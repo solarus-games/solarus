@@ -15,9 +15,10 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lowlevel/FileTools.h"
+#include "Configuration.h"
 #include <physfs.h>
 
-std::string FileTools::language_code = "en";
+std::string FileTools::language_code;
 std::map<std::string, std::string> FileTools::languages;
 
 /**
@@ -98,7 +99,7 @@ void FileTools::quit(void) {
 
 /**
  * Loads the list of available languages.
- * @param initial_language an initial language to set (empty to set the default one)
+ * @param initial_language an initial language to set (empty to set the one from the configuration file)
  */
 void FileTools::initialize_languages(const std::string &initial_language) {
   // TODO load this from some external file
@@ -108,10 +109,10 @@ void FileTools::initialize_languages(const std::string &initial_language) {
   languages["nl"] = "Nederlands";
 
   if (initial_language != "") {
-    set_language(initial_language);
+    set_language(initial_language); // pick the language
   }
   else {
-    set_language("fr"); // default
+    set_language(Configuration::get_value("language", "fr"));
   }
 }
 
@@ -122,7 +123,18 @@ void FileTools::initialize_languages(const std::string &initial_language) {
  */
 void FileTools::set_language(const std::string &language) {
   FileTools::language_code = language;
+  Configuration::set_value("language", language);
 }
+
+/**
+ * Returns the current language.
+ * The language-specific data are be loaded from the directory of this language.
+ * @return code of the language
+ */
+const std::string & FileTools::get_language(void) {
+  return language_code;
+}
+
 
 /**
  * Returns whether a file exists in the search path.

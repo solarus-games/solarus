@@ -14,6 +14,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
 /**
  * Some definition of types.
  * This header is included by Common.h and every class header file should include Common.h.
@@ -46,6 +47,7 @@ typedef std::string MessageId;
 // main classes
 class Solarus;
 class Screen;
+class Configuration;
 class ResourceManager;
 class KeysEffect;
 

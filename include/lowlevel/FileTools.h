@@ -42,6 +42,7 @@ class FileTools {
     static void quit(void);
 
     static void set_language(const std::string &language);
+    static const std::string & get_language(void);
 
     static bool data_file_exists(const std::string &file_name);
     static std::istream & data_file_open(const std::string &file_name, bool language_specific = false);

@@ -50,24 +50,8 @@ void FileTools::initialize(int argc, char **argv) {
     }
   }
 
-  // we set the write directory to a ".solarus" subdirectory of the user home
-
-  // first, create the ".solarus" directory
-   if (!PHYSFS_setWriteDir(PHYSFS_getUserDir())) {
-    DIE("Cannot write in user directory:" << PHYSFS_getLastError());
-  }
-  std::string app_dir = ".solarus";
-  PHYSFS_mkdir(app_dir.c_str());
-
-  // then set this directory as the write directory
-  std::string write_dir = (std::string) PHYSFS_getUserDir() + app_dir;
-  if (!PHYSFS_setWriteDir(write_dir.c_str())) {
-    DIE("Cannot set write dir '" << write_dir << "': " << PHYSFS_getLastError());
-  }
- 
-  // set the search path for data files
+  // set the search path for reading data files
   std::string datapath = ".";
-
 #ifdef DATAPATH
   // by default, use the datapath defined during the build process
   datapath = std::string(DATAPATH);
@@ -83,11 +67,28 @@ void FileTools::initialize(int argc, char **argv) {
   std::string debug_datapath = datapath + "/data"; // in debug mode, read directly from the data directory
   std::string release_datapath = datapath + "/data.solarus"; // in release mode, only read from the data.solarus archive
 
-  PHYSFS_addToSearchPath(PHYSFS_getWriteDir(), 1);     // directory for writing files (savegames and configuration file)
 #if SOLARUS_DEBUG_LEVEL >= 1
   PHYSFS_addToSearchPath(debug_datapath.c_str(), 1);   // data directory
 #endif
   PHYSFS_addToSearchPath(release_datapath.c_str(), 1); // data.solarus archive
+
+  // then set the write directory to a ".solarus/quest_dir" subdirectory of the user home
+
+  // first, create the directory
+   if (!PHYSFS_setWriteDir(PHYSFS_getUserDir())) {
+    DIE("Cannot write in user directory:" << PHYSFS_getLastError());
+  }
+  IniFile ini("info.dat", IniFile::READ);
+  ini.set_group("info");
+  std::string write_dir = (std::string) ".solarus/" + ini.get_string_value("write_dir");
+  PHYSFS_mkdir(write_dir.c_str());
+
+  // then set this directory as the write directory
+  write_dir = (std::string) PHYSFS_getUserDir() + write_dir;
+  if (!PHYSFS_setWriteDir(write_dir.c_str())) {
+    DIE("Cannot set write dir '" << write_dir << "': " << PHYSFS_getLastError());
+  }
+  PHYSFS_addToSearchPath(PHYSFS_getWriteDir(), 0);     // directory for writing files (savegames and configuration file)
 
   // load the list of languages
   initialize_languages(language_arg);

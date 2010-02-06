@@ -60,7 +60,8 @@ class IniFile {
     const std::string & get_group(void); 
     int get_integer_value(const std::string &key, int default_value);
     bool get_boolean_value(const std::string &key, bool default_value);
-    std::string get_string_value(const std::string &key, const std::string &default_value);
+    const std::string & get_string_value(const std::string &key, const std::string &default_value);
+    const std::string & get_string_value(const std::string &key);
 
     // writing values
     void set_integer_value(const std::string &key, int value);

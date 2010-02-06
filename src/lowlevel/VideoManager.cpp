@@ -15,9 +15,10 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lowlevel/VideoManager.h"
+#include "lowlevel/Surface.h"
 #include "lowlevel/Color.h"
 #include "lowlevel/FileTools.h"
-#include "lowlevel/Surface.h"
+#include "lowlevel/IniFile.h"
 #include "Configuration.h"
 
 VideoManager *VideoManager::instance = NULL;
@@ -62,7 +63,10 @@ VideoManager * VideoManager::get_instance(void) {
 VideoManager::VideoManager(void) {
 
   // initialize the window
-  SDL_WM_SetCaption("Solarus", NULL); // TODO load the game name (language-independent!)
+  IniFile ini("info.dat", IniFile::READ);
+  ini.set_group("info");
+  std::string title_bar = ini.get_string_value("title_bar"); // get the window title bar text (language-independent)
+  SDL_WM_SetCaption(title_bar.c_str(), NULL);
   putenv((char*) "SDL_VIDEO_CENTERED=center");
   putenv((char*) "SDL_NOMOUSE");
 

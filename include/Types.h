@@ -68,6 +68,7 @@ class PixelBits;
 class IniFile;
 
 // menus
+class LanguageScreen;
 class TitleScreen;
 class SelectionMenu;
 class SelectionMenuPhase;

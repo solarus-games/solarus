@@ -15,10 +15,13 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lowlevel/FileTools.h"
+#include "lowlevel/IniFile.h"
 #include "Configuration.h"
+#include "StringResource.h"
 #include <physfs.h>
 
 std::string FileTools::language_code;
+std::string FileTools::default_language_code;
 std::map<std::string, std::string> FileTools::languages;
 
 /**
@@ -94,47 +97,88 @@ void FileTools::initialize(int argc, char **argv) {
  * Quits the file tools.
  */
 void FileTools::quit(void) {
+  StringResource::quit();
   PHYSFS_deinit();
 }
 
 /**
  * Loads the list of available languages.
- * @param initial_language an initial language to set (empty to set the one from the configuration file)
+ * @param arg_language the language specified as command-line argument (or an empty string if not specified)
  */
-void FileTools::initialize_languages(const std::string &initial_language) {
-  // TODO load this from some external file
-  languages["en"] = "English";
-  languages["fr"] = "Français";
-  languages["de"] = "Deutsch";
-  languages["nl"] = "Nederlands";
+void FileTools::initialize_languages(const std::string &arg_language) {
 
-  if (initial_language != "") {
-    set_language(initial_language); // pick the language
+  // first determine the languages available
+  IniFile ini("languages/languages.dat", IniFile::READ);
+  for (ini.start_group_iteration(); ini.has_more_groups(); ini.next_group()) {
+
+    std::string language_code = ini.get_group();
+    std::string language_name = ini.get_string_value("name", "");
+    if (language_name.size() == 0) {
+      DIE("Missing language name in file 'languages/languages.dat' for group '" << language_code << "'");
+    }
+    languages[language_code] = language_name;
+
+    if (ini.get_boolean_value("default", false)) {
+      default_language_code = language_code;
+    }
+  }
+
+  if (arg_language.size() != 0) {
+    set_language(arg_language);
   }
   else {
-    set_language(Configuration::get_value("language", "fr"));
+    std::string config_language = Configuration::get_value("language", "");
+    if (config_language.size() != 0) {
+      set_language(config_language);
+    }
   }
 }
 
 /**
  * Sets the current language.
  * The language-specific data will be loaded from the directory of this language.
- * @param language code of the language
+ * This function must be called before the first language-specific file is loaded.
+ * @param language_code code of the language
  */
-void FileTools::set_language(const std::string &language) {
-  FileTools::language_code = language;
-  Configuration::set_value("language", language);
+void FileTools::set_language(const std::string &language_code) {
+
+  if (languages[language_code] == "") {
+    DIE("Unknown language '" << language_code << "'");
+  }
+  FileTools::language_code = language_code;
+  Configuration::set_value("language", language_code);
+  StringResource::initialize();
 }
 
 /**
  * Returns the current language.
  * The language-specific data are be loaded from the directory of this language.
- * @return code of the language
+ * @return code of the language, or an empty string if no language is set
  */
 const std::string & FileTools::get_language(void) {
   return language_code;
 }
 
+/**
+ * Returns the default language.
+ * This default language is indicated in the languages file (languages/languages.dat).
+ * It can be used to pick a language without user interaction, but you still have
+ * to call set_language() otherwise no initial language is set.
+ * @return code of the default language, or an empty string if the languages file
+ * does not specify a default language
+ */
+const std::string & FileTools::get_default_language(void) {
+  return default_language_code;
+}
+
+
+/**
+ * Returns the list of available languages.
+ * @return the available languages (mapping of language codes to language names)
+ */
+const std::map<std::string, std::string> & FileTools::get_languages(void) {
+  return languages;
+}
 
 /**
  * Returns whether a file exists in the search path.

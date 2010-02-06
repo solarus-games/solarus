@@ -19,7 +19,6 @@
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Surface.h"
 #include "Configuration.h"
-#include "StringResource.h"
 
 VideoManager *VideoManager::instance = NULL;
 
@@ -63,8 +62,7 @@ VideoManager * VideoManager::get_instance(void) {
 VideoManager::VideoManager(void) {
 
   // initialize the window
-  const std::string &title_bar = StringResource::get_string("video_manager.title_bar");
-  SDL_WM_SetCaption(title_bar.c_str(), NULL);
+  SDL_WM_SetCaption("Solarus", NULL); // TODO load the game name (language-independent!)
   putenv((char*) "SDL_VIDEO_CENTERED=center");
   putenv((char*) "SDL_NOMOUSE");
 

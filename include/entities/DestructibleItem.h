@@ -93,7 +93,7 @@ class DestructibleItem: public Detector {
     bool is_displayed_in_y_order(void);
 
     const std::string& get_animation_set_id(void);
-    Sound *get_destruction_sound(void);
+    const SoundId & get_destruction_sound_id(void);
     int get_damage_on_enemies(void);
     bool has_special_ground(void);
     Ground get_special_ground(void);

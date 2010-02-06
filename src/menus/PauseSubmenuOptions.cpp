@@ -21,8 +21,6 @@
 #include "Game.h"
 #include "Sprite.h"
 #include "KeysEffect.h"
-#include "ResourceManager.h"
-#include "lowlevel/Sound.h"
 #include "lowlevel/VideoManager.h"
 #include "lowlevel/TextSurface.h"
 #include "lowlevel/Color.h"
@@ -95,9 +93,6 @@ PauseSubmenuOptions::PauseSubmenuOptions(PauseMenu *pause_menu, Game *game):
   cursor_position = -1;
   set_cursor_position(0);
   customizing = false;
-
-  cursor_sound = ResourceManager::get_sound("cursor");
-  ok_sound = ResourceManager::get_sound("danger");
 
   // action icon
   KeysEffect *keys_effect = game->get_keys_effect();
@@ -205,12 +200,12 @@ void PauseSubmenuOptions::key_pressed(Controls::GameKey key) {
     break;
 
   case Controls::UP:
-    cursor_sound->play();
+    game->play_sound("cursor");
     set_cursor_position((cursor_position + 9) % 10);
     break;
 
   case Controls::DOWN:
-    cursor_sound->play();
+    game->play_sound("cursor");
     set_cursor_position((cursor_position + 1) % 10);
     break;
 
@@ -228,7 +223,7 @@ void PauseSubmenuOptions::key_pressed(Controls::GameKey key) {
  */
 void PauseSubmenuOptions::action_key_pressed(void) {
 
-  ok_sound->play();
+  game->play_sound("danger");
   if (cursor_position == 0) {
     VideoManager::get_instance()->switch_video_mode();
   }
@@ -258,7 +253,7 @@ void PauseSubmenuOptions::update(void) {
   cursor_sprite->update();
 
   if (customizing && controls->is_customization_done()) {
-    ok_sound->play();
+    game->play_sound("danger");
     customizing = false;
     set_caption_text(caption_strings[1]);
     cursor_sprite->set_current_animation("small");

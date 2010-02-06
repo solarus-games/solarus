@@ -24,9 +24,7 @@
 #include "Sprite.h"
 #include "DialogBox.h"
 #include "Equipment.h"
-#include "ResourceManager.h"
 #include "Savegame.h"
-#include "lowlevel/Sound.h"
 #include "lowlevel/TextSurface.h"
 #include "lowlevel/FileTools.h"
 
@@ -207,12 +205,12 @@ void ShopItem::update(void) {
 
       if (equipment->get_rupees() < price) {
 	// not enough rupees
-	ResourceManager::get_sound("wrong")->play();
+	game->play_sound("wrong");
 	game->get_dialog_box()->start_message_sequence("_shop.not_enough_money");
       }
       else if (treasure->is_amount_full()) {
 	// the player already has the maximum amount of this item
-	ResourceManager::get_sound("wrong")->play();
+	game->play_sound("wrong");
 	game->get_dialog_box()->start_message_sequence("_shop.amount_full");
       }
       else {

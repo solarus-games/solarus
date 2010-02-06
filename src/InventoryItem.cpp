@@ -18,7 +18,6 @@
 #include "Game.h"
 #include "Savegame.h"
 #include "Equipment.h"
-#include "ResourceManager.h"
 #include "DialogBox.h"
 #include "MapScript.h"
 #include "Map.h"
@@ -30,7 +29,6 @@
 #include "entities/Arrow.h"
 #include "entities/PickableItem.h"
 #include "movements/FallingHeight.h"
-#include "lowlevel/Sound.h"
 #include "lowlevel/System.h"
 
 /**
@@ -136,7 +134,7 @@ void InventoryItem::start(Game *game) {
   this->game = game;
   this->variant = game->get_equipment()->has_inventory_item(item_id);
   this->finished = false;
-  this->item_sound = NULL;
+  this->item_sound_id = "";
 
   Hero *hero = game->get_hero();
   Map *map = game->get_current_map();
@@ -165,7 +163,7 @@ void InventoryItem::start(Game *game) {
    
       case INVENTORY_BOW:
 	if (equipment->get_arrows() == 0) {
-          ResourceManager::get_sound("wrong")->play();
+          game->play_sound("wrong");
 	  finished = true;
 	}
         else {
@@ -182,7 +180,7 @@ void InventoryItem::start(Game *game) {
       case INVENTORY_PAINS_AU_CHOCOLAT:
       case INVENTORY_CROISSANTS:
         if (equipment->get_inventory_item_amount(item_id) == 0) {
-          ResourceManager::get_sound("wrong")->play();
+          game->play_sound("wrong");
 	  finished = true;
 	}
 	else {
@@ -210,10 +208,10 @@ void InventoryItem::update(void) {
   Hero *hero = game->get_hero();
   Equipment *equipment = game->get_equipment();
 
-  if (item_sound != NULL) {
+  if (item_sound_id.size() != 0) {
     uint32_t now = System::now();
     if (now >= next_sound_date) {
-      item_sound->play();
+      game->play_sound(item_sound_id);
       next_sound_date = now + sound_delay;
     }
   }
@@ -245,7 +243,7 @@ void InventoryItem::update(void) {
 	if (hero->is_animation_finished()) {
 	  finished = true;
 	  game->get_current_map()->get_entities()->add_entity(new Arrow(hero));
-          ResourceManager::get_sound("bow")->play();
+          game->play_sound("bow");
 	}
 	break;
  
@@ -325,7 +323,7 @@ void InventoryItem::start_bottle(void) {
 	  !facing_entity->interaction_with_inventory_item(this)) {
 	
 	// unless an interaction occurs, we play the "wrong" sound
-	ResourceManager::get_sound("wrong")->play();
+	game->play_sound("wrong");
       }
       finished = true;
     }
@@ -380,7 +378,7 @@ void InventoryItem::update_bottle(void) {
       if (answer == 0) {
 	// empty the water
 	game->get_equipment()->set_bottle_empty(item_id);
-	ResourceManager::get_sound("item_in_water")->play();
+	game->play_sound("item_in_water");
 
 	Detector *facing_entity = game->get_hero()->get_facing_entity();
 

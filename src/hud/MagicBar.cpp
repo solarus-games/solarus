@@ -20,7 +20,6 @@
 #include "ResourceManager.h"
 #include "Sprite.h"
 #include "lowlevel/FileTools.h"
-#include "lowlevel/Sound.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Surface.h"
 
@@ -36,7 +35,6 @@ MagicBar::MagicBar(Game *game, int x, int y):
 
   img_magic_bar = new Surface("hud/magic_bar.png");
   sprite_magic_bar_container = new Sprite("hud/magic_bar");
-  sound_magic_bar = ResourceManager::get_sound("magic_bar");
 
   current_magic_displayed = equipment->get_magic();
   max_magic_displayed = 0;
@@ -126,7 +124,7 @@ void MagicBar::update(void) {
 
     // play the magic bar sound
     if ((current_magic - current_magic_displayed) % 10 == 1) {
-      sound_magic_bar->play();
+      game->play_sound("magic_bar");
     }
   }
 

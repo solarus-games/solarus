@@ -33,7 +33,6 @@ class PauseSubmenuInventory: public PauseSubmenu {
     int cursor_row;                 /**< row of the inventory cursor, between 0 and 3 */
     int cursor_column;              /**< column of the inventory cursor, between 0 and 6 */
     Sprite *cursor_sprite;          /**< sprite of the cursor to select an item */
-    Sound *cursor_sound;            /**< sound played when moving the cursor */
 
     // graphics
     Surface *items_img;             /**< images of the existing items */

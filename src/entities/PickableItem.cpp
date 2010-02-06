@@ -27,9 +27,7 @@
 #include "Equipment.h"
 #include "DungeonEquipment.h"
 #include "Map.h"
-#include "ResourceManager.h"
 #include "Treasure.h"
-#include "lowlevel/Sound.h"
 #include "lowlevel/Random.h"
 #include "lowlevel/System.h"
 #include "lowlevel/FileTools.h"
@@ -430,8 +428,7 @@ void PickableItem::give_item_to_player(void) {
 
   // play the sound
   if (features[subtype].sound != "") {
-    Sound *sound = ResourceManager::get_sound(features[subtype].sound);
-    sound->play();
+    game->play_sound(features[subtype].sound);
   }
 
   // give the item

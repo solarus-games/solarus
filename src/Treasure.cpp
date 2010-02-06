@@ -15,7 +15,6 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "Treasure.h"
-#include "ResourceManager.h"
 #include "Game.h"
 #include "DialogBox.h"
 #include "Savegame.h"
@@ -26,7 +25,6 @@
 #include "Map.h"
 #include "MapScript.h"
 #include "Treasure.h"
-#include "lowlevel/Sound.h"
 #include "lowlevel/Surface.h"
 
 /**
@@ -207,7 +205,7 @@ void Treasure::play_treasure_sound(void) {
   else {
     sound_name = "treasure";
   }
-  ResourceManager::get_sound(sound_name)->play();
+  game->play_sound(sound_name);
 }
 
 /**

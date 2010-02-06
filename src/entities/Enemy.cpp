@@ -23,12 +23,10 @@
 #include "Equipment.h"
 #include "Sprite.h"
 #include "SpriteAnimationSet.h"
-#include "ResourceManager.h"
 #include "Map.h"
 #include "MapScript.h"
 #include "movements/StraightMovement.h"
 #include "movements/FallingHeight.h"
-#include "lowlevel/Sound.h"
 #include "lowlevel/Geometry.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Random.h"
@@ -627,7 +625,7 @@ void Enemy::attack_hero(Hero *hero, Sprite *this_sprite) {
  * By default, the shield sound is played and the enemy cannot attack again for a while.
  */
 void Enemy::attack_stopped_by_hero_shield(void) {
-  ResourceManager::get_sound("shield")->play();
+  game->play_sound("shield");
 
   uint32_t now = System::now();
   can_attack = false;
@@ -678,7 +676,7 @@ void Enemy::play_hurt_sound(void) {
       break;
   }
 
-  ResourceManager::get_sound(sound_id)->play();
+  game->play_sound(sound_id);
 }
 
 /**
@@ -708,7 +706,7 @@ void Enemy::try_hurt(EnemyAttack attack, MapEntity *source, Sprite *this_sprite)
     
     if (consequence == -1) {
       // shield sound
-      ResourceManager::get_sound("shield")->play();
+      game->play_sound("shield");
       result = -1;
     }
     else if (consequence == -2) {
@@ -827,7 +825,7 @@ void Enemy::kill(void) {
     // replace the enemy sprite
     remove_sprites();
     create_sprite("enemies/enemy_killed");
-    ResourceManager::get_sound("enemy_killed")->play();
+    game->play_sound("enemy_killed");
   }
   else {
     // create some explosions

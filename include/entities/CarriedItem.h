@@ -29,24 +29,24 @@ class CarriedItem: public MapEntity {
   private:
 
     // game data
-    Hero *hero;               /**< the hero, who is carrying or throwing this item */
+    Hero *hero;                      /**< the hero, who is carrying or throwing this item */
 
     // state
-    bool is_lifting;          /**< indicates that the hero is lifting this item */
-    bool is_throwing;         /**< indicates that the item is being thrown */
-    bool is_breaking;         /**< indicates that the item is breaking */
-    Sound *destruction_sound; /**< the sound played when the item breaks */
-    int damage_on_enemies;    /**< damage for an enemy that receives the item */
+    bool is_lifting;                 /**< indicates that the hero is lifting this item */
+    bool is_throwing;                /**< indicates that the item is being thrown */
+    bool is_breaking;                /**< indicates that the item is breaking */
+    SoundId destruction_sound_id;    /**< the sound played when the item breaks */
+    int damage_on_enemies;           /**< damage for an enemy that receives the item */
 
     // throwing the item
-    Sprite *shadow_sprite;    /**< sprite of the shadow when the item is being thrown */
-    int throwing_direction;   /**< direction where the item is thrown (0 to 3) */
-    uint32_t next_down_date;    /**< when the item is thrown, date when it move one pixel downwards next time */
-    int item_height;          /**< current height where the item is displayed above its shadow */
-    int y_increment;          /**< next y change for item_height */
+    Sprite *shadow_sprite;           /**< sprite of the shadow when the item is being thrown */
+    int throwing_direction;          /**< direction where the item is thrown (0 to 3) */
+    uint32_t next_down_date;         /**< when the item is thrown, date when it move one pixel downwards next time */
+    int item_height;                 /**< current height where the item is displayed above its shadow */
+    int y_increment;                 /**< next y change for item_height */
 
     // explosion of the item
-    uint32_t explosion_date;    /**< date when the item will explode (0 if there is no explosion) */
+    uint32_t explosion_date;         /**< date when the item will explode (0 if there is no explosion) */
 
     bool will_explode_soon(void);
 

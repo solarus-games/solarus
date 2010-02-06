@@ -24,9 +24,7 @@
 #include "Map.h"
 #include "Sprite.h"
 #include "SpriteAnimationSet.h"
-#include "ResourceManager.h"
 #include "KeysEffect.h"
-#include "lowlevel/Sound.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Random.h"
@@ -178,7 +176,7 @@ void CrystalSwitch::activate(void) {
 
   uint32_t now = System::now();
   if (now >= next_possible_hit_date) {
-    ResourceManager::get_sound("switch")->play();
+    game->play_sound("switch");
     game->change_crystal_switch_state();
     next_possible_hit_date = now + 1000;
   }

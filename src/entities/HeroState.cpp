@@ -32,13 +32,11 @@
 #include "Map.h"
 #include "MapScript.h"
 #include "KeysEffect.h"
-#include "ResourceManager.h"
 #include "Equipment.h"
 #include "Sprite.h"
 #include "Treasure.h"
 #include "Controls.h"
 #include "InventoryItem.h"
-#include "lowlevel/Sound.h"
 #include "lowlevel/System.h"
 
 /**
@@ -436,7 +434,7 @@ void Hero::update_sword_loading(void) {
 
   // detect when the sword is loaded (i.e. ready for a spin attack)
   if (!sword_loaded && counter >= 10) {
-      ResourceManager::get_sound("sword_spin_attack_load")->play();
+      game->play_sound("sword_spin_attack_load");
       sword_loaded = true;
       counter = 0;
   }
@@ -500,7 +498,7 @@ void Hero::update_sword_tapping(void) {
       else {
         sound_id = "sword_tapping";
       }
-      ResourceManager::get_sound(sound_id)->play();
+      game->play_sound(sound_id);
       next_hit_sound_date = now + 100;
     }
   }
@@ -1054,7 +1052,7 @@ void Hero::start_spin_attack(void) {
   sword_loaded = false;
 
   // play the sound
-  ResourceManager::get_sound("sword_spin_attack_release")->play();
+  game->play_sound("sword_spin_attack_release");
 
   // start the animation
   sprites->set_animation_spin_attack();
@@ -1109,7 +1107,7 @@ void Hero::start_jumping(int direction, int length, bool with_collisions, bool w
   set_movement(new JumpMovement(direction, length, with_collisions));
 
   if (with_sound) {
-    ResourceManager::get_sound("jump")->play();
+    game->play_sound("jump");
   }
   jump_y = get_y();
   this->layer_after_jump = layer_after_jump;
@@ -1171,14 +1169,14 @@ void Hero::hurt(MapEntity *source, int life_points, int magic_points) {
     }
     sprites->stop_displaying_sword();
 
-    ResourceManager::get_sound("hero_hurt")->play();
+    game->play_sound("hero_hurt");
 
     life_points = std::max(1, life_points / (equipment->get_tunic() + 1));
 
     equipment->remove_hearts(life_points);
     if (magic_points > 0 && equipment->get_magic() > 0) {
       equipment->remove_magic(magic_points);
-      ResourceManager::get_sound("magic_bar")->play();
+      game->play_sound("magic_bar");
     }
     sprites->blink();
     set_state(HURT);
@@ -1324,7 +1322,7 @@ void Hero::start_deep_water(void) {
 void Hero::start_plunging(void) {
   set_state(PLUNGING);
   sprites->set_animation_plunging();
-  ResourceManager::get_sound("splash")->play();
+  game->play_sound("splash");
 }
 
 /**
@@ -1341,7 +1339,7 @@ void Hero::update_plunging(void) {
       start_swimming();
     }
     else {
-      ResourceManager::get_sound("message_end")->play();
+      game->play_sound("message_end");
       start_returning_to_solid_ground(last_solid_ground_coords, last_solid_ground_layer);
       equipment->remove_hearts(1);
     }
@@ -1408,7 +1406,7 @@ void Hero::start_falling(void) {
   sprites->save_animation_direction();
   set_state(FALLING);
   sprites->set_animation_falling();
-  ResourceManager::get_sound("hero_falls")->play();
+  game->play_sound("hero_falls");
 }
 
 /**
@@ -1493,7 +1491,7 @@ void Hero::update_returning_to_solid_ground(void) {
 void Hero::start_victory() {
   set_state(VICTORY);
   sprites->set_animation_victory();
-  ResourceManager::get_sound("victory")->play();
+  game->play_sound("victory");
   end_victory_date = System::now() + 1500;
 }
 

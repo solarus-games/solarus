@@ -22,12 +22,10 @@
 #include "DialogBox.h"
 #include "Savegame.h"
 #include "Sprite.h"
-#include "ResourceManager.h"
 #include "DungeonEquipment.h"
 #include "Savegame.h"
 #include "Map.h"
 #include "MapScript.h"
-#include "lowlevel/Sound.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/System.h"
 
@@ -270,7 +268,7 @@ void Chest::update(void) {
 
 	  // the script does not define any behavior:
 	  // by default, we tell the player the chest is empty
-	  ResourceManager::get_sound("wrong")->play();
+	  game->play_sound("wrong");
 	  game->get_dialog_box()->start_message_sequence("_empty_chest");
 	  hero->unfreeze();
 	}
@@ -295,7 +293,7 @@ void Chest::action_key_pressed(void) {
   if (!is_hidden() && hero->get_state() == Hero::FREE) { // don't open a chest while pushing
 
     if (!big_chest || dungeon_equipment->has_big_key()) {
-      ResourceManager::get_sound("chest_open")->play();
+      game->play_sound("chest_open");
       set_open(true);
       treasure_date = System::now() + 300;
 
@@ -303,7 +301,7 @@ void Chest::action_key_pressed(void) {
       hero->freeze();
     }
     else {
-      ResourceManager::get_sound("wrong")->play();
+      game->play_sound("wrong");
       game->get_dialog_box()->start_message_sequence("_big_key_required");
     }
   }

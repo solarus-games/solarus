@@ -21,9 +21,8 @@
 #include "movements/CollisionMovement.h"
 #include "movements/PlayerMovement.h"
 #include "movements/TargetMovement.h"
-#include "ResourceManager.h"
+#include "Game.h"
 #include "Map.h"
-#include "lowlevel/Sound.h"
 #include "lowlevel/System.h"
 
 /**
@@ -246,7 +245,7 @@ void Boomerang::update(void) {
 
   uint32_t now = System::now();
   if (now >= next_sound_date) {
-    ResourceManager::get_sound("boomerang")->play();
+    game->play_sound("boomerang");
     next_sound_date = now + 150;
   }
 
@@ -263,7 +262,7 @@ void Boomerang::update(void) {
       
       if (!map->test_collision_with_border(get_movement()->get_last_collision_box_on_obstacle())) {
         // play a sound unless we are on the map border
-	ResourceManager::get_sound("sword_tapping")->play();
+	game->play_sound("sword_tapping");
       }
       go_back();
     }

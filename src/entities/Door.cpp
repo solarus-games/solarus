@@ -24,8 +24,6 @@
 #include "Equipment.h"
 #include "DungeonEquipment.h"
 #include "KeysEffect.h"
-#include "ResourceManager.h"
-#include "lowlevel/Sound.h"
 #include "Savegame.h"
 #include "Map.h"
 #include "lowlevel/FileTools.h"
@@ -300,8 +298,8 @@ void Door::action_key_pressed(void) {
 
   if (hero->get_state() == Hero::FREE) {
     if (can_open()) {
-      ResourceManager::get_sound("door_unlocked")->play();
-      ResourceManager::get_sound("door_open")->play();
+      game->play_sound("door_unlocked");
+      game->play_sound("door_open");
 
       game->get_savegame()->set_boolean(savegame_variable, true);
       if (subtype == SMALL_KEY_BLOCK) {
@@ -316,7 +314,7 @@ void Door::action_key_pressed(void) {
       }
     }
     else {
-      ResourceManager::get_sound("wrong")->play();
+      game->play_sound("wrong");
       game->get_dialog_box()->start_message_sequence(key_required_message_ids[subtype]);
     }
   }

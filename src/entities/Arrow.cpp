@@ -20,9 +20,8 @@
 #include "movements/PathMovement.h"
 #include "movements/FollowMovement.h"
 #include "Sprite.h"
+#include "Game.h"
 #include "Map.h"
-#include "ResourceManager.h"
-#include "lowlevel/Sound.h"
 #include "lowlevel/System.h"
 
 /**
@@ -256,7 +255,7 @@ void Arrow::update(void) {
     // an obstacle or an entity was just reached
     disappear_date = now + 1500;
     get_sprite()->set_current_animation("reached_obstacle");
-    ResourceManager::get_sound("arrow_hit")->play();
+    game->play_sound("arrow_hit");
     clear_movement();
   }
 

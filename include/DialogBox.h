@@ -95,10 +95,6 @@ class DialogBox {
     Surface *icons_img;                             /**< image containing all possible icons used in messages */
     Sprite *end_message_sprite;                     /**< sprite displayed when the current message is finished*/
 
-    // sounds
-    Sound *end_message_sound;                       /**< sound played when the current message is finished */
-    Sound *switch_answer_sound;                     /**< sound played when the player selects an answer to a question */
-
     // position of the images
     Rectangle box_src_position;                     /**< rectangle of the dialog box in its source image */
     Rectangle box_dst_position;                     /**< destination rectangle of the dialog box image */

@@ -18,8 +18,6 @@
 #include "movements/FairyMovement.h"
 #include "Game.h"
 #include "Equipment.h"
-#include "ResourceManager.h"
-#include "lowlevel/Sound.h"
 #include "Sprite.h"
 
 /**
@@ -81,11 +79,11 @@ void PickableItemFairy::give_item_to_player(void) {
 
   // play the sound
   if (features[subtype].sound != "") {
-    Sound *sound = ResourceManager::get_sound(features[subtype].sound);
-    sound->play();
+    game->play_sound(features[subtype].sound);
   }
 
   // give the fairy
   Equipment *equipment = game->get_equipment();
   equipment->found_fairy();
 }
+

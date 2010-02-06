@@ -141,6 +141,3 @@ selection_menu.empty		Leer
 title_screen.website		www.zelda-solarus.com
 title_screen.press_space	Bitte Leertaste drücken
 
-# Title bar of the program window
-video_manager.title_bar		Zelda Mystery of Solarus DX - Spieledemo
-

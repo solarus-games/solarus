@@ -112,6 +112,7 @@ const std::string & IniFile::get_group(void) {
  * Returns the integer value corresponding to the specified key in the current group.
  * @param key the key
  * @param default value a default value to return if the key does not exist
+ * @return the value of this key
  */
 int IniFile::get_integer_value(const std::string &key, int default_value) {
 
@@ -123,20 +124,42 @@ int IniFile::get_integer_value(const std::string &key, int default_value) {
  * Returns the boolean value corresponding to the specified key in the current group.
  * @param key the key
  * @param default value a default value to return if the key does not exist
+ * @return the value of this key
  */
 bool IniFile::get_boolean_value(const std::string &key, bool default_value) {
 
   return ini.GetBoolValue(group.c_str(), key.c_str(), default_value);
 }
+
 /**
  * Returns the string value corresponding to the specified key in the current group.
  * @param key the key
  * @param default value a default value to return if the key does not exist
+ * @return the value of this key
  */
-std::string IniFile::get_string_value(const std::string &key, const std::string &default_value) {
+const std::string & IniFile::get_string_value(const std::string &key, const std::string &default_value) {
 
- return ini.GetValue(group.c_str(), key.c_str(), default_value.c_str());
+  static std::string value;
+  value = ini.GetValue(group.c_str(), key.c_str(), default_value.c_str());
+  return value;
 }
+
+/**
+ * Returns the string value corresponding to the specified key in the current group.
+ * If the string is not defined, the application stops on an error message.
+ * @param key the key
+ * @param default value a default value to return if the key does not exist
+ * @return the value of this key
+ */
+const std::string & IniFile::get_string_value(const std::string &key) {
+
+  const std::string & value = get_string_value(key, "");
+  if (value.size() == 0) {
+    DIE("No value for key '" << key << "' in file '" << file_name << "'");
+  }
+  return value;
+}
+
 
 /**
  * Sets an integer value in the current group.

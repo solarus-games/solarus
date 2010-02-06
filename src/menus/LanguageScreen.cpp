@@ -23,30 +23,33 @@
 #include "lowlevel/Surface.h"
 #include "lowlevel/TextSurface.h"
 
+const int LanguageScreen::max_visible_languages = 10;
+
 /**
  * Creates a language screen.
  * @param solarus the Solarus object
  */
 LanguageScreen::LanguageScreen(Solarus *solarus):
-  Screen(solarus) {
+  Screen(solarus), transition(NULL), intermediate_surface(NULL), 
+  language_codes(NULL), language_texts(NULL),
+  cursor_position(0), nb_languages(0), finished(false) {
 
   if (FileTools::get_language().size() != 0) {
     // a language is already set: skip this screen
     finished = true;
   }
   else {
-    // transition = Transition::create(Transition::FADE, Transition::IN);
-    // transition->start();
-    transition = NULL;
     intermediate_surface = new Surface(320, 240);
 
     std::map<std::string, std::string> language_map = FileTools::get_languages();
     nb_languages = language_map.size();
     first_visible_language = 0;
+    nb_visible_languages = std::min(nb_languages, max_visible_languages);
     language_texts = new TextSurface*[nb_languages];
     language_codes = new std::string[nb_languages];
     int cursor_position = 0;
     int i = 0;
+
     std::map<std::string, std::string>::iterator it;
     for (it = language_map.begin(); it != language_map.end(); it++) {
       language_codes[i] = it->first;
@@ -68,6 +71,12 @@ LanguageScreen::LanguageScreen(Solarus *solarus):
 LanguageScreen::~LanguageScreen(void) {
 
   delete transition;
+  delete intermediate_surface;
+  for (int i = 0; i < nb_languages; i++) {
+    delete language_texts[i];
+  }
+  delete[] language_texts;
+  delete[] language_codes;
 }
 
 /**
@@ -75,9 +84,6 @@ LanguageScreen::~LanguageScreen(void) {
  * @param cursor_position
  */
 void LanguageScreen::set_cursor_position(int cursor_position) {
-
-  const int max_visible_languages = 10;
-  const int nb_visible_languages = std::min(nb_languages, max_visible_languages);
 
   language_texts[this->cursor_position]->set_text_color(Color::get_white());
   language_texts[cursor_position]->set_text_color(Color::get_yellow());
@@ -90,7 +96,7 @@ void LanguageScreen::set_cursor_position(int cursor_position) {
   }
 
   int y = 120 - 8 * nb_visible_languages;
-  for (int i = 0; i < nb_languages; i++) {
+  for (int i = first_visible_language; i < first_visible_language + nb_visible_languages; i++) {
     language_texts[i]->set_y(y);
     y += 16;
   }
@@ -112,10 +118,7 @@ void LanguageScreen::update(void) {
     if (transition->is_finished()) {
       delete transition;
       transition = NULL;
-
-      if (FileTools::get_language().size() != 0) {
-        set_next_screen(new TitleScreen(solarus));
-      }
+      finished = true;
     }
   }
 }
@@ -128,7 +131,7 @@ void LanguageScreen::display(Surface *destination_surface) {
 
   intermediate_surface->fill_with_color(Color::get_black());
 
-  for (int i = 0; i < nb_languages; i++) {
+  for (int i = first_visible_language; i < first_visible_language + nb_visible_languages; i++) {
     language_texts[i]->display(intermediate_surface);
   }
 

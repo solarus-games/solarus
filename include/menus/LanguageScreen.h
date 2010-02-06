@@ -37,6 +37,8 @@ class LanguageScreen: public Screen {
     TextSurface **language_texts;
     int cursor_position;
     int first_visible_language;
+    int nb_visible_languages;
+    static const int max_visible_languages;
     int nb_languages;
     bool finished;
 

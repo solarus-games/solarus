@@ -24,7 +24,7 @@
 #include "ResourceManager.h"
 #include "Savegame.h"
 #include "StringResource.h"
-#include "menus/TitleScreen.h"
+#include "menus/LanguageScreen.h"
 
 /**
  * Initializes the game engine.
@@ -37,7 +37,7 @@ Solarus::Solarus(int argc, char **argv) {
   debug_keys = new DebugKeys(this);
 
   // create the first screen
-  current_screen = new TitleScreen(this);
+  current_screen = new LanguageScreen(this);
   exiting = false;
 }
 
@@ -121,7 +121,7 @@ void Solarus::main(void) {
 	current_screen = next_screen;
       }
       else {
-	current_screen = new TitleScreen(this);
+	current_screen = new LanguageScreen(this);
       }
     }
     else {

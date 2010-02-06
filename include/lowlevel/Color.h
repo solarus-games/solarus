@@ -36,15 +36,21 @@ class Color {
     static Color black;
     static Color white;
     static Color red;
+    static Color green;
+    static Color blue;
+    static Color yellow;
 
   public:
 
     static void initialize(void);
     static void quit(void);
 
-    static inline Color & get_black(void) { return black; }
-    static inline Color & get_white(void) { return white; }
-    static inline Color & get_red(void)   { return red;   }
+    static inline Color & get_black(void)    { return black;    }
+    static inline Color & get_white(void)    { return white;    }
+    static inline Color & get_red(void)      { return red;      }
+    static inline Color & get_green(void)    { return green;    }
+    static inline Color & get_blue(void)     { return blue ;    }
+    static inline Color & get_yellow(void)   { return yellow;   }
 
     Color(void);
     Color(const Color &other);

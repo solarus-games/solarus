@@ -33,16 +33,19 @@ class FileTools {
 
     static std::map<std::string, std::string> languages; /**< the languages available (code -> language name) */
     static std::string language_code;                    /**< code of the current language (e.g. "en", "fr", etc.) */
+    static std::string default_language_code;            /**< code of the default language */
 
-    static void initialize_languages(const std::string &initial_language);
+    static void initialize_languages(const std::string &arg_language);
 
   public:
 
     static void initialize(int argc, char **argv);
     static void quit(void);
 
-    static void set_language(const std::string &language);
+    static void set_language(const std::string &language_code);
     static const std::string & get_language(void);
+    static const std::string & get_default_language(void);
+    static const std::map<std::string, std::string> & get_languages(void);
 
     static bool data_file_exists(const std::string &file_name);
     static std::istream & data_file_open(const std::string &file_name, bool language_specific = false);

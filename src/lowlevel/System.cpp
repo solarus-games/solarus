@@ -21,7 +21,6 @@
 #include "lowlevel/TextSurface.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/Random.h"
-#include "StringResource.h"
 #include "ResourceManager.h"
 #include "Sprite.h"
 #include <SDL/SDL.h>
@@ -40,7 +39,6 @@ void System::initialize(int argc, char **argv) {
 
   // files
   FileTools::initialize(argc, argv);
-  StringResource::initialize();
   ResourceManager::initialize();
 
   // video
@@ -74,7 +72,6 @@ void System::quit(void) {
   TextSurface::quit();
   Color::quit();
   VideoManager::quit();
-  StringResource::quit();
   FileTools::quit();
 
   SDL_Quit();

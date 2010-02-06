@@ -34,14 +34,14 @@ Feature requests :
 - son et animation des marches d'escalier
 - rendre les pierres et les buissons dépendants du tileset
 - scrolling tiles : permettre de choisir la direction du décalage
-- écran d'options global permettant de régler la langue, le volume de la musique et du son et la résolution
+- écran d'options global permettant de régler la langue, le volume de la musique et du son, la résolution, voire les touches ?
 - Windows : voir si SDL utilise ou peut utiliser OpenGL ou DirectX
 - Ce serait pas mal de faire une animation lorsque Link vide le contenu de sa bouteille.
 - Il manque les animations de Link lorsqu'il monte ou descend un escalier en colimaçon.
 - Ajouter un "map marker" pour indiquer où il faut se rendre ensuite
 - faire une classe script plus générale indépendante des maps ? on pourrait avoir un script global, des scripts d'objets de l'inventaire,
   des scripts d'ennemis, etc.
-- Le moteur doit connaître le nom du jeu pour enregistrer les sauvegardes et le fichier de configuration dans ~/.solarus/nom_jeu/. Connaître à partir du contenu d'un fichier ou du nom de l'archive de données
+- Le moteur doit connaître le nom court du jeu pour enregistrer les sauvegardes et le fichier de configuration dans ~/.solarus/nom_jeu/. Connaître à partir du contenu d'un fichier ou du nom de l'archive de données. Il doit aussi connaître son nom long pour l'afficher dans la barre de titre.
 - Rendre les polices indépendantes de Zelda
 - Sons : format flac ou ogg
 
@@ -78,6 +78,7 @@ Bugs :
 - boss donjon 1 trop facile, alonger le délai des choux-péteurs ? En mettre moins ?
 - saut de la falaise en diagonale : rendre plus évident
 - TARDIS pas respecté chez Link et Sahasrahla
+
 
 
 Donjon 2 :

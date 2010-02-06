@@ -131,9 +131,9 @@ void TitleScreen::display(Surface *destination_surface) {
 }
 
 /**
- * Handles an SDL event.
- * This function is called by the SDL main loop when there is an event.
- * @param event the SDL event to handle
+ * Handles an event.
+ * This function is called by the main loop when there is an event.
+ * @param event the event to handle
  */
 void TitleScreen::handle_event(const SDL_Event &event) {
 

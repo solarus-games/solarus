@@ -25,6 +25,9 @@ SDL_PixelFormat * Color::format = NULL;
 Color Color::black;
 Color Color::white;
 Color Color::red;
+Color Color::green;
+Color Color::blue;
+Color Color::yellow;
 
 /**
  * Initializes the color static fields.
@@ -33,9 +36,12 @@ void Color::initialize(void) {
 
   format = SDL_GetVideoSurface()->format;
 
-  black = Color(0, 0, 0); 
-  white = Color(255, 255, 255);
-  red = Color(255, 0, 0);
+  black =    Color(  0,   0,   0); 
+  white =    Color(255, 255, 255);
+  red =      Color(255,   0,   0);
+  green =    Color(  0, 255,   0);
+  blue =     Color(  0,   0, 255);
+  yellow =   Color(255, 255,   0);
 }
 
 /**

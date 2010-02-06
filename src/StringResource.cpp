@@ -39,6 +39,7 @@ StringResource::~StringResource(void) {
  */
 void StringResource::initialize(void) {
 
+  strings.clear();
   std::istream &file = FileTools::data_file_open("text/strings.dat", true);
   std::string line;
 
@@ -71,7 +72,7 @@ void StringResource::initialize(void) {
  * Closes the text resource.
  */
 void StringResource::quit(void) {
-
+  strings.clear();
 }
 
 /**

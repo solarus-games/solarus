@@ -18,14 +18,12 @@
 #include "entities/Hero.h"
 #include "entities/MapEntities.h"
 #include "movements/FallingHeight.h"
-#include "ResourceManager.h"
 #include "Game.h"
 #include "DialogBox.h"
 #include "KeysEffect.h"
 #include "Equipment.h"
 #include "Map.h"
 #include "Sprite.h"
-#include "lowlevel/Sound.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/System.h"
 
@@ -145,11 +143,11 @@ const std::string& DestructibleItem::get_animation_set_id(void) {
 }
 
 /**
- * Returns the sound to play when this item is destroyed.
- * @return the sound to play when this item is destroyed
+ * Returns the id of the sound to play when this item is destroyed.
+ * @return the destruction sound id
  */
-Sound * DestructibleItem::get_destruction_sound(void) {
-  return ResourceManager::get_sound(features[subtype].destruction_sound_id);
+const SoundId & DestructibleItem::get_destruction_sound_id(void) {
+  return features[subtype].destruction_sound_id;
 }
 
 /**
@@ -277,7 +275,7 @@ void DestructibleItem::action_key_pressed(void) {
       hero->start_lifting(this);
 
       // play the sound
-      ResourceManager::get_sound("lift")->play();
+      game->play_sound("lift");
 
       // create the pickable item
       if (pickable_item != PickableItem::NONE) {
@@ -315,7 +313,7 @@ void DestructibleItem::action_key_pressed(void) {
 void DestructibleItem::play_destroy_animation(void) {
 
   is_being_cut = true;
-  get_destruction_sound()->play();
+  game->play_sound(get_destruction_sound_id());
   get_sprite()->set_current_animation("destroy");
   if (!is_displayed_in_y_order()) {
     map->get_entities()->bring_to_front(this); // show animation destroy to front

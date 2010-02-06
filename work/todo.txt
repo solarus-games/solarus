@@ -41,8 +41,6 @@ Feature requests :
 - Ajouter un "map marker" pour indiquer où il faut se rendre ensuite
 - faire une classe script plus générale indépendante des maps ? on pourrait avoir un script global, des scripts d'objets de l'inventaire,
   des scripts d'ennemis, etc.
-- Le moteur doit connaître le nom court du jeu pour enregistrer les sauvegardes et le fichier de configuration dans ~/.solarus/nom_jeu/. Connaître à partir du contenu d'un fichier ou du nom de l'archive de données. Il doit aussi connaître son nom long pour l'afficher dans la barre de titre.
-- Rendre les polices indépendantes de Zelda
 - Sons : format flac ou ogg
 
 
@@ -78,7 +76,7 @@ Bugs :
 - boss donjon 1 trop facile, alonger le délai des choux-péteurs ? En mettre moins ?
 - saut de la falaise en diagonale : rendre plus évident
 - TARDIS pas respecté chez Link et Sahasrahla
-
+- Remplacer les ResourceManager::get_sound(...)->play() par game->play_sound(...)
 
 
 Donjon 2 :

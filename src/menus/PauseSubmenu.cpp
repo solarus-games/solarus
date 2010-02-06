@@ -86,3 +86,10 @@ void PauseSubmenu::set_caption_text(const std::string &text) {
   }
 }
 
+/**
+ * Plays the cursor sound.
+ */
+void PauseSubmenu::play_cursor_sound(void) {
+  game->play_sound("cursor");
+}
+

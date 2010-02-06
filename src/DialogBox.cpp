@@ -20,10 +20,8 @@
 #include "Game.h"
 #include "Map.h"
 #include "KeysEffect.h"
-#include "ResourceManager.h"
 #include "MapScript.h"
 #include "entities/Hero.h"
-#include "lowlevel/Sound.h"
 #include "lowlevel/Color.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Surface.h"
@@ -45,10 +43,6 @@ DialogBox::DialogBox(Game *game):
   box_src_position = Rectangle(0, 0, 220, 60);
   box_dst_position.set_size(box_src_position);
   question_src_position = Rectangle(96, 60, 8, 8);
-
-  // load the sounds
-  end_message_sound = ResourceManager::get_sound("message_end");
-  switch_answer_sound = ResourceManager::get_sound("cursor");
 
   // create the sprites
   end_message_sprite = new Sprite("hud/dialog_box_message_end");
@@ -412,7 +406,7 @@ void DialogBox::up_or_down_key_pressed(void) {
     int answer = get_last_answer();
     set_last_answer(1 - answer);
     question_dst_position.set_y(box_dst_position.get_y() + ((answer == 1) ? 27 : 40));
-    switch_answer_sound->play();
+    game->play_sound("cursor");
   }
 }
 
@@ -496,7 +490,7 @@ void DialogBox::update(void) {
       }
 
       keys_effect->set_sword_key_effect(KeysEffect::SWORD_KEY_HIDDEN);
-      end_message_sound->play();
+      game->play_sound("message_end");
     }
   }
 }

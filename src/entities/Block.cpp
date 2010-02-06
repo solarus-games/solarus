@@ -19,11 +19,9 @@
 #include "movements/FollowMovement.h"
 #include "Game.h"
 #include "Map.h"
-#include "ResourceManager.h"
 #include "KeysEffect.h"
 #include "Sprite.h"
 #include "lowlevel/FileTools.h"
-#include "lowlevel/Sound.h"
 #include "lowlevel/System.h"
 
 /**
@@ -235,7 +233,7 @@ void Block::just_moved(void) {
   // now we now that the block moves at least of 1 pixel:
   // we can play the sound
   if (!sound_played) {
-    ResourceManager::get_sound("hero_pushes")->play();
+    game->play_sound("hero_pushes");
     sound_played = true;
   }
 }

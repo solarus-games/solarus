@@ -21,10 +21,8 @@
 #include "menus/PauseSubmenuOptions.h"
 #include "Game.h"
 #include "Savegame.h"
-#include "ResourceManager.h"
 #include "Sprite.h"
 #include "StringResource.h"
-#include "lowlevel/Sound.h"
 #include "lowlevel/Color.h"
 #include "lowlevel/TextSurface.h"
 #include "lowlevel/Surface.h"
@@ -43,7 +41,7 @@ PauseMenu::PauseMenu(Game *game):
   this->save_dialog_sprite = new Sprite("menus/pause_save_dialog");
   this->save_dialog_state = 0;
 
-  ResourceManager::get_sound("pause_open")->play();
+  game->play_sound("pause_open");
   keys_effect->set_pause_key_effect(KeysEffect::PAUSE_KEY_RETURN);
   keys_effect->save_action_key_effect();
   keys_effect->save_sword_key_effect();
@@ -82,7 +80,7 @@ PauseMenu::~PauseMenu(void) {
  */
 void PauseMenu::quit(void) {
 
-  ResourceManager::get_sound("pause_closed")->play();
+  game->play_sound("pause_closed");
   keys_effect->set_pause_key_effect(KeysEffect::PAUSE_KEY_PAUSE);
   keys_effect->restore_action_key_effect();
   keys_effect->restore_sword_key_effect();
@@ -104,7 +102,7 @@ void PauseMenu::key_pressed(Controls::GameKey key) {
 
     if (key == Controls::SWORD) {
 
-      ResourceManager::get_sound("message_end")->play();
+      game->play_sound("message_end");
 
       save_dialog_state = 1;
       save_dialog_choice = 0;
@@ -127,7 +125,7 @@ void PauseMenu::key_pressed(Controls::GameKey key) {
   else if (key == Controls::LEFT || key == Controls::RIGHT) {
     // move the cursor
 
-    ResourceManager::get_sound("cursor")->play();
+    game->play_sound("cursor");
     save_dialog_choice = 1 - save_dialog_choice;
     save_dialog_sprite->set_current_animation(save_dialog_choice == 0 ? "left" : "right");
   }
@@ -139,10 +137,10 @@ void PauseMenu::key_pressed(Controls::GameKey key) {
  
       if (save_dialog_choice == 0) {
 	savegame->save();
-	ResourceManager::get_sound("piece_of_heart")->play();
+	game->play_sound("piece_of_heart");
       }
       else {
-	ResourceManager::get_sound("danger")->play();
+	game->play_sound("danger");
       }
 
       question_text[0]->set_text(StringResource::get_string("save_dialog.continue_question_0"));
@@ -152,7 +150,7 @@ void PauseMenu::key_pressed(Controls::GameKey key) {
       save_dialog_sprite->set_current_animation("left");
     }
     else {
-      ResourceManager::get_sound("danger")->play();
+      game->play_sound("danger");
 
       save_dialog_state = 0;
       keys_effect->set_action_key_effect(action_key_effect_saved);
@@ -239,7 +237,7 @@ void PauseMenu::set_current_submenu(int submenu_index) {
  */
 void PauseMenu::show_left_submenu(void) {
 
-  ResourceManager::get_sound("pause_closed")->play();
+  game->play_sound("pause_closed");
   int submenu_index = savegame->get_integer(Savegame::PAUSE_LAST_SUBMENU);
   set_current_submenu((submenu_index + 3) % 4);
 }
@@ -249,7 +247,7 @@ void PauseMenu::show_left_submenu(void) {
  */
 void PauseMenu::show_right_submenu(void) {
 
-  ResourceManager::get_sound("pause_closed")->play();
+  game->play_sound("pause_closed");
   int submenu_index = savegame->get_integer(Savegame::PAUSE_LAST_SUBMENU);
   set_current_submenu((submenu_index + 1) % 4);
 }

@@ -15,12 +15,11 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "hud/HeartsView.h"
-#include "lowlevel/Sound.h"
+#include "Game.h"
+#include "Equipment.h"
+#include "Sprite.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/System.h"
-#include "Equipment.h"
-#include "ResourceManager.h"
-#include "Sprite.h"
 
 /**
  * Position of the hearts in the PNG image.
@@ -112,8 +111,8 @@ void HeartsView::update(void) {
     else {
       nb_current_hearts_displayed++;
 
-      if (nb_current_hearts_displayed % 4 == 0) {
-	ResourceManager::get_sound("heart")->play();
+      if (nb_current_hearts_displayed % 4 == 0 && game != NULL) {
+	game->play_sound("heart");
       }
     }
 
@@ -135,7 +134,7 @@ void HeartsView::update(void) {
       uint32_t now = System::now();
       if (now > next_danger_sound_date) {
 	next_danger_sound_date = now + 750;
-	ResourceManager::get_sound("danger")->play();
+	game->play_sound("danger");
       }
 
       need_rebuild = true;

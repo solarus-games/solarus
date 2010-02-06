@@ -25,9 +25,8 @@
 #include "movements/FollowMovement.h"
 #include "movements/CollisionMovement.h"
 #include "Sprite.h"
-#include "ResourceManager.h"
+#include "Game.h"
 #include "Map.h"
-#include "lowlevel/Sound.h"
 #include "lowlevel/System.h"
 
 /**
@@ -71,7 +70,7 @@ CarriedItem::CarriedItem(Hero *hero, DestructibleItem *destructible_item):
   set_movement(movement);
 
   // create the breaking sound
-  destruction_sound = destructible_item->get_destruction_sound();
+  destruction_sound_id = destructible_item->get_destruction_sound_id();
 
   // create the shadow (not visible yet)
   shadow_sprite = new Sprite("entities/shadow");
@@ -145,7 +144,7 @@ void CarriedItem::throw_item(Map *map, int direction) {
   is_throwing = true;
 
   // play the sound
-  ResourceManager::get_sound("throw")->play();
+  game->play_sound("throw");
 
   // stop the sprite animation
   Sprite *sprite = get_sprite();
@@ -195,7 +194,7 @@ void CarriedItem::break_item(void) {
   movement->stop();
 
   if (explosion_date == 0) {
-    destruction_sound->play();
+    game->play_sound(destruction_sound_id);
     get_sprite()->set_current_animation("destroy");
   }
   else {

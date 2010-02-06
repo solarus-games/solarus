@@ -16,10 +16,9 @@
  */
 #include "hud/RupeesCounter.h"
 #include "Counter.h"
+#include "Game.h"
 #include "Equipment.h"
-#include "ResourceManager.h"
 #include "lowlevel/System.h"
-#include "lowlevel/Sound.h"
 #include "lowlevel/Surface.h"
 
 /**
@@ -114,12 +113,12 @@ void RupeesCounter::update(void) {
 
     // if we have just reached the right value, we play a specific sound
     if (counter->get_value() == nb_current_rupees) {
-      ResourceManager::get_sound("rupee_counter_end")->play();
+      game->play_sound("rupee_counter_end");
     }
 
     // while the counter is scrolling, play a sound (every 3 values)
     else if (nb_current_rupees_displayed % 3 == 0) {
-      ResourceManager::get_sound("rupee_counter")->play();
+      game->play_sound("rupee_counter");
     }
 
     need_rebuild = true;

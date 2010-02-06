@@ -32,7 +32,6 @@ class MagicBar: public HudElement {
     uint32_t next_magic_update_date;
     bool is_magic_decreasing;
     Surface *img_magic_bar;
-    Sound *sound_magic_bar;
 
     // sprite representing the magic bar container
     int max_magic_displayed;

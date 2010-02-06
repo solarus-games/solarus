@@ -18,11 +18,9 @@
 #include "Game.h"
 #include "Savegame.h"
 #include "DialogBox.h"
-#include "ResourceManager.h"
 #include "Map.h"
 #include "Treasure.h"
 #include "InventoryItem.h"
-#include "lowlevel/Sound.h"
 #include "lowlevel/System.h"
 
 /**
@@ -102,12 +100,12 @@ void Equipment::update(void) {
 	// keep the fairy in a bottle
 	if (!has_empty_bottle()) {
 	  game->get_dialog_box()->start_message_sequence("_found_fairy.no_empty_bottle");
-	  ResourceManager::get_sound("wrong")->play();
+	  game->play_sound("wrong");
 	  add_hearts(7 * 4);
 	}
 	else {
 	  give_inventory_item(get_first_empty_bottle(), 6);
-	  ResourceManager::get_sound("danger")->play();
+	  game->play_sound("danger");
 	}
       }
     }

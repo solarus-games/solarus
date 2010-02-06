@@ -19,8 +19,6 @@
 #include "Game.h"
 #include "Sprite.h"
 #include "Map.h"
-#include "ResourceManager.h"
-#include "lowlevel/Sound.h"
 #include "lowlevel/FileTools.h"
 
 /**
@@ -41,13 +39,13 @@ Teletransporter::Teletransporter(const std::string &name, Layer layer, int x, in
 				 Subtype subtype, Transition::Style transition_style,
 				 MapId destination_map_id, std::string destination_point_name):
   Detector(COLLISION_CUSTOM, name, layer, x, y, width, height),
-  subtype(subtype), transition_style(transition_style), sound(NULL),
+  subtype(subtype), transition_style(transition_style), sound_id(""),
   destination_map_id(destination_map_id), destination_point_name(destination_point_name), transporting_hero(false) {
   
   if (subtype == YELLOW) {
     create_sprite("entities/teletransporter");
     get_sprite()->set_current_animation("yellow");
-    sound = ResourceManager::get_sound("warp");
+    sound_id = "warp";
   }
   else {
     // TODO
@@ -211,8 +209,8 @@ void Teletransporter::transport_hero(Hero *hero) {
   }
   transporting_hero = true;
 
-  if (sound != NULL) {
-    sound->play();
+  if (sound_id.size() != 0) {
+    game->play_sound(sound_id);
   }
 
   std::string name = destination_point_name;

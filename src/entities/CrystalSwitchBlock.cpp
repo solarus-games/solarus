@@ -21,8 +21,6 @@
 #include "Game.h"
 #include "Map.h"
 #include "Sprite.h"
-#include "ResourceManager.h"
-#include "lowlevel/Sound.h"
 #include "lowlevel/FileTools.h"
 #include <list>
 
@@ -192,7 +190,7 @@ bool CrystalSwitchBlock::try_jump(Hero *hero, const Rectangle &collision_box,
       && !map->get_entities()->overlaps_raised_blocks(get_layer(), collision_box)) {
 
     hero->start_jumping(jump_direction, jump_length, true, false);
-    ResourceManager::get_sound("hero_lands")->play();
+    game->play_sound("hero_lands");
     return true;
   }
 

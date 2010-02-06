@@ -43,7 +43,7 @@ class Teletransporter: public Detector {
 
     Subtype subtype;                      /**< subtype of teletransporter */
     Transition::Style transition_style;   /**< style of transition between the two maps */
-    Sound *sound;                         /**< the sound played when this teletransporter is taken (can be NULL) */
+    SoundId sound_id;                     /**< the sound played when this teletransporter is taken (an empty string means no sound) */
     MapId destination_map_id;             /**< id of the destination map */
     std::string destination_point_name;        /**< destination point on that map, or "_same" to keep the hero's coordinates,
 						* or "_side" to place the hero on the appropriate side of the map */

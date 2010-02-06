@@ -18,11 +18,9 @@
 #include "menus/PauseMenu.h"
 #include "Game.h"
 #include "Equipment.h"
-#include "ResourceManager.h"
 #include "Sprite.h"
 #include "StringResource.h"
 #include "lowlevel/Color.h"
-#include "lowlevel/Sound.h"
 #include "lowlevel/Surface.h"
 
 /**
@@ -222,7 +220,7 @@ void PauseSubmenuQuestStatus::key_pressed(Controls::GameKey key) {
       pause_menu->show_left_submenu();
     }
     else {
-      ResourceManager::get_sound("cursor")->play();
+      game->play_sound("cursor");
 
       if (cursor_position == 4) {
 	set_cursor_position(0);
@@ -242,7 +240,7 @@ void PauseSubmenuQuestStatus::key_pressed(Controls::GameKey key) {
       pause_menu->show_right_submenu();
     }
     else {
-      ResourceManager::get_sound("cursor")->play();
+      game->play_sound("cursor");
 
       if (cursor_position <= 2) {
 	set_cursor_position(4);
@@ -257,12 +255,12 @@ void PauseSubmenuQuestStatus::key_pressed(Controls::GameKey key) {
     break;
 
   case Controls::DOWN:
-    ResourceManager::get_sound("cursor")->play();
+    game->play_sound("cursor");
     set_cursor_position((cursor_position + 1) % 8);
     break;
 
   case Controls::UP:
-    ResourceManager::get_sound("cursor")->play();
+    game->play_sound("cursor");
     set_cursor_position((cursor_position + 7) % 8);
     break;
 

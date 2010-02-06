@@ -18,8 +18,6 @@
 #include "menus/PauseMenu.h"
 #include "movements/TargetMovement.h"
 #include "Sprite.h"
-#include "ResourceManager.h"
-#include "lowlevel/Sound.h"
 #include "Game.h"
 #include "DialogBox.h"
 #include "Equipment.h"
@@ -39,7 +37,6 @@ PauseSubmenuInventory::PauseSubmenuInventory(PauseMenu *pause_menu, Game *game):
   PauseSubmenu(pause_menu, game) {
 
   cursor_sprite = new Sprite("menus/pause_cursor");
-  cursor_sound = ResourceManager::get_sound("cursor");
 
   items_img = new Surface("hud/inventory_items.png");
 
@@ -193,7 +190,7 @@ void PauseSubmenuInventory::key_pressed(Controls::GameKey key) {
       pause_menu->show_left_submenu();
     }
     else {
-      cursor_sound->play();
+      play_cursor_sound();
       set_cursor_position(cursor_row, cursor_column - 1);
     }
     break;
@@ -203,18 +200,18 @@ void PauseSubmenuInventory::key_pressed(Controls::GameKey key) {
       pause_menu->show_right_submenu();
     }
     else {
-      cursor_sound->play();
+      play_cursor_sound();
       set_cursor_position(cursor_row, cursor_column + 1);
     }
     break;
 
   case Controls::UP:
-    cursor_sound->play();
+    play_cursor_sound();
     set_cursor_position((cursor_row + 3) % 4, cursor_column);
     break;
 
   case Controls::DOWN:
-    cursor_sound->play();
+    play_cursor_sound();
     set_cursor_position((cursor_row + 1) % 4, cursor_column);
     break;
 
@@ -350,7 +347,7 @@ void PauseSubmenuInventory::assign_item(int slot) {
   this->item_assigned_destination = slot;
 
   // play the sound
-  ResourceManager::get_sound("throw")->play();
+  game->play_sound("throw");
 
   // compute the movement
   int x1 = 60 + 32 * cursor_column;

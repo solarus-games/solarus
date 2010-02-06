@@ -20,9 +20,8 @@
 #include "movements/StraightMovement.h"
 #include "movements/PathFindingMovement.h"
 #include "Sprite.h"
-#include "ResourceManager.h"
+#include "Game.h"
 #include "Map.h"
-#include "lowlevel/Sound.h"
 
 /**
  * Constructor.
@@ -91,7 +90,7 @@ void Minillosaur::restart(void) {
 int Minillosaur::custom_attack(EnemyAttack attack, Sprite *this_sprite) {
 
   if (attack == ATTACK_SWORD && get_sprite()->get_current_animation() == "egg") {
-    ResourceManager::get_sound("monster_hurt")->play();
+    game->play_sound("monster_hurt");
     clear_movement();
     get_sprite()->set_current_animation("egg_breaking");
   }

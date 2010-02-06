@@ -16,10 +16,9 @@
  */
 #include "enemies/Khorneth.h"
 #include "movements/RandomWalkMovement.h"
+#include "Game.h"
 #include "Sprite.h"
 #include "SpriteAnimationSet.h"
-#include "ResourceManager.h"
-#include "lowlevel/Sound.h"
 #include "lowlevel/Random.h"
 #include "lowlevel/System.h"
 
@@ -182,7 +181,7 @@ int Khorneth::custom_attack(EnemyAttack attack, Sprite *this_sprite) {
       get_right_blade_sprite()->set_current_animation("stopped");
     }
     stop_movement();
-    ResourceManager::get_sound("boss_hurt")->play();
+    game->play_sound("boss_hurt");
     left_blade_life--;
     end_left_blade_hurt_date = System::now() + 400;
   }
@@ -194,7 +193,7 @@ int Khorneth::custom_attack(EnemyAttack attack, Sprite *this_sprite) {
       get_left_blade_sprite()->set_current_animation("stopped");
     }
     stop_movement();
-    ResourceManager::get_sound("boss_hurt")->play();
+    game->play_sound("boss_hurt");
     right_blade_life--;
     end_right_blade_hurt_date = System::now() + 400;
   }
@@ -243,7 +242,7 @@ void Khorneth::update(void) {
       restart();
 
       if (left_blade_life <= 0) {
-	ResourceManager::get_sound("stone")->play();
+	game->play_sound("stone");
 	remove_sprite("enemies/khorneth_left_blade");
 
 	if (!has_right_blade()) {
@@ -257,7 +256,7 @@ void Khorneth::update(void) {
       restart();
 
       if (right_blade_life <= 0) {
-	ResourceManager::get_sound("stone")->play();
+	game->play_sound("stone");
 	remove_sprite("enemies/khorneth_right_blade");
 
 	if (!has_left_blade()) {

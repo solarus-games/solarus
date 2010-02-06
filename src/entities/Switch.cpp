@@ -15,12 +15,11 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "entities/Switch.h"
-#include "ResourceManager.h"
 #include "Sprite.h"
+#include "Game.h"
 #include "Map.h"
 #include "MapScript.h"
 #include "lowlevel/FileTools.h"
-#include "lowlevel/Sound.h"
 
 /**
  * Constructor.
@@ -145,7 +144,7 @@ void Switch::notify_collision(MapEntity *entity_overlapping, CollisionMode colli
   if (enabled) {
 
     if (subtype != INVISIBLE) {
-      ResourceManager::get_sound("switch")->play();
+      game->play_sound("switch");
     }
 
     map->get_script()->event_switch_enabled(get_name());

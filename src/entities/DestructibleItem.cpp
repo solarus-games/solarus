@@ -369,7 +369,7 @@ void DestructibleItem::update(void) {
     }
     else {
       is_being_cut = false;
-      regeneration_date = System::now() + 8000;
+      regeneration_date = System::now() + 10000;
     }
   }
 

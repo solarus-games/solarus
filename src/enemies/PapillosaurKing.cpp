@@ -70,7 +70,7 @@ void PapillosaurKing::restart(void) {
   Enemy::restart();
 
   // state
-  next_egg_phase_date = System::now() + 3000;
+  next_egg_phase_date = System::now() + 2500;
   next_egg_date = 0;
   get_sprite()->set_current_animation("walking");
 

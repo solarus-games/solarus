@@ -10,20 +10,6 @@ height = 696
 width = 1040
 height = 696
 
-[dungeon_1.map_24.chest_0]
-floor = -1
-x = 808
-y = 440
-save = 56
-big = 0
-
-[dungeon_1.map_24.boss_0]
-floor = -1
-x = 648
-y = 184
-save = 63
-big = 1
-
 [dungeon_2.floor_-1]
 width = 1152
 height = 768
@@ -129,4 +115,18 @@ x = 104
 y = 320
 save = 77
 big = 0
+
+[dungeon_1.map_24.chest_0]
+floor = -1
+x = 808
+y = 440
+save = 56
+big = 0
+
+[dungeon_1.map_24.boss_0]
+floor = -1
+x = 648
+y = 184
+save = 63
+big = 1
 

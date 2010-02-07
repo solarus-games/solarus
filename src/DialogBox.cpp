@@ -480,6 +480,9 @@ void DialogBox::update(void) {
 
       MessageId next_message_id = current_message->get_next_message_id();
       if (next_message_id != "" || current_message->is_question()) {
+	if (end_message_sprite->get_current_animation() != "next") {
+	  end_message_sprite->set_current_animation("next");
+	}
 	keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_NEXT);
       }
       else {

@@ -125,10 +125,9 @@ const std::string& Controls::get_key_name(GameKey key) {
  * @param game_key a game key
  * @return a string representing the corresponding keyboard key
  */
-const std::string & Controls::get_keyboard_string(GameKey game_key) {
+const std::string Controls::get_keyboard_string(GameKey game_key) {
 
-  static std::string keyboard_string;
-  keyboard_string = SDL_GetKeyName(get_keyboard_key(game_key));
+  std::string keyboard_string = keyboard_string = SDL_GetKeyName(get_keyboard_key(game_key));
   return keyboard_string;
 }
 
@@ -626,7 +625,7 @@ SDLKey Controls::get_keyboard_key(GameKey game_key) {
  * specified game key is currently mapped.
  * @return the joypad action corresponding this game key
  */
-const std::string& Controls::get_joypad_string(GameKey game_key) {
+const std::string & Controls::get_joypad_string(GameKey game_key) {
 
   std::map<std::string, GameKey>::const_iterator it;
   for (it = joypad_mapping.begin(); it != joypad_mapping.end(); it++) {

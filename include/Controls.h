@@ -88,7 +88,7 @@ class Controls {
 
     // controls
     const std::string & get_key_name(GameKey game_key);
-    const std::string & get_keyboard_string(GameKey game_key);
+    const std::string get_keyboard_string(GameKey game_key);
     const std::string & get_joypad_string(GameKey game_key);
     void handle_event(const SDL_Event &event);
     bool is_key_pressed(GameKey game_key);

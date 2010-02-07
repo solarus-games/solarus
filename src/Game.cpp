@@ -120,7 +120,10 @@ Hero * Game::get_hero(void) {
  * @return the position of the hero
  */
 const Rectangle & Game::get_hero_xy(void) {
-  return hero->get_xy();
+
+  static Rectangle xy;
+  xy = hero->get_xy();
+  return xy;
 }
 
 /**

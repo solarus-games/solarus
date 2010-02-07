@@ -160,7 +160,7 @@ class MapEntity {
     int get_y(void);
     void set_x(int x);
     void set_y(int y);
-    const Rectangle & get_xy(void);
+    const Rectangle get_xy(void);
     void set_xy(const Rectangle &xy);
     void set_xy(int x, int y);
 

@@ -33,7 +33,7 @@ class Configuration {
 
   public:
 
-    static const std::string &get_value(const std::string &key, const std::string &default_value);
+    static const std::string get_value(const std::string &key, const std::string &default_value);
     static int get_value(const std::string &key, int default_value);
 
     static void set_value(const std::string &key, const std::string &value);

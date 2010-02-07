@@ -74,9 +74,7 @@ Bugs :
   (le délai est trop long et trop spécifique aux explosions)
 - le lien entre le garde dans la grotte et l'accès du premier donjon : pas évident, je suis allé sur place pour voir s'il se passait quelque chose, sans qu'il n'y ait visuellement aucun changement. Il faut y penser, ça n'est pas intuitif.
 - boss donjon 1 trop facile, alonger le délai des choux-péteurs ? En mettre moins ?
-- saut de la falaise en diagonale : rendre plus évident
 - TARDIS pas respecté chez Link et Sahasrahla
-- Remplacer les ResourceManager::get_sound(...)->play() par game->play_sound(...)
 
 
 Donjon 2 :

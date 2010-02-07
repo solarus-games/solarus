@@ -27,10 +27,9 @@ const std::string Configuration::group_name = "configuration";
  * @param default value the value to return if the configuration file does not exist or does not have the information
  * @return the value as a string
  */
-const std::string & Configuration::get_value(const std::string &key, const std::string &default_value) {
+const std::string Configuration::get_value(const std::string &key, const std::string &default_value) {
 
-  static std::string value;
-  value = default_value;
+  std::string value = default_value;
 
   if (FileTools::data_file_exists(file_name)) {
 

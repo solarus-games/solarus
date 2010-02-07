@@ -137,10 +137,9 @@ bool IniFile::get_boolean_value(const std::string &key, bool default_value) {
  * @param default value a default value to return if the key does not exist
  * @return the value of this key
  */
-const std::string & IniFile::get_string_value(const std::string &key, const std::string &default_value) {
+const std::string IniFile::get_string_value(const std::string &key, const std::string &default_value) {
 
-  static std::string value;
-  value = ini.GetValue(group.c_str(), key.c_str(), default_value.c_str());
+  std::string value = ini.GetValue(group.c_str(), key.c_str(), default_value.c_str());
   return value;
 }
 
@@ -151,9 +150,9 @@ const std::string & IniFile::get_string_value(const std::string &key, const std:
  * @param default value a default value to return if the key does not exist
  * @return the value of this key
  */
-const std::string & IniFile::get_string_value(const std::string &key) {
+const std::string IniFile::get_string_value(const std::string &key) {
 
-  const std::string & value = get_string_value(key, "");
+  std::string value = get_string_value(key, "");
   if (value.size() == 0) {
     DIE("No value for key '" << key << "' in file '" << file_name << "'");
   }

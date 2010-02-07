@@ -46,6 +46,7 @@ StraightMovement::StraightMovement(int speed, double direction, uint32_t time) {
  * @param time duration of the movement in milliseconds
  */
 StraightMovement::StraightMovement(int speed, const Rectangle &source_xy, const Rectangle &target_xy, uint32_t time) {
+
   double angle = Geometry::get_angle(source_xy.get_x(), source_xy.get_y(), target_xy.get_x(), target_xy.get_y());
   start(speed, angle, time);
 }

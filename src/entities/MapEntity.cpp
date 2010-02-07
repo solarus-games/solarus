@@ -359,11 +359,8 @@ void MapEntity::set_y(int y) {
  * These are the coordinates of the point as returned by get_x() and get_y().
  * @return the coordinates of the entity on the map
  */
-const Rectangle & MapEntity::get_xy(void) {
-
-  static Rectangle xy;
-  xy = Rectangle(get_x(), get_y());
-  return xy;
+const Rectangle MapEntity::get_xy(void) {
+  return Rectangle(get_x(), get_y());
 }
 
 /**

@@ -88,6 +88,7 @@ const MapEntity::EntityTypeFeatures MapEntity::entity_types_features[] = {
   { true,  true,  true, false}, // shop item
   { true,  true,  true, false}, // conveyor belt
   { true,  true,  true, false}, // door
+  // other entity types (the ones not stored in map files) does not use this array and must redefine the 4 functions
 };
 
 const Rectangle MapEntity::directions_to_xy_moves[] = {

@@ -66,6 +66,7 @@ class Geometry;
 class Rectangle;
 class PixelBits;
 class IniFile;
+class Input;
 
 // menus
 class LanguageScreen;

@@ -65,13 +65,13 @@ class MapEntity {
 
   private:
 
-    static const EntityTypeFeatures entity_types_features[]; /**< The features of each entity type. */
+    static const EntityTypeFeatures entity_types_features[]; /**< The features of each entity type stored in map files. */
 
   protected:
 
     // these fields are automatically set by class MapEntities after adding the entity to the map
-    Map *map;                 /**< the map where this entity is */
-    Game *game;               /**< the game running that map */
+    Map *map;                 /**< The map where this entity is. */
+    Game *game;               /**< The game running that map. */
 
   private:
 

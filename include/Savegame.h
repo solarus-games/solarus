@@ -54,8 +54,8 @@ class Savegame {
 
       /**
        * @name Joypad customizable controls.
-       * Variables 1 to 9 indicate the SDL joypad action
-       * associated to each game key: action, sword, item 1, item 2, pause,
+       * Variables 1 to 9 indicate the joypad event
+       * of each game key: action, sword, item 1, item 2, pause,
        * right, up, left and down.
        * Examples: "button 1", "axis 1 +", "hat 1 left"
        * @{
@@ -147,15 +147,10 @@ class Savegame {
 
       /**
        * @name Keyboard customizable keys.
-       * Variables 35 to 43 indicate the keyboard key
+       * Variables 35 to 49 indicate the keyboard key
        * associated to each game key: action, sword, item 1, item 2, pause,
        * right, up, left and down.
-       *
-       * Each integer corresponds to a value of the SDLKey enumeration.
-       * This makes the savegames SDL-dependent.
-       * TODO: make our own enumeration to replace SDLKey.
-       * Add a saved integer to define the type of key saved (SDL: 0, Solarus: 1).
-       * When loading the savegame, if this is SDL, replace by Solarus and reset to default keys.
+       * Each integer corresponds to a value of the Input::Key enumeration.
        * @{
        */
       KEYBOARD_ACTION_KEY              = 35,
@@ -167,6 +162,9 @@ class Savegame {
       KEYBOARD_UP_KEY                  = 41,
       KEYBOARD_LEFT_KEY                = 42,
       KEYBOARD_DOWN_KEY                = 43,
+      KEYBOARD_ENUM_VERSION            = 49, /**< Indicates the version of the Input::Key enumeration this savegame was created with.
+                                              * If the version saved is different from Input::KEYBOARD_ENUM_VERSION, then
+					      * we know it is obsolete and the customization is reset to some default values. */
       /**
        * @}
        */

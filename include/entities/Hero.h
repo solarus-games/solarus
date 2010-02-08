@@ -21,7 +21,7 @@
 #include "entities/MapEntity.h"
 #include "entities/EnemyAttack.h"
 #include "entities/Ground.h"
-#include "Controls.h"
+#include "GameControls.h"
 #include "InventoryItemId.h"
 
 /**
@@ -297,8 +297,8 @@ class Hero: public MapEntity {
     bool are_pegasus_shoes_finished(void);
 
     // keys
-    void key_pressed(Controls::GameKey key);
-    void key_released(Controls::GameKey key);
+    void key_pressed(GameControls::GameKey key);
+    void key_released(GameControls::GameKey key);
 
     // enemies and collisions
     bool is_obstacle_for(MapEntity *other);

@@ -18,10 +18,10 @@
 #include "movements/PlayerMovement.h"
 #include "entities/MapEntity.h"
 #include "Game.h"
-#include "Controls.h"
+#include "GameControls.h"
 #include "lowlevel/Geometry.h"
 
-// TODO use the code from Controls
+// TODO use the code from GameControls
 
 /*
  * Bit masks associated to each arrow on the keyboard or the joypad.
@@ -132,30 +132,30 @@ void PlayerMovement::set_moving_enabled(bool moving_enabled, bool direction_enab
       // if the control is being restored, let's take
       // into account the possible arrows pressed
 
-      Controls *controls = entity->get_game()->get_controls();
+      GameControls *controls = entity->get_game()->get_controls();
 
-      if (controls->is_key_pressed(Controls::RIGHT)) {
+      if (controls->is_key_pressed(GameControls::RIGHT)) {
 	add_direction_mask(direction_masks[0]);
       }
       else {
 	remove_direction_mask(direction_masks[0]);	
       }
 
-      if (controls->is_key_pressed(Controls::UP)) {
+      if (controls->is_key_pressed(GameControls::UP)) {
 	add_direction_mask(direction_masks[1]);
       }
       else {
 	remove_direction_mask(direction_masks[1]);	
       }
 
-      if (controls->is_key_pressed(Controls::LEFT)) {
+      if (controls->is_key_pressed(GameControls::LEFT)) {
 	add_direction_mask(direction_masks[2]);
       }
       else {
 	remove_direction_mask(direction_masks[2]);	
       }
 
-      if (controls->is_key_pressed(Controls::DOWN)) {
+      if (controls->is_key_pressed(GameControls::DOWN)) {
 	add_direction_mask(direction_masks[3]);
       }
       else {

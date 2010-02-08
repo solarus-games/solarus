@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "Controls.h"
+#include "GameControls.h"
 #include "Game.h"
 #include "Savegame.h"
 #include "Equipment.h"
@@ -23,9 +23,9 @@
 #include "menus/PauseMenu.h"
 #include "entities/Hero.h"
 
-const std::string Controls::direction_names[] = {"right", "up", "left", "down"};
+const std::string GameControls::direction_names[] = {"right", "up", "left", "down"};
 
-const uint16_t Controls::arrows_masks[4] = {
+const uint16_t GameControls::arrows_masks[4] = {
   0x0001,
   0x0002,
   0x0004,
@@ -65,7 +65,7 @@ static const int arrows_angles[] = {
  * Constructor.
  * @param game the game
  */
-Controls::Controls(Game *game):
+GameControls::GameControls(Game *game):
   game(game), savegame(game->get_savegame()), customizing(false) {
 
   if (SDL_NumJoysticks() > 0) {
@@ -103,7 +103,7 @@ Controls::Controls(Game *game):
 /**
  * Destructor.
  */
-Controls::~Controls(void) {
+GameControls::~GameControls(void) {
 
   if (SDL_JoystickOpened(0)) {
     SDL_JoystickClose(joystick);
@@ -115,7 +115,7 @@ Controls::~Controls(void) {
  * @param key a game key
  * @return the corresponding name
  */
-const std::string& Controls::get_key_name(GameKey key) {
+const std::string& GameControls::get_key_name(GameKey key) {
   return game_key_names[key - 1];
 }
 
@@ -125,7 +125,7 @@ const std::string& Controls::get_key_name(GameKey key) {
  * @param game_key a game key
  * @return a string representing the corresponding keyboard key
  */
-const std::string Controls::get_keyboard_string(GameKey game_key) {
+const std::string GameControls::get_keyboard_string(GameKey game_key) {
 
   std::string keyboard_string = keyboard_string = SDL_GetKeyName(get_keyboard_key(game_key));
   return keyboard_string;
@@ -135,7 +135,7 @@ const std::string Controls::get_keyboard_string(GameKey game_key) {
  * Returns whether the specified game key is pressed.
  * The key can be pressed from the keyboard or the joypad.
  */
-bool Controls::is_key_pressed(GameKey game_key) {
+bool GameControls::is_key_pressed(GameKey game_key) {
   return keys_pressed[game_key - 1];
 }
 
@@ -145,7 +145,7 @@ bool Controls::is_key_pressed(GameKey game_key) {
  * @return the arrows direction (0 to 360), or -1
  * if no arrow is pressed
  */
-int Controls::get_arrows_direction(void) {
+int GameControls::get_arrows_direction(void) {
 
   uint16_t arrows_mask = 0x0000;
   if (is_key_pressed(RIGHT)) {
@@ -167,7 +167,7 @@ int Controls::get_arrows_direction(void) {
  * This function is called by the game when an SDL event occurs.
  * @param event an SDL event
  */
-void Controls::handle_event(const SDL_Event &event) {
+void GameControls::handle_event(const SDL_Event &event) {
 
   /*
    * If no key is being customized, we look for a binding
@@ -214,7 +214,7 @@ void Controls::handle_event(const SDL_Event &event) {
  * This function is called when a keyboard key is pressed.
  * @param keysym the key pressed
  */
-void Controls::key_pressed(const SDL_keysym &keysym) {
+void GameControls::key_pressed(const SDL_keysym &keysym) {
 
   // retrieve the game key corresponding to this keyboard key
   GameKey game_key = keyboard_mapping[keysym.sym];
@@ -257,7 +257,7 @@ void Controls::key_pressed(const SDL_keysym &keysym) {
  * This function is called when a keyboard key is released.
  * @param keysym the key released
  */
-void Controls::key_released(const SDL_keysym &keysym) {
+void GameControls::key_released(const SDL_keysym &keysym) {
 
   // retrieve the game key corresponding to this keyboard key
   GameKey game_key = keyboard_mapping[keysym.sym];
@@ -274,7 +274,7 @@ void Controls::key_released(const SDL_keysym &keysym) {
  * This function is called when a joypad button is pressed.
  * @param button the button pressed
  */
-void Controls::joypad_button_pressed(int button) {
+void GameControls::joypad_button_pressed(int button) {
 
   // retrieve the game key corresponding to this joypad button
   std::ostringstream oss;
@@ -320,7 +320,7 @@ void Controls::joypad_button_pressed(int button) {
  * This function is called when a joypad button is released.
  * @param button the button released
  */
-void Controls::joypad_button_released(int button) {
+void GameControls::joypad_button_released(int button) {
 
   // retrieve the game key corresponding to this joypad button
   std::ostringstream oss;
@@ -340,7 +340,7 @@ void Controls::joypad_button_released(int button) {
  * @param axis the axis moved
  * @param state the new axis state
  */
-void Controls::joypad_axis_moved(int axis, int state) {
+void GameControls::joypad_axis_moved(int axis, int state) {
 
   // axis in centered position
   if (state <= 1000 && state >= -1000) {
@@ -417,7 +417,7 @@ void Controls::joypad_axis_moved(int axis, int state) {
  * @param hat the hat moved
  * @param value the new hat position
  */
-void Controls::joypad_hat_moved(int hat, int value) {
+void GameControls::joypad_hat_moved(int hat, int value) {
 
   // hat in centered position
   if (value == SDL_HAT_CENTERED) {
@@ -570,7 +570,7 @@ void Controls::joypad_hat_moved(int hat, int value) {
  * This event may come from the keyboard or the joypad.
  * @param key the game key pressed
  */
-void Controls::game_key_pressed(GameKey key) {
+void GameControls::game_key_pressed(GameKey key) {
 
   int index = key - 1;
   if (keys_pressed[index]) {
@@ -587,7 +587,7 @@ void Controls::game_key_pressed(GameKey key) {
  * This event may come from the keyboard or the joypad.
  * @param key the game key pressed
  */
-void Controls::game_key_released(GameKey key) {
+void GameControls::game_key_released(GameKey key) {
 
   keys_pressed[key - 1] = false;
   game->key_released(key);
@@ -600,7 +600,7 @@ void Controls::game_key_released(GameKey key) {
  * @param game_key a game key
  * @return the keyboard key corresponding this game key
  */
-SDLKey Controls::get_keyboard_key(GameKey game_key) {
+SDLKey GameControls::get_keyboard_key(GameKey game_key) {
 
   bool found = false;
   SDLKey keyboard_key = (SDLKey) 0;
@@ -625,7 +625,7 @@ SDLKey Controls::get_keyboard_key(GameKey game_key) {
  * specified game key is currently mapped.
  * @return the joypad action corresponding this game key
  */
-const std::string & Controls::get_joypad_string(GameKey game_key) {
+const std::string & GameControls::get_joypad_string(GameKey game_key) {
 
   std::map<std::string, GameKey>::const_iterator it;
   for (it = joypad_mapping.begin(); it != joypad_mapping.end(); it++) {
@@ -648,7 +648,7 @@ const std::string & Controls::get_joypad_string(GameKey game_key) {
  * normally again. Call is_customization_done() to know when this happens.
  * @param key the game key to customize
  */
-void Controls::customize(GameKey key) {
+void GameControls::customize(GameKey key) {
   this->customizing = true;
   this->key_to_customize = key;
 }
@@ -657,7 +657,7 @@ void Controls::customize(GameKey key) {
  * Returns whether the player is currently customizing a key.
  * @return true if the player is currently customizing a key 
  */
-bool Controls::is_customizing(void) {
+bool GameControls::is_customizing(void) {
   return customizing;
 }
 
@@ -665,7 +665,7 @@ bool Controls::is_customizing(void) {
  * When the player is customizing a key, returns the key that is being customized.
  * @return the key being customize
  */
-Controls::GameKey Controls::get_key_to_customize(void) {
+GameControls::GameKey GameControls::get_key_to_customize(void) {
   if (!is_customizing()) {
     DIE("The player is not customizing a key");
   }
@@ -678,7 +678,7 @@ Controls::GameKey Controls::get_key_to_customize(void) {
  * and the controls are now treated normally again.
  * @return true if no game key is being customized
  */
-bool Controls::is_customization_done(void) {
+bool GameControls::is_customization_done(void) {
   return !customizing;
 }
 

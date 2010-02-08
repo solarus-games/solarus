@@ -24,7 +24,6 @@
 #include "Equipment.h"
 #include "DungeonEquipment.h"
 #include "Counter.h"
-#include "Controls.h"
 #include "Savegame.h"
 #include "StringResource.h"
 #include "lowlevel/Color.h"
@@ -260,33 +259,33 @@ void PauseSubmenuMap::load_dungeon_map_image(void) {
  * This function is called when a key is pressed on this submenu.
  * @param key the key pressed
  */
-void PauseSubmenuMap::key_pressed(Controls::GameKey key) {
+void PauseSubmenuMap::key_pressed(GameControls::GameKey key) {
 
   switch (key) {
 
-  case Controls::LEFT:
+  case GameControls::LEFT:
     pause_menu->show_left_submenu();
     break;
 
-  case Controls::RIGHT:
+  case GameControls::RIGHT:
     pause_menu->show_right_submenu();
     break;
 
-  case Controls::UP:
-  case Controls::DOWN:
+  case GameControls::UP:
+  case GameControls::DOWN:
 
     if (dungeon == NULL) {
 
       // move the world map
       if (equipment->has_world_map()) {
-	moving_visible_y = (key == Controls::UP) ? -1 : 1;
+	moving_visible_y = (key == GameControls::UP) ? -1 : 1;
 	next_moving_visible_y_date = System::now();
       }
     }
 
     else {
       // select another floor
-      int new_selected_floor = selected_floor + ((key == Controls::UP) ? 1 : -1);
+      int new_selected_floor = selected_floor + ((key == GameControls::UP) ? 1 : -1);
       if (new_selected_floor >= lowest_floor && new_selected_floor <= highest_floor) {
 
 	ResourceManager::get_sound("cursor")->play();
@@ -320,10 +319,10 @@ void PauseSubmenuMap::update(void) {
 
   if (dungeon == NULL) {
 
-    Controls *controls = game->get_controls();
+    GameControls *controls = game->get_controls();
 
-    bool up = controls->is_key_pressed(Controls::UP);
-    bool down = controls->is_key_pressed(Controls::DOWN);
+    bool up = controls->is_key_pressed(GameControls::UP);
+    bool down = controls->is_key_pressed(GameControls::DOWN);
 
     if (moving_visible_y == -1) {
 

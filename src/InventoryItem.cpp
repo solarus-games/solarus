@@ -21,7 +21,6 @@
 #include "DialogBox.h"
 #include "MapScript.h"
 #include "Map.h"
-#include "Controls.h"
 #include "entities/MapEntities.h"
 #include "entities/Hero.h"
 #include "entities/Detector.h"

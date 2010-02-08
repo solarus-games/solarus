@@ -17,7 +17,6 @@
 #include "menus/PauseSubmenuOptions.h"
 #include "menus/PauseMenu.h"
 #include "StringResource.h"
-#include "Controls.h"
 #include "Game.h"
 #include "Sprite.h"
 #include "KeysEffect.h"
@@ -72,7 +71,7 @@ PauseSubmenuOptions::PauseSubmenuOptions(PauseMenu *pause_menu, Game *game):
 
     game_key_texts[i] = new TextSurface(4, y, TextSurface::ALIGN_LEFT, TextSurface::ALIGN_TOP);
     game_key_texts[i]->set_font(TextSurface::FONT_STANDARD);
-    game_key_texts[i]->set_text(controls->get_key_name((Controls::GameKey) (i + 1)));
+    game_key_texts[i]->set_text(controls->get_key_name((GameControls::GameKey) (i + 1)));
 
     keyboard_control_texts[i] = new TextSurface(74, y, TextSurface::ALIGN_LEFT, TextSurface::ALIGN_TOP);
     keyboard_control_texts[i]->set_font(TextSurface::FONT_STANDARD);
@@ -129,12 +128,12 @@ PauseSubmenuOptions::~PauseSubmenuOptions(void) {
  */
 void PauseSubmenuOptions::load_control_texts(void) {
   
-  Controls *controls = game->get_controls();
+  GameControls *controls = game->get_controls();
 
   controls_surface->fill_with_color(Color::get_black());
   for (int i = 0; i < 9; i++) {
 
-    Controls::GameKey key = (Controls::GameKey) (i + 1);
+    GameControls::GameKey key = (GameControls::GameKey) (i + 1);
 
     const std::string &keyboard_text = controls->get_keyboard_string(key);
     keyboard_control_texts[i]->set_text(keyboard_text.substr(0, 9));
@@ -187,29 +186,29 @@ void PauseSubmenuOptions::set_cursor_position(int position) {
  * This function is called when a key is pressed on this submenu.
  * @param key the key pressed
  */
-void PauseSubmenuOptions::key_pressed(Controls::GameKey key) {
+void PauseSubmenuOptions::key_pressed(GameControls::GameKey key) {
   
   switch (key) {
 
-  case Controls::LEFT:
+  case GameControls::LEFT:
     pause_menu->show_left_submenu();
     break;
 
-  case Controls::RIGHT:
+  case GameControls::RIGHT:
     pause_menu->show_right_submenu();
     break;
 
-  case Controls::UP:
+  case GameControls::UP:
     game->play_sound("cursor");
     set_cursor_position((cursor_position + 9) % 10);
     break;
 
-  case Controls::DOWN:
+  case GameControls::DOWN:
     game->play_sound("cursor");
     set_cursor_position((cursor_position + 1) % 10);
     break;
 
-  case Controls::ACTION:
+  case GameControls::ACTION:
     action_key_pressed();
     break;
 
@@ -230,7 +229,7 @@ void PauseSubmenuOptions::action_key_pressed(void) {
   else {
     set_caption_text(caption_strings[2]);
     cursor_sprite->set_current_animation("small_blink");
-    Controls::GameKey key_to_customize = (Controls::GameKey) cursor_position;
+    GameControls::GameKey key_to_customize = (GameControls::GameKey) cursor_position;
     controls->customize(key_to_customize);
     customizing = true;
 

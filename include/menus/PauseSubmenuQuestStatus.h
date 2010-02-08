@@ -19,7 +19,6 @@
 
 #include "Common.h"
 #include "menus/PauseSubmenu.h"
-#include "Controls.h"
 #include "lowlevel/Rectangle.h"
 
 /**
@@ -44,7 +43,7 @@ class PauseSubmenuQuestStatus: public PauseSubmenu {
     PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *game);
     ~PauseSubmenuQuestStatus(void);
 
-    void key_pressed(Controls::GameKey key);
+    void key_pressed(GameControls::GameKey key);
     void update(void);
     void display(Surface *destination);
 };

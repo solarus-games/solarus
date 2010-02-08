@@ -25,7 +25,7 @@
 #include "hud/SmallKeysCounter.h"
 #include "hud/FloorView.h"
 #include "Game.h"
-#include "Controls.h"
+#include "GameControls.h"
 
 /**
  * Constructor.
@@ -63,28 +63,28 @@ void HUD::update_blinking(void) {
 
   // detect whether a key is being customized
   int index = -1;
-  Controls *controls = game->get_controls();
+  GameControls *controls = game->get_controls();
   if (controls->is_customizing()) {
-    Controls::GameKey key = controls->get_key_to_customize();
+    GameControls::GameKey key = controls->get_key_to_customize();
     switch (key) {
 
-      case Controls::ACTION:
+      case GameControls::ACTION:
         index = 7;
 	break;
 
-      case Controls::SWORD:
+      case GameControls::SWORD:
 	index = 5;
 	break;
 
-      case Controls::PAUSE:
+      case GameControls::PAUSE:
 	index = 6;
 	break;
 
-      case Controls::ITEM_1:
+      case GameControls::ITEM_1:
 	index = 3;
 	break;
 
-      case Controls::ITEM_2:
+      case GameControls::ITEM_2:
 	index = 4;
 	break;
 

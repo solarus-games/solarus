@@ -34,9 +34,9 @@
  */
 class Map {
 
-  friend class MapLoader; // the map loader modifies the private fields of Map
-
   private:
+
+    friend class MapLoader; // the map loader modifies the private fields of Map
 
     static MapLoader map_loader;  /**< the map file parser */
 

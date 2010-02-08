@@ -189,7 +189,9 @@ class Input {
 
     ~Input(void);
 
-    static Input * get_event(void);   
+    static Input * get_event(void); 
+
+
 };
 
 #endif

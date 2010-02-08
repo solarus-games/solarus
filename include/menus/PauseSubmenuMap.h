@@ -19,7 +19,6 @@
 
 #include "Common.h"
 #include "menus/PauseSubmenu.h"
-#include "Controls.h"
 #include "lowlevel/Rectangle.h"
 
 /**
@@ -69,7 +68,7 @@ class PauseSubmenuMap: public PauseSubmenu {
     PauseSubmenuMap(PauseMenu *pause_menu, Game *game);
     ~PauseSubmenuMap(void);
 
-    void key_pressed(Controls::GameKey key);
+    void key_pressed(GameControls::GameKey key);
     void update(void);
     void display(Surface *destination);
     void display_world_map(Surface *destination);

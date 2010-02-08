@@ -35,7 +35,7 @@
 #include "Equipment.h"
 #include "Sprite.h"
 #include "Treasure.h"
-#include "Controls.h"
+#include "GameControls.h"
 #include "InventoryItem.h"
 #include "lowlevel/System.h"
 
@@ -389,7 +389,7 @@ void Hero::update_sword_swinging(void) {
   if (sprites->is_animation_finished()) {
 
     // if the player is still pressing the sword key, start loading the sword
-    if (game->get_controls()->is_key_pressed(Controls::SWORD)) {
+    if (game->get_controls()->is_key_pressed(GameControls::SWORD)) {
       start_sword_loading();
     }
     else {
@@ -439,9 +439,9 @@ void Hero::update_sword_loading(void) {
       counter = 0;
   }
 
-  Controls *controls = game->get_controls();
+  GameControls *controls = game->get_controls();
 
-  if (!controls->is_key_pressed(Controls::SWORD)) {
+  if (!controls->is_key_pressed(GameControls::SWORD)) {
     // the player just released the sword key
 
     // stop loading the sword, go to normal state or spin attack
@@ -473,10 +473,10 @@ void Hero::start_sword_tapping(void) {
  */
 void Hero::update_sword_tapping(void) {
 
-  Controls *controls = game->get_controls();
+  GameControls *controls = game->get_controls();
   const Rectangle &facing_point = get_facing_point();
 
-  if (!controls->is_key_pressed(Controls::SWORD)
+  if (!controls->is_key_pressed(GameControls::SWORD)
       || get_wanted_movement_direction() != get_animation_direction() * 90
       || !map->test_collision_with_obstacles(get_layer(), facing_point.get_x(), facing_point.get_y(), this)) {
     // the sword key has been released, the player has moved or the obstacle is gone
@@ -797,7 +797,7 @@ void Hero::start_pulling(void) {
  */
 void Hero::update_grabbing_pulling(void) {
 
-  Controls *controls = game->get_controls();
+  GameControls *controls = game->get_controls();
 
   // the hero is grabbing an obstacle
   if (state == GRABBING) {
@@ -816,7 +816,7 @@ void Hero::update_grabbing_pulling(void) {
 
     // release the obstacle
     if (!is_moving_grabbed_entity()) {
-      if (!controls->is_key_pressed(Controls::ACTION)) {
+      if (!controls->is_key_pressed(GameControls::ACTION)) {
 	start_free();
       }
     }
@@ -833,7 +833,7 @@ void Hero::update_grabbing_pulling(void) {
     }
 
     // stop pulling if the action key is released or if there is no more obstacle
-    if (!controls->is_key_pressed(Controls::ACTION) ||
+    if (!controls->is_key_pressed(GameControls::ACTION) ||
 	!is_facing_obstacle()) {
       start_free();
     }
@@ -948,8 +948,8 @@ void Hero::stop_moving_grabbed_entity(void) {
     set_movement(normal_movement);
   }
 
-  Controls *controls = game->get_controls();
-  if (state == PUSHING && !controls->is_key_pressed(Controls::ACTION)) {
+  GameControls *controls = game->get_controls();
+  if (state == PUSHING && !controls->is_key_pressed(GameControls::ACTION)) {
     // the hero was pushing an entity without grabbing it
     grabbed_entity = NULL;
 

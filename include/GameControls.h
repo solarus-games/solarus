@@ -14,21 +14,21 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_CONTROLS_H
-#define SOLARUS_CONTROLS_H
+#ifndef SOLARUS_GAME_CONTROLS_H
+#define SOLARUS_GAME_CONTROLS_H
 
 #include "Common.h"
 #include <SDL/SDL.h>
 #include <map>
 
 /**
- * Represents the game controls. This class handles the customization of the keyboard and joypad buttons.
- * It receives the SDL keyboard and joypad events that occur during
- * the game and then notifies the appropriate objects that a game key was pressed or released.
+ * Represents the game controls. This class handles the customization of the keyboard and joypad controls.
+ * It receives the low-level keyboard and joypad events that occur during
+ * the game and then notifies the appropriate objects that a game key was activated or released.
  * What we call a game key is a high-level notion such as "the action key".
  * The corresponding low-level event can be a keyboard event or a joypad event.
  */
-class Controls {
+class GameControls {
 
   public:
 
@@ -83,8 +83,8 @@ class Controls {
   public:
 
     // creation and destruction
-    Controls(Game *game);
-    ~Controls(void);
+    GameControls(Game *game);
+    ~GameControls(void);
 
     // controls
     const std::string & get_key_name(GameKey game_key);

@@ -200,21 +200,21 @@ void GameoverSequence::display(Surface *destination_surface) {
  * This function is called when a game key is pressed.
  * @param key the key pressed
  */
-void GameoverSequence::key_pressed(Controls::GameKey key) {
+void GameoverSequence::key_pressed(GameControls::GameKey key) {
 
   if (state == MENU) {
 
-    if (key == Controls::DOWN) {
+    if (key == GameControls::DOWN) {
       game->play_sound("cursor");
       cursor_position = (cursor_position + 1) % 4;
       fairy_y = 124 + cursor_position * 16;
     }
-    else if (key == Controls::UP) {
+    else if (key == GameControls::UP) {
       game->play_sound("cursor");
       cursor_position = (cursor_position + 3) % 4;
       fairy_y = 124 + cursor_position * 16;
     }
-    else if (key == Controls::ACTION || key == Controls::SWORD) {
+    else if (key == GameControls::ACTION || key == GameControls::SWORD) {
       game->play_sound("danger");
       game->get_equipment()->add_hearts(7 * 4);
 

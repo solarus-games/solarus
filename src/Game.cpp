@@ -62,7 +62,7 @@ Game::Game(Solarus *solarus, Savegame *savegame):
   get_equipment()->set_game(this);
   get_dungeon_equipment()->set_game(this);
   solarus->get_debug_keys()->set_game(this);
-  controls = new Controls(this);
+  controls = new GameControls(this);
   dialog_box = new DialogBox(this);
 
   // initialize the hero
@@ -130,7 +130,7 @@ const Rectangle & Game::get_hero_xy(void) {
  * Returns the game controls for the keyboard and the joypad.
  * @return the game controls
  */
-Controls * Game::get_controls(void) {
+GameControls * Game::get_controls(void) {
   return controls;
 }
 
@@ -195,11 +195,11 @@ void Game::handle_event(const SDL_Event &event) {
  * This function is called when a game key is pressed.
  * @param key a key
  */
-void Game::key_pressed(Controls::GameKey key) {
+void Game::key_pressed(GameControls::GameKey key) {
 
   if (!is_suspended()) {    
 
-    if (key == Controls::PAUSE) {
+    if (key == GameControls::PAUSE) {
       if (is_pause_enabled()) {
         set_paused(true);
       }
@@ -230,7 +230,7 @@ void Game::key_pressed(Controls::GameKey key) {
  * This function is called when a game key is released.
  * @param key a key
  */
-void Game::key_released(Controls::GameKey key) {
+void Game::key_released(GameControls::GameKey key) {
 
   if (!is_suspended()) {
     // if the game is not suspended, the keys apply to the hero

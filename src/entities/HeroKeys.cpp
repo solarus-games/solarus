@@ -18,6 +18,7 @@
 #include "entities/Detector.h"
 #include "movements/PlayerMovement.h"
 #include "Game.h"
+#include "GameControls.h"
 #include "KeysEffect.h"
 #include "InventoryItemId.h"
 #include "Equipment.h"
@@ -27,42 +28,42 @@
  * if the game is not suspended.
  * @param key the key pressed
  */
-void Hero::key_pressed(Controls::GameKey key) {
+void Hero::key_pressed(GameControls::GameKey key) {
 
   switch (key) {
 
     // action key
-  case Controls::ACTION:
+  case GameControls::ACTION:
     action_key_pressed();
     break;
 
     // sword key
-  case Controls::SWORD:
+  case GameControls::SWORD:
     sword_key_pressed();
     break;
 
     // move the hero
-  case Controls::RIGHT:
+  case GameControls::RIGHT:
     arrow_pressed(0);
     break;
 
-  case Controls::UP:
+  case GameControls::UP:
     arrow_pressed(1);
     break;
 
-  case Controls::LEFT:
+  case GameControls::LEFT:
     arrow_pressed(2);
     break;
 
-  case Controls::DOWN:
+  case GameControls::DOWN:
     arrow_pressed(3);
     break;
 
-  case Controls::ITEM_1:
+  case GameControls::ITEM_1:
     item_key_pressed(0);
     break;
 
-  case Controls::ITEM_2:
+  case GameControls::ITEM_2:
     item_key_pressed(1);
     break;
 
@@ -76,7 +77,7 @@ void Hero::key_pressed(Controls::GameKey key) {
  * if the game is not suspended.
  * @param key the key released
  */
-void Hero::key_released(Controls::GameKey key) {
+void Hero::key_released(GameControls::GameKey key) {
 
   /*
    * When the action key or the sword key are released,
@@ -87,19 +88,19 @@ void Hero::key_released(Controls::GameKey key) {
 
   switch (key) {
 
-  case Controls::RIGHT:
+  case GameControls::RIGHT:
     arrow_released(0);
     break;
 
-  case Controls::UP:
+  case GameControls::UP:
     arrow_released(1);
     break;
 
-  case Controls::LEFT:
+  case GameControls::LEFT:
     arrow_released(2);
     break;
 
-  case Controls::DOWN:
+  case GameControls::DOWN:
     arrow_released(3);
     break;
 

@@ -19,7 +19,6 @@
 
 #include "Common.h"
 #include "menus/PauseSubmenu.h"
-#include "Controls.h"
 #include "lowlevel/Rectangle.h"
 
 /**
@@ -29,7 +28,7 @@ class PauseSubmenuOptions: public PauseSubmenu {
 
   private:
 
-    Controls *controls;
+    GameControls *controls;
 
     std::string *video_mode_strings;
     std::string caption_strings[3];
@@ -70,7 +69,7 @@ class PauseSubmenuOptions: public PauseSubmenu {
     PauseSubmenuOptions(PauseMenu *pause_menu, Game *game);
     ~PauseSubmenuOptions(void);
 
-    void key_pressed(Controls::GameKey key);
+    void key_pressed(GameControls::GameKey key);
     void update(void);
     void display(Surface *destination);
 };

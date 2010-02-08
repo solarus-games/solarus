@@ -20,7 +20,6 @@
 #include "Common.h"
 #include "menus/PauseSubmenu.h"
 #include "InventoryItemId.h"
-#include "Controls.h"
 
 /**
  * The Inventory submenu of the pause menu.
@@ -63,7 +62,7 @@ class PauseSubmenuInventory: public PauseSubmenu {
     ~PauseSubmenuInventory(void);
 
     // main loop
-    void key_pressed(Controls::GameKey key);
+    void key_pressed(GameControls::GameKey key);
     void update(void);
     void display(Surface *destination);
 };

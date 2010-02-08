@@ -20,7 +20,7 @@
 #include "Common.h"
 #include "Screen.h"
 #include "Transition.h"
-#include "Controls.h"
+#include "GameControls.h"
 
 /**
  * This class handles the game.
@@ -46,7 +46,7 @@ class Game: public Screen {
     bool restarting;           /**< true if the game will be restarted */
 
     // controls
-    Controls *controls;        /**< this object receives the keyboard and joypad events */
+    GameControls *controls;        /**< this object receives the keyboard and joypad events */
     KeysEffect *keys_effect;   /**< current effect associated to the main game keys
 				* (represented on the HUD by the action icon, the objects icons, etc.) */
 
@@ -93,7 +93,7 @@ class Game: public Screen {
     // global objects
     Hero *get_hero(void);
     const Rectangle & get_hero_xy(void);
-    Controls *get_controls(void);
+    GameControls *get_controls(void);
     KeysEffect *get_keys_effect(void);
     Savegame *get_savegame(void);
     Equipment *get_equipment(void);
@@ -105,8 +105,8 @@ class Game: public Screen {
     void update(void);
     void display(Surface *screen_surface);
 
-    void key_pressed(Controls::GameKey key);
-    void key_released(Controls::GameKey key);
+    void key_pressed(GameControls::GameKey key);
+    void key_released(GameControls::GameKey key);
 
     // map
     Map *get_current_map(void);

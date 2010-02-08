@@ -32,13 +32,13 @@
  * - update: to update your screen's internal data (this function is
  * called repeatedly). This is useful to update the
  * state of objects that depend on time (e.g. they are animated or moving).
- * - handle_event: to take into account events that occur
+ * - handle_event: to take into account input events that occur
  * (such as a key that was just pressed).
  * TODO: replace handle_event by some higher level functions: handle_key_pressed,
  * handle_key_released, handle_joypad_... This will encapsulate SDL event structures
  * and allow using the joypad in the menus. Also rename Controls into GameControls.
  *
- * Basically, the SDL main loop calls these three functions. If it has enough
+ * Basically, the program main loop calls these three functions. If it has enough
  * time (depending on how long are the update() and display() calls), it also
  * sleeps between two loops.
  *

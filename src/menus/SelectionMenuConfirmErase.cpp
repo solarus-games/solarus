@@ -44,38 +44,30 @@ SelectionMenuConfirmErase::~SelectionMenuConfirmErase(void) {
  * Handles an event in this phase.
  * @param event the event
  */
-void SelectionMenuConfirmErase::handle_event(const SDL_Event &event) {
+void SelectionMenuConfirmErase::notify_event(InputEvent &event) {
 
-  if (event.type == SDL_KEYDOWN) {
+  if (event.is_keyboard_key_pressed(validation_keys)) { // to erase a savegame file we don't allow joypad buttons
     
     int cursor_position = menu->get_cursor_position();
 
-    switch (event.key.keysym.sym) {
-
-    case SDLK_SPACE:
-    case SDLK_RETURN:
-      if (cursor_position == 5) {
-	// the user chose "Yes"
-	menu->play_erase_sound();
-	delete_save_file(save_number_to_erase);
-	menu->set_cursor_position(save_number_to_erase + 1);
-	menu->set_next_phase(new SelectionMenuSelectFile(menu));
-      }
-      else if (cursor_position == 4) {
-	// the user chose "No"
-	menu->play_ok_sound();
-	menu->set_next_phase(new SelectionMenuSelectFile(menu));
-      }
-      break;
-
-    case SDLK_RIGHT:
-    case SDLK_LEFT:
-      menu->move_cursor_left_or_right();
-      break;
-
-    default:
-      break;
+    if (cursor_position == 5) {
+      // the user chose "Yes"
+      menu->play_erase_sound();
+      delete_save_file(save_number_to_erase);
+      menu->set_cursor_position(save_number_to_erase + 1);
+      menu->set_next_phase(new SelectionMenuSelectFile(menu));
     }
+    else if (cursor_position == 4) {
+      // the user chose "No"
+      menu->play_ok_sound();
+      menu->set_next_phase(new SelectionMenuSelectFile(menu));
+    }
+  }
+
+  if (event.is_direction_pressed()
+      && event.get_direction() % 4 == 0) { // right or left
+
+    menu->move_cursor_left_or_right();
   }
 }
 

@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include "Screen.h"
+#include "lowlevel/InputEvent.h"
 
 /**
  * Abstract class for a phase of the selection menu,
@@ -28,9 +29,9 @@ class SelectionMenuPhase {
 
   protected:
 
-    SelectionMenu *menu;    /**< the selection menu this phase belongs to */
+    static const InputEvent::KeyboardKey validation_keys[]; /**< the keys recognized when validating a choice */
 
-  protected:
+    SelectionMenu *menu;    /**< the selection menu this phase belongs to */
 
     // creation and destruction
     SelectionMenuPhase(SelectionMenu *menu, const std::string &title_string_key);
@@ -42,7 +43,7 @@ class SelectionMenuPhase {
     // update and display
     virtual void update(void);
     virtual void display(Surface *destination_surface);
-    virtual void handle_event(const SDL_Event &event);
+    virtual void notify_event(InputEvent &event);
 
 };
 

@@ -18,7 +18,7 @@
 #include "Equipment.h"
 #include "DungeonEquipment.h"
 #include "lowlevel/FileTools.h"
-#include <SDL/SDL.h> // TODO remove
+#include "lowlevel/InputEvent.h"
 
 /**
  * Creates a savegame with a specified file name, existing or not.
@@ -52,6 +52,8 @@ Savegame::Savegame(const std::string &file_name) {
 
     this->equipment = new Equipment(this);
     this->dungeon_equipment = new DungeonEquipment(this);
+
+    check_game_controls();
   }
 }
 
@@ -104,16 +106,30 @@ void Savegame::set_initial_values(void) {
   set_integer(ITEM_SLOT_0, (uint32_t) -1);
   set_integer(ITEM_SLOT_1, (uint32_t) -1);
 
-  // default game controls
-  set_integer(KEYBOARD_ACTION_KEY, SDLK_SPACE);
-  set_integer(KEYBOARD_SWORD_KEY, SDLK_c);
-  set_integer(KEYBOARD_ITEM_1_KEY, SDLK_x);
-  set_integer(KEYBOARD_ITEM_2_KEY, SDLK_v);
-  set_integer(KEYBOARD_PAUSE_KEY, SDLK_d);
-  set_integer(KEYBOARD_RIGHT_KEY, SDLK_RIGHT);
-  set_integer(KEYBOARD_UP_KEY, SDLK_UP);
-  set_integer(KEYBOARD_LEFT_KEY, SDLK_LEFT);
-  set_integer(KEYBOARD_DOWN_KEY, SDLK_DOWN);
+  set_default_keyboard_controls();
+  set_default_joypad_controls();
+}
+
+/**
+ * Sets default values for the keyboard game controls.
+ */
+void Savegame::set_default_keyboard_controls(void) {
+
+  set_integer(KEYBOARD_ACTION_KEY, InputEvent::KEY_SPACE);
+  set_integer(KEYBOARD_SWORD_KEY, InputEvent::KEY_c);
+  set_integer(KEYBOARD_ITEM_1_KEY, InputEvent::KEY_x);
+  set_integer(KEYBOARD_ITEM_2_KEY, InputEvent::KEY_v);
+  set_integer(KEYBOARD_PAUSE_KEY, InputEvent::KEY_d);
+  set_integer(KEYBOARD_RIGHT_KEY, InputEvent::KEY_RIGHT);
+  set_integer(KEYBOARD_UP_KEY, InputEvent::KEY_UP);
+  set_integer(KEYBOARD_LEFT_KEY, InputEvent::KEY_LEFT);
+  set_integer(KEYBOARD_DOWN_KEY, InputEvent::KEY_DOWN);
+}
+
+/**
+ * Sets default values for the joypad game controls.
+ */
+void Savegame::set_default_joypad_controls(void) {
 
   set_string(JOYPAD_ACTION_KEY, "button 0");
   set_string(JOYPAD_SWORD_KEY, "button 1");
@@ -124,6 +140,18 @@ void Savegame::set_initial_values(void) {
   set_string(JOYPAD_UP_KEY, "axis 1 -");
   set_string(JOYPAD_LEFT_KEY, "axis 0 -");
   set_string(JOYPAD_DOWN_KEY, "axis 1 +");
+}
+
+/**
+ * Ensures the keyboard mapping saved is valid with respect to the enumeration InputEvent::KeyboardKey.
+ * If the bindings saved corresponds to an old version of this enumeration, it is obsolete and
+ * we reset it to the default values.
+ */
+void Savegame::check_game_controls(void) {
+
+  if (get_integer(KEYBOARD_ENUM_VERSION) != (uint16_t) InputEvent::KEYBOARD_ENUM_VERSION) {
+    set_default_keyboard_controls();
+  }
 }
 
 /**

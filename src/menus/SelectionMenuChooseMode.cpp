@@ -50,22 +50,23 @@ SelectionMenuChooseMode::~SelectionMenuChooseMode(void) {
  * Handles an event in this phase.
  * @param event the event
  */
-void SelectionMenuChooseMode::handle_event(const SDL_Event &event) {
+void SelectionMenuChooseMode::notify_event(InputEvent &event) {
 /*
-  if (!menu->has_transition() && event.type == SDL_KEYDOWN) {
+  // TODO also allow joypad
+  if (!menu->has_transition() && event.is_keyboard_key_pressed()) {
 
     bool finished = false;
 
-    switch (event.key.keysym.sym) {
+    switch (event.get_keyboard_key()) {
 
-    case SDLK_SPACE:
-    case SDLK_RETURN:
+    case InputEvent::KEY_SPACE:
+    case InputEvent::KEY_RETURN:
       menu->play_ok_sound();
       finished = true;
       break;
 
-    case SDLK_RIGHT:
-    case SDLK_LEFT:
+    case InputEvent::KEY_RIGHT:
+    case InputEvent::KEY_LEFT:
       menu->play_cursor_sound();
       adventure_mode = !adventure_mode;
       break;

@@ -30,7 +30,7 @@
 SelectionMenuChooseName::SelectionMenuChooseName(SelectionMenu *menu):
   SelectionMenuPhase(menu, "selection_menu.choose_name"), next_key_date(System::now()) {
 
-  SDL_EnableKeyRepeat(300, 50);
+  InputEvent::set_key_repeat(300, 50);
 
   menu->get_cursor_sprite()->set_current_animation("letters");
 
@@ -51,7 +51,7 @@ SelectionMenuChooseName::SelectionMenuChooseName(SelectionMenu *menu):
  */
 SelectionMenuChooseName::~SelectionMenuChooseName(void) {
 
-  SDL_EnableKeyRepeat(0, 0);
+  InputEvent::set_key_repeat(0, 0);
 
   delete player_name_text;
   delete arrow_img;
@@ -62,52 +62,58 @@ SelectionMenuChooseName::~SelectionMenuChooseName(void) {
  * Handles an event in this phase.
  * @param event the event
  */
-void SelectionMenuChooseName::handle_event(const SDL_Event &event) {
+void SelectionMenuChooseName::notify_event(InputEvent &event) {
 
-  if (event.type == SDL_KEYDOWN) {
+  static const InputEvent::KeyboardKey letter_keys[] = { InputEvent::KEY_c, InputEvent::KEY_SPACE, InputEvent::KEY_NONE };
+
+  if (event.is_pressed()) {
 
     uint32_t now = System::now();
-
     bool finished = false;
-    switch (event.key.keysym.sym) {
 
-    case SDLK_RETURN:
+    if (event.is_keyboard_key_pressed(InputEvent::KEY_RETURN)) {
+
       // directly validate the name
       finished = validate_player_name();
-      break;
-  
-    case SDLK_c:
-    case SDLK_SPACE:
+    }
+
+    else if (event.is_keyboard_key_pressed(letter_keys) || event.is_joypad_button_pressed()) {
+
       if (now >= next_key_date) {
 	// choose a letter
 	finished = select_letter();
 	player_name_text->set_text(player_name);
 	next_key_date = now + 500;
       }
-      break;
+    }
 
-    case SDLK_RIGHT:
-      menu->play_cursor_sound();
-      letter_cursor_x = (letter_cursor_x + 14) % 13;
-      break;
-	  
-    case SDLK_UP:
-      menu->play_cursor_sound();
-      letter_cursor_y = (letter_cursor_y + 4) % 5;
-      break;
-	  
-    case SDLK_LEFT:
-      menu->play_cursor_sound();
-      letter_cursor_x = (letter_cursor_x + 12) % 13;
-      break;
-	  
-    case SDLK_DOWN:
-      menu->play_cursor_sound();
-      letter_cursor_y = (letter_cursor_y + 6) % 5;
-      break;
-  
-    default:
-      break;
+    else if (event.is_direction_pressed()) {
+
+      switch (event.get_direction()) {
+
+	case 0: // right
+	  menu->play_cursor_sound();
+	  letter_cursor_x = (letter_cursor_x + 14) % 13;
+	  break;
+
+	case 1: // up
+	  menu->play_cursor_sound();
+	  letter_cursor_y = (letter_cursor_y + 4) % 5;
+	  break;
+
+	case 2: // left
+	  menu->play_cursor_sound();
+	  letter_cursor_x = (letter_cursor_x + 12) % 13;
+	  break;
+
+	case 3: // down
+	  menu->play_cursor_sound();
+	  letter_cursor_y = (letter_cursor_y + 6) % 5;
+	  break;
+
+	default:
+	  break;
+      }
     }
 
     if (finished) {

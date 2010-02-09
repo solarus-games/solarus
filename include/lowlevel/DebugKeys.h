@@ -18,7 +18,7 @@
 #define SOLARUS_DEBUG_KEYS_H
 
 #include "Common.h"
-#include <SDL/SDL.h>
+#include "lowlevel/InputEvent.h"
 
 /**
  * This class provides some special keys that make it easier to debug the game, including
@@ -39,8 +39,8 @@ class DebugKeys {
 
     void set_game(Game *game);
 
-    void key_pressed(const SDL_keysym &keysym);
-    void key_released(const SDL_keysym &keysym);
+    void key_pressed(InputEvent::KeyboardKey key);
+    void key_released(InputEvent::KeyboardKey key);
     void update(void);
 };
 

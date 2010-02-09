@@ -100,11 +100,12 @@ class Game: public Screen {
     DungeonEquipment *get_dungeon_equipment(void);
     MapScript *get_current_script(void);
 
-    // functions called by the SDL loop
-    void handle_event(const SDL_Event &event);
+    // functions called by the main loop
+    void notify_event(InputEvent &event);
     void update(void);
     void display(Surface *screen_surface);
 
+    // game controls
     void key_pressed(GameControls::GameKey key);
     void key_released(GameControls::GameKey key);
 

@@ -183,12 +183,14 @@ MapScript * Game::get_current_script(void) {
 
 /**
  * This function is called by the main loop
- * when an event occurs during the game.
+ * when a low-level input event occurs during the game.
+ * @param event the event to handle
  */
-void Game::handle_event(const SDL_Event &event) {
+void Game::notify_event(InputEvent &event) {
 
-  // the only events we are interested in are the keyboard and joypad events
-  controls->handle_event(event);
+  // the GameControl object will transform the low-level input event into
+  // a high-level game control event (i.e. a call to key_pressed() or key_released()).
+  controls->notify_event(event);
 }
 
 /**

@@ -49,7 +49,7 @@ void DebugKeys::set_game(Game *game) {
  * This function is called when a keyboard key is pressed.
  * @param keysym the key pressed
  */
-void DebugKeys::key_pressed(const SDL_keysym &keysym) {
+void DebugKeys::key_pressed(InputEvent::KeyboardKey key) {
 
 #if SOLARUS_DEBUG_LEVEL >= 2
   // don't consider the debug keys in release mode
@@ -57,33 +57,33 @@ void DebugKeys::key_pressed(const SDL_keysym &keysym) {
   if (game != NULL) {
     Equipment *equipment = game->get_equipment();
 
-    switch (keysym.unicode) {
+    switch (key) {
 
-      case SDLK_p:
+      case InputEvent::KEY_p:
 	equipment->add_hearts(2);
 	break;
 
-      case SDLK_m:
+      case InputEvent::KEY_m:
 	equipment->remove_hearts(1);
 	break;
 
-      case SDLK_o:
+      case InputEvent::KEY_o:
 	equipment->add_rupees(23);
 	break;
 
-      case SDLK_l:
+      case InputEvent::KEY_l:
 	equipment->remove_rupees(14);
 	break;
 
-      case SDLK_i:
+      case InputEvent::KEY_i:
 	equipment->add_magic(10);
 	break;
 
-      case SDLK_k:
+      case InputEvent::KEY_k:
 	equipment->remove_magic(4);
 	break;
 
-      case SDLK_j:
+      case InputEvent::KEY_j:
 	if (!equipment->is_magic_decreasing()) {
 	  equipment->start_removing_magic(200);
 	}
@@ -91,39 +91,40 @@ void DebugKeys::key_pressed(const SDL_keysym &keysym) {
 	  equipment->stop_removing_magic();
 	}
 	break;
-	   case SDLK_t:
-	   equipment->give_inventory_item(INVENTORY_BOW);
-	   equipment->set_max_arrows(10);
-	   equipment->give_inventory_item(INVENTORY_BOTTLE_2, 6);
-	   equipment->give_inventory_item(INVENTORY_BOMBS);
-	   equipment->set_max_bombs(10);
-	   equipment->set_bombs(10);
-	   equipment->give_inventory_item(INVENTORY_BOOMERANG);
-	   equipment->give_inventory_item(INVENTORY_LAMP);
-	   equipment->give_inventory_item(INVENTORY_HOOK_SHOT);
-	   equipment->give_inventory_item(INVENTORY_PEGASUS_SHOES);
-	   equipment->give_inventory_item(INVENTORY_BOTTLE_1);
-	   equipment->give_inventory_item(INVENTORY_GLOVE);
-	   equipment->give_inventory_item(INVENTORY_PAINS_AU_CHOCOLAT);
-	   equipment->set_inventory_item_amount(INVENTORY_PAINS_AU_CHOCOLAT, 3);
-	   equipment->give_inventory_item(INVENTORY_CROISSANTS);
-	   equipment->give_inventory_item(INVENTORY_RED_KEY);
-	   equipment->give_inventory_item(INVENTORY_CLAY_KEY);
-	   equipment->add_world_map();
-	   equipment->set_item_assigned(0, INVENTORY_BOOMERANG);
-	   equipment->set_item_assigned(1, INVENTORY_BOTTLE_2);
-	   break;
 
-      case SDLK_g:
+      case InputEvent::KEY_t:
+	equipment->give_inventory_item(INVENTORY_BOW);
+	equipment->set_max_arrows(10);
+	equipment->give_inventory_item(INVENTORY_BOTTLE_2, 6);
+	equipment->give_inventory_item(INVENTORY_BOMBS);
+	equipment->set_max_bombs(10);
+	equipment->set_bombs(10);
+	equipment->give_inventory_item(INVENTORY_BOOMERANG);
+	equipment->give_inventory_item(INVENTORY_LAMP);
+	equipment->give_inventory_item(INVENTORY_HOOK_SHOT);
+	equipment->give_inventory_item(INVENTORY_PEGASUS_SHOES);
+	equipment->give_inventory_item(INVENTORY_BOTTLE_1);
+	equipment->give_inventory_item(INVENTORY_GLOVE);
+	equipment->give_inventory_item(INVENTORY_PAINS_AU_CHOCOLAT);
+	equipment->set_inventory_item_amount(INVENTORY_PAINS_AU_CHOCOLAT, 3);
+	equipment->give_inventory_item(INVENTORY_CROISSANTS);
+	equipment->give_inventory_item(INVENTORY_RED_KEY);
+	equipment->give_inventory_item(INVENTORY_CLAY_KEY);
+	equipment->add_world_map();
+	equipment->set_item_assigned(0, INVENTORY_BOOMERANG);
+	equipment->set_item_assigned(1, INVENTORY_BOTTLE_2);
+	break;
+
+      case InputEvent::KEY_g:
 	equipment->add_arrows(7);
 	break;
 
-      case SDLK_b:
+      case InputEvent::KEY_b:
 	equipment->remove_arrow();
 	break;
 
 	/*
-	   case SDLK_SPACE:
+	   case InputEvent::KEY_SPACE:
 	// almost the feather, actually
 	if (game->get_keys_effect()->get_action_key_effect() == KeysEffect::ACTION_KEY_NONE) {
 	Hero *hero = game->get_hero();
@@ -132,55 +133,50 @@ void DebugKeys::key_pressed(const SDL_keysym &keysym) {
 	break;
 	*/
 
-      default:
-	break;
-    }
-
-    switch (keysym.sym) {
-      case SDLK_KP7:
+      case InputEvent::KEY_KP7:
 	equipment->set_max_magic(0);
 	break;
 
-      case SDLK_KP8:
+      case InputEvent::KEY_KP8:
 	equipment->set_max_magic(42);
 	break;
 
-      case SDLK_KP9:
+      case InputEvent::KEY_KP9:
 	equipment->set_max_magic(84);
 	break;
 
-      case SDLK_KP1:
+      case InputEvent::KEY_KP1:
 	equipment->set_tunic(std::max(equipment->get_tunic() - 1, 0));
 	game->get_hero()->rebuild_equipment();
 	break;
 
-      case SDLK_KP4:
+      case InputEvent::KEY_KP4:
 	equipment->set_tunic(std::min(equipment->get_tunic() + 1, 2));
 	game->get_hero()->rebuild_equipment();
 	break;
 
-      case SDLK_KP2:
+      case InputEvent::KEY_KP2:
 	equipment->set_sword(std::max(equipment->get_sword() - 1, 0));
 	game->get_hero()->rebuild_equipment();
 	break;
 
-      case SDLK_KP5:
+      case InputEvent::KEY_KP5:
 	equipment->set_sword(std::min(equipment->get_sword() + 1, 4));
 	game->get_hero()->rebuild_equipment();
 	break;
 
-      case SDLK_KP3:
+      case InputEvent::KEY_KP3:
 	equipment->set_shield(std::max(equipment->get_shield() - 1, 0));
 	game->get_hero()->rebuild_equipment();
 	break;
 
-      case SDLK_KP6:
+      case InputEvent::KEY_KP6:
 	equipment->set_shield(std::min(equipment->get_shield() + 1, 3));
 	game->get_hero()->rebuild_equipment();
 	break;
 
-      case SDLK_LCTRL:
-      case SDLK_RCTRL:
+      case InputEvent::KEY_LEFT_CONTROL:
+      case InputEvent::KEY_RIGHT_CONTROL:
 	game->get_hero()->get_normal_movement()->set_stop_on_obstacles(false);
 	break;
 
@@ -188,7 +184,8 @@ void DebugKeys::key_pressed(const SDL_keysym &keysym) {
 	break;
     }
   }
-  else if (keysym.sym == SDLK_ESCAPE) {
+  else if (key == InputEvent::KEY_ESCAPE) {
+    // no game yet
     solarus->skip_menus();
   }
 #endif
@@ -198,15 +195,15 @@ void DebugKeys::key_pressed(const SDL_keysym &keysym) {
  * This function is called when a keyboard key is released.
  * @param keysym the key released
  */
-void DebugKeys::key_released(const SDL_keysym &keysym) {
+void DebugKeys::key_released(InputEvent::KeyboardKey key) {
 
 #if SOLARUS_DEBUG_LEVEL >= 2
 
   if (game != NULL) {
-    switch (keysym.sym) {
+    switch (key) {
 
-      case SDLK_LCTRL:
-      case SDLK_RCTRL:
+      case InputEvent::KEY_LEFT_CONTROL:
+      case InputEvent::KEY_RIGHT_CONTROL:
 	game->get_hero()->get_normal_movement()->set_stop_on_obstacles(true);
 	break;
 
@@ -222,8 +219,7 @@ void DebugKeys::key_released(const SDL_keysym &keysym) {
  */
 void DebugKeys::update(void) {
 
-  SDLMod mod = SDL_GetModState();
-  if (mod & (KMOD_LSHIFT | KMOD_RSHIFT)) {
+  if (InputEvent::is_shift_down()) {
     if (game != NULL && game->is_showing_message()) {
       game->get_dialog_box()->show_all_now();
     }

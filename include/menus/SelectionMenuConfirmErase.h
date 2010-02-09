@@ -39,7 +39,7 @@ class SelectionMenuConfirmErase: public SelectionMenuPhase {
 
     // update and display
     void display(Surface *destination_surface);
-    void handle_event(const SDL_Event &event);
+    void notify_event(InputEvent &event);
 };
 
 #endif

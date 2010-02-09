@@ -88,14 +88,14 @@ void Solarus::set_exiting(void) {
 }
 
 /**
- * The main function. The SDL loop is executed here.
- * The SDL events are forwarded to the current screen.
+ * The main function. The main loop is executed here.
+ * The input events are forwarded to the current screen.
  * The current screen is redrawn when necessary.
  */
 void Solarus::main(void) {
 
-  // SDL main loop
-  SDL_Event event = {};
+  // main loop
+  InputEvent *event;
   uint32_t now;
   uint32_t next_frame_date = System::now();
   uint32_t frame_interval = 25; // time interval between to displays
@@ -104,9 +104,10 @@ void Solarus::main(void) {
 
   while (!is_exiting()) {
 
-    // handle the SDL events
-    if (SDL_PollEvent(&event)) {
-      handle_event(event);
+    // handle the input events
+    event = InputEvent::get_event();
+    if (event != NULL) {
+      notify_event(*event);
     }
 
     // update the current screen
@@ -159,54 +160,40 @@ void Solarus::main(void) {
 }
 
 /**
- * This function handles an SDL event.
+ * This function is called when there is an input event.
  * It handles the events common to all screens:
- * closing the window and pressing escape or F5.
- * The handle_event() method of the current screen
+ * closing the window, pressing F5 or a debug key.
+ * The notify_event() method of the current screen
  * is then called.
  */
-void Solarus::handle_event(const SDL_Event &event) {
+void Solarus::notify_event(InputEvent &event) {
 
   // handle the common events
-  switch (event.type) {
-
-    // quit if the user closes the window
-  case SDL_QUIT:
+  InputEvent::KeyboardKey key = event.get_keyboard_key();
+  if (event.is_window_closing()) {
     exiting = true;
-    break;
-
+  }
+  else if (event.is_keyboard_key_pressed()) {
     // a key is pressed
-  case SDL_KEYDOWN:
-
-    switch (event.key.keysym.sym) {
-
+    if (key == InputEvent::KEY_F5) {
       // F5: change the video mode
-    case SDLK_F5:
       VideoManager::get_instance()->switch_video_mode();
-      break;
-
-      // Alt + F4: quit the program
-    case SDLK_F4:
-      if (event.key.keysym.mod & KMOD_ALT) {
-	exiting = true;
-      }
-      break;
-
-    default:
-      debug_keys->key_pressed(event.key.keysym);
-      break;
     }
-    break;
-
-    // a key is pressed
-  case SDL_KEYUP:
-    debug_keys->key_released(event.key.keysym);
-    break;
-
+    else if (key == InputEvent::KEY_F4 && event.is_alt_down()) {
+      // Alt + F4: quit the program
+      exiting = true;
+    }
+    else {
+      debug_keys->key_pressed(key);
+    }
+  }
+  else if (event.is_keyboard_key_released()) {
+    // a key is released
+    debug_keys->key_released(key);
   }
 
-  // handle the specific events depending on the current screen
-  current_screen->handle_event(event);
+  // send the event to the current screen
+  current_screen->notify_event(event);
 }
 
 /**

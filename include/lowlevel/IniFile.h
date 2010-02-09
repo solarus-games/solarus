@@ -22,7 +22,7 @@
 
 /**
  * This class provides functions to read and write an ini-like file.
- * It encapsulates the library used to manage ini files (SDL_Config for now).
+ * It encapsulates the library used to manage ini files (SimpleIni for now).
  */
 class IniFile {
 

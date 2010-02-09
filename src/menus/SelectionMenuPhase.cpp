@@ -25,6 +25,12 @@
 #include "lowlevel/Sound.h"
 #include "lowlevel/Rectangle.h"
 
+const InputEvent::KeyboardKey SelectionMenuPhase::validation_keys[] = {
+  InputEvent::KEY_SPACE,
+  InputEvent::KEY_RETURN,
+  InputEvent::KEY_NONE
+};
+
 /**
  * Creates a selection menu phase.
  * @param selection_menu the selection menu this phase will belong to
@@ -59,10 +65,10 @@ void SelectionMenuPhase::display(Surface *destination_surface) {
 }
 
 /**
- * This function is called when an event occurs.
+ * This function is called when an input event occurs.
  * @param event the event
  */
-void SelectionMenuPhase::handle_event(const SDL_Event &event) {
+void SelectionMenuPhase::notify_event(InputEvent &event) {
   // nothing to do by default (subclasses can redefine this method)
 }
 

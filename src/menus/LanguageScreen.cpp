@@ -22,6 +22,7 @@
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/TextSurface.h"
+#include "lowlevel/InputEvent.h"
 
 const int LanguageScreen::max_visible_languages = 10;
 
@@ -143,35 +144,35 @@ void LanguageScreen::display(Surface *destination_surface) {
 }
 
 /**
- * Handles an event.
- * This function is called by the main loop when there is an event.
+ * This function is called by the main loop when there is an input event.
  * @param event the event to handle
  */
-void LanguageScreen::handle_event(const SDL_Event &event) {
+void LanguageScreen::notify_event(InputEvent &event) {
 
-  if (event.type == SDL_KEYDOWN && transition == NULL) {
+  static const InputEvent::KeyboardKey validation_keys[] = { InputEvent::KEY_SPACE, InputEvent::KEY_RETURN, InputEvent::KEY_NONE };
 
-    switch (event.key.keysym.sym) {
-      
-      case SDLK_UP:
+  if (transition == NULL) {
+
+    if (event.is_direction_pressed()) {
+
+      int direction = event.get_direction();
+      if (direction == 2) {
+	// up
 	set_cursor_position((cursor_position - 1 + nb_languages) % nb_languages);
 	ResourceManager::get_sound("cursor")->play();
-	break;
-    
-      case SDLK_DOWN:
+      }
+      else if (direction == 6) {
+	// down
 	set_cursor_position((cursor_position + 1) % nb_languages);
 	ResourceManager::get_sound("cursor")->play();
-	break;
+      }
+    }
+    else if (event.is_keyboard_key_pressed(validation_keys)
+	|| event.is_joypad_button_pressed()) {
 
-      case SDLK_SPACE:
-      case SDLK_RETURN:
 	FileTools::set_language(language_codes[cursor_position]);
 	transition = Transition::create(Transition::FADE, Transition::OUT);
 	transition->start();
-	break;
-
-      default:
-	break;
     }
   }
 }

@@ -40,7 +40,7 @@ class SelectionMenuChooseMode: public SelectionMenuPhase {
     ~SelectionMenuChooseMode(void);
 
     // update and display
-    void handle_event(const SDL_Event &event);
+    void notify_event(InputEvent &event);
     void update(void);
     void display(Surface *screen_surface);
 };

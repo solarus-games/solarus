@@ -64,8 +64,9 @@ SelectionMenu::SelectionMenu(Solarus *solarus):
     number_imgs[i] = new Surface(oss.str());
   }
 
-  cursor_sprite = new Sprite("menus/selection_menu_cursor");
   background_color = Color(104, 144, 240);
+  cursor_sprite = new Sprite("menus/selection_menu_cursor");
+  allow_cursor_date = 0;
 
   // texts
   option1_text = new TextSurface(90, 172, TextSurface::ALIGN_LEFT, TextSurface::ALIGN_MIDDLE);
@@ -321,8 +322,23 @@ void SelectionMenu::display(Surface *screen_surface) {
  */
 void SelectionMenu::notify_event(InputEvent &event) {
 
-  // notify the current phase
-  current_phase->notify_event(event);
+  bool notify = true;
+  if (event.is_joypad_axis_moved() && !event.is_joypad_axis_centered()) {
+    
+    // the cursor moves to much when using a joypad axis
+    uint32_t now = System::now();
+    if (now > allow_cursor_date) {
+      allow_cursor_date = now + 200;
+    }
+    else {
+      notify = false;
+    }
+  }
+  
+  if (notify) {
+    // notify the current phase
+    current_phase->notify_event(event);
+  }
 }
 
 /**

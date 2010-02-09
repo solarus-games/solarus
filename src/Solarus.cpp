@@ -19,11 +19,11 @@
 #include "lowlevel/VideoManager.h"
 #include "lowlevel/Color.h"
 #include "lowlevel/Surface.h"
-#include "lowlevel/DebugKeys.h"
 #include "Game.h"
 #include "ResourceManager.h"
 #include "Savegame.h"
 #include "StringResource.h"
+#include "DebugKeys.h"
 #include "menus/LanguageScreen.h"
 
 /**
@@ -108,6 +108,7 @@ void Solarus::main(void) {
     event = InputEvent::get_event();
     if (event != NULL) {
       notify_event(*event);
+      delete event;
     }
 
     // update the current screen
@@ -170,6 +171,7 @@ void Solarus::notify_event(InputEvent &event) {
 
   // handle the common events
   InputEvent::KeyboardKey key = event.get_keyboard_key();
+
   if (event.is_window_closing()) {
     exiting = true;
   }

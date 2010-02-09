@@ -46,19 +46,17 @@ SelectionMenuSelectFile::~SelectionMenuSelectFile(void) {
 }
 
 /**
- * Handles an event in this phase.
+ * Handles an input event in this phase.
  * @param event the event
  */
-void SelectionMenuSelectFile::handle_event(const SDL_Event &event) {
+void SelectionMenuSelectFile::notify_event(InputEvent &event) {
 
-  if (!menu->has_transition() && event.type == SDL_KEYDOWN) {
-
-    int cursor_position = menu->get_cursor_position();
+  if (!menu->has_transition()) {
     
-    switch (event.key.keysym.sym) {
+    if (event.is_keyboard_key_pressed(validation_keys) || event.is_joypad_button_pressed()) {
 
-    case SDLK_SPACE:
-    case SDLK_RETURN:
+      int cursor_position = menu->get_cursor_position();
+    
       if (cursor_position == 5) {
 	// the user chose "Exit"
 	menu->set_exiting();
@@ -71,7 +69,7 @@ void SelectionMenuSelectFile::handle_event(const SDL_Event &event) {
       else {
 	// the user chose a save
 	menu->play_ok_sound();
-	
+
 	Savegame **savegames = menu->get_savegames();
 	if (savegames[cursor_position - 1]->is_empty()) {
 	  // the savegame doesn't exist: ask the name
@@ -82,23 +80,28 @@ void SelectionMenuSelectFile::handle_event(const SDL_Event &event) {
 	  menu->set_next_phase(new SelectionMenuChooseMode(menu));
 	}
       }
-      break;
+    }
 
-    case SDLK_DOWN:
-      menu->move_cursor_down();
-      break;
- 
-    case SDLK_UP:
-      menu->move_cursor_up();
-      break;
+    if (event.is_direction_pressed()) {
 
-    case SDLK_RIGHT:
-    case SDLK_LEFT:
-      menu->move_cursor_left_or_right();
-      break;
- 
-    default:
-      break;
+      switch (event.get_direction()) {
+
+	case 6: // down
+	  menu->move_cursor_down();
+	  break;
+
+	case 2: // up
+	  menu->move_cursor_up();
+	  break;
+
+	case 0: // right
+	case 4: // left
+	  menu->move_cursor_left_or_right();
+	  break;
+
+	default:
+	  break;
+      }
     }
   }
 }

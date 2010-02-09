@@ -18,7 +18,6 @@
 #define SOLARUS_SOLARUS_H
 
 #include "Common.h"
-#include <SDL/SDL.h>
 
 /**
  * Main class of the game engine. It contains objects to
@@ -36,7 +35,7 @@ class Solarus {
 
     void launch_adventure_mode(Savegame *savegame);
 
-    void handle_event(const SDL_Event &event);
+    void notify_event(InputEvent &event);
     void display(void);
     void update(void);
 

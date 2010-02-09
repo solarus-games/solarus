@@ -14,26 +14,19 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_INPUT_H
-#define SOLARUS_INPUT_H
+#ifndef SOLARUS_INPUT_EVENT_H
+#define SOLARUS_INPUT_EVENT_H
 
 #include "Common.h"
+#include <SDL/SDL.h>
 
 /**
- * This lowlevel class provides an API for input events (keyboard and joypad).
+ * This lowlevel class provides an API for input events (keyboard, joypad and window events).
  * This class encapsulates the library-dependent keyboard and joypad events.
  */
-class Input {
+class InputEvent {
 
   public:
-
-    /**
-     * Indicates whether a key was pressed or released.
-     */
-    enum KeyEventType {
-      KEY_PRESSED,
-      KEY_RELEASED
-    };
 
     /**
      * Enumeration of keyboard keys.
@@ -47,7 +40,8 @@ class Input {
      * Therefore, you should also change the value of KEYBOARD_ENUMERATION_VERSION
      * so that the savegames can detect that their keyboard customization is obsolete and reset it.
      */
-    enum Key {
+    enum KeyboardKey {
+      KEY_NONE                     = 0,
       KEY_BACKSPACE                = 8,
       KEY_TABULATION               = 9,
       KEY_CLEAR                    = 12,
@@ -169,8 +163,8 @@ class Input {
       KEY_SCROLLOCK                = 302,
       KEY_RIGHT_SHIFT              = 303,
       KEY_LEFT_SHIFT               = 304,
-      KEY_RIGHT_CTRL               = 305,
-      KEY_LEFT_CTRL                = 306,
+      KEY_RIGHT_CONTROL            = 305,
+      KEY_LEFT_CONTROL             = 306,
       KEY_RIGHT_ALT                = 307,
       KEY_LEFT_ALT                 = 308,
       KEY_RIGHT_META               = 309,
@@ -179,19 +173,78 @@ class Input {
       KEY_RIGHT_WINDOWS            = 312
     };
 
-    static const int KEYBOARD_ENUM_VERSION; /**< version of the Key enumeration above (this prevents from breaking savegames when the enumeration values are changed) */
+    static const int KEYBOARD_ENUM_VERSION;      /**< version of the Key enumeration above (this prevents from
+					          * breaking savegames when the enumeration values are changed) */
 
   private:
 
-    Input(KeyEventType type, Key key);
+    static SDL_Joystick *joystick;               /**< the joystick object */
+    SDL_Event event;                             /**< the SDL event encapsulated */
 
   public:
 
-    ~Input(void);
+    static void initialize(void);
+    static void quit(void);
 
-    static Input * get_event(void); 
+  private:
 
+    InputEvent(KeyboardKey key);
 
+  public:
+
+    ~InputEvent(void);
+
+    // retrieve the current event
+    static InputEvent * get_event(void); 
+
+    // global information
+    static void set_key_repeat(int delay, int interval);
+    static bool is_shift_down(void);
+    static bool is_control_down(void);
+    static bool is_alt_down(void);
+
+    // keyboard or joypad event
+    bool is_keyboard_event(void);
+    bool is_joypad_event(void);
+
+    // keyboard
+    bool is_keyboard_key_pressed(void);
+    bool is_keyboard_key_pressed(KeyboardKey key);
+    bool is_keyboard_key_pressed(const KeyboardKey *keys);
+    bool is_keyboard_direction_key_pressed(void);
+    bool is_keyboard_non_direction_key_pressed(void);
+
+    bool is_keyboard_key_released(void);
+    bool is_keyboard_direction_key_released(void);
+    bool is_keyboard_non_direction_key_released(void);
+
+    bool is_with_shift(void);
+    bool is_with_control(void);
+    bool is_with_alt(void);
+
+    KeyboardKey get_keyboard_key(void);
+    static const std::string get_keyboard_key_name(KeyboardKey key);
+
+    // joypad
+    bool is_joypad_button_pressed(void);
+    bool is_joypad_button_released(void);
+    int get_joypad_button(void);
+    bool is_joypad_axis_moved(void);
+    int get_joypad_axis(void);
+    int get_joypad_axis_value(void);
+    bool is_joypad_hat_moved(void);
+    int get_joypad_hat(void);
+    int get_joypad_hat_value(void);
+
+    // functions common to keyboard and joypad
+    int get_direction(void);
+    bool is_pressed(void);
+    bool is_direction_pressed(void);
+    bool is_non_direction_pressed(void);
+    bool is_released(void);
+
+    // window event
+    bool is_window_closing(void);
 };
 
 #endif

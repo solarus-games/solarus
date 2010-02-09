@@ -150,7 +150,7 @@ class Savegame {
        * Variables 35 to 49 indicate the keyboard key
        * associated to each game key: action, sword, item 1, item 2, pause,
        * right, up, left and down.
-       * Each integer corresponds to a value of the Input::Key enumeration.
+       * Each integer corresponds to a value of the Input::KeyboardKey enumeration.
        * @{
        */
       KEYBOARD_ACTION_KEY              = 35,
@@ -162,7 +162,7 @@ class Savegame {
       KEYBOARD_UP_KEY                  = 41,
       KEYBOARD_LEFT_KEY                = 42,
       KEYBOARD_DOWN_KEY                = 43,
-      KEYBOARD_ENUM_VERSION            = 49, /**< Indicates the version of the Input::Key enumeration this savegame was created with.
+      KEYBOARD_ENUM_VERSION            = 49, /**< Indicates the version of the Input::KeyboardKey enumeration this savegame was created with.
                                               * If the version saved is different from Input::KEYBOARD_ENUM_VERSION, then
 					      * we know it is obsolete and the customization is reset to some default values. */
       /**
@@ -228,6 +228,9 @@ class Savegame {
     Equipment *equipment;
 
     void set_initial_values(void);
+    void set_default_keyboard_controls(void);
+    void set_default_joypad_controls(void);
+    void check_game_controls(void);
 
   public:
 

@@ -18,7 +18,6 @@
 #define SOLARUS_SCREEN_H
 
 #include "Common.h"
-#include <SDL/SDL.h>
 
 /**
  * A screen is an execution phase of the program, like the title
@@ -32,11 +31,8 @@
  * - update: to update your screen's internal data (this function is
  * called repeatedly). This is useful to update the
  * state of objects that depend on time (e.g. they are animated or moving).
- * - handle_event: to take into account input events that occur
- * (such as a key that was just pressed).
- * TODO: replace handle_event by some higher level functions: handle_key_pressed,
- * handle_key_released, handle_joypad_... This will encapsulate SDL event structures
- * and allow using the joypad in the menus. Also rename Controls into GameControls.
+ * - notify_event: to take into account input events that occur
+ * (such as a keyboard key or a joypad button that was just pressed).
  *
  * Basically, the program main loop calls these three functions. If it has enough
  * time (depending on how long are the update() and display() calls), it also
@@ -72,7 +68,7 @@ class Screen {
     // functions to implement in subclasses and that will be called by the main loop
     virtual void update(void) = 0;
     virtual void display(Surface *screen_surface) = 0;
-    virtual void handle_event(const SDL_Event &event) = 0;
+    virtual void notify_event(InputEvent &event) = 0;
 };
 
 #endif

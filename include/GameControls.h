@@ -18,7 +18,7 @@
 #define SOLARUS_GAME_CONTROLS_H
 
 #include "Common.h"
-#include <SDL/SDL.h>
+#include "lowlevel/InputEvent.h"
 #include <map>
 
 /**
@@ -34,6 +34,7 @@ class GameControls {
 
     /**
      * The game keys that can be customized.
+     * These high-level keys can be mapped onto the keyboard and the joypad.
      */
     enum GameKey {
       NONE = 0,
@@ -50,12 +51,11 @@ class GameControls {
 
   private:
 
-    Game *game;             /**< the game */
-    Savegame *savegame;     /**< the savegame, which stores the keyboard and joypad mappings of the game keys */
-    SDL_Joystick *joystick; /**< the joystick object */
+    Game *game;                                    /**< the game */
+    Savegame *savegame;                            /**< the savegame, which stores the keyboard and joypad mappings of the game keys */
 
     std::string game_key_names[9];                 /**< human name of each game key, in the current language */
-    std::map<SDLKey, GameKey> keyboard_mapping;    /**< associates each game key to the keyboard key that triggers it */
+    std::map<InputEvent::KeyboardKey, GameKey> keyboard_mapping;    /**< associates each game key to the keyboard key that triggers it */
     std::map<std::string, GameKey> joypad_mapping; /**< associates each game key to the joypad action that triggers it */
     bool keys_pressed[9];                          /**< memorizes the state of each game key */
     static const uint16_t arrows_masks[4];         /**< bit mask associated to each directional key: this allows to
@@ -70,9 +70,9 @@ class GameControls {
     void game_key_released(GameKey key);
 
     // keyboard mapping
-    void key_pressed(const SDL_keysym &keysym);
-    void key_released(const SDL_keysym &keysym);
-    SDLKey get_keyboard_key(GameKey game_key);
+    void key_pressed(InputEvent::KeyboardKey keyboard_key_pressed);
+    void key_released(InputEvent::KeyboardKey keyboard_key_released);
+    InputEvent::KeyboardKey get_keyboard_key(GameKey game_key);
 
     // joypad mapping
     void joypad_button_pressed(int button);
@@ -90,7 +90,7 @@ class GameControls {
     const std::string & get_key_name(GameKey game_key);
     const std::string get_keyboard_string(GameKey game_key);
     const std::string & get_joypad_string(GameKey game_key);
-    void handle_event(const SDL_Event &event);
+    void notify_event(InputEvent &event);
     bool is_key_pressed(GameKey game_key);
     int get_arrows_direction(void);
 

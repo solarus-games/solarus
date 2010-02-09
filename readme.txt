@@ -74,9 +74,9 @@ openal
 libsndfile
 
 
-Note that two other libraries are directly embedded in the source code: SDL_Config
-(an ini parsing library, with some modifications to avoid compilation warnings and 64-bit issues)
-and snes_spc (an SPC music decoding library).
+Note that two other libraries are directly embedded in the source code: SimpleIni,
+an ini parsing library which consists in only two header files (no source files),
+and snes_spc, an SPC music decoding library.
 
 
 Linux developers:

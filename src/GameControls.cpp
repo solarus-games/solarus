@@ -68,13 +68,6 @@ static const int arrows_angles[] = {
 GameControls::GameControls(Game *game):
   game(game), savegame(game->get_savegame()), customizing(false) {
 
-  if (SDL_NumJoysticks() > 0) {
-    joystick = SDL_JoystickOpen(0);
-  }
-  else {
-    joystick = NULL;
-  }
-
   // load the controls from the savegame
   for (int i = 0; i < 9; i++) {
 
@@ -82,7 +75,7 @@ GameControls::GameControls(Game *game):
 
     // keyboard
     int index = Savegame::KEYBOARD_ACTION_KEY + i;
-    SDLKey keyboard_symbol = (SDLKey) savegame->get_integer(index);
+    InputEvent::KeyboardKey keyboard_symbol = InputEvent::KeyboardKey(savegame->get_integer(index));
     keyboard_mapping[keyboard_symbol] = game_key;
 
     // joypad
@@ -105,9 +98,6 @@ GameControls::GameControls(Game *game):
  */
 GameControls::~GameControls(void) {
 
-  if (SDL_JoystickOpened(0)) {
-    SDL_JoystickClose(joystick);
-  }
 }
 
 /**
@@ -127,13 +117,16 @@ const std::string& GameControls::get_key_name(GameKey key) {
  */
 const std::string GameControls::get_keyboard_string(GameKey game_key) {
 
-  std::string keyboard_string = keyboard_string = SDL_GetKeyName(get_keyboard_key(game_key));
+  InputEvent::KeyboardKey keyboard_key = get_keyboard_key(game_key);
+  std::string keyboard_string = InputEvent::get_keyboard_key_name(keyboard_key);
   return keyboard_string;
 }
 
 /**
  * Returns whether the specified game key is pressed.
  * The key can be pressed from the keyboard or the joypad.
+ * @param game key a game key
+ * @return true if the game key is currently pressed
  */
 bool GameControls::is_key_pressed(GameKey game_key) {
   return keys_pressed[game_key - 1];
@@ -164,60 +157,46 @@ int GameControls::get_arrows_direction(void) {
 }
 
 /**
- * This function is called by the game when an SDL event occurs.
- * @param event an SDL event
+ * This function is called by the game when a low-level input event occurs.
+ * @param event an input event
  */
-void GameControls::handle_event(const SDL_Event &event) {
+void GameControls::notify_event(InputEvent &event) {
 
   /*
-   * If no key is being customized, we look for a binding
-   * for this SDL event and we ignore the event if no binding was found.
+   * If no game key is being customized, we look for a binding
+   * for this input event and we ignore the event if no binding is found.
    * If a key is being customized, we consider instead this event as
    * the new binding for this game key.
    */
 
-  switch (event.type) {
-
-    // a key is pressed
-  case SDL_KEYDOWN:
-    key_pressed(event.key.keysym);
-    break;
-
-    // a key is released
-  case SDL_KEYUP:
-    key_released(event.key.keysym);
-    break;
-
-    // joypad
-  case SDL_JOYAXISMOTION:
-    joypad_axis_moved(event.jaxis.axis, event.jaxis.value);
-    break;
-
-  case SDL_JOYHATMOTION:
-    joypad_hat_moved(event.jhat.hat, event.jhat.value);
-    break;
-
-  case SDL_JOYBUTTONDOWN:
-    joypad_button_pressed(event.jbutton.button);
-    break;
-
-  case SDL_JOYBUTTONUP:
-    joypad_button_released(event.jbutton.button);
-    break;
-
-  default:
-    break;
+  if (event.is_keyboard_key_pressed()) {
+    key_pressed(event.get_keyboard_key());
+  }
+  else if (event.is_keyboard_key_released()) {
+    key_released(event.get_keyboard_key());
+  }
+  else if (event.is_joypad_button_pressed()) {
+    joypad_button_pressed(event.get_joypad_button());
+  }
+  else if (event.is_joypad_button_released()) {
+    joypad_button_released(event.get_joypad_button());
+  }
+  else if (event.is_joypad_axis_moved()) {
+    joypad_axis_moved(event.get_joypad_axis(), event.get_joypad_axis_value());
+  }
+  else if (event.is_joypad_hat_moved()) {
+    joypad_hat_moved(event.get_joypad_hat(), event.get_joypad_hat_value());
   }
 }
 
 /**
- * This function is called when a keyboard key is pressed.
- * @param keysym the key pressed
+ * This function is called when a low-level keyboard key is pressed.
+ * @param keyboard_key_pressed the key pressed
  */
-void GameControls::key_pressed(const SDL_keysym &keysym) {
+void GameControls::key_pressed(InputEvent::KeyboardKey keyboard_key_pressed) {
 
   // retrieve the game key corresponding to this keyboard key
-  GameKey game_key = keyboard_mapping[keysym.sym];
+  GameKey game_key = keyboard_mapping[keyboard_key_pressed];
 
   if (!customizing) {
 
@@ -234,7 +213,7 @@ void GameControls::key_pressed(const SDL_keysym &keysym) {
     if (game_key != key_to_customize) {
       // consider this key as the new mapping for the game key being customized
 
-      SDLKey previous_keyboard_key = get_keyboard_key(key_to_customize);
+      InputEvent::KeyboardKey previous_keyboard_key = get_keyboard_key(key_to_customize);
       if (game_key != 0) {
 	// this keyboard key was already assigned to a game key
 	keyboard_mapping[previous_keyboard_key] = game_key;
@@ -244,9 +223,9 @@ void GameControls::key_pressed(const SDL_keysym &keysym) {
       else {
 	keyboard_mapping.erase(previous_keyboard_key);
       }
-      keyboard_mapping[keysym.sym] = key_to_customize;
+      keyboard_mapping[keyboard_key_pressed] = key_to_customize;
       int index = Savegame::KEYBOARD_ACTION_KEY + key_to_customize - 1;
-      savegame->set_integer(index, keysym.sym);
+      savegame->set_integer(index, keyboard_key_pressed);
 
       keys_pressed[key_to_customize - 1] = true;
     }
@@ -254,13 +233,13 @@ void GameControls::key_pressed(const SDL_keysym &keysym) {
 }
 
 /**
- * This function is called when a keyboard key is released.
- * @param keysym the key released
+ * This function is called when a low-level keyboard key is released.
+ * @param keyboard_key_released the key released
  */
-void GameControls::key_released(const SDL_keysym &keysym) {
+void GameControls::key_released(InputEvent::KeyboardKey keyboard_key_released) {
 
   // retrieve the game key corresponding to this keyboard key
-  GameKey game_key = keyboard_mapping[keysym.sym];
+  GameKey game_key = keyboard_mapping[keyboard_key_released];
 
   // if the key is mapped (otherwise we just ignore it)
   if (game_key != 0) {
@@ -337,8 +316,10 @@ void GameControls::joypad_button_released(int button) {
 
 /**
  * This function is called when a joypad axis is moved.
+ * The joypad axis is identified by an integer (usually,
+ * 0 and 1 represents the x and y axis of a joystick).
  * @param axis the axis moved
- * @param state the new axis state
+ * @param state the new axis state (a value between -32768 and 32767)
  */
 void GameControls::joypad_axis_moved(int axis, int state) {
 
@@ -415,12 +396,12 @@ void GameControls::joypad_axis_moved(int axis, int state) {
 /**
  * This function is called when a joypad has is moved.
  * @param hat the hat moved
- * @param value the new hat position
+ * @param value the new hat position (-1: centered, 0 to 7: a direction)
  */
 void GameControls::joypad_hat_moved(int hat, int value) {
 
   // hat in centered position
-  if (value == SDL_HAT_CENTERED) {
+  if (value == -1) {
 
     for (int i = 0; i < 4; i++) {
 
@@ -440,38 +421,38 @@ void GameControls::joypad_hat_moved(int hat, int value) {
 
     switch (value) {
 
-    case SDL_HAT_RIGHT:
+    case 0: // right
       direction_1 = 0;
       break;
 
-    case SDL_HAT_RIGHTUP:
+    case 1: // right-up
       direction_1 = 1;
       direction_2 = 0;
       break;
 
-    case SDL_HAT_UP:
+    case 2: // up
       direction_1 = 1;
       break;
 
-    case SDL_HAT_LEFTUP:
+    case 3: // left-up
       direction_1 = 1;
       direction_2 = 2;
       break;
 
-    case SDL_HAT_LEFT:
+    case 4: // left
       direction_1 = 2;
       break;
 
-    case SDL_HAT_LEFTDOWN:
+    case 5: // left-down
       direction_1 = 3;
       direction_2 = 2;
       break;
 
-    case SDL_HAT_DOWN:
+    case 6: // down
       direction_1 = 3;
       break;
 
-    case SDL_HAT_RIGHTDOWN:
+    case 7: // right-down
       direction_1 = 3;
       direction_2 = 0;
     }
@@ -595,16 +576,16 @@ void GameControls::game_key_released(GameKey key) {
 
 
 /**
- * Returns the keyboard key where the specified game key
+ * Returns the low-level keyboard key where the specified game key
  * is currently mapped.
  * @param game_key a game key
  * @return the keyboard key corresponding this game key
  */
-SDLKey GameControls::get_keyboard_key(GameKey game_key) {
+InputEvent::KeyboardKey GameControls::get_keyboard_key(GameKey game_key) {
 
   bool found = false;
-  SDLKey keyboard_key = (SDLKey) 0;
-  std::map<SDLKey, GameKey>::const_iterator it;
+  InputEvent::KeyboardKey keyboard_key = InputEvent::KEY_NONE;
+  std::map<InputEvent::KeyboardKey, GameKey>::const_iterator it;
   for (it = keyboard_mapping.begin(); it != keyboard_mapping.end(); it++) {
 
     if (it->second == game_key) {

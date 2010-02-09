@@ -21,6 +21,7 @@
 #include "lowlevel/TextSurface.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/Random.h"
+#include "lowlevel/InputEvent.h"
 #include "ResourceManager.h"
 #include "Sprite.h"
 #include <SDL/SDL.h>
@@ -51,8 +52,7 @@ void System::initialize(int argc, char **argv) {
   Sound::initialize(argc, argv);
 
   // input
-  SDL_EnableUNICODE(SDL_ENABLE); // TODO move in an Input class
-  SDL_EnableKeyRepeat(0, 0);
+  InputEvent::initialize();
 
   // random number generator
   Random::initialize();

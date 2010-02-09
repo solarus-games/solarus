@@ -25,6 +25,7 @@
 #include "lowlevel/TextSurface.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/System.h"
+#include "lowlevel/InputEvent.h"
 #include <ctime>
 
 /**
@@ -131,15 +132,15 @@ void TitleScreen::display(Surface *destination_surface) {
 }
 
 /**
- * Handles an event.
- * This function is called by the main loop when there is an event.
+ * This function is called by the main loop when there is an input event.
  * @param event the event to handle
  */
-void TitleScreen::handle_event(const SDL_Event &event) {
+void TitleScreen::notify_event(InputEvent &event) {
+
+  static const InputEvent::KeyboardKey keys[] = { InputEvent::KEY_SPACE, InputEvent::KEY_RETURN, InputEvent::KEY_NONE };
 
   if (current_phase == PHASE_TITLE
-      && event.type == SDL_KEYDOWN
-      && (event.key.keysym.sym == SDLK_SPACE || event.key.keysym.sym == SDLK_RETURN)
+      && (event.is_joypad_button_pressed() || event.is_keyboard_key_pressed(keys))
       && counter >= 1
       && !transition_out->is_started()
       && !transition_out->is_finished()) {

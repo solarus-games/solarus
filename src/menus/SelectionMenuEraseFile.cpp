@@ -44,54 +44,55 @@ SelectionMenuEraseFile::~SelectionMenuEraseFile(void) {
  * Handles an event in this phase.
  * @param event the event
  */
-void SelectionMenuEraseFile::handle_event(const SDL_Event &event) {
+void SelectionMenuEraseFile::notify_event(InputEvent &event) {
 
-  if (event.type == SDL_KEYDOWN) {
+  if (event.is_keyboard_key_pressed(validation_keys) || event.is_joypad_button_pressed()) {
     
     int cursor_position = menu->get_cursor_position();
-    switch (event.key.keysym.sym) {
 
-    case SDLK_SPACE:
-    case SDLK_RETURN:
-      if (cursor_position == 5) {
-	// the user chose "Quit"
-	menu->set_exiting();
-      }
-      else if (cursor_position == 4) {
-	// the user chose "Cancel"
-	menu->play_ok_sound();
-	menu->set_next_phase(new SelectionMenuSelectFile(menu));
+    if (cursor_position == 5) {
+      // the user chose "Quit"
+      menu->set_exiting();
+    }
+    else if (cursor_position == 4) {
+      // the user chose "Cancel"
+      menu->play_ok_sound();
+      menu->set_next_phase(new SelectionMenuSelectFile(menu));
+    }
+    else {
+
+      int save_number_to_erase = cursor_position - 1;
+      if (menu->get_savegame(save_number_to_erase)->is_empty()) {
+	// the savegame doesn't exist: error sound
+	menu->play_error_sound();
       }
       else {
-	
-	int save_number_to_erase = cursor_position - 1;
-	if (menu->get_savegame(save_number_to_erase)->is_empty()) {
-	  // the savegame doesn't exist: error sound
-	  menu->play_error_sound();
-	}
-	else {
-	  // the savegame exists: confirm deleting it
-	  menu->play_ok_sound();
-	  menu->set_next_phase(new SelectionMenuConfirmErase(menu, save_number_to_erase));
-	}
+	// the savegame exists: confirm deleting it
+	menu->play_ok_sound();
+	menu->set_next_phase(new SelectionMenuConfirmErase(menu, save_number_to_erase));
       }
-      break;
-      
-    case SDLK_DOWN:
-      menu->move_cursor_down();
-      break;
-      
-    case SDLK_UP:
-      menu->move_cursor_up();
-      break;
-      
-    case SDLK_RIGHT:
-    case SDLK_LEFT:
-      menu->move_cursor_left_or_right();
-      break;
-      
-    default:
-      break;
+    }
+  }
+
+  if (event.is_direction_pressed()) {
+
+    switch (event.get_direction()) {
+
+      case 6: // down
+	menu->move_cursor_down();
+	break;
+
+      case 2: // up
+	menu->move_cursor_up();
+	break;
+
+      case 0: // right
+      case 4: // left
+	menu->move_cursor_left_or_right();
+	break;
+
+      default:
+	break;
     }
   }
 }
@@ -112,7 +113,7 @@ void SelectionMenuEraseFile::display(Surface *destination_surface) {
 
   // cursor
   menu->display_savegame_cursor(destination_surface);
- 
+
   // save numbers
   for (int i = 0; i < 3; i++) {
     menu->display_savegame_number(destination_surface, i);

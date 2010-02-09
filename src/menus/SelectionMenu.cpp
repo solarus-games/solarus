@@ -316,14 +316,13 @@ void SelectionMenu::display(Surface *screen_surface) {
 }
 
 /**
- * Handles an event.
- * This function is called by the program main loop when there is an event.
+ * This function is called by the program main loop when there is an input event.
  * @param event the event to handle
  */
-void SelectionMenu::handle_event(const SDL_Event &event) {
+void SelectionMenu::notify_event(InputEvent &event) {
 
   // notify the current phase
-  current_phase->handle_event(event);
+  current_phase->notify_event(event);
 }
 
 /**

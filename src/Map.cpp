@@ -283,7 +283,7 @@ void Map::set_welcome_message(MessageId welcome_message_id) {
 }
 
 /**
- * Returns the SDL surface where the map is displayed.
+ * Returns the surface where the map is displayed.
  * This surface is only the visible part of the map, so the
  * coordinates on this surface are relative to the screen,
  * not to the map.

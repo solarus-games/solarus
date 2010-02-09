@@ -41,13 +41,13 @@ SelectionMenuConfirmErase::~SelectionMenuConfirmErase(void) {
 }
 
 /**
- * Handles an event in this phase.
+ * Handles an input event in this phase.
  * @param event the event
  */
 void SelectionMenuConfirmErase::notify_event(InputEvent &event) {
 
   if (event.is_keyboard_key_pressed(validation_keys)) { // to erase a savegame file we don't allow joypad buttons
-    
+
     int cursor_position = menu->get_cursor_position();
 
     if (cursor_position == 5) {

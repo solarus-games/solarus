@@ -178,8 +178,9 @@ class InputEvent {
 
   private:
 
+    static const KeyboardKey directional_keys[];        /**< array of the keyboard directional keys */
     static SDL_Joystick *joystick;               /**< the joystick object */
-    SDL_Event event;                             /**< the SDL event encapsulated */
+    SDL_Event internal_event;                    /**< the internal event encapsulated */
 
   public:
 
@@ -188,7 +189,7 @@ class InputEvent {
 
   private:
 
-    InputEvent(KeyboardKey key);
+    InputEvent(const SDL_Event &event);
 
   public:
 
@@ -203,9 +204,10 @@ class InputEvent {
     static bool is_control_down(void);
     static bool is_alt_down(void);
 
-    // keyboard or joypad event
+    // event type
     bool is_keyboard_event(void);
     bool is_joypad_event(void);
+    bool is_window_event(void);
 
     // keyboard
     bool is_keyboard_key_pressed(void);
@@ -215,6 +217,8 @@ class InputEvent {
     bool is_keyboard_non_direction_key_pressed(void);
 
     bool is_keyboard_key_released(void);
+    bool is_keyboard_key_released(KeyboardKey key);
+    bool is_keyboard_key_released(const KeyboardKey *keys);
     bool is_keyboard_direction_key_released(void);
     bool is_keyboard_non_direction_key_released(void);
 
@@ -231,10 +235,12 @@ class InputEvent {
     int get_joypad_button(void);
     bool is_joypad_axis_moved(void);
     int get_joypad_axis(void);
-    int get_joypad_axis_value(void);
+    int get_joypad_axis_state(void);
+    bool is_joypad_axis_centered(void);
     bool is_joypad_hat_moved(void);
     int get_joypad_hat(void);
-    int get_joypad_hat_value(void);
+    int get_joypad_hat_direction(void);
+    bool is_joypad_hat_centered(void);
 
     // functions common to keyboard and joypad
     int get_direction(void);

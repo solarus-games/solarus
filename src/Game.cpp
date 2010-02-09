@@ -27,6 +27,7 @@
 #include "Treasure.h"
 #include "Dungeon.h"
 #include "GameoverSequence.h"
+#include "DebugKeys.h"
 #include "hud/HUD.h"
 #include "menus/TitleScreen.h"
 #include "menus/PauseMenu.h"
@@ -37,7 +38,6 @@
 #include "lowlevel/Music.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/Surface.h"
-#include "lowlevel/DebugKeys.h"
 
 const Rectangle Game::outside_world_size(0, 0, 2080, 3584); // TODO load from external file
 

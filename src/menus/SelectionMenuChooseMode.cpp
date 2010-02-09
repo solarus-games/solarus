@@ -52,7 +52,7 @@ SelectionMenuChooseMode::~SelectionMenuChooseMode(void) {
  */
 void SelectionMenuChooseMode::notify_event(InputEvent &event) {
 /*
-  // TODO also allow joypad
+  // TODO also allow joypad and check last_cursor_move_date
   if (!menu->has_transition() && event.is_keyboard_key_pressed()) {
 
     bool finished = false;

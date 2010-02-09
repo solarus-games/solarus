@@ -77,8 +77,8 @@ class GameControls {
     // joypad mapping
     void joypad_button_pressed(int button);
     void joypad_button_released(int button);
-    void joypad_axis_moved(int axis, int state);
-    void joypad_hat_moved(int hat, int value);
+    void joypad_axis_moved(int axis, int direction);
+    void joypad_hat_moved(int hat, int direction);
 
   public:
 

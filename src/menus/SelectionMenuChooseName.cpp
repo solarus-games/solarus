@@ -96,17 +96,17 @@ void SelectionMenuChooseName::notify_event(InputEvent &event) {
 	  letter_cursor_x = (letter_cursor_x + 14) % 13;
 	  break;
 
-	case 1: // up
+	case 2: // up
 	  menu->play_cursor_sound();
 	  letter_cursor_y = (letter_cursor_y + 4) % 5;
 	  break;
 
-	case 2: // left
+	case 4: // left
 	  menu->play_cursor_sound();
 	  letter_cursor_x = (letter_cursor_x + 12) % 13;
 	  break;
 
-	case 3: // down
+	case 6: // down
 	  menu->play_cursor_sound();
 	  letter_cursor_y = (letter_cursor_y + 6) % 5;
 	  break;

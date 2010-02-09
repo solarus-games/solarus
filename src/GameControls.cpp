@@ -182,10 +182,10 @@ void GameControls::notify_event(InputEvent &event) {
     joypad_button_released(event.get_joypad_button());
   }
   else if (event.is_joypad_axis_moved()) {
-    joypad_axis_moved(event.get_joypad_axis(), event.get_joypad_axis_value());
+    joypad_axis_moved(event.get_joypad_axis(), event.get_joypad_axis_state());
   }
   else if (event.is_joypad_hat_moved()) {
-    joypad_hat_moved(event.get_joypad_hat(), event.get_joypad_hat_value());
+    joypad_hat_moved(event.get_joypad_hat(), event.get_joypad_hat_direction());
   }
 }
 
@@ -316,15 +316,13 @@ void GameControls::joypad_button_released(int button) {
 
 /**
  * This function is called when a joypad axis is moved.
- * The joypad axis is identified by an integer (usually,
- * 0 and 1 represents the x and y axis of a joystick).
  * @param axis the axis moved
- * @param state the new axis state (a value between -32768 and 32767)
+ * @param state the new axis direction (-1: left or up, 0: centered, 1: right or down)
  */
 void GameControls::joypad_axis_moved(int axis, int state) {
 
-  // axis in centered position
-  if (state <= 1000 && state >= -1000) {
+  if (state == 0) {
+    // axis in centered position
 
     std::ostringstream oss_1;
     oss_1 << "axis " << axis << " +";
@@ -342,7 +340,8 @@ void GameControls::joypad_axis_moved(int axis, int state) {
       game_key_released(game_key_2);
     }
   }
-  else if (state > 15000 || state < -15000) {
+  else {
+    // axis not centered 
 
     std::ostringstream oss;
     oss << "axis " << axis << ((state > 0) ? " +" : " -");
@@ -396,7 +395,7 @@ void GameControls::joypad_axis_moved(int axis, int state) {
 /**
  * This function is called when a joypad has is moved.
  * @param hat the hat moved
- * @param value the new hat position (-1: centered, 0 to 7: a direction)
+ * @param direction the new hat position (-1: centered, 0 to 7: a direction)
  */
 void GameControls::joypad_hat_moved(int hat, int value) {
 

@@ -72,6 +72,7 @@ Bugs :
 - MapEntity : "features" mal gérées au niveau du code (mélange tableau / héritage) : faire une sous-classe pour les entités qui peuvent être chargées avec la map ?
 - CrystalSwitch : permettre d'activer deux fois par deux entités différentes (flèches, explosions, héros...) en mémorisant les entités activatrices
   (le délai est trop long et trop spécifique aux explosions)
+- buisson lancé sur ennemi : l'ennemi est blessé mais le buisson ne s'arrête pas
 
 
 Donjon 2 :
@@ -97,34 +98,6 @@ Ennemis à faire (reprendre graphismes de MC + graphismes rippés) :
 - Armos
 - fantôme
 - garde bleu avec lance (monde des ténèbres)
-
-
-
---------------------
-Abstraction de SDL :
-
-Graphics :
-
-SDL_WM_SetCaption
-putenv
-SDL_VideoModeOK
-SDL_SetVideoMode
-SDL_ListModes
-SDL_Flip
-SDL_LockSurface
-SDL_UnlockSurface
-SDL_ShowCursor
-
-Controls :
-SDL_Key
-SDL_keysym
-SDL_EnableUNICODE
-SDL_EnableKeyRepeat
-
-Events :
-SDL_Event
-SDL_PollEvent
-SDL_Delay
 
 
 --------------

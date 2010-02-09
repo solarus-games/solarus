@@ -1,10 +1,9 @@
 set(quest_name "zsdx")
 
 # compile the Lua scripts
-file(GLOB_RECURSE lua_source_files 
-  ${CMAKE_CURRENT_SOURCE_DIR}
+file(GLOB lua_source_files 
+  RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
   maps/*.lua)
-
 set(lua_bin_files "")
 foreach(lua_source_file ${lua_source_files})
   add_custom_command(
@@ -16,7 +15,7 @@ endforeach(lua_source_file ${lua_source_files})
 
 # data files list
 file(GLOB_RECURSE data_files
-  ${CMAKE_CURRENT_SOURCE_DIR}
+  RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
   *.spc *.wav *.png *.dat *.ttf *.fon)
 set(data_files ${data_files} ${lua_bin_files})
 
@@ -26,7 +25,6 @@ add_custom_command(
   DEPENDS ${data_files}
   COMMAND zip -q data.solarus ${data_files}
 )
-
 add_custom_target(${quest_name}_data
   ALL
   DEPENDS data.solarus

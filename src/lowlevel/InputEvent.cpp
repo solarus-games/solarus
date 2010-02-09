@@ -78,7 +78,7 @@ InputEvent * InputEvent::get_event(void) {
     // ignore intermediate positions of joystick axis
     if (internal_event.type != SDL_JOYAXISMOTION
 	|| internal_event.jaxis.value <= 1000
-	|| internal_event.jaxis.value >= 15000) {
+	|| internal_event.jaxis.value >= 10000) {
 
       result = new InputEvent(internal_event);
     }
@@ -428,7 +428,7 @@ int InputEvent::get_joypad_axis_state(void) {
  
   int result;
   int value = internal_event.jaxis.value;
-  if (abs(value) < 15000) {
+  if (abs(value) < 10000) {
     result = 0;
   }
   else {

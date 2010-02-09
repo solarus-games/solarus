@@ -558,7 +558,6 @@ void GameControls::game_key_pressed(GameKey key) {
   }
 
   keys_pressed[index] = true;
-
   game->key_pressed(key);
 }
 
@@ -569,7 +568,12 @@ void GameControls::game_key_pressed(GameKey key) {
  */
 void GameControls::game_key_released(GameKey key) {
 
-  keys_pressed[key - 1] = false;
+  int index = key - 1;
+  if (!keys_pressed[index]) {
+    return;
+  }
+
+  keys_pressed[index] = false;
   game->key_released(key);
 }
 

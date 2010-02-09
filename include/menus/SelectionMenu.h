@@ -48,6 +48,7 @@ class SelectionMenu: public Screen {
     // cursor
     Sprite *cursor_sprite;                               /**< sprite of the cursor */
     int cursor_position;                                 /**< current cursor position (1 to 5) */
+    uint32_t allow_cursor_date;                          /**< date when it is possible to move the cursor again */
 
     // music
     Music *music;                                        /**< the music currently playing */

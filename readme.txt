@@ -36,7 +36,7 @@ has a specific directory and its data files are in a data subdirectory.
 For example, for the zsdx quest, the data files are in a directory called
 quests/zsdx/data. These data files represent all resources used by the quest, such as
 sounds, music, images, sprites, maps and scripts. The scripts are written in Lua.
-When building the quest, an zip archive called data.solarus is created with all data files.
+When building the quest, a zip archive called data.solarus is created with all data files.
 
 Note that the engine itself relies on some of these resources (for instance a sprite for the hero).
 

@@ -44,6 +44,7 @@ Le dernier donjon est le repaire de Ganondorf. C'est là qu'on été emmenés Ze
 
 Idées pour les dialogues de fin de donjon :
 
+- amulette du Solarus (on n'en parle plus dans l'intro)
 - explications sur pourquoi Link, origines du héros au bonnet vert
 - histoire de la triforce : indispensable à la prospérité d'Hyrule, ne doit pas rester longtemps désassemblée (disparition des Hyliens)
 - explications sur le retour d'Agahnim

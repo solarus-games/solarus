@@ -38,8 +38,9 @@
 #include "lowlevel/Music.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/Surface.h"
+#include "lowlevel/IniFile.h"
 
-const Rectangle Game::outside_world_size(0, 0, 2080, 3584); // TODO load from external file
+Rectangle Game::outside_world_size(0, 0, 0, 0); // loaded from info.dat
 
 /**
  * Creates a game.
@@ -543,6 +544,18 @@ void Game::set_current_map(MapId map_id, const std::string &destination_point_na
  * @return the size of the oustide world
  */
 const Rectangle & Game::get_outside_world_size(void) {
+
+  if (outside_world_size.get_width() == 0) {
+    // first time: read the information
+    IniFile ini("info.dat", IniFile::READ);
+    ini.set_group("info");
+    int width = ini.get_integer_value("outside_world_width", 0);
+    int height = ini.get_integer_value("outside_world_height", 0);
+    if (width == 0 || height == 0) {
+      DIE("Missing outside world size in file info.dat");
+    }
+    outside_world_size.set_size(width, height);
+  }
   return outside_world_size;
 }
 

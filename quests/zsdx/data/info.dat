@@ -1,5 +1,6 @@
 [info]
 title_bar = Zelda: Mystery of Solarus DX
 write_dir = zsdx
-# TODO other quest information such as the outside world size
+outside_world_width = 2080
+outside_world_height = 3584
 

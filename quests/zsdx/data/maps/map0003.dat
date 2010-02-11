@@ -1782,7 +1782,7 @@
 0	0	512	648	8	8	60
 0	0	728	744	16	16	664
 0	0	656	832	8	16	46
-12	0	1008	688	32	24	custom_obstacle_3	0	1	1	0
+12	0	992	624	32	24	custom_obstacle_3	0	1	1	0
 12	0	760	440	32	16	custom_obstacle_2	0	0	1	1
 1	0	1008	613	out_link_house	3	0
 4	0	544	277	2	-1	-1
@@ -1901,7 +1901,7 @@
 1	0	712	773	out_sahasrahla_house	3	0
 7	0	784	853	enemy	3	0	0	-1	-1	-1
 7	0	976	829	enemy_2	3	0	0	-1	-1	-1
-8	0	1024	709	monkey	3	1	npc/monkey	_none
+8	0	1008	645	monkey	3	1	npc/monkey	_none
 12	0	912	456	16	16	custom_obstacle	0	0	1	1
 8	0	792	157	monkey_2	3	1	npc/monkey	_none
 2	0	680	336	16	16	to_smith_cave	0	1	16	main_entrance

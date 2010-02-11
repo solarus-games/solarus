@@ -98,6 +98,9 @@ void Message::parse(MessageId message_id) {
   // parse the message
   IniFile ini_file(file_name, IniFile::READ_LANGUAGE);
 
+  if (!ini_file.has_group(message_id)) {
+    DIE("The message '" << message_id << "' does not exist");
+  }
   ini_file.set_group(message_id);
 
   // text

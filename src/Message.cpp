@@ -28,8 +28,8 @@
  * Delay between two chars, depending on the dialog speed.
  */
 static const uint32_t char_delays[3] = {
-  100, // slow
-  60,  // medium
+  60, // slow
+  45,  // medium
   30   // fast (default)
 };
 

@@ -20,49 +20,30 @@ line2 = "     Caverne de Roc    "
 line1 = "$2D'anciennes légendes"
 line2 = "racontent qu'il y a"
 line3 = "bien longtemps,"
+next = intro0.1
+
+[intro0.1]
+#       |-----------------------|
+line1 = "existait un magnifique"
+line2 = "royaume du nom d'Hyrule."
+line3 = "Ce royaume prospérait"
 next = intro0.2
 
 [intro0.2]
 #       |-----------------------|
-line1 = "existait un magnifique"
-line2 = "royaume du nom d'Hyrule."
+line1 = "sous la bénédiction de"
+line2 = "trois déesses"
+line3 = "représentées sous la"
 next = intro0.3
 
 [intro0.3]
 #       |-----------------------|
-line1 = "Ce royaume prospérait"
-line2 = "sous la bénédiction des"
-line3 = "trois déesses"
+line1 = "forme de la Triforce."
+line2 = "Sept Sages scellèrent"
+line3 = "la Triforce dans la"
 next = intro0.4
 
 [intro0.4]
-#       |-----------------------|
-line1 = "qui l'avaient créé en"
-line2 = "des temps ancestraux."
-next = intro0.5
-
-[intro0.5]
-#       |-----------------------|
-line1 = "Les trois déesses"
-line2 = "étaient représentées"
-line3 = "sous la forme de"
-next = intro0.6
-
-[intro0.6]
-#       |-----------------------|
-line1 = "la Triforce, symbole de"
-line2 = "pouvoir infini qui"
-line3 = "attirait la convoitise."
-next = intro0.7
-
-[intro0.7]
-#       |-----------------------|
-line1 = "Sept Sages furent"
-line2 = "choisis pour sceller la"
-line3 = "Triforce dans la"
-next = intro0.8
-
-[intro0.8]
 #       |-----------------------|
 line1 = "Terre d'Or, le reflet"
 line2 = "utopique du monde. Puis"
@@ -78,40 +59,26 @@ next = intro1.2
 
 [intro1.2]
 #       |-----------------------|
-line1 = "Alors que les ténèbres"
-line2 = "commençaient à envahir"
-line3 = "le royaume,"
+line1 = "Un mystérieux sorcier"
+line2 = "nommé Agahnim repoussa"
+line3 = "les ténèbres. Acclamé"
 next = intro1.3
 
 [intro1.3]
 #       |-----------------------|
-line1 = "un mystérieux sorcier"
-line2 = "nommé Agahnim se"
-line3 = "présenta et résolut les"
+line1 = "par le peuple, le Roi"
+line2 = "le nomma à un poste"
+line3 = "haut placé. En réalité,"
 next = intro1.4
 
 [intro1.4]
 #       |-----------------------|
-line1 = "problèmes grâce à ses"
-line2 = "sortilèges."
-line3 = "Acclamé par le peuple,"
-next = intro1.5
-
-[intro1.5]
-#       |-----------------------|
-line1 = "le Roi le nomma à un"
-line2 = "poste haut placé. Il"
-line3 = "s'avéra qu'en réalité,"
-next = intro1.6
-
-[intro1.6]
-#       |-----------------------|
 line1 = "le sorcier complotait"
 line2 = "contre la famille"
 line3 = "royale. Il tentait de"
-next = intro1.7
+next = intro1.5
 
-[intro1.7]
+[intro1.5]
 #       |-----------------------|
 line1 = "faire revenir Ganondorf,"
 line2 = "roi des bandits d'un"
@@ -122,21 +89,14 @@ line3 = "temps oublié."
 #       |-----------------------|
 line1 = "$2On raconte qu'un jeune"
 line2 = "homme vêtu de vert se"
-line3 = "lança dans une quête"
+line3 = "lança dans une quête,"
 next = intro2.2
 
 [intro2.2]
 #       |-----------------------|
-line1 = "à travers le royaume,"
-line2 = "explorant des temples"
-line3 = "perdus, gravissant les"
-next = intro2.3
-
-[intro2.3]
-#       |-----------------------|
-line1 = "montagnes, traversant"
-line2 = "les vallées brumeuses"
-line3 = "et terrassant le mal."
+line1 = "explorant des temples"
+line2 = "perdus, traversant les"
+line3 = "plaines et les vallées."
 
 [intro3]
 # Intro : fresque 3
@@ -157,13 +117,7 @@ next = intro3.3
 #       |-----------------------|
 line1 = "siège dans une"
 line2 = "imposante pyramide au"
-line3 = "sein de la Terre d'Or,"
-next = intro3.4
-
-[intro3.4]
-#       |-----------------------|
-line1 = "transformée en Royaume"
-line2 = "des Ténèbres."
+line3 = "sein de la Terre d'Or."
 
 [intro4]
 # Intro : fresque 4
@@ -175,8 +129,8 @@ next = intro4.2
 
 [intro4.2]
 #       |-----------------------|
-line1 = "éternellement dans le"
-line2 = "Royaume des Ténèbres."
+line1 = "éternellement dans la"
+line2 = "Terre d'Or."
 line3 = "Le Roi d'Hyrule, de la"
 next = intro4.3
 
@@ -217,28 +171,14 @@ next = intro5.3
 
 [intro5.3]
 #       |-----------------------|
-line1 = "mettre à profit toutes"
-line2 = "leurs connaissances,"
-line3 = "mais en vain..."
+line1 = "trouver un remède, mais"
+line2 = "en vain... Le Roi"
+line3 = "disparut en emportant"
 next = intro5.4
 
 [intro5.4]
 #       |-----------------------|
-line1 = "La mort du Roi fut"
-line2 = "lourde de conséquences."
-line3 = "Outre le deuil qui"
-next = intro5.5
-
-[intro5.5]
-#       |-----------------------|
-line1 = "s'abattit sur Hyrule,"
-line2 = "le Roi emportait son"
-line3 = "pouvoir dans sa mort"
-next = intro5.6
-
-[intro5.6]
-#       |-----------------------|
-line1 = "prématurée. Le sceau"
+line1 = "son pouvoir. Le sceau"
 line2 = "des Sept Sages était à"
 line3 = "nouveau fragilisé."
 
@@ -247,73 +187,59 @@ line3 = "nouveau fragilisé."
 #       |-----------------------|
 line1 = "$2Le Héros, suivant les"
 line2 = "conseils de son maître"
-line3 = "à penser Sahasrahla,"
+line3 = "Sahasrahla, confia la"
 next = intro6.2
 
 [intro6.2]
 #       |-----------------------|
-line1 = "décida d'empêcher"
-line2 = "quiconque de s'emparer"
-line3 = "de la Triforce. Il la"
+line1 = "Triforce à la Princesse"
+line2 = "Zelda, héritière des"
+line3 = "pouvoirs royaux."
 next = intro6.3
 
 [intro6.3]
 #       |-----------------------|
-line1 = "confia à la Princesse"
-line2 = "Zelda, héritière des"
-line3 = "pouvoirs royaux."
+line1 = "Zelda s'associa à huit"
+line2 = "mystérieux enfants pour"
+line3 = "séparer la Triforce en"
+next = intro6.4
+
+[intro6.4]
+#       |-----------------------|
+line1 = "huit fragments et les"
+line2 = "dissimuler aux quatre"
+line3 = "coins du royaume."
 next = intro6.5
+
+#[intro6.8]
+##       |-----------------------|
+#line1 = "Mais avant cela, ils"
+#line2 = "prirent soin de créer"
+#line3 = "une ultime protection :"
+#next = intro6.9
+
+#[intro6.9]
+##       |-----------------------|
+#line1 = "l'Amulette du Solarus."
+#line2 = "C'était un pendentif"
+#line3 = "qui permettait à son"
+#next = intro6.10
+
+#[intro6.10]
+##       |-----------------------|
+#line1 = "possesseur d'assembler"
+#line2 = "la Triforce. Après ces"
+#line3 = "événements, le Héros et"
+#next = intro6.11
 
 [intro6.5]
 #       |-----------------------|
-line1 = "Zelda associa ses"
-line2 = "pouvoirs à ceux de huit"
-line3 = "mystérieux enfants pour"
+line1 = "Les habitants purent"
+line2 = "ainsi continuer à vivre"
+line3 = "paisiblement."
 next = intro6.6
 
 [intro6.6]
-#       |-----------------------|
-line1 = "séparer la Triforce en"
-line2 = "huit fragments. Les"
-line3 = "enfants se chargèrent"
-next = intro6.7
-
-[intro6.7]
-#       |-----------------------|
-line1 = "de dissimuler les huit"
-line2 = "fragments aux quatre"
-line3 = "coins du royaume."
-next = intro6.8
-
-[intro6.8]
-#       |-----------------------|
-line1 = "Mais avant cela, ils"
-line2 = "prirent soin de créer"
-line3 = "une ultime protection :"
-next = intro6.9
-
-[intro6.9]
-#       |-----------------------|
-line1 = "l'Amulette du Solarus."
-line2 = "C'était un pendentif"
-line3 = "qui permettait à son"
-next = intro6.10
-
-[intro6.10]
-#       |-----------------------|
-line1 = "possesseur d'assembler"
-line2 = "la Triforce. Après ces"
-line3 = "événements, le Héros et"
-next = intro6.11
-
-[intro6.11]
-#       |-----------------------|
-line1 = "les autres habitants"
-line2 = "continuèrent à vivre"
-line3 = "paisiblement."
-next = intro6.12
-
-[intro6.12]
 #       |-----------------------|
 line1 = "C'est à ce moment que"
 line2 = "débute notre épopée..."

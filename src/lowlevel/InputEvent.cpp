@@ -197,7 +197,7 @@ bool InputEvent::is_keyboard_key_pressed(KeyboardKey key) {
 bool InputEvent::is_keyboard_key_pressed(const KeyboardKey *keys) {
 
   while (*keys != KEY_NONE) {
-    
+
     if (is_keyboard_key_pressed(*keys)) {
       return true;
     }
@@ -609,7 +609,8 @@ int InputEvent::get_direction(void) {
  */
 bool InputEvent::is_pressed(void) {
 
-  return is_direction_pressed()
+  return is_keyboard_key_pressed()
+    || is_direction_pressed()
     || is_joypad_button_pressed();
 }
 

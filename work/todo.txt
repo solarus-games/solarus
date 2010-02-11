@@ -66,7 +66,6 @@ Bugs :
 - Lorsqu'on fait des appuis courts et répétés sur une des flèches, Link avance sans marcher.
 - Quand Link rentre dans une maison, le cadre de la porte est sous sa tête et pas au-dessus.
 - Au moment où on frappe les gardes verts qui rôdent près du village, il se peut que ceux-ci ne reculent pas malgré l'impact s'ils changent de direction au même moment.
-- Raccourcir l'intro
 - On ne peut pas lancer un pot au-dessus d'une falaise (même à l'intérieur d'un donjon)
 - Les pots s'affichent en-dessous de la partie haute des petits escaliers
 - CrystalSwitch : permettre d'activer deux fois par deux entités différentes (flèches, explosions, héros...) en mémorisant les entités activatrices

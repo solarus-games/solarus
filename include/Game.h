@@ -46,7 +46,7 @@ class Game: public Screen {
     bool restarting;           /**< true if the game will be restarted */
 
     // controls
-    GameControls *controls;        /**< this object receives the keyboard and joypad events */
+    GameControls *controls;    /**< this object receives the keyboard and joypad events */
     KeysEffect *keys_effect;   /**< current effect associated to the main game keys
 				* (represented on the HUD by the action icon, the objects icons, etc.) */
 
@@ -62,7 +62,7 @@ class Game: public Screen {
     // world (i.e. the current set of maps)
     Dungeon *dungeon;          /**< the dungeon of the current map, of NULL if we are not in a dungeon */
     bool crystal_switch_state; /**< indicates that a crystal switch has been enabled (i.e. the orange blocks are raised) */
-    static const Rectangle outside_world_size; /**< size of the outside world in pixels */
+    static Rectangle outside_world_size; /**< size of the outside world in pixels */
 
     // graphics
     HUD *hud;                  /**< the game HUD (displaying hearts, rupees, key icons, etc.) */

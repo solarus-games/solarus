@@ -205,8 +205,7 @@ void PauseSubmenuMap::load_dungeon_map_image(void) {
     hero_position = game->get_current_map()->get_location();
     const Rectangle &hero_map_xy = game->get_hero_xy();
 
-    hero_position.add_x(hero_map_xy.get_x());
-    hero_position.add_y(hero_map_xy.get_y());
+    hero_position.add_xy(hero_map_xy.get_x(), hero_map_xy.get_y());
 
     to_dungeon_minimap_coordinates(hero_position, hero_position, floor_size);
 
@@ -388,8 +387,8 @@ void PauseSubmenuMap::display_world_map(Surface *destination) {
 
     // display the hero's position
     int hero_visible_y = hero_position.get_y() - world_minimap_visible_y;
-    if (hero_visible_y >= 51 && hero_visible_y <= 184) {
-      hero_head_sprite->display(destination, hero_position.get_x(), hero_position.get_y() - world_minimap_visible_y);
+    if (hero_visible_y >= 51 && hero_visible_y <= 133 + 51) {
+      hero_head_sprite->display(destination, hero_position.get_x(), hero_visible_y);
     }
 
     // display the arrows

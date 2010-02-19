@@ -28,7 +28,7 @@
  * This class also handles the initialization of the whole audio system.
  * To create a sound, prefer the ResourceManager::get_sound() method
  * rather than calling directly the constructor of Sound.
- * This class is the only one that calls the sound decoding library (sndfile).
+ * This class is the only one that calls the sound decoding library (libsndfile).
  * This class and the Music class are the only ones that call the audio mixer library (OpenAL).
  */
 class Sound {
@@ -44,22 +44,22 @@ class Sound {
 
     static bool initialized;                 /**< indicates that the audio system is initialized */
  
-    struct WavFromMemory {                   /**< buffer containing a wav file */
+    struct SoundFromMemory {                 /**< buffer containing a encoded sound file */
       char *data;
       size_t size;
       size_t position;
     };
 
-    static SF_VIRTUAL_IO sf_virtual;         /**< libsndfile object used to load the wav from memory */
+    static SF_VIRTUAL_IO sf_virtual;         /**< libsndfile object used to load the encoded sound from memory */
 
-    // functions to load wav from memory
+    // functions to load the encoded sound from memory
     static sf_count_t sf_get_filelen(void *user_data);
     static sf_count_t sf_seek(sf_count_t offset, int whence, void *user_data);
     static sf_count_t sf_read(void *ptr, sf_count_t count, void *user_data);
     static sf_count_t sf_write(const void *ptr, sf_count_t count, void *user_data);
     static sf_count_t sf_tell(void *user_data);
 
-    ALuint decode_wav(const std::string &file_name);
+    ALuint decode_file(const std::string &file_name);
     bool update_playing(void);
 
   public:

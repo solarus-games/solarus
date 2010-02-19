@@ -16,7 +16,7 @@ endforeach(lua_source_file ${lua_source_files})
 # data files list
 file(GLOB_RECURSE data_files
   RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
-  *.spc *.wav *.png *.dat *.ttf *.fon)
+  *.spc *.ogg *.png *.dat *.ttf *.fon)
 set(data_files ${data_files} ${lua_bin_files})
 
 # build the data archive

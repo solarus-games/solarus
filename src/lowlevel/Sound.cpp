@@ -27,20 +27,21 @@ bool Sound::initialized = false;
 std::list<Sound*> Sound::current_sounds;
 
 /**
- * Creates a new sound.
- * @param sound_id id of the sound (a file name)
+ * Creates a new Ogg Vorbis sound.
+ * @param sound_id id of the sound: name of a .ogg file in the sounds subdirectory,
+ * without the extension (.ogg is added automatically)
  */
 Sound::Sound(const SoundId &sound_id):
   buffer(AL_NONE) {
 
   if (is_initialized()) {
 
-    std::string file_name = (std::string) "sounds/" + sound_id + ".wav";
+    std::string file_name = (std::string) "sounds/" + sound_id + ".ogg";
     // create an OpenAL buffer with the sound decoded by the library
-    buffer = decode_wav(file_name);
+    buffer = decode_file(file_name);
 
     if (buffer == AL_NONE) {
-      std::cerr << "lowlevel/Sound '" << file_name << "' will not be played" << std::endl;
+      std::cerr << "Sound '" << file_name << "' will not be played" << std::endl;
     }
   }
 }
@@ -255,34 +256,34 @@ bool Sound::play(void) {
 }
 
 /**
- * Loads the specified wav file and decodes its content into an OpenAL buffer.
+ * Loads the specified sound file and decodes its content into an OpenAL buffer.
  * @param file_name name of the file to open
  * @return the buffer created, or AL_NONE if the sound could not be loaded
  */
-ALuint Sound::decode_wav(const std::string &file_name) {
+ALuint Sound::decode_file(const std::string &file_name) {
 
   ALuint buffer = AL_NONE;
 
-  // load the wav file
-  WavFromMemory wav;
-  wav.position = 0;
-  FileTools::data_file_open_buffer(file_name, &wav.data, &wav.size);
+  // load the sound file
+  SoundFromMemory mem;
+  mem.position = 0;
+  FileTools::data_file_open_buffer(file_name, &mem.data, &mem.size);
   SF_INFO file_info = {0, 0, 0, 0, 0, 0};
-  SNDFILE *file = sf_open_virtual(&sf_virtual, SFM_READ, &file_info, &wav);
+  SNDFILE *file = sf_open_virtual(&sf_virtual, SFM_READ, &file_info, &mem);
 
   if (file == NULL) {
-    std::cout << "Cannot load wav file from memory\n";
+    std::cout << "Cannot load sound file from memory\n";
   }
   else {
 
-    // read the wav properties
+    // read the encoded sound properties
     ALsizei nb_samples  = (ALsizei) (file_info.channels * file_info.frames);
     ALsizei sample_rate = (ALsizei) file_info.samplerate;
 
     // decode the sound with libsndfile
     ALshort *samples = new ALshort[nb_samples];
     if (sf_read_short(file, samples, nb_samples) < nb_samples) {
-      std::cout << "Unable to decode wav data\n";
+      std::cout << "Unable to decode sound data\n";
     }
     else {
 
@@ -312,38 +313,36 @@ ALuint Sound::decode_wav(const std::string &file_name) {
     sf_close(file);
   }
 
-  FileTools::data_file_close_buffer(wav.data);
+  FileTools::data_file_close_buffer(mem.data);
 
   return buffer;
 }
 
 
-// io functions to load wav from memory
+// io functions to load the encoded sound from memory
 
 sf_count_t Sound::sf_get_filelen(void *user_data) {
 
-  WavFromMemory *wav = (WavFromMemory*) user_data;
-//  std::cout << "get_filelen: " << wav->size << std::endl;
-  return wav->size;
+  SoundFromMemory *mem = (SoundFromMemory*) user_data;
+  return mem->size;
 }
 
 sf_count_t Sound::sf_seek(sf_count_t offset, int whence, void *user_data) {
 
-  WavFromMemory *wav = (WavFromMemory*) user_data;
-//  std::cout << "seek\n";
+  SoundFromMemory *mem = (SoundFromMemory*) user_data;
   
   switch (whence) {
 
     case SEEK_SET:
-      wav->position = offset;
+      mem->position = offset;
       break;
 
     case SEEK_CUR:
-      wav->position += offset;
+      mem->position += offset;
       break;
 
     case SEEK_END:
-      wav->position = wav->size - offset;
+      mem->position = mem->size - offset;
       break;
   }
 
@@ -352,15 +351,13 @@ sf_count_t Sound::sf_seek(sf_count_t offset, int whence, void *user_data) {
 
 sf_count_t Sound::sf_read(void *ptr, sf_count_t count, void *user_data) {
   
-  WavFromMemory *wav = (WavFromMemory*) user_data;
-//  std::cout << "read: " << count << std::endl;
-  if (wav->position + count >= wav->size) {
-    count = wav->size - wav->position;
+  SoundFromMemory *mem = (SoundFromMemory*) user_data;
+  if (mem->position + count >= mem->size) {
+    count = mem->size - mem->position;
   }
-  memcpy(ptr, wav->data + wav->position, count);
-  wav->position += count;
+  memcpy(ptr, mem->data + mem->position, count);
+  mem->position += count;
 
-//  std::cout << count << " bytes read\n";
   return count;
 }
 
@@ -371,8 +368,7 @@ sf_count_t Sound::sf_write(const void *ptr, sf_count_t count, void *user_data) {
 
 sf_count_t Sound::sf_tell(void *user_data) {
 
-  WavFromMemory *wav = (WavFromMemory*) user_data;
-//  std::cout << "tell: " << wav->position << std::endl;
-  return wav->position;
+  SoundFromMemory *mem = (SoundFromMemory*) user_data;
+  return mem->position;
 }
 

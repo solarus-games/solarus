@@ -1069,7 +1069,10 @@ void Hero::reset_movement(void) {
  * @param chest the chest
  */
 void Hero::avoid_chest_collision(Chest *chest) {
-  set_top_left_y(chest->get_top_left_y() + 16);
+
+  // fix the hero's position, whatever the chest size is
+  set_top_left_y(chest->get_top_left_y() + chest->get_height());
+  set_x(chest->get_center_point().get_x());
   reset_movement();
 }
 

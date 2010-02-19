@@ -660,6 +660,18 @@ void Hero::destroy_carried_items(void) {
 }
 
 /**
+ * This function is called when the layer of this entity has just changed.
+ * Redefine it if you need to be notified.
+ */
+void Hero::notify_layer_just_changed(void) {
+
+  // if the hero is carrying an item, change its layer too
+  if (lifted_item != NULL) {
+    lifted_item->set_layer(get_layer());
+  }
+}
+
+/**
  * Makes the hero push something.
  * Moves to the state PUSHING and updates the animations accordingly.
  */

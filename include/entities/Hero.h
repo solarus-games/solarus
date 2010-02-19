@@ -218,6 +218,10 @@ class Hero: public MapEntity {
     void start_returning_to_solid_ground(const Rectangle &target_xy, Layer target_layer);
     void update_returning_to_solid_ground(void);
 
+  protected:
+
+    void notify_layer_just_changed(void);
+
   public:
 
     // creation and destruction

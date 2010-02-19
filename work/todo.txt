@@ -37,11 +37,9 @@ Feature requests :
 - écran d'options global permettant de régler la langue, le volume de la musique et du son, la résolution, voire les touches ?
 - Windows : voir si SDL utilise ou peut utiliser OpenGL ou DirectX
 - Ce serait pas mal de faire une animation lorsque Link vide le contenu de sa bouteille.
-- Il manque les animations de Link lorsqu'il monte ou descend un escalier en colimaçon.
 - Ajouter un "map marker" pour indiquer où il faut se rendre ensuite
 - faire une classe script plus générale indépendante des maps ? on pourrait avoir un script global, des scripts d'objets de l'inventaire,
   des scripts d'ennemis, etc.
-- Sons : format flac ou ogg
 
 
 Bugs :
@@ -57,7 +55,6 @@ Bugs :
 - curseur visible sur eeepc linux en plein écran
 - le 8 n'est pas très lisible (ex : 80 rubis chez le forgeron)
 - engine_dialogs.zsd : deux fois _treasure_88_2 (le signaler aux traducteurs)
-- quand un coffre apparaît sur le héros : seul y est corrigé
 - empêcher de lancer le jeu en root, sinon le config.ini est créé avec root comme propriétaire
 - mode d'emploi : enlever le logo nintendo sur la dernière page
 - mode d'emploi : page 13 : "vous pouvez la possibilité"
@@ -97,6 +94,27 @@ Ennemis à faire (reprendre graphismes de MC + graphismes rippés) :
 - fantôme
 - garde bleu avec lance (monde des ténèbres)
 
+
+Escaliers :
+
+- intra-étages : faire une entité InternalStairs qui remplace les deux capteurs de changement de layer
+et peut-être aussi le dessin de l'escalier.
+  Un escalier serait capable de laisser passer un vase lancé ou un boomerang selon le sens (d'ailleurs, les capteurs de saut aussi)
+  Voir si on peut régler les problèmes d'affichage (épée et vases qui s'affichent
+  en-dessous de la partie haute).
+  Utiliser 4 directions.
+
+- inter-étages : faire une autre entité ExternalStairs en plus du téléporteur.
+  Utiliser la même idée que pour les trous : l'escalier agit en premier, puis le téléporteur ensuite.
+  Plusieurs animations du héros et sons qui vont avec, en fonction du sous-type d'escalier :
+  - haut descendant tout droit
+  - haut montant tout droit (y compris si l'escalier n'est pas dans un mur)
+  - haut descendant à gauche
+  - haut montant à droite
+  - bas descendant tout droit
+  - bas montant tout droit
+  - bas descendant à droite
+  - bas montant à gauche
 
 --------------
 Mode release :

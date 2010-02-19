@@ -133,9 +133,11 @@ class MapEntity {
     void set_bounding_box(const Rectangle &bounding_box);
     void create_sprite(const SpriteAnimationSetId &id);
     void create_sprite(const SpriteAnimationSetId &id, bool enable_pixel_collisions);
-
     void set_movement(Movement *movement);
     void clear_movement(void);
+
+    // position
+    virtual void notify_layer_just_changed(void);
 
   public:
 
@@ -156,6 +158,7 @@ class MapEntity {
     // position in the map
     Layer get_layer(void);
     void set_layer(Layer layer);
+
     int get_x(void);
     int get_y(void);
     void set_x(int x);

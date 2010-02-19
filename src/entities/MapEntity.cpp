@@ -301,6 +301,15 @@ Layer MapEntity::get_layer(void) {
  */
 void MapEntity::set_layer(Layer layer) {
   this->layer = layer;
+  notify_layer_just_changed();
+}
+
+/**
+ * This function is called when the layer of this entity has just changed.
+ * Redefine it if you need to be notified.
+ */
+void MapEntity::notify_layer_just_changed(void) {
+  // nothing done by default
 }
 
 /**

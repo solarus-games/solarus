@@ -127,6 +127,15 @@ bool Arrow::is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt) {
 }
 
 /**
+ * Returns whether some internal stairs are currently considered as an obstacle for this entity.
+ * @param internal stairs an internal stairs entity
+ * @return true if the internal statrs are currently an obstacle for this entity
+ */
+bool Arrow::is_internal_stairs_obstacle(InternalStairs *internal_stairs) {
+  return get_layer() == LAYER_LOW;
+}
+
+/**
  * Returns whether a water tile is currently considered as an obstacle for this entity.
  * This function returns true by default.
  * @return true if the water tiles are currently an obstacle for this entity

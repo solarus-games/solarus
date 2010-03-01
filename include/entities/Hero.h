@@ -324,6 +324,7 @@ class Hero: public MapEntity {
     bool is_ladder_obstacle(void);
     bool is_teletransporter_obstacle(Teletransporter *teletransporter);
     bool is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt);
+    bool is_internal_stairs_obstacle(InternalStairs *internal_stairs);
     bool is_sensor_obstacle(Sensor *sensor);
     bool is_raised_block_obstacle(CrystalSwitchBlock *raised_block);
     bool is_jump_sensor_obstacle(JumpSensor *jump_sensor);

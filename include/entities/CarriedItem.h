@@ -72,6 +72,7 @@ class CarriedItem: public MapEntity {
 
     bool is_teletransporter_obstacle(Teletransporter *teletransporter);
     bool is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt);
+    bool is_internal_stairs_obstacle(InternalStairs *internal_stairs);
     bool is_water_obstacle(void);
     bool is_hole_obstacle(void);
     bool is_ladder_obstacle(void);
@@ -79,6 +80,7 @@ class CarriedItem: public MapEntity {
     bool is_crystal_switch_obstacle(CrystalSwitch *crystal_switch);
     bool is_sensor_obstacle(Sensor *sensor);
     bool is_npc_obstacle(InteractiveEntity *npc);
+    bool is_jump_sensor_obstacle(JumpSensor *jump_sensor);
     bool is_enemy_obstacle(Enemy *enemy);
     void notify_collision_with_sensor(Sensor *sensor);
     void notify_collision_with_enemy(Enemy *enemy);

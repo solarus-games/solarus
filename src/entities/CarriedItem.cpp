@@ -364,6 +364,15 @@ bool CarriedItem::is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt) {
 }
 
 /**
+ * Returns whether some internal stairs are currently considered as an obstacle for this entity.
+ * @param internal stairs an internal stairs entity
+ * @return true if the internal statrs are currently an obstacle for this entity
+ */
+bool CarriedItem::is_internal_stairs_obstacle(InternalStairs *internal_stairs) {
+  return get_layer() == LAYER_LOW;
+}
+
+/**
  * Returns whether a water tile is currently considered as an obstacle for this entity.
  * @return true if the water tiles are currently an obstacle for this entity
  */
@@ -412,6 +421,16 @@ bool CarriedItem::is_crystal_switch_obstacle(CrystalSwitch *crystal_switch) {
  * @return true if the NPC is currently an obstacle for this entity
  */
 bool CarriedItem::is_npc_obstacle(InteractiveEntity *npc) {
+  return false;
+}
+
+/**
+ * Returns whether a jump sensor is currently considered as an obstacle for this entity.
+ * This function returns true by default.
+ * @param jump_sensor a jump sensor
+ * @return true if the jump sensor is currently an obstacle for this entity
+ */
+bool CarriedItem::is_jump_sensor_obstacle(JumpSensor *jump_sensor) {
   return false;
 }
 

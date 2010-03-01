@@ -230,7 +230,7 @@ class MapEntity {
     virtual void notify_collision_with_enemy(Enemy *enemy);
     virtual void notify_collision_with_teletransporter(Teletransporter *teletransporter, int collision_mode);
     virtual void notify_collision_with_conveyor_belt(ConveyorBelt *conveyor_belt, int dx, int dy);
-    virtual void notify_collision_with_internal_stairs(InternalStairs *internal_stairs, int dx, int dy);
+    virtual void notify_collision_with_internal_stairs(InternalStairs *internal_stairs);
     virtual void notify_collision_with_sensor(Sensor *sensor);
     virtual void notify_collision_with_explosion(Explosion *explosion, Sprite *sprite_overlapping);
     virtual void notify_collision_with_enemy(Enemy *enemy, Sprite *enemy_sprite, Sprite *this_sprite);

@@ -874,7 +874,7 @@ bool MapEntity::is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt) {
  * @param internal stairs an internal stairs entity
  * @return true if the internal statrs are currently an obstacle for this entity
  */
-bool MapEntity::is_internal_stairs_obstacle(ConveyorBelt *conveyor_belt) {
+bool MapEntity::is_internal_stairs_obstacle(InternalStairs *internal_stairs) {
   return true;
 }
 
@@ -890,7 +890,7 @@ bool MapEntity::is_sensor_obstacle(Sensor *sensor) {
 
 /**
  * Returns whether a raised crystal switch block is currently considered as an obstacle for this entity.
- * This function returns true by default.
+  This function returns true by default.
  * @param raised_block a crystal switch block raised
  * @return true if the raised block is currently an obstacle for this entity
  */

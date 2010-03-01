@@ -157,10 +157,11 @@ class CrystalSwitch;
 class CrystalSwitchBlock;
 class ShopItem;
 class Boomerang;
+class Arrow;
 class ConveyorBelt;
+class InternalStairs;
 class Door;
 class Explosion;
-class Arrow;
 
 // tile patterns
 class Tileset;

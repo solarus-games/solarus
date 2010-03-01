@@ -45,6 +45,7 @@ enum EntityType {
   SHOP_ITEM                 = 16,   /**< an item the hero can buy in a shop */
   CONVEYOR_BELT             = 17,   /**< a special terrain that moves the hero */
   DOOR                      = 18,   /**< a door to open with a key or another action */
+  INTERNAL_STAIRS           = 19,   /**< stairs that change the hero's layer inside a map */
 
   // entities created during the game (not stored in maps)
 

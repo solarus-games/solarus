@@ -314,6 +314,9 @@ void MapEntity::notify_layer_just_changed(void) {
 
 /**
  * Returns the direction of the entity.
+ * This direction is not used by all kinds of entities
+ * since some of them already use the direction property of their sprites
+ * and/or their movements.
  * @return the direction of the entity
  */
 int MapEntity::get_direction(void) {
@@ -866,6 +869,16 @@ bool MapEntity::is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt) {
 }
 
 /**
+ * Returns whether some internal stairs are currently considered as an obstacle for this entity.
+ * This function returns true by default.
+ * @param internal stairs an internal stairs entity
+ * @return true if the internal statrs are currently an obstacle for this entity
+ */
+bool MapEntity::is_internal_stairs_obstacle(ConveyorBelt *conveyor_belt) {
+  return true;
+}
+
+/**
  * Returns whether a sensor is currently considered as an obstacle for this entity.
  * This function returns false by default.
  * @param sensor a sensor
@@ -1096,6 +1109,14 @@ void MapEntity::notify_collision_with_teletransporter(Teletransporter *teletrans
  * @param dy direction of the y move in pixels (0, 1 or -1)
  */
 void MapEntity::notify_collision_with_conveyor_belt(ConveyorBelt *conveyor_belt, int dx, int dy) {
+  // nothing done by default
+}
+
+/**
+ * This function is called when an internal stairs entity detect a collision with this entity.
+ * @param internal_stairs the internal stairs
+ */
+void MapEntity::notify_collision_with_internal_stairs(InternalStairs *internal_stairs) {
   // nothing done by default
 }
 

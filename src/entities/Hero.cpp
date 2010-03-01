@@ -199,6 +199,16 @@ bool Hero::is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt) {
 }
 
 /**
+ * Returns whether some internal stairs are currently considered as an obstacle for this entity.
+ * @param internal stairs an internal stairs entity
+ * @return true if the internal statrs are currently an obstacle for this entity
+ */
+bool Hero::is_internal_stairs_obstacle(InternalStairs *internal_stairs) {
+  return true;
+  // TODO same as is_sensor_obstacle
+}
+
+/**
  * Returns whether a sensor is currently considered as an obstacle for the hero.
  * @param sensor a sensor
  * @return true if this sensor is currently an obstacle for the hero

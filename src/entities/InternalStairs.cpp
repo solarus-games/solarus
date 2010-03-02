@@ -18,22 +18,27 @@
 #include "lowlevel/FileTools.h"
 
 /**
- * Creates a new conveyor belt.
+ * Creates a new internal stairs entity.
  * @param layer layer of the entity to create on the map
  * @param x x coordinate of the entity to create
  * @param y y coordinate of the entity to create
- * @param direction direction of the conveyor belt
+ * @param direction direction of the stairs (0 to 3)
  */
 InternalStairs::InternalStairs(Layer layer, int x, int y, int direction):
   Detector(COLLISION_RECTANGLE, "", layer, x, y, 16, 16) {
 
-  set_origin(0, 0);
   set_direction(direction);
+  set_origin(0, 0);
+
+  if (direction % 2 == 0) { // horizontal stairs
+    set_size(32, 16);
+  }
+  else { // vertical stairs
+    set_size(16, 32);
+  }
 
   // check the collisions on both layers
   set_layer_ignored(true);
-
-  // TODO set size
 }
 
 /**

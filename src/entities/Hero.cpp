@@ -204,18 +204,19 @@ bool Hero::is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt) {
  * @return true if the internal statrs are currently an obstacle for this entity
  */
 bool Hero::is_internal_stairs_obstacle(InternalStairs *internal_stairs) {
-  return true;
-  // TODO same as is_sensor_obstacle
+
+  // exactly the same thing as a sensor: we do not allow traversing while jumping or other special movements
+  return is_sensor_obstacle(NULL);
 }
 
 /**
  * Returns whether a sensor is currently considered as an obstacle for the hero.
- * @param sensor a sensor
+ * @param sensor a sensor (not used here)
  * @return true if this sensor is currently an obstacle for the hero
  */
 bool Hero::is_sensor_obstacle(Sensor *sensor) {
 
-  if (state == HURT) {
+  if (state == HURT) { // TODO same thing for pegasus shoes
     return false;
   }
 

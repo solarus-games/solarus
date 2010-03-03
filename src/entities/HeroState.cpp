@@ -21,6 +21,7 @@
 #include "entities/MapEntities.h"
 #include "entities/Enemy.h"
 #include "entities/ConveyorBelt.h"
+#include "entities/InternalStairs.h"
 #include "entities/Sensor.h"
 #include "entities/Explosion.h"
 #include "movements/PlayerMovement.h"
@@ -276,29 +277,6 @@ void Hero::notify_collision_with_conveyor_belt(ConveyorBelt *conveyor_belt, int 
 }
 
 /**
- * This function is called when a sensor detects a collision with this entity.
- * @param sensor a sensor
- */
-void Hero::notify_collision_with_sensor(Sensor *sensor) {
-
-  if (get_state() != RETURNING_TO_SOLID_GROUND && get_state() != JUMPING) {
-    sensor->activate(this);
-  }
-}
-
-/**
- * This function is called when an explosion's sprite detects a collision with a sprite of the hero.
- * @param explosion the explosion
- * @param sprite_overlapping the sprite of the hero that collides with the explosion
- */
-void Hero::notify_collision_with_explosion(Explosion *explosion, Sprite *sprite_overlapping) {
-
-  if (sprite_overlapping->contains("tunic")) {
-    hurt(explosion, 2, 0);
-  }
-}
-
-/**
  * Updates the hero when he is on a conveyor belt.
  * The state should be CONVEYOR_BELT.
  */
@@ -321,6 +299,84 @@ void Hero::update_conveyor_belt(void) {
       start_free();
     }
     on_conveyor_belt =  false;
+  }
+}
+
+/**
+ * This function is called when an internal stairs entity detects a collision with this entity.
+ * @param internal_stairs the stairs
+ */
+void Hero::notify_collision_with_internal_stairs(InternalStairs *internal_stairs) {
+
+  if (state != JUMPING && state != INTERNAL_STAIRS && state != PUSHING) {
+
+    // state
+    sprites->set_animation_walking();
+    set_state(INTERNAL_STAIRS);
+    game->get_keys_effect()->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
+
+    // sound
+    char direction = internal_stairs->get_direction() * 2;
+    if (get_layer() == LAYER_LOW) {
+      game->play_sound("internal_stairs_up");
+      map->get_entities()->set_entity_layer(this, LAYER_INTERMEDIATE);
+      going_upstairs = true;
+    }
+    else {
+      game->play_sound("internal_stairs_down");
+      direction = (direction + 4) % 8;
+      going_upstairs = false;
+    }
+
+    // movement
+    std::string path = "    ";
+    for (int i = 0; i < 4; i++) {
+      path[i] = '0' + direction;
+    }
+    set_movement(new PathMovement(path, walking_speed / 2, false, false, false));
+  }
+}
+
+/**
+ * Updates the hero when he is walking on internal stairs.
+ * The state should be INTERNAL_STAIRS.
+ */
+void Hero::update_internal_stairs(void) {
+
+  get_movement()->update();
+
+  if (get_movement()->is_finished()) {
+
+    if (!going_upstairs) {
+      map->get_entities()->set_entity_layer(this, LAYER_LOW);
+    }
+    clear_movement();
+    set_movement(normal_movement);
+    start_free();
+  }
+}
+
+
+/**
+ * This function is called when a sensor detects a collision with this entity.
+ * @param sensor a sensor
+ */
+void Hero::notify_collision_with_sensor(Sensor *sensor) {
+
+  if (get_state() != RETURNING_TO_SOLID_GROUND && get_state() != JUMPING) {
+    sensor->activate(this);
+  }
+}
+
+/**
+ * This function is called when an explosion's sprite detects a collision with a sprite of the hero.
+ * @param explosion the explosion
+ * @param sprite_overlapping the sprite of the hero that collides with the explosion
+ */
+void Hero::notify_collision_with_explosion(Explosion *explosion, Sprite *sprite_overlapping) {
+
+  if (sprite_overlapping->contains("tunic")) {
+    hurt(explosion, 2, 0);
   }
 }
 

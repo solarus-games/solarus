@@ -57,6 +57,17 @@ bool Rectangle::contains(int x, int y) const {
 }
 
 /**
+ * Returns whether the specified rectangle is inside this rectangle.
+ * @param other another rectangle
+ * @return true if the specified rectangle is inside this rectangle
+ */
+bool Rectangle::contains(const Rectangle &other) const {
+  return contains(other.get_x(), other.get_y())
+    && contains(other.get_x() + other.get_width() - 1, other.get_y() + other.get_height() - 1);
+}
+
+
+/**
  * Returns whether or not another rectangle overlaps this one.
  * @param other another rectangle
  * @return true if the two rectangles overlap

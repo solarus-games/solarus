@@ -69,6 +69,8 @@ Bugs :
 - CrystalSwitch : permettre d'activer deux fois par deux entités différentes (flèches, explosions, héros...) en mémorisant les entités activatrices
   (le délai est trop long et trop spécifique aux explosions)
 - buisson lancé sur ennemi : l'ennemi est blessé mais le buisson ne s'arrête pas
+- vérifier ce qui se passe si on arrive sur un tapis roulant ou un internal stairs pendant qu'on tire une statue (peut-être modifier le is_conveyor_belt_obstacle)
+- internal stairs : obstacle seulement sur un des deux layers à la fois
 
 
 Donjon 2 :

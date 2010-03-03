@@ -217,7 +217,7 @@ bool Hero::is_internal_stairs_obstacle(InternalStairs *internal_stairs) {
 bool Hero::is_sensor_obstacle(Sensor *sensor) {
 
   if (state == HURT) { // TODO same thing for pegasus shoes
-    return false;
+    return true;
   }
 
   if (state == JUMPING) {
@@ -549,6 +549,10 @@ void Hero::update(void) {
 
       case CONVEYOR_BELT:
 	update_conveyor_belt();
+	break;
+
+      case INTERNAL_STAIRS:
+	update_internal_stairs();
 	break;
 
       case JUMPING:

@@ -36,6 +36,7 @@
 #include "entities/ShopItem.h"
 #include "entities/ConveyorBelt.h"
 #include "entities/Door.h"
+#include "entities/InternalStairs.h"
 #include "entities/Arrow.h"
 #include "movements/Movement.h"
 #include "lowlevel/Geometry.h"
@@ -64,6 +65,7 @@ MapEntity::CreationFunction* MapEntity::creation_functions[] = {
   ShopItem::parse,
   ConveyorBelt::parse,
   Door::parse,
+  InternalStairs::parse,
 };
 
 
@@ -88,6 +90,7 @@ const MapEntity::EntityTypeFeatures MapEntity::entity_types_features[] = {
   { true,  true,  true, false}, // shop item
   { true,  true,  true, false}, // conveyor belt
   { true,  true,  true, false}, // door
+  { true,  true, false, false}, // internal stairs
   // other entity types (the ones not stored in map files) does not use this array and must redefine the 4 functions
 };
 
@@ -102,9 +105,8 @@ const Rectangle MapEntity::directions_to_xy_moves[] = {
   Rectangle( 1, 1)
 };
 
-
 /**
- * Creates a map entity without specifying its properties yet.
+ * Creates a map entity without specifying its properties now.
  */
 MapEntity::MapEntity(void):
   map(NULL), layer(LAYER_LOW), name(""), direction(0), first_sprite(NULL), visible(true),
@@ -112,7 +114,6 @@ MapEntity::MapEntity(void):
 
   bounding_box.set_xy(0, 0);
   origin.set_xy(0, 0);
-
   set_size(0, 0);
 }
 
@@ -130,7 +131,6 @@ MapEntity::MapEntity(Layer layer, int x, int y, int width, int height):
   movement(NULL), suspended(false), when_suspended(0), being_removed(false) {
 
   origin.set_xy(0, 0);
-
   set_size(width, height);
 }
 
@@ -150,7 +150,6 @@ MapEntity::MapEntity(const std::string &name, int direction, Layer layer,
   movement(NULL), suspended(false), when_suspended(0), being_removed(false) {
 
   origin.set_xy(0, 0);
-
   set_size(width, height);
 }
 

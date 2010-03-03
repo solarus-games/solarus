@@ -43,89 +43,93 @@ class Hero: public MapEntity {
     enum State {
 
       // the hero can move in these states
-      FREE,                        /**< the hero is free to move (stopped or walking) */
-      CARRYING,                    /**< the hero can walk but he is carrying a pot or a bush */
-      SWORD_LOADING,               /**< the hero can walk but his sword is loading for a spin attack */
-      SWIMMING,                    /**< the hero is swimming in deep water */
+      FREE,                                /**< the hero is free to move (stopped or walking) */
+      CARRYING,                            /**< the hero can walk but he is carrying a pot or a bush */
+      SWORD_LOADING,                       /**< the hero can walk but his sword is loading for a spin attack */
+      SWIMMING,                            /**< the hero is swimming in deep water */
 
       // the hero can change his direction but cannot move in these states
-      PUSHING,                     /**< the hero is trying to push an obstacle */
-      SWORD_TAPPING,               /**< the hero is tapping his sword on a wall */
-      PULLING,                     /**< the hero is pulling an object */
-      GRABBING,                    /**< the hero is grabbing an object and can pull it */
-      CONVEYOR_BELT,               /**< the hero is being moved by a conveyor belt */
+      PUSHING,                             /**< the hero is trying to push an obstacle */
+      SWORD_TAPPING,                       /**< the hero is tapping his sword on a wall */
+      PULLING,                             /**< the hero is pulling an object */
+      GRABBING,                            /**< the hero is grabbing an object and can pull it */
+      CONVEYOR_BELT,                       /**< the hero is being moved by a conveyor belt */
 
       // the hero cannot move in these states
-      SWORD_SWINGING,              /**< the hero is swinging his sword */
-      SPIN_ATTACK,                 /**< the hero is releasing a spin attack */
-      LIFTING,                     /**< the hero is lifting an destroyable item (a pot, a bush, etc.) */
-      BRANDISHING_TREASURE,        /**< the hero is brandishing a treasure */
-      JUMPING,                     /**< the hero is jumping */
-      HURT,                        /**< the hero is hurt */
-      PLUNGING,                    /**< the hero is plunging into water */
-      FALLING,                     /**< the hero is falling into a hole */
-      RETURNING_TO_SOLID_GROUND,   /**< the hero is returning towards solid ground (e.g. after he drowned
-				    * in deep water or falled into a hole) */
-      VICTORY,                     /**< the hero is make a victory sequence with his sword */
-      USING_INVENTORY_ITEM,        /**< the hero is currently using an item from the inventory */
-      FREEZED                      /**< the hero cannot move for various possible reasons,
-				    * including an instruction from the script */
+      SWORD_SWINGING,                      /**< the hero is swinging his sword */
+      SPIN_ATTACK,                         /**< the hero is releasing a spin attack */
+      LIFTING,                             /**< the hero is lifting an destroyable item (a pot, a bush, etc.) */
+      BRANDISHING_TREASURE,                /**< the hero is brandishing a treasure */
+      JUMPING,                             /**< the hero is jumping */
+      HURT,                                /**< the hero is hurt */
+      PLUNGING,                            /**< the hero is plunging into water */
+      FALLING,                             /**< the hero is falling into a hole */
+      RETURNING_TO_SOLID_GROUND,           /**< the hero is returning towards solid ground (e.g. after he drowned
+				            * in deep water or falled into a hole) */
+      INTERNAL_STAIRS,                     /**< the hero is being moved by internal stairs */
+      VICTORY,                             /**< the hero is make a victory sequence with his sword */
+      USING_INVENTORY_ITEM,                /**< the hero is currently using an item from the inventory */
+      FREEZED                              /**< the hero cannot move for various possible reasons,
+				            * including an instruction from the script */
     };
 
   private:
 
     // sprites
-    Equipment *equipment;                                       /**< equipment of the player */
-    HeroSprites *sprites;                                       /**< the hero's sprites (note that we don't use the sprites structure from MapEntity) */
+    Equipment *equipment;                  /**< equipment of the player */
+    HeroSprites *sprites;                  /**< the hero's sprites (note that we don't use the sprites structure from MapEntity) */
 
     // movement
     PlayerMovement *normal_movement;
-    static const int walking_speed;                             /**< speed of the player movement */
-    bool move_tried;                                            /**< indicates that the hero just tried to move */
-    int old_x;                                                  /**< x position of the hero before the last move try */
-    int old_y;                                                  /**< y position of the hero before the last move try */
+    static const int walking_speed;        /**< speed of the player movement */
+    bool move_tried;                       /**< indicates that the hero just tried to move */
+    int old_x;                             /**< x position of the hero before the last move try */
+    int old_y;                             /**< y position of the hero before the last move try */
 
     // state
-    State state;                   /**< current state of the hero (considered only when the game is not suspended) */
-    Detector *facing_entity;       /**< the entity just in front of the hero */
+    State state;                           /**< current state of the hero (considered only when the game is not suspended) */
+    Detector *facing_entity;               /**< the entity just in front of the hero */
 
-    int counter;                   /**< counter incremented every 100 ms in certain conditions:
-				    * - in state FREE: counts for how long the hero is trying to walk
-				    * to a wall (animation pushing is triggered at 800 ms)
-				    * - in state SWORD_LOADING: counts for how long the hero is loading
-				    * his sword (the spin attack is possible after 1000 ms) */
+    int counter;                           /**< counter incremented every 100 ms in certain conditions:
+				            * - in state FREE: counts for how long the hero is trying to walk
+				            * to a wall (animation pushing is triggered at 800 ms)
+				            * - in state SWORD_LOADING: counts for how long the hero is loading
+				            * his sword (the spin attack is possible after 1000 ms) */
 
-    uint32_t next_counter_date;      /**< when the counter will be incremented */
+    uint32_t next_counter_date;            /**< when the counter will be incremented */
 
     // pushing
-    uint16_t pushing_direction_mask; /**< direction of the hero's movement when pushing
-				      * (0xFFFF indicates that he is currently not trying to push) */
-    Detector *grabbed_entity;        /**< the entity the hero is pushing or pulling */
+    uint16_t pushing_direction_mask;       /**< direction of the hero's movement when pushing
+				            * (0xFFFF indicates that he is currently not trying to push) */
+    Detector *grabbed_entity;              /**< the entity the hero is pushing or pulling */
 
     // conveyor belt
-    bool on_conveyor_belt;         /**< indicates that the hero's rectangle is currently overlapping a conveyor belt,
-				    * (even if the collision is not enough to go to state CONVEYOR_BELT and move the hero) */
-    bool conveyor_belt_snapping;   /**< in state CONVEYOR_BELT, indicates that the hero is currently moving towards the
-				    * center of a conveyor belt, before following the conveyor belt's direction */
-    ConveyorBelt *current_conveyor_belt; /**< the current conveyor belt in state CONVEYOR_BELT */
+    bool on_conveyor_belt;                 /**< indicates that the hero's rectangle is currently overlapping a conveyor belt,
+				            * (even if the collision is not enough to go to state CONVEYOR_BELT and move the hero) */
+    bool conveyor_belt_snapping;           /**< in state CONVEYOR_BELT, indicates that the hero is currently moving towards the
+				            * center of a conveyor belt, before following the conveyor belt's direction */
+    ConveyorBelt *current_conveyor_belt;   /**< the current conveyor belt in state CONVEYOR_BELT */
+
+    // stairs
+    bool going_upstairs;                   /**< when walking on internal stairs, indicates whether the hero is walking upstairs or downstairs */
 
     // sword loading
-    bool sword_loaded;             /**< in state SWORD_LOADING, becomes true when the spin attack is possible */
-    uint32_t next_hit_sound_date;  /**< when the sword hit sound has to be played next time */
+    bool sword_loaded;                     /**< in state SWORD_LOADING, becomes true when the spin attack is possible */
+    uint32_t next_hit_sound_date;          /**< when the sword hit sound has to be played next time */
 
     // lift and carry an object
-    CarriedItem *lifted_item;      /**< item being lifted or carried */
-    CarriedItem *thrown_item;      /**< item thrown and not broken yet */
+    CarriedItem *lifted_item;              /**< item being lifted or carried */
+    CarriedItem *thrown_item;              /**< item thrown and not broken yet */
 
     // brandish a treasure
-    Treasure *treasure;            /**< the treasure being brandished (if any) */
+    Treasure *treasure;                    /**< the treasure being brandished (if any) */
 
     // victory 
-    uint32_t end_victory_date;     /**< date when the victory animation should stop */
+    uint32_t end_victory_date;             /**< date when the victory animation should stop */
 
     // jump
-    int jump_y;                    /**< height of the hero's sprite when jumping, relative to its shadow on the ground */
-    Layer layer_after_jump;        /**< the layer to set when the jump movement is finished */
+    int jump_y;                            /**< height of the hero's sprite when jumping, relative to its shadow on the ground */
+    Layer layer_after_jump;                /**< the layer to set when the jump movement is finished */
 
     // return to solid ground
     Rectangle last_solid_ground_coords;    /**< coordinates of the last hero position on a ground
@@ -194,6 +198,7 @@ class Hero: public MapEntity {
     void update_moving_grabbed_entity(void);
 
     void update_conveyor_belt(void);
+    void update_internal_stairs(void);
 
     void update_treasure(void);
     void display_treasure(void);
@@ -313,6 +318,7 @@ class Hero: public MapEntity {
 
     void notify_collision_with_teletransporter(Teletransporter *teletransporter, int collision_mode);
     void notify_collision_with_conveyor_belt(ConveyorBelt *conveyor_belt, int dx, int dy);
+    void notify_collision_with_internal_stairs(InternalStairs *internal_stairs);
     void notify_collision_with_sensor(Sensor *sensor);
     void notify_collision_with_explosion(Explosion *explosion, Sprite *sprite_overlapping);
     void avoid_chest_collision(Chest *chest);

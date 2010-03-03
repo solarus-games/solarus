@@ -25,7 +25,7 @@
  * @param direction direction of the stairs (0 to 3)
  */
 InternalStairs::InternalStairs(Layer layer, int x, int y, int direction):
-  Detector(COLLISION_RECTANGLE, "", layer, x, y, 16, 16) {
+  Detector(COLLISION_INSIDE, "", layer, x, y, 16, 16) {
 
   set_direction(direction);
   set_origin(0, 0);

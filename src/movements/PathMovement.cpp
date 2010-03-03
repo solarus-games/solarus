@@ -95,8 +95,6 @@ void PathMovement::update(void) {
     start_next_move();
   }
 
-//  if (snapping) std::cout << "snapping\n";
-
   CollisionMovement::update();
 }
 

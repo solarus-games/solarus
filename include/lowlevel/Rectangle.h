@@ -60,6 +60,7 @@ class Rectangle {
     inline void add_xy(int dx, int dy) { add_x(dx); add_y(dy);          }
 
     bool contains(int x, int y) const;
+    bool contains(const Rectangle &other) const;
     bool overlaps(const Rectangle &other) const;
     Rectangle get_center(void);
 

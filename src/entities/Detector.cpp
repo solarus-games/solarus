@@ -120,6 +120,10 @@ void Detector::check_collision(MapEntity *entity) {
       notify_collision(entity, COLLISION_RECTANGLE);
     }
 
+    if (has_collision_mode(COLLISION_INSIDE) && test_collision_inside(entity)) {
+      notify_collision(entity, COLLISION_INSIDE);
+    }
+
     if (has_collision_mode(COLLISION_ORIGIN_POINT) && test_collision_origin_point(entity)) {
       notify_collision(entity, COLLISION_ORIGIN_POINT);
     }
@@ -175,6 +179,19 @@ bool Detector::test_collision_rectangle(MapEntity *entity) {
 
   return entity->overlaps(this);
 }
+
+/**
+ * Checks whether an entity's rectangle is entirely inside the detector's rectangle.
+ * This method is called by check_collision(MapEntity*) when the detector's collision
+ * mode is COLLISION_INSIDE.
+ * @param entity the entity
+ * @return true if the entity's rectangle is entirely inside the detector's rectangle
+ */
+bool Detector::test_collision_inside(MapEntity *entity) {
+
+  return this->get_bounding_box().contains(entity->get_bounding_box());;
+}
+
 
 /**
  * Checks whether an entity's origin point is overlapping the detector's rectangle.

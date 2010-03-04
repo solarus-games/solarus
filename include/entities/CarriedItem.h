@@ -35,6 +35,7 @@ class CarriedItem: public MapEntity {
     bool is_lifting;                 /**< indicates that the hero is lifting this item */
     bool is_throwing;                /**< indicates that the item is being thrown */
     bool is_breaking;                /**< indicates that the item is breaking */
+    bool break_on_intermediate_layer;   /**<  indicates that the item has to get broken now and on the intermediate layer instead of the lower one */
     SoundId destruction_sound_id;    /**< the sound played when the item breaks */
     int damage_on_enemies;           /**< damage for an enemy that receives the item */
 
@@ -82,7 +83,7 @@ class CarriedItem: public MapEntity {
     bool is_npc_obstacle(InteractiveEntity *npc);
     bool is_jump_sensor_obstacle(JumpSensor *jump_sensor);
     bool is_enemy_obstacle(Enemy *enemy);
-    void notify_collision_with_sensor(Sensor *sensor);
+    void notify_collision_with_internal_stairs(InternalStairs *internal_stairs);
     void notify_collision_with_enemy(Enemy *enemy);
     void just_attacked_enemy(EnemyAttack attack, Enemy *victim, int result);
 };

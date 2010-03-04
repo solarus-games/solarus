@@ -68,5 +68,7 @@ class Rectangle {
     SDL_Rect * get_internal_rect(void);
 };
 
+std::ostream & operator <<(std::ostream &stream, const Rectangle &rectangle);
+
 #endif
 

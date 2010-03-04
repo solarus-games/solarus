@@ -100,6 +100,17 @@ Rectangle Rectangle::get_center(void) {
 }
 
 /**
+ * Prints a rectangle to an output stream.
+ * @param stream the stream
+ * @param rectangle a rectangle
+ */
+std::ostream & operator <<(std::ostream &stream, const Rectangle &rectangle) {
+  stream << "(" << rectangle.get_x() << "," << rectangle.get_y() << ") x ("
+    << rectangle.get_width() << "," << rectangle.get_height() << ")";
+  return stream;
+}
+
+/**
  * Returns the SDL rectangle encapsulated by this object.
  * This function must be used only by other low-level classes (typically Surface)
  * as it is library dependent.

@@ -47,7 +47,8 @@ static const Rectangle lifting_translations[4][6] = {
  * @param destructible_item a destructible item
  */
 CarriedItem::CarriedItem(Hero *hero, DestructibleItem *destructible_item):
-  MapEntity(), hero(hero), is_lifting(true), is_throwing(false), is_breaking(false), explosion_date(0) {
+  MapEntity(), hero(hero), is_lifting(true), is_throwing(false), is_breaking(false),
+  break_on_intermediate_layer(false), explosion_date(0) {
 
   // put the item on the hero's layer
   set_layer(hero->get_layer());
@@ -285,7 +286,12 @@ void CarriedItem::update(void) {
   if (is_throwing) {
     shadow_sprite->update();
 
-    if (movement->is_stopped() || y_increment >= 7) {
+    if (break_on_intermediate_layer) {
+      break_item();
+      map->get_entities()->set_entity_layer(this, LAYER_INTERMEDIATE);
+      break_on_intermediate_layer = false;
+    }
+    else if (movement->is_stopped() || y_increment >= 7) {
       break_item();
     }
     else {
@@ -296,6 +302,7 @@ void CarriedItem::update(void) {
 	y_increment++;
       }
     }
+
   }
 }
 
@@ -369,7 +376,7 @@ bool CarriedItem::is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt) {
  * @return true if the internal statrs are currently an obstacle for this entity
  */
 bool CarriedItem::is_internal_stairs_obstacle(InternalStairs *internal_stairs) {
-  return get_layer() == LAYER_LOW;
+  return false;
 }
 
 /**
@@ -454,15 +461,13 @@ bool CarriedItem::is_enemy_obstacle(Enemy *enemy) {
 }
 
 /**
- * This function is called when a sensor detects a collision with this entity.
- * @param sensor a sensor
+ * This function is called when some internal stairs detect a collision with this entity.
+ * @param internal_stairs the internal stairs entity
  */
-void CarriedItem::notify_collision_with_sensor(Sensor *sensor) {
+void CarriedItem::notify_collision_with_internal_stairs(InternalStairs *internal_stairs) {
 
-  if (is_throwing && !is_breaking &&
-      sensor->get_subtype() == Sensor::CHANGE_LAYER &&
-      get_layer() == LAYER_LOW) { // to avoid throwing a pot under small stairs
-    break_item();
+  if (is_throwing && !is_breaking && get_layer() == LAYER_LOW) { // show the destruction animation above the stairs
+    break_on_intermediate_layer = true;
   }
 }
 

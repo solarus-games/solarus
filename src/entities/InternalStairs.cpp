@@ -25,7 +25,7 @@
  * @param direction direction of the stairs (0 to 3)
  */
 InternalStairs::InternalStairs(Layer layer, int x, int y, int direction):
-  Detector(COLLISION_FACING_POINT, "", layer, x, y, 16, 16) {
+  Detector(COLLISION_FACING_POINT | COLLISION_RECTANGLE, "", layer, x, y, 16, 16) {
 
   if (layer == LAYER_HIGH) {
     DIE("Cannot put internal stairs on the high layer");

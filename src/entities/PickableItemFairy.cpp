@@ -29,7 +29,6 @@
 PickableItemFairy::PickableItemFairy(int x, int y):
   PickableItem(LAYER_HIGH, x, y, PickableItem::FAIRY, 0) {
 
-  set_layer_ignored(true); // detect collisions even if the fairy is on LAYER_HIGH
 }
 
 /**
@@ -37,6 +36,15 @@ PickableItemFairy::PickableItemFairy(int x, int y):
  */
 PickableItemFairy::~PickableItemFairy(void) {
 
+}
+
+/**
+ * Returns whether this entity can have collisions with entities even if
+ * they are not on the same layer.
+ * @return true if this entity can collide with entities that are on another layer
+ */
+bool PickableItemFairy::has_layer_independent_collisions(void) {
+  return true;
 }
 
 /**

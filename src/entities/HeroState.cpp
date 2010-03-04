@@ -55,6 +55,7 @@ Hero::State Hero::get_state(void) {
 void Hero::set_state(State state) {
 
   if (state != this->state) {
+
     this->state = state;
 
     if (!game->is_suspended()) {
@@ -396,16 +397,17 @@ void Hero::start_free(void) {
 
   set_state(FREE);
 
+  // computes the movement from the directions pressed and detect collisions with entities
   get_normal_movement()->compute_movement();
-  if (get_normal_movement()->is_started()) {
-    sprites->set_animation_walking();
-  }
-  else {
-    sprites->set_animation_stopped();
-  }
 
-  // to check the facing entity and the ground
-  just_moved();
+  if (state == FREE) { // yes, the state may have already changed
+    if (get_normal_movement()->is_started()) {
+      sprites->set_animation_walking();
+    }
+    else {
+      sprites->set_animation_stopped();
+    }
+  }
 }
 
 /**

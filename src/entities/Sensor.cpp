@@ -42,11 +42,6 @@ Sensor::Sensor(const std::string &name, Layer layer, int x, int y,
   }
 
   set_origin(8, 13);
-
-  if (subtype == CHANGE_LAYER) {
-    // check the collisions with the hero even if he is not on the same layer yet
-    set_layer_ignored(true);
-  }
 }
 
 /**
@@ -93,6 +88,17 @@ EntityType Sensor::get_type() {
  */
 Sensor::Subtype Sensor::get_subtype(void) {
   return subtype;
+}
+
+/**
+ * Returns whether this entity can have collisions with entities even if
+ * they are not on the same layer.
+ * @return true if this entity can collide with entities that are on another layer
+ */
+bool Sensor::has_layer_independent_collisions(void) {
+
+  // check the collisions with the hero even if he is not on the same layer yet
+  return subtype == CHANGE_LAYER;
 }
 
 /**

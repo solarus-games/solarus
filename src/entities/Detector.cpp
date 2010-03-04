@@ -37,7 +37,7 @@ Detector::Detector(int collision_modes,
 		   const std::string &name, Layer layer,
 		   int x, int y, int width, int height):
   MapEntity(name, 0, layer, x, y, width, height),
-  collision_modes(collision_modes), layer_ignored(false) {
+  collision_modes(collision_modes) {
 
 }
 
@@ -80,16 +80,6 @@ bool Detector::has_collision_mode(CollisionMode collision_mode) {
 }
 
 /**
- * Sets whether the detector can detect entities even if
- * they are not on the same layer.
- * @param layer_ignored true to detect all entities, false
- * to detect only those on the same layer.
- */
-void Detector::set_layer_ignored(bool layer_ignored) {
-  this->layer_ignored = layer_ignored;
-}
-
-/**
  * Enables the pixel-perfect collision checks for all sprites
  * of this detector.
  */
@@ -104,15 +94,15 @@ void Detector::enable_pixel_collisions(void) {
 /**
  * This function is called by the map when an entity has just moved.
  * It checks whether the entity collides with this detector.
- * Depending on the detector collision mode(s), the appropriate check_collision_*
+ * Depending on the detector collision mode(s), the appropriate has_collision_*
  * functions are called.
- * If there is a collision, the collision(MapEntity*) method is called.
+ * If there is a collision, the notify_collision() method is called.
  * @param entity the entity to check
  */
 void Detector::check_collision(MapEntity *entity) {
 
   if (entity != this
-      && (layer_ignored || get_layer() == entity->get_layer())) { // the entity is in the same layer as the detector
+      && (has_layer_independent_collisions() || get_layer() == entity->get_layer())) { // the entity is in the same layer as the detector
 
     // detect the collision depending on the collision mode
 
@@ -153,7 +143,7 @@ void Detector::check_collision(MapEntity *entity, Sprite *sprite) {
 
   if (has_collision_mode(COLLISION_SPRITE)
       && entity != this
-      && (layer_ignored || get_layer() == entity->get_layer())
+      && (has_layer_independent_collisions() || get_layer() == entity->get_layer())
       && sprite->are_pixel_collisions_enabled()) {
 
     // we check the collision between the specified entity's sprite and all sprites of the current entity

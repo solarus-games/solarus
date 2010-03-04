@@ -31,10 +31,10 @@ InternalStairs::InternalStairs(Layer layer, int x, int y, int direction):
   set_origin(0, 0);
 
   if (direction % 2 == 0) { // horizontal stairs
-    set_size(32, 16);
+    set_size(48, 16);
   }
   else { // vertical stairs
-    set_size(16, 32);
+    set_size(16, 48);
   }
 
   // check the collisions on both layers

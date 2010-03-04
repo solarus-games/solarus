@@ -329,8 +329,8 @@ void Hero::notify_collision_with_internal_stairs(InternalStairs *internal_stairs
     }
 
     // movement
-    std::string path = "    ";
-    for (int i = 0; i < 4; i++) {
+    std::string path = "     ";
+    for (int i = 0; i < 5; i++) {
       path[i] = '0' + direction;
     }
     set_movement(new PathMovement(path, walking_speed / 2, false, false, false));

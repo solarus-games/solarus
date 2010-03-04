@@ -56,9 +56,6 @@ class Detector: public MapEntity {
     int collision_modes; /**< collision modes of the detector
 			  * (can be an OR combination of CollisionMode values) */
 
-    bool layer_ignored;  /**< indicates that collisions are detected even
-			  * with entities that are not on the same layer than the detector */
-
   protected:
 
     // construction
@@ -70,7 +67,6 @@ class Detector: public MapEntity {
     void add_collision_mode(CollisionMode collision_mode);
     bool has_collision_mode(CollisionMode collision_mode);
     void enable_pixel_collisions(void);
-    void set_layer_ignored(bool layer_ignored);
 
     // specialized collision checking functions
     bool test_collision_rectangle(MapEntity *entity);

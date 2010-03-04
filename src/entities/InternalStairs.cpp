@@ -27,11 +27,12 @@
 InternalStairs::InternalStairs(Layer layer, int x, int y, int direction):
   Detector(COLLISION_FACING_POINT, "", layer, x, y, 16, 16) {
 
+  if (layer == LAYER_HIGH) {
+    DIE("Cannot put internal stairs on the high layer");
+  }
+
   set_direction(direction);
   set_origin(0, 0);
-
-  // check the collisions on both layers
-  set_layer_ignored(true);
 }
 
 /**
@@ -64,6 +65,15 @@ MapEntity * InternalStairs::parse(Game *game, std::istream &is, Layer layer, int
  */
 EntityType InternalStairs::get_type() {
   return INTERNAL_STAIRS;
+}
+
+/**
+ * Returns whether this entity can have collisions with entities even if
+ * they are not on the same layer.
+ * @return true if this entity can collide with entities that are on another layer
+ */
+bool InternalStairs::has_layer_independent_collisions(void) {
+  return true;
 }
 
 /**

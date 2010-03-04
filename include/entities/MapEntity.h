@@ -227,6 +227,7 @@ class MapEntity {
 
     // collisions
     virtual bool is_obstacle_for(MapEntity *other);
+    virtual bool has_layer_independent_collisions(void);
     virtual void notify_collision_with_enemy(Enemy *enemy);
     virtual void notify_collision_with_teletransporter(Teletransporter *teletransporter, int collision_mode);
     virtual void notify_collision_with_conveyor_belt(ConveyorBelt *conveyor_belt, int dx, int dy);

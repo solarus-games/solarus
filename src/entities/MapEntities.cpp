@@ -417,7 +417,17 @@ void MapEntities::add_entity(MapEntity *entity) {
 
     // update the obstacle list
     if (entity->can_be_obstacle()) {
-    obstacle_entities[layer].push_back(entity);
+
+      if (entity->has_layer_independent_collisions()) {
+	// some entities handle collisions on any layers (e.g. stairs inside a single floor)
+        obstacle_entities[LAYER_LOW].push_back(entity);
+        obstacle_entities[LAYER_INTERMEDIATE].push_back(entity);
+        obstacle_entities[LAYER_HIGH].push_back(entity);
+      }
+      else {
+	// but usually, an entity collides with only one layer
+        obstacle_entities[layer].push_back(entity);
+      }
     }
 
     // update the sprites list

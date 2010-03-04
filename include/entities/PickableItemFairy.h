@@ -25,24 +25,27 @@
  */
 class PickableItemFairy: public PickableItem {
 
- private:
+  private:
 
-  Movement *movement;
+    Movement *movement;
 
- protected:
+  protected:
 
-  // initialization
-  void initialize_movement(void);
+    // initialization
+    void initialize_movement(void);
 
- public:
+  public:
 
-  // creation and destruction
-  PickableItemFairy(int x, int y);
-  ~PickableItemFairy(void);
+    // creation and destruction
+    PickableItemFairy(int x, int y);
+    ~PickableItemFairy(void);
 
-  // update
-  virtual void give_item_to_player(void);
-  void update(void);
+    bool has_layer_independent_collisions(void);
+
+    // update
+    void give_item_to_player(void);
+    void update(void);
 };
 
 #endif
+

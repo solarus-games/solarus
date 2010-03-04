@@ -39,6 +39,7 @@ class InternalStairs: public Detector {
 
     EntityType get_type(void);
 
+    bool has_layer_independent_collisions(void);
     bool is_sword_ignored(void);
     bool is_obstacle_for(MapEntity *other);
     void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);

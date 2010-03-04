@@ -821,6 +821,16 @@ bool MapEntity::is_obstacle_for(MapEntity *other) {
 }
 
 /**
+ * Returns whether this entity can have collisions with entities even if
+ * they are not on the same layer.
+ * This function returns false by default.
+ * @return true if this entity can collide with entities that are on another layer
+ */
+bool MapEntity::has_layer_independent_collisions(void) {
+  return false;
+}
+
+/**
  * Returns whether a water tile is currently considered as an obstacle for this entity.
  * This function returns true by default.
  * @return true if the water tiles are currently an obstacle for this entity

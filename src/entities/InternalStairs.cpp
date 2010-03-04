@@ -25,17 +25,10 @@
  * @param direction direction of the stairs (0 to 3)
  */
 InternalStairs::InternalStairs(Layer layer, int x, int y, int direction):
-  Detector(COLLISION_INSIDE, "", layer, x, y, 16, 16) {
+  Detector(COLLISION_FACING_POINT, "", layer, x, y, 16, 16) {
 
   set_direction(direction);
   set_origin(0, 0);
-
-  if (direction % 2 == 0) { // horizontal stairs
-    set_size(48, 16);
-  }
-  else { // vertical stairs
-    set_size(16, 48);
-  }
 
   // check the collisions on both layers
   set_layer_ignored(true);
@@ -71,6 +64,15 @@ MapEntity * InternalStairs::parse(Game *game, std::istream &is, Layer layer, int
  */
 EntityType InternalStairs::get_type() {
   return INTERNAL_STAIRS;
+}
+
+/**
+ * Returns true if this entity does not react to the sword.
+ * If true is returned, nothing will happen when the hero hits this entity with the sword.
+ * @return true if the sword is ignored
+ */
+bool InternalStairs::is_sword_ignored(void) {
+  return true;
 }
 
 /**

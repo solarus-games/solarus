@@ -308,32 +308,40 @@ void Hero::update_conveyor_belt(void) {
  */
 void Hero::notify_collision_with_internal_stairs(InternalStairs *internal_stairs) {
 
-  if (state != JUMPING && state != INTERNAL_STAIRS && state != PUSHING) {
+  if (state != INTERNAL_STAIRS && state != CARRYING && state != SWORD_LOADING) {
 
-    // state
-    sprites->set_animation_walking();
-    set_state(INTERNAL_STAIRS);
-    game->get_keys_effect()->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
-
-    // sound
-    char direction = internal_stairs->get_direction() * 2;
-    if (get_layer() == LAYER_LOW) {
-      game->play_sound("internal_stairs_up");
-      map->get_entities()->set_entity_layer(this, LAYER_INTERMEDIATE);
-      going_upstairs = true;
-    }
-    else {
-      game->play_sound("internal_stairs_down");
-      direction = (direction + 4) % 8;
-      going_upstairs = false;
+    // check whether the hero is trying to move in the direction of the stairs
+    int stairs_direction = internal_stairs->get_direction();
+    if (get_layer() != LAYER_LOW) {
+      stairs_direction = (stairs_direction + 2) % 4;
     }
 
-    // movement
-    std::string path = "     ";
-    for (int i = 0; i < 5; i++) {
-      path[i] = '0' + direction;
+    if (is_moving_towards(stairs_direction)) {
+
+      // state
+      set_state(INTERNAL_STAIRS);
+      sprites->set_animation_walking();
+      game->get_keys_effect()->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
+
+      // sound
+      if (get_layer() == LAYER_LOW) {
+	game->play_sound("internal_stairs_up");
+	map->get_entities()->set_entity_layer(this, LAYER_INTERMEDIATE);
+	going_upstairs = true;
+      }
+      else {
+	game->play_sound("internal_stairs_down");
+	going_upstairs = false;
+      }
+
+      // movement
+      stairs_direction *= 2;
+      std::string path = "     ";
+      for (int i = 0; i < 5; i++) {
+	path[i] = '0' + stairs_direction;
+      }
+      set_movement(new PathMovement(path, walking_speed / 2, false, false, false));
     }
-    set_movement(new PathMovement(path, walking_speed / 2, false, false, false));
   }
 }
 

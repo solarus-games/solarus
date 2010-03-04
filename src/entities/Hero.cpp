@@ -204,9 +204,7 @@ bool Hero::is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt) {
  * @return true if the internal statrs are currently an obstacle for this entity
  */
 bool Hero::is_internal_stairs_obstacle(InternalStairs *internal_stairs) {
-
-  // exactly the same thing as a sensor: we do not allow traversing while jumping or other special movements
-  return is_sensor_obstacle(NULL);
+  return true;
 }
 
 /**

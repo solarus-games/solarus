@@ -505,7 +505,15 @@ void MapEntities::remove_marked_entities(void) {
 
     // remove it from the obstacle entities list if present
     if (entity->can_be_obstacle()) {
-      obstacle_entities[layer].remove(entity);
+
+      if (entity->has_layer_independent_collisions()) {
+	for (int i = 0; i < LAYER_NB; i++) {
+	  obstacle_entities[i].remove(entity);
+	}
+      }
+      else {
+        obstacle_entities[layer].remove(entity);
+      }
     }
 
     // remove it from the detectors list if present
@@ -645,7 +653,7 @@ void MapEntities::set_entity_layer(MapEntity *entity, Layer layer) {
 
   if (layer != old_layer) {
 
-  entity->set_layer(layer);
+    entity->set_layer(layer);
 
     // update the obstacle list
     if (entity->can_be_obstacle()) {

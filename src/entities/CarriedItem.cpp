@@ -302,7 +302,6 @@ void CarriedItem::update(void) {
 	y_increment++;
       }
     }
-
   }
 }
 

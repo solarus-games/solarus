@@ -70,8 +70,6 @@ Bugs :
   (le délai est trop long et trop spécifique aux explosions)
 - buisson lancé sur ennemi : l'ennemi est blessé mais le buisson ne s'arrête pas
 - vérifier ce qui se passe si on arrive sur un tapis roulant pendant qu'on tire une statue (peut-être modifier le is_conveyor_belt_obstacle)
-- lancer un vase sur un escalier interne (couche basse) : seg fault à cause du changement de layer
-  dès que le héros lance l'objet qu'il porte, rattacher l'objet lancé à MapEntities au lieu du héros
 
 
 Donjon 2 :

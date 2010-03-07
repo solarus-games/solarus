@@ -119,7 +119,6 @@ class Hero: public MapEntity {
 
     // lift and carry an object
     CarriedItem *lifted_item;              /**< item being lifted or carried */
-    CarriedItem *thrown_item;              /**< item thrown and not broken yet */
 
     // brandish a treasure
     Treasure *treasure;                    /**< the treasure being brandished (if any) */

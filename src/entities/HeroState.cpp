@@ -636,13 +636,8 @@ void Hero::start_throwing(void) {
   if (state == CARRYING) {
 
     if (!lifted_item->is_broken()) {
-      lifted_item->throw_item(map, get_animation_direction());
-
-      if (thrown_item != NULL) {
-	delete thrown_item;
-      }
-
-      thrown_item = lifted_item;
+      lifted_item->throw_item(get_animation_direction());
+      map->get_entities()->add_entity(lifted_item);
       lifted_item = NULL;
     }
     start_free();
@@ -658,10 +653,6 @@ void Hero::set_suspended_carried_items(bool suspended) {
 
   if (lifted_item != NULL) {
     lifted_item->set_suspended(suspended);
-  }
-
-  if (thrown_item != NULL) {
-    thrown_item->set_suspended(suspended);
   }
 }
 
@@ -685,14 +676,6 @@ void Hero::update_carried_items(void) {
       keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
     }
   }
-
-  if (!suspended && thrown_item != NULL) {
-    thrown_item->update();
-    if (thrown_item->is_broken()) {
-      delete thrown_item;
-      thrown_item = NULL;
-    }
-  }
 }
 
 /**
@@ -702,10 +685,6 @@ void Hero::display_carried_items(void) {
 
   if (lifted_item != NULL) {
     lifted_item->display_on_map();
-  }
-
-  if (thrown_item != NULL) {
-    thrown_item->display_on_map();
   }
 }
 
@@ -717,11 +696,6 @@ void Hero::destroy_carried_items(void) {
   if (lifted_item != NULL) {
     delete lifted_item;
     lifted_item = NULL;
-  }
-
-  if (thrown_item != NULL) {
-    delete thrown_item;
-    thrown_item = NULL;
   }
 }
 

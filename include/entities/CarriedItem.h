@@ -58,11 +58,16 @@ class CarriedItem: public MapEntity {
 
     EntityType get_type(void);
 
+    bool can_be_obstacle(void);
+    bool can_detect_entities(void);
+    bool can_be_displayed(void);
+    bool is_displayed_in_y_order(void);
+
     int get_damage_on_enemies(void);
 
     void set_animation_stopped(void);
     void set_animation_walking(void);
-    void throw_item(Map *map, int direction);
+    void throw_item(int direction);
     bool is_being_thrown(void);
     void break_item(void);
     bool is_broken(void);

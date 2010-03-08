@@ -148,8 +148,13 @@ class MapEntity {
     bool is_being_removed(void);
 
     // entity type features
-    virtual bool is_hero(void);
+ 
+    /**
+     * Returns the type of entity.
+     * @return the type of entity
+     */
     virtual EntityType get_type(void) = 0;
+    bool is_hero(void);
     virtual bool can_be_obstacle(void);
     virtual bool can_detect_entities(void);
     virtual bool can_be_displayed(void);

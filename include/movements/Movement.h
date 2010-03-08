@@ -75,20 +75,20 @@ class Movement {
 
     uint32_t when_suspended;   /**< Indicates when the movement is currently suspended. */
 
-    int get_x_move(void);
-    int get_y_move(void);
-    void set_x_move(int x_move);
-    void set_y_move(int y_move);
+    inline int get_x_move(void)        { return x_move; }
+    inline int get_y_move(void)        { return y_move; }
+    inline void set_x_move(int x_move) { this->x_move = x_move; }
+    inline void set_y_move(int y_move) { this->y_move = y_move; }
 
-    uint32_t get_next_move_date_x(void);
-    uint32_t get_next_move_date_y(void);
-    void set_next_move_date_x(uint32_t next_move_date_x);
-    void set_next_move_date_y(uint32_t next_move_date_y);
+    inline uint32_t get_next_move_date_x(void)                  { return next_move_date_x; }
+    inline uint32_t get_next_move_date_y(void)                  { return next_move_date_y; }
+    inline void set_next_move_date_x(uint32_t next_move_date_x) { this->next_move_date_x = next_move_date_x; }
+    inline void set_next_move_date_y(uint32_t next_move_date_y) { this->next_move_date_y = next_move_date_y; }
 
-    uint32_t get_x_delay(void);
-    uint32_t get_y_delay(void);
-    void set_x_delay(uint32_t x_delay);
-    void set_y_delay(uint32_t y_delay);
+    inline uint32_t get_x_delay(void)         { return x_delay; }
+    inline uint32_t get_y_delay(void)         { return y_delay; }
+    inline void set_x_delay(uint32_t x_delay) { this->x_delay = x_delay; }
+    inline void set_y_delay(uint32_t y_delay) { this->y_delay = y_delay; }
 
     void translate_x(int dx);
     void translate_y(int dy);

@@ -68,7 +68,9 @@ bool InventoryItem::has_counter(InventoryItemId item_id) {
 /**
  * If the specified item has a counter, returns the index of the savegame
  * variable indicating the counter's value. Otherwise, returns -1.
- * @return the index of the savegame variable indicating the counter's value
+ * @param item_id an inventory item (with or without counter)
+ * @return the index of the savegame variable indicating the counter's value,
+ * or -1 if there is no counter on this item
  */
 int InventoryItem::get_counter_index(InventoryItemId item_id) {
 
@@ -411,6 +413,7 @@ void InventoryItem::update_bottle(void) {
 /**
  * Sets the current map.
  * This function is called when the map is changed while the player is still using this item.
+ * @param map the map
  */
 void InventoryItem::set_map(Map *map) {
   

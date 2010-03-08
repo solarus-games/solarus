@@ -28,27 +28,34 @@
  * The width and the height of a tile pattern are always multiples or 8.
  */
 class TilePattern {
-  
- protected:
 
-  const Obstacle obstacle; /**< is the tile an obstacle? */
+  protected:
 
-  const int width;         /**< tile width (multiple of 8) */
-  const int height;        /**< tile height (multiple of 8) */
+    const Obstacle obstacle; /**< is the tile an obstacle? */
 
-  TilePattern(Obstacle obstacle, int width, int height);
+    const int width;         /**< tile width (multiple of 8) */
+    const int height;        /**< tile height (multiple of 8) */
 
- public:
+    TilePattern(Obstacle obstacle, int width, int height);
 
-  virtual ~TilePattern(void);
+  public:
 
-  int get_width(void) const;
-  int get_height(void) const;
-  Obstacle get_obstacle(void) const;
+    virtual ~TilePattern(void);
 
-  static void update(void);
-  void display_on_map(Map *map, const Rectangle &position_in_map);
-  virtual void display(Surface *surface, const Rectangle &position_in_surface, Surface *tileset_image) = 0;
+    int get_width(void) const;
+    int get_height(void) const;
+    Obstacle get_obstacle(void) const;
+
+    static void update(void);
+    void display_on_map(Map *map, const Rectangle &position_in_map);
+
+    /**
+     * Displays the tile image on a surface.
+     * @param destination the destination surface
+     * @param dst_position position of the tile pattern on the destination surface
+     * @param tileset_image the tileset image of this tile
+     */
+    virtual void display(Surface *destination, const Rectangle &dst_position, Surface *tileset_image) = 0;
 };
 
 #endif

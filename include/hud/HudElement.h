@@ -66,7 +66,7 @@ class HudElement {
     virtual bool is_visible(void);
     int get_opacity(void);
     void set_opacity(int opacity);
-    void set_blinking(int blinking);
+    void set_blinking(bool blinking);
     bool is_blinking(void);
 
     virtual void update(void);

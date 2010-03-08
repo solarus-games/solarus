@@ -28,6 +28,8 @@
 
 /**
  * Initializes the game engine.
+ * @param argc number of arguments of the command line
+ * @param argv command-line arguments
  */
 Solarus::Solarus(int argc, char **argv) {
 

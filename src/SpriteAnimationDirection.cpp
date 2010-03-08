@@ -106,9 +106,10 @@ void SpriteAnimationDirection::display(Surface *destination, int x, int y,
 /**
  * Calculates the bit fields representing the non-transparent pixels
  * of the images in this direction.
- * This method has to be called if you want a sprite with this animations
+ * This method has to be called if you want a sprite having this animations
  * to be able to detect pixel-perfect collisions.
- * Nothing happens if the pixel-perfect collisions were already enabled.
+ * If the pixel-perfect collisions are already enabled, this function does nothing.
+ * @param src_image the surface containing the animations
  */
 void SpriteAnimationDirection::enable_pixel_collisions(Surface *src_image) {
 
@@ -132,6 +133,7 @@ bool SpriteAnimationDirection::are_pixel_collisions_enabled(void) {
  * Returns the pixel bits object of a frame.
  * It represents the transparent bits of the frame and permits to detect pixel collisions.
  * The pixel collisions must be enabled.
+ * @param frame a frame of the animation
  * @return the pixel bits object of a frame
  */
 PixelBits * SpriteAnimationDirection::get_pixel_bits(int frame) {

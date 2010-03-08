@@ -2075,6 +2075,7 @@ void MapScript::event_map_started(const std::string &destination_point_name) {
 
 /**
  * Notifies the script that the opening transition of the map has just finished.
+ * @param destination_point_name name of the destination point where the hero is
  */
 void MapScript::event_opening_transition_finished(const std::string &destination_point_name) {
   call_script_function("event_opening_transition_finished", destination_point_name);

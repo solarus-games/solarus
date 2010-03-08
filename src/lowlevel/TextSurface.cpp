@@ -233,6 +233,7 @@ void TextSurface::set_text(const std::string &text) {
 /**
  * Adds a character to the string drawn.
  * This is equivalent to set_text(get_text() + c)
+ * @param c the character to add
  */
 void TextSurface::add_char(char c) {
   set_text(text + c);

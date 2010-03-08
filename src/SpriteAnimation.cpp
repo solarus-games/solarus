@@ -59,6 +59,7 @@ SpriteAnimation::~SpriteAnimation(void) {
 /**
  * When the sprite is displayed on a map, sets the map.
  * This function must be called if this sprite image depends on the map's tileset.
+ * @param map the map
  */
 void SpriteAnimation::set_map(Map *map) {
 

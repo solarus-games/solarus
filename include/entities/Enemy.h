@@ -73,9 +73,10 @@ class Enemy: public Detector {
      * This structure contains the parameters needed by the subclasses constructors.
      */
     struct ConstructionParameters {
-      std::string name;
-      Layer layer;
-      int x, y;
+      std::string name;   /**< name of the instance of enemy */
+      Layer layer;        /**< initial layer of the enemy */
+      int x;              /**< initial x coordinate of the enemy */
+      int y;              /**< initial y coordinate of the enemy */
     };
 
   private:
@@ -124,23 +125,27 @@ class Enemy: public Detector {
     bool can_attack;                        /**< indicates that the enemy can currently attack the hero */
     uint32_t can_attack_again_date;         /**< date when the enemy can attack again */
     bool immobilized;                       /**< indicates that the enemy is currently immobilized */
-    uint32_t start_shaking_date;          /**< date when the enemy shakes */ 
-    uint32_t end_shaking_date;            /**< date when the enemy stops shaking and walks again */ 
+    uint32_t start_shaking_date;            /**< date when the enemy shakes */ 
+    uint32_t end_shaking_date;              /**< date when the enemy stops shaking and walks again */ 
 
     // pickable item
     PickableItem::Subtype pickable_item_subtype;  /**< subtype of pickable item that appears when this enemy gets killed */
     int pickable_item_savegame_variable;          /**< savegame variable of the pickable item (if any) */
 
     // boss or mini-boss
-    bool exploding;                     /**< indicates that the boss is dying and some explosions are triggered on him */
-    int nb_explosions;                  /**< number of explosions already played */
-    uint32_t next_explosion_date;         /**< date of the next explosion */
+    bool exploding;                         /**< indicates that the boss is dying and some explosions are triggered on him */
+    int nb_explosions;                      /**< number of explosions already played */
+    uint32_t next_explosion_date;           /**< date of the next explosion */
 
   protected:
 
     // creation
     Enemy(const ConstructionParameters &params);
-    virtual void initialize(void) = 0; // to initialize the features, the sprites and the movement
+
+    /**
+     * Initializes the features, the sprites and the movement.
+     */
+    virtual void initialize(void) = 0;
     virtual void restart(void);
 
     void stop_movement(void);

@@ -174,6 +174,7 @@ void PauseMenu::update(void) {
 
 /**
  * Displays the pause menu.
+ * @param destination the surface to draw
  */
 void PauseMenu::display(Surface *destination) {
 

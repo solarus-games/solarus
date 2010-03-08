@@ -20,10 +20,11 @@
 #include "TransitionScrolling.h"
 
 /**
- * Constructor.
+ * Creates a transition effect.
+ * @param direction direction of the transition effect (in or out)
  */
 Transition::Transition(Transition::Direction direction):
-direction(direction), previous_surface(NULL) {
+  direction(direction), previous_surface(NULL) {
 
 }
 

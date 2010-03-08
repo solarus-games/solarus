@@ -19,7 +19,8 @@
 #include "lowlevel/System.h"
 
 /**
- * Constructor.
+ * Creates a fade-in or fade-out transition effect.
+ * @param direction direction of the transition effect (in or out)
  */
 TransitionFade::TransitionFade(Transition::Direction direction):
   Transition(direction), alpha(-1) {
@@ -99,6 +100,7 @@ void TransitionFade::update(void) {
 
 /**
  * Displays the transition effect on a surface.
+ * @param surface the destination surface
  */
 void TransitionFade::display(Surface *surface) {
 

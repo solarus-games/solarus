@@ -30,13 +30,16 @@ class Dungeon {
 
   public:
 
-    // elements of each floor: chests and bosses
+    /**
+     * Represents a dynamic element that appears on the minimap of a floor
+     * (a chest or a boss).
+     */
     struct DungeonElement {
-      int savegame_variable;
-      int floor;
-      int x;
-      int y;
-      bool big; // to distinguish big chests from normal chests and big bosses from minibosses
+      int savegame_variable;    /**< index of the savegame variable that memorizes this element's state (chest open or boss killed) */
+      int floor;                /**< the floor where this element appears */
+      int x;                    /**< x coordinate of the element on the floor */
+      int y;                    /**< y coordinate of the element on the floor */
+      bool big;                 /**< to distinguish big chests from normal chests and big bosses from minibosses */
     };
 
   private:

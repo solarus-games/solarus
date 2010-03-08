@@ -196,6 +196,9 @@ int Dungeon::get_nb_floors_displayed(void) {
 /**
  * Returns the highest floor that can be displayed when the specified
  * current floor has to be visible.
+ * @param current_floor a floor
+ * @return the highest floor that can be displayed so that the specified floor
+ * is visible
  */
 int Dungeon::get_highest_floor_displayed(int current_floor) {
 

@@ -88,6 +88,7 @@ EntityType Switch::get_type() {
 
 /**
  * Enables or disables the switch, not playing any sound.
+ * @param enabled true to make the switch enabled, false to make it disabled
  */
 void Switch::set_enabled(bool enabled) {
 

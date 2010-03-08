@@ -607,6 +607,7 @@ InputEvent::KeyboardKey GameControls::get_keyboard_key(GameKey game_key) {
 /**
  * Returns a string representing the joypad action where the
  * specified game key is currently mapped.
+ * @param game_key a game key
  * @return the joypad action corresponding this game key
  */
 const std::string & GameControls::get_joypad_string(GameKey game_key) {

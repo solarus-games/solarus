@@ -166,6 +166,7 @@ void GameoverSequence::update(void) {
 
 /**
  * Displays the gameover sequence.
+ * @param destination_surface the surface to draw
  */
 void GameoverSequence::display(Surface *destination_surface) {
 

@@ -61,10 +61,32 @@ class Transition {
     void set_previous_surface(Surface *previous_surface);
     virtual bool needs_previous_surface(void);
 
+    /**
+     * Starts this transition effect.
+     */
     virtual void start(void) = 0;
+
+    /**
+     * Returns whether the transition effect is started.
+     * @return true if the transition effect is started
+     */
     virtual bool is_started(void) = 0;
+
+    /**
+     * Returns whether the transition effect is finished.
+     * @return true if the transition effect is finished
+     */
     virtual bool is_finished(void) = 0;
+
+    /**
+     * Updates this transition effect.
+     */
     virtual void update(void) = 0;
+
+    /**
+     * Displays the transition effect on a surface.
+     * @param surface the surface to draw
+     */
     virtual void display(Surface *surface) = 0;
 };
 

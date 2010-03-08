@@ -24,7 +24,7 @@ class Geometry {
 
   public:
 
-    /**
+    /*
      * Mathematic constants.
      * We don't use the constants from math.h
      * because they are not ANSI.

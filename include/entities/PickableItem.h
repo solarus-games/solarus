@@ -87,8 +87,8 @@ class PickableItem: public Detector {
 				              * (only possible for items not saved) */
 
     // current state
-    int shadow_x;                            /**< coordinates of the shadow (which does not move when the item does by falling) */
-    int shadow_y;
+    int shadow_x;                            /**< x coordinate of the shadow (which does not move while the item does) */
+    int shadow_y;                            /**< x coordinate of the shadow (which does not move while the item does) */
 
     uint32_t appear_date;                    /**< date when the item is created */
     uint32_t allow_pick_date;                /**< date when the item can be picked */

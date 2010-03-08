@@ -25,31 +25,31 @@
  */
 class TargetMovement: public Movement {
 
- protected:
+  protected:
 
-  int target_x;
-  int target_y;
-  MapEntity *target_entity; /**< can be NULL if only a point is targeted */
+    int target_x;                         /**< x coordinate of the point to track */
+    int target_y;                         /**< y coordinate of the point to track */
+    MapEntity *target_entity;             /**< the entity to track (can be NULL if only a point is targeted) */
 
-  int sign_x;   /**< sign of the x movement (1: right, -1: left) */
-  int sign_y;   /**< sign of the y movement (1: up, -1: down) */
-  int speed;
+    int sign_x;                           /**< sign of the x movement (1: right, -1: left) */
+    int sign_y;                           /**< sign of the y movement (1: down, -1: up) */
+    int speed;                            /**< movement's speed */
 
-  uint32_t next_recomputation_date;
+    uint32_t next_recomputation_date;     /**< date when the movement is recalculated */
 
-  void recompute_movement(void);
+    void recompute_movement(void);
 
- public:
+  public:
 
-  TargetMovement(int target_x, int target_y, int speed);
-  TargetMovement(MapEntity *target_entity, int speed);
-  ~TargetMovement(void);
+    TargetMovement(int target_x, int target_y, int speed);
+    TargetMovement(MapEntity *target_entity, int speed);
+    ~TargetMovement(void);
 
-  void set_target(int target_x, int target_y);
-  void set_target(MapEntity *target_entity);
+    void set_target(int target_x, int target_y);
+    void set_target(MapEntity *target_entity);
 
-  bool is_finished(void);
-  void update(void);
+    bool is_finished(void);
+    void update(void);
 };
 
 #endif

@@ -33,8 +33,8 @@ const Rectangle TransitionScrolling::previous_map_dst_positions[] = {
 };
 
 /**
- * Constructor.
- * @param direction direction of the transition
+ * Creates a scrolling transition effect.
+ * @param direction direction of the transition (in or out)
  */
 TransitionScrolling::TransitionScrolling(Transition::Direction direction):
   Transition(direction), dx(0), dy(0) {
@@ -146,6 +146,7 @@ void TransitionScrolling::update(void) {
 
 /**
  * Displays the transition effect on a surface.
+ * @param surface the surface to draw
  */
 void TransitionScrolling::display(Surface *surface) {
 

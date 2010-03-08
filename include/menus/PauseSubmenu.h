@@ -27,14 +27,14 @@ class PauseSubmenu {
 
   protected:
 
-    PauseMenu *pause_menu;
-    Game *game;
-    Savegame *savegame;
-    Equipment *equipment;
-    DungeonEquipment *dungeon_equipment;
+    PauseMenu *pause_menu;                    /**< the pause menu this submenu belongs to */
+    Game *game;                               /**< the current game */
+    Savegame *savegame;                       /**< the savegame */
+    Equipment *equipment;                     /**< the player's equipment */
+    DungeonEquipment *dungeon_equipment;      /**< the player's dungeon-specific equipment */
 
-    TextSurface *caption_text_1;
-    TextSurface *caption_text_2;
+    TextSurface *caption_text_1;              /**< the bottom text displayed at left */
+    TextSurface *caption_text_2;              /**< the bottom text displayed at right */
 
     PauseSubmenu(PauseMenu *pause_menu, Game *game);
 
@@ -45,8 +45,17 @@ class PauseSubmenu {
 
     virtual ~PauseSubmenu(void);
 
+    /**
+     * This function is called when a key is pressed on this submenu.
+     * @param key the key pressed
+     */
     virtual void key_pressed(GameControls::GameKey key) = 0;
+
+    /**
+     * Updates this submenu.
+     */
     virtual void update(void) = 0;
+
     virtual void display(Surface *destination);
 };
 

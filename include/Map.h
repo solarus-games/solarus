@@ -144,7 +144,6 @@ class Map {
     void set_welcome_message(std::string welcome_message_id);
 
     // current destination point
-    void set_destination_point(unsigned int destination_point_index);
     void set_destination_point(const std::string &destination_point_name);
     const std::string& get_destination_point_name(void);
     int get_destination_side(void);

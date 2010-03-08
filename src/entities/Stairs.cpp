@@ -100,7 +100,7 @@ bool Stairs::is_sword_ignored(void) {
 /**
  * Returns whether this entity is an obstacle for another one.
  * @param other another entity
- * @return true if this block is raised
+ * @return true if this entity is an obstacle for the other one
  */
 bool Stairs::is_obstacle_for(MapEntity *other) {
   return other->is_stairs_obstacle(this);

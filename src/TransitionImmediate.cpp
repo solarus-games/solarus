@@ -17,7 +17,8 @@
 #include "TransitionImmediate.h"
 
 /**
- * Constructor.
+ * Creates an immediate transition effect.
+ * @param direction direction of the transition effect (in or out)
  */
 TransitionImmediate::TransitionImmediate(Transition::Direction direction):
   Transition(direction) {
@@ -63,6 +64,7 @@ void TransitionImmediate::update(void) {
 
 /**
  * Displays the transition effect on a surface.
+ * @param surface the surface to draw
  */
 void TransitionImmediate::display(Surface *surface) {
 

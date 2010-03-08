@@ -86,6 +86,8 @@ HudElement::~HudElement(void) {
 
 /**
  * Changes the position of this hud element.
+ * @param x the new x coordinate
+ * @param y the new y coordinate
  */
 void HudElement::set_position(int x, int y) {
   
@@ -142,9 +144,10 @@ void HudElement::set_opacity(int opacity) {
 }
 
 /**
- * Makes this element blink.
+ * Makes this element blink or stop blinking.
+ * @param blinking true to make the element blink, false otherwise
  */
-void HudElement::set_blinking(int blinking) {
+void HudElement::set_blinking(bool blinking) {
 
   if (blinking != this->blinking) {
 

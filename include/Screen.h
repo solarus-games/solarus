@@ -49,8 +49,8 @@ class Screen {
 
   private:
 
-    bool screen_finished;
-    Screen *next_screen;
+    bool screen_finished;       /**< indicates that the current screen is finished and should be destroyed */
+    Screen *next_screen;        /**< when the current screen is finished, indicates the next screen */
 
   protected:
 
@@ -66,8 +66,24 @@ class Screen {
     Screen *get_next_screen(void);
 
     // functions to implement in subclasses and that will be called by the main loop
+
+    /**
+     * Updates this screen.
+     * This function is called repeatedly by the program's main loop.
+     */
     virtual void update(void) = 0;
+
+    /**
+     * Displays this screen.
+     * This function is called by the main loop depending of the number of frames per second.
+     * @param screen_surface the surface to draw
+     */
     virtual void display(Surface *screen_surface) = 0;
+
+    /**
+     * This function is called by the main loop when there is an input event.
+     * @param event the event to handle
+     */
     virtual void notify_event(InputEvent &event) = 0;
 };
 

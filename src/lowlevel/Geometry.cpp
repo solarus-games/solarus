@@ -19,14 +19,28 @@
 #include <cmath>
 
 /**
- * Mathematic constants.
- * We don't use the constants from math.h
- * because they are not ANSI.
+ * The pi constant.
  */
 const double Geometry::PI = 3.14159265358979323846;
+
+/**
+ * 2 * pi.
+ */
 const double Geometry::TWO_PI = 2.0 * PI;
+
+/**
+ * pi / 2.
+ */
 const double Geometry::PI_OVER_2 = PI / 2.0;
+
+/**
+ * 3 * pi / 2.
+ */
 const double Geometry::THREE_PI_OVER_2 = 3 * PI_OVER_2;
+
+/**
+ * Square root of 2.
+ */
 const double Geometry::SQRT_2 = 1.41421356237309504880;
 
 /**

@@ -40,7 +40,8 @@
 const int Hero::walking_speed = 9;
 
 /**
- * Constructor.
+ * Creates a hero.
+ * @param equipment the equipment
  */
 Hero::Hero(Equipment *equipment):
   equipment(equipment), normal_movement(new PlayerMovement(walking_speed)),

@@ -100,6 +100,7 @@ void StraightMovement::update(void) {
 
 /**
  * Suspends or resumes the movement
+ * @param suspended true to suspend the movement, false to resume it
  */
 void StraightMovement::set_suspended(bool suspended) {
 

@@ -29,38 +29,20 @@ class PlayerMovement: public SmoothCollisionMovement {
 
   // movement
 
-  /**
-   * True if the entity is moving.
-   */
-  bool started;
-
-  /**
-   * Speed of the entity when it is moving.
-   */
-  int moving_speed;
-
-  /**
-   * True if the player can move the entity, i.e. if the game is not interrupted
-   * and the entity is in a state such that the player has the control.
-   */
-  bool moving_enabled;
-  bool moving_enabled_before_suspended;
-
-  /**
-   * True if the direction arrows pressed are taken into account.
-   */
-  bool direction_enabled;
-  bool direction_enabled_before_suspended;
+  bool started;                                    /**< true if the entity is moving */
+  int moving_speed;                                /**< speed of the entity when it is moving */
+  bool moving_enabled;                             /**< true if the player can move the entity, i.e. if the game is not interrupted
+						    * and the entity is in a state such that the player has the control */
+  bool moving_enabled_before_suspended;            /**< indicates whether moving_enabled was true when the game was suspended */
+  bool direction_enabled;                          /**< true if the direction arrows pressed are taken into account */
+  bool direction_enabled_before_suspended;         /**< indicates whether direction_enabled was true when the game was suspended */
 
   // keyboard
 
-  /**
-   * Indicates which ones of the 4 arrows are currently pressed by the player.
-   * This bit field is an OR combination of right_mask, up_mask, left_mask and down_mask.
-   */
-  uint16_t direction_mask;
+  uint16_t direction_mask;                         /**< indicates which ones of the 4 directional keys are currently pressed by the player
+						    * (an OR combination of the four direction masks) */
 
-  static const uint16_t direction_masks[4];
+  static const uint16_t direction_masks[4];        /**< bit mask representing of each one of the 4 directions */
 
   void add_direction_mask(uint16_t direction_mask);
   void remove_direction_mask(uint16_t direction_mask);

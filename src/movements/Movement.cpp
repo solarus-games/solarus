@@ -147,21 +147,6 @@ void Movement::translate(int dx, int dy) {
   set_position(get_x() + dx, get_y() + dy);
 }
 
-int Movement::get_x_move(void) { return x_move; }
-int Movement::get_y_move(void) { return y_move; }
-void Movement::set_x_move(int x_move) { this->x_move = x_move; }
-void Movement::set_y_move(int y_move) { this->y_move = y_move; }
-
-uint32_t Movement::get_next_move_date_x(void) { return next_move_date_x; }
-uint32_t Movement::get_next_move_date_y(void) { return next_move_date_y; }
-void Movement::set_next_move_date_x(uint32_t next_move_date_x) { this->next_move_date_x = next_move_date_x; }
-void Movement::set_next_move_date_y(uint32_t next_move_date_y) { this->next_move_date_y = next_move_date_y; }
-
-uint32_t Movement::get_x_delay(void) { return x_delay; }
-uint32_t Movement::get_y_delay(void) { return y_delay; }
-void Movement::set_x_delay(uint32_t x_delay) { this->x_delay = x_delay; }
-void Movement::set_y_delay(uint32_t y_delay) { this->y_delay = y_delay; }
-
 /**
  * Returns the x speed of the entity.
  * @return the x speed of the entity, between -100 and 100

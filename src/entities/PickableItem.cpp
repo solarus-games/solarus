@@ -301,8 +301,9 @@ PickableItem::Subtype PickableItem::choose_random_subtype(Equipment *equipment) 
 }
 
 /**
- * Returns whether this subtype of pickable item can disappear after a delay.
+ * Returns whether a subtype of pickable item can disappear after a delay.
  * Items saved like keys and pieces of hearts cannot disappear.
+ * @param subtype a pickable item subtype
  * @return true if this subtype of pickable item can disappear
  */
 bool PickableItem::can_disappear(Subtype subtype) {
@@ -315,7 +316,8 @@ bool PickableItem::can_disappear(Subtype subtype) {
 }
 
 /**
- * Returns whether this subtype of pickable item must be saved.
+ * Returns whether a subtype of pickable item must be saved.
+ * @param subtype a pickable item subtype
  * @return true if this subtype of pickable item must be saved
  */
 bool PickableItem::must_be_saved(Subtype subtype) {

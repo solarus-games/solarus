@@ -567,8 +567,9 @@ const Rectangle MapEntity::get_facing_point(int direction) {
 /**
  * Sets the entity this entity is currently facing.
  * This function is called when this entity is just being
- * facing another entity.
+ * facing a new entity.
  * By default, nothing is done.
+ * @param detector the detector this entity is now facing
  */
 void MapEntity::set_facing_entity(Detector *detector) {
 
@@ -699,7 +700,7 @@ void MapEntity::create_sprite(const SpriteAnimationSetId &id, bool enable_pixel_
 /**
  * Removes the specified sprite from this entity.
  * The sprite is destroyed.
- * @return id id of the sprite's animation set
+ * @param id id of the sprite's animation set
  */
 void MapEntity::remove_sprite(const SpriteAnimationSetId &id) {
 

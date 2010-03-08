@@ -321,6 +321,7 @@ void Message::update(void) {
 
 /**
  * Displays the message on a surface.
+ * @param destination_surface the surface to draw
  */
 void Message::display(Surface *destination_surface) {
 

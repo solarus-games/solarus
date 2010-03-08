@@ -941,7 +941,8 @@ void HeroSprites::set_animation_victory(void) {
 }
 
 /**
- * Creates the ground sprite corresponding to the specified ground.
+ * Creates the ground sprite and sound corresponding to the specified ground.
+ * @param ground a ground
  */
 void HeroSprites::create_ground(Ground ground) {
  

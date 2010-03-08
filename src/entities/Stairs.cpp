@@ -14,22 +14,24 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "entities/InternalStairs.h"
+#include "entities/Stairs.h"
 #include "lowlevel/FileTools.h"
 #include "Game.h"
 
 /**
- * Creates a new internal stairs entity.
+ * Creates a new stairs entity.
  * @param layer layer of the entity to create on the map
  * @param x x coordinate of the entity to create
  * @param y y coordinate of the entity to create
  * @param direction direction of the stairs (0 to 3)
+ * @param subtype the subtype of stairs
  */
-InternalStairs::InternalStairs(Layer layer, int x, int y, int direction):
-  Detector(COLLISION_FACING_POINT | COLLISION_RECTANGLE, "", layer, x, y, 16, 16) {
+Stairs::Stairs(Layer layer, int x, int y, int direction, Subtype subtype):
+  Detector(COLLISION_FACING_POINT | COLLISION_RECTANGLE, "", layer, x, y, 16, 16),
+  subtype(subtype) {
 
-  if (layer == LAYER_HIGH) {
-    DIE("Cannot put internal stairs on the high layer");
+  if (is_inside_floor() && layer == LAYER_HIGH) {
+    DIE("Cannot put single floor stairs on the high layer");
   }
 
   set_direction(direction);
@@ -39,7 +41,7 @@ InternalStairs::InternalStairs(Layer layer, int x, int y, int direction):
 /**
  * Destructor.
  */
-InternalStairs::~InternalStairs(void) {
+Stairs::~Stairs(void) {
 
 }
 
@@ -53,19 +55,28 @@ InternalStairs::~InternalStairs(void) {
  * @param y y coordinate of the entity
  * @return the instance created
  */
-MapEntity * InternalStairs::parse(Game *game, std::istream &is, Layer layer, int x, int y) {
+MapEntity * Stairs::parse(Game *game, std::istream &is, Layer layer, int x, int y) {
 
-  int direction;
+  int direction, subtype;
   FileTools::read(is, direction);
-  return new InternalStairs(Layer(layer), x, y, direction);
+  FileTools::read(is, subtype);
+  return new Stairs(Layer(layer), x, y, direction, Subtype(subtype));
 }
 
 /**
  * Returns the type of entity.
  * @return the type of entity
  */
-EntityType InternalStairs::get_type() {
-  return INTERNAL_STAIRS;
+EntityType Stairs::get_type() {
+  return STAIRS;
+}
+
+/**
+ * Returns whether the subtype of these stairs is INSIDE_FLOOR.
+ * @return true if the subtype if INSIDE_FLOOR
+ */
+bool Stairs::is_inside_floor(void) {
+  return subtype == INSIDE_FLOOR;
 }
 
 /**
@@ -73,8 +84,8 @@ EntityType InternalStairs::get_type() {
  * they are not on the same layer.
  * @return true if this entity can collide with entities that are on another layer
  */
-bool InternalStairs::has_layer_independent_collisions(void) {
-  return true;
+bool Stairs::has_layer_independent_collisions(void) {
+  return is_inside_floor();
 }
 
 /**
@@ -82,7 +93,7 @@ bool InternalStairs::has_layer_independent_collisions(void) {
  * If true is returned, nothing will happen when the hero hits this entity with the sword.
  * @return true if the sword is ignored
  */
-bool InternalStairs::is_sword_ignored(void) {
+bool Stairs::is_sword_ignored(void) {
   return true;
 }
 
@@ -91,8 +102,8 @@ bool InternalStairs::is_sword_ignored(void) {
  * @param other another entity
  * @return true if this block is raised
  */
-bool InternalStairs::is_obstacle_for(MapEntity *other) {
-  return other->is_internal_stairs_obstacle(this);
+bool Stairs::is_obstacle_for(MapEntity *other) {
+  return other->is_stairs_obstacle(this);
 }
 
 /**
@@ -100,12 +111,15 @@ bool InternalStairs::is_obstacle_for(MapEntity *other) {
  * @param entity_overlapping the other entity
  * @param collision_mode the collision mode that detected the collision
  */
-void InternalStairs::notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
-  entity_overlapping->notify_collision_with_internal_stairs(this);
+void Stairs::notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
+  entity_overlapping->notify_collision_with_stairs(this);
 }
 
 /**
- * Returns the direction of the movement an entity would take on these stairs depending on its layer.
+ * Returns the direction of the movement an entity would take on these stairs.
+ * If the stairs are not inside a single map, the direction is just north or south
+ * depending on the stairs direction.
+ * Otherwise, the direction depends on the entity's layer.
  * If the entity's layer is LAYER_LOW, then the entity would go upstairs and this function returns 
  * the direction property of the stairs (as returned by MapEntity::get_direction()).
  * If the entity's layer is LAYER_INTERMEDIATE, then the entity would go downstairs and the opposite
@@ -115,10 +129,10 @@ void InternalStairs::notify_collision(MapEntity *entity_overlapping, CollisionMo
  * @param initial_layer the layer from which you intend to take the stairs
  * @return the movement direction an entity on this layer should take on these stairs (0 to 3)
  */
-int InternalStairs::get_movement_direction(Layer initial_layer) {
+int Stairs::get_movement_direction(Layer initial_layer) {
 
   int movement_direction = get_direction();
-  if (initial_layer != LAYER_LOW) {
+  if (is_inside_floor() && initial_layer != LAYER_LOW) {
     movement_direction = (movement_direction + 4) % 2;
   }
 
@@ -130,13 +144,18 @@ int InternalStairs::get_movement_direction(Layer initial_layer) {
  * it can call this function to play the stairs sound.
  * @param entity_overlapping the entity taking the stairs
  */
-void InternalStairs::play_sound(MapEntity *entity_overlapping) {
+void Stairs::play_sound(MapEntity *entity_overlapping) {
 
-  if (entity_overlapping->get_layer() == LAYER_LOW) {
-    game->play_sound("internal_stairs_up");
+  if (is_inside_floor()) {
+    if (entity_overlapping->get_layer() == LAYER_LOW) {
+      game->play_sound("internal_stairs_up");
+    }
+    else {
+      game->play_sound("internal_stairs_down");
+    }
   }
   else {
-    game->play_sound("internal_stairs_down");
+    // TODO
   }
 }
 
@@ -146,12 +165,12 @@ void InternalStairs::play_sound(MapEntity *entity_overlapping) {
  * @param entity_overlapping the entity taking the stairs
  * @return the corresponding path to make
  */
-std::string InternalStairs::get_path(MapEntity *entity_overlapping) {
+std::string Stairs::get_path(MapEntity *entity_overlapping) {
 
   // determine the movement direction
   int movement_direction = get_direction() * 2;
 
-  if (get_layer() != LAYER_LOW) {
+  if (is_inside_floor() && get_layer() != LAYER_LOW) {
     movement_direction = (movement_direction + 4) % 8;
   }
   std::string path = "     ";

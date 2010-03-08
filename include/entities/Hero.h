@@ -66,7 +66,7 @@ class Hero: public MapEntity {
       FALLING,                             /**< the hero is falling into a hole */
       RETURNING_TO_SOLID_GROUND,           /**< the hero is returning towards solid ground (e.g. after he drowned
 				            * in deep water or falled into a hole) */
-      INTERNAL_STAIRS,                     /**< the hero is being moved by internal stairs */
+      STAIRS,                              /**< the hero is being moved by stairs */
       VICTORY,                             /**< the hero is make a victory sequence with his sword */
       USING_INVENTORY_ITEM,                /**< the hero is currently using an item from the inventory */
       FREEZED                              /**< the hero cannot move for various possible reasons,
@@ -111,7 +111,8 @@ class Hero: public MapEntity {
     ConveyorBelt *current_conveyor_belt;   /**< the current conveyor belt in state CONVEYOR_BELT */
 
     // stairs
-    bool going_upstairs;                   /**< when walking on internal stairs, indicates whether the hero is walking upstairs or downstairs */
+    int stairs_going_to_low_layer;         /**< when walking on stairs, indicates whether the hero
+					    * should arrive on the low layer when the movement is finished */
 
     // sword loading
     bool sword_loaded;                     /**< in state SWORD_LOADING, becomes true when the spin attack is possible */
@@ -197,7 +198,7 @@ class Hero: public MapEntity {
     void update_moving_grabbed_entity(void);
 
     void update_conveyor_belt(void);
-    void update_internal_stairs(void);
+    void update_stairs(void);
 
     void update_treasure(void);
     void display_treasure(void);
@@ -317,7 +318,7 @@ class Hero: public MapEntity {
 
     void notify_collision_with_teletransporter(Teletransporter *teletransporter, int collision_mode);
     void notify_collision_with_conveyor_belt(ConveyorBelt *conveyor_belt, int dx, int dy);
-    void notify_collision_with_internal_stairs(InternalStairs *internal_stairs);
+    void notify_collision_with_stairs(Stairs *stairs);
     void notify_collision_with_sensor(Sensor *sensor);
     void notify_collision_with_explosion(Explosion *explosion, Sprite *sprite_overlapping);
     void avoid_chest_collision(Chest *chest);
@@ -329,7 +330,7 @@ class Hero: public MapEntity {
     bool is_ladder_obstacle(void);
     bool is_teletransporter_obstacle(Teletransporter *teletransporter);
     bool is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt);
-    bool is_internal_stairs_obstacle(InternalStairs *internal_stairs);
+    bool is_stairs_obstacle(Stairs *stairs);
     bool is_sensor_obstacle(Sensor *sensor);
     bool is_raised_block_obstacle(CrystalSwitchBlock *raised_block);
     bool is_jump_sensor_obstacle(JumpSensor *jump_sensor);

@@ -20,6 +20,7 @@
 #include "entities/Enemy.h"
 #include "entities/Explosion.h"
 #include "entities/Sensor.h"
+#include "entities/Stairs.h"
 #include "entities/MapEntities.h"
 #include "movements/PixelMovement.h"
 #include "movements/FollowMovement.h"
@@ -415,11 +416,11 @@ bool CarriedItem::is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt) {
 }
 
 /**
- * Returns whether some internal stairs are currently considered as an obstacle for this entity.
- * @param internal stairs an internal stairs entity
- * @return true if the internal statrs are currently an obstacle for this entity
+ * Returns whether some stairs are currently considered as an obstacle for this entity.
+ * @param stairs an stairs entity
+ * @return true if the stairs are currently an obstacle for this entity
  */
-bool CarriedItem::is_internal_stairs_obstacle(InternalStairs *internal_stairs) {
+bool CarriedItem::is_stairs_obstacle(Stairs *stairs) {
   return false;
 }
 
@@ -505,13 +506,14 @@ bool CarriedItem::is_enemy_obstacle(Enemy *enemy) {
 }
 
 /**
- * This function is called when some internal stairs detect a collision with this entity.
- * @param internal_stairs the internal stairs entity
+ * This function is called when some stairs detect a collision with this entity.
+ * @param stairs the stairs entity
  */
-void CarriedItem::notify_collision_with_internal_stairs(InternalStairs *internal_stairs) {
+void CarriedItem::notify_collision_with_stairs(Stairs *stairs) {
 
-  if (is_throwing && !is_breaking && get_layer() == LAYER_LOW) { // show the destruction animation above the stairs
-    break_on_intermediate_layer = true;
+  if (is_throwing && !is_breaking
+      && stairs->is_inside_floor() && get_layer() == LAYER_LOW) {
+    break_on_intermediate_layer = true; // show the destruction animation above the stairs
   }
 }
 

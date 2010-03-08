@@ -17,6 +17,7 @@
 #include "entities/Boomerang.h"
 #include "entities/Hero.h"
 #include "entities/Enemy.h"
+#include "entities/Stairs.h"
 #include "entities/MapEntities.h"
 #include "movements/CollisionMovement.h"
 #include "movements/PlayerMovement.h"
@@ -148,12 +149,12 @@ bool Boomerang::is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt) {
 }
 
 /**
- * Returns whether some internal stairs are currently considered as an obstacle for this entity.
- * @param internal stairs an internal stairs entity
- * @return true if the internal statrs are currently an obstacle for this entity
+ * Returns whether some stairs are currently considered as an obstacle for this entity.
+ * @param stairs an stairs entity
+ * @return true if the stairs are currently an obstacle for this entity
  */
-bool Boomerang::is_internal_stairs_obstacle(InternalStairs *internal_stairs) {
-  return get_layer() == LAYER_LOW;
+bool Boomerang::is_stairs_obstacle(Stairs *stairs) {
+  return stairs->is_inside_floor() && get_layer() == LAYER_LOW;
 }
 
 /**

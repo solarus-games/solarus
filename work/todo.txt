@@ -121,6 +121,15 @@ et peut-être aussi le dessin de l'escalier.
   - bas descendant à droite
   - bas montant à gauche
 
+Ou alors une seule entité pour gérer les deux cas (Stairs), avec plusieurs sous-types possibles :
+  - internal stairs (4 directions possibles), utilisé à la fois pour monter et descendre
+  - external stairs descendant tout droit (2 directions possibles : nord ou sud)
+  - external stairs montant tout droit (nord ou sud)
+  - external stairs descendant en colimaçon (nord ou sud)
+  - external stairs montant en colimaçon (nord ou sud)
+
+  L'animation, le son et le mouvement du héros dépendent du sous-type.
+
 
 --------------
 Mode release :

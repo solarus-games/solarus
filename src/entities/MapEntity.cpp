@@ -36,7 +36,7 @@
 #include "entities/ShopItem.h"
 #include "entities/ConveyorBelt.h"
 #include "entities/Door.h"
-#include "entities/InternalStairs.h"
+#include "entities/Stairs.h"
 #include "entities/Arrow.h"
 #include "movements/Movement.h"
 #include "lowlevel/Geometry.h"
@@ -65,7 +65,7 @@ MapEntity::CreationFunction* MapEntity::creation_functions[] = {
   ShopItem::parse,
   ConveyorBelt::parse,
   Door::parse,
-  InternalStairs::parse,
+  Stairs::parse,
 };
 
 
@@ -90,7 +90,7 @@ const MapEntity::EntityTypeFeatures MapEntity::entity_types_features[] = {
   { true,  true,  true, false}, // shop item
   { true,  true,  true, false}, // conveyor belt
   { true,  true,  true, false}, // door
-  { true,  true, false, false}, // internal stairs
+  { true,  true, false, false}, // stairs
   // other entity types (the ones not stored in map files) does not use this array and must redefine the 4 functions
 };
 
@@ -878,12 +878,12 @@ bool MapEntity::is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt) {
 }
 
 /**
- * Returns whether some internal stairs are currently considered as an obstacle for this entity.
+ * Returns whether some stairs are currently considered as an obstacle for this entity.
  * This function returns true by default.
- * @param internal stairs an internal stairs entity
- * @return true if the internal statrs are currently an obstacle for this entity
+ * @param stairs an stairs entity
+ * @return true if the stairs are currently an obstacle for this entity
  */
-bool MapEntity::is_internal_stairs_obstacle(InternalStairs *internal_stairs) {
+bool MapEntity::is_stairs_obstacle(Stairs *stairs) {
   return true;
 }
 
@@ -1122,10 +1122,10 @@ void MapEntity::notify_collision_with_conveyor_belt(ConveyorBelt *conveyor_belt,
 }
 
 /**
- * This function is called when an internal stairs entity detect a collision with this entity.
- * @param internal_stairs the internal stairs
+ * This function is called when an stairs entity detect a collision with this entity.
+ * @param stairs the stairs
  */
-void MapEntity::notify_collision_with_internal_stairs(InternalStairs *internal_stairs) {
+void MapEntity::notify_collision_with_stairs(Stairs *stairs) {
   // nothing done by default
 }
 

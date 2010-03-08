@@ -20,6 +20,9 @@ Démo :
 - Version finale 1.0 : r1176
 
 
+Version gentoo svn :
+games-rpg/solarus from  gamerlay overlay
+
 Feature requests :
 
 - Mettre de la couleur dans les messages

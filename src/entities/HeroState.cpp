@@ -21,7 +21,7 @@
 #include "entities/MapEntities.h"
 #include "entities/Enemy.h"
 #include "entities/ConveyorBelt.h"
-#include "entities/InternalStairs.h"
+#include "entities/Stairs.h"
 #include "entities/Sensor.h"
 #include "entities/Explosion.h"
 #include "movements/PlayerMovement.h"
@@ -304,49 +304,56 @@ void Hero::update_conveyor_belt(void) {
 }
 
 /**
- * This function is called when an internal stairs entity detects a collision with this entity.
- * @param internal_stairs the stairs
+ * This function is called when a stairs entity detects a collision with this entity.
+ * @param stairs the stairs
  */
-void Hero::notify_collision_with_internal_stairs(InternalStairs *internal_stairs) {
+void Hero::notify_collision_with_stairs(Stairs *stairs) {
 
-  if (state != INTERNAL_STAIRS && state != CARRYING && state != SWORD_LOADING) {
+  if (state != STAIRS && state != CARRYING && state != SWORD_LOADING) {
 
     // check whether the hero is trying to move in the direction of the stairs
-    int correct_direction = internal_stairs->get_movement_direction(get_layer());
+    int correct_direction = stairs->get_movement_direction(get_layer());
 
     if (is_moving_towards(correct_direction)) {
 
       // state
-      set_state(INTERNAL_STAIRS);
+      set_state(STAIRS);
 
       // sprites and sound
-      internal_stairs->play_sound(this);
+      stairs->play_sound(this);
       sprites->set_animation_walking();
       game->get_keys_effect()->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
 
-      // layer change
-      going_upstairs = (get_layer() == LAYER_LOW);
-      if (going_upstairs) {
-	map->get_entities()->set_entity_layer(this, LAYER_INTERMEDIATE);
+      // change the layer if necessary
+      stairs_going_to_low_layer = false;
+      if (stairs->is_inside_floor()) {
+        if (get_layer() == LAYER_LOW) {
+	  // low layer to intermediate layer: we change it now
+	  map->get_entities()->set_entity_layer(this, LAYER_INTERMEDIATE);
+	}
+	else {
+          // intermediate to low layer: we will change it only after the movement
+	  stairs_going_to_low_layer = true;
+	}
       }
 
       // movement
-      set_movement(new PathMovement(internal_stairs->get_path(this), walking_speed / 2, false, false, false));
+      set_movement(new PathMovement(stairs->get_path(this), walking_speed / 2, false, false, false));
     }
   }
 }
 
 /**
- * Updates the hero when he is walking on internal stairs.
- * The state should be INTERNAL_STAIRS.
+ * Updates the hero when he is walking on stairs.
+ * The state should be SAIRS.
  */
-void Hero::update_internal_stairs(void) {
+void Hero::update_stairs(void) {
 
   get_movement()->update();
 
   if (get_movement()->is_finished()) {
 
-    if (!going_upstairs) {
+    if (stairs_going_to_low_layer) {
       map->get_entities()->set_entity_layer(this, LAYER_LOW);
     }
     clear_movement();

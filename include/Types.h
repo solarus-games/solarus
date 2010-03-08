@@ -159,7 +159,7 @@ class ShopItem;
 class Boomerang;
 class Arrow;
 class ConveyorBelt;
-class InternalStairs;
+class Stairs;
 class Door;
 class Explosion;
 

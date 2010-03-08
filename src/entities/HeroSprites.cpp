@@ -640,7 +640,7 @@ void HeroSprites::set_animation_walking(void) {
   switch (hero->get_state()) {
 
    case Hero::FREE:
-   case Hero::INTERNAL_STAIRS:
+   case Hero::STAIRS:
 
     stop_displaying_sword();
 

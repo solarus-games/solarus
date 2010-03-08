@@ -199,11 +199,11 @@ bool Hero::is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt) {
 }
 
 /**
- * Returns whether some internal stairs are currently considered as an obstacle for this entity.
- * @param internal stairs an internal stairs entity
- * @return true if the internal statrs are currently an obstacle for this entity
+ * Returns whether some stairs are currently considered as an obstacle for this entity.
+ * @param stairs an stairs entity
+ * @return true if the stairs are currently an obstacle for this entity
  */
-bool Hero::is_internal_stairs_obstacle(InternalStairs *internal_stairs) {
+bool Hero::is_stairs_obstacle(Stairs *stairs) {
   return true;
 }
 
@@ -549,8 +549,8 @@ void Hero::update(void) {
 	update_conveyor_belt();
 	break;
 
-      case INTERNAL_STAIRS:
-	update_internal_stairs();
+      case STAIRS:
+	update_stairs();
 	break;
 
       case JUMPING:

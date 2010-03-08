@@ -14,31 +14,50 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_INTERNAL_STAIRS_H
-#define SOLARUS_INTERNAL_STAIRS_H
+#ifndef SOLARUS_STAIRS_H
+#define SOLARUS_STAIRS_H
 
 #include "Common.h"
 #include "entities/Detector.h"
 
 /**
- * A special terrain where the hero walks from 
- * the low layer to the intermediate layer (or the opposite)
- * in the same map by taking stairs.
+ * A special terrain where the hero walks on stairs
+ * either before going to another floor
+ * or to change its layer inside a single floor.
  *
- * Only one entity has to be placed and the collisions will be detected on both layers.
+ * For stairs inside a single floor,
+ * only one entity has to be placed and the collisions will be detected on both layers.
  * This entity is usually placed on the intermediate layer
  * even if there is no obligation.
  */
-class InternalStairs: public Detector {
+class Stairs: public Detector {
 
   public:
 
-    InternalStairs(Layer layer, int x, int y, int direction);
-    ~InternalStairs(void);
+    /**
+     * Subtypes of stairs.
+     */
+    enum Subtype {
+      SPIRAL_UPSTAIRS,          /**< going to the floor upstairs (spiral staircase) */
+      SPIRAL_DOWNSTAIRS,        /**< going to the floor downstairs (spiral staircase) */
+      STRAIGHT_UPSTAIRS,        /**< going to the floor upstairs (straight staircase) */
+      STRAIGHT_DOWNSTAIRS,      /**< going to the floor downstairs (straight staircase) */
+      INSIDE_FLOOR              /**< small stairs inside a single floor, changing the hero's layer */
+   };
+
+  private:
+
+    Subtype subtype;                      /**< subtype of stairs */
+
+  public:
+
+    Stairs(Layer layer, int x, int y, int direction, Subtype subtype);
+    ~Stairs(void);
     static CreationFunction parse;
 
     EntityType get_type(void);
 
+    bool is_inside_floor(void);
     bool has_layer_independent_collisions(void);
     bool is_sword_ignored(void);
     bool is_obstacle_for(MapEntity *other);

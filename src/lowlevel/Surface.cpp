@@ -33,7 +33,7 @@ Surface::Surface(int width, int height):
 /**
  * Creates a surface from the specified image file name.
  * @param file_name name of the image file to load, relative to the base directory specified
- * @param directory the base directory to use
+ * @param base_directory the base directory to use
  */
 Surface::Surface(const std::string &file_name, ImageDirectory base_directory):
   internal_surface_created(true) {

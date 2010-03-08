@@ -33,7 +33,7 @@ const InputEvent::KeyboardKey SelectionMenuPhase::validation_keys[] = {
 
 /**
  * Creates a selection menu phase.
- * @param selection_menu the selection menu this phase will belong to
+ * @param menu the selection menu this phase will belong to
  * @param title_string_key key of the title string to display in this phase
  */
 SelectionMenuPhase::SelectionMenuPhase(SelectionMenu *menu, const std::string &title_string_key):

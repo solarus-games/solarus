@@ -111,7 +111,7 @@ const std::string & IniFile::get_group(void) {
 /**
  * Returns the integer value corresponding to the specified key in the current group.
  * @param key the key
- * @param default value a default value to return if the key does not exist
+ * @param default_value a default value to return if the key does not exist
  * @return the value of this key
  */
 int IniFile::get_integer_value(const std::string &key, int default_value) {
@@ -123,7 +123,7 @@ int IniFile::get_integer_value(const std::string &key, int default_value) {
 /**
  * Returns the boolean value corresponding to the specified key in the current group.
  * @param key the key
- * @param default value a default value to return if the key does not exist
+ * @param default_value a default value to return if the key does not exist
  * @return the value of this key
  */
 bool IniFile::get_boolean_value(const std::string &key, bool default_value) {
@@ -134,7 +134,7 @@ bool IniFile::get_boolean_value(const std::string &key, bool default_value) {
 /**
  * Returns the string value corresponding to the specified key in the current group.
  * @param key the key
- * @param default value a default value to return if the key does not exist
+ * @param default_value a default value to return if the key does not exist
  * @return the value of this key
  */
 const std::string IniFile::get_string_value(const std::string &key, const std::string &default_value) {
@@ -147,7 +147,6 @@ const std::string IniFile::get_string_value(const std::string &key, const std::s
  * Returns the string value corresponding to the specified key in the current group.
  * If the string is not defined, the application stops on an error message.
  * @param key the key
- * @param default value a default value to return if the key does not exist
  * @return the value of this key
  */
 const std::string IniFile::get_string_value(const std::string &key) {

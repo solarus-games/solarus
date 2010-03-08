@@ -47,7 +47,7 @@ void DebugKeys::set_game(Game *game) {
 
 /**
  * This function is called when a keyboard key is pressed.
- * @param keysym the key pressed
+ * @param key the key pressed
  */
 void DebugKeys::key_pressed(InputEvent::KeyboardKey key) {
 
@@ -193,7 +193,7 @@ void DebugKeys::key_pressed(InputEvent::KeyboardKey key) {
 
 /**
  * This function is called when a keyboard key is released.
- * @param keysym the key released
+ * @param key the key released
  */
 void DebugKeys::key_released(InputEvent::KeyboardKey key) {
 

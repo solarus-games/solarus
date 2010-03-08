@@ -24,7 +24,7 @@ const std::string Configuration::group_name = "configuration";
 /**
  * Returns a string value from the configuration file.
  * @param key name of the value to get
- * @param default value the value to return if the configuration file does not exist or does not have the information
+ * @param default_value the value to return if the configuration file does not exist or does not have the information
  * @return the value as a string
  */
 const std::string Configuration::get_value(const std::string &key, const std::string &default_value) {
@@ -45,7 +45,7 @@ const std::string Configuration::get_value(const std::string &key, const std::st
 /**
  * Returns an integer value from the configuration file.
  * @param key name of the value to get
- * @param default value the value to return if the configuration file does not exist or does not have the information
+ * @param default_value the value to return if the configuration file does not exist or does not have the information
  * @return the value as an integer
  */
 int Configuration::get_value(const std::string &key, int default_value) {

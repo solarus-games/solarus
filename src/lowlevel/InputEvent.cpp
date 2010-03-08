@@ -91,7 +91,7 @@ InputEvent * InputEvent::get_event(void) {
 
 /**
  * Sets the keyboard repeat preferences.
- * @param initial_delay delay in milliseconds before the event begins repeating (0 means no repeating)
+ * @param delay delay in milliseconds before the event begins repeating (0 means no repeating)
  * @param interval interval in milliseconds between two events while repeating
  */
 void InputEvent::set_key_repeat(int delay, int interval) {

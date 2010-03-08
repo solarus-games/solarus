@@ -43,6 +43,10 @@ class InternalStairs: public Detector {
     bool is_sword_ignored(void);
     bool is_obstacle_for(MapEntity *other);
     void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
+
+    int get_movement_direction(Layer initial_layer);
+    void play_sound(MapEntity *entity_overlapping);
+    std::string get_path(MapEntity *entity_overlapping);
 };
 
 #endif

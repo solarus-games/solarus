@@ -312,36 +312,26 @@ void Hero::notify_collision_with_internal_stairs(InternalStairs *internal_stairs
   if (state != INTERNAL_STAIRS && state != CARRYING && state != SWORD_LOADING) {
 
     // check whether the hero is trying to move in the direction of the stairs
-    int stairs_direction = internal_stairs->get_direction();
-    if (get_layer() != LAYER_LOW) {
-      stairs_direction = (stairs_direction + 2) % 4;
-    }
+    int correct_direction = internal_stairs->get_movement_direction(get_layer());
 
-    if (is_moving_towards(stairs_direction)) {
+    if (is_moving_towards(correct_direction)) {
 
       // state
       set_state(INTERNAL_STAIRS);
+
+      // sprites and sound
+      internal_stairs->play_sound(this);
       sprites->set_animation_walking();
       game->get_keys_effect()->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
 
-      // sound
-      if (get_layer() == LAYER_LOW) {
-	game->play_sound("internal_stairs_up");
+      // layer change
+      going_upstairs = (get_layer() == LAYER_LOW);
+      if (going_upstairs) {
 	map->get_entities()->set_entity_layer(this, LAYER_INTERMEDIATE);
-	going_upstairs = true;
-      }
-      else {
-	game->play_sound("internal_stairs_down");
-	going_upstairs = false;
       }
 
       // movement
-      stairs_direction *= 2;
-      std::string path = "     ";
-      for (int i = 0; i < 5; i++) {
-	path[i] = '0' + stairs_direction;
-      }
-      set_movement(new PathMovement(path, walking_speed / 2, false, false, false));
+      set_movement(new PathMovement(internal_stairs->get_path(this), walking_speed / 2, false, false, false));
     }
   }
 }

@@ -203,7 +203,7 @@ void SelectionMenu::read_savegames(void) {
 
 /**
  * Goes to a next phase in the menu.
- * @param phase the next phase
+ * @param next_phase the next phase
  */
 void SelectionMenu::set_next_phase(SelectionMenuPhase *next_phase) {
   this->next_phase = next_phase;
@@ -401,7 +401,7 @@ int SelectionMenu::get_cursor_position(void) {
 
 /**
  * Sets the current position of the savegame cursor.
- * @param position the new position (1 to 5)
+ * @param cursor_position the new position (1 to 5)
  */
 void SelectionMenu::set_cursor_position(int cursor_position) {
   this->cursor_position = cursor_position;

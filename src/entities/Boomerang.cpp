@@ -306,7 +306,7 @@ void Boomerang::notify_collision_with_enemy(Enemy *enemy) {
  * - a value of 0 means that the attack was just ignored 
  * - a value of -1 means that the enemy was protected against the attack
  * - a value of -2 means that the attack immobilized the enemy
- * @param killed indicates that the attack has just killed the enemy
+ * @param dead indicates that the attack has just killed the enemy
  */
 void Boomerang::just_attacked_enemy(EnemyAttack attack, Enemy *victim, int result, bool dead) {
 

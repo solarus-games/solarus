@@ -125,7 +125,7 @@ const std::string GameControls::get_keyboard_string(GameKey game_key) {
 /**
  * Returns whether the specified game key is pressed.
  * The key can be pressed from the keyboard or the joypad.
- * @param game key a game key
+ * @param game_key a game key
  * @return true if the game key is currently pressed
  */
 bool GameControls::is_key_pressed(GameKey game_key) {

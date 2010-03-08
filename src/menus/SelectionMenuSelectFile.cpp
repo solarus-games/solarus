@@ -25,7 +25,7 @@
 
 /**
  * Creates a selection menu phase where the player selects a file.
- * @param selection_menu the selection menu this phase will belong to
+ * @param menu the selection menu this phase will belong to
  */
 SelectionMenuSelectFile::SelectionMenuSelectFile(SelectionMenu *menu):
   SelectionMenuPhase(menu, "selection_menu.select_file") {

@@ -25,7 +25,7 @@
 /**
  * Creates a selection menu with the phase where the
  * player has to choose his name.
- * @param previous the previous phase
+ * @param menu the selection menu this phase will belong to
  */
 SelectionMenuChooseName::SelectionMenuChooseName(SelectionMenu *menu):
   SelectionMenuPhase(menu, "selection_menu.choose_name"), next_key_date(System::now()) {

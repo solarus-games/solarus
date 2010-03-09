@@ -57,11 +57,11 @@ public class Stairs extends MapEntity {
      * Description of the default image representing this kind of entity.
      */
     public static final EntityImageDescription[] generalImageDescriptions = {
-	new EntityImageDescription("stairs.png",   0, 0, 16, 16),
-	new EntityImageDescription("stairs.png",  32, 0, 16, 16),
-	new EntityImageDescription("stairs.png",  64, 0, 16, 16),
-	new EntityImageDescription("stairs.png",  96, 0, 16, 16),
-	new EntityImageDescription("stairs.png", 128, 0, 16, 16),
+	new EntityImageDescription("stairs.png",   0, 32, 32, 32),
+	new EntityImageDescription("stairs.png",  32, 32, 32, 32),
+	new EntityImageDescription("stairs.png",  64, 32, 32, 32),
+	new EntityImageDescription("stairs.png",  96, 32, 32, 32),
+	new EntityImageDescription("stairs.png", 128, 32, 32, 32),
     };
 
     /**
@@ -97,7 +97,7 @@ public class Stairs extends MapEntity {
 	super.setSubtype(subtype);
 
 	if (!isInsideFloor() && direction % 2 == 0) {
-		setDirection(1);
+	    setDirection(1);
 	}
 
 	setChanged();
@@ -108,6 +108,7 @@ public class Stairs extends MapEntity {
      * Updates the description of the image currently representing the entity.
      */
     public void updateImageDescription() {
+      currentImageDescription.setX(getSubtype().ordinal() * 32);
       currentImageDescription.setY(getDirection() * 32);
     }
 

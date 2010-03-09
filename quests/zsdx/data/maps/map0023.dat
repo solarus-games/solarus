@@ -210,14 +210,11 @@
 12	0	88	248	32	8	custom_obstacle_2	1	1	1	1
 11	0	128	64	nw_switch	1	0	0
 4	0	136	77	0	0	-1
-13	0	80	101	16	16	sensor	1
-13	0	104	293	16	16	sensor_2	1
 5	0	400	448	compass_chest	0	71	1	55
 7	0	488	501	compass_room_battle	3	2	0	-1	-1	-1
 7	0	536	525	compass_room_battle_3	3	2	0	-1	-1	-1
 7	0	608	525	compass_room_battle_4	3	2	0	-1	-1	-1
 7	0	448	549	compass_room_battle_2	3	2	0	-1	-1	-1
-13	0	288	157	16	16	sensor_5	1
 1	0	104	77	from_B1_west	3	0
 1	0	608	477	from_B1_south	3	0
 2	0	96	48	16	16	to_B1_west	0	1	24	from_1F_west
@@ -231,6 +228,9 @@
 4	0	72	477	0	4	-1
 4	0	280	333	0	0	-1
 2	0	600	448	16	16	to_B1_south	0	1	24	from_1F_south
+19	0	96	256	1	4
+19	0	88	88	0	4
+19	0	296	144	0	4
 0	1	184	256	32	24	49
 0	1	168	216	24	48	50
 0	1	112	504	128	80	2
@@ -481,15 +481,12 @@
 12	1	80	104	32	8	custom_obstacle_4	1	1	1	1
 12	1	88	248	8	32	custom_obstacle_5	1	1	1	1
 12	1	112	248	8	32	custom_obstacle_6	1	1	1	1
-13	1	104	277	16	16	sensor_3	1
-13	1	96	101	16	16	sensor_4	1
 7	1	520	309	enemy_5	3	2	0	-1	14	59
 7	1	600	349	enemy_8	3	2	0	-1	-1	-1
 7	1	696	349	enemy_10	3	2	0	-1	-1	-1
 7	1	712	229	enemy_12	3	2	0	-1	-1	-1
 7	1	696	157	enemy_13	3	2	0	-1	-1	-1
 7	1	560	157	enemy_14	3	2	0	-1	-1	-1
-13	1	304	157	16	16	sensor_6	1
 12	1	288	136	32	8	custom_obstacle_7	1	1	1	1
 12	1	288	160	32	8	custom_obstacle_8	1	1	1	1
 7	1	408	272	enemy_6	3	1	0	-1	-1	-1

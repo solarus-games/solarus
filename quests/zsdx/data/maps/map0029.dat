@@ -456,9 +456,6 @@
 12	0	248	608	32	8	custom_obstacle_2	1	1	1	1
 1	0	200	733	from_outside_west	1	0
 2	0	608	752	16	16	to_outside_east	0	1	6	from_twin_caves_east
-13	0	200	685	16	16	sensor	1
-13	0	264	653	16	16	sensor_2	1
-13	0	152	389	16	16	sensor_5	1
 9	0	312	373	block_2	-1	0	0
 5	0	464	336	chest	0	87	20	70
 1	0	440	557	destination_point_F	-1	1
@@ -535,8 +532,11 @@
 15	0	576	160	16	16	1
 18	0	416	368	door_2	2	0	-1
 18	0	320	368	door	0	0	-1
-13	0	264	365	16	16	sensor_9	1
 10	0	688	712	8	8	final_barrier_2	69	1
+19	0	192	648	1	4
+19	0	256	616	1	4
+19	0	160	376	0	4
+19	0	240	352	2	4
 0	1	248	600	32	16	2
 0	1	184	568	96	32	2
 0	1	184	600	32	48	2
@@ -657,17 +657,13 @@
 12	1	272	608	8	32	custom_obstacle_6	1	1	1	1
 6	1	208	560	56	8	jump_sensor	2	16
 6	1	176	592	8	24	jump_sensor_2	4	16
-13	1	200	669	16	16	sensor_3	1
-13	1	264	637	16	16	sensor_4	1
 6	1	176	344	8	24	jump_sensor_3	4	40
 6	1	176	400	8	24	jump_sensor_4	4	40
 6	1	232	400	8	24	jump_sensor_5	0	40
-13	1	168	389	16	16	sensor_6	1
 12	1	152	392	32	8	custom_obstacle_8	1	1	1	1
 12	1	152	368	32	8	custom_obstacle_7	1	1	1	1
 10	1	336	368	8	32	door_open	308	1
 10	1	408	368	8	32	door_open_2	307	1
-13	1	248	365	16	16	sensor_8	1
 12	1	232	368	32	8	custom_obstacle_9	1	1	1	1
 12	1	232	344	32	8	custom_obstacle_10	1	1	1	1
 0	2	0	0	800	16	170

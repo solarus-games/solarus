@@ -27,8 +27,7 @@
  *
  * For stairs inside a single floor,
  * only one entity has to be placed and the collisions will be detected on both layers.
- * This entity is usually placed on the intermediate layer
- * even if there is no obligation.
+ * This entity is usually placed on the low layer even if there is no obligation.
  */
 class Stairs: public Detector {
 

@@ -133,7 +133,7 @@ int Stairs::get_movement_direction(Layer initial_layer) {
 
   int movement_direction = get_direction();
   if (is_inside_floor() && initial_layer != LAYER_LOW) {
-    movement_direction = (movement_direction + 4) % 2;
+    movement_direction = (movement_direction + 2) % 4;
   }
 
   return movement_direction;
@@ -168,11 +168,7 @@ void Stairs::play_sound(MapEntity *entity_overlapping) {
 std::string Stairs::get_path(MapEntity *entity_overlapping) {
 
   // determine the movement direction
-  int movement_direction = get_direction() * 2;
-
-  if (is_inside_floor() && get_layer() != LAYER_LOW) {
-    movement_direction = (movement_direction + 4) % 8;
-  }
+  int movement_direction = 2 * get_movement_direction(entity_overlapping->get_layer());
   std::string path = "     ";
   for (int i = 0; i < 5; i++) {
     path[i] = '0' + movement_direction;

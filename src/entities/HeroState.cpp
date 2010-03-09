@@ -319,6 +319,9 @@ void Hero::notify_collision_with_stairs(Stairs *stairs) {
       // state
       set_state(STAIRS);
 
+      // movement
+      Movement *movement = new PathMovement(stairs->get_path(this), walking_speed / 2, false, false, false);
+
       // sprites and sound
       stairs->play_sound(this);
       sprites->set_animation_walking();
@@ -337,8 +340,7 @@ void Hero::notify_collision_with_stairs(Stairs *stairs) {
 	}
       }
 
-      // movement
-      set_movement(new PathMovement(stairs->get_path(this), walking_speed / 2, false, false, false));
+      set_movement(movement);
     }
   }
 }

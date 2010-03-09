@@ -57,7 +57,9 @@ public class AddEntitiesToolbar extends JComponent {
 	new Cell(EntityType.CRYSTAL_SWITCH_BLOCK, CrystalSwitchBlock.Subtype.BLUE),
 	new Cell(EntityType.SHOP_ITEM),
 	new Cell(EntityType.CONVEYOR_BELT),
-	new Cell(EntityType.DOOR, Door.Subtype.CLOSED)
+	new Cell(EntityType.DOOR, Door.Subtype.CLOSED),
+	new Cell(EntityType.STAIRS, Stairs.Subtype.SPIRAL_UPSTAIRS),
+	new Cell(EntityType.STAIRS, Stairs.Subtype.INSIDE_FLOOR),
     };
 
     /**

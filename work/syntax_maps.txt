@@ -353,9 +353,10 @@ savegame_variable
 savegame_variable indique la variable qui indique l'état de cette porte. Pour le sous-type CLOSED, la valeur peut être -1 : la porte ne sera alors pas sauvegardée.
 
 
-Escaliers internes (19)
+Escaliers (19)
 
-Un escalier interne est un escalier qui permet de monter sur une plate-forme surélevée ou d'en descendre, à l'intérieur d'une map.
-Il a une direction (correspondant à la direction permettant de monter sur la plate-forme),
-n'est pas redimensionnable ni identifiable et n'a pas de partie spécifique.
+Un escalier permet de changer d'étage, ou de monter sur une plate-forme surélevée (ou d'en descendre) à l'intérieur d'un même étage.
+Il a une direction, n'est pas redimensionnable ni identifiable et n'a pas de partie spécifique.
+Pour un escalier à l'intérieur d'un même étage, il y a 4 directions possibles.
+Pour les autres escaliers, il y a 2 directions possibles (nord : 1 et sud : 3).
 

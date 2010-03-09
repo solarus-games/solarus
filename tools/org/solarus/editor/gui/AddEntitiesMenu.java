@@ -45,7 +45,7 @@ public class AddEntitiesMenu extends JMenu {
 		PickableItem.Subtype.PIECE_OF_HEART,
 		PickableItem.Subtype.SMALL_KEY
 		),
-	new ItemDefinition(EntityType.DESTRUCTIBLE_ITEM, KeyEvent.VK_S,
+	new ItemDefinition(EntityType.DESTRUCTIBLE_ITEM, KeyEvent.VK_M,
 		DestructibleItem.Subtype.GRASS,
 		DestructibleItem.Subtype.BUSH,
 		DestructibleItem.Subtype.POT,
@@ -82,9 +82,9 @@ public class AddEntitiesMenu extends JMenu {
 		CrystalSwitchBlock.Subtype.ORANGE,
 		CrystalSwitchBlock.Subtype.BLUE
 	),
-	new ItemDefinition(EntityType.SHOP_ITEM, KeyEvent.VK_M),
+	new ItemDefinition(EntityType.SHOP_ITEM, KeyEvent.VK_H),
 	new ItemDefinition(EntityType.CONVEYOR_BELT, KeyEvent.VK_V),
-	new ItemDefinition(EntityType.DOOR, KeyEvent.VK_D,
+	new ItemDefinition(EntityType.DOOR, KeyEvent.VK_R,
                 Door.Subtype.CLOSED,
 		Door.Subtype.SMALL_KEY,
 		Door.Subtype.SMALL_KEY_BLOCK,
@@ -93,6 +93,10 @@ public class AddEntitiesMenu extends JMenu {
 		Door.Subtype.WEAK,
 		Door.Subtype.VERY_WEAK,
 		Door.Subtype.WEAK_INVISIBLE
+	),
+	new ItemDefinition(EntityType.STAIRS, KeyEvent.VK_S,
+		CrystalSwitchBlock.Subtype.ORANGE,
+		CrystalSwitchBlock.Subtype.BLUE
 	),
     };
 

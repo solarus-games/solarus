@@ -42,7 +42,8 @@ public enum EntityType {
     CRYSTAL_SWITCH_BLOCK (15, "Crystal switch block", CrystalSwitchBlock.class, CrystalSwitchBlock.Subtype.class),
     SHOP_ITEM            (16, "Shop item", ShopItem.class, null),
     CONVEYOR_BELT        (17, "Conveyor belt", ConveyorBelt.class, null),
-    DOOR                 (18, "Door", Door.class, Door.Subtype.class)
+    DOOR                 (18, "Door", Door.class, Door.Subtype.class),
+    STAIRS               (19, "Stairs", Stairs.class, Stairs.Subtype.class)
     ;
 
     private final int index;
@@ -209,4 +210,5 @@ public enum EntityType {
 
 	return name;
     }
-};
+}
+

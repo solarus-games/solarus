@@ -14,31 +14,39 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
-#ifndef SOLARUS_CONFIGURATION_H
-#define SOLARUS_CONFIGURATION_H
-
-#include "Common.h"
+#include "menus/SelectionMenuOptions.h"
+#include "menus/SelectionMenuSelectFile.h"
 
 /**
- * This class loads and saves the global configuration of the program, such as the language,
- * the screen resolution, and the audio volume.
+ * Creates a selection menu phase where the player sets the global options.
+ * @param menu the selection menu this phase will belong to
  */
-class Configuration {
+SelectionMenuOptions::SelectionMenuOptions(SelectionMenu *menu):
+  SelectionMenuPhase(menu, "selection_menu.phase.options") {
 
-  private:
+}
 
-    static const std::string file_name;
-    static const std::string group_name;
 
-  public:
+/**
+ * Destructor.
+ */
+SelectionMenuOptions::~SelectionMenuOptions(void) {
 
-    static const std::string get_value(const std::string &key, const std::string &default_value);
-    static int get_value(const std::string &key, int default_value);
+}
 
-    static void set_value(const std::string &key, const std::string &value);
-    static void set_value(const std::string &key, int value);
-};
+/**
+ * Handles an input event in this phase.
+ * @param event the event
+ */
+void SelectionMenuOptions::notify_event(InputEvent &event) {
 
-#endif
+}
+
+/**
+ * Displays this selection menu phase.
+ * @param destination_surface the surface to draw
+ */
+void SelectionMenuOptions::display(Surface *destination_surface) {
+
+}
 

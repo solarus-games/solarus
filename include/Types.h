@@ -77,6 +77,7 @@ class SelectionMenuEraseFile;
 class SelectionMenuConfirmErase;
 class SelectionMenuChooseName;
 class SelectionMenuChooseMode;
+class SelectionMenuOptions;
 class PauseMenu;
 class PauseSubmenu;
 class PauseSubmenuInventory;

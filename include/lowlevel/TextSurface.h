@@ -123,6 +123,7 @@ class TextSurface {
     void set_y(int y);
     void set_text(const std::string &text);
     const std::string & get_text(void);
+    bool is_empty(void);
     void add_char(char c);
 
     void display(Surface *destination);

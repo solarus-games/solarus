@@ -248,6 +248,14 @@ const std::string & TextSurface::get_text(void) {
 }
 
 /**
+ * Returns whether the current text is an empty string.
+ * @return true if there is no texte
+ */
+bool TextSurface::is_empty(void) {
+  return text == "";
+}
+
+/**
  * Creates the text surface.
  * This function is called when there is a change.
  */
@@ -260,7 +268,7 @@ void TextSurface::rebuild(void) {
     surface = NULL;
   }
 
-  if (text == "") {
+  if (is_empty()) {
     // empty string: no surface to create
     return;
   }

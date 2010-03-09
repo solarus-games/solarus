@@ -16,6 +16,7 @@
  */
 #include "menus/TitleScreen.h"
 #include "menus/SelectionMenu.h"
+#include "Solarus.h"
 #include "TransitionFade.h"
 #include "ResourceManager.h"
 #include "StringResource.h"
@@ -139,7 +140,10 @@ void TitleScreen::notify_event(InputEvent &event) {
 
   static const InputEvent::KeyboardKey keys[] = { InputEvent::KEY_SPACE, InputEvent::KEY_RETURN, InputEvent::KEY_NONE };
 
-  if (current_phase == PHASE_TITLE
+  if (event.is_keyboard_key_pressed(InputEvent::KEY_ESCAPE)) {
+    solarus->set_exiting();
+  }
+  else if (current_phase == PHASE_TITLE
       && (event.is_joypad_button_pressed() || event.is_keyboard_key_pressed(keys))
       && counter >= 1
       && !transition_out->is_started()

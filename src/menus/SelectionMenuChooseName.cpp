@@ -28,7 +28,7 @@
  * @param menu the selection menu this phase will belong to
  */
 SelectionMenuChooseName::SelectionMenuChooseName(SelectionMenu *menu):
-  SelectionMenuPhase(menu, "selection_menu.choose_name"), next_key_date(System::now()) {
+  SelectionMenuPhase(menu, "selection_menu.phase.choose_name"), next_key_date(System::now()) {
 
   InputEvent::set_key_repeat(300, 50);
 

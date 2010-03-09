@@ -26,7 +26,7 @@
  * @param save_number_to_erase number of the savegame to delete (0 to 2)
  */
 SelectionMenuConfirmErase::SelectionMenuConfirmErase(SelectionMenu *menu, int save_number_to_erase):
-  SelectionMenuPhase(menu, "selection_menu.confirm_erase"),
+  SelectionMenuPhase(menu, "selection_menu.phase.confirm_erase"),
   save_number_to_erase(save_number_to_erase) {
 
   menu->set_bottom_options("selection_menu.big_no", "selection_menu.big_yes");

@@ -27,9 +27,9 @@
  * @param menu the selection menu this phase will belong to
  */
 SelectionMenuEraseFile::SelectionMenuEraseFile(SelectionMenu *menu):
-  SelectionMenuPhase(menu, "selection_menu.erase_file") {
+  SelectionMenuPhase(menu, "selection_menu.phase.erase_file") {
 
-  menu->set_bottom_options("selection_menu.cancel", "selection_menu.exit");
+  menu->set_bottom_options("selection_menu.cancel", "");
   menu->get_cursor_sprite()->set_current_animation("red");
 }
 
@@ -84,11 +84,6 @@ void SelectionMenuEraseFile::notify_event(InputEvent &event) {
 
       case 2: // up
 	menu->move_cursor_up();
-	break;
-
-      case 0: // right
-      case 4: // left
-	menu->move_cursor_left_or_right();
 	break;
 
       default:

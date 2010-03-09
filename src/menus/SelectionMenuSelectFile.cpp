@@ -18,6 +18,7 @@
 #include "menus/SelectionMenuEraseFile.h"
 #include "menus/SelectionMenuChooseName.h"
 #include "menus/SelectionMenuChooseMode.h"
+#include "menus/SelectionMenuOptions.h"
 #include "Transition.h"
 #include "Savegame.h"
 #include "Sprite.h"
@@ -28,9 +29,9 @@
  * @param menu the selection menu this phase will belong to
  */
 SelectionMenuSelectFile::SelectionMenuSelectFile(SelectionMenu *menu):
-  SelectionMenuPhase(menu, "selection_menu.select_file") {
+  SelectionMenuPhase(menu, "selection_menu.phase.select_file") {
 
-  menu->set_bottom_options("selection_menu.erase", "selection_menu.exit");
+  menu->set_bottom_options("selection_menu.erase", "selection_menu.options");
 
   // initialize the cursor
   menu->get_cursor_sprite()->set_current_animation("blue");
@@ -55,20 +56,19 @@ void SelectionMenuSelectFile::notify_event(InputEvent &event) {
     
     if (event.is_keyboard_key_pressed(validation_keys) || event.is_joypad_button_pressed()) {
 
+      menu->play_ok_sound();
       int cursor_position = menu->get_cursor_position();
     
       if (cursor_position == 5) {
-	// the user chose "Exit"
-	menu->set_exiting();
+	// the user chose "Options"
+	menu->set_next_phase(new SelectionMenuOptions(menu));
       }
       else if (cursor_position == 4) {
 	// the user chose "Erase"
-	menu->play_ok_sound();
 	menu->set_next_phase(new SelectionMenuEraseFile(menu));
       }
       else {
 	// the user chose a save
-	menu->play_ok_sound();
 
 	Savegame **savegames = menu->get_savegames();
 	if (savegames[cursor_position - 1]->is_empty()) {
@@ -122,7 +122,7 @@ void SelectionMenuSelectFile::display(Surface *destination_surface) {
 
   // cursor
   menu->display_savegame_cursor(destination_surface);
-  
+
   // save numbers
   for (int i = 0; i < 3; i++) {
     menu->display_savegame_number(destination_surface, i);

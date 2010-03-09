@@ -125,17 +125,18 @@ save_dialog.continue_question_0	Voulez-vous continuer
 save_dialog.continue_question_1	la partie ?
 
 # Savegame selection menu (maximum 45 characters)
-selection_menu.select_file	Veuillez choisir un fichier
-selection_menu.choose_mode	Choisissez un mode de jeu
-selection_menu.choose_name	Quel est votre nom ?
-selection_menu.confirm_erase	Etes-vous sûr ?
-selection_menu.erase_file	Quel fichier voulez-vous effacer ?
+selection_menu.phase.select_file	Veuillez choisir un fichier
+selection_menu.phase.choose_mode	Choisissez un mode de jeu
+selection_menu.phase.choose_name	Quel est votre nom ?
+selection_menu.phase.confirm_erase	Etes-vous sûr ?
+selection_menu.phase.erase_file		Quel fichier voulez-vous effacer ?
+selection_menu.phase.options		Paramètres
 selection_menu.erase		Effacer
 selection_menu.cancel		Annuler
-selection_menu.exit		Quitter
 selection_menu.big_yes		OUI
 selection_menu.big_no		NON
 selection_menu.empty		Vide
+selection_menu.options		Options
 
 # Title screen
 title_screen.website		www.zelda-solarus.com

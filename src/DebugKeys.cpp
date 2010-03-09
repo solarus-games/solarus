@@ -184,7 +184,7 @@ void DebugKeys::key_pressed(InputEvent::KeyboardKey key) {
 	break;
     }
   }
-  else if (key == InputEvent::KEY_ESCAPE) {
+  else if (key == InputEvent::KEY_TABULATION) {
     // no game yet
     solarus->skip_menus();
   }

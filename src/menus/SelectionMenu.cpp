@@ -322,22 +322,28 @@ void SelectionMenu::display(Surface *screen_surface) {
  */
 void SelectionMenu::notify_event(InputEvent &event) {
 
-  bool notify = true;
-  if (event.is_joypad_axis_moved() && !event.is_joypad_axis_centered()) {
-    
-    // the cursor moves to much when using a joypad axis
-    uint32_t now = System::now();
-    if (now > allow_cursor_date) {
-      allow_cursor_date = now + 200;
-    }
-    else {
-      notify = false;
-    }
+  if (event.is_keyboard_key_pressed(InputEvent::KEY_ESCAPE)) {
+    solarus->set_exiting();
   }
-  
-  if (notify) {
-    // notify the current phase
-    current_phase->notify_event(event);
+  else {
+
+    bool notify = true;
+    if (event.is_joypad_axis_moved() && !event.is_joypad_axis_centered()) {
+
+      // the cursor moves to much when using a joypad axis
+      uint32_t now = System::now();
+      if (now > allow_cursor_date) {
+	allow_cursor_date = now + 200;
+      }
+      else {
+	notify = false;
+      }
+    }
+
+    if (notify) {
+      // notify the current phase
+      current_phase->notify_event(event);
+    }
   }
 }
 
@@ -382,13 +388,25 @@ void SelectionMenu::set_title_text(const std::string &title_string_key) {
 
 /**
  * Sets the text of the two options to display in the bottom of the screen.
+ * These text may be empty strings.
  * @param left_string_key key of the first option string (on the left)
  * @param right_string_key key of the second option string (on the right)
  */
 void SelectionMenu::set_bottom_options(const std::string &left_string_key, const std::string &right_string_key) {
 
-  option1_text->set_text(StringResource::get_string(left_string_key));
-  option2_text->set_text(StringResource::get_string(right_string_key));
+  if (left_string_key.size() != 0) {
+    option1_text->set_text(StringResource::get_string(left_string_key));
+  }
+  else {
+    option1_text->set_text("");
+  }
+
+  if (right_string_key.size() != 0) {
+    option2_text->set_text(StringResource::get_string(right_string_key));
+  }
+  else {
+    option2_text->set_text("");
+  }
 }
 
 /**
@@ -546,17 +564,24 @@ void SelectionMenu::display_savegame_number(Surface *destination_surface, int sa
 
 /**
  * Displays the two options at the bottom of the menu.
+ * If an option text is empty, it is not displayed.
  * @param destination_surface the surface to draw
  */
 void SelectionMenu::display_bottom_options(Surface *destination_surface) {
 
-  Rectangle position(57, 158);
-  option_container_img->blit(destination_surface, position);
-  position.set_x(165);
-  option_container_img->blit(destination_surface, position);
+  Rectangle position(0, 158);
 
-  option1_text->display(destination_surface);
-  option2_text->display(destination_surface);
+  if (!option1_text->is_empty()) {
+    position.set_x(57);
+    option_container_img->blit(destination_surface, position);
+    option1_text->display(destination_surface);
+  }
+
+  if (!option2_text->is_empty()) {
+    position.set_x(165);
+    option_container_img->blit(destination_surface, position);
+    option2_text->display(destination_surface);
+  }
 }
 
 /**

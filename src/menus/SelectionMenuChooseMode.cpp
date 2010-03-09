@@ -26,8 +26,8 @@
  * @param menu the selection menu
  */
 SelectionMenuChooseMode::SelectionMenuChooseMode(SelectionMenu *menu):
-//  SelectionMenuPhase(menu, "selection_menu.choose_mode"),
-  SelectionMenuPhase(menu, "selection_menu.select_file"),
+//  SelectionMenuPhase(menu, "selection_menu.phase.choose_mode"),
+  SelectionMenuPhase(menu, "selection_menu.phase.select_file"),
   adventure_mode(true) {
 
   this->mode_img = new Surface("menus/selection_menu_mode.png");

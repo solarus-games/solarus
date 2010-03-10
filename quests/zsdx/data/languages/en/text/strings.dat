@@ -90,7 +90,7 @@ inventory.caption.item_26_1	Fiery Stones
 options.caption.press_action_change_mode	Press Action to$switch video mode
 options.caption.press_action_customize_key	Press Action to$configure this key
 options.caption.press_key			Press any key on$the keyboard or joypad
-# name of the video modes (maximum 26 characters)
+# name of video modes (maximum 26 characters)
 options.video_mode_0				Windowed 640x480
 options.video_mode_1				Windowed 640x480 smoothed
 options.video_mode_2				Windowed 320x240
@@ -125,17 +125,23 @@ save_dialog.continue_question_0	Would you like to keep
 save_dialog.continue_question_1	playing?
 
 # Savegame selection menu (maximum 45 characters)
-selection_menu.select_file	Select a file
-selection_menu.choose_mode	Choose a game mode
-selection_menu.choose_name	What's your name?
-selection_menu.confirm_erase	Are you sure?
-selection_menu.erase_file	Select File to Erase
-selection_menu.erase		Erase
-selection_menu.cancel		Cancel
-selection_menu.exit		Quit
-selection_menu.big_yes		YES
-selection_menu.big_no		NO
-selection_menu.empty		Empty
+selection_menu.phase.select_file	Select a file
+selection_menu.phase.choose_mode	Choose a game mode
+selection_menu.phase.choose_name	What's your name?
+selection_menu.phase.confirm_erase	Are you sure?
+selection_menu.phase.erase_file		Select file to erase
+selection_menu.phase.options		Press the space bar to change
+selection_menu.erase			Erase
+selection_menu.cancel			Cancel
+selection_menu.big_yes			YES
+selection_menu.big_no			NO
+selection_menu.empty			Empty
+selection_menu.options			Options
+selection_menu.back			Back
+selection_menu.options.language		Language
+selection_menu.options.video_mode	Graphics
+selection_menu.options.music_volume	Music volume
+selection_menu.options.sound_volume	Sound volume
 
 # Title screen
 title_screen.website		www.zelda-solarus.com

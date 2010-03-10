@@ -22,8 +22,8 @@
 #include "Sprite.h"
 #include "lowlevel/TextSurface.h"
 #include "lowlevel/Color.h"
-#include "lowlevel/System.h"
 #include "lowlevel/FileTools.h"
+#include "lowlevel/VideoManager.h"
 
 const std::string SelectionMenuOptions::label_keys[nb_options] = {
   "selection_menu.options.language",
@@ -38,7 +38,7 @@ const std::string SelectionMenuOptions::label_keys[nb_options] = {
  */
 SelectionMenuOptions::SelectionMenuOptions(SelectionMenu *menu):
   SelectionMenuPhase(menu, "selection_menu.phase.options"),
-  cursor_position(0), modifying(false), blinking_yellow(false) {
+  modifying(false) {
 
   // option texts and values
   for (int i = 0; i < nb_options; i++) {
@@ -49,8 +49,10 @@ SelectionMenuOptions::SelectionMenuOptions(SelectionMenu *menu):
     this->label_texts[i]->set_text(StringResource::get_string(label_keys[i]));
 
     // values
-    this->value_texts[i] = new TextSurface(256, 86 + i * 16, TextSurface::ALIGN_RIGHT, TextSurface::ALIGN_MIDDLE);
+    this->value_texts[i] = new TextSurface(266, 86 + i * 16, TextSurface::ALIGN_RIGHT, TextSurface::ALIGN_MIDDLE);
     this->value_texts[i]->set_font(TextSurface::FONT_STANDARD);
+
+    current_indices[i] = -1;
   }
   load_configuration();
 
@@ -62,7 +64,8 @@ SelectionMenuOptions::SelectionMenuOptions(SelectionMenu *menu):
   this->right_arrow_sprite->set_current_animation("blink");
   this->right_arrow_sprite->set_current_direction(0);
 
-  menu->set_bottom_options("selection_menu.validate", "selection_menu.back");
+  menu->set_bottom_options("selection_menu.back", "");
+  set_cursor_position(0);
 }
 
 /**
@@ -75,6 +78,35 @@ SelectionMenuOptions::~SelectionMenuOptions(void) {
     delete value_texts[i];
     delete[] all_values[i];
   }
+  delete[] language_codes;
+}
+
+/**
+ * Sets the current position of the options cursor.
+ * @param cursor_position the new position (0 to nb_options + 1)
+ */
+void SelectionMenuOptions::set_cursor_position(int cursor_position) {
+
+  if (cursor_position < 0 || cursor_position > nb_options) {
+    DIE("Illegal cursor position: " << cursor_position);
+  }
+
+  if (this->cursor_position < nb_options) {
+    // a option line was selected
+    label_texts[this->cursor_position]->set_text_color(Color::get_white());
+    value_texts[this->cursor_position]->set_text_color(Color::get_white());
+  }
+
+  this->cursor_position = cursor_position;
+  if (cursor_position == nb_options) {
+    menu->set_cursor_position(4);
+  }
+  
+  if (cursor_position < nb_options) {
+    // a option line is now selected
+    label_texts[cursor_position]->set_text_color(Color::get_yellow());
+    value_texts[cursor_position]->set_text_color(Color::get_yellow());
+  }
 }
 
 /**
@@ -85,15 +117,12 @@ void SelectionMenuOptions::move_cursor_up(void) {
   menu->play_cursor_sound();
   left_arrow_sprite->restart_animation();
 
-  cursor_position--;
+  int cursor_position = this->cursor_position - 1;
 
   if (cursor_position == -1) {
     cursor_position = nb_options;
-    menu->set_cursor_position(4);
   }
-  else if (cursor_position == nb_options) {
-    cursor_position = 3;
-  }
+  set_cursor_position(cursor_position);
 }
 
 /**
@@ -104,33 +133,12 @@ void SelectionMenuOptions::move_cursor_down(void) {
   menu->play_cursor_sound();
   left_arrow_sprite->restart_animation();
 
-  cursor_position++;
+  int cursor_position = this->cursor_position + 1;
 
   if (cursor_position > nb_options) {
     cursor_position = 0;
   }
-  else if (cursor_position == nb_options) {
-    menu->set_cursor_position(4);
-  }
-}
-
-/**
- * Tries to move the options cursor to the left or to the right.
- */
-void SelectionMenuOptions::move_cursor_left_or_right(void) {
-
-  if (cursor_position >= nb_options) {
-
-    if (cursor_position == nb_options) {
-      menu->set_cursor_position(4);
-      this->cursor_position = nb_options + 1;
-    }
-    else {
-      menu->set_cursor_position(5);
-      this->cursor_position = nb_options;
-    }
-    menu->move_cursor_left_or_right();
-  }
+  set_cursor_position(cursor_position);
 }
 
 /**
@@ -173,8 +181,56 @@ void SelectionMenuOptions::set_option_value(int index) {
  * @param index index of the value to set for the specified option
  */
 void SelectionMenuOptions::set_option_value(int option, int index) {
-  current_indices[option] = index;
+
   value_texts[option]->set_text(all_values[option][index]);
+  if (current_indices[option] != index) {
+    current_indices[option] = index;
+
+    switch (option) {
+
+      case 0: // language
+	FileTools::set_language(language_codes[index]);
+	reload_strings();
+	break;
+
+      case 1: // video mode
+	VideoManager::get_instance()->set_video_mode(VideoManager::VideoMode(index));
+	break;
+
+      case 2: // music volume
+	// TODO Music::set_volume(index * 10);
+	break;
+
+      case 3: // sound volume
+	// TODO Sound::set_volume(index * 10);
+	break;
+    }
+  }
+}
+
+/**
+ * Reloads all strings displayed on the menu.
+ * This function is called when the language has just been changed.
+ */
+void SelectionMenuOptions::reload_strings(void) {
+
+  // the value of each option is language dependent only for the video mode option
+  for (int i = 0; i < VideoManager::NB_MODES; i++) {
+    std::ostringstream oss;
+    oss << "options.video_mode_" << i;
+    all_values[1][i] = StringResource::get_string(oss.str());
+  }
+  int index = current_indices[1];
+  value_texts[1]->set_text(all_values[1][index]);
+
+  // reload the label of each option
+  for (int i = 0; i < nb_options; i++) {
+    label_texts[i]->set_text(StringResource::get_string(label_keys[i]));
+  }
+
+  // other menu elements
+  menu->set_title_text("selection_menu.phase.options");
+  menu->set_bottom_options("selection_menu.back", "");
 }
 
 /**
@@ -187,53 +243,47 @@ void SelectionMenuOptions::load_configuration(void) {
   const std::string &current_language_code = Configuration::get_value("language", FileTools::get_default_language());
   nb_values[0] = language_names.size();
   all_values[0] = new std::string[nb_values[0]];
+  language_codes = new std::string[nb_values[0]];
   std::map<std::string, std::string>::iterator it;
-  int k = 0;
+  int i = 0;
   for (it = language_names.begin(); it != language_names.end(); it++) {
-    all_values[0][k] = it->second;
-    if (it->first == current_language_code) {
-      set_option_value(0, k);
+    language_codes[i] = it->first;
+    all_values[0][i] = it->second;
+
+    if (language_codes[i] == current_language_code) {
+      current_indices[0] = i;
+      set_option_value(0, i);
     }
-    k++;
+    i++;
   }
 
   // video mode
-  nb_values[1] = 0;
-  all_values[1] = NULL;
+  nb_values[1] = VideoManager::NB_MODES;
+  all_values[1] = new std::string[nb_values[1]];
+  for (int i = 0; i < nb_values[1]; i++) {
+    std::ostringstream oss;
+    oss << "options.video_mode_" << i;
+    all_values[1][i] = StringResource::get_string(oss.str());
+
+    if (i == VideoManager::get_instance()->get_video_mode()) {
+      current_indices[1] = i;
+      set_option_value(1, i);
+    }
+  }
+
+  // music volume
   nb_values[2] = 0;
   all_values[2] = NULL;
+
+  // sound volume
   nb_values[3] = 0;
   all_values[3] = NULL;
-}
-
-/**
- * Saves the values of the menu into the configuration file.
- */
-void SelectionMenuOptions::save_configuration(void) {
-
 }
 
 /**
  * Updates this phase.
  */
 void SelectionMenuOptions::update(void) {
-
-  uint32_t now = System::now();
-  if (modifying && now > next_blink_date) {
-    
-    if (blinking_yellow) {
-      /*
-      label_texts[cursor_position]->set_text_color(Color::get_white());
-      value_texts[cursor_position]->set_text_color(Color::get_white());
-      */
-    }
-    else {
-      label_texts[cursor_position]->set_text_color(Color::get_yellow());
-      value_texts[cursor_position]->set_text_color(Color::get_yellow());
-    }
-    blinking_yellow = !blinking_yellow;
-    next_blink_date = now + 100;
-  }
 
   left_arrow_sprite->update();
   right_arrow_sprite->update();
@@ -249,34 +299,20 @@ void SelectionMenuOptions::notify_event(InputEvent &event) {
 
     int direction = event.get_direction();
     if (!modifying) {
-      switch (direction) {
 
-	case 2: // up
-	  move_cursor_up();
-	  break;
-
-	case 6: // down
-	  move_cursor_down();
-	  break;
-
-	case 0: // right
-	  move_cursor_left_or_right();
-	  break;
-
-	case 4: // left
-	  move_cursor_left_or_right();
-	  break;
-
-	default:
-	  break;
+      if (direction == 2) { // up
+	move_cursor_up();
+      }
+      else if (direction == 6) { // down
+	move_cursor_down();
       }
     }
-
     else {
-      if (direction == 0) {
+
+      if (direction == 0) { // right
         set_option_next_value();
       }
-      else if (direction == 4) {
+      else if (direction == 4) { // left
         set_option_previous_value();
       }
     }
@@ -288,21 +324,15 @@ void SelectionMenuOptions::notify_event(InputEvent &event) {
       
       if (!modifying) {
 	menu->play_ok_sound();
-	next_blink_date = System::now();
         modifying = true;
+	left_arrow_sprite->restart_animation();
+	right_arrow_sprite->restart_animation();
       }
       else {
-	label_texts[cursor_position]->set_text_color(Color::get_white());
-	value_texts[cursor_position]->set_text_color(Color::get_white());
 	modifying = false;
       }
     }
-    else if (cursor_position == nb_options) { // validate
-      save_configuration();
-      menu->set_next_phase(new SelectionMenuSelectFile(menu));
-      menu->set_cursor_position(5);
-    }
-    else { // back
+    else if (cursor_position == nb_options) { // back
       menu->play_ok_sound();
       menu->set_next_phase(new SelectionMenuSelectFile(menu));
       menu->set_cursor_position(5);
@@ -326,15 +356,15 @@ void SelectionMenuOptions::display(Surface *destination_surface) {
   menu->display_bottom_options(destination_surface);
 
   // cursor
-  if (this->cursor_position >= nb_options) {
+  if (this->cursor_position == nb_options) {
     menu->display_savegame_cursor(destination_surface);
   }
   else {
 
     int y = 80 + 16 * cursor_position;
     if (modifying) {
-      right_arrow_sprite->display(destination_surface, 258, y);
-      left_arrow_sprite->display(destination_surface, 246 - value_texts[cursor_position]->get_width(), y);
+      right_arrow_sprite->display(destination_surface, 268, y);
+      left_arrow_sprite->display(destination_surface, 256 - value_texts[cursor_position]->get_width(), y);
     }
     else {
       right_arrow_sprite->display(destination_surface, 54, y);

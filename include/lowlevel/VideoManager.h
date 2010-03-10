@@ -43,8 +43,8 @@ class VideoManager {
 			       * and then displayed on a widescreen resolution if possible (768*480 or 720*480)
 			       * with two black side bars */
     FULLSCREEN_CENTERED,      /**< the 320*240 game surface is displayed as a box inside a 640*480 screen */
-    FULLSCREEN_CENTERED_WIDE, /**< the 320*240 game surface is displayed as a box inside a 640*400 screen */
-    NB_MODES
+    FULLSCREEN_CENTERED_WIDE, /**< the 320*240 game surface is displayed as a box inside a widescreen resolution (768*480 or 720*480) */
+    NB_MODES                  /**< number of existing video modes */
   };
 
  private:

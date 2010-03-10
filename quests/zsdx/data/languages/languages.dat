@@ -5,9 +5,9 @@ name = Français
 name = English
 default = true
 
-[de]
-name = Deutsch
+#[de]
+#name = Deutsch
 
-[nl]
-name = Nederlands
+#[nl]
+#name = Nederlands
 

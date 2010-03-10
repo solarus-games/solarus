@@ -124,20 +124,19 @@ save_dialog.save_question_1	votre progression ?
 save_dialog.continue_question_0	Voulez-vous continuer
 save_dialog.continue_question_1	la partie ?
 
-# Savegame selection menu (maximum 45 characters)
+# Savegame selection menu (with maximum 45 characters for phase titles)
 selection_menu.phase.select_file	Veuillez choisir un fichier
 selection_menu.phase.choose_mode	Choisissez un mode de jeu
 selection_menu.phase.choose_name	Quel est votre nom ?
 selection_menu.phase.confirm_erase	Etes-vous sûr ?
 selection_menu.phase.erase_file		Quel fichier voulez-vous effacer ?
-selection_menu.phase.options		Modifier un paramètre : Espace
+selection_menu.phase.options		Appuyez sur Espace pour modifier
 selection_menu.erase			Effacer
 selection_menu.cancel			Annuler
 selection_menu.big_yes			OUI
 selection_menu.big_no			NON
 selection_menu.empty			Vide
 selection_menu.options			Options
-selection_menu.validate			Valider
 selection_menu.back			Retour
 selection_menu.options.language		Langue
 selection_menu.options.video_mode	Mode

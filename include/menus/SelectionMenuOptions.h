@@ -33,6 +33,7 @@ class SelectionMenuOptions: public SelectionMenuPhase {
 
   private:
 
+    // text of all options
     static const int nb_options = 4;                              /**< number of options to customize (currently 4) */
     static const std::string label_keys[nb_options];              /**< string key describing each option */
 
@@ -44,20 +45,21 @@ class SelectionMenuOptions: public SelectionMenuPhase {
     TextSurface *value_texts[nb_options];                         /**< text surface showing the current value of each option */
     Sprite *arrow_sprite;                                         /**< sprite of the arrow cursor */
 
+    // option-specific data
+    std::string *language_codes;                                  /**< code of each language */
+
+    // cursors
     int cursor_position;                                          /**< cursor specific to the options screen:
 							           * 0 = language
 							           * 1 = video mode
 							           * 2 = music volume
 							           * 3 = sound volume
-							           * nb_options = validation button
-							           * nb_options + 1 = back button */
+							           * (nb_options) = validation button */
     bool modifying;                                               /**< indicates that the user is currently setting an option */
-    bool blinking_yellow;                                         /**< when setting an option, the text is blinking
-							           * and this indicates the current text color */
-    uint32_t next_blink_date;                                     /**< date of the next color change while blinking */
     Sprite *left_arrow_sprite;                                    /**< sprite of a blinking left arrow to indicate how to change a value */
     Sprite *right_arrow_sprite;                                   /**< sprite of a blinking right arrow to indicate how to change a value */
 
+    void set_cursor_position(int cursor_position);
     void move_cursor_up(void);
     void move_cursor_down(void);
     void move_cursor_left_or_right(void);
@@ -68,7 +70,7 @@ class SelectionMenuOptions: public SelectionMenuPhase {
     void set_option_value(int option, int index);
 
     void load_configuration(void);
-    void save_configuration(void);
+    void reload_strings(void);
 
   public:
 

@@ -16,14 +16,17 @@
  */
 #include <iostream> // std::cerr
 #include <cstring>  // memcpy
+#include <cmath>    // memcpy
 #include "lowlevel/Sound.h"
 #include "lowlevel/Music.h"
 #include "lowlevel/FileTools.h"
+#include "Configuration.h"
 
 ALCdevice * Sound::device = NULL;
 ALCcontext * Sound::context = NULL;
 SF_VIRTUAL_IO Sound::sf_virtual;
 bool Sound::initialized = false;
+float Sound::volume = 1.0;
 std::list<Sound*> Sound::current_sounds;
 
 /**
@@ -103,7 +106,7 @@ void Sound::initialize(int argc, char **argv) {
     return;
   }
 
-  ALCint attr[] = {ALC_FREQUENCY, 32000, 0}; // 32 KHz is the SPC output sampling rate
+  ALCint attr[] = { ALC_FREQUENCY, 32000, 0 }; // 32 KHz is the SPC output sampling rate
   context = alcCreateContext(device, attr);
   if (!context) {
     std::cout << "Cannot create audio context" << std::endl;
@@ -125,6 +128,9 @@ void Sound::initialize(int argc, char **argv) {
   sf_virtual.read = sf_read;
   sf_virtual.write = sf_write;
   sf_virtual.tell = sf_tell;
+
+  // get the sound effects volume from the configuration file
+  set_volume(Configuration::get_value("sound_volume", 100));
 
   // initialize the music system
   Music::initialize();
@@ -169,6 +175,29 @@ void Sound::quit(void) {
  */
 bool Sound::is_initialized(void) {
   return initialized;
+}
+
+/**
+ * Returns the current volume of sound effects.
+ * @return the volume (0 to 100)
+ */
+int Sound::get_volume(void) {
+
+  return (int) (volume * 100.0);
+}
+
+/**
+ * Sets the volume of sound effects.
+ * @param volume the new volume (0 to 100)
+ */
+void Sound::set_volume(int volume) {
+
+  if (volume < 0 || volume > 100) {
+    DIE("Illegal volume for sound effects:" << volume);
+  }
+
+  Configuration::set_value("sound_volume", volume);
+  Sound::volume = volume / 100.0;
 }
 
 /**
@@ -231,6 +260,7 @@ bool Sound::play(void) {
     ALuint source;
     alGenSources(1, &source);
     alSourcei(source, AL_BUFFER, buffer);
+    alSourcef(source, AL_GAIN, volume);
 
     // play the sound
     int error = alGetError();

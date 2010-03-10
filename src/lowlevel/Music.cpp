@@ -17,9 +17,11 @@
 #include "lowlevel/Music.h"
 #include "lowlevel/SpcDecoder.h"
 #include "lowlevel/FileTools.h"
+#include "Configuration.h"
 
 SpcDecoder * Music::spc_decoder = NULL;
 Music * Music::current_music = NULL;
+float Music::volume = 1.0;
 
 const MusicId Music::none = "none";
 const MusicId Music::unchanged = "same";
@@ -80,7 +82,12 @@ Music::~Music(void) {
  * Initializes the music system.
  */
 void Music::initialize(void) {
+
+  // initialize the SPC decoding feature
   spc_decoder = new SpcDecoder();
+
+  // get the music volume from the configuration file
+  set_volume(Configuration::get_value("music_volume", 100));
 }
 
 /**
@@ -98,6 +105,33 @@ void Music::quit(void) {
  */
 bool Music::is_initialized(void) {
   return spc_decoder != NULL;
+}
+
+/**
+ * Returns the current volume of musis.
+ * @return the volume (0 to 100)
+ */
+int Music::get_volume(void) {
+
+  return (int) (volume * 100.0);
+}
+
+/**
+ * Sets the volume of musics.
+ * @param volume the new volume (0 to 100)
+ */
+void Music::set_volume(int volume) {
+
+  if (volume < 0 || volume > 100) {
+    DIE("Illegal volume for music:" << volume);
+  }
+
+  Configuration::set_value("music_volume", volume);
+  Music::volume = volume / 100.0;
+
+  if (current_music != NULL) {
+    alSourcef(current_music->source, AL_GAIN, Music::volume);
+  }
 }
 
 /**
@@ -198,6 +232,7 @@ bool Music::play(void) {
   // create the two buffers and the source
   alGenBuffers(nb_buffers, buffers);
   alGenSources(1, &source);
+  alSourcef(source, AL_GAIN, volume);
   for (int i = 0; i < nb_buffers; i++) {
     decode_spc(buffers[i], 4096);
   }

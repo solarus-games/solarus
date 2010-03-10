@@ -43,6 +43,7 @@ class Sound {
     static std::list<Sound*> current_sounds; /**< the sounds currently playing */
 
     static bool initialized;                 /**< indicates that the audio system is initialized */
+    static float volume;                     /**< the volume of sound effects (0.0 to 1.0) */
  
     struct SoundFromMemory {                 /**< buffer containing a encoded sound file */
       char *data;
@@ -72,6 +73,9 @@ class Sound {
     static void quit(void);
     static bool is_initialized(void);
     static void update(void);
+
+    static int get_volume(void);
+    static void set_volume(int volume);
 };
 
 #endif

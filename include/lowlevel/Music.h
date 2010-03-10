@@ -41,22 +41,23 @@ class Music {
       IT   /**< Impulse Tracker module (TODO implement with the modplug lib) */
     };
 
-    std::string file_name;          /**< name of the file to play */
-    Format format;                  /**< format of the music, detected from the file name */
+    std::string file_name;           /**< name of the file to play */
+    Format format;                   /**< format of the music, detected from the file name */
 
     static const int nb_buffers = 8;
-    ALuint buffers[nb_buffers];     /**< multiple buffers used to stream the music */
-    ALuint source;                  /**< the OpenAL source streaming the buffers */
+    ALuint buffers[nb_buffers];      /**< multiple buffers used to stream the music */
+    ALuint source;                   /**< the OpenAL source streaming the buffers */
 
-    static Music *current_music;    /**< the music currently played (if any) */
+    static Music *current_music;     /**< the music currently played (if any) */
     static SpcDecoder *spc_decoder;  /**< the SPC decoder */
+    static float volume;             /**< volume of musics (0.0 to 1.0) */
 
     void update_playing(void);
 
   public:
 
-    static const MusicId none;      /**< special id indicating that there is no music */
-    static const MusicId unchanged; /**< special id indicating that the music is the same as before */
+    static const MusicId none;       /**< special id indicating that there is no music */
+    static const MusicId unchanged;  /**< special id indicating that the music is the same as before */
 
     Music(const MusicId &music_id);
     ~Music(void);
@@ -65,6 +66,9 @@ class Music {
     static void quit(void);
     static bool is_initialized(void);
     static void update(void);
+
+    static int get_volume(void);
+    static void set_volume(int volume);
 
     bool play(void);
     void stop(void);

@@ -24,6 +24,8 @@
 #include "lowlevel/Color.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/VideoManager.h"
+#include "lowlevel/Sound.h"
+#include "lowlevel/Music.h"
 
 const std::string SelectionMenuOptions::label_keys[nb_options] = {
   "selection_menu.options.language",
@@ -94,7 +96,7 @@ void SelectionMenuOptions::set_cursor_position(int cursor_position) {
   if (this->cursor_position < nb_options) {
     // a option line was selected
     label_texts[this->cursor_position]->set_text_color(Color::get_white());
-    value_texts[this->cursor_position]->set_text_color(Color::get_white());
+//    value_texts[this->cursor_position]->set_text_color(Color::get_white());
   }
 
   this->cursor_position = cursor_position;
@@ -105,7 +107,7 @@ void SelectionMenuOptions::set_cursor_position(int cursor_position) {
   if (cursor_position < nb_options) {
     // a option line is now selected
     label_texts[cursor_position]->set_text_color(Color::get_yellow());
-    value_texts[cursor_position]->set_text_color(Color::get_yellow());
+//    value_texts[cursor_position]->set_text_color(Color::get_yellow());
   }
 }
 
@@ -150,6 +152,7 @@ void SelectionMenuOptions::set_option_next_value(void) {
   index = (index + 1) % nb_values[cursor_position];
   set_option_value(index);
 
+  menu->play_cursor_sound();
   left_arrow_sprite->restart_animation();
   right_arrow_sprite->restart_animation();
 }
@@ -162,6 +165,7 @@ void SelectionMenuOptions::set_option_previous_value(void) {
   int index = current_indices[cursor_position];
   index = (index + nb_values[cursor_position] - 1) % nb_values[cursor_position];
   set_option_value(index);
+  menu->play_cursor_sound();
 
   left_arrow_sprite->restart_animation();
   right_arrow_sprite->restart_animation();
@@ -198,11 +202,11 @@ void SelectionMenuOptions::set_option_value(int option, int index) {
 	break;
 
       case 2: // music volume
-	// TODO Music::set_volume(index * 10);
+	Music::set_volume(index * 10);
 	break;
 
       case 3: // sound volume
-	// TODO Sound::set_volume(index * 10);
+	Sound::set_volume(index * 10);
 	break;
     }
   }
@@ -272,12 +276,34 @@ void SelectionMenuOptions::load_configuration(void) {
   }
 
   // music volume
-  nb_values[2] = 0;
-  all_values[2] = NULL;
+  nb_values[2] = 11;
+  all_values[2] = new std::string[nb_values[2]];
+  for (int i = 0; i < nb_values[2]; i++) {
+    int volume = i * 10;
+    std::ostringstream oss;
+    oss << volume << " %";
+    all_values[2][i] = oss.str();
+
+    if (volume == Music::get_volume()) {
+      current_indices[2] = i;
+      set_option_value(2, i);
+    }
+  }
 
   // sound volume
-  nb_values[3] = 0;
-  all_values[3] = NULL;
+  nb_values[3] = 11;
+  all_values[3] = new std::string[nb_values[3]];
+  for (int i = 0; i < nb_values[3]; i++) {
+    int volume = i * 10;
+    std::ostringstream oss;
+    oss << volume << " %";
+    all_values[3][i] = oss.str();
+
+    if (volume == Sound::get_volume()) {
+      current_indices[3] = i;
+      set_option_value(3, i);
+    }
+  }
 }
 
 /**
@@ -324,11 +350,16 @@ void SelectionMenuOptions::notify_event(InputEvent &event) {
       
       if (!modifying) {
 	menu->play_ok_sound();
-        modifying = true;
 	left_arrow_sprite->restart_animation();
 	right_arrow_sprite->restart_animation();
+        label_texts[cursor_position]->set_text_color(Color::get_white());
+        value_texts[cursor_position]->set_text_color(Color::get_yellow());
+        modifying = true;
       }
       else {
+	menu->play_letter_sound();
+        label_texts[cursor_position]->set_text_color(Color::get_yellow());
+        value_texts[cursor_position]->set_text_color(Color::get_white());
 	modifying = false;
       }
     }

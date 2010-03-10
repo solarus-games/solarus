@@ -34,7 +34,7 @@ class SelectionMenuChooseName: public SelectionMenuPhase {
     int letter_cursor_x;                 /**< x position of the letter cursor */
     int letter_cursor_y;                 /**< y position of the letter cursor */
 
-    Surface *arrow_img;                  /**< arrow image shown next to the name */
+    Sprite *arrow_sprite;                /**< arrow sprite shown next to the name */
     Surface *letters_img;                /**< image of all letters */
 
     TextSurface *player_name_text;       /**< text surface representing the current name */
@@ -52,6 +52,7 @@ class SelectionMenuChooseName: public SelectionMenuPhase {
     ~SelectionMenuChooseName(void);
 
     // update and display
+    void update(void);
     void display(Surface *destination_surface);
     void notify_event(InputEvent &event);
 };

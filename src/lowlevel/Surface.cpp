@@ -101,6 +101,15 @@ int Surface::get_height(void) {
 }
 
 /**
+ * Returns the size of this surface.
+ * @return the size of this surface
+ */
+const Rectangle Surface::get_size(void) {
+  
+  return Rectangle(0, 0, get_width(), get_height());
+}
+
+/**
  * Sets the transparency color of this surface.
  * Pixels in that color will not be displayed.
  * @param color the transparency color to set

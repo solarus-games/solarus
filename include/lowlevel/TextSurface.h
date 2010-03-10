@@ -126,6 +126,10 @@ class TextSurface {
     bool is_empty(void);
     void add_char(char c);
 
+    int get_width(void);
+    int get_height(void);
+    const Rectangle get_size(void);
+
     void display(Surface *destination);
 
 };

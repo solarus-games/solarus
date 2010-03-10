@@ -51,6 +51,7 @@ class Surface {
 
     int get_width(void);
     int get_height(void);
+    const Rectangle get_size(void);
 
     void set_transparency_color(Color &color);
     void set_opacity(int opacity);

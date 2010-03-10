@@ -42,8 +42,9 @@ SelectionMenuChooseName::SelectionMenuChooseName(SelectionMenu *menu):
   letter_cursor_x = 0;
   letter_cursor_y = 0;
 
-  arrow_img = new Surface("menus/selection_menu_arrow.png");
   letters_img = new Surface("menus/selection_menu_letters.png");
+  arrow_sprite = new Sprite("menus/arrow");
+  arrow_sprite->set_current_direction(0);
 }
 
 /**
@@ -54,8 +55,15 @@ SelectionMenuChooseName::~SelectionMenuChooseName(void) {
   InputEvent::set_key_repeat(0, 0);
 
   delete player_name_text;
-  delete arrow_img;
+  delete arrow_sprite;
   delete letters_img;
+}
+
+/**
+ * Updates this phase.
+ */
+void SelectionMenuChooseName::update(void) {
+  arrow_sprite->update();
 }
 
 /**
@@ -133,12 +141,11 @@ void SelectionMenuChooseName::display(Surface *destination_surface) {
       51 + 16 * letter_cursor_x, 93 + 18 * letter_cursor_y);
  
   // current name
-  Rectangle position(57, 76, 0, 0);
-  arrow_img->blit(destination_surface, position);
+  arrow_sprite->display(destination_surface, 57, 76);
   player_name_text->display(destination_surface);
 
   // letters
-  position.set_y(98);
+  Rectangle position(57, 98);
   letters_img->blit(destination_surface, position);
 }
 

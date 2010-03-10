@@ -90,7 +90,7 @@ inventory.caption.item_26_1	Pierres de Feu
 options.caption.press_action_change_mode	Appuyez sur Action$pour changer de mode
 options.caption.press_action_customize_key	Appuyez sur Action pour$configurer cette touche
 options.caption.press_key			Appuyez sur une touche$du clavier ou du joypad
-# name of the video modes (maximum 26 characters)
+# names of video modes (maximum 26 characters)
 options.video_mode_0				Fenêtre 640x480
 options.video_mode_1				Fenêtre 640x480 lisse
 options.video_mode_2				Fenêtre 320x240
@@ -130,13 +130,19 @@ selection_menu.phase.choose_mode	Choisissez un mode de jeu
 selection_menu.phase.choose_name	Quel est votre nom ?
 selection_menu.phase.confirm_erase	Etes-vous sûr ?
 selection_menu.phase.erase_file		Quel fichier voulez-vous effacer ?
-selection_menu.phase.options		Paramètres
-selection_menu.erase		Effacer
-selection_menu.cancel		Annuler
-selection_menu.big_yes		OUI
-selection_menu.big_no		NON
-selection_menu.empty		Vide
-selection_menu.options		Options
+selection_menu.phase.options		Modifier un paramètre : Espace
+selection_menu.erase			Effacer
+selection_menu.cancel			Annuler
+selection_menu.big_yes			OUI
+selection_menu.big_no			NON
+selection_menu.empty			Vide
+selection_menu.options			Options
+selection_menu.validate			Valider
+selection_menu.back			Retour
+selection_menu.options.language		Langue
+selection_menu.options.video_mode	Mode
+selection_menu.options.music_volume	Volume de la musique
+selection_menu.options.sound_volume	Volume des sons
 
 # Title screen
 title_screen.website		www.zelda-solarus.com

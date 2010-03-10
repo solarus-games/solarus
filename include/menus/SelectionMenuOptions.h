@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include "menus/SelectionMenuPhase.h"
+#include "lowlevel/Rectangle.h"
 
 /**
  * A phase of the selection menu where the user change set global options
@@ -26,8 +27,48 @@
  * Those options are global to all savegames even though the video mode
  * can still be changed during the game.
  * They are saved in the file config.ini.
+ * This class acts as a graphical interface for the config.ini file.
  */
 class SelectionMenuOptions: public SelectionMenuPhase {
+
+  private:
+
+    static const int nb_options = 4;                              /**< number of options to customize (currently 4) */
+    static const std::string label_keys[nb_options];              /**< string key describing each option */
+
+    int nb_values[nb_options];                                    /**< number of possible values for each option */
+    std::string *all_values[nb_options];                          /**< for each option, array of all possible values */
+    int current_indices[nb_options];                              /**< for each option, its currently selected index */
+
+    TextSurface *label_texts[nb_options];                         /**< text surface describing each option */
+    TextSurface *value_texts[nb_options];                         /**< text surface showing the current value of each option */
+    Sprite *arrow_sprite;                                         /**< sprite of the arrow cursor */
+
+    int cursor_position;                                          /**< cursor specific to the options screen:
+							           * 0 = language
+							           * 1 = video mode
+							           * 2 = music volume
+							           * 3 = sound volume
+							           * nb_options = validation button
+							           * nb_options + 1 = back button */
+    bool modifying;                                               /**< indicates that the user is currently setting an option */
+    bool blinking_yellow;                                         /**< when setting an option, the text is blinking
+							           * and this indicates the current text color */
+    uint32_t next_blink_date;                                     /**< date of the next color change while blinking */
+    Sprite *left_arrow_sprite;                                    /**< sprite of a blinking left arrow to indicate how to change a value */
+    Sprite *right_arrow_sprite;                                   /**< sprite of a blinking right arrow to indicate how to change a value */
+
+    void move_cursor_up(void);
+    void move_cursor_down(void);
+    void move_cursor_left_or_right(void);
+
+    void set_option_next_value(void);
+    void set_option_previous_value(void);
+    void set_option_value(int index);
+    void set_option_value(int option, int index);
+
+    void load_configuration(void);
+    void save_configuration(void);
 
   public:
 
@@ -36,6 +77,7 @@ class SelectionMenuOptions: public SelectionMenuPhase {
     ~SelectionMenuOptions(void);
 
     // update and display
+    void update(void);
     void display(Surface *destination_surface);
     void notify_event(InputEvent &event);
 };

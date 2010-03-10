@@ -256,6 +256,31 @@ bool TextSurface::is_empty(void) {
 }
 
 /**
+ * Returns the width of the surface containing the text.
+ * @return the width in pixels
+ */
+int TextSurface::get_width(void) {
+  return surface->get_width();
+}
+
+/**
+ * Returns the height of the surface containing the text.
+ * @return the height in pixels
+ */
+int TextSurface::get_height(void) {
+  return surface->get_height();
+}
+
+
+/**
+ * Returns the size of the surface containing the text.
+ * @return the size of the surface
+ */
+const Rectangle TextSurface::get_size(void) {
+  return Rectangle(0, 0, get_width(), get_height());
+}
+
+/**
  * Creates the text surface.
  * This function is called when there is a change.
  */

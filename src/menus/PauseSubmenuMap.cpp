@@ -114,10 +114,10 @@ PauseSubmenuMap::PauseSubmenuMap(PauseMenu *pause_menu, Game *game):
   hero_head_sprite->set_current_animation(oss.str());
 
   up_arrow_sprite = new Sprite("menus/arrow");
-  up_arrow_sprite->set_current_direction(0);
+  up_arrow_sprite->set_current_direction(1);
 
   down_arrow_sprite = new Sprite("menus/arrow");
-  down_arrow_sprite->set_current_direction(1);
+  down_arrow_sprite->set_current_direction(3);
 }
 
 /**

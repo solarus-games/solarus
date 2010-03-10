@@ -82,10 +82,10 @@ PauseSubmenuOptions::PauseSubmenuOptions(PauseMenu *pause_menu, Game *game):
   load_control_texts();
 
   up_arrow_sprite = new Sprite("menus/arrow");
-  up_arrow_sprite->set_current_direction(0);
+  up_arrow_sprite->set_current_direction(1);
 
   down_arrow_sprite = new Sprite("menus/arrow");
-  down_arrow_sprite->set_current_direction(1);
+  down_arrow_sprite->set_current_direction(3);
 
   // cursor
   cursor_sprite = new Sprite("menus/options_cursor");

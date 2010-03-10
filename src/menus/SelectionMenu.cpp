@@ -423,6 +423,7 @@ int SelectionMenu::get_cursor_position(void) {
  */
 void SelectionMenu::set_cursor_position(int cursor_position) {
   this->cursor_position = cursor_position;
+  cursor_sprite->restart_animation();
 }
 
 /**
@@ -439,9 +440,8 @@ Sprite * SelectionMenu::get_cursor_sprite(void) {
 void SelectionMenu::move_cursor_up(void) {
 
   play_cursor_sound();
-  cursor_sprite->restart_animation();
 
-  cursor_position--;
+  int cursor_position = this->get_cursor_position() - 1;
 
   if (cursor_position == 0) {
     cursor_position = 4;
@@ -449,6 +449,8 @@ void SelectionMenu::move_cursor_up(void) {
   else if (cursor_position == 4) {
     cursor_position = 3;
   }
+
+  set_cursor_position(cursor_position);
 }
 
 /**
@@ -457,13 +459,14 @@ void SelectionMenu::move_cursor_up(void) {
 void SelectionMenu::move_cursor_down(void) {
 
   play_cursor_sound();
-  cursor_sprite->restart_animation();
 
-  cursor_position++;
+  int cursor_position = this->get_cursor_position() + 1;
 
   if (cursor_position >= 5) {
     cursor_position = 1;
   }
+
+  set_cursor_position(cursor_position);
 }
 
 /**
@@ -471,15 +474,13 @@ void SelectionMenu::move_cursor_down(void) {
  */
 void SelectionMenu::move_cursor_left_or_right(void) {
 
-  if (cursor_position == 4) {
+  if (get_cursor_position() == 4) {
     play_cursor_sound();
-    cursor_sprite->restart_animation();
-    cursor_position = 5;
+    set_cursor_position(5);
   }
-  else if (cursor_position == 5) {
+  else if (get_cursor_position() == 5) {
     play_cursor_sound();
-    cursor_sprite->restart_animation();
-    cursor_position = 4;
+    set_cursor_position(4);
   }
 }
 

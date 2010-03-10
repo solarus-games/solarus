@@ -156,6 +156,7 @@ void Stairs::play_sound(MapEntity *entity_overlapping) {
   }
   else {
     // TODO
+    game->play_sound("danger");
   }
 }
 
@@ -169,8 +170,17 @@ std::string Stairs::get_path(MapEntity *entity_overlapping) {
 
   // determine the movement direction
   int movement_direction = 2 * get_movement_direction(entity_overlapping->get_layer());
-  std::string path = "     ";
-  for (int i = 0; i < 5; i++) {
+  std::string path;
+  int nb_steps;
+  if (is_inside_floor()) {
+    nb_steps = 5;
+    path = "     ";
+  }
+  else {
+    nb_steps = 1;
+    path = " ";
+  }
+  for (int i = 0; i < nb_steps; i++) {
     path[i] = '0' + movement_direction;
   }
 

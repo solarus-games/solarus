@@ -222,7 +222,7 @@ bool Hero::is_ground_visible(void) {
  */
 void Hero::notify_collision_with_teletransporter(Teletransporter *teletransporter, int collision_mode) {
 
-  if (state != JUMPING && state != CONVEYOR_BELT) {
+  if (state != JUMPING && state != CONVEYOR_BELT && state != STAIRS) {
 
     if (map->get_tile_ground(get_layer(), get_x(), get_y()) == GROUND_HOLE) {
       this->hole_teletransporter = teletransporter; // fall first, transport later

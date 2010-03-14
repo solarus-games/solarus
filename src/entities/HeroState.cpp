@@ -318,6 +318,8 @@ void Hero::notify_collision_with_stairs(Stairs *stairs) {
 
       // state
       set_state(STAIRS);
+      this->current_stairs = stairs;
+      this->stairs_phase = 0;
 
       // movement
       Movement *movement = new PathMovement(stairs->get_path(this), walking_speed / 2, false, false, false);
@@ -347,20 +349,47 @@ void Hero::notify_collision_with_stairs(Stairs *stairs) {
 
 /**
  * Updates the hero when he is walking on stairs.
- * The state should be SAIRS.
+ * The state should be STAIRS.
  */
 void Hero::update_stairs(void) {
 
   get_movement()->update();
 
-  if (get_movement()->is_finished()) {
+  if (current_stairs->is_inside_floor()) {
 
-    if (stairs_going_to_low_layer) {
-      map->get_entities()->set_entity_layer(this, LAYER_LOW);
+    // inside a single floor: return to normal state as soon as the movement is finished
+    if (get_movement()->is_finished()) {
+
+      if (stairs_going_to_low_layer) {
+	map->get_entities()->set_entity_layer(this, LAYER_LOW);
+      }
+      clear_movement();
+      set_movement(normal_movement);
+      start_free();
     }
-    clear_movement();
-    set_movement(normal_movement);
-    start_free();
+  }
+  else {
+    // between two floors: do a small movement an then move the hero diagonally
+    if (get_movement()->is_finished()) {
+      clear_movement();
+      this->stairs_phase++;
+
+      if (stairs_phase == 0) {
+	stairs_phase = 1;
+	sprites->set_animation_walking_diagonal(3);
+	set_movement(new PathMovement("4", 1, false, false, false));
+      }
+      else if (stairs_phase == 1) { // diagonal animation finished
+	sprites->set_animation_walking();
+	sprites->set_animation_direction(2);
+	set_movement(new PathMovement("4", 1, false, false, false));
+      }
+      else {
+	stairs_phase = 0;
+	set_movement(normal_movement);
+	start_free();
+      }
+    }
   }
 }
 

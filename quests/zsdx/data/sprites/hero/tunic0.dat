@@ -22,6 +22,12 @@ walking_with_shield hero/walking.tunic.png 4 100 0
 0	96	24	32	12	29	8	8
 0	128	24	32	12	29	8	8
 
+walking_diagonal hero/walking.tunic.png 4 100 0
+192	0	24	32	12	29	3	3
+192	32	24	32	12	29	3	3
+192	96	24	32	12	29	3	3
+192	128	24	32	12	29	3	3
+
 sword hero/sword.tunic0.png 4 30 -1
 0	0	32	32	16	29	12	12
 0	32	32	32	16	29	12	12

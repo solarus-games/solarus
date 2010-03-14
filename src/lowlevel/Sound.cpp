@@ -39,7 +39,11 @@ Sound::Sound(const SoundId &sound_id):
 
   if (is_initialized()) {
 
-    std::string file_name = (std::string) "sounds/" + sound_id + ".ogg";
+    std::string file_name = (std::string) "sounds/" + sound_id;
+    if (sound_id.find(".") == std::string::npos) {
+      file_name += ".ogg";
+    }
+
     // create an OpenAL buffer with the sound decoded by the library
     buffer = decode_file(file_name);
 

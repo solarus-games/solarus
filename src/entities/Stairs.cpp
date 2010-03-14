@@ -148,15 +148,15 @@ void Stairs::play_sound(MapEntity *entity_overlapping) {
 
   if (is_inside_floor()) {
     if (entity_overlapping->get_layer() == LAYER_LOW) {
-      game->play_sound("internal_stairs_up");
+      game->play_sound("stairs_up_end.wav");
     }
     else {
-      game->play_sound("internal_stairs_down");
+      game->play_sound("stairs_down_end.wav");
     }
   }
   else {
     // TODO
-    game->play_sound("danger");
+    game->play_sound("stairs_down_start.wav");
   }
 }
 

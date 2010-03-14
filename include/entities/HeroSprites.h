@@ -89,6 +89,7 @@ class HeroSprites {
 
     void set_animation_stopped(void);
     void set_animation_walking(void);
+    void set_animation_walking_diagonal(int direction);
     void set_animation_sword(void);
     void play_sword_sound(void);
     void set_animation_sword_tapping(void);

@@ -700,6 +700,19 @@ void HeroSprites::set_animation_walking(void) {
 }
 
 /**
+ * Starts the "walking_diagonal" animation of the hero's sprites.
+ * @param direction the diagonal direction to take (1, 3, 5 or 7)
+ */
+void HeroSprites::set_animation_walking_diagonal(int direction) {
+
+  stop_displaying_sword();
+  tunic_sprite->set_current_animation("walking_diagonal");
+  if (equipment->has_shield()) {
+    shield_sprite->stop_animation();
+  }
+}
+
+/**
  * Starts (or restarts) the "sword" animation of the hero's sprites.
  * The state of the hero should be SWORD.
  */

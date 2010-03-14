@@ -111,8 +111,11 @@ class Hero: public MapEntity {
     ConveyorBelt *current_conveyor_belt;   /**< the current conveyor belt in state CONVEYOR_BELT */
 
     // stairs
-    int stairs_going_to_low_layer;         /**< when walking on stairs, indicates whether the hero
+    Stairs *current_stairs;                /**< the stairs the hero is currently taking in state STAIRS (or NULL) */
+    bool stairs_going_to_low_layer;        /**< when walking on stairs, indicates whether the hero
 					    * should arrive on the low layer when the movement is finished */
+    int stairs_phase;                      /**< when walking on spiral stairs, indicates the current phase of the
+					    * movement */
 
     // sword loading
     bool sword_loaded;                     /**< in state SWORD_LOADING, becomes true when the spin attack is possible */

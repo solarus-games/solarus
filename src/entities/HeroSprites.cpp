@@ -119,7 +119,7 @@ const SoundId HeroSprites::ground_sound_ids[] = {
 HeroSprites::HeroSprites(Hero *hero, Equipment *equipment):
   hero(hero), equipment(equipment), tunic_sprite(NULL), sword_sprite(NULL),
   sword_stars_sprite(NULL), shield_sprite(NULL), shadow_sprite(NULL), ground_sprite(NULL),
-  end_blink_date(0), walking(false) {
+  end_blink_date(0), walking(false), clipping_rectangle(Rectangle()) {
 
 }
 
@@ -306,6 +306,16 @@ bool HeroSprites::is_blinking(void) {
 }
 
 /**
+ * Sets the rectangle of the map where the display of the hero's sprite
+ * will be restricted to.
+ * A (0,0,0,0) rectangle means that the sprite is not restricted to a subarea of the map.
+ * @param clipping_rectangle a subarea of the map to restrict the display to
+ */
+void HeroSprites::set_clipping_rectangle(const Rectangle &clipping_rectangle) {
+  this->clipping_rectangle = clipping_rectangle;
+}
+
+/**
  * Returns whether the sprites have currently a walking animation.
  * @return true if the sprites are walking
  */
@@ -485,6 +495,12 @@ void HeroSprites::display_on_map(void) {
   int y = hero->get_y();
 
   Map *map = hero->get_map();
+
+  if (clipping_rectangle.get_width() > 0) {
+    // restrict the map displaying to the clipping rectangle specified (just for the hero's sprites)
+    map->set_clipping_rectangle(clipping_rectangle);
+  }
+
   if (hero->get_state() == Hero::JUMPING) {
     map->display_sprite(shadow_sprite, x, y);
     map->display_sprite(tunic_sprite, x, hero->get_jump_y());
@@ -510,6 +526,11 @@ void HeroSprites::display_on_map(void) {
     if (hero->is_ground_visible()) {
       map->display_sprite(ground_sprite, x, y);
     }
+  }
+  
+  if (clipping_rectangle.get_width() > 0) {
+    // restore the normal map displaying
+    map->set_clipping_rectangle();
   }
 }
 
@@ -707,6 +728,7 @@ void HeroSprites::set_animation_walking_diagonal(int direction) {
 
   stop_displaying_sword();
   tunic_sprite->set_current_animation("walking_diagonal");
+  tunic_sprite->set_current_direction(direction / 2);
   if (equipment->has_shield()) {
     shield_sprite->stop_animation();
   }

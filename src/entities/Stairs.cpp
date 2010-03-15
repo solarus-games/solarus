@@ -35,7 +35,13 @@ Stairs::Stairs(Layer layer, int x, int y, int direction, Subtype subtype):
   }
 
   set_direction(direction);
-  set_origin(0, 0);
+
+  if (!is_inside_floor()) {
+    set_size(16, 8);
+    if (direction == 3) { // down
+      set_origin(0, -8);
+    }
+  }
 }
 
 /**
@@ -116,8 +122,8 @@ void Stairs::notify_collision(MapEntity *entity_overlapping, CollisionMode colli
 }
 
 /**
- * Returns the direction of the movement an entity would take on these stairs.
- * If the stairs are not inside a single map, the direction is just north or south
+ * Returns the direction of the movement an entity would take when activating these stairs.
+ * If the stairs are not inside a single map, the direction is simply north or south
  * depending on the stairs direction.
  * Otherwise, the direction depends on the entity's layer.
  * If the entity's layer is LAYER_LOW, then the entity would go upstairs and this function returns 
@@ -127,16 +133,36 @@ void Stairs::notify_collision(MapEntity *entity_overlapping, CollisionMode colli
  * This function can be used to determine whether an entity is taking the correct direction
  * to take the stairs.
  * @param initial_layer the layer from which you intend to take the stairs
- * @return the movement direction an entity on this layer should take on these stairs (0 to 3)
+ * @return the movement direction an entity on this layer should take on these stairs (0 to 7)
  */
 int Stairs::get_movement_direction(Layer initial_layer) {
 
-  int movement_direction = get_direction();
+  int movement_direction = get_direction() * 2;
   if (is_inside_floor() && initial_layer != LAYER_LOW) {
-    movement_direction = (movement_direction + 2) % 4;
+    movement_direction = (movement_direction + 4) % 8;
   }
 
   return movement_direction;
+}
+
+/**
+ * Returns the direction of the animation an entity should take when activating these stairs.
+ * For spiral stairs, the direction returned is diagonal.
+ * @return the direction of animation (0 to 7)
+ */
+int Stairs::get_animation_direction(void) {
+
+  int basic_direction = get_direction();
+  int result = basic_direction;
+
+  if (subtype == SPIRAL_UPSTAIRS) {
+    result = (basic_direction == 1) ? 1 : 5;
+  }
+  else if (subtype == SPIRAL_DOWNSTAIRS) {
+    result = (basic_direction == 1) ? 3 : 7;
+  }
+
+  return result;
 }
 
 /**
@@ -169,19 +195,19 @@ void Stairs::play_sound(MapEntity *entity_overlapping) {
 std::string Stairs::get_path(MapEntity *entity_overlapping) {
 
   // determine the movement direction
-  int movement_direction = 2 * get_movement_direction(entity_overlapping->get_layer());
-  std::string path;
+  int movement_direction = get_movement_direction(entity_overlapping->get_layer());
+  std::string path = "";
+  char path_element;
   int nb_steps;
   if (is_inside_floor()) {
     nb_steps = 5;
-    path = "     ";
   }
   else {
-    nb_steps = 1;
-    path = " ";
+    nb_steps = (get_direction() == 1) ? 1 : 2;
   }
+  path_element = '0' + movement_direction;
   for (int i = 0; i < nb_steps; i++) {
-    path[i] = '0' + movement_direction;
+    path += path_element;
   }
 
   return path;

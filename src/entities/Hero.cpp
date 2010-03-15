@@ -49,7 +49,7 @@ Hero::Hero(Equipment *equipment):
   counter(0), next_counter_date(0), pushing_direction_mask(0xFFFF),
   grabbed_entity(NULL), on_conveyor_belt(false), 
   lifted_item(NULL), treasure(NULL), end_victory_date(0),
-  ground(GROUND_NORMAL), next_ground_date(0),
+  ground(GROUND_NORMAL), next_ground_date(0), delayed_teletransporter(NULL),
   current_inventory_item(NULL), when_can_use_inventory_item(0) {
 
   set_size(16, 16);
@@ -457,6 +457,7 @@ void Hero::set_map(Map *map) {
   MapEntity::set_map(map);
 
   target_solid_ground_coords.set_xy(-1, -1);
+  sprites->set_clipping_rectangle();
 
   if (lifted_item != NULL) {
     lifted_item->set_map(map);

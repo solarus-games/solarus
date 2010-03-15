@@ -222,13 +222,16 @@ bool Hero::is_ground_visible(void) {
  */
 void Hero::notify_collision_with_teletransporter(Teletransporter *teletransporter, int collision_mode) {
 
-  if (state != JUMPING && state != CONVEYOR_BELT && state != STAIRS) {
+  if (state != JUMPING && state != CONVEYOR_BELT) {
 
-    if (map->get_tile_ground(get_layer(), get_x(), get_y()) == GROUND_HOLE) {
-      this->hole_teletransporter = teletransporter; // fall first, transport later
+    if (state == STAIRS) {
+      this->delayed_teletransporter = teletransporter; // take the stairs first, transport later
+    }
+    else if (map->get_tile_ground(get_layer(), get_x(), get_y()) == GROUND_HOLE) {
+      this->delayed_teletransporter = teletransporter; // fall first, transport later
     }
     else {
-      teletransporter->transport_hero(this);
+      teletransporter->transport_hero(this); // usual case: transport right now
     }
   }
 }
@@ -314,7 +317,7 @@ void Hero::notify_collision_with_stairs(Stairs *stairs) {
     // check whether the hero is trying to move in the direction of the stairs
     int correct_direction = stairs->get_movement_direction(get_layer());
 
-    if (is_moving_towards(correct_direction)) {
+    if (is_moving_towards(correct_direction / 2)) {
 
       // state
       set_state(STAIRS);
@@ -322,7 +325,8 @@ void Hero::notify_collision_with_stairs(Stairs *stairs) {
       this->stairs_phase = 0;
 
       // movement
-      Movement *movement = new PathMovement(stairs->get_path(this), walking_speed / 2, false, false, false);
+      int speed = stairs->is_inside_floor() ? 4 : 3;
+      Movement *movement = new PathMovement(stairs->get_path(this), speed, false, false, false);
 
       // sprites and sound
       stairs->play_sound(this);
@@ -369,30 +373,52 @@ void Hero::update_stairs(void) {
     }
   }
   else {
-    // between two floors: do a small movement an then move the hero diagonally
+
+    // movement direction corresponding to each animation direction while taking stairs
+    static const int movement_directions[] = { 0, 0, 2, 4, 4, 4, 6, 0 };
+
+    // between two floors: do a small movement and perhaps animate the hero diagonally
     if (get_movement()->is_finished()) {
+
       clear_movement();
       this->stairs_phase++;
 
-      if (stairs_phase == 0) {
-	stairs_phase = 1;
-	sprites->set_animation_walking_diagonal(3);
-	set_movement(new PathMovement("4", 1, false, false, false));
+      int animation_direction = current_stairs->get_animation_direction();
+      char c = '0' + movement_directions[animation_direction];
+      std::string path = std::string("") + c;
+
+      if (stairs_phase == 1) { // initial straight movement finished
+
+	if (animation_direction % 2 != 0) {
+	  sprites->set_animation_walking_diagonal(animation_direction);
+	}
+	else {
+	  sprites->set_animation_direction(animation_direction / 2);
+          sprites->set_animation_walking();
+	}
+	sprites->set_clipping_rectangle(Rectangle(get_top_left_x(), 0, 16, map->get_height()));
+	set_movement(new PathMovement(path, 2, false, false, false));
       }
-      else if (stairs_phase == 1) { // diagonal animation finished
+      else if (stairs_phase == 2) { // diagonal animation finished
 	sprites->set_animation_walking();
-	sprites->set_animation_direction(2);
-	set_movement(new PathMovement("4", 1, false, false, false));
+	sprites->set_animation_direction(movement_directions[animation_direction] / 2);
+	set_movement(new PathMovement(path, 2, false, false, false));
       }
-      else {
+      else { // last movement finished
 	stairs_phase = 0;
 	set_movement(normal_movement);
-	start_free();
+
+	// there must be a teletransporter associated with these stairs,
+	// otherwise the hero would get stuck into the walls
+	if (delayed_teletransporter == NULL) {
+          DIE("Teletransporter expected with the stairs");
+	}
+	
+	delayed_teletransporter->transport_hero(this);
       }
     }
   }
 }
-
 
 /**
  * This function is called when a sensor detects a collision with this entity.
@@ -1447,7 +1473,7 @@ void Hero::stop_swimming(void) {
 void Hero::start_hole(void) {
 
   next_ground_date = System::now();
-  hole_teletransporter = NULL;
+  delayed_teletransporter = NULL;
 
   // push the hero into a direction
   if (is_moving_towards(0)) {
@@ -1497,9 +1523,9 @@ void Hero::update_falling(void) {
   if (sprites->is_animation_finished()) {
 
     // the hero has just finished falling
-    if (hole_teletransporter != NULL) {
+    if (delayed_teletransporter != NULL) {
       // special hole with a teletransporter
-      hole_teletransporter->transport_hero(this);
+      delayed_teletransporter->transport_hero(this);
     }
     else {
       // hole that hurts the hero

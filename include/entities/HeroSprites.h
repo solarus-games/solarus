@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include "Ground.h"
+#include "lowlevel/Rectangle.h"
 
 /**
  * This class handles the animations of the hero's main sprites: the tunic,
@@ -60,6 +61,9 @@ class HeroSprites {
 
     bool walking;                  /**< stopped or walking? (used in states FREE, PUSHING and CARRYING) */
 
+    Rectangle clipping_rectangle;  /**< when displaying the sprites onto a map, indicates an area of the map to be restricted to
+				    * (usually, the whole map is considered and this rectangle's values are all 0) */
+
   public:
 
     HeroSprites(Hero *hero, Equipment *equipment);
@@ -76,6 +80,7 @@ class HeroSprites {
     void stop_blinking(void);
     bool is_blinking(void);
     bool is_walking(void);
+    void set_clipping_rectangle(const Rectangle &clipping_rectangle = Rectangle());
 
     int get_animation_direction(int keys_direction, int real_movement_direction);
     int get_animation_direction(void);

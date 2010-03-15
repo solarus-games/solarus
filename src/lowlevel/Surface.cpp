@@ -134,6 +134,25 @@ void Surface::set_opacity(int opacity) {
 }
 
 /**
+ * Sets a subarea of the surface where the next drawings will be restricted to
+ * when this surface is used as the destination of blitting.
+ * A zero-sized rectangle means that drawings are not restricted to a subarea of the surface.
+ * The rectangle specified may be partially outside this rectangle
+ * (then it will be resized to fit inside).
+ * @param clipping_rectangle a subarea of the rectangle to restrict the display to
+ */
+void Surface::set_clipping_rectangle(const Rectangle &clipping_rectangle) {
+
+  if (clipping_rectangle.get_width() == 0) {
+    SDL_SetClipRect(internal_surface, NULL);
+  }
+  else {
+    Rectangle copy = clipping_rectangle;
+    SDL_SetClipRect(internal_surface, copy.get_internal_rect());
+  }
+}
+
+/**
  * Fills the entire surface with the specified color.
  * @param color a color
  */

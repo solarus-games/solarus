@@ -329,6 +329,15 @@ bool Map::is_camera_fixed_on_hero(void) {
 }
 
 /**
+ * Sets a subarea of the map where the next drawings will be restricted to.
+ * A zero-sized rectangle means that drawings are not restricted to a subarea of the map.
+ * @param clipping_rectangle a subarea of the map to restrict the display to
+ */
+void Map::set_clipping_rectangle(const Rectangle &clipping_rectangle) {
+  get_visible_surface()->set_clipping_rectangle(clipping_rectangle);
+}
+
+/**
  * Suspends or resumes the movement and animations of the entities.
  * This function is called when the game is being suspended
  * or resumed.

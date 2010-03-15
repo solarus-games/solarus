@@ -253,13 +253,13 @@
 0	0	240	240	8	8	69
 0	0	96	600	8	24	71
 0	0	120	600	8	24	71
-2	0	72	376	16	16	to_B1_stairs_2	0	1	21	from_1F_stairs_2
+2	0	72	368	16	16	to_B1_stairs_2	0	1	21	from_1F_stairs_2
 2	0	104	608	16	16	to_outside	0	1	4	out_lyriann_cave
 1	0	72	509	destination_point	-1	1
 1	0	88	509	destination_point_2	-1	1
 1	0	104	509	destination_point_3	-1	1
 1	0	80	493	from_B1_first_stairs	3	0
-2	0	-24	464	16	16	to_B1_first_stairs	0	1	21	from_1F_first_stairs
+2	0	72	464	16	16	to_B1_first_stairs	0	1	21	from_1F_first_stairs
 2	0	96	512	16	16	teletransporter_2	0	1	21	_same
 2	0	96	544	16	16	teletransporter_3	0	1	21	_same
 2	0	64	512	32	48	teletransporter_4	0	1	21	_same
@@ -326,8 +326,8 @@
 12	0	288	464	128	8	custom_obstacle_7	0	1	1	1
 12	0	168	64	8	32	custom_obstacle_8	0	1	1	0
 19	0	128	88	1	4
-19	0	72	456	1	1
-19	0	72	376	3	1
+19	0	72	464	1	1
+19	0	72	368	3	1
 1	0	80	509	from_outside	1	0
 0	1	200	592	64	8	180
 0	1	200	560	64	32	2
@@ -385,8 +385,9 @@
 2	1	136	24	16	16	to_B1_north_stairs	0	1	21	from_1F_north_stairs
 1	1	240	597	from_B1_final_stairs	1	0
 6	1	192	560	8	16	jump_sensor	4	40
-2	1	232	608	16	16	teletransporter	0	1	21	from_1F_final_stairs
+2	1	232	600	16	16	teletransporter	0	1	21	from_1F_final_stairs
 3	1	232	573	18	37
+19	1	232	600	3	1
 0	2	192	616	96	8	148
 0	2	96	16	96	8	147
 0	2	0	0	480	16	170

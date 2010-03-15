@@ -18,6 +18,7 @@
 #define SOLARUS_SURFACE_H
 
 #include "Common.h"
+#include "lowlevel/Rectangle.h"
 #include <SDL/SDL.h>
 
 /**
@@ -55,6 +56,7 @@ class Surface {
 
     void set_transparency_color(Color &color);
     void set_opacity(int opacity);
+    void set_clipping_rectangle(const Rectangle &clipping_rectangle = Rectangle());
     void fill_with_color(Color &color);
     void fill_with_color(Color &color, const Rectangle &where);
     void blit(Surface *destination);

@@ -46,7 +46,7 @@ class Stairs: public Detector {
 
   private:
 
-    Subtype subtype;                      /**< subtype of stairs */
+    Subtype subtype;            /**< subtype of stairs */
 
   public:
 
@@ -63,6 +63,7 @@ class Stairs: public Detector {
     void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
 
     int get_movement_direction(Layer initial_layer);
+    int get_animation_direction(void);
     void play_sound(MapEntity *entity_overlapping);
     std::string get_path(MapEntity *entity_overlapping);
 };

@@ -126,6 +126,7 @@ class Map {
     void move_camera(int x, int y, int speed);
     void restore_camera(void);
     bool is_camera_fixed_on_hero(void);
+    void set_clipping_rectangle(const Rectangle &clipping_rectangle = Rectangle());
 
     // loading
     bool is_loaded(void);

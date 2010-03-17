@@ -131,6 +131,7 @@ selection_menu.phase.choose_name	What's your name?
 selection_menu.phase.confirm_erase	Are you sure?
 selection_menu.phase.erase_file		Select file to erase
 selection_menu.phase.options		Press the space bar to change
+selection_menu.phase.options.changing	<  > : choose, Space : validate
 selection_menu.erase			Erase
 selection_menu.cancel			Cancel
 selection_menu.big_yes			YES

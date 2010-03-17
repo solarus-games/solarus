@@ -42,6 +42,7 @@ Feature requests :
 - Ajouter un "map marker" pour indiquer où il faut se rendre ensuite
 - faire une classe script plus générale indépendante des maps ? on pourrait avoir un script global, des scripts d'objets de l'inventaire,
   des scripts d'ennemis, etc.
+- Voir si la police supporte des caractères unicode comme U+2192 (→) et U+2190 (←)
 
 
 Bugs :

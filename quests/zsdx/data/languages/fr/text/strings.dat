@@ -131,6 +131,7 @@ selection_menu.phase.choose_name	Quel est votre nom ?
 selection_menu.phase.confirm_erase	Etes-vous sûr ?
 selection_menu.phase.erase_file		Quel fichier voulez-vous effacer ?
 selection_menu.phase.options		Appuyez sur Espace pour modifier
+selection_menu.phase.options.changing	<  > : choisir, Espace : valider
 selection_menu.erase			Effacer
 selection_menu.cancel			Annuler
 selection_menu.big_yes			OUI

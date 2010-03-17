@@ -334,7 +334,13 @@ bool Map::is_camera_fixed_on_hero(void) {
  * @param clipping_rectangle a subarea of the map to restrict the display to
  */
 void Map::set_clipping_rectangle(const Rectangle &clipping_rectangle) {
-  get_visible_surface()->set_clipping_rectangle(clipping_rectangle);
+
+  this->clipping_rectangle = clipping_rectangle;
+
+  const Rectangle &camera_position = camera->get_position();
+  Rectangle surface_clipping_rectangle(clipping_rectangle);
+  surface_clipping_rectangle.add_xy(-camera_position.get_x(), -camera_position.get_y());
+  visible_surface->set_clipping_rectangle(surface_clipping_rectangle);
 }
 
 /**
@@ -368,6 +374,7 @@ void Map::update(void) {
   script->update();
   camera->update(); /* update the camera after the entities since this might 
 		       be the last update() call for this map */
+  set_clipping_rectangle(clipping_rectangle);
 }
 
 /**

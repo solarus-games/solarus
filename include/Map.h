@@ -80,6 +80,8 @@ class Map {
     Surface *visible_surface;     /**< surface where the map is displayed - this surface is only the visible part
 				   * of the map, so the coordinates on this surface are relative to the screen,
 				   * not to the map */
+    Rectangle clipping_rectangle; /**< when displaying the map, indicates an area of the surface to be restricted to
+				    * (usually, the whole map is considered and this rectangle's values are all 0) */
 
     // map state
     bool started;                         /**< true if this map is the current map */

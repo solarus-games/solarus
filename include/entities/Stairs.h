@@ -42,7 +42,19 @@ class Stairs: public Detector {
       STRAIGHT_UPSTAIRS,        /**< going to the floor upstairs (straight staircase) */
       STRAIGHT_DOWNSTAIRS,      /**< going to the floor downstairs (straight staircase) */
       INSIDE_FLOOR              /**< small stairs inside a single floor, changing the hero's layer */
-   };
+    };
+
+      
+    /** Indicates the way an entity is walking on stairs:
+     * - for stairs between two floors, 0 means that the hero is on the stairs
+     *   of the old map and 1 means that he is on the stairs on the new map 
+     */
+    enum Way {
+      NORMAL_WAY,    /**< for stairs inside a single floor, indicates that the entity is going upstairs;
+		      * for stairs between two floors, indicates that the entity is leaving this floor */
+      REVERSE_WAY    /**< for stairs inside a single floor, indicates that the entity is going downstairs;
+                      * for stairs between two floors, indicates that the entity is arriving on this floor */
+    };
 
   private:
 
@@ -62,10 +74,10 @@ class Stairs: public Detector {
     bool is_obstacle_for(MapEntity *other);
     void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
 
-    int get_movement_direction(Layer initial_layer);
-    int get_animation_direction(void);
-    void play_sound(MapEntity *entity_overlapping);
-    std::string get_path(MapEntity *entity_overlapping);
+    int get_movement_direction(Way way);
+    int get_animation_direction(Way way);
+    void play_sound(Way way);
+    std::string get_path(Way way);
 };
 
 #endif

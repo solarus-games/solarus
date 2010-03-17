@@ -354,12 +354,14 @@ void SelectionMenuOptions::notify_event(InputEvent &event) {
 	right_arrow_sprite->restart_animation();
         label_texts[cursor_position]->set_text_color(Color::get_white());
         value_texts[cursor_position]->set_text_color(Color::get_yellow());
+	menu->set_title_text("selection_menu.phase.options.changing");
         modifying = true;
       }
       else {
 	menu->play_letter_sound();
         label_texts[cursor_position]->set_text_color(Color::get_yellow());
         value_texts[cursor_position]->set_text_color(Color::get_white());
+	menu->set_title_text("selection_menu.phase.options");
 	modifying = false;
       }
     }

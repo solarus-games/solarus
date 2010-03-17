@@ -21,6 +21,7 @@
 #include "entities/MapEntity.h"
 #include "entities/EnemyAttack.h"
 #include "entities/Ground.h"
+#include "entities/Stairs.h"
 #include "GameControls.h"
 #include "InventoryItemId.h"
 
@@ -112,10 +113,15 @@ class Hero: public MapEntity {
 
     // stairs
     Stairs *current_stairs;                /**< the stairs the hero is currently taking in state STAIRS (or NULL) */
-    bool stairs_going_to_low_layer;        /**< when walking on stairs, indicates whether the hero
-					    * should arrive on the low layer when the movement is finished */
+    Stairs::Way stairs_way;                /**< when walking on stairs, indicates the way the hero is taking the stairs:
+					    * - for stairs inside a single floor, 0 means that the hero is going upstairs
+					    * and 1 means the contrary;
+					    * - for stairs between two floors, 0 means that the hero is on the stairs
+					    *   of the old map and 1 means that he is on the stairs on the new map 
+					    */
     int stairs_phase;                      /**< when walking on spiral stairs, indicates the current phase of the
-					    * movement */
+					    * animations (0: initial, 1: diagonal animation, 2: final) */
+    uint32_t next_stairs_phase_date;       /**< date when the stairs phase changes */
 
     // sword loading
     bool sword_loaded;                     /**< in state SWORD_LOADING, becomes true when the spin attack is possible */

@@ -314,38 +314,42 @@ void Hero::notify_collision_with_stairs(Stairs *stairs) {
 
   if (state != STAIRS && state != CARRYING && state != SWORD_LOADING) {
 
-    // check whether the hero is trying to move in the direction of the stairs
-    int correct_direction = stairs->get_movement_direction(get_layer());
+    if (stairs->is_inside_floor()) {
+      stairs_way = (get_layer() == LAYER_LOW) ? Stairs::NORMAL_WAY : Stairs::REVERSE_WAY;
+    }
+    else {
+      stairs_way = Stairs::NORMAL_WAY; // TODO
+    }
 
+    // check whether the hero is trying to move in the direction of the stairs
+    int correct_direction = stairs->get_movement_direction(stairs_way);
     if (is_moving_towards(correct_direction / 2)) {
 
       // state
       set_state(STAIRS);
       this->current_stairs = stairs;
-      this->stairs_phase = 0;
 
       // movement
-      int speed = stairs->is_inside_floor() ? 4 : 3;
-      Movement *movement = new PathMovement(stairs->get_path(this), speed, false, false, false);
+      int speed = stairs->is_inside_floor() ? 4 : 2;
+      Movement *movement = new PathMovement(stairs->get_path(stairs_way), speed, false, false, false);
 
       // sprites and sound
-      stairs->play_sound(this);
+      stairs->play_sound(stairs_way);
       sprites->set_animation_walking();
       game->get_keys_effect()->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
 
       // change the layer if necessary
-      stairs_going_to_low_layer = false;
       if (stairs->is_inside_floor()) {
-        if (get_layer() == LAYER_LOW) {
+        if (stairs_way == Stairs::NORMAL_WAY) {
 	  // low layer to intermediate layer: we change it now
 	  map->get_entities()->set_entity_layer(this, LAYER_INTERMEDIATE);
 	}
-	else {
-          // intermediate to low layer: we will change it only after the movement
-	  stairs_going_to_low_layer = true;
-	}
       }
-
+      else {
+	sprites->set_clipping_rectangle(Rectangle(get_top_left_x(), get_top_left_y() - 8, 16, 72));
+        stairs_phase = 0;
+	next_stairs_phase_date = System::now() + 450;
+      }
       set_movement(movement);
     }
   }
@@ -364,7 +368,7 @@ void Hero::update_stairs(void) {
     // inside a single floor: return to normal state as soon as the movement is finished
     if (get_movement()->is_finished()) {
 
-      if (stairs_going_to_low_layer) {
+      if (stairs_way == Stairs::REVERSE_WAY) {
 	map->get_entities()->set_entity_layer(this, LAYER_LOW);
       }
       clear_movement();
@@ -373,48 +377,46 @@ void Hero::update_stairs(void) {
     }
   }
   else {
+    // stairs between two different floors
 
-    // movement direction corresponding to each animation direction while taking stairs
-    static const int movement_directions[] = { 0, 0, 2, 4, 4, 4, 6, 0 };
-
-    // between two floors: do a small movement and perhaps animate the hero diagonally
     if (get_movement()->is_finished()) {
-
       clear_movement();
-      this->stairs_phase++;
+      set_movement(normal_movement);
 
-      int animation_direction = current_stairs->get_animation_direction();
-      char c = '0' + movement_directions[animation_direction];
-      std::string path = std::string("") + c;
-
-      if (stairs_phase == 1) { // initial straight movement finished
-
-	if (animation_direction % 2 != 0) {
-	  sprites->set_animation_walking_diagonal(animation_direction);
-	}
-	else {
-	  sprites->set_animation_direction(animation_direction / 2);
-          sprites->set_animation_walking();
-	}
-	sprites->set_clipping_rectangle(Rectangle(get_top_left_x(), 0, 16, map->get_height()));
-	set_movement(new PathMovement(path, 2, false, false, false));
-      }
-      else if (stairs_phase == 2) { // diagonal animation finished
-	sprites->set_animation_walking();
-	sprites->set_animation_direction(movement_directions[animation_direction] / 2);
-	set_movement(new PathMovement(path, 2, false, false, false));
-      }
-      else { // last movement finished
-	stairs_phase = 0;
-	set_movement(normal_movement);
-
+      if (stairs_way == Stairs::NORMAL_WAY) {
 	// there must be a teletransporter associated with these stairs,
 	// otherwise the hero would get stuck into the walls
 	if (delayed_teletransporter == NULL) {
-          DIE("Teletransporter expected with the stairs");
+	  DIE("Teletransporter expected with the stairs");
 	}
-	
 	delayed_teletransporter->transport_hero(this);
+      }
+      else {
+        start_free();
+      }
+    }
+    else {
+      uint32_t now = System::now();
+      if (now >= next_stairs_phase_date) {
+	stairs_phase++;
+	next_stairs_phase_date += 350;
+
+	// movement direction corresponding to each animation direction while taking stairs
+        static const int movement_directions[] = { 0, 0, 2, 4, 4, 4, 6, 0 };
+	int animation_direction = current_stairs->get_animation_direction(stairs_way);
+	if (stairs_phase == 1) { // initial straight movement finished
+	  if (animation_direction % 2 != 0) {
+	    sprites->set_animation_walking_diagonal(animation_direction);
+	  }
+	  else {
+	    sprites->set_animation_direction(animation_direction / 2);
+	    sprites->set_animation_walking();
+	  }
+	}
+	else if (stairs_phase == 2) { // diagonal animation finished
+	  sprites->set_animation_walking();
+	  sprites->set_animation_direction(movement_directions[animation_direction] / 2);
+	}
       }
     }
   }

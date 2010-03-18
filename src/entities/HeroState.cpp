@@ -224,10 +224,12 @@ void Hero::notify_collision_with_teletransporter(Teletransporter *teletransporte
 
   if (state != JUMPING && state != CONVEYOR_BELT) {
 
-    if (state == STAIRS) {
+    bool on_hole = map->get_tile_ground(get_layer(), get_x(), get_y()) == GROUND_HOLE;
+
+    if (state == STAIRS || get_stairs_overlapping() != NULL) {
       this->delayed_teletransporter = teletransporter; // take the stairs first, transport later
     }
-    else if (map->get_tile_ground(get_layer(), get_x(), get_y()) == GROUND_HOLE) {
+    else if (on_hole) {
       this->delayed_teletransporter = teletransporter; // fall first, transport later
     }
     else {
@@ -309,8 +311,9 @@ void Hero::update_conveyor_belt(void) {
 /**
  * This function is called when a stairs entity detects a collision with this entity.
  * @param stairs the stairs
+ * @param collision_mode the collision mode that detected the event
  */
-void Hero::notify_collision_with_stairs(Stairs *stairs) {
+void Hero::notify_collision_with_stairs(Stairs *stairs, int collision_mode) {
 
   if (state != STAIRS && state != CARRYING && state != SWORD_LOADING) {
 
@@ -318,35 +321,35 @@ void Hero::notify_collision_with_stairs(Stairs *stairs) {
       stairs_way = (get_layer() == LAYER_LOW) ? Stairs::NORMAL_WAY : Stairs::REVERSE_WAY;
     }
     else {
-      stairs_way = Stairs::NORMAL_WAY; // TODO
+      stairs_way = (collision_mode == Detector::COLLISION_FACING_POINT) ? Stairs::NORMAL_WAY : Stairs::REVERSE_WAY;
     }
 
     // check whether the hero is trying to move in the direction of the stairs
     int correct_direction = stairs->get_movement_direction(stairs_way);
-    if (is_moving_towards(correct_direction / 2)) {
+    if (is_moving_towards(correct_direction / 2) || collision_mode == Detector::COLLISION_RECTANGLE) {
 
       // state
-      set_state(STAIRS);
       this->current_stairs = stairs;
+      set_state(STAIRS);
 
       // movement
       int speed = stairs->is_inside_floor() ? 4 : 2;
       Movement *movement = new PathMovement(stairs->get_path(stairs_way), speed, false, false, false);
 
       // sprites and sound
-      stairs->play_sound(stairs_way);
       sprites->set_animation_walking();
       game->get_keys_effect()->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
 
-      // change the layer if necessary
       if (stairs->is_inside_floor()) {
         if (stairs_way == Stairs::NORMAL_WAY) {
-	  // low layer to intermediate layer: we change it now
+	  // low layer to intermediate layer: change the layer now
 	  map->get_entities()->set_entity_layer(this, LAYER_INTERMEDIATE);
 	}
       }
       else {
-	sprites->set_clipping_rectangle(Rectangle(get_top_left_x(), get_top_left_y() - 8, 16, 72));
+	if (stairs_way == Stairs::NORMAL_WAY) {
+	  sprites->set_clipping_rectangle(Rectangle(get_top_left_x(), get_top_left_y() - 8, 16, 32));
+	}
         stairs_phase = 0;
 	next_stairs_phase_date = System::now() + 450;
       }
@@ -362,6 +365,11 @@ void Hero::notify_collision_with_stairs(Stairs *stairs) {
 void Hero::update_stairs(void) {
 
   get_movement()->update();
+
+  if (stairs_phase == 0) {
+    current_stairs->play_sound(stairs_way);
+    stairs_phase++;
+  }
 
   if (current_stairs->is_inside_floor()) {
 
@@ -389,9 +397,12 @@ void Hero::update_stairs(void) {
 	if (delayed_teletransporter == NULL) {
 	  DIE("Teletransporter expected with the stairs");
 	}
+	this->current_stairs = NULL;
+	start_free();
 	delayed_teletransporter->transport_hero(this);
       }
       else {
+	sprites->set_clipping_rectangle();
         start_free();
       }
     }
@@ -404,7 +415,7 @@ void Hero::update_stairs(void) {
 	// movement direction corresponding to each animation direction while taking stairs
         static const int movement_directions[] = { 0, 0, 2, 4, 4, 4, 6, 0 };
 	int animation_direction = current_stairs->get_animation_direction(stairs_way);
-	if (stairs_phase == 1) { // initial straight movement finished
+	if (stairs_phase == 2) { // initial straight movement finished
 	  if (animation_direction % 2 != 0) {
 	    sprites->set_animation_walking_diagonal(animation_direction);
 	  }
@@ -413,12 +424,49 @@ void Hero::update_stairs(void) {
 	    sprites->set_animation_walking();
 	  }
 	}
-	else if (stairs_phase == 2) { // diagonal animation finished
+	else if (stairs_phase == 3) { // diagonal animation finished
 	  sprites->set_animation_walking();
 	  sprites->set_animation_direction(movement_directions[animation_direction] / 2);
 	}
       }
     }
+  }
+}
+
+/**
+ * Returns the stairs the hero may be currently overlapping.
+ * The result is calculated (not stored) so that you can know it
+ * even when the game is suspended
+ * @return the stairs the hero is currently overlapping, or NULL
+ */
+Stairs * Hero::get_stairs_overlapping(void) {
+
+  Stairs *stairs = NULL;
+  std::list<Stairs*> *all_stairs = map->get_entities()->get_stairs(get_layer());
+  std::list<Stairs*>::iterator it;
+  for (it = all_stairs->begin(); it != all_stairs->end() && stairs == NULL; it++) {
+    
+    if (overlaps(*it)) {
+      stairs = *it;
+    }
+  }
+
+  return stairs;
+}
+
+/**
+ * This function is called when the hero arrives on this map by taking stairs.
+ */
+void Hero::stairs_just_arrived(void) {
+  
+  // check whether the hero is arriving on the map by stairs too (this is usually the case)
+  Stairs *stairs = get_stairs_overlapping();
+
+  if (stairs != NULL) {
+    // the hero is arriving on the map by stairs: trigger the stairs manually
+    sprites->set_clipping_rectangle(Rectangle(get_top_left_x(), get_top_left_y(), 16, 32));
+    set_xy(get_x() + 16,  get_y());
+    notify_collision_with_stairs(stairs, Detector::COLLISION_RECTANGLE);
   }
 }
 

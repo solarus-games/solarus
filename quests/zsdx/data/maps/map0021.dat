@@ -364,7 +364,7 @@
 0	0	176	168	8	24	404
 0	0	160	168	16	24	405
 0	0	152	160	32	8	406
-1	0	240	597	from_1F_final_stairs	1	0
+1	0	240	613	from_1F_final_stairs	1	0
 2	0	56	456	16	16	to_1F_first_stairs	0	1	20	from_B1_first_stairs
 2	0	232	600	16	16	to_B1_final_stairs	0	1	20	from_B1_final_stairs
 15	0	80	544	48	16	1
@@ -373,7 +373,7 @@
 15	0	80	528	48	16	0
 15	0	80	512	48	16	1
 15	0	128	528	16	16	1
-1	0	64	373	from_1F_stairs_2	1	0
+1	0	64	389	from_1F_stairs_2	1	0
 2	0	56	376	16	16	to_B1_final_stairs_2	0	1	20	from_B1_stairs_2
 15	0	136	552	48	16	1
 1	0	424	589	destination_point	-1	1
@@ -391,12 +391,12 @@
 10	0	104	216	8	16	barrier_2	71	0
 10	0	104	288	8	16	barrier_1	71	1
 12	0	152	160	32	8	custom_obstacle	1	1	1	1
-1	0	144	53	from_1F_north_stairs	3	0
+1	0	144	37	from_1F_north_stairs	3	0
 2	0	136	24	16	16	to_1F_north_stairs	0	1	20	from_B1_north_stairs
 14	0	272	149
 15	0	112	96	32	16	0
 15	0	112	112	32	16	1
-1	0	168	197	from_1F_middle_stairs	3	0
+1	0	168	181	from_1F_middle_stairs	3	0
 4	0	248	253	0	2	-1
 4	0	296	253	0	-1	-1
 4	0	296	229	0	4	-1
@@ -408,7 +408,7 @@
 1	0	304	589	from_1F_hole_2_east	-1	0
 4	0	88	117	0	4	-1
 9	0	376	197	block	-1	1	2
-1	0	64	485	from_1F_first_stairs	3	0
+1	0	64	469	from_1F_first_stairs	3	0
 15	0	296	64	32	16	1
 15	0	376	80	32	16	1
 15	0	408	96	16	48	1
@@ -424,6 +424,8 @@
 19	0	56	456	1	0
 19	0	56	376	3	0
 19	0	232	600	3	0
+19	0	136	24	1	0
+19	0	160	168	1	2
 0	2	192	616	96	8	148
 0	2	96	16	96	8	147
 0	2	0	0	480	16	170

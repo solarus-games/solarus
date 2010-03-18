@@ -70,7 +70,7 @@ class MapEntities {
       obstacle_entities[LAYER_NB];                          /**< all entities that might be obstacle for other
 							     * entities on this map, including the hero */
 
-    std::vector<DestinationPoint*> destination_points;      /**< all destination points of the map */
+    std::list<Stairs*> stairs[LAYER_NB];                  /**< all stairs of the map */
     std::list<CrystalSwitchBlock*>
       crystal_switch_blocks[LAYER_NB];                      /**< all crystal switch blocks of the map */
     Boomerang *boomerang;                                   /**< the boomerang if present on the map, NULL otherwise */
@@ -90,10 +90,10 @@ class MapEntities {
 
     // information about the entities
     Hero * get_hero(void);
-    unsigned int get_nb_destination_points(void);
     Obstacle get_obstacle_tile(Layer layer, int x, int y);
     std::list<MapEntity*> * get_obstacle_entities(Layer layer);
     std::list<Detector*> * get_detectors(void);
+    std::list<Stairs*> * get_stairs(Layer layer);
     std::list<CrystalSwitchBlock*> * get_crystal_switch_blocks(Layer layer);
 
     MapEntity *get_entity(EntityType type, const std::string &name);

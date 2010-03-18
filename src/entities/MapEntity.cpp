@@ -1125,8 +1125,9 @@ void MapEntity::notify_collision_with_conveyor_belt(ConveyorBelt *conveyor_belt,
 /**
  * This function is called when an stairs entity detect a collision with this entity.
  * @param stairs the stairs
+ * @param collision_mode the collision mode that detected the event
  */
-void MapEntity::notify_collision_with_stairs(Stairs *stairs) {
+void MapEntity::notify_collision_with_stairs(Stairs *stairs, int collision_mode) {
   // nothing done by default
 }
 

@@ -46,8 +46,9 @@ const int Hero::walking_speed = 9;
 Hero::Hero(Equipment *equipment):
   equipment(equipment), normal_movement(new PlayerMovement(walking_speed)),
   state(FREE), facing_entity(NULL),
-  counter(0), next_counter_date(0), pushing_direction_mask(0xFFFF),
-  grabbed_entity(NULL), on_conveyor_belt(false), 
+  counter(0), next_counter_date(0),
+  pushing_direction_mask(0xFFFF), grabbed_entity(NULL),
+  on_conveyor_belt(false), current_stairs(NULL),
   lifted_item(NULL), treasure(NULL), end_victory_date(0),
   ground(GROUND_NORMAL), next_ground_date(0), delayed_teletransporter(NULL),
   current_inventory_item(NULL), when_can_use_inventory_item(0) {
@@ -938,7 +939,14 @@ void Hero::place_on_destination_point(Map *map) {
 
       destroy_carried_items();
       entities->remove_boomerang();
-      start_free();
+
+      if (get_stairs_overlapping() != NULL) {
+        // the hero just arrived on stairs
+	stairs_just_arrived();
+      }
+      else {
+        start_free();
+      }
     }
   }
 }

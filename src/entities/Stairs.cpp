@@ -118,7 +118,7 @@ bool Stairs::is_obstacle_for(MapEntity *other) {
  * @param collision_mode the collision mode that detected the collision
  */
 void Stairs::notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
-  entity_overlapping->notify_collision_with_stairs(this);
+  entity_overlapping->notify_collision_with_stairs(this, collision_mode);
 }
 
 /**
@@ -144,14 +144,14 @@ int Stairs::get_movement_direction(Way way) {
  */
 int Stairs::get_animation_direction(Way way) {
 
-  int basic_direction = get_direction();
+  int basic_direction = get_direction() * 2;
   int result = basic_direction;
 
   if (subtype == SPIRAL_UPSTAIRS) {
-    result = (basic_direction == 1) ? 1 : 5;
+    result = (basic_direction == 2) ? 1 : 5;
   }
   else if (subtype == SPIRAL_DOWNSTAIRS) {
-    result = (basic_direction == 1) ? 3 : 7;
+    result = (basic_direction == 2) ? 3 : 7;
   }
 
   if (way == REVERSE_WAY) {

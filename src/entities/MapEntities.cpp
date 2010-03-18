@@ -71,6 +71,7 @@ void MapEntities::destroy_all_entities(void) {
     entities_displayed_first[layer].clear();
     entities_displayed_y_order[layer].clear();
     obstacle_entities[layer].clear();
+    stairs[layer].clear();
   }
 
   // delete the other entities
@@ -81,7 +82,6 @@ void MapEntities::destroy_all_entities(void) {
   }
   all_entities.clear();
 
-  destination_points.clear();
   detectors.clear();
   entities_to_remove.clear();
 }
@@ -92,14 +92,6 @@ void MapEntities::destroy_all_entities(void) {
  */
 Hero * MapEntities::get_hero(void) {
   return hero;
-}
-
-/**
- * Returns the number of destination points of the map.
- * @return the number of destination points
- */
-unsigned int MapEntities::get_nb_destination_points(void) {
-  return destination_points.size();
 }
 
 /**
@@ -146,6 +138,15 @@ list<MapEntity*> * MapEntities::get_obstacle_entities(Layer layer) {
  */
 list<Detector*> * MapEntities::get_detectors(void) {
   return &detectors;
+}
+
+/**
+ * Returns all stairs on the specified layer.
+ * @param layer the layer
+ * @return the stairs on this layer
+ */
+list<Stairs*> * MapEntities::get_stairs(Layer layer) {
+  return &stairs[layer];
 }
 
 /**
@@ -441,8 +442,8 @@ void MapEntities::add_entity(MapEntity *entity) {
     // update the specific entities lists
     switch (entity->get_type()) {
 
-      case DESTINATION_POINT:
-	destination_points.push_back((DestinationPoint*) entity);
+      case STAIRS:
+	stairs[layer].push_back((Stairs*) entity);
 	break;
 
       case CRYSTAL_SWITCH_BLOCK:

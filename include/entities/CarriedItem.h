@@ -88,7 +88,7 @@ class CarriedItem: public MapEntity {
     bool is_npc_obstacle(InteractiveEntity *npc);
     bool is_jump_sensor_obstacle(JumpSensor *jump_sensor);
     bool is_enemy_obstacle(Enemy *enemy);
-    void notify_collision_with_stairs(Stairs *stairs);
+    void notify_collision_with_stairs(Stairs *stairs, int CollisionMode);
     void notify_collision_with_enemy(Enemy *enemy);
     void just_attacked_enemy(EnemyAttack attack, Enemy *victim, int result);
 };

@@ -119,8 +119,9 @@ class Hero: public MapEntity {
 					    * - for stairs between two floors, 0 means that the hero is on the stairs
 					    *   of the old map and 1 means that he is on the stairs on the new map 
 					    */
-    int stairs_phase;                      /**< when walking on spiral stairs, indicates the current phase of the
-					    * animations (0: initial, 1: diagonal animation, 2: final) */
+    int stairs_phase;                      /**< when walking on stairs between two floors, indicates the current
+					    * phase of the animations (0: not started, 1: initial animation,
+					    * 2: diagonal animation, 2: final animation) */
     uint32_t next_stairs_phase_date;       /**< date when the stairs phase changes */
 
     // sword loading
@@ -210,6 +211,8 @@ class Hero: public MapEntity {
 
     void update_conveyor_belt(void);
     void update_stairs(void);
+    Stairs * get_stairs_overlapping(void);
+    void stairs_just_arrived(void);
 
     void update_treasure(void);
     void display_treasure(void);
@@ -329,7 +332,7 @@ class Hero: public MapEntity {
 
     void notify_collision_with_teletransporter(Teletransporter *teletransporter, int collision_mode);
     void notify_collision_with_conveyor_belt(ConveyorBelt *conveyor_belt, int dx, int dy);
-    void notify_collision_with_stairs(Stairs *stairs);
+    void notify_collision_with_stairs(Stairs *stairs, int collision_mode);
     void notify_collision_with_sensor(Sensor *sensor);
     void notify_collision_with_explosion(Explosion *explosion, Sprite *sprite_overlapping);
     void avoid_chest_collision(Chest *chest);

@@ -508,8 +508,9 @@ bool CarriedItem::is_enemy_obstacle(Enemy *enemy) {
 /**
  * This function is called when some stairs detect a collision with this entity.
  * @param stairs the stairs entity
+ * @param collision_mode the collision mode that detected the event
  */
-void CarriedItem::notify_collision_with_stairs(Stairs *stairs) {
+void CarriedItem::notify_collision_with_stairs(Stairs *stairs, int collision_mode) {
 
   if (is_throwing && !is_breaking
       && stairs->is_inside_floor() && get_layer() == LAYER_LOW) {

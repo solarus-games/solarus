@@ -258,13 +258,13 @@
 1	0	72	509	destination_point	-1	1
 1	0	88	509	destination_point_2	-1	1
 1	0	104	509	destination_point_3	-1	1
-1	0	80	493	from_B1_first_stairs	3	0
+1	0	80	477	from_B1_first_stairs	3	0
 2	0	72	464	16	16	to_B1_first_stairs	0	1	21	from_1F_first_stairs
 2	0	96	512	16	16	teletransporter_2	0	1	21	_same
 2	0	96	544	16	16	teletransporter_3	0	1	21	_same
 2	0	64	512	32	48	teletransporter_4	0	1	21	_same
 14	0	192	509
-1	0	80	365	from_B1_stairs_2	1	0
+1	0	80	381	from_B1_stairs_2	1	0
 10	0	136	296	8	16	barrier	71	1
 1	0	248	421	destination_point_4	-1	1
 2	0	128	448	16	16	teletransporter_5	1	1	20	destination_point_3
@@ -288,7 +288,7 @@
 2	0	208	200	16	16	teletransporter_9	1	1	20	destination_point_5
 2	0	88	256	16	16	teletransporter_10	1	1	20	destination_point_6
 15	0	208	144	32	16	0
-1	0	168	165	from_B1_middle_stairs	1	0
+1	0	168	181	from_B1_middle_stairs	1	0
 2	0	160	168	16	16	to_B1_middle_stairs	0	1	21	from_1F_middle_stairs
 15	0	208	104	16	32	0
 15	0	248	144	32	16	1
@@ -329,6 +329,7 @@
 19	0	72	464	1	1
 19	0	72	368	3	1
 1	0	80	509	from_outside	1	0
+19	0	160	168	3	3
 0	1	200	592	64	8	180
 0	1	200	560	64	32	2
 0	1	40	600	400	24	52
@@ -381,13 +382,14 @@
 0	1	232	624	16	8	70
 12	1	144	80	8	32	custom_obstacle_3	1	1	1	1
 12	1	120	80	8	32	custom_obstacle_2	1	1	1	1
-1	1	144	53	from_B1_north_stairs	3	0
+1	1	144	37	from_B1_north_stairs	3	0
 2	1	136	24	16	16	to_B1_north_stairs	0	1	21	from_1F_north_stairs
-1	1	240	597	from_B1_final_stairs	1	0
+1	1	240	613	from_B1_final_stairs	1	0
 6	1	192	560	8	16	jump_sensor	4	40
 2	1	232	600	16	16	teletransporter	0	1	21	from_1F_final_stairs
 3	1	232	573	18	37
 19	1	232	600	3	1
+19	1	136	24	1	1
 0	2	192	616	96	8	148
 0	2	96	16	96	8	147
 0	2	0	0	480	16	170

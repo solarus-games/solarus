@@ -317,6 +317,7 @@ void Hero::notify_collision_with_stairs(Stairs *stairs, int collision_mode) {
 
   if (state != STAIRS && state != CARRYING && state != SWORD_LOADING) {
 
+    Stairs::Way stairs_way;
     if (stairs->is_inside_floor()) {
       stairs_way = (get_layer() == LAYER_LOW) ? Stairs::NORMAL_WAY : Stairs::REVERSE_WAY;
     }
@@ -327,41 +328,54 @@ void Hero::notify_collision_with_stairs(Stairs *stairs, int collision_mode) {
     // check whether the hero is trying to move in the direction of the stairs
     int correct_direction = stairs->get_movement_direction(stairs_way);
     if (is_moving_towards(correct_direction / 2) || collision_mode == Detector::COLLISION_RECTANGLE) {
-
-      // state
-      this->current_stairs = stairs;
-      set_state(STAIRS);
-
-      // movement
-      int speed = stairs->is_inside_floor() ? 4 : 2;
-      std::string path = stairs->get_path(stairs_way);
-      PathMovement *movement = new PathMovement(path, speed, false, false, false);
-
-      // sprites and sound
-      sprites->set_animation_walking();
-      sprites->set_animation_direction((path[0] - '0') / 2);
-      game->get_keys_effect()->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
-
-      if (stairs->is_inside_floor()) {
-        if (stairs_way == Stairs::NORMAL_WAY) {
-	  // low layer to intermediate layer: change the layer now
-	  map->get_entities()->set_entity_layer(this, LAYER_INTERMEDIATE);
-	}
-      }
-      else {
-	if (stairs_way == Stairs::NORMAL_WAY) {
-	  sprites->set_clipping_rectangle(Rectangle(get_top_left_x(), get_top_left_y() - 8, 16, 32));
-	}
-	stairs_phase = 0;
-      }
-
-      if (stairs_way == Stairs::REVERSE_WAY) {
-	Rectangle dxy = movement->get_xy_change();
-	set_x(get_x() - dxy.get_x());
-      }
-      set_movement(movement);
+      start_stairs(stairs, stairs_way);
     }
   }
+}
+
+/**
+ * Activates some stairs in the specified way.
+ * @param stairs the stairs to activate
+ * @param way the way the hero will take the stairs
+ */
+void Hero::start_stairs(Stairs *stairs, Stairs::Way stairs_way) {
+  
+  // state
+  this->current_stairs = stairs;
+  set_state(STAIRS);
+  this->stairs_phase = 0;
+  this->stairs_way = stairs_way;
+
+  // movement
+  int speed = stairs->is_inside_floor() ? 4 : 2;
+  std::string path = stairs->get_path(stairs_way);
+  PathMovement *movement = new PathMovement(path, speed, false, false, false);
+
+  // sprites and sound
+  sprites->set_animation_walking();
+  sprites->set_animation_direction((path[0] - '0') / 2);
+  game->get_keys_effect()->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
+
+  if (stairs->is_inside_floor()) {
+    if (stairs_way == Stairs::NORMAL_WAY) {
+      // low layer to intermediate layer: change the layer now
+      map->get_entities()->set_entity_layer(this, LAYER_INTERMEDIATE);
+    }
+  }
+  else {
+    if (stairs_way == Stairs::NORMAL_WAY) {
+      sprites->set_clipping_rectangle(Rectangle(get_top_left_x(), get_top_left_y() - 24, 16, 56));
+    }
+    else {
+      Rectangle dxy = movement->get_xy_change();
+      int fix_y = 8;
+      if (path[path.size() - 1] == '2') {
+        fix_y *= -1;
+      }
+      set_xy(get_x() - dxy.get_x(), get_y() - dxy.get_y() + fix_y);
+    }
+  }
+  set_movement(movement);
 }
 
 /**
@@ -410,7 +424,7 @@ void Hero::update_stairs(void) {
       }
       else {
 	sprites->set_clipping_rectangle();
-        start_free();
+	start_free();
       }
     }
     else {
@@ -420,7 +434,7 @@ void Hero::update_stairs(void) {
 	next_stairs_phase_date += 350;
 
 	// movement direction corresponding to each animation direction while taking stairs, for each phase
-        static const int movement_directions[] = { 0, 0, 2, 4, 4, 4, 6, 0 };
+	static const int movement_directions[] = { 0, 0, 2, 4, 4, 4, 6, 0 };
 
 	int animation_direction = current_stairs->get_animation_direction(stairs_way);
 	if (stairs_phase == 2) { // initial straight movement finished
@@ -439,7 +453,7 @@ void Hero::update_stairs(void) {
 	    sprites->set_animation_direction(movement_directions[animation_direction] / 2);
 	  }
 	  else {
-            sprites->set_animation_direction((current_stairs->get_direction() + 2) % 4);
+	    sprites->set_animation_direction((current_stairs->get_direction() + 2) % 4);
 	  }
 	}
       }
@@ -459,7 +473,7 @@ Stairs * Hero::get_stairs_overlapping(void) {
   std::list<Stairs*> *all_stairs = map->get_entities()->get_stairs(get_layer());
   std::list<Stairs*>::iterator it;
   for (it = all_stairs->begin(); it != all_stairs->end() && stairs == NULL; it++) {
-    
+
     if (overlaps(*it)) {
       stairs = *it;
     }
@@ -472,14 +486,14 @@ Stairs * Hero::get_stairs_overlapping(void) {
  * This function is called when the hero arrives on this map by taking stairs.
  */
 void Hero::stairs_just_arrived(void) {
-  
+
   // check whether the hero is arriving on the map by stairs too (this is usually the case)
   Stairs *stairs = get_stairs_overlapping();
 
   if (stairs != NULL) {
     // the hero is arriving on the map by stairs: trigger the stairs manually
     sprites->set_clipping_rectangle(Rectangle(get_top_left_x(), get_top_left_y() - 24, 16, 56));
-    notify_collision_with_stairs(stairs, Detector::COLLISION_RECTANGLE);
+    start_stairs(stairs, Stairs::REVERSE_WAY);
   }
 }
 
@@ -617,9 +631,9 @@ void Hero::update_sword_loading(void) {
 
   // detect when the sword is loaded (i.e. ready for a spin attack)
   if (!sword_loaded && counter >= 10) {
-      game->play_sound("sword_spin_attack_load");
-      sword_loaded = true;
-      counter = 0;
+    game->play_sound("sword_spin_attack_load");
+    sword_loaded = true;
+    counter = 0;
   }
 
   GameControls *controls = game->get_controls();
@@ -676,10 +690,10 @@ void Hero::update_sword_tapping(void) {
       Detector *facing_entity = get_facing_entity();
       SoundId sound_id;
       if (facing_entity != NULL) {
-        sound_id = facing_entity->get_sword_tapping_sound();
+	sound_id = facing_entity->get_sword_tapping_sound();
       }
       else {
-        sound_id = "sword_tapping";
+	sound_id = "sword_tapping";
       }
       game->play_sound(sound_id);
       next_hit_sound_date = now + 100;
@@ -880,8 +894,8 @@ void Hero::update_pushing(void) {
 	}
       }
       else if (state == SWORD_LOADING
-	       && get_wanted_movement_direction() == get_animation_direction() * 90
-	       && (facing_entity == NULL || !facing_entity->is_sword_ignored())) {
+	  && get_wanted_movement_direction() == get_animation_direction() * 90
+	  && (facing_entity == NULL || !facing_entity->is_sword_ignored())) {
 	// in state SWORD_LOADING: hit the wall with the sword
 	pushing_direction_mask = direction_mask;
 	start_sword_tapping();
@@ -1036,7 +1050,7 @@ void Hero::update_moving_grabbed_entity(void) {
   // detect when the hero movement is finished
   // because the hero has covered 16 pixels, has reached an obstacle or has aligned the entity on the grid
   if (is_moving_grabbed_entity()) {
-    
+
     PathMovement *movement = (PathMovement*) get_movement();
 
     bool horizontal = get_animation_direction() % 2 == 0;
@@ -1083,21 +1097,21 @@ void Hero::grabbed_entity_collision(void) {
   // go back one pixel in that direction
   switch (direction_back) {
 
-  case 0:
-    set_x(get_x() + 1);
-    break;
+    case 0:
+      set_x(get_x() + 1);
+      break;
 
-  case 1:
-    set_y(get_y() - 1);
-    break;
+    case 1:
+      set_y(get_y() - 1);
+      break;
 
-  case 2:
-    set_x(get_x() - 1);
-    break;
+    case 2:
+      set_x(get_x() - 1);
+      break;
 
-  case 3:
-    set_y(get_y() + 1);
-    break;
+    case 3:
+      set_y(get_y() + 1);
+      break;
 
   }
 
@@ -1207,8 +1221,8 @@ void Hero::display_treasure(void) {
 
   const Rectangle &camera_position = map->get_camera_position();
   treasure->display(map->get_visible_surface(),
-		    x - camera_position.get_x(),
-		    y - 24 - camera_position.get_y());
+      x - camera_position.get_x(),
+      y - 24 - camera_position.get_y());
 }
 
 /**
@@ -1444,15 +1458,15 @@ void Hero::just_attacked_enemy(EnemyAttack attack, Enemy *victim, int result, bo
 
   switch (attack) {
 
-  case ATTACK_SWORD:
-    if (get_state() == SWORD_LOADING) {
-      sprites->stop_displaying_sword();
-      start_free();
-    }
-    break;
+    case ATTACK_SWORD:
+      if (get_state() == SWORD_LOADING) {
+	sprites->stop_displaying_sword();
+	start_free();
+      }
+      break;
 
-  default:
-    DIE("Unknown attack '" << attack << "'");
+    default:
+      DIE("Unknown attack '" << attack << "'");
   }
 }
 
@@ -1600,7 +1614,7 @@ void Hero::update_falling(void) {
 	// nothing was specified: just go back to the last solid ground location
 	start_returning_to_solid_ground(last_solid_ground_coords, last_solid_ground_layer);
       }
-   
+
       equipment->remove_hearts(2);
       sprites->set_animation_stopped();
       sprites->restore_animation_direction();

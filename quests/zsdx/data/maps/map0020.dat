@@ -288,8 +288,8 @@
 2	0	208	200	16	16	teletransporter_9	1	1	20	destination_point_5
 2	0	88	256	16	16	teletransporter_10	1	1	20	destination_point_6
 15	0	208	144	32	16	0
-1	0	168	181	from_B1_middle_stairs	1	0
-2	0	160	168	16	16	to_B1_middle_stairs	0	1	21	from_1F_middle_stairs
+1	0	168	173	from_B1_middle_stairs	1	0
+2	0	160	160	16	16	to_B1_middle_stairs	0	1	21	from_1F_middle_stairs
 15	0	208	104	16	32	0
 15	0	248	144	32	16	1
 15	0	64	160	64	16	0
@@ -328,8 +328,8 @@
 19	0	128	88	1	4
 19	0	72	464	1	1
 19	0	72	368	3	1
-1	0	80	509	from_outside	1	0
-19	0	160	168	3	3
+1	0	160	157	from_outside	1	0
+19	0	160	160	3	3
 0	1	200	592	64	8	180
 0	1	200	560	64	32	2
 0	1	40	600	400	24	52

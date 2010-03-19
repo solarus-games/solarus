@@ -69,6 +69,7 @@ class PathMovement: public CollisionMovement {
     int get_current_direction(void);
     void set_position(int x, int y);
     int get_total_distance_covered(void);
+    Rectangle get_xy_change(void);
 
     void update(void);
 };

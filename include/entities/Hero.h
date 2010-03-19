@@ -210,6 +210,7 @@ class Hero: public MapEntity {
     void update_moving_grabbed_entity(void);
 
     void update_conveyor_belt(void);
+    void start_stairs(Stairs *stairs, Stairs::Way stairs_way);
     void update_stairs(void);
     Stairs * get_stairs_overlapping(void);
     void stairs_just_arrived(void);

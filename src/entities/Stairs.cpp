@@ -219,7 +219,10 @@ std::string Stairs::get_path(Way way) {
       second_direction = (second_direction + 4) % 8;
     }
     char c = '0' + second_direction;
-    path = path + c + c;
+    path = path + c;
+    if (subtype == SPIRAL_UPSTAIRS || subtype == SPIRAL_DOWNSTAIRS) {
+      path = path + c;
+    }
   }
 
   if (way == REVERSE_WAY) {

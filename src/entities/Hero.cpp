@@ -48,7 +48,7 @@ Hero::Hero(Equipment *equipment):
   state(FREE), facing_entity(NULL),
   counter(0), next_counter_date(0),
   pushing_direction_mask(0xFFFF), grabbed_entity(NULL),
-  on_conveyor_belt(false), current_stairs(NULL),
+  on_conveyor_belt(false), current_stairs(NULL), next_stairs_phase_date(0),
   lifted_item(NULL), treasure(NULL), end_victory_date(0),
   ground(GROUND_NORMAL), next_ground_date(0), delayed_teletransporter(NULL),
   current_inventory_item(NULL), when_can_use_inventory_item(0) {
@@ -508,6 +508,7 @@ void Hero::set_suspended(bool suspended) {
   if (!suspended) {
     uint32_t now = System::now();
     next_counter_date += now - when_suspended;
+    next_stairs_phase_date += now - when_suspended;
   }
 }
 

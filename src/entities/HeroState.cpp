@@ -334,10 +334,12 @@ void Hero::notify_collision_with_stairs(Stairs *stairs, int collision_mode) {
 
       // movement
       int speed = stairs->is_inside_floor() ? 4 : 2;
-      Movement *movement = new PathMovement(stairs->get_path(stairs_way), speed, false, false, false);
+      std::string path = stairs->get_path(stairs_way);
+      PathMovement *movement = new PathMovement(path, speed, false, false, false);
 
       // sprites and sound
       sprites->set_animation_walking();
+      sprites->set_animation_direction((path[0] - '0') / 2);
       game->get_keys_effect()->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
 
       if (stairs->is_inside_floor()) {
@@ -350,8 +352,12 @@ void Hero::notify_collision_with_stairs(Stairs *stairs, int collision_mode) {
 	if (stairs_way == Stairs::NORMAL_WAY) {
 	  sprites->set_clipping_rectangle(Rectangle(get_top_left_x(), get_top_left_y() - 8, 16, 32));
 	}
-        stairs_phase = 0;
-	next_stairs_phase_date = System::now() + 450;
+	stairs_phase = 0;
+      }
+
+      if (stairs_way == Stairs::REVERSE_WAY) {
+	Rectangle dxy = movement->get_xy_change();
+	set_x(get_x() - dxy.get_x());
       }
       set_movement(movement);
     }
@@ -368,6 +374,7 @@ void Hero::update_stairs(void) {
 
   if (stairs_phase == 0) {
     current_stairs->play_sound(stairs_way);
+    next_stairs_phase_date = System::now() + 450;
     stairs_phase++;
   }
 
@@ -412,8 +419,9 @@ void Hero::update_stairs(void) {
 	stairs_phase++;
 	next_stairs_phase_date += 350;
 
-	// movement direction corresponding to each animation direction while taking stairs
+	// movement direction corresponding to each animation direction while taking stairs, for each phase
         static const int movement_directions[] = { 0, 0, 2, 4, 4, 4, 6, 0 };
+
 	int animation_direction = current_stairs->get_animation_direction(stairs_way);
 	if (stairs_phase == 2) { // initial straight movement finished
 	  if (animation_direction % 2 != 0) {
@@ -426,7 +434,13 @@ void Hero::update_stairs(void) {
 	}
 	else if (stairs_phase == 3) { // diagonal animation finished
 	  sprites->set_animation_walking();
-	  sprites->set_animation_direction(movement_directions[animation_direction] / 2);
+
+	  if (stairs_way == Stairs::NORMAL_WAY) {
+	    sprites->set_animation_direction(movement_directions[animation_direction] / 2);
+	  }
+	  else {
+            sprites->set_animation_direction((current_stairs->get_direction() + 2) % 4);
+	  }
 	}
       }
     }
@@ -464,8 +478,7 @@ void Hero::stairs_just_arrived(void) {
 
   if (stairs != NULL) {
     // the hero is arriving on the map by stairs: trigger the stairs manually
-    sprites->set_clipping_rectangle(Rectangle(get_top_left_x(), get_top_left_y(), 16, 32));
-    set_xy(get_x() + 16,  get_y());
+    sprites->set_clipping_rectangle(Rectangle(get_top_left_x(), get_top_left_y() - 24, 16, 56));
     notify_collision_with_stairs(stairs, Detector::COLLISION_RECTANGLE);
   }
 }

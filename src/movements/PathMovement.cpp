@@ -262,3 +262,21 @@ int PathMovement::get_total_distance_covered(void) {
   return total_distance_covered;
 }
 
+/**
+ * Returns an xy value representing the total distance of this movement.
+ * @return the total x and y distance of this movement
+ */
+Rectangle PathMovement::get_xy_change(void) {
+
+  Rectangle xy;
+  
+  std::string::const_iterator it;
+  for (it = initial_path.begin(); it != initial_path.end(); it++) {
+    int direction = *it - '0';
+    const Rectangle &xy_move = MapEntity::direction_to_xy_move(direction);
+    xy.add_xy(xy_move.get_x() * 8, xy_move.get_y() * 8);
+  }
+
+  return xy;
+}
+

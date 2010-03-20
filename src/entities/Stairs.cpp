@@ -228,12 +228,14 @@ std::string Stairs::get_path(Way way) {
   if (way == REVERSE_WAY) {
     std::string inverse_path = "";
     std::string::reverse_iterator it;
+    int direction = 0;
     for (it = path.rbegin(); it != path.rend(); it++) {
-      int direction = *it - '0';
+      direction = *it - '0';
       direction = (direction + 4) % 8;
       inverse_path += '0' + direction;
     }
     path = inverse_path;
+//    path += '0' + direction;
   }
 
   return path;

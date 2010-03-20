@@ -17,6 +17,7 @@
 #include "entities/Stairs.h"
 #include "lowlevel/FileTools.h"
 #include "Game.h"
+#include "Map.h"
 
 /**
  * Creates a new stairs entity.
@@ -239,5 +240,29 @@ std::string Stairs::get_path(Way way) {
   }
 
   return path;
+}
+
+/**
+ * Returns the subarea in which an entity tooking these stairs can be displayed.
+ * @param way the way you are taking these stairs
+ * @return the subarea of the map where the entity displaying should be restricted to
+ */
+Rectangle Stairs::get_clipping_rectangle(Way way) {
+
+  Rectangle clipping_rectangle(get_top_left_x(), 0, 16, map->get_height());
+
+  if (subtype == STRAIGHT_DOWNSTAIRS) {
+    
+    if (get_direction() == 1) {
+      clipping_rectangle.set_y(get_top_left_y() - 8);
+      clipping_rectangle.set_height(48);
+    }
+    else {
+      clipping_rectangle.set_y(0);
+      clipping_rectangle.set_height(get_top_left_y() + 16);
+    }
+  }
+
+  return clipping_rectangle;
 }
 

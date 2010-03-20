@@ -386,6 +386,7 @@ void Hero::update_stairs(void) {
 
   get_movement()->update();
 
+  // first time: we play the sound and initialize
   if (stairs_phase == 0) {
     current_stairs->play_sound(stairs_way);
     next_stairs_phase_date = System::now() + 450;
@@ -406,53 +407,58 @@ void Hero::update_stairs(void) {
     }
   }
   else {
-    // stairs between two different floors
+    // stairs between two different floors: more complicated
 
     if (get_movement()->is_finished()) {
       clear_movement();
       set_movement(normal_movement);
 
       if (stairs_way == Stairs::NORMAL_WAY) {
+	// we are on the old floor:
 	// there must be a teletransporter associated with these stairs,
 	// otherwise the hero would get stuck into the walls
 	if (delayed_teletransporter == NULL) {
 	  DIE("Teletransporter expected with the stairs");
 	}
 	this->current_stairs = NULL;
-	start_free();
 	delayed_teletransporter->transport_hero(this);
       }
       else {
+	// we are on the new floor: it is finished
 	sprites->set_clipping_rectangle();
 	start_free();
       }
     }
-    else {
+    else { // movement not finished yet
       uint32_t now = System::now();
       if (now >= next_stairs_phase_date) {
 	stairs_phase++;
 	next_stairs_phase_date += 350;
 
-	// movement direction corresponding to each animation direction while taking stairs, for each phase
+	// main movement direction corresponding to each animation direction while taking stairs
 	static const int movement_directions[] = { 0, 0, 2, 4, 4, 4, 6, 0 };
 
 	int animation_direction = current_stairs->get_animation_direction(stairs_way);
-	if (stairs_phase == 2) { // initial straight movement finished
+	if (stairs_phase == 2) { // the first phase of the movement is finished
 	  if (animation_direction % 2 != 0) {
+	    // if the stairs are spiral, take a diagonal direction of animation
 	    sprites->set_animation_walking_diagonal(animation_direction);
 	  }
 	  else {
+	    // otherwise, take a usual direction
 	    sprites->set_animation_direction(animation_direction / 2);
 	    sprites->set_animation_walking();
 	  }
 	}
-	else if (stairs_phase == 3) { // diagonal animation finished
+	else if (stairs_phase == 3) { // the second phase of the movement (possibly diagonal) is finished
 	  sprites->set_animation_walking();
 
 	  if (stairs_way == Stairs::NORMAL_WAY) {
+	    // on the old floor, take a direction towards the next floor
 	    sprites->set_animation_direction(movement_directions[animation_direction] / 2);
 	  }
 	  else {
+	    // on the new floor, take the direction out of the stairs
 	    sprites->set_animation_direction((current_stairs->get_direction() + 2) % 4);
 	  }
 	}

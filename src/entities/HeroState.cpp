@@ -363,10 +363,8 @@ void Hero::start_stairs(Stairs *stairs, Stairs::Way stairs_way) {
     }
   }
   else {
-    if (stairs_way == Stairs::NORMAL_WAY) {
-      sprites->set_clipping_rectangle(Rectangle(get_top_left_x(), get_top_left_y() - 24, 16, 56));
-    }
-    else {
+    sprites->set_clipping_rectangle(stairs->get_clipping_rectangle(stairs_way));
+    if (stairs_way == Stairs::REVERSE_WAY) {
       Rectangle dxy = movement->get_xy_change();
       int fix_y = 8;
       if (path[path.size() - 1] == '2') {
@@ -498,7 +496,6 @@ void Hero::stairs_just_arrived(void) {
 
   if (stairs != NULL) {
     // the hero is arriving on the map by stairs: trigger the stairs manually
-    sprites->set_clipping_rectangle(Rectangle(get_top_left_x(), get_top_left_y() - 24, 16, 56));
     start_stairs(stairs, Stairs::REVERSE_WAY);
   }
 }

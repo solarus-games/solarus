@@ -78,6 +78,7 @@ class Stairs: public Detector {
     int get_animation_direction(Way way);
     void play_sound(Way way);
     std::string get_path(Way way);
+    Rectangle get_clipping_rectangle(Way way);
 };
 
 #endif

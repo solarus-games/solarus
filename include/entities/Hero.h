@@ -336,7 +336,7 @@ class Hero: public MapEntity {
     void notify_collision_with_stairs(Stairs *stairs, int collision_mode);
     void notify_collision_with_sensor(Sensor *sensor);
     void notify_collision_with_explosion(Explosion *explosion, Sprite *sprite_overlapping);
-    void avoid_chest_collision(Chest *chest);
+    void avoid_collision(MapEntity *entity, int direction);
     bool is_on_raised_blocks(void);
 
     bool is_on_hole(void);

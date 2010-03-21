@@ -149,6 +149,12 @@ void Door::set_open(bool door_open) {
   else {
     get_sprite()->set_current_animation(animations[subtype]);
     set_collision_modes(COLLISION_FACING_POINT);
+
+    // ensure we are not closing the door on the hero
+    Hero *hero = game->get_hero();
+    if (overlaps(hero)) {
+      hero->avoid_collision(this, 3);
+    }
   }
 
   if (map != NULL) {

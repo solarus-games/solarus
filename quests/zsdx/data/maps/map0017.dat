@@ -186,7 +186,7 @@
 0	1	280	192	8	24	267
 0	1	288	192	16	16	76
 0	1	288	200	16	16	192
-1	1	168	205	main_entrance	1	0
+1	1	528	245	main_entrance	1	0
 2	1	520	256	16	16	to_outside_world	0	1	22	destination_point_2
 6	1	904	96	8	112	jump_sensor	0	40
 9	1	896	53	block	2	0	1

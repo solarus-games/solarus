@@ -1089,14 +1089,41 @@ void Hero::reset_movement(void) {
 }
 
 /**
- * This function is called when a chest overlaps the hero when it appears.
- * @param chest the chest
+ * This function is called when an entity that appears may overlap the hero
+ * (e.g. a chest or a door)
+ * @param entity the entity appearing
+ * @param direction the direction of the hero relative to the entity
+ * (the hero will be moved into this direction): 0 to 3
  */
-void Hero::avoid_chest_collision(Chest *chest) {
+void Hero::avoid_collision(MapEntity *entity, int direction) {
 
-  // fix the hero's position, whatever the chest size is
-  set_top_left_y(chest->get_top_left_y() + chest->get_height());
-  set_x(chest->get_center_point().get_x());
+  // fix the hero's position, whatever the entity size is
+  switch (direction) {
+
+    case 0:
+      set_top_left_x(entity->get_top_left_x() + entity->get_width());
+      set_y(entity->get_center_point().get_y());
+      break;
+
+    case 1:
+      set_top_left_y(entity->get_top_left_y() - this->get_height());
+      set_x(entity->get_center_point().get_x());
+      break;
+
+    case 2:
+      set_top_left_x(entity->get_top_left_x() - this->get_width());
+      set_y(entity->get_center_point().get_y());
+      break;
+
+    case 3:
+      set_top_left_y(entity->get_top_left_y() + entity->get_height());
+      set_x(entity->get_center_point().get_x());
+      break;
+
+    default:
+      DIE("Invalid direction in Hero::avoid_collision(): " << direction);
+      break;
+  }
   reset_movement();
 }
 

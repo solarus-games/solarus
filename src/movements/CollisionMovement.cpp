@@ -84,7 +84,7 @@ void CollisionMovement::update_x(void) {
 
   uint32_t now = System::now();
   int x_move = get_x_move();
-  // if was changed to while because of problems when the game is slow²
+  // if was changed to while because of problems when the game is slow
   while (x_move != 0 && now >= get_next_move_date_x()) { // while it's time to try a move
 
     // make the move only if there is no collision

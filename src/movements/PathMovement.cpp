@@ -65,6 +65,11 @@ void PathMovement::set_entity(MapEntity *entity) {
  */
 void PathMovement::set_position(int x, int y) {
 
+  if (is_current_move_finished()) {
+    // because this function is called by a 'while' loop
+    return;
+  }
+
   if (x != get_x()) {
     distance_covered++;
     total_distance_covered++;
@@ -131,7 +136,7 @@ bool PathMovement::is_current_move_finished(void) {
  */
 void PathMovement::start_next_move(void) {
 
-//  std::cout << "PathMovement::start_next_move()\n";
+//  std::cout << "PathMovement::start_next_move(), x = " << get_x() << "\n";
 
   // don't move while the entity is unknown
   if (entity == NULL) {

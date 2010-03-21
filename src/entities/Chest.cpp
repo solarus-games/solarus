@@ -156,7 +156,7 @@ void Chest::set_hidden(bool hidden) {
   if (!hidden) {
     Hero *hero = game->get_hero();
     if (overlaps(hero)) {
-      hero->avoid_chest_collision(this);
+      hero->avoid_collision(this, 3);
     }
   }
 }

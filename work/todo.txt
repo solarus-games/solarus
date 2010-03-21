@@ -34,7 +34,6 @@ Feature requests :
 - Mettre une icône sur l'exécutable
 - transition intérieur / extérieur : ovale
 - transition des téléporteurs ?
-- son et animation des marches d'escalier
 - rendre les pierres et les buissons dépendants du tileset
 - scrolling tiles : permettre de choisir la direction du décalage
 - Windows : voir si SDL utilise ou peut utiliser OpenGL ou DirectX
@@ -73,7 +72,7 @@ Bugs :
   (le délai est trop long et trop spécifique aux explosions)
 - buisson lancé sur ennemi : l'ennemi est blessé mais le buisson ne s'arrête pas
 - vérifier ce qui se passe si on arrive sur un tapis roulant pendant qu'on tire une statue (peut-être modifier le is_conveyor_belt_obstacle)
-- convertir les sons d'escaliers en .ogg
+- Ouverture du donjon 1 : Tom buggue
 
 
 Donjon 2 :

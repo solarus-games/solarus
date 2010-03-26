@@ -57,6 +57,12 @@ cancel = current
 line1 = "        Level 1        "
 line2 = "     Forest Dungeon    "
 
+[dungeon_2]
+# Lorsqu'on pénètre dans le donjon 2
+#       |-----------------------|
+line1 = "        Level 2        "
+line2 = "       Roc's Cave      "
+
 [intro0]
 # Intro : écran noir
 #       |-----------------------|

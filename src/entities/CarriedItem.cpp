@@ -243,6 +243,7 @@ void CarriedItem::break_item(void) {
   }
   else {
     map->get_entities()->add_entity(new Explosion(get_layer(), get_xy(), true));
+    remove_from_map();
   }
 }
 
@@ -330,7 +331,7 @@ void CarriedItem::update(void) {
     shadow_sprite->update();
 
     if (is_broken()) {
-      map->get_entities()->remove_entity(this);
+      remove_from_map();
     }
     else if (break_on_intermediate_layer) {
       break_item();
@@ -390,8 +391,10 @@ void CarriedItem::notify_collision_with_enemy(Enemy *enemy) {
  * - a value of 0 means that the attack was just ignored 
  * - a value of -1 means that the enemy was protected against the attack
  * - a value of -2 means that the attack immobilized the enemy
+ * @param killed indicates that the attack has just killed the enemy
  */
-void CarriedItem::just_attacked_enemy(EnemyAttack attack, Enemy *victim, int result) {
+void CarriedItem::just_attacked_enemy(EnemyAttack attack, Enemy *victim, int result, bool killed) {
+
   if (result != 0) {
     break_item();
   }

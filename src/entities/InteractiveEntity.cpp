@@ -316,7 +316,6 @@ void InteractiveEntity::update(void) {
   if (subtype == NON_PLAYING_CHARACTER && get_movement() != NULL) {
 
     if (get_movement()->is_finished()) {
-      std::cout << "finished walking, x = " << get_x() << std::endl;
       get_sprite()->set_current_animation("stopped");
       clear_movement();
       map->get_script()->event_npc_movement_finished(get_name());
@@ -336,8 +335,6 @@ void InteractiveEntity::walk(std::string path, bool loop, bool with_collisions) 
   if (subtype != NON_PLAYING_CHARACTER) {
     DIE("This entity is not a non-playing character");
   }
-
-  std::cout << "start walk, x = " << get_x() << std::endl;
 
   clear_movement();
   set_movement(new PathMovement(path, 6, loop, with_collisions, false));

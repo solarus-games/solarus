@@ -2,12 +2,16 @@ Prochaines mises à jour :
 
 - fausse boîte
 - mode d'emploi
-- idées pour la vidéo / le trailer :
-  - musique de George
-  - détails de jeu comme tapoter contre un mur avec l'épée
-  - boss
-  - intro
-  - énigme des blocs
+
+
+Vidéo / trailer :
+  - version anglaise
+  - jouer avec sons et sans musique, ajouter au montage la musique de George
+  - énigme boomerang grotte de Tom
+  - partir de l'extérieur, entrer dans la maison de Link, tapoter contre le mur fissuré avec l'épée
+  - énigme des blocs N1 (avec combat dont flèches)
+  - escaliers N2 (RC, Ouest)
+  - combat contre boss N1
 
 
 Démo :

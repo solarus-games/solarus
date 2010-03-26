@@ -90,7 +90,7 @@ class CarriedItem: public MapEntity {
     bool is_enemy_obstacle(Enemy *enemy);
     void notify_collision_with_stairs(Stairs *stairs, int CollisionMode);
     void notify_collision_with_enemy(Enemy *enemy);
-    void just_attacked_enemy(EnemyAttack attack, Enemy *victim, int result);
+    void just_attacked_enemy(EnemyAttack attack, Enemy *victim, int result, bool killed);
 };
 
 #endif

@@ -11,13 +11,15 @@ function event_map_started(destination_point_name)
   door_set_open("miniboss_door", true)
 end
 
+fighting_miniboss = false
 function event_hero_on_sensor(sensor_name)
 
-  if sensor_name == "start_miniboss_sensor" and not savegame_get_boolean(62) then
+  if sensor_name == "start_miniboss_sensor" and not savegame_get_boolean(62) and not fighting_miniboss then
     -- the miniboss is alive
     door_close("miniboss_door")
     freeze()
     start_timer(1000, "miniboss_timer", false)
+    fighting_miniboss = true
   end
 end
 

@@ -4,16 +4,6 @@ Prochaines mises à jour :
 - mode d'emploi
 
 
-Vidéo / trailer :
-  - version anglaise
-  - jouer avec sons et sans musique, ajouter au montage la musique de George
-  - énigme boomerang grotte de Tom
-  - partir de l'extérieur, entrer dans la maison de Link, tapoter contre le mur fissuré avec l'épée
-  - énigme des blocs N1 (avec combat dont flèches)
-  - escaliers N2 (RC, Ouest)
-  - combat contre boss N1
-
-
 Démo :
 
 - Version alpha 1 (r1093) : envoyée aux testeurs, touches de test activées (DEBUG_LEVEL = 2)
@@ -26,6 +16,7 @@ Démo :
 
 Version gentoo svn :
 games-rpg/solarus from  gamerlay overlay
+
 
 Feature requests :
 
@@ -71,12 +62,9 @@ Bugs :
 - Au moment où on frappe les gardes verts qui rôdent près du village, il se peut que ceux-ci ne reculent pas malgré l'impact s'ils changent de direction au même moment.
 - On ne peut pas lancer un pot au-dessus d'une falaise
 - Quand on lance un pot dans un donjon depuis la couche intermédiaire vers la couche basse, le changer de couche (détecter l'absence de tiles sur la couche intermédiaire)
-- Les pots s'affichent en-dessous de la partie haute des petits escaliers
 - CrystalSwitch : permettre d'activer deux fois par deux entités différentes (flèches, explosions, héros...) en mémorisant les entités activatrices
   (le délai est trop long et trop spécifique aux explosions)
-- buisson lancé sur ennemi : l'ennemi est blessé mais le buisson ne s'arrête pas (problème aussi avec choux-péteurs contre le boss)
 - vérifier ce qui se passe si on arrive sur un tapis roulant pendant qu'on tire une statue (peut-être modifier le is_conveyor_belt_obstacle)
-- quand on porte un chou-péteur et qu'on le laisse exploser : segfault
 
 
 Donjon 2 :
@@ -102,37 +90,6 @@ Ennemis à faire (reprendre graphismes de MC + graphismes rippés) :
 - Armos
 - fantôme
 - garde bleu avec lance (monde des ténèbres)
-
-
-Escaliers :
-
-- intra-étages : faire une entité InternalStairs qui remplace les deux capteurs de changement de layer
-et peut-être aussi le dessin de l'escalier.
-  Un escalier serait capable de laisser passer un vase lancé ou un boomerang selon le sens (d'ailleurs, les capteurs de saut aussi)
-  Voir si on peut régler les problèmes d'affichage (épée et vases qui s'affichent
-  en-dessous de la partie haute).
-  Utiliser 4 directions.
-
-- inter-étages : faire une autre entité ExternalStairs en plus du téléporteur.
-  Utiliser la même idée que pour les trous : l'escalier agit en premier, puis le téléporteur ensuite.
-  Plusieurs animations du héros et sons qui vont avec, en fonction du sous-type d'escalier :
-  - haut descendant tout droit
-  - haut montant tout droit (y compris si l'escalier n'est pas dans un mur)
-  - haut descendant à gauche
-  - haut montant à droite
-  - bas descendant tout droit
-  - bas montant tout droit
-  - bas descendant à droite
-  - bas montant à gauche
-
-Ou alors une seule entité pour gérer les deux cas (Stairs), avec plusieurs sous-types possibles :
-  - internal stairs (4 directions possibles), utilisé à la fois pour monter et descendre
-  - external stairs descendant tout droit (2 directions possibles : nord ou sud)
-  - external stairs montant tout droit (nord ou sud)
-  - external stairs descendant en colimaçon (nord ou sud)
-  - external stairs montant en colimaçon (nord ou sud)
-
-  L'animation, le son et le mouvement du héros dépendent du sous-type.
 
 
 --------------

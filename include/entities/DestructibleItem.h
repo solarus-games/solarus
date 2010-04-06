@@ -73,13 +73,12 @@ class DestructibleItem: public Detector {
     int pickable_item_savegame_variable;     /**< savegame variable of the pickable item (if any) */
 
     bool is_being_cut;                       /**< indicates that the item is being cut */
-    uint32_t regeneration_date;                /**< date when the item starts regenerating */
+    uint32_t regeneration_date;              /**< date when the item starts regenerating */
     bool is_regenerating;                    /**< indicates that the item is currently regenerating */
 
     static const Features features[];
 
     void play_destroy_animation(void);
-    bool is_disabled(void);
 
   public:
 
@@ -98,6 +97,7 @@ class DestructibleItem: public Detector {
     bool has_special_ground(void);
     Ground get_special_ground(void);
     bool can_explode(void);
+    bool is_disabled(void);
 
     bool is_obstacle_for(MapEntity *other);
     bool test_collision_custom(MapEntity *entity);

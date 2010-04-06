@@ -217,6 +217,15 @@ bool Enemy::is_sensor_obstacle(Sensor *sensor) {
 }
 
 /**
+ * Returns whether a destructible item is currently considered as an obstacle for this entity.
+ * @param destructible_item a destructible item
+ * @return true if the destructible item is currently an obstacle this entity
+ */
+bool Enemy::is_destructible_item_obstacle(DestructibleItem *destructible_item) {
+  return true;
+}
+
+/**
  * Sets the amount of damage this kind of enemy can make to the hero.
  * @param damage_on_hero number of heart quarters the player loses
  */

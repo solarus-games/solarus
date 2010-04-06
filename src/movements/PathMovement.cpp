@@ -118,6 +118,10 @@ bool PathMovement::is_finished(void) {
  */
 bool PathMovement::is_current_move_finished(void) {
 
+  if (snapping) {
+    return false;
+  }
+
   if (is_stopped()) {
     return true;
   }
@@ -136,11 +140,11 @@ bool PathMovement::is_current_move_finished(void) {
  */
 void PathMovement::start_next_move(void) {
 
-  std::cout << "PathMovement::start_next_move(), x = " << get_x() << "\n";
+//  std::cout << "PathMovement::start_next_move()\n";
 
   // don't move while the entity is unknown
   if (entity == NULL) {
-    std::cout << "NULL\n";
+//    std::cout << "NULL\n";
     return;
   }
 
@@ -160,7 +164,7 @@ void PathMovement::start_next_move(void) {
     if (!snapping) {
       // if we haven't started to move the entity into the direction of the closest grid intersection, we do it
       snapping_angle = Geometry::get_angle(entity->get_top_left_x(), entity->get_top_left_y(), snapped_x, snapped_y);
-      std::cout << "not aligned yet, going to direction " << snapping_angle << "\n";
+//      std::cout << "start snapping, going to direction " << (snapping_angle * 360 / Geometry::TWO_PI) << "\n";
       set_speed(normal_speed);
       set_direction(snapping_angle);
       snapping = true;
@@ -168,24 +172,26 @@ void PathMovement::start_next_move(void) {
     }
     else {
       // the entity is currently trying to move towards the closest grid intersection
+//      std::cout << "currently snapping, position = (" << x << "," << y << "), snapped position = ("
+//	<< snapped_x << "," << snapped_y << "), distance = " << Geometry::get_distance(x, y, snapped_x, snapped_y) << "\n";
       
       if (Geometry::get_distance(x, y, snapped_x, snapped_y) <= 2) {
 	// if the entity has become close to the intersection, put it there directly,
 	// unless an unlikely (but possible) collision occurs (see below)
 
-	std::cout << "almost aligned, distance = " << Geometry::get_distance(x, y, snapped_x, snapped_y) << "\n";
+//	std::cout << "almost aligned, distance = " << Geometry::get_distance(x, y, snapped_x, snapped_y) << "\n";
 
-	x = entity->get_x() + (snapped_x - x);
-	y = entity->get_y() + (snapped_y - y);
+	x = snapped_x - x;
+	y = snapped_y - y;
 
 	if (!test_collision_with_map(x, y)) {
 	  // no problem, we can align the entity right now
-	  std::cout << "aligning directly\n";
-	  CollisionMovement::set_position(x, y);
+//	  std::cout << "aligning directly\n";
+	  CollisionMovement::set_position(entity->get_x() + x, entity->get_y() + y);
 	  stop();
 	  snapping = false;
 	}
-	else { std::cout << "failed to align directly because of a collision\n"; }
+//	else { std::cout << "failed to align directly because of a collision\n"; }
       }
 
       uint32_t now = System::now();
@@ -194,7 +200,10 @@ void PathMovement::start_next_move(void) {
 	// this is possible when there is collisions with 8*8 squares where only a part is an obstacle
 	// (typically a statue that is being moved)
 	snapping_angle += Geometry::PI;
-	std::cout << "could not align: going back to direction " << (snapping_angle * 360 / Geometry::TWO_PI) << "\n";
+	if (snapping_angle > Geometry::TWO_PI) {
+          snapping_angle -= Geometry::TWO_PI;
+	}
+//	std::cout << "could not align: going back to direction " << (snapping_angle * 360 / Geometry::TWO_PI) << "\n";
 	set_speed(normal_speed);
 	set_direction(snapping_angle);
 	stop_snapping_date = now + 500;
@@ -204,19 +213,19 @@ void PathMovement::start_next_move(void) {
 
   // start the next step if we are ready
   if (!must_be_aligned || entity->is_aligned_to_grid()) {
-    std::cout << "aligned, considering next move (remaining_path = '" << remaining_path << "')\n";
+//    std::cout << "aligned, considering next move (remaining_path = '" << remaining_path << "')\n";
     
     if (remaining_path.size() == 0) {
       // well, there is no next step (the remaining path is empty)
-      std::cout << "path empty:\n";
+//      std::cout << "path empty:\n";
       if (loop) {
 	// if the property 'loop' is true, repeat the same path again
-	std::cout << "  loop, doing path '" << remaining_path << "' again.\n";
+//	std::cout << "  loop, doing path '" << remaining_path << "' again.\n";
 	remaining_path = initial_path;
       }
       else if (!is_stopped()) {
 	// the movement is finished: stop the entity
-	std::cout << "  path finished.\n";
+//	std::cout << "  path finished.\n";
 	finished = true;
 	stop();
       }
@@ -225,7 +234,7 @@ void PathMovement::start_next_move(void) {
     if (!finished && remaining_path.size() != 0) {
       // normal case: there is a next step to do
 
-      std::cout << "path: " << remaining_path << "\n";
+//      std::cout << "path: " << remaining_path << "\n";
       current_direction = remaining_path[0] - '0';
       set_speed(normal_speed);
       set_direction(current_direction * 45);

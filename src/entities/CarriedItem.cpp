@@ -233,8 +233,6 @@ void CarriedItem::break_item(void) {
     set_y(get_y() - item_height);
   }
 
-  is_throwing = false;
-  is_breaking = true;
   movement->stop();
 
   if (explosion_date == 0) {
@@ -243,8 +241,12 @@ void CarriedItem::break_item(void) {
   }
   else {
     map->get_entities()->add_entity(new Explosion(get_layer(), get_xy(), true));
-    remove_from_map();
+    if (is_throwing) {
+      remove_from_map(); // because if the item was still carried by the hero, then the hero class will destroy it
+    }
   }
+  is_throwing = false;
+  is_breaking = true;
 }
 
 /**

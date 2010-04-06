@@ -203,6 +203,7 @@ class Enemy: public Detector {
     // obstacles
     bool is_obstacle_for(MapEntity *other);
     bool is_sensor_obstacle(Sensor *sensor);
+    bool is_destructible_item_obstacle(DestructibleItem *destructible_item);
 
     // enemy state
     virtual void update(void);

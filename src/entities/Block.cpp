@@ -132,6 +132,15 @@ bool Block::is_enemy_obstacle(Enemy *enemy) {
 }
 
 /**
+ * Returns whether a destructible item is currently considered as an obstacle for this entity.
+ * @param destructible_item a destructible item
+ * @return true if the destructible item is currently an obstacle this entity
+ */
+bool Block::is_destructible_item_obstacle(DestructibleItem *destructible_item) {
+  return true;
+}
+
+/**
  * This function is called by the engine when there is a collision with another entity.
  * This is a redefinition of Detector::notify_collision().
  * If the entity is the hero and this block can be pulled, we show the grab icon.

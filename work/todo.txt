@@ -76,8 +76,7 @@ Bugs :
   (le délai est trop long et trop spécifique aux explosions)
 - buisson lancé sur ennemi : l'ennemi est blessé mais le buisson ne s'arrête pas (problème aussi avec choux-péteurs contre le boss)
 - vérifier ce qui se passe si on arrive sur un tapis roulant pendant qu'on tire une statue (peut-être modifier le is_conveyor_belt_obstacle)
-- Ouverture du donjon 1 : Tom buggue
-- boss N1 : coup d'épée sur minillosaure -> ne bouge plus
+- quand on porte un chou-péteur et qu'on le laisse exploser : segfault
 
 
 Donjon 2 :

@@ -174,7 +174,7 @@ bool DestructibleItem::has_special_ground(void) {
  * @return true if this entity is an obstacle for others
  */
 bool DestructibleItem::is_obstacle_for(MapEntity *other) {
-  return features[subtype].can_be_lifted && !is_being_cut && !is_disabled() && other->is_destructible_item_obstacle(this);
+  return features[subtype].can_be_lifted && !is_being_cut && other->is_destructible_item_obstacle(this);
 }
 
 /**

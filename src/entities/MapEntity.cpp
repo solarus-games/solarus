@@ -951,12 +951,13 @@ bool MapEntity::is_jump_sensor_obstacle(JumpSensor *jump_sensor) {
 
 /**
  * Returns whether a destructible item is currently considered as an obstacle for this entity.
- * This function returns true by default.
+ * By default, this function returns true unless the destructible item is disabled
+ * (e.g. a bomb flower that will regenerate).
  * @param destructible_item a destructible item
  * @return true if the destructible item is currently an obstacle for this entity
  */
 bool MapEntity::is_destructible_item_obstacle(DestructibleItem *destructible_item) {
-  return true;
+  return !destructible_item->is_disabled();
 }
 
 /**

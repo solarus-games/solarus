@@ -47,7 +47,7 @@ void PathFindingMovement::update(void) {
     // there was a collision
     set_speed(normal_speed);
     remaining_path = get_random_path();
-    std::cout << "stopped, made random path: " << remaining_path << "\n";
+//    std::cout << "stopped, made random path: " << remaining_path << "\n";
     start_next_move();
   } 
 
@@ -76,12 +76,12 @@ void PathFindingMovement::recompute_movement(void) {
     // no path was found: no need to try again very soon
     // (note that the A* algorithm is very costly when it explores all nodes without finding a solution)
     min_delay = 3000;
-    std::cout << "PathFindingMovement::recompute_path(): generated a random path: " << remaining_path << std::endl;
+//    std::cout << "PathFindingMovement::recompute_path(): generated a random path: " << remaining_path << std::endl;
   }
   else {
     // a path was found: we need to update it frequently (and the A* algorithm is much faster in general when there is a solution)
     min_delay = 300;
-    std::cout << "PathFindingMovement::recompute_path(): calculated a path to the hero: " << remaining_path << std::endl;
+//    std::cout << "PathFindingMovement::recompute_path(): calculated a path to the hero: " << remaining_path << std::endl;
   }
   // compute a new path every random delay to avoid
   // making all path-finding entities of the map compute a path at the same time

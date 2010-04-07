@@ -40,7 +40,7 @@ const std::string SelectionMenuOptions::label_keys[nb_options] = {
  */
 SelectionMenuOptions::SelectionMenuOptions(SelectionMenu *menu):
   SelectionMenuPhase(menu, "selection_menu.phase.options"),
-  modifying(false) {
+  cursor_position(0), modifying(false) {
 
   // option texts and values
   for (int i = 0; i < nb_options; i++) {
@@ -81,6 +81,8 @@ SelectionMenuOptions::~SelectionMenuOptions(void) {
     delete[] all_values[i];
   }
   delete[] language_codes;
+  delete left_arrow_sprite;
+  delete right_arrow_sprite;
 }
 
 /**

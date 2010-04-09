@@ -318,7 +318,9 @@ class Hero: public MapEntity {
     void start_bow(void);
     void start_pegasus_shoes(void);
     void update_pegasus_shoes(void);
-    bool are_pegasus_shoes_finished(void);
+    void stop_pegasus_shoes(void);
+    bool is_pegasus_shoes_running(void);
+    bool is_pegasus_shoes_run_finished(void);
 
     // keys
     void key_pressed(GameControls::GameKey key);

@@ -53,8 +53,9 @@ public class MapEditorWindow extends JFrame implements Observer, ProjectObserver
 
     /**
      * Creates a new window.
+     * @param quest name of a quest to load, or null to show a dialog to select the quest
      */
-    public MapEditorWindow() {
+    public MapEditorWindow(String quest) {
 	super("Solarus - Map Editor");
 	Project.addProjectObserver(this);
 
@@ -108,7 +109,18 @@ public class MapEditorWindow extends JFrame implements Observer, ProjectObserver
 	createMenuBar();
 
 	setMap(null);
-	new ActionListenerLoadProject().actionPerformed(null);
+
+	if (quest == null) {
+	    new ActionListenerLoadProject().actionPerformed(null);
+	}
+	else {
+	    try {
+	        Project.createExisting("../quests/zsdx");
+	    }
+	    catch (ZSDXException ex) {
+	        new ActionListenerLoadProject().actionPerformed(null);
+	    }
+	}
     }
 
     /**

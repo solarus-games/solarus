@@ -54,7 +54,7 @@ SelectionMenuOptions::SelectionMenuOptions(SelectionMenu *menu):
     this->value_texts[i] = new TextSurface(266, 86 + i * 16, TextSurface::ALIGN_RIGHT, TextSurface::ALIGN_MIDDLE);
     this->value_texts[i]->set_font(TextSurface::FONT_STANDARD);
 
-    current_indices[i] = -1;
+    this->current_indices[i] = -1;
   }
   load_configuration();
 

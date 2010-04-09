@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include "entities/Detector.h"
+#include <list>
 
 /**
  * A crystal switch is a switch that the hero can activate to change the configuration of the
@@ -28,14 +29,15 @@ class CrystalSwitch: public Detector {
 
   private:
 
-    bool state;                      /**< false if the orange blocks are lowered,
-				      * true if the blue blocks are lowered */
-    uint32_t next_possible_hit_date; /**< date when the crystal switch can be hit again */
-    Sprite *star_sprite;             /**< sprite of the star twinkling on the crystal switch */
-    Rectangle star_xy;               /**< position of the star */
+    bool state;                                    /**< false if the orange blocks are lowered,
+						    * true if the blue blocks are lowered */
+    uint32_t next_possible_hit_date;               /**< date when the crystal switch can be hit again */
+    std::list<MapEntity*> entities_activating;     /**< list of entities that recently activated this crystal switch */
+    Sprite *star_sprite;                           /**< sprite of the star twinkling on the crystal switch */
+    Rectangle star_xy;                             /**< position of the star */
 
-    void activate();
-    void twinkle();
+    void activate(MapEntity *entity_activating);
+    void twinkle(void);
 
   public:
 

@@ -121,3 +121,11 @@ bool StraightMovement::is_finished(void) {
   return finished;
 }
 
+/**
+ * Stops the movement finished even if the delay planned is not finished yet.
+ */
+void StraightMovement::set_finished(void) {
+  stop();
+  this->finished = true;
+}
+

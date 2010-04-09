@@ -250,7 +250,7 @@ void InventoryItem::update(void) {
  
       case INVENTORY_PEGASUS_SHOES:
 	hero->update_pegasus_shoes();
-        if (hero->are_pegasus_shoes_finished()) {
+        if (hero->is_pegasus_shoes_run_finished()) {
 	  finished = true;
 	}
 	break;

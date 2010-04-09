@@ -41,6 +41,7 @@ class StraightMovement: public CollisionMovement {
     void update(void);
     void set_suspended(bool suspended);
     bool is_finished(void);
+    void set_finished(void);
     void start(int speed, int direction, uint32_t time);
     void start(int speed, double direction, uint32_t time);
 };

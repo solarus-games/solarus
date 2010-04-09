@@ -95,14 +95,14 @@ void CrystalSwitch::notify_collision(MapEntity *entity_overlapping, CollisionMod
 
     CarriedItem *item = (CarriedItem*) entity_overlapping;
     if (item->is_being_thrown()) {
-      activate();
+      activate(item);
       item->break_item();
     }
   }
   else if (entity_overlapping->get_type() == BOOMERANG && collision_mode == COLLISION_RECTANGLE) {
 
     Boomerang *boomerang = (Boomerang*) entity_overlapping;
-    activate();
+    activate(boomerang);
     if (!boomerang->is_going_back()) {
       boomerang->go_back();
     }
@@ -111,7 +111,7 @@ void CrystalSwitch::notify_collision(MapEntity *entity_overlapping, CollisionMod
 
     Arrow *arrow = (Arrow*) entity_overlapping;
     if (arrow->is_flying()) {
-      activate();
+      activate(arrow);
       arrow->attach_to(this);
     }
   }
@@ -144,11 +144,11 @@ void CrystalSwitch::notify_collision(MapEntity *other_entity, Sprite *other_spri
 
     Hero *hero = (Hero*) other_entity;
     if (hero->get_state() != Hero::SWORD_LOADING && get_distance(hero) < 32) {
-      activate();
+      activate(hero);
     }
   }
   else if (other_entity->get_type() == EXPLOSION) {
-    activate();
+    activate(other_entity);
   }
 }
 
@@ -171,14 +171,22 @@ void CrystalSwitch::action_key_pressed(void) {
 
 /**
  * Activates the crystal switch if the delay since the last activation allows it.
+ * @param entity_activating the entity that activates this crystal switch
  */
-void CrystalSwitch::activate(void) {
+void CrystalSwitch::activate(MapEntity *entity_activating) {
+
+  bool recently_activated = false;
+  std::list<MapEntity*>::iterator it;
+  for (it = entities_activating.begin(); it != entities_activating.end() && !recently_activated; it++) {
+    recently_activated  = (*it == entity_activating);
+  }
 
   uint32_t now = System::now();
-  if (now >= next_possible_hit_date) {
+  if (!recently_activated || now >= next_possible_hit_date) {
     game->play_sound("switch");
     game->change_crystal_switch_state();
     next_possible_hit_date = now + 1000;
+    entities_activating.push_back(entity_activating);
   }
 }
 
@@ -208,6 +216,11 @@ void CrystalSwitch::update(void) {
     twinkle();
   }
 
+  uint32_t now = System::now();
+  if (now >= next_possible_hit_date) {
+    entities_activating.clear();
+  }
+ 
   MapEntity::update();
 }
 

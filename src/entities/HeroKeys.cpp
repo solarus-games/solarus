@@ -179,6 +179,10 @@ void Hero::arrow_pressed(int direction) {
 
   // notify the movement
   get_normal_movement()->add_direction(direction);
+
+  if (is_pegasus_shoes_running()) {
+    stop_pegasus_shoes();
+  }
 }
 
 /**
@@ -190,3 +194,4 @@ void Hero::arrow_released(int direction) {
   // notify the movement
   get_normal_movement()->remove_direction(direction);
 }
+

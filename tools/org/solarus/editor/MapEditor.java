@@ -37,8 +37,10 @@ public class MapEditor {
      */
     public static void main(String[] args) {
 
+        String quest = (args.length != 0) ? args[0] : null;
+
 	// create the main window
-	MapEditorWindow window = new MapEditorWindow();
+	MapEditorWindow window = new MapEditorWindow(quest);
 	window.pack();
 	window.setExtendedState(MapEditorWindow.MAXIMIZED_BOTH);
 	window.setVisible(true);

@@ -1775,11 +1775,29 @@ void Hero::update_pegasus_shoes(void) {
 }
 
 /**
+ * Stops running.
+ */
+void Hero::stop_pegasus_shoes(void) {
+  
+  StraightMovement *movement = (StraightMovement*) get_movement();
+  movement->set_finished();
+}
+
+/**
+ * Returns whether the hero is currently running with the Pegasus Shoes.
+ * @return true if the heor is running
+ */
+bool Hero::is_pegasus_shoes_running(void) {
+
+  return state == USING_INVENTORY_ITEM && current_inventory_item->get_id() == INVENTORY_PEGASUS_SHOES;
+}
+
+/**
  * Returns whether the Pegasus Shoes run is finished.
  * The state should be USING_INVENTORY_ITEM.
  * @return true if the run is finished
  */
-bool Hero::are_pegasus_shoes_finished(void) {
+bool Hero::is_pegasus_shoes_run_finished(void) {
   return get_movement() == get_normal_movement();
 }
 

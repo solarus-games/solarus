@@ -28,7 +28,7 @@ public class ProjectFileChooser extends JFileChooser {
      * Constructor.
      */
     public ProjectFileChooser() {
-	super("..");
+	super("../quests");
 	setDialogTitle("Please select the root directory of your project");
 	setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 	setDragEnabled(false);

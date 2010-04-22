@@ -13,6 +13,11 @@ function event_map_started(destination_point_name)
       npc_remove("monkey")
    end
 
+   if savegame_get_boolean(89) then
+     -- remove the dungeon 2 door
+      remove_dungeon_2_door()
+   end
+
    -- make the NPCs walk
    npc_random_walk("hat_man")
    npc_random_walk("how_to_save_npc")
@@ -86,5 +91,28 @@ function monkey_timer()
    play_sound("la_monkey")
    npc_jump("monkey", 2, 56, false)
    monkey_jumps = 2
+end
+
+-- Function called when the player presses the action key
+-- while facing an interactive entity
+function event_interaction(entity_name)
+
+   if entity_name == "dungeon_2_door" then
+
+      -- open the door if the player has the Clay Key
+      if inventory_item_get(14) ~= 0 then
+	 play_sound("door_open")
+	 play_sound("secret")
+	 savegame_set_boolean(89, true)
+	 remove_dungeon_2_door()
+      else
+	 start_message("outside_world.rock_key_required")
+      end
+   end
+end
+
+function remove_dungeon_2_door()
+   interactive_entity_remove("dungeon_2_door")
+   tile_set_enabled("dungeon_2_door_tile", false)
 end
 

@@ -1792,6 +1792,12 @@ line1 = "Puisse le héros mener"
 line2 = "le Royaume à la paix et"
 line3 = "à la prospérité !"
 
+[outside_world.rock_key_required]
+# Message affiché lorsqu'on tente d'ouvrir la porte d'entrée
+# du donjon 2 sans avoir la Clé de Roc
+#       |-----------------------|
+line1 = "C'est fermé à clé !"
+
 [dungeon_2.eye_hint]
 #       |-----------------------|
 line1 = "Les deux yeux doivent"
@@ -1804,4 +1810,5 @@ line1 = "Les yeux doivent être"
 line2 = "transpercés avec"
 line3 = "persévérance."
 skip = all
+
 

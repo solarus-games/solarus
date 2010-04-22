@@ -79,4 +79,5 @@ booleans:
 86	dungeon 2 1F: big chest with the pegasus shoes
 87	dungeon 2 1F: chest with 5 rupees
 88	dungeon 2 B1: chest with the large rupee bag
+89	dungeon 2 entrance door unlocked
 

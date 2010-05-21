@@ -24,7 +24,7 @@
 #include <map>
 
 /**
- * This class displays some text on a surface.
+ * This class displays a line of text on a surface.
  * Basically, it encapsulates a graphic surface and handles text rendering,
  * horizontal and vertical text alignment, color and other properties.
  * This is the only class related to a font library (SDL_ttf).
@@ -37,27 +37,28 @@ class TextSurface {
      * Horizontal alignment of the text.
      */
     enum HorizontalAlignment {
-      ALIGN_LEFT,
-      ALIGN_CENTER,
-      ALIGN_RIGHT
+      ALIGN_LEFT,                                     /**< the text is aligned to the left */
+      ALIGN_CENTER,                                   /**< the text is centerd */
+      ALIGN_RIGHT                                     /**< the text is aligned to the right */
     };
 
     /**
      * Vertical alignment of the text.
+     *
      */
     enum VerticalAlignment {
-      ALIGN_TOP,
-      ALIGN_MIDDLE,
-      ALIGN_BOTTOM
+      ALIGN_TOP,                                      /**< the text is aligned to the top */
+      ALIGN_MIDDLE,                                   /**< the text is aligned in the middle */
+      ALIGN_BOTTOM                                    /**< the text is aligned to the bottom */
     };
 
     /**
      * Rendering mode of the text.
      */
     enum RenderingMode {
-      TEXT_SOLID,          /**< the text is displayed without smooth effect */
-      TEXT_SHADED,         /**< the text is displayed with a smooth effect for an unicolor background */
-      TEXT_BLENDED         /**< the text is displayed with a smooth effect for any background */
+      TEXT_SOLID,                                     /**< the text is displayed without smooth effect */
+      TEXT_SHADED,                                    /**< the text is displayed with a smooth effect for an unicolor background */
+      TEXT_BLENDED                                    /**< the text is displayed with a smooth effect for any background */
     };
 
   private:
@@ -66,30 +67,30 @@ class TextSurface {
      * This structures stores the data of a font.
      */
     struct FontData {
-      std::string file_name;
-      int font_size;
-      char *buffer;
-      SDL_RWops *rw;
-      TTF_Font *internal_font;
+      std::string file_name;                          /**< name of the font file, relative to the data directory */
+      int font_size;                                  /**< size of the characters */
+      char *buffer;                                   /**< the file loaded into memory */
+      SDL_RWops *rw;                                  /**< read/write object used to open the font file from memory */
+      TTF_Font *internal_font;                        /**< the library-dependant font object */
     };
 
-    static std::map<std::string, FontData> fonts; /**< the data of each font, load by the initialize()
-						    function from the file text/fonts.dat. */
-    static std::string default_font_id;
+    static std::map<std::string, FontData> fonts;     /**< the data of each font, loaded from the file text/fonts.dat
+							(fond id -> font data) */
+    static std::string default_font_id;               /**< id of the default font to use */
 
-    std::string font_id;
-    HorizontalAlignment horizontal_alignment;
-    VerticalAlignment vertical_alignment;
-    RenderingMode rendering_mode;
-    Color text_color;
-    Color background_color; // only for the TEXT_SHADED rendering
+    std::string font_id;                              /**< id of the font of the current text surface */
+    HorizontalAlignment horizontal_alignment;         /**< horizontal alignment of the current text surface */
+    VerticalAlignment vertical_alignment;             /**< vertical alignment of the current text surface */
+    RenderingMode rendering_mode;                     /**< rendering mode of the current text surface */
+    Color text_color;                                 /**< color of the text */
+    Color background_color;                           /**< color of the background (only for the TEXT_SHADED rendering mode) */
 
-    int x;
-    int y;
-    Surface *surface;
-    Rectangle text_position;
+    int x;                                            /**< x coordinate of where the text is aligned */
+    int y;                                            /**< y coordinate of where the text is aligned */
+    Surface *surface;                                 /**< the surface to draw */
+    Rectangle text_position;                          /**< position of the top-left corner of the surface on the screen */
 
-    std::string text;
+    std::string text;                                 /**< the string to display (only one line) */
 
     void rebuild(void);
 

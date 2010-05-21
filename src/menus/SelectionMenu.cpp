@@ -72,7 +72,7 @@ SelectionMenu::SelectionMenu(Solarus *solarus):
   option1_text = new TextSurface(90, 172, TextSurface::ALIGN_LEFT, TextSurface::ALIGN_MIDDLE);
   option2_text = new TextSurface(198, 172, TextSurface::ALIGN_LEFT, TextSurface::ALIGN_MIDDLE);
   title_text = new TextSurface(160, 54, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_MIDDLE);
-  title_text->set_font(TextSurface::FONT_STANDARD);
+  title_text->set_font("fixed");
 
   // music
   music = ResourceManager::get_music("game_over.spc");

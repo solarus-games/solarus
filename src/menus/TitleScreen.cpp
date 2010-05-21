@@ -215,12 +215,12 @@ void TitleScreen::init_phase_title(void) {
   star_img = new Surface("menus/title_star.png");
 
   website_img = new TextSurface(160, 220, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_MIDDLE);
-  website_img->set_font(TextSurface::FONT_LA);
+  website_img->set_font("dialog");
   website_img->set_rendering_mode(TextSurface::TEXT_BLENDED);
   website_img->set_text_color(text_colors[time_of_day]);
   website_img->set_text(StringResource::get_string("title_screen.website"));
   press_space_img = new TextSurface(160, 190, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_MIDDLE);
-  press_space_img->set_font(TextSurface::FONT_LA_BIG);
+  press_space_img->set_font("dialog_big");
   press_space_img->set_rendering_mode(TextSurface::TEXT_BLENDED);
   press_space_img->set_text_color(text_colors[time_of_day]);
   press_space_img->set_text(StringResource::get_string("title_screen.press_space"));

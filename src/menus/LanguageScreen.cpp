@@ -55,7 +55,7 @@ LanguageScreen::LanguageScreen(Solarus *solarus):
     for (it = language_map.begin(); it != language_map.end(); it++) {
       language_codes[i] = it->first;
       language_texts[i] = new TextSurface(160, 0, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_MIDDLE);
-      language_texts[i]->set_font(TextSurface::FONT_STANDARD);
+      language_texts[i]->set_font("fixed");
       language_texts[i]->set_text(it->second);
       if (language_codes[i] == FileTools::get_default_language()) {
 	cursor_position = i;

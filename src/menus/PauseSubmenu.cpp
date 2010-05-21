@@ -30,12 +30,12 @@ PauseSubmenu::PauseSubmenu(PauseMenu *pause_menu, Game *game):
   caption_text_1 = new TextSurface(160, 0,
 				   TextSurface::ALIGN_CENTER,
 				   TextSurface::ALIGN_MIDDLE);
-  caption_text_1->set_font(TextSurface::FONT_STANDARD);
+  caption_text_1->set_font("fixed");
 
   caption_text_2 = new TextSurface(160, 0,
 				   TextSurface::ALIGN_CENTER,
 				   TextSurface::ALIGN_MIDDLE);
-  caption_text_2->set_font(TextSurface::FONT_STANDARD);
+  caption_text_2->set_font("fixed");
 }
 
 /**

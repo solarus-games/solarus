@@ -47,12 +47,12 @@ SelectionMenuOptions::SelectionMenuOptions(SelectionMenu *menu):
 
     // labels
     this->label_texts[i] = new TextSurface(64, 86 + i * 16, TextSurface::ALIGN_LEFT, TextSurface::ALIGN_MIDDLE);
-    this->label_texts[i]->set_font(TextSurface::FONT_STANDARD);
+    this->label_texts[i]->set_font("fixed");
     this->label_texts[i]->set_text(StringResource::get_string(label_keys[i]));
 
     // values
     this->value_texts[i] = new TextSurface(266, 86 + i * 16, TextSurface::ALIGN_RIGHT, TextSurface::ALIGN_MIDDLE);
-    this->value_texts[i]->set_font(TextSurface::FONT_STANDARD);
+    this->value_texts[i]->set_font("fixed");
 
     this->current_indices[i] = -1;
   }

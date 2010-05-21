@@ -46,18 +46,18 @@ PauseSubmenuOptions::PauseSubmenuOptions(PauseMenu *pause_menu, Game *game):
 
   // create the text surfaces
   video_mode_text = new TextSurface(264, 62, TextSurface::ALIGN_RIGHT, TextSurface::ALIGN_TOP);
-  video_mode_text->set_font(TextSurface::FONT_STANDARD);
+  video_mode_text->set_font("fixed");
 
   controls_text = new TextSurface(84, 83, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_TOP);
-  controls_text->set_font(TextSurface::FONT_STANDARD);
+  controls_text->set_font("fixed");
   controls_text->set_text(StringResource::get_string("options.commands_column"));
 
   keyboard_text = new TextSurface(153, 83, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_TOP);
-  keyboard_text->set_font(TextSurface::FONT_STANDARD);
+  keyboard_text->set_font("fixed");
   keyboard_text->set_text(StringResource::get_string("options.keyboard_column"));
 
   joypad_text = new TextSurface(229, 83, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_TOP);
-  joypad_text->set_font(TextSurface::FONT_STANDARD);
+  joypad_text->set_font("fixed");
   joypad_text->set_text(StringResource::get_string("options.joypad_column"));
 
   controls_surface = new Surface(215, 160);
@@ -70,14 +70,14 @@ PauseSubmenuOptions::PauseSubmenuOptions(PauseMenu *pause_menu, Game *game):
     int y = 2 + 16 * i;
 
     game_key_texts[i] = new TextSurface(4, y, TextSurface::ALIGN_LEFT, TextSurface::ALIGN_TOP);
-    game_key_texts[i]->set_font(TextSurface::FONT_STANDARD);
+    game_key_texts[i]->set_font("fixed");
     game_key_texts[i]->set_text(controls->get_key_name((GameControls::GameKey) (i + 1)));
 
     keyboard_control_texts[i] = new TextSurface(74, y, TextSurface::ALIGN_LEFT, TextSurface::ALIGN_TOP);
-    keyboard_control_texts[i]->set_font(TextSurface::FONT_STANDARD);
+    keyboard_control_texts[i]->set_font("fixed");
 
     joypad_control_texts[i] = new TextSurface(143, y, TextSurface::ALIGN_LEFT, TextSurface::ALIGN_TOP);
-    joypad_control_texts[i]->set_font(TextSurface::FONT_STANDARD);
+    joypad_control_texts[i]->set_font("fixed");
   }
   load_control_texts();
 

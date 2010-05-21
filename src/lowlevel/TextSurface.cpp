@@ -18,16 +18,10 @@
 #include "lowlevel/Surface.h"
 #include "lowlevel/System.h"
 #include "lowlevel/FileTools.h"
+#include "lowlevel/IniFile.h"
 
-/**
- * The data of each fonts, created in the initialize() function.
- * TODO load this from some external file
- */
-TextSurface::FontData TextSurface::data[FONT_NB] = {
-  {"text/la.ttf", 11, NULL, NULL, NULL},
-  {"text/fixed8.fon", 11, NULL, NULL, NULL},
-  {"text/la.ttf", 18, NULL, NULL, NULL}
-};
+std::map<std::string, TextSurface::FontData> TextSurface::fonts;
+std::string TextSurface::default_font_id = "";
 
 /**
  * Initializes the font system.
@@ -36,15 +30,39 @@ void TextSurface::initialize(void) {
 
   TTF_Init();
 
-  for (int i = 0; i < FONT_NB; i++) {
+  // first determine the available fonts
+  IniFile ini("text/fonts.dat", IniFile::READ);
+  for (ini.start_group_iteration(); ini.has_more_groups(); ini.next_group()) {
 
-    size_t size;
-    FileTools::data_file_open_buffer(data[i].file_name, &data[i].buffer, &size);
-    data[i].rw = SDL_RWFromMem(data[i].buffer, size);
-    data[i].font = TTF_OpenFontRW(data[i].rw, 0, data[i].font_size);
-    if (data[i].font == NULL) {
-      DIE("Cannot load font " << i << " '" << data[i].file_name << "': " << TTF_GetError());
+    // get the font metadata
+    std::string font_id = ini.get_group();
+    std::string file_name = ini.get_string_value("file", "");
+    if (file_name.size() == 0) {
+      DIE("Missing font file name in file 'text/fonts.dat' for group '" << font_id << "'");
     }
+    int font_size = ini.get_integer_value("size", 0);
+    if (font_size == 0) {
+      DIE("Missing font size in file 'text/fonts.dat' for group '" << font_id << "'");
+    }
+    fonts[font_id].file_name = file_name;
+    fonts[font_id].font_size = font_size;
+
+    if (ini.get_boolean_value("default", false)) {
+      default_font_id = font_id;
+    }
+
+    // load the font
+    size_t size;
+    FileTools::data_file_open_buffer(file_name, &fonts[font_id].buffer, &size);
+    fonts[font_id].rw = SDL_RWFromMem(fonts[font_id].buffer, size);
+    fonts[font_id].internal_font = TTF_OpenFontRW(fonts[font_id].rw, 0, font_size);
+    if (fonts[font_id].internal_font == NULL) {
+      DIE("Cannot load font from file '" << file_name << "': " << TTF_GetError());
+    }
+  }
+
+  if (default_font_id.size() == 0) {
+    DIE("No default font set in file 'text/fonts.dat'");
   }
 }
 
@@ -53,10 +71,13 @@ void TextSurface::initialize(void) {
  */
 void TextSurface::quit(void) {
 
-  for (int i = 0; i < FONT_NB; i++) {
-    TTF_CloseFont(data[i].font);
-    SDL_RWclose(data[i].rw);
-    FileTools::data_file_close_buffer(data[i].buffer);
+  std::map<std::string, FontData>::iterator it;
+  for (it = fonts.begin(); it != fonts.end(); it++) {
+    std::string font_id = it->first;
+    FontData *font = &it->second;
+    TTF_CloseFont(font->internal_font);
+    SDL_RWclose(font->rw);
+    FileTools::data_file_close_buffer(font->buffer);
   }
 
   TTF_Quit();
@@ -64,7 +85,7 @@ void TextSurface::quit(void) {
 
 /**
  * Creates a text to display with the default properties:
- * - font: Link's Awakening
+ * - font: the default font defined in file text/fonts.dat
  * - horizontal alignment: left
  * - vertical alignment: middle
  * - rendering mode: solid
@@ -74,7 +95,7 @@ void TextSurface::quit(void) {
  * @param y y position of the text on the destination surface
  */
 TextSurface::TextSurface(int x, int y):
-  font_id(FONT_LA),
+  font_id(default_font_id),
   horizontal_alignment(ALIGN_LEFT),
   vertical_alignment(ALIGN_MIDDLE),
   rendering_mode(TEXT_SOLID),
@@ -99,7 +120,7 @@ TextSurface::TextSurface(int x, int y,
 			 TextSurface::HorizontalAlignment horizontal_alignment,
 			 TextSurface::VerticalAlignment vertical_alignment):
 
-  font_id(FONT_LA),
+  font_id(default_font_id),
   horizontal_alignment(horizontal_alignment),
   vertical_alignment(vertical_alignment),
   rendering_mode(TEXT_SOLID),
@@ -126,7 +147,7 @@ TextSurface::~TextSurface(void) {
  * Sets the font to use.
  * @param font_id a font
  */
-void TextSurface::set_font(FontId font_id) {
+void TextSurface::set_font(const std::string font_id) {
   this->font_id = font_id;
   rebuild();
 }
@@ -304,16 +325,16 @@ void TextSurface::rebuild(void) {
   switch (rendering_mode) {
 
   case TEXT_SOLID:
-    internal_surface = TTF_RenderUTF8_Solid(data[font_id].font, text.c_str(), *text_color.get_internal_color());
+    internal_surface = TTF_RenderUTF8_Solid(fonts[font_id].internal_font, text.c_str(), *text_color.get_internal_color());
     break;
 
   case TEXT_SHADED:
-    internal_surface = TTF_RenderUTF8_Shaded(data[font_id].font, text.c_str(), *text_color.get_internal_color(),
+    internal_surface = TTF_RenderUTF8_Shaded(fonts[font_id].internal_font, text.c_str(), *text_color.get_internal_color(),
 	*background_color.get_internal_color());
     break;
 
   case TEXT_BLENDED:
-    internal_surface = TTF_RenderUTF8_Blended(data[font_id].font, text.c_str(), *text_color.get_internal_color());
+    internal_surface = TTF_RenderUTF8_Blended(fonts[font_id].internal_font, text.c_str(), *text_color.get_internal_color());
     break;
   }
 

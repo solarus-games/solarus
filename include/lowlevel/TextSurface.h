@@ -21,6 +21,7 @@
 #include "lowlevel/Color.h"
 #include "lowlevel/Rectangle.h"
 #include <SDL/SDL_ttf.h>
+#include <map>
 
 /**
  * This class displays some text on a surface.
@@ -59,16 +60,6 @@ class TextSurface {
       TEXT_BLENDED         /**< the text is displayed with a smooth effect for any background */
     };
 
-    /**
-     * The fonts available.
-     */
-    enum FontId {
-      FONT_LA       = 0,   /**< italic font (default) */
-      FONT_STANDARD = 1,   /**< a more common font, with fixed width too */
-      FONT_LA_BIG   = 2,   /**< italic font with double size */
-      FONT_NB
-    };
-
   private:
 
     /**
@@ -79,12 +70,14 @@ class TextSurface {
       int font_size;
       char *buffer;
       SDL_RWops *rw;
-      TTF_Font *font;
+      TTF_Font *internal_font;
     };
 
-    static FontData data[FONT_NB];
+    static std::map<std::string, FontData> fonts; /**< the data of each font, load by the initialize()
+						    function from the file text/fonts.dat. */
+    static std::string default_font_id;
 
-    FontId font_id;
+    std::string font_id;
     HorizontalAlignment horizontal_alignment;
     VerticalAlignment vertical_alignment;
     RenderingMode rendering_mode;
@@ -111,7 +104,7 @@ class TextSurface {
 	VerticalAlignment vertical_alignment);
     ~TextSurface(void);
 
-    void set_font(FontId font);
+    void set_font(const std::string font_id);
     void set_alignment(HorizontalAlignment horizontal_alignment,
 	VerticalAlignment vertical_alignment);
     void set_rendering_mode(RenderingMode rendering_mode);

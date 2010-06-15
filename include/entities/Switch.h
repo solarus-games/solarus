@@ -21,10 +21,12 @@
 #include "entities/Detector.h"
 
 /**
- * A switch is a button that the hero can push.
- * Some switches require a block to be enabled.
- * Some switches become disabled when the hero or the block leave it.
- * A switch can be visible or invisible.
+ * A switch is a button that the hero can trigger by walking onto it
+ * (then we call it a walkable switch) or by shooting an arrow towards it
+ * (then we call it an arrow target).
+ * Some walkable switches require a block to be enabled.
+ * Some walkable switches become disabled when the hero or the block leave it.
+ * A walkable switch can be visible or invisible.
  */
 class Switch: public Detector {
 
@@ -34,16 +36,17 @@ class Switch: public Detector {
      * Subtypes of switches.
      */
     enum Subtype {
-      INVISIBLE = 0, /**< an invisible switch, usually to detect the hero position */
-      NORMAL    = 1  /**< a classical switch */
+      WALKABLE_INVISIBLE = 0, /**< an invisible switch, typically used to detect the hero position */
+      WALKABLE_VISIBLE   = 1, /**< a classical visible switch the hero can walk on */
+      ARROW_TARGET       = 2  /**< an invisible switch that can be trigger by shooting an arrow on it */
     };
 
   private:
 
     Subtype subtype;           /**< subtype of switch */
-    bool needs_block;          /**< indicates that a block or a statue is required to enable to switch */
-    bool disable_when_leaving; /**< indicates that the switch becomes disabled when the hero or the block leaves it */
-    bool enabled;              /**< indicates that the switch is currently enabled */
+    bool needs_block;          /**< indicates that a block or a statue is required to enable this walkable switch */
+    bool disable_when_leaving; /**< indicates that this walkable switch becomes disabled when the hero or the block leaves it */
+    bool enabled;              /**< indicates that this switch is currently enabled */
 
   public:
 
@@ -54,6 +57,7 @@ class Switch: public Detector {
 
     EntityType get_type(void);
 
+    bool is_walkable(void);
     void set_enabled(bool enabled);
     bool test_collision_custom(MapEntity *entity);
     void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);

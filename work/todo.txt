@@ -26,7 +26,6 @@ Feature requests :
 - Permettre aux ennemis de tomber dans les trous
 - Permettre aux objets portés de tomber dans les trous et dans l'eau
 - Mettre des constantes dans les scripts
-- Mettre une icône sur l'exécutable
 - transition intérieur / extérieur : ovale
 - transition des téléporteurs ?
 - rendre les pierres et les buissons dépendants du tileset

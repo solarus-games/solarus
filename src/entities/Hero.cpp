@@ -442,7 +442,7 @@ const Rectangle Hero::get_facing_point(int direction) {
       break;
 
     default:
-      DIE("Invalid direction for get_facing_point(): " << direction);
+      DIE("Invalid direction for Hero::get_facing_point(): " << direction);
   }
 
   return facing_point;

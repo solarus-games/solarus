@@ -68,8 +68,9 @@ public class AddEntitiesMenu extends JMenu {
 		Block.Subtype.STATUE
 	),
 	new ItemDefinition(EntityType.SWITCH, KeyEvent.VK_W,
-		Switch.Subtype.INVISIBLE,
-		Switch.Subtype.NORMAL
+		Switch.Subtype.WALKABLE_INVISIBLE,
+		Switch.Subtype.WALKABLE_VISIBLE,
+		Switch.Subtype.ARROW_TARGET
 	),
 	new ItemDefinition(EntityType.CUSTOM_OBSTACLE, KeyEvent.VK_O),
 	new ItemDefinition(EntityType.SENSOR, KeyEvent.VK_N,

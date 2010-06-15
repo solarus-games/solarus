@@ -34,17 +34,26 @@
  */
 Switch::Switch(const std::string &name, Layer layer, int x, int y,
 	       Subtype subtype, bool needs_block, bool disable_when_leaving):
-  Detector(COLLISION_CUSTOM, name, layer, x, y, 16, 16),
+  Detector(COLLISION_NONE, name, layer, x, y, 16, 16),
   subtype(subtype), needs_block(needs_block), disable_when_leaving(disable_when_leaving),
   enabled(false) {
 
-  if (subtype == INVISIBLE && needs_block) {
+  if (subtype == WALKABLE_INVISIBLE && needs_block) {
     DIE("The switch '" << name << "' is invisible but needs a block");
   }
 
-  if (subtype == NORMAL) {
+  // sprite
+  if (subtype == WALKABLE_VISIBLE) {
     create_sprite("entities/switch");
     get_sprite()->set_current_animation("disabled");
+  }
+
+  // collisions
+  if (is_walkable()) {
+    set_collision_modes(COLLISION_CUSTOM);
+  }
+  else {
+    set_collision_modes(COLLISION_FACING_POINT);
   }
 }
 
@@ -87,6 +96,14 @@ EntityType Switch::get_type() {
 }
 
 /**
+ * Returns wether this switch is a walkable switch.
+ * @return true if the subtype of switch is WALKABLE_INVISIBLE or WALKABLE_VISIBLE
+ */
+bool Switch::is_walkable(void) {
+  return subtype == WALKABLE_INVISIBLE || subtype == WALKABLE_VISIBLE;
+}
+
+/**
  * Enables or disables the switch, not playing any sound.
  * @param enabled true to make the switch enabled, false to make it disabled
  */
@@ -95,7 +112,7 @@ void Switch::set_enabled(bool enabled) {
   if (enabled != this->enabled) {
     this->enabled = enabled;
 
-    if (subtype != INVISIBLE) {
+    if (subtype == WALKABLE_VISIBLE) {
       if (enabled) {
         get_sprite()->set_current_animation("enabled");
       }
@@ -112,6 +129,8 @@ void Switch::set_enabled(bool enabled) {
  * @return true if the entity's collides with this entity
  */
 bool Switch::test_collision_custom(MapEntity *entity) {
+
+  // this collision test is performed for walkable switches only
 
   const Rectangle &entity_rectangle = entity->get_bounding_box();
   int x1 = entity_rectangle.get_x() + 4;
@@ -134,17 +153,24 @@ void Switch::notify_collision(MapEntity *entity_overlapping, CollisionMode colli
     return;
   }
 
-  if (entity_overlapping->is_hero()) {
-    set_enabled(!needs_block);
+  if (is_walkable()) {
+    // walkable switch: allow the hero or a block
+    if (entity_overlapping->is_hero()) {
+      set_enabled(!needs_block);
+    }
+    else if (entity_overlapping->get_type() == BLOCK) {
+      // blocks can only enable walkable, visible switches
+      set_enabled(subtype == WALKABLE_VISIBLE);
+    }
   }
-  else if (entity_overlapping->get_type() == BLOCK) {
-    // don't enable an invisible switch with a block
-    set_enabled(subtype != INVISIBLE);
+  else if (subtype == ARROW_TARGET && entity_overlapping->get_type() == ARROW) {
+    // arrow target: only allow an arrow
+    set_enabled(true);
   }
 
   if (enabled) {
 
-    if (subtype != INVISIBLE) {
+    if (subtype == WALKABLE_VISIBLE) {
       game->play_sound("switch");
     }
 
@@ -153,3 +179,4 @@ void Switch::notify_collision(MapEntity *entity_overlapping, CollisionMode colli
 }
 
 // TODO take into account disable_when_leaving
+

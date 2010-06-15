@@ -1811,4 +1811,11 @@ line2 = "transpercés avec"
 line3 = "persévérance."
 skip = all
 
+[dungeon_2.code_hint]
+#       |-----------------------|
+line1 = "       F | B | E "
+line2 = "      ---|---|---"
+line3 = "       C | D | A "
+skip = all
+
 

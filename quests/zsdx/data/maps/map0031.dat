@@ -126,12 +126,12 @@
 15	0	568	312	16	48	0
 5	0	200	656	chest_2	0	83	5	72
 8	0	144	653	interactive_entity	3	0	entities/hint_stone	dungeon_2.eye_hint
-11	0	168	504	switch_3	1	0	0
-11	0	168	440	switch_4	1	0	0
-11	0	232	440	switch_5	1	0	0
-11	0	232	504	switch_6	1	0	0
-11	0	104	504	switch_7	1	0	0
-11	0	104	440	switch_8	1	0	0
+11	0	168	504	switch_d	1	0	0
+11	0	168	440	switch_b	1	0	0
+11	0	232	440	switch_e	1	0	0
+11	0	232	504	switch_a	1	0	0
+11	0	104	504	switch_c	1	0	0
+11	0	104	440	switch_f	1	0	0
 18	0	384	464	door	2	3	82
 18	0	288	464	door_2	0	3	82
 1	0	176	653	from_1F_south	3	0
@@ -389,7 +389,7 @@
 18	1	944	200	boss_door	1	4	83
 18	1	944	152	boss_door_2	3	4	83
 1	1	176	61	from_1F_north	3	0
-1	1	80	309	from_1F_west	3	0
+1	1	80	317	from_1F_west	3	0
 2	1	72	304	16	16	to_1F_west	0	1	30	from_B1_west
 2	1	168	48	16	16	to_1F_north	0	1	30	from_B1_north
 5	1	104	320	map_chest	0	70	1	77
@@ -410,7 +410,7 @@
 4	1	840	149	0	4	-1
 4	1	840	133	0	4	-1
 4	1	856	149	0	4	-1
-8	1	960	37	interactive_entity_3	3	0	entities/hint_stone	code_hint
+8	1	960	37	interactive_entity_3	3	0	entities/hint_stone	dungeon_2.code_hint
 19	1	168	48	1	0
 19	1	72	304	1	0
 0	2	912	168	96	8	357

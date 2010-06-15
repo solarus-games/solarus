@@ -58,7 +58,8 @@ public class EditSwitchComponent extends EditEntityComponent {
 	// disable the 'needs block' field when the subtype is invisible
 	subtypeField.addActionListener(new ActionListener() {
 	    public void actionPerformed(ActionEvent ev) {
-		needsBlockField.setEnabled(subtypeField.getValue() != Subtype.INVISIBLE);
+		needsBlockField.setEnabled(subtypeField.getValue() == Subtype.WALKABLE_VISIBLE);
+		disableWhenLeavingField.setEnabled(Subtype.isWalkable(subtypeField.getValue()));
 	    }
 	});
     }
@@ -73,7 +74,8 @@ public class EditSwitchComponent extends EditEntityComponent {
 
 	needsBlockField.setSelected(sw.getBooleanProperty("needsBlock"));
 	disableWhenLeavingField.setSelected(sw.getBooleanProperty("disableWhenLeaving"));
-	needsBlockField.setEnabled(entity.getSubtype() != Subtype.INVISIBLE);
+	needsBlockField.setEnabled(entity.getSubtype() == Subtype.WALKABLE_VISIBLE);
+	disableWhenLeavingField.setEnabled(Subtype.isWalkable(entity.getSubtype()));
     }
 
     /**
@@ -88,3 +90,4 @@ public class EditSwitchComponent extends EditEntityComponent {
 	return new ActionEditEntitySpecific(entity, needsBlock, disableWhenLeaving);
     }
 }
+

@@ -27,11 +27,14 @@ public class Switch extends MapEntity {
      * Subtypes of switches.
      */
     public enum Subtype implements EntitySubtype {
-	INVISIBLE,
-	NORMAL;
+	WALKABLE_INVISIBLE,
+	WALKABLE_VISIBLE,
+	ARROW_TARGET;
 
 	public static final String[] humanNames = {
-	  "Invisible", "Normal"  
+	  "Walkable invisible",
+	  "Walkable visible",
+	  "Arrow target"
 	};
 
 	public int getId() {
@@ -41,14 +44,19 @@ public class Switch extends MapEntity {
 	public static Subtype get(int id) {
 	    return values()[id];
 	}
+
+	public static boolean isWalkable(EntitySubtype subtype) {
+	    return subtype == WALKABLE_INVISIBLE || subtype == WALKABLE_VISIBLE;
+	}
     }
 
     /**
      * Description of the default image representing this kind of entity.
      */
     public static final EntityImageDescription[] generalImageDescriptions = {
-	new EntityImageDescription("miscellaneous_entities.png", 56, 16, 16, 16), // invisible
-	new EntityImageDescription("miscellaneous_entities.png", 72, 16, 16, 16), // normal
+	new EntityImageDescription("miscellaneous_entities.png", 56, 16, 16, 16), // walkable invisible
+	new EntityImageDescription("miscellaneous_entities.png", 72, 16, 16, 16), // walkable visible
+	new EntityImageDescription("miscellaneous_entities.png", 88, 16, 16, 16), // arrow target
     };
 
     /**
@@ -68,6 +76,14 @@ public class Switch extends MapEntity {
     }
 
     /**
+     * Returns whether this switch is walkable.
+     * @return true if the subtype is WALKABLE_INVISIBLE or WALKABLE_VISIBLE
+     */
+    public boolean isWalkable() {
+        return Subtype.isWalkable(getSubtype());
+    }
+
+    /**
      * Sets the subtype of this entity.
      * @param subtype the subtype of entity
      * @throws MapException if the subtype is not valid
@@ -75,8 +91,12 @@ public class Switch extends MapEntity {
     public void setSubtype(EntitySubtype subtype) throws MapException {
 
 	if (subtype != this.subtype) {
-	    if (subtype == Subtype.INVISIBLE) {
+	    if (subtype == Subtype.WALKABLE_INVISIBLE) {
 		setProperty("needsBlock", false);
+	    }
+	    else if (Subtype.isWalkable(subtype)) {
+		setProperty("needsBlock", false);
+		setProperty("disableWhenLeaving", false);
 	    }
 	    super.setSubtype(subtype);
 	}
@@ -88,7 +108,7 @@ public class Switch extends MapEntity {
     public void setPropertiesDefaultValues() throws MapException {
 	setProperty("needsBlock", false);
 	setProperty("disableWhenLeaving", false);
-	setSubtype(Subtype.NORMAL);
+	setSubtype(Subtype.WALKABLE_INVISIBLE);
     }
 
     /**
@@ -97,8 +117,19 @@ public class Switch extends MapEntity {
      */
     public void checkProperties() throws MapException {
 
-	if (getSubtype() == Subtype.INVISIBLE && getBooleanProperty("needsBlock")) {
+	if (getSubtype() == Subtype.WALKABLE_INVISIBLE && getBooleanProperty("needsBlock")) {
 	    throw new MapException("Cannot put a block on an invisible switch");
+	}
+
+	if (!isWalkable()) {
+	  
+	    if (getBooleanProperty("needsBlock")) {
+	        throw new MapException("Cannot put a block on a non-walkable switch");
+	    }
+
+	    if (getBooleanProperty("disableWhenLeaving")) {
+	        throw new MapException("Cannot disable the switch when leaving for a non-walkable switch");
+	    }
 	}
     }
 
@@ -109,3 +140,4 @@ public class Switch extends MapEntity {
 	currentImageDescription = generalImageDescriptions[subtype.getId()];
     }
 }
+

@@ -1198,6 +1198,15 @@ public abstract class MapEntity extends Observable {
     }
 
     /**
+     * Returns whether a value specific to the current entity type is defined.
+     * @param name name of the property to look for
+     * @return true if this property has a value
+     */
+    public final boolean hasProperty(String name) {
+	return specificProperties.get(name) != null;
+    }
+
+    /**
      * Returns a string value specific to the current entity type.
      * @param name name of the property to get
      * @return the value of this property

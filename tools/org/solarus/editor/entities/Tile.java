@@ -66,7 +66,10 @@ public class Tile extends MapEntity {
 
 	    try {
 		TilePattern tilePattern = getTilePattern(); // get the tile pattern from the tileset
-		setSize(tilePattern.getWidth(), tilePattern.getHeight());
+
+		if (getWidth() == 0) {
+		    setSize(tilePattern.getWidth(), tilePattern.getHeight());
+		}
 
 		if (layer == null) {
 		    setLayer(tilePattern.getDefaultLayer());
@@ -244,3 +247,4 @@ public class Tile extends MapEntity {
 	return (DynamicTile) createFromString(map, description); 
     }
 }
+

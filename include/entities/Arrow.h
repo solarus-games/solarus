@@ -30,7 +30,7 @@ class Arrow: public MapEntity {
     Hero *hero;                /**< the hero */
     uint32_t disappear_date;   /**< date when the arrow disappears */
     bool stop_now;             /**< true to make the arrow stop now */
-    MapEntity *entity_reached; /**< an entity reached by the arrow */
+    MapEntity *entity_reached; /**< a dynamic entity reached by the arrow (i.e. an enemy or a crystal switch, not a usual wall) */
 
   public:
 
@@ -63,6 +63,7 @@ class Arrow: public MapEntity {
     bool is_stopped(void);
     bool is_flying(void);
     void attach_to(MapEntity *entity_reached);
+    const Rectangle get_facing_point(void);
 
     // collisions
     void notify_collision_with_enemy(Enemy *enemy, Sprite *enemy_sprite, Sprite *this_sprite);

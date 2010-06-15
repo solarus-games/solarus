@@ -202,6 +202,43 @@ bool Arrow::is_jump_sensor_obstacle(JumpSensor *jump_sensor) {
 }
 
 /**
+ * Returns the point located just outside the arrow's collision box,
+ * in its current direction.
+ */
+const Rectangle Arrow::get_facing_point(void) {
+
+  Rectangle facing_point = get_xy();
+
+  switch (get_sprite()->get_current_direction()) {
+
+    // right
+    case 0:
+      facing_point.add_x(8);
+      break;
+
+      // up
+    case 1:
+      facing_point.add_y(-9);
+      break;
+
+      // left
+    case 2:
+      facing_point.add_x(-9);
+      break;
+
+      // down
+    case 3:
+      facing_point.add_y(8);
+      break;
+
+    default:
+      DIE("Invalid direction for Arrow::get_facing_point(): " << direction);
+  }
+
+  return facing_point;
+}
+
+/**
  * Updates this entity.
  */
 void Arrow::update(void) {

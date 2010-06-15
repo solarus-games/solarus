@@ -80,4 +80,6 @@ booleans:
 87	dungeon 2 1F: chest with 5 rupees
 88	dungeon 2 B1: chest with the large rupee bag
 89	dungeon 2 entrance door unlocked
+90	dungeon 2 1F: hidden stairs open
+91	dungeon 2 1F: hidden door open
 

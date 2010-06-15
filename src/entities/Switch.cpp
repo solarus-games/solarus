@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "entities/Switch.h"
+#include "entities/Arrow.h"
 #include "Sprite.h"
 #include "Game.h"
 #include "Map.h"
@@ -173,7 +174,8 @@ void Switch::notify_collision(MapEntity *entity_overlapping, CollisionMode colli
   }
   else if (subtype == ARROW_TARGET && entity_overlapping->get_type() == ARROW) {
     // arrow target: only allow an arrow
-    set_enabled(true);
+    Arrow *arrow = (Arrow*) entity_overlapping;
+    set_enabled(arrow->is_stopped());
   }
 
   if (enabled) {

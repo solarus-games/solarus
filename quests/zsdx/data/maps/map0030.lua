@@ -47,13 +47,14 @@ function check_eye_statues()
 
   if switch_is_enabled("left_eye_switch") and switch_is_enabled("right_eye_switch") then
 
-    play_sound("switch")
     switch_set_enabled("left_eye_switch", false)
     switch_set_enabled("right_eye_switch", false)
 
     if not savegame_get_boolean(90) then
+      play_sound("switch")
       move_camera(456, 232, 15)
     elseif not savegame_get_boolean(91) then
+      play_sound("switch")
       move_camera(520, 320, 15)
     end
   end

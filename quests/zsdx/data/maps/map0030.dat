@@ -519,11 +519,11 @@
 1	0	456	237	from_B1_east	3	0
 2	0	448	224	16	16	to_B1_east	0	1	31	from_1F_east
 19	0	448	224	1	1
-11	0	424	296	tmp_switch	1	0	0
 10	0	432	216	48	24	hidden_stairs_closed	232	1
 10	0	512	296	24	48	hidden_door_closed	233	1
 10	0	600	296	24	48	hidden_door_closed_2	235	1
-11	0	480	256	switch_2	2	0	0
+11	0	480	256	right_eye_switch	2	0	0
+11	0	416	256	left_eye_switch	2	0	0
 0	1	408	216	96	8	358
 0	1	776	616	160	112	2
 0	1	784	720	144	8	236

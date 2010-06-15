@@ -124,6 +124,7 @@ class MapScript {
 				     l_equipment_get_sword,
 				     l_equipment_get_shield,
 				     l_shop_item_remove,
+				     l_switch_is_enabled,
 				     l_switch_set_enabled,
 				     l_enemy_is_dead,
 				     l_enemies_are_dead,

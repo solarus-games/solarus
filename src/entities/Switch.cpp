@@ -104,6 +104,14 @@ bool Switch::is_walkable(void) {
 }
 
 /**
+ * Returns whether this switch is currently enabled.
+ * @return true if the switch is enabled
+ */
+bool Switch::is_enabled(void) {
+  return enabled;
+}
+
+/**
  * Enables or disables the switch, not playing any sound.
  * @param enabled true to make the switch enabled, false to make it disabled
  */

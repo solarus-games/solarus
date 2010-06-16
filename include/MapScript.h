@@ -126,6 +126,7 @@ class MapScript {
 				     l_shop_item_remove,
 				     l_switch_is_enabled,
 				     l_switch_set_enabled,
+				     l_switch_set_locked,
 				     l_enemy_is_dead,
 				     l_enemies_are_dead,
 				     l_enemy_set_enabled,
@@ -165,9 +166,11 @@ class MapScript {
     void event_message_sequence_finished(const MessageId &first_message_id, int answer);
     void event_switch_enabled(const std::string &switch_name);
     void event_switch_disabled(const std::string &switch_name);
+    void event_switch_left(const std::string &switch_name);
     void event_hero_on_sensor(const std::string &sensor_name);
     void event_hero_victory_sequence_finished(void);
     void event_camera_reached_target(void);
+    void event_camera_back(void);
     void event_interaction(const std::string &entity_name);
     bool event_interaction_item(const std::string &entity_name, InventoryItemId item_id, int variant);
     void event_npc_dialog(const std::string &npc_name);

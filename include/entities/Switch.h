@@ -43,10 +43,13 @@ class Switch: public Detector {
 
   private:
 
-    Subtype subtype;           /**< subtype of switch */
-    bool needs_block;          /**< indicates that a block or a statue is required to enable this walkable switch */
-    bool disable_when_leaving; /**< indicates that this walkable switch becomes disabled when the hero or the block leaves it */
-    bool enabled;              /**< indicates that this switch is currently enabled */
+    Subtype subtype;                           /**< subtype of switch */
+    bool needs_block;                          /**< indicates that a block or a statue is required to enable this walkable switch */
+    bool disable_when_leaving;                 /**< indicates that this walkable switch becomes disabled when the hero or the block leaves it */
+    bool enabled;                              /**< indicates that this switch is currently enabled */
+    bool locked;                               /**< indicates that this switch cannot be enabled or disabled by other entities for now */
+    MapEntity *entity_overlapping;             /**< the entity currently on this switch (or NULL) */
+    bool entity_overlapping_still_present;     /**< to detect when the entity overlapping leaves the switch */
 
   public:
 
@@ -60,6 +63,8 @@ class Switch: public Detector {
     bool is_walkable(void);
     bool is_enabled(void);
     void set_enabled(bool enabled);
+    void set_locked(bool locked);
+    void update(void);
     bool test_collision_custom(MapEntity *entity);
     void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
 };

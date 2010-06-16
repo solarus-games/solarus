@@ -6,13 +6,11 @@ current_room = ""
 sw_sensor_enabled = false
 
 function event_map_started(destination_point_name)
-  if not savegame_get_boolean(54) then
-    chest_set_hidden("map_chest", true)
-  else
+
+  chest_set_hidden("map_chest", true)
+  chest_set_hidden("compass_chest", true)
+  if savegame_get_boolean(54) then
     switch_set_enabled("map_room_switch", true)
-  end
-  if not savegame_get_boolean(55) then
-    chest_set_hidden("compass_chest", true)
   end
 end
 

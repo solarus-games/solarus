@@ -25,6 +25,8 @@ function event_switch_enabled(switch_name)
   current_switch = switch_name
   if switch_name == "barrier_switch" then
     move_camera(120, 536, 15)
+  elseif switch_name == "pegasus_run_switch" then
+    move_camera(904, 88, 30)
   elseif switch_name == "left_eye_switch" then
     check_eye_statues()
   elseif switch_name == "right_eye_switch" then
@@ -36,10 +38,18 @@ function event_camera_reached_target()
 
   if current_switch == "barrier_switch" then
     start_timer(1000, "barrier_camera_timer", false)
+  elseif current_switch == "pegasus_run_switch" then
+    start_timer(1000, "pegasus_run_camera_timer", false)
   elseif not savegame_get_boolean(90) then
     start_timer(1000, "hidden_stairs_timer", false)
   else
     start_timer(1000, "hidden_door_timer", false)
+  end
+end
+
+function event_camera_back()
+  if current_switch == "pegasus_run_switch" then
+    start_timer(7000, "pegasus_run_timer", true)
   end
 end
 
@@ -65,6 +75,18 @@ function barrier_camera_timer()
   tile_set_enabled("barrier", false)
   savegame_set_boolean(78, true)
   start_timer(1000, "restore_camera", false)
+end
+
+function pegasus_run_camera_timer()
+  play_sound("secret")
+  tile_set_enabled("pegasus_run_barrier", false)
+  start_timer(1000, "restore_camera", false)
+end
+
+function pegasus_run_timer()
+  play_sound("door_closed")
+  tile_set_enabled("pegasus_run_barrier", true)
+  switch_set_enabled("pegasus_run_switch", false)
 end
 
 function hidden_stairs_timer()

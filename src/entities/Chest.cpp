@@ -148,15 +148,20 @@ bool Chest::is_hidden(void) {
 
 /**
  * Sets whether the chest is hidden.
+ * If the chest is already open, this function has no effect.
  * @param hidden true to hide the chest, false to unhide it
  */
 void Chest::set_hidden(bool hidden) {
-  this->hidden = hidden;
 
-  if (!hidden) {
-    Hero *hero = game->get_hero();
-    if (overlaps(hero)) {
-      hero->avoid_collision(this, 3);
+  if (!is_open()) {
+
+    this->hidden = hidden;
+
+    if (!hidden) {
+      Hero *hero = game->get_hero();
+      if (overlaps(hero)) {
+	hero->avoid_collision(this, 3);
+      }
     }
   }
 }

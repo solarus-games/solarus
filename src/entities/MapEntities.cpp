@@ -1,4 +1,5 @@
 /*
+ * bool has_entity(MapEntity *entity);
  * Copyright (C) 2009 Christopho, Solarus - http://www.solarus-engine.org
  * 
  * Solarus is free software; you can redistribute it and/or modify

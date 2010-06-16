@@ -82,4 +82,5 @@ booleans:
 89	dungeon 2 entrance door unlocked
 90	dungeon 2 1F: hidden stairs open
 91	dungeon 2 1F: hidden door open
+92	dungeon 2: mini boss
 

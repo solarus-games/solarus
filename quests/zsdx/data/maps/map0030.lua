@@ -6,17 +6,49 @@ current_switch = ""
 
 function event_map_started(destination_point_name)
 
+  -- west barrier
   if savegame_get_boolean(78) then
     tile_set_enabled("barrier", false)
     switch_set_enabled("barrier_switch", true)
   end
 
+  -- hidden stairs
   if savegame_get_boolean(90) then
     open_hidden_stairs()
   end
 
+  -- hidden door
   if savegame_get_boolean(91) then
     open_hidden_door()
+  end
+
+  -- miniboss doors
+  door_set_open("stairs_door", true)
+  door_set_open("miniboss_door", true)
+end
+
+fighting_miniboss = false
+function event_hero_on_sensor(sensor_name)
+
+  if sensor_name == "start_miniboss_sensor" and not savegame_get_boolean(92) and not fighting_miniboss then
+    -- the miniboss is alive
+    door_close("miniboss_door")
+    freeze()
+    start_timer(1000, "miniboss_timer", false)
+    fighting_miniboss = true
+  end
+end
+
+function miniboss_timer()
+  miniboss_start_battle("miniboss")
+  unfreeze()
+end
+
+function event_enemy_dead(enemy_name)
+
+  if enemy_name == "miniboss" then
+    miniboss_end_battle()
+    door_open("miniboss_door")
   end
 end
 

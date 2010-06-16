@@ -89,7 +89,7 @@ PauseSubmenuMap::PauseSubmenuMap(PauseMenu *pause_menu, Game *game):
     small_keys_counter->set_value(equipment->get_small_keys());
 
     // floors
-    dungeon_floors_img = new Surface("hud/floors.png");
+    dungeon_floors_img = new Surface("floors.png", Surface::DIR_LANGUAGE);
 
     hero_floor = game->get_current_map()->get_floor();
     boss_floor = dungeon->get_boss_floor();

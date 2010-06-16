@@ -62,6 +62,7 @@ Bugs :
 - On ne peut pas lancer un pot au-dessus d'une falaise
 - Quand on lance un pot dans un donjon depuis la couche intermédiaire vers la couche basse, le changer de couche (détecter l'absence de tiles sur la couche intermédiaire)
 - vérifier ce qui se passe si on arrive sur un tapis roulant pendant qu'on tire une statue (peut-être modifier le is_conveyor_belt_obstacle)
+- lancer un chou-péteur sur un interrupteur de cristal : activé deux fois (projectile + explosion)
 
 
 Donjon 2 :

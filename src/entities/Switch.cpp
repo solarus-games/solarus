@@ -36,8 +36,9 @@
 Switch::Switch(const std::string &name, Layer layer, int x, int y,
 	       Subtype subtype, bool needs_block, bool disable_when_leaving):
   Detector(COLLISION_NONE, name, layer, x, y, 16, 16),
-  subtype(subtype), needs_block(needs_block), disable_when_leaving(disable_when_leaving),
-  enabled(false), locked(false), entity_overlapping(NULL) {
+  subtype(subtype), enabled(false), locked(false), 
+  needs_block(needs_block), disable_when_leaving(disable_when_leaving),
+  entity_overlapping(NULL) {
 
   if (subtype == WALKABLE_INVISIBLE && needs_block) {
     DIE("The switch '" << name << "' is invisible but needs a block");
@@ -148,14 +149,14 @@ void Switch::set_locked(bool locked) {
  */
 void Switch::update(void) {
 
-  if (entity_overlapping != NULL) {
+  if (is_walkable() && entity_overlapping != NULL) {
 
     // if an entity was on the switch, see if it is still there
     entity_overlapping_still_present = false;
     check_collision(entity_overlapping);
 
     if (!entity_overlapping_still_present) {
-      // the entity just left the switch
+      // the entity just left the switch or disappeared from the map (it may even have been freed)
 
       entity_overlapping = NULL;
       if (is_enabled() && disable_when_leaving && !locked) {
@@ -207,10 +208,12 @@ void Switch::notify_collision(MapEntity *entity_overlapping, CollisionMode colli
     // walkable switch: allow the hero or a block
     if (entity_overlapping->is_hero()) {
       set_enabled(!needs_block);
+      this->entity_overlapping = entity_overlapping;
     }
     else if (entity_overlapping->get_type() == BLOCK) {
       // blocks can only enable walkable, visible switches
       set_enabled(subtype == WALKABLE_VISIBLE);
+      this->entity_overlapping = entity_overlapping;
     }
   }
   else if (subtype == ARROW_TARGET && entity_overlapping->get_type() == ARROW) {
@@ -221,7 +224,6 @@ void Switch::notify_collision(MapEntity *entity_overlapping, CollisionMode colli
 
   if (enabled) {
 
-    this->entity_overlapping = entity_overlapping;
     if (subtype == WALKABLE_VISIBLE) {
       game->play_sound("switch");
     }

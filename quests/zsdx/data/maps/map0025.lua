@@ -3,10 +3,8 @@
 -------------------------
 
 function event_map_started(destination_point_name)
-  if not savegame_get_boolean(57) then
-    chest_set_hidden("boss_key_chest", true)
-  end
 
+  chest_set_hidden("boss_key_chest", true)
   door_set_open("stairs_door", true)
   door_set_open("miniboss_door", true)
 end

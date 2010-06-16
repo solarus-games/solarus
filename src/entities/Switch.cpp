@@ -37,7 +37,7 @@ Switch::Switch(const std::string &name, Layer layer, int x, int y,
 	       Subtype subtype, bool needs_block, bool disable_when_leaving):
   Detector(COLLISION_NONE, name, layer, x, y, 16, 16),
   subtype(subtype), needs_block(needs_block), disable_when_leaving(disable_when_leaving),
-  enabled(false) {
+  enabled(false), locked(false), entity_overlapping(NULL) {
 
   if (subtype == WALKABLE_INVISIBLE && needs_block) {
     DIE("The switch '" << name << "' is invisible but needs a block");
@@ -114,6 +114,7 @@ bool Switch::is_enabled(void) {
 
 /**
  * Enables or disables the switch, not playing any sound.
+ * This function can change the switch state even if the switch is locked.
  * @param enabled true to make the switch enabled, false to make it disabled
  */
 void Switch::set_enabled(bool enabled) {
@@ -128,6 +129,40 @@ void Switch::set_enabled(bool enabled) {
       else {
         get_sprite()->set_current_animation("disabled");
       }
+    }
+  }
+}
+
+/**
+ * Locks this switch is its current state or unlocks it.
+ * When the switch is locked, it cannot be enabled or disabled by other entities.
+ * However, the state can still be changed manually by calling set_enabled().
+ * @param locked true to lock the switch in its current state, false to unlock it
+ */
+void Switch::set_locked(bool locked) {
+  this->locked = locked;
+}
+
+/**
+ * Updates this switch.
+ */
+void Switch::update(void) {
+
+  if (entity_overlapping != NULL) {
+
+    // if an entity was on the switch, see if it is still there
+    entity_overlapping_still_present = false;
+    check_collision(entity_overlapping);
+
+    if (!entity_overlapping_still_present) {
+      // the entity just left the switch
+
+      entity_overlapping = NULL;
+      if (is_enabled() && disable_when_leaving && !locked) {
+        set_enabled(false);
+	map->get_script()->event_switch_disabled(get_name());
+      }
+      map->get_script()->event_switch_left(get_name());
     }
   }
 }
@@ -158,7 +193,13 @@ bool Switch::test_collision_custom(MapEntity *entity) {
  */
 void Switch::notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
 
-  if (enabled) {
+  if (entity_overlapping == this->entity_overlapping) {
+    // already overlapping
+    entity_overlapping_still_present = true;
+    return;
+  }
+
+  if (enabled || locked) {
     return;
   }
 
@@ -180,6 +221,7 @@ void Switch::notify_collision(MapEntity *entity_overlapping, CollisionMode colli
 
   if (enabled) {
 
+    this->entity_overlapping = entity_overlapping;
     if (subtype == WALKABLE_VISIBLE) {
       game->play_sound("switch");
     }
@@ -187,6 +229,4 @@ void Switch::notify_collision(MapEntity *entity_overlapping, CollisionMode colli
     map->get_script()->event_switch_enabled(get_name());
   }
 }
-
-// TODO take into account disable_when_leaving
 

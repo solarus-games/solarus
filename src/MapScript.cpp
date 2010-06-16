@@ -146,6 +146,7 @@ void MapScript::register_c_functions(void) {
   lua_register(context, "shop_item_remove", l_shop_item_remove);
   lua_register(context, "switch_is_enabled", l_switch_is_enabled);
   lua_register(context, "switch_set_enabled", l_switch_set_enabled);
+  lua_register(context, "switch_set_locked", l_switch_set_locked);
   lua_register(context, "enemy_is_dead", l_enemy_is_dead);
   lua_register(context, "enemies_are_dead", l_enemies_are_dead);
   lua_register(context, "enemy_set_enabled", l_enemy_set_enabled);
@@ -1238,6 +1239,7 @@ int MapScript::l_chest_set_open(lua_State *l) {
 
 /**
  * Hides or unhides a chest.
+ * If the chest is already open, hiding it has not effect.
  * Argument 1 (string): name of the chest
  * Argument 2 (boolean): true to make the chest hidden, false to make it appear
  */
@@ -1819,7 +1821,6 @@ int MapScript::l_switch_is_enabled(lua_State *l) {
   return 1;
 }
 
-
 /**
  * Enables or disables a switch.
  * Argument 1 (string): name of the switch
@@ -1836,6 +1837,26 @@ int MapScript::l_switch_set_enabled(lua_State *l) {
   MapEntities *entities = script->map->get_entities();
   Switch *sw = (Switch*) entities->get_entity(SWITCH, name);
   sw->set_enabled(enable);
+
+  return 0;
+}
+
+/**
+ * Locks a switch in its current state or unlocks it.
+ * Argument 1 (string): name of the switch
+ * Argument 2 (boolean): true to lock the switch, false to unlock it
+ */
+int MapScript::l_switch_set_locked(lua_State *l) {
+
+  MapScript *script;
+  called_by_script(l, 2, &script);
+
+  const std::string &name = lua_tostring(l, 1);
+  bool lock = lua_toboolean(l, 2) != 0;
+
+  MapEntities *entities = script->map->get_entities();
+  Switch *sw = (Switch*) entities->get_entity(SWITCH, name);
+  sw->set_locked(lock);
 
   return 0;
 }
@@ -2142,6 +2163,15 @@ void MapScript::event_switch_disabled(const std::string &switch_name) {
 }
 
 /**
+ * Notifies the script that a switch has just been left by the entity that was on it.
+ * The fact that the switch is enabled or disabled does not matter here.
+ * @param switch_name name of the switch
+ */
+void MapScript::event_switch_left(const std::string &switch_name) {
+  call_script_function("event_switch_left", switch_name);
+}
+
+/**
  * Notifies the script that the hero is overlapping a sensor.
  * @param sensor_name name of the sensor
  */
@@ -2155,6 +2185,13 @@ void MapScript::event_hero_on_sensor(const std::string &sensor_name) {
  */
 void MapScript::event_camera_reached_target(void) {
   call_script_function("event_camera_reached_target");
+}
+
+/**
+ * Notifies the script that the camera moved by a call to restore_camera() has reached the hero.
+ */
+void MapScript::event_camera_back(void) {
+  call_script_function("event_camera_back");
 }
 
 /**

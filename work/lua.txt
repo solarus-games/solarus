@@ -8,8 +8,10 @@ Appel de fonctions LUA depuis le moteur C++ (événements) :
 - event_message_sequence_finished(message_id, answer)		appelé lorsqu'un dialogue se termine (i.e. après l'affichage du dernier message)
 - event_switch_enabled(switch_name)			appelé lorsqu'un interrupteur vient d'être activé
 - event_switch_disabled(switch_name)			appelé lorsqu'un interrupteur vient d'être désactivé
+- event_switch_left(switch_name)			appelé lorsqu'un interrupteur vient d'être quitté (qu'il soit activé ou non)
 - event_hero_on_sensor(sensor_name)			appelé lorsque le héros marche sur un capteur
 - event_camera_reached_target()				appelé lorsque la caméra (envoyée par move_camera()) a atteint sa cible
+- event_camera_back()					appelé lorsque la caméra (renvoyée par restore_camera()) est revenue sur le héros
 - event_interaction(entity_name)			appelé lorsque le joueur interagit une entité interactive
                                                         (autre qu'un PNJ) avec la touche Action lorsqu'il n'y a
                                                         pas de message prédéfini
@@ -100,6 +102,7 @@ Appel de fonctions C++ depuis un script LUA :
 - shop_item_remove(shop_item_name)			supprime un article de magasin sur la map
 - switch_is_enabled(switch_name)			vérifiie si un interrupteur est activé
 - switch_set_enabled(switch_name, enabled)              active ou désactive un interrupteur
+- switch_set_locked(switch_name, locked)		verrouille un interrupteur dans son état actuel
 - enemy_is_dead(enemy_name)				vérifie si un ennemi est mort
 - enemies_are_dead(enemies_name_prefix)			vérifie si un ensemble d'ennemis sont morts
 - enemy_set_enabled(enemy_name)				active ou désactive un ennemi

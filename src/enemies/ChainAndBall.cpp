@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "enemies/ChainAndBall.h"
+#include "movements/CircleMovement.h"
 #include "Sprite.h"
 
 /**
@@ -54,6 +55,11 @@ void ChainAndBall::initialize(void) {
   // reactions to attacks
   set_no_attack_consequences();
   set_attack_consequence(ATTACK_SWORD, -1);
+
+  // movement (temporary)
+  CircleMovement *movement = new CircleMovement();
+  movement->start(360, 32, get_xy());
+  set_movement(movement);
 }
 
 /**

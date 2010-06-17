@@ -44,6 +44,7 @@ class Enemy: public Detector {
       BUBBLE,
       TENTACLE,
       MINILLOSAUR,
+      CHAIN_AND_BALL,
 
       PAPILLOSAUR_KING = 1000,
       KHORNETH

@@ -35,6 +35,7 @@
 #include "enemies/Bubble.h"
 #include "enemies/Tentacle.h"
 #include "enemies/Minillosaur.h"
+#include "enemies/ChainAndBall.h"
 #include "enemies/PapillosaurKing.h"
 #include "enemies/Khorneth.h"
 
@@ -137,8 +138,9 @@ MapEntity * Enemy::create(Game *game, Subtype type, Rank rank, int savegame_vari
   case BUBBLE:               enemy = new Bubble(params);             break;
   case TENTACLE:             enemy = new Tentacle(params);           break;
   case MINILLOSAUR:          enemy = new Minillosaur(params);        break;
+  case CHAIN_AND_BALL:       enemy = new ChainAndBall(params);       break;
   case PAPILLOSAUR_KING:     enemy = new PapillosaurKing(params);    break;
-  case KHORNETH:             enemy = new Khorneth(params);    break;
+  case KHORNETH:             enemy = new Khorneth(params);           break;
 
   default:
     DIE("Unknown enemy type '" << type << "'");

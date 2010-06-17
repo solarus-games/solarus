@@ -89,7 +89,7 @@ void StraightMovement::start(int speed, double direction, uint32_t time) {
  * Updates the movement.
  */
 void StraightMovement::update(void) {
-  Movement::update();
+  CollisionMovement::update();
 
   uint32_t now = System::now();
   if (now >= end_movement_date) {
@@ -104,7 +104,7 @@ void StraightMovement::update(void) {
  */
 void StraightMovement::set_suspended(bool suspended) {
 
-  Movement::set_suspended(suspended);
+  CollisionMovement::set_suspended(suspended);
 
   if (!suspended) {
     end_movement_date += System::now() - when_suspended;

@@ -38,8 +38,7 @@ class ChainAndBall: public Enemy {
     ChainAndBall(const ConstructionParameters &params);
     ~ChainAndBall(void);
 
-    void attach_to(MapEntity *entity);
-    void attach_to(MapEntity *entity, int x, int y);
+    void attach_to(MapEntity *entity, int x = 0, int y = 0);
     void twirl(void);
     void update(void);
 };

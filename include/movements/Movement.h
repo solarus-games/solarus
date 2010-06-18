@@ -111,6 +111,7 @@ class Movement {
     void set_x(int x);
     void set_y(int y);
     virtual void set_position(int x, int y);
+    void set_position(const Rectangle &xy);
 
     virtual void update(void);
     bool has_to_move_now(void);

@@ -53,11 +53,12 @@ class Rectangle {
     inline void set_size(int width, int height)  { set_width(width); set_height(height);            }
     inline void set_size(const Rectangle &other) { set_size(other.get_width(), other.get_height()); }
 
-    inline void add_x(int dx)          { set_x(get_x() + dx);           }
-    inline void add_y(int dy)          { set_y(get_y() + dy);           }
-    inline void add_width(int dw)      { set_width(get_width() + dw);   }
-    inline void add_height(int dh)     { set_height(get_height() + dh); }
-    inline void add_xy(int dx, int dy) { add_x(dx); add_y(dy);          }
+    inline void add_x(int dx)                    { set_x(get_x() + dx);                  }
+    inline void add_y(int dy)                    { set_y(get_y() + dy);                  }
+    inline void add_width(int dw)                { set_width(get_width() + dw);          }
+    inline void add_height(int dh)               { set_height(get_height() + dh);        }
+    inline void add_xy(int dx, int dy)           { add_x(dx); add_y(dy);                 }
+    inline void add_xy(const Rectangle &other)   { add_xy(other.get_x(), other.get_y()); }
 
     bool contains(int x, int y) const;
     bool contains(const Rectangle &other) const;

@@ -23,6 +23,7 @@
 #include "entities/EnemyAttack.h"
 #include "lowlevel/Rectangle.h"
 #include <map>
+#include <list>
 
 /**
  * Abstract class for all objects placed on a map: tiles,

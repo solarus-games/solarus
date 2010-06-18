@@ -259,6 +259,8 @@ Game * MapEntity::get_game(void) {
  * The entity will be removed from the map and destroyed.
  */
 void MapEntity::remove_from_map(void) {
+
+  // remove this entity
   map->get_entities()->remove_entity(this);
 }
 
@@ -266,9 +268,9 @@ void MapEntity::remove_from_map(void) {
  * Notifies this entity that is has been added
  * to the list of entities that will be removed from the map
  * and deleted from the memory as soon as possible.
- * When this flag is on, this entity is not considered to be on the map anymore.
  */
 void MapEntity::notify_being_removed(void) {
+
   this->being_removed = true;
 }
 

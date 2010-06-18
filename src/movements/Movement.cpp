@@ -123,6 +123,14 @@ void Movement::set_position(int x, int y) {
 }
 
 /**
+ * Sets the position of the entity.
+ * @param xy the new coordinates
+ */
+void Movement::set_position(const Rectangle &xy) {
+  set_position(xy.get_x(), xy.get_y());
+}
+
+/**
  * Moves the entity on x.
  * @param dx number of pixels of the move
  */
@@ -241,10 +249,13 @@ void Movement::set_speed(double speed) {
   if (x_speed == 0 && y_speed == 0) {
     x_speed = 1;
   }
-  double angle = Geometry::get_angle(0, 0, (int) (x_speed * 100), (int) (y_speed * 100)); // angle in radians
 
-  set_x_speed(speed * cos(angle));
-  set_y_speed(-speed * sin(angle));
+  // compute the new speed vector
+  double angle = Geometry::get_angle(0, 0, (int) (x_speed * 100), (int) (y_speed * 100)); // angle in radians
+  const Rectangle &speed_vector = Geometry::get_xy(angle, speed);
+
+  set_x_speed(speed_vector.get_x());
+  set_y_speed(speed_vector.get_y());
 }
 
 /**
@@ -291,7 +302,7 @@ bool Movement::is_finished(void) {
  */
 void Movement::set_direction(int direction) {
 
-  double angle = direction * Geometry::TWO_PI / 360.0; // angle in radians
+  double angle = Geometry::degrees_to_radians(direction);
   set_direction(angle);
 }
 
@@ -314,9 +325,10 @@ void Movement::set_direction(double angle) {
   }
 
   double speed = get_speed();
+  const Rectangle &speed_vector = Geometry::get_xy(angle, speed);
 
-  set_x_speed(speed * cos(angle));
-  set_y_speed(-speed * sin(angle));
+  set_x_speed(speed_vector.get_x());
+  set_y_speed(speed_vector.get_y());
 }
 
 /**

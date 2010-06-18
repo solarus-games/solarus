@@ -112,3 +112,4 @@ void SimpleGreenSoldier::walk(int direction) {
   int seconds = 2 + Random::get_number(3);
   movement->start(4, direction * 90, seconds * 1000);
 }
+

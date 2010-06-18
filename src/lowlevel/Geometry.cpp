@@ -44,6 +44,24 @@ const double Geometry::THREE_PI_OVER_2 = 3 * PI_OVER_2;
 const double Geometry::SQRT_2 = 1.41421356237309504880;
 
 /**
+ * Converts an angles in radians to an angle in degrees.
+ * @param degrees angle in radians
+ * @return the degrees value
+ */
+const int Geometry::radians_to_degrees(double radians) {
+  return (int) radians * 360.0 / TWO_PI;
+}
+
+/**
+ * Converts an angles in degrees to an angle in radians.
+ * @param degrees angle in degrees
+ * @return the radians value
+ */
+const double Geometry::degrees_to_radians(int degrees) {
+  return degrees * TWO_PI / 360.0;
+}
+
+/**
  * Returns the distance between two points.
  * @param x1 x coordinate of the first point
  * @param y1 y coordinate of the first point
@@ -51,7 +69,8 @@ const double Geometry::SQRT_2 = 1.41421356237309504880;
  * @param y2 y coordinate of the second point
  * @return the distance in pixels
  */
-double Geometry::get_distance(int x1, int y1, int x2, int y2) { 
+double Geometry::get_distance(int x1, int y1, int x2, int y2) {
+
   int dx = x2 - x1;
   int dy = y2 - y1;
   return sqrt(dx * dx + dy * dy);
@@ -84,5 +103,30 @@ double Geometry::get_angle(int x1, int y1, int x2, int y2) {
   }
 
   return angle;
+}
+
+/**
+ * Returns the cartesian coordinates of a vector that starts from the origin, given its angle and distance.
+ * @param angle angle of the vector in radians
+ * @param distance length of the vector in pixels
+ * @return the coordinates of the second point 
+ */
+const Rectangle Geometry::get_xy(double angle, int distance) {
+
+  return Rectangle(distance * cos(angle), -distance * sin(angle));
+}
+
+/**
+ * Returns the cartesian coordinates of a vector, given its initial point, angle and distance.
+ * @param xy1 coordinates of the first point
+ * @param angle angle of the vector in radians
+ * @param distance length of the vector in pixels
+ * @return the coordinates of the second point 
+ */
+const Rectangle Geometry::get_xy(const Rectangle &xy1, double angle, int distance) {
+
+  Rectangle xy = get_xy(angle, distance);
+  xy.add_xy(xy1.get_x(), xy1.get_y());
+  return xy;
 }
 

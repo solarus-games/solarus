@@ -31,13 +31,13 @@ class CircleMovement: public Movement {
     // movement info
     int radius;                                     /**< circle radius in pixels */
     Rectangle center_point;                         /**< coordinates of the center of the circles */
-    MapEntity *center_entity;                       /**< the entity to circle around (NULL if only a point is used) */
+    MapEntity *center_entity;                       /**< the entity to make circles around (NULL if only a point is used) */
+    int angle_increment;                            /**< number of degrees to add when the angle changes (usually 1 or -1) */
+    uint32_t angle_change_delay;                    /**< time interval between two angle changes */
 
     // state
-    int current_angle;                           /**< */
-    int angle_increment;
-    uint32_t next_angle_change_date;
-    uint32_t angle_change_delay;
+    int current_angle;                              /**< current angle in the circle in degrees */
+    uint32_t next_angle_change_date;                /**< date when the angle changes */
 
   public:
 

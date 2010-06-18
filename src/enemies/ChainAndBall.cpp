@@ -17,6 +17,8 @@
 #include "enemies/ChainAndBall.h"
 #include "movements/CircleMovement.h"
 #include "Sprite.h"
+#include "Map.h" // TODO remove
+#include "entities/MapEntities.h" // TODO remove
 
 /**
  *
@@ -56,10 +58,9 @@ void ChainAndBall::initialize(void) {
   set_no_attack_consequences();
   set_attack_consequence(ATTACK_SWORD, -1);
 
-  // movement (temporary)
-  CircleMovement *movement = new CircleMovement();
-  movement->start(360, 32, get_xy());
-  set_movement(movement);
+  // TODO temporary
+  MapEntity *miniboss = map->get_entities()->get_entity(ENEMY, "miniboss");
+  attach_to(miniboss, 0, -12);
 }
 
 /**
@@ -72,18 +73,16 @@ void ChainAndBall::update(void) {
 /**
  * Makes the chain and ball follow the specified entity.
  * @param entity the entity to follow
- */
-void ChainAndBall::attach_to(MapEntity *entity) {
-  attach_to(entity, 0, 0);
-}
-
-/**
- * Makes the chain and ball follow the specified entity.
- * @param entity the entity to follow
  * @param x x coordinate of where the chain movement should be centered on (relative to the entity followed)
  * @param y y coordinate of where the chain movement should be centered on (relative to the entity followed)
  */
 void ChainAndBall::attach_to(MapEntity *entity, int x, int y) {
+
+  clear_movement();
+
+  CircleMovement *movement = new CircleMovement();
+  movement->start(360, 32, entity, x, y);
+  set_movement(movement);
 }
 
 /**

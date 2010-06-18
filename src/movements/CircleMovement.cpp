@@ -17,12 +17,13 @@
 #include "movements/CircleMovement.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Geometry.h"
-#include <cmath> // remove
+#include "entities/MapEntity.h"
 
 /**
  * Creates a circle movement.
  */
-CircleMovement::CircleMovement(void) {
+CircleMovement::CircleMovement(void):
+  next_angle_change_date(0) {
 
 }
 
@@ -39,22 +40,29 @@ CircleMovement::~CircleMovement(void) {
 void CircleMovement::update(void) {
   Movement::update();
 
+  if (is_suspended()) {
+    return;
+  }
+
   // update the angle
-  bool angle_changed = false;
+  bool update_needed = false;
   uint32_t now = System::now();
   while (now >= next_angle_change_date) {
     current_angle += angle_increment;
     next_angle_change_date += angle_change_delay;
-    angle_changed = true;
+    update_needed = true;
   }
 
-  if (angle_changed || center_entity != NULL) {
-    // compute the new position
-    double radians = current_angle * Geometry::TWO_PI / 360.0;
-    int dx = radius * cos(radians);
-    int dy = -radius * sin(radians); // TODO put this in the Geometry class
+  Rectangle center = Rectangle(this->center_point);
+  if (center_entity != NULL) {
+    center.add_xy(center_entity->get_xy());
+    update_needed = true;
+  }
 
-    set_position(center_point.get_x() + dx, center_point.get_y() + dy);
+  if (update_needed) {
+    // compute the new position
+    const Rectangle &xy = Geometry::get_xy(center, Geometry::degrees_to_radians(current_angle), radius);
+    set_position(xy);
   }
 }
 
@@ -64,7 +72,11 @@ void CircleMovement::update(void) {
  */
 void CircleMovement::set_suspended(bool suspended) {
   Movement::set_suspended(suspended);
-  // TODO suspend the angle change
+
+  if (!suspended) {
+    uint32_t now = System::now();
+    next_angle_change_date += now - when_suspended;
+  }
 }
 
 /**
@@ -91,6 +103,7 @@ void CircleMovement::set_finished(void) {
 void CircleMovement::start(int angle_speed, int radius, const Rectangle &center_point) {
 
   this->radius = radius;
+  this->center_entity = NULL;
   this->center_point = center_point;
 
   this->current_angle = 0;
@@ -109,7 +122,15 @@ void CircleMovement::start(int angle_speed, int radius, const Rectangle &center_
  * @param y y coordinate of where the center of the circle entity should be placed (relative to the entity's origin)
  */
 void CircleMovement::start(int angle_speed, int radius, MapEntity *center_entity, int x, int y) {
-  // TODO
+
+  this->radius = radius;
+  this->center_entity = center_entity;
+  this->center_point = Rectangle(x, y);
+
+  this->current_angle = 0;
+  this->angle_increment = 1;
+  this->next_angle_change_date = System::now();
+  this->angle_change_delay = 1000 / angle_speed;
 }
 
 

@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 #include "Common.h"
+#include "lowlevel/Rectangle.h"
 
 /**
  * This class provides functions to make mathematic computations.
@@ -35,7 +35,12 @@ class Geometry {
     static const double THREE_PI_OVER_2;
     static const double SQRT_2;
 
+    static const int radians_to_degrees(double radians);
+    static const double degrees_to_radians(int degrees);
+
     static double get_distance(int x1, int y1, int x2, int y2);
     static double get_angle(int x1, int y1, int x2, int y2);
+    static const Rectangle get_xy(double angle, int distance);
+    static const Rectangle get_xy(const Rectangle &xy1, double angle, int distance);
 };
 

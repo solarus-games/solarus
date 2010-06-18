@@ -23,7 +23,9 @@
  * Creates a circle movement.
  */
 CircleMovement::CircleMovement(void):
-  next_angle_change_date(0) {
+  center_entity(NULL), current_angle(0), initial_angle(0), angle_increment(1), next_angle_change_date(0), angle_change_delay(5),
+  current_radius(0), wanted_radius(0), previous_radius(0), next_radius_change_date(0), radius_change_delay(0),
+  duration(0), end_movement_date(0), max_rotations(0), loop_delay(0), restart_date(0) {
 
 }
 
@@ -32,6 +34,149 @@ CircleMovement::CircleMovement(void):
  */
 CircleMovement::~CircleMovement(void) {
 
+}
+
+/**
+ * Sets the center of the circles.
+ * The movement will make circles around the specified fixed point.
+ * @param center_point center of the circles to make
+ */
+void CircleMovement::set_center(const Rectangle &center_point) {
+
+  this->center_entity = NULL;
+  this->center_point = center_point;
+  recompute_position();
+}
+
+/**
+ * Sets the center of the circles.
+ * The movement will make circles around the specified (possibly moving) entity.
+ * @param center_entity the entity around which you want to make circles
+ * @param x x coordinate of where the center should be placed relative to the entity's origin
+ * @param y y coordinate of where the center should be placed relative to the entity's origin
+ */
+void CircleMovement::set_center(MapEntity *center_entity, int x, int y) {
+
+  if (center_entity == NULL) {
+    DIE("The center entity is NULL");
+  }
+
+  this->center_entity = center_entity;
+  this->center_point.set_xy(x, y);
+  recompute_position();
+}
+
+/**
+ * Sets the radius of the circles.
+ * You may want the radius to be updated immediately or gradually towards this value.
+ * @param speed speed of the radius variation (number of pixels per second), or 0 to update it immediately
+ */
+void CircleMovement::set_radius(int radius, int speed) {
+
+  if (radius < 0) {
+    DIE("Invalid radius: " << radius);
+  }
+
+  if (speed < 0) {
+    DIE("Invalid speed: " << speed);
+  }
+
+  this->wanted_radius = radius;
+  if (speed == 0) {
+    this->radius_change_delay = 0;
+    if (is_started()) {
+      this->current_radius = wanted_radius;
+    }
+  }
+  else {
+    this->radius_change_delay = 1000 / speed;
+    this->radius_increment = (radius > this->current_radius) ? 1 : -1;
+    if (is_started()) {
+      this->next_radius_change_date = System::now();
+    }
+  }
+  recompute_position();
+}
+
+/**
+ * Sets the speed of the angle variation.
+ * @param angle_speed number of degrees to make per second
+ */
+void CircleMovement::set_angle_speed(int angle_speed) {
+
+  if (angle_speed <= 0) {
+    DIE("Invalid angle speed: " << angle_speed);
+  }
+
+  this->angle_change_delay = 1000 / angle_speed;
+  this->next_angle_change_date = System::now();
+  recompute_position();
+}
+
+/**
+ * Sets the angle where the first circle starts from.
+ * @param initial_angle angle in degrees (0 to 359)
+ */
+void CircleMovement::set_initial_angle(int initial_angle) {
+
+  if (initial_angle < 0 || initial_angle >= 360) {
+    DIE("Invalid initial angle: " << initial_angle);
+  }
+
+  this->initial_angle = initial_angle;
+}
+
+/**
+ * Sets the direction of the circles.
+ * @param direction CLOCKWISE or COUNTER_CLOCKWISE 
+ */
+void CircleMovement::set_direction(Direction direction) {
+
+  this->angle_increment = (direction == CLOCKWISE) ? -1 : 1;
+}
+
+/**
+ * Sets the maximum duration of the movement.
+ * When this delay is reached, the movement stops.
+ * Note that is the radius changes gradually, the movement will continue
+ * for a while until the radius reaches zero.
+ * @param duration duration of the movement in milliseconds, or 0 to make it infinite
+ */
+void CircleMovement::set_duration(uint32_t duration) {
+
+  this->duration = duration;
+  if (duration != 0 && is_started()) {
+    this->end_movement_date = System::now() + duration;
+  }
+}
+
+/**
+ * Sets the number of rotations of the movement.
+ * When this number of rotations is reached, the movement stops.
+ * Note that is the radius changes gradually, the movement will continue
+ * for a while until the radius reaches zero.
+ * @param max_rotation number of rotations to make (0 for infinite rotations)
+ */
+void CircleMovement::set_max_rotations(int max_rotations) {
+
+  if (max_rotations < 0) {
+    DIE("Invalid maximum rotations number: " << max_rotations);
+  }
+
+  this->max_rotations = max_rotations;
+  this->nb_rotations = 0;
+}
+
+/**
+ * Makes the movement restart after a delay when it is finished.
+ * @param delay the movement will restart after this delay in milliseconds (0 to avoid this)
+ */
+void CircleMovement::set_loop(uint32_t delay) {
+
+  this->loop_delay = delay;
+  if (delay != 0 && is_stopped()) {
+    this->restart_date = System::now() + delay;
+  }
 }
 
 /**
@@ -44,26 +189,69 @@ void CircleMovement::update(void) {
     return;
   }
 
-  // update the angle
   bool update_needed = false;
   uint32_t now = System::now();
-  while (now >= next_angle_change_date) {
-    current_angle += angle_increment;
-    next_angle_change_date += angle_change_delay;
+
+  // maybe it is time to stop or to restart
+  if (current_radius != 0 && duration != 0 && now >= end_movement_date && wanted_radius != 0) {
+    stop();
+  }
+  else if (current_radius == 0 && loop_delay != 0 && now >= restart_date) {
+    set_radius(previous_radius, radius_change_delay);
+    start();
+  }
+
+  // update the angle
+  if (is_started()) {
+    while (now >= next_angle_change_date) {
+
+      current_angle += angle_increment;
+      current_angle = (360 + current_angle) % 360;
+      if (current_angle == initial_angle) {
+	nb_rotations++;
+
+	if (nb_rotations == max_rotations) {
+	  stop();
+	}
+      }
+
+      next_angle_change_date += angle_change_delay;
+      update_needed = true;
+    }
+  }
+
+  // update the radius
+  while (current_radius != wanted_radius && now >= next_radius_change_date) {
+
+    current_radius += radius_increment;
+
+    next_radius_change_date += radius_change_delay;
     update_needed = true;
   }
 
-  Rectangle center = Rectangle(this->center_point);
+  // the center may have moved
   if (center_entity != NULL) {
-    center.add_xy(center_entity->get_xy());
     update_needed = true;
   }
 
   if (update_needed) {
-    // compute the new position
-    const Rectangle &xy = Geometry::get_xy(center, Geometry::degrees_to_radians(current_angle), radius);
-    set_position(xy);
+    recompute_position();
   }
+}
+
+/**
+ * Computes the position of the object controlled by this movement.
+ * This function should be called whenever the angle, the radius or the center changes.
+ */
+void CircleMovement::recompute_position(void) {
+
+  Rectangle center = this->center_point;
+  if (center_entity != NULL) {
+    center.add_xy(center_entity->get_xy());
+  }
+
+  const Rectangle &xy = Geometry::get_xy(center, Geometry::degrees_to_radians(current_angle), current_radius);
+  set_position(xy);
 }
 
 /**
@@ -74,63 +262,55 @@ void CircleMovement::set_suspended(bool suspended) {
   Movement::set_suspended(suspended);
 
   if (!suspended) {
-    uint32_t now = System::now();
-    next_angle_change_date += now - when_suspended;
+    uint32_t diff = System::now() - when_suspended;
+    next_angle_change_date += diff;
+    next_radius_change_date += diff;
+    end_movement_date += diff;
+    restart_date += diff;
   }
 }
 
 /**
- * Returns whether the movement is finished.
- * @return true if the movement is finished
+ * Starts the circle movement.
  */
-bool CircleMovement::is_finished(void) {
-  return false;
+void CircleMovement::start(void) {
+
+  current_angle = initial_angle;
+  next_angle_change_date = System::now();
+  nb_rotations = 0;
+
+  if (duration != 0) {
+    end_movement_date = System::now() + duration;
+  }
+
+  if (radius_change_delay == 0) {
+    current_radius = wanted_radius;
+  }
+  else {
+    next_radius_change_date = System::now();
+  }
+  recompute_position();
 }
 
 /**
- * Stops the movement right now.
+ * Returns whether this movement is running.
+ * @return true if the movement is started
  */
-void CircleMovement::set_finished(void) {
-  // TODO
+bool CircleMovement::is_started(void) {
+  return current_radius != 0 || wanted_radius != 0;
 }
 
 /**
- * Starts the circle movement around a fixed center point.
- * @param angle_speed number of degrees per second
- * @param center_point center of the circles to make
- * @param radius radius of the circle in pixels
+ * Stops the movement.
  */
-void CircleMovement::start(int angle_speed, int radius, const Rectangle &center_point) {
+void CircleMovement::stop(void) {
 
-  this->radius = radius;
-  this->center_entity = NULL;
-  this->center_point = center_point;
+  previous_radius = current_radius;
+  set_radius(0); // TODO radius speed
 
-  this->current_angle = 0;
-  this->angle_increment = 1;
-  this->next_angle_change_date = System::now();
-  this->angle_change_delay = 1000 / angle_speed;
+  if (loop_delay != 0) {
+    restart_date = System::now() + loop_delay;
+  }
+  recompute_position();
 }
-
-/**
- * Starts the circle movement around an entity.
- * If the entity moves, the center of the circle will follow the movement.
- * @param angle_speed the speed
- * @param radius radius of the circle in pixels
- * @param center_entity the entity around which you want to make circles
- * @param x x coordinate of where the center of the circle entity should be placed (relative to the entity's origin)
- * @param y y coordinate of where the center of the circle entity should be placed (relative to the entity's origin)
- */
-void CircleMovement::start(int angle_speed, int radius, MapEntity *center_entity, int x, int y) {
-
-  this->radius = radius;
-  this->center_entity = center_entity;
-  this->center_point = Rectangle(x, y);
-
-  this->current_angle = 0;
-  this->angle_increment = 1;
-  this->next_angle_change_date = System::now();
-  this->angle_change_delay = 1000 / angle_speed;
-}
-
 

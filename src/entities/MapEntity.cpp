@@ -790,7 +790,7 @@ void MapEntity::movement_just_changed(void) {
  * This function is called when the entity has just moved.
  * It checks collisions with the detectors on the map.
  */
-void MapEntity::just_moved(void) {
+void MapEntity::notify_just_moved(void) {
 
   map->check_collision_with_detectors(this);
 
@@ -1096,7 +1096,7 @@ void MapEntity::ensure_no_obstacles(void) {
       if (!map->test_collision_with_obstacles(get_layer(), collision_box, this)) {
 	found = true;
 	set_rectangle(collision_box);
-	just_moved();
+	notify_just_moved();
       }
 
       collision_box.add_x(-dx[j] * i);

@@ -26,31 +26,76 @@
  */
 class CircleMovement: public Movement {
 
+  public:
+
+    /**
+     * Possibles directions when making circles.
+     */
+    enum Direction {
+      COUNTER_CLOCKWISE,
+      CLOCKWISE
+    };
+
   private:
 
-    // movement info
-    int radius;                                     /**< circle radius in pixels */
-    Rectangle center_point;                         /**< coordinates of the center of the circles */
+    // center of the circles
     MapEntity *center_entity;                       /**< the entity to make circles around (NULL if only a point is used) */
-    int angle_increment;                            /**< number of degrees to add when the angle changes (usually 1 or -1) */
-    uint32_t angle_change_delay;                    /**< time interval between two angle changes */
+    Rectangle center_point;                         /**< absolute coordinates of the center if only a point is used,
+                                                     * or coordinates relative to the center entity otherwise */
 
-    // state
+    // angle
     int current_angle;                              /**< current angle in the circle in degrees */
+    int initial_angle;                              /**< the first circle starts from this angle in degrees */
+    int angle_increment;                            /**< number of degrees to add when the angle changes (1 or -1) */
     uint32_t next_angle_change_date;                /**< date when the angle changes */
+    uint32_t angle_change_delay;                    /**< if not zero, time interval between two angle changes */
+
+    // radius
+    int current_radius;                             /**< current radius of the circle in pixels */
+    int wanted_radius;                              /**< the current radius changes gradually towards this wanted value */
+    int previous_radius;                            /**< radius before the movement stops */
+    int radius_increment;                           /**< number of pixels to add when the radius is changing (1 or -1) */
+    uint32_t next_radius_change_date;               /**< date of the next radius change */
+    uint32_t radius_change_delay;                   /**< if not zero, time interval between two radius changes */
+
+    // stop after an amount of time
+    uint32_t duration;                              /**< if not zero, the movement will stop after this delay */
+    uint32_t end_movement_date;                     /**< date when the movement stops */
+
+    // stop after a number of rotations
+    int max_rotations;                              /**< if not zero, the movement will stop after this number of rotations are done */
+    int nb_rotations;                               /**< number of complete circles already done */
+
+    // restart when stopped
+    uint32_t loop_delay;                            /**< if not zero, when the movement finishes, it will start again after this delay */
+    uint32_t restart_date;                          /**< date when the movement restarts */
+
+    void recompute_position(void);
 
   public:
 
+    // creation and destruction
     CircleMovement(void);
     ~CircleMovement(void);
 
+    // state
     void update(void);
     void set_suspended(bool suspended);
-    bool is_finished(void);
-    void set_finished(void);
+    void start(void);
+    void stop(void);
+    bool is_started(void);
 
-    void start(int angle_speed, int radius, const Rectangle &center_point);
-    void start(int angle_speed, int radius, MapEntity *center_entity, int x = 0, int y = 0);
+    // properties
+    void set_center(const Rectangle &center_point);
+    void set_center(MapEntity *center_entity, int x = 0, int y = 0);
+    void set_radius(int radius, int speed = 0);
+    void set_angle_speed(int angle_speed);
+    void set_initial_angle(int initial_angle);
+    void set_direction(Direction direction);
+    void set_duration(uint32_t duration);
+    void set_max_rotations(int max_rotations);
+    void set_loop(uint32_t delay);
+
 };
 
 #endif

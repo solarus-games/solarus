@@ -276,7 +276,7 @@ class Hero: public MapEntity {
     const Rectangle get_facing_point(void);
     const Rectangle get_facing_point(int direction);
     Detector *get_facing_entity(void);
-    void just_moved(void);
+    void notify_just_moved(void);
     void set_facing_entity(Detector *detector);
     bool is_facing_obstacle(void);
     void reset_movement(void);

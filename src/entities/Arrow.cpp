@@ -304,7 +304,7 @@ void Arrow::update(void) {
     get_sprite()->set_current_animation("reached_obstacle");
     game->play_sound("arrow_hit");
     clear_movement();
-    just_moved();
+    notify_just_moved();
   }
 
   // destroy the arrow when disappear_date is reached

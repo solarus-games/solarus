@@ -215,7 +215,7 @@ class MapEntity {
     // movement
     Movement * get_movement(void);
     virtual void movement_just_changed(void);
-    virtual void just_moved(void);
+    virtual void notify_just_moved(void);
     virtual void set_facing_entity(Detector *detector);
     static const Rectangle & direction_to_xy_move(int direction8);
 

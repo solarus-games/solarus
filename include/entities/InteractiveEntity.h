@@ -82,7 +82,7 @@ class InteractiveEntity: public Detector {
     void walk(std::string path, bool loop, bool with_collisions);
     void walk_random(void);
     void jump(int direction, int length, bool with_collisions);
-    void just_moved(void);
+    void notify_just_moved(void);
     void set_sprite_direction(int direction);
 };
 

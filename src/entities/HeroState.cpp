@@ -60,7 +60,7 @@ void Hero::set_state(State state) {
 
     if (!game->is_suspended()) {
       get_normal_movement()->set_moving_enabled(state < PUSHING, state <= CONVEYOR_BELT);
-      just_moved();
+      notify_just_moved();
     }
   }
 }
@@ -179,21 +179,21 @@ void Hero::update_ground(void) {
 
 	if (!map->test_collision_with_obstacles(get_layer(), collision_box, this)) {
 	  set_bounding_box(collision_box);
-	  just_moved();
+	  notify_just_moved();
 	}
 	else {
           collision_box = get_bounding_box();
 	  collision_box.add_xy(hole_dx, 0);
 	  if (!map->test_collision_with_obstacles(get_layer(), collision_box, this)) {
 	    set_bounding_box(collision_box);
-	    just_moved();
+	    notify_just_moved();
 	  }
 	  else {
 	    collision_box = get_bounding_box();
 	    collision_box.add_xy(0, hole_dy);
 	    if (!map->test_collision_with_obstacles(get_layer(), collision_box, this)) {
 	      set_bounding_box(collision_box);
-	      just_moved();
+	      notify_just_moved();
 	    }
 	  }
 	}

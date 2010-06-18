@@ -88,7 +88,8 @@ class CircleMovement: public Movement {
     // properties
     void set_center(const Rectangle &center_point);
     void set_center(MapEntity *center_entity, int x = 0, int y = 0);
-    void set_radius(int radius, int speed = 0);
+    void set_radius(int radius);
+    void set_radius_speed(int radius_speed);
     void set_angle_speed(int angle_speed);
     void set_initial_angle(int initial_angle);
     void set_direction(Direction direction);

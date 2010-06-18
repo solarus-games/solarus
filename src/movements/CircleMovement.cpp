@@ -68,28 +68,21 @@ void CircleMovement::set_center(MapEntity *center_entity, int x, int y) {
 
 /**
  * Sets the radius of the circles.
- * You may want the radius to be updated immediately or gradually towards this value.
- * @param speed speed of the radius variation (number of pixels per second), or 0 to update it immediately
+ * @param radius the radius in pixels
  */
-void CircleMovement::set_radius(int radius, int speed) {
+void CircleMovement::set_radius(int radius) {
 
   if (radius < 0) {
     DIE("Invalid radius: " << radius);
   }
 
-  if (speed < 0) {
-    DIE("Invalid speed: " << speed);
-  }
-
   this->wanted_radius = radius;
-  if (speed == 0) {
-    this->radius_change_delay = 0;
+  if (radius_change_delay == 0) {
     if (is_started()) {
       this->current_radius = wanted_radius;
     }
   }
   else {
-    this->radius_change_delay = 1000 / speed;
     this->radius_increment = (radius > this->current_radius) ? 1 : -1;
     if (is_started()) {
       this->next_radius_change_date = System::now();
@@ -97,6 +90,27 @@ void CircleMovement::set_radius(int radius, int speed) {
   }
   recompute_position();
 }
+
+/**
+ * Sets the radius to be updated immediately or gradually towards its wanted value when you call set_radius().
+ * @param speed speed of the radius variation (number of pixels per second), or 0 to update it immediately
+ */
+void CircleMovement::set_radius_speed(int radius_speed) {
+
+  if (radius_speed < 0) {
+    DIE("Invalid speed: " << radius_speed);
+  }
+
+  if (radius_speed == 0) {
+    this->radius_change_delay = 0;
+  }
+  else {
+    this->radius_change_delay = 1000 / radius_speed;
+  }
+
+  set_radius(wanted_radius);
+}
+
 
 /**
  * Sets the speed of the angle variation.
@@ -197,7 +211,7 @@ void CircleMovement::update(void) {
     stop();
   }
   else if (current_radius == 0 && loop_delay != 0 && now >= restart_date) {
-    set_radius(previous_radius, radius_change_delay);
+    set_radius(previous_radius);
     start();
   }
 
@@ -306,7 +320,7 @@ bool CircleMovement::is_started(void) {
 void CircleMovement::stop(void) {
 
   previous_radius = current_radius;
-  set_radius(0); // TODO radius speed
+  set_radius(0);
 
   if (loop_delay != 0) {
     restart_date = System::now() + loop_delay;

@@ -110,7 +110,8 @@ void ChainAndBall::attach_to(MapEntity *entity, int x, int y) {
   CircleMovement *movement = new CircleMovement();
   movement->set_center(entity, x, y);
   movement->set_angle_speed(360);
-  movement->set_radius(48, 100);
+  movement->set_radius_speed(50);
+  movement->set_radius(48);
   movement->set_max_rotations(3);
   movement->set_loop(1500);
   movement->start();

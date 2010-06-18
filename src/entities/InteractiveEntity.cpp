@@ -380,7 +380,7 @@ void InteractiveEntity::jump(int direction, int length, bool with_collisions) {
  * This function is called when the entity has just moved.
  * If it is an NPC, its sprite's direction is updated.
  */
-void InteractiveEntity::just_moved(void) {
+void InteractiveEntity::notify_just_moved(void) {
 
   if (subtype == NON_PLAYING_CHARACTER) {
 

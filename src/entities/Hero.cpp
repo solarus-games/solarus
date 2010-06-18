@@ -393,7 +393,7 @@ void Hero::try_snap_to_facing_entity(void) {
 
   if (!map->test_collision_with_obstacles(get_layer(), collision_box, this)) {
     set_bounding_box(collision_box);
-    just_moved();
+    notify_just_moved();
   }
 }
 
@@ -726,7 +726,7 @@ void Hero::movement_just_changed(void) {
 
   // check the collisions
   if (map != NULL && !game->is_suspended()) {
-    just_moved();
+    notify_just_moved();
   }
 }
 
@@ -734,7 +734,7 @@ void Hero::movement_just_changed(void) {
  * This function is called when the hero's position is changed,
  * or when his direction changes.
  */
-void Hero::just_moved(void) {
+void Hero::notify_just_moved(void) {
 
   if (state == RETURNING_TO_SOLID_GROUND) {
     // do not take care of the ground or detectors when returning to a solid ground point
@@ -749,7 +749,7 @@ void Hero::just_moved(void) {
   set_ground(tiles_ground);
 
   set_facing_entity(NULL);
-  MapEntity::just_moved(); // to see the special ground indicated by the dynamic entities
+  MapEntity::notify_just_moved(); // to see the special ground indicated by the dynamic entities
 
   if (this->ground != previous_ground) {
     start_ground();

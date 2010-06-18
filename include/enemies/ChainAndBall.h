@@ -27,7 +27,14 @@ class ChainAndBall: public Enemy {
 
   private:
 
+    // center
+    MapEntity *center_entity;          /**< the entity this ball makes circles around */
+    Rectangle center_entity_dxy;       /**< center point of the circles, relative to the entity */
 
+    // chain
+    static const int nb_links = 10;    /**< number of links in the chain */
+    Sprite* link_sprite;               /**< sprite of the links between the center and the ball */
+    Rectangle link_xy[nb_links];       /**< coordinates of each link displayed */
 
   protected:
 
@@ -39,8 +46,10 @@ class ChainAndBall: public Enemy {
     ~ChainAndBall(void);
 
     void attach_to(MapEntity *entity, int x = 0, int y = 0);
-    void twirl(void);
     void update(void);
+    void display_on_map(void);
+    void notify_just_moved(void);
+    bool is_displayed_in_y_order(void);
 };
 
 #endif

@@ -237,7 +237,7 @@ void Block::update(void) {
 /**
  * Notifies the block that it has just moved.
  */
-void Block::just_moved(void) {
+void Block::notify_just_moved(void) {
 
   // now we now that the block moves at least of 1 pixel:
   // we can play the sound

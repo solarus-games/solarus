@@ -103,7 +103,7 @@ void Movement::set_y(int y) {
 }
 
 /**
- * Sets the position of the entity.
+ * Sets the position of the entity or the point controlled by this movement.
  * @param x the new x position
  * @param y the new y position
  */
@@ -112,7 +112,7 @@ void Movement::set_position(int x, int y) {
   if (entity != NULL) {
     entity->set_x(x);
     entity->set_y(y);
-    entity->just_moved();
+    entity->notify_just_moved();
   }
   else {
     this->x = x;
@@ -252,10 +252,8 @@ void Movement::set_speed(double speed) {
 
   // compute the new speed vector
   double angle = Geometry::get_angle(0, 0, (int) (x_speed * 100), (int) (y_speed * 100)); // angle in radians
-  const Rectangle &speed_vector = Geometry::get_xy(angle, speed);
-
-  set_x_speed(speed_vector.get_x());
-  set_y_speed(speed_vector.get_y());
+  set_x_speed(speed * cos(angle));
+  set_y_speed(-speed * sin(angle));
 }
 
 /**
@@ -325,10 +323,8 @@ void Movement::set_direction(double angle) {
   }
 
   double speed = get_speed();
-  const Rectangle &speed_vector = Geometry::get_xy(angle, speed);
-
-  set_x_speed(speed_vector.get_x());
-  set_y_speed(speed_vector.get_y());
+  set_x_speed(speed * cos(angle));
+  set_y_speed(-speed * sin(angle));
 }
 
 /**

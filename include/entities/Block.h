@@ -64,7 +64,7 @@ class Block: public Detector {
     bool is_destructible_item_obstacle(DestructibleItem *destructible_item);
     void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
     bool moved_by_hero(void);
-    void just_moved(void);
+    void notify_just_moved(void);
 
     void update(void);
 

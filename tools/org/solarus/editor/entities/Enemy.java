@@ -36,6 +36,7 @@ public class Enemy extends MapEntity {
 
 	new EntityImageDescription("bosses.png", 0, 0, 176, 96),
 	new EntityImageDescription("bosses.png", 176, 0, 48, 72),
+	new EntityImageDescription("bosses.png", 224, 0, 48, 48),
     };
 
     /**
@@ -50,6 +51,7 @@ public class Enemy extends MapEntity {
 	
 	new EntityImageDescription("bosses.png", 0, 0, 176, 96),
 	new EntityImageDescription("bosses.png", 176, 0, 48, 72),
+	new EntityImageDescription("bosses.png", 224, 0, 48, 48),
     };
 
     /**
@@ -64,6 +66,7 @@ public class Enemy extends MapEntity {
 	
 	new Point(88, 64),
 	new Point(24, 69),
+	new Point(24, 29),
     };
 
     /**
@@ -78,6 +81,7 @@ public class Enemy extends MapEntity {
 	
 	new Dimension(176, 96),
 	new Dimension(48, 72),
+	new Dimension(48, 48),
     };
 
     /**
@@ -91,7 +95,8 @@ public class Enemy extends MapEntity {
 	CHAIN_AND_BALL,
 	
 	PAPILLAUSOR_KING,
-	KHORNETH;
+	KHORNETH,
+	KHOTOR;
 
 	public static final String[] humanNames = {
 	    "Simple green soldier",
@@ -102,6 +107,7 @@ public class Enemy extends MapEntity {
 	    
 	    "Papillausor King",
 	    "Khorneth",
+	    "Khotor",
 	};
 
 	public int getId() {

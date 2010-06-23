@@ -193,9 +193,11 @@ class PathFinding;
 class SimpleGreenSoldier;
 class Bubble;
 class Tentacle;
+class ChainAndBall;
 class Minillosaur;
 class PapillosaurKing;
 class Khorneth;
+class Khotor;
 
 #endif
 

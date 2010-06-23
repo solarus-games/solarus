@@ -47,7 +47,8 @@ class Enemy: public Detector {
       CHAIN_AND_BALL,
 
       PAPILLOSAUR_KING = 1000,
-      KHORNETH
+      KHORNETH,
+      KHOTOR
     };
 
     /**

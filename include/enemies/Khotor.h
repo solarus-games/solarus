@@ -14,22 +14,20 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_PAPILLAUSOR_KING_H
-#define SOLARUS_PAPILLAUSOR_KING_H
+#ifndef SOLARUS_KHOTOR_H
+#define SOLARUS_KHOTOR_H
 
 #include "Common.h"
 #include "entities/Enemy.h"
 
 /**
- * A butterfly boss from Newlink.
+ * The boss Khotor.
  */
-class PapillosaurKing: public Enemy {
+class Khotor: public Enemy {
 
   private:
 
-    uint32_t next_egg_phase_date;  /**< date of the next egg creation phase */
-    uint32_t next_egg_date;        /**< during an egg phase, date when a minillosaur egg is created */
-    int nb_eggs_to_create;         /**< number of eggs to create in the current egg phase */
+    ChainAndBall *chain;
 
   protected:
 
@@ -38,12 +36,9 @@ class PapillosaurKing: public Enemy {
 
   public:
 
-    PapillosaurKing(const ConstructionParameters &params);
-    ~PapillosaurKing(void);
+    Khotor(const ConstructionParameters &params);
+    ~Khotor(void);
 
-    bool is_destructible_item_obstacle(DestructibleItem *destructible_item);
-    void set_suspended(bool suspended);
-    void update(void);
     void just_hurt(MapEntity *source, EnemyAttack attack, int life_points);
 };
 

@@ -257,6 +257,7 @@ Game * MapEntity::get_game(void) {
 /**
  * Schedules this entity for removal.
  * The entity will be removed from the map and destroyed.
+ * This function is equivalent to calling map->get_entities()->remove_entity(this).
  */
 void MapEntity::remove_from_map(void) {
 

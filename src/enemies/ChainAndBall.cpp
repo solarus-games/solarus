@@ -60,10 +60,6 @@ void ChainAndBall::initialize(void) {
   // reactions to attacks
   set_no_attack_consequences();
   set_attack_consequence(ATTACK_SWORD, -1);
-
-  // TODO temporary
-  MapEntity *miniboss = map->get_entities()->get_entity(ENEMY, "miniboss");
-  attach_to(miniboss, 0, -12);
 }
 
 /**

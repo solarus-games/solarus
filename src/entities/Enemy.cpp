@@ -38,6 +38,7 @@
 #include "enemies/ChainAndBall.h"
 #include "enemies/PapillosaurKing.h"
 #include "enemies/Khorneth.h"
+#include "enemies/Khotor.h"
 
 /**
  * Creates an enemy.
@@ -141,6 +142,7 @@ MapEntity * Enemy::create(Game *game, Subtype type, Rank rank, int savegame_vari
   case CHAIN_AND_BALL:       enemy = new ChainAndBall(params);       break;
   case PAPILLOSAUR_KING:     enemy = new PapillosaurKing(params);    break;
   case KHORNETH:             enemy = new Khorneth(params);           break;
+  case KHOTOR:               enemy = new Khotor(params);             break;
 
   default:
     DIE("Unknown enemy type '" << type << "'");

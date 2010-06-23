@@ -116,6 +116,13 @@ y = 56
 save = 86
 big = 1
 
+[dungeon_2.map_30.boss_0]
+floor = 0
+x = 176
+y = 149
+save = 92
+big = 0
+
 [dungeon_2.map_30.chest_2]
 floor = 0
 x = 656

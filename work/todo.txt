@@ -88,6 +88,92 @@ Ennemis à faire (reprendre graphismes de MC + graphismes rippés) :
 - garde bleu avec lance (monde des ténèbres)
 
 
+-----------------
+Scripts d'ennemis
+-----------------
+
+Chaque type d'ennemi scripté est défini dans un fichier de script Lua.
+Exemple : garde vert avec grande épée
+L'ennemi est placé sur l'éditeur de maps avec comme sous-type "Custom Enemy"
+et une information supplémentaire "green_soldier"
+Cette information supplémentaire est à choisir dans une liste déroulante
+remplie par un examen du répertoire des scripts d'ennmis (pas cohérent avec les autres
+ressources) ou comme une ressource de la base de données (au même titre qu'une map, une musique, etc.)
+
+Le fichier enemies/green_soldier.lua contient la description et le comportement de l'ennemi.
+La classe EnemyScript fait le lien entre les fonctions des scripts d'ennemis et le moteur de jeu
+(en particulier la classe Enemy).
+
+Il peut y avoir 5 gardes verts sur la même map.
+
+Choix possibles :
+
+non 1) Une instance de EnemyScript gère 1 garde. Lourd car beaucoup de scripts à instancier, analyser et beaucoup de contextes lua en mémoire
+oui 2) Une instance de EnemyScript gère tous les gardes d'un type. Le contexte Lua contient le nom du type (ici "green_soldier").
+
+
+Il faut pouvoir indiquer au moteur les caractéristiques de l'ennemi (utiliser un grand tableau indexé par des string) :
+
+- initial_life
+- damage_on_hero
+- hurt_sound_style
+- pushed_back_when_hurt
+- push_back_hero_on_sword
+- minimum_shield_needed
+- attack_consequences
+
+indiquer cela au moteur une seule fois de façon globale car ça ne change pas en fonction des ennemis
+
+
+Lua -> C++ :
+
+enemy_create_sprite(…)
+enemy_set_movement(…)
+
+
+C++ -> Lua :
+
+event_initialization()				appelé à l'initialisation du script 
+event_enemy_created(enemy_name)			appelé à la création d'un de ce type
+
+______________
+Fichier type :
+
+
+features = {
+  initial_life = 10,
+  damage_on_hero = 1,
+  attack_consequences = {
+    attack_sword = -1,
+    attack_explosion = 1
+  }
+}
+
+set_features(features)
+
+function event_enemy_created(enemy_name)
+  create_sprite("green_soldier_body")
+  create_sprite("green_soldier_sword")
+  set_movement(movements.RANDOM_WALK)
+end
+
+function event_enemy_hurt(source, attack, life_points)
+  
+end
+_____________________
+
+-- faire un script prédéfini qui fournit ce code ainsi que des constantes comme attack_sword, attack_explosion, etc
+-- pareil pour les scripts des maps qui n'ont pas de constantes
+function set_features(features)
+  enemy_type_set_initial_life(features.initial_life)
+  enemy_type_set_damage_on_hero(features.damage_on_hero)
+  enemy_type_set_attack_consequence(attacks.SWORD, features.attack_consequences.attack_sword)
+  enemy_type_set_attack_consequence(attacks.EXPLOSION, features.attack_consequences.attack_explosion)
+end
+
+-- possibilité que ce script prédéfini fournisse le moyen aux scripts normaux de s'abstraire du nom de l'ennemi ?
+-- avec une variable globale qui retient le nom de l'ennemi courant
+
 --------------
 Mode release :
 --------------

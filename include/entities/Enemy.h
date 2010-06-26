@@ -101,11 +101,13 @@ class Enemy: public Detector {
     int attack_consequences[ATTACK_NUMBER]; /**< indicates how the enemy reacts to each attack
 					     * (by default, it depends on the attacks):
 					     * - a number greater than 0 represents the number of health points lost when
-					     *   he is subject to this attack (for a sword attack, this number will be multiplied
-					     *   depending on the sword and the presence of a spin attack),
+					     *   he is subject to this attack
+					     *     - for a sword attack, this number is multiplied depending on
+					     *       the sword strongness and the presence of a spin attack
+					     *     - for a thrown item, this number is multiplied by the weight
 					     * - a value of 0 means that the attack is just ignored (this is the case
 					     *   for some special enemies like Octorok's stones),
-					     * - a value of -1 means that the enemy is protected against this attack (the shield
+					     * - a value of -1 means that the enemy is protected against this attack (a
 					     *   sound is played),
 					     * - a value of -2 means that this attack immobilizes the enemy
 					     * - a value of -3 means a custom effect for the attack

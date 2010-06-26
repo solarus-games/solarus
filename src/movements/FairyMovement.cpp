@@ -15,15 +15,17 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "movements/FairyMovement.h"
+#include "entities/MapEntity.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Random.h"
+#include "lowlevel/Geometry.h"
 
 /**
  * Creates a fairy movement.
  */
 FairyMovement::FairyMovement(void) {
-  set_speed(4);
-  set_random_direction();
+  set_speed(3);
+  set_next_direction();
 }
 
 /**
@@ -34,14 +36,38 @@ FairyMovement::~FairyMovement(void) {
 }
 
 /**
- * Sets a random direction for the fairy.
+ * Sets the entity to be controlled by this movement object.
+ * @param entity the entity to control
  */
-void FairyMovement::set_random_direction(void) {
+void FairyMovement::set_entity(MapEntity *entity) {
 
-  int nb = Random::get_number(8);
-  set_direction(nb * 45 + 22); // 8 possible directions but no "simple" direction
+  Movement::set_entity(entity);
 
-  next_direction_change = System::now() + 2000; // change again in 2 seconds
+  // restrict the movement in a 80*80 rectangle
+  bounds.set_xy(entity->get_xy());
+  bounds.add_xy(-40, -40);
+  bounds.set_size(80, 80);
+}
+
+/**
+ * Chooses a new direction for the fairy.
+ */
+void FairyMovement::set_next_direction(void) {
+
+  if (entity == NULL || bounds.contains(get_x(), get_y())) {
+
+    // we are inside the bounds: we pick a random direction
+    int nb = Random::get_number(8);
+    set_direction(nb * 45 + 22); // 8 possible directions but no "simple" direction
+  }
+  else {
+
+    // we are outside the bounds: we get back into the rectangle to avoid going to far
+    double angle = Geometry::get_angle(get_x(), get_y(), bounds.get_x() + bounds.get_width() / 2, bounds.get_y() + bounds.get_height() / 2);
+    set_direction(angle);
+  }
+
+  next_direction_change_date = System::now() + 500 + Random::get_number(3) * 500; // change again in 0.5 to 2 seconds
 }
 
 /**
@@ -57,8 +83,8 @@ void FairyMovement::update(void) {
   if (!is_suspended()) {
 
     uint32_t now = System::now();
-    if (now >= next_direction_change) {
-      set_random_direction();
+    if (now >= next_direction_change_date) {
+      set_next_direction();
     }
   }
 }

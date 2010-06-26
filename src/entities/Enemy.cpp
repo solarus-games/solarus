@@ -718,8 +718,8 @@ void Enemy::try_hurt(EnemyAttack attack, MapEntity *source, Sprite *this_sprite)
     vulnerable_again_date = System::now() + 500;
     
     if (consequence == -1) {
-      // shield sound
-      game->play_sound("shield");
+      // attack failure sound
+      game->play_sound("sword_tapping");
       result = -1;
     }
     else if (consequence == -2) {

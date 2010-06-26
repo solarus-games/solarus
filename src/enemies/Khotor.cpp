@@ -43,18 +43,19 @@ void Khotor::initialize(void) {
 
   // attack/defense features
   set_damage(2, 0);
-  set_life(5);
+  set_life(12);
   set_pushed_back_when_hurt(false);
 
   // sprite
   create_sprite("enemies/khotor", true);
   set_size(48, 48);
   set_origin(24, 29);
-  set_collision_modes(COLLISION_SPRITE);
 
   // reactions to attacks
   set_no_attack_consequences();
-  set_attack_consequence(ATTACK_SWORD, 1); // TODO temporary ?
+  set_attack_consequence(ATTACK_SWORD, 2);
+  set_attack_consequence(ATTACK_THROWN_ITEM, 1);
+  set_attack_consequence(ATTACK_BOW, 1);
 
   // movement
   set_movement(new RandomWalkMovement(3));
@@ -62,8 +63,18 @@ void Khotor::initialize(void) {
   // chain and ball
   chain = (ChainAndBall*) create(game, CHAIN_AND_BALL, RANK_NORMAL, -1, "chain_and_ball", get_layer(),
       get_x(), get_y(), 0, PickableItem::NONE, -1);
-  chain->attach_to(this, -16, -33);
+  //chain->attach_to(this, -16, -33, 64); // TODO when the walking+chain animation is available
+  chain->attach_to(this, 0, -8, 64);
   map->get_entities()->add_entity(chain);
+}
+
+/**
+ * Returns whether this entity should be displayed above
+ * the hero and other entities having this property when it is in front of them.
+ * @return true if this type of entity is displayed at the same level as the hero
+ */
+bool Khotor::is_displayed_in_y_order(void) {
+  return false; // unlike usual enemies
 }
 
 /**

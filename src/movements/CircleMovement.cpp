@@ -169,7 +169,7 @@ void CircleMovement::set_duration(uint32_t duration) {
  * When this number of rotations is reached, the movement stops.
  * Note that is the radius changes gradually, the movement will continue
  * for a while until the radius reaches zero.
- * @param max_rotation number of rotations to make (0 for infinite rotations)
+ * @param max_rotations number of rotations to make (0 for infinite rotations)
  */
 void CircleMovement::set_max_rotations(int max_rotations) {
 

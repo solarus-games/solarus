@@ -33,10 +33,12 @@ Feature requests :
 - Windows : voir si SDL utilise ou peut utiliser OpenGL ou DirectX
 - Ce serait pas mal de faire une animation lorsque Link vide le contenu de sa bouteille.
 - Ajouter un "map marker" pour indiquer où il faut se rendre ensuite
-- faire une classe Script plus générale indépendante des maps, dont hérite MapScript ?
+- faire une classe Script plus générale indépendante des maps, dont hérite MapScript :
   on pourrait ensuite avoir un script global, des scripts d'objets de l'inventaire,
   des scripts d'ennemis, etc.
+- faire un type d'ennemi "CustomEnemy" qui est en fait scripté
 - Voir si la police supporte des caractères unicode comme U+2192 (→) et U+2190 (←)
+
 
 
 Bugs :

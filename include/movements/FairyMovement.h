@@ -19,27 +19,28 @@
 
 #include "Common.h"
 #include "movements/Movement.h"
+#include "lowlevel/Rectangle.h"
 
 /**
  * Defines the movement of a pickable fairy.
  */
 class FairyMovement: public Movement {
 
- private:
-  
-  /**
-   * Date of the next direction change
-   */
-  uint32_t next_direction_change;
+  private:
 
-  void set_random_direction(void);
+    Rectangle bounds;                        /**< a rectangle the fairy cannot escape from */
+    uint32_t next_direction_change_date;     /**< date of the next direction change */
 
- public:
+    void set_next_direction(void);
 
-  FairyMovement(void);
-  ~FairyMovement(void);
+  public:
 
-  void update(void);
+    FairyMovement(void);
+    ~FairyMovement(void);
+
+    void set_entity(MapEntity *entity);
+    void update(void);
 };
 
 #endif
+

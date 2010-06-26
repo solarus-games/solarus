@@ -188,6 +188,7 @@ class PathMovement;
 class RandomWalkMovement;
 class PathFindingMovement;
 class PathFinding;
+class CircleMovement;
 
 // enemies
 class SimpleGreenSoldier;

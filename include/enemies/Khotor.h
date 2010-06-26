@@ -39,6 +39,7 @@ class Khotor: public Enemy {
     Khotor(const ConstructionParameters &params);
     ~Khotor(void);
 
+    bool is_displayed_in_y_order(void);
     void just_hurt(MapEntity *source, EnemyAttack attack, int life_points);
 };
 

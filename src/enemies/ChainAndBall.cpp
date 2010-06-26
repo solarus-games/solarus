@@ -59,7 +59,6 @@ void ChainAndBall::initialize(void) {
 
   // reactions to attacks
   set_no_attack_consequences();
-  set_attack_consequence(ATTACK_SWORD, -1);
 }
 
 /**
@@ -98,18 +97,23 @@ bool ChainAndBall::is_displayed_in_y_order(void) {
  * @param entity the entity to follow
  * @param x x coordinate of where the chain movement should be centered on (relative to the entity followed)
  * @param y y coordinate of where the chain movement should be centered on (relative to the entity followed)
+ * @param radius radius of the circles to make, in pixels (see CircleMovement::set_radius)
+ * @param radius_speed speed of the radius variation in pixels per second (see CircleMovement::set_radius_speed)
+ * @param max_rotations number of rotations to make (see CircleMovement::set_max_rotations)
+ * @param loop_delay the movement will restart after this delay in milliseconds (see CircleMovement::set_loop)
  */
-void ChainAndBall::attach_to(MapEntity *entity, int x, int y) {
+void ChainAndBall::attach_to(MapEntity *entity, int x, int y,
+    int radius, int radius_speed, int max_rotations, uint32_t loop_delay) {
 
   clear_movement();
 
   CircleMovement *movement = new CircleMovement();
   movement->set_center(entity, x, y);
   movement->set_angle_speed(360);
-  movement->set_radius_speed(50);
-  movement->set_radius(48);
-  movement->set_max_rotations(3);
-  movement->set_loop(1500);
+  movement->set_radius_speed(radius_speed);
+  movement->set_radius(radius);
+  movement->set_max_rotations(max_rotations);
+  movement->set_loop(loop_delay);
   movement->start();
   set_movement(movement);
 

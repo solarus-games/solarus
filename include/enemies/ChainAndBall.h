@@ -45,7 +45,6 @@ class ChainAndBall: public Enemy {
     ChainAndBall(const ConstructionParameters &params);
     ~ChainAndBall(void);
 
-    CircleMovement *get_circle_movement(void);
     void attach_to(MapEntity *entity, int x = 0, int y = 0,
 	int radius = 48, int radius_speed = 50, int max_rotations = 4, uint32_t loop_delay = 2000);
     void update(void);

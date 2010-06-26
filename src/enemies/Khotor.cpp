@@ -15,10 +15,10 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "enemies/Khotor.h"
+#include "enemies/ChainAndBall.h"
+#include "entities/MapEntities.h"
 #include "movements/RandomWalkMovement.h"
 #include "Map.h"
-#include "entities/MapEntities.h"
-#include "enemies/ChainAndBall.h"
 
 /**
  * Constructor.
@@ -64,7 +64,7 @@ void Khotor::initialize(void) {
   chain = (ChainAndBall*) create(game, CHAIN_AND_BALL, RANK_NORMAL, -1, "chain_and_ball", get_layer(),
       get_x(), get_y(), 0, PickableItem::NONE, -1);
   //chain->attach_to(this, -16, -33, 64); // TODO when the walking+chain animation is available
-  chain->attach_to(this, 0, -8, 64);
+  chain->attach_to(this, -16, 0, 64);
   map->get_entities()->add_entity(chain);
 }
 

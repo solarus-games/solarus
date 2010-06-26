@@ -166,7 +166,6 @@ int Stairs::get_animation_direction(Way way) {
  * When an entity collides with the stairs (usually the hero),
  * it can call this function to play the appropriate stairs sound.
  * @param way the way you are taking these stairs
- * @param entity_overlapping the entity taking the stairs
  */
 void Stairs::play_sound(Way way) {
 

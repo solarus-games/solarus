@@ -45,7 +45,7 @@ const double Geometry::SQRT_2 = 1.41421356237309504880;
 
 /**
  * Converts an angles in radians to an angle in degrees.
- * @param degrees angle in radians
+ * @param radians angle in radians
  * @return the degrees value
  */
 const int Geometry::radians_to_degrees(double radians) {

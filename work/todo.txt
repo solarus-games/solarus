@@ -67,6 +67,7 @@ Bugs :
   et que l'on reste appuyé sur la touche directionnelle, Link continue d'essayer de pousser la falaise
   tant qu'on ne relâche pas la touche directionnelle.
 - réformer les noms dans les scripts
+- event_obtaining/obtained_treasure : confusion entre les deux classes
 
 
 A venir :

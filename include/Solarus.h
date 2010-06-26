@@ -14,29 +14,6 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
-
-/** @mainpage
- *
- * This is the documentation of the C++ code of Solarus.
- * Solarus is a free, open-source engine for Zelda-like 2D games.
- *
- * The engine is an executable binary that can run a quest.
- * A quest is a data package containing the graphics, the sounds, the maps
- * and the dialogs.
- *
- * The engine classes are organized in several directories:
- * - (root directory): the main classes of the engine;
- * - lowlevel: encapsulates all libraries and provides low-level access to resources
- *   (the rest of the code is independent from libraries like SDL, OpenAL, etc.);
- * - menus: the menus displayed before or during the game;
- * - entities: all objects that are present on a map: the tiles, the hero, the enemies, the chests, etc.
- *   (most of the code is there);
- * - enemies: all types of enemies with their specific behavior;
- * - movements: many types of movements that can be applied to objects;
- * - hud: the head-up display that appears during the game.
- */
-
 #ifndef SOLARUS_SOLARUS_H
 #define SOLARUS_SOLARUS_H
 

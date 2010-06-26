@@ -93,7 +93,7 @@ void CircleMovement::set_radius(int radius) {
 
 /**
  * Sets the radius to be updated immediately or gradually towards its wanted value when you call set_radius().
- * @param speed speed of the radius variation (number of pixels per second), or 0 to update it immediately
+ * @param radius_speed speed of the radius variation (number of pixels per second), or 0 to update it immediately
  */
 void CircleMovement::set_radius_speed(int radius_speed) {
 

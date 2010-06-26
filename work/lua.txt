@@ -3,8 +3,8 @@ ainsi que la liste des fonctions C++ qui peuvent être appelées depuis les scri
 Il est principalement destiné aux programmeurs des scripts qui souhaitent connaître les fonctions mises
 à leur disposition.
 
-Il existe plusieurs types de scripts, qui sont, du point de vue du moteur C++, des sous-classes de la classe Script :
-MapScript, EnemyScript (à faire), InventoryItemScript (à faire), GlobalScript (à faire ?).
+Il peut exister plusieurs types de scripts, qui sont, du point de vue du moteur C++, des sous-classes de la classe Script :
+MapScript, EnemyScript (à faire), InventoryItemScript (à faire), MovementScript (à faire ?), GlobalScript (à faire ?).
 La classe Script propose des fonctions communes à tous les types de scripts, puis chaque
 sous-classe y ajoute des fonctions spécifiques.
 

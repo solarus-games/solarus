@@ -18,135 +18,78 @@
 #define SOLARUS_MAP_SCRIPT_H
 
 #include "Common.h"
-#include "Treasure.h"
-#include "InventoryItemId.h"
-#include <list>
-
-struct lua_State;
+#include "Script.h"
 
 /**
  * Represents the Lua script of a map.
- * This class makes the interface between the engine C++ code and the map Lua script.
+ * This class makes the interface between the engine C++ code and the Lua script of a map.
  */
-class MapScript {
+class MapScript: public Script {
 
   private:
 
-    typedef int (FunctionAvailableToScript) (lua_State *l); /**< functions that can be called by the Lua script */
-
-    // game objects
-    Game *game;                 /**< the game associated to this script */
-    Map *map;                   /**< the current map of the game */
-    Hero *hero;                 /**< the hero */
-
-    // script data
-    lua_State* context;         /**< the execution context of the Lua script */
-    std::list<Timer*> timers;   /**< the timers currently running for this script */
-
-    // calling a script function from C++
-    bool call_script_function(const std::string &function_name);
-    bool call_script_function(const std::string &function_name, const std::string &arg1);
-    bool call_script_function(const std::string &function_name, const std::string &arg1, int arg2);
-    bool call_script_function(const std::string &function_name, const std::string &arg1, int arg2, int arg3);
-    bool call_script_function(const std::string &function_name, int arg1);
-    bool call_script_function(const std::string &function_name, int arg1, int arg2);
-    bool call_script_function(const std::string &function_name, bool arg1);
+    Map *map;                   /**< the map controlled by this script */
 
     // calling a C++ function from the script
-    static void called_by_script(lua_State *context, int nb_arguments, MapScript **script);
-    static FunctionAvailableToScript l_freeze,
-				     l_unfreeze,
-				     l_play_sound,
-				     l_play_music,
-				     l_start_message,
-				     l_set_message_variable,
-				     l_dialog_set_style,
-				     l_hud_set_enabled,
-				     l_give_treasure,
-				     l_give_treasure_with_amount,
-				     l_savegame_get_string,
-				     l_savegame_get_integer,
-				     l_savegame_get_boolean,
-				     l_savegame_set_string,
-				     l_savegame_set_integer,
-				     l_savegame_set_boolean,
-				     l_player_get_name,
-				     l_player_set_pause_enabled,
-				     l_start_timer,
-				     l_stop_timer,
-				     l_move_camera,
-				     l_restore_camera,
-				     l_npc_get_position,
-				     l_npc_set_position,
-				     l_npc_walk,
-				     l_npc_random_walk,
-				     l_npc_jump,
-				     l_npc_set_animation,
-				     l_npc_set_animation_ignore_suspend,
-				     l_npc_set_direction,
-				     l_npc_remove,
-				     l_hero_set_direction,
-				     l_hero_align_on_sensor,
-				     l_hero_set_map,
-				     l_hero_walk,
-				     l_hero_jump,
-				     l_hero_start_victory_sequence,
-				     l_hero_set_visible,
-				     l_chest_set_open,
-				     l_chest_set_hidden,
-				     l_chest_is_hidden,
-				     l_get_rupees,
-				     l_remove_rupees,
-				     l_inventory_item_get,
-				     l_inventory_item_set,
-				     l_inventory_item_get_amount,
-				     l_inventory_item_remove_amount,
-				     l_inventory_item_is_bottle,
-				     l_tile_is_enabled,
-				     l_tile_set_enabled,
-				     l_tiles_set_enabled,
-				     l_reset_block,
-				     l_reset_blocks,
-				     l_interactive_entity_get_animation,
-				     l_interactive_entity_get_animation_delay,
-				     l_interactive_entity_get_animation_frame,
-				     l_interactive_entity_get_direction,
-				     l_interactive_entity_is_animation_paused,
-				     l_interactive_entity_set_animation,
-				     l_interactive_entity_set_animation_delay,
-				     l_interactive_entity_set_animation_frame,
-				     l_interactive_entity_set_direction,
-				     l_interactive_entity_set_animation_paused,
-				     l_interactive_entity_set_animation_ignore_suspend,
-				     l_interactive_entity_fade,
-				     l_interactive_entity_remove,
-				     l_equipment_get_tunic,
-				     l_equipment_get_sword,
-				     l_equipment_get_shield,
-				     l_shop_item_remove,
-				     l_switch_is_enabled,
-				     l_switch_set_enabled,
-				     l_switch_set_locked,
-				     l_enemy_is_dead,
-				     l_enemies_are_dead,
-				     l_enemy_set_enabled,
-				     l_boss_start_battle,
-				     l_boss_end_battle,
-				     l_miniboss_start_battle,
-				     l_miniboss_end_battle,
-				     l_sensor_remove,
-				     l_door_open,
-				     l_door_close,
-				     l_door_is_open,
-				     l_door_set_open;
+    static void called_by_script(lua_State *context, int nb_arguments, MapScript **map_script);
+
+    static FunctionAvailableToScript 
+      l_hero_set_map,
+      l_hero_set_direction,
+      l_hero_align_on_sensor,
+      l_hero_walk,
+      l_hero_jump,
+      l_hero_start_victory_sequence,
+      l_hero_set_visible,
+      l_npc_get_position,
+      l_npc_set_position,
+      l_npc_walk,
+      l_npc_random_walk,
+      l_npc_jump,
+      l_npc_set_animation,
+      l_npc_set_animation_ignore_suspend,
+      l_npc_set_direction,
+      l_npc_remove,
+      l_chest_set_open,
+      l_chest_set_hidden,
+      l_chest_is_hidden,
+      l_tile_is_enabled,
+      l_tile_set_enabled,
+      l_tiles_set_enabled,
+      l_reset_block,
+      l_reset_blocks,
+      l_interactive_entity_get_animation,
+      l_interactive_entity_get_animation_delay,
+      l_interactive_entity_get_animation_frame,
+      l_interactive_entity_get_direction,
+      l_interactive_entity_is_animation_paused,
+      l_interactive_entity_set_animation,
+      l_interactive_entity_set_animation_delay,
+      l_interactive_entity_set_animation_frame,
+      l_interactive_entity_set_direction,
+      l_interactive_entity_set_animation_paused,
+      l_interactive_entity_set_animation_ignore_suspend,
+      l_interactive_entity_fade,
+      l_interactive_entity_remove,
+      l_shop_item_remove,
+      l_switch_is_enabled,
+      l_switch_set_enabled,
+      l_switch_set_locked,
+      l_enemy_is_dead,
+      l_enemies_are_dead,
+      l_enemy_set_enabled,
+      l_boss_start_battle,
+      l_boss_end_battle,
+      l_miniboss_start_battle,
+      l_miniboss_end_battle,
+      l_sensor_remove,
+      l_door_open,
+      l_door_close,
+      l_door_is_open,
+      l_door_set_open;
 
     // initialization
-    void load(void);
-    void register_c_functions(void);
-
-    // timers
-    void add_timer(Timer *timer);
-    void remove_timer(const std::string &callback_name);
+    void register_available_functions(void);
 
   public:
 
@@ -155,22 +98,13 @@ class MapScript {
     ~MapScript(void);
     void start(const std::string &destination_point_name);
 
-    // update functions
-    void update(void);
-    void set_suspended(bool suspended);
-
     // C++ functions that call script functions
     void event_map_started(const std::string &destination_point_name);
     void event_opening_transition_finished(const std::string &destination_point_name);
-    void event_message_started(const MessageId &message_id);
-    void event_message_sequence_finished(const MessageId &first_message_id, int answer);
     void event_switch_enabled(const std::string &switch_name);
     void event_switch_disabled(const std::string &switch_name);
     void event_switch_left(const std::string &switch_name);
     void event_hero_on_sensor(const std::string &sensor_name);
-    void event_hero_victory_sequence_finished(void);
-    void event_camera_reached_target(void);
-    void event_camera_back(void);
     void event_interaction(const std::string &entity_name);
     bool event_interaction_item(const std::string &entity_name, InventoryItemId item_id, int variant);
     void event_npc_dialog(const std::string &npc_name);
@@ -180,7 +114,7 @@ class MapScript {
     void event_obtained_treasure(Treasure::Content content, int savegame_variable);
     void event_shop_item_bought(const std::string &shop_item_name);
     void event_enemy_dead(const std::string &enemy_name);
-    void event_dungeon_ending_sequence(void);
+    void event_hero_victory_sequence_finished(void);
 };
 
 #endif

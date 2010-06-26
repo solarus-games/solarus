@@ -119,7 +119,7 @@ big = 1
 [dungeon_2.map_30.boss_0]
 floor = 0
 x = 176
-y = 149
+y = 165
 save = 92
 big = 0
 

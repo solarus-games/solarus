@@ -17,11 +17,6 @@
 #include "MapScript.h"
 #include "Map.h"
 #include "Game.h"
-#include "Equipment.h"
-#include "DialogBox.h"
-#include "Treasure.h"
-#include "Savegame.h"
-#include "Timer.h"
 #include "Sprite.h"
 #include "InventoryItem.h"
 #include "entities/EntityType.h"
@@ -36,7 +31,6 @@
 #include "entities/Door.h"
 #include "entities/Sensor.h"
 #include "entities/Enemy.h"
-#include "lowlevel/FileTools.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/Music.h"
 #include "lowlevel/Rectangle.h"
@@ -48,7 +42,7 @@
  * @param map the map
  */
 MapScript::MapScript(Map *map):
-  map(map), context(NULL) {
+  Script(map->get_game()), map(map) {
 
 }
 
@@ -57,45 +51,24 @@ MapScript::MapScript(Map *map):
  */
 MapScript::~MapScript(void) {
 
-  // close the Lua execution context
-  if (context != NULL) {
-    lua_close(context);
-  }
-
-  // delete the timers
-  std::list<Timer*>::iterator it;
-  for (it = timers.begin(); it != timers.end(); it++) {
-    delete *it;
-  }
 }
 
 /**
- * Tells the Lua context what C functions it can call.
+ * Tells the Lua context what C++ functions it can call.
  */
-void MapScript::register_c_functions(void) {
+void MapScript::register_available_functions(void) {
 
-  lua_register(context, "freeze", l_freeze);
-  lua_register(context, "unfreeze", l_unfreeze);
-  lua_register(context, "play_sound", l_play_sound);
-  lua_register(context, "play_music", l_play_music);
-  lua_register(context, "start_message", l_start_message);
-  lua_register(context, "set_message_variable", l_set_message_variable);
-  lua_register(context, "dialog_set_style", l_dialog_set_style);
-  lua_register(context, "hud_set_enabled", l_hud_set_enabled);
-  lua_register(context, "give_treasure", l_give_treasure);
-  lua_register(context, "give_treasure_with_amount", l_give_treasure_with_amount);
-  lua_register(context, "savegame_get_string", l_savegame_get_string);
-  lua_register(context, "savegame_get_integer", l_savegame_get_integer);
-  lua_register(context, "savegame_get_boolean", l_savegame_get_boolean);
-  lua_register(context, "savegame_set_string", l_savegame_set_string);
-  lua_register(context, "savegame_set_integer", l_savegame_set_integer);
-  lua_register(context, "savegame_set_boolean", l_savegame_set_boolean);
-  lua_register(context, "player_get_name", l_player_get_name);
-  lua_register(context, "player_set_pause_enabled", l_player_set_pause_enabled);
-  lua_register(context, "start_timer", l_start_timer);
-  lua_register(context, "stop_timer", l_stop_timer);
-  lua_register(context, "move_camera", l_move_camera);
-  lua_register(context, "restore_camera", l_restore_camera);
+  // functions global to all types of scripts
+  Script::register_available_functions();
+
+  // functions specific to map scripts
+  lua_register(context, "hero_set_map", l_hero_set_map);
+  lua_register(context, "hero_set_direction", l_hero_set_direction);
+  lua_register(context, "hero_align_on_sensor", l_hero_align_on_sensor);
+  lua_register(context, "hero_walk", l_hero_walk);
+  lua_register(context, "hero_jump", l_hero_jump);
+  lua_register(context, "hero_start_victory_sequence", l_hero_start_victory_sequence);
+  lua_register(context, "hero_set_visible", l_hero_set_visible);
   lua_register(context, "npc_get_position", l_npc_get_position);
   lua_register(context, "npc_set_position", l_npc_set_position);
   lua_register(context, "npc_walk", l_npc_walk);
@@ -105,23 +78,9 @@ void MapScript::register_c_functions(void) {
   lua_register(context, "npc_set_animation_ignore_suspend", l_npc_set_animation_ignore_suspend);
   lua_register(context, "npc_set_direction", l_npc_set_direction);
   lua_register(context, "npc_remove", l_npc_remove);
-  lua_register(context, "hero_set_direction", l_hero_set_direction);
-  lua_register(context, "hero_align_on_sensor", l_hero_align_on_sensor);
-  lua_register(context, "hero_set_map", l_hero_set_map);
-  lua_register(context, "hero_walk", l_hero_walk);
-  lua_register(context, "hero_jump", l_hero_jump);
-  lua_register(context, "hero_start_victory_sequence", l_hero_start_victory_sequence);
-  lua_register(context, "hero_set_visible", l_hero_set_visible);
   lua_register(context, "chest_set_open", l_chest_set_open);
   lua_register(context, "chest_set_hidden", l_chest_set_hidden);
   lua_register(context, "chest_is_hidden", l_chest_is_hidden);
-  lua_register(context, "get_rupees", l_get_rupees);
-  lua_register(context, "remove_rupees", l_remove_rupees);
-  lua_register(context, "inventory_item_get", l_inventory_item_get);
-  lua_register(context, "inventory_item_set", l_inventory_item_set);
-  lua_register(context, "inventory_item_get_amount", l_inventory_item_get_amount);
-  lua_register(context, "inventory_item_remove_amount", l_inventory_item_remove_amount);
-  lua_register(context, "inventory_item_is_bottle", l_inventory_item_is_bottle);
   lua_register(context, "tile_set_enabled", l_tile_set_enabled);
   lua_register(context, "tiles_set_enabled", l_tiles_set_enabled);
   lua_register(context, "tile_is_enabled", l_tile_is_enabled);
@@ -140,9 +99,6 @@ void MapScript::register_c_functions(void) {
   lua_register(context, "interactive_entity_set_animation_ignore_suspend", l_interactive_entity_set_animation_ignore_suspend);
   lua_register(context, "interactive_entity_fade", l_interactive_entity_fade);
   lua_register(context, "interactive_entity_remove", l_interactive_entity_remove);
-  lua_register(context, "equipment_get_tunic", l_equipment_get_tunic);
-  lua_register(context, "equipment_get_sword", l_equipment_get_sword);
-  lua_register(context, "equipment_get_shield", l_equipment_get_shield);
   lua_register(context, "shop_item_remove", l_shop_item_remove);
   lua_register(context, "switch_is_enabled", l_switch_is_enabled);
   lua_register(context, "switch_set_enabled", l_switch_set_enabled);
@@ -162,744 +118,169 @@ void MapScript::register_c_functions(void) {
 }
 
 /**
+ * Loads the script and starts it.
+ * This function is called when the map starts.
+ * @param destination_point_name name of the destination point where the hero is
+ */
+void MapScript::start(const std::string &destination_point_name) {
+
+  this->hero = map->get_entities()->get_hero();
+
+  // compute the file name, depending on the id of the map
+  int id = (int) map->get_id();
+  std::ostringstream oss;
+  oss << "maps/map" << std::setfill('0') << std::setw(4) << id;
+
+  // load the script
+  load(oss.str());
+
+  // notify the map
+  event_map_started(destination_point_name);
+}
+
+/**
  * In any C++ function called by the Lua script (i.e. a function prefixed by "l_"),
  * the first instruction calls this function.
  * It checks the number of arguments provided to the C++ function called by the Lua script
  * and retrieves the current MapScript object.
  * @param context the Lua context
  * @param nb_arguments the number of arguments to check (if it is incorrect, the program stops)
- * @param script if not NULL, a pointer to the MapScript object will be copied there so that the C++ function
+ * @param map_script if not NULL, a pointer to the MapScript object will be copied there so that the static C++ function
  * called by the Lua script can access it
  */
-void MapScript::called_by_script(lua_State *context, int nb_arguments, MapScript **script) {
 
-  // check the number of arguments
-  if (lua_gettop(context) != nb_arguments) {
-    DIE("Invalid number of arguments");
-  }
+void MapScript::called_by_script(lua_State *context, int nb_arguments, MapScript **map_script) {
 
-  // retrieve the MapScript object
-  if (script != NULL) {
-    lua_getglobal(context, "_cpp_object");
-    *script = (MapScript*) lua_touserdata(context, -1);
-    lua_pop(context, 1);
-  }
-}
-
-/**
- * Loads the script and starts it.
- * @param destination_point_name name of the destination point where the hero is
- */
-void MapScript::start(const std::string &destination_point_name) {
-
-  this->game = map->get_game();
-  this->hero = game->get_hero();
-
-  // create an execution context
-  context = lua_open();
-  luaL_openlibs(context);
-
-  // put a pointer to this MapScript object in the global area of the Lua context
-  lua_pushlightuserdata(context, this);
-  lua_setglobal(context, "_cpp_object");
-
-  // register the C functions accessible to the script
-  register_c_functions();
-
-  // initialize the script
-  luaL_dostring(context, "math.randomseed(os.time())");
-
-  // load the script
-  load();
-
-  event_map_started(destination_point_name);
-}
-
-/**
- * Loads the script from the game data source.
- */
-void MapScript::load(void) {
-
-  // get the id of the map
-  int id = (int) map->get_id();
-
-  // compute the file name, depending on the id
-  std::ostringstream oss;
-  oss << "maps/map" << std::setfill('0') << std::setw(4) << id << ".lua";
-  std::string text_script_name = oss.str();
-  oss << "c";
-  std::string compiled_script_name = oss.str();
-
-  std::string file_name;
-#if SOLARUS_DEBUG_LEVEL == 0
-  file_name = compiled_script_name; // use the compiled version of the script (.luac)
-#else
-  if (FileTools::data_file_exists(text_script_name)) {
-    file_name = text_script_name; // in debug mode, we prefer using the clear text script
-  }
-  else {
-    file_name = compiled_script_name;
-  }
-#endif
-
-  size_t size;
-  char *buffer;
-  FileTools::data_file_open_buffer(file_name, &buffer, &size);
-  luaL_loadbuffer(context, buffer, size, "map script");
-  FileTools::data_file_close_buffer(buffer);
-  lua_call(context, 0, 0);
-}
-
-/**
- * Calls a function without arguments in the script.
- * If the function does not exists in the script, nothing happens:
- * it just means that the function corresponds to an event that
- * the script does not need to handle.
- * @param function_name name of the function to call
- * @return true if the function was called, false if it does not exist
- */
-bool MapScript::call_script_function(const std::string &function_name) {
-
-  if (context == NULL) {
-    return false;
-  }
-
-  lua_getglobal(context, function_name.c_str());
-  bool exists = lua_isfunction(context, -1);
-
-  if (exists) {
-    lua_call(context, 0, 0);
-  }
-  else {
-    lua_pop(context, -1);
-  }
-
-  return exists;
-}
-
-/**
- * Calls a function in the script.
- * @param function_name name of the function to call
- * @param arg1 argument of the function
- * @return true if the function was called, false if it does not exist
- */
-bool MapScript::call_script_function(const std::string &function_name, const std::string &arg1) {
-
-  if (context == NULL) {
-    return false;
-  }
-
-  lua_getglobal(context, function_name.c_str());
-  bool exists = lua_isfunction(context, -1);
-
-  if (exists) {
-    lua_pushstring(context, arg1.c_str());
-    lua_call(context, 1, 0);
-  }
-  else {
-    lua_pop(context, -1);
-  }
-
-  return exists;
-}
-
-/**
- * Calls a function in the script.
- * @param function_name name of the function to call
- * @param arg1 first argument of the function
- * @param arg2 second argument of the function
- * @return true if the function was called, false if it does not exist
- */
-bool MapScript::call_script_function(const std::string &function_name,
-				  const std::string &arg1, int arg2) {
-
-  if (context == NULL) {
-    return false;
-  }
-
-  lua_getglobal(context, function_name.c_str());
-  bool exists = lua_isfunction(context, -1);
-
-  if (exists) {
-    lua_pushstring(context, arg1.c_str());
-    lua_pushinteger(context, arg2);
-    lua_call(context, 2, 0);
-  }
-  else {
-    lua_pop(context, -1);
-  }
-
-  return exists;
-}
-
-/**
- * Calls a function in the script.
- * @param function_name name of the function to call
- * @param arg1 first argument of the function
- * @param arg2 second argument of the function
- * @param arg3 third argument of the function
- * @return true if the function was called, false if it does not exist
- */
-bool MapScript::call_script_function(const std::string &function_name,
-				  const std::string &arg1, int arg2, int arg3) {
-
-  if (context == NULL) {
-    return false;
-  }
-
-  lua_getglobal(context, function_name.c_str());
-  bool exists = lua_isfunction(context, -1);
-
-  if (exists) {
-    lua_pushstring(context, arg1.c_str());
-    lua_pushinteger(context, arg2);
-    lua_pushinteger(context, arg3);
-    lua_call(context, 3, 0);
-  }
-  else {
-    lua_pop(context, -1);
-  }
-
-  return exists;
-}
-
-/**
- * Calls a function in the script.
- * @param function_name name of the function to call
- * @param arg1 argument of the function
- * @return true if the function was called, false if it does not exist
- */
-bool MapScript::call_script_function(const std::string &function_name, int arg1) {
-
-  if (context == NULL) {
-    return false;
-  }
-
-  lua_getglobal(context, function_name.c_str());
-  bool exists = lua_isfunction(context, -1);
-
-  if (exists) {
-    lua_pushinteger(context, arg1);
-    lua_call(context, 1, 0);
-  }
-  else {
-    lua_pop(context, -1);
-  }
-
-  return exists;
-}
-
-/**
- * Calls a function in the script.
- * @param function_name name of the function to call
- * @param arg1 first argument of the function
- * @param arg1 second argument of the function
- * @return true if the function was called, false if it does not exist
- */
-bool MapScript::call_script_function(const std::string &function_name, int arg1, int arg2) {
-
-  if (context == NULL) {
-    return false;
-  }
-
-  lua_getglobal(context, function_name.c_str());
-  bool exists = lua_isfunction(context, -1);
-
-  if (exists) {
-    lua_pushinteger(context, arg1);
-    lua_pushinteger(context, arg2);
-    lua_call(context, 2, 0);
-  }
-  else {
-    lua_pop(context, -1);
-  }
-
-  return exists;
-}
-
-/**
- * Calls a function in the script.
- * @param function_name name of the function to call
- * @param arg1 argument of the function
- * @return true if the function was called, false if it does not exist
- */
-bool MapScript::call_script_function(const std::string &function_name, bool arg1) {
-
-  if (context == NULL) {
-    return false;
-  }
-
-  lua_getglobal(context, function_name.c_str());
-  bool exists = lua_isfunction(context, -1);
-
-  if (exists) {
-    lua_pushboolean(context, arg1);
-    lua_call(context, 1, 0);
-  }
-  else {
-    lua_pop(context, -1);
-  }
-
-  return exists;
-}
-
-/**
- * This function is called when the game is being suspended
- * or resumed.
- * @param suspended true if the game is suspended, false if it is resumed
- */
-void MapScript::set_suspended(bool suspended) {
-
-  if (context != NULL) {
-
-    // suspend or resume the timers
-    std::list<Timer*>::iterator it;
-    for (it = timers.begin(); it != timers.end(); it++) {
-      (*it)->set_suspended(suspended);
-    }
-
-    // notify the script
-    call_script_function("event_set_suspended", suspended);
-  }
-}
-
-/**
- * Updates the script.
- */
-void MapScript::update(void) {
-
-  // update the timers
-  std::list<Timer*>::iterator it;
-
-  for (it = timers.begin(); it != timers.end(); it++) {
-
-    Timer *timer = *it;
-
-    timer->update();
-    if (timer->is_finished()) {
-      call_script_function(timer->get_name());
-      delete timer;
-      timers.erase(it);
-      it = timers.begin();
-    }
-  }
-
-  // update the script
-  call_script_function("event_update");
-}
-
-/**
- * Adds a timer to the script.
- * @param timer the timer
- */
-void MapScript::add_timer(Timer *timer) {
-  timers.push_back(timer);
-}
-
-/**
- * Removes a timer if it exists.
- * @param callback_name name of the timer callback
- */
-void MapScript::remove_timer(const std::string &callback_name) {
-
-  bool found = false;
-  std::list<Timer*>::iterator it;
-
-  Timer *timer = NULL;
-  for (it = timers.begin(); it != timers.end() && !found; it++) {
-
-    timer = *it;
-    if (timer->get_name() == callback_name) {
-      delete timer;
-      found = true;
-    }
-  }
-
-  if (found) {
-    timers.remove(timer);
-  }
+  Script *script;
+  Script::called_by_script(context, nb_arguments, &script);
+  *map_script = (MapScript*) script;
 }
 
 // functions that can be called by the Lua script
 
 /**
- * Prevents the player from moving until unfreeze() is called.
+ * Sends the hero to a map.
+ * Argument 1 (int): id of the destination map (can be the same one)
+ * Argument 2 (string): name of the destination point on that map
+ * Argument 3 (int): type of transition to play
  */
-int MapScript::l_freeze(lua_State *l) {
-
-  MapScript *script;
-  called_by_script(l, 0, &script);
-
-  script->hero->freeze();
-
-  return 0;
-}
-
-/**
- * Allows the player to move again after a freeze() call.
- */
-int MapScript::l_unfreeze(lua_State *l) {
-
-  MapScript *script;
-  called_by_script(l, 0, &script);
-
-  script->hero->unfreeze();
-
-  return 0;
-}
-
-/**
- * Creates a dialog box and starts displaying a message.
- * If the message is followed by other messages, they are also
- * displayed, posting a message_started() event each time.
- * If the message (or one of its next messages) contains a variable,
- * then call set_message_variable() to specify its value.
- * Argument 1 (string): id of the message to display
- */
-int MapScript::l_start_message(lua_State *l) {
-
-  MapScript *script;
-  called_by_script(l, 1, &script);
-  const std::string &message_id = lua_tostring(l, 1);
-
-  script->game->get_dialog_box()->start_message_sequence(message_id);
-
-  return 0;
-}
-
-/**
- * Sets the value of the variable in a diabog box message.
- * The function has to be called after the dialog box is created,
- * i.e. after calling show_message.
- * Argument 1 (string): id of the message containing the variable
- * Argument 2 (string): value of the variable
- */
-int MapScript::l_set_message_variable(lua_State *l) {
-
-  MapScript *script;
-  called_by_script(l, 2, &script);
-  const MessageId &message_id = lua_tostring(l, 1);
-  const std::string &value = lua_tostring(l, 2);
-
-  script->game->get_dialog_box()->set_variable(message_id, value);
-
-  return 0;
-}
-
-/**
- * Changes the style of the future dialog boxes.
- * Argument 1 (integer): the style to set (see the DialogBox::Style enum)
- */
-int MapScript::l_dialog_set_style(lua_State *l) {
-
-  MapScript *script;
-  called_by_script(l, 1, &script);
-  int style = lua_tointeger(l, 1);
-
-  script->game->get_dialog_box()->set_style(DialogBox::Style(style));
-
-  return 0;
-}
-
-/**
- * Enables or disables the head up display.
- * Argument 1 (boolean): true to enable it, false to disable it
- */
-int MapScript::l_hud_set_enabled(lua_State *l) {
-
-  MapScript *script;
-  called_by_script(l, 1, &script);
-  bool enabled = lua_toboolean(l, 1) != 0;
-
-  script->game->set_hud_enabled(enabled);
-  return 0;
-}
-
-/**
- * Plays a sound.
- * Argument 1 (string): name of the sound
- */
-int MapScript::l_play_sound(lua_State *l) {
-
-  MapScript *script;
-  called_by_script(l, 1, &script);
-  const SoundId &sound_id = lua_tostring(l, 1);
-
-  script->game->play_sound(sound_id);
-
-  return 0;
-}
-
-/**
- * Plays a music.
- * Argument 1 (string): name of the music
- */
-int MapScript::l_play_music(lua_State *l) {
-
-  MapScript *script;
-  called_by_script(l, 1, &script);
-  const MusicId &music_id = lua_tostring(l, 1);
-
-  script->game->play_music(music_id);
-
-  return 0;
-}
-
-/**
- * Gives a treasure to the player.
- * If the treasure comes from a chest, you don't have to call this function:
- * the treasure will be given to the player automatically when he opens the chest.
- * You can use this function to make a non-playing character
- * give a treasure to the player.
- * Argument 1 (integer): content of the treasure (see Treasure.h)
- * Argument 2 (integer): index of the savegame boolean variable that stores
- * the possession state of the treasure (or -1 if you don't want to save this treasure)
- */
-int MapScript::l_give_treasure(lua_State *l) {
-
-  MapScript *script;
-  called_by_script(l, 2, &script);
-  Treasure::Content content = (Treasure::Content) lua_tointeger(l, 1);
-  int savegame_variable = lua_tointeger(l, 2);
-
-  Game *game = script->game;
-  game->give_treasure(new Treasure(game, content, savegame_variable));
-
-  return 0;
-}
-
-/**
- * Gives a treasure to the player, specifying the amount.
- * This function should be called only for for treasures with an amount, like arrows, apples, etc.,
- * otherwise the amount parameter will be ignored.
- * For example you can use this function to make a non-playing character
- * give a treasure to the player.
- * Argument 1 (integer): content of the treasure (see Treasure.h)
- * Argument 2 (integer): amount to give
- * Argument 3 (integer): index of the savegame boolean variable that stores
- * the possession state of the treasure (or -1 if you don't want to save this treasure)
- */
-int MapScript::l_give_treasure_with_amount(lua_State *l) {
+int MapScript::l_hero_set_map(lua_State *l) {
 
   MapScript *script;
   called_by_script(l, 3, &script);
-  Treasure::Content content = (Treasure::Content) lua_tointeger(l, 1);
-  int amount = lua_tointeger(l, 2);
-  int savegame_variable = lua_tointeger(l, 3);
 
-  Game *game = script->game;
-  game->give_treasure(new Treasure(game, content, amount, savegame_variable));
+  MapId map_id = lua_tointeger(l, 1);
+  const std::string &destination_point_name = lua_tostring(l, 2);
+  Transition::Style transition_style = Transition::Style(lua_tointeger(l, 3));
+
+  script->game->set_current_map(map_id, destination_point_name, transition_style);
 
   return 0;
 }
 
 /**
- * Returns a string value saved.
- * Argument 1 (integer): index of the string value to get (0 to 63)
- * Return value (string): the string saved at this index
+ * Sets the direction of the hero's sprite.
+ * Argument 1 (integer): the direction between 0 and 3
  */
-int MapScript::l_savegame_get_string(lua_State *l) {
+int MapScript::l_hero_set_direction(lua_State *l) {
 
   MapScript *script;
   called_by_script(l, 1, &script);
-  int index = lua_tointeger(l, 1);
 
-  const std::string &value = script->game->get_savegame()->get_string(index);
-  lua_pushstring(l, value.c_str());
+  int direction = lua_tointeger(l, 1);
 
-  return 1;
+  script->hero->set_animation_direction(direction);
+
+  return 0;
 }
 
 /**
- * Returns an integer value saved.
- * Argument 1 (integer): index of the integer value to get (0 to 2047)
- * Return value (integer): the integer saved at this index
+ * Places the hero on the exact position of a sensor's name.
+ * Argument 1 (string): name of the sensor
  */
-int MapScript::l_savegame_get_integer(lua_State *l) {
+int MapScript::l_hero_align_on_sensor(lua_State *l) {
 
   MapScript *script;
   called_by_script(l, 1, &script);
-  int index = lua_tointeger(l, 1);
 
-  int value = script->game->get_savegame()->get_integer(index);
-  lua_pushinteger(l, value);
+  const std::string &name = lua_tostring(l, 1);
 
-  return 1;
-}
-
-/**
- * Returns a boolean value saved.
- * Argument 1 (integer): index of the boolean value to get
- * Return value (boolean): the boolean saved at this index
- */
-int MapScript::l_savegame_get_boolean(lua_State *l) {
-
-  MapScript *script;
-  called_by_script(l, 1, &script);
-  int index = lua_tointeger(l, 1);
-
-  bool value = script->game->get_savegame()->get_boolean(index);
-  lua_pushboolean(l, value ? 1 : 0);
-
-  return 1;
-}
-
-/**
- * Sets a string value saved.
- * Argument 1 (integer): index of the string value to set, between 32 and 63
- * (lower indices are writable only by the game engine)
- * Argument 2 (string): the string value to store at this index
- */
-int MapScript::l_savegame_set_string(lua_State *l) {
-
-  MapScript *script;
-  called_by_script(l, 2, &script);
-  int index = lua_tointeger(l, 1);
-  const std::string &value = lua_tostring(l, 2);
-
-  if (index < 32) {
-    DIE("Cannot change savegame string '" << index << "': string variables below 32 are read-only");
-  }
-
-  script->game->get_savegame()->set_string(index, value);
+  MapEntities *entities = script->map->get_entities();
+  Sensor *sensor = (Sensor*) entities->get_entity(SENSOR, name);
+  script->hero->set_xy(sensor->get_xy());
 
   return 0;
 }
 
 /**
- * Sets an integer value saved.
- * Argument 1 (integer): index of the integer value to set, between 1024 and 2047
- * (lower indices are writable only by the game engine)
- * Argument 2 (integer): the integer value to store at this index
+ * Makes the hero walk with respect to a path.
+ * Argument 1 (string): the path (each character is a direction between '0' and '7')
+ * Argument 2 (boolean): true to make the movement loop
+ * Argument 3 (boolean): true to make the movement sensible to obstacles
  */
-int MapScript::l_savegame_set_integer(lua_State *l) {
+int MapScript::l_hero_walk(lua_State *l) {
 
-  MapScript *script;
-  called_by_script(l, 2, &script);
-  int index = lua_tointeger(l, 1);
-  int value = lua_tointeger(l, 2);
+  called_by_script(l, 3, NULL);
 
-  if (index < 1024) {
-    DIE("Cannot change savegame integer '" << index << "': integer variables below 1024 are read-only");
-  }
+  /* TODO
+  const std::string &path = lua_tostring(l, 1);
+  bool loop = lua_toboolean(l, 2) != 0;
+  bool with_collisions = lua_toboolean(l, 3) != 0;
 
-  script->game->get_savegame()->set_integer(index, value);
+  script->hero->walk(path, loop, with_collisions);
+  */
 
   return 0;
 }
 
 /**
- * Sets a boolean value saved.
- * Argument 1 (integer): index of the boolean value to set, between 0 and 32767
- * Argument 2 (boolean): the boolean value to store at this index
+ * Makes the hero jump into a direction.
+ * Argument 1 (integer): the jump direction, between 0 and 7
+ * Argument 2 (integer): the jump length in pixels
+ * Argument 3 (boolean): true to enable the collisions
  */
-int MapScript::l_savegame_set_boolean(lua_State *l) {
-
-  MapScript *script;
-  called_by_script(l, 2, &script);
-  int index = lua_tointeger(l, 1);
-  int value = lua_toboolean(l, 2);
-
-  script->game->get_savegame()->set_boolean(index, value != 0);
-
-  return 0;
-}
-
-/**
- * Returns a string representing the name of the player.
- * Return value (string): the player's name
- */
-int MapScript::l_player_get_name(lua_State *l) {
-
-  MapScript *script;
-  called_by_script(l, 0, &script);
-
-  const std::string &name = script->game->get_savegame()->get_string(Savegame::PLAYER_NAME);
-  lua_pushstring(l, name.c_str());
-
-  return 1;
-}
-
-/**
- * Sets whether the player can pause the game.
- * Argument 1 (boolean): true to enable the pause key
- */
-int MapScript::l_player_set_pause_enabled(lua_State *l) {
-
-  MapScript *script;
-  called_by_script(l, 1, &script);
-  bool enabled = lua_toboolean(l, 1) != 0;
-
-  script->game->set_pause_enabled(enabled);
-
-  return 0;
-}
-
-/**
- * Starts a timer to run a Lua function after a delay.
- * Argument 1 (integer): the timer duration in milliseconds
- * Argument 2 (string): name of the Lua function to call when the timer is finished
- * (no argument, no return value)
- * Argument 3 (boolean): plays a sound until the timer expires
- */
-int MapScript::l_start_timer(lua_State *l) {
+int MapScript::l_hero_jump(lua_State *l) {
 
   MapScript *script;
   called_by_script(l, 3, &script);
-  uint32_t duration = lua_tointeger(l, 1);
-  const std::string &callback_name = lua_tostring(l, 2);
-  bool with_sound = lua_toboolean(l, 3) != 0;
 
-  Timer *timer = new Timer(script->game, duration, callback_name, with_sound);
-  script->add_timer(timer);
+  int direction = lua_tointeger(l, 1);
+  int length = lua_tointeger(l, 2);
+  bool with_collisions = lua_toboolean(l, 3) != 0;
 
-  return 0;
-}
-
-/**
- * Stops an existing timer.
- * Argument 1 (string): name of the Lua function that is supposed to be called
- * when the timer is finished
- */
-int MapScript::l_stop_timer(lua_State *l) {
-
-  MapScript *script;
-  called_by_script(l, 1, &script);
-  const std::string &callback_name = lua_tostring(l, 1);
-
-  script->remove_timer(callback_name);
+  script->hero->start_jumping(direction, length, with_collisions, false);
 
   return 0;
 }
 
 /**
- * Moves the camera towards a target point.
- * Argument 1 (integer): x coordinate of the target point
- * Argument 2 (integer): y coordinate of the target point
- * Argument 3 (integer): speed of the camera movement (10 is normal)
+ * Makes the hero brandish his sword meaning a victory
+ * and plays the corresponding sound.
  */
-int MapScript::l_move_camera(lua_State *l) {
-
-  MapScript *script;
-  called_by_script(l, 3, &script);
-  int x = lua_tointeger(l, 1);
-  int y = lua_tointeger(l, 2);
-  int speed = lua_tointeger(l, 3);
-
-  script->map->move_camera(x, y, speed);
-
-  return 0;
-}
-
-/**
- * Moves the camera back to the hero.
- */
-int MapScript::l_restore_camera(lua_State *l) {
-
+int MapScript::l_hero_start_victory_sequence(lua_State *l) {
+  
   MapScript *script;
   called_by_script(l, 0, &script);
 
-  script->map->restore_camera();
+  script->hero->start_victory();
+
+  return 0;
+}
+
+/**
+ * Hides or shows the hero.
+ * Hiding the hero does not disable its movements, so when using this function
+ * you will usually also need to freeze the hero.
+ * Argument 1 (boolean): true to make the hero visible
+ */
+int MapScript::l_hero_set_visible(lua_State *l) {
+
+  MapScript *script;
+  called_by_script(l, 1, &script);
+
+  bool visible = lua_toboolean(l, 1) != 0;
+
+  script->hero->set_visible(visible);
 
   return 0;
 }
@@ -926,7 +307,6 @@ int MapScript::l_npc_get_position(lua_State *l) {
 
   return 2;
 }
-
 
 /**
  * Sets the position of an NPC.
@@ -1088,134 +468,6 @@ int MapScript::l_npc_remove(lua_State *l) {
 }
 
 /**
- * Sets the direction of the hero's sprite.
- * Argument 1 (integer): the direction between 0 and 3
- */
-int MapScript::l_hero_set_direction(lua_State *l) {
-
-  MapScript *script;
-  called_by_script(l, 1, &script);
-
-  int direction = lua_tointeger(l, 1);
-
-  script->hero->set_animation_direction(direction);
-
-  return 0;
-}
-
-/**
- * Places the hero on the exact position of a sensor's name.
- * Argument 1 (string): name of the sensor
- */
-int MapScript::l_hero_align_on_sensor(lua_State *l) {
-
-  MapScript *script;
-  called_by_script(l, 1, &script);
-
-  const std::string &name = lua_tostring(l, 1);
-
-  MapEntities *entities = script->map->get_entities();
-  Sensor *sensor = (Sensor*) entities->get_entity(SENSOR, name);
-  script->hero->set_xy(sensor->get_xy());
-
-  return 0;
-}
-
-/**
- * Sends the hero to a map.
- * Argument 1 (int): id of the destination map (can be the same one)
- * Argument 2 (string): name of the destination point on that map
- * Argument 3 (int): type of transition to play
- */
-int MapScript::l_hero_set_map(lua_State *l) {
-
-  MapScript *script;
-  called_by_script(l, 3, &script);
-
-  MapId map_id = lua_tointeger(l, 1);
-  const std::string &destination_point_name = lua_tostring(l, 2);
-  Transition::Style transition_style = Transition::Style(lua_tointeger(l, 3));
-
-  script->game->set_current_map(map_id, destination_point_name, transition_style);
-
-  return 0;
-}
-
-/**
- * Makes the hero walk with respect to a path.
- * Argument 1 (string): the path (each character is a direction between '0' and '7')
- * Argument 2 (boolean): true to make the movement loop
- * Argument 3 (boolean): true to make the movement sensible to obstacles
- */
-int MapScript::l_hero_walk(lua_State *l) {
-
-  called_by_script(l, 3, NULL);
-
-  /* TODO
-  const std::string &path = lua_tostring(l, 1);
-  bool loop = lua_toboolean(l, 2) != 0;
-  bool with_collisions = lua_toboolean(l, 3) != 0;
-
-  script->hero->walk(path, loop, with_collisions);
-  */
-
-  return 0;
-}
-
-/**
- * Makes the hero jump into a direction.
- * Argument 1 (integer): the jump direction, between 0 and 7
- * Argument 2 (integer): the jump length in pixels
- * Argument 3 (boolean): true to enable the collisions
- */
-int MapScript::l_hero_jump(lua_State *l) {
-
-  MapScript *script;
-  called_by_script(l, 3, &script);
-
-  int direction = lua_tointeger(l, 1);
-  int length = lua_tointeger(l, 2);
-  bool with_collisions = lua_toboolean(l, 3) != 0;
-
-  script->hero->start_jumping(direction, length, with_collisions, false);
-
-  return 0;
-}
-
-/**
- * Makes the hero brandish his sword meaning a victory
- * and plays the corresponding sound.
- */
-int MapScript::l_hero_start_victory_sequence(lua_State *l) {
-  
-  MapScript *script;
-  called_by_script(l, 0, &script);
-
-  script->hero->start_victory();
-
-  return 0;
-}
-
-/**
- * Hides or shows the hero.
- * Hiding the hero does not disable its movements, so when using this function
- * you will usually also need to freeze the hero.
- * Argument 1 (boolean): true to make the hero visible
- */
-int MapScript::l_hero_set_visible(lua_State *l) {
-
-  MapScript *script;
-  called_by_script(l, 1, &script);
-
-  bool visible = lua_toboolean(l, 1) != 0;
-
-  script->hero->set_visible(visible);
-
-  return 0;
-}
-
-
-/**
  * Sets the chest open or closed.
  * Only the chest sprite is affected (use give_treasure to give a treasure to the player).
  * This function is useful for chests whose content is managed by the script.
@@ -1273,129 +525,6 @@ int MapScript::l_chest_is_hidden(lua_State *l) {
   MapEntities *entities = script->map->get_entities();
   Chest *chest = (Chest*) entities->get_entity(CHEST, name);
   lua_pushboolean(l, chest->is_hidden() ? 1 : 0);
-
-  return 1;
-}
-
-/**
- * Returns the current number of rupees of the player.
- * Return value (integer): the number of rupees
- */
-int MapScript::l_get_rupees(lua_State *l) {
-
-  MapScript *script;
-  called_by_script(l, 0, &script);
-
-  int rupees = script->game->get_equipment()->get_rupees();
-  lua_pushinteger(l, rupees);
-
-  return 1;
-}
-
-/**
- * Removes some rupees to the player.
- * Argument 1 (integer): number or rupees to remove
- */
-int MapScript::l_remove_rupees(lua_State *l) {
-
-  MapScript *script;
-  called_by_script(l, 1, &script);
-
-  int rupees = lua_tointeger(l, 1);
-
-  script->game->get_equipment()->remove_rupees(rupees);
-
-  return 0;
-}
-
-/**
- * Returns the possession state of an item from the inventory.
- * Argument 1 (integer): an inventory item id
- * Return value (integer): the possession state of this inventory item
- */
-int MapScript::l_inventory_item_get(lua_State *l) {
-
-  MapScript *script;
-  called_by_script(l, 1, &script);
-
-  InventoryItemId item_id = InventoryItemId(lua_tointeger(l, 1));
-
-  int variant = script->game->get_equipment()->has_inventory_item(item_id);
-  lua_pushinteger(l, variant);
-
-  return 1;
-}
-
-/**
- * Sets the possession state of an item from the inventory
- * Argument 1 (integer): an inventory item id
- * Argument 2 (integer): the possession state of this inventory item
- * (a value of 0 removes the inventory item)
- */
-int MapScript::l_inventory_item_set(lua_State *l) {
-
-  MapScript *script;
-  called_by_script(l, 2, &script);
-
-  InventoryItemId item_id = InventoryItemId(lua_tointeger(l, 1));
-
-  int variant = lua_tointeger(l, 2);
-  script->game->get_equipment()->give_inventory_item(item_id, variant);
-  lua_pushinteger(l, variant);
-
-  return 1;
-}
-
-
-/**
- * Returns the amount the player has for an item from the inventory.
- * Argument 1 (integer): an inventory item id having an amount (e.g. the bombs)
- * Return value (integer): the amount possessed
- */
-int MapScript::l_inventory_item_get_amount(lua_State *l) {
-
-  MapScript *script;
-  called_by_script(l, 1, &script);
-
-  InventoryItemId item_id = InventoryItemId(lua_tointeger(l, 1));
-
-  int amount = script->game->get_equipment()->get_inventory_item_amount(item_id);
-  lua_pushinteger(l, amount);
-
-  return 1;
-}
-
-/**
- * Removes from the inventory an amount of the specified item.
- * Argument 1 (integer): an inventory item id having an amount (e.g. the bombs)
- * Argument 2 (integer): the amount possessed
- */
-int MapScript::l_inventory_item_remove_amount(lua_State *l) {
-
-  MapScript *script;
-  called_by_script(l, 2, &script);
-
-  InventoryItemId item_id = InventoryItemId(lua_tointeger(l, 1));
-
-  int amount = lua_tointeger(l, 2);
-  script->game->get_equipment()->remove_inventory_item_amount(item_id, amount);
-
-  return 0;
-}
-
-/**
- * Returns whether the specified inventory item is corresponds to a bottle.
- * Argument 1 (integer): an inventory item id
- * Return value (integer): true if it is a bottle
- */
-int MapScript::l_inventory_item_is_bottle(lua_State *l) {
-
-  called_by_script(l, 1, NULL);
-
-  InventoryItemId item_id = InventoryItemId(lua_tointeger(l, 1));
-
-  bool bottle = InventoryItem::is_bottle(item_id);
-  lua_pushboolean(l, bottle ? 1 : 0);
 
   return 1;
 }
@@ -1738,54 +867,6 @@ int MapScript::l_interactive_entity_remove(lua_State *l) {
 }
 
 /**
- * Returns the tunic of the hero.
- * Return value (integer): the tunic number (0 to 2)
- */
-int MapScript::l_equipment_get_tunic(lua_State *l) {
-
-  MapScript *script;
-  called_by_script(l, 0, &script);
-
-  int tunic = script->game->get_equipment()->get_tunic();
-
-  lua_pushinteger(l, tunic);
-
-  return 1;
-}
-
-/**
- * Returns the sword of the hero.
- * Return value (integer): the sword number (0 to 4)
- */
-int MapScript::l_equipment_get_sword(lua_State *l) {
-
-  MapScript *script;
-  called_by_script(l, 0, &script);
-
-  int sword = script->game->get_equipment()->get_sword();
-
-  lua_pushinteger(l, sword);
-
-  return 1;
-}
-
-/**
- * Returns the shield of the hero.
- * Return value (integer): the shield number (0 to 3)
- */
-int MapScript::l_equipment_get_shield(lua_State *l) {
-
-  MapScript *script;
-  called_by_script(l, 0, &script);
-
-  int shield = script->game->get_equipment()->get_shield();
-
-  lua_pushinteger(l, shield);
-
-  return 1;
-}
-
-/**
  * Removes a shop item from the map.
  * Argument 1 (string): name of the shop item
  */
@@ -2125,28 +1206,6 @@ void MapScript::event_opening_transition_finished(const std::string &destination
 }
 
 /**
- * Notifies the script that a message has just started to be displayed
- * in the dialog box.
- * @param message_id id of the message
- */
-void MapScript::event_message_started(const MessageId &message_id) {
-  call_script_function("event_message_started", message_id);
-}
-
-/**
- * Notifies the script that the dialog box has just finished.
- * This function is called when the last message of a dialog is finished.
- * Note that this event is not called if the dialog was cancelled.
- * @param first_message_id id of the first message in the message sequence
- * that has just finished
- * @param answer the answer selected by the player: 0 for the first one,
- * 1 for the second one, -1 if there was no question
- */
-void MapScript::event_message_sequence_finished(const MessageId &first_message_id, int answer) {
-  call_script_function("event_message_sequence_finished", first_message_id, answer);
-}
-
-/**
  * Notifies the script that a switch has just been enabled.
  * @param switch_name name of the switch
  */
@@ -2178,20 +1237,6 @@ void MapScript::event_switch_left(const std::string &switch_name) {
 void MapScript::event_hero_on_sensor(const std::string &sensor_name) {
   call_script_function("event_hero_on_sensor", sensor_name);
   this->hero->reset_movement();
-}
-
-/**
- * Notifies the script that the camera moved by a call to move_camera() has reached its target.
- */
-void MapScript::event_camera_reached_target(void) {
-  call_script_function("event_camera_reached_target");
-}
-
-/**
- * Notifies the script that the camera moved by a call to restore_camera() has reached the hero.
- */
-void MapScript::event_camera_back(void) {
-  call_script_function("event_camera_back");
 }
 
 /**
@@ -2240,11 +1285,14 @@ void MapScript::event_npc_movement_finished(const std::string &npc_name) {
 
 /**
  * Notifies the script that the player has just open an empty chest.
- * What happend next is defined by your script. The hero is in state FREEZE
+ * What happens next is controlled by your script if it handles this event.
+ * The hero is in state FREEZE
  * so if you do something else than giving the player a treasure,
- * don't forget to call unfreeze() when you have finished.
+ * don't forget to call unfreeze() once you have finished.
+ * The script function does not have to return any value.
  * @param chest_name name of the chest
- * @return true if the script has handled the event
+ * @return true if the script has handled the event, i.e. if the
+ * event_open_empty_chest exists in the script
  */
 bool MapScript::event_open_empty_chest(const std::string &chest_name) {
   return call_script_function("event_open_empty_chest", chest_name);
@@ -2288,13 +1336,6 @@ void MapScript::event_shop_item_bought(const std::string &shop_item_name) {
  */
 void MapScript::event_enemy_dead(const std::string &enemy_name) {
   call_script_function("event_enemy_dead", enemy_name);
-}
-
-/**
- * Notifies the script that the ending sequence of a dungeon has to start now.
- */
-void MapScript::event_dungeon_ending_sequence(void) {
-  call_script_function("event_dungeon_ending_sequence");
 }
 
 /**

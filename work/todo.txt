@@ -33,11 +33,8 @@ Feature requests :
 - Windows : voir si SDL utilise ou peut utiliser OpenGL ou DirectX
 - Ce serait pas mal de faire une animation lorsque Link vide le contenu de sa bouteille.
 - Ajouter un "map marker" pour indiquer où il faut se rendre ensuite
-- faire une classe Script plus générale indépendante des maps, dont hérite MapScript :
-  on pourrait ensuite avoir un script global, des scripts d'objets de l'inventaire,
-  des scripts d'ennemis, etc.
-- faire un type d'ennemi "CustomEnemy" qui est en fait scripté
 - Voir si la police supporte des caractères unicode comme U+2192 (→) et U+2190 (←)
+- faire un type d'ennemi "CustomEnemy" qui est en fait scripté
 
 
 
@@ -66,6 +63,10 @@ Bugs :
 - Quand on lance un pot dans un donjon depuis la couche intermédiaire vers la couche basse, le changer de couche (détecter l'absence de tiles sur la couche intermédiaire)
 - vérifier ce qui se passe si on arrive sur un tapis roulant pendant qu'on tire une statue (peut-être modifier le is_conveyor_belt_obstacle)
 - lancer un chou-péteur sur un interrupteur de cristal : activé deux fois (projectile + explosion)
+- (bug trouvé par Morwenn, confirmé) Lorsqu'on essaye de soulever une falaise en biais (avec la touche action),
+  et que l'on reste appuyé sur la touche directionnelle, Link continue d'essayer de pousser la falaise
+  tant qu'on ne relâche pas la touche directionnelle.
+- réformer les noms dans les scripts
 
 
 A venir :

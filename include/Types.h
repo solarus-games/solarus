@@ -97,13 +97,14 @@ class Dungeon;
 class Treasure;
 class Map;
 class MapLoader;
-class MapScript;
 class DialogBox;
 class Message;
 class Timer;
 class GameoverSequence;
 class Camera;
 class InventoryItem;
+class Script;
+class MapScript;
 
 // HUD
 class HUD;

@@ -24,10 +24,11 @@
 #include <map>
 
 /**
- * This class displays a line of text on a surface.
- * Basically, it encapsulates a graphic surface and handles text rendering,
+ * @brief Displays a line of text on a surface.
+ *
+ * Basically, this class encapsulates a graphic surface and handles text rendering,
  * horizontal and vertical text alignment, color and other properties.
- * This is the only class related to a font library (SDL_ttf).
+ * This is the only class related to the font library (SDL_ttf).
  */
 class TextSurface {
 

@@ -18,17 +18,15 @@
 #include "lowlevel/Rectangle.h"
 
 /**
- * This class provides functions to make mathematic computations.
+ * @brief Provides functions to make mathematic computations.
  */
 class Geometry {
 
   public:
 
-    /*
-     * Mathematic constants.
-     * We don't use the constants from math.h
-     * because they are not ANSI.
-     */
+    // Mathematic constants:
+    // we don't use the constants from math.h
+    // because they are not ANSI
     static const double PI;
     static const double TWO_PI;
     static const double PI_OVER_2;

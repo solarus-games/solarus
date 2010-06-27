@@ -70,6 +70,12 @@ Bugs :
 - event_obtaining/obtained_treasure : confusion entre les deux classes
 
 
+Amélioration de la documentation en cours (@brief manquants) :
+
+find . -name '*.h' -o -name '*.cpp'
+
+dernière fichier traité : include/lowlevel/TextSurface.h
+
 A venir :
 
 - Prochains types d'entités :

@@ -25,7 +25,7 @@
 struct lua_State;
 
 /**
- * Abstract class for making an interface between the engine C++ code and a Lua script.
+ * @brief Abstract class for making an interface between the engine C++ code and a Lua script.
  */
 class Script {
 

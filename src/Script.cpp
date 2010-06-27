@@ -143,10 +143,14 @@ void Script::register_available_functions(void) {
 }
 
 /**
+ * @brief Checks the number of arguments provided to a C++ function
+ * called by the Lua script.
+ *
  * In any C++ function called by the Lua script (i.e. a function prefixed by "l_"),
  * the first instruction calls this function.
  * It checks the number of arguments provided to the C++ function called by the Lua script
  * and retrieves the current Script object.
+ *
  * @param context the Lua context
  * @param nb_arguments the number of arguments to check (if it is incorrect, the program stops)
  * @param script if not NULL, a pointer to the Script object will be copied there so that the static C++ function

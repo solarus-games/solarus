@@ -448,7 +448,7 @@ void Map::opening_transition_finished(void) {
     welcome_message_id = "";
   }
   else {
-    script->event_opening_transition_finished(destination_point_name);
+    script->event_map_opening_transition_finished(destination_point_name);
   }
 }
 

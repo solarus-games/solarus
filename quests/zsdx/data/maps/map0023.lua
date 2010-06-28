@@ -17,7 +17,7 @@ end
 function event_switch_enabled(switch_name)
 
   if switch_name == "sw_switch" or switch_name == "nw_switch" then
-    move_camera(176, 392, 15)
+    camera_move(176, 392, 15)
     current_room = "sw"
   elseif switch_name == "map_room_switch" then
     play_sound("chest_appears")
@@ -27,21 +27,21 @@ end
 
 function event_camera_reached_target()
   if current_room == "sw" then
-    start_timer(1000, "sw_camera_timer", false)
+    timer_start(1000, "sw_camera_timer", false)
   elseif current_room == "compass_room" then
-    start_timer(1000, "compass_room_timer", false)
+    timer_start(1000, "compass_room_timer", false)
   end
 end
 
 function sw_camera_timer()
   open_sw_door()
-  start_timer(1000, "restore_camera", false)
+  timer_start(1000, "camera_restore", false)
 end
 
 function compass_room_timer()
   play_sound("chest_appears")
   chest_set_hidden("compass_chest", false)
-  start_timer(1000, "restore_camera", false)
+  timer_start(1000, "camera_restore", false)
 end
 
 function event_hero_on_sensor(sensor_name)
@@ -75,7 +75,7 @@ end
 function event_enemy_dead(enemy_name)
 
   if enemies_are_dead("compass_room_battle") and chest_is_hidden("compass_chest") then
-    move_camera(408, 456, 15)
+    camera_move(408, 456, 15)
     current_room = "compass_room"
   end
 end

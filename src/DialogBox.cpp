@@ -268,6 +268,9 @@ void DialogBox::start_message_sequence(const MessageId &first_message_id, Vertic
   this->skipped = false;
   this->first_message_id = first_message_id;
   show_message(first_message_id);
+
+  // notify the script
+  game->get_current_script()->event_dialog_started(first_message_id);
 }
 
 /**
@@ -299,9 +302,6 @@ void DialogBox::show_message(const MessageId &message_id) {
   else {
     keys_effect->set_sword_key_effect(KeysEffect::SWORD_KEY_HIDDEN);
   }
-
-  // notify the script
-  game->get_current_script()->event_message_started(message_id);
 }
 
 /** 
@@ -336,7 +336,7 @@ void DialogBox::close(void) {
   // notify the script if necessary
   if (!skipped && first_message_id[0] != '_') {
     // a dialog of the quest was just finished: notify the script
-    game->get_current_script()->event_message_sequence_finished(first_message_id, last_answer);
+    game->get_current_script()->event_dialog_finished(first_message_id, last_answer);
   }
 }
 

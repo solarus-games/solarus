@@ -17,25 +17,25 @@ function event_map_started(destination_point_name)
 end
 
 -- Function called when the player presses the action key on the frozen door
-function event_interaction(entity_name)
+function event_hero_interaction(entity_name)
 
    if entity_name == "frozen_door" then
-      start_message("sahasrahla_house.frozen_door")
+      dialog_start("sahasrahla_house.frozen_door")
       savegame_set_boolean(34, true)
    end
 end
 
 -- Function called when the player uses an inventory item on the frozen door
-function event_interaction_item(entity_name, item_id, variant)
+function event_hero_interaction_item(entity_name, item_id, variant)
 
    if entity_name == "frozen_door" and
       inventory_item_is_bottle(item_id) and variant == 2 then
 
       -- using water on the frozen door
-      freeze()
+      hero_freeze()
       interactive_entity_set_animation("frozen_door", "disappearing")
       interactive_entity_set_animation("frozen_door_opposite", "disappearing")
-      start_timer(800, "timer_frozen_door", false)
+      timer_start(800, "timer_frozen_door", false)
       return true
    else
       return false
@@ -48,5 +48,5 @@ function timer_frozen_door()
    savegame_set_boolean(35, true)
    interactive_entity_remove("frozen_door")
    interactive_entity_remove("frozen_door_opposite")
-   unfreeze()
+   hero_unfreeze()
 end

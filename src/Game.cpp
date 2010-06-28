@@ -449,7 +449,7 @@ void Game::update_treasure(void) {
     delete treasure;
     treasure = NULL;
 
-    get_current_script()->event_obtained_treasure(content, savegame_variable);
+    get_current_script()->event_treasure_obtained(content, savegame_variable);
   }
 }
 

@@ -40,7 +40,7 @@ function event_switch_enabled(switch_name)
     if switches_puzzle_nb_enabled == 6 then
 
       if switches_puzzle_correct then
-	move_camera(240, 328, 15)
+	camera_move(240, 328, 15)
       else
 	play_sound("wrong")
 	switches_puzzle_nb_enabled = 0
@@ -64,12 +64,12 @@ function event_switch_left(switch_name)
 end
 
 function event_camera_reached_target()
-  start_timer(1000, "boss_key_chest_timer", false)
+  timer_start(1000, "boss_key_chest_timer", false)
 end
 
 function boss_key_chest_timer()
   chest_set_hidden("boss_key_chest", false)
   play_sound("secret")
-  start_timer(1000, "restore_camera", false)
+  timer_start(1000, "camera_restore", false)
 end
 

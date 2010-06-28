@@ -15,7 +15,7 @@ end
 
 -- Function called when the player presses the action key
 -- while facing an interactive entity
-function event_interaction(entity_name)
+function event_hero_interaction(entity_name)
 
    if entity_name == "tom_cave_door" then
 
@@ -26,7 +26,7 @@ function event_interaction(entity_name)
 	 savegame_set_boolean(36, true)
 	 remove_village_cave_door()
       else
-	 start_message("outside_world.village.clay_key_required")
+	 dialog_start("outside_world.village.clay_key_required")
       end
    end
 end

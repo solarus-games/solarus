@@ -64,7 +64,7 @@ const int InteractiveEntity::animation_directions[] = {
  * @param sprite_name sprite animation set of the entity, or "_none" to create no sprite
  * @param initial_direction direction of the entity's sprite (only used if the entity has a sprite)
  * @param message_to_show id of the message to show when the player presses the action key in front
- * of this entity, or "_none" to call the script instead (with an event_interaction() call)
+ * of this entity, or "_none" to call the script instead (with an event_hero_interaction() call)
  */
 InteractiveEntity::InteractiveEntity(const std::string &name, Layer layer, int x, int y,
 				     Subtype subtype, SpriteAnimationSetId sprite_name,
@@ -287,7 +287,7 @@ bool InteractiveEntity::interaction_with_inventory_item(InventoryItem *item) {
   else {
     // in other cases, nothing is predefined in the engine: we call the script
     interaction = game->get_current_script()->
-      event_interaction_item(get_name(), item->get_id(), item->get_variant());
+      event_hero_interaction_item(get_name(), item->get_id(), item->get_variant());
   }
 
   return interaction;
@@ -302,7 +302,7 @@ void InteractiveEntity::call_script(void) {
     map->get_script()->event_npc_dialog(get_name());
   }
   else {
-    map->get_script()->event_interaction(get_name());
+    map->get_script()->event_hero_interaction(get_name());
   }
 }
 

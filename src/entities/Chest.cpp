@@ -269,7 +269,7 @@ void Chest::update(void) {
 	delete treasure;
 	treasure = NULL;
 
-	if (!map->get_script()->event_open_empty_chest(get_name())) {
+	if (!map->get_script()->event_chest_empty(get_name())) {
 
 	  // the script does not define any behavior:
 	  // by default, we tell the player the chest is empty

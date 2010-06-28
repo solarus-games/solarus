@@ -184,7 +184,7 @@ void Treasure::give_to_player(void) {
     play_treasure_sound();
     show_message();
     add_item_to_equipment();
-    game->get_current_script()->event_obtaining_treasure(content, savegame_variable);
+    game->get_current_script()->event_treasure_obtaining(content, savegame_variable);
   }
 }
 

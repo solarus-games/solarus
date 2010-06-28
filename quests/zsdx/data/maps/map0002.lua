@@ -33,7 +33,7 @@ function event_npc_dialog(npc_name)
 
     if playing_game_1 then
       -- the player is already playing: tell him to choose a chest
-      start_message("rupee_house.game_1.choose_chest")
+      dialog_start("rupee_house.game_1.choose_chest")
     else
 
       -- see if the player can still play
@@ -41,14 +41,14 @@ function event_npc_dialog(npc_name)
 
       if unauthorized then
 	-- the player already won much money
-	start_message("rupee_house.game_1.not_allowed_to_play")
+	dialog_start("rupee_house.game_1.not_allowed_to_play")
       else 
 	if not already_played_game_1 then
 	  -- first time: long dialog with the game rules
-	  start_message("rupee_house.game_1.intro")
+	  dialog_start("rupee_house.game_1.intro")
 	else
 	  -- quick dialog to play again
-	  start_message("rupee_house.game_1.play_again_question")
+	  dialog_start("rupee_house.game_1.play_again_question")
 	end
       end
     end
@@ -58,10 +58,10 @@ function event_npc_dialog(npc_name)
 
     if playing_game_2 then
       -- the player is already playing: tell him to stop the reels
-      start_message("rupee_house.game_2.playing")
+      dialog_start("rupee_house.game_2.playing")
     else
       -- dialog with the game rules
-      start_message("rupee_house.game_2.intro")
+      dialog_start("rupee_house.game_2.intro")
     end
 
   elseif npc_name == "game_3_man" then
@@ -69,17 +69,17 @@ function event_npc_dialog(npc_name)
 
     if playing_game_3 then
       -- the player is already playing: let him restart the game
-      start_message("rupee_house.game_3.restart_question")
+      dialog_start("rupee_house.game_3.restart_question")
     else
       -- see if the player can still play
       unauthorized = savegame_get_boolean(17)
 
       if unauthorized then
 	-- the player already won this game
-	start_message("rupee_house.game_3.not_allowed_to_play")
+	dialog_start("rupee_house.game_3.not_allowed_to_play")
       else
 	-- game rules
-	start_message("rupee_house.game_3.intro")
+	dialog_start("rupee_house.game_3.intro")
       end
     end
   end
@@ -88,7 +88,7 @@ end
 -- Function called when the dialog box is being closed
 -- first_message_id: name of the first message of the sequence that has just finished
 -- answer: the answer of the question (0 or 1) or -1 if there was no question
-function event_message_sequence_finished(first_message_id, answer)
+function event_dialog_finished(first_message_id, answer)
 
   if first_message_id == "rupee_house.game_1.intro" or 
     first_message_id == "rupee_house.game_1.play_again_question" then
@@ -96,14 +96,14 @@ function event_message_sequence_finished(first_message_id, answer)
 
     if answer == 1 then
       -- the player does not want to play the game
-      start_message("rupee_house.game_1.not_playing")
+      dialog_start("rupee_house.game_1.not_playing")
     else
       -- wants to play game 1
 
-      if get_rupees() < 20 then
+      if equipment_get_rupees() < 20 then
 	-- not enough money
 	play_sound("wrong")
-	start_message("rupee_house.not_enough_money")
+	dialog_start("rupee_house.not_enough_money")
 
       else
 	-- enough money: reset the 3 chests, pay and start the game
@@ -111,8 +111,8 @@ function event_message_sequence_finished(first_message_id, answer)
 	chest_set_open("chest_2", false)
 	chest_set_open("chest_3", false)
 
-	remove_rupees(20)
-	start_message("rupee_house.game_1.good_luck")
+	equipment_remove_rupees(20)
+	dialog_start("rupee_house.game_1.good_luck")
 	playing_game_1 = true
       end
     end
@@ -122,10 +122,10 @@ function event_message_sequence_finished(first_message_id, answer)
 
     if answer == 1 then
       -- don't want to play the game
-      start_message("rupee_house.game_2.not_playing")
+      dialog_start("rupee_house.game_2.not_playing")
     else
       -- wants to play game 2
-      start_message("rupee_house.game_2.choose_bet")
+      dialog_start("rupee_house.game_2.choose_bet")
     end
 
   elseif first_message_id == "rupee_house.game_2.choose_bet" then
@@ -138,14 +138,14 @@ function event_message_sequence_finished(first_message_id, answer)
       game_2_bet = 20
     end
 
-    if get_rupees() < game_2_bet then
+    if equipment_get_rupees() < game_2_bet then
       -- not enough money
       play_sound("wrong")
-      start_message("rupee_house.not_enough_money")
+      dialog_start("rupee_house.not_enough_money")
     else
       -- enough money: pay and start the game
-      remove_rupees(game_2_bet)
-      start_message("rupee_house.game_2.just_paid")
+      equipment_remove_rupees(game_2_bet)
+      dialog_start("rupee_house.game_2.just_paid")
       playing_game_2 = true
 
       -- start the slot machine animations
@@ -160,7 +160,7 @@ function event_message_sequence_finished(first_message_id, answer)
     end
   elseif string.find(first_message_id, "rupee_house.game_2.reward.") then
     -- reward in game 2
-    give_treasure_with_amount(87, game_2_reward, -1)
+    treasure_give_with_amount(87, game_2_reward, -1)
 
   elseif first_message_id == "rupee_house.game_3.intro" or 
     first_message_id == "rupee_house.game_3.restart_question" then
@@ -168,14 +168,14 @@ function event_message_sequence_finished(first_message_id, answer)
 
     if answer == 1 then
       -- don't want to play the game
-      start_message("rupee_house.game_3.not_playing")
+      dialog_start("rupee_house.game_3.not_playing")
     else
       -- wants to play game 3
 
-      if get_rupees() < 10 then
+      if equipment_get_rupees() < 10 then
 	-- not enough money
 	play_sound("wrong")
-	start_message("rupee_house.not_enough_money")
+	dialog_start("rupee_house.not_enough_money")
 
       else
 	-- enough money: reset the game, pay and start the game
@@ -185,15 +185,15 @@ function event_message_sequence_finished(first_message_id, answer)
 	tile_set_enabled("game_3_barrier_2", false);
 	tile_set_enabled("game_3_barrier_3", false);
 	tile_set_enabled("game_3_middle_barrier", false);
-	stop_timer("game_3_timer")
+	timer_stop("game_3_timer")
 
-	remove_rupees(10)
-	start_message("rupee_house.game_3.go")
+	equipment_remove_rupees(10)
+	dialog_start("rupee_house.game_3.go")
 	playing_game_3 = true
       end
     end
   elseif first_message_id == "rupee_house.game_3.go" then 
-    start_timer(8000, "game_3_timer", true);
+    timer_start(8000, "game_3_timer", true);
     switch_set_enabled("switch", false);
   end
 end
@@ -201,14 +201,14 @@ end
 -- Function called when the player opens an empty chest (i.e. a chest
 -- whose feature is to call the script).
 -- chest_name: name of the chest being open
-function event_open_empty_chest(chest_name)
+function event_chest_empty(chest_name)
 
   if not playing_game_1 then
     -- trying to open a chest but not playing yet
-    start_message("rupee_house.pay_first") -- the game man is angry
+    dialog_start("rupee_house.pay_first") -- the game man is angry
     chest_set_open(chest_name, false) -- close the chest again
     play_sound("wrong")
-    unfreeze() -- restore the control
+    hero_unfreeze() -- restore the control
   else
     -- give a random reward
     index = math.random(#game_1_rewards)
@@ -220,7 +220,7 @@ function event_open_empty_chest(chest_name)
 
     -- 87 means green rupees (see include/Treasure.h), amount is the number of rupees to give
     -- and -1 means that the chest is not saved
-    give_treasure_with_amount(87, amount, -1)
+    treasure_give_with_amount(87, amount, -1)
 
     if amount == 50 then
       -- the maximum reward was found: the game will now refuse to let the hero play again
@@ -239,7 +239,7 @@ function game_3_timer()
 end
 
 -- Function called when the player is obtaining a treasure
-function event_obtained_treasure(content, savegame_variable)
+function event_treasure_obtained(content, savegame_variable)
 
   -- stop game 3 when the player founds the piece of heart
   if savegame_variable == 17 then
@@ -253,12 +253,12 @@ end
 function event_switch_enabled(switch_name)
 
   -- stop the timer when the player reaches the invisible switch
-  stop_timer("game_3_timer")
+  timer_stop("game_3_timer")
   play_sound("secret")
 end
 
 -- Function called when the player interacts with the slot machine
-function event_interaction(entity_name)
+function event_hero_interaction(entity_name)
 
   if playing_game_2 then
 
@@ -281,11 +281,11 @@ function event_interaction(entity_name)
       -----------
 
       play_sound("switch")
-      freeze()
+      hero_freeze()
     end
   else
     play_sound("wrong")
-    start_message("rupee_house.pay_first")
+    dialog_start("rupee_house.pay_first")
   end
 end
 
@@ -311,10 +311,10 @@ function event_update()
 	nb_finished = nb_finished + 1
 
 	if nb_finished < 3 then
-	  unfreeze()
+	  hero_unfreeze()
 	else
 	  playing_game_2 = false
-	  start_timer(500, "game_2_timer", false)
+	  timer_start(500, "game_2_timer", false)
 	end
       end
     end
@@ -348,28 +348,28 @@ function game_2_timer()
     -- three identical symbols
 
     if symbols[1] == 0 then -- 3 green rupees
-      start_message("rupee_house.game_2.reward.green_rupees")
+      dialog_start("rupee_house.game_2.reward.green_rupees")
       game_2_reward = 5 * game_2_bet
     elseif symbols[1] == 2 then -- 3 blue rupees
-      start_message("rupee_house.game_2.reward.blue_rupees")
+      dialog_start("rupee_house.game_2.reward.blue_rupees")
       game_2_reward = 7 * game_2_bet
     elseif symbols[1] == 4 then -- 3 red rupees
-      start_message("rupee_house.game_2.reward.red_rupees")
+      dialog_start("rupee_house.game_2.reward.red_rupees")
       game_2_reward = 10 * game_2_bet
     elseif symbols[1] == 5 then -- 3 Yoshi
-      start_message("rupee_house.game_2.reward.yoshi")
+      dialog_start("rupee_house.game_2.reward.yoshi")
       game_2_reward = 20 * game_2_bet
     else -- other symbol
-      start_message("rupee_house.game_2.reward.same_any")
+      dialog_start("rupee_house.game_2.reward.same_any")
       game_2_reward = 4 * game_2_bet
     end
 
   elseif green_found and blue_found and red_found then
     -- three rupees with different colors
-    start_message("rupee_house.game_2.reward.different_rupees")
+    dialog_start("rupee_house.game_2.reward.different_rupees")
     game_2_reward = 15 * game_2_bet
   else
-    start_message("rupee_house.game_2.reward.none")
+    dialog_start("rupee_house.game_2.reward.none")
     game_2_reward = 0
   end
 
@@ -379,5 +379,5 @@ function game_2_timer()
     play_sound("wrong")
   end
 
-  unfreeze()
+  hero_unfreeze()
 end

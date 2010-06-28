@@ -54,26 +54,28 @@ class Script {
     static void called_by_script(lua_State *context, int nb_arguments, Script **script);
 
     static FunctionAvailableToScript 
-      l_freeze,
-      l_unfreeze,
-      l_start_message,
-      l_set_message_variable,
+      l_hero_freeze,
+      l_hero_unfreeze,
+      l_hero_set_pause_enabled;
+      l_dialog_start,
+      l_dialog_set_variable,
       l_dialog_set_style,
       l_hud_set_enabled,
       l_play_sound,
       l_play_music,
-      l_start_timer,
-      l_stop_timer,
-      l_move_camera,
-      l_restore_camera,
+      l_timer_start,
+      l_timer_stop,
+      l_camera_move,
+      l_camera_restore,
       l_savegame_get_string,
       l_savegame_get_integer,
       l_savegame_get_boolean,
       l_savegame_set_string,
       l_savegame_set_integer,
       l_savegame_set_boolean,
-      l_get_rupees,
-      l_remove_rupees,
+      l_savegame_get_name,
+      l_equipment_get_rupees,
+      l_equipment_remove_rupees,
       l_equipment_get_tunic,
       l_equipment_get_sword,
       l_equipment_get_shield,
@@ -82,10 +84,8 @@ class Script {
       l_inventory_item_get_amount,
       l_inventory_item_remove_amount,
       l_inventory_item_is_bottle,
-      l_give_treasure,
-      l_give_treasure_with_amount,
-      l_player_get_name,
-      l_player_set_pause_enabled;
+      l_treasure_give,
+      l_treasure_give_with_amount,
 
     // initialization
     void load(const std::string &script_name);
@@ -108,12 +108,12 @@ class Script {
     // C++ functions that call script functions
     void event_update(void);
     void event_set_suspended(bool suspended);
-    void event_message_started(const MessageId &message_id);
-    void event_message_sequence_finished(const MessageId &first_message_id, int answer);
+    void event_dialog_started(const MessageId &message_id);
+    void event_dialog_finished(const MessageId &first_message_id, int answer);
     void event_camera_reached_target(void);
     void event_camera_back(void);
-    void event_obtaining_treasure(Treasure::Content content, int savegame_variable);
-    void event_obtained_treasure(Treasure::Content content, int savegame_variable);
+    void event_treasure_obtaining(Treasure::Content content, int savegame_variable);
+    void event_treasure_obtained(Treasure::Content content, int savegame_variable);
 };
 
 #endif

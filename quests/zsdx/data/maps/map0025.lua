@@ -15,15 +15,15 @@ function event_hero_on_sensor(sensor_name)
   if sensor_name == "start_miniboss_sensor" and not savegame_get_boolean(62) and not fighting_miniboss then
     -- the miniboss is alive
     door_close("miniboss_door")
-    freeze()
-    start_timer(1000, "miniboss_timer", false)
+    hero_freeze()
+    timer_start(1000, "miniboss_timer", false)
     fighting_miniboss = true
   end
 end
 
 function miniboss_timer()
   miniboss_start_battle("khorneth")
-  unfreeze()
+  hero_unfreeze()
 end
 
 function event_enemy_dead(enemy_name)
@@ -34,17 +34,17 @@ function event_enemy_dead(enemy_name)
   end
 
   if enemies_are_dead("boss_key_battle") and chest_is_hidden("boss_key_chest") then
-    move_camera(104, 72, 15)
+    camera_move(104, 72, 15)
   end
 end
 
 function event_camera_reached_target()
-  start_timer(1000, "boss_key_timer", false)
+  timer_start(1000, "boss_key_timer", false)
 end
 
 function boss_key_timer()
   play_sound("chest_appears")
   chest_set_hidden("boss_key_chest", false)
-  start_timer(1000, "restore_camera", false)
+  timer_start(1000, "camera_restore", false)
 end
 

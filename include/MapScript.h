@@ -100,19 +100,19 @@ class MapScript: public Script {
 
     // C++ functions that call script functions
     void event_map_started(const std::string &destination_point_name);
-    void event_opening_transition_finished(const std::string &destination_point_name);
+    void event_map_opening_transition_finished(const std::string &destination_point_name);
     void event_switch_enabled(const std::string &switch_name);
     void event_switch_disabled(const std::string &switch_name);
     void event_switch_left(const std::string &switch_name);
+    void event_hero_victory_sequence_finished(void);
     void event_hero_on_sensor(const std::string &sensor_name);
-    void event_interaction(const std::string &entity_name);
-    bool event_interaction_item(const std::string &entity_name, InventoryItemId item_id, int variant);
+    void event_hero_interaction(const std::string &entity_name);
+    bool event_hero_interaction_item(const std::string &entity_name, InventoryItemId item_id, int variant);
     void event_npc_dialog(const std::string &npc_name);
     void event_npc_movement_finished(const std::string &npc_name);
-    bool event_open_empty_chest(const std::string &chest_name);
+    bool event_chest_empty(const std::string &chest_name);
     void event_shop_item_bought(const std::string &shop_item_name);
     void event_enemy_dead(const std::string &enemy_name);
-    void event_hero_victory_sequence_finished(void);
 };
 
 #endif

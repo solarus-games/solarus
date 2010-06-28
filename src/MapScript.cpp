@@ -1201,8 +1201,8 @@ void MapScript::event_map_started(const std::string &destination_point_name) {
  * Notifies the script that the opening transition of the map has just finished.
  * @param destination_point_name name of the destination point where the hero is
  */
-void MapScript::event_opening_transition_finished(const std::string &destination_point_name) {
-  call_script_function("event_opening_transition_finished", destination_point_name);
+void MapScript::event_map_opening_transition_finished(const std::string &destination_point_name) {
+  call_script_function("event_map_opening_transition_finished", destination_point_name);
 }
 
 /**
@@ -1231,6 +1231,13 @@ void MapScript::event_switch_left(const std::string &switch_name) {
 }
 
 /**
+ * Notifies the script that the victory sequence of the hero has just finished.
+ */
+void MapScript::event_hero_victory_sequence_finished(void) {
+  call_script_function("event_hero_victory_sequence_finished");
+}
+
+/**
  * Notifies the script that the hero is overlapping a sensor.
  * @param sensor_name name of the sensor
  */
@@ -1244,12 +1251,12 @@ void MapScript::event_hero_on_sensor(const std::string &sensor_name) {
  * key in front of an interactive entity.
  * @param entity_name name of the interactive entity
  */
-void MapScript::event_interaction(const std::string &entity_name) {
-  call_script_function("event_interaction", entity_name);
+void MapScript::event_hero_interaction(const std::string &entity_name) {
+  call_script_function("event_hero_interaction", entity_name);
 }
 
 /**
- * Notifies the script that the player is using an inventory item
+ * Notifies the script that the hero is using an inventory item
  * in front of a interactive entity.
  * This event is called only for inventory items that want to use it
  * (e.g. a key that is being used in front of a door).
@@ -1258,9 +1265,9 @@ void MapScript::event_interaction(const std::string &entity_name) {
  * @param variant variant of this inventory item
  * @return true if the script has handled the event
  */
-bool MapScript::event_interaction_item(const std::string &entity_name, InventoryItemId item_id, int variant) {
+bool MapScript::event_hero_interaction_item(const std::string &entity_name, InventoryItemId item_id, int variant) {
 
-  bool exists = call_script_function("event_interaction_item", entity_name, item_id, variant);
+  bool exists = call_script_function("event_hero_interaction_item", entity_name, item_id, variant);
   bool interaction = lua_toboolean(context, 1);
 
   return exists && interaction;
@@ -1288,14 +1295,14 @@ void MapScript::event_npc_movement_finished(const std::string &npc_name) {
  * What happens next is controlled by your script if it handles this event.
  * The hero is in state FREEZE
  * so if you do something else than giving the player a treasure,
- * don't forget to call unfreeze() once you have finished.
+ * don't forget to call hero_unfreeze() once you have finished.
  * The script function does not have to return any value.
  * @param chest_name name of the chest
  * @return true if the script has handled the event, i.e. if the
- * event_open_empty_chest exists in the script
+ * event_chest_empty exists in the script
  */
-bool MapScript::event_open_empty_chest(const std::string &chest_name) {
-  return call_script_function("event_open_empty_chest", chest_name);
+bool MapScript::event_chest_empty(const std::string &chest_name) {
+  return call_script_function("event_chest_empty", chest_name);
 }
 
 /**
@@ -1312,12 +1319,5 @@ void MapScript::event_shop_item_bought(const std::string &shop_item_name) {
  */
 void MapScript::event_enemy_dead(const std::string &enemy_name) {
   call_script_function("event_enemy_dead", enemy_name);
-}
-
-/**
- * Notifies the script that the victory sequence of the hero has just finished.
- */
-void MapScript::event_hero_victory_sequence_finished(void) {
-  call_script_function("event_hero_victory_sequence_finished");
 }
 

@@ -108,26 +108,28 @@ void Script::load(const std::string &script_name) {
  */
 void Script::register_available_functions(void) {
 
-  lua_register(context, "freeze", l_freeze);
-  lua_register(context, "unfreeze", l_unfreeze);
-  lua_register(context, "start_message", l_start_message);
-  lua_register(context, "set_message_variable", l_set_message_variable);
+  lua_register(context, "hero_freeze", l_hero_freeze);
+  lua_register(context, "hero_unfreeze", l_hero_unfreeze);
+  lua_register(context, "hero_set_pause_enabled", l_hero_set_pause_enabled);
+  lua_register(context, "dialog_start", l_dialog_start);
+  lua_register(context, "dialog_set_variable", l_dialog_set_variable);
   lua_register(context, "dialog_set_style", l_dialog_set_style);
   lua_register(context, "hud_set_enabled", l_hud_set_enabled);
   lua_register(context, "play_sound", l_play_sound);
   lua_register(context, "play_music", l_play_music);
-  lua_register(context, "start_timer", l_start_timer);
-  lua_register(context, "stop_timer", l_stop_timer);
-  lua_register(context, "move_camera", l_move_camera);
-  lua_register(context, "restore_camera", l_restore_camera);
+  lua_register(context, "timer_start", l_timer_start);
+  lua_register(context, "timer_stop", l_timer_stop);
+  lua_register(context, "camera_move", l_camera_move);
+  lua_register(context, "camera_restore", l_camera_restore);
   lua_register(context, "savegame_get_string", l_savegame_get_string);
   lua_register(context, "savegame_get_integer", l_savegame_get_integer);
   lua_register(context, "savegame_get_boolean", l_savegame_get_boolean);
   lua_register(context, "savegame_set_string", l_savegame_set_string);
   lua_register(context, "savegame_set_integer", l_savegame_set_integer);
   lua_register(context, "savegame_set_boolean", l_savegame_set_boolean);
-  lua_register(context, "get_rupees", l_get_rupees);
-  lua_register(context, "remove_rupees", l_remove_rupees);
+  lua_register(context, "savegame_get_name", l_savegame_get_name);
+  lua_register(context, "equipment_get_rupees", l_equipment_get_rupees);
+  lua_register(context, "equipment_remove_rupees", l_equipment_remove_rupees);
   lua_register(context, "equipment_get_tunic", l_equipment_get_tunic);
   lua_register(context, "equipment_get_sword", l_equipment_get_sword);
   lua_register(context, "equipment_get_shield", l_equipment_get_shield);
@@ -136,10 +138,8 @@ void Script::register_available_functions(void) {
   lua_register(context, "inventory_item_get_amount", l_inventory_item_get_amount);
   lua_register(context, "inventory_item_remove_amount", l_inventory_item_remove_amount);
   lua_register(context, "inventory_item_is_bottle", l_inventory_item_is_bottle);
-  lua_register(context, "give_treasure", l_give_treasure);
-  lua_register(context, "give_treasure_with_amount", l_give_treasure_with_amount);
-  lua_register(context, "player_get_name", l_player_get_name);
-  lua_register(context, "player_set_pause_enabled", l_player_set_pause_enabled);
+  lua_register(context, "treasure_give", l_treasure_give);
+  lua_register(context, "treasure_give_with_amount", l_treasure_give_with_amount);
 }
 
 /**
@@ -443,9 +443,9 @@ void Script::remove_timer(const std::string &callback_name) {
 // functions that can be called by the Lua script
 
 /**
- * Prevents the player from moving until unfreeze() is called.
+ * Prevents the player from moving until hero_unfreeze() is called.
  */
-int Script::l_freeze(lua_State *l) {
+int Script::l_hero_freeze(lua_State *l) {
 
   Script *script;
   called_by_script(l, 0, &script);
@@ -456,9 +456,9 @@ int Script::l_freeze(lua_State *l) {
 }
 
 /**
- * Allows the player to move again after a freeze() call.
+ * Allows the player to move again after a hero_freeze() call.
  */
-int Script::l_unfreeze(lua_State *l) {
+int Script::l_hero_unfreeze(lua_State *l) {
 
   Script *script;
   called_by_script(l, 0, &script);
@@ -469,14 +469,29 @@ int Script::l_unfreeze(lua_State *l) {
 }
 
 /**
+ * Sets whether the player can pause the game.
+ * Argument 1 (boolean): true to enable the pause key
+ */
+int Script::l_hero_set_pause_enabled(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 1, &script);
+  bool enabled = lua_toboolean(l, 1) != 0;
+
+  script->game->set_pause_enabled(enabled);
+
+  return 0;
+}
+
+/**
  * Creates a dialog box and starts displaying a message.
  * If the message is followed by other messages, they are also
- * displayed, posting a message_started() event each time.
+ * displayed.
  * If the message (or one of its next messages) contains a variable,
- * then call set_message_variable() to specify its value.
+ * then you have to call dialog_set_variable() to specify its value.
  * Argument 1 (string): id of the message to display
  */
-int Script::l_start_message(lua_State *l) {
+int Script::l_dialog_start(lua_State *l) {
 
   Script *script;
   called_by_script(l, 1, &script);
@@ -488,13 +503,13 @@ int Script::l_start_message(lua_State *l) {
 }
 
 /**
- * Sets the value of the variable in a diabog box message.
+ * Sets the value of the variable in a diabog.
  * The function has to be called after the dialog box is created,
- * i.e. after calling show_message.
+ * i.e. after calling dialog_start().
  * Argument 1 (string): id of the message containing the variable
  * Argument 2 (string): value of the variable
  */
-int Script::l_set_message_variable(lua_State *l) {
+int Script::l_dialog_set_variable(lua_State *l) {
 
   Script *script;
   called_by_script(l, 2, &script);
@@ -572,7 +587,7 @@ int Script::l_play_music(lua_State *l) {
  * (no argument, no return value)
  * Argument 3 (boolean): plays a sound until the timer expires
  */
-int Script::l_start_timer(lua_State *l) {
+int Script::l_timer_start(lua_State *l) {
 
   Script *script;
   called_by_script(l, 3, &script);
@@ -591,7 +606,7 @@ int Script::l_start_timer(lua_State *l) {
  * Argument 1 (string): name of the Lua function that is supposed to be called
  * when the timer is finished
  */
-int Script::l_stop_timer(lua_State *l) {
+int Script::l_timer_stop(lua_State *l) {
 
   Script *script;
   called_by_script(l, 1, &script);
@@ -608,7 +623,7 @@ int Script::l_stop_timer(lua_State *l) {
  * Argument 2 (integer): y coordinate of the target point
  * Argument 3 (integer): speed of the camera movement (10 is normal)
  */
-int Script::l_move_camera(lua_State *l) {
+int Script::l_camera_move(lua_State *l) {
 
   Script *script;
   called_by_script(l, 3, &script);
@@ -624,7 +639,7 @@ int Script::l_move_camera(lua_State *l) {
 /**
  * Moves the camera back to the hero.
  */
-int Script::l_restore_camera(lua_State *l) {
+int Script::l_camera_restore(lua_State *l) {
 
   Script *script;
   called_by_script(l, 0, &script);
@@ -747,10 +762,25 @@ int Script::l_savegame_set_boolean(lua_State *l) {
 }
 
 /**
+ * Returns a string representing the name of the player.
+ * Return value (string): the player's name
+ */
+int Script::l_savegame_get_name(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 0, &script);
+
+  const std::string &name = script->game->get_savegame()->get_string(Savegame::PLAYER_NAME);
+  lua_pushstring(l, name.c_str());
+
+  return 1;
+}
+
+/**
  * Returns the current number of rupees of the player.
  * Return value (integer): the number of rupees
  */
-int Script::l_get_rupees(lua_State *l) {
+int Script::l_equipment_get_rupees(lua_State *l) {
 
   Script *script;
   called_by_script(l, 0, &script);
@@ -765,7 +795,7 @@ int Script::l_get_rupees(lua_State *l) {
  * Removes some rupees to the player.
  * Argument 1 (integer): number or rupees to remove
  */
-int Script::l_remove_rupees(lua_State *l) {
+int Script::l_equipment_remove_rupees(lua_State *l) {
 
   Script *script;
   called_by_script(l, 1, &script);
@@ -927,7 +957,7 @@ int Script::l_inventory_item_is_bottle(lua_State *l) {
  * Argument 2 (integer): index of the savegame boolean variable that stores
  * the possession state of the treasure (or -1 if you don't want to save this treasure)
  */
-int Script::l_give_treasure(lua_State *l) {
+int Script::l_treasure_give(lua_State *l) {
 
   Script *script;
   called_by_script(l, 2, &script);
@@ -951,7 +981,7 @@ int Script::l_give_treasure(lua_State *l) {
  * Argument 3 (integer): index of the savegame boolean variable that stores
  * the possession state of the treasure (or -1 if you don't want to save this treasure)
  */
-int Script::l_give_treasure_with_amount(lua_State *l) {
+int Script::l_treasure_give_with_amount(lua_State *l) {
 
   Script *script;
   called_by_script(l, 3, &script);
@@ -961,36 +991,6 @@ int Script::l_give_treasure_with_amount(lua_State *l) {
 
   Game *game = script->game;
   game->give_treasure(new Treasure(game, content, amount, savegame_variable));
-
-  return 0;
-}
-
-/**
- * Returns a string representing the name of the player.
- * Return value (string): the player's name
- */
-int Script::l_player_get_name(lua_State *l) {
-
-  Script *script;
-  called_by_script(l, 0, &script);
-
-  const std::string &name = script->game->get_savegame()->get_string(Savegame::PLAYER_NAME);
-  lua_pushstring(l, name.c_str());
-
-  return 1;
-}
-
-/**
- * Sets whether the player can pause the game.
- * Argument 1 (boolean): true to enable the pause key
- */
-int Script::l_player_set_pause_enabled(lua_State *l) {
-
-  Script *script;
-  called_by_script(l, 1, &script);
-  bool enabled = lua_toboolean(l, 1) != 0;
-
-  script->game->set_pause_enabled(enabled);
 
   return 0;
 }
@@ -1015,25 +1015,25 @@ void Script::event_set_suspended(bool suspended) {
 }
 
 /**
- * Notifies the script that a message has just started to be displayed
+ * Notifies the script that a dialog has just started to be displayed
  * in the dialog box.
- * @param message_id id of the message
+ * @param message_id id of the first message in this dialog
  */
-void Script::event_message_started(const MessageId &message_id) {
-  call_script_function("event_message_started", message_id);
+void Script::event_dialog_started(const MessageId &message_id) {
+  call_script_function("event_dialog_started", message_id);
 }
 
 /**
  * Notifies the script that the dialog box has just finished.
  * This function is called when the last message of a dialog is finished.
  * Note that this event is not called if the dialog was cancelled.
- * @param first_message_id id of the first message in the message sequence
+ * @param first_message_id id of the first message in the dialog
  * that has just finished
  * @param answer the answer selected by the player: 0 for the first one,
  * 1 for the second one, -1 if there was no question
  */
-void Script::event_message_sequence_finished(const MessageId &first_message_id, int answer) {
-  call_script_function("event_message_sequence_finished", first_message_id, answer);
+void Script::event_dialog_finished(const MessageId &first_message_id, int answer) {
+  call_script_function("event_dialog_finished", first_message_id, answer);
 }
 
 /**
@@ -1058,8 +1058,8 @@ void Script::event_camera_back(void) {
  * @param savegame_variable the boolean variable where this treasure is saved
  * (or -1 if the treasure is not saved)
  */
-void Script::event_obtaining_treasure(Treasure::Content content, int savegame_variable) {
-  call_script_function("event_obtaining_treasure", content, savegame_variable);
+void Script::event_treasure_obtaining(Treasure::Content content, int savegame_variable) {
+  call_script_function("event_treasure_obtaining", content, savegame_variable);
 }
 
 /**
@@ -1070,7 +1070,7 @@ void Script::event_obtaining_treasure(Treasure::Content content, int savegame_va
  * @param savegame_variable the boolean variable where this treasure is saved
  * (or -1 if the treasure is not saved)
  */
-void Script::event_obtained_treasure(Treasure::Content content, int savegame_variable) {
-  call_script_function("event_obtained_treasure", content, savegame_variable);
+void Script::event_treasure_obtained(Treasure::Content content, int savegame_variable) {
+  call_script_function("event_treasure_obtained", content, savegame_variable);
 }
 

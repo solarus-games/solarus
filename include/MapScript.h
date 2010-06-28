@@ -110,8 +110,6 @@ class MapScript: public Script {
     void event_npc_dialog(const std::string &npc_name);
     void event_npc_movement_finished(const std::string &npc_name);
     bool event_open_empty_chest(const std::string &chest_name);
-    void event_obtaining_treasure(Treasure::Content content, int savegame_variable);
-    void event_obtained_treasure(Treasure::Content content, int savegame_variable);
     void event_shop_item_bought(const std::string &shop_item_name);
     void event_enemy_dead(const std::string &enemy_name);
     void event_hero_victory_sequence_finished(void);

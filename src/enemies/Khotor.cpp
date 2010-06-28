@@ -63,8 +63,7 @@ void Khotor::initialize(void) {
   // chain and ball
   chain = (ChainAndBall*) create(game, CHAIN_AND_BALL, RANK_NORMAL, -1, "chain_and_ball", get_layer(),
       get_x(), get_y(), 0, PickableItem::NONE, -1);
-  //chain->attach_to(this, -16, -33, 64); // TODO when the walking+chain animation is available
-  chain->attach_to(this, -16, 0, 64);
+  chain->attach_to(this, -16, -33, 64);
   map->get_entities()->add_entity(chain);
 }
 

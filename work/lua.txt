@@ -27,6 +27,8 @@ Ce sont des fonctions communes à tous les types de scripts.
 - event_message_sequence_finished(message_id, answer)		appelé lorsqu'un dialogue se termine (i.e. après l'affichage du dernier message)
 - event_camera_reached_target()				appelé lorsque la caméra (envoyée par move_camera()) a atteint sa cible
 - event_camera_back()					appelé lorsque la caméra (renvoyée par restore_camera()) est revenue sur le héros
+- event_obtaining_treasure(content, savegame_variable)	appelé lorsque le joueur obtient un trésor, que cela vienne d'un coffre ou non
+- event_obtained_treasure(content, savegame_variable)	appelé lorsque le joueur a fini d'obtenir un trésor
 
 
   1.2.  Fonctions C++ qu'un script Lua peut appeler
@@ -94,8 +96,6 @@ Ce sont des fonctions communes à tous les types de scripts.
 - event_npc_dialog(npc_name)				appelé lorsque le joueur parle à un PNJ sans message prédéfini
 - event_npc_movement_finished(npc_name)			appelé lorsqu'un PNJ a terminé son mouvement de marche ou de saut
 - event_open_empty_chest(chest_name)			appelé lorsque le joueur ouvre un coffre vide (son comportement sera alors défini par le script, le héros étant bloqué jusqu'à ce que le script appelle unfreeze())
-- event_obtaining_treasure(content, savegame_variable)	appelé lorsque le joueur obtient un trésor, que cela vienne d'un coffre ou non
-- event_obtained_treasure(content, savegame_variable)	appelé lorsque le joueur a fini d'obtenir un trésor
 - event_shop_item_bought(shop_item_name)                appelé lorsque le joueur achète un article dans un magasin
 - event_enemy_dead(enemy_name)				appelé à la mort d'un ennemi
 - event_hero_victory_sequence_finished()		appelé lorsque l'animation de victoire du héros se termine

@@ -1050,3 +1050,27 @@ void Script::event_camera_back(void) {
   call_script_function("event_camera_back");
 }
 
+/**
+ * Notifies the script that the player is obtaining a treasure.
+ * The treasure source does not matter: it can come from a chest,
+ * a pickable item or the script.
+ * @param content the content obtained
+ * @param savegame_variable the boolean variable where this treasure is saved
+ * (or -1 if the treasure is not saved)
+ */
+void Script::event_obtaining_treasure(Treasure::Content content, int savegame_variable) {
+  call_script_function("event_obtaining_treasure", content, savegame_variable);
+}
+
+/**
+ * Notifies the script that the player has just finished obtaining a treasure.
+ * The treasure source does not matter: it can come from a chest,
+ * a pickable item or the script.
+ * @param content the content obtained
+ * @param savegame_variable the boolean variable where this treasure is saved
+ * (or -1 if the treasure is not saved)
+ */
+void Script::event_obtained_treasure(Treasure::Content content, int savegame_variable) {
+  call_script_function("event_obtained_treasure", content, savegame_variable);
+}
+

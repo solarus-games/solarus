@@ -23,7 +23,7 @@
 #include "lowlevel/FileTools.h"
 
 /**
- * Constructor.
+ * @brief Constructor.
  * @param name name of the entity
  * @param layer layer of the entity
  * @param x x position of the entity's rectangle
@@ -60,15 +60,17 @@ Switch::Switch(const std::string &name, Layer layer, int x, int y,
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 Switch::~Switch(void) {
 
 }
 
 /**
- * Creates an instance from an input stream.
+ * @brief Creates an instance from an input stream.
+ *
  * The input stream must respect the syntax of this entity type.
+ *
  * @param game the game that will contain the entity created
  * @param is an input stream
  * @param layer the layer
@@ -90,7 +92,7 @@ MapEntity * Switch::parse(Game *game, std::istream &is, Layer layer, int x, int 
 }
 
 /**
- * Returns the type of entity.
+ * @brief Returns the type of entity.
  * @return the type of entity
  */
 EntityType Switch::get_type() {
@@ -98,7 +100,7 @@ EntityType Switch::get_type() {
 }
 
 /**
- * Returns wether this switch is a walkable switch.
+ * @brief Returns wether this switch is a walkable switch.
  * @return true if the subtype of switch is WALKABLE_INVISIBLE or WALKABLE_VISIBLE
  */
 bool Switch::is_walkable(void) {
@@ -106,7 +108,7 @@ bool Switch::is_walkable(void) {
 }
 
 /**
- * Returns whether this switch is currently enabled.
+ * @brief Returns whether this switch is currently enabled.
  * @return true if the switch is enabled
  */
 bool Switch::is_enabled(void) {
@@ -114,8 +116,10 @@ bool Switch::is_enabled(void) {
 }
 
 /**
- * Enables or disables the switch, not playing any sound.
+ * @brief Enables or disables the switch, not playing any sound.
+ *
  * This function can change the switch state even if the switch is locked.
+ *
  * @param enabled true to make the switch enabled, false to make it disabled
  */
 void Switch::set_enabled(bool enabled) {
@@ -135,9 +139,11 @@ void Switch::set_enabled(bool enabled) {
 }
 
 /**
- * Locks this switch is its current state or unlocks it.
+ * @brief Locks this switch is its current state or unlocks it.
+ *
  * When the switch is locked, it cannot be enabled or disabled by other entities.
  * However, the state can still be changed manually by calling set_enabled().
+ *
  * @param locked true to lock the switch in its current state, false to unlock it
  */
 void Switch::set_locked(bool locked) {
@@ -145,7 +151,7 @@ void Switch::set_locked(bool locked) {
 }
 
 /**
- * Updates this switch.
+ * @brief Updates this switch.
  */
 void Switch::update(void) {
 
@@ -169,7 +175,7 @@ void Switch::update(void) {
 }
 
 /**
- * Tests whether an entity's collides with this entity.
+ * @brief Tests whether an entity's collides with this entity.
  * @param entity an entity
  * @return true if the entity's collides with this entity
  */
@@ -188,7 +194,7 @@ bool Switch::test_collision_custom(MapEntity *entity) {
 }
 
 /**
- * This function is called by the engine when an entity overlaps the switch.
+ * @brief This function is called by the engine when an entity overlaps the switch.
  * @param entity_overlapping the entity overlapping the detector
  * @param collision_mode the collision mode that detected the collision
  */

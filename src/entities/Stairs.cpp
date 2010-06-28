@@ -20,7 +20,7 @@
 #include "Map.h"
 
 /**
- * Creates a new stairs entity.
+ * @brief Creates a new stairs entity.
  * @param layer layer of the entity to create on the map
  * @param x x coordinate of the entity to create
  * @param y y coordinate of the entity to create
@@ -46,15 +46,17 @@ Stairs::Stairs(Layer layer, int x, int y, int direction, Subtype subtype):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 Stairs::~Stairs(void) {
 
 }
 
 /**
- * Creates an instance from an input stream.
+ * @brief Creates an instance from an input stream.
+ *
  * The input stream must respect the syntax of this entity type.
+ *
  * @param game the game that will contain the entity created
  * @param is an input stream
  * @param layer the layer
@@ -71,7 +73,7 @@ MapEntity * Stairs::parse(Game *game, std::istream &is, Layer layer, int x, int 
 }
 
 /**
- * Returns the type of entity.
+ * @brief Returns the type of entity.
  * @return the type of entity
  */
 EntityType Stairs::get_type() {
@@ -79,7 +81,7 @@ EntityType Stairs::get_type() {
 }
 
 /**
- * Returns whether the subtype of these stairs is INSIDE_FLOOR.
+ * @brief Returns whether the subtype of these stairs is INSIDE_FLOOR.
  * @return true if the subtype if INSIDE_FLOOR
  */
 bool Stairs::is_inside_floor(void) {
@@ -87,7 +89,7 @@ bool Stairs::is_inside_floor(void) {
 }
 
 /**
- * Returns whether this entity can have collisions with entities even if
+ * @brief Returns whether this entity can have collisions with entities even if
  * they are not on the same layer.
  * @return true if this entity can collide with entities that are on another layer
  */
@@ -96,8 +98,10 @@ bool Stairs::has_layer_independent_collisions(void) {
 }
 
 /**
- * Returns true if this entity does not react to the sword.
- * If true is returned, nothing will happen when the hero hits this entity with the sword.
+ * @brief Returns true if this entity does not react to the sword.
+ *
+ * If true is returned, nothing will happen when the hero taps this entity with the sword.
+ *
  * @return true if the sword is ignored
  */
 bool Stairs::is_sword_ignored(void) {
@@ -105,7 +109,7 @@ bool Stairs::is_sword_ignored(void) {
 }
 
 /**
- * Returns whether this entity is an obstacle for another one.
+ * @brief Returns whether this entity is an obstacle for another one.
  * @param other another entity
  * @return true if this entity is an obstacle for the other one
  */
@@ -114,7 +118,7 @@ bool Stairs::is_obstacle_for(MapEntity *other) {
 }
 
 /**
- * This function is called when another entity overlaps this entity.
+ * @brief This function is called when another entity overlaps this entity.
  * @param entity_overlapping the other entity
  * @param collision_mode the collision mode that detected the collision
  */
@@ -123,7 +127,7 @@ void Stairs::notify_collision(MapEntity *entity_overlapping, CollisionMode colli
 }
 
 /**
- * Returns the direction of the movement an entity would take when activating these stairs.
+ * @brief Returns the direction of the movement an entity would take when activating these stairs.
  * @param way the way you intend to take these stairs
  * @return the movement direction an entity should take on these stairs (0 to 7)
  */
@@ -138,8 +142,10 @@ int Stairs::get_movement_direction(Way way) {
 }
 
 /**
- * Returns the direction of the animation an entity should take when walking these stairs.
+ * @brief Returns the direction of the animation an entity should take when walking these stairs.
+ *
  * For spiral stairs, the direction returned is diagonal.
+ *
  * @param way the way you are taking these stairs
  * @return the direction of animation (0 to 7)
  */
@@ -163,8 +169,11 @@ int Stairs::get_animation_direction(Way way) {
 }
 
 /**
+ * @brief Plays a sound corresponding to these stairs.
+ *
  * When an entity collides with the stairs (usually the hero),
  * it can call this function to play the appropriate stairs sound.
+ *
  * @param way the way you are taking these stairs
  */
 void Stairs::play_sound(Way way) {
@@ -188,8 +197,11 @@ void Stairs::play_sound(Way way) {
 }
 
 /**
+ * @brief Returns the path an entity should follow to take these stairs.
+ *
  * When an entity collides with the stairs (usually the hero),
  * it can call this function to know the path it should take to make the appropriate movement.
+ *
  * @param way the way you are taking these stairs
  * @return the corresponding path to make
  */
@@ -242,7 +254,7 @@ std::string Stairs::get_path(Way way) {
 }
 
 /**
- * Returns the subarea in which an entity tooking these stairs can be displayed.
+ * @brief Returns the subarea in which an entity tooking these stairs can be displayed.
  * @param way the way you are taking these stairs
  * @return the subarea of the map where the entity displaying should be restricted to
  */

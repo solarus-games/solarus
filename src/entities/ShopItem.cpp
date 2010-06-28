@@ -29,7 +29,7 @@
 #include "lowlevel/FileTools.h"
 
 /**
- * Creates a new shop item with the specified treasure and price.
+ * @brief Creates a new shop item with the specified treasure and price.
  * @param name the name identifying this entity
  * @param layer layer of the entity to create
  * @param x x coordinate of the entity to create
@@ -54,7 +54,7 @@ ShopItem::ShopItem(const std::string &name, Layer layer, int x, int y,
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 ShopItem::~ShopItem(void) {
   delete treasure;
@@ -62,8 +62,10 @@ ShopItem::~ShopItem(void) {
 }
 
 /**
- * Creates an instance from an input stream.
+ * @brief Creates an instance from an input stream.
+ *
  * The input stream must respect the syntax of this entity type.
+ *
  * @param game the game that will contain the entity created
  * @param is an input stream
  * @param layer the layer
@@ -89,7 +91,7 @@ MapEntity * ShopItem::parse(Game *game, std::istream &is, Layer layer, int x, in
 }
 
 /**
- * Creates a new shop item with the specified treasure and price.
+ * @brief Creates a new shop item with the specified treasure and price.
  * @param game the current game
  * @param name the name identifying this entity
  * @param layer layer of the entity to create
@@ -113,7 +115,7 @@ ShopItem * ShopItem::create(Game *game, const std::string &name, Layer layer, in
 }
 
 /**
- * Returns the type of entity.
+ * @brief Returns the type of entity.
  * @return the type of entity
  */
 EntityType ShopItem::get_type() {
@@ -121,8 +123,10 @@ EntityType ShopItem::get_type() {
 }
 
 /**
- * Returns true if this entity does not react to the sword.
- * If true is returned, nothing will happen when the hero hits this entity with the sword.
+ * @brief Returns true if this entity does not react to the sword.
+ *
+ * If true is returned, nothing will happen when the hero taps this entity with the sword.
+ *
  * @return true if the sword is ignored
  */
 bool ShopItem::is_sword_ignored(void) {
@@ -130,7 +134,7 @@ bool ShopItem::is_sword_ignored(void) {
 }
 
 /**
- * Returns whether this entity is an obstacle for another one.
+ * @brief Returns whether this entity is an obstacle for another one.
  * @param other another entity
  * @return true
  */
@@ -139,8 +143,10 @@ bool ShopItem::is_obstacle_for(MapEntity *other) {
 }
 
 /**
- * This function is called by the engine when an entity overlaps the shop item.
+ * @brief This function is called by the engine when an entity overlaps the shop item.
+ *
  * If the entity is the hero, we allow him to buy the item.
+ *
  * @param entity_overlapping the entity overlapping the detector
  * @param collision_mode the collision mode that detected the collision
  */
@@ -161,6 +167,8 @@ void ShopItem::notify_collision(MapEntity *entity_overlapping, CollisionMode col
 }
 
 /**
+ * @brief Notifies this entity that the player is interacting by pressing the action key.
+ *
  * This function is called when the player presses the action key
  * when the hero is facing this detector, and the action icon lets him do this.
  * A dialog is shown to let the hero buy the item.
@@ -179,7 +187,7 @@ void ShopItem::action_key_pressed(void) {
 }
 
 /**
- * Updates the entity.
+ * @brief Updates the entity.
  */
 void ShopItem::update(void) {
 
@@ -231,7 +239,7 @@ void ShopItem::update(void) {
 }
 
 /**
- * Displays the entity on the map.
+ * @brief Displays the entity on the map.
  */
 void ShopItem::display_on_map(void) {
 

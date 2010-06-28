@@ -24,7 +24,7 @@
 #include <iomanip>
 
 /**
- * Constructor.
+ * @brief Constructor.
  * @param id id of the tileset to create
  */
 Tileset::Tileset(TilesetId id):
@@ -37,7 +37,7 @@ Tileset::Tileset(TilesetId id):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 Tileset::~Tileset(void) {
   if (is_loaded()) {
@@ -46,8 +46,10 @@ Tileset::~Tileset(void) {
 }
 
 /**
- * Adds a tile pattern in this tileset.
+ * @brief Adds a tile pattern to this tileset.
+ *
  * This function is called by load().
+ * 
  * @param id id of this tile pattern (1 to 1024)
  * @param tile_pattern the tile pattern to add
  */
@@ -59,7 +61,7 @@ void Tileset::add_tile_pattern(int id, TilePattern *tile) {
 }
 
 /**
- * Loads the tileset by creating all tile patterns.
+ * @brief Loads the tileset from its file by creating all tile patterns.
  */
 void Tileset::load(void) {
 
@@ -154,7 +156,7 @@ void Tileset::load(void) {
 }
 
 /**
- * Destroys the tile patterns and frees the memory used
+ * @brief Destroys the tile patterns and frees the memory used
  * by the tileset image.
  */
 void Tileset::unload(void) {
@@ -175,7 +177,7 @@ void Tileset::unload(void) {
 }
 
 /**
- * Returns the background color of this tileset.
+ * @brief Returns the background color of this tileset.
  * @return the background color
  */
 Color & Tileset::get_background_color(void) {
@@ -183,7 +185,7 @@ Color & Tileset::get_background_color(void) {
 }
 
 /**
- * Returns whether this tileset is loaded.
+ * @brief Returns whether this tileset is loaded.
  * @return true if this tileset is loaded
  */
 bool Tileset::is_loaded(void) {
@@ -191,7 +193,7 @@ bool Tileset::is_loaded(void) {
 }
 
 /**
- * Returns the image containing the tiles of this tileset.
+ * @brief Returns the image containing the tiles of this tileset.
  * @return the tiles image
  */
 Surface * Tileset::get_tiles_image(void) {
@@ -199,7 +201,7 @@ Surface * Tileset::get_tiles_image(void) {
 }
 
 /**
- * Returns the image containing the skin-dependent dynamic entities for this tileset.
+ * @brief Returns the image containing the skin-dependent dynamic entities for this tileset.
  * @return the image containing the skin-dependent dynamic entities for this tileset
  */
 Surface * Tileset::get_entities_image(void) {
@@ -207,7 +209,7 @@ Surface * Tileset::get_entities_image(void) {
 }
 
 /**
- * Returns a tile pattern from this tileset.
+ * @brief Returns a tile pattern from this tileset.
  * @param id id of the tile pattern to get
  * @return the tile pattern with this id
  */

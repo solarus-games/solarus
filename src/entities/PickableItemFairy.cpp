@@ -21,8 +21,10 @@
 #include "Sprite.h"
 
 /**
- * Creates a pickable fairy.
+ * @brief Creates a pickable fairy.
+ *
  * The layer is automatically set to LAYER_HIGH.
+ *
  * @param x x coordinate of the fairy to create
  * @param y y coordinate of the fairy to create
  */
@@ -32,14 +34,14 @@ PickableItemFairy::PickableItemFairy(int x, int y):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 PickableItemFairy::~PickableItemFairy(void) {
 
 }
 
 /**
- * Returns whether this entity can have collisions with entities even if
+ * @brief Returns whether this entity can have collisions with entities even if
  * they are not on the same layer.
  * @return true if this entity can collide with entities that are on another layer
  */
@@ -48,7 +50,8 @@ bool PickableItemFairy::has_layer_independent_collisions(void) {
 }
 
 /**
- * Initializes the fairy's movement.
+ * @brief Initializes the fairy's movement.
+ *
  * This is a redefinition of PickableItem::initialize_movement()
  * to create the specific movement of a fairy.
  */
@@ -59,7 +62,8 @@ void PickableItemFairy::initialize_movement(void) {
 }
 
 /**
- * Updates the fairy.
+ * @brief Updates the fairy.
+ *
  * This function is called repeatedly by the map.
  * This is a redefinition of PickableItem::update() to update
  * the position of the shadow depending on the fairy's position.
@@ -81,7 +85,7 @@ void PickableItemFairy::update(void) {
 }
 
 /**
- * Gives the item to the player.
+ * @brief Gives the item to the player.
  */
 void PickableItemFairy::give_item_to_player(void) {
 

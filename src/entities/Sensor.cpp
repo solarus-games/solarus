@@ -23,7 +23,7 @@
 #include "lowlevel/FileTools.h"
 
 /**
- * Constructor.
+ * @brief Constructor.
  * @param name name of the entity
  * @param layer layer of the entity
  * @param x x position of the entity's rectangle
@@ -45,15 +45,17 @@ Sensor::Sensor(const std::string &name, Layer layer, int x, int y,
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 Sensor::~Sensor(void) {
 
 }
 
 /**
- * Creates an instance from an input stream.
+ * @brief Creates an instance from an input stream.
+ *
  * The input stream must respect the syntax of this entity type.
+ *
  * @param game the game that will contain the entity created
  * @param is an input stream
  * @param layer the layer
@@ -75,7 +77,7 @@ MapEntity * Sensor::parse(Game *game, std::istream &is, Layer layer, int x, int 
 }
 
 /**
- * Returns the type of entity.
+ * @brief Returns the type of entity.
  * @return the type of entity
  */
 EntityType Sensor::get_type() {
@@ -83,7 +85,7 @@ EntityType Sensor::get_type() {
 }
     
 /**
- * Returns the subtype of this sensor.
+ * @brief Returns the subtype of this sensor.
  * @return the subtype
  */
 Sensor::Subtype Sensor::get_subtype(void) {
@@ -91,7 +93,7 @@ Sensor::Subtype Sensor::get_subtype(void) {
 }
 
 /**
- * Returns whether this entity can have collisions with entities even if
+ * @brief Returns whether this entity can have collisions with entities even if
  * they are not on the same layer.
  * @return true if this entity can collide with entities that are on another layer
  */
@@ -102,7 +104,7 @@ bool Sensor::has_layer_independent_collisions(void) {
 }
 
 /**
- * Returns whether this entity is an obstacle for another one.
+ * @brief Returns whether this entity is an obstacle for another one.
  * @param other another entity
  * @return true if this entity is an obstacle for the other one
  */
@@ -111,7 +113,7 @@ bool Sensor::is_obstacle_for(MapEntity *other) {
 }
 
 /**
- * Checks whether an entity's collides with this entity.
+ * @brief Checks whether an entity's collides with this entity.
  * @param entity an entity
  * @return true if the entity's collides with this entity
  */
@@ -134,8 +136,10 @@ bool Sensor::test_collision_custom(MapEntity *entity) {
 }
 
 /**
- * This function is called by the engine when an entity overlaps this sensor.
+ * @brief This function is called by the engine when an entity overlaps this sensor.
+ *
  * This is a redefinition of Detector::collision().
+ *
  * @param entity_overlapping the entity overlapping the detector
  * @param collision_mode the collision mode that detected the collision
  */
@@ -144,8 +148,10 @@ void Sensor::notify_collision(MapEntity *entity_overlapping, CollisionMode colli
 }
 
 /**
- * Activates this sensor.
+ * @brief Activates this sensor.
+ *
  * This function is called when the hero overlaps the sensor.
+ *
  * @param hero the hero
  */
 void Sensor::activate(Hero *hero) {

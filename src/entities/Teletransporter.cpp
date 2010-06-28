@@ -22,7 +22,7 @@
 #include "lowlevel/FileTools.h"
 
 /**
- * Constructor.
+ * @brief Constructor.
  * @param name name of the teletransporter
  * @param layer layer of the teletransporter
  * @param x x position of the teletransporter's rectangle
@@ -53,15 +53,17 @@ Teletransporter::Teletransporter(const std::string &name, Layer layer, int x, in
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 Teletransporter::~Teletransporter(void) {
 
 }
 
 /**
- * Creates an instance from an input stream.
+ * @brief Creates an instance from an input stream.
+ *
  * The input stream must respect the syntax of this entity type.
+ *
  * @param game the game that will contain the entity created
  * @param is an input stream
  * @param layer the layer
@@ -89,7 +91,7 @@ MapEntity * Teletransporter::parse(Game *game, std::istream &is, Layer layer, in
 }
 
 /**
- * Sets the map.
+ * @brief Sets the map.
  * @param map the map
  */
 void Teletransporter::set_map(Map *map) {
@@ -122,7 +124,7 @@ void Teletransporter::set_map(Map *map) {
 }
 
 /**
- * Returns the type of entity.
+ * @brief Returns the type of entity.
  * @return the type of entity
  */
 EntityType Teletransporter::get_type() {
@@ -130,7 +132,7 @@ EntityType Teletransporter::get_type() {
 }
 
 /**
- * Returns whether this entity is an obstacle for another one.
+ * @brief Returns whether this entity is an obstacle for another one.
  * @param other another entity
  * @return true if this entity is an obstacle for the other one
  */
@@ -139,7 +141,7 @@ bool Teletransporter::is_obstacle_for(MapEntity *other) {
 }
 
 /**
- * Tests whether an entity's collides with this entity.
+ * @brief Returns whether an entity's collides with this entity.
  * @param entity an entity
  * @return true if the entity's collides with this entity
  */
@@ -188,7 +190,7 @@ bool Teletransporter::test_collision_custom(MapEntity *entity) {
 }
 
 /**
- * This function is called by the engine when an entity overlaps the teletransporter.
+ * @brief This function is called by the engine when an entity overlaps the teletransporter.
  * @param entity_overlapping the entity overlapping the detector
  * @param collision_mode the collision mode that detected the collision
  */
@@ -198,7 +200,7 @@ void Teletransporter::notify_collision(MapEntity *entity_overlapping, CollisionM
 }
 
 /**
- * Makes the teletransporter move the hero to the destination.
+ * @brief Makes the teletransporter move the hero to the destination.
  * @param hero the hero
  */
 void Teletransporter::transport_hero(Hero *hero) {

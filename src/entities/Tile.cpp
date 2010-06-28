@@ -21,7 +21,7 @@
 #include "Map.h"
 
 /**
- * Creates a new tile on the map.
+ * @brief Creates a new tile.
  * @param layer layer of the tile
  * @param x x position of the tile on the map
  * @param y y position of the tile on the map
@@ -35,8 +35,10 @@ Tile::Tile(Layer layer, int x, int y, int width, int height, int tile_pattern_id
 }
 
 /**
- * Creates an instance from an input stream.
+ * @brief Creates an instance from an input stream.
+ *
  * The input stream must respect the syntax of this entity type.
+ *
  * @param game the game that will contain the entity created
  * @param is an input stream
  * @param layer the layer
@@ -56,14 +58,14 @@ MapEntity * Tile::parse(Game *game, std::istream &is, Layer layer, int x, int y)
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 Tile::~Tile(void) {
 
 }
 
 /**
- * Returns the type of entity.
+ * @brief Returns the type of entity.
  * @return the type of entity
  */
 EntityType Tile::get_type() {
@@ -71,7 +73,7 @@ EntityType Tile::get_type() {
 }
 
 /**
- * Sets the map of this entity.
+ * @brief Sets the map of this entity.
  * @param map the map
  */
 void Tile::set_map(Map *map) {
@@ -80,14 +82,14 @@ void Tile::set_map(Map *map) {
 }
 
 /**
- * Displays the tile on the map.
+ * @brief Displays the tile on the map.
  */
 void Tile::display_on_map(void) {
   tile_pattern->display_on_map(map, bounding_box);
 }
 
 /**
- * Returns the pattern of this tile.
+ * @brief Returns the pattern of this tile.
  * @return the tile pattern
  */
 TilePattern * Tile::get_tile_pattern(void) {

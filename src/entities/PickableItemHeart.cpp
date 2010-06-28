@@ -19,7 +19,7 @@
 #include "Sprite.h"
 
 /**
- * Translation vectors constituing the movement of the falling heart.
+ * @brief Translation vectors that define the movement of the falling heart.
  */
 static const Rectangle falling_moves[24] = {
   Rectangle( 0, 0), Rectangle( 0,-2), Rectangle( 0,-2), Rectangle( 0,-2), Rectangle( 0,-2), Rectangle( 0,-2),
@@ -29,7 +29,7 @@ static const Rectangle falling_moves[24] = {
 };
 
 /**
- * Creates a pickable heart.
+ * @brief Creates a pickable heart.
  * @param layer layer of the heart to create on the map
  * @param x x coordinate of the heart to create
  * @param y y coordinate of the heart to create
@@ -40,14 +40,15 @@ PickableItemHeart::PickableItemHeart(Layer layer, int x, int y):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 PickableItemHeart::~PickableItemHeart(void) {
 
 }
 
 /**
- * Creates the sprite of this pickable heart.
+ * @brief Creates the sprite of this pickable heart.
+ *
  * Like the normal pickable items, a pickable heart is represented with two sprites:
  * the heart itself and its shadow. The difference is that the heart sprite has a special
  * animation when falling.
@@ -64,7 +65,8 @@ void PickableItemHeart::initialize_sprites(void) {
 }
 
 /**
- * Initializes the movement of the heart (if it is falling).
+ * @brief Initializes the movement of the heart (if it is falling).
+ *
  * The movement of a falling heart is completely different to the other
  * pickable items and the shadow is also moving.
  */
@@ -76,9 +78,10 @@ void PickableItemHeart::initialize_movement(void) {
 }
 
 /**
- * Updates the pickable heart.
+ * @brief Updates the pickable heart.
+ *
  * This function is called repeatedly by the map.
- * This is a redefinition of PickableItem::update() to make
+ * This is a redefinition of PickableItem::update() to
  * update the shadow position when the heart is falling.
  */
 void PickableItemHeart::update(void) {

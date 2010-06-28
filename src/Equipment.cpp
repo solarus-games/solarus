@@ -24,7 +24,7 @@
 #include "lowlevel/System.h"
 
 /**
- * Constructor.
+ * @brief Constructor.
  * @param savegame the savegame to encapsulate
  */
 Equipment::Equipment(Savegame *savegame):
@@ -33,14 +33,14 @@ Equipment::Equipment(Savegame *savegame):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 Equipment::~Equipment(void) {
 
 }
 
 /**
- * Sets the current game.
+ * @brief Sets the current game.
  * @param game the game
  */
 void Equipment::set_game(Game *game) {
@@ -48,7 +48,8 @@ void Equipment::set_game(Game *game) {
 }
 
 /**
- * This function is be called repeatedly by the game.
+ * @brief This function is be called repeatedly by the game.
+ *
  * Most of the time, there is nothing to update in this class.
  * The only elements updated here are some dynamic things
  * such as equipment-related animations or dialogs.
@@ -124,18 +125,16 @@ void Equipment::update(void) {
 // tunic
 
 /**
- * Returns the number of the player's tunic.
- * @return the player's tunic number (0: green tunic,
- * 1: blue tunic, 2: red tunic)
+ * @brief Returns the number of the player's tunic.
+ * @return the player's tunic number (0 to 2)
  */
 int Equipment::get_tunic(void) {
   return savegame->get_integer(Savegame::HERO_TUNIC);
 }
 
 /**
- * Sets the player's tunic.
- * @param tunic the player's tunic number (0: green tunic,
- * 1: blue tunic, 2: red tunic)
+ * @brief Sets the player's tunic.
+ * @param tunic the player's tunic number (0 to 2)
  */
 void Equipment::set_tunic(int tunic) {
 
@@ -153,7 +152,7 @@ void Equipment::set_tunic(int tunic) {
 // sword
 
 /**
- * Returns whether the player has a sword.
+ * @brief Returns whether the player has a sword.
  * @return true if the player has a sword, i.e. if get_sword_number() > 0
  */
 bool Equipment::has_sword(void) {
@@ -161,7 +160,7 @@ bool Equipment::has_sword(void) {
 }
 
 /**
- * Returns the number of the player's sword.
+ * @brief Returns the number of the player's sword.
  * @return the player's sword number (0: no sword,
  * 1 to 4: sword 1 to 4)
  */
@@ -170,7 +169,7 @@ int Equipment::get_sword(void) {
 }
 
 /**
- * Sets the player's sword.
+ * @brief Sets the player's sword.
  * @param sword the player's sword number (0: no sword,
  * 1 to 4: sword 1 to 4)
  */
@@ -190,7 +189,7 @@ void Equipment::set_sword(int sword) {
 // shield
 
 /**
- * Returns whether the player has a shield.
+ * @brief Returns whether the player has a shield.
  * @return true if the player has a shield, i.e. if get_shield_number() > 0
  */
 bool Equipment::has_shield(void) {
@@ -198,7 +197,7 @@ bool Equipment::has_shield(void) {
 }
 
 /**
- * Returns the number of the player's shield.
+ * @brief Returns the number of the player's shield.
  * @return the player's shield number (0: no shield,
  * 1 to 3: shield 1 to 3)
  */
@@ -207,7 +206,7 @@ int Equipment::get_shield(void) {
 }
 
 /**
- * Sets the player's shield.
+ * @brief Sets the player's shield.
  * @param shield the player's shield number (0: no shield,
  * 1 to 3: shield 1 to 3)
  */
@@ -227,7 +226,7 @@ void Equipment::set_shield(int shield) {
 // rupees
 
 /**
- * Returns the maximum number of rupees of the player.
+ * @brief Returns the maximum number of rupees of the player.
  * @return the player's maximum number of rupees (100, 300 or 999)
  */
 int Equipment::get_max_rupees(void) {
@@ -235,7 +234,7 @@ int Equipment::get_max_rupees(void) {
 }
 
 /**
- * Sets the maximum number of rupees of the player.
+ * @brief Sets the maximum number of rupees of the player.
  * @param max_rupees the player's maximum number of rupees (100, 300 or 999)
  */
 void Equipment::set_max_rupees(int max_rupees) {
@@ -248,7 +247,7 @@ void Equipment::set_max_rupees(int max_rupees) {
 }
 
 /**
- * Returns the player's current number of rupees.
+ * @brief Returns the player's current number of rupees.
  * @return the player's current number of rupees
  */
 int Equipment::get_rupees(void) {
@@ -256,8 +255,10 @@ int Equipment::get_rupees(void) {
 }
 
 /**
- * Sets the player's current number of rupees.
+ * @brief Sets the player's current number of rupees.
+ *
  * Exits with an error message if the given number of rupees is not valid.
+ *
  * @param rupees the player's new number of rupees
  */
 void Equipment::set_rupees(int rupees) {
@@ -270,8 +271,10 @@ void Equipment::set_rupees(int rupees) {
 }
 
 /**
- * Adds some rupees to the player.
- * If the maximum number of rupees is achieved, no more rupees are added.
+ * @brief Adds some rupees to the player.
+ *
+ * If the maximum number of rupees is reached, no more rupees are added.
+ * 
  * @param rupees_to_add number of rupees to add
  */
 void Equipment::add_rupees(int rupees_to_add) {
@@ -283,8 +286,10 @@ void Equipment::add_rupees(int rupees_to_add) {
 }
 
 /**
- * Removes some rupees from the player.
- * If the number of rupees achieves zero, no more rupees are removed.
+ * @brief Removes some rupees from the player.
+ *
+ * If the number of rupees reaches zero, no more rupees are removed.
+ *
  * @param rupees_to_remove number of rupees to remove
  */
 void Equipment::remove_rupees(int rupees_to_remove) {
@@ -297,7 +302,7 @@ void Equipment::remove_rupees(int rupees_to_remove) {
 // hearts
 
 /**
- * Returns the maximum number of hearts of the player.
+ * @brief Returns the maximum number of hearts of the player.
  * @return the player's maximum number of rupees
  */
 int Equipment::get_max_hearts(void) {
@@ -305,9 +310,11 @@ int Equipment::get_max_hearts(void) {
 }
 
 /**
- * Sets the maximum number of hearts of the player.
+ * @brief Sets the maximum number of hearts of the player.
+ *
  * The program exits with an error message if the given maximum
  * number of hearts is not valid.
+ * 
  * @param max_hearts the player's maximum number of hearts
  */
 void Equipment::set_max_hearts(int max_hearts) {
@@ -320,7 +327,7 @@ void Equipment::set_max_hearts(int max_hearts) {
 }
 
 /**
- * Adds a heart container to the player.
+ * @brief Adds a heart container to the player.
  */
 void Equipment::add_heart_container(void) {
   set_max_hearts(get_max_hearts() + 1);
@@ -328,9 +335,11 @@ void Equipment::add_heart_container(void) {
 }
 
 /**
- * Returns the current number of hearts of the player.
+ * @brief Returns the current number of hearts of the player.
+ *
  * The value returned is actually the number of heart quarters,
  * so a value of 4 means that the player has 1 heart left.
+ * 
  * @return the player's current number of hearts (in heart quarters)
  */
 int Equipment::get_hearts(void) {
@@ -338,11 +347,13 @@ int Equipment::get_hearts(void) {
 }
 
 /**
- * Sets the current number of hearts of the player.
+ * @brief Sets the current number of hearts of the player.
+ *
  * The given value is actually the number of heart quarters,
  * so a value of 4 means that the player has 1 heart left.
  * The program exits with an error message if the given number
  * of hearts is not valid.
+ *
  * @param hearts the player's new number of hearts (in heart quarters)
  */
 void Equipment::set_hearts(int hearts) {
@@ -355,8 +366,10 @@ void Equipment::set_hearts(int hearts) {
 }
 
 /**
- * Gives some hearts to the player.
- * If the maximum number of hearts is achieved, no more hearts are added.
+ * @brief Gives some hearts to the player.
+ *
+ * If the maximum number of hearts is reached, no more hearts are added.
+ *
  * @param hearts_to_add number of hearts to add (in heart quarters)
  */
 void Equipment::add_hearts(int hearts_to_add) {
@@ -368,8 +381,10 @@ void Equipment::add_hearts(int hearts_to_add) {
 }
 
 /**
- * Removes some hearts from the player.
- * If the number of hearts achieves zero, the game over sequence is started.
+ * @brief Removes some hearts from the player.
+ *
+ * If the number of hearts reaches zero, the game over sequence is started.
+ *
  * @param hearts_to_remove number of hearts to remove
  */
 void Equipment::remove_hearts(int hearts_to_remove) {
@@ -380,17 +395,19 @@ void Equipment::remove_hearts(int hearts_to_remove) {
 }
 
 /**
- * Restores all the hearts.
+ * @brief Restores all the hearts.
  */
 void Equipment::restore_all_hearts(void) {
   set_hearts(get_max_hearts() * 4);
 }
 
 /**
- * Returns whether the player is running out of hearts.
+ * @brief Returns whether the player is running out of hearts.
+ *
  * The function returns true if the number of hearts is
  * greater than zero and lower
  * than or equal to 25% of the maximum.
+ *
  * @return true if the player is running out of hearts
  */
 bool Equipment::needs_hearts(void) {
@@ -398,7 +415,7 @@ bool Equipment::needs_hearts(void) {
 }
 
 /**
- * Returns the current number of pieces of heart of the player.
+ * @brief Returns the current number of pieces of heart of the player.
  * @returns the player's current number of pieces of heart, between 0 and 3
  */
 int Equipment::get_nb_pieces_of_heart(void) {
@@ -406,7 +423,7 @@ int Equipment::get_nb_pieces_of_heart(void) {
 }
 
 /**
- * Adds a piece of heart to the player.
+ * @brief Adds a piece of heart to the player.
  */
 void Equipment::add_piece_of_heart(void) {
 
@@ -430,7 +447,9 @@ void Equipment::add_piece_of_heart(void) {
 }
 
 /**
- * Gives a fairy to the player: shows the dialog box and does the action
+ * @brief Gives a fairy to the player.
+ *
+ * Shows the dialog box and does the action
  * chosen by the player: restore his hearts or keep the fairy in a bottle.
  */
 void Equipment::found_fairy(void) {
@@ -446,7 +465,9 @@ void Equipment::found_fairy(void) {
 }
 
 /**
- * Gives some water to the player: shows the dialog box and give the water
+ * @brief Gives some water to the player.
+ *
+ * Shows the dialog box and give the water
  * to the player if he wants and if this is possible.
  * The water will fill the first empty bottle.
  */
@@ -466,8 +487,11 @@ void Equipment::found_water(void) {
 }
 
 /**
- * Gives some water to the player: shows the dialog box and give the water
+ * @brief Gives some water to the player.
+ *
+ * Shows the dialog box and give the water
  * to the player if he wants and if this is possible.
+ *
  * @param bottle_id id of the bottle to fill if the player wants to,
  * or -1 to pick the first bottle available
  */
@@ -490,7 +514,7 @@ void Equipment::found_water(InventoryItemId bottle_id) {
 // magic
 
 /**
- * Returns the maximum level of the player's magic bar.
+ * @brief Returns the maximum level of the player's magic bar.
  * @return the maximum level of magic (0, 42 or 84 points)
  */
 int Equipment::get_max_magic(void) {
@@ -498,9 +522,11 @@ int Equipment::get_max_magic(void) {
 }
 
 /**
- * Sets the maximum level of the player's magic bar.
+ * @brief Sets the maximum level of the player's magic bar.
+ *
  * Exits with an error message if the value specified
  * if not valid.
+ * 
  * @param max_magic the maximum level of magic (0, 42 or 84 points)
  */
 void Equipment::set_max_magic(int max_magic) {
@@ -515,7 +541,7 @@ void Equipment::set_max_magic(int max_magic) {
 }
 
 /**
- * Returns the current number of magic points of the player.
+ * @brief Returns the current number of magic points of the player.
  * @return the player's current number of magic points (0 to 28)
  */
 int Equipment::get_magic(void) {
@@ -523,9 +549,11 @@ int Equipment::get_magic(void) {
 }
 
 /**
- * Sets the current number of magic points of the player.
+ * @brief Sets the current number of magic points of the player.
+ *
  * The program exits with an error message if the given value
  * is not valid.
+ * 
  * @param magic the player's new number of magic points (0 to 84)
  */
 void Equipment::set_magic(int magic) {
@@ -538,8 +566,10 @@ void Equipment::set_magic(int magic) {
 }
 
 /**
- * Adds some magic points to the player.
- * If the maximum value is achieved, no more magic points are added.
+ * @brief Adds some magic points to the player.
+ *
+ * If the maximum value is reached, no more magic points are added.
+ * 
  * @param magic_to_add number of magic points to add
  */
 void Equipment::add_magic(int magic_to_add) {
@@ -551,9 +581,11 @@ void Equipment::add_magic(int magic_to_add) {
 }
 
 /**
- * Removes some magic points from the player.
- * If the number of magic points achieves zero, no more magic points
+ * @brief Removes some magic points from the player.
+ *
+ * If the number of magic points reaches zero, no more magic points
  * are removed.
+ *
  * @param magic_to_remove number of magic poits to remove
  */
 void Equipment::remove_magic(int magic_to_remove) {
@@ -564,16 +596,18 @@ void Equipment::remove_magic(int magic_to_remove) {
 }
 
 /**
- * Restores all magic points.
+ * @brief Restores all magic points.
  */
 void Equipment::restore_all_magic(void) {
   set_magic(get_max_magic());
 }
 
 /**
- * Returns whether the player needs magic.
+ * @brief Returns whether the player needs magic.
+ *
  * The function returns true if the player has a magic bar
  * and has 0 magic points left.
+ * 
  * @return true if the player needs magic
  */
 bool Equipment::needs_magic(void) {
@@ -581,7 +615,7 @@ bool Equipment::needs_magic(void) {
 }
 
 /**
- * Returns whether the magic bar is decreasing continuously.
+ * @brief Returns whether the magic bar is decreasing continuously.
  * @return true if the magic bar is decreasing, false otherwise
  */
 bool Equipment::is_magic_decreasing(void) {
@@ -589,7 +623,7 @@ bool Equipment::is_magic_decreasing(void) {
 }
 
 /**
- * Starts removing magic continuously.
+ * @brief Starts removing magic continuously.
  * @param delay delay in miliseconds between two decreases
  */
 void Equipment::start_removing_magic(uint32_t delay) {
@@ -607,7 +641,7 @@ void Equipment::start_removing_magic(uint32_t delay) {
 }
 
 /**
- * Stops removing magic continuously.
+ * S@brief tops removing magic continuously.
  */
 void Equipment::stop_removing_magic(void) {
   this->magic_decrease_delay = 0;
@@ -616,7 +650,7 @@ void Equipment::stop_removing_magic(void) {
 // bombs
 
 /**
- * Returns the maximum number of bombs of the player.
+ * @brief Returns the maximum number of bombs of the player.
  * @return the player's maximum number of bombs (0, 10, 30 or 99)
  */
 int Equipment::get_max_bombs(void) {
@@ -624,7 +658,7 @@ int Equipment::get_max_bombs(void) {
 }
 
 /**
- * Sets the maximum number of bombs of the player.
+ * @brief Sets the maximum number of bombs of the player.
  * @param max_bombs the player's maximum number of bombs (0, 10, 30 or 99)
  */
 void Equipment::set_max_bombs(int max_bombs) {
@@ -637,7 +671,7 @@ void Equipment::set_max_bombs(int max_bombs) {
 }
 
 /**
- * Returns the current number of bombs.
+ * @brief Returns the current number of bombs.
  * @return the player's current number of bombs
  */
 int Equipment::get_bombs(void) {
@@ -645,9 +679,11 @@ int Equipment::get_bombs(void) {
 }
 
 /**
- * Sets the current number of bombs of the player.
+ * @brief Sets the current number of bombs of the player.
+ *
  * The program exits with an error message if the given number
  * of bombs is not valid.
+ * 
  * @param bombs the player's new number of bombs
  */
 void Equipment::set_bombs(int bombs) {
@@ -660,8 +696,10 @@ void Equipment::set_bombs(int bombs) {
 }
 
 /**
- * Adds some bombs to the player.
- * If the maximum number of bombs is achieved, no more bombs are added.
+ * @brief Adds some bombs to the player.
+ *
+ * If the maximum number of bombs is reached, no more bombs are added.
+ * 
  * @param bombs_to_add number of bombs to add
  */
 void Equipment::add_bombs(int bombs_to_add) {
@@ -673,7 +711,8 @@ void Equipment::add_bombs(int bombs_to_add) {
 }
 
 /**
- * Removes a bomb from the player.
+ * @brief Removes a bomb from the player.
+ *
  * If the number of bombs is already zero, nothing happens.
  */
 void Equipment::remove_bomb(void) {
@@ -684,9 +723,11 @@ void Equipment::remove_bomb(void) {
 }
 
 /**
- * Returns whether the player needs bombs.
+ * @brief Returns whether the player needs bombs.
+ *
  * The function returns true if the player has obtained the bombs
  * but has 0 bombs left.
+ * 
  * @return true if the player needs bombs
  */
 bool Equipment::needs_bombs(void) {
@@ -695,7 +736,7 @@ bool Equipment::needs_bombs(void) {
 }
 
 /**
- * Returns the maximum number of arrows of the player.
+ * @brief Returns the maximum number of arrows of the player.
  * @return the player's maximum number of arrows (0, 10, 30 or 99)
  */
 int Equipment::get_max_arrows(void) {
@@ -703,7 +744,7 @@ int Equipment::get_max_arrows(void) {
 }
 
 /**
- * Sets the maximum number of arrows of the player.
+ * @brief Sets the maximum number of arrows of the player.
  * @param max_arrows the player's maximum number of arrows (0, 10, 30 or 99)
  */
 void Equipment::set_max_arrows(int max_arrows) {
@@ -716,7 +757,7 @@ void Equipment::set_max_arrows(int max_arrows) {
 }
 
 /**
- * Returns the current number of arrows.
+ * @brief Returns the current number of arrows.
  * @return the player's current number of arrows
  */
 int Equipment::get_arrows(void) {
@@ -724,9 +765,11 @@ int Equipment::get_arrows(void) {
 }
 
 /**
- * Sets the current number of arrows of the player.
+ * @brief Sets the current number of arrows of the player.
+ *
  * The program exits with an error message if the given number
  * of arrows is not valid.
+ * 
  * @param arrows the player's new number of arrows
  */
 void Equipment::set_arrows(int arrows) {
@@ -750,8 +793,10 @@ void Equipment::set_arrows(int arrows) {
 }
 
 /**
- * Adds some arrows to the player.
- * If the maximum number of arrows is achieved, no more arrows are added.
+ * @brief Adds some arrows to the player.
+ *
+ * If the maximum number of arrows is reached, no more arrows are added.
+ * 
  * @param arrows_to_add number of arrows to add
  */
 void Equipment::add_arrows(int arrows_to_add) {
@@ -763,7 +808,8 @@ void Equipment::add_arrows(int arrows_to_add) {
 }
 
 /**
- * Removes an arrow from the player.
+ * @brief Removes an arrow from the player.
+ *
  * If the number of arrows is already zero, nothing happens.
  */
 void Equipment::remove_arrow(void) {
@@ -774,9 +820,11 @@ void Equipment::remove_arrow(void) {
 }
 
 /**
- * Returns whether the player needs arrows.
+ * @brief Returns whether the player needs arrows.
+ *
  * The function returns true if the player has obtained the bow
  * but has 0 arrows left.
+ * 
  * @return true if the player needs arrows
  */
 bool Equipment::needs_arrows(void) {
@@ -787,11 +835,13 @@ bool Equipment::needs_arrows(void) {
 // inventory items
 
 /**
- * Returns whether the player has obtained the specified item.
+ * @brief Returns whether the player has obtained the specified item.
+ *
  * For most of the items, the value returned is always 0 or 1.
  * Some items have several variants (for example a bottle):
  * for such items, the value returned indicates the variant
  * and may be greater than 1.
+ *
  * @param item_id id of the item
  * @return a value indicating the possession state of this item.
  */
@@ -802,8 +852,10 @@ int Equipment::has_inventory_item(InventoryItemId item_id) {
 }
 
 /**
- * Gives an item of the inventory to the player.
+ * @brief Gives an item of the inventory to the player.
+ *
  * This is equivalent to give_inventory_item(item_id, 1).
+ * 
  * @param item_id the item to give
  */
 void Equipment::give_inventory_item(InventoryItemId item_id) {
@@ -811,7 +863,7 @@ void Equipment::give_inventory_item(InventoryItemId item_id) {
 }
 
 /**
- * Sets the possession state of an item.
+ * @brief Sets the possession state of an item.
  * @param item_id the item to set
  * @param variant the variant of the item to give to the player,
  * or zero to remove the item
@@ -834,8 +886,10 @@ void Equipment::give_inventory_item(InventoryItemId item_id, int variant) {
 }
 
 /**
- * Removes from the player an item of the inventory.
+ * @brief Removes from the player an item of the inventory.
+ *
  * This is equivalent to give_inventory_item(item_id, 0).
+ *
  * @param item_id the item to remove
  */
 void Equipment::remove_inventory_item(InventoryItemId item_id) {
@@ -843,7 +897,8 @@ void Equipment::remove_inventory_item(InventoryItemId item_id) {
 }
 
 /**
- * Gives an empty bottle to the player.
+ * @brief Gives an empty bottle to the player.
+ *
  * This function calls give_inventory_item() with the item id
  * corresponding to the first bottle slot that the player
  * doesn't have yet.
@@ -868,7 +923,7 @@ void Equipment::add_bottle(void) {
 }
 
 /**
- * Returns whether the player has at least one bottle.
+ * @brief Returns whether the player has at least one bottle.
  * @return true if the player has at least one bottle
  */
 bool Equipment::has_bottle(void) {
@@ -880,7 +935,7 @@ bool Equipment::has_bottle(void) {
 }
 
 /**
- * Returns whether the player has at least one empty bottle.
+ * @brief Returns whether the player has at least one empty bottle.
  * @return true if the player has at least one empty bottle
  */
 bool Equipment::has_empty_bottle(void) {
@@ -888,7 +943,7 @@ bool Equipment::has_empty_bottle(void) {
 }
 
 /**
- * Returns the id of the first empty bottle.
+ * @brief Returns the id of the first empty bottle.
  * @return the id of the first empty bottle
  */
 InventoryItemId Equipment::get_first_empty_bottle(void) {
@@ -896,7 +951,7 @@ InventoryItemId Equipment::get_first_empty_bottle(void) {
 }
 
 /**
- * Returns the id of a bottle previously selected.
+ * @brief Returns the id of a bottle previously selected.
  * @return the id of a bottle previously selected
  */
 InventoryItemId Equipment::get_destination_bottle(void) {
@@ -904,7 +959,7 @@ InventoryItemId Equipment::get_destination_bottle(void) {
 }
 
 /**
- * Returns whether the player has at least one bottle having the specified content.
+ * @brief Returns whether the player has at least one bottle having the specified content.
  * @param content the content seeked (must be a valid bottle content or Treasure::NONE)
  * @return true if the player has at least one bottle with this content
  */
@@ -928,7 +983,7 @@ bool Equipment::has_bottle_with(Treasure::Content content) {
 }
 
 /**
- * Returns the id of the first bottle having the specified content.
+ * @brief Returns the id of the first bottle having the specified content.
  * @param content the content seeked (must be a valid bottle content or Treasure::NONE)
  * @return the id of the first bottle with this content
  */
@@ -965,7 +1020,7 @@ InventoryItemId Equipment::get_first_bottle_with(Treasure::Content content) {
 }
 
 /**
- * Sets the content of a bottle.
+ * @brief Sets the content of a bottle.
  * @param bottle_id item id of the bottle (must be the id of a bottle)
  * @param content content to set (must be a valid bottle content or Treasure::NONE)
  */
@@ -992,7 +1047,7 @@ void Equipment::set_bottle_content(InventoryItemId bottle_id, Treasure::Content 
 }
 
 /**
- * Sets a bottle empty.
+ * @brief Sets a bottle empty.
  * @param bottle_id item id of the bottle to make empty (must be the id of a bottle)
  */
 void Equipment::set_bottle_empty(InventoryItemId bottle_id) {
@@ -1000,7 +1055,7 @@ void Equipment::set_bottle_empty(InventoryItemId bottle_id) {
 }
 
 /**
- * Returns the current amount of a specified inventory item.
+ * @brief Returns the current amount of a specified inventory item.
  * @param item_id id of the item to get
  * @return the player's current amount of this item
  */
@@ -1020,9 +1075,11 @@ int Equipment::get_inventory_item_amount(InventoryItemId item_id) {
 }
 
 /**
- * Sets the current amount of a specified item.
+ * @brief Sets the current amount of a specified item.
+ *
  * The program exits with an error message if the given number
  * is not valid.
+ *
  * @param item_id id of the item to set
  * @param amount the new amount
  */
@@ -1051,8 +1108,10 @@ void Equipment::set_inventory_item_amount(InventoryItemId item_id, int amount) {
 }
 
 /**
- * Adds an amount of a specified inventory item to the player.
- * If the maximum amount is achieved, no more items are added.
+ * @brief Adds an amount of a specified inventory item to the player.
+ *
+ * If the maximum amount is reached, no more items are added.
+ * 
  * @param item_id id of the item to set
  * @param amount_to_add the amount to add
  */
@@ -1076,8 +1135,10 @@ void Equipment::add_inventory_item_amount(InventoryItemId item_id, int amount_to
 }
 
 /**
- * Removes an amount of a specified inventory item to the player.
+ * @brief Removes an amount of a specified inventory item to the player.
+ *
  * If the amount reaches zero, no more items are removed.
+ * 
  * @param item_id id of the item to set
  * @param amount_to_remove the amount to remove
  */
@@ -1093,7 +1154,7 @@ void Equipment::remove_inventory_item_amount(InventoryItemId item_id, int amount
 }
 
 /**
- * Returns the maximum amount value of the specified item.
+ * @brief Returns the maximum amount value of the specified item.
  * @param item_id id of an item
  * @return the maximum amount value of this item
  */
@@ -1129,7 +1190,7 @@ int Equipment::get_inventory_item_maximum(InventoryItemId item_id) {
 }
 
 /**
- * Returns whether the player has the maximum amount of the specified item.
+ * @brief Returns whether the player has the maximum amount of the specified item.
  * @param item_id id of an item
  * @return true if the player has the maximum amount of this item
  */
@@ -1138,7 +1199,7 @@ bool Equipment::has_inventory_item_maximum(InventoryItemId item_id) {
 }
 
 /**
- * Returns the item currently assigned to a slot.
+ * @brief Returns the item currently assigned to a slot.
  * @param slot slot of the item to get (0 for X or 1 for V)
  * @return the item currently assigned to this slot (may be INVENTORY_NONE)
  */
@@ -1148,9 +1209,11 @@ InventoryItemId Equipment::get_item_assigned(int slot) {
 }
 
 /**
- * Assigns an item to a slot.
+ * @brief Assigns an item to a slot.
+ *
  * The program exits with an error message if the specified item
- * cannot be equiped or if the player does not have it
+ * cannot be equiped or if the player does not have it.
+ * 
  * @param slot slot to set (0 for X or 1 for V)
  * @param item_id the item to assign to this slot (may be INVENTORY_NONE)
  */
@@ -1171,7 +1234,7 @@ void Equipment::set_item_assigned(int slot, InventoryItemId item_id) {
 }
 
 /**
- * Returns whether the player has got the world map.
+ * @brief Returns whether the player has got the world map.
  * @return true if the player has got the world map
  */
 bool Equipment::has_world_map(void) {
@@ -1179,7 +1242,7 @@ bool Equipment::has_world_map(void) {
 }
 
 /**
- * Gives the world map to the player.
+ * @brief Gives the world map to the player.
  */
 void Equipment::add_world_map(void) {
   savegame->set_integer(Savegame::WORLD_MAP, 1);
@@ -1188,7 +1251,7 @@ void Equipment::add_world_map(void) {
 // small keys
 
 /**
- * Returns whether the small keys are enabled in the current map.
+ * @brief Returns whether the small keys are enabled in the current map.
  * @return true if the small keys are enabled in the current map
  */
 bool Equipment::are_small_keys_enabled(void) {
@@ -1196,8 +1259,9 @@ bool Equipment::are_small_keys_enabled(void) {
 }
 
 /**
- * Returns the savegame variable where the number of small keys
+ * @brief Returns the savegame variable where the number of small keys
  * is stored for the current map.
+ *
  * Stops with an error message if the small keys are not enabled in the current map.
  */
 int Equipment::get_small_keys_variable(void) {
@@ -1210,8 +1274,10 @@ int Equipment::get_small_keys_variable(void) {
 }
 
 /**
- * Returns whether the player has got at least one small key in the current map.
+ * @brief Returns whether the player has got at least one small key in the current map.
+ *
  * Stops with an error message if the small keys are not enabled in the current map.
+ * 
  * @return true if the player has got at least one small key
  */
 bool Equipment::has_small_key(void) {
@@ -1219,8 +1285,10 @@ bool Equipment::has_small_key(void) {
 }
 
 /**
- * Returns the current number of small keys of the player in the current map.
+ * @brief Returns the current number of small keys of the player in the current map.
+ *
  * Stops with an error message if the small keys are not enabled in the current map.
+ * 
  * @return the current number of small keys
  */
 int Equipment::get_small_keys(void) {
@@ -1229,7 +1297,9 @@ int Equipment::get_small_keys(void) {
 }
 
 /**
- * Adds a small key to the player in the current map.
+ * @brief Adds a small key to the player in the current map.
+ *
+ * Stops with an error message if the player has no more small keys.
  */
 void Equipment::add_small_key(void) {
 
@@ -1238,7 +1308,8 @@ void Equipment::add_small_key(void) {
 }
 
 /**
- * Removes a small key from the player in the current dungeon.
+ * @brief Removes a small key from the player in the current dungeon.
+ *
  * Stops with an error message if the player has no more small keys.
  */
 void Equipment::remove_small_key(void) {
@@ -1254,13 +1325,16 @@ void Equipment::remove_small_key(void) {
 // ability to lift items
 
 /**
- * Returns whether the player can lift the specified weight.
+ * @brief Returns whether the player can lift the specified weight.
+ *
  * - If the weight is 0, true is always returned.
  * - If the weight is 1, the function returns true if the player has got the iron glove.
  * - If the weight is 2, the function returns true if the player has got the golden glove.
+ *
  * @param weight the weight of an item (0 to 2)
  * @return true if the player can lift this weight.
  */
 bool Equipment::can_lift(int weight) {
   return has_inventory_item(INVENTORY_GLOVE) >= weight;
 }
+

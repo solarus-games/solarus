@@ -73,7 +73,7 @@ Amélioration de la documentation en cours (@brief manquants) :
 
 find . -name '*.h' -o -name '*.cpp' | sort
 
-dernière fichier traité : PickableItem.cpp
+dernier fichier traité : Equipment.cpp
 
 A venir :
 

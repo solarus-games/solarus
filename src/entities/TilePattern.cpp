@@ -21,8 +21,10 @@
 #include "Map.h"
 
 /**
- * Constructor.
+ * @brief Constructor.
+ *
  * It is called by the subclasses. 
+ * 
  * @param obstacle type of obstacle
  * @param width width of the tile in pixels (must be a multiple of 8)
  * @param height height of the tile in pixels (must be a multiple of 8)
@@ -45,14 +47,14 @@ TilePattern::TilePattern(Obstacle obstacle, int width, int height):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 TilePattern::~TilePattern(void) {
 
 }
 
 /**
- * Returns the width of the tile.
+ * @brief Returns the width of the tile pattern.
  * @return the width of the tile 
  */
 int TilePattern::get_width(void) const {
@@ -60,7 +62,7 @@ int TilePattern::get_width(void) const {
 }
 
 /**
- * Returns the height of the tile.
+ * @brief Returns the height of the tile pattern.
  * @return the height of the tile 
  */
 int TilePattern::get_height(void) const {
@@ -68,7 +70,7 @@ int TilePattern::get_height(void) const {
 }
 
 /**
- * Returns the obstacle property of this tile pattern.
+ * @brief Returns the obstacle property of this tile pattern.
  * @return the obstacle property of this tile pattern
  */
 Obstacle TilePattern::get_obstacle(void) const {
@@ -76,7 +78,8 @@ Obstacle TilePattern::get_obstacle(void) const {
 }
 
 /**
- * Updates the current frame of all tile patterns.
+ * @brief Updates the current frame of all tile patterns.
+ *
  * This function is called repeatedly by the map.
  */
 void TilePattern::update(void) {
@@ -85,7 +88,7 @@ void TilePattern::update(void) {
 }
 
 /**
- * Displays the tile pattern on the map, repeating it to fit the specified size.
+ * @brief Displays the tile pattern on the map, repeating it to fit the specified size.
  * @param map the map
  * @param position_in_map location and size of the tile on the map
  */

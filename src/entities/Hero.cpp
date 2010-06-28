@@ -35,12 +35,12 @@
 #include "lowlevel/System.h"
 
 /**
- * Normal speed of the hero when walking.
+ * @brief Normal speed of the hero when walking.
  */
 const int Hero::walking_speed = 9;
 
 /**
- * Creates a hero.
+ * @brief Creates a hero.
  * @param equipment the equipment
  */
 Hero::Hero(Equipment *equipment):
@@ -65,7 +65,7 @@ Hero::Hero(Equipment *equipment):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 Hero::~Hero(void) {
 
@@ -78,7 +78,7 @@ Hero::~Hero(void) {
 }
 
 /**
- * Returns the type of entity.
+ * @brief Returns the type of entity.
  * @return the type of entity
  */
 EntityType Hero::get_type() {
@@ -86,9 +86,11 @@ EntityType Hero::get_type() {
 }
 
 /**
- * Returns whether entities of this type can be obstacles for other entities.
+ * @brief Returns whether entities of this type can be obstacles for other entities.
+ *
  * If yes, the function is_obstacle_for() will be called
  * to determine whether this particular entity is an obstacle or not.
+ *
  * @return true if this type of entity can be obstacle for other entities
  */
 bool Hero::can_be_obstacle(void) {
@@ -96,10 +98,13 @@ bool Hero::can_be_obstacle(void) {
 }
 
 /**
- * Returns whether entities of this type can detect the presence 
+ * @brief Returns whether entities of this type have detection capabilities.
+ *
+ * This function returns whether entities of this type can detect the presence 
  * of the hero or other entities (this is possible only for
  * suclasses of Detector). If yes, the function 
- * collision() will be called when a collision is detected.
+ * notify_collision() will be called when a collision is detected.
+ *
  * @return true if this type of entity can detect other entities
  */
 bool Hero::can_detect_entities(void) {
@@ -107,9 +112,11 @@ bool Hero::can_detect_entities(void) {
 }
 
 /**
- * Returns whether entities of this type can be displayed.
- * If enabled, the sprites added by the add_sprite() calls will be 
+ * @brief Returns whether entities of this type can be displayed.
+ *
+ * If yes, the sprites added by the add_sprite() calls will be 
  * displayed (if any).
+ *
  * @return true if this type of entity can be displayed
  */
 bool Hero::can_be_displayed(void) {
@@ -117,7 +124,9 @@ bool Hero::can_be_displayed(void) {
 }
 
 /**
- * Returns whether an entity of this type should be displayed above
+ * @brief Returns whether this entity has to be displayed in y order.
+ *
+ * This function returns whether an entity of this type should be displayed above
  * the hero and other entities having this property when it is in front of them.
  * This means that the displaying order of entities having this
  * feature depends on their y position. The entities without this feature
@@ -128,8 +137,9 @@ bool Hero::can_be_displayed(void) {
 bool Hero::is_displayed_in_y_order(void) {
   return true;
 }
+
 /**
- * Returns whether the hero is currently on raised crystal switch blocks.
+ * @brief Returns whether the hero is currently on raised crystal switch blocks.
  * @return true if the hero is currently on raised crystal switch blocks
  */
 bool Hero::is_on_raised_blocks(void) {
@@ -137,7 +147,7 @@ bool Hero::is_on_raised_blocks(void) {
 }
 
 /**
- * Returns whether this entity is an obstacle for another one.
+ * @brief Returns whether this entity is an obstacle for another one.
  * @param other another entity
  * @return true if this entity is an obstacle for the other one
  */
@@ -157,7 +167,7 @@ bool Hero::is_obstacle_for(MapEntity *other) {
 }
 
 /**
- * Returns whether a water tile is currently considered as an obstacle for the hero.
+ * @brief Returns whether a water tile is currently considered as an obstacle for the hero.
  * @return true if the water tiles are currently an obstacle for the hero
  */
 bool Hero::is_water_obstacle(void) {
@@ -165,7 +175,7 @@ bool Hero::is_water_obstacle(void) {
 }
 
 /**
- * Returns whether a hole is currently considered as an obstacle for the hero.
+ * @brief Returns whether a hole is currently considered as an obstacle for the hero.
  * @return true if the holes are currently an obstacle for the hero
  */
 bool Hero::is_hole_obstacle(void) {
@@ -173,7 +183,7 @@ bool Hero::is_hole_obstacle(void) {
 }
 
 /**
- * Returns whether a ladder is currently considered as an obstacle for the hero.
+ * @brief Returns whether a ladder is currently considered as an obstacle for the hero.
  * @return true if the ladders are currently an obstacle for the hero
  */
 bool Hero::is_ladder_obstacle(void) {
@@ -181,8 +191,10 @@ bool Hero::is_ladder_obstacle(void) {
 }
 
 /**
- * Returns whether a teletransporter is currently considered as an obstacle.
+ * @brief Returns whether a teletransporter is currently considered as an obstacle.
+ *
  * This depends on the hero's state.
+ *
  * @param teletransporter a teletransporter
  * @return true if the teletransporter is currently an obstacle for the hero
  */
@@ -191,8 +203,10 @@ bool Hero::is_teletransporter_obstacle(Teletransporter *teletransporter) {
 }
 
 /**
- * Returns whether a conveyor belt is currently considered as an obstacle for the hero.
+ * @brief Returns whether a conveyor belt is currently considered as an obstacle for the hero.
+ *
  * This depends on the hero's state.
+ *
  * @param conveyor_belt a conveyor belt
  * @return true if the conveyor belt is currently an obstacle for this entity
  */
@@ -201,7 +215,7 @@ bool Hero::is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt) {
 }
 
 /**
- * Returns whether some stairs are currently considered as an obstacle for this entity.
+ * @brief Returns whether some stairs are currently considered as an obstacle for this entity.
  * @param stairs an stairs entity
  * @return true if the stairs are currently an obstacle for this entity
  */
@@ -210,7 +224,7 @@ bool Hero::is_stairs_obstacle(Stairs *stairs) {
 }
 
 /**
- * Returns whether a sensor is currently considered as an obstacle for the hero.
+ * @brief Returns whether a sensor is currently considered as an obstacle for the hero.
  * @param sensor a sensor (not used here)
  * @return true if this sensor is currently an obstacle for the hero
  */
@@ -230,7 +244,7 @@ bool Hero::is_sensor_obstacle(Sensor *sensor) {
 }
 
 /**
- * Returns whether a raised crystal switch block is currently considered as an obstacle for this entity.
+ * @brief Returns whether a raised crystal switch block is currently considered as an obstacle for this entity.
  * @param raised_block a crystal switch block raised
  * @return true if the raised block is currently an obstacle for this entity
  */
@@ -241,8 +255,7 @@ bool Hero::is_raised_block_obstacle(CrystalSwitchBlock *raised_block) {
 }
 
 /**
- * Returns whether a jump sensor is currently considered as an obstacle for this entity.
- * This function returns true by default.
+ * @brief Returns whether a jump sensor is currently considered as an obstacle for this entity.
  * @param jump_sensor a jump sensor
  * @return true if the jump sensor is currently an obstacle for this entity
  */
@@ -251,8 +264,10 @@ bool Hero::is_jump_sensor_obstacle(JumpSensor *jump_sensor) {
 }
 
 /**
- * Returns the 8-direction movement controlled by the player,
- * even if it is not the current movement of the hero.
+ * @brief Returns the 8-direction movement controlled by the player.
+ *
+ * The 8-direction movement is return even if it is not the current movement of the hero.
+ *
  * @return the player's movement
  */
 PlayerMovement * Hero::get_normal_movement(void) {
@@ -260,19 +275,23 @@ PlayerMovement * Hero::get_normal_movement(void) {
 }
 
 /**
- * Returns the direction of the hero's movement as defined by the directional keys pressed by the player.
+ * @brief Returns the direction of the hero's movement as defined by the directional keys pressed by the player.
+ *
  * If he is not moving, -1 is returned.
  * This direction may be different from the real movement direction because of obstacles.
- * @return the hero's wanted direction between 0 and 360, or -1 if he is stopped
+ *
+ * @return the hero's wanted direction between 0 and 359, or -1 if he is stopped
  */
 int Hero::get_wanted_movement_direction(void) {
   return get_normal_movement()->get_direction();
 }
 
 /**
- * Returns the direction of the hero's movement as defined by the directional keys pressed by the player.
+ * @brief Returns the direction of the hero's movement as defined by the directional keys pressed by the player.
+ *
  * If he is not moving, -1 is returned.
  * This direction may be different from the real movement direction because of obstacles.
+ *
  * @return the hero's wanted direction between 0 and 7, or -1 if he is stopped
  */
 int Hero::get_wanted_movement_direction8(void) {
@@ -281,13 +300,16 @@ int Hero::get_wanted_movement_direction8(void) {
 }
 
 /**
- * Returns the actual direction of the hero's movement, which can be different from the one
+ * @brief Returns the actual direction of the hero's movement.
+ *
+ * This function returns the actual direction of the hero's movement, which can be different from the one
  * defined by the directional keys pressed by the player because we consider obstacles here.
  * If he does not want to move, -1 is returned. If he is trying to move but cannot because of obstacles,
  * the direction he is trying to move toward is returned.
  * This function is not used to compute the hero's movement (PlayerMovement does that) but only
  * to decide what direction to give to its sprites once the movement is already computed.
- * @return the hero's actual direction between 0 and 360, or -1 if he is stopped
+ *
+ * @return the hero's actual direction between 0 and 359, or -1 if he is stopped
  */
 int Hero::get_real_movement_direction(void) {
 
@@ -296,12 +318,15 @@ int Hero::get_real_movement_direction(void) {
 }
 
 /**
- * Returns the actual direction of the hero's movement, which can be different from the one
+ * @brief Returns the actual direction of the hero's movement.
+ *
+ * This function returns the actual direction of the hero's movement, which can be different from the one
  * defined by the directional keys pressed by the player because we consider obstacles here.
  * If he does not want to move, -1 is returned. If he is trying to move but cannot because of obstacles,
  * the direction he is trying to move toward is returned.
  * This function is not used to compute the hero's movement (PlayerMovement does that) but only
  * to decide what direction to give to its sprites once the movement is already computed.
+ *
  * @return the hero's actual direction between 0 and 7, or -1 if he is stopped
  */
 int Hero::get_real_movement_direction8(void) {
@@ -354,8 +379,10 @@ int Hero::get_real_movement_direction8(void) {
 }
 
 /**
- * Returns whether the hero is moving towards the specified direction.
+ * @brief Returns whether the hero is moving towards the specified direction.
+ *
  * If the hero is not moving, false is returned.
+ *
  * @param direction one of the four main directions (0 to 3)
  * @return true if the hero is moving in that direction, even if he is actually doing a diagonal move
  */
@@ -373,8 +400,9 @@ bool Hero::is_moving_towards(int direction) {
 }
 
 /**
- * Snaps the hero to the entity he is facing if there is no
- * collision and if he is not too far.
+ * @brief Snaps the hero to the entity he is facing.
+ *
+ * The hero is snapped if there is no collision and if he is not too far.
  */
 void Hero::try_snap_to_facing_entity(void) {
 
@@ -398,10 +426,12 @@ void Hero::try_snap_to_facing_entity(void) {
 }
 
 /**
- * Returns the coordinates of a point in the direction the hero's sprite is looking at.
+ * @brief Returns the coordinates of a point in the direction the hero's sprite is looking at.
+ *
  * This point is 1 pixel outside the hero's collision box. It is used
  * to determine the actions he can do depending on the entity he is facing
- * (a bush, a pot, a PNJ...)
+ * (a bush, a pot, an NPC…)
+ *
  * @return the point the hero is facing
  */
 const Rectangle Hero::get_facing_point(void) {
@@ -411,8 +441,12 @@ const Rectangle Hero::get_facing_point(void) {
 }
 
 /**
- * Returns the point located just outside the hero's collision box,
- * in the specified direction.
+ * @brief Returns the coordinates of a point in the specified direction.
+ *
+ * This point is 1 pixel outside the hero's collision box. It is used
+ * to determine the actions he can do depending on the entity he is facing
+ * (a bush, a pot, an NPC…)
+ *
  * @param direction a direction (0 to 3)
  */
 const Rectangle Hero::get_facing_point(int direction) {
@@ -449,8 +483,10 @@ const Rectangle Hero::get_facing_point(int direction) {
 }
 
 /**
- * Sets the hero's current map.
+ * @brief Sets the hero's current map.
+ *
  * This function is called when the map is changed.
+ *
  * @param map the map
  */
 void Hero::set_map(Map *map) {
@@ -470,8 +506,10 @@ void Hero::set_map(Map *map) {
 }
 
 /**
- * Sets the hero's current map.
+ * @brief Sets the hero's current map.
+ *
  * This function is called when the map is changed.
+ *
  * @param map the map
  * @param initial_direction the direction of the hero (0 to 3)
  * or -1 to let the direction unchanged
@@ -487,8 +525,10 @@ void Hero::set_map(Map *map, int initial_direction) {
 }
 
 /**
- * Suspends or resumes the animation and the movements of the hero.
+ * @brief Suspends or resumes the animation and the movements of the hero.
+ *
  * This function is called by the map when the game is suspended or resumed.
+ *
  * @param suspended true to suspend the hero, false to resume it
  */
 void Hero::set_suspended(bool suspended) {
@@ -513,7 +553,8 @@ void Hero::set_suspended(bool suspended) {
 }
 
 /**
- * Updates the hero's position, movement and animation.
+ * @brief Updates the hero's position, movement and animation.
+ *
  * This function is called repeteadly by the game.
  */
 void Hero::update(void) {
@@ -618,8 +659,9 @@ void Hero::update(void) {
 }
 
 /**
- * Displays the hero on the map with its current animation and
- * at its current position.
+ * @brief Displays the hero on the map.
+ *
+ * The hero is displayed with its current animation and at its current position.
  */
 void Hero::display_on_map(void) {
 
@@ -637,8 +679,10 @@ void Hero::display_on_map(void) {
 }
 
 /**
- * Returns the direction of the hero's sprites.
+ * @brief Returns the direction of the hero's sprites.
+ *
  * It is different from the movement direction.
+ *
  * @return the direction of the sprites (0 to 3)
  */
 int Hero::get_animation_direction(void) {
@@ -646,8 +690,10 @@ int Hero::get_animation_direction(void) {
 }
 
 /**
- * Changes the direction of the hero's sprites.
+ * @brief Changes the direction of the hero's sprites.
+ *
  * It is different from the movement direction.
+ *
  * @param direction the direction to set (0 to 3)
  */
 void Hero::set_animation_direction(int direction) {
@@ -655,7 +701,7 @@ void Hero::set_animation_direction(int direction) {
 }
 
 /**
- * Returns whether the sprites animations are finished.
+ * @brief Returns whether the sprites animations are finished.
  * @return true if the animation is finished
  */
 bool Hero::is_animation_finished(void) {
@@ -663,8 +709,9 @@ bool Hero::is_animation_finished(void) {
 }
 
 /**
- * Loads (or reloads) the sprites and sounds of the hero and his equipment,
- * depending on its tunic, sword and shield as specified in the savegame.
+ * @brief Loads (or reloads) the sprites and sounds of the hero and his equipment.
+ *
+ * The sprites and sounds depend on its tunic, sword and shield as specified in the savegame.
  * This function must be called at the game beginning
  * and as soon as the hero's equipment is changed.
  */
@@ -683,7 +730,8 @@ void Hero::rebuild_equipment(void) {
 }
 
 /**
- * Updates the hero depending on the arrows pressed.
+ * @brief Updates the hero depending on the directional keys pressed.
+ *
  * This function is called when the hero's movement direction changes (because the player
  * pressed or released a directional key, or the hero just reached an obstacle).
  * It updates the hero's animations and collisions according to the new movement.
@@ -731,7 +779,7 @@ void Hero::movement_just_changed(void) {
 }
 
 /**
- * This function is called when the hero's position is changed,
+ * @brief This function is called when the hero's position is changed,
  * or when his direction changes.
  */
 void Hero::notify_just_moved(void) {
@@ -768,17 +816,15 @@ void Hero::notify_just_moved(void) {
 }
 
 /**
- * Returns whether the hero is currently on a hole.
- * @return true if the hero is currently on a hole.
+ * @brief Returns whether the hero is currently on a hole.
+ * @return true if the hero is currently on a hole
  */
 bool Hero::is_on_hole(void) {
   return ground == GROUND_HOLE;
 }
 
 /**
- * Sets the entity the hero is currently facing.
- * This function is called when the hero is just being
- * facing another entity.
+ * @brief Sets the entity the hero is currently facing.
  * @param detector the detector the hero is facing
  */
 void Hero::set_facing_entity(Detector *detector) {
@@ -796,9 +842,7 @@ void Hero::set_facing_entity(Detector *detector) {
 }
 
 /**
- * Returns the entity the hero is currently facing.
- * This function is called when the hero is just being
- * facing another entity.
+ * @brief Returns the entity the hero is currently facing.
  * @return the detector the hero is facing
  */
 Detector * Hero::get_facing_entity(void) {
@@ -806,10 +850,13 @@ Detector * Hero::get_facing_entity(void) {
 }
 
 /**
- * Returns whether the hero is facing an obstacle, i.e. whether
- * its facing point is overlapping an obstacle of the map.
+ * @brief Returns whether the hero is facing an obstacle.
+ *
+ * This function returns whether
+ * his facing point is overlapping an obstacle of the map.
  * This information is calculated and not stored, so it is
  * always up to date.
+ *
  * @return true if the hero is facing an obstacle.
  */
 bool Hero::is_facing_obstacle(void) {
@@ -848,7 +895,8 @@ bool Hero::is_facing_obstacle(void) {
 }
 
 /**
- * Updates the hero's position.
+ * @brief Updates the hero's position.
+ *
  * This function is called repeatedly by update().
  */
 void Hero::update_position(void) {
@@ -872,7 +920,7 @@ void Hero::update_position(void) {
 }
 
 /**
- * Places the hero on the map specified and at its destination point selected.
+ * @brief Places the hero on the map specified and at its destination point selected.
  * @param map the new map
  */
 void Hero::place_on_destination_point(Map *map) {
@@ -953,7 +1001,8 @@ void Hero::place_on_destination_point(Map *map) {
 }
 
 /**
- * This function is called when the opening transition of the map is finished.
+ * @brief This function is called when the opening transition of the map is finished.
+ *
  * The position of the hero is updated if necessary.
  */
 void Hero::opening_transition_finished(void) {
@@ -988,6 +1037,8 @@ void Hero::opening_transition_finished(void) {
 }
 
 /**
+ * @brief Tests whether the hero is striking the specified detector with his sword.
+ *
  * When the sword sprite collides with a detector,
  * this function can be called to determine whether the hero is
  * really striking this particular detector only.
@@ -999,6 +1050,7 @@ void Hero::opening_transition_finished(void) {
  * hero wants to cut a bush or some grass.
  * Don't use this function for enemies since any sprite
  * collision is enough to hurt an enemy.
+ *
  * @param detector the detector to check
  * @return true if the sword is striking this detector
  */
@@ -1074,7 +1126,7 @@ bool Hero::is_stroke_by_sword(Detector *detector) {
 }
 
 /**
- * Stops and restarts the current movement of the hero.
+ * @brief Stops and restarts the current movement of the hero.
  */
 void Hero::reset_movement(void) {
 
@@ -1089,9 +1141,12 @@ void Hero::reset_movement(void) {
 }
 
 /**
- * This function is called when an entity that appears may overlap the hero
- * (e.g. a chest or a door)
- * @param entity the entity appearing
+ * @brief Makes the hero escape from an entity that is overlapping it.
+ *
+ * This function is called when an entity that just appeared may overlap the hero
+ * (e.g. a chest or a door).
+ *
+ * @param entity the entity that just appeared
  * @param direction the direction of the hero relative to the entity
  * (the hero will be moved into this direction): 0 to 3
  */

@@ -22,7 +22,7 @@
 #include "lowlevel/FileTools.h"
 
 /**
- * Creates a jump sensor.
+ * @brief Creates a jump sensor.
  * @param name a name identifying this jump sensor
  * @param layer layer of the sensor on the map
  * @param x x coordinate of the top-left corner of the sensor's rectangle
@@ -64,15 +64,17 @@ JumpSensor::JumpSensor(const std::string &name, Layer layer, int x, int y, int w
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 JumpSensor::~JumpSensor(void) {
 
 }
 
 /**
- * Creates an instance from an input stream.
+ * @brief Creates an instance from an input stream.
+ *
  * The input stream must respect the syntax of this entity type.
+ *
  * @param game the game that will contain the entity created
  * @param is an input stream
  * @param layer the layer
@@ -95,7 +97,7 @@ MapEntity * JumpSensor::parse(Game *game, std::istream &is, Layer layer, int x, 
 }
 
 /**
- * Returns the type of entity.
+ * @brief Returns the type of entity.
  * @return the type of entity
  */
 EntityType JumpSensor::get_type() {
@@ -103,7 +105,7 @@ EntityType JumpSensor::get_type() {
 }
 
 /**
- * Returns whether this entity is an obstacle for another one.
+ * @brief Returns whether this entity is an obstacle for another one.
  * @param other another entity
  * @return true if this entity is an obstacle for the other one
  */
@@ -112,8 +114,10 @@ bool JumpSensor::is_obstacle_for(MapEntity *other) {
 }
 
 /**
- * Checks whether an entity's collides with this jump sensor.
- * The test depends on the sensor's shape.
+ * @brief Returns whether an entity's collides with this jump sensor.
+ *
+ * The result depends on the sensor's shape.
+ *
  * @param entity the entity
  * @return true if the entity's collides with this jump sensor
  */
@@ -156,8 +160,10 @@ bool JumpSensor::test_collision_custom(MapEntity *entity) {
 }
 
 /**
- * Returns whether the specified point is in the jump sensor's shape
- * (only for a jump sensor with diagonal direction).
+ * @brief Returns whether the specified point is in the jump sensor's shape.
+ *
+ * This function is used only for a jump sensor with diagonal direction.
+ *
  * @param point the point to check
  * @return true if this point is overlapping the jump sensor
  */
@@ -171,6 +177,7 @@ bool JumpSensor::is_point_in_diagonal(const Rectangle &point) {
   int x = point.get_x() - this->get_x();
   int y = point.get_y() - this->get_y();
   int width = get_width();
+
   switch (direction) {
 
   case 1:
@@ -198,8 +205,10 @@ bool JumpSensor::is_point_in_diagonal(const Rectangle &point) {
 }
 
 /**
- * This function is called when an entity overlaps the sensor.
+ * @brief This function is called when an entity overlaps the sensor.
+ *
  * If this entity is the hero, then we make him jump.
+ *
  * @param entity_overlapping the entity that overalps the sensor
  * @param collision_mode the collision mode that triggered the event
  * (not used here since a jump sensor has only one collision mode)

@@ -18,7 +18,7 @@
 #include "lowlevel/FileTools.h"
 
 /**
- * Constructor.
+ * @brief Constructor.
  * @param name name of the custom obstacle to create
  * @param layer layer of the  to create
  * @param x x position of the  to create
@@ -41,15 +41,17 @@ CustomObstacle::CustomObstacle(const std::string &name, Layer layer, int x, int 
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 CustomObstacle::~CustomObstacle(void) {
 
 }
 
 /**
- * Creates an instance from an input stream.
+ * @brief Creates an instance from an input stream.
+ *
  * The input stream must respect the syntax of this entity type.
+ *
  * @param game the game that will contain the entity created
  * @param is an input stream
  * @param layer the layer
@@ -75,7 +77,7 @@ MapEntity * CustomObstacle::parse(Game *game, std::istream &is, Layer layer, int
 }
 
 /**
- * Returns the type of entity.
+ * @brief Returns the type of entity.
  * @return the type of entity
  */
 EntityType CustomObstacle::get_type(void) {
@@ -83,10 +85,11 @@ EntityType CustomObstacle::get_type(void) {
 }
 
 /**
- * Returns whether this entity is an obstacle for another one.
+ * @brief Returns whether this entity is an obstacle for another one.
  * @param other another entity
  * @return true if this entity is an obstacle for the other one
  */
 bool CustomObstacle::is_obstacle_for(MapEntity *other) {
   return entity_types_stopped[other->get_type()];
 }
+

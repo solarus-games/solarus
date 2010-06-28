@@ -25,7 +25,7 @@
 #include <list>
 
 /**
- * Creates a new raised block.
+ * @brief Creates a new crystal switch block.
  * @param game the current game
  * @param layer layer of the entity to create on the map
  * @param x x coordinate of the entity to create
@@ -52,15 +52,17 @@ CrystalSwitchBlock::CrystalSwitchBlock(Game *game, Layer layer, int x, int y, in
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 CrystalSwitchBlock::~CrystalSwitchBlock(void) {
 
 }
 
 /**
- * Creates an instance from an input stream.
+ * @brief Creates an instance from an input stream.
+ *
  * The input stream must respect the syntax of this entity type.
+ *
  * @param game the game that will contain the entity created
  * @param is an input stream
  * @param layer the layer
@@ -80,7 +82,7 @@ MapEntity * CrystalSwitchBlock::parse(Game *game, std::istream &is, Layer layer,
 }
 
 /**
- * Returns the type of entity.
+ * @brief Returns the type of entity.
  * @return the type of entity
  */
 EntityType CrystalSwitchBlock::get_type() {
@@ -88,7 +90,7 @@ EntityType CrystalSwitchBlock::get_type() {
 }
 
 /**
- * Returns whether this block is raised.
+ * @brief Returns whether this block is raised.
  * @return true if this block is raised
  */
 bool CrystalSwitchBlock::is_raised(void) {
@@ -98,7 +100,7 @@ bool CrystalSwitchBlock::is_raised(void) {
 }
 
 /**
- * Returns whether this entity is an obstacle for another one.
+ * @brief Returns whether this entity is an obstacle for another one.
  * @param other another entity
  * @return true if this entity is an obstacle for the other one
  */
@@ -114,7 +116,7 @@ bool CrystalSwitchBlock::is_obstacle_for(MapEntity *other) {
 }
 
 /**
- * This function is called when another entity overlaps this crystal switch block.
+ * @brief This function is called when another entity overlaps this crystal switch block.
  * @param entity_overlapping the other entity
  * @param collision_mode the collision mode that detected the collision
  */
@@ -174,7 +176,7 @@ void CrystalSwitchBlock::notify_collision(MapEntity *entity_overlapping, Collisi
 }
 
 /**
- * Makes the hero leave this raised crystal switch block if possible.
+ * @brief Makes the hero leave this raised crystal switch block if possible.
  * @param hero the hero
  * @param collision_box destination wanted for the jump
  * @param jump_direction direction of the jump
@@ -198,7 +200,7 @@ bool CrystalSwitchBlock::try_jump(Hero *hero, const Rectangle &collision_box,
 }
 
 /**
- * Updates the entity.
+ * @brief Updates the entity.
  */
 void CrystalSwitchBlock::update(void) {
 
@@ -221,7 +223,7 @@ void CrystalSwitchBlock::update(void) {
 }
 
 /**
- * Displays the entity on the map.
+ * @brief Displays the entity on the map.
  * This is a redefinition of MapEntity::display_on_map to repeat the block pattern.
  */
 void CrystalSwitchBlock::display_on_map(void) {
@@ -239,3 +241,4 @@ void CrystalSwitchBlock::display_on_map(void) {
     }
   }
 }
+

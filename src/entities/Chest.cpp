@@ -30,7 +30,7 @@
 #include "lowlevel/System.h"
 
 /**
- * Creates a new chest with the specified treasure.
+ * @brief Creates a new chest with the specified treasure.
  * @param name name identifying this chest
  * @param layer layer of the chest to create on the map
  * @param x x coordinate of the chest to create
@@ -54,7 +54,7 @@ Chest::Chest(const std::string &name, Layer layer, int x, int y,
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 Chest::~Chest(void) {
   if (treasure != NULL && !treasure_given) {
@@ -64,8 +64,10 @@ Chest::~Chest(void) {
 }
 
 /**
- * Creates an instance from an input stream.
+ * @brief Creates an instance from an input stream.
+ *
  * The input stream must respect the syntax of this entity type.
+ *
  * @param game the game that will contain the entity created
  * @param is an input stream
  * @param layer the layer
@@ -89,7 +91,7 @@ MapEntity * Chest::parse(Game *game, std::istream &is, Layer layer, int x, int y
 }
 
 /**
- * Returns the type of entity.
+ * @brief Returns the type of entity.
  * @return the type of entity
  */
 EntityType Chest::get_type() {
@@ -97,8 +99,11 @@ EntityType Chest::get_type() {
 }
 
 /**
- * Returns whether an entity of this type should be displayed above
+ * @brief Returns whether this entity has to be displayed in y order.
+ *
+ * This function returns whether an entity of this type should be displayed above
  * the hero and other entities when it is in front of them.
+ *
  * @return true if this entity is displayed at the same level as the hero
  */
 bool Chest::is_displayed_in_y_order(void) {
@@ -106,7 +111,7 @@ bool Chest::is_displayed_in_y_order(void) {
 }
 
 /**
- * Returns whether this entity is an obstacle for another one.
+ * @brief Returns whether this entity is an obstacle for another one.
  * @param other another entity
  * @return true
  */
@@ -115,7 +120,7 @@ bool Chest::is_obstacle_for(MapEntity *other) {
 }
 
 /**
- * Creates the chest sprite depending on its size and the savegame.
+ * @brief Creates the chest sprite depending on its size and the savegame.
  */
 void Chest::initialize_sprite(void) {
 
@@ -139,7 +144,7 @@ void Chest::initialize_sprite(void) {
 }
 
 /**
- * Returns whether the chest is hidden.
+ * @brief Returns whether the chest is hidden.
  * @return true if the chest is hidden
  */
 bool Chest::is_hidden(void) {
@@ -147,8 +152,10 @@ bool Chest::is_hidden(void) {
 }
 
 /**
- * Sets whether the chest is hidden.
+ * @brief Sets whether the chest is hidden.
+ *
  * If the chest is already open, this function has no effect.
+ *
  * @param hidden true to hide the chest, false to unhide it
  */
 void Chest::set_hidden(bool hidden) {
@@ -167,7 +174,7 @@ void Chest::set_hidden(bool hidden) {
 }
 
 /**
- * Returns whether the player has found the treasure in this chest.
+ * @brief Returns whether the player has found the treasure in this chest.
  * @return true if the chest is open
  */
 bool Chest::is_open(void) {
@@ -175,11 +182,13 @@ bool Chest::is_open(void) {
 }
 
 /**
- * Sets whether the chest is open.
- * If you open the chest, its sprite is updated but the treasure is not given
- * to the player in this function.
- * If you close the chest, its sprite is updated but the treasure is not restored
- * (the chest will then be empty).
+ * @brief Sets whether the chest is open.
+ *
+ * If you don't change the chest state, this function has no effect.
+ * If you make the chest opened, its sprite is updated but this function does not give any treasur
+ * to the player.
+ * If you close the chest, its sprite is updated and the chest will then be empty.
+ *
  * @param open true to open the chest, false to close it
  */
 void Chest::set_open(bool open) {
@@ -204,10 +213,12 @@ void Chest::set_open(bool open) {
 }
 
 /**
- * This function is called by the engine when an entity overlaps the chest.
+ * @brief This function is called by the engine when an entity overlaps the chest.
+ *
  * This is a redefinition of Detector::notify_collision().
  * If the entity is the hero, and if he is facing north, we allow him to
  * open (or try to open) the chest.
+ *
  * @param entity_overlapping the entity overlapping the detector
  * @param collision_mode the collision mode that detected the collision
  */
@@ -234,7 +245,8 @@ void Chest::notify_collision(MapEntity *entity_overlapping, CollisionMode collis
 }
 
 /**
- * Updates the chest.
+ * @brief Updates the chest.
+ *
  * This function is called repeatedly by the map.
  * This is a redefinition of MapEntity::update()
  * the handle the chest opening.
@@ -285,6 +297,8 @@ void Chest::update(void) {
 }
 
 /**
+ * @brief This function is called when the player interacts with this chest.
+ *
  * This function is called when the player presses the action key
  * when the hero is facing this detector, and the action icon lets him do this.
  * The hero opens the chest if possible.
@@ -313,7 +327,7 @@ void Chest::action_key_pressed(void) {
 }
 
 /**
- * Displays the entity on the map.
+ * @brief Displays the entity on the map.
  */
 void Chest::display_on_map(void) {
   if (!is_hidden()) {
@@ -322,9 +336,11 @@ void Chest::display_on_map(void) {
 }
 
 /**
- * This function is called by the map when the game is suspended or resumed.
+ * @brief This function is called by the map when the game is suspended or resumed.
+ *
  * This is a redefinition of MapEntity::set_suspended() to suspend the timer
  * of the chest being opened.
+ *
  * @param suspended true to suspend the entity, false to resume it
  */
 void Chest::set_suspended(bool suspended) {

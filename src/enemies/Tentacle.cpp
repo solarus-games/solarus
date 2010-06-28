@@ -22,7 +22,7 @@
 #include "Sprite.h"
 
 /**
- * Constructor.
+ * @brief Constructor.
  * @param params name and position of the enemy to create
  */
 Tentacle::Tentacle(const ConstructionParameters &params):
@@ -31,14 +31,14 @@ Tentacle::Tentacle(const ConstructionParameters &params):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 Tentacle::~Tentacle(void) {
 
 }
 
 /**
- * Initializes the enemy.
+ * @brief Initializes the enemy.
  */
 void Tentacle::initialize(void) {
 

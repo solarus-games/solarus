@@ -20,7 +20,7 @@
 #include "lowlevel/FileTools.h"
 
 /**
- * Constructor.
+ * @brief Constructor.
  * @param name name of the destination point to create
  * @param layer the layer
  * @param x x position of the destination point to create
@@ -47,15 +47,17 @@ DestinationPoint::DestinationPoint(const std::string &name, Layer layer, int x, 
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 DestinationPoint::~DestinationPoint(void) {
 
 }
 
 /**
- * Creates an instance from an input stream.
+ * @brief Creates an instance from an input stream.
+ *
  * The input stream must respect the syntax of this entity type.
+ *
  * @param game the game that will contain the entity created
  * @param is an input stream
  * @param layer the layer
@@ -76,7 +78,7 @@ MapEntity * DestinationPoint::parse(Game *game, std::istream &is, Layer layer, i
 }
 
 /**
- * Returns the type of entity.
+ * @brief Returns the type of entity.
  * @return the type of entity
  */
 EntityType DestinationPoint::get_type() {

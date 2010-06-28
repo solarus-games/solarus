@@ -33,7 +33,7 @@
 #include "lowlevel/FileTools.h"
 
 /**
- * Features of each subtype of pickable item.
+ * @brief Features of each subtype of pickable item.
  */
 const PickableItem::Features PickableItem::features[] = {
 
@@ -61,12 +61,11 @@ const PickableItem::Features PickableItem::features[] = {
 };
 
 /**
- * Creates a pickable item with the specified subtype.
- * The subtype cannot be NONE.
+ * @brief Creates a pickable item with the specified subtype.
  * @param layer layer of the pickable item to create on the map
  * @param x x coordinate of the pickable item to create
  * @param y y coordinate of the pickable item to create
- * @param subtype subtype of pickable item to create (must be a normal item)
+ * @param subtype subtype of pickable item to create (cannot be NONE)
  * @param savegame_variable index of the savegame boolean variable storing
  * the possession state of this item,
  * only for pickable items that are saved (a key, a piece of heart...)
@@ -79,7 +78,7 @@ PickableItem::PickableItem(Layer layer, int x, int y, PickableItem::Subtype subt
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 PickableItem::~PickableItem(void) {
 
@@ -89,7 +88,7 @@ PickableItem::~PickableItem(void) {
 }
 
 /**
- * Returns the type of entity.
+ * @brief Returns the type of entity.
  * @return the type of entity
  */
 EntityType PickableItem::get_type() {
@@ -97,8 +96,10 @@ EntityType PickableItem::get_type() {
 }
 
 /**
- * Creates an instance from an input stream.
+ * @brief Creates an instance from an input stream.
+ *
  * The input stream must respect the syntax of this entity type.
+ *
  * @param game the game that will contain the entity created
  * @param is an input stream
  * @param layer the layer
@@ -117,7 +118,8 @@ MapEntity * PickableItem::parse(Game *game, std::istream &is, Layer layer, int x
 }
 
 /**
- * Creates a pickable item with the specified subtype.
+ * @brief Creates a pickable item with the specified subtype.
+ *
  * This method acts like a constructor, except that it can return NULL in several cases:
  * - if the specified subtype is NONE,
  * or:
@@ -130,6 +132,7 @@ MapEntity * PickableItem::parse(Game *game, std::istream &is, Layer layer, int x
  *   (e.g. arrows without bow).
  * Furthermore, the dynamic type of the object returned might be PickableItem (for a simple item)
  * or one of its subclasses (for more complex items).
+ *
  * @param game the current game
  * @param layer layer of the pickable item to create on the map (ignored for a fairy)
  * @param x x coordinate of the pickable item to create
@@ -208,8 +211,10 @@ PickableItem * PickableItem::create(Game *game, Layer layer, int x, int y, Picka
 }
 
 /**
- * Returns whether a subtype is locked,
- * i.e. whether the player has not unlocked it yet in its equipment.
+ * @brief Returns whether a subtype is locked.
+ *
+ * A subtype is locked if the player has not unlocked it yet in his equipment.
+ *
  * @param subtype the subtype to check
  * @param equipment the player's equipment
  * @return true if the subtype is locked
@@ -227,13 +232,13 @@ bool PickableItem::is_subtype_locked(Subtype subtype, Equipment *equipment) {
 }
 
 /**
- * Chooses a subtype of item randomly among all subtypes,
- * including the ones the player cannot get yet.
- * This function is called when the subtype of item is RANDOM.
+ * @brief Chooses a subtype of item randomly among all subtypes.
  *
+ * This function is called when the subtype of item is RANDOM
+ * and may return a subtype that the player cannot get yet.
  * Some items have a low probability (fairies, big bottles of magic...)
  * while other have a high probability (hearts, rupees...).
- * The function can return NONE (this is actually the case
+ * The function can return NONE (and this is actually the case
  * most of the time).
  * If the player is running out of hearts, magic, bombs or arrows,
  * the probability of getting what he needs is increased.
@@ -301,8 +306,10 @@ PickableItem::Subtype PickableItem::choose_random_subtype(Equipment *equipment) 
 }
 
 /**
- * Returns whether a subtype of pickable item can disappear after a delay.
+ * @brief Returns whether a subtype of pickable item can disappear after a delay.
+ *
  * Items saved like keys and pieces of hearts cannot disappear.
+ *
  * @param subtype a pickable item subtype
  * @return true if this subtype of pickable item can disappear
  */
@@ -316,7 +323,7 @@ bool PickableItem::can_disappear(Subtype subtype) {
 }
 
 /**
- * Returns whether a subtype of pickable item must be saved.
+ * @brief Returns whether a subtype of pickable item must be saved.
  * @param subtype a pickable item subtype
  * @return true if this subtype of pickable item must be saved
  */
@@ -330,8 +337,9 @@ bool PickableItem::must_be_saved(Subtype subtype) {
 }
 
 /**
- * Creates the sprite of this pickable item,
+ * @brief Creates the sprite of this pickable item,
  * depending on its subtype.
+ *
  * The pickable items are represented with two sprites:
  * the item itself and its shadow, except the fairy whose
  * shadow is part of its sprite.
@@ -371,7 +379,7 @@ void PickableItem::initialize_sprites(void) {
 }
 
 /**
- * Initializes the movement of the item (if it is falling),
+ * @brief Initializes the movement of the item (if it is falling),
  * depending on its subtype.
  */
 void PickableItem::initialize_movement(void) {
@@ -382,7 +390,7 @@ void PickableItem::initialize_movement(void) {
 }
 
 /**
- * Returns whether the entity is currently falling.
+ * @brief Returns whether the entity is currently falling.
  * @return true if the entity is currently falling
  */
 bool PickableItem::is_falling(void) {
@@ -390,7 +398,8 @@ bool PickableItem::is_falling(void) {
 }
 
 /**
- * This function is called by the engine when an entity overlaps the pickable item.
+ * @brief This function is called by the engine when an entity overlaps the pickable item.
+ *
  * If the entity is the player, we give him the item, and the map is notified
  * to destroy it.
  * @param entity_overlapping the entity overlapping the detector
@@ -419,7 +428,7 @@ void PickableItem::notify_collision(MapEntity *entity_overlapping, CollisionMode
 }
 
 /**
- * Gives the item to the player.
+ * @brief Gives the item to the player.
  */
 void PickableItem::give_item_to_player(void) {
 
@@ -528,7 +537,7 @@ void PickableItem::give_item_to_player(void) {
 }
 
 /**
- * Sets whether the pickable item is blinking.
+ * @brief Sets whether the pickable item is blinking.
  * @param blinking true to make it blink, false to make it stop blinking
  */
 void PickableItem::set_blinking(bool blinking) {
@@ -540,9 +549,11 @@ void PickableItem::set_blinking(bool blinking) {
 }
 
 /**
- * This function is called by the map when the game is suspended or resumed.
+ * @brief This function is called by the map when the game is suspended or resumed.
+ *
  * This is a redefinition of MapEntity::set_suspended() to suspend the timer
  * which makes the pickable item disappear after a few seconds.
+ *
  * @param suspended true to suspend the entity, false to resume it
  */
 void PickableItem::set_suspended(bool suspended) {
@@ -572,7 +583,8 @@ void PickableItem::set_suspended(bool suspended) {
 }
 
 /**
- * Updates the pickable item.
+ * @brief Updates the pickable item.
+ *
  * This function is called repeatedly by the map.
  * This is a redefinition of MapEntity::update() to make
  * the item blink and then disappear after an amount of time.
@@ -617,7 +629,8 @@ void PickableItem::update(void) {
 }
 
 /**
- * Displays the pickable item on the map.
+ * @brief Displays the pickable item on the map.
+ *
  * This is a redefinition of MapEntity::display_on_map
  * to display the shadow independently of the item movement.
  */

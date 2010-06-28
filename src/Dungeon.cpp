@@ -21,7 +21,7 @@
 #include "lowlevel/IniFile.h"
 
 /**
- * Creates the specified dungeon.
+ * @brief Creates the specified dungeon.
  * @param dungeon_number a dungeon number between 1 and 20
  */
 Dungeon::Dungeon(int dungeon_number):
@@ -31,7 +31,7 @@ Dungeon::Dungeon(int dungeon_number):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 Dungeon::~Dungeon(void) {
   if (chests != NULL) {
@@ -41,7 +41,7 @@ Dungeon::~Dungeon(void) {
 }
 
 /**
- * Returns this dungeon number.
+ * @brief Returns this dungeon number.
  * @return the dungeon number, between 1 and 20
  */
 int Dungeon::get_number(void) {
@@ -49,9 +49,11 @@ int Dungeon::get_number(void) {
 }
 
 /**
- * Returns the name of the dungeon, in the current language.
+ * @brief Returns the name of the dungeon in the current language.
+ *
  * The returned name respects the syntax specified by the
  * PauseSubmenuMap::set_caption_text() function.
+ *
  * @return the dungeon name
  */
 const std::string& Dungeon::get_name(void) {
@@ -59,7 +61,7 @@ const std::string& Dungeon::get_name(void) {
 }
 
 /**
- * Loads the dungeon properties from file dungeons.dat.
+ * @brief Loads the dungeon properties from the file dungeons.dat.
  */
 void Dungeon::load(void) {
 
@@ -151,7 +153,7 @@ void Dungeon::load(void) {
 }
 
 /**
- * Returns the number of floors in this dungeon.
+ * @brief Returns the number of floors in this dungeon.
  * @return the number of floors
  */
 int Dungeon::get_nb_floors(void) {
@@ -159,7 +161,7 @@ int Dungeon::get_nb_floors(void) {
 }
 
 /**
- * Returns the lowest floor in this dungeon.
+ * @brief Returns the lowest floor in this dungeon.
  * @return the lowest floor
  */
 int Dungeon::get_lowest_floor(void) {
@@ -167,7 +169,7 @@ int Dungeon::get_lowest_floor(void) {
 }
 
 /**
- * Returns the highest floor in this dungeon.
+ * @brief Returns the highest floor in this dungeon.
  * @return the highest floor
  */
 int Dungeon::get_highest_floor(void) {
@@ -175,7 +177,7 @@ int Dungeon::get_highest_floor(void) {
 }
 
 /**
- * Returns the size of the specified floor.
+ * @brief Returns the size of the specified floor.
  * @param floor a floor of this dungeon
  * @return the size of this floor
  */
@@ -184,9 +186,11 @@ const Rectangle & Dungeon::get_floor_size(int floor) {
 }
 
 /**
- * Returns the number of floors that can be displayed for this dungeon.
+ * @brief Returns the number of floors that can be displayed for this dungeon.
+ *
  * No more that 7 floors can be displayed simultaneously.
  * This function is equivalent to std::min(7, get_nb_floors()).
+ *
  * @return the number of floors that can be displayed for this dungeon
  */
 int Dungeon::get_nb_floors_displayed(void) {
@@ -194,8 +198,11 @@ int Dungeon::get_nb_floors_displayed(void) {
 }
 
 /**
- * Returns the highest floor that can be displayed when the specified
- * current floor has to be visible.
+ * @brief Returns the highest floor to display.
+ *
+ * This function determines the highest floor that can be displayed when the specified
+ * current floor needs to be visible.
+ *
  * @param current_floor a floor
  * @return the highest floor that can be displayed so that the specified floor
  * is visible
@@ -225,7 +232,7 @@ int Dungeon::get_highest_floor_displayed(int current_floor) {
 }
 
 /**
- * Returns the floor where the boss of this dungeon is.
+ * @brief Returns the floor where the boss of this dungeon is.
  * @return the floor of the boss
  */
 int Dungeon::get_boss_floor(void) {
@@ -233,8 +240,11 @@ int Dungeon::get_boss_floor(void) {
 }
 
 /**
- * Returns the information about the bosses and the minibosses
+ * @brief Returns the bosses and minibosses information of a floor.
+ *
+ * This function returns the information about the bosses and minibosses
  * of this dungeon that are on the specified floor.
+ *
  * @param floor a floor of this dungeon
  * @return the information about the bosses and minibosses of this floor
  */
@@ -243,8 +253,11 @@ const std::vector<Dungeon::DungeonElement> Dungeon::get_bosses(int floor) {
 }
 
 /**
- * Returns the information about the chests
+ * @brief Returns the information about the chests of a floor.
+ *
+ * This function returns the information about the chests
  * of this dungeon that are on the specified floor.
+ *
  * @param floor a floor of this dungeon
  * @return the information about the chests of this floor
  */

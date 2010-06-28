@@ -29,7 +29,7 @@
 #include "lowlevel/FileTools.h"
 
 /**
- * Action icon depending on the type of interaction.
+ * @brief Action key effect depending on the type of interaction.
  */
 const KeysEffect::ActionKeyEffect InteractiveEntity::action_key_effects[] = {
 
@@ -40,8 +40,8 @@ const KeysEffect::ActionKeyEffect InteractiveEntity::action_key_effects[] = {
 };
 
 /**
- * Indicates the direction of an NPC's animation (from 0 to 3)
- * depending on the movement direction
+ * @brief Indicates the direction of an NPC's animation (from 0 to 3)
+ * depending on the movement direction.
  */
 const int InteractiveEntity::animation_directions[] = {
   0, // right
@@ -55,7 +55,7 @@ const int InteractiveEntity::animation_directions[] = {
 };
 
 /**
- * Creates an interactive entity.
+ * @brief Creates an interactive entity.
  * @param name name identifying this interactive entity
  * @param layer layer of the entity to create
  * @param x x coordinate of the entity to create
@@ -99,15 +99,17 @@ InteractiveEntity::InteractiveEntity(const std::string &name, Layer layer, int x
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 InteractiveEntity::~InteractiveEntity(void) {
 
 }
 
 /**
- * Creates an instance from an input stream.
+ * @brief Creates an instance from an input stream.
+ *
  * The input stream must respect the syntax of this entity type.
+ *
  * @param game the game that will contain the entity created
  * @param is an input stream
  * @param layer the layer
@@ -132,7 +134,7 @@ MapEntity * InteractiveEntity::parse(Game *game, std::istream &is, Layer layer, 
 }
 
 /**
- * Returns the type of entity.
+ * @brief Returns the type of entity.
  * @return the type of entity
  */
 EntityType InteractiveEntity::get_type() {
@@ -140,8 +142,11 @@ EntityType InteractiveEntity::get_type() {
 }
 
 /**
- * Returns whether an entity of this type should be displayed above
+ * @brief Returns whether this entity has to be displayed in y order.
+ *
+ * This function returns whether an entity of this type should be displayed above
  * the hero and other entities when it is in front of them.
+ *
  * @return true if this entity is displayed at the same level as the hero
  */
 bool InteractiveEntity::is_displayed_in_y_order(void) {
@@ -149,7 +154,7 @@ bool InteractiveEntity::is_displayed_in_y_order(void) {
 }
 
 /**
- * Creates the sprite specified.
+ * @brief Creates the sprite specified.
  * @param sprite_name sprite animation set of the entity, or "_none" to create no sprite
  * @param initial_direction direction of the entity's sprite (ignored if there is no sprite)
  */
@@ -162,7 +167,7 @@ void InteractiveEntity::initialize_sprite(SpriteAnimationSetId sprite_name, int 
 }
 
 /**
- * Returns whether this entity is an obstacle for another one.
+ * @brief Returns whether this entity is an obstacle for another one.
  * @param other another entity
  * @return true
  */
@@ -178,7 +183,7 @@ bool InteractiveEntity::is_obstacle_for(MapEntity *other) {
 }
 
 /**
- * Returns whether a non-playing character is considered as an obstacle for this entity.
+ * @brief Returns whether a non-playing character is considered as an obstacle for this entity.
  * @param npc a non-playing character
  * @return true if this NPC is considered as an obstacle for this entity.
  */
@@ -187,7 +192,7 @@ bool InteractiveEntity::is_npc_obstacle(InteractiveEntity *npc) {
 }
 
 /**
- * Returns whether an enemy character is considered as an obstacle for this entity.
+ * @brief Returns whether an enemy character is considered as an obstacle for this entity.
  * @param enemy an enemy
  * @return true if this enemy is considered as an obstacle for this entity.
  */
@@ -196,8 +201,10 @@ bool InteractiveEntity::is_enemy_obstacle(Enemy *enemy) {
 }
 
 /**
- * Returns true if this entity does not react to the sword.
+ * @brief Returns true if this entity does not react to the sword.
+ *
  * If true is returned, nothing will happen when the hero hits this entity with the sword.
+ *
  * @return true if the sword is ignored
  */
 bool InteractiveEntity::is_sword_ignored(void) {
@@ -205,8 +212,10 @@ bool InteractiveEntity::is_sword_ignored(void) {
 }
 
 /**
- * This function is called by the engine when there is a collision with another entity.
+ * @brief This function is called by the engine when there is a collision with another entity.
+ *
  * If the entity is the hero, we allow him to interact with this entity.
+ *
  * @param entity_overlapping the entity overlapping the detector
  * @param collision_mode the collision mode that detected the collision
  */
@@ -228,6 +237,8 @@ void InteractiveEntity::notify_collision(MapEntity *entity_overlapping, Collisio
 }
 
 /**
+ * @brief Notifies this detector that the player is interacting by pressing the action key.
+ *
  * This function is called when the player presses the action key
  * when the hero is facing this detector, and the action icon lets him do this.
  */
@@ -264,11 +275,14 @@ void InteractiveEntity::action_key_pressed(void) {
 }
 
 /**
+ * @brief Notifies this detector that the player is interacting by using an inventory item.
+ *
  * This function is called when the player uses an inventory item
  * while the hero is facing this interactive entity.
  * The exact conditions where this function is called depend on the type of inventory item.
  * For some items, the function is called as soon as the player uses the item.
  * For others, it is called after the player confirms the action in a dialog box.
+ *
  * @param item the inventory item used
  * @return true if an interaction occured
  */
@@ -294,7 +308,7 @@ bool InteractiveEntity::interaction_with_inventory_item(InventoryItem *item) {
 }
 
 /**
- * Notifies the script that the player is interacting with this entity.
+ * @brief Notifies the script that the player is interacting with this entity.
  */
 void InteractiveEntity::call_script(void) {
 
@@ -307,7 +321,7 @@ void InteractiveEntity::call_script(void) {
 }
 
 /**
- * Updates the entity.
+ * @brief Updates the entity.
  */
 void InteractiveEntity::update(void) {
 
@@ -324,8 +338,10 @@ void InteractiveEntity::update(void) {
 }
 
 /**
- * Makes the entity walk (only for an NPC).
+ * @brief Makes the entity walk (only for an NPC).
+ *
  * The NPC's sprite must have an animation "walking".
+ *
  * @param path the path to follow (see class PathMovement)
  * @param loop true to make the movement loop
  * @param with_collisions true to make the movement sensitive to obstacles
@@ -342,7 +358,8 @@ void InteractiveEntity::walk(std::string path, bool loop, bool with_collisions) 
 }
 
 /**
- * Makes the entity walk randomly (only for NPC).
+ * @brief Makes the entity walk randomly (only for NPC).
+ *
  * The NPC's sprite must have an animation "walking".
  */
 void InteractiveEntity::walk_random(void) {
@@ -357,8 +374,10 @@ void InteractiveEntity::walk_random(void) {
 }
 
 /**
- * Makes the entity jump into a direction (only for NPC).
+ * @brief Makes the entity jump into a direction (only for NPC).
+ *
  * The NPC's sprite must have an animation "jumping".
+ *
  * @param direction direction of the movement (0 to 7)
  * @param length length of the jump in pixels
  * @param with_collisions true to make the movement sensitive to the collisions
@@ -377,7 +396,8 @@ void InteractiveEntity::jump(int direction, int length, bool with_collisions) {
 }
 
 /**
- * This function is called when the entity has just moved.
+ * @brief This function is called when the entity has just moved.
+ *
  * If it is an NPC, its sprite's direction is updated.
  */
 void InteractiveEntity::notify_just_moved(void) {
@@ -402,7 +422,7 @@ void InteractiveEntity::notify_just_moved(void) {
 }
 
 /**
- * Sets the direction of the entity's sprite.
+ * @brief Sets the direction of the entity's sprite.
  * @param direction a direction between 0 and 3
  */
 void InteractiveEntity::set_sprite_direction(int direction) {
@@ -410,8 +430,9 @@ void InteractiveEntity::set_sprite_direction(int direction) {
 }
 
 /**
- * Displays the entity on the map.
- * This is a redefinition of MapEntity::display_on_map to handle the special
+ * @brief Displays the entity on the map.
+ *
+ * This is a redefinition of MapEntity::display_on_map() to handle the special
  * display when the entity is jumping.
  */
 void InteractiveEntity::display_on_map(void) {

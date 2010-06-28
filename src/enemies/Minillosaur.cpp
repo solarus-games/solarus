@@ -24,7 +24,7 @@
 #include "Map.h"
 
 /**
- * Constructor.
+ * @brief Constructor.
  * @param params name and position of the enemy to create
  */
 Minillosaur::Minillosaur(const ConstructionParameters &params):
@@ -33,14 +33,14 @@ Minillosaur::Minillosaur(const ConstructionParameters &params):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 Minillosaur::~Minillosaur(void) {
 
 }
 
 /**
- * Initializes this enemy.
+ * @brief Initializes this enemy.
  */
 void Minillosaur::initialize(void) {
 
@@ -69,6 +69,8 @@ void Minillosaur::initialize(void) {
 }
 
 /**
+ * @brief Restarts the normal movement of this enemy.
+ *
  * This function is called when the enemy needs to restart its movement
  * because something happened (for example the enemy has just been created,
  * or it was just hurt).
@@ -81,7 +83,7 @@ void Minillosaur::restart(void) {
 }
 
 /**
- * This function is called when the enemy is attacked by a custom effect attack.
+ * @brief This function is called when the enemy is attacked by a custom effect attack.
  * @param attack the attack
  * @param this_sprite the sprite of this enemy subject to the attack, or NULL
  * if the attack does not come from a pixel-perfect collision test.
@@ -98,7 +100,7 @@ int Minillosaur::custom_attack(EnemyAttack attack, Sprite *this_sprite) {
 }
 
 /**
- * Updates this enemy.
+ * @brief Updates this enemy.
  */
 void Minillosaur::update(void) {
 
@@ -126,3 +128,4 @@ void Minillosaur::update(void) {
 
   Enemy::update();
 }
+

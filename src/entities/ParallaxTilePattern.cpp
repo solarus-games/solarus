@@ -18,7 +18,7 @@
 #include "lowlevel/Surface.h"
 
 /**
- * Creates a tile pattern with parallax scrolling.
+ * @brief Creates a tile pattern with parallax scrolling.
  * @param obstacle is the tile pattern an obstacle?
  * @param x x position of the tile pattern in the tileset
  * @param y y position of the tile pattern in the tileset
@@ -31,14 +31,14 @@ ParallaxTilePattern::ParallaxTilePattern(Obstacle obstacle, int x, int y, int wi
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 ParallaxTilePattern::~ParallaxTilePattern(void) {
 
 }
 
 /**
- * Displays the tile image on a surface.
+ * @brief Displays the tile image on a surface.
  * @param destination the destination surface
  * @param dst_position position of the tile pattern on the destination surface
  * @param tileset_image the tileset image of this tile

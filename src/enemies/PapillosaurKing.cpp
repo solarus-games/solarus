@@ -25,7 +25,7 @@
 #include "lowlevel/System.h"
 
 /**
- * Constructor.
+ * @brief Constructor.
  * @param params name and position of the enemy to create
  */
 PapillosaurKing::PapillosaurKing(const ConstructionParameters &params):
@@ -34,14 +34,14 @@ PapillosaurKing::PapillosaurKing(const ConstructionParameters &params):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 PapillosaurKing::~PapillosaurKing(void) {
 
 }
 
 /**
- * Initializes the enemy.
+ * @brief Initializes the enemy.
  */
 void PapillosaurKing::initialize(void) {
 
@@ -62,6 +62,8 @@ void PapillosaurKing::initialize(void) {
 }
 
 /**
+ * @brief Restarts the normal movement of this enemy.
+ *
  * This function is called when the enemy needs to restart its movement
  * because something happened (for example the enemy has just been created,
  * or it was just hurt).
@@ -81,7 +83,7 @@ void PapillosaurKing::restart(void) {
 }
 
 /**
- * Returns whether a destructible item is currently considered as an obstacle for this entity.
+ * @brief Returns whether a destructible item is currently considered as an obstacle for this entity.
  * @param destructible_item a destructible item
  * @return true if the destructible item is currently an obstacle for this entity
  */
@@ -91,7 +93,7 @@ bool PapillosaurKing::is_destructible_item_obstacle(DestructibleItem *destructib
 }
 
 /**
- * Suspends or resumes the entity.
+ * @brief Suspends or resumes the entity.
  * @param suspended true to suspend the entity, false to resume it
  */
 void PapillosaurKing::set_suspended(bool suspended) {
@@ -106,7 +108,7 @@ void PapillosaurKing::set_suspended(bool suspended) {
 }
 
 /**
- * Updates this entity.
+ * @brief Updates this entity.
  */
 void PapillosaurKing::update(void) {
 
@@ -162,7 +164,7 @@ void PapillosaurKing::update(void) {
 }
 
 /**
- * This function is called when the enemy has just been hurt.
+ * @brief This function is called when the enemy has just been hurt.
  * @param source the source of the attack
  * @param attack the attack that was just successful
  * @param life_points the number of life points lost by this enemy

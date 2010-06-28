@@ -31,7 +31,7 @@
 #include "lowlevel/System.h"
 
 /**
- * Movement of the item when the hero is lifting it.
+ * @brief Movement of the item when the hero is lifting it.
  */
 static const Rectangle lifting_translations[4][6] = {
   { Rectangle(0, 0), Rectangle(0, 0), Rectangle(-3, -3), Rectangle(-5, -3), Rectangle(-5,-2) },
@@ -41,9 +41,12 @@ static const Rectangle lifting_translations[4][6] = {
 };
 
 /**
+ * @brief Constructor.
+ *
  * Creates a carried item (i.e. an item carried by the hero)
  * based on a destructible item (i.e. the item placed on the map
  * before the hero lifts it).
+ *
  * @param hero the hero
  * @param destructible_item a destructible item
  */
@@ -88,14 +91,14 @@ CarriedItem::CarriedItem(Hero *hero, DestructibleItem *destructible_item):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 CarriedItem::~CarriedItem(void) {
   delete shadow_sprite;
 }
 
 /**
- * Returns the type of entity.
+ * @brief Returns the type of entity.
  * @return the type of entity
  */
 EntityType CarriedItem::get_type() {
@@ -103,9 +106,11 @@ EntityType CarriedItem::get_type() {
 }
 
 /**
- * Returns whether entities of this type can be obstacles for other entities.
+ * @brief Returns whether entities of this type can be obstacles for other entities.
+ *
  * If yes, the function is_obstacle_for() will be called
  * to determine whether this particular entity is an obstacle or not.
+ *
  * @return true if this type of entity can be obstacle for other entities
  */
 bool CarriedItem::can_be_obstacle(void) {
@@ -113,10 +118,13 @@ bool CarriedItem::can_be_obstacle(void) {
 }
 
 /**
- * Returns whether entities of this type can detect the presence 
+ * @brief Returns whether entities of this type have detection capabilities.
+ *
+ * This function returns whether entities of this type can detect the presence 
  * of the hero or other entities (this is possible only for
  * suclasses of Detector). If yes, the function 
  * notify_collision() will be called when a collision is detected.
+ *
  * @return true if this type of entity can detect other entities
  */
 bool CarriedItem::can_detect_entities(void) {
@@ -124,9 +132,11 @@ bool CarriedItem::can_detect_entities(void) {
 }
 
 /**
- * Returns whether entities of this type can be displayed.
- * If enabled, the sprites added by the add_sprite() calls will be 
+ * @brief Returns whether entities of this type can be displayed.
+ *
+ * If yes, the sprites added by the add_sprite() calls will be 
  * displayed (if any).
+ *
  * @return true if this type of entity can be displayed
  */
 bool CarriedItem::can_be_displayed(void) {
@@ -134,7 +144,9 @@ bool CarriedItem::can_be_displayed(void) {
 }
 
 /**
- * Returns whether an entity of this type should be displayed above
+ * @brief Returns whether this entity has to be displayed in y order.
+ *
+ * This function returns whether an entity of this type should be displayed above
  * the hero and other entities having this property when it is in front of them.
  * This means that the displaying order of entities having this
  * feature depends on their y position. The entities without this feature
@@ -147,7 +159,7 @@ bool CarriedItem::is_displayed_in_y_order(void) {
 }
 
 /**
- * Returns the damage this item can cause to ennemies.
+ * @brief Returns the damage this item can cause to ennemies.
  * @return the damage on enemies
  */
 int CarriedItem::get_damage_on_enemies(void) {
@@ -155,8 +167,10 @@ int CarriedItem::get_damage_on_enemies(void) {
 }
 
 /**
- * This function is called when the hero stops walking while
- * carrying the item. The item also stops moving.
+ * @brief Makes the item sprite stop moving.
+ *
+ * This function is called when the hero stops walking while carrying the item.
+ * The item also stops moving.
  */
 void CarriedItem::set_animation_stopped(void) {
 
@@ -167,8 +181,10 @@ void CarriedItem::set_animation_stopped(void) {
 }
 
 /**
- * This function is called when the hero starts walking while
- * carrying the item. The item moves like him.
+ * @brief Makes the item sprite move.
+ *
+ * This function is called when the hero starts walking while carrying the item.
+ * The item moves like him.
  */
 void CarriedItem::set_animation_walking(void) {
   if (!is_lifting && !is_throwing) {
@@ -178,7 +194,7 @@ void CarriedItem::set_animation_walking(void) {
 }
 
 /**
- * Throws the item.
+ * @brief Throws the item.
  * @param direction direction where the hero throws the item (0 to 3)
  */
 void CarriedItem::throw_item(int direction) {
@@ -208,7 +224,7 @@ void CarriedItem::throw_item(int direction) {
 }
 
 /**
- * Returns whether the item is being thrown.
+ * @brief Returns whether the item is being thrown.
  * @return true if the item is being thrown
  */
 bool CarriedItem::is_being_thrown(void) {
@@ -216,7 +232,7 @@ bool CarriedItem::is_being_thrown(void) {
 }
  
 /**
- * Returns whether the item is about to explode.
+ * @brief Returns whether the item is about to explode.
  * @return true if the item is about to explode 
  */
 bool CarriedItem::will_explode_soon(void) {
@@ -224,7 +240,7 @@ bool CarriedItem::will_explode_soon(void) {
 }
 
 /**
- * Destroys the item when it is being thrown.
+ * @brief Destroys the item when it is being thrown.
  */
 void CarriedItem::break_item(void) {
 
@@ -250,8 +266,10 @@ void CarriedItem::break_item(void) {
 }
 
 /**
- * Returns whether the item is broken.
+ * @brief Returns whether the item is broken.
+ *
  * When this function returns true, the item can be deleted from memory.
+ *
  * @return true if the item is broken
  */
 bool CarriedItem::is_broken(void) {
@@ -259,9 +277,7 @@ bool CarriedItem::is_broken(void) {
 }
 
 /**
- * This function is called by the map when the game is suspended or resumed.
- * This is a redefinition of MapEntity::set_suspended() to suspend the movement
- * of the shadow when the item is being thrown.
+ * @brief This function is called by the map when the game is suspended or resumed.
  * @param suspended true to suspend the entity, false to resume it
  */
 void CarriedItem::set_suspended(bool suspended) {
@@ -285,8 +301,7 @@ void CarriedItem::set_suspended(bool suspended) {
 }
 
 /**
- * This function is called repeatedly by the hero.
- * When the lift movement finishes, the hero starts carrying the item.
+ * @brief This function is called repeatedly.
  */
 void CarriedItem::update(void) {
 
@@ -355,8 +370,9 @@ void CarriedItem::update(void) {
 }
 
 /**
- * Displays the carried item on the map.
- * This is a redefinition of MapEntity::display_on_map
+ * @brief Displays the carried item on the map.
+ *
+ * This is a redefinition of MapEntity::display_on_map()
  * to display the shadow independently of the item movement.
  */
 void CarriedItem::display_on_map(void) {
@@ -373,7 +389,7 @@ void CarriedItem::display_on_map(void) {
 }
 
 /**
- * This function is called when this carried item collides an enemy.
+ * @brief This function is called when this carried item collides an enemy.
  * @param enemy the enemy
  */
 void CarriedItem::notify_collision_with_enemy(Enemy *enemy) {
@@ -384,8 +400,10 @@ void CarriedItem::notify_collision_with_enemy(Enemy *enemy) {
 }
 
 /**
- * Notifies this entity that it has just attacked an enemy
- * (even if this attack was not successful).
+ * @brief Notifies this entity that it has just attacked an enemy.
+ *
+ * This function is called even if this attack was not successful.
+ *
  * @param attack the attack
  * @param victim the enemy just hurt
  * @param result indicates how the enemy has reacted to the attack:
@@ -403,7 +421,7 @@ void CarriedItem::just_attacked_enemy(EnemyAttack attack, Enemy *victim, int res
 }
 
 /**
- * Returns whether a teletransporter is currently considered as an obstacle for this entity.
+ * @brief Returns whether a teletransporter is currently considered as an obstacle for this entity.
  * @param teletransporter a teletransporter
  * @return true if the teletransporter is currently an obstacle for this entity
  */
@@ -412,7 +430,7 @@ bool CarriedItem::is_teletransporter_obstacle(Teletransporter *teletransporter) 
 }
 
 /**
- * Returns whether a conveyor belt is currently considered as an obstacle for this entity.
+ * @brief Returns whether a conveyor belt is currently considered as an obstacle for this entity.
  * @param conveyor_belt a conveyor belt
  * @return true if the conveyor belt is currently an obstacle for this entity
  */
@@ -421,7 +439,7 @@ bool CarriedItem::is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt) {
 }
 
 /**
- * Returns whether some stairs are currently considered as an obstacle for this entity.
+ * @brief Returns whether some stairs are currently considered as an obstacle for this entity.
  * @param stairs an stairs entity
  * @return true if the stairs are currently an obstacle for this entity
  */
@@ -430,7 +448,7 @@ bool CarriedItem::is_stairs_obstacle(Stairs *stairs) {
 }
 
 /**
- * Returns whether a water tile is currently considered as an obstacle for this entity.
+ * @brief Returns whether a water tile is currently considered as an obstacle for this entity.
  * @return true if the water tiles are currently an obstacle for this entity
  */
 bool CarriedItem::is_water_obstacle(void) {
@@ -438,7 +456,7 @@ bool CarriedItem::is_water_obstacle(void) {
 }
 
 /**
- * Returns whether a hole is currently considered as an obstacle for this entity.
+ * @brief Returns whether a hole is currently considered as an obstacle for this entity.
  * @return true if the holes are currently an obstacle for this entity
  */
 bool CarriedItem::is_hole_obstacle(void) {
@@ -446,7 +464,7 @@ bool CarriedItem::is_hole_obstacle(void) {
 }
 
 /**
- * Returns whether a ladder is currently considered as an obstacle for this entity.
+ * @brief Returns whether a ladder is currently considered as an obstacle for this entity.
  * @return true if the ladders are currently an obstacle for this entity
  */
 bool CarriedItem::is_ladder_obstacle(void) {
@@ -454,7 +472,7 @@ bool CarriedItem::is_ladder_obstacle(void) {
 }
 
 /**
- * Returns whether a raised crystal switch block is currently considered as an obstacle for this entity.
+ * @brief Returns whether a raised crystal switch block is currently considered as an obstacle for this entity.
  * @param raised_block a crystal switch block raised
  * @return false 
  */
@@ -464,7 +482,7 @@ bool CarriedItem::is_raised_block_obstacle(CrystalSwitchBlock *raised_block) {
 }
 
 /**
- * Returns whether a crystal switch is currently considered as an obstacle for this entity.
+ * @brief Returns whether a crystal switch is currently considered as an obstacle for this entity.
  * @param crystal_switch a crystal switch
  * @return true if the crystal switch is currently an obstacle for this entity
  */
@@ -473,7 +491,7 @@ bool CarriedItem::is_crystal_switch_obstacle(CrystalSwitch *crystal_switch) {
 }
 
 /**
- * Returns whether a non-playing character is currently considered as an obstacle for this entity.
+ * @brief Returns whether a non-playing character is currently considered as an obstacle for this entity.
  * @param npc a non-playing character
  * @return true if the NPC is currently an obstacle for this entity
  */
@@ -482,8 +500,7 @@ bool CarriedItem::is_npc_obstacle(InteractiveEntity *npc) {
 }
 
 /**
- * Returns whether a jump sensor is currently considered as an obstacle for this entity.
- * This function returns true by default.
+ * @brief Returns whether a jump sensor is currently considered as an obstacle for this entity.
  * @param jump_sensor a jump sensor
  * @return true if the jump sensor is currently an obstacle for this entity
  */
@@ -492,7 +509,7 @@ bool CarriedItem::is_jump_sensor_obstacle(JumpSensor *jump_sensor) {
 }
 
 /**
- * Returns whether a sensor is currently considered as an obstacle for this entity.
+ * @brief Returns whether a sensor is currently considered as an obstacle for this entity.
  * @param sensor a sensor
  * @return true if this sensor is currently an obstacle for this entity.
  */
@@ -501,7 +518,7 @@ bool CarriedItem::is_sensor_obstacle(Sensor *sensor) {
 }
 
 /**
- * Returns whether an enemy character is considered as an obstacle for this entity.
+ * @brief Returns whether an enemy character is considered as an obstacle for this entity.
  * @param enemy an enemy
  * @return true if this enemy is considered as an obstacle for this entity.
  */
@@ -511,7 +528,7 @@ bool CarriedItem::is_enemy_obstacle(Enemy *enemy) {
 }
 
 /**
- * This function is called when some stairs detect a collision with this entity.
+ * @brief This function is called when some stairs detect a collision with this entity.
  * @param stairs the stairs entity
  * @param collision_mode the collision mode that detected the event
  */

@@ -20,7 +20,7 @@
 #include "lowlevel/FileTools.h"
 
 /**
- * Creates a new conveyor belt.
+ * @brief Creates a new conveyor belt.
  * @param layer layer of the entity to create on the map
  * @param x x coordinate of the entity to create
  * @param y y coordinate of the entity to create
@@ -35,15 +35,17 @@ ConveyorBelt::ConveyorBelt(Layer layer, int x, int y, int direction):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 ConveyorBelt::~ConveyorBelt(void) {
 
 }
 
 /**
- * Creates an instance from an input stream.
+ * @brief Creates an instance from an input stream.
+ *
  * The input stream must respect the syntax of this entity type.
+ *
  * @param game the game that will contain the entity created
  * @param is an input stream
  * @param layer the layer
@@ -59,7 +61,7 @@ MapEntity * ConveyorBelt::parse(Game *game, std::istream &is, Layer layer, int x
 }
 
 /**
- * Returns the type of entity.
+ * @brief Returns the type of entity.
  * @return the type of entity
  */
 EntityType ConveyorBelt::get_type() {
@@ -67,7 +69,7 @@ EntityType ConveyorBelt::get_type() {
 }
 
 /**
- * Returns whether this entity is an obstacle for another one.
+ * @brief Returns whether this entity is an obstacle for another one.
  * @param other another entity
  * @return true if this entity is an obstacle for the other one
  */
@@ -76,7 +78,7 @@ bool ConveyorBelt::is_obstacle_for(MapEntity *other) {
 }
 
 /**
- * This function is called when another entity overlaps this entity.
+ * @brief This function is called when another entity overlaps this entity.
  * @param entity_overlapping the other entity
  * @param collision_mode the collision mode that detected the collision
  */

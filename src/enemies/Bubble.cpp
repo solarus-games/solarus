@@ -20,7 +20,7 @@
 #include "Sprite.h"
 
 /**
- * Constructor.
+ * @brief Constructor.
  * @param params name and position of the enemy to create
  */
 Bubble::Bubble(const ConstructionParameters &params):
@@ -29,14 +29,14 @@ Bubble::Bubble(const ConstructionParameters &params):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 Bubble::~Bubble(void) {
 
 }
 
 /**
- * Initializes the enemy.
+ * @brief Initializes the enemy.
  */
 void Bubble::initialize(void) {
 
@@ -57,6 +57,8 @@ void Bubble::initialize(void) {
 }
 
 /**
+ * @brief Restarts the normal movement of this enemy.
+ *
  * This function is called when the enemy needs to restart its movement
  * because something happened (for example the enemy has just been created,
  * or it was just hurt).
@@ -69,7 +71,7 @@ void Bubble::restart(void) {
 }
 
 /**
- * Makes the enemy go into the specified direction.
+ * @brief Makes the enemy go into the specified direction.
  * @param movement_direction8 the direction (1, 3, 5 or 7)
  */
 void Bubble::go(int movement_direction8) {
@@ -88,7 +90,7 @@ void Bubble::go(int movement_direction8) {
 
 
 /**
- * Updates the enemy.
+ * @brief Updates the enemy.
  */
 void Bubble::update(void) {
 
@@ -101,7 +103,7 @@ void Bubble::update(void) {
 }
 
 /**
- * Makes the enemy bounce against a wall.
+ * @brief Makes the enemy bounce against a wall.
  */
 void Bubble::bounce(void) {
 
@@ -121,7 +123,6 @@ void Bubble::bounce(void) {
   int try3 = (movement_direction8 + 4) % 8;
 
   CollisionMovement *movement = (CollisionMovement*) get_movement();
-
 
   if (!movement->test_collision_with_map(dxy[try1][0], dxy[try1][1])) {
     go(try1);

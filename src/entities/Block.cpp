@@ -25,7 +25,7 @@
 #include "lowlevel/System.h"
 
 /**
- * Creates a block.
+ * @brief Creates a block.
  * @param name name identifying this block
  * @param layer layer of the entity to create
  * @param x x coordinate of the entity to create
@@ -62,15 +62,17 @@ Block::Block(const std::string &name, Layer layer, int x, int y,
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 Block::~Block(void) {
 
 }
 
 /**
- * Creates an instance from an input stream.
+ * @brief Creates an instance from an input stream.
+ *
  * The input stream must respect the syntax of this entity type.
+ *
  * @param game the game that will contain the entity created
  * @param is an input stream
  * @param layer the layer
@@ -92,7 +94,7 @@ MapEntity * Block::parse(Game *game, std::istream &is, Layer layer, int x, int y
 }
 
 /**
- * Returns the type of entity.
+ * @brief Returns the type of entity.
  * @return the type of entity
  */
 EntityType Block::get_type(void) {
@@ -100,8 +102,11 @@ EntityType Block::get_type(void) {
 }
 
 /**
- * Returns whether an entity of this type should be displayed above
+ * @brief Returns whether this entity has to be displayed in y order.
+ *
+ * This function returns whether an entity of this type should be displayed above
  * the hero and other entities when it is in front of them.
+ *
  * @return true if this entity is displayed at the same level as the hero
  */
 bool Block::is_displayed_in_y_order(void) {
@@ -109,7 +114,7 @@ bool Block::is_displayed_in_y_order(void) {
 }
 
 /**
- * Returns whether this entity is an obstacle for another one.
+ * @brief Returns whether this entity is an obstacle for another one.
  * @param other another entity
  * @return true
  */
@@ -123,7 +128,7 @@ bool Block::is_obstacle_for(MapEntity *other) {
 }
 
 /**
- * Returns whether an enemy character is considered as an obstacle for this entity.
+ * @brief Returns whether an enemy is considered as an obstacle for this entity.
  * @param enemy an enemy
  * @return true if this enemy is considered as an obstacle for this entity.
  */
@@ -132,7 +137,7 @@ bool Block::is_enemy_obstacle(Enemy *enemy) {
 }
 
 /**
- * Returns whether a destructible item is currently considered as an obstacle for this entity.
+ * @brief Returns whether a destructible item is currently considered as an obstacle for this entity.
  * @param destructible_item a destructible item
  * @return true if the destructible item is currently an obstacle this entity
  */
@@ -141,9 +146,11 @@ bool Block::is_destructible_item_obstacle(DestructibleItem *destructible_item) {
 }
 
 /**
- * This function is called by the engine when there is a collision with another entity.
+ * @brief This function is called by the engine when there is a collision with another entity.
+ *
  * This is a redefinition of Detector::notify_collision().
  * If the entity is the hero and this block can be pulled, we show the grab icon.
+ *
  * @param entity_overlapping the entity overlapping the detector
  * @param collision_mode the collision mode that detected the collision
  */
@@ -164,7 +171,7 @@ void Block::notify_collision(MapEntity *entity_overlapping, CollisionMode collis
 }
 
 /**
- * This function is called when the player tries to push or pull this block.
+ * @brief This function is called when the player tries to push or pull this block.
  * @return true if the player can be move this block
  */
 bool Block::moved_by_hero(void) {
@@ -190,7 +197,7 @@ bool Block::moved_by_hero(void) {
 }
 
 /**
- * Updates the entity.
+ * @brief Updates the entity.
  */
 void Block::update(void) {
 
@@ -235,11 +242,11 @@ void Block::update(void) {
 }
 
 /**
- * Notifies the block that it has just moved.
+ * @brief Notifies the block that it has just moved.
  */
 void Block::notify_just_moved(void) {
 
-  // now we now that the block moves at least of 1 pixel:
+  // now we know that the block moves at least of 1 pixel:
   // we can play the sound
   if (!sound_played) {
     game->play_sound("hero_pushes");
@@ -248,7 +255,7 @@ void Block::notify_just_moved(void) {
 }
 
 /**
- * Resets the block at its initial position.
+ * @brief Resets the block at its initial position.
  */
 void Block::reset(void) {
   set_xy(initial_position);

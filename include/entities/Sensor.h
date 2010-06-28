@@ -21,7 +21,9 @@
 #include "entities/Detector.h"
 
 /**
- * A sensor is an invisible entity that triggers something
+ * @brief An invisible entity that triggers something when it is walked on.
+ *
+ * A sensor is an invisible entity that triggers an event
  * when the hero or another entity walks on it. Unlike the switches,
  * the hero cannot avoid a sensor by jumping.
  */
@@ -36,13 +38,13 @@ class Sensor: public Detector {
       CUSTOM                 = 0, /**< the map script is called when the hero walks on this sensor */
       CHANGE_LAYER           = 1, /**< the hero's layer is changed when he comes on this sensor
 				   * (the hero's layer becomes the sensor's layer) */
-      RETURN_FROM_BAD_GROUND = 2  /**< when falling in a hole or in other bad grounds, the hero
-				   * comes back at the location of this sensor */
+      RETURN_FROM_BAD_GROUND = 2  /**< when he falls in a hole or in other bad grounds, the hero
+				   * will come back at the location of this sensor */
     };
 
   private:
 
-    Subtype subtype;            /**< subtype of teletransporter */
+    Subtype subtype;            /**< subtype of sensor */
     bool hero_already_overlaps; /**< true if the hero is currently on this sensor */
 
   public:

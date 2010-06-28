@@ -19,8 +19,10 @@
 #include "lowlevel/Surface.h"
 
 /**
- * Constructor.
+ * @brief Constructor.
+ *
  * The counter's value is initialized to zero.
+ *
  * @param nb_digits number of digits to display
  * @param fill_with_zeros true to fill with zeros when the current number of digits is lower than nb_digits
  * @param x x coordinate of the top-left corner of the counter on the destination surface
@@ -40,7 +42,7 @@ Counter::Counter(unsigned int nb_digits, bool fill_with_zeros,
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 Counter::~Counter(void) {
   delete surface_drawn;
@@ -48,7 +50,7 @@ Counter::~Counter(void) {
 }
 
 /**
- * Sets the style of digits to display.
+ * @brief Sets the style of digits to display.
  * @param style the style to set
  */
 void Counter::set_style(Style style) {
@@ -60,9 +62,11 @@ void Counter::set_style(Style style) {
 }
 
 /**
- * Changes the counter's maximum value.
+ * @brief Changes the counter's maximum value.
+ *
  * The surface is redrawn if necessary.
  * Nothing is done if the maximum value is unchanged.
+ *
  * @param maximum the new maximum value to set (0 to set no maximum)
  */
 void Counter::set_maximum(unsigned int maximum) {
@@ -74,7 +78,7 @@ void Counter::set_maximum(unsigned int maximum) {
 }
 
 /**
- * Returns the value currently displayed by the counter.
+ * @brief Returns the value currently displayed by the counter.
  * @return the value currently displayed by the counter
  */
 unsigned int Counter::get_value(void) {
@@ -82,10 +86,12 @@ unsigned int Counter::get_value(void) {
 }
 
 /**
- * Changes the counter's value.
+ * @brief Changes the counter's value.
+ *
  * The surface is redrawn such that the counter displays
  * the new value.
- * Nothing is done if the value is the same.
+ * Nothing is done if the value remains the same.
+ *
  * @param value the new value to display
  */
 void Counter::set_value(unsigned int value) {
@@ -96,7 +102,7 @@ void Counter::set_value(unsigned int value) {
 }
 
 /**
- * Redraws the surface to represent a new value.
+ * @brief Redraws the surface to represent a new value.
  * @param value the new value to display
  */
 void Counter::rebuild_with_value(unsigned int value) {
@@ -146,7 +152,8 @@ void Counter::rebuild_with_value(unsigned int value) {
 }
 
 /**
- * Adds 1 to the counter.
+ * @brief Adds 1 to the counter.
+ *
  * The surface is redrawn such that the counter displays
  * the new value.
  */
@@ -155,7 +162,8 @@ void Counter::increase(void) {
 }
 
 /**
- * Substracts 1 from the counter.
+ * @brief Substracts 1 from the counter.
+ *
  * The surface is redrawn such that the counter displays
  * the new value.
  */
@@ -164,8 +172,10 @@ void Counter::decrease(void) {
 }
 
 /**
- * Displays the counter on a surface, at the position specified
- * when you called the constructor.
+ * @brief Displays the counter on a surface.
+ *
+ * The counter is displayed at the position specified when the constructor was called.
+ *
  * @param destination the destination surface
  */
 void Counter::display(Surface *destination) {
@@ -173,7 +183,7 @@ void Counter::display(Surface *destination) {
 }
 
 /**
- * Displays the counter on a surface, specifying the position.
+ * @brief Displays the counter on a surface, specifying the position.
  * @param destination the destination surface
  * @param x x coordinate of the top-left corner of the counter on the destination surface
  * @param y y coordinate of the top-left corner of the counter on the destination surface

@@ -21,22 +21,27 @@
 #include "movements/PathMovement.h"
 
 /**
- * Movement for an entity that walks randomly.
+ * @brief Movement of an entity that walks randomly.
+ *
+ * The movement is composed of small random moves. Each
+ * random move goes to one of the 4 main directions
+ * and with a length that is a multiple of 8 pixels.
  */
 class RandomWalkMovement: public PathMovement {
 
- protected:
+  protected:
 
-  void start_next_move(void);
+    void start_next_move(void);
 
- public:
+  public:
 
-  RandomWalkMovement(int speed);
-  ~RandomWalkMovement(void);
+    RandomWalkMovement(int speed);
+    ~RandomWalkMovement(void);
 
-  void update(void);
-  bool is_finished(void);
+    void update(void);
+    bool is_finished(void);
 
 };
 
 #endif
+

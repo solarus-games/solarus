@@ -21,8 +21,10 @@
 #include "SDL/SDL.h"
 
 /**
+ * @brief Represents a color.
+ *
  * This module defines a type for the colors and provides some color related functions.
- * It encapsulates a library dependent color.
+ * It encapsulates a library-dependent color.
  */
 class Color {
 

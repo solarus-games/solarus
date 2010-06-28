@@ -21,7 +21,7 @@
 #include "Transition.h"
 
 /**
- * Fade in or fade out transition effect.
+ * @brief Fade in or fade out transition effect.
  */
 class TransitionFade: public Transition {
 

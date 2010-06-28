@@ -21,12 +21,14 @@
 #include <map>
 
 /**
+ * @brief Provides storage and access to exteranl resources.
+ *
  * This class provides storage and access to some external resources:
- * maps, sounds, sprite animations...
+ * maps, sounds, sprite animations, etc.
  * Those resources are stored into
  * memory when you get them for the first time and you
- * don't have to delete them. They are deleted when the application
- * ends. This does not consumes much memory because:
+ * don't have to delete them. They are deleted when the program ends.
+ * This does not consumes much memory because:
  * - the maps and tilesets have an unload() method you can call,
  * - the musics and sounds close their audio files when they stop.
  */

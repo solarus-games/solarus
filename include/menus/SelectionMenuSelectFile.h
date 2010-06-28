@@ -21,7 +21,9 @@
 #include "menus/SelectionMenuPhase.h"
 
 /**
- * First phase of the selection menu, where the user can select a file.
+ * @brief Phase of the selection menu where the user can select a file.
+ *
+ * This is the first phase of the selection menu.
  */
 class SelectionMenuSelectFile: public SelectionMenuPhase {
 

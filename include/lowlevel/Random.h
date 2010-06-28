@@ -20,7 +20,7 @@
 #include "Common.h"
 
 /**
- * Provides some functions to compute random numbers.
+ * @brief Provides some functions to compute random numbers.
  */
 class Random {
 

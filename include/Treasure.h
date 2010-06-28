@@ -20,19 +20,22 @@
 #include "Common.h"
 
 /**
- * A treasure is any item that the hero brandishes when he receives it.
- * It includes all items he can get in chest, buy a shop or get from the script
- * (e.g. when talking to an NPC).
+ * @brief Represents an item that the hero brandishes when he receives it.
+ *
+ * Treasures include all items the hero can get in chest, buy in a shop
+ * or get from the script (e.g. when talking to an NPC).
  * It also includes items picked on the ground if they are saved
  * (heart pieces, keys, etc.).
- * Picked items that are not saved are not treasures since they are not brandished.
+ * Picked items that are not saved (rupees, bombs, etc.) are not treasures since they are not brandished
+ * when they are picked on the ground. When they come from a chest, they are
+ * treasures.
  *
  * A treasure is represented as the following three values:
- * - the treasure content: indicates the nature of the treasure: 20 rupees, a heart container,
+ * - the treasure content: indicates the nature of the treasure: a red rupee, a heart container,
  *   the map, a red potion, the bow, some bombs, etc;
  * - the amount: an optional integer indicating the number of items of this treasure
  *   (for bombs, rupees, croissants, etc.);
- * - a savegame variable: index of the boolean variable saved indicating whether
+ * - a savegame variable: index of the boolean variable that indicates whether
  *   the player has found this treasure (-1 if the treasure is not saved).
  */
 class Treasure {
@@ -40,7 +43,8 @@ class Treasure {
   public:
 
     /**
-     * Identifies each possible treasure.
+     * @brief Identification of each possible treasure.
+     *
      * The values correspond to the icons in hud/message_and_treasure_icons.png
      * and the maps refer to these numbers for each chest or shop item.
      */

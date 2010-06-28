@@ -21,8 +21,11 @@
 #include "simpleini/SimpleIni.h"
 
 /**
- * This class provides functions to read and write an ini-like file.
- * It encapsulates the library used to manage ini files (SimpleIni for now).
+ * @brief Reads and writes an ini-life file.
+ *
+ * This class provides functions to read and write a configuration file
+ * that uses the ini syntax.
+ * It encapsulates the dependency to a library used to manage ini files (SimpleIni).
  */
 class IniFile {
 

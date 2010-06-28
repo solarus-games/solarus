@@ -24,13 +24,15 @@
 #include "lowlevel/Rectangle.h"
 
 /**
- * Represents a map.
- * A map is where a game sequence takes place. It contains many information:
+ * @brief Represents a map where the game can take place.
+ *
+ * A map is where a game sequence takes place. It contains various information, including:
  * - the map dimensions
  * - the tileset
- * - the tiles
+ * - the tiles and the other entities
  * - the obstacles
  * - the background music
+ * - the position of the camera
  */
 class Map {
 

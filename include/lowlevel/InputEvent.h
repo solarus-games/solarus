@@ -21,8 +21,10 @@
 #include <SDL/SDL.h>
 
 /**
- * This lowlevel class provides an API for input events (keyboard, joypad and window events).
- * This class encapsulates the library-dependent keyboard and joypad events.
+ * @brief Represents a low-level event.
+ *
+ * This low-level class provides an API for input events (keyboard, joypad and window events).
+ * It encapsulates the library-dependent events.
  */
 class InputEvent {
 
@@ -178,7 +180,7 @@ class InputEvent {
 
   private:
 
-    static const KeyboardKey directional_keys[];        /**< array of the keyboard directional keys */
+    static const KeyboardKey directional_keys[]; /**< array of the keyboard directional keys */
     static SDL_Joystick *joystick;               /**< the joystick object */
     SDL_Event internal_event;                    /**< the internal event encapsulated */
 

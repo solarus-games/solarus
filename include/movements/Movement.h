@@ -20,25 +20,28 @@
 #include "Common.h"
 
 /**
- * The movement of an entity on the map, visible or not.
- * A moving entity has an instance of Movement which modifies its coordinates.
- * An instance of Movement is attached to at most one instance of MapEntity.
+ * @brief Base class for representing a movement.
  *
  * This is the parent class of all kinds of movement.
- * It implements a simple speed vector: you can set the speed and the direction.
+ * It implements a simple speed vector and provides basic functions
+ * such as setting the speed and the direction of a straight movement.
  * Subclassses can use this speed vector and extend it or implement totally different movements.
+ *
+ * An instance of Movement can be applied to a map entity during the game,
+ * or to any arbitrary coordinates.
+ * A moving map entity has an instance of Movement that modifies its coordinates.
  */
 class Movement {
 
   protected:
 
     MapEntity *entity;         /**< The entity controlled by this movement.
-                                * If it is NULL, the movement is applied to the internal x and y fields of the Movement class. */
+                                * If it is NULL, the movement is applied to the internal x and y fields below. */
 
   private:
 
-    int x;                     /**< x coordinate of the object controlled by this movement */
-    int y;                     /**< y coordinate of the object controlled by this movement */
+    int x;                     /**< X coordinate of the object controlled by this movement. */
+    int y;                     /**< Y coordinate of the object controlled by this movement. */
 
     // speed vector
 

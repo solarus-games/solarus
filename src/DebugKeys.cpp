@@ -23,7 +23,7 @@
 #include "movements/PlayerMovement.h"
 
 /**
- * Constructor.
+ * @brief Constructor.
  * @param solarus the application object
  */
 DebugKeys::DebugKeys(Solarus *solarus):
@@ -31,14 +31,14 @@ DebugKeys::DebugKeys(Solarus *solarus):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 DebugKeys::~DebugKeys(void) {
 
 }
 
 /**
- * Sets the current game.
+ * @brief Sets the current game.
  * @param game the current game
  */
 void DebugKeys::set_game(Game *game) {
@@ -46,7 +46,7 @@ void DebugKeys::set_game(Game *game) {
 }
 
 /**
- * This function is called when a keyboard key is pressed.
+ * @brief This function is called when a keyboard key is pressed.
  * @param key the key pressed
  */
 void DebugKeys::key_pressed(InputEvent::KeyboardKey key) {
@@ -192,7 +192,7 @@ void DebugKeys::key_pressed(InputEvent::KeyboardKey key) {
 }
 
 /**
- * This function is called when a keyboard key is released.
+ * @brief This function is called when a keyboard key is released.
  * @param key the key released
  */
 void DebugKeys::key_released(InputEvent::KeyboardKey key) {
@@ -215,7 +215,7 @@ void DebugKeys::key_released(InputEvent::KeyboardKey key) {
 }
 
 /**
- * This function is called repeatedly by the engine.
+ * @brief This function is called repeatedly by the engine.
  */
 void DebugKeys::update(void) {
 

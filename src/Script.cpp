@@ -314,7 +314,7 @@ bool Script::call_script_function(const std::string &function_name, int arg1) {
  * Calls a function in the script.
  * @param function_name name of the function to call
  * @param arg1 first argument of the function
- * @param arg1 second argument of the function
+ * @param arg2 second argument of the function
  * @return true if the function was called, false if it does not exist
  */
 bool Script::call_script_function(const std::string &function_name, int arg1, int arg2) {

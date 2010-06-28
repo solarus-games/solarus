@@ -21,7 +21,12 @@
 #include "entities/Detector.h"
 
 /**
- * Represents an item the hero can buy in a shop.
+ * @brief An item the hero can buy in a shop.
+ *
+ * The item is automatically displayed with its icon,
+ * the amount and the price. When the hero presses the action
+ * key in front of it, a dialog is automatically showed and
+ * the hero can buy the item.
  */
 class ShopItem: public Detector {
 

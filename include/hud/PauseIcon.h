@@ -22,7 +22,13 @@
 #include "KeysEffect.h"
 
 /**
- * This class displays the pause icon.
+ * @brief Displays the pause icon.
+ *
+ * This icon displays what happens when the player presses the pause key.
+ * Usually, the icon indicates that the player can pause the pause
+ * by pressing the key. When the game is paused,
+ * the icon indicates that he can get back to the game by pressing
+ * the same key.
  */
 class PauseIcon: public HudElement {
 

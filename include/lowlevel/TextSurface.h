@@ -26,7 +26,7 @@
 /**
  * @brief Displays a line of text on a surface.
  *
- * Basically, this class encapsulates a graphic surface and handles text rendering,
+ * This class encapsulates a graphic surface and handles text rendering,
  * horizontal and vertical text alignment, color and other properties.
  * This is the only class related to the font library (SDL_ttf).
  */

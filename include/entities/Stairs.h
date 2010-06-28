@@ -21,20 +21,28 @@
 #include "entities/Detector.h"
 
 /**
- * A special terrain where the hero walks on stairs
+ * @brief Some stairs that trigger a special animation on the hero.
+ *
+ * A stairs entity is a special terrain where the hero walks
  * either before going to another floor
  * or to change its layer inside a single floor.
  *
  * For stairs inside a single floor,
- * only one entity has to be placed and the collisions will be detected on both layers.
+ * only one stairs entity has to be placed and the collisions will be detected on both layers.
  * This entity is usually placed on the low layer even if there is no obligation.
+ *
+ * For stairs that send the hero to another floor (i.e. another map),
+ * there must be three entities:
+ * - a teletransporter (that make the hero go to the next map),
+ * - a stairs entity (that make the hero take the stairs animation),
+ * - a destination point on the next map.
  */
 class Stairs: public Detector {
 
   public:
 
     /**
-     * Subtypes of stairs.
+     * @brief Subtypes of stairs.
      */
     enum Subtype {
       SPIRAL_UPSTAIRS,          /**< going to the floor upstairs (spiral staircase) */
@@ -45,9 +53,12 @@ class Stairs: public Detector {
     };
 
       
-    /** Indicates the way an entity is walking on stairs:
-     * - for stairs between two floors, 0 means that the hero is on the stairs
-     *   of the old map and 1 means that he is on the stairs on the new map 
+    /**
+     * @brief Indicates the way an entity is walking on stairs.
+     * - For stairs inside a single floor, 0 means that the hero is going upstairs
+     *   and 1 means that he is going downstairs.
+     * - For stairs between two different floors, 0 means that the hero is on the stairs
+     *   of the old map and 1 means that he is on the stairs on the new map.
      */
     enum Way {
       NORMAL_WAY,    /**< for stairs inside a single floor, indicates that the entity is going upstairs;

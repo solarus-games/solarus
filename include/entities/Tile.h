@@ -21,8 +21,10 @@
 #include "MapEntity.h"
 
 /**
- * A tile is a small fixed piece of the map background.
+ * @brief A small fixed piece of the map background.
+ *
  * It is composed of a tile pattern that can be repeated.
+ * It can be traversable or obstacle.
  */
 class Tile: public MapEntity {
 

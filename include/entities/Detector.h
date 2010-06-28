@@ -21,9 +21,11 @@
 #include "entities/MapEntity.h"
 
 /**
+ * @brief Abstract class for an entity able to detect the presence of other entities.
+ *
  * A detector is an object placed somewhere on the map
  * to detect the presence of the hero or other moving entities.
- * Examples of detectors are teletransporters, switches, bushes, enemies, etc.
+ * Examples of detectors include teletransporters, switches, bushes and enemies.
  */
 class Detector: public MapEntity {
 
@@ -31,7 +33,7 @@ class Detector: public MapEntity {
 
     /**
      * Collisions modes of a detector.
-     * The collision mode indicates what kind of collision the detector will detect.
+     * The collision mode indicates what kind of collisions the detector will detect.
      */
     enum CollisionMode {
       COLLISION_NONE         = 0x0000, /**< no collision will be detected

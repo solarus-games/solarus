@@ -14,8 +14,10 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
 /**
- * This header should be included by each class header file.
+ * @file Common.h
+ * @brief This header should be included by each class header file.
  */
 
 #ifndef SOLARUS_COMMON_H
@@ -28,14 +30,17 @@
 #include "Types.h"
 
 /**
- * Debug level.
- * 0: no debug (release mode): no error messages; pick the data only from the archive file; no debug keys; use only compiled (.luac) scripts
- * >= 1: enable the error messages; pick the data also from the physical data directory; use clear text (.lua) scripts
- * >= 2: enable the debug keys
+ * @brief Debug level.
+ *
+ * - 0: no debug (release mode): no error messages; pick the data only from the archive file; no debug keys; use only compiled (.luac) scripts
+ * - >= 1: enable the error messages; pick the data also from the physical data directory; use clear text (.lua) scripts
+ * - >= 2: enable the debug keys
  */
 #define SOLARUS_DEBUG_LEVEL 2
 
 /**
+ * @brief Stops the program on an error message.
+ *
  * This macro should be used to exit the program properly on an error message.
  * The message parameter can contain several elements separated by the '<<' operator.
  */

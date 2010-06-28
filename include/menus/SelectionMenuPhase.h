@@ -22,8 +22,7 @@
 #include "lowlevel/InputEvent.h"
 
 /**
- * Abstract class for a phase of the selection menu,
- * i.e. the menu to select the savegame file.
+ * @brief Abstract class for a phase of the selection menu.
  */
 class SelectionMenuPhase {
 

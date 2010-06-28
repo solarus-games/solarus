@@ -21,9 +21,11 @@
 #include <SDL/SDL.h>
 
 /**
- * Represents a rectangle with its top-left corner, width and height.
+ * @brief Represents a rectangle.
+ *
+ * This class represents a rectangle with its top-left corner, width and height.
  * This class can also be used to represent a single point
- * (then the width and the height can be set to zero or event just left unused).
+ * (then the width and the height can be set to zero or even just left unset).
  * This class basically encapsulates a library-dependent rectangle object.
  */
 class Rectangle {

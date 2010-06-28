@@ -21,11 +21,13 @@
 #include <map>
 
 /**
+ * @brief Handles access to data files.
+ *
  * This class provides some functions to open and analyze a data file.
  * It encapsulates how the access to data files is done.
  * This class is the only one that knows how to access a data file
- * (including language-specific ones)
- * and the only one that calls the PHYSFS library to get data files from
+ * (including the language-specific ones)
+ * and is the only one that calls the PHYSFS library to get data files from
  * the data archive when necessary.
  */
 class FileTools {

@@ -21,7 +21,8 @@
 #include "Script.h"
 
 /**
- * Represents the Lua script of a map.
+ * @brief Represents the Lua script of a map.
+ *
  * This class makes the interface between the engine C++ code and the Lua script of a map.
  */
 class MapScript: public Script {

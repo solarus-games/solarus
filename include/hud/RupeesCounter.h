@@ -21,14 +21,18 @@
 #include "hud/HudElement.h"
 
 /**
- * This class displays the rupee counter and its icon.
+ * @brief Displays the rupee counter and its icon.
+ *
+ * When the player gets or loses some rupees,
+ * the counter is updated gradually with a repetitive rupee sound.
+ * The icon displayed depends on the size of the rupee bag.
  */
 class RupeesCounter: public HudElement {
 
   private:
 
     // rectangles of the rupee icons in the image
-    static Rectangle rupee_icon_positions[3];
+    static const Rectangle rupee_icon_positions[3];
 
     Surface *img_rupee_icon;
 

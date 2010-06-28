@@ -21,11 +21,12 @@
 #include "lowlevel/Rectangle.h"
 
 /**
- * Abstract class for displaying an element of the HUD.
+ * @brief Abstract class for all elements of the HUD.
+ *
  * The HUD calls update() repeatedly. The update() function
  * should check whether the information displayed has changed,
  * and call rebuild() if necessary.
- * The rebuild() function build the surface of this HUD element.
+ * The rebuild() function builds the surface of the HUD element.
  */
 class HudElement {
 

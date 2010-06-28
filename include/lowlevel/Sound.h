@@ -24,12 +24,13 @@
 #include <sndfile.h>
 
 /**
- * This class represents a sound effet that can be played in the program.
+ * @brief Represents a sound effet that can be played in the program.
+ *
  * This class also handles the initialization of the whole audio system.
  * To create a sound, prefer the ResourceManager::get_sound() method
  * rather than calling directly the constructor of Sound.
- * This class is the only one that calls the sound decoding library (libsndfile).
- * This class and the Music class are the only ones that call the audio mixer library (OpenAL).
+ * This class is the only one that depends on the sound decoding library (libsndfile).
+ * This class and the Music class are the only ones that depend on the audio mixer library (OpenAL).
  */
 class Sound {
 

@@ -20,16 +20,17 @@
 #include "Common.h"
 
 /**
- * Represents an animated sprite.
- * An animated sprite is represented as a set of animations (an
- * instance of SpriteAnimationSet), a current animation,
+ * @brief Represents an animated sprite.
+ *
+ * A sprite is represented as a set of animations
+ * (i.e. an instance of SpriteAnimationSet),
+ * a current animation,
  * a current direction and a current frame.
  * Several sprites can have the same animation set (i.e. they share
  * the same SpriteAnimationSet object).
  *
  * A sprite can be displayed directly on a surface, or it can
- * be attached to a map entity, allowing it to have a position on
- * the map and a movement.
+ * be attached to a map entity, allowing it to have a position on the map.
  */
 class Sprite {
 

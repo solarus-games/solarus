@@ -21,15 +21,17 @@
 #include "Common.h"
 
 /**
+ * @brief Stores the global configuration of the program.
+ *
  * This class loads and saves the global configuration of the program, such as the language,
- * the screen resolution, and the audio volume.
+ * the screen resolution and the audio volume.
  */
 class Configuration {
 
   private:
 
-    static const std::string file_name;
-    static const std::string group_name;
+    static const std::string file_name;     /**< name of the file that stores the configuration in an ini-like way */
+    static const std::string group_name;    /**< name of the configuration group in the file */
 
   public:
 

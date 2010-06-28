@@ -21,7 +21,10 @@
 #include "Transition.h"
 
 /**
- * Immediate transition effect.
+ * @brief Immediate transition effect.
+ *
+ * This transition just acts as if there was no transition:
+ * the next surface is immediately displayed.
  */
 class TransitionImmediate: public Transition {
 

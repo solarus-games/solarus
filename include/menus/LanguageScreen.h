@@ -21,10 +21,11 @@
 #include "Screen.h"
 
 /**
- * This class shows a screen to let the user choose his language.
- * The screen is displayed only the first time the program is launched,
+ * @brief Shows a screen to let the user choose his language.
+ *
+ * This screen is displayed only the first time the program is launched,
  * that is, when the configuration file does not exist or does not contains
- * the language setting.
+ * the language setting yet.
  */
 class LanguageScreen: public Screen {
 

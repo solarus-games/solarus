@@ -22,23 +22,28 @@
 #include <map>
 
 /**
- * This type of entity is an invisible obstacle for some other types of entities.
+ * @brief An invisible obstacle that stops other types of entities.
+ *
+ * The types of entities that are stopped can be specified.
+ * This entity is typically used to prevent enemies from going to
+ * a specific place.
  */
 class CustomObstacle: public MapEntity {
 
- private:
+  private:
 
-  std::map<int, bool> entity_types_stopped;
+    std::map<int, bool> entity_types_stopped;
 
- public:
+  public:
 
-  CustomObstacle(const std::string &name, Layer layer, int x, int y, int width, int height,
-		 bool stops_hero, bool stops_enemies, bool stops_npcs, bool stops_blocks);
-  ~CustomObstacle(void);
-  static CreationFunction parse;
+    CustomObstacle(const std::string &name, Layer layer, int x, int y, int width, int height,
+	bool stops_hero, bool stops_enemies, bool stops_npcs, bool stops_blocks);
+    ~CustomObstacle(void);
+    static CreationFunction parse;
 
-  EntityType get_type(void);
-  bool is_obstacle_for(MapEntity *other);
+    EntityType get_type(void);
+    bool is_obstacle_for(MapEntity *other);
 };
 
 #endif
+

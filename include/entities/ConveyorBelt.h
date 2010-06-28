@@ -21,20 +21,22 @@
 #include "entities/Detector.h"
 
 /**
- * A special terrain where the hero is moved towards a specific direction.
+ * @brief A special terrain where the hero is moved towards a specific direction.
+ *
+ * The hero cannot resist to the movement of the conveyor belt.
  */
 class ConveyorBelt: public Detector {
 
- public:
+  public:
 
-  ConveyorBelt(Layer layer, int x, int y, int direction);
-  ~ConveyorBelt(void);
-  static CreationFunction parse;
+    ConveyorBelt(Layer layer, int x, int y, int direction);
+    ~ConveyorBelt(void);
+    static CreationFunction parse;
 
-  EntityType get_type(void);
-  
-  bool is_obstacle_for(MapEntity *other);
-  void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
+    EntityType get_type(void);
+
+    bool is_obstacle_for(MapEntity *other);
+    void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
 };
 
 #endif

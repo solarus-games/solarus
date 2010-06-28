@@ -24,22 +24,32 @@
 #include "entities/Explosion.h"
 
 /**
- * Abstract class representing an enemy.
+ * @brief Abstract class representing an enemy.
+ *
  * This class stores the attack and defense properties of the enemy.
  * The subclasses have to set these properties and create the enemy's sprites.
- * Every enemy sprite must have at least the following animations:
- * "walking", "hurt", "immobilized" and "shaking" with the four main directions.
+ * Every enemy sprite must have at least the following animations
+ * and with the four main directions:
+ * - "walking": used when the enemy is in its normal state
+ * - "hurt": used when it was just hurt
+ * If the enemy can be immobilized (i.e. it is sensible to attacks like the boomerang),
+ * the following animations are also required:
+ * - "immobilized": used while the enemy is immobilized
+ * - "shaking": used when the immobilized enemy is about to get back to its normal state.
  * The animation of its sprites
- * automically switches depending on its current movement and the attacks it is subject to.
+ * automically switches between those animations 
+ * depending on its current movement and the attacks it is subject to.
+ * Additional animations may be defined by the subclasses.
  */
 class Enemy: public Detector {
 
   public:
 
     /**
-     * Subtypes of enemies.
+     * @brief Subtypes of enemies.
      */
     enum Subtype {
+      // TODO CUSTOM = -1
       SIMPLE_GREEN_SOLDIER = 0,
       BUBBLE,
       TENTACLE,
@@ -52,7 +62,7 @@ class Enemy: public Detector {
     };
 
     /**
-     * Enemy ranks.
+     * @brief Enemy ranks.
      */
     enum Rank {
       RANK_NORMAL,
@@ -63,16 +73,16 @@ class Enemy: public Detector {
   protected:
 
     /**
-     * Defines the sounds that can be played when an enemy is hurt.
+     * @brief Defines the sounds that can be played when an enemy is hurt.
      */
     enum HurtSoundStyle {
-      HURT_SOUND_NORMAL,  /**< "enemy_hurt" and if necessary "enemy_killed" are played */
-      HURT_SOUND_MONSTER, /**< "monster_hurt" and if necessary "enemy_killed" are played */
+      HURT_SOUND_NORMAL,  /**< "enemy_hurt" (and if necessary "enemy_killed") is played */
+      HURT_SOUND_MONSTER, /**< "monster_hurt" (and if necessary "enemy_killed") is played */
       HURT_SOUND_BOSS     /**< "boss_hurt" or "boss_killed" is played */
     };
 
     /**
-     * This structure contains the parameters needed by the subclasses constructors.
+     * @brief This structure contains the parameters needed by the subclasses constructors.
      */
     struct ConstructionParameters {
       std::string name;   /**< name of the instance of enemy */
@@ -147,7 +157,7 @@ class Enemy: public Detector {
     Enemy(const ConstructionParameters &params);
 
     /**
-     * Initializes the features, the sprites and the movement.
+     * @brief Initializes the features, the sprites and the movement.
      */
     virtual void initialize(void) = 0;
     virtual void restart(void);

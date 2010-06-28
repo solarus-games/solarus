@@ -22,6 +22,8 @@
 #include "Transition.h"
 
 /**
+ * @brief A detector that sends the hero to a destination point.
+ *
  * A teletransporter is a detector placed on a map.
  * When the hero walks on this detector, he is placed on a destination point
  * on the same map or another one.
@@ -31,7 +33,7 @@ class Teletransporter: public Detector {
   public:
 
     /**
-     * Subtypes of teletransporters.
+     * @brief Subtypes of teletransporters.
      */
     enum Subtype {
       INVISIBLE = 0, /**< an invisible detector, usually to move the hero to another map */
@@ -45,8 +47,8 @@ class Teletransporter: public Detector {
     Transition::Style transition_style;   /**< style of transition between the two maps */
     SoundId sound_id;                     /**< the sound played when this teletransporter is taken (an empty string means no sound) */
     MapId destination_map_id;             /**< id of the destination map */
-    std::string destination_point_name;        /**< destination point on that map, or "_same" to keep the hero's coordinates,
-						* or "_side" to place the hero on the appropriate side of the map */
+    std::string destination_point_name;   /**< destination point on that map, or "_same" to keep the hero's coordinates,
+					   * or "_side" to place the hero on the appropriate side of the map */
     int destination_side;                 /**< when the destination point is "_side", indicates which side
 					   * of the destination map this teletransporters leads to
 					   * (this depends on the teletransporter position on the map */

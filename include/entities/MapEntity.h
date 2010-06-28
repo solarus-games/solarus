@@ -26,12 +26,15 @@
 #include <list>
 
 /**
- * Abstract class for all objects placed on a map: tiles,
- * enemies, the hero, interactive objects, etc.
+ * @brief Abstract class for all objects placed on a map.
+ *
+ * Example of entities include tiles, enemies, the hero,
+ * interactive objects, doors, chests, etc.
  * Each entity has:
+ * - a bounding box that represents its position on the map (a rectangle),
  * - a layer on the map
- * - a position on the map (a rectangle),
  * - an origin point, relative to the rectangle's top-left corner
+ * Some entities can also have a name, a movement and some sprites.
  */
 class MapEntity {
 
@@ -42,6 +45,8 @@ class MapEntity {
     static const Rectangle directions_to_xy_moves[8];                                   /**< converts a direction (0 to 7) into a one-pixel xy move */
 
     /**
+     * @brief Describes the features of each type of entity.
+     *
      * Describes the features of each dynamic entity type:
      * is it an obstacle, can it detect collisions, etc.
      */
@@ -151,7 +156,7 @@ class MapEntity {
     // entity type features
  
     /**
-     * Returns the type of entity.
+     * @brief Returns the type of entity.
      * @return the type of entity
      */
     virtual EntityType get_type(void) = 0;

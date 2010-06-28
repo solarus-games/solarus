@@ -21,7 +21,9 @@
 #include "movements/Movement.h"
 
 /**
- * Movement of an object that goes from an initial point to a target point.
+ * @brief Movement of an object that goes to a target point.
+ *
+ * The target point may be a fixed point or a moving entity.
  */
 class TargetMovement: public Movement {
 

@@ -21,7 +21,10 @@
 #include "movements/PixelMovement.h"
 
 /**
- * Movement for an entity that jumps in a direction.
+ * @brief Movement of an entity that jumps towards a direction.
+ *
+ * This movement is used by the hero when he jumps from a cliff
+ * or when he uses the feather.
  */
 class JumpMovement: public PixelMovement {
 

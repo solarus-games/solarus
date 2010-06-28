@@ -22,7 +22,12 @@
 #include "lowlevel/Rectangle.h"
 
 /**
- * Defines the movement of a pickable fairy.
+ * @brief Defines the movement of a pickable fairy.
+ *
+ * This movement is typically used by the PickableItemFairy entity.
+ * The entity makes successive small straight steps
+ * and changes its direction randomly.
+ * It stays inside a limited rectangle.
  */
 class FairyMovement: public Movement {
 

@@ -21,10 +21,10 @@
 #include "entities/Obstacle.h"
 
 /**
- * Abstract class for a tile pattern.
- * A tile pattern defines a rectangle image in a tileset and has 
- * an obstacle property.
- * Examples of subclasses are SimpleTilePattern and AnimatedTilePattern.
+ * @brief Abstract class for a tile pattern.
+ *
+ * A tile pattern defines a rectangle image in a tileset and has an obstacle property.
+ * It may have a special animation.
  * The width and the height of a tile pattern are always multiples or 8.
  */
 class TilePattern {

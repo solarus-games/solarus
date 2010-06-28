@@ -21,7 +21,9 @@
 #include "entities/Enemy.h"
 
 /**
- * The Khorneth boss.
+ * @brief The boss Khorneth.
+ *
+ * Khorneth has two blades that must be destroyed first.
  */
 class Khorneth: public Enemy {
 

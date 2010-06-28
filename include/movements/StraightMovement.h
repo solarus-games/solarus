@@ -21,8 +21,8 @@
 #include "movements/CollisionMovement.h"
 
 /**
- * Movement for an entity that follows a straight trajectory
- * for a given amount of time.
+ * @brief Movement of an entity that follows a straight trajectory
+ * for an amount of time.
  */
 class StraightMovement: public CollisionMovement {
 

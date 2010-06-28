@@ -22,8 +22,9 @@
 #include "lowlevel/Rectangle.h"
 
 /**
- * A phase of the selection menu where the user change set global options
- * such as the language, the video mode and the sound volume.
+ * @brief Phase of the selection menu where the user change set global options.
+ *
+ * The global options include the language, the video mode and the sound volume.
  * Those options are global to all savegames even though the video mode
  * can still be changed during the game.
  * They are saved in the file config.ini.

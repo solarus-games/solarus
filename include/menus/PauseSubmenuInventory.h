@@ -22,7 +22,10 @@
 #include "InventoryItemId.h"
 
 /**
- * The Inventory submenu of the pause menu.
+ * @brief The Inventory submenu of the pause menu.
+ *
+ * This submenu shows all inventory items that the player has.
+ * He can assign items to the item keys from here.
  */
 class PauseSubmenuInventory: public PauseSubmenu {
 

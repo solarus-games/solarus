@@ -23,12 +23,13 @@
 #include "Ground.h"
 
 /**
- * Represents an entity that the hero can destroy and that may contain a pickable item.
+ * @brief An entity that the hero can destroy and that may contain a pickable item.
+ *
  * Some destructible items can be lifted and thrown (a pot, a stone, etc.),
  * some of them can be cut with the sword (for example some grass)
  * and others have both behaviors (for example a bush).
  * Some others can explode when they are lifted (a bomb or a bomb flower).
- * When the hero lifts an item, it is removed and replaced by an instance of CarriedItem
+ * When the hero lifts an item, it is removed from the map and replaced by an instance of CarriedItem
  * that is attached to the hero.
  */
 class DestructibleItem: public Detector {

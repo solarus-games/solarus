@@ -21,7 +21,10 @@
 #include "hud/HudElement.h"
 
 /**
- * Displays the floor of the current map.
+ * @brief Displays the floor of the current map.
+ *
+ * When the map starts, this class displays the floor (if any)
+ * during a few seconds.
  */
 class FloorView: public HudElement {
 

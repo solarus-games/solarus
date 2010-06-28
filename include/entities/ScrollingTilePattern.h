@@ -21,14 +21,17 @@
 #include "entities/SimpleTilePattern.h"
 
 /**
- * Tile pattern with a scrolling effect.
+ * @brief Tile pattern with a scrolling effect.
+ *
+ * The pattern shifts with the time inside its rectangle,
+ * giving the illusion of a movement.
  */
 class ScrollingTilePattern: public SimpleTilePattern {
 
   private:
 
-    static int shift;                /**< number of pixels to shift, increased with the time */
-    static uint32_t next_shift_date; /**< when the shift variable is incremented */
+    static int shift;                   /**< number of pixels to shift, increased with the time */
+    static uint32_t next_shift_date;    /**< when the shift variable is incremented */
 
   public:
 

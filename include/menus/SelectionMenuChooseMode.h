@@ -21,7 +21,8 @@
 #include "menus/SelectionMenuPhase.h"
 
 /**
- * Phase of the selection menu where the user chooses the game mode.
+ * @brief Phase of the selection menu where the user chooses the game mode.
+ *
  * Note that currently, this phase is automatically closed because there is only one game mode for now.
  * This class may allow to create an alternative game mode later.
  */

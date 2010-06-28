@@ -21,28 +21,30 @@
 #include "Detector.h"
 
 /**
+ * @brief A sensor that makes the hero jump.
+ *
  * A jump sensor is a detector placed on a map.
  * When the hero touches this detetor, he makes a jump with a specified length.
  */
 class JumpSensor: public Detector {
 
- private:
+  private:
 
-  int jump_length; /**< length of the jump in pixels (should be a multiple of 8) */
+    int jump_length; /**< length of the jump in pixels (should be a multiple of 8) */
 
- public:
+  public:
 
-  JumpSensor(const std::string &name, Layer layer, int x, int y, int width, int height,
-	     int direction, int jump_length);
-  ~JumpSensor(void);
-  static CreationFunction parse;
+    JumpSensor(const std::string &name, Layer layer, int x, int y, int width, int height,
+	int direction, int jump_length);
+    ~JumpSensor(void);
+    static CreationFunction parse;
 
-  EntityType get_type(void);
+    EntityType get_type(void);
 
-  bool is_obstacle_for(MapEntity *other);
-  bool is_point_in_diagonal(const Rectangle &point);
-  bool test_collision_custom(MapEntity *entity);
-  void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
+    bool is_obstacle_for(MapEntity *other);
+    bool is_point_in_diagonal(const Rectangle &point);
+    bool test_collision_custom(MapEntity *entity);
+    void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
 
 };
 

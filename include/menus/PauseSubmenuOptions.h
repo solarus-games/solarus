@@ -22,7 +22,10 @@
 #include "lowlevel/Rectangle.h"
 
 /**
- * The Options submenu of the pause menu.
+ * @brief The Options submenu of the pause menu.
+ *
+ * This submenu allows the player to change the video mode
+ * and to customize his game keys.
  */
 class PauseSubmenuOptions: public PauseSubmenu {
 

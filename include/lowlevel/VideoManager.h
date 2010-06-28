@@ -21,14 +21,14 @@
 #include "lowlevel/Rectangle.h"
  
 /**
- * Displays the window and handles the resolution mode.
+ * @brief Displays the window and handles the video mode.
  */
 class VideoManager {
 
  public:
 
   /**
-   * The different possible video modes.
+   * @brief The different possible video modes.
    */
   enum VideoMode {
     WINDOWED_STRETCHED,       /**< the 320*240 game surface is stretched into a 640*480 window (default) */

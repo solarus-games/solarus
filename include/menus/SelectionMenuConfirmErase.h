@@ -21,8 +21,8 @@
 #include "menus/SelectionMenuPhase.h"
 
 /**
- * Phase of the selection menu where the user
- * has to confirm he really want to erase a savegame file.
+ * @brief Phase of the selection menu where the user
+ * has to confirm that he really wants to erase a savegame file.
  */
 class SelectionMenuConfirmErase: public SelectionMenuPhase {
 

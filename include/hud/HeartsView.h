@@ -21,7 +21,11 @@
 #include "hud/HudElement.h"
 
 /**
- * This class handles the player's hearts displaying.
+ * @brief Displays the player's hearts.
+ *
+ * The hearts represent the current life of the player.
+ * When the player gets or loses some life, the counter
+ * is updated gradually and a sound is played.
  */
 class HeartsView: public HudElement {
 

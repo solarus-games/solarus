@@ -21,49 +21,48 @@
 #include "movements/CollisionMovement.h"
 
 /**
- * Movement for an entity that follows a predetermined succession
- * of per-pixel translation vectors.
+ * @brief Movement of an entity that follows a predetermined sequence of pixel-precise moves.
  */
 class PixelMovement: public CollisionMovement {
 
- private:
+  private:
 
-  // movement properties
+    // movement properties
 
-  const Rectangle *translation_vectors; /**< The succession of translations.
-					 * Each element of the array represents a move
-					 * in pixels (only the x and y fields of the Rectangle are used). */
-  const int nb_vectors;                 /**< Number of translation vectors: this is the size of the
-					 * translation_vectors array. */
+    const Rectangle *translation_vectors; /**< The succession of translations.
+					   * Each element of the array represents a move
+					   * in pixels (only the x and y fields of the Rectangle are used). */
+    const int nb_vectors;                 /**< Number of translation vectors: this is the size of the
+					   * translation_vectors array. */
 
-  uint32_t delay;                       /**< Delay in milliseconds between two translations. */
+    uint32_t delay;                       /**< Delay in milliseconds between two translations. */
 
-  const bool loop;                      /**< Should the movement return to the beginning once finished? */ 
+    const bool loop;                      /**< Should the movement return to the beginning once finished? */ 
 
-  // current state
+    // current state
 
-  int vector_index;                     /**< Current translation vector in the array. */
-  bool finished;                        /**< Indicates whether the entity has reached the end of the trajectory
-					 * (only possible when loop is false). */
+    int vector_index;                     /**< Current translation vector in the array. */
+    bool finished;                        /**< Indicates whether the entity has reached the end of the trajectory
+					   * (only possible when loop is false). */
 
- protected:
+  protected:
 
-  PixelMovement(int nb_vectors, uint32_t delay, bool loop, bool with_collisions);
+    PixelMovement(int nb_vectors, uint32_t delay, bool loop, bool with_collisions);
 
-  void set_translation_vectors(const Rectangle *translation_vectors);
-  virtual void make_next_move(void);
-  int get_vector_index(void);
+    void set_translation_vectors(const Rectangle *translation_vectors);
+    virtual void make_next_move(void);
+    int get_vector_index(void);
 
- public:
+  public:
 
-  PixelMovement(const Rectangle *translation_vectors,
-		int nb_vectors, uint32_t delay, bool loop, bool with_collisions);
-  virtual ~PixelMovement(void);
+    PixelMovement(const Rectangle *translation_vectors,
+	int nb_vectors, uint32_t delay, bool loop, bool with_collisions);
+    virtual ~PixelMovement(void);
 
-  void set_delay(uint32_t delay);
-  virtual void update(void);
-  bool is_finished(void);
-  int get_length(void);
+    void set_delay(uint32_t delay);
+    virtual void update(void);
+    bool is_finished(void);
+    int get_length(void);
 
 };
 

@@ -23,14 +23,19 @@
 #include <map>
 
 /**
- * This class computes a path between two entities on the map with the A* algorithm.
+ * @brief Implementation of the A* algorithm to computes a path.
+ *
+ * This class implements the A* algorithm to compute the path.
+ * The entity to move is supposed to have a size of 16*16.
  */
 class PathFinding {
 
   private:
 
     /**
-     * A node is a 16*16 square of the map.
+     * @brief Represents a node in the path to compute.
+     *
+     * A node is the location of a 16*16 square of the map.
      * The algorithm tries to find the best sequence of nodes leading to the target.
      */
     class Node {

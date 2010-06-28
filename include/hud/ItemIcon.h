@@ -22,8 +22,11 @@
 #include "InventoryItemId.h"
 
 /**
- * This class displays the icon representing
- * the item currently assigned to X or V.
+ * @brief Displays the item currently assigned to one of both inventory item keys.
+ *
+ * Two keys (by default X and V) control the inventory items and
+ * the player can choose what inventory items are assigned to those keys.
+ * This class displays a slot with an icon of the inventory item currently assigned to it.
  */
 class ItemIcon: public HudElement {
 

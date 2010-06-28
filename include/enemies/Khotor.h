@@ -21,7 +21,9 @@
 #include "entities/Enemy.h"
 
 /**
- * The boss Khotor.
+ * @brief The boss Khotor.
+ *
+ * Khotor controls a chain and ball.
  */
 class Khotor: public Enemy {
 

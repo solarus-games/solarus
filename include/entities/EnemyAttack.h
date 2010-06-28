@@ -18,7 +18,7 @@
 #define SOLARUS_ENEMY_ATTACK_H
 
 /**
- * Defines the attacks an enemy can be victim of.
+ * @brief Defines the types of attacks an enemy can be victim of.
  */
 enum EnemyAttack {
   ATTACK_SWORD,       /**< attacked by the sword (for a spin attack, the life lost is multiplied by 2) */

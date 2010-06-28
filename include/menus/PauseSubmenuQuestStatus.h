@@ -22,7 +22,10 @@
 #include "lowlevel/Rectangle.h"
 
 /**
- * The Quest Status submenu of the pause menu.
+ * @brief The Quest Status submenu of the pause menu.
+ *
+ * This submenu shows additional quest information
+ * such as the pieces of heart and the equipment.
  */
 class PauseSubmenuQuestStatus: public PauseSubmenu {
 

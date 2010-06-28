@@ -21,7 +21,8 @@
 #include "lowlevel/Rectangle.h"
 
 /**
- * This class displays a counter on a surface.
+ * @brief Displays a counter on a surface.
+ *
  * The counter can only display positive integer numbers.
  */
 class Counter {

@@ -56,7 +56,7 @@ class Script {
     static FunctionAvailableToScript 
       l_hero_freeze,
       l_hero_unfreeze,
-      l_hero_set_pause_enabled;
+      l_hero_set_pause_enabled,
       l_dialog_start,
       l_dialog_set_variable,
       l_dialog_set_style,
@@ -85,7 +85,7 @@ class Script {
       l_inventory_item_remove_amount,
       l_inventory_item_is_bottle,
       l_treasure_give,
-      l_treasure_give_with_amount,
+      l_treasure_give_with_amount;
 
     // initialization
     void load(const std::string &script_name);

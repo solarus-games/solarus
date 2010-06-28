@@ -244,7 +244,7 @@ void Treasure::show_message(void) {
   }
 
   std::string message_id = oss.str();
-  game->get_dialog_box()->start_message_sequence(message_id);
+  game->get_dialog_box()->start_dialog(message_id);
 
   if (has_amount() && amount > 1) {
     game->get_dialog_box()->set_variable(message_id, amount);

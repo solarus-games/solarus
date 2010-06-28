@@ -189,7 +189,7 @@ void InventoryItem::start(Game *game) {
 	    (item_id == INVENTORY_APPLES) ? "_use_apples" :
 	    (item_id == INVENTORY_PAINS_AU_CHOCOLAT) ? "_use_pains_au_chocolat" : "_use_croissants";
 
-          game->get_dialog_box()->start_message_sequence(message_id);
+          game->get_dialog_box()->start_dialog(message_id);
 	}
 	break;
 
@@ -333,7 +333,7 @@ void InventoryItem::start_bottle(void) {
     // water
   case 2:
     // ask the hero to pour away the water
-    game->get_dialog_box()->start_message_sequence("_use_bottle_with_water");
+    game->get_dialog_box()->start_dialog("_use_bottle_with_water");
     break;
 
     // red potion
@@ -357,7 +357,7 @@ void InventoryItem::start_bottle(void) {
     // fairy
   case 6:
     // ask the hero to release the fairy
-    game->get_dialog_box()->start_message_sequence("_use_bottle_with_fairy");
+    game->get_dialog_box()->start_dialog("_use_bottle_with_fairy");
     break;
 
   }

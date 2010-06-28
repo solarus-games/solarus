@@ -274,7 +274,7 @@ void Chest::update(void) {
 	  // the script does not define any behavior:
 	  // by default, we tell the player the chest is empty
 	  game->play_sound("wrong");
-	  game->get_dialog_box()->start_message_sequence("_empty_chest");
+	  game->get_dialog_box()->start_dialog("_empty_chest");
 	  hero->unfreeze();
 	}
       }
@@ -307,7 +307,7 @@ void Chest::action_key_pressed(void) {
     }
     else {
       game->play_sound("wrong");
-      game->get_dialog_box()->start_message_sequence("_big_key_required");
+      game->get_dialog_box()->start_dialog("_big_key_required");
     }
   }
 }

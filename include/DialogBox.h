@@ -123,7 +123,7 @@ class DialogBox {
     bool is_enabled(void);
 
     // current message
-    void start_message_sequence(const MessageId &first_message_id, VerticalPosition vertical_position = POSITION_AUTO);
+    void start_dialog(const MessageId &first_message_id, VerticalPosition vertical_position = POSITION_AUTO);
     Speed get_speed(void);
     void set_speed(Speed speed);
     SkipMode get_skip_mode(void);

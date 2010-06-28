@@ -317,7 +317,7 @@ void PauseSubmenuInventory::show_info_message(void) {
 
   DialogBox::VerticalPosition vertical_position = (cursor_row >= 2) ? DialogBox::POSITION_TOP : DialogBox::POSITION_BOTTOM;
 
-  game->get_dialog_box()->start_message_sequence(oss.str(), vertical_position);
+  game->get_dialog_box()->start_dialog(oss.str(), vertical_position);
 }
 
 /**

@@ -165,7 +165,7 @@ void CrystalSwitch::action_key_pressed(void) {
     keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
 
     // start a dialog
-    game->get_dialog_box()->start_message_sequence("_crystal_switch");
+    game->get_dialog_box()->start_dialog("_crystal_switch");
   }
 }
 

@@ -497,7 +497,7 @@ int Script::l_dialog_start(lua_State *l) {
   called_by_script(l, 1, &script);
   const std::string &message_id = lua_tostring(l, 1);
 
-  script->game->get_dialog_box()->start_message_sequence(message_id);
+  script->game->get_dialog_box()->start_dialog(message_id);
 
   return 0;
 }

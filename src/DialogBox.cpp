@@ -249,7 +249,7 @@ void DialogBox::set_last_answer(int answer) {
  * @param first_message_id id of the first message of the sequence
  * @param vertical_position vertical position where to display the dialog box (default: auto)
  */
-void DialogBox::start_message_sequence(const MessageId &first_message_id, VerticalPosition vertical_position) {
+void DialogBox::start_dialog(const MessageId &first_message_id, VerticalPosition vertical_position) {
 
   if (is_enabled()) {
     DIE("Cannot start message sequence '" << first_message_id << ": the dialog box is already enabled");

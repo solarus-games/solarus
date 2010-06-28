@@ -99,7 +99,7 @@ void Equipment::update(void) {
       else {
 	// keep the fairy in a bottle
 	if (!has_empty_bottle()) {
-	  game->get_dialog_box()->start_message_sequence("_found_fairy.no_empty_bottle");
+	  game->get_dialog_box()->start_dialog("_found_fairy.no_empty_bottle");
 	  game->play_sound("wrong");
 	  add_hearts(7 * 4);
 	}
@@ -436,7 +436,7 @@ void Equipment::add_piece_of_heart(void) {
 void Equipment::found_fairy(void) {
 
   if (has_bottle()) {
-    game->get_dialog_box()->start_message_sequence("_found_fairy");
+    game->get_dialog_box()->start_dialog("_found_fairy");
     giving_fairy = true;
     // the next messages will be handled by the update() function
   }
@@ -457,11 +457,11 @@ void Equipment::found_water(void) {
       found_water(get_first_empty_bottle());
     }
     else {
-      game->get_dialog_box()->start_message_sequence("_found_water.no_empty_bottle");
+      game->get_dialog_box()->start_dialog("_found_water.no_empty_bottle");
     }
   }
   else {
-    game->get_dialog_box()->start_message_sequence("_found_water.no_bottle");
+    game->get_dialog_box()->start_dialog("_found_water.no_bottle");
   }  
 }
 
@@ -482,7 +482,7 @@ void Equipment::found_water(InventoryItemId bottle_id) {
 
   this->destination_bottle_id = bottle_id;
 
-  game->get_dialog_box()->start_message_sequence("_found_water");
+  game->get_dialog_box()->start_dialog("_found_water");
   giving_water = true;
   // the next messages will be handled by the update() function
 }

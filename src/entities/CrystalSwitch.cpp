@@ -30,7 +30,7 @@
 #include "lowlevel/Random.h"
 
 /**
- * Creates a new crystal switch.
+ * @brief Creates a new crystal switch.
  * @param layer layer of the entity to create on the map
  * @param x x coordinate of the entity to create
  * @param y y coordinate of the entity to create
@@ -47,15 +47,17 @@ CrystalSwitch::CrystalSwitch(Layer layer, int x, int y):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 CrystalSwitch::~CrystalSwitch(void) {
   delete star_sprite;
 }
 
 /**
- * Creates an instance from an input stream.
+ * @brief Creates an instance from an input stream.
+ *
  * The input stream must respect the syntax of this entity type.
+ *
  * @param game the game that will contain the entity created
  * @param is an input stream
  * @param layer the layer
@@ -68,7 +70,7 @@ MapEntity * CrystalSwitch::parse(Game *game, std::istream &is, Layer layer, int 
 }
 
 /**
- * Returns the type of entity.
+ * @brief Returns the type of entity.
  * @return the type of entity
  */
 EntityType CrystalSwitch::get_type() {
@@ -76,7 +78,7 @@ EntityType CrystalSwitch::get_type() {
 }
 
 /**
- * Returns whether this entity is an obstacle for another one.
+ * @brief Returns whether this entity is an obstacle for another one.
  * @param other another entity
  * @return true if this entity is an obstacle for the other one 
  */
@@ -85,7 +87,7 @@ bool CrystalSwitch::is_obstacle_for(MapEntity *other) {
 }
 
 /**
- * This function is called when another entity collides with this crystal switch.
+ * @brief This function is called when another entity collides with this crystal switch.
  * @param entity_overlapping the other entity
  * @param collision_mode the collision mode that detected the collision
  */
@@ -130,8 +132,11 @@ void CrystalSwitch::notify_collision(MapEntity *entity_overlapping, CollisionMod
 }
 
 /**
+ * @brief Notifies this entity that another sprite is overlapping it.
+ *
  * This function is called by check_collision(MapEntity*, Sprite*) when another entity's
  * sprite overlaps a sprite of this detector.
+ *
  * @param other_entity the entity overlapping this detector
  * @param other_sprite the sprite of other_entity that is overlapping this detector
  * @param this_sprite the sprite of this detector that is overlapping the other entity's sprite
@@ -153,6 +158,8 @@ void CrystalSwitch::notify_collision(MapEntity *other_entity, Sprite *other_spri
 }
 
 /**
+ * @brief This function is called when the player interacts with this entity.
+ *
  * This function is called when the player presses the action key
  * while the hero is facing this detector, and the action icon lets him do this.
  */
@@ -170,7 +177,7 @@ void CrystalSwitch::action_key_pressed(void) {
 }
 
 /**
- * Activates the crystal switch if the delay since the last activation allows it.
+ * @brief Activates the crystal switch if the delay since the last activation allows it.
  * @param entity_activating the entity that activates this crystal switch
  */
 void CrystalSwitch::activate(MapEntity *entity_activating) {
@@ -191,7 +198,7 @@ void CrystalSwitch::activate(MapEntity *entity_activating) {
 }
 
 /**
- * Makes a star twinkle on the crystal switch at a random position.
+ * @brief Makes a star twinkle on the crystal switch at a random position.
  */
 void CrystalSwitch::twinkle(void) {
 
@@ -200,7 +207,7 @@ void CrystalSwitch::twinkle(void) {
 }
 
 /**
- * Updates the entity.
+ * @brief Updates the entity.
  */
 void CrystalSwitch::update(void) {
 
@@ -225,19 +232,22 @@ void CrystalSwitch::update(void) {
 }
 
 /**
- * Displays the entity on the map.
- * This is a redefinition of MapEntity::display_on_map to also display the twinkling star
+ * @brief Displays the entity on the map.
+ *
+ * This is a redefinition of MapEntity::display_on_map() to also display the twinkling star
  * which has a special position.
  */
 void CrystalSwitch::display_on_map(void) {
 
+  // display the crystal switch
   MapEntity::display_on_map();
 
+  // display the star
   map->display_sprite(star_sprite, get_top_left_x() + star_xy.get_x(), get_top_left_y() + star_xy.get_y());
 }
 
 /**
- * Suspends or resumes the entity.
+ * @brief Suspends or resumes the entity.
  * @param suspended true to suspend the entity, false to resume it
  */
 void CrystalSwitch::set_suspended(bool suspended) {

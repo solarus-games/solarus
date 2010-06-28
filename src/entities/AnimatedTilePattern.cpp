@@ -19,12 +19,14 @@
 #include "lowlevel/Surface.h"
 
 /**
- * Interval in millisecond between two frames of an animation.
+ * @brief Interval in millisecond between two frames of an animation.
  */
 static const uint32_t TILE_FRAME_INTERVAL = 250;
 
 /**
- * Array to associate the current frame (0, 1 or 2) depending on
+ * @brief Gives the current frame depending on the sequence type and the frame counter.
+ *
+ * This array associates the current frame (0, 1 or 2) to
  * the sequence type and the frame counter (0 to 11).
  */
 static const short frames[2][12] = {
@@ -39,7 +41,7 @@ int AnimatedTilePattern::current_frames[3] = {0, 0, 0};
 uint32_t AnimatedTilePattern::next_frame_date = 0;
 
 /**
- * Constructor.
+ * @brief Constructor.
  * @param obstacle is the tile pattern an obstacle?
  * @param sequence animation sequence type
  * @param width width of the tile (the same for each frame of the animation)
@@ -69,14 +71,15 @@ AnimatedTilePattern::AnimatedTilePattern(Obstacle obstacle,
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 AnimatedTilePattern::~AnimatedTilePattern(void) {
   
 }
 
 /**
- * Updates the current frame of all tiles.
+ * @brief Updates the current frame of all tiles.
+ *
  * This function is called repeatedly by the map.
  */
 void AnimatedTilePattern::update(void) {
@@ -94,7 +97,7 @@ void AnimatedTilePattern::update(void) {
 }
 
 /**
- * Displays the tile on a surface.
+ * @brief Displays the tile on a surface.
  * @param destination the destination surface
  * @param dst_position position of the tile pattern on the destination surface
  * @param tileset_image the tileset image of this tile pattern

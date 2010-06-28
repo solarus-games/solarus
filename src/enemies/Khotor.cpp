@@ -21,7 +21,7 @@
 #include "Map.h"
 
 /**
- * Constructor.
+ * @brief Constructor.
  * @param params name and position of the enemy to create
  */
 Khotor::Khotor(const ConstructionParameters &params):
@@ -30,14 +30,14 @@ Khotor::Khotor(const ConstructionParameters &params):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 Khotor::~Khotor(void) {
 
 }
 
 /**
- * Initializes the enemy.
+ * @brief Initializes the enemy.
  */
 void Khotor::initialize(void) {
 
@@ -68,8 +68,11 @@ void Khotor::initialize(void) {
 }
 
 /**
- * Returns whether this entity should be displayed above
+ * @brief Returns whether this entity has to be displayed in y order.
+ *
+ * This function returns whether this entity should be displayed above
  * the hero and other entities having this property when it is in front of them.
+ *
  * @return true if this type of entity is displayed at the same level as the hero
  */
 bool Khotor::is_displayed_in_y_order(void) {
@@ -77,6 +80,8 @@ bool Khotor::is_displayed_in_y_order(void) {
 }
 
 /**
+ * @brief Restarts the normal movement of the enemy.
+ *
  * This function is called when the enemy needs to restart its movement
  * because something happened (for example the enemy has just been created,
  * or it was just hurt).
@@ -86,7 +91,7 @@ void Khotor::restart(void) {
 }
 
 /**
- * This function is called when the enemy has just been hurt.
+ * @brief This function is called when the enemy has just been hurt.
  * @param source the source of the attack
  * @param attack the attack that was just successful
  * @param life_points the number of life points lost by this enemy

@@ -23,7 +23,7 @@
 #include "lowlevel/System.h"
 
 /**
- * Constructor.
+ * @brief Constructor.
  * @param params name and position of the enemy to create
  */
 Khorneth::Khorneth(const ConstructionParameters &params):
@@ -32,14 +32,14 @@ Khorneth::Khorneth(const ConstructionParameters &params):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 Khorneth::~Khorneth(void) {
 
 }
 
 /**
- * Initializes the enemy.
+ * @brief Initializes the enemy.
  */
 void Khorneth::initialize(void) {
 
@@ -74,7 +74,7 @@ void Khorneth::initialize(void) {
 }
 
 /**
- * Returns the main sprite of Khorneth.
+ * @brief Returns the main sprite of Khorneth.
  * @return the main sprite
  */
 Sprite * Khorneth::get_main_sprite(void) {
@@ -82,7 +82,7 @@ Sprite * Khorneth::get_main_sprite(void) {
 }
 
 /**
- * Returns the left blade sprite.
+ * @brief Returns the left blade sprite.
  * @return the left blade sprite, or NULL if the left blade was destroyed
  */
 Sprite * Khorneth::get_left_blade_sprite(void) {
@@ -90,7 +90,7 @@ Sprite * Khorneth::get_left_blade_sprite(void) {
 }
 
 /**
- * Returns the right blade sprite.
+ * @brief Returns the right blade sprite.
  * @return the right blade sprite, or NULL if the right blade was destroyed
  */
 Sprite * Khorneth::get_right_blade_sprite(void) {
@@ -98,7 +98,7 @@ Sprite * Khorneth::get_right_blade_sprite(void) {
 }
 
 /**
- * Returns whether the left blade is still present.
+ * @brief Returns whether the left blade is still present.
  * @return true if the left blade is still present
  */
 bool Khorneth::has_left_blade(void) {
@@ -106,7 +106,7 @@ bool Khorneth::has_left_blade(void) {
 }
 
 /**
- * Returns whether the left blade is still present.
+ * @brief Returns whether the left blade is still present.
  * @return true if the left blade is still present
  */
 bool Khorneth::has_right_blade(void) {
@@ -114,7 +114,7 @@ bool Khorneth::has_right_blade(void) {
 }
 
 /**
- * Returns whether at least one blade is still present.
+ * @brief Returns whether at least one blade is still present.
  * @return true if the left blade or the right blade is still present
  */
 bool Khorneth::has_blade(void) {
@@ -122,7 +122,7 @@ bool Khorneth::has_blade(void) {
 }
 
 /**
- * Returns whether the left blade is currently playing animation "hurt".
+ * @brief Returns whether the left blade is currently playing animation "hurt".
  * @return true if the left blade is being hurt
  */
 bool Khorneth::is_left_blade_being_hurt(void) {
@@ -130,7 +130,7 @@ bool Khorneth::is_left_blade_being_hurt(void) {
 }
 
 /**
- * Returns whether the right blade is currently playing animation "hurt".
+ * @brief Returns whether the right blade is currently playing animation "hurt".
  * @return true if the right blade is being hurt
  */
 bool Khorneth::is_right_blade_being_hurt(void) {
@@ -138,7 +138,7 @@ bool Khorneth::is_right_blade_being_hurt(void) {
 }
 
 /**
- * Returns the consequence corresponding to the specified attack on the specified sprite of this enemy.
+ * @brief Returns the consequence corresponding to the specified attack on the specified sprite of this enemy.
  * @param attack an attack this enemy is subject to
  * @param this_sprite the sprite attacked, or NULL if the attack does not come from
  * a pixel-perfect collision test
@@ -165,7 +165,7 @@ int Khorneth::get_attack_consequence(EnemyAttack attack, Sprite *this_sprite) {
 }
 
 /**
- * This function is called when the enemy is attacked by a custom effect attack.
+ * @brief This function is called when the enemy is attacked by a custom effect attack.
  * @param attack the attack
  * @param this_sprite the sprite of this enemy subject to the attack, or NULL
  * if the attack does not come from a pixel-perfect collision test.
@@ -202,7 +202,8 @@ int Khorneth::custom_attack(EnemyAttack attack, Sprite *this_sprite) {
 }
 
 /**
- * Starts the last phase of Khorneth.
+ * @brief Starts the last phase of Khorneth.
+ *
  * This function is called when both blades are destroyed.
  */
 void Khorneth::start_final_phase(void) {
@@ -213,6 +214,8 @@ void Khorneth::start_final_phase(void) {
 }
 
 /**
+ * @brief Restarts the normal movement of the enemy.
+ *
  * This function is called when the enemy needs to restart its movement
  * because something happened (for example the enemy has just been created,
  * or it was just hurt).
@@ -227,7 +230,7 @@ void Khorneth::restart(void) {
 }
 
 /**
- * Updates this enemy.
+ * @brief Updates this enemy.
  */
 void Khorneth::update(void) {
   

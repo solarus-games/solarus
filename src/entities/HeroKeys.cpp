@@ -24,7 +24,7 @@
 #include "Equipment.h"
 
 /**
- * This function is called by the controls when a game key is pressed
+ * @brief This function is called when a game key is pressed
  * if the game is not suspended.
  * @param key the key pressed
  */
@@ -73,7 +73,7 @@ void Hero::key_pressed(GameControls::GameKey key) {
 }
 
 /**
- * This function is called when a key is released
+ * @brief This function is called when a key is released
  * if the game is not suspended.
  * @param key the key released
  */
@@ -110,7 +110,8 @@ void Hero::key_released(GameControls::GameKey key) {
 }
 
 /**
- * This function is called when the action key is pressed.
+ * @brief This function is called when the action key is pressed.
+ *
  * Depending on its effect, an action may be performed.
  */
 void Hero::action_key_pressed(void) {
@@ -147,7 +148,8 @@ void Hero::action_key_pressed(void) {
 }
 
 /**
- * This function is called when the sword key is pressed.
+ * @brief This function is called when the sword key is pressed.
+ *
  * Depending on its effect, an action may be performed.
  */
 void Hero::sword_key_pressed(void) {
@@ -158,7 +160,8 @@ void Hero::sword_key_pressed(void) {
 }
 
 /**
- * This function is called when an item key is pressed.
+ * @brief This function is called when an item key is pressed.
+ *
  * Depending on the item assigned to this key, an
  * action may be performed.
  */
@@ -172,7 +175,7 @@ void Hero::item_key_pressed(int slot) {
 }
 
 /**
- * This function is called when an arrow key is pressed.
+ * @brief This function is called when an directional key is pressed.
  * @param direction of the arrow pressed (0 to 3)
  */
 void Hero::arrow_pressed(int direction) {
@@ -186,7 +189,7 @@ void Hero::arrow_pressed(int direction) {
 }
 
 /**
- * This function is called when an arrow key is released.
+ * @brief This function is called when a directional key is released.
  * @param direction of the arrow released (0 to 3)
  */
 void Hero::arrow_released(int direction) {

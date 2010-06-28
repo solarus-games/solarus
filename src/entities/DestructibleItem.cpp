@@ -28,7 +28,7 @@
 #include "lowlevel/System.h"
 
 /**
- * Features of each type of destructible item.
+ * @brief Features of each type of destructible item.
  */
 const DestructibleItem::Features DestructibleItem::features[] = {
   // animation set, sound, can be lifted, can be cut, can_explode, can_regenerate, weight, damage, special ground
@@ -42,7 +42,7 @@ const DestructibleItem::Features DestructibleItem::features[] = {
 };
 
 /**
- * Creates a new destructible item with the specified subtype.
+ * @brief Creates a new destructible item with the specified subtype.
  * @param layer layer of the destructible item to create on the map
  * @param x x coordinate of the destructible item to create
  * @param y y coordinate of the destructible item to create
@@ -78,15 +78,17 @@ DestructibleItem::DestructibleItem(Layer layer, int x, int y, DestructibleItem::
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 DestructibleItem::~DestructibleItem(void) {
 
 }
 
 /**
- * Creates an instance from an input stream.
+ * @brief Creates an instance from an input stream.
+ *
  * The input stream must respect the syntax of this entity type.
+ *
  * @param game the game that will contain the entity created
  * @param is an input stream
  * @param layer the layer
@@ -107,7 +109,7 @@ MapEntity * DestructibleItem::parse(Game *game, std::istream &is, Layer layer, i
 }
 
 /**
- * Returns the type of entity.
+ * @brief Returns the type of entity.
  * @return the type of entity
  */
 EntityType DestructibleItem::get_type() {
@@ -115,8 +117,11 @@ EntityType DestructibleItem::get_type() {
 }
 
 /**
- * Returns whether an entity of this type should be displayed above
+ * @brief Returns whether this entity has to be displayed in y order.
+ *
+ * Rhis function returns whether an entity of this type should be displayed above
  * the hero and other entities when it is in front of them.
+ *
  * @return true if this entity is displayed at the same level as the hero
  */
 bool DestructibleItem::is_displayed_in_y_order(void) {
@@ -127,7 +132,7 @@ bool DestructibleItem::is_displayed_in_y_order(void) {
 
 
 /**
- * Returns the damage this destructible item can cause to enemies
+ * @brief Returns the damage this destructible item can cause to enemies
  * @return the damage on enemies
  */
 int DestructibleItem::get_damage_on_enemies(void) {
@@ -135,7 +140,7 @@ int DestructibleItem::get_damage_on_enemies(void) {
 }
 
 /**
- * Returns the animation set of this destructible item.
+ * @brief Returns the animation set of this destructible item.
  * @return the animations of the sprite
  */
 const std::string& DestructibleItem::get_animation_set_id(void) {
@@ -143,7 +148,7 @@ const std::string& DestructibleItem::get_animation_set_id(void) {
 }
 
 /**
- * Returns the id of the sound to play when this item is destroyed.
+ * @brief Returns the id of the sound to play when this item is destroyed.
  * @return the destruction sound id
  */
 const SoundId & DestructibleItem::get_destruction_sound_id(void) {
@@ -151,7 +156,7 @@ const SoundId & DestructibleItem::get_destruction_sound_id(void) {
 }
 
 /**
- * Returns the special ground to display when walking on this destructible item.
+ * @brief Returns the special ground to display when walking on this destructible item.
  * @return the ground, or GROUND_NORMAL if there is no special ground to display
  */
 Ground DestructibleItem::get_special_ground(void) {
@@ -159,7 +164,7 @@ Ground DestructibleItem::get_special_ground(void) {
 }
 
 /**
- * Returns whether there is a special ground to display when walking on this destructible item.
+ * @brief Returns whether there is a special ground to display when walking on this destructible item.
  * @return true if there is a special ground
  */
 bool DestructibleItem::has_special_ground(void) {
@@ -167,9 +172,11 @@ bool DestructibleItem::has_special_ground(void) {
 }
 
 /**
- * Returns whether this entity is an obstacle for another one.
+ * @brief Returns whether this entity is an obstacle for another one.
+ *
  * For a destructible item, this does not depend on the other
  * entity but only on the subtype of destructible item.
+ *
  * @param other another entity
  * @return true if this entity is an obstacle for others
  */
@@ -178,8 +185,10 @@ bool DestructibleItem::is_obstacle_for(MapEntity *other) {
 }
 
 /**
- * Tests whether an entity's collides with this entity.
- * This custom collision test determines whether the entity's ground is defined by this item.
+ * @brief Tests whether an entity's collides with this entity.
+ *
+ * This custom collision is used for destructible items that change the ground displayed under the hero.
+ *
  * @param entity an entity
  * @return true if the entity's collides with this entity
  */
@@ -188,8 +197,10 @@ bool DestructibleItem::test_collision_custom(MapEntity *entity) {
 }
 
 /**
- * This function is called by the engine when an entity overlaps the destructible item.
+ * @brief This function is called by the engine when an entity overlaps the destructible item.
+ *
  * If the entity is the hero, we allow him to lift the item.
+ *
  * @param entity_overlapping the entity overlapping the detector
  * @param collision_mode the collision mode that detected the collision
  */
@@ -223,8 +234,11 @@ void DestructibleItem::notify_collision(MapEntity *entity_overlapping, Collision
 }
 
 /**
+ * @brief Notifies this entity that another sprite is overlapping it.
+ *
  * This function is called by check_collision(MapEntity*, Sprite*) when another entity's
  * sprite overlaps a sprite of this detector.
+ *
  * @param other_entity the entity overlapping this detector
  * @param other_sprite the sprite of other_entity that is overlapping this detector
  * @param this_sprite the sprite of this detector that is overlapping the other entity's sprite
@@ -253,6 +267,8 @@ void DestructibleItem::notify_collision(MapEntity *other_entity, Sprite *other_s
 }
 
 /**
+ * @brief Notifies this entity that the player is interacting with it.
+ *
  * This function is called when the player presses the action key
  * when the hero is facing this detector, and the action icon lets him do this.
  * The hero lifts the item if possible.
@@ -308,7 +324,7 @@ void DestructibleItem::action_key_pressed(void) {
 }
 
 /**
- * Plays the animation destroy of this item.
+ * @brief Plays the animation destroy of this item.
  */
 void DestructibleItem::play_destroy_animation(void) {
 
@@ -321,15 +337,16 @@ void DestructibleItem::play_destroy_animation(void) {
 }
 
 /**
- * Returns whether the item is disabled, i.e. if it was lifted
- * and is about to regenerate.
+ * @brief Returns whether the item is disabled.
+ *
+ * The item is disabled if it was lifted and is about to regenerate.
  */
 bool DestructibleItem::is_disabled(void) {
   return regeneration_date != 0 && !is_regenerating;
 }
 
 /**
- * Returns whether the item can explode.
+ * @brief Returns whether the item can explode.
  * @return true if the item will explode
  */
 bool DestructibleItem::can_explode(void) {
@@ -337,7 +354,7 @@ bool DestructibleItem::can_explode(void) {
 }
 
 /**
- * This function is called by the map when the game is suspended or resumed.
+ * @brief This function is called by the map when the game is suspended or resumed.
  * @param suspended true to suspend the entity, false to resume it
  */
 void DestructibleItem::set_suspended(bool suspended) {
@@ -351,7 +368,7 @@ void DestructibleItem::set_suspended(bool suspended) {
 }
 
 /**
- * Updates the item.
+ * @brief Updates the item.
  */
 void DestructibleItem::update(void) {
 

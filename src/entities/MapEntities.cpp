@@ -30,7 +30,7 @@
 using std::list;
 
 /**
- * Constructor.
+ * @brief Constructor.
  * @param game the game
  * @param map the map
  */
@@ -46,16 +46,16 @@ MapEntities::MapEntities(Game *game, Map *map):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 MapEntities::~MapEntities(void) {
   destroy_all_entities();
 }
 
 /**
- * Removes all entities from the map.
- * This function is called by the destructor and when the map
- * is unloaded.
+ * @brief Removes all entities from the map.
+ *
+ * This function is called by the destructor or when the map is unloaded.
  */
 void MapEntities::destroy_all_entities(void) {
 
@@ -88,7 +88,7 @@ void MapEntities::destroy_all_entities(void) {
 }
 
 /**
- * Returns the hero.
+ * @brief Returns the hero.
  * @return the hero
  */
 Hero * MapEntities::get_hero(void) {
@@ -96,8 +96,7 @@ Hero * MapEntities::get_hero(void) {
 }
 
 /**
- * Returns the obstacle property of the tile located
- * at a specified point.
+ * @brief Returns the obstacle property of the tile located at a specified point.
  * @param layer of the tile to get
  * @param x x coordinate of the point
  * @param y y coordiate of the point
@@ -124,17 +123,16 @@ Obstacle MapEntities::get_obstacle_tile(Layer layer, int x, int y) {
 }
 
 /**
- * Returns the entities on a layer, such that the hero cannot walk on them
- * (except the tiles).
+ * @brief Returns the entities (other that tiles) such that the hero cannot walk on them.
  * @param layer the layer
- * @return the obstacle entities
+ * @return the obstacle entities on that layer
  */
 list<MapEntity*> * MapEntities::get_obstacle_entities(Layer layer) {
   return &obstacle_entities[layer];
 }
 
 /**
- * Returns all detectors of the map.
+ * @brief Returns all detectors on the map.
  * @return the detectors
  */
 list<Detector*> * MapEntities::get_detectors(void) {
@@ -142,7 +140,7 @@ list<Detector*> * MapEntities::get_detectors(void) {
 }
 
 /**
- * Returns all stairs on the specified layer.
+ * @brief Returns all stairs on the specified layer.
  * @param layer the layer
  * @return the stairs on this layer
  */
@@ -151,7 +149,7 @@ list<Stairs*> * MapEntities::get_stairs(Layer layer) {
 }
 
 /**
- * Returns all crystal switch blocks on the specified layer.
+ * @brief Returns all crystal switch blocks on the specified layer.
  * @param layer the layer
  * @return the crystal switch blocks on this layer
  */
@@ -160,7 +158,7 @@ list<CrystalSwitchBlock*> * MapEntities::get_crystal_switch_blocks(Layer layer) 
 }
 
 /**
- * Sets the obstacle tile property of an 8*8 square of the map.
+ * @brief Sets the obstacle tile property of an 8*8 square of the map.
  * @param layer layer of the square
  * @param x8 x coordinate of the square (divided by 8)
  * @param y8 y coordinate of the square (divided by 8)
@@ -175,8 +173,10 @@ void MapEntities::set_obstacle(int layer, int x8, int y8, Obstacle obstacle) {
 }
 
 /**
- * Returns the entity with the specified type and name.
+ * @brief Returns the entity with the specified type and name.
+ *
  * The program stops if there is no such entity.
+ *
  * @param type type of entity
  * @param name name of the entity to get
  * @return the entity requested
@@ -192,7 +192,7 @@ MapEntity * MapEntities::get_entity(EntityType type, const std::string &name) {
 }
 
 /**
- * Returns the entity with the specified type and name, or NULL if it doesn't exist.
+ * @brief Returns the entity with the specified type and name, or NULL if it doesn't exist.
  * @param type type of entity
  * @param name name of the entity to get
  * @return the entity requested, or NULL if there is no entity with the specified type and name
@@ -212,8 +212,10 @@ MapEntity * MapEntities::find_entity(EntityType type, const std::string &name) {
 }
 
 /**
- * Returns all entities of the map with the specified type.
+ * @brief Returns all entities of the map with the specified type.
+ *
  * Don't forget to delete the list when you don't need it anymore.
+ *
  * @param type type of entity
  * @return the entities of this type
  */
@@ -234,8 +236,10 @@ list<MapEntity*> * MapEntities::get_entities(EntityType type) {
 }
 
 /**
- * Returns the entities of the map with the specified type and having the specified name prefix.
+ * @brief Returns the entities of the map with the specified type and having the specified name prefix.
+ *
  * Don't forget to delete the list when you don't need it anymore.
+ *
  * @param type type of entity
  * @param prefix prefix of the name
  * @return the entities of this type and having this prefix in their name
@@ -257,8 +261,7 @@ list<MapEntity*> * MapEntities::get_entities_with_prefix(EntityType type, const 
 }
 
 /**
- * Brings to front an entity that is displayed as a 
- * sprite in the normal order.
+ * @brief Brings to front an entity that is displayed as a sprite in the normal order.
  * @param entity the entity to bring to front
  */
 void MapEntities::bring_to_front(MapEntity *entity) {
@@ -279,9 +282,11 @@ void MapEntities::bring_to_front(MapEntity *entity) {
 }
 
 /**
- * Creates a tile on the map.
+ * @brief Adds a tile on the map.
+ *
  * This function is called for each tile when loading the map.
  * The tiles cannot change during the game.
+ *
  * @param tile the tile to add
  */
 void MapEntities::add_tile(Tile *tile) {
@@ -394,10 +399,12 @@ void MapEntities::add_tile(Tile *tile) {
 }
 
 /**
- * Adds a dynamic entity to the map.
+ * @brief Adds an entity to the map.
+ *
  * This function is called when loading the map. If the entity
  * specified is NULL (because some entity creation function
  * sometimes return NULL), nothing is done.
+ *
  * @param entity the entity to add (can be NULL)
  */
 void MapEntities::add_entity(MapEntity *entity) {
@@ -421,7 +428,7 @@ void MapEntities::add_entity(MapEntity *entity) {
     if (entity->can_be_obstacle()) {
 
       if (entity->has_layer_independent_collisions()) {
-	// some entities handle collisions on any layers (e.g. stairs inside a single floor)
+	// some entities handle collisions on any layer (e.g. stairs inside a single floor)
         obstacle_entities[LAYER_LOW].push_back(entity);
         obstacle_entities[LAYER_INTERMEDIATE].push_back(entity);
         obstacle_entities[LAYER_HIGH].push_back(entity);
@@ -468,7 +475,7 @@ void MapEntities::add_entity(MapEntity *entity) {
 }
 
 /**
- * Removes an entity from the map and schedules it to be destroyed.
+ * @brief Removes an entity from the map and schedules it to be destroyed.
  * @param entity the entity to remove
  */
 void MapEntities::remove_entity(MapEntity *entity) {
@@ -482,7 +489,7 @@ void MapEntities::remove_entity(MapEntity *entity) {
 }
 
 /**
- * Removes an entity from the map and schedules it to be destroyed.
+ * @brief Removes an entity from the map and schedules it to be destroyed.
  * @param type type of the entity to remove
  * @param name name of the entity
  */
@@ -491,7 +498,7 @@ void MapEntities::remove_entity(EntityType type, const std::string &name) {
 }
 
 /**
- * Removes and destroys the entities placed in the entities_to_remove list. 
+ * @brief Removes and destroys the entities placed in the entities_to_remove list. 
  */
 void MapEntities::remove_marked_entities(void) {
 
@@ -541,10 +548,11 @@ void MapEntities::remove_marked_entities(void) {
 }
 
 /**
- * Suspends or resumes the movement and animations of the
- * entities.
+ * @brief Suspends or resumes the movement and animations of the entities.
+ *
  * This function is called by the map when the game
  * is being suspended or resumed.
+ *
  * @param suspended true to suspend the movement and the animations,
  * false to resume them
  */
@@ -566,7 +574,7 @@ void MapEntities::set_suspended(bool suspended) {
 }
 
 /**
- * Updates the position, movement and animation each entity.
+ * @brief Updates the position, movement and animation each entity.
  */
 void MapEntities::update(void) {
 
@@ -601,7 +609,7 @@ void MapEntities::update(void) {
 }
 
 /**
- * Displays the entities on the map surface.
+ * @brief Displays the entities on the map surface.
  */
 void MapEntities::display() {
 
@@ -631,7 +639,7 @@ void MapEntities::display() {
 }
 
 /**
- * Compares the y position of two entities.
+ * @brief Compares the y position of two entities.
  * @param first an entity
  * @param second another entity
  * @return true if the y position of the first entity is lower
@@ -644,8 +652,10 @@ bool MapEntities::compare_y(MapEntity *first, MapEntity *second) {
 }
 
 /**
- * Changes the layer of an entity.
+ * @brief Changes the layer of an entity.
+ *
  * Only some specific entities should change their layer.
+ *
  * @param entity an entity
  * @param layer the new layer
  */
@@ -676,7 +686,7 @@ void MapEntities::set_entity_layer(MapEntity *entity, Layer layer) {
 }
 
 /**
- * Updates the crystal switch blocks.
+ * @brief Updates the crystal switch blocks.
  */
 void MapEntities::update_crystal_switch_blocks(void) {
 
@@ -684,7 +694,7 @@ void MapEntities::update_crystal_switch_blocks(void) {
 }
 
 /**
- * Returns whether a rectangle overlaps with a raised crystal switch block.
+ * @brief Returns whether a rectangle overlaps with a raised crystal switch block.
  * @param layer the layer to check
  * @param rectangle a rectangle
  * @return true if this rectangle overlaps a raised crystal switch block
@@ -703,7 +713,7 @@ bool MapEntities::overlaps_raised_blocks(Layer layer, const Rectangle &rectangle
 }
 
 /**
- * Returns whether the hero is currently on raised crystal switch blocks.
+ * @brief Returns whether the hero is currently on raised crystal switch blocks.
  * @return true if the hero is currently on raised crystal switch blocks
  */
 bool MapEntities::is_hero_on_raised_blocks(void) {
@@ -711,7 +721,7 @@ bool MapEntities::is_hero_on_raised_blocks(void) {
 }
 
 /**
- * Returns true if the player has thrown the boomerang.
+ * @brief Returns true if the player has thrown the boomerang.
  * @return true if the boomerang is present on the map
  */
 bool MapEntities::is_boomerang_present(void) {
@@ -719,7 +729,7 @@ bool MapEntities::is_boomerang_present(void) {
 }
 
 /**
- * Removes the boomerang from the map, if it is present.
+ * @brief Removes the boomerang from the map, if it is present.
  */
 void MapEntities::remove_boomerang(void) {
 
@@ -730,9 +740,11 @@ void MapEntities::remove_boomerang(void) {
 }
 
 /**
- * Starts the battle against a boss.
+ * @brief Starts the battle against a boss.
+ *
  * Calling this function enables the boss if he is alive and plays the appropriate music.
  * If the boss was already killed, nothing happens.
+ *
  * @param boss the boss, or NULL if it is already dead.
  */
 void MapEntities::start_boss_battle(Enemy *boss) {
@@ -744,7 +756,8 @@ void MapEntities::start_boss_battle(Enemy *boss) {
 }
 
 /**
- * Indicates that the battle corresponding to the last call to start_boss_battle() is finished.
+ * @brief Indicates that the battle corresponding to the last call to start_boss_battle() is finished.
+ *
  * This function stops the previous music (usually, the boss music), plays the victory music
  * and freezes the hero.
  * This function is called typically when the player has just picked the heart container.
@@ -758,9 +771,11 @@ void MapEntities::end_boss_battle(void) {
 }
 
 /**
- * Starts the battle against a miniboss.
+ * @brief Starts the battle against a miniboss.
+ *
  * Calling this function enables the miniboss if he is alive and plays the appropriate music.
  * If the miniboss was already killed, nothing happens.
+ *
  * @param miniboss the miniboss, or NULL if it is already dead.
  */
 void MapEntities::start_miniboss_battle(Enemy *miniboss) {
@@ -773,7 +788,8 @@ void MapEntities::start_miniboss_battle(Enemy *miniboss) {
 }
 
 /**
- * Indicates that the battle corresponding to the last call to start_miniboss_battle() is finished.
+ * @brief Indicates that the battle corresponding to the last call to start_miniboss_battle() is finished.
+ *
  * This function stops the previous music (usually, the boss music) and restores the dungeon music.
  * This function is called typically when the player has just killed the miniboss.
  */

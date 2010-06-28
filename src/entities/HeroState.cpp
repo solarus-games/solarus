@@ -41,7 +41,7 @@
 #include "lowlevel/System.h"
 
 /**
- * Returns the hero's state.
+ * @brief Returns the hero's state.
  * @return the state of the hero
  */
 Hero::State Hero::get_state(void) {
@@ -49,7 +49,7 @@ Hero::State Hero::get_state(void) {
 }
 
 /**
- * Sets the hero's state.
+ * @brief Sets the hero's state.
  * @param state the state of the hero
  */
 void Hero::set_state(State state) {
@@ -66,12 +66,14 @@ void Hero::set_state(State state) {
 }
 
 /**
- * Returns whether the animation direction is locked.
+ * @brief Returns whether the animation direction is locked.
+ *
  * When this function returns false, which is the case most of the time,
  * it means that the animation direction is set to the movement direction.
  * When it returns false, it means that the animation direction is fixed
  * and do not depends on the movement direction anymore (this is the case
  * when the hero is loading his sword).
+ *
  * @return true if the animation direction is locked
  */
 bool Hero::is_direction_locked(void) {
@@ -79,7 +81,7 @@ bool Hero::is_direction_locked(void) {
 }
 
 /**
- * Sets the ground displayed under the hero.
+ * @brief Sets the ground displayed under the hero.
  * @param ground the ground to display
  */
 void Hero::set_ground(Ground ground) {
@@ -90,7 +92,7 @@ void Hero::set_ground(Ground ground) {
 }
 
 /**
- * Returns the ground displayed under the hero.
+ * @brief Returns the ground displayed under the hero.
  * @return ground the ground under the hero
  */
 Ground Hero::get_ground(void) {
@@ -98,7 +100,7 @@ Ground Hero::get_ground(void) {
 }
 
 /**
- * Starts displaying the ground specified by the last set_ground() call.
+ * @brief Starts displaying the ground specified by the last call to set_ground().
  */
 void Hero::start_ground(void) {
 
@@ -148,7 +150,7 @@ void Hero::start_ground(void) {
 }
 
 /**
- * Updates the ground under the hero.
+ * @brief Updates the ground under the hero.
  */
 void Hero::update_ground(void) {
 
@@ -205,7 +207,7 @@ void Hero::update_ground(void) {
 }
 
 /**
- * Returns whether the hero is in a state such that
+ * @brief Returns whether the hero is in a state such that
  * a ground can be displayed under him.
  */
 bool Hero::is_ground_visible(void) {
@@ -216,7 +218,7 @@ bool Hero::is_ground_visible(void) {
 }
 
 /**
- * This function is called when a teletransporter detects a collision with the hero.
+ * @brief This function is called when a teletransporter detects a collision with the hero.
  * @param teletransporter the teletransporter
  * @param collision_mode the collision mode that detected the event
  */
@@ -239,7 +241,7 @@ void Hero::notify_collision_with_teletransporter(Teletransporter *teletransporte
 }
 
 /**
- * This function is called when a conveyor belt detects a collision with this entity.
+ * @brief This function is called when a conveyor belt detects a collision with this entity.
  * @param conveyor_belt a conveyor belt
  * @param dx direction of the x move in pixels (0, 1 or -1)
  * @param dy direction of the y move in pixels (0, 1 or -1)
@@ -283,7 +285,8 @@ void Hero::notify_collision_with_conveyor_belt(ConveyorBelt *conveyor_belt, int 
 }
 
 /**
- * Updates the hero when he is on a conveyor belt.
+ * @brief Updates the hero when he is on a conveyor belt.
+ *
  * The state should be CONVEYOR_BELT.
  */
 void Hero::update_conveyor_belt(void) {
@@ -309,7 +312,7 @@ void Hero::update_conveyor_belt(void) {
 }
 
 /**
- * This function is called when a stairs entity detects a collision with this entity.
+ * @brief This function is called when a stairs entity detects a collision with this entity.
  * @param stairs the stairs
  * @param collision_mode the collision mode that detected the event
  */
@@ -334,7 +337,7 @@ void Hero::notify_collision_with_stairs(Stairs *stairs, int collision_mode) {
 }
 
 /**
- * Activates some stairs in the specified way.
+ * @brief Activates some stairs in the specified way.
  * @param stairs the stairs to activate
  * @param way the way the hero will take the stairs
  */
@@ -377,7 +380,8 @@ void Hero::start_stairs(Stairs *stairs, Stairs::Way stairs_way) {
 }
 
 /**
- * Updates the hero when he is walking on stairs.
+ * @brief Updates the hero when he is walking on stairs.
+ *
  * The state should be STAIRS.
  */
 void Hero::update_stairs(void) {
@@ -466,9 +470,11 @@ void Hero::update_stairs(void) {
 }
 
 /**
- * Returns the stairs the hero may be currently overlapping.
+ * @brief Returns the stairs the hero may be currently overlapping.
+ *
  * The result is calculated (not stored) so that you can know it
  * even when the game is suspended
+ *
  * @return the stairs the hero is currently overlapping, or NULL
  */
 Stairs * Hero::get_stairs_overlapping(void) {
@@ -487,7 +493,7 @@ Stairs * Hero::get_stairs_overlapping(void) {
 }
 
 /**
- * This function is called when the hero arrives on this map by taking stairs.
+ * @brief This function is called when the hero arrives on this map by taking stairs.
  */
 void Hero::stairs_just_arrived(void) {
 
@@ -501,7 +507,7 @@ void Hero::stairs_just_arrived(void) {
 }
 
 /**
- * This function is called when a sensor detects a collision with this entity.
+ * @brief This function is called when a sensor detects a collision with this entity.
  * @param sensor a sensor
  */
 void Hero::notify_collision_with_sensor(Sensor *sensor) {
@@ -512,7 +518,7 @@ void Hero::notify_collision_with_sensor(Sensor *sensor) {
 }
 
 /**
- * This function is called when an explosion's sprite detects a collision with a sprite of the hero.
+ * @brief This function is called when an explosion's sprite detects a collision with a sprite of the hero.
  * @param explosion the explosion
  * @param sprite_overlapping the sprite of the hero that collides with the explosion
  */
@@ -524,7 +530,8 @@ void Hero::notify_collision_with_explosion(Explosion *explosion, Sprite *sprite_
 }
 
 /**
- * Lets the hero walk.
+ * @brief Lets the hero walk.
+ *
  * Moves to the state FREE and updates the animations accordingly.
  */
 void Hero::start_free(void) {
@@ -545,12 +552,14 @@ void Hero::start_free(void) {
 }
 
 /**
- * Makes the hero swing his sword if this action is possible.
+ * @brief Makes the hero swing his sword if this action is possible.
+ *
  * The game should not be suspended.
  * Moves to the state SWORD_SWINGING, plays the sword sound
  * and updates the animations accordingly.
  */
 void Hero::start_sword(void) {
+
   if (can_start_sword()) {
 
     // remove the carried item
@@ -565,10 +574,11 @@ void Hero::start_sword(void) {
 }
 
 /**
- * Returns whether the hero can swing his sword right now.
+ * @brief Returns whether the hero can swing his sword right now.
+ *
  * The function returns true if the game is not suspended and the hero
- * is in state FREE, PUSHING,
- * CARRYING or SWORD_SWINGING.
+ * is in state FREE, PUSHING, CARRYING or SWORD_SWINGING.
+ *
  * @return true if the hero can swing his sword, false otherwise
  */
 bool Hero::can_start_sword(void) {
@@ -581,7 +591,8 @@ bool Hero::can_start_sword(void) {
 }
 
 /**
- * This function is called repeatedly while the hero is swinging his sword.
+ * @brief This function is called repeatedly while the hero is swinging his sword.
+ *
  * The state must be SWORD_SWINGING.
  */
 void Hero::update_sword_swinging(void) {
@@ -599,7 +610,8 @@ void Hero::update_sword_swinging(void) {
 }
 
 /**
- * Lets the hero load his sword.
+ * @brief Lets the hero load his sword.
+ *
  * Moves to the state SWORD_LOADING
  * and updates the animations accordingly.
  */
@@ -620,7 +632,8 @@ void Hero::start_sword_loading(void) {
 }
 
 /**
- * This function is called repeatedly while the hero is loading his sword.
+ * @brief This function is called repeatedly while the hero is loading his sword.
+ *
  * It stops the loading if the sword key is released.
  * The state must be SWORD_LOADING.
  */
@@ -657,7 +670,8 @@ void Hero::update_sword_loading(void) {
 }
 
 /**
- * Makes the hero tap the wall he is facing with his sword.
+ * @brief Makes the hero tap the wall he is facing with his sword.
+ *
  * Moves to the state SWORD_TAPPING
  * and updates the animations accordingly.
  */
@@ -668,7 +682,8 @@ void Hero::start_sword_tapping(void) {
 }
 
 /**
- * This function is called repeatedly while the hero is tapping a wall with his sword.
+ * @brief This function is called repeatedly while the hero is tapping a wall with his sword.
+ *
  * The state must be SWORD_TAPPING.
  */
 void Hero::update_sword_tapping(void) {
@@ -705,7 +720,7 @@ void Hero::update_sword_tapping(void) {
 }
 
 /**
- * Makes the hero lift a destructible item.
+ * @brief Makes the hero lift a destructible item.
  * @param item_to_lift the destructible item to lift
  */
 void Hero::start_lifting(DestructibleItem *item_to_lift) {
@@ -721,7 +736,7 @@ void Hero::start_lifting(DestructibleItem *item_to_lift) {
 }
 
 /**
- * Returns the item the hero is currently lifting or carrying.
+ * @brief Returns the item the hero is currently lifting or carrying.
  * @return the item the hero is currently lifting or carrying
  */
 CarriedItem * Hero::get_lifted_item(void) {
@@ -729,7 +744,7 @@ CarriedItem * Hero::get_lifted_item(void) {
 }
 
 /**
- * Makes the hero carry the item he was lifting.
+ * @brief Makes the hero carry the item he was lifting.
  */
 void Hero::start_carrying(void) {
   set_state(CARRYING);
@@ -747,7 +762,8 @@ void Hero::start_carrying(void) {
 }
 
 /**
- * Removes the item carried by the hero, without throwing it.
+ * @brief Removes the item carried by the hero, without throwing it.
+ *
  * Change the hero state after calling this function.
  */
 void Hero::stop_carrying(void) {
@@ -757,7 +773,7 @@ void Hero::stop_carrying(void) {
 }
 
 /**
- * Makes the hero throw the item he was carrying.
+ * @brief Makes the hero throw the item he was carrying.
  */
 void Hero::start_throwing(void) {
 
@@ -779,8 +795,10 @@ void Hero::start_throwing(void) {
 }
 
 /**
- * Suspends or resumes the animation of the hero's carried items.
+ * @brief Suspends or resumes the animation of the hero's carried items.
+ *
  * This function is called when the game is suspended or resumed.
+ *
  * @param suspended true to suspend the game, false to resume it
  */
 void Hero::set_suspended_carried_items(bool suspended) {
@@ -791,7 +809,7 @@ void Hero::set_suspended_carried_items(bool suspended) {
 }
 
 /**
- * Updates the carried items.
+ * @brief Updates the carried items.
  */
 void Hero::update_carried_items(void) {
 
@@ -813,7 +831,7 @@ void Hero::update_carried_items(void) {
 }
 
 /**
- * Displays the carried items.
+ * @brief Displays the carried items.
  */
 void Hero::display_carried_items(void) {
 
@@ -823,7 +841,7 @@ void Hero::display_carried_items(void) {
 }
 
 /**
- * Deletes the carried items.
+ * @brief Deletes the carried items.
  */
 void Hero::destroy_carried_items(void) {
 
@@ -834,8 +852,7 @@ void Hero::destroy_carried_items(void) {
 }
 
 /**
- * This function is called when the layer of this entity has just changed.
- * Redefine it if you need to be notified.
+ * @brief This function is called when the layer of this entity has just changed.
  */
 void Hero::notify_layer_just_changed(void) {
 
@@ -846,7 +863,8 @@ void Hero::notify_layer_just_changed(void) {
 }
 
 /**
- * Makes the hero push something.
+ * @brief Makes the hero push something.
+ *
  * Moves to the state PUSHING and updates the animations accordingly.
  */
 void Hero::start_pushing(void) {
@@ -856,8 +874,9 @@ void Hero::start_pushing(void) {
 }
 
 /**
- * Updates the hero pushing, whether
- * his state is already PUSHING or not.
+ * @brief Updates the hero pushing.
+ *
+ * This function is called whether his state is already PUSHING or not.
  */
 void Hero::update_pushing(void) {
 
@@ -958,7 +977,7 @@ void Hero::update_pushing(void) {
 }
 
 /**
- * Makes the hero grab the object he is facing.
+ * @brief Makes the hero grab the object he is facing.
  * @param delay delay before the hero can push or pull 
  * the entity he is facing (if any)
  */
@@ -970,7 +989,7 @@ void Hero::start_grabbing(void) {
 }
 
 /**
- * Makes the hero pull the object he is grabbing.
+ * @brief Makes the hero pull the object he is grabbing.
  */
 void Hero::start_pulling(void) {
   set_state(PULLING);
@@ -978,7 +997,8 @@ void Hero::start_pulling(void) {
 }
 
 /**
- * This function is called repeatedly while the hero is grabbing something.
+ * @brief This function is called repeatedly while the hero is grabbing something.
+ *
  * The state must be GRABBING or PULLING.
  */
 void Hero::update_grabbing_pulling(void) {
@@ -1045,7 +1065,7 @@ void Hero::update_grabbing_pulling(void) {
 }
 
 /**
- * This function is called repeatedly in order to update the hero when he
+ * @brief This function is called repeatedly in order to update the hero when he
  * is pushing or pulling the entity he is grabbing.
  */
 void Hero::update_moving_grabbed_entity(void) {
@@ -1067,7 +1087,7 @@ void Hero::update_moving_grabbed_entity(void) {
 }
 
 /**
- * Returns whether the hero is moving the entity he is grabbing.
+ * @brief Returns whether the hero is moving the entity he is grabbing.
  * @return true if the hero is moving the entity he is grabbing
  */
 bool Hero::is_moving_grabbed_entity(void) {
@@ -1075,7 +1095,7 @@ bool Hero::is_moving_grabbed_entity(void) {
 }
 
 /**
- * Returns whether the hero is in state GRABBING or PULLING.
+ * @brief Returns whether the hero is in state GRABBING or PULLING.
  * @return true if the state is GRABBING or PULLING
  */
 bool Hero::is_grabbing_or_pulling(void) {
@@ -1083,7 +1103,7 @@ bool Hero::is_grabbing_or_pulling(void) {
 }
 
 /**
- * Notifies the hero that the entity he is pushing or pulling
+ * @brief Notifies the hero that the entity he is pushing or pulling
  * cannot move any more because of a collision.
  */
 void Hero::grabbed_entity_collision(void) {
@@ -1122,7 +1142,8 @@ void Hero::grabbed_entity_collision(void) {
 }
 
 /**
- * Makes the hero stop pushing or pulling the entity he is grabbing.
+ * @brief Makes the hero stop pushing or pulling the entity he is grabbing.
+ *
  * This function is called while moving the entity, when the 
  * hero or the entity collides with an obstacle or when
  * the hero's movement is finished.
@@ -1151,7 +1172,8 @@ void Hero::stop_moving_grabbed_entity(void) {
 }
 
 /**
- * Forbids the hero to move until unfreeze() is called.
+ * @brief Prevents the hero from moving until unfreeze() is called.
+ *
  * The current animation of the hero's sprites is stopped and the "stopped" animation is played.
  */
 void Hero::freeze(void) {
@@ -1163,14 +1185,14 @@ void Hero::freeze(void) {
 }
 
 /**
- * Lets the hero move again after a freeze() call.
+ * @brief Lets the hero move again after a call to freeze().
  */
 void Hero::unfreeze(void) {
   start_free();
 }
 
 /**
- * Makes the hero brandish a treasure.
+ * @brief Makes the hero brandish a treasure.
  * @param treasure the treasure to give him (you have to delete it after the hero brandishes it)
  */
 void Hero::give_treasure(Treasure *treasure) {
@@ -1193,7 +1215,7 @@ void Hero::give_treasure(Treasure *treasure) {
 }
 
 /**
- * Updates the hero when he is brandishing a treasure.
+ * @brief Updates the hero when he is brandishing a treasure.
  */
 void Hero::update_treasure(void) {
 
@@ -1215,7 +1237,7 @@ void Hero::update_treasure(void) {
 }
 
 /**
- * Displays the treasure the hero is brandishing.
+ * @brief Displays the treasure the hero is brandishing.
  */
 void Hero::display_treasure(void) {
 
@@ -1229,7 +1251,8 @@ void Hero::display_treasure(void) {
 }
 
 /**
- * Makes the hero load his sword.
+ * @brief Makes the hero load his sword.
+ *
  * Moves to the state SWORD_LOADING
  * and updates the animations accordingly.
  */
@@ -1245,7 +1268,8 @@ void Hero::start_spin_attack(void) {
 }
 
 /**
- * This function is called repeatedly during the spin attack.
+ * @brief This function is called repeatedly during the spin attack.
+ *
  * The state must be SPIN_ATTACK.
  */
 void Hero::update_spin_attack(void) {
@@ -1256,8 +1280,10 @@ void Hero::update_spin_attack(void) {
 }
 
 /**
- * Makes the hero jump in a direction.
+ * @brief Makes the hero jump into a direction.
+ *
  * While he is jumping, the player does not control him anymore.
+ *
  * @param direction direction of the jump (0 to 7)
  * @param length length of the jump in pixels
  * @param with_collisions true to stop the movement if there is a collision
@@ -1268,8 +1294,10 @@ void Hero::start_jumping(int direction, int length, bool with_collisions, bool w
 }
 
 /**
- * Makes the hero jump in a direction.
+ * @brief Makes the hero jump into a direction.
+ *
  * While he is jumping, the player does not control him anymore.
+ *
  * @param direction direction of the jump (0 to 7)
  * @param length length of the jump in pixels
  * @param with_collisions true to stop the movement if there is a collision
@@ -1300,7 +1328,7 @@ void Hero::start_jumping(int direction, int length, bool with_collisions, bool w
 }
 
 /**
- * Updates the jump action.
+ * @brief Updates the jump action.
  */
 void Hero::update_jumping(void) {
 
@@ -1324,15 +1352,15 @@ void Hero::update_jumping(void) {
 }
 
 /**
- * Returns the height of the current jump.
- * @return the height of the current jump
+ * @brief Returns the height of the current jump.
+ * @return the height of the current jump in pixels
  */
 int Hero::get_jump_y(void) {
   return jump_y;
 }
 
 /**
- * Returns whether the hero can be hurt.
+ * @brief Returns whether the hero can be hurt.
  * @return true if the hero can be hurt in its current state
  */
 bool Hero::can_be_hurt(void) {
@@ -1340,7 +1368,7 @@ bool Hero::can_be_hurt(void) {
 }
 
 /**
- * Hurts the hero if possible.
+ * @brief Hurts the hero if possible.
  * @param source the entity that hurts the hero (usually an enemy)
  * @param life_points number of heart quarters to remove (this number may be reduced by the tunic)
  * @param magic_points number of magic points to remove
@@ -1374,7 +1402,7 @@ void Hero::hurt(MapEntity *source, int life_points, int magic_points) {
 }
 
 /**
- * Updates the HURT state.
+ * @brief Updates the HURT state.
  */
 void Hero::update_hurt(void) {
 
@@ -1394,8 +1422,7 @@ void Hero::update_hurt(void) {
 }
 
 /**
- * Returns whether the hero is in a state such that the game over
- * sequence can start.
+ * @brief Returns whether the hero is in a state such that the game over sequence can start.
  * @return true if the game over sequence can start
  */
 bool Hero::can_start_gameover_sequence(void) {
@@ -1403,7 +1430,7 @@ bool Hero::can_start_gameover_sequence(void) {
 }
 
 /**
- * This function is called when the hero was dead but saved by a fairy.
+ * @brief This function is called when the hero was dead but saved by a fairy.
  */
 void Hero::get_back_from_death(void) {
   sprites->blink();
@@ -1412,7 +1439,7 @@ void Hero::get_back_from_death(void) {
 }
 
 /**
- * This function is called when a non-pixel perfect enemy collides with the hero.
+ * @brief This function is called when a non-pixel perfect enemy collides with the hero.
  * @param enemy the enemy
  */
 void Hero::notify_collision_with_enemy(Enemy *enemy) {
@@ -1420,7 +1447,7 @@ void Hero::notify_collision_with_enemy(Enemy *enemy) {
 }
 
 /**
- * This function is called when an enemy's sprite collides with a sprite of the hero.
+ * @brief This function is called when an enemy's sprite collides with a sprite of the hero.
  * @param enemy the enemy
  * @param enemy_sprite the enemy's sprite that overlaps a sprite of the hero
  * @param this_sprite the hero's sprite that overlaps the enemy's sprite
@@ -1445,8 +1472,10 @@ void Hero::notify_collision_with_enemy(Enemy *enemy, Sprite *enemy_sprite, Sprit
 }
 
 /**
- * Notifies this entity that it has just attacked an enemy
- * (even if this attack was not successful).
+ * @brief Notifies this entity that it has just attacked an enemy
+ *
+ * This function is called even if this attack was not successful.
+ *
  * @param attack the attack
  * @param victim the enemy just hurt
  * @param result indicates how the enemy has reacted to the attack (see Enemy.h)
@@ -1474,7 +1503,7 @@ void Hero::just_attacked_enemy(EnemyAttack attack, Enemy *victim, int result, bo
 }
 
 /**
- * Makes the hero drown or swim.
+ * @brief Makes the hero drown or swim.
  */
 void Hero::start_deep_water(void) {
 
@@ -1503,7 +1532,7 @@ void Hero::start_deep_water(void) {
 }
 
 /**
- * Makes the hero plunge into the water.
+ * @brief Makes the hero plunge into the water.
  */
 void Hero::start_plunging(void) {
   set_state(PLUNGING);
@@ -1512,7 +1541,7 @@ void Hero::start_plunging(void) {
 }
 
 /**
- * Updates the PLUNGING state.
+ * @brief Updates the PLUNGING state.
  */
 void Hero::update_plunging(void) {
 
@@ -1533,7 +1562,7 @@ void Hero::update_plunging(void) {
 }
 
 /**
- * Makes the hero swim.
+ * @brief Makes the hero swim.
  */
 void Hero::start_swimming(void) {
   set_state(SWIMMING);
@@ -1541,14 +1570,14 @@ void Hero::start_swimming(void) {
 }
 
 /**
- * Makes the hero stop swimming.
+ * @brief Makes the hero stop swimming.
  */
 void Hero::stop_swimming(void) {
   start_free();
 }
 
 /**
- * Makes the hero move towards a hole of fall into it.
+ * @brief Makes the hero move towards a hole of fall into it.
  */
 void Hero::start_hole(void) {
 
@@ -1580,7 +1609,7 @@ void Hero::start_hole(void) {
 }
 
 /**
- * Makes the hero fall into a hole.
+ * @brief Makes the hero fall into a hole.
  */
 void Hero::start_falling(void) {
 
@@ -1596,7 +1625,7 @@ void Hero::start_falling(void) {
 }
 
 /**
- * Updates the FALLING state.
+ * @brief Updates the FALLING state.
  */
 void Hero::update_falling(void) {
 
@@ -1631,9 +1660,11 @@ void Hero::update_falling(void) {
 }
 
 /**
- * Specifies a point of the map where the hero will go back if he falls
+ * @brief Specifies a point of the map where the hero will go back if he falls
  * into a hole or some other bad ground.
+ *
  * This function is usually called when the hero walks on a special sensor.
+ *
  * @param target_solid_ground_coords coordinates of the position where
  * the hero will go if he falls into a hole or some other bad ground
  * @param layer the layer
@@ -1644,7 +1675,7 @@ void Hero::set_target_solid_ground_coords(const Rectangle &target_solid_ground_c
 }
 
 /**
- * Hides the hero and makes him move back to the specified solid ground location.
+ * @brief Hides the hero and makes him move back to the specified solid ground location.
  * @param target_xy coordinates of the solid ground location
  * @param target_layer the destination layer
  */
@@ -1656,7 +1687,7 @@ void Hero::start_returning_to_solid_ground(const Rectangle &target_xy, Layer tar
 }
 
 /**
- * Updates the RETURNING_TO_SOLID_GROUND state.
+ * @brief Updates the RETURNING_TO_SOLID_GROUND state.
  */
 void Hero::update_returning_to_solid_ground(void) {
 
@@ -1672,7 +1703,7 @@ void Hero::update_returning_to_solid_ground(void) {
 }
 
 /**
- * Makes the hero brandish his sword meaning a victory.
+ * @brief Makes the hero brandish his sword meaning a victory.
  */
 void Hero::start_victory() {
   set_state(VICTORY);
@@ -1682,7 +1713,7 @@ void Hero::start_victory() {
 }
 
 /**
- * Updates the VICTORY state.
+ * @brief Updates the VICTORY state.
  */
 void Hero::update_victory() {
 
@@ -1692,13 +1723,13 @@ void Hero::update_victory() {
 }
 
 /**
- * Updates the FREEZED state.
+ * @brief Updates the FREEZED state.
  */
 void Hero::update_freezed(void) {
 }
 
 /**
- * Returns whether the hero can use an item from
+ * @brief Returns whether the hero can use an item from
  * the inventory now.
  * @param item_id id of the item to check
  */
@@ -1710,7 +1741,7 @@ bool Hero::can_start_inventory_item(InventoryItemId item_id) {
 }
 
 /**
- * Starts using an item from the inventory.
+ * @brief Starts using an item from the inventory.
  * @param item the item to use.
  */
 void Hero::start_inventory_item(InventoryItemId item_id) {
@@ -1722,7 +1753,7 @@ void Hero::start_inventory_item(InventoryItemId item_id) {
 }
 
 /**
- * Updates the USING_INVENTORY_ITEM state.
+ * @brief Updates the USING_INVENTORY_ITEM state.
  */
 void Hero::update_inventory_item(void) {
 
@@ -1739,7 +1770,8 @@ void Hero::update_inventory_item(void) {
 }
 
 /**
- * Starts the boomerang animation.
+ * @brief Starts the boomerang animation.
+ *
  * The state should be USING_INVENTORY_ITEM.
  */
 void Hero::start_boomerang(void) {
@@ -1747,7 +1779,8 @@ void Hero::start_boomerang(void) {
 }
 
 /**
- * Starts the bow animation.
+ * @brief Starts the bow animation.
+ *
  * The state should be USING_INVENTORY_ITEM.
  */
 void Hero::start_bow(void) {
@@ -1755,7 +1788,8 @@ void Hero::start_bow(void) {
 }
 
 /**
- * Starts running with the Pegasus Shoes.
+ * @brief Starts running with the Pegasus Shoes.
+ *
  * The state should be USING_INVENTORY_ITEM.
  */
 void Hero::start_pegasus_shoes(void) {
@@ -1763,7 +1797,8 @@ void Hero::start_pegasus_shoes(void) {
 }
 
 /**
- * This function is called repeatedly while the hero is running with the Pegasus Shoes.
+ * @brief This function is called repeatedly while the hero is running with the Pegasus Shoes.
+ *
  * The state should be USING_INVENTORY_ITEM.
  */
 void Hero::update_pegasus_shoes(void) {
@@ -1775,7 +1810,7 @@ void Hero::update_pegasus_shoes(void) {
 }
 
 /**
- * Stops running.
+ * @brief Stops running.
  */
 void Hero::stop_pegasus_shoes(void) {
   
@@ -1784,7 +1819,7 @@ void Hero::stop_pegasus_shoes(void) {
 }
 
 /**
- * Returns whether the hero is currently running with the Pegasus Shoes.
+ * @brief Returns whether the hero is currently running with the Pegasus Shoes.
  * @return true if the heor is running
  */
 bool Hero::is_pegasus_shoes_running(void) {
@@ -1793,8 +1828,10 @@ bool Hero::is_pegasus_shoes_running(void) {
 }
 
 /**
- * Returns whether the Pegasus Shoes run is finished.
+ * @brief Returns whether the Pegasus Shoes run is finished.
+ *
  * The state should be USING_INVENTORY_ITEM.
+ *
  * @return true if the run is finished
  */
 bool Hero::is_pegasus_shoes_run_finished(void) {

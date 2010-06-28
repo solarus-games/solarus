@@ -20,7 +20,7 @@
 #include "Savegame.h"
 
 /**
- * Constructor.
+ * @brief Constructor.
  * @param savegame the savegame
  */
 DungeonEquipment::DungeonEquipment(Savegame *savegame):
@@ -29,14 +29,14 @@ DungeonEquipment::DungeonEquipment(Savegame *savegame):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 DungeonEquipment::~DungeonEquipment(void) {
 
 }
 
 /**
- * Sets the current game.
+ * @brief Sets the current game.
  * @param game the game
  */
 void DungeonEquipment::set_game(Game *game) {
@@ -44,9 +44,11 @@ void DungeonEquipment::set_game(Game *game) {
 }
 
 /**
- * Returns the current dungeon number.
+ * @brief Returns the current dungeon number.
+ *
  * The dungeon number returned is between 1 and 20.
  * The programs stops with an error message if the player is not in a dungeon.
+ *
  * @return the number of the current dungeon between 1 and 20
  */
 int DungeonEquipment::get_current_dungeon(void) {
@@ -61,7 +63,7 @@ int DungeonEquipment::get_current_dungeon(void) {
 }
 
 /**
- * Returns whether the player has found the map in the current dungeon.
+ * @brief Returns whether the player has found the map in the current dungeon.
  * @return true if the player has found the map in the current dungeon
  */
 bool DungeonEquipment::has_map(void) {
@@ -72,7 +74,7 @@ bool DungeonEquipment::has_map(void) {
 }
 
 /**
- * Give the current dungeon's map to the player.
+ * @brief Gives the current dungeon's map to the player in the savegame.
  */
 void DungeonEquipment::add_map(void) {
 
@@ -86,7 +88,7 @@ void DungeonEquipment::add_map(void) {
 }
 
 /**
- * Returns whether the player has found the compass in the current dungeon.
+ * @brief Returns whether the player has found the compass in the current dungeon.
  * @return true if the player has found the compass in the current dungeon
  */
 bool DungeonEquipment::has_compass(void) {
@@ -97,7 +99,7 @@ bool DungeonEquipment::has_compass(void) {
 }
 
 /**
- * Give the current dungeon's compass to the player.
+ * @brief Gives the current dungeon's compass to the player in the savegame.
  */
 void DungeonEquipment::add_compass(void) {
 
@@ -111,7 +113,7 @@ void DungeonEquipment::add_compass(void) {
 }
 
 /**
- * Returns whether the player has found the big key in the current dungeon.
+ * @brief Returns whether the player has found the big key in the current dungeon.
  * @return true if the player has found the big key in the current dungeon
  */
 bool DungeonEquipment::has_big_key(void) {
@@ -122,7 +124,7 @@ bool DungeonEquipment::has_big_key(void) {
 }
 
 /**
- * Give the current dungeon's big key to the player.
+ * @brief Gives the current dungeon's big key to the player in the savegame.
  */
 void DungeonEquipment::add_big_key(void) {
 
@@ -136,7 +138,7 @@ void DungeonEquipment::add_big_key(void) {
 }
 
 /**
- * Returns whether the player has found the boss key in the current dungeon.
+ * @brief Returns whether the player has found the boss key in the current dungeon.
  * @return true if the player has found the boss key in the current dungeon
  */
 bool DungeonEquipment::has_boss_key(void) {
@@ -147,7 +149,7 @@ bool DungeonEquipment::has_boss_key(void) {
 }
 
 /**
- * Give the current dungeon's boss key to the player.
+ * @brief Gives the current dungeon's boss key to the player in the savegame.
  */
 void DungeonEquipment::add_boss_key(void) {
 
@@ -159,3 +161,4 @@ void DungeonEquipment::add_boss_key(void) {
   int index = Savegame::FIRST_DUNGEON_BOSS_KEY + 10 * (dungeon - 1);
   savegame->set_integer(index, 1);
 }
+

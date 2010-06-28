@@ -20,7 +20,7 @@
 #include "Sprite.h"
 
 /**
- * Constructor.
+ * @brief Constructor.
  * @param params name and position of the enemy to create
  */
 SimpleGreenSoldier::SimpleGreenSoldier(const ConstructionParameters &params):
@@ -29,14 +29,14 @@ SimpleGreenSoldier::SimpleGreenSoldier(const ConstructionParameters &params):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 SimpleGreenSoldier::~SimpleGreenSoldier(void) {
 
 }
 
 /**
- * Initializes the enemy.
+ * @brief Initializes the enemy.
  */
 void SimpleGreenSoldier::initialize(void) {
 
@@ -54,6 +54,8 @@ void SimpleGreenSoldier::initialize(void) {
 }
 
 /**
+ * @brief Restarts the normal movement of this enemy.
+ *
  * This function is called when the enemy needs to restart its movement
  * because something happened (for example the enemy has just been created,
  * or it was just hurt).
@@ -64,7 +66,7 @@ void SimpleGreenSoldier::restart(void) {
 }
 
 /**
- * Updates the enemy.
+ * @brief Updates the enemy.
  */
 void SimpleGreenSoldier::update(void) {
 
@@ -99,7 +101,7 @@ void SimpleGreenSoldier::update(void) {
 }
 
 /**
- * Starts walking towards one of the four main directions.
+ * @brief Starts walking towards one of the four main directions.
  * @param direction a direction (0 to 3)
  */
 void SimpleGreenSoldier::walk(int direction) {

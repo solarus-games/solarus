@@ -23,7 +23,7 @@
 #include "Map.h"
 
 /**
- * Creates a new dynamic tile on the map.
+ * @brief Creates a new dynamic tile on the map.
  * @param name a name to identify this tile
  * @param layer layer of the tile
  * @param x x position of the tile on the map
@@ -42,15 +42,17 @@ DynamicTile::DynamicTile(const std::string &name, Layer layer, int x, int y,
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 DynamicTile::~DynamicTile(void) {
 
 }
 
 /**
- * Creates an instance from an input stream.
+ * @brief Creates an instance from an input stream.
+ *
  * The input stream must respect the syntax of this entity type.
+ *
  * @param game the game that will contain the entity created
  * @param is an input stream
  * @param layer the layer
@@ -73,7 +75,7 @@ MapEntity * DynamicTile::parse(Game *game, std::istream &is, Layer layer, int x,
 }
 
 /**
- * Returns the type of entity.
+ * @brief Returns the type of entity.
  * @return the type of entity
  */
 EntityType DynamicTile::get_type(void) {
@@ -81,7 +83,7 @@ EntityType DynamicTile::get_type(void) {
 }
 
 /**
- * Sets the map of this entity.
+ * @brief Sets the map of this entity.
  * @param map the map
  */
 void DynamicTile::set_map(Map *map) {
@@ -90,7 +92,7 @@ void DynamicTile::set_map(Map *map) {
 }
 
 /**
- * Returns whether this tile is an obstacle for the specified entity.
+ * @brief Returns whether this tile is an obstacle for the specified entity.
  * @param other an entity
  * @return true if this tile is an obstacle for the entity
  */
@@ -99,7 +101,7 @@ bool DynamicTile::is_obstacle_for(MapEntity *other) {
 }
 
 /**
- * Displays the tile on the map.
+ * @brief Displays the tile on the map.
  */
 void DynamicTile::display_on_map(void) {
   if (enabled) {
@@ -108,7 +110,7 @@ void DynamicTile::display_on_map(void) {
 }
 
 /**
- * Updates the entity.
+ * @brief Updates the entity.
  */
 void DynamicTile::update(void) {
 
@@ -124,7 +126,7 @@ void DynamicTile::update(void) {
 }
 
 /**
- * Returns whether this dynamic tile is enabled.
+ * @brief Returns whether this dynamic tile is enabled.
  * @return true if this tile is enabled
  */
 bool DynamicTile::is_enabled(void) {
@@ -132,10 +134,11 @@ bool DynamicTile::is_enabled(void) {
 }
 
 /**
- * Enables or disables this dynamic tile.
+ * @brief Enables or disables this dynamic tile.
  * @param enabled true to enable the tile, false to disable it
  */
 void DynamicTile::set_enabled(bool enabled) {
+
   if (enabled) {
     // enable the tile as soon as possible
     this->waiting_enabled = true;
@@ -144,3 +147,4 @@ void DynamicTile::set_enabled(bool enabled) {
     this->enabled = false;
   }
 }
+

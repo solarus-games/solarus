@@ -17,13 +17,12 @@
 #include "enemies/ChainAndBall.h"
 #include "movements/CircleMovement.h"
 #include "Sprite.h"
-#include "Map.h" // TODO remove
-#include "entities/MapEntities.h" // TODO remove
+#include "Map.h"
 
 const int ChainAndBall::nb_links;
 
 /**
- * Constructor.
+ * @brief Constructor.
  * @param params name and position of the enemy to create
  */
 ChainAndBall::ChainAndBall(const ConstructionParameters &params):
@@ -32,14 +31,14 @@ ChainAndBall::ChainAndBall(const ConstructionParameters &params):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 ChainAndBall::~ChainAndBall(void) {
 
 }
 
 /**
- * Initializes this enemy.
+ * @brief Initializes this enemy.
  */
 void ChainAndBall::initialize(void) {
 
@@ -62,14 +61,14 @@ void ChainAndBall::initialize(void) {
 }
 
 /**
- * Updates this enemy.
+ * @brief Updates this enemy.
  */
 void ChainAndBall::update(void) {
   Enemy::update();
 }
 
 /**
- * Displays the chain and ball on the map.
+ * @brief Displays the chain and ball on the map.
  */
 void ChainAndBall::display_on_map(void) {
 
@@ -84,8 +83,11 @@ void ChainAndBall::display_on_map(void) {
 }
 
 /**
- * Returns whether this entity should be displayed above
+ * @brief Returns whether this entity has to be displayed in y order.
+ *
+ * This function returns whether the entity should be displayed above
  * the hero and other entities having this property when it is in front of them.
+ *
  * @return true if this type of entity is displayed at the same level as the hero
  */
 bool ChainAndBall::is_displayed_in_y_order(void) {
@@ -93,7 +95,7 @@ bool ChainAndBall::is_displayed_in_y_order(void) {
 }
 
 /**
- * Makes the chain and ball follow the specified entity.
+ * @brief Makes the chain and ball follow the specified entity.
  * @param entity the entity to follow
  * @param x x coordinate of where the chain movement should be centered on (relative to the entity followed)
  * @param y y coordinate of where the chain movement should be centered on (relative to the entity followed)
@@ -122,7 +124,8 @@ void ChainAndBall::attach_to(MapEntity *entity, int x, int y,
 }
 
 /**
- * This function is called when the ball has just moved.
+ * @brief This function is called when the ball has just moved.
+ *
  * The chain is then updated.
  */
 void ChainAndBall::notify_just_moved(void) {

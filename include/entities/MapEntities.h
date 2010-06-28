@@ -27,7 +27,12 @@
 #include <list>
 
 /**
- * Manages all entities of a map: the tiles, the hero and all other entities.
+ * @brief Manages the whole content of a map.
+ *
+ * Each element of a map is called an entity and is an instance of
+ * a subclass of MapEntity.
+ * This class stores all entities of the current map:
+ * the tiles, the hero, the enemies and all other entities.
  */
 class MapEntities {
 
@@ -40,7 +45,7 @@ class MapEntities {
     Map *map;                                               /**< the map */
     int map_width8;                                         /**< number of 8*8 squares on a row of the map grid */
     int map_height8;                                        /**< number of 8*8 squares on a column of the map grid */
-    Tileset *tileset;                                       /**< the tileset */
+    Tileset *tileset;                                       /**< the tileset of the map */
 
     // tiles
     std::vector<Tile*> tiles[LAYER_NB];                     /**< all tiles of the map (a vector for each layer) */
@@ -54,7 +59,7 @@ class MapEntities {
     std::list<MapEntity*> all_entities;                     /**< all map entities execept the tiles and the hero;
 							     * this vector is used to delete the entities 
 							     * when the map is unloaded */
-    std::list<MapEntity*> entities_to_remove;               /**< list of entities that need to be removed now */
+    std::list<MapEntity*> entities_to_remove;               /**< list of entities that need to be removed right now */
 
     std::list<MapEntity*>
       entities_displayed_first[LAYER_NB];                   /**< all map entities that are displayed in the normal order */
@@ -70,7 +75,7 @@ class MapEntities {
       obstacle_entities[LAYER_NB];                          /**< all entities that might be obstacle for other
 							     * entities on this map, including the hero */
 
-    std::list<Stairs*> stairs[LAYER_NB];                  /**< all stairs of the map */
+    std::list<Stairs*> stairs[LAYER_NB];                    /**< all stairs of the map */
     std::list<CrystalSwitchBlock*>
       crystal_switch_blocks[LAYER_NB];                      /**< all crystal switch blocks of the map */
     Boomerang *boomerang;                                   /**< the boomerang if present on the map, NULL otherwise */

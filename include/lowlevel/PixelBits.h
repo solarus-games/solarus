@@ -20,10 +20,12 @@
 #include "Common.h"
 
 /**
- * Represents the non-transparent pixels of a 8-bit image.
- * For each pixel of the image, a bit indicates whether
- * this pixel is transparent.
- * This class allows to perform fast pixel-perfect collision checks.
+ * @brief Provides pixel-perfect collision checks for a surface.
+ *
+ * This class stores efficently the location of the non-transparent pixels of a surface.
+ * For each pixel of the image, a bit indicates whether this pixel is transparent.
+ * This class perform fast pixel-perfect collision checks.
+ * Note that only 8-bit images are supported.
  */
 class PixelBits {
 

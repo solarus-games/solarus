@@ -20,23 +20,25 @@
 #include "Common.h"
 
 /**
- * Abstract class for a transition effect between two phases (maps or not).
+ * @brief Abstract class for a transition effect between two phases.
+ *
+ * The transitions may be applied to maps or any surface.
  */
 class Transition {
 
   public:
 
     /**
-     * Style of transition between two screens.
+     * @brief Styles of transitions.
      */
     enum Style {
-      IMMEDIATE = 0,  // no transition between the two screens
+      IMMEDIATE = 0,  // no transition between the two surfaces
       FADE      = 1,  // fade in and fade out
       SCROLLING = 2   // scrolling between two maps
     };
 
     /**
-     * Direction of the transition.
+     * @brief Possible directions of a transition.
      */
     enum Direction {
       IN  = 0,
@@ -45,7 +47,7 @@ class Transition {
 
   protected:
 
-    Game *game;                    /**< the current game if any (used by some kinds of transitions) */
+    Game *game;                    /**< the current game if any (required by some kinds of transitions) */
     Direction direction;           /**< direction of the transition (in or out) */
     Surface *previous_surface;     /**< during an in transition, this is the surface that was displayed 
 				    * when the out transition was played */
@@ -62,29 +64,29 @@ class Transition {
     virtual bool needs_previous_surface(void);
 
     /**
-     * Starts this transition effect.
+     * @brief Starts this transition effect.
      */
     virtual void start(void) = 0;
 
     /**
-     * Returns whether the transition effect is started.
+     * @brief Returns whether the transition effect is started.
      * @return true if the transition effect is started
      */
     virtual bool is_started(void) = 0;
 
     /**
-     * Returns whether the transition effect is finished.
+     * @brief Returns whether the transition effect is finished.
      * @return true if the transition effect is finished
      */
     virtual bool is_finished(void) = 0;
 
     /**
-     * Updates this transition effect.
+     * @brief Updates this transition effect.
      */
     virtual void update(void) = 0;
 
     /**
-     * Displays the transition effect on a surface.
+     * @brief Displays the transition effect on a surface.
      * @param surface the surface to draw
      */
     virtual void display(Surface *surface) = 0;

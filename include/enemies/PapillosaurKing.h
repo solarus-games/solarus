@@ -21,7 +21,7 @@
 #include "entities/Enemy.h"
 
 /**
- * A butterfly boss from Newlink.
+ * @brief A big butterfly boss from Newlink.
  */
 class PapillosaurKing: public Enemy {
 

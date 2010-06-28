@@ -21,7 +21,7 @@
 #include "GameControls.h"
 
 /**
- * Abstract class for a submenu of the pause menu.
+ * @brief Abstract class for a submenu of the pause menu.
  */
 class PauseSubmenu {
 
@@ -46,13 +46,18 @@ class PauseSubmenu {
     virtual ~PauseSubmenu(void);
 
     /**
-     * This function is called when a key is pressed on this submenu.
+     * @brief This function is called when a key is pressed on this submenu.
+     *
+     * The subclasses should redefine it to react to the key that was just pressed.
+     *
      * @param key the key pressed
      */
     virtual void key_pressed(GameControls::GameKey key) = 0;
 
     /**
-     * Updates this submenu.
+     * @brief Updates this submenu.
+     *
+     * This function is called continuously while this submenu is active.
      */
     virtual void update(void) = 0;
 

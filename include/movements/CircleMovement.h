@@ -22,14 +22,16 @@
 #include "lowlevel/Rectangle.h"
 
 /**
- * Movement for an entity that makes a circle around a center point or an entity.
+ * @brief Movement that makes circles around a center.
+ *
+ * This movement is used by entities that makes a circle around a center point or another entity.
  */
 class CircleMovement: public Movement {
 
   public:
 
     /**
-     * Possibles directions when making circles.
+     * @brief Possibles directions when making circles.
      */
     enum Direction {
       COUNTER_CLOCKWISE,
@@ -38,7 +40,7 @@ class CircleMovement: public Movement {
 
   private:
 
-    // center of the circles
+    // center of the circle
     MapEntity *center_entity;                       /**< the entity to make circles around (NULL if only a point is used) */
     Rectangle center_point;                         /**< absolute coordinates of the center if only a point is used,
                                                      * or coordinates relative to the center entity otherwise */

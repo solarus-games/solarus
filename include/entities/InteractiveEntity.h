@@ -22,7 +22,7 @@
 #include "KeysEffect.h"
 
 /**
- * An interactive entity is an entity that triggers a message or an event
+ * @brief An entity that triggers a message or an event
  * when the player presses the action key while facing it.
  *
  * Note that complex entities such as chests, pots and doors are not included
@@ -34,7 +34,8 @@ class InteractiveEntity: public Detector {
   public:
 
     /**
-     * The different kinds of interactions.
+     * @brief The different kinds of interactions.
+     *
      * They indicate what happens when the player presses the action key in front of this entity.
      */
     enum Subtype {

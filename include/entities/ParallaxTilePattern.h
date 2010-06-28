@@ -21,7 +21,10 @@
 #include "entities/SimpleTilePattern.h"
 
 /**
- * Tile pattern with a parallax scrolling effect.
+ * @brief Tile pattern with a parallax scrolling effect.
+ *
+ * The pattern shifts when the camera moves, giving
+ * an illusion of depth.
  */
 class ParallaxTilePattern: public SimpleTilePattern {
 

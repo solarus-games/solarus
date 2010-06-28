@@ -21,8 +21,12 @@
 #include "MapEntity.h"
 
 /**
+ * @brief An item carried or thrown by the hero.
+ *
  * Represents an item (pot, bush...) carried by the hero. He can throw it.
- * The item is attached to the hero, not to the map.
+ * While the hero is carrying it, the item is attached to the hero, not to the map.
+ * As soon as he throws it, the item becomes attached to the map and the hero
+ * may lift another item.
  */
 class CarriedItem: public MapEntity {
 

@@ -20,7 +20,9 @@
 #include "Common.h"
 
 /**
- * This class parses a map file.
+ * @brief Parses a map file.
+ *
+ * This class loads a map and its content from a map file.
  */
 class MapLoader {
 

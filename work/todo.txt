@@ -71,9 +71,9 @@ Bugs :
 
 Amélioration de la documentation en cours (@brief manquants) :
 
-find . -name '*.h' -o -name '*.cpp'
+find . -name '*.h' -o -name '*.cpp' | sort
 
-dernière fichier traité : include/lowlevel/TextSurface.h
+dernière fichier traité : DialogBox.cpp
 
 A venir :
 

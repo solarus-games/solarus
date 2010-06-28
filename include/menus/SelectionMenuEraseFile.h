@@ -21,8 +21,7 @@
 #include "menus/SelectionMenuPhase.h"
 
 /**
- * Phase of the selection menu where the user
- * chooses a file to erase.
+ * @brief Phase of the selection menu where the user chooses a file to erase.
  */
 class SelectionMenuEraseFile: public SelectionMenuPhase {
 

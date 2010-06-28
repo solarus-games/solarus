@@ -23,8 +23,7 @@
 #include "menus/SelectionMenu.h"
 
 /**
- * Phase of the selection menu where the user
- * chooses the name to create its savegame.
+ * @brief Phase of the selection menu where the user chooses its name
  */
 class SelectionMenuChooseName: public SelectionMenuPhase {
 

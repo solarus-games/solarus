@@ -27,7 +27,7 @@
 #include "lowlevel/Surface.h"
 
 /**
- * Creates a new dialog box.
+ * @brief Creates a new dialog box.
  * @param game the game this dialog box belongs to
  */
 DialogBox::DialogBox(Game *game):
@@ -51,7 +51,7 @@ DialogBox::DialogBox(Game *game):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 DialogBox::~DialogBox(void) {
 
@@ -64,7 +64,7 @@ DialogBox::~DialogBox(void) {
 }
 
 /**
- * Returns the game where this dialog box is displayed.
+ * @brief Returns the game where this dialog box is displayed.
  * @return the current game
  */
 Game * DialogBox::get_game(void) {
@@ -72,7 +72,7 @@ Game * DialogBox::get_game(void) {
 }
 
 /**
- * Returns whether the dialog box is currently active.
+ * @brief Returns whether the dialog box is currently active.
  * @return true if the dialog box is enabled
  */
 bool DialogBox::is_enabled(void) {
@@ -80,8 +80,10 @@ bool DialogBox::is_enabled(void) {
 }
 
 /**
- * Sets the dialog box style for all subsequent dialogs.
+ * @brief Sets the dialog box style for all subsequent dialogs.
+ *
  * The default style is DialogBox::STYLE_WITH_FRAME.
+ *
  * @param style the new style to set
  */
 void DialogBox::set_style(Style style) {
@@ -94,7 +96,7 @@ void DialogBox::set_style(Style style) {
 }
 
 /**
- * Sets the vertical position of the dialog box.
+ * @brief Sets the vertical position of the dialog box.
  * @param vertical_position the vertical position
  */
 void DialogBox::set_vertical_position(VerticalPosition vertical_position) {
@@ -123,7 +125,7 @@ void DialogBox::set_vertical_position(VerticalPosition vertical_position) {
 }
 
 /**
- * Returns the speed of the text.
+ * @brief Returns the speed of the text.
  * @return the speed
  */
 DialogBox::Speed DialogBox::get_speed(void) {
@@ -131,7 +133,7 @@ DialogBox::Speed DialogBox::get_speed(void) {
 }
 
 /**
- * Sets the speed of the text.
+ * @brief Sets the speed of the text.
  * @param speed the new speed
  */
 void DialogBox::set_speed(Speed speed) {
@@ -139,7 +141,7 @@ void DialogBox::set_speed(Speed speed) {
 }
 
 /**
- * Returns the current skip mode of the dialog box.
+ * @brief Returns the current skip mode of the dialog box.
  * @return the skip mode
  */
 DialogBox::SkipMode DialogBox::get_skip_mode(void) {
@@ -147,7 +149,7 @@ DialogBox::SkipMode DialogBox::get_skip_mode(void) {
 }
 
 /**
- * Sets the skip mode of the dialog box.
+ * @brief Sets the skip mode of the dialog box.
  * @param skip_mode the new skip mode
  */
 void DialogBox::set_skip_mode(SkipMode skip_mode) {
@@ -155,8 +157,10 @@ void DialogBox::set_skip_mode(SkipMode skip_mode) {
 }
 
 /**
- * Returns the index of the icon displayed in this dialog box,
- * or -1 if there is no icon.
+ * @brief Returns the index of the icon displayed in this dialog box.
+ *
+ * If there is no icon, -1 is returned.
+ *
  * @return the icon number
  */
 int DialogBox::get_icon_number(void) {
@@ -164,15 +168,15 @@ int DialogBox::get_icon_number(void) {
 }
 
 /**
- * Sets the index of the icon displayed in this dialog box,
- * @param icon_number the icon number, or -1 to remove a previous icon
+ * @brief Sets the index of the icon displayed in this dialog box,
+ * @param icon_number the icon number, or -1 to remove any previous icon
  */
 void DialogBox::set_icon_number(int icon_number) {
   this->icon_number = icon_number;
 }
 
 /**
- * Returns whether a sound should be played when displaying the letters.
+ * @brief Returns whether a sound should be played when displaying the letters.
  * @return true if a sound should be played when displaying the letters
  */
 bool DialogBox::is_letter_sound_enabled(void) {
@@ -180,10 +184,12 @@ bool DialogBox::is_letter_sound_enabled(void) {
 }
 
 /**
- * Specifies the value of a variable that will occur
- * in the specified sequence of messages (with the '$v' sequence).
+ * @brief Specifies the value of a variable that will occur in a future message.
+ *
+ * A value is expected in a message when the '$v' sequence is read.
  * You can specify only one variable at the same time per message sequence.
  * If a variable was already specified for this sequence of messages, it is replaced.
+ *
  * @param first_message_id id of the first message of the sequence where this value will appear
  * @param value the value to add
  */

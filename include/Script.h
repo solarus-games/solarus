@@ -25,7 +25,19 @@
 struct lua_State;
 
 /**
- * @brief Abstract class for making an interface between the engine C++ code and a Lua script.
+ * @brief Interface between the engine C++ code and a Lua script.
+ *
+ * This class provides a API that allows the C++ and the Lua script to communicate
+ * in both directions.
+ * - The API contains C++ functions that Lua scripts can call to act on the game.
+ *   Examples: starting a dialog or getting the current number of rupees.
+ * - The API also contains names of Lua functions that the C++ engine invokes if they exist.
+ *   Such Lua functions are called events. They are used to notify the script that
+ *   and event just happened. Example: a dialog has just finished.
+ *
+ * This class only provide functions that are common to any kind of script and is meant to be inherited.
+ * The subclasses are specific to particular kinds of script
+ * (such as map scripts or enemy scripts) and provide additional, specific fonctions.
  */
 class Script {
 

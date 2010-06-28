@@ -21,20 +21,25 @@
 #include "entities/Enemy.h"
 
 /**
- * A ball and its chain, usually controlled by another enemy.
+ * @brief A ball and its chain, usually controlled by another enemy.
+ *
+ * The ball is controlled by an instance of CircleMovement and
+ * the chain automatically fits the space between the enemy and the ball.
+ * The chain and ball cannot be killed. They usually disappear when
+ * the enemy is killed.
  */
 class ChainAndBall: public Enemy {
 
   private:
 
     // center
-    MapEntity *center_entity;          /**< the entity this ball makes circles around */
+    MapEntity *center_entity;          /**< the entity this ball is making circles around */
     Rectangle center_entity_dxy;       /**< center point of the circles, relative to the entity */
 
     // chain
     static const int nb_links = 10;    /**< number of links in the chain */
     Sprite* link_sprite;               /**< sprite of the links between the center and the ball */
-    Rectangle link_xy[nb_links];       /**< coordinates of each link displayed */
+    Rectangle link_xy[nb_links];       /**< current coordinates of each link displayed */
 
   protected:
 

@@ -21,7 +21,9 @@
 #include "Detector.h"
 
 /**
- * A block or a statue that the hero can push.
+ * @brief A block or a statue that the hero can push.
+ *
+ * Some blocks can be moved only once or in only one direction.
  * If this a statue, it can also be pulled.
  */
 class Block: public Detector {
@@ -29,8 +31,7 @@ class Block: public Detector {
   public:
 
     /**
-     * The different kinds of blocks: normal block
-     * or statue.
+     * @brief The different kinds of blocks.
      */
     enum Subtype {
       NORMAL, /**< a usual block */

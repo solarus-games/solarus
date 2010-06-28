@@ -22,7 +22,13 @@
 #include "lowlevel/Rectangle.h"
 
 /**
- * The Map submenu of the pause menu.
+ * @brief The Map submenu of the pause menu.
+ *
+ * When the player is not in a dungeon, this submenu shows the outside map 
+ * if he has the world map.
+ * When the player is in a dungeon, this submenu shows the dungeon information,
+ * possibly including the minimap and other data depending on
+ * whether he has the map and the compass.
  */
 class PauseSubmenuMap: public PauseSubmenu {
 

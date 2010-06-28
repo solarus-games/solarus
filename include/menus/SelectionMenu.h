@@ -23,7 +23,9 @@
 #include "lowlevel/Color.h"
 
 /**
- * This class represents the selection menu where the player chooses his savegame.
+ * @brief Represents the selection screen where the player chooses his savegame.
+ *
+ * This screen is divided in several phase. Each phase is a subclass of SelectionMenuPhase.
  */
 class SelectionMenu: public Screen {
 

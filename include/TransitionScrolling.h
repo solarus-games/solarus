@@ -22,7 +22,14 @@
 #include "lowlevel/Rectangle.h"
 
 /**
- * Scrolling transition between two maps.
+ * @brief Scrolling transition between two maps.
+ *
+ * This kind of transition can only be used for the transition between two maps.
+ * The new map is displayed gradually, with a scrolling effect, and the hero
+ * is displayed between both maps.
+ * Nothing happens during the out transition. During the in transition,
+ * the previous map does not exist anymore but its surface was saved
+ * and we can still display it.
  */
 class TransitionScrolling: public Transition {
 

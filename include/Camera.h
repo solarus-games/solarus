@@ -21,7 +21,11 @@
 #include "lowlevel/Rectangle.h"
 
 /**
+ * @brief Manages the visible area of the map.
+ *
  * The camera determines the visible area of the map.
+ * Most of the time, the camera follows the hero movements.
+ * Occasionaly, it can be moved towards a point and then restored towards the hero.
  */
 class Camera {
 

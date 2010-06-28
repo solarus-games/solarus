@@ -22,8 +22,8 @@
 #include <list>
 
 /**
- * A crystal switch is a switch that the hero can activate to change the configuration of the
- * blue and orange blocks on the map.
+ * @brief A switch that can be activated to change the state of the
+ * crystal switch blocks.
  */
 class CrystalSwitch: public Detector {
 

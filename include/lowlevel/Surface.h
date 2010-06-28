@@ -22,7 +22,10 @@
 #include <SDL/SDL.h>
 
 /**
- * Represents a surface that can be drawn or blitted on another surface.
+ * @brief Represents a graphic surface.
+ *
+ * A surface is a rectangle of pixels.
+ * A surface can be drawn or blitted on another surface.
  * This class basically encapsulates a library-dependent surface object.
  */
 class Surface {
@@ -30,7 +33,7 @@ class Surface {
   public:
 
     /**
-     * Indicates the base directory to use when opening image files.
+     * @brief The base directory to use when opening image files.
      */
     enum ImageDirectory {
       DIR_DATA,        /**< the root directory of the data package */

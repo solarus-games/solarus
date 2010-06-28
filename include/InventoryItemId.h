@@ -18,10 +18,11 @@
 #define SOLARUS_INVENTORY_ITEM_ID_H
 
 /**
- * Constants identifying each item of the inventory.
+ * @brief Constants identifying each item of the inventory.
+ *
  * These constants allow the engine to determine
  * the savegame variable of each item and
- * the place for each item in the inventory screen.
+ * the place for each one in the inventory submenu.
  */
 enum InventoryItemId {
   INVENTORY_NONE                        = -1,

@@ -21,8 +21,8 @@
 #include "movements/CollisionMovement.h"
 
 /**
- * Class for a moving map entity sensible to the obstacles
- * but capable of fixing its direction to continue walking.
+ * @brief Movement capable of fixing itself to continue walking when
+ * an obstacle is reached.
  */
 class SmoothCollisionMovement: public CollisionMovement {
   

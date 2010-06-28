@@ -22,14 +22,16 @@
 #include "movements/FallingHeight.h"
 
 /**
- * A pickable item on the map (rupee, heart, bomb, fairy...).
+ * @brief An item that the hero can take.
+ *
+ * Example of pickable items include rupees, hearts, bombs, fairies, etc.
  */
 class PickableItem: public Detector {
 
   public:
 
     /**
-     * Subtypes of pickable items.
+     * @brief Subtypes of pickable items.
      */
     enum Subtype {
 
@@ -52,7 +54,7 @@ class PickableItem: public Detector {
       ARROW_5         = 12,
       ARROW_10        = 13,
 
-      // items saved
+      // items always saved
       SMALL_KEY       = 14,
       BIG_KEY         = 15,
       BOSS_KEY        = 16,
@@ -63,7 +65,7 @@ class PickableItem: public Detector {
   protected:
 
     /**
-     * This structure defines the features of a pickable item subtype.
+     * @brief Defines the features of a pickable item subtype.
      */
     struct Features {
       SpriteAnimationSetId animation_set_id; /**< animation set used for this subtype of pickable item */

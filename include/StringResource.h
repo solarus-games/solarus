@@ -21,9 +21,12 @@
 #include <map>
 
 /**
+ * @brief Provides access to strings translated in the current language.
+ *
  * This class provides some strings loaded from an external file containing the texts in the current language.
- * This class is used only to load simple strings. The messages displayed in the dialog box come from more
- * complex data files, see classes DialogBox and Message.
+ * This class is used only to load simple strings such as the ones displayed in the menus.
+ * The messages displayed in the dialog box during the game come from more
+ * complex data files (see classes DialogBox and Message).
  */
 class StringResource {
 

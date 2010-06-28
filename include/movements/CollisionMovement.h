@@ -22,8 +22,9 @@
 #include "lowlevel/Rectangle.h"
 
 /**
- * Abstract movement class for all moving entities
- * that may be sensible to the obstacles of their map.
+ * @brief Abstract class for all movements sensible to obstacle.
+ *
+ * This class is inherited by all movements that may be sensible to the obstacles of the map.
  */
 class CollisionMovement: public Movement {
 

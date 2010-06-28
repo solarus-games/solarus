@@ -22,10 +22,11 @@
 #include "Treasure.h"
 
 /**
- * This class represents the hero's equipment. It makes the interface
- * between the savegame and other engine classes.
- * You should call this class to know his current equipment
- * (sword, rupees, objects...) and to modify it.
+ * @brief Represents the hero's equipment.
+ *
+ * This class makes the interface between the savegame and other classes.
+ * You should call this class to get information about the current equipment
+ * (sword, rupees, inventory…) and to modify it.
  */
 class Equipment {
 

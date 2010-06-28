@@ -22,11 +22,19 @@
 #include "InventoryItemId.h"
 
 /**
+ * @brief Represents an item from the inventory.
+ *
  * This class provides the description of each item of the inventory
  * with some static methods,
  * and handles their behavior when it is instanciated.
  * This inventory items does not include the dungeon items (map, compass, etc.)
  * nor the items of the quest status screen (rupee bag, heart pieces, etc.).
+ * It only includes the items displayed on the inventory submenu
+ * (accessible when the game is paused).
+ * Some inventory items can be assigned to the two inventory item keys
+ * and then be used directly during the game (e.g. the boomerang, the bombs, etc.),
+ * whereas some other cannot (e.g. the glove and the flippers)
+ * because they are only used in an implicit way.
  */
 class InventoryItem {
 

@@ -18,8 +18,11 @@
 #define SOLARUS_FALLING_HEIGHT_H
 
 /**
- * Indicates from which height an entity falls
- * when the FallingOnFloorMovement class is used.
+ * @brief Indicates from which height an entity falls.
+ *
+ * This enumeration is used by the FallingOnFloorMovement class,
+ * typically to make pickable items fall on the ground
+ * when an enemy is killed or when a pot is lifted.
  */
 enum FallingHeight {
   FALLING_NONE = -1,

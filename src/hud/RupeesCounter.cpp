@@ -24,7 +24,7 @@
 /**
  * Position of the 3 rupee icons in the image.
  */
-Rectangle RupeesCounter::rupee_icon_positions[3] = {
+const Rectangle RupeesCounter::rupee_icon_positions[3] = {
   Rectangle( 0, 0, 12, 12),
   Rectangle(12, 0, 12, 12),
   Rectangle(24, 0, 12, 12),

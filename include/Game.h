@@ -23,9 +23,11 @@
 #include "GameControls.h"
 
 /**
- * This class handles the game.
- * The game shows the current map and displays all current elements:
- * the current map, the HUD, the pause menu, the dialog box, etc.
+ * @brief Represents the game currently running.
+ *
+ * The game is the main screen of the program.
+ * It shows the current map and displays all game elements:
+ * the map entities, the HUD, the pause menu, the dialog box, etc.
  */
 class Game: public Screen {
 

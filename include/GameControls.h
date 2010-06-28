@@ -22,7 +22,9 @@
 #include <map>
 
 /**
- * Represents the game controls. This class handles the customization of the keyboard and joypad controls.
+ * @brief Stores the game controls.
+ *
+ * This class handles the customization of the keyboard and joypad controls.
  * It receives the low-level keyboard and joypad events that occur during
  * the game and then notifies the appropriate objects that a game key was activated or released.
  * What we call a game key is a high-level notion such as "the action key".
@@ -33,7 +35,8 @@ class GameControls {
   public:
 
     /**
-     * The game keys that can be customized.
+     * @brief The game keys that can be customized.
+     *
      * These high-level keys can be mapped onto the keyboard and the joypad.
      */
     enum GameKey {

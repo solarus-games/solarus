@@ -21,26 +21,28 @@
 #include "entities/Enemy.h"
 
 /**
- * A green soldier with a small sword.
+ * @brief A green soldier with a small sword.
+ *
  * Unlike the normal green soldier, it cannot see or follow the hero.
  */
 class SimpleGreenSoldier: public Enemy {
 
- private:
+  private:
 
-  void walk(int direction);
+    void walk(int direction);
 
- protected:
+  protected:
 
-  void initialize(void);
-  void restart(void);
+    void initialize(void);
+    void restart(void);
 
- public:
+  public:
 
-  SimpleGreenSoldier(const ConstructionParameters &params);
-  ~SimpleGreenSoldier(void);
+    SimpleGreenSoldier(const ConstructionParameters &params);
+    ~SimpleGreenSoldier(void);
 
-  void update(void);
+    void update(void);
 };
 
 #endif
+

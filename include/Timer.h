@@ -20,7 +20,9 @@
 #include "Common.h"
 
 /**
- * Represents a timer that any class can start.
+ * @brief Represents a timer that any class can start.
+ *
+ * Timers are mostly used by the scripts.
  */
 class Timer {
 
@@ -33,10 +35,10 @@ class Timer {
     bool finished;                   /**< indicates that the timer is finished */
 
     bool suspended;                  /**< indicates whether the timer is suspended */
-    uint32_t when_suspended;         /**< indicates when the timer was suspended */
+    uint32_t when_suspended;         /**< date when the timer was suspended */
 
     // sound
-    uint32_t next_sound_date;        /**< date when the next countdown sound effect will be played */
+    uint32_t next_sound_date;        /**< date when the next countdown sound effect is played */
     Sound *countdown_sound;          /**< sound played every second while the timer is running */
     Sound *countdown_hurry_sound;    /**< sound played when the timer is close to finish */
 

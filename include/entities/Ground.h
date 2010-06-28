@@ -18,8 +18,9 @@
 #define SOLARUS_GROUND_H
 
 /**
- * The possible kinds of ground on the map.
- * The hero cannot walk on grounds above or equal to DEEP_WATER.
+ * @brief The possible kinds of ground on the map.
+ *
+ * The hero cannot walk on grounds that are above than or equal to GROUND_DEEP_WATER.
  */
 enum Ground {
   GROUND_NORMAL,

@@ -22,8 +22,10 @@
 #include "lowlevel/Rectangle.h"
 
 /**
- * Animated tile pattern.
- * An animated tile pattern has always three frames.
+ * @brief Animated tile pattern.
+ *
+ * Unlike simple tile patterns that always display the same image,
+ * an animated tile pattern displays three frames alternatively.
  */
 class AnimatedTilePattern: public TilePattern {
 

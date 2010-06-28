@@ -21,7 +21,9 @@
 #include "PickableItem.h"
 
 /**
- * Represents a fairy placed on the map, that the hero can take.
+ * @brief Represents a fairy that the hero can take to increase his life.
+ *
+ * The fairy moves on the map with an instance of FairyMovement.
  */
 class PickableItemFairy: public PickableItem {
 

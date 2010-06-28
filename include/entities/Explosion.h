@@ -22,7 +22,8 @@
 #include <list>
 
 /**
- * Represents an explosion on the map.
+ * @brief Represents an explosion on the map.
+ *
  * An explosion can be caused by several entities such as bombs, bomb flowers and enemies.
  * An explosion can hurt the hero, the enemies and open weak walls.
  */

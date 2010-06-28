@@ -16,7 +16,9 @@
  */
 
 /**
- * Some definition of types.
+ * @file Types.h
+ * @brief Some declarations of types.
+ *
  * This header is included by Common.h and every class header file should include Common.h.
  */
 
@@ -25,7 +27,7 @@
 
 #include <stdint.h>
 
-/**
+/*
  * Types of the id of each resource.
  */
 typedef std::string ImageId;
@@ -35,12 +37,12 @@ typedef std::string MusicId;
 typedef std::string SoundId;
 typedef std::string SpriteAnimationSetId;
 
-/**
+/*
  * Messages.
  */
 typedef std::string MessageId;
 
-/**
+/*
  * Declaration of all classes to avoid dependencies between the header files.
  */
 

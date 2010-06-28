@@ -25,7 +25,7 @@ class Geometry {
   public:
 
     // Mathematic constants:
-    // we don't use the constants from math.h
+    // we don't use the ones from math.h
     // because they are not ANSI
     static const double PI;
     static const double TWO_PI;

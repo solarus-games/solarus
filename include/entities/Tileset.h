@@ -21,9 +21,11 @@
 #include "lowlevel/Color.h"
 
 /**
- * A tileset is an image with a set of elements (tile patterns)
- * one can use to compose a map. * 
- * See the directory images/tilesets.
+ * @brief An image containing all tile patterns.
+ *
+ * A tileset is an image containing a set of elements (tile patterns)
+ * that one can use to compose a map.
+ * See the directory images/tilesets of the data package.
  */
 class Tileset {
 

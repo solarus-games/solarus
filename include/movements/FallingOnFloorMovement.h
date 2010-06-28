@@ -22,23 +22,25 @@
 #include "movements/FallingHeight.h"
 
 /**
+ * @brief Movement of an entity that falls on the floor and bounces.
+ *
  * Movement of an item that falls on the floor and
  * bounces one or several times before it stops.
  * This movement is typically used by the pickable items
- * (rupees, hearts...) that appear when the player kill an enemy.
+ * (rupees, hearts...) that appear when the player kills an enemy.
  */
 class FallingOnFloorMovement: public PixelMovement {
 
- private:
+  private:
 
-  static const Rectangle moves[][26];
-  static const int nb_moves[];
+    static const Rectangle moves[][26];
+    static const int nb_moves[];
 
- public:
+  public:
 
-  // construction and destruction
-  FallingOnFloorMovement(FallingHeight height);
-  ~FallingOnFloorMovement(void);
+    // construction and destruction
+    FallingOnFloorMovement(FallingHeight height);
+    ~FallingOnFloorMovement(void);
 
 };
 

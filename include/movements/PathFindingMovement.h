@@ -21,29 +21,32 @@
 #include "movements/PathMovement.h"
 
 /**
- * Movement for an entity that finds a path to another entity,
- * avoiding the obstacles on the way.
- * If the target entity is too far, the movement is a random walk.
+ * @brief Movement for an entity that looks for a path to another entity.
+ *
+ * This movement is typically used by enemies that try to reach the hero.
+ * The entity tries to find a path and to avoid the obstacles on the way.
+ * To this end, the PathFinding class (i.e. an implementation of the A* algorithm) is used.
+ * If the target entity is too far or not reachable, the movement is a random walk.
  */
 class PathFindingMovement: public PathMovement {
 
- private:
+  private:
 
-  MapEntity *target;              /**< the entity targeted by this movement (usually the hero) */
-  uint32_t next_recomputation_date;
+    MapEntity *target;              /**< the entity targeted by this movement (usually the hero) */
+    uint32_t next_recomputation_date;
 
- protected:
+  protected:
 
-  void update(void);
-  void start_next_move(void);
-  void recompute_movement(void);
+    void update(void);
+    void start_next_move(void);
+    void recompute_movement(void);
 
- public:
+  public:
 
-  PathFindingMovement(MapEntity *target, int speed);
-  ~PathFindingMovement(void);
+    PathFindingMovement(MapEntity *target, int speed);
+    ~PathFindingMovement(void);
 
-  bool is_finished(void);
+    bool is_finished(void);
 };
 
 #endif

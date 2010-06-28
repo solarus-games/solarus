@@ -20,7 +20,6 @@
 #include "entities/Stairs.h"
 #include "entities/MapEntities.h"
 #include "movements/CollisionMovement.h"
-#include "movements/PlayerMovement.h"
 #include "movements/TargetMovement.h"
 #include "Game.h"
 #include "Map.h"

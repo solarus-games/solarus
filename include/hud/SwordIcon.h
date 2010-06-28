@@ -22,7 +22,13 @@
 #include "KeysEffect.h"
 
 /**
- * This class displays the sword icon.
+ * @brief Displays the sword icon.
+ *
+ * The sword icon displays what happens when the sword key is pressed.
+ * In other words, it displays some information from the KeysEffect class.
+ * Most of the time, a sword image is displayed.
+ * When the game is paused, the sword icon changes and indicates that
+ * the player can save the game by pressing the sword key.
  */
 class SwordIcon: public HudElement {
 

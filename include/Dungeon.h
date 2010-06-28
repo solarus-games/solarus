@@ -21,6 +21,8 @@
 #include <vector>
 
 /**
+ * @brief Represents the properties of a dungeon.
+ *
  * Represents the properties of a dungeon, like the floors
  * and the chests it contains.
  * This class is used by the map submenu when the player is in a dungeon.
@@ -31,7 +33,9 @@ class Dungeon {
   public:
 
     /**
-     * Represents a dynamic element that appears on the minimap of a floor
+     * @brief A dynamic element that may appear on the minimap.
+     *
+     * This structre represents a dynamic element that appears on the minimap of a floor
      * (a chest or a boss).
      */
     struct DungeonElement {

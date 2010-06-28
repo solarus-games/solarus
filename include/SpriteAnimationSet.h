@@ -21,10 +21,11 @@
 #include <map>
 
 /**
- * A set of animations.
- * Each animation correspond to a specific situation
- * of a sprite.
- * For example, you can have an animation "stopped"
+ * @brief A set of animations representing a sprite.
+ *
+ * Each animation correspond to a specific situation of a sprite
+ * and is an instance of SpriteAnimation.
+ * For example, an NPC usually has an animation "stopped"
  * and an animation "walking".
  */
 class SpriteAnimationSet {

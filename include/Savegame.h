@@ -20,13 +20,17 @@
 #include "Common.h"
 
 /**
- * This class handles the game data saved.
+ * @brief Manages the game data saved.
+ *
+ * This class provides read and write access to the saved data.
  */
 class Savegame {
 
   private:
 
     /**
+     * @brief Contains the data saved.
+     *
      * This structure contains the data saved (16 Ko of data are stored).
      * The system can save some strings, integers and boolean values.
      * See StringIndex and IntegerIndex for the meaning of each string and integer used.
@@ -42,7 +46,8 @@ class Savegame {
   public:
 
     /**
-     * Index of each string saved in the file.
+     * @brief Index of each string saved in the file.
+     *
      * Do not change these numbers, otherwise you might break
      * the existing savegames.
      * Values before 63 are used by the engine. The map only have a read-only access to them.
@@ -77,7 +82,7 @@ class Savegame {
     };
 
     /**
-     * Index of each integer saved in the file.
+     * @brief Index of each integer saved in the file.
      * Do not change these numbers, otherwise you might break
      * the existing savegames.
      * Values before 1023 are used by the engine. The map only have a read-only access to them.

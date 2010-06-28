@@ -20,23 +20,25 @@
 #include "Common.h"
 
 /**
- * A screen is an execution phase of the program, like the title
- * screen, the selection menu screens or the game itself.
- * There is always a current screen and it is managed by the main loop.
+ * @brief Represents an execution phase of the program.
  *
- * To create a screen, you have to make a subclass of Screen.
+ * A screen is an execution phase of the program, like the title
+ * screen, the selection menu or the game itself.
+ * There is always a current screen and it is controlled by the main loop of the program.
+ *
+ * To create a screen, you have to implement a subclass of Screen.
  * The main loop will call three methods that you must implement:
- * - display: to draw your screen on the screen surface. This function
- * is called a certain number of times per second (FPS).
- * - update: to update your screen's internal data (this function is
+ * - display(): to draw your screen on the main surface. This function
+ * is called a certain number of times per second (which is the FPS number).
+ * - update(): to update your screen's internal data (this function is
  * called repeatedly). This is useful to update the
- * state of objects that depend on time (e.g. they are animated or moving).
- * - notify_event: to take into account input events that occur
+ * state of objects that depend on time (e.g. the ones that are animated or moving).
+ * - notify_event(): to take into account input events that occur
  * (such as a keyboard key or a joypad button that was just pressed).
  *
  * Basically, the program main loop calls these three functions. If it has enough
- * time (depending on how long are the update() and display() calls), it also
- * sleeps between two loops.
+ * time (depending on how long are the update() and display() calls), it can choose
+ * to sleep between two loops.
  *
  * When your screen is finished and you want to go to another screen,
  * you have to call set_next_screen() with the new screen as parameter.
@@ -68,20 +70,26 @@ class Screen {
     // functions to implement in subclasses and that will be called by the main loop
 
     /**
-     * Updates this screen.
+     * @brief Updates this screen.
+     *
      * This function is called repeatedly by the program's main loop.
      */
     virtual void update(void) = 0;
 
     /**
-     * Displays this screen.
+     * @brief Displays this screen on a surface.
+     *
      * This function is called by the main loop depending of the number of frames per second.
+     *
      * @param screen_surface the surface to draw
      */
     virtual void display(Surface *screen_surface) = 0;
 
     /**
+     * @brief Notifies this screen that an event just occured.
+     *
      * This function is called by the main loop when there is an input event.
+     *
      * @param event the event to handle
      */
     virtual void notify_event(InputEvent &event) = 0;

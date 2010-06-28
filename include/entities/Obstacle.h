@@ -18,7 +18,8 @@
 #define SOLARUS_OBSTACLE_H
 
 /**
- * Obstacle property for the tiles or the dynamic entities.
+ * @brief Obstacle property for the entities.
+ *
  * Values lower than or equal to OBSTACLE_NONE correspond to entities the hero can walk on.
  * Values higher than OBSTACLE_NONE correspond to obstacles.
  */
@@ -34,7 +35,7 @@ enum Obstacle {
   OBSTACLE_TOP_LEFT,           /**< the upper-left half of the entity is an obstacle */
   OBSTACLE_BOTTOM_LEFT,        /**< the lower-left half of the entity is an obstacle */
   OBSTACLE_BOTTOM_RIGHT,       /**< the lower-right half of the entity is an obstacle */
-  OBSTACLE_EMPTY               /**< there is no ground */
+  OBSTACLE_EMPTY               /**< there is no ground: you should look at a lower layer */
 };
 
 #endif

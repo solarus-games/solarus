@@ -21,18 +21,20 @@
 #include "entities/Enemy.h"
 
 /**
- * The tentacle enemy.
+ * @brief The tentacle enemy.
+ *
+ * It is a simple, small enemy that follows the hero.
  */
 class Tentacle: public Enemy {
 
- protected:
+  protected:
 
-  void initialize(void);
+    void initialize(void);
 
- public:
+  public:
 
-  Tentacle(const ConstructionParameters &params);
-  ~Tentacle(void);
+    Tentacle(const ConstructionParameters &params);
+    ~Tentacle(void);
 };
 
 #endif

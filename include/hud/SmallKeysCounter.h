@@ -21,8 +21,10 @@
 #include "hud/HudElement.h"
 
 /**
- * This class displays the small key counter and its icon
- * when the small keys are enabled in the current map.
+ * @brief Displays the small key counter and its icon.
+ *
+ * This HUD element is displayed only
+ * when small keys are enabled in the current map.
  */
 class SmallKeysCounter: public HudElement {
 

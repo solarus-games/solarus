@@ -21,7 +21,8 @@
 #include "entities/Enemy.h"
 
 /**
- * A bouncing enemy that removes life and magic when touching the hero.
+ * @brief A bouncing enemy that removes life and magic.
+ *
  * It cannot be killed.
  */
 class Bubble: public Enemy {

@@ -22,15 +22,19 @@
 #include "lowlevel/Color.h"
 
 /**
- * The game over sequence displayed when the hero dies.
+ * @brief The game over sequence displayed when the hero dies.
+ * 
+ * This class displayed the game over sequence.
+ * If the player has a fairy, a special animation occurs, the hero gets some life back and the game is resumed.
+ * If he does not, the game over menu is displayed.
  */
 class GameoverSequence {
 
   private:
 
     // data
-    Game *game;       /**< the game */
-    MusicId music_id; /**< the music played before game over */
+    Game *game;                     /**< the game */
+    MusicId music_id;               /**< the music played before game over */
 
     // graphics
     Surface *gameover_menu_img;     /**< image of the game over menu */
@@ -49,7 +53,9 @@ class GameoverSequence {
 
     int cursor_position;            /**< position of the cursor in the gameover menu (0 to 3) */
 
-    // state
+    /**
+     * @brief States of the game over sequence.
+     */
     enum State {
       WAITING_START,  /**< the game over sequence will start soon */
       CLOSING_GAME,   /**< fade out on the game screen */
@@ -61,7 +67,7 @@ class GameoverSequence {
       MENU            /**< the player can choose an option in the game over menu */
     };
 
-    State state;            /**< current state of the gameover sequence */
+    State state;              /**< current state of the gameover sequence */
     uint32_t next_state_date; /**< date when moving from a state to another one */
 
   public:

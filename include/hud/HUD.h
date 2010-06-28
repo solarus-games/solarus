@@ -20,8 +20,7 @@
 #include "Common.h"
 
 /**
- * This class displays information on the screen such as the rupees,
- * the hearts, etc.
+ * @brief Displays on-screen information such as the rupees, the icons, etc.
  */
 class HUD {
 

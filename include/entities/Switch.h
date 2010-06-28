@@ -21,12 +21,15 @@
 #include "entities/Detector.h"
 
 /**
- * A switch is a button that the hero can trigger by walking onto it
+ * @brief A button that the hero can trigger.
+ *
+ * A switch can be triggered by walking onto it
  * (then we call it a walkable switch) or by shooting an arrow towards it
  * (then we call it an arrow target).
  * Some walkable switches require a block to be enabled.
  * Some walkable switches become disabled when the hero or the block leave it.
  * A walkable switch can be visible or invisible.
+ * An arrow target is always invisible.
  */
 class Switch: public Detector {
 

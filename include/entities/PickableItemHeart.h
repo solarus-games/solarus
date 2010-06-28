@@ -21,7 +21,10 @@
 #include "entities/PickableItem.h"
 
 /**
- * Represents some life placed on the map, that the hero can pick.
+ * @brief Represents some life placed on the map, that the hero can pick.
+ *
+ * This kind of pickable item is specialized in a dedicated class because
+ * of its special sprites and movements.
  */
 class PickableItemHeart: public PickableItem {
 

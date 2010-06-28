@@ -21,23 +21,23 @@
 #include "MapEntity.h"
 
 /**
- * A destination point on the map.
- * A destination point is a location where the hero can arrive when using a teletransporter.
+ * @brief A location of the map where the hero can arrive when using a teletransporter.
  */
 class DestinationPoint: public MapEntity {
 
- private:
+  private:
 
-  bool is_visible;
-  bool change_direction;
+    bool is_visible;
+    bool change_direction;
 
- public:
+  public:
 
-  DestinationPoint(const std::string &name, Layer layer, int x, int y, int hero_direction, bool is_visible);
-  ~DestinationPoint(void);
-  static CreationFunction parse;
+    DestinationPoint(const std::string &name, Layer layer, int x, int y, int hero_direction, bool is_visible);
+    ~DestinationPoint(void);
+    static CreationFunction parse;
 
-  EntityType get_type(void);
+    EntityType get_type(void);
 };
 
 #endif
+

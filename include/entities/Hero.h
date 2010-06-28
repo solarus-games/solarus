@@ -26,16 +26,19 @@
 #include "InventoryItemId.h"
 
 /**
- * The hero's entity.
- * It is animated and can be controlled with an 8 directions system.
- * This class handles the hero's actions: the movements and the animation of his sprites.
+ * @brief The hero's entity.
+ *
+ * The hero is animated by several sprites and is controlled with an instance of PlayerMovement.
+ * This class handles the states and actions of the hero.
+ * The sprites are handled by the HeroSprites class.
  */
 class Hero: public MapEntity {
 
   public:
 
     /**
-     * Possible states of the hero.
+     * @brief Possible states of the hero.
+     *
      * The state is considered only when the game is not suspended.
      * The hero can move (and walk on teletransporters) in states FREE, PUSHING, CARRYING, SWORD_LOADING and SWIMMING.
      * He can swing his sword in states FREE, PUSHING, CARRYING and SWORD_SWINGING.

@@ -22,14 +22,16 @@
 #include "lowlevel/Rectangle.h"
 
 /**
- * This class shows the title screen of the game.
+ * @brief Shows the title screen of the game.
+ *
+ * This screen is the first one displayed when the program starts.
  */
 class TitleScreen: public Screen {
 
   private:
 
     /**
-     * The phases of the title screen.
+     * @brief The phases of the title screen.
      */
     enum Phase {
       PHASE_BLACK_SCREEN,
@@ -38,8 +40,9 @@ class TitleScreen: public Screen {
     };
 
     /**
-     * Possible times of the day, used
-     * to display different title screens.
+     * @brief Possible times of the day.
+     *
+     * These values are used to display different title screens.
      */
     enum TimeOfDay {
       DAYLIGHT,

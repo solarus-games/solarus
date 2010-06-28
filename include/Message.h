@@ -21,9 +21,10 @@
 #include "DialogBox.h"
 
 /**
- * A message displayed in a dialog box.
- * This class parses the message from a data file
- * and displays it in a dialog box.
+ * @brief A message displayed in a dialog box.
+ *
+ * This class parses the message from a data file and displays it in a dialog box.
+ * A message is usually part of a sequence of several messages called a dialog.
  */
 class Message {
 

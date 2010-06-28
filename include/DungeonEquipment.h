@@ -20,6 +20,8 @@
 #include "Common.h"
 
 /**
+ * @brief Represents the hero's equipment in a dungeon.
+ *
  * This class represents the hero's equipment in a dungeon
  * (the map, the compass, the boss keys...).
  * Like the class Equipment, it makes the interface between

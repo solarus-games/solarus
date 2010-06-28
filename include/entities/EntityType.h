@@ -18,7 +18,15 @@
 #define SOLARUS_ENTITY_TYPE_H
 
 /**
- * Constants to identify each kind of map entity.
+ * @brief Constants to identify each kind of map entity.
+ *
+ * Each constant correspond to a subclass of MapEntity.
+ * Entities with an entity type lower than 1000 are
+ * stored in the map file (tiles, teletransporters, chests,
+ * stairs, doors, etc.).
+ * Entities with an entity type greater than or equal to 1000
+ * are only generated dynamically during the game
+ * (hero, explosion, boomerang, etc.).
  */
 enum EntityType {
 

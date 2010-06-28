@@ -21,10 +21,11 @@
 #include "movements/CollisionMovement.h"
 
 /**
- * Movement for an entity that follows a path.
- * The path is a succession of basic moves, where
- * each basic move is an 8-pixel movement in one
- * of the 8 main directions.
+ * @brief Movement of an entity that follows a predetermined path.
+ *
+ * The path is a succession of basic moves, where each basic move
+ * is an 8-pixel movement in one of the 8 main directions.
+ * The movement may or may not be sensible to obstacles.
  */
 class PathMovement: public CollisionMovement {
 

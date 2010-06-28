@@ -22,7 +22,18 @@
 #include "KeysEffect.h"
 
 /**
- * The menus displayed when the game is paused.
+ * @brief The menus displayed when the game is paused.
+ *
+ * The pause menu is divided in four submenus:
+ * - inventory,
+ * - map,
+ * - quest status,
+ * - options.
+ * Each submenu is a subclass of PauseSubmenu.
+ * The player can switch between the submenu with
+ * the directional keys. From any submenu, he can
+ * save the game by pressing the sword key,
+ * and resume the game by pressing the pause key.
  */
 class PauseMenu {
 

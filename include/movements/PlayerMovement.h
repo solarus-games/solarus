@@ -21,7 +21,9 @@
 #include "movements/SmoothCollisionMovement.h"
 
 /**
- * Abstract class for an 8-direction movement controlled by the player.
+ * @brief Movement of an entity controlled by the player.
+ *
+ * This movement is an 8-direction movement typically used by the hero.
  */
 class PlayerMovement: public SmoothCollisionMovement {
 

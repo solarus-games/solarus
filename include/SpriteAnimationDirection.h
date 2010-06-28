@@ -21,9 +21,10 @@
 #include "lowlevel/Rectangle.h"
 
 /**
- * An animation direction is a sequence of
- * frames representing a sprite with a particular
- * animation in a particular direction.
+ * @brief A sequence of frames representing a sprite animated in a particular direction.
+ *
+ * An animation direction is a sequence of frames representing a sprite
+ * with a specific animation and in a specific direction.
  */
 class SpriteAnimationDirection {
 

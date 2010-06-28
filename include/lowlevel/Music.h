@@ -21,13 +21,14 @@
 #include <AL/al.h>
 
 /**
- * This class represents a music that can be played.
+ * @brief Represents a music that can be played.
+ *
  * A music should be in format .spc (Snes).
- * The .it format (Impulse Tracker Module) will be supported in a future version.
+ * The .it format (Impulse Tracker Module) will probably be supported in a future version.
  * Only one music can be played at the same time.
  * Before using this class, the audio system should have been
  * initialized, by calling Sound::initialize().
- * Sound and Music are the only classes that depends on the audio mixer library (OpenAL).
+ * Sound and Music are the only classes that depends on audio libraries.
  */
 class Music {
 

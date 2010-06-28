@@ -21,7 +21,8 @@
 #include "entities/Detector.h"
 
 /**
- * Represents a chest on a map.
+ * @brief Represents a chest on a map.
+ *
  * It can be a normal chest or a big chest.
  */
 class Chest: public Detector {

@@ -21,13 +21,13 @@
 #include "snes_spc/spc.h"
 
 /**
- * @brief Encapsulates the SPC music decoding, allowing
- * the Music class to be independent of the SPC library.
+ * @brief Encapsulates the SPC music decoding.
  *
- * To decode SPC music files, the Snes_SPC library code is used.
- * Snes_SPC is a recent SPC decoding library and exists in two versions:
- * - a fast version, that renders music with a very nice quality (recommended);
- * - a highly accurate version, that renders music with a better accuracy, but three times slower.
+ * This class allows the Music class to be independent of the SPC library.
+ * To decode SPC music files, the code of the Snes_SPC library is used.
+ * Snes_SPC is a recent SPC decoding library that exists in two versions:
+ * - a fast version, that renders music with a very nice quality;
+ * - a highly accurate version, that renders music with a better accuracy, but about three times slower.
  * The source code of Solarus include the fast version of Snes_SPC, which I recommend
  * since the sound generated is good enough.
  */
@@ -36,7 +36,7 @@ class SpcDecoder {
   private:
 
     // Snes_SPC specific data
-    SNES_SPC *snes_spc_manager;   /**< the snes_spc object */
+    SNES_SPC *snes_spc_manager;   /**< the snes_spc object encapsulated */
     SPC_Filter *snes_spc_filter;  /**< the snes_spc filter object */
 
   public:

@@ -37,7 +37,6 @@ Feature requests :
 - faire un type d'ennemi "CustomEnemy" qui est en fait scripté
 
 
-
 Bugs :
 
 - plein écran se déclenche parfois avec des combinaisons de espace, gauche, haut (il croit que F5 a été appuyé)
@@ -66,14 +65,7 @@ Bugs :
 - (bug trouvé par Morwenn, confirmé) Lorsqu'on essaye de soulever une falaise en biais (avec la touche action),
   et que l'on reste appuyé sur la touche directionnelle, Link continue d'essayer de pousser la falaise
   tant qu'on ne relâche pas la touche directionnelle.
-- réformer les noms dans les scripts
 
-
-Amélioration de la documentation en cours (@brief manquants) :
-
-find . -name '*.h' -o -name '*.cpp' | sort
-
-dernier fichier traité : PauseSubmenuQuestStatus.cpp
 
 A venir :
 

@@ -29,7 +29,7 @@
 Surface *Sprite::alpha_surface = NULL;
 
 /**
- * Initializes the sprites system.
+ * @brief Initializes the sprites system.
  */
 void Sprite::initialize(void) {
 
@@ -39,14 +39,14 @@ void Sprite::initialize(void) {
 }
 
 /**
- * Uninitializes the sprites system.
+ * @brief Uninitializes the sprites system.
  */
 void Sprite::quit(void) {
   delete alpha_surface;
 }
 
 /**
- * Creates a sprite with the specified animation set.
+ * @brief Creates a sprite with the specified animation set.
  * @param id name of an animation set
  */
 Sprite::Sprite(const SpriteAnimationSetId &id):
@@ -59,14 +59,14 @@ Sprite::Sprite(const SpriteAnimationSetId &id):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 Sprite::~Sprite(void) {
 
 }
 
 /**
- * Returns the id of the animation set of this sprite.
+ * @brief Returns the id of the animation set of this sprite.
  * @return the animation set id of this sprite
  */
 const SpriteAnimationSetId& Sprite::get_animation_set_id(void) {
@@ -74,7 +74,7 @@ const SpriteAnimationSetId& Sprite::get_animation_set_id(void) {
 }
 
 /**
- * Returns wether the id of the animation set of this sprite
+ * @brief Returns wether the id of the animation set of this sprite
  * contains the specified string.
  * @param s the string to check
  * @return true if the animation set id contains this string
@@ -84,9 +84,11 @@ bool Sprite::contains(const std::string s) {
 }
 
 /**
- * Returns the animation set of this sprite.
+ * @brief Returns the animation set of this sprite.
+ *
  * If several sprites have the same animation set, they share the same instance of animation set
  * and the same pointer is returned here.
+ *
  * @return the animation set of this sprite
  */
 SpriteAnimationSet * Sprite::get_animation_set(void) {
@@ -94,7 +96,8 @@ SpriteAnimationSet * Sprite::get_animation_set(void) {
 }
 
 /**
- * Enables the pixel-perfect collision detection for the animation set of this sprite.
+ * @brief Enables the pixel-perfect collision detection for the animation set of this sprite.
+ *
  * All sprites that use the same animation set as this one will be affected.
  */
 void Sprite::enable_pixel_collisions(void) {
@@ -102,7 +105,7 @@ void Sprite::enable_pixel_collisions(void) {
 }
 
 /**
- * Returns whether the pixel-perfect collisions are enabled for the animation set of this sprite.
+ * @brief Returns whether the pixel-perfect collisions are enabled for the animation set of this sprite.
  * @return true if the pixel-perfect collisions are enabled
  */
 bool Sprite::are_pixel_collisions_enabled(void) {
@@ -110,7 +113,7 @@ bool Sprite::are_pixel_collisions_enabled(void) {
 }
 
 /**
- * Returns the size of a frame for the current animation and the current direction.
+ * @brief Returns the size of a frame for the current animation and the current direction.
  * @return the size of a frame
  */
 const Rectangle & Sprite::get_size(void) {
@@ -120,7 +123,7 @@ const Rectangle & Sprite::get_size(void) {
 }
 
 /**
- * Returns the origin point of a frame for the current animation and the current direction.
+ * @brief Returns the origin point of a frame for the current animation and the current direction.
  * @return the origin point of a frame
  */
 const Rectangle & Sprite::get_origin(void) {
@@ -130,10 +133,12 @@ const Rectangle & Sprite::get_origin(void) {
 }
 
 /**
- * Returns the frame delay of the current animation.
+ * @brief Returns the frame delay of the current animation.
+ *
  * A value of 0 (only for 1-frame animations) means that the
  * animation must continue to be displayed: in this case,
  * is_animation_finished() returns always false.
+ *
  * @return the delay between two frames for the current animation (in miliseconds)
  */
 uint32_t Sprite::get_frame_delay(void) {
@@ -141,9 +146,11 @@ uint32_t Sprite::get_frame_delay(void) {
 }
 
 /**
- * Sets the frame delay of the current animation.
+ * @brief Sets the frame delay of the current animation.
+ *
  * A value of 0 (only for 1-frame animations) means that the
  * animation will continue to be displayed.
+ *
  * @param frame_delay the delay between two frames for the current animation (in miliseconds)
  */
 void Sprite::set_frame_delay(uint32_t frame_delay) {
@@ -151,7 +158,7 @@ void Sprite::set_frame_delay(uint32_t frame_delay) {
 }
 
 /**
- * Returns the next frame of the current frame.
+ * @brief Returns the next frame of the current frame.
  * @return the next frame of the current frame (or -1 if the animation is finished)
  */
 int Sprite::get_next_frame(void) {
@@ -159,7 +166,7 @@ int Sprite::get_next_frame(void) {
 }
 
 /**
- * Returns the current animation of the sprite.
+ * @brief Returns the current animation of the sprite.
  * @return the name of the current animation of the sprite
  */
 const std::string & Sprite::get_current_animation(void) {
@@ -167,9 +174,11 @@ const std::string & Sprite::get_current_animation(void) {
 }
 
 /**
- * Sets the current animation of the sprite.
+ * @brief Sets the current animation of the sprite.
+ *
  * If the sprite is already playing another animation, this animation is interrupted.
  * If the sprite is already playing the same animation, nothing is done.
+ *
  * @param animation_name name of the new animation of the sprite
  */
 void Sprite::set_current_animation(const std::string &animation_name) {
@@ -190,7 +199,7 @@ void Sprite::set_current_animation(const std::string &animation_name) {
 }
 
 /**
- * Returns the current direction of the sprite's animation.
+ * @brief Returns the current direction of the sprite's animation.
  * @return the current direction
  */
 int Sprite::get_current_direction(void) {
@@ -198,8 +207,10 @@ int Sprite::get_current_direction(void) {
 }
 
 /**
- * Sets the current direction of the sprite's animation and restarts the animation.
+ * @brief Sets the current direction of the sprite's animation and restarts the animation.
+ *
  * If the specified direction is the current direction, nothing is done.
+ *
  * @param current_direction the current direction
  */
 void Sprite::set_current_direction(int current_direction) {
@@ -216,7 +227,7 @@ void Sprite::set_current_direction(int current_direction) {
 }
 
 /**
- * Returns the current frame of the sprite's animation.
+ * @brief Returns the current frame of the sprite's animation.
  * @return the current frame
  */
 int Sprite::get_current_frame(void) {
@@ -224,10 +235,12 @@ int Sprite::get_current_frame(void) {
 }
 
 /**
- * Sets the current frame of the sprite's animation.
+ * @brief Sets the current frame of the sprite's animation.
+ *
  * If the animation was finished, it is restarted.
  * If the animation is suspended, it remains suspended
- * but the specified frame is displayed. 
+ * but the specified frame is displayed.
+ *
  * @param current_frame the current frame
  */
 void Sprite::set_current_frame(int current_frame) {
@@ -241,7 +254,7 @@ void Sprite::set_current_frame(int current_frame) {
 }
 
 /**
- * Returns whether the frame of this sprite has just changed.
+ * @brief Returns whether the frame of this sprite has just changed.
  * @return true if the frame of this sprite has just changed.
  */
 bool Sprite::has_frame_changed(void) {
@@ -249,8 +262,10 @@ bool Sprite::has_frame_changed(void) {
 }
 
 /**
- * Returns true if the animation is started.
+ * @brief Returns true if the animation is started.
+ *
  * It can be suspended.
+ *
  * @return true if the animation is started, false otherwise
  */
 bool Sprite::is_animation_started(void) {
@@ -258,14 +273,14 @@ bool Sprite::is_animation_started(void) {
 }
 
 /**
- * Starts the animation.
+ * @brief Starts the animation.
  */
 void Sprite::start_animation(void) {
   restart_animation();
 }
 
 /**
- * Restarts the animation.
+ * @brief Restarts the animation.
  */
 void Sprite::restart_animation(void) {
   set_current_frame(0);
@@ -274,14 +289,14 @@ void Sprite::restart_animation(void) {
 }
 
 /**
- * Stops the animation.
+ * @brief Stops the animation.
  */
 void Sprite::stop_animation(void) {
   finished = true;
 }
 
 /**
- * Returns true if the game is suspended.
+ * @brief Returns true if the game is suspended.
  * @return true if the game is suspended, false otherwise
  */
 bool Sprite::is_suspended(void) {
@@ -289,8 +304,10 @@ bool Sprite::is_suspended(void) {
 }
 
 /**
- * Suspends or resumes the animation.
+ * @brief Suspends or resumes the animation.
+ *
  * Nothing is done if the parameter specified does not change.
+ *
  * @param suspended true to suspend the animation, false to resume it
  */
 void Sprite::set_suspended(bool suspended) {
@@ -311,8 +328,10 @@ void Sprite::set_suspended(bool suspended) {
 }
 
 /**
- * Sets whether this sprite should keep playing its animation when the game is suspended.
- * This will ignore subsequent calls to set_suspended(). 
+ * @brief Sets whether this sprite should keep playing its animation when the game is suspended.
+ *
+ * This will ignore subsequent calls to set_suspended().
+ *
  * @param ignore_suspend true to make the sprite continue its animation even
  * when the game is suspended
  */
@@ -322,7 +341,7 @@ void Sprite::set_ignore_suspend(bool ignore_suspend) {
 }
 
 /**
- * Returns true if the animation is paused.
+ * @brief Returns true if the animation is paused.
  * @return true if the animation is paused, false otherwise
  */
 bool Sprite::is_paused(void) {
@@ -330,8 +349,10 @@ bool Sprite::is_paused(void) {
 }
 
 /**
- * Pauses or resumes the animation.
+ * @brief Pauses or resumes the animation.
+ *
  * Nothing is done if the parameter specified does not change.
+ *
  * @param paused true to pause the animation, false to resume it
  */
 void Sprite::set_paused(bool paused) {
@@ -352,7 +373,7 @@ void Sprite::set_paused(bool paused) {
 }
 
 /**
- * Returns true if the animation is looping.
+ * @brief Returns true if the animation is looping.
  * @return true if the animation is looping
  */
 bool Sprite::is_animation_looping(void) {
@@ -360,10 +381,12 @@ bool Sprite::is_animation_looping(void) {
 }
 
 /**
- * Returns true if the animation is finished.
+ * @brief Returns true if the animation is finished.
+ *
  * The animation is finished after the last frame is reached
  * and if the frame delay is not zero (a frame delay
  * of zero should be used only for 1-frame animations).
+ *
  * @return true if the animation is finished
  */
 bool Sprite::is_animation_finished(void) {
@@ -371,7 +394,7 @@ bool Sprite::is_animation_finished(void) {
 }
 
 /**
- * Returns true if the last frame is reached.
+ * @brief Returns true if the last frame is reached.
  * @return true if the last frame is reached
  */
 bool Sprite::is_last_frame_reached(void) {
@@ -381,7 +404,7 @@ bool Sprite::is_last_frame_reached(void) {
 }
 
 /**
- * Returns whether the sprite is blinking.
+ * @brief Returns whether the sprite is blinking.
  * @return true if the sprite is blinking
  */
 bool Sprite::is_blinking(void) {
@@ -389,7 +412,7 @@ bool Sprite::is_blinking(void) {
 }
 
 /**
- * Sets the blink delay of this sprite.
+ * @brief Sets the blink delay of this sprite.
  * @param blink_delay blink delay of the sprite in milliseconds,
  * or zero to stop blinking.
  */
@@ -403,7 +426,7 @@ void Sprite::set_blinking(uint32_t blink_delay) {
 }
  
 /**
- * Returns the alpha value currently applied to the sprite.
+ * @brief Returns the alpha value currently applied to the sprite.
  * @return the transparency rate: 0 (tranparent) to 255 (opaque)
  */
 int Sprite::get_alpha(void) {
@@ -411,7 +434,7 @@ int Sprite::get_alpha(void) {
 }
 
 /**
- * Sets the alpha value applied to the sprite.
+ * @brief Sets the alpha value applied to the sprite.
  * @param alpha the opacity rate: 0 (tranparent) to 255 (opaque)
  */
 void Sprite::set_alpha(int alpha) {
@@ -420,7 +443,7 @@ void Sprite::set_alpha(int alpha) {
 }
 
 /**
- * Returns whether the entity's sprites are currently displaying a fade-in or fade-out effect.
+ * @brief Returns whether the entity's sprites are currently displaying a fade-in or fade-out effect.
  * @return true if there is currently a fade effect
  */
 bool Sprite::is_fading(void) {
@@ -428,7 +451,7 @@ bool Sprite::is_fading(void) {
 }
 
 /**
- * Starts a fade-in effect on this sprite.
+ * @brief Starts a fade-in effect on this sprite.
  * @param direction direction of the effect (0: fade-in, 1: fade-out)
  */
 void Sprite::start_fading(int direction) {
@@ -438,7 +461,7 @@ void Sprite::start_fading(int direction) {
 }
 
 /**
- * Tests whether this sprite's pixels are overlapping another sprite.
+ * @brief Tests whether this sprite's pixels are overlapping another sprite.
  * @param other another sprite
  * @param x1 x coordinate of this sprite's origin point
  * @param y1 y coordinate of this sprite's origin point
@@ -462,7 +485,8 @@ bool Sprite::test_collision(Sprite *other, int x1, int y1, int x2, int y2) {
 }
 
 /**
- * Checks whether the frame has to be changed.
+ * @brief Checks whether the frame has to be changed.
+ *
  * If the frame changes, next_frame_date is updated.
  */
 void Sprite::update(void) {
@@ -520,7 +544,7 @@ void Sprite::update(void) {
 }
 
 /**
- * Displays the sprite on a surface, with its current animation, direction and frame.
+ * @brief Displays the sprite on a surface, with its current animation, direction and frame.
  * @param destination the surface on which the sprite will be displayed
  * @param x x coordinate of the sprite on this surface
  * (the origin will be placed at this position)

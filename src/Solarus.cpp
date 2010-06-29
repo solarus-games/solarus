@@ -27,7 +27,7 @@
 #include "menus/LanguageScreen.h"
 
 /**
- * Initializes the game engine.
+ * @brief Initializes the game engine.
  * @param argc number of arguments of the command line
  * @param argv command-line arguments
  */
@@ -44,7 +44,7 @@ Solarus::Solarus(int argc, char **argv) {
 }
 
 /**
- * Cleans everything.
+ * @brief Cleans everything.
  */
 Solarus::~Solarus(void) {
   delete root_surface;
@@ -54,7 +54,7 @@ Solarus::~Solarus(void) {
 }
 
 /**
- * Returns the debugging keys object.
+ * @brief Returns the debugging keys object.
  * @return the debbuging keys object
  */
 DebugKeys * Solarus::get_debug_keys(void) {
@@ -62,8 +62,10 @@ DebugKeys * Solarus::get_debug_keys(void) {
 }
 
 /**
+ * @brief Skips the menus and starts the game immediately.
+ *
  * This function can be called during the title screen or the selection menu to skip them
- * and start the game immediately (for debugging purposes only!).
+ * and start the game immediately with the first savegame (for debugging purposes only!).
  */
 void Solarus::skip_menus(void) {
 
@@ -73,9 +75,11 @@ void Solarus::skip_menus(void) {
 }
 
 /**
- * Returns whether the user just closed the window.
+ * @brief Returns whether the user just closed the window.
+ *
  * When this function returns true, you should stop immediately
  * whatever you are doing, free your memory and let the program quit.
+ *
  * @return true if the user wants to exit the program
  */
 bool Solarus::is_exiting(void) {
@@ -83,14 +87,16 @@ bool Solarus::is_exiting(void) {
 }
 
 /**
- * Sets whether the user wants to quit the program.
+ * @brief Sets whether the user wants to quit the program.
  */
 void Solarus::set_exiting(void) {
   exiting = true;
 }
 
 /**
- * The main function. The main loop is executed here.
+ * @brief The main function.
+ *
+ * The main loop is executed here.
  * The input events are forwarded to the current screen.
  * The current screen is redrawn when necessary.
  */
@@ -163,7 +169,8 @@ void Solarus::main(void) {
 }
 
 /**
- * This function is called when there is an input event.
+ * @brief This function is called when there is an input event.
+ *
  * It handles the events common to all screens:
  * closing the window, pressing F5 or a debug key.
  * The notify_event() method of the current screen
@@ -201,7 +208,8 @@ void Solarus::notify_event(InputEvent &event) {
 }
 
 /**
- * Updates the current screen.
+ * @brief Updates the current screen.
+ *
  * This function is called repeatedly by the main loop.
  */
 void Solarus::update(void) {
@@ -212,7 +220,8 @@ void Solarus::update(void) {
 }
 
 /**
- * Redraws the current screen.
+ * @brief Redraws the current screen.
+ *
  * This function is called repeatedly by the main loop.
  */
 void Solarus::display(void) {
@@ -223,10 +232,12 @@ void Solarus::display(void) {
 }
 
 /**
- * Entry point of the program.
+ * @brief Entry point of the program.
+ *
  * The following optional command-line arguments are supported:
  *   -datapath=/some/path/to/datadir            loads the data files from the specified directory
  *   -disable-audio                             disables sounds and musics
+ *
  * @param argc number of command-line arguments
  * @param argv command-line arguments
  */

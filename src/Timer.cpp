@@ -21,7 +21,7 @@
 #include "lowlevel/System.h"
 
 /**
- * Creates and starts a timer.
+ * @brief Creates and starts a timer.
  * @param game the current game (if any)
  * @param duration duration of the timer in milliseconds
  * @param name a name to identify this timer
@@ -50,14 +50,14 @@ Timer::Timer(Game *game, uint32_t duration, const std::string &name, bool with_s
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 Timer::~Timer(void) {
 
 }
 
 /**
- * Returns the name identifying this timer.
+ * @brief Returns the name identifying this timer.
  * @return the name of this timer
  */
 const std::string& Timer::get_name(void) {
@@ -65,7 +65,7 @@ const std::string& Timer::get_name(void) {
 }
 
 /**
- * Returns whether the timer is finished.
+ * @brief Returns whether the timer is finished.
  * @return true if the timer is finished
  */
 bool Timer::is_finished(void) {
@@ -73,7 +73,7 @@ bool Timer::is_finished(void) {
 }
 
 /**
- * Updates the timer.
+ * @brief Updates the timer.
  */
 void Timer::update(void) {
 
@@ -106,7 +106,7 @@ void Timer::update(void) {
 }
 
 /**
- * Suspends or resumes the timer.
+ * @brief Suspends or resumes the timer.
  * @param suspended true to suspend the timer, false to resume it
  */
 void Timer::set_suspended(bool suspended) {

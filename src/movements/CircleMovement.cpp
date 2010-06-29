@@ -20,7 +20,7 @@
 #include "entities/MapEntity.h"
 
 /**
- * Creates a circle movement.
+ * @brief Creates a circle movement.
  */
 CircleMovement::CircleMovement(void):
   center_entity(NULL), current_angle(0), initial_angle(0), angle_increment(1), next_angle_change_date(0), angle_change_delay(5),
@@ -30,15 +30,17 @@ CircleMovement::CircleMovement(void):
 }
 
 /**
- * Destroys this circle movement.
+ * @brief Destroys this circle movement.
  */
 CircleMovement::~CircleMovement(void) {
 
 }
 
 /**
- * Sets the center of the circles.
+ * @brief Sets the center of the circles.
+ *
  * The movement will make circles around the specified fixed point.
+ *
  * @param center_point center of the circles to make
  */
 void CircleMovement::set_center(const Rectangle &center_point) {
@@ -49,8 +51,10 @@ void CircleMovement::set_center(const Rectangle &center_point) {
 }
 
 /**
- * Sets the center of the circles.
+ * @brief Sets the center of the circles.
+ *
  * The movement will make circles around the specified (possibly moving) entity.
+ *
  * @param center_entity the entity around which you want to make circles
  * @param x x coordinate of where the center should be placed relative to the entity's origin
  * @param y y coordinate of where the center should be placed relative to the entity's origin
@@ -67,7 +71,7 @@ void CircleMovement::set_center(MapEntity *center_entity, int x, int y) {
 }
 
 /**
- * Sets the radius of the circles.
+ * @brief Sets the radius of the circles.
  * @param radius the radius in pixels
  */
 void CircleMovement::set_radius(int radius) {
@@ -92,7 +96,10 @@ void CircleMovement::set_radius(int radius) {
 }
 
 /**
- * Sets the radius to be updated immediately or gradually towards its wanted value when you call set_radius().
+ * @brief Sets the radius to be updated immediately or gradually towards its wanted value.
+ *
+ * Use set_radius() to specify the wanted value.
+ *
  * @param radius_speed speed of the radius variation (number of pixels per second), or 0 to update it immediately
  */
 void CircleMovement::set_radius_speed(int radius_speed) {
@@ -113,7 +120,7 @@ void CircleMovement::set_radius_speed(int radius_speed) {
 
 
 /**
- * Sets the speed of the angle variation.
+ * @brief Sets the speed of the angle variation.
  * @param angle_speed number of degrees to make per second
  */
 void CircleMovement::set_angle_speed(int angle_speed) {
@@ -128,7 +135,7 @@ void CircleMovement::set_angle_speed(int angle_speed) {
 }
 
 /**
- * Sets the angle where the first circle starts from.
+ * @brief Sets the angle where the first circle starts from.
  * @param initial_angle angle in degrees (0 to 359)
  */
 void CircleMovement::set_initial_angle(int initial_angle) {
@@ -141,7 +148,7 @@ void CircleMovement::set_initial_angle(int initial_angle) {
 }
 
 /**
- * Sets the direction of the circles.
+ * @brief Sets the direction of the circles.
  * @param direction CLOCKWISE or COUNTER_CLOCKWISE 
  */
 void CircleMovement::set_direction(Direction direction) {
@@ -150,10 +157,12 @@ void CircleMovement::set_direction(Direction direction) {
 }
 
 /**
- * Sets the maximum duration of the movement.
+ * @brief Sets the maximum duration of the movement.
+ *
  * When this delay is reached, the movement stops.
  * Note that is the radius changes gradually, the movement will continue
  * for a while until the radius reaches zero.
+ *
  * @param duration duration of the movement in milliseconds, or 0 to make it infinite
  */
 void CircleMovement::set_duration(uint32_t duration) {
@@ -165,10 +174,12 @@ void CircleMovement::set_duration(uint32_t duration) {
 }
 
 /**
- * Sets the number of rotations of the movement.
+ * @brief Sets the number of rotations of the movement.
+ *
  * When this number of rotations is reached, the movement stops.
  * Note that is the radius changes gradually, the movement will continue
  * for a while until the radius reaches zero.
+ *
  * @param max_rotations number of rotations to make (0 for infinite rotations)
  */
 void CircleMovement::set_max_rotations(int max_rotations) {
@@ -182,7 +193,7 @@ void CircleMovement::set_max_rotations(int max_rotations) {
 }
 
 /**
- * Makes the movement restart after a delay when it is finished.
+ * @brief Makes the movement restart after a delay when it is finished.
  * @param delay the movement will restart after this delay in milliseconds (0 to avoid this)
  */
 void CircleMovement::set_loop(uint32_t delay) {
@@ -194,7 +205,7 @@ void CircleMovement::set_loop(uint32_t delay) {
 }
 
 /**
- * Updates the movement.
+ * @brief Updates the movement.
  */
 void CircleMovement::update(void) {
   Movement::update();
@@ -254,7 +265,8 @@ void CircleMovement::update(void) {
 }
 
 /**
- * Computes the position of the object controlled by this movement.
+ * @brief Computes the position of the object controlled by this movement.
+ *
  * This function should be called whenever the angle, the radius or the center changes.
  */
 void CircleMovement::recompute_position(void) {
@@ -269,7 +281,7 @@ void CircleMovement::recompute_position(void) {
 }
 
 /**
- * Suspends or resumes the movement
+ * @brief Suspends or resumes the movement
  * @param suspended true to suspend the movement, false to resume it
  */
 void CircleMovement::set_suspended(bool suspended) {
@@ -285,7 +297,7 @@ void CircleMovement::set_suspended(bool suspended) {
 }
 
 /**
- * Starts the circle movement.
+ * @brief Starts the circle movement.
  */
 void CircleMovement::start(void) {
 
@@ -307,7 +319,7 @@ void CircleMovement::start(void) {
 }
 
 /**
- * Returns whether this movement is running.
+ * @brief Returns whether this movement is running.
  * @return true if the movement is started
  */
 bool CircleMovement::is_started(void) {
@@ -315,7 +327,7 @@ bool CircleMovement::is_started(void) {
 }
 
 /**
- * Stops the movement.
+ * @brief Stops the movement.
  */
 void CircleMovement::stop(void) {
 

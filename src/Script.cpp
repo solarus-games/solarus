@@ -30,7 +30,7 @@
 #include <lua.hpp>
 
 /**
- * Creates a script.
+ * @brief Creates a script.
  * @param game the game
  */
 Script::Script(Game *game):
@@ -39,7 +39,7 @@ Script::Script(Game *game):
 }
 
 /**
- * Desctructor.
+ * @brief Desctructor.
  */
 Script::~Script(void) {
 
@@ -56,7 +56,7 @@ Script::~Script(void) {
 }
 
 /**
- * Initializes the Lua context and loads the script from a file.
+ * @brief Initializes the Lua context and loads the script from a file.
  * @param script_name name of a Lua script file (without extension)
  */
 void Script::load(const std::string &script_name) {
@@ -104,7 +104,7 @@ void Script::load(const std::string &script_name) {
 }
 
 /**
- * Tells the Lua context what C++ functions it can call.
+ * @brief Tells the Lua context what C++ functions it can call.
  */
 void Script::register_available_functions(void) {
 
@@ -172,10 +172,12 @@ void Script::called_by_script(lua_State *context, int nb_arguments, Script **scr
 }
 
 /**
- * Calls a function without argument in the script.
+ * @brief Calls a function without argument in the script.
+ *
  * If the function does not exists in the script, nothing happens:
  * it just means that the function corresponds to an event that
  * the script does not want to handle.
+ *
  * @param function_name name of the function to call
  * @return true if the function was called, false if it does not exist
  */
@@ -199,7 +201,7 @@ bool Script::call_script_function(const std::string &function_name) {
 }
 
 /**
- * Calls a function in the script.
+ * @brief Calls a function in the script.
  * @param function_name name of the function to call
  * @param arg1 argument of the function
  * @return true if the function was called, false if it does not exist
@@ -225,7 +227,7 @@ bool Script::call_script_function(const std::string &function_name, const std::s
 }
 
 /**
- * Calls a function in the script.
+ * @brief Calls a function in the script.
  * @param function_name name of the function to call
  * @param arg1 first argument of the function
  * @param arg2 second argument of the function
@@ -254,7 +256,7 @@ bool Script::call_script_function(const std::string &function_name,
 }
 
 /**
- * Calls a function in the script.
+ * @brief Calls a function in the script.
  * @param function_name name of the function to call
  * @param arg1 first argument of the function
  * @param arg2 second argument of the function
@@ -285,7 +287,7 @@ bool Script::call_script_function(const std::string &function_name,
 }
 
 /**
- * Calls a function in the script.
+ * @brief Calls a function in the script.
  * @param function_name name of the function to call
  * @param arg1 argument of the function
  * @return true if the function was called, false if it does not exist
@@ -311,7 +313,7 @@ bool Script::call_script_function(const std::string &function_name, int arg1) {
 }
 
 /**
- * Calls a function in the script.
+ * @brief Calls a function in the script.
  * @param function_name name of the function to call
  * @param arg1 first argument of the function
  * @param arg2 second argument of the function
@@ -339,7 +341,7 @@ bool Script::call_script_function(const std::string &function_name, int arg1, in
 }
 
 /**
- * Calls a function in the script.
+ * @brief Calls a function in the script.
  * @param function_name name of the function to call
  * @param arg1 argument of the function
  * @return true if the function was called, false if it does not exist
@@ -365,7 +367,7 @@ bool Script::call_script_function(const std::string &function_name, bool arg1) {
 }
 
 /**
- * This function is called when the game is being suspended or resumed.
+ * @brief This function is called when the game is being suspended or resumed.
  * @param suspended true if the game is suspended, false if it is resumed
  */
 void Script::set_suspended(bool suspended) {
@@ -384,7 +386,7 @@ void Script::set_suspended(bool suspended) {
 }
 
 /**
- * Updates the script.
+ * @brief Updates the script.
  */
 void Script::update(void) {
 
@@ -409,7 +411,7 @@ void Script::update(void) {
 }
 
 /**
- * Adds a timer to the script.
+ * @brief Adds a timer to the script.
  * @param timer the timer
  */
 void Script::add_timer(Timer *timer) {
@@ -417,7 +419,7 @@ void Script::add_timer(Timer *timer) {
 }
 
 /**
- * Removes a timer if it exists.
+ * @brief Removes a timer if it exists.
  * @param callback_name name of the timer callback
  */
 void Script::remove_timer(const std::string &callback_name) {
@@ -443,7 +445,7 @@ void Script::remove_timer(const std::string &callback_name) {
 // functions that can be called by the Lua script
 
 /**
- * Prevents the player from moving until hero_unfreeze() is called.
+ * @brief Prevents the player from moving until hero_unfreeze() is called.
  */
 int Script::l_hero_freeze(lua_State *l) {
 
@@ -456,7 +458,7 @@ int Script::l_hero_freeze(lua_State *l) {
 }
 
 /**
- * Allows the player to move again after a hero_freeze() call.
+ * @brief Allows the player to move again after a hero_freeze() call.
  */
 int Script::l_hero_unfreeze(lua_State *l) {
 
@@ -469,8 +471,8 @@ int Script::l_hero_unfreeze(lua_State *l) {
 }
 
 /**
- * Sets whether the player can pause the game.
- * Argument 1 (boolean): true to enable the pause key
+ * @brief Sets whether the player can pause the game.
+ * - Argument 1 (boolean): true to enable the pause key
  */
 int Script::l_hero_set_pause_enabled(lua_State *l) {
 
@@ -484,12 +486,14 @@ int Script::l_hero_set_pause_enabled(lua_State *l) {
 }
 
 /**
- * Creates a dialog box and starts displaying a message.
+ * @brief Creates a dialog box and starts displaying a message.
+ *
  * If the message is followed by other messages, they are also
  * displayed.
  * If the message (or one of its next messages) contains a variable,
  * then you have to call dialog_set_variable() to specify its value.
- * Argument 1 (string): id of the message to display
+ * 
+ * - Argument 1 (string): id of the message to display
  */
 int Script::l_dialog_start(lua_State *l) {
 
@@ -503,11 +507,13 @@ int Script::l_dialog_start(lua_State *l) {
 }
 
 /**
- * Sets the value of the variable in a diabog.
+ * @brief Sets the value of the variable in a diabog.
+ *
  * The function has to be called after the dialog box is created,
  * i.e. after calling dialog_start().
- * Argument 1 (string): id of the message containing the variable
- * Argument 2 (string): value of the variable
+ * 
+ * - Argument 1 (string): id of the message containing the variable
+ * - Argument 2 (string): value of the variable
  */
 int Script::l_dialog_set_variable(lua_State *l) {
 
@@ -522,8 +528,9 @@ int Script::l_dialog_set_variable(lua_State *l) {
 }
 
 /**
- * Changes the style of the future dialog boxes.
- * Argument 1 (integer): the style to set (see the DialogBox::Style enum)
+ * @brief Changes the style of the future dialog boxes.
+ * 
+ * - Argument 1 (integer): the style to set (see the DialogBox::Style enum)
  */
 int Script::l_dialog_set_style(lua_State *l) {
 
@@ -537,8 +544,9 @@ int Script::l_dialog_set_style(lua_State *l) {
 }
 
 /**
- * Enables or disables the head up display.
- * Argument 1 (boolean): true to enable it, false to disable it
+ * @brief Enables or disables the head up display.
+ *
+ * - Argument 1 (boolean): true to enable it, false to disable it
  */
 int Script::l_hud_set_enabled(lua_State *l) {
 
@@ -551,8 +559,9 @@ int Script::l_hud_set_enabled(lua_State *l) {
 }
 
 /**
- * Plays a sound.
- * Argument 1 (string): name of the sound
+ * @brief Plays a sound.
+ *
+ * - Argument 1 (string): name of the sound
  */
 int Script::l_play_sound(lua_State *l) {
 
@@ -566,8 +575,9 @@ int Script::l_play_sound(lua_State *l) {
 }
 
 /**
- * Plays a music.
- * Argument 1 (string): name of the music
+ * @brief Plays a music.
+ * 
+ * - Argument 1 (string): name of the music
  */
 int Script::l_play_music(lua_State *l) {
 
@@ -581,11 +591,12 @@ int Script::l_play_music(lua_State *l) {
 }
 
 /**
- * Starts a timer to run a Lua function after a delay.
- * Argument 1 (integer): the timer duration in milliseconds
- * Argument 2 (string): name of the Lua function to call when the timer is finished
+ * @brief Starts a timer to run a Lua function after a delay.
+ *
+ * - Argument 1 (integer): the timer duration in milliseconds
+ * - Argument 2 (string): name of the Lua function to call when the timer is finished
  * (no argument, no return value)
- * Argument 3 (boolean): plays a sound until the timer expires
+ * - Argument 3 (boolean): plays a sound until the timer expires
  */
 int Script::l_timer_start(lua_State *l) {
 
@@ -602,8 +613,9 @@ int Script::l_timer_start(lua_State *l) {
 }
 
 /**
- * Stops an existing timer.
- * Argument 1 (string): name of the Lua function that is supposed to be called
+ * @brief Stops an existing timer.
+ *
+ * - Argument 1 (string): name of the Lua function that is supposed to be called
  * when the timer is finished
  */
 int Script::l_timer_stop(lua_State *l) {
@@ -618,10 +630,11 @@ int Script::l_timer_stop(lua_State *l) {
 }
 
 /**
- * Moves the camera towards a target point.
- * Argument 1 (integer): x coordinate of the target point
- * Argument 2 (integer): y coordinate of the target point
- * Argument 3 (integer): speed of the camera movement (10 is normal)
+ * @brief Moves the camera towards a target point.
+ *
+ * - Argument 1 (integer): x coordinate of the target point
+ * - Argument 2 (integer): y coordinate of the target point
+ * - Argument 3 (integer): speed of the camera movement (10 is normal)
  */
 int Script::l_camera_move(lua_State *l) {
 
@@ -637,7 +650,7 @@ int Script::l_camera_move(lua_State *l) {
 }
 
 /**
- * Moves the camera back to the hero.
+ * @brief Moves the camera back to the hero.
  */
 int Script::l_camera_restore(lua_State *l) {
 
@@ -650,9 +663,10 @@ int Script::l_camera_restore(lua_State *l) {
 }
 
 /**
- * Returns a string value saved.
- * Argument 1 (integer): index of the string value to get (0 to 63)
- * Return value (string): the string saved at this index
+ * @brief Returns a string value saved.
+ *
+ * - Argument 1 (integer): index of the string value to get (0 to 63)
+ * - Return value (string): the string saved at this index
  */
 int Script::l_savegame_get_string(lua_State *l) {
 
@@ -667,9 +681,10 @@ int Script::l_savegame_get_string(lua_State *l) {
 }
 
 /**
- * Returns an integer value saved.
- * Argument 1 (integer): index of the integer value to get (0 to 2047)
- * Return value (integer): the integer saved at this index
+ * @brief Returns an integer value saved.
+ *
+ * - Argument 1 (integer): index of the integer value to get (0 to 2047)
+ * - Return value (integer): the integer saved at this index
  */
 int Script::l_savegame_get_integer(lua_State *l) {
 
@@ -684,9 +699,10 @@ int Script::l_savegame_get_integer(lua_State *l) {
 }
 
 /**
- * Returns a boolean value saved.
- * Argument 1 (integer): index of the boolean value to get
- * Return value (boolean): the boolean saved at this index
+ * @brief Returns a boolean value saved.
+ *
+ * - Argument 1 (integer): index of the boolean value to get
+ * - Return value (boolean): the boolean saved at this index
  */
 int Script::l_savegame_get_boolean(lua_State *l) {
 
@@ -701,10 +717,11 @@ int Script::l_savegame_get_boolean(lua_State *l) {
 }
 
 /**
- * Sets a string value saved.
- * Argument 1 (integer): index of the string value to set, between 32 and 63
+ * @brief Sets a string value saved.
+ *
+ * - Argument 1 (integer): index of the string value to set, between 32 and 63
  * (lower indices are writable only by the game engine)
- * Argument 2 (string): the string value to store at this index
+ * - Argument 2 (string): the string value to store at this index
  */
 int Script::l_savegame_set_string(lua_State *l) {
 
@@ -723,10 +740,11 @@ int Script::l_savegame_set_string(lua_State *l) {
 }
 
 /**
- * Sets an integer value saved.
- * Argument 1 (integer): index of the integer value to set, between 1024 and 2047
+ * @brief Sets an integer value saved.
+ *
+ * - Argument 1 (integer): index of the integer value to set, between 1024 and 2047
  * (lower indices are writable only by the game engine)
- * Argument 2 (integer): the integer value to store at this index
+ * - Argument 2 (integer): the integer value to store at this index
  */
 int Script::l_savegame_set_integer(lua_State *l) {
 
@@ -745,9 +763,10 @@ int Script::l_savegame_set_integer(lua_State *l) {
 }
 
 /**
- * Sets a boolean value saved.
- * Argument 1 (integer): index of the boolean value to set, between 0 and 32767
- * Argument 2 (boolean): the boolean value to store at this index
+ * @brief Sets a boolean value saved.
+ *
+ * - Argument 1 (integer): index of the boolean value to set, between 0 and 32767
+ * - Argument 2 (boolean): the boolean value to store at this index
  */
 int Script::l_savegame_set_boolean(lua_State *l) {
 
@@ -762,8 +781,9 @@ int Script::l_savegame_set_boolean(lua_State *l) {
 }
 
 /**
- * Returns a string representing the name of the player.
- * Return value (string): the player's name
+ * @brief Returns a string representing the name of the player.
+ * 
+ * - Return value (string): the player's name
  */
 int Script::l_savegame_get_name(lua_State *l) {
 
@@ -777,8 +797,9 @@ int Script::l_savegame_get_name(lua_State *l) {
 }
 
 /**
- * Returns the current number of rupees of the player.
- * Return value (integer): the number of rupees
+ * @brief Returns the current number of rupees of the player.
+ *
+ * - Return value (integer): the number of rupees
  */
 int Script::l_equipment_get_rupees(lua_State *l) {
 
@@ -792,8 +813,9 @@ int Script::l_equipment_get_rupees(lua_State *l) {
 }
 
 /**
- * Removes some rupees to the player.
- * Argument 1 (integer): number or rupees to remove
+ * @brief Removes some rupees to the player.
+ *
+ * - Argument 1 (integer): number or rupees to remove
  */
 int Script::l_equipment_remove_rupees(lua_State *l) {
 
@@ -808,8 +830,9 @@ int Script::l_equipment_remove_rupees(lua_State *l) {
 }
 
 /**
- * Returns the tunic of the hero.
- * Return value (integer): the tunic number (0 to 2)
+ * @brief Returns the tunic of the hero.
+ *
+ * - Return value (integer): the tunic number (0 to 2)
  */
 int Script::l_equipment_get_tunic(lua_State *l) {
 
@@ -824,8 +847,9 @@ int Script::l_equipment_get_tunic(lua_State *l) {
 }
 
 /**
- * Returns the sword of the hero.
- * Return value (integer): the sword number (0 to 4)
+ * @brief Returns the sword of the hero.
+ *
+ * - Return value (integer): the sword number (0 to 4)
  */
 int Script::l_equipment_get_sword(lua_State *l) {
 
@@ -840,8 +864,9 @@ int Script::l_equipment_get_sword(lua_State *l) {
 }
 
 /**
- * Returns the shield of the hero.
- * Return value (integer): the shield number (0 to 3)
+ * @brief Returns the shield of the hero.
+ *
+ * - Return value (integer): the shield number (0 to 3)
  */
 int Script::l_equipment_get_shield(lua_State *l) {
 
@@ -856,9 +881,10 @@ int Script::l_equipment_get_shield(lua_State *l) {
 }
 
 /**
- * Returns the possession state of an item from the inventory.
- * Argument 1 (integer): an inventory item id
- * Return value (integer): the possession state of this inventory item
+ * @brief Returns the possession state of an item from the inventory.
+ *
+ * - Argument 1 (integer): an inventory item id
+ * - Return value (integer): the possession state of this inventory item
  */
 int Script::l_inventory_item_get(lua_State *l) {
 
@@ -874,9 +900,10 @@ int Script::l_inventory_item_get(lua_State *l) {
 }
 
 /**
- * Sets the possession state of an item from the inventory
- * Argument 1 (integer): an inventory item id
- * Argument 2 (integer): the possession state of this inventory item
+ * @brief Sets the possession state of an item from the inventory
+ *
+ * - Argument 1 (integer): an inventory item id
+ * - Argument 2 (integer): the possession state of this inventory item
  * (a value of 0 removes the inventory item)
  */
 int Script::l_inventory_item_set(lua_State *l) {
@@ -895,9 +922,10 @@ int Script::l_inventory_item_set(lua_State *l) {
 
 
 /**
- * Returns the amount the player has for an item from the inventory.
- * Argument 1 (integer): an inventory item id having an amount (e.g. the bombs)
- * Return value (integer): the amount possessed
+ * @brief Returns the amount the player has for an item from the inventory.
+ *
+ * - Argument 1 (integer): an inventory item id having an amount (e.g. the bombs)
+ * - Return value (integer): the amount possessed
  */
 int Script::l_inventory_item_get_amount(lua_State *l) {
 
@@ -913,9 +941,10 @@ int Script::l_inventory_item_get_amount(lua_State *l) {
 }
 
 /**
- * Removes from the inventory an amount of the specified item.
- * Argument 1 (integer): an inventory item id having an amount (e.g. the bombs)
- * Argument 2 (integer): the amount possessed
+ * @brief Removes from the inventory an amount of the specified item.
+ *
+ * - Argument 1 (integer): an inventory item id having an amount (e.g. the bombs)
+ * - Argument 2 (integer): the amount possessed
  */
 int Script::l_inventory_item_remove_amount(lua_State *l) {
 
@@ -931,9 +960,10 @@ int Script::l_inventory_item_remove_amount(lua_State *l) {
 }
 
 /**
- * Returns whether the specified inventory item is corresponds to a bottle.
- * Argument 1 (integer): an inventory item id
- * Return value (integer): true if it is a bottle
+ * @brief Returns whether the specified inventory item is corresponds to a bottle.
+ *
+ * - Argument 1 (integer): an inventory item id
+ * - Return value (integer): true if it is a bottle
  */
 int Script::l_inventory_item_is_bottle(lua_State *l) {
 
@@ -948,13 +978,15 @@ int Script::l_inventory_item_is_bottle(lua_State *l) {
 }
 
 /**
- * Gives a treasure to the player.
+ * @brief Gives a treasure to the player.
+ *
  * If the treasure comes from a chest, you don't have to call this function:
  * the treasure will be given to the player automatically when he opens the chest.
  * You can use this function to make a non-playing character
  * give a treasure to the player.
- * Argument 1 (integer): content of the treasure (see Treasure.h)
- * Argument 2 (integer): index of the savegame boolean variable that stores
+ *
+ * - Argument 1 (integer): content of the treasure (see Treasure.h)
+ * - Argument 2 (integer): index of the savegame boolean variable that stores
  * the possession state of the treasure (or -1 if you don't want to save this treasure)
  */
 int Script::l_treasure_give(lua_State *l) {
@@ -971,14 +1003,16 @@ int Script::l_treasure_give(lua_State *l) {
 }
 
 /**
- * Gives a treasure to the player, specifying the amount.
+ * @brief Gives a treasure to the player, specifying the amount.
+ *
  * This function should be called only for for treasures with an amount, like arrows, apples, etc.,
  * otherwise the amount parameter will be ignored.
  * For example you can use this function to make a non-playing character
  * give a treasure to the player.
- * Argument 1 (integer): content of the treasure (see Treasure.h)
- * Argument 2 (integer): amount to give
- * Argument 3 (integer): index of the savegame boolean variable that stores
+ *
+ * - Argument 1 (integer): content of the treasure (see Treasure.h)
+ * - Argument 2 (integer): amount to give
+ * - Argument 3 (integer): index of the savegame boolean variable that stores
  * the possession state of the treasure (or -1 if you don't want to save this treasure)
  */
 int Script::l_treasure_give_with_amount(lua_State *l) {
@@ -998,7 +1032,8 @@ int Script::l_treasure_give_with_amount(lua_State *l) {
 // event functions, i.e. functions called by the C++ engine to notify the map script that something happened
 
 /**
- * The update event is called at each cycle.
+ * @brief The update event is called at each cycle.
+ *
  * Implementing this event should be done with care as it may
  * reduce the performances dramatically.
  */
@@ -1007,7 +1042,7 @@ void Script::event_update(void) {
 }
 
 /**
- * Notifies the script that the game is being suspended or resumed.
+ * @brief Notifies the script that the game is being suspended or resumed.
  * @param suspended true if the game is suspended, false if it is resumed
  */
 void Script::event_set_suspended(bool suspended) {
@@ -1015,7 +1050,7 @@ void Script::event_set_suspended(bool suspended) {
 }
 
 /**
- * Notifies the script that a dialog has just started to be displayed
+ * @brief Notifies the script that a dialog has just started to be displayed
  * in the dialog box.
  * @param message_id id of the first message in this dialog
  */
@@ -1024,9 +1059,11 @@ void Script::event_dialog_started(const MessageId &message_id) {
 }
 
 /**
- * Notifies the script that the dialog box has just finished.
+ * @brief Notifies the script that the dialog box has just finished.
+ *
  * This function is called when the last message of a dialog is finished.
  * Note that this event is not called if the dialog was cancelled.
+ *
  * @param first_message_id id of the first message in the dialog
  * that has just finished
  * @param answer the answer selected by the player: 0 for the first one,
@@ -1037,23 +1074,25 @@ void Script::event_dialog_finished(const MessageId &first_message_id, int answer
 }
 
 /**
- * Notifies the script that the camera moved by a call to move_camera() has reached its target.
+ * @brief Notifies the script that the camera moved by a call to move_camera() has reached its target.
  */
 void Script::event_camera_reached_target(void) {
   call_script_function("event_camera_reached_target");
 }
 
 /**
- * Notifies the script that the camera moved by a call to restore_camera() has reached the hero.
+ * @brief Notifies the script that the camera moved by a call to restore_camera() has reached the hero.
  */
 void Script::event_camera_back(void) {
   call_script_function("event_camera_back");
 }
 
 /**
- * Notifies the script that the player is obtaining a treasure.
+ * @brief Notifies the script that the player is obtaining a treasure.
+ *
  * The treasure source does not matter: it can come from a chest,
  * a pickable item or the script.
+ *
  * @param content the content obtained
  * @param savegame_variable the boolean variable where this treasure is saved
  * (or -1 if the treasure is not saved)
@@ -1063,9 +1102,11 @@ void Script::event_treasure_obtaining(Treasure::Content content, int savegame_va
 }
 
 /**
- * Notifies the script that the player has just finished obtaining a treasure.
+ * @brief Notifies the script that the player has just finished obtaining a treasure.
+ *
  * The treasure source does not matter: it can come from a chest,
  * a pickable item or the script.
+ *
  * @param content the content obtained
  * @param savegame_variable the boolean variable where this treasure is saved
  * (or -1 if the treasure is not saved)

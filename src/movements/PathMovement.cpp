@@ -21,7 +21,7 @@
 #include "lowlevel/System.h"
 
 /**
- * Creates a path movement object.
+ * @brief Creates a path movement object.
  * @param path the succession of basic moves
  * composing this movement (each character represents
  * a direction between '0' and '7')
@@ -41,14 +41,14 @@ PathMovement::PathMovement(const std::string &path, int speed,
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 PathMovement::~PathMovement(void) {
 
 }
 
 /**
- * Sets the entity to be controlled by this movement object.
+ * @brief Sets the entity to be controlled by this movement object.
  * @param entity the entity to control
  */
 void PathMovement::set_entity(MapEntity *entity) {
@@ -57,9 +57,11 @@ void PathMovement::set_entity(MapEntity *entity) {
 }
 
 /**
- * Sets the position of the entity.
+ * @brief Sets the position of the entity.
+ *
  * This is a redefinition of CollisionMovement::set_position() because we need
  * to update the number of pixels covered.
+ *
  * @param x the new x position
  * @param y the new y position
  */
@@ -82,7 +84,7 @@ void PathMovement::set_position(int x, int y) {
 }
 
 /**
- * Changes the speed of the movement.
+ * @brief Changes the speed of the movement.
  * @param speed the new speed
  */
 void PathMovement::set_speed(int speed) {
@@ -91,7 +93,7 @@ void PathMovement::set_speed(int speed) {
 }
 
 /**
- * Updates the movements: detects the collisions
+ * @brief Updates the movements: detects the collisions
  * in order to restart the movement.
  */
 void PathMovement::update(void) {
@@ -104,7 +106,7 @@ void PathMovement::update(void) {
 }
 
 /**
- * Returns whether the movement is finished.
+ * @brief Returns whether the movement is finished.
  * @return true if the end of the path was reached or the entity 
  * reached an obstacle
  */
@@ -113,7 +115,7 @@ bool PathMovement::is_finished(void) {
 }
 
 /**
- * Returns whether the current move of the path is finished.
+ * @brief Returns whether the current move of the path is finished.
  * @return true if the current move is finished
  */
 bool PathMovement::is_current_move_finished(void) {
@@ -132,7 +134,8 @@ bool PathMovement::is_current_move_finished(void) {
 }
 
 /**
- * Starts the next step of the movement.
+ * @brief Starts the next step of the movement.
+ *
  * This function is called when a step of the movement is finished,
  * or when the movement is restarted.
  * Before starting the step, if the must_be_aligned property is true,
@@ -246,7 +249,7 @@ void PathMovement::start_next_move(void) {
 }
 
 /**
- * Returns the direction of the current move, between 0 and 7.
+ * @brief Returns the direction of the current move, between 0 and 7.
  * @return the direction of the current move
  */
 int PathMovement::get_current_direction(void) {
@@ -254,7 +257,7 @@ int PathMovement::get_current_direction(void) {
 }
 
 /**
- * Returns a string describing a random length path in one of the four main directions.
+ * @brief Returns a string describing a random length path in one of the four main directions.
  * @return a random direction
  */
 const std::string PathMovement::get_random_path() {
@@ -270,7 +273,7 @@ const std::string PathMovement::get_random_path() {
 }
 
 /**
- * Returns the distance covered by this movement since its beginning.
+ * @brief Returns the distance covered by this movement since its beginning.
  * @return the total distance covered in pixels
  */
 int PathMovement::get_total_distance_covered(void) {
@@ -278,7 +281,7 @@ int PathMovement::get_total_distance_covered(void) {
 }
 
 /**
- * Returns an xy value representing the total distance of this movement.
+ * @brief Returns an xy value representing the total distance of this movement.
  * @return the total x and y distance of this movement
  */
 Rectangle PathMovement::get_xy_change(void) {

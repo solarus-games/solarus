@@ -19,7 +19,7 @@
 #include "lowlevel/Surface.h"
 
 /**
- * Constructor.
+ * @brief Constructor.
  * @param nb_frames number of frames in the sequence
  * @param frames position of each frames of the sequence in the image
  * (the pointer is copied, not the array, so don't modify after calling this constructor)
@@ -34,7 +34,7 @@ SpriteAnimationDirection::SpriteAnimationDirection(int nb_frames, Rectangle *fra
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 SpriteAnimationDirection::~SpriteAnimationDirection(void) {
   delete[] frames;
@@ -48,7 +48,7 @@ SpriteAnimationDirection::~SpriteAnimationDirection(void) {
 }
 
 /**
- * Returns the size of a frame.
+ * @brief Returns the size of a frame.
  * @return the size of a frame
  */
 const Rectangle & SpriteAnimationDirection::get_size(void) {
@@ -56,7 +56,7 @@ const Rectangle & SpriteAnimationDirection::get_size(void) {
 }
 
 /**
- * Returns the origin point of a frame.
+ * @brief Returns the origin point of a frame.
  * @return the origin point of a frame
  */
 const Rectangle & SpriteAnimationDirection::get_origin(void) {
@@ -64,7 +64,7 @@ const Rectangle & SpriteAnimationDirection::get_origin(void) {
 }
 
 /**
- * Returns the number of frames in this direction.
+ * @brief Returns the number of frames in this direction.
  * @return the number of frames
  */
 int SpriteAnimationDirection::get_nb_frames(void) {
@@ -72,7 +72,7 @@ int SpriteAnimationDirection::get_nb_frames(void) {
 }
 
 /**
- * Returns the rectangle representing the specified frame on the source image.
+ * @brief Returns the rectangle representing the specified frame on the source image.
  * @param frame a frame number
  * @return the rectangle of this frame
  */
@@ -81,7 +81,7 @@ const Rectangle & SpriteAnimationDirection::get_frame(int frame) {
 }
 
 /**
- * Displays a specific frame on the map.
+ * @brief Displays a specific frame on the map.
  * @param destination the surface on which the frame will be displayed
  * @param x x coordinate of the sprite on this surface
  * (the origin point will be displayed at this position)
@@ -104,11 +104,13 @@ void SpriteAnimationDirection::display(Surface *destination, int x, int y,
 }
 
 /**
- * Calculates the bit fields representing the non-transparent pixels
+ * @brief Calculates the bit fields representing the non-transparent pixels
  * of the images in this direction.
+ *
  * This method has to be called if you want a sprite having this animations
  * to be able to detect pixel-perfect collisions.
  * If the pixel-perfect collisions are already enabled, this function does nothing.
+ *
  * @param src_image the surface containing the animations
  */
 void SpriteAnimationDirection::enable_pixel_collisions(Surface *src_image) {
@@ -122,7 +124,7 @@ void SpriteAnimationDirection::enable_pixel_collisions(Surface *src_image) {
 }
 
 /**
- * Returns whether the pixel-perfect collisions are enabled for this direction.
+ * @brief Returns whether the pixel-perfect collisions are enabled for this direction.
  * @return true if the pixel-perfect collisions are enabled
  */
 bool SpriteAnimationDirection::are_pixel_collisions_enabled(void) {
@@ -130,9 +132,11 @@ bool SpriteAnimationDirection::are_pixel_collisions_enabled(void) {
 }
 
 /**
- * Returns the pixel bits object of a frame.
+ * @brief Returns the pixel bits object of a frame.
+ *
  * It represents the transparent bits of the frame and permits to detect pixel collisions.
  * The pixel collisions must be enabled.
+ *
  * @param frame a frame of the animation
  * @return the pixel bits object of a frame
  */

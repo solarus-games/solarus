@@ -17,7 +17,7 @@
 #include "TransitionImmediate.h"
 
 /**
- * Creates an immediate transition effect.
+ * @brief Creates an immediate transition effect.
  * @param direction direction of the transition effect (in or out)
  */
 TransitionImmediate::TransitionImmediate(Transition::Direction direction):
@@ -26,21 +26,21 @@ TransitionImmediate::TransitionImmediate(Transition::Direction direction):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 TransitionImmediate::~TransitionImmediate(void) {
 
 }
 
 /**
- * Starts this transition effect.
+ * @brief Starts this transition effect.
  */
 void TransitionImmediate::start(void) {
   
 }
 
 /**
- * Returns whether the transition effect is started.
+ * @brief Returns whether the transition effect is started.
  * @return false
  */
 bool TransitionImmediate::is_started(void) {
@@ -48,7 +48,7 @@ bool TransitionImmediate::is_started(void) {
 }
 
 /**
- * Returns whether the transition effect is finished.
+ * @brief Returns whether the transition effect is finished.
  * @return true
  */
 bool TransitionImmediate::is_finished(void) {
@@ -56,14 +56,14 @@ bool TransitionImmediate::is_finished(void) {
 }
 
 /**
- * Updates this transition effect.
+ * @brief Updates this transition effect.
  */
 void TransitionImmediate::update(void) {
 
 }
 
 /**
- * Displays the transition effect on a surface.
+ * @brief Displays the transition effect on a surface.
  * @param surface the surface to draw
  */
 void TransitionImmediate::display(Surface *surface) {

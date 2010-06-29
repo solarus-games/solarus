@@ -21,7 +21,7 @@
 #include "lowlevel/Surface.h"
 
 /**
- * Constructor.
+ * @brief Constructor.
  * @param image_file_name the image from which the frames are extracted
  * @param nb_directions number of directions in this animation
  * @param directions the image sequence of each direction
@@ -42,7 +42,7 @@ SpriteAnimation::SpriteAnimation(const std::string &image_file_name,
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 SpriteAnimation::~SpriteAnimation(void) {
   for (int i = 0; i < nb_directions; i++) {
@@ -57,8 +57,10 @@ SpriteAnimation::~SpriteAnimation(void) {
 }
 
 /**
- * When the sprite is displayed on a map, sets the map.
+ * @brief When the sprite is displayed on a map, sets the map.
+ *
  * This function must be called if this sprite image depends on the map's tileset.
+ *
  * @param map the map
  */
 void SpriteAnimation::set_map(Map *map) {
@@ -69,7 +71,7 @@ void SpriteAnimation::set_map(Map *map) {
 }
 
 /**
- * Returns the number of directions of this animation.
+ * @brief Returns the number of directions of this animation.
  * @return the number of directions
  */
 int SpriteAnimation::get_nb_directions(void) {
@@ -77,7 +79,7 @@ int SpriteAnimation::get_nb_directions(void) {
 }
 
 /**
- * Returns a direction.
+ * @brief Returns a direction.
  * @param direction the direction
  * @return the sequence of images corresponding to this direction
  */
@@ -86,7 +88,7 @@ SpriteAnimationDirection * SpriteAnimation::get_direction(int direction) {
 }
 
 /**
- * Returns the delay between two frames for this sprite animation.
+ * @brief Returns the delay between two frames for this sprite animation.
  * @return the frame delay in milliseconds
  */
 uint32_t SpriteAnimation::get_frame_delay(void) {
@@ -94,7 +96,7 @@ uint32_t SpriteAnimation::get_frame_delay(void) {
 }
 
 /**
- * Returns whether this animation loops on a frame.
+ * @brief Returns whether this animation loops on a frame.
  * @return true if this animation loops
  */
 bool SpriteAnimation::is_looping(void) {
@@ -102,7 +104,7 @@ bool SpriteAnimation::is_looping(void) {
 }
 
 /**
- * Returns the next frame of the current frame.
+ * @brief Returns the next frame of the current frame.
  * @param current_direction the current direction
  * @param current_frame the current frame
  * @return the next frame of the current frame in this direction
@@ -128,7 +130,7 @@ int SpriteAnimation::get_next_frame(int current_direction, int current_frame) {
 }
 
 /**
- * Displays a specific frame of this animation on a surface.
+ * @brief Displays a specific frame of this animation on a surface.
  * @param destination the surface on which the sprite will be displayed
  * @param x x coordinate of the sprite on this surface
  * (the origin point will be displayed at this position)
@@ -144,7 +146,7 @@ void SpriteAnimation::display(Surface *destination, int x, int y,
 }
 
 /**
- * Enables the pixel-perfect collision detection for this animation.
+ * @brief Enables the pixel-perfect collision detection for this animation.
  */
 void SpriteAnimation::enable_pixel_collisions(void) {
 
@@ -154,7 +156,7 @@ void SpriteAnimation::enable_pixel_collisions(void) {
 }
 
 /**
- * Returns whether the pixel-perfect collisions are enabled for this animations.
+ * @brief Returns whether the pixel-perfect collisions are enabled for this animations.
  * @return true if the pixel-perfect collisions are enabled
  */
 bool SpriteAnimation::are_pixel_collisions_enabled(void) {

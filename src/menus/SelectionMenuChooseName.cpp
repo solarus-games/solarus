@@ -23,7 +23,7 @@
 #include "lowlevel/Surface.h"
 
 /**
- * Creates a selection menu with the phase where the
+ * @brief Creates a selection menu with the phase where the
  * player has to choose his name.
  * @param menu the selection menu this phase will belong to
  */
@@ -48,7 +48,7 @@ SelectionMenuChooseName::SelectionMenuChooseName(SelectionMenu *menu):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 SelectionMenuChooseName::~SelectionMenuChooseName(void) {
 
@@ -60,14 +60,14 @@ SelectionMenuChooseName::~SelectionMenuChooseName(void) {
 }
 
 /**
- * Updates this phase.
+ * @brief Updates this phase.
  */
 void SelectionMenuChooseName::update(void) {
   arrow_sprite->update();
 }
 
 /**
- * Handles an event in this phase.
+ * @brief Handles an event in this phase.
  * @param event the event
  */
 void SelectionMenuChooseName::notify_event(InputEvent &event) {
@@ -131,7 +131,7 @@ void SelectionMenuChooseName::notify_event(InputEvent &event) {
 }
 
 /**
- * Displays the selection menu phase.
+ * @brief Displays the selection menu phase.
  * @param destination_surface the surface to draw
  */
 void SelectionMenuChooseName::display(Surface *destination_surface) {
@@ -150,7 +150,7 @@ void SelectionMenuChooseName::display(Surface *destination_surface) {
 }
 
 /**
- * This function is called when the player chooses a letter when typing his name.
+ * @brief This function is called when the player chooses a letter when typing his name.
  * @return true if he finished typing the name (because he validated or cancelled)
  */
 bool SelectionMenuChooseName::select_letter(void) {
@@ -234,7 +234,7 @@ bool SelectionMenuChooseName::select_letter(void) {
 }
 
 /**
- * This function is called when the player wants to finish typing his name.
+ * @brief This function is called when the player wants to finish typing his name.
  * @return true if the new name is valid, false otherwise
  */
 bool SelectionMenuChooseName::validate_player_name(void) {

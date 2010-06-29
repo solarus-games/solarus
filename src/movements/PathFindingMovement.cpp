@@ -21,7 +21,7 @@
 #include "lowlevel/System.h"
 
 /**
- * Creates a chase movement.
+ * @brief Creates a chase movement.
  * @param target the entity to target
  * @param speed speed of the movement
  */
@@ -32,14 +32,14 @@ PathFindingMovement::PathFindingMovement(MapEntity *target, int speed):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 PathFindingMovement::~PathFindingMovement(void) {
 
 }
 
 /**
- * Updates the position.
+ * @brief Updates the position.
  */
 void PathFindingMovement::update(void) {
 
@@ -55,7 +55,7 @@ void PathFindingMovement::update(void) {
 }
 
 /**
- * Calculates the direction and the speed of the movement
+ * @brief Calculates the direction and the speed of the movement
  * depending on the target.
  */
 void PathFindingMovement::recompute_movement(void) { 
@@ -89,7 +89,8 @@ void PathFindingMovement::recompute_movement(void) {
 }
 
 /**
- * Starts the next step of the movement.
+ * @brief Starts the next step of the movement.
+ *
  * This is a redefinition of PathMovement::start_next_move() to recalculate the path when it is finished
  * or when the recomputation delay is over.
  */
@@ -107,7 +108,7 @@ void PathFindingMovement::start_next_move(void) {
 }
 
 /**
- * Returns whether the movement is finished.
+ * @brief Returns whether the movement is finished.
  * @return false
  */
 bool PathFindingMovement::is_finished(void) {

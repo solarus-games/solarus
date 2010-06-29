@@ -30,7 +30,7 @@
 #include <ctime>
 
 /**
- * Creates a title screen.
+ * @brief Creates a title screen.
  * @param solarus the Solarus object
  */
 TitleScreen::TitleScreen(Solarus *solarus):
@@ -41,7 +41,7 @@ TitleScreen::TitleScreen(Solarus *solarus):
 }
 
 /**
- * Destroys the title screen.
+ * @brief Destroys the title screen.
  */
 TitleScreen::~TitleScreen(void) {
 
@@ -64,7 +64,7 @@ TitleScreen::~TitleScreen(void) {
 }
 
 /**
- * Updates the title screen.
+ * @brief Updates the title screen.
  */
 void TitleScreen::update(void) {
 
@@ -108,7 +108,7 @@ void TitleScreen::update(void) {
 }
 
 /**
- * Displays the title screen.
+ * @brief Displays the title screen.
  * @param destination_surface the surface to draw
  */
 void TitleScreen::display(Surface *destination_surface) {
@@ -133,7 +133,7 @@ void TitleScreen::display(Surface *destination_surface) {
 }
 
 /**
- * This function is called by the main loop when there is an input event.
+ * @brief This function is called by the main loop when there is an input event.
  * @param event the event to handle
  */
 void TitleScreen::notify_event(InputEvent &event) {
@@ -154,7 +154,8 @@ void TitleScreen::notify_event(InputEvent &event) {
 }
 
 /**
- * Initializes phase 1 of the title screen.
+ * @brief Initializes phase 1 of the title screen.
+ *
  * A black screen will be shown for a fraction of second.
  */
 void TitleScreen::init_phase_black_screen(void) {
@@ -165,7 +166,8 @@ void TitleScreen::init_phase_black_screen(void) {
 }
 
 /**
- * Initializes phase 2 of the title screen.
+ * @brief Initializes phase 2 of the title screen.
+ *
  * A introduction message will be shown.
  */
 void TitleScreen::init_phase_introduction_message(void) {
@@ -182,7 +184,7 @@ void TitleScreen::init_phase_introduction_message(void) {
 }
 
 /**
- * Exits phase 2 of the title screen.
+ * @brief Exits phase 2 of the title screen.
  */
 void TitleScreen::exit_phase_introduction_message(void) {
   delete introduction_message_img;
@@ -190,7 +192,8 @@ void TitleScreen::exit_phase_introduction_message(void) {
 }
 
 /**
- * Initializes phase 3 of the title screen.
+ * @brief Initializes phase 3 of the title screen.
+ *
  * The title screen will be shown.
  */
 void TitleScreen::init_phase_title(void) {
@@ -240,7 +243,7 @@ void TitleScreen::init_phase_title(void) {
 }
 
 /**
- * Exits phase 3 of the title screen.
+ * @brief Exits phase 3 of the title screen.
  */
 void TitleScreen::exit_phase_title(void) {
 
@@ -258,7 +261,7 @@ void TitleScreen::exit_phase_title(void) {
 }
 
 /**
- * Updates phase 3 of the title screen.
+ * @brief Updates phase 3 of the title screen.
  */
 void TitleScreen::update_phase_title(void) {
 
@@ -303,7 +306,7 @@ void TitleScreen::update_phase_title(void) {
 }
 
 /**
- * Displays phase 3 of the title screen.
+ * @brief Displays phase 3 of the title screen.
  * @param destination surface the surface to draw
  */
 void TitleScreen::display_phase_title(Surface *destination_surface) {
@@ -353,7 +356,7 @@ void TitleScreen::display_phase_title(Surface *destination_surface) {
 }
 
 /**
- * Returns a number describing the current time of the day.
+ * @brief Returns a number describing the current time of the day.
  * @return DAYLIGHT, SUNSET or NIGHT
  */
 TitleScreen::TimeOfDay TitleScreen::get_time_of_day(void) {

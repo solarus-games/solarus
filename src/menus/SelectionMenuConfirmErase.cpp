@@ -21,7 +21,7 @@
 #include "lowlevel/FileTools.h"
 
 /**
- * Creates a selection menu phase where the player has to confirm to erase a file.
+ * @brief Creates a selection menu phase where the player has to confirm to erase a file.
  * @param menu the selection menu this phase will belong to
  * @param save_number_to_erase number of the savegame to delete (0 to 2)
  */
@@ -34,14 +34,14 @@ SelectionMenuConfirmErase::SelectionMenuConfirmErase(SelectionMenu *menu, int sa
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 SelectionMenuConfirmErase::~SelectionMenuConfirmErase(void) {
 
 }
 
 /**
- * Handles an input event in this phase.
+ * @brief Handles an input event in this phase.
  * @param event the event
  */
 void SelectionMenuConfirmErase::notify_event(InputEvent &event) {
@@ -72,7 +72,7 @@ void SelectionMenuConfirmErase::notify_event(InputEvent &event) {
 }
 
 /**
- * Displays this selection menu phase.
+ * @brief Displays this selection menu phase.
  * @param destination_surface the surface to draw
  */
 void SelectionMenuConfirmErase::display(Surface *destination_surface) {
@@ -89,7 +89,7 @@ void SelectionMenuConfirmErase::display(Surface *destination_surface) {
 }
 
 /**
- * Deletes a save file.
+ * @brief Deletes a save file.
  * @param save_number number of the savegame to delete (0 to 2)
  */
 void SelectionMenuConfirmErase::delete_save_file(int save_number) {

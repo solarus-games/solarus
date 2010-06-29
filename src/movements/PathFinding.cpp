@@ -41,7 +41,7 @@ const Rectangle PathFinding::transition_collision_boxes[] = {
 };
 
 /**
- * Constructor.
+ * @brief Constructor.
  * @param map the map
  * @param source_entity the entity that will move from the starting point to the target
  * (its position must be a 16*16 rectangle aligned on the map grid)
@@ -61,13 +61,13 @@ PathFinding::PathFinding(Map *map, MapEntity *source_entity, MapEntity *target_e
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 PathFinding::~PathFinding(void) {
 }
 
 /**
- * Tries to find a path between the source point and the target point.
+ * @brief Tries to find a path between the source point and the target point.
  * @return the path found, or an empty string if no path was found
  * (because there is no path or the target is too far)
  */
@@ -185,7 +185,7 @@ std::string PathFinding::compute_path(void) {
 }
 
 /**
- * Returns the index of the 8*8 square in the map
+ * @brief Returns the index of the 8*8 square in the map
  * corresponding to the specified location.
  * @param location location of a node on the map
  * @return index of the square corresponding to the top-left part of the location
@@ -198,7 +198,7 @@ int PathFinding::get_square_index(const Rectangle &location) {
 }
 
 /**
- * Returns the Manhattan distance of two points, measured in number of 8*8 squares.
+ * @brief Returns the Manhattan distance of two points, measured in number of 8*8 squares.
  * @param point1 a first point
  * @param point2 a second point
  * @return the Manhattan distance between these points
@@ -211,7 +211,7 @@ int PathFinding::get_manhattan_distance(const Rectangle &point1, const Rectangle
 
 
 /**
- * Compares two nodes according to their total estimated cost.
+ * @brief Compares two nodes according to their total estimated cost.
  * @param other the other node
  */
 bool PathFinding::Node::operator<(const Node &other) {
@@ -219,7 +219,7 @@ bool PathFinding::Node::operator<(const Node &other) {
 }
 
 /**
- * Adds the index of a node to the sorted list of indices of the open list, making sure the list remains sorted.
+ * @brief Adds the index of a node to the sorted list of indices of the open list, making sure the list remains sorted.
  * @param node the node
  */
 void PathFinding::add_index_sorted(Node *node) {
@@ -241,7 +241,7 @@ void PathFinding::add_index_sorted(Node *node) {
 }
 
 /**
- * Builds the string representation of the path found by the algorithm.
+ * @brief Builds the string representation of the path found by the algorithm.
  * @param closed_list the closed list of A*
  * @return final_node the final node of the path
  */
@@ -258,7 +258,7 @@ std::string PathFinding::rebuild_path(const Node *final_node) {
 }
 
 /**
- * Returns whether a transition between two nodes is valid, i.e. whether there is no collision with the map.
+ * @brief Returns whether a transition between two nodes is valid, i.e. whether there is no collision with the map.
  * @param initial_node the first node
  * @param direction the direction to take (0 to 7)
  * @return true if there is no collision for this transition

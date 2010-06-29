@@ -22,7 +22,7 @@
 #include "lowlevel/Rectangle.h"
 
 /**
- * Creates a selection phase where the player has to choose the game mode.
+ * @brief Creates a selection phase where the player has to choose the game mode.
  * @param menu the selection menu
  */
 SelectionMenuChooseMode::SelectionMenuChooseMode(SelectionMenu *menu):
@@ -39,7 +39,7 @@ SelectionMenuChooseMode::SelectionMenuChooseMode(SelectionMenu *menu):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 SelectionMenuChooseMode::~SelectionMenuChooseMode(void) {
   delete mode_img;
@@ -47,7 +47,7 @@ SelectionMenuChooseMode::~SelectionMenuChooseMode(void) {
 }
 
 /**
- * Handles an event in this phase.
+ * @brief Handles an event in this phase.
  * @param event the event
  */
 void SelectionMenuChooseMode::notify_event(InputEvent &event) {
@@ -85,7 +85,7 @@ void SelectionMenuChooseMode::notify_event(InputEvent &event) {
 }
 
 /**
- * Updates the selection menu in this phase.
+ * @brief Updates the selection menu in this phase.
  */
 void SelectionMenuChooseMode::update(void) {
 
@@ -100,7 +100,7 @@ void SelectionMenuChooseMode::update(void) {
 }
 
 /**
- * Displays this selection menu phase.
+ * @brief Displays this selection menu phase.
  * @param destination_surface the surface to draw
  */
 void SelectionMenuChooseMode::display(Surface *destination_surface) {

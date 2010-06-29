@@ -25,7 +25,7 @@
 #include "lowlevel/IniFile.h"
 
 /**
- * Delay between two chars, depending on the dialog speed.
+ * @brief Delay between two chars, depending on the dialog speed.
  */
 static const uint32_t char_delays[3] = {
   60, // slow
@@ -34,7 +34,7 @@ static const uint32_t char_delays[3] = {
 };
 
 /**
- * Creates a new message.
+ * @brief Creates a new message.
  * @param dialog_box the dialog box
  * @param message_id id of the message
  * @param x x position of the dialog box
@@ -69,7 +69,7 @@ Message::Message(DialogBox *dialog_box, MessageId message_id, int x, int y):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 Message::~Message(void) {
 
@@ -79,7 +79,7 @@ Message::~Message(void) {
 }
 
 /**
- * Reads the message from the data file and initializes
+ * @brief Reads the message from the data file and initializes
  * the fields accordingly.
  * @param message_id id of the message
  */
@@ -151,7 +151,7 @@ void Message::parse(MessageId message_id) {
 }
 
 /**
- * Returns whether this message is a question.
+ * @brief Returns whether this message is a question.
  * @return true if the message is a question
  */
 bool Message::is_question(void) {
@@ -159,8 +159,10 @@ bool Message::is_question(void) {
 }
 
 /**
- * Returns the id of the next message to display, or
- * an empty string if this is the last message.
+ * @brief Returns the id of the next message to display.
+ *
+ * If this is the last message, an empty string is returned.
+ *
  * @return the id of the message to display when this one is over
  */
 MessageId Message::get_next_message_id(void) {
@@ -173,7 +175,7 @@ MessageId Message::get_next_message_id(void) {
 }
 
 /**
- * Returns whether the message is now completely displayed.
+ * @brief Returns whether the message is now completely displayed.
  * @return true if the message is over
  */
 bool Message::is_finished(void) {
@@ -181,7 +183,7 @@ bool Message::is_finished(void) {
 }
 
 /**
- * Shows all characters of the message now.
+ * @brief Shows all characters of the message now.
  */
 void Message::show_all_now(void) {
   show_all = true;
@@ -189,7 +191,7 @@ void Message::show_all_now(void) {
 }
 
 /**
- * Sets the delay between two chars, depending on the
+ * @brief Sets the delay between two chars, depending on the
  * speed specified by the dialog box.
  * @param speed the speed
  */
@@ -205,7 +207,8 @@ void Message::update_char_delay(void) {
 }
 
 /**
- * Adds the next character to the message.
+ * @brief Adds the next character to the message.
+ *
  * If this is a special character (like $0, $v, etc.),
  * the corresponding action is performed.
  */
@@ -290,7 +293,7 @@ void Message::add_character(void) {
 }
 
 /**
- * Replaces the first occurence of "$v" by the specified value.
+ * @brief Replaces the first occurence of "$v" by the specified value.
  * @param value the value to set
  */
 void Message::set_variable(const std::string &value) {
@@ -299,7 +302,7 @@ void Message::set_variable(const std::string &value) {
 }
 
 /**
- * Updates the message.
+ * @brief Updates the message.
  */
 void Message::update(void) {
 
@@ -320,7 +323,7 @@ void Message::update(void) {
 }
 
 /**
- * Displays the message on a surface.
+ * @brief Displays the message on a surface.
  * @param destination_surface the surface to draw
  */
 void Message::display(Surface *destination_surface) {

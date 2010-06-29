@@ -21,7 +21,7 @@
 #include <cmath>
 
 /**
- * Constructor.
+ * @brief Constructor.
  */
 Movement::Movement(void):
   x_speed(0), y_speed(0),
@@ -34,17 +34,19 @@ Movement::Movement(void):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 Movement::~Movement(void) {
 
 }
 
 /**
- * Sets the entity to be controlled by this movement object.
+ * @brief Sets the entity to be controlled by this movement object.
+ *
  * This entity can be NULL if your movement applies to something else than a map entity.
  * However, some subclasses of Movement may require a non NULL entity because they
  * implement movements that depend on the map content (e.g. to handle the collisions).
+ *
  * @param entity the entity to control
  */
 void Movement::set_entity(MapEntity *entity) {
@@ -61,7 +63,7 @@ void Movement::set_entity(MapEntity *entity) {
 }
 
 /**
- * Returns the x position of the object controlled by this movement.
+ * @brief Returns the x position of the object controlled by this movement.
  * @return the x position of the object controlled by this movement
  */
 int Movement::get_x(void) {
@@ -74,7 +76,7 @@ int Movement::get_x(void) {
 }
 
 /**
- * Returns the y position of the object controlled by this movement.
+ * @brief Returns the y position of the object controlled by this movement.
  * @return the y position of the object controlled by this movement
  */
 int Movement::get_y(void) {
@@ -87,7 +89,7 @@ int Movement::get_y(void) {
 }
 
 /**
- * Sets the x position of the object controlled by this movement.
+ * @brief Sets the x position of the object controlled by this movement.
  * @param x the new x position
  */
 void Movement::set_x(int x) {
@@ -95,7 +97,7 @@ void Movement::set_x(int x) {
 }
 
 /**
- * Sets the y position of the object controlled by this movement.
+ * @brief Sets the y position of the object controlled by this movement.
  * @param y the new y position
  */
 void Movement::set_y(int y) {
@@ -103,7 +105,7 @@ void Movement::set_y(int y) {
 }
 
 /**
- * Sets the position of the entity or the point controlled by this movement.
+ * @brief Sets the position of the entity or the point controlled by this movement.
  * @param x the new x position
  * @param y the new y position
  */
@@ -123,7 +125,7 @@ void Movement::set_position(int x, int y) {
 }
 
 /**
- * Sets the position of the entity.
+ * @brief Sets the position of the entity.
  * @param xy the new coordinates
  */
 void Movement::set_position(const Rectangle &xy) {
@@ -131,7 +133,7 @@ void Movement::set_position(const Rectangle &xy) {
 }
 
 /**
- * Moves the entity on x.
+ * @brief Moves the entity on x.
  * @param dx number of pixels of the move
  */
 void Movement::translate_x(int dx) {
@@ -139,7 +141,7 @@ void Movement::translate_x(int dx) {
 }
 
 /**
- * Moves the entity on y.
+ * @brief Moves the entity on y.
  * @param dy number of pixels of the move
  */
 void Movement::translate_y(int dy) {
@@ -147,7 +149,7 @@ void Movement::translate_y(int dy) {
 }
 
 /**
- * Moves the entity.
+ * @brief Moves the entity.
  * @param dx number of pixels of the move on x
  * @param dy number of pixels of the move on y
  */
@@ -156,7 +158,7 @@ void Movement::translate(int dx, int dy) {
 }
 
 /**
- * Returns the x speed of the entity.
+ * @brief Returns the x speed of the entity.
  * @return the x speed of the entity, between -100 and 100
  */
 double Movement::get_x_speed() {
@@ -164,7 +166,7 @@ double Movement::get_x_speed() {
 }
 
 /**
- * Returns the y speed of the entity.
+ * @brief Returns the y speed of the entity.
  * @return the y speed of the entity, between -100 and 100
  */
 double Movement::get_y_speed() {
@@ -172,15 +174,16 @@ double Movement::get_y_speed() {
 }
 
 /**
- * Returns the total speed of the entity:
- * sqrt(x_speed^2 + y_speed^2)
+ * @brief Returns the total speed of the entity.
+ *
+ * The speed is calculated as sqrt(x_speed^2 + y_speed^2).
  */
 double Movement::get_speed(void) {
   return sqrt(x_speed * x_speed + y_speed * y_speed);
 }
 
 /**
- * Sets the x speed.
+ * @brief Sets the x speed.
  * @param x_speed the x speed of the entity, between -100 and 100
  */
 void Movement::set_x_speed(double x_speed) {
@@ -210,7 +213,7 @@ void Movement::set_x_speed(double x_speed) {
 }
 
 /**
- * Sets the y speed.
+ * @brief Sets the y speed.
  * @param y_speed the y speed of the entity, between -100 and 100
  */
 void Movement::set_y_speed(double y_speed) {
@@ -240,8 +243,10 @@ void Movement::set_y_speed(double y_speed) {
 }
 
 /**
- * Changes the speed, keeping the same direction of the movement.
+ * @brief Changes the speed, keeping the same direction of the movement.
+ *
  * x_speed and y_speed are recomputed so that the movement direction is unchanged.
+ *
  * @param speed the new speed
  */
 void Movement::set_speed(double speed) {
@@ -257,7 +262,7 @@ void Movement::set_speed(double speed) {
 }
 
 /**
- * Returns whether the speed is zero.
+ * @brief Returns whether the speed is zero.
  * @return true if the entity is stopped, false otherwise
  */
 bool Movement::is_stopped(void) {
@@ -265,7 +270,7 @@ bool Movement::is_stopped(void) {
 }
 
 /**
- * Returns whether the speed is not zero.
+ * @brief Returns whether the speed is not zero.
  * @return true if the entity is moving, false otherwise
  */
 bool Movement::is_started(void) {
@@ -273,7 +278,7 @@ bool Movement::is_started(void) {
 }
 
 /**
- * Sets the speed to zero.
+ * @brief Sets the speed to zero.
  */
 void Movement::stop(void) {
   set_x_speed(0);
@@ -283,8 +288,10 @@ void Movement::stop(void) {
 }
 
 /**
- * Returns whether this movement is finished.
+ * @brief Returns whether this movement is finished.
+ *
  * You can redefine this function if your movement has an end.
+ *
  * @return true if this movement is finished
  */
 bool Movement::is_finished(void) {
@@ -292,10 +299,12 @@ bool Movement::is_finished(void) {
 }
 
 /**
- * Changes the direction of the movement vector, keeping the same speed.
+ * @brief Changes the direction of the movement vector, keeping the same speed.
+ *
  * x_speed and y_speed are recomputed so that the total speed is unchanged.
  * Warning: if x_speed and y_speed are both equal to zero, this function
- * stops the program.
+ * stops the program on an error message.
+ *
  * @param direction the new movement direction, between 0 and 359
  */
 void Movement::set_direction(int direction) {
@@ -305,10 +314,12 @@ void Movement::set_direction(int direction) {
 }
 
 /**
- * Changes the direction of the movement vector, keeping the same speed.
+ * @brief Changes the direction of the movement vector, keeping the same speed.
+ *
  * x_speed and y_speed are recomputed so that the total speed is unchanged.
  * Warning: if x_speed and y_speed are both equal to zero, this function
- * stops the program.
+ * stops the program on an error message.
+ *
  * @param angle the new movement direction in radians
  */
 void Movement::set_direction(double angle) {
@@ -328,11 +339,13 @@ void Movement::set_direction(double angle) {
 }
 
 /**
- * Returns true if the entity is about to try to move
- * on the next update(), i.e. if x_move is not equal to zero
- * and next_move_date_x is past, or the same thing for y.
- * @return true if the entity is about to try to move
+ * @brief Returns true if the entity is about to try to move
+ * on the next update().
  *
+ * This function returns true if x_move is not equal to zero
+ * and next_move_date_x is past, or the same thing for y.
+ *
+ * @return true if the entity is about to try to move
  */
 bool Movement::has_to_move_now(void) {
 
@@ -342,7 +355,7 @@ bool Movement::has_to_move_now(void) {
 }
 
 /**
- * Returns whether the movement is suspended.
+ * @brief Returns whether the movement is suspended.
  * @return true if the movement is suspended
  */
 bool Movement::is_suspended(void) {
@@ -350,8 +363,10 @@ bool Movement::is_suspended(void) {
 }
 
 /**
- * Suspends or resumes the movement.
+ * @brief Suspends or resumes the movement.
+ *
  * This function is called by the entity when the game is suspended or resumed.
+ *
  * @param suspended true to suspend the movement, false to resume it
  */
 void Movement::set_suspended(bool suspended) {
@@ -374,7 +389,7 @@ void Movement::set_suspended(bool suspended) {
 }
 
 /**
- * Updates the x position of the entity if it has to be changed.
+ * @brief Updates the x position of the entity if it has to be changed.
  */
 void Movement::update_x(void) {
 
@@ -390,7 +405,7 @@ void Movement::update_x(void) {
 }
 
 /**
- * Updates the y position of the entity if it has changed.
+ * @brief Updates the y position of the entity if it has changed.
  */
 void Movement::update_y(void) {
 
@@ -406,7 +421,8 @@ void Movement::update_y(void) {
 }
 
 /**
- * Updates the entity's position.
+ * @brief Updates the entity's position.
+ *
  * This function is called repeteadly by the map.
  * By default, it calls update_x() and update_y().
  * You can redefine this function.
@@ -420,8 +436,10 @@ void Movement::update(void) {
 }
 
 /**
- * Returns the collision box of the last collision check that detected an obstacle.
+ * @brief Returns the collision box of the last collision check that detected an obstacle.
+ *
  * This function is useful only for subclasses of Movement that handle collisions.
+ *
  * @return the collision box of the last collision detected, or (-1, -1) if no obstacle was detected
  */
 const Rectangle & Movement::get_last_collision_box_on_obstacle(void) {

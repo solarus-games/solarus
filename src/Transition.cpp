@@ -20,7 +20,7 @@
 #include "TransitionScrolling.h"
 
 /**
- * Creates a transition effect.
+ * @brief Creates a transition effect.
  * @param direction direction of the transition effect (in or out)
  */
 Transition::Transition(Transition::Direction direction):
@@ -29,14 +29,14 @@ Transition::Transition(Transition::Direction direction):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 Transition::~Transition(void) {
 
 }
 
 /**
- * Creates a transition effect with the specified type and direction.
+ * @brief Creates a transition effect with the specified type and direction.
  * @param style style of the transition: Transition::IMMEDIATE, Transition::FADE, etc.
  * @param direction Transition::IN or Transition::OUT
  * @param game the current game if any (used by some kinds of transitions)
@@ -66,7 +66,7 @@ Transition * Transition::create(Transition::Style style, Transition::Direction d
 }
 
 /**
- * Returns the direction of this transition effect.
+ * @brief Returns the direction of this transition effect.
  * @returns the direction of this transition effect: Transition::IN or Transition::OUT
  */
 Transition::Direction Transition::get_direction(void) {
@@ -74,7 +74,7 @@ Transition::Direction Transition::get_direction(void) {
 }
 
 /**
- * Indicates the surface that was shown during the OUT transition
+ * @brief Indicates the surface that was shown during the OUT transition
  * that was played before this IN transition.
  * @param previous_surface the previous surface
  */
@@ -88,7 +88,7 @@ void Transition::set_previous_surface(Surface *previous_surface) {
 }
 
 /**
- * Returns whether this transition effect needs the previous surface.
+ * @brief Returns whether this transition effect needs the previous surface.
  * @return false
  */
 bool Transition::needs_previous_surface(void) {

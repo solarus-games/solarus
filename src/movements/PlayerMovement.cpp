@@ -24,7 +24,8 @@
 // TODO use the code from GameControls
 
 /*
- * Bit masks associated to each arrow on the keyboard or the joypad.
+ * @brief Bit masks associated to each arrow on the keyboard or the joypad.
+ *
  * A combination of arrows is stored in a simple integer.
  */
 const uint16_t PlayerMovement::direction_masks[4] = {
@@ -35,8 +36,10 @@ const uint16_t PlayerMovement::direction_masks[4] = {
 };
 
 /**
- * Associates to each possible combination of arrows
- * a movement direction in degrees: 0 to 359, or -1 to indicate
+ * @brief Associates to each possible combination of arrows
+ * a movement direction in degrees.
+ *
+ * The direction in degrees is between 0 and 359, or -1 to indicate
  * that the movement is stopped.
  *
  * For example:
@@ -64,7 +67,7 @@ static const int directions[] = {
 };
 
 /**
- * Constructor.
+ * @brief Constructor.
  * @param moving_speed movement speed
  */
 PlayerMovement::PlayerMovement(int moving_speed):
@@ -76,16 +79,18 @@ PlayerMovement::PlayerMovement(int moving_speed):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 PlayerMovement::~PlayerMovement(void) {
 
 }
 
 /**
- * Returns the current direction of the movement.
+ * @brief Returns the current direction of the movement.
+ *
  * The returned direction is an angle (0 to 359), or -1 if the
  * movement is stopped.
+ *
  * @returns the current movement direction
  */
 int PlayerMovement::get_direction(void) {
@@ -93,7 +98,7 @@ int PlayerMovement::get_direction(void) {
 }
 
 /**
- * Returns whether the entity is moving.
+ * @brief Returns whether the entity is moving.
  * @return true if the entity is moving
  */
 bool PlayerMovement::is_started(void) {
@@ -101,9 +106,11 @@ bool PlayerMovement::is_started(void) {
 }
 
 /**
- * Returns whether the player can move the entity.
+ * @brief Returns whether the player can move the entity.
+ *
  * This function returns false when the player does not
  * currently have control of the entity.
+ *
  * @return true if the movements are enabled
  */
 bool PlayerMovement::is_moving_enabled(void) {
@@ -111,8 +118,10 @@ bool PlayerMovement::is_moving_enabled(void) {
 }
 
 /**
- * Sets whether the player can move the entity.
+ * @brief Sets whether the player can move the entity.
+ *
  * This function permits to ignore or restore the control of the entity.
+ *
  * @param moving_enabled true to enable the movements, false to disable them.
  * @param direction_enabled true to keep the direction control even if the movement is disabled
  * (must be true if moving_enabled is true)
@@ -176,9 +185,11 @@ void PlayerMovement::set_moving_enabled(bool moving_enabled, bool direction_enab
 }
 
 /**
- * Returns whether the player can control the entity's direction.
+ * @brief Returns whether the player can control the entity's direction.
+ *
  * This function returns false when the player does not
  * currently have control of the entity's direction.
+ *
  * @return true if the direction is enabled
  */
 bool PlayerMovement::is_direction_enabled(void) {
@@ -186,7 +197,7 @@ bool PlayerMovement::is_direction_enabled(void) {
 }
 
 /**
- * Suspends or resumes the movement.
+ * @brief Suspends or resumes the movement.
  * @param suspended true to suspend the movement, false to resume it
  */
 void PlayerMovement::set_suspended(bool suspended) {
@@ -207,7 +218,7 @@ void PlayerMovement::set_suspended(bool suspended) {
 }
 
 /**
- * This function is called when an arrow key is pressed.
+ * @brief This function is called when an arrow key is pressed.
  * @param direction of the arrow pressed (0 to 3)
  */
 void PlayerMovement::add_direction(int direction) {
@@ -223,7 +234,7 @@ void PlayerMovement::add_direction(int direction) {
 }
 
 /**
- * This function is called when an arrow key is released.
+ * @brief This function is called when an arrow key is released.
  * @param direction of the arrow released (0 to 3)
  */
 void PlayerMovement::remove_direction(int direction) {
@@ -239,9 +250,11 @@ void PlayerMovement::remove_direction(int direction) {
 }
 
 /**
- * Returns the direction mask.
+ * @brief Returns the direction mask.
+ *
  * The direction mask represents what arrow keys are currently
  * pressed by the player.
+ *
  * @return the direction mask
  */
 uint16_t PlayerMovement::get_direction_mask(void) {
@@ -259,9 +272,11 @@ void PlayerMovement::add_direction_mask(uint16_t direction_mask) {
 }
 
 /**
- * Removes one of the four directions to the direction mask.
+ * @brief Removes one of the four directions to the direction mask.
+ *
  * The direction mask represents what arrow keys are currently
  * pressed by the player.
+ *
  * @param direction_mask the direction mask to remove
  */
 void PlayerMovement::remove_direction_mask(uint16_t direction_mask) {
@@ -269,9 +284,11 @@ void PlayerMovement::remove_direction_mask(uint16_t direction_mask) {
 }
 
 /**
- * Sets the direction mask.
+ * @brief Sets the direction mask.
+ *
  * The direction mask represents what arrow keys are currently
  * pressed by the player.
+ *
  * @param direction_mask the direction mask
  */
 void PlayerMovement::set_direction_mask(uint16_t direction_mask) {
@@ -281,7 +298,7 @@ void PlayerMovement::set_direction_mask(uint16_t direction_mask) {
 }
 
 /**
- * Returns the moving speed of the entity.
+ * @brief Returns the moving speed of the entity.
  * @return the moving speed of the entity
  */
 int PlayerMovement::get_moving_speed(void) {
@@ -289,7 +306,7 @@ int PlayerMovement::get_moving_speed(void) {
 }
 
 /**
- * Sets the moving speed of the entity.
+ * @brief Sets the moving speed of the entity.
  * @param moving_speed the moving speed of the entity
  */
 void PlayerMovement::set_moving_speed(int moving_speed) {
@@ -298,8 +315,8 @@ void PlayerMovement::set_moving_speed(int moving_speed) {
 }
 
 /**
- * Changes the movement of the entity depending on the arrows pressed
- * (i.e. depending on the value of direction_mask).
+ * @brief Changes the movement of the entity depending on the directional keys pressed.
+ *
  * This function is called when an arrow is pressed or released,
  * or when the movement has just been enabled or
  * disabled (i.e. when set_moving_enabled() is called).
@@ -373,3 +390,4 @@ void PlayerMovement::compute_movement(void) {
   // indeed the entity may need to update its animations and its collisions
   entity->movement_just_changed();
 }
+

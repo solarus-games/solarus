@@ -20,7 +20,7 @@
 #include "lowlevel/FileTools.h"
 
 /**
- * Loads the animations of a sprite from a file.
+ * @brief Loads the animations of a sprite from a file.
  * @param id id of the sprite (used to determine the sprite file)
  */
 SpriteAnimationSet::SpriteAnimationSet(const SpriteAnimationSetId &id) {
@@ -115,7 +115,7 @@ SpriteAnimationSet::SpriteAnimationSet(const SpriteAnimationSetId &id) {
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 SpriteAnimationSet::~SpriteAnimationSet(void) {
 
@@ -128,8 +128,10 @@ SpriteAnimationSet::~SpriteAnimationSet(void) {
 }
 
 /**
- * When the sprite is displayed on a map, sets the map.
+ * @brief When the sprite is displayed on a map, sets the map.
+ *
  * This function must be called if this sprite image depends on the map's tileset.
+ *
  * @param map the map
  */
 void SpriteAnimationSet::set_map(Map *map) {
@@ -143,7 +145,7 @@ void SpriteAnimationSet::set_map(Map *map) {
 }
 
 /**
- * Returns an animation.
+ * @brief Returns an animation.
  * @param animation_name name of the animation to get
  * @return the specified animation
  */
@@ -152,7 +154,7 @@ SpriteAnimation * SpriteAnimationSet::get_animation(const std::string &animation
 }
 
 /**
- * Returns the name of the default animation, i.e. the first one.
+ * @brief Returns the name of the default animation, i.e. the first one.
  * @return the name of the default animation
  */
 const std::string& SpriteAnimationSet::get_default_animation(void) {
@@ -160,7 +162,7 @@ const std::string& SpriteAnimationSet::get_default_animation(void) {
 }
 
 /**
- * Enables the pixel-perfect collision detection for these animations.
+ * @brief Enables the pixel-perfect collision detection for these animations.
  */
 void SpriteAnimationSet::enable_pixel_collisions(void) {
 
@@ -175,7 +177,7 @@ void SpriteAnimationSet::enable_pixel_collisions(void) {
 }
 
 /**
- * Returns whether the pixel-perfect collisions are enabled for these animations.
+ * @brief Returns whether the pixel-perfect collisions are enabled for these animations.
  * @return true if the pixel-perfect collisions are enabled
  */
 bool SpriteAnimationSet::are_pixel_collisions_enabled(void) {

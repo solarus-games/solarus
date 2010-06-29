@@ -32,7 +32,7 @@ const InputEvent::KeyboardKey SelectionMenuPhase::validation_keys[] = {
 };
 
 /**
- * Creates a selection menu phase.
+ * @brief Creates a selection menu phase.
  * @param menu the selection menu this phase will belong to
  * @param title_string_key key of the title string to display in this phase
  */
@@ -43,21 +43,21 @@ SelectionMenuPhase::SelectionMenuPhase(SelectionMenu *menu, const std::string &t
 }
 
 /**
- * Destroys the selection menu phase.
+ * @brief Destroys the selection menu phase.
  */
 SelectionMenuPhase::~SelectionMenuPhase(void) {
 
 }
 
 /**
- * Updates the selection menu in this phase.
+ * @brief Updates the selection menu in this phase.
  */
 void SelectionMenuPhase::update(void) {
   // nothing to do by default (subclasses can redefine this method)
 }
 
 /**
- * Displays this phase of the selection menu.
+ * @brief Displays this phase of the selection menu.
  * @param destination_surface surface where this phase has to be drawn
  */
 void SelectionMenuPhase::display(Surface *destination_surface) {
@@ -65,7 +65,7 @@ void SelectionMenuPhase::display(Surface *destination_surface) {
 }
 
 /**
- * This function is called when an input event occurs.
+ * @brief This function is called when an input event occurs.
  * @param event the event
  */
 void SelectionMenuPhase::notify_event(InputEvent &event) {

@@ -19,7 +19,7 @@
 #include "lowlevel/System.h"
 
 /**
- * Creates a fade-in or fade-out transition effect.
+ * @brief Creates a fade-in or fade-out transition effect.
  * @param direction direction of the transition effect (in or out)
  */
 TransitionFade::TransitionFade(Transition::Direction direction):
@@ -40,15 +40,17 @@ TransitionFade::TransitionFade(Transition::Direction direction):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 TransitionFade::~TransitionFade(void) {
 
 }
 
 /**
- * Sets the delay between two frames.
+ * @brief Sets the delay between two frames.
+ *
  * The default delay is 20 ms.
+ *
  * @param delay the new delay in milliseconds
  */
 void TransitionFade::set_delay(uint32_t delay) {
@@ -56,7 +58,7 @@ void TransitionFade::set_delay(uint32_t delay) {
 }
 
 /**
- * Starts this transition effect.
+ * @brief Starts this transition effect.
  */
 void TransitionFade::start(void) {
   alpha = alpha_start;
@@ -64,7 +66,7 @@ void TransitionFade::start(void) {
 }
 
 /**
- * Returns whether the transition effect is started and not finished yet.
+ * @brief Returns whether the transition effect is started and not finished yet.
  * @return true if the transition effect is started
  */
 bool TransitionFade::is_started(void) {
@@ -72,7 +74,7 @@ bool TransitionFade::is_started(void) {
 }
 
 /**
- * Returns whether the transition effect is finished.
+ * @brief Returns whether the transition effect is finished.
  * @return true
  */
 bool TransitionFade::is_finished(void) {
@@ -80,7 +82,8 @@ bool TransitionFade::is_finished(void) {
 }
 
 /**
- * Updates this transition effect.
+ * @brief Updates this transition effect.
+ *
  * This function should be called repeatedly while the transition exists.
  */
 void TransitionFade::update(void) {
@@ -99,7 +102,7 @@ void TransitionFade::update(void) {
 }
 
 /**
- * Displays the transition effect on a surface.
+ * @brief Displays the transition effect on a surface.
  * @param surface the destination surface
  */
 void TransitionFade::display(Surface *surface) {

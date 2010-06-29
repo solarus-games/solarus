@@ -18,7 +18,7 @@
 #include "lowlevel/System.h"
 
 /**
- * Creates a pixel movement object, not specifying the trajectory for now.
+ * @brief Creates a pixel movement object, not specifying the trajectory for now.
  * @param nb_vectors number of translation vectors in the array
  * @param delay delay in milliseconds between two translations
  * @param loop true to make the movement return to the beginning
@@ -34,7 +34,7 @@ PixelMovement::PixelMovement(int nb_vectors, uint32_t delay,
 }
 
 /**
- * Creates a pixel movement object.
+ * @brief Creates a pixel movement object.
  * @param translation_vectors the succession of translations
  * composing this movement (each element of the array represents
  * a translation vector in pixels; only the fields x and y of the
@@ -54,14 +54,14 @@ PixelMovement::PixelMovement(const Rectangle *translation_vectors,
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 PixelMovement::~PixelMovement(void) {
 
 }
 
 /**
- * Sets the translation vectors of the trajectory.
+ * @brief Sets the translation vectors of the trajectory.
  * @param translation_vectors the trajectory
  */
 void PixelMovement::set_translation_vectors(const Rectangle *translation_vectors) {
@@ -69,7 +69,7 @@ void PixelMovement::set_translation_vectors(const Rectangle *translation_vectors
 }
 
 /**
- * Changes the delay between two moves.
+ * @brief Changes the delay between two moves.
  * @param delay the new delay
  */
 void PixelMovement::set_delay(uint32_t delay) {
@@ -77,7 +77,7 @@ void PixelMovement::set_delay(uint32_t delay) {
 }
 
 /**
- * Updates the position.
+ * @brief Updates the position.
  */
 void PixelMovement::update(void) {
 
@@ -93,7 +93,7 @@ void PixelMovement::update(void) {
 }
 
 /**
- * Makes a move in the path.
+ * @brief Makes a move in the path.
  */
 void PixelMovement::make_next_move(void) {
 
@@ -118,7 +118,7 @@ void PixelMovement::make_next_move(void) {
 }
 
 /**
- * Returns the total number of moves in this trajectory.
+ * @brief Returns the total number of moves in this trajectory.
  * @return the total number of moves in this trajectory
  */
 int PixelMovement::get_length(void) {
@@ -126,7 +126,7 @@ int PixelMovement::get_length(void) {
 }
 
 /**
- * Returns the current iteration number.
+ * @brief Returns the current iteration number.
  * @return the current iteration number of the movement
  */
 int PixelMovement::get_vector_index(void) {
@@ -134,9 +134,10 @@ int PixelMovement::get_vector_index(void) {
 }
 
 /**
- * Returns whether the movement is finished, i.e.
+ * @brief Returns whether the movement is finished, i.e.
  * whether the end of the trajectory was reached.
  */
 bool PixelMovement::is_finished(void) {
   return finished;
 }
+

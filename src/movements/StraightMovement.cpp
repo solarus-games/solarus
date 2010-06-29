@@ -19,7 +19,7 @@
 #include "lowlevel/System.h"
 
 /**
- * Creates a straight movement.
+ * @brief Creates a straight movement.
  * @param speed the speed
  * @param direction angle of the movement (0 to 359)
  * @param time duration of the movement in milliseconds
@@ -29,7 +29,7 @@ StraightMovement::StraightMovement(int speed, int direction, uint32_t time) {
 }
 
 /**
- * Creates a straight movement.
+ * @brief Creates a straight movement.
  * @param speed the speed
  * @param direction angle of the movement in radians
  * @param time duration of the movement in milliseconds
@@ -39,7 +39,7 @@ StraightMovement::StraightMovement(int speed, double direction, uint32_t time) {
 }
 
 /**
- * Creates a straight movement.
+ * @brief Creates a straight movement.
  * @param speed the speed
  * @param source_xy the movement will start from this point
  * @param target_xy the movement will go into this point's direction
@@ -52,14 +52,14 @@ StraightMovement::StraightMovement(int speed, const Rectangle &source_xy, const 
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 StraightMovement::~StraightMovement(void) {
 
 }
 
 /**
- * Starts the straight movement into a direction.
+ * @brief Starts the straight movement into a direction.
  * @param speed the speed
  * @param direction angle of the movement (0 to 359)
  * @param time duration of the movement in milliseconds
@@ -70,7 +70,7 @@ void StraightMovement::start(int speed, int direction, uint32_t time) {
 }
 
 /**
- * Starts the straight movement into a direction.
+ * @brief Starts the straight movement into a direction.
  * @param speed the speed
  * @param direction angle of the movement in radians
  * @param time duration of the movement in milliseconds
@@ -86,7 +86,7 @@ void StraightMovement::start(int speed, double direction, uint32_t time) {
 }
 
 /**
- * Updates the movement.
+ * @brief Updates the movement.
  */
 void StraightMovement::update(void) {
   CollisionMovement::update();
@@ -99,7 +99,7 @@ void StraightMovement::update(void) {
 }
 
 /**
- * Suspends or resumes the movement
+ * @brief Suspends or resumes the movement
  * @param suspended true to suspend the movement, false to resume it
  */
 void StraightMovement::set_suspended(bool suspended) {
@@ -112,9 +112,11 @@ void StraightMovement::set_suspended(bool suspended) {
 }
 
 /**
- * Returns whether the movement is finished.
+ * @brief Returns whether the movement is finished.
+ *
  * This functions returns false while the delay is not finished,
  * even if the movement was stopped by an obstacle.
+ *
  * @return true if the movement is finished
  */
 bool StraightMovement::is_finished(void) {
@@ -122,7 +124,7 @@ bool StraightMovement::is_finished(void) {
 }
 
 /**
- * Stops the movement finished even if the delay planned is not finished yet.
+ * @brief Stops the movement finished even if the delay planned is not finished yet.
  */
 void StraightMovement::set_finished(void) {
   stop();

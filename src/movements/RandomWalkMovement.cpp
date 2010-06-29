@@ -17,7 +17,7 @@
 #include "movements/RandomWalkMovement.h"
 
 /**
- * Creates a random walk movement object.
+ * @brief Creates a random walk movement object.
  * @param speed speed of the movement
  */
 RandomWalkMovement::RandomWalkMovement(int speed):
@@ -26,14 +26,14 @@ RandomWalkMovement::RandomWalkMovement(int speed):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 RandomWalkMovement::~RandomWalkMovement(void) {
 
 }
 
 /**
- * Updates the movements: detects the collisions
+ * @brief Updates the movements: detects the collisions
  * in order to restart the movement.
  */
 void RandomWalkMovement::update(void) {
@@ -48,7 +48,7 @@ void RandomWalkMovement::update(void) {
 }
 
 /**
- * Starts the next step of the movement.
+ * @brief Starts the next step of the movement.
  */
 void RandomWalkMovement::start_next_move(void) {
 
@@ -60,9 +60,10 @@ void RandomWalkMovement::start_next_move(void) {
 }
 
 /**
- * Returns whether the movement is finished.
+ * @brief Returns whether the movement is finished.
  * @return false
  */
 bool RandomWalkMovement::is_finished(void) {
   return false;
 }
+

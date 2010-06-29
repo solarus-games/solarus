@@ -28,7 +28,7 @@
 #include "lowlevel/Surface.h"
 
 /**
- * Creates a new treasure without amount.
+ * @brief Creates a new treasure without amount.
  * @param game the current game (cannot be NULL)
  * @param content content of the treasure
  * @param savegame_variable index of the savegame boolean indicating that the hero has found this treasure
@@ -41,7 +41,7 @@ Treasure::Treasure(Game *game, Content content, int savegame_variable):
 }
 
 /**
- * Creates a new treasure.
+ * @brief Creates a new treasure.
  * @param game the current game (cannot be NULL)
  * @param content content of the treasure
  * @param amount for bombs, arrows, apples, pains au chocolat, croissants, hearts, 
@@ -62,7 +62,7 @@ Treasure::Treasure(Game *game, Content content, int amount, int savegame_variabl
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 Treasure::~Treasure(void) {
 
@@ -71,7 +71,7 @@ Treasure::~Treasure(void) {
 }
 
 /**
- * Returns the content of this treasure.
+ * @brief Returns the content of this treasure.
  * @return this treasure's content
  */
 Treasure::Content Treasure::get_content(void) {
@@ -79,7 +79,7 @@ Treasure::Content Treasure::get_content(void) {
 }
 
 /**
- * Returns the index of the variable where this treasure is saved.
+ * @brief Returns the index of the variable where this treasure is saved.
  * @return the savegame variable of this treasure
  */
 int Treasure::get_savegame_variable(void) {
@@ -87,8 +87,10 @@ int Treasure::get_savegame_variable(void) {
 }
 
 /**
- * Returns whether this treasure content has an amount value.
+ * @brief Returns whether this treasure content has an amount value.
+ *
  * This only depends on the kind of content.
+ *
  * @return true if there is an amount with this kind of content
  */
 bool Treasure::has_amount(void) {
@@ -117,7 +119,7 @@ bool Treasure::has_amount(void) {
 }
 
 /**
- * Returns the amount of this treasure.
+ * @brief Returns the amount of this treasure.
  * @return the amount
  */
 int Treasure::get_amount(void) {
@@ -125,7 +127,7 @@ int Treasure::get_amount(void) {
 }
 
 /**
- * Returns whether the player already has the maximum amount
+ * @brief Returns whether the player already has the maximum amount
  * of this item.
  * @return true if the player already has the maximum amount
  * of this item
@@ -165,8 +167,10 @@ bool Treasure::is_amount_full(void) {
 }
 
 /**
- * Returns whether the player has got this treasure according to the savegame.
+ * @brief Returns whether the player has got this treasure according to the savegame.
+ *
  * Returns false if the treasure possession state is not saved.
+ *
  * @return true if the player has found this treasure
  */
 bool Treasure::is_found(void) {
@@ -174,7 +178,9 @@ bool Treasure::is_found(void) {
 }
 
 /**
- * Give the treasure to the player: plays the treasure sound, makes the hero
+ * @brief Give the treasure to the player.
+ *
+ * Plays the treasure sound, makes the hero
  * brandish the item and adds the item to the hero's equipment.
  * The treasure content should not be NONE.
  */
@@ -189,7 +195,7 @@ void Treasure::give_to_player(void) {
 }
 
 /**
- * Plays a treasure sound.
+ * @brief Plays a treasure sound.
  */
 void Treasure::play_treasure_sound(void) {
   
@@ -209,7 +215,7 @@ void Treasure::play_treasure_sound(void) {
 }
 
 /**
- * Shows the message telling that the player
+ * @brief Shows the message telling that the player
  * has found the item.
  */
 void Treasure::show_message(void) {
@@ -252,7 +258,7 @@ void Treasure::show_message(void) {
 }
 
 /**
- * Adds the item to the hero's eqipment.
+ * @brief Adds the item to the hero's eqipment.
  */
 void Treasure::add_item_to_equipment(void) {
 
@@ -554,7 +560,7 @@ void Treasure::add_item_to_equipment(void) {
 }
 
 /**
- * Displays the treasure.
+ * @brief Displays the treasure.
  * @param destination the surface where to draw
  * @param x the treasure x position on this surface
  * @param y the treasure y position on this surface

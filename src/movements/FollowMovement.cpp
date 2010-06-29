@@ -18,7 +18,7 @@
 #include "entities/MapEntity.h"
 
 /**
- * Creates a follow movement.
+ * @brief Creates a follow movement.
  * @param entity_followed the entity to follow
  * @param x x coordinate of where this entity should be placed (relative to the entity followed)
  * @param y y coordinate of where this entity should be placed (relative to the entity followed)
@@ -31,14 +31,14 @@ FollowMovement::FollowMovement(MapEntity *entity_followed, int x, int y, bool wi
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 FollowMovement::~FollowMovement(void) {
 
 }
 
 /**
- * Returns whether the movement is finished.
+ * @brief Returns whether the movement is finished.
  * @return true if there was a collision or the entity followed disappeared
  */
 bool FollowMovement::is_finished(void) {
@@ -47,7 +47,7 @@ bool FollowMovement::is_finished(void) {
 
 
 /**
- * Updates the position.
+ * @brief Updates the position.
  */
 void FollowMovement::update(void) {
 

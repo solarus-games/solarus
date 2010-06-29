@@ -25,19 +25,20 @@
 using std::map;
 
 /**
- * Only instance.
+ * @brief Only instance.
  */
 ResourceManager * ResourceManager::instance;
 
 /**
- * Constructor.
+ * @brief Constructor.
  */
 ResourceManager::ResourceManager(void) {
 
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
+ *
  * Destroys all the resources stored into memory.
  */
 ResourceManager::~ResourceManager(void) {
@@ -94,21 +95,21 @@ ResourceManager::~ResourceManager(void) {
 }
 
 /**
- * Initializes the resource manager.
+ * @brief Initializes the resource manager.
  */
 void ResourceManager::initialize(void) {
   instance = new ResourceManager();
 }
 
 /**
- * Quits the resource manager.
+ * @brief Quits the resource manager.
  */
 void ResourceManager::quit(void) {
   delete instance;
 }
 
 /**
- * Returns a tileset.
+ * @brief Returns a tileset.
  * @param id id of the tileset to get
  * @return the tileset
  */
@@ -122,7 +123,7 @@ Tileset * ResourceManager::get_tileset(TilesetId id) {
 }
 
 /**
- * Returns a map.
+ * @brief Returns a map.
  * @param id id of the map to get
  * @return the map
  */
@@ -136,7 +137,7 @@ Map * ResourceManager::get_map(MapId id) {
 }
 
 /**
- * Returns a music.
+ * @brief Returns a music.
  * @param id id of the music to get
  * @return the music
  */
@@ -150,7 +151,7 @@ Music * ResourceManager::get_music(const MusicId &id) {
 }
 
 /**
- * Returns a sound.
+ * @brief Returns a sound.
  * @param id id of the sound to get
  * @return the sound
  */
@@ -164,7 +165,7 @@ Sound * ResourceManager::get_sound(const SoundId &id) {
 }
 
 /**
- * Returns the animation set of a sprite.
+ * @brief Returns the animation set of a sprite.
  * @param id id of the sprite animation set to get
  * @return the sprite animation set required
  */

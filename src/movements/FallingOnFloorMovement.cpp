@@ -17,7 +17,7 @@
 #include "movements/FallingOnFloorMovement.h"
 
 /**
- * Y move at each time frame.
+ * @brief Y move at each time frame.
  */
 const Rectangle FallingOnFloorMovement::moves[3][26] = {
 
@@ -46,12 +46,12 @@ const Rectangle FallingOnFloorMovement::moves[3][26] = {
 };
 
 /**
- * Number of moves for each height.
+ * @brief Number of moves for each height.
  */
 const int FallingOnFloorMovement::nb_moves[3] = {2, 12, 26};
 
 /**
- * Creates a movement falling object.
+ * @brief Creates a movement falling object.
  * @param height height the entity will fall from
  */
 FallingOnFloorMovement::FallingOnFloorMovement(FallingHeight height):
@@ -60,7 +60,7 @@ FallingOnFloorMovement::FallingOnFloorMovement(FallingHeight height):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 FallingOnFloorMovement::~FallingOnFloorMovement(void) {
 

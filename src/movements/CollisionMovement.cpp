@@ -21,7 +21,7 @@
 #include "lowlevel/System.h"
 
 /**
- * Default constructor.
+ * @brief Default constructor.
  */
 CollisionMovement::CollisionMovement(void):
   stop_on_obstacles(true) {
@@ -29,7 +29,7 @@ CollisionMovement::CollisionMovement(void):
 }
 
 /**
- * Constructor specifying whether the collisions are enabled.
+ * @brief Constructor specifying whether the collisions are enabled.
  * @param stop_on_obstacles true to make the movement sensible to the obstacles.
  */
 CollisionMovement::CollisionMovement(bool stop_on_obstacles):
@@ -37,16 +37,15 @@ CollisionMovement::CollisionMovement(bool stop_on_obstacles):
 
 }
 
-
 /**
- * Destructor.
+ * @brief Destructor.
  */
 CollisionMovement::~CollisionMovement(void) {
 
 }
 
 /**
- * Returns whether the entity would collide with the map
+ * @brief Returns whether the entity would collide with the map
  * if it was moved a few pixels from its position.
  * @param dx x distance between the current position and the position to check
  * @param dy y distance between the current position and the position to check
@@ -75,9 +74,9 @@ bool CollisionMovement::test_collision_with_map(int dx, int dy) {
 }
 
 /**
- * Updates the x position of the entity if it wants to move
- * (i.e. if x_move != 0).
- * This is a redefinition of Movement::update_x to make the move
+ * @brief Updates the x position of the entity if it wants to move.
+ *
+ * This is a redefinition of Movement::update_x() to make the move
  * only if there is no collision with the map.
  */
 void CollisionMovement::update_x(void) {
@@ -99,9 +98,9 @@ void CollisionMovement::update_x(void) {
 }
 
 /**
- * Updates the y position of the entity if it wants to move
- * (i.e. if y_move != 0).
- * This is a redefinition of Movement::update_y to make the move
+ * @brief Updates the y position of the entity if it wants to move
+ *
+ * This is a redefinition of Movement::update_y() to make the move
  * only if there is no collision with the map.
  */
 void CollisionMovement::update_y(void) {
@@ -122,7 +121,7 @@ void CollisionMovement::update_y(void) {
 }
 
 /**
- * Returns the collision box of the last call
+ * @brief Returns the collision box of the last call
  * to test_collision_with_map() returning true.
  * @return the collision box of the last collision detected, or (-1, -1) if no obstacle was detected
  */
@@ -131,7 +130,7 @@ const Rectangle & CollisionMovement::get_last_collision_box_on_obstacle(void) {
 }
 
 /**
- * Sets whether this movement allows to traverse obstacles.
+ * @brief Sets whether this movement allows to traverse obstacles.
  * @param stop_on_obstacles true to make the movement sensible to obstacles, false to ignore them
  */
 void CollisionMovement::set_stop_on_obstacles(bool stop_on_obstacles) {

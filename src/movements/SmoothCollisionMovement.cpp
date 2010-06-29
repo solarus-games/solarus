@@ -19,21 +19,22 @@
 #include "lowlevel/System.h"
 
 /**
- * Constructor.
+ * @brief Constructor.
  */
 SmoothCollisionMovement::SmoothCollisionMovement(void) {
 
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 SmoothCollisionMovement::~SmoothCollisionMovement(void) {
 
 }
 
 /**
- * Updates the position of the entity if it wants to move.
+ * @brief Updates the position of the entity if it wants to move.
+ *
  * This is a redefinition of Movement::update because we have
  * to call update_x() and update_y() in the right order.
  */
@@ -80,8 +81,8 @@ void SmoothCollisionMovement::update(void) {
 }
 
 /**
- * Updates the x position of the entity if it wants to move
- * (i.e. if x_move != 0).
+ * @brief Updates the x position of the entity if it wants to move
+ *
  * This is a redefinition of CollisionMovement::update_x() to
  * handle the smooth collisions.
  */
@@ -152,8 +153,8 @@ void SmoothCollisionMovement::update_x(void) {
 }
 
 /**
- * Updates the y position of the entity if it wants to move
- * (i.e. if y_move != 0).
+ * @brief Updates the y position of the entity if it wants to move
+ *
  * This is a redefinition of CollisionMovement::update_y() to to
  * handle the smooth collisions.
  */

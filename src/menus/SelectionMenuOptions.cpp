@@ -35,7 +35,7 @@ const std::string SelectionMenuOptions::label_keys[nb_options] = {
 };
 
 /**
- * Creates a selection menu phase where the player sets the global options.
+ * @brief Creates a selection menu phase where the player sets the global options.
  * @param menu the selection menu this phase will belong to
  */
 SelectionMenuOptions::SelectionMenuOptions(SelectionMenu *menu):
@@ -71,7 +71,7 @@ SelectionMenuOptions::SelectionMenuOptions(SelectionMenu *menu):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 SelectionMenuOptions::~SelectionMenuOptions(void) {
 
@@ -86,7 +86,7 @@ SelectionMenuOptions::~SelectionMenuOptions(void) {
 }
 
 /**
- * Sets the current position of the options cursor.
+ * @brief Sets the current position of the options cursor.
  * @param cursor_position the new position (0 to nb_options + 1)
  */
 void SelectionMenuOptions::set_cursor_position(int cursor_position) {
@@ -114,7 +114,7 @@ void SelectionMenuOptions::set_cursor_position(int cursor_position) {
 }
 
 /**
- * Moves the options cursor upwards.
+ * @brief Moves the options cursor upwards.
  */
 void SelectionMenuOptions::move_cursor_up(void) {
 
@@ -130,7 +130,7 @@ void SelectionMenuOptions::move_cursor_up(void) {
 }
 
 /**
- * Moves the options cursor downwards.
+ * @brief Moves the options cursor downwards.
  */
 void SelectionMenuOptions::move_cursor_down(void) {
 
@@ -146,7 +146,7 @@ void SelectionMenuOptions::move_cursor_down(void) {
 }
 
 /**
- * For the selected option, selects the next possible value in the list.
+ * @brief For the selected option, selects the next possible value in the list.
  */
 void SelectionMenuOptions::set_option_next_value(void) {
 
@@ -160,7 +160,7 @@ void SelectionMenuOptions::set_option_next_value(void) {
 }
 
 /**
- * For the selected option, selects the previous possible value in the list.
+ * @brief For the selected option, selects the previous possible value in the list.
  */
 void SelectionMenuOptions::set_option_previous_value(void) {
 
@@ -174,7 +174,7 @@ void SelectionMenuOptions::set_option_previous_value(void) {
 }
 
 /**
- * For the selected option, sets the value at the specified index.
+ * @brief For the selected option, sets the value at the specified index.
  * @param index index of the value to set for the current option
  */
 void SelectionMenuOptions::set_option_value(int index) {
@@ -182,7 +182,7 @@ void SelectionMenuOptions::set_option_value(int index) {
 }
 
 /**
- * For the specified option, sets the value at the specified index.
+ * @brief For the specified option, sets the value at the specified index.
  * @param option the option to set
  * @param index index of the value to set for the specified option
  */
@@ -215,7 +215,8 @@ void SelectionMenuOptions::set_option_value(int option, int index) {
 }
 
 /**
- * Reloads all strings displayed on the menu.
+ * @brief Reloads all strings displayed on the menu.
+ *
  * This function is called when the language has just been changed.
  */
 void SelectionMenuOptions::reload_strings(void) {
@@ -240,7 +241,7 @@ void SelectionMenuOptions::reload_strings(void) {
 }
 
 /**
- * Loads the values from the configuration file into the menu.
+ * @brief Loads the values from the configuration file into the menu.
  */
 void SelectionMenuOptions::load_configuration(void) {
   
@@ -309,7 +310,7 @@ void SelectionMenuOptions::load_configuration(void) {
 }
 
 /**
- * Updates this phase.
+ * @brief Updates this phase.
  */
 void SelectionMenuOptions::update(void) {
 
@@ -318,7 +319,7 @@ void SelectionMenuOptions::update(void) {
 }
 
 /**
- * Handles an input event in this phase.
+ * @brief Handles an input event in this phase.
  * @param event the event
  */
 void SelectionMenuOptions::notify_event(InputEvent &event) {
@@ -376,7 +377,7 @@ void SelectionMenuOptions::notify_event(InputEvent &event) {
 }
 
 /**
- * Displays this selection menu phase.
+ * @brief Displays this selection menu phase.
  * @param destination_surface the surface to draw
  */
 void SelectionMenuOptions::display(Surface *destination_surface) {

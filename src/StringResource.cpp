@@ -20,22 +20,24 @@
 std::map<std::string, std::string> StringResource::strings;
 
 /**
- * Constructor.
+ * @brief Constructor.
  */
 StringResource::StringResource(void) {
 
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 StringResource::~StringResource(void) {
 
 }
 
 /**
- * Initializes the text resource by loading all string of the language-specific file "text/strings.dat"
- * into memory for future access by get_string().
+ * @brief Initializes the text resource by loading all strings.
+ *
+ * The strings are loaded from the language-specific file "text/strings.dat"
+ * and stored into memory for future access by get_string().
  */
 void StringResource::initialize(void) {
 
@@ -69,14 +71,14 @@ void StringResource::initialize(void) {
 }
 
 /**
- * Closes the text resource.
+ * @brief Closes the text resource.
  */
 void StringResource::quit(void) {
   strings.clear();
 }
 
 /**
- * Returns a string stored in the language-specific file "text/strings.dat".
+ * @brief Returns a string stored in the language-specific file "text/strings.dat".
  * @param key id of the string to retrieve
  */
 const std::string &StringResource::get_string(const std::string &key) {

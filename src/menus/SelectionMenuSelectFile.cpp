@@ -25,7 +25,7 @@
 #include "Solarus.h"
 
 /**
- * Creates a selection menu phase where the player selects a file.
+ * @brief Creates a selection menu phase where the player selects a file.
  * @param menu the selection menu this phase will belong to
  */
 SelectionMenuSelectFile::SelectionMenuSelectFile(SelectionMenu *menu):
@@ -40,14 +40,14 @@ SelectionMenuSelectFile::SelectionMenuSelectFile(SelectionMenu *menu):
 
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 SelectionMenuSelectFile::~SelectionMenuSelectFile(void) {
 
 }
 
 /**
- * Handles an input event in this phase.
+ * @brief Handles an input event in this phase.
  * @param event the event
  */
 void SelectionMenuSelectFile::notify_event(InputEvent &event) {
@@ -107,7 +107,7 @@ void SelectionMenuSelectFile::notify_event(InputEvent &event) {
 }
 
 /**
- * Displays this selection menu phase.
+ * @brief Displays this selection menu phase.
  * @param destination_surface the surface to draw
  */
 void SelectionMenuSelectFile::display(Surface *destination_surface) {

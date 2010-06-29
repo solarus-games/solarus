@@ -23,7 +23,7 @@
 #include "Solarus.h"
 
 /**
- * Creates a selection menu phase where the player chooses a file to erase.
+ * @brief Creates a selection menu phase where the player chooses a file to erase.
  * @param menu the selection menu this phase will belong to
  */
 SelectionMenuEraseFile::SelectionMenuEraseFile(SelectionMenu *menu):
@@ -34,14 +34,14 @@ SelectionMenuEraseFile::SelectionMenuEraseFile(SelectionMenu *menu):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 SelectionMenuEraseFile::~SelectionMenuEraseFile(void) {
 
 }
 
 /**
- * Handles an event in this phase.
+ * @brief Handles an event in this phase.
  * @param event the event
  */
 void SelectionMenuEraseFile::notify_event(InputEvent &event) {
@@ -93,7 +93,7 @@ void SelectionMenuEraseFile::notify_event(InputEvent &event) {
 }
 
 /**
- * Displays this selection menu phase.
+ * @brief Displays this selection menu phase.
  * @param destination_surface the surface to draw
  */
 void SelectionMenuEraseFile::display(Surface *destination_surface) {

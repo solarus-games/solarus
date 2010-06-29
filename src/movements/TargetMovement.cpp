@@ -20,7 +20,7 @@
 #include "lowlevel/System.h"
 
 /**
- * Creates a new target movement towards a fixed point.
+ * @brief Creates a new target movement towards a fixed point.
  * @param target_x x coordinate of the target point
  * @param target_y y coordinate of the target point
  * @param speed speed of the movement
@@ -32,8 +32,10 @@ TargetMovement::TargetMovement(int target_x, int target_y, int speed):
 }
 
 /**
- * Creates a new target movement toward an entity.
+ * @brief Creates a new target movement toward an entity.
+ *
  * The movement will update its trajectory if the entity's position is changed.
+ *
  * @param target_entity the target entity
  * @param speed speed of the movement
  */
@@ -44,14 +46,14 @@ TargetMovement::TargetMovement(MapEntity *target_entity, int speed):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 TargetMovement::~TargetMovement(void) {
 
 }
 
 /**
- * Changes the target of this movement.
+ * @brief Changes the target of this movement.
  * @param target_x x coordinate of the target point
  * @param target_y y coordinate of the target point
  */
@@ -62,7 +64,7 @@ void TargetMovement::set_target(int target_x, int target_y) {
 }
 
 /**
- * Changes the target of this movement.
+ * @brief Changes the target of this movement.
  * @param target_entity the target entity
  */
 void TargetMovement::set_target(MapEntity *target_entity) {
@@ -74,7 +76,7 @@ void TargetMovement::set_target(MapEntity *target_entity) {
 
 
 /**
- * Updates the movement.
+ * @brief Updates the movement.
  */
 void TargetMovement::update(void) {
 
@@ -96,7 +98,7 @@ void TargetMovement::update(void) {
 }
 
 /**
- * Calculates the direction and the speed of the movement
+ * @brief Calculates the direction and the speed of the movement
  * depending on the target.
  */
 void TargetMovement::recompute_movement(void) { 
@@ -120,7 +122,7 @@ void TargetMovement::recompute_movement(void) {
 }
 
 /**
- * Returns whether the movement is finished, i.e.
+ * @brief Returns whether the movement is finished, i.e.
  * whether the target was reached.
  */
 bool TargetMovement::is_finished(void) {

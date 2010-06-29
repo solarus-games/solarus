@@ -21,7 +21,7 @@
 #include "lowlevel/InputEvent.h"
 
 /**
- * Creates a savegame with a specified file name, existing or not.
+ * @brief Creates a savegame with a specified file name, existing or not.
  * @param file_name name of the savegame file (can be a new file), relative to the savegames directory
  */
 Savegame::Savegame(const std::string &file_name) {
@@ -58,7 +58,7 @@ Savegame::Savegame(const std::string &file_name) {
 }
 
 /**
- * Creates a savegame by copying an existing one, even if
+ * @brief Creates a savegame by copying an existing one, even if
  * it is not saved in its current state.
  * @param other the savegame to copy
  */
@@ -73,7 +73,7 @@ Savegame::Savegame(Savegame *other) {
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 Savegame::~Savegame(void) {
   delete equipment;
@@ -81,7 +81,7 @@ Savegame::~Savegame(void) {
 }
 
 /**
- * Returns whether this is a new save.
+ * @brief Returns whether this is a new save.
  * @return true if there is no savegame file with this name yet
  */
 bool Savegame::is_empty() {
@@ -89,7 +89,7 @@ bool Savegame::is_empty() {
 }
 
 /**
- * Loads the initial values.
+ * @brief Loads the initial values.
  */
 void Savegame::set_initial_values(void) {
 
@@ -111,7 +111,7 @@ void Savegame::set_initial_values(void) {
 }
 
 /**
- * Sets default values for the keyboard game controls.
+ * @brief Sets default values for the keyboard game controls.
  */
 void Savegame::set_default_keyboard_controls(void) {
 
@@ -127,7 +127,7 @@ void Savegame::set_default_keyboard_controls(void) {
 }
 
 /**
- * Sets default values for the joypad game controls.
+ * @brief Sets default values for the joypad game controls.
  */
 void Savegame::set_default_joypad_controls(void) {
 
@@ -143,7 +143,8 @@ void Savegame::set_default_joypad_controls(void) {
 }
 
 /**
- * Ensures the keyboard mapping saved is valid with respect to the enumeration InputEvent::KeyboardKey.
+ * @brief Ensures the keyboard mapping saved is valid with respect to the enumeration InputEvent::KeyboardKey.
+ *
  * If the bindings saved corresponds to an old version of this enumeration, it is obsolete and
  * we reset it to the default values.
  */
@@ -155,7 +156,7 @@ void Savegame::check_game_controls(void) {
 }
 
 /**
- * Saves the data into a file.
+ * @brief Saves the data into a file.
  */
 void Savegame::save(void) {
 
@@ -164,7 +165,7 @@ void Savegame::save(void) {
 }
 
 /**
- * Returns the name of the file where the data is saved.
+ * @brief Returns the name of the file where the data is saved.
  * @return the file name of this savegame
  */
 const std::string& Savegame::get_file_name(void) {
@@ -172,7 +173,7 @@ const std::string& Savegame::get_file_name(void) {
 }
 
 /**
- * Returns the player's equipment corresponding to this savegame.
+ * @brief Returns the player's equipment corresponding to this savegame.
  * @return the equipment
  */
 Equipment * Savegame::get_equipment(void) {
@@ -180,7 +181,7 @@ Equipment * Savegame::get_equipment(void) {
 }
 
 /**
- * Returns the player's dungeon equipment corresponding to this savegame.
+ * @brief Returns the player's dungeon equipment corresponding to this savegame.
  * @return the dungeon equipment
  */
 DungeonEquipment * Savegame::get_dungeon_equipment(void) {
@@ -188,7 +189,7 @@ DungeonEquipment * Savegame::get_dungeon_equipment(void) {
 }
 
 /**
- * Returns a string value saved.
+ * @brief Returns a string value saved.
  * @param index index of the value to get, between 0 and 63
  * (see enum StringIndex for their definition)
  * @return the string value saved at this index
@@ -198,7 +199,7 @@ const std::string Savegame::get_string(int index) {
 }
 
 /**
- * Sets a string value saved.
+ * @brief Sets a string value saved.
  * @param index index of the value to set, between 0 and 63
  * (see enum StringIndex for their definition)
  * @param value the string value to store at this index
@@ -208,7 +209,8 @@ void Savegame::set_string(int index, const std::string &value) {
 }
 
 /**
- * Returns a integer value saved.
+ * @brief Returns a integer value saved.
+ *
  * Values between 0 and 1023 are used by the engine (the C++ code)
  * and values between 1024 and 2047 are available to the map scripts.
  * @param index index of the value to get, between 0 and 2047
@@ -220,7 +222,8 @@ uint32_t Savegame::get_integer(int index) {
 }
 
 /**
- * Sets an integer value saved.
+ * @brief Sets an integer value saved.
+ *
  * Values between 0 and 1023 are used by the engine (the C++ code)
  * and values between 1024 and 2047 are available to the map scripts.
  * @param index index of the value to set, between 0 and 2047
@@ -232,7 +235,7 @@ void Savegame::set_integer(int index, uint32_t value) {
 }
 
 /**
- * Returns a boolean value saved.
+ * @brief Returns a boolean value saved.
  * @param index index of the value to get, between 0 and 32767
  * @return the boolean value saved at this index
  */
@@ -243,7 +246,7 @@ bool Savegame::get_boolean(int index) {
 }
 
 /**
- * Sets a boolean value in the savegame.
+ * @brief Sets a boolean value in the savegame.
  * @param index index of the value to set, between 0 and 32767
  * @param value the boolean value to store at this index
  */

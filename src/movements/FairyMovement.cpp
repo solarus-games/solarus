@@ -21,7 +21,7 @@
 #include "lowlevel/Geometry.h"
 
 /**
- * Creates a fairy movement.
+ * @brief Creates a fairy movement.
  */
 FairyMovement::FairyMovement(void) {
   set_speed(3);
@@ -29,14 +29,14 @@ FairyMovement::FairyMovement(void) {
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 FairyMovement::~FairyMovement(void) {
 
 }
 
 /**
- * Sets the entity to be controlled by this movement object.
+ * @brief Sets the entity to be controlled by this movement object.
  * @param entity the entity to control
  */
 void FairyMovement::set_entity(MapEntity *entity) {
@@ -50,7 +50,7 @@ void FairyMovement::set_entity(MapEntity *entity) {
 }
 
 /**
- * Chooses a new direction for the fairy.
+ * @brief Chooses a new direction for the fairy.
  */
 void FairyMovement::set_next_direction(void) {
 
@@ -71,7 +71,8 @@ void FairyMovement::set_next_direction(void) {
 }
 
 /**
- * Updates the fairy movement.
+ * @brief Updates the fairy movement.
+ *
  * This function is called repeatedly by the map.
  * This is a redefinition of Movement::update()
  * to change the fairy's direction sometimes.
@@ -88,3 +89,4 @@ void FairyMovement::update(void) {
     }
   }
 }
+

@@ -17,7 +17,7 @@
 #include "movements/JumpMovement.h"
 
 /**
- * Basic movement vector of each direction.
+ * @brief Basic movement vector of each direction.
  */
 const Rectangle JumpMovement::basic_translations[8] = {
   Rectangle( 1,  0), // right
@@ -31,7 +31,7 @@ const Rectangle JumpMovement::basic_translations[8] = {
 };
 
 /**
- * Creates a jump movement.
+ * @brief Creates a jump movement.
  * @param direction of the movement (0 to 7)
  * @param length length of the jump
  * @param with_collisions true to make the movement sensitive to obstacles
@@ -49,14 +49,14 @@ JumpMovement::JumpMovement(int direction, int length, bool with_collisions):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 JumpMovement::~JumpMovement(void) {
   delete[] translation_vectors;
 }
 
 /**
- * Returns the height in pixels where the entity should be displayed over its shadow.
+ * @brief Returns the height in pixels where the entity should be displayed over its shadow.
  * @return the height of the jump
  */
 int JumpMovement::get_jump_height(void) {
@@ -64,7 +64,7 @@ int JumpMovement::get_jump_height(void) {
 }
 
 /**
- * Makes a move in the path.
+ * @brief Makes a move in the path.
  */
 void JumpMovement::make_next_move(void) {
   PixelMovement::make_next_move();

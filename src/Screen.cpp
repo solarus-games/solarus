@@ -17,7 +17,7 @@
 #include "Screen.h"
 
 /**
- * Creates a screen.
+ * @brief Creates a screen.
  * @param solarus the application object (some screens need it)
  */
 Screen::Screen(Solarus *solarus):
@@ -26,14 +26,14 @@ Screen::Screen(Solarus *solarus):
 }
 
 /**
- * Destroys the screen.
+ * @brief Destroys the screen.
  */
 Screen::~Screen(void) {
 
 }
 
 /**
- * This function can be called by the current screen
+ * @brief This function can be called by the current screen
  * to indicates that it is finished and to specify
  * the next screen.
  * @param next_screen the next screen to show, or NULL
@@ -45,7 +45,7 @@ void Screen::set_next_screen(Screen *next_screen) {
 }
 
 /**
- * When this screen is finished, returns the
+ * @brief When this screen is finished, returns the
  * screen that should be displayed now.
  * @return the next screen
  */
@@ -54,10 +54,12 @@ Screen * Screen::get_next_screen(void) {
 }
 
 /**
- * Returns whether this screen is finished.
+ * @brief Returns whether this screen is finished.
+ *
  * If true is returned, the get_next_screen()
  * function indicates what screen should be
  * displayed now.
+ *
  * @return true if the screen finished
  */
 bool Screen::is_screen_finished(void) {

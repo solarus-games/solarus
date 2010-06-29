@@ -32,7 +32,7 @@
 #include "StringResource.h"
 
 /**
- * Creates the selection menu.
+ * @brief Creates the selection menu.
  * @param solarus the Solarus object
  */
 SelectionMenu::SelectionMenu(Solarus *solarus):
@@ -90,7 +90,7 @@ SelectionMenu::SelectionMenu(Solarus *solarus):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 SelectionMenu::~SelectionMenu(void) {
 
@@ -120,7 +120,7 @@ SelectionMenu::~SelectionMenu(void) {
 }
 
 /**
- * Initializes the clouds position.
+ * @brief Initializes the clouds position.
  */
 void SelectionMenu::initialize_clouds(void) {
 
@@ -153,7 +153,7 @@ void SelectionMenu::initialize_clouds(void) {
 }
 
 /**
- * Loads (or reloads) the data of the 3 savegames and creates the surfaces to display.
+ * @brief Loads (or reloads) the data of the 3 savegames and creates the surfaces to display.
  */
 void SelectionMenu::read_savegames(void) {
 
@@ -202,7 +202,7 @@ void SelectionMenu::read_savegames(void) {
 }
 
 /**
- * Goes to a next phase in the menu.
+ * @brief Goes to a next phase in the menu.
  * @param next_phase the next phase
  */
 void SelectionMenu::set_next_phase(SelectionMenuPhase *next_phase) {
@@ -210,7 +210,7 @@ void SelectionMenu::set_next_phase(SelectionMenuPhase *next_phase) {
 }
 
 /**
- * Stops the selection menu and starts a game instead.
+ * @brief Stops the selection menu and starts a game instead.
  * @param savegame the savegame to play
  */
 void SelectionMenu::start_game(Savegame *savegame) {
@@ -218,14 +218,14 @@ void SelectionMenu::start_game(Savegame *savegame) {
 }
 
 /**
- * Ends the program.
+ * @brief Ends the program.
  */
 void SelectionMenu::set_exiting(void) {
   solarus->set_exiting();
 }
 
 /**
- * Updates the selection menu.
+ * @brief Updates the selection menu.
  */
 void SelectionMenu::update(void) {
 
@@ -269,7 +269,7 @@ void SelectionMenu::update(void) {
 }
 
 /**
- * Displays this screen.
+ * @brief Displays this screen.
  * @param screen_surface the surface where to display
  */
 void SelectionMenu::display(Surface *screen_surface) {
@@ -317,7 +317,7 @@ void SelectionMenu::display(Surface *screen_surface) {
 }
 
 /**
- * This function is called by the program main loop when there is an input event.
+ * @brief This function is called by the program main loop when there is an input event.
  * @param event the event to handle
  */
 void SelectionMenu::notify_event(InputEvent &event) {
@@ -348,7 +348,7 @@ void SelectionMenu::notify_event(InputEvent &event) {
 }
 
 /**
- * Starts a transition effect in the menu.
+ * @brief Starts a transition effect in the menu.
  * @param transition the transition effect
  */
 void SelectionMenu::set_transition(Transition *transition) {
@@ -358,7 +358,7 @@ void SelectionMenu::set_transition(Transition *transition) {
 }
 
 /**
- * Returns whether the selection menu is currently displaying a transition effect.
+ * @brief Returns whether the selection menu is currently displaying a transition effect.
  * @return true if there is a transition
  */
 bool SelectionMenu::has_transition(void) {
@@ -367,7 +367,7 @@ bool SelectionMenu::has_transition(void) {
 }
 
 /**
- * Returns whether the current transition effect (if any) is finished.
+ * @brief Returns whether the current transition effect (if any) is finished.
  * @return true if the transition effect is finished
  */
 bool SelectionMenu::is_transition_finished(void) {
@@ -377,7 +377,7 @@ bool SelectionMenu::is_transition_finished(void) {
 
 
 /**
- * Sets the text of title to display on the top of the screen.
+ * @brief Sets the text of title to display on the top of the screen.
  * @param title_string_key key of the title string
  */
 void SelectionMenu::set_title_text(const std::string &title_string_key) {
@@ -387,8 +387,10 @@ void SelectionMenu::set_title_text(const std::string &title_string_key) {
 
 
 /**
- * Sets the text of the two options to display in the bottom of the screen.
- * These text may be empty strings.
+ * @brief Sets the text of the two options to display in the bottom of the screen.
+ *
+ * These texts may be empty strings.
+ *
  * @param left_string_key key of the first option string (on the left)
  * @param right_string_key key of the second option string (on the right)
  */
@@ -410,7 +412,7 @@ void SelectionMenu::set_bottom_options(const std::string &left_string_key, const
 }
 
 /**
- * Returns the current position of the savegame cursor.
+ * @brief Returns the current position of the savegame cursor.
  * @return the cursor position (1 to 5)
  */
 int SelectionMenu::get_cursor_position(void) {
@@ -418,7 +420,7 @@ int SelectionMenu::get_cursor_position(void) {
 }
 
 /**
- * Sets the current position of the savegame cursor.
+ * @brief Sets the current position of the savegame cursor.
  * @param cursor_position the new position (1 to 5)
  */
 void SelectionMenu::set_cursor_position(int cursor_position) {
@@ -427,7 +429,7 @@ void SelectionMenu::set_cursor_position(int cursor_position) {
 }
 
 /**
- * Returns the savegame cursor sprite.
+ * @brief Returns the savegame cursor sprite.
  * @return the cursor sprite
  */
 Sprite * SelectionMenu::get_cursor_sprite(void) {
@@ -435,7 +437,7 @@ Sprite * SelectionMenu::get_cursor_sprite(void) {
 }
 
 /**
- * Moves the savegame cursor upwards.
+ * @brief Moves the savegame cursor upwards.
  */
 void SelectionMenu::move_cursor_up(void) {
 
@@ -454,7 +456,7 @@ void SelectionMenu::move_cursor_up(void) {
 }
 
 /**
- * Moves the savegame cursor downwards.
+ * @brief Moves the savegame cursor downwards.
  */
 void SelectionMenu::move_cursor_down(void) {
 
@@ -470,7 +472,7 @@ void SelectionMenu::move_cursor_down(void) {
 }
 
 /**
- * Tries to move the savegame cursor to the left or to the right.
+ * @brief Tries to move the savegame cursor to the left or to the right.
  */
 void SelectionMenu::move_cursor_left_or_right(void) {
 
@@ -485,7 +487,7 @@ void SelectionMenu::move_cursor_left_or_right(void) {
 }
 
 /**
- * Returns the three savegames of the menu.
+ * @brief Returns the three savegames of the menu.
  * @return the savegames
  */
 Savegame ** SelectionMenu::get_savegames(void) {
@@ -493,7 +495,7 @@ Savegame ** SelectionMenu::get_savegames(void) {
 }
 
 /**
- * Returns a savegame of the menu.
+ * @brief Returns a savegame of the menu.
  * @param save_number number of the savegame to get (0 to 2)
  * @return the savegame
  */
@@ -502,7 +504,8 @@ Savegame * SelectionMenu::get_savegame(int save_number) {
 }
 
 /**
- * Reloads the three savegames of the menu.
+ * @brief Reloads the three savegames of the menu.
+ *
  * This function should be called when a savegame is created or deleted.
  */
 void SelectionMenu::reload_savegames(void) {
@@ -510,7 +513,7 @@ void SelectionMenu::reload_savegames(void) {
 }
 
 /**
- * Draws the current transition effect (if any).
+ * @brief Draws the current transition effect (if any).
  * @param destination_surface the surface to draw
  */
 void SelectionMenu::display_transition(Surface *destination_surface) {
@@ -521,7 +524,7 @@ void SelectionMenu::display_transition(Surface *destination_surface) {
 }
 
 /**
- * Draws the title text.
+ * @brief Draws the title text.
  * @param destination_surface the surface to draw
  */
 void SelectionMenu::display_title_text(Surface *destination_surface) {
@@ -530,7 +533,7 @@ void SelectionMenu::display_title_text(Surface *destination_surface) {
 }
 
 /**
- * Displays a savegame.
+ * @brief Displays a savegame.
  * @param destination_surface the surface to draw
  * @param save_number number of the savegame to display (0 to 2)
  */
@@ -550,10 +553,12 @@ void SelectionMenu::display_savegame(Surface *destination_surface, int save_numb
 }
 
 /**
- * Displays the number of a savegame.
+ * @brief Displays the number of a savegame.
+ *
  * This function is separate from the display_savegame() function
  * because the cursor has to be displayed after the savegame images
  * but before the savegame number.
+ *
  * @param destination_surface the surface to draw
  * @param save_number number to display (0 to 2)
  */
@@ -564,8 +569,10 @@ void SelectionMenu::display_savegame_number(Surface *destination_surface, int sa
 }
 
 /**
- * Displays the two options at the bottom of the menu.
+ * @brief Displays the two options at the bottom of the menu.
+ *
  * If an option text is empty, it is not displayed.
+ *
  * @param destination_surface the surface to draw
  */
 void SelectionMenu::display_bottom_options(Surface *destination_surface) {
@@ -586,7 +593,7 @@ void SelectionMenu::display_bottom_options(Surface *destination_surface) {
 }
 
 /**
- * Displays the savegame cursor (i.e. the cursor to select a file)
+ * @brief Displays the savegame cursor (i.e. the cursor to select a file)
  * at its current position.
  * @param destination_surface the surface to draw
  */
@@ -611,35 +618,35 @@ void SelectionMenu::display_savegame_cursor(Surface *destination_surface) {
 }
 
 /**
- * Plays the "cursor" sound.
+ * @brief Plays the "cursor" sound.
  */
 void SelectionMenu::play_cursor_sound(void) {
   ResourceManager::get_sound("cursor")->play();
 }
 
 /**
- * Plays the "ok" sound.
+ * @brief Plays the "ok" sound.
  */
 void SelectionMenu::play_ok_sound(void) {
   ResourceManager::get_sound("ok")->play();
 }
 
 /**
- * Plays the "error" sound.
+ * @brief Plays the "error" sound.
  */
 void SelectionMenu::play_error_sound(void) {
   ResourceManager::get_sound("wrong")->play();
 }
 
 /**
- * Plays the "erase" sound.
+ * @brief Plays the "erase" sound.
  */
 void SelectionMenu::play_erase_sound(void) {
   ResourceManager::get_sound("boss_killed")->play();
 }
 
 /**
- * Plays the "letter" sound.
+ * @brief Plays the "letter" sound.
  */
 void SelectionMenu::play_letter_sound(void) {
   ResourceManager::get_sound("danger")->play();

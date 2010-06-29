@@ -34,7 +34,7 @@
 const Rectangle PauseSubmenuMap::outside_world_minimap_size(0, 0, 225, 388);
 
 /**
- * Constructor.
+ * @brief Constructor.
  * @param pause_menu the pause menu object
  * @param game the game
  */
@@ -121,7 +121,7 @@ PauseSubmenuMap::PauseSubmenuMap(PauseMenu *pause_menu, Game *game):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 PauseSubmenuMap::~PauseSubmenuMap(void) {
 
@@ -143,7 +143,7 @@ PauseSubmenuMap::~PauseSubmenuMap(void) {
 }
 
 /**
- * Converts some coordinates relative to the dungeon floor into coordinates relative to the minimap displayed.
+ * @brief Converts some coordinates relative to the dungeon floor into coordinates relative to the minimap displayed.
  * @param floor_coords coordinates relative to the floor
  * @param minimap_coords coordinates relative to the minimap (result of the function)
  * @param floor_size size of the floor
@@ -175,7 +175,7 @@ void PauseSubmenuMap::to_dungeon_minimap_coordinates(const Rectangle &floor_coor
 }
 
 /**
- * Deletes any previous dungeon map image and loads the image
+ * @brief Deletes any previous dungeon map image and loads the image
  * corresponding to the selected floor.
  */
 void PauseSubmenuMap::load_dungeon_map_image(void) {
@@ -255,7 +255,7 @@ void PauseSubmenuMap::load_dungeon_map_image(void) {
 }
 
 /**
- * This function is called when a key is pressed on this submenu.
+ * @brief This function is called when a key is pressed on this submenu.
  * @param key the key pressed
  */
 void PauseSubmenuMap::key_pressed(GameControls::GameKey key) {
@@ -308,7 +308,7 @@ void PauseSubmenuMap::key_pressed(GameControls::GameKey key) {
 }
 
 /**
- * Updates this submenu.
+ * @brief Updates this submenu.
  */
 void PauseSubmenuMap::update(void) {
 
@@ -355,7 +355,7 @@ void PauseSubmenuMap::update(void) {
 }
 
 /**
- * Displays this submenu.
+ * @brief Displays this submenu.
  * @param destination the destination surface
  */
 void PauseSubmenuMap::display(Surface *destination) {
@@ -371,7 +371,7 @@ void PauseSubmenuMap::display(Surface *destination) {
 }
 
 /**
- * Displays the world map.
+ * @brief Displays the world map.
  * @param destination the destination surface
  */
 void PauseSubmenuMap::display_world_map(Surface *destination) {
@@ -405,7 +405,7 @@ void PauseSubmenuMap::display_world_map(Surface *destination) {
 }
 
 /**
- * Displays the dungeon map submenu.
+ * @brief Displays the dungeon map submenu.
  * @param destination the destination surface
  */
 void PauseSubmenuMap::display_dungeon_map(Surface *destination) {
@@ -430,7 +430,7 @@ void PauseSubmenuMap::display_dungeon_map(Surface *destination) {
 }
 
 /**
- * Displays the dungeon items.
+ * @brief Displays the dungeon items.
  * @param destination the destination surface
  */
 void PauseSubmenuMap::display_dungeon_items(Surface *destination) {
@@ -471,7 +471,7 @@ void PauseSubmenuMap::display_dungeon_items(Surface *destination) {
 }
 
 /**
- * Displays the dungeon floors.
+ * @brief Displays the dungeon floors.
  * @param destination the destination surface
  */
 void PauseSubmenuMap::display_dungeon_floors(Surface *destination) {

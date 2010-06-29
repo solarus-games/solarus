@@ -29,7 +29,7 @@
 #include "lowlevel/Surface.h"
 
 /**
- * Constructor.
+ * @brief Constructor.
  * @param pause_menu the pause menu object
  * @param game the game
  */
@@ -81,7 +81,7 @@ PauseSubmenuInventory::PauseSubmenuInventory(PauseMenu *pause_menu, Game *game):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 PauseSubmenuInventory::~PauseSubmenuInventory(void) {
 
@@ -104,8 +104,10 @@ PauseSubmenuInventory::~PauseSubmenuInventory(void) {
 }
 
 /**
- * Sets the position of the cursor.
+ * @brief Sets the position of the cursor.
+ *
  * In other words, selects an item in the inventory.
+ *
  * @param row row of the cursor, between 0 and 3
  * @param column columng of the cursor, between 0 and 6
  */
@@ -135,9 +137,11 @@ void PauseSubmenuInventory::set_cursor_position(int row, int column) {
 }
 
 /**
- * Returns the index of the cell currently selected in the inventory.
+ * @brief Returns the index of the cell currently selected in the inventory.
+ *
  * The value returned identifies an item and corresponds directly to a
  * value from the InventoryItemId enum.
+ *
  * @return the index of the selected cell, between 0 and 27
  */
 int PauseSubmenuInventory::get_selected_index(void) {
@@ -145,8 +149,11 @@ int PauseSubmenuInventory::get_selected_index(void) {
 }
 
 /**
- * Returns whether an item is selected, i.e. whether the cursor is on an
+ * @brief Returns whether an item is selected.
+ *
+ * This function returns whether whether the cursor is on an
  * item that the player has.
+ *
  * @return true if an item is currently selected
  */
 bool PauseSubmenuInventory::is_item_selected(void) {
@@ -158,7 +165,7 @@ bool PauseSubmenuInventory::is_item_selected(void) {
 }
 
 /**
- * This function is called when a key is pressed on this submenu.
+ * @brief This function is called when a key is pressed on this submenu.
  * @param key the key pressed
  */
 void PauseSubmenuInventory::key_pressed(GameControls::GameKey key) {
@@ -221,7 +228,8 @@ void PauseSubmenuInventory::key_pressed(GameControls::GameKey key) {
 }
 
 /**
- * Updates this submenu.
+ * @brief Updates this submenu.
+ *
  * The items displayed and their counters are not updated since the
  * equipment does not change while the game is paused.
  */
@@ -241,7 +249,7 @@ void PauseSubmenuInventory::update(void) {
 }
 
 /**
- * Displays this submenu.
+ * @brief Displays this submenu.
  * @param destination the destination surface
  */
 void PauseSubmenuInventory::display(Surface *destination) {
@@ -297,7 +305,8 @@ void PauseSubmenuInventory::display(Surface *destination) {
 }
 
 /**
- * Shows a message describing the item currently selected.
+ * @brief Shows a message describing the item currently selected.
+ *
  * The player must have this item.
  */
 void PauseSubmenuInventory::show_info_message(void) {
@@ -321,10 +330,12 @@ void PauseSubmenuInventory::show_info_message(void) {
 }
 
 /**
- * Assigns the selected item to a slot.
+ * @brief Assigns the selected item to a slot.
+ *
  * The operation does not take effect immediately: the item picture is thrown to
  * its destination icon, then the assignment is done.
  * Nothing is done if the item is not assignable.
+ *
  * @param slot slot to set (0 for X or 1 for V)
  */
 void PauseSubmenuInventory::assign_item(int slot) {
@@ -360,7 +371,7 @@ void PauseSubmenuInventory::assign_item(int slot) {
 }
 
 /**
- * Returns whether an item is currently being thrown to an icon.
+ * @brief Returns whether an item is currently being thrown to an icon.
  * @return true if an item is being assigned
  */
 bool PauseSubmenuInventory::is_assigning_item(void) {
@@ -368,7 +379,8 @@ bool PauseSubmenuInventory::is_assigning_item(void) {
 }
 
 /**
- * Stops assigning the item right now.
+ * @brief Stops assigning the item right now.
+ *
  * This function is called when we want to assign the item without
  * waiting for its throwing movement to end, for example when the inventory submenu
  * is being closed.

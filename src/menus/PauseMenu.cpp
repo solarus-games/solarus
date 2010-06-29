@@ -28,7 +28,7 @@
 #include "lowlevel/Surface.h"
 
 /**
- * Opens a pause menu.
+ * @brief Opens a pause menu.
  * @param game the game
  */
 PauseMenu::PauseMenu(Game *game):
@@ -62,7 +62,7 @@ PauseMenu::PauseMenu(Game *game):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 PauseMenu::~PauseMenu(void) {
   delete current_submenu;
@@ -76,7 +76,7 @@ PauseMenu::~PauseMenu(void) {
 }
 
 /**
- * Exits the pause menu.
+ * @brief Exits the pause menu.
  */
 void PauseMenu::quit(void) {
 
@@ -87,7 +87,7 @@ void PauseMenu::quit(void) {
 }
 
 /**
- * This function is called when a key is pressed.
+ * @brief This function is called when a key is pressed.
  * @param key the key pressed
  */
 void PauseMenu::key_pressed(GameControls::GameKey key) {
@@ -166,14 +166,14 @@ void PauseMenu::key_pressed(GameControls::GameKey key) {
 }
 
 /**
- * Updates the pause menu.
+ * @brief Updates the pause menu.
  */
 void PauseMenu::update(void) {
   current_submenu->update();
 }
 
 /**
- * Displays the pause menu.
+ * @brief Displays the pause menu.
  * @param destination the surface to draw
  */
 void PauseMenu::display(Surface *destination) {
@@ -197,7 +197,7 @@ void PauseMenu::display(Surface *destination) {
 }
 
 /**
- * Moves to the specified submenu.
+ * @brief Moves to the specified submenu.
  * @param submenu_index the submenu to show
  */
 void PauseMenu::set_current_submenu(int submenu_index) {
@@ -234,7 +234,7 @@ void PauseMenu::set_current_submenu(int submenu_index) {
 }
 
 /**
- * Shows the submenu located at the left side from the current one.
+ * @brief Shows the submenu located at the left side from the current one.
  */
 void PauseMenu::show_left_submenu(void) {
 
@@ -244,7 +244,7 @@ void PauseMenu::show_left_submenu(void) {
 }
 
 /**
- * Shows the submenu located at the right side from the current one.
+ * @brief Shows the submenu located at the right side from the current one.
  */
 void PauseMenu::show_right_submenu(void) {
 

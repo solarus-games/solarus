@@ -26,7 +26,7 @@
 #include "lowlevel/Surface.h"
 
 /**
- * Constructor.
+ * @brief Constructor.
  * @param pause_menu the pause menu object
  * @param game the game
  */
@@ -99,7 +99,7 @@ PauseSubmenuOptions::PauseSubmenuOptions(PauseMenu *pause_menu, Game *game):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 PauseSubmenuOptions::~PauseSubmenuOptions(void) {
 
@@ -123,7 +123,7 @@ PauseSubmenuOptions::~PauseSubmenuOptions(void) {
 }
 
 /**
- * Loads the text displayed for each control, for the
+ * @brief Loads the text displayed for each control, for the
  * keyboard and the joypad.
  */
 void PauseSubmenuOptions::load_control_texts(void) {
@@ -148,7 +148,7 @@ void PauseSubmenuOptions::load_control_texts(void) {
 }
 
 /**
- * Changes the position of the cursor.
+ * @brief Changes the position of the cursor.
  * @param position new cursor position, from 0 to 9
  */
 void PauseSubmenuOptions::set_cursor_position(int position) {
@@ -183,7 +183,7 @@ void PauseSubmenuOptions::set_cursor_position(int position) {
 }
 
 /**
- * This function is called when a key is pressed on this submenu.
+ * @brief This function is called when a key is pressed on this submenu.
  * @param key the key pressed
  */
 void PauseSubmenuOptions::key_pressed(GameControls::GameKey key) {
@@ -218,7 +218,7 @@ void PauseSubmenuOptions::key_pressed(GameControls::GameKey key) {
 }
 
 /**
- * This function is called when the action key is pressed.
+ * @brief This function is called when the action key is pressed.
  */
 void PauseSubmenuOptions::action_key_pressed(void) {
 
@@ -242,7 +242,7 @@ void PauseSubmenuOptions::action_key_pressed(void) {
 }
 
 /**
- * Updates this submenu.
+ * @brief Updates this submenu.
  */
 void PauseSubmenuOptions::update(void) {
 
@@ -267,7 +267,7 @@ void PauseSubmenuOptions::update(void) {
 }
 
 /**
- * Displays this submenu.
+ * @brief Displays this submenu.
  * @param destination the destination surface
  */
 void PauseSubmenuOptions::display(Surface *destination) {
@@ -300,7 +300,7 @@ void PauseSubmenuOptions::display(Surface *destination) {
 }
 
 /**
- * Displays the cursor.
+ * @brief Displays the cursor.
  * @param destination the destination surface
  */
 void PauseSubmenuOptions::display_cursor(Surface *destination) {

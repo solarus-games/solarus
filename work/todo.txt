@@ -73,7 +73,7 @@ Amélioration de la documentation en cours (@brief manquants) :
 
 find . -name '*.h' -o -name '*.cpp' | sort
 
-dernier fichier traité : MapScript.cpp (mauvais rendu)
+dernier fichier traité : PauseSubmenuQuestStatus.cpp
 
 A venir :
 

@@ -27,7 +27,7 @@
 const int LanguageScreen::max_visible_languages = 10;
 
 /**
- * Creates a language screen.
+ * @brief Creates a language screen.
  * @param solarus the Solarus object
  */
 LanguageScreen::LanguageScreen(Solarus *solarus):
@@ -67,7 +67,7 @@ LanguageScreen::LanguageScreen(Solarus *solarus):
 }
 
 /**
- * Destroys the language screen.
+ * @brief Destroys the language screen.
  */
 LanguageScreen::~LanguageScreen(void) {
 
@@ -81,7 +81,7 @@ LanguageScreen::~LanguageScreen(void) {
 }
 
 /**
- * Sets the position of the cursor.
+ * @brief Sets the position of the cursor.
  * @param cursor_position
  */
 void LanguageScreen::set_cursor_position(int cursor_position) {
@@ -106,7 +106,7 @@ void LanguageScreen::set_cursor_position(int cursor_position) {
 }
 
 /**
- * Updates this screen.
+ * @brief Updates this screen.
  */
 void LanguageScreen::update(void) {
 
@@ -125,7 +125,7 @@ void LanguageScreen::update(void) {
 }
 
 /**
- * Displays this screen.
+ * @brief Displays this screen.
  * @param destination_surface the surface to draw
  */
 void LanguageScreen::display(Surface *destination_surface) {
@@ -144,7 +144,7 @@ void LanguageScreen::display(Surface *destination_surface) {
 }
 
 /**
- * This function is called by the main loop when there is an input event.
+ * @brief This function is called by the main loop when there is an input event.
  * @param event the event to handle
  */
 void LanguageScreen::notify_event(InputEvent &event) {

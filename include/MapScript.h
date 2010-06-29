@@ -27,7 +27,7 @@
  */
 class MapScript: public Script {
 
-  private:
+  protected:   // even if there no subclass of MapScript, we want Doxygen to show the functions available to scripts
 
     Map *map;                   /**< the map controlled by this script */
 

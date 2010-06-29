@@ -19,7 +19,7 @@
 #include "Game.h"
 
 /**
- * Constructor.
+ * @brief Constructor.
  * @param pause_menu the pause menu object
  * @param game the game
  */
@@ -39,7 +39,7 @@ PauseSubmenu::PauseSubmenu(PauseMenu *pause_menu, Game *game):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 PauseSubmenu::~PauseSubmenu(void) {
   delete caption_text_1;
@@ -47,8 +47,10 @@ PauseSubmenu::~PauseSubmenu(void) {
 }
 
 /**
- * Displays the common part of a submenu.
+ * @brief Displays the common part of a submenu.
+ *
  * The subclasses should call this function.
+ *
  * @param destination the surface to draw
  */
 void PauseSubmenu::display(Surface *destination) {
@@ -57,9 +59,11 @@ void PauseSubmenu::display(Surface *destination) {
 }
 
 /**
- * Sets the caption text.
+ * @brief Sets the caption text.
+ *
  * The caption text can have one or two lines, with 20 characters maximum for each line.
  * If the text you want to display has two lines, use the '$' character to separate them.
+ *
  * @param text the caption text to set
  */
 void PauseSubmenu::set_caption_text(const std::string &text) {
@@ -87,7 +91,7 @@ void PauseSubmenu::set_caption_text(const std::string &text) {
 }
 
 /**
- * Plays the cursor sound.
+ * @brief Plays the cursor sound.
  */
 void PauseSubmenu::play_cursor_sound(void) {
   game->play_sound("cursor");

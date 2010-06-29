@@ -21,7 +21,7 @@
 #include <SDL/SDL_image.h>
 
 /**
- * Creates a empty surface with the specified size.
+ * @brief Creates a empty surface with the specified size.
  * @param width the width in pixels
  * @param height the height in pixels
  */
@@ -31,7 +31,7 @@ Surface::Surface(int width, int height):
 }
 
 /**
- * Creates a surface from the specified image file name.
+ * @brief Creates a surface from the specified image file name.
  * @param file_name name of the image file to load, relative to the base directory specified
  * @param base_directory the base directory to use
  */
@@ -64,9 +64,11 @@ Surface::Surface(const std::string &file_name, ImageDirectory base_directory):
 }
 
 /**
- * Creates a surface form the specified SDL surface.
+ * @brief Creates a surface form the specified SDL surface.
+ *
  * This constructor must be used only by lowlevel classes that manipulate directly
  * SDL dependent surfaces.
+ *
  * @param internal_surface the internal surface data (the destructor will not free it)
  */
 Surface::Surface(SDL_Surface *internal_surface):
@@ -75,7 +77,7 @@ Surface::Surface(SDL_Surface *internal_surface):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 Surface::~Surface(void) {
 
@@ -85,7 +87,7 @@ Surface::~Surface(void) {
 }
 
 /**
- * Returns the width of the surface.
+ * @brief Returns the width of the surface.
  * @return the width in pixels
  */
 int Surface::get_width(void) {
@@ -93,7 +95,7 @@ int Surface::get_width(void) {
 }
 
 /**
- * Returns the height of the surface.
+ * @brief Returns the height of the surface.
  * @return the height in pixels
  */
 int Surface::get_height(void) {
@@ -101,7 +103,7 @@ int Surface::get_height(void) {
 }
 
 /**
- * Returns the size of this surface.
+ * @brief Returns the size of this surface.
  * @return the size of this surface
  */
 const Rectangle Surface::get_size(void) {
@@ -110,8 +112,10 @@ const Rectangle Surface::get_size(void) {
 }
 
 /**
- * Sets the transparency color of this surface.
+ * @brief Sets the transparency color of this surface.
+ *
  * Pixels in that color will not be displayed.
+ *
  * @param color the transparency color to set
  */
 void Surface::set_transparency_color(Color &color) {
@@ -119,7 +123,7 @@ void Surface::set_transparency_color(Color &color) {
 }
 
 /**
- * Sets the opacity of this surface.
+ * @brief Sets the opacity of this surface.
  * @param opacity the opacity (0 to 255)
  */
 void Surface::set_opacity(int opacity) {
@@ -134,11 +138,14 @@ void Surface::set_opacity(int opacity) {
 }
 
 /**
+ * @brief Restricts drawing on this surface to a subarea.
+ *
  * Sets a subarea of the surface where the next drawings will be restricted to
  * when this surface is used as the destination of blitting.
  * A zero-sized rectangle means that drawings are not restricted to a subarea of the surface.
  * The rectangle specified may be partially outside this rectangle
  * (then it will be resized to fit inside).
+ *
  * @param clipping_rectangle a subarea of the rectangle to restrict the display to
  */
 void Surface::set_clipping_rectangle(const Rectangle &clipping_rectangle) {
@@ -153,7 +160,7 @@ void Surface::set_clipping_rectangle(const Rectangle &clipping_rectangle) {
 }
 
 /**
- * Fills the entire surface with the specified color.
+ * @brief Fills the entire surface with the specified color.
  * @param color a color
  */
 void Surface::fill_with_color(Color &color) {
@@ -161,7 +168,7 @@ void Surface::fill_with_color(Color &color) {
 }
 
 /**
- * Fills a rectangle of this surface with the specified color.
+ * @brief Fills a rectangle of this surface with the specified color.
  * @param color a color
  * @param where the rectangle to fill
  */
@@ -171,8 +178,10 @@ void Surface::fill_with_color(Color &color, const Rectangle &where) {
 }
 
 /**
- * Blits this whole surface on another surface.
- * The top-left corner of this surface will be blitted on the other's surface top-left corner
+ * @brief Blits this whole surface on another surface.
+ *
+ * The top-left corner of this surface will be blitted on the other's surface top-left corner.
+ *
  * @param destination the destination surface
  */
 void Surface::blit(Surface *destination) {
@@ -180,7 +189,7 @@ void Surface::blit(Surface *destination) {
 }
 
 /**
- * Blits this whole surface on a specified location of another surface.
+ * @brief Blits this whole surface on a specified location of another surface.
  * @param dst the destination surface
  * @param dst_position the destination position where the current surface will be blitted on dst
  */
@@ -191,8 +200,10 @@ void Surface::blit(Surface *dst, const Rectangle &dst_position) {
 }
 
 /**
- * Blits a subarea of this surface on another surface.
- * The top-left corner of the source subarea will be blitted on the other's surface top-left corner
+ * @brief Blits a subarea of this surface on another surface.
+ *
+ * The top-left corner of the source subarea will be blitted on the other's surface top-left corner.
+ *
  * @param src_position the subrectangle of this surface to pick
  * @param dst the destination surface
  */
@@ -203,7 +214,7 @@ void Surface::blit(const Rectangle &src_position, Surface *dst) {
 }
 
 /**
- * Blits a subarea of this surface on a specified location of another surface.
+ * @brief Blits a subarea of this surface on a specified location of another surface.
  * @param src_position the subrectangle of this surface to pick
  * @param dst the destination surface
  * @param dst_position the destination position where the current surface will be blitted on dst
@@ -216,9 +227,11 @@ void Surface::blit(const Rectangle &src_position, Surface *dst, const Rectangle 
 }
 
 /**
- * Returns the SDL surface encapsulated by this object.
+ * @brief Returns the SDL surface encapsulated by this object.
+ *
  * This method should be used only by low-level classes.
- * @return the SDL surface encapsulated:
+ *
+ * @return the SDL surface encapsulated
  */
 SDL_Surface * Surface::get_internal_surface(void) {
   return internal_surface;

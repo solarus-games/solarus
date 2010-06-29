@@ -22,7 +22,7 @@
 #include "lowlevel/System.h"
 
 /**
- * Constructor.
+ * @brief Constructor.
  * @param game the current game
  * @param x x coordinate of the top-left corner of the element on the destination surface
  * @param y y coordinate of the top-left corner of the element on the destination surface
@@ -37,14 +37,14 @@ FloorView::FloorView(Game *game, int x, int y):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 FloorView::~FloorView(void) {
   delete img_floors;
 }
 
 /**
- * Updates the floors displayed.
+ * @brief Updates the floors displayed.
  */
 void FloorView::update(void) {
 
@@ -79,7 +79,7 @@ void FloorView::update(void) {
 
 
 /**
- * Redraws the floor (if any) on the surface.
+ * @brief Redraws the floor (if any) on the surface.
  */
 void FloorView::rebuild(void) {
 

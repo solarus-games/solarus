@@ -28,7 +28,7 @@
 #include "GameControls.h"
 
 /**
- * Constructor.
+ * @brief Constructor.
  * @param game the current game (cannot be NULL)
  */
 HUD::HUD(Game *game):
@@ -47,7 +47,7 @@ HUD::HUD(Game *game):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 HUD::~HUD(void) {
 
@@ -57,7 +57,7 @@ HUD::~HUD(void) {
 }
 
 /**
- * Makes an icon blink if the corresponding game key is being customized.
+ * @brief Makes an icon blink if the corresponding game key is being customized.
  */
 void HUD::update_blinking(void) {
 
@@ -106,7 +106,7 @@ void HUD::update_blinking(void) {
 }
 
 /**
- * Updates the information displayed by HUD.
+ * @brief Updates the information displayed by HUD.
  */
 void HUD::update(void) {
 
@@ -165,7 +165,7 @@ void HUD::update(void) {
 }
 
 /**
- * Displays the HUD.
+ * @brief Displays the HUD.
  * @param destination the destination surface
  */
 void HUD::display(Surface *destination) {

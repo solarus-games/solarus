@@ -22,7 +22,7 @@
 #include "lowlevel/System.h"
 
 /**
- * Creates a HUD element in a game.
+ * @brief Creates a HUD element in a game.
  * @param game the current game
  * @param x x coordinate of the top-left corner of the hud element surface on the destination surface
  * @param y y coordinate of the top-left corner of the hud element surface on the destination surface
@@ -40,8 +40,10 @@ HudElement::HudElement(Game *game, int x, int y, int width, int height):
 }
 
 /**
- * Creates a HUD element outside a game and representing some equipment-related data.
+ * @brief Creates a HUD element outside a game and representing some equipment-related data.
+ *
  * The fields game and keys_effect will be NULL.
+ *
  * @param equipment the equipment object to represent
  * @param x x coordinate of the top-left corner of the hud element surface on the destination surface
  * @param y y coordinate of the top-left corner of the hud element surface on the destination surface
@@ -59,8 +61,10 @@ HudElement::HudElement(Equipment *equipment, int x, int y, int width, int height
 }
 
 /**
- * Creates a HUD element outside a game and representing some keys effect related data.
+ * @brief Creates a HUD element outside a game and representing some keys effect related data.
+ *
  * The fields game and equipment will be NULL.
+ *
  * @param keys_effect the keys_effect object to represent
  * @param x x coordinate of the top-left corner of the hud element surface on the destination surface
  * @param y y coordinate of the top-left corner of the hud element surface on the destination surface
@@ -78,14 +82,14 @@ HudElement::HudElement(KeysEffect *keys_effect, int x, int y, int width, int hei
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 HudElement::~HudElement(void) {
   delete surface_drawn;
 }
 
 /**
- * Changes the position of this hud element.
+ * @brief Changes the position of this hud element.
  * @param x the new x coordinate
  * @param y the new y coordinate
  */
@@ -96,8 +100,9 @@ void HudElement::set_position(int x, int y) {
 }
 
 /**
- * Redefine this method to redraw the element on the surface.
- * You have to call this method from the subclasses to initialize
+ * @brief Redefine this method to redraw the element on the surface.
+ *
+ * You have to call this method from your redifined method to initialize
  * the surface with transparent color.
  */
 void HudElement::rebuild(void) {
@@ -105,7 +110,7 @@ void HudElement::rebuild(void) {
 }
 
 /**
- * Shows or hides this element.
+ * @brief Shows or hides this element.
  * @param visible true to make it visible, false to hide it
  */
 void HudElement::set_visible(bool visible) {
@@ -113,9 +118,11 @@ void HudElement::set_visible(bool visible) {
 }
 
 /**
- * Returns whether this hud element is visible.
+ * @brief Returns whether this hud element is visible.
+ *
  * The display() function does nothing if this function
  * returns false.
+ *
  * @return true if this hud element is visible, false otherwise
  */
 bool HudElement::is_visible(void) {
@@ -123,7 +130,7 @@ bool HudElement::is_visible(void) {
 }
 
 /**
- * Returns the current opacity of this element.
+ * @brief Returns the current opacity of this element.
  * @return the current opacity, between 0 and 255
  */
 int HudElement::get_opacity(void) {
@@ -131,7 +138,7 @@ int HudElement::get_opacity(void) {
 }
 
 /**
- * Sets the opacity of this element.
+ * @brief Sets the opacity of this element.
  * @param opacity the opacity, between 0 and 255
  */
 void HudElement::set_opacity(int opacity) {
@@ -144,7 +151,7 @@ void HudElement::set_opacity(int opacity) {
 }
 
 /**
- * Makes this element blink or stop blinking.
+ * @brief Makes this element blink or stop blinking.
  * @param blinking true to make the element blink, false otherwise
  */
 void HudElement::set_blinking(bool blinking) {
@@ -160,7 +167,7 @@ void HudElement::set_blinking(bool blinking) {
 }
 
 /**
- * Returns whether this element is blinking.
+ * @brief Returns whether this element is blinking.
  * @return true if this element is blinking
  */
 bool HudElement::is_blinking(void) {
@@ -168,7 +175,7 @@ bool HudElement::is_blinking(void) {
 }
 
 /**
- * Updates this HUD element.
+ * @brief Updates this HUD element.
  */
 void HudElement::update(void) {
 
@@ -180,8 +187,7 @@ void HudElement::update(void) {
 }
 
 /**
- * Displays the hud element on a surface.
- * If the savegame is empty, nothing is done.
+ * @brief Displays the hud element on a surface.
  * @param destination the destination surface
  */
 void HudElement::display(Surface *destination) {

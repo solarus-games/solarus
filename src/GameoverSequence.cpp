@@ -27,7 +27,7 @@
 #include <sstream>
 
 /**
- * Creates a game over sequence.
+ * @brief Creates a game over sequence.
  * @param game the game
  * @param hero_direction direction of the hero sprite before game over
  */
@@ -58,7 +58,7 @@ GameoverSequence::GameoverSequence(Game *game, int hero_direction):
 }
 
 /**
- * Destroys the game over sequence.
+ * @brief Destroys the game over sequence.
  */
 GameoverSequence::~GameoverSequence(void) {
 
@@ -70,7 +70,7 @@ GameoverSequence::~GameoverSequence(void) {
 }
 
 /**
- * Updates the gameover sequence.
+ * @brief Updates the gameover sequence.
  */
 void GameoverSequence::update(void) {
 
@@ -165,7 +165,7 @@ void GameoverSequence::update(void) {
 }
 
 /**
- * Displays the gameover sequence.
+ * @brief Displays the gameover sequence.
  * @param destination_surface the surface to draw
  */
 void GameoverSequence::display(Surface *destination_surface) {
@@ -198,7 +198,7 @@ void GameoverSequence::display(Surface *destination_surface) {
 }
 
 /**
- * This function is called when a game key is pressed.
+ * @brief This function is called when a game key is pressed.
  * @param key the key pressed
  */
 void GameoverSequence::key_pressed(GameControls::GameKey key) {
@@ -245,7 +245,7 @@ void GameoverSequence::key_pressed(GameControls::GameKey key) {
 }
 
 /**
- * Returns whether the game over sequence is finished.
+ * @brief Returns whether the game over sequence is finished.
  * @return true if the game over sequence is finished
  */
 bool GameoverSequence::is_finished(void) {

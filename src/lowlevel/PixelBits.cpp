@@ -21,7 +21,7 @@
 #include <iostream> // print functions
 
 /**
- * Creates a pixel bits object.
+ * @brief Creates a pixel bits object.
  * @param surface the surface where the image is
  * @param image_position position of the image on this surface
  */
@@ -72,7 +72,7 @@ PixelBits::PixelBits(Surface *surface, const Rectangle &image_position) {
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 PixelBits::~PixelBits(void) {
 
@@ -83,7 +83,7 @@ PixelBits::~PixelBits(void) {
 }
 
 /**
- * Detects whether the image represented by these pixel bits is overlapping another image.
+ * @brief Detects whether the image represented by these pixel bits is overlapping another image.
  * @param other the other image
  * @param location1 position of the top-left corner of this image on the map (only x and y must be specified)
  * @param location2 position of the top-left corner of the other image on the map (only x and y must be specified)
@@ -224,7 +224,7 @@ bool PixelBits::test_collision(PixelBits *other, const Rectangle &location1, con
 }
 
 /**
- * Prints an ascii representation of the pixels (for debugging purposes only).
+ * @brief Prints an ascii representation of the pixels (for debugging purposes only).
  */
 void PixelBits::print(void) {
 
@@ -255,7 +255,7 @@ void PixelBits::print(void) {
 }
 
 /**
- * Prints an ascii representation of a 32-bit mask.
+ * @brief Prints an ascii representation of a 32-bit mask (for debugging purposes only).
  */
 void PixelBits::print_mask(uint32_t mask) {
   for (int i = 0; i < 32; i++) {

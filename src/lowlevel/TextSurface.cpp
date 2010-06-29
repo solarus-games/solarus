@@ -24,7 +24,7 @@ std::map<std::string, TextSurface::FontData> TextSurface::fonts;
 std::string TextSurface::default_font_id = "";
 
 /**
- * Initializes the font system.
+ * @brief Initializes the font system.
  */
 void TextSurface::initialize(void) {
 
@@ -67,7 +67,7 @@ void TextSurface::initialize(void) {
 }
 
 /**
- * Closes the font system.
+ * @brief Closes the font system.
  */
 void TextSurface::quit(void) {
 
@@ -84,13 +84,16 @@ void TextSurface::quit(void) {
 }
 
 /**
- * Creates a text to display with the default properties:
+ * @brief Creates a text to display with the default properties.
+ *
+ * The default properties are:
  * - font: the default font defined in file text/fonts.dat
  * - horizontal alignment: left
  * - vertical alignment: middle
  * - rendering mode: solid
  * - text color: white
  * - background color: black
+ *
  * @param x x position of the text on the destination surface
  * @param y y position of the text on the destination surface
  */
@@ -108,7 +111,7 @@ TextSurface::TextSurface(int x, int y):
 }
 
 /**
- * Creates a text to display with the specified alignment properties.
+ * @brief Creates a text to display with the specified alignment properties.
  * @param x x position of the text on the destination surface
  * @param y y position of the text on the destination surface
  * @param horizontal_alignment horizontal alignment of the text: ALIGN_LEFT,
@@ -133,7 +136,7 @@ TextSurface::TextSurface(int x, int y,
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 TextSurface::~TextSurface(void) {
 
@@ -144,7 +147,7 @@ TextSurface::~TextSurface(void) {
 }
 
 /**
- * Sets the font to use.
+ * @brief Sets the font to use.
  * @param font_id a font
  */
 void TextSurface::set_font(const std::string font_id) {
@@ -153,7 +156,7 @@ void TextSurface::set_font(const std::string font_id) {
 }
 
 /**
- * Sets the text alignment.
+ * @brief Sets the text alignment.
  * @param horizontal_alignment horizontal alignment of the text: ALIGN_LEFT,
  * ALIGN_CENTER or ALIGN_RIGHT
  * @param vertical_alignment vertical alignment of the text: ALIGN_TOP,
@@ -168,7 +171,7 @@ void TextSurface::set_alignment(HorizontalAlignment horizontal_alignment,
 }
 
 /**
- * Sets the rendering mode of the text.
+ * @brief Sets the rendering mode of the text.
  * @param rendering_mode rendering mode: TEXT_SOLID, TEXT_SHADED or TEXT_BLENDED
  */
 void TextSurface::set_rendering_mode(TextSurface::RenderingMode rendering_mode) {
@@ -178,7 +181,7 @@ void TextSurface::set_rendering_mode(TextSurface::RenderingMode rendering_mode) 
 }
 
 /**
- * Sets the color of the text.
+ * @brief Sets the color of the text.
  * @param color the color to set
  */
 void TextSurface::set_text_color(Color &color) {
@@ -187,7 +190,7 @@ void TextSurface::set_text_color(Color &color) {
 }
 
 /**
- * Sets the color of the text.
+ * @brief Sets the color of the text.
  * @param r red component (0 to 255)
  * @param g green component (0 to 255)
  * @param b blue component (0 to 255)
@@ -198,8 +201,10 @@ void TextSurface::set_text_color(int r, int g, int b) {
 }
 
 /**
- * Sets the background color of the text.
+ * @brief Sets the background color of the text.
+ *
  * This is only useful for the TEXT_SHADED rendering.
+ *
  * @param color the background color to set
  */
 void TextSurface::set_background_color(Color &color) {
@@ -208,7 +213,7 @@ void TextSurface::set_background_color(Color &color) {
 }
 
 /**
- * Sets the position of the text on the destination surface.
+ * @brief Sets the position of the text on the destination surface.
  * @param x x position of the text on the destination surface
  * @param y y position of the text on the destination surface
  */
@@ -219,7 +224,7 @@ void TextSurface::set_position(int x, int y) {
 }
 
 /**
- * Sets the x position of the text on the destination surface.
+ * @brief Sets the x position of the text on the destination surface.
  * @param x x position of the text
  */
 void TextSurface::set_x(int x) {
@@ -228,7 +233,7 @@ void TextSurface::set_x(int x) {
 }
 
 /**
- * Sets the y position of the text on the destination surface.
+ * @brief Sets the y position of the text on the destination surface.
  * @param y y position of the text
  */
 void TextSurface::set_y(int y) {
@@ -237,8 +242,10 @@ void TextSurface::set_y(int y) {
 }
 
 /**
- * Sets the string drawn.
+ * @brief Sets the string drawn.
+ *
  * If the specified string is the same than the current text, nothing is done.
+ *
  * @param text the text to display (cannot be NULL)
  */
 void TextSurface::set_text(const std::string &text) {
@@ -252,8 +259,10 @@ void TextSurface::set_text(const std::string &text) {
 }
 
 /**
- * Adds a character to the string drawn.
- * This is equivalent to set_text(get_text() + c)
+ * @brief Adds a character to the string drawn.
+ *
+ * This is equivalent to set_text(get_text() + c).
+ *
  * @param c the character to add
  */
 void TextSurface::add_char(char c) {
@@ -261,7 +270,7 @@ void TextSurface::add_char(char c) {
 }
 
 /**
- * Returns the text currently displayed.
+ * @brief Returns the text currently displayed.
  * @return the text currently displayed, or NULL if there is no text
  */
 const std::string & TextSurface::get_text(void) {
@@ -269,7 +278,7 @@ const std::string & TextSurface::get_text(void) {
 }
 
 /**
- * Returns whether the current text is an empty string.
+ * @brief Returns whether the current text is an empty string.
  * @return true if there is no texte
  */
 bool TextSurface::is_empty(void) {
@@ -277,7 +286,7 @@ bool TextSurface::is_empty(void) {
 }
 
 /**
- * Returns the width of the surface containing the text.
+ * @brief Returns the width of the surface containing the text.
  * @return the width in pixels
  */
 int TextSurface::get_width(void) {
@@ -285,7 +294,7 @@ int TextSurface::get_width(void) {
 }
 
 /**
- * Returns the height of the surface containing the text.
+ * @brief Returns the height of the surface containing the text.
  * @return the height in pixels
  */
 int TextSurface::get_height(void) {
@@ -294,7 +303,7 @@ int TextSurface::get_height(void) {
 
 
 /**
- * Returns the size of the surface containing the text.
+ * @brief Returns the size of the surface containing the text.
  * @return the size of the surface
  */
 const Rectangle TextSurface::get_size(void) {
@@ -302,7 +311,8 @@ const Rectangle TextSurface::get_size(void) {
 }
 
 /**
- * Creates the text surface.
+ * @brief Creates the text surface.
+ *
  * This function is called when there is a change.
  */
 void TextSurface::rebuild(void) {
@@ -380,9 +390,11 @@ void TextSurface::rebuild(void) {
 }
 
 /**
- * Displays the text on a surface.
+ * @brief Displays the text on a surface.
+ *
  * This method just blits on the given surface the text surface created
  * when you called set_text().
+ *
  * @param destination the destination surface
  */
 void TextSurface::display(Surface *destination) {

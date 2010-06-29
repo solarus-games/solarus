@@ -43,7 +43,7 @@
 Rectangle Game::outside_world_size(0, 0, 0, 0); // loaded from info.dat
 
 /**
- * Creates a game.
+ * @brief Creates a game.
  * @param solarus the application object
  * @param savegame the saved data of this game
  */
@@ -79,7 +79,7 @@ Game::Game(Solarus *solarus, Savegame *savegame):
 }
 
 /**
- * Destroys the game.
+ * @brief Destroys the game.
  */
 Game::~Game(void) {
 
@@ -107,7 +107,7 @@ Game::~Game(void) {
 }
 
 /**
- * Returns the hero.
+ * @brief Returns the hero.
  * @return the hero
  */
 Hero * Game::get_hero(void) {
@@ -115,9 +115,11 @@ Hero * Game::get_hero(void) {
 }
 
 /**
- * Returns the coordinates of the hero on the current map.
+ * @brief Returns the coordinates of the hero on the current map.
+ *
  * The coordinates returned are the coordinates of the hero's origin point on the map.
- * The width and the height are not used.
+ * The width and height are not used.
+ *
  * @return the position of the hero
  */
 const Rectangle & Game::get_hero_xy(void) {
@@ -128,7 +130,7 @@ const Rectangle & Game::get_hero_xy(void) {
 }
 
 /**
- * Returns the game controls for the keyboard and the joypad.
+ * @brief Returns the game controls for the keyboard and the joypad.
  * @return the game controls
  */
 GameControls * Game::get_controls(void) {
@@ -136,7 +138,7 @@ GameControls * Game::get_controls(void) {
 }
 
 /**
- * Returns the current effect of the main keys (action, sword, pause, etc.).
+ * @brief Returns the current effect of the main keys (action, sword, pause, etc.).
  * @return the current effect of the main keys
  */
 KeysEffect * Game::get_keys_effect(void) {
@@ -144,7 +146,7 @@ KeysEffect * Game::get_keys_effect(void) {
 }
 
 /**
- * Returns the saved data associated to this game.
+ * @brief Returns the saved data associated to this game.
  * @return the saved data
  */
 Savegame * Game::get_savegame(void) {
@@ -152,8 +154,10 @@ Savegame * Game::get_savegame(void) {
 }
 
 /**
- * Returns the equipment of the player.
- * It just calls get_savegame()->get_equipment().
+ * @brief Returns the equipment of the player.
+ *
+ * It is equivalent to get_savegame()->get_equipment().
+ *
  * @return the equipment
  */
 Equipment * Game::get_equipment(void) {
@@ -161,8 +165,10 @@ Equipment * Game::get_equipment(void) {
 }
 
 /**
- * Returns the dungeon equipment of the player.
- * It just calls get_savegame()->get_dungeon_equipment().
+ * @brief Returns the dungeon equipment of the player.
+ *
+ * It is equivalent to get_savegame()->get_dungeon_equipment().
+ *
  * @return the dungeon equipment
  */
 DungeonEquipment * Game::get_dungeon_equipment(void) {
@@ -170,7 +176,7 @@ DungeonEquipment * Game::get_dungeon_equipment(void) {
 }
 
 /**
- * Returns the script of the current map.
+ * @brief Returns the script of the current map.
  * @return the script of the current map, or NULL if no map is loaded
  */
 MapScript * Game::get_current_script(void) {
@@ -183,8 +189,7 @@ MapScript * Game::get_current_script(void) {
 }
 
 /**
- * This function is called by the main loop
- * when a low-level input event occurs during the game.
+ * @brief This function is called when a low-level input event occurs during the game.
  * @param event the event to handle
  */
 void Game::notify_event(InputEvent &event) {
@@ -195,7 +200,7 @@ void Game::notify_event(InputEvent &event) {
 }
 
 /**
- * This function is called when a game key is pressed.
+ * @brief This function is called when a game key is pressed.
  * @param key a key
  */
 void Game::key_pressed(GameControls::GameKey key) {
@@ -230,7 +235,7 @@ void Game::key_pressed(GameControls::GameKey key) {
 }
 
 /**
- * This function is called when a game key is released.
+ * @brief This function is called when a game key is released.
  * @param key a key
  */
 void Game::key_released(GameControls::GameKey key) {
@@ -242,7 +247,9 @@ void Game::key_released(GameControls::GameKey key) {
 }
 
 /**
- * Updates the game elements : the map, the equipment, the HUD, the sound system, etc.
+ * @brief Updates the game elements.
+ *
+ * Updates the map, the equipment, the HUD, etc.
  */
 void Game::update(void) {
 
@@ -279,7 +286,8 @@ void Game::update(void) {
 }
 
 /**
- * Handles the transitions.
+ * @brief Handles the transitions.
+ *
  * This functions changes the map when needed and plays the
  * transitions between the two maps. This function is called
  * by the update() function.
@@ -400,7 +408,7 @@ void Game::update_transitions(void) {
 }
 
 /**
- * Makes sure the keys effects are coherent with the hero's equipment and abilities.
+ * @brief Makes sure the keys effects are coherent with the hero's equipment and abilities.
  */
 void Game::update_keys_effect(void) {
 
@@ -433,7 +441,8 @@ void Game::update_keys_effect(void) {
 }
 
 /**
- * Updates the treasure.
+ * @brief Updates the treasure.
+ *
  * This function is called repeatedly while a treasure is being given.
  */
 void Game::update_treasure(void) {
@@ -454,7 +463,8 @@ void Game::update_treasure(void) {
 }
 
 /**
- * Updates the game over sequence.
+ * @brief Updates the game over sequence.
+ *
  * This function is called repeatedly while the game over sequence is shown.
  */
 void Game::update_gameover_sequence(void) {
@@ -469,7 +479,7 @@ void Game::update_gameover_sequence(void) {
 }
 
 /**
- * Displays the game.
+ * @brief Displays the game.
  * @param screen_surface the surface where the game will be displayed
  */
 void Game::display(Surface *screen_surface) {
@@ -503,7 +513,7 @@ void Game::display(Surface *screen_surface) {
 }
 
 /**
- * Returns the current map.
+ * @brief Returns the current map.
  * @return the current map
  */
 Map * Game::get_current_map(void) {
@@ -511,8 +521,10 @@ Map * Game::get_current_map(void) {
 }
 
 /**
- * Changes the current map.
+ * @brief Changes the current map.
+ *
  * Call this function when you want the hero to go to another map.
+ *
  * @param map_id id of the map to launch
  * @param destination_point_name name of the destination point of the map you want to use,
  * or en ampty string to pick the destination point saved
@@ -540,7 +552,7 @@ void Game::set_current_map(MapId map_id, const std::string &destination_point_na
 }
 
 /**
- * Returns the size of the oustide world in pixels.
+ * @brief Returns the size of the oustide world in pixels.
  * @return the size of the oustide world
  */
 const Rectangle & Game::get_outside_world_size(void) {
@@ -560,7 +572,7 @@ const Rectangle & Game::get_outside_world_size(void) {
 }
 
 /**
- * Returns whether the current map belongs to a dungeon.
+ * @brief Returns whether the current map belongs to a dungeon.
  * @return true if the current map is in a dungeon
  */
 bool Game::is_in_dungeon(void) {
@@ -568,8 +580,10 @@ bool Game::is_in_dungeon(void) {
 }
 
 /**
- * Returns the dungeon where the current map is, or NULL
- * if we are not in a dungeon.
+ * @brief Returns the dungeon where the current map is.
+ *
+ * Returns NULL if we are not in a dungeon.
+ *
  * @return the current dungeon
  */
 Dungeon * Game::get_current_dungeon(void) {
@@ -577,8 +591,10 @@ Dungeon * Game::get_current_dungeon(void) {
 }
 
 /**
- * Returns false if the orange blocks are lowered
- * or true if the blue blocks are lowered.
+ * @brief Returns the state of the crystal switch blocks.
+ *
+ * Returns false if the orange blocks are lowered or true if the blue blocks are lowered.
+ *
  * @return the state of the crystal switchs or this world
  */
 bool Game::get_crystal_switch_state(void) {
@@ -586,14 +602,14 @@ bool Game::get_crystal_switch_state(void) {
 }
 
 /**
- * Changes the state of the blue and orange blocks.
+ * @brief Changes the state of the crystal switch blocks.
  */
 void Game::change_crystal_switch_state(void) {
   crystal_switch_state = !crystal_switch_state;
 }
 
 /**
- * Plays a sound.
+ * @brief Plays a sound.
  * @param sound_id id of the sound to play
  */
 void Game::play_sound(MusicId sound_id) {
@@ -601,10 +617,13 @@ void Game::play_sound(MusicId sound_id) {
 }
 
 /**
- * Plays a music. If the music is different from the current one,
+ * @brief Plays a music.
+ *
+ * If the music is different from the current one,
  * the current one is stopped.
  * The music specified can also be Music::none_id (then the current music is just stopped)
  * or even Music::unchanged_id (nothing is done in this case).
+ *
  * @param new_music_id id of the music to play
  */
 void Game::play_music(MusicId new_music_id) {
@@ -642,7 +661,8 @@ void Game::play_music(MusicId new_music_id) {
 }
 
 /**
- * Pauses or resumes the current music.
+ * @brief Pauses or resumes the current music.
+ *
  * If no music is being played, nothing is done.
  */
 void Game::pause_or_resume_music(void) {
@@ -652,7 +672,8 @@ void Game::pause_or_resume_music(void) {
 }
 
 /**
- * Stops playing the current music.
+ * @brief Stops playing the current music.
+ *
  * If no music is being played, nothing is done.
  */
 void Game::stop_music(void) {
@@ -660,14 +681,14 @@ void Game::stop_music(void) {
 }
 
 /**
- * Plays the music that was playing before the last music change.
+ * @brief Plays the music that was playing before the last music change.
  */
 void Game::restore_music(void) {
   play_music(previous_music_id);
 }
 
 /**
- * Returns the id of the music currently played.
+ * @brief Returns the id of the music currently played.
  * @return the current music
  */
 const MusicId& Game::get_current_music_id(void) {
@@ -675,7 +696,7 @@ const MusicId& Game::get_current_music_id(void) {
 }
 
 /**
- * Returns whether the game is paused.
+ * @brief Returns whether the game is paused.
  * @return true if the game is paused
  */
 bool Game::is_paused(void) {
@@ -683,7 +704,7 @@ bool Game::is_paused(void) {
 }
 
 /**
- * Returns whether we are playing a transition between two maps.
+ * @brief Returns whether we are playing a transition between two maps.
  * @return true if there is a transition
  */
 bool Game::is_playing_transition(void) {
@@ -691,11 +712,15 @@ bool Game::is_playing_transition(void) {
 }
 
 /**
- * Returns whether the game is suspended.
+ * @brief Returns whether the game is suspended.
+ *
  * This is true in the following cases:
  * - the game is paused,
- * - a message a being dispayed,
- * - a transition between two maps is playing.
+ * - a dialog a being dispayed,
+ * - a transition between two maps is playing,
+ * - the game over sequence is active,
+ * - the camera is moving.
+ *
  * @return true if the game is suspended
  */
 bool Game::is_suspended(void) {
@@ -704,7 +729,7 @@ bool Game::is_suspended(void) {
 }
 
 /**
- * Returns whether we are showing a message.
+ * @brief Returns whether we are showing a message.
  * @return true if a message is being shown.
  */
 bool Game::is_showing_message(void) {
@@ -712,7 +737,7 @@ bool Game::is_showing_message(void) {
 }
 
 /**
- * Returns the dialog box currently displayed.
+ * @brief Returns the dialog box currently displayed.
  * @return the dialog box, or NULL if no message is currently displayed
  */
 DialogBox * Game::get_dialog_box(void) {
@@ -720,8 +745,10 @@ DialogBox * Game::get_dialog_box(void) {
 }
 
 /**
- * Gives a treasure to the player.
+ * @brief Gives a treasure to the player.
+ *
  * Makes the hero brandish the treasure and shows a message.
+ *
  * @param treasure the treasure to give (will be deleted after the hero brandishes it) 
  */
 void Game::give_treasure(Treasure *treasure) {
@@ -736,7 +763,7 @@ void Game::give_treasure(Treasure *treasure) {
 }
 
 /**
- * Returns whether a treasure is being given to the player.
+ * @brief Returns whether a treasure is being given to the player.
  * @return true if a treasure is being given to the player.
  */
 bool Game::is_giving_treasure(void) {
@@ -744,7 +771,7 @@ bool Game::is_giving_treasure(void) {
 }
 
 /**
- * Sets whether the HUD is currently displayed.
+ * @brief Sets whether the HUD is currently displayed.
  * @param hud_enabled true to make the HUD displayed
  */
 void Game::set_hud_enabled(bool hud_enabled) {
@@ -752,7 +779,7 @@ void Game::set_hud_enabled(bool hud_enabled) {
 }
 
 /**
- * Returns whether the player can pause the game.
+ * @brief Returns whether the player can pause the game.
  * @return true if the player is currently allowed to pause the game
  */
 bool Game::is_pause_enabled(void) {
@@ -760,7 +787,7 @@ bool Game::is_pause_enabled(void) {
 }
 
 /**
- * Sets whether the player can pause the game.
+ * @brief Sets whether the player can pause the game.
  * @param pause_enabled true to allow the player to pause the game
  */
 void Game::set_pause_enabled(bool pause_enabled) {
@@ -769,7 +796,7 @@ void Game::set_pause_enabled(bool pause_enabled) {
 }
 
 /**
- * Pauses or resumes the game.
+ * @brief Pauses or resumes the game.
  * @param paused true to pause the game, false to resume it.
  */
 void Game::set_paused(bool paused) {
@@ -787,7 +814,7 @@ void Game::set_paused(bool paused) {
 }
 
 /**
- * Returns the pause menu.
+ * @brief Returns the pause menu.
  * @return the pause menu, or NULL if the game is not paused
  */
 PauseMenu * Game::get_pause_menu(void) {
@@ -795,7 +822,8 @@ PauseMenu * Game::get_pause_menu(void) {
 }
 
 /**
- * Sets the dungeon field depending on the current map.
+ * @brief Loads the dungeon data for the current map.
+ *
  * This function is called when the map changes.
  */
 void Game::load_dungeon(void) {
@@ -814,7 +842,7 @@ void Game::load_dungeon(void) {
 }
 
 /**
- * Go back to the title screen.
+ * @brief Goes back to the title screen.
  */
 void Game::reset(void) {
 
@@ -824,7 +852,7 @@ void Game::reset(void) {
 }
 
 /**
- * Restarts the game with the current savegame state.
+ * @brief Restarts the game with the current savegame state.
  */
 void Game::restart(void) {
 
@@ -834,14 +862,14 @@ void Game::restart(void) {
 }
 
 /**
- * Launches the gameover sequence.
+ * @brief Launches the gameover sequence.
  */
 void Game::start_gameover_sequence(void) {
   gameover_sequence = new GameoverSequence(this, hero->get_animation_direction());
 }
 
 /**
- * Returns whether the gameover sequence is being shown.
+ * @brief Returns whether the gameover sequence is being shown.
  * @return true if the gameover sequence is being shown
  */
 bool Game::is_showing_gameover(void) {
@@ -849,7 +877,7 @@ bool Game::is_showing_gameover(void) {
 }
 
 /**
- * This function is called when the hero was dead but saved by a fairy.
+ * @brief This function is called when the hero was dead but saved by a fairy.
  */
 void Game::get_back_from_death(void) {
   hero->get_back_from_death();

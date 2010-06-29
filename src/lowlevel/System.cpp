@@ -28,8 +28,11 @@
 
 
 /**
- * Initializes the whole lowlevel system: the graphics, the audio system,
+ * @brief Initializes the whole lowlevel system.
+ *
+ * Initializes the graphics, the audio system,
  * the data file system, etc.
+ *
  * @param argc number of command line arguments
  * @param argv command line arguments
  */
@@ -59,14 +62,15 @@ void System::initialize(int argc, char **argv) {
 }
 
 /**
- * Closes the lowlevel system.
+ * @brief Closes the lowlevel system.
+ *
  * This closes all initializations made in initialize().
  */
 void System::quit(void) {
 
   ResourceManager::quit();
   Random::quit();
-  // TODO Input::quit();
+  InputEvent::quit();
   Sound::quit();
   Sprite::quit();
   TextSurface::quit();
@@ -78,7 +82,8 @@ void System::quit(void) {
 }
 
 /**
- * This function is called repeatedly by the main loop.
+ * @brief This function is called repeatedly by the main loop.
+ *
  * It calls the update function of the low level systems that needs it.
  */
 void System::update(void) {
@@ -86,15 +91,17 @@ void System::update(void) {
 }
 
 /**
- * Returns the number of milliseconds elapsed since the beginning of the program.
+ * @brief Returns the number of milliseconds elapsed since the beginning of the program.
  */
 uint32_t System::now(void) {
   return SDL_GetTicks();
 }
 
 /**
- * Makes the program sleep during some time.
- * Due to OS scheduling, the real delay may be longer.
+ * @brief Makes the program sleep during some time.
+ *
+ * Due to the OS scheduling, the real delay may be longer.
+ *
  * @param duration duration of the sleep in milliseconds
  */
 void System::sleep(uint32_t duration) {

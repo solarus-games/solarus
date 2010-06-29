@@ -36,21 +36,21 @@ Rectangle VideoManager::default_mode_sizes[] = {
 };
 
 /**
- * Initializes the video system and creates the window.
+ * @brief Initializes the video system and creates the window.
  */
 void VideoManager::initialize(void) {
   instance = new VideoManager();
 }
 
 /**
- * Closes the video system.
+ * @brief Closes the video system.
  */
 void VideoManager::quit(void) {
   delete instance;
 }
 
 /**
- * Returns the video manager.
+ * @brief Returns the video manager.
  * @return the only video manager
  */
 VideoManager * VideoManager::get_instance(void) {
@@ -58,7 +58,7 @@ VideoManager * VideoManager::get_instance(void) {
 }
 
 /**
- * Constructor.
+ * @brief Constructor.
  */
 VideoManager::VideoManager(void) {
 
@@ -100,14 +100,14 @@ VideoManager::VideoManager(void) {
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 VideoManager::~VideoManager(void) {
   delete screen_surface;
 }
 
 /**
- * Returns whether a video mode is supported.
+ * @brief Returns whether a video mode is supported.
  * @param mode a video mode
  * @return true if this mode is supported
  */
@@ -128,7 +128,7 @@ bool VideoManager::is_mode_supported(VideoMode mode) {
 }
 
 /**
- * Returns whether a video mode is in fullscreen.
+ * @brief Returns whether a video mode is in fullscreen.
  * @param mode a video mode
  * @return true if this video mode is in fullscreen
  */
@@ -137,7 +137,7 @@ bool VideoManager::is_fullscreen(VideoMode mode) {
 }
 
 /**
- * Sets the next video mode.
+ * @brief Sets the next video mode.
  */
 void VideoManager::switch_video_mode(void) {
 
@@ -149,7 +149,8 @@ void VideoManager::switch_video_mode(void) {
 }
 
 /**
- * Sets the initial video mode.
+ * @brief Sets the initial video mode.
+ *
  * The initial video mode is read from the configuration file if existing.
  * Otherwise, the default video mode is chosen.
  */
@@ -166,15 +167,17 @@ void VideoManager::set_initial_video_mode(void) {
 }
 
 /**
- * Sets the default video mode.
+ * @brief Sets the default video mode.
  */
 void VideoManager::set_default_video_mode(void) {
   set_video_mode(WINDOWED_STRETCHED);
 }
 
 /**
- * Sets the video mode.
+ * @brief Sets the video mode.
+ *
  * The specified video mode must be supported.
+ *
  * @param mode the video mode
  */
 void VideoManager::set_video_mode(VideoMode mode) {
@@ -218,7 +221,7 @@ void VideoManager::set_video_mode(VideoMode mode) {
 }
 
 /**
- * Returns the current video mode.
+ * @brief Returns the current video mode.
  * @return the video mode
  */
 VideoManager::VideoMode VideoManager::get_video_mode(void) {
@@ -226,7 +229,7 @@ VideoManager::VideoMode VideoManager::get_video_mode(void) {
 }
 
 /**
- * Blits a surface on the screen with the current video mode.
+ * @brief Blits a surface on the screen with the current video mode.
  * @param src_surface the source surface
  */
 void VideoManager::display(Surface *src_surface) {
@@ -263,7 +266,7 @@ void VideoManager::display(Surface *src_surface) {
 }
 
 /**
- * Blits a 320*240 surface on a 320*240 surface.
+ * @brief Blits a 320*240 surface on a 320*240 surface.
  * @param src_surface the source surface
  * @param dst_surface the destination surface
  */
@@ -272,7 +275,7 @@ void VideoManager::blit(Surface *src_surface, Surface *dst_surface) {
 }
 
 /**
- * Blits a 320*240 surface on a 640*480 or 640*400 surface, centering the image.
+ * @brief Blits a 320*240 surface on a 640*480 or 640*400 surface, centering the image.
  * @param src_surface the source surface
  * @param dst_surface the destination surface
  */
@@ -281,8 +284,9 @@ void VideoManager::blit_centered(Surface *src_surface, Surface *dst_surface) {
 }
 
 /**
- * Blits a 320*240 surface on a 640*480, 768*480 or 720*480 surface, stretching the image
- * and adding two black side bars if the destination surface is wider than 640.
+ * @brief Blits a 320*240 surface on a 640*480, 768*480 or 720*480 surface, stretching the image.
+ *
+ * Two black side bars are added if the destination surface is wider than 640.
  * @param src_surface the source surface
  * @param dst_surface the destination surface
  */
@@ -314,9 +318,11 @@ void VideoManager::blit_stretched(Surface *src_surface, Surface *dst_surface) {
 }
 
 /**
- * Blits a 320*240 surface on a 640*480, 768*480 or 720*480 surface, scaling the image with
- * an implementation of the Scale2x algorithm.
+ * @brief Blits a 320*240 surface on a 640*480, 768*480 or 720*480 surface.
+ *
+ * The image is scaled with an implementation of the Scale2x algorithm.
  * Two black side bars if the destination surface is wider than 640.
+ *
  * @param src_surface the source surface
  * @param dst_surface the destination surface
  */

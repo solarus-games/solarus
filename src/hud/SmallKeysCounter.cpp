@@ -20,7 +20,7 @@
 #include "lowlevel/Surface.h"
 
 /**
- * Constructor.
+ * @brief Constructor.
  * @param game the current game
  * @param x x coordinate of the top-left corner of the key icon on the destination surface
  * @param y y coordinate of the top-left corner of the key icon on the destination surface
@@ -35,7 +35,7 @@ SmallKeysCounter::SmallKeysCounter(Game *game, int x, int y):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 SmallKeysCounter::~SmallKeysCounter(void) {
 
@@ -46,7 +46,7 @@ SmallKeysCounter::~SmallKeysCounter(void) {
 }
 
 /**
- * Updates this HUD element.
+ * @brief Updates this HUD element.
  */
 void SmallKeysCounter::update(void) {
 
@@ -84,7 +84,7 @@ void SmallKeysCounter::update(void) {
 }
 
 /**
- * Redraws the icon and the counter on the surface.
+ * @brief Redraws the icon and the counter on the surface.
  */
 void SmallKeysCounter::rebuild(void) {
 

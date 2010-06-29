@@ -18,8 +18,10 @@
 #include "lowlevel/FileTools.h"
 
 /**
- * Creates an object to read or write an ini file.
+ * @brief Creates an object to read or write an ini file.
+ * 
  * Opens the specified file.
+ *
  * @param file_name name of the file to write, relative to the data location
  * @param mode mode to open the file
  */
@@ -42,14 +44,14 @@ IniFile::IniFile(const std::string &file_name, Mode mode):
 }
 
 /**
- * Destroys the object.
+ * @brief Destroys the object.
  */
 IniFile::~IniFile(void) {
 
 }
 
 /**
- * Saves the ini file into the file specified with the constructor.
+ * @brief Saves the ini data into the file specified with the constructor.
  */
 void IniFile::save(void) {
 
@@ -64,7 +66,7 @@ void IniFile::save(void) {
 }
 
 /**
- * Returns whether the specified group exists.
+ * @brief Returns whether the specified group exists.
  * @param group name of the group to check
  * @return true if this group exists
  */
@@ -73,9 +75,11 @@ bool IniFile::has_group(const std::string &group) {
 }
 
 /**
- * Sets the current group, that will be used for the next operations.
+ * @brief Sets the current group, that will be used for the next operations.
+ *
  * If the file mode is WRITE and the group does not exist, it is created.
  * If the file mode is READ and the group does not exist, a fatal error is raised.
+ *
  * @param group name of the group to set (an empty name means the global group)
  */
 void IniFile::set_group(const std::string &group) {
@@ -99,8 +103,10 @@ void IniFile::set_group(const std::string &group) {
 }
 
 /**
- * Returns the name of the current group.
+ * @brief Returns the name of the current group.
+ *
  * This name was typically set by set_group() or next_group().
+ *
  * @return name of the current group (an empty name means the global group)
  */
 const std::string & IniFile::get_group(void) {
@@ -109,7 +115,7 @@ const std::string & IniFile::get_group(void) {
 }
 
 /**
- * Returns the integer value corresponding to the specified key in the current group.
+ * @brief Returns the integer value corresponding to the specified key in the current group.
  * @param key the key
  * @param default_value a default value to return if the key does not exist
  * @return the value of this key
@@ -121,7 +127,7 @@ int IniFile::get_integer_value(const std::string &key, int default_value) {
 }
 
 /**
- * Returns the boolean value corresponding to the specified key in the current group.
+ * @brief Returns the boolean value corresponding to the specified key in the current group.
  * @param key the key
  * @param default_value a default value to return if the key does not exist
  * @return the value of this key
@@ -132,7 +138,7 @@ bool IniFile::get_boolean_value(const std::string &key, bool default_value) {
 }
 
 /**
- * Returns the string value corresponding to the specified key in the current group.
+ * @brief Returns the string value corresponding to the specified key in the current group.
  * @param key the key
  * @param default_value a default value to return if the key does not exist
  * @return the value of this key
@@ -144,8 +150,10 @@ const std::string IniFile::get_string_value(const std::string &key, const std::s
 }
 
 /**
- * Returns the string value corresponding to the specified key in the current group.
+ * @brief Returns the string value corresponding to the specified key in the current group.
+ *
  * If the string is not defined, the application stops on an error message.
+ *
  * @param key the key
  * @return the value of this key
  */
@@ -160,7 +168,7 @@ const std::string IniFile::get_string_value(const std::string &key) {
 
 
 /**
- * Sets an integer value in the current group.
+ * @brief Sets an integer value in the current group.
  * @param key the key
  * @param value the new value to set for that key
  */
@@ -170,7 +178,7 @@ void IniFile::set_integer_value(const std::string &key, int value) {
 }
 
 /**
- * Sets a boolean value in the current group.
+ * @brief Sets a boolean value in the current group.
  * @param key the key
  * @param value the new value to set for that key
  */
@@ -180,7 +188,7 @@ void IniFile::set_boolean_value(const std::string &key, bool value) {
 }
 
 /**
- * Sets a string value in the current group.
+ * @brief Sets a string value in the current group.
  * @param key the key
  * @param value the new value to set for that key
  */
@@ -190,7 +198,8 @@ void IniFile::set_string_value(const std::string &key, const std::string &value)
 }
 
 /**
- * Starts an iteration over the groups of this ini file.
+ * @brief Starts an iteration over the groups of this ini file.
+ *
  * While has_more_groups() returns true, call next_group() to get the next element of your iteration.
  */
 void IniFile::start_group_iteration(void) {
@@ -200,7 +209,7 @@ void IniFile::start_group_iteration(void) {
 }
 
 /**
- * During a group iteration, returns whether there are at least one group remaining.
+ * @brief During a group iteration, returns whether there are at least one group remaining.
  * @return true if the group iteration can continue (i.e. you can call next_group())
  */
 bool IniFile::has_more_groups(void) {
@@ -215,7 +224,8 @@ bool IniFile::has_more_groups(void) {
 }
 
 /**
- * Selects the next group during a group iteration.
+ * @brief Selects the next group during a group iteration.
+ *
  * This function should be called only when has_more_groups() returns true.
  * You don't have to call set_group() to select this group, it is already done by this function.
  * To know the group name, call get_group().

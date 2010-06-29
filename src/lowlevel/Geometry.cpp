@@ -19,32 +19,32 @@
 #include <cmath>
 
 /**
- * The pi constant.
+ * @brief The pi constant.
  */
 const double Geometry::PI = 3.14159265358979323846;
 
 /**
- * 2 * pi.
+ * @brief 2 * pi.
  */
 const double Geometry::TWO_PI = 2.0 * PI;
 
 /**
- * pi / 2.
+ * @brief pi / 2.
  */
 const double Geometry::PI_OVER_2 = PI / 2.0;
 
 /**
- * 3 * pi / 2.
+ * @brief 3 * pi / 2.
  */
 const double Geometry::THREE_PI_OVER_2 = 3 * PI_OVER_2;
 
 /**
- * Square root of 2.
+ * @brief Square root of 2.
  */
 const double Geometry::SQRT_2 = 1.41421356237309504880;
 
 /**
- * Converts an angles in radians to an angle in degrees.
+ * @brief Converts an angle in radians into an angle in degrees.
  * @param radians angle in radians
  * @return the degrees value
  */
@@ -53,7 +53,7 @@ const int Geometry::radians_to_degrees(double radians) {
 }
 
 /**
- * Converts an angles in degrees to an angle in radians.
+ * @brief Converts an angle in degrees into an angle in radians.
  * @param degrees angle in degrees
  * @return the radians value
  */
@@ -62,7 +62,7 @@ const double Geometry::degrees_to_radians(int degrees) {
 }
 
 /**
- * Returns the distance between two points.
+ * @brief Returns the distance between two points.
  * @param x1 x coordinate of the first point
  * @param y1 y coordinate of the first point
  * @param x2 x coordinate of the second point
@@ -77,7 +77,7 @@ double Geometry::get_distance(int x1, int y1, int x2, int y2) {
 }
 
 /**
- * Returns the angle of the vector formed by two points.
+ * @brief Returns the angle of the vector formed by two points.
  * @param x1 x coordinate of the first point
  * @param y1 y coordinate of the first point
  * @param x2 x coordinate of the second point
@@ -106,7 +106,7 @@ double Geometry::get_angle(int x1, int y1, int x2, int y2) {
 }
 
 /**
- * Returns the cartesian coordinates of a vector that starts from the origin, given its angle and distance.
+ * @brief Returns the cartesian coordinates of a vector that starts from the origin, given its angle and distance.
  * @param angle angle of the vector in radians
  * @param distance length of the vector in pixels
  * @return the coordinates of the second point 
@@ -117,7 +117,7 @@ const Rectangle Geometry::get_xy(double angle, int distance) {
 }
 
 /**
- * Returns the cartesian coordinates of a vector, given its initial point, angle and distance.
+ * @brief Returns the cartesian coordinates of a vector, given its initial point, angle and distance.
  * @param xy1 coordinates of the first point
  * @param angle angle of the vector in radians
  * @param distance length of the vector in pixels

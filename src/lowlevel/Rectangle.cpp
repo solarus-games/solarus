@@ -17,7 +17,7 @@
 #include "lowlevel/Rectangle.h"
 
 /**
- * Creates a rectangle, specifying its properties.
+ * @brief Creates a rectangle, specifying its properties.
  * @param x x coordinate of the top-left corner
  * @param y y coordinate of the top-left corner
  * @param width the rectangle's width
@@ -31,7 +31,7 @@ Rectangle::Rectangle(int x, int y, int width, int height) {
 }
 
 /**
- * Copy constructor.
+ * @brief Copy constructor.
  * @param other the rectangle to copy
  */
 Rectangle::Rectangle(const Rectangle &other):
@@ -40,14 +40,14 @@ Rectangle::Rectangle(const Rectangle &other):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 Rectangle::~Rectangle(void) {
 
 }
 
 /**
- * Returns whether the specified point is inside this rectangle.
+ * @brief Returns whether the specified point is inside this rectangle.
  * @param x x coordinate of the point
  * @param y y coordinate of the point
  * @return true if the point is in this rectangle
@@ -57,7 +57,7 @@ bool Rectangle::contains(int x, int y) const {
 }
 
 /**
- * Returns whether the specified rectangle is inside this rectangle.
+ * @brief Returns whether the specified rectangle is inside this rectangle.
  * @param other another rectangle
  * @return true if the specified rectangle is inside this rectangle
  */
@@ -68,7 +68,7 @@ bool Rectangle::contains(const Rectangle &other) const {
 
 
 /**
- * Returns whether or not another rectangle overlaps this one.
+ * @brief Returns whether or not another rectangle overlaps this one.
  * @param other another rectangle
  * @return true if the two rectangles overlap
  */
@@ -92,7 +92,7 @@ bool Rectangle::overlaps(const Rectangle &other) const {
 }
 
 /**
- * Returns the center point of this rectangle
+ * @brief Returns the center point of this rectangle
  * @return the center point (represented as a zero-sized rectangle)
  */
 Rectangle Rectangle::get_center(void) {
@@ -100,7 +100,7 @@ Rectangle Rectangle::get_center(void) {
 }
 
 /**
- * Prints a rectangle to an output stream.
+ * @brief Prints a rectangle to an output stream.
  * @param stream the stream
  * @param rectangle a rectangle
  */
@@ -111,9 +111,11 @@ std::ostream & operator <<(std::ostream &stream, const Rectangle &rectangle) {
 }
 
 /**
- * Returns the SDL rectangle encapsulated by this object.
+ * @brief Returns the SDL rectangle encapsulated by this object.
+ *
  * This function must be used only by other low-level classes (typically Surface)
  * as it is library dependent.
+ *
  * @return the internal rectangle encapsulated
  */
 SDL_Rect * Rectangle::get_internal_rect(void) {

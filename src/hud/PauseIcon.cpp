@@ -20,7 +20,7 @@
 #include "lowlevel/Surface.h"
 
 /**
- * Constructor.
+ * @brief Constructor.
  * @param game the current game
  * @param x x coordinate of the top-left corner of the icon on the destination surface
  * @param y y coordinate of the top-left corner of the icon on the destination surface
@@ -40,7 +40,7 @@ PauseIcon::PauseIcon(Game *game, int x, int y):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 PauseIcon::~PauseIcon(void) {
   delete sprite_pause_icon;
@@ -48,8 +48,9 @@ PauseIcon::~PauseIcon(void) {
 }
 
 /**
- * This function is called repeatedly, it checks whether
- * the icon should change.
+ * @brief This function is called repeatedly.
+ *
+ * It checks whether the icon should change.
  */
 void PauseIcon::update(void) {
 
@@ -95,7 +96,7 @@ void PauseIcon::update(void) {
 }
 
 /**
- * Redraws the icon on the surface.
+ * @brief Redraws the icon on the surface.
  */
 void PauseIcon::rebuild(void) {
 

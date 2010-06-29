@@ -29,21 +29,21 @@
 #include <iomanip>
 
 /**
- * Creates a map loader.
+ * @brief Creates a map loader.
  */
 MapLoader::MapLoader(void) {
 
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 MapLoader::~MapLoader(void) {
 
 }
 
 /**
- * Loads a map into the game.
+ * @brief Loads a map into the game.
  * @param game the game
  * @param map the map to load
  */

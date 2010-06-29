@@ -22,7 +22,7 @@
 #include "lowlevel/Surface.h"
 
 /**
- * Position of the 3 rupee icons in the image.
+ * @brief Position of the 3 rupee icons in the source image.
  */
 const Rectangle RupeesCounter::rupee_icon_positions[3] = {
   Rectangle( 0, 0, 12, 12),
@@ -31,7 +31,7 @@ const Rectangle RupeesCounter::rupee_icon_positions[3] = {
 };
 
 /**
- * Constructor.
+ * @brief Constructor.
  * @param game the current game
  * @param x x coordinate of the top-left corner of the rupees on the destination surface
  * @param y y coordinate of the top-left corner of the rupees on the destination surface
@@ -61,7 +61,7 @@ RupeesCounter::RupeesCounter(Game *game, int x, int y):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 RupeesCounter::~RupeesCounter(void) {
   delete img_rupee_icon;
@@ -69,7 +69,7 @@ RupeesCounter::~RupeesCounter(void) {
 }
 
 /**
- * Updates the number of rupees displayed and the color of the icon.
+ * @brief Updates the number of rupees displayed and the color of the icon.
  */
 void RupeesCounter::update(void) {
 
@@ -131,7 +131,7 @@ void RupeesCounter::update(void) {
 }
 
 /**
- * Redraws the icon and the counter on the surface.
+ * @brief Redraws the icon and the counter on the surface.
  */
 void RupeesCounter::rebuild(void) {
 

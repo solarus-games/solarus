@@ -25,10 +25,12 @@ std::string FileTools::default_language_code;
 std::map<std::string, std::string> FileTools::languages;
 
 /**
- * Initializes the file tools.
+ * @brief Initializes the file tools.
+ *
  * The command-line flags recognized are:
  * -datapath=some/path/to/data specifies the data path to use (overides the one given at compilation time if any)
  * -language=lg sets the language to use, where lg is the code of a language supported by the game
+ *
  * @param argc number of command-line arguments
  * @param argv command line arguments
  */
@@ -95,7 +97,7 @@ void FileTools::initialize(int argc, char **argv) {
 }
 
 /**
- * Quits the file tools.
+ * @brief Quits the file tools.
  */
 void FileTools::quit(void) {
   StringResource::quit();
@@ -103,7 +105,7 @@ void FileTools::quit(void) {
 }
 
 /**
- * Loads the list of available languages.
+ * @brief Loads the list of available languages.
  * @param arg_language the language specified as command-line argument (or an empty string if not specified)
  */
 void FileTools::initialize_languages(const std::string &arg_language) {
@@ -136,9 +138,11 @@ void FileTools::initialize_languages(const std::string &arg_language) {
 }
 
 /**
- * Sets the current language.
+ * @brief Sets the current language.
+ *
  * The language-specific data will be loaded from the directory of this language.
  * This function must be called before the first language-specific file is loaded.
+ *
  * @param language_code code of the language
  */
 void FileTools::set_language(const std::string &language_code) {
@@ -152,8 +156,10 @@ void FileTools::set_language(const std::string &language_code) {
 }
 
 /**
- * Returns the current language.
+ * @brief Returns the current language.
+ *
  * The language-specific data are be loaded from the directory of this language.
+ *
  * @return code of the language, or an empty string if no language is set
  */
 const std::string & FileTools::get_language(void) {
@@ -161,10 +167,12 @@ const std::string & FileTools::get_language(void) {
 }
 
 /**
- * Returns the default language.
+ * @brief Returns the default language.
+ *
  * This default language is indicated in the languages file (languages/languages.dat).
  * It can be used to pick a language without user interaction, but you still have
  * to call set_language() otherwise no initial language is set.
+ *
  * @return code of the default language, or an empty string if the languages file
  * does not specify a default language
  */
@@ -174,7 +182,7 @@ const std::string & FileTools::get_default_language(void) {
 
 
 /**
- * Returns the list of available languages.
+ * @brief Returns the list of available languages.
  * @return the available languages (mapping of language codes to language names)
  */
 const std::map<std::string, std::string> & FileTools::get_languages(void) {
@@ -182,7 +190,7 @@ const std::map<std::string, std::string> & FileTools::get_languages(void) {
 }
 
 /**
- * Returns whether a file exists in the search path.
+ * @brief Returns whether a file exists in the search path.
  * @param file_name a file name relative to a directory from the search path
  * @return true if this file exists
  */
@@ -191,10 +199,12 @@ bool FileTools::data_file_exists(const std::string &file_name) {
 }
 
 /**
- * Opens in reading a text file in the Solarus data directory.
+ * @brief Opens in reading a text file in the Solarus data directory.
+ *
  * The file name is relative to the Solarus data directory.
  * The program is stopped with an error message if the file cannot be open.
  * Don't forget to close the stream with data_file_close().
+ *
  * @param file_name name of the file to open
  * @param language_specific true if the file is specific to the current language
  * @return the input stream
@@ -212,7 +222,7 @@ std::istream & FileTools::data_file_open(const std::string &file_name, bool lang
 }
 
 /**
- * Closes a text file previously open with data_file_open().
+ * @brief Closes a text file previously open with data_file_open().
  * @param data_file the input stream to close
  */
 void FileTools::data_file_close(const std::istream &data_file) {
@@ -220,7 +230,7 @@ void FileTools::data_file_close(const std::istream &data_file) {
 }
 
 /**
- * Opens a data file an loads its content into a buffer.
+ * @brief Opens a data file an loads its content into a buffer.
  * @param file_name name of the file to open
  * @param buffer the buffer to load
  * @param size number of bytes to read
@@ -258,7 +268,7 @@ void FileTools::data_file_open_buffer(const std::string &file_name, char **buffe
 }
 
 /**
- * Saves a buffer into a data file.
+ * @brief Saves a buffer into a data file.
  * @param file_name name of the file to write
  * @param buffer the buffer to save
  * @param size number of bytes to write
@@ -280,7 +290,7 @@ void FileTools::data_file_save_buffer(const std::string &file_name, const char *
 }
 
 /**
- * Closes a data buffer previously open with data_file_open_buffer().
+ * @brief Closes a data buffer previously open with data_file_open_buffer().
  * @param buffer the buffer to close
  */
 void FileTools::data_file_close_buffer(char *buffer) {
@@ -288,7 +298,7 @@ void FileTools::data_file_close_buffer(char *buffer) {
 }
  
 /**
- * Removes a file from the write directory.
+ * @brief Removes a file from the write directory.
  * @param file_name name of the file to delete
  */
 void FileTools::data_file_delete(const std::string &file_name) {
@@ -296,8 +306,10 @@ void FileTools::data_file_delete(const std::string &file_name) {
 }
 
 /**
- * Reads an integer value from an input stream.
+ * @brief Reads an integer value from an input stream.
+ *
  * Stops the program on an error message if the read fails.
+ *
  * @param is an input stream
  * @param value the value read
  */
@@ -308,8 +320,10 @@ void FileTools::read(std::istream &is, int &value) {
 }
 
 /**
- * Reads an integer value from an input stream.
+ * @brief Reads an integer value from an input stream.
+ *
  * Stops the program on an error message if the read fails.
+ *
  * @param is an input stream
  * @param value the value read
  */
@@ -323,8 +337,10 @@ void FileTools::read(std::istream &is, uint32_t &value) {
 }
 
 /**
- * Reads a string value from an input stream.
+ * @brief Reads a string value from an input stream.
+ *
  * Stops the program on an error message if the read fails.
+ *
  * @param is an input stream
  * @param value the value read
  */

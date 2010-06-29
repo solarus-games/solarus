@@ -30,7 +30,7 @@ float Sound::volume = 1.0;
 std::list<Sound*> Sound::current_sounds;
 
 /**
- * Creates a new Ogg Vorbis sound.
+ * @brief Creates a new Ogg Vorbis sound.
  * @param sound_id id of the sound: name of a .ogg file in the sounds subdirectory,
  * without the extension (.ogg is added automatically)
  */
@@ -54,7 +54,7 @@ Sound::Sound(const SoundId &sound_id):
 }
 
 /**
- * Destroys the sound.
+ * @brief Destroys the sound.
  */
 Sound::~Sound(void) {
 
@@ -74,10 +74,12 @@ Sound::~Sound(void) {
 }
 
 /**
- * Initializes the audio (music and sound) system.
+ * @brief Initializes the audio (music and sound) system.
+ *
  * This method should be called when the application starts.
  * If the argument -disable-audio is provided, this function has no effect and
  * there will be no sound.
+ *
  * @param argc command-line arguments number
  * @param argv command-line arguments
  */
@@ -141,7 +143,8 @@ void Sound::initialize(int argc, char **argv) {
 }
 
 /**
- * Closes the audio (music and sound) system.
+ * @brief Closes the audio (music and sound) system.
+ *
  * This method should be called when exiting the application.
  */
 void Sound::quit(void) {
@@ -174,7 +177,7 @@ void Sound::quit(void) {
 }
 
 /**
- * Returns whether the audio (music and sound) system is initialized.
+ * @brief Returns whether the audio (music and sound) system is initialized.
  * @return true if the audio (music and sound) system is initilialized
  */
 bool Sound::is_initialized(void) {
@@ -182,7 +185,7 @@ bool Sound::is_initialized(void) {
 }
 
 /**
- * Returns the current volume of sound effects.
+ * @brief Returns the current volume of sound effects.
  * @return the volume (0 to 100)
  */
 int Sound::get_volume(void) {
@@ -191,7 +194,7 @@ int Sound::get_volume(void) {
 }
 
 /**
- * Sets the volume of sound effects.
+ * @brief Sets the volume of sound effects.
  * @param volume the new volume (0 to 100)
  */
 void Sound::set_volume(int volume) {
@@ -205,7 +208,8 @@ void Sound::set_volume(int volume) {
 }
 
 /**
- * Updates the audio (music and sound) system.
+ * @brief Updates the audio (music and sound) system.
+ *
  * This function is called repeatedly by the game.
  */
 void Sound::update(void) {
@@ -231,7 +235,7 @@ void Sound::update(void) {
 }
 
 /**
- * Updates this sound when it is playing.
+ * @brief Updates this sound when it is playing.
  * @return true if the sound is still playing, false if it is finished.
  */
 bool Sound::update_playing() {
@@ -251,7 +255,7 @@ bool Sound::update_playing() {
 }
 
 /**
- * Plays the sound.
+ * @brief Plays the sound.
  * @return true if the sound was loaded successfully, false otherwise
  */
 bool Sound::play(void) {
@@ -290,7 +294,7 @@ bool Sound::play(void) {
 }
 
 /**
- * Loads the specified sound file and decodes its content into an OpenAL buffer.
+ * @brief Loads the specified sound file and decodes its content into an OpenAL buffer.
  * @param file_name name of the file to open
  * @return the buffer created, or AL_NONE if the sound could not be loaded
  */

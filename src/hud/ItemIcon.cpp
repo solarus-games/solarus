@@ -23,7 +23,7 @@
 #include "lowlevel/Surface.h"
 
 /**
- * Name of the image file for each item slot.
+ * @brief Name of the image file for each item slot.
  */
 const std::string ItemIcon::background_file_names[2] = {
   "hud/item_x_icon.png",
@@ -31,7 +31,7 @@ const std::string ItemIcon::background_file_names[2] = {
 };
 
 /**
- * Creates an item icon.
+ * @brief Creates an item icon.
  * @param game the current game
  * @param slot the slot of this icon (0 for the X icon, 1 for the Y icon)
  * @param x x position of the icon on the screen
@@ -54,7 +54,7 @@ ItemIcon::ItemIcon(Game *game, int slot, int x, int y):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 ItemIcon::~ItemIcon(void) {
   delete background_img;
@@ -63,7 +63,7 @@ ItemIcon::~ItemIcon(void) {
 }
 
 /**
- * Updates the item image displayed and the counter's value.
+ * @brief Updates the item image displayed and the counter's value.
  */
 void ItemIcon::update(void) {
 
@@ -125,7 +125,7 @@ void ItemIcon::update(void) {
 }
 
 /**
- * Redraws the icon on the surface.
+ * @brief Redraws the icon on the surface.
  */
 void ItemIcon::rebuild(void) {
 

@@ -20,7 +20,7 @@
 #include "lowlevel/Surface.h"
 
 /**
- * Constructor.
+ * @brief Constructor.
  * @param game the current game
  * @param x x coordinate of the top-left corner of the icon on the destination surface
  * @param y y coordinate of the top-left corner of the icon on the destination surface
@@ -40,7 +40,7 @@ ActionIcon::ActionIcon(Game *game, int x, int y):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 ActionIcon::~ActionIcon(void) {
   delete sprite_action_icon;
@@ -48,9 +48,11 @@ ActionIcon::~ActionIcon(void) {
 }
 
 /**
- * Returns whether the action icon is visible.
+ * @brief Returns whether the action icon is visible.
+ *
  * Unlike the other icons, the action icon is hidden when
  * the key effect is KeysEffect::ACTION_KEY_NONE.
+ *
  * @return true if the action key effect is not KeysEffect::ACTION_KEY_NONE
  */
 bool ActionIcon::is_visible(void) {
@@ -58,8 +60,9 @@ bool ActionIcon::is_visible(void) {
 }
 
 /**
- * This function is called repeatedly, it checks whether
- * the icon should change.
+ * @brief This function is called repeatedly.
+ *
+ * It checks whether the icon should change.
  */
 void ActionIcon::update(void) {
 
@@ -120,7 +123,7 @@ void ActionIcon::update(void) {
 }
 
 /**
- * Redraws the icon on the surface.
+ * @brief Redraws the icon on the surface.
  */
 void ActionIcon::rebuild(void) {
   

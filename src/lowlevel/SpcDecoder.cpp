@@ -17,7 +17,7 @@
 #include "lowlevel/SpcDecoder.h"
 
 /**
- * Creates an SPC decoder.
+ * @brief Creates an SPC decoder.
  */
 SpcDecoder::SpcDecoder(void) {
 
@@ -27,7 +27,7 @@ SpcDecoder::SpcDecoder(void) {
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 SpcDecoder::~SpcDecoder(void) {
 
@@ -37,7 +37,7 @@ SpcDecoder::~SpcDecoder(void) {
 }
 
 /**
- * Loads an SPC file from the memory.
+ * @brief Loads an SPC file from the memory.
  * @param sound_data the memory area to read
  * @param sound_size size of the memory area in bytes
  */
@@ -51,7 +51,7 @@ void SpcDecoder::load(int16_t *sound_data, size_t sound_size) {
 
 
 /**
- * Decodes a chunk of the previously loaded SPC data into PCM data.
+ * @brief Decodes a chunk of the previously loaded SPC data into PCM data.
  * @param decoded_data pointer to where you want the decoded data to be wrote
  * @param nb_samples number of samples to write
  */

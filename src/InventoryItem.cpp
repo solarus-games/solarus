@@ -31,7 +31,7 @@
 #include "lowlevel/System.h"
 
 /**
- * Creates a new inventory item.
+ * @brief Creates a new inventory item.
  * @param item_id id of the item to create
  */
 InventoryItem::InventoryItem(InventoryItemId item_id):
@@ -40,14 +40,14 @@ InventoryItem::InventoryItem(InventoryItemId item_id):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 InventoryItem::~InventoryItem(void) {
 
 }
 
 /**
- * Returns whether the specified item can be assigned to icon X or V.
+ * @brief Returns whether the specified item can be assigned to icon X or V.
  * @param item_id id of a item
  * @return true if this item item can be assigned to an icon
  */
@@ -56,8 +56,10 @@ bool InventoryItem::can_be_assigned(InventoryItemId item_id) {
 }
 
 /**
- * Returns whether a counter is associated to the specified item.
+ * @brief Returns whether a counter is associated to the specified item.
+ *
  * This is equivalent to get_counter_index(item_id) != -1.
+ *
  * @param item_id id of an item
  * @return true if this item has a counter
  */
@@ -66,8 +68,11 @@ bool InventoryItem::has_counter(InventoryItemId item_id) {
 }
 
 /**
+ * @brief Returns the index of the savegame variable where the counter of this item is stored.
+ *
  * If the specified item has a counter, returns the index of the savegame
  * variable indicating the counter's value. Otherwise, returns -1.
+ *
  * @param item_id an inventory item (with or without counter)
  * @return the index of the savegame variable indicating the counter's value,
  * or -1 if there is no counter on this item
@@ -111,7 +116,7 @@ int InventoryItem::get_counter_index(InventoryItemId item_id) {
 }
 
 /**
- * Returns the id of this inventory item.
+ * @brief Returns the id of this inventory item.
  * @return the id of this inventory item
  */
 InventoryItemId InventoryItem::get_id(void) {
@@ -119,7 +124,7 @@ InventoryItemId InventoryItem::get_id(void) {
 }
 
 /**
- * Returns the variant of this inventory item that the player has.
+ * @brief Returns the variant of this inventory item that the player has.
  * @return the variant
  */
 int InventoryItem::get_variant(void) {
@@ -127,7 +132,7 @@ int InventoryItem::get_variant(void) {
 }
 
 /**
- * Starts using this item.
+ * @brief Starts using this item.
  * @param game the game
  */
 void InventoryItem::start(Game *game) {
@@ -202,7 +207,7 @@ void InventoryItem::start(Game *game) {
 }
 
 /**
- * Updates this item when it is being used.
+ * @brief Updates this item when it is being used.
  */
 void InventoryItem::update(void) {
 
@@ -281,7 +286,7 @@ void InventoryItem::update(void) {
 }
 
 /**
- * Returns whether this item has finished to be used.
+ * @brief Returns whether this item has finished to be used.
  * @return true if this item has finished to be used
  */
 bool InventoryItem::is_finished(void) {
@@ -289,7 +294,7 @@ bool InventoryItem::is_finished(void) {
 }
 
 /**
- * Returns whether the specified item id corresponds to a bottle.
+ * @brief Returns whether the specified item id corresponds to a bottle.
  * @param item_id id of an inventory item
  * @return true if it is a bottle
  */
@@ -302,7 +307,7 @@ bool InventoryItem::is_bottle(InventoryItemId item_id) {
 }
 
 /**
- * Returns whether this item is a bottle.
+ * @brief Returns whether this item is a bottle.
  * @return true if this item is a bottle
  */
 bool InventoryItem::is_bottle(void) {
@@ -310,7 +315,7 @@ bool InventoryItem::is_bottle(void) {
 }
 
 /**
- * Starts using this item when it is a bottle.
+ * @brief Starts using this item when it is a bottle.
  */
 void InventoryItem::start_bottle(void) {
 
@@ -364,7 +369,7 @@ void InventoryItem::start_bottle(void) {
 }
 
 /**
- * Updates this item when it is a bottle.
+ * @brief Updates this item when it is a bottle.
  */
 void InventoryItem::update_bottle(void) {
 
@@ -411,8 +416,10 @@ void InventoryItem::update_bottle(void) {
 }
 
 /**
- * Sets the current map.
+ * @brief Sets the current map.
+ *
  * This function is called when the map is changed while the player is still using this item.
+ *
  * @param map the map
  */
 void InventoryItem::set_map(Map *map) {

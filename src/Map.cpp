@@ -34,7 +34,7 @@
 MapLoader Map::map_loader;
 
 /**
- * Creates a map.
+ * @brief Creates a map.
  * @param id id of the map, used to determine the description file
  * and the script file of the map
  */
@@ -44,7 +44,7 @@ Map::Map(MapId id):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 Map::~Map(void) {
 
@@ -54,7 +54,7 @@ Map::~Map(void) {
 }
 
 /**
- * Returns the id of the map.
+ * @brief Returns the id of the map.
  * @return the map id
  */
 MapId Map::get_id(void) {
@@ -62,7 +62,7 @@ MapId Map::get_id(void) {
 }
 
 /**
- * Returns the tileset associated to this map.
+ * @brief Returns the tileset associated to this map.
  * @return the tileset
  */
 Tileset * Map::get_tileset(void) {
@@ -70,7 +70,7 @@ Tileset * Map::get_tileset(void) {
 }
 
 /**
- * Returns this map's script.
+ * @brief Returns this map's script.
  * @return the script
  */
 MapScript * Map::get_script(void) {
@@ -78,7 +78,7 @@ MapScript * Map::get_script(void) {
 }
 
 /**
- * Returns the world where this map is.
+ * @brief Returns the world where this map is.
  * @return 0 if this map is outside, -1 if it is inside, 1 to 20 if it is in a dungeon
  */
 int Map::get_world_number(void) {
@@ -86,7 +86,7 @@ int Map::get_world_number(void) {
 }
 
 /**
- * Returns whether this map belongs to a dungeon.
+ * @brief Returns whether this map belongs to a dungeon.
  * @return true if this map is in a dungeon
  */
 bool Map::is_in_dungeon(void) {
@@ -94,7 +94,7 @@ bool Map::is_in_dungeon(void) {
 }
 
 /**
- * Returns whether this map belongs to the outside world.
+ * @brief Returns whether this map belongs to the outside world.
  * @return true if this map is in the oustide world
  */
 bool Map::is_in_outside_world(void) {
@@ -102,11 +102,13 @@ bool Map::is_in_outside_world(void) {
 }
 
 /**
- * Returns the floor where this map is.
+ * @brief Returns the floor where this map is.
+ *
  * The value returned can be:
  * - a floor number between -16 and 15,
  * - -100 to indicate that there is no floor,
- * - -99 to indicate an unknown floor (the '?' image will be displayed)
+ * - -99 to indicate an unknown floor (the '?' image will be displayed).
+ *
  * @return the floor
  */
 int Map::get_floor(void) {
@@ -114,8 +116,10 @@ int Map::get_floor(void) {
 }
 
 /**
- * Returns whether this map has a floor, i.e.
- * whether get_floor() does not return -100.
+ * @brief Returns whether this map has a floor.
+ *
+ * This function returns true if get_floor() is not -100.
+ *
  * @return true if there is a floor
  */
 bool Map::has_floor(void) {
@@ -123,21 +127,27 @@ bool Map::has_floor(void) {
 }
 
 /**
- * Returns the location of this map in its context.
+ * @brief Returns the location of this map in its context.
+ *
+ * The location returned is:
  * - in the outside world: location of the map's top-left corner
  *   relative to the whole world map
  * - in the inside world: location of the map relative to the whole world map
  * - in a dungeon: location of the map's top-left corner relative to the whole floor
  * The width and height fields correspond to the map size.
+ *
+ * @return the location of this map in its context.
  */
 const Rectangle & Map::get_location(void) {
   return location;
 }
 
 /**
- * Returns the index of the variable where the number of small keys for this
+ * @brief Returns the index of the variable where the number of small keys for this
  * map is saved.
+ *
  * -1 indicates that the small keys are not enabled on this map.
+ *
  * @return the small keys savegame variable
  */
 int Map::get_small_keys_variable(void) {
@@ -145,8 +155,10 @@ int Map::get_small_keys_variable(void) {
 }
 
 /**
- * Returns whether the small keys are enabled in this map, i.e. whether
- * get_small_keys_variable() does not return -1. 
+ * @brief Returns whether the small keys are enabled in this map.
+ *
+ * This function returns true if get_small_keys_variable() is not -1. 
+ *
  * @return true if the small keys are enabled in this map
  */
 bool Map::has_small_keys(void) {
@@ -154,7 +166,7 @@ bool Map::has_small_keys(void) {
 }
 
 /**
- * Returns the map width in pixels.
+ * @brief Returns the map width in pixels.
  * @return the map width
  */
 int Map::get_width(void) {
@@ -162,7 +174,7 @@ int Map::get_width(void) {
 }
 
 /**
- * Returns the map height in pixels.
+ * @brief Returns the map height in pixels.
  * @return the map height
  */
 int Map::get_height(void) {
@@ -170,8 +182,10 @@ int Map::get_height(void) {
 }
 
 /**
- * Returns the map width in number of 8*8 squares.
+ * @brief Returns the map width in number of 8*8 squares.
+ *
  * This is equivalent to get_width() / 8.
+ *
  * @return the map width in number of 8*8 squares
  */
 int Map::get_width8(void) {
@@ -179,8 +193,10 @@ int Map::get_width8(void) {
 }
 
 /**
- * Returns the map height in number of 8*8 squares.
+ * @brief Returns the map height in number of 8*8 squares.
+ *
  * This is equivalent to get_height() / 8.
+ *
  * @return the map height in number of 8*8 squares
  */
 int Map::get_height8(void) {
@@ -188,7 +204,7 @@ int Map::get_height8(void) {
 }
 
 /**
- * Returns whether the map is loaded.
+ * @brief Returns whether the map is loaded.
  * @return true if the map is loaded, false otherwise
  */
 bool Map::is_loaded(void) {
@@ -196,7 +212,8 @@ bool Map::is_loaded(void) {
 }
 
 /**
- * Unloads the map.
+ * @brief Unloads the map.
+ *
  * Destroys all entities in the map to free some memory. This function
  * can be called when the player exists the map. If the player is likely to
  * come back on the map, you can keep the map loaded.
@@ -212,8 +229,10 @@ void Map::unload(void) {
 }
 
 /**
- * Loads the map into a game.
+ * @brief Loads the map into a game.
+ *
  * Reads the description file of the map.
+ *
  * @param game the game
  */
 void Map::load(Game *game) {
@@ -228,7 +247,7 @@ void Map::load(Game *game) {
 }
 
 /**
- * Returns the game that loaded this map.
+ * @brief Returns the game that loaded this map.
  * @return the game, or NULL if the map is not started
  */
 Game * Map::get_game(void) {
@@ -236,14 +255,14 @@ Game * Map::get_game(void) {
 }
 
 /**
- * Returns the entities on the map.
+ * @brief Returns the entities on the map.
  */
 MapEntities * Map::get_entities(void) {
   return entities;
 }
 
 /**
- * Sets the current destination point of the map.
+ * @brief Sets the current destination point of the map.
  * @param destination_point_name name of the destination point you want to use,
  * or "_same" to keep the hero's coordinates, or "_side0", "_side1", "_side2"
  * or "_side3" to place the hero on a side of the map
@@ -253,7 +272,7 @@ void Map::set_destination_point(const std::string &destination_point_name) {
 }
 
 /**
- * Returns the destination point index specified by the last set_destination_point() call.
+ * @brief Returns the destination point index specified by the last call to set_destination_point().
  * @return the name of the destination point previously set
  */
 const std::string& Map::get_destination_point_name(void) {
@@ -261,7 +280,7 @@ const std::string& Map::get_destination_point_name(void) {
 }
 
 /**
- * When the destination point is a side of the map,
+ * @brief When the destination point is a side of the map,
  * returns this side.
  * @return the destination side (0 to 3), or -1 if the destination point is not a side
  */
@@ -275,7 +294,7 @@ int Map::get_destination_side(void) {
 }
 
 /**
- * Sets a message to show when the map is started.
+ * @brief Sets a message to show when the map is started.
  * @param welcome_message_id id of the message to show
  */
 void Map::set_welcome_message(MessageId welcome_message_id) {
@@ -283,10 +302,12 @@ void Map::set_welcome_message(MessageId welcome_message_id) {
 }
 
 /**
- * Returns the surface where the map is displayed.
+ * @brief Returns the surface where the map is displayed.
+ *
  * This surface is only the visible part of the map, so the
  * coordinates on this surface are relative to the screen,
  * not to the map.
+ *
  * @return the surface where the map is displayed
  */
 Surface * Map::get_visible_surface(void) {
@@ -294,7 +315,7 @@ Surface * Map::get_visible_surface(void) {
 }
 
 /**
- * Returns the position of the visible area, relative to the map
+ * @brief Returns the position of the visible area, relative to the map
  * top-left corner.
  * @return the position of the visible area
  */
@@ -303,7 +324,7 @@ const Rectangle & Map::get_camera_position(void) {
 }
 
 /**
- * Makes the camera move towards a point.
+ * @brief Makes the camera move towards a point.
  * @param x x coordinate of the target point
  * @param y y coordinate of the target point
  * @param speed speed of the movement
@@ -314,14 +335,14 @@ void Map::move_camera(int x, int y, int speed) {
 }
 
 /**
- * Makes the camera move back to the hero.
+ * @brief Makes the camera move back to the hero.
  */
 void Map::restore_camera(void) {
   camera->restore();
 }
 
 /**
- * Returns whether the camera is fixed on the hero.
+ * @brief Returns whether the camera is fixed on the hero.
  * @return true if the camera is following the hero
  */
 bool Map::is_camera_fixed_on_hero(void) {
@@ -329,8 +350,10 @@ bool Map::is_camera_fixed_on_hero(void) {
 }
 
 /**
- * Sets a subarea of the map where the next drawings will be restricted to.
+ * @brief Sets a subarea of the map where the next drawings will be restricted to.
+ *
  * A zero-sized rectangle means that drawings are not restricted to a subarea of the map.
+ *
  * @param clipping_rectangle a subarea of the map to restrict the display to
  */
 void Map::set_clipping_rectangle(const Rectangle &clipping_rectangle) {
@@ -344,9 +367,11 @@ void Map::set_clipping_rectangle(const Rectangle &clipping_rectangle) {
 }
 
 /**
- * Suspends or resumes the movement and animations of the entities.
+ * @brief Suspends or resumes the movement and animations of the entities.
+ *
  * This function is called when the game is being suspended
  * or resumed.
+ *
  * @param suspended true to suspend the movement and the animations,
  * false to resume them
  */
@@ -358,7 +383,7 @@ void Map::set_suspended(bool suspended) {
 }
 
 /**
- * Updates the animation and the position of each entity, including the hero.
+ * @brief Updates the animation and the position of each map elements, including the hero.
  */
 void Map::update(void) {
 
@@ -378,7 +403,7 @@ void Map::update(void) {
 }
 
 /**
- * Displays the map with all its entities on the screen.
+ * @brief Displays the map with all its entities on the screen.
  */
 void Map::display() {
 
@@ -390,7 +415,7 @@ void Map::display() {
 }
 
 /**
- * Displays a sprite on the map surface.
+ * @brief Displays a sprite on the map surface.
  * @param sprite the sprite to display
  * @param x x coordinate of the sprite's origin point in the map
  * @param y y coordinate of the sprite's origin point in the map
@@ -404,8 +429,11 @@ void Map::display_sprite(Sprite *sprite, int x, int y) {
 }
 
 /**
- * Starts the map. The map must be loaded.
+ * @brief Starts the map.
+ *
+ * The map must be loaded.
  * The background music starts and the map script is initialized.
+ *
  * @param game the game containing this map
  */
 void Map::start(Game *game) {
@@ -418,7 +446,8 @@ void Map::start(Game *game) {
 }
 
 /**
- * Exits the map.
+ * @brief Exits the map.
+ *
  * This function is called when the hero leaves the map.
  */
 void Map::leave(void) {
@@ -427,8 +456,10 @@ void Map::leave(void) {
 }
 
 /**
- * Returns whether the map is started, i.e. whether it is the current
- * map and the hero is on it.
+ * @brief Returns whether the map is started.
+ *
+ * This function returns whether this is the current map and the hero is on it.
+ *
  * @return true if the map is started
  */
 bool Map::is_started(void) {
@@ -436,7 +467,7 @@ bool Map::is_started(void) {
 }
 
 /**
- * This function is called when the map is started and 
+ * @brief This function is called when the map is started and 
  * the opening transition is finished.
  */
 void Map::opening_transition_finished(void) {
@@ -453,7 +484,7 @@ void Map::opening_transition_finished(void) {
 }
 
 /**
- * Tests whether a point is outside the map area.
+ * @brief Tests whether a point is outside the map area.
  * @param x x of the point to check
  * @param y y of the point to check
  * @return true if this point is outside the map area
@@ -464,7 +495,7 @@ bool Map::test_collision_with_border(int x, int y) {
 }
 
 /**
- * Tests whether a rectangle has overlaps the outside part of the map area.
+ * @brief Tests whether a rectangle has overlaps the outside part of the map area.
  * @param collision_box the rectangle to check
  * @return true if a point of the rectangle is outside the map area
  */
@@ -475,8 +506,10 @@ bool Map::test_collision_with_border(const Rectangle &collision_box) {
 }
 
 /**
- * Tests whether a point collides with a map tile.
+ * @brief Tests whether a point collides with a map tile.
+ *
  * This method also returns true if the point is outside the map.
+ *
  * @param layer layer of the point
  * @param x x of the point in pixels
  * @param y y of the point in pixels
@@ -556,7 +589,7 @@ bool Map::test_collision_with_tiles(Layer layer, int x, int y, MapEntity *entity
 }
 
 /**
- * Tests whether a rectangle overlaps an obstacle entity.
+ * @brief Tests whether a rectangle overlaps an obstacle entity.
  * @param layer the layer
  * @param collision_box the rectangle to check
  * @param entity_to_check the entity to check (used to decide what is considered as an obstacle)
@@ -581,8 +614,7 @@ bool Map::test_collision_with_entities(Layer layer, const Rectangle &collision_b
 }
 
 /**
- * Tests whether a rectangle collides with the map obstacles
- * (tiles and active entities).
+ * @brief Tests whether a rectangle collides with the map obstacles.
  * @param layer layer of the rectangle in the map
  * @param collision_box the rectangle to check (its dimensions should be multiples of 8)
  * @param entity_to_check the entity to check (used to decide what is considered as an obstacle)
@@ -626,8 +658,7 @@ bool Map::test_collision_with_obstacles(Layer layer, const Rectangle &collision_
 }
 
 /**
- * Tests whether a point collides with the map obstacles
- * (tiles and active entities).
+ * @brief Tests whether a point collides with the map obstacles.
  * @param layer layer of point to check
  * @param x x coordinate of the point to check
  * @param y y coordinate of the point to check
@@ -651,8 +682,10 @@ bool Map::test_collision_with_obstacles(Layer layer, int x, int y, MapEntity *en
 }
 
 /**
- * Returns the kind of ground that is under the specified point.
- * Only the tiles are considered here (not the active entities).
+ * @brief Returns the kind of ground that is under the specified point.
+ *
+ * Only the tiles are considered here (not the dynamic entities).
+ *
  * @param layer layer of point to check
  * @param x x coordinate of the point to check
  * @param y y coordinate of the point to check
@@ -689,8 +722,10 @@ Ground Map::get_tile_ground(Layer layer, int x, int y) {
 }
 
 /**
- * Returns the kind of ground that is under the specified point.
- * Only the tiles are considered here (not the active entities).
+ * @brief Returns the kind of ground that is under the specified point.
+ *
+ * Only the tiles are considered here (not the dynamic entities).
+ *
  * @param layer layer of point to check
  * @param coordinates coordinates of the point to check
  * @return the ground at this place
@@ -700,10 +735,13 @@ Ground Map::get_tile_ground(Layer layer, const Rectangle &coordinates) {
 }
 
 /**
+ * @brief Checks the collisions between an entity and the detectors of the map.
+ *
  * This function is called by an entity sensitive to the entity detectors
  * when this entity has just moved on the map, or when a detector
  * wants to check this entity.
  * We check whether or not the entity overlaps an entity detector.
+ *
  * @param entity the entity that has just moved (this entity should have
  * a movement sensible to the collisions)
  */
@@ -725,9 +763,12 @@ void Map::check_collision_with_detectors(MapEntity *entity) {
 }
 
 /**
+ * @brief Checks the pixel-perfect collisions between an entity and the detectors of the map.
+ *
  * This function is called by an entity
  * when the frame of one of its sprites has just changed.
  * We check whether or not the sprite overlaps the detector.
+ *
  * @param entity the sprite that has just changed
  * @param sprite the sprite that has just changed
  */

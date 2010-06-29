@@ -33,8 +33,10 @@ const uint16_t GameControls::arrows_masks[4] = {
 };
 
 /**
- * Associates to each possible combination of arrows
- * an angle in degrees: 0 to 359, or -1 to indicate
+ * @brief Associates to each possible combination of directional_keys
+ * an angle in degrees.
+ *
+ * The angle is between 0 and 359, or -1 to indicate
  * that the movement is stopped.
  *
  * For example:
@@ -62,7 +64,7 @@ static const int arrows_angles[] = {
 };
 
 /**
- * Constructor.
+ * @brief Constructor.
  * @param game the game
  */
 GameControls::GameControls(Game *game):
@@ -94,14 +96,14 @@ GameControls::GameControls(Game *game):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 GameControls::~GameControls(void) {
 
 }
 
 /**
- * Returns the name of a game key.
+ * @brief Returns the name of a game key.
  * @param key a game key
  * @return the corresponding name
  */
@@ -110,7 +112,7 @@ const std::string& GameControls::get_key_name(GameKey key) {
 }
 
 /**
- * Returns a string representing the keyboard key associated to
+ * @brief Returns a string representing the keyboard key associated to
  * the specified game key.
  * @param game_key a game key
  * @return a string representing the corresponding keyboard key
@@ -123,8 +125,10 @@ const std::string GameControls::get_keyboard_string(GameKey game_key) {
 }
 
 /**
- * Returns whether the specified game key is pressed.
+ * @brief Returns whether the specified game key is pressed.
+ *
  * The key can be pressed from the keyboard or the joypad.
+ *
  * @param game_key a game key
  * @return true if the game key is currently pressed
  */
@@ -133,7 +137,7 @@ bool GameControls::is_key_pressed(GameKey game_key) {
 }
 
 /**
- * Returns the direction corresponding to the arrow keys
+ * @brief Returns the direction corresponding to the arrow keys
  * currently pressed by the player.
  * @return the arrows direction (0 to 360), or -1
  * if no arrow is pressed
@@ -157,7 +161,7 @@ int GameControls::get_arrows_direction(void) {
 }
 
 /**
- * This function is called by the game when a low-level input event occurs.
+ * @brief This function is called by the game when a low-level input event occurs.
  * @param event an input event
  */
 void GameControls::notify_event(InputEvent &event) {
@@ -190,7 +194,7 @@ void GameControls::notify_event(InputEvent &event) {
 }
 
 /**
- * This function is called when a low-level keyboard key is pressed.
+ * @brief This function is called when a low-level keyboard key is pressed.
  * @param keyboard_key_pressed the key pressed
  */
 void GameControls::key_pressed(InputEvent::KeyboardKey keyboard_key_pressed) {
@@ -233,7 +237,7 @@ void GameControls::key_pressed(InputEvent::KeyboardKey keyboard_key_pressed) {
 }
 
 /**
- * This function is called when a low-level keyboard key is released.
+ * @brief This function is called when a low-level keyboard key is released.
  * @param keyboard_key_released the key released
  */
 void GameControls::key_released(InputEvent::KeyboardKey keyboard_key_released) {
@@ -250,7 +254,7 @@ void GameControls::key_released(InputEvent::KeyboardKey keyboard_key_released) {
 }
 
 /**
- * This function is called when a joypad button is pressed.
+ * @brief This function is called when a joypad button is pressed.
  * @param button the button pressed
  */
 void GameControls::joypad_button_pressed(int button) {
@@ -296,7 +300,7 @@ void GameControls::joypad_button_pressed(int button) {
 }
 
 /**
- * This function is called when a joypad button is released.
+ * @brief This function is called when a joypad button is released.
  * @param button the button released
  */
 void GameControls::joypad_button_released(int button) {
@@ -315,7 +319,7 @@ void GameControls::joypad_button_released(int button) {
 }
 
 /**
- * This function is called when a joypad axis is moved.
+ * @brief This function is called when a joypad axis is moved.
  * @param axis the axis moved
  * @param state the new axis direction (-1: left or up, 0: centered, 1: right or down)
  */
@@ -393,7 +397,7 @@ void GameControls::joypad_axis_moved(int axis, int state) {
 }
 
 /**
- * This function is called when a joypad has is moved.
+ * @brief This function is called when a joypad has is moved.
  * @param hat the hat moved
  * @param direction the new hat position (-1: centered, 0 to 7: a direction)
  */
@@ -546,8 +550,10 @@ void GameControls::joypad_hat_moved(int hat, int value) {
 }
 
 /**
- * This function is called when a game key is pressed.
+ * @brief This function is called when a game key is pressed.
+ *
  * This event may come from the keyboard or the joypad.
+ *
  * @param key the game key pressed
  */
 void GameControls::game_key_pressed(GameKey key) {
@@ -562,8 +568,10 @@ void GameControls::game_key_pressed(GameKey key) {
 }
 
 /**
- * This function is called when a game key is pressed.
+ * @brief This function is called when a game key is pressed.
+ *
  * This event may come from the keyboard or the joypad.
+ *
  * @param key the game key pressed
  */
 void GameControls::game_key_released(GameKey key) {
@@ -579,7 +587,7 @@ void GameControls::game_key_released(GameKey key) {
 
 
 /**
- * Returns the low-level keyboard key where the specified game key
+ * @brief Returns the low-level keyboard key where the specified game key
  * is currently mapped.
  * @param game_key a game key
  * @return the keyboard key corresponding this game key
@@ -605,7 +613,7 @@ InputEvent::KeyboardKey GameControls::get_keyboard_key(GameKey game_key) {
 }
 
 /**
- * Returns a string representing the joypad action where the
+ * @brief Returns a string representing the joypad action where the
  * specified game key is currently mapped.
  * @param game_key a game key
  * @return the joypad action corresponding this game key
@@ -626,11 +634,13 @@ const std::string & GameControls::get_joypad_string(GameKey game_key) {
 // customization
 
 /**
- * Notifies the control manager that the specified key is going to be customized.
+ * @brief Notifies the control manager that the specified key is going to be customized.
+ *
  * After this function is called, the next keyboard or joypad event received will
  * not be treated normally; it will be considered as the new keyboard or joypad
  * binding for this game key. Then, the keyboard and joypad events will be treated
  * normally again. Call is_customization_done() to know when this happens.
+ *
  * @param key the game key to customize
  */
 void GameControls::customize(GameKey key) {
@@ -639,7 +649,7 @@ void GameControls::customize(GameKey key) {
 }
 
 /**
- * Returns whether the player is currently customizing a key.
+ * @brief Returns whether the player is currently customizing a key.
  * @return true if the player is currently customizing a key 
  */
 bool GameControls::is_customizing(void) {
@@ -647,7 +657,7 @@ bool GameControls::is_customizing(void) {
 }
 
 /**
- * When the player is customizing a key, returns the key that is being customized.
+ * @brief When the player is customizing a key, returns the key that is being customized.
  * @return the key being customize
  */
 GameControls::GameKey GameControls::get_key_to_customize(void) {
@@ -658,9 +668,12 @@ GameControls::GameKey GameControls::get_key_to_customize(void) {
 }
 
 /**
- * Returns whether the customization process started by calling the customize()
- * function is done, i.e. whether the key has received a new binding
+ * @brief Returns whether the customization process started by calling the customize()
+ * function is done.
+ *
+ * This function returns whether the key has received a new binding
  * and the controls are now treated normally again.
+ *
  * @return true if no game key is being customized
  */
 bool GameControls::is_customization_done(void) {

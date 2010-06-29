@@ -27,7 +27,7 @@ const MusicId Music::none = "none";
 const MusicId Music::unchanged = "same";
 
 /**
- * Creates a new music.
+ * @brief Creates a new music.
  * @param music_id id of the music (a file name)
  */
 Music::Music(const MusicId &music_id) {
@@ -65,7 +65,7 @@ Music::Music(const MusicId &music_id) {
 }
 
 /**
- * Destroys the music.
+ * @brief Destroys the music.
  */
 Music::~Music(void) {
 
@@ -79,7 +79,7 @@ Music::~Music(void) {
 }
 
 /**
- * Initializes the music system.
+ * @brief Initializes the music system.
  */
 void Music::initialize(void) {
 
@@ -91,7 +91,7 @@ void Music::initialize(void) {
 }
 
 /**
- * Exits the music system.
+ * @brief Exits the music system.
  */
 void Music::quit(void) {
   if (is_initialized()) {
@@ -100,7 +100,7 @@ void Music::quit(void) {
 }
 
 /**
- * Returns whether the music system is initialized.
+ * @brief Returns whether the music system is initialized.
  * @return true if the music system is initilialized
  */
 bool Music::is_initialized(void) {
@@ -108,7 +108,7 @@ bool Music::is_initialized(void) {
 }
 
 /**
- * Returns the current volume of musis.
+ * @brief Returns the current volume of musis.
  * @return the volume (0 to 100)
  */
 int Music::get_volume(void) {
@@ -117,7 +117,7 @@ int Music::get_volume(void) {
 }
 
 /**
- * Sets the volume of musics.
+ * @brief Sets the volume of musics.
  * @param volume the new volume (0 to 100)
  */
 void Music::set_volume(int volume) {
@@ -135,7 +135,8 @@ void Music::set_volume(int volume) {
 }
 
 /**
- * Updates the music system.
+ * @brief Updates the music system.
+ *
  * When a music is playing, this function makes it update.
  */
 void Music::update(void) {
@@ -150,7 +151,8 @@ void Music::update(void) {
 }
 
 /**
- * Updates this music when it is playing.
+ * @brief Updates this music when it is playing.
+ *
  * This function handles the double buffering.
  */
 void Music::update_playing(void) {
@@ -176,7 +178,7 @@ void Music::update_playing(void) {
 }
 
 /**
- * Decodes a chunk of SPC data into PCM data for the current music.
+ * @brief Decodes a chunk of SPC data into PCM data for the current music.
  * @param destination_buffer the destination buffer to write
  * @param nb_samples number of samples to writes
  */
@@ -198,8 +200,10 @@ void Music::decode_spc(ALuint destination_buffer, ALsizei nb_samples) {
 }
 
 /**
- * Loads the file and plays the music.
+ * @brief Loads the file and plays the music.
+ *
  * No other music should be playing.
+ *
  * @return true if the music was loaded successfully
  */
 bool Music::play(void) {
@@ -259,7 +263,7 @@ bool Music::play(void) {
 }
 
 /**
- * Stops playing the music.
+ * @brief Stops playing the music.
  */
 void Music::stop(void) {
 
@@ -293,7 +297,7 @@ void Music::stop(void) {
 }
 
 /**
- * Returns whether the music is paused.
+ * @brief Returns whether the music is paused.
  * @return true if the music is paused, false otherwise
  */
 bool Music::is_paused(void) {
@@ -308,7 +312,7 @@ bool Music::is_paused(void) {
 }
 
 /**
- * Pauses or resumes the music.
+ * @brief Pauses or resumes the music.
  * @param pause true to pause the music, false to resume it
  */
 void Music::set_paused(bool pause) {
@@ -326,7 +330,7 @@ void Music::set_paused(bool pause) {
 }
 
 /**
- * Returns whether a music id is the id for no music, i.e. if it is Music.none_id.
+ * @brief Returns whether a music id is the id for no music, i.e. if it is Music.none_id.
  * @param music_id a music id
  * @return true if music_id is the special id indicating that there is no music
  */
@@ -335,7 +339,7 @@ bool Music::isNoneId(const MusicId &music_id) {
 }
 
 /**
- * Returns whether a music id is the id for no change, i.e. if it is Music.unchanged_id.
+ * @brief Returns whether a music id is the id for no change, i.e. if it is Music.unchanged_id.
  * @param music_id a music id
  * @return true if music_id is the special id indicating that the music doesn't change
  */
@@ -344,7 +348,7 @@ bool Music::isUnchangedId(const MusicId &music_id) {
 }
 
 /**
- * Compares two music ids.
+ * @brief Compares two music ids.
  * @param music_id a music id
  * @param other_music_id another music id
  * @return true if the ids are the same

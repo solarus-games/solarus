@@ -38,7 +38,7 @@
 #include <iomanip>
 
 /**
- * Creates the script of a map.
+ * @brief Creates the script of a map.
  * @param map the map
  */
 MapScript::MapScript(Map *map):
@@ -47,14 +47,14 @@ MapScript::MapScript(Map *map):
 }
 
 /**
- * Desctructor.
+ * @brief Desctructor.
  */
 MapScript::~MapScript(void) {
 
 }
 
 /**
- * Tells the Lua context what C++ functions it can call.
+ * @brief Tells the Lua context what C++ functions it can call.
  */
 void MapScript::register_available_functions(void) {
 
@@ -118,8 +118,10 @@ void MapScript::register_available_functions(void) {
 }
 
 /**
- * Loads the script and starts it.
+ * @brief Loads the script and starts it.
+ *
  * This function is called when the map starts.
+ *
  * @param destination_point_name name of the destination point where the hero is
  */
 void MapScript::start(const std::string &destination_point_name) {
@@ -139,10 +141,13 @@ void MapScript::start(const std::string &destination_point_name) {
 }
 
 /**
+ * @brief Checks the number of arguments provided to a C++ function called by the Lua script.
+ *
  * In any C++ function called by the Lua script (i.e. a function prefixed by "l_"),
  * the first instruction calls this function.
  * It checks the number of arguments provided to the C++ function called by the Lua script
  * and retrieves the current MapScript object.
+ *
  * @param context the Lua context
  * @param nb_arguments the number of arguments to check (if it is incorrect, the program stops)
  * @param map_script if not NULL, a pointer to the MapScript object will be copied there so that the static C++ function
@@ -159,10 +164,13 @@ void MapScript::called_by_script(lua_State *context, int nb_arguments, MapScript
 // functions that can be called by the Lua script
 
 /**
- * Sends the hero to a map.
- * Argument 1 (int): id of the destination map (can be the same one)
- * Argument 2 (string): name of the destination point on that map
- * Argument 3 (int): type of transition to play
+ * @brief Sends the hero to a map.
+ *
+ * - Argument 1 (int): id of the destination map (can be the same one)
+ * - Argument 2 (string): name of the destination point on that map
+ * - Argument 3 (int): type of transition to play
+ *
+ * @param l the Lua context that is calling this function
  */
 int MapScript::l_hero_set_map(lua_State *l) {
 
@@ -179,8 +187,11 @@ int MapScript::l_hero_set_map(lua_State *l) {
 }
 
 /**
- * Sets the direction of the hero's sprite.
- * Argument 1 (integer): the direction between 0 and 3
+ * @brief Sets the direction of the hero's sprite.
+ *
+ * - Argument 1 (integer): the direction between 0 and 3
+ *
+ * @param l the Lua context that is calling this function
  */
 int MapScript::l_hero_set_direction(lua_State *l) {
 
@@ -195,8 +206,11 @@ int MapScript::l_hero_set_direction(lua_State *l) {
 }
 
 /**
- * Places the hero on the exact position of a sensor's name.
- * Argument 1 (string): name of the sensor
+ * @brief Places the hero on the exact position of a sensor's name.
+ *
+ * - Argument 1 (string): name of the sensor
+ *
+ * @param l the Lua context that is calling this function
  */
 int MapScript::l_hero_align_on_sensor(lua_State *l) {
 
@@ -213,10 +227,13 @@ int MapScript::l_hero_align_on_sensor(lua_State *l) {
 }
 
 /**
- * Makes the hero walk with respect to a path.
- * Argument 1 (string): the path (each character is a direction between '0' and '7')
- * Argument 2 (boolean): true to make the movement loop
- * Argument 3 (boolean): true to make the movement sensible to obstacles
+ * @brief Makes the hero walk with respect to a path.
+ *
+ * - Argument 1 (string): the path (each character is a direction between '0' and '7')
+ * - Argument 2 (boolean): true to make the movement loop
+ * - Argument 3 (boolean): true to make the movement sensible to obstacles
+ *
+ * @param l the Lua context that is calling this function
  */
 int MapScript::l_hero_walk(lua_State *l) {
 
@@ -234,10 +251,13 @@ int MapScript::l_hero_walk(lua_State *l) {
 }
 
 /**
- * Makes the hero jump into a direction.
- * Argument 1 (integer): the jump direction, between 0 and 7
- * Argument 2 (integer): the jump length in pixels
- * Argument 3 (boolean): true to enable the collisions
+ * @brief Makes the hero jump into a direction.
+ *
+ * - Argument 1 (integer): the jump direction, between 0 and 7
+ * - Argument 2 (integer): the jump length in pixels
+ * - Argument 3 (boolean): true to enable the collisions
+ *
+ * @param l the Lua context that is calling this function
  */
 int MapScript::l_hero_jump(lua_State *l) {
 
@@ -254,8 +274,9 @@ int MapScript::l_hero_jump(lua_State *l) {
 }
 
 /**
- * Makes the hero brandish his sword meaning a victory
+ * @brief Makes the hero brandish his sword meaning a victory
  * and plays the corresponding sound.
+ * @param l the Lua context that is calling this function
  */
 int MapScript::l_hero_start_victory_sequence(lua_State *l) {
   
@@ -268,10 +289,13 @@ int MapScript::l_hero_start_victory_sequence(lua_State *l) {
 }
 
 /**
- * Hides or shows the hero.
+ * @brief Hides or shows the hero.
+ *
  * Hiding the hero does not disable its movements, so when using this function
  * you will usually also need to freeze the hero.
- * Argument 1 (boolean): true to make the hero visible
+ * - Argument 1 (boolean): true to make the hero visible
+ *
+ * @param l the Lua context that is calling this function
  */
 int MapScript::l_hero_set_visible(lua_State *l) {
 
@@ -286,10 +310,13 @@ int MapScript::l_hero_set_visible(lua_State *l) {
 }
 
 /**
- * Returns the position of an NPC.
- * Argument 1 (string): name of the NPC
- * Return value 1 (integer): x position
- * Return value 2 (integer): y position
+ * @brief Returns the position of an NPC.
+ *
+ * - Argument 1 (string): name of the NPC
+ * - Return value 1 (integer): x position
+ * - Return value 2 (integer): y position
+ *
+ * @param l the Lua context that is calling this function
  */
 int MapScript::l_npc_get_position(lua_State *l) {
 
@@ -309,10 +336,13 @@ int MapScript::l_npc_get_position(lua_State *l) {
 }
 
 /**
- * Sets the position of an NPC.
- * Argument 1 (string): name of the NPC
- * Argument 2 (integer): x position to set
- * Argument 3 (integer): y position to set
+ * @brief Sets the position of an NPC.
+ *
+ * - Argument 1 (string): name of the NPC
+ * - Argument 2 (integer): x position to set
+ * - Argument 3 (integer): y position to set
+ *
+ * @param l the Lua context that is calling this function
  */
 int MapScript::l_npc_set_position(lua_State *l) {
 
@@ -331,11 +361,14 @@ int MapScript::l_npc_set_position(lua_State *l) {
 }
 
 /**
- * Makes an NPC walk with respect to a path.
- * Argument 1 (string): name of the NPC to make move
- * Argument 2 (string): the path (each character is a direction between '0' and '7'
- * Argument 3 (boolean): true to make the movement loop
- * Argument 4 (boolean): true to enable the collisions
+ * @brief Makes an NPC walk with respect to a path.
+ *
+ * - Argument 1 (string): name of the NPC to make move
+ * - Argument 2 (string): the path (each character is a direction between '0' and '7'
+ * - Argument 3 (boolean): true to make the movement loop
+ * - Argument 4 (boolean): true to enable the collisions
+ *
+ * @param l the Lua context that is calling this function
  */
 int MapScript::l_npc_walk(lua_State *l) {
 
@@ -355,8 +388,11 @@ int MapScript::l_npc_walk(lua_State *l) {
 }
 
 /**
- * Makes an NPC walk randomly.
- * Argument 1 (string): name of the NPC to make move
+ * @brief Makes an NPC walk randomly.
+ *
+ * - Argument 1 (string): name of the NPC to make move
+ *
+ * @param l the Lua context that is calling this function
  */
 int MapScript::l_npc_random_walk(lua_State *l) {
 
@@ -373,12 +409,15 @@ int MapScript::l_npc_random_walk(lua_State *l) {
 }
 
 /**
- * Makes an NPC jump into a direction.
+ * @brief Makes an NPC jump into a direction.
+ *
  * The NPC's sprite must have an animation "jumping".
- * Argument 1 (string): name of the NPC to make move
- * Argument 2 (integer): the jump direction, between 0 and 7
- * Argument 3 (integer): the jump length in pixels
- * Argument 4 (boolean): true to enable the collisions
+ * - Argument 1 (string): name of the NPC to make move
+ * - Argument 2 (integer): the jump direction, between 0 and 7
+ * - Argument 3 (integer): the jump length in pixels
+ * - Argument 4 (boolean): true to enable the collisions
+ *
+ * @param l the Lua context that is calling this function
  */
 int MapScript::l_npc_jump(lua_State *l) {
 
@@ -398,18 +437,24 @@ int MapScript::l_npc_jump(lua_State *l) {
 }
 
 /**
- * Sets the animation of an NPC's sprite.
- * Argument 1 (string): name of the NPC
- * Argument 2 (string): name of the animation to set
+ * @brief Sets the animation of an NPC's sprite.
+ *
+ * - Argument 1 (string): name of the NPC
+ * - Argument 2 (string): name of the animation to set
+ *
+ * @param l the Lua context that is calling this function
  */
 int MapScript::l_npc_set_animation(lua_State *l) {
   return l_interactive_entity_set_animation(l);
 }
 
 /**
- * Sets whether the animation of an NPC should continue even when the game is suspended.
+ * @brief Sets whether the animation of an NPC should continue even when the game is suspended.
+ *
  * Argument 1 (string): name of the NPC
  * Argument 2 (boolean): true to ignore when the game is suspended
+ *
+ * @param l the Lua context that is calling this function
  */
 int MapScript::l_npc_set_animation_ignore_suspend(lua_State *l) {
 
@@ -427,9 +472,12 @@ int MapScript::l_npc_set_animation_ignore_suspend(lua_State *l) {
 }
 
 /**
- * Sets the direction of an NPC's sprite.
- * Argument 1 (string): name of the NPC
- * Argument 2 (integer): the sprite's direction between 0 and 3
+ * @brief Sets the direction of an NPC's sprite.
+ *
+ * - Argument 1 (string): name of the NPC
+ * - Argument 2 (integer): the sprite's direction between 0 and 3
+ *
+ * @param l the Lua context that is calling this function
  */
 int MapScript::l_npc_set_direction(lua_State *l) {
 
@@ -451,8 +499,11 @@ int MapScript::l_npc_set_direction(lua_State *l) {
 }
 
 /**
- * Removes an NPC from the map.
- * Argument 1 (string): name of the NPC
+ * @brief Removes an NPC from the map.
+ *
+ * - Argument 1 (string): name of the NPC
+ *
+ * @param l the Lua context that is calling this function
  */
 int MapScript::l_npc_remove(lua_State *l) {
 
@@ -468,11 +519,14 @@ int MapScript::l_npc_remove(lua_State *l) {
 }
 
 /**
- * Sets the chest open or closed.
+ * @brief Sets the chest open or closed.
+ *
  * Only the chest sprite is affected (use give_treasure to give a treasure to the player).
  * This function is useful for chests whose content is managed by the script.
- * Argument 1 (string): name of the chest
- * Argument 2 (boolean): true to make the chest open, false to make it closed
+ * - Argument 1 (string): name of the chest
+ * - Argument 2 (boolean): true to make the chest open, false to make it closed
+ *
+ * @param l the Lua context that is calling this function
  */
 int MapScript::l_chest_set_open(lua_State *l) {
 
@@ -490,10 +544,13 @@ int MapScript::l_chest_set_open(lua_State *l) {
 }
 
 /**
- * Hides or unhides a chest.
+ * @brief Hides or unhides a chest.
+ *
  * If the chest is already open, hiding it has not effect.
- * Argument 1 (string): name of the chest
- * Argument 2 (boolean): true to make the chest hidden, false to make it appear
+ * - Argument 1 (string): name of the chest
+ * - Argument 2 (boolean): true to make the chest hidden, false to make it appear
+ *
+ * @param l the Lua context that is calling this function
  */
 int MapScript::l_chest_set_hidden(lua_State *l) {
 
@@ -511,9 +568,12 @@ int MapScript::l_chest_set_hidden(lua_State *l) {
 }
 
 /**
- * Returns whether a chest is hidden.
- * Argument 1 (string): name of the chest
- * Return value (boolean): true if this chest is hidden
+ * @brief Returns whether a chest is hidden.
+ *
+ * - Argument 1 (string): name of the chest
+ * - Return value (boolean): true if this chest is hidden
+ *
+ * @param l the Lua context that is calling this function
  */
 int MapScript::l_chest_is_hidden(lua_State *l) {
 
@@ -530,9 +590,12 @@ int MapScript::l_chest_is_hidden(lua_State *l) {
 }
 
 /**
- * Enables or disables a dynamic tile.
- * Argument 1 (string): name of the dynamic tile
- * Argument 2 (boolean): true to enable it, false to disable it
+ * @brief Enables or disables a dynamic tile.
+ *
+ * - Argument 1 (string): name of the dynamic tile
+ * - Argument 2 (boolean): true to enable it, false to disable it
+ *
+ * @param l the Lua context that is calling this function
  */
 int MapScript::l_tile_set_enabled(lua_State *l) {
 
@@ -550,9 +613,12 @@ int MapScript::l_tile_set_enabled(lua_State *l) {
 }
 
 /**
- * Enables or disables a set of dynamic tiles.
- * Argument 1 (string): prefix of the name of the dynamic tiles to disable
- * Argument 2 (boolean): true to enable them, false to disable them
+ * @brief Enables or disables a set of dynamic tiles.
+ *
+ * - Argument 1 (string): prefix of the name of the dynamic tiles to disable
+ * - Argument 2 (boolean): true to enable them, false to disable them
+ *
+ * @param l the Lua context that is calling this function
  */
 int MapScript::l_tiles_set_enabled(lua_State *l) {
 
@@ -576,9 +642,12 @@ int MapScript::l_tiles_set_enabled(lua_State *l) {
 }
 
 /**
- * Returns whether a dynamic tile is enabled.
- * Argument 1 (string): name of the dynamic tile
- * Return value (boolean): true if this tile is enabled
+ * @brief Returns whether a dynamic tile is enabled.
+ *
+ * - Argument 1 (string): name of the dynamic tile
+ * - Return value (boolean): true if this tile is enabled
+ *
+ * @param l the Lua context that is calling this function
  */
 int MapScript::l_tile_is_enabled(lua_State *l) {
 
@@ -595,8 +664,11 @@ int MapScript::l_tile_is_enabled(lua_State *l) {
 }
 
 /**
- * Replaces a block at its initial position.
- * Argument 1 (string): name of the block to reset
+ * @brief Replaces a block at its initial position.
+ *
+ * - Argument 1 (string): name of the block to reset
+ *
+ * @param l the Lua context that is calling this function
  */
 int MapScript::l_reset_block(lua_State *l) {
 
@@ -613,7 +685,8 @@ int MapScript::l_reset_block(lua_State *l) {
 }
 
 /**
- * Replaces all blocks of the map at their initial position.
+ * @brief Replaces all blocks of the map at their initial position.
+ * @param l the Lua context that is calling this function
  */
 int MapScript::l_reset_blocks(lua_State *l) {
 
@@ -634,9 +707,12 @@ int MapScript::l_reset_blocks(lua_State *l) {
 }
 
 /**
- * Returns the current animation of an interactive entity's sprite.
- * Argument 1 (string): name of the interactive entity
- * Return value (string): name of the current animation
+ * @brief Returns the current animation of an interactive entity's sprite.
+ *
+ * - Argument 1 (string): name of the interactive entity
+ * - Return value (string): name of the current animation
+ *
+ * @param l the Lua context that is calling this function
  */
 int MapScript::l_interactive_entity_get_animation(lua_State *l) {
 
@@ -655,9 +731,12 @@ int MapScript::l_interactive_entity_get_animation(lua_State *l) {
 }
 
 /**
- * Returns the animation speed of an interactive entity's sprite.
- * Argument 1 (string): name of the interactive entity
- * Return value (integer): delay between two frames in milliseconds
+ * @brief Returns the animation speed of an interactive entity's sprite.
+ *
+ * - Argument 1 (string): name of the interactive entity
+ * - Return value (integer): delay between two frames in milliseconds
+ *
+ * @param l the Lua context that is calling this function
  */
 int MapScript::l_interactive_entity_get_animation_delay(lua_State *l) {
 
@@ -676,9 +755,12 @@ int MapScript::l_interactive_entity_get_animation_delay(lua_State *l) {
 }
 
 /**
- * Returns the current animation frame of an interactive entity's sprite.
- * Argument 1 (string): name of the interactive entity
- * Return value (integer): frame number
+ * @brief Returns the current animation frame of an interactive entity's sprite.
+ *
+ * - Argument 1 (string): name of the interactive entity
+ * - Return value (integer): frame number
+ *
+ * @param l the Lua context that is calling this function
  */
 int MapScript::l_interactive_entity_get_animation_frame(lua_State *l) {
 
@@ -697,9 +779,12 @@ int MapScript::l_interactive_entity_get_animation_frame(lua_State *l) {
 }
 
 /**
- * Returns the current direction of an interactive entity's sprite.
- * Argument 1 (string): name of the interactive entity
- * Return value (integer): the direction between 0 and 3
+ * @brief Returns the current direction of an interactive entity's sprite.
+ *
+ * - Argument 1 (string): name of the interactive entity
+ * - Return value (integer): the direction between 0 and 3
+ *
+ * @param l the Lua context that is calling this function
  */
 int MapScript::l_interactive_entity_get_direction(lua_State *l) {
 
@@ -718,9 +803,12 @@ int MapScript::l_interactive_entity_get_direction(lua_State *l) {
 }
 
 /**
- * Returns whether the animation of an interactive entity's sprite is paused.
- * Argument 1 (string): name of the interactive entity
- * Return value (boolean): true if the animation is paused
+ * @brief Returns whether the animation of an interactive entity's sprite is paused.
+ *
+ * - Argument 1 (string): name of the interactive entity
+ * - Return value (boolean): true if the animation is paused
+ *
+ * @param l the Lua context that is calling this function
  */
 int MapScript::l_interactive_entity_is_animation_paused(lua_State *l) {
 
@@ -739,9 +827,12 @@ int MapScript::l_interactive_entity_is_animation_paused(lua_State *l) {
 }
 
 /**
- * Sets the animation of an interactive entity's sprite.
- * Argument 1 (string): name of the interactive entity
- * Argument 2 (string): name of the animation to set
+ * @brief Sets the animation of an interactive entity's sprite.
+ *
+ * - Argument 1 (string): name of the interactive entity
+ * - Argument 2 (string): name of the animation to set
+ *
+ * @param l the Lua context that is calling this function
  */
 int MapScript::l_interactive_entity_set_animation(lua_State *l) {
 
@@ -760,9 +851,12 @@ int MapScript::l_interactive_entity_set_animation(lua_State *l) {
 }
 
 /**
- * Sets the animation speed of an interactive entity's sprite.
- * Argument 1 (string): name of the interactive entity
- * Argument 2 (integer): delay between two frames in milliseconds
+ * @brief Sets the animation speed of an interactive entity's sprite.
+ *
+ * - Argument 1 (string): name of the interactive entity
+ * - Argument 2 (integer): delay between two frames in milliseconds
+ *
+ * @param l the Lua context that is calling this function
  */
 int MapScript::l_interactive_entity_set_animation_delay(lua_State *l) {
 
@@ -780,9 +874,12 @@ int MapScript::l_interactive_entity_set_animation_delay(lua_State *l) {
 }
 
 /**
- * Sets the current animation frame of an interactive entity's sprite.
- * Argument 1 (string): name of the interactive entity
- * Argument 2 (integer): frame number
+ * @brief Sets the current animation frame of an interactive entity's sprite.
+ *
+ * - Argument 1 (string): name of the interactive entity
+ * - Argument 2 (integer): frame number
+ *
+ * @param l the Lua context that is calling this function
  */
 int MapScript::l_interactive_entity_set_animation_frame(lua_State *l) {
 
@@ -800,9 +897,12 @@ int MapScript::l_interactive_entity_set_animation_frame(lua_State *l) {
 }
 
 /**
- * Sets the direction of an interactive entity's sprite.
- * Argument 1 (string): name of the interactive entity
- * Argument 2 (integer): the sprite's direction between 0 and 3
+ * @brief Sets the direction of an interactive entity's sprite.
+ *
+ * - Argument 1 (string): name of the interactive entity
+ * - Argument 2 (integer): the sprite's direction between 0 and 3
+ *
+ * @param l the Lua context that is calling this function
  */
 int MapScript::l_interactive_entity_set_direction(lua_State *l) {
 
@@ -810,9 +910,12 @@ int MapScript::l_interactive_entity_set_direction(lua_State *l) {
 }
 
 /**
- * Pauses or resumes the animation of an interactive entity's sprite.
- * Argument 1 (string): name of the interactive entity
- * Argument 2 (boolean): true to pause, false to resume
+ * @brief Pauses or resumes the animation of an interactive entity's sprite.
+ *
+ * - Argument 1 (string): name of the interactive entity
+ * - Argument 2 (boolean): true to pause, false to resume
+ *
+ * @param l the Lua context that is calling this function
  */
 int MapScript::l_interactive_entity_set_animation_paused(lua_State *l) {
 
@@ -830,9 +933,12 @@ int MapScript::l_interactive_entity_set_animation_paused(lua_State *l) {
 }
 
 /**
- * Starts a fade-in or a fade-out effect on an interactive entity
- * Argument 1 (string): name of the interactive entity
- * Argument 2 (integer): direction of the effect: 0 for fade-in, 1 for fade-out
+ * @brief Starts a fade-in or a fade-out effect on an interactive entity
+ *
+ * - Argument 1 (string): name of the interactive entity
+ * - Argument 2 (integer): direction of the effect: 0 for fade-in, 1 for fade-out
+ *
+ * @param l the Lua context that is calling this function
  */
 int MapScript::l_interactive_entity_fade(lua_State *l) {
 
@@ -850,25 +956,34 @@ int MapScript::l_interactive_entity_fade(lua_State *l) {
 }
 
 /**
- * Sets whether the animation of an interactive entity should continue even when the game is suspended.
- * Argument 1 (string): name of the interactive entity
- * Argument 2 (boolean): true to ignore when the game is suspended
+ * @brief Sets whether the animation of an interactive entity should continue even when the game is suspended.
+ *
+ * - Argument 1 (string): name of the interactive entity
+ * - Argument 2 (boolean): true to ignore when the game is suspended
+ *
+ * @param l the Lua context that is calling this function
  */
 int MapScript::l_interactive_entity_set_animation_ignore_suspend(lua_State *l) {
   return l_npc_set_animation_ignore_suspend(l);
 }
 
 /**
- * Removes an interactive entity from the map.
- * Argument 1 (string): name of the interactive entity
+ * @brief Removes an interactive entity from the map.
+ *
+ * - Argument 1 (string): name of the interactive entity
+ *
+ * @param l the Lua context that is calling this function
  */
 int MapScript::l_interactive_entity_remove(lua_State *l) {
   return l_npc_remove(l);
 }
 
 /**
- * Removes a shop item from the map.
- * Argument 1 (string): name of the shop item
+ * @brief Removes a shop item from the map.
+ *
+ * - Argument 1 (string): name of the shop item
+ *
+ * @param l the Lua context that is calling this function
  */
 int MapScript::l_shop_item_remove(lua_State *l) {
 
@@ -883,9 +998,12 @@ int MapScript::l_shop_item_remove(lua_State *l) {
 }
 
 /**
- * Returns whether a switch is currently enabled.
- * Argument 1 (string): name of the switch
- * Return value (boolean): true if the switch is enabled
+ * @brief Returns whether a switch is currently enabled.
+ *
+ * - Argument 1 (string): name of the switch
+ * - Return value (boolean): true if the switch is enabled
+ *
+ * @param l the Lua context that is calling this function
  */
 int MapScript::l_switch_is_enabled(lua_State *l) {
 
@@ -903,9 +1021,12 @@ int MapScript::l_switch_is_enabled(lua_State *l) {
 }
 
 /**
- * Enables or disables a switch.
- * Argument 1 (string): name of the switch
- * Argument 2 (boolean): true to enable the switch, false to disable it
+ * @brief Enables or disables a switch.
+ *
+ * - Argument 1 (string): name of the switch
+ * - Argument 2 (boolean): true to enable the switch, false to disable it
+ *
+ * @param l the Lua context that is calling this function
  */
 int MapScript::l_switch_set_enabled(lua_State *l) {
 
@@ -923,9 +1044,12 @@ int MapScript::l_switch_set_enabled(lua_State *l) {
 }
 
 /**
- * Locks a switch in its current state or unlocks it.
- * Argument 1 (string): name of the switch
- * Argument 2 (boolean): true to lock the switch, false to unlock it
+ * @brief Locks a switch in its current state or unlocks it.
+ *
+ * - Argument 1 (string): name of the switch
+ * - Argument 2 (boolean): true to lock the switch, false to unlock it
+ *
+ * @param l the Lua context that is calling this function
  */
 int MapScript::l_switch_set_locked(lua_State *l) {
 
@@ -943,10 +1067,13 @@ int MapScript::l_switch_set_locked(lua_State *l) {
 }
 
 /**
- * Returns whether an enemy is dead.
+ * @brief Returns whether an enemy is dead.
+ *
  * An enemy is considered as dead if it is not present on the map.
- * Argument 1 (string): name of the enemy
- * Return value (boolean): true if the enemy is not on the map, false if it is alive
+ * - Argument 1 (string): name of the enemy
+ * - Return value (boolean): true if the enemy is not on the map, false if it is alive
+ *
+ * @param l the Lua context that is calling this function
  */
 int MapScript::l_enemy_is_dead(lua_State *l) {
 
@@ -964,11 +1091,14 @@ int MapScript::l_enemy_is_dead(lua_State *l) {
 }
 
 /**
- * Returns whether a set of enemies are dead.
+ * @brief Returns whether a set of enemies are dead.
+ *
  * An enemy is considered as dead if it is not present on the map.
- * Argument 1 (string): prefix of the name of the enemies to check
- * Return value (boolean): true if there is no enemy left with this prefix on the map,
+ * - Argument 1 (string): prefix of the name of the enemies to check
+ * - Return value (boolean): true if there is no enemy left with this prefix on the map,
  * false if at least one of them is alive
+ *
+ * @param l the Lua context that is calling this function
  */
 int MapScript::l_enemies_are_dead(lua_State *l) {
 
@@ -987,10 +1117,13 @@ int MapScript::l_enemies_are_dead(lua_State *l) {
 }
 
 /**
- * Enables or disables an enemy.
+ * @brief Enables or disables an enemy.
+ *
  * A normal enemy is enabled by default. A boss or a miniboss is disabled by default.
- * Argument 1 (string): name of the enemy
- * Argument 2 (boolean): true to enable the enemy, false to disable it
+ * - Argument 1 (string): name of the enemy
+ * - Argument 2 (boolean): true to enable the enemy, false to disable it
+ *
+ * @param l the Lua context that is calling this function
  */
 int MapScript::l_enemy_set_enabled(lua_State *l) {
 
@@ -1008,10 +1141,13 @@ int MapScript::l_enemy_set_enabled(lua_State *l) {
 }
 
 /**
- * Starts the battle against a boss.
+ * @brief Starts the battle against a boss.
+ *
  * Calling this function enables the boss if he is alive and plays the appropriate music.
  * If the boss was already killed, nothing happens.
- * Argument 1 (string): name of the boss
+ * - Argument 1 (string): name of the boss
+ *
+ * @param l the Lua context that is calling this function
  */
 int MapScript::l_boss_start_battle(lua_State *l) {
 
@@ -1028,9 +1164,12 @@ int MapScript::l_boss_start_battle(lua_State *l) {
 }
 
 /**
- * Ends the battle against a boss.
+ * @brief Ends the battle against a boss.
+ *
  * Calling this function plays the appropriate music and freezes the hero.
  * The next step is usually to start the dungeon end sequence.
+ *
+ * @param l the Lua context that is calling this function
  */
 int MapScript::l_boss_end_battle(lua_State *l) {
 
@@ -1043,10 +1182,13 @@ int MapScript::l_boss_end_battle(lua_State *l) {
 }
 
 /**
- * Starts the battle against a miniboss.
+ * @brief Starts the battle against a miniboss.
+ *
  * Calling this function enables the miniboss if he is alive and plays the appropriate music.
  * If the miniboss was already killed, nothing happens.
- * Argument 1 (string): name of the miniboss
+ * - Argument 1 (string): name of the miniboss
+ *
+ * @param l the Lua context that is calling this function
  */
 int MapScript::l_miniboss_start_battle(lua_State *l) {
 
@@ -1063,8 +1205,11 @@ int MapScript::l_miniboss_start_battle(lua_State *l) {
 }
 
 /**
- * Ends the battle against a miniboss.
+ * @brief Ends the battle against a miniboss.
+ *
  * Calling this function plays the appropriate music.
+ *
+ * @param l the Lua context that is calling this function
  */
 int MapScript::l_miniboss_end_battle(lua_State *l) {
 
@@ -1077,8 +1222,11 @@ int MapScript::l_miniboss_end_battle(lua_State *l) {
 }
 
 /**
- * Removes a sensor from the map.
- * Argument 1 (string): name of the sensor
+ * @brief Removes a sensor from the map.
+ *
+ * - Argument 1 (string): name of the sensor
+ *
+ * @param l the Lua context that is calling this function
  */
 int MapScript::l_sensor_remove(lua_State *l) {
 
@@ -1093,10 +1241,13 @@ int MapScript::l_sensor_remove(lua_State *l) {
 }
 
 /**
- * Opens one or several doors.
+ * @brief Opens one or several doors.
+ *
  * The doors must be normal, closed door
  * (not doors for keys or bombs).
- * Argument 1 (string): prefix of the name of the doors to open
+ * - Argument 1 (string): prefix of the name of the doors to open
+ *
+ * @param l the Lua context that is calling this function
  */
 int MapScript::l_door_open(lua_State *l) {
 
@@ -1119,10 +1270,13 @@ int MapScript::l_door_open(lua_State *l) {
 }
 
 /**
- * Closes one or several doors.
+ * @brief Closes one or several doors.
+ *
  * The doors must be normal, open door
  * (not doors for keys or bombs).
- * Argument 1 (string): prefix of the name of the doors to close
+ * - Argument 1 (string): prefix of the name of the doors to close
+ *
+ * @param l the Lua context that is calling this function
  */
 int MapScript::l_door_close(lua_State *l) {
 
@@ -1145,9 +1299,12 @@ int MapScript::l_door_close(lua_State *l) {
 }
 
 /**
- * Returns whether a door is open
- * Argument 1 (string): name of the door
- * Return value (boolean): true if this door is open
+ * @brief Returns whether a door is open
+ *
+ * - Argument 1 (string): name of the door
+ * - Return value (boolean): true if this door is open
+ *
+ * @param l the Lua context that is calling this function
  */
 int MapScript::l_door_is_open(lua_State *l) {
 
@@ -1163,9 +1320,12 @@ int MapScript::l_door_is_open(lua_State *l) {
 }
 
 /**
- * Makes one or several doors open or closed.
- * Argument 1 (string): prefix of the name of the doors to close
- * Argument 2 (boolean): true to make them open, false to make them closed
+ * @brief Makes one or several doors open or closed.
+ *
+ * - Argument 1 (string): prefix of the name of the doors to close
+ * - Argument 2 (boolean): true to make them open, false to make them closed
+ *
+ * @param l the Lua context that is calling this function
  */
 int MapScript::l_door_set_open(lua_State *l) {
 
@@ -1190,7 +1350,7 @@ int MapScript::l_door_set_open(lua_State *l) {
 // event functions, i.e. functions called by the C++ engine to notify the map script that something happened
 
 /**
- * Notifies the script that the map has just been started.
+ * @brief Notifies the script that the map has just been started.
  * @param destination_point_name name of the destination point where the hero is
  */
 void MapScript::event_map_started(const std::string &destination_point_name) {
@@ -1198,7 +1358,7 @@ void MapScript::event_map_started(const std::string &destination_point_name) {
 }
 
 /**
- * Notifies the script that the opening transition of the map has just finished.
+ * @brief Notifies the script that the opening transition of the map has just finished.
  * @param destination_point_name name of the destination point where the hero is
  */
 void MapScript::event_map_opening_transition_finished(const std::string &destination_point_name) {
@@ -1206,7 +1366,7 @@ void MapScript::event_map_opening_transition_finished(const std::string &destina
 }
 
 /**
- * Notifies the script that a switch has just been enabled.
+ * @brief Notifies the script that a switch has just been enabled.
  * @param switch_name name of the switch
  */
 void MapScript::event_switch_enabled(const std::string &switch_name) {
@@ -1214,7 +1374,7 @@ void MapScript::event_switch_enabled(const std::string &switch_name) {
 }
 
 /**
- * Notifies the script that a switch has just been disabled.
+ * @brief Notifies the script that a switch has just been disabled.
  * @param switch_name name of the switch
  */
 void MapScript::event_switch_disabled(const std::string &switch_name) {
@@ -1222,8 +1382,10 @@ void MapScript::event_switch_disabled(const std::string &switch_name) {
 }
 
 /**
- * Notifies the script that a switch has just been left by the entity that was on it.
+ * @brief Notifies the script that a switch has just been left by the entity that was on it.
+ *
  * The fact that the switch is enabled or disabled does not matter here.
+ *
  * @param switch_name name of the switch
  */
 void MapScript::event_switch_left(const std::string &switch_name) {
@@ -1231,14 +1393,14 @@ void MapScript::event_switch_left(const std::string &switch_name) {
 }
 
 /**
- * Notifies the script that the victory sequence of the hero has just finished.
+ * @brief Notifies the script that the victory sequence of the hero has just finished.
  */
 void MapScript::event_hero_victory_sequence_finished(void) {
   call_script_function("event_hero_victory_sequence_finished");
 }
 
 /**
- * Notifies the script that the hero is overlapping a sensor.
+ * @brief Notifies the script that the hero is overlapping a sensor.
  * @param sensor_name name of the sensor
  */
 void MapScript::event_hero_on_sensor(const std::string &sensor_name) {
@@ -1247,7 +1409,7 @@ void MapScript::event_hero_on_sensor(const std::string &sensor_name) {
 }
 
 /**
- * Notifies the script that the player has just pressed the action
+ * @brief Notifies the script that the player has just pressed the action
  * key in front of an interactive entity.
  * @param entity_name name of the interactive entity
  */
@@ -1256,10 +1418,12 @@ void MapScript::event_hero_interaction(const std::string &entity_name) {
 }
 
 /**
- * Notifies the script that the hero is using an inventory item
+ * @brief Notifies the script that the hero is using an inventory item
  * in front of a interactive entity.
+ *
  * This event is called only for inventory items that want to use it
  * (e.g. a key that is being used in front of a door).
+ *
  * @param entity_name name of the interactive entity the hero is facing
  * @param item_id id of the inventory item that is being used
  * @param variant variant of this inventory item
@@ -1274,7 +1438,7 @@ bool MapScript::event_hero_interaction_item(const std::string &entity_name, Inve
 }
 
 /**
- * Notifies the script that the player has just pressed the action
+ * @brief Notifies the script that the player has just pressed the action
  * key in front an NPC.
  * @param npc_name name of the NPC
  */
@@ -1283,7 +1447,7 @@ void MapScript::event_npc_dialog(const std::string &npc_name) {
 }
 
 /**
- * Notifies the script that an NPC has just finished its movement.
+ * @brief Notifies the script that an NPC has just finished its movement.
  * @param npc_name name of the NPC
  */
 void MapScript::event_npc_movement_finished(const std::string &npc_name) {
@@ -1291,12 +1455,14 @@ void MapScript::event_npc_movement_finished(const std::string &npc_name) {
 }
 
 /**
- * Notifies the script that the player has just open an empty chest.
+ * @brief Notifies the script that the player has just open an empty chest.
+ *
  * What happens next is controlled by your script if it handles this event.
  * The hero is in state FREEZE
  * so if you do something else than giving the player a treasure,
  * don't forget to call hero_unfreeze() once you have finished.
  * The script function does not have to return any value.
+ *
  * @param chest_name name of the chest
  * @return true if the script has handled the event, i.e. if the
  * event_chest_empty exists in the script
@@ -1306,7 +1472,7 @@ bool MapScript::event_chest_empty(const std::string &chest_name) {
 }
 
 /**
- * Notifies the script that the player has just bought an item in a shop.
+ * @brief Notifies the script that the player has just bought an item in a shop.
  * @param shop_item_name name of the item bought
  */
 void MapScript::event_shop_item_bought(const std::string &shop_item_name) {
@@ -1314,7 +1480,7 @@ void MapScript::event_shop_item_bought(const std::string &shop_item_name) {
 }
 
 /**
- * Notifies the script that an enemy has just been killed.
+ * @brief Notifies the script that an enemy has just been killed.
  * @param enemy_name name of the enemy
  */
 void MapScript::event_enemy_dead(const std::string &enemy_name) {

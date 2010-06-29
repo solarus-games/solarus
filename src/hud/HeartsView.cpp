@@ -22,7 +22,7 @@
 #include "lowlevel/System.h"
 
 /**
- * Position of the hearts in the PNG image.
+ * @brief Position of the hearts in the PNG image.
  */
 const Rectangle HeartsView::full_heart_position(27, 0, 9, 9);
 const Rectangle HeartsView::fraction_heart_positions[3] = {
@@ -32,7 +32,7 @@ const Rectangle HeartsView::fraction_heart_positions[3] = {
 };
 
 /**
- * Creates a life view in a game.
+ * @brief Creates a life view in a game.
  * @param game the current game (cannot be NULL)
  * @param x x coordinate of the top-left corner of this HUD element on the destination surface
  * @param y y coordinate of the top-left corner of this HUD element on the destination surface
@@ -44,7 +44,7 @@ HeartsView::HeartsView(Game *game, int x, int y):
 }
 
 /**
- * Creates a life view without game.
+ * @brief Creates a life view without game.
  * @param equipment the equipment object to represent
  * @param x x coordinate of the top-left corner of this HUD element on the destination surface
  * @param y y coordinate of the top-left corner of this HUD element on the destination surface
@@ -56,7 +56,8 @@ HeartsView::HeartsView(Equipment *equipment, int x, int y):
 }
  
 /**
- * Initializes the fields.
+ * @brief Initializes the fields.
+ *
  * This function is called by the constructors.
  */
 void HeartsView::create(void) {
@@ -76,7 +77,7 @@ void HeartsView::create(void) {
 
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 HeartsView::~HeartsView(void) {
   delete img_hearts;
@@ -84,7 +85,7 @@ HeartsView::~HeartsView(void) {
 }
 
 /**
- * Updates the number of hearts displayed.
+ * @brief Updates the number of hearts displayed.
  */
 void HeartsView::update(void) {
 
@@ -152,7 +153,7 @@ void HeartsView::update(void) {
 }
 
 /**
- * Redraws the hearts on the surface.
+ * @brief Redraws the hearts on the surface.
  */
 void HeartsView::rebuild(void) {
 
@@ -188,8 +189,10 @@ void HeartsView::rebuild(void) {
 }
 
 /**
- * Returns whether this hud element is visible.
+ * @brief Returns whether this hud element is visible.
+ *
  * The display() function does nothing if this function returns false.
+ *
  * @return true if this hud element is visible, i.e. if equipment is not NULL
  */
 bool HeartsView::is_visible(void) {

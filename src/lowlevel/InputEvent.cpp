@@ -21,7 +21,7 @@ const InputEvent::KeyboardKey InputEvent::directional_keys[] = { KEY_RIGHT, KEY_
 SDL_Joystick *InputEvent::joystick;
 
 /**
- * Initializes the input event manager.
+ * @brief Initializes the input event manager.
  */
 void InputEvent::initialize(void) {
 
@@ -39,7 +39,7 @@ void InputEvent::initialize(void) {
 }
 
 /**
- * Quits the input event manager.
+ * @brief Quits the input event manager.
  */
 void InputEvent::quit(void) {
 
@@ -49,7 +49,7 @@ void InputEvent::quit(void) {
 }
 
 /**
- * Creates a keyboard event.
+ * @brief Creates a keyboard event.
  * @param event the internal event to encapsulate
  */
 InputEvent::InputEvent(const SDL_Event &event):
@@ -58,14 +58,14 @@ InputEvent::InputEvent(const SDL_Event &event):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 InputEvent::~InputEvent(void) {
 
 }
 
 /**
- * Returns the first event from the event queue, or NULL
+ * @brief Returns the first event from the event queue, or NULL
  * if there is no event.
  * @return the current event to handle, or NULL if there is no event
  */
@@ -90,7 +90,7 @@ InputEvent * InputEvent::get_event(void) {
 // global information
 
 /**
- * Sets the keyboard repeat preferences.
+ * @brief Sets the keyboard repeat preferences.
  * @param delay delay in milliseconds before the event begins repeating (0 means no repeating)
  * @param interval interval in milliseconds between two events while repeating
  */
@@ -99,8 +99,10 @@ void InputEvent::set_key_repeat(int delay, int interval) {
 }
 
 /**
- * Returns whether the SHIFT key is currently down.
+ * @brief Returns whether the SHIFT key is currently down.
+ *
  * There is no distinction between the right and left SHIFT keys in this function.
+ *
  * @return true if the SHIFT key is currently down
  */
 bool InputEvent::is_shift_down(void) {
@@ -110,8 +112,10 @@ bool InputEvent::is_shift_down(void) {
 }
 
 /**
- * Returns whether the CTRL key is currently down.
+ * @brief Returns whether the CTRL key is currently down.
+ *
  * There is no distinction between the right and left CTRL keys in this function.
+ *
  * @return true if the CTRL key is currently down
  */
 bool InputEvent::is_control_down(void) {
@@ -121,8 +125,10 @@ bool InputEvent::is_control_down(void) {
 }
 
 /**
- * Returns whether the ALT key is currently down.
+ * @brief Returns whether the ALT key is currently down.
+ *
  * There is no distinction between the right and left ALT keys in this function.
+ *
  * @return true if the ALT key is currently down
  */
 bool InputEvent::is_alt_down(void) {
@@ -134,7 +140,7 @@ bool InputEvent::is_alt_down(void) {
 // event type
 
 /**
- * Returns whether this event is a keyboard event.
+ * @brief Returns whether this event is a keyboard event.
  * @return true if this is a keyboard event
  */
 bool InputEvent::is_keyboard_event(void) {
@@ -144,7 +150,7 @@ bool InputEvent::is_keyboard_event(void) {
 }
 
 /**
- * Returns whether this event is a joypad event.
+ * @brief Returns whether this event is a joypad event.
  * @return true if this is a joypad event
  */
 bool InputEvent::is_joypad_event(void) {
@@ -156,7 +162,7 @@ bool InputEvent::is_joypad_event(void) {
 }
 
 /**
- * Returns whether this event is a window event.
+ * @brief Returns whether this event is a window event.
  * @return true if this is a window event
  */
 bool InputEvent::is_window_event(void) {
@@ -167,7 +173,7 @@ bool InputEvent::is_window_event(void) {
 // keyboard
 
 /**
- * Returns whether this event is a keyboard event
+ * @brief Returns whether this event is a keyboard event
  * corresponding to pressing a key.
  * @return true if this is a key pressed event
  */
@@ -177,7 +183,7 @@ bool InputEvent::is_keyboard_key_pressed(void) {
 }
 
 /**
- * Returns whether this event is a keyboard event
+ * @brief Returns whether this event is a keyboard event
  * corresponding to pressing a specific key.
  * @param key the key to test
  * @return true if this event corresponds to pressing that key
@@ -189,7 +195,7 @@ bool InputEvent::is_keyboard_key_pressed(KeyboardKey key) {
 }
 
 /**
- * Returns whether this event is a keyboard event
+ * @brief Returns whether this event is a keyboard event
  * corresponding to pressing one of the specified keys.
  * @param keys an array of the keys to test, terminated by KEY_NONE
  * @return true if this event corresponds to pressing one of those keys
@@ -208,7 +214,7 @@ bool InputEvent::is_keyboard_key_pressed(const KeyboardKey *keys) {
 }
 
 /**
- * Returns whether this event is a keyboard event
+ * @brief Returns whether this event is a keyboard event
  * corresponding to pressing one of the four directional keys.
  * @return true if this event corresponds to pressing one of the four directional keys
  */
@@ -218,7 +224,7 @@ bool InputEvent::is_keyboard_direction_key_pressed(void) {
 }
 
 /**
- * Returns whether this event is a keyboard event
+ * @brief Returns whether this event is a keyboard event
  * corresponding to pressing a key other than the four directional keys.
  * @return true if this event corresponds to pressing a key other than the four directional keys
  */
@@ -229,7 +235,7 @@ bool InputEvent::is_keyboard_non_direction_key_pressed(void) {
 }
 
 /**
- * Returns whether this event is a keyboard event
+ * @brief Returns whether this event is a keyboard event
  * corresponding to releasing a key.
  * @return true if this is a key released event
  */
@@ -239,7 +245,7 @@ bool InputEvent::is_keyboard_key_released(void) {
 }
 
 /**
- * Returns whether this event is a keyboard event
+ * @brief Returns whether this event is a keyboard event
  * corresponding to releasing a specific key.
  * @param key the key to test
  * @return true if this event corresponds to releasing that key
@@ -251,7 +257,7 @@ bool InputEvent::is_keyboard_key_released(KeyboardKey key) {
 }
 
 /**
- * Returns whether this event is a keyboard event
+ * @brief Returns whether this event is a keyboard event
  * corresponding to releasing one of the specified keys.
  * @param keys an array of the keys to test, terminated by KEY_NONE
  * @return true if this event corresponds to releasing one of those keys
@@ -270,7 +276,7 @@ bool InputEvent::is_keyboard_key_released(const KeyboardKey *keys) {
 }
 
 /**
- * Returns whether this event is a keyboard event
+ * @brief Returns whether this event is a keyboard event
  * corresponding to releasing one of the four directional keys.
  * @return true if this event corresponds to releasing one of the four directional keys
  */
@@ -280,7 +286,7 @@ bool InputEvent::is_keyboard_direction_key_released(void) {
 }
 
 /**
- * Returns whether this event is a keyboard event
+ * @brief Returns whether this event is a keyboard event
  * corresponding to releasing a key other than the four directional keys.
  * @return true if this event corresponds to releasing a key other than the four directional keys
  */
@@ -291,9 +297,11 @@ bool InputEvent::is_keyboard_non_direction_key_released(void) {
 }
 
 /**
- * Returns whether the SHIFT key was pressed
+ * @brief Returns whether the SHIFT key was pressed
  * when this keyboard event occured.
+ *
  * If this is not a keyboard event, false is returned.
+ *
  * @return true if SHIFT was pressed during this keyboard event
  */
 bool InputEvent::is_with_shift(void) {
@@ -303,9 +311,11 @@ bool InputEvent::is_with_shift(void) {
 }
 
 /**
- * Returns whether the CTRL key was pressed
+ * @brief Returns whether the CTRL key was pressed
  * when this keyboard event occured.
+ *
  * If this is not a keyboard event, false is returned.
+ *
  * @return true if CTRL was pressed during this keyboard event
  */
 bool InputEvent::is_with_control(void) {
@@ -315,9 +325,11 @@ bool InputEvent::is_with_control(void) {
 }
 
 /**
- * Returns whether the ALT key was pressed
+ * @brief Returns whether the ALT key was pressed
  * when this keyboard event occured.
+ *
  * If this is not a keyboard event, false is returned.
+ *
  * @return true if ALT was pressed during this keyboard event
  */
 bool InputEvent::is_with_alt(void) {
@@ -327,9 +339,11 @@ bool InputEvent::is_with_alt(void) {
 }
 
 /**
- * Returns the key that was pressed or released during
+ * @brief Returns the key that was pressed or released during
  * this keyboard event.
+ *
  * If this is not a keyboard event, KEY_NONE is returned.
+ *
  * @return the key of this keyboard event
  */
 InputEvent::KeyboardKey InputEvent::get_keyboard_key(void) {
@@ -342,7 +356,7 @@ InputEvent::KeyboardKey InputEvent::get_keyboard_key(void) {
 }
 
 /**
- * Returns the human-readable name of a keyboard key.
+ * @brief Returns the human-readable name of a keyboard key.
  * @param key a keyboard key
  * @return the corresponding name
  */
@@ -353,7 +367,7 @@ const std::string InputEvent::get_keyboard_key_name(KeyboardKey key) {
 // joypad
 
 /**
- * Returns whether this event is a joypad event
+ * @brief Returns whether this event is a joypad event
  * corresponding to pressing a joypad button.
  * @return true if this is a joypad button pressed event.
  */
@@ -363,7 +377,7 @@ bool InputEvent::is_joypad_button_pressed(void) {
 }
 
 /**
- * Returns whether this event is a joypad event
+ * @brief Returns whether this event is a joypad event
  * corresponding to releasing a joypad button.
  * @return true if this is a joypad button released event.
  */
@@ -373,9 +387,11 @@ bool InputEvent::is_joypad_button_released(void) {
 }
 
 /**
- * Returns the button that was pressed or released during
+ * @brief Returns the button that was pressed or released during
  * this joypad button event.
+ *
  * If this is not a joypad button event, -1 is returned.
+ *
  * @return the button number of this joypad button event
  */
 int InputEvent::get_joypad_button(void) {
@@ -388,7 +404,7 @@ int InputEvent::get_joypad_button(void) {
 }
 
 /**
- * Returns whether this event is a joypad event
+ * @brief Returns whether this event is a joypad event
  * corresponding to moving a joypad axis.
  * @return true if this is a joypad axis event
  */
@@ -398,10 +414,12 @@ bool InputEvent::is_joypad_axis_moved(void) {
 }
 
 /**
- * Returns the axis that was moved during this joypad axis event.
+ * @brief Returns the axis that was moved during this joypad axis event.
+ *
  * The axis is identified by an integer (usually,
  * 0 and 1 represents the x and y axis of a joystick respectively).
  * If this is not a joypad axis event, -1 is returned.
+ *
  * @return the axis index of this joypad axis event
  */
 int InputEvent::get_joypad_axis(void) {
@@ -414,9 +432,11 @@ int InputEvent::get_joypad_axis(void) {
 }
 
 /**
- * Returns the new state of the axis that was moved during
+ * @brief Returns the new state of the axis that was moved during
  * this joypad axis event.
+ *
  * If this is not a joypad axis event, 0 is returned.
+ *
  * @return the new state of the axis moved during this joypad axis event:
  * -1 (left or up), 0 (centered) or 1 (right or down)
  */
@@ -439,10 +459,12 @@ int InputEvent::get_joypad_axis_state(void) {
 }
 
 /**
- * Returns whether the axis that was moved during this
+ * @brief Returns whether the axis that was moved during this
  * joypad axis event is now at its initial position
  * (i.e. it was released).
+ *
  * If this is not a joypad axis event, false is returned.
+ *
  * @return true if the axis is back to its initial position
  */
 bool InputEvent::is_joypad_axis_centered(void) {
@@ -452,7 +474,7 @@ bool InputEvent::is_joypad_axis_centered(void) {
 }
 
 /**
- * Returns whether this event is a joypad event
+ * @brief Returns whether this event is a joypad event
  * corresponding to moving a joypad hat.
  * @return true if this is a joypad hat event
  */
@@ -462,9 +484,11 @@ bool InputEvent::is_joypad_hat_moved(void) {
 }
 
 /**
- * Returns the hat that was moved during
+ * @brief Returns the hat that was moved during
  * this joypad hat event.
+ *
  * If this is not a joypad hat event, -1 is returned.
+ *
  * @return the hat index of this joypad hat event
  */
 int InputEvent::get_joypad_hat(void) {
@@ -477,11 +501,13 @@ int InputEvent::get_joypad_hat(void) {
 }
 
 /**
- * Returns the new direction of the hat that was moved during
+ * @brief Returns the new direction of the hat that was moved during
  * this joypad hat event.
+ *
  * The value returned is -1 if the hat is centered,
  * and 0 to 7 if the hat is is one of the eight main directions.
  * If this is not a joypad hat event, -1 is returned.
+ *
  * @return the new direction of the hat moved during this joypad hat event
  */
 int InputEvent::get_joypad_hat_direction(void) {
@@ -532,10 +558,12 @@ int InputEvent::get_joypad_hat_direction(void) {
 }
 
 /**
- * Returns whether the hat that was moved during this
+ * @brief Returns whether the hat that was moved during this
  * joypad hat event is now at its initial position
  * (i.e. it was released).
+ *
  * If this is not a joypad hat event, false is returned.
+ *
  * @return true if the hat is back to its initial position
  */
 bool InputEvent::is_joypad_hat_centered(void) {
@@ -548,10 +576,12 @@ bool InputEvent::is_joypad_hat_centered(void) {
 // functions common to keyboard and joypad events
 
 /**
- * Returns the direction that was pressed or released
+ * @brief Returns the direction that was pressed or released
  * during this keyboard or joypad event.
+ *
  * If this is not a keyboard or joypad event, or if
  * the control was not a direction, -1 is returned.
+ *
  * @return the direction (0 to 7) or -1 if there is no direction
  */
 int InputEvent::get_direction(void) {
@@ -601,10 +631,12 @@ int InputEvent::get_direction(void) {
 }
 
 /**
- * Returns whether this keyboard or joypad event
- * corresponds to pressing something: a key, a button
- * or a direction.
+ * @brief Returns whether this keyboard or joypad event
+ * corresponds to pressing something.
+ *
+ * The thing pressed may be a key, a button or a direction.
  * If this is not a keyboard or joypad event, false is returned.
+ *
  * @return true if something was pressed
  */
 bool InputEvent::is_pressed(void) {
@@ -615,9 +647,11 @@ bool InputEvent::is_pressed(void) {
 }
 
 /**
- * Returns whether this keyboard or joypad event
+ * @brief Returns whether this keyboard or joypad event
  * corresponds to pressing a direction.
+ *
  * If this is not a keyboard or joypad event, false is returned.
+ *
  * @return true if a direction was pressed
  */
 bool InputEvent::is_direction_pressed(void) {
@@ -628,9 +662,11 @@ bool InputEvent::is_direction_pressed(void) {
 }
 
 /**
- * Returns whether this keyboard or joypad event
+ * @brief Returns whether this keyboard or joypad event
  * corresponds to pressing something other than a direction.
+ *
  * If this is not a keyboard or joypad event, false is returned.
+ *
  * @return true if something other that a direction was pressed
  */
 bool InputEvent::is_non_direction_pressed(void) {
@@ -640,10 +676,12 @@ bool InputEvent::is_non_direction_pressed(void) {
 }
 
 /**
- * Returns whether this keyboard or joypad event
- * corresponds to releasing something: a key, a button
- * or a direction.
+ * @brief Returns whether this keyboard or joypad event
+ * corresponds to releasing something.
+ *
+ * The thing released may be a key, a button or a direction.
  * If this is not a keyboard or joypad event, false is returned.
+ *
  * @return true if something was released
  */
 bool InputEvent::is_released(void) {
@@ -657,7 +695,7 @@ bool InputEvent::is_released(void) {
 // window event
 
 /**
- * Returns whether this event corresponds to
+ * @brief Returns whether this event corresponds to
  * the user closing the window.
  * @return true if this is a window closing event
  */

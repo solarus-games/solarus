@@ -21,7 +21,7 @@
 #include "lowlevel/Surface.h"
 
 /**
- * Constructor.
+ * @brief Constructor.
  * @param game the current game
  * @param x x coordinate of the top-left corner of the icon on the destination surface
  * @param y y coordinate of the top-left corner of the icon on the destination surface
@@ -42,7 +42,7 @@ SwordIcon::SwordIcon(Game *game, int x, int y):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 SwordIcon::~SwordIcon(void) {
   delete sprite_sword_icon;
@@ -50,7 +50,7 @@ SwordIcon::~SwordIcon(void) {
 }
 
 /**
- * Returns whether the sword icon is visible.
+ * @brief Returns whether the sword icon is visible.
  * @return true if the sword icon is visible.
  */
 bool SwordIcon::is_visible(void) {
@@ -58,8 +58,9 @@ bool SwordIcon::is_visible(void) {
 }
 
 /**
- * This function is called repeatedly, it checks whether
- * the icon should change.
+ * @brief This function is called repeatedly.
+ *
+ * It checks whether the icon should change.
  */
 void SwordIcon::update(void) {
 
@@ -110,7 +111,7 @@ void SwordIcon::update(void) {
 }
 
 /**
- * Redraws the icon on the surface.
+ * @brief Redraws the icon on the surface.
  */
 void SwordIcon::rebuild(void) {
 

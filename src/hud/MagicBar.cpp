@@ -24,7 +24,7 @@
 #include "lowlevel/Surface.h"
 
 /**
- * Constructor.
+ * @brief Constructor.
  * @param game the current game
  * @param x x coordinate of the top-left corner of the magic bar on the destination surface
  * @param y y coordinate of the top-left corner of the magic bar on the destination surface
@@ -42,7 +42,7 @@ MagicBar::MagicBar(Game *game, int x, int y):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 MagicBar::~MagicBar(void) {
   delete img_magic_bar;
@@ -50,9 +50,11 @@ MagicBar::~MagicBar(void) {
 }
 
 /**
- * Returns whether this hud element is visible.
+ * @brief Returns whether this hud element is visible.
+ *
  * The display() function does nothing if this function
  * returns false.
+ *
  * @return true if this hud element is visible, i.e. if
  * the player has a magic bar
  */
@@ -61,7 +63,7 @@ bool MagicBar::is_visible(void) {
 }
 
 /**
- * Updates the magic bar level displayed.
+ * @brief Updates the magic bar level displayed.
  */
 void MagicBar::update(void) {
 
@@ -135,7 +137,7 @@ void MagicBar::update(void) {
 }
 
 /**
- * Redraws the magic bar on the surface.
+ * @brief Redraws the magic bar on the surface.
  */
 void MagicBar::rebuild(void) {
 

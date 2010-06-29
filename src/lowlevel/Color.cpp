@@ -30,7 +30,7 @@ Color Color::blue;
 Color Color::yellow;
 
 /**
- * Initializes the color static fields.
+ * @brief Initializes the color static fields.
  */
 void Color::initialize(void) {
 
@@ -45,14 +45,14 @@ void Color::initialize(void) {
 }
 
 /**
- * Uninitializes the color system.
+ * @brief Uninitializes the color system.
  */
 void Color::quit(void) {
 
 }
 
 /**
- * Creates a default color with unspecified RGB values.
+ * @brief Creates a default color with unspecified RGB values.
  */
 Color::Color(void) {
   internal_color.r = 0;
@@ -62,7 +62,7 @@ Color::Color(void) {
 }
 
 /**
- * Copy constructor.
+ * @brief Copy constructor.
  * @param other another color
  */
 Color::Color(const Color &other):
@@ -71,7 +71,7 @@ Color::Color(const Color &other):
 }
 
 /**
- * Creates a color with the specified RGB values.
+ * @brief Creates a color with the specified RGB values.
  * @param r the red component (from 0 to 255)
  * @param g the green component (from 0 to 255)
  * @param b the blue component (from 0 to 255)
@@ -85,8 +85,10 @@ Color::Color(int r, int g, int b) {
 }
 
 /**
- * Returns the 32-bit value representing this color.
+ * @brief Returns the 32-bit value representing this color.
+ *
  * This function must be used only by low-level classes.
+ *
  * @return the 32-bit value of this color
  */
 uint32_t Color::get_internal_value(void) {
@@ -94,8 +96,10 @@ uint32_t Color::get_internal_value(void) {
 }
 
 /**
- * Returns the internal color encapsulated by this object.
+ * @brief Returns the internal color encapsulated by this object.
+ *
  * This function must be used only by low-level classes.
+ *
  * @return the SDL color encapsulated
  */
 SDL_Color * Color::get_internal_color(void) {

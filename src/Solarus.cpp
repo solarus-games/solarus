@@ -100,7 +100,7 @@ void Solarus::set_exiting(void) {
  * The input events are forwarded to the current screen.
  * The current screen is redrawn when necessary.
  */
-void Solarus::main(void) {
+void Solarus::main_loop(void) {
 
   // main loop
   InputEvent *event;
@@ -244,7 +244,7 @@ void Solarus::display(void) {
 int main(int argc, char **argv) {
 
   Solarus solarus = Solarus(argc, argv);
-  solarus.main();
+  solarus.main_loop();
 
   return 0;
 }

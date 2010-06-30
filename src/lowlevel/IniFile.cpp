@@ -25,7 +25,7 @@ struct SimpleIni {
   CSimpleIniA data;                             /**< the library-dependent ini file object encapsulated */
   CSimpleIniA::TNamesDepend groups;             /**< the groups currently traversed by a group iteration */
   CSimpleIniA::TNamesDepend::iterator iterator; /**< the iteration */
-}
+};
 
 /**
  * @brief Creates an object to read or write an ini file.

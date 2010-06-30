@@ -1,25 +1,35 @@
 /*
  * Copyright (C) 2009 Christopho, Solarus - http://www.solarus-engine.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lowlevel/IniFile.h"
 #include "lowlevel/FileTools.h"
+#include "simpleini/SimpleIni.h"
+
+/**
+ * @brief Encapsulates the objects managed by the SimpleIni library.
+ */
+struct SimpleIni {
+  CSimpleIniA data;                             /**< the library-dependent ini file object encapsulated */
+  CSimpleIniA::TNamesDepend groups;             /**< the groups currently traversed by a group iteration */
+  CSimpleIniA::TNamesDepend::iterator iterator; /**< the iteration */
+}
 
 /**
  * @brief Creates an object to read or write an ini file.
- * 
+ *
  * Opens the specified file.
  *
  * @param file_name name of the file to write, relative to the data location
@@ -28,14 +38,16 @@
 IniFile::IniFile(const std::string &file_name, Mode mode):
   file_name(file_name), mode(mode) {
 
-  ini.SetUnicode();
+  ini = new SimpleIni();
+
+  ini->data.SetUnicode();
   if (mode != WRITE || FileTools::data_file_exists(file_name)) {
     // read the ini file
     char *buffer;
     size_t size;
     FileTools::data_file_open_buffer(file_name, &buffer, &size, (mode == READ_LANGUAGE));
 
-    if (ini.Load(buffer, size) != SI_OK) {
+    if (ini->data.Load(buffer, size) != SI_OK) {
       DIE("Cannot load the ini file '" << file_name << "'");
     }
 
@@ -47,7 +59,7 @@ IniFile::IniFile(const std::string &file_name, Mode mode):
  * @brief Destroys the object.
  */
 IniFile::~IniFile(void) {
-
+  delete ini;
 }
 
 /**
@@ -61,7 +73,7 @@ void IniFile::save(void) {
 
   // save the data into a buffer
   std::string s;
-  ini.Save(s);
+  ini->data.Save(s);
   FileTools::data_file_save_buffer(file_name, s.c_str(), s.size());
 }
 
@@ -71,7 +83,7 @@ void IniFile::save(void) {
  * @return true if this group exists
  */
 bool IniFile::has_group(const std::string &group) {
-  return ini.GetSection(group.c_str()) != NULL;
+  return ini->data.GetSection(group.c_str()) != NULL;
 }
 
 /**
@@ -122,7 +134,7 @@ const std::string & IniFile::get_group(void) {
  */
 int IniFile::get_integer_value(const std::string &key, int default_value) {
 
-  long value = ini.GetLongValue(group.c_str(), key.c_str(), default_value);
+  long value = ini->data.GetLongValue(group.c_str(), key.c_str(), default_value);
   return (int) value;
 }
 
@@ -134,7 +146,7 @@ int IniFile::get_integer_value(const std::string &key, int default_value) {
  */
 bool IniFile::get_boolean_value(const std::string &key, bool default_value) {
 
-  return ini.GetBoolValue(group.c_str(), key.c_str(), default_value);
+  return ini->data.GetBoolValue(group.c_str(), key.c_str(), default_value);
 }
 
 /**
@@ -145,7 +157,7 @@ bool IniFile::get_boolean_value(const std::string &key, bool default_value) {
  */
 const std::string IniFile::get_string_value(const std::string &key, const std::string &default_value) {
 
-  std::string value = ini.GetValue(group.c_str(), key.c_str(), default_value.c_str());
+  std::string value = ini->data.GetValue(group.c_str(), key.c_str(), default_value.c_str());
   return value;
 }
 
@@ -174,7 +186,7 @@ const std::string IniFile::get_string_value(const std::string &key) {
  */
 void IniFile::set_integer_value(const std::string &key, int value) {
 
-  ini.SetLongValue(group.c_str(), key.c_str(), value);
+  ini->data.SetLongValue(group.c_str(), key.c_str(), value);
 }
 
 /**
@@ -184,7 +196,7 @@ void IniFile::set_integer_value(const std::string &key, int value) {
  */
 void IniFile::set_boolean_value(const std::string &key, bool value) {
 
-  ini.SetBoolValue(group.c_str(), key.c_str(), value);
+  ini->data.SetBoolValue(group.c_str(), key.c_str(), value);
 }
 
 /**
@@ -194,7 +206,7 @@ void IniFile::set_boolean_value(const std::string &key, bool value) {
  */
 void IniFile::set_string_value(const std::string &key, const std::string &value) {
 
-  ini.SetValue(group.c_str(), key.c_str(), value.c_str());
+  ini->data.SetValue(group.c_str(), key.c_str(), value.c_str());
 }
 
 /**
@@ -204,8 +216,8 @@ void IniFile::set_string_value(const std::string &key, const std::string &value)
  */
 void IniFile::start_group_iteration(void) {
 
-  ini.GetAllSections(groups);
-  iterator = groups.begin();
+  ini->data.GetAllSections(ini->groups);
+  ini->iterator = ini->groups.begin();
 }
 
 /**
@@ -214,8 +226,8 @@ void IniFile::start_group_iteration(void) {
  */
 bool IniFile::has_more_groups(void) {
 
-  if (iterator != groups.end()) {
-    CSimpleIniA::Entry entry = *iterator;
+  if (ini->iterator != ini->groups.end()) {
+    CSimpleIniA::Entry entry = *ini->iterator;
     set_group(entry.pItem);
     return true;
   }
@@ -231,6 +243,6 @@ bool IniFile::has_more_groups(void) {
  * To know the group name, call get_group().
  */
 void IniFile::next_group(void) {
-  iterator++;
+  ini->iterator++;
 }
 

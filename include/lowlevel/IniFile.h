@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2009 Christopho, Solarus - http://www.solarus-engine.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -18,7 +18,8 @@
 #define SOLARUS_INI_FILE_H
 
 #include "Common.h"
-#include "simpleini/SimpleIni.h"
+
+typedef struct SimpleIni SimpleIni;
 
 /**
  * @brief Reads and writes an ini-life file.
@@ -47,9 +48,8 @@ class IniFile {
     Mode mode;                                    /**< the mode used to open the file */
     std::string group;                            /**< the group currently selected in the ini file */
 
-    CSimpleIniA ini;                              /**< the library-dependent object encapsulated */
-    CSimpleIniA::TNamesDepend groups;             /**< the groups currently traversed by a group iteration */
-    CSimpleIniA::TNamesDepend::iterator iterator; /**< the iteration */
+    SimpleIni *ini;                               /**< encapsulation of the library-dependant objects (opaque structure because
+                                                   * you don't want to include the SimpleIni header) */
 
   public:
 
@@ -60,7 +60,7 @@ class IniFile {
     // reading values
     bool has_group(const std::string &group);
     void set_group(const std::string &group);
-    const std::string & get_group(void); 
+    const std::string & get_group(void);
     int get_integer_value(const std::string &key, int default_value);
     bool get_boolean_value(const std::string &key, bool default_value);
     const std::string get_string_value(const std::string &key, const std::string &default_value);

@@ -72,6 +72,7 @@ void ChainAndBall::update(void) {
  */
 void ChainAndBall::display_on_map(void) {
 
+  // display the ball
   Enemy::display_on_map();
 
   if (is_visible()) {
@@ -147,5 +148,17 @@ void ChainAndBall::notify_just_moved(void) {
       link_xy[i].set_xy(x, y);
     }
   }
+}
+
+/**
+ * @brief Restarts the normal movement of the enemy.
+ *
+ * This function is called when the enemy needs to restart its movement
+ * because something happened (for example the enemy has just been created,
+ * or it was just hurt).
+ */
+void ChainAndBall::restart(void) {
+
+  Enemy::restart();
 }
 

@@ -236,7 +236,7 @@ bool CarriedItem::is_being_thrown(void) {
  * @return true if the item is about to explode 
  */
 bool CarriedItem::will_explode_soon(void) {
-  return explosion_date != 0 && System::now() >= explosion_date - 1500;
+  return can_explode() && System::now() >= explosion_date - 1500;
 }
 
 /**
@@ -251,7 +251,7 @@ void CarriedItem::break_item(void) {
 
   movement->stop();
 
-  if (explosion_date == 0) {
+  if (!can_explode()) {
     game->play_sound(destruction_sound_id);
     get_sprite()->set_current_animation("destroy");
   }
@@ -273,7 +273,15 @@ void CarriedItem::break_item(void) {
  * @return true if the item is broken
  */
 bool CarriedItem::is_broken(void) {
-  return is_breaking && (get_sprite()->is_animation_finished() || explosion_date != 0);
+  return is_breaking && (get_sprite()->is_animation_finished() || can_explode());
+}
+
+/**
+ * @brief Returns whether the item can explode.
+ * @return true if the item will explode
+ */
+bool CarriedItem::can_explode(void) {
+  return explosion_date != 0;
 }
 
 /**
@@ -294,7 +302,7 @@ void CarriedItem::set_suspended(bool suspended) {
     if (is_throwing) {
       next_down_date += System::now() - when_suspended;
     }
-    if (explosion_date != 0) {
+    if (can_explode()) {
       explosion_date += System::now() - when_suspended;
     }
   }
@@ -325,7 +333,7 @@ void CarriedItem::update(void) {
   }
 
   // when the item has finished flying, destroy it
-  else if (explosion_date != 0 && !is_breaking) {
+  else if (can_explode() && !is_breaking) {
     
     uint32_t now = System::now();
     
@@ -394,7 +402,7 @@ void CarriedItem::display_on_map(void) {
  */
 void CarriedItem::notify_collision_with_enemy(Enemy *enemy) {
 
-  if (is_throwing && explosion_date == 0) {
+  if (is_throwing && !can_explode()) {
     enemy->try_hurt(ATTACK_THROWN_ITEM, this, NULL);
   }
 }
@@ -524,7 +532,7 @@ bool CarriedItem::is_sensor_obstacle(Sensor *sensor) {
  */
 bool CarriedItem::is_enemy_obstacle(Enemy *enemy) {
   // if this item explodes when reaching an obstacle, then we consider enemies as obstacles
-  return explosion_date != 0;
+  return can_explode();
 }
 
 /**

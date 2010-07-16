@@ -58,7 +58,12 @@ function event_switch_enabled(switch_name)
   if switch_name == "barrier_switch" then
     camera_move(120, 536, 15)
   elseif switch_name == "pegasus_run_switch" then
+    switch_set_enabled("pegasus_run_switch_2", true)
     camera_move(904, 88, 30)
+  elseif switch_name == "pegasus_run_switch_2" then
+    play_sound("door_open")
+    tile_set_enabled("pegasus_run_barrier", false)
+    switch_set_enabled("pegasus_run_switch", true)
   elseif switch_name == "left_eye_switch" then
     check_eye_statues()
   elseif switch_name == "right_eye_switch" then
@@ -119,6 +124,7 @@ function pegasus_run_timer()
   play_sound("door_closed")
   tile_set_enabled("pegasus_run_barrier", true)
   switch_set_enabled("pegasus_run_switch", false)
+  switch_set_enabled("pegasus_run_switch_2", false)
 end
 
 function hidden_stairs_timer()

@@ -145,6 +145,7 @@ void DynamicTile::set_enabled(bool enabled) {
   }
   else {
     this->enabled = false;
+    this->waiting_enabled = false;
   }
 }
 

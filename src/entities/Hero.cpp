@@ -51,7 +51,8 @@ Hero::Hero(Equipment *equipment):
   on_conveyor_belt(false), current_stairs(NULL), next_stairs_phase_date(0),
   lifted_item(NULL), treasure(NULL), end_victory_date(0),
   ground(GROUND_NORMAL), next_ground_date(0), delayed_teletransporter(NULL),
-  current_inventory_item(NULL), when_can_use_inventory_item(0) {
+  current_inventory_item(NULL), when_can_use_inventory_item(0),
+  inventory_item_phase_date(0) {
 
   set_size(16, 16);
   set_origin(8, 13);
@@ -230,7 +231,7 @@ bool Hero::is_stairs_obstacle(Stairs *stairs) {
  */
 bool Hero::is_sensor_obstacle(Sensor *sensor) {
 
-  if (state == HURT) { // TODO same thing for pegasus shoes
+  if (state == HURT) { // TODO same thing for running shoes
     return true;
   }
 
@@ -260,7 +261,7 @@ bool Hero::is_raised_block_obstacle(CrystalSwitchBlock *raised_block) {
  * @return true if the jump sensor is currently an obstacle for this entity
  */
 bool Hero::is_jump_sensor_obstacle(JumpSensor *jump_sensor) {
-  return get_state() == USING_INVENTORY_ITEM; // stop when running with the Pegasus Shoes
+  return get_state() == USING_INVENTORY_ITEM; // stop when running with the speed shoes
 }
 
 /**
@@ -546,9 +547,12 @@ void Hero::set_suspended(bool suspended) {
 
   // timers
   if (!suspended) {
-    uint32_t now = System::now();
-    next_counter_date += now - when_suspended;
-    next_stairs_phase_date += now - when_suspended;
+    uint32_t diff = System::now() - when_suspended;
+    next_counter_date += diff;
+    next_stairs_phase_date += diff;
+    end_victory_date += diff;
+    when_can_use_inventory_item += diff;
+    inventory_item_phase_date += diff;
   }
 }
 

@@ -166,6 +166,8 @@ class Hero: public MapEntity {
     InventoryItem *current_inventory_item; /**< the inventory item the player is currently using,
 					    * or NULL if he is not using an item */
     uint32_t when_can_use_inventory_item;  /**< date when the player can use an inventory item next time */
+    int inventory_item_phase;              /**< current phase when using an item (used for some items) */
+    uint32_t inventory_item_phase_date;    /**< date of the next phase when using an item (used for some items) */
 
     // update functions
     void update_position(void);
@@ -176,6 +178,7 @@ class Hero: public MapEntity {
     void action_key_pressed(void);
     void sword_key_pressed(void);
     void item_key_pressed(int slot);
+    void item_key_released(int slot);
     void arrow_pressed(int direction);
     void arrow_released(int direction);
 
@@ -319,11 +322,11 @@ class Hero: public MapEntity {
     // using items (functions called by the InventoryItem class)
     void start_boomerang(void);
     void start_bow(void);
-    void start_pegasus_shoes(void);
-    void update_pegasus_shoes(void);
-    void stop_pegasus_shoes(void);
-    bool is_pegasus_shoes_running(void);
-    bool is_pegasus_shoes_run_finished(void);
+    void start_running(void);
+    void update_running(void);
+    void stop_running(void);
+    bool is_running(void);
+    bool is_running_finished(void);
 
     // keys
     void key_pressed(GameControls::GameKey key);

@@ -1788,22 +1788,36 @@ void Hero::start_bow(void) {
 }
 
 /**
- * @brief Starts running with the Pegasus Shoes.
+ * @brief Starts running with the running shoes.
  *
  * The state should be USING_INVENTORY_ITEM.
  */
-void Hero::start_pegasus_shoes(void) {
-  set_movement(new StraightMovement(30, get_animation_direction() * 90, 2000));
+void Hero::start_running(void) {
+
+  set_movement(new StraightMovement(10, get_animation_direction() * 90, 300));
+  sprites->set_animation_walking();
+  inventory_item_phase = 0;
+  inventory_item_phase_date = System::now() + 300;
 }
 
 /**
- * @brief This function is called repeatedly while the hero is running with the Pegasus Shoes.
+ * @brief This function is called repeatedly while the hero is running with the running shoes.
  *
  * The state should be USING_INVENTORY_ITEM.
  */
-void Hero::update_pegasus_shoes(void) {
+void Hero::update_running(void) {
 
-  if (get_movement()->is_finished() || map->test_collision_with_obstacles(get_layer(), get_movement()->get_last_collision_box_on_obstacle(), this)) {
+  uint32_t now = System::now();
+  if (inventory_item_phase == 0) {
+    
+    if (now >= inventory_item_phase_date) {
+      set_movement(new StraightMovement(30, get_animation_direction() * 90, 2000));
+      sprites->set_animation_walking();
+      inventory_item_phase++;
+    }
+  }
+  else if (get_movement()->is_finished() 
+      || map->test_collision_with_obstacles(get_layer(), get_movement()->get_last_collision_box_on_obstacle(), this)) {
     clear_movement();
     set_movement(normal_movement);
   }
@@ -1812,29 +1826,30 @@ void Hero::update_pegasus_shoes(void) {
 /**
  * @brief Stops running.
  */
-void Hero::stop_pegasus_shoes(void) {
+void Hero::stop_running(void) {
   
   StraightMovement *movement = (StraightMovement*) get_movement();
   movement->set_finished();
+  inventory_item_phase++;
 }
 
 /**
- * @brief Returns whether the hero is currently running with the Pegasus Shoes.
+ * @brief Returns whether the hero is currently running.
  * @return true if the heor is running
  */
-bool Hero::is_pegasus_shoes_running(void) {
+bool Hero::is_running(void) {
 
-  return state == USING_INVENTORY_ITEM && current_inventory_item->get_id() == INVENTORY_PEGASUS_SHOES;
+  return state == USING_INVENTORY_ITEM && current_inventory_item->get_id() == INVENTORY_SPEED_SHOES;
 }
 
 /**
- * @brief Returns whether the Pegasus Shoes run is finished.
+ * @brief Returns whether the run is finished.
  *
  * The state should be USING_INVENTORY_ITEM.
  *
  * @return true if the run is finished
  */
-bool Hero::is_pegasus_shoes_run_finished(void) {
-  return get_movement() == get_normal_movement();
+bool Hero::is_running_finished(void) {
+  return inventory_item_phase != 0 && get_movement() == get_normal_movement();
 }
 

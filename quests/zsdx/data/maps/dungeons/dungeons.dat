@@ -68,35 +68,35 @@ save = 62
 big = 0
 
 [dungeon_2.map_31.chest_0]
-floor = 0
+floor = -1
 x = 200
 y = 656
 save = 72
 big = 0
 
 [dungeon_2.map_31.chest_1]
-floor = 0
+floor = -1
 x = 552
 y = 392
 save = 85
 big = 0
 
 [dungeon_2.map_31.chest_2]
-floor = 0
+floor = -1
 x = 672
 y = 448
 save = 88
 big = 1
 
 [dungeon_2.map_31.chest_3]
-floor = 0
+floor = -1
 x = 232
 y = 320
 save = 81
 big = 0
 
 [dungeon_2.map_31.chest_4]
-floor = 0
+floor = -1
 x = 104
 y = 320
 save = 77

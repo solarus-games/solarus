@@ -75,6 +75,7 @@ class CarriedItem: public MapEntity {
     bool is_being_thrown(void);
     void break_item(void);
     bool is_broken(void);
+    bool can_explode(void);
 
     void set_suspended(bool suspended);
     void update(void);

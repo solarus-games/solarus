@@ -535,6 +535,14 @@ bool Enemy::is_enabled(void) {
 }
 
 /**
+ * @brief Returns whether this entity is currently visible.
+ * @return true if this entity is currently visible
+ */
+bool Enemy::is_visible(void) {
+  return MapEntity::is_visible() && is_enabled();
+}
+
+/**
  * @brief Returns whether this enemy is in a normal state.
  *
  * The enemy is considered to be in its normal state if

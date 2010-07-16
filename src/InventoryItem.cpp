@@ -178,8 +178,8 @@ void InventoryItem::start(Game *game) {
 	}
 	break;
 
-      case INVENTORY_PEGASUS_SHOES:
-        hero->start_pegasus_shoes();
+      case INVENTORY_SPEED_SHOES:
+        hero->start_running();
 	break;
 
       case INVENTORY_APPLES:
@@ -253,9 +253,9 @@ void InventoryItem::update(void) {
 	}
 	break;
  
-      case INVENTORY_PEGASUS_SHOES:
-	hero->update_pegasus_shoes();
-        if (hero->is_pegasus_shoes_run_finished()) {
+      case INVENTORY_SPEED_SHOES:
+	hero->update_running();
+        if (hero->is_running_finished()) {
 	  finished = true;
 	}
 	break;

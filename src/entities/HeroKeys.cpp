@@ -104,6 +104,14 @@ void Hero::key_released(GameControls::GameKey key) {
     arrow_released(3);
     break;
 
+  case GameControls::ITEM_1:
+    item_key_released(0);
+    break;
+
+  case GameControls::ITEM_2:
+    item_key_released(1);
+    break;
+
   default:
     break;
   }
@@ -175,6 +183,19 @@ void Hero::item_key_pressed(int slot) {
 }
 
 /**
+ * @brief This function is called when an item key is relased.
+ *
+ * Depending on the item assigned to this key, an
+ * action may be performed.
+ */
+void Hero::item_key_released(int slot) {
+
+  if (is_running() && inventory_item_phase == 0) {
+    stop_running();
+  }
+}
+
+/**
  * @brief This function is called when an directional key is pressed.
  * @param direction of the arrow pressed (0 to 3)
  */
@@ -183,8 +204,8 @@ void Hero::arrow_pressed(int direction) {
   // notify the movement
   get_normal_movement()->add_direction(direction);
 
-  if (is_pegasus_shoes_running()) {
-    stop_pegasus_shoes();
+  if (is_running()) {
+    stop_running();
   }
 }
 

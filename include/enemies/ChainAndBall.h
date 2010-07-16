@@ -56,6 +56,7 @@ class ChainAndBall: public Enemy {
     void display_on_map(void);
     void notify_just_moved(void);
     bool is_displayed_in_y_order(void);
+    void restart(void);
 };
 
 #endif

@@ -63,7 +63,7 @@ void Khotor::initialize(void) {
   // chain and ball
   chain = (ChainAndBall*) create(game, CHAIN_AND_BALL, RANK_NORMAL, -1, "chain_and_ball", get_layer(),
       get_x(), get_y(), 0, PickableItem::NONE, -1);
-  chain->attach_to(this, -16, -33, 64);
+  start_chain();
   map->get_entities()->add_entity(chain);
 }
 
@@ -88,6 +88,15 @@ bool Khotor::is_displayed_in_y_order(void) {
  */
 void Khotor::restart(void) {
   Enemy::restart();
+  chain->set_enabled(true);
+  start_chain();
+}
+
+/**
+ * Starts the chain and ball.
+ */
+void Khotor::start_chain(void) {
+  chain->attach_to(this, -16, -33, 64);
 }
 
 /**
@@ -102,6 +111,11 @@ void Khotor::just_hurt(MapEntity *source, EnemyAttack attack, int life_points) {
 
     // Khotor is dying: remove the chain and ball
     chain->remove_from_map();
+  }
+  else if (life_points > 0) {
+
+    // Khotor is hurt: restart the chain and ball
+    chain->set_enabled(false);
   }
 }
 

@@ -96,7 +96,7 @@ void CrystalSwitch::notify_collision(MapEntity *entity_overlapping, CollisionMod
   if (entity_overlapping->get_type() == CARRIED_ITEM && collision_mode == COLLISION_RECTANGLE) {
 
     CarriedItem *item = (CarriedItem*) entity_overlapping;
-    if (item->is_being_thrown()) {
+    if (item->is_being_thrown() && !item->can_explode()) {
       activate(item);
       item->break_item();
     }

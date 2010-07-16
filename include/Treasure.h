@@ -66,7 +66,7 @@ class Treasure {
       GREEN_POTION      = 10,
       BLUE_POTION       = 11,
       FAIRY_IN_BOTTLE   = 12,
-      PEGASUS_SHOES     = 13,
+      SPEED_SHOES       = 13,
       MYSTIC_MIRROR     = 14,
       CANE_OF_SOMARIA   = 15,
       APPLES            = 16,

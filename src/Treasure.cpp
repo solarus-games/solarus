@@ -330,8 +330,8 @@ void Treasure::add_item_to_equipment(void) {
     equipment->give_inventory_item(equipment->get_first_empty_bottle(), 6);
     break;
 
-  case PEGASUS_SHOES:
-    equipment->give_inventory_item(INVENTORY_PEGASUS_SHOES);
+  case SPEED_SHOES:
+    equipment->give_inventory_item(INVENTORY_SPEED_SHOES);
     break;
 
   case MYSTIC_MIRROR:

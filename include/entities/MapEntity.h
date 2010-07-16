@@ -211,7 +211,7 @@ class MapEntity {
     bool has_sprite(void);
     void remove_sprite(const SpriteAnimationSetId &id);
     void remove_sprites(void);
-    bool is_visible(void);
+    virtual bool is_visible(void);
     void set_visible(bool visible);
     void set_animation_ignore_suspend(bool ignore_suspend);
     void start_fading(int direction);

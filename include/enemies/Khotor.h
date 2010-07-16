@@ -30,6 +30,7 @@ class Khotor: public Enemy {
   private:
 
     ChainAndBall *chain;
+    void start_chain(void);
 
   protected:
 

@@ -35,7 +35,7 @@ enum InventoryItemId {
   INVENTORY_HOOK_SHOT                   = 5,
   INVENTORY_BOTTLE_1                    = 6, /**< 1: empty, 2: water, 3: red potion, 4: green potion, 5: blue potion, 6: fairy */
 
-  INVENTORY_PEGASUS_SHOES               = 7,
+  INVENTORY_SPEED_SHOES                 = 7,
   INVENTORY_MYSTIC_MIRROR               = 8,
   INVENTORY_CANE_OF_SOMARIA             = 9,
   INVENTORY_APPLES                      = 10,

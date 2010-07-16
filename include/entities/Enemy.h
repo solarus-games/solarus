@@ -224,6 +224,7 @@ class Enemy: public Detector {
     virtual void set_suspended(bool suspended);
     bool is_enabled(void);
     void set_enabled(bool enabled);
+    bool is_visible(void);
     void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
     void notify_collision(MapEntity *other_entity, Sprite *other_sprite, Sprite *this_sprite);
     void notify_collision_with_explosion(Explosion *explosion, Sprite *sprite_overlapping);

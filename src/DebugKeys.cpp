@@ -102,7 +102,7 @@ void DebugKeys::key_pressed(InputEvent::KeyboardKey key) {
 	equipment->give_inventory_item(INVENTORY_BOOMERANG);
 	equipment->give_inventory_item(INVENTORY_LAMP);
 	equipment->give_inventory_item(INVENTORY_HOOK_SHOT);
-	equipment->give_inventory_item(INVENTORY_PEGASUS_SHOES);
+	equipment->give_inventory_item(INVENTORY_SPEED_SHOES);
 	equipment->give_inventory_item(INVENTORY_BOTTLE_1);
 	equipment->give_inventory_item(INVENTORY_GLOVE);
 	equipment->give_inventory_item(INVENTORY_PAINS_AU_CHOCOLAT);

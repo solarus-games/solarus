@@ -61,7 +61,6 @@ Bugs :
 - On ne peut pas lancer un pot au-dessus d'une falaise
 - Quand on lance un pot dans un donjon depuis la couche intermédiaire vers la couche basse, le changer de couche (détecter l'absence de tiles sur la couche intermédiaire)
 - vérifier ce qui se passe si on arrive sur un tapis roulant pendant qu'on tire une statue (peut-être modifier le is_conveyor_belt_obstacle)
-- lancer un chou-péteur sur un interrupteur de cristal : activé deux fois (projectile + explosion)
 - (bug trouvé par Morwenn, confirmé) Lorsqu'on essaye de soulever une falaise en biais (avec la touche action),
   et que l'on reste appuyé sur la touche directionnelle, Link continue d'essayer de pousser la falaise
   tant qu'on ne relâche pas la touche directionnelle.

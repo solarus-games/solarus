@@ -28,6 +28,7 @@ function event_dialog_finished(first_message_id, answer)
 end
 
 function event_hero_victory_sequence_finished()
+  dungeon_set_finished()
   hero_set_map(6, "from_dungeon_1_1F", 1)
   hero_set_pause_enabled(true);
 end

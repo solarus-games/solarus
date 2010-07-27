@@ -1706,7 +1706,6 @@
 0	0	840	424	160	16	192
 0	0	768	208	8	112	46
 0	0	776	136	8	16	44
-0	0	800	136	8	16	44
 0	0	512	928	16	16	825
 0	0	648	864	16	16	525
 0	0	424	992	16	16	81
@@ -1787,6 +1786,8 @@
 0	0	872	72	8	8	756
 0	0	864	72	8	8	753
 0	0	888	64	8	8	57
+0	0	800	136	8	16	44
+0	0	784	128	16	16	44
 12	0	992	624	32	24	custom_obstacle_3	0	1	1	0
 12	0	760	440	32	16	custom_obstacle_2	0	0	1	1
 1	0	1008	613	out_link_house	3	0
@@ -1908,7 +1909,6 @@
 7	0	976	829	enemy_2	3	0	0	-1	-1	-1
 8	0	1008	645	monkey	3	1	npc/monkey	_none
 12	0	912	456	16	16	custom_obstacle	0	0	1	1
-8	0	792	157	monkey_2	3	1	npc/monkey	_none
 2	0	680	336	16	16	to_smith_cave	0	1	16	main_entrance
 1	0	688	365	out_smith_cave	3	0
 8	0	920	597	tree_woman	3	1	npc/villager1	outside_world.village.tree_woman

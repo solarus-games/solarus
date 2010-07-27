@@ -212,7 +212,7 @@ class Savegame {
       FIRST_DUNGEON_BIG_KEY            = 202, /**< 1 if the player has the big key of dungeon #1 */
       FIRST_DUNGEON_BOSS_KEY           = 203, /**< 1 if the player has the boss key of dungeon #1 */
       FIRST_DUNGEON_SMALL_KEYS         = 204, /**< number of small keys found in dungeon #1 */
-      FIRST_DUNGEON_FINISHED           = 205, /**< 1 if the player has finished dungeon #1 (unused for now) */
+      FIRST_DUNGEON_FINISHED           = 205, /**< 1 if the player has finished dungeon #1 */
       FIRST_DUNGEON_UNUSED_1           = 206, /**< empty place for future new data in dungeon #1 */
       FIRST_DUNGEON_UNUSED_2           = 207, /**< empty place for future new data in dungeon #1 */
       FIRST_DUNGEON_UNUSED_3           = 208, /**< empty place for future new data in dungeon #1 */

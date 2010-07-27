@@ -32,10 +32,10 @@ function event_npc_dialog(npc_name)
      
      if not savegame_get_boolean(24) then
        -- monkey first dialog
-       play_sound("la_monkey")
+       play_sound("monkey")
        dialog_start("outside_world.village.monkey")
      else
-       play_sound("la_monkey")
+       play_sound("monkey")
        dialog_start("outside_world.dungeon_2_entrance.monkey")
      end
    end
@@ -57,7 +57,7 @@ function event_dialog_finished(first_message_id, answer)
    elseif first_message_id == "outside_world.village.monkey.with_shield" then
       -- make the monkey leave
       hero_freeze()
-      play_sound("la_monkey")
+      play_sound("monkey")
       npc_jump("monkey", 1, 24, false)
       monkey_jumps = 1
       savegame_set_boolean(24, true)
@@ -75,7 +75,7 @@ function event_npc_movement_finished(npc_name)
       timer_start(300, "monkey_timer", false)
    elseif monkey_jumps == 2 then
       -- second jump finished: start the last jump
-      play_sound("la_monkey")
+      play_sound("monkey")
       npc_jump("monkey", 1, 64, false)
       monkey_jumps = 3
    else
@@ -88,7 +88,7 @@ end
 -- Function called when the monkey timer expires.
 function monkey_timer()
    -- start the second jump
-   play_sound("la_monkey")
+   play_sound("monkey")
    npc_jump("monkey", 2, 56, false)
    monkey_jumps = 2
 end

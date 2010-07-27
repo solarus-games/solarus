@@ -19,6 +19,7 @@
 #include "Game.h"
 #include "Sprite.h"
 #include "InventoryItem.h"
+#include "DungeonEquipment.h"
 #include "entities/EntityType.h"
 #include "entities/Detector.h"
 #include "entities/MapEntities.h"
@@ -110,6 +111,8 @@ void MapScript::register_available_functions(void) {
   lua_register(context, "boss_end_battle", l_boss_end_battle);
   lua_register(context, "miniboss_start_battle", l_miniboss_start_battle);
   lua_register(context, "miniboss_end_battle", l_miniboss_end_battle);
+  lua_register(context, "dungeon_is_finished", l_dungeon_is_finished);
+  lua_register(context, "dungeon_set_finished", l_dungeon_set_finished);
   lua_register(context, "sensor_remove", l_sensor_remove);
   lua_register(context, "door_open", l_door_open);
   lua_register(context, "door_close", l_door_close);
@@ -1217,6 +1220,47 @@ int MapScript::l_miniboss_end_battle(lua_State *l) {
   called_by_script(l, 0, &script);
 
   script->map->get_entities()->end_miniboss_battle();
+
+  return 0;
+}
+
+/**
+ * @brief Returns whether a dungeon is finished.
+ *
+ * A dungeon is considered as finished if the function dungeon_set_finished() was
+ * called from the script of a map in that dungeon.
+ * This information is saved by the engine (see include/Savegame.h).
+ * - Argument 1 (integer): number of the dungeon to test
+ * - Return value (boolean): true if that dungeon is finished
+ *
+ * @param l the Lua context that is calling this function
+ */
+int MapScript::l_dungeon_is_finished(lua_State *l) {
+
+  MapScript *script;
+  called_by_script(l, 1, &script);
+
+  int dungeon = lua_tointeger(l, 1);
+  bool finished = script->game->get_dungeon_equipment()->is_finished(dungeon);
+  lua_pushboolean(l, finished);
+
+  return 1;
+}
+
+/**
+ * @brief Sets a dungeon as finished.
+ *
+ * You should call this function when the final dialog of the dungeon ending
+ * sequence is finished.
+ *
+ * @param l the Lua context that is calling this function
+ */
+int MapScript::l_dungeon_set_finished(lua_State *l) {
+
+  MapScript *script;
+  called_by_script(l, 0, &script);
+
+  script->game->get_dungeon_equipment()->set_finished();
 
   return 0;
 }

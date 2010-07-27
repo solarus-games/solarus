@@ -973,34 +973,35 @@ line2 = "avant de jouer !"
 #       |-----------------------|
 line1 = "Les monstres envahis-"
 line2 = "sent la plaine. C'est"
-line3 = "mauvais signe : j'ai"
+line3 = "mauvais signe : je suis"
 next = grandma_house.sword.2
 skip = all
 
 [grandma_house.sword.2]
 #       |-----------------------|
-line1 = "peur que quelque chose"
-line2 = "de grave soit arrivé."
+line1 = "sûre que quelque chose"
+line2 = "de grave est arrivé."
 next = grandma_house.sword.3
 
 [grandma_house.sword.3]
 #       |-----------------------|
 line1 = "Tu cherches une épée ?"
-line2 = "Tu devrais aller voir"
-line3 = "le forgeron dans la"
+line2 = "Ces choses-là ne sont"
+line3 = "plus de mon âge !"
 next = grandma_house.sword.4
 
 [grandma_house.sword.4]
 #       |-----------------------|
-line1 = "grotte au Nord-Ouest du"
-line2 = "village. Il n'est pas"
-line3 = "très commode mais"
+line1 = "Tu devrais plutôt aller"
+line2 = "voir le forgeron dans"
+line3 = "la grotte au nord-ouest"
 next = grandma_house.sword.5
 
 [grandma_house.sword.5]
 #       |-----------------------|
-line1 = "il pourra sûrement"
-line2 = "t'aider."
+line1 = "du village. Il n'est"
+line2 = "pas très commode mais"
+line3 = "il pourra t'aider."
 
 [grandma_house.find_sahasrahla]
 # Dialogue chez la grand-mère (après avoir obtenu l'épée)
@@ -1021,7 +1022,8 @@ next = grandma_house.find_sahasrahla.3
 [grandma_house.find_sahasrahla.3]
 #       |-----------------------|
 line1 = "sud-ouest, près de la"
-line2 = "pâtisserie."
+line2 = "pâtisserie. Tu ne t'en"
+line3 = "souvenais plus ?"
 
 [grandma_house.go_lyriann_cave]
 # Dialogue chez la grand-mère (après avoir obtenu la clé de terre)
@@ -1044,7 +1046,75 @@ next = grandma_house.go_dungeon_1.2
 #       |-----------------------|
 line1 = "donjon lugubre dans la"
 line2 = "forêt au sud du"
-line3 = "village..."
+line3 = "village. Qu'attends-tu"
+next = grandma_house.go_dungeon_1.3
+
+[grandma_house.go_dungeon_1.3]
+#       |-----------------------|
+line1 = "pour y aller ?"
+
+[grandma_house.go_back_sahasrahla]
+# Dialogue chez la grand-mère (après avoir fini le donjon 1)
+#       |-----------------------|
+line1 = "Quelque chose me dit"
+line2 = "que cette fois-ci,"
+line3 = "Sahasrahla est mieux"
+skip = all
+next = grandma_house.go_back_sahasrahla.2
+
+[grandma_house.go_back_sahasrahla.2]
+#       |-----------------------|
+line1 = "placé que moi pour"
+line2 = "t'aider."
+
+[grandma_house.go_twin_caves]
+# Dialogue chez la grand-mère (après avoir obtenu l'arc)
+#       |-----------------------|
+line1 = "Tu as trouvé un Arc ?"
+line2 = "A mon avis, les secrets"
+line3 = "que renferment les"
+skip = all
+next = grandma_house.go_twin_caves.2
+
+[grandma_house.go_twin_caves.2]
+#       |-----------------------|
+line1 = "grottes jumelles au sud"
+line2 = "sont largement à ta"
+line3 = "portée désormais !"
+
+[grandma_house.go_dungeon_2]
+# Dialogue chez la grand-mère (après avoir obtenu la clé de roc)
+#       |-----------------------|
+line1 = "C'est une belle clé que"
+line2 = "tu as là ! N'est-il"
+line3 = "pas temps de partir"
+skip = all
+next = grandma_house.go_dungeon_2.2
+
+[grandma_house.go_dungeon_2.2]
+#       |-----------------------|
+line1 = "à la recherche du"
+line2 = "deuxième enfant ?"
+
+[grandma_house.go_telepathic_booth]
+#       |-----------------------|
+line1 = "Que dis-tu ? Je ne"
+line2 = "t'entends pas bien !"
+line3 = "Je suis un peu dure"
+skip = all
+next = grandma_house.go_telepathic_booth.2
+
+[grandma_house.go_telepathic_booth.2]
+#       |-----------------------|
+line1 = "d'oreille à mon âge !"
+line2 = "Pourquoi n'utilises-tu"
+line3 = "pas un moyen de"
+next = grandma_house.go_telepathic_booth.3
+
+[grandma_house.go_telepathic_booth.3]
+#       |-----------------------|
+line1 = "communication moderne"
+line2 = "comme la télépathie ?"
 
 [smith_cave.without_sword]
 # Dialogue avec le forgeron
@@ -1063,7 +1133,7 @@ next = smith_cave.without_sword.3
 
 [smith_cave.without_sword.3]
 #       |-----------------------|
-line1 = "Avec seulement ce"
+line1 = "Avec seulement ton"
 line2 = "minable bouclier, tu"
 line3 = "n'iras pas bien loin."
 next = smith_cave.without_sword.4
@@ -1370,6 +1440,28 @@ line1 = "rien car cela fait"
 line2 = "longtemps que je ne"
 line3 = "l'ai pas entretenue..."
 
+[sahasrahla_house.go_downstairs_advice]
+# Chez Sahasrahla : quand on lui reparle après avoir fini le donjon 1
+#       |-----------------------|
+line1 = "Bravo, tu es venu à"
+line2 = "bout des épreuves du"
+line3 = "donjon de la forêt."
+next = sahasrahla_house.go_downstairs_advice.2
+
+[sahasrahla_house.go_downstairs_advice.2]
+#       |-----------------------|
+line1 = "Avant de continuer ton"
+line2 = "périple, n'hésite pas à"
+line3 = "descendre dans ma cave"
+next = sahasrahla_house.go_downstairs_advice.3
+
+[sahasrahla_house.go_downstairs_advice.3]
+#       |-----------------------|
+line1 = "pour y trouver des"
+line2 = "objets qui te seront"
+line3 = "utiles."
+next = sahasrahla_house.go_grandma
+
 [sahasrahla_house.memories]
 # Chez Sahasrahla : quand on regarde sa bibliothèque
 #       |-----------------------|
@@ -1387,7 +1479,7 @@ next = sahasrahla_house.memories.read
 
 [sahasrahla_house.memories.read]
 #       |-----------------------|
-line1 = "Oh, c'est beaucoup"
+line1 = "Hum, c'est beaucoup"
 line2 = "trop long !"
 
 [sahasrahla_house.frozen_door_advice]
@@ -1405,6 +1497,26 @@ line1 = "J'ai foi en toi."
 line2 = "Le courage et la"
 line3 = "sagesse te guideront."
 skip = all
+next = sahasrahla_house.go_grandma
+
+[sahasrahla_house.go_grandma]
+#       |-----------------------|
+line1 = "Si tu as un doute au"
+line2 = "cours de ton aventure,"
+line3 = "pense à rendre visite à"
+next = sahasrahla_house.go_grandma.2
+
+[sahasrahla_house.go_grandma.2
+#       |-----------------------|
+line1 = "la grand-mère du petit,"
+line2 = "à l'est du village."
+line3 = "C'est une vieille amie"
+next = sahasrahla_house.go_grandma.3
+
+[sahasrahla_house.go_grandma.3]
+#       |-----------------------|
+line1 = "et elle connaît tout"
+line2 = "sur les environs."
 
 [sahasrahla_house.frozen_door]
 # Cave de Sahasrahla : quand on regarde la porte gelée

@@ -9,9 +9,13 @@ function event_map_started(destination_point_name)
 
     if savegame_get_boolean(63) and savegame_get_boolean(64) then
       -- the boss was already killed and the heart container was also picked:
-      -- make the hero leave the dungeon since the room is closed
-      hero_freeze()
-      timer_start(1000, "boss_already_killed", false)
+      -- make the hero leave the map since the room is closed
+      if not dungeon_is_finished(1) then
+	start_final_room()
+      else
+        hero_freeze()
+        timer_start(1000, "boss_already_killed", false)
+      end
     else
       -- normal case
       boss_start_battle("boss")

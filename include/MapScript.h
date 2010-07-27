@@ -83,6 +83,8 @@ class MapScript: public Script {
       l_boss_end_battle,
       l_miniboss_start_battle,
       l_miniboss_end_battle,
+      l_dungeon_is_finished,
+      l_dungeon_set_finished,
       l_sensor_remove,
       l_door_open,
       l_door_close,

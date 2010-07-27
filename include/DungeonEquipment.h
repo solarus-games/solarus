@@ -55,6 +55,10 @@ class DungeonEquipment {
 
     bool has_boss_key(void);
     void add_boss_key(void);
+
+    bool is_finished(int dungeon);
+    bool is_finished(void);
+    void set_finished(void);
 };
 
 #endif

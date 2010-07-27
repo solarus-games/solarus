@@ -1440,22 +1440,22 @@ line1 = "rien car cela fait"
 line2 = "longtemps que je ne"
 line3 = "l'ai pas entretenue..."
 
-[sahasrahla_house.go_downstairs_advice]
+[sahasrahla_house.dungeon_1_finished]
 # Chez Sahasrahla : quand on lui reparle après avoir fini le donjon 1
 #       |-----------------------|
 line1 = "Bravo, tu es venu à"
 line2 = "bout des épreuves du"
 line3 = "donjon de la forêt."
-next = sahasrahla_house.go_downstairs_advice.2
+next = sahasrahla_house.dungeon_1_finished.2
 
-[sahasrahla_house.go_downstairs_advice.2]
+[sahasrahla_house.dungeon_1_finished.2]
 #       |-----------------------|
 line1 = "Avant de continuer ton"
 line2 = "périple, n'hésite pas à"
 line3 = "descendre dans ma cave"
-next = sahasrahla_house.go_downstairs_advice.3
+next = sahasrahla_house.dungeon_1_finished.3
 
-[sahasrahla_house.go_downstairs_advice.3]
+[sahasrahla_house.dungeon_1_finished.3]
 #       |-----------------------|
 line1 = "pour y trouver des"
 line2 = "objets qui te seront"
@@ -1506,7 +1506,7 @@ line2 = "cours de ton aventure,"
 line3 = "pense à rendre visite à"
 next = sahasrahla_house.go_grandma.2
 
-[sahasrahla_house.go_grandma.2
+[sahasrahla_house.go_grandma.2]
 #       |-----------------------|
 line1 = "la grand-mère du petit,"
 line2 = "à l'est du village."

@@ -2,6 +2,13 @@
 -- Sahasrahla house script --
 -----------------------------
 
+function event_map_started(destination_point)
+
+  if savegame_get_boolean(37) then -- if the Lyriann cave is finished
+    door_set_open("door", dungeon_is_finished(1)) -- don't allow the player to obtain the bow until the first dungeon is finished
+  end
+end
+
 -- The player talks to Sahasrahla
 function event_npc_dialog(npc_name)
 
@@ -71,3 +78,4 @@ end
 function event_treasure_obtained(content, savegame_variable)
    dialog_start("sahasrahla_house.quest_accepted")
 end
+

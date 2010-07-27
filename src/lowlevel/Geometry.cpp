@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 2009 Christopho, Solarus - http://www.solarus-engine.org
- * 
+ *
  * Solarus is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Solarus is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -49,7 +49,7 @@ const double Geometry::SQRT_2 = 1.41421356237309504880;
  * @return the degrees value
  */
 const int Geometry::radians_to_degrees(double radians) {
-  return (int) radians * 360.0 / TWO_PI;
+  return (int) (radians * 360.0 / TWO_PI);
 }
 
 /**
@@ -109,11 +109,11 @@ double Geometry::get_angle(int x1, int y1, int x2, int y2) {
  * @brief Returns the cartesian coordinates of a vector that starts from the origin, given its angle and distance.
  * @param angle angle of the vector in radians
  * @param distance length of the vector in pixels
- * @return the coordinates of the second point 
+ * @return the coordinates of the second point
  */
 const Rectangle Geometry::get_xy(double angle, int distance) {
 
-  return Rectangle(distance * cos(angle), -distance * sin(angle));
+  return Rectangle((int) (distance * cos(angle)), (int) (-distance * sin(angle)));
 }
 
 /**
@@ -121,7 +121,7 @@ const Rectangle Geometry::get_xy(double angle, int distance) {
  * @param xy1 coordinates of the first point
  * @param angle angle of the vector in radians
  * @param distance length of the vector in pixels
- * @return the coordinates of the second point 
+ * @return the coordinates of the second point
  */
 const Rectangle Geometry::get_xy(const Rectangle &xy1, double angle, int distance) {
 

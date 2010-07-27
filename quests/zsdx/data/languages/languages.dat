@@ -1,9 +1,10 @@
 [fr]
 name = Français
-
-[en]
-name = English
 default = true
+
+#[en]
+#name = English
+#default = true
 
 #[de]
 #name = Deutsch

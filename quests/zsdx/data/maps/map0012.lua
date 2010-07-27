@@ -24,6 +24,9 @@ function event_npc_dialog(npc_name)
   elseif not has_obtained_world_map() then
     -- the player has obtained the clay key: give him the world map now if he didn't talk the first time
     dialog_start("sahasrahla_house.give_world_map")
+  elseif dungeon_is_finished(1) and not has_obtained_bow() then -- glove
+    -- the player should now go downstairs to obtain the bow
+    dialog_start("sahasrahla_house.dungeon_1_finished")
   else
     -- Sahsrahla has nothing special to say
     dialog_start("sahasrahla_house.default")
@@ -44,6 +47,10 @@ end
 
 function has_obtained_clay_key()
   return savegame_get_boolean(28);
+end
+
+function has_obtained_bow()
+  return savegame_get_boolean(26);
 end
 
 -- Function called when the dialog box is being closed

@@ -162,3 +162,31 @@ void DungeonEquipment::add_boss_key(void) {
   savegame->set_integer(index, 1);
 }
 
+/**
+ * @brief Returns whether the player has finished the specified dungeon.
+ * @return true if the specified dungeon is finished
+ */
+bool DungeonEquipment::is_finished(int dungeon) {
+
+  int index = Savegame::FIRST_DUNGEON_FINISHED + 10 * (dungeon - 1);
+  return savegame->get_integer(index) != 0;
+}
+
+/**
+ * @brief Returns whether the player has finished the current dungeon.
+ * @return true if the current dungeon is finished
+ */
+bool DungeonEquipment::is_finished(void) {
+  return is_finished(get_current_dungeon());
+}
+
+/**
+ * @brief Sets the currend dungeon as finished.
+ */
+void DungeonEquipment::set_finished(void) {
+
+  int dungeon = get_current_dungeon();
+  int index = Savegame::FIRST_DUNGEON_FINISHED + 10 * (dungeon - 1);
+  savegame->set_integer(index, 1);
+}
+

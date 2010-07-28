@@ -89,6 +89,7 @@ void StraightMovement::start(int speed, double direction, uint32_t time) {
  * @brief Updates the movement.
  */
 void StraightMovement::update(void) {
+
   CollisionMovement::update();
 
   uint32_t now = System::now();

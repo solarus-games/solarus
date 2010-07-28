@@ -140,7 +140,7 @@ void Hero::start_ground(void) {
     break;
 
   case GROUND_LADDER:
-    get_normal_movement()->set_moving_speed(walking_speed * 2 / 3);
+    get_normal_movement()->set_moving_speed(walking_speed * 3 / 5);
     break;
   }
 
@@ -318,7 +318,11 @@ void Hero::update_conveyor_belt(void) {
  */
 void Hero::notify_collision_with_stairs(Stairs *stairs, int collision_mode) {
 
-  if (state != STAIRS && state != CARRYING && state != SWORD_LOADING && state != RETURNING_TO_SOLID_GROUND) {
+  if (state != STAIRS
+      && state != CARRYING
+      && state != SWORD_LOADING
+      && state != RETURNING_TO_SOLID_GROUND
+      && state != USING_INVENTORY_ITEM) {
 
     Stairs::Way stairs_way;
     if (stairs->is_inside_floor()) {

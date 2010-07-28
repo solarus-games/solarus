@@ -47,7 +47,7 @@
 //#if SOLARUS_DEBUG_LEVEL == 0
 //#define DIE(message) do { throw std::logic_error(""); } while (false)
 //#else
-#define DIE(message) do { std::ostringstream oss; oss << message; throw std::logic_error(oss.str()); } while (false)
+#define DIE(message) do { std::cerr << message << std::endl; std::ostringstream oss; oss << message; throw std::logic_error(oss.str()); } while (false)
 //#endif
 
 #endif

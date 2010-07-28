@@ -284,6 +284,11 @@ PlayerMovement * Hero::get_normal_movement(void) {
  * @return the hero's wanted direction between 0 and 359, or -1 if he is stopped
  */
 int Hero::get_wanted_movement_direction(void) {
+
+  if (is_running()) {
+    return get_animation_direction() * 90;
+  }
+
   return get_normal_movement()->get_direction();
 }
 
@@ -1140,7 +1145,6 @@ void Hero::reset_movement(void) {
     movement->stop();
     movement->set_moving_enabled(false, false);
     movement->set_moving_enabled(true, true);
-
   }
 }
 

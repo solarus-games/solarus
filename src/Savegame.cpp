@@ -115,6 +115,8 @@ void Savegame::set_initial_values(void) {
  */
 void Savegame::set_default_keyboard_controls(void) {
 
+  set_integer(KEYBOARD_ENUM_VERSION, InputEvent::KEYBOARD_ENUM_VERSION);
+
   set_integer(KEYBOARD_ACTION_KEY, InputEvent::KEY_SPACE);
   set_integer(KEYBOARD_SWORD_KEY, InputEvent::KEY_c);
   set_integer(KEYBOARD_ITEM_1_KEY, InputEvent::KEY_x);
@@ -143,7 +145,8 @@ void Savegame::set_default_joypad_controls(void) {
 }
 
 /**
- * @brief Ensures the keyboard mapping saved is valid with respect to the enumeration InputEvent::KeyboardKey.
+ * @brief Ensures the keyboard mapping saved is valid with respect to the current version of
+ * the enumeration InputEvent::KeyboardKey.
  *
  * If the bindings saved corresponds to an old version of this enumeration, it is obsolete and
  * we reset it to the default values.
@@ -151,6 +154,9 @@ void Savegame::set_default_joypad_controls(void) {
 void Savegame::check_game_controls(void) {
 
   if (get_integer(KEYBOARD_ENUM_VERSION) != (uint16_t) InputEvent::KEYBOARD_ENUM_VERSION) {
+    /* The enumeration has changed, probably because this savegame was created with an old version of the game.
+     * Thus, the keys saved are not valid anymore and we reset them to the default values.
+     */
     set_default_keyboard_controls();
   }
 }

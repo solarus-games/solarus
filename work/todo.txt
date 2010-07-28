@@ -64,6 +64,7 @@ Bugs :
 - (bug trouvé par Morwenn, confirmé) Lorsqu'on essaye de soulever une falaise en biais (avec la touche action),
   et que l'on reste appuyé sur la touche directionnelle, Link continue d'essayer de pousser la falaise
   tant qu'on ne relâche pas la touche directionnelle.
+- bottes de pégase contre les limites d'une map en scrolling (seulement à droite ?) seg fault
 
 
 A venir :

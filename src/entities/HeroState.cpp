@@ -318,7 +318,7 @@ void Hero::update_conveyor_belt(void) {
  */
 void Hero::notify_collision_with_stairs(Stairs *stairs, int collision_mode) {
 
-  if (state != STAIRS && state != CARRYING && state != SWORD_LOADING) {
+  if (state != STAIRS && state != CARRYING && state != SWORD_LOADING && state != RETURNING_TO_SOLID_GROUND) {
 
     Stairs::Way stairs_way;
     if (stairs->is_inside_floor()) {
@@ -524,8 +524,10 @@ void Hero::notify_collision_with_sensor(Sensor *sensor) {
  */
 void Hero::notify_collision_with_explosion(Explosion *explosion, Sprite *sprite_overlapping) {
 
-  if (sprite_overlapping->contains("tunic")) {
-    hurt(explosion, 2, 0);
+  if (get_state() != RETURNING_TO_SOLID_GROUND && get_state() != JUMPING) {
+    if (sprite_overlapping->contains("tunic")) {
+      hurt(explosion, 2, 0);
+    }
   }
 }
 

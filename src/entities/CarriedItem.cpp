@@ -152,10 +152,11 @@ bool CarriedItem::can_be_displayed(void) {
  * feature depends on their y position. The entities without this feature
  * are displayed in the normal order (i.e. as specified by the map file), 
  * and before the entities with the feature.
+ *
  * @return true if this type of entity is displayed at the same level as the hero
  */
 bool CarriedItem::is_displayed_in_y_order(void) {
-  return false;
+  return true;
 }
 
 /**

@@ -1062,7 +1062,8 @@ void Script::event_dialog_started(const MessageId &message_id) {
  * @brief Notifies the script that the dialog box has just finished.
  *
  * This function is called when the last message of a dialog is finished.
- * Note that this event is not called if the dialog was cancelled.
+ * The dialog box has just been closed but the game is still suspended.
+ * Note that this event is not called if the dialog was skipped.
  *
  * @param first_message_id id of the first message in the dialog
  * that has just finished

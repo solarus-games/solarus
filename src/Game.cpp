@@ -787,7 +787,8 @@ void Game::set_hud_enabled(bool hud_enabled) {
  * @return true if the player is currently allowed to pause the game
  */
 bool Game::can_pause(void) {
-  return is_pause_key_available() && get_equipment()->get_hearts() > 0;
+  return is_pause_key_available()             // see if the map currently allows the pause key
+    && get_equipment()->get_hearts() > 0;     // don't allow to pause the game if the gameover sequence is about to start
 }
 
 /**

@@ -208,6 +208,7 @@ void CircleMovement::set_loop(uint32_t delay) {
  * @brief Updates the movement.
  */
 void CircleMovement::update(void) {
+
   Movement::update();
 
   if (is_suspended()) {

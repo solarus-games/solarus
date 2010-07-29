@@ -200,7 +200,9 @@ bool Hero::is_ladder_obstacle(void) {
  * @return true if the teletransporter is currently an obstacle for the hero
  */
 bool Hero::is_teletransporter_obstacle(Teletransporter *teletransporter) {
-  return state > SWIMMING && state != CONVEYOR_BELT && state != JUMPING;
+  return state > SWIMMING
+    && state != CONVEYOR_BELT
+    && state != JUMPING;
 }
 
 /**
@@ -1145,7 +1147,7 @@ bool Hero::is_stroke_by_sword(Detector *detector) {
 }
 
 /**
- * @brief Stops and restarts the current movement of the hero.
+ * @brief Stops and restarts the normal movement of the hero.
  */
 void Hero::reset_movement(void) {
 

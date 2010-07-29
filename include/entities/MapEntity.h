@@ -141,9 +141,6 @@ class MapEntity {
     void set_movement(Movement *movement);
     void clear_movement(void);
 
-    // position
-    virtual void notify_layer_just_changed(void);
-
   public:
 
     // destruction
@@ -218,8 +215,9 @@ class MapEntity {
 
     // movement
     Movement * get_movement(void);
-    virtual void movement_just_changed(void);
-    virtual void notify_just_moved(void);
+    virtual void notify_position_changed(void);
+    virtual void notify_layer_changed(void);
+    virtual void notify_movement_changed(void);
     virtual void set_facing_entity(Detector *detector);
     static const Rectangle & direction_to_xy_move(int direction8);
 
@@ -250,6 +248,8 @@ class MapEntity {
     virtual bool is_water_obstacle(void);
     virtual bool is_hole_obstacle(void);
     virtual bool is_ladder_obstacle(void);
+    virtual bool is_hero_obstacle(Hero *hero);
+    virtual bool is_block_obstacle(Block *block);
     virtual bool is_teletransporter_obstacle(Teletransporter *teletransporter);
     virtual bool is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt);
     virtual bool is_stairs_obstacle(Stairs *stairs);

@@ -114,7 +114,7 @@ void Movement::set_position(int x, int y) {
   if (entity != NULL) {
     entity->set_x(x);
     entity->set_y(y);
-    entity->notify_just_moved();
+    entity->notify_position_changed();
   }
   else {
     this->x = x;

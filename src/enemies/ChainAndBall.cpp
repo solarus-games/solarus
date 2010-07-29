@@ -129,9 +129,9 @@ void ChainAndBall::attach_to(MapEntity *entity, int x, int y,
  *
  * The chain is then updated.
  */
-void ChainAndBall::notify_just_moved(void) {
+void ChainAndBall::notify_position_changed(void) {
 
-  Enemy::notify_just_moved();
+  Enemy::notify_position_changed();
 
   if (center_entity != NULL) {
     // recalculate the chain position

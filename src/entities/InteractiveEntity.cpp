@@ -183,18 +183,27 @@ bool InteractiveEntity::is_obstacle_for(MapEntity *other) {
 }
 
 /**
- * @brief Returns whether a non-playing character is considered as an obstacle for this entity.
+ * @brief Returns whether the hero is currently considered as an obstacle by this entity.
+ * @param hero the hero
+ * @return true if the hero is an obstacle for this entity.
+ */
+bool InteractiveEntity::is_hero_obstacle(Hero *hero) {
+  return true;
+}
+
+/**
+ * @brief Returns whether a non-playing character is currently considered as an obstacle by this entity.
  * @param npc a non-playing character
- * @return true if this NPC is considered as an obstacle for this entity.
+ * @return true if this NPC is currently considered as an obstacle by this entity.
  */
 bool InteractiveEntity::is_npc_obstacle(InteractiveEntity *npc) {
   return subtype != NON_PLAYING_CHARACTER;
 }
 
 /**
- * @brief Returns whether an enemy character is considered as an obstacle for this entity.
+ * @brief Returns whether an enemy character is currently considered as an obstacle by this entity.
  * @param enemy an enemy
- * @return true if this enemy is considered as an obstacle for this entity.
+ * @return true if this enemy is currently considered as an obstacle by this entity.
  */
 bool InteractiveEntity::is_enemy_obstacle(Enemy *enemy) {
   return true;
@@ -400,7 +409,7 @@ void InteractiveEntity::jump(int direction, int length, bool with_collisions) {
  *
  * If it is an NPC, its sprite's direction is updated.
  */
-void InteractiveEntity::notify_just_moved(void) {
+void InteractiveEntity::notify_position_changed(void) {
 
   if (subtype == NON_PLAYING_CHARACTER) {
 

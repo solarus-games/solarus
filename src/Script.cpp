@@ -478,9 +478,9 @@ int Script::l_hero_set_pause_enabled(lua_State *l) {
 
   Script *script;
   called_by_script(l, 1, &script);
-  bool enabled = lua_toboolean(l, 1) != 0;
+  bool pause_key_available = lua_toboolean(l, 1) != 0;
 
-  script->game->set_pause_enabled(enabled);
+  script->game->set_pause_key_available(pause_key_available);
 
   return 0;
 }

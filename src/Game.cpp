@@ -50,7 +50,7 @@ Rectangle Game::outside_world_size(0, 0, 0, 0); // loaded from info.dat
 Game::Game(Solarus *solarus, Savegame *savegame):
   Screen(solarus),
 
-  savegame(savegame), pause_enabled(true), pause_menu(NULL), 
+  savegame(savegame), pause_key_available(true), pause_menu(NULL), 
   treasure(NULL), gameover_sequence(NULL),
   reseting(false), restarting(false), keys_effect(NULL),
   current_map(NULL), next_map(NULL), previous_map_surface(NULL),
@@ -208,12 +208,12 @@ void Game::key_pressed(GameControls::GameKey key) {
   if (!is_suspended()) {    
 
     if (key == GameControls::PAUSE) {
-      if (is_pause_enabled()) {
+      if (can_pause()) {
         set_paused(true);
       }
     }
     else {
-      // when the game is not suspended, most of the keys apply to the hero
+      // when the game is not suspended, all other keys apply to the hero
       hero->key_pressed(key);
     }
   }
@@ -779,20 +779,41 @@ void Game::set_hud_enabled(bool hud_enabled) {
 }
 
 /**
- * @brief Returns whether the player can pause the game.
+ * @brief Returns whether the player is currently allowed to pause the game.
+ *
+ * He can pause the game if the pause key is enabled
+ * and if his life is greater than zero.
+ *
  * @return true if the player is currently allowed to pause the game
  */
-bool Game::is_pause_enabled(void) {
-  return pause_enabled;
+bool Game::can_pause(void) {
+  return is_pause_key_available() && get_equipment()->get_hearts() > 0;
 }
 
 /**
- * @brief Sets whether the player can pause the game.
- * @param pause_enabled true to allow the player to pause the game
+ * @brief Returns whether the pause key is available.
+ *
+ * Even when the pause key is available, the player may still
+ * be unauthorized to pause the game, depending on the result of can_pause().
+ *
+ * @return true if the pause key is available
  */
-void Game::set_pause_enabled(bool pause_enabled) {
-  this->pause_enabled = pause_enabled;
-  keys_effect->set_pause_key_enabled(pause_enabled);
+bool Game::is_pause_key_available(void) {
+  return pause_key_available;
+}
+
+/**
+ * @brief Sets whether the pause key menu is available.
+ *
+ * Even when the pause key is available, the player may still
+ * be unauthorized to pause the game, depending on the result of can_pause().
+ *
+ * @param pause_key_available true to make the pause key available
+ */
+void Game::set_pause_key_available(bool pause_key_available) {
+
+  this->pause_key_available = pause_key_available;
+  keys_effect->set_pause_key_enabled(pause_key_available);
 }
 
 /**

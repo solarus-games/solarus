@@ -859,14 +859,16 @@ Detector * Hero::get_facing_entity(void) {
 }
 
 /**
- * @brief Returns whether the hero is facing an obstacle.
+ * @brief Returns whether there is an obstacle in front of the hero.
  *
- * This function returns whether
- * his facing point is overlapping an obstacle of the map.
+ * This function returns whether he is touching an obstacle that
+ * is just in front of him.
+ * Note that even if this function returns true, the hero
+ * may still be able to move in that direction due to the smooth collision movement.
  * This information is calculated and not stored, so it is
  * always up to date.
  *
- * @return true if the hero is facing an obstacle.
+ * @return true if the hero is facing an obstacle
  */
 bool Hero::is_facing_obstacle(void) {
 
@@ -895,12 +897,20 @@ bool Hero::is_facing_obstacle(void) {
   }
 
   return map->test_collision_with_obstacles(get_layer(), collision_box, this);
+}
 
-  /* old version with only one point: problems when the hero
-     cannot pass but the facing point can
-     const Rectangle &facing_point = get_facing_point();
-     return map->test_collision_with_obstacles(layer, facing_point.get_x(), facing_point.get_y(), this);
-     */
+/**
+ * @brief Returns whether the facing point of the hero is overlapping an obstacle.
+ *
+ * This function returns whether his facing point is overlapping an obstacle of the map.
+ * This information is calculated and not stored, so it is always up to date.
+ *
+ * @return true if the facing point is overlapping an obstacle
+ */
+bool Hero::is_facing_point_on_obstacle(void) {
+
+  const Rectangle &facing_point = get_facing_point();
+  return map->test_collision_with_obstacles(get_layer(), facing_point.get_x(), facing_point.get_y(), this);
 }
 
 /**

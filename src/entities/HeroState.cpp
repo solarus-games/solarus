@@ -902,7 +902,9 @@ void Hero::update_pushing(void) {
 
       // the hero is facing an obstacle
 
-      if (state == FREE) { // is state FREE: see when we can start animation "pushing"
+      if (state == FREE
+	  && get_wanted_movement_direction() == get_animation_direction() * 90) {
+	// in state FREE: see when we can start animation "pushing"
 
 	uint32_t now = System::now();
 	if (pushing_direction_mask == 0xFFFF) { // we start counting to trigger animation "pushing"

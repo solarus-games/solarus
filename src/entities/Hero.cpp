@@ -231,7 +231,7 @@ bool Hero::is_stairs_obstacle(Stairs *stairs) {
  */
 bool Hero::is_sensor_obstacle(Sensor *sensor) {
 
-  if (state == HURT) { // TODO same thing for running shoes
+  if (state == HURT || is_running()) {
     return true;
   }
 

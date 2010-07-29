@@ -164,6 +164,11 @@ PickableItem * PickableItem::create(Game *game, Layer layer, int x, int y, Picka
     DIE("Invalid savegame variable: " << savegame_variable);
   }
 
+  if (!can_be_saved(subtype) && savegame_variable != -1) {
+    DIE("This subtype of pickable item cannot be saved: " << subtype);
+  }
+
+
   if (must_be_saved(subtype) && savegame_variable == -1) {
     DIE("This subtype of pickable item must be saved: " << subtype);
   }
@@ -321,6 +326,17 @@ bool PickableItem::can_disappear(Subtype subtype) {
 
   return features[subtype].can_disappear;
 }
+
+/**
+ * @brief Returns whether a subtype of pickable item can be saved.
+ * @param subtype a pickable item subtype
+ * @return true if this subtype of pickable item can be saved
+ */
+bool PickableItem::can_be_saved(Subtype subtype) {
+
+  return subtype != RANDOM && subtype != NONE;
+}
+
 
 /**
  * @brief Returns whether a subtype of pickable item must be saved.

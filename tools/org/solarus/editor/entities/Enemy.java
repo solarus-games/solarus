@@ -235,16 +235,16 @@ public class Enemy extends MapEntity {
 
 	boolean isSaved = (pickableItemSavegameVariable >= 0 && pickableItemSavegameVariable < 32768);
 
+	if (!pickableItemSubtype.canBeSaved() && isSaved) {
+	    throw new MapException("This pickable item cannot be saved");
+	}
+
 	if (pickableItemSubtype.mustBeSaved() && !isSaved) {
 	    throw new MapException("This pickable item must be saved");
 	}
 
-	if (!pickableItemSubtype.mustBeSaved() && isSaved) {
-	    throw new MapException("This pickable item cannot be saved");
-	}
-
 	boolean inDungeon = map.isInDungeon();
-	boolean mustBeInDungeon = pickableItemSubtype.isOnlyInDungeon();
+	boolean mustBeInDungeon = pickableItemSubtype.mustBeInDungeon();
 	if (mustBeInDungeon && !inDungeon) {
 	    throw new MapException("This pickable item is available only in a dungeon");
 	}

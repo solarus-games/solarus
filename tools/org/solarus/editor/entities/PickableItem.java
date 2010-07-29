@@ -102,6 +102,14 @@ public class PickableItem extends MapEntity {
 	}
 
 	/**
+	 * Returns whether this subtype of pickable item can be saved.
+	 * @return true if this subtype of pickable item can be saved
+	 */
+	public boolean canBeSaved() {
+	    return id > NONE.getId();
+	}
+
+	/**
 	 * Returns whether this subtype of pickable item must be saved.
 	 * @return true if this subtype of pickable item must be saved
 	 */
@@ -113,7 +121,7 @@ public class PickableItem extends MapEntity {
 	 * Returns whether this subtype of pickable item is available only in dungeons.
 	 * @return true if this subtype of pickable item is available only in dungeons
 	 */
-	public boolean isOnlyInDungeon() {
+	public boolean mustBeInDungeon() {
 	    return this == BIG_KEY || this == BOSS_KEY;
 	}
     }
@@ -182,13 +190,18 @@ public class PickableItem extends MapEntity {
 	    throw new MapException("Invalid savegame variable");
 	}
 
+	boolean canBeSaved = ((Subtype) subtype).canBeSaved();
+	if (!canBeSaved && savegameVariable != -1) {
+	    throw new MapException("This pickable item cannot be saved");
+	}
+
 	boolean mustBeSaved = ((Subtype) subtype).mustBeSaved();
 	if (mustBeSaved && savegameVariable == -1) {
 	    throw new MapException("This pickable item must be saved");
 	}
 
 	boolean inDungeon = map.isInDungeon();
-	boolean mustBeInDungeon = ((Subtype) subtype).isOnlyInDungeon();
+	boolean mustBeInDungeon = ((Subtype) subtype).mustBeInDungeon();
 	if (mustBeInDungeon && !inDungeon) {
 	    throw new MapException("This pickable item is available only in a dungeon");
 	}
@@ -198,3 +211,4 @@ public class PickableItem extends MapEntity {
 	}
     }
 }
+

@@ -127,6 +127,7 @@ class PickableItem: public Detector {
 
     // item state
     static bool can_disappear(Subtype subtype);
+    static bool can_be_saved(Subtype subtype);
     static bool must_be_saved(Subtype subtype);
     virtual void set_suspended(bool suspended);
     void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);

@@ -65,14 +65,20 @@ public class EditPickableItemComponent extends EditEntityComponent {
 
 	subtypeField.addActionListener(new ActionListener() {
 	    public void actionPerformed(ActionEvent ev) {
-		if (((Subtype) subtypeField.getValue()).mustBeSaved()) {
+
+	        Subtype subtype = (Subtype) subtypeField.getValue();
+		if (subtype.mustBeSaved()) {
 		  savegameVariableField.setEnabled(true);
 		  saveField.setEnabled(false);
 		  saveField.setSelected(true);
 		}
+		else if (!subtype.canBeSaved()) {
+		  saveField.setEnabled(false);
+		  savegameVariableField.setEnabled(false);
+		  saveField.setSelected(false);
+		}
 		else {
 		  saveField.setEnabled(true);
-		  savegameVariableField.setEnabled(true);
 		}
 	    }
 	});
@@ -102,7 +108,7 @@ public class EditPickableItemComponent extends EditEntityComponent {
 	  saveField.setSelected(false);
 	}
 
-	saveField.setEnabled(!subtype.mustBeSaved());
+	saveField.setEnabled(subtype.canBeSaved() && !subtype.mustBeSaved());
     }
 
     /**

@@ -18,6 +18,7 @@ package org.solarus.editor.gui.edit_entities;
 
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.event.*;
 import org.solarus.editor.*;
 import org.solarus.editor.entities.*;
 import org.solarus.editor.entities.Enemy.*;
@@ -34,6 +35,7 @@ public class EditEnemyComponent extends EditEntityComponent {
     private JCheckBox saveField;
     private NumberChooser savegameVariableField;
     private PickableItemSubtypeChooser pickableItemSubtypeField;
+    private JCheckBox pickableItemSaveField;
     private NumberChooser pickableItemSavegameVariableField;
 
     /**
@@ -66,6 +68,10 @@ public class EditEnemyComponent extends EditEntityComponent {
 	pickableItemSubtypeField = new PickableItemSubtypeChooser(true);
 	addField("Pickable item", pickableItemSubtypeField);
 
+	// pickable item saving option
+	pickableItemSaveField = new JCheckBox("Save the pickable item state");
+	addField("Savegame", pickableItemSaveField);
+
 	// pickable item savegame variable
 	pickableItemSavegameVariableField = new NumberChooser(0, 0, 32767);
 	addField("Pickable item savegame variable", pickableItemSavegameVariableField);
@@ -77,12 +83,31 @@ public class EditEnemyComponent extends EditEntityComponent {
 	  }
 	});
 
-	// enable or disable the 'pickable item savegame variable' field depending on the pickable item type
+	// enable or disable the 'pickable item savegame variable' field depending on the checkbox and the subtype
+	pickableItemSaveField.addChangeListener(new ChangeListener() {
+	    public void stateChanged(ChangeEvent ev) {
+		pickableItemSavegameVariableField.setEnabled(pickableItemSaveField.isSelected());
+	    }
+	});
+
 	pickableItemSubtypeField.addActionListener(new ActionListener() {
-	  public void actionPerformed(ActionEvent ev) {
-	    PickableItem.Subtype pickableItemSubtype = pickableItemSubtypeField.getValue();
-	    pickableItemSavegameVariableField.setEnabled(pickableItemSubtype.mustBeSaved());
-	  }
+	    public void actionPerformed(ActionEvent ev) {
+
+	        PickableItem.Subtype pickableItemSubtype = (PickableItem.Subtype) pickableItemSubtypeField.getValue();
+		if (pickableItemSubtype.mustBeSaved()) {
+		  pickableItemSavegameVariableField.setEnabled(true);
+		  pickableItemSaveField.setEnabled(false);
+		  pickableItemSaveField.setSelected(true);
+		}
+		else if (!pickableItemSubtype.canBeSaved()) {
+		  pickableItemSaveField.setEnabled(false);
+		  pickableItemSavegameVariableField.setEnabled(false);
+		  pickableItemSaveField.setSelected(false);
+		}
+		else {
+		  pickableItemSaveField.setEnabled(true);
+		}
+	    }
 	});
     }
 
@@ -107,16 +132,20 @@ public class EditEnemyComponent extends EditEntityComponent {
 	  saveField.setSelected(false);
 	}
 
-	pickableItemSubtypeField.setValue(PickableItem.Subtype.get(enemy.getIntegerProperty("pickableItemSubtype")));
-
-	int pickableItemSavegameVariable = enemy.getIntegerProperty("pickableItemSavegameVariable"); 
-        if (pickableItemSavegameVariable != -1) {
+	PickableItem.Subtype pickableItemSubtype = PickableItem.Subtype.get(enemy.getIntegerProperty("pickableItemSubtype"));
+	pickableItemSubtypeField.setValue(pickableItemSubtype);
+	int pickableItemSavegameVariable = enemy.getIntegerProperty("pickableItemSavegameVariable");
+	if (pickableItemSavegameVariable != -1) {
 	  pickableItemSavegameVariableField.setNumber(pickableItemSavegameVariable);
 	  pickableItemSavegameVariableField.setEnabled(true);
+	  pickableItemSaveField.setSelected(true);
 	}
 	else {
 	  pickableItemSavegameVariableField.setEnabled(false);
+	  pickableItemSaveField.setSelected(false);
 	}
+
+	pickableItemSaveField.setEnabled(pickableItemSubtype.canBeSaved() && !pickableItemSubtype.mustBeSaved());
     }
 
     /**

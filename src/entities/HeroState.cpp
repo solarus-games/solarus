@@ -1712,10 +1712,15 @@ void Hero::update_returning_to_solid_ground(void) {
  * @brief Makes the hero brandish his sword meaning a victory.
  */
 void Hero::start_victory() {
+
   set_state(VICTORY);
   sprites->set_animation_victory();
   game->play_sound("victory");
-  end_victory_date = System::now() + 1500;
+
+  // compute the date when the VICTORY state is considered as finished,
+  // but the game may be currently suspended
+  uint32_t start_victory_date = suspended ? when_suspended : System::now();
+  end_victory_date = start_victory_date + 1500;
 }
 
 /**

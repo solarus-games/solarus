@@ -1818,13 +1818,13 @@ line3 = "l'intérieur."
 #       |-----------------------|
 line1 = "$2$v... Merci."
 line2 = "Tu m'as sauvé la vie."
-line3 = "Je suis l'un des "
+line3 = "Je suis l'un des huit"
 next = dungeon_1.solarus_child.2
 
 [dungeon_1.solarus_child.2]
 #       |-----------------------|
-line1 = "8 protecteurs appelés"
-line2 = "par la Princesse Zelda."
+line1 = "protecteurs appelés par"
+line2 = "la Princesse Zelda."
 line3 = "Nous sommes dévoués à"
 next = dungeon_1.solarus_child.3
 

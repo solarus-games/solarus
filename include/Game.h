@@ -40,7 +40,7 @@ class Game: public Screen {
     Hero *hero;
 
     // current game state (elements currently shown)
-    bool pause_enabled;        /**< indicates that the player is allowed to pause the game */
+    bool pause_key_available;  /**< indicates that the player is allowed to use the pause key */
     PauseMenu *pause_menu;     /**< the current pause menu, or NULL if the game is not paused */
     Treasure *treasure;        /**< the treasure currently being given to the player or NULL if it is not the case */
     GameoverSequence *gameover_sequence; /**< the game over sequence (if currently shown) */
@@ -144,8 +144,9 @@ class Game: public Screen {
     void set_hud_enabled(bool hud_enabled);
 
     // pause
-    bool is_pause_enabled(void);
-    void set_pause_enabled(bool pause_enabled);
+    bool can_pause(void);
+    bool is_pause_key_available(void);
+    void set_pause_key_available(bool pause_key_available);
     void set_paused(bool paused);
     PauseMenu *get_pause_menu(void);
 

@@ -321,7 +321,7 @@ Layer MapEntity::get_layer(void) {
  */
 void MapEntity::set_layer(Layer layer) {
   this->layer = layer;
-  notify_layer_just_changed();
+  notify_layer_changed();
 }
 
 /**
@@ -329,7 +329,7 @@ void MapEntity::set_layer(Layer layer) {
  *
  * Redefine it if you need to be notified.
  */
-void MapEntity::notify_layer_just_changed(void) {
+void MapEntity::notify_layer_changed(void) {
   // nothing done by default
 }
 
@@ -817,21 +817,11 @@ void MapEntity::clear_movement(void) {
 }
 
 /**
- * @brief This function can be called by the movement object
- * to notify the entity when its movement has just changed.
- *
- * By default, nothing is done.
- */
-void MapEntity::movement_just_changed(void) {
-
-}
-
-/**
  * @brief This function is called when the entity has just moved.
  *
  * It checks collisions with the detectors on the map.
  */
-void MapEntity::notify_just_moved(void) {
+void MapEntity::notify_position_changed(void) {
 
   map->check_collision_with_detectors(this);
 
@@ -843,6 +833,16 @@ void MapEntity::notify_just_moved(void) {
       map->check_collision_with_detectors(this, sprite);
     }
   }
+}
+
+/**
+ * @brief This function can be called by the movement object
+ * to notify the entity when its movement has just changed.
+ *
+ * By default, nothing is done.
+ */
+void MapEntity::notify_movement_changed(void) {
+
 }
 
 /**
@@ -879,7 +879,7 @@ bool MapEntity::has_layer_independent_collisions(void) {
 }
 
 /**
- * @brief Returns whether a water tile is currently considered as an obstacle for this entity.
+ * @brief Returns whether a water tile is currently considered as an obstacle by this entity.
  *
  * This function returns true by default.
  *
@@ -890,7 +890,7 @@ bool MapEntity::is_water_obstacle(void) {
 }
 
 /**
- * @brief Returns whether a hole is currently considered as an obstacle for this entity.
+ * @brief Returns whether a hole is currently considered as an obstacle by this entity.
  *
  * This function returns true by default.
  *
@@ -901,7 +901,7 @@ bool MapEntity::is_hole_obstacle(void) {
 }
 
 /**
- * @brief Returns whether a ladder is currently considered as an obstacle for this entity.
+ * @brief Returns whether a ladder is currently considered as an obstacle by this entity.
  *
  * This function returns true by default.
  *
@@ -912,7 +912,31 @@ bool MapEntity::is_ladder_obstacle(void) {
 }
 
 /**
- * @brief Returns whether a teletransporter is currently considered as an obstacle for this entity.
+ * @brief Returns whether the hero is currently considered as an obstacle by this entity.
+ *
+ * This function returns false by default.
+ *
+ * @param hero the hero
+ * @return true if the hero is currently an obstacle for this entity
+ */
+bool MapEntity::is_hero_obstacle(Hero *hero) {
+  return false;
+}
+
+/**
+ * @brief Returns whether a block is currently considered as an obstacle by this entity.
+ *
+ * This function returns true by default.
+ *
+ * @param block a block
+ * @return true if the teletransporter is currently an obstacle for this entity
+ */
+bool MapEntity::is_block_obstacle(Block *block) {
+  return true;
+}
+
+/**
+ * @brief Returns whether a teletransporter is currently considered as an obstacle by this entity.
  *
  * This function returns true by default.
  *
@@ -924,7 +948,7 @@ bool MapEntity::is_teletransporter_obstacle(Teletransporter *teletransporter) {
 }
 
 /**
- * @brief Returns whether a conveyor belt is currently considered as an obstacle for this entity.
+ * @brief Returns whether a conveyor belt is currently considered as an obstacle by this entity.
  *
  * This function returns true by default.
  *
@@ -948,7 +972,7 @@ bool MapEntity::is_stairs_obstacle(Stairs *stairs) {
 }
 
 /**
- * @brief Returns whether a sensor is currently considered as an obstacle for this entity.
+ * @brief Returns whether a sensor is currently considered as an obstacle by this entity.
  *
  * This function returns false by default.
  *
@@ -960,7 +984,7 @@ bool MapEntity::is_sensor_obstacle(Sensor *sensor) {
 }
 
 /**
- * @brief Returns whether a raised crystal switch block is currently considered as an obstacle for this entity.
+ * @brief Returns whether a raised crystal switch block is currently considered as an obstacle by this entity.
  *
  * This function returns true by default.
  *
@@ -972,7 +996,7 @@ bool MapEntity::is_raised_block_obstacle(CrystalSwitchBlock *raised_block) {
 }
 
 /**
- * @brief Returns whether a crystal switch is currently considered as an obstacle for this entity.
+ * @brief Returns whether a crystal switch is currently considered as an obstacle by this entity.
  *
  * This function returns true by default.
  * It should be redefined only for entities that can activate a crystal switch: a pot, the boomerang, etc.
@@ -985,7 +1009,7 @@ bool MapEntity::is_crystal_switch_obstacle(CrystalSwitch *crystal_switch) {
 }
 
 /**
- * @brief Returns whether a non-playing character is currently considered as an obstacle for this entity.
+ * @brief Returns whether a non-playing character is currently considered as an obstacle by this entity.
  *
  * This function returns true by default.
  *
@@ -997,7 +1021,7 @@ bool MapEntity::is_npc_obstacle(InteractiveEntity *npc) {
 }
 
 /**
- * @brief Returns whether an enemy is currently considered as an obstacle for this entity.
+ * @brief Returns whether an enemy is currently considered as an obstacle by this entity.
  *
  * This function returns false by default.
  *
@@ -1009,7 +1033,7 @@ bool MapEntity::is_enemy_obstacle(Enemy *enemy) {
 }
 
 /**
- * @brief Returns whether a jump sensor is currently considered as an obstacle for this entity.
+ * @brief Returns whether a jump sensor is currently considered as an obstacle by this entity.
  *
  * This function returns true by default.
  *
@@ -1021,7 +1045,7 @@ bool MapEntity::is_jump_sensor_obstacle(JumpSensor *jump_sensor) {
 }
 
 /**
- * @brief Returns whether a destructible item is currently considered as an obstacle for this entity.
+ * @brief Returns whether a destructible item is currently considered as an obstacle by this entity.
  *
  * By default, this function returns true unless the destructible item is disabled
  * (e.g. a bomb flower that will regenerate).
@@ -1169,7 +1193,7 @@ void MapEntity::ensure_no_obstacles(void) {
       if (!map->test_collision_with_obstacles(get_layer(), collision_box, this)) {
 	found = true;
 	set_rectangle(collision_box);
-	notify_just_moved();
+	notify_position_changed();
       }
 
       collision_box.add_x(-dx[j] * i);

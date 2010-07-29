@@ -252,10 +252,10 @@ void DestructibleItem::notify_collision(MapEntity *other_entity, Sprite *other_s
       && other_sprite->contains("sword")) {
 
     Hero *hero = (Hero*) other_entity;
-    if (hero->is_stroke_by_sword(this)) {
+    if (hero->is_striking_with_sword(this)) {
 
       play_destroy_animation();
-      hero->notify_just_moved(); // to update the ground under the hero
+      hero->notify_position_changed(); // to update the ground under the hero
 
       if (pickable_item != PickableItem::NONE) {
 	bool will_disappear = PickableItem::can_disappear(pickable_item);

@@ -119,27 +119,31 @@ bool Block::is_displayed_in_y_order(void) {
  * @return true
  */
 bool Block::is_obstacle_for(MapEntity *other) {
-
-  if (other->is_hero() && get_movement() != NULL) {
-    return false;
-  }
-
-  return true;
+  return other->is_block_obstacle(this);
 }
 
 /**
- * @brief Returns whether an enemy is considered as an obstacle for this entity.
+ * @brief Returns whether the hero is currently considered as an obstacle by this entity.
+ * @param hero the hero
+ * @return true if the hero is an obstacle for this entity.
+ */
+bool Block::is_hero_obstacle(Hero *hero) {
+  return get_movement() == NULL;
+}
+
+/**
+ * @brief Returns whether an enemy is currently considered as an obstacle by this entity.
  * @param enemy an enemy
- * @return true if this enemy is considered as an obstacle for this entity.
+ * @return true if this enemy is currently considered as an obstacle by this entity.
  */
 bool Block::is_enemy_obstacle(Enemy *enemy) {
   return true;
 }
 
 /**
- * @brief Returns whether a destructible item is currently considered as an obstacle for this entity.
+ * @brief Returns whether a destructible item is currently considered as an obstacle by this entity.
  * @param destructible_item a destructible item
- * @return true if the destructible item is currently an obstacle this entity
+ * @return true if the destructible item is currently an obstacle by this entity
  */
 bool Block::is_destructible_item_obstacle(DestructibleItem *destructible_item) {
   return true;
@@ -213,7 +217,7 @@ void Block::update(void) {
 
     if (movement->is_finished()) {
       // the block was just stopped by an obstacle: notify the hero
-      hero->grabbed_entity_collision();
+      hero->notify_grabbed_entity_collision();
       finished = true;
     }
     else if (!hero->is_moving_grabbed_entity()) {
@@ -244,7 +248,7 @@ void Block::update(void) {
 /**
  * @brief Notifies the block that it has just moved.
  */
-void Block::notify_just_moved(void) {
+void Block::notify_position_changed(void) {
 
   // now we know that the block moves at least of 1 pixel:
   // we can play the sound

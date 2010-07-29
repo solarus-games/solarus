@@ -69,6 +69,7 @@ class InteractiveEntity: public Detector {
     bool is_displayed_in_y_order(void);
 
     bool is_obstacle_for(MapEntity *other);
+    bool is_hero_obstacle(Hero *hero);
     bool is_npc_obstacle(InteractiveEntity *npc);
     bool is_enemy_obstacle(Enemy *enemy);
     bool is_sword_ignored(void);
@@ -83,7 +84,7 @@ class InteractiveEntity: public Detector {
     void walk(std::string path, bool loop, bool with_collisions);
     void walk_random(void);
     void jump(int direction, int length, bool with_collisions);
-    void notify_just_moved(void);
+    void notify_position_changed(void);
     void set_sprite_direction(int direction);
 };
 

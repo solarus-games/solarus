@@ -53,7 +53,7 @@ Bugs :
 - empêcher de lancer le jeu en root, sinon le config.ini est créé avec root comme propriétaire
 - mode d'emploi : enlever le logo nintendo sur la dernière page
 - mode d'emploi : page 13 : "vous pouvez la possibilité"
-- pousser un buisson empêche de le soulever (valable aussi pour coffres ?), d'utiliser un objet, etc... il faudrait au moins pouvoir donner un coup d'épée
+- pousser un buisson empêche de le soulever (valable aussi pour coffres ?), d'utiliser un objet, etc. il faudrait au moins pouvoir donner un coup d'épée
 - Link semble disparaître un peu lors des phases à l'épée.
 - Lorsqu'on fait des appuis courts et répétés sur une des flèches, Link avance sans marcher.
 - Quand Link rentre dans une maison, le cadre de la porte est sous sa tête et pas au-dessus.
@@ -61,13 +61,13 @@ Bugs :
 - On ne peut pas lancer un pot au-dessus d'une falaise
 - Quand on lance un pot dans un donjon depuis la couche intermédiaire vers la couche basse, le changer de couche (détecter l'absence de tiles sur la couche intermédiaire)
 - vérifier ce qui se passe si on arrive sur un tapis roulant pendant qu'on tire une statue (peut-être modifier le is_conveyor_belt_obstacle)
-- (bug trouvé par Morwenn, confirmé) Lorsqu'on essaye de soulever une falaise en biais (avec la touche action),
-  et que l'on reste appuyé sur la touche directionnelle, Link continue d'essayer de pousser la falaise
-  tant qu'on ne relâche pas la touche directionnelle.
 - état RETURNING_TO_SOLID_GROUND : faire revenir uniquement la caméra puis téléporter le héros ensuite ? sinon la caméra peut rester collée un moment au bord de la map (cela éviterait aussi des risques de bugs de collision avec des capteurs).
 - Boss du niveau 1 : faire une vraie salle pour la séquence de fin ?
-- bottes de pégase : on passe à travers les ennemis et les trous
+- bottes de pégase : on passe à travers les ennemis et les trous, vérifier aussi les tapis roulants, etc, faire un vrai état RUNNING
+  similaire à WALKING, CARRYING, SWORD_LOADING et SWIMMING
 - bottes de pégase contre les limites d'une map en scrolling (seulement à droite ?) seg fault ?
+- réformer les états du héros en faisant des sous-classes ? cela dit il ne reste plus que running et swimming qui posent problème
+- on peut mettre pause et sauvegarder quand on n'a plus de coeurs, avant le déclenchement de l'écran game over
 
 
 A venir :

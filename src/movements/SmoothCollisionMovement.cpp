@@ -33,54 +33,6 @@ SmoothCollisionMovement::~SmoothCollisionMovement(void) {
 }
 
 /**
- * @brief Updates the position of the entity if it wants to move.
- *
- * This is a redefinition of Movement::update because we have
- * to call update_x() and update_y() in the right order.
- */
-void SmoothCollisionMovement::update(void) {
-
-  if (!is_suspended()) {
-    uint32_t now = System::now();
-
-    bool x_move_now = get_x_move() != 0 && now >= get_next_move_date_x();
-    bool y_move_now = get_y_move() != 0 && now >= get_next_move_date_y();
-
-    while (x_move_now || y_move_now) {
-
-      if (x_move_now) {
-	// it's time to make an x move
-
-	if (y_move_now) {
-	  // but it's also time to make a y move
-
-	  if (get_next_move_date_x() <= get_next_move_date_y()) {
-	    // x move first
-	    update_x();
-	    update_y();
-	  }
-	  else {
-	    // y move first
-	    update_y();
-	    update_x();
-	  }
-	}
-	else {
-	  update_x();
-	}
-      }
-      else if (y_move_now) {
-	update_y();
-      }
-
-      now = System::now();
-      x_move_now = get_x_move() != 0 && now >= get_next_move_date_x();
-      y_move_now = get_y_move() != 0 && now >= get_next_move_date_y();
-    }
-  }
-}
-
-/**
  * @brief Updates the x position of the entity if it wants to move
  *
  * This is a redefinition of CollisionMovement::update_x() to

@@ -388,10 +388,7 @@ void Map::set_suspended(bool suspended) {
 void Map::update(void) {
 
   // detect whether the game has just been suspended or resumed
-  bool game_suspended = game->is_suspended();
-  if (suspended != game_suspended) {
-    set_suspended(game_suspended);
-  }
+  check_suspended();
 
   // update the elements
   TilePattern::update();
@@ -400,6 +397,21 @@ void Map::update(void) {
   camera->update(); /* update the camera after the entities since this might 
 		       be the last update() call for this map */
   set_clipping_rectangle(clipping_rectangle);
+}
+
+/**
+ * @brief Checks whether the game has just been suspended or resumed
+ * and notifies the map elements when this is the case.
+ *
+ * This function is called at each cycle while this map is active,
+ * but you may want to call it more often in specific situations if you cannot wait.
+ */
+void Map::check_suspended() {
+
+  bool game_suspended = game->is_suspended();
+  if (suspended != game_suspended) {
+    set_suspended(game_suspended);
+  }
 }
 
 /**

@@ -169,6 +169,7 @@ class Map {
 
     // update and display
     void update(void);
+    void check_suspended(void);
     void display();
     void display_sprite(Sprite *sprite, int x, int y);
 };

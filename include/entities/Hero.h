@@ -285,6 +285,7 @@ class Hero: public MapEntity {
     void notify_just_moved(void);
     void set_facing_entity(Detector *detector);
     bool is_facing_obstacle(void);
+    bool is_facing_point_on_obstacle(void);
     void reset_movement(void);
     bool is_direction_locked(void);
 

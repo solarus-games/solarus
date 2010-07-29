@@ -147,7 +147,7 @@ void Hero::action_key_pressed(void) {
       // action on the facing entity
       facing_entity->action_key_pressed();
     }
-    else if (is_facing_obstacle() && get_state() == FREE) {
+    else if (is_facing_point_on_obstacle() && get_state() == FREE) {
       // grab an obstacle
       start_grabbing();
     }

@@ -65,7 +65,9 @@ Bugs :
   et que l'on reste appuyé sur la touche directionnelle, Link continue d'essayer de pousser la falaise
   tant qu'on ne relâche pas la touche directionnelle.
 - bottes de pégase contre les limites d'une map en scrolling (seulement à droite ?) seg fault
-  c'est à cause des update, update_x et update_y de Movement qui font un while. Enlever ces while et reprendre le code de SmoothCollisionMovement ?
+  c'est à cause des update_x et update_y de Movement qui font un while. Enlever ces while et reprendre le code de SmoothCollisionMovement ?
+  sauf que c'est bien des while dans update_x et update_y de CollisionMovement…
+  en fait ça doit être bon quand même du moment qu'il y a un while dans update
 - état RETURNING_TO_SOLID_GROUND : faire revenir uniquement la caméra puis téléporter le héros ensuite ? sinon la caméra peut rester collée un moment au bord de la map (cela éviterait aussi des risques de bugs de collision avec des capteurs).
 
 

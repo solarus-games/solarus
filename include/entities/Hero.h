@@ -27,60 +27,43 @@
 /**
  * @brief The hero's entity.
  *
- * The hero is animated by several sprites and is controlled with an instance of PlayerMovement.
- * The sprites are handled by the HeroSprites class.
- * This class handles actions of the hero. Each state of the hero is a subclass
- * of Hero::State.
+ * This class represents the hero. It coordinates his position on the map and his state.
+ * The hero is animated by several sprites that are handled by the HeroSprites class.
  */
 class Hero: public MapEntity {
 
   private:
 
-    /**
-     * @brief Constants to identify the possible states of the hero.
-     */
-    enum StateId {
-
-      // the hero can move in these states
-      FREE,				/**< the hero is free to move (stopped or walking) and can interact with entities */
-      CARRYING,				/**< the hero can walk but he is carrying a pot or a bush */
-      SWORD_LOADING,			/**< the hero can walk but his sword is loading for a spin attack */
-      RUNNING,				/**< the hero is running */
-      SWIMMING,				/**< the hero is swimming in deep water */
-
-      // the hero can change his direction but cannot move in these states
-      PUSHING,				/**< the hero is trying to push an obstacle */
-      SWORD_TAPPING,			/**< the hero is tapping his sword on a wall */
-      PULLING,				/**< the hero is pulling an object */
-      GRABBING,				/**< the hero is grabbing an object and can pull it */
-      CONVEYOR_BELT,			/**< the hero is being moved by a conveyor belt */
-
-      // the hero cannot move in these states
-      SWORD_SWINGING,			/**< the hero is swinging his sword */
-      SPIN_ATTACK,			/**< the hero is releasing a spin attack */
-      LIFTING,				/**< the hero is lifting an destroyable item (a pot, a bush, etc.) */
-      TREASURE,				/**< the hero is brandishing a treasure */
-      JUMPING,				/**< the hero is jumping */
-      HURT,				/**< the hero is hurt */
-      PLUNGING,				/**< the hero is plunging into water */
-      FALLING,				/**< the hero is falling into a hole */
-      RETURNING_TO_SOLID_GROUND,	/**< the hero is returning towards solid ground (e.g. after he drowned
-					 * in deep water or falled into a hole) */
-      STAIRS,				/**< the hero is being moved by stairs */
-      VICTORY,				/**< the hero is make a victory sequence with his sword */
-      USING_INVENTORY_ITEM,		/**< the hero is currently using an item from the inventory */
-      FREEZED,				/**< the hero cannot move for various possible reasons,
-					 * including an instruction from the script */
-
-      NB_STATES				/**< special value that indicates the number of existing states */
-    };
-
     // state
-    class State;
+    class State;				/**< base class for all states */
+    class StateFree;				/**< the hero is free to move (stopped or walking) and can interact with entities */
+    class StateCarrying;			/**< the hero can walk but he is carrying a pot or a bush */
+    class StateSwordLoading;			/**< the hero can walk but his sword is loading for a spin attack */
+    class StateRunning;				/**< the hero is running */
+    class StateSwimming;			/**< the hero is swimming in deep water */
+    class StatePushing;				/**< the hero is trying to push an obstacle */
+    class StateSwordTapping;			/**< the hero is tapping his sword on a wall */
+    class StatePulling;				/**< the hero is pulling an object */
+    class StateGrabbing;			/**< the hero is grabbing an object and can pull it */
+    class StateConveyorBelt;			/**< the hero is being moved by a conveyor belt */
+    class StateSwordSwinging;			/**< the hero is swinging his sword */
+    class StateSpinAttack;			/**< the hero is releasing a spin attack */
+    class StateLifting;				/**< the hero is lifting an destroyable item (a pot, a bush, etc.) */
+    class StateTreasure;			/**< the hero is brandishing a treasure */
+    class StateJumping;				/**< the hero is jumping */
+    class StateHurt;				/**< the hero is hurt */
+    class StatePlunging;			/**< the hero is plunging into water */
+    class StateFalling;				/**< the hero is falling into a hole */
+    class StateBackToSolidGround;		/**< the hero is getting back to solid ground (e.g. after he drowned
+						 * in deep water or falled into a hole) */
+    class StateStairs;				/**< the hero is being moved by stairs */
+    class StateVictory;				/**< the hero is make a victory sequence with his sword */
+    class StateInventoryItem;			/**< the hero is currently using an item from the inventory */
+    class StateFreezed;				/**< the hero cannot move for various possible reasons,
+						 * including an instruction from the script */
 
-    State *states[NB_STATES];			/**< all possible states of the hero (each state has only one instance) */
-    State *state;				/**< the current state */
-    StateId state_id;				/**< id of current state of the hero (considered only when the game is not suspended) */
+    State *state;				/**< the current internal state */
+    State *old_state;				/**< the previous state, to delete as soon as possible */
 
     // sprites
     Equipment *equipment;			/**< equipment of the player */
@@ -92,6 +75,8 @@ class Hero: public MapEntity {
     int walking_speed;				/**< current walking speed */
     Teletransporter *delayed_teletransporter;	/**< a teletransporter that will be activated when the hero finishes 
 						 * a special behavior, such as falling into a hole or walking on stairs */
+    bool on_conveyor_belt;			/**< indicates that the hero's rectangle is currently overlapping a conveyor belt 
+						 * (even if the collision is not enough to take the conveyor belt and move the hero) */
 
     // ground
     Ground ground;				/**< kind of ground under the hero: grass, shallow water, etc. */
@@ -103,12 +88,11 @@ class Hero: public MapEntity {
 						 * that the hero will just return to the last solid ground coordinates */
     Layer target_solid_ground_layer;		/**< layer of the place to go back when falling in some bad ground */
     uint32_t next_ground_date;			/**< when something will happend with the ground next time (a sound or a movement) */
+    Rectangle hole_dxy;				/**< direction of the movement when the hero is being attracted by a hole */
 
     // state
-    StateId get_state(void);
-    StateId get_state(StateId state);
-    bool is_state(StateId state);
-    void set_state(StateId state);
+    void set_state(State *state);
+    void update_state(void);
 
     // position
     void update_movement(void);
@@ -116,8 +100,8 @@ class Hero: public MapEntity {
     void try_snap_to_facing_entity(void);
 
     // ground
-    void start_ground(void);
     void update_ground(void);
+    void notify_ground_changed(void);
 
     // life
     void check_gameover();
@@ -287,10 +271,14 @@ class Hero: public MapEntity {
     bool is_grabbing_or_pulling(void);
     bool is_moving_grabbed_entity(void);
 
-    void give_treasure(Treasure *treasure);
+    void start_deep_water(void);
+    void start_hole(void);
+
+    void start_free(void);
+    void start_treasure(Treasure *treasure);
     void start_jumping(int direction8, int length, bool with_collisions, bool with_sound,
 	uint32_t movement_delay = 0, Layer layer_after_jump = LAYER_NB);
-    void set_freezed(bool freezed);
+    void start_freezed(void);
     void start_victory(void);
     void start_running(void);
     void start_bow(void);

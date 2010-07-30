@@ -721,7 +721,7 @@ void Game::give_treasure(Treasure *treasure) {
   this->treasure = treasure;
 
   // brandish the treasure
-  hero->give_treasure(treasure);
+  hero->start_treasure(treasure);
 
   // give the treasure and show the message
   treasure->give_to_player();

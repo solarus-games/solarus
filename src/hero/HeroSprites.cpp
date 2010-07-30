@@ -884,6 +884,7 @@ void HeroSprites::set_animation_jumping(void) {
     shield_sprite->set_current_animation("stopped");
     shield_sprite->set_current_direction(get_animation_direction());
   }
+  stop_displaying_sword();
 }
 
 /**
@@ -892,6 +893,7 @@ void HeroSprites::set_animation_jumping(void) {
 void HeroSprites::set_animation_hurt(void) {
 
   tunic_sprite->set_current_animation("hurt");
+  stop_displaying_sword();
   stop_displaying_shield();
 }
 
@@ -901,6 +903,7 @@ void HeroSprites::set_animation_hurt(void) {
 void HeroSprites::set_animation_plunging(void) {
 
   tunic_sprite->set_current_animation("plunging");
+  stop_displaying_sword();
   stop_displaying_shield();
 }
 

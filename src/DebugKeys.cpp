@@ -177,7 +177,7 @@ void DebugKeys::key_pressed(InputEvent::KeyboardKey key) {
 
       case InputEvent::KEY_LEFT_CONTROL:
       case InputEvent::KEY_RIGHT_CONTROL:
-	game->get_hero()->get_normal_movement()->set_stop_on_obstacles(false);
+	game->get_hero()->set_stop_on_obstacles(false);
 	break;
 
       default:
@@ -204,7 +204,7 @@ void DebugKeys::key_released(InputEvent::KeyboardKey key) {
 
       case InputEvent::KEY_LEFT_CONTROL:
       case InputEvent::KEY_RIGHT_CONTROL:
-	game->get_hero()->get_normal_movement()->set_stop_on_obstacles(true);
+	game->get_hero()->set_stop_on_obstacles(true);
 	break;
 
       default:

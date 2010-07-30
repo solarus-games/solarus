@@ -158,7 +158,7 @@ void ShopItem::notify_collision(MapEntity *entity_overlapping, CollisionMode col
     KeysEffect *keys_effect = game->get_keys_effect();
 
     if (keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
-	&& hero->get_state() == Hero::FREE) {
+	&& hero->is_free()) {
 
       // we show the 'look' icon
       keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_LOOK);
@@ -178,7 +178,7 @@ void ShopItem::action_key_pressed(void) {
   Hero *hero = game->get_hero();
   KeysEffect *keys_effect = game->get_keys_effect();
 
-  if (hero->get_state() == Hero::FREE
+  if (hero->is_free()
       && keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_LOOK) {
 
     game->get_dialog_box()->start_dialog(message_id);

@@ -208,7 +208,7 @@ void Door::notify_collision(MapEntity *entity_overlapping, CollisionMode collisi
     KeysEffect *keys_effect = game->get_keys_effect();
 
     if (keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
-	&& hero->get_state() == Hero::FREE) {
+	&& hero->is_free()) {
 
       // we show the action icon
       keys_effect->set_action_key_effect(can_open() ? KeysEffect::ACTION_KEY_OPEN : KeysEffect::ACTION_KEY_LOOK);
@@ -313,7 +313,7 @@ void Door::action_key_pressed(void) {
   Hero *hero = game->get_hero();
   Equipment *equipment = game->get_equipment();
 
-  if (hero->get_state() == Hero::FREE) {
+  if (hero->is_free()) {
     if (can_open()) {
       game->play_sound("door_unlocked");
       game->play_sound("door_open");

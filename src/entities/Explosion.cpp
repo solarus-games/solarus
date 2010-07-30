@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "entities/Explosion.h"
+#include "entities/CrystalSwitch.h"
 #include "entities/Enemy.h"
 #include "Game.h"
 #include "Sprite.h"
@@ -133,6 +134,16 @@ void Explosion::notify_collision(MapEntity *other_entity, Sprite *other_sprite, 
 }
 
 /**
+ * @brief This function is called when a the sprite of a crystal switch 
+ * detects a pixel-perfect collision with a sprite of this entity.
+ * @param crystal_switch the crystal switch
+ * @param sprite_overlapping the sprite of the current entity that collides with the crystal switch
+ */
+void Explosion::notify_collision_with_crystal_switch(CrystalSwitch *crystal_switch, Sprite *sprite_overlapping) {
+  crystal_switch->activate(this);
+}
+
+/**
  * @brief This function is called when an enemy's sprite collides with a sprite of this entity
  * @param enemy the enemy
  * @param enemy_sprite the enemy's sprite that overlaps a sprite of this entity
@@ -178,7 +189,7 @@ void Explosion::try_attack_enemy(Enemy *enemy, Sprite *enemy_sprite) {
  * - a value of -2 means that the attack immobilized the enemy
  * @param killed indicates that the attack has just killed the enemy
  */
-void Explosion::just_attacked_enemy(EnemyAttack attack, Enemy *victim, int result, bool killed) {
+void Explosion::notify_attacked_enemy(EnemyAttack attack, Enemy *victim, int result, bool killed) {
 
   if (result > 0) {
     victims.push_back(victim);

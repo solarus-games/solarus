@@ -36,7 +36,6 @@ class CrystalSwitch: public Detector {
     Sprite *star_sprite;                           /**< sprite of the star twinkling on the crystal switch */
     Rectangle star_xy;                             /**< position of the star */
 
-    void activate(MapEntity *entity_activating);
     void twinkle(void);
 
   public:
@@ -51,6 +50,7 @@ class CrystalSwitch: public Detector {
     void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
     void notify_collision(MapEntity *other_entity, Sprite *other_sprite, Sprite *this_sprite);
     void action_key_pressed(void);
+    void activate(MapEntity *entity_activating);
 
     void update(void);
     void display_on_map(void);

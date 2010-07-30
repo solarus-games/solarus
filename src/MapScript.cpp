@@ -565,7 +565,7 @@ int MapScript::l_chest_set_hidden(lua_State *l) {
 
   MapEntities *entities = script->map->get_entities();
   Chest *chest = (Chest*) entities->get_entity(CHEST, name);
-  chest->set_hidden(hidden);
+  chest->set_visible(!hidden);
 
   return 0;
 }
@@ -587,7 +587,7 @@ int MapScript::l_chest_is_hidden(lua_State *l) {
 
   MapEntities *entities = script->map->get_entities();
   Chest *chest = (Chest*) entities->get_entity(CHEST, name);
-  lua_pushboolean(l, chest->is_hidden() ? 1 : 0);
+  lua_pushboolean(l, chest->is_visible() ? 0 : 1);
 
   return 1;
 }
@@ -1449,7 +1449,6 @@ void MapScript::event_hero_victory_sequence_finished(void) {
  */
 void MapScript::event_hero_on_sensor(const std::string &sensor_name) {
   call_script_function("event_hero_on_sensor", sensor_name);
-  this->hero->reset_movement();
 }
 
 /**

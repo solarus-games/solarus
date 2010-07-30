@@ -773,7 +773,7 @@ bool MapEntity::is_visible(void) {
 }
 
 /**
- * @brief Sets whether this entity is visible
+ * @brief Sets whether this entity is visible.
  * @param visible true to make it visible
  */
 void MapEntity::set_visible(bool visible) {
@@ -1240,12 +1240,32 @@ void MapEntity::notify_collision_with_sensor(Sensor *sensor) {
 }
 
 /**
- * @brief This function is called when an explosion's sprite detects a collision with a sprite of this entity.
+ * @brief This function is called when an explosion's sprite
+ * detects a pixel-perfect collision with a sprite of this entity.
  * @param explosion the explosion
  * @param sprite_overlapping the sprite of the current entity that collides with the explosion
  */
 void MapEntity::notify_collision_with_explosion(Explosion *explosion, Sprite *sprite_overlapping) {
   // nothing done by default
+}
+
+/**
+ * @brief This function is called when a crystal switch detects a collision with this entity.
+ * @param crystal_switch the crystal switch
+ * @param collision_mode the collision mode that detected the event
+ */
+void MapEntity::notify_collision_with_crystal_switch(CrystalSwitch *crystal_switch, int collision_mode) {
+
+}
+
+/**
+ * @brief This function is called when a the sprite of a crystal switch 
+ * detects a pixel-perfect collision with a sprite of this entity.
+ * @param crystal_switch the crystal switch
+ * @param sprite_overlapping the sprite of the current entity that collides with the crystal switch
+ */
+void MapEntity::notify_collision_with_crystal_switch(CrystalSwitch *crystal_switch, Sprite *sprite_overlapping) {
+
 }
 
 /**
@@ -1280,7 +1300,7 @@ void MapEntity::notify_collision_with_enemy(Enemy *enemy, Sprite *enemy_sprite, 
  * - a value of -2 means that the attack immobilized the enemy
  * @param killed indicates that the attack has just killed the enemy
  */
-void MapEntity::just_attacked_enemy(EnemyAttack attack, Enemy *victim, int result, bool killed) {
+void MapEntity::notify_attacked_enemy(EnemyAttack attack, Enemy *victim, int result, bool killed) {
   // nothing done by default
 }
 

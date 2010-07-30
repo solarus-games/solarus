@@ -215,7 +215,7 @@ void DestructibleItem::notify_collision(MapEntity *entity_overlapping, Collision
 	&& !is_being_cut
 	&& !is_disabled()
 	&& keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
-	&& hero->get_state() == Hero::FREE) {
+	&& hero->is_free()) {
 
       Equipment *equipment = game->get_equipment();
       int weight = features[subtype].weight;

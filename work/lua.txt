@@ -21,7 +21,7 @@ Ce sont des fonctions communes à tous les types de scripts.
   Ces fonctions Lua sont appelées, si elles existent, par le moteur C++ lorsque
   ce dernier souhaite notifier le script qu'un événement vient de se produire.
 
-- event_update()					appelé à chaque cycle (à éviter si possible)
+- event_update()					appelé à chaque cycle (attention aux performances)
 - event_set_suspended(suspended)			appelé lorsque le jeu est suspendu ou repris
 - event_dialog_started(message_id)			appelé lorsqu'un dialogue commence (i.e. au début de l'affichage du premier message)
 - event_dialog_finished(first_message_id, answer)	appelé lorsqu'un dialogue se termine (i.e. après l'affichage du dernier message)

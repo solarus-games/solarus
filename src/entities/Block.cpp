@@ -166,7 +166,7 @@ void Block::notify_collision(MapEntity *entity_overlapping, CollisionMode collis
     KeysEffect *keys_effect = game->get_keys_effect();
 
     if (keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
-	&& hero->get_state() == Hero::FREE) {
+	&& hero->is_free()) {
 
       // we show the action icon
       keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_GRAB);
@@ -176,18 +176,17 @@ void Block::notify_collision(MapEntity *entity_overlapping, CollisionMode collis
 
 /**
  * @brief This function is called when the player tries to push or pull this block.
- * @return true if the player can be move this block
+ * @return true if the player is allowed to move this block
  */
 bool Block::moved_by_hero(void) {
 
   Hero *hero = game->get_hero();
 
-  if (get_movement() != NULL || maximum_moves == 0 || System::now() < when_can_move ||
-      (direction != -1 && hero->get_animation_direction() != direction)) {
-    return false;
-  }
-
-  if (hero->is_grabbing_or_pulling() && subtype != STATUE) {
+  if (get_movement() != NULL							// the block is already moving
+      || maximum_moves == 0							// the block cannot move anymore
+      || System::now() < when_can_move						// the block cannot move for a while
+      || (direction != -1 && hero->get_animation_direction() != direction)	// the block cannot move in this direction
+      || (hero->is_grabbing_or_pulling() && subtype != STATUE)) {		// only statues can be pulled
     return false;
   }
 

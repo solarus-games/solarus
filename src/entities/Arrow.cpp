@@ -18,6 +18,7 @@
 #include "entities/Hero.h"
 #include "entities/Enemy.h"
 #include "entities/Stairs.h"
+#include "entities/CrystalSwitch.h"
 #include "movements/PathMovement.h"
 #include "movements/FollowMovement.h"
 #include "Sprite.h"
@@ -370,6 +371,20 @@ void Arrow::attach_to(MapEntity *entity_reached) {
 }
 
 /**
+ * @brief This function is called when a crystal switch detects a collision with this entity.
+ * @param crystal_switch the crystal switch
+ * @param collision_mode the collision mode that detected the event
+ */
+void Arrow::notify_collision_with_crystal_switch(CrystalSwitch *crystal_switch, int collision_mode) {
+
+  if (collision_mode == Detector::COLLISION_RECTANGLE && is_flying()) {
+
+    crystal_switch->activate(this);
+    attach_to(crystal_switch);
+  }
+}
+
+/**
  * @brief This function is called when an enemy's sprite collides with a sprite of this entity.
  * @param enemy the enemy
  * @param enemy_sprite the enemy's sprite that overlaps the hero
@@ -396,7 +411,7 @@ void Arrow::notify_collision_with_enemy(Enemy *enemy, Sprite *enemy_sprite, Spri
  * - a value of -2 means that the attack immobilized the enemy
  * @param killed indicates that the attack has just killed the enemy
  */
-void Arrow::just_attacked_enemy(EnemyAttack attack, Enemy *victim, int result, bool killed) {
+void Arrow::notify_attacked_enemy(EnemyAttack attack, Enemy *victim, int result, bool killed) {
 
   if (result == -1) {
     stop();

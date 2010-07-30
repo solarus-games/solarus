@@ -41,7 +41,7 @@
 Chest::Chest(const std::string &name, Layer layer, int x, int y,
 	     bool big_chest, Treasure *treasure):
   Detector(COLLISION_FACING_POINT, name, layer, x, y, 16, 16),
-  big_chest(big_chest), hidden(false) {
+  big_chest(big_chest) {
 
   open = treasure_given = (treasure != NULL && treasure->is_found());
   if (open) {
@@ -113,10 +113,10 @@ bool Chest::is_displayed_in_y_order(void) {
 /**
  * @brief Returns whether this entity is an obstacle for another one.
  * @param other another entity
- * @return true
+ * @return true if this entity is an obstacle for the other one
  */
 bool Chest::is_obstacle_for(MapEntity *other) {
-  return !is_hidden();
+  return is_visible();
 }
 
 /**
@@ -144,27 +144,17 @@ void Chest::initialize_sprite(void) {
 }
 
 /**
- * @brief Returns whether the chest is hidden.
- * @return true if the chest is hidden
+ * @brief Sets whether this entity is visible.
+ * @param visible true to make it visible
  */
-bool Chest::is_hidden(void) {
-  return hidden;
-}
+void Chest::set_visible(bool visible) {
 
-/**
- * @brief Sets whether the chest is hidden.
- *
- * If the chest is already open, this function has no effect.
- *
- * @param hidden true to hide the chest, false to unhide it
- */
-void Chest::set_hidden(bool hidden) {
+  if (!is_open()) { // an open chest is always visible
 
-  if (!is_open()) {
+    MapEntity::set_visible(visible);
 
-    this->hidden = hidden;
-
-    if (!hidden) {
+    // make sure the chest does not appear on the hero
+    if (visible) {
       Hero *hero = game->get_hero();
       if (overlaps(hero)) {
 	hero->avoid_collision(this, 3);
@@ -228,13 +218,13 @@ void Chest::notify_collision(MapEntity *entity_overlapping, CollisionMode collis
     return;
   }
 
-  if (entity_overlapping->is_hero() && !is_hidden()) {
+  if (entity_overlapping->is_hero() && is_visible()) {
 
     Hero *hero = (Hero*) entity_overlapping;
     KeysEffect *keys_effect = game->get_keys_effect();
 
     if (keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
-	&& hero->get_state() == Hero::FREE
+	&& hero->is_free()
 	&& hero->get_animation_direction() == 1
 	&& !is_open()) {
 
@@ -287,7 +277,7 @@ void Chest::update(void) {
 	  // by default, we tell the player the chest is empty
 	  game->play_sound("wrong");
 	  game->get_dialog_box()->start_dialog("_empty_chest");
-	  hero->unfreeze();
+	  hero->set_freezed(false);
 	}
       }
     }
@@ -309,7 +299,7 @@ void Chest::action_key_pressed(void) {
   Hero *hero = game->get_hero();
   DungeonEquipment *dungeon_equipment = game->get_dungeon_equipment();
 
-  if (!is_hidden() && hero->get_state() == Hero::FREE) { // don't open a chest while pushing
+  if (is_visible() && hero->is_free()) {
 
     if (!big_chest || dungeon_equipment->has_big_key()) {
       game->play_sound("chest_open");
@@ -317,21 +307,12 @@ void Chest::action_key_pressed(void) {
       treasure_date = System::now() + 300;
 
       keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
-      hero->freeze();
+      hero->set_freezed(true);
     }
     else {
       game->play_sound("wrong");
       game->get_dialog_box()->start_dialog("_big_key_required");
     }
-  }
-}
-
-/**
- * @brief Displays the entity on the map.
- */
-void Chest::display_on_map(void) {
-  if (!is_hidden()) {
-    Detector::display_on_map();
   }
 }
 
@@ -352,3 +333,4 @@ void Chest::set_suspended(bool suspended) {
     treasure_date = System::now() + (treasure_date - when_suspended);
   }
 }
+

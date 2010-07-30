@@ -236,7 +236,7 @@ void InteractiveEntity::notify_collision(MapEntity *entity_overlapping, Collisio
     KeysEffect *keys_effect = game->get_keys_effect();
 
     if (keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
-	&& hero->get_state() == Hero::FREE
+	&& hero->is_free()
 	&& (subtype != SIGN || hero->get_animation_direction() == 1) /* TODO move to future class Sign */) {
 
       // we show the action icon
@@ -256,7 +256,7 @@ void InteractiveEntity::action_key_pressed(void) {
   KeysEffect *keys_effect = game->get_keys_effect();
   Hero *hero = game->get_hero();
 
-  if (hero->get_state() == Hero::FREE) {
+  if (hero->is_free()) {
     keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
 
     // for a place with water: start the dialog

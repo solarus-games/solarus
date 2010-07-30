@@ -71,7 +71,6 @@ Game::Game(Solarus *solarus, Savegame *savegame):
 
   // initialize the keys effect and the HUD
   keys_effect = new KeysEffect();
-  update_keys_effect();
   hud = new HUD(this);
 
   // launch the starting map
@@ -265,7 +264,6 @@ void Game::update(void) {
 
   // update the equipment and HUD
   get_equipment()->update();
-  update_keys_effect();
   hud->update();
   dialog_box->update();
 
@@ -383,7 +381,7 @@ void Game::update_transitions(void) {
       }
     }
     else {
-      current_map->opening_transition_finished();
+      current_map->notify_opening_transition_finished();
 
       if (previous_map_surface != NULL) {
 	delete previous_map_surface;
@@ -404,39 +402,6 @@ void Game::update_transitions(void) {
     hero->place_on_destination_point(current_map);
     transition->start();
     current_map->start(this);
-  }
-}
-
-/**
- * @brief Makes sure the keys effects are coherent with the hero's equipment and abilities.
- */
-void Game::update_keys_effect(void) {
-
-  if (is_paused() || is_showing_message()) {
-    return;
-  }
-
-  switch (hero->get_state()) {
-    
-  case Hero::FREE:
-  case Hero::SWORD_SWINGING:
-  case Hero::SWORD_LOADING:
-
-    // the sword key swings the sword <=> the hero has a sword
-    if (get_equipment()->has_sword()
-	&& keys_effect->get_sword_key_effect() != KeysEffect::SWORD_KEY_SWORD) {
-
-      keys_effect->set_sword_key_effect(KeysEffect::SWORD_KEY_SWORD);
-    }
-    else if (!get_equipment()->has_sword()
-	     && keys_effect->get_sword_key_effect() == KeysEffect::SWORD_KEY_SWORD) {
-      
-      keys_effect->set_sword_key_effect(KeysEffect::SWORD_KEY_NONE);
-    }
-    break;
-
-  default:
-    break;
   }
 }
 
@@ -533,7 +498,7 @@ Map * Game::get_current_map(void) {
 void Game::set_current_map(MapId map_id, const std::string &destination_point_name,
 			   Transition::Style transition_style) {
 
-  hero->reset_movement(); // stop the hero
+  hero->notify_map_closing(); // stop the hero
 
   // load the next map
   next_map = ResourceManager::get_map(map_id);

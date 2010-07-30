@@ -70,8 +70,9 @@ class Boomerang: public MapEntity {
     void update(void);
 
     // collisions
+    void notify_collision_with_crystal_switch(CrystalSwitch *crystal_switch, int collision_mode);
     void notify_collision_with_enemy(Enemy *enemy);
-    void just_attacked_enemy(EnemyAttack attack, Enemy *victim, int result, bool killed);
+    void notify_attacked_enemy(EnemyAttack attack, Enemy *victim, int result, bool killed);
 };
 
 

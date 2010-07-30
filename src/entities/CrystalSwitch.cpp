@@ -15,9 +15,6 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "entities/CrystalSwitch.h"
-#include "entities/CarriedItem.h"
-#include "entities/Boomerang.h"
-#include "entities/Arrow.h"
 #include "entities/Hero.h"
 #include "Game.h"
 #include "DialogBox.h"
@@ -92,43 +89,7 @@ bool CrystalSwitch::is_obstacle_for(MapEntity *other) {
  * @param collision_mode the collision mode that detected the collision
  */
 void CrystalSwitch::notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
-
-  if (entity_overlapping->get_type() == CARRIED_ITEM && collision_mode == COLLISION_RECTANGLE) {
-
-    CarriedItem *item = (CarriedItem*) entity_overlapping;
-    if (item->is_being_thrown() && !item->can_explode()) {
-      activate(item);
-      item->break_item();
-    }
-  }
-  else if (entity_overlapping->get_type() == BOOMERANG && collision_mode == COLLISION_RECTANGLE) {
-
-    Boomerang *boomerang = (Boomerang*) entity_overlapping;
-    activate(boomerang);
-    if (!boomerang->is_going_back()) {
-      boomerang->go_back();
-    }
-  }
-  else if (entity_overlapping->get_type() == ARROW && collision_mode == COLLISION_RECTANGLE) {
-
-    Arrow *arrow = (Arrow*) entity_overlapping;
-    if (arrow->is_flying()) {
-      activate(arrow);
-      arrow->attach_to(this);
-    }
-  }
-  else if (entity_overlapping->is_hero() && collision_mode == COLLISION_FACING_POINT) {
-
-    Hero *hero = (Hero*) entity_overlapping;
-    KeysEffect *keys_effect = game->get_keys_effect();
-
-    if (keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
-	&& hero->get_state() == Hero::FREE) {
-
-      // we show the action icon
-      keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_LOOK);
-    }
-  }
+  entity_overlapping->notify_collision_with_crystal_switch(this, collision_mode);
 }
 
 /**
@@ -142,19 +103,7 @@ void CrystalSwitch::notify_collision(MapEntity *entity_overlapping, CollisionMod
  * @param this_sprite the sprite of this detector that is overlapping the other entity's sprite
  */
 void CrystalSwitch::notify_collision(MapEntity *other_entity, Sprite *other_sprite, Sprite *this_sprite) {
-
-  if (other_entity->is_hero() &&
-      other_sprite->contains("sword")) {
-    // the hero's sword is overlapping the crystal switch
-
-    Hero *hero = (Hero*) other_entity;
-    if (hero->get_state() != Hero::SWORD_LOADING && get_distance(hero) < 32) {
-      activate(hero);
-    }
-  }
-  else if (other_entity->get_type() == EXPLOSION) {
-    activate(other_entity);
-  }
+  other_entity->notify_collision_with_crystal_switch(this, other_sprite);
 }
 
 /**
@@ -168,7 +117,7 @@ void CrystalSwitch::action_key_pressed(void) {
   KeysEffect *keys_effect = game->get_keys_effect();
   Hero *hero = game->get_hero();
 
-  if (hero->get_state() == Hero::FREE) {
+  if (hero->is_free()) {
     keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
 
     // start a dialog

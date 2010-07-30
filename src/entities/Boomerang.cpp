@@ -18,6 +18,7 @@
 #include "entities/Hero.h"
 #include "entities/Enemy.h"
 #include "entities/Stairs.h"
+#include "entities/CrystalSwitch.h"
 #include "entities/MapEntities.h"
 #include "movements/CollisionMovement.h"
 #include "movements/TargetMovement.h"
@@ -291,6 +292,22 @@ void Boomerang::update(void) {
 }
 
 /**
+ * @brief This function is called when a crystal switch detects a collision with this entity.
+ * @param crystal_switch the crystal switch
+ * @param collision_mode the collision mode that detected the event
+ */
+void Boomerang::notify_collision_with_crystal_switch(CrystalSwitch *crystal_switch, int collision_mode) {
+
+  if (collision_mode == Detector::COLLISION_RECTANGLE) {
+
+    crystal_switch->activate(this);
+    if (!is_going_back()) {
+      go_back();
+    }
+  }
+}
+
+/**
  * @brief This function is called when an enemy collides with the entity.
  * @param enemy the enemy
  */
@@ -315,7 +332,7 @@ void Boomerang::notify_collision_with_enemy(Enemy *enemy) {
  * - a value of -2 means that the attack immobilized the enemy
  * @param killed indicates that the attack has just killed the enemy
  */
-void Boomerang::just_attacked_enemy(EnemyAttack attack, Enemy *victim, int result, bool killed) {
+void Boomerang::notify_attacked_enemy(EnemyAttack attack, Enemy *victim, int result, bool killed) {
 
   if (result != 0 && !is_going_back()) {
     go_back();

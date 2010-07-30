@@ -254,10 +254,9 @@ void InventoryItem::update(void) {
 	break;
  
       case INVENTORY_SPEED_SHOES:
-	hero->update_running();
-        if (hero->is_running_finished()) {
-	  finished = true;
-	}
+	// it's immediately finished for us : from the point of view of the InventoryItem class,
+	// the only effect of the speed shoes is to make the hero take its state "running"
+	finished = true;
 	break;
 
       case INVENTORY_APPLES:

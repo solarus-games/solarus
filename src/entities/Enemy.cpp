@@ -777,14 +777,9 @@ void Enemy::try_hurt(EnemyAttack attack, MapEntity *source, Sprite *this_sprite)
 
       if (attack == ATTACK_SWORD) {
 
-	// for a sword attack, the damage depends on the sword
-
-	static const int sword_factors[] = {0, 1, 2, 4, 8};
-	int sword = game->get_equipment()->get_sword();
-	life_lost *= sword_factors[sword];
-	if (((Hero*) source)->get_state() == Hero::SPIN_ATTACK) {
-	  life_lost *= 2; // muliply by 2 if this is a spin attack
-	}
+	// for a sword attack, the damage depends on the sword and the variant of sword attack used
+	int damage_multiplicator = ((Hero*) source)->get_sword_damage_factor();
+	life_lost *= damage_multiplicator;
       }
       else if (attack == ATTACK_THROWN_ITEM) {
 	life_lost *= ((CarriedItem*) source)->get_damage_on_enemies();
@@ -798,7 +793,7 @@ void Enemy::try_hurt(EnemyAttack attack, MapEntity *source, Sprite *this_sprite)
     }
 
     // notify the source
-    source->just_attacked_enemy(attack, this, result, get_life() <= 0);
+    source->notify_attacked_enemy(attack, this, result, get_life() <= 0);
   }
 }
 

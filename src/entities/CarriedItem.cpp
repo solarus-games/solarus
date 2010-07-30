@@ -21,6 +21,7 @@
 #include "entities/Explosion.h"
 #include "entities/Sensor.h"
 #include "entities/Stairs.h"
+#include "entities/CrystalSwitch.h"
 #include "entities/MapEntities.h"
 #include "movements/PixelMovement.h"
 #include "movements/FollowMovement.h"
@@ -422,7 +423,7 @@ void CarriedItem::notify_collision_with_enemy(Enemy *enemy) {
  * - a value of -2 means that the attack immobilized the enemy
  * @param killed indicates that the attack has just killed the enemy
  */
-void CarriedItem::just_attacked_enemy(EnemyAttack attack, Enemy *victim, int result, bool killed) {
+void CarriedItem::notify_attacked_enemy(EnemyAttack attack, Enemy *victim, int result, bool killed) {
 
   if (result != 0) {
     break_item();
@@ -534,6 +535,22 @@ bool CarriedItem::is_sensor_obstacle(Sensor *sensor) {
 bool CarriedItem::is_enemy_obstacle(Enemy *enemy) {
   // if this item explodes when reaching an obstacle, then we consider enemies as obstacles
   return can_explode();
+}
+
+/**
+ * @brief This function is called when a crystal switch detects a collision with this entity.
+ * @param crystal_switch the crystal switch
+ * @param collision_mode the collision mode that detected the event
+ */
+void CarriedItem::notify_collision_with_crystal_switch(CrystalSwitch *crystal_switch, int collision_mode) {
+
+  if (collision_mode == Detector::COLLISION_RECTANGLE
+      && is_being_thrown()
+      && !can_explode()) {
+
+    crystal_switch->activate(this);
+    break_item();
+  }
 }
 
 /**

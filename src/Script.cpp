@@ -452,20 +452,20 @@ int Script::l_hero_freeze(lua_State *l) {
   Script *script;
   called_by_script(l, 0, &script);
 
-  script->hero->freeze();
+  script->hero->set_freezed(true);
 
   return 0;
 }
 
 /**
- * @brief Allows the player to move again after a hero_freeze() call.
+ * @brief Allows the player to move again after a call to hero_freeze().
  */
 int Script::l_hero_unfreeze(lua_State *l) {
 
   Script *script;
   called_by_script(l, 0, &script);
 
-  script->hero->unfreeze();
+  script->hero->set_freezed(false);
 
   return 0;
 }
@@ -1038,7 +1038,7 @@ int Script::l_treasure_give_with_amount(lua_State *l) {
  * reduce the performances dramatically.
  */
 void Script::event_update(void) {
-  call_script_function("update");
+  call_script_function("event_update");
 }
 
 /**
@@ -1046,7 +1046,7 @@ void Script::event_update(void) {
  * @param suspended true if the game is suspended, false if it is resumed
  */
 void Script::event_set_suspended(bool suspended) {
-  call_script_function("set_suspended", suspended);
+  call_script_function("event_set_suspended", suspended);
 }
 
 /**

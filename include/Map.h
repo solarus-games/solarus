@@ -137,7 +137,7 @@ class Map {
     void load(Game *game);
     void unload(void);
     Game * get_game(void);
-    void opening_transition_finished(void);
+    void notify_opening_transition_finished(void);
 
     // entities
     MapEntities *get_entities(void);

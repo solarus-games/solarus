@@ -164,6 +164,7 @@ void Sensor::activate(Hero *hero) {
       case CUSTOM:
 	// we call the map script
 	map->get_script()->event_hero_on_sensor(get_name());
+	hero->reset_movement();
 	break;
 
       case CHANGE_LAYER:

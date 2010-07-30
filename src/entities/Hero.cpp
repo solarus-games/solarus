@@ -14,6 +14,10 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
+// TODO temporary
+#ifdef IGNORE
+
 #include "entities/Hero.h"
 
 /**
@@ -37,6 +41,10 @@ Hero::Hero(Equipment *equipment):
   // sprites
   sprites = new HeroSprites(this, equipment);
   rebuild_equipment();
+
+  // ground
+  last_solid_ground_coords.set_xy(0, 0);
+  last_solid_ground_layer = LAYER_LOW;
 }
 
 /**
@@ -294,14 +302,12 @@ void Hero::check_gameover(void) {
 /**
  * @brief Displays this entity on the map.
  *
+ * This function is called only when is_visible() returns true.
  * The hero is displayed with its current animation and at its current position.
  */
 void Hero::display_on_map(void) {
 
-  if (!sprites->is_visible() || game->is_showing_gameover()) {
-    return; // the hero is not displayed
-  }
-
+  // the state may call get_sprites()->display_on_map() or make its own display
   state->display_on_map();
 }
 
@@ -443,6 +449,34 @@ void Hero::rebuild_equipment(void) {
 }
 
 /**
+ * @brief Returns whether this entity is currently visible.
+ * @return true if this entity is currently visible
+ */
+bool Hero::is_visible(void) {
+
+  return MapEntity::is_visible()
+    && state->is_hero_visible()
+    && !game->is_showing_gameover();
+}
+
+/**
+ * @brief Returns whether the shadow should be currently displayed, separate from the tunic sprite.
+ * @return true if the shadow should be currently displayed.
+ */
+bool Hero::is_shadow_visible(void) {
+  return get_height_above_shadow() > 0;
+}
+
+/**
+ * @brief When a shadow is displayed separate from the tunic sprite,
+ * returns the height where the tunic sprite should be displayed.
+ * @return the height in pixels
+ */
+int Hero::get_height_above_shadow(void) {
+  return state->get_height_above_shadow();
+}
+
+/**
  * @brief Sets the hero's current map.
  *
  * This function is called when the map is changed.
@@ -566,7 +600,7 @@ void Hero::place_on_destination_point(Map *map) {
  *
  * The position of the hero is changed if necessary.
  */
-void Hero::opening_transition_finished(void) {
+void Hero::notify_opening_transition_finished(void) {
 
   int side = map->get_destination_side();  
   if (side != -1) {
@@ -1306,6 +1340,42 @@ void Hero::notify_collision_with_explosion(Explosion *explosion, Sprite *sprite_
 }
 
 /**
+ * @brief This function is called when a crystal switch detects a collision with this entity.
+ * @param crystal_switch the crystal switch
+ * @param collision_mode the collision mode that detected the event
+ */
+void Hero::notify_collision_with_crystal_switch(CrystalSwitch *crystal_switch, int collision_mode) {
+
+  if (collision_mode == COLLISION_FACING_POINT) {
+    // the hero is touching the crystal switch and is looking in its direction
+
+    KeysEffect *keys_effect = game->get_keys_effect();
+
+    if (keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
+	&& is_free()) {
+
+      // we show the action icon
+      keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_LOOK);
+    }
+  }
+}
+
+/**
+ * @brief This function is called when a the sprite of a crystal switch 
+ * detects a pixel-perfect collision with a sprite of this entity.
+ * @param crystal_switch the crystal switch
+ * @param sprite_overlapping the sprite of the current entity that collides with the crystal switch
+ */
+void Hero::notify_collision_with_crystal_switch(CrystalSwitch *crystal_switch, Sprite *sprite_overlapping) {
+
+  if (sprite_overlapping->contains("sword") // the hero's sword is overlapping the crystal switch
+      && state->can_activate_crystal_switch()) {
+    
+    crystal_switch->activate(this);
+  }
+}
+
+/**
  * @brief Makes the hero escape from an entity that is overlapping it.
  *
  * This function is called when an entity that just appeared may overlap the hero
@@ -1383,9 +1453,9 @@ void Hero::try_snap_to_facing_entity(void) {
  * @param result indicates how the enemy has reacted to the attack (see Enemy.h)
  * @param killed indicates that the attack has just killed the enemy
  */
-void Hero::just_attacked_enemy(EnemyAttack attack, Enemy *victim, int result, bool killed) {
+void Hero::notify_attacked_enemy(EnemyAttack attack, Enemy *victim, int result, bool killed) {
 
-  state->just_attacked_enemy(attack, victim, result, killed);
+  state->notify_attacked_enemy(attack, victim, result, killed);
 }
 
 /**
@@ -1487,7 +1557,7 @@ void Hero::give_treasure(Treasure *treasure) {
  * (or LAYER_NB to keep the same layer)
  * @param movement_delay delay between each one-pixel move in the jump movement (0: default)
  */
-void Hero::jump(int direction8, int length, bool with_collisions, bool with_sound, Layer layer_after_jump, uint32_t movement_delay) {
+void Hero::start_jumping(int direction8, int length, bool with_collisions, bool with_sound, uint32_t movement_delay, Layer layer_after_jump) {
 
   StateJumping *state = (StateJumping*) get_state(JUMPING);
   state->set_jump(direction8, length, with_collision, with_sound, layer_after_jump, movement_delay);
@@ -1512,7 +1582,7 @@ void Hero::start_deep_water(void) {
       set_state(SWIMMING);
     }
     else {
-      jump(get_wanted_movement_direction8(), 32, true, true, LAYER_NB, 13);
+      start_jumping(get_wanted_movement_direction8(), 32, true, true, 13);
     }
   }
 }
@@ -1554,6 +1624,34 @@ void Hero::start_hole(void) {
  * @brief Makes the hero brandish his sword meaning a victory.
  */
 void Hero::start_victory() {
+
   set_state(VICTORY);
 }
+
+/**
+ * @brief Freezes or unfreezes the hero.
+ *
+ * When the hero is freezed, he cannot move.
+ * The current animation of the hero's sprites is stopped and the "stopped" animation is played.
+ * When the hero is unfreezed, he gets back to the state FREE.
+ *
+ * @param freezed true to freeze the hero, false to unfreeze him
+ */
+void set_freezed(bool freezed) {
+
+  set_state(freezed ? FREEZED : FREE);
+}
+
+/**
+ * @brief Makes the hero lift a destructible item.
+ * @param item_to_lift the destructible item to lift
+ */
+void Hero::start_lifting(DestructibleItem *item_to_lift) {
+
+  StateLifting *state = (StateLifting*) get_state(LIFTING);
+  state->set_item_to_lift(item_to_lift);
+  set_state(LIFTING);
+}
+
+#endif
 

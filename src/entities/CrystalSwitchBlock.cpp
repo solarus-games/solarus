@@ -127,7 +127,7 @@ void CrystalSwitchBlock::notify_collision(MapEntity *entity_overlapping, Collisi
     // see if we have to make fim fall
 
     Hero *hero = (Hero*) entity_overlapping;
-    if (hero->get_normal_movement()->is_moving_enabled()) {
+    if (hero->can_control_movement()) {
 
       Rectangle collision_box = hero->get_bounding_box();
       int x1 = get_top_left_x();

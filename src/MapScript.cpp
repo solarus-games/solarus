@@ -1462,9 +1462,9 @@ void MapScript::event_hero_interaction(const std::string &entity_name) {
 
 /**
  * @brief Notifies the script that the hero is using an inventory item
- * in front of a interactive entity.
+ * in front of an interactive entity.
  *
- * This event is called only for inventory items that want to use it
+ * This event is called only for inventory items that want to use an interactive entity
  * (e.g. a key that is being used in front of a door).
  *
  * @param entity_name name of the interactive entity the hero is facing

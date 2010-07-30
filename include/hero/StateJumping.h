@@ -14,33 +14,21 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_HERO_STATE_H
-#define SOLARUS_HERO_STATE_H
+#ifndef SOLARUS_HERO_STATE_JUMPING_H
+#define SOLARUS_HERO_STATE_JUMPING_H
 
-#include "Common.h"
-#include "entities/Hero.h"
+#include "hero/State.h"
 
 /**
- * @brief Abstract base class for a state of the hero.
+ * @brief The state "Jumping" of the hero.
  */
-class Hero::State {
-
-  protected:
-
-    Hero *hero;				/**< the hero this state is managing */
-
-    State(Hero *hero);
+class Hero::StateJumping: public Hero::State {
 
   public:
 
-    virtual ~State(void);
-
-    virtual void start(void);
-    virtual void stop(void);
-
-    virtual void update(void);
-    virtual void display_on_map(void);
-    virtual void set_suspended(bool suspended);
+    StateJumping(Hero *hero, int direction8, int length, bool with_collisions, bool with_sound,
+	uint32_t movement_delay = 0, Layer layer_after_jump = LAYER_NB);
+    ~StateJumping(void);
 };
 
 #endif

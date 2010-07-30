@@ -767,7 +767,7 @@ void MapEntities::end_boss_battle(void) {
   game->play_music("victory.spc");
   game->set_pause_key_available(false);
   hero->set_animation_direction(3);
-  hero->set_freezed(true);
+  hero->start_freezed();
 }
 
 /**

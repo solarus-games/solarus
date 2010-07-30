@@ -452,7 +452,7 @@ int Script::l_hero_freeze(lua_State *l) {
   Script *script;
   called_by_script(l, 0, &script);
 
-  script->hero->set_freezed(true);
+  script->hero->start_freezed();
 
   return 0;
 }
@@ -465,7 +465,7 @@ int Script::l_hero_unfreeze(lua_State *l) {
   Script *script;
   called_by_script(l, 0, &script);
 
-  script->hero->set_freezed(false);
+  script->hero->start_free();
 
   return 0;
 }

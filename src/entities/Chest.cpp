@@ -277,7 +277,7 @@ void Chest::update(void) {
 	  // by default, we tell the player the chest is empty
 	  game->play_sound("wrong");
 	  game->get_dialog_box()->start_dialog("_empty_chest");
-	  hero->set_freezed(false);
+	  hero->start_free();
 	}
       }
     }
@@ -307,7 +307,7 @@ void Chest::action_key_pressed(void) {
       treasure_date = System::now() + 300;
 
       keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
-      hero->set_freezed(true);
+      hero->start_freezed();
     }
     else {
       game->play_sound("wrong");

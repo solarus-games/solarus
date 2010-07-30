@@ -14,29 +14,49 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
-// TODO temporary
-#ifdef IGNORE
-
 #include "entities/Hero.h"
+#include "entities/MapEntities.h"
+#include "entities/DestinationPoint.h"
+#include "entities/Teletransporter.h"
+#include "entities/Stairs.h"
+#include "entities/ConveyorBelt.h"
+#include "entities/CrystalSwitch.h"
+#include "entities/Block.h"
+#include "entities/Sensor.h"
+#include "hero/HeroSprites.h"
+#include "hero/StateConveyorBelt.h"
+#include "hero/StateFalling.h"
+#include "hero/StateFree.h"
+#include "hero/StateFreezed.h"
+#include "hero/StateHurt.h"
+#include "hero/StateJumping.h"
+#include "hero/StateLifting.h"
+#include "hero/StatePlunging.h"
+#include "hero/StateStairs.h"
+#include "hero/StateSwimming.h"
+#include "hero/StateTreasure.h"
+#include "hero/StateVictory.h"
+#include "movements/Movement.h"
+#include "lowlevel/System.h"
+#include "Game.h"
+#include "Map.h"
+#include "Equipment.h"
+#include "KeysEffect.h"
+#include "Sprite.h"
 
 /**
  * @brief Creates a hero.
  * @param equipment the equipment
  */
 Hero::Hero(Equipment *equipment):
-  state(NULL), state_id(FREE), equipment(equipment), facing_entity(NULL),
-  ground(GROUND_NORMAL), next_ground_date(0), {
+  state(NULL), old_state(NULL), equipment(equipment), facing_entity(NULL),
+  on_conveyor_belt(false), ground(GROUND_NORMAL), next_ground_date(0) {
 
   // position
   set_size(16, 16);
   set_origin(8, 13);
-
-  // create the states
-  states[FREE] = new StateFree(this);
-  // TODO create all states
-  
-  set_state(FREE);
+ 
+  start_free();
 
   // sprites
   sprites = new HeroSprites(this, equipment);
@@ -51,10 +71,6 @@ Hero::Hero(Equipment *equipment):
  * @brief Destructor.
  */
 Hero::~Hero(void) {
-
-  for (int i = 0; i < NB_STATES; i++) {
-    delete states[i];
-  }
 
   delete sprites;
 }
@@ -121,51 +137,22 @@ bool Hero::is_displayed_in_y_order(void) {
 }
 
 /**
- * @brief Returns the id of the hero's current state.
- * @return the state of the hero
- */
-Hero::StateId Hero::get_state(void) {
-  return state_id;
-}
-
-/**
- * @brief Returns the specified state.
- * @param state_id id of a state
- * @return the corresponding state
- */
-Hero::State Hero::get_state(StateId state_id) {
-  return states[state_id];
-}
-
-/**
  * @brief Sets the hero's state.
  *
- * The previous state should have been stopped.
+ * The previous state will be stopped.
  *
- * @param state_id id of the new state of the hero
+ * @param state the new state of the hero
  */
-void Hero::set_state(StateId state_id) {
+void Hero::set_state(State *state) {
 
-  if (state_id != this->state_id || state == NULL) {
-
-    if (state != NULL) {
-      state->stop();
-    }
-
-    this->state_id = state_id;
-    
-    state = get_state(state_id);
-    state->start();
+  // stop the previous state
+  if (this->state != NULL) {
+    this->state->stop();
   }
-}
 
-/**
- * @brief Returns whether the hero is currently in the specified state.
- * @param state a state
- * @return true if the hero is in this state
- */
-bool Hero::is_state(StateId state_id) {
-  return get_state() == state_id;
+  this->old_state = this->state;
+  this->state = state;
+  this->state->start();
 }
 
 /**
@@ -179,10 +166,7 @@ void Hero::set_suspended(bool suspended) {
 
   MapEntity::set_suspended(suspended);
 
-  // sprites
   sprites->set_suspended(suspended);
-
-  // state
   state->set_suspended(suspended);
 }
 
@@ -193,14 +177,29 @@ void Hero::set_suspended(bool suspended) {
  */
 void Hero::update(void) {
 
-  if (!suspended) {
+  update_state();
 
-    state->update();
+  if (!suspended) {
     sprites->update();
     update_movement();
     update_ground();
     map->check_collision_with_detectors(this);
     check_gameover();
+  }
+}
+
+/**
+ * @brief Updates the hero's internal state.
+ *
+ * This function is called repeatedly by update().
+ */
+void Hero::update_state(void) {
+
+  state->update();
+
+  if (old_state != NULL) {
+    delete old_state;
+    old_state = NULL;
   }
 }
 
@@ -251,13 +250,13 @@ void Hero::update_ground(void) {
 
       if (get_distance(last_solid_ground_coords.get_x(), last_solid_ground_coords.get_y()) >= 8) {
 	// too far from the solid ground: make the hero fall
-        set_state(FALLING);
+        set_state(new StateFalling(this));
       }
       else {
 
         // not too far yet
         Rectangle collision_box = get_bounding_box();
-        collision_box.add_xy(hole_dx, hole_dy);
+        collision_box.add_xy(hole_dxy);
 
         if (!map->test_collision_with_obstacles(get_layer(), collision_box, this)) {
           set_bounding_box(collision_box);
@@ -265,14 +264,14 @@ void Hero::update_ground(void) {
         }
         else {
           collision_box = get_bounding_box();
-          collision_box.add_xy(hole_dx, 0);
+          collision_box.add_xy(hole_dxy.get_x(), 0);
           if (!map->test_collision_with_obstacles(get_layer(), collision_box, this)) {
             set_bounding_box(collision_box);
             notify_position_changed();
           }
           else {
            collision_box = get_bounding_box();
-            collision_box.add_xy(0, hole_dy);
+            collision_box.add_xy(0, hole_dxy.get_y());
             if (!map->test_collision_with_obstacles(get_layer(), collision_box, this)) {
               set_bounding_box(collision_box);
               notify_position_changed();
@@ -322,37 +321,37 @@ void Hero::key_pressed(GameControls::GameKey key) {
 
     // action key
   case GameControls::ACTION:
-    action_key_pressed();
+    state->action_key_pressed();
     break;
 
     // sword key
   case GameControls::SWORD:
-    sword_key_pressed();
+    state->sword_key_pressed();
     break;
 
     // move the hero
   case GameControls::RIGHT:
-    directional_key_pressed(0);
+    state->directional_key_pressed(0);
     break;
 
   case GameControls::UP:
-    directional_key_pressed(1);
+    state->directional_key_pressed(1);
     break;
 
   case GameControls::LEFT:
-    directional_key_pressed(2);
+    state->directional_key_pressed(2);
     break;
 
   case GameControls::DOWN:
-    directional_key_pressed(3);
+    state->directional_key_pressed(3);
     break;
 
   case GameControls::ITEM_1:
-    item_key_pressed(0);
+    state->item_key_pressed(0);
     break;
 
   case GameControls::ITEM_2:
-    item_key_pressed(1);
+    state->item_key_pressed(1);
     break;
 
   default:
@@ -412,7 +411,7 @@ void Hero::key_released(GameControls::GameKey key) {
  *
  * @return the direction of the sprites (0 to 3)
  */
-int Hero::get_animation_direction4(void) {
+int Hero::get_animation_direction(void) {
   return sprites->get_animation_direction();
 }
 
@@ -534,7 +533,7 @@ void Hero::place_on_destination_point(Map *map) {
     set_map(map);
     map->get_entities()->set_entity_layer(this, layer);
 
-    set_state(FREE);
+    start_free();
   }
   else {
     int side = map->get_destination_side();
@@ -583,13 +582,12 @@ void Hero::place_on_destination_point(Map *map) {
       Stairs *stairs = get_stairs_overlapping();
       if (stairs != NULL) {
         // the hero arrived on the map by stairs
-	StateStairs *state_stairs = (StateStairs*) get_state(STAIRS);
-	state_stairs->set_stairs(stairs, Stairs::REVERSE_WAY);
-	set_state(STAIRS);
+	StateStairs *state = new StateStairs(this, stairs, Stairs::REVERSE_WAY);
+	set_state(state);
       }
       else {
 	// the hero arrived on the map by a usual destination point
-        set_state(FREE);
+	start_free();
       }
     }
   }
@@ -969,7 +967,7 @@ void Hero::notify_position_changed(void) {
     notify_ground_changed();
   }
 
-  if (is_on_solid_ground()
+  if (state->is_on_solid_ground()
       && (get_x() != last_solid_ground_coords.get_x() || get_y() != last_solid_ground_coords.get_y())) {
 
     // save the hero's last valid position
@@ -1021,32 +1019,9 @@ void Hero::notify_movement_changed(void) {
 }
 
 /**
- * @brief Returns the ground displayed under the hero.
- * @return ground the ground under the hero
- */
-Ground Hero::get_ground(void) {
-  return ground;
-}
-
-/**
- * @brief Sets the ground under the hero.
- *
- * This function may be called by dynamic entities
- * having a special ground when the hero walks on them.
- *
- * @param ground the ground to set
- */
-void Hero::set_ground(Ground ground) {
-
-  if (ground != this->ground) {
-    this->ground = ground;
-  }
-}
-
-/**
  * @brief Starts activating the ground specified by the last call to set_ground().
  */
-void Hero::start_ground(void) {
+void Hero::notify_ground_changed(void) {
 
   switch (ground) {
 
@@ -1090,6 +1065,32 @@ void Hero::start_ground(void) {
 
   // notify the state
   state->notify_ground_changed(ground);
+}
+
+/**
+ * @brief Returns the ground displayed under the hero.
+ * @return ground the ground under the hero
+ */
+Ground Hero::get_ground(void) {
+  return ground;
+}
+
+/**
+ * @brief Sets the ground under the hero.
+ *
+ * This function is called when the hero walks on an entity
+ * having a special ground.
+ *
+ * @param ground the ground to set
+ */
+void Hero::set_ground(Ground ground) {
+
+  if (ground != this->ground) {
+    this->ground = ground;
+  }
+  // we don't call notify_ground_changed() from here because set_ground()
+  // may be called several times if several grounds are stacked on the
+  // same location (e.g. one from a tile and one from a dynamic entity)
 }
 
 /**
@@ -1281,7 +1282,7 @@ void Hero::notify_collision_with_conveyor_belt(ConveyorBelt *conveyor_belt, int 
  
       if (!map->test_collision_with_obstacles(get_layer(), collision_box, this)) {
 	// set the state
-	set_state(CONVEYOR_BELT);
+	set_state(new StateConveyorBelt(this));
       }
     }
   }
@@ -1307,9 +1308,7 @@ void Hero::notify_collision_with_stairs(Stairs *stairs, int collision_mode) {
     // check whether the hero is trying to move in the direction of the stairs
     int correct_direction = stairs->get_movement_direction(stairs_way);
     if (is_moving_towards(correct_direction / 2) || collision_mode == Detector::COLLISION_RECTANGLE) {
-      StateStairs *state = (StateStairs*) get_state(STAIRS);
-      state->set_stairs(stairs, stairs_way);
-      set_stairs(STAIRS);
+      set_state(new StateStairs(this, stairs, stairs_way));
     }
   }
 }
@@ -1346,7 +1345,7 @@ void Hero::notify_collision_with_explosion(Explosion *explosion, Sprite *sprite_
  */
 void Hero::notify_collision_with_crystal_switch(CrystalSwitch *crystal_switch, int collision_mode) {
 
-  if (collision_mode == COLLISION_FACING_POINT) {
+  if (collision_mode == Detector::COLLISION_FACING_POINT) {
     // the hero is touching the crystal switch and is looking in its direction
 
     KeysEffect *keys_effect = game->get_keys_effect();
@@ -1512,7 +1511,7 @@ Stairs * Hero::get_stairs_overlapping(void) {
 void Hero::hurt(MapEntity *source, int life_points, int magic_points) {
 
   if (state->can_be_hurt()) {
-    set_state(HURT);
+    set_state(new StateHurt(this));
   }
 }
 
@@ -1534,14 +1533,18 @@ void Hero::notify_grabbed_entity_collision(void) {
 }
 
 /**
+ * @brief Lets the hero walk normally.
+ */
+void Hero::start_free(void) {
+  set_state(new StateFree(this));
+}
+
+/**
  * @brief Makes the hero brandish a treasure.
  * @param treasure the treasure to give him (you have to delete it after the hero brandishes it)
  */
-void Hero::give_treasure(Treasure *treasure) {
-
-  TreasureState *state = (TreasureState*) get_state(TREASURE);
-  state->set_treasure(treasure);
-  set_state(TREASURE);
+void Hero::start_treasure(Treasure *treasure) {
+  set_state(new StateTreasure(this, treasure));
 }
 
 /**
@@ -1559,9 +1562,8 @@ void Hero::give_treasure(Treasure *treasure) {
  */
 void Hero::start_jumping(int direction8, int length, bool with_collisions, bool with_sound, uint32_t movement_delay, Layer layer_after_jump) {
 
-  StateJumping *state = (StateJumping*) get_state(JUMPING);
-  state->set_jump(direction8, length, with_collision, with_sound, layer_after_jump, movement_delay);
-  set_state(JUMPING);
+  StateJumping *state = new StateJumping(this, direction8, length, with_collisions, with_sound, movement_delay, layer_after_jump);
+  set_state(state);
 }
 
 /**
@@ -1569,17 +1571,14 @@ void Hero::start_jumping(int direction8, int length, bool with_collisions, bool 
  */
 void Hero::start_deep_water(void) {
 
-  // stop the sword
-  sprites->stop_displaying_sword();
-
-  if (!is_touching_ground())
+  if (!state->is_touching_ground()) {
     // plunge into the water
-    set_state(PLUNGING);
+    set_state(new StatePlunging(this));
   }
   else {
     // move to state swimming or jumping
     if (equipment->has_inventory_item(INVENTORY_FLIPPERS)) {
-      set_state(SWIMMING);
+      set_state(new StateSwimming(this));
     }
     else {
       start_jumping(get_wanted_movement_direction8(), 32, true, true, 13);
@@ -1597,27 +1596,26 @@ void Hero::start_hole(void) {
 
   // push the hero into a direction
   if (is_moving_towards(0)) {
-    hole_dx = 1;
+    hole_dxy.set_x(1);
   }
   else if (is_moving_towards(2)) {
-    hole_dx = -1;
+    hole_dxy.set_x(-1);
   }
   else {
-    hole_dx = 0;
+    hole_dxy.set_x(0);
   }
 
   if (is_moving_towards(1)) {
-    hole_dy = -1;
+    hole_dxy.set_y(-1);
   }
   else if (is_moving_towards(3)) {
-    hole_dy = 1;
+    hole_dxy.set_y(1);
   }
   else {
-    hole_dy = 0;
+    hole_dxy.set_y(0);
   }
 
-  walking_speed = normal_walking_speed / 3;
-  state->notify_walking_speed_changed();
+  set_walking_speed(normal_walking_speed / 3);
 }
 
 /**
@@ -1625,21 +1623,19 @@ void Hero::start_hole(void) {
  */
 void Hero::start_victory() {
 
-  set_state(VICTORY);
+  set_state(new StateVictory(this));
 }
 
 /**
- * @brief Freezes or unfreezes the hero.
+ * @brief Freezes the hero.
  *
  * When the hero is freezed, he cannot move.
  * The current animation of the hero's sprites is stopped and the "stopped" animation is played.
- * When the hero is unfreezed, he gets back to the state FREE.
- *
- * @param freezed true to freeze the hero, false to unfreeze him
+ * You can call start_free() to unfreeze him.
  */
-void set_freezed(bool freezed) {
+void Hero::start_freezed(void) {
 
-  set_state(freezed ? FREEZED : FREE);
+  set_state(new StateFreezed(this));
 }
 
 /**
@@ -1648,10 +1644,6 @@ void set_freezed(bool freezed) {
  */
 void Hero::start_lifting(DestructibleItem *item_to_lift) {
 
-  StateLifting *state = (StateLifting*) get_state(LIFTING);
-  state->set_item_to_lift(item_to_lift);
-  set_state(LIFTING);
+  set_state(new StateLifting(this, item_to_lift));
 }
-
-#endif
 

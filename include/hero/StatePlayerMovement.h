@@ -14,21 +14,32 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_HERO_STATE_FREE_H
-#define SOLARUS_HERO_STATE_FREE_H
+#ifndef SOLARUS_HERO_STATE_PLAYER_MOVEMENT_H
+#define SOLARUS_HERO_STATE_PLAYER_MOVEMENT_H
 
+#include "Common.h"
 #include "hero/State.h"
-#include "hero/StatePlayerMovement.h"
 
 /**
- * @brief State of the hero where he can walk normally and interact with entities.
+ * Abstract class for all hero states such that the movement is controlled by the player.
+ * This means that the hero can move in the eight directions and the movement
+ * is an instance of PlayerMovement.
+ * These states include StateFree (the normal walk), StateSwordLoading (the sword is
+ * loading), StateCarrying (the hero is carrying something) and StateSwimming.
  */
-class Hero::StateFree: public Hero::StatePlayerMovement {
+class Hero::StatePlayerMovement: public Hero::State {
+
+  protected:
+
+    StatePlayerMovement(Hero *hero);
 
   public:
 
-    StateFree(Hero *hero);
-    ~StateFree(void);
+    virtual ~StatePlayerMovement(void);
+    virtual void start(State *previous_state);
+    virtual void stop(State *next_state);
+
+    PlayerMovement *get_player_movement(void);
 };
 
 #endif

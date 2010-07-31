@@ -14,33 +14,31 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "hero/State.h"
-#include "hero/StateSwordSwinging.h"
-#include "hero/HeroSprites.h"
-#include "entities/Hero.h"
-#include "lowlevel/System.h"
-#include "Game.h"
-#include "Equipment.h"
-#include "Sprite.h"
-#include "KeysEffect.h"
+#include "hero/StatePlayerMovement.h"
+#include "movements/PlayerMovement.h"
 
 /**
- * @brief Creates a state.
- *
- * This constructor can be called only from the subclasses.
+ * @brief Constructor.
+ * @param hero the hero
  */
-Hero::State::State(Hero *hero):
-  game(hero->get_game()), map(hero->get_map()), hero(hero), when_suspended(0) {
+Hero::StatePlayerMovement::StatePlayerMovement(Hero *hero):
+  State(hero) {
 
 }
 
 /**
  * @brief Destructor.
- *
- * The state is destroyed once it is not the current state of the hero anymore.
  */
-Hero::State::~State(void) {
+Hero::StatePlayerMovement::~StatePlayerMovement(void) {
 
+}
+
+/**
+ * @brief Returns the movement of the hero controlled by the player.
+ * @return the movement
+ */
+PlayerMovement * Hero::StatePlayerMovement::get_player_movement(void) {
+  return (PlayerMovement*) hero->get_movement();
 }
 
 /**
@@ -51,7 +49,14 @@ Hero::State::~State(void) {
  *
  * @param previous_state the previous state of NULL if this is the first state (for information)
  */
-void Hero::State::start(State *previous_state) {
+void Hero::StatePlayerMovement::start(State *previous_state) {
+
+  if (previous_state == NULL || !previous_state->can_control_movement()) {
+    // create the movement unless it already exists
+    hero->set_movement(new PlayerMovement(hero->get_walking_speed()));
+  }
+
+  get_player_movement()->set_moving_enabled(true, true);
 }
 
 /**
@@ -63,57 +68,11 @@ void Hero::State::start(State *previous_state) {
  *
  * @param next_state the next state (for information)
  */
-void Hero::State::stop(State *next_state) {
-}
-
-/**
- * @brief Updates this state.
- *
- * This function is called repeatedly while this state is the active state.
- */
-void Hero::State::update(void) {
-}
-
-/**
- * @brief Displays this state.
- *
- * This function displays the hero's sprites in its current state.
- * If your state needs to display additional elements, you can redefine this function.
- */
-void Hero::State::display_on_map(void) {
-
-  hero->get_sprites()->display_on_map();
-}
-
-/**
- * @brief Notifies this state that the game was just suspended or resumed.
- * @param suspended true if the game is suspended
- */
-void Hero::State::set_suspended(bool suspended) {
-
-  // remember the date if the state is being suspended
-  if (suspended) {
-    when_suspended = System::now();
-  }
-}
-
-/**
- * @brief Notifies this state that the action key was just pressed.
- */
-void Hero::State::action_key_pressed(void) {
-}
-
-/**
- * @brief Notifies this state that the sword key was just pressed.
- */
-void Hero::State::sword_key_pressed(void) {
-
-  KeysEffect *keys_effect = game->get_keys_effect();
-  if (!hero->is_suspended()
-      && keys_effect->get_sword_key_effect() == KeysEffect::SWORD_KEY_SWORD
-      && can_start_sword()) {
-
-    hero->set_state(new StateSwordSwinging(hero));
+void Hero::StatePlayerMovement::stop(State *next_state) {
+  
+  if (!next_state->can_control_movement()) {
+    // destroy the movement unless the next state intends to keep it
+    hero->clear_movement();
   }
 }
 
@@ -121,28 +80,20 @@ void Hero::State::sword_key_pressed(void) {
  * @brief Notifies this state that a directional key was just pressed.
  * @param direction4 direction of the key (0 to 3)
  */
-void Hero::State::directional_key_pressed(int direction4) {
+void Hero::StatePlayerMovement::directional_key_pressed(int direction4) {
+
+  // notify the player's movement
+  get_player_movement()->add_direction(direction);
 }
 
 /**
  * @brief Notifies this state that a directional key was just released.
  * @param direction4 direction of the key (0 to 3)
  */
-void Hero::State::directional_key_released(int direction4) {
-}
+void Hero::StatePlayerMovement::directional_key_released(int direction4) {
 
-/**
- * @brief Notifies this state that an item key was just pressed.
- * @param slot the slot activated (0 or 1)
- */
-void Hero::State::item_key_pressed(int slot) {
-}
-
-/**
- * @brief Notifies this state that an item key was just released.
- * @param slot the slot (0 or 1)
- */
-void Hero::State::item_key_released(int slot) {
+  // notify the movement
+  get_player_movement()->remove_direction(direction);
 }
 
 /**
@@ -150,63 +101,23 @@ void Hero::State::item_key_released(int slot) {
  *
  * This function is called when the hero is about to go to another map.
  */
-void Hero::State::set_map(Map *map) {
-}
-
-/**
- * @brief Returns whether the game over sequence can start in the current state.
- * @return true if the game over sequence can start in the current state
- */
-bool Hero::State::can_start_gameover_sequence(void) {
-  return true;
-}
-
-/**
- * @brief Returns whether the hero is visible in the current state.
- * @return true if the hero is displayed in the current state
- */
-bool Hero::State::is_hero_visible(void) {
-  return true;
-}
-
-/**
- * @brief Returns whether the animation direction is locked.
- *
- * When this function returns false, which is the case most of the time,
- * it means that the animation direction is set to the movement direction.
- * When it returns true, it means that the animation direction is fixed
- * and do not depends on the movement direction anymore (this is the case
- * when the hero is loading his sword).
- *
- * @return true if the animation direction is locked
- */
-bool Hero::State::is_direction_locked(void) {
-  return false;
-}
-
-/**
- * @brief When a shadow is displayed separate from the tunic sprite,
- * returns the height where the tunic sprite should be displayed.
- * @return the height in pixels, or zero if there is no separate shadow in this state
- */
-int Hero::State::get_height_above_shadow(void) {
-  return 0;
+void Hero::StatePlayerMovement::set_map(Map *map) {
 }
 
 /**
  * @brief Returns whether the player can control his movements in the current state.
  * @return true if the player can control his movements
  */
-bool Hero::State::can_control_movement(void) {
-  return false;
+bool Hero::StatePlayerMovement::can_control_movement(void) {
+  return true;
 }
 
 /**
  * @brief Returns whether the player can control his direction in the current state.
  * @return true if the player can control his direction
  */
-bool Hero::State::can_control_direction(void) {
-  return false;
+bool Hero::StatePlayerMovement::can_control_direction(void) {
+  return true;
 }
 
 /**
@@ -217,8 +128,8 @@ bool Hero::State::can_control_direction(void) {
  *
  * @return the hero's wanted direction between 0 and 359, or -1 if he is stopped
  */
-int Hero::State::get_wanted_movement_direction(void) {
-  return -1;
+int Hero::StatePlayerMovement::get_wanted_movement_direction(void) {
+  return get_player_movement()->get_direction();
 }
 
 /**
@@ -227,13 +138,21 @@ int Hero::State::get_wanted_movement_direction(void) {
  * If the hero can walk in this state, the state should modify its movement
  * to set the new speed.
  */
-void Hero::State::notify_walking_speed_changed(int walking_speed) {
+void Hero::StatePlayerMovement::notify_walking_speed_changed(int walking_speed) {
+  get_player_movement()->set_moving_speed(walking_speed);
 }
+
+/////////////////////// TODO below are all remaining functions of State, implement only the necessary ones
+
+
+
+
+
 
 /**
  * @brief Notifies this state that the layer has changed.
  */
-void Hero::State::notify_layer_changed(void) {
+void Hero::StatePlayerMovement::notify_layer_changed(void) {
 }
 
 /**
@@ -243,7 +162,7 @@ void Hero::State::notify_layer_changed(void) {
  * because the player pressed or released a directional key, or the hero just reached an obstacle).
  * The animations and collisions should be updated according to the new movement.
  */
-void Hero::State::notify_movement_changed(void) {
+void Hero::StatePlayerMovement::notify_movement_changed(void) {
 }
 
 /**
@@ -254,7 +173,7 @@ void Hero::State::notify_movement_changed(void) {
  * @param tried_to_move true if the hero tried to change his position during this cycle
  * @param success true if the position has actually just changed
  */
-void Hero::State::notify_movement_result(bool tried_to_move, bool success) {
+void Hero::StatePlayerMovement::notify_movement_result(bool tried_to_move, bool success) {
 }
 
 /**
@@ -266,7 +185,7 @@ void Hero::State::notify_movement_result(bool tried_to_move, bool success) {
  * This function removes such residual effects of the player's movement.
  * If the current movement is not controlled by the player, this function has no effect.
  */
-void Hero::State::reset_movement(void) {
+void Hero::StatePlayerMovement::reset_movement(void) {
 }
 
 /**
@@ -276,7 +195,7 @@ void Hero::State::reset_movement(void) {
  *
  * @return true if the hero ignores the effect of deep water in the current state
  */
-bool Hero::State::can_avoid_deep_water(void) {
+bool Hero::StatePlayerMovement::can_avoid_deep_water(void) {
   return false;
 }
 
@@ -287,7 +206,7 @@ bool Hero::State::can_avoid_deep_water(void) {
  *
  * @return true if the hero ignores the effect of holes in the current state
  */
-bool Hero::State::can_avoid_hole(void) {
+bool Hero::StatePlayerMovement::can_avoid_hole(void) {
   return false;
 }
 
@@ -298,14 +217,14 @@ bool Hero::State::can_avoid_hole(void) {
  *
  * @return true if the hero is touching the ground in the current state
  */
-bool Hero::State::is_touching_ground(void) {
+bool Hero::StatePlayerMovement::is_touching_ground(void) {
   return true;
 }
 
 /**
  * @brief Notifies this state that the ground was just changed.
  */
-void Hero::State::notify_ground_changed(void) {
+void Hero::StatePlayerMovement::notify_ground_changed(void) {
 }
 
 /**
@@ -315,13 +234,13 @@ void Hero::State::notify_ground_changed(void) {
  *
  * @param stop_on_obstacles true to make the movement sensible to obstacles, false to ignore them
  */
-void Hero::State::set_stop_on_obstacles(bool stop_on_obstacles) {
+void Hero::StatePlayerMovement::set_stop_on_obstacles(bool stop_on_obstacles) {
 }
 
 /**
  * @brief Returns whether this state ignores the collisions with the detectors and the ground.
  */
-bool Hero::State::are_collisions_ignored(void) {
+bool Hero::StatePlayerMovement::are_collisions_ignored(void) {
   return false;
 }
 
@@ -332,7 +251,7 @@ bool Hero::State::are_collisions_ignored(void) {
  *
  * @return true if the deep water tiles are considered as obstacles in this state
  */
-bool Hero::State::is_water_obstacle(void) {
+bool Hero::StatePlayerMovement::is_water_obstacle(void) {
   return false;
 }
 
@@ -343,7 +262,7 @@ bool Hero::State::is_water_obstacle(void) {
  *
  * @return true if the holes are considered as obstacles in this state
  */
-bool Hero::State::is_hole_obstacle(void) {
+bool Hero::StatePlayerMovement::is_hole_obstacle(void) {
   return false;
 }
 
@@ -354,7 +273,7 @@ bool Hero::State::is_hole_obstacle(void) {
  *
  * @return true if the ladders are considered as obstacles in this state
  */
-bool Hero::State::is_ladder_obstacle(void) {
+bool Hero::StatePlayerMovement::is_ladder_obstacle(void) {
   return false;
 }
 
@@ -366,7 +285,7 @@ bool Hero::State::is_ladder_obstacle(void) {
  * @param teletransporter a teletransporter
  * @return true if the teletransporter is an obstacle in this state
  */
-bool Hero::State::is_teletransporter_obstacle(Teletransporter *teletransporter) {
+bool Hero::StatePlayerMovement::is_teletransporter_obstacle(Teletransporter *teletransporter) {
   return true;
 }
 
@@ -377,7 +296,7 @@ bool Hero::State::is_teletransporter_obstacle(Teletransporter *teletransporter) 
  *
  * @return true if the hero ignores the effect of teletransporters in this state
  */
-bool Hero::State::can_avoid_teletransporter(void) {
+bool Hero::StatePlayerMovement::can_avoid_teletransporter(void) {
   return false;
 }
 
@@ -388,7 +307,7 @@ bool Hero::State::can_avoid_teletransporter(void) {
  * will not be activated immediately.
  * Returns false by default.
  */
-bool Hero::State::is_teletransporter_delayed(void) {
+bool Hero::StatePlayerMovement::is_teletransporter_delayed(void) {
   return false;
 }
 
@@ -400,7 +319,7 @@ bool Hero::State::is_teletransporter_delayed(void) {
  * @param conveyor_belt a conveyor belt
  * @return true if the conveyor belt is an obstacle in this state
  */
-bool Hero::State::is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt) {
+bool Hero::StatePlayerMovement::is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt) {
   return true;
 }
 
@@ -411,7 +330,7 @@ bool Hero::State::is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt) {
  *
  * @return true if the hero ignores the effect of conveyor belts in this state
  */
-bool Hero::State::can_avoid_conveyor_belt(void) {
+bool Hero::StatePlayerMovement::can_avoid_conveyor_belt(void) {
   return false;
 }
 
@@ -422,7 +341,7 @@ bool Hero::State::can_avoid_conveyor_belt(void) {
  *
  * @return true if the hero ignores the effect of stairs in this state
  */
-bool Hero::State::can_avoid_stairs(void) {
+bool Hero::StatePlayerMovement::can_avoid_stairs(void) {
   return false;
 }
 
@@ -434,7 +353,7 @@ bool Hero::State::can_avoid_stairs(void) {
  * @param sensor a sensor
  * @return true if the sensor is an obstacle in this state
  */
-bool Hero::State::is_sensor_obstacle(Sensor *sensor) {
+bool Hero::StatePlayerMovement::is_sensor_obstacle(Sensor *sensor) {
   return false;
 }
 
@@ -445,7 +364,7 @@ bool Hero::State::is_sensor_obstacle(Sensor *sensor) {
  *
  * @return true if the hero ignores the effect of sensors in this state
  */
-bool Hero::State::can_avoid_sensor(void) {
+bool Hero::StatePlayerMovement::can_avoid_sensor(void) {
   return false;
 }
 
@@ -457,7 +376,7 @@ bool Hero::State::can_avoid_sensor(void) {
  * @param jump_sensor a jump sensor
  * @return true if the jump sensor is an obstacle in this state
  */
-bool Hero::State::is_jump_sensor_obstacle(JumpSensor *jump_sensor) {
+bool Hero::StatePlayerMovement::is_jump_sensor_obstacle(JumpSensor *jump_sensor) {
   return false;
 }
 
@@ -468,7 +387,7 @@ bool Hero::State::is_jump_sensor_obstacle(JumpSensor *jump_sensor) {
  *
  * @return true if the hero ignores the effect of explosions in this state
  */
-bool Hero::State::can_avoid_explosion(void) {
+bool Hero::StatePlayerMovement::can_avoid_explosion(void) {
   return false;
 }
 
@@ -479,7 +398,7 @@ bool Hero::State::can_avoid_explosion(void) {
  *
  * @return true if crystal switches can be activated by the sword in this state
  */
-bool Hero::State::can_sword_hit_crystal_switch(void) {
+bool Hero::StatePlayerMovement::can_sword_hit_crystal_switch(void) {
   return false;
 }
 
@@ -493,7 +412,7 @@ bool Hero::State::can_sword_hit_crystal_switch(void) {
  * @param result indicates how the enemy has reacted to the attack (see Enemy.h)
  * @param killed indicates that the attack has just killed the enemy
  */
-void Hero::State::notify_attacked_enemy(EnemyAttack attack, Enemy *victim, int result, bool killed) {
+void Hero::StatePlayerMovement::notify_attacked_enemy(EnemyAttack attack, Enemy *victim, int result, bool killed) {
 }
 
 /**
@@ -504,7 +423,7 @@ void Hero::State::notify_attacked_enemy(EnemyAttack attack, Enemy *victim, int r
  *
  * @return the current damage factor of the sword
  */
-int Hero::State::get_sword_damage_factor(void) {
+int Hero::StatePlayerMovement::get_sword_damage_factor(void) {
 
   static const int sword_factors[] = {0, 1, 2, 4, 8};
   int sword = game->get_equipment()->get_sword();
@@ -518,7 +437,7 @@ int Hero::State::get_sword_damage_factor(void) {
  *
  * @return true if the hero can be hurt in this state
  */
-bool Hero::State::can_be_hurt(void) {
+bool Hero::StatePlayerMovement::can_be_hurt(void) {
   return false;
 }
 
@@ -530,7 +449,7 @@ bool Hero::State::can_be_hurt(void) {
  *
  * @return true if the hero can walk normally
  */
-bool Hero::State::is_free(void) {
+bool Hero::StatePlayerMovement::is_free(void) {
   return false;
 }
 
@@ -541,7 +460,7 @@ bool Hero::State::is_free(void) {
  *
  * @return true if the hero is grabbing or pulling an entity
  */
-bool Hero::State::is_grabbing_or_pulling(void) {
+bool Hero::StatePlayerMovement::is_grabbing_or_pulling(void) {
   return false;
 }
 
@@ -554,7 +473,7 @@ bool Hero::State::is_grabbing_or_pulling(void) {
  *
  * @return true if the hero is grabbing and moving an entity
  */
-bool Hero::State::is_moving_grabbed_entity(void) {
+bool Hero::StatePlayerMovement::is_moving_grabbed_entity(void) {
   return false;
 }
 
@@ -562,7 +481,7 @@ bool Hero::State::is_moving_grabbed_entity(void) {
  * @brief Notifies the hero that the entity he is pushing or pulling in this state
  * cannot move anymore because of a collision.
  */
-void Hero::State::notify_grabbed_entity_collision(void) {
+void Hero::StatePlayerMovement::notify_grabbed_entity_collision(void) {
 }
 
 /**
@@ -582,7 +501,7 @@ void Hero::State::notify_grabbed_entity_collision(void) {
  * @param detector the detector to check
  * @return true if the sword is striking this detector
  */
-bool Hero::State::is_striking_with_sword(Detector *detector) {
+bool Hero::StatePlayerMovement::is_striking_with_sword(Detector *detector) {
   return false;
 }
 
@@ -593,7 +512,9 @@ bool Hero::State::is_striking_with_sword(Detector *detector) {
  *
  * @return true if the hero can swing his sword in this state
  */
-bool Hero::State::can_start_sword(void) {
+bool Hero::StatePlayerMovement::can_start_sword(void) {
   return false;
 }
+
+#endif
 

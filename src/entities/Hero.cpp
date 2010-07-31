@@ -151,16 +151,16 @@ bool Hero::is_displayed_in_y_order(void) {
  *
  * @param state the new state of the hero
  */
-void Hero::set_state(State *state) {
+void Hero::set_state(State *new_state) {
 
   // stop the previous state
   if (this->state != NULL) {
-    this->state->stop();
+    this->state->stop(new_state);
   }
 
-  this->old_state = state;
-  this->state = state;
-  this->state->start();
+  old_state = this->state;
+  this->state = new_state;
+  this->state->start(old_state);
 }
 
 /**
@@ -219,6 +219,10 @@ void Hero::update_state(void) {
  * This function is called repeatedly by update().
  */
 void Hero::update_movement(void) {
+
+  if (movement == NULL) {
+    return;
+  }
 
   bool trying_to_move = get_movement()->has_to_move_now();
 
@@ -970,7 +974,8 @@ int Hero::get_real_movement_direction8(void) {
  */
 bool Hero::is_moving_towards(int direction4) {
 
-  if (get_movement()->is_stopped()) {
+  Movement *movement = get_movement();
+  if (movement == NULL || movement->is_stopped()) {
     return false;
   }
 
@@ -1694,13 +1699,6 @@ bool Hero::is_moving_grabbed_entity(void) {
  */
 bool Hero::is_grabbing_or_pulling(void) {
   return state->is_grabbing_or_pulling();
-}
-
-/**
- * @brief Starts the state indicated by the current state.
- */
-void Hero::start_next_state(void) {
-  set_state(state->get_next_state());
 }
 
 /**

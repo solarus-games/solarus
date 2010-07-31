@@ -36,10 +36,10 @@ class Hero: public MapEntity {
 
     // state
     class State;				/**< base class for all states */
+    class StatePlayerMovement;			/**< abstract class for states whose movement is controlled by the player */
     class StateFree;				/**< the hero is free to move (stopped or walking) and can interact with entities */
     class StateCarrying;			/**< the hero can walk but he is carrying a pot or a bush */
     class StateSwordLoading;			/**< the hero can walk but his sword is loading for a spin attack */
-    class StateRunning;				/**< the hero is running */
     class StateSwimming;			/**< the hero is swimming in deep water */
     class StatePushing;				/**< the hero is trying to push an obstacle */
     class StateSwordTapping;			/**< the hero is tapping his sword on a wall */
@@ -50,6 +50,7 @@ class Hero: public MapEntity {
     class StateSpinAttack;			/**< the hero is releasing a spin attack */
     class StateLifting;				/**< the hero is lifting an destroyable item (a pot, a bush, etc.) */
     class StateTreasure;			/**< the hero is brandishing a treasure */
+    class StateRunning;				/**< the hero is running */
     class StateJumping;				/**< the hero is jumping */
     class StateHurt;				/**< the hero is hurt */
     class StatePlunging;			/**< the hero is plunging into water */

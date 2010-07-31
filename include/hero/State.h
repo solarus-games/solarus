@@ -35,20 +35,16 @@ class Hero::State {
     Game *game;				/**< the game */
     Map *map;				/**< the current map */
     Hero *hero;				/**< the hero controlled by this state */
-    State *next_state;			/**< a new state to set, or NULL to stay in the current state */
     uint32_t when_suspended;		/**< indicates when this state was suspended */
 
     State(Hero *hero);
-    void set_next_state(State *next_state);
 
   public:
 
     // creation and destruction
     virtual ~State(void);
-    virtual void start(void);
-    virtual void stop(void);
-
-    State *get_next_state(void);
+    virtual void start(State *previous_state);
+    virtual void stop(State *next_state);
 
     // game loop
     virtual void update(void);
@@ -57,8 +53,8 @@ class Hero::State {
     virtual void action_key_pressed(void);
     virtual void sword_key_pressed(void);
     virtual void directional_key_pressed(int direction4);
-    virtual void item_key_pressed(int slot);
     virtual void directional_key_released(int direction4);
+    virtual void item_key_pressed(int slot);
     virtual void item_key_released(int slot);
 
     // game
@@ -70,7 +66,6 @@ class Hero::State {
     virtual bool is_direction_locked(void);
     virtual int get_height_above_shadow(void);
 
-    // movement
     virtual bool can_control_movement(void);
     virtual bool can_control_direction(void);
     virtual int get_wanted_movement_direction(void);

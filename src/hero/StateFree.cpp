@@ -21,7 +21,7 @@
  * @param hero the hero controlled by this state
  */
 Hero::StateFree::StateFree(Hero *hero):
-  State(hero) {
+  StatePlayerMovement(hero) {
 
 }
 
@@ -30,5 +30,29 @@ Hero::StateFree::StateFree(Hero *hero):
  */
 Hero::StateFree::~StateFree(void) {
 
+}
+
+/**
+ * @brief Notifies this state that the action key was just pressed.
+ */
+void Hero::StateFree::action_key_pressed(void) {
+
+  KeysEffect *keys_effect = game->get_keys_effect();
+
+  if (keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_GRAB) {
+
+    // grab an entity
+    hero->set_state(new StateGrabbing(hero));
+  }
+  else if (keys_effect->is_action_key_acting_on_facing_entity()) {
+
+    // action on the facing entity
+    facing_entity->action_key_pressed();
+  }
+  else if (is_facing_point_on_obstacle()) {
+
+    // grab an obstacle
+    hero->set_state(new StateGrabbing(hero));
+  }
 }
 

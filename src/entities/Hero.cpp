@@ -54,21 +54,21 @@ const int Hero::normal_walking_speed = 9;
  */
 Hero::Hero(Equipment *equipment):
   state(NULL), old_state(NULL), equipment(equipment), facing_entity(NULL),
-  on_conveyor_belt(false), ground(GROUND_NORMAL), next_ground_date(0) {
+  walking_speed(normal_walking_speed), on_conveyor_belt(false),
+  ground(GROUND_NORMAL), next_ground_date(0) {
 
   // position
   set_size(16, 16);
   set_origin(8, 13);
- 
-  start_free();
-
-  // sprites
-  sprites = new HeroSprites(this, equipment);
-  rebuild_equipment();
-
-  // ground
   last_solid_ground_coords.set_xy(0, 0);
   last_solid_ground_layer = LAYER_LOW;
+ 
+  // sprites
+  sprites = new HeroSprites(this, equipment);
+
+  // state
+  set_state(new StateFree(this));
+  rebuild_equipment();
 }
 
 /**
@@ -224,13 +224,13 @@ void Hero::update_movement(void) {
     return;
   }
 
-  bool trying_to_move = get_movement()->has_to_move_now();
+  bool trying_to_move = movement->has_to_move_now();
 
   // save the current coordinates
   Rectangle old_xy(get_xy());
 
   // make the movement (this might call notify_position_changed())
-  get_movement()->update();
+  movement->update();
 
   // see if the movement was successful (i.e. if the hero's coordinates have changed)
   bool success = (get_x() != old_xy.get_x() || get_y() != old_xy.get_y());
@@ -315,13 +315,15 @@ void Hero::check_gameover(void) {
 /**
  * @brief Displays this entity on the map.
  *
- * This function is called only when is_visible() returns true.
+ * This function should draw the entity only if is_visible() returns true.
  * The hero is displayed with its current animation and at its current position.
  */
 void Hero::display_on_map(void) {
 
-  // the state may call get_sprites()->display_on_map() or make its own display
-  state->display_on_map();
+  if (is_visible()) {
+    // the state may call get_sprites()->display_on_map() or make its own display
+    state->display_on_map();
+  }
 }
 
 /**
@@ -853,7 +855,7 @@ int Hero::get_walking_speed(void) {
  */
 void Hero::set_walking_speed(int walking_speed) {
   this->walking_speed = walking_speed;
-  state->notify_walking_speed_changed(walking_speed);
+  state->notify_walking_speed_changed();
 }
 
 /**
@@ -1705,7 +1707,10 @@ bool Hero::is_grabbing_or_pulling(void) {
  * @brief Lets the hero walk normally.
  */
 void Hero::start_free(void) {
-  set_state(new StateFree(this));
+
+  if (!state->is_free()) {
+    set_state(new StateFree(this));
+  }
 }
 
 /**

@@ -129,18 +129,19 @@ bool PlayerMovement::is_moving_enabled(void) {
 void PlayerMovement::set_moving_enabled(bool moving_enabled, bool direction_enabled) {
 
   if (moving_enabled && !direction_enabled) {
-    DIE("Illegal parameters for set_moving_enabled");
+    DIE("Illegal parameters for PlayerMovement::set_moving_enabled");
   }
 
   if (moving_enabled != this->moving_enabled || direction_enabled != this->direction_enabled) {
 
     this->direction_enabled = direction_enabled;
 
-    if (direction_enabled) {
+    if (direction_enabled && entity->get_game() != NULL) {
 
       // if the control is being restored, let's take
       // into account the possible arrows pressed
 
+      // TODO put the following code into a function compute_direction() and call it
       GameControls *controls = entity->get_game()->get_controls();
 
       if (controls->is_key_pressed(GameControls::RIGHT)) {
@@ -201,20 +202,13 @@ bool PlayerMovement::is_direction_enabled(void) {
  * @param suspended true to suspend the movement, false to resume it
  */
 void PlayerMovement::set_suspended(bool suspended) {
+
   Movement::set_suspended(suspended);
 
-  if (suspended) {
-    // suspend the movement
-    moving_enabled_before_suspended = moving_enabled;
-    direction_enabled_before_suspended = direction_enabled;
-    set_moving_enabled(false, false);
+  if (!suspended) {
+    // TODO call compute_direction() here to compute the direction pressed with Control::is_key_pressed
+    compute_movement(); // recompute the movement when the game is resumed
   }
-  else {
-    // enable exactly what was enabled before
-    set_moving_enabled(moving_enabled_before_suspended, direction_enabled_before_suspended);
-  }
-
-  compute_movement(); // always recompute the movement when the game is suspended / resumed
 }
 
 /**
@@ -322,6 +316,7 @@ void PlayerMovement::set_moving_speed(int moving_speed) {
  * disabled (i.e. when set_moving_enabled() is called).
  */
 void PlayerMovement::compute_movement(void) {
+
   int x_speed = 0;
   int y_speed = 0;
 

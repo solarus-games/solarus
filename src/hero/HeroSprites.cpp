@@ -121,7 +121,7 @@ const SoundId HeroSprites::ground_sound_ids[] = {
 HeroSprites::HeroSprites(Hero *hero, Equipment *equipment):
   hero(hero), equipment(equipment), tunic_sprite(NULL), sword_sprite(NULL),
   sword_stars_sprite(NULL), shield_sprite(NULL), shadow_sprite(NULL), ground_sprite(NULL),
-  end_blink_date(0), walking(false), clipping_rectangle(Rectangle()) {
+  end_blink_date(0), walking(false), clipping_rectangle(Rectangle()), lifted_item(NULL) {
 
 }
 

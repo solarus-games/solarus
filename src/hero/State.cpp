@@ -20,6 +20,7 @@
 #include "entities/Hero.h"
 #include "lowlevel/System.h"
 #include "Game.h"
+#include "Map.h"
 #include "Equipment.h"
 #include "Sprite.h"
 #include "KeysEffect.h"
@@ -151,6 +152,8 @@ void Hero::State::item_key_released(int slot) {
  * This function is called when the hero is about to go to another map.
  */
 void Hero::State::set_map(Map *map) {
+  this->map = map;
+  this->game = map->get_game();
 }
 
 /**
@@ -227,7 +230,7 @@ int Hero::State::get_wanted_movement_direction(void) {
  * If the hero can walk in this state, the state should modify its movement
  * to set the new speed.
  */
-void Hero::State::notify_walking_speed_changed(int walking_speed) {
+void Hero::State::notify_walking_speed_changed(void) {
 }
 
 /**
@@ -361,13 +364,13 @@ bool Hero::State::is_ladder_obstacle(void) {
 /**
  * @brief Returns whether a teletransporter is considered as an obstacle in this state.
  *
- * Returns true by default.
+ * Returns false by default.
  *
  * @param teletransporter a teletransporter
  * @return true if the teletransporter is an obstacle in this state
  */
 bool Hero::State::is_teletransporter_obstacle(Teletransporter *teletransporter) {
-  return true;
+  return false;
 }
 
 /**
@@ -395,13 +398,13 @@ bool Hero::State::is_teletransporter_delayed(void) {
 /**
  * @brief Returns whether a conveyor belt is considered as an obstacle in this state.
  *
- * Returns true by default.
+ * Returns false by default.
  *
  * @param conveyor_belt a conveyor belt
  * @return true if the conveyor belt is an obstacle in this state
  */
 bool Hero::State::is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt) {
-  return true;
+  return false;
 }
 
 /**

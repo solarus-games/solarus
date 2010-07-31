@@ -16,3 +16,19 @@
  */
 #include "hero/StateGrabbing.h"
 
+/**
+ * Constructor.
+ * @param hero the hero controlled by this state
+ */
+Hero::StateGrabbing::StateGrabbing(Hero *hero):
+  State(hero) {
+
+}
+
+/**
+ * Destructor.
+ */
+Hero::StateGrabbing::~StateGrabbing(void) {
+
+}
+

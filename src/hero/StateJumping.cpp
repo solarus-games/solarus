@@ -16,3 +16,28 @@
  */
 #include "hero/StateJumping.h"
 
+/**
+ * Constructor.
+ * @param hero the hero controlled by this state
+ * @param direction8 direction of the jump (0 to 7)
+ * @param length length of the jump in pixels
+ * @param with_collisions true to stop the movement if there is a collision
+ * @param with_sound true to play the "jump" sound
+ * @param movement_delay delay between each one-pixel move in the jump movement (0: default)
+ * @param layer_after_jump the layer to set when the jump is finished
+ * (or LAYER_NB to keep the same layer)
+ */
+Hero::StateJumping::StateJumping(Hero *hero, int direction8, int length,
+    bool with_collisions, bool with_sound,
+    uint32_t movement_delay, Layer layer_after_jump):
+  State(hero) {
+
+}
+
+/**
+ * Destructor.
+ */
+Hero::StateJumping::~StateJumping(void) {
+
+}
+

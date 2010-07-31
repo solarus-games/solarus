@@ -16,3 +16,19 @@
  */
 #include "hero/StateSpinAttack.h"
 
+/**
+ * Constructor.
+ * @param hero the hero controlled by this state
+ */
+Hero::StateSpinAttack::StateSpinAttack(Hero *hero):
+  State(hero) {
+
+}
+
+/**
+ * Destructor.
+ */
+Hero::StateSpinAttack::~StateSpinAttack(void) {
+
+}
+

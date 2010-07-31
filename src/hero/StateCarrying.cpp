@@ -16,3 +16,19 @@
  */
 #include "hero/StateCarrying.h"
 
+/**
+ * Constructor.
+ * @param hero the hero controlled by this state
+ */
+Hero::StateCarrying::StateCarrying(Hero *hero):
+  State(hero) {
+
+}
+
+/**
+ * Destructor.
+ */
+Hero::StateCarrying::~StateCarrying(void) {
+
+}
+

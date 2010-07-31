@@ -14,13 +14,13 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_HERO_STATE_SWORDTAPPING_H
-#define SOLARUS_HERO_STATE_SWORDTAPPING_H
+#ifndef SOLARUS_HERO_STATE_SWORD_TAPPING_H
+#define SOLARUS_HERO_STATE_SWORD_TAPPING_H
 
 #include "hero/State.h"
 
 /**
- * @brief The state "SwordTapping" of the hero.
+ * @brief The state "sword tapping" of the hero.
  */
 class Hero::StateSwordTapping: public Hero::State {
 

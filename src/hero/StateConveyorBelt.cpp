@@ -16,3 +16,19 @@
  */
 #include "hero/StateConveyorBelt.h"
 
+/**
+ * Constructor.
+ * @param hero the hero controlled by this state
+ */
+Hero::StateConveyorBelt::StateConveyorBelt(Hero *hero):
+  State(hero) {
+
+}
+
+/**
+ * Destructor.
+ */
+Hero::StateConveyorBelt::~StateConveyorBelt(void) {
+
+}
+

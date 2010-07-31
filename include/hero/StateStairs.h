@@ -18,6 +18,7 @@
 #define SOLARUS_HERO_STATE_STAIRS_H
 
 #include "hero/State.h"
+#include "entities/Stairs.h"
 
 /**
  * @brief The state "Stairs" of the hero.

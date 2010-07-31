@@ -16,3 +16,19 @@
  */
 #include "hero/StatePlunging.h"
 
+/**
+ * Constructor.
+ * @param hero the hero controlled by this state
+ */
+Hero::StatePlunging::StatePlunging(Hero *hero):
+  State(hero) {
+
+}
+
+/**
+ * Destructor.
+ */
+Hero::StatePlunging::~StatePlunging(void) {
+
+}
+

@@ -14,13 +14,13 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_HERO_STATE_INVENTORYITEM_H
-#define SOLARUS_HERO_STATE_INVENTORYITEM_H
+#ifndef SOLARUS_HERO_STATE_INVENTORY_ITEM_H
+#define SOLARUS_HERO_STATE_INVENTORY_ITEM_H
 
 #include "hero/State.h"
 
 /**
- * @brief The state "InventoryItem" of the hero.
+ * @brief The state "inventory item" of the hero.
  */
 class Hero::StateInventoryItem: public Hero::State {
 

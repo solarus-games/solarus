@@ -16,3 +16,19 @@
  */
 #include "hero/StatePulling.h"
 
+/**
+ * Constructor.
+ * @param hero the hero controlled by this state
+ */
+Hero::StatePulling::StatePulling(Hero *hero):
+  State(hero) {
+
+}
+
+/**
+ * Destructor.
+ */
+Hero::StatePulling::~StatePulling(void) {
+
+}
+

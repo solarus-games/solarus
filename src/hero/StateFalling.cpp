@@ -16,3 +16,19 @@
  */
 #include "hero/StateFalling.h"
 
+/**
+ * Constructor.
+ * @param hero the hero controlled by this state
+ */
+Hero::StateFalling::StateFalling(Hero *hero):
+  State(hero) {
+
+}
+
+/**
+ * Destructor.
+ */
+Hero::StateFalling::~StateFalling(void) {
+
+}
+

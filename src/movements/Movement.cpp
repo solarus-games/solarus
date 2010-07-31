@@ -350,6 +350,7 @@ void Movement::set_direction(double angle) {
 bool Movement::has_to_move_now(void) {
 
   uint32_t now = System::now();
+
   return (x_move != 0 && now >= next_move_date_x)
     || (y_move != 0 && now >= next_move_date_y);
 }

@@ -109,7 +109,7 @@ const Rectangle MapEntity::directions_to_xy_moves[] = {
  * @brief Creates a map entity without specifying its properties now.
  */
 MapEntity::MapEntity(void):
-  map(NULL), layer(LAYER_LOW), name(""), direction(0), first_sprite(NULL), visible(true),
+  map(NULL), game(NULL), layer(LAYER_LOW), name(""), direction(0), first_sprite(NULL), visible(true),
   movement(NULL), suspended(false), when_suspended(0), being_removed(false) {
 
   bounding_box.set_xy(0, 0);
@@ -129,7 +129,7 @@ MapEntity::MapEntity(void):
  * @param height height of the entity
  */
 MapEntity::MapEntity(Layer layer, int x, int y, int width, int height):
-  map(NULL), layer(layer), bounding_box(x, y), name(""), direction(0), first_sprite(NULL), visible(true),
+  map(NULL), game(NULL), layer(layer), bounding_box(x, y), name(""), direction(0), first_sprite(NULL), visible(true),
   movement(NULL), suspended(false), when_suspended(0), being_removed(false) {
 
   origin.set_xy(0, 0);
@@ -148,7 +148,7 @@ MapEntity::MapEntity(Layer layer, int x, int y, int width, int height):
  */
 MapEntity::MapEntity(const std::string &name, int direction, Layer layer,
 		     int x, int y, int width, int height):
-  map(NULL), layer(layer), bounding_box(x, y), name(name), direction(direction), visible(true),
+  map(NULL), game(NULL), layer(layer), bounding_box(x, y), name(name), direction(direction), visible(true),
   movement(NULL), suspended(false), when_suspended(0), being_removed(false) {
 
   origin.set_xy(0, 0);

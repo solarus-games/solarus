@@ -292,7 +292,6 @@ end
 -- Updates the slot machine
 function event_update()
 
-  print "update!\n"
   if playing_game_2 then
 
     -- stop the reels when necessary

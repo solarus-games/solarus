@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "hero/StatePlayerMovement.h"
+#include "hero/HeroSprites.h"
 #include "movements/PlayerMovement.h"
 
 /**
@@ -83,7 +84,7 @@ void Hero::StatePlayerMovement::stop(State *next_state) {
 void Hero::StatePlayerMovement::directional_key_pressed(int direction4) {
 
   // notify the player's movement
-  get_player_movement()->add_direction(direction);
+  get_player_movement()->directional_key_pressed(direction4);
 }
 
 /**
@@ -93,15 +94,7 @@ void Hero::StatePlayerMovement::directional_key_pressed(int direction4) {
 void Hero::StatePlayerMovement::directional_key_released(int direction4) {
 
   // notify the movement
-  get_player_movement()->remove_direction(direction);
-}
-
-/**
- * @brief Changes the map.
- *
- * This function is called when the hero is about to go to another map.
- */
-void Hero::StatePlayerMovement::set_map(Map *map) {
+  get_player_movement()->directional_key_released(direction4);
 }
 
 /**
@@ -138,21 +131,8 @@ int Hero::StatePlayerMovement::get_wanted_movement_direction(void) {
  * If the hero can walk in this state, the state should modify its movement
  * to set the new speed.
  */
-void Hero::StatePlayerMovement::notify_walking_speed_changed(int walking_speed) {
-  get_player_movement()->set_moving_speed(walking_speed);
-}
-
-/////////////////////// TODO below are all remaining functions of State, implement only the necessary ones
-
-
-
-
-
-
-/**
- * @brief Notifies this state that the layer has changed.
- */
-void Hero::StatePlayerMovement::notify_layer_changed(void) {
+void Hero::StatePlayerMovement::notify_walking_speed_changed(void) {
+  get_player_movement()->set_moving_speed(hero->get_walking_speed());
 }
 
 /**
@@ -163,17 +143,18 @@ void Hero::StatePlayerMovement::notify_layer_changed(void) {
  * The animations and collisions should be updated according to the new movement.
  */
 void Hero::StatePlayerMovement::notify_movement_changed(void) {
-}
 
-/**
- * @brief Notifies this state of the result of the current movement.
- *
- * This function is called at each cycle.
- *
- * @param tried_to_move true if the hero tried to change his position during this cycle
- * @param success true if the position has actually just changed
- */
-void Hero::StatePlayerMovement::notify_movement_result(bool tried_to_move, bool success) {
+  // the movement has changed: update the animation of the sprites
+
+  bool movement_walking = get_player_movement()->is_started();
+  bool sprites_walking = hero->get_sprites()->is_walking();
+
+  if (movement_walking && !sprites_walking) {
+    set_animation_walking();
+  }
+  else if (!movement_walking && sprites_walking) {
+    set_animation_stopped();
+  }
 }
 
 /**
@@ -186,45 +167,11 @@ void Hero::StatePlayerMovement::notify_movement_result(bool tried_to_move, bool 
  * If the current movement is not controlled by the player, this function has no effect.
  */
 void Hero::StatePlayerMovement::reset_movement(void) {
-}
 
-/**
- * @brief Returns whether the hero ignores the effect of deep water in this state.
- *
- * Returns false by default.
- *
- * @return true if the hero ignores the effect of deep water in the current state
- */
-bool Hero::StatePlayerMovement::can_avoid_deep_water(void) {
-  return false;
-}
-
-/**
- * @brief Returns whether the hero ignores the effect of holes in this state.
- *
- * Returns false by default.
- *
- * @return true if the hero ignores the effect of holes in the current state
- */
-bool Hero::StatePlayerMovement::can_avoid_hole(void) {
-  return false;
-}
-
-/**
- * @brief Returns whether the hero is touching the ground in the current state.
- *
- * Returns true by default.
- *
- * @return true if the hero is touching the ground in the current state
- */
-bool Hero::StatePlayerMovement::is_touching_ground(void) {
-  return true;
-}
-
-/**
- * @brief Notifies this state that the ground was just changed.
- */
-void Hero::StatePlayerMovement::notify_ground_changed(void) {
+  PlayerMovement *movement = get_player_movement();
+  movement->stop();
+  movement->set_moving_enabled(false, false);
+  movement->set_moving_enabled(true, true);
 }
 
 /**
@@ -235,286 +182,15 @@ void Hero::StatePlayerMovement::notify_ground_changed(void) {
  * @param stop_on_obstacles true to make the movement sensible to obstacles, false to ignore them
  */
 void Hero::StatePlayerMovement::set_stop_on_obstacles(bool stop_on_obstacles) {
-}
 
-/**
- * @brief Returns whether this state ignores the collisions with the detectors and the ground.
- */
-bool Hero::StatePlayerMovement::are_collisions_ignored(void) {
-  return false;
-}
-
-/**
- * @brief Returns whether a deep water tile is considered as an obstacle in this state.
- *
- * Returns false by default.
- *
- * @return true if the deep water tiles are considered as obstacles in this state
- */
-bool Hero::StatePlayerMovement::is_water_obstacle(void) {
-  return false;
-}
-
-/**
- * @brief Returns whether a hole is considered as an obstacle in this state.
- *
- * Returns false by default.
- *
- * @return true if the holes are considered as obstacles in this state
- */
-bool Hero::StatePlayerMovement::is_hole_obstacle(void) {
-  return false;
-}
-
-/**
- * @brief Returns whether a ladder is considered as an obstacle in this state.
- *
- * Returns false by default.
- *
- * @return true if the ladders are considered as obstacles in this state
- */
-bool Hero::StatePlayerMovement::is_ladder_obstacle(void) {
-  return false;
-}
-
-/**
- * @brief Returns whether a teletransporter is considered as an obstacle in this state.
- *
- * Returns true by default.
- *
- * @param teletransporter a teletransporter
- * @return true if the teletransporter is an obstacle in this state
- */
-bool Hero::StatePlayerMovement::is_teletransporter_obstacle(Teletransporter *teletransporter) {
-  return true;
-}
-
-/**
- * @brief Returns whether the hero ignores the effect of teletransporters in this state.
- *
- * Returns false by default.
- *
- * @return true if the hero ignores the effect of teletransporters in this state
- */
-bool Hero::StatePlayerMovement::can_avoid_teletransporter(void) {
-  return false;
-}
-
-/**
- * @brief Returns whether the effect of teletransporters is delayed in this state.
- *
- * When overlapping a teletransporter, if this function returns true, the teletransporter
- * will not be activated immediately.
- * Returns false by default.
- */
-bool Hero::StatePlayerMovement::is_teletransporter_delayed(void) {
-  return false;
-}
-
-/**
- * @brief Returns whether a conveyor belt is considered as an obstacle in this state.
- *
- * Returns true by default.
- *
- * @param conveyor_belt a conveyor belt
- * @return true if the conveyor belt is an obstacle in this state
- */
-bool Hero::StatePlayerMovement::is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt) {
-  return true;
-}
-
-/**
- * @brief Returns whether the hero ignores the effect of conveyor belts in this state.
- *
- * Returns false by default.
- *
- * @return true if the hero ignores the effect of conveyor belts in this state
- */
-bool Hero::StatePlayerMovement::can_avoid_conveyor_belt(void) {
-  return false;
-}
-
-/**
- * @brief Returns whether the hero ignores the effect of stairs in this state.
- *
- * Returns false by default.
- *
- * @return true if the hero ignores the effect of stairs in this state
- */
-bool Hero::StatePlayerMovement::can_avoid_stairs(void) {
-  return false;
-}
-
-/**
- * @brief Returns whether a sensor is considered as an obstacle in this state.
- *
- * Returns false by default.
- *
- * @param sensor a sensor
- * @return true if the sensor is an obstacle in this state
- */
-bool Hero::StatePlayerMovement::is_sensor_obstacle(Sensor *sensor) {
-  return false;
-}
-
-/**
- * @brief Returns whether the hero ignores the effect of sensors in this state.
- *
- * Returns false by default.
- *
- * @return true if the hero ignores the effect of sensors in this state
- */
-bool Hero::StatePlayerMovement::can_avoid_sensor(void) {
-  return false;
-}
-
-/**
- * @brief Returns whether a jump sensor is considered as an obstacle in this state.
- *
- * Returns false by default.
- *
- * @param jump_sensor a jump sensor
- * @return true if the jump sensor is an obstacle in this state
- */
-bool Hero::StatePlayerMovement::is_jump_sensor_obstacle(JumpSensor *jump_sensor) {
-  return false;
-}
-
-/**
- * @brief Returns whether the hero ignores the effect of explosions in this state.
- *
- * Returns false by default.
- *
- * @return true if the hero ignores the effect of explosions in this state
- */
-bool Hero::StatePlayerMovement::can_avoid_explosion(void) {
-  return false;
-}
-
-/**
- * @brief Returns whether crystal switches can be activated by the sword in this state.
- *
- * Returns false by default.
- *
- * @return true if crystal switches can be activated by the sword in this state
- */
-bool Hero::StatePlayerMovement::can_sword_hit_crystal_switch(void) {
-  return false;
-}
-
-/**
- * @brief Notifies this entity that it has just attacked an enemy
- *
- * This function is called even if this attack was not successful.
- *
- * @param attack the attack
- * @param victim the enemy just hurt
- * @param result indicates how the enemy has reacted to the attack (see Enemy.h)
- * @param killed indicates that the attack has just killed the enemy
- */
-void Hero::StatePlayerMovement::notify_attacked_enemy(EnemyAttack attack, Enemy *victim, int result, bool killed) {
-}
-
-/**
- * @brief Returns the damage power of the sword for the current attack.
- *
- * Redefine the function if your state changes the power of the sword
- * (typically for a spin attack).
- *
- * @return the current damage factor of the sword
- */
-int Hero::StatePlayerMovement::get_sword_damage_factor(void) {
-
-  static const int sword_factors[] = {0, 1, 2, 4, 8};
-  int sword = game->get_equipment()->get_sword();
-  return sword_factors[sword];
+  get_player_movement()->set_stop_on_obstacles(stop_on_obstacles);
 }
 
 /**
  * @brief Returns whether the hero can be hurt in this state.
- *
- * Returns false by default.
- *
  * @return true if the hero can be hurt in this state
  */
 bool Hero::StatePlayerMovement::can_be_hurt(void) {
-  return false;
+  return true;
 }
-
-/**
- * @brief Returns whether the hero can walk normally and interact with entities
- * in this state.
- *
- * Returns false by default.
- *
- * @return true if the hero can walk normally
- */
-bool Hero::StatePlayerMovement::is_free(void) {
-  return false;
-}
-
-/**
- * @brief Returns whether the hero is grabbing or pulling an entity in this state.
- *
- * Returns false by default.
- *
- * @return true if the hero is grabbing or pulling an entity
- */
-bool Hero::StatePlayerMovement::is_grabbing_or_pulling(void) {
-  return false;
-}
-
-/**
- * @brief Returns whether the hero is grabbing and moving an entity in this state.
- *
- * If he is not grabbing any entity, false is returned.
- * Returns false by default.
- *
- *
- * @return true if the hero is grabbing and moving an entity
- */
-bool Hero::StatePlayerMovement::is_moving_grabbed_entity(void) {
-  return false;
-}
-
-/**
- * @brief Notifies the hero that the entity he is pushing or pulling in this state
- * cannot move anymore because of a collision.
- */
-void Hero::StatePlayerMovement::notify_grabbed_entity_collision(void) {
-}
-
-/**
- * @brief Tests whether the hero is striking the specified detector with his sword.
- *
- * When the sword sprite collides with a detector,
- * this function can be called to determine whether the hero is
- * really striking this particular detector only.
- * This depends on the hero's state, his direction and his
- * distance to the detector.
- * This function assumes that there is already a collision
- * between the sword sprite and the detector's sprite.
- * This function should be called to check whether the
- * hero wants to cut a bush or some grass.
- * Returns false by default.
- *
- * @param detector the detector to check
- * @return true if the sword is striking this detector
- */
-bool Hero::StatePlayerMovement::is_striking_with_sword(Detector *detector) {
-  return false;
-}
-
-/**
- * @brief Returns whether the hero can swing his sword in this state.
- *
- * Returns false by default.
- *
- * @return true if the hero can swing his sword in this state
- */
-bool Hero::StatePlayerMovement::can_start_sword(void) {
-  return false;
-}
-
-#endif
 

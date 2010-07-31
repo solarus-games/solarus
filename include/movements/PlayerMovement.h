@@ -50,6 +50,9 @@ class PlayerMovement: public SmoothCollisionMovement {
   void remove_direction_mask(uint16_t direction_mask);
   void set_direction_mask(uint16_t direction_mask);
 
+  void add_direction(int direction);
+  void remove_direction(int direction);
+
  public:
 
   // creation and destruction
@@ -60,8 +63,8 @@ class PlayerMovement: public SmoothCollisionMovement {
   int get_direction(void);
   uint16_t get_direction_mask(void);
 
-  void add_direction(int direction);
-  void remove_direction(int direction);
+  void directional_key_pressed(int direction4);
+  void directional_key_released(int direction4);
 
   // movement
   bool is_moving_enabled(void);

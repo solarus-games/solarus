@@ -29,6 +29,11 @@ class Hero::StateFree: public Hero::StatePlayerMovement {
 
     StateFree(Hero *hero);
     ~StateFree(void);
+
+    bool is_free(void);
+    void action_key_pressed(void);
+    void set_animation_stopped(void);
+    void set_animation_walking(void);
 };
 
 #endif

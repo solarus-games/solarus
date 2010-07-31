@@ -462,7 +462,7 @@ bool Hero::is_animation_finished(void) {
 void Hero::rebuild_equipment(void) {
 
   sprites->rebuild_equipment();
-  state->notify_equipment_changed();
+  start_free();
 }
 
 /**
@@ -1270,7 +1270,7 @@ bool Hero::is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt) {
  * @return true if the stairs are currently an obstacle for this entity
  */
 bool Hero::is_stairs_obstacle(Stairs *stairs) {
-  return state->is_stairs_obstacle(stairs);
+  return true;
 }
 
 /**
@@ -1288,7 +1288,7 @@ bool Hero::is_sensor_obstacle(Sensor *sensor) {
  * @return true if the raised block is currently an obstacle for this entity
  */
 bool Hero::is_raised_block_obstacle(CrystalSwitchBlock *raised_block) {
-  return state->is_raised_block_obstacle(raised_block);
+  return !is_on_raised_blocks();
 }
 
 /**
@@ -1376,7 +1376,7 @@ void Hero::notify_collision_with_conveyor_belt(ConveyorBelt *conveyor_belt, int 
       collision_box.add_xy(dx, dy);
  
       if (!map->test_collision_with_obstacles(get_layer(), collision_box, this)) {
-	// set the state
+	// move the hero
 	set_state(new StateConveyorBelt(this));
       }
     }
@@ -1463,7 +1463,7 @@ void Hero::notify_collision_with_crystal_switch(CrystalSwitch *crystal_switch, i
 void Hero::notify_collision_with_crystal_switch(CrystalSwitch *crystal_switch, Sprite *sprite_overlapping) {
 
   if (sprite_overlapping->contains("sword") // the hero's sword is overlapping the crystal switch
-      && state->can_activate_crystal_switch()) {
+      && state->can_sword_hit_crystal_switch()) {
     
     crystal_switch->activate(this);
   }
@@ -1603,8 +1603,8 @@ int Hero::get_sword_damage_factor(void) {
  */
 void Hero::hurt(MapEntity *source, int life_points, int magic_points) {
 
-  if (state->can_be_hurt()) {
-    set_state(new StateHurt(this));
+  if (!sprites->is_blinking() && state->can_be_hurt()) {
+    set_state(new StateHurt(this, source, life_points, magic_points));
   }
 }
 

@@ -25,14 +25,18 @@
  *
  * This class contains all hero-related functions that depend on his state
  * and provide a default implementation for them.
- * Redefine for each state the functions that you need to change.
+ * Most of them are almost empty here because they depend on the state.
+ * Redefine for each state the functions that you need to implement or change.
  */
 class Hero::State {
 
   protected:
 
+    Game *game;				/**< the game */
+    Map *map;				/**< the current map */
     Hero *hero;				/**< the hero controlled by this state */
     State *next_state;			/**< a new state to set, or NULL to stay in the current state */
+    uint32_t when_suspended;		/**< indicates when this state was suspended */
 
     State(Hero *hero);
     void set_next_state(State *next_state);
@@ -60,7 +64,6 @@ class Hero::State {
     // game
     virtual void set_map(Map *map);
     virtual bool can_start_gameover_sequence(void);
-    virtual void notify_equipment_changed(void);
 
     // sprites
     virtual bool is_hero_visible(void);
@@ -94,20 +97,16 @@ class Hero::State {
     virtual bool is_teletransporter_delayed(void);
     virtual bool is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt);
     virtual bool can_avoid_conveyor_belt(void);
-    virtual bool is_stairs_obstacle(Stairs *stairs);
     virtual bool can_avoid_stairs(void);
     virtual bool is_sensor_obstacle(Sensor *sensor);
     virtual bool can_avoid_sensor(void);
-    virtual bool is_raised_block_obstacle(CrystalSwitchBlock *raised_block);
     virtual bool is_jump_sensor_obstacle(JumpSensor *jump_sensor);
     virtual bool can_avoid_explosion(void);
-    virtual bool can_activate_crystal_switch(void);
 
     // enemies
     virtual void notify_attacked_enemy(EnemyAttack attack, Enemy *victim, int result, bool killed);
     virtual int get_sword_damage_factor(void);
     virtual bool can_be_hurt(void);
-    virtual void hurt(MapEntity *source, int life_points, int magic_points);
 
     // state specific
     virtual bool is_free(void);
@@ -115,6 +114,8 @@ class Hero::State {
     virtual bool is_moving_grabbed_entity(void);
     virtual void notify_grabbed_entity_collision(void);
     virtual bool is_striking_with_sword(Detector *detector);
+    virtual bool can_start_sword(void);
+    virtual bool can_sword_hit_crystal_switch(void);
 };
 
 #endif

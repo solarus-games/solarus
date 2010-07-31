@@ -26,7 +26,7 @@ class Hero::StateHurt: public Hero::State {
 
   public:
 
-    StateHurt(Hero *hero);
+    StateHurt(Hero *hero, MapEntity *source, int life_points, int magic_points);
     ~StateHurt(void);
 };
 

@@ -19,8 +19,11 @@
 /**
  * Constructor.
  * @param hero the hero controlled by this state
+ * @param source the entity that hurts the hero (usually an enemy)
+ * @param life_points number of heart quarters to remove (this number may be reduced by the tunic)
+ * @param magic_points number of magic points to remove
  */
-Hero::StateHurt::StateHurt(Hero *hero):
+Hero::StateHurt::StateHurt(Hero *hero, MapEntity *source, int life_points, int magic_points):
   State(hero) {
 
 }

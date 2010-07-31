@@ -1,4 +1,28 @@
+/*
+ * Copyright (C) 2009 Christopho, Solarus - http://www.solarus-engine.org
+ * 
+ * Solarus is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * Solarus is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along
+ * with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 #include "hero/State.h"
+#include "hero/StateSwordSwinging.h"
+#include "hero/HeroSprites.h"
+#include "entities/Hero.h"
+#include "lowlevel/System.h"
+#include "Game.h"
+#include "Equipment.h"
+#include "Sprite.h"
+#include "KeysEffect.h"
 
 /**
  * @brief Creates a state.
@@ -6,7 +30,8 @@
  * This constructor can be called only from the subclasses.
  */
 Hero::State::State(Hero *hero):
-  hero(hero), next_state(NULL) {
+  game(hero->get_game()), map(hero->get_map()), hero(hero), next_state(NULL),
+  when_suspended(0) {
 
 }
 
@@ -77,6 +102,8 @@ void Hero::State::update(void) {
  * If your state needs to display additional elements, you can redefine this function.
  */
 void Hero::State::display_on_map(void) {
+
+  hero->get_sprites()->display_on_map();
 }
 
 /**
@@ -84,6 +111,11 @@ void Hero::State::display_on_map(void) {
  * @param suspended true if the game is suspended
  */
 void Hero::State::set_suspended(bool suspended) {
+
+  // remember the date if the state is being suspended
+  if (suspended) {
+    when_suspended = System::now();
+  }
 }
 
 /**
@@ -96,6 +128,14 @@ void Hero::State::action_key_pressed(void) {
  * @brief Notifies this state that the sword key was just pressed.
  */
 void Hero::State::sword_key_pressed(void) {
+
+  KeysEffect *keys_effect = game->get_keys_effect();
+  if (!hero->is_suspended()
+      && keys_effect->get_sword_key_effect() == KeysEffect::SWORD_KEY_SWORD
+      && can_start_sword()) {
+
+    set_next_state(new StateSwordSwinging(hero));
+  }
 }
 
 /**
@@ -140,12 +180,6 @@ void Hero::State::set_map(Map *map) {
  */
 bool Hero::State::can_start_gameover_sequence(void) {
   return true;
-}
-
-/**
- * @brief Notifies this state that the equipment of the player has just changed.
- */
-void Hero::State::notify_equipment_changed(void) {
 }
 
 /**
@@ -205,7 +239,7 @@ bool Hero::State::can_control_direction(void) {
  * @return the hero's wanted direction between 0 and 359, or -1 if he is stopped
  */
 int Hero::State::get_wanted_movement_direction(void) {
-  return 0;
+  return -1;
 }
 
 /**
@@ -258,6 +292,9 @@ void Hero::State::reset_movement(void) {
 
 /**
  * @brief Returns whether the hero ignores the effect of deep water in this state.
+ *
+ * Returns false by default.
+ *
  * @return true if the hero ignores the effect of deep water in the current state
  */
 bool Hero::State::can_avoid_deep_water(void) {
@@ -266,6 +303,9 @@ bool Hero::State::can_avoid_deep_water(void) {
 
 /**
  * @brief Returns whether the hero ignores the effect of holes in this state.
+ *
+ * Returns false by default.
+ *
  * @return true if the hero ignores the effect of holes in the current state
  */
 bool Hero::State::can_avoid_hole(void) {
@@ -274,6 +314,9 @@ bool Hero::State::can_avoid_hole(void) {
 
 /**
  * @brief Returns whether the hero is touching the ground in the current state.
+ *
+ * Returns true by default.
+ *
  * @return true if the hero is touching the ground in the current state
  */
 bool Hero::State::is_touching_ground(void) {
@@ -297,7 +340,7 @@ void Hero::State::set_stop_on_obstacles(bool stop_on_obstacles) {
 }
 
 /**
- * @bried Returns whether this state ignores the collisions with the detectors and the ground.
+ * @brief Returns whether this state ignores the collisions with the detectors and the ground.
  */
 bool Hero::State::are_collisions_ignored(void) {
   return false;
@@ -305,6 +348,9 @@ bool Hero::State::are_collisions_ignored(void) {
 
 /**
  * @brief Returns whether a deep water tile is considered as an obstacle in this state.
+ *
+ * Returns false by default.
+ *
  * @return true if the deep water tiles are considered as obstacles in this state
  */
 bool Hero::State::is_water_obstacle(void) {
@@ -313,6 +359,9 @@ bool Hero::State::is_water_obstacle(void) {
 
 /**
  * @brief Returns whether a hole is considered as an obstacle in this state.
+ *
+ * Returns false by default.
+ *
  * @return true if the holes are considered as obstacles in this state
  */
 bool Hero::State::is_hole_obstacle(void) {
@@ -321,6 +370,9 @@ bool Hero::State::is_hole_obstacle(void) {
 
 /**
  * @brief Returns whether a ladder is considered as an obstacle in this state.
+ *
+ * Returns false by default.
+ *
  * @return true if the ladders are considered as obstacles in this state
  */
 bool Hero::State::is_ladder_obstacle(void) {
@@ -329,15 +381,21 @@ bool Hero::State::is_ladder_obstacle(void) {
 
 /**
  * @brief Returns whether a teletransporter is considered as an obstacle in this state.
+ *
+ * Returns true by default.
+ *
  * @param teletransporter a teletransporter
  * @return true if the teletransporter is an obstacle in this state
  */
 bool Hero::State::is_teletransporter_obstacle(Teletransporter *teletransporter) {
-  return false;
+  return true;
 }
 
 /**
  * @brief Returns whether the hero ignores the effect of teletransporters in this state.
+ *
+ * Returns false by default.
+ *
  * @return true if the hero ignores the effect of teletransporters in this state
  */
 bool Hero::State::can_avoid_teletransporter(void) {
@@ -349,6 +407,7 @@ bool Hero::State::can_avoid_teletransporter(void) {
  *
  * When overlapping a teletransporter, if this function returns true, the teletransporter
  * will not be activated immediately.
+ * Returns false by default.
  */
 bool Hero::State::is_teletransporter_delayed(void) {
   return false;
@@ -356,15 +415,21 @@ bool Hero::State::is_teletransporter_delayed(void) {
 
 /**
  * @brief Returns whether a conveyor belt is considered as an obstacle in this state.
+ *
+ * Returns true by default.
+ *
  * @param conveyor_belt a conveyor belt
  * @return true if the conveyor belt is an obstacle in this state
  */
 bool Hero::State::is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt) {
-  return false;
+  return true;
 }
 
 /**
  * @brief Returns whether the hero ignores the effect of conveyor belts in this state.
+ *
+ * Returns false by default.
+ *
  * @return true if the hero ignores the effect of conveyor belts in this state
  */
 bool Hero::State::can_avoid_conveyor_belt(void) {
@@ -372,16 +437,10 @@ bool Hero::State::can_avoid_conveyor_belt(void) {
 }
 
 /**
- * @brief Returns whether a stairs entity is considered as an obstacle in this state.
- * @param stairs a stairs entity
- * @return true if these stairs are an obstacle in this state
- */
-bool Hero::State::is_stairs_obstacle(Stairs *stairs) {
-  return false;
-}
-
-/**
  * @brief Returns whether the hero ignores the effect of stairs in this state.
+ *
+ * Returns false by default.
+ *
  * @return true if the hero ignores the effect of stairs in this state
  */
 bool Hero::State::can_avoid_stairs(void) {
@@ -390,6 +449,9 @@ bool Hero::State::can_avoid_stairs(void) {
 
 /**
  * @brief Returns whether a sensor is considered as an obstacle in this state.
+ *
+ * Returns false by default.
+ *
  * @param sensor a sensor
  * @return true if the sensor is an obstacle in this state
  */
@@ -399,6 +461,9 @@ bool Hero::State::is_sensor_obstacle(Sensor *sensor) {
 
 /**
  * @brief Returns whether the hero ignores the effect of sensors in this state.
+ *
+ * Returns false by default.
+ *
  * @return true if the hero ignores the effect of sensors in this state
  */
 bool Hero::State::can_avoid_sensor(void) {
@@ -406,16 +471,10 @@ bool Hero::State::can_avoid_sensor(void) {
 }
 
 /**
- * @brief Returns whether a raised crystal switch block is considered as an obstacle in this state.
- * @param raised_block a crystal switch block raised
- * @return true if the raised block is an obstacle in this state
- */
-bool Hero::State::is_raised_block_obstacle(CrystalSwitchBlock *raised_block) {
-  return false;
-}
-
-/**
  * @brief Returns whether a jump sensor is considered as an obstacle in this state.
+ *
+ * Returns false by default.
+ *
  * @param jump_sensor a jump sensor
  * @return true if the jump sensor is an obstacle in this state
  */
@@ -425,6 +484,9 @@ bool Hero::State::is_jump_sensor_obstacle(JumpSensor *jump_sensor) {
 
 /**
  * @brief Returns whether the hero ignores the effect of explosions in this state.
+ *
+ * Returns false by default.
+ *
  * @return true if the hero ignores the effect of explosions in this state
  */
 bool Hero::State::can_avoid_explosion(void) {
@@ -432,10 +494,13 @@ bool Hero::State::can_avoid_explosion(void) {
 }
 
 /**
- * @brief Returns whether crystal switches can be activated by the hero in this state.
- * @return true if crystal switches can be activated by the hero in this state
+ * @brief Returns whether crystal switches can be activated by the sword in this state.
+ *
+ * Returns false by default.
+ *
+ * @return true if crystal switches can be activated by the sword in this state
  */
-bool Hero::State::can_activate_crystal_switch(void) {
+bool Hero::State::can_sword_hit_crystal_switch(void) {
   return false;
 }
 
@@ -455,17 +520,23 @@ void Hero::State::notify_attacked_enemy(EnemyAttack attack, Enemy *victim, int r
 /**
  * @brief Returns the damage power of the sword for the current attack.
  *
- * The value returned takes into account the power of the current sword
- * and the fact that a spin attack is more powerful than other attacks.
+ * Redefine the function if your state changes the power of the sword
+ * (typically for a spin attack).
  *
  * @return the current damage factor of the sword
  */
 int Hero::State::get_sword_damage_factor(void) {
-  return 0;
+
+  static const int sword_factors[] = {0, 1, 2, 4, 8};
+  int sword = game->get_equipment()->get_sword();
+  return sword_factors[sword];
 }
 
 /**
  * @brief Returns whether the hero can be hurt in this state.
+ *
+ * Returns false by default.
+ *
  * @return true if the hero can be hurt in this state
  */
 bool Hero::State::can_be_hurt(void) {
@@ -473,17 +544,11 @@ bool Hero::State::can_be_hurt(void) {
 }
 
 /**
- * @brief Hurts the hero.
- * @param source the entity that hurts the hero (usually an enemy)
- * @param life_points number of heart quarters to remove (this number may be reduced by the tunic)
- * @param magic_points number of magic points to remove
- */
-void Hero::State::hurt(MapEntity *source, int life_points, int magic_points) {
-}
-
-/**
  * @brief Returns whether the hero can walk normally and interact with entities
  * in this state.
+ *
+ * Returns false by default.
+ *
  * @return true if the hero can walk normally
  */
 bool Hero::State::is_free(void) {
@@ -492,6 +557,9 @@ bool Hero::State::is_free(void) {
 
 /**
  * @brief Returns whether the hero is grabbing or pulling an entity in this state.
+ *
+ * Returns false by default.
+ *
  * @return true if the hero is grabbing or pulling an entity
  */
 bool Hero::State::is_grabbing_or_pulling(void) {
@@ -502,6 +570,8 @@ bool Hero::State::is_grabbing_or_pulling(void) {
  * @brief Returns whether the hero is grabbing and moving an entity in this state.
  *
  * If he is not grabbing any entity, false is returned.
+ * Returns false by default.
+ *
  *
  * @return true if the hero is grabbing and moving an entity
  */
@@ -528,11 +598,23 @@ void Hero::State::notify_grabbed_entity_collision(void) {
  * between the sword sprite and the detector's sprite.
  * This function should be called to check whether the
  * hero wants to cut a bush or some grass.
+ * Returns false by default.
  *
  * @param detector the detector to check
  * @return true if the sword is striking this detector
  */
 bool Hero::State::is_striking_with_sword(Detector *detector) {
+  return false;
+}
+
+/**
+ * @brief Returns whether the hero can swing his sword in this state.
+ *
+ * Returns false by default.
+ *
+ * @return true if the hero can swing his sword in this state
+ */
+bool Hero::State::can_start_sword(void) {
   return false;
 }
 

@@ -1323,7 +1323,7 @@ void MapEntity::set_suspended(bool suspended) {
 
   this->suspended = suspended;
 
-  // remember the date if the movement is being suspended
+  // remember the date if the entity is being suspended
   if (suspended) {
     when_suspended = System::now();
   }

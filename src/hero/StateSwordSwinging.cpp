@@ -16,3 +16,19 @@
  */
 #include "hero/StateSwordSwinging.h"
 
+/**
+ * Constructor.
+ * @param hero the hero controlled by this state
+ */
+Hero::StateSwordSwinging::StateSwordSwinging(Hero *hero):
+  State(hero) {
+
+}
+
+/**
+ * Destructor.
+ */
+Hero::StateSwordSwinging::~StateSwordSwinging(void) {
+
+}
+

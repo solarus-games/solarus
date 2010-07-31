@@ -16,3 +16,21 @@
  */
 #include "hero/StateStairs.h"
 
+/**
+ * Constructor.
+ * @param hero the hero controlled by this state
+ * @param stairs the stairs to take
+ * @param way the way you are taking the stairs
+ */
+Hero::StateStairs::StateStairs(Hero *hero, Stairs *stairs, Stairs::Way way):
+  State(hero) {
+
+}
+
+/**
+ * Destructor.
+ */
+Hero::StateStairs::~StateStairs(void) {
+
+}
+

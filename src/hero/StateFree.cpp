@@ -16,3 +16,19 @@
  */
 #include "hero/StateFree.h"
 
+/**
+ * Constructor.
+ * @param hero the hero controlled by this state
+ */
+Hero::StateFree::StateFree(Hero *hero):
+  State(hero) {
+
+}
+
+/**
+ * Destructor.
+ */
+Hero::StateFree::~StateFree(void) {
+
+}
+

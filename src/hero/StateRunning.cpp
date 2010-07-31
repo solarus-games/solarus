@@ -16,3 +16,19 @@
  */
 #include "hero/StateRunning.h"
 
+/**
+ * Constructor.
+ * @param hero the hero controlled by this state
+ */
+Hero::StateRunning::StateRunning(Hero *hero):
+  State(hero) {
+
+}
+
+/**
+ * Destructor.
+ */
+Hero::StateRunning::~StateRunning(void) {
+
+}
+

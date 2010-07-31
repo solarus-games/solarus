@@ -14,20 +14,20 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_HERO_STATE_PUING.H_H
-#define SOLARUS_HERO_STATE_PUING.H_H
+#ifndef SOLARUS_HERO_STATE_PUSHING_H
+#define SOLARUS_HERO_STATE_PUSHING_H
 
 #include "hero/State.h"
 
 /**
- * @brief The state "Puing.h" of the hero.
+ * @brief The state "Pushing" of the hero.
  */
-class Hero::StatePuing.h: public Hero::State {
+class Hero::StatePushing: public Hero::State {
 
   public:
 
-    StatePuing.h(Hero *hero);
-    ~StatePuing.h(void);
+    StatePushing(Hero *hero);
+    ~StatePushing(void);
 };
 
 #endif

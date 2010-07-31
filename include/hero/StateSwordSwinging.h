@@ -14,13 +14,13 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_HERO_STATE_SWORDSWINGING_H
-#define SOLARUS_HERO_STATE_SWORDSWINGING_H
+#ifndef SOLARUS_HERO_STATE_SWORD_SWINGING_H
+#define SOLARUS_HERO_STATE_SWORD_SWINGING_H
 
 #include "hero/State.h"
 
 /**
- * @brief The state "SwordSwinging" of the hero.
+ * @brief The state "sword swinging" of the hero.
  */
 class Hero::StateSwordSwinging: public Hero::State {
 

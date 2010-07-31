@@ -27,6 +27,7 @@
 #include "entities/Boomerang.h"
 #include "entities/Arrow.h"
 #include "entities/PickableItem.h"
+#include "hero/HeroSprites.h"
 #include "movements/FallingHeight.h"
 #include "lowlevel/System.h"
 
@@ -162,7 +163,7 @@ void InventoryItem::start(Game *game) {
 	  finished = true;
 	}
 	else {
-	  hero->start_boomerang();
+	  hero->get_sprites()->set_animation_boomerang();
 	  this->direction_pressed = game->get_controls()->get_arrows_direction();
 	}
 	break;
@@ -174,7 +175,7 @@ void InventoryItem::start(Game *game) {
 	}
         else {
 	  equipment->remove_arrow();
-	  hero->start_bow();
+	  hero->get_sprites()->set_animation_bow();
 	}
 	break;
 

@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_HERO_STATE_CONVEYORBELT_H
-#define SOLARUS_HERO_STATE_CONVEYORBELT_H
+#ifndef SOLARUS_HERO_STATE_CONVEYOR_BELT_H
+#define SOLARUS_HERO_STATE_CONVEYOR_BELT_H
 
 #include "hero/State.h"
 

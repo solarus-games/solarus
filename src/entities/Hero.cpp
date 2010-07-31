@@ -24,6 +24,7 @@
 #include "entities/Block.h"
 #include "entities/Sensor.h"
 #include "hero/HeroSprites.h"
+#include "hero/StateCarrying.h"
 #include "hero/StateConveyorBelt.h"
 #include "hero/StateFalling.h"
 #include "hero/StateFree.h"
@@ -32,6 +33,7 @@
 #include "hero/StateJumping.h"
 #include "hero/StateLifting.h"
 #include "hero/StatePlunging.h"
+#include "hero/StateRunning.h"
 #include "hero/StateStairs.h"
 #include "hero/StateSwimming.h"
 #include "hero/StateTreasure.h"
@@ -43,6 +45,8 @@
 #include "Equipment.h"
 #include "KeysEffect.h"
 #include "Sprite.h"
+
+const int Hero::normal_walking_speed = 9;
 
 /**
  * @brief Creates a hero.
@@ -73,6 +77,8 @@ Hero::Hero(Equipment *equipment):
 Hero::~Hero(void) {
 
   delete sprites;
+  delete state;
+  delete old_state;
 }
 
 /**
@@ -137,9 +143,11 @@ bool Hero::is_displayed_in_y_order(void) {
 }
 
 /**
- * @brief Sets the hero's state.
+ * @brief Changes the hero's internal state.
  *
- * The previous state will be stopped.
+ * This function stops the old state and starts the new one.
+ * The old state will also be automatically destroyed, but not right now,
+ * in order to allow this function to be called by the old state itself safely.
  *
  * @param state the new state of the hero
  */
@@ -150,7 +158,7 @@ void Hero::set_state(State *state) {
     this->state->stop();
   }
 
-  this->old_state = this->state;
+  this->old_state = state;
   this->state = state;
   this->state->start();
 }
@@ -195,8 +203,10 @@ void Hero::update(void) {
  */
 void Hero::update_state(void) {
 
+  // update the current state
   state->update();
 
+  // see if there is an old state to destroy
   if (old_state != NULL) {
     delete old_state;
     old_state = NULL;
@@ -245,7 +255,7 @@ void Hero::update_ground(void) {
       next_ground_date = now + 300;
     }
 
-    else if (ground == GROUND_HOLE && state->can_fall_into_hole()) {
+    else if (ground == GROUND_HOLE && !state->can_avoid_hole()) {
       // the hero is being attracted by a hole and it's time to move one more pixel into the hole
 
       if (get_distance(last_solid_ground_coords.get_x(), last_solid_ground_coords.get_y()) >= 8) {
@@ -405,6 +415,14 @@ void Hero::key_released(GameControls::GameKey key) {
 }
 
 /**
+ * @brief Returns the sprites currently representing the hero.
+ * @return the sprites
+ */
+HeroSprites * Hero::get_sprites(void) {
+  return sprites;
+}
+
+/**
  * @brief Returns the direction of the hero's sprites.
  *
  * It is different from the movement direction.
@@ -469,7 +487,7 @@ bool Hero::is_shadow_visible(void) {
 /**
  * @brief When a shadow is displayed separate from the tunic sprite,
  * returns the height where the tunic sprite should be displayed.
- * @return the height in pixels
+ * @return the height in pixels, or zero if there is no separate shadow in this state
  */
 int Hero::get_height_above_shadow(void) {
   return state->get_height_above_shadow();
@@ -779,6 +797,45 @@ bool Hero::is_on_raised_blocks(void) {
 }
 
 /**
+ * @brief Returns the stairs the hero may be currently overlapping.
+ *
+ * The result is calculated (not stored) so that you can know it
+ * even when the game is suspended.
+ *
+ * @return the stairs the hero is currently overlapping, or NULL
+ */
+Stairs * Hero::get_stairs_overlapping(void) {
+
+  Stairs *stairs = NULL;
+  std::list<Stairs*> *all_stairs = map->get_entities()->get_stairs(get_layer());
+  std::list<Stairs*>::iterator it;
+  for (it = all_stairs->begin(); it != all_stairs->end() && stairs == NULL; it++) {
+
+    if (overlaps(*it)) {
+      stairs = *it;
+    }
+  }
+
+  return stairs;
+}
+
+/**
+ * @brief Returns whether the player can control his movements in the current state.
+ * @return true if the player can control his movements
+ */
+bool Hero::can_control_movement(void) {
+  return state->can_control_movement();
+}
+
+/**
+ * @brief Returns whether the player can control his direction in the current state.
+ * @return true if the player can control his direction
+ */
+bool Hero::can_control_direction(void) {
+  return state->can_control_direction();
+}
+
+/**
  * @brief Returns the current speed applied to the hero's movements when he is walking.
  * @return the current walking speed
  */
@@ -808,7 +865,7 @@ int Hero::get_wanted_movement_direction(void) {
 }
 
 /**
- * @brief Returns the direction of the hero's movement as defined by the directional keys pressed by the player.
+ * @brief Returns the direction of the hero's movement as defined by the controls applied by the player.
  *
  * If he is not moving, -1 is returned.
  * This direction may be different from the real movement direction because of obstacles.
@@ -967,7 +1024,8 @@ void Hero::notify_position_changed(void) {
     notify_ground_changed();
   }
 
-  if (state->is_on_solid_ground()
+  if (ground < GROUND_DEEP_WATER
+      && state->is_touching_ground()
       && (get_x() != last_solid_ground_coords.get_x() || get_y() != last_solid_ground_coords.get_y())) {
 
     // save the hero's last valid position
@@ -1019,6 +1077,20 @@ void Hero::notify_movement_changed(void) {
 }
 
 /**
+ * @brief Stops the movement of the player and lets the player restart it when he can.
+ *
+ * This function is typically called when the player loses temporarily the control
+ * (e.g. because of a script or a teletransporter) whereas the movement remains the same.
+ * Then the movement may want to move a few pixels more as soon as it is resumed.
+ * This function removes such residual effects of the player's movement.
+ * If the current movement is not controlled by the player, this function has no effect.
+ */
+void Hero::reset_movement(void) {
+
+  state->reset_movement();
+}
+
+/**
  * @brief Starts activating the ground specified by the last call to set_ground().
  */
 void Hero::notify_ground_changed(void) {
@@ -1064,7 +1136,7 @@ void Hero::notify_ground_changed(void) {
   }
 
   // notify the state
-  state->notify_ground_changed(ground);
+  state->notify_ground_changed();
 }
 
 /**
@@ -1104,6 +1176,29 @@ bool Hero::is_ground_visible(void) {
 }
 
 /**
+ * @brief Specifies a point of the map where the hero will go back if he falls
+ * into a hole or some other bad ground.
+ *
+ * This function is usually called when the hero walks on a special sensor.
+ *
+ * @param target_solid_ground_coords coordinates of the position where
+ * the hero will go if he falls into a hole or some other bad ground
+ * @param layer the layer
+ */
+void Hero::set_target_solid_ground_coords(const Rectangle &target_solid_ground_coords, Layer layer) {
+  this->target_solid_ground_coords = target_solid_ground_coords;
+  this->target_solid_ground_layer = layer;
+}
+
+/**
+ * @brief Sets whether the movement allows to traverse obstacles.
+ * @param stop_on_obstacles true to make the movement sensible to obstacles, false to ignore them
+ */
+void Hero::set_stop_on_obstacles(bool stop_on_obstacles) {
+  state->set_stop_on_obstacles(stop_on_obstacles);
+}
+
+/**
  * @brief Returns whether this entity is an obstacle for another one.
  * @param other another entity
  * @return true if this entity is an obstacle for the other one
@@ -1113,8 +1208,8 @@ bool Hero::is_obstacle_for(MapEntity *other) {
 }
 
 /**
- * @brief Returns whether a water tile is currently considered as an obstacle for the hero.
- * @return true if the water tiles are currently an obstacle for the hero
+ * @brief Returns whether a deep water tile is currently considered as an obstacle for the hero.
+ * @return true if the deep water tiles are currently an obstacle for the hero
  */
 bool Hero::is_water_obstacle(void) {
   return state->is_water_obstacle();
@@ -1248,7 +1343,7 @@ void Hero::notify_collision_with_teletransporter(Teletransporter *teletransporte
   if (!state->can_avoid_teletransporter()) {
 
     bool on_hole = map->get_tile_ground(get_layer(), get_x(), get_y()) == GROUND_HOLE;
-    if (on_hole || state->is_teletransporter_delayed(this)) {
+    if (on_hole || state->is_teletransporter_delayed()) {
       this->delayed_teletransporter = teletransporter; // fall into the hole (or do something else) first, transport later
     }
     else {
@@ -1295,7 +1390,7 @@ void Hero::notify_collision_with_conveyor_belt(ConveyorBelt *conveyor_belt, int 
  */
 void Hero::notify_collision_with_stairs(Stairs *stairs, int collision_mode) {
 
-  if (state->can_take_stairs()) {
+  if (!state->can_avoid_stairs()) {
 
     Stairs::Way stairs_way;
     if (stairs->is_inside_floor()) {
@@ -1417,6 +1512,36 @@ void Hero::avoid_collision(MapEntity *entity, int direction) {
 }
 
 /**
+ * @brief Notifies the hero that the entity he is pushing or pulling
+ * cannot move anymore because of a collision.
+ */
+void Hero::notify_grabbed_entity_collision(void) {
+  state->notify_grabbed_entity_collision();
+}
+
+/**
+ * @brief Tests whether the hero is striking the specified detector with his sword.
+ *
+ * When the sword sprite collides with a detector,
+ * this function can be called to determine whether the hero is
+ * really striking this particular detector only.
+ * This depends on the hero's state, his direction and his
+ * distance to the detector.
+ * This function assumes that there is already a collision
+ * between the sword sprite and the detector's sprite.
+ * This function should be called to check whether the
+ * hero wants to cut a bush or some grass.
+ * Don't use this function for enemies since any sprite
+ * collision is enough to hurt an enemy.
+ *
+ * @param detector the detector to check
+ * @return true if the sword is striking this detector
+ */
+bool Hero::is_striking_with_sword(Detector *detector) {
+  return state->is_striking_with_sword(detector);
+}
+
+/**
  * @brief Snaps the hero to the entity he is facing.
  *
  * The hero is snapped if there is no collision and if he is not too far.
@@ -1458,48 +1583,16 @@ void Hero::notify_attacked_enemy(EnemyAttack attack, Enemy *victim, int result, 
 }
 
 /**
- * @brief Tests whether the hero is striking the specified detector with his sword.
+ * @brief Returns the damage power of the sword for the current attack.
  *
- * When the sword sprite collides with a detector,
- * this function can be called to determine whether the hero is
- * really striking this particular detector only.
- * This depends on the hero's state, his direction and his
- * distance to the detector.
- * This function assumes that there is already a collision
- * between the sword sprite and the detector's sprite.
- * This function should be called to check whether the
- * hero wants to cut a bush or some grass.
- * Don't use this function for enemies since any sprite
- * collision is enough to hurt an enemy.
+ * The value returned takes into account the power of the current sword
+ * and the fact that a spin attack is more powerful than other attacks.
  *
- * @param detector the detector to check
- * @return true if the sword is striking this detector
+ * @return the current damage factor of the sword
  */
-bool Hero::is_striking_with_sword(Detector *detector) {
-  return state->is_striking_with_sword(detector);
-}
+int Hero::get_sword_damage_factor(void) {
 
-/**
- * @brief Returns the stairs the hero may be currently overlapping.
- *
- * The result is calculated (not stored) so that you can know it
- * even when the game is suspended.
- *
- * @return the stairs the hero is currently overlapping, or NULL
- */
-Stairs * Hero::get_stairs_overlapping(void) {
-
-  Stairs *stairs = NULL;
-  std::list<Stairs*> *all_stairs = map->get_entities()->get_stairs(get_layer());
-  std::list<Stairs*>::iterator it;
-  for (it = all_stairs->begin(); it != all_stairs->end() && stairs == NULL; it++) {
-
-    if (overlaps(*it)) {
-      stairs = *it;
-    }
-  }
-
-  return stairs;
+  return state->get_sword_damage_factor();
 }
 
 /**
@@ -1522,48 +1615,6 @@ void Hero::get_back_from_death(void) {
   sprites->blink();
   start_free();
   when_suspended = System::now();
-}
-
-/**
- * @brief Notifies the hero that the entity he is pushing or pulling
- * cannot move any more because of a collision.
- */
-void Hero::notify_grabbed_entity_collision(void) {
-  state->notify_grabbed_entity_collision();
-}
-
-/**
- * @brief Lets the hero walk normally.
- */
-void Hero::start_free(void) {
-  set_state(new StateFree(this));
-}
-
-/**
- * @brief Makes the hero brandish a treasure.
- * @param treasure the treasure to give him (you have to delete it after the hero brandishes it)
- */
-void Hero::start_treasure(Treasure *treasure) {
-  set_state(new StateTreasure(this, treasure));
-}
-
-/**
- * @brief Makes the hero jump into a direction.
- *
- * While he is jumping, the player does not control him anymore.
- *
- * @param direction8 direction of the jump (0 to 7)
- * @param length length of the jump in pixels
- * @param with_collisions true to stop the movement if there is a collision
- * @param with_sound true to play the "jump" sound
- * @param layer_after_jump the layer to set when the jump is finished
- * (or LAYER_NB to keep the same layer)
- * @param movement_delay delay between each one-pixel move in the jump movement (0: default)
- */
-void Hero::start_jumping(int direction8, int length, bool with_collisions, bool with_sound, uint32_t movement_delay, Layer layer_after_jump) {
-
-  StateJumping *state = new StateJumping(this, direction8, length, with_collisions, with_sound, movement_delay, layer_after_jump);
-  set_state(state);
 }
 
 /**
@@ -1619,10 +1670,77 @@ void Hero::start_hole(void) {
 }
 
 /**
+ * @brief Returns whether the hero can walk normally and interact with entities.
+ * @return true if the hero can walk normally
+ */
+bool Hero::is_free(void) {
+  return state->is_free();
+}
+
+/**
+ * @brief Returns whether the hero is grabbing and moving an entity in this state.
+ *
+ * If he is not grabbing any entity, false is returned.
+ *
+ * @return true if the hero is grabbing and moving an entity
+ */
+bool Hero::is_moving_grabbed_entity(void) {
+  return state->is_moving_grabbed_entity();
+}
+
+/**
+ * @brief Returns whether the hero is grabbing or pulling an entity.
+ * @return true if the hero is grabbing or pulling an entity
+ */
+bool Hero::is_grabbing_or_pulling(void) {
+  return state->is_grabbing_or_pulling();
+}
+
+/**
+ * @brief Starts the state indicated by the current state.
+ */
+void Hero::start_next_state(void) {
+  set_state(state->get_next_state());
+}
+
+/**
+ * @brief Lets the hero walk normally.
+ */
+void Hero::start_free(void) {
+  set_state(new StateFree(this));
+}
+
+/**
+ * @brief Makes the hero brandish a treasure.
+ * @param treasure the treasure to give him (you have to delete it after the hero brandishes it)
+ */
+void Hero::start_treasure(Treasure *treasure) {
+  set_state(new StateTreasure(this, treasure));
+}
+
+/**
+ * @brief Makes the hero jump into a direction.
+ *
+ * While he is jumping, the player does not control him anymore.
+ *
+ * @param direction8 direction of the jump (0 to 7)
+ * @param length length of the jump in pixels
+ * @param with_collisions true to stop the movement if there is a collision
+ * @param with_sound true to play the "jump" sound
+ * @param movement_delay delay between each one-pixel move in the jump movement (0: default)
+ * @param layer_after_jump the layer to set when the jump is finished
+ * (or LAYER_NB to keep the same layer)
+ */
+void Hero::start_jumping(int direction8, int length, bool with_collisions, bool with_sound, uint32_t movement_delay, Layer layer_after_jump) {
+
+  StateJumping *state = new StateJumping(this, direction8, length, with_collisions, with_sound, movement_delay, layer_after_jump);
+  set_state(state);
+}
+
+/**
  * @brief Makes the hero brandish his sword meaning a victory.
  */
 void Hero::start_victory() {
-
   set_state(new StateVictory(this));
 }
 
@@ -1634,7 +1752,6 @@ void Hero::start_victory() {
  * You can call start_free() to unfreeze him.
  */
 void Hero::start_freezed(void) {
-
   set_state(new StateFreezed(this));
 }
 
@@ -1643,7 +1760,20 @@ void Hero::start_freezed(void) {
  * @param item_to_lift the destructible item to lift
  */
 void Hero::start_lifting(DestructibleItem *item_to_lift) {
-
   set_state(new StateLifting(this, item_to_lift));
+}
+
+/**
+ * @brief Makes the hero carry the item he was lifting.
+ */
+void Hero::start_carrying(void) {
+  set_state(new StateCarrying(this));
+}
+
+/**
+ * @brief Starts running with the speed shoes.
+ */
+void Hero::start_running(void) {
+  set_state(new StateRunning(this));
 }
 

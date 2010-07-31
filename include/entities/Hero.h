@@ -63,7 +63,7 @@ class Hero: public MapEntity {
 						 * including an instruction from the script */
 
     State *state;				/**< the current internal state */
-    State *old_state;				/**< the previous state, to delete as soon as possible */
+    State *old_state;                           /**< the previous state, to delete as soon as possible */
 
     // sprites
     Equipment *equipment;			/**< equipment of the player */
@@ -157,7 +157,6 @@ class Hero: public MapEntity {
      *
      * Functions called when the player goes to another map.
      */
-    void notify_map_closing(void);
     void set_map(Map *map);
     void set_map(Map *map, int initial_direction);
     void place_on_destination_point(Map *map);
@@ -219,6 +218,7 @@ class Hero: public MapEntity {
      *
      * Information about what is considered as an obstacle for the hero.
      */
+    void set_stop_on_obstacles(bool stop_on_obstacles);
     bool is_obstacle_for(MapEntity *other);
     bool is_water_obstacle(void);
     bool is_hole_obstacle(void);
@@ -230,7 +230,6 @@ class Hero: public MapEntity {
     bool is_sensor_obstacle(Sensor *sensor);
     bool is_raised_block_obstacle(CrystalSwitchBlock *raised_block);
     bool is_jump_sensor_obstacle(JumpSensor *jump_sensor);
-    void set_stop_on_obstacles(bool stop_on_obstacles);
 
     /**
      * @name Collisions.
@@ -247,7 +246,7 @@ class Hero: public MapEntity {
     void notify_collision_with_crystal_switch(CrystalSwitch *crystal_switch, int collision_mode);
     void notify_collision_with_crystal_switch(CrystalSwitch *crystal_switch, Sprite *sprite_overlapping);
     void avoid_collision(MapEntity *entity, int direction);
-    void notify_grabbed_entity_collision(void);
+    bool is_striking_with_sword(Detector *detector);
 
     /**
      * @name Enemies.
@@ -255,7 +254,6 @@ class Hero: public MapEntity {
      * Attacking enemies or getting hurt by them.
      */
     void notify_attacked_enemy(EnemyAttack attack, Enemy *victim, int result, bool killed);
-    bool is_striking_with_sword(Detector *detector);
     int get_sword_damage_factor(void);
     void hurt(MapEntity *source, int life_points, int magic_points);
     void get_back_from_death(void);
@@ -270,21 +268,21 @@ class Hero: public MapEntity {
     bool is_free(void);
     bool is_grabbing_or_pulling(void);
     bool is_moving_grabbed_entity(void);
+    void notify_grabbed_entity_collision(void);
 
     void start_deep_water(void);
     void start_hole(void);
 
+    void start_next_state(void);
     void start_free(void);
     void start_treasure(Treasure *treasure);
     void start_jumping(int direction8, int length, bool with_collisions, bool with_sound,
 	uint32_t movement_delay = 0, Layer layer_after_jump = LAYER_NB);
     void start_freezed(void);
     void start_victory(void);
-    void start_running(void);
-    void start_bow(void);
-    void start_boomerang(void);
     void start_lifting(DestructibleItem *destructible_item);
     void start_carrying(void);
+    void start_running(void);
 };
 
 #endif

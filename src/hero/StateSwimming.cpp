@@ -16,3 +16,19 @@
  */
 #include "hero/StateSwimming.h"
 
+/**
+ * Constructor.
+ * @param hero the hero controlled by this state
+ */
+Hero::StateSwimming::StateSwimming(Hero *hero):
+  State(hero) {
+
+}
+
+/**
+ * Destructor.
+ */
+Hero::StateSwimming::~StateSwimming(void) {
+
+}
+

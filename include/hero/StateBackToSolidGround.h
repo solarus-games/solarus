@@ -14,13 +14,13 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_HERO_STATE_BACKTOSOLIDGROUND_H
-#define SOLARUS_HERO_STATE_BACKTOSOLIDGROUND_H
+#ifndef SOLARUS_HERO_STATE_BACK_TO_SOLID_GROUND_H
+#define SOLARUS_HERO_STATE_BACK_TO_SOLID_GROUND_H
 
 #include "hero/State.h"
 
 /**
- * @brief The state "BackToSolidGround.h" of the hero.
+ * @brief The state "back to solid ground" of the hero.
  */
 class Hero::StateBackToSolidGround: public Hero::State {
 

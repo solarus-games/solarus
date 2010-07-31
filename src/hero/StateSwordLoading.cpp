@@ -16,3 +16,19 @@
  */
 #include "hero/StateSwordLoading.h"
 
+/**
+ * Constructor.
+ * @param hero the hero controlled by this state
+ */
+Hero::StateSwordLoading::StateSwordLoading(Hero *hero):
+  State(hero) {
+
+}
+
+/**
+ * Destructor.
+ */
+Hero::StateSwordLoading::~StateSwordLoading(void) {
+
+}
+

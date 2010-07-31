@@ -16,3 +16,19 @@
  */
 #include "hero/StateFreezed.h"
 
+/**
+ * Constructor.
+ * @param hero the hero controlled by this state
+ */
+Hero::StateFreezed::StateFreezed(Hero *hero):
+  State(hero) {
+
+}
+
+/**
+ * Destructor.
+ */
+Hero::StateFreezed::~StateFreezed(void) {
+
+}
+

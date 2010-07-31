@@ -16,3 +16,19 @@
  */
 #include "hero/StateBackToSolidGround.h"
 
+/**
+ * Constructor.
+ * @param hero the hero controlled by this state
+ */
+Hero::StateBackToSolidGround::StateBackToSolidGround(Hero *hero):
+  State(hero) {
+
+}
+
+/**
+ * Destructor.
+ */
+Hero::StateBackToSolidGround::~StateBackToSolidGround(void) {
+
+}
+

@@ -16,3 +16,19 @@
  */
 #include "hero/StateSwordTapping.h"
 
+/**
+ * Constructor.
+ * @param hero the hero controlled by this state
+ */
+Hero::StateSwordTapping::StateSwordTapping(Hero *hero):
+  State(hero) {
+
+}
+
+/**
+ * Destructor.
+ */
+Hero::StateSwordTapping::~StateSwordTapping(void) {
+
+}
+

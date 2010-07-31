@@ -16,3 +16,19 @@
  */
 #include "hero/StateHurt.h"
 
+/**
+ * Constructor.
+ * @param hero the hero controlled by this state
+ */
+Hero::StateHurt::StateHurt(Hero *hero):
+  State(hero) {
+
+}
+
+/**
+ * Destructor.
+ */
+Hero::StateHurt::~StateHurt(void) {
+
+}
+

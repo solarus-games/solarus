@@ -16,3 +16,19 @@
  */
 #include "hero/StateInventoryItem.h"
 
+/**
+ * Constructor.
+ * @param hero the hero controlled by this state
+ */
+Hero::StateInventoryItem::StateInventoryItem(Hero *hero):
+  State(hero) {
+
+}
+
+/**
+ * Destructor.
+ */
+Hero::StateInventoryItem::~StateInventoryItem(void) {
+
+}
+

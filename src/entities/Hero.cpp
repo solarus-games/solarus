@@ -187,7 +187,8 @@ void Hero::update(void) {
 
   update_state();
 
-  if (!suspended) {
+  if (!is_suspended()) {
+    
     sprites->update();
     update_movement();
     update_ground();

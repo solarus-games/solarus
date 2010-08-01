@@ -50,8 +50,7 @@ class PlayerMovement: public SmoothCollisionMovement {
   void remove_direction_mask(uint16_t direction_mask);
   void set_direction_mask(uint16_t direction_mask);
 
-  void add_direction(int direction);
-  void remove_direction(int direction);
+  void compute_direction(void);
 
  public:
 

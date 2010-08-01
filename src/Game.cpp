@@ -498,6 +498,9 @@ Map * Game::get_current_map(void) {
 void Game::set_current_map(MapId map_id, const std::string &destination_point_name,
 			   Transition::Style transition_style) {
 
+  // stop the hero's movement
+  hero->reset_movement();
+
   // load the next map
   next_map = ResourceManager::get_map(map_id);
   if (!next_map->is_loaded()) {

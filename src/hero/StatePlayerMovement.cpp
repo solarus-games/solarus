@@ -83,7 +83,7 @@ void Hero::StatePlayerMovement::stop(State *next_state) {
  */
 void Hero::StatePlayerMovement::directional_key_pressed(int direction4) {
 
-  // notify the player's movement
+  // notify the movement
   get_player_movement()->directional_key_pressed(direction4);
 }
 

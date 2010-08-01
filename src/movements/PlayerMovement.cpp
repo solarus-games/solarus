@@ -14,7 +14,6 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include <cmath>
 #include "movements/PlayerMovement.h"
 #include "entities/MapEntity.h"
 #include "Game.h"
@@ -139,38 +138,9 @@ void PlayerMovement::set_moving_enabled(bool moving_enabled, bool direction_enab
     if (direction_enabled && entity->get_game() != NULL) {
 
       // if the control is being restored, let's take
-      // into account the possible arrows pressed
+      // into account the possible directional keys pressed
 
-      // TODO put the following code into a function compute_direction() and call it
-      GameControls *controls = entity->get_game()->get_controls();
-
-      if (controls->is_key_pressed(GameControls::RIGHT)) {
-	add_direction_mask(direction_masks[0]);
-      }
-      else {
-	remove_direction_mask(direction_masks[0]);	
-      }
-
-      if (controls->is_key_pressed(GameControls::UP)) {
-	add_direction_mask(direction_masks[1]);
-      }
-      else {
-	remove_direction_mask(direction_masks[1]);	
-      }
-
-      if (controls->is_key_pressed(GameControls::LEFT)) {
-	add_direction_mask(direction_masks[2]);
-      }
-      else {
-	remove_direction_mask(direction_masks[2]);	
-      }
-
-      if (controls->is_key_pressed(GameControls::DOWN)) {
-	add_direction_mask(direction_masks[3]);
-      }
-      else {
-	remove_direction_mask(direction_masks[3]);	
-      }
+      compute_direction();
     }
     else {
       // the control is being ignored:
@@ -206,16 +176,19 @@ void PlayerMovement::set_suspended(bool suspended) {
   Movement::set_suspended(suspended);
 
   if (!suspended) {
-    // TODO call compute_direction() here to compute the direction pressed with Control::is_key_pressed
+    compute_direction();
     compute_movement(); // recompute the movement when the game is resumed
   }
 }
 
 /**
  * @brief This function is called when an arrow key is pressed.
- * @param direction of the arrow pressed (0 to 3)
+ *
+ * It changes the movement according to the new direction.
+ *
+ * @param direction of the directional key pressed (0 to 3)
  */
-void PlayerMovement::add_direction(int direction) {
+void PlayerMovement::directional_key_pressed(int direction) {
 
   if (direction_enabled) {
 
@@ -228,10 +201,13 @@ void PlayerMovement::add_direction(int direction) {
 }
 
 /**
- * @brief This function is called when an arrow key is released.
- * @param direction of the arrow released (0 to 3)
+ * @brief This function is called when a directional key is released.
+ *
+ * It changes the movement according to the new direction.
+ *
+ * @param direction of the directional key released (0 to 3)
  */
-void PlayerMovement::remove_direction(int direction) {
+void PlayerMovement::directional_key_released(int direction) {
 
   if (direction_enabled) {
 
@@ -240,6 +216,42 @@ void PlayerMovement::remove_direction(int direction) {
     if (moving_enabled) {
       compute_movement();
     }
+  }
+}
+
+/**
+ * @brief Finds the direction defined by the directional keys currently pressed.
+ */
+void PlayerMovement::compute_direction(void) {
+
+  GameControls *controls = entity->get_game()->get_controls();
+
+  if (controls->is_key_pressed(GameControls::RIGHT)) {
+    add_direction_mask(direction_masks[0]);
+  }
+  else {
+    remove_direction_mask(direction_masks[0]);	
+  }
+
+  if (controls->is_key_pressed(GameControls::UP)) {
+    add_direction_mask(direction_masks[1]);
+  }
+  else {
+    remove_direction_mask(direction_masks[1]);	
+  }
+
+  if (controls->is_key_pressed(GameControls::LEFT)) {
+    add_direction_mask(direction_masks[2]);
+  }
+  else {
+    remove_direction_mask(direction_masks[2]);	
+  }
+
+  if (controls->is_key_pressed(GameControls::DOWN)) {
+    add_direction_mask(direction_masks[3]);
+  }
+  else {
+    remove_direction_mask(direction_masks[3]);	
   }
 }
 
@@ -311,9 +323,7 @@ void PlayerMovement::set_moving_speed(int moving_speed) {
 /**
  * @brief Changes the movement of the entity depending on the directional keys pressed.
  *
- * This function is called when an arrow is pressed or released,
- * or when the movement has just been enabled or
- * disabled (i.e. when set_moving_enabled() is called).
+ * This function is called when the direction is changed.
  */
 void PlayerMovement::compute_movement(void) {
 

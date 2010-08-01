@@ -242,8 +242,6 @@ void Map::load(Game *game) {
 
   // read the map file
   map_loader.load_map(game, this);
-
-  set_suspended(true);
 }
 
 /**
@@ -753,11 +751,16 @@ Ground Map::get_tile_ground(Layer layer, const Rectangle &coordinates) {
  * when this entity has just moved on the map, or when a detector
  * wants to check this entity.
  * We check whether or not the entity overlaps an entity detector.
+ * If the map is suspended, this function does nothing.
  *
  * @param entity the entity that has just moved (this entity should have
  * a movement sensible to the collisions)
  */
 void Map::check_collision_with_detectors(MapEntity *entity) {
+
+  if (suspended) {
+    return;
+  }
 
   std::list<Detector*> *detectors = entities->get_detectors();
 
@@ -780,11 +783,16 @@ void Map::check_collision_with_detectors(MapEntity *entity) {
  * This function is called by an entity
  * when the frame of one of its sprites has just changed.
  * We check whether or not the sprite overlaps the detector.
+ * If the map is suspended, this function does nothing.
  *
  * @param entity the sprite that has just changed
  * @param sprite the sprite that has just changed
  */
 void Map::check_collision_with_detectors(MapEntity *entity, Sprite *sprite) {
+
+  if (suspended) {
+    return;
+  }
 
   std::list<Detector*> *detectors = entities->get_detectors();
   // check each detector

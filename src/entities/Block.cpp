@@ -175,6 +175,20 @@ void Block::notify_collision(MapEntity *entity_overlapping, CollisionMode collis
 }
 
 /**
+ * @brief Notifies this detector that the player is interacting by pressing the action key.
+ *
+ * This function is called when the player presses the action key
+ * when the hero is facing this detector, and the action icon lets him do this.
+ */
+void Block::action_key_pressed(void) {
+
+  KeysEffect *keys_effect = game->get_keys_effect();
+  if (keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_GRAB) {
+    game->get_hero()->start_grabbing();
+  }
+}
+ 
+/**
  * @brief This function is called when the player tries to push or pull this block.
  * @return true if the player is allowed to move this block
  */

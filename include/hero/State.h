@@ -18,7 +18,6 @@
 #define SOLARUS_HERO_STATE_H
 
 #include "Common.h"
-#include "entities/Hero.h"
 
 /**
  * @brief Abstract base class for a state of the hero.

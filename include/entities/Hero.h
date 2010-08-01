@@ -284,6 +284,7 @@ class Hero: public MapEntity {
     void start_lifting(DestructibleItem *destructible_item);
     void start_carrying(void);
     void start_running(void);
+    void start_grabbing(void);
 };
 
 #endif

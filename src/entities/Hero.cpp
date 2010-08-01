@@ -29,6 +29,7 @@
 #include "hero/StateFalling.h"
 #include "hero/StateFree.h"
 #include "hero/StateFreezed.h"
+#include "hero/StateGrabbing.h"
 #include "hero/StateHurt.h"
 #include "hero/StateJumping.h"
 #include "hero/StateLifting.h"
@@ -1779,5 +1780,12 @@ void Hero::start_carrying(void) {
  */
 void Hero::start_running(void) {
   set_state(new StateRunning(this));
+}
+
+/**
+ * @brief Starts grabbing the obstacle or the entity the hero is facing.
+ */
+void Hero::start_grabbing(void) {
+  set_state(new StateGrabbing(this));
 }
 

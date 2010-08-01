@@ -53,12 +53,7 @@ void Hero::StateFree::action_key_pressed(void) {
 
   KeysEffect *keys_effect = game->get_keys_effect();
 
-  if (keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_GRAB) {
-
-    // grab an entity
-    hero->set_state(new StateGrabbing(hero));
-  }
-  else if (keys_effect->is_action_key_acting_on_facing_entity()) {
+  if (keys_effect->is_action_key_acting_on_facing_entity()) {
 
     // action on the facing entity
     hero->get_facing_entity()->action_key_pressed();

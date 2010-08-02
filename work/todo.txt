@@ -67,7 +67,6 @@ Bugs :
   similaire à WALKING, CARRYING, SWORD_LOADING et SWIMMING
 - bottes de pégase contre les limites d'une map en scrolling (seulement à droite ?) seg fault ?
 - réformer les états du héros en faisant des sous-classes ? cela dit il ne reste plus que running et swimming qui posent problème
-- quand on arrive sur une map, l'animation du héros est restée bloquée et se débloque lorsque la transition se finit
 
 
 Dernière version compilable (avant travaux sur Hero) : 1355

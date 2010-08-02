@@ -38,6 +38,7 @@ class Hero::StatePlayerMovement: public Hero::State {
     virtual ~StatePlayerMovement(void);
     virtual void start(State *previous_state);
     virtual void stop(State *next_state);
+    void set_map(Map *map);
 
     PlayerMovement *get_player_movement(void);
 

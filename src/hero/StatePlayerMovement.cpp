@@ -78,6 +78,17 @@ void Hero::StatePlayerMovement::stop(State *next_state) {
 }
 
 /**
+ * @brief Changes the map.
+ *
+ * This function is called when the hero is about to go to another map.
+ */
+void Hero::StatePlayerMovement::set_map(Map *map) {
+
+  State::set_map(map);
+  set_animation_stopped();
+}
+
+/**
  * @brief Notifies this state that a directional key was just pressed.
  * @param direction4 direction of the key (0 to 3)
  */

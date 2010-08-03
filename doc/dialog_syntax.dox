@@ -184,206 +184,161 @@ However, you may need to translate them one day.
 
 Both dialog files have the same syntax. They are ini files encoded in UTF-8 and obey strict rules so that
 the sequences of dialogs are displayed correctly in the game.
-In particular, don't put more character on a line than the maximum length,
-otherwise the text will overflow from the dialog box during the game.
-These rules are explained in the comments
-of <tt>languages/XX/text/engine_dialogs.dat</tt>:
+We give here the full syntax specification of the dialog files.
+
+This is a Windows ini-like syntax.
+Lines starting with the character '#' are comments and are ignored by the engine.
+A dialog is a sequence of one or several messages.
+A message is one, two or three lines of text to display in the dialog box.
+A message has the following syntax:
+
+- An id, inside square brackets.
+For all engine messages, (the one is this file), the id
+starts with the character '_'.
+The id allows the engine to refer to the message it want to display.
+If you want to translate the dialogs, don't translate the id.
+
+- The values <tt>line1</tt>, <tt>line2</tt> and <tt>line3</tt>:
+they determine the content of the message. The text can
+be inside quotes. A line shoud not exceed 23 characters.
+
+- The value <tt>next</tt>: id of the next message to display
+in the sequence. If this value is not set, the current message
+is considered as the last one and the dialog box is closed
+when the current message is finished.
+
+If <tt>next</tt> is set, then an arrow is displayed on the
+bottom of the current message to indicate that there will
+be a next message.
+If <tt>next</tt> is not set, then this arrow is replaced
+by a square to indicate that this message was the last one
+of the sequence.
+A message having a question (see below) is always displayed 
+with an arrow.
+
+Sometimes, event if a sequence is finished, you may
+want to show an arrow.
+This is typically the case when you know that another
+sequence will start immediately, but you don't know which one yet
+(this may depend on the quest). In this case, you can
+set the special word <tt>_unknown</tt> as the value of <tt>next</tt>
+to indicate that the sequence will be followed by another one,
+unknown for now.
+This will display the arrow instead of the square, but everything
+works exactly like the value <tt>next</tt> was not set.
+
+- By convention, when some text is too long to be in a single
+message (i.e. three lines), we use a sequence of message:
+we put the rest of the text in one
+or several messages whose id is the one of the first message,
+concatenated with <tt>.2</tt> for the second one, <tt>.3</tt>
+for the third one, etc.
+We set the appropriate values of <tt>next</tt> to make the sequence work.
+Translators can change the number of messages in a sequence
+without any problem of id.
+Only the first id of the sequence must have the same name than in the reference language.
+If the id of the last message of the sequence ends with ".4" instead
+of ".3" because the translated dialog didn't fit in the same number
+of messages, it still works.
+The translators only need to synchronize the messages whose id ends with
+".2", ".3", etc.
+
+- The value <tt>skip</tt>: defines what happens when the player
+tries to skip the dialog (by pressing the sword key).
+There are three possible values:
+  - <tt>none</tt> (default): the message cannot be skipped.
+  - <tt>current</tt>: if the key is pressed, the whole current message
+    is immediately shown (instead of being displayed letter by letter).
+    This allows to get to the next message faster.
+  - <tt>all</tt>: the whole sequence of messages can be skipped.
+    The dialog box is immediataly closed and
+    the next messages will not be displayed at all.
+    Use this only for non-essential dialogs that can be read again later.
+The value of <tt>skip</tt> takes effect for the current message and all next
+messages of the sequence, until it is changed or the dialog box is closed.
+
+- The value <tt>icon</tt>: displays a small image of size 16*16 pixels 
+in the dialog box. The value is a number
+that identifies the icon in the icon image file.
+The icon (if any) is displayed on the left of the message
+and the text cannot exceed 20 characters (instead of 23 when there is no
+icon). The icon remains displayed in the next message, until its value
+is changed or the dialog box is closed. A value of -1 means that you
+want to remove the icon.
+The icons are mostly used by the engine dialogs, for instance when the
+player gets a treasure.
+
+- The value <tt>question</tt> (true or false): shows a question to the player with two
+choices. The first line is considered as the question and the two
+other lines are the two possible answers.
+Those lines are then limited to 20 characters (instead of 23
+when there is no question) because a cursor lets the player choose his answer.
+It is possible to have both a question and an icon: then, the maximum
+number of character is the two last lines is 17.
+
+If there is a question, you can define a value <tt>next2</tt>.
+<tt>next</tt> specifies the message to show when the first answer is selected.
+<tt>next2</tt> specifies the message to show when the second answer is selected.
+As for <tt>next</tt>, if <tt>next2</tt> is unspecified and the player choses
+the second answer, the sequence stops and the dialog box is closed.
+When a message has a question, it cannot be skipped.
+If the value of <tt>skip</tt> is <tt>all</tt> during a message with a question,
+then everything works as it was <tt>current</tt> instead of <tt>all</tt>
+for this message.
+However, if the message with the question is part of a sequence that
+can be skipped (<tt>skip</tt> = <tt>all</tt>),
+then the whole sequence may be skipped including the question message.
+
+- Finally, there exists special characters that you can put in the body of a message:
+  - <tt>$0</tt>: makes a break of one second in the letter scrolling,
+  - <tt>$1</tt>: set the letter scrolling speed to slow
+  - <tt>$2</tt>: set the letter scrolling speed to medium
+  - <tt>$3</tt>: set the letter scrolling speed to fast (default)
+  - <tt>$v</tt>: inserts the value of a variable in the message
+  (then the program must specify this value)
+
+Here is an small example of such a dialog file.
 
 @verbatim
-# This file contains all dialogs displayed by the engine.
-# Dialogs displayed by the quest are in the file game_dialogs.dat.
 
-####################################################################################
-#             Syntax of files text/engine_dialogs.dat and text/game_dialogs.dat
-#
-# This is a Windows ini-like syntax.
-# Lines starting with the character '#' are comments and are ignored by the engine.
-# A dialog is a sequence of one or several messages.
-# A message is one, two or three lines of text to display in the dialog box.
-# A message has the following syntax:
-#
-# - An id, inside square brackets.
-# For all engine messages, (the one is this file), the id
-# starts with the character '_'.
-# The id allows the engine to refer to the message it want to display.
-# If you want to translate the dialogs, don't translate the id.
-#
-# - The values <tt>line1</tt>, <tt>line2</tt> and <tt>line3</tt>:
-# they determine the content of the message. The text should not
-# be inside quotes. A line shoud not exceed 23 characters.
-#
-#
-# - The value <tt>next</tt>: id of the next message to display
-# in the sequence. If this value is not set, the current message
-# is considered as the last one and the dialog box is closed
-# when the current message is finished.
-#
-# If <tt>next</tt> is set, then an arrow is displayed on the
-# bottom of the current message to indicate that there will
-# be a next message.
-# If <tt>next</tt> is not set, then this arrow is replaced
-# by a square to indicate that this message was the last one
-# of the sequence.
-# A message having a question (see below) is always displayed 
-# with an arrow.
-#
-# Sometimes, event if a sequence is finished, you may
-# want to show an arrow.
-# This is typically the case when you know that another
-# sequence will start immediately, but you don't know which one yet
-# (this may depend on the quest). In this case, you can
-# set the special word <tt>_unknown</tt> as the value of <tt>next</tt>
-# to indicate that the sequence will be followed by another one,
-# unknown for now.
-# This will display the arrow instead of the square, but everything
-# works exactly like the value <tt>next</tt> was not set.
-# 
-# - By convention, when some text is too long to be in a single
-# message (i.e. three lines), we use a sequence of message:
-# we put the rest of the text in one
-# or several messages whose id is the one of the first message,
-# concatenated with <tt>.2</tt> for the second one, <tt>.3</tt>
-# for the third one, etc.
-# We set the appropriate values of <tt>next</tt> to make the sequence work.
-# Translators can change the number of messages in a sequence
-# without any problem of id.
-# Only the first id of the sequence must have the same name than in the reference language.
-# If the id of the last message of the sequence ends with ".4" instead
-# of ".3" because the translated dialog didn't fit in the same number
-# of messages, it still works.
-# The translators only need to synchronize the messages whose id ends with
-# ".2", ".3", etc.
+[wise_man]
+#       |-----------------------|
+line1 = "I can feel courage in"
+line2 = "you, $v."
+line3 = "Do you think you can"
+next = wise_man.2
+skip = current
 
-# - The value <tt>skip</tt>: defines what happens when the player
-# tries to skip the dialog (by pressing the sword key).
-# There are three possible values:
-#   - <tt>none</tt> (default): the message cannot be skipped.
-#   - <tt>current</tt>: if the key is pressed, the whole current message
-#     is immediately shown (instead of being displayed letter by letter).
-#     This allows to get to the next message faster.
-#   - <tt>all</tt>: the whole sequence of messages can be skipped.
-#     The dialog box is immediataly closed and
-#     the next messages will not be displayed at all.
-#     Use this only for non-essential dialogs that can be read again later.
-# The value of <tt>skip</tt> takes effect for the current message and all next
-# messages of the sequence, until it is changed or the dialog box is closed.
-#
-# - The value <tt>icon</tt>:
-#
+[wise_man.2]
+#       |-----------------------|
+line1 = "protect the Princess?"
+line2 = "Definitely!"
+line3 = "No way"
+question = true
+next = wise_man.thanks
+next2 = wise_man.insisting
 
+[wise_man.insisting]
+#       |-----------------------|
+line1 = "$v, I beg you"
+line2 = "you are the only"
+line3 = "one able to protect"
+next = wise_man.insisting.2
 
+[wise_man.insisting.2]
+#       |-----------------------|
+line1 = "our kingdom..."
+line2 = "Sure"
+line3 = "No way"
+question = true
+next = wise_man.thanks
+next2 = wise_man.insisting
 
-
-
-
-
-
-
-
-# - La valeur icon : permet d'afficher une icône de 16*16 pixels dans le message.
-# La valeur est un numéro qui permet d'identifier l'icône dans
-# le fichier image des icônes. L'icône s'affiche à gauche du texte
-# et le texte ne doit pas dépasser 20 caractères (au lieu de 23 en
-# temps normal). Elle reste affichée dans les messages suivants,
-# jusqu'à ce que sa valeur soit changée ou que la boîte de dialogue
-# se ferme. Une valeur de -1 signifie d'enlever l'icône.
-# Les icônes sont surtout utilisées dans les messages du moteur de
-# jeu, par exemple lorsque le joueur obtient un trésor.
-#
-# - La valeur question : permet d'afficher une question avec deux
-# réponses au choix. La première ligne est la question
-# et les deux dernières lignes sont les deux réponses possibles.
-# Ces deux lignes sont alors limitées à 20
-# caractères (au lieu de 23 en temps normal) car un curseur en
-# forme de flèche permet au joueur de choisir sa réponse. Il est
-# possible d'avoir à la fois une icône et une question, dans ce cas
-# le nombre de caractères des lignes de réponse se limite à 17.
-# S'il y a une question, il est possible de spécifier une valeur
-# next2. Si la première réponse est choisie, le prochain message
-# affiché est indiqué par next. Si la deuxième réponse est choisie,
-# il est alors indiqué par next2. Comme pour la valeur next,
-# si next2 n'est pas spécifié et que le joueur choisit la réponse 2,
-# la série de messages s'arrête et la boîte de dialogue se ferme.
-#
-# Un message contenant une question ne plus pas être passé.
-# si skip égal à "all" dans un message avec question, alors tout se passe
-# comme si c'était "current" au lieu de "all".
-# Remarque : si le message contenant la question fait partie d'une
-# série de messages, et que cette série pouvait être annulée (skip = "all")
-# alors il est possible d'annuler la série malgré la présence d'un message
-# avec question par la suite. C'est possible tant que le message contenant
-# la question n'est pas commencé.
-#
-# - Enfin, il existe des séquences particulières que l'on peut
-# insérer dans le texte d'un message :
-#    - $0 : fait une pause d'une seconde dans le défilement du message.
-#    - $1 : met une vitesse de défilement lente
-#    - $2 : met une vitesse de défilement moyenne
-#    - $3 : met une vitesse de déliement rapide (par défaut)
-#    - $v : permet d'insérer la valeur d'une variable dans le texte
-#           du message (la valeur est alors spécifiée dans
-#           le programme qui a demandé l'affichage du message)
-#
-#
-# - Les commentaires suivants permettent de vérifier le nombre
-# limite de caractères dans un message :
-#
-#       |-----------------------| sans icône ni question (23)
-#       |--------------------|    avec icône ou question (20)
-#       |-----------------|       avec icône et question (17)
-#
-# Attention : dans ces commentaires, chaque tiret représente un caractère
-# (il y a bien 17, 20 ou 23 tirets) et les deux barres verticales sont exclues,
-# elles représentent les limites qu'il est interdit de toucher.
-# Si vous débordez, rien ne garantit que les caractères en trop vont s'afficher
-# correctement. Le moteur de jeu ne spécifie pas ce qui se passe si on ne respecte
-# pas cette règle : les caractères en trop peuvent par exemple être coupés ou au contraire
-# s'afficher au-dessus de la bordure de droite de la boîte de dialogue.
-####################################################################################
-
-
-# -------------------------------------
-# Description des items de l'inventaire
-# -------------------------------------
-# 
-# Les messages ci-dessous sont affichés dans l'écran d'inventaire
-# lorsque le joueur souhaite afficher la description d'un item
-# qu'il possède. Ces messages peuvent être annulés en appuyant
-# sur C.
-# L'identificateur de chacun de ces messages est de la forme _item_description_i_x
-# où i est le numéro de l'item (de 0 à 27) et x est la variante de cet
-# item possédée par le joueur.
-# Exception : les items 13, 20 et 27 ne sont pas définis car il s'agit des Flacons 2, 3 et 4,
-# et ces derniers se contentent de faire appel aux messages définis pour le Flacon 1 (item n°6).
-
-[_item_description_0_1]
-# Plume / Feather
-#       |--------------------|
-icon = 0
-line1 = "Utilise la Plume"
-line2 = "pour sauter et fran-"
-line3 = "chir des obstacles."
-skip = all
-
-[_item_description_1_1]
-# Bombes / Bombs
-#       |--------------------|
-icon = 1
-line1 = "Utilise les Bombes"
-line2 = "contre les ennemis"
-line3 = "ou pour faire"
-skip = all
-next = _item_description_1_1.1
-
-[_item_description_1_1.1]
-#       |--------------------|
-line1 = "exploser des"
-line2 = "obstacles."
-
-
+[wise_man.thanks]
+#       |-----------------------|
+line1 = "I knew I could count on"
+line2 = "your immense bravery."
 @endverbatim
-
-
 
 */
 

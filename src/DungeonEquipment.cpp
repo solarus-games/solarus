@@ -164,6 +164,7 @@ void DungeonEquipment::add_boss_key(void) {
 
 /**
  * @brief Returns whether the player has finished the specified dungeon.
+ * @param dungeon a dungeon number
  * @return true if the specified dungeon is finished
  */
 bool DungeonEquipment::is_finished(int dungeon) {

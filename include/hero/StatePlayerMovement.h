@@ -42,8 +42,16 @@ class Hero::StatePlayerMovement: public Hero::State {
 
     PlayerMovement *get_player_movement(void);
 
+    /**
+     * Gives the sprites the animation stopped corresponding to this state.
+     */
     virtual void set_animation_stopped(void) = 0;
+
+    /**
+     * Gives the sprites the animation walking corresponding to this state.
+     */
     virtual void set_animation_walking(void) = 0;
+
     void directional_key_pressed(int direction4);
     void directional_key_released(int direction4);
     bool can_control_movement(void);

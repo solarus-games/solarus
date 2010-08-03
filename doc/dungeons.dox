@@ -1,0 +1,117 @@
+@page dungeon_syntax Dungeon files
+
+A dungeon is an exploration phase where the hero usually has to solve puzzles
+and beat enemies.
+For the engine, it is basically a set of maps on one of several floors.
+The player can display a minimap of the dungeon if he has found the "Map" item.
+If he has found the "Compass" item, he can also see the location of the chest
+and the bosses in the dungeon.
+
+The <tt>maps/dungeons</tt> subdirectory contains all files required by the engine to
+show the minimap of each dungeon.
+It contains PNG images that represent the floors of the dungeons.
+Each PNG image is called mapX_Y.png, where X is the dungeon number and Y is the floor number.
+The floor number is between -16 and 15.
+0 means the first floor, 1 the second floor, etc.
+
+The file <tt>maps/dungeons/dungeons.dat</tt> gives the information needed to display this minimap.
+Thanks to this file, the engine does not need to open the map files of a dungeon to display its minimap.
+For each floor of the dungeon, it gives
+its size (a floor may be composed of several maps) and the location of all elements that should be displayed
+on the minimap when the player has the compass: the bosses and the chests.
+Here is an example of what could be the beginning of this file:
+
+@verbatim
+[dungeon_1.floor_-1]
+width = 1040
+height = 696
+
+[dungeon_1.floor_0]
+width = 1040
+height = 696
+
+[dungeon_1.floor_1]
+width = 1040
+height = 696
+
+[dungeon_2.floor_-1]
+width = 1152
+height = 768
+
+[dungeon_2.floor_0]
+width = 1152
+height = 768
+
+[dungeon_1.map_23.chest_0]
+floor = 0
+x = 392
+y = 280
+save = 54
+big = 0
+
+[dungeon_1.map_23.chest_1]
+floor = 0
+x = 528
+y = 448
+save = 55
+big = 0
+
+[dungeon_1.map_23.chest_2]
+floor = 0
+x = 288
+y = 488
+save = 5
+big = 1
+
+[dungeon_1.map_24.chest_0]
+floor = -1
+x = 808
+y = 440
+save = 56
+big = 0
+
+[dungeon_1.map_24.boss_0]
+floor = -1
+x = 648
+y = 184
+save = 63
+big = 1
+
+[dungeon_2.map_31.chest_0]
+floor = -1
+x = 200
+y = 656
+save = 72
+big = 0
+
+[dungeon_2.map_31.chest_1]
+floor = -1
+x = 552
+y = 392
+save = 85
+big = 0
+@endverbatim
+
+The first part of the file contains the size of each floor for each dungeon.
+The groups are called here [dungeon_X.floor_Y] where X is the dungeon number
+and Y is the floor number.
+
+The second part describes the location and the type of each chest and boss.
+The current version of the map editor generates automatically
+the second part when editing the maps of a dungeon, but not the first part.
+(you have to write it yourself).
+
+In the second part of the file, the groups are called [dungeon_X.map_Y.chest_Z] or
+[dungeon_X.map_Y.boss_Z] where X is the dungeon number, Y is the map id
+(Y is not the floor number this time - this allows the editor to regenerate
+this file easily when a map is modified even if the floor contains several maps)
+and Z is the chest or boss number.
+The location is given with the floor and the coordinates of the element
+relative to the floor.
+The value <tt>big</tt> (0 or 1) indicates whether the chest is a big chest 
+or a small chest, or whether the boss is the big boss of the dungeon
+or a miniboss.
+The value <tt>save</tt> indicates the index of the savegame variable that stores
+the state of the chest or the boss in your quest.
+
+

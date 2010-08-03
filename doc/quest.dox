@@ -1,0 +1,232 @@
+/**
+
+@page quest Quests
+
+We explain here how a quest is built.
+A quest is a data package that may be run by the C++ engine (the executable file).
+
+When it is installed, the project is divided in two parts:
+- Solarus (the engine), which is an executable file written in C++ under GPL and called <tt>solarus</tt>.
+- One or several quests, each quest corresponding to a zip archive called data.solarus and containing all the data.
+
+When you run the <tt>solarus</tt> binary, it needs the path of the quest to launch.
+This can be done at runtime by using the <tt>-datapath=/path/to/your/quest</tt>
+option of solarus. If the datapath is not specified, the current directory is considered by default.
+The release versions require the quest files to be in a zip archive called <tt>data.solarus</tt> and located in this datapath.
+The debug versions first look in a subdirectory of the datapath called <tt>data</tt> (if existing) and directly pick
+the data files in this subdirectory.
+Thus, when developping your quest, you should use the development version (see
+the documentation to <a href="http://www.solarus-engine.org/source-code">get the source</a>
+and <a href="http://www.solarus-engine.org/source-code/compilation-instructions">compile it</a>).
+You will then be able to edit your quest and see the changes immediately in the game without having
+to rebuild the zip archive. In fact, when you modify a map, you don't even need to restart the game.
+
+In other words, the simplest way of editing a quest is the following.
+Put the debug version of the executable file (the engine) in a directory,
+and put the <tt>data</tt> subdirectory (the quest) in the same directory.
+When running the program, the quest located in <tt>data</tt> is run.
+
+For now, only one quest is available (zsdx), and this quest is not under GPL since it uses elements from Nintendo.
+If you are interested in creating a quest, we recommand you to copy zsdx and modify it
+instead of starting from nothing.
+
+The data files represent all resources used by both the engine and the quest, such as sounds,
+music, images, sprites, dialogs, maps and scripts.
+We specify here the details for all those categories.
+
+@section root Root directory
+
+A few files are directly placed inside the <tt>data</tt> directory.
+
+@subsection info.dat General quest information file
+
+The <tt>info.dat</tt> file is an ini-like file that contains some general data regarding the quest.
+This includes a group named <tt>info</tt> which contains (for now) the following four values:
+- <tt>title_bar</tt>: the text to display in the title bar of the game window.
+- <tt>write_dir</tt>: name of the directory where the data of this quest will be saved
+(this will be a subdirectory of <tt>$HOME/.solarus</tt>). This is usually a short name for your quest.
+This allows several quests to be saved in different directories.
+- <tt>outside_world_width</tt>: with of the whole outside world in pixels (used to manage the minimap)
+- <tt>outside_world_height</tt>: with of the whole outside world in pixels (used to manage the minimap)
+
+Example:
+
+@verbatim
+[info]
+title_bar = Zelda: Mystery of Solarus DX
+write_dir = zsdx
+outside_world_width = 2080
+outside_world_height = 3584
+@endverbatim
+
+<h3>Project database</h3>
+
+The <tt>project_db.solarus</tt> file is NOT used by the engine,
+but only by the map editor. The map editor is still in development and
+there is no stable release.
+This file contains a list of all resources (maps, musics, sprites, etc.) of the quest.
+Each resource is usually represented by a data file.
+The map editor needs it only to provide graphical components that let the user choose a resource
+in a list of human readable names.
+
+For instance, when the user creates a teletransporter on the map, a graphical list
+lets him choose the destination map of the teletransporter.
+This list contains the human name of each map.
+The engine does not need this, it only needs an internal id that identifies the map.
+
+We give here the syntax of <tt>project_db.solarus</tt>.
+This is a text file where each line represents a single resource.
+Each line has the following syntax:
+
+@verbatim
+resource_type	id	human readable name
+@endverbatim
+
+<tt>resource_type</tt> is an integer identifying the type of resource (a map, a music, a sprite, etc.).
+<tt>id</tt> is a value that identifies the resource. The id allows to find the resource file.
+Depending on the type of resource, this may be an integer or a string (without spaces).
+<tt>human readable name</tt> is a name that describes the resource. The map editor will display this name to the user
+but will use the id internally.
+
+The current types of resources are:
+- 0: a map (the id is an integer),
+- 1: a tileset (the id is an integer),
+- 2: a music (the id is the music file name with its extension),
+- 3: a sprite (the id is the sprite file name without extension),
+- 4: a sound (the id is the music file name without its extension),
+
+<h3>Sounds</h3>
+
+The <tt>sounds</tt> directory contains all small sound effects used by both the engine and the quest.
+A sound file must have the extension <tt>.ogg</tt> (Ogg Vorbis).
+Note that in previous versions of the engine such as the demo version released on December 18th, 2009,
+the sounds were in WAV format.
+The files are lighter with the Ogg compression.
+
+<h3>Musics</h3>
+
+The <tt>musics</tt> directory contains all musics used by both the engine and the quest.
+For now, the only format recognized is SPC, i.e. a Super NES original music file.
+Future release will support more music formats.
+
+<h3>Fonts</h3>
+
+The <tt>text</tt> directory contains the font files used by the engine.
+The formats recognized are the ones supported by the SDL_ttf library, including .ttf or .fon.
+It also contains a <tt>fonts.dat</tt> file with the syntax of an ini file.
+An example is self-speaking:
+
+@verbatim
+# This file defines the fonts available to the game engine.
+# The engine relies on 3 fonts named 'dialog', 'dialog_big' and 'fixed'.
+# The main purpose of this file is to make the engine independant from the font file names.
+
+[dialog]
+# the font used in dialog boxes
+file = text/la.ttf
+size = 11
+default = true
+
+[dialog_big]
+# same as 'dialog' but bigger
+file = text/la.ttf
+size = 18
+
+[fixed]
+# fixed-width font used in the menus
+file = text/fixed8.fon
+size = 11
+@endverbatim
+
+<h3>Languages</h3>
+
+When running the game for the first time, a language selection menu is displayed
+before the title screen. The language selected is then saved
+(independently of the savegames) and can be changed later from the options menu.
+The <tt>languages</tt> directory contains all language-specific data files
+(strings, dialogs and sprites).
+
+The <tt>languages.dat</tt> ini-like file gives the list of the supported language
+and indicates the default one.
+We give here an example of this file:
+
+@verbatim
+[fr]
+name = Français
+
+[en]
+name = English
+default = true
+
+[de]
+name = Deutsch
+
+[nl]
+name = Nederlands
+@endverbatim
+
+The language code (in square brackets) represents the name of the directory
+containing the language-specific files of this language.
+The value <tt>name</tt> is a human-readable name for the language.
+This name is displayed to the user in the language selection screen and in the options menu.
+
+The directory <tt>languages</tt> is divided into several directories (one for each language).
+Then, there are two subdirectories:
+- <tt>text</tt>: contains all strings and game dialogs localized in this language.
+See the @ref dialog_syntax page to know the syntax of these files.
+- <tt>images</tt>: contains the images showing some text that needs to be translated.
+
+<h3>Sprites</h3>
+
+The <tt>sprites</tt> directory contains all images (animated or not) used by both the game and the engine.
+It also contains the sprite description files.
+The syntax of these files is specified in the @ref sprite_syntax page.
+
+<h3>Maps</h3>
+
+The <tt>maps</tt> directory contains the full description and the script of each map.
+It also includes a subdirectory called <tt>dungeons</tt> that gives specific information about the dungeons.
+
+Each map is specified with two files. Let us call XXXX the id of the map (which is an integer number).
+The id is represented with four digits in the file names.
+- <tt>mapXXXX.dat</tt>: full description of the map content (the walls, the enemies, the NPCs, the chests…).
+See the @ref map_syntax page for the detailed specification of the map file syntax.
+- <tt>mapXXXX.lua</tt>: script of the map in Lua language.
+The script triggers dynamic events in this map, such as opening a door, making enemies appear, etc.
+See the @ref lua_api_specification for scripting your maps.
+- <tt>mapXXXX.luac</tt>: compiled version of the Lua script.
+
+In release versions, only
+the compiled script (<tt>.luac</tt>) is used. 
+In debug versions, the engine first tries to open the source file (<tt>.lua</tt>) if it exists.
+Thus, you don't need to compile your scripts to test them when you make a change.
+The Lua source files of the zsdx quest are available on the
+<a href="http://www.solarus-engine.org/source-code">subversion</a> repository. 
+
+The <tt>maps/dungeons</tt> subdirectory contains important information for each dungeon.
+See the @ref dungeon_syntax page for the specification of those files.
+
+<h3>Tilesets</h3>
+
+The maps are composed of small bricks called "tiles".
+The tiles are static: they cannot be moved or removed dynamically during the game.
+They are opposed to all dynamic entities such as enemies, doors, bushes, switches, etc.
+Each tile is a graphical element whose width and height are multiple of 8 pixels.
+Tiles can overlap each other and have different sizes.
+A tileset is a set of tiles that a map can use, you can call it the skin of the map.
+For example, there may exist a tileset for the outside world, another one for the houses,
+another one for the dungeons, etc.
+The <tt>tilesets</tt> directory contains the tilesets and their images.
+For each tileset, if we denote by XXXX its id (an integer number on four digits, like the maps),
+we have three files:
+- tilesetXXXX_tiles.png: the PNG image containing all tile images.
+- tilesetXXXX.dat: the description file for tilesetXXXX_tiles.png. Each line describes a tile
+with its size and its properties. See the @ref tileset_syntax page for the detailed specification.
+- tilesetXXXX_entities.png: some dynamic entities (i.e. other that tiles)
+such as doors and blocks have a skin that actually depends on
+the tileset. A door inside a dungeon has different graphics and colors from a door inside a cave.
+Such dynamic entities are skin-dependent and we need to store their graphics in this file.
+Their is no description file (this file is organized the same way for each tileset).
+
+*/
+

@@ -1,10 +1,10 @@
 # Ce fichier comporte l'ensemble des messages affichés
 # par le moteur de jeu en version française.
 # Les messages affichés par les maps sont quant à eux
-# définis dans le fichier text/game_dialogs.zsd.
+# définis dans le fichier text/game_dialogs.dat.
 
 ####################################################################################
-#             Syntaxe des fichiers text/engine_dialogs.zsd et text/game_dialogs.zsd
+#             Syntaxe des fichiers text/engine_dialogs.dat et text/game_dialogs.dat
 #
 # La syntaxe est similaire à celle d'un fichier ini de Windows.
 # Les lignes commençant par le caractère '#' sont des commentaires

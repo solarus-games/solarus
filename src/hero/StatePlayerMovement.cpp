@@ -81,6 +81,8 @@ void Hero::StatePlayerMovement::stop(State *next_state) {
  * @brief Changes the map.
  *
  * This function is called when the hero is about to go to another map.
+ *
+ * @param map the new map
  */
 void Hero::StatePlayerMovement::set_map(Map *map) {
 

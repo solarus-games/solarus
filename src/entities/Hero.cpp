@@ -446,7 +446,7 @@ int Hero::get_animation_direction(void) {
  *
  * It is different from the movement direction.
  *
- * @param direction the direction to set (0 to 3)
+ * @param direction4 the direction to set (0 to 3)
  */
 void Hero::set_animation_direction(int direction4) {
   sprites->set_animation_direction(direction4);
@@ -973,7 +973,7 @@ int Hero::get_real_movement_direction8(void) {
  * If he is making a diagonal move, this function considers that he is moving
  * towards both directions.
  *
- * @param direction one of the four main directions (0 to 3)
+ * @param direction4 one of the four main directions (0 to 3)
  * @return true if the hero is moving in that direction, even if he is actually doing a diagonal move
  */
 bool Hero::is_moving_towards(int direction4) {

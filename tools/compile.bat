@@ -1,1 +1,2 @@
-javac -classpath .;.\ini4j.jar zsdx\*.java zsdx\entities\*.java zsdx\gui\*.java zsdx\gui\edit_entities\*.java zsdx\map_editor_actions\*.java
+javac -classpath .;.\ini4j.jar org\solarus\editor\*.java org\solarus\editor\entities\*.java org\solarus\editor\gui\*.java org\solarus\editor\gui\edit_entities\*.java org\solarus\editor\map_editor_actions\*.java
+

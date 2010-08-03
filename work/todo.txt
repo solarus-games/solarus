@@ -35,6 +35,7 @@ Feature requests :
 - Ajouter un "map marker" pour indiquer où il faut se rendre ensuite
 - Voir si la police supporte des caractères unicode comme U+2192 (→) et U+2190 (←)
 - faire un type d'ennemi "CustomEnemy" qui est en fait scripté
+- renommer Tileset en Skin ?
 
 
 Bugs :
@@ -67,9 +68,13 @@ Bugs :
   similaire à WALKING, CARRYING, SWORD_LOADING et SWIMMING
 - bottes de pégase contre les limites d'une map en scrolling (seulement à droite ?) seg fault ?
 - réformer les états du héros en faisant des sous-classes ? cela dit il ne reste plus que running et swimming qui posent problème
+- Morwenn : Quand on reste l'épée brandie vers le bas, et qu'on tue un monstre, on peut continuer à avancer.
+  Cependant, on se blesse même si on le touche alors qu'il en est à son animation de destruction.
+- achat d'un croissant : dialogue avant et après l'achat redondant
+- Dans les caves jumelles, si on retourne dans celle de gauche, on peut appuyer à nouveau sur l'interrupteur en haut de la salle.
 
 
-Dernière version compilable (avant travaux sur Hero) : 1355
+Dernière version fonctionnelle (avant travaux sur Hero) : 1355
 
 
 A venir :
@@ -212,3 +217,4 @@ Feature requests de l'éditeur :
 	- Affichage : dessiner les tiles une seule fois sur une surface intermédiaire au lieu de les redessiner un par un à chaque affichage (c'est possible dans l'éditeur mais pas facilement dans le jeu à cause des tiles animés)
 	- Permettre de modifier les textes "Direction", "Subtype", etc... depuis les sous-classes de EditEntityComponent afin de rendre certains plus explicites (exemple : mettre "Pushing direction" pour les blocs)
 	- Interface pour éditer les étages des donjons
+	- dungeons.dat : l'emplacement des coffres et des boss est censé être relatif à l'étage, pas à la map

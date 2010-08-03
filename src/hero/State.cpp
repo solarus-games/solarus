@@ -29,6 +29,8 @@
  * @brief Creates a state.
  *
  * This constructor can be called only from the subclasses.
+ *
+ * @param hero the hero to control with this state
  */
 Hero::State::State(Hero *hero):
   game(hero->get_game()), map(hero->get_map()), hero(hero), when_suspended(0) {
@@ -150,6 +152,8 @@ void Hero::State::item_key_released(int slot) {
  * @brief Changes the map.
  *
  * This function is called when the hero is about to go to another map.
+ *
+ * @param map the new map
  */
 void Hero::State::set_map(Map *map) {
   this->map = map;

@@ -59,7 +59,7 @@ Certaines images du moteur de jeu contiennent du texte. En voici la liste exhaus
 
 2) Chaînes de caractères
 
-Le moteur de jeu affiche du texte dans les différents menus. Tous ces textes sont chargés depuis le fichier text/strings.zsd. Pour les traduire, il faut modifier ce fichier à l'aide d'un éditeur de texte, en respectant les règles expliquées à l'intérieur. Le fichier doit être encodé en utf-8.
+Le moteur de jeu affiche du texte dans les différents menus. Tous ces textes sont chargés depuis le fichier text/strings.dat. Pour les traduire, il faut modifier ce fichier à l'aide d'un éditeur de texte, en respectant les règles expliquées à l'intérieur. Le fichier doit être encodé en utf-8.
 
 
 3) Dialogues
@@ -68,7 +68,7 @@ Les dialogues sont la plus grosse partie à traduire. Ce sont tous les messages 
   - les dialogues affichés par le moteur de jeu. Ce sont tous les dialogues prédéfinis qui sont affichés automatiquement selon ce que fait le joueur. Exemples : lorsqu'on ouvre un coffre, lorsqu'on obtient une fée, lorsqu'on consulte la description d'un objet de l'inventaire, lorsqu'on achète un objet dans un magasin...
   - les dialogues affichés par l'aventure. Ce sont tous les dialogues du scénario et ils sont affichés par les scripts des différentes maps selon les événements de l'aventure. Exemples : lorsqu'on parle à un personnage ou lorsqu'on interagit avec une énigme ou un mini-jeu.
 
-Les dialogues du moteur sont définis dans le fichier text/engine_dialogs.zsd. Les dialogues du jeu sont définis dans le fichier text/game_dialogs.zsd. Ce sont tous les deux des fichiers ini encodés en utf-8 et ils obéissent à des règles très strictes pour que les dialogues puissent être affichés correctement et s'enchaîner comme il faut. Ces règles sont expliquées dans le fichier des dialogues du moteur (text/engine_dialogs.zsd). En particulier, il ne faut pas dépasser la longueur maximale des lignes, sous peine de voir le texte déborder de la boîte de dialogue pendant le jeu. Il faut aussi veiller à conserver les enchaînements prévus. Venez me poser des questions. Le plus important est de retester le jeu méticuleusement après avoir effectué la traduction, en vérifiant bien l'orthographe et la cohérence des dialogues.
+Les dialogues du moteur sont définis dans le fichier text/engine_dialogs.dat. Les dialogues du jeu sont définis dans le fichier text/game_dialogs.dat. Ce sont tous les deux des fichiers ini encodés en utf-8 et ils obéissent à des règles très strictes pour que les dialogues puissent être affichés correctement et s'enchaîner comme il faut. Ces règles sont expliquées dans le fichier des dialogues du moteur (text/engine_dialogs.dat). En particulier, il ne faut pas dépasser la longueur maximale des lignes, sous peine de voir le texte déborder de la boîte de dialogue pendant le jeu. Il faut aussi veiller à conserver les enchaînements prévus. Venez me poser des questions. Le plus important est de retester le jeu méticuleusement après avoir effectué la traduction, en vérifiant bien l'orthographe et la cohérence des dialogues.
 
 
 4) Mode d'emploi

@@ -1,1 +1,1 @@
-java -classpath .;.\ini4j.jar zsdx.MapEditor
+java -classpath .;.\ini4j.jar org.solarus.MapEditor

@@ -36,9 +36,10 @@ We specify here the details for all those categories.
 
 @section root Root directory
 
-A few files are directly placed inside the <tt>data</tt> directory.
+Two files are directly placed inside the <tt>data</tt> directory: <tt>info.dat</tt> and
+<tt>project_db.solarus</tt>.
 
-@subsection info.dat General quest information file
+@subsection info info.dat
 
 The <tt>info.dat</tt> file is an ini-like file that contains some general data regarding the quest.
 This includes a group named <tt>info</tt> which contains (for now) the following four values:
@@ -59,7 +60,7 @@ outside_world_width = 2080
 outside_world_height = 3584
 @endverbatim
 
-<h3>Project database</h3>
+@subsection projet_db Project database
 
 The <tt>project_db.solarus</tt> file is NOT used by the engine,
 but only by the map editor. The map editor is still in development and
@@ -95,7 +96,7 @@ The current types of resources are:
 - 3: a sprite (the id is the sprite file name without extension),
 - 4: a sound (the id is the music file name without its extension),
 
-<h3>Sounds</h3>
+@section sounds Sounds
 
 The <tt>sounds</tt> directory contains all small sound effects used by both the engine and the quest.
 A sound file must have the extension <tt>.ogg</tt> (Ogg Vorbis).
@@ -103,13 +104,13 @@ Note that in previous versions of the engine such as the demo version released o
 the sounds were in WAV format.
 The files are lighter with the Ogg compression.
 
-<h3>Musics</h3>
+@section musics Musics
 
 The <tt>musics</tt> directory contains all musics used by both the engine and the quest.
 For now, the only format recognized is SPC, i.e. a Super NES original music file.
 Future release will support more music formats.
 
-<h3>Fonts</h3>
+@section fonts Fonts
 
 The <tt>text</tt> directory contains the font files used by the engine.
 The formats recognized are the ones supported by the SDL_ttf library, including .ttf or .fon.
@@ -138,7 +139,7 @@ file = text/fixed8.fon
 size = 11
 @endverbatim
 
-<h3>Languages</h3>
+@section languages Language-specific files
 
 When running the game for the first time, a language selection menu is displayed
 before the title screen. The language selected is then saved
@@ -176,13 +177,13 @@ Then, there are two subdirectories:
 See the @ref dialog_syntax page to know the syntax of these files.
 - <tt>images</tt>: contains the images showing some text that needs to be translated.
 
-<h3>Sprites</h3>
+@section sprites Sprites
 
 The <tt>sprites</tt> directory contains all images (animated or not) used by both the game and the engine.
 It also contains the sprite description files.
 The syntax of these files is specified in the @ref sprite_syntax page.
 
-<h3>Maps</h3>
+@section maps Maps
 
 The <tt>maps</tt> directory contains the full description and the script of each map.
 It also includes a subdirectory called <tt>dungeons</tt> that gives specific information about the dungeons.
@@ -206,7 +207,7 @@ The Lua source files of the zsdx quest are available on the
 The <tt>maps/dungeons</tt> subdirectory contains important information for each dungeon.
 See the @ref dungeon_syntax page for the specification of those files.
 
-<h3>Tilesets</h3>
+@section tilesets Tilesets
 
 The maps are composed of small bricks called "tiles".
 The tiles are static: they cannot be moved or removed dynamically during the game.

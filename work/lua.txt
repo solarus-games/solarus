@@ -25,8 +25,8 @@ Ce sont des fonctions communes à tous les types de scripts.
 - event_set_suspended(suspended)			appelé lorsque le jeu est suspendu ou repris
 - event_dialog_started(message_id)			appelé lorsqu'un dialogue commence (i.e. au début de l'affichage du premier message)
 - event_dialog_finished(first_message_id, answer)	appelé lorsqu'un dialogue se termine (i.e. après l'affichage du dernier message)
-- event_camera_reached_target()				appelé lorsque la caméra (envoyée par move_camera()) a atteint sa cible
-- event_camera_back()					appelé lorsque la caméra (renvoyée par restore_camera()) est revenue sur le héros
+- event_camera_reached_target()				appelé lorsque la caméra (envoyée par camera_move()) a atteint sa cible
+- event_camera_back()					appelé lorsque la caméra (renvoyée par camera_restore()) est revenue sur le héros
 - event_treasure_obtaining(content, savegame_variable)	appelé lorsque le joueur obtient un trésor, que cela vienne d'un coffre ou non
 - event_treasure_obtained(content, savegame_variable)	appelé lorsque le joueur a fini d'obtenir un trésor
 
@@ -38,7 +38,7 @@ Ce sont des fonctions communes à tous les types de scripts.
 - hero_freeze()						empêche le joueur de bouger jusqu'à un appel à hero_unfreeze()
 - hero_unfreeze()					restaure le contrôle au joueur
 - hero_set_pause_enabled(bool enabled)			autorise ou interdit de mettre le jeu en pause (et donc notamment de sauvegarder)
-- dialog_start(message_id)				démarre un dialogue en affichant un premier message
+- dialog_start(first_message_id)				démarre un dialogue en affichant un premier message
 - dialog_set_variable(first_message_id, value)		spécifie la valeur d'une variable dans un dialogue
 - dialog_set_style(style)                               spécifie le style de la boîte de dialogue pour les futurs messages
 - hud_set_enabled(enabled)				active ou désactive l'affichage du HUD

@@ -1075,14 +1075,14 @@ void Script::event_dialog_finished(const MessageId &first_message_id, int answer
 }
 
 /**
- * @brief Notifies the script that the camera moved by a call to move_camera() has reached its target.
+ * @brief Notifies the script that the camera moved by a call to camera_move() has reached its target.
  */
 void Script::event_camera_reached_target(void) {
   call_script_function("event_camera_reached_target");
 }
 
 /**
- * @brief Notifies the script that the camera moved by a call to restore_camera() has reached the hero.
+ * @brief Notifies the script that the camera moved by a call to camera_restore() has reached the hero.
  */
 void Script::event_camera_back(void) {
   call_script_function("event_camera_back");

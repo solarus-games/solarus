@@ -112,7 +112,7 @@ Le fichier enemies/green_soldier.lua contient la description et le comportement 
 La classe EnemyScript fait le lien entre les fonctions des scripts d'ennemis et le moteur de jeu
 (en particulier la classe Enemy).
 
-Il peut y avoir 5 gardes verts sur la même map.
+Il peut y avoir plusieurs gardes verts sur la même map.
 
 Choix possibles :
 

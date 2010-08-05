@@ -6,7 +6,7 @@ This is the documentation of the C++ code of Solarus.
 Solarus is a free, open-source engine for Zelda-like 2D games.
 
 The engine is an executable binary that can run a quest.
-A @ref quest is a data package containing the graphics, the sounds, the maps
+A @ref quest "quest" is a data package containing the graphics, the sounds, the maps
 and the dialogs.
 
 The engine classes are organized in several directories:

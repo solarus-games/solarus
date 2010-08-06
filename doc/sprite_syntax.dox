@@ -1,0 +1,88 @@
+/**
+
+@page sprite_syntax Sprites syntax specification
+
+A sprite is an animated image that can be displayed on the screen or attached to an entity of the map.
+More precisely, a sprite displays images from an animation set with a current animation, a current direction and a current frame.
+Several sprites displayed at the same time can share the same animation set and have different states (i.e. different animations, directions and frames).
+
+An animation set has at least two data files:
+- one or more PNG images that contains the images of the animation set,
+- a description file like <tt>sprites/XXX.dat</tt>, where <tt>XXX</tt> is a string that identifies the animation set.
+The description file contains the definition of each animation and direction of the animation set.
+
+The sprite animation sets are represented as in Multimedia Fusion:
+- A sprite animation set is composed of one or several animations. For instance, the animation set of a basic enemy may have four animations: stopped, walking, hurt and shaking.
+- Each animation is composed of one or several directions, numbered from 0. Usual enemies have four directions.
+- Each direction is a sequence of frames, where a frame is a static image. The frames are numbered from 0. Once the animation is finished, it may loop by coming back to a specific frame (which may be other that the first one).
+
+The description file (usually <tt>sprites/XXX.dat</tt>) contains those information. We describe here its syntax.
+It is a textual file that defines each animation.
+For each animation, we first have a line that give general information about the animation:
+
+@verbatim
+animation_name image_file nb_directions frame_delay loop_on_frame
+@endverbatim
+
+<tt>animation_name</tt> is a name that identifies this animation.
+
+<tt>image_file</tt> is the name of the PNG image that contains all frames of all directions of this animation.
+Its path is relative to the directory <tt>sprites</tt>.
+<tt>image_file</tt> may also be the keyword <tt>tileset</tt>, this means that the image file
+is the one of the current tileset. This can be used to make sprites that depend on the skin of the current map
+(e.g. animated doors). The PNG file is then <tt>tilesets/tilesetYYY_entities.png</tt> where <tt>YYY</tt>
+is the id of the current tileset.
+
+<tt>nb_direction</tt> is the number of directions of this animation.
+
+<tt>frame_delay</tt> is the delay in milliseconds between two frames of the animation,
+or 0 if there is only one frame and you want it to stay displayed.
+
+<tt>loop_on_frame</tt> is the number of a frame where the animation will loop, or -1 to make the animation stop
+after the last frame. If the value is -1, the sprite will stop being displayed after the last frame, unless
+<tt>frame_delay</tt> is 0 (meaning that the only frame keeps being displayed).
+
+After this first line, there is a line for each direction of the animation.
+For each directio, the line determines the location of the individual frames of this direction.
+In the PNG image, all frames of a direction are rectangles of the same size, placed in adjacent locations
+from left to right, possibly on several rows.
+Thus, instead of defining the frames one by one, we just specify the location of the first rectangle,
+the number of frames and the number of columns.
+A direction description has the following syntax:
+
+@verbatim
+x y frame_width frame_height origin_x origin_y nb_frames nb_columns
+@endverbatim
+
+<tt>x</tt> and <tt>y</tt> are the coordinates of the top-left corner of area containg the frames.
+<tt>frame_width</tt> and <tt>frame_height</tt> are the size of each frame.
+Thus, the first frame is the rectangle of coordinates (<tt>x</tt>,<tt>y</tt>) and size (<tt>frame_width</tt>,<tt>frame_height</tt>).
+<tt>origin_x</tt> and <tt>origin_y</tt> are the coordinates of the origin point of the sprite relative to the top-left rectangle of a frame.
+<tt>nb_frames</tt> is the number of frames of this direction. Most of the time, this number is the same for all directions.
+<tt>nb_columns</tt> defines the number of columns of the grid containing the frames of this direction.
+The number of rows is deduced from <tt>nb_frames</tt> and <tt>nb_columns</tt>.
+The last row of the grid may be incomplete.
+
+Here is an animation set description file example:
+
+@verbatim
+stopped hero/stopped.tunic.png 4 0 -1
+0	0	24	24	12	21	1	1
+24	0	24	24	12	21	1	1
+72	0	24	24	12	21	1	1
+96	0	24	24	12	21	1	1
+
+walking hero/walking.tunic.png 4 100 0
+0	0	24	32	12	29	8	8
+0	32	24	32	12	29	8	8
+0	96	24	32	12	29	8	8
+0	128	24	32	12	29	8	8
+
+sword hero/sword.tunic0.png 4 30 -1
+0	0	32	32	16	29	12	12
+0	32	32	32	16	29	12	12
+0	64	32	32	16	29	12	12
+0	96	32	32	16	29	12	12
+@endverbatim
+
+*/

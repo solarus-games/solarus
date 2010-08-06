@@ -259,7 +259,7 @@ removes an NPC from the map
 sets the state of a chest (without giving or reseting its content)
 
 - <tt>chest_set_hidden(chest_name, bool hidden)</tt>:
-hidens or unhides a chest
+hides or unhides a chest
 
 - <tt>chest_is_hidden(chest_name)</tt>:
 returns whether a chest is hidden
@@ -267,41 +267,107 @@ returns whether a chest is hidden
 - <tt>tile_set_enabled(tile_name, enable)</tt>:
 enables or disables a dynamic tile
 
-- <tt>tiles_set_enabled(tiles_prefix, enable)</tt>:			active ou désactive un ensemble de tiles dynamiques
-- <tt>tile_is_enabled(tile_name)</tt>:					indique si un tile dynamique est activé
-- <tt>reset_block(block_name)</tt>:					replace un bloc comme il était au début de la map
-- <tt>reset_blocks()</tt>:						réinitialise tous les blocs de la map
-- <tt>interactive_entity_get_animation(entity)</tt>:				 	retourne l'animation d'une entité interactive
-- <tt>interactive_entity_get_animation_delay(entity)</tt>:			 	retourne la vitesse de l'animation d'une entité interactive
-- <tt>interactive_entity_get_animation_frame(entity)</tt>:			 	retourne l'image de l'animation d'une entité interactive
-- <tt>interactive_entity_get_direction(entity)</tt>:				 	retourne la direction du sprite d'une entité interactive
-- <tt>interactive_entity_is_animation_paused(entity)</tt>:			 	indique si l'animation d'une entité interactive est en pause
-- <tt>interactive_entity_set_animation(entity, animation_name)</tt>:		 	change l'animation d'une entité interactive
-- <tt>interactive_entity_set_animation_delay(entity, delay)</tt>:			 	change la vitesse de l'animation d'une entité interactive
-- <tt>interactive_entity_set_animation_frame(entity, frame)</tt>:			 	change l'image de l'animation d'une entité interactive
-- <tt>interactive_entity_set_animation_direction(entity, direction)</tt>:			change la direction du sprite d'une entité interactive
-- <tt>interactive_entity_set_animation_paused(entity, paused)</tt>:			met en pause ou restore l'animation d'une entité interactive
-- <tt>interactive_entity_set_animation_ignore_suspend(npc, ignore)</tt>:			indique si l'animation d'un sprite doit continuer même lorsque le jeu est suspendu
-- <tt>interactive_entity_fade(entity, direction)</tt>:					affiche un fondu d'entrée (0) ou de sortie (1) sur une entité interactive
-- <tt>interactive_entity_remove(entity)</tt>:						supprime une entité interactive
-- <tt>shop_item_remove(shop_item_name)</tt>:				supprime un article de magasin sur la map
-- <tt>switch_is_enabled(switch_name)</tt>:				vérifie si un interrupteur est activé
-- <tt>switch_set_enabled(switch_name, enabled)</tt>:	              active ou désactive un interrupteur
-- <tt>switch_set_locked(switch_name, locked)</tt>:			verrouille un interrupteur dans son état actuel
-- <tt>enemy_is_dead(enemy_name)</tt>:					vérifie si un ennemi est mort
-- <tt>enemies_are_dead(enemies_name_prefix)</tt>:				vérifie si un ensemble d'ennemis sont morts
-- <tt>enemy_set_enabled(enemy_name)</tt>:					active ou désactive un ennemi
-- <tt>boss_start_battle(enemy_name)</tt>:					démarre le combat contre un boss s'il est en vie
-- <tt>boss_end_battle()</tt>:						indique que le combat contre un boss est terminé (appelé en général
-							après avoir obtenu le Réceptacle de Coeur)
-- <tt>miniboss_start_battle(enemy_name)</tt>:				démarre le combat contre un mini-boss s'il est en vie
-- <tt>miniboss_end_battle()</tt>:						indique que le combat contre un mini-boss est terminé
-- <tt>dungeon_is_finished(dungeon)</tt>:					vérifie si le donjon spécifié est terminé
-- <tt>dungeon_set_finished()</tt>:					indique au moteur que le donjon actuel est maintenant terminé
-- <tt>sensor_remove(sensor_name)</tt>:					supprime un capteur
-- <tt>door_open(door_name)</tt>:						ouvre une ou plusieurs portes, avec animation et son
-- <tt>door_close(door_name)</tt>					ferme une ou plusieurs portes, avec animation et son
-- <tt>door_set_open(door_name, open)</tt>			change l'état d'une porte
+- <tt>tiles_set_enabled(tiles_prefix, enable)</tt>:
+active ou désactive un ensemble de tiles dynamiques
+
+- <tt>tile_is_enabled(tile_name)</tt>:
+returns where a dynamic tile is enabled
+
+- <tt>reset_block(block_name)</tt>:
+places a block where it was when the map started
+
+- <tt>reset_blocks()</tt>:
+resets all blocks of the map
+
+- <tt>interactive_entity_get_animation(entity)</tt>:
+returns the current sprite animation of an interactive entity
+
+- <tt>interactive_entity_get_animation_delay(entity)</tt>:
+returns the delay (in milliseconds) between two frames for the sprite of an interactive entity
+
+- <tt>interactive_entity_get_animation_frame(entity)</tt>:
+returns the current animation frame of an interactive entity
+
+- <tt>interactive_entity_get_direction(entity)</tt>:
+returns the sprite direction of an interactive entity
+
+- <tt>interactive_entity_is_animation_paused(entity)</tt>:
+returns whether the sprite animation of an interactive entity is paused
+
+- <tt>interactive_entity_set_animation(entity, animation_name)</tt>:
+sets the sprite animation of an interactive entity
+
+- <tt>interactive_entity_set_animation_delay(entity, delay)</tt>:
+sets the delay (in milliseconds) between two frames for the sprite of an interactive entity
+
+- <tt>interactive_entity_set_animation_frame(entity, frame)</tt>:
+sets the animation frame of an interactive entity
+
+- <tt>interactive_entity_set_direction(entity, direction)</tt>:
+sets the sprite direction of an interactive entity
+
+- <tt>interactive_entity_set_animation_paused(entity, paused)</tt>:
+pauses or resumes the sprite animation of an interactive entity
+
+- <tt>interactive_entity_set_animation_ignore_suspend(npc, ignore)</tt>:
+sets whether the sprite of an NPC should keep playing its animation when the game is suspended
+
+- <tt>interactive_entity_fade(entity, direction)</tt>:
+displays a fade-in (0) or a fade-out (1) effect on an interactive entity
+
+- <tt>interactive_entity_remove(entity)</tt>:
+removes an interactive entity from the map
+
+- <tt>shop_item_remove(shop_item_name)</tt>:
+removes a shop item from the map
+
+- <tt>switch_is_enabled(switch_name)</tt>:
+returns whether a switch is enabled
+
+- <tt>switch_set_enabled(switch_name, enabled)</tt>:
+enables or disables a switch
+
+- <tt>switch_set_locked(switch_name, locked)</tt>:
+locks a switch in its current state or unlocks it
+
+- <tt>enemy_is_dead(enemy_name)</tt>:
+returns whether an enemy is dead
+
+- <tt>enemies_are_dead(enemies_name_prefix)</tt>:
+returns whether all enemies having a common prefix are dead
+
+- <tt>enemy_set_enabled(enemy_name)</tt>:
+enables or disables an enemy
+
+- <tt>boss_start_battle(enemy_name)</tt>:
+starts fighting a boss if it is alive
+
+- <tt>boss_end_battle()</tt>:
+sets the fight with a boss as finished (usually called after picking the heart container)
+
+- <tt>miniboss_start_battle(enemy_name)</tt>:
+starts fighting a miniboss if it is alive
+
+- <tt>miniboss_end_battle()</tt>:
+sets the fight with a miniboss as finished
+
+- <tt>dungeon_is_finished(dungeon)</tt>:
+returns whether the specified dungeon is finished
+
+- <tt>dungeon_set_finished()</tt>:
+sets the current dungeon as finished
+
+- <tt>sensor_remove(sensor_name)</tt>:
+removes a sensor from the map
+
+- <tt>door_open(door_prefix)</tt>:
+opens one or several doors, playing their animation and sound
+
+- <tt>door_close(door_prefix)</tt>:
+closes one or several doors, playing their animation and sound
+
+- <tt>door_set_open(door_name, open)</tt>:
+changes immediately the state of a door (without playing animation and sound)
 
 */
 

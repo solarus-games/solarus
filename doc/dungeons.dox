@@ -1,3 +1,4 @@
+/**
 @page dungeon_syntax Dungeon files
 
 A dungeon is an exploration phase where the hero usually has to solve puzzles
@@ -114,4 +115,5 @@ or a miniboss.
 The value <tt>save</tt> indicates the index of the savegame variable that stores
 the state of the chest or the boss in your quest.
 
+*/
 

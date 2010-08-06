@@ -136,7 +136,7 @@ Ce sont des fonctions communes à tous les types de scripts.
 - interactive_entity_set_animation(entity, animation_name)	 	change l'animation d'une entité interactive
 - interactive_entity_set_animation_delay(entity, delay)		 	change la vitesse de l'animation d'une entité interactive
 - interactive_entity_set_animation_frame(entity, frame)		 	change l'image de l'animation d'une entité interactive
-- interactive_entity_set_animation_direction(entity, direction)		change la direction du sprite d'une entité interactive
+- interactive_entity_set_direction(entity, direction)		change la direction du sprite d'une entité interactive
 - interactive_entity_set_animation_paused(entity, paused)		met en pause ou restore l'animation d'une entité interactive
 - interactive_entity_set_animation_ignore_suspend(npc, ignore)		indique si l'animation d'un sprite doit continuer même lorsque le jeu est suspendu
 - interactive_entity_fade(entity, direction)				affiche un fondu d'entrée (0) ou de sortie (1) sur une entité interactive
@@ -156,7 +156,7 @@ Ce sont des fonctions communes à tous les types de scripts.
 - dungeon_is_finished(dungeon)				vérifie si le donjon spécifié est terminé
 - dungeon_set_finished()				indique au moteur que le donjon actuel est maintenant terminé
 - sensor_remove(sensor_name)				supprime un capteur
-- door_open(door_name)					ouvre une ou plusieurs portes, avec animation et son
-- door_close(door_name)					ferme une ou plusieurs portes, avec animation et son
-- door_set_open(door_name, open)			change l'état d'une porte
+- door_open(door_prefix)				ouvre une ou plusieurs portes, avec animation et son
+- door_close(door_prefix)				ferme une ou plusieurs portes, avec animation et son
+- door_set_open(door_prefix, open)			change l'état d'une porte
 

@@ -1,0 +1,117 @@
+/**
+@page tileset_syntax Tileset syntax specification
+
+A tileset is the skin of a map.
+It is composed of a set of tile patterns that a map can use.
+The <tt>tilesets</tt> directory contains the tilesets and their images.
+For a tileset whose id is XXXX (an integer number on four digits, like the maps),
+the file <tt>tilesetXXXX.dat</tt> describes all its tile patterns.
+We give here the detailed specification of the format of this file.
+
+The images of the tile patterns are picked in the file <tt>tilesetXXXX_tiles.png</tt>.
+A tile pattern is a rectangle image inside this PNG file, with any size multiple of 8*8 pixels,
+and some obstacle and animation properties.
+
+The obstacle property of a tile pattern can have the following values (these values 
+are from the enumration Obstacle): 
+- 0 (no obstacle): the tile is normal ground without obstacle
+- 1 (obstacle): the tile cannot be traversed
+- 2 (top-right): the upper-right half of the tile is an obstacle
+- 3 (top-left): the upper-left half of the tile is an obstacle
+- 4 (bottom-left): the lower-left half of the tile is an obstacle
+- 5 (bottom-right): the lower-right half of the tile is an obstacle
+- -1 (deep water): the tile is some deep water (the hero drowns or swims)
+- -2 (shallow water): the tile is shallow water (the hero may walk on it)
+- -3 (hole): the tile is a hole (the hero falls into it)
+- -4 (ladder): the tile is a ladder (the hero walks slowly on it)
+
+A tile pattern also have an animation property:
+- 0 (static pattern): the pattern is not animated (like most of the tiles)
+- 1 (animated pattern): the pattern is an animation of three frames, with the sequence 0-1-2-0 or 0-1-2-1-0
+- 2 (parallax scrolling pattern): the pattern displays a parallax scrolling effect to give a 3D impression
+- 3 (scrolling pattern): the pattern scrolls with the time in a direction
+
+Finally, a tile pattern has a default layer. This is the layer suggested by the map editor when placing
+the tile onto a map:
+- 0 (low layer): the tile is always displayed below the hero (like most of the tiles)
+- 1 (intermediate layer): the hero may be above or below the tile (e.g. a platform)
+- 2 (high layer): the tile is always above the hero (e.g. a tree)
+
+When you add a tile to a map with the map editor, it is placed on its default layer,
+but then you may change the layer.
+Thus, the default layer property is only used by the map editor, not by the game.
+
+A tileset description file is a clear text file.
+Here is an example of such a file:
+
+@verbatim
+255	255	255
+1	0	0	0	16	0	16	16
+2	0	0	0	32	0	16	16
+163	0	0	2	152	240	8	32
+164	0	0	2	160	240	8	32
+165	0	0	2	168	240	8	32
+166	0	1	0	200	240	32	24
+167	0	1	0	232	240	24	32
+168	0	1	0	200	264	24	32
+@endverbatim
+
+The first line is the background color of the maps 
+using this tileset (with the RGB notation).
+Each one of the remaining lines describes a tile pattern.
+The first element of the line is always the id of the tile pattern (an integer number),
+the second one is the animation type, and 
+the remaining part of the line depends the animation type.
+
+@section non_animated_tile_pattern Non-animated tile pattern
+
+Syntax of a non-animated tile pattern:
+
+@verbatim
+id   0   obstacle   default_layer   x   y   width   height
+@endverbatim
+
+<tt>id</tt> identifies the pattern. <tt>0</tt> indicates that this is a non-animated
+tile pattern.
+<tt>obstacle</tt> and <tt>default_layer</tt> are the properties explained above.
+<tt>x</tt>, <tt>y</tt>, <tt>width</tt> and <tt>height</tt> define the rectangle
+of the tile pattern in the PNG image.
+
+@section animated_tile_pattern Animated tile pattern
+
+Syntax of an animated tile pattern:
+
+@verbatim
+id   1   obstacle   default_layer   animation_sequence   width   height   x1   y1   x2   y2   x3   y3
+@endverbatim
+
+<tt>animation_sequence</tt> determines how the three frames of the animation are played:
+0 means 0-1-2-0, and 1 means 0-1-2-1-0.
+<tt>width</tt>, <tt>height</tt>, <tt>x1</tt>, <tt>y1</tt>, <tt>x2</tt>, <tt>y2</tt>, <tt>x3</tt> and <tt>y3</tt>
+define the location of the three rectangles in the PNG image (the size is the same for all rectangles).
+
+
+@section parallax_tile_pattern Parallax scrolling tile pattern
+
+Syntax of a tile pattern with parallax scrolling:
+
+@verbatim
+id   2   obstacle   default_layer   x   y   width   height
+@endverbatim
+
+The syntax is the same as for non-animated tiles.
+
+@section scrolling_tile_pattern Scrolling tile pattern
+
+Syntax of a scrolling tile pattern:
+
+@verbatim
+id   3   obstacle   default_layer   x   y   width   height
+@endverbatim
+
+The syntax is the same as for non-animated tiles.
+Such tiles are not fully implemented yet.
+In future versions, the direction of the scrolling will be customizable.
+
+*/
+

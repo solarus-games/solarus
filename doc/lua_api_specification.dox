@@ -1,5 +1,4 @@
 /**
-
 @page lua_api_specification Lua scripting API specification
 
 We give here the list of Lua functions that are called by the C++ engine
@@ -32,14 +31,14 @@ called when the game is suspended or resumed
 - <tt>event_dialog_started(message_id)</tt>: 
 called when a dialog starts (i.e. at the beginning of its first message)
 
-- <tt>event_dialog_finished(first_message_id, answer)
+- <tt>event_dialog_finished(first_message_id, answer)</tt>
 called when a dialog finishes (i.e. once its last message is finished)
 
 - <tt>event_camera_reached_target()</tt>: 
-called when the camera (previously started by camera_move()) reaches its target
+called when the camera (previously started by <tt>camera_move()</tt>) reaches its target
 
 - <tt>event_camera_back()</tt>: 
-called when the camera (previously sent back by camera_restore()) reaches the hero
+called when the camera (previously sent back by <tt>camera_restore()</tt>) reaches the hero
 
 - <tt>event_treasure_obtaining(content, savegame_variable)</tt>: 
 called when the player is obtaining a treasure (coming from a chest or not)
@@ -53,10 +52,10 @@ called when the player has just finished obtaining a treasure
 These functions of the C++ engine can be called by any type of script.
 
 - <tt>hero_freeze()</tt>: 
-prevents the hero from moving until you call hero_unfreeze()
+prevents the hero from moving until you call <tt>hero_unfreeze()</tt>
 
 - <tt>hero_unfreeze()</tt>: 
-restores the control to the hero, typically after a call to hero_freeze()
+restores the control to the hero, typically after a call to <tt>hero_freeze()</tt>
 
 - <tt>hero_set_pause_enabled(bool enabled)</tt>: 
 allows or disallows to pause the game (and to save the game)

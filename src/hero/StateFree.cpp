@@ -38,6 +38,19 @@ Hero::StateFree::~StateFree(void) {
 }
 
 /**
+ * @brief Starts this state.
+ *
+ * This function is called automatically when this state becomes the active state of the hero.
+ *
+ * @param previous_state the previous state of NULL if this is the first state (for information)
+ */
+void Hero::StateFree::start(State *previous_state) {
+
+  StatePlayerMovement::start(previous_state);
+  set_animation_stopped();
+}
+
+/**
  * @brief Returns whether the hero can walk normally and interact with entities
  * in this state.
  * @return true
@@ -77,5 +90,13 @@ void Hero::StateFree::set_animation_stopped(void) {
  */
 void Hero::StateFree::set_animation_walking(void) {
   hero->get_sprites()->set_animation_walking_normal();
+}
+
+/**
+ * @brief Returns whether the hero can swing his sword in this state.
+ * @return true if the hero can swing his sword in this state
+ */
+bool Hero::StateFree::can_start_sword(void) {
+  return true;
 }
 

@@ -78,6 +78,7 @@ class Game: public Screen {
     MusicId previous_music_id; /**< id of the previous music played (useful after a mini-boss) */
 
     // update functions
+    void update_keys_effect(void);
     void update_dialog_box(void);
     void update_transitions(void);
     void update_treasure(void);

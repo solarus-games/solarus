@@ -31,9 +31,12 @@ class Hero::StateFree: public Hero::StatePlayerMovement {
     ~StateFree(void);
 
     bool is_free(void);
+    void start(State *previous_state);
     void action_key_pressed(void);
     void set_animation_stopped(void);
     void set_animation_walking(void);
+
+    bool can_start_sword(void);
 };
 
 #endif

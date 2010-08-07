@@ -46,7 +46,6 @@ PlayerMovement * Hero::StatePlayerMovement::get_player_movement(void) {
  * @brief Starts this state.
  *
  * This function is called automatically when this state becomes the active state of the hero.
- * The initializations should be done here rather than in the constructor.
  *
  * @param previous_state the previous state of NULL if this is the first state (for information)
  */

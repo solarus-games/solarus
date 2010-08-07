@@ -66,10 +66,10 @@ Hero::Hero(Equipment *equipment):
  
   // sprites
   sprites = new HeroSprites(this, equipment);
+  rebuild_equipment();
 
   // state
   set_state(new StateFree(this));
-  rebuild_equipment();
 }
 
 /**
@@ -470,7 +470,6 @@ bool Hero::is_animation_finished(void) {
 void Hero::rebuild_equipment(void) {
 
   sprites->rebuild_equipment();
-  start_free();
 }
 
 /**

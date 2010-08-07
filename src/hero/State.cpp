@@ -33,7 +33,7 @@
  * @param hero the hero to control with this state
  */
 Hero::State::State(Hero *hero):
-  game(hero->get_game()), map(hero->get_map()), hero(hero), when_suspended(0) {
+  game(hero->get_game()), map(hero->get_map()), hero(hero), sprites(hero->get_sprites()), when_suspended(0) {
 
 }
 
@@ -75,6 +75,7 @@ void Hero::State::stop(State *next_state) {
  * This function is called repeatedly while this state is the active state.
  */
 void Hero::State::update(void) {
+
 }
 
 /**

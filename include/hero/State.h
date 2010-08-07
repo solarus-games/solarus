@@ -35,6 +35,7 @@ class Hero::State {
     Game *game;				/**< the game */
     Map *map;				/**< the current map */
     Hero *hero;				/**< the hero controlled by this state */
+    HeroSprites *sprites;		/**< sprites of the hero */
     uint32_t when_suspended;		/**< indicates when this state was suspended */
 
     State(Hero *hero);

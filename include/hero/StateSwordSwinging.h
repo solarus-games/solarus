@@ -28,6 +28,10 @@ class Hero::StateSwordSwinging: public Hero::State {
 
     StateSwordSwinging(Hero *hero);
     ~StateSwordSwinging(void);
+
+    void start(State *previous_state);
+    void update(void);
+    bool can_start_sword(void);
 };
 
 #endif

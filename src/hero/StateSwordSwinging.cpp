@@ -15,6 +15,10 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "hero/StateSwordSwinging.h"
+#include "hero/StateSwordLoading.h"
+#include "hero/HeroSprites.h"
+#include "Game.h"
+#include "GameControls.h"
 
 /**
  * Constructor.
@@ -30,5 +34,43 @@ Hero::StateSwordSwinging::StateSwordSwinging(Hero *hero):
  */
 Hero::StateSwordSwinging::~StateSwordSwinging(void) {
 
+}
+
+/**
+ * @brief Starts this state.
+ *
+ * This function is called automatically when this state becomes the active state of the hero.
+ *
+ * @param previous_state the previous state of NULL if this is the first state (for information)
+ */
+void Hero::StateSwordSwinging::start(State *previous_state) {
+
+  sprites->play_sword_sound();
+  sprites->set_animation_sword();
+}
+
+/**
+ * @brief Updates this state.
+ */
+void Hero::StateSwordSwinging::update(void) {
+
+  if (sprites->is_animation_finished()) {
+
+    // if the player is still pressing the sword key, start loading the sword
+    if (game->get_controls()->is_key_pressed(GameControls::SWORD)) {
+      hero->set_state(new StateSwordLoading(hero));
+    }
+    else {
+      hero->start_free();
+    }
+  }
+}
+
+/**
+ * @brief Returns whether the hero can swing his sword in this state.
+ * @return true if the hero can swing his sword in this state
+ */
+bool Hero::StateSwordSwinging::can_start_sword(void) {
+  return true;
 }
 

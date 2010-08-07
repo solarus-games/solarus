@@ -264,6 +264,7 @@ void Game::update(void) {
 
   // update the equipment and HUD
   get_equipment()->update();
+  update_keys_effect();
   hud->update();
   dialog_box->update();
 
@@ -406,6 +407,29 @@ void Game::update_transitions(void) {
 }
 
 /**
+ * @brief Makes sure the keys effects are coherent with the hero's equipment and abilities.
+ */
+void Game::update_keys_effect(void) {
+
+  // when the game is paused or a dialog box is shown, the sword key is not the usual one
+  if (is_paused() || is_showing_message()) {
+    return; // if the game is interrupted for some other reason (e.g. a transition), let the normal sword icon
+  }
+
+  // make sure the sword key is coherent with having a sword
+  if (get_equipment()->has_sword()
+      && keys_effect->get_sword_key_effect() != KeysEffect::SWORD_KEY_SWORD) {
+
+    keys_effect->set_sword_key_effect(KeysEffect::SWORD_KEY_SWORD);
+  }
+  else if (!get_equipment()->has_sword()
+      && keys_effect->get_sword_key_effect() == KeysEffect::SWORD_KEY_SWORD) {
+
+    keys_effect->set_sword_key_effect(KeysEffect::SWORD_KEY_NONE);
+  }
+}
+
+/**
  * @brief Updates the treasure.
  *
  * This function is called repeatedly while a treasure is being given.
@@ -496,7 +520,7 @@ Map * Game::get_current_map(void) {
  * @param transition_style type of transition between the two maps
  */
 void Game::set_current_map(MapId map_id, const std::string &destination_point_name,
-			   Transition::Style transition_style) {
+    Transition::Style transition_style) {
 
   // stop the hero's movement
   hero->reset_movement();
@@ -506,7 +530,7 @@ void Game::set_current_map(MapId map_id, const std::string &destination_point_na
   if (!next_map->is_loaded()) {
     next_map->load(this);
     next_map->check_suspended();
-    
+
     if (current_map != NULL) {
       current_map->check_suspended();
     }
@@ -605,7 +629,7 @@ void Game::play_music(MusicId new_music_id) {
     previous_music_id = current_music_id; // save the previous music
 
     if (Music::isNoneId(new_music_id) && current_music != NULL) {
- 
+
       current_music->stop();
       current_music_id = Music::none;
       current_music = NULL;
@@ -757,10 +781,10 @@ void Game::set_hud_enabled(bool hud_enabled) {
  *
  * @return true if the player is currently allowed to pause the game
  */
-bool Game::can_pause(void) {
-  return is_pause_key_available()             // see if the map currently allows the pause key
-    && get_equipment()->get_hearts() > 0;     // don't allow to pause the game if the gameover sequence is about to start
-}
+  bool Game::can_pause(void) {
+    return is_pause_key_available()             // see if the map currently allows the pause key
+      && get_equipment()->get_hearts() > 0;     // don't allow to pause the game if the gameover sequence is about to start
+  }
 
 /**
  * @brief Returns whether the pause key is available.

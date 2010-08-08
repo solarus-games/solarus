@@ -17,7 +17,7 @@
 #include "hero/StateFalling.h"
 
 /**
- * Constructor.
+ * @brief Constructor.
  * @param hero the hero controlled by this state
  */
 Hero::StateFalling::StateFalling(Hero *hero):
@@ -26,7 +26,7 @@ Hero::StateFalling::StateFalling(Hero *hero):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 Hero::StateFalling::~StateFalling(void) {
 

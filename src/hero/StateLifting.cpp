@@ -17,7 +17,7 @@
 #include "hero/StateLifting.h"
 
 /**
- * Constructor.
+ * @brief Constructor.
  * @param hero the hero controlled by this state
  * @param item_to_lift the item to lift
  */
@@ -27,7 +27,7 @@ Hero::StateLifting::StateLifting(Hero *hero, DestructibleItem *item_to_lift):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 Hero::StateLifting::~StateLifting(void) {
 

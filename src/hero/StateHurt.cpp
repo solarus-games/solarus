@@ -17,7 +17,7 @@
 #include "hero/StateHurt.h"
 
 /**
- * Constructor.
+ * @brief Constructor.
  * @param hero the hero controlled by this state
  * @param source the entity that hurts the hero (usually an enemy)
  * @param life_points number of heart quarters to remove (this number may be reduced by the tunic)
@@ -29,7 +29,7 @@ Hero::StateHurt::StateHurt(Hero *hero, MapEntity *source, int life_points, int m
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 Hero::StateHurt::~StateHurt(void) {
 

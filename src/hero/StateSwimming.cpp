@@ -17,7 +17,7 @@
 #include "hero/StateSwimming.h"
 
 /**
- * Constructor.
+ * @brief Constructor.
  * @param hero the hero controlled by this state
  */
 Hero::StateSwimming::StateSwimming(Hero *hero):
@@ -26,7 +26,7 @@ Hero::StateSwimming::StateSwimming(Hero *hero):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 Hero::StateSwimming::~StateSwimming(void) {
 

@@ -15,9 +15,10 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "hero/StatePushing.h"
+#include "hero/HeroSprites.h"
 
 /**
- * Constructor.
+ * @brief Constructor.
  * @param hero the hero controlled by this state
  */
 Hero::StatePushing::StatePushing(Hero *hero):
@@ -26,9 +27,17 @@ Hero::StatePushing::StatePushing(Hero *hero):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 Hero::StatePushing::~StatePushing(void) {
 
+}
+
+/**
+ * @brief Starts this state.
+ */
+void Hero::StatePushing::start(State *previous_state) {
+
+  sprites->set_animation_pushing();
 }
 

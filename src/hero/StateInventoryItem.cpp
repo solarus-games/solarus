@@ -17,7 +17,7 @@
 #include "hero/StateInventoryItem.h"
 
 /**
- * Constructor.
+ * @brief Constructor.
  * @param hero the hero controlled by this state
  */
 Hero::StateInventoryItem::StateInventoryItem(Hero *hero):
@@ -26,7 +26,7 @@ Hero::StateInventoryItem::StateInventoryItem(Hero *hero):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 Hero::StateInventoryItem::~StateInventoryItem(void) {
 

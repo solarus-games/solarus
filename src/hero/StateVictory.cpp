@@ -17,7 +17,7 @@
 #include "hero/StateVictory.h"
 
 /**
- * Constructor.
+ * @brief Constructor.
  * @param hero the hero controlled by this state
  */
 Hero::StateVictory::StateVictory(Hero *hero):
@@ -26,7 +26,7 @@ Hero::StateVictory::StateVictory(Hero *hero):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 Hero::StateVictory::~StateVictory(void) {
 

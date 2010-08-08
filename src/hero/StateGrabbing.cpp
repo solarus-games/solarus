@@ -17,7 +17,7 @@
 #include "hero/StateGrabbing.h"
 
 /**
- * Constructor.
+ * @brief Constructor.
  * @param hero the hero controlled by this state
  */
 Hero::StateGrabbing::StateGrabbing(Hero *hero):
@@ -26,7 +26,7 @@ Hero::StateGrabbing::StateGrabbing(Hero *hero):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 Hero::StateGrabbing::~StateGrabbing(void) {
 

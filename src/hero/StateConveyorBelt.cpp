@@ -17,7 +17,7 @@
 #include "hero/StateConveyorBelt.h"
 
 /**
- * Constructor.
+ * @brief Constructor.
  * @param hero the hero controlled by this state
  */
 Hero::StateConveyorBelt::StateConveyorBelt(Hero *hero):
@@ -26,7 +26,7 @@ Hero::StateConveyorBelt::StateConveyorBelt(Hero *hero):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 Hero::StateConveyorBelt::~StateConveyorBelt(void) {
 

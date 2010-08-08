@@ -19,7 +19,7 @@
 #include "Game.h"
 
 /**
- * Constructor.
+ * @brief Constructor.
  * @param hero the hero controlled by this state
  */
 Hero::StateSpinAttack::StateSpinAttack(Hero *hero):
@@ -28,7 +28,7 @@ Hero::StateSpinAttack::StateSpinAttack(Hero *hero):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 Hero::StateSpinAttack::~StateSpinAttack(void) {
 

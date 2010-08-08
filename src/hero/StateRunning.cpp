@@ -17,7 +17,7 @@
 #include "hero/StateRunning.h"
 
 /**
- * Constructor.
+ * @brief Constructor.
  * @param hero the hero controlled by this state
  */
 Hero::StateRunning::StateRunning(Hero *hero):
@@ -26,7 +26,7 @@ Hero::StateRunning::StateRunning(Hero *hero):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 Hero::StateRunning::~StateRunning(void) {
 

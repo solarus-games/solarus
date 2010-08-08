@@ -57,6 +57,13 @@ void Hero::StatePlayerMovement::start(State *previous_state) {
   }
 
   get_player_movement()->set_moving_enabled(true, true);
+
+  if (get_player_movement()->is_started()) {
+    set_animation_walking();
+  }
+  else {
+    set_animation_stopped();
+  }
 }
 
 /**

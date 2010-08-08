@@ -715,9 +715,9 @@ void HeroSprites::set_animation_walking_normal(void) {
  */
 void HeroSprites::set_animation_walking_sword_loading(void) {
 
-  int direction = get_animation_direction();
+  set_animation_walking_common();
 
-  set_animation_stopped_common();
+  int direction = get_animation_direction();
 
   tunic_sprite->set_current_animation("sword_loading_walking");
   sword_sprite->set_current_animation("sword_loading_walking");
@@ -744,6 +744,8 @@ void HeroSprites::set_animation_walking_sword_loading(void) {
  * If the hero actually carries an item, the carried item also takes a "walking" animation.
  */
 void HeroSprites::set_animation_walking_carrying(void) {
+
+  set_animation_walking_common();
 
   tunic_sprite->set_current_animation("carrying_walking");
   if (lifted_item != NULL) {

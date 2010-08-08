@@ -33,7 +33,8 @@
  * @param hero the hero to control with this state
  */
 Hero::State::State(Hero *hero):
-  game(hero->get_game()), map(hero->get_map()), hero(hero), sprites(hero->get_sprites()), when_suspended(0) {
+  game(hero->get_game()), map(hero->get_map()), hero(hero), sprites(hero->get_sprites()),
+  suspended(false), when_suspended(0) {
 
 }
 
@@ -95,9 +96,108 @@ void Hero::State::display_on_map(void) {
  */
 void Hero::State::set_suspended(bool suspended) {
 
-  // remember the date if the state is being suspended
-  if (suspended) {
-    when_suspended = System::now();
+  if (suspended != this->suspended) {
+
+    this->suspended = suspended;
+
+    // remember the date if the state is being suspended
+    if (suspended) {
+      when_suspended = System::now();
+    }
+  }
+}
+
+/**
+ * @brief This function is called when a game key is pressed and the game is not suspended.
+ * @param key the key pressed
+ */
+void Hero::State::key_pressed(GameControls::GameKey key) {
+
+  switch (key) {
+
+    // action key
+  case GameControls::ACTION:
+    action_key_pressed();
+    break;
+
+    // sword key
+  case GameControls::SWORD:
+    sword_key_pressed();
+    break;
+
+    // move the hero
+  case GameControls::RIGHT:
+    directional_key_pressed(0);
+    break;
+
+  case GameControls::UP:
+    directional_key_pressed(1);
+    break;
+
+  case GameControls::LEFT:
+    directional_key_pressed(2);
+    break;
+
+  case GameControls::DOWN:
+    directional_key_pressed(3);
+    break;
+
+    // use an inventory item
+  case GameControls::ITEM_1:
+    item_key_pressed(0);
+    break;
+
+  case GameControls::ITEM_2:
+    item_key_pressed(1);
+    break;
+
+  default:
+    break;
+  }
+}
+
+/**
+ * @brief This function is called when a key is released if the game is not suspended.
+ * @param key the key released
+ */
+void Hero::State::key_released(GameControls::GameKey key) {
+
+  switch (key) {
+
+  case GameControls::ACTION:
+    action_key_released();
+    break;
+
+  case GameControls::SWORD:
+    sword_key_released();
+    break;
+
+  case GameControls::RIGHT:
+    directional_key_released(0);
+    break;
+
+  case GameControls::UP:
+    directional_key_released(1);
+    break;
+
+  case GameControls::LEFT:
+    directional_key_released(2);
+    break;
+
+  case GameControls::DOWN:
+    directional_key_released(3);
+    break;
+
+  case GameControls::ITEM_1:
+    item_key_released(0);
+    break;
+
+  case GameControls::ITEM_2:
+    item_key_released(1);
+    break;
+
+  default:
+    break;
   }
 }
 
@@ -105,6 +205,12 @@ void Hero::State::set_suspended(bool suspended) {
  * @brief Notifies this state that the action key was just pressed.
  */
 void Hero::State::action_key_pressed(void) {
+}
+
+/**
+ * @brief Notifies this state that the action key was just released.
+ */
+void Hero::State::action_key_released(void) {
 }
 
 /**
@@ -119,6 +225,12 @@ void Hero::State::sword_key_pressed(void) {
 
     hero->set_state(new StateSwordSwinging(hero));
   }
+}
+
+/**
+ * @brief Notifies this state that the sword key was just released.
+ */
+void Hero::State::sword_key_released(void) {
 }
 
 /**

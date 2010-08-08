@@ -17,17 +17,30 @@
 #ifndef SOLARUS_HERO_STATE_SWORD_LOADING_H
 #define SOLARUS_HERO_STATE_SWORD_LOADING_H
 
-#include "hero/State.h"
+#include "hero/StatePlayerMovement.h"
 
 /**
  * @brief The state "sword loading" of the hero.
  */
-class Hero::StateSwordLoading: public Hero::State {
+class Hero::StateSwordLoading: public Hero::StatePlayerMovement {
+
+  private:
+
+    uint32_t sword_loaded_date;            /**< date when the sword is loaded */
+    bool sword_loaded;                     /**< becomes true when the spin attack is possible */
 
   public:
 
     StateSwordLoading(Hero *hero);
     ~StateSwordLoading(void);
+
+    void start(State *previous_state);
+    void update(void);
+    void set_suspended(bool suspended);
+    void set_animation_stopped(void);
+    void set_animation_walking(void);
+    bool is_direction_locked(void);
+
 };
 
 #endif

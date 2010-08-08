@@ -25,6 +25,11 @@
  */
 class Hero::StateFree: public Hero::StatePlayerMovement {
 
+  private:
+
+    uint16_t pushing_direction_mask;
+    uint32_t start_pushing_date;
+
   public:
 
     StateFree(Hero *hero);
@@ -35,8 +40,8 @@ class Hero::StateFree: public Hero::StatePlayerMovement {
     void action_key_pressed(void);
     void set_animation_stopped(void);
     void set_animation_walking(void);
-
     bool can_start_sword(void);
+    void notify_movement_result(bool tried_to_move, bool success);
 };
 
 #endif

@@ -237,8 +237,10 @@ void Hero::update_movement(void) {
   // see if the movement was successful (i.e. if the hero's coordinates have changed)
   bool success = (get_x() != old_xy.get_x() || get_y() != old_xy.get_y());
 
-  // always notify the state
-  state->notify_movement_result(trying_to_move, success);
+  if (!is_suspended()) {
+    // always notify the state
+    state->notify_movement_result(trying_to_move, success);
+  }
 }
 
 /**

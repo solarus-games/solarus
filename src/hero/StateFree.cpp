@@ -100,3 +100,47 @@ bool Hero::StateFree::can_start_sword(void) {
   return true;
 }
 
+/**
+ * @brief Notifies this state of the result of the current movement.
+ * @param tried_to_move true if the hero tried to change his position during this cycle
+ * @param success true if the position has actually just changed
+ */
+void Hero::StateFree::notify_movement_result(bool tried_to_move, bool success) {
+  
+  StatePlayerMovement::notify_movement_result(tried_to_move, success);
+
+  // get the direction of the player
+  uint16_t direction_mask = get_player_movement()->get_direction_mask();
+
+  if (tried_to_move) { // the hero tried to move
+
+    if (!success) { // the hero is facing an obstacle
+
+      if (hero->get_wanted_movement_direction8() == get_animation_direction() * 2) {
+	// see when we can start animation "pushing"
+
+	uint32_t now = System::now();
+	if (pushing_direction_mask == 0xFFFF) { // we start counting to trigger animation "pushing"
+	  start_pushing_date = now + 800; // start animation "pushing" after 800 ms
+	  pushing_direction_mask = direction_mask;
+	}
+	else if (now >= start_pushing_date) {
+	  start_pushing();
+	}
+      }
+    }
+    else {
+      // the hero has just moved successfuly: stop trying to push
+      start_pushing_date = 0;
+      pushing_direction_mask = 0xFFFF;
+    }
+  }
+  else if (pushing_direction_mask != 0xFFFF && // the hero is about to push
+      direction_mask != pushing_direction_mask) {
+
+    // stop trying to push if the player changes his direction
+    start_pushing_date = 0;
+    pushing_direction_mask = 0xFFFF;
+  }
+}
+

@@ -17,7 +17,7 @@
 #include "hero/StateJumping.h"
 
 /**
- * Constructor.
+ * @brief Constructor.
  * @param hero the hero controlled by this state
  * @param direction8 direction of the jump (0 to 7)
  * @param length length of the jump in pixels
@@ -35,7 +35,7 @@ Hero::StateJumping::StateJumping(Hero *hero, int direction8, int length,
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 Hero::StateJumping::~StateJumping(void) {
 

@@ -21,7 +21,7 @@
 #include "GameControls.h"
 
 /**
- * Constructor.
+ * @brief Constructor.
  * @param hero the hero controlled by this state
  */
 Hero::StateSwordSwinging::StateSwordSwinging(Hero *hero):
@@ -30,7 +30,7 @@ Hero::StateSwordSwinging::StateSwordSwinging(Hero *hero):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 Hero::StateSwordSwinging::~StateSwordSwinging(void) {
 

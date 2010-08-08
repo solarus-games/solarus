@@ -17,7 +17,7 @@
 #include "hero/StateFreezed.h"
 
 /**
- * Constructor.
+ * @brief Constructor.
  * @param hero the hero controlled by this state
  */
 Hero::StateFreezed::StateFreezed(Hero *hero):
@@ -26,7 +26,7 @@ Hero::StateFreezed::StateFreezed(Hero *hero):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 Hero::StateFreezed::~StateFreezed(void) {
 

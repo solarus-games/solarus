@@ -17,7 +17,7 @@
 #include "hero/StatePlunging.h"
 
 /**
- * Constructor.
+ * @brief Constructor.
  * @param hero the hero controlled by this state
  */
 Hero::StatePlunging::StatePlunging(Hero *hero):
@@ -26,7 +26,7 @@ Hero::StatePlunging::StatePlunging(Hero *hero):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 Hero::StatePlunging::~StatePlunging(void) {
 

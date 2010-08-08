@@ -17,7 +17,7 @@
 #include "hero/StateCarrying.h"
 
 /**
- * Constructor.
+ * @brief Constructor.
  * @param hero the hero controlled by this state
  */
 Hero::StateCarrying::StateCarrying(Hero *hero):
@@ -26,7 +26,7 @@ Hero::StateCarrying::StateCarrying(Hero *hero):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 Hero::StateCarrying::~StateCarrying(void) {
 

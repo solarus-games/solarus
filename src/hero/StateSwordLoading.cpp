@@ -22,7 +22,7 @@
 #include "GameControls.h"
 
 /**
- * Constructor.
+ * @brief Constructor.
  * @param hero the hero controlled by this state
  */
 Hero::StateSwordLoading::StateSwordLoading(Hero *hero):
@@ -31,7 +31,7 @@ Hero::StateSwordLoading::StateSwordLoading(Hero *hero):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 Hero::StateSwordLoading::~StateSwordLoading(void) {
 

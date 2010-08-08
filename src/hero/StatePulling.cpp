@@ -17,7 +17,7 @@
 #include "hero/StatePulling.h"
 
 /**
- * Constructor.
+ * @brief Constructor.
  * @param hero the hero controlled by this state
  */
 Hero::StatePulling::StatePulling(Hero *hero):
@@ -26,7 +26,7 @@ Hero::StatePulling::StatePulling(Hero *hero):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 Hero::StatePulling::~StatePulling(void) {
 

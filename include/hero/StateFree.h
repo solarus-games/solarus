@@ -27,8 +27,8 @@ class Hero::StateFree: public Hero::StatePlayerMovement {
 
   private:
 
-    uint16_t pushing_direction_mask;
-    uint32_t start_pushing_date;
+    uint16_t pushing_direction_mask;		/**< mask of the direction where the hero is trying to push an obstacle */ 
+    uint32_t start_pushing_date;		/**< date when the state pushing starts */
 
   public:
 

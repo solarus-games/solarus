@@ -28,6 +28,9 @@ class Hero::StatePushing: public Hero::State {
 
     StatePushing(Hero *hero);
     ~StatePushing(void);
+
+    void start(State *previous_state);
+
 };
 
 #endif

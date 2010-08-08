@@ -17,7 +17,7 @@
 #include "hero/StateTreasure.h"
 
 /**
- * Constructor.
+ * @brief Constructor.
  * @param hero the hero controlled by this state
  * @param treasure the treasure to give to the hero
  */
@@ -27,7 +27,7 @@ Hero::StateTreasure::StateTreasure(Hero *hero, Treasure *treasure):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 Hero::StateTreasure::~StateTreasure(void) {
 

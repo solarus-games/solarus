@@ -16,13 +16,16 @@
  */
 #include "hero/StateFree.h"
 #include "hero/StateGrabbing.h"
+#include "hero/StatePushing.h"
 #include "hero/HeroSprites.h"
+#include "movements/PlayerMovement.h"
 #include "entities/Detector.h"
+#include "lowlevel/System.h"
 #include "Game.h"
 #include "KeysEffect.h"
 
 /**
- * Constructor.
+ * @brief Constructor.
  * @param hero the hero controlled by this state
  */
 Hero::StateFree::StateFree(Hero *hero):
@@ -31,7 +34,7 @@ Hero::StateFree::StateFree(Hero *hero):
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 Hero::StateFree::~StateFree(void) {
 
@@ -48,6 +51,8 @@ void Hero::StateFree::start(State *previous_state) {
 
   StatePlayerMovement::start(previous_state);
   set_animation_stopped();
+
+  pushing_direction_mask = 0xFFFF;
 }
 
 /**
@@ -116,7 +121,7 @@ void Hero::StateFree::notify_movement_result(bool tried_to_move, bool success) {
 
     if (!success) { // the hero is facing an obstacle
 
-      if (hero->get_wanted_movement_direction8() == get_animation_direction() * 2) {
+      if (hero->get_wanted_movement_direction8() == hero->get_animation_direction() * 2) {
 	// see when we can start animation "pushing"
 
 	uint32_t now = System::now();
@@ -125,13 +130,12 @@ void Hero::StateFree::notify_movement_result(bool tried_to_move, bool success) {
 	  pushing_direction_mask = direction_mask;
 	}
 	else if (now >= start_pushing_date) {
-	  start_pushing();
+	  hero->set_state(new StatePushing(hero));
 	}
       }
     }
     else {
       // the hero has just moved successfuly: stop trying to push
-      start_pushing_date = 0;
       pushing_direction_mask = 0xFFFF;
     }
   }
@@ -139,7 +143,6 @@ void Hero::StateFree::notify_movement_result(bool tried_to_move, bool success) {
       direction_mask != pushing_direction_mask) {
 
     // stop trying to push if the player changes his direction
-    start_pushing_date = 0;
     pushing_direction_mask = 0xFFFF;
   }
 }

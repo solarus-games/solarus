@@ -334,47 +334,7 @@ void Hero::display_on_map(void) {
  * @param key the key pressed
  */
 void Hero::key_pressed(GameControls::GameKey key) {
-
-  switch (key) {
-
-    // action key
-  case GameControls::ACTION:
-    state->action_key_pressed();
-    break;
-
-    // sword key
-  case GameControls::SWORD:
-    state->sword_key_pressed();
-    break;
-
-    // move the hero
-  case GameControls::RIGHT:
-    state->directional_key_pressed(0);
-    break;
-
-  case GameControls::UP:
-    state->directional_key_pressed(1);
-    break;
-
-  case GameControls::LEFT:
-    state->directional_key_pressed(2);
-    break;
-
-  case GameControls::DOWN:
-    state->directional_key_pressed(3);
-    break;
-
-  case GameControls::ITEM_1:
-    state->item_key_pressed(0);
-    break;
-
-  case GameControls::ITEM_2:
-    state->item_key_pressed(1);
-    break;
-
-  default:
-    break;
-  }
+  state->key_pressed(key);
 }
 
 /**
@@ -383,43 +343,7 @@ void Hero::key_pressed(GameControls::GameKey key) {
  * @param key the key released
  */
 void Hero::key_released(GameControls::GameKey key) {
-
-  /*
-   * When the action key or the sword key are released,
-   * we do nothing here: the update() functions will detect that
-   * the key is not pressed anymore. Thus, the key will be
-   * detected even if it is released while the game is suspended.
-   */
-
-  switch (key) {
-
-  case GameControls::RIGHT:
-    state->directional_key_released(0);
-    break;
-
-  case GameControls::UP:
-    state->directional_key_released(1);
-    break;
-
-  case GameControls::LEFT:
-    state->directional_key_released(2);
-    break;
-
-  case GameControls::DOWN:
-    state->directional_key_released(3);
-    break;
-
-  case GameControls::ITEM_1:
-    state->item_key_released(0);
-    break;
-
-  case GameControls::ITEM_2:
-    state->item_key_released(1);
-    break;
-
-  default:
-    break;
-  }
+  state->key_released(key);
 }
 
 /**
@@ -525,15 +449,12 @@ void Hero::set_map(Map *map) {
  */
 void Hero::set_map(Map *map, int initial_direction) {
 
-  set_map(map);
-
   // take the specified direction
   if (initial_direction != -1) {
     sprites->set_animation_direction(initial_direction);
   }
 
-  // notify the state
-  state->set_map(map);
+  set_map(map);
 }
 
 /**

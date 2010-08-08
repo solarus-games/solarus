@@ -15,6 +15,8 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "hero/StateSpinAttack.h"
+#include "hero/HeroSprites.h"
+#include "Game.h"
 
 /**
  * Constructor.
@@ -30,5 +32,30 @@ Hero::StateSpinAttack::StateSpinAttack(Hero *hero):
  */
 Hero::StateSpinAttack::~StateSpinAttack(void) {
 
+}
+
+/**
+ * @brief Starts this state.
+ * @param previous_state the previous state
+ */
+void Hero::StateSpinAttack::start(State *previous_state) {
+
+  State::start(previous_state);
+
+  // play the sound
+  game->play_sound("sword_spin_attack_release");
+
+  // start the animation
+  sprites->set_animation_spin_attack();
+}
+
+/**
+ * @brief Updates this state.
+ */
+void Hero::StateSpinAttack::update(void) {
+
+  if (sprites->is_animation_finished()) {
+    hero->start_free();
+  }
 }
 

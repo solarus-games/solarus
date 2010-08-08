@@ -28,6 +28,9 @@ class Hero::StateSpinAttack: public Hero::State {
 
     StateSpinAttack(Hero *hero);
     ~StateSpinAttack(void);
+
+    void start(State *previous_state);
+    void update(void);
 };
 
 #endif

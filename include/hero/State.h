@@ -36,6 +36,7 @@ class Hero::State {
     Map *map;				/**< the current map */
     Hero *hero;				/**< the hero controlled by this state */
     HeroSprites *sprites;		/**< sprites of the hero */
+    bool suspended;			/**< indicates whether this state is suspended */
     uint32_t when_suspended;		/**< indicates when this state was suspended */
 
     State(Hero *hero);
@@ -51,8 +52,12 @@ class Hero::State {
     virtual void update(void);
     virtual void display_on_map(void);
     virtual void set_suspended(bool suspended);
+    void key_pressed(GameControls::GameKey key);
+    void key_released(GameControls::GameKey key);
     virtual void action_key_pressed(void);
+    virtual void action_key_released(void);
     virtual void sword_key_pressed(void);
+    virtual void sword_key_released(void);
     virtual void directional_key_pressed(int direction4);
     virtual void directional_key_released(int direction4);
     virtual void item_key_pressed(int slot);

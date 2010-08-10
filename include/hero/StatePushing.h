@@ -17,16 +17,16 @@
 #ifndef SOLARUS_HERO_STATE_PUSHING_H
 #define SOLARUS_HERO_STATE_PUSHING_H
 
-#include "hero/StatePlayerMovement.h"
+#include "hero/State.h"
 
 /**
  * @brief The state "Pushing" of the hero.
  */
-class Hero::StatePushing: public Hero::StatePlayerMovement {
+class Hero::StatePushing: public Hero::State {
 
   private:
 
-    int pushing_direction;			/**< direction where the hero is looking (0 to 3) */
+    int pushing_direction4;			/**< direction where the hero is looking (0 to 3) */
     Detector *grabbed_entity;			/**< the entity the hero is pushing (or NULL) */
 
     void stop_moving_grabbed_entity(void);
@@ -38,14 +38,11 @@ class Hero::StatePushing: public Hero::StatePlayerMovement {
 
     void start(State *previous_state);
     void stop(State *next_state);
-    bool can_control_movement(void);
-    bool is_direction_locked(void);
+    void update(void);
     bool can_avoid_conveyor_belt(void);
     bool can_start_sword(void);
-    void notify_movement_result(bool tried_to_move, bool success);
     bool is_moving_grabbed_entity(void);
     void notify_grabbed_entity_collision(void);
-
 };
 
 #endif

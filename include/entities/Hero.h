@@ -176,6 +176,8 @@ class Hero: public MapEntity {
     void set_facing_entity(Detector *detector);
     bool is_facing_obstacle(void);
     bool is_facing_point_on_obstacle(void);
+    bool is_facing_direction4(int direction4);
+    bool is_facing_direction8(int direction8);
     bool is_on_raised_blocks(void);
     Stairs *get_stairs_overlapping(void);
 
@@ -191,9 +193,7 @@ class Hero: public MapEntity {
     bool can_control_direction(void);
     int get_walking_speed(void);
     void set_walking_speed(int walking_speed);
-    int get_wanted_movement_direction(void);
     int get_wanted_movement_direction8(void);
-    int get_real_movement_direction(void);
     int get_real_movement_direction8(void);
     bool is_moving_towards(int direction4);
     bool is_direction_locked(void);

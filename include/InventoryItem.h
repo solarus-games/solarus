@@ -40,18 +40,19 @@ class InventoryItem {
 
   private:
 
-    InventoryItemId item_id;  /**< id of this item */
+    InventoryItemId item_id;	/**< id of this item */
 
     // state
-    int variant;              /**< the possession state of this item when it is used */
-    Game *game;               /**< the game this item is used in */
-    bool finished;            /**< true if we have finished using this item */
+    int variant;		/**< the possession state of this item when it is used */
+    Game *game;			/**< the game this item is used in */
+    bool finished;		/**< true if we have finished using this item */
 
     // additionnal state information used by certain items
-    SoundId item_sound_id;    /**< sound played repeatedly while using this item */
-    uint32_t sound_delay;     /**< delay before playing the sound again */
-    uint32_t next_sound_date; /**< when the sound is played again */
-    int direction_pressed;    /**< arrow keys pressed when starting using this item*/
+    SoundId item_sound_id;	/**< sound played repeatedly while using this item */
+    uint32_t sound_delay;	/**< delay before playing the sound again */
+    uint32_t next_sound_date;	/**< when the sound is played again */
+    int direction_pressed8;	/**< direction defined by the directional keys pressed when starting using this item
+				 * (0 to 8) or -1 if there is no direction */
 
     void start_bottle(void);
     void update_bottle(void);

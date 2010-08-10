@@ -647,7 +647,7 @@ void Enemy::attack_hero(Hero *hero, Sprite *this_sprite) {
       int protected_direction = (int) ((angle + Geometry::PI_OVER_2 / 2.0) * 4 / Geometry::TWO_PI);
       protected_direction = (protected_direction + 4) % 4;
 
-      hero_protected = (hero->get_animation_direction() == protected_direction);
+      hero_protected = hero->is_facing_direction4(protected_direction);
     }
 
     if (hero_protected) {

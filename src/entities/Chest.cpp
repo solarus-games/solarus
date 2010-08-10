@@ -225,7 +225,7 @@ void Chest::notify_collision(MapEntity *entity_overlapping, CollisionMode collis
 
     if (keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
 	&& hero->is_free()
-	&& hero->get_animation_direction() == 1
+	&& hero->is_facing_direction4(1)
 	&& !is_open()) {
 
       // we show the 'open' icon, even if this is a big chest and the player does not have the big key

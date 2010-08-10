@@ -237,9 +237,9 @@ void Hero::update_movement(void) {
   // see if the movement was successful (i.e. if the hero's coordinates have changed)
   bool success = (get_x() != old_xy.get_x() || get_y() != old_xy.get_y());
 
-  if (!is_suspended()) {
-    // always notify the state
-    state->notify_movement_result(trying_to_move, success);
+  if (trying_to_move && !is_suspended()) {
+    // notify the state
+    state->notify_movement_tried(success);
   }
 }
 
@@ -719,6 +719,25 @@ bool Hero::is_facing_point_on_obstacle(void) {
 }
 
 /**
+ * @brief Returns whether the hero is looking towards the specified direction.
+ * @param direction4 a direction (0 to 3)
+ * @return true if the hero is looking towards the specified direction
+ */
+bool Hero::is_facing_direction4(int direction4) {
+  return get_animation_direction() == direction4;
+}
+
+/**
+ * @brief Returns whether the hero is looking towards the specified direction.
+ * @param direction8 a direction (0 to 7)
+ * @return true if the hero is looking towards the specified direction
+ * (always false for diagonal directions)
+ */
+bool Hero::is_facing_direction8(int direction8) {
+  return get_animation_direction() * 2 == direction8;
+}
+
+/**
  * @brief Returns whether the hero is currently on raised crystal switch blocks.
  * @return true if the hero is currently on raised crystal switch blocks
  */
@@ -783,18 +802,6 @@ void Hero::set_walking_speed(int walking_speed) {
 }
 
 /**
- * @brief Returns the direction of the hero's movement as defined by the directional keys pressed by the player.
- *
- * If he is not moving, -1 is returned.
- * This direction may be different from the real movement direction because of obstacles.
- *
- * @return the hero's wanted direction between 0 and 359, or -1 if he is stopped
- */
-int Hero::get_wanted_movement_direction(void) {
-  return state->get_wanted_movement_direction();
-}
-
-/**
  * @brief Returns the direction of the hero's movement as defined by the controls applied by the player.
  *
  * If he is not moving, -1 is returned.
@@ -803,27 +810,7 @@ int Hero::get_wanted_movement_direction(void) {
  * @return the hero's wanted direction between 0 and 7, or -1 if he is stopped
  */
 int Hero::get_wanted_movement_direction8(void) {
-
-  int wanted_direction = get_wanted_movement_direction();
-  return (wanted_direction != -1) ? (wanted_direction / 45) : -1;
-}
-
-/**
- * @brief Returns the actual direction of the hero's movement.
- *
- * This function returns the actual direction of the hero's movement, which can be different from the one
- * defined by the directional keys pressed by the player because we consider obstacles here.
- * If he does not want to move, -1 is returned. If he is trying to move but cannot because of obstacles,
- * the direction he is trying to move toward is returned.
- * This function is not used to compute the hero's movement (PlayerMovement does that) but only
- * to decide what direction to give to its sprites once the movement is already computed.
- *
- * @return the hero's actual direction between 0 and 359, or -1 if he is stopped
- */
-int Hero::get_real_movement_direction(void) {
-
-  int real_movement_direction8 = get_real_movement_direction8();
-  return (real_movement_direction8 != -1) ? (real_movement_direction8 * 45) : -1;
+  return state->get_wanted_movement_direction8();
 }
 
 /**
@@ -909,7 +896,7 @@ bool Hero::is_moving_towards(int direction4) {
   int movement_direction8 = get_wanted_movement_direction8();
   return movement_direction8 == direction8
     || (movement_direction8 + 1) % 8 == direction8
-    || movement_direction8 - 1 == direction8;
+    || (movement_direction8 + 7) % 8 == direction8;
 }
 
 /**
@@ -982,11 +969,11 @@ void Hero::notify_layer_changed(void) {
 void Hero::notify_movement_changed(void) {
 
   // update the animation direction according to the movement direction
-  int direction = get_wanted_movement_direction();
-  if (direction != -1) {
+  int wanted_direction8 = get_wanted_movement_direction8();
+  if (wanted_direction8 != -1) {
 
     int old_animation_direction = sprites->get_animation_direction();
-    int animation_direction = sprites->get_animation_direction(get_wanted_movement_direction8(), get_real_movement_direction8());
+    int animation_direction = sprites->get_animation_direction(wanted_direction8, get_real_movement_direction8());
 
     if (animation_direction != old_animation_direction
 	&& animation_direction != -1

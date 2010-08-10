@@ -27,55 +27,43 @@
  */
 class PlayerMovement: public SmoothCollisionMovement {
 
- protected:
+  protected:
 
-  // movement
+    // movement
 
-  bool started;                                    /**< true if the entity is moving */
-  int moving_speed;                                /**< speed of the entity when it is moving */
-  bool moving_enabled;                             /**< true if the player can move the entity, i.e. if the game is not interrupted
-						    * and the entity is in a state such that the player has the control */
-  bool moving_enabled_before_suspended;            /**< indicates whether moving_enabled was true when the game was suspended */
-  bool direction_enabled;                          /**< true if the direction arrows pressed are taken into account */
-  bool direction_enabled_before_suspended;         /**< indicates whether direction_enabled was true when the game was suspended */
+    int moving_speed;					/**< speed of the entity when it is moving */
+    bool moving_enabled;				/**< true if the player can move the entity, i.e. if the game is not interrupted
+							 * and the entity is in a state such that the player has the control */
+    bool direction_enabled;				/**< true if the direction arrows pressed are taken into account */
 
-  // keyboard
+    // keyboard
 
-  uint16_t direction_mask;                         /**< indicates which ones of the 4 directional keys are currently pressed by the player
-						    * (an OR combination of the four direction masks) */
+    int direction8;					/**< current direction of the movement (0 to 7), as defined by the directional keys
+							 * currently pressed by the player (when the movement allows them) or -1*/
 
-  static const uint16_t direction_masks[4];        /**< bit mask representing of each one of the 4 directions */
+    void set_wanted_direction8(int wanted_direction8);
+    void compute_wanted_direction(void);
 
-  void add_direction_mask(uint16_t direction_mask);
-  void remove_direction_mask(uint16_t direction_mask);
-  void set_direction_mask(uint16_t direction_mask);
+  public:
 
-  void compute_direction(void);
+    // creation and destruction
+    PlayerMovement(int speed);
+    ~PlayerMovement(void);
 
- public:
+    // direction
+    int get_wanted_direction8(void);
+    void directional_key_pressed(int direction4);
+    void directional_key_released(int direction4);
 
-  // creation and destruction
-  PlayerMovement(int speed);
-  ~PlayerMovement(void);
+    // movement
+    bool is_moving_enabled(void);
+    void set_moving_enabled(bool moving_enabled, bool direction_enabled);
+    int get_moving_speed(void);
+    void set_moving_speed(int moving_speed);
+    bool is_direction_enabled(void);
 
-  // direction
-  int get_direction(void);
-  uint16_t get_direction_mask(void);
-
-  void directional_key_pressed(int direction4);
-  void directional_key_released(int direction4);
-
-  // movement
-  bool is_moving_enabled(void);
-  void set_moving_enabled(bool moving_enabled, bool direction_enabled);
-  int get_moving_speed(void);
-  void set_moving_speed(int moving_speed);
-  bool is_direction_enabled(void);
-
-  bool is_started(void);
-  void set_suspended(bool suspended);
-
-  void compute_movement(void);
+    void set_suspended(bool suspended);
+    void compute_movement(void);
 };
 
 #endif

@@ -20,60 +20,13 @@
 #include "GameControls.h"
 #include "lowlevel/Geometry.h"
 
-// TODO use the code from GameControls
-
-/*
- * @brief Bit masks associated to each arrow on the keyboard or the joypad.
- *
- * A combination of arrows is stored in a simple integer.
- */
-const uint16_t PlayerMovement::direction_masks[4] = {
-  0x0001,
-  0x0002,
-  0x0004,
-  0x0008
-};
-
-/**
- * @brief Associates to each possible combination of arrows
- * a movement direction in degrees.
- *
- * The direction in degrees is between 0 and 359, or -1 to indicate
- * that the movement is stopped.
- *
- * For example:
- *   uint16_t arrows_pressed = right_mask | up_mask;
- *   int angle = directions[arrows_pressed];
- * Here the angle is 45°.
- */
-static const int directions[] = {
-  -1,  // none: stop
-  0,   // right
-  90,  // up
-  45,  // right + up
-  180, // left
-  -1,  // left + right: stop
-  135, // left + up
-  -1,  // left + right + up: stop
-  270, // down
-  315, // down + right
-  -1,  // down + up: stop
-  -1,  // down + right + up: stop
-  225, // down + left
-  -1,  // down + left + right: stop
-  -1,  // down + left + up: stop
-  -1,  // down + left + right + up: stop
-};
-
 /**
  * @brief Constructor.
  * @param moving_speed movement speed
  */
 PlayerMovement::PlayerMovement(int moving_speed):
-  started(false), moving_speed(moving_speed),
-  moving_enabled(false), moving_enabled_before_suspended(false),
-  direction_enabled(false), direction_enabled_before_suspended(false),
-  direction_mask(0) {
+  moving_speed(moving_speed), moving_enabled(false), 
+  direction_enabled(false), direction8(-1) {
 
 }
 
@@ -82,26 +35,6 @@ PlayerMovement::PlayerMovement(int moving_speed):
  */
 PlayerMovement::~PlayerMovement(void) {
 
-}
-
-/**
- * @brief Returns the current direction of the movement.
- *
- * The returned direction is an angle (0 to 359), or -1 if the
- * movement is stopped.
- *
- * @returns the current movement direction
- */
-int PlayerMovement::get_direction(void) {
-  return directions[direction_mask];
-}
-
-/**
- * @brief Returns whether the entity is moving.
- * @return true if the entity is moving
- */
-bool PlayerMovement::is_started(void) {
-  return started;
 }
 
 /**
@@ -133,24 +66,10 @@ void PlayerMovement::set_moving_enabled(bool moving_enabled, bool direction_enab
 
   if (moving_enabled != this->moving_enabled || direction_enabled != this->direction_enabled) {
 
+    this->moving_enabled = moving_enabled;
     this->direction_enabled = direction_enabled;
 
-    if (direction_enabled && entity->get_game() != NULL) {
-
-      // if the control is being restored, let's take
-      // into account the possible directional keys pressed
-
-      compute_direction();
-    }
-    else {
-      // the control is being ignored:
-      // we now consider that no arrow is currently pressed
-      set_direction_mask(0x0000);
-    }
-
-    this->moving_enabled = moving_enabled;
-
-    // recalculate the movement since direction_mask may have changed
+    // recalculate the movement since the direction may have changed
     compute_movement();
   }
 }
@@ -175,9 +94,9 @@ void PlayerMovement::set_suspended(bool suspended) {
 
   Movement::set_suspended(suspended);
 
+  // recompute the movement when the game is resumed
   if (!suspended) {
-    compute_direction();
-    compute_movement(); // recompute the movement when the game is resumed
+    compute_movement();
   }
 }
 
@@ -189,15 +108,7 @@ void PlayerMovement::set_suspended(bool suspended) {
  * @param direction of the directional key pressed (0 to 3)
  */
 void PlayerMovement::directional_key_pressed(int direction) {
-
-  if (direction_enabled) {
-
-    add_direction_mask(direction_masks[direction]);
-
-    if (moving_enabled) {
-      compute_movement();
-    }
-  }
+  compute_movement();
 }
 
 /**
@@ -208,99 +119,16 @@ void PlayerMovement::directional_key_pressed(int direction) {
  * @param direction of the directional key released (0 to 3)
  */
 void PlayerMovement::directional_key_released(int direction) {
-
-  if (direction_enabled) {
-
-    remove_direction_mask(direction_masks[direction]);
-
-    if (moving_enabled) {
-      compute_movement();
-    }
-  }
+  compute_movement();
 }
 
 /**
- * @brief Finds the direction defined by the directional keys currently pressed.
+ * @brief Returns the direction this movement is trying to move towards.
+ * @return the direction (0 to 7), or -1 if the player is not trying to go
+ * to a direction or the movement is disabled
  */
-void PlayerMovement::compute_direction(void) {
-
-  GameControls *controls = entity->get_game()->get_controls();
-
-  if (controls->is_key_pressed(GameControls::RIGHT)) {
-    add_direction_mask(direction_masks[0]);
-  }
-  else {
-    remove_direction_mask(direction_masks[0]);	
-  }
-
-  if (controls->is_key_pressed(GameControls::UP)) {
-    add_direction_mask(direction_masks[1]);
-  }
-  else {
-    remove_direction_mask(direction_masks[1]);	
-  }
-
-  if (controls->is_key_pressed(GameControls::LEFT)) {
-    add_direction_mask(direction_masks[2]);
-  }
-  else {
-    remove_direction_mask(direction_masks[2]);	
-  }
-
-  if (controls->is_key_pressed(GameControls::DOWN)) {
-    add_direction_mask(direction_masks[3]);
-  }
-  else {
-    remove_direction_mask(direction_masks[3]);	
-  }
-}
-
-/**
- * @brief Returns the direction mask.
- *
- * The direction mask represents what arrow keys are currently
- * pressed by the player.
- *
- * @return the direction mask
- */
-uint16_t PlayerMovement::get_direction_mask(void) {
-  return direction_mask;
-}
-
-/**
- * Adds one of the four directions to the direction mask.
- * The direction mask represents what arrow keys are currently
- * pressed by the player.
- * @param direction_mask the direction mask to add
- */
-void PlayerMovement::add_direction_mask(uint16_t direction_mask) {
-  set_direction_mask(this->direction_mask | direction_mask);
-}
-
-/**
- * @brief Removes one of the four directions to the direction mask.
- *
- * The direction mask represents what arrow keys are currently
- * pressed by the player.
- *
- * @param direction_mask the direction mask to remove
- */
-void PlayerMovement::remove_direction_mask(uint16_t direction_mask) {
-  set_direction_mask(this->direction_mask & ~direction_mask);
-}
-
-/**
- * @brief Sets the direction mask.
- *
- * The direction mask represents what arrow keys are currently
- * pressed by the player.
- *
- * @param direction_mask the direction mask
- */
-void PlayerMovement::set_direction_mask(uint16_t direction_mask) {
-  if (direction_mask != this->direction_mask) {
-    this->direction_mask = direction_mask;
-  }
+int PlayerMovement::get_wanted_direction8(void) {
+  return direction8;
 }
 
 /**
@@ -316,75 +144,91 @@ int PlayerMovement::get_moving_speed(void) {
  * @param moving_speed the moving speed of the entity
  */
 void PlayerMovement::set_moving_speed(int moving_speed) {
+
   this->moving_speed = moving_speed;
   compute_movement();
 }
 
 /**
- * @brief Changes the movement of the entity depending on the directional keys pressed.
+ * @brief Determines the direction defined by the directional keys currently pressed.
+ */
+void PlayerMovement::compute_wanted_direction(void) {
+
+  if (direction_enabled && entity->get_game() != NULL) {
+    GameControls *controls = entity->get_game()->get_controls();
+    direction8 = controls->get_wanted_direction8();
+  }
+  else {
+    direction8 = -1;
+  }
+}
+
+/**
+ * @brief Changes the movement of the entity depending on the direction wanted.
  *
  * This function is called when the direction is changed.
  */
 void PlayerMovement::compute_movement(void) {
 
-  int x_speed = 0;
-  int y_speed = 0;
+  // determine the direction wanted by the player
+  compute_wanted_direction();
 
-  // get the direction in degrees specified by the user (or -1)
-  int direction = directions[direction_mask];
-
-  if (direction == -1 || !moving_enabled) {
+  // compute the corresponding speed vector
+  if (direction8 == -1 || !moving_enabled) {
     // no movement
     stop();
-    started = false;
   }
-  else {
-    // the arrows currently pressed define a valid movement
+  else { // the directional keys currently pressed define a valid movement
 
-    if (!started) {
-      started = true;
-    }
+    // calculte the speed vector (x_speed and y_speed) knowing the direction
+    // without using Movement::set_direction(direction) as we just have the 8 basic directions
+    int x_speed = 0;
+    int y_speed = 0;
 
-    /* Now we need to calculte the speed vector (x_speed and y_speed) knowing the direction.
-     * We could call Movement::set_direction(direction) but with the 8
-     * basic directions, we don't need to make complex computations.
-     */
+    switch (direction8) {
 
-    switch (direction) {
     case 0: // right
       x_speed = moving_speed;
       y_speed = 0;
       break;
-    case 90: // up
+
+    case 2: // up
       x_speed = 0;
       y_speed = -moving_speed;
       break;
-    case 180: // left
+
+    case 4: // left
       x_speed = -moving_speed;
       y_speed = 0;
       break;
-    case 270: // down
+
+    case 6: // down
       x_speed = 0;
       y_speed = moving_speed;
       break;
-    case 45: // right up
+
+    case 1: // right up
       x_speed = (int) (moving_speed / Geometry::SQRT_2);
       y_speed = -x_speed;
       break;
-    case 135: // left up
+
+    case 3: // left up
       x_speed = -(int) (moving_speed / Geometry::SQRT_2);
       y_speed = x_speed;
       break;
-    case 225: // left down
+
+    case 5: // left down
       y_speed = (int) (moving_speed / Geometry::SQRT_2);
       x_speed = -y_speed;
       break;
-    case 315: // right down
+
+    case 7: // right down
       x_speed = (int) (moving_speed / Geometry::SQRT_2);
       y_speed = x_speed;
       break;
+
     default:
-      DIE("Bad basic direction: " << direction);
+      DIE("Bad basic direction: " << direction8);
       break;
     }
     set_x_speed(x_speed);
@@ -392,7 +236,7 @@ void PlayerMovement::compute_movement(void) {
   }
 
   // notify the entity that its movement has just changed:
-  // indeed the entity may need to update its animations and its collisions
+  // indeed, the entity may need to update its sprites
   entity->notify_movement_changed();
 }
 

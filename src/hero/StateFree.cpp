@@ -50,18 +50,36 @@ Hero::StateFree::~StateFree(void) {
 void Hero::StateFree::start(State *previous_state) {
 
   StatePlayerMovement::start(previous_state);
-  set_animation_stopped();
-
-  pushing_direction_mask = 0xFFFF;
+  pushing_direction4 = -1;
+  start_pushing_date = 0;
 }
 
 /**
- * @brief Returns whether the hero can walk normally and interact with entities
- * in this state.
- * @return true
+ * @brief Updates this state.
  */
-bool Hero::StateFree::is_free(void) {
-  return true;
+void Hero::StateFree::update(void) {
+
+  StatePlayerMovement::update();
+
+  if (!suspended
+      && pushing_direction4 != -1					// the hero is trying to push
+      && get_wanted_movement_direction8() != pushing_direction4 * 2) {	// but his movement direction has changed
+
+    pushing_direction4 = -1; // stop trying to push
+  }
+}
+
+/**
+ * @brief Notifies this state that the game was just suspended or resumed.
+ * @param suspended true if the game is suspended
+ */
+void Hero::StateFree::set_suspended(bool suspended) {
+
+  StatePlayerMovement::set_suspended(suspended);
+
+  if (!suspended) {
+    start_pushing_date += System::now() - when_suspended;
+  }
 }
 
 /**
@@ -84,17 +102,36 @@ void Hero::StateFree::action_key_pressed(void) {
 }
 
 /**
- * Gives the sprites the animation stopped corresponding to this state.
+ * @brief Notifies this state of the result of the current movement.
+ * @param success true if the position has actually just changed
  */
-void Hero::StateFree::set_animation_stopped(void) {
-  hero->get_sprites()->set_animation_stopped_normal();
+void Hero::StateFree::notify_movement_tried(bool success) {
+
+  StatePlayerMovement::notify_movement_tried(success);
+
+  if (!success) { // the hero has just tried to move unsuccessfuly
+
+    if (hero->is_facing_point_on_obstacle()) { // he is facing an obstacle
+
+      uint32_t now = System::now();
+      if (pushing_direction4 == -1) { // we start counting to trigger animation "pushing"
+	start_pushing_date = now + 800; // start animation "pushing" after 800 ms
+	pushing_direction4 = hero->get_animation_direction();
+      }
+      else if (now >= start_pushing_date) {
+	hero->set_state(new StatePushing(hero));
+      }
+    }
+  }
 }
 
 /**
- * Gives the sprites the animation walking corresponding to this state.
+ * @brief Returns whether the hero can walk normally and interact with entities
+ * in this state.
+ * @return true
  */
-void Hero::StateFree::set_animation_walking(void) {
-  hero->get_sprites()->set_animation_walking_normal();
+bool Hero::StateFree::is_free(void) {
+  return true;
 }
 
 /**
@@ -106,44 +143,16 @@ bool Hero::StateFree::can_start_sword(void) {
 }
 
 /**
- * @brief Notifies this state of the result of the current movement.
- * @param tried_to_move true if the hero tried to change his position during this cycle
- * @param success true if the position has actually just changed
+ * Gives the sprites the animation stopped corresponding to this state.
  */
-void Hero::StateFree::notify_movement_result(bool tried_to_move, bool success) {
+void Hero::StateFree::set_animation_stopped(void) {
+  hero->get_sprites()->set_animation_stopped_normal();
+}
 
-  StatePlayerMovement::notify_movement_result(tried_to_move, success);
-
-  // get the direction of the player
-  uint16_t direction_mask = get_player_movement()->get_direction_mask();
-
-  if (tried_to_move) { // the hero tried to move
-
-    if (!success) { // the hero is facing an obstacle
-
-      if (hero->get_wanted_movement_direction8() == hero->get_animation_direction() * 2) {
-	// see when we can start animation "pushing"
-
-	uint32_t now = System::now();
-	if (pushing_direction_mask == 0xFFFF) { // we start counting to trigger animation "pushing"
-	  start_pushing_date = now + 800; // start animation "pushing" after 800 ms
-	  pushing_direction_mask = direction_mask;
-	}
-	else if (now >= start_pushing_date) {
-	  hero->set_state(new StatePushing(hero));
-	}
-      }
-    }
-    else {
-      // the hero has just moved successfuly: stop trying to push
-      pushing_direction_mask = 0xFFFF;
-    }
-  }
-  else if (pushing_direction_mask != 0xFFFF && // the hero is about to push
-      direction_mask != pushing_direction_mask) {
-
-    // stop trying to push if the player changes his direction
-    pushing_direction_mask = 0xFFFF;
-  }
+/**
+ * Gives the sprites the animation walking corresponding to this state.
+ */
+void Hero::StateFree::set_animation_walking(void) {
+  hero->get_sprites()->set_animation_walking_normal();
 }
 

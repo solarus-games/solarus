@@ -315,17 +315,13 @@ int Hero::State::get_height_above_shadow(void) {
 
 /**
  * @brief Returns whether the player can control his movements in the current state.
+ *
+ * This function returns true if and only if the current movement of the hero is
+ * an instance of PlayerMovement.
+ *
  * @return true if the player can control his movements
  */
 bool Hero::State::can_control_movement(void) {
-  return false;
-}
-
-/**
- * @brief Returns whether the player can control his direction in the current state.
- * @return true if the player can control his direction
- */
-bool Hero::State::can_control_direction(void) {
   return false;
 }
 
@@ -376,18 +372,6 @@ void Hero::State::notify_movement_changed(void) {
  * @param success true if the position has actually just changed
  */
 void Hero::State::notify_movement_tried(bool success) {
-}
-
-/**
- * @brief Stops the movement of the player and lets the player restart it when he can.
- *
- * This function is typically called when the player loses temporarily the control
- * (e.g. because of a script or a teletransporter) whereas the movement remains the same.
- * Then the movement may want to move a few pixels more as soon as it is resumed.
- * This function removes such residual effects of the player's movement.
- * If the current movement is not controlled by the player, this function has no effect.
- */
-void Hero::State::reset_movement(void) {
 }
 
 /**

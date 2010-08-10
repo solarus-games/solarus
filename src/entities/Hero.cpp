@@ -777,14 +777,6 @@ bool Hero::can_control_movement(void) {
 }
 
 /**
- * @brief Returns whether the player can control his direction in the current state.
- * @return true if the player can control his direction
- */
-bool Hero::can_control_direction(void) {
-  return state->can_control_direction();
-}
-
-/**
  * @brief Returns the current speed applied to the hero's movements when he is walking.
  * @return the current walking speed
  */
@@ -1005,7 +997,9 @@ void Hero::notify_movement_changed(void) {
  */
 void Hero::reset_movement(void) {
 
-  state->reset_movement();
+  if (state->can_control_movement()) {
+    get_movement()->stop();
+  }
 }
 
 /**

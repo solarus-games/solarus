@@ -51,18 +51,20 @@ PlayerMovement * Hero::StatePlayerMovement::get_player_movement(void) {
  */
 void Hero::StatePlayerMovement::start(State *previous_state) {
 
-  if (previous_state == NULL || !previous_state->can_control_movement()) {
+  if (previous_state == NULL || !previous_state->can_control_direction()) {
     // create the movement unless it already exists
     hero->set_movement(new PlayerMovement(hero->get_walking_speed()));
   }
 
-  get_player_movement()->set_moving_enabled(true, true);
+  get_player_movement()->set_moving_enabled(can_control_movement(), can_control_direction());
 
-  if (get_player_movement()->is_started()) {
-    set_animation_walking();
-  }
-  else {
-    set_animation_stopped();
+  if (can_control_movement()) {
+    if (get_player_movement()->is_started()) {
+      set_animation_walking();
+    }
+    else {
+      set_animation_stopped();
+    }
   }
 }
 
@@ -77,7 +79,7 @@ void Hero::StatePlayerMovement::start(State *previous_state) {
  */
 void Hero::StatePlayerMovement::stop(State *next_state) {
   
-  if (!next_state->can_control_movement()) {
+  if (!next_state->can_control_direction()) {
     // destroy the movement unless the next state intends to keep it
     hero->clear_movement();
   }
@@ -94,6 +96,18 @@ void Hero::StatePlayerMovement::set_map(Map *map) {
 
   State::set_map(map);
   set_animation_stopped();
+}
+
+/**
+ * Gives the sprites the animation stopped corresponding to this state.
+ */
+void Hero::StatePlayerMovement::set_animation_stopped(void) {
+}
+
+/**
+ * Gives the sprites the animation walking corresponding to this state.
+ */
+void Hero::StatePlayerMovement::set_animation_walking(void) {
 }
 
 /**
@@ -163,16 +177,18 @@ void Hero::StatePlayerMovement::notify_walking_speed_changed(void) {
  */
 void Hero::StatePlayerMovement::notify_movement_changed(void) {
 
-  // the movement has changed: update the animation of the sprites
+  if (can_control_movement()) {
+    // the movement has changed: update the animation of the sprites
 
-  bool movement_walking = get_player_movement()->is_started();
-  bool sprites_walking = hero->get_sprites()->is_walking();
+    bool movement_walking = get_player_movement()->is_started();
+    bool sprites_walking = hero->get_sprites()->is_walking();
 
-  if (movement_walking && !sprites_walking) {
-    set_animation_walking();
-  }
-  else if (!movement_walking && sprites_walking) {
-    set_animation_stopped();
+    if (movement_walking && !sprites_walking) {
+      set_animation_walking();
+    }
+    else if (!movement_walking && sprites_walking) {
+      set_animation_stopped();
+    }
   }
 }
 
@@ -190,7 +206,7 @@ void Hero::StatePlayerMovement::reset_movement(void) {
   PlayerMovement *movement = get_player_movement();
   movement->stop();
   movement->set_moving_enabled(false, false);
-  movement->set_moving_enabled(true, true);
+  movement->set_moving_enabled(can_control_movement(), can_control_direction());
 }
 
 /**

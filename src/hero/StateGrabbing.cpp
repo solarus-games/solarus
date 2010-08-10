@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "hero/StateGrabbing.h"
+#include "hero/HeroSprites.h"
 
 /**
  * @brief Constructor.
@@ -31,4 +32,15 @@ Hero::StateGrabbing::StateGrabbing(Hero *hero):
 Hero::StateGrabbing::~StateGrabbing(void) {
 
 }
+
+/**
+ * @brief Starts this state.
+ */
+void Hero::StateGrabbing::start(State *previous_state) {
+
+  State::start(previous_state);
+
+  sprites->set_animation_grabbing();
+}
+
 

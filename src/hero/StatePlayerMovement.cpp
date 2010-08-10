@@ -51,12 +51,11 @@ PlayerMovement * Hero::StatePlayerMovement::get_player_movement(void) {
  */
 void Hero::StatePlayerMovement::start(State *previous_state) {
 
-  if (previous_state == NULL || !previous_state->can_control_direction()) {
+  if (previous_state == NULL || !previous_state->can_control_movement()) {
     // create the movement unless it already exists
     hero->set_movement(new PlayerMovement(hero->get_walking_speed()));
+    get_player_movement()->compute_movement();
   }
-
-  get_player_movement()->set_moving_enabled(can_control_movement(), can_control_direction());
 
   if (get_wanted_movement_direction8() != -1) {
     set_animation_walking();
@@ -77,7 +76,7 @@ void Hero::StatePlayerMovement::start(State *previous_state) {
  */
 void Hero::StatePlayerMovement::stop(State *next_state) {
   
-  if (!next_state->can_control_direction()) {
+  if (!next_state->can_control_movement()) {
     // destroy the movement unless the next state intends to keep it
     hero->clear_movement();
   }
@@ -115,7 +114,7 @@ void Hero::StatePlayerMovement::set_animation_walking(void) {
 void Hero::StatePlayerMovement::directional_key_pressed(int direction4) {
 
   // notify the movement
-  get_player_movement()->directional_key_pressed(direction4);
+  get_player_movement()->compute_movement();
 }
 
 /**
@@ -125,7 +124,7 @@ void Hero::StatePlayerMovement::directional_key_pressed(int direction4) {
 void Hero::StatePlayerMovement::directional_key_released(int direction4) {
 
   // notify the movement
-  get_player_movement()->directional_key_released(direction4);
+  get_player_movement()->compute_movement();
 }
 
 /**
@@ -133,14 +132,6 @@ void Hero::StatePlayerMovement::directional_key_released(int direction4) {
  * @return true if the player can control his movements
  */
 bool Hero::StatePlayerMovement::can_control_movement(void) {
-  return true;
-}
-
-/**
- * @brief Returns whether the player can control his direction in the current state.
- * @return true if the player can control his direction
- */
-bool Hero::StatePlayerMovement::can_control_direction(void) {
   return true;
 }
 
@@ -184,36 +175,17 @@ void Hero::StatePlayerMovement::notify_walking_speed_changed(void) {
  */
 void Hero::StatePlayerMovement::notify_movement_changed(void) {
 
-  if (can_control_movement()) {
-    // the movement has changed: update the animation of the sprites
+  // the movement has changed: update the animation of the sprites
 
-    bool movement_walking = get_wanted_movement_direction8() != -1;
-    bool sprites_walking = hero->get_sprites()->is_walking();
+  bool movement_walking = get_wanted_movement_direction8() != -1;
+  bool sprites_walking = hero->get_sprites()->is_walking();
 
-    if (movement_walking && !sprites_walking) {
-      set_animation_walking();
-    }
-    else if (!movement_walking && sprites_walking) {
-      set_animation_stopped();
-    }
+  if (movement_walking && !sprites_walking) {
+    set_animation_walking();
   }
-}
-
-/**
- * @brief Stops the movement of the player and lets the player restart it when he can.
- *
- * This function is typically called when the player loses temporarily the control
- * (e.g. because of a script or a teletransporter) whereas the movement remains the same.
- * Then the movement may want to move a few pixels more as soon as it is resumed.
- * This function removes such residual effects of the player's movement.
- * If the current movement is not controlled by the player, this function has no effect.
- */
-void Hero::StatePlayerMovement::reset_movement(void) {
-
-  PlayerMovement *movement = get_player_movement();
-  movement->stop();
-  movement->set_moving_enabled(false, false);
-  movement->set_moving_enabled(can_control_movement(), can_control_direction());
+  else if (!movement_walking && sprites_walking) {
+    set_animation_stopped();
+  }
 }
 
 /**
@@ -224,7 +196,6 @@ void Hero::StatePlayerMovement::reset_movement(void) {
  * @param stop_on_obstacles true to make the movement sensible to obstacles, false to ignore them
  */
 void Hero::StatePlayerMovement::set_stop_on_obstacles(bool stop_on_obstacles) {
-
   get_player_movement()->set_stop_on_obstacles(stop_on_obstacles);
 }
 

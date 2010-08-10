@@ -45,12 +45,10 @@ class Hero::StatePlayerMovement: public Hero::State {
     virtual void set_animation_walking(void);
     void directional_key_pressed(int direction4);
     void directional_key_released(int direction4);
-    virtual bool can_control_movement(void);
-    bool can_control_direction(void);
+    bool can_control_movement(void);
     int get_wanted_movement_direction8(void);
     void notify_walking_speed_changed(void);
     void notify_movement_changed(void);
-    void reset_movement(void);
     void set_stop_on_obstacles(bool stop_on_obstacles);
     bool can_be_hurt(void);
 };

@@ -24,25 +24,18 @@
  * @brief Movement of an entity controlled by the player.
  *
  * This movement is an 8-direction movement typically used by the hero.
+ * This class basically converts the combination of directional keys pressed
+ * (from the class GameControls) into a movement.
  */
 class PlayerMovement: public SmoothCollisionMovement {
 
   protected:
 
-    // movement
-
     int moving_speed;					/**< speed of the entity when it is moving */
-    bool moving_enabled;				/**< true if the player can move the entity, i.e. if the game is not interrupted
-							 * and the entity is in a state such that the player has the control */
-    bool direction_enabled;				/**< true if the direction arrows pressed are taken into account */
-
-    // keyboard
-
     int direction8;					/**< current direction of the movement (0 to 7), as defined by the directional keys
 							 * currently pressed by the player (when the movement allows them) or -1*/
 
-    void set_wanted_direction8(int wanted_direction8);
-    void compute_wanted_direction(void);
+    void set_wanted_direction(void);
 
   public:
 
@@ -50,19 +43,11 @@ class PlayerMovement: public SmoothCollisionMovement {
     PlayerMovement(int speed);
     ~PlayerMovement(void);
 
-    // direction
-    int get_wanted_direction8(void);
-    void directional_key_pressed(int direction4);
-    void directional_key_released(int direction4);
+    void update(void);
 
-    // movement
-    bool is_moving_enabled(void);
-    void set_moving_enabled(bool moving_enabled, bool direction_enabled);
     int get_moving_speed(void);
     void set_moving_speed(int moving_speed);
-    bool is_direction_enabled(void);
-
-    void set_suspended(bool suspended);
+    int get_wanted_direction8(void);
     void compute_movement(void);
 };
 

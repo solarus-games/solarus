@@ -73,13 +73,11 @@ class Hero::State {
     virtual int get_height_above_shadow(void);
 
     virtual bool can_control_movement(void);
-    virtual bool can_control_direction(void);
     virtual int get_wanted_movement_direction8(void);
     virtual void notify_walking_speed_changed(void);
     virtual void notify_layer_changed(void);
     virtual void notify_movement_changed(void);
     virtual void notify_movement_tried(bool success);
-    virtual void reset_movement(void);
 
     // ground
     virtual bool can_avoid_deep_water(void);

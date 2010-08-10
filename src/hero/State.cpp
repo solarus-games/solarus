@@ -330,14 +330,15 @@ bool Hero::State::can_control_direction(void) {
 }
 
 /**
- * @brief Returns the direction of the hero's movement as defined by the controls applied by the player.
+ * @brief Returns the direction of the hero's movement as defined by the controls applied by the player
+ * and the movements allowed is the current state.
  *
  * If he is not moving, -1 is returned.
  * This direction may be different from the real movement direction because of obstacles.
  *
- * @return the hero's wanted direction between 0 and 359, or -1 if he is stopped
+ * @return the hero's wanted direction between 0 and 7, or -1 if he is stopped
  */
-int Hero::State::get_wanted_movement_direction(void) {
+int Hero::State::get_wanted_movement_direction8(void) {
   return -1;
 }
 
@@ -369,12 +370,12 @@ void Hero::State::notify_movement_changed(void) {
 /**
  * @brief Notifies this state of the result of the current movement.
  *
- * This function is called at each cycle when the game is not suspended.
+ * This function is called when the hero has just tried to change its position
+ * and only when the game is not suspended.
  *
- * @param tried_to_move true if the hero tried to change his position during this cycle
  * @param success true if the position has actually just changed
  */
-void Hero::State::notify_movement_result(bool tried_to_move, bool success) {
+void Hero::State::notify_movement_tried(bool success) {
 }
 
 /**

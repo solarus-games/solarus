@@ -25,7 +25,7 @@
 
 const std::string GameControls::direction_names[] = {"right", "up", "left", "down"};
 
-const uint16_t GameControls::arrows_masks[4] = {
+const uint16_t GameControls::direction_masks[4] = {
   0x0001,
   0x0002,
   0x0004,
@@ -33,31 +33,29 @@ const uint16_t GameControls::arrows_masks[4] = {
 };
 
 /**
- * @brief Associates to each possible combination of directional_keys
- * an angle in degrees.
+ * @brief Associates to each possible combination of directional_keys a direction.
  *
- * The angle is between 0 and 359, or -1 to indicate
- * that the movement is stopped.
+ * The direction is between 0 and 7, or -1 to indicate that no direction is set.
  *
  * For example:
- *   uint16_t arrows_pressed = right_mask | up_mask;
- *   int angle = directions[arrows_pressed];
- * Here the angle is 45°.
+ *   uint16_t direction_mask = right_mask | up_mask;
+ *   int direction8 = masks_to_directions8[direction_mask];
+ * Here the direction is 1 (north-east).
 */
-static const int arrows_angles[] = {
+const int GameControls::masks_to_directions8[] = {
   -1,  // none: stop
-  0,   // right
-  90,  // up
-  45,  // right + up
-  180, // left
+   0,  // right
+   2,  // up
+   1,  // right + up
+   4,  // left
   -1,  // left + right: stop
-  135, // left + up
+   3,  // left + up
   -1,  // left + right + up: stop
-  270, // down
-  315, // down + right
+   6,  // down
+   7,  // down + right
   -1,  // down + up: stop
   -1,  // down + right + up: stop
-  225, // down + left
+   5,  // down + left
   -1,  // down + left + right: stop
   -1,  // down + left + up: stop
   -1,  // down + left + right + up: stop
@@ -137,27 +135,27 @@ bool GameControls::is_key_pressed(GameKey game_key) {
 }
 
 /**
- * @brief Returns the direction corresponding to the arrow keys
+ * @brief Returns the direction corresponding to the directional keys
  * currently pressed by the player.
- * @return the arrows direction (0 to 360), or -1
- * if no arrow is pressed
+ * @return the direction (0 to 8), or -1 if no directional key is pressed
+ * or the combination of directional keys is not valid
  */
-int GameControls::get_arrows_direction(void) {
+int GameControls::get_wanted_direction8(void) {
 
-  uint16_t arrows_mask = 0x0000;
+  uint16_t direction_mask = 0x0000;
   if (is_key_pressed(RIGHT)) {
-    arrows_mask |= 0x0001;
+    direction_mask |= direction_masks[0];
   }
   if (is_key_pressed(UP)) {
-    arrows_mask |= 0x0002;
+    direction_mask |= direction_masks[1];
   }
   if (is_key_pressed(LEFT)) {
-    arrows_mask |= 0x0004;
+    direction_mask |= direction_masks[2];
   }
   if (is_key_pressed(DOWN)) {
-    arrows_mask |= 0x0008;
+    direction_mask |= direction_masks[3];
   }
-  return arrows_angles[arrows_mask];
+  return masks_to_directions8[direction_mask];
 }
 
 /**

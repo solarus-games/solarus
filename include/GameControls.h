@@ -54,20 +54,22 @@ class GameControls {
 
   private:
 
-    Game *game;                                    /**< the game */
-    Savegame *savegame;                            /**< the savegame, which stores the keyboard and joypad mappings of the game keys */
+    Game *game;						/**< the game */
+    Savegame *savegame;					/**< the savegame, which stores the keyboard and joypad mappings of the game keys */
 
-    std::string game_key_names[9];                 /**< human name of each game key, in the current language */
-    std::map<InputEvent::KeyboardKey, GameKey> keyboard_mapping;    /**< associates each game key to the keyboard key that triggers it */
-    std::map<std::string, GameKey> joypad_mapping; /**< associates each game key to the joypad action that triggers it */
-    bool keys_pressed[9];                          /**< memorizes the state of each game key */
-    static const uint16_t arrows_masks[4];         /**< bit mask associated to each directional key: this allows to
-						    * store any combination of the 4 directions into a simple integer */
+    std::string game_key_names[9];			/**< human name of each game key, in the current language */
+    std::map<InputEvent::KeyboardKey, GameKey> keyboard_mapping;	/**< associates each game key to the keyboard key that triggers it */
+    std::map<std::string, GameKey> joypad_mapping;	/**< associates each game key to the joypad action that triggers it */
+    bool keys_pressed[9];				/**< memorizes the state of each game key */
+    static const uint16_t direction_masks[4];		/**< bit mask associated to each directional key: this allows to
+							 * store any combination of the four main directions into a simple integer */
+    static const int masks_to_directions8[16];		/**< associates to each possible combination of directional_keys a direction
+							  * between 0 and 7, or -1 to indicate that no direction is set */
 
-    bool customizing;                              /**< indicates that the next keyboard event will be considered as the new mapping for a game key */
-    GameKey key_to_customize;                      /**< the game key to customize when customizing is true */
+    bool customizing;					/**< indicates that the next keyboard event will be considered as the new mapping for a game key */
+    GameKey key_to_customize;				/**< the game key to customize when customizing is true */
 
-    static const std::string direction_names[4];   /**< English name of each arrow direction, used to represent a joypad action by a string */
+    static const std::string direction_names[4];	/**< English name of each arrow direction, used to represent a joypad action by a string */
 
     void game_key_pressed(GameKey key);
     void game_key_released(GameKey key);
@@ -95,7 +97,7 @@ class GameControls {
     const std::string & get_joypad_string(GameKey game_key);
     void notify_event(InputEvent &event);
     bool is_key_pressed(GameKey game_key);
-    int get_arrows_direction(void);
+    int get_wanted_direction8(void);
 
     // customization
     void customize(GameKey key);

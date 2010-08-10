@@ -58,13 +58,11 @@ void Hero::StatePlayerMovement::start(State *previous_state) {
 
   get_player_movement()->set_moving_enabled(can_control_movement(), can_control_direction());
 
-  if (can_control_movement()) {
-    if (get_player_movement()->is_started()) {
-      set_animation_walking();
-    }
-    else {
-      set_animation_stopped();
-    }
+  if (get_wanted_movement_direction8() != -1) {
+    set_animation_walking();
+  }
+  else {
+    set_animation_stopped();
   }
 }
 
@@ -154,8 +152,17 @@ bool Hero::StatePlayerMovement::can_control_direction(void) {
  *
  * @return the hero's wanted direction between 0 and 359, or -1 if he is stopped
  */
-int Hero::StatePlayerMovement::get_wanted_movement_direction(void) {
-  return get_player_movement()->get_direction();
+/**
+ * @brief Returns the direction of the hero's movement as defined by the controls applied by the player
+ * and the movements allowed is the current state.
+ *
+ * If he is not moving, -1 is returned.
+ * This direction may be different from the real movement direction because of obstacles.
+ *
+ * @return the hero's wanted direction between 0 and 7, or -1 if he is stopped
+ */
+int Hero::StatePlayerMovement::get_wanted_movement_direction8(void) {
+  return get_player_movement()->get_wanted_direction8();
 }
 
 /**
@@ -180,7 +187,7 @@ void Hero::StatePlayerMovement::notify_movement_changed(void) {
   if (can_control_movement()) {
     // the movement has changed: update the animation of the sprites
 
-    bool movement_walking = get_player_movement()->is_started();
+    bool movement_walking = get_wanted_movement_direction8() != -1;
     bool sprites_walking = hero->get_sprites()->is_walking();
 
     if (movement_walking && !sprites_walking) {

@@ -164,7 +164,7 @@ void InventoryItem::start(Game *game) {
 	}
 	else {
 	  hero->get_sprites()->set_animation_boomerang();
-	  this->direction_pressed = game->get_controls()->get_arrows_direction();
+	  this->direction_pressed8 = game->get_controls()->get_wanted_direction8();
 	}
 	break;
    
@@ -234,15 +234,19 @@ void InventoryItem::update(void) {
 	if (hero->is_animation_finished()) {
 	  finished = true;
 
-	  if (direction_pressed == -1) {
+	  if (direction_pressed8 == -1) {
 	    // the player can press the diagonal arrows before or after the boomerang key
-	    direction_pressed = game->get_controls()->get_arrows_direction();
+	    direction_pressed8 = game->get_controls()->get_wanted_direction8();
 	  }
-	  int boomerang_direction = direction_pressed;
-	  if (boomerang_direction == -1 || boomerang_direction % 90 == 0) {
-	    boomerang_direction = hero->get_animation_direction() * 90;
+
+	  int boomerang_direction8;
+	  if (direction_pressed8 == -1 || direction_pressed8 % 2 == 0) {
+	    boomerang_direction8 = hero->get_animation_direction() * 2;
 	  }
-	  game->get_current_map()->get_entities()->add_entity(new Boomerang(hero, boomerang_direction));
+	  else {
+	    boomerang_direction8 = direction_pressed8;
+	  }
+	  game->get_current_map()->get_entities()->add_entity(new Boomerang(hero, boomerang_direction8 * 45));
 	}
 	break;
  

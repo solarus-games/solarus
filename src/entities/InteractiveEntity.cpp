@@ -237,7 +237,7 @@ void InteractiveEntity::notify_collision(MapEntity *entity_overlapping, Collisio
 
     if (keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
 	&& hero->is_free()
-	&& (subtype != SIGN || hero->get_animation_direction() == 1) /* TODO move to future class Sign */) {
+	&& (subtype != SIGN || hero->is_facing_direction4(1))) { // TODO move to future class Sign
 
       // we show the action icon
       keys_effect->set_action_key_effect(action_key_effects[subtype]);

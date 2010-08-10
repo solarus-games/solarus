@@ -27,7 +27,7 @@ class Hero::StateFree: public Hero::StatePlayerMovement {
 
   private:
 
-    uint16_t pushing_direction_mask;		/**< mask of the direction where the hero is trying to push an obstacle */ 
+    int pushing_direction4;			/**< direction where the hero is trying to push an obstacle (0 to 3) or -1*/ 
     uint32_t start_pushing_date;		/**< date when the state pushing starts */
 
   public:
@@ -35,13 +35,16 @@ class Hero::StateFree: public Hero::StatePlayerMovement {
     StateFree(Hero *hero);
     ~StateFree(void);
 
-    bool is_free(void);
     void start(State *previous_state);
+    void update(void);
+    void set_suspended(bool suspended);
     void action_key_pressed(void);
+    void notify_movement_tried(bool success);
+
+    bool is_free(void);
+    bool can_start_sword(void);
     void set_animation_stopped(void);
     void set_animation_walking(void);
-    bool can_start_sword(void);
-    void notify_movement_result(bool tried_to_move, bool success);
 };
 
 #endif

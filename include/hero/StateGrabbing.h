@@ -28,6 +28,8 @@ class Hero::StateGrabbing: public Hero::State {
 
     StateGrabbing(Hero *hero);
     ~StateGrabbing(void);
+
+    void start(State *previous_state);
 };
 
 #endif

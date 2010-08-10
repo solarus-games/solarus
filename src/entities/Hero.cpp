@@ -1705,7 +1705,7 @@ void Hero::start_running(void) {
 }
 
 /**
- * @brief Starts grabbing the obstacle or the entity the hero is facing.
+ * @brief Starts grabbing an obstacle.
  */
 void Hero::start_grabbing(void) {
   set_state(new StateGrabbing(this));

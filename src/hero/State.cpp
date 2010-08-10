@@ -671,7 +671,6 @@ bool Hero::State::is_grabbing_or_pulling(void) {
  * If he is not grabbing any entity, false is returned.
  * Returns false by default.
  *
- *
  * @return true if the hero is grabbing and moving an entity
  */
 bool Hero::State::is_moving_grabbed_entity(void) {

@@ -111,7 +111,7 @@ bool Hero::StateFree::can_start_sword(void) {
  * @param success true if the position has actually just changed
  */
 void Hero::StateFree::notify_movement_result(bool tried_to_move, bool success) {
-  
+
   StatePlayerMovement::notify_movement_result(tried_to_move, success);
 
   // get the direction of the player

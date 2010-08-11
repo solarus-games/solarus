@@ -15,6 +15,11 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "hero/StateFalling.h"
+#include "hero/StateBackToSolidGround.h"
+#include "hero/HeroSprites.h"
+#include "entities/Teletransporter.h"
+#include "Game.h"
+#include "Equipment.h"
 
 /**
  * @brief Constructor.
@@ -30,5 +35,69 @@ Hero::StateFalling::StateFalling(Hero *hero):
  */
 Hero::StateFalling::~StateFalling(void) {
 
+}
+
+/**
+ * @brief Starts this state.
+ * @param previous_state the previous state
+ */
+void Hero::StateFalling::start(State *previous_state) {
+
+  State::start(previous_state);
+
+  sprites->save_animation_direction();
+  sprites->set_animation_falling();
+  game->play_sound("hero_falls");
+}
+
+/**
+ * @brief Stops this state.
+ * @param next_state the next state
+ */
+void Hero::StateFalling::stop(State *next_state) {
+
+  State::stop(next_state);
+
+  sprites->set_animation_stopped_normal();
+  sprites->restore_animation_direction();
+}
+
+/**
+ * @brief Updates this state.
+ */
+void Hero::StateFalling::update(void) {
+
+  State::update();
+
+  if (!suspended && sprites->is_animation_finished()) {
+
+    // the hero has just finished falling
+    Teletransporter *teletransporter = hero->get_delayed_teletransporter();
+    if (teletransporter != NULL) {
+      // special hole with a teletransporter
+      teletransporter->transport_hero(hero);
+    }
+    else {
+      // normal hole that hurts the hero
+      game->get_equipment()->remove_hearts(2);
+      hero->set_state(new StateBackToSolidGround(hero, true));
+    }
+  }
+}
+
+/**
+ * @brief Returns whether the hero ignores the effect of holes in this state.
+ * @return true if the hero ignores the effect of holes in the current state
+ */
+bool Hero::StateFalling::can_avoid_hole(void) {
+  return true;
+}
+
+/**
+ * @brief Returns whether the game over sequence can start in the current state.
+ * @return true if the game over sequence can start in the current state
+ */
+bool Hero::StateFalling::can_start_gameover_sequence(void) {
+  return false;
 }
 

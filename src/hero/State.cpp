@@ -426,6 +426,7 @@ void Hero::State::set_stop_on_obstacles(bool stop_on_obstacles) {
 
 /**
  * @brief Returns whether this state ignores the collisions with the detectors and the ground.
+ * @return true if the collision are ignored
  */
 bool Hero::State::are_collisions_ignored(void) {
   return false;

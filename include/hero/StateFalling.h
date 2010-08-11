@@ -28,6 +28,11 @@ class Hero::StateFalling: public Hero::State {
 
     StateFalling(Hero *hero);
     ~StateFalling(void);
+    void start(State *previous_state);
+    void stop(State *next_state);
+    void update(void);
+    bool can_avoid_hole(void);
+    bool can_start_gameover_sequence(void);
 };
 
 #endif

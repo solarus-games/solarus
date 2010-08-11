@@ -268,6 +268,7 @@ void Hero::update_ground(void) {
 
       if (get_distance(last_solid_ground_coords.get_x(), last_solid_ground_coords.get_y()) >= 8) {
 	// too far from the solid ground: make the hero fall
+	set_walking_speed(normal_walking_speed);
         set_state(new StateFalling(this));
       }
       else {
@@ -436,6 +437,8 @@ int Hero::get_height_above_shadow(void) {
 void Hero::set_map(Map *map) {
 
   MapEntity::set_map(map);
+
+  target_solid_ground_coords.set_xy(-1, -1);
 
   state->set_map(map);
 }
@@ -938,7 +941,7 @@ void Hero::notify_position_changed(void) {
       && (get_x() != last_solid_ground_coords.get_x() || get_y() != last_solid_ground_coords.get_y())) {
 
     // save the hero's last valid position
-    last_solid_ground_coords = get_xy();
+    last_solid_ground_coords.set_xy(get_xy());
     last_solid_ground_layer = get_layer();
   }
 }

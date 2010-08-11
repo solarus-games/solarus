@@ -24,10 +24,29 @@
  */
 class Hero::StateBackToSolidGround: public Hero::State {
 
+  private:
+
+    Rectangle target_xy;			/**< coordinates of the solid ground location to go to*/
+    Layer target_layer;				/**< layer of the target location */
+
   public:
 
-    StateBackToSolidGround(Hero *hero);
+    StateBackToSolidGround(Hero *hero, bool use_memorized_xy);
     ~StateBackToSolidGround(void);
+
+    void start(State *previous_state);
+    void stop(State *next_state);
+    void update(void);
+    bool can_start_gameover_sequence(void);
+    bool is_hero_visible(void);
+    bool are_collisions_ignored(void);
+    bool can_avoid_deep_water(void);
+    bool can_avoid_hole(void);
+    bool is_touching_ground(void);
+    bool can_avoid_conveyor_belt(void);
+    bool can_avoid_sensor(void);
+    bool can_avoid_explosion(void);
+
 };
 
 #endif

@@ -35,8 +35,9 @@ const Rectangle JumpMovement::basic_translations[8] = {
  * @param direction of the movement (0 to 7)
  * @param length length of the jump
  * @param with_collisions true to make the movement sensitive to obstacles
+ * @param movement_delay delay between each one-pixel move in the jump movement in milliseconds (0: default)
  */
-JumpMovement::JumpMovement(int direction, int length, bool with_collisions):
+JumpMovement::JumpMovement(int direction, int length, bool with_collisions, uint32_t movement_delay):
   PixelMovement(length, 10, false, with_collisions), jump_height(0) {
 
   // compute the path
@@ -45,7 +46,14 @@ JumpMovement::JumpMovement(int direction, int length, bool with_collisions):
     translation_vectors[i] = basic_translations[direction];
   }
   set_translation_vectors(translation_vectors);
-  set_delay(std::max(4, 14 - length / 10));
+
+  // set the speed
+  if (movement_delay == 0) {
+    set_delay(std::max(4, 14 - length / 10));
+  }
+  else {
+    set_delay(movement_delay);
+  }
 }
 
 /**

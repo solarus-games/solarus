@@ -40,9 +40,9 @@ class MapEntity {
 
   public:
 
-    typedef MapEntity* (CreationFunction)(Game *game, std::istream &is, Layer layer, int x, int y); /**< a function to parse a certain type of entity */
-    static CreationFunction* creation_functions[];                                      /**< the creation functions of all types of entities */
-    static const Rectangle directions_to_xy_moves[8];                                   /**< converts a direction (0 to 7) into a one-pixel xy move */
+    typedef MapEntity* (CreationFunction)(Game *game, std::istream &is, Layer layer, int x, int y);	/**< a function to parse a certain type of entity */
+    static CreationFunction* creation_functions[];			/**< the creation functions of all types of entities */
+    static const Rectangle directions_to_xy_moves[8];			/**< converts a direction (0 to 7) into a one-pixel xy move */
 
     /**
      * @brief Describes the features of each type of entity.
@@ -51,78 +51,79 @@ class MapEntity {
      * is it an obstacle, can it detect collisions, etc.
      */
     struct EntityTypeFeatures {
-      bool can_be_obstacle;         /**< Allows entities of this type to be obstacles for other entities.
-				     * If enabled, the function is_obstacle_for() will be called
-				     * to determine whether this is an obstacle or not. */
-      bool can_detect_entities;     /**< Allows entities of this type to detect the presence 
-				     * of the hero or other entities (this is possible only for
-				     * suclasses of Detector). If enabled, the function 
-				     * collision() will be called when a collision is detected. */
-      bool can_be_displayed;        /**< Allows entities of this type to be displayed. 
-				     * If enabled, the sprites added by the add_sprite() calls will be 
-				     * displayed (if any). */
-      bool is_displayed_in_y_order; /**< Allows an entity of this type to be displayed above
-				     * the hero and other entities having this property when it is in front of them.
-				     * This means that the displaying order of entities having this
-				     * feature depends on their y position. The entities without this feature
-				     * are displayed in the normal order (i.e. as specified by the map file), 
-				     * and before the entities with the feature. */
+      bool can_be_obstacle; 					/**< Allows entities of this type to be obstacles for other entities.
+								 * If enabled, the function is_obstacle_for() will be called
+								 * to determine whether this is an obstacle or not. */
+      bool can_detect_entities;					/**< Allows entities of this type to detect the presence 
+								 * of the hero or other entities (this is possible only for
+								 * suclasses of Detector). If enabled, the function 
+								 * collision() will be called when a collision is detected. */
+      bool can_be_displayed;					/**< Allows entities of this type to be displayed. 
+								 * If enabled, the sprites added by the add_sprite() calls will be 
+								 * displayed (if any). */
+      bool is_displayed_in_y_order;				/**< Allows an entity of this type to be displayed above
+								 * the hero and other entities having this property when it is in front of them.
+								 * This means that the displaying order of entities having this
+								 * feature depends on their y position. The entities without this feature
+								 * are displayed in the normal order (i.e. as specified by the map file), 
+								 * and before the entities with the feature. */
     };
 
   private:
 
-    static const EntityTypeFeatures entity_types_features[]; /**< The features of each entity type stored in map files. */
+    static const EntityTypeFeatures entity_types_features[];	/**< The features of each entity type stored in map files. */
 
   protected:
 
     // these fields are automatically set by class MapEntities after adding the entity to the map
-    Map *map;                 /**< The map where this entity is. */
-    Game *game;               /**< The game running that map. */
+    Map *map;							/**< The map where this entity is. */
+    Game *game;							/**< The game running that map. */
 
   private:
 
-    Layer layer;              /**< Layer of the entity: LAYER_LOW, LAYER_INTERMEDIATE or LAYER_HIGH.
-			       * The layer is constant for the tiles and can change for the hero and the dynamic entities.
-			       * The layer is private to make sure the set_layer() function is always called. */
+    Layer layer;						/**< Layer of the entity: LAYER_LOW, LAYER_INTERMEDIATE or LAYER_HIGH.
+								 * The layer is constant for the tiles and can change for the hero and the dynamic entities.
+								 * The layer is private to make sure the set_layer() function is always called. */
 
   protected:
 
-    Rectangle bounding_box;   /**< This rectangle represents the position of the entity of the map and is
-			       * used for the collision tests. It corresponds to the bounding box of the entity.
-			       * It can be different from the sprite's rectangle of the entity.
-			       * For example, the hero's bounding box is a 16*16 rectangle, but its sprite may be
-			       * a 24*32 rectangle. */
+    Rectangle bounding_box;					/**< This rectangle represents the position of the entity of the map and is
+								 * used for the collision tests. It corresponds to the bounding box of the entity.
+								 * It can be different from the sprite's rectangle of the entity.
+								 * For example, the hero's bounding box is a 16*16 rectangle, but its sprite may be
+								 * a 24*32 rectangle. */
 
-    Rectangle origin;         /**< Coordinates of the origin point of the entity,
-			       * relative to the top-left corner of its rectangle.
-			       * Remember that when you call get_x() and get_y(), you get the coordinates
-			       * of the origin point on the map, not the coordinates of the rectangle's
-			       * top-left corner.
-			       * This is useful because the top-left corner of the entity's bounding box does
-			       * not represent the actual entity's coordinates and does not match necessarily
-			       * the sprite's rectangle. */
+    Rectangle origin;						/**< Coordinates of the origin point of the entity,
+								 * relative to the top-left corner of its rectangle.
+								 * Remember that when you call get_x() and get_y(), you get the coordinates
+								 * of the origin point on the map, not the coordinates of the rectangle's
+								 * top-left corner.
+								 * This is useful because the top-left corner of the entity's bounding box does
+								 * not represent the actual entity's coordinates and does not match necessarily
+								 * the sprite's rectangle. */
 
     // other data, used for some kinds of entities only
 
-    std::string name;         /**< name of the entity, not used for all kinds of entities;
-			       * the name identifies the entity in the game (an empty string
-			       * indicates that the entity has no name) */
+    std::string name;						/**< name of the entity, not used for all kinds of entities;
+								 * the name identifies the entity in the game (an empty string
+								 * indicates that the entity has no name) */
 
-    int direction;            /**< direction of the entity, not used for all kinds of entities */
+    int direction;						/**< direction of the entity, not used for all kinds of entities */
 
-    std::map<std::string, Sprite*> sprites; /**< sprite(s) representing the entity, indexed by their animation set id;
-                                             * note that some entities manage their sprites themselves rather than using this field */
-    Sprite *first_sprite;     /**< the first sprite that was created into the sprites map,
-			       * stored here because the map does not keep the order from which its elements are added */
-    bool visible;             /**< indicates that this entity's sprites are currently displayed */
-    Movement *movement;       /**< movement of the entity, not used for all kinds of entities;
-			       * NULL indicates that the entity has no movement */
+    std::map<std::string, Sprite*> sprites;			/**< sprite(s) representing the entity, indexed by their animation set id;
+								 * note that some entities manage their sprites themselves rather than using this field */
+    Sprite *first_sprite;					/**< the first sprite that was created into the sprites map,
+								 * stored here because the map does not keep the order from which its elements are added */
+    bool visible;						/**< indicates that this entity's sprites are currently displayed */
+    Movement *movement;						/**< movement of the entity, not used for all kinds of entities;
+								 * NULL indicates that the entity has no movement */
+    Movement *old_movement;					/**< an old movement to destroy as soon as possible */
 
     // entity state
 
-    bool suspended;           /**< indicates that the animation and movement of this entity are suspended */
-    uint32_t when_suspended;  /**< indicates when this entity was suspended */
-    bool being_removed;       /**< indicates that the entity is not valid anymore because it is about to be removed */
+    bool suspended;						/**< indicates that the animation and movement of this entity are suspended */
+    uint32_t when_suspended;					/**< indicates when this entity was suspended */
+    bool being_removed;						/**< indicates that the entity is not valid anymore because it is about to be removed */
 
     // creation
     MapEntity(void);

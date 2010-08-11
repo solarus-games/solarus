@@ -24,11 +24,32 @@
  */
 class Hero::StateJumping: public Hero::State {
 
+  private:
+
+    JumpMovement *movement;			/**< the movement applied to the hero */
+    int direction8;				/**< direction of the jump (0 to 7) */
+    bool with_sound;				/**< indicates that a jump sound is played */
+    Layer layer_after_jump;			/**< layer where the hero arrives (LAYER_NB means unchanged) */
+
   public:
 
     StateJumping(Hero *hero, int direction8, int length, bool with_collisions, bool with_sound,
 	uint32_t movement_delay = 0, Layer layer_after_jump = LAYER_NB);
     ~StateJumping(void);
+
+    void start(State *previous_state);
+    void stop(State *next_state);
+    void update(void);
+    bool can_start_gameover_sequence(void);
+    int get_height_above_shadow(void);
+    bool is_touching_ground(void);
+    bool can_avoid_deep_water(void);
+    bool can_avoid_hole(void);
+    bool can_avoid_teletransporter(void);
+    bool can_avoid_conveyor_belt(void);
+    bool is_sensor_obstacle(Sensor *sensor);
+    bool can_avoid_sensor(void);
+    bool can_be_hurt(void);
 };
 
 #endif

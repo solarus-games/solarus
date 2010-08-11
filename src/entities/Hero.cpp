@@ -530,8 +530,7 @@ void Hero::place_on_destination_point(Map *map) {
       Stairs *stairs = get_stairs_overlapping();
       if (stairs != NULL) {
         // the hero arrived on the map by stairs
-	StateStairs *state = new StateStairs(this, stairs, Stairs::REVERSE_WAY);
-	set_state(state);
+	set_state(new StateStairs(this, stairs, Stairs::REVERSE_WAY));
       }
       else {
 	// the hero arrived on the map by a usual destination point
@@ -1265,6 +1264,16 @@ void Hero::notify_collision_with_teletransporter(Teletransporter *teletransporte
 }
 
 /**
+ * @brief Returns a teletransporter that has detected a collision with the hero
+ * bu will be activated when the current action is finished
+ * (e.g. falling into a hole or taking stairs).
+ * @return the delayed teletransporter
+ */
+Teletransporter * Hero::get_delayed_teletransporter(void) {
+  return delayed_teletransporter;
+}
+
+/**
  * @brief This function is called when a conveyor belt detects a collision with this entity.
  * @param conveyor_belt a conveyor belt
  * @param dx direction of the x move in pixels (0, 1 or -1)
@@ -1302,7 +1311,7 @@ void Hero::notify_collision_with_conveyor_belt(ConveyorBelt *conveyor_belt, int 
  */
 void Hero::notify_collision_with_stairs(Stairs *stairs, int collision_mode) {
 
-  if (!state->can_avoid_stairs()) {
+  if (state->can_take_stairs()) {
 
     Stairs::Way stairs_way;
     if (stairs->is_inside_floor()) {
@@ -1635,7 +1644,7 @@ void Hero::start_treasure(Treasure *treasure) {
  * @param length length of the jump in pixels
  * @param with_collisions true to stop the movement if there is a collision
  * @param with_sound true to play the "jump" sound
- * @param movement_delay delay between each one-pixel move in the jump movement (0: default)
+ * @param movement_delay delay between each one-pixel move in the jump movement in milliseconds (0: default)
  * @param layer_after_jump the layer to set when the jump is finished
  * (or LAYER_NB to keep the same layer)
  */

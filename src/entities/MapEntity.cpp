@@ -110,7 +110,7 @@ const Rectangle MapEntity::directions_to_xy_moves[] = {
  */
 MapEntity::MapEntity(void):
   map(NULL), game(NULL), layer(LAYER_LOW), name(""), direction(0), first_sprite(NULL), visible(true),
-  movement(NULL), suspended(false), when_suspended(0), being_removed(false) {
+  movement(NULL), old_movement(NULL), suspended(false), when_suspended(0), being_removed(false) {
 
   bounding_box.set_xy(0, 0);
   origin.set_xy(0, 0);
@@ -130,7 +130,7 @@ MapEntity::MapEntity(void):
  */
 MapEntity::MapEntity(Layer layer, int x, int y, int width, int height):
   map(NULL), game(NULL), layer(layer), bounding_box(x, y), name(""), direction(0), first_sprite(NULL), visible(true),
-  movement(NULL), suspended(false), when_suspended(0), being_removed(false) {
+  movement(NULL), old_movement(NULL), suspended(false), when_suspended(0), being_removed(false) {
 
   origin.set_xy(0, 0);
   set_size(width, height);
@@ -149,7 +149,7 @@ MapEntity::MapEntity(Layer layer, int x, int y, int width, int height):
 MapEntity::MapEntity(const std::string &name, int direction, Layer layer,
 		     int x, int y, int width, int height):
   map(NULL), game(NULL), layer(layer), bounding_box(x, y), name(name), direction(direction), visible(true),
-  movement(NULL), suspended(false), when_suspended(0), being_removed(false) {
+  movement(NULL), old_movement(NULL), suspended(false), when_suspended(0), being_removed(false) {
 
   origin.set_xy(0, 0);
   set_size(width, height);
@@ -421,7 +421,7 @@ void MapEntity::set_xy(int x, int y) {
  * 
  * This function sets the coordinates of the point as returned by get_x() and get_y().
  *
- * @param xy the new coordinates of the entity on the map
+ * @param xy the new coordinates of the entity on the map (the width and height are ignored)
  */
 void MapEntity::set_xy(const Rectangle &xy) {
   set_xy(xy.get_x(), xy.get_y());
@@ -809,10 +809,15 @@ void MapEntity::set_movement(Movement *movement) {
 }
 
 /**
- * @brief Removes and deletes the movement of this entity.
+ * @brief Removes the movement of this entity.
+ *
+ * The entity immediately stops moving.
+ * The movement object will be destroyed at the next cycle,
+ * thus this function can be called by the movement itself.
  */
 void MapEntity::clear_movement(void) {
-  delete movement;
+
+  old_movement = movement; // destroy it later
   movement = NULL;
 }
 
@@ -1392,6 +1397,11 @@ void MapEntity::update(void) {
   // update the movement
   if (movement != NULL) {
     movement->update();
+  }
+
+  if (old_movement != NULL) {
+    delete old_movement;
+    old_movement = NULL;
   }
 }
 

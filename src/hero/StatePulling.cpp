@@ -88,7 +88,7 @@ void Hero::StatePulling::update(void) {
     GameControls *controls = game->get_controls();
 
     int wanted_direction8 = controls->get_wanted_direction8();
-    int opposite_direction8 = ((sprites->get_animation_direction() * 2) + 4) % 8;
+    int opposite_direction8 = (sprites->get_animation_direction8() + 4) % 8;
 
     // stop pulling if the action key is released or if there is no more obstacle
     if (!controls->is_key_pressed(GameControls::ACTION)
@@ -159,7 +159,7 @@ void Hero::StatePulling::notify_grabbed_entity_collision(void) {
   int pulling_direction4 = sprites->get_animation_direction();
   Rectangle bounding_box = hero->get_bounding_box();
   bounding_box.add_xy(straight_dxy[pulling_direction4]);
-  hero->set_xy(bounding_box);
+  hero->set_bounding_box(bounding_box);
 
   stop_moving_pulled_entity();
 }
@@ -176,5 +176,13 @@ void Hero::StatePulling::stop_moving_pulled_entity(void) {
   pulled_entity = NULL;
   hero->clear_movement();
   hero->set_state(new StateGrabbing(hero));
+}
+
+/**
+ * @brief Returns whether the hero can be hurt in this state.
+ * @return true if the hero can be hurt in this state
+ */
+bool Hero::StatePulling::can_be_hurt(void) {
+  return !is_moving_grabbed_entity();
 }
 

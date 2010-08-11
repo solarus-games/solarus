@@ -172,7 +172,7 @@ void Hero::StatePushing::notify_grabbed_entity_collision(void) {
   // go back one pixel into the opposite direction
   Rectangle bounding_box = hero->get_bounding_box();
   bounding_box.add_xy(opposite_dxy[pushing_direction4]);
-  hero->set_xy(bounding_box);
+  hero->set_bounding_box(bounding_box);
 
   stop_moving_pushed_entity();
 }
@@ -194,12 +194,20 @@ void Hero::StatePushing::stop_moving_pushed_entity(void) {
     // the hero was pushing an entity without grabbing it
 
     // stop the animation pushing if his direction changed
-    if (get_wanted_movement_direction8() != pushing_direction4 * 2) {
+    if (controls->get_wanted_direction8() != pushing_direction4 * 2) {
       hero->set_state(new StateFree(hero));
     }
   }
   else {
     hero->set_state(new StateGrabbing(hero));
   }
+}
+
+/**
+ * @brief Returns whether the hero can be hurt in this state.
+ * @return true if the hero can be hurt in this state
+ */
+bool Hero::StatePushing::can_be_hurt(void) {
+  return !is_moving_grabbed_entity();
 }
 

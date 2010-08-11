@@ -334,6 +334,17 @@ int HeroSprites::get_animation_direction(void) {
 }
 
 /**
+ * @brief Returns the direction of the hero's sprites.
+ *
+ * It is different from the movement direction.
+ *
+ * @return the direction of the sprites (0 to 7, except diagonal directions)
+ */
+int HeroSprites::get_animation_direction8(void) {
+  return get_animation_direction() * 2;
+}
+
+/**
  * @brief Returns the direction that the hero's sprites should take.
  *
  * This function returns the direction that the hero's sprites should take depending on the direction wanted
@@ -509,8 +520,8 @@ void HeroSprites::display_on_map(void) {
   }
 
   if (hero->is_shadow_visible()) {
-    y -= hero->get_height_above_shadow();
     map->display_sprite(shadow_sprite, x, y);
+    y -= hero->get_height_above_shadow();
   }
 
   map->display_sprite(tunic_sprite, x, y);

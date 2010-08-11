@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright (C) 2009 Christopho, Solarus - http://www.solarus-engine.org
  * 
  * Solarus is free software; you can redistribute it and/or modify
@@ -98,6 +98,7 @@ class HeroSprites {
 
     int get_animation_direction(int keys_direction, int real_movement_direction);
     int get_animation_direction(void);
+    int get_animation_direction8(void);
     void set_animation_direction(int direction);
     void set_animation_direction8(int direction);
     void restart_animation(void);

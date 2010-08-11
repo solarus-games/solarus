@@ -143,6 +143,15 @@ bool Hero::StateFree::can_start_sword(void) {
 }
 
 /**
+ * @brief Returns whether the hero can take stairs in this state.
+ * If false is returned, stairs have no effect (but they are obstacle for the hero).
+ * @return true if the hero ignores the effect of stairs in this state
+ */
+bool Hero::StateFree::can_take_stairs(void) {
+  return true;
+}
+
+/**
  * Gives the sprites the animation stopped corresponding to this state.
  */
 void Hero::StateFree::set_animation_stopped(void) {

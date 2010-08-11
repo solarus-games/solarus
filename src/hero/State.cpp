@@ -56,6 +56,7 @@ Hero::State::~State(void) {
  * @param previous_state the previous state of NULL if this is the first state (for information)
  */
 void Hero::State::start(State *previous_state) {
+  set_suspended(hero->is_suspended());
 }
 
 /**
@@ -490,7 +491,7 @@ bool Hero::State::can_avoid_teletransporter(void) {
  * @brief Returns whether the effect of teletransporters is delayed in this state.
  *
  * When overlapping a teletransporter, if this function returns true, the teletransporter
- * will not be activated immediately.
+ * will not be activated immediately. The state then has to activate it when it is ready.
  * Returns false by default.
  */
 bool Hero::State::is_teletransporter_delayed(void) {
@@ -521,13 +522,14 @@ bool Hero::State::can_avoid_conveyor_belt(void) {
 }
 
 /**
- * @brief Returns whether the hero ignores the effect of stairs in this state.
+ * @brief Returns whether the hero can take stairs in this state.
+ * If false is returned, stairs have no effect (but they are obstacle for the hero).
  *
  * Returns false by default.
  *
  * @return true if the hero ignores the effect of stairs in this state
  */
-bool Hero::State::can_avoid_stairs(void) {
+bool Hero::State::can_take_stairs(void) {
   return false;
 }
 

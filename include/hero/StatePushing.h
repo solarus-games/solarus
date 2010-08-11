@@ -43,6 +43,8 @@ class Hero::StatePushing: public Hero::State {
     bool can_start_sword(void);
     bool is_moving_grabbed_entity(void);
     void notify_grabbed_entity_collision(void);
+
+    bool can_be_hurt(void);
 };
 
 #endif

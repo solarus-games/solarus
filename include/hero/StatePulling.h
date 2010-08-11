@@ -24,10 +24,23 @@
  */
 class Hero::StatePulling: public Hero::State {
 
+  private:
+
+    Detector *pulled_entity;			/**< the entity the hero is pulling (or NULL) */
+
+    void stop_moving_pulled_entity(void);
+
   public:
 
     StatePulling(Hero *hero);
     ~StatePulling(void);
+
+    void start(State *previous_state);
+    void stop(State *next_state);
+    void update(void);
+    void notify_grabbed_entity_collision(void);
+    bool is_grabbing_or_pulling(void);
+    bool is_moving_grabbed_entity(void);
 };
 
 #endif

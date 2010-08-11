@@ -30,6 +30,8 @@ class Hero::StateGrabbing: public Hero::State {
     ~StateGrabbing(void);
 
     void start(State *previous_state);
+    void update(void);
+    bool is_grabbing_or_pulling(void);
 };
 
 #endif

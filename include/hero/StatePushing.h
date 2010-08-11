@@ -27,9 +27,9 @@ class Hero::StatePushing: public Hero::State {
   private:
 
     int pushing_direction4;			/**< direction where the hero is looking (0 to 3) */
-    Detector *grabbed_entity;			/**< the entity the hero is pushing (or NULL) */
+    Detector *pushed_entity;			/**< the entity the hero is pushing (or NULL) */
 
-    void stop_moving_grabbed_entity(void);
+    void stop_moving_pushed_entity(void);
 
   public:
 

@@ -42,14 +42,15 @@ Hero::StatePushing::~StatePushing(void) {
 
 /**
  * @brief Starts this state.
+ * @param previous_state the previous state
  */
 void Hero::StatePushing::start(State *previous_state) {
 
   State::start(previous_state);
 
+  pushed_entity = NULL;
+  pushing_direction4 = sprites->get_animation_direction();
   sprites->set_animation_pushing();
-  pushing_direction4 = hero->get_animation_direction();
-  grabbed_entity = NULL;
 }
 
 /**
@@ -83,7 +84,7 @@ void Hero::StatePushing::update(void) {
       && ((horizontal && hero->is_x_aligned_to_grid()) || (!horizontal && hero->is_y_aligned_to_grid()));
 
     if (movement->is_finished() || has_reached_grid) {
-      stop_moving_grabbed_entity();
+      stop_moving_pushed_entity();
     }
   }
   else { // the hero is pushing a fixed obstacle
@@ -99,7 +100,7 @@ void Hero::StatePushing::update(void) {
     else if (controls->get_wanted_direction8() != pushing_direction4 * 2) {
 
       if (controls->is_key_pressed(GameControls::ACTION)) {
-        hero->set_state(new StateGrabbing(hero));
+	hero->set_state(new StateGrabbing(hero));
       }
       else {
 	hero->set_state(new StateFree(hero));
@@ -122,7 +123,7 @@ void Hero::StatePushing::update(void) {
 	  path[0] = path[1] = '0' + pushing_direction4 * 2;
 
 	  hero->set_movement(new PathMovement(path, 8, false, true, false));
-	  grabbed_entity = facing_entity;
+	  pushed_entity = facing_entity;
 	}
       }
     }
@@ -142,7 +143,7 @@ bool Hero::StatePushing::can_avoid_conveyor_belt(void) {
  * @return true if the hero can swing his sword in this state
  */
 bool Hero::StatePushing::can_start_sword(void) {
-  return true;
+  return !is_moving_grabbed_entity();
 }
 
 /**
@@ -150,7 +151,7 @@ bool Hero::StatePushing::can_start_sword(void) {
  * @return true if the hero is grabbing and moving an entity
  */
 bool Hero::StatePushing::is_moving_grabbed_entity(void) {
-  return grabbed_entity != NULL;
+  return pushed_entity != NULL;
 }
 
 /**
@@ -173,27 +174,24 @@ void Hero::StatePushing::notify_grabbed_entity_collision(void) {
   bounding_box.add_xy(opposite_dxy[pushing_direction4]);
   hero->set_xy(bounding_box);
 
-  stop_moving_grabbed_entity();
+  stop_moving_pushed_entity();
 }
 
 /**
- * @brief Makes the hero stop pushing the entity he is grabbing.
+ * @brief Makes the hero stop pushing the entity he is facing.
  *
  * This function is called while moving the entity, when the 
  * hero or the entity collides with an obstacle or when
  * the hero's movement is finished.
  */
-void Hero::StatePushing::stop_moving_grabbed_entity(void) {
+void Hero::StatePushing::stop_moving_pushed_entity(void) {
 
-  if (is_moving_grabbed_entity()) {
-    hero->clear_movement();
-  }
+  pushed_entity = NULL;
+  hero->clear_movement();
 
   GameControls *controls = game->get_controls();
   if (!controls->is_key_pressed(GameControls::ACTION)) {
-
     // the hero was pushing an entity without grabbing it
-    grabbed_entity = NULL;
 
     // stop the animation pushing if his direction changed
     if (get_wanted_movement_direction8() != pushing_direction4 * 2) {

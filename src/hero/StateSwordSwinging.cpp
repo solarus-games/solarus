@@ -71,3 +71,11 @@ bool Hero::StateSwordSwinging::can_start_sword(void) {
   return true;
 }
 
+/**
+ * @brief Returns whether the hero can be hurt in this state.
+ * @return true if the hero can be hurt in this state
+ */
+bool Hero::StateSwordSwinging::can_be_hurt(void) {
+  return true;
+}
+

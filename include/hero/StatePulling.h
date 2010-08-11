@@ -41,6 +41,8 @@ class Hero::StatePulling: public Hero::State {
     void notify_grabbed_entity_collision(void);
     bool is_grabbing_or_pulling(void);
     bool is_moving_grabbed_entity(void);
+
+    bool can_be_hurt(void);
 };
 
 #endif

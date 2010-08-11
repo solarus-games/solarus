@@ -96,7 +96,6 @@ class Hero::State {
     virtual bool is_teletransporter_delayed(void);
     virtual bool is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt);
     virtual bool can_avoid_conveyor_belt(void);
-    virtual bool can_avoid_stairs(void);
     virtual bool is_sensor_obstacle(Sensor *sensor);
     virtual bool can_avoid_sensor(void);
     virtual bool is_jump_sensor_obstacle(JumpSensor *jump_sensor);
@@ -114,6 +113,7 @@ class Hero::State {
     virtual void notify_grabbed_entity_collision(void);
     virtual bool is_striking_with_sword(Detector *detector);
     virtual bool can_start_sword(void);
+    virtual bool can_take_stairs(void);
     virtual bool can_sword_hit_crystal_switch(void);
 };
 

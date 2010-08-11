@@ -43,6 +43,7 @@ class Hero::StateFree: public Hero::StatePlayerMovement {
 
     bool is_free(void);
     bool can_start_sword(void);
+    bool can_take_stairs(void);
     void set_animation_stopped(void);
     void set_animation_walking(void);
 };

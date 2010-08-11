@@ -218,7 +218,7 @@ void JumpSensor::notify_collision(MapEntity *entity_overlapping, CollisionMode c
   if (entity_overlapping->is_hero()) {
     Hero* hero = (Hero*) entity_overlapping;
     if (hero->can_control_movement()) {
-      hero->start_jumping(direction, jump_length, false, true, LAYER_LOW);
+      hero->start_jumping(direction, jump_length, false, true, 0, LAYER_LOW);
     }
   }
 }

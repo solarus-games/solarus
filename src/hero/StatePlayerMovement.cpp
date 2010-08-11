@@ -77,7 +77,7 @@ void Hero::StatePlayerMovement::start(State *previous_state) {
 void Hero::StatePlayerMovement::stop(State *next_state) {
   
   if (!next_state->can_control_movement()) {
-    // destroy the movement unless the next state intends to keep it
+    // remove the movement unless the next state intends to keep it
     hero->clear_movement();
   }
 }

@@ -84,3 +84,11 @@ bool Hero::StateGrabbing::is_grabbing_or_pulling(void) {
   return true;
 }
 
+/**
+ * @brief Returns whether the hero can be hurt in this state.
+ * @return true if the hero can be hurt in this state
+ */
+bool Hero::StateGrabbing::can_be_hurt(void) {
+  return true;
+}
+

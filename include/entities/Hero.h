@@ -99,6 +99,7 @@ class Hero: public MapEntity {
     void update_movement(void);
     void movement_just_changed(void);
     void try_snap_to_facing_entity(void);
+    Teletransporter *get_delayed_teletransporter(void);
 
     // ground
     void update_ground(void);

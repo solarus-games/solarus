@@ -40,7 +40,7 @@ class JumpMovement: public PixelMovement {
 
   public:
 
-    JumpMovement(int direction, int length, bool with_collisions);
+    JumpMovement(int direction, int length, bool with_collisions, uint32_t movement_delay = 0);
     ~JumpMovement(void);
 
     int get_jump_height(void);

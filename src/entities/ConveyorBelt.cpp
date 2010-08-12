@@ -32,6 +32,7 @@ ConveyorBelt::ConveyorBelt(Layer layer, int x, int y, int direction):
   set_origin(8, 13);
   create_sprite("entities/conveyor_belt");
   get_sprite()->set_current_direction(direction);
+  set_direction(direction);
 }
 
 /**
@@ -84,8 +85,7 @@ bool ConveyorBelt::is_obstacle_for(MapEntity *other) {
  */
 void ConveyorBelt::notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
 
-  int direction = get_sprite()->get_current_direction();
-  const Rectangle &xy_move = direction_to_xy_move(direction);
+  const Rectangle &xy_move = direction_to_xy_move(get_direction());
   entity_overlapping->notify_collision_with_conveyor_belt(this, xy_move.get_x(), xy_move.get_y());
 }
 

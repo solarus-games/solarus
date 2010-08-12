@@ -53,6 +53,7 @@ void Hero::StatePlayerMovement::start(State *previous_state) {
 
   if (previous_state == NULL || !previous_state->can_control_movement()) {
     // create the movement unless it already exists
+    hero->clear_movement();
     hero->set_movement(new PlayerMovement(hero->get_walking_speed()));
     get_player_movement()->compute_movement();
   }

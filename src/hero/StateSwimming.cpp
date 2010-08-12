@@ -21,7 +21,7 @@
  * @param hero the hero controlled by this state
  */
 Hero::StateSwimming::StateSwimming(Hero *hero):
-  State(hero) {
+  StatePlayerMovement(hero) {
 
 }
 

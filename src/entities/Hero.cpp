@@ -1301,7 +1301,7 @@ void Hero::notify_collision_with_conveyor_belt(ConveyorBelt *conveyor_belt, int 
  
       if (!map->test_collision_with_obstacles(get_layer(), collision_box, this)) {
 	// move the hero
-	set_state(new StateConveyorBelt(this));
+	set_state(new StateConveyorBelt(this, conveyor_belt));
       }
     }
   }

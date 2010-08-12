@@ -24,10 +24,18 @@
  */
 class Hero::StateSwordTapping: public Hero::State {
 
+  private:
+
+    uint32_t next_sound_date;		/**< date when the sword tapping sound should be played */
+
   public:
 
     StateSwordTapping(Hero *hero);
     ~StateSwordTapping(void);
+
+    void start(State *previous_state);
+    void update(void);
+    void set_suspended(bool suspended);
 };
 
 #endif

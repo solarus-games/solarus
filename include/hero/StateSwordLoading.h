@@ -37,6 +37,8 @@ class Hero::StateSwordLoading: public Hero::StatePlayerMovement {
     void start(State *previous_state);
     void update(void);
     void set_suspended(bool suspended);
+    void notify_movement_tried(bool success);
+
     void set_animation_stopped(void);
     void set_animation_walking(void);
     bool is_direction_locked(void);

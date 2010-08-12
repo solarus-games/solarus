@@ -58,7 +58,7 @@ void Hero::StateGrabbing::update(void) {
   GameControls *controls = game->get_controls();
 
   int wanted_direction8 = controls->get_wanted_direction8();
-  int sprite_direction8 = sprites->get_animation_direction() * 2;
+  int sprite_direction8 = sprites->get_animation_direction8();
 
   // release the obstacle
   if (!controls->is_key_pressed(GameControls::ACTION)) {

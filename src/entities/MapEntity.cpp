@@ -167,8 +167,10 @@ MapEntity::~MapEntity(void) {
     delete it->second;
   }
 
-  if (movement != NULL) {
-    clear_movement();
+  clear_movement();
+
+  if (old_movement != NULL) {
+    delete old_movement;
   }
 }
 
@@ -816,6 +818,10 @@ void MapEntity::set_movement(Movement *movement) {
  * thus this function can be called by the movement itself.
  */
 void MapEntity::clear_movement(void) {
+
+  if (old_movement != NULL) {
+    delete old_movement;
+  }
 
   old_movement = movement; // destroy it later
   movement = NULL;

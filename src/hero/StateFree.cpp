@@ -102,25 +102,23 @@ void Hero::StateFree::action_key_pressed(void) {
 }
 
 /**
- * @brief Notifies this state of the result of the current movement.
+ * @brief Notifies this state that the hero has just tried to change his position.
  * @param success true if the position has actually just changed
  */
 void Hero::StateFree::notify_movement_tried(bool success) {
 
   StatePlayerMovement::notify_movement_tried(success);
 
-  if (!success) { // the hero has just tried to move unsuccessfuly
+  if (!success // the hero has just tried to move unsuccessfuly
+      &&  hero->is_facing_point_on_obstacle()) { // he is really facing an obstacle
 
-    if (hero->is_facing_point_on_obstacle()) { // he is facing an obstacle
-
-      uint32_t now = System::now();
-      if (pushing_direction4 == -1) { // we start counting to trigger animation "pushing"
-	start_pushing_date = now + 800; // start animation "pushing" after 800 ms
-	pushing_direction4 = hero->get_animation_direction();
-      }
-      else if (now >= start_pushing_date) {
-	hero->set_state(new StatePushing(hero));
-      }
+    uint32_t now = System::now();
+    if (pushing_direction4 == -1) { // we start counting to trigger animation "pushing"
+      start_pushing_date = now + 800; // start animation "pushing" after 800 ms
+      pushing_direction4 = hero->get_animation_direction();
+    }
+    else if (now >= start_pushing_date) {
+      hero->set_state(new StatePushing(hero));
     }
   }
 }

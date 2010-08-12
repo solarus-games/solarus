@@ -17,12 +17,12 @@
 #ifndef SOLARUS_HERO_STATE_SWIMMING_H
 #define SOLARUS_HERO_STATE_SWIMMING_H
 
-#include "hero/State.h"
+#include "hero/StatePlayerMovement.h"
 
 /**
  * @brief The state "Swimming" of the hero.
  */
-class Hero::StateSwimming: public Hero::State {
+class Hero::StateSwimming: public Hero::StatePlayerMovement {
 
   public:
 

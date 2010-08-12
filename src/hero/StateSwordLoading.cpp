@@ -16,7 +16,9 @@
  */
 #include "hero/StateSwordLoading.h"
 #include "hero/StateSpinAttack.h"
+#include "hero/StateSwordTapping.h"
 #include "hero/HeroSprites.h"
+#include "entities/Detector.h"
 #include "lowlevel/System.h"
 #include "Game.h"
 #include "GameControls.h"
@@ -95,6 +97,25 @@ void Hero::StateSwordLoading::set_suspended(bool suspended) {
 
   if (!suspended) {
     sword_loaded_date += System::now() - when_suspended;
+  }
+}
+
+/**
+ * @brief Notifies this state that the hero has just tried to change his position.
+ * @param success true if the position has actually just changed
+ */
+void Hero::StateSwordLoading::notify_movement_tried(bool success) {
+
+  StatePlayerMovement::notify_movement_tried(success);
+
+  Detector *facing_entity = hero->get_facing_entity();
+
+  if (!success					// the hero has just tried to move unsuccessfuly
+      && hero->is_facing_point_on_obstacle()	// he is really facing an obstacle
+      && get_wanted_movement_direction8() == sprites->get_animation_direction8()	// he is trying to move towards the obstacle
+      && (facing_entity == NULL || !facing_entity->is_sword_ignored())) {		// the obstacle allows him to tap with his sword
+
+    hero->set_state(new StateSwordTapping(hero));
   }
 }
 

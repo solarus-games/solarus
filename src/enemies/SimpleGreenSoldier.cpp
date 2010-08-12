@@ -61,6 +61,7 @@ void SimpleGreenSoldier::initialize(void) {
  * or it was just hurt).
  */
 void SimpleGreenSoldier::restart(void) {
+
   Enemy::restart();
   walk(Random::get_number(4));
 }

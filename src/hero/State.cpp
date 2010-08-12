@@ -365,10 +365,9 @@ void Hero::State::notify_movement_changed(void) {
 }
 
 /**
- * @brief Notifies this state of the result of the current movement.
+ * @brief Notifies this state that the hero has just tried to change his position.
  *
- * This function is called when the hero has just tried to change its position
- * and only when the game is not suspended.
+ * This function is called only when the game is not suspended.
  *
  * @param success true if the position has actually just changed
  */

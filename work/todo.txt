@@ -72,6 +72,8 @@ Bugs :
   Cependant, on se blesse même si on le touche alors qu'il en est à son animation de destruction.
 - achat d'un croissant : dialogue avant et après l'achat redondant
 - Dans les caves jumelles, si on retourne dans celle de gauche, on peut appuyer à nouveau sur l'interrupteur en haut de la salle.
+- tapis roulants : l'animation marche se déclenche après le premier
+- TargetMovement : problèmes à l'initialisation avant de connaître les coordonnées actuelles, selon que l'on cible un point ou une entité
 
 
 Dernière version fonctionnelle (avant travaux sur Hero) : 1355

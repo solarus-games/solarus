@@ -114,7 +114,7 @@ void Movement::set_position(int x, int y) {
   if (entity != NULL) {
     entity->set_x(x);
     entity->set_y(y);
-    entity->notify_position_changed();
+    notify_position_changed();
   }
   else {
     this->x = x;
@@ -130,6 +130,18 @@ void Movement::set_position(int x, int y) {
  */
 void Movement::set_position(const Rectangle &xy) {
   set_position(xy.get_x(), xy.get_y());
+}
+
+/**
+ * @brief Notifies this movement that the coordinates controlled by it
+ * have just been changed.
+ * By default, the entity (if any) is notified.
+ */
+void Movement::notify_position_changed(void) {
+
+  if (entity != NULL) {
+    entity->notify_position_changed();
+  }
 }
 
 /**

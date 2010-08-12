@@ -59,6 +59,7 @@ void Hero::StatePlayerMovement::start(State *previous_state) {
   }
 
   if (get_wanted_movement_direction8() != -1) {
+    std::cout << "walking because player movement has direction " << get_wanted_movement_direction8() << std::endl;
     set_animation_walking();
   }
   else {

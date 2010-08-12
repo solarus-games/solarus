@@ -26,9 +26,9 @@
  * @param speed speed of the movement
  */
 TargetMovement::TargetMovement(int target_x, int target_y, int speed):
-  target_x(target_x), target_y(target_y), target_entity(NULL), sign_x(0), sign_y(0), speed(speed),
-  next_recomputation_date(System::now()) {
+  target_entity(NULL), sign_x(0), sign_y(0), speed(speed) {
 
+    set_target(target_x, target_y);
 }
 
 /**
@@ -40,9 +40,9 @@ TargetMovement::TargetMovement(int target_x, int target_y, int speed):
  * @param speed speed of the movement
  */
 TargetMovement::TargetMovement(MapEntity *target_entity, int speed):
-  target_x(target_entity->get_x()), target_y(target_entity->get_y()), target_entity(target_entity),
-  sign_x(0), sign_y(0), speed(speed), next_recomputation_date(System::now()) {
+  sign_x(0), sign_y(0), speed(speed) {
 
+    set_target(target_entity);
 }
 
 /**
@@ -58,6 +58,7 @@ TargetMovement::~TargetMovement(void) {
  * @param target_y y coordinate of the target point
  */
 void TargetMovement::set_target(int target_x, int target_y) {
+
   this->target_x = target_x;
   this->target_y = target_y;
   next_recomputation_date = System::now();
@@ -68,12 +69,14 @@ void TargetMovement::set_target(int target_x, int target_y) {
  * @param target_entity the target entity
  */
 void TargetMovement::set_target(MapEntity *target_entity) {
-  this->target_entity = target_entity;
-  this->target_x = target_entity->get_x();
-  this->target_y = target_entity->get_y();
-  next_recomputation_date = System::now();
-}
 
+  this->target_entity = target_entity;
+  this->target_x = target_x;
+  this->target_y = target_y;
+  recompute_movement();
+  next_recomputation_date = System::now() + 100;
+  // TODO not consistent with above
+}
 
 /**
  * @brief Updates the movement.
@@ -104,7 +107,7 @@ void TargetMovement::update(void) {
 void TargetMovement::recompute_movement(void) { 
 
   if (target_entity != NULL) {
-    // the target is not necessarily an entity
+    // the target may be a moving entity
     target_x = target_entity->get_x();
     target_y = target_entity->get_y();
   }
@@ -114,8 +117,8 @@ void TargetMovement::recompute_movement(void) {
   int dx = target_x - get_x();
   int dy = target_y - get_y();
 
-  sign_x = dx >= 0 ? 1 : -1;
-  sign_y = dy >= 0 ? 1 : -1;
+  sign_x = (dx >= 0) ? 1 : -1;
+  sign_y = (dy >= 0) ? 1 : -1;
 
   set_speed(speed);
   set_direction(angle);
@@ -126,6 +129,7 @@ void TargetMovement::recompute_movement(void) {
  * whether the target was reached.
  */
 bool TargetMovement::is_finished(void) {
+
   return is_stopped();
 }
 

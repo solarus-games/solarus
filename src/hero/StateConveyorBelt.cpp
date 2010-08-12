@@ -52,7 +52,7 @@ void Hero::StateConveyorBelt::start(State *previous_state) {
 
   // first, snap the hero to the center of the conveyor belt
   snapping = true;
-  hero->set_movement(new TargetMovement(conveyor_belt, hero->get_walking_speed()));
+  hero->set_movement(new TargetMovement(conveyor_belt, hero->get_walking_speed() * 2 / 3));
 }
 
 /**

@@ -28,6 +28,11 @@ class Hero::StatePlunging: public Hero::State {
 
     StatePlunging(Hero *hero);
     ~StatePlunging(void);
+
+    void start(State *previous_state);
+    void update(void);
+    bool can_start_gameover_sequence(void);
+    bool is_touching_ground(void);
 };
 
 #endif

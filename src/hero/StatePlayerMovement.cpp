@@ -89,6 +89,8 @@ void Hero::StatePlayerMovement::stop(State *next_state) {
     // remove the movement unless the next state intends to keep it
     hero->clear_movement();
   }
+
+  sprites->set_animation_stopped_normal();
 }
 
 /**

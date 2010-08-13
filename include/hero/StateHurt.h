@@ -24,10 +24,26 @@
  */
 class Hero::StateHurt: public Hero::State {
 
+  private:
+
+    MapEntity *source;		/**< the entity that hurts the hero (usually an enemy) */
+    int life_points;		/**< number of heart quarters to remove (this number may be reduced by the tunic) */
+    int magic_points;		/**< number of magic points to remove */
+
   public:
 
     StateHurt(Hero *hero, MapEntity *source, int life_points, int magic_points);
     ~StateHurt(void);
+
+    void start(State *previous_state);
+    void stop(State *next_state);
+    void update(void);
+    bool can_start_gameover_sequence(void);
+    bool is_touching_ground(void);
+    bool is_teletransporter_obstacle(Teletransporter *teletransporter);
+    bool is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt);
+    bool is_sensor_obstacle(Sensor *sensor);
+    bool can_be_hurt(void);
 };
 
 #endif

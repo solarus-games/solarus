@@ -24,10 +24,18 @@
  */
 class Hero::StateVictory: public Hero::State {
 
+  private:
+    
+    uint32_t end_victory_date;		/**< date when the victory animation stops */
+
   public:
 
     StateVictory(Hero *hero);
     ~StateVictory(void);
+
+    void start(State *previous_state);
+    void update(void);
+    void set_suspended(bool suspended);
 };
 
 #endif

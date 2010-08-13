@@ -155,6 +155,7 @@ int GameControls::get_wanted_direction8(void) {
   if (is_key_pressed(DOWN)) {
     direction_mask |= direction_masks[3];
   }
+
   return masks_to_directions8[direction_mask];
 }
 

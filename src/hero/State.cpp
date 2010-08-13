@@ -48,6 +48,14 @@ Hero::State::~State(void) {
 }
 
 /**
+ * @brief Returns whether this state is the current state.
+ * @return true if this state is the current state
+ */
+bool Hero::State::is_current_state(void) {
+  return hero->state == this;
+}
+
+/**
  * @brief Starts this state.
  *
  * This function is called automatically when this state becomes the active state of the hero.

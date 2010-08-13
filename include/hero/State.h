@@ -40,6 +40,7 @@ class Hero::State {
     uint32_t when_suspended;		/**< indicates when this state was suspended */
 
     State(Hero *hero);
+    bool is_current_state(void);
 
   public:
 

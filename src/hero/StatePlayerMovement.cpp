@@ -36,6 +36,10 @@ Hero::StatePlayerMovement::~StatePlayerMovement(void) {
 
 /**
  * @brief Returns the movement of the hero controlled by the player.
+ *
+ * This function should be called only when the movement of the hero is
+ * an instance of PlayerMovement.
+ *
  * @return the movement
  */
 PlayerMovement * Hero::StatePlayerMovement::get_player_movement(void) {
@@ -58,12 +62,13 @@ void Hero::StatePlayerMovement::start(State *previous_state) {
     get_player_movement()->compute_movement();
   }
 
-  if (get_wanted_movement_direction8() != -1) {
-    std::cout << "walking because player movement has direction " << get_wanted_movement_direction8() << std::endl;
-    set_animation_walking();
-  }
-  else {
-    set_animation_stopped();
+  if (is_current_state()) { // yes, the state may have already changed
+    if (get_wanted_movement_direction8() != -1) {
+      set_animation_walking();
+    }
+    else {
+      set_animation_stopped();
+    }
   }
 }
 
@@ -77,7 +82,9 @@ void Hero::StatePlayerMovement::start(State *previous_state) {
  * @param next_state the next state (for information)
  */
 void Hero::StatePlayerMovement::stop(State *next_state) {
-  
+ 
+  get_player_movement()->stop();
+
   if (!next_state->can_control_movement()) {
     // remove the movement unless the next state intends to keep it
     hero->clear_movement();

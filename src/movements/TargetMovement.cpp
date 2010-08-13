@@ -26,9 +26,9 @@
  * @param speed speed of the movement
  */
 TargetMovement::TargetMovement(int target_x, int target_y, int speed):
-  target_entity(NULL), sign_x(0), sign_y(0), speed(speed) {
+  target_x(target_x), target_y(target_y), target_entity(NULL), sign_x(0), sign_y(0),
+  speed(speed), next_recomputation_date(System::now()), finished(false) {
 
-    set_target(target_x, target_y);
 }
 
 /**
@@ -40,9 +40,9 @@ TargetMovement::TargetMovement(int target_x, int target_y, int speed):
  * @param speed speed of the movement
  */
 TargetMovement::TargetMovement(MapEntity *target_entity, int speed):
-  sign_x(0), sign_y(0), speed(speed) {
+  target_x(target_entity->get_x()), target_y(target_entity->get_y()), target_entity(target_entity),
+  sign_x(0), sign_y(0), speed(speed), next_recomputation_date(System::now()), finished(false) {
 
-    set_target(target_entity);
 }
 
 /**
@@ -61,7 +61,8 @@ void TargetMovement::set_target(int target_x, int target_y) {
 
   this->target_x = target_x;
   this->target_y = target_y;
-  next_recomputation_date = System::now();
+  recompute_movement();
+  next_recomputation_date = System::now() + 100;
 }
 
 /**
@@ -75,7 +76,6 @@ void TargetMovement::set_target(MapEntity *target_entity) {
   this->target_y = target_y;
   recompute_movement();
   next_recomputation_date = System::now() + 100;
-  // TODO not consistent with above
 }
 
 /**
@@ -95,6 +95,7 @@ void TargetMovement::update(void) {
   else if (dx * sign_x <= 0 && dy * sign_y <= 0) {
     set_position(target_x, target_y); // because the target movement may have not been very precise
     stop();
+    finished = true;
   }
 
   Movement::update();
@@ -112,16 +113,20 @@ void TargetMovement::recompute_movement(void) {
     target_y = target_entity->get_y();
   }
 
-  double angle = Geometry::get_angle(get_x(), get_y(), target_x, target_y);
+  if (get_x() != target_x || get_y() != target_y) {
+    finished = false;
 
-  int dx = target_x - get_x();
-  int dy = target_y - get_y();
+    double angle = Geometry::get_angle(get_x(), get_y(), target_x, target_y);
 
-  sign_x = (dx >= 0) ? 1 : -1;
-  sign_y = (dy >= 0) ? 1 : -1;
+    int dx = target_x - get_x();
+    int dy = target_y - get_y();
 
-  set_speed(speed);
-  set_direction(angle);
+    sign_x = (dx >= 0) ? 1 : -1;
+    sign_y = (dy >= 0) ? 1 : -1;
+
+    set_speed(speed);
+    set_direction(angle);
+  }
 }
 
 /**
@@ -130,6 +135,6 @@ void TargetMovement::recompute_movement(void) {
  */
 bool TargetMovement::is_finished(void) {
 
-  return is_stopped();
+  return finished;
 }
 

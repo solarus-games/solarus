@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_PLAYER_MOVEMENT
-#define SOLARUS_PLAYER_MOVEMENT
+#ifndef SOLARUS_PLAYER_MOVEMENT_H
+#define SOLARUS_PLAYER_MOVEMENT_H
 
 #include "Common.h"
 #include "movements/SmoothCollisionMovement.h"

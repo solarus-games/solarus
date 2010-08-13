@@ -59,3 +59,33 @@ void Hero::StateSpinAttack::update(void) {
   }
 }
 
+/**
+ * @brief Returns whether crystal switches can be activated by the sword in this state.
+ * @return true if crystal switches can be activated by the sword in this state
+ */
+bool Hero::StateSpinAttack::can_sword_hit_crystal_switch(void) {
+  return true;
+}
+
+/**
+ * @brief Tests whether the hero is cutting with his sword the specified detector
+ * for which a collision was detected.
+ * @param detector the detector to check
+ * @return true if the sword is cutting this detector
+ */
+bool Hero::StateSpinAttack::is_cutting_with_sword(Detector *detector) {
+
+  // during a spin attack, any sprite collision can cut things
+  return true;
+}
+
+/**
+ * @brief Returns the damage power of the sword for the current attack.
+ * @return the current damage factor of the sword
+ */
+int Hero::StateSpinAttack::get_sword_damage_factor(void) {
+
+  // the damage are multiplied by 2
+  return State::get_sword_damage_factor() * 2;
+}
+

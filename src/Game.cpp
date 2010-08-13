@@ -84,6 +84,8 @@ Game::~Game(void) {
 
   // quit the game
   current_map->leave(); // tell the map that the hero is not there anymore
+  delete current_map;
+
   solarus->get_debug_keys()->set_game(NULL);
   stop_music();
 
@@ -377,6 +379,7 @@ void Game::update_transitions(void) {
 	// set the next map
 	load_dungeon();
 	current_map->unload();
+	delete current_map;
 	current_map = next_map;
 	next_map = NULL;
       }
@@ -526,14 +529,12 @@ void Game::set_current_map(MapId map_id, const std::string &destination_point_na
   hero->reset_movement();
 
   // load the next map
-  next_map = ResourceManager::get_map(map_id);
-  if (!next_map->is_loaded()) {
-    next_map->load(this);
-    next_map->check_suspended();
+  next_map = new Map(map_id);
+  next_map->load(this);
+  next_map->check_suspended();
 
-    if (current_map != NULL) {
-      current_map->check_suspended();
-    }
+  if (current_map != NULL) {
+    current_map->check_suspended();
   }
 
   // initialize the destination point, from the specified name or from the savegame

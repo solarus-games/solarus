@@ -38,6 +38,7 @@ class Hero::StateSwordLoading: public Hero::StatePlayerMovement {
     void update(void);
     void set_suspended(bool suspended);
     void notify_movement_tried(bool success);
+    void notify_attacked_enemy(EnemyAttack attack, Enemy *victim, int result, bool killed);
 
     void set_animation_stopped(void);
     void set_animation_walking(void);

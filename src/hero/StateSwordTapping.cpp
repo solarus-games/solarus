@@ -104,4 +104,24 @@ void Hero::StateSwordTapping::set_suspended(bool suspended) {
   }
 }
 
+/**
+ * @brief Returns whether crystal switches can be activated by the sword in this state.
+ * @return true if crystal switches can be activated by the sword in this state
+ */
+bool Hero::StateSwordTapping::can_sword_hit_crystal_switch(void) {
+  return true;
+}
+
+/**
+ * @brief Tests whether the hero is cutting with his sword the specified detector
+ * for which a collision was detected.
+ * @param detector the detector to check
+ * @return true if the sword is cutting this detector
+ */
+bool Hero::StateSwordTapping::is_cutting_with_sword(Detector *detector) {
+
+  return detector->is_obstacle_for(hero)	// only obstacle entities can be cut
+    && hero->get_facing_entity() == detector	// only one entity at a time
+    && sprites->get_current_frame() >= 3;	// wait until the animation shows an appropriate frame
+}
 

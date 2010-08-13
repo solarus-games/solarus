@@ -17,6 +17,7 @@
 #include "hero/StateSwordLoading.h"
 #include "hero/StateSpinAttack.h"
 #include "hero/StateSwordTapping.h"
+#include "hero/StateFree.h"
 #include "hero/HeroSprites.h"
 #include "entities/Detector.h"
 #include "lowlevel/System.h"
@@ -78,7 +79,7 @@ void Hero::StateSwordLoading::update(void) {
     // stop loading the sword, go to the normal state or make a spin attack
     if (!sword_loaded) {
       // the sword was not loaded yet: go to the normal state
-      hero->start_free();
+      hero->set_state(new StateFree(hero));
     }
     else {
       // the sword is loaded: release a spin attack
@@ -116,6 +117,20 @@ void Hero::StateSwordLoading::notify_movement_tried(bool success) {
       && (facing_entity == NULL || !facing_entity->is_sword_ignored())) {		// the obstacle allows him to tap with his sword
 
     hero->set_state(new StateSwordTapping(hero));
+  }
+}
+
+/**
+ * @brief Notifies this state that the hero has just attacked an enemy
+ * @param attack the attack
+ * @param victim the enemy just hurt
+ * @param result indicates how the enemy has reacted to the attack (see Enemy.h)
+ * @param killed indicates that the attack has just killed the enemy
+ */
+void Hero::StateSwordLoading::notify_attacked_enemy(EnemyAttack attack, Enemy *victim, int result, bool killed) {
+
+  if (result != 0 && attack == ATTACK_SWORD) {
+    hero->set_state(new StateFree(hero));
   }
 }
 

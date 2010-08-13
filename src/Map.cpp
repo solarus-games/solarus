@@ -39,7 +39,8 @@ MapLoader Map::map_loader;
  * and the script file of the map
  */
 Map::Map(MapId id):
-  game(NULL), id(id), started(false), welcome_message_id(""), entities(NULL), suspended(false), script(NULL) {
+  game(NULL), id(id), started(false), destination_point_name(""),
+  welcome_message_id(""), entities(NULL), suspended(false), script(NULL) {
 
 }
 

@@ -31,6 +31,9 @@ class Hero::StateSpinAttack: public Hero::State {
 
     void start(State *previous_state);
     void update(void);
+    bool can_sword_hit_crystal_switch(void);
+    bool is_cutting_with_sword(Detector *detector);
+    int get_sword_damage_factor(void);
 };
 
 #endif

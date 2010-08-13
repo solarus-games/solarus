@@ -15,13 +15,18 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "hero/StateVictory.h"
+#include "hero/HeroSprites.h"
+#include "lowlevel/System.h"
+#include "Game.h"
+#include "Map.h"
+#include "MapScript.h"
 
 /**
  * @brief Constructor.
  * @param hero the hero controlled by this state
  */
 Hero::StateVictory::StateVictory(Hero *hero):
-  State(hero) {
+  State(hero), end_victory_date(0) {
 
 }
 
@@ -30,5 +35,47 @@ Hero::StateVictory::StateVictory(Hero *hero):
  */
 Hero::StateVictory::~StateVictory(void) {
 
+}
+
+/**
+ * @brief Starts this state.
+ * @param previous_state the previous state of NULL if this is the first state (for information)
+ */
+void Hero::StateVictory::start(State *previous_state) {
+
+  State::start(previous_state);
+
+  sprites->set_animation_victory();
+  game->play_sound("victory");
+
+  // compute the date when the victory state is considered as finished,
+  // but the game may be currently suspended
+  uint32_t start_victory_date = suspended ? when_suspended : System::now();
+  end_victory_date = start_victory_date + 1500;
+}
+
+/**
+ * @brief Updates this state.
+ */
+void Hero::StateVictory::update(void) {
+
+  State::update();
+
+  if (System::now() >= end_victory_date) {
+    map->get_script()->event_hero_victory_sequence_finished();
+  }
+}
+
+/**
+ * @brief Notifies this state that the game was just suspended or resumed.
+ * @param suspended true if the game is suspended
+ */
+void Hero::StateVictory::set_suspended(bool suspended) {
+
+  State::set_suspended(suspended);
+
+  if (!suspended) {
+    end_victory_date += System::now() - when_suspended;
+  }
 }
 

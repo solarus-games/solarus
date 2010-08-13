@@ -24,10 +24,19 @@
  */
 class Hero::StateTreasure: public Hero::State {
 
+  private:
+
+    Treasure *treasure;		/**< the treasure to give to the hero */
+
   public:
 
     StateTreasure(Hero *hero, Treasure *treasure);
     ~StateTreasure(void);
+
+    void start(State *previous_state);
+    void stop(State *next_state);
+    void update(void);
+    void display_on_map(void);
 };
 
 #endif

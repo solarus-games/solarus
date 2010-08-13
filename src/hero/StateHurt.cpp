@@ -15,6 +15,11 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "hero/StateHurt.h"
+#include "hero/StateFree.h"
+#include "hero/HeroSprites.h"
+#include "movements/StraightMovement.h"
+#include "Game.h"
+#include "Equipment.h"
 
 /**
  * @brief Constructor.
@@ -24,7 +29,7 @@
  * @param magic_points number of magic points to remove
  */
 Hero::StateHurt::StateHurt(Hero *hero, MapEntity *source, int life_points, int magic_points):
-  State(hero) {
+  State(hero), source(source), life_points(life_points), magic_points(magic_points) {
 
 }
 
@@ -33,5 +38,104 @@ Hero::StateHurt::StateHurt(Hero *hero, MapEntity *source, int life_points, int m
  */
 Hero::StateHurt::~StateHurt(void) {
 
+}
+
+/**
+ * @brief Starts this state.
+ * @param previous_state the previous state of NULL if this is the first state (for information)
+ */
+void Hero::StateHurt::start(State *previous_state) {
+
+  State::start(previous_state);
+
+  Equipment *equipment = game->get_equipment();
+  game->play_sound("hero_hurt");
+  life_points = std::max(1, life_points / (equipment->get_tunic() + 1));
+  equipment->remove_hearts(life_points);
+
+  if (magic_points > 0 && equipment->get_magic() > 0) {
+    equipment->remove_magic(magic_points);
+    game->play_sound("magic_bar");
+  }
+  sprites->set_animation_hurt();
+  sprites->blink();
+
+  double angle = source->get_vector_angle(hero);
+  hero->set_movement(new StraightMovement(12, angle, 200));
+}
+
+/**
+ * @brief Ends this state.
+ * @param next_state the next state (for information)
+ */
+void Hero::StateHurt::stop(State *next_state) {
+
+  State::stop(next_state);
+
+  hero->clear_movement();
+}
+
+/**
+ * @brief Updates this state.
+ */
+void Hero::StateHurt::update(void) {
+
+  State::update();
+
+  if (hero->get_movement()->is_finished()) {
+    hero->clear_movement();
+    hero->set_state(new StateFree(hero));
+  }
+}
+
+/**
+ * @brief Returns whether the game over sequence can start in the current state.
+ * @return true if the game over sequence can start in the current state
+ */
+bool Hero::StateHurt::can_start_gameover_sequence(void) {
+  return false;
+}
+
+/**
+ * @brief Returns whether the hero is touching the ground in the current state.
+ * @return true if the hero is touching the ground in the current state
+ */
+bool Hero::StateHurt::is_touching_ground(void) {
+  return false;
+}
+
+/**
+ * @brief Returns whether a teletransporter is considered as an obstacle in this state.
+ * @param teletransporter a teletransporter
+ * @return true if the teletransporter is an obstacle in this state
+ */
+bool Hero::StateHurt::is_teletransporter_obstacle(Teletransporter *teletransporter) {
+  return true;
+}
+
+/**
+ * @brief Returns whether a conveyor belt is considered as an obstacle in this state.
+ * @param conveyor_belt a conveyor belt
+ * @return true if the conveyor belt is an obstacle in this state
+ */
+bool Hero::StateHurt::is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt) {
+  return true;
+}
+
+/**
+ * @brief Returns whether a sensor is considered as an obstacle in this state.
+ * @param sensor a sensor
+ * @return true if the sensor is an obstacle in this state
+ */
+bool Hero::StateHurt::is_sensor_obstacle(Sensor *sensor) {
+  return true;
+}
+
+/**
+ * @brief Returns whether the hero can be hurt in this state.
+ * @return true if the hero can be hurt in this state
+ */
+bool Hero::StateHurt::can_be_hurt(void) {
+  return false;
 }
 

@@ -957,14 +957,18 @@ void HeroSprites::set_animation_bow(void) {
  * @brief Starts the "brandish" animation of the hero's sprites.
  */
 void HeroSprites::set_animation_brandish(void) {
+
   tunic_sprite->set_current_animation("brandish");
   tunic_sprite->set_current_direction(0);
+  stop_displaying_sword();
+  stop_displaying_shield();
 }
 
 /**
  * @brief Starts the "victory" animation of the hero's sprites.
  */
 void HeroSprites::set_animation_victory(void) {
+
   tunic_sprite->set_current_animation("victory");
   tunic_sprite->set_current_direction(0);
   sword_sprite->set_current_animation("victory");

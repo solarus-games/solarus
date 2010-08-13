@@ -15,6 +15,12 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "hero/StatePlunging.h"
+#include "hero/StateFree.h"
+#include "hero/StateSwimming.h"
+#include "hero/StateBackToSolidGround.h"
+#include "hero/HeroSprites.h"
+#include "Game.h"
+#include "Equipment.h"
 
 /**
  * @brief Constructor.
@@ -30,5 +36,58 @@ Hero::StatePlunging::StatePlunging(Hero *hero):
  */
 Hero::StatePlunging::~StatePlunging(void) {
 
+}
+
+/**
+ * @brief Starts this state.
+ * @param previous_state the previous state of NULL if this is the first state (for information)
+ */
+void Hero::StatePlunging::start(State *previous_state) {
+
+  State::start(previous_state);
+
+  sprites->set_animation_plunging();
+  game->play_sound("splash");
+}
+
+/**
+ * @brief Updates this state.
+ */
+void Hero::StatePlunging::update(void) {
+
+  State::update();
+
+  Equipment *equipment = game->get_equipment();
+
+  if (sprites->is_animation_finished()) {
+
+    if (hero->get_ground() != GROUND_DEEP_WATER) {
+      hero->set_state(new StateFree(hero));
+    }
+    else if (equipment->has_inventory_item(INVENTORY_FLIPPERS)) {
+      hero->set_state(new StateSwimming(hero));
+    }
+    else {
+      equipment->remove_hearts(1);
+      game->play_sound("message_end");
+      hero->set_state(new StateBackToSolidGround(hero, false));
+    }
+  }
+}
+
+/**
+ * @brief Returns whether the game over sequence can start in the current state.
+ * @return true if the game over sequence can start in the current state
+ */
+bool Hero::StatePlunging::can_start_gameover_sequence(void) {
+  return false;
+}
+
+/**
+ * @brief Returns whether the hero is touching the ground in the current state.
+ * @return true if the hero is touching the ground in the current state
+ */
+bool Hero::StatePlunging::is_touching_ground(void) {
+  return false;
 }
 

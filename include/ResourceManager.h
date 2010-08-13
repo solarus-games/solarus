@@ -29,7 +29,7 @@
  * memory when you get them for the first time and you
  * don't have to delete them. They are deleted when the program ends.
  * This does not consumes much memory because:
- * - the maps and tilesets have an unload() method you can call,
+ * - the tilesets have an unload() method you can call,
  * - the musics and sounds close their audio files when they stop.
  */
 class ResourceManager {
@@ -39,7 +39,6 @@ class ResourceManager {
     static ResourceManager *instance;
 
     std::map<TilesetId, Tileset*> tilesets;
-    std::map<MapId, Map*> maps;
     std::map<MusicId, Music*> musics;
     std::map<SoundId, Sound*> sounds;
     std::map<SpriteAnimationSetId, SpriteAnimationSet*> sprite_animations;
@@ -53,7 +52,6 @@ class ResourceManager {
     static void quit(void);
 
     static Tileset* get_tileset(TilesetId id);
-    static Map* get_map(MapId id);
     static Music* get_music(const MusicId &id);
     static Sound* get_sound(const SoundId &id);
     static SpriteAnimationSet* get_sprite_animation_set(const SpriteAnimationSetId &id);

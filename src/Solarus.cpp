@@ -142,7 +142,7 @@ void Solarus::main_loop(void) {
 
       if (delay <= 0) { // it's time to display
 
-	// see whether the FPS number is too high
+	// see if the FPS number is too high
 	if (just_displayed && frame_interval <= 30) {
 	  frame_interval += 5; // display the screen less often
 	  //std::cout << "\rFPS: " << (1000 / frame_interval) << std::flush;

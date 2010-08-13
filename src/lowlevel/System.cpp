@@ -92,6 +92,7 @@ void System::update(void) {
 
 /**
  * @brief Returns the number of milliseconds elapsed since the beginning of the program.
+ * @return the number of milliseconds elapsed since the beginning of the program
  */
 uint32_t System::now(void) {
   return SDL_GetTicks();

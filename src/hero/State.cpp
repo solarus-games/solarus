@@ -599,7 +599,7 @@ bool Hero::State::can_sword_hit_crystal_switch(void) {
 }
 
 /**
- * @brief Notifies this entity that it has just attacked an enemy
+ * @brief Notifies this state that the hero has just attacked an enemy
  *
  * This function is called even if this attack was not successful.
  *
@@ -680,11 +680,12 @@ void Hero::State::notify_grabbed_entity_collision(void) {
 }
 
 /**
- * @brief Tests whether the hero is striking the specified detector with his sword.
+ * @brief Tests whether the hero is cutting with his sword the specified detector
+ * for which a collision was detected.
  *
  * When the sword sprite collides with a detector,
  * this function can be called to determine whether the hero is
- * really striking this particular detector only.
+ * really cutting this particular detector precisely.
  * This depends on the hero's state, his direction and his
  * distance to the detector.
  * This function assumes that there is already a collision
@@ -694,9 +695,9 @@ void Hero::State::notify_grabbed_entity_collision(void) {
  * Returns false by default.
  *
  * @param detector the detector to check
- * @return true if the sword is striking this detector
+ * @return true if the sword is cutting this detector
  */
-bool Hero::State::is_striking_with_sword(Detector *detector) {
+bool Hero::State::is_cutting_with_sword(Detector *detector) {
   return false;
 }
 

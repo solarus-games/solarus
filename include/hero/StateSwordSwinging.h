@@ -33,6 +33,8 @@ class Hero::StateSwordSwinging: public Hero::State {
     void update(void);
     bool can_start_sword(void);
     bool can_be_hurt(void);
+    bool can_sword_hit_crystal_switch(void);
+    bool is_cutting_with_sword(Detector *detector);
 };
 
 #endif

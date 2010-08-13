@@ -46,27 +46,17 @@ ResourceManager::~ResourceManager(void) {
   // tilesets
   {
     map<TilesetId, Tileset*>::const_iterator it;
-    
+
     for (it = tilesets.begin(); it != tilesets.end(); it++) {
       delete it->second;
     }
     tilesets.clear();
   }
 
-  // maps
-  {
-    map<MapId, Map*>::const_iterator it;
-    
-    for (it = maps.begin(); it != maps.end(); it++) {
-      delete it->second;
-    }
-    maps.clear();
-  }
-
   // musics
   {
     map<MusicId, Music*>::const_iterator it;
-    
+ 
     for (it = musics.begin(); it != musics.end(); it++) {
       delete it->second;
     }
@@ -76,7 +66,7 @@ ResourceManager::~ResourceManager(void) {
   // sounds
   {
     map<SoundId, Sound*>::const_iterator it;
-    
+
     for (it = sounds.begin(); it != sounds.end(); it++) {
       delete it->second;
     }
@@ -86,7 +76,7 @@ ResourceManager::~ResourceManager(void) {
   // sprite animations
   {
     map<SpriteAnimationSetId, SpriteAnimationSet*>::const_iterator it;
-    
+
     for (it = sprite_animations.begin(); it != sprite_animations.end(); it++) {
       delete it->second;
     }
@@ -120,20 +110,6 @@ Tileset * ResourceManager::get_tileset(TilesetId id) {
   }
 
   return instance->tilesets[id];
-}
-
-/**
- * @brief Returns a map.
- * @param id id of the map to get
- * @return the map
- */
-Map * ResourceManager::get_map(MapId id) {
-
-  if (instance->maps[id] == NULL) {
-    instance->maps[id] = new Map(id);
-  }
-
-  return instance->maps[id];
 }
 
 /**

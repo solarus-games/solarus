@@ -17,6 +17,7 @@
 #include "hero/StateSwordSwinging.h"
 #include "hero/StateSwordLoading.h"
 #include "hero/HeroSprites.h"
+#include "entities/Detector.h"
 #include "Game.h"
 #include "GameControls.h"
 
@@ -77,5 +78,47 @@ bool Hero::StateSwordSwinging::can_start_sword(void) {
  */
 bool Hero::StateSwordSwinging::can_be_hurt(void) {
   return true;
+}
+
+/**
+ * @brief Returns whether crystal switches can be activated by the sword in this state.
+ * @return true if crystal switches can be activated by the sword in this state
+ */
+bool Hero::StateSwordSwinging::can_sword_hit_crystal_switch(void) {
+  return true;
+}
+
+/**
+ * @brief Tests whether the hero is cutting with his sword the specified detector
+ * for which a collision was detected.
+ * @param detector the detector to check
+ * @return true if the sword is cutting this detector
+ */
+bool Hero::StateSwordSwinging::is_cutting_with_sword(Detector *detector) {
+
+  // check the distance to the detector
+  int distance = detector->is_obstacle_for(hero) ? 14 : 4;
+  Rectangle tested_point = hero->get_facing_point();
+
+  switch (sprites->get_animation_direction()) {
+
+    case 0: // right
+      tested_point.add_x(distance);
+      break;
+
+    case 1: // up
+      tested_point.add_y(-distance);
+      break;
+
+    case 2: // left
+      tested_point.add_x(-distance);
+      break;
+
+    case 3: // down
+      tested_point.add_y(distance);
+      break;
+  }
+
+  return detector->get_bounding_box().contains(tested_point.get_x(), tested_point.get_y());
 }
 

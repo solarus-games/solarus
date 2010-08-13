@@ -439,6 +439,7 @@ void Hero::set_map(Map *map) {
   MapEntity::set_map(map);
 
   target_solid_ground_coords.set_xy(-1, -1);
+  ground = GROUND_NORMAL;
 
   state->set_map(map);
 }
@@ -577,6 +578,7 @@ void Hero::notify_opening_transition_finished(void) {
 	DIE("Invalid destination side: " << side);
     }
   }
+  notify_position_changed();
 }
 
 /**
@@ -601,6 +603,7 @@ const Rectangle Hero::get_facing_point(void) {
  * (a bush, a pot, an NPC…)
  *
  * @param direction a direction (0 to 3)
+ * @return coordinates of the point the hero would be touching if he was looking towards that direction
  */
 const Rectangle Hero::get_facing_point(int direction) {
 
@@ -631,6 +634,8 @@ const Rectangle Hero::get_facing_point(int direction) {
     default:
       DIE("Invalid direction for Hero::get_facing_point(): " << direction);
   }
+
+  facing_point.set_size(1, 1);
 
   return facing_point;
 }
@@ -1444,25 +1449,25 @@ void Hero::notify_grabbed_entity_collision(void) {
 }
 
 /**
- * @brief Tests whether the hero is striking the specified detector with his sword.
+ * @brief Tests whether the hero is cutting with his sword the specified detector
+ * for which a collision was detected.
  *
  * When the sword sprite collides with a detector,
  * this function can be called to determine whether the hero is
- * really striking this particular detector only.
+ * really cutting this particular detector precisely.
  * This depends on the hero's state, his direction and his
  * distance to the detector.
  * This function assumes that there is already a collision
  * between the sword sprite and the detector's sprite.
  * This function should be called to check whether the
  * hero wants to cut a bush or some grass.
- * Don't use this function for enemies since any sprite
- * collision is enough to hurt an enemy.
+ * Returns false by default.
  *
  * @param detector the detector to check
- * @return true if the sword is striking this detector
+ * @return true if the sword is cutting this detector
  */
 bool Hero::is_striking_with_sword(Detector *detector) {
-  return state->is_striking_with_sword(detector);
+  return state->is_cutting_with_sword(detector);
 }
 
 /**
@@ -1536,6 +1541,7 @@ void Hero::hurt(MapEntity *source, int life_points, int magic_points) {
  * @brief This function is called when the hero was dead but saved by a fairy.
  */
 void Hero::get_back_from_death(void) {
+
   sprites->blink();
   start_free();
   when_suspended = System::now();

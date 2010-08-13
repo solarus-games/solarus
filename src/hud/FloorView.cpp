@@ -28,7 +28,7 @@
  * @param y y coordinate of the top-left corner of the element on the destination surface
  */
 FloorView::FloorView(Game *game, int x, int y):
-  HudElement(game, x, y, 32, 85), current_map(NULL),
+  HudElement(game, x, y, 32, 85), current_map(NULL), current_floor(-100),
   is_floor_displayed(false) {
 
   img_floors = new Surface("floors.png", Surface::DIR_LANGUAGE);
@@ -52,10 +52,10 @@ void FloorView::update(void) {
 
   bool need_rebuild = false;
 
-  // detect when the players enters a new map
+  // detect when the hero enters a new map
   if (game->get_current_map() != current_map) {
 
-    int old_floor = (current_map != NULL) ? current_map->get_floor() : -100;
+    int old_floor = (current_map != NULL) ? current_floor : -100;
     current_map = game->get_current_map();
 
     if (current_map->has_floor() && old_floor != current_map->get_floor()) {
@@ -87,7 +87,7 @@ void FloorView::rebuild(void) {
 
   if (is_floor_displayed) { // a floor is being displayed
 
-    int current_floor = current_map->get_floor();
+    current_floor = current_map->get_floor();
     int highest_floor, highest_floor_displayed;
 
     // if we are in a dungeon, show several floors (but no more than 7)

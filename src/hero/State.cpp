@@ -61,7 +61,7 @@ bool Hero::State::is_current_state(void) {
  * This function is called automatically when this state becomes the active state of the hero.
  * The initializations should be done here rather than in the constructor.
  *
- * @param previous_state the previous state of NULL if this is the first state (for information)
+ * @param previous_state the previous state or NULL if this is the first state (for information)
  */
 void Hero::State::start(State *previous_state) {
   set_suspended(hero->is_suspended());

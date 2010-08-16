@@ -24,9 +24,13 @@
  */
 class Hero::StateCarrying: public Hero::State {
 
+  private:
+
+    CarriedItem *carried_item;		/**< the item to carry */
+
   public:
 
-    StateCarrying(Hero *hero);
+    StateCarrying(Hero *hero, CarriedItem *carried_item);
     ~StateCarrying(void);
 };
 

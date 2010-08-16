@@ -1690,13 +1690,6 @@ void Hero::start_lifting(DestructibleItem *item_to_lift) {
 }
 
 /**
- * @brief Makes the hero carry the item he was lifting.
- */
-void Hero::start_carrying(void) {
-  set_state(new StateCarrying(this));
-}
-
-/**
  * @brief Starts running with the speed shoes.
  */
 void Hero::start_running(void) {

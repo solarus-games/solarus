@@ -19,9 +19,10 @@
 /**
  * @brief Constructor.
  * @param hero the hero controlled by this state
+ * @param carried_item the item to carry
  */
-Hero::StateCarrying::StateCarrying(Hero *hero):
-  State(hero) {
+Hero::StateCarrying::StateCarrying(Hero *hero, CarriedItem *carried_item):
+  State(hero), carried_item(carried_item) {
 
 }
 

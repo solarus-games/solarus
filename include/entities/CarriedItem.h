@@ -72,6 +72,7 @@ class CarriedItem: public MapEntity {
     void set_animation_stopped(void);
     void set_animation_walking(void);
     void throw_item(int direction);
+    bool is_being_lifted(void);
     bool is_being_thrown(void);
     void break_item(void);
     bool is_broken(void);

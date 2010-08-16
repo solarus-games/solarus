@@ -51,7 +51,7 @@ PlayerMovement * Hero::StatePlayerMovement::get_player_movement(void) {
  *
  * This function is called automatically when this state becomes the active state of the hero.
  *
- * @param previous_state the previous state of NULL if this is the first state (for information)
+ * @param previous_state the previous state
  */
 void Hero::StatePlayerMovement::start(State *previous_state) {
 

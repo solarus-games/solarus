@@ -26,6 +26,7 @@
 #include "Sprite.h"
 #include <SDL/SDL.h>
 
+uint32_t System::ticks = 0;
 
 /**
  * @brief Initializes the whole lowlevel system.
@@ -87,6 +88,8 @@ void System::quit(void) {
  * It calls the update function of the low level systems that needs it.
  */
 void System::update(void) {
+
+  ticks = SDL_GetTicks();
   Sound::update();
 }
 
@@ -95,7 +98,7 @@ void System::update(void) {
  * @return the number of milliseconds elapsed since the beginning of the program
  */
 uint32_t System::now(void) {
-  return SDL_GetTicks();
+  return ticks;
 }
 
 /**

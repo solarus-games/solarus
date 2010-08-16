@@ -17,21 +17,33 @@
 #ifndef SOLARUS_HERO_CARRYING_STATE_H
 #define SOLARUS_HERO_CARRYING_STATE_H
 
-#include "hero/State.h"
+#include "hero/PlayerMovementState.h"
 
 /**
  * @brief The state "Carrying" of the hero.
  */
-class Hero::CarryingState: public Hero::State {
+class Hero::CarryingState: public Hero::PlayerMovementState {
 
   private:
 
     CarriedItem *carried_item;		/**< the item to carry */
 
+    void throw_item(void);
+
   public:
 
     CarryingState(Hero *hero, CarriedItem *carried_item);
     ~CarryingState(void);
+
+    void start(State *previous_state);
+    void stop(State *next_state);
+    void set_map(Map *map);
+    void update(void);
+    void action_key_pressed(void);
+    bool can_start_sword(void);
+    void set_animation_stopped(void);
+    void set_animation_walking(void);
+
 };
 
 #endif

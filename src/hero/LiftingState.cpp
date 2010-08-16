@@ -36,6 +36,7 @@ Hero::LiftingState::LiftingState(Hero *hero, DestructibleItem *item_to_lift):
  */
 Hero::LiftingState::~LiftingState(void) {
 
+  delete lifted_item;
 }
 
 /**
@@ -70,6 +71,7 @@ void Hero::LiftingState::stop(State *next_state) {
 
     // the lifted item is still managed by this state
     delete lifted_item;
+    lifted_item = NULL;
     game->get_keys_effect()->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
   }
 }
@@ -84,8 +86,10 @@ void Hero::LiftingState::update(void) {
   lifted_item->update();
 
   if (!lifted_item->is_being_lifted()) { // the item has finished being lifted
-    hero->set_state(new CarryingState(hero, lifted_item));
+
+    CarriedItem *carried_item = lifted_item;
     lifted_item = NULL; // we do not take care of the carried item from this state anymore
+    hero->set_state(new CarryingState(hero, carried_item));
   }
 }
 

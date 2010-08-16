@@ -150,6 +150,14 @@ bool Hero::FreeState::can_take_stairs(void) {
 }
 
 /**
+ * @brief Returns whether an item previously carried by the hero should be thrown when this state starts.
+ * @return true if an item previously carried by the hero should be thrown when this state starts
+ */
+bool Hero::FreeState::can_throw_item(void) {
+  return false;
+}
+
+/**
  * Gives the sprites the animation stopped corresponding to this state.
  */
 void Hero::FreeState::set_animation_stopped(void) {

@@ -36,31 +36,31 @@ class Hero: public MapEntity {
 
     // state
     class State;				/**< base class for all states */
-    class StatePlayerMovement;			/**< abstract class for states whose movement is controlled by the player */
-    class StateFree;				/**< the hero is free to move (stopped or walking) and can interact with entities */
-    class StateCarrying;			/**< the hero can walk but he is carrying a pot or a bush */
-    class StateSwordLoading;			/**< the hero can walk but his sword is loading for a spin attack */
-    class StateSwimming;			/**< the hero is swimming in deep water */
-    class StatePushing;				/**< the hero is trying to push an obstacle */
-    class StateSwordTapping;			/**< the hero is tapping his sword on a wall */
-    class StatePulling;				/**< the hero is pulling an object */
-    class StateGrabbing;			/**< the hero is grabbing an object and can pull it */
-    class StateConveyorBelt;			/**< the hero is being moved by a conveyor belt */
-    class StateSwordSwinging;			/**< the hero is swinging his sword */
-    class StateSpinAttack;			/**< the hero is releasing a spin attack */
-    class StateLifting;				/**< the hero is lifting an destroyable item (a pot, a bush, etc.) */
-    class StateTreasure;			/**< the hero is brandishing a treasure */
-    class StateRunning;				/**< the hero is running */
-    class StateJumping;				/**< the hero is jumping */
-    class StateHurt;				/**< the hero is hurt */
-    class StatePlunging;			/**< the hero is plunging into water */
-    class StateFalling;				/**< the hero is falling into a hole */
-    class StateBackToSolidGround;		/**< the hero is getting back to solid ground (e.g. after he drowned
+    class PlayerMovementState;			/**< abstract class for states whose movement is controlled by the player */
+    class FreeState;				/**< the hero is free to move (stopped or walking) and can interact with entities */
+    class CarryingState;			/**< the hero can walk but he is carrying a pot or a bush */
+    class SwordLoadingState;			/**< the hero can walk but his sword is loading for a spin attack */
+    class SwimmingState;			/**< the hero is swimming in deep water */
+    class PushingState;				/**< the hero is trying to push an obstacle */
+    class SwordTappingState;			/**< the hero is tapping his sword on a wall */
+    class PullingState;				/**< the hero is pulling an object */
+    class GrabbingState;			/**< the hero is grabbing an object and can pull it */
+    class ConveyorBeltState;			/**< the hero is being moved by a conveyor belt */
+    class SwordSwingingState;			/**< the hero is swinging his sword */
+    class SpinAttackState;			/**< the hero is releasing a spin attack */
+    class LiftingState;				/**< the hero is lifting an destroyable item (a pot, a bush, etc.) */
+    class TreasureState;			/**< the hero is brandishing a treasure */
+    class RunningState;				/**< the hero is running */
+    class JumpingState;				/**< the hero is jumping */
+    class HurtState;				/**< the hero is hurt */
+    class PlungingState;			/**< the hero is plunging into water */
+    class FallingState;				/**< the hero is falling into a hole */
+    class BackToSolidGroundState;		/**< the hero is getting back to solid ground (e.g. after he drowned
 						 * in deep water or falled into a hole) */
-    class StateStairs;				/**< the hero is being moved by stairs */
-    class StateVictory;				/**< the hero is make a victory sequence with his sword */
-    class StateInventoryItem;			/**< the hero is currently using an item from the inventory */
-    class StateFreezed;				/**< the hero cannot move for various possible reasons,
+    class StairsState;				/**< the hero is being moved by stairs */
+    class VictoryState;				/**< the hero is make a victory sequence with his sword */
+    class InventoryItemState;			/**< the hero is currently using an item from the inventory */
+    class FreezedState;				/**< the hero cannot move for various possible reasons,
 						 * including an instruction from the script */
 
     State *state;				/**< the current internal state */

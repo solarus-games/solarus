@@ -24,21 +24,21 @@
 #include "entities/Block.h"
 #include "entities/Sensor.h"
 #include "hero/HeroSprites.h"
-#include "hero/StateCarrying.h"
-#include "hero/StateConveyorBelt.h"
-#include "hero/StateFalling.h"
-#include "hero/StateFree.h"
-#include "hero/StateFreezed.h"
-#include "hero/StateGrabbing.h"
-#include "hero/StateHurt.h"
-#include "hero/StateJumping.h"
-#include "hero/StateLifting.h"
-#include "hero/StatePlunging.h"
-#include "hero/StateRunning.h"
-#include "hero/StateStairs.h"
-#include "hero/StateSwimming.h"
-#include "hero/StateTreasure.h"
-#include "hero/StateVictory.h"
+#include "hero/CarryingState.h"
+#include "hero/ConveyorBeltState.h"
+#include "hero/FallingState.h"
+#include "hero/FreeState.h"
+#include "hero/FreezedState.h"
+#include "hero/GrabbingState.h"
+#include "hero/HurtState.h"
+#include "hero/JumpingState.h"
+#include "hero/LiftingState.h"
+#include "hero/PlungingState.h"
+#include "hero/RunningState.h"
+#include "hero/StairsState.h"
+#include "hero/SwimmingState.h"
+#include "hero/TreasureState.h"
+#include "hero/VictoryState.h"
 #include "movements/Movement.h"
 #include "lowlevel/System.h"
 #include "Game.h"
@@ -69,7 +69,7 @@ Hero::Hero(Equipment *equipment):
   rebuild_equipment();
 
   // state
-  set_state(new StateFree(this));
+  set_state(new FreeState(this));
 }
 
 /**
@@ -269,7 +269,7 @@ void Hero::update_ground(void) {
       if (get_distance(last_solid_ground_coords.get_x(), last_solid_ground_coords.get_y()) >= 8) {
 	// too far from the solid ground: make the hero fall
 	set_walking_speed(normal_walking_speed);
-        set_state(new StateFalling(this));
+        set_state(new FallingState(this));
       }
       else {
 
@@ -534,7 +534,7 @@ void Hero::place_on_destination_point(Map *map) {
       Stairs *stairs = get_stairs_overlapping();
       if (stairs != NULL) {
         // the hero arrived on the map by stairs
-	set_state(new StateStairs(this, stairs, Stairs::REVERSE_WAY));
+	set_state(new StairsState(this, stairs, Stairs::REVERSE_WAY));
       }
       else {
 	// the hero arrived on the map by a usual destination point
@@ -1306,7 +1306,7 @@ void Hero::notify_collision_with_conveyor_belt(ConveyorBelt *conveyor_belt, int 
  
       if (!map->test_collision_with_obstacles(get_layer(), collision_box, this)) {
 	// move the hero
-	set_state(new StateConveyorBelt(this, conveyor_belt));
+	set_state(new ConveyorBeltState(this, conveyor_belt));
       }
     }
   }
@@ -1332,7 +1332,7 @@ void Hero::notify_collision_with_stairs(Stairs *stairs, int collision_mode) {
     // check whether the hero is trying to move in the direction of the stairs
     int correct_direction = stairs->get_movement_direction(stairs_way);
     if (is_moving_towards(correct_direction / 2) || collision_mode == Detector::COLLISION_RECTANGLE) {
-      set_state(new StateStairs(this, stairs, stairs_way));
+      set_state(new StairsState(this, stairs, stairs_way));
     }
   }
 }
@@ -1533,7 +1533,7 @@ int Hero::get_sword_damage_factor(void) {
 void Hero::hurt(MapEntity *source, int life_points, int magic_points) {
 
   if (!sprites->is_blinking() && state->can_be_hurt()) {
-    set_state(new StateHurt(this, source, life_points, magic_points));
+    set_state(new HurtState(this, source, life_points, magic_points));
   }
 }
 
@@ -1554,12 +1554,12 @@ void Hero::start_deep_water(void) {
 
   if (!state->is_touching_ground()) {
     // plunge into the water
-    set_state(new StatePlunging(this));
+    set_state(new PlungingState(this));
   }
   else {
     // move to state swimming or jumping
     if (equipment->has_inventory_item(INVENTORY_FLIPPERS)) {
-      set_state(new StateSwimming(this));
+      set_state(new SwimmingState(this));
     }
     else {
       start_jumping(get_wanted_movement_direction8(), 32, true, true, 13);
@@ -1632,7 +1632,7 @@ bool Hero::is_grabbing_or_pulling(void) {
 void Hero::start_free(void) {
 
   if (!state->is_free()) {
-    set_state(new StateFree(this));
+    set_state(new FreeState(this));
   }
 }
 
@@ -1641,7 +1641,7 @@ void Hero::start_free(void) {
  * @param treasure the treasure to give him (you have to delete it after the hero brandishes it)
  */
 void Hero::start_treasure(Treasure *treasure) {
-  set_state(new StateTreasure(this, treasure));
+  set_state(new TreasureState(this, treasure));
 }
 
 /**
@@ -1659,7 +1659,7 @@ void Hero::start_treasure(Treasure *treasure) {
  */
 void Hero::start_jumping(int direction8, int length, bool with_collisions, bool with_sound, uint32_t movement_delay, Layer layer_after_jump) {
 
-  StateJumping *state = new StateJumping(this, direction8, length, with_collisions, with_sound, movement_delay, layer_after_jump);
+  JumpingState *state = new JumpingState(this, direction8, length, with_collisions, with_sound, movement_delay, layer_after_jump);
   set_state(state);
 }
 
@@ -1667,7 +1667,7 @@ void Hero::start_jumping(int direction8, int length, bool with_collisions, bool 
  * @brief Makes the hero brandish his sword meaning a victory.
  */
 void Hero::start_victory() {
-  set_state(new StateVictory(this));
+  set_state(new VictoryState(this));
 }
 
 /**
@@ -1678,7 +1678,7 @@ void Hero::start_victory() {
  * You can call start_free() to unfreeze him.
  */
 void Hero::start_freezed(void) {
-  set_state(new StateFreezed(this));
+  set_state(new FreezedState(this));
 }
 
 /**
@@ -1686,20 +1686,20 @@ void Hero::start_freezed(void) {
  * @param item_to_lift the destructible item to lift
  */
 void Hero::start_lifting(DestructibleItem *item_to_lift) {
-  set_state(new StateLifting(this, item_to_lift));
+  set_state(new LiftingState(this, item_to_lift));
 }
 
 /**
  * @brief Starts running with the speed shoes.
  */
 void Hero::start_running(void) {
-  set_state(new StateRunning(this));
+  set_state(new RunningState(this));
 }
 
 /**
  * @brief Starts grabbing an obstacle.
  */
 void Hero::start_grabbing(void) {
-  set_state(new StateGrabbing(this));
+  set_state(new GrabbingState(this));
 }
 

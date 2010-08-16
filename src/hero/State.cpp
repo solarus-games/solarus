@@ -15,7 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "hero/State.h"
-#include "hero/StateSwordSwinging.h"
+#include "hero/SwordSwingingState.h"
 #include "hero/HeroSprites.h"
 #include "entities/Hero.h"
 #include "lowlevel/System.h"
@@ -232,7 +232,7 @@ void Hero::State::sword_key_pressed(void) {
       && keys_effect->get_sword_key_effect() == KeysEffect::SWORD_KEY_SWORD
       && can_start_sword()) {
 
-    hero->set_state(new StateSwordSwinging(hero));
+    hero->set_state(new SwordSwingingState(hero));
   }
 }
 

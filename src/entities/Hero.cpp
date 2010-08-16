@@ -160,6 +160,7 @@ void Hero::set_state(State *new_state) {
   }
 
   old_state = this->state;
+
   this->state = new_state;
   this->state->start(old_state);
 }
@@ -186,12 +187,12 @@ void Hero::set_suspended(bool suspended) {
  */
 void Hero::update(void) {
 
+  update_movement();
   update_state();
 
   if (!is_suspended()) {
     
     sprites->update();
-    update_movement();
     update_ground();
     map->check_collision_with_detectors(this);
     check_gameover();

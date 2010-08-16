@@ -116,6 +116,7 @@ class Hero::State {
     virtual bool can_start_sword(void);
     virtual bool can_take_stairs(void);
     virtual bool can_sword_hit_crystal_switch(void);
+    virtual bool can_throw_item(void);
 };
 
 #endif

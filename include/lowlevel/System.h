@@ -26,6 +26,10 @@
  */
 class System {
 
+  private:
+
+    static uint32_t ticks;
+
   public:
 
     static void initialize(int argc, char **argv);

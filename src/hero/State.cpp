@@ -712,3 +712,16 @@ bool Hero::State::can_start_sword(void) {
   return false;
 }
 
+/**
+ * @brief Returns whether an item previously carried by the hero should be thrown when this state starts.
+ * 
+ * If false is returned, the item will be directly removed.
+ * If true is returned, the item will be thrown in the direction the hero is looking towards.
+ * Returns true by default.
+ *
+ * @return true if an item previously carried by the hero should be thrown when this state starts
+ */
+bool Hero::State::can_throw_item(void) {
+  return true;
+}
+

@@ -68,6 +68,14 @@ bool Hero::SpinAttackState::can_sword_hit_crystal_switch(void) {
 }
 
 /**
+ * @brief Returns whether the hero can be hurt in this state.
+ * @return true if the hero can be hurt in this state
+ */
+bool Hero::SpinAttackState::can_be_hurt(void) {
+  return true;
+}
+
+/**
  * @brief Tests whether the hero is cutting with his sword the specified detector
  * for which a collision was detected.
  * @param detector the detector to check

@@ -226,6 +226,14 @@ void CarriedItem::throw_item(int direction) {
 }
 
 /**
+ * @brief Returns whether the item is being lifted.
+ * @return true if the item is being lifted
+ */
+bool CarriedItem::is_being_lifted(void) {
+  return is_lifting;
+}
+
+/**
  * @brief Returns whether the item is being thrown.
  * @return true if the item is being thrown
  */
@@ -325,9 +333,6 @@ void CarriedItem::update(void) {
   // when the hero finishes lifting the item, start carrying it
   if (is_lifting && get_movement()->is_finished()) {
     is_lifting = false;
-
-    // make the hero carry the item
-    hero->start_carrying();
 
     // make the item follow the hero
     clear_movement();

@@ -39,7 +39,7 @@ Hero::StateSwordSwinging::~StateSwordSwinging(void) {
 
 /**
  * @brief Starts this state.
- * @param previous_state the previous state of NULL if this is the first state (for information)
+ * @param previous_state the previous state
  */
 void Hero::StateSwordSwinging::start(State *previous_state) {
 

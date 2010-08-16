@@ -42,7 +42,7 @@ Hero::StateHurt::~StateHurt(void) {
 
 /**
  * @brief Starts this state.
- * @param previous_state the previous state of NULL if this is the first state (for information)
+ * @param previous_state the previous state
  */
 void Hero::StateHurt::start(State *previous_state) {
 
@@ -66,7 +66,7 @@ void Hero::StateHurt::start(State *previous_state) {
 
 /**
  * @brief Ends this state.
- * @param next_state the next state (for information)
+ * @param next_state the next state
  */
 void Hero::StateHurt::stop(State *next_state) {
 

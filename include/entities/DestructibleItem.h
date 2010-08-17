@@ -104,6 +104,7 @@ class DestructibleItem: public Detector {
     bool test_collision_custom(MapEntity *entity);
     void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
     void notify_collision(MapEntity *other_entity, Sprite *other_sprite, Sprite *this_sprite);
+    void notify_collision_with_hero(Hero *hero, CollisionMode collision_mode);
     void action_key_pressed(void);
 
     void set_suspended(bool suspended);

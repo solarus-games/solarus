@@ -73,8 +73,10 @@ Bugs :
 - achat d'un croissant : dialogue avant et après l'achat redondant
 - Dans les caves jumelles, si on retourne dans celle de gauche, on peut appuyer à nouveau sur l'interrupteur en haut de la salle.
 
-
-Dernière version fonctionnelle (avant travaux sur Hero) : 1355
+- Quand on monte un escalier vers le nord, le héros se tourne vers le bas une fois en haut, pendant la transition de sortie de la map (grotte de Tom)
+- Grotte de tom : quand Tom repart, il disparaît alors qu'il est encore dans l'écran
+- Si on se fait blesser pendant qu'on commence à porter un objet, l'icône "Jeter" reste
+- On ne peut pas se faire blesser pendant qu'on soulève
 
 
 A venir :

@@ -1376,7 +1376,7 @@ next = sahasrahla_house.beginning.10
 #       |-----------------------|
 line1 = "Te sens-tu capable de"
 line2 = "partir à la recherche"
-line3 = "des 4 enfants et de"
+line3 = "des enfants et de"
 next = sahasrahla_house.beginning.11
 
 [sahasrahla_house.beginning.11]

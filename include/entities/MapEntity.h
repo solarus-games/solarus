@@ -20,6 +20,7 @@
 #include "Common.h"
 #include "entities/EntityType.h"
 #include "entities/Layer.h"
+#include "entities/CollisionMode.h"
 #include "entities/EnemyAttack.h"
 #include "lowlevel/Rectangle.h"
 #include <map>
@@ -238,13 +239,14 @@ class MapEntity {
     virtual bool is_obstacle_for(MapEntity *other);
     virtual bool has_layer_independent_collisions(void);
     virtual void notify_collision_with_enemy(Enemy *enemy);
-    virtual void notify_collision_with_teletransporter(Teletransporter *teletransporter, int collision_mode);
+    virtual void notify_collision_with_destructible_item(DestructibleItem *destructible_item, CollisionMode collision_mode);
+    virtual void notify_collision_with_teletransporter(Teletransporter *teletransporter, CollisionMode collision_mode);
     virtual void notify_collision_with_conveyor_belt(ConveyorBelt *conveyor_belt, int dx, int dy);
-    virtual void notify_collision_with_stairs(Stairs *stairs, int collision_mode);
+    virtual void notify_collision_with_stairs(Stairs *stairs, CollisionMode collision_mode);
     virtual void notify_collision_with_jump_sensor(JumpSensor *jump_sensor);
     virtual void notify_collision_with_sensor(Sensor *sensor);
     virtual void notify_collision_with_explosion(Explosion *explosion, Sprite *sprite_overlapping);
-    virtual void notify_collision_with_crystal_switch(CrystalSwitch *crystal_switch, int collision_mode);
+    virtual void notify_collision_with_crystal_switch(CrystalSwitch *crystal_switch, CollisionMode collision_mode);
     virtual void notify_collision_with_crystal_switch(CrystalSwitch *crystal_switch, Sprite *sprite_overlapping);
     virtual void notify_collision_with_enemy(Enemy *enemy, Sprite *enemy_sprite, Sprite *this_sprite);
     virtual void notify_attacked_enemy(EnemyAttack attack, Enemy *victim, int result, bool killed);

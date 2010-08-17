@@ -23,7 +23,6 @@
 #include "Map.h"
 #include "entities/MapEntities.h"
 #include "entities/Hero.h"
-#include "entities/Detector.h"
 #include "entities/Boomerang.h"
 #include "entities/Arrow.h"
 #include "entities/PickableItem.h"

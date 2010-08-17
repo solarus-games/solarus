@@ -138,7 +138,7 @@ bool PathMovement::is_current_move_finished(void) {
  *
  * This function is called when a step of the movement is finished,
  * or when the movement is restarted.
- * Before starting the step, if the must_be_aligned property is true,
+ * Before starting the step, if the property must_be_aligned is true,
  * the entity's top-left corner tries to get aligned with the 8*8 squares of the grid.
  */
 void PathMovement::start_next_move(void) {

@@ -33,7 +33,6 @@
 #include "menus/PauseMenu.h"
 #include "entities/Hero.h"
 #include "entities/Tileset.h"
-#include "entities/Detector.h"
 #include "lowlevel/Color.h"
 #include "lowlevel/Music.h"
 #include "lowlevel/Sound.h"

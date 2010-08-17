@@ -206,30 +206,36 @@ bool DestructibleItem::test_collision_custom(MapEntity *entity) {
  */
 void DestructibleItem::notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
 
-  if (entity_overlapping->is_hero()) {
+  entity_overlapping->notify_collision_with_destructible_item(this, collision_mode);
+}
 
-    Hero *hero = game->get_hero();
-    KeysEffect *keys_effect = game->get_keys_effect();
+/**
+ * @brief This function is called when this entity detects a collision with the hero.
+ * @param hero the hero
+ * @param collision_mode the collision mode that detected the collision
+ */
+void DestructibleItem::notify_collision_with_hero(Hero *hero, CollisionMode collision_mode) {
 
-    if (features[subtype].can_be_lifted
-	&& !is_being_cut
-	&& !is_disabled()
-	&& keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
-	&& hero->is_free()) {
+  KeysEffect *keys_effect = game->get_keys_effect();
 
-      Equipment *equipment = game->get_equipment();
-      int weight = features[subtype].weight;
-      if (equipment->can_lift(weight)) {
-	keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_LIFT);
-      }
-      else {
-	keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_LOOK);
-      }
+  if (features[subtype].can_be_lifted
+      && !is_being_cut
+      && !is_disabled()
+      && keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
+      && hero->is_free()) {
+
+    Equipment *equipment = game->get_equipment();
+    int weight = features[subtype].weight;
+    if (equipment->can_lift(weight)) {
+      keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_LIFT);
     }
-
-    else if (collision_mode == COLLISION_CUSTOM && has_special_ground() && !is_being_cut) {
-      hero->set_ground(get_special_ground());
+    else {
+      keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_LOOK);
     }
+  }
+
+  else if (collision_mode == COLLISION_CUSTOM && has_special_ground() && !is_being_cut) {
+    hero->set_ground(get_special_ground());
   }
 }
 

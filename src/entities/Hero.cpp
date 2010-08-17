@@ -19,6 +19,7 @@
 #include "entities/DestinationPoint.h"
 #include "entities/Teletransporter.h"
 #include "entities/Stairs.h"
+#include "entities/DestructibleItem.h"
 #include "entities/ConveyorBelt.h"
 #include "entities/CrystalSwitch.h"
 #include "entities/Block.h"
@@ -1229,6 +1230,14 @@ bool Hero::is_jump_sensor_obstacle(JumpSensor *jump_sensor) {
 }
 
 /**
+ * @brief This function is called when a destructible item detects a non-pixel perfect collision with this entity.
+ * @param destructible_item the destructible item
+ */
+void Hero::notify_collision_with_destructible_item(DestructibleItem *destructible_item, CollisionMode collision_mode) {
+  destructible_item->notify_collision_with_hero(this, collision_mode);
+}
+
+/**
  * @brief This function is called when a non-pixel perfect enemy collides with the hero.
  * @param enemy the enemy
  */
@@ -1266,7 +1275,7 @@ void Hero::notify_collision_with_enemy(Enemy *enemy, Sprite *enemy_sprite, Sprit
  * @param teletransporter the teletransporter
  * @param collision_mode the collision mode that detected the event
  */
-void Hero::notify_collision_with_teletransporter(Teletransporter *teletransporter, int collision_mode) {
+void Hero::notify_collision_with_teletransporter(Teletransporter *teletransporter, CollisionMode collision_mode) {
 
   if (!state->can_avoid_teletransporter()) {
 
@@ -1326,7 +1335,7 @@ void Hero::notify_collision_with_conveyor_belt(ConveyorBelt *conveyor_belt, int 
  * @param stairs the stairs
  * @param collision_mode the collision mode that detected the event
  */
-void Hero::notify_collision_with_stairs(Stairs *stairs, int collision_mode) {
+void Hero::notify_collision_with_stairs(Stairs *stairs, CollisionMode collision_mode) {
 
   if (state->can_take_stairs()) {
 
@@ -1335,12 +1344,12 @@ void Hero::notify_collision_with_stairs(Stairs *stairs, int collision_mode) {
       stairs_way = (get_layer() == LAYER_LOW) ? Stairs::NORMAL_WAY : Stairs::REVERSE_WAY;
     }
     else {
-      stairs_way = (collision_mode == Detector::COLLISION_FACING_POINT) ? Stairs::NORMAL_WAY : Stairs::REVERSE_WAY;
+      stairs_way = (collision_mode == COLLISION_FACING_POINT) ? Stairs::NORMAL_WAY : Stairs::REVERSE_WAY;
     }
 
     // check whether the hero is trying to move in the direction of the stairs
     int correct_direction = stairs->get_movement_direction(stairs_way);
-    if (is_moving_towards(correct_direction / 2) || collision_mode == Detector::COLLISION_RECTANGLE) {
+    if (is_moving_towards(correct_direction / 2) || collision_mode == COLLISION_RECTANGLE) {
       set_state(new StairsState(this, stairs, stairs_way));
     }
   }
@@ -1396,9 +1405,9 @@ void Hero::notify_collision_with_explosion(Explosion *explosion, Sprite *sprite_
  * @param crystal_switch the crystal switch
  * @param collision_mode the collision mode that detected the event
  */
-void Hero::notify_collision_with_crystal_switch(CrystalSwitch *crystal_switch, int collision_mode) {
+void Hero::notify_collision_with_crystal_switch(CrystalSwitch *crystal_switch, CollisionMode collision_mode) {
 
-  if (collision_mode == Detector::COLLISION_FACING_POINT) {
+  if (collision_mode == COLLISION_FACING_POINT) {
     // the hero is touching the crystal switch and is looking in its direction
 
     KeysEffect *keys_effect = game->get_keys_effect();

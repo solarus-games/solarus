@@ -296,9 +296,9 @@ void Boomerang::update(void) {
  * @param crystal_switch the crystal switch
  * @param collision_mode the collision mode that detected the event
  */
-void Boomerang::notify_collision_with_crystal_switch(CrystalSwitch *crystal_switch, int collision_mode) {
+void Boomerang::notify_collision_with_crystal_switch(CrystalSwitch *crystal_switch, CollisionMode collision_mode) {
 
-  if (collision_mode == Detector::COLLISION_RECTANGLE) {
+  if (collision_mode == COLLISION_RECTANGLE) {
 
     crystal_switch->activate(this);
     if (!is_going_back()) {

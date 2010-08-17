@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_HERO_STATE_PLAYER_MOVEMENT_H
-#define SOLARUS_HERO_STATE_PLAYER_MOVEMENT_H
+#ifndef SOLARUS_HERO_PLAYER_MOVEMENT_STATE_H
+#define SOLARUS_HERO_PLAYER_MOVEMENT_STATE_H
 
 #include "Common.h"
 #include "hero/State.h"

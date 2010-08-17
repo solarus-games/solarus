@@ -14,20 +14,27 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_HERO_STATE_INVENTORY_ITEM_H
-#define SOLARUS_HERO_STATE_INVENTORY_ITEM_H
+#ifndef SOLARUS_HERO_INVENTORY_ITEM_STATE_H
+#define SOLARUS_HERO_INVENTORY_ITEM_STATE_H
 
 #include "hero/State.h"
+#include "InventoryItemId.h"
 
 /**
  * @brief The state "inventory item" of the hero.
  */
 class Hero::InventoryItemState: public Hero::State {
 
+  private:
+
+    InventoryItem *item;	/**< the inventory item that the hero is currently using */
   public:
 
-    InventoryItemState(Hero *hero);
+    InventoryItemState(Hero *hero, InventoryItemId item_id);
     ~InventoryItemState(void);
+
+    void start(State *previous_state);
+    void update(void);
 };
 
 #endif

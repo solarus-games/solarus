@@ -74,10 +74,13 @@ class Hero: public MapEntity {
     Detector *facing_entity;			/**< the entity just in front of the hero (or NULL) */
     static const int normal_walking_speed;	/**< default speed when walking */
     int walking_speed;				/**< current walking speed */
+
+    // state specific
     Teletransporter *delayed_teletransporter;	/**< a teletransporter that will be activated when the hero finishes 
 						 * a special behavior, such as falling into a hole or walking on stairs */
     bool on_conveyor_belt;			/**< indicates that the hero's rectangle is currently overlapping a conveyor belt 
 						 * (even if the collision is not enough to take the conveyor belt and move the hero) */
+    uint32_t can_use_inventory_item_date;	/**< date when the player can use an inventory item next time */
 
     // ground
     Ground ground;				/**< kind of ground under the hero: grass, shallow water, etc. */

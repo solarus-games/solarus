@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_HERO_STATE_SWORD_SWINGING_H
-#define SOLARUS_HERO_STATE_SWORD_SWINGING_H
+#ifndef SOLARUS_HERO_SWORD_SWINGING_STATE_H
+#define SOLARUS_HERO_SWORD_SWINGING_STATE_H
 
 #include "hero/State.h"
 

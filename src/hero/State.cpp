@@ -16,12 +16,14 @@
  */
 #include "hero/State.h"
 #include "hero/SwordSwingingState.h"
+#include "hero/InventoryItemState.h"
 #include "hero/HeroSprites.h"
 #include "entities/Hero.h"
 #include "lowlevel/System.h"
 #include "Game.h"
 #include "Map.h"
 #include "Equipment.h"
+#include "InventoryItem.h"
 #include "Sprite.h"
 #include "KeysEffect.h"
 
@@ -261,6 +263,17 @@ void Hero::State::directional_key_released(int direction4) {
  * @param slot the slot activated (0 or 1)
  */
 void Hero::State::item_key_pressed(int slot) {
+
+  Equipment *equipment = game->get_equipment();
+  InventoryItemId item_id = equipment->get_item_assigned(slot);
+
+  if (InventoryItem::can_be_assigned(item_id)
+      && equipment->has_inventory_item(item_id)
+      && System::now() >= hero->can_use_inventory_item_date
+      && can_start_inventory_item()) {
+
+    hero->set_state(new InventoryItemState(hero, item_id));
+  }
 }
 
 /**
@@ -710,6 +723,17 @@ bool Hero::State::is_cutting_with_sword(Detector *detector) {
  * @return true if the hero can swing his sword in this state
  */
 bool Hero::State::can_start_sword(void) {
+  return false;
+}
+
+/**
+ * @brief Returns whether the hero can use an inventory item in this state.
+ *
+ * Returns false by default.
+ *
+ * @return true if the hero can use an inventoy item in this state
+ */
+bool Hero::State::can_start_inventory_item(void) {
   return false;
 }
 

@@ -56,7 +56,7 @@ const int Hero::normal_walking_speed = 9;
  */
 Hero::Hero(Equipment *equipment):
   state(NULL), old_state(NULL), equipment(equipment), facing_entity(NULL),
-  walking_speed(normal_walking_speed), on_conveyor_belt(false),
+  walking_speed(normal_walking_speed), on_conveyor_belt(false), can_use_inventory_item_date(0),
   ground(GROUND_NORMAL), next_ground_date(0) {
 
   // position
@@ -176,6 +176,13 @@ void Hero::set_state(State *new_state) {
 void Hero::set_suspended(bool suspended) {
 
   MapEntity::set_suspended(suspended);
+
+  if (!suspended) {
+
+    uint32_t diff = System::now() - when_suspended;
+    next_ground_date += diff;
+    can_use_inventory_item_date += diff;
+  }
 
   sprites->set_suspended(suspended);
   state->set_suspended(suspended);

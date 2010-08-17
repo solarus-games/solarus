@@ -42,9 +42,6 @@ Hero::FreeState::~FreeState(void) {
 
 /**
  * @brief Starts this state.
- *
- * This function is called automatically when this state becomes the active state of the hero.
- *
  * @param previous_state the previous state
  */
 void Hero::FreeState::start(State *previous_state) {
@@ -137,6 +134,14 @@ bool Hero::FreeState::is_free(void) {
  * @return true if the hero can swing his sword in this state
  */
 bool Hero::FreeState::can_start_sword(void) {
+  return true;
+}
+
+/**
+ * @brief Returns whether the hero can use an inventory item in this state.
+ * @return true if the hero can use an inventoy item in this state
+ */
+bool Hero::FreeState::can_start_inventory_item(void) {
   return true;
 }
 

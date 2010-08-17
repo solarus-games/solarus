@@ -1044,11 +1044,11 @@ bool MapEntity::is_enemy_obstacle(Enemy *enemy) {
 }
 
 /**
- * @brief Returns whether a jump sensor is currently considered as an obstacle by this entity.
+ * @brief Returns whether a non-diagonal jump sensor is currently considered as an obstacle by this entity.
  *
  * This function returns true by default.
  *
- * @param jump_sensor a jump sensor
+ * @param jump_sensor a non-diagonal jump sensor
  * @return true if the jump sensor is currently an obstacle for this entity
  */
 bool MapEntity::is_jump_sensor_obstacle(JumpSensor *jump_sensor) {
@@ -1234,11 +1234,19 @@ void MapEntity::notify_collision_with_conveyor_belt(ConveyorBelt *conveyor_belt,
 }
 
 /**
- * @brief This function is called when an stairs entity detect a collision with this entity.
+ * @brief This function is called when a stairs entity detects a collision with this entity.
  * @param stairs the stairs
  * @param collision_mode the collision mode that detected the event
  */
 void MapEntity::notify_collision_with_stairs(Stairs *stairs, int collision_mode) {
+  // nothing done by default
+}
+
+/**
+ * @brief This function is called when a jump sensor detects a collision with this entity.
+ * @param jump_sensor the jump sensor
+ */
+void MapEntity::notify_collision_with_jump_sensor(JumpSensor *jump_sensor) {
   // nothing done by default
 }
 

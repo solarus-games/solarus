@@ -16,9 +16,6 @@
  */
 #include "entities/JumpSensor.h"
 #include "entities/Hero.h"
-#include "entities/MapEntities.h"
-#include "movements/PlayerMovement.h"
-#include "Map.h"
 #include "lowlevel/FileTools.h"
 
 /**
@@ -110,6 +107,12 @@ EntityType JumpSensor::get_type() {
  * @return true if this entity is an obstacle for the other one
  */
 bool JumpSensor::is_obstacle_for(MapEntity *other) {
+
+  if (direction % 2 != 0) {
+    return false; // diagonal jump sensor: never obstacle (the tiles below the jump sensor should block entities)
+  }
+
+  // non-diagonal jump sensor: it depends on the entities (the tiles below the jump sensor should NOT block entities)
   return other->is_jump_sensor_obstacle(this);
 }
 
@@ -132,25 +135,16 @@ bool JumpSensor::test_collision_custom(MapEntity *entity) {
   // its shape is exactly its rectangle
   if (direction % 2 == 0) {
 
-    /* Version where the hero must be on the jump sensor.
-     * This requires that we should never put a sensor on an obstacle.
-     */
-    if (!test_collision_rectangle(hero) || !hero->is_moving_towards(direction / 2)) {
-      return false;
-    }
-    
-    /* version where the hero only has to touch the sensor
     if (!hero->is_moving_towards(direction / 2)) {
       return false;
     }
-    */
 
-    bool even = (direction % 4 == 0);
+    bool horizontal = (direction % 4 == 0);
     const Rectangle &facing_point = hero->get_facing_point(direction / 2);
-    return overlaps(facing_point.get_x() + (even ? 0 : -8),
-		    facing_point.get_y() + (even ? -8 : 0))
-      && overlaps(facing_point.get_x() + (even ? 0 : 7),
-		  facing_point.get_y() + (even ? 7 : 0));
+    return overlaps(facing_point.get_x() + (horizontal ? 0 : -8),
+		    facing_point.get_y() + (horizontal ? -8 : 0))
+      && overlaps(facing_point.get_x() + (horizontal ? 0 : 7),
+		  facing_point.get_y() + (horizontal ? 7 : 0));
   }
 
   // otherwise, the sensor's shape is a diagonal bar
@@ -206,20 +200,19 @@ bool JumpSensor::is_point_in_diagonal(const Rectangle &point) {
 
 /**
  * @brief This function is called when an entity overlaps the sensor.
- *
- * If this entity is the hero, then we make him jump.
- *
  * @param entity_overlapping the entity that overalps the sensor
  * @param collision_mode the collision mode that triggered the event
  * (not used here since a jump sensor has only one collision mode)
  */
 void JumpSensor::notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
+  entity_overlapping->notify_collision_with_jump_sensor(this);
+}
 
-  if (entity_overlapping->is_hero()) {
-    Hero* hero = (Hero*) entity_overlapping;
-    if (hero->can_control_movement()) {
-      hero->start_jumping(direction, jump_length, false, true, 0, LAYER_LOW);
-    }
-  }
+/**
+ * @brief Returns the length of the jump to make with this jump sensor.
+ * @return length of the jump in pixels (usually a multiple of 8)
+ */
+int JumpSensor::get_jump_length(void) {
+  return jump_length;
 }
 

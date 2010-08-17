@@ -38,9 +38,11 @@ class Hero::CarryingState: public Hero::PlayerMovementState {
     void start(State *previous_state);
     void stop(State *next_state);
     void set_map(Map *map);
+    void set_suspended(bool suspended);
     void update(void);
     void action_key_pressed(void);
     bool can_start_sword(void);
+    bool can_take_jump_sensor(void);
     void set_animation_stopped(void);
     void set_animation_walking(void);
 

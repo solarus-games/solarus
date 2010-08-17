@@ -243,6 +243,7 @@ class Hero: public MapEntity {
     void notify_collision_with_teletransporter(Teletransporter *teletransporter, int collision_mode);
     void notify_collision_with_conveyor_belt(ConveyorBelt *conveyor_belt, int dx, int dy);
     void notify_collision_with_stairs(Stairs *stairs, int collision_mode);
+    void notify_collision_with_jump_sensor(JumpSensor *jump_sensor);
     void notify_collision_with_sensor(Sensor *sensor);
     void notify_collision_with_explosion(Explosion *explosion, Sprite *sprite_overlapping);
     void notify_collision_with_crystal_switch(CrystalSwitch *crystal_switch, int collision_mode);

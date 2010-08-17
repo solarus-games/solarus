@@ -484,6 +484,7 @@ bool Map::is_started(void) {
 void Map::notify_opening_transition_finished(void) {
 
   visible_surface->set_opacity(255); // because the transition effect may have changed the opacity
+  check_suspended();
   game->get_hero()->notify_opening_transition_finished();
   if (welcome_message_id != "") {
     game->get_dialog_box()->start_dialog(welcome_message_id);

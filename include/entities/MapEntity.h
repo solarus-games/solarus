@@ -241,6 +241,7 @@ class MapEntity {
     virtual void notify_collision_with_teletransporter(Teletransporter *teletransporter, int collision_mode);
     virtual void notify_collision_with_conveyor_belt(ConveyorBelt *conveyor_belt, int dx, int dy);
     virtual void notify_collision_with_stairs(Stairs *stairs, int collision_mode);
+    virtual void notify_collision_with_jump_sensor(JumpSensor *jump_sensor);
     virtual void notify_collision_with_sensor(Sensor *sensor);
     virtual void notify_collision_with_explosion(Explosion *explosion, Sprite *sprite_overlapping);
     virtual void notify_collision_with_crystal_switch(CrystalSwitch *crystal_switch, int collision_mode);

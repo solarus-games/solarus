@@ -40,10 +40,10 @@ class Hero::SwordLoadingState: public Hero::PlayerMovementState {
     void notify_movement_tried(bool success);
     void notify_attacked_enemy(EnemyAttack attack, Enemy *victim, int result, bool killed);
 
+    bool is_direction_locked(void);
+    bool can_take_jump_sensor(void);
     void set_animation_stopped(void);
     void set_animation_walking(void);
-    bool is_direction_locked(void);
-
 };
 
 #endif

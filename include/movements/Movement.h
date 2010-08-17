@@ -85,8 +85,8 @@ class Movement {
 
     inline uint32_t get_next_move_date_x(void)                  { return next_move_date_x; }
     inline uint32_t get_next_move_date_y(void)                  { return next_move_date_y; }
-    inline void set_next_move_date_x(uint32_t next_move_date_x) { this->next_move_date_x = next_move_date_x; }
-    inline void set_next_move_date_y(uint32_t next_move_date_y) { this->next_move_date_y = next_move_date_y; }
+    void set_next_move_date_x(uint32_t next_move_date_x);
+    void set_next_move_date_y(uint32_t next_move_date_y);
 
     inline uint32_t get_x_delay(void)         { return x_delay; }
     inline uint32_t get_y_delay(void)         { return y_delay; }

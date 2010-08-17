@@ -89,14 +89,24 @@ void Hero::CarryingState::set_map(Map *map) {
 }
 
 /**
+ * @brief Notifies this state that the game was just suspended or resumed.
+ * @param suspended true if the game is suspended
+ */
+void Hero::CarryingState::set_suspended(bool suspended) {
+
+  PlayerMovementState::set_suspended(suspended);
+  carried_item->set_suspended(suspended);
+}
+
+/**
  * @brief Updates this state.
  */
 void Hero::CarryingState::update(void) {
 
   PlayerMovementState::update();
+  carried_item->update();
 
   if (!suspended) {
-    carried_item->update();
 
     if (carried_item->is_broken()) {
       delete carried_item;
@@ -137,6 +147,16 @@ void Hero::CarryingState::throw_item(void) {
  * @return true if the hero can swing his sword in this state
  */
 bool Hero::CarryingState::can_start_sword(void) {
+  return true;
+}
+
+/**
+ * @brief Returns whether can trigger a jump sensor in this state.
+ * If false is returned, jump sensors have no effect (but they are obstacle for the hero).
+ * @param jump_sensor a jump sensor
+ * @return true if the hero can use jump sensors in this state
+ */
+bool Hero::CarryingState::can_take_jump_sensor(void) {
   return true;
 }
 

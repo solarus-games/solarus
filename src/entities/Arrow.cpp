@@ -200,8 +200,8 @@ bool Arrow::is_npc_obstacle(InteractiveEntity *npc) {
 }
 
 /**
- * @brief Returns whether a jump sensor is currently considered as an obstacle for this entity.
- * @param jump_sensor a jump sensor
+ * @brief Returns whether a non-diagonal jump sensor is currently considered as an obstacle for this entity.
+ * @param jump_sensor a non-diagonal jump sensor
  * @return true if the jump sensor is currently an obstacle for this entity
  */
 bool Arrow::is_jump_sensor_obstacle(JumpSensor *jump_sensor) {

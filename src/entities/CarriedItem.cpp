@@ -309,11 +309,12 @@ void CarriedItem::set_suspended(bool suspended) {
 
   if (!suspended && when_suspended != 0) {
     // recalculate the timers
+    uint32_t diff = System::now() - when_suspended;
     if (is_throwing) {
-      next_down_date += System::now() - when_suspended;
+      next_down_date += diff;
     }
     if (can_explode()) {
-      explosion_date += System::now() - when_suspended;
+      explosion_date += diff;
     }
   }
 }
@@ -515,8 +516,8 @@ bool CarriedItem::is_npc_obstacle(InteractiveEntity *npc) {
 }
 
 /**
- * @brief Returns whether a jump sensor is currently considered as an obstacle for this entity.
- * @param jump_sensor a jump sensor
+ * @brief Returns whether a non-diagonal jump sensor is currently considered as an obstacle for this entity.
+ * @param jump_sensor a non-diagonal jump sensor
  * @return true if the jump sensor is currently an obstacle for this entity
  */
 bool CarriedItem::is_jump_sensor_obstacle(JumpSensor *jump_sensor) {

@@ -45,6 +45,7 @@ class JumpSensor: public Detector {
     bool is_point_in_diagonal(const Rectangle &point);
     bool test_collision_custom(MapEntity *entity);
     void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
+    int get_jump_length(void);
 
 };
 

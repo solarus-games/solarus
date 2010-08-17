@@ -300,6 +300,36 @@ void Movement::stop(void) {
 }
 
 /**
+ * @brief Sets the date of the next change of the x coordinate.
+ * @param next_move_date_x the date in milliseconds
+ */
+void Movement::set_next_move_date_x(uint32_t next_move_date_x) {
+
+  if (suspended) {
+    uint32_t delay = next_move_date_x - System::now();
+    this->next_move_date_x = when_suspended + delay;
+  }
+  else {
+    this->next_move_date_x = next_move_date_x;
+  }
+}
+
+/**
+ * @brief Sets the date of the next change of the y coordinate.
+ * @param next_move_date_y the date in milliseconds
+ */
+void Movement::set_next_move_date_y(uint32_t next_move_date_y) {
+
+  if (suspended) {
+    uint32_t delay = next_move_date_y - System::now();
+    this->next_move_date_y = when_suspended + delay;
+  }
+  else {
+    this->next_move_date_y = next_move_date_y;
+  }
+}
+
+/**
  * @brief Returns whether this movement is finished.
  *
  * You can redefine this function if your movement has an end.
@@ -395,8 +425,9 @@ void Movement::set_suspended(bool suspended) {
   else {
     // recalculate the next move date
     if (when_suspended != 0) {
-      next_move_date_x += now - when_suspended;
-      next_move_date_y += now - when_suspended;
+      uint32_t diff = now - when_suspended;
+      next_move_date_x += diff;
+      next_move_date_y += diff;
     }
   }
 }

@@ -22,6 +22,7 @@
 #include "entities/ConveyorBelt.h"
 #include "entities/CrystalSwitch.h"
 #include "entities/Block.h"
+#include "entities/JumpSensor.h"
 #include "entities/Sensor.h"
 #include "hero/HeroSprites.h"
 #include "hero/CarryingState.h"
@@ -1212,12 +1213,12 @@ bool Hero::is_raised_block_obstacle(CrystalSwitchBlock *raised_block) {
 }
 
 /**
- * @brief Returns whether a jump sensor is currently considered as an obstacle for this entity.
- * @param jump_sensor a jump sensor
+ * @brief Returns whether a non-diagonal jump sensor is currently considered as an obstacle for this entity.
+ * @param jump_sensor a non-diagonal jump sensor
  * @return true if the jump sensor is currently an obstacle for this entity
  */
 bool Hero::is_jump_sensor_obstacle(JumpSensor *jump_sensor) {
-  return state->is_jump_sensor_obstacle(jump_sensor);
+  return !state->can_take_jump_sensor(); // if the jump sensors cannot be used in this state, consider them as obstacles
 }
 
 /**
@@ -1335,6 +1336,26 @@ void Hero::notify_collision_with_stairs(Stairs *stairs, int collision_mode) {
     if (is_moving_towards(correct_direction / 2) || collision_mode == Detector::COLLISION_RECTANGLE) {
       set_state(new StairsState(this, stairs, stairs_way));
     }
+  }
+}
+
+/**
+ * @brief This function is called when a jump sensor detects a collision with this entity.
+ * @param jump_sensor the jump sensor
+ */
+void Hero::notify_collision_with_jump_sensor(JumpSensor *jump_sensor) {
+  
+  if (state->can_take_jump_sensor()) {
+
+    if (jump_sensor->get_direction() % 2 == 0) {
+      // this non-diagonal jump sensor is not currently an obstacle for the hero
+      // (in order to allow his smooth collision movement),
+      // so the hero may have one pixel inside the sensor before jumping
+      set_aligned_to_grid();
+    }
+
+    // jump
+    start_jumping(jump_sensor->get_direction(), jump_sensor->get_jump_length(), false, true, 0, LAYER_LOW);
   }
 }
 

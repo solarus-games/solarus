@@ -535,9 +535,22 @@ bool Hero::State::can_avoid_conveyor_belt(void) {
  *
  * Returns false by default.
  *
- * @return true if the hero ignores the effect of stairs in this state
+ * @return true if the hero can take stairs in this state
  */
 bool Hero::State::can_take_stairs(void) {
+  return false;
+}
+
+/**
+ * @brief Returns whether can trigger a jump sensor in this state.
+ * If false is returned, jump sensors have no effect (but they are obstacle for the hero).
+ *
+ * Returns false by default.
+ *
+ * @param jump_sensor a jump sensor
+ * @return true if the hero can use jump sensors in this state
+ */
+bool Hero::State::can_take_jump_sensor(void) {
   return false;
 }
 
@@ -561,18 +574,6 @@ bool Hero::State::is_sensor_obstacle(Sensor *sensor) {
  * @return true if the hero ignores the effect of sensors in this state
  */
 bool Hero::State::can_avoid_sensor(void) {
-  return false;
-}
-
-/**
- * @brief Returns whether a jump sensor is considered as an obstacle in this state.
- *
- * Returns false by default.
- *
- * @param jump_sensor a jump sensor
- * @return true if the jump sensor is an obstacle in this state
- */
-bool Hero::State::is_jump_sensor_obstacle(JumpSensor *jump_sensor) {
   return false;
 }
 

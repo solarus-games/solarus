@@ -99,7 +99,6 @@ class Hero::State {
     virtual bool can_avoid_conveyor_belt(void);
     virtual bool is_sensor_obstacle(Sensor *sensor);
     virtual bool can_avoid_sensor(void);
-    virtual bool is_jump_sensor_obstacle(JumpSensor *jump_sensor);
     virtual bool can_avoid_explosion(void);
 
     // enemies
@@ -115,6 +114,7 @@ class Hero::State {
     virtual bool is_cutting_with_sword(Detector *detector);
     virtual bool can_start_sword(void);
     virtual bool can_take_stairs(void);
+    virtual bool can_take_jump_sensor(void);
     virtual bool can_sword_hit_crystal_switch(void);
     virtual bool can_throw_item(void);
 };

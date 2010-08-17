@@ -44,6 +44,7 @@ class Hero::FreeState: public Hero::PlayerMovementState {
     bool is_free(void);
     bool can_start_sword(void);
     bool can_take_stairs(void);
+    bool can_take_jump_sensor(void);
     bool can_throw_item(void);
     void set_animation_stopped(void);
     void set_animation_walking(void);

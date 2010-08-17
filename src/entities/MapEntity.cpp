@@ -1215,12 +1215,18 @@ void MapEntity::ensure_no_obstacles(void) {
 */
 
 /**
+ * @brief This function is called when a destructible item detects a non-pixel perfect collision with this entity.
+ * @param destructible_item the destructible item
+ */
+void MapEntity::notify_collision_with_destructible_item(DestructibleItem *destructible_item, CollisionMode collision_mode) {
+}
+
+/**
  * @brief This function is called when a teletransporter detects a collision with this entity.
  * @param teletransporter the teletransporter
  * @param collision_mode the collision mode that detected the event
  */
-void MapEntity::notify_collision_with_teletransporter(Teletransporter *teletransporter, int collision_mode) {
-  // nothing done by default
+void MapEntity::notify_collision_with_teletransporter(Teletransporter *teletransporter, CollisionMode collision_mode) {
 }
 
 /**
@@ -1230,7 +1236,6 @@ void MapEntity::notify_collision_with_teletransporter(Teletransporter *teletrans
  * @param dy direction of the y move in pixels (0, 1 or -1)
  */
 void MapEntity::notify_collision_with_conveyor_belt(ConveyorBelt *conveyor_belt, int dx, int dy) {
-  // nothing done by default
 }
 
 /**
@@ -1238,8 +1243,7 @@ void MapEntity::notify_collision_with_conveyor_belt(ConveyorBelt *conveyor_belt,
  * @param stairs the stairs
  * @param collision_mode the collision mode that detected the event
  */
-void MapEntity::notify_collision_with_stairs(Stairs *stairs, int collision_mode) {
-  // nothing done by default
+void MapEntity::notify_collision_with_stairs(Stairs *stairs, CollisionMode collision_mode) {
 }
 
 /**
@@ -1247,7 +1251,6 @@ void MapEntity::notify_collision_with_stairs(Stairs *stairs, int collision_mode)
  * @param jump_sensor the jump sensor
  */
 void MapEntity::notify_collision_with_jump_sensor(JumpSensor *jump_sensor) {
-  // nothing done by default
 }
 
 /**
@@ -1255,7 +1258,6 @@ void MapEntity::notify_collision_with_jump_sensor(JumpSensor *jump_sensor) {
  * @param sensor a sensor
  */
 void MapEntity::notify_collision_with_sensor(Sensor *sensor) {
-  // nothing done by default
 }
 
 /**
@@ -1265,7 +1267,6 @@ void MapEntity::notify_collision_with_sensor(Sensor *sensor) {
  * @param sprite_overlapping the sprite of the current entity that collides with the explosion
  */
 void MapEntity::notify_collision_with_explosion(Explosion *explosion, Sprite *sprite_overlapping) {
-  // nothing done by default
 }
 
 /**
@@ -1273,8 +1274,7 @@ void MapEntity::notify_collision_with_explosion(Explosion *explosion, Sprite *sp
  * @param crystal_switch the crystal switch
  * @param collision_mode the collision mode that detected the event
  */
-void MapEntity::notify_collision_with_crystal_switch(CrystalSwitch *crystal_switch, int collision_mode) {
-
+void MapEntity::notify_collision_with_crystal_switch(CrystalSwitch *crystal_switch, CollisionMode collision_mode) {
 }
 
 /**
@@ -1284,7 +1284,6 @@ void MapEntity::notify_collision_with_crystal_switch(CrystalSwitch *crystal_swit
  * @param sprite_overlapping the sprite of the current entity that collides with the crystal switch
  */
 void MapEntity::notify_collision_with_crystal_switch(CrystalSwitch *crystal_switch, Sprite *sprite_overlapping) {
-
 }
 
 /**
@@ -1292,7 +1291,6 @@ void MapEntity::notify_collision_with_crystal_switch(CrystalSwitch *crystal_swit
  * @param enemy the enemy
  */
 void MapEntity::notify_collision_with_enemy(Enemy *enemy) {
-  // nothing done by default
 }
 
 /**
@@ -1302,7 +1300,6 @@ void MapEntity::notify_collision_with_enemy(Enemy *enemy) {
  * @param this_sprite this entity's sprite that overlaps the enemy's sprite
  */
 void MapEntity::notify_collision_with_enemy(Enemy *enemy, Sprite *enemy_sprite, Sprite *this_sprite) {
-  // nothing done by default
 }
 
 /**
@@ -1320,7 +1317,6 @@ void MapEntity::notify_collision_with_enemy(Enemy *enemy, Sprite *enemy_sprite, 
  * @param killed indicates that the attack has just killed the enemy
  */
 void MapEntity::notify_attacked_enemy(EnemyAttack attack, Enemy *victim, int result, bool killed) {
-  // nothing done by default
 }
 
 /**

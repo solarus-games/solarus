@@ -548,9 +548,9 @@ bool CarriedItem::is_enemy_obstacle(Enemy *enemy) {
  * @param crystal_switch the crystal switch
  * @param collision_mode the collision mode that detected the event
  */
-void CarriedItem::notify_collision_with_crystal_switch(CrystalSwitch *crystal_switch, int collision_mode) {
+void CarriedItem::notify_collision_with_crystal_switch(CrystalSwitch *crystal_switch, CollisionMode collision_mode) {
 
-  if (collision_mode == Detector::COLLISION_RECTANGLE
+  if (collision_mode == COLLISION_RECTANGLE
       && is_being_thrown()
       && !can_explode()) {
 
@@ -564,7 +564,7 @@ void CarriedItem::notify_collision_with_crystal_switch(CrystalSwitch *crystal_sw
  * @param stairs the stairs entity
  * @param collision_mode the collision mode that detected the event
  */
-void CarriedItem::notify_collision_with_stairs(Stairs *stairs, int collision_mode) {
+void CarriedItem::notify_collision_with_stairs(Stairs *stairs, CollisionMode collision_mode) {
 
   if (is_throwing && !is_breaking
       && stairs->is_inside_floor() && get_layer() == LAYER_LOW) {

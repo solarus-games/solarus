@@ -21,7 +21,6 @@
 #include "InventoryItem.h"
 #include "DungeonEquipment.h"
 #include "entities/EntityType.h"
-#include "entities/Detector.h"
 #include "entities/MapEntities.h"
 #include "entities/InteractiveEntity.h"
 #include "entities/Hero.h"

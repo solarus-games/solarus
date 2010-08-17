@@ -19,6 +19,7 @@
 #include "entities/Enemy.h"
 #include "entities/Stairs.h"
 #include "entities/CrystalSwitch.h"
+#include "entities/DestructibleItem.h"
 #include "movements/PathMovement.h"
 #include "movements/FollowMovement.h"
 #include "Sprite.h"
@@ -277,6 +278,9 @@ void Arrow::update(void) {
       // the arrow is stopped because the entity that was reached just disappeared
       disappear_date = now;
     }
+    else if (entity_reached->get_type() == DESTRUCTIBLE_ITEM && !entity_reached->is_obstacle_for(this)) {
+      disappear_date = now;
+    }
     else if (entity_reached->get_type() == ENEMY && ((Enemy*) entity_reached)->is_dying()) {
       // the enemy is dying
       disappear_date = now;
@@ -293,7 +297,7 @@ void Arrow::update(void) {
       reached_obstacle = true;
     }
     else if (is_stopped()) {
-      
+
       if (has_reached_map_border()) {
         // the map border was reached: destroy the arrow
 	disappear_date = now;
@@ -310,7 +314,10 @@ void Arrow::update(void) {
     disappear_date = now + 1500;
     get_sprite()->set_current_animation("reached_obstacle");
     game->play_sound("arrow_hit");
-    clear_movement();
+    
+    if (entity_reached == NULL) {
+      clear_movement();
+    }
   }
 
   // destroy the arrow when disappear_date is reached
@@ -375,12 +382,23 @@ void Arrow::attach_to(MapEntity *entity_reached) {
  * @param crystal_switch the crystal switch
  * @param collision_mode the collision mode that detected the event
  */
-void Arrow::notify_collision_with_crystal_switch(CrystalSwitch *crystal_switch, int collision_mode) {
+void Arrow::notify_collision_with_crystal_switch(CrystalSwitch *crystal_switch, CollisionMode collision_mode) {
 
-  if (collision_mode == Detector::COLLISION_RECTANGLE && is_flying()) {
+  if (collision_mode == COLLISION_RECTANGLE && is_flying()) {
 
     crystal_switch->activate(this);
     attach_to(crystal_switch);
+  }
+}
+
+/**
+ * @brief This function is called when a destructible item detects a non-pixel perfect collision with this entity.
+ * @param destructible_item the destructible item
+ */
+void Arrow::notify_collision_with_destructible_item(DestructibleItem *destructible_item, CollisionMode collision_mode) {
+
+  if (destructible_item->is_obstacle_for(this) && is_flying()) {
+    attach_to(destructible_item);
   }
 }
 

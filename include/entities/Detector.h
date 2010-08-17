@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include "entities/MapEntity.h"
+#include "entities/CollisionMode.h"
 
 /**
  * @brief Abstract class for an entity able to detect the presence of other entities.
@@ -28,30 +29,6 @@
  * Examples of detectors include teletransporters, switches, bushes and enemies.
  */
 class Detector: public MapEntity {
-
-  public:
-
-    /**
-     * Collisions modes of a detector.
-     * The collision mode indicates what kind of collisions the detector will detect.
-     */
-    enum CollisionMode {
-      COLLISION_NONE         = 0x0000, /**< no collision will be detected
-					* (the detector doesn't detect any entity) */
-      COLLISION_RECTANGLE    = 0x0001, /**< collision if an entity's rectangle
-					* overlaps the detector's rectangle */
-      COLLISION_INSIDE       = 0x0002, /**< collision if an entity's rectangle
-					* overlaps the detector's rectangle */
-      COLLISION_ORIGIN_POINT = 0x0004, /**< collision if an entity's origin point
-					* is inside the detector's rectangle */
-      COLLISION_FACING_POINT = 0x0008, /**< collision if an entity's facing point
-					* is inside the detector's rectangle */
-      COLLISION_CENTER       = 0x0010, /**< collision if the entity's center
-					* is inside the detector's rectangle */
-      COLLISION_SPRITE       = 0x0020, /**< collision if an entity's sprite has pixels
-					* overlapping pixels of the detector's sprite */
-      COLLISION_CUSTOM       = 0x0040  /**< custom collision function, defined by the subclass */
-    };
 
   private:
 

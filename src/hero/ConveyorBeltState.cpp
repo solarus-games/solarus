@@ -73,6 +73,10 @@ void Hero::ConveyorBeltState::update(void) {
 
   State::update();
 
+  if (suspended) {
+    return;
+  }
+
   if (snapping && hero->get_movement()->is_finished()) {
 
     // the hero is now exactly placed on the conveyor belt: start the conveyor belt's movement

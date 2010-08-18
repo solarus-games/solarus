@@ -217,6 +217,7 @@ class MapEntity {
 
     // movement
     Movement * get_movement(void);
+    virtual void notify_movement_tried(bool success);
     virtual void notify_position_changed(void);
     virtual void notify_layer_changed(void);
     virtual void notify_movement_changed(void);

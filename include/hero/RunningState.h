@@ -24,10 +24,21 @@
  */
 class Hero::RunningState: public Hero::State {
 
+  private:
+
+    int phase;				/**< current phase of the run */
+    uint32_t next_phase_date;		/**< date of the next phase */
+
   public:
 
     RunningState(Hero *hero);
     ~RunningState(void);
+
+    void start(State *previous_state);
+    void stop(State *next_state);
+    void update(void);
+    void set_suspended(bool suspended);
+    void notify_movement_tried(bool success);
 };
 
 #endif

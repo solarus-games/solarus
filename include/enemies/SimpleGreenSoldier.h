@@ -42,6 +42,7 @@ class SimpleGreenSoldier: public Enemy {
     ~SimpleGreenSoldier(void);
 
     void update(void);
+    void notify_movement_tried(bool success);
 };
 
 #endif

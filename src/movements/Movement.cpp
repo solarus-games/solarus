@@ -50,6 +50,7 @@ Movement::~Movement(void) {
  * @param entity the entity to control
  */
 void Movement::set_entity(MapEntity *entity) {
+
   this->entity = entity;
 
   if (entity == NULL) {
@@ -393,8 +394,8 @@ bool Movement::has_to_move_now(void) {
 
   uint32_t now = System::now();
 
-  return (x_move != 0 && now >= next_move_date_x)
-    || (y_move != 0 && now >= next_move_date_y);
+  return (get_x_move() != 0 && now >= get_next_move_date_x())
+    || (get_y_move() != 0 && now >= get_next_move_date_y());
 }
 
 /**
@@ -465,10 +466,10 @@ void Movement::update_y(void) {
 }
 
 /**
- * @brief Updates the entity's position.
+ * @brief Updates the position of the object controlled by this movement.
  *
- * This function is called repeteadly by the map.
- * By default, it calls update_x() and update_y().
+ * This function is called repeteadly.
+ * By default, it calls update_x() and update_y() when necessary.
  * You can redefine this function.
  */
 void Movement::update(void) {
@@ -478,6 +479,10 @@ void Movement::update(void) {
 
     bool x_move_now = get_x_move() != 0 && now >= get_next_move_date_x();
     bool y_move_now = get_y_move() != 0 && now >= get_next_move_date_y();
+    bool trying_to_move = x_move_now || y_move_now;
+
+    // save the current coordinates
+    Rectangle old_xy(get_x(), get_y());
 
     while (x_move_now || y_move_now) { // while it's time to move
 
@@ -509,6 +514,14 @@ void Movement::update(void) {
       now = System::now();
       x_move_now = get_x_move() != 0 && now >= get_next_move_date_x();
       y_move_now = get_y_move() != 0 && now >= get_next_move_date_y();
+    }
+
+    // see if the movement was successful (i.e. if the hero's coordinates have changed)
+    bool success = (get_x() != old_xy.get_x() || get_y() != old_xy.get_y());
+
+    if (trying_to_move && !is_suspended() && entity != NULL) {
+      // notify the entity
+      entity->notify_movement_tried(success);
     }
   }
 }

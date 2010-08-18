@@ -1,0 +1,4 @@
+find . -name '*~' -exec rm {} \;
+jar cvmf manifest.mf solarus-editor.jar org
+keytool -genkey -keystore solaruskeystore -alias solaruskey
+jarsigner -keystore solaruskeystore solarus-editor.jar solaruskey

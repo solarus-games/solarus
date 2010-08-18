@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<jnlp spec="1.0+" codebase="http://zsdx.zelda-solarus.com/editor" href="editor.jnlp">
+<jnlp spec="1.0+" codebase="http://www.solarus-engine.org/editor" href="editor.jnlp">
   <information>
-    <title>ZSDX Editor</title>
+    <title>Solarus Quest Editor</title>
     <vendor>Christopho</vendor>
-    <homepage href="http://www.zelda-solarus.com" />
-    <description>Map editor for Zelda: Mystery of Solarus DX</description>
+    <homepage href="http://www.solarus-engine.org" />
+    <description>Quest editor for Solarus</description>
     <offline-allowed />
     <icon href="icon.gif" />
   </information>
@@ -13,8 +13,9 @@
   </security>
   <resources>
     <j2se version="1.6" />
-    <jar href="zsdx-editor.jar" />
+    <jar href="solarus-editor.jar" />
     <jar href="ini4j.jar" />
   </resources>
-  <application-desc main-class="zsdx.MapEditor" />
+  <application-desc main-class="org.solarus.editor.MapEditor" />
 </jnlp>
+

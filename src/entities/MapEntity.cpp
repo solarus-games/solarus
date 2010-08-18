@@ -828,6 +828,17 @@ void MapEntity::clear_movement(void) {
 }
 
 /**
+ * @brief Notifies this entity that it has just tried to change his position.
+ *
+ * This function is called only when the movement is not suspended.
+ * By default, nothing is done.
+ *
+ * @param success true if the position has actually just changed
+ */
+void MapEntity::notify_movement_tried(bool success) {
+}
+
+/**
  * @brief This function is called when the entity has just moved.
  *
  * It checks collisions with the detectors on the map.
@@ -853,7 +864,6 @@ void MapEntity::notify_position_changed(void) {
  * By default, nothing is done.
  */
 void MapEntity::notify_movement_changed(void) {
-
 }
 
 /**

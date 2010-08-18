@@ -18,13 +18,16 @@
 #define SOLARUS_STRAIGHT_MOVEMENT_H
 
 #include "Common.h"
-#include "movements/CollisionMovement.h"
+#include "movements/SmoothCollisionMovement.h"
 
 /**
  * @brief Movement of an entity that follows a straight trajectory
  * for an amount of time.
+ *
+ * If an obstacle is reached, the movement tries to fix the trajectory
+ * so that the movement can continue.
  */
-class StraightMovement: public CollisionMovement {
+class StraightMovement: public SmoothCollisionMovement {
 
   private:
 
@@ -33,9 +36,9 @@ class StraightMovement: public CollisionMovement {
 
   public:
 
-    StraightMovement(int speed, int direction, uint32_t time);
-    StraightMovement(int speed, double direction, uint32_t time);
-    StraightMovement(int speed, const Rectangle &source_xy, const Rectangle &target_xy, uint32_t time);
+    StraightMovement(int speed, int direction, uint32_t time, bool smooth = true);
+    StraightMovement(int speed, double direction, uint32_t time, bool smooth = true);
+    StraightMovement(int speed, const Rectangle &source_xy, const Rectangle &target_xy, uint32_t time, bool smooth = true);
     ~StraightMovement(void);
 
     void update(void);

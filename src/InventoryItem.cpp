@@ -180,6 +180,7 @@ void InventoryItem::start(Game *game) {
 
       case INVENTORY_SPEED_SHOES:
         hero->start_running();
+	finished = true;
 	break;
 
       case INVENTORY_APPLES:

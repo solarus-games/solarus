@@ -76,8 +76,8 @@ void SimpleGreenSoldier::update(void) {
   if (is_in_normal_state()) {
     Sprite *sprite = get_sprite();
     const std::string &animation = sprite->get_current_animation();
-    if (get_movement()->is_stopped() && animation == "walking") {
 
+    if (get_movement()->is_finished() && animation == "walking") {
       int rand = Random::get_number(2);
 
       if (rand == 0) {
@@ -114,5 +114,30 @@ void SimpleGreenSoldier::walk(int direction) {
   StraightMovement *movement = (StraightMovement*) get_movement();
   int seconds = 2 + Random::get_number(3);
   movement->start(4, direction * 90, seconds * 1000);
+}
+
+/**
+ * @brief Notifies this entity that it has just tried to change his position.
+ * @param success true if the position has actually just changed
+ */
+void SimpleGreenSoldier::notify_movement_tried(bool success) {
+
+  Enemy::notify_movement_tried(success);
+
+  if (is_in_normal_state()) {
+    Sprite *sprite = get_sprite();
+    const std::string &animation = sprite->get_current_animation();
+    if (!success && animation == "walking") {
+
+      int rand = Random::get_number(2);
+
+      if (rand == 0) {
+	sprite->set_current_animation("stopped_watching_left");
+      }
+      else {
+	sprite->set_current_animation("stopped_watching_right");
+      }
+    }
+  }
 }
 

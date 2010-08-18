@@ -21,18 +21,23 @@
 #include "movements/CollisionMovement.h"
 
 /**
- * @brief Movement capable of fixing itself to continue walking when
+ * @brief Movement capable of fixing the trajectory to continue walking when
  * an obstacle is reached.
  */
 class SmoothCollisionMovement: public CollisionMovement {
-  
- public:
 
-  SmoothCollisionMovement(void);
-  virtual ~SmoothCollisionMovement(void);
+  private:
 
-  virtual void update_x(void);
-  virtual void update_y(void);
+    bool smooth;		/**< indicates that the movement fixes its trajectory
+				 * (if not, the movement is identical to a normal CollisionMovement) */
+
+  public:
+
+    SmoothCollisionMovement(bool smooth = true);
+    virtual ~SmoothCollisionMovement(void);
+
+    void update_x(void);
+    void update_y(void);
 };
 
 #endif

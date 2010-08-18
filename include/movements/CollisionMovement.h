@@ -33,12 +33,11 @@ class CollisionMovement: public Movement {
     Rectangle last_collision_box_on_obstacle; /**< copy of the collision box of the last call
 					      * to test_collision_with_map() returning true */ 
     bool stop_on_obstacles;                   /**< indicates that this movement is currently sensible
-					       * to collisions with obstacles */
+					       * to collisions with obstacles (if not, no collisions will be detected) */
 
   public:
 
-    CollisionMovement(void);
-    CollisionMovement(bool stop_on_obstacles);
+    CollisionMovement(bool stop_on_obstacles = true);
     virtual ~CollisionMovement(void);
 
     bool test_collision_with_map(int dx, int dy);

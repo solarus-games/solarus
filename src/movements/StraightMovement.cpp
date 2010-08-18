@@ -23,8 +23,10 @@
  * @param speed the speed
  * @param direction angle of the movement (0 to 359)
  * @param time duration of the movement in milliseconds
+ * @param smooth true to make the movement smooth
  */
-StraightMovement::StraightMovement(int speed, int direction, uint32_t time) {
+StraightMovement::StraightMovement(int speed, int direction, uint32_t time, bool smooth):
+  SmoothCollisionMovement(smooth) {
   start(speed, direction, time);
 }
 
@@ -33,8 +35,10 @@ StraightMovement::StraightMovement(int speed, int direction, uint32_t time) {
  * @param speed the speed
  * @param direction angle of the movement in radians
  * @param time duration of the movement in milliseconds
+ * @param smooth true to make the movement smooth
  */
-StraightMovement::StraightMovement(int speed, double direction, uint32_t time) {
+StraightMovement::StraightMovement(int speed, double direction, uint32_t time, bool smooth):
+  SmoothCollisionMovement(smooth) {
   start(speed, direction, time);
 }
 
@@ -44,8 +48,10 @@ StraightMovement::StraightMovement(int speed, double direction, uint32_t time) {
  * @param source_xy the movement will start from this point
  * @param target_xy the movement will go into this point's direction
  * @param time duration of the movement in milliseconds
+ * @param smooth true to make the movement smooth
  */
-StraightMovement::StraightMovement(int speed, const Rectangle &source_xy, const Rectangle &target_xy, uint32_t time) {
+StraightMovement::StraightMovement(int speed, const Rectangle &source_xy, const Rectangle &target_xy, uint32_t time, bool smooth):
+  SmoothCollisionMovement(smooth) {
 
   double angle = Geometry::get_angle(source_xy.get_x(), source_xy.get_y(), target_xy.get_x(), target_xy.get_y());
   start(speed, angle, time);
@@ -90,7 +96,7 @@ void StraightMovement::start(int speed, double direction, uint32_t time) {
  */
 void StraightMovement::update(void) {
 
-  CollisionMovement::update();
+  SmoothCollisionMovement::update();
 
   uint32_t now = System::now();
   if (now >= end_movement_date) {
@@ -105,7 +111,7 @@ void StraightMovement::update(void) {
  */
 void StraightMovement::set_suspended(bool suspended) {
 
-  CollisionMovement::set_suspended(suspended);
+  SmoothCollisionMovement::set_suspended(suspended);
 
   if (!suspended) {
     end_movement_date += System::now() - when_suspended;

@@ -28,12 +28,14 @@ class Hero::InventoryItemState: public Hero::State {
   private:
 
     InventoryItem *item;	/**< the inventory item that the hero is currently using */
+
   public:
 
     InventoryItemState(Hero *hero, InventoryItemId item_id);
     ~InventoryItemState(void);
 
     void start(State *previous_state);
+    void stop(State *next_state);
     void update(void);
 };
 

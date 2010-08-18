@@ -20,8 +20,11 @@
 
 /**
  * @brief Constructor.
+ * @param smooth true to actually make the movement smooth
+ * (false makes the movement identical to CollisionMovement)
  */
-SmoothCollisionMovement::SmoothCollisionMovement(void) {
+SmoothCollisionMovement::SmoothCollisionMovement(bool smooth):
+  smooth(smooth) {
 
 }
 
@@ -39,6 +42,11 @@ SmoothCollisionMovement::~SmoothCollisionMovement(void) {
  * handle the smooth collisions.
  */
 void SmoothCollisionMovement::update_x(void) {
+
+  if (!smooth) {
+    CollisionMovement::update_x();
+    return;
+  }
 
   int x_move = get_x_move();
   int y_move = get_y_move();
@@ -65,9 +73,8 @@ void SmoothCollisionMovement::update_x(void) {
 	}
       }
       else if (y_move == 0) {
-	/* The move on x is not possible: let's try
-	 * to add a move on y to make a diagonal move.
-	 */
+	// the move on x is not possible: let's try
+	// to add a move on y to make a diagonal move
 
 	if (!test_collision_with_map(x_move, 1)) {
 	  translate(x_move, 1);
@@ -112,6 +119,11 @@ void SmoothCollisionMovement::update_x(void) {
  */
 void SmoothCollisionMovement::update_y(void) {
 
+  if (!smooth) {
+    CollisionMovement::update_x();
+    return;
+  }
+
   int x_move = get_x_move();
   int y_move = get_y_move();
   uint32_t y_delay = get_y_delay();
@@ -137,10 +149,8 @@ void SmoothCollisionMovement::update_y(void) {
 	}
       }
       else if (x_move == 0) {
-	/* The move on y is not possible: let's try
-	 * to add a move on x to make a diagonal move.
-	 */
-
+	// The move on y is not possible: let's try
+	// to add a move on x to make a diagonal move.
 
 	if (!test_collision_with_map(1, y_move)) {
 	  translate(1, y_move);

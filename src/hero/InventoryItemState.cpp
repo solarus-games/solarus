@@ -49,6 +49,16 @@ void Hero::InventoryItemState::start(State *previous_state) {
 }
 
 /**
+ * @brief Stops this state.
+ * @param next_state the next state
+ */
+void Hero::InventoryItemState::stop(State *next_state) {
+
+  delete item;
+  item = NULL;
+}
+
+/**
  * @brief Updates this state.
  */
 void Hero::InventoryItemState::update(void) {
@@ -56,16 +66,9 @@ void Hero::InventoryItemState::update(void) {
   State::update();
 
   item->update();
-  if (item->is_finished()) {
-
-    delete item;
-    item = NULL;
-
-    if (is_current_state()) {
-      // if the state was not modified by the item, return to the normal state
-      hero->set_state(new FreeState(hero));
-    }
+  if (item->is_finished() && is_current_state()) {
+    // if the state was not modified by the item, return to the normal state
+    hero->set_state(new FreeState(hero));
   }
 }
-
 

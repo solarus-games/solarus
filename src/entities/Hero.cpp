@@ -235,22 +235,7 @@ void Hero::update_movement(void) {
   if (movement == NULL) {
     return;
   }
-
-  bool trying_to_move = movement->has_to_move_now();
-
-  // save the current coordinates
-  Rectangle old_xy(get_xy());
-
-  // make the movement (this might call notify_position_changed())
   movement->update();
-
-  // see if the movement was successful (i.e. if the hero's coordinates have changed)
-  bool success = (get_x() != old_xy.get_x() || get_y() != old_xy.get_y());
-
-  if (trying_to_move && !is_suspended()) {
-    // notify the state
-    state->notify_movement_tried(success);
-  }
 }
 
 /**
@@ -921,6 +906,17 @@ bool Hero::is_moving_towards(int direction4) {
  */
 bool Hero::is_direction_locked(void) {
   return state->is_direction_locked();
+}
+
+/**
+ * @brief Notifies this entity that it has just tried to change his position.
+ * @param success true if the position has actually just changed
+ */
+void Hero::notify_movement_tried(bool success) {
+
+  MapEntity::notify_movement_tried(success);
+
+  state->notify_movement_tried(success);
 }
 
 /**

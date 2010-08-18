@@ -68,6 +68,8 @@ void Hero::PullingState::stop(State *next_state) {
  */
 void Hero::PullingState::update(void) {
 
+  State::update();
+
   if (is_moving_grabbed_entity()) { // the hero is pulling an entity and is currently moving it (typically a block)
 
     // detect when the hero movement is finished

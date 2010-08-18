@@ -201,6 +201,7 @@ class Hero: public MapEntity {
     int get_real_movement_direction8(void);
     bool is_moving_towards(int direction4);
     bool is_direction_locked(void);
+    void notify_movement_tried(bool success);
     void notify_position_changed(void);
     void notify_layer_changed(void);
     void notify_movement_changed(void);

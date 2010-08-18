@@ -21,16 +21,9 @@
 #include "lowlevel/System.h"
 
 /**
- * @brief Default constructor.
- */
-CollisionMovement::CollisionMovement(void):
-  stop_on_obstacles(true) {
-
-}
-
-/**
  * @brief Constructor specifying whether the collisions are enabled.
- * @param stop_on_obstacles true to make the movement sensible to the obstacles.
+ * @param stop_on_obstacles true to make the movement sensible to the obstacles
+ * (if not, no collisions will be detected)
  */
 CollisionMovement::CollisionMovement(bool stop_on_obstacles):
   last_collision_box_on_obstacle(-1, -1), stop_on_obstacles(stop_on_obstacles)  {

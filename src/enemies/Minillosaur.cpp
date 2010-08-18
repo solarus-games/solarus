@@ -58,7 +58,7 @@ void Minillosaur::initialize(void) {
 
   // initial movement
   Hero *hero = map->get_entities()->get_hero();
-  set_movement(new StraightMovement(12, get_xy(), hero->get_xy(), 1500));
+  set_movement(new StraightMovement(12, get_xy(), hero->get_xy(), 1500, false));
 
   // reactions to attacks
   set_no_attack_consequences();

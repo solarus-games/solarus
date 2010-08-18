@@ -17,8 +17,10 @@
 #include "hero/LiftingState.h"
 #include "hero/CarryingState.h"
 #include "hero/HeroSprites.h"
+#include "entities/MapEntities.h"
 #include "entities/CarriedItem.h"
 #include "Game.h"
+#include "Map.h"
 #include "KeysEffect.h"
 
 /**
@@ -70,8 +72,13 @@ void Hero::LiftingState::stop(State *next_state) {
   if (lifted_item != NULL) {
 
     // the lifted item is still managed by this state
-    delete lifted_item;
-    lifted_item = NULL;
+    if (next_state->can_throw_item()) {
+      throw_item();
+    }
+    else {
+      delete lifted_item;
+      lifted_item = NULL;
+    }
     game->get_keys_effect()->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
   }
 }
@@ -91,5 +98,26 @@ void Hero::LiftingState::update(void) {
     lifted_item = NULL; // we do not take care of the carried item from this state anymore
     hero->set_state(new CarryingState(hero, carried_item));
   }
+}
+
+/**
+ * @brief Returns whether the hero can be hurt in this state.
+ * @return true if the hero can be hurt in this state
+ */
+bool Hero::LiftingState::can_be_hurt(void) {
+  return true;
+}
+
+/**
+ * @brief Throws the item that is being lifted.
+ *
+ * This function is called when this state is interrupted by a new state,
+ * e.g. when the hero is hurt while lifting an item.
+ */
+void Hero::LiftingState::throw_item(void) {
+
+  lifted_item->throw_item(sprites->get_animation_direction());
+  map->get_entities()->add_entity(lifted_item);
+  lifted_item = NULL;
 }
 

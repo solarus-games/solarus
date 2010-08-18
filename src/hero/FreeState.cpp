@@ -47,6 +47,7 @@ Hero::FreeState::~FreeState(void) {
 void Hero::FreeState::start(State *previous_state) {
 
   PlayerMovementState::start(previous_state);
+
   pushing_direction4 = -1;
   start_pushing_date = 0;
 }

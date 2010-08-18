@@ -104,6 +104,8 @@ Hero * MapEntities::get_hero(void) {
  */
 Obstacle MapEntities::get_obstacle_tile(Layer layer, int x, int y) {
 
+  // this function is optimized because it is often called
+
 #if SOLARUS_DEBUG_LEVEL > 0
   if (layer < 0 || layer >= LAYER_NB) {
     DIE("get_obstacle_tile(): invalid layer number '" << layer << "'");

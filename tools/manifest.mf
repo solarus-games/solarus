@@ -1,2 +1,2 @@
 Manifest-Version: 1.0
-Main-Class: zsdx.MapEditor
+Main-Class: org.solarus.editor.MapEditor

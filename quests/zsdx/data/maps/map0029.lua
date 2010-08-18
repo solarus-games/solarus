@@ -6,6 +6,7 @@ function event_map_started(destination_point_name)
   
   if savegame_get_boolean(69) then
     tile_set_enabled("barrier", false)
+    switch_set_enabled("barrier_switch", true)
   end
 end
 

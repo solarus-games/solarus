@@ -42,18 +42,20 @@ Hero::CarryingState::~CarryingState(void) {
 }
 
 /**
- * @brief Starts this state
+ * @brief Starts this state.
  * @param previous_state the previous state
  */
 void Hero::CarryingState::start(State *previous_state) {
 
   PlayerMovementState::start(previous_state);
 
-  sprites->set_lifted_item(carried_item);
+  if (is_current_state()) {
+    sprites->set_lifted_item(carried_item);
 
-  // action icon "throw"
-  KeysEffect *keys_effect = game->get_keys_effect();
-  keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_THROW);
+    // action icon "throw"
+    KeysEffect *keys_effect = game->get_keys_effect();
+    keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_THROW);
+  }
 }
 
 /**

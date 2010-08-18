@@ -206,7 +206,7 @@ bool InteractiveEntity::is_npc_obstacle(InteractiveEntity *npc) {
  * @return true if this enemy is currently considered as an obstacle by this entity.
  */
 bool InteractiveEntity::is_enemy_obstacle(Enemy *enemy) {
-  return true;
+  return subtype != NON_PLAYING_CHARACTER;
 }
 
 /**

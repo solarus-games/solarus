@@ -941,8 +941,10 @@ void Hero::notify_position_changed(void) {
   Ground previous_ground = this->ground;
 
   // see the ground indicated by the tiles
-  Ground tiles_ground = map->get_tile_ground(get_layer(), get_x(), get_y() - 2);
-  set_ground(tiles_ground);
+  if (!is_suspended()) { // when the game is suspended, the hero may have invalid coordinates (e.g. transition between maps)
+    Ground tiles_ground = map->get_tile_ground(get_layer(), get_x(), get_y() - 2);
+    set_ground(tiles_ground);
+  }
 
   // see the ground indicated by the dynamic entities, also find the facing entity
   MapEntity::notify_position_changed();
@@ -998,7 +1000,7 @@ void Hero::notify_movement_changed(void) {
   state->notify_movement_changed();
 
   // check the collisions
-  if (map != NULL && !game->is_suspended()) {
+  if (map != NULL) {
     notify_position_changed();
   }
 }
@@ -1349,7 +1351,7 @@ void Hero::notify_collision_with_stairs(Stairs *stairs, CollisionMode collision_
 
     // check whether the hero is trying to move in the direction of the stairs
     int correct_direction = stairs->get_movement_direction(stairs_way);
-    if (is_moving_towards(correct_direction / 2) || collision_mode == COLLISION_RECTANGLE) {
+    if (is_moving_towards(correct_direction / 2)) {
       set_state(new StairsState(this, stairs, stairs_way));
     }
   }

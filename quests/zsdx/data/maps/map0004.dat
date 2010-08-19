@@ -932,7 +932,7 @@
 2	0	0	1008	960	16	to_D2	0	2	5	_side
 2	0	0	-16	960	16	to_B2	0	2	7	_side
 6	0	88	296	32	8	Jump_sensor	6	184
-6	0	312	120	8	56	Jump_sensor_2	0	48
+6	0	320	120	8	56	Jump_sensor_2	0	48
 6	0	264	56	16	8	Jump_sensor_4	6	88
 8	0	64	701	welcome_sign	0	2	entities/sign	outside_world.village.welcome_sign
 8	0	144	629	rupee_house_sign	3	2	entities/sign	outside_world.village.rupee_house_sign

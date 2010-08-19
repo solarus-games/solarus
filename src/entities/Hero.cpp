@@ -63,7 +63,7 @@ Hero::Hero(Equipment *equipment):
   // position
   set_size(16, 16);
   set_origin(8, 13);
-  last_solid_ground_coords.set_xy(0, 0);
+  last_solid_ground_coords.set_xy(-1, -1);
   last_solid_ground_layer = LAYER_LOW;
  
   // sprites
@@ -249,17 +249,19 @@ void Hero::update_ground(void) {
   uint32_t now = System::now();
   if (now >= next_ground_date) {
 
-    if (is_ground_visible()) {
+    if (is_ground_visible() && get_movement() != NULL) {
+
       // a special ground is displayed under the hero and it's time to play a sound
+      next_ground_date = now + std::max(150, (int) (2000 / get_movement()->get_speed()));
       if (sprites->is_walking() && state->is_touching_ground()) {
         sprites->play_ground_sound();
       }
-
-      next_ground_date = now + 300;
     }
 
     else if (ground == GROUND_HOLE && !state->can_avoid_hole()) {
       // the hero is being attracted by a hole and it's time to move one more pixel into the hole
+      
+      next_ground_date = now + 60;
 
       if (get_distance(last_solid_ground_coords.get_x(), last_solid_ground_coords.get_y()) >= 8) {
 	// too far from the solid ground: make the hero fall
@@ -269,31 +271,41 @@ void Hero::update_ground(void) {
       else {
 
         // not too far yet
+	bool moved = false;
         Rectangle collision_box = get_bounding_box();
         collision_box.add_xy(hole_dxy);
 
         if (!map->test_collision_with_obstacles(get_layer(), collision_box, this)) {
           set_bounding_box(collision_box);
           notify_position_changed();
-        }
-        else {
-          collision_box = get_bounding_box();
-          collision_box.add_xy(hole_dxy.get_x(), 0);
-          if (!map->test_collision_with_obstacles(get_layer(), collision_box, this)) {
-            set_bounding_box(collision_box);
-            notify_position_changed();
-          }
-          else {
-           collision_box = get_bounding_box();
-            collision_box.add_xy(0, hole_dxy.get_y());
-            if (!map->test_collision_with_obstacles(get_layer(), collision_box, this)) {
-              set_bounding_box(collision_box);
-              notify_position_changed();
-            }
-          }
+	  moved = true;
         }
 
-        next_ground_date = now + 60;
+	if (!moved && hole_dxy.get_x() != 0) { // try x only
+	  collision_box = get_bounding_box();
+	  collision_box.add_xy(hole_dxy.get_x(), 0);
+	  if (!map->test_collision_with_obstacles(get_layer(), collision_box, this)) {
+	    set_bounding_box(collision_box);
+	    notify_position_changed();
+	    moved = true;
+	  }
+	}
+
+	if (!moved && hole_dxy.get_y() != 0) { // try y only
+	  collision_box = get_bounding_box();
+	  collision_box.add_xy(0, hole_dxy.get_y());
+	  if (!map->test_collision_with_obstacles(get_layer(), collision_box, this)) {
+	    set_bounding_box(collision_box);
+	    notify_position_changed();
+	    moved = true;
+	  }
+	}
+
+	if (!moved) {
+	  // the hero cannot be moved towards the direction previously calculated
+	  set_walking_speed(normal_walking_speed);
+	  set_state(new FallingState(this));
+	}
       }
     }
   }
@@ -433,6 +445,7 @@ void Hero::set_map(Map *map) {
 
   MapEntity::set_map(map);
 
+  last_solid_ground_coords.set_xy(-1, -1);
   target_solid_ground_coords.set_xy(-1, -1);
   ground = GROUND_NORMAL;
 
@@ -1275,9 +1288,9 @@ void Hero::notify_collision_with_enemy(Enemy *enemy, Sprite *enemy_sprite, Sprit
  */
 void Hero::notify_collision_with_teletransporter(Teletransporter *teletransporter, CollisionMode collision_mode) {
 
-  if (!state->can_avoid_teletransporter()) {
+  if (teletransporter->is_on_map_side() || !state->can_avoid_teletransporter()) {
 
-    bool on_hole = map->get_tile_ground(get_layer(), get_x(), get_y()) == GROUND_HOLE;
+    bool on_hole = map->get_tile_ground(get_layer(), get_x(), get_y() - 2) == GROUND_HOLE;
     if (on_hole || state->is_teletransporter_delayed()) {
       this->delayed_teletransporter = teletransporter; // fall into the hole (or do something else) first, transport later
     }
@@ -1608,31 +1621,74 @@ void Hero::start_deep_water(void) {
  */
 void Hero::start_hole(void) {
 
-  next_ground_date = System::now();
   delayed_teletransporter = NULL;
 
-  // push the hero into a direction
-  if (is_moving_towards(0)) {
-    hole_dxy.set_x(1);
-  }
-  else if (is_moving_towards(2)) {
-    hole_dxy.set_x(-1);
+  if (!state->can_control_movement()) {
+    // the player has no control (e.g. he is running or being hurt):
+    // fall immediately
+    set_state(new FallingState(this));
   }
   else {
-    hole_dxy.set_x(0);
-  }
+    // otherwise, push the hero towards the hole
 
-  if (is_moving_towards(1)) {
-    hole_dxy.set_y(-1);
-  }
-  else if (is_moving_towards(3)) {
-    hole_dxy.set_y(1);
-  }
-  else {
-    hole_dxy.set_y(0);
-  }
+    next_ground_date = System::now();
 
-  set_walking_speed(normal_walking_speed / 3);
+    /* version where the attraction direction is calculated based on the wanted movement:
+     * problem because the wanted movement may be different from the real one
+    if (is_moving_towards(0)) {
+      hole_dxy.set_x(1);
+    }
+    else if (is_moving_towards(2)) {
+      hole_dxy.set_x(-1);
+    }
+    else {
+      hole_dxy.set_x(0);
+    }
+
+    if (is_moving_towards(1)) {
+      hole_dxy.set_y(-1);
+    }
+    else if (is_moving_towards(3)) {
+      hole_dxy.set_y(1);
+    }
+    else {
+      hole_dxy.set_y(0);
+    }
+
+    if (hole_dxy.get_x() == 0 && hole_dxy.get_y() == 0) {
+      // fall immediately because the hero was not moving but directly placed on the hole
+      set_state(new FallingState(this));
+    }
+    else {
+      set_walking_speed(normal_walking_speed / 3);
+    }
+    */
+
+    if (last_solid_ground_coords.get_x() == -1 ||
+	(last_solid_ground_coords.get_x() == get_x() && last_solid_ground_coords.get_y() == get_y())) {
+      // fall immediately because the hero was not moving but directly placed on the hole
+      set_state(new FallingState(this));
+    }
+    else {
+
+      hole_dxy.set_xy(0, 0);
+
+      if (get_x() > last_solid_ground_coords.get_x()) {
+        hole_dxy.set_x(1);
+      }
+      else if (get_x() < last_solid_ground_coords.get_x()) {
+        hole_dxy.set_x(-1);
+      }
+
+      if (get_y() > last_solid_ground_coords.get_y()) {
+        hole_dxy.set_y(1);
+      }
+      else if (get_y() < last_solid_ground_coords.get_y()) {
+        hole_dxy.set_y(-1);
+      }
+      set_walking_speed(normal_walking_speed / 3);
+    }
+  }
 }
 
 /**

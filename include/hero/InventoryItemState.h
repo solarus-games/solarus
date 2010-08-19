@@ -35,7 +35,6 @@ class Hero::InventoryItemState: public Hero::State {
     ~InventoryItemState(void);
 
     void start(State *previous_state);
-    void stop(State *next_state);
     void update(void);
 };
 

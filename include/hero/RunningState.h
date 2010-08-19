@@ -39,6 +39,9 @@ class Hero::RunningState: public Hero::State {
     void update(void);
     void set_suspended(bool suspended);
     void notify_movement_tried(bool success);
+    int get_wanted_movement_direction8(void);
+    bool can_take_jump_sensor(void);
+    bool can_be_hurt(void);
 };
 
 #endif

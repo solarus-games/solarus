@@ -55,12 +55,8 @@ PlayerMovement * Hero::PlayerMovementState::get_player_movement(void) {
  */
 void Hero::PlayerMovementState::start(State *previous_state) {
 
-  if (previous_state == NULL || !previous_state->can_control_movement()) {
-    // create the movement unless it already exists
-    hero->clear_movement();
-    hero->set_movement(new PlayerMovement(hero->get_walking_speed()));
-    get_player_movement()->compute_movement();
-  }
+  hero->set_movement(new PlayerMovement(hero->get_walking_speed()));
+  get_player_movement()->compute_movement();
 
   if (is_current_state()) { // yes, the state may have already changed
     if (get_wanted_movement_direction8() != -1) {
@@ -84,12 +80,7 @@ void Hero::PlayerMovementState::start(State *previous_state) {
 void Hero::PlayerMovementState::stop(State *next_state) {
  
   get_player_movement()->stop();
-
-  if (!next_state->can_control_movement()) {
-    // remove the movement unless the next state intends to keep it
-    hero->clear_movement();
-  }
-
+  hero->clear_movement();
   sprites->set_animation_stopped_normal();
 }
 
@@ -146,14 +137,6 @@ bool Hero::PlayerMovementState::can_control_movement(void) {
   return true;
 }
 
-/**
- * @brief Returns the direction of the hero's movement as defined by the controls applied by the player.
- *
- * If he is not moving, -1 is returned.
- * This direction may be different from the real movement direction because of obstacles.
- *
- * @return the hero's wanted direction between 0 and 359, or -1 if he is stopped
- */
 /**
  * @brief Returns the direction of the hero's movement as defined by the controls applied by the player
  * and the movements allowed is the current state.

@@ -126,7 +126,7 @@ class Movement {
     double get_y_speed();
     double get_speed(void);
     bool is_stopped(void);
-    bool is_started(void);
+    virtual bool is_started(void);
     virtual bool is_finished(void);
 
     void set_x_speed(double x_speed);

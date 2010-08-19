@@ -107,3 +107,34 @@ void Hero::RunningState::notify_movement_tried(bool success) {
   }
 }
 
+/**
+ * @brief Returns the direction of the hero's movement as defined by the controls applied by the player
+ * and the movements allowed is the current state.
+ *
+ * If he is not moving, -1 is returned.
+ * This direction may be different from the real movement direction because of obstacles.
+ *
+ * @return the hero's wanted direction between 0 and 7, or -1 if he is stopped
+ */
+int Hero::RunningState::get_wanted_movement_direction8(void) {
+  return sprites->get_animation_direction8();
+}
+
+/**
+ * @brief Returns whether can trigger a jump sensor in this state.
+ * If false is returned, jump sensors have no effect (but they are obstacle for the hero).
+ * @param jump_sensor a jump sensor
+ * @return true if the hero can use jump sensors in this state
+ */
+bool Hero::RunningState::can_take_jump_sensor(void) {
+  return true;
+}
+
+/**
+ * @brief Returns whether the hero can be hurt in this state.
+ * @return true if the hero can be hurt in this state
+ */
+bool Hero::RunningState::can_be_hurt(void) {
+  return true;
+}
+

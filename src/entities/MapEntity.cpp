@@ -799,6 +799,7 @@ Movement * MapEntity::get_movement(void) {
  * @param movement the movement to set, or NULL to set no movement
  */
 void MapEntity::set_movement(Movement *movement) {
+
   this->movement = movement;
 
   if (movement != NULL) {

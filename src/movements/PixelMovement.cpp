@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "movements/PixelMovement.h"
+#include "entities/MapEntity.h"
 #include "lowlevel/System.h"
 
 /**
@@ -88,7 +89,14 @@ void PixelMovement::update(void) {
   uint32_t now = System::now();
 
   while (now >= get_next_move_date_x() && !finished) {
+
+    Rectangle old_xy(get_x(), get_y());
     make_next_move();
+
+    bool success = (get_x() != old_xy.get_x() || get_y() != old_xy.get_y());
+    if (!is_suspended() && entity != NULL) {
+      entity->notify_movement_tried(success);
+    }
   }
 }
 
@@ -131,6 +139,14 @@ int PixelMovement::get_length(void) {
  */
 int PixelMovement::get_vector_index(void) {
   return vector_index;
+}
+
+/**
+ * @brief Returns whether the entity controlled by this movement is moving.
+ * @return true if the entity is moving, false otherwise
+ */
+bool PixelMovement::is_started(void) {
+  return !finished;
 }
 
 /**

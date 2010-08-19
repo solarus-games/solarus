@@ -49,16 +49,6 @@ void Hero::InventoryItemState::start(State *previous_state) {
 }
 
 /**
- * @brief Stops this state.
- * @param next_state the next state
- */
-void Hero::InventoryItemState::stop(State *next_state) {
-
-  delete item;
-  item = NULL;
-}
-
-/**
  * @brief Updates this state.
  */
 void Hero::InventoryItemState::update(void) {

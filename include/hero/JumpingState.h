@@ -40,6 +40,7 @@ class Hero::JumpingState: public Hero::State {
     void start(State *previous_state);
     void stop(State *next_state);
     void update(void);
+    int get_wanted_movement_direction8(void);
     bool can_start_gameover_sequence(void);
     int get_height_above_shadow(void);
     bool is_touching_ground(void);

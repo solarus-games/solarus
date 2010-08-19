@@ -36,6 +36,7 @@ class Hero::FreeState: public Hero::PlayerMovementState {
     ~FreeState(void);
 
     void start(State *previous_state);
+    void stop(State *next_state);
     void update(void);
     void set_suspended(bool suspended);
     void action_key_pressed(void);

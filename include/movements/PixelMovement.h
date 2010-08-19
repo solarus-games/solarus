@@ -61,6 +61,7 @@ class PixelMovement: public CollisionMovement {
 
     void set_delay(uint32_t delay);
     virtual void update(void);
+    bool is_started(void);
     bool is_finished(void);
     int get_length(void);
 

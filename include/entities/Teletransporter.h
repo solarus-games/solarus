@@ -72,6 +72,7 @@ class Teletransporter: public Detector {
     bool test_collision_custom(MapEntity *entity);
     void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
     void transport_hero(Hero *hero);
+    bool is_on_map_side(void);
 };
 
 #endif

@@ -30,7 +30,6 @@ Feature requests :
 - transition des téléporteurs ?
 - rendre les pierres et les buissons dépendants du tileset
 - scrolling tiles : permettre de choisir la direction du décalage
-- Windows : voir si SDL utilise ou peut utiliser OpenGL ou DirectX
 - Ce serait pas mal de faire une animation lorsque Link vide le contenu de sa bouteille.
 - Ajouter un "map marker" pour indiquer où il faut se rendre ensuite
 - Voir si la police supporte des caractères unicode comme U+2192 (→) et U+2190 (←)
@@ -54,7 +53,7 @@ Bugs :
 - empêcher de lancer le jeu en root, sinon le config.ini est créé avec root comme propriétaire
 - mode d'emploi : enlever le logo nintendo sur la dernière page
 - mode d'emploi : page 13 : "vous pouvez la possibilité"
-- pousser un buisson empêche de le soulever (valable aussi pour coffres ?), d'utiliser un objet, etc. il faudrait au moins pouvoir donner un coup d'épée
+- pousser un buisson empêche de le soulever
 - Link semble disparaître un peu lors des phases à l'épée.
 - Lorsqu'on fait des appuis courts et répétés sur une des flèches, Link avance sans marcher.
 - Quand Link rentre dans une maison, le cadre de la porte est sous sa tête et pas au-dessus.
@@ -62,15 +61,9 @@ Bugs :
 - On ne peut pas lancer un pot au-dessus d'une falaise
 - Quand on lance un pot dans un donjon depuis la couche intermédiaire vers la couche basse, le changer de couche (détecter l'absence de tiles sur la couche intermédiaire)
 - vérifier ce qui se passe si on arrive sur un tapis roulant pendant qu'on tire une statue (peut-être modifier le is_conveyor_belt_obstacle)
-- état RETURNING_TO_SOLID_GROUND : faire revenir uniquement la caméra puis téléporter le héros ensuite ? sinon la caméra peut rester collée un moment au bord de la map (cela éviterait aussi des risques de bugs de collision avec des capteurs).
-- Boss du niveau 1 : faire une vraie salle pour la séquence de fin ?
-- bottes de pégase : on passe à travers les ennemis et les trous, vérifier aussi les tapis roulants, etc, faire un vrai état RUNNING
-  similaire à WALKING, CARRYING, SWORD_LOADING et SWIMMING
-- bottes de pégase contre les limites d'une map en scrolling (seulement à droite ?) seg fault ?
 - Morwenn : Quand on reste l'épée brandie vers le bas, et qu'on tue un monstre, on peut continuer à avancer.
   Cependant, on se blesse même si on le touche alors qu'il en est à son animation de destruction.
 - achat d'un croissant : dialogue avant et après l'achat redondant
-- le mouvement des oeufs Minillosaur ne devrait pas être smooth
 
 
 A venir :

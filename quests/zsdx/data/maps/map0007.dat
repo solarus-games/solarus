@@ -1136,20 +1136,17 @@
 0	0	136	840	16	8	228
 0	0	40	824	16	8	228
 0	0	24	824	16	8	227
-2	0	120	976	32	16	to_C2	0	2	4	_side
+2	0	0	976	960	16	to_C2	0	2	4	_side
 2	0	-16	0	16	976	to_B1	0	2	9	_side
 6	0	408	792	32	8	jump_sensor	6	120
-6	0	408	920	32	8	jump_sensor_2	6	72
-6	0	520	920	48	8	jump_sensor_3	6	72
-6	0	648	760	32	8	jump_sensor_4	6	232
-2	0	408	976	32	16	left_jump_to_C2	0	1	4	from_B2_left_jump
-2	0	520	976	48	16	middle_jump_to_C2	0	1	4	from_B2_middle_jump
-2	0	648	976	32	16	right_jump_to_C2	0	1	4	from_B2_right_jump
+6	0	408	920	32	8	jump_sensor_2	6	152
+6	0	520	920	48	8	jump_sensor_3	6	152
+6	0	648	760	32	8	jump_sensor_4	6	264
 6	0	600	264	32	8	jump_sensor_5	6	120
 6	0	376	296	16	8	jump_sensor_6	6	120
 6	0	344	136	16	8	jump_sensor_7	6	152
 4	0	888	797	4	-1	-1
-2	0	880	976	16	16	to_C2_2	0	2	4	_side
+2	0	0	-16	960	16	to_A2	0	2	10	_side
 0	2	800	688	8	40	513
 0	2	624	336	8	40	513
 0	2	840	304	8	40	513

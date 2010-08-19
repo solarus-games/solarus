@@ -107,6 +107,19 @@ void Hero::JumpingState::update(void) {
 }
 
 /**
+ * @brief Returns the direction of the hero's movement as defined by the controls applied by the player
+ * and the movements allowed is the current state.
+ *
+ * If he is not moving, -1 is returned.
+ * This direction may be different from the real movement direction because of obstacles.
+ *
+ * @return the hero's wanted direction between 0 and 7, or -1 if he is stopped
+ */
+int Hero::JumpingState::get_wanted_movement_direction8(void) {
+  return sprites->get_animation_direction8();
+}
+
+/**
  * @brief Returns whether the game over sequence can start in the current state.
  * @return true if the game over sequence can start in the current state
  */

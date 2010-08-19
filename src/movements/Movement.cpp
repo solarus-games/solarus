@@ -284,6 +284,10 @@ bool Movement::is_stopped(void) {
 
 /**
  * @brief Returns whether the speed is not zero.
+ *
+ * Subclasses of Movement that don't use the speed feature of this class
+ * should redefine this function to indicated whether the object is moving.
+ *
  * @return true if the entity is moving, false otherwise
  */
 bool Movement::is_started(void) {
@@ -479,12 +483,11 @@ void Movement::update(void) {
 
     bool x_move_now = get_x_move() != 0 && now >= get_next_move_date_x();
     bool y_move_now = get_y_move() != 0 && now >= get_next_move_date_y();
-    bool trying_to_move = x_move_now || y_move_now;
-
-    // save the current coordinates
-    Rectangle old_xy(get_x(), get_y());
 
     while (x_move_now || y_move_now) { // while it's time to move
+
+      // save the current coordinates
+      Rectangle old_xy(get_x(), get_y());
 
       if (x_move_now) {
 	// it's time to make an x move
@@ -507,21 +510,21 @@ void Movement::update(void) {
 	  update_x();
 	}
       }
-      else if (y_move_now) {
+      else {
 	update_y();
+      }
+
+      // see if the movement was successful (i.e. if the hero's coordinates have changed)
+      bool success = (get_x() != old_xy.get_x() || get_y() != old_xy.get_y());
+
+      if (!is_suspended() && entity != NULL) {
+	// notify the entity
+	entity->notify_movement_tried(success);
       }
 
       now = System::now();
       x_move_now = get_x_move() != 0 && now >= get_next_move_date_x();
       y_move_now = get_y_move() != 0 && now >= get_next_move_date_y();
-    }
-
-    // see if the movement was successful (i.e. if the hero's coordinates have changed)
-    bool success = (get_x() != old_xy.get_x() || get_y() != old_xy.get_y());
-
-    if (trying_to_move && !is_suspended() && entity != NULL) {
-      // notify the entity
-      entity->notify_movement_tried(success);
     }
   }
 }

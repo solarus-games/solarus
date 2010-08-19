@@ -53,6 +53,17 @@ void Hero::FreeState::start(State *previous_state) {
 }
 
 /**
+ * @brief Stops this state.
+ * @param next_state the next state
+ */
+void Hero::FreeState::stop(State *next_state) {
+
+  PlayerMovementState::stop(next_state);
+
+  game->get_keys_effect()->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
+}
+
+/**
  * @brief Updates this state.
  */
 void Hero::FreeState::update(void) {
@@ -143,7 +154,7 @@ bool Hero::FreeState::can_start_sword(void) {
  * @return true if the hero can use an inventoy item in this state
  */
 bool Hero::FreeState::can_start_inventory_item(void) {
-  return true;
+  return hero->get_ground() != GROUND_HOLE;
 }
 
 /**

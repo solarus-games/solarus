@@ -98,7 +98,7 @@ void Teletransporter::set_map(Map *map) {
 
   MapEntity::set_map(map);
 
-  if (destination_point_name == "_side") {
+  if (is_on_map_side()) {
 
     int x = get_x();
     int y = get_y();
@@ -154,7 +154,7 @@ bool Teletransporter::test_collision_custom(MapEntity *entity) {
   if (entity->is_hero()) {
 
     Hero *hero = (Hero*) entity;
-    if (destination_point_name == "_side") {
+    if (is_on_map_side()) {
       // scrolling towards an adjacent map
       Rectangle facing_point = hero->get_facing_point(transition_direction);
       collision = hero->is_moving_towards(transition_direction)
@@ -182,9 +182,10 @@ bool Teletransporter::test_collision_custom(MapEntity *entity) {
       overlaps(x1, y2) && overlaps(x2, y2);
   }
 
-  if (!collision && destination_point_name != "_side") {
+  if (!collision && !is_on_map_side()) {
     transporting_hero = false;
   }
+
 
   return collision;
 }
@@ -219,7 +220,7 @@ void Teletransporter::transport_hero(Hero *hero) {
   int hero_x = hero->get_x();
   int hero_y = hero->get_y();
 
-  if (destination_point_name == "_side") {
+  if (is_on_map_side()) {
 
     // special desination point: side of the map
     // we determine the appropriate side based on the teletransporter's position;
@@ -254,5 +255,17 @@ void Teletransporter::transport_hero(Hero *hero) {
 
   game->set_current_map(destination_map_id, name, transition_style);
   hero->set_xy(hero_x, hero_y);
+}
+
+/**
+ * @brief Returns whether this teletransporter is on the side of the map.
+ *
+ * When true is returned, this means that the teletransporter can make the hero
+ * scroll towards an adjacent map.
+ *
+ * @return true if this teletransporter is on the side of the map
+ */
+bool Teletransporter::is_on_map_side(void) {
+  return destination_point_name == "_side";
 }
 

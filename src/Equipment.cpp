@@ -1204,6 +1204,7 @@ bool Equipment::has_inventory_item_maximum(InventoryItemId item_id) {
  * @return the item currently assigned to this slot (may be INVENTORY_NONE)
  */
 InventoryItemId Equipment::get_item_assigned(int slot) {
+
   int index = Savegame::ITEM_SLOT_0 + slot;
   return InventoryItemId(savegame->get_integer(index));
 }
@@ -1231,6 +1232,24 @@ void Equipment::set_item_assigned(int slot, InventoryItemId item_id) {
 
   int index = Savegame::ITEM_SLOT_0 + slot;
   savegame->set_integer(index, item_id);
+}
+
+/**
+ * @brief Returns the slot (0 or 1) where the specified item is currently assigned.
+ * @param item_id id of the item
+ * @return the slot of this item, or -1 if this item is not assigned
+ */
+int Equipment::get_item_slot(InventoryItemId item_id) {
+  
+  if (get_item_assigned(0) == item_id) {
+    return 0;
+  }
+
+  if (get_item_assigned(1) == item_id) {
+    return 1;
+  }
+
+  return -1;
 }
 
 /**

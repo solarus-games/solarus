@@ -57,7 +57,8 @@ const int Hero::normal_walking_speed = 9;
  */
 Hero::Hero(Equipment *equipment):
   state(NULL), old_state(NULL), equipment(equipment), facing_entity(NULL),
-  walking_speed(normal_walking_speed), on_conveyor_belt(false), can_use_inventory_item_date(0),
+  walking_speed(normal_walking_speed), on_conveyor_belt(false),
+  last_inventory_item_id(INVENTORY_NONE), can_use_inventory_item_date(0),
   ground(GROUND_NORMAL), next_ground_date(0) {
 
   // position

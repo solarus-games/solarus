@@ -269,7 +269,7 @@ void Hero::State::item_key_pressed(int slot) {
 
   if (InventoryItem::can_be_assigned(item_id)
       && equipment->has_inventory_item(item_id)
-      && System::now() >= hero->can_use_inventory_item_date
+      && (item_id != hero->last_inventory_item_id || System::now() >= hero->can_use_inventory_item_date)
       && can_start_inventory_item()) {
 
     hero->set_state(new InventoryItemState(hero, item_id));

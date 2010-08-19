@@ -19,7 +19,10 @@
 #include "hero/HeroSprites.h"
 #include "movements/StraightMovement.h"
 #include "lowlevel/System.h"
+#include "Game.h"
+#include "GameControls.h"
 #include "Map.h"
+#include "Equipment.h"
 
 /**
  * @brief Constructor.
@@ -72,8 +75,11 @@ void Hero::RunningState::update(void) {
     
     if (now >= next_phase_date) {
       hero->clear_movement();
-      hero->set_movement(new StraightMovement(30, sprites->get_animation_direction() * 90, 2000));
+      hero->set_movement(new StraightMovement(30, sprites->get_animation_direction() * 90, 10000));
       phase++;
+    }
+    else if (!is_pressing_running_key()) {
+      hero->set_state(new FreeState(hero));
     }
   }
   else if (hero->get_movement()->is_finished()) {
@@ -91,6 +97,33 @@ void Hero::RunningState::set_suspended(bool suspended) {
 
   if (!suspended) {
     next_phase_date += System::now() - when_suspended;
+  }
+}
+
+/**
+ * @brief Returns whether the hero is pressing the item key corresponding to the running shoes.
+ * @return true if the hero is pressing the item key corresponding to the running shoes
+ */
+bool Hero::RunningState::is_pressing_running_key(void) {
+
+  Equipment *equipment = game->get_equipment();
+  int slot = equipment->get_item_slot(INVENTORY_SPEED_SHOES);
+  if (slot == -1) {
+    return false;
+  }
+
+  GameControls::GameKey key = (slot == 0) ? GameControls::ITEM_1 : GameControls::ITEM_2;
+  return game->get_controls()->is_key_pressed(key);
+}
+
+/**
+ * @brief Notifies this state that a directional key was just pressed.
+ * @param direction4 direction of the key (0 to 3)
+ */
+void Hero::RunningState::directional_key_pressed(int direction4) {
+
+  if (direction4 != sprites->get_animation_direction()) {
+    hero->set_state(new FreeState(hero));
   }
 }
 

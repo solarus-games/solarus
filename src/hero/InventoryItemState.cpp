@@ -44,7 +44,8 @@ void Hero::InventoryItemState::start(State *previous_state) {
 
   State::start(previous_state);
 
-  hero->can_use_inventory_item_date = System::now() + 500;
+  hero->last_inventory_item_id = item->get_id();
+  hero->can_use_inventory_item_date = System::now() + item->get_reuse_delay();
   item->start(game);
 }
 

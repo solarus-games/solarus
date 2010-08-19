@@ -313,11 +313,11 @@ void Arrow::update(void) {
     // an obstacle or an entity was just reached
     disappear_date = now + 1500;
     get_sprite()->set_current_animation("reached_obstacle");
-    game->play_sound("arrow_hit");
     
     if (entity_reached == NULL) {
       clear_movement();
     }
+    map->check_collision_with_detectors(this);
   }
 
   // destroy the arrow when disappear_date is reached

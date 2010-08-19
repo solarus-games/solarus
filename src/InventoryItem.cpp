@@ -116,6 +116,21 @@ int InventoryItem::get_counter_index(InventoryItemId item_id) {
 }
 
 /**
+ * @brief Returns the delay after which the hero can use this inventory item again.
+ * @return the delay in milliseconds
+ */
+uint32_t InventoryItem::get_reuse_delay(void) {
+
+  uint32_t result = 0;
+
+  if (item_id == INVENTORY_BOW) {
+    result = 500;
+  }
+
+  return result;
+}
+
+/**
  * @brief Returns the id of this inventory item.
  * @return the id of this inventory item
  */
@@ -166,7 +181,7 @@ void InventoryItem::start(Game *game) {
 	  this->direction_pressed8 = game->get_controls()->get_wanted_direction8();
 	}
 	break;
-   
+ 
       case INVENTORY_BOW:
 	if (equipment->get_arrows() == 0) {
           game->play_sound("wrong");

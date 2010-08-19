@@ -38,6 +38,8 @@ class Hero::RunningState: public Hero::State {
     void stop(State *next_state);
     void update(void);
     void set_suspended(bool suspended);
+    bool is_pressing_running_key(void);
+    void directional_key_pressed(int direction4);
     void notify_movement_tried(bool success);
     int get_wanted_movement_direction8(void);
     bool can_take_jump_sensor(void);

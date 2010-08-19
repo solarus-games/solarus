@@ -159,6 +159,7 @@ class Equipment {
     // item assignments
     InventoryItemId get_item_assigned(int slot);
     void set_item_assigned(int slot, InventoryItemId item_id);
+    int get_item_slot(InventoryItemId item_id);
 
     // quest status
     bool has_world_map(void);

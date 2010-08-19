@@ -73,6 +73,7 @@ class InventoryItem {
     InventoryItemId get_id(void);
     int get_variant(void);
     bool is_bottle(void);
+    uint32_t get_reuse_delay(void);
 
     // state
     void start(Game *game);

@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "hero/SpinAttackState.h"
+#include "hero/FreeState.h"
 #include "hero/HeroSprites.h"
 #include "Game.h"
 
@@ -55,7 +56,7 @@ void Hero::SpinAttackState::start(State *previous_state) {
 void Hero::SpinAttackState::update(void) {
 
   if (sprites->is_animation_finished()) {
-    hero->start_free();
+    hero->set_state(new FreeState(hero));
   }
 }
 

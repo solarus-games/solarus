@@ -118,7 +118,6 @@ void CircleMovement::set_radius_speed(int radius_speed) {
   set_radius(wanted_radius);
 }
 
-
 /**
  * @brief Sets the speed of the angle variation.
  * @param angle_speed number of degrees to make per second
@@ -222,7 +221,7 @@ void CircleMovement::update(void) {
   if (current_radius != 0 && duration != 0 && now >= end_movement_date && wanted_radius != 0) {
     stop();
   }
-  else if (current_radius == 0 && loop_delay != 0 && now >= restart_date) {
+  else if (current_radius == 0 && loop_delay != 0 && now >= restart_date && wanted_radius == 0) {
     set_radius(previous_radius);
     start();
   }

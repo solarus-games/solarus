@@ -16,6 +16,7 @@
  */
 #include "hero/SwordSwingingState.h"
 #include "hero/SwordLoadingState.h"
+#include "hero/FreeState.h"
 #include "hero/HeroSprites.h"
 #include "entities/Detector.h"
 #include "Game.h"
@@ -59,7 +60,7 @@ void Hero::SwordSwingingState::update(void) {
       hero->set_state(new SwordLoadingState(hero));
     }
     else {
-      hero->start_free();
+      hero->set_state(new FreeState(hero));
     }
   }
 }

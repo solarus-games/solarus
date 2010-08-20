@@ -1134,14 +1134,6 @@ void Hero::set_target_solid_ground_coords(const Rectangle &target_solid_ground_c
 }
 
 /**
- * @brief Sets whether the movement allows to traverse obstacles.
- * @param stop_on_obstacles true to make the movement sensible to obstacles, false to ignore them
- */
-void Hero::set_stop_on_obstacles(bool stop_on_obstacles) {
-  state->set_stop_on_obstacles(stop_on_obstacles);
-}
-
-/**
  * @brief Returns whether this entity is an obstacle for another one.
  * @param other another entity
  * @return true if this entity is an obstacle for the other one
@@ -1246,6 +1238,7 @@ bool Hero::is_jump_sensor_obstacle(JumpSensor *jump_sensor) {
 /**
  * @brief This function is called when a destructible item detects a non-pixel perfect collision with this entity.
  * @param destructible_item the destructible item
+ * @param collision_mode the collision mode that detected the event
  */
 void Hero::notify_collision_with_destructible_item(DestructibleItem *destructible_item, CollisionMode collision_mode) {
   destructible_item->notify_collision_with_hero(this, collision_mode);
@@ -1385,7 +1378,7 @@ void Hero::notify_collision_with_jump_sensor(JumpSensor *jump_sensor) {
     }
 
     // jump
-    start_jumping(jump_sensor->get_direction(), jump_sensor->get_jump_length(), false, true, 0, LAYER_LOW);
+    start_jumping(jump_sensor->get_direction(), jump_sensor->get_jump_length(), true, true, 0, LAYER_LOW);
   }
 }
 
@@ -1614,7 +1607,7 @@ void Hero::start_deep_water(void) {
       set_state(new SwimmingState(this));
     }
     else {
-      start_jumping(get_wanted_movement_direction8(), 32, true, true, 13);
+      start_jumping(get_wanted_movement_direction8(), 32, false, true, 13);
     }
   }
 }
@@ -1746,15 +1739,15 @@ void Hero::start_treasure(Treasure *treasure) {
  *
  * @param direction8 direction of the jump (0 to 7)
  * @param length length of the jump in pixels
- * @param with_collisions true to stop the movement if there is a collision
+ * @param ignore_obstacles true make the movement ignore obstacles
  * @param with_sound true to play the "jump" sound
  * @param movement_delay delay between each one-pixel move in the jump movement in milliseconds (0: default)
  * @param layer_after_jump the layer to set when the jump is finished
  * (or LAYER_NB to keep the same layer)
  */
-void Hero::start_jumping(int direction8, int length, bool with_collisions, bool with_sound, uint32_t movement_delay, Layer layer_after_jump) {
+void Hero::start_jumping(int direction8, int length, bool ignore_obstacles, bool with_sound, uint32_t movement_delay, Layer layer_after_jump) {
 
-  JumpingState *state = new JumpingState(this, direction8, length, with_collisions, with_sound, movement_delay, layer_after_jump);
+  JumpingState *state = new JumpingState(this, direction8, length, ignore_obstacles, with_sound, movement_delay, layer_after_jump);
   set_state(state);
 }
 

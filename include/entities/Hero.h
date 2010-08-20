@@ -228,7 +228,6 @@ class Hero: public MapEntity {
      *
      * Information about what is considered as an obstacle for the hero.
      */
-    void set_stop_on_obstacles(bool stop_on_obstacles);
     bool is_obstacle_for(MapEntity *other);
     bool is_water_obstacle(void);
     bool is_hole_obstacle(void);
@@ -288,7 +287,7 @@ class Hero: public MapEntity {
     void start_next_state(void);
     void start_free(void);
     void start_treasure(Treasure *treasure);
-    void start_jumping(int direction8, int length, bool with_collisions, bool with_sound,
+    void start_jumping(int direction8, int length, bool ignore_obstacles, bool with_sound,
 	uint32_t movement_delay = 0, Layer layer_after_jump = LAYER_NB);
     void start_freezed(void);
     void start_victory(void);

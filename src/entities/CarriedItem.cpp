@@ -70,7 +70,7 @@ CarriedItem::CarriedItem(Hero *hero, DestructibleItem *destructible_item):
   set_size(destructible_item->get_width(), destructible_item->get_height());
 
   // create the lift movement and the sprite
-  PixelMovement *movement = new PixelMovement(lifting_translations[direction], 6, 100, false, false);
+  PixelMovement *movement = new PixelMovement(lifting_translations[direction], 6, 100, false, true);
   create_sprite(destructible_item->get_animation_set_id());
   get_sprite()->set_current_animation("stopped");
   set_movement(movement);
@@ -337,7 +337,7 @@ void CarriedItem::update(void) {
 
     // make the item follow the hero
     clear_movement();
-    set_movement(new FollowMovement(hero, 0, -18, false));
+    set_movement(new FollowMovement(hero, 0, -18, true));
   }
 
   // when the item has finished flying, destroy it

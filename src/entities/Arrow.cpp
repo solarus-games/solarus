@@ -44,7 +44,7 @@ Arrow::Arrow(Hero *hero):
 
   std::string path = " ";
   path[0] = '0' + (direction * 2);
-  Movement *movement = new PathMovement(path, 24, true, true, false);
+  Movement *movement = new PathMovement(path, 24, true, false, false);
   set_movement(movement);
 
   disappear_date = System::now() + 1500;
@@ -267,7 +267,7 @@ void Arrow::update(void) {
     if (entity_reached != NULL) {
       // the arrow just hit an entity (typically an enemy) and this entity may have a movement
       Rectangle dxy(get_x() - entity_reached->get_x(), get_y() - entity_reached->get_y());
-      set_movement(new FollowMovement(entity_reached, dxy.get_x(), dxy.get_y(), false));
+      set_movement(new FollowMovement(entity_reached, dxy.get_x(), dxy.get_y(), true));
     }
   }
 
@@ -394,6 +394,7 @@ void Arrow::notify_collision_with_crystal_switch(CrystalSwitch *crystal_switch, 
 /**
  * @brief This function is called when a destructible item detects a non-pixel perfect collision with this entity.
  * @param destructible_item the destructible item
+ * @param collision_mode the collision mode that detected the event
  */
 void Arrow::notify_collision_with_destructible_item(DestructibleItem *destructible_item, CollisionMode collision_mode) {
 

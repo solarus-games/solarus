@@ -27,17 +27,17 @@
  * @param hero the hero controlled by this state
  * @param direction8 direction of the jump (0 to 7)
  * @param length length of the jump in pixels
- * @param with_collisions true to stop the movement if there is a collision
+ * @param ignore_obstacles true to make the movement ignore obstacles
  * @param with_sound true to play the "jump" sound
  * @param movement_delay delay between each one-pixel move in the jump movement (0: default)
  * @param layer_after_jump the layer to set when the jump is finished
  * (or LAYER_NB to keep the same layer)
  */
 Hero::JumpingState::JumpingState(Hero *hero, int direction8, int length,
-    bool with_collisions, bool with_sound, uint32_t movement_delay, Layer layer_after_jump):
+    bool ignore_obstacles, bool with_sound, uint32_t movement_delay, Layer layer_after_jump):
   State(hero) {
 
-    this->movement = new JumpMovement(direction8, length, with_collisions);
+    this->movement = new JumpMovement(direction8, length, ignore_obstacles);
     this->direction8 = direction8;
     this->with_sound = with_sound;
 

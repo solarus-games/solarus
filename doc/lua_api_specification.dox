@@ -218,10 +218,10 @@ sets the direction of the hero's sprites
 - <tt>hero_align_on_sensor(sensor_name)</tt>:
 places the hero's bounding box exactly on the rectangle of a sensor
 
-- <tt>hero_walk(path, loop, with_collisions)</tt>:
+- <tt>hero_walk(path, loop, ignore_obstacles)</tt>:
 makes the hero move with the specified path
 
-- <tt>hero_jump(direction, length, with_collisions)</tt>:
+- <tt>hero_jump(direction, length, ignore_obstacles)</tt>:
 makes the hero jump towards the specified direction (0 to 7)
 
 - <tt>hero_start_victory_sequence()</tt>:
@@ -233,13 +233,13 @@ hides or unhides the hero
 - <tt>npc_set_position(npc, x, y)</tt>:
 sets the position of an NPC
 
-- <tt>npc_walk(npc, path, loop, with_collisions)</tt>:
+- <tt>npc_walk(npc, path, loop, ignore_obstacles)</tt>:
 makes an NPC move with the specified path
 
 - <tt>npc_random_walk(npc)</tt>:
 makes an NPC walk randomly
 
-- <tt>npc_jump(npc, direction, length, with_collisions)</tt>:
+- <tt>npc_jump(npc, direction, length, ignore_obstacles)</tt>:
 makes an NPC jump towards the specified direction (0 to 7)
 
 - <tt>npc_set_animation(npc, animation_name)</tt>:

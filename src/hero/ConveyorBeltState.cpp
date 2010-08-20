@@ -84,7 +84,7 @@ void Hero::ConveyorBeltState::update(void) {
     std::string path = "  ";
     path[0] = path[1] = '0' + conveyor_belt->get_direction();
     hero->clear_movement();
-    hero->set_movement(new PathMovement(path, hero->get_walking_speed() * 2 / 3, false, true, false));
+    hero->set_movement(new PathMovement(path, hero->get_walking_speed() * 2 / 3, false, false, false));
   }
   else {
 

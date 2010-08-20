@@ -169,7 +169,6 @@ bool Hero::FreeState::can_take_stairs(void) {
 /**
  * @brief Returns whether can trigger a jump sensor in this state.
  * If false is returned, jump sensors have no effect (but they are obstacle for the hero).
- * @param jump_sensor a jump sensor
  * @return true if the hero can use jump sensors in this state
  */
 bool Hero::FreeState::can_take_jump_sensor(void) {

@@ -95,7 +95,7 @@ function event_dialog_finished(message_id, answer)
     give_boomerang_back()
     x,y = npc_get_position("tom")
     if y ~= tom_initial_y then
-      npc_walk("tom", "2222220000002222222222222222", false, true)
+      npc_walk("tom", "2222220000002222222222222222", false, false)
     end
   end
 
@@ -108,7 +108,7 @@ end
 
 function start_moving_tom()
   npc_set_position("tom", 88, 509)
-  npc_walk("tom", "0000666666", false, true)
+  npc_walk("tom", "0000666666", false, false)
 end
 
 function event_npc_movement_finished(npc)

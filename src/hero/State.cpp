@@ -435,16 +435,6 @@ void Hero::State::notify_ground_changed(void) {
 }
 
 /**
- * @brief Sets whether the movement allows to traverse obstacles.
- *
- * This function is used for debugging purposes only.
- *
- * @param stop_on_obstacles true to make the movement sensible to obstacles, false to ignore them
- */
-void Hero::State::set_stop_on_obstacles(bool stop_on_obstacles) {
-}
-
-/**
  * @brief Returns whether this state ignores the collisions with the detectors and the ground.
  * @return true if the collision are ignored
  */
@@ -560,7 +550,6 @@ bool Hero::State::can_take_stairs(void) {
  *
  * Returns false by default.
  *
- * @param jump_sensor a jump sensor
  * @return true if the hero can use jump sensors in this state
  */
 bool Hero::State::can_take_jump_sensor(void) {

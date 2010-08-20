@@ -24,11 +24,11 @@
  * @param delay delay in milliseconds between two translations
  * @param loop true to make the movement return to the beginning
  * once finished
- * @param with_collisions true to make the movement sensitive to obstacles
+ * @param ignore_obstacles true to make the movement ignore obstacles
  */
 PixelMovement::PixelMovement(int nb_vectors, uint32_t delay,
-			     bool loop, bool with_collisions):
-  CollisionMovement(with_collisions),
+			     bool loop, bool ignore_obstacles):
+  CollisionMovement(ignore_obstacles),
   nb_vectors(nb_vectors), delay(delay), loop(loop),
   vector_index(0), finished(false) {
 
@@ -44,11 +44,11 @@ PixelMovement::PixelMovement(int nb_vectors, uint32_t delay,
  * @param delay delay in milliseconds between two translations
  * @param loop true to make the movement return to the beginning
  * once finished
- * @param with_collisions true to make the movement sensitive to obstacles
+ * @param ignore_obstacles true to make the movement ignore obstacles
  */
 PixelMovement::PixelMovement(const Rectangle *translation_vectors,
-			     int nb_vectors, uint32_t delay, bool loop, bool with_collisions):
-  CollisionMovement(with_collisions),
+			     int nb_vectors, uint32_t delay, bool loop, bool ignore_obstacles):
+  CollisionMovement(ignore_obstacles),
   translation_vectors(translation_vectors), nb_vectors(nb_vectors),
   delay(delay), loop(loop), vector_index(0), finished(false) {
 

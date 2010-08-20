@@ -49,7 +49,6 @@ class Hero::PlayerMovementState: public Hero::State {
     int get_wanted_movement_direction8(void);
     void notify_walking_speed_changed(void);
     void notify_movement_changed(void);
-    void set_stop_on_obstacles(bool stop_on_obstacles);
     bool can_be_hurt(void);
 };
 

@@ -244,9 +244,9 @@ int MapScript::l_hero_walk(lua_State *l) {
   /* TODO
   const std::string &path = lua_tostring(l, 1);
   bool loop = lua_toboolean(l, 2) != 0;
-  bool with_collisions = lua_toboolean(l, 3) != 0;
+  bool ignore_obstacles = lua_toboolean(l, 3) != 0;
 
-  script->hero->walk(path, loop, with_collisions);
+  script->hero->walk(path, loop, ignore_obstacles);
   */
 
   return 0;
@@ -268,9 +268,9 @@ int MapScript::l_hero_jump(lua_State *l) {
 
   int direction = lua_tointeger(l, 1);
   int length = lua_tointeger(l, 2);
-  bool with_collisions = lua_toboolean(l, 3) != 0;
+  bool ignore_obstacles = lua_toboolean(l, 3) != 0;
 
-  script->hero->start_jumping(direction, length, with_collisions, false);
+  script->hero->start_jumping(direction, length, ignore_obstacles, false);
 
   return 0;
 }
@@ -368,7 +368,7 @@ int MapScript::l_npc_set_position(lua_State *l) {
  * - Argument 1 (string): name of the NPC to make move
  * - Argument 2 (string): the path (each character is a direction between '0' and '7'
  * - Argument 3 (boolean): true to make the movement loop
- * - Argument 4 (boolean): true to enable the collisions
+ * - Argument 4 (boolean): true to make the movement ignore obstacles
  *
  * @param l the Lua context that is calling this function
  */
@@ -380,11 +380,11 @@ int MapScript::l_npc_walk(lua_State *l) {
   const std::string &name = lua_tostring(l, 1);
   const std::string &path = lua_tostring(l, 2);
   bool loop = lua_toboolean(l, 3) != 0;
-  bool with_collisions = lua_toboolean(l, 4) != 0;
+  bool ignore_obstacles = lua_toboolean(l, 4) != 0;
 
   MapEntities *entities = script->map->get_entities();
   InteractiveEntity *npc = (InteractiveEntity*) entities->get_entity(INTERACTIVE_ENTITY, name);
-  npc->walk(path, loop, with_collisions);
+  npc->walk(path, loop, ignore_obstacles);
 
   return 0;
 }
@@ -417,7 +417,7 @@ int MapScript::l_npc_random_walk(lua_State *l) {
  * - Argument 1 (string): name of the NPC to make move
  * - Argument 2 (integer): the jump direction, between 0 and 7
  * - Argument 3 (integer): the jump length in pixels
- * - Argument 4 (boolean): true to enable the collisions
+ * - Argument 4 (boolean): true to make the movement ignore obstacles
  *
  * @param l the Lua context that is calling this function
  */
@@ -429,11 +429,11 @@ int MapScript::l_npc_jump(lua_State *l) {
   const std::string &name = lua_tostring(l, 1);
   int direction = lua_tointeger(l, 2);
   int length = lua_tointeger(l, 3);
-  bool with_collisions = lua_toboolean(l, 4) != 0;
+  bool ignore_obstacles = lua_toboolean(l, 4) != 0;
 
   MapEntities *entities = script->map->get_entities();
   InteractiveEntity *npc = (InteractiveEntity*) entities->get_entity(INTERACTIVE_ENTITY, name);
-  npc->jump(direction, length, with_collisions);
+  npc->jump(direction, length, ignore_obstacles);
 
   return 0;
 }

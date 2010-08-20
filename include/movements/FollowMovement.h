@@ -30,14 +30,13 @@ class FollowMovement: public CollisionMovement {
 
   private:
 
-    MapEntity *entity_followed; /**< the entity followed by this movement */
-    const int x;                /**< x coordinate of where this entity should be placed,
-				 * relative to the entity followed */
-    const int y;                /**< y coordinate of where this entity should be placed,
-				 * relative to the entity followed */
+    MapEntity *entity_followed;		/**< the entity followed by this movement */
+    const int x;			/**< x coordinate of where this entity should be placed,
+					 * relative to the entity followed */
+    const int y;			/**< y coordinate of where this entity should be placed,
+					 * relative to the entity followed */
 
-    const bool with_collisions; /**< indicates that this movement is sensitive to the obstacles */
-    bool finished;              /**< indicates that the movement is stopped because of a collision */
+    bool finished;			/**< indicates that the movement is stopped because of a collision */
 
   protected:
 
@@ -45,7 +44,7 @@ class FollowMovement: public CollisionMovement {
 
   public:
 
-    FollowMovement(MapEntity *entity_followed, int x, int y, bool with_collisions);
+    FollowMovement(MapEntity *entity_followed, int x, int y, bool ignore_obstacles);
     ~FollowMovement(void);
 
     bool is_finished(void);

@@ -34,13 +34,13 @@ function event_dialog_finished(first_message_id, answer)
     hero_freeze()
     hero_set_direction(0)
     npc_set_position("tom", 528, 245)
-    npc_walk("tom", "44444444444444444444222", false, false)
+    npc_walk("tom", "44444444444444444444222", false, true)
   elseif first_message_id == "outside_world.tom_dungeon_1_entrance.need_help" then
     npc_set_direction("tom", 1)
     timer_start(1500, "tom_timer_1", false)
   elseif first_message_id == "outside_world.tom_dungeon_1_entrance.let_me_see" then
     play_sound("jump")
-    npc_jump("tom", 4, 16, false)
+    npc_jump("tom", 4, 16, true)
   elseif first_message_id == "outside_world.tom_dungeon_1_entrance.open" then
     npc_set_animation("tom", "walking")
     timer_start(300, "tom_timer_3", false)

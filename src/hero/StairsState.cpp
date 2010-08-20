@@ -68,7 +68,7 @@ void Hero::StairsState::start(State *previous_state) {
   // movement
   int speed = stairs->is_inside_floor() ? 4 : 2;
   std::string path = stairs->get_path(way);
-  PathMovement *movement = new PathMovement(path, speed, false, false, false);
+  PathMovement *movement = new PathMovement(path, speed, false, true, false);
 
   // sprites and sound
   sprites->set_animation_walking_normal();

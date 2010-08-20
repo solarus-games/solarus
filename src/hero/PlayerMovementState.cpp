@@ -183,17 +183,6 @@ void Hero::PlayerMovementState::notify_movement_changed(void) {
 }
 
 /**
- * @brief Sets whether the movement allows to traverse obstacles.
- *
- * This function is used for debugging purposes only.
- *
- * @param stop_on_obstacles true to make the movement sensible to obstacles, false to ignore them
- */
-void Hero::PlayerMovementState::set_stop_on_obstacles(bool stop_on_obstacles) {
-  get_player_movement()->set_stop_on_obstacles(stop_on_obstacles);
-}
-
-/**
  * @brief Returns whether the hero can be hurt in this state.
  * @return true if the hero can be hurt in this state
  */

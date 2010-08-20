@@ -39,7 +39,7 @@ end
 
 function jump_from_bed()
   hero_set_visible(true)
-  hero_jump(4, 24, false)
+  hero_jump(4, 24, true)
   interactive_entity_set_animation("bed", "empty_open")
   hero_set_pause_enabled(true)
   play_sound("hero_lands");

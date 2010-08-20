@@ -87,7 +87,6 @@ class Hero::State {
     virtual void notify_ground_changed(void);
 
     // obstacles and collisions
-    virtual void set_stop_on_obstacles(bool stop_on_obstacles);
     virtual bool are_collisions_ignored(void);
     virtual bool is_water_obstacle(void);
     virtual bool is_hole_obstacle(void);

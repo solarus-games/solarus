@@ -35,7 +35,7 @@ using std::list;
  * @param map the map
  */
 MapEntities::MapEntities(Game *game, Map *map):
-  map(map), hero_on_raised_blocks(false), music_before_miniboss(Music::none) {
+  map(map), music_before_miniboss(Music::none) {
 
   this->game = game;
   this->hero = game->get_hero();
@@ -583,8 +583,6 @@ void MapEntities::update(void) {
   // first update the hero
   hero->update();
 
-  update_crystal_switch_blocks();
-
   // update the tiles and the dynamic entities
   list<MapEntity*>::iterator it;
   for (int layer = 0; layer < LAYER_NB; layer++) {
@@ -688,14 +686,6 @@ void MapEntities::set_entity_layer(MapEntity *entity, Layer layer) {
 }
 
 /**
- * @brief Updates the crystal switch blocks.
- */
-void MapEntities::update_crystal_switch_blocks(void) {
-
-  hero_on_raised_blocks = overlaps_raised_blocks(hero->get_layer(), hero->get_bounding_box());
-}
-
-/**
  * @brief Returns whether a rectangle overlaps with a raised crystal switch block.
  * @param layer the layer to check
  * @param rectangle a rectangle
@@ -712,14 +702,6 @@ bool MapEntities::overlaps_raised_blocks(Layer layer, const Rectangle &rectangle
   }
 
   return overlaps;
-}
-
-/**
- * @brief Returns whether the hero is currently on raised crystal switch blocks.
- * @return true if the hero is currently on raised crystal switch blocks
- */
-bool MapEntities::is_hero_on_raised_blocks(void) {
-  return hero_on_raised_blocks;
 }
 
 /**

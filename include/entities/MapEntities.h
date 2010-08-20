@@ -79,8 +79,6 @@ class MapEntities {
     std::list<CrystalSwitchBlock*>
       crystal_switch_blocks[LAYER_NB];                      /**< all crystal switch blocks of the map */
     Boomerang *boomerang;                                   /**< the boomerang if present on the map, NULL otherwise */
-    bool hero_on_raised_blocks;                             /**< indicates that the hero is currently on
-							     * raised crystal switch blocks */
     MusicId music_before_miniboss;                          /**< the music that was played before starting a miniboss fight */
 
     void set_obstacle(int layer, int x8, int y8, Obstacle obstacle);
@@ -117,7 +115,6 @@ class MapEntities {
     void set_entity_layer(MapEntity *entity, Layer layer);
 
     // hero
-    bool is_hero_on_raised_blocks(void);
     bool overlaps_raised_blocks(Layer layer, const Rectangle &rectangle);
     bool is_boomerang_present(void);
     void remove_boomerang(void);

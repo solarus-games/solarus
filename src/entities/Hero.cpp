@@ -57,7 +57,7 @@ const int Hero::normal_walking_speed = 9;
  */
 Hero::Hero(Equipment *equipment):
   state(NULL), old_state(NULL), equipment(equipment), facing_entity(NULL),
-  walking_speed(normal_walking_speed), on_conveyor_belt(false),
+  walking_speed(normal_walking_speed), on_conveyor_belt(false), on_raised_blocks(false),
   last_inventory_item_id(INVENTORY_NONE), can_use_inventory_item_date(0),
   ground(GROUND_NORMAL), next_ground_date(0) {
 
@@ -232,6 +232,8 @@ void Hero::update_state(void) {
  * This function is called repeatedly by update().
  */
 void Hero::update_movement(void) {
+
+  on_raised_blocks = map->get_entities()->overlaps_raised_blocks(get_layer(), get_bounding_box());
 
   if (movement == NULL) {
     return;
@@ -758,7 +760,7 @@ bool Hero::is_facing_direction8(int direction8) {
  * @return true if the hero is currently on raised crystal switch blocks
  */
 bool Hero::is_on_raised_blocks(void) {
-  return map->get_entities()->is_hero_on_raised_blocks();
+  return on_raised_blocks;
 }
 
 /**

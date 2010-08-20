@@ -807,7 +807,7 @@
 5	1	56	536	chest_4	0	88	1	87
 10	1	448	216	16	8	hidden_stairs_open	273	0
 10	1	528	304	8	32	hidden_door_open	163	0
-2	1	832	728	16	16	teletransporter_2	0	1	30	destination_point
+2	1	832	728	16	16	teletransporter_2	0	1	31	from_1F_east
 10	1	168	40	16	8	miniboss_door_open	273	1
 0	2	808	744	96	8	357
 0	2	160	592	32	16	170

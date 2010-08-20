@@ -81,6 +81,8 @@ class Hero: public MapEntity {
 						 * a special behavior, such as falling into a hole or walking on stairs */
     bool on_conveyor_belt;			/**< indicates that the hero's rectangle is currently overlapping a conveyor belt 
 						 * (even if the collision is not enough to take the conveyor belt and move the hero) */
+    bool on_raised_blocks;			/**< indicates that the hero is currently on
+						 * raised crystal switch blocks */
     InventoryItemId last_inventory_item_id;	/**< id of the last inventory item used */
     uint32_t can_use_inventory_item_date;	/**< date when the player can use the same inventory item next time */
 

@@ -28,6 +28,8 @@ class Hero::FreezedState: public Hero::State {
 
     FreezedState(Hero *hero);
     ~FreezedState(void);
+
+    void start(State *previous_state);
 };
 
 #endif

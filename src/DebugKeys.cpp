@@ -175,11 +175,6 @@ void DebugKeys::key_pressed(InputEvent::KeyboardKey key) {
 	game->get_hero()->rebuild_equipment();
 	break;
 
-      case InputEvent::KEY_LEFT_CONTROL:
-      case InputEvent::KEY_RIGHT_CONTROL:
-	game->get_hero()->set_stop_on_obstacles(false);
-	break;
-
       default:
 	break;
     }
@@ -196,22 +191,6 @@ void DebugKeys::key_pressed(InputEvent::KeyboardKey key) {
  * @param key the key released
  */
 void DebugKeys::key_released(InputEvent::KeyboardKey key) {
-
-#if SOLARUS_DEBUG_LEVEL >= 2
-
-  if (game != NULL) {
-    switch (key) {
-
-      case InputEvent::KEY_LEFT_CONTROL:
-      case InputEvent::KEY_RIGHT_CONTROL:
-	game->get_hero()->set_stop_on_obstacles(true);
-	break;
-
-      default:
-	break;
-    }
-  }
-#endif
 }
 
 /**
@@ -224,5 +203,13 @@ void DebugKeys::update(void) {
       game->get_dialog_box()->show_all_now();
     }
   }
+
+#if SOLARUS_DEBUG_LEVEL >= 2
+  // traverse walls when control is pressed
+  if (game != NULL) {
+    game->get_hero()->set_stop_on_obstacles(!InputEvent::is_control_down());
+  }
+#endif
+  
 }
 

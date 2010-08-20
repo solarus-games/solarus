@@ -32,18 +32,18 @@ const Rectangle JumpMovement::basic_translations[8] = {
 
 /**
  * @brief Creates a jump movement.
- * @param direction of the movement (0 to 7)
+ * @param direction8 of the movement (0 to 7)
  * @param length length of the jump
  * @param with_collisions true to make the movement sensitive to obstacles
  * @param movement_delay delay between each one-pixel move in the jump movement in milliseconds (0: default)
  */
-JumpMovement::JumpMovement(int direction, int length, bool with_collisions, uint32_t movement_delay):
+JumpMovement::JumpMovement(int direction8, int length, bool with_collisions, uint32_t movement_delay):
   PixelMovement(length, 10, false, with_collisions), jump_height(0) {
 
   // compute the path
   translation_vectors = new Rectangle[length];
   for (int i = 0; i < length; i++) {
-    translation_vectors[i] = basic_translations[direction];
+    translation_vectors[i] = basic_translations[direction8];
   }
   set_translation_vectors(translation_vectors);
 
@@ -75,6 +75,7 @@ int JumpMovement::get_jump_height(void) {
  * @brief Makes a move in the path.
  */
 void JumpMovement::make_next_move(void) {
+
   PixelMovement::make_next_move();
 
   int i = get_vector_index();

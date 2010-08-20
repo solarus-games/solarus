@@ -1,4 +1,6 @@
-find . -name '*~' -exec rm {} \;
+svn export . export
+cd export
+./compile
 jar cvmf manifest.mf solarus-editor.jar org
 keytool -genkey -keystore solaruskeystore -alias solaruskey
 jarsigner -keystore solaruskeystore solarus-editor.jar solaruskey

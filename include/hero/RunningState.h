@@ -28,6 +28,9 @@ class Hero::RunningState: public Hero::State {
 
     int phase;				/**< current phase of the run */
     uint32_t next_phase_date;		/**< date of the next phase */
+    uint32_t next_sound_date;		/**< date of the next time a sound is played during the run */
+
+    bool is_bouncing(void);
 
   public:
 
@@ -42,8 +45,20 @@ class Hero::RunningState: public Hero::State {
     void directional_key_pressed(int direction4);
     void notify_movement_tried(bool success);
     int get_wanted_movement_direction8(void);
+
+    bool can_take_stairs(void);
     bool can_take_jump_sensor(void);
     bool can_be_hurt(void);
+    bool can_start_gameover_sequence(void);
+    int get_height_above_shadow(void);
+    bool is_touching_ground(void);
+    bool can_avoid_deep_water(void);
+    bool can_avoid_hole(void);
+    bool can_avoid_teletransporter(void);
+    bool can_avoid_conveyor_belt(void);
+    bool is_sensor_obstacle(Sensor *sensor);
+    bool is_cutting_with_sword(Detector *detector);
+    void set_stop_on_obstacles(bool stop_on_obstacles);
 };
 
 #endif

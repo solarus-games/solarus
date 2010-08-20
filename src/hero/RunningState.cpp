@@ -17,7 +17,9 @@
 #include "hero/RunningState.h"
 #include "hero/FreeState.h"
 #include "hero/HeroSprites.h"
+#include "entities/Detector.h"
 #include "movements/StraightMovement.h"
+#include "movements/JumpMovement.h"
 #include "lowlevel/System.h"
 #include "Game.h"
 #include "GameControls.h"
@@ -48,11 +50,13 @@ void Hero::RunningState::start(State *previous_state) {
 
   State::start(previous_state);
 
-  hero->set_movement(new StraightMovement(10, sprites->get_animation_direction() * 90, 300));
   sprites->set_animation_walking_normal();
 
   phase = 0;
-  next_phase_date = System::now() + 300;
+
+  uint32_t now = System::now();
+  next_phase_date = now + 500;
+  next_sound_date = now + 300;
 }
 
 /**
@@ -62,7 +66,9 @@ void Hero::RunningState::stop(State *next_state) {
 
   State::stop(next_state);
 
-  hero->clear_movement();
+  if (phase != 0) {
+    hero->clear_movement();
+  }
 }
 
 /**
@@ -70,12 +76,24 @@ void Hero::RunningState::stop(State *next_state) {
  */
 void Hero::RunningState::update(void) {
 
+  State::update();
+
+  if (suspended) {
+    return;
+  }
+
   uint32_t now = System::now();
+
+  if (!is_bouncing() && now >= next_sound_date) {
+    game->play_sound("running");
+    next_sound_date = now + 170;
+  }
+
   if (phase == 0) {
     
     if (now >= next_phase_date) {
-      hero->clear_movement();
       hero->set_movement(new StraightMovement(30, sprites->get_animation_direction() * 90, 10000));
+      sprites->set_animation_walking_sword_loading();
       phase++;
     }
     else if (!is_pressing_running_key()) {
@@ -96,8 +114,18 @@ void Hero::RunningState::set_suspended(bool suspended) {
   State::set_suspended(suspended);
 
   if (!suspended) {
-    next_phase_date += System::now() - when_suspended;
+    uint32_t diff = System::now() - when_suspended;
+    next_phase_date += diff;
+    next_sound_date += diff;
   }
+}
+
+/**
+ * @brief Returns whether the hero is boucing after he reached an obstacle during the run.
+ * @return true if the hero is bouncing
+ */
+bool Hero::RunningState::is_bouncing(void) {
+  return phase == 2;
 }
 
 /**
@@ -122,7 +150,8 @@ bool Hero::RunningState::is_pressing_running_key(void) {
  */
 void Hero::RunningState::directional_key_pressed(int direction4) {
 
-  if (direction4 != sprites->get_animation_direction()) {
+  if (!is_bouncing()
+      && direction4 != sprites->get_animation_direction()) {
     hero->set_state(new FreeState(hero));
   }
 }
@@ -135,8 +164,12 @@ void Hero::RunningState::notify_movement_tried(bool success) {
 
   State::notify_movement_tried(success);
 
-  if (!success) {
-    hero->set_state(new FreeState(hero));
+  if (!success && phase == 1) {
+    int opposite_direction = (sprites->get_animation_direction8() + 4) % 8;
+    hero->set_movement(new JumpMovement(opposite_direction, 32, true, 15));
+    sprites->set_animation_hurt();
+    game->play_sound("explosion");
+    phase++;
   }
 }
 
@@ -154,13 +187,21 @@ int Hero::RunningState::get_wanted_movement_direction8(void) {
 }
 
 /**
+ * @brief Returns whether the hero can take stairs in this state.
+ * If false is returned, stairs have no effect (but they are obstacle for the hero).
+ * @return true if the hero ignores the effect of stairs in this state
+ */
+bool Hero::RunningState::can_take_stairs(void) {
+  return !is_bouncing();
+}
+/**
  * @brief Returns whether can trigger a jump sensor in this state.
  * If false is returned, jump sensors have no effect (but they are obstacle for the hero).
  * @param jump_sensor a jump sensor
  * @return true if the hero can use jump sensors in this state
  */
 bool Hero::RunningState::can_take_jump_sensor(void) {
-  return true;
+  return !is_bouncing();
 }
 
 /**
@@ -168,6 +209,122 @@ bool Hero::RunningState::can_take_jump_sensor(void) {
  * @return true if the hero can be hurt in this state
  */
 bool Hero::RunningState::can_be_hurt(void) {
-  return true;
+  return !is_bouncing();
+}
+
+/**
+ * @brief Returns whether the game over sequence can start in the current state.
+ * @return true if the game over sequence can start in the current state
+ */
+bool Hero::RunningState::can_start_gameover_sequence(void) {
+  return !is_bouncing();
+}
+
+/**
+ * @brief When a shadow is displayed separate from the tunic sprite,
+ * returns the height where the tunic sprite should be displayed.
+ * @return the height in pixels, or zero if there is no separate shadow in this state
+ */
+int Hero::RunningState::get_height_above_shadow(void) {
+
+  if (is_bouncing()) {
+    return ((JumpMovement*) hero->get_movement())->get_jump_height();
+  }
+
+  return 0;
+}
+
+/**
+ * @brief Returns whether the hero is touching the ground in the current state.
+ * @return true if the hero is touching the ground in the current state
+ */
+bool Hero::RunningState::is_touching_ground(void) {
+  return !is_bouncing();
+}
+
+/**
+ * @brief Returns whether the hero ignores the effect of deep water in this state.
+ * @return true if the hero ignores the effect of deep water in the current state
+ */
+bool Hero::RunningState::can_avoid_deep_water(void) {
+  return is_bouncing();
+}
+
+/**
+ * @brief Returns whether the hero ignores the effect of holes in this state.
+ * @return true if the hero ignores the effect of holes in the current state
+ */
+bool Hero::RunningState::can_avoid_hole(void) {
+  return is_bouncing();
+}
+
+/**
+ * @brief Returns whether the hero ignores the effect of teletransporters in this state.
+ * @return true if the hero ignores the effect of teletransporters in this state
+ */
+bool Hero::RunningState::can_avoid_teletransporter(void) {
+  return is_bouncing();
+}
+
+/**
+ * @brief Returns whether the hero ignores the effect of conveyor belts in this state.
+ * @return true if the hero ignores the effect of conveyor belts in this state
+ */
+bool Hero::RunningState::can_avoid_conveyor_belt(void) {
+  return is_bouncing();
+}
+
+/**
+ * @brief Returns whether a sensor is considered as an obstacle in this state.
+ * @param sensor a sensor
+ * @return true if the sensor is an obstacle in this state
+ */
+bool Hero::RunningState::is_sensor_obstacle(Sensor *sensor) {
+  return is_bouncing();
+}
+
+/**
+ * @brief Tests whether the hero is cutting with his sword the specified detector
+ * for which a collision was detected.
+ * @param detector the detector to check
+ * @return true if the sword is cutting this detector
+ */
+bool Hero::RunningState::is_cutting_with_sword(Detector *detector) {
+
+  // check the distance to the detector
+  int distance = 8;
+  Rectangle tested_point = hero->get_facing_point();
+
+  switch (sprites->get_animation_direction()) {
+
+    case 0: // right
+      tested_point.add_x(distance);
+      break;
+
+    case 1: // up
+      tested_point.add_y(-distance);
+      break;
+
+    case 2: // left
+      tested_point.add_x(-distance);
+      break;
+
+    case 3: // down
+      tested_point.add_y(distance);
+      break;
+  }
+
+  return detector->get_bounding_box().contains(tested_point.get_x(), tested_point.get_y());
+}
+
+/**
+ * @brief Sets whether the movement allows to traverse obstacles.
+ * @param stop_on_obstacles true to make the movement sensible to obstacles, false to ignore them
+ */
+void Hero::RunningState::set_stop_on_obstacles(bool stop_on_obstacles) {
+
+  if (phase == 1) {
+    ((StraightMovement*) hero->get_movement())->set_stop_on_obstacles(stop_on_obstacles);
+  }
 }
 

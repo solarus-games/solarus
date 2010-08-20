@@ -140,8 +140,11 @@ class Movement {
     void set_direction(int direction);
     void set_direction(double angle);
 
-    // collisions
+    // obstacles
     virtual const Rectangle & get_last_collision_box_on_obstacle(void);
+    virtual bool are_obstacles_ignored(void);
+    virtual void set_ignore_obstacles(void);
+    virtual void restore_ignore_obstacles(void);
 };
 
 #endif

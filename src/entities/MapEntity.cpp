@@ -1228,6 +1228,7 @@ void MapEntity::ensure_no_obstacles(void) {
 /**
  * @brief This function is called when a destructible item detects a non-pixel perfect collision with this entity.
  * @param destructible_item the destructible item
+ * @param collision_mode the collision mode that detected the event
  */
 void MapEntity::notify_collision_with_destructible_item(DestructibleItem *destructible_item, CollisionMode collision_mode) {
 }

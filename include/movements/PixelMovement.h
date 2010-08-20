@@ -47,7 +47,7 @@ class PixelMovement: public CollisionMovement {
 
   protected:
 
-    PixelMovement(int nb_vectors, uint32_t delay, bool loop, bool with_collisions);
+    PixelMovement(int nb_vectors, uint32_t delay, bool loop, bool ignore_obstacles);
 
     void set_translation_vectors(const Rectangle *translation_vectors);
     virtual void make_next_move(void);
@@ -56,7 +56,7 @@ class PixelMovement: public CollisionMovement {
   public:
 
     PixelMovement(const Rectangle *translation_vectors,
-	int nb_vectors, uint32_t delay, bool loop, bool with_collisions);
+	int nb_vectors, uint32_t delay, bool loop, bool ignore_obstacles);
     virtual ~PixelMovement(void);
 
     void set_delay(uint32_t delay);

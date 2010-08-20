@@ -122,7 +122,7 @@ void Hero::PushingState::update(void) {
 	  std::string path = "  ";
 	  path[0] = path[1] = '0' + pushing_direction4 * 2;
 
-	  hero->set_movement(new PathMovement(path, 8, false, true, false));
+	  hero->set_movement(new PathMovement(path, 8, false, false, false));
 	  pushed_entity = facing_entity;
 	}
       }

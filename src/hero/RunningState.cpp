@@ -166,7 +166,7 @@ void Hero::RunningState::notify_movement_tried(bool success) {
 
   if (!success && phase == 1) {
     int opposite_direction = (sprites->get_animation_direction8() + 4) % 8;
-    hero->set_movement(new JumpMovement(opposite_direction, 32, true, 15));
+    hero->set_movement(new JumpMovement(opposite_direction, 32, false, 15));
     sprites->set_animation_hurt();
     game->play_sound("explosion");
     phase++;
@@ -197,7 +197,6 @@ bool Hero::RunningState::can_take_stairs(void) {
 /**
  * @brief Returns whether can trigger a jump sensor in this state.
  * If false is returned, jump sensors have no effect (but they are obstacle for the hero).
- * @param jump_sensor a jump sensor
  * @return true if the hero can use jump sensors in this state
  */
 bool Hero::RunningState::can_take_jump_sensor(void) {
@@ -318,13 +317,12 @@ bool Hero::RunningState::is_cutting_with_sword(Detector *detector) {
 }
 
 /**
- * @brief Sets whether the movement allows to traverse obstacles.
- * @param stop_on_obstacles true to make the movement sensible to obstacles, false to ignore them
+ * @brief Returns the damage power of the sword for the current attack.
+ * @return the current damage factor of the sword
  */
-void Hero::RunningState::set_stop_on_obstacles(bool stop_on_obstacles) {
+int Hero::RunningState::get_sword_damage_factor(void) {
 
-  if (phase == 1) {
-    ((StraightMovement*) hero->get_movement())->set_stop_on_obstacles(stop_on_obstacles);
-  }
+  // the damage are multiplied by 2
+  return State::get_sword_damage_factor() * 2;
 }
 

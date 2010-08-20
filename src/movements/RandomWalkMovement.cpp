@@ -21,7 +21,7 @@
  * @param speed speed of the movement
  */
 RandomWalkMovement::RandomWalkMovement(int speed):
-  PathMovement(get_random_path(), speed, false, true, false) {
+  PathMovement(get_random_path(), speed, false, false, false) {
 
 }
 

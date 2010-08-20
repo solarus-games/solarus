@@ -353,16 +353,16 @@ void InteractiveEntity::update(void) {
  *
  * @param path the path to follow (see class PathMovement)
  * @param loop true to make the movement loop
- * @param with_collisions true to make the movement sensitive to obstacles
+ * @param ignore_obstacles true to make the movement sensitive to obstacles
  */
-void InteractiveEntity::walk(std::string path, bool loop, bool with_collisions) {
+void InteractiveEntity::walk(std::string path, bool loop, bool ignore_obstacles) {
 
   if (subtype != NON_PLAYING_CHARACTER) {
     DIE("This entity is not a non-playing character");
   }
 
   clear_movement();
-  set_movement(new PathMovement(path, 6, loop, with_collisions, false));
+  set_movement(new PathMovement(path, 6, loop, ignore_obstacles, false));
   get_sprite()->set_current_animation("walking");
 }
 
@@ -389,9 +389,9 @@ void InteractiveEntity::walk_random(void) {
  *
  * @param direction direction of the movement (0 to 7)
  * @param length length of the jump in pixels
- * @param with_collisions true to make the movement sensitive to the collisions
+ * @param ignore_obstacles true to make the movement sensitive to obstacles
  */
-void InteractiveEntity::jump(int direction, int length, bool with_collisions) {
+void InteractiveEntity::jump(int direction, int length, bool ignore_obstacles) {
 
   if (subtype != NON_PLAYING_CHARACTER) {
     DIE("This entity is not a non-playing character");
@@ -399,7 +399,7 @@ void InteractiveEntity::jump(int direction, int length, bool with_collisions) {
 
   get_sprite()->set_current_animation("jumping");
   clear_movement();
-  JumpMovement *movement = new JumpMovement(direction, length, with_collisions);
+  JumpMovement *movement = new JumpMovement(direction, length, ignore_obstacles);
   movement->set_delay(20);
   set_movement(movement);
 }

@@ -28,12 +28,12 @@
  * @param speed speed of the movement
  * @param loop true to make the movement return to the beginning
  * once finished
- * @param with_collisions true to make the movement sensitive to obstacles
+ * @param ignore_obstacles true to make the movement ignore obstacles
  * @param must_be_aligned true to snap the entity to the map grid before moving it
  */
 PathMovement::PathMovement(const std::string &path, int speed,
-    bool loop, bool with_collisions, bool must_be_aligned):
-  CollisionMovement(with_collisions),
+    bool loop, bool ignore_obstacles, bool must_be_aligned):
+  CollisionMovement(ignore_obstacles),
   initial_path(path), remaining_path(path), normal_speed(speed), current_direction(0),
   distance_covered(0), total_distance_covered(0),
   loop(loop), finished(false), must_be_aligned(must_be_aligned), snapping(false) {

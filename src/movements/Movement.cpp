@@ -541,3 +541,30 @@ const Rectangle & Movement::get_last_collision_box_on_obstacle(void) {
   return collision_box;
 }
 
+/**
+ * @brief Returns whether this movement currently ignores obstacles.
+ *
+ * This function is useful only for subclasses of Movement that handle collisions.
+ *
+ * @return true if the obstacles are ignored
+ */
+bool Movement::are_obstacles_ignored(void) {
+  return true;
+}
+
+/**
+ * @brief Allows temporarily this movement to traverse obstacles.
+ *
+ * This function is useful only for subclasses of Movement that handle collisions.
+ */
+void Movement::set_ignore_obstacles(void) {
+}
+
+/**
+ * @brief Restores the initial value of ignore_obstacles.
+ *
+ * This function is useful only for subclasses of Movement that handle collisions.
+ */
+void Movement::restore_ignore_obstacles(void) {
+}
+

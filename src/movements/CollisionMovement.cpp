@@ -22,11 +22,11 @@
 
 /**
  * @brief Constructor specifying whether the collisions are enabled.
- * @param stop_on_obstacles true to make the movement sensible to the obstacles
- * (if not, no collisions will be detected)
+ * @param ignore_obstacles true to make the movement ignore obstacles
  */
-CollisionMovement::CollisionMovement(bool stop_on_obstacles):
-  last_collision_box_on_obstacle(-1, -1), stop_on_obstacles(stop_on_obstacles)  {
+CollisionMovement::CollisionMovement(bool ignore_obstacles):
+  last_collision_box_on_obstacle(-1, -1),
+  initial_ignore_obstacles(ignore_obstacles), current_ignore_obstacles(ignore_obstacles) {
 
 }
 
@@ -46,7 +46,7 @@ CollisionMovement::~CollisionMovement(void) {
  */
 bool CollisionMovement::test_collision_with_map(int dx, int dy) {
 
-  if (!stop_on_obstacles) {
+  if (current_ignore_obstacles) {
     return false;
   }
 
@@ -122,10 +122,24 @@ const Rectangle & CollisionMovement::get_last_collision_box_on_obstacle(void) {
 }
 
 /**
- * @brief Sets whether this movement allows to traverse obstacles.
- * @param stop_on_obstacles true to make the movement sensible to obstacles, false to ignore them
+ * @brief Returns whether this movement currently ignores obstacles.
+ * @return true if the obstacles are ignored
  */
-void CollisionMovement::set_stop_on_obstacles(bool stop_on_obstacles) {
-  this->stop_on_obstacles = stop_on_obstacles;
+bool CollisionMovement::are_obstacles_ignored(void) {
+  return current_ignore_obstacles;
+}
+
+/**
+ * @brief Allows temporarily this movement to traverse obstacles.
+ */
+void CollisionMovement::set_ignore_obstacles(void) {
+  this->current_ignore_obstacles = true;
+}
+
+/**
+ * @brief Restores the initial value of ignore_obstacles.
+ */
+void CollisionMovement::restore_ignore_obstacles(void) {
+  this->current_ignore_obstacles = initial_ignore_obstacles;
 }
 

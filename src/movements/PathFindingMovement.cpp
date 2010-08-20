@@ -26,7 +26,7 @@
  * @param speed speed of the movement
  */
 PathFindingMovement::PathFindingMovement(MapEntity *target, int speed):
-  PathMovement("", speed, false, true, true),
+  PathMovement("", speed, false, false, true),
   target(target), next_recomputation_date(System::now() + 100) {
 
 }

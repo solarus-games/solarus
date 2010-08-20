@@ -55,7 +55,7 @@ const int FallingOnFloorMovement::nb_moves[3] = {2, 12, 26};
  * @param height height the entity will fall from
  */
 FallingOnFloorMovement::FallingOnFloorMovement(FallingHeight height):
-  PixelMovement(moves[height], nb_moves[height], 30, false, false) {
+  PixelMovement(moves[height], nb_moves[height], 30, false, true) {
 
 }
 

@@ -20,7 +20,7 @@
 #include "DialogBox.h"
 #include "Equipment.h"
 #include "entities/Hero.h"
-#include "movements/PlayerMovement.h"
+#include "movements/Movement.h"
 
 /**
  * @brief Constructor.
@@ -207,7 +207,17 @@ void DebugKeys::update(void) {
 #if SOLARUS_DEBUG_LEVEL >= 2
   // traverse walls when control is pressed
   if (game != NULL) {
-    game->get_hero()->set_stop_on_obstacles(!InputEvent::is_control_down());
+
+    Movement *movement = game->get_hero()->get_movement();
+    if (movement != NULL) {
+
+      if (InputEvent::is_control_down()) {
+	movement->set_ignore_obstacles();
+      }
+      else {
+	movement->restore_ignore_obstacles();
+      }
+    }
   }
 #endif
   

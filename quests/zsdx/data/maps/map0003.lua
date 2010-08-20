@@ -58,7 +58,7 @@ function event_dialog_finished(first_message_id, answer)
       -- make the monkey leave
       hero_freeze()
       play_sound("monkey")
-      npc_jump("monkey", 1, 24, false)
+      npc_jump("monkey", 1, 24, true)
       monkey_jumps = 1
       savegame_set_boolean(24, true)
 
@@ -76,7 +76,7 @@ function event_npc_movement_finished(npc_name)
    elseif monkey_jumps == 2 then
       -- second jump finished: start the last jump
       play_sound("monkey")
-      npc_jump("monkey", 1, 64, false)
+      npc_jump("monkey", 1, 64, true)
       monkey_jumps = 3
    else
       -- last jump finished: remove the monkey from the map and unfreeze the hero
@@ -89,7 +89,7 @@ end
 function monkey_timer()
    -- start the second jump
    play_sound("monkey")
-   npc_jump("monkey", 2, 56, false)
+   npc_jump("monkey", 2, 56, true)
    monkey_jumps = 2
 end
 

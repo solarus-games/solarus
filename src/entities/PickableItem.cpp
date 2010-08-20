@@ -432,7 +432,7 @@ void PickableItem::notify_collision(MapEntity *entity_overlapping, CollisionMode
     Boomerang *boomerang = (Boomerang*) entity_overlapping;
     
     clear_movement();
-    set_movement(new FollowMovement(entity_overlapping, 0, 0, false));
+    set_movement(new FollowMovement(entity_overlapping, 0, 0, true));
     is_following_boomerang = true;
     falling_height = FALLING_NONE;
     set_blinking(false);

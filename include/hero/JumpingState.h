@@ -33,7 +33,7 @@ class Hero::JumpingState: public Hero::State {
 
   public:
 
-    JumpingState(Hero *hero, int direction8, int length, bool with_collisions, bool with_sound,
+    JumpingState(Hero *hero, int direction8, int length, bool ignore_obstacles, bool with_sound,
 	uint32_t movement_delay = 0, Layer layer_after_jump = LAYER_NB);
     ~JumpingState(void);
 

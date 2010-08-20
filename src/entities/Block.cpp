@@ -207,7 +207,7 @@ bool Block::moved_by_hero(void) {
   int dx = get_x() - hero->get_x();
   int dy = get_y() - hero->get_y();
 
-  set_movement(new FollowMovement(hero, dx, dy, true));
+  set_movement(new FollowMovement(hero, dx, dy, false));
   sound_played = false;
 
   return true;

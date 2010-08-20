@@ -30,14 +30,15 @@ class CollisionMovement: public Movement {
 
   private:
 
-    Rectangle last_collision_box_on_obstacle; /**< copy of the collision box of the last call
-					      * to test_collision_with_map() returning true */ 
-    bool stop_on_obstacles;                   /**< indicates that this movement is currently sensible
-					       * to collisions with obstacles (if not, no collisions will be detected) */
+    Rectangle last_collision_box_on_obstacle;	/**< copy of the collision box of the last call
+						 * to test_collision_with_map() returning true */ 
+
+    const bool initial_ignore_obstacles;	/**< indicates that this movement ignores collisions with obstacles when it is created */
+    bool current_ignore_obstacles;		/**< indicates that this movement currently ignores obstacles */
 
   public:
 
-    CollisionMovement(bool stop_on_obstacles = true);
+    CollisionMovement(bool ignore_obstacles = false);
     virtual ~CollisionMovement(void);
 
     bool test_collision_with_map(int dx, int dy);
@@ -45,8 +46,9 @@ class CollisionMovement: public Movement {
     virtual void update_y(void);
 
     const Rectangle & get_last_collision_box_on_obstacle(void);
-
-    void set_stop_on_obstacles(bool stop_on_obstacles);
+    bool are_obstacles_ignored(void);
+    void set_ignore_obstacles(void);
+    void restore_ignore_obstacles(void);
 };
 
 #endif

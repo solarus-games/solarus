@@ -62,7 +62,7 @@ class PathMovement: public CollisionMovement {
 
   public:
 
-    PathMovement(const std::string &path, int speed, bool loop, bool with_collisions, bool snap_to_grid);
+    PathMovement(const std::string &path, int speed, bool loop, bool ignore_obstacles, bool snap_to_grid);
     ~PathMovement(void);
 
     virtual bool is_finished(void);

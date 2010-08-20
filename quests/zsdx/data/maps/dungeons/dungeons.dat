@@ -111,14 +111,14 @@ big = 0
 
 [dungeon_2.map_31.chest_1]
 floor = -1
-x = 552
-y = 392
+x = 488
+y = 384
 save = 85
 big = 0
 
 [dungeon_2.map_31.chest_2]
 floor = -1
-x = 672
+x = 608
 y = 448
 save = 88
 big = 1

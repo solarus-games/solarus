@@ -5,4 +5,5 @@ idées d'énigmes particulièrement compliquées :
 - grottes jumelles : on pourrait activer l'interrupteur de cristal en lançant un vase dessus !
 - tomber dans un trou à un endroit précis pour arriver sur une plate-forme en hauteur et pas tout en bas, ou bien sur des planchers-interrupteurs
 - tirer une flèche beaucoup plus loin que les limites de l'écran
+- énigme comme celle du donjon 2 avec arc + bottes de pégase, mais où il faut tirer plusieurs flèches à la suite
 

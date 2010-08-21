@@ -45,6 +45,7 @@ class HeroSprites {
     Sprite *shadow_sprite;		/**< shadow of the hero, only in specific states (most of the time
 					 * the shadow is with the tunic sprite) */
     Sprite *ground_sprite;		/**< ground displayed under the hero (e.g. grass or shallow water) */
+    Sprite *trail_sprite;		/**< trail of dust that the hero lets behind him (e.g. when running) */
 
     Sound *sword_sound;			/**< sound of the current sword */
     Sound *ground_sound;		/**< sound of the current ground displayed under the hero */
@@ -75,10 +76,12 @@ class HeroSprites {
     bool is_sword_visible(void);
     bool is_sword_stars_visible(void);
     bool is_shield_visible(void);
+    bool is_trail_visible(void);
 
     void stop_displaying_sword(void);
     void stop_displaying_sword_stars(void);
     void stop_displaying_shield(void);
+    void stop_displaying_trail(void);
 
   public:
 
@@ -132,6 +135,8 @@ class HeroSprites {
     void set_animation_bow(void);
     void set_animation_brandish(void);
     void set_animation_victory(void);
+    void set_animation_prepare_running(void);
+    void set_animation_running(void);
 
     void create_ground(Ground grond);
     void destroy_ground(void);

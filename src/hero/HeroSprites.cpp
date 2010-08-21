@@ -120,7 +120,7 @@ const SoundId HeroSprites::ground_sound_ids[] = {
  */
 HeroSprites::HeroSprites(Hero *hero, Equipment *equipment):
   hero(hero), equipment(equipment), tunic_sprite(NULL), sword_sprite(NULL),
-  sword_stars_sprite(NULL), shield_sprite(NULL), shadow_sprite(NULL), ground_sprite(NULL),
+  sword_stars_sprite(NULL), shield_sprite(NULL), shadow_sprite(NULL), ground_sprite(NULL), trail_sprite(NULL),
   end_blink_date(0), walking(false), clipping_rectangle(Rectangle()), lifted_item(NULL) {
 
 }
@@ -135,6 +135,7 @@ HeroSprites::~HeroSprites(void) {
   delete sword_stars_sprite;
   delete shield_sprite;
   delete ground_sprite;
+  delete trail_sprite;
 }
 
 /**
@@ -201,6 +202,9 @@ void HeroSprites::rebuild_equipment(void) {
     shield_sprite = new Sprite(shield_sprite_ids[shield_number - 1]);
   }
 
+  // the trail
+  trail_sprite = new Sprite("hero/trail");
+
   // restore the animation direction
   if (animation_direction != -1) {
     set_animation_direction(animation_direction);
@@ -229,6 +233,14 @@ bool HeroSprites::is_sword_stars_visible(void) {
  */
 bool HeroSprites::is_shield_visible(void) {
   return equipment->has_shield() && shield_sprite != NULL && shield_sprite->is_animation_started();
+}
+
+/**
+ * @brief Returns whether the trail of dust is currently displayed.
+ * @return true if the trail of dust is currently displayed
+ */
+bool HeroSprites::is_trail_visible(void) {
+  return trail_sprite->is_animation_started();
 }
 
 /**
@@ -263,6 +275,14 @@ void HeroSprites::stop_displaying_shield(void) {
 }
 
 /**
+ * @brief Stops displaying the trail (if any).
+ */
+void HeroSprites::stop_displaying_trail(void) {
+  trail_sprite->stop_animation();
+}
+
+
+/**
  * @brief Makes the hero blink for a while.
  */
 void HeroSprites::blink(void) {
@@ -274,6 +294,7 @@ void HeroSprites::blink(void) {
   if (equipment->has_sword()) {
     sword_sprite->set_blinking(50);
   }
+  trail_sprite->set_blinking(50);
 
   end_blink_date = System::now() + 2000;
 }
@@ -291,6 +312,7 @@ void HeroSprites::stop_blinking() {
   if (equipment->has_sword()) {
     sword_sprite->set_blinking(0);
   }
+  trail_sprite->set_blinking(0);
 
   end_blink_date = 0;
 }
@@ -411,6 +433,10 @@ void HeroSprites::set_animation_direction(int direction) {
   if (is_shield_visible()) {
     shield_sprite->set_current_direction(direction);
   }
+
+  if (is_trail_visible()) {
+    trail_sprite->set_current_direction(direction);
+  }
 }
 
 /**
@@ -490,6 +516,10 @@ void HeroSprites::update(void) {
     }
   }
 
+  if (is_trail_visible()) {
+    trail_sprite->update();
+  }
+
   if (hero->is_ground_visible()) {
     ground_sprite->update();
   }
@@ -538,6 +568,10 @@ void HeroSprites::display_on_map(void) {
     map->display_sprite(shield_sprite, x, y);
   }
 
+  if (is_trail_visible()) {
+    map->display_sprite(trail_sprite, x, y);
+  }
+
   if (hero->is_ground_visible()) {
     map->display_sprite(ground_sprite, x, y);
   }
@@ -572,6 +606,8 @@ void HeroSprites::set_suspended(bool suspended) {
     shield_sprite->set_suspended(suspended);
   }
 
+  trail_sprite->set_suspended(suspended);
+
   // timer
   uint32_t now = System::now();
   if (suspended) {
@@ -603,6 +639,10 @@ void HeroSprites::restart_animation(void) {
     shield_sprite->restart_animation();
   }
 
+  if (is_trail_visible()) {
+    trail_sprite->restart_animation();
+  }
+
   if (hero->is_ground_visible()) {
     ground_sprite->restart_animation();
   }
@@ -629,8 +669,6 @@ void HeroSprites::set_animation_stopped_normal(void) {
 
   set_animation_stopped_common();
 
-  stop_displaying_sword();
-
   if (equipment->has_shield()) {
 
     tunic_sprite->set_current_animation("stopped_with_shield");
@@ -640,6 +678,8 @@ void HeroSprites::set_animation_stopped_normal(void) {
   else {
     tunic_sprite->set_current_animation("stopped");
   }
+  stop_displaying_sword();
+  stop_displaying_trail();
 }
 
 /**
@@ -667,6 +707,7 @@ void HeroSprites::set_animation_stopped_sword_loading(void) {
       stop_displaying_shield();
     }
   }
+  stop_displaying_trail();
 }
 
 /**
@@ -683,6 +724,7 @@ void HeroSprites::set_animation_stopped_carrying(void) {
   if (lifted_item != NULL) {
     lifted_item->set_animation_stopped();
   }
+  stop_displaying_trail();
 }
 
 /**
@@ -707,8 +749,6 @@ void HeroSprites::set_animation_walking_normal(void) {
 
   set_animation_walking_common();
 
-  stop_displaying_sword();
-
   if (equipment->has_shield()) {
 
     tunic_sprite->set_current_animation("walking_with_shield");
@@ -719,6 +759,8 @@ void HeroSprites::set_animation_walking_normal(void) {
   else {
     tunic_sprite->set_current_animation("walking");
   }
+  stop_displaying_sword();
+  stop_displaying_trail();
 }
 
 /**
@@ -746,6 +788,7 @@ void HeroSprites::set_animation_walking_sword_loading(void) {
       stop_displaying_shield();
     }
   }
+  stop_displaying_trail();
 }
 
 /**
@@ -762,6 +805,7 @@ void HeroSprites::set_animation_walking_carrying(void) {
   if (lifted_item != NULL) {
     lifted_item->set_animation_walking();
   }
+  stop_displaying_trail();
 }
 
 /**
@@ -772,6 +816,7 @@ void HeroSprites::set_animation_walking_diagonal(int direction8) {
 
   stop_displaying_sword();
   stop_displaying_shield();
+  stop_displaying_trail();
   tunic_sprite->set_current_animation("walking_diagonal");
   tunic_sprite->set_current_direction(direction8 / 2);
 }
@@ -802,6 +847,7 @@ void HeroSprites::set_animation_sword(void) {
       stop_displaying_shield();
     }
   }
+  stop_displaying_trail();
 }
 
 /**
@@ -837,6 +883,7 @@ void HeroSprites::set_animation_sword_tapping(void) {
       stop_displaying_shield();
     }
   }
+  stop_displaying_trail();
 }
 
 /**
@@ -848,6 +895,7 @@ void HeroSprites::set_animation_spin_attack(void) {
   sword_sprite->set_current_animation("spin_attack");
   stop_displaying_sword_stars();
   stop_displaying_shield();
+  stop_displaying_trail();
 }
 
 /**
@@ -857,6 +905,7 @@ void HeroSprites::set_animation_grabbing(void) {
 
   tunic_sprite->set_current_animation("grabbing");
   stop_displaying_shield();
+  stop_displaying_trail();
 }
 
 /**
@@ -866,6 +915,7 @@ void HeroSprites::set_animation_pulling(void) {
 
   tunic_sprite->set_current_animation("pulling");
   stop_displaying_shield();
+  stop_displaying_trail();
 }
 
 /**
@@ -875,6 +925,7 @@ void HeroSprites::set_animation_pushing(void) {
 
   tunic_sprite->set_current_animation("pushing");
   stop_displaying_shield();
+  stop_displaying_trail();
 }
 
 /**
@@ -884,6 +935,7 @@ void HeroSprites::set_animation_lifting(void) {
 
   tunic_sprite->set_current_animation("lifting");
   stop_displaying_shield();
+  stop_displaying_trail();
 }
 
 /**
@@ -898,6 +950,7 @@ void HeroSprites::set_animation_jumping(void) {
     shield_sprite->set_current_direction(get_animation_direction());
   }
   stop_displaying_sword();
+  stop_displaying_trail();
 }
 
 /**
@@ -908,6 +961,7 @@ void HeroSprites::set_animation_hurt(void) {
   tunic_sprite->set_current_animation("hurt");
   stop_displaying_sword();
   stop_displaying_shield();
+  stop_displaying_trail();
 }
 
 /**
@@ -918,6 +972,7 @@ void HeroSprites::set_animation_plunging(void) {
   tunic_sprite->set_current_animation("plunging");
   stop_displaying_sword();
   stop_displaying_shield();
+  stop_displaying_trail();
 }
 
 /**
@@ -929,6 +984,7 @@ void HeroSprites::set_animation_falling(void) {
   tunic_sprite->set_current_animation("falling");
   stop_displaying_sword();
   stop_displaying_shield();
+  stop_displaying_trail();
 }
 
 /**
@@ -940,6 +996,7 @@ void HeroSprites::set_animation_boomerang(void) {
   if (equipment->has_shield()) {
     shield_sprite->set_current_animation("boomerang");
   }
+  stop_displaying_trail();
 }
 
 /**
@@ -950,6 +1007,7 @@ void HeroSprites::set_animation_bow(void) {
   tunic_sprite->set_current_animation("bow");
   stop_displaying_sword();
   stop_displaying_shield();
+  stop_displaying_trail();
 }
 
 
@@ -962,6 +1020,7 @@ void HeroSprites::set_animation_brandish(void) {
   tunic_sprite->set_current_direction(0);
   stop_displaying_sword();
   stop_displaying_shield();
+  stop_displaying_trail();
 }
 
 /**
@@ -975,6 +1034,25 @@ void HeroSprites::set_animation_victory(void) {
   sword_sprite->set_current_direction(0);
   stop_displaying_sword_stars();
   stop_displaying_shield();
+  stop_displaying_trail();
+}
+
+/**
+ * @brief Starts the "prepare running" animation of the hero's sprites.
+ */
+void HeroSprites::set_animation_prepare_running(void) {
+
+  set_animation_walking_normal();
+  trail_sprite->set_current_animation("running");
+}
+
+/**
+ * @brief Starts the "running" animation of the hero's sprites.
+ */
+void HeroSprites::set_animation_running(void) {
+
+  set_animation_walking_sword_loading();
+  trail_sprite->set_current_animation("running");
 }
 
 /**

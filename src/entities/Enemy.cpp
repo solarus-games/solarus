@@ -810,11 +810,13 @@ void Enemy::hurt(MapEntity *source) {
     return;
   }
 
+  uint32_t now = System::now();
+
   // update the enemy state
   being_hurt = true;
 
-  //can_attack = false;
-  //can_attack_again_date = vulnerable_again_date;
+  can_attack = false;
+  can_attack_again_date = now + 300;
 
   // graphics and sounds
   set_animation("hurt");
@@ -829,7 +831,7 @@ void Enemy::hurt(MapEntity *source) {
     set_movement(new StraightMovement(12, angle, 200));
   }
   else {
-    stop_hurt_date = System::now() + 300;
+    stop_hurt_date = now + 300;
   }
 }
 

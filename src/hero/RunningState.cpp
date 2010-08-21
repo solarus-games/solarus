@@ -50,7 +50,7 @@ void Hero::RunningState::start(State *previous_state) {
 
   State::start(previous_state);
 
-  sprites->set_animation_walking_normal();
+  sprites->set_animation_prepare_running();
 
   phase = 0;
 
@@ -93,7 +93,7 @@ void Hero::RunningState::update(void) {
     
     if (now >= next_phase_date) {
       hero->set_movement(new StraightMovement(30, sprites->get_animation_direction() * 90, 10000));
-      sprites->set_animation_walking_sword_loading();
+      sprites->set_animation_running();
       phase++;
     }
     else if (!is_pressing_running_key()) {

@@ -120,7 +120,7 @@ void SmoothCollisionMovement::update_x(void) {
 void SmoothCollisionMovement::update_y(void) {
 
   if (!smooth) {
-    CollisionMovement::update_x();
+    CollisionMovement::update_y();
     return;
   }
 

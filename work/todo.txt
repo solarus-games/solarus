@@ -102,9 +102,9 @@ Plusieurs fonctions d'objets d'inventaire :
 - glove
 - block_maker
 - weak_wall_detector
-- interaction
-- unassignable
-- script
+- custom_unassignable
+- custom_interaction
+- custom_script
 
 Faire un fichier de données de type ini (dans info.dat ?) qui donne la liste
 des items de chaque slot (sans les variantes)

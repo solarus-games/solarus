@@ -55,7 +55,7 @@ Treasure::Treasure(Game *game, Content content, int amount, int savegame_variabl
 
   treasures_img = new Surface("hud/message_and_treasure_icons.png");
 
-  if (has_amount() && amount > 1) {
+  if (amount > 1) {
     counter = new Counter(3, false, 0, 0);
     counter->set_value(amount);
   }
@@ -75,7 +75,7 @@ Treasure::~Treasure(void) {
  * @param content a treasure content
  */
 bool Treasure::can_be_in_bottle(Content content) {
-  return (content >= Treasure::WATER && content <= Treasure::FAIRY_IN_BOTTLE);
+  return content >= Treasure::WATER && content <= Treasure::FAIRY_IN_BOTTLE;
 }
 
 /**
@@ -244,10 +244,9 @@ void Treasure::show_message(void) {
 
   else if (has_amount()) {
 
-    /* for an item with an amount (e.g. 10 bombs), if the amount
-     * is 1 we must display a message with the singular form, and
-     * if the amount is greater than 1 we must use the plural form.
-     */
+    // for an item with an amount (e.g. 10 bombs), if the amount
+    // is 1 we must display a message with the singular form, and
+    // if the amount is greater than 1 we must use the plural form
 
     if (amount == 1) {
       oss << "_1";

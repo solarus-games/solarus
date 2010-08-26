@@ -133,7 +133,7 @@ public class Project {
     }
 
     /**
-     * Returns the file containing the database of the game resources (project_db.solarus).
+     * Returns the file containing the database of the game resources (project_db.dat).
      * This method can be called event if this project is not the current project.
      * @return the file containing the database of the game resources
      */

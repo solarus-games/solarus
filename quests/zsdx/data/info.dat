@@ -1,6 +1,114 @@
+# General information about this quest
+
 [info]
 title_bar = Zelda: Mystery of Solarus DX
 write_dir = zsdx
 outside_world_width = 2080
 outside_world_height = 3584
+starting_map = 0
+starting_point = start_position
+
+# List of inventory items
+
+[inventory_slot_0]
+function = script
+name = feather
+
+[inventory_slot_1]
+function = bombs
+
+[inventory_slot_2]
+function = bow
+
+[inventory_slot_3]
+function = boomerang
+
+[inventory_slot_4]
+function = lamp
+
+[inventory_slot_5]
+function = hookshot
+
+[inventory_slot_6]
+function = bottle
+
+[inventory_slot_7]
+function = speed_shoes
+
+[inventory_slot_8]
+function = script
+name = mystic_mirror
+
+[inventory_slot_9]
+function = block_maker
+
+[inventory_slot_10]
+function = script
+name = apples
+counter = 1026
+
+[inventory_slot_11]
+function = script
+name = pains_au_chocolat
+counter = 1024
+
+[inventory_slot_12]
+function = script
+name = croissants
+counter = 1025
+
+[inventory_slot_13]
+function = bottle
+
+[inventory_slot_14]
+function = unassignable
+name = rock_key
+
+[inventory_slot_15]
+function = unassignable
+name = red_key
+
+[inventory_slot_16]
+function = unassignable
+name = clay_key
+
+[inventory_slot_17]
+function = unassignable
+name = level_4_way_bone_key
+
+[inventory_slot_18]
+function = flippers
+
+[inventory_slot_19]
+function = weak_wall_detector
+name = magic_cape
+
+[inventory_slot_20]
+function = bottle
+
+[inventory_slot_21]
+function = unassignable
+name = iron_key
+
+[inventory_slot_22]
+function = unassignable
+name = stone_key
+
+[inventory_slot_23]
+function = unassignable
+name = wooden_key
+
+[inventory_slot_24]
+function = unassignable
+name = ice_key
+
+[inventory_slot_25]
+function = glove
+
+[inventory_slot_26]
+function = unassignable
+name = fire_stones
+
+[inventory_slot_27]
+function = bottle
 

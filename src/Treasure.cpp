@@ -71,6 +71,14 @@ Treasure::~Treasure(void) {
 }
 
 /**
+ * @brief Returns whether the specified content can be in a bottle.
+ * @param content a treasure content
+ */
+bool Treasure::can_be_in_bottle(Content content) {
+  return (content >= Treasure::WATER && content <= Treasure::FAIRY_IN_BOTTLE);
+}
+
+/**
  * @brief Returns the content of this treasure.
  * @return this treasure's content
  */

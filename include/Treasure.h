@@ -158,6 +158,8 @@ class Treasure {
     Treasure(Game *game, Content content, int amount, int savegame_variable);
     ~Treasure(void);
 
+    static bool can_be_in_bottle(Content content);
+
     Content get_content(void);
     bool has_amount(void);
     int get_amount(void);

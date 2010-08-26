@@ -19,6 +19,7 @@
 #include "DungeonEquipment.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/InputEvent.h"
+#include "lowlevel/IniFile.h"
 
 /**
  * @brief Creates a savegame with a specified file name, existing or not.
@@ -97,7 +98,6 @@ void Savegame::set_initial_values(void) {
   memset(&saved_data, 0x0000, sizeof(SavedData));
 
   // a few variable have other initial values
-  set_string(STARTING_POINT, "_start_position");
   set_integer(MAX_HEARTS, 3);
   set_integer(CURRENT_HEARTS, 12);
 
@@ -108,6 +108,22 @@ void Savegame::set_initial_values(void) {
 
   set_default_keyboard_controls();
   set_default_joypad_controls();
+
+  IniFile ini("info.dat", IniFile::READ);
+  ini.set_group("info");
+  int starting_map_id = ini.get_integer_value("starting_map", -1);
+  const std::string &starting_destination_point_name = ini.get_string_value("starting_point", "");
+
+  if (starting_map_id == -1) {
+    DIE("No starting map defined in info.dat. Please set the value starting_map to the id of the initial map of your quest.");
+  }
+  if (starting_destination_point_name == "") {
+    DIE("No starting point defined in info.dat. Please set the value starting_point to the name of the "
+	"destination point where the hero should be placed on the initial map.");
+  }
+
+  set_integer(STARTING_MAP, starting_map_id);
+  set_string(STARTING_POINT, starting_destination_point_name);
 }
 
 /**

@@ -22,14 +22,14 @@ import java.util.*;
 /**
  * This class contains the list of the game resources and their name in the project.
  * Each resource name is associated with an id.
- * This class contains the information of the file project_db.solarus.
+ * This class stores the information of the file project_db.dat.
  */
 public class ResourceDatabase extends Observable {
 
     /**
      * Name of the file storing the resource database.
      */
-    public static final String fileName = "project_db.solarus";
+    public static final String fileName = "project_db.dat";
 
     /**
      * The project.
@@ -42,7 +42,7 @@ public class ResourceDatabase extends Observable {
     private Resource[] resources;
 
     /**
-     * Creates the list of the game resources from the file project_db.solarus.
+     * Creates the list of the game resources from the file project_db.dat.
      */
     public ResourceDatabase(Project project) {
 
@@ -72,7 +72,7 @@ public class ResourceDatabase extends Observable {
     }
     
     /**
-     * Reads the file project_db.solarus of the project, i.e. the list
+     * Reads the file project_db.dat of the project, i.e. the list
      * of the game resources and their name.
      * @throws ZSDXException if the file contains an error
      * @throws IOException if the file could not be loaded
@@ -119,7 +119,7 @@ public class ResourceDatabase extends Observable {
     }
     
     /**
-     * Saves the list of the game resources and their names into the file project_db.solarus.
+     * Saves the list of the game resources and their names into the file project_db.dat.
      * @throws IOException if the file could not be written
      */
     public void save() throws IOException {

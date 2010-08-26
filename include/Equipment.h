@@ -18,7 +18,6 @@
 #define SOLARUS_EQUIPMENT_H
 
 #include "Common.h"
-#include "InventoryItemId.h"
 #include "Treasure.h"
 
 /**
@@ -32,18 +31,22 @@ class Equipment {
 
   private:
 
-    Savegame *savegame;                        /**< the savegame encapsulated by this equipment object */
-    Game *game;                                /**< the current game (may be NULL when the savegame is loaded outside a game) */
+    // game
+    Savegame *savegame;				/**< the savegame encapsulated by this equipment object */
+    Game *game;					/**< the current game (may be NULL when the savegame is loaded outside a game) */
+
+    // quest data
+    // TODO
 
     // magic bar decrease handling
-    uint32_t magic_decrease_delay;             /**< when the magic bar decreases with time,
-						* delay between two decreases of 1 magic point */
-    uint32_t next_magic_decrease_date;         /**< date of the next decrease of 1 magic point */
+    uint32_t magic_decrease_delay;		/**< when the magic bar decreases with time,
+						 * delay between two decreases of 1 magic point */
+    uint32_t next_magic_decrease_date;		/**< date of the next decrease of 1 magic point */
 
     // giving some bottle content to the player
-    bool giving_fairy;                         /**< indicates that the player is getting a fairy */
-    bool giving_water;                         /**< indicates that the player is getting water */
-    InventoryItemId destination_bottle_id;     /**< id of the bottle where the content the player is getting will go*/
+    bool giving_fairy;				/**< indicates that the player is getting a fairy */
+    bool giving_water;				/**< indicates that the player is getting water */
+    int destination_bottle_index;		/**< index of the bottle where the content the player is getting will go */
 
   public:
 
@@ -128,38 +131,39 @@ class Equipment {
     bool needs_arrows(void);
 
     // inventory items
-    int has_inventory_item(InventoryItemId item_id);
-    void give_inventory_item(InventoryItemId item_id);
-    void give_inventory_item(InventoryItemId item_id, int variant);
-    void remove_inventory_item(InventoryItemId item_id);
+    bool has_inventory_item(const std::string &name);
+    void give_inventory_item(const std::string &name);
+    void remove_inventory_item(const sdt::string &name);
+    int get_inventory_item_possession_state(const std::string &name);
+    void set_inventory_item_possession_state(const std::string &name, int possession_state);
 
-    int get_inventory_item_amount(InventoryItemId item_id);
-    void set_inventory_item_amount(InventoryItemId item_id, int amount);
-    void add_inventory_item_amount(InventoryItemId item_id, int amount_to_add);
-    void remove_inventory_item_amount(InventoryItemId item_id, int amount_to_remove);
+    int get_inventory_item_amount(const std::string &name);
+    void set_inventory_item_amount(const std::string &name, int amount);
+    void add_inventory_item_amount(const std::string &name, int amount_to_add);
+    void remove_inventory_item_amount(const std::string &name, int amount_to_remove);
 
-    int get_inventory_item_maximum(InventoryItemId item_id);
-    bool has_inventory_item_maximum(InventoryItemId item_id);
+    int get_inventory_item_maximum(const std::string &name);
+    bool has_inventory_item_maximum(const std::string &name);
 
     // bottles
     void add_bottle(void);
     bool has_bottle(void);
     bool has_empty_bottle(void);
-    InventoryItemId get_first_empty_bottle(void);
+    int get_first_empty_bottle(void);
     bool has_bottle_with(Treasure::Content content);
-    InventoryItemId get_first_bottle_with(Treasure::Content content);
-    InventoryItemId get_destination_bottle(void);
-    void set_bottle_content(InventoryItemId bottle_id, Treasure::Content content);
-    void set_bottle_empty(InventoryItemId bottle_id);
+    int get_first_bottle_with(Treasure::Content content);
+    int get_destination_bottle(void);
+    void set_bottle_content(int bottle_index, Treasure::Content content);
+    void set_bottle_empty(int bottle_index);
 
     void found_fairy(void);
     void found_water(void);
-    void found_water(InventoryItemId bottle_id);
+    void found_water(int bottle_index);
 
     // item assignments
-    InventoryItemId get_item_assigned(int slot);
-    void set_item_assigned(int slot, InventoryItemId item_id);
-    int get_item_slot(InventoryItemId item_id);
+    int get_item_assigned(int slot);
+    void set_item_assigned(int slot, int item_index);
+    int get_slot(int item_index);
 
     // quest status
     bool has_world_map(void);

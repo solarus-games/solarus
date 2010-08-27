@@ -28,29 +28,16 @@
 #include "lowlevel/Surface.h"
 
 /**
- * @brief Creates a new treasure without amount.
- * @param game the current game (cannot be NULL)
- * @param content content of the treasure
- * @param savegame_variable index of the savegame boolean indicating that the hero has found this treasure
- * or -1 if this treasure is not saved
- */
-Treasure::Treasure(Game *game, Content content, int savegame_variable):
-  game(game), content(content), amount(1), savegame_variable(savegame_variable), counter(NULL) {
-
-  treasures_img = new Surface("hud/message_and_treasure_icons.png");
-}
-
-/**
  * @brief Creates a new treasure.
  * @param game the current game (cannot be NULL)
+ * @param savegame_variable index of the savegame boolean indicating that the hero has found this treasure
+ * or -1 if this treasure is not saved
  * @param content content of the treasure
  * @param amount for bombs, arrows, apples, pains au chocolat, croissants, hearts, 
  * green rupees, blue rupees and red rupees: indicates the amount;
  * if the amount is greater than 1, a counter will be shown.
- * @param savegame_variable index of the savegame boolean indicating that the hero has found this treasure
- * or -1 if this treasure is not saved
  */
-Treasure::Treasure(Game *game, Content content, int amount, int savegame_variable):
+Treasure::Treasure(Game *game, int savegame_variable, Content content, int amount):
   game(game), content(content), amount(amount), savegame_variable(savegame_variable), counter(NULL) {
 
   treasures_img = new Surface("hud/message_and_treasure_icons.png");
@@ -68,14 +55,6 @@ Treasure::~Treasure(void) {
 
   delete treasures_img;
   delete counter;
-}
-
-/**
- * @brief Returns whether the specified content can be in a bottle.
- * @param content a treasure content
- */
-bool Treasure::can_be_in_bottle(Content content) {
-  return content >= Treasure::WATER && content <= Treasure::FAIRY_IN_BOTTLE;
 }
 
 /**

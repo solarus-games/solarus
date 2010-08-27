@@ -18,7 +18,9 @@
 #define SOLARUS_EQUIPMENT_H
 
 #include "Common.h"
-#include "Treasure.h"
+#include "entities/PickableItem.h"
+#include <map>
+#include <list>
 
 /**
  * @brief Represents the hero's equipment.
@@ -29,24 +31,62 @@
  */
 class Equipment {
 
+  public:
+
+    /**
+     * @brief Properties of each existing inventory item in the quest.
+     *
+     * These properties are loaded from the file info.dat.
+     */
+    struct InventoryItemProperties {
+
+      std::string name;						/**< unique name of the item */
+      bool can_be_assigned;					/**< indicates that the item can be assigned to one of the two item icons */
+      bool bottle;						/**< indicates that this item is a bottle */
+
+      int counter_savegame_variable;				/**< savegame variable that stores the amount of this item (-1 for no amount) */
+      int counter_limit;					/**< fixed limit of this amount (-1 for no fixed limit) */
+      int counter_limit_savegame_variable;			/**< if not -1, then the limit is defined in the specified savegame variable */
+      PickableItem::Subtype pickable_item_subtype;		/**< when the hero finds a pickable item of this subtype,
+								 * the amount of this item is increased */
+    };
+
+    /**
+     * @brief Possible contents of a bottle.
+     *
+     * Each value corresponds to a possession state of a bottle.
+     */
+    enum BottleContent {
+
+      BOTTLE_EMPTY		= 1,
+      BOTTLE_WATER		= 2,
+      BOTTLE_RED_POTION		= 3,
+      BOTTLE_GREEN_POTION	= 4,
+      BOTTLE_BLUE_POTION	= 5,
+      BOTTLE_FAIRY		= 6
+    };
+
   private:
 
     // game
-    Savegame *savegame;				/**< the savegame encapsulated by this equipment object */
-    Game *game;					/**< the current game (may be NULL when the savegame is loaded outside a game) */
+    Savegame *savegame;						/**< the savegame encapsulated by this equipment object */
+    Game *game;							/**< the current game (may be NULL when the savegame is loaded outside a game) */
 
-    // quest data
-    // TODO
-
+    // inventory items
+    int nb_inventory_items;					/**< number of existing inventory items in the quest */
+    InventoryItemProperties *inventory_items_properties;	/**< properties of each inventory item */
+    std::map<std::string,int> inventory_items_indices;		/**< maps the name of an inventory item to its index */
+    std::list<int> bottles_indices;				/**< index of each bottle in the inventory item properties array */
+    
     // magic bar decrease handling
-    uint32_t magic_decrease_delay;		/**< when the magic bar decreases with time,
-						 * delay between two decreases of 1 magic point */
-    uint32_t next_magic_decrease_date;		/**< date of the next decrease of 1 magic point */
+    uint32_t magic_decrease_delay;				/**< when the magic bar decreases with time,
+								 * delay between two decreases of 1 magic point */
+    uint32_t next_magic_decrease_date;				/**< date of the next decrease of 1 magic point */
 
     // giving some bottle content to the player
-    bool giving_fairy;				/**< indicates that the player is getting a fairy */
-    bool giving_water;				/**< indicates that the player is getting water */
-    int destination_bottle_index;		/**< index of the bottle where the content the player is getting will go */
+    bool giving_fairy;						/**< indicates that the player is getting a fairy */
+    bool giving_water;						/**< indicates that the player is getting water */
+    int destination_bottle_index;				/**< index of the bottle where the content the player is getting will go */
 
   public:
 
@@ -59,7 +99,7 @@ class Equipment {
 
     // tunic
     int get_tunic(void);
-    void set_tunic(int tunic);
+    void set_tunic(int tunic); 
 
     // sword
     bool has_sword(void);
@@ -110,26 +150,6 @@ class Equipment {
     void start_removing_magic(uint32_t delay);
     void stop_removing_magic(void);
 
-    // bombs
-    int get_max_bombs(void);
-    void set_max_bombs(int max_bombs);
-
-    int get_bombs(void);
-    void set_bombs(int bombs);
-    void add_bombs(int bombs_to_add);
-    void remove_bomb(void);
-    bool needs_bombs(void);
-
-    // arrows
-    int get_max_arrows(void);
-    void set_max_arrows(int max_arrows);
-
-    int get_arrows(void);
-    void set_arrows(int arrows);
-    void add_arrows(int arrows_to_add);
-    void remove_arrow(void);
-    bool needs_arrows(void);
-
     // inventory items
     bool has_inventory_item(const std::string &name);
     void give_inventory_item(const std::string &name);
@@ -150,10 +170,10 @@ class Equipment {
     bool has_bottle(void);
     bool has_empty_bottle(void);
     int get_first_empty_bottle(void);
-    bool has_bottle_with(Treasure::Content content);
-    int get_first_bottle_with(Treasure::Content content);
+    bool has_bottle_with(int content);
+    int get_first_bottle_with(BottleContent content);
     int get_destination_bottle(void);
-    void set_bottle_content(int bottle_index, Treasure::Content content);
+    void set_bottle_content(int bottle_index, BottleContent content);
     void set_bottle_empty(int bottle_index);
 
     void found_fairy(void);

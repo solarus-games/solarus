@@ -1,5 +1,18 @@
 
+# Listes personnalisables
+# avec éléments identifiés par entier ou string :
+#
+# de mouvements
+# d'états du héros
+# de trésors / pickable items / equipement
+# de sons
+# de musiques
+# de maps
+# de tilesets
+# d'ennemis
+
 # List of equipment items
+# This list determines the equipment, the treasures and the pickable items
 
 [equipment_item.feather]
 subscreen = inventory
@@ -10,33 +23,42 @@ can_be_assigned = true
 subscreen = inventory
 subscreen_slot = 1
 can_be_assigned = true
-counter_savegame_variable = 1024
-pickable_item = bomb
+counter = 1024
+
+[equipment_item.pickable_bombs]
+pickable_item_for = bombs
+nb_variants = 3
+amount_1 = 1
+amount_2 = 5
+amount_3 = 10
 
 [equipment_item.bomb_bag]
 subscreen = quest_status
 subscreen_slot = 1
-set_limit = bombs
+limit_for = bombs
 nb_variants = 3
-limit_1 = 10
-limit_2 = 30
-limit_3 = 99
+amount_1 = 10
+amount_2 = 30
+amount_3 = 99
 
 [equipment_item.bow]
 subscreen = inventory
 subscreen_slot = 2
 can_be_assigned = true
-counter_savegame_variable = 1025
-pickable_item = arrow
+counter = 1025
+pickable_items = 3
+pickable_item_1 = 1
+pickable_item_2 = 5
+pickable_item_3 = 10
 
 [equipment_item.quiver]
 subscreen = quest_status
 subscreen_slot = 1
-set_limit = bow
+limit_for = bow
 nb_variants = 3
-limit_1 = 10
-limit_2 = 30
-limit_3 = 99
+amount_1 = 10
+amount_2 = 30
+amount_3 = 99
 
 [equipment_item.boomerang]
 subscreen = inventory
@@ -79,22 +101,22 @@ can_be_assigned = true
 subscreen = inventory
 subscreen_slot = 10
 can_be_assigned = true
-counter_savegame_variable = 1026
-counter_limit = 10
+counter = 1026
+limit = 10
 
 [equipment_item.pains_au_chocolat]
 subscreen = inventory
 subscreen_slot = 11
 can_be_assigned = true
-counter_savegame_variable = 1027
-counter_limit = 10
+counter = 1027
+limit = 10
 
 [equipment_item.croissants]
 subscreen = inventory
 subscreen_slot = 12
 can_be_assigned = true
-counter_savegame_variable = 1028
-counter_limit = 10
+counter = 1028
+limit = 10
 
 [equipment_item.bottle_2]
 subscreen = inventory
@@ -160,7 +182,7 @@ ability = lift
 [equipment_item.fire_stones]
 subscreen = inventory
 subscreen_slot = 26
-counter_savegame_variable = 1029
+counter = 1029
 
 [equipment_item.bottle_4]
 subscreen = inventory
@@ -171,7 +193,7 @@ ability = bottle
 subscreen = quest_status
 subscreen_slot = 4
 nb_variants = 3
-initial_variant = 1
+initial_variants = 1
 ability = tunic
 
 [equipment_item.sword]
@@ -194,10 +216,81 @@ ability = show_outside_world_minimap
 [equipment_item.rupee_bag]
 subscreen = quest_status
 subscren_slot = 2
-ability = set_money_limit
+limit_for = money
 nb_variants = 3
 initial_variant = 1
-limit_1 = 100
-limit_2 = 300
-limit_3 = 999
+amount_1 = 100
+amount_2 = 300
+amount_3 = 999
+
+[equipment_item.map]
+subscreen = dungeon_map
+subscreen_slot = 0
+impact = dungeon
+ability = see_dungeon_minimap_rooms
+
+[equipment_item.compass]
+subscreen = dungeon_map
+subscreen_slot = 1
+impact = dungeon
+ability = see_dungeon_minimap_elements
+
+[equipment_item.big_key]
+subscreen = dungeon_map
+subscreen_slot = 2
+impact = dungeon
+pickable = true
+ability = open_dungeon_big_locks
+
+[equipment_item.boss_key]
+subscreen = dungeon_map
+subscreen_slot = 3
+impact = dungeon
+pickable = true
+ability = open_dungeon_boss_lock
+
+[equipment_item.dungeon_small_key]
+subscreen = dungeon_map
+subscreen_slot = 4
+impact = dungeon
+pickable = true
+counter = 0
+initial_variant = 1
+ability = open_small_lock
+
+[equipment_item.small_key]
+# TODO save where? maybe specify explicitely every item savegame variable
+impact = # TODO
+pickable = true
+counter = 0
+initial_variant = 1
+ability = open_small_lock
+
+[equipment_item.rupee]
+pickable = true
+nb_variants = 3
+pickable = true
+amount_1 = 1
+amount_2 = 5
+amount_3 = 20
+
+[equipment_item.magic_flask]
+pickable = true
+nb_variants = 2
+amount_1 = 6
+amount_2 = 42
+
+[equipment_item.heart]
+pickable = true
+
+[equipment_item.heart_container]
+pickable = true
+must_be_saved = true
+
+[equipment_item.piece_of_heart]
+pickable = true
+must_be_saved = true
+
+[equipment_item.fairy]
+
 

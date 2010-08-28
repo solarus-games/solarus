@@ -116,6 +116,10 @@ class Savegame {
       CURRENT_MAGIC                    = 12, /**< current level of magic (0 to 84) */
       CURRENT_BOMBS                    = 13, /**< current number of bombs */
       CURRENT_ARROWS                   = 14, /**< current number of arrows */
+      CURRENT_PAINS_AU_CHOCOLAT        = 15, /**< current number of pains au chocolat (0 to 10) */
+      CURRENT_CROISSANTS               = 16, /**< current number of croissants (0 to 10) */
+      CURRENT_APPLES                   = 17, /**< current number of apples (0 to 10) */
+      NB_FIRE_STONES                   = 18, /**< number of fire stones already found (0 to 3) */
       /**
        * @}
        */

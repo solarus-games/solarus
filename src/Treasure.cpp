@@ -28,21 +28,34 @@
 #include "lowlevel/Surface.h"
 
 /**
- * @brief Creates a new treasure.
+ * @brief Creates a new treasure without amount.
  * @param game the current game (cannot be NULL)
+ * @param content content of the treasure
  * @param savegame_variable index of the savegame boolean indicating that the hero has found this treasure
  * or -1 if this treasure is not saved
+ */
+Treasure::Treasure(Game *game, Content content, int savegame_variable):
+  game(game), content(content), amount(1), savegame_variable(savegame_variable), counter(NULL) {
+
+  treasures_img = new Surface("hud/message_and_treasure_icons.png");
+}
+
+/**
+ * @brief Creates a new treasure.
+ * @param game the current game (cannot be NULL)
  * @param content content of the treasure
  * @param amount for bombs, arrows, apples, pains au chocolat, croissants, hearts, 
  * green rupees, blue rupees and red rupees: indicates the amount;
  * if the amount is greater than 1, a counter will be shown.
+ * @param savegame_variable index of the savegame boolean indicating that the hero has found this treasure
+ * or -1 if this treasure is not saved
  */
-Treasure::Treasure(Game *game, int savegame_variable, Content content, int amount):
+Treasure::Treasure(Game *game, Content content, int amount, int savegame_variable):
   game(game), content(content), amount(amount), savegame_variable(savegame_variable), counter(NULL) {
 
   treasures_img = new Surface("hud/message_and_treasure_icons.png");
 
-  if (amount > 1) {
+  if (has_amount() && amount > 1) {
     counter = new Counter(3, false, 0, 0);
     counter->set_value(amount);
   }
@@ -223,9 +236,10 @@ void Treasure::show_message(void) {
 
   else if (has_amount()) {
 
-    // for an item with an amount (e.g. 10 bombs), if the amount
-    // is 1 we must display a message with the singular form, and
-    // if the amount is greater than 1 we must use the plural form
+    /* for an item with an amount (e.g. 10 bombs), if the amount
+     * is 1 we must display a message with the singular form, and
+     * if the amount is greater than 1 we must use the plural form.
+     */
 
     if (amount == 1) {
       oss << "_1";

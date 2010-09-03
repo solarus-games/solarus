@@ -2,7 +2,47 @@ This file describes the usage of all savegame variables except the engine ones (
 
 integers (above 1024):
 
-inventory item counters: cf info.dat
+1024	current number of bombs
+1025	current number of arrows
+1026	current number of pains au chocolat
+1027	current number of croissants
+1028	current number of apples
+1029	current number of fire stones
+1030	current number of pieces of heart
+1031	world map (0 or 1)
+
+1100	feather
+	bombs
+	bow
+	boomerang
+	lamp
+	hookshot
+	bottle 1
+
+	speed shoes
+	mystic mirror
+	cane of somaria
+	apples
+	pains au chocolat
+	croissant
+	bottle 2
+
+	rock key
+	red key
+	clay key
+	apple pie, gold bar, edelweiss, bone key
+	flippers
+	magic cape
+	bottle 3
+
+	iron key
+	wooden key
+	stone key
+	ice key
+	glove
+	fire stones
+1127	bottle 4
+
 
 booleans:
 

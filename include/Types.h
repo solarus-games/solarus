@@ -94,6 +94,8 @@ class GameControls;
 class Savegame;
 class Equipment;
 class DungeonEquipment;
+class ItemProperties;
+class InventoryItem;
 class DebugKeys;
 class Dungeon;
 class Treasure;
@@ -104,7 +106,6 @@ class Message;
 class Timer;
 class GameoverSequence;
 class Camera;
-class InventoryItem;
 class Script;
 class MapScript;
 

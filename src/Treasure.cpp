@@ -27,6 +27,9 @@
 #include "Treasure.h"
 #include "lowlevel/Surface.h"
 
+// TODO
+#ifndef TODO
+
 /**
  * @brief Creates a new treasure without amount.
  * @param game the current game (cannot be NULL)
@@ -581,4 +584,6 @@ void Treasure::display(Surface *destination, int x, int y) {
     counter->display(destination, x - 3, y + 12);
   }
 }
+
+#endif
 

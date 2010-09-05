@@ -1,8 +1,13 @@
 This ChangeLog describes the important changes of each svn commit.
 
+r1412 (2010-09-05):
+
+Rewriting item-related classes. The interface of Equipment and Treasure have
+changed in order to make them independent of a choice of items. This work is in progress, other classes will also change.
+
 r1411 (2010-09-05):
 
-Rename info.dat in quest.dat and change its syntax. This file will contain all
+Rename info.dat into quest.dat and change its syntax. This file will contain all
 global information of the quest, including the list of items.
 
 r1410 (2010-09-05):

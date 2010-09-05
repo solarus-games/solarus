@@ -43,7 +43,7 @@ RupeesCounter::RupeesCounter(Game *game, int x, int y):
 
   img_rupee_icon = new Surface("hud/rupee_icon.png");
 
-  nb_max_rupees_displayed = equipment->get_max_rupees();
+  nb_max_rupees_displayed = equipment->get_max_money();
 
   if (nb_max_rupees_displayed == 100) {
     icon_displayed = 0;
@@ -55,7 +55,7 @@ RupeesCounter::RupeesCounter(Game *game, int x, int y):
     icon_displayed = 2;
   }
 
-  counter->set_value(equipment->get_rupees());
+  counter->set_value(equipment->get_money());
 
   rebuild();
 }
@@ -78,7 +78,7 @@ void RupeesCounter::update(void) {
   bool need_rebuild = false;
 
   // max rupees
-  int nb_max_rupees = equipment->get_max_rupees();
+  int nb_max_rupees = equipment->get_max_money();
   if (nb_max_rupees_displayed != nb_max_rupees) {
     nb_max_rupees_displayed = nb_max_rupees;
 
@@ -96,7 +96,7 @@ void RupeesCounter::update(void) {
   }
 
   // current rupees
-  uint32_t nb_current_rupees = equipment->get_rupees();
+  uint32_t nb_current_rupees = equipment->get_money();
   unsigned int nb_current_rupees_displayed = counter->get_value();
 
   if (nb_current_rupees_displayed != nb_current_rupees && System::now() > next_rupee_update_date) {

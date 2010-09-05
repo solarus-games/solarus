@@ -17,9 +17,9 @@
 #include "hud/ItemIcon.h"
 #include "Counter.h"
 #include "Equipment.h"
+#include "ItemProperties.h"
 #include "Game.h"
 #include "KeysEffect.h"
-#include "InventoryItem.h"
 #include "lowlevel/Surface.h"
 
 /**
@@ -44,7 +44,7 @@ ItemIcon::ItemIcon(Game *game, int slot, int x, int y):
   this->background_img = new Surface(background_file_names[slot]);
   this->items_img = new Surface("hud/inventory_items.png");
 
-  this->item_displayed = INVENTORY_NONE;
+  this->item_displayed = "";
   this->item_variant_displayed = 0;
   this->counter = new Counter(2, false, 8, 16);
   this->counter_value_displayed = -1;
@@ -74,7 +74,7 @@ void ItemIcon::update(void) {
   KeysEffect *keys_effect = game->get_keys_effect();
 
   // item assigned
-  InventoryItemId current_item = equipment->get_item_assigned(slot);
+  const std::string &current_item = equipment->get_item_assigned(slot);
   if (item_displayed != current_item) {
 
     need_rebuild = true;
@@ -83,7 +83,7 @@ void ItemIcon::update(void) {
   }
 
   // variant of the item
-  int current_item_variant = equipment->has_inventory_item(current_item);
+  int current_item_variant = equipment->get_item_variant(current_item);
   if (item_variant_displayed != current_item_variant) {
 
     need_rebuild = true;
@@ -91,11 +91,11 @@ void ItemIcon::update(void) {
   }
 
   // counter index
-  int counter_index = InventoryItem::get_counter_index(current_item);
+  int counter_index = equipment->get_item_properties(current_item)->get_counter_savegame_variable();
   if (counter_index != -1) {
 
-    int current_counter_value = equipment->get_inventory_item_amount(current_item);
-    int current_counter_maximum = equipment->get_inventory_item_maximum(current_item);
+    int current_counter_value = equipment->get_item_amount(current_item);
+    int current_counter_maximum = equipment->get_item_maximum(current_item);
 
     if (counter_value_displayed != current_counter_value || counter_maximum_displayed != current_counter_maximum) {
       need_rebuild = true;
@@ -135,12 +135,12 @@ void ItemIcon::rebuild(void) {
   background_img->blit(surface_drawn);
 
   // item
-  if (item_displayed != INVENTORY_NONE) {
+  if (item_displayed != "") {
 
     Rectangle dst_position(4, 4, 0, 0);
     Rectangle src_position(0, 0, 16, 16);
 
-    src_position.set_x(16 * item_displayed);
+// TODO    src_position.set_x(16 * item_index);
     src_position.set_y(16 * (item_variant_displayed - 1));
 
     items_img->blit(src_position, surface_drawn, dst_position);

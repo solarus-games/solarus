@@ -63,7 +63,7 @@ VideoManager * VideoManager::get_instance(void) {
 VideoManager::VideoManager(void) {
 
   // initialize the window
-  IniFile ini("info.dat", IniFile::READ);
+  IniFile ini("quest.dat", IniFile::READ);
   ini.set_group("info");
   std::string title_bar = ini.get_string_value("title_bar"); // get the window title bar text (language-independent)
   SDL_WM_SetCaption(title_bar.c_str(), NULL);

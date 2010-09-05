@@ -97,33 +97,30 @@ void Savegame::set_initial_values(void) {
   // 0 is the initial value of most variables
   memset(&saved_data, 0x0000, sizeof(SavedData));
 
-  // a few variable have other initial values
-  set_integer(MAX_HEARTS, 3);
-  set_integer(CURRENT_HEARTS, 12);
-
-  set_integer(MAX_RUPEES, 100);
-
-  set_integer(ITEM_SLOT_0, (uint32_t) -1);
-  set_integer(ITEM_SLOT_1, (uint32_t) -1);
-
+  // set the initial controls
   set_default_keyboard_controls();
   set_default_joypad_controls();
 
-  IniFile ini("info.dat", IniFile::READ);
-  ini.set_group("info");
+  // set some other values from the quest file
+  IniFile ini("quest.dat", IniFile::READ);
+  ini.set_group("initial");
   int starting_map_id = ini.get_integer_value("starting_map", -1);
   const std::string &starting_destination_point_name = ini.get_string_value("starting_point", "");
+  int max_life = ini.get_integer_value("max_life", 1);
+  int life = ini.get_integer_value("life", 1);
 
   if (starting_map_id == -1) {
-    DIE("No starting map defined in info.dat. Please set the value starting_map to the id of the initial map of your quest.");
+    DIE("No starting map defined in quest.dat. Please set the value starting_map to the id of the initial map of your quest.");
   }
   if (starting_destination_point_name == "") {
-    DIE("No starting point defined in info.dat. Please set the value starting_point to the name of the "
+    DIE("No starting point defined in quest.dat. Please set the value starting_point to the name of the "
 	"destination point where the hero should be placed on the initial map.");
   }
 
   set_integer(STARTING_MAP, starting_map_id);
   set_string(STARTING_POINT, starting_destination_point_name);
+  set_integer(MAX_LIFE, max_life);
+  set_integer(CURRENT_LIFE, current_life);
 }
 
 /**

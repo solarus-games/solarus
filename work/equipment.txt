@@ -36,9 +36,13 @@ name = Bombs refill
 changes_counter = bombs
 nb_variants = 3
 amount_1 = 1
+probability_1 = 8
 amount_2 = 5
+probability_2 = 5
 amount_3 = 10
+probability_3 = 2
 brandish_when_picked = false
+can_disappear = true
 
 [item.bomb_bag]
 name = Bomb bag
@@ -60,9 +64,14 @@ name = Arrows refill
 changes_counter = bow
 nb_variants = 3
 amount_1 = 1
+probability_1 = 8
 amount_2 = 5
+probability_2 = 5
 amount_3 = 10
+probability_3 = 2
 brandish_when_picked = false
+can_disappear = true
+shadow = small
 
 [item.quiver]
 name = Quiver
@@ -236,6 +245,14 @@ amount_1 = 100
 amount_2 = 300
 amount_3 = 999
 
+[item.magic_bar]
+name = Magic bar
+limit_for_counter = magic
+nb_variants = 2
+initial_variant = 0
+amount_1 = 42
+amount_2 = 84
+
 [item.map]
 name = Dungeon map
 ability = see_dungeon_minimap_rooms
@@ -258,29 +275,44 @@ name = Small key
 changes_counter = small_keys
 amount = 1
 brandish_when_picked = false
+sound_when_picked = picked_small_key
+shadow = small
 
 [item.rupee]
 name = Rupee
 changes_counter = money
 nb_variants = 3
 amount_1 = 1
+probability_1 = 50
 amount_2 = 5
+probability_2 = 15
 amount_3 = 20
+probability_3 = 5
 brandish_when_picked = false
+sound_when_picked = picked_rupee
+can_disappear = true
+shadow = small
 
 [item.magic_flask]
 name = Magic flask
 changes_counter = magic
 nb_variants = 2
 amount_1 = 6
+probability_1 = 25
 amount_2 = 42
+probability_2 = 8
 brandish_when_picked = false
+can_disappear = true
+shadow = small
 
 [item.heart]
 name = Heart
 changes_counter = life
 amount = 1
+probability = 100
 brandish_when_picked = false
+can_disappear = true
+shadow = small
 
 [item.heart_container]
 name = Heart container
@@ -290,4 +322,5 @@ name = Piece of heart
 
 [item.fairy]
 name = Fairy
+probability = 2
 

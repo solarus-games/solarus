@@ -1,0 +1,16 @@
+This ChangeLog describes the important changes of each svn commit.
+
+r1410 (2010-09-05):
+
+Changing savegame format to make equipment items independent of the
+engine.
+
+I am working on a new item system to make all items
+(treasures, equipment items, inventory items, pickable items, etc.) dependent of the quest
+instead of being hardcoded in the engine. This will require many changes in the
+existing code and you won't be able to compile the svn version soon.
+
+A first step is to make important changes to the savegame format. The item
+names were removed and some of them were replaced by a notion of abilities.
+The existing savegame files are not compatible anymore and must be deleted.
+

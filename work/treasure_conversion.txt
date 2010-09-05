@@ -7,11 +7,12 @@
 # However, the data files of maps needs to be updated because the syntax of
 # chests, shop items, pickable items, destructible items and enemies has changed.
 #
-# This file gives for each Treasure::Content value of the old system
+
+# This section gives for each Treasure::Content value of the old system
 # the corresponding equipment item name and variant number in the new system.
 # It can be used to update (manually or automatically with a shell-script)
 # the treasures, chests and shop items in data files of the old system.
-#
+
 # old_treasure_content		item_name		variant
 -1	_none	0
 0	feather	1
@@ -75,4 +76,28 @@
 87	rupee	1
 88	rupee	2
 89	rupee	3
+
+# This section gives, for each pickable item subtype of the old system,
+# the corresponding new item and variant.
+
+-1	_random	0
+0	_none	0
+1	rupee	1
+2	rupee	2
+3	rupee	3
+4	heart	1
+5	magic_flask	1
+6	magic_flask	2
+7	fairy	1
+8	bombs_refill	1
+9	bombs_refill	2
+10	bombs_refill	3
+11	arrows_refill	1
+12	arrows_refill	2
+13	arrows_refill	3
+14	small_key	1
+15	big_key	1
+16	boss_key	1
+17	piece_of_heart	1
+18	heart_container	1
 

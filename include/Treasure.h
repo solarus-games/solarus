@@ -47,7 +47,7 @@ class Treasure {
     Game *game;			/**< the current game */
     int savegame_variable;	/**< index of the savegame boolean variable corresponding to this treasure,
 				 * or -1 if the treasure state is not saved */
-    std::string item; 		/**< content of the treasure */
+    std::string item_name;	/**< content of the treasure */
     int variant;		/**< variant of this content */
     int amount;			/**< amount of item (for some kinds of treasures only) */
 
@@ -59,7 +59,7 @@ class Treasure {
 
   public:
 
-    Treasure(Game *game, int savegame_variable, const std::string &item, int variant, int amount = 0);
+    Treasure(Game *game, int savegame_variable, const std::string &item_name, int variant, int amount = 0);
     ~Treasure(void);
 
     const std::string & get_item(void);

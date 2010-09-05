@@ -289,6 +289,37 @@ bool Script::call_script_function(const std::string &function_name,
 /**
  * @brief Calls a function in the script.
  * @param function_name name of the function to call
+ * @param arg1 first argument of the function
+ * @param arg2 second argument of the function
+ * @param arg3 third argument of the function
+ * @return true if the function was called, false if it does not exist
+ */
+bool Script::call_script_function(const std::string &function_name,
+				  int arg1, const std::string &arg2, int arg3) {
+
+  if (context == NULL) {
+    return false;
+  }
+
+  lua_getglobal(context, function_name.c_str());
+  bool exists = lua_isfunction(context, -1);
+
+  if (exists) {
+    lua_pushinteger(context, arg1);
+    lua_pushstring(context, arg2.c_str());
+    lua_pushinteger(context, arg3);
+    lua_call(context, 3, 0);
+  }
+  else {
+    lua_pop(context, -1);
+  }
+
+  return exists;
+}
+
+/**
+ * @brief Calls a function in the script.
+ * @param function_name name of the function to call
  * @param arg1 argument of the function
  * @return true if the function was called, false if it does not exist
  */
@@ -985,19 +1016,21 @@ int Script::l_inventory_item_is_bottle(lua_State *l) {
  * You can use this function to make a non-playing character
  * give a treasure to the player.
  *
- * - Argument 1 (integer): content of the treasure (see Treasure.h)
- * - Argument 2 (integer): index of the savegame boolean variable that stores
+ * - Argument 1 (integer): index of the savegame boolean variable that stores
  * the possession state of the treasure (or -1 if you don't want to save this treasure)
+ * - Argument 2 (integer): name of the item to give (according to the item list of quest.dat)
+ * - Argument 3 (integer): variant of this item (1 if the item has only one variant)
  */
 int Script::l_treasure_give(lua_State *l) {
 
   Script *script;
-  called_by_script(l, 2, &script);
-  Treasure::Content content = (Treasure::Content) lua_tointeger(l, 1);
-  int savegame_variable = lua_tointeger(l, 2);
+  called_by_script(l, 3, &script);
+  int savegame_variable = lua_tointeger(l, 1);
+  const std::string &item_name = lua_tostring(l, 2);
+  int variant = lua_tointeger(l, 3);
 
   Game *game = script->game;
-  game->give_treasure(new Treasure(game, content, savegame_variable));
+  game->give_treasure(new Treasure(game, savegame_variable, item_name, variant));
 
   return 0;
 }
@@ -1010,21 +1043,23 @@ int Script::l_treasure_give(lua_State *l) {
  * For example you can use this function to make a non-playing character
  * give a treasure to the player.
  *
- * - Argument 1 (integer): content of the treasure (see Treasure.h)
- * - Argument 2 (integer): amount to give
- * - Argument 3 (integer): index of the savegame boolean variable that stores
+ * - Argument 1 (integer): index of the savegame boolean variable that stores
  * the possession state of the treasure (or -1 if you don't want to save this treasure)
+ * - Argument 2 (integer): name of the item to give (according to the item list of quest.dat)
+ * - Argument 3 (integer): variant of this item (1 if the item has only one variant)
+ * - Argument 4 (integer): amount to give
  */
 int Script::l_treasure_give_with_amount(lua_State *l) {
 
   Script *script;
-  called_by_script(l, 3, &script);
-  Treasure::Content content = (Treasure::Content) lua_tointeger(l, 1);
-  int amount = lua_tointeger(l, 2);
-  int savegame_variable = lua_tointeger(l, 3);
+  called_by_script(l, 4, &script);
+  int savegame_variable = lua_tointeger(l, 1);
+  const std::string &item_name = lua_tostring(l, 2);
+  int variant = lua_tointeger(l, 3);
+  int amount = lua_tointeger(l, 4);
 
   Game *game = script->game;
-  game->give_treasure(new Treasure(game, content, amount, savegame_variable));
+  game->give_treasure(new Treasure(savegame_variable, game, item_name, variant, amount));
 
   return 0;
 }
@@ -1094,12 +1129,13 @@ void Script::event_camera_back(void) {
  * The treasure source does not matter: it can come from a chest,
  * a pickable item or the script.
  *
- * @param content the content obtained
  * @param savegame_variable the boolean variable where this treasure is saved
  * (or -1 if the treasure is not saved)
+ * @param item_name name of the item obtained
+ * @param variant variant of this item
  */
-void Script::event_treasure_obtaining(Treasure::Content content, int savegame_variable) {
-  call_script_function("event_treasure_obtaining", content, savegame_variable);
+void Script::event_treasure_obtaining(int savegame_variable, const std::string &item_name, int variant) {
+  call_script_function("event_treasure_obtaining", savegame_variable, item_name, variant);
 }
 
 /**
@@ -1108,11 +1144,12 @@ void Script::event_treasure_obtaining(Treasure::Content content, int savegame_va
  * The treasure source does not matter: it can come from a chest,
  * a pickable item or the script.
  *
- * @param content the content obtained
  * @param savegame_variable the boolean variable where this treasure is saved
  * (or -1 if the treasure is not saved)
+ * @param item_name name of the item obtained
+ * @param variant variant of this item
  */
-void Script::event_treasure_obtained(Treasure::Content content, int savegame_variable) {
-  call_script_function("event_treasure_obtained", content, savegame_variable);
+void Script::event_treasure_obtained(int savegame_variable, const std::string &item_name, int variant) {
+  call_script_function("event_treasure_obtained", savegame_variable, item_name, variant);
 }
 

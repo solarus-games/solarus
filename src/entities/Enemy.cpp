@@ -641,7 +641,7 @@ void Enemy::attack_hero(Hero *hero, Sprite *this_sprite) {
 
     bool hero_protected = false;
     if (minimum_shield_needed != 0 &&
-	game->get_equipment()->get_shield() >= minimum_shield_needed) {
+	game->get_equipment()->has_ability("shield", minimum_shield_needed)) {
 
       double angle = hero->get_vector_angle(this);
       int protected_direction = (int) ((angle + Geometry::PI_OVER_2 / 2.0) * 4 / Geometry::TWO_PI);

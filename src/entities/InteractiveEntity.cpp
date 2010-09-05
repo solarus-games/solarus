@@ -261,7 +261,7 @@ void InteractiveEntity::action_key_pressed(void) {
 
     // for a place with water: start the dialog
     if (subtype == WATER_FOR_BOTTLE) {
-      game->get_equipment()->found_water();
+      // TODO game->get_equipment()->found_water();
     }
     else {
 
@@ -304,7 +304,7 @@ bool InteractiveEntity::interaction_with_inventory_item(InventoryItem *item) {
       && item->is_bottle()
       && item->get_variant() == 1) {
 
-    game->get_equipment()->found_water();
+    // TODO game->get_equipment()->found_water();
     interaction = true;
   }
   else {

@@ -183,7 +183,7 @@ class Savegame {
       DUNGEON_1_UNUSED_3			= 208,		/**< empty place for future new data in dungeon #1 */
       DUNGEON_1_UNUSED_4			= 209,		/**< empty place for future new data in dungeon #1 */
       // then, same thing for other dungeons
-      DUNGEON_40_UNUSED_4			= 599,		/**< empty place for future new data in dungeon #40 */
+      DUNGEON_40_UNUSED_4			= 599		/**< empty place for future new data in dungeon #40 */
 
       // values above 1024 are available to the maps
     };

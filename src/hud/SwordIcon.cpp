@@ -30,7 +30,7 @@ SwordIcon::SwordIcon(Game *game, int x, int y):
   HudElement(game, x, y, 72, 24) {
 
   // static icon
-  this->sword_number_displayed = (equipment != NULL) ? equipment->get_sword() : 0;
+  this->sword_number_displayed = (equipment != NULL) ? equipment->get_ability("sword") : 0;
   this->sword_key_effect_displayed = keys_effect->get_sword_key_effect();
   this->img_sword_icon = new Surface("sword_icon.png", Surface::DIR_LANGUAGE);
 
@@ -73,7 +73,7 @@ void SwordIcon::update(void) {
 
     KeysEffect::SwordKeyEffect sword_key_effect = keys_effect->get_sword_key_effect();
 
-    int sword_number = (equipment != NULL) ? equipment->get_sword() : 0;
+    int sword_number = (equipment != NULL) ? equipment->get_ability("sword") : 0;
 
     if (sword_key_effect_displayed != sword_key_effect
 	|| (sword_key_effect_displayed == KeysEffect::SWORD_KEY_SWORD

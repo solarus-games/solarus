@@ -226,8 +226,8 @@ PickableItem * PickableItem::create(Game *game, Layer layer, int x, int y, Picka
  */
 bool PickableItem::is_subtype_locked(Subtype subtype, Equipment *equipment) {
 
-  bool has_bombs = equipment->has_inventory_item(INVENTORY_BOMBS);
-  bool has_bow = equipment->has_inventory_item(INVENTORY_BOW);
+  bool has_bombs = equipment->has_item("bombs");
+  bool has_bow = equipment->has_item("bow");
   bool has_magic = equipment->get_max_magic() > 0;
 
   return
@@ -262,6 +262,7 @@ PickableItem::Subtype PickableItem::choose_random_subtype(Equipment *equipment) 
     subtype = NONE;
   }
 
+  /* TODO
   else if (r < 765) { // with probability 10%
     // give the player what he needs, or nothing if he doesn't need anything
     
@@ -306,6 +307,7 @@ PickableItem::Subtype PickableItem::choose_random_subtype(Equipment *equipment) 
   else if (r < 993) { subtype = ARROW_1; }     // 1 arrow:     0.8%
   else if (r < 998) { subtype = ARROW_5; }     // 5 arrows:    0.5%
   else              { subtype = ARROW_10; }    // 10 arrows:   0.2%
+  */
 
   return subtype;
 }
@@ -465,19 +467,19 @@ void PickableItem::give_item_to_player(void) {
   switch (subtype) {
 
   case RUPEE_1:
-    equipment->add_rupees(1);
+    equipment->add_money(1);
     break;
 
   case RUPEE_5:
-    equipment->add_rupees(5);
+    equipment->add_money(5);
     break;
 
   case RUPEE_20:
-    equipment->add_rupees(20);
+    equipment->add_money(20);
     break;
 
   case HEART:
-    equipment->add_hearts(4);
+    equipment->add_life(4);
     break;
 
   case SMALL_MAGIC:
@@ -493,27 +495,27 @@ void PickableItem::give_item_to_player(void) {
     break;
 
   case BOMB_1:
-    equipment->add_bombs(1);
+    equipment->add_item_amount("bombs", 1);
     break;
 
   case BOMB_5:
-    equipment->add_bombs(5);
+    equipment->add_item_amount("bombs", 5);
     break;
 
   case BOMB_10:
-    equipment->add_bombs(10);
+    equipment->add_item_amount("bombs", 10);
     break;
 
   case ARROW_1:
-    equipment->add_arrows(1);
+    equipment->add_item_amount("arrows", 1);
     break;
 
   case ARROW_5:
-    equipment->add_arrows(5);
+    equipment->add_item_amount("arrows", 5);
     break;
 
   case ARROW_10:
-    equipment->add_arrows(10);
+    equipment->add_item_amount("arrows", 10);
     break;
 
   case SMALL_KEY:
@@ -521,22 +523,22 @@ void PickableItem::give_item_to_player(void) {
     break;
 
   case BIG_KEY:
-    treasure = new Treasure(game, Treasure::BIG_KEY, savegame_variable);
+    treasure = new Treasure(game, savegame_variable, "big_key", 1);
     game->give_treasure(treasure);
     break;
 
   case BOSS_KEY:
-    treasure = new Treasure(game, Treasure::BOSS_KEY, savegame_variable);
+    treasure = new Treasure(game, savegame_variable, "boss_key", 1);
     game->give_treasure(treasure);
     break;
 
   case PIECE_OF_HEART:
-    treasure = new Treasure(game, Treasure::PIECE_OF_HEART, savegame_variable);
+    treasure = new Treasure(game, savegame_variable, "piece_of_heart")
     game->give_treasure(treasure);
     break;
 
   case HEART_CONTAINER:
-    treasure = new Treasure(game, Treasure::HEART_CONTAINER, savegame_variable);
+    treasure = new Treasure(game, savegame_variable, "heart_container");
     game->give_treasure(treasure);
     break;
 

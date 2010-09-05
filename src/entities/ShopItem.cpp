@@ -211,7 +211,7 @@ void ShopItem::update(void) {
       // the player wants to buy the item
       Equipment *equipment = game->get_equipment();
 
-      if (equipment->get_rupees() < price) {
+      if (equipment->get_money() < price) {
 	// not enough rupees
 	game->play_sound("wrong");
 	game->get_dialog_box()->start_dialog("_shop.not_enough_money");
@@ -223,7 +223,7 @@ void ShopItem::update(void) {
       }
       else {
 	// give the treasure
-	equipment->remove_rupees(price);
+	equipment->remove_money(price);
 
 	int savegame_variable = treasure->get_savegame_variable();
 	game->give_treasure(new Treasure(game, treasure->get_content(),

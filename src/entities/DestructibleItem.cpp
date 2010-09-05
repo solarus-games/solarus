@@ -226,7 +226,7 @@ void DestructibleItem::notify_collision_with_hero(Hero *hero, CollisionMode coll
 
     Equipment *equipment = game->get_equipment();
     int weight = features[subtype].weight;
-    if (equipment->can_lift(weight)) {
+    if (equipment->has_ability("lift", weight)) {
       keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_LIFT);
     }
     else {
@@ -293,7 +293,7 @@ void DestructibleItem::action_key_pressed(void) {
     int weight = features[subtype].weight;
     Equipment *equipment = game->get_equipment();
 
-    if (equipment->can_lift(weight)) {
+    if (equipment->has_ability("lift", weight)) {
       hero->start_lifting(this);
 
       // play the sound
@@ -319,7 +319,7 @@ void DestructibleItem::action_key_pressed(void) {
       if (features[subtype].can_be_cut) {
         game->get_dialog_box()->start_dialog("_cannot_lift_should_cut");
       }
-      else if (!equipment->can_lift(1)) {
+      else if (!equipment->has_ability("lift", 1)) {
 	game->get_dialog_box()->start_dialog("_cannot_lift_too_heavy");
       }
       else {

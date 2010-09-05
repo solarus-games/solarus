@@ -239,7 +239,7 @@ bool IniFile::has_more_groups(void) {
  * @brief Selects the next group during a group iteration.
  *
  * This function should be called only when has_more_groups() returns true.
- * You don't have to call set_group() to select this group, it is already done by this function.
+ * You don't have to call set_group() to select this group, it is already done by has_more_groups().
  * To know the group name, call get_group().
  */
 void IniFile::next_group(void) {

@@ -69,8 +69,8 @@ void HeartsView::create(void) {
   this->img_hearts = new Surface("hud/hearts.png");
   this->empty_heart_sprite = new Sprite("hud/empty_heart");
 
-  this->nb_max_hearts_displayed = equipment->get_max_hearts();
-  this->nb_current_hearts_displayed = equipment->get_hearts();
+  this->nb_max_hearts_displayed = equipment->get_max_life() / 4;
+  this->nb_current_hearts_displayed = equipment->get_life();
 
   rebuild();
 }
@@ -94,14 +94,14 @@ void HeartsView::update(void) {
   bool need_rebuild = false;
 
   // max hearts
-  int nb_max_hearts = equipment->get_max_hearts();
+  int nb_max_hearts = equipment->get_max_life() / 4;
   if (nb_max_hearts != nb_max_hearts_displayed) {
     nb_max_hearts_displayed = nb_max_hearts;
     need_rebuild = true;
   }
 
   // current hearts
-  int nb_current_hearts = equipment->get_hearts();
+  int nb_current_hearts = equipment->get_life();
   if (nb_current_hearts != nb_current_hearts_displayed && System::now() > next_heart_update_date) {
 
     next_heart_update_date = System::now() + 50;
@@ -125,7 +125,7 @@ void HeartsView::update(void) {
    */
   if (game != NULL) {
 
-    if (equipment->needs_hearts()) {
+    if (equipment->get_life() <= equipment->get_max_life() / 4) {
 
       if (empty_heart_sprite->get_current_animation() != "danger") {
 	empty_heart_sprite->set_current_animation("danger");

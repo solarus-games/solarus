@@ -32,20 +32,20 @@ class ItemIcon: public HudElement {
 
   private:
 
-    int slot;                       /**< the slot of this icon (0 for the X icon, 1 for the Y icon) */
+    int slot;							/**< the slot of this icon (0 for the X icon, 1 for the Y icon) */
 
-    Surface *background_img;        /**< background image of the icon (i.e. the empty icon) */
-    Surface *items_img;             /**< image containing all item with all variants */
+    Surface *background_img;					/**< background image of the icon (i.e. the empty icon) */
+    Surface *items_img;						/**< image containing all item with all variants */
 
-    InventoryItemId item_displayed; /**< the item currently displayed on the icon */
-    int item_variant_displayed;     /**< the item variant currently displayed */
-    Counter *counter;               /**< the counter associated to this item (if any) */
-    int counter_value_displayed;    /**< the counter value currently displayed 
-				     * (-1 if there is no counter) */
-    int counter_maximum_displayed;  /**< the counter maximum value currently considered 
-				     * (-1 if there is no counter) */
+    std::string item_displayed;					/**< the item currently displayed on the icon (or an empty string) */
+    int item_variant_displayed;					/**< the item variant currently displayed */
+    Counter *counter;						/**< the counter associated to this item (if any) */
+    int counter_value_displayed;				/**< the counter value currently displayed 
+								 * (-1 if there is no counter) */
+    int counter_maximum_displayed;				/**< the counter maximum value currently considered 
+								 * (-1 if there is no counter) */
 
-    static const std::string background_file_names[]; /**< file name of the background image for each slot */
+    static const std::string background_file_names[];		/**< file name of the background image for each slot */
 
   public:
 

@@ -22,6 +22,7 @@
 #include "Treasure.h"
 #include "InventoryItem.h"
 #include "lowlevel/System.h"
+#include "lowlevel/IniFile.h"
 
 /**
  * @brief Constructor.
@@ -30,6 +31,18 @@
 Equipment::Equipment(Savegame *savegame):
   savegame(savegame), game(NULL), magic_decrease_delay(0), 
   giving_fairy(false), giving_water(false) {
+
+  // load the equipment specification from quest.dat
+  IniFile ini("quest.dat", IniFile::READ);
+  ini.start_group_iteration();
+  while (ini.has_more_groups()) {
+
+    if (ini.get_group().substr(0,5) == "item.") {
+
+      std::string item_name = ini.get_group().substr(5);
+    }
+    ini.next_group();
+  }
 }
 
 /**
@@ -85,6 +98,8 @@ void Equipment::update(void) {
     }
   }
 
+  // TODO
+  /*
   // fairy
   if (giving_fairy) {
 
@@ -120,139 +135,45 @@ void Equipment::update(void) {
       game->give_treasure(new Treasure(game, Treasure::WATER, -1));
     }
   }
+  */
 }
 
-// tunic
+// money
 
 /**
- * @brief Returns the number of the player's tunic.
- * @return the player's tunic number (0 to 2)
+ * @brief Returns the maximum amount of money of the player.
+ * @return the player's maximum number of money
  */
-int Equipment::get_tunic(void) {
-  return savegame->get_integer(Savegame::HERO_TUNIC);
-}
-
-/**
- * @brief Sets the player's tunic.
- * @param tunic the player's tunic number (0 to 2)
- */
-void Equipment::set_tunic(int tunic) {
-
-  if (tunic != get_tunic()) {
-    // the tunic has changed
-
-    if (tunic < 0 || tunic > 2) {
-      DIE("Illegal tunic number: " << tunic);
-    }
-
-    savegame->set_integer(Savegame::HERO_TUNIC, tunic);
-  }
-}
-
-// sword
-
-/**
- * @brief Returns whether the player has a sword.
- * @return true if the player has a sword, i.e. if get_sword_number() > 0
- */
-bool Equipment::has_sword(void) {
-  return get_sword() > 0;
+int Equipment::get_max_money(void) {
+  return savegame->get_integer(Savegame::MAX_MONEY);
 }
 
 /**
- * @brief Returns the number of the player's sword.
- * @return the player's sword number (0: no sword,
- * 1 to 4: sword 1 to 4)
+ * @brief Sets the maximum amount of money of the player.
+ * @param max_money the player's maximum amount number of money
  */
-int Equipment::get_sword(void) {
-  return savegame->get_integer(Savegame::HERO_SWORD);
-}
+void Equipment::set_max_money(int max_money) {
 
-/**
- * @brief Sets the player's sword.
- * @param sword the player's sword number (0: no sword,
- * 1 to 4: sword 1 to 4)
- */
-void Equipment::set_sword(int sword) {
-
-  if (sword != get_sword()) {
-    // the sword has changed
-
-    if (sword < 0 || sword > 4) {
-      DIE("Illegal sword number: " << sword);
-    }
-
-    savegame->set_integer(Savegame::HERO_SWORD, sword);
-  }
-}
-
-// shield
-
-/**
- * @brief Returns whether the player has a shield.
- * @return true if the player has a shield, i.e. if get_shield_number() > 0
- */
-bool Equipment::has_shield(void) {
-  return get_shield() > 0;
-}
-
-/**
- * @brief Returns the number of the player's shield.
- * @return the player's shield number (0: no shield,
- * 1 to 3: shield 1 to 3)
- */
-int Equipment::get_shield(void) {
-  return savegame->get_integer(Savegame::HERO_SHIELD);
-}
-
-/**
- * @brief Sets the player's shield.
- * @param shield the player's shield number (0: no shield,
- * 1 to 3: shield 1 to 3)
- */
-void Equipment::set_shield(int shield) {
-
-  if (shield != get_shield()) {
-    // the shield has changed
-
-    if (shield < 0 || shield > 3) {
-      DIE("Illegal shield number: " << shield);
-    }
-
-    savegame->set_integer(Savegame::HERO_SHIELD, shield);
-  }
-}
-
-// rupees
-
-/**
- * @brief Returns the maximum number of rupees of the player.
- * @return the player's maximum number of rupees (100, 300 or 999)
- */
-int Equipment::get_max_rupees(void) {
-  return savegame->get_integer(Savegame::MAX_RUPEES);
-}
-
-/**
- * @brief Sets the maximum number of rupees of the player.
- * @param max_rupees the player's maximum number of rupees (100, 300 or 999)
- */
-void Equipment::set_max_rupees(int max_rupees) {
-
-  if (max_rupees != 100 && max_rupees != 300 && max_rupees != 999) {
-    DIE("Illegal maximum number of rupees: " << max_rupees);
+  if (max_money <= 0) {
+    DIE("Illegal maximum amount of money: " << max_money);
   }
 
-  savegame->set_integer(Savegame::MAX_RUPEES, max_rupees);
+  savegame->set_integer(Savegame::MAX_MONEY, max_money);
 }
 
 /**
- * @brief Returns the player's current number of rupees.
- * @return the player's current number of rupees
+ * @brief Returns the player's current amount of money
+ * @return the player's current amount of money
  */
-int Equipment::get_rupees(void) {
-  return savegame->get_integer(Savegame::CURRENT_RUPEES);
+int Equipment::get_money(void) {
+  return savegame->get_integer(Savegame::CURRENT_MONEY);
 }
+
+
+// TODO
+// the rest of the class is not yet implemented in the new system
+// (the existing code is just disabled)
+#ifndef TODO
 
 /**
  * @brief Sets the player's current number of rupees.
@@ -1356,4 +1277,6 @@ void Equipment::remove_small_key(void) {
 bool Equipment::can_lift(int weight) {
   return has_inventory_item(INVENTORY_GLOVE) >= weight;
 }
+
+#endif
 

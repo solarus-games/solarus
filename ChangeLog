@@ -1,5 +1,10 @@
 This ChangeLog describes the important changes of each svn commit.
 
+r1411 (2010-09-05):
+
+Rename info.dat in quest.dat and change its syntax. This file will contain all
+global information of the quest, including the list of items.
+
 r1410 (2010-09-05):
 
 Changing savegame format to make equipment items independent of the

@@ -39,7 +39,7 @@
 #include "lowlevel/Surface.h"
 #include "lowlevel/IniFile.h"
 
-Rectangle Game::outside_world_size(0, 0, 0, 0); // loaded from info.dat
+Rectangle Game::outside_world_size(0, 0, 0, 0); // loaded from quest.dat
 
 /**
  * @brief Creates a game.
@@ -554,12 +554,12 @@ const Rectangle & Game::get_outside_world_size(void) {
 
   if (outside_world_size.get_width() == 0) {
     // first time: read the information
-    IniFile ini("info.dat", IniFile::READ);
+    IniFile ini("quest.dat", IniFile::READ);
     ini.set_group("info");
     int width = ini.get_integer_value("outside_world_width", 0);
     int height = ini.get_integer_value("outside_world_height", 0);
     if (width == 0 || height == 0) {
-      DIE("Missing outside world size in file info.dat");
+      DIE("Missing outside world size in file quest.dat");
     }
     outside_world_size.set_size(width, height);
   }

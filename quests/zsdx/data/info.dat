@@ -1,9 +1,0 @@
-# General information about this quest
-
-[info]
-title_bar = Zelda: Mystery of Solarus DX
-write_dir = zsdx
-outside_world_width = 2080
-outside_world_height = 3584
-starting_map = 0
-starting_point = start_position

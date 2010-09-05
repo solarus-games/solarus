@@ -80,7 +80,7 @@ void FileTools::initialize(int argc, char **argv) {
    if (!PHYSFS_setWriteDir(PHYSFS_getUserDir())) {
     DIE("Cannot write in user directory:" << PHYSFS_getLastError());
   }
-  IniFile ini("info.dat", IniFile::READ);
+  IniFile ini("quest.dat", IniFile::READ);
   ini.set_group("info");
   std::string write_dir = (std::string) ".solarus/" + ini.get_string_value("write_dir");
   PHYSFS_mkdir(write_dir.c_str());

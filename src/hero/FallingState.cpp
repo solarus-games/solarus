@@ -79,7 +79,7 @@ void Hero::FallingState::update(void) {
     }
     else {
       // normal hole that hurts the hero
-      game->get_equipment()->remove_hearts(2);
+      game->get_equipment()->remove_life(2);
       hero->set_state(new BackToSolidGroundState(hero, true));
     }
   }

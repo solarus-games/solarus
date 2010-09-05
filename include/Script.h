@@ -58,6 +58,7 @@ class Script {
     bool call_script_function(const std::string &function_name, const std::string &arg1);
     bool call_script_function(const std::string &function_name, const std::string &arg1, int arg2);
     bool call_script_function(const std::string &function_name, const std::string &arg1, int arg2, int arg3);
+    bool call_script_function(const std::string &function_name, int arg1, const std::string &arg2, int arg3);
     bool call_script_function(const std::string &function_name, int arg1);
     bool call_script_function(const std::string &function_name, int arg1, int arg2);
     bool call_script_function(const std::string &function_name, bool arg1);
@@ -124,8 +125,8 @@ class Script {
     void event_dialog_finished(const MessageId &first_message_id, int answer);
     void event_camera_reached_target(void);
     void event_camera_back(void);
-    void event_treasure_obtaining(Treasure::Content content, int savegame_variable);
-    void event_treasure_obtained(Treasure::Content content, int savegame_variable);
+    void event_treasure_obtaining(int savegame_variable, const std::string &item, int variant);
+    void event_treasure_obtained(int savegame_variable, const std::string &item, int variant);
 };
 
 #endif

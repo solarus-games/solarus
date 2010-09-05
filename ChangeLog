@@ -1,9 +1,18 @@
 This ChangeLog describes the important changes of each svn commit.
 
+r1413 (2010-09-05):
+
+Change the Lua API of treasure functions to fit with the new item system: treasure_give,
+treasure_give_with_amount, event_treasure_obtaining and
+event_treasure_obtained.
+The existing scripts that use these functions will need to be updated.
+
 r1412 (2010-09-05):
 
 Rewriting item-related classes. The interface of Equipment and Treasure have
 changed in order to make them independent of a choice of items. This work is in progress, other classes will also change.
+Add a class ItemProperties (not implemented yet) that will store the
+properties of an item as described in the file quest.dat.
 
 r1411 (2010-09-05):
 

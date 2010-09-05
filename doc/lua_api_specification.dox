@@ -40,10 +40,10 @@ called when the camera (previously started by <tt>camera_move()</tt>) reaches it
 - <tt>event_camera_back()</tt>: 
 called when the camera (previously sent back by <tt>camera_restore()</tt>) reaches the hero
 
-- <tt>event_treasure_obtaining(content, savegame_variable)</tt>: 
+- <tt>event_treasure_obtaining(savegame_variable, item_name, variant)</tt>: 
 called when the player is obtaining a treasure (coming from a chest or not)
 
-- <tt>event_treasure_obtained(content, savegame_variable)</tt>: 
+- <tt>event_treasure_obtained(savegame_variable, item_name, variant)</tt>: 
 called when the player has just finished obtaining a treasure
 
 
@@ -141,10 +141,10 @@ removes an amount of the specified inventory item
 - <tt>inventory_item_is_bottle(item_id)</tt>: 
 returns whether an inventory item is a bottle
 
-- <tt>treasure_give(treasure_id, savegame_variable)</tt>: 
+- <tt>treasure_give(savegame_variable, item_name, variant)</tt>: 
 gives a treasure to the player (without using a chest)
 
-- <tt>treasure_give_with_amount(treasure_id, amount, savegame_variable)</tt>: 
+- <tt>treasure_give_with_amount(savegame_variable, item_name, variant, amount)</tt>: 
 gives a treasure to the player (without using a chest) and specifies its amount
 
 

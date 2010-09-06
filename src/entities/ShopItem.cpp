@@ -75,18 +75,20 @@ ShopItem::~ShopItem(void) {
  */
 MapEntity * ShopItem::parse(Game *game, std::istream &is, Layer layer, int x, int y) {
 
-  std::string name;
-  int treasure, amount, savegame_variable, price;
+  std::string name, treasure_name;
+  int treasure_variant, treasure_amount, treasure_savegame_variable, price;
   MessageId message_id;
 
   FileTools::read(is, name);
-  FileTools::read(is, treasure);
-  FileTools::read(is, amount);
-  FileTools::read(is, savegame_variable);
+  FileTools::read(is, treasure_name);
+  FileTools::read(is, treasure_variant);
+  FileTools::read(is, treasure_amount);
+  FileTools::read(is, treasure_savegame_variable);
   FileTools::read(is, price);
   FileTools::read(is, message_id);
 
-  return create(game, name, Layer(layer), x, y, new Treasure(game, Treasure::Content(treasure), amount, savegame_variable),
+  return create(game, name, Layer(layer), x, y,
+      new Treasure(game, treasure_savegame_variable, treasure_name, treasure_variant, treasure_amount),
       price, message_id);
 }
 
@@ -226,8 +228,9 @@ void ShopItem::update(void) {
 	equipment->remove_money(price);
 
 	int savegame_variable = treasure->get_savegame_variable();
-	game->give_treasure(new Treasure(game, treasure->get_content(),
-	      treasure->get_amount(), savegame_variable));
+	// TODO check memory (before r1414, a new Treasure was created here)
+	game->give_treasure(treasure);
+	treasure = NULL;
 	if (savegame_variable != -1) {
 	  remove_from_map();
 	  game->get_savegame()->set_boolean(savegame_variable, true);

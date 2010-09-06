@@ -22,10 +22,10 @@
 /**
  * @brief Constructor.
  * @param hero the hero controlled by this state
- * @param item_id id of the inventory item to use
+ * @param item_name name of the inventory item to use
  */
-Hero::InventoryItemState::InventoryItemState(Hero *hero, InventoryItemId item_id):
-  State(hero), item(new InventoryItem(item_id)) {
+Hero::InventoryItemState::InventoryItemState(Hero *hero, const std::string &item_name):
+  State(hero), item(new InventoryItem(item_name)) {
 
 }
 
@@ -44,8 +44,10 @@ void Hero::InventoryItemState::start(State *previous_state) {
 
   State::start(previous_state);
 
-  hero->last_inventory_item_id = item->get_id();
-  hero->can_use_inventory_item_date = System::now() + item->get_reuse_delay();
+  hero->last_inventory_item_name = item->get_name();
+  // TODO delay of 500 ms for the bow
+  // hero->can_use_inventory_item_date = System::now() + item->get_reuse_delay();
+  hero->can_use_inventory_item_date = System::now();
   item->start(game);
 }
 

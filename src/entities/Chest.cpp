@@ -22,8 +22,8 @@
 #include "DialogBox.h"
 #include "Savegame.h"
 #include "Sprite.h"
-#include "DungeonEquipment.h"
 #include "Savegame.h"
+#include "Equipment.h"
 #include "Map.h"
 #include "MapScript.h"
 #include "lowlevel/FileTools.h"
@@ -77,17 +77,18 @@ Chest::~Chest(void) {
  */
 MapEntity * Chest::parse(Game *game, std::istream &is, Layer layer, int x, int y) {
 
-  std::string name;
-  int big_chest, treasure_content, treasure_amount, treasure_savegame_variable;
+  std::string name, treasure_name;
+  int big_chest, treasure_variant, treasure_amount, treasure_savegame_variable;
 
   FileTools::read(is, name);
   FileTools::read(is, big_chest);
-  FileTools::read(is, treasure_content);
+  FileTools::read(is, treasure_name);
+  FileTools::read(is, treasure_variant);
   FileTools::read(is, treasure_amount);
   FileTools::read(is, treasure_savegame_variable);
 
   return new Chest(name, Layer(layer), x, y, (big_chest != 0),
-      new Treasure(game, Treasure::Content(treasure_content), treasure_amount, treasure_savegame_variable));
+      new Treasure(game, treasure_savegame_variable, treasure_name, treasure_variant, treasure_amount));
 }
 
 /**
@@ -196,7 +197,7 @@ void Chest::set_open(bool open) {
       treasure_given = false;
 
       if (treasure == NULL) {
-	treasure = new Treasure(game, Treasure::NONE, -1);
+	treasure = new Treasure(game, -1, "_none", 0);
       }
     }
   }
@@ -249,7 +250,7 @@ void Chest::update(void) {
 
       Hero *hero = game->get_hero();
 
-      if (treasure->get_content() != Treasure::NONE) {
+      if (treasure->get_item_name() != "_none") {
 	// give a treasure to the player
 
 	Treasure *t = treasure;
@@ -297,11 +298,11 @@ void Chest::action_key_pressed(void) {
 
   KeysEffect *keys_effect = game->get_keys_effect();
   Hero *hero = game->get_hero();
-  DungeonEquipment *dungeon_equipment = game->get_dungeon_equipment();
+  Equipment *equipment = game->get_equipment();
 
   if (is_visible() && hero->is_free()) {
 
-    if (!big_chest || dungeon_equipment->has_big_key()) {
+    if (!big_chest || equipment->has_item("big_key")) {
       game->play_sound("chest_open");
       set_open(true);
       treasure_date = System::now() + 300;

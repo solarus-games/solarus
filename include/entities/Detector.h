@@ -69,7 +69,7 @@ class Detector: public MapEntity {
     void check_collision(MapEntity *entity, Sprite *sprite);
 
     virtual void action_key_pressed(void);
-    virtual bool interaction_with_item(InventoryItem *item);
+    virtual bool interaction_with_inventory_item(InventoryItem *item);
     virtual bool moved_by_hero(void);
     virtual SoundId get_sword_tapping_sound(void);
 };

@@ -25,7 +25,7 @@
  */
 PauseSubmenu::PauseSubmenu(PauseMenu *pause_menu, Game *game):
   pause_menu(pause_menu), game(game), savegame(game->get_savegame()),
-  equipment(game->get_equipment()), dungeon_equipment(game->get_dungeon_equipment()) {
+  equipment(game->get_equipment()) {
 
   caption_text_1 = new TextSurface(160, 0,
 				   TextSurface::ALIGN_CENTER,

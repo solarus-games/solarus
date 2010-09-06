@@ -17,6 +17,7 @@
 #include "menus/PauseSubmenuQuestStatus.h"
 #include "menus/PauseMenu.h"
 #include "Game.h"
+#include "Savegame.h"
 #include "Equipment.h"
 #include "Sprite.h"
 #include "StringResource.h"
@@ -45,7 +46,7 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *ga
 
   // tunic
   {
-    int tunic = equipment->get_tunic();
+    int tunic = equipment->get_ability("tunic");
     Rectangle src_position(tunic * 16, 96, 16, 16);
     Rectangle dst_position(177, 164);
     treasures_img->blit(src_position, quest_items_surface, dst_position);
@@ -56,8 +57,8 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *ga
   }
 
   // sword
-  if (equipment->has_sword()) {
-    int sword = equipment->get_sword();
+  if (equipment->has_ability("sword")) {
+    int sword = equipment->get_ability("sword");
     Rectangle src_position(80 + sword * 16, 96, 16, 16);
     Rectangle dst_position(211, 164);
     treasures_img->blit(src_position, quest_items_surface, dst_position);
@@ -68,8 +69,8 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *ga
   }
 
   // shield
-  if (equipment->has_shield()) {
-    int shield = equipment->get_shield();
+  if (equipment->has_ability("shield")) {
+    int shield = equipment->get_ability("shield");
     Rectangle src_position(32 + shield * 16, 96, 16, 16);
     Rectangle dst_position(245, 164);
     treasures_img->blit(src_position, quest_items_surface, dst_position);
@@ -81,7 +82,7 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *ga
 
   // rupee bag
   {
-    int max_rupees = equipment->get_max_rupees();
+    int max_rupees = equipment->get_max_money();
     int rupee_bag = (max_rupees == 100) ? 1 : ((max_rupees == 300) ? 2 : 3);
     
     Rectangle src_position(rupee_bag * 16, 80, 16, 16);
@@ -94,7 +95,7 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *ga
   }
 
   // bomb bag
-  int max_bombs = equipment->get_max_bombs();
+  int max_bombs = equipment->get_item_maximum("bombs");
   if (max_bombs != 0) {
     int bomb_bag = (max_bombs == 10) ? 1 : ((max_bombs == 30) ? 2 : 3);
     Rectangle src_position(48 + bomb_bag * 16, 80, 16, 16);
@@ -107,7 +108,7 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *ga
   }
 
   // quiver
-  int max_arrows = equipment->get_max_arrows();
+  int max_arrows = equipment->get_item_maximum("arrows");
   if (max_arrows != 0) {
     int quiver = (max_arrows == 10) ? 1 : ((max_arrows == 30) ? 2 : 3);
     
@@ -121,7 +122,7 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *ga
   }
 
   // world map
-  if (equipment->has_world_map()) {
+  if (equipment->has_item("world_map")) {
     Rectangle src_position(0, 80, 16, 16);
     Rectangle dst_position(60, 164);
     treasures_img->blit(src_position, quest_items_surface, dst_position);
@@ -131,7 +132,7 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *ga
 
   // heart pieces
   {
-    int x = 51 * equipment->get_nb_pieces_of_heart();
+    int x = 51 * savegame->get_integer(1030); // TODO script
     Rectangle src_position(x, 0, 51, 50);
     Rectangle dst_position(101, 82);
     pieces_of_heart_img->blit(src_position, quest_items_surface, dst_position);

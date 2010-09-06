@@ -31,7 +31,7 @@ class Hero::InventoryItemState: public Hero::State {
 
   public:
 
-    InventoryItemState(Hero *hero, InventoryItemId item_id);
+    InventoryItemState(Hero *hero, const std::string &item_name);
     ~InventoryItemState(void);
 
     void start(State *previous_state);

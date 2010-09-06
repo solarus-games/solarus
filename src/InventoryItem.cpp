@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "InventoryItem.h"
+#include "ItemProperties.h"
 #include "Game.h"
 #include "Savegame.h"
 #include "Equipment.h"
@@ -34,8 +35,8 @@
  * @brief Creates a new inventory item.
  * @param item_id id of the item to create
  */
-InventoryItem::InventoryItem(InventoryItemId item_id):
-  item_id(item_id) {
+InventoryItem::InventoryItem(const std::string &item_name):
+  item_name(item_name) {
 
 }
 
@@ -47,95 +48,11 @@ InventoryItem::~InventoryItem(void) {
 }
 
 /**
- * @brief Returns whether the specified item can be assigned to icon X or V.
- * @param item_id id of a item
- * @return true if this item item can be assigned to an icon
+ * @brief Returns the name of this inventory item.
+ * @return the name of this inventory item
  */
-bool InventoryItem::can_be_assigned(InventoryItemId item_id) {
-  return item_id < INVENTORY_ROCK_KEY || is_bottle(item_id);
-}
-
-/**
- * @brief Returns whether a counter is associated to the specified item.
- *
- * This is equivalent to get_counter_index(item_id) != -1.
- *
- * @param item_id id of an item
- * @return true if this item has a counter
- */
-bool InventoryItem::has_counter(InventoryItemId item_id) {
-  return get_counter_index(item_id) != -1;
-}
-
-/**
- * @brief Returns the index of the savegame variable where the counter of this item is stored.
- *
- * If the specified item has a counter, returns the index of the savegame
- * variable indicating the counter's value. Otherwise, returns -1.
- *
- * @param item_id an inventory item (with or without counter)
- * @return the index of the savegame variable indicating the counter's value,
- * or -1 if there is no counter on this item
- */
-int InventoryItem::get_counter_index(InventoryItemId item_id) {
-
-  int counter;
-
-  switch(item_id) {
-
-  case INVENTORY_BOMBS:
-    counter = Savegame::CURRENT_BOMBS;
-    break;
-
-  case INVENTORY_BOW:
-    counter = Savegame::CURRENT_ARROWS;
-    break;
-
-  case INVENTORY_APPLES:
-    counter = Savegame::CURRENT_APPLES;
-    break;
-
-  case INVENTORY_PAINS_AU_CHOCOLAT:
-    counter = Savegame::CURRENT_PAINS_AU_CHOCOLAT;
-    break;
-
-  case INVENTORY_CROISSANTS:
-    counter = Savegame::CURRENT_CROISSANTS;
-    break;
-
-  case INVENTORY_FIRE_STONES:
-    counter = Savegame::NB_FIRE_STONES;
-    break;
-
-  default:
-    counter = -1;
-    break;
-  }
-
-  return counter;
-}
-
-/**
- * @brief Returns the delay after which the hero can use this inventory item again.
- * @return the delay in milliseconds
- */
-uint32_t InventoryItem::get_reuse_delay(void) {
-
-  uint32_t result = 0;
-
-  if (item_id == INVENTORY_BOW) {
-    result = 500;
-  }
-
-  return result;
-}
-
-/**
- * @brief Returns the id of this inventory item.
- * @return the id of this inventory item
- */
-InventoryItemId InventoryItem::get_id(void) {
-  return item_id;
+const std::string & InventoryItem::get_name(void) {
+  return item_name;
 }
 
 /**
@@ -152,72 +69,80 @@ int InventoryItem::get_variant(void) {
  */
 void InventoryItem::start(Game *game) {
 
-  this->game = game;
-  this->variant = game->get_equipment()->has_inventory_item(item_id);
-  this->finished = false;
-  this->item_sound_id = "";
-
   Hero *hero = game->get_hero();
   Map *map = game->get_current_map();
   Equipment *equipment = game->get_equipment();
 
+  this->game = game;
+  this->variant = equipment->get_item_variant(item_name);
+  this->finished = false;
+  this->item_sound_id = "";
+
   if (variant == 0) {
-    DIE("Trying to use inventory item #" << item_id << " without having it");
+    DIE("Trying to use inventory item '" << item_name << "' without having it");
   }
 
-  if (is_bottle()) {
+  if (equipment->get_item_properties(item_name)->is_bottle()) {
     start_bottle();
   }
   else {
-    switch (item_id) {
+    
+    // TODO use scripts
+    if (item_name == "boomerang") {
 
-      case INVENTORY_BOOMERANG:
-
-	if (map->get_entities()->is_boomerang_present()) {
-	  finished = true;
-	}
-	else {
-	  hero->get_sprites()->set_animation_boomerang();
-	  this->direction_pressed8 = game->get_controls()->get_wanted_direction8();
-	}
-	break;
- 
-      case INVENTORY_BOW:
-	if (equipment->get_arrows() == 0) {
-          game->play_sound("wrong");
-	  finished = true;
-	}
-        else {
-	  equipment->remove_arrow();
-	  hero->get_sprites()->set_animation_bow();
-	}
-	break;
-
-      case INVENTORY_SPEED_SHOES:
-        hero->start_running();
+      if (map->get_entities()->is_boomerang_present()) {
 	finished = true;
-	break;
+      }
+      else {
+	hero->get_sprites()->set_animation_boomerang();
+	this->direction_pressed8 = game->get_controls()->get_wanted_direction8();
+      }
+    }
+    else if (item_name == "bow") {
 
-      case INVENTORY_APPLES:
-      case INVENTORY_PAINS_AU_CHOCOLAT:
-      case INVENTORY_CROISSANTS:
-        if (equipment->get_inventory_item_amount(item_id) == 0) {
-          game->play_sound("wrong");
-	  finished = true;
-	}
-	else {
-	  MessageId message_id =
-	    (item_id == INVENTORY_APPLES) ? "_use_apples" :
-	    (item_id == INVENTORY_PAINS_AU_CHOCOLAT) ? "_use_pains_au_chocolat" : "_use_croissants";
-
-          game->get_dialog_box()->start_dialog(message_id);
-	}
-	break;
-
-      default:
-	// TODO
+      if (equipment->get_item_amount("bow") == 0) {
+	game->play_sound("wrong");
 	finished = true;
-	break;
+      }
+      else {
+	equipment->remove_item_amount("bow", 1);
+	hero->get_sprites()->set_animation_bow();
+      }
+    }
+    else if (item_name == "speed_shoes") {
+
+      hero->start_running();
+      finished = true;
+    }
+    else if (item_name == "apples") {
+      if (equipment->get_item_amount(item_name) == 0) {
+	game->play_sound("wrong");
+	finished = true;
+      }
+      else {
+	game->get_dialog_box()->start_dialog("_use_apples");
+      }
+    }
+    else if (item_name == "pains_au_chocolat") {
+      if (equipment->get_item_amount(item_name) == 0) {
+	game->play_sound("wrong");
+	finished = true;
+      }
+      else {
+	game->get_dialog_box()->start_dialog("_use_pains_au_chocolat");
+      }
+    }
+    else if (item_name == "croissants") {
+      if (equipment->get_item_amount(item_name) == 0) {
+	game->play_sound("wrong");
+	finished = true;
+      }
+      else {
+	game->get_dialog_box()->start_dialog("_use_croissants");
+      }
+    }
+    else {
+      finished = true;
     }
   }
 }
@@ -238,68 +163,61 @@ void InventoryItem::update(void) {
     }
   }
 
-  if (is_bottle()) {
+  // TODO use scripts
+  if (equipment->get_item_properties(item_name)->is_bottle()) {
     update_bottle();
   }
   else {
-    
-    switch (item_id) {
+   
+    if (item_name == "boomerang") {
       
-      case INVENTORY_BOOMERANG:
-	if (hero->is_animation_finished()) {
-	  finished = true;
-
-	  if (direction_pressed8 == -1) {
-	    // the player can press the diagonal arrows before or after the boomerang key
-	    direction_pressed8 = game->get_controls()->get_wanted_direction8();
-	  }
-
-	  int boomerang_direction8;
-	  if (direction_pressed8 == -1 || direction_pressed8 % 2 == 0) {
-	    boomerang_direction8 = hero->get_animation_direction() * 2;
-	  }
-	  else {
-	    boomerang_direction8 = direction_pressed8;
-	  }
-	  game->get_current_map()->get_entities()->add_entity(new Boomerang(hero, boomerang_direction8 * 45));
-	}
-	break;
- 
-      case INVENTORY_BOW:
-	if (hero->is_animation_finished()) {
-	  finished = true;
-	  game->get_current_map()->get_entities()->add_entity(new Arrow(hero));
-          game->play_sound("bow");
-	}
-	break;
- 
-      case INVENTORY_SPEED_SHOES:
-	// it's immediately finished for us : from the point of view of the InventoryItem class,
-	// the only effect of the speed shoes is to make the hero take its state "running"
+      if (hero->is_animation_finished()) {
 	finished = true;
-	break;
 
-      case INVENTORY_APPLES:
-      case INVENTORY_PAINS_AU_CHOCOLAT:
-      case INVENTORY_CROISSANTS:
-
-        if (!game->is_showing_message()) {
-	  
-	  if (game->get_dialog_box()->get_last_answer() == 0 &&
-	      equipment->get_inventory_item_amount(item_id) > 0) {
-
-	    equipment->remove_inventory_item_amount(item_id, 1);
-	    int nb_hearts =
-	      (item_id == INVENTORY_APPLES) ? 1 :
-	      (item_id == INVENTORY_PAINS_AU_CHOCOLAT) ? 3 : 7;
-	    equipment->add_hearts(nb_hearts * 4);
-	  }
-	  finished = true;
+	if (direction_pressed8 == -1) {
+	  // the player can press the diagonal arrows before or after the boomerang key
+	  direction_pressed8 = game->get_controls()->get_wanted_direction8();
 	}
-	break;
 
-      default:
-	break;
+	int boomerang_direction8;
+	if (direction_pressed8 == -1 || direction_pressed8 % 2 == 0) {
+	  boomerang_direction8 = hero->get_animation_direction() * 2;
+	}
+	else {
+	  boomerang_direction8 = direction_pressed8;
+	}
+	game->get_current_map()->get_entities()->add_entity(new Boomerang(hero, boomerang_direction8 * 45));
+      }
+    }
+    else if (item_name == "bow") {
+
+      if (hero->is_animation_finished()) {
+	finished = true;
+	game->get_current_map()->get_entities()->add_entity(new Arrow(hero));
+	game->play_sound("bow");
+      }
+    }
+    else if (item_name == "speed_shoes") {
+
+      // it's immediately finished for us : from the point of view of the InventoryItem class,
+      // the only effect of the speed shoes is to make the hero take its state "running"
+      finished = true;
+    }
+    else if (item_name == "apples" || item_name == "pains_au_chocolat" || item_name == "croissants") {
+
+      if (!game->is_showing_message()) {
+
+	if (game->get_dialog_box()->get_last_answer() == 0 &&
+	    equipment->get_item_amount(item_name) > 0) {
+
+	  equipment->remove_item_amount(item_name, 1);
+	  int nb_hearts =
+	    (item_name == "apples") ? 1 :
+	    (item_name == "pains_au_chocolat") ? 3 : 7;
+	  equipment->add_life(nb_hearts * 4);
+	}
+	finished = true;
+      }
     }
   }
 }
@@ -313,31 +231,11 @@ bool InventoryItem::is_finished(void) {
 }
 
 /**
- * @brief Returns whether the specified item id corresponds to a bottle.
- * @param item_id id of an inventory item
- * @return true if it is a bottle
- */
-bool InventoryItem::is_bottle(InventoryItemId item_id) {
-
-  return item_id == INVENTORY_BOTTLE_1
-    || item_id == INVENTORY_BOTTLE_2
-    || item_id == INVENTORY_BOTTLE_3
-    || item_id == INVENTORY_BOTTLE_4;
-}
-
-/**
- * @brief Returns whether this item is a bottle.
- * @return true if this item is a bottle
- */
-bool InventoryItem::is_bottle(void) {
-  return is_bottle(item_id);
-}
-
-/**
  * @brief Starts using this item when it is a bottle.
  */
 void InventoryItem::start_bottle(void) {
 
+  // TODO use the script
   switch (variant) {
 
     // empty bottle
@@ -346,7 +244,7 @@ void InventoryItem::start_bottle(void) {
       Detector *facing_entity = game->get_hero()->get_facing_entity();
       if (facing_entity == NULL ||
 	  !facing_entity->interaction_with_inventory_item(this)) {
-	
+
 	// unless an interaction occurs, we play the "wrong" sound
 	game->play_sound("wrong");
       }
@@ -402,7 +300,7 @@ void InventoryItem::update_bottle(void) {
 
       if (answer == 0) {
 	// empty the water
-	game->get_equipment()->set_bottle_empty(item_id);
+	game->get_equipment()->set_bottle_empty(item_name);
 	game->play_sound("item_in_water");
 
 	Detector *facing_entity = game->get_hero()->get_facing_entity();
@@ -426,7 +324,7 @@ void InventoryItem::update_bottle(void) {
 	Hero *hero = game->get_hero();
 	map->get_entities()->add_entity(PickableItem::create(game, hero->get_layer(), hero->get_x(), hero->get_y(),
 	      PickableItem::FAIRY, -1, FALLING_LOW, true));
-	game->get_equipment()->set_bottle_empty(item_id);
+	game->get_equipment()->set_bottle_empty(item_name);
 
       }
       finished = true;

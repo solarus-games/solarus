@@ -58,7 +58,7 @@ const int Hero::normal_walking_speed = 9;
 Hero::Hero(Equipment *equipment):
   state(NULL), old_state(NULL), equipment(equipment), facing_entity(NULL),
   walking_speed(normal_walking_speed), on_conveyor_belt(false), on_raised_blocks(false),
-  last_inventory_item_id(INVENTORY_NONE), can_use_inventory_item_date(0),
+  last_inventory_item_name(""), can_use_inventory_item_date(0),
   ground(GROUND_NORMAL), next_ground_date(0) {
 
   // position
@@ -321,7 +321,7 @@ void Hero::update_ground(void) {
  */
 void Hero::check_gameover(void) {
 
-  if (equipment->get_hearts() <= 0 && state->can_start_gameover_sequence()) {
+  if (equipment->get_life() <= 0 && state->can_start_gameover_sequence()) {
     sprites->stop_blinking();
     game->start_gameover_sequence();
   }
@@ -1603,7 +1603,7 @@ void Hero::start_deep_water(void) {
   }
   else {
     // move to state swimming or jumping
-    if (equipment->has_inventory_item(INVENTORY_FLIPPERS)) {
+    if (equipment->has_ability("swim")) {
       set_state(new SwimmingState(this));
     }
     else {

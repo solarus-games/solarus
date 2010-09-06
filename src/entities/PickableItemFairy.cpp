@@ -95,7 +95,6 @@ void PickableItemFairy::give_item_to_player(void) {
   }
 
   // give the fairy
-  Equipment *equipment = game->get_equipment();
-  equipment->found_fairy();
+  // TODO game->get_equipment()->found_fairy();
 }
 

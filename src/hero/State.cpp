@@ -23,6 +23,7 @@
 #include "Game.h"
 #include "Map.h"
 #include "Equipment.h"
+#include "ItemProperties.h"
 #include "InventoryItem.h"
 #include "Sprite.h"
 #include "KeysEffect.h"
@@ -265,14 +266,14 @@ void Hero::State::directional_key_released(int direction4) {
 void Hero::State::item_key_pressed(int slot) {
 
   Equipment *equipment = game->get_equipment();
-  InventoryItemId item_id = equipment->get_item_assigned(slot);
+  const std::string item_name = equipment->get_item_assigned(slot);
 
-  if (InventoryItem::can_be_assigned(item_id)
-      && equipment->has_inventory_item(item_id)
-      && (item_id != hero->last_inventory_item_id || System::now() >= hero->can_use_inventory_item_date)
+  if (equipment->get_item_properties(item_name)->can_be_assigned()
+      && equipment->has_item(item_name)
+      && (item_name != hero->last_inventory_item_name || System::now() >= hero->can_use_inventory_item_date)
       && can_start_inventory_item()) {
 
-    hero->set_state(new InventoryItemState(hero, item_id));
+    hero->set_state(new InventoryItemState(hero, item_name));
   }
 }
 
@@ -625,7 +626,7 @@ void Hero::State::notify_attacked_enemy(EnemyAttack attack, Enemy *victim, int r
 int Hero::State::get_sword_damage_factor(void) {
 
   static const int sword_factors[] = {0, 1, 2, 4, 8};
-  int sword = game->get_equipment()->get_sword();
+  int sword = game->get_equipment()->get_ability("sword");
   return sword_factors[sword];
 }
 

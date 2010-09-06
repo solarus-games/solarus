@@ -22,7 +22,6 @@
 #include "Game.h"
 #include "DialogBox.h"
 #include "Equipment.h"
-#include "DungeonEquipment.h"
 #include "KeysEffect.h"
 #include "Savegame.h"
 #include "Map.h"
@@ -250,11 +249,10 @@ bool Door::requires_bomb(void) {
 bool Door::can_open(void) {
 
   Equipment *equipment = game->get_equipment();
-  DungeonEquipment *dungeon_equipment = game->get_dungeon_equipment();
 
   return (requires_small_key() && equipment->has_small_key())
-    || (subtype == BIG_KEY && dungeon_equipment->has_big_key())
-    || (subtype == BOSS_KEY && dungeon_equipment->has_boss_key());
+    || (subtype == BIG_KEY && equipment->has_item("big_key"))
+    || (subtype == BOSS_KEY && equipment->has_item("boss_key"));
 }
 
 /**

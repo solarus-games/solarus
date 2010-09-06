@@ -16,7 +16,6 @@
  */
 #include "Savegame.h"
 #include "Equipment.h"
-#include "DungeonEquipment.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/InputEvent.h"
 #include "lowlevel/IniFile.h"
@@ -35,7 +34,6 @@ Savegame::Savegame(const std::string &file_name) {
     set_initial_values();
 
     this->equipment = NULL;
-    this->dungeon_equipment = NULL;
   }
   else {
     // a save already exists, let's load it
@@ -52,7 +50,6 @@ Savegame::Savegame(const std::string &file_name) {
     FileTools::data_file_close_buffer(buffer);
 
     this->equipment = new Equipment(this);
-    this->dungeon_equipment = new DungeonEquipment(this);
 
     check_game_controls();
   }
@@ -70,7 +67,6 @@ Savegame::Savegame(Savegame *other) {
   this->saved_data = other->saved_data;
 
   this->equipment = new Equipment(this);
-  this->dungeon_equipment = new DungeonEquipment(this);
 }
 
 /**
@@ -78,7 +74,6 @@ Savegame::Savegame(Savegame *other) {
  */
 Savegame::~Savegame(void) {
   delete equipment;
-  delete dungeon_equipment;
 }
 
 /**
@@ -107,7 +102,6 @@ void Savegame::set_initial_values(void) {
   int starting_map_id = ini.get_integer_value("starting_map", -1);
   const std::string &starting_destination_point_name = ini.get_string_value("starting_point", "");
   int max_life = ini.get_integer_value("max_life", 1);
-  int life = ini.get_integer_value("life", 1);
 
   if (starting_map_id == -1) {
     DIE("No starting map defined in quest.dat. Please set the value starting_map to the id of the initial map of your quest.");
@@ -120,7 +114,7 @@ void Savegame::set_initial_values(void) {
   set_integer(STARTING_MAP, starting_map_id);
   set_string(STARTING_POINT, starting_destination_point_name);
   set_integer(MAX_LIFE, max_life);
-  set_integer(CURRENT_LIFE, current_life);
+  set_integer(CURRENT_LIFE, max_life);
 }
 
 /**
@@ -197,14 +191,6 @@ const std::string& Savegame::get_file_name(void) {
  */
 Equipment * Savegame::get_equipment(void) {
   return equipment;
-}
-
-/**
- * @brief Returns the player's dungeon equipment corresponding to this savegame.
- * @return the dungeon equipment
- */
-DungeonEquipment * Savegame::get_dungeon_equipment(void) {
-  return dungeon_equipment;
 }
 
 /**

@@ -26,6 +26,7 @@
 #include "Sprite.h"
 #include "Equipment.h"
 #include "InventoryItem.h"
+#include "ItemProperties.h"
 #include "lowlevel/FileTools.h"
 
 /**
@@ -301,7 +302,7 @@ bool InteractiveEntity::interaction_with_inventory_item(InventoryItem *item) {
 
   // if the player uses an empty bottle on a place with water, we let him fill the bottle
   if (subtype == WATER_FOR_BOTTLE
-      && item->is_bottle()
+      && item->get_properties()->is_bottle()
       && item->get_variant() == 1) {
 
     // TODO game->get_equipment()->found_water();
@@ -310,7 +311,7 @@ bool InteractiveEntity::interaction_with_inventory_item(InventoryItem *item) {
   else {
     // in other cases, nothing is predefined in the engine: we call the script
     interaction = game->get_current_script()->
-      event_hero_interaction_item(get_name(), item->get_id(), item->get_variant());
+      event_hero_interaction_item(get_name(), item->get_name(), item->get_variant());
   }
 
   return interaction;

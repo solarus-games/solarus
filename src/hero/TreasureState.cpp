@@ -76,8 +76,8 @@ void Hero::TreasureState::update(void) {
 
     // the treasure's dialog is over: if the treasure was a tunic,
     // a sword or a shield, we have to reload the hero's sprites now
-    Treasure::Content content = treasure->get_content();
-    if (content >= Treasure::BLUE_TUNIC && content <= Treasure::SWORD_4) {
+    const std::string &item_name = treasure->get_item_name();
+    if (item_name == "tunic" || item_name == "sword" || item_name == "shield") {
       hero->rebuild_equipment();
     }
 

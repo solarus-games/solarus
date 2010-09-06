@@ -64,11 +64,11 @@ void Hero::PlungingState::update(void) {
     if (hero->get_ground() != GROUND_DEEP_WATER) {
       hero->set_state(new FreeState(hero));
     }
-    else if (equipment->has_inventory_item(INVENTORY_FLIPPERS)) {
+    else if (equipment->has_ability("swim")) {
       hero->set_state(new SwimmingState(hero));
     }
     else {
-      equipment->remove_hearts(1);
+      equipment->remove_life(1);
       game->play_sound("message_end");
       hero->set_state(new BackToSolidGroundState(hero, false));
     }

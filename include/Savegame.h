@@ -194,7 +194,6 @@ class Savegame {
     std::string file_name;
     SavedData saved_data;
 
-    DungeonEquipment *dungeon_equipment;
     Equipment *equipment;
 
     void set_initial_values(void);
@@ -226,7 +225,6 @@ class Savegame {
 
     // unsaved data
     Equipment *get_equipment(void);
-    DungeonEquipment *get_dungeon_equipment(void);
 };
 
 #endif

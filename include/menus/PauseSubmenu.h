@@ -31,7 +31,6 @@ class PauseSubmenu {
     Game *game;                               /**< the current game */
     Savegame *savegame;                       /**< the savegame */
     Equipment *equipment;                     /**< the player's equipment */
-    DungeonEquipment *dungeon_equipment;      /**< the player's dungeon-specific equipment */
 
     TextSurface *caption_text_1;              /**< the bottom text displayed at left */
     TextSurface *caption_text_2;              /**< the bottom text displayed at right */

@@ -22,7 +22,6 @@
 #include "Savegame.h"
 #include "KeysEffect.h"
 #include "Equipment.h"
-#include "DungeonEquipment.h"
 #include "DialogBox.h"
 #include "Treasure.h"
 #include "Dungeon.h"
@@ -60,7 +59,6 @@ Game::Game(Solarus *solarus, Savegame *savegame):
 
   // notify objects
   get_equipment()->set_game(this);
-  get_dungeon_equipment()->set_game(this);
   solarus->get_debug_keys()->set_game(this);
   controls = new GameControls(this);
   dialog_box = new DialogBox(this);
@@ -162,17 +160,6 @@ Savegame * Game::get_savegame(void) {
  */
 Equipment * Game::get_equipment(void) {
   return savegame->get_equipment();
-}
-
-/**
- * @brief Returns the dungeon equipment of the player.
- *
- * It is equivalent to get_savegame()->get_dungeon_equipment().
- *
- * @return the dungeon equipment
- */
-DungeonEquipment * Game::get_dungeon_equipment(void) {
-  return savegame->get_dungeon_equipment();
 }
 
 /**
@@ -419,12 +406,12 @@ void Game::update_keys_effect(void) {
   }
 
   // make sure the sword key is coherent with having a sword
-  if (get_equipment()->has_sword()
+  if (get_equipment()->has_ability("sword")
       && keys_effect->get_sword_key_effect() != KeysEffect::SWORD_KEY_SWORD) {
 
     keys_effect->set_sword_key_effect(KeysEffect::SWORD_KEY_SWORD);
   }
-  else if (!get_equipment()->has_sword()
+  else if (!get_equipment()->has_ability("sword")
       && keys_effect->get_sword_key_effect() == KeysEffect::SWORD_KEY_SWORD) {
 
     keys_effect->set_sword_key_effect(KeysEffect::SWORD_KEY_NONE);
@@ -443,13 +430,14 @@ void Game::update_treasure(void) {
     // the game has finished giving the treasure to the player
     // and displaying the corresponding message
 
-    Treasure::Content content = treasure->get_content();
+    const std::string &item_name = treasure->get_item_name();
+    int variant = treasure->get_variant();
     int savegame_variable = treasure->get_savegame_variable();
 
     delete treasure;
     treasure = NULL;
 
-    get_current_script()->event_treasure_obtained(content, savegame_variable);
+    get_current_script()->event_treasure_obtained(savegame_variable, item_name, variant);
   }
 }
 
@@ -782,8 +770,8 @@ void Game::set_hud_enabled(bool hud_enabled) {
  * @return true if the player is currently allowed to pause the game
  */
   bool Game::can_pause(void) {
-    return is_pause_key_available()             // see if the map currently allows the pause key
-      && get_equipment()->get_hearts() > 0;     // don't allow to pause the game if the gameover sequence is about to start
+    return is_pause_key_available()		// see if the map currently allows the pause key
+      && get_equipment()->get_life() > 0;	// don't allow to pause the game if the gameover sequence is about to start
   }
 
 /**

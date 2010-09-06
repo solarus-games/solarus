@@ -38,7 +38,6 @@ class PauseSubmenuMap: public PauseSubmenu {
 
     // data
     Equipment *equipment;        /**< general equipment */
-    DungeonEquipment *dungeon_equipment;        /**< dungeon equipment */
     Dungeon *dungeon;            /**< the dungeon whose map is displayed, or NULL if we are not in a dungeon */
     Rectangle hero_position;     /**< position of the hero on the minimap */
 

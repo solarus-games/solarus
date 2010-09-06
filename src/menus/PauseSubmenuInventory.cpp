@@ -28,6 +28,41 @@
 #include "StringResource.h"
 #include "lowlevel/Surface.h"
 
+// TODO load from external data
+static const std::string item_names = {
+  "feather",
+  "bombs",
+  "bow",
+  "boomerang",
+  "lamp",
+  "hookshot",
+  "bottle_1",
+
+  "speed_shoes",
+  "mystic_mirror",
+  "cane_of_somaria",
+  "apples",
+  "pains_au_chocolat",
+  "croissants",
+  "bottle_2",
+
+  "rock_key",
+  "red_key",
+  "clay_key",
+  "l4_way_bone_key",
+  "flippers",
+  "magic_cape",
+  "bottle_3",
+
+  "iron_key",
+  "stone_key",
+  "wooden_key",
+  "ice_key",
+  "glove",
+  "fire_stones",
+  "bottle_4"
+};
+
 /**
  * @brief Constructor.
  * @param pause_menu the pause menu object
@@ -44,15 +79,16 @@ PauseSubmenuInventory::PauseSubmenuInventory(PauseMenu *pause_menu, Game *game):
   for (int k = 0; k < 28; k++) {
 
     // get the item, its counter property and the possession state    
-    InventoryItemId item_id = InventoryItemId(k);
-    int variant = equipment->has_inventory_item(item_id);
+    const std::string &item_name = item_names[k];
+    int variant = equipment->get_item_variant(item_name);
+    ItemProperties *item_properties = equipment->get_item_properties(item_name);
 
-    if (variant != 0 && InventoryItem::has_counter(item_id)) {
+    if (variant != 0 && item_properties->has_amount(item_name)) {
 
-      // if the player has the item and this item has a counter, we show a counter
+      // if the player has the item and this item has an amount, we show a counter
 
-      int amount = equipment->get_inventory_item_amount(item_id);
-      int maximum = equipment->get_inventory_item_maximum(item_id);
+      int amount = equipment->get_item_amount(item_name);
+      int maximum = equipment->get_item_maximum(item_name);
       int x = 60 + (k % 7) * 32;
       int y = 81 + (k / 7) * 32;
 
@@ -66,9 +102,7 @@ PauseSubmenuInventory::PauseSubmenuInventory(PauseMenu *pause_menu, Game *game):
 
     // initialize the caption strings
     if (variant != 0) {
-      int id = InventoryItem::is_bottle(item_id) ? INVENTORY_BOTTLE_1 : item_id;
-      std::ostringstream oss;
-      oss << "inventory.caption.item_" << id << "_" << variant;
+      oss << "inventory.caption.item." << item_name << "_" << variant;
       caption_strings[k] = StringResource::get_string(oss.str());
     }
   }
@@ -123,13 +157,13 @@ void PauseSubmenuInventory::set_cursor_position(int row, int column) {
 
   // update the caption text, show or hide the action icon
   KeysEffect *keys_effect = game->get_keys_effect();
-  InventoryItemId item_id = InventoryItemId(row * 7 + column);
-  int variant = equipment->has_inventory_item(item_id);
+  const std::string item_name = item_names[row * 7 + column];
+  int variant = equipment->get_item_variant(item_name);
 
-  set_caption_text(caption_strings[item_id]);
+  set_caption_text(caption_strings[item_name]);
   if (variant != 0) {
     keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_INFO);
-    keys_effect->set_item_keys_enabled(InventoryItem::can_be_assigned(item_id));
+    keys_effect->set_item_keys_enabled(equipment->get_properties(item_name)->can_be_assigned());
   }
   else {
     keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
@@ -140,8 +174,7 @@ void PauseSubmenuInventory::set_cursor_position(int row, int column) {
 /**
  * @brief Returns the index of the cell currently selected in the inventory.
  *
- * The value returned identifies an item and corresponds directly to a
- * value from the InventoryItemId enum.
+ * The value returned identifies an item.
  *
  * @return the index of the selected cell, between 0 and 27
  */
@@ -159,10 +192,7 @@ int PauseSubmenuInventory::get_selected_index(void) {
  */
 bool PauseSubmenuInventory::is_item_selected(void) {
   
-  InventoryItemId item_id = InventoryItemId(get_selected_index());
-  int variant = equipment->has_inventory_item(item_id);
-
-  return variant != 0;
+  return equipment->has_item(item_names[get_selected_index()]);
 }
 
 /**
@@ -270,13 +300,13 @@ void PauseSubmenuInventory::display(Surface *destination) {
     for (int j = 0; j < 7; j++, k++) {
 
       // get the possession state of this item
-      InventoryItemId item_id = InventoryItemId(k);
-      int variant = equipment->has_inventory_item(item_id);
+      const std::string item_name = item_names[k];
+      int variant = equipment->has_inventory_item(item_name);
 
       if (variant > 0) {
 
 	// the player has this item, display the variant he has
-	src_position.set_xy(16 * item_id, 16 * (variant - 1));
+	src_position.set_xy(16 * item_name, 16 * (variant - 1));
 	items_img->blit(src_position, destination, dst_position);
 
 	// display the counter (if any)
@@ -299,7 +329,7 @@ void PauseSubmenuInventory::display(Surface *destination) {
   // display the item being assigned
   if (item_assigned_movement != NULL) {
     
-    src_position.set_xy(16 * item_assigned_id, 16 * (item_assigned_variant - 1));
+    src_position.set_xy(16 * item_assigned_index, 16 * (item_assigned_variant - 1));
     dst_position.set_xy(item_assigned_movement->get_x(), item_assigned_movement->get_y());
     items_img->blit(src_position, destination, dst_position);
   }

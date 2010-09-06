@@ -19,7 +19,6 @@
 #include "DialogBox.h"
 #include "Savegame.h"
 #include "Equipment.h"
-#include "DungeonEquipment.h"
 #include "DialogBox.h"
 #include "Counter.h"
 #include "Map.h"
@@ -28,7 +27,7 @@
 #include "lowlevel/Surface.h"
 
 // TODO
-#ifndef TODO
+#ifdef TEMP_DISABLED
 
 /**
  * @brief Creates a new treasure without amount.
@@ -267,7 +266,6 @@ void Treasure::add_item_to_equipment(void) {
 
   Savegame *savegame = game->get_savegame();
   Equipment *equipment = game->get_equipment();
-  DungeonEquipment *dungeon_equipment = game->get_dungeon_equipment();
 
   // mark the treasure as found in the savegame
   if (savegame_variable != -1) {
@@ -500,23 +498,23 @@ void Treasure::add_item_to_equipment(void) {
 
 
   case MAP:
-    dungeon_equipment->add_map();
+    equipment->give_item("map");
     break;
 
   case COMPASS:
-    dungeon_equipment->add_compass();
+    equipment->give_item("compass");
     break;
 
   case SMALL_KEY:
-    equipment->add_small_key();
+    equipment->give_item("small_key");
     break;
 
   case BIG_KEY:
-    dungeon_equipment->add_big_key();
+    dungeon_equipment->give_item("big_key");
     break;
 
   case BOSS_KEY:
-    dungeon_equipment->add_boss_key();
+    dungeon_equipment->give_item("boss_key");
     break;
 
   case PIECE_OF_HEART:

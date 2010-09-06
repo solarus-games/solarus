@@ -184,7 +184,7 @@ called when the hero walks on a sensor
 called when the hero interacts with an interactive entity (other than an NPC)
 by pressing the action key when there is no predetermined dialog to show
 
-- <tt>event_hero_interaction_item(entity_name, item_id, variant)</tt>:
+- <tt>event_hero_interaction_item(entity_name, item_name, variant)</tt>:
 called when the hero interacts with an interactive entity (other than an NPC)
 by using an inventory item; returns true if an interaction actually happened
 

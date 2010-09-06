@@ -29,6 +29,8 @@ class ItemProperties {
   public:
 
     int get_counter_savegame_variable();
+    bool can_be_assigned(void);
+    bool is_bottle(void);
 };
 
 #endif

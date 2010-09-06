@@ -19,35 +19,27 @@
 
 #include "Common.h"
 #include "Savegame.h"
-#include "InventoryItemId.h"
 
 /**
- * @brief Represents an item from the inventory.
+ * @brief Represents an item from the inventory that the player can use.
  *
- * This class provides the description of each item of the inventory
- * with some static methods,
- * and handles their behavior when it is instanciated.
- * This inventory items does not include the dungeon items (map, compass, etc.)
- * nor the items of the quest status screen (rupee bag, heart pieces, etc.).
+ * This class handles the behavior of the item when the player uses it.
  * It only includes the items displayed on the inventory submenu
- * (accessible when the game is paused).
- * Some inventory items can be assigned to the two inventory item keys
- * and then be used directly during the game (e.g. the boomerang, the bombs, etc.),
- * whereas some other cannot (e.g. the glove and the flippers)
- * because they are only used in an implicit way.
+ * (accessible when the game is paused) and that can be assigned to an item key.
  */
 class InventoryItem {
 
   private:
 
-    InventoryItemId item_id;	/**< id of this item */
+    std::string item_name;	/**< name of the item being used */
+    int variant;		/**< the possession state of this item when it is used */
 
     // state
-    int variant;		/**< the possession state of this item when it is used */
     Game *game;			/**< the game this item is used in */
     bool finished;		/**< true if we have finished using this item */
 
     // additionnal state information used by certain items
+    // TODO use scripts
     SoundId item_sound_id;	/**< sound played repeatedly while using this item */
     uint32_t sound_delay;	/**< delay before playing the sound again */
     uint32_t next_sound_date;	/**< when the sound is played again */
@@ -60,20 +52,13 @@ class InventoryItem {
   public:
 
     // creation and destruction
-    InventoryItem(InventoryItemId item_id);
+    InventoryItem(const std::string &item_name);
     ~InventoryItem(void);
 
-    // static features
-    static bool can_be_assigned(InventoryItemId item_id);
-    static bool has_counter(InventoryItemId item_id);
-    static int get_counter_index(InventoryItemId item_id);
-    static bool is_bottle(InventoryItemId item_id);
-
-    // properties
-    InventoryItemId get_id(void);
+    // item information
+    const std::string & get_name(void);
     int get_variant(void);
-    bool is_bottle(void);
-    uint32_t get_reuse_delay(void);
+    ItemProperties * get_properties(void);
 
     // state
     void start(Game *game);

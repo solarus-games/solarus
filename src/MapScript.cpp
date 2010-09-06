@@ -19,7 +19,6 @@
 #include "Game.h"
 #include "Sprite.h"
 #include "InventoryItem.h"
-#include "DungeonEquipment.h"
 #include "entities/EntityType.h"
 #include "entities/MapEntities.h"
 #include "entities/InteractiveEntity.h"
@@ -1240,7 +1239,7 @@ int MapScript::l_dungeon_is_finished(lua_State *l) {
   called_by_script(l, 1, &script);
 
   int dungeon = lua_tointeger(l, 1);
-  bool finished = script->game->get_dungeon_equipment()->is_finished(dungeon);
+  bool finished = script->game->get_equipment()->is_dungeon_finished(dungeon);
   lua_pushboolean(l, finished);
 
   return 1;
@@ -1259,7 +1258,7 @@ int MapScript::l_dungeon_set_finished(lua_State *l) {
   MapScript *script;
   called_by_script(l, 0, &script);
 
-  script->game->get_dungeon_equipment()->set_finished();
+  script->game->get_equipment()->set_dungeon_finished();
 
   return 0;
 }
@@ -1467,13 +1466,13 @@ void MapScript::event_hero_interaction(const std::string &entity_name) {
  * (e.g. a key that is being used in front of a door).
  *
  * @param entity_name name of the interactive entity the hero is facing
- * @param item_id id of the inventory item that is being used
+ * @param item_name name of the inventory item that is being used
  * @param variant variant of this inventory item
  * @return true if the script has handled the event
  */
-bool MapScript::event_hero_interaction_item(const std::string &entity_name, InventoryItemId item_id, int variant) {
+bool MapScript::event_hero_interaction_item(const std::string &entity_name, const std::string &item_name, int variant) {
 
-  bool exists = call_script_function("event_hero_interaction_item", entity_name, item_id, variant);
+  bool exists = call_script_function("event_hero_interaction_item", entity_name, item_name, variant);
   bool interaction = lua_toboolean(context, 1);
 
   return exists && interaction;

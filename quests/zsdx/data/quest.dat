@@ -10,7 +10,6 @@ outside_world_height = 3584
 starting_map = 0
 starting_point = start_position
 max_life = 12
-life = 12
 
 # List of equipment items:
 # determines the equipment, the treasures and the pickable items

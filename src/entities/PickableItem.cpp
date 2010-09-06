@@ -25,7 +25,6 @@
 #include "Game.h"
 #include "Savegame.h"
 #include "Equipment.h"
-#include "DungeonEquipment.h"
 #include "Map.h"
 #include "Treasure.h"
 #include "lowlevel/Random.h"
@@ -533,12 +532,12 @@ void PickableItem::give_item_to_player(void) {
     break;
 
   case PIECE_OF_HEART:
-    treasure = new Treasure(game, savegame_variable, "piece_of_heart")
+    treasure = new Treasure(game, savegame_variable, "piece_of_heart", 1);
     game->give_treasure(treasure);
     break;
 
   case HEART_CONTAINER:
-    treasure = new Treasure(game, savegame_variable, "heart_container");
+    treasure = new Treasure(game, savegame_variable, "heart_container", 1);
     game->give_treasure(treasure);
     break;
 

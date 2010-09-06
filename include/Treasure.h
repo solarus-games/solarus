@@ -62,7 +62,7 @@ class Treasure {
     Treasure(Game *game, int savegame_variable, const std::string &item_name, int variant, int amount = 0);
     ~Treasure(void);
 
-    const std::string & get_item(void);
+    const std::string & get_item_name(void);
     int get_variant(void);
     bool has_amount(void);
     int get_amount(void);

@@ -1,5 +1,9 @@
 This ChangeLog describes the important changes of each svn commit.
 
+r1413 (2010-09-07):
+
+Still updating classes for the new item system.
+
 r1413 (2010-09-05):
 
 Change the Lua API of treasure functions to fit with the new item system: treasure_give,

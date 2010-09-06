@@ -103,6 +103,7 @@ class Equipment {
 
     int get_item_maximum(const std::string &item_name);
     bool has_item_maximum(const std::string &item_name);
+    void set_item_maximum(const std::string &item_name, int maximum);
 
     // bottles
     bool has_bottle(void);

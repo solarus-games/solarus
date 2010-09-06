@@ -93,7 +93,6 @@ class Game;
 class GameControls;
 class Savegame;
 class Equipment;
-class DungeonEquipment;
 class ItemProperties;
 class InventoryItem;
 class DebugKeys;

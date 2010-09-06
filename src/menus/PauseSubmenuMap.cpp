@@ -22,7 +22,6 @@
 #include "Sprite.h"
 #include "Map.h"
 #include "Equipment.h"
-#include "DungeonEquipment.h"
 #include "Counter.h"
 #include "Savegame.h"
 #include "StringResource.h"
@@ -40,8 +39,7 @@ const Rectangle PauseSubmenuMap::outside_world_minimap_size(0, 0, 225, 388);
  */
 PauseSubmenuMap::PauseSubmenuMap(PauseMenu *pause_menu, Game *game):
   PauseSubmenu(pause_menu, game),
-  equipment(game->get_equipment()), dungeon_equipment(game->get_dungeon_equipment()),
-  dungeon(game->get_current_dungeon()) {
+  equipment(game->get_equipment()), dungeon(game->get_current_dungeon()) {
 
   // outside map or inside map (no dungeon): show the world map
   if (dungeon == NULL) {
@@ -61,7 +59,7 @@ PauseSubmenuMap::PauseSubmenuMap(PauseMenu *pause_menu, Game *game):
     hero_position.set_x(hero_position.get_x() * outside_world_minimap_size.get_width() / real_size.get_width());
     hero_position.set_y(hero_position.get_y() * outside_world_minimap_size.get_height() / real_size.get_height());
 
-    if (equipment->has_world_map()) {
+    if (equipment->has_ability("see_outside_world_minimap")) {
       world_map_img = new Surface("menus/outside_world_map.png");
       world_minimap_visible_y = std::min(388 - 133, std::max(0, hero_position.get_y() - 66));
     }
@@ -110,7 +108,7 @@ PauseSubmenuMap::PauseSubmenuMap(PauseMenu *pause_menu, Game *game):
 
   hero_head_sprite = new Sprite("menus/hero_head");
   std::ostringstream oss;
-  oss << "tunic" << equipment->get_tunic();
+  oss << "tunic" << equipment->get_ability("tunic");
   hero_head_sprite->set_current_animation(oss.str());
 
   up_arrow_sprite = new Sprite("menus/arrow");
@@ -182,7 +180,7 @@ void PauseSubmenuMap::load_dungeon_map_image(void) {
 
   dungeon_map_img->fill_with_color(Color::get_black());
 
-  if (dungeon_equipment->has_map()) {
+  if (equipment->has_ability("see_dungeon_minimap_rooms")) {
 
     // load the image of this floor
     std::ostringstream oss;
@@ -192,7 +190,7 @@ void PauseSubmenuMap::load_dungeon_map_image(void) {
     delete floor_map_img;
   }
 
-  if (!dungeon_equipment->has_compass()) {
+  if (!equipment->has_ability("see_dungeon_minimap_elements")) {
     hero_point_sprite = NULL;
   }
 
@@ -276,7 +274,7 @@ void PauseSubmenuMap::key_pressed(GameControls::GameKey key) {
     if (dungeon == NULL) {
 
       // move the world map
-      if (equipment->has_world_map()) {
+      if (equipment->has_ability("see_outside_world_minimap")) {
 	moving_visible_y = (key == GameControls::UP) ? -1 : 1;
 	next_moving_visible_y_date = System::now();
       }
@@ -382,8 +380,8 @@ void PauseSubmenuMap::display_world_map(Surface *destination) {
 
   world_map_img->blit(src_position, destination, dst_position);
 
-  // if the player has the map
-  if (equipment->has_world_map()) {
+  // if the player can see the miniap
+  if (equipment->has_ability("see_outside_world_minimap")) {
 
     // display the hero's position
     int hero_visible_y = hero_position.get_y() - world_minimap_visible_y;
@@ -435,29 +433,29 @@ void PauseSubmenuMap::display_dungeon_map(Surface *destination) {
  */
 void PauseSubmenuMap::display_dungeon_items(Surface *destination) {
 
-  // map
-  if (dungeon_equipment->has_map()) {
+  // rooms
+  if (equipment->has_ability("see_dungeon_minimap_rooms")) {
     Rectangle src_position(0, 0, 17, 17);
     Rectangle dst_position(50, 168);
     dungeon_map_icons->blit(src_position, destination, dst_position);
   }
 
-  // compass
-  if (dungeon_equipment->has_compass()) {
+  // elements
+  if (equipment->has_ability("see_dungeon_minimap_elements")) {
     Rectangle src_position(17, 0, 17, 17);
     Rectangle dst_position(69, 168);
     dungeon_map_icons->blit(src_position, destination, dst_position);
   }
 
   // big key
-  if (dungeon_equipment->has_big_key()) {
+  if (equipment->has_ability("open_dungeon_big_locks")) {
     Rectangle src_position(34, 0, 17, 17);
     Rectangle dst_position(88, 168);
     dungeon_map_icons->blit(src_position, destination, dst_position);
   }
 
   // boss key
-  if (dungeon_equipment->has_boss_key()) {
+  if (equipment->has_ability("open_dungeon_boss_lock")) {
     Rectangle src_position(51, 0, 17, 17);
     Rectangle dst_position(107, 168);
     dungeon_map_icons->blit(src_position, destination, dst_position);
@@ -502,7 +500,9 @@ void PauseSubmenuMap::display_dungeon_floors(Surface *destination) {
   }
 
   // display the boss icon
-  if (dungeon_equipment->has_compass() && boss_floor >= lowest_floor_displayed && boss_floor <= highest_floor_displayed) {
+  if (equipment->has_ability("see_dungeon_minimap_elements")
+      && boss_floor >= lowest_floor_displayed
+      && boss_floor <= highest_floor_displayed) {
 
     int boss_y = dst_y + (highest_floor_displayed - boss_floor) * 12 + 3;
 

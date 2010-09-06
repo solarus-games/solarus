@@ -270,20 +270,21 @@ A chest contains a treasure. The hero can open it to obtain the treasure.
 
 Syntax of a chest:
 @verbatim
-5	layer	x	y	entity_name	is_big_chest	treasure_content	treasure_amount	treasure_savegame_variable
+5	layer	x	y	entity_name	is_big_chest	treasure_name	treasure_variant	treasure_amount	treasure_savegame_variable
 @endverbatim
 
 <tt>is_big_chest</tt> is a boolean (0 ou 1) that indicates whether
 this is a big chest (1) or a normal chest (0).
 
-<tt>treasure_content</tt> is a number indicating the treasure placed
-in the chest, according to the enumeration Treasure::Content.
-There are more than 70 possible treasures (rupees, inventory items, equipment,
-dungeon items…). A value of -1 means that the chest is empty or controlled by the script of the map.
+<tt>treasure_name</tt> is a string identifying the item placed
+in the chest, according to the file quest.dat.
+A value of "_none" means that the chest is empty or controlled by the script of the map.
+
+<tt>treasure_variant</tt> is an integer that corresponds to the possession
+state of the item. Most items have only one variant and for them, this value is set to 1.
 
 <tt>treasure_amount</tt> gives the amount of this treasure in the chest.
-This value is used only for some kinds of treasures: rupees, arrows, bombs, etc.
-It is ignored for the other ones.
+This value is used only for some kinds of treasures and ignored for other ones.
 
 <tt>treasure_savegame_variable</tt> is the index of the savegame variable
 that stores the state of this chest.
@@ -474,12 +475,12 @@ A shop item is a treasure one can buy in a shop in exchange for money.
 
 Syntax of a shop item:
 @verbatim
-16	layer	x	y	entity_name	treasure_content	treasure_amount	treasure_savegame_variable	price	message_id
+16	layer	x	y	entity_name	treasure_name	treasure_variant	treasure_amount	treasure_savegame_variable	price	message_id
 @endverbatim
 
-<tt>treasure_content</tt>, <tt>treasure_amount</tt> and <tt>treasure_savegame_variable</tt>
-define the treasure to give to the player when he buys the item.
-The behavior of these values is identical to the case of chests (see above).
+<tt>treasure_name</tt>, <tt>treasure_variant</tt>, <tt>treasure_amount</tt> and <tt>treasure_savegame_variable</tt>
+define the treasure to give to the player when he buys the item (see Treasure.h).
+The behavior of these values is identical to the case of chests.
 The treasure is saved if <tt>treasure_savegame_variable</tt> is not -1.
 When loading the map, is the savegame indicates that the player has already bought the item,
 then the item is not created.

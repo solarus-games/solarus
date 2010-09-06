@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License along
- * with this program. If not, see <http://www.gnu.org/licenses/>.
- */
+ * with this program. If not, see <http://www.gnu.org/licenses	*/
 #include "DebugKeys.h"
 #include "Solarus.h"
 #include "Game.h"
@@ -60,19 +59,19 @@ void DebugKeys::key_pressed(InputEvent::KeyboardKey key) {
     switch (key) {
 
       case InputEvent::KEY_p:
-	equipment->add_hearts(2);
+	equipment->add_life(2);
 	break;
 
       case InputEvent::KEY_m:
-	equipment->remove_hearts(1);
+	equipment->remove_life(1);
 	break;
 
       case InputEvent::KEY_o:
-	equipment->add_rupees(23);
+	equipment->add_money(23);
 	break;
 
       case InputEvent::KEY_l:
-	equipment->remove_rupees(14);
+	equipment->remove_money(14);
 	break;
 
       case InputEvent::KEY_i:
@@ -93,34 +92,35 @@ void DebugKeys::key_pressed(InputEvent::KeyboardKey key) {
 	break;
 
       case InputEvent::KEY_t:
-	equipment->give_inventory_item(INVENTORY_BOW);
-	equipment->set_max_arrows(10);
-	equipment->give_inventory_item(INVENTORY_BOTTLE_2, 6);
-	equipment->give_inventory_item(INVENTORY_BOMBS);
-	equipment->set_max_bombs(10);
-	equipment->set_bombs(10);
-	equipment->give_inventory_item(INVENTORY_BOOMERANG);
-	equipment->give_inventory_item(INVENTORY_LAMP);
-	equipment->give_inventory_item(INVENTORY_HOOK_SHOT);
-	equipment->give_inventory_item(INVENTORY_SPEED_SHOES);
-	equipment->give_inventory_item(INVENTORY_BOTTLE_1);
-	equipment->give_inventory_item(INVENTORY_GLOVE);
-	equipment->give_inventory_item(INVENTORY_PAINS_AU_CHOCOLAT);
-	equipment->set_inventory_item_amount(INVENTORY_PAINS_AU_CHOCOLAT, 3);
-	equipment->give_inventory_item(INVENTORY_CROISSANTS);
-	equipment->give_inventory_item(INVENTORY_RED_KEY);
-	equipment->give_inventory_item(INVENTORY_CLAY_KEY);
-	equipment->add_world_map();
-	equipment->set_item_assigned(0, INVENTORY_BOOMERANG);
-	equipment->set_item_assigned(1, INVENTORY_BOTTLE_2);
+	// quest-specific temporary code
+	equipment->give_item("bow");
+	equipment->set_item_maximum("bow", 10);
+	equipment->set_item_variant("bottle_2", 6);
+	equipment->give_item("bombs");
+	equipment->set_item_maximum("bombs", 10);
+	equipment->set_item_amount("bombs", 10);
+	equipment->give_item("boomerang");
+	equipment->give_item("lamp");
+	equipment->give_item("hookshot");
+	equipment->give_item("speed_shoes");
+	equipment->give_item("bottle_1");
+	equipment->give_item("glove");
+	equipment->give_item("pains_au_chocolat");
+	equipment->set_item_amount("pains_au_chocolat", 3);
+	equipment->give_item("croissants");
+	equipment->give_item("red_key");
+	equipment->give_item("clay_key");
+	equipment->give_item("world_map");
+	equipment->set_item_assigned(0, "boomerang");
+	equipment->set_item_assigned(1, "bottle_2");
 	break;
 
       case InputEvent::KEY_g:
-	equipment->add_arrows(7);
+	equipment->add_item_amount("bow", 7);
 	break;
 
       case InputEvent::KEY_b:
-	equipment->remove_arrow();
+	equipment->remove_item_amount("bow", 1);
 	break;
 
 	/*
@@ -146,32 +146,32 @@ void DebugKeys::key_pressed(InputEvent::KeyboardKey key) {
 	break;
 
       case InputEvent::KEY_KP1:
-	equipment->set_tunic(std::max(equipment->get_tunic() - 1, 0));
+	equipment->set_item_variant("tunic", std::max(equipment->get_item_variant("tunic") - 1, 0));
 	game->get_hero()->rebuild_equipment();
 	break;
 
       case InputEvent::KEY_KP4:
-	equipment->set_tunic(std::min(equipment->get_tunic() + 1, 2));
+	equipment->set_item_variant("tunic", std::min(equipment->get_item_variant("tunic" + 1), 2));
 	game->get_hero()->rebuild_equipment();
 	break;
 
       case InputEvent::KEY_KP2:
-	equipment->set_sword(std::max(equipment->get_sword() - 1, 0));
+	equipment->set_item_variant("sword", std::max(equipment->get_item_variant("sword") - 1, 0));
 	game->get_hero()->rebuild_equipment();
 	break;
 
       case InputEvent::KEY_KP5:
-	equipment->set_sword(std::min(equipment->get_sword() + 1, 4));
+	equipment->set_item_variant("sword", std::min(equipment->get_item_variant("sword" + 1), 4));
 	game->get_hero()->rebuild_equipment();
 	break;
 
       case InputEvent::KEY_KP3:
-	equipment->set_shield(std::max(equipment->get_shield() - 1, 0));
+	equipment->set_item_variant("shield", std::max(equipment->get_item_variant("shield") - 1, 0));
 	game->get_hero()->rebuild_equipment();
 	break;
 
       case InputEvent::KEY_KP6:
-	equipment->set_shield(std::min(equipment->get_shield() + 1, 3));
+	equipment->set_item_variant("shield", std::min(equipment->get_item_variant("shield" + 1), 3));
 	game->get_hero()->rebuild_equipment();
 	break;
 

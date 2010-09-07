@@ -41,7 +41,7 @@ class PauseSubmenuInventory: public PauseSubmenu {
     std::string caption_strings[28];
 
     // assigning an item to an icon
-    int item_assigned_index;                /**< index of the item currently being assigned */
+    std::string item_assigned_name;         /**< name of the item currently being assigned */
     int item_assigned_variant;              /**< possession state of the item being assigned */
     int item_assigned_destination;          /**< destination slot of the item being assigned: 0 for X, 1 for V */
     TargetMovement *item_assigned_movement; /**< movement of the item currently being assigned (NULL if none) */

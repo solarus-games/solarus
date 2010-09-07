@@ -25,11 +25,12 @@
 #include "Counter.h"
 #include "KeysEffect.h"
 #include "InventoryItem.h"
+#include "ItemProperties.h"
 #include "StringResource.h"
 #include "lowlevel/Surface.h"
 
 // TODO load from external data
-static const std::string item_names = {
+static const std::string item_names[] = {
   "feather",
   "bombs",
   "bow",
@@ -83,7 +84,7 @@ PauseSubmenuInventory::PauseSubmenuInventory(PauseMenu *pause_menu, Game *game):
     int variant = equipment->get_item_variant(item_name);
     ItemProperties *item_properties = equipment->get_item_properties(item_name);
 
-    if (variant != 0 && item_properties->has_amount(item_name)) {
+    if (variant != 0 && item_properties->has_amount()) {
 
       // if the player has the item and this item has an amount, we show a counter
 
@@ -102,6 +103,7 @@ PauseSubmenuInventory::PauseSubmenuInventory(PauseMenu *pause_menu, Game *game):
 
     // initialize the caption strings
     if (variant != 0) {
+      std::ostringstream oss;
       oss << "inventory.caption.item." << item_name << "_" << variant;
       caption_strings[k] = StringResource::get_string(oss.str());
     }
@@ -153,17 +155,18 @@ void PauseSubmenuInventory::set_cursor_position(int row, int column) {
   cursor_row = row;
   cursor_column = column;
 
-  savegame->set_integer(Savegame::INVENTORY_LAST_ITEM_INDEX, row * 7 + column);
+  int index = row * 7 + column;
+  savegame->set_integer(Savegame::INVENTORY_LAST_ITEM_INDEX, index);
 
   // update the caption text, show or hide the action icon
   KeysEffect *keys_effect = game->get_keys_effect();
-  const std::string item_name = item_names[row * 7 + column];
+  const std::string item_name = item_names[index];
   int variant = equipment->get_item_variant(item_name);
 
-  set_caption_text(caption_strings[item_name]);
+  set_caption_text(caption_strings[index]);
   if (variant != 0) {
     keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_INFO);
-    keys_effect->set_item_keys_enabled(equipment->get_properties(item_name)->can_be_assigned());
+    keys_effect->set_item_keys_enabled(equipment->get_item_properties(item_name)->can_be_assigned());
   }
   else {
     keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
@@ -301,12 +304,12 @@ void PauseSubmenuInventory::display(Surface *destination) {
 
       // get the possession state of this item
       const std::string item_name = item_names[k];
-      int variant = equipment->has_inventory_item(item_name);
+      int variant = equipment->has_item(item_name);
 
       if (variant > 0) {
 
 	// the player has this item, display the variant he has
-	src_position.set_xy(16 * item_name, 16 * (variant - 1));
+	src_position.set_xy(16 * k, 16 * (variant - 1));
 	items_img->blit(src_position, destination, dst_position);
 
 	// display the counter (if any)
@@ -342,18 +345,11 @@ void PauseSubmenuInventory::display(Surface *destination) {
  */
 void PauseSubmenuInventory::show_info_message(void) {
 
-  InventoryItemId item_id = InventoryItemId(get_selected_index());
-  int variant = equipment->has_inventory_item(item_id);
-
-  // exception: for a bottle, replace its real id by the id of the first bottle
-  if (item_id == INVENTORY_BOTTLE_2
-      || item_id == INVENTORY_BOTTLE_3
-      || item_id == INVENTORY_BOTTLE_4) {
-    item_id = INVENTORY_BOTTLE_1;
-  }
+  const std::string &item_name = item_names[get_selected_index()];
+  int variant = equipment->get_item_variant(item_name);
 
   std::ostringstream oss;
-  oss << "_item_description_" << item_id << '_' << variant;
+  oss << "_item_description." << item_name << '.' << variant;
 
   DialogBox::VerticalPosition vertical_position = (cursor_row >= 2) ? DialogBox::POSITION_TOP : DialogBox::POSITION_BOTTOM;
 
@@ -371,10 +367,10 @@ void PauseSubmenuInventory::show_info_message(void) {
  */
 void PauseSubmenuInventory::assign_item(int slot) {
 
-  InventoryItemId selected_item_id = InventoryItemId(get_selected_index());
+  const std::string &item_name = item_names[get_selected_index()];
 
   // if this item is not assignable, do nothing
-  if (!InventoryItem::can_be_assigned(selected_item_id)) {
+  if (!equipment->get_item_properties(item_name)->can_be_assigned()) {
     return;
   }
 
@@ -384,8 +380,8 @@ void PauseSubmenuInventory::assign_item(int slot) {
   }
 
   // memorize this item
-  this->item_assigned_id = selected_item_id;
-  this->item_assigned_variant = equipment->has_inventory_item(item_assigned_id);
+  this->item_assigned_name = selected_item_name;
+  this->item_assigned_variant = equipment->has_item(item_assigned_name);
   this->item_assigned_destination = slot;
 
   // play the sound
@@ -420,13 +416,13 @@ void PauseSubmenuInventory::finish_assigning_item(void) {
 
   // if the item to assign is already assigned to the other icon, switch the two items
   int slot = item_assigned_destination;
-  InventoryItemId current_item_id = equipment->get_item_assigned(slot);
-  InventoryItemId other_item_id = equipment->get_item_assigned(1 - slot);
+  const std::string &current_item_name = equipment->get_item_assigned(slot);
+  const std::string &other_item_name = equipment->get_item_assigned(1 - slot);
 
-  if (other_item_id == item_assigned_id) {
-    equipment->set_item_assigned(1 - slot, current_item_id);
+  if (other_item_name == item_assigned_name) {
+    equipment->set_item_assigned(1 - slot, current_item_name);
   }
-  equipment->set_item_assigned(slot, item_assigned_id);
+  equipment->set_item_assigned(slot, item_assigned_name);
 
   delete item_assigned_movement;
   item_assigned_movement = NULL;

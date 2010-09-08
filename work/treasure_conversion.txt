@@ -1,19 +1,20 @@
-# The format of treasures has changed since r1410 to make them quest-dependent.
-# Now, the inventory items, the equipment items, the quest status items, the dungeon items,
-# the treasures, the chests, the shop items and the pickable items
-# are all described in a data file instead of being hardcoded.
-# This allows each quest to create its own items.
-# 
-# However, the data files of maps needs to be updated because the syntax of
-# chests, shop items, pickable items, destructible items and enemies has changed.
-#
+The format of treasures has changed since r1410 to make them quest-dependent.
+Now, the inventory items, the equipment items, the quest status items, the dungeon items,
+the treasures, the chests, the shop items and the pickable items
+are all described in a data file instead of being hardcoded.
+This allows each quest to create its own items.
 
-# This section gives for each Treasure::Content value of the old system
-# the corresponding equipment item name and variant number in the new system.
-# It can be used to update (manually or automatically with a shell-script)
-# the treasures, chests and shop items in data files of the old system.
+However, the data files of maps needs to be updated because the syntax of
+chests, shop items, pickable items, destructible items and enemies has changed.
 
-# old_treasure_content		item_name		variant
+
+This section gives for each Treasure::Content value of the old system
+the corresponding equipment item name and variant number in the new system.
+It can be used to update (manually or automatically with a shell-script)
+the treasures, chests and shop items in data files of the old system.
+
+old_treasure_content		item_name		variant
+
 -1	_none	0
 0	feather	1
 2	bow	1
@@ -77,8 +78,8 @@
 88	rupee	2
 89	rupee	3
 
-# This section gives, for each pickable item subtype of the old system,
-# the corresponding new item and variant.
+This section gives, for each pickable item subtype of the old system,
+the corresponding new item and variant.
 
 -1	_random	0
 0	_none	0

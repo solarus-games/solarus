@@ -128,16 +128,18 @@ void Script::register_available_functions(void) {
   lua_register(context, "savegame_set_integer", l_savegame_set_integer);
   lua_register(context, "savegame_set_boolean", l_savegame_set_boolean);
   lua_register(context, "savegame_get_name", l_savegame_get_name);
-  lua_register(context, "equipment_get_rupees", l_equipment_get_rupees);
-  lua_register(context, "equipment_remove_rupees", l_equipment_remove_rupees);
-  lua_register(context, "equipment_get_tunic", l_equipment_get_tunic);
-  lua_register(context, "equipment_get_sword", l_equipment_get_sword);
-  lua_register(context, "equipment_get_shield", l_equipment_get_shield);
-  lua_register(context, "inventory_item_get", l_inventory_item_get);
-  lua_register(context, "inventory_item_set", l_inventory_item_set);
-  lua_register(context, "inventory_item_get_amount", l_inventory_item_get_amount);
-  lua_register(context, "inventory_item_remove_amount", l_inventory_item_remove_amount);
-  lua_register(context, "inventory_item_is_bottle", l_inventory_item_is_bottle);
+  lua_register(context, "equipment_get_life", l_equipment_get_life);
+  lua_register(context, "equipment_add_life", l_equipment_add_life);
+  lua_register(context, "equipment_remove_life", l_equipment_remove_life);
+  lua_register(context, "equipment_get_money", l_equipment_get_money);
+  lua_register(context, "equipment_add_money", l_equipment_add_money);
+  lua_register(context, "equipment_remove_money", l_equipment_remove_money);
+  lua_register(context, "equipment_get_ability", l_equipment_get_ability);
+  lua_register(context, "equipment_get_item", l_equipment_get_item);
+  lua_register(context, "equipment_set_item", l_equipment_set_item);
+  lua_register(context, "equipment_get_item_amount", l_equipment_get_item_amount);
+  lua_register(context, "equipment_add_item_amount", l_equipment_add_item_amount);
+  lua_register(context, "equipment_remove_item_amount", l_equipment_remove_item_amount);
   lua_register(context, "treasure_give", l_treasure_give);
   lua_register(context, "treasure_give_with_amount", l_treasure_give_with_amount);
 }
@@ -828,184 +830,220 @@ int Script::l_savegame_get_name(lua_State *l) {
 }
 
 /**
- * @brief Returns the current number of rupees of the player.
+ * @brief Returns the current level of life of the player.
  *
- * - Return value (integer): the number of rupees
+ * - Return value (integer): the level of life
  */
-int Script::l_equipment_get_rupees(lua_State *l) {
+int Script::l_equipment_get_life(lua_State *l) {
 
   Script *script;
   called_by_script(l, 0, &script);
 
-  int rupees = script->game->get_equipment()->get_rupees();
-  lua_pushinteger(l, rupees);
+  int life = script->game->get_equipment()->get_life();
+  lua_pushinteger(l, life);
 
   return 1;
 }
 
 /**
- * @brief Removes some rupees to the player.
+ * @brief Gives some life to the player.
  *
- * - Argument 1 (integer): number or rupees to remove
+ * - Argument 1 (integer): amount of life to add
  */
-int Script::l_equipment_remove_rupees(lua_State *l) {
+int Script::l_equipment_add_life(lua_State *l) {
 
   Script *script;
   called_by_script(l, 1, &script);
 
-  int rupees = lua_tointeger(l, 1);
+  int life = lua_tointeger(l, 1);
 
-  script->game->get_equipment()->remove_rupees(rupees);
+  script->game->get_equipment()->add_life(life);
 
   return 0;
 }
 
 /**
- * @brief Returns the tunic of the hero.
+ * @brief Removes some life from the player.
  *
- * - Return value (integer): the tunic number (0 to 2)
+ * - Argument 1 (integer): amount of life to remove
  */
-int Script::l_equipment_get_tunic(lua_State *l) {
-
-  Script *script;
-  called_by_script(l, 0, &script);
-
-  int tunic = script->game->get_equipment()->get_tunic();
-
-  lua_pushinteger(l, tunic);
-
-  return 1;
-}
-
-/**
- * @brief Returns the sword of the hero.
- *
- * - Return value (integer): the sword number (0 to 4)
- */
-int Script::l_equipment_get_sword(lua_State *l) {
-
-  Script *script;
-  called_by_script(l, 0, &script);
-
-  int sword = script->game->get_equipment()->get_sword();
-
-  lua_pushinteger(l, sword);
-
-  return 1;
-}
-
-/**
- * @brief Returns the shield of the hero.
- *
- * - Return value (integer): the shield number (0 to 3)
- */
-int Script::l_equipment_get_shield(lua_State *l) {
-
-  Script *script;
-  called_by_script(l, 0, &script);
-
-  int shield = script->game->get_equipment()->get_shield();
-
-  lua_pushinteger(l, shield);
-
-  return 1;
-}
-
-/**
- * @brief Returns the possession state of an item from the inventory.
- *
- * - Argument 1 (integer): an inventory item id
- * - Return value (integer): the possession state of this inventory item
- */
-int Script::l_inventory_item_get(lua_State *l) {
+int Script::l_equipment_remove_life(lua_State *l) {
 
   Script *script;
   called_by_script(l, 1, &script);
 
-  InventoryItemId item_id = InventoryItemId(lua_tointeger(l, 1));
+  int life = lua_tointeger(l, 1);
 
-  int variant = script->game->get_equipment()->has_inventory_item(item_id);
+  script->game->get_equipment()->remove_life(life);
+
+  return 0;
+}
+
+/**
+ * @brief Returns the current amount of money of the player.
+ *
+ * - Return value (integer): the amount of money
+ */
+int Script::l_equipment_get_money(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 0, &script);
+
+  int money = script->game->get_equipment()->get_money();
+  lua_pushinteger(l, money);
+
+  return 1;
+}
+
+/**
+ * @brief Gives some money to the player.
+ *
+ * - Argument 1 (integer): amount of money to add
+ */
+int Script::l_equipment_add_money(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 1, &script);
+
+  int money = lua_tointeger(l, 1);
+
+  script->game->get_equipment()->add_money(money);
+
+  return 0;
+}
+
+/**
+ * @brief Removes some money from the player.
+ *
+ * - Argument 1 (integer): amount of money to remove
+ */
+int Script::l_equipment_remove_money(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 1, &script);
+
+  int money = lua_tointeger(l, 1);
+
+  script->game->get_equipment()->remove_money(money);
+
+  return 0;
+}
+
+/**
+ * @brief Returns the level of an ability of the player.
+ *
+ * - Argument 1 (string): name of the ability to get
+ * - Return value (integer): the level of this ability
+ */
+int Script::l_equipment_get_ability(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 1, &script);
+
+  const std::string &ability_name = lua_tostring(l, 1);
+
+  int ability_level = script->game->get_equipment()->get_ability(ability_name);
+  lua_pushinteger(l, ability_level);
+
+  return 1;
+}
+
+/**
+ * @brief Returns the possession state (also called the variant) of an item.
+ *
+ * - Argument 1 (string): an item name
+ * - Return value (integer): the possession state of this item
+ *   (0 if the player does not have the item)
+ */
+int Script::l_equipment_get_item(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 1, &script);
+
+  const std::string &item_name = lua_tostring(l, 1);
+
+  int variant = script->game->get_equipment()->get_item_variant(item_name);
   lua_pushinteger(l, variant);
 
   return 1;
 }
 
 /**
- * @brief Sets the possession state of an item from the inventory
+ * @brief Sets the possession state of an item.
  *
- * - Argument 1 (integer): an inventory item id
+ * - Argument 1 (string): an item name
  * - Argument 2 (integer): the possession state of this inventory item
- * (a value of 0 removes the inventory item)
+ * (a value of 0 removes the item)
  */
-int Script::l_inventory_item_set(lua_State *l) {
+int Script::l_equipment_set_item(lua_State *l) {
 
   Script *script;
   called_by_script(l, 2, &script);
 
-  InventoryItemId item_id = InventoryItemId(lua_tointeger(l, 1));
-
+  const std::string &item_name = lua_tostring(l, 1);
   int variant = lua_tointeger(l, 2);
-  script->game->get_equipment()->give_inventory_item(item_id, variant);
-  lua_pushinteger(l, variant);
+
+  script->game->get_equipment()->set_item_variant(item_name, variant);
 
   return 1;
 }
 
 
 /**
- * @brief Returns the amount the player has for an item from the inventory.
+ * @brief Returns the amount the player has for an item.
  *
- * - Argument 1 (integer): an inventory item id having an amount (e.g. the bombs)
+ * - Argument 1 (string): the name of an item having an amount
  * - Return value (integer): the amount possessed
  */
-int Script::l_inventory_item_get_amount(lua_State *l) {
+int Script::l_equipment_get_item_amount(lua_State *l) {
 
   Script *script;
   called_by_script(l, 1, &script);
 
-  InventoryItemId item_id = InventoryItemId(lua_tointeger(l, 1));
+  const std::string &item_name = lua_tostring(l, 1);
 
-  int amount = script->game->get_equipment()->get_inventory_item_amount(item_id);
+  int amount = script->game->get_equipment()->get_item_amount(item_name);
   lua_pushinteger(l, amount);
 
   return 1;
 }
 
 /**
- * @brief Removes from the inventory an amount of the specified item.
+ * @brief Adds an amount of the specified item.
  *
- * - Argument 1 (integer): an inventory item id having an amount (e.g. the bombs)
- * - Argument 2 (integer): the amount possessed
+ * - Argument 1 (string): the name of an item having an amount
+ * - Argument 2 (integer): the amount to add
  */
-int Script::l_inventory_item_remove_amount(lua_State *l) {
+int Script::l_equipment_add_item_amount(lua_State *l) {
 
   Script *script;
   called_by_script(l, 2, &script);
 
-  InventoryItemId item_id = InventoryItemId(lua_tointeger(l, 1));
-
+  const std::string &item_name = lua_tostring(l, 1);
   int amount = lua_tointeger(l, 2);
-  script->game->get_equipment()->remove_inventory_item_amount(item_id, amount);
+
+  script->game->get_equipment()->add_item_amount(item_name, amount);
 
   return 0;
 }
 
 /**
- * @brief Returns whether the specified inventory item is corresponds to a bottle.
+ * @brief Removes an amount of the specified item.
  *
- * - Argument 1 (integer): an inventory item id
- * - Return value (integer): true if it is a bottle
+ * - Argument 1 (string): the name of an item having an amount
+ * - Argument 2 (integer): the amount to remove
  */
-int Script::l_inventory_item_is_bottle(lua_State *l) {
+int Script::l_equipment_remove_item_amount(lua_State *l) {
 
-  called_by_script(l, 1, NULL);
+  Script *script;
+  called_by_script(l, 2, &script);
 
-  InventoryItemId item_id = InventoryItemId(lua_tointeger(l, 1));
+  const std::string &item_name = lua_tostring(l, 1);
+  int amount = lua_tointeger(l, 2);
 
-  bool bottle = InventoryItem::is_bottle(item_id);
-  lua_pushboolean(l, bottle ? 1 : 0);
+  script->game->get_equipment()->remove_item_amount(item_name, amount);
 
-  return 1;
+  return 0;
 }
 
 /**
@@ -1059,7 +1097,7 @@ int Script::l_treasure_give_with_amount(lua_State *l) {
   int amount = lua_tointeger(l, 4);
 
   Game *game = script->game;
-  game->give_treasure(new Treasure(savegame_variable, game, item_name, variant, amount));
+  game->give_treasure(new Treasure(game, savegame_variable, item_name, variant, amount));
 
   return 0;
 }

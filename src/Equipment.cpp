@@ -173,7 +173,7 @@ int Equipment::get_money(void) {
 // TODO
 // the rest of the class is not yet implemented in the new system
 // (the existing code is just disabled)
-#ifndef TODO
+#ifdef NOT_YET_IMPLEMENTED
 
 /**
  * @brief Sets the player's current number of rupees.

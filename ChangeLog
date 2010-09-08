@@ -1,5 +1,11 @@
 This ChangeLog describes the important changes of each svn commit.
 
+r1419 (2010-09-08):
+
+- Update the inventory subscreen for the new item system.
+Each item image is now defined as the sprite hud/inventory_item, with the
+animation and direction determined by its name and variant.
+
 r1418 (2010-09-08):
 
 - Update all existing Lua scripts to match the new API.

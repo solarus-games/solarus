@@ -1050,8 +1050,8 @@ int Script::l_equipment_has_item_amount(lua_State *l) {
   const std::string &item_name = lua_tostring(l, 1);
   int amount = lua_tointeger(l, 2);
 
-  bool has_amount = script->game->get_equipment()->get_item_amount(item_name) > 0;
-  lua_pushboolan(l, has_amount);
+  bool has_amount = script->game->get_equipment()->get_item_amount(item_name) > amount;
+  lua_pushboolean(l, has_amount);
 
   return 1;
 }

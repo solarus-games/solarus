@@ -74,12 +74,10 @@ PauseSubmenuInventory::PauseSubmenuInventory(PauseMenu *pause_menu, Game *game):
 
   cursor_sprite = new Sprite("menus/pause_cursor");
 
-  items_img = new Surface("hud/inventory_items.png");
-
-  // set the counters and the caption strings
+  // set the sprites, counters and caption strings
   for (int k = 0; k < 28; k++) {
 
-    // get the item, its counter property and the possession state    
+    // get the item, its counter property and the possession state
     const std::string &item_name = item_names[k];
     int variant = equipment->get_item_variant(item_name);
     ItemProperties *item_properties = equipment->get_item_properties(item_name);
@@ -101,11 +99,23 @@ PauseSubmenuInventory::PauseSubmenuInventory(PauseMenu *pause_menu, Game *game):
       counters[k] = NULL;
     }
 
-    // initialize the caption strings
+    // initialize the sprite and the caption string
     if (variant != 0) {
+
       std::ostringstream oss;
-      oss << "inventory.caption.item." << item_name << "_" << variant;
+
+      // sprite
+      sprites[k] = new Sprite("hud/inventory_item");
+      sprites[k]->set_current_animation(item_name);
+      sprites[k]->set_current_direction(variant - 1);
+
+      // caption string
+      oss.str("");
+      oss << "inventory.caption.item." << item_name << "." << variant;
       caption_strings[k] = StringResource::get_string(oss.str());
+    }
+    else {
+      sprites[k] = NULL;
     }
   }
 
@@ -132,12 +142,10 @@ PauseSubmenuInventory::~PauseSubmenuInventory(void) {
 
   // free the memory
   delete cursor_sprite;
-  delete items_img;
 
   for (int k = 0; k < 28; k++) {
-    if (counters[k] != NULL) {
-      delete counters[k];
-    }
+    delete sprites[k];
+    delete counters[k];
   }
 }
 
@@ -292,25 +300,22 @@ void PauseSubmenuInventory::display(Surface *destination) {
   PauseSubmenu::display(destination);
 
   // display each inventory item
-  Rectangle src_position(0, 0, 16, 16);
-  Rectangle dst_position(0, 69, 0, 0);
+  Rectangle dst_xy(0, 69);
 
   int k = 0;
   for (int i = 0; i < 4; i++) {
 
-    dst_position.set_x(56);
+    dst_xy.set_x(56);
 
     for (int j = 0; j < 7; j++, k++) {
 
       // get the possession state of this item
       const std::string item_name = item_names[k];
-      int variant = equipment->has_item(item_name);
 
-      if (variant > 0) {
+      if (equipment->has_item(item_name)) {
 
 	// the player has this item, display the variant he has
-	src_position.set_xy(16 * k, 16 * (variant - 1));
-	items_img->blit(src_position, destination, dst_position);
+	sprites[k]->display(destination, dst_xy.get_x(), dst_xy.get_y());
 
 	// display the counter (if any)
 	if (counters[k] != NULL) {
@@ -318,9 +323,9 @@ void PauseSubmenuInventory::display(Surface *destination) {
 	}
       }
 
-      dst_position.add_x(32);
+      dst_xy.add_x(32);
     }
-    dst_position.add_y(32);
+    dst_xy.add_y(32);
   }
 
   // display the cursor
@@ -332,9 +337,7 @@ void PauseSubmenuInventory::display(Surface *destination) {
   // display the item being assigned
   if (item_assigned_movement != NULL) {
     
-    src_position.set_xy(16 * item_assigned_index, 16 * (item_assigned_variant - 1));
-    dst_position.set_xy(item_assigned_movement->get_x(), item_assigned_movement->get_y());
-    items_img->blit(src_position, destination, dst_position);
+    item_assigned_sprite->display(destination, item_assigned_movement->get_x(), item_assigned_movement->get_y());
   }
 }
 
@@ -367,7 +370,8 @@ void PauseSubmenuInventory::show_info_message(void) {
  */
 void PauseSubmenuInventory::assign_item(int slot) {
 
-  const std::string &item_name = item_names[get_selected_index()];
+  int index = get_selected_index();
+  const std::string &item_name = item_names[index];
 
   // if this item is not assignable, do nothing
   if (!equipment->get_item_properties(item_name)->can_be_assigned()) {
@@ -380,7 +384,8 @@ void PauseSubmenuInventory::assign_item(int slot) {
   }
 
   // memorize this item
-  this->item_assigned_name = selected_item_name;
+  this->item_assigned_name = item_name;
+  this->item_assigned_sprite = sprites[index];
   this->item_assigned_variant = equipment->has_item(item_assigned_name);
   this->item_assigned_destination = slot;
 

@@ -111,35 +111,41 @@ sets a boolean in the savegame
 - <tt>savegame_get_name()</tt>:
 returns the name of the hero (cannot exceed 5 characters)
 
-- <tt>equipment_get_rupees()</tt>:
-returns the number of rupees of the player
+- <tt>equipment_get_life()</tt>:
+returns the current level of life of the player
 
-- <tt>equipment_remove_rupees(rupees)</tt>: 
-removes some rupees from the player
+- <tt>equipment_add_life(life)</tt>: 
+adds some life to the player
 
-- <tt>equipment_get_tunic()</tt>: 
-returns the tunic of the player (0 to 2)
+- <tt>equipment_remove_life(life)</tt>: 
+removes some life from the player
 
-- <tt>equipment_get_sword()</tt>: 
-returns the sword of the player (0 to 4)
+- <tt>equipment_get_money()</tt>:
+returns the amount of money of the player
 
-- <tt>equipment_get_shield()</tt>: 
-returns the shield of the player (0 to 3)
+- <tt>equipment_add_money(money)</tt>: 
+adds some money to the player
 
-- <tt>inventory_item_get(item_id)</tt>: 
-returns the possession state of an inventory item
+- <tt>equipment_remove_money(money)</tt>: 
+removes some money from the player
 
-- <tt>inventory_item_set(item_id, variant)</tt>: 
-sets the possession state of an inventory item
+- <tt>equipment_get_ability(ability_name)</tt>: 
+returns the value of an ability
 
-- <tt>inventory_item_get_amount(item_id)</tt>: 
-returns the amount the player has for an inventory item
+- <tt>equipment_get_item(item_name)</tt>: 
+returns the possession state of an item
 
-- <tt>inventory_item_remove_amount(item_id, amount)</tt>: 
-removes an amount of the specified inventory item
+- <tt>equipment_set_item(item_name, variant)</tt>: 
+sets the possession state of an item
 
-- <tt>inventory_item_is_bottle(item_id)</tt>: 
-returns whether an inventory item is a bottle
+- <tt>equipment_get_item_amount(item_name)</tt>: 
+returns the amount the player has for an item
+
+- <tt>equipment_add_item_amount(item_name, amount)</tt>: 
+adds an amount of the specified item
+
+- <tt>equipment_remove_item_amount(item_name, amount)</tt>: 
+removes an amount of the specified item
 
 - <tt>treasure_give(savegame_variable, item_name, variant)</tt>: 
 gives a treasure to the player (without using a chest)
@@ -342,7 +348,7 @@ enables or disables an enemy
 starts fighting a boss if it is alive
 
 - <tt>boss_end_battle()</tt>:
-sets the fight with a boss as finished (usually called after picking the heart container)
+sets the fight with a boss as finished (usually called after picking the life container)
 
 - <tt>miniboss_start_battle(enemy_name)</tt>:
 starts fighting a miniboss if it is alive

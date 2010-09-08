@@ -18,8 +18,6 @@
 #define SOLARUS_SCRIPT_H
 
 #include "Common.h"
-#include "Treasure.h"
-#include "InventoryItemId.h"
 #include <list>
 
 struct lua_State;
@@ -87,16 +85,18 @@ class Script {
       l_savegame_set_integer,
       l_savegame_set_boolean,
       l_savegame_get_name,
-      l_equipment_get_rupees,
-      l_equipment_remove_rupees,
-      l_equipment_get_tunic,
-      l_equipment_get_sword,
-      l_equipment_get_shield,
-      l_inventory_item_get,
-      l_inventory_item_set,
-      l_inventory_item_get_amount,
-      l_inventory_item_remove_amount,
-      l_inventory_item_is_bottle,
+      l_equipment_get_life,
+      l_equipment_add_life,
+      l_equipment_remove_life,
+      l_equipment_get_money,
+      l_equipment_add_money,
+      l_equipment_remove_money,
+      l_equipment_get_ability,
+      l_equipment_get_item,
+      l_equipment_set_item,
+      l_equipment_get_item_amount,
+      l_equipment_add_item_amount,
+      l_equipment_remove_item_amount,
       l_treasure_give,
       l_treasure_give_with_amount;
 

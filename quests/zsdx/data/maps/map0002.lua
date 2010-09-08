@@ -100,7 +100,7 @@ function event_dialog_finished(first_message_id, answer)
     else
       -- wants to play game 1
 
-      if equipment_get_rupees() < 20 then
+      if equipment_get_money() < 20 then
 	-- not enough money
 	play_sound("wrong")
 	dialog_start("rupee_house.not_enough_money")
@@ -111,7 +111,7 @@ function event_dialog_finished(first_message_id, answer)
 	chest_set_open("chest_2", false)
 	chest_set_open("chest_3", false)
 
-	equipment_remove_rupees(20)
+	equipment_remove_money(20)
 	dialog_start("rupee_house.game_1.good_luck")
 	playing_game_1 = true
       end
@@ -138,13 +138,13 @@ function event_dialog_finished(first_message_id, answer)
       game_2_bet = 20
     end
 
-    if equipment_get_rupees() < game_2_bet then
+    if equipment_get_money() < game_2_bet then
       -- not enough money
       play_sound("wrong")
       dialog_start("rupee_house.not_enough_money")
     else
       -- enough money: pay and start the game
-      equipment_remove_rupees(game_2_bet)
+      equipment_remove_money(game_2_bet)
       dialog_start("rupee_house.game_2.just_paid")
       playing_game_2 = true
 
@@ -160,7 +160,7 @@ function event_dialog_finished(first_message_id, answer)
     end
   elseif string.find(first_message_id, "rupee_house.game_2.reward.") then
     -- reward in game 2
-    treasure_give_with_amount(87, game_2_reward, -1)
+    treasure_give_with_amount(-1, "rupee", 1, game_2_reward)
 
   elseif first_message_id == "rupee_house.game_3.intro" or 
     first_message_id == "rupee_house.game_3.restart_question" then
@@ -172,7 +172,7 @@ function event_dialog_finished(first_message_id, answer)
     else
       -- wants to play game 3
 
-      if equipment_get_rupees() < 10 then
+      if equipment_get_money() < 10 then
 	-- not enough money
 	play_sound("wrong")
 	dialog_start("rupee_house.not_enough_money")
@@ -187,7 +187,7 @@ function event_dialog_finished(first_message_id, answer)
 	tile_set_enabled("game_3_middle_barrier", false);
 	timer_stop("game_3_timer")
 
-	equipment_remove_rupees(10)
+	equipment_remove_money(10)
 	dialog_start("rupee_house.game_3.go")
 	playing_game_3 = true
       end
@@ -218,9 +218,8 @@ function event_chest_empty(chest_name)
       amount = 10
     end
 
-    -- 87 means green rupees (see include/Treasure.h), amount is the number of rupees to give
-    -- and -1 means that the chest is not saved
-    treasure_give_with_amount(87, amount, -1)
+    -- give the rupees
+    treasure_give_with_amount(-1, "rupee", 1, amount)
 
     if amount == 50 then
       -- the maximum reward was found: the game will now refuse to let the hero play again
@@ -239,7 +238,7 @@ function game_3_timer()
 end
 
 -- Function called when the player is obtaining a treasure
-function event_treasure_obtained(content, savegame_variable)
+function event_treasure_obtained(savegame_variable, item_name, variant)
 
   -- stop game 3 when the player founds the piece of heart
   if savegame_variable == 17 then

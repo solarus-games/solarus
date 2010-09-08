@@ -25,10 +25,10 @@ function event_dialog_finished(first_message_id, answer)
     savegame_set_boolean(46, true)
 
     if answer == 0 then
-      if inventory_item_get(10) == 1 then
-	if inventory_item_get_amount(10) >= 6 then
+      if equipment_has_item("apples") then
+	if equipment_get_item_amount("apples") >= 6 then
 	  dialog_start("cake_shop.thank_you")
-	  inventory_item_remove_amount(10, 6)
+	  equipment_remove_item_amount("apples", 6)
 	else
 	  dialog_start("cake_shop.not_enough_apples")
 	end
@@ -37,7 +37,7 @@ function event_dialog_finished(first_message_id, answer)
       end
     end
   elseif first_message_id == "cake_shop.thank_you" then
-    treasure_give(7, 32)
+    treasure_give(32, "bottle_1")
   end
 end
 

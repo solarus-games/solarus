@@ -134,9 +134,12 @@ void Script::register_available_functions(void) {
   lua_register(context, "equipment_get_money", l_equipment_get_money);
   lua_register(context, "equipment_add_money", l_equipment_add_money);
   lua_register(context, "equipment_remove_money", l_equipment_remove_money);
+  lua_register(context, "equipment_has_ability", l_equipment_has_ability);
   lua_register(context, "equipment_get_ability", l_equipment_get_ability);
+  lua_register(context, "equipment_has_item", l_equipment_has_item);
   lua_register(context, "equipment_get_item", l_equipment_get_item);
   lua_register(context, "equipment_set_item", l_equipment_set_item);
+  lua_register(context, "equipment_has_item_amount", l_equipment_has_item_amount);
   lua_register(context, "equipment_get_item_amount", l_equipment_get_item_amount);
   lua_register(context, "equipment_add_item_amount", l_equipment_add_item_amount);
   lua_register(context, "equipment_remove_item_amount", l_equipment_remove_item_amount);
@@ -930,6 +933,27 @@ int Script::l_equipment_remove_money(lua_State *l) {
 }
 
 /**
+ * @brief Returns whether the player has the specified ability.
+ *
+ * This is equivalent to equipment_get_ability(ability_name) > 0.
+ *
+ * - Argument 1 (string): name of the ability to get
+ * - Return value (boolean): true if the level of this ability is greater than 0
+ */
+int Script::l_equipment_has_ability(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 1, &script);
+
+  const std::string &ability_name = lua_tostring(l, 1);
+
+  bool has_ability = script->game->get_equipment()->has_ability(ability_name);
+  lua_pushboolean(l, has_ability);
+
+  return 1;
+}
+
+/**
  * @brief Returns the level of an ability of the player.
  *
  * - Argument 1 (string): name of the ability to get
@@ -944,6 +968,27 @@ int Script::l_equipment_get_ability(lua_State *l) {
 
   int ability_level = script->game->get_equipment()->get_ability(ability_name);
   lua_pushinteger(l, ability_level);
+
+  return 1;
+}
+
+/**
+ * @brief Returns whether the player has the specified item.
+ *
+ * This is equivalent to equipment_get_item(item_name) > 0.
+ *
+ * - Argument 1 (string): an item name
+ * - Return value (boolean): true if the player has this item
+ */
+int Script::l_equipment_has_item(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 1, &script);
+
+  const std::string &item_name = lua_tostring(l, 1);
+
+  bool has_item = script->game->get_equipment()->has_item(item_name);
+  lua_pushboolean(l, has_item);
 
   return 1;
 }
@@ -988,6 +1033,28 @@ int Script::l_equipment_set_item(lua_State *l) {
   return 1;
 }
 
+/**
+ * @brief Returns whether the player has at least the specified amount of an item.
+ *
+ * This is equivalent to equipment_get_item_amount(item_name, amount) > 0.
+ *
+ * - Argument 1 (string): the name of an item having an amount
+ * - Argument 2 (integer): the amount to check
+ * - Return value (integer): true if the player has at least this amount
+ */
+int Script::l_equipment_has_item_amount(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 1, &script);
+
+  const std::string &item_name = lua_tostring(l, 1);
+  int amount = lua_tointeger(l, 2);
+
+  bool has_amount = script->game->get_equipment()->get_item_amount(item_name) > 0;
+  lua_pushboolan(l, has_amount);
+
+  return 1;
+}
 
 /**
  * @brief Returns the amount the player has for an item.

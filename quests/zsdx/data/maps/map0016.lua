@@ -26,22 +26,23 @@ function event_dialog_finished(first_message_id, answer)
 	 dialog_start("smith_cave.not_buying")
       else
 	 -- wants to buy the sword
-	 if equipment_get_rupees() < 80 then
+	 if equipment_get_money() < 80 then
 	    -- not enough money
 	    play_sound("wrong")
 	    dialog_start("smith_cave.not_enough_money")
 	 else
 	    -- enough money: buy the sword
-	    equipment_remove_rupees(80)
-	    treasure_give(66, 30)
+	    equipment_remove_money(80)
+	    treasure_give(30, "sword", 1)
 	 end
       end
    end
 end
 
 -- Function called when the player has bought the sword.
-function event_treasure_obtained(content, savegame_variable)
-   if (content == 66) then
+function event_treasure_obtained(savegame_variable, item_name, variant)
+   if (savegame_variable == 30) then
       dialog_start("smith_cave.thank_you")
    end
 end
+

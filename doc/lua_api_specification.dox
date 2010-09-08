@@ -129,8 +129,14 @@ adds some money to the player
 - <tt>equipment_remove_money(money)</tt>: 
 removes some money from the player
 
+- <tt>equipment_has_ability(ability_name)</tt>: 
+returns whether the player has an ability
+
 - <tt>equipment_get_ability(ability_name)</tt>: 
 returns the value of an ability
+
+- <tt>equipment_has_item(item_name)</tt>: 
+returns whether the player has an item
 
 - <tt>equipment_get_item(item_name)</tt>: 
 returns the possession state of an item
@@ -138,8 +144,11 @@ returns the possession state of an item
 - <tt>equipment_set_item(item_name, variant)</tt>: 
 sets the possession state of an item
 
-- <tt>equipment_get_item_amount(item_name)</tt>: 
+- <tt>equipment_has_item_amount(item_name, amount)</tt>: 
 returns the amount the player has for an item
+
+- <tt>equipment_get_item_amount(item_name)</tt>: 
+returns whether the player has at least the specified amount of an item
 
 - <tt>equipment_add_item_amount(item_name, amount)</tt>: 
 adds an amount of the specified item

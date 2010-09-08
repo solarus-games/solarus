@@ -20,7 +20,7 @@ function event_hero_interaction(entity_name)
    if entity_name == "tom_cave_door" then
 
       -- open the door if the player has the Clay Key
-      if inventory_item_get(16) ~= 0 then
+      if equipment_has_item("clay_key") then
 	 play_sound("door_open")
 	 play_sound("secret")
 	 savegame_set_boolean(36, true)

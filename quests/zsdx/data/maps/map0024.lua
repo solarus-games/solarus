@@ -29,8 +29,9 @@ function boss_already_killed()
   hero_set_map(6, "from_dungeon_1_1F", 1)
 end
 
-function event_treasure_obtained(content, savegame_variable)
-  if content == 80 then
+function event_treasure_obtained(savegame_variable, item_name, variant)
+
+  if item_name == "heart_container" then
     boss_end_battle()
     timer_start(9000, "start_final_room", false);
   end

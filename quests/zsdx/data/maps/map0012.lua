@@ -68,7 +68,7 @@ function event_dialog_finished(first_message_id, answer)
   if first_message_id == "sahasrahla_house.beginning" or
     first_message_id == "sahasrahla_house.give_world_map" then
     -- give the world map to the player
-    treasure_give(50, 33)
+    treasure_give(33, "world_map", 1)
   elseif first_message_id == "sahasrahla_house.quest_accepted" and not door_is_open("door") then
     door_open("door")
   end

@@ -80,7 +80,7 @@ function event_dialog_finished(message_id, answer)
       dialog_start("lyriann_cave.tom.accept_help")
     end
   elseif message_id == "lyriann_cave.tom.accept_help" then
-    treasure_give(4, 41)
+    treasure_give(41, "boomerang", 1)
   elseif message_id == "lyriann_cave.tom.leaving" then
     play_sound("warp")
     hero_set_direction(1)
@@ -102,7 +102,7 @@ function event_dialog_finished(message_id, answer)
 end
 
 function give_boomerang_back()
-  inventory_item_set(3, 0)
+  equipment_set_item("boomerang", 0)
   savegame_set_boolean(41, false)
 end
 

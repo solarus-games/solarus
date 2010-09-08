@@ -25,11 +25,11 @@ function event_hero_interaction(entity_name)
    end
 end
 
--- Function called when the player uses an inventory item on the frozen door
-function event_hero_interaction_item(entity_name, item_id, variant)
+-- Function called when the player uses an item on the frozen door
+function event_hero_interaction_item(entity_name, item_name, variant)
 
    if entity_name == "frozen_door" and
-      inventory_item_is_bottle(item_id) and variant == 2 then
+      item_id.match("^bottle") and variant == 2 then
 
       -- using water on the frozen door
       hero_freeze()
@@ -37,9 +37,9 @@ function event_hero_interaction_item(entity_name, item_id, variant)
       interactive_entity_set_animation("frozen_door_opposite", "disappearing")
       timer_start(800, "timer_frozen_door", false)
       return true
-   else
-      return false
    end
+
+   return false
 end
 
 -- Function called when the door is unfreezed

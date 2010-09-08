@@ -1,5 +1,13 @@
 This ChangeLog describes the important changes of each svn commit.
 
+r1418 (2010-09-08):
+
+- Update all existing Lua scripts to match the new API.
+- New functions in the Lua API:
+  equipment_has_ability(ability_name)
+  equipment_has_item(item_name)
+  equipment_has_item_amount(item_name, amount)
+
 r1417 (2010-09-08):
 
 - Removed the class DungeonEquipment. The class Equipment will handle all items in
@@ -9,18 +17,19 @@ separated anymore.
 
 Functions changed or added:
 
-equipment_get_money()					name changed (was equipment_get_rupees())
-equipment_add_money(money)				new function
-equipment_remove_money(money)				name changed (was equipment_remove_rupees(rupees))
-equipment_get_life()					new function
-equipment_add_life(life)				new function
-equipment_remove_life(life)				new function
-equipment_get_ability(ability_name)			new function (replaces equipment_get_tunic(), equipment_get_sword() and equipment_get_shield())
-equipment_get_item(item_name)				name and parameter changed (was inventory_item_get(item_id))
-equipment_set_item(item_name, variant)			name and parameter changed (was inventory_item_set(item_id, variant))
-equipment_get_item_amount(item_name)			name and parameter changed (was inventory_item_get_amount(item_id))
-equipment_add_item_amount(item_name, amount)		new function
-equipment_remove_item_amount(item_name, amount)		name and parameter changed (was inventory_item_remove_amount(item_id, amount))
+equipment_get_money()						name changed (was equipment_get_rupees())
+equipment_add_money(money)					new function
+equipment_remove_money(money)					name changed (was equipment_remove_rupees(rupees))
+equipment_get_life()						new function
+equipment_add_life(life)					new function
+equipment_remove_life(life)					new function
+equipment_get_ability(ability_name)				new function (replaces equipment_get_tunic(), equipment_get_sword() and equipment_get_shield())
+equipment_get_item(item_name)					name and parameter changed (was inventory_item_get(item_id))
+equipment_set_item(item_name, variant)				name and parameter changed (was inventory_item_set(item_id, variant))
+equipment_get_item_amount(item_name)				name and parameter changed (was inventory_item_get_amount(item_id))
+equipment_add_item_amount(item_name, amount)			new function
+equipment_remove_item_amount(item_name, amount)			name and parameter changed (was inventory_item_remove_amount(item_id, amount))
+event_hero_interaction_item(entity_name, item_name, variant)	paramater changed (was event_hero_interaction_item(entity_name, item_id, variant)
 
 Functions removed from the API:
 

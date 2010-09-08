@@ -48,7 +48,7 @@ function event_dialog_finished(first_message_id, answer)
    if first_message_id == "outside_world.village.monkey" then
 
       -- show another message depending on the shield
-      if equipment_get_shield() > 0 then
+      if equipment_has_ability("shield") then
 	 dialog_start("outside_world.village.monkey.with_shield")
       else
 	 dialog_start("outside_world.village.monkey.without_shield")
@@ -63,7 +63,7 @@ function event_dialog_finished(first_message_id, answer)
       savegame_set_boolean(24, true)
 
    elseif first_message_id == "outside_world.village.tree_woman" then
-      treasure_give(87, -1)
+      treasure_give(-1, "rupee", 1)
    end
 end
 
@@ -99,8 +99,8 @@ function event_hero_interaction(entity_name)
 
    if entity_name == "dungeon_2_door" then
 
-      -- open the door if the player has the Clay Key
-      if inventory_item_get(14) ~= 0 then
+      -- open the door if the player has the Rock Key
+      if equipment_has_item("rock_key") then
 	 play_sound("door_open")
 	 play_sound("secret")
 	 savegame_set_boolean(89, true)

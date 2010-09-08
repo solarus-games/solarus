@@ -110,7 +110,7 @@ class MapScript: public Script {
     void event_hero_victory_sequence_finished(void);
     void event_hero_on_sensor(const std::string &sensor_name);
     void event_hero_interaction(const std::string &entity_name);
-    bool event_hero_interaction_item(const std::string &entity_name, const std::string item_name, int variant);
+    bool event_hero_interaction_item(const std::string &entity_name, const std::string &item_name, int variant);
     void event_npc_dialog(const std::string &npc_name);
     void event_npc_movement_finished(const std::string &npc_name);
     bool event_chest_empty(const std::string &chest_name);

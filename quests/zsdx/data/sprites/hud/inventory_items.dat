@@ -1,0 +1,108 @@
+feather hud/inventory_items.png 1 0 -1
+0	0	16	16	0	0	1	1
+
+bombs hud/inventory_items.png 1 0 -1
+16	0	16	16	0	0	1	1
+
+bow hud/inventory_items.png 1 0 -1
+32	0	16	16	0	0	1	1
+
+boomerang hud/inventory_items.png 1 0 -1
+48	0	16	16	0	0	1	1
+
+lamp hud/inventory_items.png 1 0 -1
+64	0	16	16	0	0	1	1
+
+hookshot hud/inventory_items.png 1 0 -1
+80	0	16	16	0	0	1	1
+
+bottle_1 hud/inventory_items.png 1 0 -1
+96	0	16	16	0	0	1	1
+96	16	16	16	0	0	1	1
+96	32	16	16	0	0	1	1
+96	48	16	16	0	0	1	1
+96	64	16	16	0	0	1	1
+96	80	16	16	0	0	1	1
+
+speed_shoes hud/inventory_items.png 1 0 -1
+112	0	16	16	0	0	1	1
+
+mystic_mirror hud/inventory_items.png 1 0 -1
+128	0	16	16	0	0	1	1
+
+cane_of_somaria hud/inventory_items.png 1 0 -1
+144	0	16	16	0	0	1	1
+
+apples hud/inventory_items.png 1 0 -1
+160	0	16	16	0	0	1	1
+
+pains_au_chocolat hud/inventory_items.png 1 0 -1
+176	0	16	16	0	0	1	1
+
+croissants hud/inventory_items.png 1 0 -1
+192	0	16	16	0	0	1	1
+
+bottle_2 hud/inventory_items.png 1 0 -1
+208	0	16	16	0	0	1	1
+208	16	16	16	0	0	1	1
+208	32	16	16	0	0	1	1
+208	48	16	16	0	0	1	1
+208	64	16	16	0	0	1	1
+208	80	16	16	0	0	1	1
+
+rock_key hud/inventory_items.png 1 0 -1
+224	0	16	16	0	0	1	1
+
+red_key hud/inventory_items.png 1 0 -1
+240	0	16	16	0	0	1	1
+
+clay_key hud/inventory_items.png 1 0 -1
+256	0	16	16	0	0	1	1
+
+l4_way_bone_key hud/inventory_items.png 1 0 -1
+272	0	16	16	0	0	1	1
+272	16	16	16	0	0	1	1
+272	32	16	16	0	0	1	1
+272	48	16	16	0	0	1	1
+
+flippers hud/inventory_items.png 1 0 -1
+288	0	16	16	0	0	1	1
+
+magic_cape hud/inventory_items.png 1 0 -1
+304	0	16	16	0	0	1	1
+
+bottle_3 hud/inventory_items.png 1 0 -1
+320	0	16	16	0	0	1	1
+320	16	16	16	0	0	1	1
+320	32	16	16	0	0	1	1
+320	48	16	16	0	0	1	1
+320	64	16	16	0	0	1	1
+320	80	16	16	0	0	1	1
+
+iron_key hud/inventory_items.png 1 0 -1
+336	0	16	16	0	0	1	1
+
+stone_key hud/inventory_items.png 1 0 -1
+352	0	16	16	0	0	1	1
+
+wooden_key hud/inventory_items.png 1 0 -1
+368	0	16	16	0	0	1	1
+
+ice_key hud/inventory_items.png 1 0 -1
+384	0	16	16	0	0	1	1
+
+glove hud/inventory_items.png 1 0 -1
+400	0	16	16	0	0	1	1
+400	16	16	16	0	0	1	1
+
+fire_stones hud/inventory_items.png 1 0 -1
+416	0	16	16	0	0	1	1
+
+bottle_4 hud/inventory_items.png 1 0 -1
+432	0	16	16	0	0	1	1
+432	16	16	16	0	0	1	1
+432	32	16	16	0	0	1	1
+432	48	16	16	0	0	1	1
+432	64	16	16	0	0	1	1
+432	80	16	16	0	0	1	1
+

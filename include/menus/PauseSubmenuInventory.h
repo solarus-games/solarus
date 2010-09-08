@@ -31,20 +31,21 @@ class PauseSubmenuInventory: public PauseSubmenu {
   private:
 
     // cursor
-    int cursor_row;                 /**< row of the inventory cursor, between 0 and 3 */
-    int cursor_column;              /**< column of the inventory cursor, between 0 and 6 */
-    Sprite *cursor_sprite;          /**< sprite of the cursor to select an item */
+    int cursor_row;				/**< row of the inventory cursor, between 0 and 3 */
+    int cursor_column;				/**< column of the inventory cursor, between 0 and 6 */
+    Sprite *cursor_sprite;			/**< sprite of the cursor to select an item */
 
     // graphics
-    Surface *items_img;             /**< images of the existing items */
-    Counter *counters[28];          /**< counters (for some items only) */
-    std::string caption_strings[28];
+    Sprite *sprites[28];			/**< the sprite of each item */
+    Counter *counters[28];			/**< counters (for some items only) */
+    std::string caption_strings[28];		/**< string displayed when each item is selected */
 
     // assigning an item to an icon
-    std::string item_assigned_name;         /**< name of the item currently being assigned */
-    int item_assigned_variant;              /**< possession state of the item being assigned */
-    int item_assigned_destination;          /**< destination slot of the item being assigned: 0 for X, 1 for V */
-    TargetMovement *item_assigned_movement; /**< movement of the item currently being assigned (NULL if none) */
+    std::string item_assigned_name;		/**< name of the item currently being assigned */
+    Sprite *item_assigned_sprite;		/**< sprite of the item being assigned */
+    int item_assigned_variant;			/**< possession state of the item being assigned */
+    int item_assigned_destination;		/**< destination slot of the item being assigned: 0 for X, 1 for V */
+    TargetMovement *item_assigned_movement;	/**< movement of the item currently being assigned (NULL if none) */
 
     // cursor position
     void set_cursor_position(int row, int column);

@@ -10,6 +10,9 @@ integers (above 1024):
 1029	current number of fire stones
 1030	current number of pieces of heart
 1031	world map (0 or 1)
+1032	bomb bag
+1033	quiver
+1034	rupee bag
 
 1100	feather
 	bombs
@@ -41,8 +44,7 @@ integers (above 1024):
 	ice key
 	glove
 	fire stones
-1127	bottle 4
-
+1127	bottle 4	
 
 booleans:
 

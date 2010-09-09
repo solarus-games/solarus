@@ -6,7 +6,6 @@ lift
 tunic
 sword
 shield
-bottle
 see_outside_world_minimap
 see_dungeon_minimap_rooms
 see_dungeon_minimap_elements

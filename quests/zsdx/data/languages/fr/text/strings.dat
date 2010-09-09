@@ -47,61 +47,61 @@ quest_status.caption.shield_2		Bouclier de Feu
 quest_status.caption.shield_3		Bouclier Miroir
 
 # Inventory submenu
-inventory.caption.item.feather.1		Plume
-inventory.caption.item.bombs.1			Bombes
-inventory.caption.item.bow.1			Arc
-inventory.caption.item.boomerang.1		Boomerang
-inventory.caption.item.lamp.1			Lanterne
-inventory.caption.item.hookshot.1		Grappin
-inventory.caption.item.bottle_1.1		Flacon Magique$(Vide)
-inventory.caption.item.bottle_1.2		Flacon Magique$(Eau)
-inventory.caption.item.bottle_1.3		Flacon Magique$(Potion rouge)
-inventory.caption.item.bottle_1.4		Flacon Magique$(Potion verte)
-inventory.caption.item.bottle_1.5		Flacon Magique$(Potion blue)
-inventory.caption.item.bottle_1.6		Flacon Magique$(Fée)
+inventory.caption.item.feather.1			Plume
+inventory.caption.item.bombs_counter.1			Bombes
+inventory.caption.item.bow.1				Arc
+inventory.caption.item.boomerang.1			Boomerang
+inventory.caption.item.lamp.1				Lanterne
+inventory.caption.item.hookshot.1			Grappin
+inventory.caption.item.bottle_1.1			Flacon Magique$(Vide)
+inventory.caption.item.bottle_1.2			Flacon Magique$(Eau)
+inventory.caption.item.bottle_1.3			Flacon Magique$(Potion rouge)
+inventory.caption.item.bottle_1.4			Flacon Magique$(Potion verte)
+inventory.caption.item.bottle_1.5			Flacon Magique$(Potion blue)
+inventory.caption.item.bottle_1.6			Flacon Magique$(Fée)
 
-inventory.caption.item.speed_shoes.1		Bottes de Pégase
-inventory.caption.item.mystic_mirror.1		Miroir Mystique
-inventory.caption.item.cane_of_somaria.1	Canne de Somaria
-inventory.caption.item.apples.1			Pommes
-inventory.caption.item.pains_au_chocolat.1	Pains au Chocolat
-inventory.caption.item.croissants.1		Croissants
-inventory.caption.item.bottle_2.1		Flacon Magique$(Vide)
-inventory.caption.item.bottle_2.2		Flacon Magique$(Eau)
-inventory.caption.item.bottle_2.3		Flacon Magique$(Potion rouge)
-inventory.caption.item.bottle_2.4		Flacon Magique$(Potion verte)
-inventory.caption.item.bottle_2.5		Flacon Magique$(Potion blue)
-inventory.caption.item.bottle_2.6		Flacon Magique$(Fée)
+inventory.caption.item.speed_shoes.1			Bottes de Pégase
+inventory.caption.item.mystic_mirror.1			Miroir Mystique
+inventory.caption.item.cane_of_somaria.1		Canne de Somaria
+inventory.caption.item.apples_counter.1			Pommes
+inventory.caption.item.pains_au_chocolat_counter.1	Pains au Chocolat
+inventory.caption.item.croissants_counter.1		Croissants
+inventory.caption.item.bottle_2.1			Flacon Magique$(Vide)
+inventory.caption.item.bottle_2.2			Flacon Magique$(Eau)
+inventory.caption.item.bottle_2.3			Flacon Magique$(Potion rouge)
+inventory.caption.item.bottle_2.4			Flacon Magique$(Potion verte)
+inventory.caption.item.bottle_2.5			Flacon Magique$(Potion blue)
+inventory.caption.item.bottle_2.6			Flacon Magique$(Fée)
 
-inventory.caption.item.rock_key.1		Clé de Roc
-inventory.caption.item.red_key.1		Clé Rouge
-inventory.caption.item.clay_key.1		Clé de Terre
-inventory.caption.item.level_4_way_bone_key.1	Tarte aux Pommes
-inventory.caption.item.level_4_way_bone_key.2	Lingots d'or
-inventory.caption.item.level_4_way_bone_key.3	Edelweiss
-inventory.caption.item.level_4_way_bone_key.4	Clé d'Os
-inventory.caption.item.flippers.1		Palmes
-inventory.caption.item.magic_cape.1		Cape Magique
-inventory.caption.item.bottle_3.1		Flacon Magique$(Vide)
-inventory.caption.item.bottle_3.2		Flacon Magique$(Eau)
-inventory.caption.item.bottle_3.3		Flacon Magique$(Potion rouge)
-inventory.caption.item.bottle_3.4		Flacon Magique$(Potion verte)
-inventory.caption.item.bottle_3.5		Flacon Magique$(Potion blue)
-inventory.caption.item.bottle_3.6		Flacon Magique$(Fée)
+inventory.caption.item.rock_key.1			Clé de Roc
+inventory.caption.item.red_key.1			Clé Rouge
+inventory.caption.item.clay_key.1			Clé de Terre
+inventory.caption.item.level_4_way_bone_key.1		Tarte aux Pommes
+inventory.caption.item.level_4_way_bone_key.2		Lingots d'or
+inventory.caption.item.level_4_way_bone_key.3		Edelweiss
+inventory.caption.item.level_4_way_bone_key.4		Clé d'Os
+inventory.caption.item.flippers.1			Palmes
+inventory.caption.item.magic_cape.1			Cape Magique
+inventory.caption.item.bottle_3.1			Flacon Magique$(Vide)
+inventory.caption.item.bottle_3.2			Flacon Magique$(Eau)
+inventory.caption.item.bottle_3.3			Flacon Magique$(Potion rouge)
+inventory.caption.item.bottle_3.4			Flacon Magique$(Potion verte)
+inventory.caption.item.bottle_3.5			Flacon	Magique$(Potion blue)
+inventory.caption.item.bottle_3.6			Flacon Magique$(Fée)
 
-inventory.caption.item.iron_key.1		Clé de Fer
-inventory.caption.item.stone_key.1		Clé de Pierre
-inventory.caption.item.wooden_key.1		Clé de Bois
-inventory.caption.item.ice_key.1		Clé de Glace
-inventory.caption.item.glove.1			Poigne de Fer
-inventory.caption.item.glove.2			Poigne d'Or
-inventory.caption.item.fire_stones.1		Pierres de Feu
-inventory.caption.item.bottle_4.1		Flacon Magique$(Vide)
-inventory.caption.item.bottle_4.2		Flacon Magique$(Eau)
-inventory.caption.item.bottle_4.3		Flacon Magique$(Potion rouge)
-inventory.caption.item.bottle_4.4		Flacon Magique$(Potion verte)
-inventory.caption.item.bottle_4.5		Flacon Magique$(Potion blue)
-inventory.caption.item.bottle_4.6		Flacon Magique$(Fée)
+inventory.caption.item.iron_key.1			Clé de Fer
+inventory.caption.item.stone_key.1			Clé de Pierre
+inventory.caption.item.wooden_key.1			Clé de Bois
+inventory.caption.item.ice_key.1			Clé de Glace
+inventory.caption.item.glove.1				Poigne de Fer
+inventory.caption.item.glove.2				Poigne d'Or
+inventory.caption.item.fire_stones_counter.1		Pierres de Feu
+inventory.caption.item.bottle_4.1			Flacon Magique$(Vide)
+inventory.caption.item.bottle_4.2			Flacon Magique$(Eau)
+inventory.caption.item.bottle_4.3			Flacon Magique$(Potion rouge)
+inventory.caption.item.bottle_4.4			Flacon Magique$(Potion verte)
+inventory.caption.item.bottle_4.5			Flacon Magique$(Potion blue)
+inventory.caption.item.bottle_4.6			Flacon Magique$(Fée)
 
 # Options submenu
 options.caption.press_action_change_mode	Appuyez sur Action$pour changer de mode

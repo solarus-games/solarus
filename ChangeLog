@@ -1,5 +1,11 @@
 This ChangeLog describes the important changes of each svn commit.
 
+r1420 (2010-09-09):
+
+- New function in the Lua API:
+  equipment_set_ability(ability_name, level)
+- Update dialogs and strings related to items and treasures
+
 r1419 (2010-09-08):
 
 - Update the inventory subscreen for the new item system.

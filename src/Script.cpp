@@ -136,6 +136,7 @@ void Script::register_available_functions(void) {
   lua_register(context, "equipment_remove_money", l_equipment_remove_money);
   lua_register(context, "equipment_has_ability", l_equipment_has_ability);
   lua_register(context, "equipment_get_ability", l_equipment_get_ability);
+  lua_register(context, "equipment_set_ability", l_equipment_set_ability);
   lua_register(context, "equipment_has_item", l_equipment_has_item);
   lua_register(context, "equipment_get_item", l_equipment_get_item);
   lua_register(context, "equipment_set_item", l_equipment_set_item);
@@ -951,6 +952,28 @@ int Script::l_equipment_has_ability(lua_State *l) {
   lua_pushboolean(l, has_ability);
 
   return 1;
+}
+
+/**
+ * @brief Sets the level of an ability of the player.
+ *
+ * This function is typically called when the player obtains
+ * an item that gives an ability
+ *
+ * - Argument 1 (string): name of the ability to set
+ * - Argument 2 (integer): the level of this ability
+ */
+int Script::l_equipment_set_ability(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 2, &script);
+
+  const std::string &ability_name = lua_tostring(l, 1);
+  int level = lua_tointeger(l, 2);
+
+  script->game->get_equipment()->set_ability(ability_name, level);
+
+  return 0;
 }
 
 /**

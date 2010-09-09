@@ -140,13 +140,11 @@
 # lorsque le joueur souhaite afficher la description d'un item
 # qu'il possède. Ces messages peuvent être annulés en appuyant
 # sur C.
-# L'identificateur de chacun de ces messages est de la forme _item_description_i_x
-# où i est le numéro de l'item (de 0 à 27) et x est la variante de cet
-# item possédée par le joueur.
-# Exception : les items 13, 20 et 27 ne sont pas définis car il s'agit des Flacons 2, 3 et 4,
-# et ces derniers se contentent de faire appel aux messages définis pour le Flacon 1 (item n°6).
+# L'identificateur de chacun de ces messages est de la forme _item_description.x.y
+# où x est le nom qui identifie l'item (conformément à ce qui est défini dans quest.dat)
+# et y est la variante de cet item possédée par le joueur (un nombre entier).
 
-[_item_description_0_1]
+[_item_description.feather.1]
 # Plume / Feather
 #       |--------------------|
 icon = 0
@@ -155,7 +153,7 @@ line2 = "pour sauter et fran-"
 line3 = "chir des obstacles."
 skip = all
 
-[_item_description_1_1]
+[_item_description.bombs_counter.1]
 # Bombes / Bombs
 #       |--------------------|
 icon = 1
@@ -163,14 +161,14 @@ line1 = "Utilise les Bombes"
 line2 = "contre les ennemis"
 line3 = "ou pour faire"
 skip = all
-next = _item_description_1_1.1
+next = _item_description.bombs_counter.1.1
 
-[_item_description_1_1.1]
+[_item_description.bombs_counter.1.1]
 #       |--------------------|
 line1 = "exploser des"
 line2 = "obstacles."
 
-[_item_description_2_1]
+[_item_description.bow.1]
 # Arc / Bow
 #       |--------------------|
 icon = 2
@@ -178,16 +176,7 @@ line1 = "Tu n'as plus de"
 line2 = "Flèches !"
 skip = all
 
-[_item_description_2_2]
-# Arc & Flèches / Bow & Arrows
-#       |--------------------|
-icon = 3
-line1 = "Tire des Flèches"
-line2 = "pour vaincre des"
-line3 = "ennemis coriaces."
-skip = all
-
-[_item_description_3_1]
+[_item_description.boomerang.1]
 # Boomerang
 #       |--------------------|
 icon = 4
@@ -195,14 +184,14 @@ line1 = "Utilise le Boomerang"
 line2 = "pour immobiliser les"
 line3 = "ennemis ou attraper"
 skip = all
-next = _item_description_3_1.1
+next = _item_description.boomerang.1.1
 
-[_item_description_3_1.1]
+[_item_description.boomerang.1.1]
 #       |--------------------|
 line1 = "des objets à"
 line2 = "distance."
 
-[_item_description_4_1]
+[_item_description.lamp.1]
 # Lanterne / Lamp
 #       |--------------------|
 icon = 5
@@ -210,15 +199,15 @@ line1 = "Eclaire-toi dans le"
 line2 = "noir ou allume des"
 line3 = "braseros à l'aide"
 skip = all
-next = _item_description_4_1.1
+next = _item_description.lamp.1.1
 
-[_item_description_4_1.1]
+[_item_description.lamp.1.1]
 #       |--------------------|
 line1 = "de la Lanterne. Mais"
 line2 = "surveille ton"
 line3 = "compteur magique !"
 
-[_item_description_5_1]
+[_item_description.hookshot.1]
 # Grappin / Hook Shot
 #       |--------------------|
 icon = 6
@@ -226,13 +215,13 @@ line1 = "Hisse-toi à des"
 line2 = "endroits"
 line3 = "inaccessibles grâce"
 skip = all
-next = _item_description_5_1.1
+next = _item_description.hookshot.1.1
 
-[_item_description_5_1.1]
+[_item_description.hookshot.1.1]
 #       |--------------------|
 line1 = "au Grappin."
 
-[_item_description_6_1]
+[_item_description.bootle_1.1]
 # Flacon Magique vide / Empty bottle
 #       |--------------------|
 icon = 7
@@ -241,21 +230,21 @@ line2 = "peut contenir di-"
 line3 = "verses substances..."
 skip = all
 
-[_item_description_6_2]
+[_item_description.bootle_1.2]
 # Eau dans Flacon / Water in Bottle
 #       |--------------------|
 icon = 8
 line1 = "Ton Flacon Magique"
 line2 = "contient de l'eau."
 skip = all
-next = _item_description_6_2.1
+next = _item_description.bottle_1.2.1
 
-[_item_description_6_2.1]
+[_item_description.bottle_1.2.1]
 #       |--------------------|
 line1 = "Verse-la à un"
 line2 = "endroit approprié..."
 
-[_item_description_6_3]
+[_item_description.bottle_1.3]
 # Potion rouge / Red potion
 #       |--------------------|
 icon = 9
@@ -264,7 +253,7 @@ line2 = "rouge pour retrouver"
 line3 = "tous tes Coeurs."
 skip = all
 
-[_item_description_6_4]
+[_item_description.bottle_1.4]
 # Potion verte / Red potion
 #       |--------------------|
 icon = 10
@@ -273,7 +262,7 @@ line2 = "verte pour retrouver"
 line3 = "toute ta magie."
 skip = all
 
-[_item_description_6_5]
+[_item_description.bottle_1.5]
 # Potion bleue / Red potion
 #       |--------------------|
 icon = 11
@@ -282,29 +271,245 @@ line2 = "bleue pour retrouver"
 line3 = "vie et magie !"
 skip = all
 
-[_item_description_6_6]
+[_item_description.bottle_1.6]
 # Fée dans Flacon / Fairy in Bottle
 #       |--------------------|
 icon = 12
 line1 = "Cette Fée te viendra"
 line2 = "en aide si tu es en"
 line3 = "difficulté."
-next = _item_description_6_6.1
+next = _item_description.bottle_1.6.1
 skip = all
 
-[_item_description_6_6.1]
+[_item_description.bottle_1.6.1]
 #       |--------------------|
 line1 = "Tu peux aussi"
 line2 = "l'utiliser à tout"
 line3 = "moment pour"
-next = _item_description_6_6.2
+next = _item_description.bottle_1.6.2
 
-[_item_description_6_6.2]
+[_item_description.bottle_1.6.2]
 #       |--------------------|
 line1 = "récupérer des"
 line2 = "Coeurs !"
 
-[_item_description_7_1]
+[_item_description.bootle_2.1]
+# Flacon Magique vide / Empty bottle
+#       |--------------------|
+icon = 7
+line1 = "Le Flacon Magique"
+line2 = "peut contenir di-"
+line3 = "verses substances..."
+skip = all
+
+[_item_description.bootle_2.2]
+# Eau dans Flacon / Water in Bottle
+#       |--------------------|
+icon = 8
+line1 = "Ton Flacon Magique"
+line2 = "contient de l'eau."
+skip = all
+next = _item_description.bottle_2.2.1
+
+[_item_description.bottle_2.2.1]
+#       |--------------------|
+line1 = "Verse-la à un"
+line2 = "endroit approprié..."
+
+[_item_description.bottle_2.3]
+# Potion rouge / Red potion
+#       |--------------------|
+icon = 9
+line1 = "Bois de la Potion"
+line2 = "rouge pour retrouver"
+line3 = "tous tes Coeurs."
+skip = all
+
+[_item_description.bottle_2.4]
+# Potion verte / Red potion
+#       |--------------------|
+icon = 10
+line1 = "Bois de la Potion"
+line2 = "verte pour retrouver"
+line3 = "toute ta magie."
+skip = all
+
+[_item_description.bottle_2.5]
+# Potion bleue / Red potion
+#       |--------------------|
+icon = 11
+line1 = "Bois de la Potion"
+line2 = "bleue pour retrouver"
+line3 = "vie et magie !"
+skip = all
+
+[_item_description.bottle_2.6]
+# Fée dans Flacon / Fairy in Bottle
+#       |--------------------|
+icon = 12
+line1 = "Cette Fée te viendra"
+line2 = "en aide si tu es en"
+line3 = "difficulté."
+next = _item_description.bottle_2.6.1
+skip = all
+
+[_item_description.bottle_2.6.1]
+#       |--------------------|
+line1 = "Tu peux aussi"
+line2 = "l'utiliser à tout"
+line3 = "moment pour"
+next = _item_description.bottle_2.6.2
+
+[_item_description.bottle_2.6.2]
+#       |--------------------|
+line1 = "récupérer des"
+line2 = "Coeurs !"
+
+[_item_description.bootle_3.1]
+# Flacon Magique vide / Empty bottle
+#       |--------------------|
+icon = 7
+line1 = "Le Flacon Magique"
+line2 = "peut contenir di-"
+line3 = "verses substances..."
+skip = all
+
+[_item_description.bootle_3.2]
+# Eau dans Flacon / Water in Bottle
+#       |--------------------|
+icon = 8
+line1 = "Ton Flacon Magique"
+line2 = "contient de l'eau."
+skip = all
+next = _item_description.bottle_3.2.1
+
+[_item_description.bottle_3.2.1]
+#       |--------------------|
+line1 = "Verse-la à un"
+line2 = "endroit approprié..."
+
+[_item_description.bottle_3.3]
+# Potion rouge / Red potion
+#       |--------------------|
+icon = 9
+line1 = "Bois de la Potion"
+line2 = "rouge pour retrouver"
+line3 = "tous tes Coeurs."
+skip = all
+
+[_item_description.bottle_3.4]
+# Potion verte / Red potion
+#       |--------------------|
+icon = 10
+line1 = "Bois de la Potion"
+line2 = "verte pour retrouver"
+line3 = "toute ta magie."
+skip = all
+
+[_item_description.bottle_3.5]
+# Potion bleue / Red potion
+#       |--------------------|
+icon = 11
+line1 = "Bois de la Potion"
+line2 = "bleue pour retrouver"
+line3 = "vie et magie !"
+skip = all
+
+[_item_description.bottle_3.6]
+# Fée dans Flacon / Fairy in Bottle
+#       |--------------------|
+icon = 12
+line1 = "Cette Fée te viendra"
+line2 = "en aide si tu es en"
+line3 = "difficulté."
+next = _item_description.bottle_3.6.1
+skip = all
+
+[_item_description.bottle_3.6.1]
+#       |--------------------|
+line1 = "Tu peux aussi"
+line2 = "l'utiliser à tout"
+line3 = "moment pour"
+next = _item_description.bottle_3.6.2
+
+[_item_description.bottle_3.6.2]
+#       |--------------------|
+line1 = "récupérer des"
+line2 = "Coeurs !"
+
+[_item_description.bootle_4.1]
+# Flacon Magique vide / Empty bottle
+#       |--------------------|
+icon = 7
+line1 = "Le Flacon Magique"
+line2 = "peut contenir di-"
+line3 = "verses substances..."
+skip = all
+
+[_item_description.bootle_4.2]
+# Eau dans Flacon / Water in Bottle
+#       |--------------------|
+icon = 8
+line1 = "Ton Flacon Magique"
+line2 = "contient de l'eau."
+skip = all
+next = _item_description.bottle_4.2.1
+
+[_item_description.bottle_4.2.1]
+#       |--------------------|
+line1 = "Verse-la à un"
+line2 = "endroit approprié..."
+
+[_item_description.bottle_4.3]
+# Potion rouge / Red potion
+#       |--------------------|
+icon = 9
+line1 = "Bois de la Potion"
+line2 = "rouge pour retrouver"
+line3 = "tous tes Coeurs."
+skip = all
+
+[_item_description.bottle_4.4]
+# Potion verte / Red potion
+#       |--------------------|
+icon = 10
+line1 = "Bois de la Potion"
+line2 = "verte pour retrouver"
+line3 = "toute ta magie."
+skip = all
+
+[_item_description.bottle_4.5]
+# Potion bleue / Red potion
+#       |--------------------|
+icon = 11
+line1 = "Bois de la Potion"
+line2 = "bleue pour retrouver"
+line3 = "vie et magie !"
+skip = all
+
+[_item_description.bottle_4.6]
+# Fée dans Flacon / Fairy in Bottle
+#       |--------------------|
+icon = 12
+line1 = "Cette Fée te viendra"
+line2 = "en aide si tu es en"
+line3 = "difficulté."
+next = _item_description.bottle_4.6.1
+skip = all
+
+[_item_description.bottle_4.6.1]
+#       |--------------------|
+line1 = "Tu peux aussi"
+line2 = "l'utiliser à tout"
+line3 = "moment pour"
+next = _item_description.bottle_4.6.2
+
+[_item_description.bottle_4.6.2]
+#       |--------------------|
+line1 = "récupérer des"
+line2 = "Coeurs !"
+
+[_item_description.speed_shoes.1]
 # Bottes de Pégase / Pegasus Shoes
 #       |--------------------|
 icon = 13
@@ -312,13 +517,13 @@ line1 = "Cours très vite et"
 line2 = "fracasse des"
 line3 = "obstacles grâce aux"
 skip = all
-next = _item_description_7_1.1
+next = _item_description.speed_shoes.1.1
 
-[_item_description_7_1.1]
+[_item_description.speed_shoes.1.1]
 #       |--------------------|
 line1 = "Bottes de Pégase !"
 
-[_item_description_8_1]
+[_item_description.mystic_mirror.1]
 # Miroir Mystique / Mystic Mirror
 #       |--------------------|
 icon = 14
@@ -327,7 +532,7 @@ line2 = "aurait de mystérieux"
 line3 = "pouvoirs..."
 skip = all
 
-[_item_description_9_1]
+[_item_description.cane_of_somaria.1]
 # Canne de Somaria / Cane of Somaria
 #       |--------------------|
 icon = 15
@@ -337,7 +542,7 @@ line3 = "l'aide du Grappin."
 skip = all
 next = _warning_magic
 
-[_item_description_10_1]
+[_item_description.apples_counter.1]
 # Pommes / Apples
 #       |--------------------|
 icon = 16
@@ -346,7 +551,7 @@ line2 = "pour récupérer des"
 line3 = "Coeurs."
 skip = all
 
-[_item_description_11_1]
+[_item_description.pains_au_chocolat_counter.1]
 # Pains au Chocolat / Pains au Chocolat
 #       |--------------------|
 icon = 17
@@ -355,7 +560,7 @@ line2 = "Chocolat pour"
 line3 = "récupéer 3 Coeurs."
 skip = all
 
-[_item_description_12_1]
+[_item_description.croissants_counter.1]
 # Croissant / Croissant
 #       |--------------------|
 icon = 18
@@ -364,7 +569,7 @@ line2 = "pour récupérer"
 line3 = "7 Coeurs."
 skip = all
 
-[_item_description_14_1]
+[_item_description.rock_key.1]
 # Clé de Roc / Rock Key
 #       |--------------------|
 icon = 19
@@ -373,7 +578,7 @@ line2 = "où est donc la bonne"
 line3 = "serrure ?"
 skip = all
 
-[_item_description_15_1]
+[_item_description.red_key.1]
 # Clé Rouge / Red Key
 #       |--------------------|
 icon = 20
@@ -381,7 +586,7 @@ line1 = "Cette étrange Clé"
 line2 = "est toute rouge."
 skip = all
 
-[_item_description_16_1]
+[_item_description.clay_key.1]
 # Clé de Terre / Clay Key
 #       |--------------------|
 icon = 21
@@ -390,7 +595,7 @@ line2 = "permet d'ouvrir la"
 line3 = "grotte du village."
 skip = all
 
-[_item_description_17_1]
+[_item_description.level_4_way_bone_key.1]
 # Tarte aux Pommes / Apple Pie
 #       |--------------------|
 icon = 22
@@ -399,7 +604,7 @@ line2 = "Pommes a un drôle"
 line3 = "d'aspect..."
 skip = all
 
-[_item_description_17_2]
+[_item_description.level_4_way_bone_key.2]
 # Lingots d'or / Golden bars
 #       |--------------------|
 icon = 23
@@ -408,7 +613,7 @@ line2 = "authentiques"
 line3 = "lingots d'or !"
 skip = all
 
-[_item_description_17_3]
+[_item_description.level_4_way_bone_key.3]
 # Edelweiss / Edelweiss
 #       |--------------------|
 icon = 24
@@ -417,7 +622,7 @@ line2 = "fleur très rare dans"
 line3 = "le royaume d'Hyrule."
 skip = all
 
-[_item_description_17_4]
+[_item_description.level_4_way_bone_key.4]
 # Clé d'Os / Bone Key
 #       |--------------------|
 icon = 25
@@ -425,7 +630,7 @@ line1 = "A quoi peut servir"
 line2 = "la Clé d'Os ?"
 skip = all
 
-[_item_description_18_1]
+[_item_description.flippers.1]
 # Palmes / Flippers
 #       |--------------------|
 icon = 26
@@ -434,7 +639,7 @@ line2 = "permettent de nager"
 line3 = "dans l'eau profonde."
 skip = all
 
-[_item_description_19_1]
+[_item_description.magic_cape.1]
 # Cape magique / Magic Cape
 #       |--------------------|
 icon = 27
@@ -442,13 +647,13 @@ line1 = "La Cape Magique"
 line2 = "t'avertit si tu"
 line3 = "t'approches d'un"
 skip = all
-next = _item_description_19_1.1
+next = _item_description.magic_cape.1.1
 
-[_item_description_19_1.1]
+[_item_description.magic_cape.1.1]
 #       |--------------------|
 line1 = "mur fragile..."
 
-[_item_description_21_1]
+[_item_description.iron_key.1]
 # Clé de Fer / Iron Key
 #       |--------------------|
 icon = 28
@@ -457,7 +662,7 @@ line2 = "Mais ne te trompe"
 line3 = "pas de serrure !"
 skip = all
 
-[_item_description_22_1]
+[_item_description.stone_key.1]
 # Clé de Pierre / Stone Key
 #       |--------------------|
 icon = 29
@@ -466,7 +671,7 @@ line2 = "Reste à trouver la"
 line3 = "bonne serrure !"
 skip = all
 
-[_item_description_23_1]
+[_item_description.wooden_key.1]
 # Clé de Bois / Wooden Key
 #       |--------------------|
 icon = 30
@@ -475,7 +680,7 @@ line2 = "une seule serrure"
 line3 = "est la bonne..."
 skip = all
 
-[_item_description_24_1]
+[_item_description.ice_key.1]
 # Clé de Glace / Ice Key
 #       |--------------------|
 icon = 31
@@ -483,14 +688,14 @@ line1 = "La Clé de Glace."
 line2 = "A toi de trouver un"
 line3 = "lieu gelé pour la"
 skip = all
-next = _item_description_24_1.1
+next = _item_description.ice_key.1.1
 
-[_item_description_24_1.1]
+[_item_description.ice_key.1.1]
 #       |--------------------|
 line1 = "faire fonctionner !"
 skip = all
 
-[_item_description_25_1]
+[_item_description.glove.1]
 # Poigne de Fer / Iron Glove
 #       |--------------------|
 icon = 32
@@ -499,7 +704,7 @@ line2 = "permet de soulever"
 line3 = "les pierres."
 skip = all
 
-[_item_description_25_2]
+[_item_description.glove.2]
 # Poigne d'Or / Golden Glove
 #       |--------------------|
 icon = 33
@@ -508,7 +713,7 @@ line2 = "noires grâce à la"
 line3 = "Poigne d'Or."
 skip = all
 
-[_item_description_26_1]
+[_item_description.fire_stones_counter.1]
 # Pierres de Feu / Fire Stones
 #       |--------------------|
 icon = 34
@@ -516,9 +721,9 @@ line1 = "Trouve les trois"
 line2 = "Pierres de Feu et"
 line3 = "apporte-les"
 skip = all
-next = _item_description_26_1.1
+next = _item_description.fire_stones_counter.1
 
-[_item_description_26_1.1]
+[_item_description.fire_stones_counter.1.1]
 #       |--------------------|
 line1 = "à Inferno."
 
@@ -530,115 +735,106 @@ line1 = "à Inferno."
 # un trésor, généralement en ouvrant un coffre ou en l'achetant
 # dans un magasin.
 
-[_treasure_0]
+[_treasure.feather.1]
 # Plume
 #       |--------------------|
 icon = 0
 line1 = "Tu as trouvé la"
 line2 = "Plume !$0 Utilise-la"
 line3 = "pour sauter et"
-next = _treasure_0.1
+next = _treasure.feather.1.1
 
-[_treasure_0.1]
+[_treasure.feather.1.1]
 #       |--------------------|
 line1 = "franchir des"
 line2 = "obstacles !"
 
-[_treasure_2]
+[_treasure.bow.1]
 # Arc seul
 #       |--------------------|
 icon = 2
 line1 = "Tu as trouvé l'Arc !$0"
 line2 = "Trouve des Flèches"
 line3 = "et tu pourras"
-next = _treasure_2.1
+next = _treasure.bow.1.1
 
-[_treasure_2.1]
+[_treasure.bow.1.1]
 #       |--------------------|
 line1 = "vaincre à distance"
 line2 = "les ennemis"
 line3 = "coriaces !"
 
-[_treasure_3]
-# Arc & Flèches
-#       |--------------------|
-icon = 3
-line1 = "Tu as trouvé l'Arc !$0"
-line2 = "Il est équipé de 10"
-line3 = "Flèches. Tu peux"
-next = _treasure_2.1
-
-[_treasure_4]
+[_treasure.boomerang.1]
 # Boomerang
 #       |--------------------|
 icon = 4
 line1 = "Tu as trouvé le"
 line2 = "Boomerang !$0 Tu peux"
 line3 = "immobiliser les"
-next = _treasure_4.1
+next = _treasure.boomerang.1.1
 
-[_treasure_4.1]
+[_treasure.boomerang.1.1]
 #       |--------------------|
 line1 = "ennemis ou attraper"
 line2 = "des objets à"
 line3 = "distance."
-next = _treasure_4.2
+next = _treasure.boomerang.1.2
 
-[_treasure_4.2]
+[_treasure.boomerang.1.2]
 #       |--------------------|
 line1 = "Il y a plusieurs" 
 line2 = "techniques pour le"
 line3 = "manipuler, à toi"
-next = _treasure_4.3
+next = _treasure.boomerang.1.3
 
-[_treasure_4.3]
+[_treasure.boomerang.1.3]
 #       |--------------------|
 line1 = "de les découvrir !"
 
-[_treasure_5]
+[_treasure.lamp.1]
 # Lanterne
 #       |--------------------|
 icon = 5
 line1 = "Tu as trouvé la"
 line2 = "Lanterne !$0 Elle"
 line3 = "t'éclaire dans le"
-next = _treasure_5.1
+next = _treasure.lamp.1.1
 
-[_treasure_5.1]
+[_treasure.lamp.1.1]
 #       |--------------------|
 line1 = "noir et te permet"
 line2 = "d'allumer des"
 line3 = "braseros."
 next = _warning_magic
 
-[_treasure_6]
+[_treasure.hookshot.1]
 # Grappin
 #       |--------------------|
 icon = 6
 line1 = "Tu as trouvé le"
 line2 = "Grappin !$0 Immobilise"
 line3 = "les ennemis et vole"
-next = _treasure_6.1
+next = _treasure.hookshot.1.1
 
-[_treasure_6.1]
+[_treasure.hookshot.1.1]
 #       |--------------------|
 line1 = "vers des endroits"
 line2 = "inacessibles !"
 
-[_treasure_7]
+[_treasure.bottle_1.1]
 # Flacon vide
 #       |--------------------|
 icon = 7
 line1 = "Tu as trouvé un"
 line2 = "Flacon Magique !$0"
-next = _treasure_7.1
+next = _treasure.bottle_1.1.1
 
-[_treasure_7.1]
+[_treasure.bottle_1.1.1]
 #       |--------------------|
 line1 = "Remplis-le avec"
 line2 = "diverses substances."
 
-[_treasure_8]
+[_treasure.bottle_1.2]
 # Eau
 #       |--------------------|
 icon = 8
@@ -646,848 +842,1062 @@ line1 = "Tu as rempli ton"
 line2 = "Flacon Magique avec"
 line3 = "de l'eau !"
 
-[_treasure_9]
+[_treasure.bottle_1.3]
 # Potion rouge
 #       |--------------------|
 icon = 9
 line1 = "Tu as trouvé de la"
 line2 = "Potion Rouge !$0"
-next = _treasure_9.1
+next = _treasure.bottle_1.3.1
 
-[_treasure_9.1]
+[_treasure.bottle_1.3.1]
 #       |--------------------|
 line1 = "Bois-la pour"
 line2 = "retrouver toute ton"
 line3 = "énergie vitale."
 
-[_treasure_10]
+[_treasure.bottle_1.4]
 # Potion verte
 #       |--------------------|
 icon = 10
 line1 = "Tu as trouvé de la"
 line2 = "Potion Verte !$0"
-next = _treasure_10.1
+next = _treasure.bottle_1.4.1
 
-[_treasure_10.1]
+[_treasure.bottle_1.4.1]
 #       |--------------------|
 line1 = "Bois-la pour"
 line2 = "retrouver toute ton"
 line3 = "énergie magique."
 
-[_treasure_11]
+[_treasure.bottle_1.5]
 # Potion bleue
 #       |--------------------|
 icon = 11
 line1 = "Tu as trouvé de la"
 line2 = "Potion Bleue !$0"
-next = _treasure_11.1
+next = _treasure.bottle_1.5.1
 
-[_treasure_11.1]
+[_treasure.bottle_1.5.1]
 #       |--------------------|
 line1 = "Bois-la pour"
 line2 = "retrouver toute ta"
 line3 = "vie et ta magie !"
 
-[_treasure_12]
+[_treasure.bottle_1.6]
 # Fée dans Flacon
 #       |--------------------|
 icon = 12
 line1 = "Tu as capturé une"
 line2 = "Fée ! Elle te"
 line3 = "viendra en aide si"
-next = _treasure_12.1
+next = _treasure.bottle_1.6.1
 skip = all
 
-[_treasure_12.1]
+[_treasure.bottle_1.6.1]
 #       |--------------------|
 line1 = "tu es en difficulté."
 line2 = "Tu peux aussi"
 line3 = "l'utiliser à tout"
-next = _treasure_12.2
+next = _treasure.bottle_1.6.2
 
-[_treasure_12.2]
+[_treasure.bottle_1.6.2]
 #       |--------------------|
 line1 = "moment pour"
 line2 = "récupérer des"
 line3 = "Coeurs."
 
-[_treasure_13]
+[_treasure.bottle_2.1]
+# Flacon vide
+#       |--------------------|
+icon = 7
+line1 = "Tu as trouvé un"
+line2 = "Flacon Magique !$0"
+next = _treasure.bottle_2.1.1
+
+[_treasure.bottle_2.1.1]
+#       |--------------------|
+line1 = "Remplis-le avec"
+line2 = "diverses substances."
+
+[_treasure.bottle_2.2]
+# Eau
+#       |--------------------|
+icon = 8
+line1 = "Tu as rempli ton"
+line2 = "Flacon Magique avec"
+line3 = "de l'eau !"
+
+[_treasure.bottle_2.3]
+# Potion rouge
+#       |--------------------|
+icon = 9
+line1 = "Tu as trouvé de la"
+line2 = "Potion Rouge !$0"
+next = _treasure.bottle_2.3.1
+
+[_treasure.bottle_2.3.1]
+#       |--------------------|
+line1 = "Bois-la pour"
+line2 = "retrouver toute ton"
+line3 = "énergie vitale."
+
+[_treasure.bottle_2.4]
+# Potion verte
+#       |--------------------|
+icon = 10
+line1 = "Tu as trouvé de la"
+line2 = "Potion Verte !$0"
+next = _treasure.bottle_2.4.1
+
+[_treasure.bottle_2.4.1]
+#       |--------------------|
+line1 = "Bois-la pour"
+line2 = "retrouver toute ton"
+line3 = "énergie magique."
+
+[_treasure.bottle_2.5]
+# Potion bleue
+#       |--------------------|
+icon = 11
+line1 = "Tu as trouvé de la"
+line2 = "Potion Bleue !$0"
+next = _treasure.bottle_2.5.1
+
+[_treasure.bottle_2.5.1]
+#       |--------------------|
+line1 = "Bois-la pour"
+line2 = "retrouver toute ta"
+line3 = "vie et ta magie !"
+
+[_treasure.bottle_2.6]
+# Fée dans Flacon
+#       |--------------------|
+icon = 12
+line1 = "Tu as capturé une"
+line2 = "Fée ! Elle te"
+line3 = "viendra en aide si"
+next = _treasure.bottle_2.6.1
+skip = all
+
+[_treasure.bottle_2.6.1]
+#       |--------------------|
+line1 = "tu es en difficulté."
+line2 = "Tu peux aussi"
+line3 = "l'utiliser à tout"
+next = _treasure.bottle_2.6.2
+
+[_treasure.bottle_2.6.2]
+#       |--------------------|
+line1 = "moment pour"
+line2 = "récupérer des"
+line3 = "Coeurs."
+
+[_treasure.bottle_3.1]
+# Flacon vide
+#       |--------------------|
+icon = 7
+line1 = "Tu as trouvé un"
+line2 = "Flacon Magique !$0"
+next = _treasure.bottle_3.1.1
+
+[_treasure.bottle_3.1.1]
+#       |--------------------|
+line1 = "Remplis-le avec"
+line2 = "diverses substances."
+
+[_treasure.bottle_3.2]
+# Eau
+#       |--------------------|
+icon = 8
+line1 = "Tu as rempli ton"
+line2 = "Flacon Magique avec"
+line3 = "de l'eau !"
+
+[_treasure.bottle_3.3]
+# Potion rouge
+#       |--------------------|
+icon = 9
+line1 = "Tu as trouvé de la"
+line2 = "Potion Rouge !$0"
+next = _treasure.bottle_3.3.1
+
+[_treasure.bottle_3.3.1]
+#       |--------------------|
+line1 = "Bois-la pour"
+line2 = "retrouver toute ton"
+line3 = "énergie vitale."
+
+[_treasure.bottle_3.4]
+# Potion verte
+#       |--------------------|
+icon = 10
+line1 = "Tu as trouvé de la"
+line2 = "Potion Verte !$0"
+next = _treasure.bottle_3.4.1
+
+[_treasure.bottle_3.4.1]
+#       |--------------------|
+line1 = "Bois-la pour"
+line2 = "retrouver toute ton"
+line3 = "énergie magique."
+
+[_treasure.bottle_3.5]
+# Potion bleue
+#       |--------------------|
+icon = 11
+line1 = "Tu as trouvé de la"
+line2 = "Potion Bleue !$0"
+next = _treasure.bottle_3.5.1
+
+[_treasure.bottle_3.5.1]
+#       |--------------------|
+line1 = "Bois-la pour"
+line2 = "retrouver toute ta"
+line3 = "vie et ta magie !"
+
+[_treasure.bottle_3.6]
+# Fée dans Flacon
+#       |--------------------|
+icon = 12
+line1 = "Tu as capturé une"
+line2 = "Fée ! Elle te"
+line3 = "viendra en aide si"
+next = _treasure.bottle_3.6.1
+skip = all
+
+[_treasure.bottle_3.6.1]
+#       |--------------------|
+line1 = "tu es en difficulté."
+line2 = "Tu peux aussi"
+line3 = "l'utiliser à tout"
+next = _treasure.bottle_3.6.2
+
+[_treasure.bottle_3.6.2]
+#       |--------------------|
+line1 = "moment pour"
+line2 = "récupérer des"
+line3 = "Coeurs."
+
+[_treasure.bottle_4.1]
+# Flacon vide
+#       |--------------------|
+icon = 7
+line1 = "Tu as trouvé un"
+line2 = "Flacon Magique !$0"
+next = _treasure.bottle_4.1.1
+
+[_treasure.bottle_4.1.1]
+#       |--------------------|
+line1 = "Remplis-le avec"
+line2 = "diverses substances."
+
+[_treasure.bottle_4.2]
+# Eau
+#       |--------------------|
+icon = 8
+line1 = "Tu as rempli ton"
+line2 = "Flacon Magique avec"
+line3 = "de l'eau !"
+
+[_treasure.bottle_4.3]
+# Potion rouge
+#       |--------------------|
+icon = 9
+line1 = "Tu as trouvé de la"
+line2 = "Potion Rouge !$0"
+next = _treasure.bottle_4.3.1
+
+[_treasure.bottle_4.3.1]
+#       |--------------------|
+line1 = "Bois-la pour"
+line2 = "retrouver toute ton"
+line3 = "énergie vitale."
+
+[_treasure.bottle_4.4]
+# Potion verte
+#       |--------------------|
+icon = 10
+line1 = "Tu as trouvé de la"
+line2 = "Potion Verte !$0"
+next = _treasure.bottle_4.4.1
+
+[_treasure.bottle_4.4.1]
+#       |--------------------|
+line1 = "Bois-la pour"
+line2 = "retrouver toute ton"
+line3 = "énergie magique."
+
+[_treasure.bottle_4.5]
+# Potion bleue
+#       |--------------------|
+icon = 11
+line1 = "Tu as trouvé de la"
+line2 = "Potion Bleue !$0"
+next = _treasure.bottle_4.5.1
+
+[_treasure.bottle_4.5.1]
+#       |--------------------|
+line1 = "Bois-la pour"
+line2 = "retrouver toute ta"
+line3 = "vie et ta magie !"
+
+[_treasure.bottle_4.6]
+# Fée dans Flacon
+#       |--------------------|
+icon = 12
+line1 = "Tu as capturé une"
+line2 = "Fée ! Elle te"
+line3 = "viendra en aide si"
+next = _treasure.bottle_4.6.1
+skip = all
+
+[_treasure.bottle_4.6.1]
+#       |--------------------|
+line1 = "tu es en difficulté."
+line2 = "Tu peux aussi"
+line3 = "l'utiliser à tout"
+next = _treasure.bottle_4.6.2
+
+[_treasure.bottle_4.6.2]
+#       |--------------------|
+line1 = "moment pour"
+line2 = "récupérer des"
+line3 = "Coeurs."
+
+[_treasure.speed_shoes.1]
 # Bottes de Pégase
 #       |--------------------|
 icon = 13
 line1 = "Tu as trouvé les"
 line2 = "Bottes de Pégase !$0"
-next = _treasure_13.1
+next = _treasure.speed_shoes.1.1
 
-[_treasure_13.1]
+[_treasure.speed_shoes.1.1]
 #       |--------------------|
 line1 = "Cours, fonce et"
 line2 = "fracasse les"
 line3 = "obstacles !"
 
-[_treasure_14]
+[_treasure.mystic_mirror.1]
 # Miroir Mystique
 #       |--------------------|
 icon = 14
 line1 = "Tu as trouvé le"
 line2 = "Miroir Mystique !$0"
 line3 = "Ses étranges"
-next = _treasure_14.1
+next = _treasure.mystic_mirror.1.1
 
-[_treasure_14.1]
+[_treasure.mystic_mirror.1.1]
 #       |--------------------|
 line1 = "pouvoirs t'aideront"
 line2 = "sans doute dans ta"
 line3 = "quête..."
 
-[_treasure_15]
+[_treasure.cane_of_somaria.1]
 # Canne de Somaria
 #       |--------------------|
 icon = 15
 line1 = "Tu as trouvé la"
 line2 = "Canne de Somaria !$0"
-next = _treasure_15.1
+next = _treasure.cane_of_somaria.1.1
 
-[_treasure_15.1]
+[_treasure.cane_of_somaria.1.1]
 #       |--------------------|
 line1 = "Tu peux créer des"
 line2 = "blocs et t'accrocher"
 line3 = "à l'aide du Grappin."
 next = _warning_magic
 
-[_treasure_16_1]
-# 1 Pomme
+[_treasure.apple.1]
+# 3 Pommes
 #       |--------------------|
 icon = 16
-line1 = "Tu as trouvé une"
-line2 = "Pomme !$0"
-next = _treasure_16_1.1
-
-[_treasure_16_1.1]
-#       |--------------------|
-line1 = "Consomme-la plus"
-line2 = "tard pour récupérer"
-line3 = "un Coeur !"
-
-[_treasure_16_2]
-# Plusieurs Pommes
-#       |--------------------|
-icon = 16
-line1 = "Tu as trouvé $v"
+line1 = "Tu as trouvé 3"
 line2 = "Pommes !$0"
-next = _treasure_16_2.1
+next = _treasure.apple.1.1
 
-[_treasure_16_2.1]
+[_treasure.apple.1.1]
 #       |--------------------|
 line1 = "Consomme-les plus"
 line2 = "tard pour récupérer"
 line3 = "des Coeurs !"
 
-[_treasure_17_1]
+[_treasure.pain_au_chocolat.1]
 # 1 Pain au Chocolat
 #       |--------------------|
 icon = 17
 line1 = "Tu as trouvé un Pain"
 line2 = "au Chocolat !$0"
-next = _treasure_17_1.1
+next = _treasure.pain_au_chocolat.1.1
 
-[_treasure_17_1.1]
+[_treasure1.pain_au_chocolat.1.1]
 #       |--------------------|
 line1 = "Mange un Pain au"
 line2 = "Chocolat pour"
 line3 = "récupérer 3 Coeurs."
 
-[_treasure_17_2]
-# Plusieurs Pains au Chocolat
-#       |--------------------|
-icon = 17
-line1 = "Tu as trouvé $v"
-line2 = "Pains au Chocolat !$0"
-next = _treasure_17_1.1
-
-[_treasure_18_1]
+[_treasure.croissant.1]
 # 1 Croissant
 #       |--------------------|
 icon = 18
 line1 = "Tu as trouvé un"
 line2 = "Croissant !$0 Il est"
 line3 = "croustillant !"
-next = _treasure_18_1.1
+next = _treasure.croissant.1.1
 
-[_treasure_18_1.1]
+[_treasure.croissant.1.1]
 #       |--------------------|
 line1 = "Mange un Croissant"
 line2 = "pour récupérer"
 line3 = "7 Coeurs."
 
-[_treasure_18_2]
-# Plusieurs Croissants
-#       |--------------------|
-icon = 18
-line1 = "Tu as trouvé $v"
-line2 = "Croissants !$0"
-next = _treasure_18_1.1
-
-[_treasure_19]
+[_treasure.rock_key.1]
 # Clé de Roc
 #       |--------------------|
 icon = 19
 line1 = "Tu as trouvé la"
 line2 = "Clé de Roc !$0"
 
-[_treasure_20]
+[_treasure.red_key.1]
 # Clé Rouge
 #       |--------------------|
 icon = 20
 line1 = "Tu as trouvé la"
 line2 = "Clé Rouge !$0"
 
-[_treasure_21]
+[_treasure.clay_key.1]
 # Clé de Terre
 #       |--------------------|
 icon = 21
 line1 = "Tu as trouvé la"
 line2 = "Clé de Terre !$0"
-next = _treasure_21.1
+next = _treasure.clay_key.1.1
 
-[_treasure_21.1]
+[_treasure.clay_key.1.1]
 #       |--------------------|
 line1 = "Tu peux maintenant"
 line2 = "ouvrir la grotte du"
 line3 = "village !"
 
-[_treasure_22]
+[_treasure.level_4_way_bone_key.1]
 # Tarte aux Pommes
 #       |--------------------|
 icon = 22
 line1 = "Tu as trouvé une"
 line2 = "Tarte aux Pommes !$0"
 line3 = "$1...$3 Hmmm, à ta"
-next = _treasure_22.1
+next = _treasure.level_4_way_bone_key.1.1
 
-[_treasure_22.1]
+[_treasure.level_4_way_bone_key.1.1]
 #       |--------------------|
 line1 = "place, je n'y goûte-"
 line2 = "rais pas, elle a un"
 line3 = "drôle d'aspect..."
 
-[_treasure_23]
+[_treasure.level_4_way_bone_key.2]
 # Lingots d'or
 #       |--------------------|
 icon = 23
 line1 = "Tu as trouvé des"
 line2 = "Lingots d'or !!!$0"
-next = _treasure_23.1
+next = _treasure.level_4_way_bone_key.2.1
 
-[_treasure_23.1]
+[_treasure.level_4_way_bone_key.2.1]
 #       |--------------------|
 line1 = "Ils brillent et ont"
 line2 = "une valeur"
 line3 = "inestimable !"
 
-[_treasure_24]
+[_treasure.level_4_way_bone_key.3]
 # Edelweiss
 #       |--------------------|
 icon = 24
 line1 = "Tu as trouvé un"
 line2 = "Edelweiss !$0"
-next = _treasure_24.1
+next = _treasure.level_4_way_bone_key.3.1
 
-[_treasure_24.1]
+[_treasure.level_4_way_bone_key.3.1]
 #       |--------------------|
 line1 = "Cette jolie fleur"
 line2 = "des montagnes est"
 line3 = "rarissime !"
 
-[_treasure_25]
+[_treasure.level_4_way_bone_key.4]
 # Clé d'os
 #       |--------------------|
 icon = 25
 line1 = "Tu as trouvé la"
 line2 = "Clé d'Os !$0"
-next = _treasure_25.1
+next = _treasure.level_4_way_bone_key.4.1
 
-[_treasure_25.1]
+[_treasure.level_4_way_bone_key.4.1]
 #       |--------------------|
 line1 = "Mais à quoi peut-"
 line2 = "elle bien servir ?"
 
-[_treasure_26]
+[_treasure.flippers.1]
 # Palmes
 #       |--------------------|
 icon = 26
 line1 = "Tu as trouvé les"
 line2 = "Palmes !$0"
-next = _treasure_26.1
+next = _treasure.flippers.1.1
 
-[_treasure_26.1]
+[_treasure.flippers.1.1]
 #       |--------------------|
 line1 = "Tu peux maintenant"
 line2 = "nager en eau"
 line3 = "profonde !"
 
-[_treasure_27]
+[_treasure.magic_cape.1]
 # Cape Magique
 #       |--------------------|
 icon = 27
 line1 = "Tu as trouvé la Cape"
 line2 = "Magique !$0"
-next = _treasure_27.1
+next = _treasure.magic_cape.1.1
 
-[_treasure_27.1]
+[_treasure.magic_cape.1.1]
 #       |--------------------|
 line1 = "Elle t'avertira si"
 line2 = "tu t'approchees d'un"
 line3 = "mur fragile."
 
-[_treasure_28]
+[_treasure.iron_key.1]
 # Clé de Fer
 #       |--------------------|
 icon = 28
 line1 = "Tu as trouvé la"
 line2 = "Clé de Fer !$0"
-next = _treasure_28.1
+next = _treasure.iron_key.1.1
 
-[_treasure_28.1]
+[_treasure.iron_key.1.1]
 #       |--------------------|
 line1 = "Il doit bien y"
 line2 = "avoir une porte qui"
 line3 = "va avec !"
 
-[_treasure_29]
+[_treasure.stone_key.1]
 # Clé de Pierre
 #       |--------------------|
 icon = 29
 line1 = "Tu as trouvé la"
 line2 = "Clé de Pierre !$0"
-next = _treasure_29.1
+next = _treasure.stone_key.1.1
 
-[_treasure_29.1]
+[_treasure.stone_key.1.1]
 #       |--------------------|
 line1 = "Mais où est la"
 line2 = "serrure qui"
 line3 = "correspond ?"
 
-[_treasure_30]
+[_treasure.wooden_key.1]
 # Clé de Bois
 #       |--------------------|
 icon = 30
 line1 = "Tu as trouvé la"
 line2 = "Clé de Bois !$0"
-next = _treasure_30.1
+next = _treasure.wooden_key.1.1
 
-[_treasure_30.1]
+[_treasure.wooden_key.1.1]
 #       |--------------------|
 line1 = "A toi de voir où"
 line2 = "tu peux l'utiliser !"
 
-[_treasure_31]
+[_treasure.ice_key.1]
 # Clé de Glace
 #       |--------------------|
 icon = 31
 line1 = "Tu as trouvé la"
 line2 = "Clé de Glace !$0"
-next = _treasure_31.1
+next = _treasure.ice_key.1.1
 
-[_treasure_31.1]
+[_treasure.ice_key.1.1]
 #       |--------------------|
 line1 = "Elle protège sans"
 line2 = "doute l'entrée d'un"
 line3 = "lieu glacial..."
 
-[_treasure_32]
+[_treasure.glove.1]
 # Poigne de Fer
 #       |--------------------|
 icon = 32
 line1 = "Tu as trouvé la"
 line2 = "Poigne de Fer !$0"
-next = _treasure_32.1
+next = _treasure.glove.1.1
 
-[_treasure_32.1]
+[_treasure.glove.1.1]
 #       |--------------------|
 line1 = "Elle te permet de"
 line2 = "soulever les"
 line3 = "pierres."
 
-[_treasure_33]
+[_treasure.glove.2]
 # Poigne d'Or
 #       |--------------------|
 icon = 33
 line1 = "Tu as trouvé la"
 line2 = "Poigne d'Or !$0"
-next = _treasure_33.1
+next = _treasure.glove.2.1
 
-[_treasure_33.1]
+[_treasure.glove.2.1]
 #       |--------------------|
 line1 = "Tu peux maintenant"
 line2 = "soulever les pierres"
 line3 = "noires !"
 
-[_treasure_34]
+[_treasure.fire_stone.1]
 # Pierre de Feu
 #       |--------------------|
 icon = 34
 line1 = "Tu as trouvé une"
 line2 = "Pierre de Feu !"
 
-[_treasure_50]
+[_treasure.world_map.1]
 # Carte du Monde
 #       |--------------------|
 icon = 50
 line1 = "Tu as trouvé la"
 line2 = "Carte du Monde !$0"
-next = _treasure_50.1
+next = _treasure.world_map.1.1
 
-[_treasure_50.1]
+[_treasure.world_map.1.1]
 #       |--------------------|
 line1 = "Tu peux l'afficher"
 line2 = "dans l'écran Carte."
 
-[_treasure_52]
+[_treasure.rupee_bag.2]
 # Grand sac de rubis
 #       |--------------------|
 icon = 52
 line1 = "Tu as trouvé le"
 line2 = "Grand Sac de Rubis !$0"
-next = _treasure_52.1
+next = _treasure.rupee_bag.2.1
 
-[_treasure_52.1]
+[_treasure.rupee_bag.2.1]
 #       |--------------------|
 line1 = "Il peut contenir"
 line2 = "jusqu'à 300 rubis !"
 
-[_treasure_53]
+[_treasure.rupee_bag.3]
 # Sac de rubis géant
 #       |--------------------|
 icon = 53
 line1 = "Tu as trouvé le"
 line2 = "Sac de Rubis Géant !$0"
-next = _treasure_53.1
+next = _treasure.rupee_bag.3.1
 
-[_treasure_53.1]
+[_treasure.rupee_bag.3.1]
 #       |--------------------|
 line1 = "Il peut contenir"
 line2 = "jusqu'à 999 rubis !"
 
-[_treasure_54]
+[_treasure.bomb_bag.1]
 # Petit sac de bombes
 #       |--------------------|
 icon = 54
 line1 = "Tu as trouvé le Sac"
 line2 = "de Bombes !$0 Il"
 line3 = "contient 10 Bombes."
-next = _treasure_54.1
+next = _treasure.bomb_bag.1.1
 
-[_treasure_54.1]
+[_treasure.bomb_bag.1.1]
 #       |--------------------|
 line1 = "Assigne-les à une"
 line2 = "touche et fais tout"
 line3 = "sauter !"
 
-[_treasure_55]
+[_treasure.bomb_bag.2]
 # Grand sac de bombes
 #       |--------------------|
 icon = 55
 line1 = "Tu as trouvé le"
 line2 = "Grand Sac de"
 line3 = "Bombes !$0"
-next = _treasure_55.1
+next = _treasure.bomb_bag.2.1
 
-[_treasure_55.1]
+[_treasure.bomb_bag.2.1]
 #       |--------------------|
 line1 = "Il peut contenir"
 line2 = "jusqu'à 30 Bombes"
 line3 = "au lieu de 10 !"
 
-[_treasure_56]
+[_treasure.bomb_bag.3]
 # Sac de bombes géant
 #       |--------------------|
 icon = 56
 line1 = "Tu as trouvé le Sac"
 line2 = "de Bombes Géant !$0"
-next = _treasure_56.1
+next = _treasure.bomb_bag.3.1
 
-[_treasure_56.1]
+[_treasure.bomb_bag.3.1]
 #       |--------------------|
 line1 = "Il peut contenir"
 line2 = "jusqu'à 100 Bombes"
 line3 = "au lieu de 30 !"
 
-[_treasure_58]
+[_treasure.quiver.2]
 # Grand carquois 
 #       |--------------------|
 icon = 58
 line1 = "Tu as trouvé le"
 line2 = "Grand Carquois !$0"
-next = _treasure_58.1
+next = _treasure.quiver.2.1
 
-[_treasure_58.1]
+[_treasure.quiver.2.1]
 #       |--------------------|
 line1 = "Il peut contenir"
 line2 = "jusqu'à 30 Flèches"
 line3 = "au lieu de 10 !"
 
-[_treasure_59]
+[_treasure.quiver.3]
 # Carquois géant
 #       |--------------------|
 icon = 59
 line1 = "Tu as trouvé le"
 line2 = "Carquois Géant !$0"
-next = _treasure_59.1
+next = _treasure.quiver.3.1
 
-[_treasure_59.1]
+[_treasure.quiver.3.1]
 #       |--------------------|
 line1 = "Il peut contenir"
 line2 = "jusqu'à 100 Flèches"
 line3 = "au lieu de 30 !"
 
-[_treasure_61]
+[_treasure.tunic.2]
 # Cotte de mailles bleue
 #       |--------------------|
 icon = 61
 line1 = "Tu as trouvé la"
 line2 = "Cotte de Mailles"
 line3 = "bleue !$0 Elle te"
-next = _treasure_61.1
+next = _treasure.tunic.2.1
 
-[_treasure_61.1]
+[_treasure.tunic.2.1]
 #       |--------------------|
 line1 = "permet de résister"
 line2 = "aux températures les"
 line3 = "plus glaciales..."
 
-[_treasure_62]
+[_treasure.tunic.3]
 # Cotte de mailles rouge
 #       |--------------------|
 icon = 62
 line1 = "Tu as trouvé la"
 line2 = "Cotte de Mailles"
 line3 = "rouge !$0 Elle te"
-next = _treasure_62.1
+next = _treasure.tunic.3.1
 
-[_treasure_62.1]
+[_treasure.tunic.3.1]
 #       |--------------------|
 line1 = "protège de manière"
 line2 = "plus efficace contre"
 line3 = "les ennemis !"
 
-[_treasure_63]
+[_treasure.shield.1]
 # Bouclier
 #       |--------------------|
 icon = 63
 line1 = "Tu as trouvé le"
 line2 = "Bouclier !$0"
-next = _treasure_63.1
+next = _treasure.shield.1.1
 
-[_treasure_63.1]
+[_treasure.shield.1.1]
 #       |--------------------|
 line1 = "Tu peux repousser"
 line2 = "les attaques des"
 line3 = "ennemis !"
 
-[_treasure_64]
+[_treasure.shield.2]
 # Bouclier de Feu
 #       |--------------------|
 icon = 64
 line1 = "Tu as trouvé le"
 line2 = "Bouclier de Feu !$0"
 line3 = "Tu es désormais"
-next = _treasure_64.1
+next = _treasure.shield.2.1
 
-[_treasure_64.1]
+[_treasure.shield.2.1]
 #       |--------------------|
 line1 = "protégé contre les"
 line2 = "attaques"
 line3 = "enflammées !"
 
-[_treasure_65]
+[_treasure.shield.3]
 # Bouclier Miroir
 #       |--------------------|
 icon = 65
 line1 = "Tu as trouvé le"
 line2 = "Bouclier Miroir !$0"
-next = _treasure_65.1
+next = _treasure.shield.3.1
 
-[_treasure_65.1]
+[_treasure.shield.3.1]
 #       |--------------------|
 line1 = "Tu peux désormais"
 line2 = "contrer les lasers !"
 
-[_treasure_66]
+[_treasure.sword.1]
 # Epée 1 (Epée du courage)
 #       |--------------------|
 icon = 66
 line1 = "Tu as obtenu l'Epée"
 line2 = "du Courage !$0"
-next = _treasure_66.1
+next = _treasure.sword.1.1
 
-[_treasure_66.1]
+[_treasure.sword.1.1]
 #       |--------------------|
 line1 = "Tu peux croiser le"
 line2 = "fer et affronter"
 line3 = "les ennemis !"
 
-[_treasure_67]
+[_treasure.sword.2]
 # Epée 2 (Glaive Hylien)
 #       |--------------------|
 icon = 67
 line1 = "Tu as trouvé"
 line2 = "le Glaive Hylien !$0"
 line3 = "Cette nouvelle épée"
-next = _treasure_67.1
+next = _treasure.sword.2.1
 
-[_treasure_67.1]
+[_treasure.sword.2.1]
 #       |--------------------|
 line1 = "est deux fois plus"
 line2 = "puissante que"
 line3 = "l'ancienne !"
 
-[_treasure_68]
+[_treasure.sword.3]
 # Epée 3 (Sabre du Héros)
 #       |--------------------|
 icon = 68
 line1 = "Tu as trouvé"
 line2 = "le Sabre du Héros !"
 line3 = "Cette nouvelle lame$0"
-next = _treasure_67.1
+next = _treasure.sword.2.1
 
-[_treasure_69]
+[_treasure.sword.4]
 # Epée 4 (Lame Purificatrice)
 #       |--------------------|
 icon = 69
 line1 = "Tu as trouvé la Lame"
 line2 = "Purificatrice !$0"
 line3 = "La puissance de"
-next = _treasure_69.1
+next = _treasure.sword.4.1
 
-[_treasure_69.1]
+[_treasure.sword.4.1]
 #       |--------------------|
 line1 = "cette épée ultime"
 line2 = "dépasse"
 line3 = "l'entendement..."
 
-[_treasure_70]
+[_treasure.map.1]
 # Carte
 #       |--------------------|
 icon = 70
 line1 = "Tu as trouvé"
 line2 = "la Carte !"
-next = _treasure_70.1
+next = _treasure.map.1.1
 
-[_treasure_70.1]
+[_treasure.map.1.1]
 #       |--------------------|
 line1 = "Utilise-la pour"
 line2 = "connaître le plan"
 line3 = "du donjon."
 
-[_treasure_71]
+[_treasure.compass.1]
 # Boussole
 #       |--------------------|
 icon = 71
 line1 = "Tu as trouvé"
 line2 = "la Boussole ! Elle"
 line3 = "indique ta position"
-next = _treasure_71.1
+next = _treasure.compass.1.1
 
-[_treasure_71.1]
+[_treasure.compass.1.1]
 #       |--------------------|
 line1 = "sur la Carte, les"
 line2 = "emplacements des"
 line3 = "coffres et du Boss."
-next = _treasure_71.2
+next = _treasure.compass.1.2
 
-[_treasure_71.2]
+[_treasure.compass.1.2]
 # Remarque : clin d'oeil à Link's Awakening
 # quand on obtient la Boussole
 #       |--------------------|
 line1 = "C'est ça"
 line2 = "le progrès !"
 
-[_treasure_72]
+[_treasure.small_key.1]
 # Petite clé
 #       |--------------------|
 icon = 72
 line1 = "Tu as trouvé une"
 line2 = "Petite Clé !"
-next = _treasure_72.1
+next = _treasure.small_key.1.1
 
-[_treasure_72.1]
+[_treasure.small_key.1.1]
 #       |--------------------|
 line1 = "Tu peux ouvrir une"
 line2 = "porte verrouillée"
 line3 = "dans les environs."
 
-[_treasure_73]
+[_treasure.big_key.1]
 # Grande Clé
 #       |--------------------|
 icon = 73
 line1 = "Tu as trouvé la"
 line2 = "Grande Clé ! Tu peux"
 line3 = "désormais ouvrir les"
-next = _treasure_73.1
+next = _treasure.big_key.1
 
-[_treasure_73.1]
+[_treasure.big_key.1.1]
 #       |--------------------|
 line1 = "portes spéciales et"
 line2 = "découvrir de"
 line3 = "nouveaux trésors !"
 
-[_treasure_74]
+[_treasure.boss_key.1]
 # Clé du Maître
 #       |--------------------|
 icon = 74
 line1 = "Tu as trouvé la"
 line2 = "Clé du Maître ! Tu"
 line3 = "peux maintenant"
-next = _treasure_74.1
+next = _treasure.boss_key.1.1
 
-[_treasure_74.1]
+[_treasure.boss_key.1.1]
 #       |--------------------|
 line1 = "entrer dans le"
 line2 = "repaire du maître"
 line3 = "des lieux !"
 
-[_treasure_79_1]
-# 1er Fragment de Coeur
+[_treasure.piece_of_heart.1]
+# Fragment de Coeur
 #       |--------------------|
 icon = 79
 line1 = "Tu as trouvé un"
 line2 = "Fragment de Coeur !"
-next = _treasure_79_1.1
 
-[_treasure_79_1.1]
+[_treasure.piece_of_heart.1.first]
 #       |--------------------|
 icon = 75
 line1 = "Collecte-en quatre"
 line2 = "pour former un"
 line3 = "nouveau Coeur."
 
-[_treasure_79_2]
-# 2e Fragment de Coeur
-#       |--------------------|
-icon = 79
-line1 = "Tu as trouvé un"
-line2 = "Fragment de Coeur !"
-next = _treasure_79_2.1
-
-[_treasure_79_2.1]
+[_treasure.piece_of_heart.1.second]
 #       |--------------------|
 icon = 76
 line1 = "Encore deux et"
 line2 = "tu obtiendras"
 line3 = "un nouveau Coeur."
 
-[_treasure_79_3]
-# 3e Fragment de Coeur
-#       |--------------------|
-icon = 79
-line1 = "Tu as trouvé un"
-line2 = "Fragment de Coeur !"
-next = _treasure_79_3.1
-
-[_treasure_79_3.1]
+[_treasure.piece_of_heart.1.third]
 #       |--------------------|
 icon = 77
 line1 = "Plus qu'un à trouver"
 line2 = "pour former un"
 line3 = "nouveau Coeur !"
 
-[_treasure_79_4]
-# 4e Fragment de Coeur
-#       |--------------------|
-icon = 79
-line1 = "Tu as trouvé un"
-line2 = "Fragment de Coeur !"
-next = _treasure_79_4.1
-
-[_treasure_79_4.1]
+[_treasure.piece_of_heart.1.fourth]
 #       |--------------------|
 icon = 78
 line1 = "Tu as trouvé quatre"
 line2 = "Fragments de Coeur."
-next = _treasure_79_4.2
+next = _treasure.piece_of_heart.1.fourth.1
 
-[_treasure_79_4.2]
+[_treasure.piece_of_heart.1.fourth.1]
 #       |--------------------|
 line1 = "Tu obtiens un Coeur"
 line2 = "supplémentaire !"
 
-[_treasure_80]
+[_treasure.heart_container.1]
 # Réceptacle de Coeur
 #       |--------------------|
 icon = 80
 line1 = "Tu as trouvé un"
 line2 = "Réceptacle de Coeur."
-next = _treasure_80.2
+next = _treasure.heart_container.1.1
 
-[_treasure_80.2]
+[_treasure.heart_container.1.1]
 #       |--------------------|
 line1 = "Tu obtiens un Coeur"
 line2 = "supplémentaire !"
 
-[_treasure_82_1]
+[_treasure.bomb.1]
 # 1 Bombe
 #       |--------------------|
 icon = 82
 line1 = "Tu as trouvé une"
 line2 = "Bombe !$0"
 line3 = "Utilise une Bombe"
-next = _treasure_82_1.1
+next = _treasure.bomb.1.1
 
-[_treasure_82_1.1]
+[_treasure.bomb.1.1]
 #       |--------------------|
 line1 = "pour faire exploser"
 line2 = "un ennemi ou un"
 line3 = "obstacle."
 
-[_treasure_82_2]
-# Plusieurs Bombes
+[_treasure.bomb.2]
+# 3 Bombes
 #       |--------------------|
 icon = 82
-line1 = "Tu as trouvé $v"
+line1 = "Tu as trouvé 3"
 line2 = "Bombes !$0"
 line3 = "Utilise une Bombe"
-next = _treasure_82_1.1
+next = _treasure.bomb.1.1
 
-[_treasure_83_1]
+[_treasure.bomb.3]
+# 8 Bombes
+#       |--------------------|
+icon = 82
+line1 = "Tu as trouvé 8"
+line2 = "Bombes !$0"
+line3 = "Utilise une Bombe"
+next = _treasure.bomb.1.1
+
+[_treasure.arrow.1]
 # 1 Flèche
 #       |--------------------|
 icon = 83
 line1 = "Tu as trouvé une"
 line2 = "Flèche !$0"
 line3 = "Utilise l'Arc et les"
-next = _treasure_83_1.1
+next = _treasure.arrow.1.1
 
-[_treasure_83_1.1]
+[_treasure.arrow.1.1]
 #       |--------------------|
 line1 = "Flèches pour vaincre"
 line2 = "des ennemis coriaces"
 line3 = "à distance."
 
-[_treasure_83_2]
-# Plusieurs Flèches
+[_treasure.arrow.2]
+# 5 Flèches
 #       |--------------------|
 icon = 83
-line1 = "Tu as trouvé $v"
+line1 = "Tu as trouvé 5"
 line2 = "Flèches !$0"
 line3 = "Utilise l'Arc et les"
-next = _treasure_83_1.1
+next = _treasure.arrow.1.1
 
-[_treasure_84_1]
+[_treasure.arrow.3]
+# 10 Flèches
+#       |--------------------|
+icon = 83
+line1 = "Tu as trouvé 10"
+line2 = "Flèches !$0"
+line3 = "Utilise l'Arc et les"
+next = _treasure.arrow.1.1
+
+[_treasure.heart.1]
 # 1 Coeur
 #       |--------------------|
 icon = 84
 line1 = "Tu as trouvé un"
 line2 = "Coeur !"
 
-[_treasure_84_2]
-# Plusieurs Coeurs
-#       |--------------------|
-icon = 84
-line1 = "Tu as trouvé $v"
-line2 = "Coeurs !"
-
-[_treasure_85]
+[_treasure.magic_flask.1]
 # Petite bouteille de magie
 #       |--------------------|
 icon = 85
@@ -1495,7 +1905,7 @@ line1 = "Tu as trouvé une"
 line2 = "petite bouteille"
 line3 = "d'énergie magique !"
 
-[_treasure_86]
+[_treasure.magic_flask.2]
 # Grande bouteille de magie
 #       |--------------------|
 icon = 86
@@ -1503,21 +1913,14 @@ line1 = "Tu as trouvé une"
 line2 = "grande bouteille"
 line3 = "d'énergie magique !"
 
-[_treasure_87_1]
+[_treasure.rupee.1]
 # 1 rubis vert
 #       |--------------------|
 icon = 90
 line1 = "Tu as trouvé un"
 line2 = "Rubis !"
 
-[_treasure_87_2]
-# Plusieurs rubis verts
-#       |--------------------|
-icon = 90
-line1 = "Tu as trouvé $v"
-line2 = "Rubis !"
-
-[_treasure_88_1]
+[_treasure.rupee.2]
 # 1 rubis bleu
 #       |--------------------|
 icon = 91
@@ -1525,15 +1928,7 @@ line1 = "Tu as trouvé un"
 line2 = "Rubis bleu."
 line3 = "Il vaut 5 Rubis !"
 
-[_treasure_88_2]
-# Plusieurs rubis bleus
-#       |--------------------|
-icon = 91
-line1 = "Tu as trouvé $v"
-line2 = "Rubis bleus ! Chacun"
-line3 = "d'eux vaut 5 Rubis !"
-
-[_treasure_89_1]
+[_treasure.rupee.3]
 # 1 rubis rouge
 #       |--------------------|
 icon = 92
@@ -1541,18 +1936,33 @@ line1 = "Tu as trouvé un"
 line2 = "Rubis rouge !"
 line3 = "Il vaut 20 Rubis !"
 
-[_treasure_89_2]
-# Plusieurs rubis bleus
+[_treasure.rupee.4]
+# 50 rubis
+# Remarque : clin d'oeil à Link's Awakening
 #       |--------------------|
-icon = 91
-line1 = "Tu as trouvé $v"
-line2 = "Rubis rouges."
-next = _treasure_89_2.1
+icon = 90
+line1 = "Tu as trouvé 50"
+line2 = "Rubis !"
+line3 = "Merveilleux !"
 
-[_treasure_89_2.1]
+[_treasure.rupee.5]
+# 100 rubis
+# Remarque : clin d'oeil à Link's Awakening
 #       |--------------------|
-line1 = "Chacun d'entre eux"
-line2 = "vaut 20 Rubis !"
+icon = 90
+line1 = "Tu as trouvé 100"
+line2 = "Rubis !"
+line3 = "Fantastique !"
+
+[_treasure.rupee.6]
+# 200 rubis
+# Remarque : clin d'oeil à Link's Awakening
+#       |--------------------|
+icon = 90
+line1 = "Tu as trouvé 200"
+line2 = "Rubis !"
+line3 = "C'est l'extase !"
+
 
 # ---------------
 # Autres messages
@@ -1579,7 +1989,7 @@ line2 = "Tant pis pour toi !"
 # et qu'on ne possède pas de Petite Clé
 #       |--------------------|
 icon = 72
-line1 = "C'est fermé à Clé !"
+line1 = "C'est fermé à clé !"
 skip = all
 
 [_big_key_required]
@@ -1608,6 +2018,73 @@ icon = 74
 line1 = "Il te faut la"
 line2 = "Clé du Maître"
 line3 = "pour l'ouvrir."
+
+[_cannot_lift_should_cut]
+# Lorsqu'on tente de soulever un buisson
+# au lieu de le couper avec l'épée
+#       |-----------------------|
+line1 = "Il te faudrait quelque"
+line2 = "de tranchant pour"
+line3 = "couper ces buissons..."
+skip = all
+
+[_cannot_lift_too_heavy]
+# Lorsqu'on tente de soulever une pierre
+# sans avoir de bracelet de force
+# (Clin d'oeil à Link's Awekening)
+#       |-----------------------|
+line1 = "Oh là là, c'est"
+line2 = "bien trop lourd !"
+skip = all
+next = _cannot_lift_too_heavy.2
+
+[_cannot_lift_too_heavy.2]
+#       |-----------------------|
+line1 = "Tu n'y arriveras jamais"
+line2 = "rien que par la force"
+line3 = "de tes bras !"
+
+[_cannot_lift_still_too_heavy]
+# Lorsqu'on tente de soulever une pierre vraiment lourde
+# en ayant seulement la poigne de fer
+#       |-----------------------|
+line1 = "Oh là là, c'est encore"
+line2 = "trop lourd pour toi !"
+skip = all
+
+[_shop.question]
+# Lorsqu'on regarde un objet vendu dans un magasin
+# (message affiché après avoir lu la description de l'objet)
+#       |-----------------------|
+line1 = "Prix : $v rubis."
+line2 = "Acheter"
+line3 = "Ne pas acheter"
+question = true
+
+[_shop.not_enough_money]
+# Lorsqu'on veut acheter un objet dans un magasin
+# mais qu'on n'a pas assez de Rubis
+#       |-----------------------|
+line1 = "Désolé, mais tu n'as"
+line2 = "pas assez d'argent !"
+skip = all
+
+[_shop.amount_full]
+# Lorsqu'on veut acheter un objet dans un magasin
+# mais qu'on a déjà le maximum de la quantité possible
+# (pour des Bombes, des Flèches, etc.)
+#       |-----------------------|
+line1 = "Tu es déjà au maximum !"
+
+[_crystal_switch]
+# Lorsqu'on regarde un interrupteur de cristal
+#       |-----------------------|
+line1 = "C'est un interrupteur"
+line2 = "de cristal. Frappe-le"
+line3 = "avec quelque chose..."
+skip = all
+
+# TODO: make the messages below quest-specific (call them from scripts)
 
 [_found_fairy]
 # Lorsqu'on trouve une Fée en ayant au moins un Flacon (même dialogue que dans ALTTP)
@@ -1749,69 +2226,4 @@ line1 = "Que veux-tu faire ?"
 line2 = "En manger un"
 line3 = "Ne rien faire"
 question = true
-
-[_cannot_lift_should_cut]
-# Lorsqu'on tente de soulever un buisson
-# au lieu de le couper avec l'épée
-#       |-----------------------|
-line1 = "Il te faudrait quelque"
-line2 = "de tranchant pour"
-line3 = "couper ces buissons..."
-skip = all
-
-[_cannot_lift_too_heavy]
-# Lorsqu'on tente de soulever une pierre
-# sans avoir de bracelet de force
-# (Clin d'oeil à Link's Awekening)
-#       |-----------------------|
-line1 = "Oh là là, c'est"
-line2 = "bien trop lourd !"
-skip = all
-next = _cannot_lift_too_heavy.2
-
-[_cannot_lift_too_heavy.2]
-#       |-----------------------|
-line1 = "Tu n'y arriveras jamais"
-line2 = "rien que par la force"
-line3 = "de tes bras !"
-
-[_cannot_lift_still_too_heavy]
-# Lorsqu'on tente de soulever une pierre vraiment lourde
-# en ayant seulement la poigne de fer
-#       |-----------------------|
-line1 = "Oh là là, c'est encore"
-line2 = "trop lourd pour toi !"
-skip = all
-
-[_shop.question]
-# Lorsqu'on regarde un objet vendu dans un magasin
-# (message affiché après avoir lu la description de l'objet)
-#       |-----------------------|
-line1 = "Prix : $v rubis."
-line2 = "Acheter"
-line3 = "Ne pas acheter"
-question = true
-
-[_shop.not_enough_money]
-# Lorsqu'on veut acheter un objet dans un magasin
-# mais qu'on n'a pas assez de Rubis
-#       |-----------------------|
-line1 = "Désolé, mais tu n'as"
-line2 = "pas assez d'argent !"
-skip = all
-
-[_shop.amount_full]
-# Lorsqu'on veut acheter un objet dans un magasin
-# mais qu'on a déjà le maximum de la quantité possible
-# (pour des Bombes, des Flèches, etc.)
-#       |-----------------------|
-line1 = "Tu es déjà au maximum !"
-
-[_crystal_switch]
-# Lorsqu'on regarde un interrupteur de cristal
-#       |-----------------------|
-line1 = "C'est un interrupteur"
-line2 = "de cristal. Frappe-le"
-line3 = "avec quelque chose..."
-skip = all
 

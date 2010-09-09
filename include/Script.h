@@ -93,6 +93,7 @@ class Script {
       l_equipment_remove_money,
       l_equipment_has_ability,
       l_equipment_get_ability,
+      l_equipment_set_ability,
       l_equipment_has_item,
       l_equipment_get_item,
       l_equipment_set_item,

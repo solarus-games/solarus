@@ -78,17 +78,16 @@ Chest::~Chest(void) {
 MapEntity * Chest::parse(Game *game, std::istream &is, Layer layer, int x, int y) {
 
   std::string name, treasure_name;
-  int big_chest, treasure_variant, treasure_amount, treasure_savegame_variable;
+  int big_chest, treasure_variant, treasure_savegame_variable;
 
   FileTools::read(is, name);
   FileTools::read(is, big_chest);
   FileTools::read(is, treasure_name);
   FileTools::read(is, treasure_variant);
-  FileTools::read(is, treasure_amount);
   FileTools::read(is, treasure_savegame_variable);
 
   return new Chest(name, Layer(layer), x, y, (big_chest != 0),
-      new Treasure(game, treasure_savegame_variable, treasure_name, treasure_variant, treasure_amount));
+      new Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable));
 }
 
 /**
@@ -197,7 +196,7 @@ void Chest::set_open(bool open) {
       treasure_given = false;
 
       if (treasure == NULL) {
-	treasure = new Treasure(game, -1, "_none", 0);
+	treasure = new Treasure(game, "_none", 0, -1);
       }
     }
   }

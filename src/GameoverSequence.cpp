@@ -20,7 +20,6 @@
 #include "Sprite.h"
 #include "Map.h"
 #include "Equipment.h"
-#include "Treasure.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Surface.h"
 #include "movements/TargetMovement.h"
@@ -40,7 +39,7 @@ GameoverSequence::GameoverSequence(Game *game, int hero_direction):
   red_screen_color = Color(224, 32, 32);
 
   std::ostringstream oss;
-  oss << "hero/tunic" << game->get_equipment()->get_tunic();
+  oss << "hero/tunic" << game->get_equipment()->get_ability("tunic");
   hero_dead_sprite = new Sprite(oss.str());
   hero_dead_sprite->set_current_animation("hurt");
   hero_dead_sprite->set_current_direction(hero_direction);
@@ -78,7 +77,7 @@ void GameoverSequence::update(void) {
   hero_dead_sprite->update();
 
   switch (state) {
-    
+ 
   case WAITING_START:
     if (now >= next_state_date) {
       state = CLOSING_GAME;
@@ -114,13 +113,12 @@ void GameoverSequence::update(void) {
     if (fade_sprite->is_animation_finished()) {
 
       Equipment *equipment = game->get_equipment();
-      if (equipment->has_bottle_with(Treasure::FAIRY_IN_BOTTLE)) {
+      if (equipment->has_ability("get_back_from_death")) {
 	state = SAVED_BY_FAIRY;
 	fairy_x = hero_dead_x + 12;
 	fairy_y = hero_dead_y + 21;
 	fairy_movement = new TargetMovement(240, 22, 10);
 	fairy_movement->set_position(fairy_x, fairy_y);
-	equipment->set_bottle_empty(equipment->get_first_bottle_with(Treasure::FAIRY_IN_BOTTLE));
       }
       else {
 	state = MENU;
@@ -141,7 +139,7 @@ void GameoverSequence::update(void) {
     if (fairy_movement->is_finished()) {
       state = WAITING_END;
       next_state_date = now + 1000;
-      game->get_equipment()->add_hearts(7 * 4);
+      game->get_equipment()->add_life(7 * 4);
     }
     break;
 
@@ -217,7 +215,7 @@ void GameoverSequence::key_pressed(GameControls::GameKey key) {
     }
     else if (key == GameControls::ACTION || key == GameControls::SWORD) {
       game->play_sound("danger");
-      game->get_equipment()->add_hearts(7 * 4);
+      game->get_equipment()->add_life(7 * 4);
 
       switch (cursor_position) {
 

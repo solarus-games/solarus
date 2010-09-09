@@ -522,22 +522,22 @@ void PickableItem::give_item_to_player(void) {
     break;
 
   case BIG_KEY:
-    treasure = new Treasure(game, savegame_variable, "big_key", 1);
+    treasure = new Treasure(game, "big_key", 1, savegame_variable);
     game->give_treasure(treasure);
     break;
 
   case BOSS_KEY:
-    treasure = new Treasure(game, savegame_variable, "boss_key", 1);
+    treasure = new Treasure(game, "boss_key", 1, savegame_variable);
     game->give_treasure(treasure);
     break;
 
   case PIECE_OF_HEART:
-    treasure = new Treasure(game, savegame_variable, "piece_of_heart", 1);
+    treasure = new Treasure(game, "piece_of_heart", 1, savegame_variable);
     game->give_treasure(treasure);
     break;
 
   case HEART_CONTAINER:
-    treasure = new Treasure(game, savegame_variable, "heart_container", 1);
+    treasure = new Treasure(game, "heart_container", 1, savegame_variable);
     game->give_treasure(treasure);
     break;
 

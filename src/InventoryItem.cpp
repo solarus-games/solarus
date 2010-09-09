@@ -82,12 +82,12 @@ void InventoryItem::start(Game *game) {
     DIE("Trying to use inventory item '" << item_name << "' without having it");
   }
 
-  if (equipment->get_item_properties(item_name)->is_bottle()) {
+  // TODO use scripts
+  if (item_name.substr(0, 7) == "bottle_") {
     start_bottle();
   }
   else {
     
-    // TODO use scripts
     if (item_name == "boomerang") {
 
       if (map->get_entities()->is_boomerang_present()) {
@@ -164,7 +164,7 @@ void InventoryItem::update(void) {
   }
 
   // TODO use scripts
-  if (equipment->get_item_properties(item_name)->is_bottle()) {
+  if (item_name.substr(0, 7) == "bottle_") {
     update_bottle();
   }
   else {
@@ -300,7 +300,7 @@ void InventoryItem::update_bottle(void) {
 
       if (answer == 0) {
 	// empty the water
-	game->get_equipment()->set_bottle_empty(item_name);
+	game->get_equipment()->set_item_variant(item_name, 1);
 	game->play_sound("item_in_water");
 
 	Detector *facing_entity = game->get_hero()->get_facing_entity();
@@ -324,7 +324,7 @@ void InventoryItem::update_bottle(void) {
 	Hero *hero = game->get_hero();
 	map->get_entities()->add_entity(PickableItem::create(game, hero->get_layer(), hero->get_x(), hero->get_y(),
 	      PickableItem::FAIRY, -1, FALLING_LOW, true));
-	game->get_equipment()->set_bottle_empty(item_name);
+	game->get_equipment()->set_item_variant(item_name, 1);
 
       }
       finished = true;

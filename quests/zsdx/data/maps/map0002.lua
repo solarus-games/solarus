@@ -158,9 +158,9 @@ function event_dialog_finished(first_message_id, answer)
 	interactive_entity_set_animation_paused(k, false)
       end
     end
-  elseif string.find(first_message_id, "rupee_house.game_2.reward.") then
+  elseif string.match(first_message_id, "^rupee_house.game_2.reward.") then
     -- reward in game 2
-    treasure_give_with_amount(-1, "rupee", 1, game_2_reward)
+    equipment_add_money(game_2_reward)
 
   elseif first_message_id == "rupee_house.game_3.intro" or 
     first_message_id == "rupee_house.game_3.restart_question" then
@@ -215,11 +215,17 @@ function event_chest_empty(chest_name)
     amount = game_1_rewards[index]
     if amount == 50 and not already_played_game_1 then
       -- don't give 50 rupees at the first attempt
-      amount = 10
+      amount = 5
     end
 
     -- give the rupees
-    treasure_give_with_amount(-1, "rupee", 1, amount)
+    if (amount == 5) then
+      treasure_give("rupee", 2, -1)
+    else if (amount == 20) then
+      treasure_give("rupee", 3, -1)
+    else if (amount == 50) then
+      treasure_give("rupee", 4, -1)
+    end
 
     if amount == 50 then
       -- the maximum reward was found: the game will now refuse to let the hero play again
@@ -238,7 +244,7 @@ function game_3_timer()
 end
 
 -- Function called when the player is obtaining a treasure
-function event_treasure_obtained(savegame_variable, item_name, variant)
+function event_treasure_obtained(item_name, variant, savegame_variable)
 
   -- stop game 3 when the player founds the piece of heart
   if savegame_variable == 17 then

@@ -23,7 +23,6 @@
 #include "entities/Ground.h"
 #include "lowlevel/Rectangle.h"
 #include "GameControls.h"
-#include "InventoryItemId.h"
 
 /**
  * @brief The hero's entity.

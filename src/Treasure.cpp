@@ -23,11 +23,10 @@
 #include "Counter.h"
 #include "Map.h"
 #include "MapScript.h"
-#include "Treasure.h"
 #include "lowlevel/Surface.h"
 
 // TODO
-#ifdef TEMP_DISABLED
+#ifdef NOT_YET_IMPLEMENTED
 
 /**
  * @brief Creates a new treasure without amount.

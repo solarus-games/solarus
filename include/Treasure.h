@@ -30,13 +30,11 @@
  * when they are picked on the ground. When they come from a chest, they are
  * treasures.
  *
- * A treasure is represented as the following three values:
- * - the treasure content: indicates the nature of the treasure: a red rupee, a heart container,
- *   the map, a red potion, the bow, some bombs, etc;
- * - the amount: an optional integer indicating the number of items of this treasure
- *   (for bombs, rupees, croissants, etc.);
+ * A treasure is represented as the following values:
  * - a savegame variable: index of the boolean variable that indicates whether
  *   the player has found this treasure (-1 if the treasure is not saved).
+ * - the item name: a string identitying the nature of the treasure, according to the file quest.dat
+ * - the variant: indicates the variant of this item
  */
 class Treasure {
 
@@ -49,7 +47,6 @@ class Treasure {
 				 * or -1 if the treasure state is not saved */
     std::string item_name;	/**< content of the treasure */
     int variant;		/**< variant of this content */
-    int amount;			/**< amount of item (for some kinds of treasures only) */
 
     Counter *counter;
 
@@ -59,13 +56,11 @@ class Treasure {
 
   public:
 
-    Treasure(Game *game, int savegame_variable, const std::string &item_name, int variant, int amount = 0);
+    Treasure(Game *game, const std::string &item_name, int variant, int savegame_variable);
     ~Treasure(void);
 
     const std::string & get_item_name(void);
     int get_variant(void);
-    bool has_amount(void);
-    int get_amount(void);
     int get_savegame_variable(void);
 
     bool is_amount_full(void);

@@ -6,6 +6,7 @@ lift
 tunic
 sword
 shield
+get_back_from_death
 see_outside_world_minimap
 see_dungeon_minimap_rooms
 see_dungeon_minimap_elements

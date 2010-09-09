@@ -68,14 +68,14 @@ function event_dialog_finished(first_message_id, answer)
   if first_message_id == "sahasrahla_house.beginning" or
     first_message_id == "sahasrahla_house.give_world_map" then
     -- give the world map to the player
-    treasure_give(33, "world_map", 1)
+    treasure_give("world_map", 1, 33)
   elseif first_message_id == "sahasrahla_house.quest_accepted" and not door_is_open("door") then
     door_open("door")
   end
 end
 
 -- Function called when the player has just obtained a treasure
-function event_treasure_obtained(content, savegame_variable)
+function event_treasure_obtained(item_name, variant, savegame_variable)
    dialog_start("sahasrahla_house.quest_accepted")
 end
 

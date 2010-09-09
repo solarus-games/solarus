@@ -19,7 +19,6 @@
 
 #include "Common.h"
 #include "hud/HudElement.h"
-#include "InventoryItemId.h"
 
 /**
  * @brief Displays the item currently assigned to one of both inventory item keys.

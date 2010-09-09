@@ -63,7 +63,7 @@ function event_dialog_finished(first_message_id, answer)
       savegame_set_boolean(24, true)
 
    elseif first_message_id == "outside_world.village.tree_woman" then
-      treasure_give(-1, "rupee", 1)
+      treasure_give("rupee", 1, -1)
    end
 end
 

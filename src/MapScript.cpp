@@ -19,6 +19,7 @@
 #include "Game.h"
 #include "Sprite.h"
 #include "InventoryItem.h"
+#include "Equipment.h"
 #include "entities/EntityType.h"
 #include "entities/MapEntities.h"
 #include "entities/InteractiveEntity.h"

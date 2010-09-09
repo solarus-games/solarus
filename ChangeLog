@@ -1,5 +1,23 @@
 This ChangeLog describes the important changes of each svn commit.
 
+r1421 (2010-09-09):
+
+- Remove enumeration InventoryItemId (the hardcoded list of inventory items).
+- Remove the amount parameter of treasures. The variant gives enough
+information. This makes new changes to the Lua API:
+
+Function removed:
+
+give_treasure_with_amount
+
+Functions whose parameters have changed (to make them coherent with 
+treasure_give):
+
+event_treasure_obtaining
+event_treasure_obtained
+
+The existing scripts will need to be updated.
+
 r1420 (2010-09-09):
 
 - New function in the Lua API:

@@ -21,6 +21,8 @@
 #include "GameControls.h"
 #include "lowlevel/Color.h"
 
+// TODO remove ability get_back_from_death and script the game over sequence
+
 /**
  * @brief The game over sequence displayed when the hero dies.
  * 

@@ -18,8 +18,6 @@
 #define SOLARUS_EQUIPMENT_H
 
 #include "Common.h"
-#include "InventoryItemId.h"
-#include "Treasure.h"
 
 /**
  * @brief Represents the hero's equipment.
@@ -39,11 +37,6 @@ class Equipment {
     uint32_t magic_decrease_delay;             /**< when the magic bar decreases with time,
 						* delay between two decreases of 1 magic point */
     uint32_t next_magic_decrease_date;         /**< date of the next decrease of 1 magic point */
-
-    // giving some bottle content to the player
-    bool giving_fairy;                         /**< indicates that the player is getting a fairy */
-    bool giving_water;                         /**< indicates that the player is getting water */
-    InventoryItemId destination_bottle_id;     /**< id of the bottle where the content the player is getting will go*/
 
   public:
 
@@ -105,16 +98,6 @@ class Equipment {
     bool has_item_maximum(const std::string &item_name);
     void set_item_maximum(const std::string &item_name, int maximum);
 
-    // bottles
-    bool has_bottle(void);
-    bool has_empty_bottle(void);
-    const std::string & get_first_empty_bottle(void);
-    bool has_bottle_with(int content);
-    const std::string & get_first_bottle_with(int content);
-    const std::string & get_destination_bottle(void);
-    void set_bottle_content(const std::string &bottle_name, int content);
-    void set_bottle_empty(const std::string &bottle_name);
-
     // item assignments
     const std::string & get_item_assigned(int slot);
     void set_item_assigned(int slot, const std::string &item_name);
@@ -134,6 +117,12 @@ class Equipment {
     bool has_ability(const std::string &ability_name, int level);
     int get_ability(const std::string &ability_name);
     void set_ability(const std::string &ability_name, int level);
+    bool use_ability(const std::string &ability_name);
+
+    // dungeons
+    bool is_dungeon_finished(int dungeon);
+    bool is_dungeon_finished(void);
+    void set_dungeon_finished(void);
 };
 
 #endif

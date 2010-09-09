@@ -80,7 +80,7 @@ function event_dialog_finished(message_id, answer)
       dialog_start("lyriann_cave.tom.accept_help")
     end
   elseif message_id == "lyriann_cave.tom.accept_help" then
-    treasure_give(41, "boomerang", 1)
+    treasure_give("boomerang", 1, 41)
   elseif message_id == "lyriann_cave.tom.leaving" then
     play_sound("warp")
     hero_set_direction(1)

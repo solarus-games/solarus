@@ -24,6 +24,11 @@
 #include "lowlevel/System.h"
 #include "lowlevel/IniFile.h"
 
+// TODO
+// this class is not yet implemented in the new system
+// (the existing code is just disabled)
+#ifdef NOT_YET_IMPLEMENTED
+
 /**
  * @brief Constructor.
  * @param savegame the savegame to encapsulate
@@ -169,11 +174,6 @@ int Equipment::get_money(void) {
   return savegame->get_integer(Savegame::CURRENT_MONEY);
 }
 
-
-// TODO
-// the rest of the class is not yet implemented in the new system
-// (the existing code is just disabled)
-#ifdef NOT_YET_IMPLEMENTED
 
 /**
  * @brief Sets the player's current number of rupees.

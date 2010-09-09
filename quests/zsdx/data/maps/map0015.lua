@@ -29,7 +29,7 @@ end
 function event_hero_interaction_item(entity_name, item_name, variant)
 
    if entity_name == "frozen_door" and
-      item_id.match("^bottle") and variant == 2 then
+      string.match(item_name, "^bottle") and variant == 2 then
 
       -- using water on the frozen door
       hero_freeze()

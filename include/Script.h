@@ -56,6 +56,7 @@ class Script {
     bool call_script_function(const std::string &function_name, const std::string &arg1);
     bool call_script_function(const std::string &function_name, const std::string &arg1, int arg2);
     bool call_script_function(const std::string &function_name, const std::string &arg1, int arg2, int arg3);
+    bool call_script_function(const std::string &function_name, const std::string &arg1, const std::string &arg2, int arg3);
     bool call_script_function(const std::string &function_name, int arg1, const std::string &arg2, int arg3);
     bool call_script_function(const std::string &function_name, int arg1);
     bool call_script_function(const std::string &function_name, int arg1, int arg2);
@@ -101,8 +102,7 @@ class Script {
       l_equipment_get_item_amount,
       l_equipment_add_item_amount,
       l_equipment_remove_item_amount,
-      l_treasure_give,
-      l_treasure_give_with_amount;
+      l_treasure_give;
 
     // initialization
     void load(const std::string &script_name);

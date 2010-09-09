@@ -40,10 +40,10 @@ called when the camera (previously started by <tt>camera_move()</tt>) reaches it
 - <tt>event_camera_back()</tt>: 
 called when the camera (previously sent back by <tt>camera_restore()</tt>) reaches the hero
 
-- <tt>event_treasure_obtaining(savegame_variable, item_name, variant)</tt>: 
+- <tt>event_treasure_obtaining(item_name, variant, savegame_variable)</tt>: 
 called when the player is obtaining a treasure (coming from a chest or not)
 
-- <tt>event_treasure_obtained(savegame_variable, item_name, variant)</tt>: 
+- <tt>event_treasure_obtained(item_name, variant, savegame_variable)</tt>: 
 called when the player has just finished obtaining a treasure
 
 
@@ -159,11 +159,8 @@ adds an amount of the specified item
 - <tt>equipment_remove_item_amount(item_name, amount)</tt>: 
 removes an amount of the specified item
 
-- <tt>treasure_give(savegame_variable, item_name, variant)</tt>: 
+- <tt>treasure_give(item_name, variant, savegame_variable)</tt>: 
 gives a treasure to the player (without using a chest)
-
-- <tt>treasure_give_with_amount(savegame_variable, item_name, variant, amount)</tt>: 
-gives a treasure to the player (without using a chest) and specifies its amount
 
 
 @section map_script_api Map scripts API

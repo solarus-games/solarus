@@ -29,7 +29,7 @@ function boss_already_killed()
   hero_set_map(6, "from_dungeon_1_1F", 1)
 end
 
-function event_treasure_obtained(savegame_variable, item_name, variant)
+function event_treasure_obtained(item_name, variant, savegame_variable)
 
   if item_name == "heart_container" then
     boss_end_battle()

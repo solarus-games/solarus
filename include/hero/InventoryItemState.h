@@ -18,7 +18,6 @@
 #define SOLARUS_HERO_INVENTORY_ITEM_STATE_H
 
 #include "hero/State.h"
-#include "InventoryItemId.h"
 
 /**
  * @brief The state "inventory item" of the hero.

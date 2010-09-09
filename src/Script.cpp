@@ -145,7 +145,6 @@ void Script::register_available_functions(void) {
   lua_register(context, "equipment_add_item_amount", l_equipment_add_item_amount);
   lua_register(context, "equipment_remove_item_amount", l_equipment_remove_item_amount);
   lua_register(context, "treasure_give", l_treasure_give);
-  lua_register(context, "treasure_give_with_amount", l_treasure_give_with_amount);
 }
 
 /**
@@ -282,6 +281,37 @@ bool Script::call_script_function(const std::string &function_name,
   if (exists) {
     lua_pushstring(context, arg1.c_str());
     lua_pushinteger(context, arg2);
+    lua_pushinteger(context, arg3);
+    lua_call(context, 3, 0);
+  }
+  else {
+    lua_pop(context, -1);
+  }
+
+  return exists;
+}
+
+/**
+ * @brief Calls a function in the script.
+ * @param function_name name of the function to call
+ * @param arg1 first argument of the function
+ * @param arg2 second argument of the function
+ * @param arg3 third argument of the function
+ * @return true if the function was called, false if it does not exist
+ */
+bool Script::call_script_function(const std::string &function_name,
+				  const std::string &arg1, const std::string &arg2, int arg3) {
+
+  if (context == NULL) {
+    return false;
+  }
+
+  lua_getglobal(context, function_name.c_str());
+  bool exists = lua_isfunction(context, -1);
+
+  if (exists) {
+    lua_pushstring(context, arg1.c_str());
+    lua_pushstring(context, arg2.c_str());
     lua_pushinteger(context, arg3);
     lua_call(context, 3, 0);
   }
@@ -1144,50 +1174,21 @@ int Script::l_equipment_remove_item_amount(lua_State *l) {
  * You can use this function to make a non-playing character
  * give a treasure to the player.
  *
- * - Argument 1 (integer): index of the savegame boolean variable that stores
+ * - Argument 1 (integer): name of the item to give (according to the item list of quest.dat)
+ * - Argument 2 (integer): variant of this item (1 if the item has only one variant)
+ * - Argument 3 (integer): index of the savegame boolean variable that stores
  * the possession state of the treasure (or -1 if you don't want to save this treasure)
- * - Argument 2 (integer): name of the item to give (according to the item list of quest.dat)
- * - Argument 3 (integer): variant of this item (1 if the item has only one variant)
  */
 int Script::l_treasure_give(lua_State *l) {
 
   Script *script;
   called_by_script(l, 3, &script);
-  int savegame_variable = lua_tointeger(l, 1);
-  const std::string &item_name = lua_tostring(l, 2);
-  int variant = lua_tointeger(l, 3);
+  const std::string &item_name = lua_tostring(l, 1);
+  int variant = lua_tointeger(l, 2);
+  int savegame_variable = lua_tointeger(l, 3);
 
   Game *game = script->game;
-  game->give_treasure(new Treasure(game, savegame_variable, item_name, variant));
-
-  return 0;
-}
-
-/**
- * @brief Gives a treasure to the player, specifying the amount.
- *
- * This function should be called only for for treasures with an amount, like arrows, apples, etc.,
- * otherwise the amount parameter will be ignored.
- * For example you can use this function to make a non-playing character
- * give a treasure to the player.
- *
- * - Argument 1 (integer): index of the savegame boolean variable that stores
- * the possession state of the treasure (or -1 if you don't want to save this treasure)
- * - Argument 2 (integer): name of the item to give (according to the item list of quest.dat)
- * - Argument 3 (integer): variant of this item (1 if the item has only one variant)
- * - Argument 4 (integer): amount to give
- */
-int Script::l_treasure_give_with_amount(lua_State *l) {
-
-  Script *script;
-  called_by_script(l, 4, &script);
-  int savegame_variable = lua_tointeger(l, 1);
-  const std::string &item_name = lua_tostring(l, 2);
-  int variant = lua_tointeger(l, 3);
-  int amount = lua_tointeger(l, 4);
-
-  Game *game = script->game;
-  game->give_treasure(new Treasure(game, savegame_variable, item_name, variant, amount));
+  game->give_treasure(new Treasure(game, item_name, variant, savegame_variable));
 
   return 0;
 }

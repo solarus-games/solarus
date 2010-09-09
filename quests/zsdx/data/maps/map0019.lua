@@ -37,7 +37,7 @@ function event_dialog_finished(first_message_id, answer)
       end
     end
   elseif first_message_id == "cake_shop.thank_you" then
-    treasure_give(32, "bottle_1")
+    treasure_give("bottle_1", 1, 32)
   end
 end
 

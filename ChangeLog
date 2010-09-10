@@ -1,5 +1,13 @@
 This ChangeLog describes the important changes of each svn commit.
 
+r1423 (2010-09-10):
+
+- Change the syntax of pickable items and entities that depend on them
+(enemies and destructible items). Now, all entities that can contain a
+treasure (chests, shop items, pickable items, enemies and destructible
+items) use the same unified syntax. This syntax is the one that describes a treasure: an item name,
+a variant and a savegame variable. The existing maps will need to be upgraded.
+
 r1421 (2010-09-09):
 
 - Remove enumeration InventoryItemId (the hardcoded list of inventory items).

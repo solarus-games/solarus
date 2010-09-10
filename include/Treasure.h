@@ -40,15 +40,11 @@ class Treasure {
 
   private:
 
-    Surface *treasures_img;	/**< image of all treasures */
-
     Game *game;			/**< the current game */
-    int savegame_variable;	/**< index of the savegame boolean variable corresponding to this treasure,
-				 * or -1 if the treasure state is not saved */
     std::string item_name;	/**< content of the treasure */
     int variant;		/**< variant of this content */
-
-    Counter *counter;
+    int savegame_variable;	/**< index of the savegame boolean variable corresponding to this treasure,
+				 * or -1 if the treasure state is not saved */
 
     void play_treasure_sound(void);
     void show_message(void);
@@ -56,12 +52,15 @@ class Treasure {
 
   public:
 
+    static Treasure * create(Game *game, const std::string &item_name, int variant, int savegame_variable);
+
     Treasure(Game *game, const std::string &item_name, int variant, int savegame_variable);
     ~Treasure(void);
 
     const std::string & get_item_name(void);
     int get_variant(void);
     int get_savegame_variable(void);
+    bool is_saved(void);
 
     bool is_amount_full(void);
     void give_to_player(void);

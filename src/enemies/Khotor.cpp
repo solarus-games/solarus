@@ -62,7 +62,7 @@ void Khotor::initialize(void) {
 
   // chain and ball
   chain = (ChainAndBall*) create(game, CHAIN_AND_BALL, RANK_NORMAL, -1, "chain_and_ball", get_layer(),
-      get_x(), get_y(), 0, PickableItem::NONE, -1);
+      get_x(), get_y(), 0, NULL);
   map->get_entities()->add_entity(chain);
 }
 

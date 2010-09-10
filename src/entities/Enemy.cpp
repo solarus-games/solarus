@@ -18,9 +18,12 @@
 #include "entities/Hero.h"
 #include "entities/MapEntities.h"
 #include "entities/CarriedItem.h"
+#include "entities/PickableItem.h"
 #include "Game.h"
 #include "Savegame.h"
 #include "Equipment.h"
+#include "ItemProperties.h"
+#include "Treasure.h"
 #include "Sprite.h"
 #include "SpriteAnimationSet.h"
 #include "Map.h"
@@ -59,7 +62,7 @@ Enemy::Enemy(const ConstructionParameters &params):
  * @brief Destructor.
  */
 Enemy::~Enemy(void) {
-
+  delete treasure;
 }
 
 /**
@@ -76,30 +79,30 @@ Enemy::~Enemy(void) {
  */
 MapEntity * Enemy::parse(Game *game, std::istream &is, Layer layer, int x, int y) {
 
-  int direction, subtype, rank, savegame_variable, pickable_item_type, pickable_item_savegame_variable;
-  std::string name;
+  int direction, subtype, rank, savegame_variable, treasure_variant, treasure_savegame_variable;
+  std::string name, treasure_name;
 
   FileTools::read(is, name);
   FileTools::read(is, direction);
   FileTools::read(is, subtype);
   FileTools::read(is, rank);
   FileTools::read(is, savegame_variable);
-  FileTools::read(is, pickable_item_type);
-  FileTools::read(is, pickable_item_savegame_variable);
+  FileTools::read(is, treasure_name);
+  FileTools::read(is, treasure_variant);
+  FileTools::read(is, treasure_savegame_variable);
 
   return create(game, Subtype(subtype), Enemy::Rank(rank), savegame_variable, name, Layer(layer), x, y, direction, 
-      PickableItem::Subtype(pickable_item_type), pickable_item_savegame_variable);
+      Treasure::create(game, treasure_name, treasure_variant, treasure_savegame_variable));
 }
 
 /**
  * @brief Creates an enemy with the specified type.
  *
- * This method acts like a constructor, except that it can return NULL if the enemy
- * is already dead and cannot be killed again (e.g. a boss).
- * It some very special cases, it can even return an entity that is not an enemy:
- * for example, imagine that the player killed a dungeon's end boss
- * but then killed himself (or just left the game) without picking the heart container: in this case,
- * this function returns an instance of PickableItem (the heart container).
+ * This method acts like a constructor, and usually returns an enemy.
+ * However, if the enemy is already dead and cannot be killed again,
+ * this function returns:
+ * - NULL if the enemy has no treasure (or its treasure was already picked)
+ * - or a pickable treasure if the enemy has one
  *
  * @param game the current game
  * @param type type of enemy to create
@@ -111,28 +114,17 @@ MapEntity * Enemy::parse(Game *game, std::istream &is, Layer layer, int x, int y
  * @param y y position of the enemy on the map
  * @param direction initial direction of the enemy on the map (0 to 3)
  * this enemy is killed, or -1 if this enemy is not saved
- * @param pickable_item_subtype subtype of pickable item the enemy drops
- * @param pickable_item_savegame_variable index of the boolean variable
+ * @param treasure the pickable item that the enemy drops (possibly NULL)
  */
 MapEntity * Enemy::create(Game *game, Subtype type, Rank rank, int savegame_variable,
-    const std::string &name, Layer layer, int x, int y, int direction,
-    PickableItem::Subtype pickable_item_subtype, int pickable_item_savegame_variable) {
+    const std::string &name, Layer layer, int x, int y, int direction, Treasure *treasure) {
 
-  // see if the enemy is alive
-  if (savegame_variable != -1) {
-    
-    if (game->get_savegame()->get_boolean(savegame_variable)) {
+  // see if the enemy is dead
+  if (savegame_variable != -1
+      && game->get_savegame()->get_boolean(savegame_variable)) {
 
-      // the enemy is dead: see whether it releases a pickable item saved
-      if (pickable_item_savegame_variable != -1) {
-	// return the pickable item that the player has possibly forgotten after he killed the enemy
-        return PickableItem::create(game, layer, x, y, pickable_item_subtype, pickable_item_savegame_variable, FALLING_NONE, false);
-      }
-      else {
-	// the enemy is already killed and released no pickable item saved
-        return NULL;
-      }
-    }
+    // the enemy is dead: create its pickable treasure (if any) instead
+    return PickableItem::create(game, layer, x, y, treasure, FALLING_NONE, false);
   }
 
   // create the enemy
@@ -159,8 +151,7 @@ MapEntity * Enemy::create(Game *game, Subtype type, Rank rank, int savegame_vari
   enemy->rank = rank;
   enemy->enabled = (rank == RANK_NORMAL);
   enemy->savegame_variable = savegame_variable;
-  enemy->pickable_item_subtype = pickable_item_subtype;
-  enemy->pickable_item_savegame_variable = pickable_item_savegame_variable;
+  enemy->treasure = treasure;
 
   // set the default enemy features
   enemy->damage_on_hero = 1;
@@ -466,11 +457,14 @@ void Enemy::update(void) {
 
   if (is_killed() && is_dying_animation_finished()) {
 
-    // create the pickable item
-    if (pickable_item_subtype != PickableItem::NONE) {
-      bool will_disappear = PickableItem::can_disappear(pickable_item_subtype);
-      map->get_entities()->add_entity(PickableItem::create(game, get_layer(), get_x(), get_y(), pickable_item_subtype,
-	    pickable_item_savegame_variable, FALLING_HIGH, will_disappear));
+    // create the pickable treasure
+    if (treasure != NULL) {
+
+      ItemProperties *item_properties = game->get_equipment()->get_item_properties(treasure->get_item_name());
+      bool will_disappear = item_properties->can_disappear();
+      map->get_entities()->add_entity(PickableItem::create(game, get_layer(), get_x(), get_y(), treasure,
+	    FALLING_HIGH, will_disappear));
+      treasure = NULL;
     }
 
     // notify the enemy
@@ -853,8 +847,8 @@ void Enemy::just_hurt(MapEntity *source, EnemyAttack attack, int life_points) {
 void Enemy::kill(void) {
 
   // if the enemy is immobilized, give a rupee
-  if (rank == RANK_NORMAL && is_immobilized() && pickable_item_savegame_variable == -1) {
-    pickable_item_subtype = get_random_rupee();
+  if (rank == RANK_NORMAL && is_immobilized() && !treasure->is_saved()) {
+    // TODO choose random money
   }
 
   // stop any movement and disable attacks
@@ -972,10 +966,12 @@ int Enemy::custom_attack(EnemyAttack attack, Sprite *this_sprite) {
   DIE("The custom attack for enemy '" << get_name() << "' is not defined");
 }
 
+// TODO make the boomerang script choose rupees?
 /**
  * @brief Computes randomly a type of pickable rupee.
  * @return a type of pickable rupee
  */
+/*
 PickableItem::Subtype Enemy::get_random_rupee(void) {
 
   PickableItem::Subtype rupee;
@@ -992,4 +988,4 @@ PickableItem::Subtype Enemy::get_random_rupee(void) {
   }
   return rupee;
 }
-
+*/

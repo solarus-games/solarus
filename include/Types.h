@@ -145,8 +145,6 @@ class Detector;
 class Teletransporter;
 class DestinationPoint;
 class PickableItem;
-class PickableItemHeart;
-class PickableItemFairy;
 class CarriedItem;
 class DestructibleItem;
 class Chest;

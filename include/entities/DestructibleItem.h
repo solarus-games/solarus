@@ -19,7 +19,6 @@
 
 #include "Common.h"
 #include "Detector.h"
-#include "PickableItem.h"
 #include "Ground.h"
 
 /**
@@ -57,35 +56,34 @@ class DestructibleItem: public Detector {
      * This structure defines the properties of a destructible item type.
      */
     struct Features {
-      SpriteAnimationSetId animation_set_id; /**< animation set used for this type of destructible item */
-      SoundId destruction_sound_id;          /**< sound played when the item is destroyed */
-      bool can_be_lifted;                    /**< indicates that this item is an obstacle and can be lifted */
-      bool can_be_cut;                       /**< indicates that this item can be cut with the sword */
-      bool can_explode;                      /**< indicates that this item explodes after a delay */
-      bool can_regenerate;                   /**< indicates that this item regenerates once lifted */
-      int weight;                            /**< for liftable items: weight of the item (0: light,
-					      * 1: iron glove required, 2: golden glove required) */
-      int damage_on_enemies;                 /**< damage the item can cause to enemies (1: few, 2: normal, 3: a lot) */
-      Ground special_ground;                 /**< for a non-obstacle item, indicates a special ground to display */
+      SpriteAnimationSetId animation_set_id;	/**< animation set used for this type of destructible item */
+      SoundId destruction_sound_id;		/**< sound played when the item is destroyed */
+      bool can_be_lifted;			/**< indicates that this item is an obstacle and can be lifted */
+      bool can_be_cut;				/**< indicates that this item can be cut with the sword */
+      bool can_explode;				/**< indicates that this item explodes after a delay */
+      bool can_regenerate;			/**< indicates that this item regenerates once lifted */
+      int weight;				/**< for liftable items: weight of the item (0: light,
+						 * 1: iron glove required, 2: golden glove required) */
+      int damage_on_enemies;			/**< damage the item can cause to enemies (1: few, 2: normal, 3: a lot) */
+      Ground special_ground;			/**< for a non-obstacle item, indicates a special ground to display */
     };
 
-    Subtype subtype;                         /**< the subtype of destructible item */
-    PickableItem::Subtype pickable_item;     /**< the pickable item that appears when the item is lifted or cut */
-    int pickable_item_savegame_variable;     /**< savegame variable of the pickable item (if any) */
+    Subtype subtype;				/**< the subtype of destructible item */
+    Treasure *treasure;				/**< the pickable item that appears when the item is lifted or cut */
 
-    bool is_being_cut;                       /**< indicates that the item is being cut */
-    uint32_t regeneration_date;              /**< date when the item starts regenerating */
-    bool is_regenerating;                    /**< indicates that the item is currently regenerating */
+    bool is_being_cut;				/**< indicates that the item is being cut */
+    uint32_t regeneration_date;			/**< date when the item starts regenerating */
+    bool is_regenerating;			/**< indicates that the item is currently regenerating */
 
     static const Features features[];
 
     void play_destroy_animation(void);
+    void create_pickable_item(void);
 
   public:
 
     // creation and destruction
-    DestructibleItem(Layer layer, int x, int y, Subtype subtype,
-	PickableItem::Subtype pickable_item, int pickable_item_savegame_variable);
+    DestructibleItem(Layer layer, int x, int y, Subtype subtype, Treasure *treasure);
     ~DestructibleItem(void);
     static CreationFunction parse;
 

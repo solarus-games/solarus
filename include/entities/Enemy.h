@@ -20,7 +20,6 @@
 #include "Common.h"
 #include "entities/Detector.h"
 #include "entities/EnemyAttack.h"
-#include "entities/PickableItem.h"
 #include "entities/Explosion.h"
 
 /**
@@ -76,80 +75,79 @@ class Enemy: public Detector {
      * @brief Defines the sounds that can be played when an enemy is hurt.
      */
     enum HurtSoundStyle {
-      HURT_SOUND_NORMAL,  /**< "enemy_hurt" (and if necessary "enemy_killed") is played */
-      HURT_SOUND_MONSTER, /**< "monster_hurt" (and if necessary "enemy_killed") is played */
-      HURT_SOUND_BOSS     /**< "boss_hurt" or "boss_killed" is played */
+      HURT_SOUND_NORMAL,			/**< "enemy_hurt" (and if necessary "enemy_killed") is played */
+      HURT_SOUND_MONSTER,			/**< "monster_hurt" (and if necessary "enemy_killed") is played */
+      HURT_SOUND_BOSS				/**< "boss_hurt" or "boss_killed" is played */
     };
 
     /**
      * @brief This structure contains the parameters needed by the subclasses constructors.
      */
     struct ConstructionParameters {
-      std::string name;   /**< name of the instance of enemy */
-      Layer layer;        /**< initial layer of the enemy */
-      int x;              /**< initial x coordinate of the enemy */
-      int y;              /**< initial y coordinate of the enemy */
+      std::string name;				/**< name of the instance of enemy */
+      Layer layer;				/**< initial layer of the enemy */
+      int x;					/**< initial x coordinate of the enemy */
+      int y;					/**< initial y coordinate of the enemy */
     };
 
   private:
 
     // attack/defense features of this type of enemy
-    int damage_on_hero;                 /**< number of heart quarters the player loses when he gets hurt by this enemy;
-					 * this number is divided depending on the hero's tunic number (default: 1) */
-    int magic_damage_on_hero;           /**< number of magic points the player loses when he gets hurt
-					 * by this enemy (default: 0) */
-    int life;                           /**< number of health points of the enemy (default: 1) */
-    HurtSoundStyle hurt_sound_style;    /**< the sound played when this kind of enemy gets hurt by the hero
-					 * (default: HURT_SOUND_NORMAL) */
-    bool pushed_back_when_hurt;         /**< indicates whether the enemy is pushed back when it gets hurt by the hero
-					 * (default: true) */
-    bool push_back_hero_on_sword;       /**< indicates whether the hero is pushed back when he hurts the enemy with his
-					 * sword (default: false) */
-    int minimum_shield_needed;          /**< shield number needed by the hero to avoid the attack of this enemy,
-					 * or 0 to make the attack unavoidable (default: 0) */
+    int damage_on_hero;					/**< number of heart quarters the player loses when he gets hurt by this enemy;
+							 * this number is divided depending on the hero's tunic number (default: 1) */
+    int magic_damage_on_hero;				/**< number of magic points the player loses when he gets hurt
+							 * by this enemy (default: 0) */
+    int life;						/**< number of health points of the enemy (default: 1) */
+    HurtSoundStyle hurt_sound_style;			/**< the sound played when this kind of enemy gets hurt by the hero
+							 * (default: HURT_SOUND_NORMAL) */
+    bool pushed_back_when_hurt;				/**< indicates whether the enemy is pushed back when it gets hurt by the hero
+							 * (default: true) */
+    bool push_back_hero_on_sword;			/**< indicates whether the hero is pushed back when he hurts the enemy with his
+							 * sword (default: false) */
+    int minimum_shield_needed;				/**< shield number needed by the hero to avoid the attack of this enemy,
+							 * or 0 to make the attack unavoidable (default: 0) */
 
-    int attack_consequences[ATTACK_NUMBER]; /**< indicates how the enemy reacts to each attack
-					     * (by default, it depends on the attacks):
-					     * - a number greater than 0 represents the number of health points lost when
-					     *   he is subject to this attack
-					     *     - for a sword attack, this number is multiplied depending on
-					     *       the sword strongness and the presence of a spin attack
-					     *     - for a thrown item, this number is multiplied by the weight
-					     * - a value of 0 means that the attack is just ignored (this is the case
-					     *   for some special enemies like Octorok's stones),
-					     * - a value of -1 means that the enemy is protected against this attack (a
-					     *   sound is played),
-					     * - a value of -2 means that this attack immobilizes the enemy
-					     * - a value of -3 means a custom effect for the attack
-					     *   (the custom_attack() fonction is called) */
+    int attack_consequences[ATTACK_NUMBER];		/**< indicates how the enemy reacts to each attack
+							 * (by default, it depends on the attacks):
+							 * - a number greater than 0 represents the number of health points lost when
+							 *   he is subject to this attack
+							 *     - for a sword attack, this number is multiplied depending on
+							 *       the sword strongness and the presence of a spin attack
+							 *     - for a thrown item, this number is multiplied by the weight
+							 * - a value of 0 means that the attack is just ignored (this is the case
+							 *   for some special enemies like Octorok's stones),
+							 * - a value of -1 means that the enemy is protected against this attack (a
+							 *   sound is played),
+							 * - a value of -2 means that this attack immobilizes the enemy
+							 * - a value of -3 means a custom effect for the attack
+							 *   (the custom_attack() fonction is called) */
 
     // enemy characteristics
-    Rank rank;                              /**< is this enemy a normal enemy, a miniboss or a boss? */
-    int savegame_variable;                  /**< index of the boolean variable indicating whether this enemy is killed,
-					     * or -1 if it is not saved */
+    Rank rank;						/**< is this enemy a normal enemy, a miniboss or a boss? */
+    int savegame_variable;				/**< index of the boolean variable indicating whether this enemy is killed,
+							 * or -1 if it is not saved */
 
     // enemy state
-    bool enabled;                           /**< indicates that the enemy is enabled */
-    bool being_hurt;                        /**< indicates that the enemy is being hurt */
-    uint32_t stop_hurt_date;                /**< date when the enemy stops being hurt */
-    Movement *normal_movement;              /**< backup of the enemy's movement, which is replaced by
-					     * a straight movement while it is hurt */
-    bool invulnerable;                      /**< indicates that the enemy cannot be hurt for now */
-    uint32_t vulnerable_again_date;         /**< date when the enemy can be hurt again */
-    bool can_attack;                        /**< indicates that the enemy can currently attack the hero */
-    uint32_t can_attack_again_date;         /**< date when the enemy can attack again */
-    bool immobilized;                       /**< indicates that the enemy is currently immobilized */
-    uint32_t start_shaking_date;            /**< date when the enemy shakes */ 
-    uint32_t end_shaking_date;              /**< date when the enemy stops shaking and walks again */ 
+    bool enabled;					/**< indicates that the enemy is enabled */
+    bool being_hurt;					/**< indicates that the enemy is being hurt */
+    uint32_t stop_hurt_date;				/**< date when the enemy stops being hurt */
+    Movement *normal_movement;				/**< backup of the enemy's movement, which is replaced by
+							 * a straight movement while it is hurt */
+    bool invulnerable;					/**< indicates that the enemy cannot be hurt for now */
+    uint32_t vulnerable_again_date;			/**< date when the enemy can be hurt again */
+    bool can_attack;					/**< indicates that the enemy can currently attack the hero */
+    uint32_t can_attack_again_date;			/**< date when the enemy can attack again */
+    bool immobilized;					/**< indicates that the enemy is currently immobilized */
+    uint32_t start_shaking_date;			/**< date when the enemy shakes */ 
+    uint32_t end_shaking_date;				/**< date when the enemy stops shaking and walks again */ 
 
-    // pickable item
-    PickableItem::Subtype pickable_item_subtype;  /**< subtype of pickable item that appears when this enemy gets killed */
-    int pickable_item_savegame_variable;          /**< savegame variable of the pickable item (if any) */
+    // treasure
+    Treasure *treasure;					/**< pickable item that appears when this enemy gets killed */
 
     // boss or mini-boss
-    bool exploding;                         /**< indicates that the boss is dying and some explosions are triggered on him */
-    int nb_explosions;                      /**< number of explosions already played */
-    uint32_t next_explosion_date;           /**< date of the next explosion */
+    bool exploding;					/**< indicates that the boss is dying and some explosions are triggered on him */
+    int nb_explosions;					/**< number of explosions already played */
+    uint32_t next_explosion_date;			/**< date of the next explosion */
 
   protected:
 
@@ -195,10 +193,9 @@ class Enemy: public Detector {
     virtual void just_hurt(MapEntity *source, EnemyAttack attack, int life_points);
     virtual void just_dead(void);
 
-    // utility functions
+    // animation
     const std::string& get_animation(void);
     void set_animation(const std::string &animation);
-    PickableItem::Subtype get_random_rupee(void);
 
   public:
 
@@ -208,7 +205,7 @@ class Enemy: public Detector {
     static CreationFunction parse;
     static MapEntity * create(Game *game, Subtype type, Rank rank, int savegame_variable,
 	const std::string &name, Layer layer, int x, int y, int direction,
-	PickableItem::Subtype pickable_item_subtype, int pickable_item_savegame_variable);
+	Treasure *treasure);
 
     EntityType get_type(void);
     void set_map(Map *map);

@@ -80,6 +80,7 @@ old_treasure_content		item_name		variant
 
 This section gives, for each pickable item subtype of the old system,
 the corresponding new item and variant.
+Pickable items, enemies and destructible items need to be updated.
 
 -1	_random	0
 0	_none	0

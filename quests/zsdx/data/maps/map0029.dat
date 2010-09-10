@@ -449,18 +449,18 @@
 2	0	192	752	16	16	to_outside_west	0	1	6	from_twin_caves_west
 9	0	312	389	block	-1	0	2
 11	0	304	704	door_switch	1	0	0
-4	0	312	717	0	0	-1
-4	0	88	717	0	-1	-1
-4	0	72	717	0	1	-1
-4	0	72	701	0	-1	-1
-4	0	296	717	0	-1	-1
-4	0	312	701	0	-1	-1
+4	0	312	717	0	_none	0	-1
+4	0	88	717	0	_random	0	-1
+4	0	72	717	0	rupee	1	-1
+4	0	72	701	0	_random	0	-1
+4	0	296	717	0	_random	0	-1
+4	0	312	701	0	_random	0	-1
 12	0	184	640	32	8	custom_obstacle	1	1	1	1
 12	0	248	608	32	8	custom_obstacle_2	1	1	1	1
 1	0	200	733	from_outside_west	1	0
 2	0	608	752	16	16	to_outside_east	0	1	6	from_twin_caves_east
 9	0	312	373	block_2	-1	0	0
-5	0	464	336	chest	0	87	20	70
+5	0	464	336	chest	0	rupee	3	70
 1	0	440	557	destination_point_F	-1	1
 1	0	440	589	destination_point_G	-1	1
 1	0	440	717	destination_point_L	-1	1
@@ -478,7 +478,7 @@
 1	0	584	581	destination_point_N	-1	1
 1	0	616	581	destination_point_O	-1	1
 1	0	648	581	destination_point_Q	-1	1
-4	0	656	453	0	12	-1
+4	0	656	453	0	arrows_refill	2	-1
 1	0	656	421	destination_point_U	-1	1
 1	0	624	469	destination_point_T	-1	1
 1	0	688	469	destination_point_S	-1	1
@@ -499,7 +499,7 @@
 17	0	456	141	0
 17	0	440	157	6
 17	0	440	173	6
-5	0	688	64	chest_2	0	19	1	68
+5	0	688	64	chest_2	0	rock_key	1	68
 2	0	432	672	16	16	teletransporter_A	1	1	29	destination_point_A
 1	0	480	541	destination_point_B	-1	1
 1	0	512	541	destination_point_D	-1	1
@@ -525,9 +525,9 @@
 2	0	696	392	16	16	teletransporter_T	1	1	29	destination_point_A
 2	0	600	392	16	16	teletransporter_A_22	1	1	29	destination_point_S
 1	0	480	701	destination_point_K	-1	1
-4	0	496	573	0	2	-1
+4	0	496	573	0	rupee	2	-1
 11	0	464	400	barrier_switch	1	0	0
-4	0	472	413	0	0	-1
+4	0	472	413	0	_none	0	-1
 10	0	600	656	32	32	barrier	399	1
 15	0	608	96	48	16	1
 15	0	576	112	64	16	1

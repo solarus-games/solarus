@@ -57,18 +57,18 @@
 0	0	72	128	176	32	173
 1	0	160	213	main_entrance	1	0
 2	0	152	224	16	16	to_outside	0	1	3	out_cake_shop
-4	0	48	53	0	1	-1
-4	0	64	53	0	1	-1
-4	0	64	69	0	1	-1
-4	0	48	69	0	1	-1
-4	0	256	53	0	4	-1
-4	0	256	69	0	4	-1
-4	0	272	69	0	4	-1
-4	0	272	53	0	4	-1
+4	0	48	53	0	rupee	1	-1
+4	0	64	53	0	rupee	1	-1
+4	0	64	69	0	rupee	1	-1
+4	0	48	69	0	rupee	1	-1
+4	0	256	53	0	heart	1	-1
+4	0	256	69	0	heart	1	-1
+4	0	272	69	0	heart	1	-1
+4	0	272	53	0	heart	1	-1
 8	0	160	77	seller	3	1	npc/static_villager10	_none
 8	0	160	109	seller_talking_place	3	0	_none	_none
-16	0	80	128	pain_au_chocolat	17	1	-1	20	cake_shop.pain_au_chocolat
-16	0	208	128	croissant	18	1	-1	50	cake_shop.croissant
+16	0	80	128	pain_au_chocolat	pains_au_chocolat	1	-1	20	cake_shop.pain_au_chocolat
+16	0	208	128	croissant	croissants	1	-1	50	cake_shop.croissant
 13	0	160	221	16	16	leaving_shop_sensor	0
 0	2	112	216	96	8	148
 0	2	144	216	32	8	153

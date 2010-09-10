@@ -199,22 +199,22 @@
 13	0	176	333	16	16	sensor_7	2
 13	0	104	77	16	16	sensor_8	2
 11	0	64	544	sw_switch	1	0	0
-4	0	72	557	0	0	-1
-4	0	72	461	0	4	-1
-4	0	280	461	0	4	-1
-4	0	280	477	0	4	-1
-4	0	280	557	0	1	-1
-5	0	264	280	map_chest	0	70	1	54
+4	0	72	557	0	_none	0	-1
+4	0	72	461	0	heart	1	-1
+4	0	280	461	0	heart	1	-1
+4	0	280	477	0	heart	1	-1
+4	0	280	557	0	rupee	1	-1
+5	0	264	280	map_chest	0	map	1	54
 11	0	272	320	map_room_switch	1	0	0
 12	0	104	80	8	32	custom_obstacle	1	1	1	1
 12	0	88	248	32	8	custom_obstacle_2	1	1	1	1
 11	0	128	64	nw_switch	1	0	0
-4	0	136	77	0	0	-1
-5	0	400	448	compass_chest	0	71	1	55
-7	0	488	501	compass_room_battle	3	2	0	-1	-1	-1
-7	0	536	525	compass_room_battle_3	3	2	0	-1	-1	-1
-7	0	608	525	compass_room_battle_4	3	2	0	-1	-1	-1
-7	0	448	549	compass_room_battle_2	3	2	0	-1	-1	-1
+4	0	136	77	0	_none	0	-1
+5	0	400	448	compass_chest	0	compass	1	55
+7	0	488	501	compass_room_battle	3	2	0	-1	_random	0	-1
+7	0	536	525	compass_room_battle_3	3	2	0	-1	_random	0	-1
+7	0	608	525	compass_room_battle_4	3	2	0	-1	_random	0	-1
+7	0	448	549	compass_room_battle_2	3	2	0	-1	_random	0	-1
 1	0	104	61	from_B1_west	3	0
 1	0	608	461	from_B1_south	3	0
 2	0	96	48	16	16	to_B1_west	0	1	24	from_1F_west
@@ -225,8 +225,8 @@
 18	0	288	488	door	0	1	58
 18	0	384	488	door_2	2	1	58
 12	0	144	304	8	32	custom_obstacle_10	0	1	1	1
-4	0	72	477	0	4	-1
-4	0	280	333	0	0	-1
+4	0	72	477	0	heart	1	-1
+4	0	280	333	0	_none	0	-1
 2	0	600	448	16	16	to_B1_south	0	1	24	from_1F_south
 19	0	96	256	1	4
 19	0	88	88	0	4
@@ -477,28 +477,28 @@
 0	1	168	256	24	24	55
 0	1	312	296	16	32	338
 2	1	168	608	16	16	to_outside	0	1	6	from_dungeon_1_1F
-5	1	160	488	chest_6	1	32	1	5
+5	1	160	488	chest_6	1	glove	1	5
 6	1	240	528	8	24	jump_sensor	0	16
 12	1	80	80	32	8	custom_obstacle_3	1	1	1	1
 12	1	80	104	32	8	custom_obstacle_4	1	1	1	1
 12	1	88	248	8	32	custom_obstacle_5	1	1	1	1
 12	1	112	248	8	32	custom_obstacle_6	1	1	1	1
-7	1	520	309	enemy_5	3	2	0	-1	14	59
-7	1	600	349	enemy_8	3	2	0	-1	-1	-1
-7	1	696	349	enemy_10	3	2	0	-1	-1	-1
-7	1	712	229	enemy_12	3	2	0	-1	-1	-1
-7	1	696	157	enemy_13	3	2	0	-1	-1	-1
-7	1	560	157	enemy_14	3	2	0	-1	-1	-1
+7	1	520	309	enemy_5	3	2	0	-1	small_key	1	59
+7	1	600	349	enemy_8	3	2	0	-1	_random	0	-1
+7	1	696	349	enemy_10	3	2	0	-1	_random	0	-1
+7	1	712	229	enemy_12	3	2	0	-1	_random	0	-1
+7	1	696	157	enemy_13	3	2	0	-1	_random	0	-1
+7	1	560	157	enemy_14	3	2	0	-1	_random	0	-1
 12	1	288	136	32	8	custom_obstacle_7	1	1	1	1
 12	1	288	160	32	8	custom_obstacle_8	1	1	1	1
-7	1	408	272	enemy_6	3	1	0	-1	-1	-1
+7	1	408	272	enemy_6	3	1	0	-1	_random	0	-1
 1	1	808	269	from_B1_east	3	0
 1	1	856	269	from_2F	3	0
 2	1	800	256	16	16	to_B1_east	0	1	24	from_1F_east
 2	1	848	256	16	16	to_2F	0	1	25	from_1F
 2	1	600	232	32	32	to_B1_hole	0	1	24	from_1F_hole
 1	1	616	253	from_2F_hole	-1	0
-7	1	400	165	enemy_9	3	0	0	-1	-1	-1
+7	1	400	165	enemy_9	3	0	0	-1	_random	0	-1
 1	1	176	597	from_outside	1	0
 13	1	432	173	16	16	sensor_9	2
 2	1	848	256	16	16	teletransporter	0	1	25	from_1F

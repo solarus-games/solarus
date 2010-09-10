@@ -13,7 +13,7 @@ the corresponding equipment item name and variant number in the new system.
 It can be used to update (manually or automatically with a shell-script)
 the treasures, chests and shop items in data files of the old system.
 
-old_treasure_content		item_name		variant
+old_treasure_content		treasure_name		treasure_variant
 
 -1	_none	0
 0	feather	1
@@ -81,6 +81,8 @@ old_treasure_content		item_name		variant
 This section gives, for each pickable item subtype of the old system,
 the corresponding new item and variant.
 Pickable items, enemies and destructible items need to be updated.
+
+old_pickable_item_subtype	treasure_name	treasure_variant
 
 -1	_random	0
 0	_none	0

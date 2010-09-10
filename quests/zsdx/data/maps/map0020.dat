@@ -272,7 +272,7 @@
 2	0	264	320	16	16	teletransporter_7	1	1	20	destination_point_4
 2	0	200	432	16	16	teletransporter_8	1	1	20	destination_point_2
 11	0	88	328	open_barrier_switch	1	0	0
-4	0	96	341	0	0	-1
+4	0	96	341	0	_none	0	-1
 1	0	112	269	destination_point_5	-1	1
 15	0	184	512	16	16	0
 12	0	120	80	32	8	custom_obstacle	1	1	1	1
@@ -281,7 +281,7 @@
 15	0	248	176	32	16	1
 15	0	264	224	16	16	0
 14	0	256	237
-5	0	208	160	chest	0	-1	1	0
+5	0	208	160	chest	0	_none	0	0
 15	0	136	160	16	32	0
 15	0	120	128	32	16	1
 1	0	200	213	destination_point_6	-1	1
@@ -300,26 +300,26 @@
 15	0	248	192	32	16	0
 8	0	208	381	tom	3	1	npc/tom	_none
 13	0	112	597	16	16	leave_cavern_sensor	0
-7	0	352	197	battle_1_enemy_5	3	2	0	-1	-1	-1
+7	0	352	197	battle_1_enemy_5	3	2	0	-1	_random	0	-1
 10	0	344	288	16	8	battle_1_barrier	70	1
 10	0	344	488	16	8	battle_2_barrier	70	1
-7	0	160	357	enemy_3	3	2	0	-1	-1	-1
-7	0	336	160	enemy	3	1	0	-1	-1	-1
-7	0	352	88	enemy_4	3	1	0	-1	-1	-1
-7	0	392	253	battle_1_enemy_3	3	2	0	-1	-1	-1
-7	0	312	253	battle_1_enemy_4	3	2	0	-1	-1	-1
-7	0	392	117	battle_1_enemy_2	3	2	0	-1	-1	-1
-7	0	400	392	enemy_2	3	1	0	-1	-1	-1
-7	0	304	392	enemy_5	3	1	0	-1	-1	-1
-7	0	360	413	battle_2_enemy_2	3	2	0	-1	-1	-1
-7	0	304	341	battle_2_enemy_3	3	2	0	-1	-1	-1
-7	0	400	341	battle_2_enemy_4	3	2	0	-1	-1	-1
-7	0	400	453	battle_2_enemy_5	3	2	0	-1	-1	-1
-4	0	408	77	0	4	-1
-4	0	392	573	0	4	-1
-4	0	408	573	0	4	-1
-4	0	408	557	0	4	-1
-7	0	80	301	enemy_6	3	2	0	-1	-1	-1
+7	0	160	357	enemy_3	3	2	0	-1	_random	0	-1
+7	0	336	160	enemy	3	1	0	-1	_random	0	-1
+7	0	352	88	enemy_4	3	1	0	-1	_random	0	-1
+7	0	392	253	battle_1_enemy_3	3	2	0	-1	_random	0	-1
+7	0	312	253	battle_1_enemy_4	3	2	0	-1	_random	0	-1
+7	0	392	117	battle_1_enemy_2	3	2	0	-1	_random	0	-1
+7	0	400	392	enemy_2	3	1	0	-1	_random	0	-1
+7	0	304	392	enemy_5	3	1	0	-1	_random	0	-1
+7	0	360	413	battle_2_enemy_2	3	2	0	-1	_random	0	-1
+7	0	304	341	battle_2_enemy_3	3	2	0	-1	_random	0	-1
+7	0	400	341	battle_2_enemy_4	3	2	0	-1	_random	0	-1
+7	0	400	453	battle_2_enemy_5	3	2	0	-1	_random	0	-1
+4	0	408	77	0	heart	1	-1
+4	0	392	573	0	heart	1	-1
+4	0	408	573	0	heart	1	-1
+4	0	408	557	0	heart	1	-1
+7	0	80	301	enemy_6	3	2	0	-1	_random	0	-1
 12	0	344	264	16	8	custom_obstacle_5	0	1	1	1
 12	0	288	312	128	8	custom_obstacle_4	0	1	1	1
 12	0	128	480	72	8	custom_obstacle_6	0	1	0	1
@@ -387,7 +387,7 @@
 1	1	240	613	from_B1_final_stairs	1	0
 6	1	192	560	8	16	jump_sensor	4	40
 2	1	232	600	16	16	teletransporter	0	1	21	from_1F_final_stairs
-3	1	232	573	18	37
+3	1	232	573	heart_container	1	37
 19	1	232	600	3	1
 19	1	136	24	1	1
 0	2	192	616	96	8	148

@@ -15,8 +15,6 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "entities/PickableItem.h"
-#include "entities/PickableItemHeart.h"
-#include "entities/PickableItemFairy.h"
 #include "entities/Hero.h"
 #include "entities/Boomerang.h"
 #include "movements/FallingOnFloorMovement.h"
@@ -31,33 +29,8 @@
 #include "lowlevel/System.h"
 #include "lowlevel/FileTools.h"
 
-/**
- * @brief Features of each subtype of pickable item.
- */
-const PickableItem::Features PickableItem::features[] = {
-
-  {"", "", false, "", false, false, false}, // none
-
-  {"entities/rupee", "green", false, "picked_rupee", true, false, false},        // 1 rupee
-  {"entities/rupee", "blue", false, "picked_rupee", true, false, false},         // 5 rupees
-  {"entities/rupee", "red", false, "picked_rupee", true, false, false},          // 20 rupees
-  {"entities/heart", "small_stopped", false, "picked_item", true, false, false}, // heart
-  {"entities/magic", "small", false, "picked_item", true, false, false},         // small magic
-  {"entities/magic", "big", false, "picked_item", true, false, false},           // big magic
-  {"entities/fairy", "normal", true, "picked_item", true, false, false},         // fairy
-  {"entities/pickable_bomb", "1", true, "picked_item", true, false, false},      // 1 bomb
-  {"entities/pickable_bomb", "5", true, "picked_item", true, false, false},      // 5 bombs
-  {"entities/pickable_bomb", "10", true, "picked_item", true, false, false},     // 10 bombs
-  {"entities/pickable_arrow", "1", false, "picked_item", true, false, false},    // 1 arrow
-  {"entities/pickable_arrow", "5", false, "picked_item", true, false, false},    // 5 arrows
-  {"entities/pickable_arrow", "10", false, "picked_item", true, false, false},   // 10 arrows
-
-  {"entities/key", "small_key", false, "picked_small_key", false, true, false},  // small key
-  {"entities/key", "big_key", true, "", false, true, true},                      // big key
-  {"entities/key", "boss_key", true, "", false, true, true},                     // boss key
-  {"entities/heart", "piece_of_heart", true, "", false, true, false},            // piece of heart
-  {"entities/heart", "heart_container", true, "", false, true, false},           // heart container
-};
+// TODO
+#ifdef NOT_YET_IMPLEMENTED
 
 /**
  * @brief Creates a pickable item with the specified subtype.
@@ -659,4 +632,6 @@ void PickableItem::display_on_map(void) {
   // display the sprite
   MapEntity::display_on_map();
 }
+
+#endif
 

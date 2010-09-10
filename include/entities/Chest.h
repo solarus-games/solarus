@@ -29,12 +29,12 @@ class Chest: public Detector {
 
   private:
 
-    bool big_chest;       /**< true for a big chest, false for normal chests */
-    Treasure *treasure;   /**< the treasure placed in this chest, or NULL if the chest contains nothing */
-    bool open;            /**< true if the chest is open (but the treasure may not have
-			   * been given yet because there is a delay of 500 ms) */
-    bool treasure_given;  /**< true if the chest is open and the treasure has been given to the player */
-    uint32_t treasure_date; /**< date when the treasure will be given to the player */
+    bool big_chest;			/**< true for a big chest, false for normal chests */
+    Treasure *treasure;			/**< the treasure placed in this chest, or NULL if the chest contains nothing */
+    bool open;				/**< true if the chest is open (but the treasure may not have
+					 * been given yet because there is a delay of 500 ms) */
+    bool treasure_given;		/**< true if the chest is open and the treasure has been given to the player */
+    uint32_t treasure_date;		/**< date when the treasure will be given to the player */
 
     void initialize_sprite(void);
 

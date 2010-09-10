@@ -146,7 +146,7 @@ void PapillosaurKing::update(void) {
       else if (now >= next_egg_date) {
 
 	MapEntity *egg = create(game, MINILLOSAUR, RANK_NORMAL, -1, get_name() + "_minillosaur",
-	    get_layer(), get_x(), get_y() + 16, 0, PickableItem::NONE, -1);
+	    get_layer(), get_x(), get_y() + 16, 0, NULL);
 	map->get_entities()->add_entity(egg);
 	game->play_sound("boss_fireball");
 

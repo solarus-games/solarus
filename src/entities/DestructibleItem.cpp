@@ -17,11 +17,14 @@
 #include "entities/DestructibleItem.h"
 #include "entities/Hero.h"
 #include "entities/MapEntities.h"
+#include "entities/PickableItem.h"
 #include "movements/FallingHeight.h"
 #include "Game.h"
 #include "DialogBox.h"
 #include "KeysEffect.h"
 #include "Equipment.h"
+#include "ItemProperties.h"
+#include "Treasure.h"
 #include "Map.h"
 #include "Sprite.h"
 #include "lowlevel/FileTools.h"
@@ -47,17 +50,12 @@ const DestructibleItem::Features DestructibleItem::features[] = {
  * @param x x coordinate of the destructible item to create
  * @param y y coordinate of the destructible item to create
  * @param subtype subtype of destructible item to create
- * @param pickable_item the subtype of pickable item that appears when the destructible
+ * @param treasure the pickable item that appears when the destructible
  * item is lifted or cut
- * @param pickable_item_savegame_variable index of the savegame boolean variable
- * storing the possession state of the pickable item,
- * for certain kinds of pickable items only (a key, a piece of heart...)
  */
 DestructibleItem::DestructibleItem(Layer layer, int x, int y, DestructibleItem::Subtype subtype,
-    PickableItem::Subtype pickable_item, int pickable_item_savegame_variable):
-  Detector(COLLISION_NONE, "", layer, x, y, 16, 16),
-  subtype(subtype), pickable_item(pickable_item),
-  pickable_item_savegame_variable(pickable_item_savegame_variable),
+    Treasure *treasure):
+  Detector(COLLISION_NONE, "", layer, x, y, 16, 16), subtype(subtype), treasure(treasure),
   is_being_cut(false), regeneration_date(0), is_regenerating(false) {
 
   set_origin(8, 13);
@@ -81,7 +79,7 @@ DestructibleItem::DestructibleItem(Layer layer, int x, int y, DestructibleItem::
  * @brief Destructor.
  */
 DestructibleItem::~DestructibleItem(void) {
-
+  delete treasure;
 }
 
 /**
@@ -98,14 +96,16 @@ DestructibleItem::~DestructibleItem(void) {
  */
 MapEntity * DestructibleItem::parse(Game *game, std::istream &is, Layer layer, int x, int y) {
 
-  int subtype, pickable_item_subtype, savegame_variable;
+  std::string treasure_name;
+  int subtype, treasure_variant, treasure_savegame_variable;
 
   FileTools::read(is, subtype);
-  FileTools::read(is, pickable_item_subtype);
-  FileTools::read(is, savegame_variable);
+  FileTools::read(is, treasure_name);
+  FileTools::read(is, treasure_variant);
+  FileTools::read(is, treasure_savegame_variable);
 
   return new DestructibleItem(Layer(layer), x, y, Subtype(subtype),
-      PickableItem::Subtype(pickable_item_subtype), savegame_variable);
+      Treasure::create(game, treasure_name, treasure_variant, treasure_savegame_variable));
 }
 
 /**
@@ -197,6 +197,21 @@ bool DestructibleItem::test_collision_custom(MapEntity *entity) {
 }
 
 /**
+ * @brief Adds to the map the pickable treasure (if any) hidden under this destructible item.
+ */
+void DestructibleItem::create_pickable_item(void) {
+
+  if (treasure != NULL) {
+
+    ItemProperties *item_properties = game->get_equipment()->get_item_properties(treasure->get_item_name());
+    bool will_disappear = item_properties->can_disappear();
+    map->get_entities()->add_entity(PickableItem::create(game, get_layer(), get_x(), get_y(),
+	  treasure, FALLING_MEDIUM, will_disappear));
+    treasure = NULL;
+  }
+}
+
+/**
  * @brief This function is called by the engine when an entity overlaps the destructible item.
  *
  * If the entity is the hero, we allow him to lift the item.
@@ -262,12 +277,7 @@ void DestructibleItem::notify_collision(MapEntity *other_entity, Sprite *other_s
 
       play_destroy_animation();
       hero->notify_position_changed(); // to update the ground under the hero
-
-      if (pickable_item != PickableItem::NONE) {
-	bool will_disappear = PickableItem::can_disappear(pickable_item);
-	map->get_entities()->add_entity(PickableItem::create(game, get_layer(), get_x(), get_y(),
-	      pickable_item, pickable_item_savegame_variable, FALLING_MEDIUM, will_disappear));
-      }
+      create_pickable_item();
     }
   }
 }
@@ -300,11 +310,7 @@ void DestructibleItem::action_key_pressed(void) {
       game->play_sound("lift");
 
       // create the pickable item
-      if (pickable_item != PickableItem::NONE) {
-	bool will_disappear = PickableItem::can_disappear(pickable_item);
-	map->get_entities()->add_entity(PickableItem::create(game, get_layer(), get_x(), get_y(),
-	      pickable_item, pickable_item_savegame_variable, FALLING_MEDIUM, will_disappear));
-      }
+      create_pickable_item();
 
       // remove the item from the map
       if (!features[subtype].can_regenerate) {

@@ -197,49 +197,23 @@ No destination point entity is needed when the value is <tt>_side</tt> or <tt>_s
 
 @section pickable_item Pickable item (3)
 
-Pickable items are the one the hero usually gets when he kills enemies or when he destroys
-bushes or pots. They include hearts, rupees, bombs, fairies, small keys, etc.
-However, in this paragraph, we are interested in pickable items directly placed on the map when loading it,
-for example in a room that contains rewards such as fairies, rupees or a key.
+A pickable item is a treasure placed on the floor.
+The hero can pick it.
 
 Syntax of a pickable item:
 @verbatim
-3	layer	x	y	subtype	savegame_variable
+3	layer	x	y	treasure_name	treasure_variant	treasure_savegame_variable
 @endverbatim
 
-Subtypes of pickable items:
-- -1: random (cannot be used for a pickable item directly placed on the map)
-- 0: none (cannot be used for a pickable item directly placed on the map)
-- 1: green rupee
-- 2: blue rupee
-- 3: red rupee
-- 4: heart
-- 5: small magic flask
-- 6: big magic flask
-- 7: fairy
-- 8: 1 bomb
-- 9: 5 bombs
-- 10: 10 bombs
-- 11: 1 arrow
-- 12: 5 arrows
-- 13: 10 arrows
-- 14: small key
-- 15: big key
-- 16: boss key
-- 17: piece of heart
-- 18: heart container
+<tt>treasure_name</tt>, <tt>treasure_variant</tt> and <tt>treasure_savegame_variable</tt>
+define the treasure to give to the player
+when he picks the item. <tt>treasure_name</tt> must be an item declared in the file <tt>quest.dat</tt>
+and <tt>treasure_variant</tt> is an integer that must be a valid variant for this item.
 
-<tt>savegame_variable</tt> is used for items that can be obtained only once and need to be saved, like keys, pieces of heart, etc.
-It is the index of the variable that stores the item's state in the savegame.
+<tt>treasure_savegame_variable</tt> is used for items that can be obtained only once and need to be saved
+(e.g. a key).
+It is the index of the variable that stores the pickable item's state in the savegame.
 A value of -1 indicates that the item is not saved.
-Any subtype of pickable item can be saved, the but small key, the big key, the boss key, the piece of heart and the heart container
-must be saved.
-The big key and the boss key are authorized only when the map is in a dungeon.
-The small key is authorized only if the map has a small key counter.
-
-The subtypes -1 (random) and 0 (none) are reserved to pickable items given by other items
-or enemies (see the corresponding sections).
-When the subtype is random, another subtype is chosen randomly (possibly none), except the items that must be saved.
 
 @section destructible_item Destructible item (4)
 
@@ -247,7 +221,7 @@ Destructible items are the ones that can hide pickable items and that the hero
 can lift or cut (or both).
 
 @verbatim
-4	layer	x	y	subtype	pickable_item_subtype	pickable_item_savegame_variable
+4	layer	x	y	subtype	treasure_name	treasure_variant	treasure_savegame_variable
 @endverbatim
 
 Subtypes of destructible items:
@@ -259,10 +233,10 @@ Subtypes of destructible items:
 - 5 : grass
 - 6 : bomb flower
 
-<tt>pickable_item</tt> and <tt>pickable_item_savegame_variable</tt>
+<tt>treasure_name</tt>, <tt>treasure_variant</tt> and <tt>treasure_savegame_variable</tt>
 define the pickable item hidden under the destructible item.
 See the previous section for their meaning.
-This time, the pickable item subtype can be random or none.
+<tt>treasure_name</tt> can be "_random" or "_none".
 
 @section chest Chest (5)
 
@@ -311,7 +285,7 @@ Make sure the length cannot send the hero into a wall.
 
 Syntax of an enemy:
 @verbatim
-7	layer	x	y	entity_name	direction	subtype	rank	savegame_variable	pickable_item	pickable_item_savegame_variable
+7	layer	x	y	entity_name	direction	subtype	rank	savegame_variable	treasure_name	treasure_variant	treasure_savegame_variable
 
 @endverbatim
 
@@ -325,9 +299,10 @@ a miniboss (1) or a boss (1).
 It indicates the index of the boolean variable that stores the state of the enemy
 in the savegame. A value of -1 means that the enemy is not saved.
 
-<tt>pickable_item</tt> and <tt>pickable_item_savegame_variable</tt>
-define the pickable item given by this enemy when it is killed
+<tt>treasure_name</tt>, <tt>treasure_variant</tt> and <tt>treasure_savegame_variable</tt>
+define the pickable item given by this enemy when it is killed,
 (see the section about pickable items above).
+<tt>treasure_name</tt> can be "_random" or "_none".
 
 @section interactive_entity Interactive entity (8)
 

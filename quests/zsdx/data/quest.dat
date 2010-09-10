@@ -322,4 +322,7 @@ name = Piece of heart
 [item.fairy]
 name = Fairy
 probability = 2
+brandish_when_picked = false
+can_disappear = true
+shadow = none
 

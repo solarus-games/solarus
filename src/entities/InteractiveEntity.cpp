@@ -302,7 +302,7 @@ bool InteractiveEntity::interaction_with_inventory_item(InventoryItem *item) {
 
   // if the player uses an empty bottle on a place with water, we let him fill the bottle
   if (subtype == WATER_FOR_BOTTLE
-      && item->get_properties()->is_bottle()
+      && item->get_name().substr(0, 7) == "bottle_" // TODO make a script
       && item->get_variant() == 1) {
 
     // TODO game->get_equipment()->found_water();

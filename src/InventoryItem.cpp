@@ -16,6 +16,7 @@
  */
 #include "InventoryItem.h"
 #include "ItemProperties.h"
+#include "Treasure.h"
 #include "Game.h"
 #include "Savegame.h"
 #include "Equipment.h"
@@ -323,7 +324,7 @@ void InventoryItem::update_bottle(void) {
 	Map *map = game->get_current_map();
 	Hero *hero = game->get_hero();
 	map->get_entities()->add_entity(PickableItem::create(game, hero->get_layer(), hero->get_x(), hero->get_y(),
-	      PickableItem::FAIRY, -1, FALLING_LOW, true));
+	      new Treasure(game, "fairy", 1, -1), FALLING_LOW, true));
 	game->get_equipment()->set_item_variant(item_name, 1);
 
       }

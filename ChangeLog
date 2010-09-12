@@ -1,5 +1,10 @@
 This ChangeLog describes the important changes of each svn commit.
 
+r1425 (2010-09-12):
+
+- Move the item descriptions in a separate file items.dat.
+- Add the interface of class ItemProperties.
+
 r1424 (2010-09-10):
 
 - Upgrade all existing maps of zsdx to respect the new syntax of chests, shop items,

@@ -37,15 +37,12 @@ Equipment::Equipment(Savegame *savegame):
   savegame(savegame), game(NULL), magic_decrease_delay(0), 
   giving_fairy(false), giving_water(false) {
 
-  // load the equipment specification from quest.dat
-  IniFile ini("quest.dat", IniFile::READ);
+  // load the equipment specification from items.dat
+  IniFile ini("items.dat", IniFile::READ);
   ini.start_group_iteration();
   while (ini.has_more_groups()) {
 
-    if (ini.get_group().substr(0,5) == "item.") {
-
-      std::string item_name = ini.get_group().substr(5);
-    }
+    item_properties[ini.get_group()] = new ItemProperties(*ini);
     ini.next_group();
   }
 }
@@ -55,6 +52,12 @@ Equipment::Equipment(Savegame *savegame):
  */
 Equipment::~Equipment(void) {
 
+  map<std::string, ItemProperties*>::const_iterator it;
+
+  for (it = item_properties.begin(); it != item_properties.end(); it++) {
+    delete it->second;
+  }
+  item_properties.clear();
 }
 
 /**

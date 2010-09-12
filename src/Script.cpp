@@ -1174,7 +1174,7 @@ int Script::l_equipment_remove_item_amount(lua_State *l) {
  * You can use this function to make a non-playing character
  * give a treasure to the player.
  *
- * - Argument 1 (integer): name of the item to give (according to the item list of quest.dat)
+ * - Argument 1 (integer): name of the item to give (according to the item list of items.dat)
  * - Argument 2 (integer): variant of this item (1 if the item has only one variant)
  * - Argument 3 (integer): index of the savegame boolean variable that stores
  * the possession state of the treasure (or -1 if you don't want to save this treasure)

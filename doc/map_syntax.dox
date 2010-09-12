@@ -207,7 +207,7 @@ Syntax of a pickable item:
 
 <tt>treasure_name</tt>, <tt>treasure_variant</tt> and <tt>treasure_savegame_variable</tt>
 define the treasure to give to the player
-when he picks the item. <tt>treasure_name</tt> must be an item declared in the file <tt>quest.dat</tt>
+when he picks the item. <tt>treasure_name</tt> must be an item declared in the file <tt>items.dat</tt>
 and <tt>treasure_variant</tt> is an integer that must be a valid variant for this item.
 
 <tt>treasure_savegame_variable</tt> is used for items that can be obtained only once and need to be saved
@@ -251,7 +251,7 @@ Syntax of a chest:
 this is a big chest (1) or a normal chest (0).
 
 <tt>treasure_name</tt> is a string identifying the item placed
-in the chest, according to the file quest.dat.
+in the chest, according to the file items.dat.
 A value of "_none" means that the chest is empty or controlled by the script of the map.
 
 <tt>treasure_variant</tt> is an integer that corresponds to the possession

@@ -31,7 +31,7 @@ class PickableItem: public Detector {
 
   private:
 
-    std::string item_name;			/**< name of the item, according to quest.dat */
+    std::string item_name;			/**< name of the item, according to items.dat */
     int variant;				/**< variant of this item */
     int savegame_variable;			/**< savegame variable of the possession state of this item,
 						 * or -1 if the item is not saved */

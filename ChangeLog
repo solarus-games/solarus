@@ -1,5 +1,9 @@
 This ChangeLog describes the important changes of each svn commit.
 
+r1426 (2010-09-12):
+
+- Implement the class ItemProperties.
+
 r1425 (2010-09-12):
 
 - Move the item descriptions in a separate file items.dat.

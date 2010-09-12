@@ -579,7 +579,17 @@ int Equipment::get_item_maximum(const std::string &item_name) {
  * @return true if the player has the maximum amount of this item
  */
 bool Equipment::has_item_maximum(const std::string &item_name) {
+  // TODO also check when item_name changes the counter of another item
   return get_item_amount(item_name) >= get_item_maximum(item_name);
+}
+
+/**
+ * @brief Returns the name of an item randomly chosen, with respect
+ * to the probabilities indicated in the file items.dat.
+ * @return the name of an item randomly chosen (possibly "_none")
+ */
+const std::string Equipment::get_random_item(void) {
+  return "_none"; // TODO
 }
 
 /**

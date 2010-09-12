@@ -104,6 +104,8 @@ class Equipment {
     int get_item_maximum(const std::string &item_name);
     bool has_item_maximum(const std::string &item_name);
 
+    const std::string get_random_item(void);
+
     // item assignments
     const std::string get_item_assigned(int slot);
     void set_item_assigned(int slot, const std::string &item_name);

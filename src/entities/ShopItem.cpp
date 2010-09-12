@@ -217,7 +217,7 @@ void ShopItem::update(void) {
 	game->play_sound("wrong");
 	game->get_dialog_box()->start_dialog("_shop.not_enough_money");
       }
-      else if (treasure->is_amount_full()) {
+      else if (equipment->has_item_maximum(treasure->get_item_name())) {
 	// the player already has the maximum amount of this item
 	game->play_sound("wrong");
 	game->get_dialog_box()->start_dialog("_shop.amount_full");

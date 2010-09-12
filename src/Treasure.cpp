@@ -23,60 +23,80 @@
 #include "Counter.h"
 #include "Map.h"
 #include "MapScript.h"
+#include "Sprite.h"
 #include "lowlevel/Surface.h"
-
-// TODO
-#ifdef NOT_YET_IMPLEMENTED
-
-/**
- * @brief Creates a new treasure without amount.
- * @param game the current game (cannot be NULL)
- * @param content content of the treasure
- * @param savegame_variable index of the savegame boolean indicating that the hero has found this treasure
- * or -1 if this treasure is not saved
- */
-Treasure::Treasure(Game *game, Content content, int savegame_variable):
-  game(game), content(content), amount(1), savegame_variable(savegame_variable), counter(NULL) {
-
-  treasures_img = new Surface("hud/message_and_treasure_icons.png");
-}
 
 /**
  * @brief Creates a new treasure.
  * @param game the current game (cannot be NULL)
- * @param content content of the treasure
- * @param amount for bombs, arrows, apples, pains au chocolat, croissants, hearts, 
- * green rupees, blue rupees and red rupees: indicates the amount;
- * if the amount is greater than 1, a counter will be shown.
+ * @param item_name name of the item to give, according to items.dat
+ * @param variant variant of this item
  * @param savegame_variable index of the savegame boolean indicating that the hero has found this treasure
  * or -1 if this treasure is not saved
  */
-Treasure::Treasure(Game *game, Content content, int amount, int savegame_variable):
-  game(game), content(content), amount(amount), savegame_variable(savegame_variable), counter(NULL) {
+Treasure::Treasure(Game *game, const std::string &item_name, int variant, int savegame_variable):
+  game(game), item_name(item_name), variant(variant), savegame_variable(savegame_variable) {
 
-  treasures_img = new Surface("hud/message_and_treasure_icons.png");
-
-  if (has_amount() && amount > 1) {
-    counter = new Counter(3, false, 0, 0);
-    counter->set_value(amount);
-  }
+  sprite = new Sprite("hud/inventory_items"); // TODO move and rename the sprite
+  sprite->set_current_animation(item_name);
+  sprite->set_current_direction(variant);
 }
 
 /**
  * @brief Destructor.
  */
 Treasure::~Treasure(void) {
-
-  delete treasures_img;
-  delete counter;
+  delete sprite;
 }
 
 /**
- * @brief Returns the content of this treasure.
- * @return this treasure's content
+ * @brief Creates a new treasure.
+ *
+ * This method acts like a constructor, except that it returns NULL in the following cases:
+ * - the item is "_none",
+ * or:
+ * - the item is "_random" and the random choice selects "_none",
+ * or:
+ * - the item is saved and the player already has it.
+ *
+ * @param game the current game (cannot be NULL)
+ * @param item_name name of the item to give, according to items.dat
+ * ("_random" and "_none" are also accepted)
+ * @param variant variant of this item
+ * @param savegame_variable index of the savegame boolean indicating that the hero has found this treasure
+ * or -1 if this treasure is not saved
  */
-Treasure::Content Treasure::get_content(void) {
-  return content;
+Treasure * Treasure::create(Game *game, std::string item_name, int variant, int savegame_variable) {
+
+  if (item_name == "_random") {
+    item_name = game->get_equipment()->get_random_item();
+  }
+
+  if (item_name == "_none") {
+    return NULL;
+  }
+
+  if (game->get_savegame()->get_boolean(savegame_variable)) {
+    return NULL;
+  }
+
+  return new Treasure(game, item_name, variant, savegame_variable);
+}
+
+/**
+ * @brief Returns the name of the item.
+ * @return the name of the item
+ */
+const std::string & Treasure::get_item_name(void) {
+  return item_name;
+}
+
+/**
+ * @brief Returns the variant of the item.
+ * @return the variant
+ */
+int Treasure::get_variant(void) {
+  return variant;
 }
 
 /**
@@ -88,97 +108,6 @@ int Treasure::get_savegame_variable(void) {
 }
 
 /**
- * @brief Returns whether this treasure content has an amount value.
- *
- * This only depends on the kind of content.
- *
- * @return true if there is an amount with this kind of content
- */
-bool Treasure::has_amount(void) {
-
-  bool result;
-
-  switch (content) {
-
-  case BOMBS:
-  case ARROWS:
-  case APPLES:
-  case PAINS_AU_CHOCOLAT:
-  case CROISSANTS:
-  case HEARTS:
-  case GREEN_RUPEES:
-  case BLUE_RUPEES:
-  case RED_RUPEES:
-    result = true;
-    break;
-
-  default:
-    result = false;
-  }
-
-  return result;
-}
-
-/**
- * @brief Returns the amount of this treasure.
- * @return the amount
- */
-int Treasure::get_amount(void) {
-  return amount;
-}
-
-/**
- * @brief Returns whether the player already has the maximum amount
- * of this item.
- * @return true if the player already has the maximum amount
- * of this item
- */
-bool Treasure::is_amount_full(void) {
-
-  bool full = false;
-  Equipment *equipment = game->get_equipment();
-
-  switch (content) {
-
-  case APPLES:
-    full = equipment->has_inventory_item_maximum(INVENTORY_APPLES);
-    break;
-
-  case PAINS_AU_CHOCOLAT:
-    full = equipment->has_inventory_item_maximum(INVENTORY_PAINS_AU_CHOCOLAT);
-    break;
-
-  case CROISSANTS:
-    full = equipment->has_inventory_item_maximum(INVENTORY_CROISSANTS);
-    break;
-
-  case BOMBS:
-    full = equipment->has_inventory_item_maximum(INVENTORY_BOMBS);
-    break;
-
-  case ARROWS:
-    full = equipment->has_inventory_item_maximum(INVENTORY_BOW);
-    break;
-
-  default:
-    break;
-  }
-
-  return full;
-}
-
-/**
- * @brief Returns whether the player has got this treasure according to the savegame.
- *
- * Returns false if the treasure possession state is not saved.
- *
- * @return true if the player has found this treasure
- */
-bool Treasure::is_found(void) {
-  return savegame_variable != -1 && game->get_savegame()->get_boolean(savegame_variable);
-}
-
-/**
  * @brief Give the treasure to the player.
  *
  * Plays the treasure sound, makes the hero
@@ -187,32 +116,9 @@ bool Treasure::is_found(void) {
  */
 void Treasure::give_to_player(void) {
 
-  if (content != NONE) {
-    play_treasure_sound();
-    show_message();
-    add_item_to_equipment();
-    game->get_current_script()->event_treasure_obtaining(content, savegame_variable);
-  }
-}
-
-/**
- * @brief Plays a treasure sound.
- */
-void Treasure::play_treasure_sound(void) {
-  
-  // the treasure sound is the same for all items except the piece of heart and the heart container
-  std::string sound_name;
-
-  if (content == PIECE_OF_HEART) {
-    sound_name = "piece_of_heart";
-  }
-  else if (content == HEART_CONTAINER) { 
-    sound_name = "heart_container";
-  }
-  else {
-    sound_name = "treasure";
-  }
-  game->play_sound(sound_name);
+  show_message();
+  add_item_to_equipment();
+  game->get_current_script()->event_treasure_obtaining(content, savegame_variable);
 }
 
 /**
@@ -225,37 +131,8 @@ void Treasure::show_message(void) {
 
   // the message id is _treasure_x where x is the treasure content
   std::ostringstream oss;
-  oss << "_treasure_" << content;
-
-  // but for some kinds of content, the message id is more complex and has a suffix
-  if (content == PIECE_OF_HEART) {
-
-    // for a piece of heart, the message shown depends on their number
-    int nb_pieces = equipment->get_nb_pieces_of_heart() + 1;
-    oss << "_" << nb_pieces;
-  }
-
-  else if (has_amount()) {
-
-    /* for an item with an amount (e.g. 10 bombs), if the amount
-     * is 1 we must display a message with the singular form, and
-     * if the amount is greater than 1 we must use the plural form.
-     */
-
-    if (amount == 1) {
-      oss << "_1";
-    }
-    else {
-      oss << "_2";
-    }
-  }
-
-  std::string message_id = oss.str();
-  game->get_dialog_box()->start_dialog(message_id);
-
-  if (has_amount() && amount > 1) {
-    game->get_dialog_box()->set_variable(message_id, amount);
-  }
+  oss << "_treasure." << item_name << "." << variant;
+  game->get_dialog_box()->start_dialog(oss.str());
 }
 
 /**
@@ -272,291 +149,7 @@ void Treasure::add_item_to_equipment(void) {
   }
 
   // give the item
-  switch (content) {
-
-  case NONE:
-    DIE("Cannot give an empty treasure");
-    break;
-    
-  case FEATHER:
-    equipment->give_inventory_item(INVENTORY_FEATHER);
-    break;
-
-  case BOW:
-    equipment->give_inventory_item(INVENTORY_BOW);
-    equipment->set_max_arrows(10);
-    break;
-
-  case BOW_AND_ARROWS:
-    equipment->give_inventory_item(INVENTORY_BOW);
-    equipment->set_max_arrows(10);
-    equipment->add_arrows(10);
-    break;
-
-  case BOOMERANG:
-    equipment->give_inventory_item(INVENTORY_BOOMERANG);
-    break;
-
-  case LAMP:
-    equipment->give_inventory_item(INVENTORY_LAMP);
-    break;
-
-  case HOOK_SHOT:
-    equipment->give_inventory_item(INVENTORY_HOOK_SHOT);
-    break;
-
-  case BOTTLE:
-    equipment->add_bottle();
-    break;
-
-  case WATER:
-    equipment->give_inventory_item(equipment->get_destination_bottle(), 2);
-    break;
-
-  case RED_POTION:
-    equipment->give_inventory_item(equipment->get_first_empty_bottle(), 3);
-    break;
-
-
-  case GREEN_POTION:
-    equipment->give_inventory_item(equipment->get_first_empty_bottle(), 4);
-    break;
-
-  case BLUE_POTION:
-    equipment->give_inventory_item(equipment->get_first_empty_bottle(), 5);
-    break;
-
-  case FAIRY_IN_BOTTLE:
-    equipment->give_inventory_item(equipment->get_first_empty_bottle(), 6);
-    break;
-
-  case SPEED_SHOES:
-    equipment->give_inventory_item(INVENTORY_SPEED_SHOES);
-    break;
-
-  case MYSTIC_MIRROR:
-    equipment->give_inventory_item(INVENTORY_MYSTIC_MIRROR);
-    break;
-
-  case CANE_OF_SOMARIA:
-    equipment->give_inventory_item(INVENTORY_CANE_OF_SOMARIA);
-    break;
-
-  case MAGIC_CAPE:
-    equipment->give_inventory_item(INVENTORY_MAGIC_CAPE);
-    break;
-
-  case IRON_GLOVE:
-    equipment->give_inventory_item(INVENTORY_GLOVE, 1);
-    break;
-
-  case GOLDEN_GLOVE:
-    equipment->give_inventory_item(INVENTORY_GLOVE, 2);
-    break;
-
-  case FIRE_STONE:
-    equipment->add_inventory_item_amount(INVENTORY_FIRE_STONES, 1);
-    break;
-
-
-  case APPLES:
-    equipment->give_inventory_item(INVENTORY_APPLES);
-    equipment->add_inventory_item_amount(INVENTORY_APPLES, amount);
-    break;
-
-  case PAINS_AU_CHOCOLAT:
-    equipment->give_inventory_item(INVENTORY_PAINS_AU_CHOCOLAT);
-    equipment->add_inventory_item_amount(INVENTORY_PAINS_AU_CHOCOLAT, amount);
-    break;
-
-  case CROISSANTS:
-    equipment->give_inventory_item(INVENTORY_CROISSANTS);
-    equipment->add_inventory_item_amount(INVENTORY_CROISSANTS, amount);
-    break;
-
-  case APPLE_PIE:
-    equipment->give_inventory_item(INVENTORY_L4_WAY_BONE_KEY, 1);
-    break;
-
-  case GOLDEN_BARS:
-    equipment->give_inventory_item(INVENTORY_L4_WAY_BONE_KEY, 2);
-    break;
-
-  case EDELWEISS:
-    equipment->give_inventory_item(INVENTORY_L4_WAY_BONE_KEY, 3);
-    break;
-
-  case BONE_KEY:
-    equipment->give_inventory_item(INVENTORY_L4_WAY_BONE_KEY, 4);
-    break;
-
-  case FLIPPERS:
-    equipment->give_inventory_item(INVENTORY_FLIPPERS);
-    break;
-
-  case RED_KEY:
-    equipment->give_inventory_item(INVENTORY_RED_KEY);
-    break;
-
-
-  case CLAY_KEY:
-    equipment->give_inventory_item(INVENTORY_CLAY_KEY);
-    break;
-
-  case ROCK_KEY:
-    equipment->give_inventory_item(INVENTORY_ROCK_KEY);
-    break;
-
-  case IRON_KEY:
-    equipment->give_inventory_item(INVENTORY_IRON_KEY);
-    break;
-
-  case STONE_KEY:
-    equipment->give_inventory_item(INVENTORY_STONE_KEY);
-    break;
-
-  case WOODEN_KEY:
-    equipment->give_inventory_item(INVENTORY_WOODEN_KEY);
-    break;
-
-  case ICE_KEY:
-    equipment->give_inventory_item(INVENTORY_ICE_KEY);
-    break;
-
-
-  case WORLD_MAP:
-    equipment->add_world_map();
-    break;
-
-  case LARGE_RUPEE_BAG:
-    equipment->set_max_rupees(300);
-    break;
-
-  case HUGE_RUPEE_BAG:
-    equipment->set_max_rupees(999);
-    break;
-
-  case SMALL_BOMB_BAG:
-    equipment->set_max_bombs(10);
-    equipment->give_inventory_item(INVENTORY_BOMBS);
-    equipment->add_bombs(10);
-    break;
-
-  case LARGE_BOMB_BAG:
-    equipment->set_max_bombs(30);
-    break;
-
-  case HUGE_BOMB_BAG:
-    equipment->set_max_bombs(99);
-    break;
-
-  case LARGE_QUIVER:
-    equipment->set_max_arrows(30);
-    break;
-
-  case HUGE_QUIVER:
-    equipment->set_max_arrows(99);
-    break;
-
-
-  case BLUE_TUNIC:
-    equipment->set_tunic(1);
-    break;
-
-  case RED_TUNIC:
-    equipment->set_tunic(2);
-    break;
-
-  case SHIELD_1:
-    equipment->set_shield(1);
-    break;
-
-  case SHIELD_2:
-    equipment->set_shield(2);
-    break;
-
-  case SHIELD_3:
-    equipment->set_shield(3);
-    break;
-
-  case SWORD_1:
-    equipment->set_sword(1);
-    break;
-
-  case SWORD_2:
-    equipment->set_sword(2);
-    break;
-
-  case SWORD_3:
-    equipment->set_sword(3);
-    break;
-
-  case SWORD_4:
-    equipment->set_sword(4);
-    break;
-
-
-  case MAP:
-    equipment->give_item("map");
-    break;
-
-  case COMPASS:
-    equipment->give_item("compass");
-    break;
-
-  case SMALL_KEY:
-    equipment->give_item("small_key");
-    break;
-
-  case BIG_KEY:
-    dungeon_equipment->give_item("big_key");
-    break;
-
-  case BOSS_KEY:
-    dungeon_equipment->give_item("boss_key");
-    break;
-
-  case PIECE_OF_HEART:
-    equipment->add_piece_of_heart();
-    break;
-
-
-  case HEART_CONTAINER:
-    equipment->add_heart_container();
-    break;
-
-  case BOMBS:
-    equipment->add_inventory_item_amount(INVENTORY_BOMBS, amount);
-    break;
-
-  case ARROWS:
-    equipment->add_inventory_item_amount(INVENTORY_BOW, amount);
-    break;
-
-  case HEARTS:
-    equipment->add_hearts(amount * 4);
-    break;
-
-  case SMALL_MAGIC:
-    equipment->add_magic(6);
-    break;
-
-  case BIG_MAGIC:
-    equipment->add_magic(42);
-    break;
-
-  case GREEN_RUPEES:
-    equipment->add_rupees(amount);
-    break;
-
-  case BLUE_RUPEES:
-    equipment->add_rupees(5 * amount);
-    break;
-
-  case RED_RUPEES:
-    equipment->add_rupees(20 * amount);
-    break;
-  }
+  equipment->give_item(item_name, variant);
 }
 
 /**
@@ -568,19 +161,6 @@ void Treasure::add_item_to_equipment(void) {
 void Treasure::display(Surface *destination, int x, int y) {
 
   // display the item
-  Rectangle src_position(0, 0, 16, 16);
-  src_position.set_x(16 * (content % 10));
-  src_position.set_y(16 * (content / 10));
-
-  Rectangle dst_position(x, y, 0, 0);
-
-  treasures_img->blit(src_position, destination, dst_position);
-
-  // display the counter
-  if (counter != NULL) {
-    counter->display(destination, x - 3, y + 12);
-  }
+  sprite->display(destination, x, y);
 }
-
-#endif
 

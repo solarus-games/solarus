@@ -1,5 +1,9 @@
 This ChangeLog describes the important changes of each svn commit.
 
+r1429 (2010-09-12):
+
+- Implementing the class Treasure.
+
 r1428 (2010-09-12):
 
 - Implement the new version of the class PickableItem.

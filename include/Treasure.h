@@ -31,10 +31,10 @@
  * treasures.
  *
  * A treasure is represented as the following values:
- * - a savegame variable: index of the boolean variable that indicates whether
- *   the player has found this treasure (-1 if the treasure is not saved).
  * - the item name: a string identitying the nature of the treasure, according to the file items.dat
  * - the variant: indicates the variant of this item
+ * - a savegame variable: index of the boolean variable that indicates whether
+ *   the player has found this treasure (-1 if the treasure is not saved).
  */
 class Treasure {
 
@@ -45,14 +45,14 @@ class Treasure {
     int variant;		/**< variant of this content */
     int savegame_variable;	/**< index of the savegame boolean variable corresponding to this treasure,
 				 * or -1 if the treasure state is not saved */
+    Sprite *sprite;		/**< the sprite of the treasure */
 
-    void play_treasure_sound(void);
     void show_message(void);
     void add_item_to_equipment(void);
 
   public:
 
-    static Treasure * create(Game *game, const std::string &item_name, int variant, int savegame_variable);
+    static Treasure * create(Game *game, std::string item_name, int variant, int savegame_variable);
 
     Treasure(Game *game, const std::string &item_name, int variant, int savegame_variable);
     ~Treasure(void);
@@ -63,7 +63,6 @@ class Treasure {
     int get_savegame_variable(void);
     bool is_saved(void);
 
-    bool is_amount_full(void);
     void give_to_player(bool brandish = true);
     bool is_found(void);
 

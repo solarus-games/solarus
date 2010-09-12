@@ -43,11 +43,7 @@ Chest::Chest(const std::string &name, Layer layer, int x, int y,
   Detector(COLLISION_FACING_POINT, name, layer, x, y, 16, 16),
   big_chest(big_chest) {
 
-  open = treasure_given = (treasure != NULL && treasure->is_found());
-  if (open) {
-    delete treasure;
-    treasure = NULL;
-  }
+  open = treasure_given = (treasure != NULL);
   this->treasure = treasure;
 
   initialize_sprite();

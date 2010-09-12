@@ -132,11 +132,11 @@ removes some money from the player
 - <tt>equipment_has_ability(ability_name)</tt>: 
 returns whether the player has an ability
 
-- <tt>equipment_set_ability(ability_name, level)</tt>: 
-sets the level of an ability
-
 - <tt>equipment_get_ability(ability_name)</tt>: 
 returns the level of an ability
+
+- <tt>equipment_set_ability(ability_name, level)</tt>: 
+sets the level of an ability
 
 - <tt>equipment_has_item(item_name)</tt>: 
 returns whether the player has an item

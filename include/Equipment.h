@@ -23,9 +23,10 @@
 /**
  * @brief Represents the hero's equipment.
  *
- * This class makes the interface between the savegame and other classes.
+ * This class gives access to the equipment data saved and the properties of items
+ * as defined in items.dat.
  * You should call this class to get information about the current equipment
- * (sword, rupees, inventory…) and to modify it.
+ * (sword, money, inventory…) and to modify it.
  */
 class Equipment {
 
@@ -41,6 +42,8 @@ class Equipment {
     uint32_t magic_decrease_delay;					/**< when the magic bar decreases with time,
 									 * delay between two decreases of 1 magic point */
     uint32_t next_magic_decrease_date;					/**< date of the next decrease of 1 magic point */
+
+    int get_ability_savegame_variable(const std::string &ability_name);
 
   public:
 
@@ -100,10 +103,9 @@ class Equipment {
 
     int get_item_maximum(const std::string &item_name);
     bool has_item_maximum(const std::string &item_name);
-    void set_item_maximum(const std::string &item_name, int maximum);
 
     // item assignments
-    const std::string & get_item_assigned(int slot);
+    const std::string get_item_assigned(int slot);
     void set_item_assigned(int slot, const std::string &item_name);
     int get_item_slot(const std::string &item_name);
 
@@ -117,13 +119,13 @@ class Equipment {
     void remove_small_key(void);
 
     // abilities
-    bool has_ability(const std::string &ability_name);
-    bool has_ability(const std::string &ability_name, int level);
+    bool has_ability(const std::string &ability_name, int level = 1);
     int get_ability(const std::string &ability_name);
     void set_ability(const std::string &ability_name, int level);
-    bool use_ability(const std::string &ability_name);
+    void use_ability(const std::string &ability_name);
 
     // dungeons
+    int get_current_dungeon(void);
     bool is_dungeon_finished(int dungeon);
     bool is_dungeon_finished(void);
     void set_dungeon_finished(void);

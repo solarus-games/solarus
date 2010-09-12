@@ -42,8 +42,9 @@ class ItemProperties {
     int counter_savegame_variable;		/**< savegame variable that stores the counter associated to this item
 						 * or -1 if there is no counter */
     int fixed_limit;				/**< limit of the counter associated to this item, or 0 */
-    std::string limited_counter_name;		/**< name of an item whose counter is limited by this item (or an empty string) */
-    std::string changed_counter_name;		/**< name of an item whose counter is changed by this item (or an empty string) */
+    std::string item_limiting;			/**< name of an item that limits the counter of this item (or an empty string) */
+    std::string item_limited;			/**< name of an item whose counter is limited by this item (or an empty string) */
+    std::string item_counter_changed;		/**< name of an item whose counter is changed by this item (or an empty string) */
     int *amounts;				/**< amount to consider when limited_counter_name or changed_counter_name
 						 * is defined (for each variant) */
     int *probabilities;				/**< probability of getting this item when a pickable item is choosen
@@ -60,7 +61,7 @@ class ItemProperties {
 
   public:
 
-    ItemProperties(IniFile *ini);
+    ItemProperties(Equipment *equipment, IniFile *ini);
     ~ItemProperties(void);
 
     const std::string & get_name(void);
@@ -70,8 +71,9 @@ class ItemProperties {
     int get_counter_savegame_variable(void);
     bool has_fixed_limit(void);
     int get_fixed_limit(void);
-    const std::string & get_limited_counter_name(void);
-    const std::string & get_changed_counter_name(void);
+    const std::string & get_item_limiting(void);
+    const std::string & get_item_limited(void);
+    const std::string & get_item_counter_changed(void);
     bool has_amount(void);
     bool get_amount(int variant = 1);
     bool get_probability(int variant = 1);

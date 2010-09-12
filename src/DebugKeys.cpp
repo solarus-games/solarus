@@ -94,10 +94,10 @@ void DebugKeys::key_pressed(InputEvent::KeyboardKey key) {
       case InputEvent::KEY_t:
 	// quest-specific temporary code
 	equipment->give_item("bow");
-	equipment->set_item_maximum("bow", 10);
+	equipment->set_item_variant("quiver", 1);
 	equipment->set_item_variant("bottle_2", 6);
 	equipment->give_item("bombs");
-	equipment->set_item_maximum("bombs", 10);
+	equipment->set_item_variant("bomb_bag", 1);
 	equipment->set_item_amount("bombs", 10);
 	equipment->give_item("boomerang");
 	equipment->give_item("lamp");

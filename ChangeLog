@@ -1,5 +1,9 @@
 This ChangeLog describes the important changes of each svn commit.
 
+r1427 (2010-09-12):
+
+- Implement the new version of the class Equipment.
+
 r1426 (2010-09-12):
 
 - Implement the class ItemProperties.

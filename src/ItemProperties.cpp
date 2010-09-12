@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "ItemProperties.h"
+#include "Equipment.h"
 #include "lowlevel/IniFile.h"
 #include <map>
 
@@ -23,9 +24,10 @@
  *
  * The current group of the ini file describes the item to parse.
  *
+ * @param equipment the equipment object that stores all item properties
  * @param ini the ini file to parse
  */
-ItemProperties::ItemProperties(IniFile *ini) {
+ItemProperties::ItemProperties(Equipment *equipment, IniFile *ini) {
 
   name = ini->get_group();
   savegame_variable = ini->get_integer_value("savegame_variable", -1);
@@ -48,8 +50,12 @@ ItemProperties::ItemProperties(IniFile *ini) {
   allow_assigned = ini->get_boolean_value("can_be_assigned", false);
   counter_savegame_variable = ini->get_integer_value("counter", -1);
   fixed_limit = ini->get_integer_value("limit", 0);
-  limited_counter_name = ini->get_string_value("limit_for_counter", "");
-  changed_counter_name = ini->get_string_value("changes_counter", "");
+  item_limiting = "";
+  item_limited = ini->get_string_value("limit_for_counter", "");
+  if (item_limited.size() != 0) {
+    equipment->get_item_properties(item_limited)->item_limiting = this->name;
+  }
+  item_counter_changed = ini->get_string_value("changes_counter", "");
   disappears = ini->get_boolean_value("can_disappear", false);
   brandish_when_picked = ini->get_boolean_value("brandish_when_picked", true);
   sound_when_picked = ini->get_string_value("sound_when_picked", "picked_item");
@@ -135,14 +141,22 @@ int ItemProperties::get_fixed_limit(void) {
 }
 
 /**
+ * @brief Returns the name of an item that sets the limit to the counter of this item.
+ * @return the name of the item that sets the limit of the counter of this item, or an empty string
+ */
+const std::string & ItemProperties::get_item_limiting(void) {
+  return item_limiting;
+}
+
+/**
  * @brief Returns the name of an item whose counter is limited by this item.
  *
  * The special names "money", "life" and "magic" may also be returned.
  *
  * @return the name of the item whose counter is limited by this item, or an empty string
  */
-const std::string & ItemProperties::get_limited_counter_name(void) {
-  return limited_counter_name;
+const std::string & ItemProperties::get_item_limited(void) {
+  return item_limited;
 }
 
 /**
@@ -152,28 +166,28 @@ const std::string & ItemProperties::get_limited_counter_name(void) {
  *
  * @return the name of the item whose counter is changed by this item, or an empty string
  */
-const std::string & ItemProperties::get_changed_counter_name(void) {
-  return changed_counter_name;
+const std::string & ItemProperties::get_item_counter_changed(void) {
+  return item_counter_changed;
 }
 
 /**
  * @brief Returns whether an amount is associated to this item.
  *
- * This function returns true if get_limited_counter_name() or get_changed_counter_name()
+ * This function returns true if get_item_limited() or get_item_counter_changed()
  * return a non-empty string. The amount applies to the corresponding counter.
  *
  * @return true if this item has an amount
  */
 bool ItemProperties::has_amount(void) {
-  return get_limited_counter_name().size() > 0
-    || get_changed_counter_name().size() > 0;
+  return get_item_limited().size() > 0
+    || get_item_counter_changed().size() > 0;
 }
 
 /**
  * @brief Returns the amount associated to the specified variant of the item.
  *
- * This amount applies to the counter indicated by get_limited_counter_name()
- * or get_changed_counter_name().
+ * This amount applies to the counter indicated by get_item_limited()
+ * or get_item_counter_changed().
  *
  * @param variant a variant of this item
  * @return the amount of this variant

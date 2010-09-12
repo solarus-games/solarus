@@ -36,21 +36,27 @@ class ItemProperties {
 
   private:
 
-    std::string name;
-    int savegame_variable;
-    int nb_variants;
-    int counter_savegame_variable;
-    int fixed_limit;
-    std::string limited_counter_name;
-    std::string changed_counter_name;
-    int *amounts;
-    int *probabilities;
-    bool allow_assigned;
-    bool disappears;
-    bool brandished_when_picked;
-    SoundId sound_when_picked;
-    SoundId sound_when_brandished;
-    ShadowSize shadow_size;
+    std::string name;				/**< name that identifies this item */
+    int savegame_variable;			/**< savegame variable that stores the possession state */
+    int nb_variants;				/**< number of variants of this item */
+    int counter_savegame_variable;		/**< savegame variable that stores the counter associated to this item
+						 * or -1 if there is no counter */
+    int fixed_limit;				/**< limit of the counter associated to this item, or 0 */
+    std::string limited_counter_name;		/**< name of an item whose counter is limited by this item (or an empty string) */
+    std::string changed_counter_name;		/**< name of an item whose counter is changed by this item (or an empty string) */
+    int *amounts;				/**< amount to consider when limited_counter_name or changed_counter_name
+						 * is defined (for each variant) */
+    int *probabilities;				/**< probability of getting this item when a pickable item is choosen
+						 * randomly (for each variant) */
+    bool allow_assigned;			/**< indicates that this item can be assigned to an item key an then
+						 * be used explicitely */
+    bool disappears;				/**< when the item is dropped on the ground, indicates that it will disappear 
+						 * after some time */
+    bool brandish_when_picked;			/**< when the item is picked on the ground, indicates that the hero
+						 * brandishes it */
+    SoundId sound_when_picked;			/**< sound to play when the item is picked on the ground */
+    SoundId sound_when_brandished;		/**< sound to play when the item is brandished */
+    ShadowSize shadow_size;			/**< size of the shadow when the item is on the ground */
 
   public:
 

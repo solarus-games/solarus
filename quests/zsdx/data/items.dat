@@ -52,9 +52,10 @@
 #
 # - probability (integer)
 #   Some items are generated randomly, for example the pickable treasures dropped by enemies.
-#   If this value is defined, then the item can be chosen randomly and with the probability specified.
-#   The probability is between 0 and 1000. The sum of probabilities
-#   of all items should be equal to 1000.
+#   If this value is defined, then the item can be generated randomly and with the probability specified.
+#   The probability is an integer between 0 and 1000. The sum of probabilities
+#   of all items should be lower than 1000. The remaining probability corresponds to
+#   the case where no item is genereated.
 #
 # - probability_1, probability_2, …, probability_n (integers)
 #   Same as probability, but with different probabilities for the different variants of the item.

@@ -31,10 +31,7 @@ class PickableItem: public Detector {
 
   private:
 
-    std::string item_name;			/**< name of the item, according to items.dat */
-    int variant;				/**< variant of this item */
-    int savegame_variable;			/**< savegame variable of the possession state of this item,
-						 * or -1 if the item is not saved */
+    Treasure *treasure;				/**< the treasure obtained when the player picks this item */
 
     Sprite *shadow_sprite;			/**< sprite of the shadow (if any) */
     FallingHeight falling_height;		/**< indicates whether the item is falling when it appears (except for a fairy) */

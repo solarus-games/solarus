@@ -33,7 +33,7 @@
  * A treasure is represented as the following values:
  * - a savegame variable: index of the boolean variable that indicates whether
  *   the player has found this treasure (-1 if the treasure is not saved).
- * - the item name: a string identitying the nature of the treasure, according to the file quest.dat
+ * - the item name: a string identitying the nature of the treasure, according to the file items.dat
  * - the variant: indicates the variant of this item
  */
 class Treasure {

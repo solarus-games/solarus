@@ -18,6 +18,7 @@
 #define SOLARUS_EQUIPMENT_H
 
 #include "Common.h"
+#include <map>
 
 /**
  * @brief Represents the hero's equipment.
@@ -30,13 +31,16 @@ class Equipment {
 
   private:
 
-    Savegame *savegame;                        /**< the savegame encapsulated by this equipment object */
-    Game *game;                                /**< the current game (may be NULL when the savegame is loaded outside a game) */
+    Savegame *savegame;							/**< the savegame encapsulated by this equipment object */
+    Game *game;								/**< the current game (may be NULL when the savegame is loaded outside a game) */
+
+    // static properties of items
+    std::map<std::string, ItemProperties*> item_properties;		/**< static properties of each item (loaded from the file items.dat) */
 
     // magic bar decrease handling
-    uint32_t magic_decrease_delay;             /**< when the magic bar decreases with time,
-						* delay between two decreases of 1 magic point */
-    uint32_t next_magic_decrease_date;         /**< date of the next decrease of 1 magic point */
+    uint32_t magic_decrease_delay;					/**< when the magic bar decreases with time,
+									 * delay between two decreases of 1 magic point */
+    uint32_t next_magic_decrease_date;					/**< date of the next decrease of 1 magic point */
 
   public:
 

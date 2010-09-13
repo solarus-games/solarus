@@ -105,7 +105,7 @@ PauseSubmenuInventory::PauseSubmenuInventory(PauseMenu *pause_menu, Game *game):
       std::ostringstream oss;
 
       // sprite
-      sprites[k] = new Sprite("hud/inventory_item");
+      sprites[k] = new Sprite("entities/items");
       sprites[k]->set_current_animation(item_name);
       sprites[k]->set_current_direction(variant - 1);
 

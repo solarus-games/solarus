@@ -180,7 +180,7 @@ counter = 1028
 limit = 10
 
 [apple]
-changes_counter = apples
+changes_counter = apples_counter
 amount = 3
 
 [pains_au_chocolat_counter]
@@ -190,7 +190,7 @@ counter = 1026
 limit = 10
 
 [pain_au_chocolat]
-changes_counter = pains_au_chocolat
+changes_counter = pains_au_chocolat_counter
 
 [croissants_counter]
 savegame_variable = 1112
@@ -199,7 +199,7 @@ counter = 1027
 limit = 10
 
 [croissant]
-changes_counter = croissants
+changes_counter = croissants_counter
 
 [bottle_2]
 savegame_variable = 1113

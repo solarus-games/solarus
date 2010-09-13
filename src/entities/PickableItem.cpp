@@ -155,7 +155,7 @@ void PickableItem::initialize_sprites(void) {
   create_sprite("entities/items");
   Sprite *item_sprite = get_sprite();
   item_sprite->set_current_animation(treasure->get_item_name());
-  item_sprite->set_current_direction(treasure->get_variant());
+  item_sprite->set_current_direction(treasure->get_variant() - 1);
 
   // set the origin point and the size of the entity
   set_bounding_box_from_sprite();

@@ -92,7 +92,7 @@ void ItemIcon::update(void) {
 
       need_rebuild = true;
       item_variant_displayed = current_item_variant;
-      item_sprite->set_current_direction(current_item_variant);
+      item_sprite->set_current_direction(current_item_variant - 1);
     }
 
     // counter index

@@ -1,8 +1,0 @@
-green entities/pickable_rupee.png 1 100 0
-0	0	8	14	4	15	10	10
-
-blue entities/pickable_rupee.png 1 100 0
-0	14	8	14	4	15	10	10
-
-red entities/pickable_rupee.png 1 100 0
-0	28	8	14	4	15	10	10

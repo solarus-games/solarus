@@ -152,7 +152,7 @@ void PickableItem::initialize_sprites(void) {
   }
 
   // create the sprite and set its animation
-  create_sprite("hud/inventory_items"); // TODO move and rename the sprite file
+  create_sprite("entities/items");
   Sprite *item_sprite = get_sprite();
   item_sprite->set_current_animation(treasure->get_item_name());
   item_sprite->set_current_direction(treasure->get_variant());

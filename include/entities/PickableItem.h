@@ -23,9 +23,7 @@
 #include "lowlevel/Rectangle.h"
 
 /**
- * @brief An item that the hero can take.
- *
- * Example of pickable items include rupees, hearts, bombs, fairies, etc.
+ * @brief An treasure placed on the ground and that the hero can take.
  */
 class PickableItem: public Detector {
 

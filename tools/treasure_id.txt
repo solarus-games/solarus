@@ -6,12 +6,12 @@
 5	lamp	1
 6	hookshot	1
 7	bottle_1	1
-13	speed_shoes	1
+13	pegasus_shoes	1
 14	mystic_mirror	1
 15	cane_of_somaria	1
-16	apples	1
-17	pains_au_chocolat	1
-18	croissants	1
+16	apple	1
+17	pain_au_chocolat	1
+18	croissant	1
 19	rock_key	1
 20	red_key	1
 21	clay_key	1
@@ -52,8 +52,8 @@
 74	boss_key	1
 79	piece_of_heart	1
 80	heart_container	1
-82	bombs_refill	1
-83	arrows_refill	1
+82	bomb	1
+83	arrow	1
 84	heart	1
 85	magic_flask	1
 86	magic_flask	2	

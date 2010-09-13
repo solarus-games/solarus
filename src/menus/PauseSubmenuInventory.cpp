@@ -32,25 +32,25 @@
 // TODO load from external data
 static const std::string item_names[] = {
   "feather",
-  "bombs",
+  "bombs_counter",
   "bow",
   "boomerang",
   "lamp",
   "hookshot",
   "bottle_1",
 
-  "speed_shoes",
+  "pegasus_shoes",
   "mystic_mirror",
   "cane_of_somaria",
-  "apples",
-  "pains_au_chocolat",
-  "croissants",
+  "apples_counter",
+  "pains_au_chocolat_counter",
+  "croissants_counter",
   "bottle_2",
 
   "rock_key",
   "red_key",
   "clay_key",
-  "l4_way_bone_key",
+  "level_4_way_bone_key",
   "flippers",
   "magic_cape",
   "bottle_3",
@@ -60,7 +60,7 @@ static const std::string item_names[] = {
   "wooden_key",
   "ice_key",
   "glove",
-  "fire_stones",
+  "fire_stones_counter",
   "bottle_4"
 };
 

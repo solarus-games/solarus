@@ -1286,8 +1286,8 @@ int MapScript::l_sensor_remove(lua_State *l) {
 /**
  * @brief Opens one or several doors.
  *
- * The doors must be normal, closed door
- * (not doors for keys or bombs).
+ * The doors must be normal closed doors
+ * (not doors for keys or explosions).
  * - Argument 1 (string): prefix of the name of the doors to open
  *
  * @param l the Lua context that is calling this function

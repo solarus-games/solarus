@@ -42,21 +42,8 @@ RupeesCounter::RupeesCounter(Game *game, int x, int y):
   next_rupee_update_date(System::now()) {
 
   img_rupee_icon = new Surface("hud/rupee_icon.png");
-
-  nb_max_rupees_displayed = equipment->get_max_money();
-
-  if (nb_max_rupees_displayed == 100) {
-    icon_displayed = 0;
-  }
-  else if (nb_max_rupees_displayed == 300) {
-    icon_displayed = 1;
-  }
-  else {
-    icon_displayed = 2;
-  }
-
+  rupee_bag_displayed = equipment->get_item_variant("rupee_bag");
   counter->set_value(equipment->get_money());
-
   rebuild();
 }
 
@@ -78,20 +65,9 @@ void RupeesCounter::update(void) {
   bool need_rebuild = false;
 
   // max rupees
-  int nb_max_rupees = equipment->get_max_money();
-  if (nb_max_rupees_displayed != nb_max_rupees) {
-    nb_max_rupees_displayed = nb_max_rupees;
-
-    if (nb_max_rupees_displayed == 100) {
-      icon_displayed = 0;
-    }
-    else if (nb_max_rupees_displayed == 300) {
-      icon_displayed = 1;
-    }
-    else {
-      icon_displayed = 2;
-    }
-
+  int rupee_bag = equipment->get_item_variant("rupee_bag");
+  if (rupee_bag_displayed != rupee_bag) {
+    rupee_bag = rupee_bag_displayed;
     need_rebuild = true;
   }
 
@@ -138,10 +114,10 @@ void RupeesCounter::rebuild(void) {
   HudElement::rebuild();
   
   // max rupees (icon)
-  img_rupee_icon->blit(rupee_icon_positions[icon_displayed], surface_drawn);
+  img_rupee_icon->blit(rupee_icon_positions[rupee_bag_displayed - 1], surface_drawn);
 
   // current rupees (counter)
-  counter->set_maximum(nb_max_rupees_displayed);
+  counter->set_maximum(equipment->get_max_money());
   counter->display(surface_drawn);
 }
 

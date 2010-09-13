@@ -743,6 +743,9 @@ int Equipment::get_ability_savegame_variable(const std::string &ability_name) {
   else if (ability_name == "detect_weak_walls") {
     index = Savegame::ABILITY_DETECT_WEAK_WALLS;
   }
+  else if (ability_name == "see_outside_world_minimap") {
+    index = Savegame::ABILITY_SEE_OUTSIDE_WORLD_MINIMAP;
+  }
   else if (ability_name == "see_minimap_rooms") {
     index = Savegame::DUNGEON_1_ABILITY_SEE_MINIMAP_ROOMS + 10 * (dungeon - 1);
   }
@@ -963,8 +966,9 @@ void Equipment::add_item(const std::string &item_name, int variant) {
       }
       else { // general case
 
+	// make sure the player has the item to increase
 	if (!has_item(item_counter_changed)) {
-	  DIE("Cannot give item '" << item_name << "' because the player does not have item '" << item_counter_changed << "'");
+	  set_item_variant(item_counter_changed, 1);
 	}
 
 	// for example, we give some bombs: increase the bomb counter

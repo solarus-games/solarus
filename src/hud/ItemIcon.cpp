@@ -20,6 +20,7 @@
 #include "ItemProperties.h"
 #include "Game.h"
 #include "KeysEffect.h"
+#include "Sprite.h"
 #include "lowlevel/Surface.h"
 
 /**
@@ -42,7 +43,7 @@ ItemIcon::ItemIcon(Game *game, int slot, int x, int y):
 
   this->slot = slot;
   this->background_img = new Surface(background_file_names[slot]);
-  this->items_img = new Surface("hud/inventory_items.png");
+  this->item_sprite = new Sprite("entities/items");
 
   this->item_displayed = "";
   this->item_variant_displayed = 0;
@@ -57,8 +58,9 @@ ItemIcon::ItemIcon(Game *game, int slot, int x, int y):
  * @brief Destructor.
  */
 ItemIcon::~ItemIcon(void) {
+
   delete background_img;
-  delete items_img;  
+  delete item_sprite;  
   delete counter;
 }
 
@@ -80,34 +82,38 @@ void ItemIcon::update(void) {
     need_rebuild = true;
     item_displayed = current_item;
     item_variant_displayed = 0;
+    item_sprite->set_current_animation(current_item);
   }
 
-  // variant of the item
-  int current_item_variant = equipment->get_item_variant(current_item);
-  if (item_variant_displayed != current_item_variant) {
+  if (current_item.size() > 0) {
+    // variant of the item
+    int current_item_variant = equipment->get_item_variant(current_item);
+    if (item_variant_displayed != current_item_variant) {
 
-    need_rebuild = true;
-    item_variant_displayed = current_item_variant;
-  }
-
-  // counter index
-  int counter_index = equipment->get_item_properties(current_item)->get_counter_savegame_variable();
-  if (counter_index != -1) {
-
-    int current_counter_value = equipment->get_item_amount(current_item);
-    int current_counter_maximum = equipment->get_item_maximum(current_item);
-
-    if (counter_value_displayed != current_counter_value || counter_maximum_displayed != current_counter_maximum) {
       need_rebuild = true;
-      counter_maximum_displayed = current_counter_maximum;
-      counter_value_displayed = current_counter_value;
-      counter->set_maximum(current_counter_maximum);
-      counter->set_value(counter_value_displayed);
+      item_variant_displayed = current_item_variant;
+      item_sprite->set_current_direction(current_item_variant);
     }
-  }
-  else if (counter_value_displayed != -1) {
-    need_rebuild = true;
-    counter_value_displayed = -1;
+
+    // counter index
+    int counter_index = equipment->get_item_properties(current_item)->get_counter_savegame_variable();
+    if (counter_index != -1) {
+
+      int current_counter_value = equipment->get_item_amount(current_item);
+      int current_counter_maximum = equipment->get_item_maximum(current_item);
+
+      if (counter_value_displayed != current_counter_value || counter_maximum_displayed != current_counter_maximum) {
+	need_rebuild = true;
+	counter_maximum_displayed = current_counter_maximum;
+	counter_value_displayed = current_counter_value;
+	counter->set_maximum(current_counter_maximum);
+	counter->set_value(counter_value_displayed);
+      }
+    }
+    else if (counter_value_displayed != -1) {
+      need_rebuild = true;
+      counter_value_displayed = -1;
+    }
   }
 
   // icon opacity
@@ -135,15 +141,9 @@ void ItemIcon::rebuild(void) {
   background_img->blit(surface_drawn);
 
   // item
-  if (item_displayed != "") {
+  if (item_displayed.size() > 0) {
 
-    Rectangle dst_position(4, 4, 0, 0);
-    Rectangle src_position(0, 0, 16, 16);
-
-// TODO    src_position.set_x(16 * item_index);
-    src_position.set_y(16 * (item_variant_displayed - 1));
-
-    items_img->blit(src_position, surface_drawn, dst_position);
+    item_sprite->display(surface_drawn, 4, 4);
 
     // counter
     if (counter_value_displayed != -1) {

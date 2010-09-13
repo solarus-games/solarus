@@ -32,21 +32,23 @@ ItemProperties::ItemProperties(Equipment *equipment, IniFile *ini) {
   name = ini->get_group();
   savegame_variable = ini->get_integer_value("savegame_variable", -1);
   nb_variants = ini->get_integer_value("nb_variants", 1);
-  initial_variant = ini->get_integer_value("initial_variants", 0);
+  initial_variant = ini->get_integer_value("initial_variant", 0);
 
-  amounts = new int[nb_variants];
-  probabilities = new int[nb_variants];
-  for (int i = 0; i < nb_variants; i++) {
+  amounts = new int[nb_variants + 1];
+  amounts[0] = 0;
+  probabilities = new int[nb_variants + 1];
+  probabilities[0] = 0;
+  for (int i = 1; i <= nb_variants; i++) {
 
     std::ostringstream oss;
-    oss << "amount_" << (i + 1);
+    oss << "amount_" << i;
     amounts[i] = ini->get_integer_value(oss.str(), 0);
     oss.str("");
-    oss << "probability_" << (i + 1);
+    oss << "probability_" << i;
     probabilities[i] = ini->get_integer_value(oss.str(), 0);
   }
-  amounts[0] = ini->get_integer_value("amount", 0);
-  probabilities[0] = ini->get_integer_value("probability", 0);
+  amounts[1] = ini->get_integer_value("amount", amounts[1]);
+  probabilities[1] = ini->get_integer_value("probability", probabilities[1]);
 
   allow_assigned = ini->get_boolean_value("can_be_assigned", false);
   counter_savegame_variable = ini->get_integer_value("counter", -1);
@@ -200,7 +202,7 @@ const std::string & ItemProperties::get_item_counter_changed(void) {
  * @return the amount of this variant
  */
 bool ItemProperties::get_amount(int variant) {
-  return amounts[variant - 1];
+  return amounts[variant];
 }
 
 /**
@@ -210,7 +212,7 @@ bool ItemProperties::get_amount(int variant) {
  * @return the probability that this variant of this item appears, between 0 and 1000
  */
 bool ItemProperties::get_probability(int variant) {
-  return probabilities[variant - 1];
+  return probabilities[variant];
 }
 
 /**

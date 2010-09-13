@@ -57,9 +57,9 @@ class Savegame {
       PLAYER_NAME			= 0,
       STARTING_POINT			= 1,		/**< the player appears on this destination point on the starting map */
 
-      ITEM_SLOT_0			= 1,		/**< current item associated to the first item slot
+      ITEM_SLOT_0			= 2,		/**< current item associated to the first item slot
 							 * (X button by default), an empty string means no item */
-      ITEM_SLOT_1			= 2,		/**< current item associated to the second slot
+      ITEM_SLOT_1			= 3,		/**< current item associated to the second slot
 							 * (V button by default), an empty string means no item */
 
       /**
@@ -156,13 +156,14 @@ class Savegame {
        * @name General abilities.
        * @{
        */
-      ABILITY_TUNIC			= 50,
-      ABILITY_SWORD			= 51,
-      ABILITY_SHIELD			= 52,
-      ABILITY_LIFT			= 53,
-      ABILITY_SWIM			= 54,
-      ABILITY_SEE_IN_DARK		= 55,
-      ABILITY_DETECT_WEAK_WALLS		= 56,
+      ABILITY_TUNIC				= 50,
+      ABILITY_SWORD				= 51,
+      ABILITY_SHIELD				= 52,
+      ABILITY_LIFT				= 53,
+      ABILITY_SWIM				= 54,
+      ABILITY_SEE_IN_DARK			= 55,
+      ABILITY_DETECT_WEAK_WALLS			= 56,
+      ABILITY_SEE_OUTSIDE_WORLD_MINIMAP		= 57,
       /**
        * @}
        */

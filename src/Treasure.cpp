@@ -35,11 +35,8 @@
  * or -1 if this treasure is not saved
  */
 Treasure::Treasure(Game *game, const std::string &item_name, int variant, int savegame_variable):
-  game(game), item_name(item_name), variant(variant), savegame_variable(savegame_variable) {
+  game(game), item_name(item_name), variant(variant), savegame_variable(savegame_variable), sprite(NULL) {
 
-  sprite = new Sprite("hud/inventory_items"); // TODO move and rename the sprite
-  sprite->set_current_animation(item_name);
-  sprite->set_current_direction(variant);
 }
 
 /**
@@ -170,6 +167,13 @@ void Treasure::add_item_to_equipment(void) {
  * @param y the treasure y position on this surface
  */
 void Treasure::display(Surface *destination, int x, int y) {
+
+  if (sprite == NULL) {
+    // create the sprite only if needed (many treasures are actually never displayed)
+    sprite = new Sprite("entities/items");
+    sprite->set_current_animation(item_name);
+    sprite->set_current_direction(variant);
+  }
 
   // display the item
   sprite->display(destination, x, y);

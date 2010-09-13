@@ -34,7 +34,7 @@ class ItemIcon: public HudElement {
     int slot;							/**< the slot of this icon (0 for the X icon, 1 for the Y icon) */
 
     Surface *background_img;					/**< background image of the icon (i.e. the empty icon) */
-    Surface *items_img;						/**< image containing all item with all variants */
+    Sprite *item_sprite;					/**< sprite of item currently displayed */
 
     std::string item_displayed;					/**< the item currently displayed on the icon (or an empty string) */
     int item_variant_displayed;					/**< the item variant currently displayed */

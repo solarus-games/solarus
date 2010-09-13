@@ -509,7 +509,7 @@ next = _item_description.bottle_4.6.2
 line1 = "récupérer des"
 line2 = "Coeurs !"
 
-[_item_description.speed_shoes.1]
+[_item_description.pegasus_shoes.1]
 # Bottes de Pégase / Pegasus Shoes
 #       |--------------------|
 icon = 13
@@ -517,9 +517,9 @@ line1 = "Cours très vite et"
 line2 = "fracasse des"
 line3 = "obstacles grâce aux"
 skip = all
-next = _item_description.speed_shoes.1.1
+next = _item_description.pegasus_shoes.1.1
 
-[_item_description.speed_shoes.1.1]
+[_item_description.pegasus_shoes.1.1]
 #       |--------------------|
 line1 = "Bottes de Pégase !"
 
@@ -1165,15 +1165,15 @@ line1 = "moment pour"
 line2 = "récupérer des"
 line3 = "Coeurs."
 
-[_treasure.speed_shoes.1]
+[_treasure.pegasus_shoes.1]
 # Bottes de Pégase
 #       |--------------------|
 icon = 13
 line1 = "Tu as trouvé les"
 line2 = "Bottes de Pégase !$0"
-next = _treasure.speed_shoes.1.1
+next = _treasure.pegasus_shoes.1.1
 
-[_treasure.speed_shoes.1.1]
+[_treasure.pegasus_shoes.1.1]
 #       |--------------------|
 line1 = "Cours, fonce et"
 line2 = "fracasse les"

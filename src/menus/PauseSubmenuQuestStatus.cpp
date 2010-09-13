@@ -39,7 +39,7 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *ga
   quest_items_surface->set_transparency_color(Color::get_black());
   quest_items_surface->fill_with_color(Color::get_black());
 
-  Surface *treasures_img = new Surface("hud/message_and_treasure_icons.png");
+  Surface *treasures_img = new Surface("hud/message_and_treasure_icons.png"); // TODO use sprite entities/items
   Surface *pieces_of_heart_img = new Surface("menus/quest_status_pieces_of_heart.png");
 
   std::ostringstream oss;
@@ -82,8 +82,7 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *ga
 
   // rupee bag
   {
-    int max_rupees = equipment->get_max_money();
-    int rupee_bag = (max_rupees == 100) ? 1 : ((max_rupees == 300) ? 2 : 3);
+    int rupee_bag = equipment->get_item_variant("rupee_bag");
     
     Rectangle src_position(rupee_bag * 16, 80, 16, 16);
     Rectangle dst_position(60, 71);
@@ -95,9 +94,8 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *ga
   }
 
   // bomb bag
-  int max_bombs = equipment->get_item_maximum("bombs");
-  if (max_bombs != 0) {
-    int bomb_bag = (max_bombs == 10) ? 1 : ((max_bombs == 30) ? 2 : 3);
+  int bomb_bag = equipment->get_item_variant("bomb_bag");
+  if (bomb_bag != 0) {
     Rectangle src_position(48 + bomb_bag * 16, 80, 16, 16);
     Rectangle dst_position(60, 100);
     treasures_img->blit(src_position, quest_items_surface, dst_position);
@@ -108,9 +106,8 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *ga
   }
 
   // quiver
-  int max_arrows = equipment->get_item_maximum("arrows");
-  if (max_arrows != 0) {
-    int quiver = (max_arrows == 10) ? 1 : ((max_arrows == 30) ? 2 : 3);
+  int quiver = equipment->get_item_variant("quiver");
+  if (quiver != 0) {
     
     Rectangle src_position(96 + quiver * 16, 80, 16, 16);
     Rectangle dst_position(60, 130);

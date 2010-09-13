@@ -36,8 +36,7 @@ class RupeesCounter: public HudElement {
 
     Surface *img_rupee_icon;
 
-    int nb_max_rupees_displayed;
-    int icon_displayed;
+    int rupee_bag_displayed;
     Counter *counter;
 
     uint32_t next_rupee_update_date;

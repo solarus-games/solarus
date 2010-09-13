@@ -22,13 +22,8 @@
 /**
  * @brief Represents an item that the hero brandishes when he receives it.
  *
- * Treasures include all items the hero can get in chest, buy in a shop
- * or get from the script (e.g. when talking to an NPC).
- * It also includes items picked on the ground if they are saved
- * (heart pieces, keys, etc.).
- * Picked items that are not saved (rupees, bombs, etc.) are not treasures since they are not brandished
- * when they are picked on the ground. When they come from a chest, they are
- * treasures.
+ * Treasures include all items the hero can get in chest, buy in a shop,
+ * pick on the ground or get from scripts (e.g. when talking to an NPC).
  *
  * A treasure is represented as the following values:
  * - the item name: a string identitying the nature of the treasure, according to the file items.dat

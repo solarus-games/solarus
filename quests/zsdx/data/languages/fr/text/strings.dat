@@ -60,7 +60,7 @@ inventory.caption.item.bottle_1.4			Flacon Magique$(Potion verte)
 inventory.caption.item.bottle_1.5			Flacon Magique$(Potion blue)
 inventory.caption.item.bottle_1.6			Flacon Magique$(Fée)
 
-inventory.caption.item.speed_shoes.1			Bottes de Pégase
+inventory.caption.item.pegasus_shoes.1			Bottes de Pégase
 inventory.caption.item.mystic_mirror.1			Miroir Mystique
 inventory.caption.item.cane_of_somaria.1		Canne de Somaria
 inventory.caption.item.apples_counter.1			Pommes

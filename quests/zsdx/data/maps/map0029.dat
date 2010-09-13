@@ -478,7 +478,7 @@
 1	0	584	581	destination_point_N	-1	1
 1	0	616	581	destination_point_O	-1	1
 1	0	648	581	destination_point_Q	-1	1
-4	0	656	453	0	arrows_refill	2	-1
+4	0	656	453	0	arrow	2	-1
 1	0	656	421	destination_point_U	-1	1
 1	0	624	469	destination_point_T	-1	1
 1	0	688	469	destination_point_S	-1	1

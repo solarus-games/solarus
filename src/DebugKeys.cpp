@@ -99,12 +99,11 @@ void DebugKeys::key_pressed(InputEvent::KeyboardKey key) {
 	equipment->add_item("boomerang", 1);
 	equipment->add_item("lamp", 1);
 	equipment->add_item("hookshot", 1);
-	equipment->add_item("speed_shoes", 1);
+	equipment->add_item("pegasus_shoes", 1);
 	equipment->add_item("bottle_1", 1);
 	equipment->add_item("glove", 1);
-	equipment->add_item("pains_au_chocolat_counter", 1);
-	equipment->add_item("pains_au_chocolat", 3);
-	equipment->add_item("croissants", 1);
+	equipment->add_item("pain_au_chocolat", 1);
+	equipment->add_item("croissant", 1);
 	equipment->add_item("red_key", 1);
 	equipment->add_item("clay_key", 1);
 	equipment->add_item("world_map", 1);
@@ -113,7 +112,7 @@ void DebugKeys::key_pressed(InputEvent::KeyboardKey key) {
 	break;
 
       case InputEvent::KEY_g:
-	equipment->add_item("arrows", 2);
+	equipment->add_item("arrow", 2);
 	break;
 
 	/*

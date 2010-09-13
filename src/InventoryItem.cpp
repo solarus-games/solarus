@@ -110,7 +110,7 @@ void InventoryItem::start(Game *game) {
 	hero->get_sprites()->set_animation_bow();
       }
     }
-    else if (item_name == "speed_shoes") {
+    else if (item_name == "pegasus_shoes") {
 
       hero->start_running();
       finished = true;
@@ -198,7 +198,7 @@ void InventoryItem::update(void) {
 	game->play_sound("bow");
       }
     }
-    else if (item_name == "speed_shoes") {
+    else if (item_name == "pegasus_shoes") {
 
       // it's immediately finished for us : from the point of view of the InventoryItem class,
       // the only effect of the speed shoes is to make the hero take its state "running"

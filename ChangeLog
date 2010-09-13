@@ -1,5 +1,9 @@
 This ChangeLog describes the important changes of each svn commit.
 
+r1431 (2010-09-13):
+
+- Fix problems about items.
+
 r1430 (2010-09-13):
 
 - Finish implementing the class Treasure. The code now compiles but the game

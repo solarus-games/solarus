@@ -135,7 +135,7 @@ bool Hero::RunningState::is_bouncing(void) {
 bool Hero::RunningState::is_pressing_running_key(void) {
 
   Equipment *equipment = game->get_equipment();
-  int slot = equipment->get_item_slot("speed_shoes");
+  int slot = equipment->get_item_slot("pegasus_shoes"); // TODO make quest-dependent
   if (slot == -1) {
     return false;
   }

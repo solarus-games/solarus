@@ -446,7 +446,7 @@
 15	0	176	496	16	32	0
 15	0	160	480	16	32	1
 14	0	168	429
-4	0	96	477	6	arrows_refill	1	-1
+4	0	96	477	6	arrow	1	-1
 12	0	208	384	8	32	custom_obstacle	1	1	1	1
 12	0	200	464	32	8	custom_obstacle_2	1	1	1	1
 15	0	192	496	16	16	1
@@ -486,7 +486,7 @@
 9	0	1064	301	block_7	-1	1	2
 15	0	816	416	80	32	0
 15	0	1056	320	16	16	0
-4	0	888	317	0	arrows_refill	3	-1
+4	0	888	317	0	arrow	3	-1
 14	0	888	413
 14	0	824	461
 18	0	512	464	small_key_door_B	0	1	79
@@ -505,7 +505,7 @@
 2	0	72	304	16	16	to_B1_west	0	1	31	from_1F_west
 2	0	168	640	16	16	to_B1_south	0	1	31	from_1F_south
 2	0	1056	64	32	32	hole_to_B1_east	0	1	31	_same
-5	0	440	56	chest_3	1	speed_shoes	1	86
+5	0	440	56	chest_3	1	pegasus_shoes	1	86
 2	0	480	64	32	32	hole_to_B1_west	0	1	31	_same
 11	0	832	352	pegasus_run_switch	1	0	0
 10	0	896	72	8	24	pegasus_run_barrier	71	1
@@ -533,8 +533,8 @@
 18	0	160	48	miniboss_door_3	1	0	-1
 13	0	176	77	16	16	start_miniboss_sensor	0
 7	0	176	165	miniboss	3	1002	1	92	fairy	1	-1
-4	0	80	85	0	arrows_refill	1	-1
-4	0	272	197	0	arrows_refill	2	-1
+4	0	80	85	0	arrow	1	-1
+4	0	272	197	0	arrow	2	-1
 4	0	80	197	0	heart	1	-1
 4	0	272	85	0	heart	1	-1
 11	0	928	112	pegasus_run_switch_2	1	0	0

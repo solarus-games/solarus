@@ -49,7 +49,7 @@ Game::Game(Solarus *solarus, Savegame *savegame):
   Screen(solarus),
 
   savegame(savegame), pause_key_available(true), pause_menu(NULL), 
-  treasure(NULL), gameover_sequence(NULL),
+  gameover_sequence(NULL),
   reseting(false), restarting(false), keys_effect(NULL),
   current_map(NULL), next_map(NULL), previous_map_surface(NULL),
   transition_style(Transition::IMMEDIATE), transition(NULL),
@@ -89,7 +89,6 @@ Game::~Game(void) {
   delete transition;
   delete dialog_box;
   delete pause_menu;
-  delete treasure;
   delete dungeon;
   delete gameover_sequence;
 
@@ -256,11 +255,6 @@ void Game::update(void) {
   hud->update();
   dialog_box->update();
 
-  // update the treasure (if any)
-  if (treasure != NULL) {
-    update_treasure();
-  }
-
   // update the pause menu (if the game is paused)
   if (is_paused()) {
     pause_menu->update();
@@ -415,29 +409,6 @@ void Game::update_keys_effect(void) {
       && keys_effect->get_sword_key_effect() == KeysEffect::SWORD_KEY_SWORD) {
 
     keys_effect->set_sword_key_effect(KeysEffect::SWORD_KEY_NONE);
-  }
-}
-
-/**
- * @brief Updates the treasure.
- *
- * This function is called repeatedly while a treasure is being given.
- */
-void Game::update_treasure(void) {
-
-  if (treasure != NULL && !is_showing_message()) {
-
-    // the game has finished giving the treasure to the player
-    // and displaying the corresponding message
-
-    const std::string &item_name = treasure->get_item_name();
-    int variant = treasure->get_variant();
-    int savegame_variable = treasure->get_savegame_variable();
-
-    delete treasure;
-    treasure = NULL;
-
-    get_current_script()->event_treasure_obtained(savegame_variable, item_name, variant);
   }
 }
 
@@ -725,32 +696,6 @@ bool Game::is_showing_message(void) {
  */
 DialogBox * Game::get_dialog_box(void) {
   return dialog_box;
-}
-
-/**
- * @brief Gives a treasure to the player.
- *
- * Makes the hero brandish the treasure and shows a message.
- *
- * @param treasure the treasure to give (will be deleted after the hero brandishes it) 
- */
-void Game::give_treasure(Treasure *treasure) {
-
-  this->treasure = treasure;
-
-  // brandish the treasure
-  hero->start_treasure(treasure);
-
-  // give the treasure and show the message
-  treasure->give_to_player();
-}
-
-/**
- * @brief Returns whether a treasure is being given to the player.
- * @return true if a treasure is being given to the player.
- */
-bool Game::is_giving_treasure(void) {
-  return treasure != NULL && is_showing_message();
 }
 
 /**

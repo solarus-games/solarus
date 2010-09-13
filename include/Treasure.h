@@ -63,7 +63,7 @@ class Treasure {
     int get_savegame_variable(void);
     bool is_saved(void);
 
-    void give_to_player(bool brandish = true);
+    void give_to_player(void);
     bool is_found(void);
 
     void display(Surface *destination, int x, int y);

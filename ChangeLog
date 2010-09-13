@@ -1,5 +1,12 @@
 This ChangeLog describes the important changes of each svn commit.
 
+r1430 (2010-09-13):
+
+- Finish implementing the class Treasure. The code now compiles but the game
+cannot be played normally since some item features are still missing.
+- Detect savegames created with the old format (before the changes about
+items) and destroy them.
+
 r1429 (2010-09-12):
 
 - Implementing the class Treasure.

@@ -27,13 +27,12 @@
 Savegame::Savegame(const std::string &file_name) {
 
   this->file_name = file_name;
+  this->equipment = new Equipment(this);
 
   if (!FileTools::data_file_exists(file_name.c_str())) {
     // this save slot is free
     empty = true;
     set_initial_values();
-
-    this->equipment = NULL;
   }
   else {
     // a save already exists, let's load it
@@ -49,9 +48,18 @@ Savegame::Savegame(const std::string &file_name) {
     memcpy(&saved_data, buffer, sizeof(SavedData));
     FileTools::data_file_close_buffer(buffer);
 
-    this->equipment = new Equipment(this);
+    // check that the savegame is compatible with the current savegame system
+    if (get_integer(SAVEGAME_COMPATIBILITY_FORMAT) != CURRENT_COMPATIBILITY_FORMAT) {
 
-    check_game_controls();
+      // obsolete savegame file: create a new savegame instead
+      empty = true;
+      set_initial_values();
+    }
+    else {
+
+      // the savegame file is okay
+      check_game_controls();
+    }
   }
 }
 
@@ -92,6 +100,9 @@ void Savegame::set_initial_values(void) {
   // 0 is the initial value of most variables
   memset(&saved_data, 0x0000, sizeof(SavedData));
 
+  // set the compatibility version
+  set_integer(SAVEGAME_COMPATIBILITY_FORMAT, CURRENT_COMPATIBILITY_FORMAT);
+
   // set the initial controls
   set_default_keyboard_controls();
   set_default_joypad_controls();
@@ -110,6 +121,9 @@ void Savegame::set_initial_values(void) {
     DIE("No starting point defined in quest.dat. Please set the value starting_point to the name of the "
 	"destination point where the hero should be placed on the initial map.");
   }
+
+  // the equipment may give some initial items
+  equipment->set_initial_items();
 
   set_integer(STARTING_MAP, starting_map_id);
   set_string(STARTING_POINT, starting_destination_point_name);

@@ -54,13 +54,12 @@ class Savegame {
      * Values above 64 are available for the maps in reading and writing.
      */
     enum StringIndex {
-      // 0: unused for now
-      PLAYER_NAME			= 1,
-      STARTING_POINT			= 2,		/**< the player appears on this destination point on the starting map */
+      PLAYER_NAME			= 0,
+      STARTING_POINT			= 1,		/**< the player appears on this destination point on the starting map */
 
-      ITEM_SLOT_0			= 3,		/**< current item associated to the first item slot
+      ITEM_SLOT_0			= 1,		/**< current item associated to the first item slot
 							 * (X button by default), an empty string means no item */
-      ITEM_SLOT_1			= 4,		/**< current item associated to the second slot
+      ITEM_SLOT_1			= 2,		/**< current item associated to the second slot
 							 * (V button by default), an empty string means no item */
 
       /**
@@ -183,10 +182,19 @@ class Savegame {
       DUNGEON_1_UNUSED_3			= 208,		/**< empty place for future new data in dungeon #1 */
       DUNGEON_1_UNUSED_4			= 209,		/**< empty place for future new data in dungeon #1 */
       // then, same thing for other dungeons
-      DUNGEON_40_UNUSED_4			= 599		/**< empty place for future new data in dungeon #40 */
+      DUNGEON_40_UNUSED_4			= 599,		/**< empty place for future new data in dungeon #40 */
+
+
+      SAVEGAME_COMPATIBILITY_FORMAT		= 1023		/**< Indicates the version of the savegame format this savegame was created with.
+								 * If the version saved is different from COMPATIBILITY_FORMAT, then
+								 * we know it is obsolete (not compatible anymore) and the savegame is destroyed. */
 
       // values above 1024 are available to the maps
     };
+
+    static const unsigned int CURRENT_COMPATIBILITY_FORMAT = 1;	/**< version of the savegame format currently recognized by the engine
+								 * (only savegames created with this format can be loaded,
+								 * the old ones are obsolete and are destroyed) */
 
   private:
 

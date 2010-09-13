@@ -20,6 +20,7 @@
 #include "Treasure.h"
 #include "Game.h"
 #include "Map.h"
+#include "MapScript.h"
 #include "Camera.h"
 
 /**
@@ -37,6 +38,7 @@ Hero::TreasureState::TreasureState(Hero *hero, Treasure *treasure):
  */
 Hero::TreasureState::~TreasureState(void) {
 
+  delete treasure;
 }
 
 /**
@@ -50,6 +52,9 @@ void Hero::TreasureState::start(State *previous_state) {
   // show the animation
   sprites->save_animation_direction();
   sprites->set_animation_brandish();
+
+  // give the treasure
+  treasure->give_to_player();
 }
 
 /**
@@ -70,9 +75,9 @@ void Hero::TreasureState::stop(State *next_state) {
  */
 void Hero::TreasureState::update(void) {
 
-  State::display_on_map();
+  State::update();
 
-  if (!game->is_giving_treasure()) {
+  if (!game->is_showing_message()) {
 
     // the treasure's dialog is over: if the treasure was a tunic,
     // a sword or a shield, we have to reload the hero's sprites now
@@ -80,6 +85,14 @@ void Hero::TreasureState::update(void) {
     if (item_name == "tunic" || item_name == "sword" || item_name == "shield") {
       hero->rebuild_equipment();
     }
+
+    int variant = treasure->get_variant();
+    int savegame_variable = treasure->get_savegame_variable();
+
+    delete treasure;
+    treasure = NULL;
+
+    map->get_script()->event_treasure_obtained(item_name, variant, savegame_variable);
 
     hero->set_state(new FreeState(hero));
   }

@@ -228,7 +228,7 @@ void ShopItem::update(void) {
 
 	int savegame_variable = treasure->get_savegame_variable();
 	// TODO check memory (before r1414, a new Treasure was created here)
-	game->give_treasure(treasure);
+	game->get_hero()->start_treasure(treasure);
 	treasure = NULL;
 	if (savegame_variable != -1) {
 	  remove_from_map();

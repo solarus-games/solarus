@@ -42,7 +42,6 @@ class Game: public Screen {
     // current game state (elements currently shown)
     bool pause_key_available;  /**< indicates that the player is allowed to use the pause key */
     PauseMenu *pause_menu;     /**< the current pause menu, or NULL if the game is not paused */
-    Treasure *treasure;        /**< the treasure currently being given to the player or NULL if it is not the case */
     GameoverSequence *gameover_sequence; /**< the game over sequence (if currently shown) */
     bool reseting;             /**< true if the game will be reset */
     bool restarting;           /**< true if the game will be restarted */
@@ -81,7 +80,6 @@ class Game: public Screen {
     void update_keys_effect(void);
     void update_dialog_box(void);
     void update_transitions(void);
-    void update_treasure(void);
     void update_gameover_sequence(void);
 
     void load_dungeon(void);
@@ -151,10 +149,6 @@ class Game: public Screen {
 
     // dialog box
     DialogBox *get_dialog_box(void);
-
-    // treasure
-    void give_treasure(Treasure *treasure);
-    bool is_giving_treasure(void);
 
     // game over
     void start_gameover_sequence(void);

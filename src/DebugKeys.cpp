@@ -93,34 +93,27 @@ void DebugKeys::key_pressed(InputEvent::KeyboardKey key) {
 
       case InputEvent::KEY_t:
 	// quest-specific temporary code
-	equipment->give_item("bow");
-	equipment->set_item_variant("quiver", 1);
-	equipment->set_item_variant("bottle_2", 6);
-	equipment->give_item("bombs");
-	equipment->set_item_variant("bomb_bag", 1);
-	equipment->set_item_amount("bombs", 10);
-	equipment->give_item("boomerang");
-	equipment->give_item("lamp");
-	equipment->give_item("hookshot");
-	equipment->give_item("speed_shoes");
-	equipment->give_item("bottle_1");
-	equipment->give_item("glove");
-	equipment->give_item("pains_au_chocolat");
-	equipment->set_item_amount("pains_au_chocolat", 3);
-	equipment->give_item("croissants");
-	equipment->give_item("red_key");
-	equipment->give_item("clay_key");
-	equipment->give_item("world_map");
+	equipment->add_item("bow", 1);
+	equipment->add_item("bottle_2", 6);
+	equipment->add_item("bombs_counter", 1);
+	equipment->add_item("boomerang", 1);
+	equipment->add_item("lamp", 1);
+	equipment->add_item("hookshot", 1);
+	equipment->add_item("speed_shoes", 1);
+	equipment->add_item("bottle_1", 1);
+	equipment->add_item("glove", 1);
+	equipment->add_item("pains_au_chocolat_counter", 1);
+	equipment->add_item("pains_au_chocolat", 3);
+	equipment->add_item("croissants", 1);
+	equipment->add_item("red_key", 1);
+	equipment->add_item("clay_key", 1);
+	equipment->add_item("world_map", 1);
 	equipment->set_item_assigned(0, "boomerang");
 	equipment->set_item_assigned(1, "bottle_2");
 	break;
 
       case InputEvent::KEY_g:
-	equipment->add_item_amount("bow", 7);
-	break;
-
-      case InputEvent::KEY_b:
-	equipment->remove_item_amount("bow", 1);
+	equipment->add_item("arrows", 2);
 	break;
 
 	/*

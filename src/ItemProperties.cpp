@@ -32,6 +32,7 @@ ItemProperties::ItemProperties(Equipment *equipment, IniFile *ini) {
   name = ini->get_group();
   savegame_variable = ini->get_integer_value("savegame_variable", -1);
   nb_variants = ini->get_integer_value("nb_variants", 1);
+  initial_variant = ini->get_integer_value("initial_variants", 0);
 
   amounts = new int[nb_variants];
   probabilities = new int[nb_variants];
@@ -52,7 +53,10 @@ ItemProperties::ItemProperties(Equipment *equipment, IniFile *ini) {
   fixed_limit = ini->get_integer_value("limit", 0);
   item_limiting = "";
   item_limited = ini->get_string_value("limit_for_counter", "");
-  if (item_limited.size() != 0) {
+  if (item_limited.size() != 0
+      && item_limited != "life"
+      && item_limited != "money"
+      && item_limited != "magic") {
     equipment->get_item_properties(item_limited)->item_limiting = this->name;
   }
   item_counter_changed = ini->get_string_value("changes_counter", "");
@@ -114,6 +118,22 @@ int ItemProperties::get_nb_variants(void) {
 }
 
 /**
+ * @brief Returns the initial possession state of this item.
+ * @return the initial variant of this item
+ */
+int ItemProperties::get_initial_variant(void) {
+  return initial_variant;
+}
+
+/**
+ * @brief Returns whether this item has a counter associated to it.
+ * @return true if this item has a counter
+ */
+bool ItemProperties::has_counter(void) {
+  return get_counter_savegame_variable() != -1;
+}
+
+/**
  * @brief If this item has a counter, returns the savegame variable
  * that stores the value of this counter.
  * @return the savegame variable of the counter, or -1 if there is no counter
@@ -168,19 +188,6 @@ const std::string & ItemProperties::get_item_limited(void) {
  */
 const std::string & ItemProperties::get_item_counter_changed(void) {
   return item_counter_changed;
-}
-
-/**
- * @brief Returns whether an amount is associated to this item.
- *
- * This function returns true if get_item_limited() or get_item_counter_changed()
- * return a non-empty string. The amount applies to the corresponding counter.
- *
- * @return true if this item has an amount
- */
-bool ItemProperties::has_amount(void) {
-  return get_item_limited().size() > 0
-    || get_item_counter_changed().size() > 0;
 }
 
 /**

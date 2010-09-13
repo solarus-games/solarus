@@ -84,6 +84,14 @@ Treasure * Treasure::create(Game *game, std::string item_name, int variant, int 
 }
 
 /**
+ * @brief Returns the properties of the item given with this treasure.
+ * @return the item properties
+ */
+ItemProperties * Treasure::get_item_properties(void) {
+  return game->get_equipment()->get_item_properties(item_name);
+}
+
+/**
  * @brief Returns the name of the item.
  * @return the name of the item
  */
@@ -100,8 +108,16 @@ int Treasure::get_variant(void) {
 }
 
 /**
+ * @brief Returns whether this treasure is saved.
+ * @return true if this treasure is saved
+ */
+bool Treasure::is_saved(void) {
+  return get_savegame_variable() != -1;
+}
+
+/**
  * @brief Returns the index of the variable where this treasure is saved.
- * @return the savegame variable of this treasure
+ * @return the savegame variable of this treasure, or -1 if it is not saved
  */
 int Treasure::get_savegame_variable(void) {
   return savegame_variable;
@@ -118,7 +134,7 @@ void Treasure::give_to_player(void) {
 
   show_message();
   add_item_to_equipment();
-  game->get_current_script()->event_treasure_obtaining(content, savegame_variable);
+  game->get_current_script()->event_treasure_obtaining(item_name, variant, savegame_variable);
 }
 
 /**
@@ -127,29 +143,24 @@ void Treasure::give_to_player(void) {
  */
 void Treasure::show_message(void) {
 
-  Equipment *equipment = game->get_equipment();
-
-  // the message id is _treasure_x where x is the treasure content
+  // the message id is _treasure.x.y where x is the item name and y is the variant
   std::ostringstream oss;
   oss << "_treasure." << item_name << "." << variant;
   game->get_dialog_box()->start_dialog(oss.str());
 }
 
 /**
- * @brief Adds the item to the hero's eqipment.
+ * @brief Adds the item to the hero's equipment and sets this treasure as obtained.
  */
 void Treasure::add_item_to_equipment(void) {
 
-  Savegame *savegame = game->get_savegame();
-  Equipment *equipment = game->get_equipment();
-
   // mark the treasure as found in the savegame
   if (savegame_variable != -1) {
-    savegame->set_boolean(savegame_variable, true);
+    game->get_savegame()->set_boolean(savegame_variable, true);
   }
 
   // give the item
-  equipment->give_item(item_name, variant);
+  game->get_equipment()->add_item(item_name, variant);
 }
 
 /**

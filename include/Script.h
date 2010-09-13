@@ -129,8 +129,8 @@ class Script {
     void event_dialog_finished(const MessageId &first_message_id, int answer);
     void event_camera_reached_target(void);
     void event_camera_back(void);
-    void event_treasure_obtaining(int savegame_variable, const std::string &item, int variant);
-    void event_treasure_obtained(int savegame_variable, const std::string &item, int variant);
+    void event_treasure_obtaining(const std::string &item_name, int variant, int savegame_variable);
+    void event_treasure_obtained(const std::string &item_name, int variant, int savegame_variable);
 };
 
 #endif

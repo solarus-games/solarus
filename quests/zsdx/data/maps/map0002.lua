@@ -221,9 +221,9 @@ function event_chest_empty(chest_name)
     -- give the rupees
     if (amount == 5) then
       treasure_give("rupee", 2, -1)
-    else if (amount == 20) then
+    elseif (amount == 20) then
       treasure_give("rupee", 3, -1)
-    else if (amount == 50) then
+    elseif (amount == 50) then
       treasure_give("rupee", 4, -1)
     end
 

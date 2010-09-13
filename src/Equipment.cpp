@@ -400,7 +400,7 @@ ItemProperties * Equipment::get_item_properties(const std::string &item_name) {
 }
 
 /**
- * @brief Returns whether the player has obtained the specified item.
+ * @brief Returns whether the player has obtained the specified saved item.
  *
  * This function can return true only for items that are saved.
  * This function is equivalent to get_item_variant(item_name) != 0.
@@ -414,7 +414,7 @@ bool Equipment::has_item(const std::string &item_name) {
 }
 
 /**
- * @brief Returns the possession state of the specified item.
+ * @brief Returns the possession state of the specified saved item.
  *
  * This function makes sense only for items whose possession state is saved.
  *
@@ -432,18 +432,7 @@ int Equipment::get_item_variant(const std::string &item_name) {
 }
 
 /**
- * @brief Gives the first variant of an item to the player.
- *
- * This is equivalent to set_item_variant(item_name, 1).
- * 
- * @param item_id the item to give
- */
-void Equipment::give_item(const std::string &item_name) {
-  set_item_variant(item_name, 1);
-}
-
-/**
- * @brief Sets the possession state of an item.
+ * @brief Sets the possession state of a saved item.
  * @param item_name the item to set
  * @param variant the variant of the item to give to the player,
  * or zero to remove the item
@@ -452,9 +441,11 @@ void Equipment::set_item_variant(const std::string &item_name, int variant) {
 
   // set the possession state in the savegame
   int index = get_item_properties(item_name)->get_savegame_variable();
-  if (index != -1) {
-    savegame->set_integer(index, variant);
+  if (index == -1) {
+    DIE("The item '" << item_name << "' is not saved");
   }
+
+  savegame->set_integer(index, variant);
 
   // if we are removing the item, unassign it
   if (variant == 0) {
@@ -468,7 +459,7 @@ void Equipment::set_item_variant(const std::string &item_name, int variant) {
 }
 
 /**
- * @brief Removes an item from the player.
+ * @brief Removes a saved item from the player.
  *
  * This is equivalent to set_item_variant(item_name, 0).
  *
@@ -695,14 +686,13 @@ int Equipment::get_small_keys(void) {
 }
 
 /**
- * @brief Adds a small key to the player in the current map.
- *
- * Stops with an error message if the player has no more small keys.
+ * @brief Adds one or several small keys to the player in the current map.
+ * @param amount_to_add number of small keys to add
  */
-void Equipment::add_small_key(void) {
+void Equipment::add_small_keys(int amount_to_add) {
 
   int index = get_small_keys_variable();
-  savegame->set_integer(index, get_small_keys() + 1);
+  savegame->set_integer(index, get_small_keys() + amount_to_add);
 }
 
 /**
@@ -823,7 +813,7 @@ int Equipment::get_current_dungeon(void) {
 
   Map *current_map = game->get_current_map();
 
-  if (!current_map->is_in_dungeon()) {
+  if (current_map == NULL || !current_map->is_in_dungeon()) {
     return 0;
   }
 
@@ -857,5 +847,132 @@ void Equipment::set_dungeon_finished(void) {
   int dungeon = get_current_dungeon();
   int index = Savegame::DUNGEON_1_FINISHED + 10 * (dungeon - 1);
   savegame->set_integer(index, 1);
+}
+
+// obtaining items
+
+/**
+ * @brief Gives to the player the initial variant of each item saved,
+ * according to the file items.dat.
+ * 
+ * This function is called when the savegame is created.
+ */
+void Equipment::set_initial_items(void) {
+
+  std::map<std::string, ItemProperties*>::const_iterator it;
+
+  for (it = item_properties.begin(); it != item_properties.end(); it++) {
+
+    ItemProperties *properties = it->second;
+    int initial_variant = properties->get_initial_variant();
+    if (initial_variant != 0) {
+      add_item(it->first, initial_variant);
+    }
+  }
+}
+
+/**
+ * @brief Adds an item to the equipment.
+ *
+ * This function can be called with any kind of item and it makes the
+ * appropriate modifications on equipment according to the item description in items.dat.
+ *
+ * @param item_name name of the item to add
+ * @param variant variant of this item
+ */
+void Equipment::add_item(const std::string &item_name, int variant) {
+
+  ItemProperties *properties = get_item_properties(item_name);
+
+  if (properties->is_saved()) {
+
+    // the item is saved
+    set_item_variant(item_name, variant);
+
+    if (properties->has_counter()) {
+      // the item has a counter
+
+      // if another item acts as a limit for the counter of this item
+      const std::string &item_limiting = properties->get_item_limiting();
+      if (item_limiting.size() > 0) {
+
+	// make sure we have at least the first variant of that item
+	if (!has_item(item_limiting)) {
+
+	  // for example, we give the bomb counter: also give the bomb bag
+	  set_item_variant(item_limiting, 1);
+	}
+      }
+
+      // set the counter at its maximum value
+      set_item_amount(item_name, get_item_maximum(item_name));
+    }
+
+    // see if this item acts as a limit for another item
+    const std::string &item_limited = properties->get_item_limited();
+    if (item_limited.size() > 0) {
+      
+      int maximum = properties->get_amount(variant);
+
+      // consider built-in counters
+      if (item_limited == "life") {
+	set_max_life(maximum);
+	restore_all_life();
+      }
+      else if (item_limited == "money") {
+	set_max_money(maximum);
+      }
+      else if (item_limited == "magic") {
+	set_max_magic(maximum);
+	restore_all_magic();
+      }
+      else { // general case
+
+	// make sure we have the other item
+	if (!has_item(item_limited)) {
+
+	  // for example, we give the bomb bag: also give the bomb counter
+	  set_item_variant(item_limited, 1);
+	}
+
+	// make sure the other item has its new maximum value
+	set_item_amount(item_limited, get_item_maximum(item_limited));
+      }
+    }
+  }
+
+  else {
+    // now, see if this obtaining this item changes the counter of another item
+    const std::string &item_counter_changed = properties->get_item_counter_changed();
+    if (item_counter_changed.size() > 0) {
+
+      int amount = properties->get_amount(variant);
+
+      // consider built-in counters
+      if (item_counter_changed == "life") {
+	add_life(amount);
+      }
+      else if (item_counter_changed == "money") {
+	add_money(amount);
+      }
+      else if (item_counter_changed == "magic") {
+	add_magic(amount);
+      }
+      else if (item_counter_changed == "small_keys") {
+	add_small_keys(amount);
+      }
+      else { // general case
+
+	if (!has_item(item_counter_changed)) {
+	  DIE("Cannot give item '" << item_name << "' because the player does not have item '" << item_counter_changed << "'");
+	}
+
+	// for example, we give some bombs: increase the bomb counter
+	add_item_amount(item_counter_changed, amount);
+      }
+    }
+  }
+
+  // TODO notify the script
 }
 

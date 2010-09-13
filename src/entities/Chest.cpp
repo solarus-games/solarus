@@ -250,7 +250,7 @@ void Chest::update(void) {
 
 	Treasure *t = treasure;
 	treasure = NULL;
-	game->give_treasure(t); // from now the game handles the treasure
+	game->get_hero()->start_treasure(t); // from now the hero handles the treasure
 	treasure_given = true;
       }
       else { // the chest is empty

@@ -16,6 +16,10 @@
 #   and nb_variant if he has a variant of the item.
 #   The default value is 1.
 #
+# - initial_variant (integer)
+#   Initial possession state of the item (only for items saved). The default
+#   value is 0.
+#
 # - can_be_assigned (boolean)
 #   If true, the item can be assigned to an item key from the inventory subscreen
 #   and then be used explicitely by pressing this item key.
@@ -108,7 +112,7 @@ can_disappear = true
 
 [bomb_bag]
 savegame_variable = 1032
-limit_for_counter = bombs
+limit_for_counter = bombs_counter
 nb_variants = 3
 amount_1 = 10
 amount_2 = 30

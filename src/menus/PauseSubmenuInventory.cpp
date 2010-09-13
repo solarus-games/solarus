@@ -82,7 +82,7 @@ PauseSubmenuInventory::PauseSubmenuInventory(PauseMenu *pause_menu, Game *game):
     int variant = equipment->get_item_variant(item_name);
     ItemProperties *item_properties = equipment->get_item_properties(item_name);
 
-    if (variant != 0 && item_properties->has_amount()) {
+    if (variant != 0 && item_properties->has_counter()) {
 
       // if the player has the item and this item has an amount, we show a counter
 

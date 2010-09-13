@@ -232,11 +232,17 @@ void PickableItem::notify_collision(MapEntity *entity_overlapping, CollisionMode
 void PickableItem::give_item_to_player(void) {
 
   ItemProperties *properties = treasure->get_item_properties();
+
   // play the sound
   game->play_sound(properties->get_sound_when_picked());
 
   // give the item
-  treasure->give_to_player(properties->is_brandished_when_picked());
+  if (properties->is_brandished_when_picked()) {
+    game->get_hero()->start_treasure(treasure);
+  }
+  else {
+    treasure->give_to_player();
+  }
 }
 
 /**

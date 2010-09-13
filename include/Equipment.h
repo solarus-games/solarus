@@ -92,7 +92,6 @@ class Equipment {
     ItemProperties * get_item_properties(const std::string &item_name);
     bool has_item(const std::string &item_name);
     int get_item_variant(const std::string &item_name);
-    void give_item(const std::string &item_name);
     void set_item_variant(const std::string &item_name, int variant);
     void remove_item(const std::string &item_name);
 
@@ -117,7 +116,7 @@ class Equipment {
 
     bool has_small_key(void);
     int get_small_keys(void);
-    void add_small_key(void);
+    void add_small_keys(int amount_to_add);
     void remove_small_key(void);
 
     // abilities
@@ -131,6 +130,10 @@ class Equipment {
     bool is_dungeon_finished(int dungeon);
     bool is_dungeon_finished(void);
     void set_dungeon_finished(void);
+
+    // giving items
+    void set_initial_items(void);
+    void add_item(const std::string &item_name, int variant);
 };
 
 #endif

@@ -217,6 +217,7 @@ void IniFile::set_string_value(const std::string &key, const std::string &value)
 void IniFile::start_group_iteration(void) {
 
   ini->data.GetAllSections(ini->groups);
+  ini->groups.sort(CSimpleIniA::Entry::LoadOrder());
   ini->iterator = ini->groups.begin();
 }
 

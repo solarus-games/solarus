@@ -1188,7 +1188,7 @@ int Script::l_treasure_give(lua_State *l) {
   int savegame_variable = lua_tointeger(l, 3);
 
   Game *game = script->game;
-  game->give_treasure(new Treasure(game, item_name, variant, savegame_variable));
+  game->get_hero()->start_treasure(new Treasure(game, item_name, variant, savegame_variable));
 
   return 0;
 }
@@ -1258,13 +1258,13 @@ void Script::event_camera_back(void) {
  * The treasure source does not matter: it can come from a chest,
  * a pickable item or the script.
  *
- * @param savegame_variable the boolean variable where this treasure is saved
- * (or -1 if the treasure is not saved)
  * @param item_name name of the item obtained
  * @param variant variant of this item
+ * @param savegame_variable the boolean variable where this treasure is saved
+ * (or -1 if the treasure is not saved)
  */
-void Script::event_treasure_obtaining(int savegame_variable, const std::string &item_name, int variant) {
-  call_script_function("event_treasure_obtaining", savegame_variable, item_name, variant);
+void Script::event_treasure_obtaining(const std::string &item_name, int variant, int savegame_variable) {
+  call_script_function("event_treasure_obtaining", item_name, variant, savegame_variable);
 }
 
 /**
@@ -1273,12 +1273,12 @@ void Script::event_treasure_obtaining(int savegame_variable, const std::string &
  * The treasure source does not matter: it can come from a chest,
  * a pickable item or the script.
  *
- * @param savegame_variable the boolean variable where this treasure is saved
- * (or -1 if the treasure is not saved)
  * @param item_name name of the item obtained
  * @param variant variant of this item
+ * @param savegame_variable the boolean variable where this treasure is saved
+ * (or -1 if the treasure is not saved)
  */
-void Script::event_treasure_obtained(int savegame_variable, const std::string &item_name, int variant) {
-  call_script_function("event_treasure_obtained", savegame_variable, item_name, variant);
+void Script::event_treasure_obtained(const std::string &item_name, int variant, int savegame_variable) {
+  call_script_function("event_treasure_obtained", item_name, variant, savegame_variable);
 }
 

@@ -39,6 +39,7 @@ class ItemProperties {
     std::string name;				/**< name that identifies this item */
     int savegame_variable;			/**< savegame variable that stores the possession state */
     int nb_variants;				/**< number of variants of this item */
+    int initial_variant;			/**< initial possession state of this item */
     int counter_savegame_variable;		/**< savegame variable that stores the counter associated to this item
 						 * or -1 if there is no counter */
     int fixed_limit;				/**< limit of the counter associated to this item, or 0 */
@@ -68,13 +69,14 @@ class ItemProperties {
     bool is_saved(void);
     int get_savegame_variable(void);
     int get_nb_variants(void);
+    int get_initial_variant(void);
+    bool has_counter(void);
     int get_counter_savegame_variable(void);
     bool has_fixed_limit(void);
     int get_fixed_limit(void);
     const std::string & get_item_limiting(void);
     const std::string & get_item_limited(void);
     const std::string & get_item_counter_changed(void);
-    bool has_amount(void);
     bool get_amount(int variant = 1);
     bool get_probability(int variant = 1);
     bool can_be_assigned(void);

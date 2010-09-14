@@ -79,7 +79,7 @@ MapEntity * PickableItem::parse(Game *game, std::istream &is, Layer layer, int x
   FileTools::read(is, treasure_savegame_variable);
 
   return create(game, Layer(layer), x, y,
-      Treasure::create(game, treasure_name, treasure_variant, treasure_savegame_variable),
+      new Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable),
       FALLING_NONE, false);
 }
 
@@ -87,9 +87,11 @@ MapEntity * PickableItem::parse(Game *game, std::istream &is, Layer layer, int x
  * @brief Creates a pickable item with the specified subtype.
  *
  * This method acts like a constructor, except that it can return NULL in several cases:
- * - if the treasure is NULL (because the item was "_none", or the item was "_random" and
- *   "_none" was selected randomly, or the item was saved and the player already had it,
- *   or the item cannot be picked by the hero yet)
+ * - the treasure is NULL (because the item was saved and the player already had it),
+ * or:
+ * - the treasure is "_none",
+ * or:
+ * - the item cannot be picked by the hero yet.
  *
  * @param game the current game
  * @param layer layer of the pickable item to create on the map
@@ -104,7 +106,7 @@ PickableItem * PickableItem::create(Game *game, Layer layer, int x, int y, Treas
     FallingHeight falling_height, bool will_disappear) {
 
   // don't create anything if there is no treasure to give
-  if (treasure == NULL) {
+  if (treasure->is_empty()) {
     return NULL;
   }
 

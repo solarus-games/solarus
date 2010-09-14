@@ -36,18 +36,13 @@ class Treasure {
   private:
 
     Game *game;			/**< the current game */
-    std::string item_name;	/**< content of the treasure */
+    std::string item_name;	/**< content of the treasure (can be "_none") */
     int variant;		/**< variant of this content */
     int savegame_variable;	/**< index of the savegame boolean variable corresponding to this treasure,
 				 * or -1 if the treasure state is not saved */
     Sprite *sprite;		/**< the sprite of the treasure */
 
-    void show_message(void);
-    void add_item_to_equipment(void);
-
   public:
-
-    static Treasure * create(Game *game, std::string item_name, int variant, int savegame_variable);
 
     Treasure(Game *game, const std::string &item_name, int variant, int savegame_variable);
     ~Treasure(void);
@@ -57,6 +52,7 @@ class Treasure {
     int get_variant(void);
     int get_savegame_variable(void);
     bool is_saved(void);
+    bool is_empty(void);
 
     void give_to_player(void);
     bool is_found(void);

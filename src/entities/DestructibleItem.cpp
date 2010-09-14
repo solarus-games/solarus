@@ -105,7 +105,7 @@ MapEntity * DestructibleItem::parse(Game *game, std::istream &is, Layer layer, i
   FileTools::read(is, treasure_savegame_variable);
 
   return new DestructibleItem(Layer(layer), x, y, Subtype(subtype),
-      Treasure::create(game, treasure_name, treasure_variant, treasure_savegame_variable));
+      new Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable));
 }
 
 /**
@@ -201,14 +201,16 @@ bool DestructibleItem::test_collision_custom(MapEntity *entity) {
  */
 void DestructibleItem::create_pickable_item(void) {
 
-  if (treasure != NULL) {
+  if (!treasure->is_empty()) {
 
-    ItemProperties *item_properties = game->get_equipment()->get_item_properties(treasure->get_item_name());
-    bool will_disappear = item_properties->can_disappear();
+    bool will_disappear = treasure->get_item_properties()->can_disappear();
     map->get_entities()->add_entity(PickableItem::create(game, get_layer(), get_x(), get_y(),
 	  treasure, FALLING_MEDIUM, will_disappear));
-    treasure = NULL;
   }
+  else {
+    delete treasure;
+  }
+  treasure = NULL;
 }
 
 /**

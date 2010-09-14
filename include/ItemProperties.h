@@ -77,8 +77,8 @@ class ItemProperties {
     const std::string & get_item_limiting(void);
     const std::string & get_item_limited(void);
     const std::string & get_item_counter_changed(void);
-    bool get_amount(int variant = 1);
-    bool get_probability(int variant = 1);
+    int get_amount(int variant = 1);
+    int get_probability(int variant = 1);
     bool can_be_assigned(void);
     bool can_disappear(void);
     bool is_brandished_when_picked(void);

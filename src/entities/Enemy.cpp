@@ -92,7 +92,7 @@ MapEntity * Enemy::parse(Game *game, std::istream &is, Layer layer, int x, int y
   FileTools::read(is, treasure_savegame_variable);
 
   return create(game, Subtype(subtype), Enemy::Rank(rank), savegame_variable, name, Layer(layer), x, y, direction, 
-      Treasure::create(game, treasure_name, treasure_variant, treasure_savegame_variable));
+      new Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable));
 }
 
 /**
@@ -458,14 +458,16 @@ void Enemy::update(void) {
   if (is_killed() && is_dying_animation_finished()) {
 
     // create the pickable treasure
-    if (treasure != NULL) {
+    if (!treasure->is_empty()) {
 
-      ItemProperties *item_properties = game->get_equipment()->get_item_properties(treasure->get_item_name());
-      bool will_disappear = item_properties->can_disappear();
+      bool will_disappear = treasure->get_item_properties()->can_disappear();
       map->get_entities()->add_entity(PickableItem::create(game, get_layer(), get_x(), get_y(), treasure,
 	    FALLING_HIGH, will_disappear));
-      treasure = NULL;
     }
+    else {
+      delete treasure;
+    }
+    treasure = NULL;
 
     // notify the enemy
     just_dead();

@@ -204,6 +204,7 @@ void HeroSprites::rebuild_equipment(void) {
 
   // the trail
   trail_sprite = new Sprite("hero/trail");
+  trail_sprite->stop_animation();
 
   // restore the animation direction
   if (animation_direction != -1) {

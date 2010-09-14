@@ -19,9 +19,9 @@
 #include "hero/HeroSprites.h"
 #include "Treasure.h"
 #include "Game.h"
+#include "DialogBox.h"
 #include "Map.h"
 #include "MapScript.h"
-#include "Camera.h"
 
 /**
  * @brief Constructor.
@@ -55,6 +55,11 @@ void Hero::TreasureState::start(State *previous_state) {
 
   // give the treasure
   treasure->give_to_player();
+
+  // show a message
+  std::ostringstream oss;
+  oss << "_treasure." << treasure->get_item_name() << "." << treasure->get_variant();
+  game->get_dialog_box()->start_dialog(oss.str());
 }
 
 /**
@@ -68,7 +73,6 @@ void Hero::TreasureState::stop(State *next_state) {
   // restore the sprite's direction
   sprites->restore_animation_direction();
 }
-
 
 /**
  * @brief Updates this state.

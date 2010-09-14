@@ -18,6 +18,7 @@
 #include "hero/FreeState.h"
 #include "hero/HeroSprites.h"
 #include "Treasure.h"
+#include "ItemProperties.h"
 #include "Game.h"
 #include "DialogBox.h"
 #include "Map.h"
@@ -52,6 +53,10 @@ void Hero::TreasureState::start(State *previous_state) {
   // show the animation
   sprites->save_animation_direction();
   sprites->set_animation_brandish();
+
+  // play the sound
+  const SoundId &sound_id = treasure->get_item_properties()->get_sound_when_brandished();
+  game->play_sound(sound_id);
 
   // give the treasure
   treasure->give_to_player();
@@ -109,8 +114,8 @@ void Hero::TreasureState::display_on_map(void) {
 
   State::display_on_map();
 
-  int x = hero->get_top_left_x();
-  int y = hero->get_top_left_y();
+  int x = hero->get_x();
+  int y = hero->get_y();
 
   const Rectangle &camera_position = map->get_camera_position();
   treasure->display(map->get_visible_surface(),

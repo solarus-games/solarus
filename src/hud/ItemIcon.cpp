@@ -143,7 +143,7 @@ void ItemIcon::rebuild(void) {
   // item
   if (item_displayed.size() > 0) {
 
-    item_sprite->display(surface_drawn, 4, 4);
+    item_sprite->display(surface_drawn, 12, 17);
 
     // counter
     if (counter_value_displayed != -1) {

@@ -44,6 +44,8 @@ ShopItem::ShopItem(const std::string &name, Layer layer, int x, int y,
   treasure(treasure), price(price), message_id(message_id),
   is_looking_item(false), is_asking_question(false) {
 
+  set_origin(8, 13);
+
   std::ostringstream oss;
   oss << price;
 

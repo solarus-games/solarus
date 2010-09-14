@@ -122,11 +122,10 @@ int Treasure::get_savegame_variable(void) {
 }
 
 /**
- * @brief Give the treasure to the player.
+ * @brief Gives the treasure to the player.
  *
- * Plays the treasure sound, makes the hero
- * brandish the item and adds the item to the hero's equipment.
- * The treasure content should not be NONE.
+ * Adds the item to the hero's equipment.
+ * The item should not be "_none".
  */
 void Treasure::give_to_player(void) {
 

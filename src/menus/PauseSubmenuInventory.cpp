@@ -300,12 +300,12 @@ void PauseSubmenuInventory::display(Surface *destination) {
   PauseSubmenu::display(destination);
 
   // display each inventory item
-  Rectangle dst_xy(0, 69);
+  Rectangle dst_xy(0, 82);
 
   int k = 0;
   for (int i = 0; i < 4; i++) {
 
-    dst_xy.set_x(56);
+    dst_xy.set_x(64);
 
     for (int j = 0; j < 7; j++, k++) {
 

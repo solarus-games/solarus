@@ -66,7 +66,7 @@ ItemProperties::ItemProperties(Equipment *equipment, IniFile *ini) {
   brandish_when_picked = ini->get_boolean_value("brandish_when_picked", true);
   sound_when_picked = ini->get_string_value("sound_when_picked", "picked_item");
   sound_when_brandished = ini->get_string_value("sound_when_brandished", "treasure");
-  
+ 
   const std::string &shadow_name = ini->get_string_value("shadow", "big");
 
   std::map<std::string, ShadowSize> shadows;
@@ -201,7 +201,7 @@ const std::string & ItemProperties::get_item_counter_changed(void) {
  * @param variant a variant of this item
  * @return the amount of this variant
  */
-bool ItemProperties::get_amount(int variant) {
+int ItemProperties::get_amount(int variant) {
   return amounts[variant];
 }
 
@@ -211,7 +211,7 @@ bool ItemProperties::get_amount(int variant) {
  * @param variant a variant of this item
  * @return the probability that this variant of this item appears, between 0 and 1000
  */
-bool ItemProperties::get_probability(int variant) {
+int ItemProperties::get_probability(int variant) {
   return probabilities[variant];
 }
 

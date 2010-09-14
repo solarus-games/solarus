@@ -19,12 +19,13 @@
 #include "lowlevel/VideoManager.h"
 #include "lowlevel/Color.h"
 #include "lowlevel/Surface.h"
+#include "lowlevel/FileTools.h"
+#include "menus/LanguageScreen.h"
 #include "Game.h"
 #include "ResourceManager.h"
 #include "Savegame.h"
 #include "StringResource.h"
 #include "DebugKeys.h"
-#include "menus/LanguageScreen.h"
 
 /**
  * @brief Initializes the game engine.
@@ -69,9 +70,11 @@ DebugKeys * Solarus::get_debug_keys(void) {
  */
 void Solarus::skip_menus(void) {
 
-  Game *game = new Game(this, new Savegame("save1.dat"));
-  delete current_screen;
-  current_screen = game;
+  if (FileTools::data_file_exists("save1.dat")) {
+    Game *game = new Game(this, new Savegame("save1.dat"));
+    delete current_screen;
+    current_screen = game;
+  }
 }
 
 /**

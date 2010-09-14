@@ -29,7 +29,7 @@ Savegame::Savegame(const std::string &file_name) {
   this->file_name = file_name;
   this->equipment = new Equipment(this);
 
-  if (!FileTools::data_file_exists(file_name.c_str())) {
+  if (!FileTools::data_file_exists(file_name)) {
     // this save slot is free
     empty = true;
     set_initial_values();

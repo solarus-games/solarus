@@ -43,7 +43,7 @@ Chest::Chest(const std::string &name, Layer layer, int x, int y,
   Detector(COLLISION_FACING_POINT, name, layer, x, y, 16, 16),
   big_chest(big_chest) {
 
-  open = treasure_given = (treasure != NULL);
+  open = treasure_given = treasure->is_found();
   this->treasure = treasure;
 
   initialize_sprite();
@@ -53,6 +53,7 @@ Chest::Chest(const std::string &name, Layer layer, int x, int y,
  * @brief Destructor.
  */
 Chest::~Chest(void) {
+
   if (treasure != NULL && !treasure_given) {
     // delete the treasure only if the player didn't take it
     delete treasure;

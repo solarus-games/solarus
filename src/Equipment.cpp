@@ -538,7 +538,7 @@ void Equipment::remove_item_amount(const std::string &item_name, int amount_to_r
 
 /**
  * @brief Returns the maximum amount value of the specified item.
- * @param item_name name of an item
+ * @param item_name name of an item 
  * @return the maximum amount value of this item
  */
 int Equipment::get_item_maximum(const std::string &item_name) {
@@ -575,12 +575,15 @@ bool Equipment::has_item_maximum(const std::string &item_name) {
 }
 
 /**
- * @brief Returns the name of an item randomly chosen, with respect
+ * @brief Chooses randomly the name and variant of an item, with respect
  * to the probabilities indicated in the file items.dat.
- * @return the name of an item randomly chosen (possibly "_none")
+ * @param item_name the name of an item randomly chosen (possibly "_none")
+ * @param variant variant of this item
  */
-const std::string Equipment::get_random_item(void) {
-  return "_none"; // TODO
+void Equipment::get_random_item(std::string &item_name, int &variant) {
+  item_name = "_none";
+  variant = 1;
+  // TODO
 }
 
 /**
@@ -914,7 +917,7 @@ void Equipment::add_item(const std::string &item_name, int variant) {
     // see if this item acts as a limit for another item
     const std::string &item_limited = properties->get_item_limited();
     if (item_limited.size() > 0) {
-      
+
       int maximum = properties->get_amount(variant);
 
       // consider built-in counters
@@ -939,7 +942,7 @@ void Equipment::add_item(const std::string &item_name, int variant) {
 	}
 
 	// make sure the other item has its new maximum value
-	set_item_amount(item_limited, get_item_maximum(item_limited));
+	set_item_amount(item_limited, maximum);
       }
     }
   }

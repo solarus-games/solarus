@@ -30,13 +30,29 @@
  * @brief Creates a new treasure.
  * @param game the current game (cannot be NULL)
  * @param item_name name of the item to give, according to items.dat
+ * ("_random" and "_none" are also accepted)
  * @param variant variant of this item
  * @param savegame_variable index of the savegame boolean indicating that the hero has found this treasure
  * or -1 if this treasure is not saved
  */
 Treasure::Treasure(Game *game, const std::string &item_name, int variant, int savegame_variable):
-  game(game), item_name(item_name), variant(variant), savegame_variable(savegame_variable), sprite(NULL) {
+  game(game), savegame_variable(savegame_variable), sprite(NULL) {
 
+  std::string real_item_name;
+
+  if (item_name == "_random") {
+    game->get_equipment()->get_random_item(real_item_name, variant);
+  }
+  else {
+    real_item_name = item_name;
+  }
+
+  if (savegame_variable != -1 && game->get_savegame()->get_boolean(savegame_variable)) {
+    real_item_name = "_none";
+  }
+
+  this->item_name = real_item_name;
+  this->variant = variant;
 }
 
 /**
@@ -44,40 +60,6 @@ Treasure::Treasure(Game *game, const std::string &item_name, int variant, int sa
  */
 Treasure::~Treasure(void) {
   delete sprite;
-}
-
-/**
- * @brief Creates a new treasure.
- *
- * This method acts like a constructor, except that it returns NULL in the following cases:
- * - the item is "_none",
- * or:
- * - the item is "_random" and the random choice selects "_none",
- * or:
- * - the item is saved and the player already has it.
- *
- * @param game the current game (cannot be NULL)
- * @param item_name name of the item to give, according to items.dat
- * ("_random" and "_none" are also accepted)
- * @param variant variant of this item
- * @param savegame_variable index of the savegame boolean indicating that the hero has found this treasure
- * or -1 if this treasure is not saved
- */
-Treasure * Treasure::create(Game *game, std::string item_name, int variant, int savegame_variable) {
-
-  if (item_name == "_random") {
-    item_name = game->get_equipment()->get_random_item();
-  }
-
-  if (item_name == "_none") {
-    return NULL;
-  }
-
-  if (game->get_savegame()->get_boolean(savegame_variable)) {
-    return NULL;
-  }
-
-  return new Treasure(game, item_name, variant, savegame_variable);
 }
 
 /**
@@ -113,6 +95,25 @@ bool Treasure::is_saved(void) {
 }
 
 /**
+ * @brief Returns whether the player has got this treasure according to the savegame.
+ *
+ * Returns false if the treasure possession state is not saved.
+ *
+ * @return true if the player has found this treasure
+ */
+bool Treasure::is_found(void) {
+  return savegame_variable != -1 && game->get_savegame()->get_boolean(savegame_variable);
+}
+
+/**
+ * @brief Returns whether this treasure is empty.
+ * @return true if this treasure is empty
+ */
+bool Treasure::is_empty(void) {
+  return get_item_name() == "_none";
+}
+
+/**
  * @brief Returns the index of the variable where this treasure is saved.
  * @return the savegame variable of this treasure, or -1 if it is not saved
  */
@@ -129,28 +130,6 @@ int Treasure::get_savegame_variable(void) {
  */
 void Treasure::give_to_player(void) {
 
-  show_message();
-  add_item_to_equipment();
-  game->get_current_script()->event_treasure_obtaining(item_name, variant, savegame_variable);
-}
-
-/**
- * @brief Shows the message telling that the player
- * has found the item.
- */
-void Treasure::show_message(void) {
-
-  // the message id is _treasure.x.y where x is the item name and y is the variant
-  std::ostringstream oss;
-  oss << "_treasure." << item_name << "." << variant;
-  game->get_dialog_box()->start_dialog(oss.str());
-}
-
-/**
- * @brief Adds the item to the hero's equipment and sets this treasure as obtained.
- */
-void Treasure::add_item_to_equipment(void) {
-
   // mark the treasure as found in the savegame
   if (savegame_variable != -1) {
     game->get_savegame()->set_boolean(savegame_variable, true);
@@ -158,6 +137,9 @@ void Treasure::add_item_to_equipment(void) {
 
   // give the item
   game->get_equipment()->add_item(item_name, variant);
+
+  // notify the script
+  game->get_current_script()->event_treasure_obtaining(item_name, variant, savegame_variable);
 }
 
 /**
@@ -172,7 +154,7 @@ void Treasure::display(Surface *destination, int x, int y) {
     // create the sprite only if needed (many treasures are actually never displayed)
     sprite = new Sprite("entities/items");
     sprite->set_current_animation(item_name);
-    sprite->set_current_direction(variant);
+    sprite->set_current_direction(variant - 1);
   }
 
   // display the item

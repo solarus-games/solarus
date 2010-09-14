@@ -99,6 +99,7 @@ MapEntity * ShopItem::parse(Game *game, std::istream &is, Layer layer, int x, in
  * @param x x coordinate of the entity to create
  * @param y y coordinate of the entity to create
  * @param treasure the treasure that the hero can buy (will be deleted automatically)
+ * or NULL if the item is already bought
  * @param price the treasure's price in rupees
  * @param message_id id of the message describing the item when the player watches it
  */
@@ -106,9 +107,7 @@ ShopItem * ShopItem::create(Game *game, const std::string &name, Layer layer, in
 			    Treasure *treasure, int price, const MessageId &message_id) {
 
   // see if the item was not been already bought
-  int savegame_variable = treasure->get_savegame_variable();
-  if (savegame_variable != -1 && game->get_savegame()->get_boolean(savegame_variable)) {
-    delete treasure;
+  if (treasure->is_found()) {
     return NULL;
   }
 
@@ -227,7 +226,6 @@ void ShopItem::update(void) {
 	equipment->remove_money(price);
 
 	int savegame_variable = treasure->get_savegame_variable();
-	// TODO check memory (before r1414, a new Treasure was created here)
 	game->get_hero()->start_treasure(treasure);
 	treasure = NULL;
 	if (savegame_variable != -1) {

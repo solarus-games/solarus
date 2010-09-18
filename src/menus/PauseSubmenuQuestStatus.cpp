@@ -47,7 +47,7 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *ga
   // tunic
   {
     int tunic = equipment->get_ability("tunic");
-    Rectangle src_position(tunic * 16, 96, 16, 16);
+    Rectangle src_position((tunic - 1) * 16, 96, 16, 16);
     Rectangle dst_position(177, 164);
     treasures_img->blit(src_position, quest_items_surface, dst_position);
 

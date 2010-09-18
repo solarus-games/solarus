@@ -25,10 +25,10 @@ function event_dialog_finished(first_message_id, answer)
     savegame_set_boolean(46, true)
 
     if answer == 0 then
-      if equipment_has_item("apples") then
-	if equipment_get_item_amount("apples") >= 6 then
+      if equipment_has_item("apples_counter") then
+	if equipment_get_item_amount("apples_counter") >= 6 then
 	  dialog_start("cake_shop.thank_you")
-	  equipment_remove_item_amount("apples", 6)
+	  equipment_remove_item_amount("apples_counter", 6)
 	else
 	  dialog_start("cake_shop.not_enough_apples")
 	end

@@ -37,40 +37,40 @@ class Sprite {
   private:
 
     // animation set
-    SpriteAnimationSetId animation_set_id; /**< id of this sprite's animation set */
-    SpriteAnimationSet *animation_set;     /**< animation set of this sprite */
+    const SpriteAnimationSetId animation_set_id;	/**< id of this sprite's animation set */
+    SpriteAnimationSet * const animation_set;		/**< animation set of this sprite */
 
     // current state of the sprite
 
-    std::string current_animation_name;    /**< name of the current animation */
-    SpriteAnimation *current_animation;    /**< the current animation */
-    int current_direction;                 /**< current direction of the animation (the first one is number 0);
-					    * it can be different from the movement direction
-					    * of the entity, because sometimes a sprite can
-					    * go backwards. */
-    int current_frame;                     /**< current frame of the animation (the first one is number 0) */
-    bool frame_changed;                    /**< indicates that the frame has just changed */
+    std::string current_animation_name;			/**< name of the current animation */
+    SpriteAnimation *current_animation;			/**< the current animation */
+    int current_direction;				/**< current direction of the animation (the first one is number 0);
+							 * it can be different from the movement direction
+							 * of the entity, because sometimes a sprite can
+							 * go backwards. */
+    int current_frame;					/**< current frame of the animation (the first one is number 0) */
+    bool frame_changed;					/**< indicates that the frame has just changed */
 
-    uint32_t frame_delay;                  /**< delay between two frames in milliseconds */
-    uint32_t next_frame_date;              /**< date of the next frame */
+    uint32_t frame_delay;				/**< delay between two frames in milliseconds */
+    uint32_t next_frame_date;				/**< date of the next frame */
 
-    bool suspended;                        /**< true if the game is suspended */
-    bool ignore_suspend;                   /**< true to continue playing the animation even when the game is suspended */
-    bool paused;                           /**< true if the animation is paused */
-    bool finished;                         /**< true if the animation has been stopped because the last frame is finished */
+    bool suspended;					/**< true if the game is suspended */
+    bool ignore_suspend;				/**< true to continue playing the animation even when the game is suspended */
+    bool paused;					/**< true if the animation is paused */
+    bool finished;					/**< true if the animation has been stopped because the last frame is finished */
 
     // effects
 
-    uint32_t blink_delay;                  /**< blink delay of the sprite, or zero if the sprite is not blinking */
-    bool blink_is_sprite_visible;          /**< when blinking, true if the sprite is visible or false if it is invisible */
-    uint32_t blink_next_change_date;       /**< date of the next change when blinking: visible or not */
+    uint32_t blink_delay;				/**< blink delay of the sprite, or zero if the sprite is not blinking */
+    bool blink_is_sprite_visible;			/**< when blinking, true if the sprite is visible or false if it is invisible */
+    uint32_t blink_next_change_date;			/**< date of the next change when blinking: visible or not */
 
-    int alpha;                             /**< alpha effect applied on the sprite (0: transparent, 255: opaque) */
-    uint32_t alpha_next_change_date;       /**< date of the next alpha change when applying a fade-in or fade-out effect */
-    int alpha_increment;                   /**< increment of the alpha value while fading */
-    static Surface *alpha_surface;         /**< an intermediary surface used when blitting with transparency */
+    int alpha;						/**< alpha effect applied on the sprite (0: transparent, 255: opaque) */
+    uint32_t alpha_next_change_date;			/**< date of the next alpha change when applying a fade-in or fade-out effect */
+    int alpha_increment;				/**< increment of the alpha value while fading */
+    static Surface *alpha_surface;			/**< an intermediary surface used when blitting with transparency */
 
-    int get_next_frame(void);
+    int get_next_frame(void) const;
 
   public:
 
@@ -80,52 +80,55 @@ class Sprite {
 
     // creation and destruction
     Sprite(const SpriteAnimationSetId &id);
+    Sprite(const Sprite &other);
     ~Sprite(void);
 
+    void set_map(Map *map);
+
     // animation set
-    const SpriteAnimationSetId& get_animation_set_id(void);
-    bool contains(const std::string s);
-    SpriteAnimationSet *get_animation_set(void);
+    const SpriteAnimationSetId& get_animation_set_id(void) const;
+    bool contains(const std::string &s) const;
+    const SpriteAnimationSet * get_animation_set(void) const;
     void enable_pixel_collisions(void);
-    bool are_pixel_collisions_enabled(void);
+    bool are_pixel_collisions_enabled(void) const;
 
     // size and origin point
-    const Rectangle & get_size(void);
-    const Rectangle & get_origin(void);
+    const Rectangle & get_size(void) const;
+    const Rectangle & get_origin(void) const;
 
     // current animation, direction and frame
-    const std::string& get_current_animation(void);
+    const std::string& get_current_animation(void) const;
     void set_current_animation(const std::string &animation_name);
-    int get_current_direction(void);
+    int get_current_direction(void) const;
     void set_current_direction(int current_direction);
-    int get_current_frame(void);
+    int get_current_frame(void) const;
     void set_current_frame(int current_frame);
 
-    uint32_t get_frame_delay(void);
+    uint32_t get_frame_delay(void) const;
     void set_frame_delay(uint32_t frame_delay);
 
     // animation state
-    bool is_animation_started(void);
+    bool is_animation_started(void) const;
     void start_animation(void);
     void restart_animation(void);
     void stop_animation(void);
 
-    bool is_suspended(void);
+    bool is_suspended(void) const;
     void set_suspended(bool suspended);
     void set_ignore_suspend(bool ignore_suspend);
-    bool is_paused(void);
+    bool is_paused(void) const;
     void set_paused(bool suspended);
-    bool is_animation_looping(void);
-    bool is_animation_finished(void);
-    bool is_last_frame_reached(void);
-    bool has_frame_changed(void);
+    bool is_animation_looping(void) const;
+    bool is_animation_finished(void) const;
+    bool is_last_frame_reached(void) const;
+    bool has_frame_changed(void) const;
 
     // effects
-    bool is_blinking(void);
+    bool is_blinking(void) const;
     void set_blinking(uint32_t blink_delay);
-    int get_alpha(void);
+    int get_alpha(void) const;
     void set_alpha(int alpha);
-    bool is_fading(void);
+    bool is_fading(void) const;
     void start_fading(int direction);
 
     // collisions

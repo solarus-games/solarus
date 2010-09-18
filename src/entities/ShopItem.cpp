@@ -44,8 +44,6 @@ ShopItem::ShopItem(const std::string &name, Layer layer, int x, int y,
   treasure(treasure), price(price), message_id(message_id),
   is_looking_item(false), is_asking_question(false) {
 
-  set_origin(8, 13);
-
   std::ostringstream oss;
   oss << price;
 
@@ -228,8 +226,7 @@ void ShopItem::update(void) {
 	equipment->remove_money(price);
 
 	int savegame_variable = treasure->get_savegame_variable();
-	game->get_hero()->start_treasure(treasure);
-	treasure = NULL;
+	game->get_hero()->start_treasure(new Treasure(*treasure)); // make a copy of the treasure since the shop item may be still available
 	if (savegame_variable != -1) {
 	  remove_from_map();
 	  game->get_savegame()->set_boolean(savegame_variable, true);
@@ -251,7 +248,7 @@ void ShopItem::display_on_map(void) {
 
   // display the treasure
   const Rectangle &camera_position = map->get_camera_position();
-  treasure->display(map_surface, x + 8 - camera_position.get_x(), y - camera_position.get_y());
+  treasure->display(map_surface, x + 16 - camera_position.get_x(), y + 13 - camera_position.get_y());
 
   // also display the price
   price_digits->display(map_surface);

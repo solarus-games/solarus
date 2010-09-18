@@ -47,17 +47,17 @@ class SpriteAnimation {
 
     void set_map(Map *map);
 
-    int get_next_frame(int current_direction, int current_frame);
+    int get_next_frame(int current_direction, int current_frame) const;
     void display(Surface *destination, int x, int y,
 	int current_direction, int current_frame);
 
-    int get_nb_directions(void);
-    SpriteAnimationDirection *get_direction(int direction);
-    uint32_t get_frame_delay(void);
-    bool is_looping(void);
+    int get_nb_directions(void) const;
+    const SpriteAnimationDirection *get_direction(int direction) const;
+    uint32_t get_frame_delay(void) const;
+    bool is_looping(void) const;
 
     void enable_pixel_collisions(void);
-    bool are_pixel_collisions_enabled(void);
+    bool are_pixel_collisions_enabled(void) const;
 };
 
 #endif

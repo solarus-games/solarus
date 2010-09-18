@@ -45,6 +45,7 @@ class Treasure {
   public:
 
     Treasure(Game *game, const std::string &item_name, int variant, int savegame_variable);
+    Treasure(const Treasure &other);
     ~Treasure(void);
 
     ItemProperties * get_item_properties(void);

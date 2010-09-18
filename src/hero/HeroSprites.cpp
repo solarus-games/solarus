@@ -158,7 +158,7 @@ void HeroSprites::rebuild_equipment(void) {
 
   int tunic_number = equipment->get_ability("tunic");
 
-  tunic_sprite = new Sprite(tunic_sprite_ids[tunic_number]);
+  tunic_sprite = new Sprite(tunic_sprite_ids[tunic_number - 1]);
   tunic_sprite->enable_pixel_collisions();
 
   // the hero's shadow

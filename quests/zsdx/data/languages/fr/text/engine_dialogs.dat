@@ -1231,7 +1231,7 @@ line1 = "Tu as trouvé un Pain"
 line2 = "au Chocolat !$0"
 next = _treasure.pain_au_chocolat.1.1
 
-[_treasure1.pain_au_chocolat.1.1]
+[_treasure.pain_au_chocolat.1.1]
 #       |--------------------|
 line1 = "Mange un Pain au"
 line2 = "Chocolat pour"

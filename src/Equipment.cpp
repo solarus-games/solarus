@@ -565,13 +565,39 @@ int Equipment::get_item_maximum(const std::string &item_name) {
 }
 
 /**
- * @brief Returns whether the player has the maximum amount of the specified item.
+ * @brief Returns whether the player cannot get more of the specified item.
  * @param item_name name of an item
  * @return true if the player has the maximum amount of this item
  */
 bool Equipment::has_item_maximum(const std::string &item_name) {
-  // TODO also check when item_name changes the counter of another item
-  return get_item_amount(item_name) >= get_item_maximum(item_name);
+
+  bool result;
+  const std::string &item_counter_changed = get_item_properties(item_name)->get_item_counter_changed();
+  if (item_counter_changed.size() == 0) {
+    result = false;
+  }
+
+  else if (item_counter_changed == "life") {
+    result = (get_life() >= get_max_life());
+  }
+
+  else if (item_counter_changed == "money") {
+    result = (get_money() >= get_max_money());
+  }
+
+  else if (item_counter_changed == "magic") {
+    result = (get_magic() >= get_max_magic());
+  }
+  
+  else if (item_counter_changed == "small_keys") {
+    result = false;
+  }
+
+  else {
+    result = get_item_amount(item_counter_changed) >= get_item_maximum(item_counter_changed);
+  }
+
+  return result;
 }
 
 /**
@@ -749,16 +775,16 @@ int Equipment::get_ability_savegame_variable(const std::string &ability_name) {
   else if (ability_name == "see_outside_world_minimap") {
     index = Savegame::ABILITY_SEE_OUTSIDE_WORLD_MINIMAP;
   }
-  else if (ability_name == "see_minimap_rooms") {
+  else if (ability_name == "see_dungeon_minimap_rooms") {
     index = Savegame::DUNGEON_1_ABILITY_SEE_MINIMAP_ROOMS + 10 * (dungeon - 1);
   }
-  else if (ability_name == "see_minimap_elements") {
+  else if (ability_name == "see_dungeon_minimap_elements") {
     index = Savegame::DUNGEON_1_ABILITY_SEE_MINIMAP_ELEMENTS + 10 * (dungeon - 1);
   }
-  else if (ability_name == "open_big_locks") {
+  else if (ability_name == "open_dungeon_big_locks") {
     index = Savegame::DUNGEON_1_ABILITY_OPEN_BIG_LOCKS + 10 * (dungeon - 1);
   }
-  else if (ability_name == "open_boss_lock") {
+  else if (ability_name == "open_dungeon_boss_lock") {
     index = Savegame::DUNGEON_1_ABILITY_OPEN_BOSS_LOCK + 10 * (dungeon - 1);    
   }
 

@@ -32,8 +32,8 @@ class SpriteAnimationSet {
 
   private:
 
-    std::map<std::string, SpriteAnimation*> animations; /**< the animations */
-    std::string default_animation_name;                 /**< name of the default animation */
+    std::map<std::string, SpriteAnimation*> animations;			/**< the animations */
+    std::string default_animation_name;					/**< name of the default animation */
 
   public:
 
@@ -42,11 +42,12 @@ class SpriteAnimationSet {
 
     void set_map(Map *map);
 
+    const SpriteAnimation *get_animation(const std::string &animation_name) const;
     SpriteAnimation *get_animation(const std::string &animation_name);
-    const std::string& get_default_animation(void);
+    const std::string& get_default_animation(void) const;
 
     void enable_pixel_collisions(void);
-    bool are_pixel_collisions_enabled(void);
+    bool are_pixel_collisions_enabled(void) const;
 };
 
 #endif

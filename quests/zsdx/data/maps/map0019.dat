@@ -67,8 +67,8 @@
 4	0	272	53	0	heart	1	-1
 8	0	160	77	seller	3	1	npc/static_villager10	_none
 8	0	160	109	seller_talking_place	3	0	_none	_none
-16	0	80	128	pain_au_chocolat	pains_au_chocolat	1	-1	20	cake_shop.pain_au_chocolat
-16	0	208	128	croissant	croissants	1	-1	50	cake_shop.croissant
+16	0	80	128	pain_au_chocolat	pain_au_chocolat	1	-1	20	cake_shop.pain_au_chocolat
+16	0	208	128	croissant	croissant	1	-1	50	cake_shop.croissant
 13	0	160	221	16	16	leaving_shop_sensor	0
 0	2	112	216	96	8	148
 0	2	144	216	32	8	153

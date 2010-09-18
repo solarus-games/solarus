@@ -87,9 +87,9 @@ MapEntity * PickableItem::parse(Game *game, std::istream &is, Layer layer, int x
  * @brief Creates a pickable item with the specified subtype.
  *
  * This method acts like a constructor, except that it can return NULL in several cases:
- * - the treasure is NULL (because the item was saved and the player already had it),
+ * - the treasure is saved and the player already has it,
  * or:
- * - the treasure is "_none",
+ * - the treasure is empty ("_none"),
  * or:
  * - the item cannot be picked by the hero yet.
  *
@@ -245,6 +245,7 @@ void PickableItem::give_item_to_player(void) {
   else {
     treasure->give_to_player();
   }
+  treasure = NULL; // we don't handle the treasure from here anymore
 }
 
 /**

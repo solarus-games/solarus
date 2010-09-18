@@ -42,7 +42,7 @@ ItemProperties::ItemProperties(Equipment *equipment, IniFile *ini) {
 
     std::ostringstream oss;
     oss << "amount_" << i;
-    amounts[i] = ini->get_integer_value(oss.str(), 0);
+    amounts[i] = ini->get_integer_value(oss.str(), 1);
     oss.str("");
     oss << "probability_" << i;
     probabilities[i] = ini->get_integer_value(oss.str(), 0);

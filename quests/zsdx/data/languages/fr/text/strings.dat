@@ -35,9 +35,9 @@ quest_status.caption.quiver_2		Grand Carquois
 quest_status.caption.quiver_3		Carquois Géant
 quest_status.caption.world_map		Carte du Monde
 quest_status.caption.pieces_of_heart	Fragments de Coeur
-quest_status.caption.tunic_0		Cotte de Mailles$verte
-quest_status.caption.tunic_1		Cotte de Mailles$bleue
-quest_status.caption.tunic_2		Cotte de Mailles$rouge
+quest_status.caption.tunic_1		Cotte de Mailles$verte
+quest_status.caption.tunic_2		Cotte de Mailles$bleue
+quest_status.caption.tunic_3		Cotte de Mailles$rouge
 quest_status.caption.sword_1		Epée du Courage
 quest_status.caption.sword_2		Glaive Hylien
 quest_status.caption.sword_3		Sabre du Héros

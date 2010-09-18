@@ -248,7 +248,7 @@ void MapEntity::set_map(Map *map) {
   // notify the sprites (useful for tileset dependent sprites such as doors and blocks)
   std::map<std::string, Sprite*>::iterator it;
   for (it = sprites.begin(); it != sprites.end(); it++) {
-    it->second->get_animation_set()->set_map(map);
+    it->second->set_map(map);
   }
 }
 

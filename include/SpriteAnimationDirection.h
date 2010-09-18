@@ -46,18 +46,18 @@ class SpriteAnimationDirection {
     virtual ~SpriteAnimationDirection(void);
 
     // size and origin point
-    const Rectangle & get_size(void);
-    const Rectangle & get_origin(void);
+    const Rectangle & get_size(void) const;
+    const Rectangle & get_origin(void) const;
 
     // frames
-    int get_nb_frames(void);
-    const Rectangle & get_frame(int frame);
+    int get_nb_frames(void) const;
+    const Rectangle & get_frame(int frame) const;
     void display(Surface *destination, int x, int y, int current_frame, Surface *src_image);
 
     // pixel collisions
     void enable_pixel_collisions(Surface *src_image);
-    bool are_pixel_collisions_enabled(void);
-    PixelBits *get_pixel_bits(int frame);
+    bool are_pixel_collisions_enabled(void) const;
+    PixelBits *get_pixel_bits(int frame) const;
 };
 
 #endif

@@ -74,7 +74,7 @@ void SpriteAnimation::set_map(Map *map) {
  * @brief Returns the number of directions of this animation.
  * @return the number of directions
  */
-int SpriteAnimation::get_nb_directions(void) {
+int SpriteAnimation::get_nb_directions(void) const {
   return nb_directions;
 }
 
@@ -83,7 +83,7 @@ int SpriteAnimation::get_nb_directions(void) {
  * @param direction the direction
  * @return the sequence of images corresponding to this direction
  */
-SpriteAnimationDirection * SpriteAnimation::get_direction(int direction) {
+const SpriteAnimationDirection * SpriteAnimation::get_direction(int direction) const {
   return directions[direction];
 }
 
@@ -91,7 +91,7 @@ SpriteAnimationDirection * SpriteAnimation::get_direction(int direction) {
  * @brief Returns the delay between two frames for this sprite animation.
  * @return the frame delay in milliseconds
  */
-uint32_t SpriteAnimation::get_frame_delay(void) {
+uint32_t SpriteAnimation::get_frame_delay(void) const {
   return frame_delay;
 }
 
@@ -99,7 +99,7 @@ uint32_t SpriteAnimation::get_frame_delay(void) {
  * @brief Returns whether this animation loops on a frame.
  * @return true if this animation loops
  */
-bool SpriteAnimation::is_looping(void) {
+bool SpriteAnimation::is_looping(void) const {
   return loop_on_frame != -1;
 }
 
@@ -110,7 +110,7 @@ bool SpriteAnimation::is_looping(void) {
  * @return the next frame of the current frame in this direction
  * (or -1 if the animation is over)
  */
-int SpriteAnimation::get_next_frame(int current_direction, int current_frame) {
+int SpriteAnimation::get_next_frame(int current_direction, int current_frame) const {
 
   if (current_direction >= nb_directions) {
     DIE("Invalid sprite direction '" << current_direction << "': this sprite animation has only "
@@ -159,7 +159,7 @@ void SpriteAnimation::enable_pixel_collisions(void) {
  * @brief Returns whether the pixel-perfect collisions are enabled for this animations.
  * @return true if the pixel-perfect collisions are enabled
  */
-bool SpriteAnimation::are_pixel_collisions_enabled(void) {
+bool SpriteAnimation::are_pixel_collisions_enabled(void) const {
   return directions[0]->are_pixel_collisions_enabled();
 }
 

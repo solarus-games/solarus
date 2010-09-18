@@ -48,7 +48,7 @@
 #
 # - amount (integer)
 #   Indicates the amount to increase when changes_counter is defined, or the maximum amount to set
-#   when limits_counter is defined.
+#   when limits_counter is defined. The default value is 1.
 #   
 # - amount_1, amount_2, …, amount_n (integers)
 #   Same as amount, but with different amounts depending on what variant of the item

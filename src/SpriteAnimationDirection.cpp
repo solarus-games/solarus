@@ -51,7 +51,7 @@ SpriteAnimationDirection::~SpriteAnimationDirection(void) {
  * @brief Returns the size of a frame.
  * @return the size of a frame
  */
-const Rectangle & SpriteAnimationDirection::get_size(void) {
+const Rectangle & SpriteAnimationDirection::get_size(void) const {
   return frames[0];
 }
 
@@ -59,7 +59,7 @@ const Rectangle & SpriteAnimationDirection::get_size(void) {
  * @brief Returns the origin point of a frame.
  * @return the origin point of a frame
  */
-const Rectangle & SpriteAnimationDirection::get_origin(void) {
+const Rectangle & SpriteAnimationDirection::get_origin(void) const {
   return origin;
 }
 
@@ -67,7 +67,7 @@ const Rectangle & SpriteAnimationDirection::get_origin(void) {
  * @brief Returns the number of frames in this direction.
  * @return the number of frames
  */
-int SpriteAnimationDirection::get_nb_frames(void) {
+int SpriteAnimationDirection::get_nb_frames(void) const {
   return nb_frames;
 }
 
@@ -76,7 +76,7 @@ int SpriteAnimationDirection::get_nb_frames(void) {
  * @param frame a frame number
  * @return the rectangle of this frame
  */
-const Rectangle & SpriteAnimationDirection::get_frame(int frame) {
+const Rectangle & SpriteAnimationDirection::get_frame(int frame) const {
   return frames[frame];
 }
 
@@ -127,7 +127,7 @@ void SpriteAnimationDirection::enable_pixel_collisions(Surface *src_image) {
  * @brief Returns whether the pixel-perfect collisions are enabled for this direction.
  * @return true if the pixel-perfect collisions are enabled
  */
-bool SpriteAnimationDirection::are_pixel_collisions_enabled(void) {
+bool SpriteAnimationDirection::are_pixel_collisions_enabled(void) const {
   return pixel_bits != NULL;
 }
 
@@ -140,7 +140,7 @@ bool SpriteAnimationDirection::are_pixel_collisions_enabled(void) {
  * @param frame a frame of the animation
  * @return the pixel bits object of a frame
  */
-PixelBits * SpriteAnimationDirection::get_pixel_bits(int frame) {
+PixelBits * SpriteAnimationDirection::get_pixel_bits(int frame) const {
 
   if (pixel_bits == NULL) {
     DIE("The pixel collisions are not enabled for this sprite");

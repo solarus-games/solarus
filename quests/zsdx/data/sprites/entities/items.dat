@@ -39,7 +39,13 @@ apples_counter entities/items.png 1 0 -1
 pains_au_chocolat_counter entities/items.png 1 0 -1
 176	0	16	16	8	13	1	1
 
+pain_au_chocolat entities/items.png 1 0 -1
+176	0	16	16	8	13	1	1
+
 croissants_counter entities/items.png 1 0 -1
+192	0	16	16	8	13	1	1
+
+croissant entities/items.png 1 0 -1
 192	0	16	16	8	13	1	1
 
 bottle_2 entities/items.png 6 0 -1
@@ -186,4 +192,7 @@ heart entities/items.png 1 100 24
 fairy entities/items.png 2 100 0
 192	48	16	16	8	25	2	2
 192	64	16	16	8	25	2	2
+
+apple entities/items.png 1 0 -1
+160	16	16	16	8	13	1	1
 

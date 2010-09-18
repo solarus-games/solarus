@@ -56,6 +56,16 @@ Treasure::Treasure(Game *game, const std::string &item_name, int variant, int sa
 }
 
 /**
+ * @brief Copy constructor.
+ * @param other the treasure to copy
+ */
+Treasure::Treasure(const Treasure &other):
+  game(other.game), item_name(other.item_name), variant(other.variant),
+  savegame_variable(other.savegame_variable), sprite(new Sprite(*other.sprite)) {
+
+}
+
+/**
  * @brief Destructor.
  */
 Treasure::~Treasure(void) {

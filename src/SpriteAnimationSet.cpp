@@ -141,7 +141,20 @@ void SpriteAnimationSet::set_map(Map *map) {
   for (it = animations.begin(); it != animations.end(); it++) {
     it->second->set_map(map);
   }
+}
 
+/**
+ * @brief Returns an animation.
+ * @param animation_name name of the animation to get
+ * @return the specified animation
+ */
+const SpriteAnimation * SpriteAnimationSet::get_animation(const std::string &animation_name) const {
+
+  std::map<std::string, SpriteAnimation*>::const_iterator it = animations.find(animation_name);
+  if (it == animations.end()) {
+    DIE("No animation '" << animation_name << "' in this animation set");
+  }
+  return it->second;
 }
 
 /**
@@ -150,14 +163,19 @@ void SpriteAnimationSet::set_map(Map *map) {
  * @return the specified animation
  */
 SpriteAnimation * SpriteAnimationSet::get_animation(const std::string &animation_name) {
-  return animations[animation_name];
+
+  std::map<std::string, SpriteAnimation*>::iterator it = animations.find(animation_name);
+  if (it == animations.end()) {
+    DIE("No animation '" << animation_name << "' in this animation set");
+  }
+  return it->second;
 }
 
 /**
  * @brief Returns the name of the default animation, i.e. the first one.
  * @return the name of the default animation
  */
-const std::string& SpriteAnimationSet::get_default_animation(void) {
+const std::string& SpriteAnimationSet::get_default_animation(void) const {
   return default_animation_name;
 }
 
@@ -180,7 +198,7 @@ void SpriteAnimationSet::enable_pixel_collisions(void) {
  * @brief Returns whether the pixel-perfect collisions are enabled for these animations.
  * @return true if the pixel-perfect collisions are enabled
  */
-bool SpriteAnimationSet::are_pixel_collisions_enabled(void) {
+bool SpriteAnimationSet::are_pixel_collisions_enabled(void) const {
   return animations.begin()->second->are_pixel_collisions_enabled();
 }
 

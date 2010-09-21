@@ -56,14 +56,14 @@ class TitleScreen: public Screen {
     TransitionFade *transition_out;
 
     // phase 1
-    void init_phase_black_screen(void);
+    void init_phase_black_screen();
 
     // phase 2
     Surface *introduction_message_img;
     Rectangle introduction_message_position;
 
-    void init_phase_introduction_message(void);
-    void exit_phase_introduction_message(void);
+    void init_phase_introduction_message();
+    void exit_phase_introduction_message();
 
     // phase 3
     Music *title_screen_music;
@@ -80,22 +80,22 @@ class TitleScreen: public Screen {
     Rectangle clouds_position;
     uint32_t next_clouds_move_date;
 
-    void init_phase_title(void);
-    void exit_phase_title(void);
-    void update_phase_title(void);
+    void init_phase_title();
+    void exit_phase_title();
+    void update_phase_title();
     void display_phase_title(Surface *destination_surface);
 
-    TimeOfDay get_time_of_day(void);
+    TimeOfDay get_time_of_day();
 
   public:
 
     // creation and destruction
     TitleScreen(Solarus *solarus);
-    ~TitleScreen(void);
+    ~TitleScreen();
 
     // update and display
     void notify_event(InputEvent &event);
-    void update(void);
+    void update();
     void display(Surface *destination_surface);
 };
 

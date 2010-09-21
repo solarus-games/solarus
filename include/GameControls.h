@@ -89,7 +89,7 @@ class GameControls {
 
     // creation and destruction
     GameControls(Game *game);
-    ~GameControls(void);
+    ~GameControls();
 
     // controls
     const std::string & get_key_name(GameKey game_key);
@@ -97,13 +97,13 @@ class GameControls {
     const std::string get_joypad_string(GameKey game_key);
     void notify_event(InputEvent &event);
     bool is_key_pressed(GameKey game_key);
-    int get_wanted_direction8(void);
+    int get_wanted_direction8();
 
     // customization
     void customize(GameKey key);
-    bool is_customizing(void);
-    GameKey get_key_to_customize(void);
-    bool is_customization_done(void);
+    bool is_customizing();
+    GameKey get_key_to_customize();
+    bool is_customization_done();
 };
 
 #endif

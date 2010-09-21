@@ -36,7 +36,7 @@ Hero::ConveyorBeltState::ConveyorBeltState(Hero *hero, ConveyorBelt *conveyor_be
 /**
  * @brief Destructor.
  */
-Hero::ConveyorBeltState::~ConveyorBeltState(void) {
+Hero::ConveyorBeltState::~ConveyorBeltState() {
 
 }
 
@@ -69,7 +69,7 @@ void Hero::ConveyorBeltState::stop(State *next_state) {
 /**
  * @brief Updates this state.
  */
-void Hero::ConveyorBeltState::update(void) {
+void Hero::ConveyorBeltState::update() {
 
   State::update();
 
@@ -102,7 +102,7 @@ void Hero::ConveyorBeltState::update(void) {
  * @brief Returns whether the hero ignores the effect of teletransporters in this state.
  * @return true if the hero ignores the effect of teletransporters in this state
  */
-bool Hero::ConveyorBeltState::can_avoid_teletransporter(void) {
+bool Hero::ConveyorBeltState::can_avoid_teletransporter() {
   return true; // ignore the teletransporter until the conveyor belt is finished
 }
 
@@ -110,7 +110,7 @@ bool Hero::ConveyorBeltState::can_avoid_teletransporter(void) {
  * @brief Returns whether the hero ignores the effect of conveyor belts in this state.
  * @return true if the hero ignores the effect of conveyor belts in this state
  */
-bool Hero::ConveyorBeltState::can_avoid_conveyor_belt(void) {
+bool Hero::ConveyorBeltState::can_avoid_conveyor_belt() {
   return true;
 }
 

@@ -54,7 +54,7 @@ CrystalSwitchBlock::CrystalSwitchBlock(Game *game, Layer layer, int x, int y, in
 /**
  * @brief Destructor.
  */
-CrystalSwitchBlock::~CrystalSwitchBlock(void) {
+CrystalSwitchBlock::~CrystalSwitchBlock() {
 
 }
 
@@ -93,7 +93,7 @@ EntityType CrystalSwitchBlock::get_type() {
  * @brief Returns whether this block is raised.
  * @return true if this block is raised
  */
-bool CrystalSwitchBlock::is_raised(void) {
+bool CrystalSwitchBlock::is_raised() {
 
   return (subtype == ORANGE && orange_raised) ||
     (subtype == BLUE && !orange_raised);
@@ -202,7 +202,7 @@ bool CrystalSwitchBlock::try_jump(Hero *hero, const Rectangle &collision_box,
 /**
  * @brief Updates the entity.
  */
-void CrystalSwitchBlock::update(void) {
+void CrystalSwitchBlock::update() {
 
   // see if the state has to be changed
   bool orange_raised = game->get_crystal_switch_state();
@@ -226,7 +226,7 @@ void CrystalSwitchBlock::update(void) {
  * @brief Displays the entity on the map.
  * This is a redefinition of MapEntity::display_on_map to repeat the block pattern.
  */
-void CrystalSwitchBlock::display_on_map(void) {
+void CrystalSwitchBlock::display_on_map() {
 
   Sprite *sprite = get_sprite();
 

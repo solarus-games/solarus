@@ -41,7 +41,7 @@ SelectionMenuChooseMode::SelectionMenuChooseMode(SelectionMenu *menu):
 /**
  * @brief Destructor.
  */
-SelectionMenuChooseMode::~SelectionMenuChooseMode(void) {
+SelectionMenuChooseMode::~SelectionMenuChooseMode() {
   delete mode_img;
   delete savegame_surface;
 }
@@ -87,7 +87,7 @@ void SelectionMenuChooseMode::notify_event(InputEvent &event) {
 /**
  * @brief Updates the selection menu in this phase.
  */
-void SelectionMenuChooseMode::update(void) {
+void SelectionMenuChooseMode::update() {
 
   if (menu->is_transition_finished()) {
 

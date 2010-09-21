@@ -31,12 +31,12 @@ class Hero::TreasureState: public Hero::State {
   public:
 
     TreasureState(Hero *hero, Treasure *treasure);
-    ~TreasureState(void);
+    ~TreasureState();
 
     void start(State *previous_state);
     void stop(State *next_state);
-    void update(void);
-    void display_on_map(void);
+    void update();
+    void display_on_map();
 };
 
 #endif

@@ -37,21 +37,21 @@ class Solarus {
     void launch_adventure_mode(Savegame *savegame);
 
     void notify_event(InputEvent &event);
-    void display(void);
-    void update(void);
+    void display();
+    void update();
 
   public:
 
     Solarus(int argc, char **argv);
-    ~Solarus(void);
+    ~Solarus();
 
-    void main_loop(void);
+    void main_loop();
 
-    void skip_menus(void);
-    DebugKeys * get_debug_keys(void);
+    void skip_menus();
+    DebugKeys * get_debug_keys();
 
-    void set_exiting(void);
-    bool is_exiting(void);
+    void set_exiting();
+    bool is_exiting();
 };
 
 #endif

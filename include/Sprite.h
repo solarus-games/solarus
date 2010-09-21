@@ -70,72 +70,72 @@ class Sprite {
     int alpha_increment;				/**< increment of the alpha value while fading */
     static Surface *alpha_surface;			/**< an intermediary surface used when blitting with transparency */
 
-    int get_next_frame(void) const;
+    int get_next_frame() const;
 
   public:
 
     // initialization
-    static void initialize(void);
-    static void quit(void);
+    static void initialize();
+    static void quit();
 
     // creation and destruction
     Sprite(const SpriteAnimationSetId &id);
     Sprite(const Sprite &other);
-    ~Sprite(void);
+    ~Sprite();
 
     void set_map(Map *map);
 
     // animation set
-    const SpriteAnimationSetId& get_animation_set_id(void) const;
+    const SpriteAnimationSetId& get_animation_set_id() const;
     bool contains(const std::string &s) const;
-    const SpriteAnimationSet * get_animation_set(void) const;
-    void enable_pixel_collisions(void);
-    bool are_pixel_collisions_enabled(void) const;
+    const SpriteAnimationSet * get_animation_set() const;
+    void enable_pixel_collisions();
+    bool are_pixel_collisions_enabled() const;
 
     // size and origin point
-    const Rectangle & get_size(void) const;
-    const Rectangle & get_origin(void) const;
+    const Rectangle & get_size() const;
+    const Rectangle & get_origin() const;
 
     // current animation, direction and frame
-    const std::string& get_current_animation(void) const;
+    const std::string& get_current_animation() const;
     void set_current_animation(const std::string &animation_name);
-    int get_current_direction(void) const;
+    int get_current_direction() const;
     void set_current_direction(int current_direction);
-    int get_current_frame(void) const;
+    int get_current_frame() const;
     void set_current_frame(int current_frame);
 
-    uint32_t get_frame_delay(void) const;
+    uint32_t get_frame_delay() const;
     void set_frame_delay(uint32_t frame_delay);
 
     // animation state
-    bool is_animation_started(void) const;
-    void start_animation(void);
-    void restart_animation(void);
-    void stop_animation(void);
+    bool is_animation_started() const;
+    void start_animation();
+    void restart_animation();
+    void stop_animation();
 
-    bool is_suspended(void) const;
+    bool is_suspended() const;
     void set_suspended(bool suspended);
     void set_ignore_suspend(bool ignore_suspend);
-    bool is_paused(void) const;
+    bool is_paused() const;
     void set_paused(bool suspended);
-    bool is_animation_looping(void) const;
-    bool is_animation_finished(void) const;
-    bool is_last_frame_reached(void) const;
-    bool has_frame_changed(void) const;
+    bool is_animation_looping() const;
+    bool is_animation_finished() const;
+    bool is_last_frame_reached() const;
+    bool has_frame_changed() const;
 
     // effects
-    bool is_blinking(void) const;
+    bool is_blinking() const;
     void set_blinking(uint32_t blink_delay);
-    int get_alpha(void) const;
+    int get_alpha() const;
     void set_alpha(int alpha);
-    bool is_fading(void) const;
+    bool is_fading() const;
     void start_fading(int direction);
 
     // collisions
     bool test_collision(Sprite *other, int x1, int y1, int x2, int y2);
 
     // udpate and display
-    void update(void);
+    void update();
     void display(Surface *destination, int x, int y);
 };
 

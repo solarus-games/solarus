@@ -38,7 +38,7 @@ Hero::TreasureState::TreasureState(Hero *hero, Treasure *treasure):
 /**
  * @brief Destructor.
  */
-Hero::TreasureState::~TreasureState(void) {
+Hero::TreasureState::~TreasureState() {
 
   delete treasure;
 }
@@ -83,7 +83,7 @@ void Hero::TreasureState::stop(State *next_state) {
 /**
  * @brief Updates this state.
  */
-void Hero::TreasureState::update(void) {
+void Hero::TreasureState::update() {
 
   State::update();
 
@@ -111,7 +111,7 @@ void Hero::TreasureState::update(void) {
 /**
  * @brief Displays this state.
  */
-void Hero::TreasureState::display_on_map(void) {
+void Hero::TreasureState::display_on_map() {
 
   State::display_on_map();
 

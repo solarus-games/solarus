@@ -31,7 +31,7 @@ Hero::FreezedState::FreezedState(Hero *hero):
 /**
  * @brief Destructor.
  */
-Hero::FreezedState::~FreezedState(void) {
+Hero::FreezedState::~FreezedState() {
 
 }
 

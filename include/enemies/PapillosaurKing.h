@@ -33,17 +33,17 @@ class PapillosaurKing: public Enemy {
 
   protected:
 
-    void initialize(void);
-    void restart(void);
+    void initialize();
+    void restart();
 
   public:
 
     PapillosaurKing(const ConstructionParameters &params);
-    ~PapillosaurKing(void);
+    ~PapillosaurKing();
 
     bool is_destructible_item_obstacle(DestructibleItem *destructible_item);
     void set_suspended(bool suspended);
-    void update(void);
+    void update();
     void just_hurt(MapEntity *source, EnemyAttack attack, int life_points);
 };
 

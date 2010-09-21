@@ -39,16 +39,16 @@ class CollisionMovement: public Movement {
   public:
 
     CollisionMovement(bool ignore_obstacles = false);
-    virtual ~CollisionMovement(void);
+    virtual ~CollisionMovement();
 
     bool test_collision_with_map(int dx, int dy);
-    virtual void update_x(void);
-    virtual void update_y(void);
+    virtual void update_x();
+    virtual void update_y();
 
-    const Rectangle & get_last_collision_box_on_obstacle(void);
-    bool are_obstacles_ignored(void);
-    void set_ignore_obstacles(void);
-    void restore_ignore_obstacles(void);
+    const Rectangle & get_last_collision_box_on_obstacle();
+    bool are_obstacles_ignored();
+    void set_ignore_obstacles();
+    void restore_ignore_obstacles();
 };
 
 #endif

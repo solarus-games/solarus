@@ -34,7 +34,7 @@ SimpleTilePattern::SimpleTilePattern(Obstacle obstacle, int x, int y, int width,
 /**
  * Destructor.
  */
-SimpleTilePattern::~SimpleTilePattern(void) {
+SimpleTilePattern::~SimpleTilePattern() {
 
 }
 

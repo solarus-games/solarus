@@ -61,19 +61,19 @@ class PauseSubmenuOptions: public PauseSubmenu {
     int cursor_position; /**< 0: fullscreen, 1 to 9: key 1 to 9 */
     bool customizing;
 
-    void load_control_texts(void);
+    void load_control_texts();
     void set_cursor_position(int position);
-    void action_key_pressed(void);
+    void action_key_pressed();
 
     void display_cursor(Surface *destination);
 
   public:
 
     PauseSubmenuOptions(PauseMenu *pause_menu, Game *game);
-    ~PauseSubmenuOptions(void);
+    ~PauseSubmenuOptions();
 
     void key_pressed(GameControls::GameKey key);
-    void update(void);
+    void update();
     void display(Surface *destination);
 };
 

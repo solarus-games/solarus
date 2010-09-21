@@ -41,7 +41,7 @@ Tileset::Tileset(TilesetId id):
 /**
  * @brief Destructor.
  */
-Tileset::~Tileset(void) {
+Tileset::~Tileset() {
   if (is_loaded()) {
     unload(); // destroy the tiles
   }
@@ -65,7 +65,7 @@ void Tileset::add_tile_pattern(int id, TilePattern *tile) {
 /**
  * @brief Loads the tileset from its file by creating all tile patterns.
  */
-void Tileset::load(void) {
+void Tileset::load() {
 
   // compute the file name, depending on the id
   std::ostringstream oss;
@@ -161,7 +161,7 @@ void Tileset::load(void) {
  * @brief Destroys the tile patterns and frees the memory used
  * by the tileset image.
  */
-void Tileset::unload(void) {
+void Tileset::unload() {
   int i;
 
   for (i = 0; i < max_tile_id; i++) {
@@ -182,7 +182,7 @@ void Tileset::unload(void) {
  * @brief Returns the background color of this tileset.
  * @return the background color
  */
-Color & Tileset::get_background_color(void) {
+Color & Tileset::get_background_color() {
   return background_color;
 }
 
@@ -190,7 +190,7 @@ Color & Tileset::get_background_color(void) {
  * @brief Returns whether this tileset is loaded.
  * @return true if this tileset is loaded
  */
-bool Tileset::is_loaded(void) {
+bool Tileset::is_loaded() {
   return tiles_image != NULL;
 }
 
@@ -198,7 +198,7 @@ bool Tileset::is_loaded(void) {
  * @brief Returns the image containing the tiles of this tileset.
  * @return the tiles image
  */
-Surface * Tileset::get_tiles_image(void) {
+Surface * Tileset::get_tiles_image() {
   return tiles_image;
 }
 
@@ -206,7 +206,7 @@ Surface * Tileset::get_tiles_image(void) {
  * @brief Returns the image containing the skin-dependent dynamic entities for this tileset.
  * @return the image containing the skin-dependent dynamic entities for this tileset
  */
-Surface * Tileset::get_entities_image(void) {
+Surface * Tileset::get_entities_image() {
   return entities_image;
 }
 

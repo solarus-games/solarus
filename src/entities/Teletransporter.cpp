@@ -57,7 +57,7 @@ Teletransporter::Teletransporter(const std::string &name, Layer layer, int x, in
 /**
  * @brief Destructor.
  */
-Teletransporter::~Teletransporter(void) {
+Teletransporter::~Teletransporter() {
 
 }
 
@@ -267,7 +267,7 @@ void Teletransporter::transport_hero(Hero *hero) {
  *
  * @return true if this teletransporter is on the side of the map
  */
-bool Teletransporter::is_on_map_side(void) {
+bool Teletransporter::is_on_map_side() {
   return destination_point_name == "_side";
 }
 

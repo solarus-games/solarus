@@ -38,7 +38,7 @@ Hero::RunningState::RunningState(Hero *hero):
 /**
  * @brief Destructor.
  */
-Hero::RunningState::~RunningState(void) {
+Hero::RunningState::~RunningState() {
 
 }
 
@@ -74,7 +74,7 @@ void Hero::RunningState::stop(State *next_state) {
 /**
  * @brief Updates this state.
  */
-void Hero::RunningState::update(void) {
+void Hero::RunningState::update() {
 
   State::update();
 
@@ -124,7 +124,7 @@ void Hero::RunningState::set_suspended(bool suspended) {
  * @brief Returns whether the hero is boucing after he reached an obstacle during the run.
  * @return true if the hero is bouncing
  */
-bool Hero::RunningState::is_bouncing(void) {
+bool Hero::RunningState::is_bouncing() {
   return phase == 2;
 }
 
@@ -132,7 +132,7 @@ bool Hero::RunningState::is_bouncing(void) {
  * @brief Returns whether the hero is pressing the item key corresponding to the running shoes.
  * @return true if the hero is pressing the item key corresponding to the running shoes
  */
-bool Hero::RunningState::is_pressing_running_key(void) {
+bool Hero::RunningState::is_pressing_running_key() {
 
   Equipment *equipment = game->get_equipment();
   int slot = equipment->get_item_slot("pegasus_shoes"); // TODO make quest-dependent
@@ -182,7 +182,7 @@ void Hero::RunningState::notify_movement_tried(bool success) {
  *
  * @return the hero's wanted direction between 0 and 7, or -1 if he is stopped
  */
-int Hero::RunningState::get_wanted_movement_direction8(void) {
+int Hero::RunningState::get_wanted_movement_direction8() {
   return sprites->get_animation_direction8();
 }
 
@@ -191,7 +191,7 @@ int Hero::RunningState::get_wanted_movement_direction8(void) {
  * If false is returned, stairs have no effect (but they are obstacle for the hero).
  * @return true if the hero ignores the effect of stairs in this state
  */
-bool Hero::RunningState::can_take_stairs(void) {
+bool Hero::RunningState::can_take_stairs() {
   return !is_bouncing();
 }
 /**
@@ -199,7 +199,7 @@ bool Hero::RunningState::can_take_stairs(void) {
  * If false is returned, jump sensors have no effect (but they are obstacle for the hero).
  * @return true if the hero can use jump sensors in this state
  */
-bool Hero::RunningState::can_take_jump_sensor(void) {
+bool Hero::RunningState::can_take_jump_sensor() {
   return !is_bouncing();
 }
 
@@ -207,7 +207,7 @@ bool Hero::RunningState::can_take_jump_sensor(void) {
  * @brief Returns whether the hero can be hurt in this state.
  * @return true if the hero can be hurt in this state
  */
-bool Hero::RunningState::can_be_hurt(void) {
+bool Hero::RunningState::can_be_hurt() {
   return !is_bouncing();
 }
 
@@ -215,7 +215,7 @@ bool Hero::RunningState::can_be_hurt(void) {
  * @brief Returns whether the game over sequence can start in the current state.
  * @return true if the game over sequence can start in the current state
  */
-bool Hero::RunningState::can_start_gameover_sequence(void) {
+bool Hero::RunningState::can_start_gameover_sequence() {
   return !is_bouncing();
 }
 
@@ -224,7 +224,7 @@ bool Hero::RunningState::can_start_gameover_sequence(void) {
  * returns the height where the tunic sprite should be displayed.
  * @return the height in pixels, or zero if there is no separate shadow in this state
  */
-int Hero::RunningState::get_height_above_shadow(void) {
+int Hero::RunningState::get_height_above_shadow() {
 
   if (is_bouncing()) {
     return ((JumpMovement*) hero->get_movement())->get_jump_height();
@@ -237,7 +237,7 @@ int Hero::RunningState::get_height_above_shadow(void) {
  * @brief Returns whether the hero is touching the ground in the current state.
  * @return true if the hero is touching the ground in the current state
  */
-bool Hero::RunningState::is_touching_ground(void) {
+bool Hero::RunningState::is_touching_ground() {
   return !is_bouncing();
 }
 
@@ -245,7 +245,7 @@ bool Hero::RunningState::is_touching_ground(void) {
  * @brief Returns whether the hero ignores the effect of deep water in this state.
  * @return true if the hero ignores the effect of deep water in the current state
  */
-bool Hero::RunningState::can_avoid_deep_water(void) {
+bool Hero::RunningState::can_avoid_deep_water() {
   return is_bouncing();
 }
 
@@ -253,7 +253,7 @@ bool Hero::RunningState::can_avoid_deep_water(void) {
  * @brief Returns whether the hero ignores the effect of holes in this state.
  * @return true if the hero ignores the effect of holes in the current state
  */
-bool Hero::RunningState::can_avoid_hole(void) {
+bool Hero::RunningState::can_avoid_hole() {
   return is_bouncing();
 }
 
@@ -261,7 +261,7 @@ bool Hero::RunningState::can_avoid_hole(void) {
  * @brief Returns whether the hero ignores the effect of teletransporters in this state.
  * @return true if the hero ignores the effect of teletransporters in this state
  */
-bool Hero::RunningState::can_avoid_teletransporter(void) {
+bool Hero::RunningState::can_avoid_teletransporter() {
   return is_bouncing();
 }
 
@@ -269,7 +269,7 @@ bool Hero::RunningState::can_avoid_teletransporter(void) {
  * @brief Returns whether the hero ignores the effect of conveyor belts in this state.
  * @return true if the hero ignores the effect of conveyor belts in this state
  */
-bool Hero::RunningState::can_avoid_conveyor_belt(void) {
+bool Hero::RunningState::can_avoid_conveyor_belt() {
   return is_bouncing();
 }
 
@@ -320,7 +320,7 @@ bool Hero::RunningState::is_cutting_with_sword(Detector *detector) {
  * @brief Returns the damage power of the sword for the current attack.
  * @return the current damage factor of the sword
  */
-int Hero::RunningState::get_sword_damage_factor(void) {
+int Hero::RunningState::get_sword_damage_factor() {
 
   // the damage are multiplied by 2
   return State::get_sword_damage_factor() * 2;

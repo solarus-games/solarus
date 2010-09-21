@@ -60,14 +60,14 @@ IniFile::IniFile(const std::string &file_name, Mode mode):
 /**
  * @brief Destroys the object.
  */
-IniFile::~IniFile(void) {
+IniFile::~IniFile() {
   delete ini;
 }
 
 /**
  * @brief Saves the ini data into the file specified with the constructor.
  */
-void IniFile::save(void) {
+void IniFile::save() {
 
   Debug::assert(mode == WRITE, "Cannot save ini file: the mode should be WRITE");
 
@@ -120,7 +120,7 @@ void IniFile::set_group(const std::string &group) {
  *
  * @return name of the current group (an empty name means the global group)
  */
-const std::string & IniFile::get_group(void) {
+const std::string & IniFile::get_group() {
 
   return group;
 }
@@ -211,7 +211,7 @@ void IniFile::set_string_value(const std::string &key, const std::string &value)
  *
  * While has_more_groups() returns true, call next_group() to get the next element of your iteration.
  */
-void IniFile::start_group_iteration(void) {
+void IniFile::start_group_iteration() {
 
   ini->data.GetAllSections(ini->groups);
   ini->groups.sort(CSimpleIniA::Entry::LoadOrder());
@@ -222,7 +222,7 @@ void IniFile::start_group_iteration(void) {
  * @brief During a group iteration, returns whether there are at least one group remaining.
  * @return true if the group iteration can continue (i.e. you can call next_group())
  */
-bool IniFile::has_more_groups(void) {
+bool IniFile::has_more_groups() {
 
   if (ini->iterator != ini->groups.end()) {
     CSimpleIniA::Entry entry = *ini->iterator;
@@ -240,7 +240,7 @@ bool IniFile::has_more_groups(void) {
  * You don't have to call set_group() to select this group, it is already done by has_more_groups().
  * To know the group name, call get_group().
  */
-void IniFile::next_group(void) {
+void IniFile::next_group() {
   ini->iterator++;
 }
 

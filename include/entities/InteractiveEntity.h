@@ -56,35 +56,35 @@ class InteractiveEntity: public Detector {
     static const int animation_directions[];
 
     void initialize_sprite(SpriteAnimationSetId sprite_name, int initial_direction);
-    void call_script(void);
+    void call_script();
 
   public:
 
     InteractiveEntity(const std::string &name, Layer layer, int x, int y, Subtype subtype,
 	SpriteAnimationSetId sprite_name, int initial_direction, MessageId message_to_show);
-    ~InteractiveEntity(void);
+    ~InteractiveEntity();
     static CreationFunction parse;
 
-    EntityType get_type(void);
-    bool is_displayed_in_y_order(void);
+    EntityType get_type();
+    bool is_displayed_in_y_order();
 
     bool is_obstacle_for(MapEntity *other);
     bool is_hero_obstacle(Hero *hero);
     bool is_npc_obstacle(InteractiveEntity *npc);
     bool is_enemy_obstacle(Enemy *enemy);
-    bool is_sword_ignored(void);
+    bool is_sword_ignored();
 
     void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
-    void action_key_pressed(void);
+    void action_key_pressed();
     bool interaction_with_inventory_item(InventoryItem *item);
 
-    void update(void);
-    void display_on_map(void);
+    void update();
+    void display_on_map();
 
     void walk(std::string path, bool loop, bool ignore_obstacles);
-    void walk_random(void);
+    void walk_random();
     void jump(int direction, int length, bool ignore_obstacles);
-    void notify_position_changed(void);
+    void notify_position_changed();
     void set_sprite_direction(int direction);
 };
 

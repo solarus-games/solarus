@@ -23,7 +23,7 @@ SDL_Joystick *InputEvent::joystick;
 /**
  * @brief Initializes the input event manager.
  */
-void InputEvent::initialize(void) {
+void InputEvent::initialize() {
 
   // initialize the keyboard
   SDL_EnableUNICODE(SDL_ENABLE);
@@ -41,7 +41,7 @@ void InputEvent::initialize(void) {
 /**
  * @brief Quits the input event manager.
  */
-void InputEvent::quit(void) {
+void InputEvent::quit() {
 
   if (SDL_JoystickOpened(0)) {
     SDL_JoystickClose(joystick);
@@ -60,7 +60,7 @@ InputEvent::InputEvent(const SDL_Event &event):
 /**
  * @brief Destructor.
  */
-InputEvent::~InputEvent(void) {
+InputEvent::~InputEvent() {
 
 }
 
@@ -69,7 +69,7 @@ InputEvent::~InputEvent(void) {
  * if there is no event.
  * @return the current event to handle, or NULL if there is no event
  */
-InputEvent * InputEvent::get_event(void) {
+InputEvent * InputEvent::get_event() {
 
   InputEvent *result = NULL;
   SDL_Event internal_event;
@@ -105,7 +105,7 @@ void InputEvent::set_key_repeat(int delay, int interval) {
  *
  * @return true if the SHIFT key is currently down
  */
-bool InputEvent::is_shift_down(void) {
+bool InputEvent::is_shift_down() {
   
   SDLMod mod = SDL_GetModState();
   return mod & (KMOD_LSHIFT | KMOD_RSHIFT);
@@ -118,7 +118,7 @@ bool InputEvent::is_shift_down(void) {
  *
  * @return true if the CTRL key is currently down
  */
-bool InputEvent::is_control_down(void) {
+bool InputEvent::is_control_down() {
   
   SDLMod mod = SDL_GetModState();
   return mod & (KMOD_LCTRL | KMOD_RCTRL);
@@ -131,7 +131,7 @@ bool InputEvent::is_control_down(void) {
  *
  * @return true if the ALT key is currently down
  */
-bool InputEvent::is_alt_down(void) {
+bool InputEvent::is_alt_down() {
   
   SDLMod mod = SDL_GetModState();
   return mod & (KMOD_LALT | KMOD_RALT);
@@ -143,7 +143,7 @@ bool InputEvent::is_alt_down(void) {
  * @brief Returns whether this event is a keyboard event.
  * @return true if this is a keyboard event
  */
-bool InputEvent::is_keyboard_event(void) {
+bool InputEvent::is_keyboard_event() {
 
   return internal_event.type == SDL_KEYDOWN
     || internal_event.type == SDL_KEYUP;
@@ -153,7 +153,7 @@ bool InputEvent::is_keyboard_event(void) {
  * @brief Returns whether this event is a joypad event.
  * @return true if this is a joypad event
  */
-bool InputEvent::is_joypad_event(void) {
+bool InputEvent::is_joypad_event() {
 
   return internal_event.type == SDL_JOYAXISMOTION
     || internal_event.type == SDL_JOYHATMOTION
@@ -165,7 +165,7 @@ bool InputEvent::is_joypad_event(void) {
  * @brief Returns whether this event is a window event.
  * @return true if this is a window event
  */
-bool InputEvent::is_window_event(void) {
+bool InputEvent::is_window_event() {
 
   return internal_event.type == SDL_QUIT; // other SDL window events are ignored
 }
@@ -177,7 +177,7 @@ bool InputEvent::is_window_event(void) {
  * corresponding to pressing a key.
  * @return true if this is a key pressed event
  */
-bool InputEvent::is_keyboard_key_pressed(void) {
+bool InputEvent::is_keyboard_key_pressed() {
 
   return internal_event.type == SDL_KEYDOWN;
 }
@@ -218,7 +218,7 @@ bool InputEvent::is_keyboard_key_pressed(const KeyboardKey *keys) {
  * corresponding to pressing one of the four directional keys.
  * @return true if this event corresponds to pressing one of the four directional keys
  */
-bool InputEvent::is_keyboard_direction_key_pressed(void) {
+bool InputEvent::is_keyboard_direction_key_pressed() {
 
   return is_keyboard_key_pressed(directional_keys);
 }
@@ -228,7 +228,7 @@ bool InputEvent::is_keyboard_direction_key_pressed(void) {
  * corresponding to pressing a key other than the four directional keys.
  * @return true if this event corresponds to pressing a key other than the four directional keys
  */
-bool InputEvent::is_keyboard_non_direction_key_pressed(void) {
+bool InputEvent::is_keyboard_non_direction_key_pressed() {
 
   return is_keyboard_key_pressed()
     && !is_keyboard_direction_key_pressed();
@@ -239,7 +239,7 @@ bool InputEvent::is_keyboard_non_direction_key_pressed(void) {
  * corresponding to releasing a key.
  * @return true if this is a key released event
  */
-bool InputEvent::is_keyboard_key_released(void) {
+bool InputEvent::is_keyboard_key_released() {
 
   return internal_event.type == SDL_KEYUP;
 }
@@ -280,7 +280,7 @@ bool InputEvent::is_keyboard_key_released(const KeyboardKey *keys) {
  * corresponding to releasing one of the four directional keys.
  * @return true if this event corresponds to releasing one of the four directional keys
  */
-bool InputEvent::is_keyboard_direction_key_released(void) {
+bool InputEvent::is_keyboard_direction_key_released() {
 
   return is_keyboard_key_released(directional_keys);
 }
@@ -290,7 +290,7 @@ bool InputEvent::is_keyboard_direction_key_released(void) {
  * corresponding to releasing a key other than the four directional keys.
  * @return true if this event corresponds to releasing a key other than the four directional keys
  */
-bool InputEvent::is_keyboard_non_direction_key_released(void) {
+bool InputEvent::is_keyboard_non_direction_key_released() {
 
   return is_keyboard_key_released()
     && !is_keyboard_direction_key_released();
@@ -304,7 +304,7 @@ bool InputEvent::is_keyboard_non_direction_key_released(void) {
  *
  * @return true if SHIFT was pressed during this keyboard event
  */
-bool InputEvent::is_with_shift(void) {
+bool InputEvent::is_with_shift() {
 
   return is_keyboard_event()
     && (internal_event.key.keysym.mod & KMOD_SHIFT);
@@ -318,7 +318,7 @@ bool InputEvent::is_with_shift(void) {
  *
  * @return true if CTRL was pressed during this keyboard event
  */
-bool InputEvent::is_with_control(void) {
+bool InputEvent::is_with_control() {
 
   return is_keyboard_event()
     && (internal_event.key.keysym.mod & KMOD_CTRL);
@@ -332,7 +332,7 @@ bool InputEvent::is_with_control(void) {
  *
  * @return true if ALT was pressed during this keyboard event
  */
-bool InputEvent::is_with_alt(void) {
+bool InputEvent::is_with_alt() {
 
   return is_keyboard_event()
     && (internal_event.key.keysym.mod & KMOD_ALT);
@@ -346,7 +346,7 @@ bool InputEvent::is_with_alt(void) {
  *
  * @return the key of this keyboard event
  */
-InputEvent::KeyboardKey InputEvent::get_keyboard_key(void) {
+InputEvent::KeyboardKey InputEvent::get_keyboard_key() {
 
   if (!is_keyboard_event()) {
     return KEY_NONE;
@@ -371,7 +371,7 @@ const std::string InputEvent::get_keyboard_key_name(KeyboardKey key) {
  * corresponding to pressing a joypad button.
  * @return true if this is a joypad button pressed event.
  */
-bool InputEvent::is_joypad_button_pressed(void) {
+bool InputEvent::is_joypad_button_pressed() {
 
   return internal_event.type == SDL_JOYBUTTONDOWN;
 }
@@ -381,7 +381,7 @@ bool InputEvent::is_joypad_button_pressed(void) {
  * corresponding to releasing a joypad button.
  * @return true if this is a joypad button released event.
  */
-bool InputEvent::is_joypad_button_released(void) {
+bool InputEvent::is_joypad_button_released() {
 
   return internal_event.type == SDL_JOYBUTTONUP;
 }
@@ -394,7 +394,7 @@ bool InputEvent::is_joypad_button_released(void) {
  *
  * @return the button number of this joypad button event
  */
-int InputEvent::get_joypad_button(void) {
+int InputEvent::get_joypad_button() {
 
   if (!is_joypad_button_pressed() && !is_joypad_button_released()) {
     return -1;
@@ -408,7 +408,7 @@ int InputEvent::get_joypad_button(void) {
  * corresponding to moving a joypad axis.
  * @return true if this is a joypad axis event
  */
-bool InputEvent::is_joypad_axis_moved(void) {
+bool InputEvent::is_joypad_axis_moved() {
 
   return internal_event.type == SDL_JOYAXISMOTION;
 }
@@ -422,7 +422,7 @@ bool InputEvent::is_joypad_axis_moved(void) {
  *
  * @return the axis index of this joypad axis event
  */
-int InputEvent::get_joypad_axis(void) {
+int InputEvent::get_joypad_axis() {
 
   if (!is_joypad_axis_moved()) {
     return -1;
@@ -440,7 +440,7 @@ int InputEvent::get_joypad_axis(void) {
  * @return the new state of the axis moved during this joypad axis event:
  * -1 (left or up), 0 (centered) or 1 (right or down)
  */
-int InputEvent::get_joypad_axis_state(void) {
+int InputEvent::get_joypad_axis_state() {
 
   if (!is_joypad_axis_moved()) {
     return 0;
@@ -467,7 +467,7 @@ int InputEvent::get_joypad_axis_state(void) {
  *
  * @return true if the axis is back to its initial position
  */
-bool InputEvent::is_joypad_axis_centered(void) {
+bool InputEvent::is_joypad_axis_centered() {
 
   return is_joypad_axis_moved()
     && get_joypad_axis_state() == 0;
@@ -478,7 +478,7 @@ bool InputEvent::is_joypad_axis_centered(void) {
  * corresponding to moving a joypad hat.
  * @return true if this is a joypad hat event
  */
-bool InputEvent::is_joypad_hat_moved(void) {
+bool InputEvent::is_joypad_hat_moved() {
 
   return internal_event.type == SDL_JOYHATMOTION;
 }
@@ -491,7 +491,7 @@ bool InputEvent::is_joypad_hat_moved(void) {
  *
  * @return the hat index of this joypad hat event
  */
-int InputEvent::get_joypad_hat(void) {
+int InputEvent::get_joypad_hat() {
 
   if (!is_joypad_hat_moved()) {
     return -1;
@@ -510,7 +510,7 @@ int InputEvent::get_joypad_hat(void) {
  *
  * @return the new direction of the hat moved during this joypad hat event
  */
-int InputEvent::get_joypad_hat_direction(void) {
+int InputEvent::get_joypad_hat_direction() {
 
   if (!is_joypad_hat_moved()) {
     return -1;
@@ -566,7 +566,7 @@ int InputEvent::get_joypad_hat_direction(void) {
  *
  * @return true if the hat is back to its initial position
  */
-bool InputEvent::is_joypad_hat_centered(void) {
+bool InputEvent::is_joypad_hat_centered() {
 
   return is_joypad_hat_moved()
     && get_joypad_hat_direction() == -1;
@@ -584,7 +584,7 @@ bool InputEvent::is_joypad_hat_centered(void) {
  *
  * @return the direction (0 to 7) or -1 if there is no direction
  */
-int InputEvent::get_direction(void) {
+int InputEvent::get_direction() {
 
   int result = -1;
 
@@ -639,7 +639,7 @@ int InputEvent::get_direction(void) {
  *
  * @return true if something was pressed
  */
-bool InputEvent::is_pressed(void) {
+bool InputEvent::is_pressed() {
 
   return is_keyboard_key_pressed()
     || is_direction_pressed()
@@ -654,7 +654,7 @@ bool InputEvent::is_pressed(void) {
  *
  * @return true if a direction was pressed
  */
-bool InputEvent::is_direction_pressed(void) {
+bool InputEvent::is_direction_pressed() {
 
   return is_keyboard_direction_key_pressed()
     || (is_joypad_axis_moved() && !is_joypad_axis_centered())
@@ -669,7 +669,7 @@ bool InputEvent::is_direction_pressed(void) {
  *
  * @return true if something other that a direction was pressed
  */
-bool InputEvent::is_non_direction_pressed(void) {
+bool InputEvent::is_non_direction_pressed() {
 
   return is_pressed()
     && !!is_direction_pressed();
@@ -684,7 +684,7 @@ bool InputEvent::is_non_direction_pressed(void) {
  *
  * @return true if something was released
  */
-bool InputEvent::is_released(void) {
+bool InputEvent::is_released() {
 
   return is_keyboard_key_released()
     || is_joypad_button_released()
@@ -699,7 +699,7 @@ bool InputEvent::is_released(void) {
  * the user closing the window.
  * @return true if this is a window closing event
  */
-bool InputEvent::is_window_closing(void) {
+bool InputEvent::is_window_closing() {
 
   return internal_event.type == SDL_QUIT;
 }

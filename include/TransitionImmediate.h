@@ -31,12 +31,12 @@ class TransitionImmediate: public Transition {
   public:
 
     TransitionImmediate(Direction direction);
-    ~TransitionImmediate(void);
+    ~TransitionImmediate();
 
-    void start(void);
-    bool is_started(void);
-    bool is_finished(void);
-    void update(void);
+    void start();
+    bool is_started();
+    bool is_finished();
+    void update();
     void display(Surface *surface);
 
 };

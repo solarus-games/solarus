@@ -43,7 +43,7 @@ class SpriteAnimation {
 
     SpriteAnimation(const std::string &image_file_name, 
 	int nb_directions, SpriteAnimationDirection **directions, uint32_t frame_interval, int loop_on_frame);
-    virtual ~SpriteAnimation(void);
+    virtual ~SpriteAnimation();
 
     void set_map(Map *map);
 
@@ -51,13 +51,13 @@ class SpriteAnimation {
     void display(Surface *destination, int x, int y,
 	int current_direction, int current_frame);
 
-    int get_nb_directions(void) const;
+    int get_nb_directions() const;
     const SpriteAnimationDirection *get_direction(int direction) const;
-    uint32_t get_frame_delay(void) const;
-    bool is_looping(void) const;
+    uint32_t get_frame_delay() const;
+    bool is_looping() const;
 
-    void enable_pixel_collisions(void);
-    bool are_pixel_collisions_enabled(void) const;
+    void enable_pixel_collisions();
+    bool are_pixel_collisions_enabled() const;
 };
 
 #endif

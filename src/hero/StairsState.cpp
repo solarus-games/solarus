@@ -41,7 +41,7 @@ Hero::StairsState::StairsState(Hero *hero, Stairs *stairs, Stairs::Way way):
 /**
  * @brief Destructor.
  */
-Hero::StairsState::~StairsState(void) {
+Hero::StairsState::~StairsState() {
 
 }
 
@@ -99,7 +99,7 @@ void Hero::StairsState::start(State *previous_state) {
 /**
  * @brief Updates this state.
  */
-void Hero::StairsState::update(void) {
+void Hero::StairsState::update() {
 
   State::update();
 
@@ -192,7 +192,7 @@ void Hero::StairsState::update(void) {
  * When overlapping a teletransporter, if this function returns true, the teletransporter
  * will not be activated immediately. The state then has to activate it when it is ready.
  */
-bool Hero::StairsState::is_teletransporter_delayed(void) {
+bool Hero::StairsState::is_teletransporter_delayed() {
   return true;
 }
 

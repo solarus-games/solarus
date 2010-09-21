@@ -104,54 +104,54 @@ class Map {
 
     // creation and destruction
     Map(MapId id);
-    ~Map(void);
+    ~Map();
 
     // map properties
-    MapId get_id(void);
-    Tileset *get_tileset(void);
-    MapScript *get_script(void);
-    int get_world_number(void);
-    bool is_in_dungeon(void);
-    bool is_in_outside_world(void);
-    int get_floor(void);
-    bool has_floor(void);
-    const Rectangle &get_location(void);
-    int get_small_keys_variable(void);
-    bool has_small_keys(void);
+    MapId get_id();
+    Tileset *get_tileset();
+    MapScript *get_script();
+    int get_world_number();
+    bool is_in_dungeon();
+    bool is_in_outside_world();
+    int get_floor();
+    bool has_floor();
+    const Rectangle &get_location();
+    int get_small_keys_variable();
+    bool has_small_keys();
 
-    int get_width(void);
-    int get_height(void);
-    int get_width8(void);
-    int get_height8(void);
+    int get_width();
+    int get_height();
+    int get_width8();
+    int get_height8();
 
     // camera
-    Surface *get_visible_surface(void);
-    const Rectangle &get_camera_position(void);
+    Surface *get_visible_surface();
+    const Rectangle &get_camera_position();
     void move_camera(int x, int y, int speed);
-    void restore_camera(void);
-    bool is_camera_fixed_on_hero(void);
+    void restore_camera();
+    bool is_camera_fixed_on_hero();
     void set_clipping_rectangle(const Rectangle &clipping_rectangle = Rectangle());
 
     // loading
-    bool is_loaded(void);
+    bool is_loaded();
     void load(Game *game);
-    void unload(void);
-    Game * get_game(void);
-    void notify_opening_transition_finished(void);
+    void unload();
+    Game * get_game();
+    void notify_opening_transition_finished();
 
     // entities
-    MapEntities *get_entities(void);
+    MapEntities *get_entities();
 
     // presence of the hero
-    bool is_started(void);
+    bool is_started();
     void start(Game *game);
-    void leave(void);
+    void leave();
     void set_welcome_message(std::string welcome_message_id);
 
     // current destination point
     void set_destination_point(const std::string &destination_point_name);
-    const std::string& get_destination_point_name(void);
-    int get_destination_side(void);
+    const std::string& get_destination_point_name();
+    int get_destination_side();
 
     // collisions with obstacles (checked before a move)
     bool test_collision_with_border(int x, int y);
@@ -168,8 +168,8 @@ class Map {
     void check_collision_with_detectors(MapEntity *entity, Sprite *sprite);
 
     // update and display
-    void update(void);
-    void check_suspended(void);
+    void update();
+    void check_suspended();
     void display();
     void display_sprite(Sprite *sprite, int x, int y);
 };

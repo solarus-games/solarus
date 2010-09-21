@@ -62,17 +62,17 @@ class Teletransporter: public Detector {
     Teletransporter(const std::string &name, Layer layer, int x, int y, int width, int height,
 	Subtype subtype, Transition::Style transition_style,
 	MapId destination_map_id, std::string destination_point_name);
-    ~Teletransporter(void);
+    ~Teletransporter();
     static CreationFunction parse;
 
-    EntityType get_type(void);
+    EntityType get_type();
     void set_map(Map *map);
 
     bool is_obstacle_for(MapEntity *other);
     bool test_collision_custom(MapEntity *entity);
     void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
     void transport_hero(Hero *hero);
-    bool is_on_map_side(void);
+    bool is_on_map_side();
 };
 
 #endif

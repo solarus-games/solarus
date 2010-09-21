@@ -39,15 +39,15 @@ class ActionIcon: public HudElement {
     bool is_flipping;
     Sprite *sprite_action_icon;
 
-    bool is_visible(void);
+    bool is_visible();
 
   public:
 
     ActionIcon(Game *game, int x, int y);
-    ~ActionIcon(void);
+    ~ActionIcon();
 
-    void update(void);
-    void rebuild(void);
+    void update();
+    void rebuild();
 
 };
 

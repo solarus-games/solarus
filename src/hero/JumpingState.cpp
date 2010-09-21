@@ -51,7 +51,7 @@ Hero::JumpingState::JumpingState(Hero *hero, int direction8, int length,
 /**
  * @brief Destructor.
  */
-Hero::JumpingState::~JumpingState(void) {
+Hero::JumpingState::~JumpingState() {
 
 }
 
@@ -90,7 +90,7 @@ void Hero::JumpingState::stop(State *next_state) {
 /**
  * @brief Updates this state.
  */
-void Hero::JumpingState::update(void) {
+void Hero::JumpingState::update() {
 
   State::update();
 
@@ -115,7 +115,7 @@ void Hero::JumpingState::update(void) {
  *
  * @return the hero's wanted direction between 0 and 7, or -1 if he is stopped
  */
-int Hero::JumpingState::get_wanted_movement_direction8(void) {
+int Hero::JumpingState::get_wanted_movement_direction8() {
   return sprites->get_animation_direction8();
 }
 
@@ -123,7 +123,7 @@ int Hero::JumpingState::get_wanted_movement_direction8(void) {
  * @brief Returns whether the game over sequence can start in the current state.
  * @return true if the game over sequence can start in the current state
  */
-bool Hero::JumpingState::can_start_gameover_sequence(void) {
+bool Hero::JumpingState::can_start_gameover_sequence() {
   return false;
 }
 
@@ -132,7 +132,7 @@ bool Hero::JumpingState::can_start_gameover_sequence(void) {
  * returns the height where the tunic sprite should be displayed.
  * @return the height in pixels, or zero if there is no separate shadow in this state
  */
-int Hero::JumpingState::get_height_above_shadow(void) {
+int Hero::JumpingState::get_height_above_shadow() {
   return movement->get_jump_height();
 }
 
@@ -140,7 +140,7 @@ int Hero::JumpingState::get_height_above_shadow(void) {
  * @brief Returns whether the hero is touching the ground in the current state.
  * @return true if the hero is touching the ground in the current state
  */
-bool Hero::JumpingState::is_touching_ground(void) {
+bool Hero::JumpingState::is_touching_ground() {
   return false;
 }
 
@@ -148,7 +148,7 @@ bool Hero::JumpingState::is_touching_ground(void) {
  * @brief Returns whether the hero ignores the effect of deep water in this state.
  * @return true if the hero ignores the effect of deep water in the current state
  */
-bool Hero::JumpingState::can_avoid_deep_water(void) {
+bool Hero::JumpingState::can_avoid_deep_water() {
   return true;
 }
 
@@ -156,7 +156,7 @@ bool Hero::JumpingState::can_avoid_deep_water(void) {
  * @brief Returns whether the hero ignores the effect of holes in this state.
  * @return true if the hero ignores the effect of holes in the current state
  */
-bool Hero::JumpingState::can_avoid_hole(void) {
+bool Hero::JumpingState::can_avoid_hole() {
   return true;
 }
 
@@ -164,7 +164,7 @@ bool Hero::JumpingState::can_avoid_hole(void) {
  * @brief Returns whether the hero ignores the effect of teletransporters in this state.
  * @return true if the hero ignores the effect of teletransporters in this state
  */
-bool Hero::JumpingState::can_avoid_teletransporter(void) {
+bool Hero::JumpingState::can_avoid_teletransporter() {
   return true;
 }
 
@@ -172,7 +172,7 @@ bool Hero::JumpingState::can_avoid_teletransporter(void) {
  * @brief Returns whether the hero ignores the effect of conveyor belts in this state.
  * @return true if the hero ignores the effect of conveyor belts in this state
  */
-bool Hero::JumpingState::can_avoid_conveyor_belt(void) {
+bool Hero::JumpingState::can_avoid_conveyor_belt() {
   return true;
 }
 
@@ -192,7 +192,7 @@ bool Hero::JumpingState::is_sensor_obstacle(Sensor *sensor) {
  * @brief Returns whether the hero ignores the effect of sensors in this state.
  * @return true if the hero ignores the effect of sensors in this state
  */
-bool Hero::JumpingState::can_avoid_sensor(void) {
+bool Hero::JumpingState::can_avoid_sensor() {
   return true; // however, the sensor is an obstacle if the jump length is important
 }
 
@@ -200,7 +200,7 @@ bool Hero::JumpingState::can_avoid_sensor(void) {
  * @brief Returns whether the hero can be hurt in this state.
  * @return true if the hero can be hurt in this state
  */
-bool Hero::JumpingState::can_be_hurt(void) {
+bool Hero::JumpingState::can_be_hurt() {
   return false;
 }
 

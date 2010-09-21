@@ -35,20 +35,20 @@ class PlayerMovement: public SmoothCollisionMovement {
     int direction8;					/**< current direction of the movement (0 to 7), as defined by the directional keys
 							 * currently pressed by the player (when the movement allows them) or -1*/
 
-    void set_wanted_direction(void);
+    void set_wanted_direction();
 
   public:
 
     // creation and destruction
     PlayerMovement(int speed);
-    ~PlayerMovement(void);
+    ~PlayerMovement();
 
-    void update(void);
+    void update();
 
-    int get_moving_speed(void);
+    int get_moving_speed();
     void set_moving_speed(int moving_speed);
-    int get_wanted_direction8(void);
-    void compute_movement(void);
+    int get_wanted_direction8();
+    void compute_movement();
 };
 
 #endif

@@ -43,7 +43,7 @@ CustomObstacle::CustomObstacle(const std::string &name, Layer layer, int x, int 
 /**
  * @brief Destructor.
  */
-CustomObstacle::~CustomObstacle(void) {
+CustomObstacle::~CustomObstacle() {
 
 }
 
@@ -80,7 +80,7 @@ MapEntity * CustomObstacle::parse(Game *game, std::istream &is, Layer layer, int
  * @brief Returns the type of entity.
  * @return the type of entity
  */
-EntityType CustomObstacle::get_type(void) {
+EntityType CustomObstacle::get_type() {
   return CUSTOM_OBSTACLE;
 }
 

@@ -36,9 +36,9 @@ class ScrollingTilePattern: public SimpleTilePattern {
   public:
 
     ScrollingTilePattern(Obstacle obstacle, int x, int y, int width, int height);
-    ~ScrollingTilePattern(void);
+    ~ScrollingTilePattern();
 
-    static void update(void);
+    static void update();
     void display(Surface *destination, const Rectangle &destination_position, Surface *tileset_image);
 };
 

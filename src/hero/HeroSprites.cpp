@@ -130,7 +130,7 @@ HeroSprites::HeroSprites(Hero *hero, Equipment *equipment):
 /**
  * @brief Destructor.
  */
-HeroSprites::~HeroSprites(void) {
+HeroSprites::~HeroSprites() {
   delete tunic_sprite;
   delete shadow_sprite;
   delete sword_sprite;
@@ -147,7 +147,7 @@ HeroSprites::~HeroSprites(void) {
  * This function must be called at the game beginning
  * and as soon as the hero's equipment is changed.
  */
-void HeroSprites::rebuild_equipment(void) {
+void HeroSprites::rebuild_equipment() {
 
   int animation_direction = -1;
 
@@ -220,7 +220,7 @@ void HeroSprites::rebuild_equipment(void) {
  * @brief Returns whether the sword is currently displayed on the screen.
  * @return true if the sword is currently displayed on the screen
  */
-bool HeroSprites::is_sword_visible(void) {
+bool HeroSprites::is_sword_visible() {
   return equipment->has_ability("sword") && sword_sprite != NULL && sword_sprite->is_animation_started();
 }
 
@@ -228,7 +228,7 @@ bool HeroSprites::is_sword_visible(void) {
  * @brief Returns whether the stars of the sword are currently displayed on the screen.
  * @return true if the stars of the sword are currently displayed on the screen
  */
-bool HeroSprites::is_sword_stars_visible(void) {
+bool HeroSprites::is_sword_stars_visible() {
   return equipment->has_ability("sword") && sword_stars_sprite != NULL && sword_stars_sprite->is_animation_started();
 }
 
@@ -236,7 +236,7 @@ bool HeroSprites::is_sword_stars_visible(void) {
  * @brief Returns whether the shield is currently displayed on the screen.
  * @return true if the shield is currently displayed on the screen
  */
-bool HeroSprites::is_shield_visible(void) {
+bool HeroSprites::is_shield_visible() {
   return equipment->has_ability("shield") && shield_sprite != NULL && shield_sprite->is_animation_started();
 }
 
@@ -244,14 +244,14 @@ bool HeroSprites::is_shield_visible(void) {
  * @brief Returns whether the trail of dust is currently displayed.
  * @return true if the trail of dust is currently displayed
  */
-bool HeroSprites::is_trail_visible(void) {
+bool HeroSprites::is_trail_visible() {
   return trail_sprite->is_animation_started();
 }
 
 /**
  * @brief Stops displaying the sword and the sword stars (if any).
  */
-void HeroSprites::stop_displaying_sword(void) {
+void HeroSprites::stop_displaying_sword() {
 
   if (is_sword_visible()) {
     sword_sprite->stop_animation();
@@ -262,7 +262,7 @@ void HeroSprites::stop_displaying_sword(void) {
 /**
  * @brief Stops displaying the sword stars (if any).
  */
-void HeroSprites::stop_displaying_sword_stars(void) {
+void HeroSprites::stop_displaying_sword_stars() {
 
   if (is_sword_stars_visible()) {
     sword_stars_sprite->stop_animation();
@@ -272,7 +272,7 @@ void HeroSprites::stop_displaying_sword_stars(void) {
 /**
  * @brief Stops displaying the shield (if any).
  */
-void HeroSprites::stop_displaying_shield(void) {
+void HeroSprites::stop_displaying_shield() {
 
   if (equipment->has_ability("shield")) {
     shield_sprite->stop_animation();
@@ -282,7 +282,7 @@ void HeroSprites::stop_displaying_shield(void) {
 /**
  * @brief Stops displaying the trail (if any).
  */
-void HeroSprites::stop_displaying_trail(void) {
+void HeroSprites::stop_displaying_trail() {
   trail_sprite->stop_animation();
 }
 
@@ -290,7 +290,7 @@ void HeroSprites::stop_displaying_trail(void) {
 /**
  * @brief Makes the hero blink for a while.
  */
-void HeroSprites::blink(void) {
+void HeroSprites::blink() {
   tunic_sprite->set_blinking(50);
 
   if (equipment->has_ability("shield")) {
@@ -326,7 +326,7 @@ void HeroSprites::stop_blinking() {
  * @brief Returns whether the hero's sprites are currently blinking.
  * @return true if the hero's sprites are currently blinking
  */
-bool HeroSprites::is_blinking(void) {
+bool HeroSprites::is_blinking() {
   return tunic_sprite->is_blinking();
 }
 
@@ -345,7 +345,7 @@ void HeroSprites::set_clipping_rectangle(const Rectangle &clipping_rectangle) {
  * @brief Returns whether the sprites have currently a walking animation.
  * @return true if the sprites are walking
  */
-bool HeroSprites::is_walking(void) {
+bool HeroSprites::is_walking() {
   return walking;
 }
 
@@ -356,7 +356,7 @@ bool HeroSprites::is_walking(void) {
  *
  * @return the direction of the sprites (0 to 3)
  */
-int HeroSprites::get_animation_direction(void) {
+int HeroSprites::get_animation_direction() {
   return tunic_sprite->get_current_direction();
 }
 
@@ -367,7 +367,7 @@ int HeroSprites::get_animation_direction(void) {
  *
  * @return the direction of the sprites (0 to 7, except diagonal directions)
  */
-int HeroSprites::get_animation_direction8(void) {
+int HeroSprites::get_animation_direction8() {
   return get_animation_direction() * 2;
 }
 
@@ -464,7 +464,7 @@ void HeroSprites::set_animation_direction8(int direction) {
  * @brief Returns whether the sprites animations are finished.
  * @return true if the animation is finished
  */
-bool HeroSprites::is_animation_finished(void) {
+bool HeroSprites::is_animation_finished() {
   return tunic_sprite->is_animation_finished();
 }
 
@@ -472,7 +472,7 @@ bool HeroSprites::is_animation_finished(void) {
  * @brief Returns the current frame of the tunic sprite.
  * @return the current frame
  */
-int HeroSprites::get_current_frame(void) {
+int HeroSprites::get_current_frame() {
   return tunic_sprite->get_current_frame();
 }
 
@@ -481,7 +481,7 @@ int HeroSprites::get_current_frame(void) {
  *
  * Call restore_animation_direction() to restore the direction saved here.
  */
-void HeroSprites::save_animation_direction(void) {
+void HeroSprites::save_animation_direction() {
   this->animation_direction_saved = get_animation_direction();
 }
 
@@ -489,14 +489,14 @@ void HeroSprites::save_animation_direction(void) {
  * @brief Restores the direction of the hero's sprite saved by the last
  * call to save_animation_direction().
  */
-void HeroSprites::restore_animation_direction(void) {
+void HeroSprites::restore_animation_direction() {
   set_animation_direction(animation_direction_saved);
 }
 
 /**
  * @brief Updates the animation of the hero's sprites if necessary.
  */
-void HeroSprites::update(void) {
+void HeroSprites::update() {
 
   // update the frames
   tunic_sprite->update();
@@ -541,7 +541,7 @@ void HeroSprites::update(void) {
 /**
  * @brief Draws the hero's sprites on the map.
  */
-void HeroSprites::display_on_map(void) {
+void HeroSprites::display_on_map() {
 
   int x = hero->get_x();
   int y = hero->get_y();
@@ -628,7 +628,7 @@ void HeroSprites::set_suspended(bool suspended) {
  * This function is called when the sprites have to
  * get back to their first frame.
  */
-void HeroSprites::restart_animation(void) {
+void HeroSprites::restart_animation() {
   tunic_sprite->restart_animation();
 
   if (is_sword_visible()) {
@@ -658,7 +658,7 @@ void HeroSprites::restart_animation(void) {
  * It makes instructions common to all states having a "stopped" animation.
  * (e.g. free or carrying).
  */
-void HeroSprites::set_animation_stopped_common(void) {
+void HeroSprites::set_animation_stopped_common() {
 
   if (hero->is_ground_visible() && hero->get_ground() != GROUND_SHALLOW_WATER) {
     ground_sprite->set_current_animation("stopped");
@@ -669,7 +669,7 @@ void HeroSprites::set_animation_stopped_common(void) {
 /**
  * @brief Starts the basic "stopped" animation of the hero's sprites.
  */
-void HeroSprites::set_animation_stopped_normal(void) {
+void HeroSprites::set_animation_stopped_normal() {
 
   set_animation_stopped_common();
 
@@ -689,7 +689,7 @@ void HeroSprites::set_animation_stopped_normal(void) {
 /**
  * @brief Starts the "stopped" animation of the hero's sprites with the sword loading.
  */
-void HeroSprites::set_animation_stopped_sword_loading(void) {
+void HeroSprites::set_animation_stopped_sword_loading() {
 
   set_animation_stopped_common();
 
@@ -720,7 +720,7 @@ void HeroSprites::set_animation_stopped_sword_loading(void) {
  *
  * If the hero actually carries an item, the carried item also takes a "stopped" animation.
  */
-void HeroSprites::set_animation_stopped_carrying(void) {
+void HeroSprites::set_animation_stopped_carrying() {
 
   set_animation_stopped_common();
   tunic_sprite->set_current_animation("carrying_stopped");
@@ -737,7 +737,7 @@ void HeroSprites::set_animation_stopped_carrying(void) {
  * It makes instructions common to all states having a "walking" animation.
  * (e.g. free or carrying).
  */
-void HeroSprites::set_animation_walking_common(void) {
+void HeroSprites::set_animation_walking_common() {
 
   if (hero->is_ground_visible() && hero->get_ground() != GROUND_SHALLOW_WATER) {
     ground_sprite->set_current_animation("walking");
@@ -749,7 +749,7 @@ void HeroSprites::set_animation_walking_common(void) {
 /**
  * @brief Starts the normal "walking" animation of the hero's sprites.
  */
-void HeroSprites::set_animation_walking_normal(void) {
+void HeroSprites::set_animation_walking_normal() {
 
   set_animation_walking_common();
 
@@ -770,7 +770,7 @@ void HeroSprites::set_animation_walking_normal(void) {
 /**
  * @brief Starts the "walking" animation of the hero's sprites with the sword loading.
  */
-void HeroSprites::set_animation_walking_sword_loading(void) {
+void HeroSprites::set_animation_walking_sword_loading() {
 
   set_animation_walking_common();
 
@@ -801,7 +801,7 @@ void HeroSprites::set_animation_walking_sword_loading(void) {
  *
  * If the hero actually carries an item, the carried item also takes a "walking" animation.
  */
-void HeroSprites::set_animation_walking_carrying(void) {
+void HeroSprites::set_animation_walking_carrying() {
 
   set_animation_walking_common();
 
@@ -828,7 +828,7 @@ void HeroSprites::set_animation_walking_diagonal(int direction8) {
 /**
  * @brief Starts (or restarts) the "sword" animation of the hero's sprites.
  */
-void HeroSprites::set_animation_sword(void) {
+void HeroSprites::set_animation_sword() {
 
   int direction = get_animation_direction();
 
@@ -857,14 +857,14 @@ void HeroSprites::set_animation_sword(void) {
 /**
  * @brief Plays the sound corresponding to the current sword.
  */
-void HeroSprites::play_sword_sound(void) {
+void HeroSprites::play_sword_sound() {
   sword_sound->play();
 }
 
 /**
  * @brief Starts (or restarts) the "sword tapping" animation of the hero's sprites.
  */
-void HeroSprites::set_animation_sword_tapping(void) {
+void HeroSprites::set_animation_sword_tapping() {
 
   int direction = get_animation_direction();
 
@@ -893,7 +893,7 @@ void HeroSprites::set_animation_sword_tapping(void) {
 /**
  * @brief Starts (or restarts) the "spin_attck" animation of the hero's sprites.
  */
-void HeroSprites::set_animation_spin_attack(void) {
+void HeroSprites::set_animation_spin_attack() {
 
   tunic_sprite->set_current_animation("spin_attack");
   sword_sprite->set_current_animation("spin_attack");
@@ -905,7 +905,7 @@ void HeroSprites::set_animation_spin_attack(void) {
 /**
  * @brief Starts the "grabbing" animation of the hero's sprites.
  */
-void HeroSprites::set_animation_grabbing(void) {
+void HeroSprites::set_animation_grabbing() {
 
   tunic_sprite->set_current_animation("grabbing");
   stop_displaying_shield();
@@ -915,7 +915,7 @@ void HeroSprites::set_animation_grabbing(void) {
 /**
  * @brief Starts the "pulling" animation of the hero's sprites.
  */
-void HeroSprites::set_animation_pulling(void) {
+void HeroSprites::set_animation_pulling() {
 
   tunic_sprite->set_current_animation("pulling");
   stop_displaying_shield();
@@ -925,7 +925,7 @@ void HeroSprites::set_animation_pulling(void) {
 /**
  * @brief Starts the "pushing" animation of the hero's sprites.
  */
-void HeroSprites::set_animation_pushing(void) {
+void HeroSprites::set_animation_pushing() {
 
   tunic_sprite->set_current_animation("pushing");
   stop_displaying_shield();
@@ -935,7 +935,7 @@ void HeroSprites::set_animation_pushing(void) {
 /**
  * @brief Starts the "lifting" animation of the hero's sprites.
  */
-void HeroSprites::set_animation_lifting(void) {
+void HeroSprites::set_animation_lifting() {
 
   tunic_sprite->set_current_animation("lifting");
   stop_displaying_shield();
@@ -945,7 +945,7 @@ void HeroSprites::set_animation_lifting(void) {
 /**
  * @brief Starts the "jumping" animation of the hero's sprites.
  */
-void HeroSprites::set_animation_jumping(void) {
+void HeroSprites::set_animation_jumping() {
 
   tunic_sprite->set_current_animation("jumping");
 
@@ -960,7 +960,7 @@ void HeroSprites::set_animation_jumping(void) {
 /**
  * @brief Starts the "hurt" animation of the hero's sprites.
  */
-void HeroSprites::set_animation_hurt(void) {
+void HeroSprites::set_animation_hurt() {
 
   tunic_sprite->set_current_animation("hurt");
   stop_displaying_sword();
@@ -971,7 +971,7 @@ void HeroSprites::set_animation_hurt(void) {
 /**
  * @brief Starts the "plunging" animation of the hero's sprites.
  */
-void HeroSprites::set_animation_plunging(void) {
+void HeroSprites::set_animation_plunging() {
 
   tunic_sprite->set_current_animation("plunging");
   stop_displaying_sword();
@@ -982,7 +982,7 @@ void HeroSprites::set_animation_plunging(void) {
 /**
  * @brief Starts the "falling" animation of the hero's sprites.
  */
-void HeroSprites::set_animation_falling(void) {
+void HeroSprites::set_animation_falling() {
 
   // show the animation
   tunic_sprite->set_current_animation("falling");
@@ -994,7 +994,7 @@ void HeroSprites::set_animation_falling(void) {
 /**
  * @brief Starts the "boomerang" animation of the hero's sprites.
  */
-void HeroSprites::set_animation_boomerang(void) {
+void HeroSprites::set_animation_boomerang() {
   tunic_sprite->set_current_animation("boomerang");
 
   if (equipment->has_ability("shield")) {
@@ -1006,7 +1006,7 @@ void HeroSprites::set_animation_boomerang(void) {
 /**
  * @brief Starts the "bow" animation of the hero's sprites.
  */
-void HeroSprites::set_animation_bow(void) {
+void HeroSprites::set_animation_bow() {
 
   tunic_sprite->set_current_animation("bow");
   stop_displaying_sword();
@@ -1018,7 +1018,7 @@ void HeroSprites::set_animation_bow(void) {
 /**
  * @brief Starts the "brandish" animation of the hero's sprites.
  */
-void HeroSprites::set_animation_brandish(void) {
+void HeroSprites::set_animation_brandish() {
 
   tunic_sprite->set_current_animation("brandish");
   tunic_sprite->set_current_direction(0);
@@ -1030,7 +1030,7 @@ void HeroSprites::set_animation_brandish(void) {
 /**
  * @brief Starts the "victory" animation of the hero's sprites.
  */
-void HeroSprites::set_animation_victory(void) {
+void HeroSprites::set_animation_victory() {
 
   tunic_sprite->set_current_animation("victory");
   tunic_sprite->set_current_direction(0);
@@ -1044,7 +1044,7 @@ void HeroSprites::set_animation_victory(void) {
 /**
  * @brief Starts the "prepare running" animation of the hero's sprites.
  */
-void HeroSprites::set_animation_prepare_running(void) {
+void HeroSprites::set_animation_prepare_running() {
 
   set_animation_walking_normal();
   trail_sprite->set_current_animation("running");
@@ -1053,7 +1053,7 @@ void HeroSprites::set_animation_prepare_running(void) {
 /**
  * @brief Starts the "running" animation of the hero's sprites.
  */
-void HeroSprites::set_animation_running(void) {
+void HeroSprites::set_animation_running() {
 
   set_animation_walking_sword_loading();
   trail_sprite->set_current_animation("running");
@@ -1075,7 +1075,7 @@ void HeroSprites::create_ground(Ground ground) {
 /**
  * @brief Deletes the ground sprite.
  */
-void HeroSprites::destroy_ground(void) {
+void HeroSprites::destroy_ground() {
 
   delete ground_sprite;
   ground_sprite = NULL;
@@ -1084,7 +1084,7 @@ void HeroSprites::destroy_ground(void) {
 /**
  * @brief Plays a sound for the ground displayed under the hero.
  */
-void HeroSprites::play_ground_sound(void) {
+void HeroSprites::play_ground_sound() {
   ground_sound->play();
 }
 

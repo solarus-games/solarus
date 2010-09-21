@@ -42,16 +42,16 @@ class DynamicTile: public MapEntity {
 
     DynamicTile(const std::string &name, Layer layer, int x, int y,
 	int width, int height, int tile_pattern_id, bool visible);
-    ~DynamicTile(void);
+    ~DynamicTile();
     static CreationFunction parse;
 
-    EntityType get_type(void);
+    EntityType get_type();
     void set_map(Map *map);
     bool is_obstacle_for(MapEntity *other);
-    void display_on_map(void);
-    void update(void);
+    void display_on_map();
+    void update();
 
-    bool is_enabled(void);
+    bool is_enabled();
     void set_enabled(bool enabled);
 };
 

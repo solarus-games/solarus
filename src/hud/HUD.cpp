@@ -49,7 +49,7 @@ HUD::HUD(Game *game):
 /**
  * @brief Destructor.
  */
-HUD::~HUD(void) {
+HUD::~HUD() {
 
   for (int i = 0; i < nb_elements; i++) {
     delete elements[i];
@@ -59,7 +59,7 @@ HUD::~HUD(void) {
 /**
  * @brief Makes an icon blink if the corresponding game key is being customized.
  */
-void HUD::update_blinking(void) {
+void HUD::update_blinking() {
 
   // detect whether a key is being customized
   int index = -1;
@@ -108,7 +108,7 @@ void HUD::update_blinking(void) {
 /**
  * @brief Updates the information displayed by HUD.
  */
-void HUD::update(void) {
+void HUD::update() {
 
   // detect when the game is showing a message
   if (game->is_showing_message() && !showing_message) {

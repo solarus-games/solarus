@@ -53,7 +53,7 @@ class Music {
     static SpcDecoder *spc_decoder;  /**< the SPC decoder */
     static float volume;             /**< volume of musics (0.0 to 1.0) */
 
-    void update_playing(void);
+    void update_playing();
 
   public:
 
@@ -61,19 +61,19 @@ class Music {
     static const MusicId unchanged;  /**< special id indicating that the music is the same as before */
 
     Music(const MusicId &music_id);
-    ~Music(void);
+    ~Music();
 
-    static void initialize(void);
-    static void quit(void);
-    static bool is_initialized(void);
-    static void update(void);
+    static void initialize();
+    static void quit();
+    static bool is_initialized();
+    static void update();
 
-    static int get_volume(void);
+    static int get_volume();
     static void set_volume(int volume);
 
-    bool play(void);
-    void stop(void);
-    bool is_paused(void);
+    bool play();
+    void stop();
+    bool is_paused();
     void set_paused(bool pause);
 
     void decode_spc(ALuint destination_buffer, ALsizei nb_samples);

@@ -84,7 +84,7 @@ HudElement::HudElement(KeysEffect *keys_effect, int x, int y, int width, int hei
 /**
  * @brief Destructor.
  */
-HudElement::~HudElement(void) {
+HudElement::~HudElement() {
   delete surface_drawn;
 }
 
@@ -105,7 +105,7 @@ void HudElement::set_position(int x, int y) {
  * You have to call this method from your redifined method to initialize
  * the surface with transparent color.
  */
-void HudElement::rebuild(void) {
+void HudElement::rebuild() {
   surface_drawn->fill_with_color(Color::get_black());
 }
 
@@ -125,7 +125,7 @@ void HudElement::set_visible(bool visible) {
  *
  * @return true if this hud element is visible, false otherwise
  */
-bool HudElement::is_visible(void) {
+bool HudElement::is_visible() {
   return visible;
 }
 
@@ -133,7 +133,7 @@ bool HudElement::is_visible(void) {
  * @brief Returns the current opacity of this element.
  * @return the current opacity, between 0 and 255
  */
-int HudElement::get_opacity(void) {
+int HudElement::get_opacity() {
   return opacity;
 }
 
@@ -170,14 +170,14 @@ void HudElement::set_blinking(bool blinking) {
  * @brief Returns whether this element is blinking.
  * @return true if this element is blinking
  */
-bool HudElement::is_blinking(void) {
+bool HudElement::is_blinking() {
   return blinking;
 }
 
 /**
  * @brief Updates this HUD element.
  */
-void HudElement::update(void) {
+void HudElement::update() {
 
   uint32_t now = System::now();
   if (blinking && now >= next_blink_date) {

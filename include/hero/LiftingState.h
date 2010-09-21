@@ -29,17 +29,17 @@ class Hero::LiftingState: public Hero::State {
     DestructibleItem *item_to_lift;		/**< the item that will be lifted */
     CarriedItem *lifted_item;			/**< the item currently being lifted */
 
-    void throw_item(void);
+    void throw_item();
 
   public:
 
     LiftingState(Hero *hero, DestructibleItem *item_to_lift);
-    ~LiftingState(void);
+    ~LiftingState();
 
     void start(State *previous_state);
     void stop(State *next_state);
-    void update(void);
-    bool can_be_hurt(void);
+    void update();
+    bool can_be_hurt();
 };
 
 #endif

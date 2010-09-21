@@ -35,7 +35,7 @@ Camera::Camera(Map *map):
 /**
  * @brief Destructor.
  */
-Camera::~Camera(void) {
+Camera::~Camera() {
   delete movement;
 }
 
@@ -44,7 +44,7 @@ Camera::~Camera(void) {
  *
  * This function is called continuously.
  */
-void Camera::update(void) {
+void Camera::update() {
 
   int x = position.get_x();
   int y = position.get_y();
@@ -89,7 +89,7 @@ void Camera::update(void) {
  *
  * @return the visible area
  */
-Rectangle & Camera::get_position(void) {
+Rectangle & Camera::get_position() {
   return position;
 }
 
@@ -101,7 +101,7 @@ Rectangle & Camera::get_position(void) {
  *
  * @return true if the camera is fixed on the hero
  */
-bool Camera::is_fixed_on_hero(void) {
+bool Camera::is_fixed_on_hero() {
   return fixed_on_hero;
 }
 
@@ -157,7 +157,7 @@ void Camera::move(MapEntity *entity) {
  * The hero is not supposed to move during this time.
  * Once the movement is finished, the camera starts following the hero again.
  */
-void Camera::restore(void) {
+void Camera::restore() {
   move(map->get_entities()->get_hero());
   restoring = true;
 }

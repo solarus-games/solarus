@@ -33,14 +33,14 @@ Bubble::Bubble(const ConstructionParameters &params):
 /**
  * @brief Destructor.
  */
-Bubble::~Bubble(void) {
+Bubble::~Bubble() {
 
 }
 
 /**
  * @brief Initializes the enemy.
  */
-void Bubble::initialize(void) {
+void Bubble::initialize() {
 
   // attack/defense features
   set_damage(2, 4);
@@ -65,7 +65,7 @@ void Bubble::initialize(void) {
  * because something happened (for example the enemy has just been created,
  * or it was just hurt).
  */
-void Bubble::restart(void) {
+void Bubble::restart() {
   Enemy::restart();
 
   int movement_direction8 = Random::get_number(4) * 2 + 1;
@@ -93,7 +93,7 @@ void Bubble::go(int movement_direction8) {
 /**
  * @brief Updates the enemy.
  */
-void Bubble::update(void) {
+void Bubble::update() {
 
   Enemy::update();
 
@@ -106,7 +106,7 @@ void Bubble::update(void) {
 /**
  * @brief Makes the enemy bounce against a wall.
  */
-void Bubble::bounce(void) {
+void Bubble::bounce() {
 
   static const int dxy[8][2] = {
     {1, 0},

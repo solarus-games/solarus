@@ -33,14 +33,14 @@
 /**
  * @brief Creates a map loader.
  */
-MapLoader::MapLoader(void) {
+MapLoader::MapLoader() {
 
 }
 
 /**
  * @brief Destructor.
  */
-MapLoader::~MapLoader(void) {
+MapLoader::~MapLoader() {
 
 }
 

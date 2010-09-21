@@ -43,7 +43,7 @@ PathMovement::PathMovement(const std::string &path, int speed,
 /**
  * @brief Destructor.
  */
-PathMovement::~PathMovement(void) {
+PathMovement::~PathMovement() {
 
 }
 
@@ -96,7 +96,7 @@ void PathMovement::set_speed(int speed) {
  * @brief Updates the movements: detects the collisions
  * in order to restart the movement.
  */
-void PathMovement::update(void) {
+void PathMovement::update() {
 
   if (!is_suspended() && is_current_move_finished()) {
     start_next_move();
@@ -110,7 +110,7 @@ void PathMovement::update(void) {
  * @return true if the end of the path was reached or the entity 
  * reached an obstacle
  */
-bool PathMovement::is_finished(void) {
+bool PathMovement::is_finished() {
   return finished || is_stopped();
 }
 
@@ -118,7 +118,7 @@ bool PathMovement::is_finished(void) {
  * @brief Returns whether the current move of the path is finished.
  * @return true if the current move is finished
  */
-bool PathMovement::is_current_move_finished(void) {
+bool PathMovement::is_current_move_finished() {
 
   if (snapping) {
     return false;
@@ -141,7 +141,7 @@ bool PathMovement::is_current_move_finished(void) {
  * Before starting the step, if the property must_be_aligned is true,
  * the entity's top-left corner tries to get aligned with the 8*8 squares of the grid.
  */
-void PathMovement::start_next_move(void) {
+void PathMovement::start_next_move() {
 
 //  std::cout << "PathMovement::start_next_move()\n";
 
@@ -252,7 +252,7 @@ void PathMovement::start_next_move(void) {
  * @brief Returns the direction of the current move, between 0 and 7.
  * @return the direction of the current move
  */
-int PathMovement::get_current_direction(void) {
+int PathMovement::get_current_direction() {
   return current_direction;
 }
 
@@ -276,7 +276,7 @@ const std::string PathMovement::get_random_path() {
  * @brief Returns the distance covered by this movement since its beginning.
  * @return the total distance covered in pixels
  */
-int PathMovement::get_total_distance_covered(void) {
+int PathMovement::get_total_distance_covered() {
   return total_distance_covered;
 }
 
@@ -284,7 +284,7 @@ int PathMovement::get_total_distance_covered(void) {
  * @brief Returns an xy value representing the total distance of this movement.
  * @return the total x and y distance of this movement
  */
-Rectangle PathMovement::get_xy_change(void) {
+Rectangle PathMovement::get_xy_change() {
 
   Rectangle xy;
   

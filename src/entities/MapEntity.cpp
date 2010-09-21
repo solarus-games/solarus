@@ -110,7 +110,7 @@ const Rectangle MapEntity::directions_to_xy_moves[] = {
 /**
  * @brief Creates a map entity without specifying its properties now.
  */
-MapEntity::MapEntity(void):
+MapEntity::MapEntity():
   map(NULL), game(NULL), layer(LAYER_LOW), name(""), direction(0), first_sprite(NULL), visible(true),
   movement(NULL), old_movement(NULL), suspended(false), when_suspended(0), being_removed(false) {
 
@@ -162,7 +162,7 @@ MapEntity::MapEntity(const std::string &name, int direction, Layer layer,
  *
  * The sprite and the movement of the entity are deleted (if any).
  */
-MapEntity::~MapEntity(void) {
+MapEntity::~MapEntity() {
 
   std::map<std::string, Sprite*>::iterator it;
   for (it = sprites.begin(); it != sprites.end(); it++) {
@@ -180,7 +180,7 @@ MapEntity::~MapEntity(void) {
  * @brief Returns whether this entity is the hero controlled by the player.
  * @return true if this entity is the hero
  */
-bool MapEntity::is_hero(void) {
+bool MapEntity::is_hero() {
   return get_type() == HERO;
 }
 
@@ -192,7 +192,7 @@ bool MapEntity::is_hero(void) {
  *
  * @return true if this type of entity can be obstacle for other entities
  */
-bool MapEntity::can_be_obstacle(void) {
+bool MapEntity::can_be_obstacle() {
   return entity_types_features[get_type()].can_be_obstacle;
 }
 
@@ -206,7 +206,7 @@ bool MapEntity::can_be_obstacle(void) {
  *
  * @return true if this type of entity can detect other entities
  */
-bool MapEntity::can_detect_entities(void) {
+bool MapEntity::can_detect_entities() {
   return entity_types_features[get_type()].can_detect_entities;
 }
 
@@ -218,7 +218,7 @@ bool MapEntity::can_detect_entities(void) {
  *
  * @return true if this type of entity can be displayed
  */
-bool MapEntity::can_be_displayed(void) {
+bool MapEntity::can_be_displayed() {
   return entity_types_features[get_type()].can_be_displayed;
 }
 
@@ -234,7 +234,7 @@ bool MapEntity::can_be_displayed(void) {
  *
  * @return true if this type of entity is displayed at the same level as the hero
  */
-bool MapEntity::is_displayed_in_y_order(void) {
+bool MapEntity::is_displayed_in_y_order() {
   return entity_types_features[get_type()].is_displayed_in_y_order;
 }
 
@@ -258,7 +258,7 @@ void MapEntity::set_map(Map *map) {
  * @brief Returns the map where this entity is.
  * @return the map
  */
-Map * MapEntity::get_map(void) {
+Map * MapEntity::get_map() {
   return map;
 }
 
@@ -266,7 +266,7 @@ Map * MapEntity::get_map(void) {
  * @brief Returns the game that is running the map where this entity is.
  * @return the game
  */
-Game * MapEntity::get_game(void) {
+Game * MapEntity::get_game() {
   return game;
 }
 
@@ -276,7 +276,7 @@ Game * MapEntity::get_game(void) {
  * The entity will be removed from the map and destroyed.
  * This function is equivalent to calling map->get_entities()->remove_entity(this).
  */
-void MapEntity::remove_from_map(void) {
+void MapEntity::remove_from_map() {
 
   map->get_entities()->remove_entity(this);
 }
@@ -288,7 +288,7 @@ void MapEntity::remove_from_map(void) {
  * to the list of entities that will be removed from the map
  * and deleted from the memory as soon as possible.
  */
-void MapEntity::notify_being_removed(void) {
+void MapEntity::notify_being_removed() {
 
   this->being_removed = true;
 }
@@ -301,7 +301,7 @@ void MapEntity::notify_being_removed(void) {
  *
  * @return true if this entity is about to be deleted
  */
-bool MapEntity::is_being_removed(void) {
+bool MapEntity::is_being_removed() {
   return being_removed;
 }
 
@@ -309,7 +309,7 @@ bool MapEntity::is_being_removed(void) {
  * @brief Returns the layer of the entity on the map.
  * @return the layer of the entity on the map
  */
-Layer MapEntity::get_layer(void) {
+Layer MapEntity::get_layer() {
   return layer;
 }
 
@@ -333,7 +333,7 @@ void MapEntity::set_layer(Layer layer) {
  *
  * Redefine it if you need to be notified.
  */
-void MapEntity::notify_layer_changed(void) {
+void MapEntity::notify_layer_changed() {
   // nothing done by default
 }
 
@@ -346,7 +346,7 @@ void MapEntity::notify_layer_changed(void) {
  *
  * @return the direction of the entity
  */
-int MapEntity::get_direction(void) {
+int MapEntity::get_direction() {
   return direction;
 }
 
@@ -362,7 +362,7 @@ void MapEntity::set_direction(int direction) {
  * @brief Returns the current x position of the entity.
  * @return the x position of the entity
  */
-int MapEntity::get_x(void) {
+int MapEntity::get_x() {
   return bounding_box.get_x() + origin.get_x();
 }
 
@@ -370,7 +370,7 @@ int MapEntity::get_x(void) {
  * @brief Returns the current y position of the entity.
  * @return the y position of the entity
  */
-int MapEntity::get_y(void) {
+int MapEntity::get_y() {
   return bounding_box.get_y() + origin.get_y();
 }
 
@@ -403,7 +403,7 @@ void MapEntity::set_y(int y) {
  *
  * @return the coordinates of the entity on the map
  */
-const Rectangle MapEntity::get_xy(void) {
+const Rectangle MapEntity::get_xy() {
   return Rectangle(get_x(), get_y());
 }
 
@@ -435,7 +435,7 @@ void MapEntity::set_xy(const Rectangle &xy) {
  * @brief Returns the x position of the entity's top-left corner.
  * @return the x position of the entity's top-left corner
  */
-int MapEntity::get_top_left_x(void) {
+int MapEntity::get_top_left_x() {
   return bounding_box.get_x();
 }
 
@@ -443,7 +443,7 @@ int MapEntity::get_top_left_x(void) {
  * @brief Returns the y position of the entity's top-left corner.
  * @return the y position of the entity's top-left corner
  */
-int MapEntity::get_top_left_y(void) {
+int MapEntity::get_top_left_y() {
   return bounding_box.get_y();
 }
 
@@ -480,7 +480,7 @@ void MapEntity::set_top_left_xy(int x, int y) {
  * @brief Returns the width of the entity.
  * @return the width of the entity
  */
-int MapEntity::get_width(void) {
+int MapEntity::get_width() {
   return bounding_box.get_width();
 }
 
@@ -488,7 +488,7 @@ int MapEntity::get_width(void) {
  * @brief Returns the height of the entity.
  * @return the height of the entity
  */
-int MapEntity::get_height(void) {
+int MapEntity::get_height() {
   return bounding_box.get_height();
 }
 
@@ -517,7 +517,7 @@ void MapEntity::set_size(const Rectangle &size) {
  *
  * @return the position and size of the entity
  */
-const Rectangle & MapEntity::get_bounding_box(void) {
+const Rectangle & MapEntity::get_bounding_box() {
   return bounding_box;
 }
 
@@ -541,7 +541,7 @@ void MapEntity::set_bounding_box(const Rectangle &bounding_box) {
  * Otherwise, you have to call set_size() and set_origin()
  * explicitely.
  */
-void MapEntity::set_bounding_box_from_sprite(void) {
+void MapEntity::set_bounding_box_from_sprite() {
 
   Sprite *sprite = get_sprite();
   set_size(sprite->get_size());
@@ -552,7 +552,7 @@ void MapEntity::set_bounding_box_from_sprite(void) {
  * @brief Returns whether the entity's bounding box is aligned with the 8*8 grid of the map.
  * @return true if the entity's bounding box is aligned
  */
-bool MapEntity::is_aligned_to_grid(void) {
+bool MapEntity::is_aligned_to_grid() {
   return is_x_aligned_to_grid() && is_y_aligned_to_grid();
 }
 
@@ -560,7 +560,7 @@ bool MapEntity::is_aligned_to_grid(void) {
  * @brief Returns whether the entity's bounding box is aligned horizontally with the 8*8 grid of the map.
  * @return true if the entity's bounding box is aligned hotizontally
  */
-bool MapEntity::is_x_aligned_to_grid(void) {
+bool MapEntity::is_x_aligned_to_grid() {
   return get_top_left_x() % 8 == 0;
 }
 
@@ -568,7 +568,7 @@ bool MapEntity::is_x_aligned_to_grid(void) {
  * @brief Returns whether the entity's bounding box is aligned vertically with the 8*8 grid of the map.
  * @return true if the entity's bounding box is aligned vertically
  */
-bool MapEntity::is_y_aligned_to_grid(void) {
+bool MapEntity::is_y_aligned_to_grid() {
   return get_top_left_y() % 8 == 0;
 }
 
@@ -577,7 +577,7 @@ bool MapEntity::is_y_aligned_to_grid(void) {
  *
  * This function does not check the collisions with obstacles.
  */
-void MapEntity::set_aligned_to_grid(void) {
+void MapEntity::set_aligned_to_grid() {
 
   int x = get_top_left_x() + 4;
   int y = get_top_left_y() + 4;
@@ -595,7 +595,7 @@ void MapEntity::set_aligned_to_grid(void) {
  *
  * @return the coordinates of the point the entity is looking at
  */
-const Rectangle MapEntity::get_facing_point(void) {
+const Rectangle MapEntity::get_facing_point() {
   return Rectangle(-1, -1);
 }
 
@@ -628,7 +628,7 @@ void MapEntity::set_facing_entity(Detector *detector) {
  * @brief Returns the coordinates of the center point of the entity's rectangle.
  * @return the coordinates of the center point of the entity
  */
-const Rectangle MapEntity::get_center_point(void) {
+const Rectangle MapEntity::get_center_point() {
   return bounding_box.get_center();
 }
 
@@ -636,7 +636,7 @@ const Rectangle MapEntity::get_center_point(void) {
  * @brief Returns the name of the entity (if any).
  * @return the name of the entity, or an empty string if the entity is not identifiable
  */
-const std::string& MapEntity::get_name(void) const {
+const std::string& MapEntity::get_name() const {
   return name;
 }
 
@@ -654,7 +654,7 @@ bool MapEntity::has_prefix(const std::string &prefix) {
  * relative to the top-left corner of its rectangle.
  * @return the origin point
  */
-const Rectangle & MapEntity::get_origin(void) {
+const Rectangle & MapEntity::get_origin() {
   return origin;
 }
 
@@ -683,7 +683,7 @@ void MapEntity::set_origin(const Rectangle &origin) {
  * @brief Returns the number of sprites of this entity.
  * @return the number of sprites created
  */
-int MapEntity::get_nb_sprites(void) {
+int MapEntity::get_nb_sprites() {
   return sprites.size();
 }
 
@@ -691,7 +691,7 @@ int MapEntity::get_nb_sprites(void) {
  * @brief Returns whether the entity has at least one sprite.
  * @return true if the entity has at least one sprite.
  */
-bool MapEntity::has_sprite(void) {
+bool MapEntity::has_sprite() {
   return sprites.size() != 0;
 }
 
@@ -699,7 +699,7 @@ bool MapEntity::has_sprite(void) {
  * @brief Returns the sprite created with the first call to create_sprite() for this entity.
  * @return the first sprite created
  */
-Sprite * MapEntity::get_sprite(void) {
+Sprite * MapEntity::get_sprite() {
   return first_sprite;
 }
 
@@ -758,7 +758,7 @@ void MapEntity::remove_sprite(const SpriteAnimationSetId &id) {
 /**
  * @brief Removes and destroys all sprites of this entity.
  */
-void MapEntity::remove_sprites(void) {
+void MapEntity::remove_sprites() {
   
   std::map<std::string, Sprite*>::iterator it;
   for (it = sprites.begin(); it != sprites.end(); it++) {
@@ -771,7 +771,7 @@ void MapEntity::remove_sprites(void) {
  * @brief Returns whether this entity is currently visible.
  * @return true if this entity is currently visible
  */
-bool MapEntity::is_visible(void) {
+bool MapEntity::is_visible() {
   return visible;
 }
 
@@ -787,7 +787,7 @@ void MapEntity::set_visible(bool visible) {
  * @brief Returns the current movement of the entity.
  * @return the entity's movement, or NULL if there is no movement
  */
-Movement * MapEntity::get_movement(void) {
+Movement * MapEntity::get_movement() {
   return movement;
 }
 
@@ -819,7 +819,7 @@ void MapEntity::set_movement(Movement *movement) {
  * The movement object will be destroyed at the next cycle,
  * thus this function can be called by the movement itself.
  */
-void MapEntity::clear_movement(void) {
+void MapEntity::clear_movement() {
 
   if (old_movement != NULL) {
     delete old_movement;
@@ -845,7 +845,7 @@ void MapEntity::notify_movement_tried(bool success) {
  *
  * It checks collisions with the detectors on the map.
  */
-void MapEntity::notify_position_changed(void) {
+void MapEntity::notify_position_changed() {
 
   map->check_collision_with_detectors(this);
 
@@ -865,7 +865,7 @@ void MapEntity::notify_position_changed(void) {
  *
  * By default, nothing is done.
  */
-void MapEntity::notify_movement_changed(void) {
+void MapEntity::notify_movement_changed() {
 }
 
 /**
@@ -897,7 +897,7 @@ bool MapEntity::is_obstacle_for(MapEntity *other) {
  *
  * @return true if this entity can collide with entities that are on another layer
  */
-bool MapEntity::has_layer_independent_collisions(void) {
+bool MapEntity::has_layer_independent_collisions() {
   return false;
 }
 
@@ -908,7 +908,7 @@ bool MapEntity::has_layer_independent_collisions(void) {
  *
  * @return true if the water tiles are currently an obstacle for this entity
  */
-bool MapEntity::is_water_obstacle(void) {
+bool MapEntity::is_water_obstacle() {
   return true;
 }
 
@@ -919,7 +919,7 @@ bool MapEntity::is_water_obstacle(void) {
  *
  * @return true if the holes are currently an obstacle for this entity
  */
-bool MapEntity::is_hole_obstacle(void) {
+bool MapEntity::is_hole_obstacle() {
   return true;
 }
 
@@ -930,7 +930,7 @@ bool MapEntity::is_hole_obstacle(void) {
  *
  * @return true if the ladders are currently an obstacle for this entity
  */
-bool MapEntity::is_ladder_obstacle(void) {
+bool MapEntity::is_ladder_obstacle() {
   return true;
 }
 
@@ -1087,7 +1087,7 @@ bool MapEntity::is_destructible_item_obstacle(DestructibleItem *destructible_ite
  *
  * @return true if the sword is ignored
  */
-bool MapEntity::is_sword_ignored(void) {
+bool MapEntity::is_sword_ignored() {
   return false;
 }
 
@@ -1195,7 +1195,7 @@ int MapEntity::get_distance(MapEntity *other) {
  * There is no guarantee of success: if no free position is found, the entity is not moved.
  */
 /* I think this function should never be used 
-void MapEntity::ensure_no_obstacles(void) {
+void MapEntity::ensure_no_obstacles() {
 
   Rectangle collision_box = get_rectangle();
 
@@ -1336,7 +1336,7 @@ void MapEntity::notify_attacked_enemy(EnemyAttack attack, Enemy *victim, int res
  * @brief Returns whether the movement and the animations of this entity are suspended.
  * @return true if the movement and the animations are suspended
  */
-bool MapEntity::is_suspended(void) {
+bool MapEntity::is_suspended() {
   return suspended;
 }
 
@@ -1403,7 +1403,7 @@ void MapEntity::start_fading(int direction) {
  * for other treatments but don't forget to call this method
  * to handle the movement and the sprites.
  */
-void MapEntity::update(void) {
+void MapEntity::update() {
 
   // update the sprites
   std::map<std::string, Sprite*>::iterator it;
@@ -1433,7 +1433,7 @@ void MapEntity::update(void) {
  *
  * By default, this function displays the entity's sprites (if any).
  */
-void MapEntity::display_on_map(void) {
+void MapEntity::display_on_map() {
 
   if (is_visible()) {
     // display the sprites

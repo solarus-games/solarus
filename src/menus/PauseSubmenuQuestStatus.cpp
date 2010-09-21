@@ -153,7 +153,7 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *ga
 /**
  * @brief Destructor.
  */
-PauseSubmenuQuestStatus::~PauseSubmenuQuestStatus(void) {
+PauseSubmenuQuestStatus::~PauseSubmenuQuestStatus() {
 
   delete cursor_sprite;
   delete quest_items_surface;
@@ -271,7 +271,7 @@ void PauseSubmenuQuestStatus::key_pressed(GameControls::GameKey key) {
 /**
  * @brief Updates this submenu.
  */
-void PauseSubmenuQuestStatus::update(void) {
+void PauseSubmenuQuestStatus::update() {
   cursor_sprite->update();
 }
 

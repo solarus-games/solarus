@@ -44,7 +44,7 @@ MagicBar::MagicBar(Game *game, int x, int y):
 /**
  * @brief Destructor.
  */
-MagicBar::~MagicBar(void) {
+MagicBar::~MagicBar() {
   delete img_magic_bar;
   delete sprite_magic_bar_container;
 }
@@ -58,14 +58,14 @@ MagicBar::~MagicBar(void) {
  * @return true if this hud element is visible, i.e. if
  * the player has a magic bar
  */
-bool MagicBar::is_visible(void) {
+bool MagicBar::is_visible() {
   return max_magic_displayed > 0;
 }
 
 /**
  * @brief Updates the magic bar level displayed.
  */
-void MagicBar::update(void) {
+void MagicBar::update() {
 
   HudElement::update();
 
@@ -139,7 +139,7 @@ void MagicBar::update(void) {
 /**
  * @brief Redraws the magic bar on the surface.
  */
-void MagicBar::rebuild(void) {
+void MagicBar::rebuild() {
 
   HudElement::rebuild();
 

@@ -94,7 +94,7 @@ CarriedItem::CarriedItem(Hero *hero, DestructibleItem *destructible_item):
 /**
  * @brief Destructor.
  */
-CarriedItem::~CarriedItem(void) {
+CarriedItem::~CarriedItem() {
   delete shadow_sprite;
 }
 
@@ -114,7 +114,7 @@ EntityType CarriedItem::get_type() {
  *
  * @return true if this type of entity can be obstacle for other entities
  */
-bool CarriedItem::can_be_obstacle(void) {
+bool CarriedItem::can_be_obstacle() {
   return false; 
 }
 
@@ -128,7 +128,7 @@ bool CarriedItem::can_be_obstacle(void) {
  *
  * @return true if this type of entity can detect other entities
  */
-bool CarriedItem::can_detect_entities(void) {
+bool CarriedItem::can_detect_entities() {
   return false;
 }
 
@@ -140,7 +140,7 @@ bool CarriedItem::can_detect_entities(void) {
  *
  * @return true if this type of entity can be displayed
  */
-bool CarriedItem::can_be_displayed(void) {
+bool CarriedItem::can_be_displayed() {
   return true; 
 }
 
@@ -156,7 +156,7 @@ bool CarriedItem::can_be_displayed(void) {
  *
  * @return true if this type of entity is displayed at the same level as the hero
  */
-bool CarriedItem::is_displayed_in_y_order(void) {
+bool CarriedItem::is_displayed_in_y_order() {
   return true;
 }
 
@@ -164,7 +164,7 @@ bool CarriedItem::is_displayed_in_y_order(void) {
  * @brief Returns the damage this item can cause to ennemies.
  * @return the damage on enemies
  */
-int CarriedItem::get_damage_on_enemies(void) {
+int CarriedItem::get_damage_on_enemies() {
   return damage_on_enemies;
 }
 
@@ -174,7 +174,7 @@ int CarriedItem::get_damage_on_enemies(void) {
  * This function is called when the hero stops walking while carrying the item.
  * The item also stops moving.
  */
-void CarriedItem::set_animation_stopped(void) {
+void CarriedItem::set_animation_stopped() {
 
   if (!is_lifting && !is_throwing) {
     std::string animation = will_explode_soon() ? "stopped_explosion_soon" : "stopped";
@@ -188,7 +188,7 @@ void CarriedItem::set_animation_stopped(void) {
  * This function is called when the hero starts walking while carrying the item.
  * The item moves like him.
  */
-void CarriedItem::set_animation_walking(void) {
+void CarriedItem::set_animation_walking() {
   if (!is_lifting && !is_throwing) {
     std::string animation = will_explode_soon() ? "walking_explosion_soon" : "walking";
     get_sprite()->set_current_animation(animation);
@@ -229,7 +229,7 @@ void CarriedItem::throw_item(int direction) {
  * @brief Returns whether the item is being lifted.
  * @return true if the item is being lifted
  */
-bool CarriedItem::is_being_lifted(void) {
+bool CarriedItem::is_being_lifted() {
   return is_lifting;
 }
 
@@ -237,7 +237,7 @@ bool CarriedItem::is_being_lifted(void) {
  * @brief Returns whether the item is being thrown.
  * @return true if the item is being thrown
  */
-bool CarriedItem::is_being_thrown(void) {
+bool CarriedItem::is_being_thrown() {
   return is_throwing;
 }
  
@@ -245,14 +245,14 @@ bool CarriedItem::is_being_thrown(void) {
  * @brief Returns whether the item is about to explode.
  * @return true if the item is about to explode 
  */
-bool CarriedItem::will_explode_soon(void) {
+bool CarriedItem::will_explode_soon() {
   return can_explode() && System::now() >= explosion_date - 1500;
 }
 
 /**
  * @brief Destroys the item when it is being thrown.
  */
-void CarriedItem::break_item(void) {
+void CarriedItem::break_item() {
 
   if (is_throwing && throwing_direction != 3) {
     // destroy the item where it is actually displayed
@@ -282,7 +282,7 @@ void CarriedItem::break_item(void) {
  *
  * @return true if the item is broken
  */
-bool CarriedItem::is_broken(void) {
+bool CarriedItem::is_broken() {
   return is_breaking && (get_sprite()->is_animation_finished() || can_explode());
 }
 
@@ -290,7 +290,7 @@ bool CarriedItem::is_broken(void) {
  * @brief Returns whether the item can explode.
  * @return true if the item will explode
  */
-bool CarriedItem::can_explode(void) {
+bool CarriedItem::can_explode() {
   return explosion_date != 0;
 }
 
@@ -322,7 +322,7 @@ void CarriedItem::set_suspended(bool suspended) {
 /**
  * @brief This function is called repeatedly.
  */
-void CarriedItem::update(void) {
+void CarriedItem::update() {
 
   // update the sprite and the position
   MapEntity::update();
@@ -391,7 +391,7 @@ void CarriedItem::update(void) {
  * This is a redefinition of MapEntity::display_on_map()
  * to display the shadow independently of the item movement.
  */
-void CarriedItem::display_on_map(void) {
+void CarriedItem::display_on_map() {
 
   if (!is_throwing) {
     // display the sprite normally
@@ -467,7 +467,7 @@ bool CarriedItem::is_stairs_obstacle(Stairs *stairs) {
  * @brief Returns whether a water tile is currently considered as an obstacle for this entity.
  * @return true if the water tiles are currently an obstacle for this entity
  */
-bool CarriedItem::is_water_obstacle(void) {
+bool CarriedItem::is_water_obstacle() {
   return false;
 }
 
@@ -475,7 +475,7 @@ bool CarriedItem::is_water_obstacle(void) {
  * @brief Returns whether a hole is currently considered as an obstacle for this entity.
  * @return true if the holes are currently an obstacle for this entity
  */
-bool CarriedItem::is_hole_obstacle(void) {
+bool CarriedItem::is_hole_obstacle() {
   return false;
 }
 
@@ -483,7 +483,7 @@ bool CarriedItem::is_hole_obstacle(void) {
  * @brief Returns whether a ladder is currently considered as an obstacle for this entity.
  * @return true if the ladders are currently an obstacle for this entity
  */
-bool CarriedItem::is_ladder_obstacle(void) {
+bool CarriedItem::is_ladder_obstacle() {
   return false;
 }
 

@@ -64,17 +64,17 @@ class PauseSubmenuMap: public PauseSubmenu {
     Surface *dungeon_map_img;
     Sprite *hero_point_sprite;
 
-    void load_dungeon_map_image(void);
+    void load_dungeon_map_image();
     static void to_dungeon_minimap_coordinates(const Rectangle &floor_coords,
 	Rectangle &minimap_coords, const Rectangle &floor_size);
 
   public:
 
     PauseSubmenuMap(PauseMenu *pause_menu, Game *game);
-    ~PauseSubmenuMap(void);
+    ~PauseSubmenuMap();
 
     void key_pressed(GameControls::GameKey key);
-    void update(void);
+    void update();
     void display(Surface *destination);
     void display_world_map(Surface *destination);
     void display_dungeon_map(Surface *destination);

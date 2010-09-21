@@ -42,7 +42,7 @@ TransitionFade::TransitionFade(Transition::Direction direction):
 /**
  * @brief Destructor.
  */
-TransitionFade::~TransitionFade(void) {
+TransitionFade::~TransitionFade() {
 
 }
 
@@ -60,7 +60,7 @@ void TransitionFade::set_delay(uint32_t delay) {
 /**
  * @brief Starts this transition effect.
  */
-void TransitionFade::start(void) {
+void TransitionFade::start() {
   alpha = alpha_start;
   next_frame_date = System::now();
 }
@@ -69,7 +69,7 @@ void TransitionFade::start(void) {
  * @brief Returns whether the transition effect is started and not finished yet.
  * @return true if the transition effect is started
  */
-bool TransitionFade::is_started(void) {
+bool TransitionFade::is_started() {
   return alpha != -1 && !is_finished();
 }
 
@@ -77,7 +77,7 @@ bool TransitionFade::is_started(void) {
  * @brief Returns whether the transition effect is finished.
  * @return true
  */
-bool TransitionFade::is_finished(void) {
+bool TransitionFade::is_finished() {
   return alpha == alpha_limit;
 }
 
@@ -86,7 +86,7 @@ bool TransitionFade::is_finished(void) {
  *
  * This function should be called repeatedly while the transition exists.
  */
-void TransitionFade::update(void) {
+void TransitionFade::update() {
 
   if (!is_started()) {
     return;

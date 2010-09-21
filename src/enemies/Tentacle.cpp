@@ -33,14 +33,14 @@ Tentacle::Tentacle(const ConstructionParameters &params):
 /**
  * @brief Destructor.
  */
-Tentacle::~Tentacle(void) {
+Tentacle::~Tentacle() {
 
 }
 
 /**
  * @brief Initializes the enemy.
  */
-void Tentacle::initialize(void) {
+void Tentacle::initialize() {
 
   // attack/defense features
   set_damage(2);

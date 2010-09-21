@@ -52,7 +52,7 @@ Chest::Chest(const std::string &name, Layer layer, int x, int y,
 /**
  * @brief Destructor.
  */
-Chest::~Chest(void) {
+Chest::~Chest() {
 
   if (treasure != NULL && !treasure_given) {
     // delete the treasure only if the player didn't take it
@@ -103,7 +103,7 @@ EntityType Chest::get_type() {
  *
  * @return true if this entity is displayed at the same level as the hero
  */
-bool Chest::is_displayed_in_y_order(void) {
+bool Chest::is_displayed_in_y_order() {
   return big_chest;
 }
 
@@ -119,7 +119,7 @@ bool Chest::is_obstacle_for(MapEntity *other) {
 /**
  * @brief Creates the chest sprite depending on its size and the savegame.
  */
-void Chest::initialize_sprite(void) {
+void Chest::initialize_sprite() {
 
   // create the sprite
   create_sprite("entities/chest");
@@ -164,7 +164,7 @@ void Chest::set_visible(bool visible) {
  * @brief Returns whether the player has found the treasure in this chest.
  * @return true if the chest is open
  */
-bool Chest::is_open(void) {
+bool Chest::is_open() {
   return open;
 }
 
@@ -238,7 +238,7 @@ void Chest::notify_collision(MapEntity *entity_overlapping, CollisionMode collis
  * This is a redefinition of MapEntity::update()
  * the handle the chest opening.
  */
-void Chest::update(void) {
+void Chest::update() {
 
   if (is_open() && !suspended) {
 
@@ -290,7 +290,7 @@ void Chest::update(void) {
  * when the hero is facing this detector, and the action icon lets him do this.
  * The hero opens the chest if possible.
  */
-void Chest::action_key_pressed(void) {
+void Chest::action_key_pressed() {
 
   KeysEffect *keys_effect = game->get_keys_effect();
   Hero *hero = game->get_hero();

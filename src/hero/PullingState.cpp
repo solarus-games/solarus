@@ -35,7 +35,7 @@ Hero::PullingState::PullingState(Hero *hero):
 /**
  * @brief Destructor.
  */
-Hero::PullingState::~PullingState(void) {
+Hero::PullingState::~PullingState() {
 
 }
 
@@ -66,7 +66,7 @@ void Hero::PullingState::stop(State *next_state) {
 /**
  * @brief Updates this state.
  */
-void Hero::PullingState::update(void) {
+void Hero::PullingState::update() {
 
   State::update();
 
@@ -130,7 +130,7 @@ void Hero::PullingState::update(void) {
  * @brief Returns whether the hero is grabbing or pulling an entity in this state.
  * @return true if the hero is grabbing or pulling an entity
  */
-bool Hero::PullingState::is_grabbing_or_pulling(void) {
+bool Hero::PullingState::is_grabbing_or_pulling() {
   return true;
 }
 
@@ -138,14 +138,14 @@ bool Hero::PullingState::is_grabbing_or_pulling(void) {
  * @brief Returns whether the hero is grabbing and moving an entity in this state.
  * @return true if the hero is grabbing and moving an entity
  */
-bool Hero::PullingState::is_moving_grabbed_entity(void) {
+bool Hero::PullingState::is_moving_grabbed_entity() {
   return pulled_entity != NULL;
 }
 
 /**
  * @brief Notifies the hero that the entity he is pulling cannot move any more because of a collision.
  */
-void Hero::PullingState::notify_grabbed_entity_collision(void) {
+void Hero::PullingState::notify_grabbed_entity_collision() {
 
   // the hero has moved one pixel too much
   // because he moved before the block, not knowing that the block would not follow him
@@ -173,7 +173,7 @@ void Hero::PullingState::notify_grabbed_entity_collision(void) {
  * hero or the entity collides with an obstacle or when
  * the hero's movement is finished.
  */
-void Hero::PullingState::stop_moving_pulled_entity(void) {
+void Hero::PullingState::stop_moving_pulled_entity() {
 
   pulled_entity = NULL;
   hero->clear_movement();
@@ -184,7 +184,7 @@ void Hero::PullingState::stop_moving_pulled_entity(void) {
  * @brief Returns whether the hero can be hurt in this state.
  * @return true if the hero can be hurt in this state
  */
-bool Hero::PullingState::can_be_hurt(void) {
+bool Hero::PullingState::can_be_hurt() {
   return !is_moving_grabbed_entity();
 }
 

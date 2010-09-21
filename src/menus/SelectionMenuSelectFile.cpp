@@ -42,7 +42,7 @@ SelectionMenuSelectFile::SelectionMenuSelectFile(SelectionMenu *menu):
 /**
  * @brief Destructor.
  */
-SelectionMenuSelectFile::~SelectionMenuSelectFile(void) {
+SelectionMenuSelectFile::~SelectionMenuSelectFile() {
 
 }
 

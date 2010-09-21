@@ -47,7 +47,7 @@ Map::Map(MapId id):
 /**
  * @brief Destructor.
  */
-Map::~Map(void) {
+Map::~Map() {
 
   if (is_loaded()) {
     unload();
@@ -58,7 +58,7 @@ Map::~Map(void) {
  * @brief Returns the id of the map.
  * @return the map id
  */
-MapId Map::get_id(void) {
+MapId Map::get_id() {
   return id;
 }
 
@@ -66,7 +66,7 @@ MapId Map::get_id(void) {
  * @brief Returns the tileset associated to this map.
  * @return the tileset
  */
-Tileset * Map::get_tileset(void) {
+Tileset * Map::get_tileset() {
   return tileset;
 }
 
@@ -74,7 +74,7 @@ Tileset * Map::get_tileset(void) {
  * @brief Returns this map's script.
  * @return the script
  */
-MapScript * Map::get_script(void) {
+MapScript * Map::get_script() {
   return script;
 }
 
@@ -82,7 +82,7 @@ MapScript * Map::get_script(void) {
  * @brief Returns the world where this map is.
  * @return 0 if this map is outside, -1 if it is inside, 1 to 20 if it is in a dungeon
  */
-int Map::get_world_number(void) {
+int Map::get_world_number() {
   return world;
 }
 
@@ -90,7 +90,7 @@ int Map::get_world_number(void) {
  * @brief Returns whether this map belongs to a dungeon.
  * @return true if this map is in a dungeon
  */
-bool Map::is_in_dungeon(void) {
+bool Map::is_in_dungeon() {
   return get_world_number() > 0;
 }
 
@@ -98,7 +98,7 @@ bool Map::is_in_dungeon(void) {
  * @brief Returns whether this map belongs to the outside world.
  * @return true if this map is in the oustide world
  */
-bool Map::is_in_outside_world(void) {
+bool Map::is_in_outside_world() {
   return get_world_number() == 0;
 }
 
@@ -112,7 +112,7 @@ bool Map::is_in_outside_world(void) {
  *
  * @return the floor
  */
-int Map::get_floor(void) {
+int Map::get_floor() {
   return floor;
 }
 
@@ -123,7 +123,7 @@ int Map::get_floor(void) {
  *
  * @return true if there is a floor
  */
-bool Map::has_floor(void) {
+bool Map::has_floor() {
   return get_floor() != -100;
 }
 
@@ -139,7 +139,7 @@ bool Map::has_floor(void) {
  *
  * @return the location of this map in its context.
  */
-const Rectangle & Map::get_location(void) {
+const Rectangle & Map::get_location() {
   return location;
 }
 
@@ -151,7 +151,7 @@ const Rectangle & Map::get_location(void) {
  *
  * @return the small keys savegame variable
  */
-int Map::get_small_keys_variable(void) {
+int Map::get_small_keys_variable() {
   return small_keys_variable;
 }
 
@@ -162,7 +162,7 @@ int Map::get_small_keys_variable(void) {
  *
  * @return true if the small keys are enabled in this map
  */
-bool Map::has_small_keys(void) {
+bool Map::has_small_keys() {
   return get_small_keys_variable() != -1;
 }
 
@@ -170,7 +170,7 @@ bool Map::has_small_keys(void) {
  * @brief Returns the map width in pixels.
  * @return the map width
  */
-int Map::get_width(void) {
+int Map::get_width() {
   return location.get_width();
 }
 
@@ -178,7 +178,7 @@ int Map::get_width(void) {
  * @brief Returns the map height in pixels.
  * @return the map height
  */
-int Map::get_height(void) {
+int Map::get_height() {
   return location.get_height();
 }
 
@@ -189,7 +189,7 @@ int Map::get_height(void) {
  *
  * @return the map width in number of 8*8 squares
  */
-int Map::get_width8(void) {
+int Map::get_width8() {
   return width8;
 }
 
@@ -200,7 +200,7 @@ int Map::get_width8(void) {
  *
  * @return the map height in number of 8*8 squares
  */
-int Map::get_height8(void) {
+int Map::get_height8() {
   return height8;
 }
 
@@ -208,7 +208,7 @@ int Map::get_height8(void) {
  * @brief Returns whether the map is loaded.
  * @return true if the map is loaded, false otherwise
  */
-bool Map::is_loaded(void) {
+bool Map::is_loaded() {
   return this->entities != NULL;
 }
 
@@ -219,7 +219,7 @@ bool Map::is_loaded(void) {
  * can be called when the player exists the map. If the player is likely to
  * come back on the map, you can keep the map loaded.
  */
-void Map::unload(void) {
+void Map::unload() {
 
   delete visible_surface;
   delete entities;
@@ -249,14 +249,14 @@ void Map::load(Game *game) {
  * @brief Returns the game that loaded this map.
  * @return the game, or NULL if the map is not started
  */
-Game * Map::get_game(void) {
+Game * Map::get_game() {
   return game;
 }
 
 /**
  * @brief Returns the entities on the map.
  */
-MapEntities * Map::get_entities(void) {
+MapEntities * Map::get_entities() {
   return entities;
 }
 
@@ -274,7 +274,7 @@ void Map::set_destination_point(const std::string &destination_point_name) {
  * @brief Returns the destination point index specified by the last call to set_destination_point().
  * @return the name of the destination point previously set
  */
-const std::string& Map::get_destination_point_name(void) {
+const std::string& Map::get_destination_point_name() {
   return destination_point_name;
 }
 
@@ -283,7 +283,7 @@ const std::string& Map::get_destination_point_name(void) {
  * returns this side.
  * @return the destination side (0 to 3), or -1 if the destination point is not a side
  */
-int Map::get_destination_side(void) {
+int Map::get_destination_side() {
 
   if (destination_point_name.substr(0,5) == "_side") {
     int destination_side = destination_point_name[5] - '0';
@@ -309,7 +309,7 @@ void Map::set_welcome_message(MessageId welcome_message_id) {
  *
  * @return the surface where the map is displayed
  */
-Surface * Map::get_visible_surface(void) {
+Surface * Map::get_visible_surface() {
   return visible_surface;
 }
 
@@ -318,7 +318,7 @@ Surface * Map::get_visible_surface(void) {
  * top-left corner.
  * @return the position of the visible area
  */
-const Rectangle & Map::get_camera_position(void) {
+const Rectangle & Map::get_camera_position() {
   return camera->get_position();
 }
 
@@ -336,7 +336,7 @@ void Map::move_camera(int x, int y, int speed) {
 /**
  * @brief Makes the camera move back to the hero.
  */
-void Map::restore_camera(void) {
+void Map::restore_camera() {
   camera->restore();
 }
 
@@ -344,7 +344,7 @@ void Map::restore_camera(void) {
  * @brief Returns whether the camera is fixed on the hero.
  * @return true if the camera is following the hero
  */
-bool Map::is_camera_fixed_on_hero(void) {
+bool Map::is_camera_fixed_on_hero() {
   return camera->is_fixed_on_hero();
 }
 
@@ -384,7 +384,7 @@ void Map::set_suspended(bool suspended) {
 /**
  * @brief Updates the animation and the position of each map elements, including the hero.
  */
-void Map::update(void) {
+void Map::update() {
 
   // detect whether the game has just been suspended or resumed
   check_suspended();
@@ -461,7 +461,7 @@ void Map::start(Game *game) {
  *
  * This function is called when the hero leaves the map.
  */
-void Map::leave(void) {
+void Map::leave() {
   started = false;
   game = NULL;
 }
@@ -473,7 +473,7 @@ void Map::leave(void) {
  *
  * @return true if the map is started
  */
-bool Map::is_started(void) {
+bool Map::is_started() {
   return started;
 }
 
@@ -481,7 +481,7 @@ bool Map::is_started(void) {
  * @brief This function is called when the map is started and 
  * the opening transition is finished.
  */
-void Map::notify_opening_transition_finished(void) {
+void Map::notify_opening_transition_finished() {
 
   visible_surface->set_opacity(255); // because the transition effect may have changed the opacity
   check_suspended();

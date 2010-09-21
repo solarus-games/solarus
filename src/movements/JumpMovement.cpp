@@ -59,7 +59,7 @@ JumpMovement::JumpMovement(int direction8, int length, bool ignore_obstacles, ui
 /**
  * @brief Destructor.
  */
-JumpMovement::~JumpMovement(void) {
+JumpMovement::~JumpMovement() {
   delete[] translation_vectors;
 }
 
@@ -67,14 +67,14 @@ JumpMovement::~JumpMovement(void) {
  * @brief Returns the height in pixels where the entity should be displayed over its shadow.
  * @return the height of the jump
  */
-int JumpMovement::get_jump_height(void) {
+int JumpMovement::get_jump_height() {
   return jump_height;
 }
 
 /**
  * @brief Makes a move in the path.
  */
-void JumpMovement::make_next_move(void) {
+void JumpMovement::make_next_move() {
 
   PixelMovement::make_next_move();
 

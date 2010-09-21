@@ -64,7 +64,7 @@ PauseMenu::PauseMenu(Game *game):
 /**
  * @brief Destructor.
  */
-PauseMenu::~PauseMenu(void) {
+PauseMenu::~PauseMenu() {
   delete current_submenu;
   delete backgrounds_surface;
   delete save_dialog_sprite;
@@ -78,7 +78,7 @@ PauseMenu::~PauseMenu(void) {
 /**
  * @brief Exits the pause menu.
  */
-void PauseMenu::quit(void) {
+void PauseMenu::quit() {
 
   game->play_sound("pause_closed");
   keys_effect->set_pause_key_effect(KeysEffect::PAUSE_KEY_PAUSE);
@@ -168,7 +168,7 @@ void PauseMenu::key_pressed(GameControls::GameKey key) {
 /**
  * @brief Updates the pause menu.
  */
-void PauseMenu::update(void) {
+void PauseMenu::update() {
   current_submenu->update();
 }
 
@@ -236,7 +236,7 @@ void PauseMenu::set_current_submenu(int submenu_index) {
 /**
  * @brief Shows the submenu located at the left side from the current one.
  */
-void PauseMenu::show_left_submenu(void) {
+void PauseMenu::show_left_submenu() {
 
   game->play_sound("pause_closed");
   int submenu_index = savegame->get_integer(Savegame::PAUSE_LAST_SUBMENU);
@@ -246,7 +246,7 @@ void PauseMenu::show_left_submenu(void) {
 /**
  * @brief Shows the submenu located at the right side from the current one.
  */
-void PauseMenu::show_right_submenu(void) {
+void PauseMenu::show_right_submenu() {
 
   game->play_sound("pause_closed");
   int submenu_index = savegame->get_integer(Savegame::PAUSE_LAST_SUBMENU);

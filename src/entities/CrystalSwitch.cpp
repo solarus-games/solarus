@@ -46,7 +46,7 @@ CrystalSwitch::CrystalSwitch(Layer layer, int x, int y):
 /**
  * @brief Destructor.
  */
-CrystalSwitch::~CrystalSwitch(void) {
+CrystalSwitch::~CrystalSwitch() {
   delete star_sprite;
 }
 
@@ -112,7 +112,7 @@ void CrystalSwitch::notify_collision(MapEntity *other_entity, Sprite *other_spri
  * This function is called when the player presses the action key
  * while the hero is facing this detector, and the action icon lets him do this.
  */
-void CrystalSwitch::action_key_pressed(void) {
+void CrystalSwitch::action_key_pressed() {
 
   KeysEffect *keys_effect = game->get_keys_effect();
   Hero *hero = game->get_hero();
@@ -149,7 +149,7 @@ void CrystalSwitch::activate(MapEntity *entity_activating) {
 /**
  * @brief Makes a star twinkle on the crystal switch at a random position.
  */
-void CrystalSwitch::twinkle(void) {
+void CrystalSwitch::twinkle() {
 
   star_xy.set_xy(Random::get_number(3, 13), Random::get_number(3, 13));
   star_sprite->restart_animation();
@@ -158,7 +158,7 @@ void CrystalSwitch::twinkle(void) {
 /**
  * @brief Updates the entity.
  */
-void CrystalSwitch::update(void) {
+void CrystalSwitch::update() {
 
   bool state = game->get_crystal_switch_state();
   if (state != this->state) {
@@ -186,7 +186,7 @@ void CrystalSwitch::update(void) {
  * This is a redefinition of MapEntity::display_on_map() to also display the twinkling star
  * which has a special position.
  */
-void CrystalSwitch::display_on_map(void) {
+void CrystalSwitch::display_on_map() {
 
   // display the crystal switch
   MapEntity::display_on_map();

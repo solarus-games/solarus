@@ -50,20 +50,20 @@ class PixelMovement: public CollisionMovement {
     PixelMovement(int nb_vectors, uint32_t delay, bool loop, bool ignore_obstacles);
 
     void set_translation_vectors(const Rectangle *translation_vectors);
-    virtual void make_next_move(void);
-    int get_vector_index(void);
+    virtual void make_next_move();
+    int get_vector_index();
 
   public:
 
     PixelMovement(const Rectangle *translation_vectors,
 	int nb_vectors, uint32_t delay, bool loop, bool ignore_obstacles);
-    virtual ~PixelMovement(void);
+    virtual ~PixelMovement();
 
     void set_delay(uint32_t delay);
-    virtual void update(void);
-    bool is_started(void);
-    bool is_finished(void);
-    int get_length(void);
+    virtual void update();
+    bool is_started();
+    bool is_finished();
+    int get_length();
 
 };
 

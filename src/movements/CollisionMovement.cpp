@@ -33,7 +33,7 @@ CollisionMovement::CollisionMovement(bool ignore_obstacles):
 /**
  * @brief Destructor.
  */
-CollisionMovement::~CollisionMovement(void) {
+CollisionMovement::~CollisionMovement() {
 
 }
 
@@ -72,7 +72,7 @@ bool CollisionMovement::test_collision_with_map(int dx, int dy) {
  * This is a redefinition of Movement::update_x() to make the move
  * only if there is no collision with the map.
  */
-void CollisionMovement::update_x(void) {
+void CollisionMovement::update_x() {
 
   uint32_t now = System::now();
   int x_move = get_x_move();
@@ -95,7 +95,7 @@ void CollisionMovement::update_x(void) {
  * This is a redefinition of Movement::update_y() to make the move
  * only if there is no collision with the map.
  */
-void CollisionMovement::update_y(void) {
+void CollisionMovement::update_y() {
 
   uint32_t now = System::now();
   int y_move = get_y_move();
@@ -117,7 +117,7 @@ void CollisionMovement::update_y(void) {
  * to test_collision_with_map() returning true.
  * @return the collision box of the last collision detected, or (-1, -1) if no obstacle was detected
  */
-const Rectangle & CollisionMovement::get_last_collision_box_on_obstacle(void) {
+const Rectangle & CollisionMovement::get_last_collision_box_on_obstacle() {
   return last_collision_box_on_obstacle;
 }
 
@@ -125,21 +125,21 @@ const Rectangle & CollisionMovement::get_last_collision_box_on_obstacle(void) {
  * @brief Returns whether this movement currently ignores obstacles.
  * @return true if the obstacles are ignored
  */
-bool CollisionMovement::are_obstacles_ignored(void) {
+bool CollisionMovement::are_obstacles_ignored() {
   return current_ignore_obstacles;
 }
 
 /**
  * @brief Allows temporarily this movement to traverse obstacles.
  */
-void CollisionMovement::set_ignore_obstacles(void) {
+void CollisionMovement::set_ignore_obstacles() {
   this->current_ignore_obstacles = true;
 }
 
 /**
  * @brief Restores the initial value of ignore_obstacles.
  */
-void CollisionMovement::restore_ignore_obstacles(void) {
+void CollisionMovement::restore_ignore_obstacles() {
   this->current_ignore_obstacles = initial_ignore_obstacles;
 }
 

@@ -49,24 +49,24 @@ class PauseSubmenuInventory: public PauseSubmenu {
 
     // cursor position
     void set_cursor_position(int row, int column);
-    int get_selected_index(void);
-    bool is_item_selected(void);
+    int get_selected_index();
+    bool is_item_selected();
 
     // actions
-    void show_info_message(void);
+    void show_info_message();
     void assign_item(int slot);
-    bool is_assigning_item(void);
-    void finish_assigning_item(void);
+    bool is_assigning_item();
+    void finish_assigning_item();
 
   public:
 
     // construction and destruction
     PauseSubmenuInventory(PauseMenu *pause_menu, Game *game);
-    ~PauseSubmenuInventory(void);
+    ~PauseSubmenuInventory();
 
     // main loop
     void key_pressed(GameControls::GameKey key);
-    void update(void);
+    void update();
     void display(Surface *destination);
 };
 

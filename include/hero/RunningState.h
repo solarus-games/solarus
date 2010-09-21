@@ -30,35 +30,35 @@ class Hero::RunningState: public Hero::State {
     uint32_t next_phase_date;		/**< date of the next phase */
     uint32_t next_sound_date;		/**< date of the next time a sound is played during the run */
 
-    bool is_bouncing(void);
+    bool is_bouncing();
 
   public:
 
     RunningState(Hero *hero);
-    ~RunningState(void);
+    ~RunningState();
 
     void start(State *previous_state);
     void stop(State *next_state);
-    void update(void);
+    void update();
     void set_suspended(bool suspended);
-    bool is_pressing_running_key(void);
+    bool is_pressing_running_key();
     void directional_key_pressed(int direction4);
     void notify_movement_tried(bool success);
-    int get_wanted_movement_direction8(void);
+    int get_wanted_movement_direction8();
 
-    bool can_take_stairs(void);
-    bool can_take_jump_sensor(void);
-    bool can_be_hurt(void);
-    bool can_start_gameover_sequence(void);
-    int get_height_above_shadow(void);
-    bool is_touching_ground(void);
-    bool can_avoid_deep_water(void);
-    bool can_avoid_hole(void);
-    bool can_avoid_teletransporter(void);
-    bool can_avoid_conveyor_belt(void);
+    bool can_take_stairs();
+    bool can_take_jump_sensor();
+    bool can_be_hurt();
+    bool can_start_gameover_sequence();
+    int get_height_above_shadow();
+    bool is_touching_ground();
+    bool can_avoid_deep_water();
+    bool can_avoid_hole();
+    bool can_avoid_teletransporter();
+    bool can_avoid_conveyor_belt();
     bool is_sensor_obstacle(Sensor *sensor);
     bool is_cutting_with_sword(Detector *detector);
-    int get_sword_damage_factor(void);
+    int get_sword_damage_factor();
 };
 
 #endif

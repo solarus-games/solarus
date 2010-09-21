@@ -34,14 +34,14 @@ PathFindingMovement::PathFindingMovement(MapEntity *target, int speed):
 /**
  * @brief Destructor.
  */
-PathFindingMovement::~PathFindingMovement(void) {
+PathFindingMovement::~PathFindingMovement() {
 
 }
 
 /**
  * @brief Updates the position.
  */
-void PathFindingMovement::update(void) {
+void PathFindingMovement::update() {
 
   if (!is_suspended() && is_stopped()) {
     // there was a collision
@@ -58,7 +58,7 @@ void PathFindingMovement::update(void) {
  * @brief Calculates the direction and the speed of the movement
  * depending on the target.
  */
-void PathFindingMovement::recompute_movement(void) { 
+void PathFindingMovement::recompute_movement() { 
 
 //  uint32_t start = System::now();
 
@@ -94,7 +94,7 @@ void PathFindingMovement::recompute_movement(void) {
  * This is a redefinition of PathMovement::start_next_move() to recalculate the path when it is finished
  * or when the recomputation delay is over.
  */
-void PathFindingMovement::start_next_move(void) {
+void PathFindingMovement::start_next_move() {
 
   uint32_t now = System::now();
 
@@ -111,7 +111,7 @@ void PathFindingMovement::start_next_move(void) {
  * @brief Returns whether the movement is finished.
  * @return false
  */
-bool PathFindingMovement::is_finished(void) {
+bool PathFindingMovement::is_finished() {
   return false;
 }
 

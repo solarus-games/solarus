@@ -35,18 +35,18 @@ class Explosion: public Detector {
   public:
 
     Explosion(Layer layer, const Rectangle &xy, bool with_damages);
-    ~Explosion(void);
+    ~Explosion();
 
-    EntityType get_type(void);
+    EntityType get_type();
 
     // features
-    bool can_be_obstacle(void);
-    bool can_detect_entities(void);
-    bool can_be_displayed(void);
-    bool is_displayed_in_y_order(void);
+    bool can_be_obstacle();
+    bool can_detect_entities();
+    bool can_be_displayed();
+    bool is_displayed_in_y_order();
 
     // state
-    void update(void);
+    void update();
 
     // collisions
     void notify_collision(MapEntity *other_entity, Sprite *other_sprite, Sprite *this_sprite);

@@ -49,44 +49,44 @@ class Equipment {
 
     // creation and destruction
     Equipment(Savegame *savegame);
-    ~Equipment(void);
+    ~Equipment();
     void set_game(Game *game);
 
-    void update(void);
+    void update();
 
     // money
-    int get_max_money(void);
+    int get_max_money();
     void set_max_money(int max_money);
 
-    int get_money(void);
+    int get_money();
     void set_money(int money);
     void add_money(int money_to_add);
     void remove_money(int money_to_remove);
 
     // life
-    int get_max_life(void);
+    int get_max_life();
     void set_max_life(int max_life);
 
-    int get_life(void);
+    int get_life();
     void set_life(int life);
     void add_life(int life_to_add);
     void remove_life(int life_to_remove);
-    void restore_all_life(void);
+    void restore_all_life();
 
     // magic
-    int get_max_magic(void);
+    int get_max_magic();
     void set_max_magic(int max_magic);
 
-    int get_magic(void);
+    int get_magic();
     void set_magic(int magic);
     void add_magic(int magic_to_add);
     void remove_magic(int magic_to_remove);
-    void restore_all_magic(void);
-    bool needs_magic(void);
+    void restore_all_magic();
+    bool needs_magic();
 
-    bool is_magic_decreasing(void);
+    bool is_magic_decreasing();
     void start_removing_magic(uint32_t delay);
-    void stop_removing_magic(void);
+    void stop_removing_magic();
 
     // equipment items saved
     ItemProperties * get_item_properties(const std::string &item_name);
@@ -111,13 +111,13 @@ class Equipment {
     int get_item_slot(const std::string &item_name);
 
     // small keys
-    bool are_small_keys_enabled(void);
-    int get_small_keys_variable(void);
+    bool are_small_keys_enabled();
+    int get_small_keys_variable();
 
-    bool has_small_key(void);
-    int get_small_keys(void);
+    bool has_small_key();
+    int get_small_keys();
     void add_small_keys(int amount_to_add);
-    void remove_small_key(void);
+    void remove_small_key();
 
     // abilities
     bool has_ability(const std::string &ability_name, int level = 1);
@@ -126,13 +126,13 @@ class Equipment {
     void use_ability(const std::string &ability_name);
 
     // dungeons
-    int get_current_dungeon(void);
+    int get_current_dungeon();
     bool is_dungeon_finished(int dungeon);
-    bool is_dungeon_finished(void);
-    void set_dungeon_finished(void);
+    bool is_dungeon_finished();
+    void set_dungeon_finished();
 
     // giving items
-    void set_initial_items(void);
+    void set_initial_items();
     void add_item(const std::string &item_name, int variant);
 };
 

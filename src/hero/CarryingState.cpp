@@ -36,7 +36,7 @@ Hero::CarryingState::CarryingState(Hero *hero, CarriedItem *carried_item):
 /**
  * @brief Destructor.
  */
-Hero::CarryingState::~CarryingState(void) {
+Hero::CarryingState::~CarryingState() {
 
   delete carried_item;
 }
@@ -103,7 +103,7 @@ void Hero::CarryingState::set_suspended(bool suspended) {
 /**
  * @brief Updates this state.
  */
-void Hero::CarryingState::update(void) {
+void Hero::CarryingState::update() {
 
   PlayerMovementState::update();
   carried_item->update();
@@ -121,7 +121,7 @@ void Hero::CarryingState::update(void) {
 /**
  * @brief Notifies this state that the action key was just pressed.
  */
-void Hero::CarryingState::action_key_pressed(void) {
+void Hero::CarryingState::action_key_pressed() {
 
   KeysEffect *keys_effect = game->get_keys_effect();
 
@@ -137,7 +137,7 @@ void Hero::CarryingState::action_key_pressed(void) {
  * This function is called when the player presses the action key
  * or when another state becomes the current state.
  */
-void Hero::CarryingState::throw_item(void) {
+void Hero::CarryingState::throw_item() {
 
   carried_item->throw_item(sprites->get_animation_direction());
   map->get_entities()->add_entity(carried_item);
@@ -148,7 +148,7 @@ void Hero::CarryingState::throw_item(void) {
  * @brief Returns whether the hero can swing his sword in this state.
  * @return true if the hero can swing his sword in this state
  */
-bool Hero::CarryingState::can_start_sword(void) {
+bool Hero::CarryingState::can_start_sword() {
   return true;
 }
 
@@ -157,21 +157,21 @@ bool Hero::CarryingState::can_start_sword(void) {
  * If false is returned, jump sensors have no effect (but they are obstacle for the hero).
  * @return true if the hero can use jump sensors in this state
  */
-bool Hero::CarryingState::can_take_jump_sensor(void) {
+bool Hero::CarryingState::can_take_jump_sensor() {
   return true;
 }
 
 /**
  * Gives the sprites the animation stopped corresponding to this state.
  */
-void Hero::CarryingState::set_animation_stopped(void) {
+void Hero::CarryingState::set_animation_stopped() {
   sprites->set_animation_stopped_carrying();
 }
 
 /**
  * Gives the sprites the animation walking corresponding to this state.
  */
-void Hero::CarryingState::set_animation_walking(void) {
+void Hero::CarryingState::set_animation_walking() {
   sprites->set_animation_walking_carrying();
 }
 

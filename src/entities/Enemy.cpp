@@ -63,7 +63,7 @@ Enemy::Enemy(const ConstructionParameters &params):
 /**
  * @brief Destructor.
  */
-Enemy::~Enemy(void) {
+Enemy::~Enemy() {
   delete treasure;
 }
 
@@ -196,7 +196,7 @@ void Enemy::set_map(Map *map) {
  * @brief Returns the rank of the enemy.
  * @return the enemy rank
  */
-Enemy::Rank Enemy::get_rank(void) {
+Enemy::Rank Enemy::get_rank() {
   return rank;
 }
 
@@ -257,7 +257,7 @@ void Enemy::set_life(int life) {
  * @brief Returns the number of health points of the enemy.
  * @return number of health points of the enemy
  */
-int Enemy::get_life(void) {
+int Enemy::get_life() {
   return life;
 }
  
@@ -328,7 +328,7 @@ void Enemy::set_attack_consequence(EnemyAttack attack, int consequence) {
 /**
  * @brief Sets the enemy insensible to all attacks.
  */
-void Enemy::set_no_attack_consequences(void) {
+void Enemy::set_no_attack_consequences() {
   for (int i = 0; i < ATTACK_NUMBER; i++) {
     set_attack_consequence(EnemyAttack(i), 0);
   }
@@ -337,7 +337,7 @@ void Enemy::set_no_attack_consequences(void) {
 /**
  * @brief Set some default values for the reactions of the attacks.
  */
-void Enemy::set_default_attack_consequences(void) {
+void Enemy::set_default_attack_consequences() {
 
   for (int i = 0; i < ATTACK_NUMBER; i++) {
     set_attack_consequence(EnemyAttack(i), 1);
@@ -354,7 +354,7 @@ void Enemy::set_default_attack_consequences(void) {
  *
  * @return name of the current animation of the first sprite
  */
-const std::string & Enemy::get_animation(void) {
+const std::string & Enemy::get_animation() {
   return get_sprite()->get_current_animation();
 }
 
@@ -376,7 +376,7 @@ void Enemy::set_animation(const std::string &animation) {
 /**
  * @brief Updates the enemy.
  */
-void Enemy::update(void) {
+void Enemy::update() {
   MapEntity::update();
 
   if (suspended || !is_enabled()) {
@@ -484,7 +484,7 @@ void Enemy::update(void) {
 /**
  * @brief This function is called when the enemy has just finished dying.
  */
-void Enemy::just_dead(void) {
+void Enemy::just_dead() {
 
 }
 
@@ -527,7 +527,7 @@ void Enemy::set_enabled(bool enabled) {
  * @brief Returns whether the enemy is enabled.
  * @return true if the enemy is enabled
  */
-bool Enemy::is_enabled(void) {
+bool Enemy::is_enabled() {
   return enabled;
 }
 
@@ -535,7 +535,7 @@ bool Enemy::is_enabled(void) {
  * @brief Returns whether this entity is currently visible.
  * @return true if this entity is currently visible
  */
-bool Enemy::is_visible(void) {
+bool Enemy::is_visible() {
   return MapEntity::is_visible() && is_enabled();
 }
 
@@ -547,7 +547,7 @@ bool Enemy::is_visible(void) {
  * When this method returns false, the subclasses of Enemy
  * should not change the enemy properties.
  */
-bool Enemy::is_in_normal_state(void) {
+bool Enemy::is_in_normal_state() {
   return is_enabled() && !is_being_hurt() && get_life() > 0 && !is_immobilized();
 }
 
@@ -559,7 +559,7 @@ bool Enemy::is_in_normal_state(void) {
  * or it was just hurt).
  * By default, the "walking" animation is set on the enemy's sprites.
  */
-void Enemy::restart(void) {
+void Enemy::restart() {
   set_animation("walking");
 }
 
@@ -604,7 +604,7 @@ void Enemy::notify_collision_with_explosion(Explosion *explosion, Sprite *sprite
 /**
  * @brief Stops the movement temporarily.
  */
-void Enemy::stop_movement(void) {
+void Enemy::stop_movement() {
   
   if (get_movement() != NULL) {
     normal_movement = get_movement();
@@ -615,7 +615,7 @@ void Enemy::stop_movement(void) {
 /**
  * @brief Restores the movement previously stopped with stop_movement().
  */
-void Enemy::restore_movement(void) {
+void Enemy::restore_movement() {
 
   if (normal_movement != NULL) {
     set_movement(normal_movement);
@@ -661,7 +661,7 @@ void Enemy::attack_hero(Hero *hero, Sprite *this_sprite) {
  *
  * By default, the shield sound is played and the enemy cannot attack again for a while.
  */
-void Enemy::attack_stopped_by_hero_shield(void) {
+void Enemy::attack_stopped_by_hero_shield() {
   game->play_sound("shield");
 
   uint32_t now = System::now();
@@ -697,7 +697,7 @@ int Enemy::get_attack_consequence(EnemyAttack attack, Sprite *this_sprite) {
 /**
  * @brief Plays the appropriate sound when the enemy is hurt.
  */
-void Enemy::play_hurt_sound(void) {
+void Enemy::play_hurt_sound() {
 
   SoundId sound_id = "";
   switch (hurt_sound_style) {
@@ -847,7 +847,7 @@ void Enemy::just_hurt(MapEntity *source, EnemyAttack attack, int life_points) {
  *
  * This function is called when the enemy has no more health points.
  */
-void Enemy::kill(void) {
+void Enemy::kill() {
 
   // if the enemy is immobilized, give a rupee
   if (rank == RANK_NORMAL && is_immobilized() && !treasure->is_saved()) {
@@ -886,7 +886,7 @@ void Enemy::kill(void) {
  * @brief Returns whether the enemy is being hurt.
  * @return true if the enemy is being hurt
  */
-bool Enemy::is_being_hurt(void) {
+bool Enemy::is_being_hurt() {
   return being_hurt;
 }
 
@@ -894,7 +894,7 @@ bool Enemy::is_being_hurt(void) {
  * @brief Returns whether the enemy is killed.
  * @return true if the enemy is killed
  */
-bool Enemy::is_killed(void) {
+bool Enemy::is_killed() {
   return life <= 0 && (get_sprite()->get_animation_set_id() == "enemies/enemy_killed" || !exploding);
 }
 
@@ -902,7 +902,7 @@ bool Enemy::is_killed(void) {
  * @brief When the enemy is killed, returns whether the dying animation is finished.
  * @return true if the dying animation is finished
  */
-bool Enemy::is_dying_animation_finished(void) {
+bool Enemy::is_dying_animation_finished() {
   
   if (rank == RANK_NORMAL) {
     return get_sprite()->is_animation_finished();
@@ -915,7 +915,7 @@ bool Enemy::is_dying_animation_finished(void) {
  * @brief Returns whether the enemy is dying, i.e. his life has reached zero and the dying animation is playing.
  * @return true if the enemy is dying
  */
-bool Enemy::is_dying(void) {
+bool Enemy::is_dying() {
   return get_life() <= 0;
 }
 
@@ -923,7 +923,7 @@ bool Enemy::is_dying(void) {
  * @brief Returns true if the current sprite animation is finished or is looping.
  * @return true if the current sprite animation is finished or is looping 
  */
-bool Enemy::is_sprite_finished_or_looping(void) {
+bool Enemy::is_sprite_finished_or_looping() {
 
   Sprite *sprite = get_sprite();
   return sprite->is_animation_finished() || sprite->is_animation_looping();
@@ -932,7 +932,7 @@ bool Enemy::is_sprite_finished_or_looping(void) {
 /**
  * @brief Immobilizes this enemy.
  */
-void Enemy::immobilize(void) {
+void Enemy::immobilize() {
   immobilized = true;
   start_shaking_date = System::now() + 5000; 
 }
@@ -940,7 +940,7 @@ void Enemy::immobilize(void) {
 /**
  * @brief Stops immobilizing the enemy.
  */
-void Enemy::stop_immobilized(void) {
+void Enemy::stop_immobilized() {
   immobilized = false;
   end_shaking_date = 0;
   restore_movement();
@@ -951,7 +951,7 @@ void Enemy::stop_immobilized(void) {
  * @brief Returns whether this enemy is immobilized. 
  * @return true if this enemy is immobilized 
  */
-bool Enemy::is_immobilized(void) {
+bool Enemy::is_immobilized() {
   return immobilized;
 }
 
@@ -977,7 +977,7 @@ int Enemy::custom_attack(EnemyAttack attack, Sprite *this_sprite) {
  * @return a type of pickable rupee
  */
 /*
-PickableItem::Subtype Enemy::get_random_rupee(void) {
+PickableItem::Subtype Enemy::get_random_rupee() {
 
   PickableItem::Subtype rupee;
   int r = Random::get_number(10);

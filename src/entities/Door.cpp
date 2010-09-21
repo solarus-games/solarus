@@ -72,7 +72,7 @@ Door::Door(const std::string &name, Layer layer, int x, int y,
 /**
  * @brief Destructor.
  */
-Door::~Door(void) {
+Door::~Door() {
 
 }
 
@@ -116,7 +116,7 @@ MapEntity * Door::parse(Game *game, std::istream &is, Layer layer, int x, int y)
  * @brief Returns the type of entity.
  * @return the type of entity
  */
-EntityType Door::get_type(void) {
+EntityType Door::get_type() {
   return DOOR;
 }
 
@@ -133,7 +133,7 @@ bool Door::is_obstacle_for(MapEntity *other) {
  * @brief Returns whether this door is open.
  * @return true if this door is open
  */
-bool Door::is_open(void) {
+bool Door::is_open() {
   return door_open;
 }
 
@@ -174,7 +174,7 @@ void Door::set_open(bool door_open) {
  * The dynamic tiles impacted by this function are the ones whose prefix is the door's name
  * followed by "_closed" or "_open", depending on the door state.
  */
-void Door::update_dynamic_tiles(void) {
+void Door::update_dynamic_tiles() {
   
   std::list<MapEntity*> *tiles = map->get_entities()->get_entities_with_prefix(DYNAMIC_TILE, get_name() + "_closed");
   std::list<MapEntity*>::iterator it;
@@ -220,7 +220,7 @@ void Door::notify_collision(MapEntity *entity_overlapping, CollisionMode collisi
  * @brief Returns whether this door requires a key to be open.
  * @return true if this door requires a key to be open
  */
-bool Door::requires_key(void) {
+bool Door::requires_key() {
   return requires_small_key() || subtype == BIG_KEY || subtype == BOSS_KEY;
 }
 
@@ -228,7 +228,7 @@ bool Door::requires_key(void) {
  * @brief Returns whether this door must be open with a small key.
  * @return true if this door must be open with a small key
  */
-bool Door::requires_small_key(void) {
+bool Door::requires_small_key() {
   return subtype == SMALL_KEY || subtype == SMALL_KEY_BLOCK;
 }
 
@@ -236,7 +236,7 @@ bool Door::requires_small_key(void) {
  * @brief Returns whether this door must be open with a bomb explosion.
  * @return true if this door must be open with a bomb explosion
  */
-bool Door::requires_bomb(void) {
+bool Door::requires_bomb() {
   return subtype == WEAK || subtype == VERY_WEAK || subtype == WEAK_INVISIBLE;
 }
 
@@ -247,7 +247,7 @@ bool Door::requires_bomb(void) {
  *
  * @return true if the player has the key corresponding to this door
  */
-bool Door::can_open(void) {
+bool Door::can_open() {
 
   Equipment *equipment = game->get_equipment();
 
@@ -267,7 +267,7 @@ void Door::set_suspended(bool suspended) {
 /**
  * @brief Updates the entity.
  */
-void Door::update(void) {
+void Door::update() {
   Detector::update();
 
   if (!initialized) {
@@ -294,7 +294,7 @@ void Door::update(void) {
 /**
  * @brief Displays the entity on the map.
  */
-void Door::display_on_map(void) {
+void Door::display_on_map() {
   if (has_sprite() && (!is_open() || changing)) {
     Detector::display_on_map();
   }
@@ -307,7 +307,7 @@ void Door::display_on_map(void) {
  * when the hero is facing this detector, and the action icon lets him do this.
  * The hero opens the door if possible, otherwise a message is shown.
  */
-void Door::action_key_pressed(void) {
+void Door::action_key_pressed() {
 
   Hero *hero = game->get_hero();
   Equipment *equipment = game->get_equipment();
@@ -340,7 +340,7 @@ void Door::action_key_pressed(void) {
  * @brief This function is called when the player is tapping his sword against this detector.
  * @return the sound to play when tapping this detector with the sword
  */
-SoundId Door::get_sword_tapping_sound(void) {
+SoundId Door::get_sword_tapping_sound() {
   return requires_bomb() ? "sword_tapping_weak_wall" : "sword_tapping";
 }
 
@@ -349,7 +349,7 @@ SoundId Door::get_sword_tapping_sound(void) {
  *
  * This function can be called only for a door with subtype CLOSED.
  */
-void Door::open(void) {
+void Door::open() {
 
   Debug::assert(subtype == CLOSED, "This kind of door cannot be open or closed directly");
   Debug::assert(!is_open(), "This door is already open");
@@ -364,7 +364,7 @@ void Door::open(void) {
 /**
  * @brief Makes the door being opened.
  */
-void Door::set_opening(void) {
+void Door::set_opening() {
 
   std::string animation = requires_key() ? "opening_key" : "opening";
   get_sprite()->set_current_animation(animation);
@@ -376,7 +376,7 @@ void Door::set_opening(void) {
  *
  * This function can be called only for a door with subtype CLOSED.
  */
-void Door::close(void) {
+void Door::close() {
 
   Debug::assert(is_open(), "This door is already closed");
 
@@ -390,7 +390,7 @@ void Door::close(void) {
 /**
  * @brief Makes the door being closed.
  */
-void Door::set_closing(void) {
+void Door::set_closing() {
   get_sprite()->set_current_animation("opening");
   changing = true;
 }

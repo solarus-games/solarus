@@ -43,7 +43,7 @@ Explosion::Explosion(Layer layer, const Rectangle &xy, bool with_damages):
 /**
  * @brief Destructor.
  */
-Explosion::~Explosion(void) {
+Explosion::~Explosion() {
 
 }
 
@@ -63,7 +63,7 @@ EntityType Explosion::get_type() {
  *
  * @return true if this type of entity can be obstacle for other entities
  */
-bool Explosion::can_be_obstacle(void) {
+bool Explosion::can_be_obstacle() {
   return false; 
 }
 
@@ -77,7 +77,7 @@ bool Explosion::can_be_obstacle(void) {
  *
  * @return true if this type of entity can detect other entities
  */
-bool Explosion::can_detect_entities(void) {
+bool Explosion::can_detect_entities() {
   return true;
 }
 
@@ -89,7 +89,7 @@ bool Explosion::can_detect_entities(void) {
  *
  * @return true if this type of entity can be displayed
  */
-bool Explosion::can_be_displayed(void) {
+bool Explosion::can_be_displayed() {
   return true; 
 }
 
@@ -105,14 +105,14 @@ bool Explosion::can_be_displayed(void) {
  *
  * @return true if this type of entity is displayed at the same level as the hero
  */
-bool Explosion::is_displayed_in_y_order(void) {
+bool Explosion::is_displayed_in_y_order() {
   return false;
 }
 
 /**
  * @brief Updates this entity.
  */
-void Explosion::update(void) {
+void Explosion::update() {
   Detector::update();
   if (get_sprite()->is_animation_finished()) {
     remove_from_map();

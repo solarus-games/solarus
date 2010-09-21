@@ -45,10 +45,10 @@ class PauseIcon: public HudElement {
   public:
 
     PauseIcon(Game *game, int x, int y);
-    ~PauseIcon(void);
+    ~PauseIcon();
 
-    void update(void);
-    void rebuild(void);
+    void update();
+    void rebuild();
 
 };
 

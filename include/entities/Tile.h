@@ -36,13 +36,13 @@ class Tile: public MapEntity {
   public:
 
     Tile(Layer layer, int x, int y, int width, int height, int tile_pattern_id);
-    ~Tile(void);
+    ~Tile();
     static CreationFunction parse;
 
-    EntityType get_type(void);
+    EntityType get_type();
     void set_map(Map *map);
-    void display_on_map(void);
-    TilePattern *get_tile_pattern(void);
+    void display_on_map();
+    TilePattern *get_tile_pattern();
 };
 
 #endif

@@ -32,14 +32,14 @@ Khotor::Khotor(const ConstructionParameters &params):
 /**
  * @brief Destructor.
  */
-Khotor::~Khotor(void) {
+Khotor::~Khotor() {
 
 }
 
 /**
  * @brief Initializes the enemy.
  */
-void Khotor::initialize(void) {
+void Khotor::initialize() {
 
   // attack/defense features
   set_damage(2, 0);
@@ -74,7 +74,7 @@ void Khotor::initialize(void) {
  *
  * @return true if this type of entity is displayed at the same level as the hero
  */
-bool Khotor::is_displayed_in_y_order(void) {
+bool Khotor::is_displayed_in_y_order() {
   return false; // unlike usual enemies
 }
 
@@ -85,7 +85,7 @@ bool Khotor::is_displayed_in_y_order(void) {
  * because something happened (for example the enemy has just been created,
  * or it was just hurt).
  */
-void Khotor::restart(void) {
+void Khotor::restart() {
   Enemy::restart();
   chain->set_enabled(true);
   start_chain();
@@ -94,7 +94,7 @@ void Khotor::restart(void) {
 /**
  * Starts the chain and ball.
  */
-void Khotor::start_chain(void) {
+void Khotor::start_chain() {
   chain->attach_to(this, -16, -33, 64);
 }
 

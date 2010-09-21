@@ -32,19 +32,19 @@ class Bubble: public Enemy {
   int movement_direction8; /**< direction of the movement (1, 3, 5 or 7) */
 
   void go(int movement_direction8);
-  void bounce(void);
+  void bounce();
 
  protected:
 
-  void initialize(void);
-  void restart(void);
+  void initialize();
+  void restart();
 
  public:
 
   Bubble(const ConstructionParameters &params);
-  ~Bubble(void);
+  ~Bubble();
 
-  void update(void);
+  void update();
 };
 
 #endif

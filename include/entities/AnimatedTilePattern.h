@@ -56,9 +56,9 @@ class AnimatedTilePattern: public TilePattern {
 
     AnimatedTilePattern(Obstacle obstacle, AnimationSequence sequence,
 	int width, int height, int x1, int y1, int x2, int y2, int x3, int y3);
-    ~AnimatedTilePattern(void);
+    ~AnimatedTilePattern();
 
-    static void update(void);
+    static void update();
     void display(Surface *destination, const Rectangle &dst_position, Surface *tileset_image);
 
 };

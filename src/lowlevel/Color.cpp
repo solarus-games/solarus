@@ -32,7 +32,7 @@ Color Color::yellow;
 /**
  * @brief Initializes the color static fields.
  */
-void Color::initialize(void) {
+void Color::initialize() {
 
   format = SDL_GetVideoSurface()->format;
 
@@ -47,14 +47,14 @@ void Color::initialize(void) {
 /**
  * @brief Uninitializes the color system.
  */
-void Color::quit(void) {
+void Color::quit() {
 
 }
 
 /**
  * @brief Creates a default color with unspecified RGB values.
  */
-Color::Color(void) {
+Color::Color() {
   internal_color.r = 0;
   internal_color.g = 0;
   internal_color.b = 0;
@@ -91,7 +91,7 @@ Color::Color(int r, int g, int b) {
  *
  * @return the 32-bit value of this color
  */
-uint32_t Color::get_internal_value(void) {
+uint32_t Color::get_internal_value() {
   return internal_value;
 }
 
@@ -102,7 +102,7 @@ uint32_t Color::get_internal_value(void) {
  *
  * @return the SDL color encapsulated
  */
-SDL_Color * Color::get_internal_color(void) {
+SDL_Color * Color::get_internal_color() {
   return &internal_color;
 }
 

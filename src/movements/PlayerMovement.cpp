@@ -32,14 +32,14 @@ PlayerMovement::PlayerMovement(int moving_speed):
 /**
  * @brief Destructor.
  */
-PlayerMovement::~PlayerMovement(void) {
+PlayerMovement::~PlayerMovement() {
 
 }
 
 /**
  * @brief Updates this movement.
  */
-void PlayerMovement::update(void) {
+void PlayerMovement::update() {
 
   SmoothCollisionMovement::update();
 
@@ -67,7 +67,7 @@ void PlayerMovement::update(void) {
  * @return the direction (0 to 7), or -1 if the player is not trying to go
  * to a direction or the movement is disabled
  */
-int PlayerMovement::get_wanted_direction8(void) {
+int PlayerMovement::get_wanted_direction8() {
   return direction8;
 }
 
@@ -75,7 +75,7 @@ int PlayerMovement::get_wanted_direction8(void) {
  * @brief Returns the moving speed of the entity.
  * @return the moving speed of the entity
  */
-int PlayerMovement::get_moving_speed(void) {
+int PlayerMovement::get_moving_speed() {
   return moving_speed;
 }
 
@@ -94,7 +94,7 @@ void PlayerMovement::set_moving_speed(int moving_speed) {
  * @brief Determines the direction defined by the directional keys currently pressed
  * and computes the corresponding movement.
  */
-void PlayerMovement::set_wanted_direction(void) {
+void PlayerMovement::set_wanted_direction() {
 
   if (entity->get_game() != NULL) {
     GameControls *controls = entity->get_game()->get_controls();
@@ -110,7 +110,7 @@ void PlayerMovement::set_wanted_direction(void) {
  *
  * This function is called when the direction is changed.
  */
-void PlayerMovement::compute_movement(void) {
+void PlayerMovement::compute_movement() {
 
   // compute the speed vector corresponding to the direction wanted by the player
 

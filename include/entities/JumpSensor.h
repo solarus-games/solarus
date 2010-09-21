@@ -36,16 +36,16 @@ class JumpSensor: public Detector {
 
     JumpSensor(const std::string &name, Layer layer, int x, int y, int width, int height,
 	int direction, int jump_length);
-    ~JumpSensor(void);
+    ~JumpSensor();
     static CreationFunction parse;
 
-    EntityType get_type(void);
+    EntityType get_type();
 
     bool is_obstacle_for(MapEntity *other);
     bool is_point_in_diagonal(const Rectangle &point);
     bool test_collision_custom(MapEntity *entity);
     void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
-    int get_jump_length(void);
+    int get_jump_length();
 
 };
 

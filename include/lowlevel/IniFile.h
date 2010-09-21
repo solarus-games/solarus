@@ -55,12 +55,12 @@ class IniFile {
 
     // creation and destruction
     IniFile(const std::string &file_name, Mode mode);
-    ~IniFile(void);
+    ~IniFile();
 
     // reading values
     bool has_group(const std::string &group);
     void set_group(const std::string &group);
-    const std::string & get_group(void);
+    const std::string & get_group();
     int get_integer_value(const std::string &key, int default_value);
     bool get_boolean_value(const std::string &key, bool default_value);
     const std::string get_string_value(const std::string &key, const std::string &default_value);
@@ -71,12 +71,12 @@ class IniFile {
     void set_boolean_value(const std::string &key, bool value);
     void set_string_value(const std::string &key, const std::string &value);
 
-    void save(void);
+    void save();
 
     // group iterations
-    void start_group_iteration(void);
-    bool has_more_groups(void);
-    void next_group(void);
+    void start_group_iteration();
+    bool has_more_groups();
+    void next_group();
 
 };
 

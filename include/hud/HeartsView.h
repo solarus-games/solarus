@@ -48,12 +48,12 @@ class HeartsView: public HudElement {
 
     HeartsView(Game *game, int x, int y);
     HeartsView(Equipment *equipment, int x, int y);
-    ~HeartsView(void);
-    void create(void);
+    ~HeartsView();
+    void create();
 
-    void update(void);
-    void rebuild(void);
-    bool is_visible(void);
+    void update();
+    void rebuild();
+    bool is_visible();
 };
 
 #endif

@@ -27,13 +27,13 @@ class Hero::SwordSwingingState: public Hero::State {
   public:
 
     SwordSwingingState(Hero *hero);
-    ~SwordSwingingState(void);
+    ~SwordSwingingState();
 
     void start(State *previous_state);
-    void update(void);
-    bool can_start_sword(void);
-    bool can_be_hurt(void);
-    bool can_sword_hit_crystal_switch(void);
+    void update();
+    bool can_start_sword();
+    bool can_be_hurt();
+    bool can_sword_hit_crystal_switch();
     bool is_cutting_with_sword(Detector *detector);
 };
 

@@ -52,7 +52,7 @@ TilePattern::TilePattern(Obstacle obstacle, int width, int height):
 /**
  * @brief Destructor.
  */
-TilePattern::~TilePattern(void) {
+TilePattern::~TilePattern() {
 
 }
 
@@ -60,7 +60,7 @@ TilePattern::~TilePattern(void) {
  * @brief Returns the width of the tile pattern.
  * @return the width of the tile 
  */
-int TilePattern::get_width(void) const {
+int TilePattern::get_width() const {
   return width;
 }
 
@@ -68,7 +68,7 @@ int TilePattern::get_width(void) const {
  * @brief Returns the height of the tile pattern.
  * @return the height of the tile 
  */
-int TilePattern::get_height(void) const {
+int TilePattern::get_height() const {
   return height;
 }
 
@@ -76,7 +76,7 @@ int TilePattern::get_height(void) const {
  * @brief Returns the obstacle property of this tile pattern.
  * @return the obstacle property of this tile pattern
  */
-Obstacle TilePattern::get_obstacle(void) const {
+Obstacle TilePattern::get_obstacle() const {
   return obstacle;
 }
 
@@ -85,7 +85,7 @@ Obstacle TilePattern::get_obstacle(void) const {
  *
  * This function is called repeatedly by the map.
  */
-void TilePattern::update(void) {
+void TilePattern::update() {
   AnimatedTilePattern::update();
   ScrollingTilePattern::update();
 }

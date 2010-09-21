@@ -93,7 +93,7 @@ SelectionMenu::SelectionMenu(Solarus *solarus):
 /**
  * @brief Destructor.
  */
-SelectionMenu::~SelectionMenu(void) {
+SelectionMenu::~SelectionMenu() {
 
   delete current_phase;
   delete surface;
@@ -123,7 +123,7 @@ SelectionMenu::~SelectionMenu(void) {
 /**
  * @brief Initializes the clouds position.
  */
-void SelectionMenu::initialize_clouds(void) {
+void SelectionMenu::initialize_clouds() {
 
   next_cloud_move = System::now();
 
@@ -156,7 +156,7 @@ void SelectionMenu::initialize_clouds(void) {
 /**
  * @brief Loads (or reloads) the data of the 3 savegames and creates the surfaces to display.
  */
-void SelectionMenu::read_savegames(void) {
+void SelectionMenu::read_savegames() {
 
   // load the 3 saves
   std::string file_name;
@@ -221,14 +221,14 @@ void SelectionMenu::start_game(Savegame *savegame) {
 /**
  * @brief Ends the program.
  */
-void SelectionMenu::set_exiting(void) {
+void SelectionMenu::set_exiting() {
   solarus->set_exiting();
 }
 
 /**
  * @brief Updates the selection menu.
  */
-void SelectionMenu::update(void) {
+void SelectionMenu::update() {
 
   // move the clouds
   uint32_t now = System::now();
@@ -362,7 +362,7 @@ void SelectionMenu::set_transition(Transition *transition) {
  * @brief Returns whether the selection menu is currently displaying a transition effect.
  * @return true if there is a transition
  */
-bool SelectionMenu::has_transition(void) {
+bool SelectionMenu::has_transition() {
 
   return transition != NULL && transition->is_started();
 }
@@ -371,7 +371,7 @@ bool SelectionMenu::has_transition(void) {
  * @brief Returns whether the current transition effect (if any) is finished.
  * @return true if the transition effect is finished
  */
-bool SelectionMenu::is_transition_finished(void) {
+bool SelectionMenu::is_transition_finished() {
 
   return transition != NULL && transition->is_finished();
 }
@@ -416,7 +416,7 @@ void SelectionMenu::set_bottom_options(const std::string &left_string_key, const
  * @brief Returns the current position of the savegame cursor.
  * @return the cursor position (1 to 5)
  */
-int SelectionMenu::get_cursor_position(void) {
+int SelectionMenu::get_cursor_position() {
   return cursor_position;
 }
 
@@ -433,14 +433,14 @@ void SelectionMenu::set_cursor_position(int cursor_position) {
  * @brief Returns the savegame cursor sprite.
  * @return the cursor sprite
  */
-Sprite * SelectionMenu::get_cursor_sprite(void) {
+Sprite * SelectionMenu::get_cursor_sprite() {
   return cursor_sprite;
 }
 
 /**
  * @brief Moves the savegame cursor upwards.
  */
-void SelectionMenu::move_cursor_up(void) {
+void SelectionMenu::move_cursor_up() {
 
   play_cursor_sound();
 
@@ -459,7 +459,7 @@ void SelectionMenu::move_cursor_up(void) {
 /**
  * @brief Moves the savegame cursor downwards.
  */
-void SelectionMenu::move_cursor_down(void) {
+void SelectionMenu::move_cursor_down() {
 
   play_cursor_sound();
 
@@ -475,7 +475,7 @@ void SelectionMenu::move_cursor_down(void) {
 /**
  * @brief Tries to move the savegame cursor to the left or to the right.
  */
-void SelectionMenu::move_cursor_left_or_right(void) {
+void SelectionMenu::move_cursor_left_or_right() {
 
   if (get_cursor_position() == 4) {
     play_cursor_sound();
@@ -491,7 +491,7 @@ void SelectionMenu::move_cursor_left_or_right(void) {
  * @brief Returns the three savegames of the menu.
  * @return the savegames
  */
-Savegame ** SelectionMenu::get_savegames(void) {
+Savegame ** SelectionMenu::get_savegames() {
   return savegames;
 }
 
@@ -509,7 +509,7 @@ Savegame * SelectionMenu::get_savegame(int save_number) {
  *
  * This function should be called when a savegame is created or deleted.
  */
-void SelectionMenu::reload_savegames(void) {
+void SelectionMenu::reload_savegames() {
   read_savegames();
 }
 
@@ -621,35 +621,35 @@ void SelectionMenu::display_savegame_cursor(Surface *destination_surface) {
 /**
  * @brief Plays the "cursor" sound.
  */
-void SelectionMenu::play_cursor_sound(void) {
+void SelectionMenu::play_cursor_sound() {
   ResourceManager::get_sound("cursor")->play();
 }
 
 /**
  * @brief Plays the "ok" sound.
  */
-void SelectionMenu::play_ok_sound(void) {
+void SelectionMenu::play_ok_sound() {
   ResourceManager::get_sound("ok")->play();
 }
 
 /**
  * @brief Plays the "error" sound.
  */
-void SelectionMenu::play_error_sound(void) {
+void SelectionMenu::play_error_sound() {
   ResourceManager::get_sound("wrong")->play();
 }
 
 /**
  * @brief Plays the "erase" sound.
  */
-void SelectionMenu::play_erase_sound(void) {
+void SelectionMenu::play_erase_sound() {
   ResourceManager::get_sound("boss_killed")->play();
 }
 
 /**
  * @brief Plays the "letter" sound.
  */
-void SelectionMenu::play_letter_sound(void) {
+void SelectionMenu::play_letter_sound() {
   ResourceManager::get_sound("danger")->play();
 }
 

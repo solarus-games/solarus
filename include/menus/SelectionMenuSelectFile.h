@@ -31,7 +31,7 @@ class SelectionMenuSelectFile: public SelectionMenuPhase {
 
     // creation and destruction
     SelectionMenuSelectFile(SelectionMenu *selection_menu);
-    ~SelectionMenuSelectFile(void);
+    ~SelectionMenuSelectFile();
 
     // update and display
     void display(Surface *destination_surface);

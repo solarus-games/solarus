@@ -32,7 +32,7 @@ FollowMovement::FollowMovement(MapEntity *entity_followed, int x, int y, bool ig
 /**
  * @brief Destructor.
  */
-FollowMovement::~FollowMovement(void) {
+FollowMovement::~FollowMovement() {
 
 }
 
@@ -40,7 +40,7 @@ FollowMovement::~FollowMovement(void) {
  * @brief Returns whether the movement is finished.
  * @return true if there was a collision or the entity followed disappeared
  */
-bool FollowMovement::is_finished(void) {
+bool FollowMovement::is_finished() {
   return finished;
 }
 
@@ -48,7 +48,7 @@ bool FollowMovement::is_finished(void) {
 /**
  * @brief Updates the position.
  */
-void FollowMovement::update(void) {
+void FollowMovement::update() {
 
   if (entity_followed == NULL) {
     finished = true;

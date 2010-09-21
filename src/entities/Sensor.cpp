@@ -51,7 +51,7 @@ Sensor::Sensor(const std::string &name, Layer layer, int x, int y,
 /**
  * @brief Destructor.
  */
-Sensor::~Sensor(void) {
+Sensor::~Sensor() {
 
 }
 
@@ -92,7 +92,7 @@ EntityType Sensor::get_type() {
  * @brief Returns the subtype of this sensor.
  * @return the subtype
  */
-Sensor::Subtype Sensor::get_subtype(void) {
+Sensor::Subtype Sensor::get_subtype() {
   return subtype;
 }
 
@@ -101,7 +101,7 @@ Sensor::Subtype Sensor::get_subtype(void) {
  * they are not on the same layer.
  * @return true if this entity can collide with entities that are on another layer
  */
-bool Sensor::has_layer_independent_collisions(void) {
+bool Sensor::has_layer_independent_collisions() {
 
   // check the collisions with the hero even if he is not on the same layer yet
   return subtype == CHANGE_LAYER;

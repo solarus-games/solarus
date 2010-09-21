@@ -80,7 +80,7 @@ ItemProperties::ItemProperties(Equipment *equipment, IniFile *ini) {
 /**
  * Destructor.
  */
-ItemProperties::~ItemProperties(void) {
+ItemProperties::~ItemProperties() {
 
   delete[] amounts;
   delete[] probabilities;
@@ -90,7 +90,7 @@ ItemProperties::~ItemProperties(void) {
  * @brief Returns the name identifying the item.
  * @return the name of the item
  */
-const std::string & ItemProperties::get_name(void) {
+const std::string & ItemProperties::get_name() {
   return name;
 }
 
@@ -98,7 +98,7 @@ const std::string & ItemProperties::get_name(void) {
  * @brief Returns whether the item possession state is saved.
  * @return true if the item is saved
  */
-bool ItemProperties::is_saved(void) {
+bool ItemProperties::is_saved() {
   return get_savegame_variable() != -1;
 }
 
@@ -108,7 +108,7 @@ bool ItemProperties::is_saved(void) {
  * @return the savegame variable that stores the item possession state,
  * or -1 if the item is not saved
  */
-int ItemProperties::get_savegame_variable(void) {
+int ItemProperties::get_savegame_variable() {
   return savegame_variable;
 }
 
@@ -116,7 +116,7 @@ int ItemProperties::get_savegame_variable(void) {
  * @brief Returns the number of variants of this item.
  * @return the number of variants
  */
-int ItemProperties::get_nb_variants(void) {
+int ItemProperties::get_nb_variants() {
   return nb_variants;
 }
 
@@ -124,7 +124,7 @@ int ItemProperties::get_nb_variants(void) {
  * @brief Returns the initial possession state of this item.
  * @return the initial variant of this item
  */
-int ItemProperties::get_initial_variant(void) {
+int ItemProperties::get_initial_variant() {
   return initial_variant;
 }
 
@@ -132,7 +132,7 @@ int ItemProperties::get_initial_variant(void) {
  * @brief Returns whether this item has a counter associated to it.
  * @return true if this item has a counter
  */
-bool ItemProperties::has_counter(void) {
+bool ItemProperties::has_counter() {
   return get_counter_savegame_variable() != -1;
 }
 
@@ -142,7 +142,7 @@ bool ItemProperties::has_counter(void) {
  * @return the savegame variable of the counter, or -1 if there is no counter
  * associated to this item.
  */
-int ItemProperties::get_counter_savegame_variable(void) {
+int ItemProperties::get_counter_savegame_variable() {
   return counter_savegame_variable;
 }
 
@@ -150,7 +150,7 @@ int ItemProperties::get_counter_savegame_variable(void) {
  * @brief Returns whether the counter associated to this item has a fixed limit.
  * @return true if there is a counter with a fixed limit
  */
-bool ItemProperties::has_fixed_limit(void) {
+bool ItemProperties::has_fixed_limit() {
   return get_fixed_limit() != 0;
 }
 
@@ -159,7 +159,7 @@ bool ItemProperties::has_fixed_limit(void) {
  * @return the fixed limit of the counter, or 0 if there is no counter
  * or no fixed limit
  */
-int ItemProperties::get_fixed_limit(void) {
+int ItemProperties::get_fixed_limit() {
   return fixed_limit;
 }
 
@@ -167,7 +167,7 @@ int ItemProperties::get_fixed_limit(void) {
  * @brief Returns the name of an item that sets the limit to the counter of this item.
  * @return the name of the item that sets the limit of the counter of this item, or an empty string
  */
-const std::string & ItemProperties::get_item_limiting(void) {
+const std::string & ItemProperties::get_item_limiting() {
   return item_limiting;
 }
 
@@ -178,7 +178,7 @@ const std::string & ItemProperties::get_item_limiting(void) {
  *
  * @return the name of the item whose counter is limited by this item, or an empty string
  */
-const std::string & ItemProperties::get_item_limited(void) {
+const std::string & ItemProperties::get_item_limited() {
   return item_limited;
 }
 
@@ -189,7 +189,7 @@ const std::string & ItemProperties::get_item_limited(void) {
  *
  * @return the name of the item whose counter is changed by this item, or an empty string
  */
-const std::string & ItemProperties::get_item_counter_changed(void) {
+const std::string & ItemProperties::get_item_counter_changed() {
   return item_counter_changed;
 }
 
@@ -221,7 +221,7 @@ int ItemProperties::get_probability(int variant) {
  * and then used explicitely by pressing this item key.
  * @return true if this item can be assigned
  */
-bool ItemProperties::can_be_assigned(void) {
+bool ItemProperties::can_be_assigned() {
   return allow_assigned;
 }
 
@@ -230,7 +230,7 @@ bool ItemProperties::can_be_assigned(void) {
  * when it is dropped by an enemy or a destructible entity.
  * @return true if this item can disappear
  */
-bool ItemProperties::can_disappear(void) {
+bool ItemProperties::can_disappear() {
   return disappears;
 }
 
@@ -239,7 +239,7 @@ bool ItemProperties::can_disappear(void) {
  * on the ground.
  * @return true if the hero brandishes the item after he picks it.
  */
-bool ItemProperties::is_brandished_when_picked(void) {
+bool ItemProperties::is_brandished_when_picked() {
   return brandish_when_picked;
 }
 
@@ -247,7 +247,7 @@ bool ItemProperties::is_brandished_when_picked(void) {
  * @brief Returns the sound to play when this item is picked on the ground.
  * @return the sound to play when this item is picked
  */
-const SoundId & ItemProperties::get_sound_when_picked(void) {
+const SoundId & ItemProperties::get_sound_when_picked() {
   return sound_when_picked;
 }
 
@@ -255,7 +255,7 @@ const SoundId & ItemProperties::get_sound_when_picked(void) {
  * @brief Returns the sound to play when this item is brandished.
  * @return the sound to play when this item is brandished
  */
-const SoundId & ItemProperties::get_sound_when_brandished(void) {
+const SoundId & ItemProperties::get_sound_when_brandished() {
   return sound_when_brandished;
 }
 
@@ -264,7 +264,7 @@ const SoundId & ItemProperties::get_sound_when_brandished(void) {
  * is on the ground.
  * @return the size of the shadow
  */
-ItemProperties::ShadowSize ItemProperties::get_shadow_size(void) {
+ItemProperties::ShadowSize ItemProperties::get_shadow_size() {
   return shadow_size;
 }
 

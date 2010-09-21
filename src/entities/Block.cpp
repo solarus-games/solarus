@@ -63,7 +63,7 @@ Block::Block(const std::string &name, Layer layer, int x, int y,
 /**
  * @brief Destructor.
  */
-Block::~Block(void) {
+Block::~Block() {
 
 }
 
@@ -96,7 +96,7 @@ MapEntity * Block::parse(Game *game, std::istream &is, Layer layer, int x, int y
  * @brief Returns the type of entity.
  * @return the type of entity
  */
-EntityType Block::get_type(void) {
+EntityType Block::get_type() {
   return BLOCK;
 }
 
@@ -108,7 +108,7 @@ EntityType Block::get_type(void) {
  *
  * @return true if this entity is displayed at the same level as the hero
  */
-bool Block::is_displayed_in_y_order(void) {
+bool Block::is_displayed_in_y_order() {
   return subtype == STATUE;
 }
 
@@ -179,7 +179,7 @@ void Block::notify_collision(MapEntity *entity_overlapping, CollisionMode collis
  * This function is called when the player presses the action key
  * when the hero is facing this detector, and the action icon lets him do this.
  */
-void Block::action_key_pressed(void) {
+void Block::action_key_pressed() {
 
   KeysEffect *keys_effect = game->get_keys_effect();
   if (keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_GRAB) {
@@ -191,7 +191,7 @@ void Block::action_key_pressed(void) {
  * @brief This function is called when the player tries to push or pull this block.
  * @return true if the player is allowed to move this block
  */
-bool Block::moved_by_hero(void) {
+bool Block::moved_by_hero() {
 
   Hero *hero = game->get_hero();
 
@@ -215,7 +215,7 @@ bool Block::moved_by_hero(void) {
 /**
  * @brief Updates the entity.
  */
-void Block::update(void) {
+void Block::update() {
 
   Detector::update();
 
@@ -260,7 +260,7 @@ void Block::update(void) {
 /**
  * @brief Notifies the block that it has just moved.
  */
-void Block::notify_position_changed(void) {
+void Block::notify_position_changed() {
 
   // now we know that the block moves at least of 1 pixel:
   // we can play the sound
@@ -273,7 +273,7 @@ void Block::notify_position_changed(void) {
 /**
  * @brief Resets the block at its initial position.
  */
-void Block::reset(void) {
+void Block::reset() {
   set_xy(initial_position);
   this->maximum_moves = initial_maximum_moves;
 }

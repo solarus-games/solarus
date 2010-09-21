@@ -27,14 +27,14 @@ class Hero::SpinAttackState: public Hero::State {
   public:
 
     SpinAttackState(Hero *hero);
-    ~SpinAttackState(void);
+    ~SpinAttackState();
 
     void start(State *previous_state);
-    void update(void);
-    bool can_sword_hit_crystal_switch(void);
-    bool can_be_hurt(void);
+    void update();
+    bool can_sword_hit_crystal_switch();
+    bool can_be_hurt();
     bool is_cutting_with_sword(Detector *detector);
-    int get_sword_damage_factor(void);
+    int get_sword_damage_factor();
 };
 
 #endif

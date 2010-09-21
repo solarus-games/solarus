@@ -46,17 +46,17 @@ class Treasure {
 
     Treasure(Game *game, const std::string &item_name, int variant, int savegame_variable);
     Treasure(const Treasure &other);
-    ~Treasure(void);
+    ~Treasure();
 
-    ItemProperties * get_item_properties(void);
-    const std::string & get_item_name(void);
-    int get_variant(void);
-    int get_savegame_variable(void);
-    bool is_saved(void);
-    bool is_empty(void);
+    ItemProperties * get_item_properties();
+    const std::string & get_item_name();
+    int get_variant();
+    int get_savegame_variable();
+    bool is_saved();
+    bool is_empty();
 
-    void give_to_player(void);
-    bool is_found(void);
+    void give_to_player();
+    bool is_found();
 
     void display(Surface *destination, int x, int y);
 };

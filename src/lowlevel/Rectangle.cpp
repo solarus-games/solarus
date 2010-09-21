@@ -43,7 +43,7 @@ Rectangle::Rectangle(const Rectangle &other):
 /**
  * @brief Destructor.
  */
-Rectangle::~Rectangle(void) {
+Rectangle::~Rectangle() {
 
 }
 
@@ -96,7 +96,7 @@ bool Rectangle::overlaps(const Rectangle &other) const {
  * @brief Returns the center point of this rectangle
  * @return the center point (represented as a zero-sized rectangle)
  */
-Rectangle Rectangle::get_center(void) {
+Rectangle Rectangle::get_center() {
   return Rectangle(get_x() + get_width() / 2, get_y() + get_height() / 2);
 }
 
@@ -120,7 +120,7 @@ std::ostream & operator <<(std::ostream &stream, const Rectangle &rectangle) {
  *
  * @return the internal rectangle encapsulated
  */
-SDL_Rect * Rectangle::get_internal_rect(void) {
+SDL_Rect * Rectangle::get_internal_rect() {
   return &rect;
 }
 

@@ -93,18 +93,18 @@ class TextSurface {
 
     std::string text;                                 /**< the string to display (only one line) */
 
-    void rebuild(void);
+    void rebuild();
 
   public:
 
-    static void initialize(void);
-    static void quit(void);
+    static void initialize();
+    static void quit();
 
     TextSurface(int x, int y);
     TextSurface(int x, int y,
 	HorizontalAlignment horizontal_alignment,
 	VerticalAlignment vertical_alignment);
-    ~TextSurface(void);
+    ~TextSurface();
 
     void set_font(const std::string font_id);
     void set_alignment(HorizontalAlignment horizontal_alignment,
@@ -117,13 +117,13 @@ class TextSurface {
     void set_x(int x);
     void set_y(int y);
     void set_text(const std::string &text);
-    const std::string & get_text(void);
-    bool is_empty(void);
+    const std::string & get_text();
+    bool is_empty();
     void add_char(char c);
 
-    int get_width(void);
-    int get_height(void);
-    const Rectangle get_size(void);
+    int get_width();
+    int get_height();
+    const Rectangle get_size();
 
     void display(Surface *destination);
 

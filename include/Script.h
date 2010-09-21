@@ -106,7 +106,7 @@ class Script {
 
     // initialization
     void load(const std::string &script_name);
-    virtual void register_available_functions(void);
+    virtual void register_available_functions();
 
     // timers
     void add_timer(Timer *timer);
@@ -116,19 +116,19 @@ class Script {
 
     // loading and closing a script
     Script(Game *game);
-    virtual ~Script(void);
+    virtual ~Script();
 
     // update functions
-    virtual void update(void);
+    virtual void update();
     virtual void set_suspended(bool suspended);
 
     // C++ functions that call script functions
-    void event_update(void);
+    void event_update();
     void event_set_suspended(bool suspended);
     void event_dialog_started(const MessageId &message_id);
     void event_dialog_finished(const MessageId &first_message_id, int answer);
-    void event_camera_reached_target(void);
-    void event_camera_back(void);
+    void event_camera_reached_target();
+    void event_camera_back();
     void event_treasure_obtaining(const std::string &item_name, int variant, int savegame_variable);
     void event_treasure_obtained(const std::string &item_name, int variant, int savegame_variable);
 };

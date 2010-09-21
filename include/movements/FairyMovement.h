@@ -36,15 +36,15 @@ class FairyMovement: public Movement {
     Rectangle bounds;                        /**< a rectangle the fairy cannot escape from */
     uint32_t next_direction_change_date;     /**< date of the next direction change */
 
-    void set_next_direction(void);
+    void set_next_direction();
 
   public:
 
-    FairyMovement(void);
-    ~FairyMovement(void);
+    FairyMovement();
+    ~FairyMovement();
 
     void set_entity(MapEntity *entity);
-    void update(void);
+    void update();
 };
 
 #endif

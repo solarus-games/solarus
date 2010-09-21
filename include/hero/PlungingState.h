@@ -27,12 +27,12 @@ class Hero::PlungingState: public Hero::State {
   public:
 
     PlungingState(Hero *hero);
-    ~PlungingState(void);
+    ~PlungingState();
 
     void start(State *previous_state);
-    void update(void);
-    bool can_start_gameover_sequence(void);
-    bool is_touching_ground(void);
+    void update();
+    bool can_start_gameover_sequence();
+    bool is_touching_ground();
 };
 
 #endif

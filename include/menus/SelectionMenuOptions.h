@@ -61,26 +61,26 @@ class SelectionMenuOptions: public SelectionMenuPhase {
     Sprite *right_arrow_sprite;                                   /**< sprite of a blinking right arrow to indicate how to change a value */
 
     void set_cursor_position(int cursor_position);
-    void move_cursor_up(void);
-    void move_cursor_down(void);
-    void move_cursor_left_or_right(void);
+    void move_cursor_up();
+    void move_cursor_down();
+    void move_cursor_left_or_right();
 
-    void set_option_next_value(void);
-    void set_option_previous_value(void);
+    void set_option_next_value();
+    void set_option_previous_value();
     void set_option_value(int index);
     void set_option_value(int option, int index);
 
-    void load_configuration(void);
-    void reload_strings(void);
+    void load_configuration();
+    void reload_strings();
 
   public:
 
     // creation and destruction
     SelectionMenuOptions(SelectionMenu *selection_menu);
-    ~SelectionMenuOptions(void);
+    ~SelectionMenuOptions();
 
     // update and display
-    void update(void);
+    void update();
     void display(Surface *destination_surface);
     void notify_event(InputEvent &event);
 };

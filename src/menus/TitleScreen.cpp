@@ -43,7 +43,7 @@ TitleScreen::TitleScreen(Solarus *solarus):
 /**
  * @brief Destroys the title screen.
  */
-TitleScreen::~TitleScreen(void) {
+TitleScreen::~TitleScreen() {
 
   if (!is_screen_finished()) {
 
@@ -66,7 +66,7 @@ TitleScreen::~TitleScreen(void) {
 /**
  * @brief Updates the title screen.
  */
-void TitleScreen::update(void) {
+void TitleScreen::update() {
 
   uint32_t now = System::now();
 
@@ -158,7 +158,7 @@ void TitleScreen::notify_event(InputEvent &event) {
  *
  * A black screen will be shown for a fraction of second.
  */
-void TitleScreen::init_phase_black_screen(void) {
+void TitleScreen::init_phase_black_screen() {
 
   // black screen during 0.3 second
   current_phase = PHASE_BLACK_SCREEN;
@@ -170,7 +170,7 @@ void TitleScreen::init_phase_black_screen(void) {
  *
  * A introduction message will be shown.
  */
-void TitleScreen::init_phase_introduction_message(void) {
+void TitleScreen::init_phase_introduction_message() {
 
   current_phase = PHASE_ZS_PRESENTS;
 
@@ -186,7 +186,7 @@ void TitleScreen::init_phase_introduction_message(void) {
 /**
  * @brief Exits phase 2 of the title screen.
  */
-void TitleScreen::exit_phase_introduction_message(void) {
+void TitleScreen::exit_phase_introduction_message() {
   delete introduction_message_img;
   delete transition_out;
 }
@@ -196,7 +196,7 @@ void TitleScreen::exit_phase_introduction_message(void) {
  *
  * The title screen will be shown.
  */
-void TitleScreen::init_phase_title(void) {
+void TitleScreen::init_phase_title() {
 
   static const std::string time_of_day_strings[] = { "daylight", "sunset", "night" };
   static Color text_colors[] = { Color(0, 0, 92), Color(0, 0, 92), Color(255, 128, 0) };
@@ -245,7 +245,7 @@ void TitleScreen::init_phase_title(void) {
 /**
  * @brief Exits phase 3 of the title screen.
  */
-void TitleScreen::exit_phase_title(void) {
+void TitleScreen::exit_phase_title() {
 
   delete transition_in;
   delete transition_out;
@@ -263,7 +263,7 @@ void TitleScreen::exit_phase_title(void) {
 /**
  * @brief Updates phase 3 of the title screen.
  */
-void TitleScreen::update_phase_title(void) {
+void TitleScreen::update_phase_title() {
 
   transition_in->update();
   transition_out->update();
@@ -359,7 +359,7 @@ void TitleScreen::display_phase_title(Surface *destination_surface) {
  * @brief Returns a number describing the current time of the day.
  * @return DAYLIGHT, SUNSET or NIGHT
  */
-TitleScreen::TimeOfDay TitleScreen::get_time_of_day(void) {
+TitleScreen::TimeOfDay TitleScreen::get_time_of_day() {
 
   time_t timestamp = time(NULL);
   struct tm *local_time = localtime(&timestamp);

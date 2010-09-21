@@ -45,7 +45,7 @@ Detector::Detector(int collision_modes,
 /**
  * @brief Destructor.
  */
-Detector::~Detector(void) {
+Detector::~Detector() {
 
 }
 
@@ -84,7 +84,7 @@ bool Detector::has_collision_mode(CollisionMode collision_mode) {
  * @brief Enables the pixel-perfect collision checks for all sprites
  * of this detector.
  */
-void Detector::enable_pixel_collisions(void) {
+void Detector::enable_pixel_collisions() {
 
   std::map<std::string, Sprite*>::iterator it;
   for (it = sprites.begin(); it != sprites.end(); it++) {
@@ -289,7 +289,7 @@ void Detector::notify_collision(MapEntity *other_entity, Sprite *other_sprite, S
  * By default, nothing happens.
  * Redefine your function in the subclasses to allow the hero to interact with this entity.
  */
-void Detector::action_key_pressed(void) {
+void Detector::action_key_pressed() {
 
 }
 
@@ -320,7 +320,7 @@ bool Detector::interaction_with_inventory_item(InventoryItem *item) {
  *
  * @return true if the detector was pushed or pulled successfully
  */
-bool Detector::moved_by_hero(void) {
+bool Detector::moved_by_hero() {
   return false;
 }
 
@@ -328,7 +328,7 @@ bool Detector::moved_by_hero(void) {
  * @brief This function is called when the player is tapping his sword against this detector.
  * @return the sound to play when tapping this detector with the sword
  */
-SoundId Detector::get_sword_tapping_sound(void) {
+SoundId Detector::get_sword_tapping_sound() {
   return "sword_tapping";
 }
 

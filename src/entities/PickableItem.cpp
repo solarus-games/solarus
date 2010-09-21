@@ -43,7 +43,7 @@ PickableItem::PickableItem(Layer layer, int x, int y, Treasure *treasure):
 /**
  * @brief Destructor.
  */
-PickableItem::~PickableItem(void) {
+PickableItem::~PickableItem() {
 
   delete treasure;
   delete shadow_sprite;
@@ -131,7 +131,7 @@ PickableItem * PickableItem::create(Game *game, Layer layer, int x, int y, Treas
  * the item itself and its shadow, except the fairy whose
  * shadow is part of its sprite.
  */
-void PickableItem::initialize_sprites(void) {
+void PickableItem::initialize_sprites() {
 
   ItemProperties *properties = treasure->get_item_properties();
 
@@ -183,7 +183,7 @@ void PickableItem::initialize_sprites(void) {
  * @brief Initializes the movement of the item (if it is falling),
  * depending on its subtype.
  */
-void PickableItem::initialize_movement(void) {
+void PickableItem::initialize_movement() {
 
   if (is_falling()) {
     set_movement(new FallingOnFloorMovement(falling_height));
@@ -194,7 +194,7 @@ void PickableItem::initialize_movement(void) {
  * @brief Returns whether the entity is currently falling.
  * @return true if the entity is currently falling
  */
-bool PickableItem::is_falling(void) {
+bool PickableItem::is_falling() {
   return falling_height != FALLING_NONE;
 }
 
@@ -231,7 +231,7 @@ void PickableItem::notify_collision(MapEntity *entity_overlapping, CollisionMode
 /**
  * @brief Gives the item to the player.
  */
-void PickableItem::give_item_to_player(void) {
+void PickableItem::give_item_to_player() {
 
   ItemProperties *properties = treasure->get_item_properties();
 
@@ -307,7 +307,7 @@ void PickableItem::set_suspended(bool suspended) {
  * This is a redefinition of MapEntity::update() to make
  * the item blink and then disappear after an amount of time.
  */
-void PickableItem::update(void) {
+void PickableItem::update() {
 
   // update the animations and the movement
   MapEntity::update();
@@ -353,7 +353,7 @@ void PickableItem::update(void) {
  * This is a redefinition of MapEntity::display_on_map
  * to display the shadow independently of the item movement.
  */
-void PickableItem::display_on_map(void) {
+void PickableItem::display_on_map() {
 
   // display the shadow
   if (shadow_sprite != NULL) {

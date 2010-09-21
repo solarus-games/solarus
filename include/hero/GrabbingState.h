@@ -27,12 +27,12 @@ class Hero::GrabbingState: public Hero::State {
   public:
 
     GrabbingState(Hero *hero);
-    ~GrabbingState(void);
+    ~GrabbingState();
 
     void start(State *previous_state);
-    void update(void);
-    bool is_grabbing_or_pulling(void);
-    bool can_be_hurt(void);
+    void update();
+    bool is_grabbing_or_pulling();
+    bool can_be_hurt();
 };
 
 #endif

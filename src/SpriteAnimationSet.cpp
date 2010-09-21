@@ -117,7 +117,7 @@ SpriteAnimationSet::SpriteAnimationSet(const SpriteAnimationSetId &id) {
 /**
  * @brief Destructor.
  */
-SpriteAnimationSet::~SpriteAnimationSet(void) {
+SpriteAnimationSet::~SpriteAnimationSet() {
 
   // delete the animations
   std::map<SpriteAnimationSetId, SpriteAnimation*>::const_iterator it;
@@ -173,14 +173,14 @@ SpriteAnimation * SpriteAnimationSet::get_animation(const std::string &animation
  * @brief Returns the name of the default animation, i.e. the first one.
  * @return the name of the default animation
  */
-const std::string& SpriteAnimationSet::get_default_animation(void) const {
+const std::string& SpriteAnimationSet::get_default_animation() const {
   return default_animation_name;
 }
 
 /**
  * @brief Enables the pixel-perfect collision detection for these animations.
  */
-void SpriteAnimationSet::enable_pixel_collisions(void) {
+void SpriteAnimationSet::enable_pixel_collisions() {
 
   if (!are_pixel_collisions_enabled()) {
 
@@ -196,7 +196,7 @@ void SpriteAnimationSet::enable_pixel_collisions(void) {
  * @brief Returns whether the pixel-perfect collisions are enabled for these animations.
  * @return true if the pixel-perfect collisions are enabled
  */
-bool SpriteAnimationSet::are_pixel_collisions_enabled(void) const {
+bool SpriteAnimationSet::are_pixel_collisions_enabled() const {
   return animations.begin()->second->are_pixel_collisions_enabled();
 }
 

@@ -38,12 +38,12 @@ class Rectangle {
 
     Rectangle(int x = 0, int y = 0, int width = 0, int height = 0);
     Rectangle(const Rectangle &other);
-    ~Rectangle(void);
+    ~Rectangle();
 
-    inline int get_x(void) const       { return rect.x; }
-    inline int get_y(void) const       { return rect.y; }
-    inline int get_width(void)  const  { return rect.w; }
-    inline int get_height(void) const  { return rect.h; }
+    inline int get_x() const       { return rect.x; }
+    inline int get_y() const       { return rect.y; }
+    inline int get_width()  const  { return rect.w; }
+    inline int get_height() const  { return rect.h; }
 
     inline void set_x(int x)           { rect.x = x;      }
     inline void set_y(int y)           { rect.y = y;      }
@@ -65,10 +65,10 @@ class Rectangle {
     bool contains(int x, int y) const;
     bool contains(const Rectangle &other) const;
     bool overlaps(const Rectangle &other) const;
-    Rectangle get_center(void);
+    Rectangle get_center();
 
     // for low-level classes use only
-    SDL_Rect * get_internal_rect(void);
+    SDL_Rect * get_internal_rect();
 };
 
 std::ostream & operator <<(std::ostream &stream, const Rectangle &rectangle);

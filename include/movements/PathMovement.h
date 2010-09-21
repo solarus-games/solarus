@@ -54,25 +54,25 @@ class PathMovement: public CollisionMovement {
 
   protected:
 
-    virtual void start_next_move(void);
-    static const std::string get_random_path(void);
-    bool is_current_move_finished(void);
+    virtual void start_next_move();
+    static const std::string get_random_path();
+    bool is_current_move_finished();
     void set_entity(MapEntity *entity);
     void set_speed(int speed);
 
   public:
 
     PathMovement(const std::string &path, int speed, bool loop, bool ignore_obstacles, bool snap_to_grid);
-    ~PathMovement(void);
+    ~PathMovement();
 
-    virtual bool is_finished(void);
+    virtual bool is_finished();
 
-    int get_current_direction(void);
+    int get_current_direction();
     void set_position(int x, int y);
-    int get_total_distance_covered(void);
-    Rectangle get_xy_change(void);
+    int get_total_distance_covered();
+    Rectangle get_xy_change();
 
-    void update(void);
+    void update();
 };
 
 #endif

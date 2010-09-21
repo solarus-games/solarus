@@ -38,10 +38,10 @@ class CustomObstacle: public MapEntity {
 
     CustomObstacle(const std::string &name, Layer layer, int x, int y, int width, int height,
 	bool stops_hero, bool stops_enemies, bool stops_npcs, bool stops_blocks);
-    ~CustomObstacle(void);
+    ~CustomObstacle();
     static CreationFunction parse;
 
-    EntityType get_type(void);
+    EntityType get_type();
     bool is_obstacle_for(MapEntity *other);
 };
 

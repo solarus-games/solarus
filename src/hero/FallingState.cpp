@@ -33,7 +33,7 @@ Hero::FallingState::FallingState(Hero *hero):
 /**
  * @brief Destructor.
  */
-Hero::FallingState::~FallingState(void) {
+Hero::FallingState::~FallingState() {
 
 }
 
@@ -65,7 +65,7 @@ void Hero::FallingState::stop(State *next_state) {
 /**
  * @brief Updates this state.
  */
-void Hero::FallingState::update(void) {
+void Hero::FallingState::update() {
 
   State::update();
 
@@ -89,7 +89,7 @@ void Hero::FallingState::update(void) {
  * @brief Returns whether the hero ignores the effect of holes in this state.
  * @return true if the hero ignores the effect of holes in the current state
  */
-bool Hero::FallingState::can_avoid_hole(void) {
+bool Hero::FallingState::can_avoid_hole() {
   return true;
 }
 
@@ -97,7 +97,7 @@ bool Hero::FallingState::can_avoid_hole(void) {
  * @brief Returns whether the game over sequence can start in the current state.
  * @return true if the game over sequence can start in the current state
  */
-bool Hero::FallingState::can_start_gameover_sequence(void) {
+bool Hero::FallingState::can_start_gameover_sequence() {
   return false;
 }
 

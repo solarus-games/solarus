@@ -56,34 +56,34 @@ class Transition {
 
   public:
 
-    virtual ~Transition(void);
+    virtual ~Transition();
     static Transition *create(Style style, Direction direction, Game *game = NULL);
 
-    Direction get_direction(void);
+    Direction get_direction();
     void set_previous_surface(Surface *previous_surface);
-    virtual bool needs_previous_surface(void);
+    virtual bool needs_previous_surface();
 
     /**
      * @brief Starts this transition effect.
      */
-    virtual void start(void) = 0;
+    virtual void start() = 0;
 
     /**
      * @brief Returns whether the transition effect is started.
      * @return true if the transition effect is started
      */
-    virtual bool is_started(void) = 0;
+    virtual bool is_started() = 0;
 
     /**
      * @brief Returns whether the transition effect is finished.
      * @return true if the transition effect is finished
      */
-    virtual bool is_finished(void) = 0;
+    virtual bool is_finished() = 0;
 
     /**
      * @brief Updates this transition effect.
      */
-    virtual void update(void) = 0;
+    virtual void update() = 0;
 
     /**
      * @brief Displays the transition effect on a surface.

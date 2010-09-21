@@ -29,22 +29,22 @@ class Hero::PushingState: public Hero::State {
     int pushing_direction4;			/**< direction where the hero is looking (0 to 3) */
     Detector *pushed_entity;			/**< the entity the hero is pushing (or NULL) */
 
-    void stop_moving_pushed_entity(void);
+    void stop_moving_pushed_entity();
 
   public:
 
     PushingState(Hero *hero);
-    ~PushingState(void);
+    ~PushingState();
 
     void start(State *previous_state);
     void stop(State *next_state);
-    void update(void);
-    bool can_avoid_conveyor_belt(void);
-    bool can_start_sword(void);
-    bool is_moving_grabbed_entity(void);
-    void notify_grabbed_entity_collision(void);
+    void update();
+    bool can_avoid_conveyor_belt();
+    bool can_start_sword();
+    bool is_moving_grabbed_entity();
+    void notify_grabbed_entity_collision();
 
-    bool can_be_hurt(void);
+    bool can_be_hurt();
 };
 
 #endif

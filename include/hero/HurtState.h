@@ -33,17 +33,17 @@ class Hero::HurtState: public Hero::State {
   public:
 
     HurtState(Hero *hero, MapEntity *source, int life_points, int magic_points);
-    ~HurtState(void);
+    ~HurtState();
 
     void start(State *previous_state);
     void stop(State *next_state);
-    void update(void);
-    bool can_start_gameover_sequence(void);
-    bool is_touching_ground(void);
+    void update();
+    bool can_start_gameover_sequence();
+    bool is_touching_ground();
     bool is_teletransporter_obstacle(Teletransporter *teletransporter);
     bool is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt);
     bool is_sensor_obstacle(Sensor *sensor);
-    bool can_be_hurt(void);
+    bool can_be_hurt();
 };
 
 #endif

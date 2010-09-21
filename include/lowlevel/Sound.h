@@ -62,20 +62,20 @@ class Sound {
     static sf_count_t sf_tell(void *user_data);
 
     ALuint decode_file(const std::string &file_name);
-    bool update_playing(void);
+    bool update_playing();
 
   public:
 
     Sound(const SoundId &sound_id);
-    ~Sound(void);
-    bool play(void);
+    ~Sound();
+    bool play();
 
     static void initialize(int argc, char **argv);
-    static void quit(void);
-    static bool is_initialized(void);
-    static void update(void);
+    static void quit();
+    static bool is_initialized();
+    static void update();
 
-    static int get_volume(void);
+    static int get_volume();
     static void set_volume(int volume);
 };
 

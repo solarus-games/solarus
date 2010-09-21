@@ -50,7 +50,7 @@ RupeesCounter::RupeesCounter(Game *game, int x, int y):
 /**
  * @brief Destructor.
  */
-RupeesCounter::~RupeesCounter(void) {
+RupeesCounter::~RupeesCounter() {
   delete img_rupee_icon;
   delete counter;
 }
@@ -58,7 +58,7 @@ RupeesCounter::~RupeesCounter(void) {
 /**
  * @brief Updates the number of rupees displayed and the color of the icon.
  */
-void RupeesCounter::update(void) {
+void RupeesCounter::update() {
 
   HudElement::update();
 
@@ -109,7 +109,7 @@ void RupeesCounter::update(void) {
 /**
  * @brief Redraws the icon and the counter on the surface.
  */
-void RupeesCounter::rebuild(void) {
+void RupeesCounter::rebuild() {
 
   HudElement::rebuild();
   

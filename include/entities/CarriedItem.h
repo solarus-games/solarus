@@ -53,41 +53,41 @@ class CarriedItem: public MapEntity {
     // explosion of the item
     uint32_t explosion_date;         /**< date when the item will explode (0 if there is no explosion) */
 
-    bool will_explode_soon(void);
+    bool will_explode_soon();
 
   public:
 
     CarriedItem(Hero *hero, DestructibleItem *destructible_item);
-    ~CarriedItem(void);
+    ~CarriedItem();
 
-    EntityType get_type(void);
+    EntityType get_type();
 
-    bool can_be_obstacle(void);
-    bool can_detect_entities(void);
-    bool can_be_displayed(void);
-    bool is_displayed_in_y_order(void);
+    bool can_be_obstacle();
+    bool can_detect_entities();
+    bool can_be_displayed();
+    bool is_displayed_in_y_order();
 
-    int get_damage_on_enemies(void);
+    int get_damage_on_enemies();
 
-    void set_animation_stopped(void);
-    void set_animation_walking(void);
+    void set_animation_stopped();
+    void set_animation_walking();
     void throw_item(int direction);
-    bool is_being_lifted(void);
-    bool is_being_thrown(void);
-    void break_item(void);
-    bool is_broken(void);
-    bool can_explode(void);
+    bool is_being_lifted();
+    bool is_being_thrown();
+    void break_item();
+    bool is_broken();
+    bool can_explode();
 
     void set_suspended(bool suspended);
-    void update(void);
-    void display_on_map(void);
+    void update();
+    void display_on_map();
 
     bool is_teletransporter_obstacle(Teletransporter *teletransporter);
     bool is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt);
     bool is_stairs_obstacle(Stairs *stairs);
-    bool is_water_obstacle(void);
-    bool is_hole_obstacle(void);
-    bool is_ladder_obstacle(void);
+    bool is_water_obstacle();
+    bool is_hole_obstacle();
+    bool is_ladder_obstacle();
     bool is_raised_block_obstacle(CrystalSwitchBlock *raised_block);
     bool is_crystal_switch_obstacle(CrystalSwitch *crystal_switch);
     bool is_sensor_obstacle(Sensor *sensor);

@@ -33,14 +33,14 @@ class Hero::ConveyorBeltState: public Hero::State {
   public:
 
     ConveyorBeltState(Hero *hero, ConveyorBelt *conveyor_belt);
-    ~ConveyorBeltState(void);
+    ~ConveyorBeltState();
 
     void start(State *previous_state);
     void stop(State *next_state);
-    void update(void);
+    void update();
 
-    bool can_avoid_teletransporter(void);
-    bool can_avoid_conveyor_belt(void);
+    bool can_avoid_teletransporter();
+    bool can_avoid_conveyor_belt();
 };
 
 #endif

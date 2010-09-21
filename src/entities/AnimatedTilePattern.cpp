@@ -73,7 +73,7 @@ AnimatedTilePattern::AnimatedTilePattern(Obstacle obstacle,
 /**
  * @brief Destructor.
  */
-AnimatedTilePattern::~AnimatedTilePattern(void) {
+AnimatedTilePattern::~AnimatedTilePattern() {
   
 }
 
@@ -82,7 +82,7 @@ AnimatedTilePattern::~AnimatedTilePattern(void) {
  *
  * This function is called repeatedly by the map.
  */
-void AnimatedTilePattern::update(void) {
+void AnimatedTilePattern::update() {
 
   uint32_t now = System::now();
 

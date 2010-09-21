@@ -37,10 +37,10 @@ class SelectionMenuPhase {
 
   public:
 
-    virtual ~SelectionMenuPhase(void);
+    virtual ~SelectionMenuPhase();
 
     // update and display
-    virtual void update(void);
+    virtual void update();
     virtual void display(Surface *destination_surface);
     virtual void notify_event(InputEvent &event);
 

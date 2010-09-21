@@ -63,28 +63,28 @@ class ItemProperties {
   public:
 
     ItemProperties(Equipment *equipment, IniFile *ini);
-    ~ItemProperties(void);
+    ~ItemProperties();
 
-    const std::string & get_name(void);
-    bool is_saved(void);
-    int get_savegame_variable(void);
-    int get_nb_variants(void);
-    int get_initial_variant(void);
-    bool has_counter(void);
-    int get_counter_savegame_variable(void);
-    bool has_fixed_limit(void);
-    int get_fixed_limit(void);
-    const std::string & get_item_limiting(void);
-    const std::string & get_item_limited(void);
-    const std::string & get_item_counter_changed(void);
+    const std::string & get_name();
+    bool is_saved();
+    int get_savegame_variable();
+    int get_nb_variants();
+    int get_initial_variant();
+    bool has_counter();
+    int get_counter_savegame_variable();
+    bool has_fixed_limit();
+    int get_fixed_limit();
+    const std::string & get_item_limiting();
+    const std::string & get_item_limited();
+    const std::string & get_item_counter_changed();
     int get_amount(int variant = 1);
     int get_probability(int variant = 1);
-    bool can_be_assigned(void);
-    bool can_disappear(void);
-    bool is_brandished_when_picked(void);
-    const SoundId & get_sound_when_picked(void);
-    const SoundId & get_sound_when_brandished(void);
-    ShadowSize get_shadow_size(void);
+    bool can_be_assigned();
+    bool can_disappear();
+    bool is_brandished_when_picked();
+    const SoundId & get_sound_when_picked();
+    const SoundId & get_sound_when_brandished();
+    ShadowSize get_shadow_size();
 };
 
 #endif

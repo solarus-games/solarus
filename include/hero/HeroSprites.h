@@ -72,75 +72,75 @@ class HeroSprites {
 
     CarriedItem *lifted_item;		/**< if not NULL, an item to display above the hero */
 
-    bool is_visible(void);
-    bool is_sword_visible(void);
-    bool is_sword_stars_visible(void);
-    bool is_shield_visible(void);
-    bool is_trail_visible(void);
+    bool is_visible();
+    bool is_sword_visible();
+    bool is_sword_stars_visible();
+    bool is_shield_visible();
+    bool is_trail_visible();
 
-    void stop_displaying_sword(void);
-    void stop_displaying_sword_stars(void);
-    void stop_displaying_shield(void);
-    void stop_displaying_trail(void);
+    void stop_displaying_sword();
+    void stop_displaying_sword_stars();
+    void stop_displaying_shield();
+    void stop_displaying_trail();
 
   public:
 
     HeroSprites(Hero *hero, Equipment *equipment);
-    ~HeroSprites(void);
+    ~HeroSprites();
 
-    void update(void);
-    void display_on_map(void);
+    void update();
+    void display_on_map();
     void set_suspended(bool suspended);
-    void rebuild_equipment(void);
+    void rebuild_equipment();
 
-    void blink(void);
-    void stop_blinking(void);
-    bool is_blinking(void);
-    bool is_walking(void);
+    void blink();
+    void stop_blinking();
+    bool is_blinking();
+    bool is_walking();
     void set_clipping_rectangle(const Rectangle &clipping_rectangle = Rectangle());
 
     int get_animation_direction(int keys_direction, int real_movement_direction);
-    int get_animation_direction(void);
-    int get_animation_direction8(void);
+    int get_animation_direction();
+    int get_animation_direction8();
     void set_animation_direction(int direction);
     void set_animation_direction8(int direction);
-    void restart_animation(void);
-    bool is_animation_finished(void);
-    int get_current_frame(void);
-    void save_animation_direction(void);
-    void restore_animation_direction(void);
+    void restart_animation();
+    bool is_animation_finished();
+    int get_current_frame();
+    void save_animation_direction();
+    void restore_animation_direction();
 
-    void set_animation_stopped_common(void);
-    void set_animation_stopped_normal(void);
-    void set_animation_stopped_sword_loading(void);
-    void set_animation_stopped_carrying(void);
-    void set_animation_walking_common(void);
-    void set_animation_walking_normal(void);
-    void set_animation_walking_sword_loading(void);
-    void set_animation_walking_carrying(void);
+    void set_animation_stopped_common();
+    void set_animation_stopped_normal();
+    void set_animation_stopped_sword_loading();
+    void set_animation_stopped_carrying();
+    void set_animation_walking_common();
+    void set_animation_walking_normal();
+    void set_animation_walking_sword_loading();
+    void set_animation_walking_carrying();
     void set_animation_walking_diagonal(int direction8);
-    void set_animation_sword(void);
-    void play_sword_sound(void);
-    void set_animation_sword_tapping(void);
-    void set_animation_spin_attack(void);
-    void set_animation_grabbing(void);
-    void set_animation_pulling(void);
-    void set_animation_pushing(void);
-    void set_animation_lifting(void);
-    void set_animation_jumping(void);
-    void set_animation_hurt(void);
-    void set_animation_plunging(void);
-    void set_animation_falling(void);
-    void set_animation_boomerang(void);
-    void set_animation_bow(void);
-    void set_animation_brandish(void);
-    void set_animation_victory(void);
-    void set_animation_prepare_running(void);
-    void set_animation_running(void);
+    void set_animation_sword();
+    void play_sword_sound();
+    void set_animation_sword_tapping();
+    void set_animation_spin_attack();
+    void set_animation_grabbing();
+    void set_animation_pulling();
+    void set_animation_pushing();
+    void set_animation_lifting();
+    void set_animation_jumping();
+    void set_animation_hurt();
+    void set_animation_plunging();
+    void set_animation_falling();
+    void set_animation_boomerang();
+    void set_animation_bow();
+    void set_animation_brandish();
+    void set_animation_victory();
+    void set_animation_prepare_running();
+    void set_animation_running();
 
     void create_ground(Ground grond);
-    void destroy_ground(void);
-    void play_ground_sound(void);
+    void destroy_ground();
+    void play_ground_sound();
 
     void set_lifted_item(CarriedItem *lifted_item);
 };

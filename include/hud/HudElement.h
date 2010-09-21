@@ -60,18 +60,18 @@ class HudElement {
 
   public:
 
-    virtual ~HudElement(void);
+    virtual ~HudElement();
 
     void set_position(int x, int y);
     void set_visible(bool visible);
-    virtual bool is_visible(void);
-    int get_opacity(void);
+    virtual bool is_visible();
+    int get_opacity();
     void set_opacity(int opacity);
     void set_blinking(bool blinking);
-    bool is_blinking(void);
+    bool is_blinking();
 
-    virtual void update(void);
-    virtual void rebuild(void);
+    virtual void update();
+    virtual void rebuild();
     void display(Surface *destination);
 };
 

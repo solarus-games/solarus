@@ -33,14 +33,14 @@ ChainAndBall::ChainAndBall(const ConstructionParameters &params):
 /**
  * @brief Destructor.
  */
-ChainAndBall::~ChainAndBall(void) {
+ChainAndBall::~ChainAndBall() {
 
 }
 
 /**
  * @brief Initializes this enemy.
  */
-void ChainAndBall::initialize(void) {
+void ChainAndBall::initialize() {
 
   // attack/defense features
   set_damage(2);
@@ -63,14 +63,14 @@ void ChainAndBall::initialize(void) {
 /**
  * @brief Updates this enemy.
  */
-void ChainAndBall::update(void) {
+void ChainAndBall::update() {
   Enemy::update();
 }
 
 /**
  * @brief Displays the chain and ball on the map.
  */
-void ChainAndBall::display_on_map(void) {
+void ChainAndBall::display_on_map() {
 
   // display the ball
   Enemy::display_on_map();
@@ -91,7 +91,7 @@ void ChainAndBall::display_on_map(void) {
  *
  * @return true if this type of entity is displayed at the same level as the hero
  */
-bool ChainAndBall::is_displayed_in_y_order(void) {
+bool ChainAndBall::is_displayed_in_y_order() {
   return false; // unlike usual enemies
 }
 
@@ -129,7 +129,7 @@ void ChainAndBall::attach_to(MapEntity *entity, int x, int y,
  *
  * The chain is then updated.
  */
-void ChainAndBall::notify_position_changed(void) {
+void ChainAndBall::notify_position_changed() {
 
   Enemy::notify_position_changed();
 
@@ -157,7 +157,7 @@ void ChainAndBall::notify_position_changed(void) {
  * because something happened (for example the enemy has just been created,
  * or it was just hurt).
  */
-void ChainAndBall::restart(void) {
+void ChainAndBall::restart() {
 
   Enemy::restart();
 }

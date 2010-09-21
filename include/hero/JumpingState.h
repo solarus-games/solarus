@@ -35,22 +35,22 @@ class Hero::JumpingState: public Hero::State {
 
     JumpingState(Hero *hero, int direction8, int length, bool ignore_obstacles, bool with_sound,
 	uint32_t movement_delay = 0, Layer layer_after_jump = LAYER_NB);
-    ~JumpingState(void);
+    ~JumpingState();
 
     void start(State *previous_state);
     void stop(State *next_state);
-    void update(void);
-    int get_wanted_movement_direction8(void);
-    bool can_start_gameover_sequence(void);
-    int get_height_above_shadow(void);
-    bool is_touching_ground(void);
-    bool can_avoid_deep_water(void);
-    bool can_avoid_hole(void);
-    bool can_avoid_teletransporter(void);
-    bool can_avoid_conveyor_belt(void);
+    void update();
+    int get_wanted_movement_direction8();
+    bool can_start_gameover_sequence();
+    int get_height_above_shadow();
+    bool is_touching_ground();
+    bool can_avoid_deep_water();
+    bool can_avoid_hole();
+    bool can_avoid_teletransporter();
+    bool can_avoid_conveyor_belt();
     bool is_sensor_obstacle(Sensor *sensor);
-    bool can_avoid_sensor(void);
-    bool can_be_hurt(void);
+    bool can_avoid_sensor();
+    bool can_be_hurt();
 };
 
 #endif

@@ -34,12 +34,12 @@ class HUD {
 
     bool showing_message;
 
-    void update_blinking(void);
+    void update_blinking();
 
   public:
 
     HUD(Game *game);
-    ~HUD(void);
+    ~HUD();
 
     void update();
     void display(Surface *destination);

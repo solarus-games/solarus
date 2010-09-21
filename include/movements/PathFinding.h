@@ -76,9 +76,9 @@ class PathFinding {
   public:
 
     PathFinding(Map *map, MapEntity *source_entity, MapEntity *target_entity);
-    ~PathFinding(void);
+    ~PathFinding();
 
-    std::string compute_path(void);
+    std::string compute_path();
 };
 
 #endif

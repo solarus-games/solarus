@@ -36,7 +36,7 @@ SelectionMenuConfirmErase::SelectionMenuConfirmErase(SelectionMenu *menu, int sa
 /**
  * @brief Destructor.
  */
-SelectionMenuConfirmErase::~SelectionMenuConfirmErase(void) {
+SelectionMenuConfirmErase::~SelectionMenuConfirmErase() {
 
 }
 

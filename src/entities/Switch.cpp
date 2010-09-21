@@ -63,7 +63,7 @@ Switch::Switch(const std::string &name, Layer layer, int x, int y,
 /**
  * @brief Destructor.
  */
-Switch::~Switch(void) {
+Switch::~Switch() {
 
 }
 
@@ -104,7 +104,7 @@ EntityType Switch::get_type() {
  * @brief Returns wether this switch is a walkable switch.
  * @return true if the subtype of switch is WALKABLE_INVISIBLE or WALKABLE_VISIBLE
  */
-bool Switch::is_walkable(void) {
+bool Switch::is_walkable() {
   return subtype == WALKABLE_INVISIBLE || subtype == WALKABLE_VISIBLE;
 }
 
@@ -112,7 +112,7 @@ bool Switch::is_walkable(void) {
  * @brief Returns whether this switch is currently enabled.
  * @return true if the switch is enabled
  */
-bool Switch::is_enabled(void) {
+bool Switch::is_enabled() {
   return enabled;
 }
 
@@ -154,7 +154,7 @@ void Switch::set_locked(bool locked) {
 /**
  * @brief Updates this switch.
  */
-void Switch::update(void) {
+void Switch::update() {
 
   if (is_walkable() && entity_overlapping != NULL) {
 

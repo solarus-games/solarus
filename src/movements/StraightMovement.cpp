@@ -60,7 +60,7 @@ StraightMovement::StraightMovement(int speed, const Rectangle &source_xy, const 
 /**
  * @brief Destructor.
  */
-StraightMovement::~StraightMovement(void) {
+StraightMovement::~StraightMovement() {
 
 }
 
@@ -94,7 +94,7 @@ void StraightMovement::start(int speed, double direction, uint32_t time) {
 /**
  * @brief Updates the movement.
  */
-void StraightMovement::update(void) {
+void StraightMovement::update() {
 
   SmoothCollisionMovement::update();
 
@@ -126,14 +126,14 @@ void StraightMovement::set_suspended(bool suspended) {
  *
  * @return true if the movement is finished
  */
-bool StraightMovement::is_finished(void) {
+bool StraightMovement::is_finished() {
   return finished;
 }
 
 /**
  * @brief Stops the movement finished even if the delay planned is not finished yet.
  */
-void StraightMovement::set_finished(void) {
+void StraightMovement::set_finished() {
   stop();
   this->finished = true;
 }

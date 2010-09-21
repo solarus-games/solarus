@@ -41,16 +41,16 @@ class Camera {
   public:
 
     Camera(Map *map);
-    ~Camera(void);
+    ~Camera();
 
-    void update(void);
-    Rectangle & get_position(void);
+    void update();
+    Rectangle & get_position();
 
-    bool is_fixed_on_hero(void);
+    bool is_fixed_on_hero();
     void set_speed(int speed);
     void move(int target_x, int target_y);
     void move(MapEntity *entity);
-    void restore(void);
+    void restore();
 };
 
 #endif

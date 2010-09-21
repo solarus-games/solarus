@@ -47,7 +47,7 @@ Stairs::Stairs(Layer layer, int x, int y, int direction, Subtype subtype):
 /**
  * @brief Destructor.
  */
-Stairs::~Stairs(void) {
+Stairs::~Stairs() {
 
 }
 
@@ -83,7 +83,7 @@ EntityType Stairs::get_type() {
  * @brief Returns whether the subtype of these stairs is INSIDE_FLOOR.
  * @return true if the subtype if INSIDE_FLOOR
  */
-bool Stairs::is_inside_floor(void) {
+bool Stairs::is_inside_floor() {
   return subtype == INSIDE_FLOOR;
 }
 
@@ -92,7 +92,7 @@ bool Stairs::is_inside_floor(void) {
  * they are not on the same layer.
  * @return true if this entity can collide with entities that are on another layer
  */
-bool Stairs::has_layer_independent_collisions(void) {
+bool Stairs::has_layer_independent_collisions() {
   return is_inside_floor();
 }
 
@@ -103,7 +103,7 @@ bool Stairs::has_layer_independent_collisions(void) {
  *
  * @return true if the sword is ignored
  */
-bool Stairs::is_sword_ignored(void) {
+bool Stairs::is_sword_ignored() {
   return true;
 }
 

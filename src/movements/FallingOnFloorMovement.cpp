@@ -62,7 +62,7 @@ FallingOnFloorMovement::FallingOnFloorMovement(FallingHeight height):
 /**
  * @brief Destructor.
  */
-FallingOnFloorMovement::~FallingOnFloorMovement(void) {
+FallingOnFloorMovement::~FallingOnFloorMovement() {
 
 }
 

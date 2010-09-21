@@ -186,8 +186,8 @@ class InputEvent {
 
   public:
 
-    static void initialize(void);
-    static void quit(void);
+    static void initialize();
+    static void quit();
 
   private:
 
@@ -195,64 +195,64 @@ class InputEvent {
 
   public:
 
-    ~InputEvent(void);
+    ~InputEvent();
 
     // retrieve the current event
-    static InputEvent * get_event(void); 
+    static InputEvent * get_event(); 
 
     // global information
     static void set_key_repeat(int delay, int interval);
-    static bool is_shift_down(void);
-    static bool is_control_down(void);
-    static bool is_alt_down(void);
+    static bool is_shift_down();
+    static bool is_control_down();
+    static bool is_alt_down();
 
     // event type
-    bool is_keyboard_event(void);
-    bool is_joypad_event(void);
-    bool is_window_event(void);
+    bool is_keyboard_event();
+    bool is_joypad_event();
+    bool is_window_event();
 
     // keyboard
-    bool is_keyboard_key_pressed(void);
+    bool is_keyboard_key_pressed();
     bool is_keyboard_key_pressed(KeyboardKey key);
     bool is_keyboard_key_pressed(const KeyboardKey *keys);
-    bool is_keyboard_direction_key_pressed(void);
-    bool is_keyboard_non_direction_key_pressed(void);
+    bool is_keyboard_direction_key_pressed();
+    bool is_keyboard_non_direction_key_pressed();
 
-    bool is_keyboard_key_released(void);
+    bool is_keyboard_key_released();
     bool is_keyboard_key_released(KeyboardKey key);
     bool is_keyboard_key_released(const KeyboardKey *keys);
-    bool is_keyboard_direction_key_released(void);
-    bool is_keyboard_non_direction_key_released(void);
+    bool is_keyboard_direction_key_released();
+    bool is_keyboard_non_direction_key_released();
 
-    bool is_with_shift(void);
-    bool is_with_control(void);
-    bool is_with_alt(void);
+    bool is_with_shift();
+    bool is_with_control();
+    bool is_with_alt();
 
-    KeyboardKey get_keyboard_key(void);
+    KeyboardKey get_keyboard_key();
     static const std::string get_keyboard_key_name(KeyboardKey key);
 
     // joypad
-    bool is_joypad_button_pressed(void);
-    bool is_joypad_button_released(void);
-    int get_joypad_button(void);
-    bool is_joypad_axis_moved(void);
-    int get_joypad_axis(void);
-    int get_joypad_axis_state(void);
-    bool is_joypad_axis_centered(void);
-    bool is_joypad_hat_moved(void);
-    int get_joypad_hat(void);
-    int get_joypad_hat_direction(void);
-    bool is_joypad_hat_centered(void);
+    bool is_joypad_button_pressed();
+    bool is_joypad_button_released();
+    int get_joypad_button();
+    bool is_joypad_axis_moved();
+    int get_joypad_axis();
+    int get_joypad_axis_state();
+    bool is_joypad_axis_centered();
+    bool is_joypad_hat_moved();
+    int get_joypad_hat();
+    int get_joypad_hat_direction();
+    bool is_joypad_hat_centered();
 
     // functions common to keyboard and joypad
-    int get_direction(void);
-    bool is_pressed(void);
-    bool is_direction_pressed(void);
-    bool is_non_direction_pressed(void);
-    bool is_released(void);
+    int get_direction();
+    bool is_pressed();
+    bool is_direction_pressed();
+    bool is_non_direction_pressed();
+    bool is_released();
 
     // window event
-    bool is_window_closing(void);
+    bool is_window_closing();
 };
 
 #endif

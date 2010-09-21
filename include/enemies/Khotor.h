@@ -30,19 +30,19 @@ class Khotor: public Enemy {
   private:
 
     ChainAndBall *chain;
-    void start_chain(void);
+    void start_chain();
 
   protected:
 
-    void initialize(void);
-    void restart(void);
+    void initialize();
+    void restart();
 
   public:
 
     Khotor(const ConstructionParameters &params);
-    ~Khotor(void);
+    ~Khotor();
 
-    bool is_displayed_in_y_order(void);
+    bool is_displayed_in_y_order();
     void just_hurt(MapEntity *source, EnemyAttack attack, int life_points);
 };
 

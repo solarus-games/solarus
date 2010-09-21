@@ -31,14 +31,14 @@ SimpleGreenSoldier::SimpleGreenSoldier(const ConstructionParameters &params):
 /**
  * @brief Destructor.
  */
-SimpleGreenSoldier::~SimpleGreenSoldier(void) {
+SimpleGreenSoldier::~SimpleGreenSoldier() {
 
 }
 
 /**
  * @brief Initializes the enemy.
  */
-void SimpleGreenSoldier::initialize(void) {
+void SimpleGreenSoldier::initialize() {
 
   // attack/defense features
   set_damage(2);
@@ -60,7 +60,7 @@ void SimpleGreenSoldier::initialize(void) {
  * because something happened (for example the enemy has just been created,
  * or it was just hurt).
  */
-void SimpleGreenSoldier::restart(void) {
+void SimpleGreenSoldier::restart() {
 
   Enemy::restart();
   walk(Random::get_number(4));
@@ -69,7 +69,7 @@ void SimpleGreenSoldier::restart(void) {
 /**
  * @brief Updates the enemy.
  */
-void SimpleGreenSoldier::update(void) {
+void SimpleGreenSoldier::update() {
 
   Enemy::update();
 

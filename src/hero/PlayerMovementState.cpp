@@ -30,7 +30,7 @@ Hero::PlayerMovementState::PlayerMovementState(Hero *hero):
 /**
  * @brief Destructor.
  */
-Hero::PlayerMovementState::~PlayerMovementState(void) {
+Hero::PlayerMovementState::~PlayerMovementState() {
 
 }
 
@@ -42,7 +42,7 @@ Hero::PlayerMovementState::~PlayerMovementState(void) {
  *
  * @return the movement
  */
-PlayerMovement * Hero::PlayerMovementState::get_player_movement(void) {
+PlayerMovement * Hero::PlayerMovementState::get_player_movement() {
   return (PlayerMovement*) hero->get_movement();
 }
 
@@ -100,13 +100,13 @@ void Hero::PlayerMovementState::set_map(Map *map) {
 /**
  * Gives the sprites the animation stopped corresponding to this state.
  */
-void Hero::PlayerMovementState::set_animation_stopped(void) {
+void Hero::PlayerMovementState::set_animation_stopped() {
 }
 
 /**
  * Gives the sprites the animation walking corresponding to this state.
  */
-void Hero::PlayerMovementState::set_animation_walking(void) {
+void Hero::PlayerMovementState::set_animation_walking() {
 }
 
 /**
@@ -133,7 +133,7 @@ void Hero::PlayerMovementState::directional_key_released(int direction4) {
  * @brief Returns whether the player can control his movements in the current state.
  * @return true if the player can control his movements
  */
-bool Hero::PlayerMovementState::can_control_movement(void) {
+bool Hero::PlayerMovementState::can_control_movement() {
   return true;
 }
 
@@ -146,7 +146,7 @@ bool Hero::PlayerMovementState::can_control_movement(void) {
  *
  * @return the hero's wanted direction between 0 and 7, or -1 if he is stopped
  */
-int Hero::PlayerMovementState::get_wanted_movement_direction8(void) {
+int Hero::PlayerMovementState::get_wanted_movement_direction8() {
   return get_player_movement()->get_wanted_direction8();
 }
 
@@ -156,7 +156,7 @@ int Hero::PlayerMovementState::get_wanted_movement_direction8(void) {
  * If the hero can walk in this state, the state should modify its movement
  * to set the new speed.
  */
-void Hero::PlayerMovementState::notify_walking_speed_changed(void) {
+void Hero::PlayerMovementState::notify_walking_speed_changed() {
   get_player_movement()->set_moving_speed(hero->get_walking_speed());
 }
 
@@ -167,7 +167,7 @@ void Hero::PlayerMovementState::notify_walking_speed_changed(void) {
  * because the player pressed or released a directional key, or the hero just reached an obstacle).
  * The animations and collisions should be updated according to the new movement.
  */
-void Hero::PlayerMovementState::notify_movement_changed(void) {
+void Hero::PlayerMovementState::notify_movement_changed() {
 
   // the movement has changed: update the animation of the sprites
 
@@ -186,7 +186,7 @@ void Hero::PlayerMovementState::notify_movement_changed(void) {
  * @brief Returns whether the hero can be hurt in this state.
  * @return true if the hero can be hurt in this state
  */
-bool Hero::PlayerMovementState::can_be_hurt(void) {
+bool Hero::PlayerMovementState::can_be_hurt() {
   return true;
 }
 

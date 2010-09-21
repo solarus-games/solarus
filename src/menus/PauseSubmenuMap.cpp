@@ -122,7 +122,7 @@ PauseSubmenuMap::PauseSubmenuMap(PauseMenu *pause_menu, Game *game):
 /**
  * @brief Destructor.
  */
-PauseSubmenuMap::~PauseSubmenuMap(void) {
+PauseSubmenuMap::~PauseSubmenuMap() {
 
   if (dungeon == NULL) {
     delete world_map_img;
@@ -177,7 +177,7 @@ void PauseSubmenuMap::to_dungeon_minimap_coordinates(const Rectangle &floor_coor
  * @brief Deletes any previous dungeon map image and loads the image
  * corresponding to the selected floor.
  */
-void PauseSubmenuMap::load_dungeon_map_image(void) {
+void PauseSubmenuMap::load_dungeon_map_image() {
 
   dungeon_map_img->fill_with_color(Color::get_black());
 
@@ -309,7 +309,7 @@ void PauseSubmenuMap::key_pressed(GameControls::GameKey key) {
 /**
  * @brief Updates this submenu.
  */
-void PauseSubmenuMap::update(void) {
+void PauseSubmenuMap::update() {
 
   hero_head_sprite->update();
   up_arrow_sprite->update();

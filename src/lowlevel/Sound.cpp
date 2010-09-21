@@ -58,7 +58,7 @@ Sound::Sound(const SoundId &sound_id):
 /**
  * @brief Destroys the sound.
  */
-Sound::~Sound(void) {
+Sound::~Sound() {
 
   if (is_initialized()) {
 
@@ -149,7 +149,7 @@ void Sound::initialize(int argc, char **argv) {
  *
  * This method should be called when exiting the application.
  */
-void Sound::quit(void) {
+void Sound::quit() {
 
   if (is_initialized()) {
 
@@ -182,7 +182,7 @@ void Sound::quit(void) {
  * @brief Returns whether the audio (music and sound) system is initialized.
  * @return true if the audio (music and sound) system is initilialized
  */
-bool Sound::is_initialized(void) {
+bool Sound::is_initialized() {
   return initialized;
 }
 
@@ -190,7 +190,7 @@ bool Sound::is_initialized(void) {
  * @brief Returns the current volume of sound effects.
  * @return the volume (0 to 100)
  */
-int Sound::get_volume(void) {
+int Sound::get_volume() {
 
   return (int) (volume * 100.0);
 }
@@ -212,7 +212,7 @@ void Sound::set_volume(int volume) {
  *
  * This function is called repeatedly by the game.
  */
-void Sound::update(void) {
+void Sound::update() {
 
   // update the playing sounds
   Sound *sound;
@@ -258,7 +258,7 @@ bool Sound::update_playing() {
  * @brief Plays the sound.
  * @return true if the sound was loaded successfully, false otherwise
  */
-bool Sound::play(void) {
+bool Sound::play() {
 
   bool success = false;
 

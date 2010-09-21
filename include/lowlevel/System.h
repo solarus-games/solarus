@@ -33,10 +33,10 @@ class System {
   public:
 
     static void initialize(int argc, char **argv);
-    static void quit(void);
-    static void update(void);
+    static void quit();
+    static void update();
 
-    static uint32_t now(void);
+    static uint32_t now();
     static void sleep(uint32_t duration);
 };
 

@@ -56,7 +56,7 @@ JumpSensor::JumpSensor(const std::string &name, Layer layer, int x, int y, int w
 /**
  * @brief Destructor.
  */
-JumpSensor::~JumpSensor(void) {
+JumpSensor::~JumpSensor() {
 
 }
 
@@ -204,7 +204,7 @@ void JumpSensor::notify_collision(MapEntity *entity_overlapping, CollisionMode c
  * @brief Returns the length of the jump to make with this jump sensor.
  * @return length of the jump in pixels (usually a multiple of 8)
  */
-int JumpSensor::get_jump_length(void) {
+int JumpSensor::get_jump_length() {
   return jump_length;
 }
 

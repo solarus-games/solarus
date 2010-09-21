@@ -28,7 +28,7 @@ void Random::initialize() {
 /**
  * @brief Uninitializes the random number generator.
  */
-void Random::quit(void) {
+void Random::quit() {
   // nothing to do
 }
 

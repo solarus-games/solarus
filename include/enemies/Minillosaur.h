@@ -33,16 +33,16 @@ class Minillosaur: public Enemy {
 
   protected:
 
-    void initialize(void);
-    void restart(void);
+    void initialize();
+    void restart();
     int custom_attack(EnemyAttack attack, Sprite *this_sprite);
 
   public:
 
     Minillosaur(const ConstructionParameters &params);
-    ~Minillosaur(void);
+    ~Minillosaur();
 
-    void update(void);
+    void update();
 };
 
 #endif

@@ -77,31 +77,31 @@ class Game: public Screen {
     MusicId previous_music_id; /**< id of the previous music played (useful after a mini-boss) */
 
     // update functions
-    void update_keys_effect(void);
-    void update_dialog_box(void);
-    void update_transitions(void);
-    void update_gameover_sequence(void);
+    void update_keys_effect();
+    void update_dialog_box();
+    void update_transitions();
+    void update_gameover_sequence();
 
-    void load_dungeon(void);
+    void load_dungeon();
 
   public:
 
     // creation and destruction
     Game(Solarus *solarus, Savegame *savegame);
-    ~Game(void);
+    ~Game();
 
     // global objects
-    Hero *get_hero(void);
-    const Rectangle & get_hero_xy(void);
-    GameControls *get_controls(void);
-    KeysEffect *get_keys_effect(void);
-    Savegame *get_savegame(void);
-    Equipment *get_equipment(void);
-    MapScript *get_current_script(void);
+    Hero *get_hero();
+    const Rectangle & get_hero_xy();
+    GameControls *get_controls();
+    KeysEffect *get_keys_effect();
+    Savegame *get_savegame();
+    Equipment *get_equipment();
+    MapScript *get_current_script();
 
     // functions called by the main loop
     void notify_event(InputEvent &event);
-    void update(void);
+    void update();
     void display(Surface *screen_surface);
 
     // game controls
@@ -109,50 +109,50 @@ class Game: public Screen {
     void key_released(GameControls::GameKey key);
 
     // map
-    Map *get_current_map(void);
+    Map *get_current_map();
     void set_current_map(MapId map_id, const std::string &destination_point_name,
 	Transition::Style transition_style);
 
     // world
-    const Rectangle & get_outside_world_size(void);
-    bool is_in_dungeon(void);
-    Dungeon *get_current_dungeon(void);
-    bool get_crystal_switch_state(void);
-    void change_crystal_switch_state(void);
+    const Rectangle & get_outside_world_size();
+    bool is_in_dungeon();
+    Dungeon *get_current_dungeon();
+    bool get_crystal_switch_state();
+    void change_crystal_switch_state();
 
     // audio
     void play_sound(SoundId sound_id);
     void play_music(MusicId new_music_id);
-    void pause_or_resume_music(void);
-    void stop_music(void);
-    void restore_music(void);
-    const MusicId & get_current_music_id(void);
+    void pause_or_resume_music();
+    void stop_music();
+    void restore_music();
+    const MusicId & get_current_music_id();
 
     // current game state
-    bool is_paused(void);
-    bool is_showing_message(void);
-    bool is_playing_transition(void);
-    bool is_showing_gameover(void);
-    bool is_suspended(void); // true if at least one of the three functions above returns true
-    void reset(void);
-    void restart(void);
+    bool is_paused();
+    bool is_showing_message();
+    bool is_playing_transition();
+    bool is_showing_gameover();
+    bool is_suspended(); // true if at least one of the three functions above returns true
+    void reset();
+    void restart();
 
     // HUD
     void set_hud_enabled(bool hud_enabled);
 
     // pause
-    bool can_pause(void);
-    bool is_pause_key_available(void);
+    bool can_pause();
+    bool is_pause_key_available();
     void set_pause_key_available(bool pause_key_available);
     void set_paused(bool paused);
-    PauseMenu *get_pause_menu(void);
+    PauseMenu *get_pause_menu();
 
     // dialog box
-    DialogBox *get_dialog_box(void);
+    DialogBox *get_dialog_box();
 
     // game over
-    void start_gameover_sequence(void);
-    void get_back_from_death(void);
+    void start_gameover_sequence();
+    void get_back_from_death();
 };
 
 #endif

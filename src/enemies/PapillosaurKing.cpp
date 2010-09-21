@@ -36,14 +36,14 @@ PapillosaurKing::PapillosaurKing(const ConstructionParameters &params):
 /**
  * @brief Destructor.
  */
-PapillosaurKing::~PapillosaurKing(void) {
+PapillosaurKing::~PapillosaurKing() {
 
 }
 
 /**
  * @brief Initializes the enemy.
  */
-void PapillosaurKing::initialize(void) {
+void PapillosaurKing::initialize() {
 
   // attack/defense features
   set_damage(2, 0);
@@ -68,7 +68,7 @@ void PapillosaurKing::initialize(void) {
  * because something happened (for example the enemy has just been created,
  * or it was just hurt).
  */
-void PapillosaurKing::restart(void) {
+void PapillosaurKing::restart() {
   Enemy::restart();
 
   // state
@@ -110,7 +110,7 @@ void PapillosaurKing::set_suspended(bool suspended) {
 /**
  * @brief Updates this entity.
  */
-void PapillosaurKing::update(void) {
+void PapillosaurKing::update() {
 
   Enemy::update();
 

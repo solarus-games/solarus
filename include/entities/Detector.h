@@ -45,7 +45,7 @@ class Detector: public MapEntity {
     void set_collision_modes(int collision_modes);
     void add_collision_mode(CollisionMode collision_mode);
     bool has_collision_mode(CollisionMode collision_mode);
-    void enable_pixel_collisions(void);
+    void enable_pixel_collisions();
 
     // specialized collision checking functions
     bool test_collision_rectangle(MapEntity *entity);
@@ -62,16 +62,16 @@ class Detector: public MapEntity {
   public:
 
     // destruction
-    virtual ~Detector(void);
+    virtual ~Detector();
 
     // general collision checking functions
     void check_collision(MapEntity *entity);
     void check_collision(MapEntity *entity, Sprite *sprite);
 
-    virtual void action_key_pressed(void);
+    virtual void action_key_pressed();
     virtual bool interaction_with_inventory_item(InventoryItem *item);
-    virtual bool moved_by_hero(void);
-    virtual SoundId get_sword_tapping_sound(void);
+    virtual bool moved_by_hero();
+    virtual SoundId get_sword_tapping_sound();
 };
 
 #endif

@@ -36,7 +36,7 @@ Hero::SwordLoadingState::SwordLoadingState(Hero *hero):
 /**
  * @brief Destructor.
  */
-Hero::SwordLoadingState::~SwordLoadingState(void) {
+Hero::SwordLoadingState::~SwordLoadingState() {
 
 }
 
@@ -55,7 +55,7 @@ void Hero::SwordLoadingState::start(State *previous_state) {
 /**
  * @brief Updates this state.
  */
-void Hero::SwordLoadingState::update(void) {
+void Hero::SwordLoadingState::update() {
 
   PlayerMovementState::update();
 
@@ -138,7 +138,7 @@ void Hero::SwordLoadingState::notify_attacked_enemy(EnemyAttack attack, Enemy *v
  * @brief Returns whether the animation direction is locked.
  * @return true if the animation direction is locked
  */
-bool Hero::SwordLoadingState::is_direction_locked(void) {
+bool Hero::SwordLoadingState::is_direction_locked() {
   return true;
 }
 
@@ -147,21 +147,21 @@ bool Hero::SwordLoadingState::is_direction_locked(void) {
  * If false is returned, jump sensors have no effect (but they are obstacle for the hero).
  * @return true if the hero can use jump sensors in this state
  */
-bool Hero::SwordLoadingState::can_take_jump_sensor(void) {
+bool Hero::SwordLoadingState::can_take_jump_sensor() {
   return true;
 }
 
 /**
  * Gives the sprites the animation stopped corresponding to this state.
  */
-void Hero::SwordLoadingState::set_animation_stopped(void) {
+void Hero::SwordLoadingState::set_animation_stopped() {
   sprites->set_animation_stopped_sword_loading();
 }
 
 /**
  * Gives the sprites the animation walking corresponding to this state.
  */
-void Hero::SwordLoadingState::set_animation_walking(void) {
+void Hero::SwordLoadingState::set_animation_walking() {
   sprites->set_animation_walking_sword_loading();
 }
 

@@ -37,7 +37,7 @@ SpriteAnimationDirection::SpriteAnimationDirection(int nb_frames, Rectangle *fra
 /**
  * @brief Destructor.
  */
-SpriteAnimationDirection::~SpriteAnimationDirection(void) {
+SpriteAnimationDirection::~SpriteAnimationDirection() {
   delete[] frames;
 
   if (pixel_bits != NULL) {
@@ -52,7 +52,7 @@ SpriteAnimationDirection::~SpriteAnimationDirection(void) {
  * @brief Returns the size of a frame.
  * @return the size of a frame
  */
-const Rectangle & SpriteAnimationDirection::get_size(void) const {
+const Rectangle & SpriteAnimationDirection::get_size() const {
   return frames[0];
 }
 
@@ -60,7 +60,7 @@ const Rectangle & SpriteAnimationDirection::get_size(void) const {
  * @brief Returns the origin point of a frame.
  * @return the origin point of a frame
  */
-const Rectangle & SpriteAnimationDirection::get_origin(void) const {
+const Rectangle & SpriteAnimationDirection::get_origin() const {
   return origin;
 }
 
@@ -68,7 +68,7 @@ const Rectangle & SpriteAnimationDirection::get_origin(void) const {
  * @brief Returns the number of frames in this direction.
  * @return the number of frames
  */
-int SpriteAnimationDirection::get_nb_frames(void) const {
+int SpriteAnimationDirection::get_nb_frames() const {
   return nb_frames;
 }
 
@@ -128,7 +128,7 @@ void SpriteAnimationDirection::enable_pixel_collisions(Surface *src_image) {
  * @brief Returns whether the pixel-perfect collisions are enabled for this direction.
  * @return true if the pixel-perfect collisions are enabled
  */
-bool SpriteAnimationDirection::are_pixel_collisions_enabled(void) const {
+bool SpriteAnimationDirection::are_pixel_collisions_enabled() const {
   return pixel_bits != NULL;
 }
 

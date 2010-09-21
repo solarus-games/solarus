@@ -31,10 +31,10 @@ class Hero::VictoryState: public Hero::State {
   public:
 
     VictoryState(Hero *hero);
-    ~VictoryState(void);
+    ~VictoryState();
 
     void start(State *previous_state);
-    void update(void);
+    void update();
     void set_suspended(bool suspended);
 };
 

@@ -50,20 +50,20 @@ class ShopItem: public Detector {
 
   public:
 
-    ~ShopItem(void);
+    ~ShopItem();
     static ShopItem * create(Game *game, const std::string &name, Layer layer, int x, int y,
 	Treasure *treasure, int price, const MessageId &message_id);
     static CreationFunction parse;
 
-    EntityType get_type(void);
+    EntityType get_type();
 
-    bool is_sword_ignored(void);
+    bool is_sword_ignored();
     bool is_obstacle_for(MapEntity *other);
     void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
-    void action_key_pressed(void);
+    void action_key_pressed();
 
-    void update(void);
-    void display_on_map(void);
+    void update();
+    void display_on_map();
 };
 
 #endif

@@ -55,7 +55,7 @@ DialogBox::DialogBox(Game *game):
 /**
  * @brief Destructor.
  */
-DialogBox::~DialogBox(void) {
+DialogBox::~DialogBox() {
 
   // free the memory
   delete dialog_surface;
@@ -69,7 +69,7 @@ DialogBox::~DialogBox(void) {
  * @brief Returns the game where this dialog box is displayed.
  * @return the current game
  */
-Game * DialogBox::get_game(void) {
+Game * DialogBox::get_game() {
   return game;
 }
 
@@ -77,7 +77,7 @@ Game * DialogBox::get_game(void) {
  * @brief Returns whether the dialog box is currently active.
  * @return true if the dialog box is enabled
  */
-bool DialogBox::is_enabled(void) {
+bool DialogBox::is_enabled() {
   return current_message != NULL;
 }
 
@@ -130,7 +130,7 @@ void DialogBox::set_vertical_position(VerticalPosition vertical_position) {
  * @brief Returns the speed of the text.
  * @return the speed
  */
-DialogBox::Speed DialogBox::get_speed(void) {
+DialogBox::Speed DialogBox::get_speed() {
   return speed;
 }
 
@@ -146,7 +146,7 @@ void DialogBox::set_speed(Speed speed) {
  * @brief Returns the current skip mode of the dialog box.
  * @return the skip mode
  */
-DialogBox::SkipMode DialogBox::get_skip_mode(void) {
+DialogBox::SkipMode DialogBox::get_skip_mode() {
   return skip_mode;
 }
 
@@ -165,7 +165,7 @@ void DialogBox::set_skip_mode(SkipMode skip_mode) {
  *
  * @return the icon number
  */
-int DialogBox::get_icon_number(void) {
+int DialogBox::get_icon_number() {
   return icon_number;
 }
 
@@ -181,7 +181,7 @@ void DialogBox::set_icon_number(int icon_number) {
  * @brief Returns whether a sound should be played when displaying the letters.
  * @return true if a sound should be played when displaying the letters
  */
-bool DialogBox::is_letter_sound_enabled(void) {
+bool DialogBox::is_letter_sound_enabled() {
   return style != STYLE_WITHOUT_FRAME;
 }
 
@@ -218,7 +218,7 @@ void DialogBox::set_variable(const MessageId &first_message_id, int value) {
  * This function is called by
  * the current message when it reads the '$v' sequence.
  */
-const std::string& DialogBox::get_variable(void) {
+const std::string& DialogBox::get_variable() {
 
   const std::string &value = variables[first_message_id];
 
@@ -232,7 +232,7 @@ const std::string& DialogBox::get_variable(void) {
  * @return the answer selected: 0 for the first one, 1 for the second one,
  * -1 if the last dialog was not a question
  */
-int DialogBox::get_last_answer(void) {
+int DialogBox::get_last_answer() {
   return last_answer;
 }
 
@@ -324,7 +324,7 @@ void DialogBox::show_next_message() {
 /**
  * Closes the dialog box.
  */
-void DialogBox::close(void) {
+void DialogBox::close() {
 
   // the dialog box is being closed
   delete current_message;
@@ -373,7 +373,7 @@ void DialogBox::key_pressed(GameControls::GameKey key) {
 /**
  * This function is called when the user presses the action key.
  */
-void DialogBox::action_key_pressed(void) {
+void DialogBox::action_key_pressed() {
 
   if (current_message->is_finished()) { // the current message is over
     show_next_message();
@@ -383,7 +383,7 @@ void DialogBox::action_key_pressed(void) {
 /**
  * This function is called when the user presses the sword key.
  */
-void DialogBox::sword_key_pressed(void) {
+void DialogBox::sword_key_pressed() {
 
   if (skip_mode == SKIP_ALL) {
     skipped = true;
@@ -400,7 +400,7 @@ void DialogBox::sword_key_pressed(void) {
 /**
  * This function is called when the user pressed the up or down arrow key.
  */
-void DialogBox::up_or_down_key_pressed(void) {
+void DialogBox::up_or_down_key_pressed() {
 
   if (current_message->is_question() && current_message->is_finished()) {
 
@@ -416,7 +416,7 @@ void DialogBox::up_or_down_key_pressed(void) {
  * Shows immediately this message up to the end.
  * If the message was already finished, the next message starts.
  */
-void DialogBox::show_all_now(void) {
+void DialogBox::show_all_now() {
 
   if (current_message->is_finished()) {
     show_next_message();
@@ -431,7 +431,7 @@ void DialogBox::show_all_now(void) {
  * Returns the id of the first message shown in the current dialog box sequence.
  * @return the id of the first message shown
  */
-MessageId DialogBox::get_first_message_id(void) {
+MessageId DialogBox::get_first_message_id() {
   return first_message_id;
 }
 
@@ -441,7 +441,7 @@ MessageId DialogBox::get_first_message_id(void) {
  * user has pressed the key, or the dialog was skiped.
  * @return true if the dialog is finished
  */
-bool DialogBox::is_finished(void) {
+bool DialogBox::is_finished() {
   return current_message == NULL || skipped;
 }
 
@@ -450,7 +450,7 @@ bool DialogBox::is_finished(void) {
  * it was skipped.
  * @return true if the dialog was skipped
  */
-bool DialogBox::was_skipped(void) {
+bool DialogBox::was_skipped() {
   return skipped;
 }
 
@@ -459,7 +459,7 @@ bool DialogBox::was_skipped(void) {
  * This function is called repeatedly by the game
  * while the dialog box exists.
  */
-void DialogBox::update(void) {
+void DialogBox::update() {
 
   if (current_message == NULL) {
     return; // nothing to update

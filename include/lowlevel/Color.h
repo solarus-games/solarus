@@ -28,6 +28,10 @@
  */
 class Color {
 
+  // low-level classes allowed to manipulate directly the internal SDL objects encapsulated
+  friend class Surface;
+  friend class TextSurface;
+
   private:
 
     static SDL_PixelFormat *format;		/**< the pixel format used for all colors */
@@ -41,6 +45,9 @@ class Color {
     static Color green;
     static Color blue;
     static Color yellow;
+
+    uint32_t get_internal_value();
+    SDL_Color * get_internal_color();
 
   public:
 
@@ -57,10 +64,6 @@ class Color {
     Color();
     Color(const Color &other);
     Color(int r, int g, int b);
-
-    uint32_t get_internal_value();
-    SDL_Color * get_internal_color();
-
 };
 
 /**

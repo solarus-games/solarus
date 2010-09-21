@@ -31,9 +31,14 @@
  */
 class Rectangle {
 
+  // low-level classes allowed to manipulate directly the internal SDL rectangle encapsulated
+  friend class Surface;
+
   private:
 
     SDL_Rect rect;		/**< the SDL_Rect encapsulated */
+
+    SDL_Rect * get_internal_rect();
 
   public:
 
@@ -67,10 +72,6 @@ class Rectangle {
     bool contains(const Rectangle &other) const;
     bool overlaps(const Rectangle &other) const;
     Rectangle get_center();
-
-    // for low-level classes use only
-    SDL_Rect * get_internal_rect();
-
 };
 
 std::ostream & operator <<(std::ostream &stream, const Rectangle &rectangle);

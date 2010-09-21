@@ -23,10 +23,6 @@
 #ifndef SOLARUS_COMMON_H
 #define SOLARUS_COMMON_H
 
-#include <string>
-#include <sstream>
-#include <stdexcept>
-#include <iostream>
 #include "Types.h"
 
 /**
@@ -37,18 +33,6 @@
  * - >= 2: enable the debug keys
  */
 #define SOLARUS_DEBUG_LEVEL 2
-
-/**
- * @brief Stops the program on an error message.
- *
- * This macro should be used to exit the program properly on an error message.
- * The message parameter can contain several elements separated by the '<<' operator.
- */
-//#if SOLARUS_DEBUG_LEVEL == 0
-//#define DIE(message) do { throw std::logic_error(""); } while (false)
-//#else
-#define DIE(message) do { std::cerr << message << std::endl; std::ostringstream oss; oss << message; throw std::logic_error(oss.str()); } while (false)
-//#endif
 
 #endif
 

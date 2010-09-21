@@ -27,6 +27,8 @@
 #include "MapScript.h"
 #include "Game.h"
 #include "lowlevel/Music.h"
+#include "lowlevel/Debug.h"
+#include "lowlevel/StringConcat.h"
 using std::list;
 
 /**
@@ -104,20 +106,11 @@ Hero * MapEntities::get_hero(void) {
  */
 Obstacle MapEntities::get_obstacle_tile(Layer layer, int x, int y) {
 
-  // this function is optimized because it is often called
+  // warning: this function is called very often so it has been optimized and should remain so
 
-#if SOLARUS_DEBUG_LEVEL > 0
-  if (layer < 0 || layer >= LAYER_NB) {
-    DIE("get_obstacle_tile(): invalid layer number '" << layer << "'");
-  }
-  
-  if (x < 0 || x >= map->get_width()) {
-    DIE("get_obstacle_tile(): invalid x coordinate '" << x << "'");
-  }
-
-  if (y < 0 || y >= map->get_height()) {
-    DIE("get_obstacle_tile(): invalid y coordinate '" << y << "'");
-  }
+#if SOLARUS_DEBUG_LEVEL >= 2
+  static const std::string error_message = "get_obstacle_tile(): invalid coordinates";
+  Debug::assert(!map->test_collision_with_border(x,y), error_message);
 #endif
 
   // optimization of: return obstacle_tiles[layer][(y / 8) * map_width8 + (x / 8)];
@@ -187,9 +180,8 @@ MapEntity * MapEntities::get_entity(EntityType type, const std::string &name) {
 
   MapEntity *entity = find_entity(type, name);
 
-  if (entity == NULL) {
-    DIE("Cannot find entity with type '" << type << "' and name '" << name << "'");
-  }
+  Debug::assert(entity != NULL, StringConcat() << "Cannot find entity with type '" << type << "' and name '" << name << "'");
+
   return entity;
 }
 
@@ -268,15 +260,11 @@ list<MapEntity*> * MapEntities::get_entities_with_prefix(EntityType type, const 
  */
 void MapEntities::bring_to_front(MapEntity *entity) {
 
-  if (!entity->can_be_displayed()) {
-    DIE("Cannot bring to front entity '" << entity->get_name()
-	<< "' since it is not displayed");
-  }
+  Debug::assert(entity->can_be_displayed(),
+      StringConcat() << "Cannot bring to front entity '" << entity->get_name() << "' since it is not displayed");
 
-  if (entity->is_displayed_in_y_order()) {
-    DIE("Cannot bring to front entity '" << entity->get_name()
-	<< "' since it is displayed in the y order");
-  }
+  Debug::assert(!entity->is_displayed_in_y_order(),
+    StringConcat() << "Cannot bring to front entity '" << entity->get_name() << "' since it is displayed in the y order");
 
   Layer layer = entity->get_layer();
   entities_displayed_first[layer].remove(entity);
@@ -395,7 +383,7 @@ void MapEntities::add_tile(Tile *tile) {
     break;
 
   case OBSTACLE_EMPTY:
-    DIE("Illegal obstacle property for this tile");
+    Debug::die("Illegal obstacle property for this tile");
     break;
   }
 }

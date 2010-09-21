@@ -25,6 +25,8 @@
 #include "lowlevel/Color.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Surface.h"
+#include "lowlevel/Debug.h"
+#include "lowlevel/StringConcat.h"
 
 Surface *Sprite::alpha_surface = NULL;
 
@@ -50,6 +52,7 @@ void Sprite::quit(void) {
  * @param id name of an animation set
  */
 Sprite::Sprite(const SpriteAnimationSetId &id):
+
   animation_set_id(id),
   animation_set(ResourceManager::get_sprite_animation_set(id)),
   current_direction(0),
@@ -233,9 +236,7 @@ void Sprite::set_current_animation(const std::string &animation_name) {
 
     SpriteAnimation *animation = animation_set->get_animation(animation_name);
 
-    if (animation == NULL) {
-      DIE("Unknown animation '" << animation_name << "' for animation set '" << animation_set_id << "'");
-    }
+    Debug::assert(animation != NULL, StringConcat() << "Unknown animation '" << animation_name << "' for animation set '" << animation_set_id << "'");
 
     this->current_animation_name = animation_name;
     this->current_animation = animation;
@@ -263,9 +264,7 @@ void Sprite::set_current_direction(int current_direction) {
 
   if (current_direction != this->current_direction) {
 
-    if (current_direction < 0) {
-      DIE("Invalid sprite direction: " << current_direction);
-    }
+    Debug::assert(current_direction >= 0, StringConcat() << "Invalid sprite direction: " << current_direction);
 
     this->current_direction = current_direction;
     set_current_frame(0);

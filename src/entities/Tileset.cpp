@@ -21,6 +21,8 @@
 #include "entities/ScrollingTilePattern.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Surface.h"
+#include "lowlevel/Debug.h"
+#include "lowlevel/StringConcat.h"
 #include <iomanip>
 
 /**
@@ -78,7 +80,7 @@ void Tileset::load(void) {
 
   // first line: tileset general info
   if (!std::getline(tileset_file, line)) {
-    DIE("Empty file '" << file_name << "'");
+    Debug::die(StringConcat() << "Empty file '" << file_name << "'");
   }
 
   int r, g, b;
@@ -122,7 +124,7 @@ void Tileset::load(void) {
         pattern = new ScrollingTilePattern(Obstacle(obstacle), x, y, width, height);
       }
       else {
-        DIE("Unknown tile pattern animation: " << animation);
+	Debug::die(StringConcat() << "Unknown tile pattern animation: " << animation);
       }
       add_tile_pattern(tile_pattern_id, pattern);
     }
@@ -216,9 +218,7 @@ Surface * Tileset::get_entities_image(void) {
 TilePattern * Tileset::get_tile_pattern(int id) {
 
   TilePattern *tile_pattern =  tile_patterns[id - 1];
-  if (tile_pattern == NULL) {
-    DIE("There is not tile pattern with id '" << id << "' in this tileset'");
-  }
+  Debug::assert(tile_pattern != NULL, StringConcat() << "There is not tile pattern with id '" << id << "' in this tileset'");
   return tile_pattern;
 }
 

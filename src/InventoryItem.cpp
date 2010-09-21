@@ -31,6 +31,8 @@
 #include "hero/HeroSprites.h"
 #include "movements/FallingHeight.h"
 #include "lowlevel/System.h"
+#include "lowlevel/Debug.h"
+#include "lowlevel/StringConcat.h"
 
 /**
  * @brief Creates a new inventory item.
@@ -79,9 +81,7 @@ void InventoryItem::start(Game *game) {
   this->finished = false;
   this->item_sound_id = "";
 
-  if (variant == 0) {
-    DIE("Trying to use inventory item '" << item_name << "' without having it");
-  }
+  Debug::assert(variant > 0, StringConcat() << "Trying to use inventory item '" << item_name << "' without having it");
 
   // TODO use scripts
   if (item_name.substr(0, 7) == "bottle_") {

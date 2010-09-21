@@ -29,6 +29,7 @@
 #include "lowlevel/Sound.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/System.h"
+#include <sstream>
 
 const Rectangle PauseSubmenuMap::outside_world_minimap_size(0, 0, 225, 388);
 

@@ -23,6 +23,8 @@
 #include "Map.h"
 #include "lowlevel/System.h"
 #include "lowlevel/IniFile.h"
+#include "lowlevel/Debug.h"
+#include "lowlevel/StringConcat.h"
 
 /**
  * @brief Constructor.
@@ -117,9 +119,7 @@ int Equipment::get_max_money(void) {
  */
 void Equipment::set_max_money(int max_money) {
 
-  if (max_money <= 0) {
-    DIE("Illegal maximum amount of money: " << max_money);
-  }
+  Debug::assert(max_money > 0, StringConcat() << "Illegal maximum amount of money: " << max_money);
 
   savegame->set_integer(Savegame::MAX_MONEY, max_money);
 }
@@ -142,9 +142,7 @@ int Equipment::get_money(void) {
  */
 void Equipment::set_money(int money) {
 
-  if (money < 0 || money > get_max_money()) {
-    DIE("Illegal amount of money: " << money);
-  }
+  Debug::assert(money >= 0 && money <= get_max_money(), StringConcat() << "Illegal amount of money: " << money);
 
   savegame->set_integer(Savegame::CURRENT_MONEY, money);
 }
@@ -198,9 +196,7 @@ int Equipment::get_max_life(void) {
  */
 void Equipment::set_max_life(int max_life) {
 
-  if (max_life <= 0) {
-    DIE("Illegal maximum life: " << max_life);
-  }
+  Debug::assert(max_life > 0, StringConcat() << "Illegal maximum life: " << max_life);
 
   savegame->set_integer(Savegame::MAX_LIFE, max_life);
 }
@@ -222,9 +218,7 @@ int Equipment::get_life(void) {
  */
 void Equipment::set_life(int life) {
 
-  if (life < 0 || life > get_max_life()) {
-    DIE("Illegal level of life: " << life);
-  }
+  Debug::assert(life > 0 && life <= get_max_life(), StringConcat() << "Illegal level of life: " << life);
 
   savegame->set_integer(Savegame::CURRENT_LIFE, life);
 }
@@ -281,9 +275,7 @@ int Equipment::get_max_magic(void) {
  */
 void Equipment::set_max_magic(int max_magic) {
 
-  if (max_magic < 0) {
-    DIE("Illegal maximum number of magic points: " << max_magic);
-  }
+  Debug::assert(max_magic >= 0, StringConcat() << "Illegal maximum number of magic points: " << max_magic);
 
   savegame->set_integer(Savegame::MAX_MAGIC, max_magic);
 
@@ -308,9 +300,7 @@ int Equipment::get_magic(void) {
  */
 void Equipment::set_magic(int magic) {
 
-  if (magic < 0 || magic > get_max_magic()) {
-    DIE("Illegal number of magic points: " << magic);
-  }
+  Debug::assert(magic > 0 && magic <= get_max_magic(), StringConcat() << "Illegal number of magic points: " << magic);
 
   savegame->set_integer(Savegame::CURRENT_MAGIC, magic);
 }
@@ -365,9 +355,7 @@ bool Equipment::is_magic_decreasing(void) {
  */
 void Equipment::start_removing_magic(uint32_t delay) {
 
-  if (delay <= 0) {
-    DIE("Illegal magic bar decrease delay: " << delay);
-  }
+  Debug::assert(delay > 0, StringConcat() << "Illegal magic bar decrease delay: " << delay);
 
   if (get_magic() > 0) {
     this->magic_decrease_delay = delay;
@@ -378,13 +366,13 @@ void Equipment::start_removing_magic(uint32_t delay) {
 }
 
 /**
- * S@brief tops removing magic continuously.
+ * @brief Stops removing magic continuously.
  */
 void Equipment::stop_removing_magic(void) {
   this->magic_decrease_delay = 0;
 }
 
-// inventory items
+// saved items
 
 /**
  * @brief Returns the static properties of the specified item.
@@ -393,9 +381,7 @@ void Equipment::stop_removing_magic(void) {
 ItemProperties * Equipment::get_item_properties(const std::string &item_name) {
 
   ItemProperties *properties = item_properties[item_name];
-  if (properties == NULL) {
-    DIE("Cannot find item with name '" << item_name << "'");
-  }
+  Debug::assert(properties != NULL, StringConcat() << "Cannot find item with name '" << item_name << "'");
   return properties;
 }
 
@@ -441,9 +427,7 @@ void Equipment::set_item_variant(const std::string &item_name, int variant) {
 
   // set the possession state in the savegame
   int index = get_item_properties(item_name)->get_savegame_variable();
-  if (index == -1) {
-    DIE("The item '" << item_name << "' is not saved");
-  }
+  Debug::assert(index != -1, StringConcat() << "The item '" << item_name << "' is not saved");
 
   savegame->set_integer(index, variant);
 
@@ -477,9 +461,7 @@ void Equipment::remove_item(const std::string &item_name) {
 int Equipment::get_item_amount(const std::string &item_name) {
 
   int counter_index = get_item_properties(item_name)->get_counter_savegame_variable();
-  if (counter_index == -1) {
-    DIE("No amount for item '" << item_name << "'");
-  }
+  Debug::assert(counter_index == -1, StringConcat() << "No amount for item '" << item_name << "'");
 
   return savegame->get_integer(counter_index);
 }
@@ -498,12 +480,8 @@ void Equipment::set_item_amount(const std::string &item_name, int amount) {
   int counter_index = get_item_properties(item_name)->get_counter_savegame_variable();
   int max = get_item_maximum(item_name);
 
-  if (counter_index == -1) {
-    DIE("No amount for item '" << item_name << "'");
-  }
-  if (amount < 0 || amount > max) {
-    DIE("Illegal amount for item '" << item_name << "': " << amount);
-  }
+  Debug::assert(counter_index != -1, StringConcat() << "No amount for item '" << item_name << "'");
+  Debug::assert(amount >= 0 && amount <= max, StringConcat() << "Illegal amount for item '" << item_name << "': " << amount);
 
   savegame->set_integer(counter_index, amount);
 }
@@ -557,9 +535,7 @@ int Equipment::get_item_maximum(const std::string &item_name) {
     maximum = get_item_properties(item_limiting)->get_amount(item_limiting_variant);
   }
 
-  if (maximum == 0) {
-    DIE("No maximum amount for item '" << item_name << "'");
-  }
+  Debug::assert(maximum != 0, StringConcat() << "No maximum amount for item '" << item_name << "'");
 
   return maximum;
 }
@@ -635,13 +611,8 @@ const std::string Equipment::get_item_assigned(int slot) {
 void Equipment::set_item_assigned(int slot, const std::string &item_name) {
 
   if (item_name.size() != 0) {
-    if (!has_item(item_name)) {
-      DIE("Cannot assign item '" << item_name << "' because the player does not have it");
-    }
-
-    if (!get_item_properties(item_name)->can_be_assigned()) {
-      DIE("The item '" << item_name << "' cannot be assigned");
-    }
+    Debug::assert(has_item(item_name), StringConcat() << "Cannot assign item '" << item_name << "' because the player does not have it");
+    Debug::assert(get_item_properties(item_name)->can_be_assigned(), StringConcat() << "The item '" << item_name << "' cannot be assigned");
   }
 
   int index = Savegame::ITEM_SLOT_0 + slot;
@@ -684,9 +655,7 @@ bool Equipment::are_small_keys_enabled(void) {
  */
 int Equipment::get_small_keys_variable(void) {
 
-  if (!are_small_keys_enabled()) {
-    DIE("The small keys are not enabled on this map");
-  }
+  Debug::assert(are_small_keys_enabled(), "The small keys are not enabled on this map");
 
   return game->get_current_map()->get_small_keys_variable();
 }
@@ -731,9 +700,7 @@ void Equipment::add_small_keys(int amount_to_add) {
  */
 void Equipment::remove_small_key(void) {
 
-  if (!has_small_key()) {
-    DIE("The player has no small keys");
-  }
+  Debug::assert(has_small_key(), "The player has no small keys");
 
   int index = get_small_keys_variable();
   savegame->set_integer(index, get_small_keys() - 1);
@@ -749,7 +716,6 @@ void Equipment::remove_small_key(void) {
 int Equipment::get_ability_savegame_variable(const std::string &ability_name) {
 
   int index = -1;
-  int dungeon = get_current_dungeon();
 
   if (ability_name == "tunic") {
     index = Savegame::ABILITY_TUNIC;
@@ -776,21 +742,19 @@ int Equipment::get_ability_savegame_variable(const std::string &ability_name) {
     index = Savegame::ABILITY_SEE_OUTSIDE_WORLD_MINIMAP;
   }
   else if (ability_name == "see_dungeon_minimap_rooms") {
-    index = Savegame::DUNGEON_1_ABILITY_SEE_MINIMAP_ROOMS + 10 * (dungeon - 1);
+    index = Savegame::DUNGEON_1_ABILITY_SEE_MINIMAP_ROOMS + 10 * (get_current_dungeon() - 1);
   }
   else if (ability_name == "see_dungeon_minimap_elements") {
-    index = Savegame::DUNGEON_1_ABILITY_SEE_MINIMAP_ELEMENTS + 10 * (dungeon - 1);
+    index = Savegame::DUNGEON_1_ABILITY_SEE_MINIMAP_ELEMENTS + 10 * (get_current_dungeon() - 1);
   }
   else if (ability_name == "open_dungeon_big_locks") {
-    index = Savegame::DUNGEON_1_ABILITY_OPEN_BIG_LOCKS + 10 * (dungeon - 1);
+    index = Savegame::DUNGEON_1_ABILITY_OPEN_BIG_LOCKS + 10 * (get_current_dungeon() - 1);
   }
   else if (ability_name == "open_dungeon_boss_lock") {
-    index = Savegame::DUNGEON_1_ABILITY_OPEN_BOSS_LOCK + 10 * (dungeon - 1);    
+    index = Savegame::DUNGEON_1_ABILITY_OPEN_BOSS_LOCK + 10 * (get_current_dungeon() - 1);    
   }
 
-  if (index == -1) {
-    DIE("Unknown ability '" << ability_name << "'");
-  }
+  Debug::assert(index != -1, StringConcat() << "Unknown ability '" << ability_name << "'");
 
   return index;
 }
@@ -1006,6 +970,11 @@ void Equipment::add_item(const std::string &item_name, int variant) {
     }
   }
 
-  // TODO notify the script
+  // TODO notify the script instead of this quest-specific code
+  if (item_name == "tunic"
+      || item_name == "sword"
+      || item_name == "shield") {
+    set_ability(item_name, variant);
+  }
 }
 

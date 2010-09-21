@@ -37,6 +37,8 @@
 #include "lowlevel/Sound.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/IniFile.h"
+#include "lowlevel/Debug.h"
+#include <sstream>
 
 Rectangle Game::outside_world_size(0, 0, 0, 0); // loaded from quest.dat
 
@@ -517,9 +519,7 @@ const Rectangle & Game::get_outside_world_size(void) {
     ini.set_group("info");
     int width = ini.get_integer_value("outside_world_width", 0);
     int height = ini.get_integer_value("outside_world_height", 0);
-    if (width == 0 || height == 0) {
-      DIE("Missing outside world size in file quest.dat");
-    }
+    Debug::assert(width > 0 && height > 0, "Missing outside world size in file quest.dat");
     outside_world_size.set_size(width, height);
   }
   return outside_world_size;

@@ -28,6 +28,7 @@
 #include "InventoryItem.h"
 #include "ItemProperties.h"
 #include "lowlevel/FileTools.h"
+#include "lowlevel/Debug.h"
 
 /**
  * @brief Action key effect depending on the type of interaction.
@@ -358,9 +359,7 @@ void InteractiveEntity::update(void) {
  */
 void InteractiveEntity::walk(std::string path, bool loop, bool ignore_obstacles) {
 
-  if (subtype != NON_PLAYING_CHARACTER) {
-    DIE("This entity is not a non-playing character");
-  }
+  Debug::assert(subtype == NON_PLAYING_CHARACTER, "This entity is not a non-playing character");
 
   clear_movement();
   set_movement(new PathMovement(path, 6, loop, ignore_obstacles, false));
@@ -368,15 +367,13 @@ void InteractiveEntity::walk(std::string path, bool loop, bool ignore_obstacles)
 }
 
 /**
- * @brief Makes the entity walk randomly (only for NPC).
+ * @brief Makes the entity walk randomly (only for an NPC).
  *
  * The NPC's sprite must have an animation "walking".
  */
 void InteractiveEntity::walk_random(void) {
 
-  if (subtype != NON_PLAYING_CHARACTER) {
-    DIE("This entity is not a non-playing character");
-  }
+  Debug::assert(subtype == NON_PLAYING_CHARACTER, "This entity is not a non-playing character");
 
   clear_movement();
   set_movement(new RandomWalkMovement(3));
@@ -384,7 +381,7 @@ void InteractiveEntity::walk_random(void) {
 }
 
 /**
- * @brief Makes the entity jump into a direction (only for NPC).
+ * @brief Makes the entity jump into a direction (only for an NPC).
  *
  * The NPC's sprite must have an animation "jumping".
  *
@@ -394,9 +391,7 @@ void InteractiveEntity::walk_random(void) {
  */
 void InteractiveEntity::jump(int direction, int length, bool ignore_obstacles) {
 
-  if (subtype != NON_PLAYING_CHARACTER) {
-    DIE("This entity is not a non-playing character");
-  }
+  Debug::assert(subtype == NON_PLAYING_CHARACTER, "This entity is not a non-playing character");
 
   get_sprite()->set_current_animation("jumping");
   clear_movement();

@@ -26,6 +26,8 @@
 #include "lowlevel/VideoManager.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/Music.h"
+#include "lowlevel/Debug.h"
+#include "lowlevel/StringConcat.h"
 
 const std::string SelectionMenuOptions::label_keys[nb_options] = {
   "selection_menu.options.language",
@@ -91,9 +93,8 @@ SelectionMenuOptions::~SelectionMenuOptions(void) {
  */
 void SelectionMenuOptions::set_cursor_position(int cursor_position) {
 
-  if (cursor_position < 0 || cursor_position > nb_options) {
-    DIE("Illegal cursor position: " << cursor_position);
-  }
+  Debug::assert(cursor_position >= 0 && cursor_position <= nb_options,
+      StringConcat() << "Illegal cursor position: " << cursor_position);
 
   if (this->cursor_position < nb_options) {
     // a option line was selected

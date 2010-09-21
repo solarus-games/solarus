@@ -34,6 +34,8 @@
 #include "lowlevel/Sound.h"
 #include "lowlevel/Music.h"
 #include "lowlevel/Rectangle.h"
+#include "lowlevel/Debug.h"
+#include "lowlevel/StringConcat.h"
 #include <lua.hpp>
 #include <iomanip>
 
@@ -489,9 +491,7 @@ int MapScript::l_npc_set_direction(lua_State *l) {
   const std::string &name = lua_tostring(l, 1);
   int direction = lua_tointeger(l, 2);
 
-  if (direction < 0 || direction >= 4) {
-    DIE("Invalid NPC direction: " << direction);
-  }
+  Debug::assert(direction >= 0 && direction < 4, StringConcat() << "Invalid NPC direction: " << direction);
 
   MapEntities *entities = script->map->get_entities();
   InteractiveEntity *npc = (InteractiveEntity*) entities->get_entity(INTERACTIVE_ENTITY, name);

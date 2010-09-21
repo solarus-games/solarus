@@ -20,6 +20,8 @@
 #include "Sprite.h"
 #include "Map.h"
 #include "lowlevel/FileTools.h"
+#include "lowlevel/Debug.h"
+#include "lowlevel/StringConcat.h"
 
 /**
  * @brief Constructor.
@@ -116,7 +118,7 @@ void Teletransporter::set_map(Map *map) {
       destination_side = 1;
     }
     else {
-      DIE("Bad position of teletransporter '" << get_name() << "'"); 
+      Debug::die(StringConcat() << "Bad position of teletransporter '" << get_name() << "'"); 
     }
   }
 
@@ -249,7 +251,7 @@ void Teletransporter::transport_hero(Hero *hero) {
       break;
 
     default:
-      DIE("Bad destination side for teletransporter '" << get_name() << "'"); 
+      Debug::die(StringConcat() << "Bad destination side for teletransporter '" << get_name() << "'"); 
     }
   }
 

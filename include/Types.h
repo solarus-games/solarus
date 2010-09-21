@@ -26,6 +26,7 @@
 #define SOLARUS_TYPES_H
 
 #include <stdint.h>
+#include <string>
 
 /*
  * Types of the id of each resource.
@@ -69,6 +70,8 @@ class Rectangle;
 class PixelBits;
 class IniFile;
 class InputEvent;
+class Debug;
+class StringConcat;
 
 // menus
 class LanguageScreen;

@@ -17,6 +17,7 @@
 #include "SpriteAnimationDirection.h"
 #include "lowlevel/PixelBits.h"
 #include "lowlevel/Surface.h"
+#include "lowlevel/Debug.h"
 
 /**
  * @brief Constructor.
@@ -142,9 +143,7 @@ bool SpriteAnimationDirection::are_pixel_collisions_enabled(void) const {
  */
 PixelBits * SpriteAnimationDirection::get_pixel_bits(int frame) const {
 
-  if (pixel_bits == NULL) {
-    DIE("The pixel collisions are not enabled for this sprite");
-  }
+  Debug::assert(pixel_bits != NULL, ("The pixel collisions are not enabled for this sprite"));
 
   return pixel_bits[frame];
 }

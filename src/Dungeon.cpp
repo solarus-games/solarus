@@ -19,6 +19,7 @@
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Rectangle.h"
 #include "lowlevel/IniFile.h"
+#include <sstream>
 
 /**
  * @brief Creates the specified dungeon.

@@ -25,6 +25,7 @@
 #include "Game.h"
 #include "Map.h"
 #include "lowlevel/System.h"
+#include "lowlevel/Debug.h"
 
 /**
  * @brief Creates a boomerang.
@@ -241,9 +242,7 @@ bool Boomerang::is_going_back(void) {
  */
 void Boomerang::go_back(void) {
 
-  if (is_going_back()) {
-    DIE("The boomerang is already going back");
-  }
+  Debug::assert(!is_going_back(), "The boomerang is already going back");
 
   has_to_go_back = true;
 }

@@ -496,17 +496,6 @@ void Map::notify_opening_transition_finished(void) {
 }
 
 /**
- * @brief Tests whether a point is outside the map area.
- * @param x x of the point to check
- * @param y y of the point to check
- * @return true if this point is outside the map area
- */
-bool Map::test_collision_with_border(int x, int y) {
-
-  return (x < 0 || y < 0 || x >= location.get_width() || y >= location.get_height());
-}
-
-/**
  * @brief Tests whether a rectangle has overlaps the outside part of the map area.
  * @param collision_box the rectangle to check
  * @return true if a point of the rectangle is outside the map area

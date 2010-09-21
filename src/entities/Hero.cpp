@@ -43,6 +43,8 @@
 #include "hero/VictoryState.h"
 #include "movements/Movement.h"
 #include "lowlevel/System.h"
+#include "lowlevel/Debug.h"
+#include "lowlevel/StringConcat.h"
 #include "Game.h"
 #include "Map.h"
 #include "Equipment.h"
@@ -525,7 +527,7 @@ void Hero::place_on_destination_point(Map *map) {
 	  break;
 
 	default:
-	  DIE("Invalid destination side: " << side);
+	  Debug::die(StringConcat() << "Invalid destination side: " << side);
       }
       // note that we keep the state from the previous map
     }
@@ -586,7 +588,7 @@ void Hero::notify_opening_transition_finished(void) {
 	break;
 
       default:
-	DIE("Invalid destination side: " << side);
+	Debug::die(StringConcat() << "Invalid destination side: " << side);
     }
   }
   notify_position_changed();
@@ -643,7 +645,7 @@ const Rectangle Hero::get_facing_point(int direction) {
       break;
 
     default:
-      DIE("Invalid direction for Hero::get_facing_point(): " << direction);
+      Debug::die(StringConcat() << "Invalid direction for Hero::get_facing_point(): " << direction);
   }
 
   facing_point.set_size(1, 1);
@@ -715,7 +717,7 @@ bool Hero::is_facing_obstacle(void) {
       break;
 
     default:
-      DIE("Invalid animation direction '" << sprites->get_animation_direction() << "'");
+      Debug::die(StringConcat() << "Invalid animation direction '" << sprites->get_animation_direction() << "'");
       break;
   }
 
@@ -1479,7 +1481,7 @@ void Hero::avoid_collision(MapEntity *entity, int direction) {
       break;
 
     default:
-      DIE("Invalid direction in Hero::avoid_collision(): " << direction);
+      Debug::die(StringConcat() << "Invalid direction in Hero::avoid_collision(): " << direction);
       break;
   }
   reset_movement();

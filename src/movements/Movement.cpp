@@ -18,6 +18,8 @@
 #include "entities/MapEntity.h"
 #include "lowlevel/Geometry.h"
 #include "lowlevel/System.h"
+#include "lowlevel/Debug.h"
+#include "lowlevel/StringConcat.h"
 #include <cmath>
 
 /**
@@ -371,14 +373,8 @@ void Movement::set_direction(int direction) {
  */
 void Movement::set_direction(double angle) {
 
-  if (x_speed == 0 && y_speed == 0) {
-    if (entity == NULL) {
-      DIE("Cannot set the direction when the speed is zero");
-    }
-    else {
-      DIE("Cannot set the direction when the speed is zero for entity '" << entity->get_name() << "'");
-    }
-  }
+  Debug::assert(x_speed != 0 || y_speed != 0,
+    StringConcat() << "Cannot set the direction when the speed is zero (entity: " << entity << ")");
 
   double speed = get_speed();
   set_x_speed(speed * cos(angle));

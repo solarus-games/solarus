@@ -30,6 +30,7 @@
 #include "lowlevel/Color.h"
 #include "lowlevel/System.h"
 #include "StringResource.h"
+#include <sstream>
 
 /**
  * @brief Creates the selection menu.

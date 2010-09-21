@@ -16,6 +16,8 @@
  */
 #include "lowlevel/IniFile.h"
 #include "lowlevel/FileTools.h"
+#include "lowlevel/Debug.h"
+#include "lowlevel/StringConcat.h"
 #include "simpleini/SimpleIni.h"
 
 /**
@@ -48,7 +50,7 @@ IniFile::IniFile(const std::string &file_name, Mode mode):
     FileTools::data_file_open_buffer(file_name, &buffer, &size, (mode == READ_LANGUAGE));
 
     if (ini->data.Load(buffer, size) != SI_OK) {
-      DIE("Cannot load the ini file '" << file_name << "'");
+      Debug::die(StringConcat() << "Cannot load the ini file '" << file_name << "'");
     }
 
     FileTools::data_file_close_buffer(buffer);
@@ -67,9 +69,7 @@ IniFile::~IniFile(void) {
  */
 void IniFile::save(void) {
 
-  if (mode != WRITE) {
-    DIE("Cannot save ini file: the mode should be WRITE");
-  }
+  Debug::assert(mode == WRITE, "Cannot save ini file: the mode should be WRITE");
 
   // save the data into a buffer
   std::string s;
@@ -96,9 +96,8 @@ bool IniFile::has_group(const std::string &group) {
  */
 void IniFile::set_group(const std::string &group) {
 
-  if (mode != WRITE && !has_group(group)) {
-    DIE("Cannot select group '" << group << "' in ini file: no such group");
-  }
+  Debug::assert(has_group(group) || mode == WRITE,
+      StringConcat() << "Cannot select group '" << group << "' in ini file: no such group");
   this->group = group;
 
   // debug
@@ -172,9 +171,7 @@ const std::string IniFile::get_string_value(const std::string &key, const std::s
 const std::string IniFile::get_string_value(const std::string &key) {
 
   std::string value = get_string_value(key, "");
-  if (value.size() == 0) {
-    DIE("No value for key '" << key << "' in file '" << file_name << "'");
-  }
+  Debug::assert(value.size() > 0, StringConcat() << "No value for key '" << key << "' in file '" << file_name << "'");
   return value;
 }
 

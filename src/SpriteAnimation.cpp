@@ -19,6 +19,8 @@
 #include "Map.h"
 #include "entities/Tileset.h"
 #include "lowlevel/Surface.h"
+#include "lowlevel/Debug.h"
+#include "lowlevel/StringConcat.h"
 
 /**
  * @brief Constructor.
@@ -112,10 +114,9 @@ bool SpriteAnimation::is_looping(void) const {
  */
 int SpriteAnimation::get_next_frame(int current_direction, int current_frame) const {
 
-  if (current_direction >= nb_directions) {
-    DIE("Invalid sprite direction '" << current_direction << "': this sprite animation has only "
-	<< nb_directions << " direction(s)");
-  }
+  Debug::assert(current_direction >= 0 && current_direction < nb_directions,
+    StringConcat() << "Invalid sprite direction '" << current_direction
+    << "': this sprite animation has only " << nb_directions << " direction(s)");
 
   int next_frame = current_frame + 1;
 

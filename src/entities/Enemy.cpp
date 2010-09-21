@@ -34,6 +34,8 @@
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Random.h"
 #include "lowlevel/System.h"
+#include "lowlevel/Debug.h"
+#include "lowlevel/StringConcat.h"
 #include "enemies/SimpleGreenSoldier.h"
 #include "enemies/Bubble.h"
 #include "enemies/Tentacle.h"
@@ -133,17 +135,16 @@ MapEntity * Enemy::create(Game *game, Subtype type, Rank rank, int savegame_vari
 
   switch (type) {
     
-  case SIMPLE_GREEN_SOLDIER: enemy = new SimpleGreenSoldier(params); break;
-  case BUBBLE:               enemy = new Bubble(params);             break;
-  case TENTACLE:             enemy = new Tentacle(params);           break;
-  case MINILLOSAUR:          enemy = new Minillosaur(params);        break;
-  case CHAIN_AND_BALL:       enemy = new ChainAndBall(params);       break;
-  case PAPILLOSAUR_KING:     enemy = new PapillosaurKing(params);    break;
-  case KHORNETH:             enemy = new Khorneth(params);           break;
-  case KHOTOR:               enemy = new Khotor(params);             break;
+  case SIMPLE_GREEN_SOLDIER:		enemy = new SimpleGreenSoldier(params);		break;
+  case BUBBLE:				enemy = new Bubble(params);			break;
+  case TENTACLE:			enemy = new Tentacle(params);			break;
+  case MINILLOSAUR:			enemy = new Minillosaur(params);		break;
+  case CHAIN_AND_BALL:			enemy = new ChainAndBall(params);		break;
+  case PAPILLOSAUR_KING:		enemy = new PapillosaurKing(params);		break;
+  case KHORNETH:			enemy = new Khorneth(params);			break;
+  case KHOTOR:				enemy = new Khotor(params);			break;
 
-  default:
-    DIE("Unknown enemy type '" << type << "'");
+  default:				Debug::die(StringConcat() << "Unknown enemy type '" << type << "'");
   }
 
   // initialize the fields
@@ -965,7 +966,9 @@ bool Enemy::is_immobilized(void) {
  * @return the number of health points lost (can be 0)
  */
 int Enemy::custom_attack(EnemyAttack attack, Sprite *this_sprite) {
-  DIE("The custom attack for enemy '" << get_name() << "' is not defined");
+
+  Debug::die(StringConcat() << "The custom attack for enemy '" << get_name() << "' is not defined");
+  return 0;
 }
 
 // TODO make the boomerang script choose rupees?

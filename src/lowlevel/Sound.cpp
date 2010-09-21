@@ -20,6 +20,8 @@
 #include "lowlevel/Sound.h"
 #include "lowlevel/Music.h"
 #include "lowlevel/FileTools.h"
+#include "lowlevel/Debug.h"
+#include "lowlevel/StringConcat.h"
 #include "Configuration.h"
 
 ALCdevice * Sound::device = NULL;
@@ -199,9 +201,7 @@ int Sound::get_volume(void) {
  */
 void Sound::set_volume(int volume) {
 
-  if (volume < 0 || volume > 100) {
-    DIE("Illegal volume for sound effects:" << volume);
-  }
+  Debug::assert(volume >= 0 && volume <= 100, StringConcat() << "Illegal volume for sound effects:" << volume);
 
   Configuration::set_value("sound_volume", volume);
   Sound::volume = volume / 100.0;

@@ -18,6 +18,7 @@
 #include "TransitionImmediate.h"
 #include "TransitionFade.h"
 #include "TransitionScrolling.h"
+#include "lowlevel/Debug.h"
 
 /**
  * @brief Creates a transition effect.
@@ -80,9 +81,7 @@ Transition::Direction Transition::get_direction(void) {
  */
 void Transition::set_previous_surface(Surface *previous_surface) {
 
-  if (get_direction() == OUT) {
-    DIE("Cannot show a previous surface with an OUT transition effect");
-  }
+  Debug::assert(get_direction() != OUT, "Cannot show a previous surface with an OUT transition effect");
 
   this->previous_surface = previous_surface;
 }

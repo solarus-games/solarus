@@ -21,6 +21,7 @@
 #include "MapScript.h"
 #include "KeysEffect.h"
 #include "Sprite.h"
+#include "lowlevel/Debug.h"
 
 /**
  * @brief Constructor.
@@ -246,7 +247,8 @@ bool Detector::test_collision_center(MapEntity *entity) {
  */
 bool Detector::test_collision_custom(MapEntity *entity) {
 
-  DIE("Custom collision mode invoked but not defined");
+  Debug::die("Custom collision mode invoked but not defined");
+  return false;
 }
 
 /**

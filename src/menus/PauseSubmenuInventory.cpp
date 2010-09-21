@@ -28,6 +28,7 @@
 #include "ItemProperties.h"
 #include "StringResource.h"
 #include "lowlevel/Surface.h"
+#include <sstream>
 
 // TODO load from external data
 static const std::string item_names[] = {

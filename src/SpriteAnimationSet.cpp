@@ -18,6 +18,8 @@
 #include "SpriteAnimation.h"
 #include "SpriteAnimationDirection.h"
 #include "lowlevel/FileTools.h"
+#include "lowlevel/Debug.h"
+#include "lowlevel/StringConcat.h"
 
 /**
  * @brief Loads the animations of a sprite from a file.
@@ -63,7 +65,7 @@ SpriteAnimationSet::SpriteAnimationSet(const SpriteAnimationSetId &id) {
 
       do {
 	if (!std::getline(sprite_file, line)) {
-	  DIE("Unexpected end of input in file '" << file_name << "'");
+	  Debug::die(StringConcat() << "Unexpected end of input in file '" << file_name << "'");
 	}
       }
       while (line.size() == 0);
@@ -99,9 +101,7 @@ SpriteAnimationSet::SpriteAnimationSet(const SpriteAnimationSetId &id) {
       directions[i] = new SpriteAnimationDirection(nb_frames, positions_in_src, x_origin, y_origin);
     }
 
-    if (animations.find(name) != animations.end()) {
-      DIE("Animation '" << name << "' is defined twice in sprite '" << id << "'");
-    }
+    Debug::assert(animations.count(name) == 0, StringConcat() << "Animation '" << name << "' is defined twice in sprite '" << id << "'");
     animations[name] = new SpriteAnimation(image_file_name, nb_directions, directions,
 					   frame_delay, loop_on_frame);
 
@@ -150,11 +150,10 @@ void SpriteAnimationSet::set_map(Map *map) {
  */
 const SpriteAnimation * SpriteAnimationSet::get_animation(const std::string &animation_name) const {
 
-  std::map<std::string, SpriteAnimation*>::const_iterator it = animations.find(animation_name);
-  if (it == animations.end()) {
-    DIE("No animation '" << animation_name << "' in this animation set");
-  }
-  return it->second;
+  Debug::assert(animations.count(animation_name) > 0,
+      StringConcat() << "No animation '" << animation_name << "' in this animation set");
+
+  return animations.find(animation_name)->second; // the [] operator is not const in std::map
 }
 
 /**
@@ -164,11 +163,10 @@ const SpriteAnimation * SpriteAnimationSet::get_animation(const std::string &ani
  */
 SpriteAnimation * SpriteAnimationSet::get_animation(const std::string &animation_name) {
 
-  std::map<std::string, SpriteAnimation*>::iterator it = animations.find(animation_name);
-  if (it == animations.end()) {
-    DIE("No animation '" << animation_name << "' in this animation set");
-  }
-  return it->second;
+  Debug::assert(animations.count(animation_name) > 0,
+      StringConcat() << "No animation '" << animation_name << "' in this animation set");
+
+  return animations[animation_name];
 }
 
 /**

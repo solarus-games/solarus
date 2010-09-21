@@ -19,6 +19,8 @@
 #include "entities/ScrollingTilePattern.h"
 #include "entities/Tileset.h"
 #include "Map.h"
+#include "lowlevel/Debug.h"
+#include "lowlevel/StringConcat.h"
 
 /**
  * @brief Constructor.
@@ -33,17 +35,18 @@ TilePattern::TilePattern(Obstacle obstacle, int width, int height):
   obstacle(obstacle), width(width), height(height) {
 
   // check the width and the height
-  if (width <= 0 || height <= 0 ||
-      width % 8 != 0 || height % 8 != 0) {
-    DIE("Invalid tile pattern: the size is (" << width << "x" << height <<
-	") but should be positive and multiple of 8 pixels");
-  }
+  Debug::assert(width > 0
+      && height > 0
+      && width % 8 == 0
+      && height % 8 == 0,
+      StringConcat() << "Invalid tile pattern: the size is (" << width << "x" << height <<
+      ") but should be positive and multiple of 8 pixels");
 
   // diagonal obstacle: check that the tile is square
-  if (obstacle >= OBSTACLE_TOP_RIGHT && obstacle <= OBSTACLE_BOTTOM_RIGHT
-      && width != height) {
-    DIE("Invalid tile pattern: a tile pattern with a diagonal obstacle must be square");
-  }
+  Debug::assert(obstacle < OBSTACLE_TOP_RIGHT
+      || obstacle > OBSTACLE_BOTTOM_RIGHT
+      || width == height,
+      "Invalid tile pattern: a tile pattern with a diagonal obstacle must be square");
 }
 
 /**

@@ -17,6 +17,7 @@
 #include "lowlevel/PixelBits.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/Rectangle.h"
+#include "lowlevel/Debug.h"
 #include <SDL/SDL.h>
 #include <iostream> // print functions
 
@@ -28,9 +29,7 @@
 PixelBits::PixelBits(Surface *surface, const Rectangle &image_position) {
 
   SDL_PixelFormat *format = surface->get_internal_surface()->format;
-  if (format->BitsPerPixel != 8) {
-    DIE("This surface should have an 8-bit pixel format");
-  }
+  Debug::assert(format->BitsPerPixel == 8, "This surface should have an 8-bit pixel format");
 
   uint8_t colorkey = (uint8_t) format->colorkey;
 

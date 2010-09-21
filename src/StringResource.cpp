@@ -16,6 +16,8 @@
  */
 #include "StringResource.h"
 #include "lowlevel/FileTools.h"
+#include "lowlevel/Debug.h"
+#include "lowlevel/StringConcat.h"
 
 std::map<std::string, std::string> StringResource::strings;
 
@@ -61,9 +63,8 @@ void StringResource::initialize(void) {
 
     // get the value
     size_t index = line.find_last_of("\t");
-    if (index == std::string::npos || index + 1 >= line.size()) {
-      DIE("strings.dat, line " << i << ": cannot read string value for key '" << key << "'");
-    }
+    Debug::assert(index != std::string::npos && index + 1 < line.size(),
+      StringConcat() << "strings.dat, line " << i << ": cannot read string value for key '" << key << "'");
     strings[key] = line.substr(index + 1);
   }
 
@@ -81,13 +82,9 @@ void StringResource::quit(void) {
  * @brief Returns a string stored in the language-specific file "text/strings.dat".
  * @param key id of the string to retrieve
  */
-const std::string &StringResource::get_string(const std::string &key) {
+const std::string& StringResource::get_string(const std::string& key) {
 
-  const std::string &value = strings[key];
-  if (value == "") {
-    DIE("Cannot find string with key '" << key << "'");
-  }
-
-  return value;
+  Debug::assert(strings.count(key) > 0, StringConcat() << "Cannot find string with key '" << key << "'");
+  return strings[key];
 }
 

@@ -25,6 +25,8 @@
 #include "lowlevel/Color.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Surface.h"
+#include "lowlevel/Debug.h"
+#include "lowlevel/StringConcat.h"
 
 /**
  * @brief Creates a new dialog box.
@@ -220,9 +222,7 @@ const std::string& DialogBox::get_variable(void) {
 
   const std::string &value = variables[first_message_id];
 
-  if (value == "") {
-    DIE("Missing variable in message '" << current_message_id << "'");
-  }
+  Debug::assert(value.size() > 0, StringConcat() << "Missing variable in message '" << current_message_id << "'");
 
   return value;
 }
@@ -243,9 +243,7 @@ int DialogBox::get_last_answer(void) {
  */
 void DialogBox::set_last_answer(int answer) {
 
-  if (answer < -1 || answer > 1) {
-    DIE("Invalid value of answer: " << answer);
-  }
+  Debug::assert(answer >= -1 && answer <= 1, StringConcat() << "Invalid value of answer: " << answer);
   this->last_answer = answer;
 }
 
@@ -257,9 +255,7 @@ void DialogBox::set_last_answer(int answer) {
  */
 void DialogBox::start_dialog(const MessageId &first_message_id, VerticalPosition vertical_position) {
 
-  if (is_enabled()) {
-    DIE("Cannot start message sequence '" << first_message_id << ": the dialog box is already enabled");
-  }
+  Debug::assert(!is_enabled(), StringConcat() << "Cannot start message sequence '" << first_message_id << ": the dialog box is already enabled");
 
   // save the action and sword keys
   KeysEffect *keys_effect = game->get_keys_effect();

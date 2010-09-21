@@ -26,6 +26,8 @@
 #include "entities/MapEntities.h"
 #include "entities/EntityType.h"
 #include "entities/MapEntity.h"
+#include "lowlevel/Debug.h"
+#include "lowlevel/StringConcat.h"
 #include <iomanip>
 
 /**
@@ -70,7 +72,7 @@ void MapLoader::load_map(Game *game, Map *map) {
   // first line: map general info
   // syntax: width height world floor x y small_keys_variable tileset_id music_id
   if (!std::getline(map_file, line)) {
-    DIE("Cannot load map '" << id << "': the file '" << file_name << "' is empty");
+    Debug::die(StringConcat() << "Cannot load map '" << id << "': the file '" << file_name << "' is empty");
   }
 
   std::istringstream iss0(line);

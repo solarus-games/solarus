@@ -16,6 +16,7 @@
  */
 #include "entities/Stairs.h"
 #include "lowlevel/FileTools.h"
+#include "lowlevel/Debug.h"
 #include "Game.h"
 #include "Map.h"
 
@@ -31,9 +32,7 @@ Stairs::Stairs(Layer layer, int x, int y, int direction, Subtype subtype):
   Detector(COLLISION_FACING_POINT | COLLISION_RECTANGLE, "", layer, x, y, 16, 16),
   subtype(subtype) {
 
-  if (is_inside_floor() && layer == LAYER_HIGH) {
-    DIE("Cannot put single floor stairs on the high layer");
-  }
+  Debug::assert(!is_inside_floor() || layer != LAYER_HIGH, "Cannot put single floor stairs on the high layer");
 
   set_direction(direction);
 

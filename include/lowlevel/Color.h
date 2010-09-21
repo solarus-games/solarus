@@ -30,9 +30,9 @@ class Color {
 
   private:
 
-    static SDL_PixelFormat *format; /**< the pixel format used for all colors */
-    uint32_t internal_value;        /**< the SDL 32-bit value representing this color */
-    SDL_Color internal_color;       /**< the SDL color encapsulated */
+    static SDL_PixelFormat *format;		/**< the pixel format used for all colors */
+    uint32_t internal_value;			/**< the SDL 32-bit value representing this color */
+    SDL_Color internal_color;			/**< the SDL color encapsulated */
 
     // some predefined colors
     static Color black;
@@ -47,12 +47,12 @@ class Color {
     static void initialize();
     static void quit();
 
-    static inline Color & get_black()    { return black;    }
-    static inline Color & get_white()    { return white;    }
-    static inline Color & get_red()      { return red;      }
-    static inline Color & get_green()    { return green;    }
-    static inline Color & get_blue()     { return blue ;    }
-    static inline Color & get_yellow()   { return yellow;   }
+    static Color& get_black();
+    static Color& get_white();
+    static Color& get_red();
+    static Color& get_green();
+    static Color& get_blue();
+    static Color& get_yellow();
 
     Color();
     Color(const Color &other);
@@ -62,6 +62,54 @@ class Color {
     SDL_Color * get_internal_color();
 
 };
+
+/**
+ * @brief Returns the black color.
+ * @param the black color
+ */
+inline Color& Color::get_black() {
+  return black;
+}
+
+/**
+ * @brief Returns the white color.
+ * @param the white color
+ */
+inline Color& Color::get_white() {
+  return white;
+}
+
+/**
+ * @brief Returns the red color.
+ * @return the red color
+ */
+inline Color& Color::get_red() {
+  return red;
+}
+
+/**
+ * @brief Returns the green color.
+ * @return the green color
+ */
+inline Color& Color::get_green() {
+  return green;
+}
+
+/**
+ * @brief Returns the blue color.
+ * @return the blue color
+ */
+inline Color& Color::get_blue() {
+  return blue;
+}
+
+/**
+ * @brief Returns the yellow color.
+ * @return the yellow color
+ */
+inline Color& Color::get_yellow() {
+  return yellow;
+}
 
 #endif
 

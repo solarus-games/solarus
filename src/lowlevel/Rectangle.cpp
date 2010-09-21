@@ -25,6 +25,7 @@
  * @param height the rectangle's height
  */
 Rectangle::Rectangle(int x, int y, int width, int height) {
+
   rect.x = x;
   rect.y = y;
   rect.w = width;
@@ -54,6 +55,7 @@ Rectangle::~Rectangle() {
  * @return true if the point is in this rectangle
  */
 bool Rectangle::contains(int x, int y) const {
+
   return x >= get_x() && x < get_x() + get_width() && y >= get_y() && y < get_y() + get_height();
 }
 
@@ -63,6 +65,7 @@ bool Rectangle::contains(int x, int y) const {
  * @return true if the specified rectangle is inside this rectangle
  */
 bool Rectangle::contains(const Rectangle &other) const {
+
   return contains(other.get_x(), other.get_y())
     && contains(other.get_x() + other.get_width() - 1, other.get_y() + other.get_height() - 1);
 }
@@ -97,6 +100,7 @@ bool Rectangle::overlaps(const Rectangle &other) const {
  * @return the center point (represented as a zero-sized rectangle)
  */
 Rectangle Rectangle::get_center() {
+
   return Rectangle(get_x() + get_width() / 2, get_y() + get_height() / 2);
 }
 
@@ -121,6 +125,7 @@ std::ostream & operator <<(std::ostream &stream, const Rectangle &rectangle) {
  * @return the internal rectangle encapsulated
  */
 SDL_Rect * Rectangle::get_internal_rect() {
+
   return &rect;
 }
 

@@ -40,10 +40,10 @@ class FloorView: public HudElement {
   public:
 
     FloorView(Game *game, int x, int y);
-    ~FloorView(void);
+    ~FloorView();
 
-    void update(void);
-    void rebuild(void);
+    void update();
+    void rebuild();
 };
 
 #endif

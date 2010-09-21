@@ -73,7 +73,7 @@ PixelBits::PixelBits(Surface *surface, const Rectangle &image_position) {
 /**
  * @brief Destructor.
  */
-PixelBits::~PixelBits(void) {
+PixelBits::~PixelBits() {
 
   for (int i = 0; i < height; i++) {
     delete[] bits[i];
@@ -225,7 +225,7 @@ bool PixelBits::test_collision(PixelBits *other, const Rectangle &location1, con
 /**
  * @brief Prints an ascii representation of the pixels (for debugging purposes only).
  */
-void PixelBits::print(void) {
+void PixelBits::print() {
 
   std::cout << "frame size is " << width << " x " << height << std::endl;
   for (int i = 0; i < height; i++) {

@@ -57,7 +57,7 @@ PixelMovement::PixelMovement(const Rectangle *translation_vectors,
 /**
  * @brief Destructor.
  */
-PixelMovement::~PixelMovement(void) {
+PixelMovement::~PixelMovement() {
 
 }
 
@@ -80,7 +80,7 @@ void PixelMovement::set_delay(uint32_t delay) {
 /**
  * @brief Updates the position.
  */
-void PixelMovement::update(void) {
+void PixelMovement::update() {
 
   if (is_suspended()) {
     return;
@@ -103,7 +103,7 @@ void PixelMovement::update(void) {
 /**
  * @brief Makes a move in the path.
  */
-void PixelMovement::make_next_move(void) {
+void PixelMovement::make_next_move() {
 
   int dx = translation_vectors[vector_index].get_x();
   int dy = translation_vectors[vector_index].get_y();
@@ -129,7 +129,7 @@ void PixelMovement::make_next_move(void) {
  * @brief Returns the total number of moves in this trajectory.
  * @return the total number of moves in this trajectory
  */
-int PixelMovement::get_length(void) {
+int PixelMovement::get_length() {
   return nb_vectors;
 }
 
@@ -137,7 +137,7 @@ int PixelMovement::get_length(void) {
  * @brief Returns the current iteration number.
  * @return the current iteration number of the movement
  */
-int PixelMovement::get_vector_index(void) {
+int PixelMovement::get_vector_index() {
   return vector_index;
 }
 
@@ -145,7 +145,7 @@ int PixelMovement::get_vector_index(void) {
  * @brief Returns whether the entity controlled by this movement is moving.
  * @return true if the entity is moving, false otherwise
  */
-bool PixelMovement::is_started(void) {
+bool PixelMovement::is_started() {
   return !finished;
 }
 
@@ -153,7 +153,7 @@ bool PixelMovement::is_started(void) {
  * @brief Returns whether the movement is finished, i.e.
  * whether the end of the trajectory was reached.
  */
-bool PixelMovement::is_finished(void) {
+bool PixelMovement::is_finished() {
   return finished;
 }
 

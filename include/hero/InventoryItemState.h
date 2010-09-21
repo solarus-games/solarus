@@ -31,10 +31,10 @@ class Hero::InventoryItemState: public Hero::State {
   public:
 
     InventoryItemState(Hero *hero, const std::string &item_name);
-    ~InventoryItemState(void);
+    ~InventoryItemState();
 
     void start(State *previous_state);
-    void update(void);
+    void update();
 };
 
 #endif

@@ -29,7 +29,7 @@ class SelectionMenuEraseFile: public SelectionMenuPhase {
 
     // creation and destruction
     SelectionMenuEraseFile(SelectionMenu *menu);
-    ~SelectionMenuEraseFile(void);
+    ~SelectionMenuEraseFile();
 
     // update and display
     void display(Surface *destination_surface);

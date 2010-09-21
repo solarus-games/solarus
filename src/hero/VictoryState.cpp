@@ -33,7 +33,7 @@ Hero::VictoryState::VictoryState(Hero *hero):
 /**
  * @brief Destructor.
  */
-Hero::VictoryState::~VictoryState(void) {
+Hero::VictoryState::~VictoryState() {
 
 }
 
@@ -57,7 +57,7 @@ void Hero::VictoryState::start(State *previous_state) {
 /**
  * @brief Updates this state.
  */
-void Hero::VictoryState::update(void) {
+void Hero::VictoryState::update() {
 
   State::update();
 

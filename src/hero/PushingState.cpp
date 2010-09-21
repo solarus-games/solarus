@@ -36,7 +36,7 @@ Hero::PushingState::PushingState(Hero *hero):
 /**
  * @brief Destructor.
  */
-Hero::PushingState::~PushingState(void) {
+Hero::PushingState::~PushingState() {
 
 }
 
@@ -68,7 +68,7 @@ void Hero::PushingState::stop(State *next_state) {
 /**
  * @brief Updates this state.
  */
-void Hero::PushingState::update(void) {
+void Hero::PushingState::update() {
 
   State::update();
 
@@ -134,7 +134,7 @@ void Hero::PushingState::update(void) {
  * @brief Returns whether the hero ignores the effect of conveyor belts in this state.
  * @return true if the hero ignores the effect of conveyor belts in this state
  */
-bool Hero::PushingState::can_avoid_conveyor_belt(void) {
+bool Hero::PushingState::can_avoid_conveyor_belt() {
   return true;
 }
 
@@ -142,7 +142,7 @@ bool Hero::PushingState::can_avoid_conveyor_belt(void) {
  * @brief Returns whether the hero can swing his sword in this state.
  * @return true if the hero can swing his sword in this state
  */
-bool Hero::PushingState::can_start_sword(void) {
+bool Hero::PushingState::can_start_sword() {
   return !is_moving_grabbed_entity();
 }
 
@@ -150,14 +150,14 @@ bool Hero::PushingState::can_start_sword(void) {
  * @brief Returns whether the hero is grabbing and moving an entity in this state.
  * @return true if the hero is grabbing and moving an entity
  */
-bool Hero::PushingState::is_moving_grabbed_entity(void) {
+bool Hero::PushingState::is_moving_grabbed_entity() {
   return pushed_entity != NULL;
 }
 
 /**
  * @brief Notifies the hero that the entity he is pushing cannot move any more because of a collision.
  */
-void Hero::PushingState::notify_grabbed_entity_collision(void) {
+void Hero::PushingState::notify_grabbed_entity_collision() {
 
   // the hero has moved one pixel too much
   // because he moved before the block, not knowing that the block would not follow him
@@ -184,7 +184,7 @@ void Hero::PushingState::notify_grabbed_entity_collision(void) {
  * hero or the entity collides with an obstacle or when
  * the hero's movement is finished.
  */
-void Hero::PushingState::stop_moving_pushed_entity(void) {
+void Hero::PushingState::stop_moving_pushed_entity() {
 
   pushed_entity = NULL;
   hero->clear_movement();
@@ -207,7 +207,7 @@ void Hero::PushingState::stop_moving_pushed_entity(void) {
  * @brief Returns whether the hero can be hurt in this state.
  * @return true if the hero can be hurt in this state
  */
-bool Hero::PushingState::can_be_hurt(void) {
+bool Hero::PushingState::can_be_hurt() {
   return !is_moving_grabbed_entity();
 }
 

@@ -42,7 +42,7 @@ ActionIcon::ActionIcon(Game *game, int x, int y):
 /**
  * @brief Destructor.
  */
-ActionIcon::~ActionIcon(void) {
+ActionIcon::~ActionIcon() {
   delete sprite_action_icon;
   delete img_action_icon;
 }
@@ -55,7 +55,7 @@ ActionIcon::~ActionIcon(void) {
  *
  * @return true if the action key effect is not KeysEffect::ACTION_KEY_NONE
  */
-bool ActionIcon::is_visible(void) {
+bool ActionIcon::is_visible() {
   return action_key_effect_displayed != KeysEffect::ACTION_KEY_NONE || is_flipping;
 }
 
@@ -64,7 +64,7 @@ bool ActionIcon::is_visible(void) {
  *
  * It checks whether the icon should change.
  */
-void ActionIcon::update(void) {
+void ActionIcon::update() {
 
   HudElement::update();
 
@@ -125,7 +125,7 @@ void ActionIcon::update(void) {
 /**
  * @brief Redraws the icon on the surface.
  */
-void ActionIcon::rebuild(void) {
+void ActionIcon::rebuild() {
   
   HudElement::rebuild();
   

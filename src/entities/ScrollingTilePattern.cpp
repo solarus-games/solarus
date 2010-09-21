@@ -37,7 +37,7 @@ ScrollingTilePattern::ScrollingTilePattern(Obstacle obstacle, int x, int y, int 
 /**
  * @brief Destructor.
  */
-ScrollingTilePattern::~ScrollingTilePattern(void) {
+ScrollingTilePattern::~ScrollingTilePattern() {
 
 }
 
@@ -46,7 +46,7 @@ ScrollingTilePattern::~ScrollingTilePattern(void) {
  *
  * This function is called repeatedly by the map.
  */
-void ScrollingTilePattern::update(void) {
+void ScrollingTilePattern::update() {
 
   uint32_t now = System::now();
 

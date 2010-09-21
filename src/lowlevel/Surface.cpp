@@ -79,7 +79,7 @@ Surface::Surface(SDL_Surface *internal_surface):
 /**
  * @brief Destructor.
  */
-Surface::~Surface(void) {
+Surface::~Surface() {
 
   if (internal_surface_created) {
     SDL_FreeSurface(internal_surface);
@@ -90,7 +90,7 @@ Surface::~Surface(void) {
  * @brief Returns the width of the surface.
  * @return the width in pixels
  */
-int Surface::get_width(void) {
+int Surface::get_width() {
   return internal_surface->w;
 }
 
@@ -98,7 +98,7 @@ int Surface::get_width(void) {
  * @brief Returns the height of the surface.
  * @return the height in pixels
  */
-int Surface::get_height(void) {
+int Surface::get_height() {
   return internal_surface->h;
 }
 
@@ -106,7 +106,7 @@ int Surface::get_height(void) {
  * @brief Returns the size of this surface.
  * @return the size of this surface
  */
-const Rectangle Surface::get_size(void) {
+const Rectangle Surface::get_size() {
   
   return Rectangle(0, 0, get_width(), get_height());
 }
@@ -233,7 +233,7 @@ void Surface::blit(const Rectangle &src_position, Surface *dst, const Rectangle 
  *
  * @return the SDL surface encapsulated
  */
-SDL_Surface * Surface::get_internal_surface(void) {
+SDL_Surface * Surface::get_internal_surface() {
   return internal_surface;
 }
 

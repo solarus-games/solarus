@@ -44,10 +44,10 @@ class RupeesCounter: public HudElement {
   public:
 
     RupeesCounter(Game *game, int x, int y);
-    ~RupeesCounter(void);
+    ~RupeesCounter();
 
-    void update(void);
-    void rebuild(void);
+    void update();
+    void rebuild();
 };
 
 #endif

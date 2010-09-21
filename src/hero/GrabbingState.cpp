@@ -34,7 +34,7 @@ Hero::GrabbingState::GrabbingState(Hero *hero):
 /**
  * @brief Destructor.
  */
-Hero::GrabbingState::~GrabbingState(void) {
+Hero::GrabbingState::~GrabbingState() {
 
 }
 
@@ -52,7 +52,7 @@ void Hero::GrabbingState::start(State *previous_state) {
 /**
  * @brief Updates this state.
  */
-void Hero::GrabbingState::update(void) {
+void Hero::GrabbingState::update() {
 
   // the hero is grabbing an obstacle: check the direction pressed
   GameControls *controls = game->get_controls();
@@ -80,7 +80,7 @@ void Hero::GrabbingState::update(void) {
  * @brief Returns whether the hero is grabbing or pulling an entity in this state.
  * @return true if the hero is grabbing or pulling an entity
  */
-bool Hero::GrabbingState::is_grabbing_or_pulling(void) {
+bool Hero::GrabbingState::is_grabbing_or_pulling() {
   return true;
 }
 
@@ -88,7 +88,7 @@ bool Hero::GrabbingState::is_grabbing_or_pulling(void) {
  * @brief Returns whether the hero can be hurt in this state.
  * @return true if the hero can be hurt in this state
  */
-bool Hero::GrabbingState::can_be_hurt(void) {
+bool Hero::GrabbingState::can_be_hurt() {
   return true;
 }
 

@@ -38,16 +38,16 @@ class SpriteAnimationSet {
   public:
 
     SpriteAnimationSet(const SpriteAnimationSetId &id);
-    virtual ~SpriteAnimationSet(void);
+    virtual ~SpriteAnimationSet();
 
     void set_map(Map *map);
 
     const SpriteAnimation *get_animation(const std::string &animation_name) const;
     SpriteAnimation *get_animation(const std::string &animation_name);
-    const std::string& get_default_animation(void) const;
+    const std::string& get_default_animation() const;
 
-    void enable_pixel_collisions(void);
-    bool are_pixel_collisions_enabled(void) const;
+    void enable_pixel_collisions();
+    bool are_pixel_collisions_enabled() const;
 };
 
 #endif

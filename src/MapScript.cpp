@@ -51,14 +51,14 @@ MapScript::MapScript(Map *map):
 /**
  * @brief Desctructor.
  */
-MapScript::~MapScript(void) {
+MapScript::~MapScript() {
 
 }
 
 /**
  * @brief Tells the Lua context what C++ functions it can call.
  */
-void MapScript::register_available_functions(void) {
+void MapScript::register_available_functions() {
 
   // functions global to all types of scripts
   Script::register_available_functions();
@@ -1438,7 +1438,7 @@ void MapScript::event_switch_left(const std::string &switch_name) {
 /**
  * @brief Notifies the script that the victory sequence of the hero has just finished.
  */
-void MapScript::event_hero_victory_sequence_finished(void) {
+void MapScript::event_hero_victory_sequence_finished() {
   call_script_function("event_hero_victory_sequence_finished");
 }
 

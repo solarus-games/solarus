@@ -49,11 +49,11 @@ class LanguageScreen: public Screen {
 
     // creation and destruction
     LanguageScreen(Solarus *solarus);
-    ~LanguageScreen(void);
+    ~LanguageScreen();
 
     // update and display
     void notify_event(InputEvent &event);
-    void update(void);
+    void update();
     void display(Surface *destination_surface);
 };
 

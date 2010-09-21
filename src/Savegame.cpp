@@ -80,7 +80,7 @@ Savegame::Savegame(Savegame *other) {
 /**
  * @brief Destructor.
  */
-Savegame::~Savegame(void) {
+Savegame::~Savegame() {
   delete equipment;
 }
 
@@ -95,7 +95,7 @@ bool Savegame::is_empty() {
 /**
  * @brief Loads the initial values.
  */
-void Savegame::set_initial_values(void) {
+void Savegame::set_initial_values() {
 
   // 0 is the initial value of most variables
   memset(&saved_data, 0x0000, sizeof(SavedData));
@@ -132,7 +132,7 @@ void Savegame::set_initial_values(void) {
 /**
  * @brief Sets default values for the keyboard game controls.
  */
-void Savegame::set_default_keyboard_controls(void) {
+void Savegame::set_default_keyboard_controls() {
 
   set_integer(KEYBOARD_ENUM_VERSION, InputEvent::KEYBOARD_ENUM_VERSION);
 
@@ -150,7 +150,7 @@ void Savegame::set_default_keyboard_controls(void) {
 /**
  * @brief Sets default values for the joypad game controls.
  */
-void Savegame::set_default_joypad_controls(void) {
+void Savegame::set_default_joypad_controls() {
 
   set_string(JOYPAD_ACTION_KEY, "button 0");
   set_string(JOYPAD_SWORD_KEY, "button 1");
@@ -170,7 +170,7 @@ void Savegame::set_default_joypad_controls(void) {
  * If the bindings saved corresponds to an old version of this enumeration, it is obsolete and
  * we reset it to the default values.
  */
-void Savegame::check_game_controls(void) {
+void Savegame::check_game_controls() {
 
   if (get_integer(KEYBOARD_ENUM_VERSION) != (uint16_t) InputEvent::KEYBOARD_ENUM_VERSION) {
     /* The enumeration has changed, probably because this savegame was created with an old version of the game.
@@ -183,7 +183,7 @@ void Savegame::check_game_controls(void) {
 /**
  * @brief Saves the data into a file.
  */
-void Savegame::save(void) {
+void Savegame::save() {
 
   FileTools::data_file_save_buffer(file_name, (char*) &saved_data, sizeof(SavedData));
   empty = false;
@@ -193,7 +193,7 @@ void Savegame::save(void) {
  * @brief Returns the name of the file where the data is saved.
  * @return the file name of this savegame
  */
-const std::string& Savegame::get_file_name(void) {
+const std::string& Savegame::get_file_name() {
   return file_name;
 }
 
@@ -201,7 +201,7 @@ const std::string& Savegame::get_file_name(void) {
  * @brief Returns the player's equipment corresponding to this savegame.
  * @return the equipment
  */
-Equipment * Savegame::get_equipment(void) {
+Equipment * Savegame::get_equipment() {
   return equipment;
 }
 

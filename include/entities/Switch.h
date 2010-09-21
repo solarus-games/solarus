@@ -60,16 +60,16 @@ class Switch: public Detector {
 
     Switch(const std::string &name, Layer layer, int x, int y,
 	Subtype subtype, bool needs_block, bool disabled_when_leaving);
-    ~Switch(void);
+    ~Switch();
     static CreationFunction parse;
 
-    EntityType get_type(void);
+    EntityType get_type();
 
-    bool is_walkable(void);
-    bool is_enabled(void);
+    bool is_walkable();
+    bool is_enabled();
     void set_enabled(bool enabled);
     void set_locked(bool locked);
-    void update(void);
+    void update();
     bool test_collision_custom(MapEntity *entity);
     void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
 };

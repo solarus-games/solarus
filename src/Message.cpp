@@ -73,7 +73,7 @@ Message::Message(DialogBox *dialog_box, MessageId message_id, int x, int y):
 /**
  * @brief Destructor.
  */
-Message::~Message(void) {
+Message::~Message() {
 
   for (int i = 0; i < 3; i++) {
     delete text_surfaces[i];
@@ -154,7 +154,7 @@ void Message::parse(MessageId message_id) {
  * @brief Returns whether this message is a question.
  * @return true if the message is a question
  */
-bool Message::is_question(void) {
+bool Message::is_question() {
   return question;
 }
 
@@ -165,7 +165,7 @@ bool Message::is_question(void) {
  *
  * @return the id of the message to display when this one is over
  */
-MessageId Message::get_next_message_id(void) {
+MessageId Message::get_next_message_id() {
 
   if (question && dialog_box->get_last_answer() == 1) {
     return next_message_id_2;
@@ -178,14 +178,14 @@ MessageId Message::get_next_message_id(void) {
  * @brief Returns whether the message is now completely displayed.
  * @return true if the message is over
  */
-bool Message::is_finished(void) {
+bool Message::is_finished() {
   return line_index == 3;
 }
 
 /**
  * @brief Shows all characters of the message now.
  */
-void Message::show_all_now(void) {
+void Message::show_all_now() {
   show_all = true;
   update_char_delay();
 }
@@ -195,7 +195,7 @@ void Message::show_all_now(void) {
  * speed specified by the dialog box.
  * @param speed the speed
  */
-void Message::update_char_delay(void) {
+void Message::update_char_delay() {
 
   if (!show_all) {
     delay = char_delays[dialog_box->get_speed()];
@@ -212,7 +212,7 @@ void Message::update_char_delay(void) {
  * If this is a special character (like $0, $v, etc.),
  * the corresponding action is performed.
  */
-void Message::add_character(void) {
+void Message::add_character() {
 
   unsigned char current_char = lines[line_index][char_index++];
 
@@ -304,7 +304,7 @@ void Message::set_variable(const std::string &value) {
 /**
  * @brief Updates the message.
  */
-void Message::update(void) {
+void Message::update() {
 
   uint32_t now = System::now();
   while (!is_finished() && now >= next_char_date) {

@@ -38,30 +38,30 @@ class Khorneth: public Enemy {
     bool blade_attack;
     bool blades_destroyed;
 
-    void start_final_phase(void);
+    void start_final_phase();
 
-    Sprite * get_main_sprite(void);
-    Sprite * get_left_blade_sprite(void);
-    Sprite * get_right_blade_sprite(void);
-    bool has_left_blade(void);
-    bool has_right_blade(void);
-    bool has_blade(void);
-    bool is_left_blade_being_hurt(void);
-    bool is_right_blade_being_hurt(void);
+    Sprite * get_main_sprite();
+    Sprite * get_left_blade_sprite();
+    Sprite * get_right_blade_sprite();
+    bool has_left_blade();
+    bool has_right_blade();
+    bool has_blade();
+    bool is_left_blade_being_hurt();
+    bool is_right_blade_being_hurt();
 
   protected:
 
-    void initialize(void);
-    void restart(void);
+    void initialize();
+    void restart();
     int get_attack_consequence(EnemyAttack attack, Sprite *this_sprite);
     int custom_attack(EnemyAttack attack, Sprite *this_sprite);
 
   public:
 
     Khorneth(const ConstructionParameters &params);
-    ~Khorneth(void);
+    ~Khorneth();
 
-    void update(void);
+    void update();
 };
 
 #endif

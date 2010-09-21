@@ -68,7 +68,7 @@ Music::Music(const MusicId &music_id) {
 /**
  * @brief Destroys the music.
  */
-Music::~Music(void) {
+Music::~Music() {
 
   if (!is_initialized()) {
     return;
@@ -82,7 +82,7 @@ Music::~Music(void) {
 /**
  * @brief Initializes the music system.
  */
-void Music::initialize(void) {
+void Music::initialize() {
 
   // initialize the SPC decoding feature
   spc_decoder = new SpcDecoder();
@@ -94,7 +94,7 @@ void Music::initialize(void) {
 /**
  * @brief Exits the music system.
  */
-void Music::quit(void) {
+void Music::quit() {
   if (is_initialized()) {
     delete spc_decoder;
   }
@@ -104,7 +104,7 @@ void Music::quit(void) {
  * @brief Returns whether the music system is initialized.
  * @return true if the music system is initilialized
  */
-bool Music::is_initialized(void) {
+bool Music::is_initialized() {
   return spc_decoder != NULL;
 }
 
@@ -112,7 +112,7 @@ bool Music::is_initialized(void) {
  * @brief Returns the current volume of musis.
  * @return the volume (0 to 100)
  */
-int Music::get_volume(void) {
+int Music::get_volume() {
 
   return (int) (volume * 100.0);
 }
@@ -138,7 +138,7 @@ void Music::set_volume(int volume) {
  *
  * When a music is playing, this function makes it update.
  */
-void Music::update(void) {
+void Music::update() {
 
   if (!is_initialized()) {
     return;
@@ -154,7 +154,7 @@ void Music::update(void) {
  *
  * This function handles the double buffering.
  */
-void Music::update_playing(void) {
+void Music::update_playing() {
 
   // get the empty buffers
   ALint nb_empty;
@@ -204,7 +204,7 @@ void Music::decode_spc(ALuint destination_buffer, ALsizei nb_samples) {
  *
  * @return true if the music was loaded successfully
  */
-bool Music::play(void) {
+bool Music::play() {
 
 //  std::cout << "playing music " << file_name << std::endl;
 
@@ -258,7 +258,7 @@ bool Music::play(void) {
 /**
  * @brief Stops playing the music.
  */
-void Music::stop(void) {
+void Music::stop() {
 
 //  std::cout << "stopping music " << file_name << std::endl;
 
@@ -293,7 +293,7 @@ void Music::stop(void) {
  * @brief Returns whether the music is paused.
  * @return true if the music is paused, false otherwise
  */
-bool Music::is_paused(void) {
+bool Music::is_paused() {
 
   if (!is_initialized()) {
     return false;

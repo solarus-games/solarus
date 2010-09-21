@@ -68,7 +68,7 @@ Treasure::Treasure(const Treasure &other):
 /**
  * @brief Destructor.
  */
-Treasure::~Treasure(void) {
+Treasure::~Treasure() {
   delete sprite;
 }
 
@@ -76,7 +76,7 @@ Treasure::~Treasure(void) {
  * @brief Returns the properties of the item given with this treasure.
  * @return the item properties
  */
-ItemProperties * Treasure::get_item_properties(void) {
+ItemProperties * Treasure::get_item_properties() {
   return game->get_equipment()->get_item_properties(item_name);
 }
 
@@ -84,7 +84,7 @@ ItemProperties * Treasure::get_item_properties(void) {
  * @brief Returns the name of the item.
  * @return the name of the item
  */
-const std::string & Treasure::get_item_name(void) {
+const std::string & Treasure::get_item_name() {
   return item_name;
 }
 
@@ -92,7 +92,7 @@ const std::string & Treasure::get_item_name(void) {
  * @brief Returns the variant of the item.
  * @return the variant
  */
-int Treasure::get_variant(void) {
+int Treasure::get_variant() {
   return variant;
 }
 
@@ -100,7 +100,7 @@ int Treasure::get_variant(void) {
  * @brief Returns whether this treasure is saved.
  * @return true if this treasure is saved
  */
-bool Treasure::is_saved(void) {
+bool Treasure::is_saved() {
   return get_savegame_variable() != -1;
 }
 
@@ -111,7 +111,7 @@ bool Treasure::is_saved(void) {
  *
  * @return true if the player has found this treasure
  */
-bool Treasure::is_found(void) {
+bool Treasure::is_found() {
   return savegame_variable != -1 && game->get_savegame()->get_boolean(savegame_variable);
 }
 
@@ -119,7 +119,7 @@ bool Treasure::is_found(void) {
  * @brief Returns whether this treasure is empty.
  * @return true if this treasure is empty
  */
-bool Treasure::is_empty(void) {
+bool Treasure::is_empty() {
   return get_item_name() == "_none";
 }
 
@@ -127,7 +127,7 @@ bool Treasure::is_empty(void) {
  * @brief Returns the index of the variable where this treasure is saved.
  * @return the savegame variable of this treasure, or -1 if it is not saved
  */
-int Treasure::get_savegame_variable(void) {
+int Treasure::get_savegame_variable() {
   return savegame_variable;
 }
 
@@ -137,7 +137,7 @@ int Treasure::get_savegame_variable(void) {
  * Adds the item to the hero's equipment.
  * The item should not be "_none".
  */
-void Treasure::give_to_player(void) {
+void Treasure::give_to_player() {
 
   // mark the treasure as found in the savegame
   if (savegame_variable != -1) {

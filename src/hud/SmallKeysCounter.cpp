@@ -37,7 +37,7 @@ SmallKeysCounter::SmallKeysCounter(Game *game, int x, int y):
 /**
  * @brief Destructor.
  */
-SmallKeysCounter::~SmallKeysCounter(void) {
+SmallKeysCounter::~SmallKeysCounter() {
 
   delete img_icon;
   if (counter != NULL) {
@@ -48,7 +48,7 @@ SmallKeysCounter::~SmallKeysCounter(void) {
 /**
  * @brief Updates this HUD element.
  */
-void SmallKeysCounter::update(void) {
+void SmallKeysCounter::update() {
 
   HudElement::update();
 
@@ -86,7 +86,7 @@ void SmallKeysCounter::update(void) {
 /**
  * @brief Redraws the icon and the counter on the surface.
  */
-void SmallKeysCounter::rebuild(void) {
+void SmallKeysCounter::rebuild() {
 
   HudElement::rebuild();
 

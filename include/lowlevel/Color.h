@@ -44,22 +44,22 @@ class Color {
 
   public:
 
-    static void initialize(void);
-    static void quit(void);
+    static void initialize();
+    static void quit();
 
-    static inline Color & get_black(void)    { return black;    }
-    static inline Color & get_white(void)    { return white;    }
-    static inline Color & get_red(void)      { return red;      }
-    static inline Color & get_green(void)    { return green;    }
-    static inline Color & get_blue(void)     { return blue ;    }
-    static inline Color & get_yellow(void)   { return yellow;   }
+    static inline Color & get_black()    { return black;    }
+    static inline Color & get_white()    { return white;    }
+    static inline Color & get_red()      { return red;      }
+    static inline Color & get_green()    { return green;    }
+    static inline Color & get_blue()     { return blue ;    }
+    static inline Color & get_yellow()   { return yellow;   }
 
-    Color(void);
+    Color();
     Color(const Color &other);
     Color(int r, int g, int b);
 
-    uint32_t get_internal_value(void);
-    SDL_Color * get_internal_color(void);
+    uint32_t get_internal_value();
+    SDL_Color * get_internal_color();
 
 };
 

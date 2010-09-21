@@ -46,25 +46,25 @@ class InventoryItem {
     int direction_pressed8;	/**< direction defined by the directional keys pressed when starting using this item
 				 * (0 to 8) or -1 if there is no direction */
 
-    void start_bottle(void);
-    void update_bottle(void);
+    void start_bottle();
+    void update_bottle();
 
   public:
 
     // creation and destruction
     InventoryItem(const std::string &item_name);
-    ~InventoryItem(void);
+    ~InventoryItem();
 
     // item information
-    const std::string & get_name(void);
-    int get_variant(void);
-    ItemProperties * get_properties(void);
+    const std::string & get_name();
+    int get_variant();
+    ItemProperties * get_properties();
 
     // state
     void start(Game *game);
-    void update(void);
+    void update();
     void set_map(Map *map);
-    bool is_finished(void);
+    bool is_finished();
 };
 
 #endif

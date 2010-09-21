@@ -31,7 +31,7 @@ class ParallaxTilePattern: public SimpleTilePattern {
   public:
 
     ParallaxTilePattern(Obstacle obstacle, int x, int y, int width, int height);
-    ~ParallaxTilePattern(void);
+    ~ParallaxTilePattern();
 
     void display(Surface *destination, const Rectangle &destination_position, Surface *tileset_image);
 };

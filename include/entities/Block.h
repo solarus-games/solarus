@@ -54,24 +54,24 @@ class Block: public Detector {
 
     Block(const std::string &name, Layer layer, int x, int y,
 	int direction, Subtype subtype, int maximum_push);
-    ~Block(void);
+    ~Block();
     static CreationFunction parse;
 
-    EntityType get_type(void);
-    bool is_displayed_in_y_order(void);
+    EntityType get_type();
+    bool is_displayed_in_y_order();
 
     bool is_obstacle_for(MapEntity *other);
     bool is_hero_obstacle(Hero *hero);
     bool is_enemy_obstacle(Enemy *enemy);
     bool is_destructible_item_obstacle(DestructibleItem *destructible_item);
     void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
-    void action_key_pressed(void);
-    bool moved_by_hero(void);
-    void notify_position_changed(void);
+    void action_key_pressed();
+    bool moved_by_hero();
+    void notify_position_changed();
 
-    void update(void);
+    void update();
 
-    void reset(void);
+    void reset();
 };
 
 #endif

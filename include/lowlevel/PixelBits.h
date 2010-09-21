@@ -39,13 +39,13 @@ class PixelBits {
     uint32_t **bits;         /**< a two-dimensional array representing the
 			      * transparency bit of each pixel in the image */
 
-    void print(void);
+    void print();
     void print_mask(uint32_t mask);
 
   public:
 
     PixelBits(Surface *surface, const Rectangle &image_position);
-    ~PixelBits(void);
+    ~PixelBits();
 
     bool test_collision(PixelBits *other, const Rectangle &location1, const Rectangle &location2);
 };

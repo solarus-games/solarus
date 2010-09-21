@@ -46,7 +46,7 @@ Equipment::Equipment(Savegame *savegame):
 /**
  * @brief Destructor.
  */
-Equipment::~Equipment(void) {
+Equipment::~Equipment() {
 
   std::map<std::string, ItemProperties*>::const_iterator it;
 
@@ -71,7 +71,7 @@ void Equipment::set_game(Game *game) {
  * The only elements updated here are some dynamic things
  * such as equipment-related animations or dialogs.
  */
-void Equipment::update(void) {
+void Equipment::update() {
 
   if (game == NULL) {
     // nothing dynamic when there is no game
@@ -109,7 +109,7 @@ void Equipment::update(void) {
  * @brief Returns the maximum amount of money of the player.
  * @return the player's maximum number of money
  */
-int Equipment::get_max_money(void) {
+int Equipment::get_max_money() {
   return savegame->get_integer(Savegame::MAX_MONEY);
 }
 
@@ -128,7 +128,7 @@ void Equipment::set_max_money(int max_money) {
  * @brief Returns the player's current amount of money
  * @return the player's current amount of money
  */
-int Equipment::get_money(void) {
+int Equipment::get_money() {
   return savegame->get_integer(Savegame::CURRENT_MONEY);
 }
 
@@ -182,7 +182,7 @@ void Equipment::remove_money(int money_to_remove) {
  * @brief Returns the maximum level of life of the player.
  * @return the player's maximum level of life
  */
-int Equipment::get_max_life(void) {
+int Equipment::get_max_life() {
   return savegame->get_integer(Savegame::MAX_LIFE);
 }
 
@@ -205,7 +205,7 @@ void Equipment::set_max_life(int max_life) {
  * @brief Returns the current level of life of the player.
  * @return the player's current life
  */
-int Equipment::get_life(void) {
+int Equipment::get_life() {
   return savegame->get_integer(Savegame::CURRENT_LIFE);
 }
 
@@ -251,7 +251,7 @@ void Equipment::remove_life(int life_to_remove) {
 /**
  * @brief Restores all the life.
  */
-void Equipment::restore_all_life(void) {
+void Equipment::restore_all_life() {
   set_life(get_max_life());
 }
 
@@ -261,7 +261,7 @@ void Equipment::restore_all_life(void) {
  * @brief Returns the maximum number of magic points.
  * @return the maximum level of magic
  */
-int Equipment::get_max_magic(void) {
+int Equipment::get_max_magic() {
   return savegame->get_integer(Savegame::MAX_MAGIC);
 }
 
@@ -286,7 +286,7 @@ void Equipment::set_max_magic(int max_magic) {
  * @brief Returns the current number of magic points of the player.
  * @return the player's current number of magic points
  */
-int Equipment::get_magic(void) {
+int Equipment::get_magic() {
   return savegame->get_integer(Savegame::CURRENT_MAGIC);
 }
 
@@ -337,7 +337,7 @@ void Equipment::remove_magic(int magic_to_remove) {
 /**
  * @brief Restores all magic points.
  */
-void Equipment::restore_all_magic(void) {
+void Equipment::restore_all_magic() {
   set_magic(get_max_magic());
 }
 
@@ -345,7 +345,7 @@ void Equipment::restore_all_magic(void) {
  * @brief Returns whether the magic bar is decreasing continuously.
  * @return true if the magic bar is decreasing, false otherwise
  */
-bool Equipment::is_magic_decreasing(void) {
+bool Equipment::is_magic_decreasing() {
   return this->magic_decrease_delay != 0;
 }
 
@@ -368,7 +368,7 @@ void Equipment::start_removing_magic(uint32_t delay) {
 /**
  * @brief Stops removing magic continuously.
  */
-void Equipment::stop_removing_magic(void) {
+void Equipment::stop_removing_magic() {
   this->magic_decrease_delay = 0;
 }
 
@@ -643,7 +643,7 @@ int Equipment::get_item_slot(const std::string &item_name) {
  * @brief Returns whether the small keys are enabled in the current map.
  * @return true if the small keys are enabled in the current map
  */
-bool Equipment::are_small_keys_enabled(void) {
+bool Equipment::are_small_keys_enabled() {
   return game->get_current_map()->has_small_keys();
 }
 
@@ -653,7 +653,7 @@ bool Equipment::are_small_keys_enabled(void) {
  *
  * Stops with an error message if the small keys are not enabled in the current map.
  */
-int Equipment::get_small_keys_variable(void) {
+int Equipment::get_small_keys_variable() {
 
   Debug::assert(are_small_keys_enabled(), "The small keys are not enabled on this map");
 
@@ -667,7 +667,7 @@ int Equipment::get_small_keys_variable(void) {
  * 
  * @return true if the player has got at least one small key
  */
-bool Equipment::has_small_key(void) {
+bool Equipment::has_small_key() {
   return get_small_keys() > 0;
 }
 
@@ -678,7 +678,7 @@ bool Equipment::has_small_key(void) {
  * 
  * @return the current number of small keys
  */
-int Equipment::get_small_keys(void) {
+int Equipment::get_small_keys() {
   int index = get_small_keys_variable();
   return savegame->get_integer(index);
 }
@@ -698,7 +698,7 @@ void Equipment::add_small_keys(int amount_to_add) {
  *
  * Stops with an error message if the player has no more small keys.
  */
-void Equipment::remove_small_key(void) {
+void Equipment::remove_small_key() {
 
   Debug::assert(has_small_key(), "The player has no small keys");
 
@@ -805,7 +805,7 @@ void Equipment::use_ability(const std::string &ability_name) {
  *
  * @return the number of the current dungeon between 1 and 40, or 0
  */
-int Equipment::get_current_dungeon(void) {
+int Equipment::get_current_dungeon() {
 
   Map *current_map = game->get_current_map();
 
@@ -831,14 +831,14 @@ bool Equipment::is_dungeon_finished(int dungeon) {
  * @brief Returns whether the player has finished the current dungeon.
  * @return true if the current dungeon is finished
  */
-bool Equipment::is_dungeon_finished(void) {
+bool Equipment::is_dungeon_finished() {
   return is_dungeon_finished(get_current_dungeon());
 }
 
 /**
  * @brief Sets the current dungeon as finished.
  */
-void Equipment::set_dungeon_finished(void) {
+void Equipment::set_dungeon_finished() {
 
   int dungeon = get_current_dungeon();
   int index = Savegame::DUNGEON_1_FINISHED + 10 * (dungeon - 1);
@@ -853,7 +853,7 @@ void Equipment::set_dungeon_finished(void) {
  * 
  * This function is called when the savegame is created.
  */
-void Equipment::set_initial_items(void) {
+void Equipment::set_initial_items() {
 
   std::map<std::string, ItemProperties*>::const_iterator it;
 

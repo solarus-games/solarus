@@ -60,7 +60,7 @@ MapEntity * Tile::parse(Game *game, std::istream &is, Layer layer, int x, int y)
 /**
  * @brief Destructor.
  */
-Tile::~Tile(void) {
+Tile::~Tile() {
 
 }
 
@@ -84,7 +84,7 @@ void Tile::set_map(Map *map) {
 /**
  * @brief Displays the tile on the map.
  */
-void Tile::display_on_map(void) {
+void Tile::display_on_map() {
   tile_pattern->display_on_map(map, bounding_box);
 }
 
@@ -92,7 +92,7 @@ void Tile::display_on_map(void) {
  * @brief Returns the pattern of this tile.
  * @return the tile pattern
  */
-TilePattern * Tile::get_tile_pattern(void) {
+TilePattern * Tile::get_tile_pattern() {
   return tile_pattern;
 }
 

@@ -57,7 +57,7 @@ ItemIcon::ItemIcon(Game *game, int slot, int x, int y):
 /**
  * @brief Destructor.
  */
-ItemIcon::~ItemIcon(void) {
+ItemIcon::~ItemIcon() {
 
   delete background_img;
   delete item_sprite;  
@@ -67,7 +67,7 @@ ItemIcon::~ItemIcon(void) {
 /**
  * @brief Updates the item image displayed and the counter's value.
  */
-void ItemIcon::update(void) {
+void ItemIcon::update() {
 
   HudElement::update();
 
@@ -133,7 +133,7 @@ void ItemIcon::update(void) {
 /**
  * @brief Redraws the icon on the surface.
  */
-void ItemIcon::rebuild(void) {
+void ItemIcon::rebuild() {
 
   HudElement::rebuild();
 

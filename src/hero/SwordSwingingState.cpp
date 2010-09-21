@@ -34,7 +34,7 @@ Hero::SwordSwingingState::SwordSwingingState(Hero *hero):
 /**
  * @brief Destructor.
  */
-Hero::SwordSwingingState::~SwordSwingingState(void) {
+Hero::SwordSwingingState::~SwordSwingingState() {
 
 }
 
@@ -51,7 +51,7 @@ void Hero::SwordSwingingState::start(State *previous_state) {
 /**
  * @brief Updates this state.
  */
-void Hero::SwordSwingingState::update(void) {
+void Hero::SwordSwingingState::update() {
 
   if (sprites->is_animation_finished()) {
 
@@ -69,7 +69,7 @@ void Hero::SwordSwingingState::update(void) {
  * @brief Returns whether the hero can swing his sword in this state.
  * @return true if the hero can swing his sword in this state
  */
-bool Hero::SwordSwingingState::can_start_sword(void) {
+bool Hero::SwordSwingingState::can_start_sword() {
   return true;
 }
 
@@ -77,7 +77,7 @@ bool Hero::SwordSwingingState::can_start_sword(void) {
  * @brief Returns whether the hero can be hurt in this state.
  * @return true if the hero can be hurt in this state
  */
-bool Hero::SwordSwingingState::can_be_hurt(void) {
+bool Hero::SwordSwingingState::can_be_hurt() {
   return true;
 }
 
@@ -85,7 +85,7 @@ bool Hero::SwordSwingingState::can_be_hurt(void) {
  * @brief Returns whether crystal switches can be activated by the sword in this state.
  * @return true if crystal switches can be activated by the sword in this state
  */
-bool Hero::SwordSwingingState::can_sword_hit_crystal_switch(void) {
+bool Hero::SwordSwingingState::can_sword_hit_crystal_switch() {
   return true;
 }
 

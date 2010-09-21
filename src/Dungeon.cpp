@@ -34,7 +34,7 @@ Dungeon::Dungeon(int dungeon_number):
 /**
  * @brief Destructor.
  */
-Dungeon::~Dungeon(void) {
+Dungeon::~Dungeon() {
   if (chests != NULL) {
     delete[] chests;
     delete[] bosses;
@@ -45,7 +45,7 @@ Dungeon::~Dungeon(void) {
  * @brief Returns this dungeon number.
  * @return the dungeon number, between 1 and 20
  */
-int Dungeon::get_number(void) {
+int Dungeon::get_number() {
   return dungeon_number;
 }
 
@@ -57,14 +57,14 @@ int Dungeon::get_number(void) {
  *
  * @return the dungeon name
  */
-const std::string& Dungeon::get_name(void) {
+const std::string& Dungeon::get_name() {
   return name;
 }
 
 /**
  * @brief Loads the dungeon properties from the file dungeons.dat.
  */
-void Dungeon::load(void) {
+void Dungeon::load() {
 
   // get the dungeon name
   std::ostringstream oss;
@@ -157,7 +157,7 @@ void Dungeon::load(void) {
  * @brief Returns the number of floors in this dungeon.
  * @return the number of floors
  */
-int Dungeon::get_nb_floors(void) {
+int Dungeon::get_nb_floors() {
   return floor_sizes.size();
 }
 
@@ -165,7 +165,7 @@ int Dungeon::get_nb_floors(void) {
  * @brief Returns the lowest floor in this dungeon.
  * @return the lowest floor
  */
-int Dungeon::get_lowest_floor(void) {
+int Dungeon::get_lowest_floor() {
   return lowest_floor;
 }
 
@@ -173,7 +173,7 @@ int Dungeon::get_lowest_floor(void) {
  * @brief Returns the highest floor in this dungeon.
  * @return the highest floor
  */
-int Dungeon::get_highest_floor(void) {
+int Dungeon::get_highest_floor() {
   return get_lowest_floor() + get_nb_floors() - 1;
 }
 
@@ -194,7 +194,7 @@ const Rectangle & Dungeon::get_floor_size(int floor) {
  *
  * @return the number of floors that can be displayed for this dungeon
  */
-int Dungeon::get_nb_floors_displayed(void) {
+int Dungeon::get_nb_floors_displayed() {
   return std::min(7, get_nb_floors());
 }
 
@@ -236,7 +236,7 @@ int Dungeon::get_highest_floor_displayed(int current_floor) {
  * @brief Returns the floor where the boss of this dungeon is.
  * @return the floor of the boss
  */
-int Dungeon::get_boss_floor(void) {
+int Dungeon::get_boss_floor() {
   return boss_floor;
 }
 

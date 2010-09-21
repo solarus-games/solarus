@@ -36,7 +36,7 @@ Hero::HurtState::HurtState(Hero *hero, MapEntity *source, int life_points, int m
 /**
  * @brief Destructor.
  */
-Hero::HurtState::~HurtState(void) {
+Hero::HurtState::~HurtState() {
 
 }
 
@@ -78,7 +78,7 @@ void Hero::HurtState::stop(State *next_state) {
 /**
  * @brief Updates this state.
  */
-void Hero::HurtState::update(void) {
+void Hero::HurtState::update() {
 
   State::update();
 
@@ -92,7 +92,7 @@ void Hero::HurtState::update(void) {
  * @brief Returns whether the game over sequence can start in the current state.
  * @return true if the game over sequence can start in the current state
  */
-bool Hero::HurtState::can_start_gameover_sequence(void) {
+bool Hero::HurtState::can_start_gameover_sequence() {
   return false;
 }
 
@@ -100,7 +100,7 @@ bool Hero::HurtState::can_start_gameover_sequence(void) {
  * @brief Returns whether the hero is touching the ground in the current state.
  * @return true if the hero is touching the ground in the current state
  */
-bool Hero::HurtState::is_touching_ground(void) {
+bool Hero::HurtState::is_touching_ground() {
   return false;
 }
 
@@ -135,7 +135,7 @@ bool Hero::HurtState::is_sensor_obstacle(Sensor *sensor) {
  * @brief Returns whether the hero can be hurt in this state.
  * @return true if the hero can be hurt in this state
  */
-bool Hero::HurtState::can_be_hurt(void) {
+bool Hero::HurtState::can_be_hurt() {
   return false;
 }
 

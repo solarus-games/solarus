@@ -35,13 +35,13 @@ class StringResource {
     static std::map<std::string, std::string> strings;
 
     // we don't need to instanciate this class
-    StringResource(void);
-    ~StringResource(void);
+    StringResource();
+    ~StringResource();
 
   public:
 
-    static void initialize(void);
-    static void quit(void);
+    static void initialize();
+    static void quit();
 
     static const std::string & get_string(const std::string &key);  
 };

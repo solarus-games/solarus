@@ -49,10 +49,10 @@ class ItemIcon: public HudElement {
   public:
 
     ItemIcon(Game *game, int slot, int x, int y);
-    ~ItemIcon(void);
+    ~ItemIcon();
 
-    void update(void);
-    void rebuild(void);
+    void update();
+    void rebuild();
 };
 
 #endif

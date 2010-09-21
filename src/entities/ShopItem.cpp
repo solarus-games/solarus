@@ -57,7 +57,7 @@ ShopItem::ShopItem(const std::string &name, Layer layer, int x, int y,
 /**
  * @brief Destructor.
  */
-ShopItem::~ShopItem(void) {
+ShopItem::~ShopItem() {
   delete treasure;
   delete rupee_icon_sprite;
 }
@@ -130,7 +130,7 @@ EntityType ShopItem::get_type() {
  *
  * @return true if the sword is ignored
  */
-bool ShopItem::is_sword_ignored(void) {
+bool ShopItem::is_sword_ignored() {
   return true;
 }
 
@@ -174,7 +174,7 @@ void ShopItem::notify_collision(MapEntity *entity_overlapping, CollisionMode col
  * when the hero is facing this detector, and the action icon lets him do this.
  * A dialog is shown to let the hero buy the item.
  */
-void ShopItem::action_key_pressed(void) {
+void ShopItem::action_key_pressed() {
 
   Hero *hero = game->get_hero();
   KeysEffect *keys_effect = game->get_keys_effect();
@@ -190,7 +190,7 @@ void ShopItem::action_key_pressed(void) {
 /**
  * @brief Updates the entity.
  */
-void ShopItem::update(void) {
+void ShopItem::update() {
 
   if (is_looking_item && !game->is_showing_message()) {
 
@@ -241,7 +241,7 @@ void ShopItem::update(void) {
 /**
  * @brief Displays the entity on the map.
  */
-void ShopItem::display_on_map(void) {
+void ShopItem::display_on_map() {
 
   Surface *map_surface = map->get_visible_surface();
   int x = get_x();

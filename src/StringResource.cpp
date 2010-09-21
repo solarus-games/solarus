@@ -24,14 +24,14 @@ std::map<std::string, std::string> StringResource::strings;
 /**
  * @brief Constructor.
  */
-StringResource::StringResource(void) {
+StringResource::StringResource() {
 
 }
 
 /**
  * @brief Destructor.
  */
-StringResource::~StringResource(void) {
+StringResource::~StringResource() {
 
 }
 
@@ -41,7 +41,7 @@ StringResource::~StringResource(void) {
  * The strings are loaded from the language-specific file "text/strings.dat"
  * and stored into memory for future access by get_string().
  */
-void StringResource::initialize(void) {
+void StringResource::initialize() {
 
   strings.clear();
   std::istream &file = FileTools::data_file_open("text/strings.dat", true);
@@ -74,7 +74,7 @@ void StringResource::initialize(void) {
 /**
  * @brief Closes the text resource.
  */
-void StringResource::quit(void) {
+void StringResource::quit() {
   strings.clear();
 }
 

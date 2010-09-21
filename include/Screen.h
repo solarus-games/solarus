@@ -62,10 +62,10 @@ class Screen {
 
   public:
 
-    virtual ~Screen(void);
+    virtual ~Screen();
 
-    bool is_screen_finished(void);
-    Screen *get_next_screen(void);
+    bool is_screen_finished();
+    Screen *get_next_screen();
 
     // functions to implement in subclasses and that will be called by the main loop
 
@@ -74,7 +74,7 @@ class Screen {
      *
      * This function is called repeatedly by the program's main loop.
      */
-    virtual void update(void) = 0;
+    virtual void update() = 0;
 
     /**
      * @brief Displays this screen on a surface.

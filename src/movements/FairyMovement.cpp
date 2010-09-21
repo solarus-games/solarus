@@ -23,7 +23,7 @@
 /**
  * @brief Creates a fairy movement.
  */
-FairyMovement::FairyMovement(void) {
+FairyMovement::FairyMovement() {
   set_speed(3);
   set_next_direction();
 }
@@ -31,7 +31,7 @@ FairyMovement::FairyMovement(void) {
 /**
  * @brief Destructor.
  */
-FairyMovement::~FairyMovement(void) {
+FairyMovement::~FairyMovement() {
 
 }
 
@@ -52,7 +52,7 @@ void FairyMovement::set_entity(MapEntity *entity) {
 /**
  * @brief Chooses a new direction for the fairy.
  */
-void FairyMovement::set_next_direction(void) {
+void FairyMovement::set_next_direction() {
 
   if (entity == NULL || bounds.contains(get_x(), get_y())) {
 
@@ -77,7 +77,7 @@ void FairyMovement::set_next_direction(void) {
  * This is a redefinition of Movement::update()
  * to change the fairy's direction sometimes.
  */
-void FairyMovement::update(void) {
+void FairyMovement::update() {
 
   Movement::update();
 

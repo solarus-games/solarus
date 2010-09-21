@@ -28,7 +28,7 @@ Hero::SwimmingState::SwimmingState(Hero *hero):
 /**
  * @brief Destructor.
  */
-Hero::SwimmingState::~SwimmingState(void) {
+Hero::SwimmingState::~SwimmingState() {
 
 }
 

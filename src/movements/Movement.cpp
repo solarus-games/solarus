@@ -25,7 +25,7 @@
 /**
  * @brief Constructor.
  */
-Movement::Movement(void):
+Movement::Movement():
   x_speed(0), y_speed(0),
   next_move_date_x(System::now()),
   next_move_date_y(System::now()),
@@ -38,7 +38,7 @@ Movement::Movement(void):
 /**
  * @brief Destructor.
  */
-Movement::~Movement(void) {
+Movement::~Movement() {
 
 }
 
@@ -69,7 +69,7 @@ void Movement::set_entity(MapEntity *entity) {
  * @brief Returns the x position of the object controlled by this movement.
  * @return the x position of the object controlled by this movement
  */
-int Movement::get_x(void) {
+int Movement::get_x() {
 
   if (entity == NULL) {
     return x;
@@ -82,7 +82,7 @@ int Movement::get_x(void) {
  * @brief Returns the y position of the object controlled by this movement.
  * @return the y position of the object controlled by this movement
  */
-int Movement::get_y(void) {
+int Movement::get_y() {
 
   if (entity == NULL) {
     return y;
@@ -140,7 +140,7 @@ void Movement::set_position(const Rectangle &xy) {
  * have just been changed.
  * By default, the entity (if any) is notified.
  */
-void Movement::notify_position_changed(void) {
+void Movement::notify_position_changed() {
 
   if (entity != NULL) {
     entity->notify_position_changed();
@@ -193,7 +193,7 @@ double Movement::get_y_speed() {
  *
  * The speed is calculated as sqrt(x_speed^2 + y_speed^2).
  */
-double Movement::get_speed(void) {
+double Movement::get_speed() {
   return sqrt(x_speed * x_speed + y_speed * y_speed);
 }
 
@@ -280,7 +280,7 @@ void Movement::set_speed(double speed) {
  * @brief Returns whether the speed is zero.
  * @return true if the entity is stopped, false otherwise
  */
-bool Movement::is_stopped(void) {
+bool Movement::is_stopped() {
   return !is_started();
 }
 
@@ -292,14 +292,14 @@ bool Movement::is_stopped(void) {
  *
  * @return true if the entity is moving, false otherwise
  */
-bool Movement::is_started(void) {
+bool Movement::is_started() {
   return x_speed != 0 || y_speed != 0;
 }
 
 /**
  * @brief Sets the speed to zero.
  */
-void Movement::stop(void) {
+void Movement::stop() {
   set_x_speed(0);
   set_y_speed(0);
   set_x_move(0);
@@ -343,7 +343,7 @@ void Movement::set_next_move_date_y(uint32_t next_move_date_y) {
  *
  * @return true if this movement is finished
  */
-bool Movement::is_finished(void) {
+bool Movement::is_finished() {
   return false;
 }
 
@@ -390,7 +390,7 @@ void Movement::set_direction(double angle) {
  *
  * @return true if the entity is about to try to move
  */
-bool Movement::has_to_move_now(void) {
+bool Movement::has_to_move_now() {
 
   uint32_t now = System::now();
 
@@ -402,7 +402,7 @@ bool Movement::has_to_move_now(void) {
  * @brief Returns whether the movement is suspended.
  * @return true if the movement is suspended
  */
-bool Movement::is_suspended(void) {
+bool Movement::is_suspended() {
   return suspended;
 }
 
@@ -436,7 +436,7 @@ void Movement::set_suspended(bool suspended) {
 /**
  * @brief Updates the x position of the entity if it has to be changed.
  */
-void Movement::update_x(void) {
+void Movement::update_x() {
 
   if (x_move != 0) { // if we want to move on x
 
@@ -452,7 +452,7 @@ void Movement::update_x(void) {
 /**
  * @brief Updates the y position of the entity if it has changed.
  */
-void Movement::update_y(void) {
+void Movement::update_y() {
 
   if (y_move != 0) { // if we want to move on y
 
@@ -472,7 +472,7 @@ void Movement::update_y(void) {
  * By default, it calls update_x() and update_y() when necessary.
  * You can redefine this function.
  */
-void Movement::update(void) {
+void Movement::update() {
 
   if (!is_suspended()) {
     uint32_t now = System::now();
@@ -532,7 +532,7 @@ void Movement::update(void) {
  *
  * @return the collision box of the last collision detected, or (-1, -1) if no obstacle was detected
  */
-const Rectangle & Movement::get_last_collision_box_on_obstacle(void) {
+const Rectangle & Movement::get_last_collision_box_on_obstacle() {
   static const Rectangle collision_box(-1, -1);
   return collision_box;
 }
@@ -544,7 +544,7 @@ const Rectangle & Movement::get_last_collision_box_on_obstacle(void) {
  *
  * @return true if the obstacles are ignored
  */
-bool Movement::are_obstacles_ignored(void) {
+bool Movement::are_obstacles_ignored() {
   return true;
 }
 
@@ -553,7 +553,7 @@ bool Movement::are_obstacles_ignored(void) {
  *
  * This function is useful only for subclasses of Movement that handle collisions.
  */
-void Movement::set_ignore_obstacles(void) {
+void Movement::set_ignore_obstacles() {
 }
 
 /**
@@ -561,6 +561,6 @@ void Movement::set_ignore_obstacles(void) {
  *
  * This function is useful only for subclasses of Movement that handle collisions.
  */
-void Movement::restore_ignore_obstacles(void) {
+void Movement::restore_ignore_obstacles() {
 }
 

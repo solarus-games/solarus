@@ -42,7 +42,7 @@ PauseIcon::PauseIcon(Game *game, int x, int y):
 /**
  * @brief Destructor.
  */
-PauseIcon::~PauseIcon(void) {
+PauseIcon::~PauseIcon() {
   delete sprite_pause_icon;
   delete img_pause_icon;
 }
@@ -52,7 +52,7 @@ PauseIcon::~PauseIcon(void) {
  *
  * It checks whether the icon should change.
  */
-void PauseIcon::update(void) {
+void PauseIcon::update() {
 
   HudElement::update();
 
@@ -98,7 +98,7 @@ void PauseIcon::update(void) {
 /**
  * @brief Redraws the icon on the surface.
  */
-void PauseIcon::rebuild(void) {
+void PauseIcon::rebuild() {
 
   HudElement::rebuild();
   

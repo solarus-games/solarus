@@ -32,7 +32,7 @@ Transition::Transition(Transition::Direction direction):
 /**
  * @brief Destructor.
  */
-Transition::~Transition(void) {
+Transition::~Transition() {
 
 }
 
@@ -70,7 +70,7 @@ Transition * Transition::create(Transition::Style style, Transition::Direction d
  * @brief Returns the direction of this transition effect.
  * @returns the direction of this transition effect: Transition::IN or Transition::OUT
  */
-Transition::Direction Transition::get_direction(void) {
+Transition::Direction Transition::get_direction() {
   return direction;
 }
 
@@ -90,7 +90,7 @@ void Transition::set_previous_surface(Surface *previous_surface) {
  * @brief Returns whether this transition effect needs the previous surface.
  * @return false
  */
-bool Transition::needs_previous_surface(void) {
+bool Transition::needs_previous_surface() {
   return false;
 }
 

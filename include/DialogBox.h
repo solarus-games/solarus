@@ -106,46 +106,46 @@ class DialogBox {
 
     void set_vertical_position(VerticalPosition vertical_position);
     void show_message(const MessageId &message_id);
-    void show_next_message(void);
-    void close(void);
+    void show_next_message();
+    void close();
 
-    void action_key_pressed(void);
-    void sword_key_pressed(void);
-    void up_or_down_key_pressed(void);
+    void action_key_pressed();
+    void sword_key_pressed();
+    void up_or_down_key_pressed();
 
   public:
 
     // creation and destruction
     DialogBox(Game *game);
-    ~DialogBox(void);
+    ~DialogBox();
 
     // dialog properties
-    Game * get_game(void);
+    Game * get_game();
     void set_style(Style style);
-    bool is_enabled(void);
+    bool is_enabled();
 
     // current message
     void start_dialog(const MessageId &first_message_id, VerticalPosition vertical_position = POSITION_AUTO);
-    Speed get_speed(void);
+    Speed get_speed();
     void set_speed(Speed speed);
-    SkipMode get_skip_mode(void);
+    SkipMode get_skip_mode();
     void set_skip_mode(SkipMode skip_mode);
-    int get_icon_number(void);
+    int get_icon_number();
     void set_icon_number(int icon_number);
-    bool is_letter_sound_enabled(void);
+    bool is_letter_sound_enabled();
     void set_variable(const MessageId &first_message_id, const std::string &value);
     void set_variable(const MessageId &first_message_id, int value);
-    const std::string& get_variable(void);
-    int get_last_answer(void);
+    const std::string& get_variable();
+    int get_last_answer();
     void set_last_answer(int answer);
     void key_pressed(GameControls::GameKey key);
-    MessageId get_first_message_id(void);
-    bool is_finished(void);
-    bool was_skipped(void);
-    void show_all_now(void);
+    MessageId get_first_message_id();
+    bool is_finished();
+    bool was_skipped();
+    void show_all_now();
 
     // update and display
-    void update(void);
+    void update();
     void display(Surface *destination_surface);
 };
 

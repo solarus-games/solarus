@@ -40,14 +40,14 @@ class FollowMovement: public CollisionMovement {
 
   protected:
 
-    void update(void);
+    void update();
 
   public:
 
     FollowMovement(MapEntity *entity_followed, int x, int y, bool ignore_obstacles);
-    ~FollowMovement(void);
+    ~FollowMovement();
 
-    bool is_finished(void);
+    bool is_finished();
 
 };
 

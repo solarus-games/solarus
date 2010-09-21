@@ -35,7 +35,7 @@ class SelectionMenuConfirmErase: public SelectionMenuPhase {
 
     // creation and destruction
     SelectionMenuConfirmErase(SelectionMenu *menu, int save_number_to_erase);
-    ~SelectionMenuConfirmErase(void);
+    ~SelectionMenuConfirmErase();
 
     // update and display
     void display(Surface *destination_surface);

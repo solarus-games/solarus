@@ -74,14 +74,14 @@ class Stairs: public Detector {
   public:
 
     Stairs(Layer layer, int x, int y, int direction, Subtype subtype);
-    ~Stairs(void);
+    ~Stairs();
     static CreationFunction parse;
 
-    EntityType get_type(void);
+    EntityType get_type();
 
-    bool is_inside_floor(void);
-    bool has_layer_independent_collisions(void);
-    bool is_sword_ignored(void);
+    bool is_inside_floor();
+    bool has_layer_independent_collisions();
+    bool is_sword_ignored();
     bool is_obstacle_for(MapEntity *other);
     void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
 

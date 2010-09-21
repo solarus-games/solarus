@@ -45,7 +45,7 @@ TransitionScrolling::TransitionScrolling(Transition::Direction direction):
 /**
  * @brief Destructor.
  */
-TransitionScrolling::~TransitionScrolling(void) {
+TransitionScrolling::~TransitionScrolling() {
 
   if (direction == IN) {
     delete both_maps_surface;
@@ -55,7 +55,7 @@ TransitionScrolling::~TransitionScrolling(void) {
 /**
  * @brief Starts this transition effect.
  */
-void TransitionScrolling::start(void) {
+void TransitionScrolling::start() {
   
   if (direction == OUT) {
     return;
@@ -95,7 +95,7 @@ void TransitionScrolling::start(void) {
  * @brief Returns whether this transition effect needs the previous surface.
  * @return true
  */
-bool TransitionScrolling::needs_previous_surface(void) {
+bool TransitionScrolling::needs_previous_surface() {
   return true;
 }
 
@@ -103,7 +103,7 @@ bool TransitionScrolling::needs_previous_surface(void) {
  * @brief Returns whether the transition effect is started.
  * @return false
  */
-bool TransitionScrolling::is_started(void) {
+bool TransitionScrolling::is_started() {
   return !is_finished();
 }
 
@@ -111,7 +111,7 @@ bool TransitionScrolling::is_started(void) {
  * @brief Returns whether the transition effect is finished.
  * @return true
  */
-bool TransitionScrolling::is_finished(void) {
+bool TransitionScrolling::is_finished() {
 
   if (direction == OUT) {
     return true;
@@ -124,7 +124,7 @@ bool TransitionScrolling::is_finished(void) {
 /**
  * @brief Makes a scrolling step.
  */
-void TransitionScrolling::scroll(void) {
+void TransitionScrolling::scroll() {
   current_scrolling_position.add_xy(dx, dy);
 }
 
@@ -133,7 +133,7 @@ void TransitionScrolling::scroll(void) {
  *
  * This function is called repeatedly while the transition exists.
  */
-void TransitionScrolling::update(void) {
+void TransitionScrolling::update() {
 
   if (!is_started()) {
     return;

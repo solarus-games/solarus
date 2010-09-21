@@ -65,8 +65,8 @@ class VideoManager {
   int end_row_increment;                         /**< increment used by the stretching and scaling functions 
 					          * when changing the row */
 
-  VideoManager(void);
-  ~VideoManager(void);
+  VideoManager();
+  ~VideoManager();
 
   bool is_mode_supported(VideoMode mode);
   bool is_fullscreen(VideoMode mode);
@@ -78,15 +78,15 @@ class VideoManager {
 
  public:
 
-  static void initialize(void);
-  static void quit(void);
-  static VideoManager * get_instance(void);
+  static void initialize();
+  static void quit();
+  static VideoManager * get_instance();
 
-  void switch_video_mode(void);
-  void set_initial_video_mode(void);
-  void set_default_video_mode(void);
+  void switch_video_mode();
+  void set_initial_video_mode();
+  void set_default_video_mode();
   void set_video_mode(VideoMode mode);
-  VideoMode get_video_mode(void);
+  VideoMode get_video_mode();
 
   void display(Surface *src_surface);
 };

@@ -52,7 +52,7 @@ Timer::Timer(Game *game, uint32_t duration, const std::string &name, bool with_s
 /**
  * @brief Destructor.
  */
-Timer::~Timer(void) {
+Timer::~Timer() {
 
 }
 
@@ -60,7 +60,7 @@ Timer::~Timer(void) {
  * @brief Returns the name identifying this timer.
  * @return the name of this timer
  */
-const std::string& Timer::get_name(void) {
+const std::string& Timer::get_name() {
   return name;
 }
 
@@ -68,14 +68,14 @@ const std::string& Timer::get_name(void) {
  * @brief Returns whether the timer is finished.
  * @return true if the timer is finished
  */
-bool Timer::is_finished(void) {
+bool Timer::is_finished() {
   return finished;
 }
 
 /**
  * @brief Updates the timer.
  */
-void Timer::update(void) {
+void Timer::update() {
 
   if (suspended || is_finished()) {
     return;

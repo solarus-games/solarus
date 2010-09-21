@@ -28,14 +28,14 @@ TransitionImmediate::TransitionImmediate(Transition::Direction direction):
 /**
  * @brief Destructor.
  */
-TransitionImmediate::~TransitionImmediate(void) {
+TransitionImmediate::~TransitionImmediate() {
 
 }
 
 /**
  * @brief Starts this transition effect.
  */
-void TransitionImmediate::start(void) {
+void TransitionImmediate::start() {
   
 }
 
@@ -43,7 +43,7 @@ void TransitionImmediate::start(void) {
  * @brief Returns whether the transition effect is started.
  * @return false
  */
-bool TransitionImmediate::is_started(void) {
+bool TransitionImmediate::is_started() {
   return false;
 }
 
@@ -51,14 +51,14 @@ bool TransitionImmediate::is_started(void) {
  * @brief Returns whether the transition effect is finished.
  * @return true
  */
-bool TransitionImmediate::is_finished(void) {
+bool TransitionImmediate::is_finished() {
   return true;
 }
 
 /**
  * @brief Updates this transition effect.
  */
-void TransitionImmediate::update(void) {
+void TransitionImmediate::update() {
 
 }
 

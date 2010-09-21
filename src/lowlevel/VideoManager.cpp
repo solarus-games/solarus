@@ -40,14 +40,14 @@ Rectangle VideoManager::default_mode_sizes[] = {
 /**
  * @brief Initializes the video system and creates the window.
  */
-void VideoManager::initialize(void) {
+void VideoManager::initialize() {
   instance = new VideoManager();
 }
 
 /**
  * @brief Closes the video system.
  */
-void VideoManager::quit(void) {
+void VideoManager::quit() {
   delete instance;
 }
 
@@ -55,14 +55,14 @@ void VideoManager::quit(void) {
  * @brief Returns the video manager.
  * @return the only video manager
  */
-VideoManager * VideoManager::get_instance(void) {
+VideoManager * VideoManager::get_instance() {
   return instance;
 }
 
 /**
  * @brief Constructor.
  */
-VideoManager::VideoManager(void) {
+VideoManager::VideoManager() {
 
   // initialize the window
   IniFile ini("quest.dat", IniFile::READ);
@@ -104,7 +104,7 @@ VideoManager::VideoManager(void) {
 /**
  * @brief Destructor.
  */
-VideoManager::~VideoManager(void) {
+VideoManager::~VideoManager() {
   delete screen_surface;
 }
 
@@ -141,7 +141,7 @@ bool VideoManager::is_fullscreen(VideoMode mode) {
 /**
  * @brief Sets the next video mode.
  */
-void VideoManager::switch_video_mode(void) {
+void VideoManager::switch_video_mode() {
 
   VideoMode mode = video_mode;
   do {
@@ -156,7 +156,7 @@ void VideoManager::switch_video_mode(void) {
  * The initial video mode is read from the configuration file if existing.
  * Otherwise, the default video mode is chosen.
  */
-void VideoManager::set_initial_video_mode(void) {
+void VideoManager::set_initial_video_mode() {
 
   int value = Configuration::get_value("video_mode", -1);
 
@@ -171,7 +171,7 @@ void VideoManager::set_initial_video_mode(void) {
 /**
  * @brief Sets the default video mode.
  */
-void VideoManager::set_default_video_mode(void) {
+void VideoManager::set_default_video_mode() {
   set_video_mode(WINDOWED_STRETCHED);
 }
 
@@ -224,7 +224,7 @@ void VideoManager::set_video_mode(VideoMode mode) {
  * @brief Returns the current video mode.
  * @return the video mode
  */
-VideoManager::VideoMode VideoManager::get_video_mode(void) {
+VideoManager::VideoMode VideoManager::get_video_mode() {
   return video_mode;
 }
 

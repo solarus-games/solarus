@@ -60,7 +60,7 @@ HeartsView::HeartsView(Equipment *equipment, int x, int y):
  *
  * This function is called by the constructors.
  */
-void HeartsView::create(void) {
+void HeartsView::create() {
 
   uint32_t now = System::now();
   this->next_heart_update_date = now;
@@ -79,7 +79,7 @@ void HeartsView::create(void) {
 /**
  * @brief Destructor.
  */
-HeartsView::~HeartsView(void) {
+HeartsView::~HeartsView() {
   delete img_hearts;
   delete empty_heart_sprite;
 }
@@ -87,7 +87,7 @@ HeartsView::~HeartsView(void) {
 /**
  * @brief Updates the number of hearts displayed.
  */
-void HeartsView::update(void) {
+void HeartsView::update() {
 
   HudElement::update();
 
@@ -155,7 +155,7 @@ void HeartsView::update(void) {
 /**
  * @brief Redraws the hearts on the surface.
  */
-void HeartsView::rebuild(void) {
+void HeartsView::rebuild() {
 
   HudElement::rebuild();
   
@@ -195,7 +195,7 @@ void HeartsView::rebuild(void) {
  *
  * @return true if this hud element is visible, i.e. if equipment is not NULL
  */
-bool HeartsView::is_visible(void) {
+bool HeartsView::is_visible() {
   return equipment != NULL;
 }
 

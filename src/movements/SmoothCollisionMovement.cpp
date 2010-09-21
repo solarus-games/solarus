@@ -31,7 +31,7 @@ SmoothCollisionMovement::SmoothCollisionMovement(bool smooth):
 /**
  * @brief Destructor.
  */
-SmoothCollisionMovement::~SmoothCollisionMovement(void) {
+SmoothCollisionMovement::~SmoothCollisionMovement() {
 
 }
 
@@ -41,7 +41,7 @@ SmoothCollisionMovement::~SmoothCollisionMovement(void) {
  * This is a redefinition of CollisionMovement::update_x() to
  * handle the smooth collisions.
  */
-void SmoothCollisionMovement::update_x(void) {
+void SmoothCollisionMovement::update_x() {
 
   if (!smooth) {
     CollisionMovement::update_x();
@@ -117,7 +117,7 @@ void SmoothCollisionMovement::update_x(void) {
  * This is a redefinition of CollisionMovement::update_y() to to
  * handle the smooth collisions.
  */
-void SmoothCollisionMovement::update_y(void) {
+void SmoothCollisionMovement::update_y() {
 
   if (!smooth) {
     CollisionMovement::update_y();

@@ -40,25 +40,25 @@ class Hero::State {
     uint32_t when_suspended;		/**< indicates when this state was suspended */
 
     State(Hero *hero);
-    bool is_current_state(void);
+    bool is_current_state();
 
   public:
 
     // creation and destruction
-    virtual ~State(void);
+    virtual ~State();
     virtual void start(State *previous_state);
     virtual void stop(State *next_state);
 
     // game loop
-    virtual void update(void);
-    virtual void display_on_map(void);
+    virtual void update();
+    virtual void display_on_map();
     virtual void set_suspended(bool suspended);
     void key_pressed(GameControls::GameKey key);
     void key_released(GameControls::GameKey key);
-    virtual void action_key_pressed(void);
-    virtual void action_key_released(void);
-    virtual void sword_key_pressed(void);
-    virtual void sword_key_released(void);
+    virtual void action_key_pressed();
+    virtual void action_key_released();
+    virtual void sword_key_pressed();
+    virtual void sword_key_released();
     virtual void directional_key_pressed(int direction4);
     virtual void directional_key_released(int direction4);
     virtual void item_key_pressed(int slot);
@@ -66,57 +66,57 @@ class Hero::State {
 
     // game
     virtual void set_map(Map *map);
-    virtual bool can_start_gameover_sequence(void);
+    virtual bool can_start_gameover_sequence();
 
     // sprites
-    virtual bool is_hero_visible(void);
-    virtual bool is_direction_locked(void);
-    virtual int get_height_above_shadow(void);
+    virtual bool is_hero_visible();
+    virtual bool is_direction_locked();
+    virtual int get_height_above_shadow();
 
-    virtual bool can_control_movement(void);
-    virtual int get_wanted_movement_direction8(void);
-    virtual void notify_walking_speed_changed(void);
-    virtual void notify_layer_changed(void);
-    virtual void notify_movement_changed(void);
+    virtual bool can_control_movement();
+    virtual int get_wanted_movement_direction8();
+    virtual void notify_walking_speed_changed();
+    virtual void notify_layer_changed();
+    virtual void notify_movement_changed();
     virtual void notify_movement_tried(bool success);
 
     // ground
-    virtual bool can_avoid_deep_water(void);
-    virtual bool can_avoid_hole(void);
-    virtual bool is_touching_ground(void);
-    virtual void notify_ground_changed(void);
+    virtual bool can_avoid_deep_water();
+    virtual bool can_avoid_hole();
+    virtual bool is_touching_ground();
+    virtual void notify_ground_changed();
 
     // obstacles and collisions
-    virtual bool are_collisions_ignored(void);
-    virtual bool is_water_obstacle(void);
-    virtual bool is_hole_obstacle(void);
-    virtual bool is_ladder_obstacle(void);
+    virtual bool are_collisions_ignored();
+    virtual bool is_water_obstacle();
+    virtual bool is_hole_obstacle();
+    virtual bool is_ladder_obstacle();
     virtual bool is_teletransporter_obstacle(Teletransporter *teletransporter);
-    virtual bool can_avoid_teletransporter(void);
-    virtual bool is_teletransporter_delayed(void);
+    virtual bool can_avoid_teletransporter();
+    virtual bool is_teletransporter_delayed();
     virtual bool is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt);
-    virtual bool can_avoid_conveyor_belt(void);
+    virtual bool can_avoid_conveyor_belt();
     virtual bool is_sensor_obstacle(Sensor *sensor);
-    virtual bool can_avoid_sensor(void);
-    virtual bool can_avoid_explosion(void);
+    virtual bool can_avoid_sensor();
+    virtual bool can_avoid_explosion();
 
     // enemies
     virtual void notify_attacked_enemy(EnemyAttack attack, Enemy *victim, int result, bool killed);
-    virtual int get_sword_damage_factor(void);
-    virtual bool can_be_hurt(void);
+    virtual int get_sword_damage_factor();
+    virtual bool can_be_hurt();
 
     // state specific
-    virtual bool is_free(void);
-    virtual bool is_grabbing_or_pulling(void);
-    virtual bool is_moving_grabbed_entity(void);
-    virtual void notify_grabbed_entity_collision(void);
+    virtual bool is_free();
+    virtual bool is_grabbing_or_pulling();
+    virtual bool is_moving_grabbed_entity();
+    virtual void notify_grabbed_entity_collision();
     virtual bool is_cutting_with_sword(Detector *detector);
-    virtual bool can_start_sword(void);
-    virtual bool can_start_inventory_item(void);
-    virtual bool can_take_stairs(void);
-    virtual bool can_take_jump_sensor(void);
-    virtual bool can_sword_hit_crystal_switch(void);
-    virtual bool can_throw_item(void);
+    virtual bool can_start_sword();
+    virtual bool can_start_inventory_item();
+    virtual bool can_take_stairs();
+    virtual bool can_take_jump_sensor();
+    virtual bool can_sword_hit_crystal_switch();
+    virtual bool can_throw_item();
 };
 
 #endif

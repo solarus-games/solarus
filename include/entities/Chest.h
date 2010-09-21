@@ -36,25 +36,25 @@ class Chest: public Detector {
     bool treasure_given;		/**< true if the chest is open and the treasure has been given to the player */
     uint32_t treasure_date;		/**< date when the treasure will be given to the player */
 
-    void initialize_sprite(void);
+    void initialize_sprite();
 
   public:
 
     Chest(const std::string &name, Layer layer, int x, int y, bool big_chest, Treasure *treasure);
-    ~Chest(void);
+    ~Chest();
     static CreationFunction parse;
 
-    EntityType get_type(void);
-    bool is_displayed_in_y_order(void);
+    EntityType get_type();
+    bool is_displayed_in_y_order();
 
-    bool is_open(void);
+    bool is_open();
     void set_open(bool open);
     void set_visible(bool visible);
 
     bool is_obstacle_for(MapEntity *other);
     void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
-    void update(void);
-    void action_key_pressed(void);
+    void update();
+    void action_key_pressed();
     void set_suspended(bool suspended);
 };
 

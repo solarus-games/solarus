@@ -76,13 +76,13 @@ class GameoverSequence {
 
     // creation and destruction
     GameoverSequence(Game *game, int hero_direction);
-    ~GameoverSequence(void);
+    ~GameoverSequence();
 
     // state
-    bool is_finished(void);
+    bool is_finished();
 
     // update and display
-    void update(void);
+    void update();
     void display(Surface *destination_surface);
     void key_pressed(GameControls::GameKey key);
 };

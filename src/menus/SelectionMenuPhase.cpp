@@ -45,14 +45,14 @@ SelectionMenuPhase::SelectionMenuPhase(SelectionMenu *menu, const std::string &t
 /**
  * @brief Destroys the selection menu phase.
  */
-SelectionMenuPhase::~SelectionMenuPhase(void) {
+SelectionMenuPhase::~SelectionMenuPhase() {
 
 }
 
 /**
  * @brief Updates the selection menu in this phase.
  */
-void SelectionMenuPhase::update(void) {
+void SelectionMenuPhase::update() {
   // nothing to do by default (subclasses can redefine this method)
 }
 

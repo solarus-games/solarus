@@ -36,24 +36,24 @@ class CrystalSwitch: public Detector {
     Sprite *star_sprite;                           /**< sprite of the star twinkling on the crystal switch */
     Rectangle star_xy;                             /**< position of the star */
 
-    void twinkle(void);
+    void twinkle();
 
   public:
 
     CrystalSwitch(Layer layer, int x, int y);
-    ~CrystalSwitch(void);
+    ~CrystalSwitch();
     static CreationFunction parse;
 
-    EntityType get_type(void);
+    EntityType get_type();
 
     bool is_obstacle_for(MapEntity *other);
     void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
     void notify_collision(MapEntity *other_entity, Sprite *other_sprite, Sprite *this_sprite);
-    void action_key_pressed(void);
+    void action_key_pressed();
     void activate(MapEntity *entity_activating);
 
-    void update(void);
-    void display_on_map(void);
+    void update();
+    void display_on_map();
     void set_suspended(bool suspended);
 };
 

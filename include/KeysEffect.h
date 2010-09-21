@@ -97,37 +97,37 @@ class KeysEffect {
 
   public:
 
-    KeysEffect(void);
-    ~KeysEffect(void);
+    KeysEffect();
+    ~KeysEffect();
 
     // action key
 
-    ActionKeyEffect get_action_key_effect(void);
+    ActionKeyEffect get_action_key_effect();
     void set_action_key_effect(ActionKeyEffect action_key_effect);
-    bool is_action_key_enabled(void);
+    bool is_action_key_enabled();
     void set_action_key_enabled(bool enable);
-    void save_action_key_effect(void);
-    void restore_action_key_effect(void);
-    bool is_action_key_acting_on_facing_entity(void);
+    void save_action_key_effect();
+    void restore_action_key_effect();
+    bool is_action_key_acting_on_facing_entity();
 
     // sword key
 
-    SwordKeyEffect get_sword_key_effect(void);
+    SwordKeyEffect get_sword_key_effect();
     void set_sword_key_effect(SwordKeyEffect sword_key_effect);
-    bool is_sword_key_enabled(void);
+    bool is_sword_key_enabled();
     void set_sword_key_enabled(bool enable);
-    void save_sword_key_effect(void);
-    void restore_sword_key_effect(void);
+    void save_sword_key_effect();
+    void restore_sword_key_effect();
 
     // pause key
 
-    PauseKeyEffect get_pause_key_effect(void);
+    PauseKeyEffect get_pause_key_effect();
     void set_pause_key_effect(PauseKeyEffect pause_key_effect);
-    bool is_pause_key_enabled(void);
+    bool is_pause_key_enabled();
     void set_pause_key_enabled(bool enable);
 
     // item keys
-    bool are_item_keys_enabled(void);
+    bool are_item_keys_enabled();
     void set_item_keys_enabled(bool enable);
 
     // all keys

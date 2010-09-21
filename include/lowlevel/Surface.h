@@ -51,11 +51,11 @@ class Surface {
     Surface(int width, int height);
     Surface(const std::string &file_name, ImageDirectory base_directory = DIR_SPRITES);
     Surface(SDL_Surface *internal_surface);
-    ~Surface(void);
+    ~Surface();
 
-    int get_width(void);
-    int get_height(void);
-    const Rectangle get_size(void);
+    int get_width();
+    int get_height();
+    const Rectangle get_size();
 
     void set_transparency_color(Color &color);
     void set_opacity(int opacity);
@@ -67,7 +67,7 @@ class Surface {
     void blit(const Rectangle &src_position, Surface *destination);
     void blit(const Rectangle &src_position, Surface *destination, const Rectangle &dst_position);
 
-    SDL_Surface * get_internal_surface(void);
+    SDL_Surface * get_internal_surface();
 };
 
 #endif

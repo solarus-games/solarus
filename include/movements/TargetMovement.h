@@ -40,19 +40,19 @@ class TargetMovement: public Movement {
     uint32_t next_recomputation_date;		/**< date when the movement is recalculated */
     bool finished;				/**< true if the target is reached */
 
-    void recompute_movement(void);
+    void recompute_movement();
 
   public:
 
     TargetMovement(int target_x, int target_y, int speed);
     TargetMovement(MapEntity *target_entity, int speed);
-    ~TargetMovement(void);
+    ~TargetMovement();
 
     void set_target(int target_x, int target_y);
     void set_target(MapEntity *target_entity);
 
-    bool is_finished(void);
-    void update(void);
+    bool is_finished();
+    void update();
 };
 
 #endif

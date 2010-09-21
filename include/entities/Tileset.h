@@ -44,15 +44,15 @@ class Tileset {
   public:
 
     Tileset(TilesetId id);
-    ~Tileset(void);
+    ~Tileset();
 
-    void load(void);
-    void unload(void);
+    void load();
+    void unload();
 
-    Color & get_background_color(void);
-    bool is_loaded(void);
-    Surface *get_tiles_image(void);
-    Surface *get_entities_image(void);
+    Color & get_background_color();
+    bool is_loaded();
+    Surface *get_tiles_image();
+    Surface *get_entities_image();
     TilePattern *get_tile_pattern(int id);
 };
 

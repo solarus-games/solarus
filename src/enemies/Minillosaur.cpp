@@ -35,14 +35,14 @@ Minillosaur::Minillosaur(const ConstructionParameters &params):
 /**
  * @brief Destructor.
  */
-Minillosaur::~Minillosaur(void) {
+Minillosaur::~Minillosaur() {
 
 }
 
 /**
  * @brief Initializes this enemy.
  */
-void Minillosaur::initialize(void) {
+void Minillosaur::initialize() {
 
   // attack/defense features
   set_damage(2);
@@ -75,7 +75,7 @@ void Minillosaur::initialize(void) {
  * because something happened (for example the enemy has just been created,
  * or it was just hurt).
  */
-void Minillosaur::restart(void) {
+void Minillosaur::restart() {
 
   if (!in_egg) {
     Enemy::restart();
@@ -102,7 +102,7 @@ int Minillosaur::custom_attack(EnemyAttack attack, Sprite *this_sprite) {
 /**
  * @brief Updates this enemy.
  */
-void Minillosaur::update(void) {
+void Minillosaur::update() {
 
   if (suspended) {
     return;

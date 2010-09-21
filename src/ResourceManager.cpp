@@ -32,7 +32,7 @@ ResourceManager * ResourceManager::instance;
 /**
  * @brief Constructor.
  */
-ResourceManager::ResourceManager(void) {
+ResourceManager::ResourceManager() {
 
 }
 
@@ -41,7 +41,7 @@ ResourceManager::ResourceManager(void) {
  *
  * Destroys all the resources stored into memory.
  */
-ResourceManager::~ResourceManager(void) {
+ResourceManager::~ResourceManager() {
 
   // tilesets
   {
@@ -87,14 +87,14 @@ ResourceManager::~ResourceManager(void) {
 /**
  * @brief Initializes the resource manager.
  */
-void ResourceManager::initialize(void) {
+void ResourceManager::initialize() {
   instance = new ResourceManager();
 }
 
 /**
  * @brief Quits the resource manager.
  */
-void ResourceManager::quit(void) {
+void ResourceManager::quit() {
   delete instance;
 }
 

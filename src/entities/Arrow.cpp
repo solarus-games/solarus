@@ -57,7 +57,7 @@ Arrow::Arrow(Hero *hero):
 /**
  * @brief Destructor.
  */
-Arrow::~Arrow(void) {
+Arrow::~Arrow() {
 
 }
 
@@ -77,7 +77,7 @@ EntityType Arrow::get_type() {
  *
  * @return true if this type of entity can be obstacle for other entities
  */
-bool Arrow::can_be_obstacle(void) {
+bool Arrow::can_be_obstacle() {
   return false; 
 }
 
@@ -91,7 +91,7 @@ bool Arrow::can_be_obstacle(void) {
  *
  * @return true if this type of entity can detect other entities
  */
-bool Arrow::can_detect_entities(void) {
+bool Arrow::can_detect_entities() {
   return false;
 }
 
@@ -103,7 +103,7 @@ bool Arrow::can_detect_entities(void) {
  *
  * @return true if this type of entity can be displayed
  */
-bool Arrow::can_be_displayed(void) {
+bool Arrow::can_be_displayed() {
   return true; 
 }
 
@@ -119,7 +119,7 @@ bool Arrow::can_be_displayed(void) {
  *
  * @return true if this type of entity is displayed at the same level as the hero
  */
-bool Arrow::is_displayed_in_y_order(void) {
+bool Arrow::is_displayed_in_y_order() {
   return true;
 }
 
@@ -154,7 +154,7 @@ bool Arrow::is_stairs_obstacle(Stairs *stairs) {
  * @brief Returns whether a water tile is currently considered as an obstacle for this entity.
  * @return true if the water tiles are currently an obstacle for this entity
  */
-bool Arrow::is_water_obstacle(void) {
+bool Arrow::is_water_obstacle() {
   return false;
 }
 
@@ -162,7 +162,7 @@ bool Arrow::is_water_obstacle(void) {
  * @brief Returns whether a hole is currently considered as an obstacle for this entity.
  * @return true if the holes are currently an obstacle for this entity
  */
-bool Arrow::is_hole_obstacle(void) {
+bool Arrow::is_hole_obstacle() {
   return false;
 }
 
@@ -170,7 +170,7 @@ bool Arrow::is_hole_obstacle(void) {
  * @brief Returns whether a ladder is currently considered as an obstacle for this entity.
  * @return true if the ladders are currently an obstacle for this entity
  */
-bool Arrow::is_ladder_obstacle(void) {
+bool Arrow::is_ladder_obstacle() {
   return false;
 }
 
@@ -215,7 +215,7 @@ bool Arrow::is_jump_sensor_obstacle(JumpSensor *jump_sensor) {
  * @brief Returns the point located just outside the arrow's collision box,
  * in its current direction.
  */
-const Rectangle Arrow::get_facing_point(void) {
+const Rectangle Arrow::get_facing_point() {
 
   Rectangle facing_point = get_xy();
 
@@ -251,7 +251,7 @@ const Rectangle Arrow::get_facing_point(void) {
 /**
  * @brief Updates this entity.
  */
-void Arrow::update(void) {
+void Arrow::update() {
 
   MapEntity::update();
 
@@ -345,7 +345,7 @@ void Arrow::set_suspended(bool suspended) {
 /**
  * @brief Stops the arrow movement.
  */
-void Arrow::stop(void) {
+void Arrow::stop() {
   stop_now = true;
 }
 
@@ -353,7 +353,7 @@ void Arrow::stop(void) {
  * @brief Returns whether the arrow is stopped.
  * @return true if the arrow is stopped
  */
-bool Arrow::is_stopped(void) {
+bool Arrow::is_stopped() {
   return get_movement() == NULL || get_movement()->is_finished();
 }
 
@@ -361,7 +361,7 @@ bool Arrow::is_stopped(void) {
  * @brief Returns whether the arrow is currently flying.
  * @return true if the arrow was shot and has not reached a target yet
  */
-bool Arrow::is_flying(void) {
+bool Arrow::is_flying() {
   return !is_stopped() && entity_reached == NULL;
 }
 
@@ -449,7 +449,7 @@ void Arrow::notify_attacked_enemy(EnemyAttack attack, Enemy *victim, int result,
  * @brief Returns whether the arrow has just hit the map border.
  * @return true if the arrow has just hit the map border
  */
-bool Arrow::has_reached_map_border(void) {
+bool Arrow::has_reached_map_border() {
 
   if (get_sprite()->get_current_animation() != "flying" || get_movement() == NULL) {
     return false;

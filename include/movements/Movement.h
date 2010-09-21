@@ -78,18 +78,18 @@ class Movement {
 
     uint32_t when_suspended;   /**< Indicates when the movement is currently suspended. */
 
-    inline int get_x_move(void)        { return x_move; }
-    inline int get_y_move(void)        { return y_move; }
+    inline int get_x_move()        { return x_move; }
+    inline int get_y_move()        { return y_move; }
     inline void set_x_move(int x_move) { this->x_move = x_move; }
     inline void set_y_move(int y_move) { this->y_move = y_move; }
 
-    inline uint32_t get_next_move_date_x(void)                  { return next_move_date_x; }
-    inline uint32_t get_next_move_date_y(void)                  { return next_move_date_y; }
+    inline uint32_t get_next_move_date_x()                  { return next_move_date_x; }
+    inline uint32_t get_next_move_date_y()                  { return next_move_date_y; }
     void set_next_move_date_x(uint32_t next_move_date_x);
     void set_next_move_date_y(uint32_t next_move_date_y);
 
-    inline uint32_t get_x_delay(void)         { return x_delay; }
-    inline uint32_t get_y_delay(void)         { return y_delay; }
+    inline uint32_t get_x_delay()         { return x_delay; }
+    inline uint32_t get_y_delay()         { return y_delay; }
     inline void set_x_delay(uint32_t x_delay) { this->x_delay = x_delay; }
     inline void set_y_delay(uint32_t y_delay) { this->y_delay = y_delay; }
 
@@ -97,54 +97,54 @@ class Movement {
     void translate_y(int dy);
     void translate(int dx, int dy);
 
-    virtual void update_x(void);
-    virtual void update_y(void);
+    virtual void update_x();
+    virtual void update_y();
 
   public:
 
-    Movement(void);
-    virtual ~Movement(void);
+    Movement();
+    virtual ~Movement();
 
     // entity
     virtual void set_entity(MapEntity *entity);
 
     // position
-    int get_x(void);
-    int get_y(void);
+    int get_x();
+    int get_y();
     void set_x(int x);
     void set_y(int y);
     virtual void set_position(int x, int y);
     void set_position(const Rectangle &xy);
-    virtual void notify_position_changed(void);
+    virtual void notify_position_changed();
 
-    virtual void update(void);
-    bool has_to_move_now(void);
+    virtual void update();
+    bool has_to_move_now();
 
     // movement
 
     double get_x_speed();
     double get_y_speed();
-    double get_speed(void);
-    bool is_stopped(void);
-    virtual bool is_started(void);
-    virtual bool is_finished(void);
+    double get_speed();
+    bool is_stopped();
+    virtual bool is_started();
+    virtual bool is_finished();
 
     void set_x_speed(double x_speed);
     void set_y_speed(double y_speed);
     virtual void set_speed(double speed);
-    void stop(void);
+    void stop();
 
-    bool is_suspended(void);
+    bool is_suspended();
     virtual void set_suspended(bool suspended);
 
     void set_direction(int direction);
     void set_direction(double angle);
 
     // obstacles
-    virtual const Rectangle & get_last_collision_box_on_obstacle(void);
-    virtual bool are_obstacles_ignored(void);
-    virtual void set_ignore_obstacles(void);
-    virtual void restore_ignore_obstacles(void);
+    virtual const Rectangle & get_last_collision_box_on_obstacle();
+    virtual bool are_obstacles_ignored();
+    virtual void set_ignore_obstacles();
+    virtual void restore_ignore_obstacles();
 };
 
 #endif

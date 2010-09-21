@@ -28,7 +28,7 @@ Screen::Screen(Solarus *solarus):
 /**
  * @brief Destroys the screen.
  */
-Screen::~Screen(void) {
+Screen::~Screen() {
 
 }
 
@@ -49,7 +49,7 @@ void Screen::set_next_screen(Screen *next_screen) {
  * screen that should be displayed now.
  * @return the next screen
  */
-Screen * Screen::get_next_screen(void) {
+Screen * Screen::get_next_screen() {
   return next_screen;
 }
 
@@ -62,7 +62,7 @@ Screen * Screen::get_next_screen(void) {
  *
  * @return true if the screen finished
  */
-bool Screen::is_screen_finished(void) {
+bool Screen::is_screen_finished() {
   return screen_finished;
 }
 

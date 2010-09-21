@@ -47,7 +47,7 @@ Hero::BackToSolidGroundState::BackToSolidGroundState(Hero *hero, bool use_memori
 /**
  * @brief Destructor.
  */
-Hero::BackToSolidGroundState::~BackToSolidGroundState(void) {
+Hero::BackToSolidGroundState::~BackToSolidGroundState() {
 
 }
 
@@ -78,7 +78,7 @@ void Hero::BackToSolidGroundState::stop(State *next_state) {
 /**
  * @brief Updates this state.
  */
-void Hero::BackToSolidGroundState::update(void) {
+void Hero::BackToSolidGroundState::update() {
 
   State::update();
 
@@ -93,7 +93,7 @@ void Hero::BackToSolidGroundState::update(void) {
  * @brief Returns whether the game over sequence can start in the current state.
  * @return true if the game over sequence can start in the current state
  */
-bool Hero::BackToSolidGroundState::can_start_gameover_sequence(void) {
+bool Hero::BackToSolidGroundState::can_start_gameover_sequence() {
   return false;
 }
 
@@ -101,7 +101,7 @@ bool Hero::BackToSolidGroundState::can_start_gameover_sequence(void) {
  * @brief Returns whether the hero is visible in the current state.
  * @return true if the hero is displayed in the current state
  */
-bool Hero::BackToSolidGroundState::is_hero_visible(void) {
+bool Hero::BackToSolidGroundState::is_hero_visible() {
   return false;
 }
 
@@ -109,7 +109,7 @@ bool Hero::BackToSolidGroundState::is_hero_visible(void) {
  * @brief Returns whether the hero ignores the effect of deep water in this state.
  * @return true if the hero ignores the effect of deep water in the current state
  */
-bool Hero::BackToSolidGroundState::can_avoid_deep_water(void) {
+bool Hero::BackToSolidGroundState::can_avoid_deep_water() {
   return true;
 }
 
@@ -117,7 +117,7 @@ bool Hero::BackToSolidGroundState::can_avoid_deep_water(void) {
  * @brief Returns whether the hero ignores the effect of holes in this state.
  * @return true if the hero ignores the effect of holes in the current state
  */
-bool Hero::BackToSolidGroundState::can_avoid_hole(void) {
+bool Hero::BackToSolidGroundState::can_avoid_hole() {
   return true;
 }
 
@@ -125,7 +125,7 @@ bool Hero::BackToSolidGroundState::can_avoid_hole(void) {
  * @brief Returns whether the hero is touching the ground in the current state.
  * @return true if the hero is touching the ground in the current state
  */
-bool Hero::BackToSolidGroundState::is_touching_ground(void) {
+bool Hero::BackToSolidGroundState::is_touching_ground() {
   return false;
 }
 
@@ -133,7 +133,7 @@ bool Hero::BackToSolidGroundState::is_touching_ground(void) {
  * @brief Returns whether this state ignores the collisions with the detectors and the ground.
  * @return true if the collision are ignored
  */
-bool Hero::BackToSolidGroundState::are_collisions_ignored(void) {
+bool Hero::BackToSolidGroundState::are_collisions_ignored() {
   return true;
 }
 
@@ -141,7 +141,7 @@ bool Hero::BackToSolidGroundState::are_collisions_ignored(void) {
  * @brief Returns whether the hero ignores the effect of conveyor belts in this state.
  * @return true if the hero ignores the effect of conveyor belts in this state
  */
-bool Hero::BackToSolidGroundState::can_avoid_conveyor_belt(void) {
+bool Hero::BackToSolidGroundState::can_avoid_conveyor_belt() {
   return true;
 }
 
@@ -149,7 +149,7 @@ bool Hero::BackToSolidGroundState::can_avoid_conveyor_belt(void) {
  * @brief Returns whether the hero ignores the effect of sensors in this state.
  * @return true if the hero ignores the effect of sensors in this state
  */
-bool Hero::BackToSolidGroundState::can_avoid_sensor(void) {
+bool Hero::BackToSolidGroundState::can_avoid_sensor() {
   return true;
 }
 
@@ -157,7 +157,7 @@ bool Hero::BackToSolidGroundState::can_avoid_sensor(void) {
  * @brief Returns whether the hero ignores the effect of explosions in this state.
  * @return true if the hero ignores the effect of explosions in this state
  */
-bool Hero::BackToSolidGroundState::can_avoid_explosion(void) {
+bool Hero::BackToSolidGroundState::can_avoid_explosion() {
   return true;
 }
 

@@ -41,12 +41,12 @@ class Hero::StairsState: public Hero::State {
   public:
 
     StairsState(Hero *hero, Stairs *stairs, Stairs::Way way);
-    ~StairsState(void);
+    ~StairsState();
 
     void start(State *previous_state);
-    void update(void);
+    void update();
     void set_suspended(bool suspended);
-    bool is_teletransporter_delayed(void);
+    bool is_teletransporter_delayed();
 };
 
 #endif

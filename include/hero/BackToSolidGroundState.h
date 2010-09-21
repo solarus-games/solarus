@@ -32,20 +32,20 @@ class Hero::BackToSolidGroundState: public Hero::State {
   public:
 
     BackToSolidGroundState(Hero *hero, bool use_memorized_xy);
-    ~BackToSolidGroundState(void);
+    ~BackToSolidGroundState();
 
     void start(State *previous_state);
     void stop(State *next_state);
-    void update(void);
-    bool can_start_gameover_sequence(void);
-    bool is_hero_visible(void);
-    bool are_collisions_ignored(void);
-    bool can_avoid_deep_water(void);
-    bool can_avoid_hole(void);
-    bool is_touching_ground(void);
-    bool can_avoid_conveyor_belt(void);
-    bool can_avoid_sensor(void);
-    bool can_avoid_explosion(void);
+    void update();
+    bool can_start_gameover_sequence();
+    bool is_hero_visible();
+    bool are_collisions_ignored();
+    bool can_avoid_deep_water();
+    bool can_avoid_hole();
+    bool is_touching_ground();
+    bool can_avoid_conveyor_belt();
+    bool can_avoid_sensor();
+    bool can_avoid_explosion();
 
 };
 

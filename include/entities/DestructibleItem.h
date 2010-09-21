@@ -77,36 +77,36 @@ class DestructibleItem: public Detector {
 
     static const Features features[];
 
-    void play_destroy_animation(void);
-    void create_pickable_item(void);
+    void play_destroy_animation();
+    void create_pickable_item();
 
   public:
 
     // creation and destruction
     DestructibleItem(Layer layer, int x, int y, Subtype subtype, Treasure *treasure);
-    ~DestructibleItem(void);
+    ~DestructibleItem();
     static CreationFunction parse;
 
-    EntityType get_type(void);
-    bool is_displayed_in_y_order(void);
+    EntityType get_type();
+    bool is_displayed_in_y_order();
 
-    const std::string& get_animation_set_id(void);
-    const SoundId & get_destruction_sound_id(void);
-    int get_damage_on_enemies(void);
-    bool has_special_ground(void);
-    Ground get_special_ground(void);
-    bool can_explode(void);
-    bool is_disabled(void);
+    const std::string& get_animation_set_id();
+    const SoundId & get_destruction_sound_id();
+    int get_damage_on_enemies();
+    bool has_special_ground();
+    Ground get_special_ground();
+    bool can_explode();
+    bool is_disabled();
 
     bool is_obstacle_for(MapEntity *other);
     bool test_collision_custom(MapEntity *entity);
     void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
     void notify_collision(MapEntity *other_entity, Sprite *other_sprite, Sprite *this_sprite);
     void notify_collision_with_hero(Hero *hero, CollisionMode collision_mode);
-    void action_key_pressed(void);
+    void action_key_pressed();
 
     void set_suspended(bool suspended);
-    void update(void);
+    void update();
 };
 
 #endif

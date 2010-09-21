@@ -44,7 +44,7 @@ DynamicTile::DynamicTile(const std::string &name, Layer layer, int x, int y,
 /**
  * @brief Destructor.
  */
-DynamicTile::~DynamicTile(void) {
+DynamicTile::~DynamicTile() {
 
 }
 
@@ -78,7 +78,7 @@ MapEntity * DynamicTile::parse(Game *game, std::istream &is, Layer layer, int x,
  * @brief Returns the type of entity.
  * @return the type of entity
  */
-EntityType DynamicTile::get_type(void) {
+EntityType DynamicTile::get_type() {
   return DYNAMIC_TILE;
 }
 
@@ -103,7 +103,7 @@ bool DynamicTile::is_obstacle_for(MapEntity *other) {
 /**
  * @brief Displays the tile on the map.
  */
-void DynamicTile::display_on_map(void) {
+void DynamicTile::display_on_map() {
   if (enabled) {
     tile_pattern->display_on_map(map, bounding_box);
   }
@@ -112,7 +112,7 @@ void DynamicTile::display_on_map(void) {
 /**
  * @brief Updates the entity.
  */
-void DynamicTile::update(void) {
+void DynamicTile::update() {
 
   MapEntity::update();
 
@@ -129,7 +129,7 @@ void DynamicTile::update(void) {
  * @brief Returns whether this dynamic tile is enabled.
  * @return true if this tile is enabled
  */
-bool DynamicTile::is_enabled(void) {
+bool DynamicTile::is_enabled() {
   return enabled;
 }
 

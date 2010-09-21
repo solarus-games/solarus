@@ -75,7 +75,7 @@ Boomerang::Boomerang(Hero *hero, int boomerang_direction):
 /**
  * @brief Destructor.
  */
-Boomerang::~Boomerang(void) {
+Boomerang::~Boomerang() {
 
 }
 
@@ -95,7 +95,7 @@ EntityType Boomerang::get_type() {
  *
  * @return true if this type of entity can be obstacle for other entities
  */
-bool Boomerang::can_be_obstacle(void) {
+bool Boomerang::can_be_obstacle() {
   return false; 
 }
 
@@ -109,7 +109,7 @@ bool Boomerang::can_be_obstacle(void) {
  *
  * @return true if this type of entity can detect other entities
  */
-bool Boomerang::can_detect_entities(void) {
+bool Boomerang::can_detect_entities() {
   return false;
 }
 
@@ -121,7 +121,7 @@ bool Boomerang::can_detect_entities(void) {
  *
  * @return true if this type of entity can be displayed
  */
-bool Boomerang::can_be_displayed(void) {
+bool Boomerang::can_be_displayed() {
   return true; 
 }
 
@@ -137,7 +137,7 @@ bool Boomerang::can_be_displayed(void) {
  *
  * @return true if this type of entity is displayed at the same level as the hero
  */
-bool Boomerang::is_displayed_in_y_order(void) {
+bool Boomerang::is_displayed_in_y_order() {
   return false;
 }
 
@@ -172,7 +172,7 @@ bool Boomerang::is_stairs_obstacle(Stairs *stairs) {
  * @brief Returns whether a water tile is currently considered as an obstacle for this entity.
  * @return true if the water tiles are currently an obstacle for this entity
  */
-bool Boomerang::is_water_obstacle(void) {
+bool Boomerang::is_water_obstacle() {
   return false;
 }
 
@@ -180,7 +180,7 @@ bool Boomerang::is_water_obstacle(void) {
  * @brief Returns whether a hole is currently considered as an obstacle for this entity.
  * @return true if the holes are currently an obstacle for this entity
  */
-bool Boomerang::is_hole_obstacle(void) {
+bool Boomerang::is_hole_obstacle() {
   return false;
 }
 
@@ -188,7 +188,7 @@ bool Boomerang::is_hole_obstacle(void) {
  * @brief Returns whether a ladder is currently considered as an obstacle for this entity.
  * @return true if the ladders are currently an obstacle for this entity
  */
-bool Boomerang::is_ladder_obstacle(void) {
+bool Boomerang::is_ladder_obstacle() {
   return false;
 }
 
@@ -233,14 +233,14 @@ bool Boomerang::is_jump_sensor_obstacle(JumpSensor *jump_sensor) {
  * @brief Returns whether the boomerang is going back towards the hero, i.e. if go_back() has been called.
  * @return true if the boomerang is going back
  */
-bool Boomerang::is_going_back(void) {
+bool Boomerang::is_going_back() {
   return has_to_go_back || going_back;
 }
 
 /**
  * @brief Makes the boomerang go back towards the hero.
  */
-void Boomerang::go_back(void) {
+void Boomerang::go_back() {
 
   Debug::assert(!is_going_back(), "The boomerang is already going back");
 
@@ -250,7 +250,7 @@ void Boomerang::go_back(void) {
 /**
  * @brief Updates the boomerang.
  */
-void Boomerang::update(void) {
+void Boomerang::update() {
 
   MapEntity::update();
 

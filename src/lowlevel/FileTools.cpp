@@ -101,7 +101,7 @@ void FileTools::initialize(int argc, char **argv) {
 /**
  * @brief Quits the file tools.
  */
-void FileTools::quit(void) {
+void FileTools::quit() {
   StringResource::quit();
   PHYSFS_deinit();
 }
@@ -161,7 +161,7 @@ void FileTools::set_language(const std::string &language_code) {
  *
  * @return code of the language, or an empty string if no language is set
  */
-const std::string & FileTools::get_language(void) {
+const std::string & FileTools::get_language() {
   return language_code;
 }
 
@@ -175,7 +175,7 @@ const std::string & FileTools::get_language(void) {
  * @return code of the default language, or an empty string if the languages file
  * does not specify a default language
  */
-const std::string & FileTools::get_default_language(void) {
+const std::string & FileTools::get_default_language() {
   return default_language_code;
 }
 
@@ -184,7 +184,7 @@ const std::string & FileTools::get_default_language(void) {
  * @brief Returns the list of available languages.
  * @return the available languages (mapping of language codes to language names)
  */
-const std::map<std::string, std::string> & FileTools::get_languages(void) {
+const std::map<std::string, std::string> & FileTools::get_languages() {
   return languages;
 }
 

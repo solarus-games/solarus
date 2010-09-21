@@ -31,15 +31,15 @@ class RandomWalkMovement: public PathMovement {
 
   protected:
 
-    void start_next_move(void);
+    void start_next_move();
 
   public:
 
     RandomWalkMovement(int speed);
-    ~RandomWalkMovement(void);
+    ~RandomWalkMovement();
 
-    void update(void);
-    bool is_finished(void);
+    void update();
+    bool is_finished();
 
 };
 

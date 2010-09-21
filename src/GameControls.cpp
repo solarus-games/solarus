@@ -98,7 +98,7 @@ GameControls::GameControls(Game *game):
 /**
  * @brief Destructor.
  */
-GameControls::~GameControls(void) {
+GameControls::~GameControls() {
 
 }
 
@@ -142,7 +142,7 @@ bool GameControls::is_key_pressed(GameKey game_key) {
  * @return the direction (0 to 8), or -1 if no directional key is pressed
  * or the combination of directional keys is not valid
  */
-int GameControls::get_wanted_direction8(void) {
+int GameControls::get_wanted_direction8() {
 
   uint16_t direction_mask = 0x0000;
   if (is_key_pressed(RIGHT)) {
@@ -648,7 +648,7 @@ void GameControls::customize(GameKey key) {
  * @brief Returns whether the player is currently customizing a key.
  * @return true if the player is currently customizing a key 
  */
-bool GameControls::is_customizing(void) {
+bool GameControls::is_customizing() {
   return customizing;
 }
 
@@ -656,7 +656,7 @@ bool GameControls::is_customizing(void) {
  * @brief When the player is customizing a key, returns the key that is being customized.
  * @return the key being customize
  */
-GameControls::GameKey GameControls::get_key_to_customize(void) {
+GameControls::GameKey GameControls::get_key_to_customize() {
 
   Debug::assert(is_customizing(), "The player is not customizing a key");
   return key_to_customize;
@@ -671,7 +671,7 @@ GameControls::GameKey GameControls::get_key_to_customize(void) {
  *
  * @return true if no game key is being customized
  */
-bool GameControls::is_customization_done(void) {
+bool GameControls::is_customization_done() {
   return !customizing;
 }
 

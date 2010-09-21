@@ -132,7 +132,7 @@ PauseSubmenuInventory::PauseSubmenuInventory(PauseMenu *pause_menu, Game *game):
 /**
  * @brief Destructor.
  */
-PauseSubmenuInventory::~PauseSubmenuInventory(void) {
+PauseSubmenuInventory::~PauseSubmenuInventory() {
 
   // if an item was being assigned, finish the assignement immediately
   if (is_assigning_item()) {
@@ -190,7 +190,7 @@ void PauseSubmenuInventory::set_cursor_position(int row, int column) {
  *
  * @return the index of the selected cell, between 0 and 27
  */
-int PauseSubmenuInventory::get_selected_index(void) {
+int PauseSubmenuInventory::get_selected_index() {
   return cursor_row * 7 + cursor_column;
 }
 
@@ -202,7 +202,7 @@ int PauseSubmenuInventory::get_selected_index(void) {
  *
  * @return true if an item is currently selected
  */
-bool PauseSubmenuInventory::is_item_selected(void) {
+bool PauseSubmenuInventory::is_item_selected() {
   
   return equipment->has_item(item_names[get_selected_index()]);
 }
@@ -276,7 +276,7 @@ void PauseSubmenuInventory::key_pressed(GameControls::GameKey key) {
  * The items displayed and their counters are not updated since the
  * equipment does not change while the game is paused.
  */
-void PauseSubmenuInventory::update(void) {
+void PauseSubmenuInventory::update() {
 
   // animation of the cursor
   cursor_sprite->update();
@@ -347,7 +347,7 @@ void PauseSubmenuInventory::display(Surface *destination) {
  *
  * The player must have this item.
  */
-void PauseSubmenuInventory::show_info_message(void) {
+void PauseSubmenuInventory::show_info_message() {
 
   const std::string &item_name = item_names[get_selected_index()];
   int variant = equipment->get_item_variant(item_name);
@@ -407,7 +407,7 @@ void PauseSubmenuInventory::assign_item(int slot) {
  * @brief Returns whether an item is currently being thrown to an icon.
  * @return true if an item is being assigned
  */
-bool PauseSubmenuInventory::is_assigning_item(void) {
+bool PauseSubmenuInventory::is_assigning_item() {
   return item_assigned_movement != NULL;
 }
 
@@ -418,7 +418,7 @@ bool PauseSubmenuInventory::is_assigning_item(void) {
  * waiting for its throwing movement to end, for example when the inventory submenu
  * is being closed.
  */
-void PauseSubmenuInventory::finish_assigning_item(void) {
+void PauseSubmenuInventory::finish_assigning_item() {
 
   // if the item to assign is already assigned to the other icon, switch the two items
   int slot = item_assigned_destination;

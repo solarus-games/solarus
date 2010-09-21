@@ -34,10 +34,10 @@ class SmoothCollisionMovement: public CollisionMovement {
   public:
 
     SmoothCollisionMovement(bool smooth = true);
-    virtual ~SmoothCollisionMovement(void);
+    virtual ~SmoothCollisionMovement();
 
-    void update_x(void);
-    void update_y(void);
+    void update_x();
+    void update_y();
 };
 
 #endif

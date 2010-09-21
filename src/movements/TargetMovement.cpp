@@ -48,7 +48,7 @@ TargetMovement::TargetMovement(MapEntity *target_entity, int speed):
 /**
  * @brief Destructor.
  */
-TargetMovement::~TargetMovement(void) {
+TargetMovement::~TargetMovement() {
 
 }
 
@@ -81,7 +81,7 @@ void TargetMovement::set_target(MapEntity *target_entity) {
 /**
  * @brief Updates the movement.
  */
-void TargetMovement::update(void) {
+void TargetMovement::update() {
 
   int dx = target_x - get_x();
   int dy = target_y - get_y();
@@ -105,7 +105,7 @@ void TargetMovement::update(void) {
  * @brief Calculates the direction and the speed of the movement
  * depending on the target.
  */
-void TargetMovement::recompute_movement(void) { 
+void TargetMovement::recompute_movement() { 
 
   if (target_entity != NULL) {
     // the target may be a moving entity
@@ -133,7 +133,7 @@ void TargetMovement::recompute_movement(void) {
  * @brief Returns whether the movement is finished, i.e.
  * whether the target was reached.
  */
-bool TargetMovement::is_finished(void) {
+bool TargetMovement::is_finished() {
 
   return finished;
 }

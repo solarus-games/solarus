@@ -57,25 +57,25 @@ class Message {
 
     uint32_t next_sound_date;
 
-    void update_char_delay(void);
-    void add_character(void);
+    void update_char_delay();
+    void add_character();
 
   public:
 
     // creation and destruction
     Message(DialogBox *dialog_box, MessageId message_id, int x, int y);
-    ~Message(void);
+    ~Message();
 
     // message properties
-    bool is_question(void);
-    MessageId get_next_message_id(void);
+    bool is_question();
+    MessageId get_next_message_id();
 
     // message current state
-    bool is_finished(void);
-    void show_all_now(void);
+    bool is_finished();
+    void show_all_now();
 
     // update and display
-    void update(void);
+    void update();
     void display(Surface *destination_surface);
 
 };

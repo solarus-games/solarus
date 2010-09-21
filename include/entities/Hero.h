@@ -99,17 +99,17 @@ class Hero: public MapEntity {
 
     // state
     void set_state(State *state);
-    void update_state(void);
+    void update_state();
 
     // position
-    void update_movement(void);
-    void movement_just_changed(void);
-    void try_snap_to_facing_entity(void);
-    Teletransporter *get_delayed_teletransporter(void);
+    void update_movement();
+    void movement_just_changed();
+    void try_snap_to_facing_entity();
+    Teletransporter *get_delayed_teletransporter();
 
     // ground
-    void update_ground(void);
-    void notify_ground_changed(void);
+    void update_ground();
+    void notify_ground_changed();
 
     // life
     void check_gameover();
@@ -120,7 +120,7 @@ class Hero: public MapEntity {
      * @name Creation and destruction.
      */
     Hero(Equipment *equipment);
-    ~Hero(void);
+    ~Hero();
 
     /**
      * @name Features.
@@ -128,19 +128,19 @@ class Hero: public MapEntity {
      * These functions, required by MapEntity, indicate
      * the main properties of this type of entity.
      */
-    EntityType get_type(void);
-    bool can_be_obstacle(void);
-    bool can_detect_entities(void);
-    bool can_be_displayed(void);
-    bool is_displayed_in_y_order(void);
+    EntityType get_type();
+    bool can_be_obstacle();
+    bool can_detect_entities();
+    bool can_be_displayed();
+    bool is_displayed_in_y_order();
 
     /**
      * @name Game loop.
      *
      * Functions called by the game loop.
      */
-    void update(void);
-    void display_on_map(void);
+    void update();
+    void display_on_map();
     void set_suspended(bool suspended);
     void key_pressed(GameControls::GameKey key);
     void key_released(GameControls::GameKey key);
@@ -151,14 +151,14 @@ class Hero: public MapEntity {
      * Functions relative to the sprites.
      * The sprites are managed and displayed by the class HeroSprites.
      */
-    HeroSprites *get_sprites(void);
-    int get_animation_direction(void);
+    HeroSprites *get_sprites();
+    int get_animation_direction();
     void set_animation_direction(int direction);
-    bool is_animation_finished(void);
-    void rebuild_equipment(void);
-    bool is_visible(void);
-    bool is_shadow_visible(void);
-    int get_height_above_shadow(void);
+    bool is_animation_finished();
+    void rebuild_equipment();
+    bool is_visible();
+    bool is_shadow_visible();
+    int get_height_above_shadow();
 
     /**
      * @name Changing map.
@@ -168,7 +168,7 @@ class Hero: public MapEntity {
     void set_map(Map *map);
     void set_map(Map *map, int initial_direction);
     void place_on_destination_point(Map *map);
-    void notify_opening_transition_finished(void);
+    void notify_opening_transition_finished();
 
     /**
      * @name Position.
@@ -177,16 +177,16 @@ class Hero: public MapEntity {
      * the hero relative to other entities, and about
      * what is in front of him (we call this the "facing point"). 
      */
-    const Rectangle get_facing_point(void);
+    const Rectangle get_facing_point();
     const Rectangle get_facing_point(int direction4);
-    Detector *get_facing_entity(void);
+    Detector *get_facing_entity();
     void set_facing_entity(Detector *detector);
-    bool is_facing_obstacle(void);
-    bool is_facing_point_on_obstacle(void);
+    bool is_facing_obstacle();
+    bool is_facing_point_on_obstacle();
     bool is_facing_direction4(int direction4);
     bool is_facing_direction8(int direction8);
-    bool is_on_raised_blocks(void);
-    Stairs *get_stairs_overlapping(void);
+    bool is_on_raised_blocks();
+    Stairs *get_stairs_overlapping();
 
     /**
      * @name Movement.
@@ -196,19 +196,19 @@ class Hero: public MapEntity {
      * and sometimes he is controlled automatically or he
      * cannot move.
      */
-    bool can_control_movement(void);
-    bool can_control_direction(void);
-    int get_walking_speed(void);
+    bool can_control_movement();
+    bool can_control_direction();
+    int get_walking_speed();
     void set_walking_speed(int walking_speed);
-    int get_wanted_movement_direction8(void);
-    int get_real_movement_direction8(void);
+    int get_wanted_movement_direction8();
+    int get_real_movement_direction8();
     bool is_moving_towards(int direction4);
-    bool is_direction_locked(void);
+    bool is_direction_locked();
     void notify_movement_tried(bool success);
-    void notify_position_changed(void);
-    void notify_layer_changed(void);
-    void notify_movement_changed(void);
-    void reset_movement(void);
+    void notify_position_changed();
+    void notify_layer_changed();
+    void notify_movement_changed();
+    void reset_movement();
 
     /**
      * @name Ground under the hero.
@@ -217,9 +217,9 @@ class Hero: public MapEntity {
      * Depending on the kind of ground, a special sprite may be displayed under him (grass, shallow water)
      * or something bad can happen (deep water, holes).
      */
-    Ground get_ground(void);
+    Ground get_ground();
     void set_ground(Ground ground);
-    bool is_ground_visible(void);
+    bool is_ground_visible();
     void set_target_solid_ground_coords(const Rectangle &target_solid_ground_coords, Layer layer);
 
     /**
@@ -228,9 +228,9 @@ class Hero: public MapEntity {
      * Information about what is considered as an obstacle for the hero.
      */
     bool is_obstacle_for(MapEntity *other);
-    bool is_water_obstacle(void);
-    bool is_hole_obstacle(void);
-    bool is_ladder_obstacle(void);
+    bool is_water_obstacle();
+    bool is_hole_obstacle();
+    bool is_ladder_obstacle();
     bool is_block_obstacle(Block *block);
     bool is_teletransporter_obstacle(Teletransporter *teletransporter);
     bool is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt);
@@ -264,9 +264,9 @@ class Hero: public MapEntity {
      * Attacking enemies or getting hurt by them.
      */
     void notify_attacked_enemy(EnemyAttack attack, Enemy *victim, int result, bool killed);
-    int get_sword_damage_factor(void);
+    int get_sword_damage_factor();
     void hurt(MapEntity *source, int life_points, int magic_points);
-    void get_back_from_death(void);
+    void get_back_from_death();
 
     /**
      * @name State.
@@ -275,24 +275,24 @@ class Hero: public MapEntity {
      * and allow to start actions which may modify this state.
      * Actions can be triggered by inventory items, entities or scripts.
      */
-    bool is_free(void);
-    bool is_grabbing_or_pulling(void);
-    bool is_moving_grabbed_entity(void);
-    void notify_grabbed_entity_collision(void);
+    bool is_free();
+    bool is_grabbing_or_pulling();
+    bool is_moving_grabbed_entity();
+    void notify_grabbed_entity_collision();
 
-    void start_deep_water(void);
-    void start_hole(void);
+    void start_deep_water();
+    void start_hole();
 
-    void start_next_state(void);
-    void start_free(void);
+    void start_next_state();
+    void start_free();
     void start_treasure(Treasure *treasure);
     void start_jumping(int direction8, int length, bool ignore_obstacles, bool with_sound,
 	uint32_t movement_delay = 0, Layer layer_after_jump = LAYER_NB);
-    void start_freezed(void);
-    void start_victory(void);
+    void start_freezed();
+    void start_victory();
     void start_lifting(DestructibleItem *destructible_item);
-    void start_running(void);
-    void start_grabbing(void);
+    void start_running();
+    void start_grabbing();
 };
 
 #endif

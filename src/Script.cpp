@@ -43,7 +43,7 @@ Script::Script(Game *game):
 /**
  * @brief Desctructor.
  */
-Script::~Script(void) {
+Script::~Script() {
 
   // close the Lua execution context
   if (context != NULL) {
@@ -108,7 +108,7 @@ void Script::load(const std::string &script_name) {
 /**
  * @brief Tells the Lua context what C++ functions it can call.
  */
-void Script::register_available_functions(void) {
+void Script::register_available_functions() {
 
   lua_register(context, "hero_freeze", l_hero_freeze);
   lua_register(context, "hero_unfreeze", l_hero_unfreeze);
@@ -455,7 +455,7 @@ void Script::set_suspended(bool suspended) {
 /**
  * @brief Updates the script.
  */
-void Script::update(void) {
+void Script::update() {
 
   // update the timers
   std::list<Timer*>::iterator it;
@@ -1197,7 +1197,7 @@ int Script::l_treasure_give(lua_State *l) {
  * Implementing this event should be done with care as it may
  * reduce the performances dramatically.
  */
-void Script::event_update(void) {
+void Script::event_update() {
   call_script_function("event_update");
 }
 
@@ -1237,14 +1237,14 @@ void Script::event_dialog_finished(const MessageId &first_message_id, int answer
 /**
  * @brief Notifies the script that the camera moved by a call to camera_move() has reached its target.
  */
-void Script::event_camera_reached_target(void) {
+void Script::event_camera_reached_target() {
   call_script_function("event_camera_reached_target");
 }
 
 /**
  * @brief Notifies the script that the camera moved by a call to camera_restore() has reached the hero.
  */
-void Script::event_camera_back(void) {
+void Script::event_camera_back() {
   call_script_function("event_camera_back");
 }
 

@@ -36,14 +36,14 @@ class JumpMovement: public PixelMovement {
 
   protected:
 
-    void make_next_move(void);
+    void make_next_move();
 
   public:
 
     JumpMovement(int direction8, int length, bool ignore_obstacles, uint32_t movement_delay = 0);
-    ~JumpMovement(void);
+    ~JumpMovement();
 
-    int get_jump_height(void);
+    int get_jump_height();
 };
 
 #endif

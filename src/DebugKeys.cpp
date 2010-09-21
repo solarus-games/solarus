@@ -32,7 +32,7 @@ DebugKeys::DebugKeys(Solarus *solarus):
 /**
  * @brief Destructor.
  */
-DebugKeys::~DebugKeys(void) {
+DebugKeys::~DebugKeys() {
 
 }
 
@@ -188,7 +188,7 @@ void DebugKeys::key_released(InputEvent::KeyboardKey key) {
 /**
  * @brief This function is called repeatedly by the engine.
  */
-void DebugKeys::update(void) {
+void DebugKeys::update() {
 
   if (InputEvent::is_shift_down()) {
     if (game != NULL && game->is_showing_message()) {

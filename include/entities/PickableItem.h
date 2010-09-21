@@ -49,14 +49,14 @@ class PickableItem: public Detector {
     // creation and initialization
     PickableItem(Layer layer, int x, int y, Treasure *treasure);
 
-    void initialize_sprites(void);
-    void initialize_movement(void);
+    void initialize_sprites();
+    void initialize_movement();
 
     // falling
-    bool is_falling(void);
+    bool is_falling();
 
     // item
-    void give_item_to_player(void);
+    void give_item_to_player();
     void set_blinking(bool blinking);
 
   public:
@@ -65,16 +65,16 @@ class PickableItem: public Detector {
     static PickableItem * create(Game *game, Layer layer, int x, int y,	Treasure *treasure,
 	FallingHeight falling_height, bool will_disappear);
 
-    ~PickableItem(void);
+    ~PickableItem();
     static CreationFunction parse;
 
-    EntityType get_type(void);
+    EntityType get_type();
 
     // item state
     void set_suspended(bool suspended);
     void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
-    void update(void);
-    void display_on_map(void);
+    void update();
+    void display_on_map();
 };
 
 #endif

@@ -41,17 +41,17 @@ class SelectionMenuChooseName: public SelectionMenuPhase {
     uint32_t next_key_date;              /**< date when a key other than the arrows can be pressed again */
 
     // player name
-    bool select_letter(void);
-    bool validate_player_name(void);
+    bool select_letter();
+    bool validate_player_name();
 
   public:
 
     // creation and destruction
     SelectionMenuChooseName(SelectionMenu *menu);
-    ~SelectionMenuChooseName(void);
+    ~SelectionMenuChooseName();
 
     // update and display
-    void update(void);
+    void update();
     void display(Surface *destination_surface);
     void notify_event(InputEvent &event);
 };

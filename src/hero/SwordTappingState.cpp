@@ -35,7 +35,7 @@ Hero::SwordTappingState::SwordTappingState(Hero *hero):
 /**
  * @brief Destructor.
  */
-Hero::SwordTappingState::~SwordTappingState(void) {
+Hero::SwordTappingState::~SwordTappingState() {
 
 }
 
@@ -54,7 +54,7 @@ void Hero::SwordTappingState::start(State *previous_state) {
 /**
  * @brief Updates this state.
  */
-void Hero::SwordTappingState::update(void) {
+void Hero::SwordTappingState::update() {
 
   State::update();
 
@@ -108,7 +108,7 @@ void Hero::SwordTappingState::set_suspended(bool suspended) {
  * @brief Returns whether crystal switches can be activated by the sword in this state.
  * @return true if crystal switches can be activated by the sword in this state
  */
-bool Hero::SwordTappingState::can_sword_hit_crystal_switch(void) {
+bool Hero::SwordTappingState::can_sword_hit_crystal_switch() {
   return true;
 }
 

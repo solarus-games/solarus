@@ -44,7 +44,7 @@ Counter::Counter(unsigned int nb_digits, bool fill_with_zeros,
 /**
  * @brief Destructor.
  */
-Counter::~Counter(void) {
+Counter::~Counter() {
   delete surface_drawn;
   delete img_digits;
 }
@@ -81,7 +81,7 @@ void Counter::set_maximum(unsigned int maximum) {
  * @brief Returns the value currently displayed by the counter.
  * @return the value currently displayed by the counter
  */
-unsigned int Counter::get_value(void) {
+unsigned int Counter::get_value() {
   return value;
 }
 
@@ -157,7 +157,7 @@ void Counter::rebuild_with_value(unsigned int value) {
  * The surface is redrawn such that the counter displays
  * the new value.
  */
-void Counter::increase(void) {
+void Counter::increase() {
   set_value(value + 1);
 }
 
@@ -167,7 +167,7 @@ void Counter::increase(void) {
  * The surface is redrawn such that the counter displays
  * the new value.
  */
-void Counter::decrease(void) {
+void Counter::decrease() {
   set_value(value - 1);
 }
 

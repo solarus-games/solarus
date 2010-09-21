@@ -31,7 +31,7 @@ Hero::SpinAttackState::SpinAttackState(Hero *hero):
 /**
  * @brief Destructor.
  */
-Hero::SpinAttackState::~SpinAttackState(void) {
+Hero::SpinAttackState::~SpinAttackState() {
 
 }
 
@@ -53,7 +53,7 @@ void Hero::SpinAttackState::start(State *previous_state) {
 /**
  * @brief Updates this state.
  */
-void Hero::SpinAttackState::update(void) {
+void Hero::SpinAttackState::update() {
 
   if (sprites->is_animation_finished()) {
     hero->set_state(new FreeState(hero));
@@ -64,7 +64,7 @@ void Hero::SpinAttackState::update(void) {
  * @brief Returns whether crystal switches can be activated by the sword in this state.
  * @return true if crystal switches can be activated by the sword in this state
  */
-bool Hero::SpinAttackState::can_sword_hit_crystal_switch(void) {
+bool Hero::SpinAttackState::can_sword_hit_crystal_switch() {
   return true;
 }
 
@@ -72,7 +72,7 @@ bool Hero::SpinAttackState::can_sword_hit_crystal_switch(void) {
  * @brief Returns whether the hero can be hurt in this state.
  * @return true if the hero can be hurt in this state
  */
-bool Hero::SpinAttackState::can_be_hurt(void) {
+bool Hero::SpinAttackState::can_be_hurt() {
   return true;
 }
 
@@ -92,7 +92,7 @@ bool Hero::SpinAttackState::is_cutting_with_sword(Detector *detector) {
  * @brief Returns the damage power of the sword for the current attack.
  * @return the current damage factor of the sword
  */
-int Hero::SpinAttackState::get_sword_damage_factor(void) {
+int Hero::SpinAttackState::get_sword_damage_factor() {
 
   // the damage are multiplied by 2
   return State::get_sword_damage_factor() * 2;

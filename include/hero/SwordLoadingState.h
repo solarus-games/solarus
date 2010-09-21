@@ -32,18 +32,18 @@ class Hero::SwordLoadingState: public Hero::PlayerMovementState {
   public:
 
     SwordLoadingState(Hero *hero);
-    ~SwordLoadingState(void);
+    ~SwordLoadingState();
 
     void start(State *previous_state);
-    void update(void);
+    void update();
     void set_suspended(bool suspended);
     void notify_movement_tried(bool success);
     void notify_attacked_enemy(EnemyAttack attack, Enemy *victim, int result, bool killed);
 
-    bool is_direction_locked(void);
-    bool can_take_jump_sensor(void);
-    void set_animation_stopped(void);
-    void set_animation_walking(void);
+    bool is_direction_locked();
+    bool can_take_jump_sensor();
+    void set_animation_stopped();
+    void set_animation_walking();
 };
 
 #endif

@@ -50,13 +50,13 @@ class Sensor: public Detector {
   public:
 
     Sensor(const std::string &name, Layer layer, int x, int y, int width, int height, Subtype subtype);
-    ~Sensor(void);
+    ~Sensor();
     static CreationFunction parse;
 
-    EntityType get_type(void);
+    EntityType get_type();
 
-    Subtype get_subtype(void);
-    bool has_layer_independent_collisions(void);
+    Subtype get_subtype();
+    bool has_layer_independent_collisions();
     bool is_obstacle_for(MapEntity *other);
     bool test_collision_custom(MapEntity *entity);
     void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);

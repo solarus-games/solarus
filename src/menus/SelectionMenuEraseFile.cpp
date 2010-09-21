@@ -36,7 +36,7 @@ SelectionMenuEraseFile::SelectionMenuEraseFile(SelectionMenu *menu):
 /**
  * @brief Destructor.
  */
-SelectionMenuEraseFile::~SelectionMenuEraseFile(void) {
+SelectionMenuEraseFile::~SelectionMenuEraseFile() {
 
 }
 

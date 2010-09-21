@@ -50,7 +50,7 @@ SelectionMenuChooseName::SelectionMenuChooseName(SelectionMenu *menu):
 /**
  * @brief Destructor.
  */
-SelectionMenuChooseName::~SelectionMenuChooseName(void) {
+SelectionMenuChooseName::~SelectionMenuChooseName() {
 
   InputEvent::set_key_repeat(0, 0);
 
@@ -62,7 +62,7 @@ SelectionMenuChooseName::~SelectionMenuChooseName(void) {
 /**
  * @brief Updates this phase.
  */
-void SelectionMenuChooseName::update(void) {
+void SelectionMenuChooseName::update() {
   arrow_sprite->update();
 }
 
@@ -153,7 +153,7 @@ void SelectionMenuChooseName::display(Surface *destination_surface) {
  * @brief This function is called when the player chooses a letter when typing his name.
  * @return true if he finished typing the name (because he validated or cancelled)
  */
-bool SelectionMenuChooseName::select_letter(void) {
+bool SelectionMenuChooseName::select_letter() {
 
   size_t length = strlen(player_name);
   char letter_to_add = '\0';
@@ -237,7 +237,7 @@ bool SelectionMenuChooseName::select_letter(void) {
  * @brief This function is called when the player wants to finish typing his name.
  * @return true if the new name is valid, false otherwise
  */
-bool SelectionMenuChooseName::validate_player_name(void) {
+bool SelectionMenuChooseName::validate_player_name() {
 
   if (strlen(player_name) == 0) {
     menu->play_error_sound();

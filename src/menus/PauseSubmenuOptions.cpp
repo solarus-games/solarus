@@ -102,7 +102,7 @@ PauseSubmenuOptions::PauseSubmenuOptions(PauseMenu *pause_menu, Game *game):
 /**
  * @brief Destructor.
  */
-PauseSubmenuOptions::~PauseSubmenuOptions(void) {
+PauseSubmenuOptions::~PauseSubmenuOptions() {
 
   delete[] video_mode_strings;
   delete video_mode_text;
@@ -127,7 +127,7 @@ PauseSubmenuOptions::~PauseSubmenuOptions(void) {
  * @brief Loads the text displayed for each control, for the
  * keyboard and the joypad.
  */
-void PauseSubmenuOptions::load_control_texts(void) {
+void PauseSubmenuOptions::load_control_texts() {
   
   GameControls *controls = game->get_controls();
 
@@ -221,7 +221,7 @@ void PauseSubmenuOptions::key_pressed(GameControls::GameKey key) {
 /**
  * @brief This function is called when the action key is pressed.
  */
-void PauseSubmenuOptions::action_key_pressed(void) {
+void PauseSubmenuOptions::action_key_pressed() {
 
   game->play_sound("danger");
   if (cursor_position == 0) {
@@ -245,7 +245,7 @@ void PauseSubmenuOptions::action_key_pressed(void) {
 /**
  * @brief Updates this submenu.
  */
-void PauseSubmenuOptions::update(void) {
+void PauseSubmenuOptions::update() {
 
   VideoManager::VideoMode video_mode = VideoManager::get_instance()->get_video_mode();
   video_mode_text->set_text(video_mode_strings[video_mode]);

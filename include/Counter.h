@@ -55,14 +55,14 @@ class Counter {
   public:
 
     Counter(unsigned int nb_digits, bool fill_with_zeros, int x, int y);
-    ~Counter(void);
+    ~Counter();
 
     void set_style(Style style);
     void set_maximum(unsigned int maximum);
-    unsigned int get_value(void);
+    unsigned int get_value();
     void set_value(unsigned int value);
-    void increase(void);
-    void decrease(void);
+    void increase();
+    void decrease();
 
     void display(Surface *destination);
     void display(Surface *destination, int x, int y);

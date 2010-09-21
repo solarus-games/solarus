@@ -40,11 +40,11 @@ class MagicBar: public HudElement {
   public:
 
     MagicBar(Game *game, int x, int y);
-    ~MagicBar(void);
+    ~MagicBar();
 
-    void update(void);
-    void rebuild(void);
-    bool is_visible(void);  
+    void update();
+    void rebuild();
+    bool is_visible();  
 };
 
 #endif

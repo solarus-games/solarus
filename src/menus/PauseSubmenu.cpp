@@ -41,7 +41,7 @@ PauseSubmenu::PauseSubmenu(PauseMenu *pause_menu, Game *game):
 /**
  * @brief Destructor.
  */
-PauseSubmenu::~PauseSubmenu(void) {
+PauseSubmenu::~PauseSubmenu() {
   delete caption_text_1;
   delete caption_text_2;
 }
@@ -93,7 +93,7 @@ void PauseSubmenu::set_caption_text(const std::string &text) {
 /**
  * @brief Plays the cursor sound.
  */
-void PauseSubmenu::play_cursor_sound(void) {
+void PauseSubmenu::play_cursor_sound() {
   game->play_sound("cursor");
 }
 

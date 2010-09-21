@@ -24,7 +24,7 @@
 /**
  * @brief Creates a circle movement.
  */
-CircleMovement::CircleMovement(void):
+CircleMovement::CircleMovement():
   center_entity(NULL), current_angle(0), initial_angle(0), angle_increment(1), next_angle_change_date(0), angle_change_delay(5),
   current_radius(0), wanted_radius(0), previous_radius(0), next_radius_change_date(0), radius_change_delay(0),
   duration(0), end_movement_date(0), max_rotations(0), loop_delay(0), restart_date(0) {
@@ -34,7 +34,7 @@ CircleMovement::CircleMovement(void):
 /**
  * @brief Destroys this circle movement.
  */
-CircleMovement::~CircleMovement(void) {
+CircleMovement::~CircleMovement() {
 
 }
 
@@ -196,7 +196,7 @@ void CircleMovement::set_loop(uint32_t delay) {
 /**
  * @brief Updates the movement.
  */
-void CircleMovement::update(void) {
+void CircleMovement::update() {
 
   Movement::update();
 
@@ -259,7 +259,7 @@ void CircleMovement::update(void) {
  *
  * This function should be called whenever the angle, the radius or the center changes.
  */
-void CircleMovement::recompute_position(void) {
+void CircleMovement::recompute_position() {
 
   Rectangle center = this->center_point;
   if (center_entity != NULL) {
@@ -289,7 +289,7 @@ void CircleMovement::set_suspended(bool suspended) {
 /**
  * @brief Starts the circle movement.
  */
-void CircleMovement::start(void) {
+void CircleMovement::start() {
 
   current_angle = initial_angle;
   next_angle_change_date = System::now();
@@ -312,14 +312,14 @@ void CircleMovement::start(void) {
  * @brief Returns whether this movement is running.
  * @return true if the movement is started
  */
-bool CircleMovement::is_started(void) {
+bool CircleMovement::is_started() {
   return current_radius != 0 || wanted_radius != 0;
 }
 
 /**
  * @brief Stops the movement.
  */
-void CircleMovement::stop(void) {
+void CircleMovement::stop() {
 
   previous_radius = current_radius;
   set_radius(0);

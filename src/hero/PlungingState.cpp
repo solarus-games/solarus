@@ -34,7 +34,7 @@ Hero::PlungingState::PlungingState(Hero *hero):
 /**
  * @brief Destructor.
  */
-Hero::PlungingState::~PlungingState(void) {
+Hero::PlungingState::~PlungingState() {
 
 }
 
@@ -53,7 +53,7 @@ void Hero::PlungingState::start(State *previous_state) {
 /**
  * @brief Updates this state.
  */
-void Hero::PlungingState::update(void) {
+void Hero::PlungingState::update() {
 
   State::update();
 
@@ -79,7 +79,7 @@ void Hero::PlungingState::update(void) {
  * @brief Returns whether the game over sequence can start in the current state.
  * @return true if the game over sequence can start in the current state
  */
-bool Hero::PlungingState::can_start_gameover_sequence(void) {
+bool Hero::PlungingState::can_start_gameover_sequence() {
   return false;
 }
 
@@ -87,7 +87,7 @@ bool Hero::PlungingState::can_start_gameover_sequence(void) {
  * @brief Returns whether the hero is touching the ground in the current state.
  * @return true if the hero is touching the ground in the current state
  */
-bool Hero::PlungingState::is_touching_ground(void) {
+bool Hero::PlungingState::is_touching_ground() {
   return false;
 }
 

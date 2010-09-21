@@ -43,13 +43,13 @@ class ResourceManager {
     std::map<SoundId, Sound*> sounds;
     std::map<SpriteAnimationSetId, SpriteAnimationSet*> sprite_animations;
 
-    ResourceManager(void);
-    ~ResourceManager(void);
+    ResourceManager();
+    ~ResourceManager();
 
   public:
 
-    static void initialize(void);
-    static void quit(void);
+    static void initialize();
+    static void quit();
 
     static Tileset* get_tileset(TilesetId id);
     static Music* get_music(const MusicId &id);

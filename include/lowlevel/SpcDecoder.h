@@ -41,8 +41,8 @@ class SpcDecoder {
 
   public:
 
-    SpcDecoder(void);
-    ~SpcDecoder(void);
+    SpcDecoder();
+    ~SpcDecoder();
 
     void load(int16_t *sound_data, size_t sound_size);
     void decode(int16_t *decoded_data, int nb_samples);

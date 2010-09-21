@@ -75,7 +75,7 @@ SelectionMenuOptions::SelectionMenuOptions(SelectionMenu *menu):
 /**
  * @brief Destructor.
  */
-SelectionMenuOptions::~SelectionMenuOptions(void) {
+SelectionMenuOptions::~SelectionMenuOptions() {
 
   for (int i = 0; i < nb_options; i++) {
     delete label_texts[i];
@@ -117,7 +117,7 @@ void SelectionMenuOptions::set_cursor_position(int cursor_position) {
 /**
  * @brief Moves the options cursor upwards.
  */
-void SelectionMenuOptions::move_cursor_up(void) {
+void SelectionMenuOptions::move_cursor_up() {
 
   menu->play_cursor_sound();
   left_arrow_sprite->restart_animation();
@@ -133,7 +133,7 @@ void SelectionMenuOptions::move_cursor_up(void) {
 /**
  * @brief Moves the options cursor downwards.
  */
-void SelectionMenuOptions::move_cursor_down(void) {
+void SelectionMenuOptions::move_cursor_down() {
 
   menu->play_cursor_sound();
   left_arrow_sprite->restart_animation();
@@ -149,7 +149,7 @@ void SelectionMenuOptions::move_cursor_down(void) {
 /**
  * @brief For the selected option, selects the next possible value in the list.
  */
-void SelectionMenuOptions::set_option_next_value(void) {
+void SelectionMenuOptions::set_option_next_value() {
 
   int index = current_indices[cursor_position];
   index = (index + 1) % nb_values[cursor_position];
@@ -163,7 +163,7 @@ void SelectionMenuOptions::set_option_next_value(void) {
 /**
  * @brief For the selected option, selects the previous possible value in the list.
  */
-void SelectionMenuOptions::set_option_previous_value(void) {
+void SelectionMenuOptions::set_option_previous_value() {
 
   int index = current_indices[cursor_position];
   index = (index + nb_values[cursor_position] - 1) % nb_values[cursor_position];
@@ -220,7 +220,7 @@ void SelectionMenuOptions::set_option_value(int option, int index) {
  *
  * This function is called when the language has just been changed.
  */
-void SelectionMenuOptions::reload_strings(void) {
+void SelectionMenuOptions::reload_strings() {
 
   // the value of each option is language dependent only for the video mode option
   for (int i = 0; i < VideoManager::NB_MODES; i++) {
@@ -244,7 +244,7 @@ void SelectionMenuOptions::reload_strings(void) {
 /**
  * @brief Loads the values from the configuration file into the menu.
  */
-void SelectionMenuOptions::load_configuration(void) {
+void SelectionMenuOptions::load_configuration() {
   
   // compute the list of languages and set the current one
   std::map<std::string, std::string> language_names = FileTools::get_languages();
@@ -313,7 +313,7 @@ void SelectionMenuOptions::load_configuration(void) {
 /**
  * @brief Updates this phase.
  */
-void SelectionMenuOptions::update(void) {
+void SelectionMenuOptions::update() {
 
   left_arrow_sprite->update();
   right_arrow_sprite->update();

@@ -44,7 +44,7 @@ SwordIcon::SwordIcon(Game *game, int x, int y):
 /**
  * @brief Destructor.
  */
-SwordIcon::~SwordIcon(void) {
+SwordIcon::~SwordIcon() {
   delete sprite_sword_icon;
   delete img_sword_icon;
 }
@@ -53,7 +53,7 @@ SwordIcon::~SwordIcon(void) {
  * @brief Returns whether the sword icon is visible.
  * @return true if the sword icon is visible.
  */
-bool SwordIcon::is_visible(void) {
+bool SwordIcon::is_visible() {
   return HudElement::is_visible() && keys_effect->get_sword_key_effect() != KeysEffect::SWORD_KEY_HIDDEN;
 }
 
@@ -62,7 +62,7 @@ bool SwordIcon::is_visible(void) {
  *
  * It checks whether the icon should change.
  */
-void SwordIcon::update(void) {
+void SwordIcon::update() {
 
   HudElement::update();
 
@@ -113,7 +113,7 @@ void SwordIcon::update(void) {
 /**
  * @brief Redraws the icon on the surface.
  */
-void SwordIcon::rebuild(void) {
+void SwordIcon::rebuild() {
 
   HudElement::rebuild();
   

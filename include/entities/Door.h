@@ -57,35 +57,35 @@ class Door: public Detector {
     bool changing;             /**< indicates that the door is being open or closed */
     bool initialized;          /**< true if update() was called at least once */
 
-    void set_opening(void);
-    void set_closing(void);
+    void set_opening();
+    void set_closing();
 
-    bool requires_key(void);
-    bool requires_small_key(void);
-    bool requires_bomb(void);
-    bool can_open(void);
-    void update_dynamic_tiles(void);
+    bool requires_key();
+    bool requires_small_key();
+    bool requires_bomb();
+    bool can_open();
+    void update_dynamic_tiles();
 
   public:
 
     Door(const std::string &name, Layer layer, int x, int y,
 	int direction, Subtype subtype, int savegame_variable);
-    ~Door(void);
+    ~Door();
     static CreationFunction parse;
 
-    EntityType get_type(void);
+    EntityType get_type();
 
     bool is_obstacle_for(MapEntity *other);
     void set_suspended(bool suspended);
-    void update(void);
-    void display_on_map(void);
+    void update();
+    void display_on_map();
     void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
-    void action_key_pressed(void);
-    SoundId get_sword_tapping_sound(void);
+    void action_key_pressed();
+    SoundId get_sword_tapping_sound();
 
-    bool is_open(void);
-    void open(void);
-    void close(void);
+    bool is_open();
+    void open();
+    void close();
     void set_open(bool open);
 };
 

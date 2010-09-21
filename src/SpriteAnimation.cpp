@@ -46,7 +46,7 @@ SpriteAnimation::SpriteAnimation(const std::string &image_file_name,
 /**
  * @brief Destructor.
  */
-SpriteAnimation::~SpriteAnimation(void) {
+SpriteAnimation::~SpriteAnimation() {
   for (int i = 0; i < nb_directions; i++) {
     delete directions[i];
   }
@@ -76,7 +76,7 @@ void SpriteAnimation::set_map(Map *map) {
  * @brief Returns the number of directions of this animation.
  * @return the number of directions
  */
-int SpriteAnimation::get_nb_directions(void) const {
+int SpriteAnimation::get_nb_directions() const {
   return nb_directions;
 }
 
@@ -93,7 +93,7 @@ const SpriteAnimationDirection * SpriteAnimation::get_direction(int direction) c
  * @brief Returns the delay between two frames for this sprite animation.
  * @return the frame delay in milliseconds
  */
-uint32_t SpriteAnimation::get_frame_delay(void) const {
+uint32_t SpriteAnimation::get_frame_delay() const {
   return frame_delay;
 }
 
@@ -101,7 +101,7 @@ uint32_t SpriteAnimation::get_frame_delay(void) const {
  * @brief Returns whether this animation loops on a frame.
  * @return true if this animation loops
  */
-bool SpriteAnimation::is_looping(void) const {
+bool SpriteAnimation::is_looping() const {
   return loop_on_frame != -1;
 }
 
@@ -149,7 +149,7 @@ void SpriteAnimation::display(Surface *destination, int x, int y,
 /**
  * @brief Enables the pixel-perfect collision detection for this animation.
  */
-void SpriteAnimation::enable_pixel_collisions(void) {
+void SpriteAnimation::enable_pixel_collisions() {
 
   for (int i = 0; i < nb_directions; i++) {
     directions[i]->enable_pixel_collisions(src_image);
@@ -160,7 +160,7 @@ void SpriteAnimation::enable_pixel_collisions(void) {
  * @brief Returns whether the pixel-perfect collisions are enabled for this animations.
  * @return true if the pixel-perfect collisions are enabled
  */
-bool SpriteAnimation::are_pixel_collisions_enabled(void) const {
+bool SpriteAnimation::are_pixel_collisions_enabled() const {
   return directions[0]->are_pixel_collisions_enabled();
 }
 

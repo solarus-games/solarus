@@ -127,7 +127,7 @@ class MapEntity {
     bool being_removed;						/**< indicates that the entity is not valid anymore because it is about to be removed */
 
     // creation
-    MapEntity(void);
+    MapEntity();
     MapEntity(Layer layer, int x, int y, int width, int height);
     MapEntity(const std::string &name, int direction, Layer layer, int x, int y, int width, int height);
 
@@ -137,19 +137,19 @@ class MapEntity {
     void set_size(const Rectangle &size);
     void set_origin(int x, int y);
     void set_origin(const Rectangle &origin);
-    void set_bounding_box_from_sprite(void);
+    void set_bounding_box_from_sprite();
     void set_bounding_box(const Rectangle &bounding_box);
     void create_sprite(const SpriteAnimationSetId &id, bool enable_pixel_collisions = false);
     void set_movement(Movement *movement);
-    void clear_movement(void);
+    void clear_movement();
 
   public:
 
     // destruction
-    virtual ~MapEntity(void);
-    void remove_from_map(void);
-    void notify_being_removed(void);
-    bool is_being_removed(void);
+    virtual ~MapEntity();
+    void remove_from_map();
+    void notify_being_removed();
+    bool is_being_removed();
 
     // entity type features
  
@@ -157,70 +157,70 @@ class MapEntity {
      * @brief Returns the type of entity.
      * @return the type of entity
      */
-    virtual EntityType get_type(void) = 0;
-    bool is_hero(void);
-    virtual bool can_be_obstacle(void);
-    virtual bool can_detect_entities(void);
-    virtual bool can_be_displayed(void);
-    virtual bool is_displayed_in_y_order(void);
+    virtual EntityType get_type() = 0;
+    bool is_hero();
+    virtual bool can_be_obstacle();
+    virtual bool can_detect_entities();
+    virtual bool can_be_displayed();
+    virtual bool is_displayed_in_y_order();
 
     // position in the map
-    Layer get_layer(void);
+    Layer get_layer();
     void set_layer(Layer layer);
 
-    int get_x(void);
-    int get_y(void);
+    int get_x();
+    int get_y();
     void set_x(int x);
     void set_y(int y);
-    const Rectangle get_xy(void);
+    const Rectangle get_xy();
     void set_xy(const Rectangle &xy);
     void set_xy(int x, int y);
 
-    int get_width(void);
-    int get_height(void);
-    const Rectangle & get_bounding_box(void);
-    const Rectangle & get_origin(void);
-    int get_top_left_x(void);
-    int get_top_left_y(void);
+    int get_width();
+    int get_height();
+    const Rectangle & get_bounding_box();
+    const Rectangle & get_origin();
+    int get_top_left_x();
+    int get_top_left_y();
     void set_top_left_x(int x);
     void set_top_left_y(int y);
     void set_top_left_xy(int x, int y);
 
-    virtual const Rectangle get_facing_point(void);
+    virtual const Rectangle get_facing_point();
     virtual const Rectangle get_facing_point(int direction);
-    const Rectangle get_center_point(void);
+    const Rectangle get_center_point();
 
-    bool is_aligned_to_grid(void);
-    bool is_x_aligned_to_grid(void);
-    bool is_y_aligned_to_grid(void);
-    void set_aligned_to_grid(void);
+    bool is_aligned_to_grid();
+    bool is_x_aligned_to_grid();
+    bool is_y_aligned_to_grid();
+    void set_aligned_to_grid();
 
     // properties
     virtual void set_map(Map *map);
-    Map * get_map(void);
-    Game * get_game(void);
-    const std::string& get_name(void) const;
+    Map * get_map();
+    Game * get_game();
+    const std::string& get_name() const;
     bool has_prefix(const std::string &prefix);
-    int get_direction(void);
+    int get_direction();
 
     // sprites
     Sprite * get_sprite(const SpriteAnimationSetId &id);
-    Sprite * get_sprite(void);
-    int get_nb_sprites(void);
-    bool has_sprite(void);
+    Sprite * get_sprite();
+    int get_nb_sprites();
+    bool has_sprite();
     void remove_sprite(const SpriteAnimationSetId &id);
-    void remove_sprites(void);
-    virtual bool is_visible(void);
+    void remove_sprites();
+    virtual bool is_visible();
     virtual void set_visible(bool visible);
     void set_animation_ignore_suspend(bool ignore_suspend);
     void start_fading(int direction);
 
     // movement
-    Movement * get_movement(void);
+    Movement * get_movement();
     virtual void notify_movement_tried(bool success);
-    virtual void notify_position_changed(void);
-    virtual void notify_layer_changed(void);
-    virtual void notify_movement_changed(void);
+    virtual void notify_position_changed();
+    virtual void notify_layer_changed();
+    virtual void notify_movement_changed();
     virtual void set_facing_entity(Detector *detector);
     static const Rectangle & direction_to_xy_move(int direction8);
 
@@ -238,7 +238,7 @@ class MapEntity {
 
     // collisions
     virtual bool is_obstacle_for(MapEntity *other);
-    virtual bool has_layer_independent_collisions(void);
+    virtual bool has_layer_independent_collisions();
     virtual void notify_collision_with_enemy(Enemy *enemy);
     virtual void notify_collision_with_destructible_item(DestructibleItem *destructible_item, CollisionMode collision_mode);
     virtual void notify_collision_with_teletransporter(Teletransporter *teletransporter, CollisionMode collision_mode);
@@ -252,9 +252,9 @@ class MapEntity {
     virtual void notify_collision_with_enemy(Enemy *enemy, Sprite *enemy_sprite, Sprite *this_sprite);
     virtual void notify_attacked_enemy(EnemyAttack attack, Enemy *victim, int result, bool killed);
 
-    virtual bool is_water_obstacle(void);
-    virtual bool is_hole_obstacle(void);
-    virtual bool is_ladder_obstacle(void);
+    virtual bool is_water_obstacle();
+    virtual bool is_hole_obstacle();
+    virtual bool is_ladder_obstacle();
     virtual bool is_hero_obstacle(Hero *hero);
     virtual bool is_block_obstacle(Block *block);
     virtual bool is_teletransporter_obstacle(Teletransporter *teletransporter);
@@ -267,15 +267,15 @@ class MapEntity {
     virtual bool is_enemy_obstacle(Enemy *enemy);
     virtual bool is_jump_sensor_obstacle(JumpSensor *jump_sensor);
     virtual bool is_destructible_item_obstacle(DestructibleItem *destructible_item);
-    virtual bool is_sword_ignored(void);
+    virtual bool is_sword_ignored();
 
     // suspended
-    bool is_suspended(void);
+    bool is_suspended();
     virtual void set_suspended(bool suspended);
 
     // update and display
-    virtual void update(void);
-    virtual void display_on_map(void);
+    virtual void update();
+    virtual void display_on_map();
 };
 
 #endif

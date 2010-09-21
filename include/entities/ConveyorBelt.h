@@ -30,10 +30,10 @@ class ConveyorBelt: public Detector {
   public:
 
     ConveyorBelt(Layer layer, int x, int y, int direction);
-    ~ConveyorBelt(void);
+    ~ConveyorBelt();
     static CreationFunction parse;
 
-    EntityType get_type(void);
+    EntityType get_type();
 
     bool is_obstacle_for(MapEntity *other);
     void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);

@@ -92,13 +92,13 @@ class MapScript: public Script {
       l_door_set_open;
 
     // initialization
-    void register_available_functions(void);
+    void register_available_functions();
 
   public:
 
     // loading and closing a script
     MapScript(Map *map);
-    ~MapScript(void);
+    ~MapScript();
     void start(const std::string &destination_point_name);
 
     // C++ functions that call script functions
@@ -107,7 +107,7 @@ class MapScript: public Script {
     void event_switch_enabled(const std::string &switch_name);
     void event_switch_disabled(const std::string &switch_name);
     void event_switch_left(const std::string &switch_name);
-    void event_hero_victory_sequence_finished(void);
+    void event_hero_victory_sequence_finished();
     void event_hero_on_sensor(const std::string &sensor_name);
     void event_hero_interaction(const std::string &entity_name);
     bool event_hero_interaction_item(const std::string &entity_name, const std::string &item_name, int variant);

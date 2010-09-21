@@ -27,12 +27,12 @@ class Hero::FallingState: public Hero::State {
   public:
 
     FallingState(Hero *hero);
-    ~FallingState(void);
+    ~FallingState();
     void start(State *previous_state);
     void stop(State *next_state);
-    void update(void);
-    bool can_avoid_hole(void);
-    bool can_start_gameover_sequence(void);
+    void update();
+    bool can_avoid_hole();
+    bool can_start_gameover_sequence();
 };
 
 #endif

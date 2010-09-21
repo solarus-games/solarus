@@ -21,7 +21,7 @@
 /**
  * @brief Creates an SPC decoder.
  */
-SpcDecoder::SpcDecoder(void) {
+SpcDecoder::SpcDecoder() {
 
   // initialize the SPC library
   snes_spc_manager = spc_new();
@@ -31,7 +31,7 @@ SpcDecoder::SpcDecoder(void) {
 /**
  * @brief Destructor.
  */
-SpcDecoder::~SpcDecoder(void) {
+SpcDecoder::~SpcDecoder() {
 
   // uninitialize the SPC library
   spc_filter_delete(snes_spc_filter);

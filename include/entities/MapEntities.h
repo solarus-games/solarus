@@ -82,20 +82,20 @@ class MapEntities {
     MusicId music_before_miniboss;                          /**< the music that was played before starting a miniboss fight */
 
     void set_obstacle(int layer, int x8, int y8, Obstacle obstacle);
-    void remove_marked_entities(void);
-    void update_crystal_switch_blocks(void);
+    void remove_marked_entities();
+    void update_crystal_switch_blocks();
 
   public:
 
     // creation and destruction
     MapEntities(Game *game, Map *map);
-    ~MapEntities(void);
+    ~MapEntities();
 
     // information about the entities
-    Hero * get_hero(void);
+    Hero * get_hero();
     Obstacle get_obstacle_tile(Layer layer, int x, int y);
     std::list<MapEntity*> * get_obstacle_entities(Layer layer);
-    std::list<Detector*> * get_detectors(void);
+    std::list<Detector*> * get_detectors();
     std::list<Stairs*> * get_stairs(Layer layer);
     std::list<CrystalSwitchBlock*> * get_crystal_switch_blocks(Layer layer);
 
@@ -110,23 +110,23 @@ class MapEntities {
     void remove_entity(MapEntity *entity);
     void remove_entity(EntityType type, const std::string &name);
     void bring_to_front(MapEntity *entity);
-    void destroy_all_entities(void);
+    void destroy_all_entities();
     static bool compare_y(MapEntity *first, MapEntity *second);
     void set_entity_layer(MapEntity *entity, Layer layer);
 
     // hero
     bool overlaps_raised_blocks(Layer layer, const Rectangle &rectangle);
-    bool is_boomerang_present(void);
-    void remove_boomerang(void);
+    bool is_boomerang_present();
+    void remove_boomerang();
     void start_boss_battle(Enemy *boss);
-    void end_boss_battle(void);
+    void end_boss_battle();
     void start_miniboss_battle(Enemy *miniboss);
-    void end_miniboss_battle(void);
+    void end_miniboss_battle();
 
     // update and display
     void set_suspended(bool suspended);
-    void update(void);
-    void display(void);
+    void update();
+    void display();
 };
 
 #endif

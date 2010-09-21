@@ -33,23 +33,23 @@ class Hero::FreeState: public Hero::PlayerMovementState {
   public:
 
     FreeState(Hero *hero);
-    ~FreeState(void);
+    ~FreeState();
 
     void start(State *previous_state);
     void stop(State *next_state);
-    void update(void);
+    void update();
     void set_suspended(bool suspended);
-    void action_key_pressed(void);
+    void action_key_pressed();
     void notify_movement_tried(bool success);
 
-    bool is_free(void);
-    bool can_start_sword(void);
-    bool can_start_inventory_item(void);
-    bool can_take_stairs(void);
-    bool can_take_jump_sensor(void);
-    bool can_throw_item(void);
-    void set_animation_stopped(void);
-    void set_animation_walking(void);
+    bool is_free();
+    bool can_start_sword();
+    bool can_start_inventory_item();
+    bool can_take_stairs();
+    bool can_take_jump_sensor();
+    bool can_throw_item();
+    void set_animation_stopped();
+    void set_animation_walking();
 };
 
 #endif

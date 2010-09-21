@@ -36,7 +36,7 @@ Hero::LiftingState::LiftingState(Hero *hero, DestructibleItem *item_to_lift):
 /**
  * @brief Destructor.
  */
-Hero::LiftingState::~LiftingState(void) {
+Hero::LiftingState::~LiftingState() {
 
   delete lifted_item;
 }
@@ -86,7 +86,7 @@ void Hero::LiftingState::stop(State *next_state) {
 /**
  * @brief Updates this state.
  */
-void Hero::LiftingState::update(void) {
+void Hero::LiftingState::update() {
 
   State::update();
 
@@ -104,7 +104,7 @@ void Hero::LiftingState::update(void) {
  * @brief Returns whether the hero can be hurt in this state.
  * @return true if the hero can be hurt in this state
  */
-bool Hero::LiftingState::can_be_hurt(void) {
+bool Hero::LiftingState::can_be_hurt() {
   return true;
 }
 
@@ -114,7 +114,7 @@ bool Hero::LiftingState::can_be_hurt(void) {
  * This function is called when this state is interrupted by a new state,
  * e.g. when the hero is hurt while lifting an item.
  */
-void Hero::LiftingState::throw_item(void) {
+void Hero::LiftingState::throw_item() {
 
   lifted_item->throw_item(sprites->get_animation_direction());
   map->get_entities()->add_entity(lifted_item);

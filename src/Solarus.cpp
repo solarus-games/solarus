@@ -47,7 +47,7 @@ Solarus::Solarus(int argc, char **argv) {
 /**
  * @brief Cleans everything.
  */
-Solarus::~Solarus(void) {
+Solarus::~Solarus() {
   delete root_surface;
   delete current_screen;
   delete debug_keys;
@@ -58,7 +58,7 @@ Solarus::~Solarus(void) {
  * @brief Returns the debugging keys object.
  * @return the debbuging keys object
  */
-DebugKeys * Solarus::get_debug_keys(void) {
+DebugKeys * Solarus::get_debug_keys() {
   return debug_keys;
 }
 
@@ -68,7 +68,7 @@ DebugKeys * Solarus::get_debug_keys(void) {
  * This function can be called during the title screen or the selection menu to skip them
  * and start the game immediately with the first savegame (for debugging purposes only!).
  */
-void Solarus::skip_menus(void) {
+void Solarus::skip_menus() {
 
   if (FileTools::data_file_exists("save1.dat")) {
     Game *game = new Game(this, new Savegame("save1.dat"));
@@ -85,14 +85,14 @@ void Solarus::skip_menus(void) {
  *
  * @return true if the user wants to exit the program
  */
-bool Solarus::is_exiting(void) {
+bool Solarus::is_exiting() {
   return exiting;
 }
 
 /**
  * @brief Sets whether the user wants to quit the program.
  */
-void Solarus::set_exiting(void) {
+void Solarus::set_exiting() {
   exiting = true;
 }
 
@@ -103,7 +103,7 @@ void Solarus::set_exiting(void) {
  * The input events are forwarded to the current screen.
  * The current screen is redrawn when necessary.
  */
-void Solarus::main_loop(void) {
+void Solarus::main_loop() {
 
   // main loop
   InputEvent *event;
@@ -215,7 +215,7 @@ void Solarus::notify_event(InputEvent &event) {
  *
  * This function is called repeatedly by the main loop.
  */
-void Solarus::update(void) {
+void Solarus::update() {
 
   debug_keys->update();
   current_screen->update();
@@ -227,7 +227,7 @@ void Solarus::update(void) {
  *
  * This function is called repeatedly by the main loop.
  */
-void Solarus::display(void) {
+void Solarus::display() {
 
   root_surface->fill_with_color(Color::get_black());
   current_screen->display(root_surface);

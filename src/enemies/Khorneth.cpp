@@ -34,14 +34,14 @@ Khorneth::Khorneth(const ConstructionParameters &params):
 /**
  * @brief Destructor.
  */
-Khorneth::~Khorneth(void) {
+Khorneth::~Khorneth() {
 
 }
 
 /**
  * @brief Initializes the enemy.
  */
-void Khorneth::initialize(void) {
+void Khorneth::initialize() {
 
   // attack/defense features
   set_damage(2, 0);
@@ -77,7 +77,7 @@ void Khorneth::initialize(void) {
  * @brief Returns the main sprite of Khorneth.
  * @return the main sprite
  */
-Sprite * Khorneth::get_main_sprite(void) {
+Sprite * Khorneth::get_main_sprite() {
   return get_sprite("enemies/khorneth");
 }
 
@@ -85,7 +85,7 @@ Sprite * Khorneth::get_main_sprite(void) {
  * @brief Returns the left blade sprite.
  * @return the left blade sprite, or NULL if the left blade was destroyed
  */
-Sprite * Khorneth::get_left_blade_sprite(void) {
+Sprite * Khorneth::get_left_blade_sprite() {
   return has_left_blade() ? get_sprite("enemies/khorneth_left_blade") : NULL;
 }
 
@@ -93,7 +93,7 @@ Sprite * Khorneth::get_left_blade_sprite(void) {
  * @brief Returns the right blade sprite.
  * @return the right blade sprite, or NULL if the right blade was destroyed
  */
-Sprite * Khorneth::get_right_blade_sprite(void) {
+Sprite * Khorneth::get_right_blade_sprite() {
   return has_right_blade() ? get_sprite("enemies/khorneth_right_blade") : NULL;
 }
 
@@ -101,7 +101,7 @@ Sprite * Khorneth::get_right_blade_sprite(void) {
  * @brief Returns whether the left blade is still present.
  * @return true if the left blade is still present
  */
-bool Khorneth::has_left_blade(void) {
+bool Khorneth::has_left_blade() {
   return left_blade_life > 0;
 }
 
@@ -109,7 +109,7 @@ bool Khorneth::has_left_blade(void) {
  * @brief Returns whether the left blade is still present.
  * @return true if the left blade is still present
  */
-bool Khorneth::has_right_blade(void) {
+bool Khorneth::has_right_blade() {
   return right_blade_life > 0;
 }
 
@@ -117,7 +117,7 @@ bool Khorneth::has_right_blade(void) {
  * @brief Returns whether at least one blade is still present.
  * @return true if the left blade or the right blade is still present
  */
-bool Khorneth::has_blade(void) {
+bool Khorneth::has_blade() {
   return !blades_destroyed;
 }
 
@@ -125,7 +125,7 @@ bool Khorneth::has_blade(void) {
  * @brief Returns whether the left blade is currently playing animation "hurt".
  * @return true if the left blade is being hurt
  */
-bool Khorneth::is_left_blade_being_hurt(void) {
+bool Khorneth::is_left_blade_being_hurt() {
   return end_left_blade_hurt_date != 0;
 }
 
@@ -133,7 +133,7 @@ bool Khorneth::is_left_blade_being_hurt(void) {
  * @brief Returns whether the right blade is currently playing animation "hurt".
  * @return true if the right blade is being hurt
  */
-bool Khorneth::is_right_blade_being_hurt(void) {
+bool Khorneth::is_right_blade_being_hurt() {
   return end_right_blade_hurt_date != 0;
 }
 
@@ -206,7 +206,7 @@ int Khorneth::custom_attack(EnemyAttack attack, Sprite *this_sprite) {
  *
  * This function is called when both blades are destroyed.
  */
-void Khorneth::start_final_phase(void) {
+void Khorneth::start_final_phase() {
   blades_destroyed = true;
   set_attack_consequence(ATTACK_SWORD, 1);
   clear_movement();
@@ -220,7 +220,7 @@ void Khorneth::start_final_phase(void) {
  * because something happened (for example the enemy has just been created,
  * or it was just hurt).
  */
-void Khorneth::restart(void) {
+void Khorneth::restart() {
   Enemy::restart();
 
   if (has_blade()) {
@@ -232,7 +232,7 @@ void Khorneth::restart(void) {
 /**
  * @brief Updates this enemy.
  */
-void Khorneth::update(void) {
+void Khorneth::update() {
   
   if (is_in_normal_state()) {
 

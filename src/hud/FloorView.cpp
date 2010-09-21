@@ -39,14 +39,14 @@ FloorView::FloorView(Game *game, int x, int y):
 /**
  * @brief Destructor.
  */
-FloorView::~FloorView(void) {
+FloorView::~FloorView() {
   delete img_floors;
 }
 
 /**
  * @brief Updates the floors displayed.
  */
-void FloorView::update(void) {
+void FloorView::update() {
 
   HudElement::update();
 
@@ -81,7 +81,7 @@ void FloorView::update(void) {
 /**
  * @brief Redraws the floor (if any) on the surface.
  */
-void FloorView::rebuild(void) {
+void FloorView::rebuild() {
 
   HudElement::rebuild();
 

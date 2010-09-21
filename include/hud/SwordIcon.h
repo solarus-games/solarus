@@ -46,11 +46,11 @@ class SwordIcon: public HudElement {
   public:
 
     SwordIcon(Game *game, int x, int y);
-    ~SwordIcon(void);
+    ~SwordIcon();
 
-    bool is_visible(void);
-    void update(void);
-    void rebuild(void);
+    bool is_visible();
+    void update();
+    void rebuild();
 
 };
 

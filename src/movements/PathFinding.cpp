@@ -65,7 +65,7 @@ PathFinding::PathFinding(Map *map, MapEntity *source_entity, MapEntity *target_e
 /**
  * @brief Destructor.
  */
-PathFinding::~PathFinding(void) {
+PathFinding::~PathFinding() {
 }
 
 /**
@@ -73,7 +73,7 @@ PathFinding::~PathFinding(void) {
  * @return the path found, or an empty string if no path was found
  * (because there is no path or the target is too far)
  */
-std::string PathFinding::compute_path(void) {
+std::string PathFinding::compute_path() {
 
 //  std::cout << "will compute a path from " << source_entity->get_top_left_x() << "," << source_entity->get_top_left_y()
 //    << " to " << target_entity->get_top_left_x() << "," << target_entity->get_top_left_y() << std::endl;

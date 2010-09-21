@@ -48,19 +48,19 @@ class TransitionScrolling: public Transition {
     Rectangle current_map_dst_position;   /**< position where the current map is blitted on both_maps_surface */
     Rectangle current_scrolling_position; /**< the rectangle from both_maps_surface that is currently visible */
 
-    void scroll(void);
+    void scroll();
 
   public:
 
     TransitionScrolling(Direction direction);
-    ~TransitionScrolling(void);
+    ~TransitionScrolling();
 
-    bool needs_previous_surface(void);
+    bool needs_previous_surface();
 
-    void start(void);
-    bool is_started(void);
-    bool is_finished(void);
-    void update(void);
+    void start();
+    bool is_started();
+    bool is_finished();
+    void update();
     void display(Surface *surface);
 };
 

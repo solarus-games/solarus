@@ -46,7 +46,7 @@ InventoryItem::InventoryItem(const std::string &item_name):
 /**
  * @brief Destructor.
  */
-InventoryItem::~InventoryItem(void) {
+InventoryItem::~InventoryItem() {
 
 }
 
@@ -54,7 +54,7 @@ InventoryItem::~InventoryItem(void) {
  * @brief Returns the name of this inventory item.
  * @return the name of this inventory item
  */
-const std::string & InventoryItem::get_name(void) {
+const std::string & InventoryItem::get_name() {
   return item_name;
 }
 
@@ -62,7 +62,7 @@ const std::string & InventoryItem::get_name(void) {
  * @brief Returns the variant of this inventory item that the player has.
  * @return the variant
  */
-int InventoryItem::get_variant(void) {
+int InventoryItem::get_variant() {
   return variant;
 }
 
@@ -151,7 +151,7 @@ void InventoryItem::start(Game *game) {
 /**
  * @brief Updates this item when it is being used.
  */
-void InventoryItem::update(void) {
+void InventoryItem::update() {
 
   Hero *hero = game->get_hero();
   Equipment *equipment = game->get_equipment();
@@ -227,14 +227,14 @@ void InventoryItem::update(void) {
  * @brief Returns whether this item has finished to be used.
  * @return true if this item has finished to be used
  */
-bool InventoryItem::is_finished(void) {
+bool InventoryItem::is_finished() {
   return finished;
 }
 
 /**
  * @brief Starts using this item when it is a bottle.
  */
-void InventoryItem::start_bottle(void) {
+void InventoryItem::start_bottle() {
 
   // TODO use the script
   switch (variant) {
@@ -289,7 +289,7 @@ void InventoryItem::start_bottle(void) {
 /**
  * @brief Updates this item when it is a bottle.
  */
-void InventoryItem::update_bottle(void) {
+void InventoryItem::update_bottle() {
 
   // see if a dialog is finished
   if (!game->is_showing_message()) {

@@ -78,7 +78,7 @@ DestructibleItem::DestructibleItem(Layer layer, int x, int y, DestructibleItem::
 /**
  * @brief Destructor.
  */
-DestructibleItem::~DestructibleItem(void) {
+DestructibleItem::~DestructibleItem() {
   delete treasure;
 }
 
@@ -124,7 +124,7 @@ EntityType DestructibleItem::get_type() {
  *
  * @return true if this entity is displayed at the same level as the hero
  */
-bool DestructibleItem::is_displayed_in_y_order(void) {
+bool DestructibleItem::is_displayed_in_y_order() {
 //  const Rectangle& size = get_sprite()->get_size();
 //  return size.get_height() > 16;
   return false;
@@ -135,7 +135,7 @@ bool DestructibleItem::is_displayed_in_y_order(void) {
  * @brief Returns the damage this destructible item can cause to enemies
  * @return the damage on enemies
  */
-int DestructibleItem::get_damage_on_enemies(void) {
+int DestructibleItem::get_damage_on_enemies() {
   return features[subtype].damage_on_enemies;
 }
 
@@ -143,7 +143,7 @@ int DestructibleItem::get_damage_on_enemies(void) {
  * @brief Returns the animation set of this destructible item.
  * @return the animations of the sprite
  */
-const std::string& DestructibleItem::get_animation_set_id(void) {
+const std::string& DestructibleItem::get_animation_set_id() {
   return features[subtype].animation_set_id;
 }
 
@@ -151,7 +151,7 @@ const std::string& DestructibleItem::get_animation_set_id(void) {
  * @brief Returns the id of the sound to play when this item is destroyed.
  * @return the destruction sound id
  */
-const SoundId & DestructibleItem::get_destruction_sound_id(void) {
+const SoundId & DestructibleItem::get_destruction_sound_id() {
   return features[subtype].destruction_sound_id;
 }
 
@@ -159,7 +159,7 @@ const SoundId & DestructibleItem::get_destruction_sound_id(void) {
  * @brief Returns the special ground to display when walking on this destructible item.
  * @return the ground, or GROUND_NORMAL if there is no special ground to display
  */
-Ground DestructibleItem::get_special_ground(void) {
+Ground DestructibleItem::get_special_ground() {
   return features[subtype].special_ground;
 }
 
@@ -167,7 +167,7 @@ Ground DestructibleItem::get_special_ground(void) {
  * @brief Returns whether there is a special ground to display when walking on this destructible item.
  * @return true if there is a special ground
  */
-bool DestructibleItem::has_special_ground(void) {
+bool DestructibleItem::has_special_ground() {
   return get_special_ground() != GROUND_NORMAL;
 }
 
@@ -199,7 +199,7 @@ bool DestructibleItem::test_collision_custom(MapEntity *entity) {
 /**
  * @brief Adds to the map the pickable treasure (if any) hidden under this destructible item.
  */
-void DestructibleItem::create_pickable_item(void) {
+void DestructibleItem::create_pickable_item() {
 
   if (!treasure->is_empty()) {
 
@@ -291,7 +291,7 @@ void DestructibleItem::notify_collision(MapEntity *other_entity, Sprite *other_s
  * when the hero is facing this detector, and the action icon lets him do this.
  * The hero lifts the item if possible.
  */
-void DestructibleItem::action_key_pressed(void) {
+void DestructibleItem::action_key_pressed() {
 
   KeysEffect *keys_effect = game->get_keys_effect();
   Hero *hero = game->get_hero();
@@ -340,7 +340,7 @@ void DestructibleItem::action_key_pressed(void) {
 /**
  * @brief Plays the animation destroy of this item.
  */
-void DestructibleItem::play_destroy_animation(void) {
+void DestructibleItem::play_destroy_animation() {
 
   is_being_cut = true;
   game->play_sound(get_destruction_sound_id());
@@ -355,7 +355,7 @@ void DestructibleItem::play_destroy_animation(void) {
  *
  * The item is disabled if it was lifted and is about to regenerate.
  */
-bool DestructibleItem::is_disabled(void) {
+bool DestructibleItem::is_disabled() {
   return regeneration_date != 0 && !is_regenerating;
 }
 
@@ -363,7 +363,7 @@ bool DestructibleItem::is_disabled(void) {
  * @brief Returns whether the item can explode.
  * @return true if the item will explode
  */
-bool DestructibleItem::can_explode(void) {
+bool DestructibleItem::can_explode() {
   return features[subtype].can_explode;
 }
 
@@ -384,7 +384,7 @@ void DestructibleItem::set_suspended(bool suspended) {
 /**
  * @brief Updates the item.
  */
-void DestructibleItem::update(void) {
+void DestructibleItem::update() {
 
   MapEntity::update();
 

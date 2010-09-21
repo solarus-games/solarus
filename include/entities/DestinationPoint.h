@@ -33,10 +33,10 @@ class DestinationPoint: public MapEntity {
   public:
 
     DestinationPoint(const std::string &name, Layer layer, int x, int y, int hero_direction, bool is_visible);
-    ~DestinationPoint(void);
+    ~DestinationPoint();
     static CreationFunction parse;
 
-    EntityType get_type(void);
+    EntityType get_type();
 };
 
 #endif

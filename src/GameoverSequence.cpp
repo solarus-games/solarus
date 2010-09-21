@@ -59,7 +59,7 @@ GameoverSequence::GameoverSequence(Game *game, int hero_direction):
 /**
  * @brief Destroys the game over sequence.
  */
-GameoverSequence::~GameoverSequence(void) {
+GameoverSequence::~GameoverSequence() {
 
   delete gameover_menu_img;
   delete fade_sprite;
@@ -71,7 +71,7 @@ GameoverSequence::~GameoverSequence(void) {
 /**
  * @brief Updates the gameover sequence.
  */
-void GameoverSequence::update(void) {
+void GameoverSequence::update() {
 
   uint32_t now = System::now();
   hero_dead_sprite->update();
@@ -246,7 +246,7 @@ void GameoverSequence::key_pressed(GameControls::GameKey key) {
  * @brief Returns whether the game over sequence is finished.
  * @return true if the game over sequence is finished
  */
-bool GameoverSequence::is_finished(void) {
+bool GameoverSequence::is_finished() {
   return state == RESUME_GAME;
 }
 

@@ -36,10 +36,10 @@ class SmallKeysCounter: public HudElement {
   public:
 
     SmallKeysCounter(Game *game, int x, int y);
-    ~SmallKeysCounter(void);
+    ~SmallKeysCounter();
 
-    void update(void);
-    void rebuild(void);
+    void update();
+    void rebuild();
 };
 
 #endif

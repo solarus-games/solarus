@@ -50,18 +50,18 @@ class CrystalSwitchBlock: public Detector {
   public:
 
     CrystalSwitchBlock(Game *game, Layer layer, int x, int y, int width, int height, Subtype subtype);
-    ~CrystalSwitchBlock(void);
+    ~CrystalSwitchBlock();
     static CreationFunction parse;
 
-    EntityType get_type(void);
+    EntityType get_type();
 
     bool is_obstacle_for(MapEntity *other);
     void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
 
-    void update(void);
-    void display_on_map(void);
+    void update();
+    void display_on_map();
 
-    bool is_raised(void);
+    bool is_raised();
 };
 
 #endif

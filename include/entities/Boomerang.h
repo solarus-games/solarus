@@ -42,32 +42,32 @@ class Boomerang: public MapEntity {
   public:
 
     Boomerang(Hero *hero, int boomerang_direction);
-    ~Boomerang(void);
+    ~Boomerang();
 
-    EntityType get_type(void);
+    EntityType get_type();
 
     // features
-    bool can_be_obstacle(void);
-    bool can_detect_entities(void);
-    bool can_be_displayed(void);
-    bool is_displayed_in_y_order(void);
+    bool can_be_obstacle();
+    bool can_detect_entities();
+    bool can_be_displayed();
+    bool is_displayed_in_y_order();
 
     bool is_teletransporter_obstacle(Teletransporter *teletransporter);
     bool is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt);
     bool is_stairs_obstacle(Stairs *stairs);
-    bool is_water_obstacle(void);
-    bool is_hole_obstacle(void);
-    bool is_ladder_obstacle(void);
+    bool is_water_obstacle();
+    bool is_hole_obstacle();
+    bool is_ladder_obstacle();
     bool is_raised_block_obstacle(CrystalSwitchBlock *raised_block);
     bool is_crystal_switch_obstacle(CrystalSwitch *crystal_switch);
     bool is_npc_obstacle(InteractiveEntity *npc);
     bool is_jump_sensor_obstacle(JumpSensor *jump_sensor);
 
     // state
-    bool is_going_back(void);
-    void go_back(void);
+    bool is_going_back();
+    void go_back();
 
-    void update(void);
+    void update();
 
     // collisions
     void notify_collision_with_crystal_switch(CrystalSwitch *crystal_switch, CollisionMode collision_mode);

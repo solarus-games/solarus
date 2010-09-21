@@ -28,7 +28,7 @@ RandomWalkMovement::RandomWalkMovement(int speed):
 /**
  * @brief Destructor.
  */
-RandomWalkMovement::~RandomWalkMovement(void) {
+RandomWalkMovement::~RandomWalkMovement() {
 
 }
 
@@ -36,7 +36,7 @@ RandomWalkMovement::~RandomWalkMovement(void) {
  * @brief Updates the movements: detects the collisions
  * in order to restart the movement.
  */
-void RandomWalkMovement::update(void) {
+void RandomWalkMovement::update() {
 
   PathMovement::update();
 
@@ -50,7 +50,7 @@ void RandomWalkMovement::update(void) {
 /**
  * @brief Starts the next step of the movement.
  */
-void RandomWalkMovement::start_next_move(void) {
+void RandomWalkMovement::start_next_move() {
 
   if (remaining_path.size() == 0) {
     remaining_path = get_random_path();
@@ -63,7 +63,7 @@ void RandomWalkMovement::start_next_move(void) {
  * @brief Returns whether the movement is finished.
  * @return false
  */
-bool RandomWalkMovement::is_finished(void) {
+bool RandomWalkMovement::is_finished() {
   return false;
 }
 

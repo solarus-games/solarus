@@ -40,13 +40,13 @@ class TilePattern {
 
   public:
 
-    virtual ~TilePattern(void);
+    virtual ~TilePattern();
 
-    int get_width(void) const;
-    int get_height(void) const;
-    Obstacle get_obstacle(void) const;
+    int get_width() const;
+    int get_height() const;
+    Obstacle get_obstacle() const;
 
-    static void update(void);
+    static void update();
     void display_on_map(Map *map, const Rectangle &position_in_map);
 
     /**

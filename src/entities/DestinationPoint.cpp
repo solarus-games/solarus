@@ -49,7 +49,7 @@ DestinationPoint::DestinationPoint(const std::string &name, Layer layer, int x, 
 /**
  * @brief Destructor.
  */
-DestinationPoint::~DestinationPoint(void) {
+DestinationPoint::~DestinationPoint() {
 
 }
 

@@ -103,7 +103,7 @@ InteractiveEntity::InteractiveEntity(const std::string &name, Layer layer, int x
 /**
  * @brief Destructor.
  */
-InteractiveEntity::~InteractiveEntity(void) {
+InteractiveEntity::~InteractiveEntity() {
 
 }
 
@@ -151,7 +151,7 @@ EntityType InteractiveEntity::get_type() {
  *
  * @return true if this entity is displayed at the same level as the hero
  */
-bool InteractiveEntity::is_displayed_in_y_order(void) {
+bool InteractiveEntity::is_displayed_in_y_order() {
   return subtype == NON_PLAYING_CHARACTER;
 }
 
@@ -218,7 +218,7 @@ bool InteractiveEntity::is_enemy_obstacle(Enemy *enemy) {
  *
  * @return true if the sword is ignored
  */
-bool InteractiveEntity::is_sword_ignored(void) {
+bool InteractiveEntity::is_sword_ignored() {
   return subtype == NON_PLAYING_CHARACTER;
 }
 
@@ -253,7 +253,7 @@ void InteractiveEntity::notify_collision(MapEntity *entity_overlapping, Collisio
  * This function is called when the player presses the action key
  * when the hero is facing this detector, and the action icon lets him do this.
  */
-void InteractiveEntity::action_key_pressed(void) {
+void InteractiveEntity::action_key_pressed() {
 
   KeysEffect *keys_effect = game->get_keys_effect();
   Hero *hero = game->get_hero();
@@ -321,7 +321,7 @@ bool InteractiveEntity::interaction_with_inventory_item(InventoryItem *item) {
 /**
  * @brief Notifies the script that the player is interacting with this entity.
  */
-void InteractiveEntity::call_script(void) {
+void InteractiveEntity::call_script() {
 
   if (subtype == NON_PLAYING_CHARACTER) {
     map->get_script()->event_npc_dialog(get_name());
@@ -334,7 +334,7 @@ void InteractiveEntity::call_script(void) {
 /**
  * @brief Updates the entity.
  */
-void InteractiveEntity::update(void) {
+void InteractiveEntity::update() {
 
   Detector::update();
 
@@ -371,7 +371,7 @@ void InteractiveEntity::walk(std::string path, bool loop, bool ignore_obstacles)
  *
  * The NPC's sprite must have an animation "walking".
  */
-void InteractiveEntity::walk_random(void) {
+void InteractiveEntity::walk_random() {
 
   Debug::assert(subtype == NON_PLAYING_CHARACTER, "This entity is not a non-playing character");
 
@@ -405,7 +405,7 @@ void InteractiveEntity::jump(int direction, int length, bool ignore_obstacles) {
  *
  * If it is an NPC, its sprite's direction is updated.
  */
-void InteractiveEntity::notify_position_changed(void) {
+void InteractiveEntity::notify_position_changed() {
 
   if (subtype == NON_PLAYING_CHARACTER) {
 
@@ -440,7 +440,7 @@ void InteractiveEntity::set_sprite_direction(int direction) {
  * This is a redefinition of MapEntity::display_on_map() to handle the special
  * display when the entity is jumping.
  */
-void InteractiveEntity::display_on_map(void) {
+void InteractiveEntity::display_on_map() {
 
   if (subtype == NON_PLAYING_CHARACTER &&
       get_sprite()->get_current_animation() == "jumping") {

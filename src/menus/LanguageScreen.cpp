@@ -69,7 +69,7 @@ LanguageScreen::LanguageScreen(Solarus *solarus):
 /**
  * @brief Destroys the language screen.
  */
-LanguageScreen::~LanguageScreen(void) {
+LanguageScreen::~LanguageScreen() {
 
   delete transition;
   delete intermediate_surface;
@@ -108,7 +108,7 @@ void LanguageScreen::set_cursor_position(int cursor_position) {
 /**
  * @brief Updates this screen.
  */
-void LanguageScreen::update(void) {
+void LanguageScreen::update() {
 
   if (finished) {
     set_next_screen(new TitleScreen(solarus));

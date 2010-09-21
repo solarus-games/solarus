@@ -33,7 +33,7 @@ ParallaxTilePattern::ParallaxTilePattern(Obstacle obstacle, int x, int y, int wi
 /**
  * @brief Destructor.
  */
-ParallaxTilePattern::~ParallaxTilePattern(void) {
+ParallaxTilePattern::~ParallaxTilePattern() {
 
 }
 

@@ -37,16 +37,16 @@ class PathFindingMovement: public PathMovement {
 
   protected:
 
-    void update(void);
-    void start_next_move(void);
-    void recompute_movement(void);
+    void update();
+    void start_next_move();
+    void recompute_movement();
 
   public:
 
     PathFindingMovement(MapEntity *target, int speed);
-    ~PathFindingMovement(void);
+    ~PathFindingMovement();
 
-    bool is_finished(void);
+    bool is_finished();
 };
 
 #endif

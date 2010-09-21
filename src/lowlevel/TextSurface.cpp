@@ -28,7 +28,7 @@ std::string TextSurface::default_font_id = "";
 /**
  * @brief Initializes the font system.
  */
-void TextSurface::initialize(void) {
+void TextSurface::initialize() {
 
   TTF_Init();
 
@@ -63,7 +63,7 @@ void TextSurface::initialize(void) {
 /**
  * @brief Closes the font system.
  */
-void TextSurface::quit(void) {
+void TextSurface::quit() {
 
   std::map<std::string, FontData>::iterator it;
   for (it = fonts.begin(); it != fonts.end(); it++) {
@@ -132,7 +132,7 @@ TextSurface::TextSurface(int x, int y,
 /**
  * @brief Destructor.
  */
-TextSurface::~TextSurface(void) {
+TextSurface::~TextSurface() {
 
   if (surface != NULL) {
     SDL_FreeSurface(surface->get_internal_surface());
@@ -267,7 +267,7 @@ void TextSurface::add_char(char c) {
  * @brief Returns the text currently displayed.
  * @return the text currently displayed, or NULL if there is no text
  */
-const std::string & TextSurface::get_text(void) {
+const std::string & TextSurface::get_text() {
   return text;
 }
 
@@ -275,7 +275,7 @@ const std::string & TextSurface::get_text(void) {
  * @brief Returns whether the current text is an empty string.
  * @return true if there is no texte
  */
-bool TextSurface::is_empty(void) {
+bool TextSurface::is_empty() {
   return text == "";
 }
 
@@ -283,7 +283,7 @@ bool TextSurface::is_empty(void) {
  * @brief Returns the width of the surface containing the text.
  * @return the width in pixels
  */
-int TextSurface::get_width(void) {
+int TextSurface::get_width() {
   return surface->get_width();
 }
 
@@ -291,7 +291,7 @@ int TextSurface::get_width(void) {
  * @brief Returns the height of the surface containing the text.
  * @return the height in pixels
  */
-int TextSurface::get_height(void) {
+int TextSurface::get_height() {
   return surface->get_height();
 }
 
@@ -300,7 +300,7 @@ int TextSurface::get_height(void) {
  * @brief Returns the size of the surface containing the text.
  * @return the size of the surface
  */
-const Rectangle TextSurface::get_size(void) {
+const Rectangle TextSurface::get_size() {
   return Rectangle(0, 0, get_width(), get_height());
 }
 
@@ -309,7 +309,7 @@ const Rectangle TextSurface::get_size(void) {
  *
  * This function is called when there is a change.
  */
-void TextSurface::rebuild(void) {
+void TextSurface::rebuild() {
 
   if (surface != NULL) {
     // another text was previously set: delete it

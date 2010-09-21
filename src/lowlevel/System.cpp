@@ -67,7 +67,7 @@ void System::initialize(int argc, char **argv) {
  *
  * This closes all initializations made in initialize().
  */
-void System::quit(void) {
+void System::quit() {
 
   ResourceManager::quit();
   Random::quit();
@@ -87,7 +87,7 @@ void System::quit(void) {
  *
  * It calls the update function of the low level systems that needs it.
  */
-void System::update(void) {
+void System::update() {
 
   ticks = SDL_GetTicks();
   Sound::update();
@@ -97,7 +97,7 @@ void System::update(void) {
  * @brief Returns the number of milliseconds elapsed since the beginning of the program.
  * @return the number of milliseconds elapsed since the beginning of the program
  */
-uint32_t System::now(void) {
+uint32_t System::now() {
   return ticks;
 }
 

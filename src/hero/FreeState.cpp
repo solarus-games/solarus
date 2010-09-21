@@ -36,7 +36,7 @@ Hero::FreeState::FreeState(Hero *hero):
 /**
  * @brief Destructor.
  */
-Hero::FreeState::~FreeState(void) {
+Hero::FreeState::~FreeState() {
 
 }
 
@@ -66,7 +66,7 @@ void Hero::FreeState::stop(State *next_state) {
 /**
  * @brief Updates this state.
  */
-void Hero::FreeState::update(void) {
+void Hero::FreeState::update() {
 
   PlayerMovementState::update();
 
@@ -94,7 +94,7 @@ void Hero::FreeState::set_suspended(bool suspended) {
 /**
  * @brief Notifies this state that the action key was just pressed.
  */
-void Hero::FreeState::action_key_pressed(void) {
+void Hero::FreeState::action_key_pressed() {
 
   KeysEffect *keys_effect = game->get_keys_effect();
 
@@ -137,7 +137,7 @@ void Hero::FreeState::notify_movement_tried(bool success) {
  * in this state.
  * @return true
  */
-bool Hero::FreeState::is_free(void) {
+bool Hero::FreeState::is_free() {
   return true;
 }
 
@@ -145,7 +145,7 @@ bool Hero::FreeState::is_free(void) {
  * @brief Returns whether the hero can swing his sword in this state.
  * @return true if the hero can swing his sword in this state
  */
-bool Hero::FreeState::can_start_sword(void) {
+bool Hero::FreeState::can_start_sword() {
   return true;
 }
 
@@ -153,7 +153,7 @@ bool Hero::FreeState::can_start_sword(void) {
  * @brief Returns whether the hero can use an inventory item in this state.
  * @return true if the hero can use an inventoy item in this state
  */
-bool Hero::FreeState::can_start_inventory_item(void) {
+bool Hero::FreeState::can_start_inventory_item() {
   return hero->get_ground() != GROUND_HOLE;
 }
 
@@ -162,7 +162,7 @@ bool Hero::FreeState::can_start_inventory_item(void) {
  * If false is returned, stairs have no effect (but they are obstacle for the hero).
  * @return true if the hero ignores the effect of stairs in this state
  */
-bool Hero::FreeState::can_take_stairs(void) {
+bool Hero::FreeState::can_take_stairs() {
   return true;
 }
 
@@ -171,7 +171,7 @@ bool Hero::FreeState::can_take_stairs(void) {
  * If false is returned, jump sensors have no effect (but they are obstacle for the hero).
  * @return true if the hero can use jump sensors in this state
  */
-bool Hero::FreeState::can_take_jump_sensor(void) {
+bool Hero::FreeState::can_take_jump_sensor() {
   return true;
 }
 
@@ -179,21 +179,21 @@ bool Hero::FreeState::can_take_jump_sensor(void) {
  * @brief Returns whether an item previously carried by the hero should be thrown when this state starts.
  * @return true if an item previously carried by the hero should be thrown when this state starts
  */
-bool Hero::FreeState::can_throw_item(void) {
+bool Hero::FreeState::can_throw_item() {
   return false;
 }
 
 /**
  * Gives the sprites the animation stopped corresponding to this state.
  */
-void Hero::FreeState::set_animation_stopped(void) {
+void Hero::FreeState::set_animation_stopped() {
   hero->get_sprites()->set_animation_stopped_normal();
 }
 
 /**
  * Gives the sprites the animation walking corresponding to this state.
  */
-void Hero::FreeState::set_animation_walking(void) {
+void Hero::FreeState::set_animation_walking() {
   hero->get_sprites()->set_animation_walking_normal();
 }
 

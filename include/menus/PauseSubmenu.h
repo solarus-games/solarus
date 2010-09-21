@@ -38,11 +38,11 @@ class PauseSubmenu {
     PauseSubmenu(PauseMenu *pause_menu, Game *game);
 
     void set_caption_text(const std::string &text);
-    void play_cursor_sound(void);
+    void play_cursor_sound();
 
   public:
 
-    virtual ~PauseSubmenu(void);
+    virtual ~PauseSubmenu();
 
     /**
      * @brief This function is called when a key is pressed on this submenu.
@@ -58,7 +58,7 @@ class PauseSubmenu {
      *
      * This function is called continuously while this submenu is active.
      */
-    virtual void update(void) = 0;
+    virtual void update() = 0;
 
     virtual void display(Surface *destination);
 };

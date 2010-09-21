@@ -28,8 +28,8 @@ class MapLoader {
 
   public:
 
-    MapLoader(void);
-    ~MapLoader(void);
+    MapLoader();
+    ~MapLoader();
 
     void load_map(Game *game, Map *map);
 

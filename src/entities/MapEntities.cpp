@@ -50,7 +50,7 @@ MapEntities::MapEntities(Game *game, Map *map):
 /**
  * @brief Destructor.
  */
-MapEntities::~MapEntities(void) {
+MapEntities::~MapEntities() {
   destroy_all_entities();
 }
 
@@ -59,7 +59,7 @@ MapEntities::~MapEntities(void) {
  *
  * This function is called by the destructor or when the map is unloaded.
  */
-void MapEntities::destroy_all_entities(void) {
+void MapEntities::destroy_all_entities() {
 
   // delete the entities sorted by layer
   for (int layer = 0; layer < LAYER_NB; layer++) {
@@ -93,7 +93,7 @@ void MapEntities::destroy_all_entities(void) {
  * @brief Returns the hero.
  * @return the hero
  */
-Hero * MapEntities::get_hero(void) {
+Hero * MapEntities::get_hero() {
   return hero;
 }
 
@@ -130,7 +130,7 @@ list<MapEntity*> * MapEntities::get_obstacle_entities(Layer layer) {
  * @brief Returns all detectors on the map.
  * @return the detectors
  */
-list<Detector*> * MapEntities::get_detectors(void) {
+list<Detector*> * MapEntities::get_detectors() {
   return &detectors;
 }
 
@@ -490,7 +490,7 @@ void MapEntities::remove_entity(EntityType type, const std::string &name) {
 /**
  * @brief Removes and destroys the entities placed in the entities_to_remove list. 
  */
-void MapEntities::remove_marked_entities(void) {
+void MapEntities::remove_marked_entities() {
 
   list<MapEntity*>::iterator it;
 
@@ -566,7 +566,7 @@ void MapEntities::set_suspended(bool suspended) {
 /**
  * @brief Updates the position, movement and animation each entity.
  */
-void MapEntities::update(void) {
+void MapEntities::update() {
 
   // first update the hero
   hero->update();
@@ -696,14 +696,14 @@ bool MapEntities::overlaps_raised_blocks(Layer layer, const Rectangle &rectangle
  * @brief Returns true if the player has thrown the boomerang.
  * @return true if the boomerang is present on the map
  */
-bool MapEntities::is_boomerang_present(void) {
+bool MapEntities::is_boomerang_present() {
   return boomerang != NULL;
 }
 
 /**
  * @brief Removes the boomerang from the map, if it is present.
  */
-void MapEntities::remove_boomerang(void) {
+void MapEntities::remove_boomerang() {
 
   if (boomerang != NULL) {
     remove_entity(boomerang);
@@ -734,7 +734,7 @@ void MapEntities::start_boss_battle(Enemy *boss) {
  * and freezes the hero.
  * This function is called typically when the player has just picked the heart container.
  */
-void MapEntities::end_boss_battle(void) {
+void MapEntities::end_boss_battle() {
 
   game->play_music("victory.spc");
   game->set_pause_key_available(false);
@@ -765,7 +765,7 @@ void MapEntities::start_miniboss_battle(Enemy *miniboss) {
  * This function stops the previous music (usually, the boss music) and restores the dungeon music.
  * This function is called typically when the player has just killed the miniboss.
  */
-void MapEntities::end_miniboss_battle(void) {
+void MapEntities::end_miniboss_battle() {
   game->play_music(music_before_miniboss);
 }
 

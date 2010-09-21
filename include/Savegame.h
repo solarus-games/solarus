@@ -205,22 +205,22 @@ class Savegame {
 
     Equipment *equipment;
 
-    void set_initial_values(void);
-    void set_default_keyboard_controls(void);
-    void set_default_joypad_controls(void);
-    void check_game_controls(void);
+    void set_initial_values();
+    void set_default_keyboard_controls();
+    void set_default_joypad_controls();
+    void check_game_controls();
 
   public:
 
     // creation and destruction
     Savegame(const std::string &file_name);
     Savegame(Savegame *other);
-    ~Savegame(void);
+    ~Savegame();
 
     // file state
-    bool is_empty(void);
-    void save(void);
-    const std::string& get_file_name(void);
+    bool is_empty();
+    void save();
+    const std::string& get_file_name();
 
     // data
     const std::string get_string(int index);
@@ -233,7 +233,7 @@ class Savegame {
     void set_boolean(int index, bool value);
 
     // unsaved data
-    Equipment *get_equipment(void);
+    Equipment *get_equipment();
 };
 
 #endif

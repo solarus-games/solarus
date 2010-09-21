@@ -70,8 +70,8 @@ class SelectionMenu: public Screen {
     uint32_t next_cloud_move;                            /**< date when the clouds move */
 
     // initialization functions
-    void initialize_clouds(void);
-    void read_savegames(void);
+    void initialize_clouds();
+    void read_savegames();
 
     // displaying elements
     void display_title_text(Surface *destination_surface);
@@ -81,46 +81,46 @@ class SelectionMenu: public Screen {
 
     // creation and destruction
     SelectionMenu(Solarus *solarus);
-    ~SelectionMenu(void);
+    ~SelectionMenu();
 
     // update and display (called by Solarus)
-    void update(void);
+    void update();
     void display(Surface *screen_surface);
     void notify_event(InputEvent &event);
 
     // phase
     void set_next_phase(SelectionMenuPhase *next_phase);
     void start_game(Savegame *savegame);
-    void set_exiting(void);
+    void set_exiting();
 
     // transitions
     void set_transition(Transition *transition);
-    bool has_transition(void);
-    bool is_transition_finished(void);
+    bool has_transition();
+    bool is_transition_finished();
 
     // sounds
-    void play_cursor_sound(void);
-    void play_ok_sound(void);
-    void play_error_sound(void);
-    void play_erase_sound(void);
-    void play_letter_sound(void);
+    void play_cursor_sound();
+    void play_ok_sound();
+    void play_error_sound();
+    void play_erase_sound();
+    void play_letter_sound();
 
     // savegames
-    Savegame ** get_savegames(void);
+    Savegame ** get_savegames();
     Savegame * get_savegame(int save_number);
-    void reload_savegames(void);
+    void reload_savegames();
 
     // texts
     void set_title_text(const std::string &title_string_key);
     void set_bottom_options(const std::string &left_string_key, const std::string &right_string_key);
 
     // cursor
-    Sprite *get_cursor_sprite(void);
-    int get_cursor_position(void);
+    Sprite *get_cursor_sprite();
+    int get_cursor_position();
     void set_cursor_position(int cursor_position);
-    void move_cursor_up(void);
-    void move_cursor_down(void);
-    void move_cursor_left_or_right(void);
+    void move_cursor_up();
+    void move_cursor_down();
+    void move_cursor_left_or_right();
 
     // displaying elements (subclasses of SelectionMenuPhase may call these functions)
     void display_savegame(Surface *destination_surface, int save_number);

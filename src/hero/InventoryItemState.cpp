@@ -32,7 +32,7 @@ Hero::InventoryItemState::InventoryItemState(Hero *hero, const std::string &item
 /**
  * @brief Destructor.
  */
-Hero::InventoryItemState::~InventoryItemState(void) {
+Hero::InventoryItemState::~InventoryItemState() {
   delete item;
 }
 
@@ -54,7 +54,7 @@ void Hero::InventoryItemState::start(State *previous_state) {
 /**
  * @brief Updates this state.
  */
-void Hero::InventoryItemState::update(void) {
+void Hero::InventoryItemState::update() {
 
   State::update();
 

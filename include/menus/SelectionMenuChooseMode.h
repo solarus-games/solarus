@@ -38,11 +38,11 @@ class SelectionMenuChooseMode: public SelectionMenuPhase {
 
     // creation and destruction
     SelectionMenuChooseMode(SelectionMenu *menu);
-    ~SelectionMenuChooseMode(void);
+    ~SelectionMenuChooseMode();
 
     // update and display
     void notify_event(InputEvent &event);
-    void update(void);
+    void update();
     void display(Surface *screen_surface);
 };
 

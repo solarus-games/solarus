@@ -38,14 +38,14 @@ class TransitionFade: public Transition {
   public:
 
     TransitionFade(Direction direction);
-    ~TransitionFade(void);
+    ~TransitionFade();
 
     void set_delay(uint32_t delay);
 
-    void start(void);
-    bool is_started(void);
-    bool is_finished(void);
-    void update(void);
+    void start();
+    bool is_started();
+    bool is_finished();
+    void update();
     void display(Surface *surface);
 
 };

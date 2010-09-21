@@ -45,12 +45,12 @@ class Timer {
   public:
 
     Timer(Game *game, uint32_t duration, const std::string &name, bool with_sound);
-    ~Timer(void);
+    ~Timer();
 
-    const std::string& get_name(void);
-    bool is_finished(void);
+    const std::string& get_name();
+    bool is_finished();
 
-    void update(void);
+    void update();
     void set_suspended(bool suspended);
 };
 

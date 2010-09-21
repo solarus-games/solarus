@@ -38,7 +38,7 @@ ConveyorBelt::ConveyorBelt(Layer layer, int x, int y, int direction):
 /**
  * @brief Destructor.
  */
-ConveyorBelt::~ConveyorBelt(void) {
+ConveyorBelt::~ConveyorBelt() {
 
 }
 

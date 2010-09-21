@@ -31,12 +31,12 @@ class Hero::SwordTappingState: public Hero::State {
   public:
 
     SwordTappingState(Hero *hero);
-    ~SwordTappingState(void);
+    ~SwordTappingState();
 
     void start(State *previous_state);
-    void update(void);
+    void update();
     void set_suspended(bool suspended);
-    bool can_sword_hit_crystal_switch(void);
+    bool can_sword_hit_crystal_switch();
     bool is_cutting_with_sword(Detector *detector);
 };
 

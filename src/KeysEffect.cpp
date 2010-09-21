@@ -19,7 +19,7 @@
 /**
  * @brief Constructor.
  */
-KeysEffect::KeysEffect(void):
+KeysEffect::KeysEffect():
   action_key_effect(ACTION_KEY_NONE), action_key_enabled(true),
   sword_key_effect(SWORD_KEY_NONE), sword_key_enabled(true),
   pause_key_effect(PAUSE_KEY_PAUSE), pause_key_enabled(true),
@@ -30,7 +30,7 @@ KeysEffect::KeysEffect(void):
 /**
  * @brief Destructor.
  */
-KeysEffect::~KeysEffect(void) {
+KeysEffect::~KeysEffect() {
 
 }
 
@@ -40,7 +40,7 @@ KeysEffect::~KeysEffect(void) {
  * @brief Returns the current effect of the action key.
  * @return the current effect of the action key
  */
-KeysEffect::ActionKeyEffect KeysEffect::get_action_key_effect(void) {
+KeysEffect::ActionKeyEffect KeysEffect::get_action_key_effect() {
   return action_key_effect;
 }
 /**
@@ -55,7 +55,7 @@ void KeysEffect::set_action_key_effect(KeysEffect::ActionKeyEffect action_key_ef
  * @brief Returns whether the action key is enabled.
  * @return true if the action key is enabled, false otherwise
  */
-bool KeysEffect::is_action_key_enabled(void) {
+bool KeysEffect::is_action_key_enabled() {
   return action_key_enabled;
 }
 
@@ -72,7 +72,7 @@ void KeysEffect::set_action_key_enabled(bool enable) {
  *
  * Call restore_action_key_effect() to restore the action key saved here.
  */
-void KeysEffect::save_action_key_effect(void) {
+void KeysEffect::save_action_key_effect() {
   this->action_key_effect_saved = get_action_key_effect();
 }
 
@@ -80,7 +80,7 @@ void KeysEffect::save_action_key_effect(void) {
  * @brief Restores the action key effect saved by the last
  * call to save_action_key_effect().
  */
-void KeysEffect::restore_action_key_effect(void) {
+void KeysEffect::restore_action_key_effect() {
   this->action_key_effect = action_key_effect_saved;
 }
 
@@ -93,7 +93,7 @@ void KeysEffect::restore_action_key_effect(void) {
  *
  * @return true if the action key is acting on the facing entity
  */
-bool KeysEffect::is_action_key_acting_on_facing_entity(void) {
+bool KeysEffect::is_action_key_acting_on_facing_entity() {
   return action_key_effect == ACTION_KEY_LOOK
     || action_key_effect == ACTION_KEY_OPEN
     || action_key_effect == ACTION_KEY_LIFT
@@ -107,7 +107,7 @@ bool KeysEffect::is_action_key_acting_on_facing_entity(void) {
  * @brief Returns the current effect of the sword key.
  * @return the current effect of the sword key
  */
-KeysEffect::SwordKeyEffect KeysEffect::get_sword_key_effect(void) {
+KeysEffect::SwordKeyEffect KeysEffect::get_sword_key_effect() {
   return sword_key_effect;
 }
 
@@ -123,7 +123,7 @@ void KeysEffect::set_sword_key_effect(KeysEffect::SwordKeyEffect sword_key_effec
  * @brief Returns whether the sword key is enabled.
  * @return true if the sword key is enabled, false otherwise
  */
-bool KeysEffect::is_sword_key_enabled(void) {
+bool KeysEffect::is_sword_key_enabled() {
   return sword_key_enabled;
 }
 
@@ -140,7 +140,7 @@ void KeysEffect::set_sword_key_enabled(bool enable) {
  *
  * Call restore_sword_key_effect to restore the sword key saved here.
  */
-void KeysEffect::save_sword_key_effect(void) {
+void KeysEffect::save_sword_key_effect() {
   this->sword_key_effect_saved = get_sword_key_effect();
 }
 
@@ -148,7 +148,7 @@ void KeysEffect::save_sword_key_effect(void) {
  * @brief Restores the sword key effect saved by the last
  * call to save_sword_key_effect().
  */
-void KeysEffect::restore_sword_key_effect(void) {
+void KeysEffect::restore_sword_key_effect() {
   this->sword_key_effect = sword_key_effect_saved;
 }
 
@@ -159,7 +159,7 @@ void KeysEffect::restore_sword_key_effect(void) {
  * @brief Returns the current effect of the pause key.
  * @return the current effect of the pause key
  */
-KeysEffect::PauseKeyEffect KeysEffect::get_pause_key_effect(void) {
+KeysEffect::PauseKeyEffect KeysEffect::get_pause_key_effect() {
   return pause_key_effect;
 }
 
@@ -175,7 +175,7 @@ void KeysEffect::set_pause_key_effect(KeysEffect::PauseKeyEffect pause_key_effec
  * @brief Returns whether the pause key is enabled.
  * @return true if the pause key is enabled, false otherwise
  */
-bool KeysEffect::is_pause_key_enabled(void) {
+bool KeysEffect::is_pause_key_enabled() {
   return pause_key_enabled;
 }
 
@@ -193,7 +193,7 @@ void KeysEffect::set_pause_key_enabled(bool enable) {
  * @brief Returns whether the two item keys are enabled.
  * @return true if the two item keys are enabled, false otherwise
  */
-bool KeysEffect::are_item_keys_enabled(void) {
+bool KeysEffect::are_item_keys_enabled() {
   return item_keys_enabled;
 }
 

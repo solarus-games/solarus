@@ -43,20 +43,20 @@ class SpriteAnimationDirection {
     // creation and destruction
     SpriteAnimationDirection(int nb_frames, Rectangle *frames,
 	int x_origin, int y_origin);
-    virtual ~SpriteAnimationDirection(void);
+    virtual ~SpriteAnimationDirection();
 
     // size and origin point
-    const Rectangle & get_size(void) const;
-    const Rectangle & get_origin(void) const;
+    const Rectangle & get_size() const;
+    const Rectangle & get_origin() const;
 
     // frames
-    int get_nb_frames(void) const;
+    int get_nb_frames() const;
     const Rectangle & get_frame(int frame) const;
     void display(Surface *destination, int x, int y, int current_frame, Surface *src_image);
 
     // pixel collisions
     void enable_pixel_collisions(Surface *src_image);
-    bool are_pixel_collisions_enabled(void) const;
+    bool are_pixel_collisions_enabled() const;
     PixelBits *get_pixel_bits(int frame) const;
 };
 

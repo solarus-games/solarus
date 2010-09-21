@@ -72,20 +72,20 @@ class CircleMovement: public Movement {
     uint32_t loop_delay;                            /**< if not zero, when the movement finishes, it will start again after this delay */
     uint32_t restart_date;                          /**< date when the movement restarts */
 
-    void recompute_position(void);
+    void recompute_position();
 
   public:
 
     // creation and destruction
-    CircleMovement(void);
-    ~CircleMovement(void);
+    CircleMovement();
+    ~CircleMovement();
 
     // state
-    void update(void);
+    void update();
     void set_suspended(bool suspended);
-    void start(void);
-    void stop(void);
-    bool is_started(void);
+    void start();
+    void stop();
+    bool is_started();
 
     // properties
     void set_center(const Rectangle &center_point);

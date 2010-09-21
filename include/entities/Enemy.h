@@ -157,17 +157,17 @@ class Enemy: public Detector {
     /**
      * @brief Initializes the features, the sprites and the movement.
      */
-    virtual void initialize(void) = 0;
-    virtual void restart(void);
+    virtual void initialize() = 0;
+    virtual void restart();
 
-    void stop_movement(void);
-    void restore_movement(void);
+    void stop_movement();
+    void restore_movement();
 
     // functions available to the subclasses to define the enemy type properties (they can also change directly the fields)
     void set_damage(int damage_on_hero);
     void set_damage(int damage_on_hero, int magic_damage_on_hero);
     void set_life(int life);
-    int get_life(void);
+    int get_life();
     void set_pushed_back_when_hurt(bool pushed_back_when_hurt);
     void set_push_back_hero_on_sword(bool push_back_hero_on_sword);
     void set_features(int damage_on_hero, int life);
@@ -175,41 +175,41 @@ class Enemy: public Detector {
     void set_features(int damage_on_hero, int life, HurtSoundStyle hurt_sound_style,
 	bool pushed_back_when_hurt, bool push_back_hero_on_sword, int minimum_shield_needed);
     void set_attack_consequence(EnemyAttack attack, int consequence);
-    void set_no_attack_consequences(void);
-    void set_default_attack_consequences(void);
+    void set_no_attack_consequences();
+    void set_default_attack_consequences();
 
     // hurt the enemy
-    void play_hurt_sound(void);
-    bool is_in_normal_state(void);
-    bool is_being_hurt(void);
-    bool is_immobilized(void);
-    bool is_killed(void);
-    bool is_dying_animation_finished(void);
+    void play_hurt_sound();
+    bool is_in_normal_state();
+    bool is_being_hurt();
+    bool is_immobilized();
+    bool is_killed();
+    bool is_dying_animation_finished();
     void hurt(MapEntity *source);
-    bool is_sprite_finished_or_looping(void);
-    void immobilize(void);
-    void stop_immobilized(void);
+    bool is_sprite_finished_or_looping();
+    void immobilize();
+    void stop_immobilized();
     virtual int custom_attack(EnemyAttack attack, Sprite *this_sprite);
     virtual void just_hurt(MapEntity *source, EnemyAttack attack, int life_points);
-    virtual void just_dead(void);
+    virtual void just_dead();
 
     // animation
-    const std::string& get_animation(void);
+    const std::string& get_animation();
     void set_animation(const std::string &animation);
 
   public:
 
     // creation and destruction
-    virtual ~Enemy(void);
+    virtual ~Enemy();
 
     static CreationFunction parse;
     static MapEntity * create(Game *game, Subtype type, Rank rank, int savegame_variable,
 	const std::string &name, Layer layer, int x, int y, int direction,
 	Treasure *treasure);
 
-    EntityType get_type(void);
+    EntityType get_type();
     void set_map(Map *map);
-    Rank get_rank(void);
+    Rank get_rank();
 
     // obstacles
     bool is_obstacle_for(MapEntity *other);
@@ -217,25 +217,25 @@ class Enemy: public Detector {
     bool is_destructible_item_obstacle(DestructibleItem *destructible_item);
 
     // enemy state
-    virtual void update(void);
+    virtual void update();
     virtual void set_suspended(bool suspended);
-    bool is_enabled(void);
+    bool is_enabled();
     void set_enabled(bool enabled);
-    bool is_visible(void);
+    bool is_visible();
     void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
     void notify_collision(MapEntity *other_entity, Sprite *other_sprite, Sprite *this_sprite);
     void notify_collision_with_explosion(Explosion *explosion, Sprite *sprite_overlapping);
 
     // attack the hero
     void attack_hero(Hero *hero, Sprite *this_sprite);
-    void attack_stopped_by_hero_shield(void);
+    void attack_stopped_by_hero_shield();
 
     // be subject to an attack
     int get_attack_consequence(EnemyAttack attack);
     virtual int get_attack_consequence(EnemyAttack attack, Sprite *this_sprite);
     void try_hurt(EnemyAttack attack, MapEntity *source, Sprite *this_sprite);
-    void kill(void);
-    bool is_dying(void);
+    void kill();
+    bool is_dying();
 };
 
 #endif

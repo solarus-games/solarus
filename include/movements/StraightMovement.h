@@ -39,12 +39,12 @@ class StraightMovement: public SmoothCollisionMovement {
     StraightMovement(int speed, int direction, uint32_t time, bool smooth = true);
     StraightMovement(int speed, double direction, uint32_t time, bool smooth = true);
     StraightMovement(int speed, const Rectangle &source_xy, const Rectangle &target_xy, uint32_t time, bool smooth = true);
-    ~StraightMovement(void);
+    ~StraightMovement();
 
-    void update(void);
+    void update();
     void set_suspended(bool suspended);
-    bool is_finished(void);
-    void set_finished(void);
+    bool is_finished();
+    void set_finished();
     void start(int speed, int direction, uint32_t time);
     void start(int speed, double direction, uint32_t time);
 };

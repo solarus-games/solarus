@@ -33,15 +33,15 @@ class SimpleGreenSoldier: public Enemy {
 
   protected:
 
-    void initialize(void);
-    void restart(void);
+    void initialize();
+    void restart();
 
   public:
 
     SimpleGreenSoldier(const ConstructionParameters &params);
-    ~SimpleGreenSoldier(void);
+    ~SimpleGreenSoldier();
 
-    void update(void);
+    void update();
     void notify_movement_tried(bool success);
 };
 

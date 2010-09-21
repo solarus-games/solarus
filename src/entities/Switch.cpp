@@ -21,6 +21,8 @@
 #include "Map.h"
 #include "MapScript.h"
 #include "lowlevel/FileTools.h"
+#include "lowlevel/Debug.h"
+#include "lowlevel/StringConcat.h"
 
 /**
  * @brief Constructor.
@@ -40,9 +42,8 @@ Switch::Switch(const std::string &name, Layer layer, int x, int y,
   needs_block(needs_block), disable_when_leaving(disable_when_leaving),
   entity_overlapping(NULL) {
 
-  if (subtype == WALKABLE_INVISIBLE && needs_block) {
-    DIE("The switch '" << name << "' is invisible but needs a block");
-  }
+  Debug::assert(subtype != WALKABLE_INVISIBLE || !needs_block,
+      StringConcat() << "The switch '" << name << "' is invisible but needs a block");
 
   // sprite
   if (subtype == WALKABLE_VISIBLE) {

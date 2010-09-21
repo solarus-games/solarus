@@ -15,6 +15,8 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lowlevel/SpcDecoder.h"
+#include "lowlevel/Debug.h"
+#include "lowlevel/StringConcat.h"
 
 /**
  * @brief Creates an SPC decoder.
@@ -60,9 +62,7 @@ void SpcDecoder::decode(int16_t *decoded_data, int nb_samples) {
   // decode from the SPC data the specified number of PCM samples
 
   const char *err = spc_play(snes_spc_manager, nb_samples, (short int*) decoded_data);
-  if (err != NULL) {
-    DIE("Failed to decode SPC data: " << err);
-  }
+  Debug::assert(err == NULL, StringConcat() << "Failed to decode SPC data: " << err);
   spc_filter_run(snes_spc_filter, (short int*) decoded_data, nb_samples);
 }
 

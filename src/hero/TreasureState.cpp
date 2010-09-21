@@ -23,6 +23,7 @@
 #include "DialogBox.h"
 #include "Map.h"
 #include "MapScript.h"
+#include <sstream>
 
 /**
  * @brief Constructor.

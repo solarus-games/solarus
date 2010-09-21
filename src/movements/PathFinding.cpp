@@ -17,6 +17,7 @@
 #include "movements/PathFinding.h"
 #include "entities/MapEntity.h"
 #include "Map.h"
+#include "lowlevel/Debug.h"
 
 const Rectangle PathFinding::neighbours_locations[] = {
   Rectangle( 8,  0, 16, 16 ),
@@ -53,11 +54,12 @@ PathFinding::PathFinding(Map *map, MapEntity *source_entity, MapEntity *target_e
   const Rectangle &source = source_entity->get_bounding_box();
   const Rectangle &target = target_entity->get_bounding_box();
 
-  if (!source_entity->is_aligned_to_grid() ||
-      source.get_width() % 16 != 0 || source.get_height() % 16 != 0 ||
-      target.get_width() % 16 != 0 || target.get_height() % 16 != 0) {
-    DIE("The source and the target must be 16*16 rectangles and the source must be aligned on the map grid");
-  }
+  Debug::assert(source_entity->is_aligned_to_grid()
+      && source.get_width() % 16 == 0
+      && source.get_height() % 16 == 0
+      && target.get_width() % 16 == 0
+      && target.get_height() % 16 == 0,
+      "The source and the target must be 16*16 rectangles and the source must be aligned on the map grid");
 }
 
 /**
@@ -85,9 +87,8 @@ std::string PathFinding::compute_path(void) {
   target.add_y(-target.get_y() % 8);
   int target_index = get_square_index(target);
 
-  if (target.get_x() % 8 != 0 || target.get_y() % 8 != 0) {
-    DIE("Could not snap the target to the map grid");
-  }
+  Debug::assert(target.get_x() % 8 == 0 && target.get_y() % 8 == 0,
+      "Could not snap the target to the map grid");
 
   int total_mdistance = get_manhattan_distance(source, target) * 10;
   if (total_mdistance > 250 || target_entity->get_layer() != source_entity->get_layer()) {

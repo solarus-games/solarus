@@ -23,6 +23,7 @@
 #include "Sprite.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/System.h"
+#include "lowlevel/Debug.h"
 
 /**
  * @brief Creates a block.
@@ -45,9 +46,7 @@ Block::Block(const std::string &name, Layer layer, int x, int y,
   set_origin(8, 13);
   if (subtype == STATUE) {
 
-    if (direction != -1) {
-      DIE("Cannot set only one direction for a statue");
-    }
+    Debug::assert(direction == -1, "Cannot set a direction for a statue");
     create_sprite("entities/statue");
   }
   else {

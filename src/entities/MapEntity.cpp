@@ -41,6 +41,8 @@
 #include "movements/Movement.h"
 #include "lowlevel/Geometry.h"
 #include "lowlevel/System.h"
+#include "lowlevel/Debug.h"
+#include "lowlevel/StringConcat.h"
 #include "Sprite.h"
 #include "SpriteAnimationSet.h"
 #include "Map.h"
@@ -708,11 +710,10 @@ Sprite * MapEntity::get_sprite(void) {
  */
 Sprite * MapEntity::get_sprite(const SpriteAnimationSetId &id) {
 
-  Sprite *sprite = sprites[id];
-  if (sprite == NULL) {
-    DIE("Cannot find sprite '" << id << "' for entity '" << get_name() << "'");
-  }
-  return sprite;
+  Debug::assert(sprites.count(id) > 0, 
+    StringConcat() << "Cannot find sprite '" << id << "' for entity '" << get_name() << "'");
+
+  return sprites[id];
 }
 
 /**

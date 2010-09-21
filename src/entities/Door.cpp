@@ -26,6 +26,7 @@
 #include "Savegame.h"
 #include "Map.h"
 #include "lowlevel/FileTools.h"
+#include "lowlevel/Debug.h"
 #include <list>
 
 const std::string Door::animations[] = {
@@ -350,13 +351,8 @@ SoundId Door::get_sword_tapping_sound(void) {
  */
 void Door::open(void) {
 
-  if (subtype != CLOSED) {
-    DIE("This kind of door cannot be open or closed directly");
-  }
-
-  if (is_open()) {
-    DIE("This door is already open");
-  }
+  Debug::assert(subtype == CLOSED, "This kind of door cannot be open or closed directly");
+  Debug::assert(!is_open(), "This door is already open");
 
   set_opening();
 
@@ -382,9 +378,7 @@ void Door::set_opening(void) {
  */
 void Door::close(void) {
 
-  if (!is_open()) {
-    DIE("This door is already closed");
-  }
+  Debug::assert(is_open(), "This door is already closed");
 
   set_closing();
 

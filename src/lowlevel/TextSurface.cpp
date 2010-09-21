@@ -19,6 +19,8 @@
 #include "lowlevel/System.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/IniFile.h"
+#include "lowlevel/Debug.h"
+#include "lowlevel/StringConcat.h"
 
 std::map<std::string, TextSurface::FontData> TextSurface::fonts;
 std::string TextSurface::default_font_id = "";
@@ -37,13 +39,9 @@ void TextSurface::initialize(void) {
     // get the font metadata
     std::string font_id = ini.get_group();
     std::string file_name = ini.get_string_value("file", "");
-    if (file_name.size() == 0) {
-      DIE("Missing font file name in file 'text/fonts.dat' for group '" << font_id << "'");
-    }
+    Debug::assert(file_name.size() > 0, StringConcat() << "Missing font file name in file 'text/fonts.dat' for group '" << font_id << "'");
     int font_size = ini.get_integer_value("size", 0);
-    if (font_size == 0) {
-      DIE("Missing font size in file 'text/fonts.dat' for group '" << font_id << "'");
-    }
+    Debug::assert(font_size > 0, StringConcat() << "Missing font size in file 'text/fonts.dat' for group '" << font_id << "'");
     fonts[font_id].file_name = file_name;
     fonts[font_id].font_size = font_size;
 
@@ -56,14 +54,10 @@ void TextSurface::initialize(void) {
     FileTools::data_file_open_buffer(file_name, &fonts[font_id].buffer, &size);
     fonts[font_id].rw = SDL_RWFromMem(fonts[font_id].buffer, size);
     fonts[font_id].internal_font = TTF_OpenFontRW(fonts[font_id].rw, 0, font_size);
-    if (fonts[font_id].internal_font == NULL) {
-      DIE("Cannot load font from file '" << file_name << "': " << TTF_GetError());
-    }
+    Debug::assert(fonts[font_id].internal_font != NULL, StringConcat() << "Cannot load font from file '" << file_name << "': " << TTF_GetError());
   }
 
-  if (default_font_id.size() == 0) {
-    DIE("No default font set in file 'text/fonts.dat'");
-  }
+  Debug::assert(default_font_id.size() > 0, "No default font set in file 'text/fonts.dat'");
 }
 
 /**
@@ -348,9 +342,7 @@ void TextSurface::rebuild(void) {
     break;
   }
 
-  if (internal_surface == NULL) {
-    DIE("Cannot create the text surface for string '" << text << "': " << SDL_GetError());
-  }
+  Debug::assert(internal_surface != NULL, StringConcat() << "Cannot create the text surface for string '" << text << "': " << SDL_GetError());
   surface = new Surface(internal_surface);
 
   // calculate the coordinates of the top-left corner

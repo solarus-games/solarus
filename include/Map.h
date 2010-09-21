@@ -174,5 +174,17 @@ class Map {
     void display_sprite(Sprite *sprite, int x, int y);
 };
 
+/**
+ * @brief Tests whether a point is outside the map area.
+ * @param x x of the point to check
+ * @param y y of the point to check
+ * @return true if this point is outside the map area
+ */
+inline bool Map::test_collision_with_border(int x, int y) {
+
+  return (x < 0 || y < 0 || x >= location.get_width() || y >= location.get_height());
+}
+
+
 #endif
 

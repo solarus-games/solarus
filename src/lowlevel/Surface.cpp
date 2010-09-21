@@ -18,6 +18,8 @@
 #include "lowlevel/Color.h"
 #include "lowlevel/Rectangle.h"
 #include "lowlevel/FileTools.h"
+#include "lowlevel/Debug.h"
+#include "lowlevel/StringConcat.h"
 #include <SDL/SDL_image.h>
 
 /**
@@ -58,9 +60,7 @@ Surface::Surface(const std::string &file_name, ImageDirectory base_directory):
   FileTools::data_file_close_buffer(buffer);
   SDL_RWclose(rw);
 
-  if (internal_surface == NULL) {
-    DIE("Cannot load image '" << prefixed_file_name << "'");
-  }
+  Debug::assert(internal_surface != NULL, StringConcat() << "Cannot load image '" << prefixed_file_name << "'");
 }
 
 /**

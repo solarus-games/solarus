@@ -19,6 +19,8 @@
 #include "lowlevel/Color.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/IniFile.h"
+#include "lowlevel/Debug.h"
+#include "lowlevel/StringConcat.h"
 #include "Configuration.h"
 
 VideoManager *VideoManager::instance = NULL;
@@ -208,9 +210,7 @@ void VideoManager::set_video_mode(VideoMode mode) {
 
   SDL_Surface *screen_internal_surface = SDL_SetVideoMode(size.get_width(), size.get_height(), 32, flags);
 
-  if (screen_internal_surface == NULL) {
-    DIE("Cannot create the video surface for mode " << mode);
-  }
+  Debug::assert(screen_internal_surface != NULL, StringConcat() << "Cannot create the video surface for mode " << mode);
 
   SDL_ShowCursor(show_cursor);
   this->video_mode = mode;
@@ -258,7 +258,7 @@ void VideoManager::display(Surface *src_surface) {
       break;
 
     default:
-      DIE("Unknown video mode " << video_mode);
+      Debug::die(StringConcat() << "Unknown video mode " << video_mode);
       break;
   }
 

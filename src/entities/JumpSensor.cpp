@@ -17,6 +17,7 @@
 #include "entities/JumpSensor.h"
 #include "entities/Hero.h"
 #include "lowlevel/FileTools.h"
+#include "lowlevel/Debug.h"
 
 /**
  * @brief Creates a jump sensor.
@@ -38,26 +39,18 @@ JumpSensor::JumpSensor(const std::string &name, Layer layer, int x, int y, int w
 
   // check the size
   if (direction % 2 != 0) {
-    if (width != height) {
-      DIE("This jump sensor has a diagonal direction but is not square");
-    }
+    Debug::assert(width == height, "This jump sensor has a diagonal direction but is not square");
   }
   else {
     if (direction % 4 == 0) {
-      if (width != 8) {
-	DIE("This jump sensor is horizontal but its height is not 8");
-      }
+      Debug::assert(width == 8, "This jump sensor is horizontal but its height is not 8");
     }
     else {
-      if (height != 8) {
-	DIE("This jump sensor is vertical but its width is not 8");
-      }
+      Debug::assert(height == 8, "This jump sensor is vertical but its width is not 8");
     }
   }
   // check the jump length
-  if (jump_length < 16) {
-    DIE("The jump length of this jump sensor is lower than 16");
-  }
+  Debug::assert(jump_length >= 16, "The jump length of this jump sensor is lower than 16");
 }
 
 /**
@@ -191,8 +184,7 @@ bool JumpSensor::is_point_in_diagonal(const Rectangle &point) {
     break;
 
   default:
-    DIE("Invalid direction of jump sensor");
-
+    Debug::die("Invalid direction of jump sensor");
   }
 
   return collision;

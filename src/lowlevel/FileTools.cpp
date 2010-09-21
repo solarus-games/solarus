@@ -16,6 +16,8 @@
  */
 #include "lowlevel/FileTools.h"
 #include "lowlevel/IniFile.h"
+#include "lowlevel/Debug.h"
+#include "lowlevel/StringConcat.h"
 #include "Configuration.h"
 #include "StringResource.h"
 #include <physfs.h>
@@ -78,7 +80,7 @@ void FileTools::initialize(int argc, char **argv) {
 
   // first, create the directory
    if (!PHYSFS_setWriteDir(PHYSFS_getUserDir())) {
-    DIE("Cannot write in user directory:" << PHYSFS_getLastError());
+     Debug::die(StringConcat() << "Cannot write in user directory:" << PHYSFS_getLastError());
   }
   IniFile ini("quest.dat", IniFile::READ);
   ini.set_group("info");
@@ -88,7 +90,7 @@ void FileTools::initialize(int argc, char **argv) {
   // then set this directory as the write directory
   write_dir = (std::string) PHYSFS_getUserDir() + write_dir;
   if (!PHYSFS_setWriteDir(write_dir.c_str())) {
-    DIE("Cannot set write dir '" << write_dir << "': " << PHYSFS_getLastError());
+    Debug::die(StringConcat() << "Cannot set write dir '" << write_dir << "': " << PHYSFS_getLastError());
   }
   PHYSFS_addToSearchPath(PHYSFS_getWriteDir(), 0);     // directory for writing files (savegames and configuration file)
 
@@ -116,9 +118,8 @@ void FileTools::initialize_languages(const std::string &arg_language) {
 
     std::string language_code = ini.get_group();
     std::string language_name = ini.get_string_value("name", "");
-    if (language_name.size() == 0) {
-      DIE("Missing language name in file 'languages/languages.dat' for group '" << language_code << "'");
-    }
+    Debug::assert(language_name.size() != 0,
+	StringConcat() << "Missing language name in file 'languages/languages.dat' for group '" << language_code << "'");
     languages[language_code] = language_name;
 
     if (ini.get_boolean_value("default", false)) {
@@ -147,9 +148,7 @@ void FileTools::initialize_languages(const std::string &arg_language) {
  */
 void FileTools::set_language(const std::string &language_code) {
 
-  if (languages[language_code] == "") {
-    DIE("Unknown language '" << language_code << "'");
-  }
+  Debug::assert(languages[language_code].size() > 0, StringConcat() << "Unknown language '" << language_code << "'");
   FileTools::language_code = language_code;
   Configuration::set_value("language", language_code);
   StringResource::initialize();
@@ -247,21 +246,15 @@ void FileTools::data_file_open_buffer(const std::string &file_name, char **buffe
   }
 
   // open the file
-  if (!PHYSFS_exists(full_file_name.c_str())) {
-    DIE("Data file " << full_file_name << " does not exist");
-  }
+  Debug::assert(PHYSFS_exists(full_file_name.c_str()), StringConcat() << "Data file " << full_file_name << " does not exist");
   PHYSFS_file* file = PHYSFS_openRead(full_file_name.c_str());
-  if (file == NULL) {
-    DIE("Cannot open data file " << full_file_name);
-  }
+  Debug::assert(file != NULL, StringConcat() << "Cannot open data file " << full_file_name);
 
   // load it into memory
   *size = PHYSFS_fileLength(file);
 
   *buffer = new char[*size];
-  if (buffer == NULL) {
-    DIE("Cannot allocate memory to read file " << full_file_name);
-  }
+  Debug::assert(buffer != NULL, StringConcat() << "Cannot allocate memory to read file " << full_file_name);
 
   PHYSFS_read(file, *buffer, 1, *size);
   PHYSFS_close(file);
@@ -278,13 +271,11 @@ void FileTools::data_file_save_buffer(const std::string &file_name, const char *
 
   // open the file to write
   PHYSFS_file *file = PHYSFS_openWrite(file_name.c_str());
-  if (file == NULL) {
-    DIE("Cannot open file '" << file_name << "' for writing: " << PHYSFS_getLastError());
-  }
+  Debug::assert(file != NULL, StringConcat() << "Cannot open file '" << file_name << "' for writing: " << PHYSFS_getLastError());
  
   // save the memory buffer 
   if (PHYSFS_write(file, buffer, size, 1) == -1) {
-    DIE("Cannot write file '" << file_name << "': " << PHYSFS_getLastError());
+    Debug::die(StringConcat() << "Cannot write file '" << file_name << "': " << PHYSFS_getLastError());
   }
   PHYSFS_close(file);
 }
@@ -314,8 +305,9 @@ void FileTools::data_file_delete(const std::string &file_name) {
  * @param value the value read
  */
 void FileTools::read(std::istream &is, int &value) {
+
   if (!(is >> value)) {
-    DIE("Cannot read integer from input stream");
+    Debug::die("Cannot read integer from input stream");
   }
 }
 
@@ -328,11 +320,10 @@ void FileTools::read(std::istream &is, int &value) {
  * @param value the value read
  */
 void FileTools::read(std::istream &is, uint32_t &value) {
+
   int v;
   read(is, v);
-  if (v < 0) {
-    DIE("Positive integer value expected from input stream");
-  }
+  Debug::assert(v >= 0, "Positive integer value expected from input stream");
   value = (uint32_t) v;
 }
 
@@ -345,8 +336,9 @@ void FileTools::read(std::istream &is, uint32_t &value) {
  * @param value the value read
  */
 void FileTools::read(std::istream &is, std::string &value) {
+
   if (!(is >> value)) {
-    DIE("Cannot read string from input stream");
+    Debug::die("Cannot read string from input stream");
   }
 }
 

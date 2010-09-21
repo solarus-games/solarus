@@ -18,6 +18,7 @@
 #include "Equipment.h"
 #include "lowlevel/IniFile.h"
 #include <map>
+#include <sstream>
 
 /**
  * @brief Creates the properties of an item by parsing a group of the specified ini file

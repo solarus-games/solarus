@@ -26,6 +26,8 @@
 #include "Game.h"
 #include "Map.h"
 #include "lowlevel/System.h"
+#include "lowlevel/Debug.h"
+#include "lowlevel/StringConcat.h"
 
 /**
  * @brief Creates an arrow.
@@ -240,7 +242,7 @@ const Rectangle Arrow::get_facing_point(void) {
       break;
 
     default:
-      DIE("Invalid direction for Arrow::get_facing_point(): " << direction);
+      Debug::die(StringConcat() << "Invalid direction for Arrow::get_facing_point(): " << direction);
   }
 
   return facing_point;
@@ -369,9 +371,7 @@ bool Arrow::is_flying(void) {
  */
 void Arrow::attach_to(MapEntity *entity_reached) {
 
-  if (this->entity_reached != NULL) {
-    DIE("This arrow is already attached to an entity");
-  }
+  Debug::assert(this->entity_reached == NULL, "This arrow is already attached to an entity");
 
   this->entity_reached = entity_reached;
   stop_now = true;

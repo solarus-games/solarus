@@ -20,6 +20,7 @@
 #include "lowlevel/Color.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Surface.h"
+#include "lowlevel/Debug.h"
 
 /**
  * @brief Position where the previous map is blitted on both_maps_surface,
@@ -155,9 +156,7 @@ void TransitionScrolling::display(Surface *surface) {
     return;
   }
 
-  if (previous_surface == NULL) {
-    DIE("No previous surface defined for scrolling");
-  }
+  Debug::assert(previous_surface != NULL, "No previous surface defined for scrolling");
 
   // draw the old map
   previous_surface->blit(both_maps_surface, previous_map_dst_position); 

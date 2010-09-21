@@ -22,6 +22,8 @@
 #include "StringResource.h"
 #include "menus/PauseMenu.h"
 #include "entities/Hero.h"
+#include "lowlevel/Debug.h"
+#include "lowlevel/StringConcat.h"
 
 const std::string GameControls::direction_names[] = {"right", "up", "left", "down"};
 
@@ -593,22 +595,16 @@ void GameControls::game_key_released(GameKey key) {
  */
 InputEvent::KeyboardKey GameControls::get_keyboard_key(GameKey game_key) {
 
-  bool found = false;
-  InputEvent::KeyboardKey keyboard_key = InputEvent::KEY_NONE;
   std::map<InputEvent::KeyboardKey, GameKey>::const_iterator it;
   for (it = keyboard_mapping.begin(); it != keyboard_mapping.end(); it++) {
 
     if (it->second == game_key) {
-      keyboard_key = it->first;
-      found = true;
+      return it->first;
     }
   }
 
-  if (!found) {
-    DIE("No keyboard key is defined for game key '" << get_key_name(game_key) << "'");
-  }
-
-  return keyboard_key;
+  Debug::die(StringConcat() << "No keyboard key is defined for game key '" << get_key_name(game_key) << "'");
+  return InputEvent::KEY_NONE;
 }
 
 /**
@@ -617,7 +613,7 @@ InputEvent::KeyboardKey GameControls::get_keyboard_key(GameKey game_key) {
  * @param game_key a game key
  * @return the joypad action corresponding this game key
  */
-const std::string & GameControls::get_joypad_string(GameKey game_key) {
+const std::string GameControls::get_joypad_string(GameKey game_key) {
 
   std::map<std::string, GameKey>::const_iterator it;
   for (it = joypad_mapping.begin(); it != joypad_mapping.end(); it++) {
@@ -627,7 +623,8 @@ const std::string & GameControls::get_joypad_string(GameKey game_key) {
     }
   }
 
-  DIE("No joypad action is defined for game key '" << get_key_name(game_key) << "'");
+  Debug::die(StringConcat() << "No joypad action is defined for game key '" << get_key_name(game_key) << "'");
+  return "";
 }
 
 // customization
@@ -660,9 +657,8 @@ bool GameControls::is_customizing(void) {
  * @return the key being customize
  */
 GameControls::GameKey GameControls::get_key_to_customize(void) {
-  if (!is_customizing()) {
-    DIE("The player is not customizing a key");
-  }
+
+  Debug::assert(is_customizing(), "The player is not customizing a key");
   return key_to_customize;
 }
 

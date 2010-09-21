@@ -16,8 +16,10 @@
  */
 #include "enemies/Bubble.h"
 #include "movements/CollisionMovement.h"
-#include "lowlevel/Random.h"
 #include "Sprite.h"
+#include "lowlevel/Random.h"
+#include "lowlevel/Debug.h"
+#include "lowlevel/StringConcat.h"
 
 /**
  * @brief Constructor.
@@ -76,12 +78,11 @@ void Bubble::restart(void) {
  */
 void Bubble::go(int movement_direction8) {
 
-  if (movement_direction8 != 1 &&
-      movement_direction8 != 3 &&
-      movement_direction8 != 5 &&
-      movement_direction8 != 7) {
-    DIE("Invalid Bubble direction: " << movement_direction8);
-  }
+  Debug::assert(movement_direction8 == 1
+      || movement_direction8 == 3
+      || movement_direction8 == 5
+      || movement_direction8 == 7,
+      StringConcat() << "Invalid Bubble direction: " << movement_direction8);
 
   this->movement_direction8 = movement_direction8;
   get_movement()->set_speed(8);

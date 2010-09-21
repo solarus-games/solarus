@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lowlevel/Rectangle.h"
+#include <iostream>
 
 /**
  * @brief Creates a rectangle, specifying its properties.
@@ -105,6 +106,7 @@ Rectangle Rectangle::get_center(void) {
  * @param rectangle a rectangle
  */
 std::ostream & operator <<(std::ostream &stream, const Rectangle &rectangle) {
+
   stream << "(" << rectangle.get_x() << "," << rectangle.get_y() << ") x ("
     << rectangle.get_width() << "," << rectangle.get_height() << ")";
   return stream;

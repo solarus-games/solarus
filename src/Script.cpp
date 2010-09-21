@@ -27,6 +27,8 @@
 #include "lowlevel/Sound.h"
 #include "lowlevel/Music.h"
 #include "lowlevel/FileTools.h"
+#include "lowlevel/Debug.h"
+#include "lowlevel/StringConcat.h"
 #include <lua.hpp>
 
 /**
@@ -164,9 +166,7 @@ void Script::register_available_functions(void) {
 void Script::called_by_script(lua_State *context, int nb_arguments, Script **script) {
 
   // check the number of arguments
-  if (lua_gettop(context) != nb_arguments) {
-    DIE("Invalid number of arguments");
-  }
+  Debug::assert(lua_gettop(context) == nb_arguments, "Invalid number of arguments");
 
   // retrieve the Script object
   if (script != NULL) {
@@ -797,9 +797,7 @@ int Script::l_savegame_set_string(lua_State *l) {
   int index = lua_tointeger(l, 1);
   const std::string &value = lua_tostring(l, 2);
 
-  if (index < 32) {
-    DIE("Cannot change savegame string '" << index << "': string variables below 32 are read-only");
-  }
+  Debug::assert(index >= 32, StringConcat() << "Cannot change savegame string #" << index << ": string variables below 32 are read-only");
 
   script->game->get_savegame()->set_string(index, value);
 
@@ -820,9 +818,7 @@ int Script::l_savegame_set_integer(lua_State *l) {
   int index = lua_tointeger(l, 1);
   int value = lua_tointeger(l, 2);
 
-  if (index < 1024) {
-    DIE("Cannot change savegame integer '" << index << "': integer variables below 1024 are read-only");
-  }
+  Debug::assert(index >= 1024, StringConcat() << "Cannot change savegame integer #" << index << ": integer variables below 1024 are read-only");
 
   script->game->get_savegame()->set_integer(index, value);
 

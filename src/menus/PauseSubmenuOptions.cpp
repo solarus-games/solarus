@@ -24,6 +24,7 @@
 #include "lowlevel/TextSurface.h"
 #include "lowlevel/Color.h"
 #include "lowlevel/Surface.h"
+#include <sstream>
 
 /**
  * @brief Constructor.

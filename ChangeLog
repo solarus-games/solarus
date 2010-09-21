@@ -1,5 +1,9 @@
 This ChangeLog describes the important changes of each svn commit.
 
+r1437 (2010-09-21):
+
+Replace the DIE macro by better code.
+
 r1436 (2010-09-18):
 
 Fix shop items.

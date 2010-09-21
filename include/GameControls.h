@@ -94,7 +94,7 @@ class GameControls {
     // controls
     const std::string & get_key_name(GameKey game_key);
     const std::string get_keyboard_string(GameKey game_key);
-    const std::string & get_joypad_string(GameKey game_key);
+    const std::string get_joypad_string(GameKey game_key);
     void notify_event(InputEvent &event);
     bool is_key_pressed(GameKey game_key);
     int get_wanted_direction8(void);

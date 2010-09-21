@@ -19,6 +19,8 @@
 #include "lowlevel/FileTools.h"
 #include "lowlevel/InputEvent.h"
 #include "lowlevel/IniFile.h"
+#include "lowlevel/Debug.h"
+#include "lowlevel/StringConcat.h"
 
 /**
  * @brief Creates a savegame with a specified file name, existing or not.
@@ -42,9 +44,7 @@ Savegame::Savegame(const std::string &file_name) {
     char *buffer;
 
     FileTools::data_file_open_buffer(file_name, &buffer, &size);
-    if (size != sizeof(SavedData)) {
-      DIE("Cannot read savegame file '" << file_name << "': invalid file size");
-    }
+    Debug::assert(size == sizeof(SavedData), StringConcat() << "Cannot read savegame file '" << file_name << "': invalid file size");
     memcpy(&saved_data, buffer, sizeof(SavedData));
     FileTools::data_file_close_buffer(buffer);
 
@@ -114,13 +114,11 @@ void Savegame::set_initial_values(void) {
   const std::string &starting_destination_point_name = ini.get_string_value("starting_point", "");
   int max_life = ini.get_integer_value("max_life", 1);
 
-  if (starting_map_id == -1) {
-    DIE("No starting map defined in quest.dat. Please set the value starting_map to the id of the initial map of your quest.");
-  }
-  if (starting_destination_point_name == "") {
-    DIE("No starting point defined in quest.dat. Please set the value starting_point to the name of the "
-	"destination point where the hero should be placed on the initial map.");
-  }
+  Debug::assert(starting_map_id != -1,
+      "No starting map defined in quest.dat. Please set the value starting_map to the id of the initial map of your quest.");
+  Debug::assert(starting_destination_point_name.size() != 0,
+      "No starting point defined in quest.dat. Please set the value starting_point to the name of the "
+      "destination point where the hero should be placed on the initial map.");
 
   // the equipment may give some initial items
   equipment->set_initial_items();

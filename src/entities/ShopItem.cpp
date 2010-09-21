@@ -27,6 +27,7 @@
 #include "Savegame.h"
 #include "lowlevel/TextSurface.h"
 #include "lowlevel/FileTools.h"
+#include <sstream>
 
 /**
  * @brief Creates a new shop item with the specified treasure and price.

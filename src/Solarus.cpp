@@ -246,9 +246,7 @@ void Solarus::display(void) {
  */
 int main(int argc, char **argv) {
 
-  Solarus solarus = Solarus(argc, argv);
-  solarus.main_loop();
-
+  Solarus(argc, argv).main_loop();
   return 0;
 }
 

@@ -21,6 +21,8 @@
 #include "Map.h"
 #include "MapScript.h"
 #include "lowlevel/FileTools.h"
+#include "lowlevel/Debug.h"
+#include "lowlevel/StringConcat.h"
 
 /**
  * @brief Constructor.
@@ -37,8 +39,10 @@ Sensor::Sensor(const std::string &name, Layer layer, int x, int y,
   Detector(COLLISION_CUSTOM, name, layer, x, y, width, height),
   subtype(subtype), hero_already_overlaps(false) {
 
-  if (subtype == RETURN_FROM_BAD_GROUND && (width != 16 || height != 16)) {
-    DIE("This place to return from bad grounds has an incorrect size: " << width << "x" << height);
+  if (subtype == RETURN_FROM_BAD_GROUND) {
+    
+    Debug::assert(width == 16 && height == 16,
+	StringConcat() << "This place to return from bad grounds has an incorrect size: " << width << "x" << height);
   }
 
   set_origin(8, 13);

@@ -25,6 +25,7 @@
 #include "Game.h"
 #include "Map.h"
 #include "KeysEffect.h"
+#include "lowlevel/Debug.h"
 
 /**
  * @brief Constructor.
@@ -137,9 +138,7 @@ void Hero::StairsState::update(void) {
 	// there must be a teletransporter associated with these stairs,
 	// otherwise the hero would get stuck into the walls
 	Teletransporter *teletransporter = hero->get_delayed_teletransporter();
-	if (teletransporter == NULL) {
-	  DIE("Teletransporter expected with the stairs");
-	}
+	Debug::assert(teletransporter != NULL, "Teletransporter expected with the stairs");
 	teletransporter->transport_hero(hero);
       }
       else {

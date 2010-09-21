@@ -1,5 +1,10 @@
 This ChangeLog describes the important changes of each svn commit.
 
+r1440 (2010-09-21):
+
+Improve the protection of the internal SDL objects encapsulated (access
+methods to them are now private).
+
 r1439 (2010-09-21):
 
 Put the definition of inline member functions outside the class definition.

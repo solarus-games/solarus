@@ -30,6 +30,11 @@
  */
 class Surface {
 
+  // low-level classes allowed to manipulate directly the internal SDL surface encapsulated
+  friend class TextSurface;
+  friend class VideoManager;
+  friend class PixelBits;
+
   public:
 
     /**
@@ -45,6 +50,8 @@ class Surface {
 
     SDL_Surface *internal_surface;               /**< the SDL_Surface encapsulated */
     bool internal_surface_created;               /**< indicates that internal_surface was allocated from this class */
+
+    SDL_Surface * get_internal_surface();
 
   public:
 
@@ -66,8 +73,6 @@ class Surface {
     void blit(Surface *destination, const Rectangle &dst_position);
     void blit(const Rectangle &src_position, Surface *destination);
     void blit(const Rectangle &src_position, Surface *destination, const Rectangle &dst_position);
-
-    SDL_Surface * get_internal_surface();
 };
 
 #endif

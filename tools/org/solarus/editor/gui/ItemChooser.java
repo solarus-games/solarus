@@ -19,25 +19,37 @@ package org.solarus.editor.gui;
 import org.solarus.editor.*;
 
 /**
- * A combo box component to select a music from the resource database.
+ * A combo box component to select an item from the resource database.
  */
-public class MusicChooser extends ResourceChooser {
+public class ItemChooser extends ResourceChooser {
+
+    private boolean includeNone;
+    private boolean includeRandom;
 
     /**
-     * Constructor.
+     * Creates an item chooser, specifying whether the special items
+     * "None" and "Random" are included.
+     * @param includeNone true to include an option "None"
+     * @param includeRandom true to include an option "Random"
      */
-    public MusicChooser() {
-	super(ResourceType.MUSIC, false);
+    public ItemChooser(boolean includeNone, boolean includeRandom) {
+	super(ResourceType.ITEM, false);
+	this.includeNone = includeNone;
+	this.includeRandom = includeRandom;
     }
 
     /**
-     * Rebuils the list. Two special elements (no music and no change)
+     * Rebuils the list. Two special elements (no item and random item)
      * are added at the beginning of the list.
      */
     protected void buildList() {
 
-	addItem(new KeyValue(Music.noneId, Music.noneName));
-	addItem(new KeyValue(Music.unchangedId, Music.unchangedName));
+	if (includeNone) {
+	    addItem(new KeyValue(Item.noneId, Item.noneName));
+	}
+	if (includeRandom) {
+	    addItem(new KeyValue(Item.randomId, Item.randomName));
+	}
 
 	super.buildList();
     }

@@ -216,3 +216,23 @@ Feature requests de l'éditeur :
 	- Permettre de modifier les textes "Direction", "Subtype", etc... depuis les sous-classes de EditEntityComponent afin de rendre certains plus explicites (exemple : mettre "Pushing direction" pour les blocs)
 	- Interface pour éditer les étages des donjons
 	- dungeons.dat : l'emplacement des coffres et des boss est censé être relatif à l'étage, pas à la map
+
+
+Recruter un programmeur ?
+
+Objectifs :
+- Outils utilisables en ligne de commande et dans l'éditeur (mais pas destinés au moteur de jeu) :
+  - vérifier la syntaxe des fichiers de données
+  - vérifier qu'une traduction est conforme à une autre
+- Permettre à l'éditeur d'ouvrir plusieurs fichiers de données dans différents onglets :
+  - base de données des ressources
+  - map
+  - tileset
+  - liste des donjons
+  - liste des items
+  - script
+  - sprite
+  - traduction dans une langue
+  - fichier ini
+  - fichier texte quelconque
+

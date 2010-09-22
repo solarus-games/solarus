@@ -16,12 +16,8 @@
  */
 package org.solarus.editor.gui.edit_entities;
 
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.event.*;
 import org.solarus.editor.*;
 import org.solarus.editor.entities.*;
-import org.solarus.editor.entities.PickableItem.Subtype;
 import org.solarus.editor.gui.*;
 import org.solarus.editor.map_editor_actions.*;
 
@@ -31,8 +27,7 @@ import org.solarus.editor.map_editor_actions.*;
 public class EditPickableItemComponent extends EditEntityComponent {
 
     // specific fields of a pickable item
-    private JCheckBox saveField;
-    private NumberChooser savegameVariableField; // enabled only for certain types of pickable items
+    private TreasureChooser treasureField;
 
     /**
      * Constructor.
@@ -48,44 +43,9 @@ public class EditPickableItemComponent extends EditEntityComponent {
      */
     protected void createSpecificFields() {
 
-	// saving option
-	saveField = new JCheckBox("Save the item state");
-	addField("Savegame", saveField);
-
-	// savegame variable
-	savegameVariableField = new NumberChooser(0, 0, 32767);
-	addField("Savegame variable", savegameVariableField);
-
-	// enable or disable the 'savegame variable' field depending on the check box and the subtype 
-	saveField.addChangeListener(new ChangeListener() {
-	    public void stateChanged(ChangeEvent ev) {
-		savegameVariableField.setEnabled(saveField.isSelected());
-	    }
-	});
-
-	subtypeField.addActionListener(new ActionListener() {
-	    public void actionPerformed(ActionEvent ev) {
-
-	        Subtype subtype = (Subtype) subtypeField.getValue();
-		if (subtype.mustBeSaved()) {
-		  savegameVariableField.setEnabled(true);
-		  saveField.setEnabled(false);
-		  saveField.setSelected(true);
-		}
-		else if (!subtype.canBeSaved()) {
-		  saveField.setEnabled(false);
-		  savegameVariableField.setEnabled(false);
-		  saveField.setSelected(false);
-		}
-		else {
-		  saveField.setEnabled(true);
-		}
-	    }
-	});
-
-	// remove 'Random' and 'None'
-	subtypeField.removeItemAt(0);
-	subtypeField.removeItemAt(0);
+	// treasure
+	treasureField = new TreasureChooser(false, false);
+	addField("Treasure", treasureField);
     }
 
     /**
@@ -95,20 +55,11 @@ public class EditPickableItemComponent extends EditEntityComponent {
 	super.update(); // update the common fields
 
 	PickableItem pickableItem = (PickableItem) entity;
-	Subtype subtype = (Subtype) pickableItem.getSubtype();
 
-	int savegameVariable = pickableItem.getIntegerProperty("savegameVariable");
-	if (savegameVariable != -1) {
-	  savegameVariableField.setNumber(savegameVariable);
-	  savegameVariableField.setEnabled(true);
-	  saveField.setSelected(true);
-	}
-	else {
-	  savegameVariableField.setEnabled(false);
-	  saveField.setSelected(false);
-	}
-
-	saveField.setEnabled(subtype.canBeSaved() && !subtype.mustBeSaved());
+	treasureField.setTreasure(
+		pickableItem.getProperty("treasureName"),
+		pickableItem.getIntegerProperty("treasureVariant"),
+		pickableItem.getIntegerProperty("treasureSavegameVariable"));
     }
 
     /**
@@ -117,9 +68,9 @@ public class EditPickableItemComponent extends EditEntityComponent {
      */
     protected ActionEditEntitySpecific getSpecificAction() {
 
-	int savegameVariable = savegameVariableField.isEnabled() ? 
-		savegameVariableField.getNumber() : -1;
-
-	return new ActionEditEntitySpecific(entity, savegameVariable);
+	return new ActionEditEntitySpecific(entity, 
+		treasureField.getTreasure().getItemName(),
+		Integer.toString(treasureField.getTreasure().getVariant()),
+		Integer.toString(treasureField.getTreasure().getSavegameVariable()));
     }
 }

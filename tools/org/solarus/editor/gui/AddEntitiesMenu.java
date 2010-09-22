@@ -37,14 +37,7 @@ public class AddEntitiesMenu extends JMenu {
 		Teletransporter.Subtype.INVISIBLE,
 		Teletransporter.Subtype.YELLOW
 		),
-	new ItemDefinition(EntityType.PICKABLE_ITEM, KeyEvent.VK_P,
-		PickableItem.Subtype.RUPEE_1,
-		PickableItem.Subtype.RUPEE_5,
-		PickableItem.Subtype.RUPEE_20,
-		PickableItem.Subtype.FAIRY,
-		PickableItem.Subtype.PIECE_OF_HEART,
-		PickableItem.Subtype.SMALL_KEY
-		),
+	new ItemDefinition(EntityType.PICKABLE_ITEM, KeyEvent.VK_P),
 	new ItemDefinition(EntityType.DESTRUCTIBLE_ITEM, KeyEvent.VK_M,
 		DestructibleItem.Subtype.GRASS,
 		DestructibleItem.Subtype.BUSH,

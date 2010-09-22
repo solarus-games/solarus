@@ -41,9 +41,9 @@ public class ShopItem extends MapEntity {
      * Sets the default values of all properties specific to the current entity type.
      */
     public void setPropertiesDefaultValues() throws MapException {
-	setProperty("content", TreasureContent.NOTHING.getId());
-	setProperty("amount", 1);
-	setProperty("savegameVariable", -1);
+	setProperty("treasureName", Item.noneId);
+	setProperty("treasureVariant", 1);
+	setProperty("treasureSavegameVariable", -1);
 	setProperty("price", 0);
 	setProperty("messageId", "");
     }
@@ -54,32 +54,15 @@ public class ShopItem extends MapEntity {
      */
     public void checkProperties() throws MapException {
 
-	TreasureContent content = TreasureContent.get(getIntegerProperty("content"));
+	String treasureName = getProperty("treasureName");
 
-	if (content == TreasureContent.NOTHING) {
+	if (treasureName.equals(Item.noneId)) {
 	    throw new MapException("The content must be an existing item");
 	}
 
-	if (content.mustBeInDungeon() && !map.isInDungeon()) {
-	    throw new MapException("This kind of treasure can only exist in a dungeon");
-	}
-
-	if (content == TreasureContent.SMALL_KEY && !map.hasSmallKeys()) {
-	    throw new MapException("The small keys are not enabled for this map. Please enable them first by choosing a variable to save them in this map.");
-	}
-
-	int savegameVariable = getIntegerProperty("savegameVariable");
+	int savegameVariable = getIntegerProperty("treasureSavegameVariable");
 	if (savegameVariable < -1 || savegameVariable >= 32768) {
 	    throw new MapException("Invalid savegame variable");
-	}
-
-	int amount = getIntegerProperty("amount");
-	if (amount < 0) {
-	    throw new MapException("The amount cannot be negative");
-	}
-
-	if (content.hasAmount() && amount <= 0) {
-	    throw new MapException("This kind of treasure must have a positive amount");
 	}
 
 	int price = getIntegerProperty("price");

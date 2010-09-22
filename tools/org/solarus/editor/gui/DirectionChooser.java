@@ -68,13 +68,13 @@ public class DirectionChooser extends JComboBox {
 	KeyValue item = new KeyValue(Integer.toString(direction), null);
 	setSelectedItem(item);
     }
-    
+
     /**
      * Returns the currently selected direction.
      * @return the selected direction
      */
     public int getDirection() {
-	
+
 	KeyValue item = (KeyValue) getSelectedItem();
 	return Integer.parseInt(item.getKey());
     }

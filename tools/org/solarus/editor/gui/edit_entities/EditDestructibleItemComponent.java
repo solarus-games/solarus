@@ -16,9 +16,6 @@
  */
 package org.solarus.editor.gui.edit_entities;
 
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.event.*;
 import org.solarus.editor.*;
 import org.solarus.editor.entities.*;
 import org.solarus.editor.gui.*;
@@ -30,9 +27,7 @@ import org.solarus.editor.map_editor_actions.*;
 public class EditDestructibleItemComponent extends EditEntityComponent {
 
     // specific fields of a destructible item
-    private PickableItemSubtypeChooser pickableItemSubtypeField;
-    private JCheckBox pickableItemSaveField;
-    private NumberChooser pickableItemSavegameVariableField;
+    private TreasureChooser treasureField;
 
     /**
      * Constructor.
@@ -48,44 +43,9 @@ public class EditDestructibleItemComponent extends EditEntityComponent {
      */
     protected void createSpecificFields() {
 
-	// pickable item type
-	pickableItemSubtypeField = new PickableItemSubtypeChooser(true);
-	addField("Pickable item", pickableItemSubtypeField);
-
-	// pickable item saving option
-	pickableItemSaveField = new JCheckBox("Save the pickable item state");
-	addField("Savegame", pickableItemSaveField);
-
-	// pickable item savegame variable
-	pickableItemSavegameVariableField = new NumberChooser(0, 0, 32767);
-	addField("Pickable item savegame variable", pickableItemSavegameVariableField);
-
-	// enable or disable the 'pickable item savegame variable' field depending on the checkbox and the subtype
-	pickableItemSaveField.addChangeListener(new ChangeListener() {
-	    public void stateChanged(ChangeEvent ev) {
-		pickableItemSavegameVariableField.setEnabled(pickableItemSaveField.isSelected());
-	    }
-	});
-
-	pickableItemSubtypeField.addActionListener(new ActionListener() {
-	    public void actionPerformed(ActionEvent ev) {
-
-	        PickableItem.Subtype pickableItemSubtype = (PickableItem.Subtype) pickableItemSubtypeField.getValue();
-		if (pickableItemSubtype.mustBeSaved()) {
-		  pickableItemSavegameVariableField.setEnabled(true);
-		  pickableItemSaveField.setEnabled(false);
-		  pickableItemSaveField.setSelected(true);
-		}
-		else if (!pickableItemSubtype.canBeSaved()) {
-		  pickableItemSaveField.setEnabled(false);
-		  pickableItemSavegameVariableField.setEnabled(false);
-		  pickableItemSaveField.setSelected(false);
-		}
-		else {
-		  pickableItemSaveField.setEnabled(true);
-		}
-	    }
-	});
+	// treasure
+	treasureField = new TreasureChooser(false, false);
+	addField("Treasure", treasureField);
     }
 
     /**
@@ -96,20 +56,10 @@ public class EditDestructibleItemComponent extends EditEntityComponent {
 
 	DestructibleItem destructibleItem = (DestructibleItem) entity;
 
-	PickableItem.Subtype pickableItemSubtype = PickableItem.Subtype.get(destructibleItem.getIntegerProperty("pickableItemSubtype"));
-	pickableItemSubtypeField.setValue(pickableItemSubtype);
-	int pickableItemSavegameVariable = destructibleItem.getIntegerProperty("pickableItemSavegameVariable");
-	if (pickableItemSavegameVariable != -1) {
-	  pickableItemSavegameVariableField.setNumber(pickableItemSavegameVariable);
-	  pickableItemSavegameVariableField.setEnabled(true);
-	  pickableItemSaveField.setSelected(true);
-	}
-	else {
-	  pickableItemSavegameVariableField.setEnabled(false);
-	  pickableItemSaveField.setSelected(false);
-	}
-
-	pickableItemSaveField.setEnabled(pickableItemSubtype.canBeSaved() && !pickableItemSubtype.mustBeSaved());
+	treasureField.setTreasure(
+		destructibleItem.getProperty("treasureName"),
+		destructibleItem.getIntegerProperty("treasureVariant"),
+		destructibleItem.getIntegerProperty("treasureSavegameVariable"));
     }
 
     /**
@@ -118,12 +68,10 @@ public class EditDestructibleItemComponent extends EditEntityComponent {
      */
     protected ActionEditEntitySpecific getSpecificAction() {
 
-	int pickableItemSavegameVariable = pickableItemSavegameVariableField.isEnabled() ? 
-		pickableItemSavegameVariableField.getNumber() : -1;
-
-	return new ActionEditEntitySpecific(entity,
-		pickableItemSubtypeField.getValue().getId(),
-		pickableItemSavegameVariable);
+	return new ActionEditEntitySpecific(entity, 
+		treasureField.getTreasure().getItemName(),
+		Integer.toString(treasureField.getTreasure().getVariant()),
+		Integer.toString(treasureField.getTreasure().getSavegameVariable()));
     }
 }
 

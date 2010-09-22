@@ -36,7 +36,7 @@ public class AddEntitiesToolbar extends JComponent {
 	new Cell(EntityType.DESTINATION_POINT, DestinationPoint.Subtype.GRAY),
 	new Cell(EntityType.TELETRANSPORTER, Teletransporter.Subtype.INVISIBLE),
 	new Cell(EntityType.TELETRANSPORTER, Teletransporter.Subtype.YELLOW),
-	new Cell(EntityType.PICKABLE_ITEM, PickableItem.Subtype.RUPEE_1),
+	new Cell(EntityType.PICKABLE_ITEM),
 	new Cell(EntityType.DESTRUCTIBLE_ITEM, DestructibleItem.Subtype.GRASS),
 	new Cell(EntityType.DESTRUCTIBLE_ITEM, DestructibleItem.Subtype.BUSH),
 	new Cell(EntityType.DESTRUCTIBLE_ITEM, DestructibleItem.Subtype.POT),

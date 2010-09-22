@@ -42,7 +42,7 @@ public class EnumerationChooser<E extends Enum<E>> extends JComboBox {
 
 	try {
 	    String[] humanNames = (String[]) enumeration.getField("humanNames").get(null);
-	    Enum[] values = (Enum[]) enumeration.getMethod("values").invoke(null);
+	    Enum<?>[] values = (Enum<?>[]) enumeration.getMethod("values").invoke(null);
 	    for (int i = 0; i < values.length; i++) {
 		addItem(new KeyValue(values[i].name(), humanNames[i]));
 	    }

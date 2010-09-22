@@ -22,9 +22,9 @@ import org.solarus.editor.*;
  * Represents a chest placed on the map.
  * Specific properties of a chest:
  * - bigChest
- * - content
- * - amount
- * - savegameVariable
+ * - treasureName
+ * - treasureVariant
+ * - treasureSavegameVariable
  */
 public class Chest extends MapEntity {
 
@@ -47,9 +47,9 @@ public class Chest extends MapEntity {
      */
     public void setPropertiesDefaultValues() throws MapException {
 	setProperty("bigChest", false);
-	setProperty("content", TreasureContent.NOTHING.getId());
-	setProperty("amount", 1);
-	setProperty("savegameVariable", 0);
+	setProperty("treasureName", Item.noneId);
+	setProperty("treasureVariant", 1);
+	setProperty("treasureSavegameVariable", -1);
     }
 
     /**
@@ -64,28 +64,9 @@ public class Chest extends MapEntity {
 		throw new MapException("Cannot have a big chest outside a dungeon");
 	}
 
-	TreasureContent content = TreasureContent.get(getIntegerProperty("content"));
- 
-	if (content.mustBeInDungeon() && !map.isInDungeon()) {
-	    throw new MapException("This kind of treasure can only exist in a dungeon");
-	}
-
-	if (content == TreasureContent.SMALL_KEY && !map.hasSmallKeys()) {
-	    throw new MapException("The small keys are not enabled for this map. Please enable them first by choosing a variable to save them in this map.");
-	}
-
-	int savegameVariable = getIntegerProperty("savegameVariable");
+	int savegameVariable = getIntegerProperty("treasureSavegameVariable");
 	if (savegameVariable < -1 || savegameVariable >= 32768) {
 	    throw new MapException("Invalid savegame variable");
-	}
-
-	int amount = getIntegerProperty("amount");
-	if (amount < 0) {
-	    throw new MapException("The amount cannot be negative");
-	}
-
-	if (content.hasAmount() && amount <= 0) {
-	    throw new MapException("This kind of treasure must have a positive amount");
 	}
     }
 

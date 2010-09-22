@@ -16,9 +16,6 @@
  */
 package org.solarus.editor.gui.edit_entities;
 
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.event.*;
 import org.solarus.editor.*;
 import org.solarus.editor.entities.*;
 import org.solarus.editor.gui.*;
@@ -31,10 +28,7 @@ public class EditChestComponent extends EditEntityComponent {
 
     // specific fields of a chest
     private RadioField sizeField;
-    private EnumerationChooser<TreasureContent> contentField;
-    private NumberChooser amountField;
-    private JCheckBox saveField;
-    private NumberChooser savegameVariableField;
+    private TreasureChooser treasureField;
 
     /**
      * Constructor.
@@ -54,39 +48,9 @@ public class EditChestComponent extends EditEntityComponent {
 	sizeField = new RadioField("Small", "Big");
 	addField("Chest type", sizeField);
 
-	// treasure content
-	contentField = new EnumerationChooser<TreasureContent>(TreasureContent.class);
-	addField("Treasure", contentField);
-
-	// treasure amount
-	amountField = new NumberChooser(1, 1, 999);
-	addField("Amount", amountField);
-
-	// treasure saving option
-	saveField = new JCheckBox("Save the chest state");
-	saveField.setSelected(true);
-	addField("Savegame", saveField);
-
-	// treasure savegame variable
-	savegameVariableField = new NumberChooser(0, 0, 32767);
-	addField("Savegame variable", savegameVariableField);
-
-	// enable or disable the amount field depending on the treasure content
-	contentField.addActionListener(new ActionListener() {
-	    public void actionPerformed(ActionEvent ev) {
-
-		boolean treasurePresent = (contentField.getValue() != TreasureContent.NOTHING);
-		amountField.setEnabled(treasurePresent && contentField.getValue().hasAmount());
-		savegameVariableField.setEnabled(treasurePresent);
-	    }
-	});
-
-	// enable or disable the savegame variable field depending on the check box
-	saveField.addChangeListener(new ChangeListener() {
-	    public void stateChanged(ChangeEvent ev) {
-		savegameVariableField.setEnabled(saveField.isSelected());
-	    }
-	});
+	// treasure
+	treasureField = new TreasureChooser(true, false);
+	addField("Treasure", treasureField);
     }
 
     /**
@@ -97,13 +61,11 @@ public class EditChestComponent extends EditEntityComponent {
 
 	Chest chest = (Chest) entity;
 
-	int savegameVariable = chest.getIntegerProperty("savegameVariable");
 	sizeField.setSelectedIndex(chest.isBigChest() ? 1 : 0);
-	contentField.setValue(TreasureContent.get(chest.getIntegerProperty("content")));
-	amountField.setNumber(chest.getIntegerProperty("amount"));
-	saveField.setSelected(savegameVariable != -1);
-	savegameVariableField.setNumber(savegameVariable);
-	savegameVariableField.setEnabled(savegameVariable != -1);
+	treasureField.setTreasure(
+		chest.getProperty("treasureName"),
+		chest.getIntegerProperty("treasureVariant"),
+		chest.getIntegerProperty("treasureSavegameVariable"));
     }
 
     /**
@@ -111,10 +73,11 @@ public class EditChestComponent extends EditEntityComponent {
      * @return the specific part of the action made on the entity
      */
     protected ActionEditEntitySpecific getSpecificAction() {
+
 	return new ActionEditEntitySpecific(entity,
-		sizeField.getSelectedIndex(),
-		contentField.getValue().getId(),
-		amountField.getNumber(),
-		saveField.isSelected() ? savegameVariableField.getNumber() : -1);
+		Integer.toString(sizeField.getSelectedIndex()),
+		treasureField.getTreasure().getItemName(),
+		Integer.toString(treasureField.getTreasure().getVariant()),
+		Integer.toString(treasureField.getTreasure().getSavegameVariable()));
     }
 }

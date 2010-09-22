@@ -16,9 +16,7 @@
  */
 package org.solarus.editor.gui.edit_entities;
 
-import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.event.*;
 import org.solarus.editor.*;
 import org.solarus.editor.entities.*;
 import org.solarus.editor.gui.*;
@@ -30,10 +28,7 @@ import org.solarus.editor.map_editor_actions.*;
 public class EditShopItemComponent extends EditEntityComponent {
 
     // specific fields of this type of entity
-    private EnumerationChooser<TreasureContent> contentField;
-    private NumberChooser amountField;
-    private JCheckBox saveField;
-    private NumberChooser savegameVariableField;
+    private TreasureChooser treasureField;
     private NumberChooser priceField;
     private JTextField messageIdField;
 
@@ -52,21 +47,8 @@ public class EditShopItemComponent extends EditEntityComponent {
     protected void createSpecificFields() {
 
 	// treasure content
-	contentField = new EnumerationChooser<TreasureContent>(TreasureContent.class);
-	addField("Treasure", contentField);
-
-	// treasure amount
-	amountField = new NumberChooser(1, 1, 999);
-	addField("Amount", amountField);
-
-	// treasure saving option
-	saveField = new JCheckBox("Can be bought only once");
-	saveField.setSelected(true);
-	addField("Unique", saveField);
-
-	// treasure savegame variable
-	savegameVariableField = new NumberChooser(0, 0, 32767);
-	addField("Savegame variable", savegameVariableField);
+	treasureField = new TreasureChooser(false, false);
+	addField("Treasure", treasureField);
 
 	// price
 	priceField = new NumberChooser(10, 1, 999);
@@ -75,23 +57,6 @@ public class EditShopItemComponent extends EditEntityComponent {
 	// description message id
 	messageIdField = new JTextField(15);
 	addField("Description message id", messageIdField);
-
-	// enable or disable the amount field depending on the treasure content
-	contentField.addActionListener(new ActionListener() {
-	    public void actionPerformed(ActionEvent ev) {
-
-		boolean treasurePresent = (contentField.getValue() != TreasureContent.NOTHING);
-		amountField.setEnabled(treasurePresent && contentField.getValue().hasAmount());
-		savegameVariableField.setEnabled(treasurePresent);
-	    }
-	});
-
-	// enable or disable the savegame variable field depending on the check box
-	saveField.addChangeListener(new ChangeListener() {
-	    public void stateChanged(ChangeEvent ev) {
-		savegameVariableField.setEnabled(saveField.isSelected());
-	    }
-	});
     }
 
     /**
@@ -102,12 +67,10 @@ public class EditShopItemComponent extends EditEntityComponent {
 
 	ShopItem shopItem = (ShopItem) entity;
 
-	int savegameVariable = shopItem.getIntegerProperty("savegameVariable");
-	contentField.setValue(TreasureContent.get(shopItem.getIntegerProperty("content")));
-	amountField.setNumber(shopItem.getIntegerProperty("amount"));
-	saveField.setSelected(savegameVariable != -1);
-	savegameVariableField.setNumber(savegameVariable);
-	savegameVariableField.setEnabled(savegameVariable != -1);
+	treasureField.setTreasure(
+		shopItem.getProperty("treasureName"),
+		shopItem.getIntegerProperty("treasureVariant"),
+		shopItem.getIntegerProperty("treasureSavegameVariable"));
 	priceField.setNumber(shopItem.getIntegerProperty("price"));
 	messageIdField.setText(shopItem.getProperty("messageId"));
     }
@@ -118,9 +81,9 @@ public class EditShopItemComponent extends EditEntityComponent {
      */
     protected ActionEditEntitySpecific getSpecificAction() {
 	return new ActionEditEntitySpecific(entity,
-		Integer.toString(contentField.getValue().getId()),
-		Integer.toString(amountField.getNumber()),
-		Integer.toString(saveField.isSelected() ? savegameVariableField.getNumber() : -1),
+		treasureField.getTreasure().getItemName(),
+		Integer.toString(treasureField.getTreasure().getVariant()),
+		Integer.toString(treasureField.getTreasure().getSavegameVariable()),
 		Integer.toString(priceField.getNumber()),
 		messageIdField.getText());
     }

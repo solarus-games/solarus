@@ -1059,7 +1059,7 @@ public abstract class MapEntity extends Observable {
 	    if (subtype == null) {
 		subtype = type.getDefaultSubtype();
 	    }
-	    index = ((Enum) subtype).ordinal();
+	    index = ((Enum<?>) subtype).ordinal();
 	}
 	else {
 	    index = 0;

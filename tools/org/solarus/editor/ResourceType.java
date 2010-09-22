@@ -1,7 +1,7 @@
 package org.solarus.editor;
 
 /**
- * Enumeration to identify the different kinds of resources of a project.
+ * Enumeration to identify the different kinds of resources of a quest.
  */
 public enum ResourceType {
 
@@ -9,7 +9,8 @@ public enum ResourceType {
     TILESET(true),
     MUSIC(false),
     SPRITE(false),
-    SOUND(false);
+    SOUND(false),
+    ITEM(false);
 
     /**
      * Indicates that the id of elements from this resource type is an integer

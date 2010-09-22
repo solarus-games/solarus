@@ -206,8 +206,9 @@ public class Enemy extends MapEntity {
     public void setPropertiesDefaultValues() throws MapException {
 	setProperty("rank", Rank.NORMAL.ordinal());
 	setProperty("savegameVariable", -1);
-	setProperty("pickableItemSubtype", PickableItem.Subtype.RANDOM.getId());
-	setProperty("pickableItemSavegameVariable", -1);
+	setProperty("treasureName", Item.randomId);
+	setProperty("treasureVariant", 1);
+	setProperty("treasureSavegameVariable", -1);
     }
 
     /**
@@ -226,31 +227,9 @@ public class Enemy extends MapEntity {
 	    throw new MapException("This enemy must be saved");
 	}
 
-	PickableItem.Subtype pickableItemSubtype = PickableItem.Subtype.get(getIntegerProperty("pickableItemSubtype"));
-	int pickableItemSavegameVariable = getIntegerProperty("pickableItemSavegameVariable");
-
-	if (pickableItemSavegameVariable < -1 || pickableItemSavegameVariable >= 32768) {
-	    throw new MapException("Invalid pickable item savegame variable");
-	}
-
-	boolean isSaved = (pickableItemSavegameVariable >= 0 && pickableItemSavegameVariable < 32768);
-
-	if (!pickableItemSubtype.canBeSaved() && isSaved) {
-	    throw new MapException("This pickable item cannot be saved");
-	}
-
-	if (pickableItemSubtype.mustBeSaved() && !isSaved) {
-	    throw new MapException("This pickable item must be saved");
-	}
-
-	boolean inDungeon = map.isInDungeon();
-	boolean mustBeInDungeon = pickableItemSubtype.mustBeInDungeon();
-	if (mustBeInDungeon && !inDungeon) {
-	    throw new MapException("This pickable item is available only in a dungeon");
-	}
-
-	if (pickableItemSubtype == PickableItem.Subtype.SMALL_KEY && !map.hasSmallKeys()) {
-	    throw new MapException("The small keys are not enabled in this map");
+	int treasureSavegameVariable = getIntegerProperty("treasureSavegameVariable");
+	if (treasureSavegameVariable < -1 || treasureSavegameVariable >= 32768) {
+	    throw new MapException("Invalid treasure savegame variable");
 	}
     }
 

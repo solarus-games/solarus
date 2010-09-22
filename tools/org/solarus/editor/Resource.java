@@ -58,7 +58,7 @@ public class Resource extends Observable {
     public Iterator<String> iterator() {
 	return elements.keySet().iterator();
     }
-    
+
     /**
      * Returns an array with the id of all elements.
      * @return an array with the id of all elements.
@@ -74,7 +74,7 @@ public class Resource extends Observable {
 
 	return ids;
     }
-    
+
     /**
      * Returns whether an element exists.
      * @param id id of the element

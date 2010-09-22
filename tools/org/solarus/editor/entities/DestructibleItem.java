@@ -21,13 +21,7 @@ import org.solarus.editor.*;
 
 /**
  * Represents an entity that Link can destroy (lift and throw or cut)
- * and that can hide a pickable item.
- * specific properties of a destructible item:
- * - pickableItemSubtype: type of pickable item that appears when Link lifts
- *   the destructible item
- * - pickableItemSavegameVariable: the variable where the pickable item is 
- *   saved, used only for the pickable items that are saved 
- *   (keys, pieces of hearts, etc.)
+ * and that can hide a treasure.
  */
 public class DestructibleItem extends MapEntity {
 
@@ -153,8 +147,9 @@ public class DestructibleItem extends MapEntity {
      * Sets the default values of all properties specific to the current entity type.
      */
     public void setPropertiesDefaultValues() throws MapException {
-	setProperty("pickableItemSubtype", PickableItem.Subtype.RANDOM.getId());
-	setProperty("pickableItemSavegameVariable", -1);
+	setProperty("treasureName", Item.randomId);
+	setProperty("treasureVariant", 1);
+	setProperty("treasureSavegameVariable", -1);
     }
 
     /**
@@ -163,31 +158,9 @@ public class DestructibleItem extends MapEntity {
      */
     public void checkProperties() throws MapException {
 
-	PickableItem.Subtype pickableItemSubtype = PickableItem.Subtype.get(getIntegerProperty("pickableItemSubtype"));
-	int pickableItemSavegameVariable = getIntegerProperty("pickableItemSavegameVariable");
-
-	if (pickableItemSavegameVariable < -1 || pickableItemSavegameVariable >= 32768) {
-	    throw new MapException("Invalid pickable item savegame variable");
-	}
-	
-	boolean saved = (pickableItemSavegameVariable >= 0 && pickableItemSavegameVariable < 32768);
-
-	if (!pickableItemSubtype.canBeSaved() && saved) {
-	    throw new MapException("This pickable item cannot be saved");
-	}
-
-	if (pickableItemSubtype.mustBeSaved() && !saved) {
-	    throw new MapException("This pickable item must be saved");
-	}
-
-	boolean inDungeon = map.isInDungeon();
-	boolean mustBeInDungeon = pickableItemSubtype.mustBeInDungeon();
-	if (mustBeInDungeon && !inDungeon) {
-	    throw new MapException("This pickable item is available only in a dungeon");
-	}
-
-	if (pickableItemSubtype == PickableItem.Subtype.SMALL_KEY && !map.hasSmallKeys()) {
-	    throw new MapException("The small keys are not enabled in this map");
+	int savegameVariable = getIntegerProperty("treasureSavegameVariable");
+	if (savegameVariable < -1 || savegameVariable >= 32768) {
+	    throw new MapException("Invalid treasure savegame variable");
 	}
     }
 }

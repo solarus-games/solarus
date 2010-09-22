@@ -1,42 +1,43 @@
 This ChangeLog describes the important changes of each svn commit.
 
-r1440 (2010-09-21):
+r1442 (2010-09-22):
+
+Updating the editor to take into account the new syntax of treasure-related
+entities (chests, shop items, pickable items, destructible items and enemies).
+
+r1441 (2010-09-21):
 
 Improve the protection of the internal SDL objects encapsulated (access
 methods to them are now private).
 
-r1439 (2010-09-21):
+r1440 (2010-09-21):
 
 Put the definition of inline member functions outside the class definition.
 
-r1438 (2010-09-21):
+r1439 (2010-09-21):
 
 Replace f(void) by f() in function declarations (f(void) has no meaning in
 C++).
 
-r1437 (2010-09-21):
+r1438 (2010-09-21):
 
 Replace the DIE macro by better code.
 
-r1436 (2010-09-18):
+r1435 (2010-09-18):
 
 Fix shop items.
 
-r1435 (2010-09-15):
+r1434 (2010-09-15):
 
 Still fixing items.
 
-r1434 (2010-09-14):
+r1433 (2010-09-14):
 
 Fix item issues.
 
-r1433 (2010-09-13):
-
-- Still working on items.
-
 r1432 (2010-09-13):
 
-- Reorganize sprites of items.
+- Still working on items.
 
 r1431 (2010-09-13):
 

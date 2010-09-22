@@ -179,3 +179,57 @@
 4	walk_on_water	walk_on_water
 4	wrong	wrong
 4	zora	zora
+5	feather	Feather
+5	bombs_counter	Bombs counter
+5	bomb	Bombs (x1 / x3 / x8)
+5	bomb_bag	Bomb bag (small / large / huge)
+5	bow	Bow
+5	arrow	Arrows (x1 / x5 / x10)
+5	quiver	Quiver (small / large / huge)
+5	boomerang	Boomerang
+5	lamp	Lamp
+5	hookshot	Hookshot
+5	bottle_1	Bottle 1
+5	bottle_2	Bottle 2
+5	bottle_3	Bottle 3
+5	bottle_4	Bottle 4
+5	pegasus_shoes	Pegasus shoes
+5	mystic_mirror	Mystic mirror
+5	cane_of_somaria	Cane of Somaria
+5	apples_counter	Apples counter
+5	apple	Apples (x3)
+5	pains_au_chocolat_counter	Pains au chocolat counter
+5	pain_au_chocolat	Pain au chocolat (x1)
+5	croissants_counter	Croissants counter
+5	croissant	Croissant (x1)
+5	rock_key	Rock key
+5	red_key	Red key
+5	clay_key	Clay key
+5	level_4_way_bone_key	Apple pie / Gold bars / Edelweiss / Bone key
+5	flippers	Flippers
+5	magic_cape	Magic cape
+5	iron_key	Iron key
+5	stone_key	Stone key
+5	wooden_key	Wooden key
+5	ice_key	Ice key
+5	glove	Iron glove / Golden glove
+5	fire_stones_counter	Fire stones counter
+5	fire_stone	Fire stone (x1)
+5	tunic	Tunic (green / blue / red)
+5	sword	Sword
+5	shield	Shield
+5	world_map	World map
+5	rupee_bag	Rupee bag (small / large / huge)
+5	magic_bar	Maximum of magic (none / half / full)
+5	map	Dungeon map
+5	compass	Dungeon compass
+5	big_key	Dungeon big key
+5	boss_key	Dungeon boss key
+5	small_key	Small key
+5	rupee	Rupees (x1 / x5 / x20 / x100 / x300)
+5	magic_flask	(small / big)
+5	heart	Heart
+5	heart	Heart container
+5	piece_of_heart	Piece of heart
+5	fairy	Fairy
+

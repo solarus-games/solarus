@@ -27,7 +27,7 @@ public enum EntityType {
     TILE                 (0, "Tile", Tile.class, null),
     DESTINATION_POINT    (1, "Destination point", DestinationPoint.class, DestinationPoint.Subtype.class),
     TELETRANSPORTER      (2, "Teletransporter", Teletransporter.class, Teletransporter.Subtype.class),
-    PICKABLE_ITEM        (3, "Pickable item", PickableItem.class, PickableItem.Subtype.class),
+    PICKABLE_ITEM        (3, "Pickable item", PickableItem.class, null),
     DESTRUCTIBLE_ITEM    (4, "Destructible item", DestructibleItem.class, DestructibleItem.Subtype.class),
     CHEST                (5, "Chest", Chest.class, null),
     JUMP_SENSOR          (6, "Jump Sensor", JumpSensor.class, null),
@@ -195,7 +195,7 @@ public enum EntityType {
 	try {
 	    Class<? extends EntitySubtype> subtypeEnum = getSubtypeEnum();
 	    String[] names = (String[]) subtypeEnum.getField("humanNames").get(null);
-	    name = names[((Enum) subtype).ordinal()];
+	    name = names[((Enum<?>) subtype).ordinal()];
 	}
 	catch (NoSuchFieldException ex) {
 	    System.err.println("The field 'humanNames' is missing in enumeration " + subtypeEnum.getName());

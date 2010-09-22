@@ -14,26 +14,31 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package org.solarus.editor.gui;
-
-import org.solarus.editor.entities.PickableItem.Subtype;
+package org.solarus.editor;
 
 /**
- * A combo box to select a type of pickable item.
+ * This class provides constants to handle the items in the editor.
  */
-public class PickableItemSubtypeChooser extends EnumerationChooser<Subtype> {
-    
-    /**
-     * Creates a new pickable item type chooser.
-     * @param allowRandomAndNone true to include "Random" and "None" in the combo box
-     */
-    public PickableItemSubtypeChooser(boolean allowRandomAndNone) {
-	super(Subtype.class);
+public class Item {
 
-	// special values: random and none
-	if (!allowRandomAndNone) {
-	    removeItemAt(0);
-	    removeItemAt(0);
-	}
-    }
+    /**
+     * Special id indicating that there is no item.
+     */
+    public static final String noneId = "_none";
+
+    /**
+     * Special id indicating that the item is chosen randomly.
+     */
+    public static final String randomId = "_random";
+
+    /**
+     * String indicating that there is no item.
+     */
+    public static final String noneName = "<None>";
+
+    /**
+     * String indicating that the item is randomly chosen.
+     */
+    public static final String randomName = "<Random>";
+
 }

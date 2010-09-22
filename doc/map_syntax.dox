@@ -109,11 +109,11 @@ For now, the following types of entities are available when creating a map:
 - tile (0): a tile of the map, with a pattern picked from the tileset
 - destination point (1): a possible destination for teletransporters
 - teletransporter (2): when walking there, the hero is transported to a destination point (possibly on another map)
-- pickable item (3): an item that the hero can pick up: a rupee, a heart, etc.
-- destructible item (4): an item the hero may cut or lift: a pot, a bush, a stone, some grass, etc.
+- pickable item (3): an treasure placed on the ground and that the hero can pick up: a rupee, a heart, etc.
+- destructible item (4): an item the hero may cut or lift: a pot, a bush, a stone, some grass, etc, and that may hide a treasure
 - chest (5): a chest (small or big) with a treasure inside
 - jump sensor (6): a sensor that makes the hero jump into a direction
-- enemy (7): an enemy
+- enemy (7): an enemy (that may carry a treasure)
 - interactive entity (8): an entity that the hero can interact with by pressing the action key or using an inventory
 item in front of it (typically an NPC)
 - block (9): a block or a statue that the hero can push or pull
@@ -123,7 +123,7 @@ item in front of it (typically an NPC)
 - sensor (13): an invisible sensor that triggers something when the hero walks on it
 - crystal switch (14): a switch that lowers or raises some blocks in the ground
 - crystal switch block (15): the blocks controlled by crystal switches
-- shop item (16): an item that the hero can buy in a shop
+- shop item (16): a treasure that the hero can buy in a shop
 - conveyor belt (17): when walking there, the hero is moved into a direction
 - door (18): a door to open with a key or another action
 - stairs (19): stairs between two maps or towards a platform inside a single map
@@ -197,7 +197,7 @@ No destination point entity is needed when the value is <tt>_side</tt> or <tt>_s
 
 @section pickable_item Pickable item (3)
 
-A pickable item is a treasure placed on the floor.
+A pickable item is a treasure directly placed on the floor.
 The hero can pick it.
 
 Syntax of a pickable item:

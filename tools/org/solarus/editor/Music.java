@@ -22,12 +22,12 @@ package org.solarus.editor;
 public class Music {
 
     /**
-     * Special Id indicating that there is no music.
+     * Special id indicating that there is no music.
      */
     public static final String noneId = "none";
 
     /**
-     * Special Id indicating that the music is unchanged.
+     * Special id indicating that the music is unchanged.
      */
     public static final String unchangedId = "same";
 

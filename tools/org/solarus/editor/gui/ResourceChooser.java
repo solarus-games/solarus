@@ -28,12 +28,11 @@ public class ResourceChooser extends JComboBox implements ProjectObserver {
      * The kind of resource displayed in the combo box (maps, musics...).
      */
     private ResourceType resourceType;
-    
+
     /**
-     * Indicates whether the first element of the combo box should be
-     * an empty option (showing that no element is selected).
+     * A list of special options to add to the combo box.
      */
-    private boolean showEmptyOption;
+    private KeyValue[] additionalOptions;
 
     /**
      * Constructor.
@@ -44,11 +43,27 @@ public class ResourceChooser extends JComboBox implements ProjectObserver {
 
 	super();
 	this.resourceType = resourceType;
-	this.showEmptyOption = showEmptyOption;
-	
+
+	if (showEmptyOption) {
+	    this.additionalOptions = new KeyValue[] {new KeyValue("", "")};
+	}
+	else {
+	    this.additionalOptions = new KeyValue[] {};
+	}
+
 	Project.addProjectObserver(this);
 
 	buildList();
+    }
+
+    /**
+     * Sets some additional options to add at the beginning of the combo box
+     * @param additionalOptions a list of special options to add to the combo box
+     */
+    protected void setAdditionalOptions(KeyValue[] additionalOptions) {
+
+	this.additionalOptions = additionalOptions;
+	reloadList();
     }
 
     /**
@@ -59,9 +74,9 @@ public class ResourceChooser extends JComboBox implements ProjectObserver {
 	if (!Project.isLoaded()) {
 	    return;
 	}
-	
-	if (showEmptyOption) {
-	    addItem(new KeyValue("", "          "));
+
+	for (int i = 0; i < additionalOptions.length; i++) {
+	    addItem(additionalOptions[i]);
 	}
 
 	try {

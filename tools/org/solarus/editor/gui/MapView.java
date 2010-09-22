@@ -595,6 +595,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
 	try {
 
 	    boolean valid = entityBeingAdded.isValid();
+
 	    if (!valid) {
 		// if the entity is not valid yet, this is because some information is missing:
 		// we show a dialog box to let the user edit the entity

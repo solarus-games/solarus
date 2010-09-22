@@ -64,6 +64,11 @@ public class Chest extends MapEntity {
 		throw new MapException("Cannot have a big chest outside a dungeon");
 	}
 
+	String treasureName = getProperty("treasureName");
+	if (treasureName.equals(Item.randomId)) {
+	    throw new MapException("The treasure of a chest cannot be random");
+	}
+
 	int savegameVariable = getIntegerProperty("treasureSavegameVariable");
 	if (savegameVariable < -1 || savegameVariable >= 32768) {
 	    throw new MapException("Invalid savegame variable");

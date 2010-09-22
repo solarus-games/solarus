@@ -55,9 +55,10 @@ public class ShopItem extends MapEntity {
     public void checkProperties() throws MapException {
 
 	String treasureName = getProperty("treasureName");
-
-	if (treasureName.equals(Item.noneId)) {
-	    throw new MapException("The content must be an existing item");
+	if (treasureName.isEmpty()
+		|| treasureName.equals(Item.noneId)
+		|| treasureName.equals(Item.randomId)) {
+	    throw new MapException("The treasure of a shop item cannot be empty or random");
 	}
 
 	int savegameVariable = getIntegerProperty("treasureSavegameVariable");

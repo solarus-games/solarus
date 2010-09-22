@@ -58,7 +58,7 @@ public class PickableItem extends MapEntity {
      * Sets the default values of all properties specific to the current entity type.
      */
     public void setPropertiesDefaultValues() throws MapException {
-	setProperty("treasureName", Item.noneId);
+	setProperty("treasureName", "");
 	setProperty("treasureVariant", 1);
 	setProperty("treasureSavegameVariable", -1);
     }
@@ -71,8 +71,10 @@ public class PickableItem extends MapEntity {
 
 	String treasureName = getProperty("treasureName");
 
-	if (treasureName.equals(Item.noneId) || treasureName.equals(Item.randomId)) {
-	    throw new MapException("The treasure of a pickable item cannot be 'None' or 'Random'");
+	if (treasureName.isEmpty()
+		|| treasureName.equals(Item.noneId)
+		|| treasureName.equals(Item.randomId)) {
+	    throw new MapException("The treasure of a pickable item cannot be empty or random");
 	}
 
 	int savegameVariable = getIntegerProperty("treasureSavegameVariable");

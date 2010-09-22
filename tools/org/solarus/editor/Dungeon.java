@@ -161,7 +161,7 @@ public class Dungeon {
 		    Chest chest = (Chest) entity;
 		    saveDungeonElement(ini, map, "chest_" + nbChestsSaved,
 			    chest.getX(), chest.getY(),
-			    chest.getIntegerProperty("savegameVariable"), chest.isBigChest());
+			    chest.getIntegerProperty("treasureSavegameVariable"), chest.isBigChest());
 		    nbChestsSaved++;
 		}
 		else if (entity instanceof Enemy) {

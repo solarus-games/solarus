@@ -125,7 +125,8 @@ public class EditEntityComponent extends JPanel {
 	// subtype
 	if (entity.hasSubtype()) {
 	    this.subtypeField = new EntitySubtypeChooser(entity.getType());
-	    addField(entity.getType().getName() + " subtype", subtypeField);
+	    //addField(entity.getType().getName() + " subtype", subtypeField);
+	    addField("Subtype", subtypeField);
 	}
 
 	// direction

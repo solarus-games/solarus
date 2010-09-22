@@ -62,7 +62,7 @@ public class EditEnemyComponent extends EditEntityComponent {
 	addField("Enemy savegame variable", savegameVariableField);
 
 	// treasure
-	treasureField = new TreasureChooser(false, false);
+	treasureField = new TreasureChooser(true, true);
 	addField("Treasure", treasureField);
 
 	// enable or disable the 'savegame variable' field depending on the checkbox

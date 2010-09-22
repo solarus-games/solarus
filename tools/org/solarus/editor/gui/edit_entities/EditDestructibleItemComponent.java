@@ -44,7 +44,7 @@ public class EditDestructibleItemComponent extends EditEntityComponent {
     protected void createSpecificFields() {
 
 	// treasure
-	treasureField = new TreasureChooser(false, false);
+	treasureField = new TreasureChooser(true, true);
 	addField("Treasure", treasureField);
     }
 
@@ -52,6 +52,7 @@ public class EditDestructibleItemComponent extends EditEntityComponent {
      * Updates the information displayed in the fields.
      */
     public void update() {
+
 	super.update(); // update the common fields
 
 	DestructibleItem destructibleItem = (DestructibleItem) entity;

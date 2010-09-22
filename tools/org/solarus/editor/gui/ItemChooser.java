@@ -23,9 +23,6 @@ import org.solarus.editor.*;
  */
 public class ItemChooser extends ResourceChooser {
 
-    private boolean includeNone;
-    private boolean includeRandom;
-
     /**
      * Creates an item chooser, specifying whether the special items
      * "None" and "Random" are included.
@@ -33,24 +30,28 @@ public class ItemChooser extends ResourceChooser {
      * @param includeRandom true to include an option "Random"
      */
     public ItemChooser(boolean includeNone, boolean includeRandom) {
-	super(ResourceType.ITEM, false);
-	this.includeNone = includeNone;
-	this.includeRandom = includeRandom;
-    }
 
-    /**
-     * Rebuils the list. Two special elements (no item and random item)
-     * are added at the beginning of the list.
-     */
-    protected void buildList() {
+	super(ResourceType.ITEM, false);
+
+	int size = (includeNone && includeRandom) ? 2 : 1;
+	KeyValue[] additionalOptions = new KeyValue[size];
+	int i = 0;
 
 	if (includeNone) {
-	    addItem(new KeyValue(Item.noneId, Item.noneName));
+	    additionalOptions[i] = new KeyValue(Item.noneId, Item.noneName);
+	    i++;
 	}
+	
 	if (includeRandom) {
-	    addItem(new KeyValue(Item.randomId, Item.randomName));
+	    additionalOptions[i] = new KeyValue(Item.randomId, Item.randomName);
+	    i++;
 	}
-
-	super.buildList();
+	
+	if (i == 0) {
+	    // always add an empty row to show to the user that he has to select another item
+	    additionalOptions[0] = new KeyValue("", "");
+	}
+	
+	setAdditionalOptions(additionalOptions);
     }
 }

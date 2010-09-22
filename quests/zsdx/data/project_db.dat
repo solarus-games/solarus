@@ -228,8 +228,6 @@
 5	small_key	Small key
 5	rupee	Rupees (x1 / x5 / x20 / x100 / x300)
 5	magic_flask	(small / big)
-5	heart	Heart
 5	heart	Heart container
 5	piece_of_heart	Piece of heart
 5	fairy	Fairy
-

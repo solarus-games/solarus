@@ -1,5 +1,9 @@
 This ChangeLog describes the important changes of each svn commit.
 
+r1443 (2010-09-22):
+
+Finish updating the editor.
+
 r1442 (2010-09-22):
 
 Updating the editor to take into account the new syntax of treasure-related

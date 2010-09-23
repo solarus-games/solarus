@@ -51,27 +51,6 @@ called when the player has just finished obtaining a treasure
 
 These functions of the C++ engine can be called by any type of script.
 
-- <tt>hero_freeze()</tt>: 
-prevents the hero from moving until you call <tt>hero_unfreeze()</tt>
-
-- <tt>hero_unfreeze()</tt>: 
-restores the control to the hero, typically after a call to <tt>hero_freeze()</tt>
-
-- <tt>hero_set_pause_enabled(bool enabled)</tt>: 
-allows or disallows to pause the game (and to save the game)
-
-- <tt>dialog_start(first_message_id)</tt>: 
-starts a dialog (a sequence of messages) by displaying a first message
-
-- <tt>dialog_set_variable(first_message_id, value)</tt>: 
-specifies a value to display inside a dialog
-
-- <tt>dialog_set_style(style)</tt>: 
-sets the style of the dialog box for subsequent messages
-
-- <tt>hud_set_enabled(enabled)</tt>: 
-enables or disables the HUD displaying
-
 - <tt>play_sound(sound_id)</tt>: 	
 plays a sound
 
@@ -83,12 +62,6 @@ starts a timer which will call a function of your script once finished
 
 - <tt>timer_stop(callback)</tt>: 
 stops a timer that is currently running
-
-- <tt>camera_move(x, y, speed)</tt>: 
-suspends the game and moves the camera towards a target point
-
-- <tt>camera_restore()</tt>: 
-sents the camera back to the hero after a call to camera_move()
 
 - <tt>savegame_get_string(index)</tt>:
 returns a string saved
@@ -159,6 +132,13 @@ adds an amount of the specified item
 - <tt>equipment_remove_item_amount(item_name, amount)</tt>: 
 removes an amount of the specified item
 
+- <tt>equipment_is_dungeon_finished(dungeon)</tt>:
+returns whether the specified dungeon is finished
+
+- <tt>equipment_set_dungeon_finished(dungeon)</tt>:
+sets the specified dungeon as finished
+
+
 - <tt>treasure_give(item_name, variant, savegame_variable)</tt>: 
 gives a treasure to the player (without using a chest)
 
@@ -224,6 +204,33 @@ called when an enemy is killed
 
 These engine functions can be called by the Lua script of a map.
 
+- <tt>hud_set_pause_enabled(bool enabled)</tt>: 
+allows or disallows to pause the game (and to save the game)
+
+- <tt>dialog_start(first_message_id)</tt>: 
+starts a dialog (a sequence of messages) by displaying a first message
+
+- <tt>dialog_set_variable(first_message_id, value)</tt>: 
+specifies a value to display inside a dialog
+
+- <tt>dialog_set_style(style)</tt>: 
+sets the style of the dialog box for subsequent messages
+
+- <tt>hud_set_enabled(enabled)</tt>: 
+enables or disables the HUD displaying
+
+- <tt>camera_move(x, y, speed)</tt>: 
+suspends the game and moves the camera towards a target point
+
+- <tt>camera_restore()</tt>: 
+sents the camera back to the hero after a call to camera_move()
+
+- <tt>hero_freeze()</tt>: 
+prevents the hero from moving until you call <tt>hero_unfreeze()</tt>
+
+- <tt>hero_unfreeze()</tt>: 
+restores the control to the hero, typically after a call to <tt>hero_freeze()</tt>
+
 - <tt>hero_set_map(map_id, destination_point, transition)</tt>:
 sents the hero on a map (possibly the same one)
 
@@ -281,16 +288,16 @@ returns whether a chest is hidden
 - <tt>tile_set_enabled(tile_name, enable)</tt>:
 enables or disables a dynamic tile
 
-- <tt>tiles_set_enabled(tiles_prefix, enable)</tt>:
+- <tt>tile_set_group_enabled(tiles_prefix, enable)</tt>:
 active ou désactive un ensemble de tiles dynamiques
 
 - <tt>tile_is_enabled(tile_name)</tt>:
 returns where a dynamic tile is enabled
 
-- <tt>reset_block(block_name)</tt>:
+- <tt>block_reset(block_name)</tt>:
 places a block where it was when the map started
 
-- <tt>reset_blocks()</tt>:
+- <tt>block_reset_all()</tt>:
 resets all blocks of the map
 
 - <tt>interactive_entity_get_animation(entity)</tt>:
@@ -347,29 +354,23 @@ locks a switch in its current state or unlocks it
 - <tt>enemy_is_dead(enemy_name)</tt>:
 returns whether an enemy is dead
 
-- <tt>enemies_are_dead(enemies_name_prefix)</tt>:
+- <tt>enemy_is_group_dead(enemies_name_prefix)</tt>:
 returns whether all enemies having a common prefix are dead
 
 - <tt>enemy_set_enabled(enemy_name)</tt>:
 enables or disables an enemy
 
-- <tt>boss_start_battle(enemy_name)</tt>:
+- <tt>enemy_start_boss(enemy_name)</tt>:
 starts fighting a boss if it is alive
 
-- <tt>boss_end_battle()</tt>:
+- <tt>enemy_end_boss()</tt>:
 sets the fight with a boss as finished (usually called after picking the life container)
 
-- <tt>miniboss_start_battle(enemy_name)</tt>:
+- <tt>enemy_start_miniboss(enemy_name)</tt>:
 starts fighting a miniboss if it is alive
 
-- <tt>miniboss_end_battle()</tt>:
+- <tt>enemy_end_miniboss()</tt>:
 sets the fight with a miniboss as finished
-
-- <tt>dungeon_is_finished(dungeon)</tt>:
-returns whether the specified dungeon is finished
-
-- <tt>dungeon_set_finished()</tt>:
-sets the current dungeon as finished
 
 - <tt>sensor_remove(sensor_name)</tt>:
 removes a sensor from the map

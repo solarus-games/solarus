@@ -4,13 +4,13 @@
 
 function event_map_started(destination_point_name)
   if is_ladder_activated() then
-    tiles_set_enabled("ladder_step", true)
-    tiles_set_enabled("no_ladder", false)
+    tile_set_group_enabled("ladder_step", true)
+    tile_set_group_enabled("no_ladder", false)
     npc_remove("tom")
     sensor_remove("tom_appears_sensor")
   else
-    tiles_set_enabled("ladder_step", false)
-    tiles_set_enabled("no_ladder", true)
+    tile_set_group_enabled("ladder_step", false)
+    tile_set_group_enabled("no_ladder", true)
   end
 end
 
@@ -76,25 +76,25 @@ end
 
 function ladder_step1()
   play_sound("door_open")
-  tiles_set_enabled("ladder_step1", true)
-  tiles_set_enabled("no_ladder_step1", false)
+  tile_set_group_enabled("ladder_step1", true)
+  tile_set_group_enabled("no_ladder_step1", false)
   timer_start(1000, "ladder_step2", false)
 end
 
 function ladder_step2()
   play_sound("door_open")
-  tiles_set_enabled("ladder_step2", true)
+  tile_set_group_enabled("ladder_step2", true)
   timer_start(1000, "ladder_step3", false)
 end
 
 function ladder_step3()
   play_sound("door_open")
-  tiles_set_enabled("ladder_step3", true)
+  tile_set_group_enabled("ladder_step3", true)
   timer_start(1000, "ladder_step4", false)
 end
 
 function ladder_step4()
-  tiles_set_enabled("no_ladder", false)
+  tile_set_group_enabled("no_ladder", false)
   sensor_remove("tom_appears_sensor")
   play_sound("secret")
   savegame_set_boolean(52, true)

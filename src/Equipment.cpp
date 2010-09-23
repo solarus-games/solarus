@@ -836,11 +836,11 @@ bool Equipment::is_dungeon_finished() {
 }
 
 /**
- * @brief Sets the current dungeon as finished.
+ * @brief Sets the specified dungeon as finished.
+ * @param dungeon a dungeon
  */
-void Equipment::set_dungeon_finished() {
+void Equipment::set_dungeon_finished(int dungeon) {
 
-  int dungeon = get_current_dungeon();
   int index = Savegame::DUNGEON_1_FINISHED + 10 * (dungeon - 1);
   savegame->set_integer(index, 1);
 }

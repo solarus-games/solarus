@@ -40,14 +40,14 @@ function event_hero_on_sensor(sensor_name)
 end
 
 function miniboss_timer()
-  miniboss_start_battle("miniboss")
+  enemy_start_miniboss("miniboss")
   hero_unfreeze()
 end
 
 function event_enemy_dead(enemy_name)
 
   if enemy_name == "miniboss" then
-    miniboss_end_battle()
+    enemy_end_miniboss()
     door_open("miniboss_door")
   end
 end
@@ -142,12 +142,12 @@ function hidden_door_timer()
 end
 
 function open_hidden_stairs()
-  tiles_set_enabled("hidden_stairs_closed", false)
-  tiles_set_enabled("hidden_stairs_open", true)
+  tile_set_group_enabled("hidden_stairs_closed", false)
+  tile_set_group_enabled("hidden_stairs_open", true)
 end
 
 function open_hidden_door()
-  tiles_set_enabled("hidden_door_closed", false)
-  tiles_set_enabled("hidden_door_open", true)
+  tile_set_group_enabled("hidden_door_closed", false)
+  tile_set_group_enabled("hidden_door_open", true)
 end
 

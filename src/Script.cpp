@@ -18,8 +18,6 @@
 #include "Game.h"
 #include "Map.h"
 #include "Equipment.h"
-#include "DialogBox.h"
-#include "Treasure.h"
 #include "Savegame.h"
 #include "Timer.h"
 #include "InventoryItem.h"
@@ -110,19 +108,10 @@ void Script::load(const std::string &script_name) {
  */
 void Script::register_available_functions() {
 
-  lua_register(context, "hero_freeze", l_hero_freeze);
-  lua_register(context, "hero_unfreeze", l_hero_unfreeze);
-  lua_register(context, "hero_set_pause_enabled", l_hero_set_pause_enabled);
-  lua_register(context, "dialog_start", l_dialog_start);
-  lua_register(context, "dialog_set_variable", l_dialog_set_variable);
-  lua_register(context, "dialog_set_style", l_dialog_set_style);
-  lua_register(context, "hud_set_enabled", l_hud_set_enabled);
   lua_register(context, "play_sound", l_play_sound);
   lua_register(context, "play_music", l_play_music);
   lua_register(context, "timer_start", l_timer_start);
   lua_register(context, "timer_stop", l_timer_stop);
-  lua_register(context, "camera_move", l_camera_move);
-  lua_register(context, "camera_restore", l_camera_restore);
   lua_register(context, "savegame_get_string", l_savegame_get_string);
   lua_register(context, "savegame_get_integer", l_savegame_get_integer);
   lua_register(context, "savegame_get_boolean", l_savegame_get_boolean);
@@ -146,7 +135,8 @@ void Script::register_available_functions() {
   lua_register(context, "equipment_get_item_amount", l_equipment_get_item_amount);
   lua_register(context, "equipment_add_item_amount", l_equipment_add_item_amount);
   lua_register(context, "equipment_remove_item_amount", l_equipment_remove_item_amount);
-  lua_register(context, "treasure_give", l_treasure_give);
+  lua_register(context, "equipment_is_dungeon_finished", l_equipment_is_dungeon_finished);
+  lua_register(context, "equipment_set_dungeon_finished", l_equipment_set_dungeon_finished);
 }
 
 /**
@@ -512,120 +502,6 @@ void Script::remove_timer(const std::string &callback_name) {
 // functions that can be called by the Lua script
 
 /**
- * @brief Prevents the player from moving until hero_unfreeze() is called.
- */
-int Script::l_hero_freeze(lua_State *l) {
-
-  Script *script;
-  called_by_script(l, 0, &script);
-
-  script->hero->start_freezed();
-
-  return 0;
-}
-
-/**
- * @brief Allows the player to move again after a call to hero_freeze().
- */
-int Script::l_hero_unfreeze(lua_State *l) {
-
-  Script *script;
-  called_by_script(l, 0, &script);
-
-  script->hero->start_free();
-
-  return 0;
-}
-
-/**
- * @brief Sets whether the player can pause the game.
- * - Argument 1 (boolean): true to enable the pause key
- */
-int Script::l_hero_set_pause_enabled(lua_State *l) {
-
-  Script *script;
-  called_by_script(l, 1, &script);
-  bool pause_key_available = lua_toboolean(l, 1) != 0;
-
-  script->game->set_pause_key_available(pause_key_available);
-
-  return 0;
-}
-
-/**
- * @brief Creates a dialog box and starts displaying a message.
- *
- * If the message is followed by other messages, they are also
- * displayed.
- * If the message (or one of its next messages) contains a variable,
- * then you have to call dialog_set_variable() to specify its value.
- * 
- * - Argument 1 (string): id of the message to display
- */
-int Script::l_dialog_start(lua_State *l) {
-
-  Script *script;
-  called_by_script(l, 1, &script);
-  const std::string &message_id = lua_tostring(l, 1);
-
-  script->game->get_dialog_box()->start_dialog(message_id);
-
-  return 0;
-}
-
-/**
- * @brief Sets the value of the variable in a diabog.
- *
- * The function has to be called after the dialog box is created,
- * i.e. after calling dialog_start().
- * 
- * - Argument 1 (string): id of the message containing the variable
- * - Argument 2 (string): value of the variable
- */
-int Script::l_dialog_set_variable(lua_State *l) {
-
-  Script *script;
-  called_by_script(l, 2, &script);
-  const MessageId &message_id = lua_tostring(l, 1);
-  const std::string &value = lua_tostring(l, 2);
-
-  script->game->get_dialog_box()->set_variable(message_id, value);
-
-  return 0;
-}
-
-/**
- * @brief Changes the style of the future dialog boxes.
- * 
- * - Argument 1 (integer): the style to set (see the DialogBox::Style enum)
- */
-int Script::l_dialog_set_style(lua_State *l) {
-
-  Script *script;
-  called_by_script(l, 1, &script);
-  int style = lua_tointeger(l, 1);
-
-  script->game->get_dialog_box()->set_style(DialogBox::Style(style));
-
-  return 0;
-}
-
-/**
- * @brief Enables or disables the head up display.
- *
- * - Argument 1 (boolean): true to enable it, false to disable it
- */
-int Script::l_hud_set_enabled(lua_State *l) {
-
-  Script *script;
-  called_by_script(l, 1, &script);
-  bool enabled = lua_toboolean(l, 1) != 0;
-
-  script->game->set_hud_enabled(enabled);
-  return 0;
-}
-
-/**
  * @brief Plays a sound.
  *
  * - Argument 1 (string): name of the sound
@@ -692,39 +568,6 @@ int Script::l_timer_stop(lua_State *l) {
   const std::string &callback_name = lua_tostring(l, 1);
 
   script->remove_timer(callback_name);
-
-  return 0;
-}
-
-/**
- * @brief Moves the camera towards a target point.
- *
- * - Argument 1 (integer): x coordinate of the target point
- * - Argument 2 (integer): y coordinate of the target point
- * - Argument 3 (integer): speed of the camera movement (10 is normal)
- */
-int Script::l_camera_move(lua_State *l) {
-
-  Script *script;
-  called_by_script(l, 3, &script);
-  int x = lua_tointeger(l, 1);
-  int y = lua_tointeger(l, 2);
-  int speed = lua_tointeger(l, 3);
-
-  script->game->get_current_map()->move_camera(x, y, speed);
-
-  return 0;
-}
-
-/**
- * @brief Moves the camera back to the hero.
- */
-int Script::l_camera_restore(lua_State *l) {
-
-  Script *script;
-  called_by_script(l, 0, &script);
-
-  script->game->get_current_map()->restore_camera();
 
   return 0;
 }
@@ -1163,28 +1006,44 @@ int Script::l_equipment_remove_item_amount(lua_State *l) {
 }
 
 /**
- * @brief Gives a treasure to the player.
+ * @brief Returns whether a dungeon is finished.
  *
- * If the treasure comes from a chest, you don't have to call this function:
- * the treasure will be given to the player automatically when he opens the chest.
- * You can use this function to make a non-playing character
- * give a treasure to the player.
+ * A dungeon is considered as finished if the function dungeon_set_finished() was
+ * called from the script of a map in that dungeon.
+ * This information is saved by the engine (see include/Savegame.h).
+ * - Argument 1 (integer): number of the dungeon to test
+ * - Return value (boolean): true if that dungeon is finished
  *
- * - Argument 1 (integer): name of the item to give (according to the item list of items.dat)
- * - Argument 2 (integer): variant of this item (1 if the item has only one variant)
- * - Argument 3 (integer): index of the savegame boolean variable that stores
- * the possession state of the treasure (or -1 if you don't want to save this treasure)
+ * @param l the Lua context that is calling this function
  */
-int Script::l_treasure_give(lua_State *l) {
+int Script::l_equipment_is_dungeon_finished(lua_State *l) {
 
   Script *script;
-  called_by_script(l, 3, &script);
-  const std::string &item_name = lua_tostring(l, 1);
-  int variant = lua_tointeger(l, 2);
-  int savegame_variable = lua_tointeger(l, 3);
+  called_by_script(l, 1, &script);
 
-  Game *game = script->game;
-  game->get_hero()->start_treasure(new Treasure(game, item_name, variant, savegame_variable));
+  int dungeon = lua_tointeger(l, 1);
+  bool finished = script->game->get_equipment()->is_dungeon_finished(dungeon);
+  lua_pushboolean(l, finished);
+
+  return 1;
+}
+
+/**
+ * @brief Sets a dungeon as finished.
+ *
+ * You should call this function when the final dialog of the dungeon ending
+ * sequence is finished.
+ * - Argument 1 (integer): number of the dungeon to set
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::l_equipment_set_dungeon_finished(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 1, &script);
+
+  int dungeon = lua_tointeger(l, 1);
+  script->game->get_equipment()->set_dungeon_finished(dungeon);
 
   return 0;
 }

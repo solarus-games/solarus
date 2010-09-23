@@ -7,7 +7,7 @@ function event_map_started(destination_point_name)
   if destination_point_name == "from_intro" then
     -- the intro scene is playing
     hud_set_enabled(true)
-    hero_set_pause_enabled(false)
+    hud_set_pause_enabled(false)
     dialog_set_style(0)
     interactive_entity_set_animation_ignore_suspend("snores", true)
     interactive_entity_set_animation("bed", "hero_sleeping")
@@ -41,7 +41,7 @@ function jump_from_bed()
   hero_set_visible(true)
   hero_jump(4, 24, true)
   interactive_entity_set_animation("bed", "empty_open")
-  hero_set_pause_enabled(true)
+  hud_set_pause_enabled(true)
   play_sound("hero_lands");
 end
 

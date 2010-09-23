@@ -66,19 +66,10 @@ class Script {
     static void called_by_script(lua_State *context, int nb_arguments, Script **script);
 
     static FunctionAvailableToScript 
-      l_hero_freeze,
-      l_hero_unfreeze,
-      l_hero_set_pause_enabled,
-      l_dialog_start,
-      l_dialog_set_variable,
-      l_dialog_set_style,
-      l_hud_set_enabled,
       l_play_sound,
       l_play_music,
       l_timer_start,
       l_timer_stop,
-      l_camera_move,
-      l_camera_restore,
       l_savegame_get_string,
       l_savegame_get_integer,
       l_savegame_get_boolean,
@@ -102,7 +93,8 @@ class Script {
       l_equipment_get_item_amount,
       l_equipment_add_item_amount,
       l_equipment_remove_item_amount,
-      l_treasure_give;
+      l_equipment_is_dungeon_finished,
+      l_equipment_set_dungeon_finished;
 
     // initialization
     void load(const std::string &script_name);

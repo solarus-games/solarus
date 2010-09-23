@@ -52,8 +52,6 @@ Bugs :
 - le 8 n'est pas très lisible (ex : 80 rubis chez le forgeron)
 - engine_dialogs.zsd : deux fois _treasure_88_2 (le signaler aux traducteurs)
 - empêcher de lancer le jeu en root, sinon le config.ini est créé avec root comme propriétaire
-- mode d'emploi : enlever le logo nintendo sur la dernière page
-- mode d'emploi : page 13 : "vous pouvez la possibilité"
 - pousser un buisson empêche de le soulever
 - Link semble disparaître un peu lors des phases à l'épée.
 - Lorsqu'on fait des appuis courts et répétés sur une des flèches, Link avance sans marcher.

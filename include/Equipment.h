@@ -129,7 +129,7 @@ class Equipment {
     int get_current_dungeon();
     bool is_dungeon_finished(int dungeon);
     bool is_dungeon_finished();
-    void set_dungeon_finished();
+    void set_dungeon_finished(int dungeon);
 
     // giving items
     void set_initial_items();

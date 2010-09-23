@@ -7,7 +7,7 @@ fresco = 0
 function event_map_started(destination_point_name)
   hero_freeze()
   hud_set_enabled(false)
-  hero_set_pause_enabled(false)
+  hud_set_pause_enabled(false)
   dialog_set_style(1)
   interactive_entity_set_animation_ignore_suspend("fresco", true)
   dialog_start("intro0")

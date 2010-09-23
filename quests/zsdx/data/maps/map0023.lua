@@ -74,7 +74,7 @@ end
 
 function event_enemy_dead(enemy_name)
 
-  if enemies_are_dead("compass_room_battle") and chest_is_hidden("compass_chest") then
+  if enemy_is_group_dead("compass_room_battle") and chest_is_hidden("compass_chest") then
     camera_move(408, 456, 15)
     current_room = "compass_room"
   end

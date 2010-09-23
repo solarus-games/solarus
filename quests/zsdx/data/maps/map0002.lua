@@ -180,7 +180,7 @@ function event_dialog_finished(first_message_id, answer)
       else
 	-- enough money: reset the game, pay and start the game
 
-	reset_blocks();
+	block_reset_all();
 	tile_set_enabled("game_3_barrier_1", false);
 	tile_set_enabled("game_3_barrier_2", false);
 	tile_set_enabled("game_3_barrier_3", false);

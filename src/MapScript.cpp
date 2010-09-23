@@ -20,6 +20,8 @@
 #include "Sprite.h"
 #include "InventoryItem.h"
 #include "Equipment.h"
+#include "DialogBox.h"
+#include "Treasure.h"
 #include "entities/EntityType.h"
 #include "entities/MapEntities.h"
 #include "entities/InteractiveEntity.h"
@@ -64,6 +66,16 @@ void MapScript::register_available_functions() {
   Script::register_available_functions();
 
   // functions specific to map scripts
+  lua_register(context, "dialog_start", l_dialog_start);
+  lua_register(context, "dialog_set_variable", l_dialog_set_variable);
+  lua_register(context, "dialog_set_style", l_dialog_set_style);
+  lua_register(context, "hud_set_enabled", l_hud_set_enabled);
+  lua_register(context, "hud_set_pause_enabled", l_hud_set_pause_enabled);
+  lua_register(context, "treasure_give", l_treasure_give);
+  lua_register(context, "camera_move", l_camera_move);
+  lua_register(context, "camera_restore", l_camera_restore);
+  lua_register(context, "hero_freeze", l_hero_freeze);
+  lua_register(context, "hero_unfreeze", l_hero_unfreeze);
   lua_register(context, "hero_set_map", l_hero_set_map);
   lua_register(context, "hero_set_direction", l_hero_set_direction);
   lua_register(context, "hero_align_on_sensor", l_hero_align_on_sensor);
@@ -84,10 +96,10 @@ void MapScript::register_available_functions() {
   lua_register(context, "chest_set_hidden", l_chest_set_hidden);
   lua_register(context, "chest_is_hidden", l_chest_is_hidden);
   lua_register(context, "tile_set_enabled", l_tile_set_enabled);
-  lua_register(context, "tiles_set_enabled", l_tiles_set_enabled);
+  lua_register(context, "tile_set_group_enabled", l_tile_set_group_enabled);
   lua_register(context, "tile_is_enabled", l_tile_is_enabled);
-  lua_register(context, "reset_block", l_reset_block);
-  lua_register(context, "reset_blocks", l_reset_blocks);
+  lua_register(context, "block_reset", l_block_reset);
+  lua_register(context, "block_reset_all", l_block_reset_all);
   lua_register(context, "interactive_entity_get_animation", l_interactive_entity_get_animation);
   lua_register(context, "interactive_entity_get_animation_delay", l_interactive_entity_get_animation_delay);
   lua_register(context, "interactive_entity_get_animation_frame", l_interactive_entity_get_animation_frame);
@@ -106,14 +118,12 @@ void MapScript::register_available_functions() {
   lua_register(context, "switch_set_enabled", l_switch_set_enabled);
   lua_register(context, "switch_set_locked", l_switch_set_locked);
   lua_register(context, "enemy_is_dead", l_enemy_is_dead);
-  lua_register(context, "enemies_are_dead", l_enemies_are_dead);
+  lua_register(context, "enemy_is_group_dead", l_enemy_is_group_dead);
   lua_register(context, "enemy_set_enabled", l_enemy_set_enabled);
-  lua_register(context, "boss_start_battle", l_boss_start_battle);
-  lua_register(context, "boss_end_battle", l_boss_end_battle);
-  lua_register(context, "miniboss_start_battle", l_miniboss_start_battle);
-  lua_register(context, "miniboss_end_battle", l_miniboss_end_battle);
-  lua_register(context, "dungeon_is_finished", l_dungeon_is_finished);
-  lua_register(context, "dungeon_set_finished", l_dungeon_set_finished);
+  lua_register(context, "enemy_start_boss", l_enemy_start_boss);
+  lua_register(context, "enemy_end_boss", l_enemy_end_boss);
+  lua_register(context, "enemy_start_miniboss", l_enemy_start_miniboss);
+  lua_register(context, "enemy_end_miniboss", l_enemy_end_miniboss);
   lua_register(context, "sensor_remove", l_sensor_remove);
   lua_register(context, "door_open", l_door_open);
   lua_register(context, "door_close", l_door_close);
@@ -166,6 +176,180 @@ void MapScript::called_by_script(lua_State *context, int nb_arguments, MapScript
 }
 
 // functions that can be called by the Lua script
+
+/**
+ * @brief Creates a dialog box and starts displaying a message.
+ *
+ * If the message is followed by other messages, they are also
+ * displayed.
+ * If the message (or one of its next messages) contains a variable,
+ * then you have to call dialog_set_variable() to specify its value.
+ * 
+ * - Argument 1 (string): id of the message to display
+ */
+int MapScript::l_dialog_start(lua_State *l) {
+
+  MapScript *script;
+  called_by_script(l, 1, &script);
+  const std::string &message_id = lua_tostring(l, 1);
+
+  script->game->get_dialog_box()->start_dialog(message_id);
+
+  return 0;
+}
+
+/**
+ * @brief Sets the value of the variable in a diabog.
+ *
+ * The function has to be called after the dialog box is created,
+ * i.e. after calling dialog_start().
+ * 
+ * - Argument 1 (string): id of the message containing the variable
+ * - Argument 2 (string): value of the variable
+ */
+int MapScript::l_dialog_set_variable(lua_State *l) {
+
+  MapScript *script;
+  called_by_script(l, 2, &script);
+  const MessageId &message_id = lua_tostring(l, 1);
+  const std::string &value = lua_tostring(l, 2);
+
+  script->game->get_dialog_box()->set_variable(message_id, value);
+
+  return 0;
+}
+
+/**
+ * @brief Changes the style of the future dialog boxes.
+ * 
+ * - Argument 1 (integer): the style to set (see the DialogBox::Style enum)
+ */
+int MapScript::l_dialog_set_style(lua_State *l) {
+
+  MapScript *script;
+  called_by_script(l, 1, &script);
+  int style = lua_tointeger(l, 1);
+
+  script->game->get_dialog_box()->set_style(DialogBox::Style(style));
+
+  return 0;
+}
+
+/**
+ * @brief Enables or disables the head up display.
+ *
+ * - Argument 1 (boolean): true to enable it, false to disable it
+ */
+int MapScript::l_hud_set_enabled(lua_State *l) {
+
+  MapScript *script;
+  called_by_script(l, 1, &script);
+  bool enabled = lua_toboolean(l, 1) != 0;
+
+  script->game->set_hud_enabled(enabled);
+  return 0;
+}
+
+/**
+ * @brief Sets whether the player can pause the game.
+ * - Argument 1 (boolean): true to enable the pause key
+ */
+int MapScript::l_hud_set_pause_enabled(lua_State *l) {
+
+  MapScript *script;
+  called_by_script(l, 1, &script);
+  bool pause_key_available = lua_toboolean(l, 1) != 0;
+
+  script->game->set_pause_key_available(pause_key_available);
+
+  return 0;
+}
+
+/**
+ * @brief Moves the camera towards a target point.
+ *
+ * - Argument 1 (integer): x coordinate of the target point
+ * - Argument 2 (integer): y coordinate of the target point
+ * - Argument 3 (integer): speed of the camera movement (10 is normal)
+ */
+int MapScript::l_camera_move(lua_State *l) {
+
+  MapScript *script;
+  called_by_script(l, 3, &script);
+  int x = lua_tointeger(l, 1);
+  int y = lua_tointeger(l, 2);
+  int speed = lua_tointeger(l, 3);
+
+  script->game->get_current_map()->move_camera(x, y, speed);
+
+  return 0;
+}
+
+/**
+ * @brief Moves the camera back to the hero.
+ */
+int MapScript::l_camera_restore(lua_State *l) {
+
+  MapScript *script;
+  called_by_script(l, 0, &script);
+
+  script->game->get_current_map()->restore_camera();
+
+  return 0;
+}
+
+/**
+ * @brief Gives a treasure to the hero.
+ *
+ * If the treasure comes from a chest, you don't have to call this function:
+ * the treasure will be given to the player automatically when he opens the chest.
+ * You can use this function to make a non-playing character
+ * give a treasure to the player.
+ *
+ * - Argument 1 (integer): name of the item to give (according to the item list of items.dat)
+ * - Argument 2 (integer): variant of this item (1 if the item has only one variant)
+ * - Argument 3 (integer): index of the savegame boolean variable that stores
+ * the possession state of the treasure (or -1 if you don't want to save this treasure)
+ */
+int MapScript::l_treasure_give(lua_State *l) {
+
+  MapScript *script;
+  called_by_script(l, 3, &script);
+  const std::string &item_name = lua_tostring(l, 1);
+  int variant = lua_tointeger(l, 2);
+  int savegame_variable = lua_tointeger(l, 3);
+
+  Game *game = script->game;
+  game->get_hero()->start_treasure(new Treasure(game, item_name, variant, savegame_variable));
+
+  return 0;
+}
+
+/**
+ * @brief Prevents the player from moving until hero_unfreeze() is called.
+ */
+int MapScript::l_hero_freeze(lua_State *l) {
+
+  MapScript *script;
+  called_by_script(l, 0, &script);
+
+  script->hero->start_freezed();
+
+  return 0;
+}
+
+/**
+ * @brief Allows the player to move again after a call to hero_freeze().
+ */
+int MapScript::l_hero_unfreeze(lua_State *l) {
+
+  MapScript *script;
+  called_by_script(l, 0, &script);
+
+  script->hero->start_free();
+
+  return 0;
+}
 
 /**
  * @brief Sends the hero to a map.
@@ -622,7 +806,7 @@ int MapScript::l_tile_set_enabled(lua_State *l) {
  *
  * @param l the Lua context that is calling this function
  */
-int MapScript::l_tiles_set_enabled(lua_State *l) {
+int MapScript::l_tile_set_group_enabled(lua_State *l) {
 
   MapScript *script;
   called_by_script(l, 2, &script);
@@ -672,7 +856,7 @@ int MapScript::l_tile_is_enabled(lua_State *l) {
  *
  * @param l the Lua context that is calling this function
  */
-int MapScript::l_reset_block(lua_State *l) {
+int MapScript::l_block_reset(lua_State *l) {
 
   MapScript *script;
   called_by_script(l, 1, &script);
@@ -690,7 +874,7 @@ int MapScript::l_reset_block(lua_State *l) {
  * @brief Replaces all blocks of the map at their initial position.
  * @param l the Lua context that is calling this function
  */
-int MapScript::l_reset_blocks(lua_State *l) {
+int MapScript::l_block_reset_all(lua_State *l) {
 
   MapScript *script;
   called_by_script(l, 0, &script);
@@ -1102,7 +1286,7 @@ int MapScript::l_enemy_is_dead(lua_State *l) {
  *
  * @param l the Lua context that is calling this function
  */
-int MapScript::l_enemies_are_dead(lua_State *l) {
+int MapScript::l_enemy_is_group_dead(lua_State *l) {
 
   MapScript *script;
   called_by_script(l, 1, &script);
@@ -1151,7 +1335,7 @@ int MapScript::l_enemy_set_enabled(lua_State *l) {
  *
  * @param l the Lua context that is calling this function
  */
-int MapScript::l_boss_start_battle(lua_State *l) {
+int MapScript::l_enemy_start_boss(lua_State *l) {
 
   MapScript *script;
   called_by_script(l, 1, &script);
@@ -1173,7 +1357,7 @@ int MapScript::l_boss_start_battle(lua_State *l) {
  *
  * @param l the Lua context that is calling this function
  */
-int MapScript::l_boss_end_battle(lua_State *l) {
+int MapScript::l_enemy_end_boss(lua_State *l) {
 
   MapScript *script;
   called_by_script(l, 0, &script);
@@ -1192,7 +1376,7 @@ int MapScript::l_boss_end_battle(lua_State *l) {
  *
  * @param l the Lua context that is calling this function
  */
-int MapScript::l_miniboss_start_battle(lua_State *l) {
+int MapScript::l_enemy_start_miniboss(lua_State *l) {
 
   MapScript *script;
   called_by_script(l, 1, &script);
@@ -1213,53 +1397,12 @@ int MapScript::l_miniboss_start_battle(lua_State *l) {
  *
  * @param l the Lua context that is calling this function
  */
-int MapScript::l_miniboss_end_battle(lua_State *l) {
+int MapScript::l_enemy_end_miniboss(lua_State *l) {
 
   MapScript *script;
   called_by_script(l, 0, &script);
 
   script->map->get_entities()->end_miniboss_battle();
-
-  return 0;
-}
-
-/**
- * @brief Returns whether a dungeon is finished.
- *
- * A dungeon is considered as finished if the function dungeon_set_finished() was
- * called from the script of a map in that dungeon.
- * This information is saved by the engine (see include/Savegame.h).
- * - Argument 1 (integer): number of the dungeon to test
- * - Return value (boolean): true if that dungeon is finished
- *
- * @param l the Lua context that is calling this function
- */
-int MapScript::l_dungeon_is_finished(lua_State *l) {
-
-  MapScript *script;
-  called_by_script(l, 1, &script);
-
-  int dungeon = lua_tointeger(l, 1);
-  bool finished = script->game->get_equipment()->is_dungeon_finished(dungeon);
-  lua_pushboolean(l, finished);
-
-  return 1;
-}
-
-/**
- * @brief Sets a dungeon as finished.
- *
- * You should call this function when the final dialog of the dungeon ending
- * sequence is finished.
- *
- * @param l the Lua context that is calling this function
- */
-int MapScript::l_dungeon_set_finished(lua_State *l) {
-
-  MapScript *script;
-  called_by_script(l, 0, &script);
-
-  script->game->get_equipment()->set_dungeon_finished();
 
   return 0;
 }

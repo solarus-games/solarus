@@ -24,9 +24,9 @@ function event_switch_enabled(switch_name)
 end
 
 function event_camera_reached_target()
-  if enemies_are_dead("battle_1") and tile_is_enabled("battle_1_barrier") then
+  if enemy_is_group_dead("battle_1") and tile_is_enabled("battle_1_barrier") then
     timer_start(1000, "battle_1_camera_timer", false)
-  elseif enemies_are_dead("battle_2") and tile_is_enabled("battle_2_barrier") then
+  elseif enemy_is_group_dead("battle_2") and tile_is_enabled("battle_2_barrier") then
     timer_start(1000, "battle_2_camera_timer", false)
   elseif tile_is_enabled("barrier") then
     timer_start(1000, "camera_1_timer", false)
@@ -152,10 +152,10 @@ function has_finished_cavern()
 end
 
 function event_enemy_dead(enemy_name)
-  if enemies_are_dead("battle_1") and tile_is_enabled("battle_1_barrier") then
+  if enemy_is_group_dead("battle_1") and tile_is_enabled("battle_1_barrier") then
     camera_move(352, 288, 10)
   end
-  if enemies_are_dead("battle_2") and tile_is_enabled("battle_2_barrier") then
+  if enemy_is_group_dead("battle_2") and tile_is_enabled("battle_2_barrier") then
     camera_move(344, 488, 10)
   end
 end

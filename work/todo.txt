@@ -96,6 +96,8 @@ Ennemis à faire (reprendre graphismes de MC + graphismes rippés) :
 Scripts d'ennemis
 -----------------
 
+(section un peu obsolète)
+
 Chaque type d'ennemi scripté est défini dans un fichier de script Lua.
 Exemple : garde vert avec grande épée
 L'ennemi est placé sur l'éditeur de maps avec comme sous-type "Custom Enemy"
@@ -177,6 +179,7 @@ end
 
 -- possibilité que ce script prédéfini fournisse le moyen aux scripts normaux de s'abstraire du nom de l'ennemi ?
 -- avec une variable globale qui retient le nom de l'ennemi courant
+
 
 --------------
 Mode release :

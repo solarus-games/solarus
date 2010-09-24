@@ -2,21 +2,27 @@
 Nouveau système de scripts
 --------------------------
 
-
-Le code C++ met à disposition à Lua une (ou plusieurs ?) table qui contient toutes les fonctions qu'un script
+Le code C++ met à disposition de Lua une (ou plusieurs ?) table qui contient toutes les fonctions qu'un script
 peut appeler, organisées en sous-tables (modules).
 Chaque module peut être, disponible ou non (nil) selon les types de scripts.
-Chaque module est géré par une classe C++.
 
 
 Types de scripts :
 
-- script général (typiquement, pour l'écran-titre) :
+- lua/Script : script général (typiquement, pour l'écran-titre) :
   fonctions pour afficher des sprites, appliquer des mouvements, traiter les appuis de touche, gérer des timers
-- script in-game : comme général, avec modules game et map (qui désigne la map courante) en +
-- script d'ennemi : comme map, avec module enemy (qui désigne l'ennemi courant) en +
-- script d'item : comme map, avec module item (qui désigne l'item courant) en +
-- script de sous-écran de pause
+- lua/GameScript : script in-game : comme général, avec module game (qui désigne la partie courante) en +
+- lua/MapScript : script in-game : comme game, avec modules game et map (qui désigne la map courante) en +
+- lua/EnemyScript : script d'ennemi : comme map, avec module enemy (qui désigne l'ennemi courant) en +
+- lua/ItemScript : script d'item : comme map, avec module item (qui désigne l'item courant) en +
+
+La classe lua/Scripts contient la liste des scripts en cours d'exécution. L'objet Solarus contient cette liste.
+Une classe du moteur (exemple : Map) peut créer, stocker et détruire un script.
+Lorsqu'un script est démarré, il s'ajoute lui-même dans la liste des scripts en cours.
+Lorsqu'il est arrêté, il se supprime de la liste.
+
+Les événements (i.e. C++ vers Lua) sont envoyés à tous les scripts en cours d'exécution.
+
 
 Module main : fonctions disponibles pour tous les scripts même en dehors d'un Game
 

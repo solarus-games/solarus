@@ -18,6 +18,7 @@
 #define SOLARUS_SOLARUS_H
 
 #include "Common.h"
+#include "lua/Scripts.h"
 
 /**
  * @brief Main class of the game engine.
@@ -32,6 +33,7 @@ class Solarus {
 					 * the selection menu, the game, etc.) */
     Surface *root_surface;		/**< the surface where everything is drawn (always 320*240) */
     DebugKeys *debug_keys;		/**< special keys to debug the game, e.g. to traverse walls (disabled in release mode) */
+    Scripts scripts;			/**< all scripts that are currently running */
     bool exiting;			/**< indicates that the program is about to stop */
 
     void launch_adventure_mode(Savegame *savegame);

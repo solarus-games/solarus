@@ -155,11 +155,11 @@ void ShopItem::notify_collision(MapEntity *entity_overlapping, CollisionMode col
 
   if (entity_overlapping->is_hero() && !game->is_suspended()) {
 
-    Hero *hero = game->get_hero();
+    Hero &hero = game->get_hero();
     KeysEffect *keys_effect = game->get_keys_effect();
 
     if (keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
-	&& hero->is_free()) {
+	&& hero.is_free()) {
 
       // we show the 'look' icon
       keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_LOOK);
@@ -176,10 +176,10 @@ void ShopItem::notify_collision(MapEntity *entity_overlapping, CollisionMode col
  */
 void ShopItem::action_key_pressed() {
 
-  Hero *hero = game->get_hero();
+  Hero &hero = game->get_hero();
   KeysEffect *keys_effect = game->get_keys_effect();
 
-  if (hero->is_free()
+  if (hero.is_free()
       && keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_LOOK) {
 
     game->get_dialog_box()->start_dialog(message_id);
@@ -227,7 +227,7 @@ void ShopItem::update() {
 	equipment->remove_money(price);
 
 	int savegame_variable = treasure->get_savegame_variable();
-	game->get_hero()->start_treasure(new Treasure(*treasure)); // make a copy of the treasure since the shop item may be still available
+	game->get_hero().start_treasure(new Treasure(*treasure)); // make a copy of the treasure since the shop item may be still available
 	if (savegame_variable != -1) {
 	  remove_from_map();
 	  game->get_savegame()->set_boolean(savegame_variable, true);

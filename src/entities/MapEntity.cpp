@@ -245,7 +245,7 @@ bool MapEntity::is_displayed_in_y_order() {
 void MapEntity::set_map(Map *map) {
 
   this->map = map;
-  this->game = map->get_game();
+  this->game = &map->get_game(); // TODO store a reference instead
 
   // notify the sprites (useful for tileset dependent sprites such as doors and blocks)
   std::map<std::string, Sprite*>::iterator it;

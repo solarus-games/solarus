@@ -71,6 +71,8 @@ class Music {
     static int get_volume();
     static void set_volume(int volume);
 
+    static Music* get_current_music();
+
     bool play();
     void stop();
     bool is_paused();
@@ -78,9 +80,9 @@ class Music {
 
     void decode_spc(ALuint destination_buffer, ALsizei nb_samples);
 
-    static bool isNoneId(const MusicId &music_id);
-    static bool isUnchangedId(const MusicId &music_id);
-    static bool isEqualId(const MusicId &music_id, const MusicId &other_music_id);
+    static bool is_none_id(const MusicId &music_id);
+    static bool is_unchanged_id(const MusicId &music_id);
+    static bool is_equal_id(const MusicId &music_id, const MusicId &other_music_id);
 };
 
 #endif

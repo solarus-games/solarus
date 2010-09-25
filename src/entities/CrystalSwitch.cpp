@@ -115,9 +115,9 @@ void CrystalSwitch::notify_collision(MapEntity *other_entity, Sprite *other_spri
 void CrystalSwitch::action_key_pressed() {
 
   KeysEffect *keys_effect = game->get_keys_effect();
-  Hero *hero = game->get_hero();
+  Hero &hero = game->get_hero();
 
-  if (hero->is_free()) {
+  if (hero.is_free()) {
     keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
 
     // start a dialog

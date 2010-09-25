@@ -294,7 +294,7 @@ void DestructibleItem::notify_collision(MapEntity *other_entity, Sprite *other_s
 void DestructibleItem::action_key_pressed() {
 
   KeysEffect *keys_effect = game->get_keys_effect();
-  Hero *hero = game->get_hero();
+  Hero &hero = game->get_hero();
   KeysEffect::ActionKeyEffect effect = keys_effect->get_action_key_effect();
 
   if ((effect == KeysEffect::ACTION_KEY_LIFT || effect == KeysEffect::ACTION_KEY_LOOK)
@@ -306,7 +306,7 @@ void DestructibleItem::action_key_pressed() {
     Equipment *equipment = game->get_equipment();
 
     if (equipment->has_ability("lift", weight)) {
-      hero->start_lifting(this);
+      hero.start_lifting(this);
 
       // play the sound
       game->play_sound("lift");
@@ -404,7 +404,7 @@ void DestructibleItem::update() {
     }
   }
 
-  else if (is_disabled() && System::now() >= regeneration_date && !overlaps(game->get_hero())) {
+  else if (is_disabled() && System::now() >= regeneration_date && !overlaps(&game->get_hero())) {
     get_sprite()->set_current_animation("regenerating");
     is_regenerating = true;
     regeneration_date = 0;

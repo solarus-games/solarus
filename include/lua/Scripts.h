@@ -41,8 +41,6 @@ class Scripts {
     void remove_script(Script *script);
 
     // calling Lua from C++
-    void event_update();
-    void event_set_suspended(bool suspended);
     void event_dialog_started(const MessageId &message_id);
     void event_dialog_finished(const MessageId &first_message_id, int answer);
     void event_camera_reached_target();

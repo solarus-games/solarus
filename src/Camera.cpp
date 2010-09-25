@@ -52,9 +52,9 @@ void Camera::update() {
 
   // if the camera is not moving, center it on the hero
   if (is_fixed_on_hero()) {
-    Hero *hero = map->get_entities()->get_hero();
-    x = hero->get_x();
-    y = hero->get_y();
+    Hero &hero = map->get_entities()->get_hero();
+    x = hero.get_x();
+    y = hero.get_y();
     x = std::min(std::max(x - 160, 0), map_location.get_width() - 320);
     y = std::min(std::max(y - 120, 0), map_location.get_height() - 240);
   }
@@ -158,7 +158,7 @@ void Camera::move(MapEntity *entity) {
  * Once the movement is finished, the camera starts following the hero again.
  */
 void Camera::restore() {
-  move(map->get_entities()->get_hero());
+  move(&map->get_entities()->get_hero());
   restoring = true;
 }
 

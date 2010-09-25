@@ -134,6 +134,14 @@ void Music::set_volume(int volume) {
 }
 
 /**
+ * @brief Returns the music currently playing.
+ * @return the current music, or NULL if no music is being played
+ */
+Music* Music::get_current_music() {
+  return current_music;
+}
+
+/**
  * @brief Updates the music system.
  *
  * When a music is playing, this function makes it update.
@@ -323,21 +331,21 @@ void Music::set_paused(bool pause) {
 }
 
 /**
- * @brief Returns whether a music id is the id for no music, i.e. if it is Music.none_id.
+ * @brief Returns whether a music id is the id for no music, i.e. if it is Music::none_id.
  * @param music_id a music id
  * @return true if music_id is the special id indicating that there is no music
  */
-bool Music::isNoneId(const MusicId &music_id) {
-  return isEqualId(music_id, none);
+bool Music::is_none_id(const MusicId &music_id) {
+  return is_equal_id(music_id, none);
 }
 
 /**
- * @brief Returns whether a music id is the id for no change, i.e. if it is Music.unchanged_id.
+ * @brief Returns whether a music id is the id for no change, i.e. if it is Music::unchanged_id.
  * @param music_id a music id
  * @return true if music_id is the special id indicating that the music doesn't change
  */
-bool Music::isUnchangedId(const MusicId &music_id) {
-  return isEqualId(music_id, unchanged);
+bool Music::is_unchanged_id(const MusicId &music_id) {
+  return is_equal_id(music_id, unchanged);
 }
 
 /**
@@ -346,7 +354,7 @@ bool Music::isUnchangedId(const MusicId &music_id) {
  * @param other_music_id another music id
  * @return true if the ids are the same
  */
-bool Music::isEqualId(const MusicId &music_id, const MusicId &other_music_id) {
+bool Music::is_equal_id(const MusicId &music_id, const MusicId &other_music_id) {
   return music_id == other_music_id;
 }
 

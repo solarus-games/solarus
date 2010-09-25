@@ -30,6 +30,7 @@ class MapScript: public GameScript {
   protected:
 
     Map &map;			/**< the map controlled by this script */
+    Hero &hero;			/**< the hero */
 
     // calling a C++ function from the script
     static void called_by_script(lua_State *context, int nb_arguments, MapScript **map_script);
@@ -106,7 +107,7 @@ class MapScript: public GameScript {
 
     // loading and closing a script
     MapScript(Scripts &scripts, Map &map);
-    ~MapScript();
+    virtual ~MapScript();
     void start(const std::string &destination_point_name);
 
 };

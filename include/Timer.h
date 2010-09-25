@@ -44,7 +44,7 @@ class Timer {
 
   public:
 
-    Timer(Game *game, uint32_t duration, const std::string &name, bool with_sound);
+    Timer(uint32_t duration, const std::string &name, bool with_sound);
     ~Timer();
 
     const std::string& get_name();

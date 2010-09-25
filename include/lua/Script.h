@@ -27,7 +27,7 @@ struct lua_State;
  *
  * This class and its subclasses provide an API that allows Lua scripts to call C++ functions.
  *
- * This class only provide functions that are common to any kind of script and is meant to be inherited.
+ * This particular class provide a few functions that are common to any kind of script.
  * The subclasses are specific to particular kinds of script
  * (such as map scripts or enemy scripts) and provide additional, specific fonctions.
  */
@@ -70,6 +70,7 @@ class Script {
     // timers
     void add_timer(Timer *timer);
     void remove_timer(const std::string &callback_name);
+    virtual bool is_new_timer_suspended(void);
 
   public:
 

@@ -22,12 +22,11 @@
 
 /**
  * @brief Creates and starts a timer.
- * @param game the current game (if any)
  * @param duration duration of the timer in milliseconds
  * @param name a name to identify this timer
  * @param with_sound plays a sound until the timer expires
  */
-Timer::Timer(Game *game, uint32_t duration, const std::string &name, bool with_sound):
+Timer::Timer(uint32_t duration, const std::string &name, bool with_sound):
   name(name), finished(false), suspended(false), when_suspended(0) {
 
   uint32_t now = System::now();
@@ -40,12 +39,6 @@ Timer::Timer(Game *game, uint32_t duration, const std::string &name, bool with_s
   }
   else {
     next_sound_date = 0;
-  }
-
-  // start the timer even if the game is suspended (e.g. a timer started during a camera movement)
-  // except when it is suspended because of a dialog box
-  if (game != NULL && game->is_showing_message()) {
-    set_suspended(true);
   }
 }
 

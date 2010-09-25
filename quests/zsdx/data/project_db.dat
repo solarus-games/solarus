@@ -226,8 +226,8 @@
 5	big_key	Dungeon big key
 5	boss_key	Dungeon boss key
 5	small_key	Small key
-5	rupee	Rupees (x1 / x5 / x20 / x100 / x300)
-5	magic_flask	(small / big)
+5	rupee	Rupees (x1 / x5 / x20 / x50 / x100 / x300)
+5	magic_flask	Magic flask (small / big)
 5	heart	Heart (x1)
 5	heart_container	Heart container
 5	piece_of_heart	Piece of heart

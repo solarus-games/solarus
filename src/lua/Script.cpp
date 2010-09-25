@@ -53,7 +53,7 @@ Script::~Script() {
   }
 
   // update the script list
-  scripts.remove_script(this);
+  scripts.remove_script(*this);
 }
 
 /**
@@ -104,7 +104,7 @@ void Script::load(const std::string &script_name) {
   lua_call(context, 0, 0);
 
   // update the script list
-  scripts.add_script(this);
+  scripts.add_script(*this);
 }
 
 /**
@@ -155,7 +155,7 @@ void Script::called_by_script(lua_State *context, int nb_arguments, Script **scr
  * @param function_name name of the function to call
  * @return true if the function was called, false if it does not exist
  */
-bool Script::call_script_function(const std::string &function_name) {
+bool Script::notify_script(const std::string &function_name) {
 
   if (context == NULL) {
     return false;
@@ -180,7 +180,7 @@ bool Script::call_script_function(const std::string &function_name) {
  * @param arg1 argument of the function
  * @return true if the function was called, false if it does not exist
  */
-bool Script::call_script_function(const std::string &function_name, const std::string &arg1) {
+bool Script::notify_script(const std::string &function_name, const std::string &arg1) {
 
   if (context == NULL) {
     return false;
@@ -207,7 +207,7 @@ bool Script::call_script_function(const std::string &function_name, const std::s
  * @param arg2 second argument of the function
  * @return true if the function was called, false if it does not exist
  */
-bool Script::call_script_function(const std::string &function_name,
+bool Script::notify_script(const std::string &function_name,
 				  const std::string &arg1, int arg2) {
 
   if (context == NULL) {
@@ -237,7 +237,7 @@ bool Script::call_script_function(const std::string &function_name,
  * @param arg3 third argument of the function
  * @return true if the function was called, false if it does not exist
  */
-bool Script::call_script_function(const std::string &function_name,
+bool Script::notify_script(const std::string &function_name,
 				  const std::string &arg1, int arg2, int arg3) {
 
   if (context == NULL) {
@@ -268,7 +268,7 @@ bool Script::call_script_function(const std::string &function_name,
  * @param arg3 third argument of the function
  * @return true if the function was called, false if it does not exist
  */
-bool Script::call_script_function(const std::string &function_name,
+bool Script::notify_script(const std::string &function_name,
 				  const std::string &arg1, const std::string &arg2, int arg3) {
 
   if (context == NULL) {
@@ -299,7 +299,7 @@ bool Script::call_script_function(const std::string &function_name,
  * @param arg3 third argument of the function
  * @return true if the function was called, false if it does not exist
  */
-bool Script::call_script_function(const std::string &function_name,
+bool Script::notify_script(const std::string &function_name,
 				  int arg1, const std::string &arg2, int arg3) {
 
   if (context == NULL) {
@@ -328,7 +328,7 @@ bool Script::call_script_function(const std::string &function_name,
  * @param arg1 argument of the function
  * @return true if the function was called, false if it does not exist
  */
-bool Script::call_script_function(const std::string &function_name, int arg1) {
+bool Script::notify_script(const std::string &function_name, int arg1) {
 
   if (context == NULL) {
     return false;
@@ -355,7 +355,7 @@ bool Script::call_script_function(const std::string &function_name, int arg1) {
  * @param arg2 second argument of the function
  * @return true if the function was called, false if it does not exist
  */
-bool Script::call_script_function(const std::string &function_name, int arg1, int arg2) {
+bool Script::notify_script(const std::string &function_name, int arg1, int arg2) {
 
   if (context == NULL) {
     return false;
@@ -382,7 +382,7 @@ bool Script::call_script_function(const std::string &function_name, int arg1, in
  * @param arg1 argument of the function
  * @return true if the function was called, false if it does not exist
  */
-bool Script::call_script_function(const std::string &function_name, bool arg1) {
+bool Script::notify_script(const std::string &function_name, bool arg1) {
 
   if (context == NULL) {
     return false;
@@ -417,7 +417,7 @@ void Script::set_suspended(bool suspended) {
     }
 
     // notify the script
-    call_script_function("event_set_suspended", suspended);
+    notify_script("event_set_suspended", suspended);
   }
 }
 
@@ -435,7 +435,7 @@ void Script::update() {
 
     timer->update();
     if (timer->is_finished()) {
-      call_script_function(timer->get_name());
+      notify_script(timer->get_name());
       delete timer;
       timers.erase(it);
       it = timers.begin();
@@ -443,7 +443,7 @@ void Script::update() {
   }
 
   // update the script
-  call_script_function("event_update");
+  notify_script("event_update");
 }
 
 /**

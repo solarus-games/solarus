@@ -2,6 +2,7 @@
 *.swp
 *.luac
 *.class
+tags
 work/unversioned/
 CMakeCache.txt
 install_manifest.txt

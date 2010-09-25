@@ -777,10 +777,12 @@ void HeroSprites::set_animation_walking_sword_loading() {
   int direction = get_animation_direction();
 
   tunic_sprite->set_current_animation("sword_loading_walking");
-  sword_sprite->set_current_animation("sword_loading_walking");
-  sword_sprite->set_current_direction(direction);
-  sword_stars_sprite->set_current_animation("loading");
-  sword_stars_sprite->set_current_direction(direction);
+  if (equipment->has_ability("sword")) {
+    sword_sprite->set_current_animation("sword_loading_walking");
+    sword_sprite->set_current_direction(direction);
+    sword_stars_sprite->set_current_animation("loading");
+    sword_stars_sprite->set_current_direction(direction);
+  }
 
   if (equipment->has_ability("shield")) {
 

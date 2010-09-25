@@ -66,8 +66,6 @@ Bugs :
 - permettre de zapper l'intro
 - eau froide pour faire fondre la glace : trouver autre chose
 - utiliser une bouteille ayant une fée : relâcher la fée directement au lieu de mettre un message (on l'active souvent par erreur)
-- grotte de Tom : on peut éviter de lancer le boomerang en diagonale : http://www.youtube.com/watch?v=AbOYil6zrgc à 5:25
-- grotte de Tom : on peut éviter toute une partie de la grotte !!! http://www.youtube.com/watch?v=44u4hugpUss à 0:37
 - On peut probablement parser les entités plus facilement en redéfinissant l'opérateur >> pour chaque sous-classe (ou même avec des constructeurs virtuels ?)
 - Rendre Movement abstrait et faire une classe pour le movement rectiligne, afin d'éviter que les sous-classes violent les contrats de Movement
 - Remplacer les cast

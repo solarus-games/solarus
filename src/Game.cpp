@@ -17,7 +17,6 @@
 #include "Game.h"
 #include "Solarus.h"
 #include "Map.h"
-#include "MapScript.h"
 #include "ResourceManager.h"
 #include "Savegame.h"
 #include "KeysEffect.h"
@@ -161,19 +160,6 @@ Savegame * Game::get_savegame() {
  */
 Equipment * Game::get_equipment() {
   return savegame->get_equipment();
-}
-
-/**
- * @brief Returns the script of the current map.
- * @return the script of the current map, or NULL if no map is loaded
- */
-MapScript * Game::get_current_script() {
-
-  if (get_current_map() != NULL) {
-    return get_current_map()->get_script();
-  }
-
-  return NULL;
 }
 
 /**

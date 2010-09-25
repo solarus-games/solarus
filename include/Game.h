@@ -97,7 +97,6 @@ class Game: public Screen {
     KeysEffect *get_keys_effect();
     Savegame *get_savegame();
     Equipment *get_equipment();
-    MapScript *get_current_script();
 
     // functions called by the main loop
     void notify_event(InputEvent &event);

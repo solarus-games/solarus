@@ -21,7 +21,6 @@
 #include "Savegame.h"
 #include "Equipment.h"
 #include "DialogBox.h"
-#include "MapScript.h"
 #include "Map.h"
 #include "entities/MapEntities.h"
 #include "entities/Hero.h"

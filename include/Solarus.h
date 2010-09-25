@@ -48,12 +48,12 @@ class Solarus {
     ~Solarus();
 
     void main_loop();
+    void set_exiting();
+    bool is_exiting();
+    Scripts &get_scripts();
 
     void skip_menus();
     DebugKeys * get_debug_keys();
-
-    void set_exiting();
-    bool is_exiting();
 };
 
 #endif

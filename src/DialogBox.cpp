@@ -20,7 +20,7 @@
 #include "Game.h"
 #include "Map.h"
 #include "KeysEffect.h"
-#include "MapScript.h"
+#include "lua/Scripts.h"
 #include "entities/Hero.h"
 #include "lowlevel/Color.h"
 #include "lowlevel/FileTools.h"
@@ -271,8 +271,8 @@ void DialogBox::start_dialog(const MessageId &first_message_id, VerticalPosition
   this->first_message_id = first_message_id;
   show_message(first_message_id);
 
-  // notify the script
-  game->get_current_script()->event_dialog_started(first_message_id);
+  // notify the scripts
+  game->get_scripts().event_dialog_started(first_message_id);
 }
 
 /**
@@ -338,7 +338,7 @@ void DialogBox::close() {
   // notify the script if necessary
   if (!skipped && first_message_id[0] != '_') {
     // a dialog of the quest was just finished: notify the script
-    game->get_current_script()->event_dialog_finished(first_message_id, last_answer);
+    game->get_scripts().event_dialog_finished(first_message_id, last_answer);
   }
 }
 

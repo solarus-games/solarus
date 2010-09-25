@@ -14,6 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#ifdef NOT_YET_IMPLEMENTED // TODO
+
 #include "MapScript.h"
 #include "Map.h"
 #include "Game.h"
@@ -1671,4 +1673,6 @@ void MapScript::event_shop_item_bought(const std::string &shop_item_name) {
 void MapScript::event_enemy_dead(const std::string &enemy_name) {
   call_script_function("event_enemy_dead", enemy_name);
 }
+
+#endif
 

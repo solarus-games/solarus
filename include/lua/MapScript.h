@@ -18,18 +18,18 @@
 #define SOLARUS_MAP_SCRIPT_H
 
 #include "Common.h"
-#include "Script.h"
+#include "lua/GameScript.h"
 
 /**
  * @brief Represents the Lua script of a map.
  *
  * This class makes the interface between the engine C++ code and the Lua script of a map.
  */
-class MapScript: public Script {
+class MapScript: public GameScript {
 
-  protected:   // even if there no subclass of MapScript, we want Doxygen to show the functions available to scripts
+  protected:
 
-    Map *map;                   /**< the map controlled by this script */
+    Map &map;			/**< the map controlled by this script */
 
     // calling a C++ function from the script
     static void called_by_script(lua_State *context, int nb_arguments, MapScript **map_script);
@@ -105,25 +105,10 @@ class MapScript: public Script {
   public:
 
     // loading and closing a script
-    MapScript(Map *map);
+    MapScript(Scripts &scripts, Map &map);
     ~MapScript();
     void start(const std::string &destination_point_name);
 
-    // C++ functions that call script functions
-    void event_map_started(const std::string &destination_point_name);
-    void event_map_opening_transition_finished(const std::string &destination_point_name);
-    void event_switch_enabled(const std::string &switch_name);
-    void event_switch_disabled(const std::string &switch_name);
-    void event_switch_left(const std::string &switch_name);
-    void event_hero_victory_sequence_finished();
-    void event_hero_on_sensor(const std::string &sensor_name);
-    void event_hero_interaction(const std::string &entity_name);
-    bool event_hero_interaction_item(const std::string &entity_name, const std::string &item_name, int variant);
-    void event_npc_dialog(const std::string &npc_name);
-    void event_npc_movement_finished(const std::string &npc_name);
-    bool event_chest_empty(const std::string &chest_name);
-    void event_shop_item_bought(const std::string &shop_item_name);
-    void event_enemy_dead(const std::string &enemy_name);
 };
 
 #endif

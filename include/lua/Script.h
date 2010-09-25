@@ -23,15 +23,9 @@
 struct lua_State;
 
 /**
- * @brief Interface between the engine C++ code and a Lua script.
+ * @brief Handles a Lua script that is running.
  *
- * This class provides a API that allows the C++ and the Lua script to communicate
- * in both directions.
- * - The API contains C++ functions that Lua scripts can call to act on the game.
- *   Examples: starting a dialog or getting the current number of rupees.
- * - The API also contains names of Lua functions that the C++ engine invokes if they exist.
- *   Such Lua functions are called events. They are used to notify the script that
- *   and event just happened. Example: a dialog has just finished.
+ * This class and its subclasses provide an API that allows Lua scripts to call C++ functions.
  *
  * This class only provide functions that are common to any kind of script and is meant to be inherited.
  * The subclasses are specific to particular kinds of script
@@ -41,17 +35,15 @@ class Script {
 
   protected:
 
-    typedef int (FunctionAvailableToScript) (lua_State *l); /**< type of the functions that can be called by a Lua script */
+    typedef int (FunctionAvailableToScript) (lua_State *l);		/**< type of the functions that can be called by a Lua script */
 
-    // game objects
-    Game *game;                 /**< the game associated to this script */
-    Hero *hero;                 /**< the hero */
+    Scripts &scripts;							/**< the list of all scripts */
 
     // script data
-    lua_State* context;         /**< the execution context of the Lua script */
-    std::list<Timer*> timers;   /**< the timers currently running for this script */
+    lua_State* context;							/**< the execution context of the Lua script */
+    std::list<Timer*> timers;						/**< the timers currently running for this script */
 
-    // calling a script function from C++
+    // calling a Lua function from C++
     bool call_script_function(const std::string &function_name);
     bool call_script_function(const std::string &function_name, const std::string &arg1);
     bool call_script_function(const std::string &function_name, const std::string &arg1, int arg2);
@@ -62,39 +54,14 @@ class Script {
     bool call_script_function(const std::string &function_name, int arg1, int arg2);
     bool call_script_function(const std::string &function_name, bool arg1);
 
-    // calling a C++ function from the script
+    // calling a C++ function from Lua
     static void called_by_script(lua_State *context, int nb_arguments, Script **script);
 
     static FunctionAvailableToScript 
       l_play_sound,
       l_play_music,
       l_timer_start,
-      l_timer_stop,
-      l_savegame_get_string,
-      l_savegame_get_integer,
-      l_savegame_get_boolean,
-      l_savegame_set_string,
-      l_savegame_set_integer,
-      l_savegame_set_boolean,
-      l_savegame_get_name,
-      l_equipment_get_life,
-      l_equipment_add_life,
-      l_equipment_remove_life,
-      l_equipment_get_money,
-      l_equipment_add_money,
-      l_equipment_remove_money,
-      l_equipment_has_ability,
-      l_equipment_get_ability,
-      l_equipment_set_ability,
-      l_equipment_has_item,
-      l_equipment_get_item,
-      l_equipment_set_item,
-      l_equipment_has_item_amount,
-      l_equipment_get_item_amount,
-      l_equipment_add_item_amount,
-      l_equipment_remove_item_amount,
-      l_equipment_is_dungeon_finished,
-      l_equipment_set_dungeon_finished;
+      l_timer_stop;
 
     // initialization
     void load(const std::string &script_name);
@@ -107,22 +74,12 @@ class Script {
   public:
 
     // loading and closing a script
-    Script(Game *game);
+    Script(Scripts &scripts);
     virtual ~Script();
 
     // update functions
     virtual void update();
     virtual void set_suspended(bool suspended);
-
-    // C++ functions that call script functions
-    void event_update();
-    void event_set_suspended(bool suspended);
-    void event_dialog_started(const MessageId &message_id);
-    void event_dialog_finished(const MessageId &first_message_id, int answer);
-    void event_camera_reached_target();
-    void event_camera_back();
-    void event_treasure_obtaining(const std::string &item_name, int variant, int savegame_variable);
-    void event_treasure_obtained(const std::string &item_name, int variant, int savegame_variable);
 };
 
 #endif

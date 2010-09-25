@@ -19,10 +19,10 @@
 #include "movements/PathMovement.h"
 #include "movements/RandomWalkMovement.h"
 #include "movements/JumpMovement.h"
+#include "lua/Scripts.h"
 #include "Game.h"
 #include "DialogBox.h"
 #include "Map.h"
-#include "MapScript.h"
 #include "Sprite.h"
 #include "Equipment.h"
 #include "InventoryItem.h"
@@ -311,8 +311,7 @@ bool InteractiveEntity::interaction_with_inventory_item(InventoryItem *item) {
   }
   else {
     // in other cases, nothing is predefined in the engine: we call the script
-    interaction = game->get_current_script()->
-      event_hero_interaction_item(get_name(), item->get_name(), item->get_variant());
+    interaction = game->get_scripts().event_hero_interaction_item(get_name(), item->get_name(), item->get_variant());
   }
 
   return interaction;
@@ -324,10 +323,10 @@ bool InteractiveEntity::interaction_with_inventory_item(InventoryItem *item) {
 void InteractiveEntity::call_script() {
 
   if (subtype == NON_PLAYING_CHARACTER) {
-    map->get_script()->event_npc_dialog(get_name());
+    map->get_scripts().event_npc_dialog(get_name());
   }
   else {
-    map->get_script()->event_hero_interaction(get_name());
+    map->get_scripts().event_hero_interaction(get_name());
   }
 }
 
@@ -343,7 +342,7 @@ void InteractiveEntity::update() {
     if (get_movement()->is_finished()) {
       get_sprite()->set_current_animation("stopped");
       clear_movement();
-      map->get_script()->event_npc_movement_finished(get_name());
+      map->get_scripts().event_npc_movement_finished(get_name());
     }
   }
 }

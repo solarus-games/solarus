@@ -17,12 +17,12 @@
 #include "hero/TreasureState.h"
 #include "hero/FreeState.h"
 #include "hero/HeroSprites.h"
+#include "lua/Scripts.h"
 #include "Treasure.h"
 #include "ItemProperties.h"
 #include "Game.h"
 #include "DialogBox.h"
 #include "Map.h"
-#include "MapScript.h"
 #include <sstream>
 
 /**
@@ -102,7 +102,7 @@ void Hero::TreasureState::update() {
     delete treasure;
     treasure = NULL;
 
-    map->get_script()->event_treasure_obtained(item_name, variant, savegame_variable);
+    map->get_scripts().event_treasure_obtained(item_name, variant, savegame_variable);
 
     hero->set_state(new FreeState(hero));
   }

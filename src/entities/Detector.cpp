@@ -18,7 +18,6 @@
 #include "entities/Hero.h"
 #include "ResourceManager.h"
 #include "Map.h"
-#include "MapScript.h"
 #include "KeysEffect.h"
 #include "Sprite.h"
 #include "lowlevel/Debug.h"

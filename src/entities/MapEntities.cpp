@@ -24,7 +24,6 @@
 #include "entities/CrystalSwitchBlock.h"
 #include "entities/Boomerang.h"
 #include "Map.h"
-#include "MapScript.h"
 #include "Game.h"
 #include "lowlevel/Music.h"
 #include "lowlevel/Debug.h"

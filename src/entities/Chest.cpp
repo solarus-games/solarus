@@ -25,7 +25,7 @@
 #include "Savegame.h"
 #include "Equipment.h"
 #include "Map.h"
-#include "MapScript.h"
+#include "lua/Scripts.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/System.h"
 
@@ -268,7 +268,7 @@ void Chest::update() {
 	delete treasure;
 	treasure = NULL;
 
-	if (!map->get_script()->event_chest_empty(get_name())) {
+	if (!map->get_scripts().event_chest_empty(get_name())) {
 
 	  // the script does not define any behavior:
 	  // by default, we tell the player the chest is empty

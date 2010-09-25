@@ -19,8 +19,9 @@
 #include "Game.h"
 #include "DialogBox.h"
 #include "Sprite.h"
-#include "MapScript.h"
 #include "Camera.h"
+#include "lua/Scripts.h"
+#include "lua/MapScript.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Surface.h"
 #include "entities/Ground.h"
@@ -40,7 +41,7 @@ MapLoader Map::map_loader;
  */
 Map::Map(MapId id):
   game(NULL), id(id), started(false), destination_point_name(""),
-  welcome_message_id(""), entities(NULL), suspended(false), script(NULL) {
+  welcome_message_id(""), entities(NULL), suspended(false) {
 
 }
 
@@ -71,11 +72,14 @@ Tileset * Map::get_tileset() {
 }
 
 /**
- * @brief Returns this map's script.
- * @return the script
+ * @brief Returns the scripts currently running.
+ *
+ * This function is equivalent to get_game()->get_scripts().
+ *
+ * @return the scripts
  */
-MapScript * Map::get_script() {
-  return script;
+Scripts& Map::get_scripts() {
+  return game->get_scripts();
 }
 
 /**
@@ -491,7 +495,7 @@ void Map::notify_opening_transition_finished() {
     welcome_message_id = "";
   }
   else {
-    script->event_map_opening_transition_finished(destination_point_name);
+    get_scripts().event_map_opening_transition_finished(destination_point_name);
   }
 }
 

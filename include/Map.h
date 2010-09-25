@@ -109,7 +109,6 @@ class Map {
     // map properties
     MapId get_id();
     Tileset *get_tileset();
-    MapScript *get_script();
     int get_world_number();
     bool is_in_dungeon();
     bool is_in_outside_world();
@@ -137,6 +136,7 @@ class Map {
     void load(Game *game);
     void unload();
     Game * get_game();
+    Scripts& get_scripts();
     void notify_opening_transition_finished();
 
     // entities

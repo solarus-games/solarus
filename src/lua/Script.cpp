@@ -14,6 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#ifdef NOT_YET_IMPLEMENTED // TODO
+
 #include "Script.h"
 #include "Game.h"
 #include "Map.h"
@@ -1136,4 +1138,6 @@ void Script::event_treasure_obtaining(const std::string &item_name, int variant,
 void Script::event_treasure_obtained(const std::string &item_name, int variant, int savegame_variable) {
   call_script_function("event_treasure_obtained", item_name, variant, savegame_variable);
 }
+
+#endif
 

@@ -183,7 +183,7 @@ void Block::action_key_pressed() {
 
   KeysEffect *keys_effect = game->get_keys_effect();
   if (keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_GRAB) {
-    game->get_hero()->start_grabbing();
+    game->get_hero().start_grabbing();
   }
 }
  
@@ -193,20 +193,20 @@ void Block::action_key_pressed() {
  */
 bool Block::moved_by_hero() {
 
-  Hero *hero = game->get_hero();
+  Hero &hero = game->get_hero();
 
   if (get_movement() != NULL							// the block is already moving
       || maximum_moves == 0							// the block cannot move anymore
       || System::now() < when_can_move						// the block cannot move for a while
-      || (direction != -1 && hero->get_animation_direction() != direction)	// the block cannot move in this direction
-      || (hero->is_grabbing_or_pulling() && subtype != STATUE)) {		// only statues can be pulled
+      || (direction != -1 && hero.get_animation_direction() != direction)	// the block cannot move in this direction
+      || (hero.is_grabbing_or_pulling() && subtype != STATUE)) {		// only statues can be pulled
     return false;
   }
 
-  int dx = get_x() - hero->get_x();
-  int dy = get_y() - hero->get_y();
+  int dx = get_x() - hero.get_x();
+  int dy = get_y() - hero.get_y();
 
-  set_movement(new FollowMovement(hero, dx, dy, false));
+  set_movement(new FollowMovement(&hero, dx, dy, false));
   sound_played = false;
 
   return true;
@@ -219,7 +219,7 @@ void Block::update() {
 
   Detector::update();
 
-  Hero *hero = game->get_hero();
+  Hero &hero = game->get_hero();
 
   if (movement != NULL) {
     // the block is being pushed or pulled by the hero
@@ -229,10 +229,10 @@ void Block::update() {
 
     if (movement->is_finished()) {
       // the block was just stopped by an obstacle: notify the hero
-      hero->notify_grabbed_entity_collision();
+      hero.notify_grabbed_entity_collision();
       finished = true;
     }
-    else if (!hero->is_moving_grabbed_entity()) {
+    else if (!hero.is_moving_grabbed_entity()) {
       // the hero stopped the movement, either because the 16 pixels were
       // covered or because the hero met an obstacle
       finished = true;

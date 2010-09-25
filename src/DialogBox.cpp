@@ -108,7 +108,7 @@ void DialogBox::set_vertical_position(VerticalPosition vertical_position) {
     const Rectangle &camera_position = game->get_current_map()->get_camera_position();
     vertical_position = POSITION_BOTTOM;
 
-    if (game->get_hero()->get_y() >= camera_position.get_y() + 130) {
+    if (game->get_hero().get_y() >= camera_position.get_y() + 130) {
       vertical_position = POSITION_TOP;
     }
   }

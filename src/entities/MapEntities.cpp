@@ -36,13 +36,14 @@ using std::list;
  * @param map the map
  */
 MapEntities::MapEntities(Game *game, Map *map):
-  map(map), music_before_miniboss(Music::none) {
+  game(game),
+  map(map),
+  hero(game->get_hero()),
+  music_before_miniboss(Music::none) {
 
-  this->game = game;
-  this->hero = game->get_hero();
-  Layer layer = hero->get_layer();
-  this->obstacle_entities[layer].push_back(hero);
-  this->entities_displayed_y_order[layer].push_back(hero);
+  Layer layer = hero.get_layer();
+  this->obstacle_entities[layer].push_back(&hero);
+  this->entities_displayed_y_order[layer].push_back(&hero);
   // TODO update that when the layer changes, same thing for enemies
 }
 
@@ -92,7 +93,7 @@ void MapEntities::destroy_all_entities() {
  * @brief Returns the hero.
  * @return the hero
  */
-Hero * MapEntities::get_hero() {
+Hero& MapEntities::get_hero() {
   return hero;
 }
 
@@ -548,7 +549,7 @@ void MapEntities::remove_marked_entities() {
 void MapEntities::set_suspended(bool suspended) {
 
   // the hero first
-  hero->set_suspended(suspended);
+  hero.set_suspended(suspended);
 
   // other entities
   list<MapEntity*>::iterator i;
@@ -568,7 +569,7 @@ void MapEntities::set_suspended(bool suspended) {
 void MapEntities::update() {
 
   // first update the hero
-  hero->update();
+  hero.update();
 
   // update the tiles and the dynamic entities
   list<MapEntity*>::iterator it;
@@ -737,8 +738,8 @@ void MapEntities::end_boss_battle() {
 
   game->play_music("victory.spc");
   game->set_pause_key_available(false);
-  hero->set_animation_direction(3);
-  hero->start_freezed();
+  hero.set_animation_direction(3);
+  hero.start_freezed();
 }
 
 /**

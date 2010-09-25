@@ -74,7 +74,7 @@ Tileset * Map::get_tileset() {
 /**
  * @brief Returns the scripts currently running.
  *
- * This function is equivalent to get_game()->get_scripts().
+ * This function is equivalent to get_game().get_scripts().
  *
  * @return the scripts
  */
@@ -251,10 +251,10 @@ void Map::load(Game *game) {
 
 /**
  * @brief Returns the game that loaded this map.
- * @return the game, or NULL if the map is not started
+ * @return the game
  */
-Game * Map::get_game() {
-  return game;
+Game& Map::get_game() {
+  return *game;
 }
 
 /**
@@ -489,7 +489,7 @@ void Map::notify_opening_transition_finished() {
 
   visible_surface->set_opacity(255); // because the transition effect may have changed the opacity
   check_suspended();
-  game->get_hero()->notify_opening_transition_finished();
+  game->get_hero().notify_opening_transition_finished();
   if (welcome_message_id != "") {
     game->get_dialog_box()->start_dialog(welcome_message_id);
     welcome_message_id = "";

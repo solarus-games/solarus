@@ -153,9 +153,9 @@ void Door::set_open(bool door_open) {
     set_collision_modes(COLLISION_FACING_POINT);
 
     // ensure we are not closing the door on the hero
-    Hero *hero = game->get_hero();
-    if (overlaps(hero)) {
-      hero->avoid_collision(this, 3);
+    Hero &hero = game->get_hero();
+    if (overlaps(&hero)) {
+      hero.avoid_collision(this, 3);
     }
   }
 
@@ -309,10 +309,10 @@ void Door::display_on_map() {
  */
 void Door::action_key_pressed() {
 
-  Hero *hero = game->get_hero();
+  Hero &hero = game->get_hero();
   Equipment *equipment = game->get_equipment();
 
-  if (hero->is_free()) {
+  if (hero.is_free()) {
     if (can_open()) {
       game->play_sound("door_unlocked");
       game->play_sound("door_open");

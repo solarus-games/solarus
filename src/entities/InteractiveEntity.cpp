@@ -256,9 +256,9 @@ void InteractiveEntity::notify_collision(MapEntity *entity_overlapping, Collisio
 void InteractiveEntity::action_key_pressed() {
 
   KeysEffect *keys_effect = game->get_keys_effect();
-  Hero *hero = game->get_hero();
+  Hero &hero = game->get_hero();
 
-  if (hero->is_free()) {
+  if (hero.is_free()) {
     keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
 
     // for a place with water: start the dialog
@@ -269,7 +269,7 @@ void InteractiveEntity::action_key_pressed() {
 
       // for an NPC: look in the hero's direction 
       if (subtype == NON_PLAYING_CHARACTER) {
-	int direction = (hero->get_animation_direction() + 2) % 4;
+	int direction = (hero.get_animation_direction() + 2) % 4;
 	get_sprite()->set_current_direction(direction);
       }
 
@@ -414,11 +414,11 @@ void InteractiveEntity::notify_position_changed() {
       get_sprite()->set_current_direction(animation_directions[movement_direction]);
     }
 
-    Hero *hero = game->get_hero();
+    Hero &hero = game->get_hero();
     KeysEffect *keys_effect = game->get_keys_effect();
-    if (hero->get_facing_entity() == this &&
+    if (hero.get_facing_entity() == this &&
 	keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_SPEAK &&
-	!hero->is_facing_point_in(get_bounding_box())) {
+	!hero.is_facing_point_in(get_bounding_box())) {
 
       keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
     }

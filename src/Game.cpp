@@ -108,8 +108,8 @@ Game::~Game() {
  * @brief Returns the hero.
  * @return the hero
  */
-Hero * Game::get_hero() {
-  return hero;
+Hero& Game::get_hero() {
+  return *hero;
 }
 
 /**
@@ -568,12 +568,12 @@ void Game::play_sound(MusicId sound_id) {
  */
 void Game::play_music(MusicId new_music_id) {
 
-  if (!Music::isUnchangedId(new_music_id) && !Music::isEqualId(new_music_id, current_music_id)) {
+  if (!Music::is_unchanged_id(new_music_id) && !Music::is_equal_id(new_music_id, current_music_id)) {
     // the music is changed
 
     previous_music_id = current_music_id; // save the previous music
 
-    if (Music::isNoneId(new_music_id) && current_music != NULL) {
+    if (Music::is_none_id(new_music_id) && current_music != NULL) {
 
       current_music->stop();
       current_music_id = Music::none;

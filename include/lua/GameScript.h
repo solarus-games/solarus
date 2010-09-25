@@ -18,7 +18,7 @@
 #define SOLARUS_GAME_SCRIPT_H
 
 #include "Common.h"
-#include "Script.h"
+#include "lua/Script.h"
 
 /**
  * @brief Represents an in-game Lua script.
@@ -30,7 +30,7 @@ class GameScript: public Script {
     Game &game;					/**< the game controlled by this script */
 
     // calling a C++ function from the script
-    static void called_by_script(lua_State *context, int nb_arguments, GameScript **map_script);
+    static void called_by_script(lua_State *context, int nb_arguments, GameScript **game_script);
 
     static FunctionAvailableToScript 
       l_savegame_get_string,
@@ -61,12 +61,13 @@ class GameScript: public Script {
 
     // initialization
     void register_available_functions();
+    virtual bool is_new_timer_suspended(void);
 
   public:
 
     // loading and closing a script
     GameScript(Scripts &scripts, Game &game);
-    ~GameScript();
+    virtual ~GameScript();
     void start(const std::string &destination_point_name);
 
 };

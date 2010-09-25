@@ -240,7 +240,7 @@ void PickableItem::give_item_to_player() {
 
   // give the item
   if (properties->is_brandished_when_picked()) {
-    game->get_hero()->start_treasure(treasure);
+    game->get_hero().start_treasure(treasure);
   }
   else {
     treasure->give_to_player();
@@ -329,7 +329,7 @@ void PickableItem::update() {
     // wait 0.7 second before allowing the hero to take the item
     if (!can_be_picked && now >= allow_pick_date) {
       can_be_picked = true;
-      map->check_collision_with_detectors(game->get_hero());
+      map->check_collision_with_detectors(&game->get_hero());
     }
     else {
       // make the item blink and then disappear

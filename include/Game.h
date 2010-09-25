@@ -70,12 +70,6 @@ class Game: public Screen {
     bool hud_enabled;          /**< true if the HUD is currently displayed */
     DialogBox *dialog_box;     /**< the dialog box manager */
 
-    // music
-    MusicId current_music_id;  /**< id of the music currently played (a valid music,
-				* or MUSIC_NONE if no music is being played) */
-    Music *current_music;      /**< the music currently played, or NULL if no music is being played */
-    MusicId previous_music_id; /**< id of the previous music played (useful after a mini-boss) */
-
     // update functions
     void update_keys_effect();
     void update_dialog_box();
@@ -118,14 +112,6 @@ class Game: public Screen {
     Dungeon* get_current_dungeon();
     bool get_crystal_switch_state();
     void change_crystal_switch_state();
-
-    // audio
-    void play_sound(SoundId sound_id);
-    void play_music(MusicId new_music_id);
-    void pause_or_resume_music();
-    void stop_music();
-    void restore_music();
-    const MusicId & get_current_music_id();
 
     // current game state
     bool is_paused();

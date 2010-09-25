@@ -69,6 +69,7 @@ Bugs :
 - On peut probablement parser les entités plus facilement en redéfinissant l'opérateur >> pour chaque sous-classe (ou même avec des constructeurs virtuels ?)
 - Rendre Movement abstrait et faire une classe pour le movement rectiligne, afin d'éviter que les sous-classes violent les contrats de Movement
 - Remplacer les cast
+- Quand on crée une sauvegarde, laisser le curseur sur celle-ci
 
 
 A venir :

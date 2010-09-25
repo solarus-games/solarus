@@ -514,20 +514,7 @@ int Script::l_play_music(lua_State *l) {
   Script *script;
   called_by_script(l, 1, &script);
   const MusicId &music_id = lua_tostring(l, 1);
-
-  if (!Music::is_unchanged_id(music_id)) {
-
-    // stop the current music
-    Music *current_music = Music::get_current_music();
-    if (current_music != NULL) {
-      current_music->stop();
-    }
-
-    // play the new one
-    if (!Music::is_none_id(music_id)) {
-      ResourceManager::get_music(music_id)->play();
-    }
-  }
+  Music::play(music_id);
 
   return 0;
 }

@@ -32,8 +32,6 @@
 #include "entities/Hero.h"
 #include "entities/Tileset.h"
 #include "lowlevel/Color.h"
-#include "lowlevel/Music.h"
-#include "lowlevel/Sound.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/IniFile.h"
 #include "lowlevel/Debug.h"
@@ -55,8 +53,7 @@ Game::Game(Solarus *solarus, Savegame *savegame):
   current_map(NULL), next_map(NULL), previous_map_surface(NULL),
   transition_style(Transition::IMMEDIATE), transition(NULL),
   dungeon(NULL), crystal_switch_state(false),
-  hud(NULL), hud_enabled(true), dialog_box(NULL),
-  current_music_id(Music::none), current_music(NULL), previous_music_id(Music::none) {
+  hud(NULL), hud_enabled(true), dialog_box(NULL) {
 
   // notify objects
   get_equipment()->set_game(this);
@@ -546,93 +543,6 @@ bool Game::get_crystal_switch_state() {
  */
 void Game::change_crystal_switch_state() {
   crystal_switch_state = !crystal_switch_state;
-}
-
-/**
- * @brief Plays a sound.
- * @param sound_id id of the sound to play
- */
-void Game::play_sound(MusicId sound_id) {
-  ResourceManager::get_sound(sound_id)->play();
-}
-
-/**
- * @brief Plays a music.
- *
- * If the music is different from the current one,
- * the current one is stopped.
- * The music specified can also be Music::none_id (then the current music is just stopped)
- * or even Music::unchanged_id (nothing is done in this case).
- *
- * @param new_music_id id of the music to play
- */
-void Game::play_music(MusicId new_music_id) {
-
-  if (!Music::is_unchanged_id(new_music_id) && !Music::is_equal_id(new_music_id, current_music_id)) {
-    // the music is changed
-
-    previous_music_id = current_music_id; // save the previous music
-
-    if (Music::is_none_id(new_music_id) && current_music != NULL) {
-
-      current_music->stop();
-      current_music_id = Music::none;
-      current_music = NULL;
-    }
-    else {
-
-      // play another music
-      if (current_music != NULL) {
-	current_music->stop();
-      }
-
-      Music *new_music = ResourceManager::get_music(new_music_id);
-
-      if (new_music->play()) {
-	current_music_id = new_music_id;
-	current_music = new_music;
-      }
-      else {
-	current_music_id = Music::none;
-	current_music = NULL;
-      }
-    }
-  }
-}
-
-/**
- * @brief Pauses or resumes the current music.
- *
- * If no music is being played, nothing is done.
- */
-void Game::pause_or_resume_music() {
-  if (current_music != NULL) {
-    current_music->set_paused(!current_music->is_paused());
-  }
-}
-
-/**
- * @brief Stops playing the current music.
- *
- * If no music is being played, nothing is done.
- */
-void Game::stop_music() {
-  play_music(Music::none);
-}
-
-/**
- * @brief Plays the music that was playing before the last music change.
- */
-void Game::restore_music() {
-  play_music(previous_music_id);
-}
-
-/**
- * @brief Returns the id of the music currently played.
- * @return the current music
- */
-const MusicId& Game::get_current_music_id() {
-  return current_music_id;
 }
 
 /**

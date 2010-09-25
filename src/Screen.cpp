@@ -74,3 +74,4 @@ bool Screen::is_screen_finished() {
 Scripts& Screen::get_scripts() {
   return solarus->get_scripts();
 }
+

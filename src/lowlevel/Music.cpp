@@ -330,31 +330,48 @@ void Music::set_paused(bool pause) {
   }
 }
 
-/**
- * @brief Returns whether a music id is the id for no music, i.e. if it is Music::none_id.
- * @param music_id a music id
- * @return true if music_id is the special id indicating that there is no music
+/** TODO
+ * @brief Plays a music.
+ *
+ * If the music is different from the current one,
+ * the current one is stopped.
+ * The music specified can also be Music::none_id (then the current music is just stopped)
+ * or even Music::unchanged_id (nothing is done in this case).
+ *
+ * @param new_music_id id of the music to play
  */
-bool Music::is_none_id(const MusicId &music_id) {
-  return is_equal_id(music_id, none);
+void Solarus::play_music(const MusicId &new_music_id) {
+
+  if (!Music::is_unchanged_id(new_music_id) && !Music::is_equal_id(new_music_id, current_music_id)) {
+    // the music is changed
+
+    previous_music_id = current_music_id; // save the previous music
+
+    if (Music::is_none_id(new_music_id) && current_music != NULL) {
+
+      current_music->stop();
+      current_music_id = Music::none;
+      current_music = NULL;
+    }
+    else {
+
+      // play another music
+      if (current_music != NULL) {
+	current_music->stop();
+      }
+
+      Music *new_music = ResourceManager::get_music(new_music_id);
+
+      if (new_music->play()) {
+	current_music_id = new_music_id;
+	current_music = new_music;
+      }
+      else {
+	current_music_id = Music::none;
+	current_music = NULL;
+      }
+    }
+  }
 }
 
-/**
- * @brief Returns whether a music id is the id for no change, i.e. if it is Music::unchanged_id.
- * @param music_id a music id
- * @return true if music_id is the special id indicating that the music doesn't change
- */
-bool Music::is_unchanged_id(const MusicId &music_id) {
-  return is_equal_id(music_id, unchanged);
-}
-
-/**
- * @brief Compares two music ids.
- * @param music_id a music id
- * @param other_music_id another music id
- * @return true if the ids are the same
- */
-bool Music::is_equal_id(const MusicId &music_id, const MusicId &other_music_id) {
-  return music_id == other_music_id;
-}
 

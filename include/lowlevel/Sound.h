@@ -21,13 +21,14 @@
 #include <AL/al.h>
 #include <AL/alc.h>
 #include <list>
+#include <map>
 #include <sndfile.h>
 
 /**
  * @brief Represents a sound effet that can be played in the program.
  *
  * This class also handles the initialization of the whole audio system.
- * To create a sound, prefer the ResourceManager::get_sound() method
+ * To create a sound, prefer the Sound::play() method
  * rather than calling directly the constructor of Sound.
  * This class is the only one that depends on the sound decoding library (libsndfile).
  * This class and the Music class are the only ones that depend on the audio mixer library (OpenAL).
@@ -39,20 +40,21 @@ class Sound {
     static ALCdevice* device;
     static ALCcontext* context;
 
-    ALuint buffer;                           /**< the OpenAL buffer containing the PCM decoded data of this sound */
-    std::list<ALuint> sources;               /**< the sources currently playing this sound */
-    static std::list<Sound*> current_sounds; /**< the sounds currently playing */
+    ALuint buffer;						/**< the OpenAL buffer containing the PCM decoded data of this sound */
+    std::list<ALuint> sources;					/**< the sources currently playing this sound */
+    static std::list<Sound*> current_sounds;			/**< the sounds currently playing */
+    static std::map<SoundId,Sound*> all_sounds;			/**< all sounds created before */
 
-    static bool initialized;                 /**< indicates that the audio system is initialized */
-    static float volume;                     /**< the volume of sound effects (0.0 to 1.0) */
+    static bool initialized;					/**< indicates that the audio system is initialized */
+    static float volume;					/**< the volume of sound effects (0.0 to 1.0) */
  
-    struct SoundFromMemory {                 /**< buffer containing a encoded sound file */
+    struct SoundFromMemory {					/**< buffer containing a encoded sound file */
       char *data;
       size_t size;
       size_t position;
     };
 
-    static SF_VIRTUAL_IO sf_virtual;         /**< libsndfile object used to load the encoded sound from memory */
+    static SF_VIRTUAL_IO sf_virtual;				/**< libsndfile object used to load the encoded sound from memory */
 
     // functions to load the encoded sound from memory
     static sf_count_t sf_get_filelen(void *user_data);
@@ -68,7 +70,9 @@ class Sound {
 
     Sound(const SoundId &sound_id);
     ~Sound();
-    bool play();
+    bool start();
+
+    static void play(const &SoundId sound_id);
 
     static void initialize(int argc, char **argv);
     static void quit();

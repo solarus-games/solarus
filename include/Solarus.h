@@ -50,7 +50,7 @@ class Solarus {
     void main_loop();
     void set_exiting();
     bool is_exiting();
-    Scripts &get_scripts();
+    Scripts& get_scripts();
 
     void skip_menus();
     DebugKeys * get_debug_keys();

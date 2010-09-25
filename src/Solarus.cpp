@@ -97,6 +97,14 @@ void Solarus::set_exiting() {
 }
 
 /**
+ * @brief Returns the list of scripts currently running.
+ * @return the current scripts
+ */
+Scripts& Solarus::get_scripts() {
+  return scripts;
+}
+
+/**
  * @brief The main function.
  *
  * The main loop is executed here.

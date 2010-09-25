@@ -37,8 +37,8 @@ class Scripts {
     Scripts();
     ~Scripts();
 
-    void add_script(Script *script);
-    void remove_script(Script *script);
+    void add_script(Script &script);
+    void remove_script(Script &script);
 
     // calling Lua from C++
     void event_dialog_started(const MessageId &message_id);

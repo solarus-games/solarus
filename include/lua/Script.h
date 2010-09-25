@@ -33,6 +33,8 @@ struct lua_State;
  */
 class Script {
 
+  friend class Scripts;
+
   protected:
 
     typedef int (FunctionAvailableToScript) (lua_State *l);		/**< type of the functions that can be called by a Lua script */
@@ -44,15 +46,15 @@ class Script {
     std::list<Timer*> timers;						/**< the timers currently running for this script */
 
     // calling a Lua function from C++
-    bool call_script_function(const std::string &function_name);
-    bool call_script_function(const std::string &function_name, const std::string &arg1);
-    bool call_script_function(const std::string &function_name, const std::string &arg1, int arg2);
-    bool call_script_function(const std::string &function_name, const std::string &arg1, int arg2, int arg3);
-    bool call_script_function(const std::string &function_name, const std::string &arg1, const std::string &arg2, int arg3);
-    bool call_script_function(const std::string &function_name, int arg1, const std::string &arg2, int arg3);
-    bool call_script_function(const std::string &function_name, int arg1);
-    bool call_script_function(const std::string &function_name, int arg1, int arg2);
-    bool call_script_function(const std::string &function_name, bool arg1);
+    bool notify_script(const std::string &function_name);
+    bool notify_script(const std::string &function_name, const std::string &arg1);
+    bool notify_script(const std::string &function_name, const std::string &arg1, int arg2);
+    bool notify_script(const std::string &function_name, const std::string &arg1, int arg2, int arg3);
+    bool notify_script(const std::string &function_name, const std::string &arg1, const std::string &arg2, int arg3);
+    bool notify_script(const std::string &function_name, int arg1, const std::string &arg2, int arg3);
+    bool notify_script(const std::string &function_name, int arg1);
+    bool notify_script(const std::string &function_name, int arg1, int arg2);
+    bool notify_script(const std::string &function_name, bool arg1);
 
     // calling a C++ function from Lua
     static void called_by_script(lua_State *context, int nb_arguments, Script **script);

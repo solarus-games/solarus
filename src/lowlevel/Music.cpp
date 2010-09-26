@@ -173,7 +173,6 @@ const MusicId& Music::get_current_music_id() {
  */
 void Music::play(const MusicId &music_id) {
 
-  /*
   if (music_id != unchanged && music_id != get_current_music_id()) {
     // the music is changed
 
@@ -202,7 +201,6 @@ void Music::play(const MusicId &music_id) {
       }
     }
   }
-  */
 }
 
 /**

@@ -16,6 +16,7 @@
  */
 #include "menus/PauseSubmenu.h"
 #include "lowlevel/TextSurface.h"
+#include "lowlevel/Sound.h"
 #include "Game.h"
 
 /**
@@ -94,6 +95,6 @@ void PauseSubmenu::set_caption_text(const std::string &text) {
  * @brief Plays the cursor sound.
  */
 void PauseSubmenu::play_cursor_sound() {
-  game->play_sound("cursor");
+  Sound::play("cursor");
 }
 

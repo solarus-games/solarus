@@ -26,6 +26,7 @@
 #include "Map.h"
 #include "lowlevel/System.h"
 #include "lowlevel/FileTools.h"
+#include "lowlevel/Sound.h"
 
 /**
  * @brief Creates a pickable item with the specified subtype.
@@ -236,7 +237,7 @@ void PickableItem::give_item_to_player() {
   ItemProperties *properties = treasure->get_item_properties();
 
   // play the sound
-  game->play_sound(properties->get_sound_when_picked());
+  Sound::play(properties->get_sound_when_picked());
 
   // give the item
   if (properties->is_brandished_when_picked()) {

@@ -24,6 +24,7 @@
 #include "lua/MapScript.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Surface.h"
+#include "lowlevel/Music.h"
 #include "entities/Ground.h"
 #include "entities/Tileset.h"
 #include "entities/TilePattern.h"
@@ -456,7 +457,7 @@ void Map::start(Game *game) {
   this->game = game;
   this->started = true;
   this->visible_surface->set_opacity(255);
-  this->game->play_music(music_id);
+  Music::play(music_id);
   this->script->start(destination_point_name);
 }
 

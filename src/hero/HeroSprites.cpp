@@ -21,7 +21,6 @@
 #include "SpriteAnimationSet.h"
 #include "Equipment.h"
 #include "Map.h"
-#include "ResourceManager.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Debug.h"
@@ -187,7 +186,7 @@ void HeroSprites::rebuild_equipment() {
     sword_sprite->stop_animation();
     sword_sprite->enable_pixel_collisions();
 
-    sword_sound = ResourceManager::get_sound(sword_sound_ids[sword_number - 1]);
+    sword_sound_id = sword_sound_ids[sword_number - 1];
 
     sword_stars_sprite = new Sprite(sword_stars_sprite_ids[sword_number - 1]);
     sword_stars_sprite->stop_animation();
@@ -858,7 +857,7 @@ void HeroSprites::set_animation_sword() {
  * @brief Plays the sound corresponding to the current sword.
  */
 void HeroSprites::play_sword_sound() {
-  sword_sound->play();
+  Sound::play(sword_sound_id);
 }
 
 /**
@@ -1069,7 +1068,7 @@ void HeroSprites::create_ground(Ground ground) {
   if (hero->get_ground() != GROUND_SHALLOW_WATER) {
     ground_sprite->set_current_animation(walking ? "walking" : "stopped");
   }
-  ground_sound = ResourceManager::get_sound(ground_sound_ids[ground - 1]);
+  ground_sound_id = ground_sound_ids[ground - 1];
 }
 
 /**
@@ -1085,7 +1084,7 @@ void HeroSprites::destroy_ground() {
  * @brief Plays a sound for the ground displayed under the hero.
  */
 void HeroSprites::play_ground_sound() {
-  ground_sound->play();
+  Sound::play(ground_sound_id);
 }
 
 /**

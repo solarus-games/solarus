@@ -28,6 +28,7 @@
 #include "ItemProperties.h"
 #include "StringResource.h"
 #include "lowlevel/Surface.h"
+#include "lowlevel/Sound.h"
 #include <sstream>
 
 // TODO load from external data
@@ -391,7 +392,7 @@ void PauseSubmenuInventory::assign_item(int slot) {
   this->item_assigned_destination = slot;
 
   // play the sound
-  game->play_sound("throw");
+  Sound::play("throw");
 
   // compute the movement
   int x1 = 60 + 32 * cursor_column;

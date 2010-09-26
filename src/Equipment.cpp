@@ -461,7 +461,7 @@ void Equipment::remove_item(const std::string &item_name) {
 int Equipment::get_item_amount(const std::string &item_name) {
 
   int counter_index = get_item_properties(item_name)->get_counter_savegame_variable();
-  Debug::assert(counter_index == -1, StringConcat() << "No amount for item '" << item_name << "'");
+  Debug::assert(counter_index != -1, StringConcat() << "No amount for item '" << item_name << "'");
 
   return savegame->get_integer(counter_index);
 }

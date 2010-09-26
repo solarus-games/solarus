@@ -18,6 +18,7 @@
 #include "hero/FreeState.h"
 #include "hero/HeroSprites.h"
 #include "lua/Scripts.h"
+#include "lowlevel/Sound.h"
 #include "Treasure.h"
 #include "ItemProperties.h"
 #include "Game.h"
@@ -57,7 +58,7 @@ void Hero::TreasureState::start(State *previous_state) {
 
   // play the sound
   const SoundId &sound_id = treasure->get_item_properties()->get_sound_when_brandished();
-  game->play_sound(sound_id);
+  Sound::play(sound_id);
 
   // give the treasure
   treasure->give_to_player();

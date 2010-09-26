@@ -159,12 +159,12 @@ void LanguageScreen::notify_event(InputEvent &event) {
       if (direction == 2) {
 	// up
 	set_cursor_position((cursor_position - 1 + nb_languages) % nb_languages);
-	ResourceManager::get_sound("cursor")->play();
+	Sound::play("cursor");
       }
       else if (direction == 6) {
 	// down
 	set_cursor_position((cursor_position + 1) % nb_languages);
-	ResourceManager::get_sound("cursor")->play();
+	Sound::play("cursor");
       }
     }
     else if (event.is_keyboard_key_pressed(validation_keys)

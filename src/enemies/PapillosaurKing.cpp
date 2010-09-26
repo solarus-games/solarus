@@ -23,6 +23,7 @@
 #include "SpriteAnimationSet.h"
 #include "lowlevel/Random.h"
 #include "lowlevel/System.h"
+#include "lowlevel/Sound.h"
 
 /**
  * @brief Constructor.
@@ -138,7 +139,7 @@ void PapillosaurKing::update() {
 
       if (get_sprite()->get_current_animation() != "preparing_egg") {
 	// after a delay, start the fast animation and play a sound
-	game->play_sound("boss_charge");
+	Sound::play("boss_charge");
 	get_sprite()->set_current_animation("preparing_egg");
 	next_egg_date = now + 1500;
 	nb_eggs_to_create = (get_life() < 3) ? 3 : 1;
@@ -148,7 +149,7 @@ void PapillosaurKing::update() {
 	MapEntity *egg = create(game, MINILLOSAUR, RANK_NORMAL, -1, get_name() + "_minillosaur",
 	    get_layer(), get_x(), get_y() + 16, 0, NULL);
 	map->get_entities()->add_entity(egg);
-	game->play_sound("boss_fireball");
+	Sound::play("boss_fireball");
 
 	if (--nb_eggs_to_create > 0) {
 	  next_egg_date = now + 500;

@@ -18,6 +18,7 @@
 #define SOLARUS_MUSIC_H
 
 #include "Common.h"
+#include <map>
 #include <AL/al.h>
 
 /**
@@ -42,7 +43,7 @@ class Music {
       IT   /**< Impulse Tracker module (TODO implement with the modplug lib) */
     };
 
-    const MusicId id;						/**< id of this music */
+    MusicId id;							/**< id of this music */
     std::string file_name;					/**< name of the file to play */
     Format format;						/**< format of the music, detected from the file name */
 
@@ -54,8 +55,7 @@ class Music {
     static float volume;					/**< volume of musics (0.0 to 1.0) */
 
     static Music *current_music;				/**< the music currently played (if any) */
-    static std::map<MusicId,Music*> all_musics;			/**< all musics created before */
-    static MusicId previous_music_id;				/**< id of the previous music played, or Music::none */
+    static std::map<MusicId,Music> all_musics;			/**< all musics created before */
 
     void update_playing();
 
@@ -64,6 +64,7 @@ class Music {
     static const MusicId none;					/**< special id indicating that there is no music */
     static const MusicId unchanged;				/**< special id indicating that the music is the same as before */
 
+    Music();
     Music(const MusicId &music_id);
     ~Music();
 
@@ -75,10 +76,9 @@ class Music {
     static int get_volume();
     static void set_volume(int volume);
 
-    static void play(const &MusicId music_id);
+    static void play(const MusicId &music_id);
     static Music* get_current_music();
     static const MusicId& get_current_music_id();
-    static const MusicId& get_previous_music_id();
 
     bool start();
     void stop();

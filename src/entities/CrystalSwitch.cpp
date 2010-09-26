@@ -25,6 +25,7 @@
 #include "lowlevel/FileTools.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Random.h"
+#include "lowlevel/Sound.h"
 
 /**
  * @brief Creates a new crystal switch.
@@ -139,7 +140,7 @@ void CrystalSwitch::activate(MapEntity *entity_activating) {
 
   uint32_t now = System::now();
   if (!recently_activated || now >= next_possible_hit_date) {
-    game->play_sound("switch");
+    Sound::play("switch");
     game->change_crystal_switch_state();
     next_possible_hit_date = now + 1000;
     entities_activating.push_back(entity_activating);

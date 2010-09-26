@@ -23,6 +23,7 @@
 #include "StringResource.h"
 #include "lowlevel/Color.h"
 #include "lowlevel/Surface.h"
+#include "lowlevel/Sound.h"
 #include <sstream>
 
 /**
@@ -219,7 +220,7 @@ void PauseSubmenuQuestStatus::key_pressed(GameControls::GameKey key) {
       pause_menu->show_left_submenu();
     }
     else {
-      game->play_sound("cursor");
+      Sound::play("cursor");
 
       if (cursor_position == 4) {
 	set_cursor_position(0);
@@ -239,7 +240,7 @@ void PauseSubmenuQuestStatus::key_pressed(GameControls::GameKey key) {
       pause_menu->show_right_submenu();
     }
     else {
-      game->play_sound("cursor");
+      Sound::play("cursor");
 
       if (cursor_position <= 2) {
 	set_cursor_position(4);
@@ -254,12 +255,12 @@ void PauseSubmenuQuestStatus::key_pressed(GameControls::GameKey key) {
     break;
 
   case GameControls::DOWN:
-    game->play_sound("cursor");
+    Sound::play("cursor");
     set_cursor_position((cursor_position + 1) % 8);
     break;
 
   case GameControls::UP:
-    game->play_sound("cursor");
+    Sound::play("cursor");
     set_cursor_position((cursor_position + 7) % 8);
     break;
 

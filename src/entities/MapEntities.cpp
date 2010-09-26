@@ -723,7 +723,7 @@ void MapEntities::start_boss_battle(Enemy *boss) {
 
   if (boss != NULL) {
     boss->set_enabled(true);
-    game->play_music("boss.spc");
+    Music::play("boss.spc");
   }
 }
 
@@ -736,7 +736,7 @@ void MapEntities::start_boss_battle(Enemy *boss) {
  */
 void MapEntities::end_boss_battle() {
 
-  game->play_music("victory.spc");
+  Music::play("victory.spc");
   game->set_pause_key_available(false);
   hero.set_animation_direction(3);
   hero.start_freezed();
@@ -754,8 +754,8 @@ void MapEntities::start_miniboss_battle(Enemy *miniboss) {
 
   if (miniboss != NULL) {
     miniboss->set_enabled(true);
-    music_before_miniboss = game->get_current_music_id();
-    game->play_music("boss.spc");
+    music_before_miniboss = Music::get_current_music_id();
+    Music::play("boss.spc");
   }
 }
 
@@ -766,6 +766,6 @@ void MapEntities::start_miniboss_battle(Enemy *miniboss) {
  * This function is called typically when the player has just killed the miniboss.
  */
 void MapEntities::end_miniboss_battle() {
-  game->play_music(music_before_miniboss);
+  Music::play(music_before_miniboss);
 }
 

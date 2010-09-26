@@ -23,6 +23,7 @@
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
+#include "lowlevel/Sound.h"
 
 /**
  * @brief Constructor.
@@ -232,7 +233,7 @@ void Switch::notify_collision(MapEntity *entity_overlapping, CollisionMode colli
   if (enabled) {
 
     if (subtype == WALKABLE_VISIBLE) {
-      game->play_sound("switch");
+      Sound::play("switch");
     }
 
     map->get_scripts().event_switch_enabled(get_name());

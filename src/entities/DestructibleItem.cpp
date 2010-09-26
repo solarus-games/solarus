@@ -29,6 +29,7 @@
 #include "Sprite.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/System.h"
+#include "lowlevel/Sound.h"
 
 /**
  * @brief Features of each type of destructible item.
@@ -309,7 +310,7 @@ void DestructibleItem::action_key_pressed() {
       hero.start_lifting(this);
 
       // play the sound
-      game->play_sound("lift");
+      Sound::play("lift");
 
       // create the pickable item
       create_pickable_item();
@@ -343,7 +344,7 @@ void DestructibleItem::action_key_pressed() {
 void DestructibleItem::play_destroy_animation() {
 
   is_being_cut = true;
-  game->play_sound(get_destruction_sound_id());
+  Sound::play(get_destruction_sound_id());
   get_sprite()->set_current_animation("destroy");
   if (!is_displayed_in_y_order()) {
     map->get_entities()->bring_to_front(this); // show animation destroy to front

@@ -1447,7 +1447,7 @@ int MapScript::l_door_open(lua_State *l) {
     Door *door = (Door*) (*it);
     door->open();
   }
-  script->game.play_sound("door_open");
+  Sound::play("door_open");
   delete doors;
 
   return 0;
@@ -1476,7 +1476,7 @@ int MapScript::l_door_close(lua_State *l) {
     Door *door = (Door*) (*it);
     door->close();
   }
-  script->game.play_sound("door_closed");
+  Sound::play("door_closed");
   delete doors;
 
   return 0;

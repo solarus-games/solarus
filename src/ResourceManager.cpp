@@ -16,11 +16,7 @@
  */
 #include "ResourceManager.h"
 #include "SpriteAnimationSet.h"
-#include "Map.h"
 #include "entities/Tileset.h"
-#include "lowlevel/Music.h"
-#include "lowlevel/Sound.h"
-#include "lowlevel/FileTools.h"
 
 using std::map;
 
@@ -52,27 +48,7 @@ ResourceManager::~ResourceManager() {
     }
     tilesets.clear();
   }
-
-  // musics
-  {
-    map<MusicId, Music*>::const_iterator it;
- 
-    for (it = musics.begin(); it != musics.end(); it++) {
-      delete it->second;
-    }
-    musics.clear();
-  }
-
-  // sounds
-  {
-    map<SoundId, Sound*>::const_iterator it;
-
-    for (it = sounds.begin(); it != sounds.end(); it++) {
-      delete it->second;
-    }
-    sounds.clear();
-  }
-
+  //
   // sprite animations
   {
     map<SpriteAnimationSetId, SpriteAnimationSet*>::const_iterator it;
@@ -110,34 +86,6 @@ Tileset * ResourceManager::get_tileset(TilesetId id) {
   }
 
   return instance->tilesets[id];
-}
-
-/**
- * @brief Returns a music.
- * @param id id of the music to get
- * @return the music
- */
-Music * ResourceManager::get_music(const MusicId &id) {
-
-  if (instance->musics[id] == NULL) {
-    instance->musics[id] = new Music(id);
-  }
-
-  return instance->musics[id];
-}
-
-/**
- * @brief Returns a sound.
- * @param id id of the sound to get
- * @return the sound
- */
-Sound * ResourceManager::get_sound(const SoundId &id) {
-
-  if (instance->sounds[id] == NULL) {
-    instance->sounds[id] = new Sound(id);
-  }
-
-  return instance->sounds[id];
 }
 
 /**

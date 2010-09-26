@@ -27,6 +27,7 @@
 #include "lowlevel/Surface.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
+#include "lowlevel/Sound.h"
 
 /**
  * @brief Creates a new dialog box.
@@ -408,7 +409,7 @@ void DialogBox::up_or_down_key_pressed() {
     int answer = get_last_answer();
     set_last_answer(1 - answer);
     question_dst_position.set_y(box_dst_position.get_y() + ((answer == 1) ? 27 : 40));
-    game->play_sound("cursor");
+    Sound::play("cursor");
   }
 }
 
@@ -495,7 +496,7 @@ void DialogBox::update() {
       }
 
       keys_effect->set_sword_key_effect(KeysEffect::SWORD_KEY_HIDDEN);
-      game->play_sound("message_end");
+      Sound::play("message_end");
     }
   }
 }

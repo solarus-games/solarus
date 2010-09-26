@@ -19,6 +19,7 @@
 #include "hero/HeroSprites.h"
 #include "entities/Detector.h"
 #include "lowlevel/System.h"
+#include "lowlevel/Sound.h"
 #include "Game.h"
 #include "GameControls.h"
 #include "Map.h"
@@ -85,7 +86,7 @@ void Hero::SwordTappingState::update() {
       else {
 	sound_id = "sword_tapping";
       }
-      game->play_sound(sound_id);
+      Sound::play(sound_id);
       next_sound_date = now + 100;
     }
   }

@@ -39,8 +39,6 @@ class Timer {
 
     // sound
     uint32_t next_sound_date;        /**< date when the next countdown sound effect is played */
-    Sound *countdown_sound;          /**< sound played every second while the timer is running */
-    Sound *countdown_hurry_sound;    /**< sound played when the timer is close to finish */
 
   public:
 

@@ -499,7 +499,7 @@ int Script::l_play_sound(lua_State *l) {
   called_by_script(l, 1, &script);
   const SoundId &sound_id = lua_tostring(l, 1);
 
-  ResourceManager::get_sound(sound_id)->play();
+  Sound::play(sound_id);
 
   return 0;
 }

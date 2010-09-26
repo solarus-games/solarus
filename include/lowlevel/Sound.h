@@ -18,10 +18,10 @@
 #define SOLARUS_SOUND_H
 
 #include "Common.h"
-#include <AL/al.h>
-#include <AL/alc.h>
 #include <list>
 #include <map>
+#include <AL/al.h>
+#include <AL/alc.h>
 #include <sndfile.h>
 
 /**
@@ -40,10 +40,11 @@ class Sound {
     static ALCdevice* device;
     static ALCcontext* context;
 
+    SoundId id;							/**< id of this sound */
     ALuint buffer;						/**< the OpenAL buffer containing the PCM decoded data of this sound */
     std::list<ALuint> sources;					/**< the sources currently playing this sound */
     static std::list<Sound*> current_sounds;			/**< the sounds currently playing */
-    static std::map<SoundId,Sound*> all_sounds;			/**< all sounds created before */
+    static std::map<SoundId,Sound> all_sounds;			/**< all sounds created before */
 
     static bool initialized;					/**< indicates that the audio system is initialized */
     static float volume;					/**< the volume of sound effects (0.0 to 1.0) */
@@ -68,11 +69,12 @@ class Sound {
 
   public:
 
+    Sound();
     Sound(const SoundId &sound_id);
     ~Sound();
     bool start();
 
-    static void play(const &SoundId sound_id);
+    static void play(const SoundId &sound_id);
 
     static void initialize(int argc, char **argv);
     static void quit();

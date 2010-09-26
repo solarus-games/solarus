@@ -32,6 +32,7 @@
 #include "lowlevel/System.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
+#include "lowlevel/Sound.h"
 
 /**
  * @brief Creates a new inventory item.
@@ -101,7 +102,7 @@ void InventoryItem::start(Game *game) {
     else if (item_name == "bow") {
 
       if (equipment->get_item_amount("bow") == 0) {
-	game->play_sound("wrong");
+	Sound::play("wrong");
 	finished = true;
       }
       else {
@@ -116,7 +117,7 @@ void InventoryItem::start(Game *game) {
     }
     else if (item_name == "apples") {
       if (equipment->get_item_amount(item_name) == 0) {
-	game->play_sound("wrong");
+	Sound::play("wrong");
 	finished = true;
       }
       else {
@@ -125,7 +126,7 @@ void InventoryItem::start(Game *game) {
     }
     else if (item_name == "pains_au_chocolat") {
       if (equipment->get_item_amount(item_name) == 0) {
-	game->play_sound("wrong");
+	Sound::play("wrong");
 	finished = true;
       }
       else {
@@ -134,7 +135,7 @@ void InventoryItem::start(Game *game) {
     }
     else if (item_name == "croissants") {
       if (equipment->get_item_amount(item_name) == 0) {
-	game->play_sound("wrong");
+	Sound::play("wrong");
 	finished = true;
       }
       else {
@@ -158,7 +159,7 @@ void InventoryItem::update() {
   if (item_sound_id.size() != 0) {
     uint32_t now = System::now();
     if (now >= next_sound_date) {
-      game->play_sound(item_sound_id);
+      Sound::play(item_sound_id);
       next_sound_date = now + sound_delay;
     }
   }
@@ -194,7 +195,7 @@ void InventoryItem::update() {
       if (hero.is_animation_finished()) {
 	finished = true;
 	game->get_current_map()->get_entities()->add_entity(new Arrow(&hero));
-	game->play_sound("bow");
+	Sound::play("bow");
       }
     }
     else if (item_name == "pegasus_shoes") {
@@ -246,7 +247,7 @@ void InventoryItem::start_bottle() {
 	  !facing_entity->interaction_with_inventory_item(this)) {
 
 	// unless an interaction occurs, we play the "wrong" sound
-	game->play_sound("wrong");
+	Sound::play("wrong");
       }
       finished = true;
     }
@@ -301,7 +302,7 @@ void InventoryItem::update_bottle() {
       if (answer == 0) {
 	// empty the water
 	game->get_equipment()->set_item_variant(item_name, 1);
-	game->play_sound("item_in_water");
+	Sound::play("item_in_water");
 
 	Detector *facing_entity = game->get_hero().get_facing_entity();
 

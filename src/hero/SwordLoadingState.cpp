@@ -21,6 +21,7 @@
 #include "hero/HeroSprites.h"
 #include "entities/Detector.h"
 #include "lowlevel/System.h"
+#include "lowlevel/Sound.h"
 #include "Game.h"
 #include "GameControls.h"
 
@@ -67,7 +68,7 @@ void Hero::SwordLoadingState::update() {
 
   // detect when the sword is loaded (i.e. ready for a spin attack)
   if (!sword_loaded && now >= sword_loaded_date) {
-    game->play_sound("sword_spin_attack_load");
+    Sound::play("sword_spin_attack_load");
     sword_loaded = true;
   }
 

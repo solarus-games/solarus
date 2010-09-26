@@ -5,7 +5,7 @@
 function event_map_started(destination_point)
 
   if savegame_get_boolean(37) then -- if the Lyriann cave is finished
-    door_set_open("door", dungeon_is_finished(1)) -- don't allow the player to obtain the bow until the first dungeon is finished
+    door_set_open("door", equipment_is_dungeon_finished(1)) -- don't allow the player to obtain the bow until the first dungeon is finished
   end
 end
 
@@ -31,7 +31,7 @@ function event_npc_dialog(npc_name)
   elseif not has_obtained_world_map() then
     -- the player has obtained the clay key: give him the world map now if he didn't talk the first time
     dialog_start("sahasrahla_house.give_world_map")
-  elseif dungeon_is_finished(1) and not has_obtained_bow() then -- glove
+  elseif equipment_is_dungeon_finished(1) and not has_obtained_bow() then -- glove
     -- the player should now go downstairs to obtain the bow
     dialog_start("sahasrahla_house.dungeon_1_finished")
   else

@@ -21,18 +21,29 @@
 #include "lowlevel/StringConcat.h"
 #include "Configuration.h"
 
+const int Music::nb_buffers;
 SpcDecoder * Music::spc_decoder = NULL;
-Music * Music::current_music = NULL;
 float Music::volume = 1.0;
+Music * Music::current_music = NULL;
+std::map<MusicId,Music> Music::all_musics;
 
 const MusicId Music::none = "none";
 const MusicId Music::unchanged = "same";
 
 /**
+ * @brief Empty constructor.
+ */
+Music::Music():
+  id(none) {
+
+}
+
+/**
  * @brief Creates a new music.
  * @param music_id id of the music (a file name)
  */
-Music::Music(const MusicId &music_id) {
+Music::Music(const MusicId &music_id):
+  id(music_id) {
 
   if (!is_initialized()) {
     return;
@@ -97,6 +108,7 @@ void Music::initialize() {
 void Music::quit() {
   if (is_initialized()) {
     delete spc_decoder;
+    all_musics.clear();
   }
 }
 
@@ -130,6 +142,64 @@ void Music::set_volume(int volume) {
 
   if (current_music != NULL) {
     alSourcef(current_music->source, AL_GAIN, Music::volume);
+  }
+}
+
+/**
+ * @brief Returns the music currently playing.
+ * @return the current music, or NULL if no music is being played
+ */
+Music* Music::get_current_music() {
+  return current_music;
+}
+
+/**
+ * @brief Returns the id of the music currently playing.
+ * @return the id of the current music, or "none" if no music is being played
+ */
+const MusicId& Music::get_current_music_id() {
+  return current_music != NULL ? current_music->id : none;
+}
+
+/**
+ * @brief Plays a music.
+ *
+ * If the music is different from the current one,
+ * the current one is stopped.
+ * The music specified can also be Music::none_id (then the current music is just stopped)
+ * or even Music::unchanged_id (nothing is done in this case).
+ *
+ * @param music_id id of the music to play
+ */
+void Music::play(const MusicId &music_id) {
+
+  if (music_id != unchanged && music_id != get_current_music_id()) {
+    // the music is changed
+
+    if (music_id == none && current_music != NULL) {
+
+      current_music->stop();
+      current_music = NULL;
+    }
+    else {
+
+      // play another music
+      if (current_music != NULL) {
+	current_music->stop();
+      }
+
+      if (all_musics.count(music_id) == 0) {
+	all_musics[music_id] = Music(music_id);
+      }
+
+      Music &music = all_musics[music_id];
+      if (music.start()) {
+	current_music = &music;
+      }
+      else {
+	current_music = NULL;
+      }
+    }
   }
 }
 
@@ -198,15 +268,13 @@ void Music::decode_spc(ALuint destination_buffer, ALsizei nb_samples) {
 }
 
 /**
- * @brief Loads the file and plays the music.
+ * @brief Loads the file and starts playing this music.
  *
  * No other music should be playing.
  *
  * @return true if the music was loaded successfully
  */
-bool Music::play() {
-
-//  std::cout << "playing music " << file_name << std::endl;
+bool Music::start() {
 
   if (!is_initialized()) {
     return false;
@@ -259,8 +327,6 @@ bool Music::play() {
  * @brief Stops playing the music.
  */
 void Music::stop() {
-
-//  std::cout << "stopping music " << file_name << std::endl;
 
   if (!is_initialized()) {
     return;
@@ -320,33 +386,5 @@ void Music::set_paused(bool pause) {
   else {
     alSourcePlay(source);
   }
-}
-
-/**
- * @brief Returns whether a music id is the id for no music, i.e. if it is Music.none_id.
- * @param music_id a music id
- * @return true if music_id is the special id indicating that there is no music
- */
-bool Music::isNoneId(const MusicId &music_id) {
-  return isEqualId(music_id, none);
-}
-
-/**
- * @brief Returns whether a music id is the id for no change, i.e. if it is Music.unchanged_id.
- * @param music_id a music id
- * @return true if music_id is the special id indicating that the music doesn't change
- */
-bool Music::isUnchangedId(const MusicId &music_id) {
-  return isEqualId(music_id, unchanged);
-}
-
-/**
- * @brief Compares two music ids.
- * @param music_id a music id
- * @param other_music_id another music id
- * @return true if the ids are the same
- */
-bool Music::isEqualId(const MusicId &music_id, const MusicId &other_music_id) {
-  return music_id == other_music_id;
 }
 

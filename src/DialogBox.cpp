@@ -20,13 +20,14 @@
 #include "Game.h"
 #include "Map.h"
 #include "KeysEffect.h"
-#include "MapScript.h"
+#include "lua/Scripts.h"
 #include "entities/Hero.h"
 #include "lowlevel/Color.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
+#include "lowlevel/Sound.h"
 
 /**
  * @brief Creates a new dialog box.
@@ -108,7 +109,7 @@ void DialogBox::set_vertical_position(VerticalPosition vertical_position) {
     const Rectangle &camera_position = game->get_current_map()->get_camera_position();
     vertical_position = POSITION_BOTTOM;
 
-    if (game->get_hero()->get_y() >= camera_position.get_y() + 130) {
+    if (game->get_hero().get_y() >= camera_position.get_y() + 130) {
       vertical_position = POSITION_TOP;
     }
   }
@@ -271,8 +272,8 @@ void DialogBox::start_dialog(const MessageId &first_message_id, VerticalPosition
   this->first_message_id = first_message_id;
   show_message(first_message_id);
 
-  // notify the script
-  game->get_current_script()->event_dialog_started(first_message_id);
+  // notify the scripts
+  game->get_scripts().event_dialog_started(first_message_id);
 }
 
 /**
@@ -338,7 +339,7 @@ void DialogBox::close() {
   // notify the script if necessary
   if (!skipped && first_message_id[0] != '_') {
     // a dialog of the quest was just finished: notify the script
-    game->get_current_script()->event_dialog_finished(first_message_id, last_answer);
+    game->get_scripts().event_dialog_finished(first_message_id, last_answer);
   }
 }
 
@@ -408,7 +409,7 @@ void DialogBox::up_or_down_key_pressed() {
     int answer = get_last_answer();
     set_last_answer(1 - answer);
     question_dst_position.set_y(box_dst_position.get_y() + ((answer == 1) ? 27 : 40));
-    game->play_sound("cursor");
+    Sound::play("cursor");
   }
 }
 
@@ -495,7 +496,7 @@ void DialogBox::update() {
       }
 
       keys_effect->set_sword_key_effect(KeysEffect::SWORD_KEY_HIDDEN);
-      game->play_sound("message_end");
+      Sound::play("message_end");
     }
   }
 }

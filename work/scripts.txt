@@ -1,0 +1,171 @@
+--------------------------
+Nouveau système de scripts
+--------------------------
+
+Le code C++ met à disposition de Lua une (ou plusieurs ?) table qui contient toutes les fonctions qu'un script
+peut appeler, organisées en sous-tables (modules).
+Chaque module peut être, disponible ou non (nil) selon les types de scripts.
+
+
+Types de scripts :
+
+- lua/Script : script général (typiquement, pour l'écran-titre) :
+  fonctions pour afficher des sprites, appliquer des mouvements, traiter les appuis de touche, gérer des timers
+- lua/GameScript : script in-game : comme général, avec module game (qui désigne la partie courante) en +
+- lua/MapScript : script in-game : comme game, avec modules game et map (qui désigne la map courante) en +
+- lua/EnemyScript : script d'ennemi : comme map, avec module enemy (qui désigne l'ennemi courant) en +
+- lua/ItemScript : script d'item : comme map, avec module item (qui désigne l'item courant) en +
+
+La classe lua/Scripts contient la liste des scripts en cours d'exécution. L'objet Solarus contient cette liste.
+Une classe du moteur (exemple : Map) peut créer, stocker et détruire un script.
+Lorsqu'un script est démarré, il s'ajoute lui-même dans la liste des scripts en cours.
+Lorsqu'il est arrêté, il se supprime de la liste.
+
+Les événements (i.e. C++ vers Lua) sont envoyés à tous les scripts en cours d'exécution.
+
+
+Module main : fonctions disponibles pour tous les scripts même en dehors d'un Game
+
+sol.main.timer_start(duration, callback, with_sound) 
+sol.main.timer_stop(callback) 
+sol.main.play_sound(sound_id) 	
+sol.main.play_music(music_id) 
+
+TODO sprite, movement, input:
+sol.main.sprite_create(sprite_id, animation_set)
+sol.main.sprite_get_animation(sprite_id)
+sol.main.sprite_get_animation_delay(sprite_id)
+sol.main.sprite_get_animation_frame(sprite_id)
+sol.main.sprite_get_direction(sprite_id)
+sol.main.sprite_is_animation_paused(sprite_id)
+sol.main.sprite_set_animation(sprite_id, animation_name)
+sol.main.sprite_set_animation_delay(sprite_id, delay)
+sol.main.sprite_set_animation_frame(sprite_id, frame)
+sol.main.sprite_set_direction(sprite_id, direction)
+sol.main.sprite_set_animation_paused(sprite_id, paused)
+sol.main.sprite_set_animation_ignore_suspend(sprite_id, ignore)
+sol.main.sprite_fade(sprite_id, direction)
+sol.main.sprite_remove(sprite_id)
+sol.main.movement_create(movement_id, movement_type)
+sol.main.movement_get_property(movement_id, key)
+sol.main.movement_set_property(movement_id, key, value)
+
+Module game : activé pour les scripts exécutés in-game, sol.game désigne la partie courante
+
+Le script global du jeu possède ce module mais pas le module map.
+
+sol.game.savegame_get_string(index)
+sol.game.savegame_get_integer(index) 
+sol.game.savegame_get_boolean(index) 
+sol.game.savegame_set_string(index, value) 
+sol.game.savegame_set_integer(index, value) 
+sol.game.savegame_set_boolean(index, value) 
+sol.game.savegame_get_name()
+sol.game.equipment_get_life()
+sol.game.equipment_add_life(life) 
+sol.game.equipment_remove_life(life) 
+sol.game.equipment_get_money()
+sol.game.equipment_add_money(money) 
+sol.game.equipment_remove_money(money) 
+sol.game.equipment_has_ability(ability_name) 
+sol.game.equipment_get_ability(ability_name) 
+sol.game.equipment_set_ability(ability_name, level) 
+sol.game.equipment_has_item(item_name) 
+sol.game.equipment_get_item(item_name) 
+sol.game.equipment_set_item(item_name, variant) 
+sol.game.equipment_has_item_amount(item_name, amount) 
+sol.game.equipment_get_item_amount(item_name) 
+sol.game.equipment_add_item_amount(item_name, amount) 
+sol.game.equipment_remove_item_amount(item_name, amount) 
+sol.game.equipment_is_dungeon_finished(dungeon)
+sol.game.equipment_set_dungeon_finished(dungeon)
+
+
+Module map : activé pour les scripts exécutés in-game, sol.map désigne la map courante (car il y a toujours une map courante)
+
+Les scripts des maps possèdent ce module en plus de sol.main et sol.game.
+
+sol.map.dialog_start(first_message_id)
+sol.map.dialog_set_variable(first_message_id, value)
+sol.map.dialog_set_style(style)
+sol.map.hud_set_pause_enabled(bool enabled)
+sol.map.hud_set_enabled(enabled)
+sol.map.camera_move(x, y, speed)
+sol.map.camera_restore() 
+sol.map.treasure_give(item_name, variant, savegame_variable) 
+
+sol.map.hero_freeze() 
+sol.map.hero_unfreeze() 
+sol.map.hero_set_map(map_id, destination_point, transition)
+sol.map.hero_set_direction(direction)
+sol.map.hero_align_on_sensor(sensor_name)
+sol.map.hero_walk(path, loop, ignore_obstacles)
+sol.map.hero_jump(direction, length, ignore_obstacles)
+sol.map.hero_start_victory_sequence()
+sol.map.hero_set_visible(visible)
+sol.map.npc_set_position(npc, x, y)
+sol.map.npc_walk(npc, path, loop, ignore_obstacles)
+sol.map.npc_random_walk(npc)
+sol.map.npc_jump(npc, direction, length, ignore_obstacles)
+sol.map.npc_set_animation(npc, animation_name)
+sol.map.npc_set_animation_ignore_suspend(npc, ignore)
+sol.map.npc_set_direction(npc, direction)
+sol.map.npc_remove(npc)
+sol.map.chest_set_open(chest_name, bool open)
+sol.map.chest_set_hidden(chest_name, bool hidden)
+sol.map.chest_is_hidden(chest_name)
+sol.map.tile_set_enabled(tile_name, enable)
+sol.map.tile_set_group_enabled(tiles_prefix, enable)
+sol.map.tile_is_enabled(tile_name)
+sol.map.block_reset(block_name)
+sol.map.block_reset_all()
+
+Les fonctions suivantes sont à remplacer par la nouvelle API de sprites, via sol.map.interactive_entity_get_sprite_id(entity) :
+sol.map.interactive_entity_get_animation(entity)
+sol.map.interactive_entity_get_animation_delay(entity)
+sol.map.interactive_entity_get_animation_frame(entity)
+sol.map.interactive_entity_get_direction(entity)
+sol.map.interactive_entity_is_animation_paused(entity)
+sol.map.interactive_entity_set_animation(entity, animation_name)
+sol.map.interactive_entity_set_animation_delay(entity, delay)
+sol.map.interactive_entity_set_animation_frame(entity, frame)
+sol.map.interactive_entity_set_direction(entity, direction)
+sol.map.interactive_entity_set_animation_paused(entity, paused)
+sol.map.interactive_entity_set_animation_ignore_suspend(npc, ignore)
+sol.map.interactive_entity_fade(entity, direction)
+sol.map.interactive_entity_remove(entity)
+
+sol.map.shop_item_remove(shop_item_name)
+sol.map.switch_is_enabled(switch_name)
+sol.map.switch_set_enabled(switch_name, enabled)
+sol.map.switch_set_locked(switch_name, locked)
+sol.map.enemy_is_dead(enemy_name)
+sol.map.enemy_is_group_dead(enemies_name_prefix)
+sol.map.enemy_set_enabled(enemy_name)
+sol.map.enemy_start_boss(enemy_name)
+sol.map.enemy_end_boss()
+sol.map.enemy_start_miniboss(enemy_name)
+sol.map.enemy_end_miniboss()
+sol.map.sensor_remove(sensor_name)
+sol.map.door_open(door_prefix)
+sol.map.door_close(door_prefix)
+sol.map.door_set_open(door_name, open)
+
+
+Module enemy : activé pour les scripts attachés à un type d'ennemi précis (sol.enemy désigne l'ennemi courant)
+
+Les scripts d'ennemis possèdent ce module en plus de main, game et map.
+
+
+Module item : activé pour les scripts attachés à un item précis (sol.item désigne l'item courant)
+
+Les scripts d'items possèdent ce module en plus de main, game et map.
+
+
+Questions ouvertes :
+- peut-on aussi changer la forme des fonctions événementielles ("event_") ?
+- associer un mouvement à un sprite même hors game : faire une classe MovingSprite ?
+- api lua pour créer un mouvement et spécifier ses propriétés (applicable aussi
+  bien à un sprite hors game qu'à un ennemi) -> set_property(param, value) ?
+
+

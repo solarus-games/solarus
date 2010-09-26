@@ -47,8 +47,8 @@ class HeroSprites {
     Sprite *ground_sprite;		/**< ground displayed under the hero (e.g. grass or shallow water) */
     Sprite *trail_sprite;		/**< trail of dust that the hero lets behind him (e.g. when running) */
 
-    Sound *sword_sound;			/**< sound of the current sword */
-    Sound *ground_sound;		/**< sound of the current ground displayed under the hero */
+    SoundId sword_sound_id;		/**< sound id of the current sword */
+    SoundId ground_sound_id;		/**< sound id of the current ground displayed under the hero */
 
     static const int animation_directions[8][2];		/**< possible directions of the animation for each movement direction */
 

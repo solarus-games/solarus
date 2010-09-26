@@ -17,12 +17,13 @@
 #include "hero/TreasureState.h"
 #include "hero/FreeState.h"
 #include "hero/HeroSprites.h"
+#include "lua/Scripts.h"
+#include "lowlevel/Sound.h"
 #include "Treasure.h"
 #include "ItemProperties.h"
 #include "Game.h"
 #include "DialogBox.h"
 #include "Map.h"
-#include "MapScript.h"
 #include <sstream>
 
 /**
@@ -57,7 +58,7 @@ void Hero::TreasureState::start(State *previous_state) {
 
   // play the sound
   const SoundId &sound_id = treasure->get_item_properties()->get_sound_when_brandished();
-  game->play_sound(sound_id);
+  Sound::play(sound_id);
 
   // give the treasure
   treasure->give_to_player();
@@ -102,7 +103,7 @@ void Hero::TreasureState::update() {
     delete treasure;
     treasure = NULL;
 
-    map->get_script()->event_treasure_obtained(item_name, variant, savegame_variable);
+    map->get_scripts().event_treasure_obtained(item_name, variant, savegame_variable);
 
     hero->set_state(new FreeState(hero));
   }

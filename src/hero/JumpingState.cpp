@@ -19,6 +19,7 @@
 #include "hero/HeroSprites.h"
 #include "entities/MapEntities.h"
 #include "movements/JumpMovement.h"
+#include "lowlevel/Sound.h"
 #include "Game.h"
 #include "Map.h"
 
@@ -71,7 +72,7 @@ void Hero::JumpingState::start(State *previous_state) {
   hero->set_movement(movement);
 
   if (with_sound) {
-    game->play_sound("jump");
+    Sound::play("jump");
   }
   this->layer_after_jump = layer_after_jump;
 }

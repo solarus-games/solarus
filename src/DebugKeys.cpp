@@ -139,32 +139,32 @@ void DebugKeys::key_pressed(InputEvent::KeyboardKey key) {
 
       case InputEvent::KEY_KP1:
 	equipment->set_ability("tunic", std::max(equipment->get_ability("tunic") - 1, 1));
-	game->get_hero()->rebuild_equipment();
+	game->get_hero().rebuild_equipment();
 	break;
 
       case InputEvent::KEY_KP4:
 	equipment->set_ability("tunic", std::min(equipment->get_ability("tunic") + 1, 3));
-	game->get_hero()->rebuild_equipment();
+	game->get_hero().rebuild_equipment();
 	break;
 
       case InputEvent::KEY_KP2:
 	equipment->set_ability("sword", std::max(equipment->get_ability("sword") - 1, 0));
-	game->get_hero()->rebuild_equipment();
+	game->get_hero().rebuild_equipment();
 	break;
 
       case InputEvent::KEY_KP5:
 	equipment->set_ability("sword", std::min(equipment->get_ability("sword") + 1, 4));
-	game->get_hero()->rebuild_equipment();
+	game->get_hero().rebuild_equipment();
 	break;
 
       case InputEvent::KEY_KP3:
 	equipment->set_ability("shield", std::max(equipment->get_ability("shield") - 1, 0));
-	game->get_hero()->rebuild_equipment();
+	game->get_hero().rebuild_equipment();
 	break;
 
       case InputEvent::KEY_KP6:
 	equipment->set_ability("shield", std::min(equipment->get_ability("shield") + 1, 3));
-	game->get_hero()->rebuild_equipment();
+	game->get_hero().rebuild_equipment();
 	break;
 
       default:
@@ -200,7 +200,7 @@ void DebugKeys::update() {
   // traverse walls when control is pressed
   if (game != NULL) {
 
-    Movement *movement = game->get_hero()->get_movement();
+    Movement *movement = game->get_hero().get_movement();
     if (movement != NULL) {
 
       if (InputEvent::is_control_down()) {

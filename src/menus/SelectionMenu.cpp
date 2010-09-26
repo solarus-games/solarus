@@ -76,8 +76,7 @@ SelectionMenu::SelectionMenu(Solarus *solarus):
   title_text->set_font("fixed");
 
   // music
-  music = ResourceManager::get_music("game_over.spc");
-  music->play();
+  Music::play("gameover.spc");
 
   // transitions
   transition = Transition::create(Transition::FADE, Transition::IN);
@@ -117,7 +116,7 @@ SelectionMenu::~SelectionMenu() {
 
   delete cursor_sprite;
 
-  music->stop();
+  Music::play(Music::none);
 }
 
 /**
@@ -622,34 +621,34 @@ void SelectionMenu::display_savegame_cursor(Surface *destination_surface) {
  * @brief Plays the "cursor" sound.
  */
 void SelectionMenu::play_cursor_sound() {
-  ResourceManager::get_sound("cursor")->play();
+  Sound::play("cursor");
 }
 
 /**
  * @brief Plays the "ok" sound.
  */
 void SelectionMenu::play_ok_sound() {
-  ResourceManager::get_sound("ok")->play();
+  Sound::play("ok");
 }
 
 /**
  * @brief Plays the "error" sound.
  */
 void SelectionMenu::play_error_sound() {
-  ResourceManager::get_sound("wrong")->play();
+  Sound::play("wrong");
 }
 
 /**
  * @brief Plays the "erase" sound.
  */
 void SelectionMenu::play_erase_sound() {
-  ResourceManager::get_sound("boss_killed")->play();
+  Sound::play("boss_killed");
 }
 
 /**
  * @brief Plays the "letter" sound.
  */
 void SelectionMenu::play_letter_sound() {
-  ResourceManager::get_sound("danger")->play();
+  Sound::play("danger");
 }
 

@@ -293,7 +293,7 @@ void Hero::State::item_key_released(int slot) {
  */
 void Hero::State::set_map(Map *map) {
   this->map = map;
-  this->game = map->get_game();
+  this->game = &map->get_game(); // TODO store a reference instead
 }
 
 /**

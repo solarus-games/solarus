@@ -26,6 +26,7 @@
 #include "Map.h"
 #include "lowlevel/System.h"
 #include "lowlevel/FileTools.h"
+#include "lowlevel/Sound.h"
 
 /**
  * @brief Creates a pickable item with the specified subtype.
@@ -236,11 +237,11 @@ void PickableItem::give_item_to_player() {
   ItemProperties *properties = treasure->get_item_properties();
 
   // play the sound
-  game->play_sound(properties->get_sound_when_picked());
+  Sound::play(properties->get_sound_when_picked());
 
   // give the item
   if (properties->is_brandished_when_picked()) {
-    game->get_hero()->start_treasure(treasure);
+    game->get_hero().start_treasure(treasure);
   }
   else {
     treasure->give_to_player();
@@ -329,7 +330,7 @@ void PickableItem::update() {
     // wait 0.7 second before allowing the hero to take the item
     if (!can_be_picked && now >= allow_pick_date) {
       can_be_picked = true;
-      map->check_collision_with_detectors(game->get_hero());
+      map->check_collision_with_detectors(&game->get_hero());
     }
     else {
       // make the item blink and then disappear

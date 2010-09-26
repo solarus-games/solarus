@@ -18,23 +18,34 @@
 #define SOLARUS_MAP_SCRIPT_H
 
 #include "Common.h"
-#include "Script.h"
+#include "lua/GameScript.h"
 
 /**
  * @brief Represents the Lua script of a map.
  *
  * This class makes the interface between the engine C++ code and the Lua script of a map.
  */
-class MapScript: public Script {
+class MapScript: public GameScript {
 
-  protected:   // even if there no subclass of MapScript, we want Doxygen to show the functions available to scripts
+  protected:
 
-    Map *map;                   /**< the map controlled by this script */
+    Map &map;			/**< the map controlled by this script */
+    Hero &hero;			/**< the hero */
 
     // calling a C++ function from the script
     static void called_by_script(lua_State *context, int nb_arguments, MapScript **map_script);
 
     static FunctionAvailableToScript 
+      l_hero_freeze,
+      l_hero_unfreeze,
+      l_dialog_start,
+      l_dialog_set_variable,
+      l_dialog_set_style,
+      l_hud_set_enabled,
+      l_hud_set_pause_enabled,
+      l_camera_move,
+      l_camera_restore,
+      l_treasure_give,
       l_hero_set_map,
       l_hero_set_direction,
       l_hero_align_on_sensor,
@@ -56,9 +67,9 @@ class MapScript: public Script {
       l_chest_is_hidden,
       l_tile_is_enabled,
       l_tile_set_enabled,
-      l_tiles_set_enabled,
-      l_reset_block,
-      l_reset_blocks,
+      l_tile_set_group_enabled,
+      l_block_reset,
+      l_block_reset_all,
       l_interactive_entity_get_animation,
       l_interactive_entity_get_animation_delay,
       l_interactive_entity_get_animation_frame,
@@ -77,14 +88,12 @@ class MapScript: public Script {
       l_switch_set_enabled,
       l_switch_set_locked,
       l_enemy_is_dead,
-      l_enemies_are_dead,
+      l_enemy_is_group_dead,
       l_enemy_set_enabled,
-      l_boss_start_battle,
-      l_boss_end_battle,
-      l_miniboss_start_battle,
-      l_miniboss_end_battle,
-      l_dungeon_is_finished,
-      l_dungeon_set_finished,
+      l_enemy_start_boss,
+      l_enemy_end_boss,
+      l_enemy_start_miniboss,
+      l_enemy_end_miniboss,
       l_sensor_remove,
       l_door_open,
       l_door_close,
@@ -97,25 +106,10 @@ class MapScript: public Script {
   public:
 
     // loading and closing a script
-    MapScript(Map *map);
-    ~MapScript();
+    MapScript(Scripts &scripts, Map &map);
+    virtual ~MapScript();
     void start(const std::string &destination_point_name);
 
-    // C++ functions that call script functions
-    void event_map_started(const std::string &destination_point_name);
-    void event_map_opening_transition_finished(const std::string &destination_point_name);
-    void event_switch_enabled(const std::string &switch_name);
-    void event_switch_disabled(const std::string &switch_name);
-    void event_switch_left(const std::string &switch_name);
-    void event_hero_victory_sequence_finished();
-    void event_hero_on_sensor(const std::string &sensor_name);
-    void event_hero_interaction(const std::string &entity_name);
-    bool event_hero_interaction_item(const std::string &entity_name, const std::string &item_name, int variant);
-    void event_npc_dialog(const std::string &npc_name);
-    void event_npc_movement_finished(const std::string &npc_name);
-    bool event_chest_empty(const std::string &chest_name);
-    void event_shop_item_bought(const std::string &shop_item_name);
-    void event_enemy_dead(const std::string &enemy_name);
 };
 
 #endif

@@ -19,10 +19,12 @@
 #include "Game.h"
 #include "DialogBox.h"
 #include "Sprite.h"
-#include "MapScript.h"
 #include "Camera.h"
+#include "lua/Scripts.h"
+#include "lua/MapScript.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Surface.h"
+#include "lowlevel/Music.h"
 #include "entities/Ground.h"
 #include "entities/Tileset.h"
 #include "entities/TilePattern.h"
@@ -40,7 +42,7 @@ MapLoader Map::map_loader;
  */
 Map::Map(MapId id):
   game(NULL), id(id), started(false), destination_point_name(""),
-  welcome_message_id(""), entities(NULL), suspended(false), script(NULL) {
+  welcome_message_id(""), entities(NULL), suspended(false) {
 
 }
 
@@ -71,11 +73,14 @@ Tileset * Map::get_tileset() {
 }
 
 /**
- * @brief Returns this map's script.
- * @return the script
+ * @brief Returns the scripts currently running.
+ *
+ * This function is equivalent to get_game().get_scripts().
+ *
+ * @return the scripts
  */
-MapScript * Map::get_script() {
-  return script;
+Scripts& Map::get_scripts() {
+  return game->get_scripts();
 }
 
 /**
@@ -247,10 +252,10 @@ void Map::load(Game *game) {
 
 /**
  * @brief Returns the game that loaded this map.
- * @return the game, or NULL if the map is not started
+ * @return the game
  */
-Game * Map::get_game() {
-  return game;
+Game& Map::get_game() {
+  return *game;
 }
 
 /**
@@ -452,7 +457,7 @@ void Map::start(Game *game) {
   this->game = game;
   this->started = true;
   this->visible_surface->set_opacity(255);
-  this->game->play_music(music_id);
+  Music::play(music_id);
   this->script->start(destination_point_name);
 }
 
@@ -485,13 +490,13 @@ void Map::notify_opening_transition_finished() {
 
   visible_surface->set_opacity(255); // because the transition effect may have changed the opacity
   check_suspended();
-  game->get_hero()->notify_opening_transition_finished();
+  game->get_hero().notify_opening_transition_finished();
   if (welcome_message_id != "") {
     game->get_dialog_box()->start_dialog(welcome_message_id);
     welcome_message_id = "";
   }
   else {
-    script->event_map_opening_transition_finished(destination_point_name);
+    get_scripts().event_map_opening_transition_finished(destination_point_name);
   }
 }
 

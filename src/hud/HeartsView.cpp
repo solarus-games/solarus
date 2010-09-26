@@ -20,6 +20,7 @@
 #include "Sprite.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/System.h"
+#include "lowlevel/Sound.h"
 
 /**
  * @brief Position of the hearts in the PNG image.
@@ -113,7 +114,7 @@ void HeartsView::update() {
       nb_current_hearts_displayed++;
 
       if (nb_current_hearts_displayed % 4 == 0 && game != NULL) {
-	game->play_sound("heart");
+	Sound::play("heart");
       }
     }
 
@@ -135,7 +136,7 @@ void HeartsView::update() {
       uint32_t now = System::now();
       if (now > next_danger_sound_date) {
 	next_danger_sound_date = now + 750;
-	game->play_sound("danger");
+	Sound::play("danger");
       }
 
       need_rebuild = true;

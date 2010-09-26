@@ -56,8 +56,6 @@ class PauseSubmenuOptions: public PauseSubmenu {
     Sprite *cursor_sprite;
     Rectangle cursor_sprite_position;
 
-    Sound *cursor_sound;
-    Sound *ok_sound;
     int cursor_position; /**< 0: fullscreen, 1 to 9: key 1 to 9 */
     bool customizing;
 

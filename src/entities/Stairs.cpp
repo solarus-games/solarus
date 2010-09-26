@@ -17,6 +17,7 @@
 #include "entities/Stairs.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
+#include "lowlevel/Sound.h"
 #include "Game.h"
 #include "Map.h"
 
@@ -192,7 +193,7 @@ void Stairs::play_sound(Way way) {
       sound_id = (way == NORMAL_WAY) ? "stairs_down_start" : "stairs_up_end";
     }
   }
-  game->play_sound(sound_id);
+  Sound::play(sound_id);
 }
 
 /**

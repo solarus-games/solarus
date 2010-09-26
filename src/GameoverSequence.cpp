@@ -22,6 +22,8 @@
 #include "Equipment.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Surface.h"
+#include "lowlevel/Sound.h"
+#include "lowlevel/Music.h"
 #include "movements/TargetMovement.h"
 #include <sstream>
 
@@ -31,7 +33,7 @@
  * @param hero_direction direction of the hero sprite before game over
  */
 GameoverSequence::GameoverSequence(Game *game, int hero_direction):
-  game(game), music_id(game->get_current_music_id()), state(WAITING_START) {
+  game(game), music_id(Music::get_current_music_id()), state(WAITING_START) {
 
   gameover_menu_img = new Surface("gameover_menu.png", Surface::DIR_LANGUAGE);
   fade_sprite = new Sprite("hud/gameover_fade");
@@ -82,7 +84,7 @@ void GameoverSequence::update() {
     if (now >= next_state_date) {
       state = CLOSING_GAME;
       fade_sprite->restart_animation();
-      game->stop_music();
+      Music::play(Music::none);
     }
     break;
 
@@ -91,7 +93,7 @@ void GameoverSequence::update() {
 
     if (fade_sprite->is_animation_finished()) {
       state = RED_SCREEN;
-      game->play_sound("hero_dying");
+      Sound::play("hero_dying");
       hero_dead_sprite->set_suspended(false);
       hero_dead_sprite->set_current_animation("dying");
       hero_dead_sprite->set_current_direction(0);
@@ -122,7 +124,7 @@ void GameoverSequence::update() {
       }
       else {
 	state = MENU;
-	game->play_music("game_over.spc");
+	Music::play("game_over.spc");
 	fairy_x = 76;
 	fairy_y = 124;
 	cursor_position = 0;
@@ -147,7 +149,7 @@ void GameoverSequence::update() {
     if (now >= next_state_date) {
       state = RESUME_GAME;
       game->get_back_from_death();
-      game->play_music(music_id);
+      Music::play(music_id);
     }
     break;
 
@@ -204,17 +206,17 @@ void GameoverSequence::key_pressed(GameControls::GameKey key) {
   if (state == MENU) {
 
     if (key == GameControls::DOWN) {
-      game->play_sound("cursor");
+      Sound::play("cursor");
       cursor_position = (cursor_position + 1) % 4;
       fairy_y = 124 + cursor_position * 16;
     }
     else if (key == GameControls::UP) {
-      game->play_sound("cursor");
+      Sound::play("cursor");
       cursor_position = (cursor_position + 3) % 4;
       fairy_y = 124 + cursor_position * 16;
     }
     else if (key == GameControls::ACTION || key == GameControls::SWORD) {
-      game->play_sound("danger");
+      Sound::play("danger");
       game->get_equipment()->add_life(7 * 4);
 
       switch (cursor_position) {

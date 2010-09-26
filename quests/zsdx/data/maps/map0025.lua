@@ -22,18 +22,18 @@ function event_hero_on_sensor(sensor_name)
 end
 
 function miniboss_timer()
-  miniboss_start_battle("khorneth")
+  enemy_start_miniboss("khorneth")
   hero_unfreeze()
 end
 
 function event_enemy_dead(enemy_name)
 
   if enemy_name == "khorneth" then
-    miniboss_end_battle()
+    enemy_end_miniboss()
     door_open("miniboss_door")
   end
 
-  if enemies_are_dead("boss_key_battle") and chest_is_hidden("boss_key_chest") then
+  if enemy_is_group_dead("boss_key_battle") and chest_is_hidden("boss_key_chest") then
     camera_move(104, 72, 15)
   end
 end

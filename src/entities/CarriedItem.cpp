@@ -30,6 +30,7 @@
 #include "Game.h"
 #include "Map.h"
 #include "lowlevel/System.h"
+#include "lowlevel/Sound.h"
 
 /**
  * @brief Movement of the item when the hero is lifting it.
@@ -206,7 +207,7 @@ void CarriedItem::throw_item(int direction) {
   this->is_throwing = true;
 
   // play the sound
-  game->play_sound("throw");
+  Sound::play("throw");
 
   // stop the sprite animation
   Sprite *sprite = get_sprite();
@@ -262,7 +263,7 @@ void CarriedItem::break_item() {
   movement->stop();
 
   if (!can_explode()) {
-    game->play_sound(destruction_sound_id);
+    Sound::play(destruction_sound_id);
     get_sprite()->set_current_animation("destroy");
   }
   else {

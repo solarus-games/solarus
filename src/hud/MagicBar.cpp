@@ -22,6 +22,7 @@
 #include "lowlevel/FileTools.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Surface.h"
+#include "lowlevel/Sound.h"
 
 /**
  * @brief Constructor.
@@ -126,7 +127,7 @@ void MagicBar::update() {
 
     // play the magic bar sound
     if ((current_magic - current_magic_displayed) % 10 == 1) {
-      game->play_sound("magic_bar");
+      Sound::play("magic_bar");
     }
   }
 

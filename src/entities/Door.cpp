@@ -27,6 +27,7 @@
 #include "Map.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
+#include "lowlevel/Sound.h"
 #include <list>
 
 const std::string Door::animations[] = {
@@ -153,9 +154,9 @@ void Door::set_open(bool door_open) {
     set_collision_modes(COLLISION_FACING_POINT);
 
     // ensure we are not closing the door on the hero
-    Hero *hero = game->get_hero();
-    if (overlaps(hero)) {
-      hero->avoid_collision(this, 3);
+    Hero &hero = game->get_hero();
+    if (overlaps(&hero)) {
+      hero.avoid_collision(this, 3);
     }
   }
 
@@ -309,13 +310,13 @@ void Door::display_on_map() {
  */
 void Door::action_key_pressed() {
 
-  Hero *hero = game->get_hero();
+  Hero &hero = game->get_hero();
   Equipment *equipment = game->get_equipment();
 
-  if (hero->is_free()) {
+  if (hero.is_free()) {
     if (can_open()) {
-      game->play_sound("door_unlocked");
-      game->play_sound("door_open");
+      Sound::play("door_unlocked");
+      Sound::play("door_open");
 
       game->get_savegame()->set_boolean(savegame_variable, true);
       if (subtype == SMALL_KEY_BLOCK) {
@@ -330,7 +331,7 @@ void Door::action_key_pressed() {
       }
     }
     else {
-      game->play_sound("wrong");
+      Sound::play("wrong");
       game->get_dialog_box()->start_dialog(key_required_message_ids[subtype]);
     }
   }

@@ -30,6 +30,15 @@ SF_VIRTUAL_IO Sound::sf_virtual;
 bool Sound::initialized = false;
 float Sound::volume = 1.0;
 std::list<Sound*> Sound::current_sounds;
+std::map<SoundId,Sound> Sound::all_sounds;
+
+/**
+ * @brief Empty constructor.
+ */
+Sound::Sound():
+  id(""), buffer(AL_NONE) {
+
+}
 
 /**
  * @brief Creates a new Ogg Vorbis sound.
@@ -37,22 +46,7 @@ std::list<Sound*> Sound::current_sounds;
  * without the extension (.ogg is added automatically)
  */
 Sound::Sound(const SoundId &sound_id):
-  buffer(AL_NONE) {
-
-  if (is_initialized()) {
-
-    std::string file_name = (std::string) "sounds/" + sound_id;
-    if (sound_id.find(".") == std::string::npos) {
-      file_name += ".ogg";
-    }
-
-    // create an OpenAL buffer with the sound decoded by the library
-    buffer = decode_file(file_name);
-
-    if (buffer == AL_NONE) {
-      std::cerr << "Sound '" << file_name << "' will not be played" << std::endl;
-    }
-  }
+  id(sound_id), buffer(AL_NONE) {
 }
 
 /**
@@ -166,6 +160,9 @@ void Sound::quit() {
     // uninitialize the music subsystem
     Music::quit();
 
+    // clear the sounds
+    all_sounds.clear();
+
     // uninitialize OpenAL
 
     alcMakeContextCurrent(NULL);
@@ -184,6 +181,19 @@ void Sound::quit() {
  */
 bool Sound::is_initialized() {
   return initialized;
+}
+
+/**
+ * @brief Starts playing the specified sound.
+ * @param sound_id id of the sound to play
+ */
+void Sound::play(const SoundId &sound_id) {
+
+  if (all_sounds.count(sound_id) == 0) {
+    all_sounds[sound_id] = Sound(sound_id);
+  }
+
+  all_sounds[sound_id].start();
 }
 
 /**
@@ -258,35 +268,53 @@ bool Sound::update_playing() {
  * @brief Plays the sound.
  * @return true if the sound was loaded successfully, false otherwise
  */
-bool Sound::play() {
+bool Sound::start() {
 
   bool success = false;
 
-  if (is_initialized() && buffer != AL_NONE) {
+  if (is_initialized()) {
 
-    // create a source
-    ALuint source;
-    alGenSources(1, &source);
-    alSourcei(source, AL_BUFFER, buffer);
-    alSourcef(source, AL_GAIN, volume);
+    if (buffer == AL_NONE) { // first time: load and decode the file
 
-    // play the sound
-    int error = alGetError();
-    if (error != AL_NO_ERROR) {
-      std::cerr << "Cannot attach buffer " << buffer << " to the source to play sound: error " << error << std::endl;
-      alDeleteSources(1, &source);
+      std::string file_name = (std::string) "sounds/" + id;
+      if (id.find(".") == std::string::npos) {
+	file_name += ".ogg";
+      }
+
+      // create an OpenAL buffer with the sound decoded by the library
+      buffer = decode_file(file_name);
+
+      if (buffer == AL_NONE) {
+	std::cerr << "Sound '" << file_name << "' will not be played" << std::endl;
+      }
     }
-    else {
-      sources.push_back(source);
-      current_sounds.remove(this); // to avoid duplicates
-      current_sounds.push_back(this);
-      alSourcePlay(source);
-      error = alGetError();
+
+    if (buffer != AL_NONE) {
+
+      // create a source
+      ALuint source;
+      alGenSources(1, &source);
+      alSourcei(source, AL_BUFFER, buffer);
+      alSourcef(source, AL_GAIN, volume);
+
+      // play the sound
+      int error = alGetError();
       if (error != AL_NO_ERROR) {
-	std::cerr << "Cannot play sound: error " << error << std::endl;
+	std::cerr << "Cannot attach buffer " << buffer << " to the source to play sound: error " << error << std::endl;
+	alDeleteSources(1, &source);
       }
       else {
-	success = true;
+	sources.push_back(source);
+	current_sounds.remove(this); // to avoid duplicates
+	current_sounds.push_back(this);
+	alSourcePlay(source);
+	error = alGetError();
+	if (error != AL_NO_ERROR) {
+	  std::cerr << "Cannot play sound: error " << error << std::endl;
+	}
+	else {
+	  success = true;
+	}
       }
     }
   }

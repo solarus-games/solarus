@@ -26,6 +26,7 @@
 #include "Map.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Debug.h"
+#include "lowlevel/Sound.h"
 
 /**
  * @brief Creates a boomerang.
@@ -260,7 +261,7 @@ void Boomerang::update() {
 
   uint32_t now = System::now();
   if (now >= next_sound_date) {
-    game->play_sound("boomerang");
+    Sound::play("boomerang");
     next_sound_date = now + 150;
   }
 
@@ -277,7 +278,7 @@ void Boomerang::update() {
       
       if (!map->test_collision_with_border(get_movement()->get_last_collision_box_on_obstacle())) {
         // play a sound unless we are on the map border
-	game->play_sound("sword_tapping");
+	Sound::play("sword_tapping");
       }
       go_back();
     }

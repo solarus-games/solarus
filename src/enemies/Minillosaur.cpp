@@ -19,6 +19,7 @@
 #include "entities/Hero.h"
 #include "movements/StraightMovement.h"
 #include "movements/PathFindingMovement.h"
+#include "lowlevel/Sound.h"
 #include "Sprite.h"
 #include "Game.h"
 #include "Map.h"
@@ -57,8 +58,8 @@ void Minillosaur::initialize() {
   set_origin(12, 20);
 
   // initial movement
-  Hero *hero = map->get_entities()->get_hero();
-  set_movement(new StraightMovement(12, get_xy(), hero->get_xy(), 1500, false));
+  Hero &hero = map->get_entities()->get_hero();
+  set_movement(new StraightMovement(12, get_xy(), hero.get_xy(), 1500, false));
 
   // reactions to attacks
   set_no_attack_consequences();
@@ -92,7 +93,7 @@ void Minillosaur::restart() {
 int Minillosaur::custom_attack(EnemyAttack attack, Sprite *this_sprite) {
 
   if (attack == ATTACK_SWORD && get_sprite()->get_current_animation() == "egg") {
-    game->play_sound("monster_hurt");
+    Sound::play("monster_hurt");
     clear_movement();
     get_sprite()->set_current_animation("egg_breaking");
   }
@@ -121,7 +122,7 @@ void Minillosaur::update() {
     set_size(16, 16);
     set_origin(8, 12);
     set_aligned_to_grid();
-    set_movement(new PathFindingMovement(map->get_entities()->get_hero(), 4));
+    set_movement(new PathFindingMovement(&map->get_entities()->get_hero(), 4));
     set_default_attack_consequences();
     in_egg = false;
   }

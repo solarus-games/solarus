@@ -25,9 +25,10 @@
 #include "Savegame.h"
 #include "Equipment.h"
 #include "Map.h"
-#include "MapScript.h"
+#include "lua/Scripts.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/System.h"
+#include "lowlevel/Sound.h"
 
 /**
  * @brief Creates a new chest with the specified treasure.
@@ -152,9 +153,9 @@ void Chest::set_visible(bool visible) {
 
     // make sure the chest does not appear on the hero
     if (visible) {
-      Hero *hero = game->get_hero();
-      if (overlaps(hero)) {
-	hero->avoid_collision(this, 3);
+      Hero &hero = game->get_hero();
+      if (overlaps(&hero)) {
+	hero.avoid_collision(this, 3);
       }
     }
   }
@@ -244,14 +245,14 @@ void Chest::update() {
 
     if (!treasure_given && System::now() >= treasure_date) {
 
-      Hero *hero = game->get_hero();
+      Hero &hero = game->get_hero();
 
       if (treasure->get_item_name() != "_none") {
 	// give a treasure to the player
 
 	Treasure *t = treasure;
 	treasure = NULL;
-	game->get_hero()->start_treasure(t); // from now the hero handles the treasure
+	game->get_hero().start_treasure(t); // from now the hero handles the treasure
 	treasure_given = true;
       }
       else { // the chest is empty
@@ -268,13 +269,13 @@ void Chest::update() {
 	delete treasure;
 	treasure = NULL;
 
-	if (!map->get_script()->event_chest_empty(get_name())) {
+	if (!map->get_scripts().event_chest_empty(get_name())) {
 
 	  // the script does not define any behavior:
 	  // by default, we tell the player the chest is empty
-	  game->play_sound("wrong");
+	  Sound::play("wrong");
 	  game->get_dialog_box()->start_dialog("_empty_chest");
-	  hero->start_free();
+	  hero.start_free();
 	}
       }
     }
@@ -293,21 +294,21 @@ void Chest::update() {
 void Chest::action_key_pressed() {
 
   KeysEffect *keys_effect = game->get_keys_effect();
-  Hero *hero = game->get_hero();
+  Hero &hero = game->get_hero();
   Equipment *equipment = game->get_equipment();
 
-  if (is_visible() && hero->is_free()) {
+  if (is_visible() && hero.is_free()) {
 
     if (!big_chest || equipment->has_item("big_key")) {
-      game->play_sound("chest_open");
+      Sound::play("chest_open");
       set_open(true);
       treasure_date = System::now() + 300;
 
       keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
-      hero->start_freezed();
+      hero.start_freezed();
     }
     else {
-      game->play_sound("wrong");
+      Sound::play("wrong");
       game->get_dialog_box()->start_dialog("_big_key_required");
     }
   }

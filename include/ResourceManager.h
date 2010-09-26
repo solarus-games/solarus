@@ -21,16 +21,15 @@
 #include <map>
 
 /**
- * @brief Provides storage and access to exteranl resources.
+ * @brief Provides storage and access to some external resources.
  *
- * This class provides storage and access to some external resources:
- * maps, sounds, sprite animations, etc.
+ * This class provides storage and access to some external resources.
  * Those resources are stored into
  * memory when you get them for the first time and you
  * don't have to delete them. They are deleted when the program ends.
- * This does not consumes much memory because:
- * - the tilesets have an unload() method you can call,
- * - the musics and sounds close their audio files when they stop.
+ * This does not consumes much memory because the tilesets have an unload() method you can call.
+ *
+ * Note: this class is not very useful and will probably become obsolete soon.
  */
 class ResourceManager {
 
@@ -39,8 +38,6 @@ class ResourceManager {
     static ResourceManager *instance;
 
     std::map<TilesetId, Tileset*> tilesets;
-    std::map<MusicId, Music*> musics;
-    std::map<SoundId, Sound*> sounds;
     std::map<SpriteAnimationSetId, SpriteAnimationSet*> sprite_animations;
 
     ResourceManager();
@@ -52,8 +49,6 @@ class ResourceManager {
     static void quit();
 
     static Tileset* get_tileset(TilesetId id);
-    static Music* get_music(const MusicId &id);
-    static Sound* get_sound(const SoundId &id);
     static SpriteAnimationSet* get_sprite_animation_set(const SpriteAnimationSetId &id);
 };
 

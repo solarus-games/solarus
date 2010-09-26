@@ -117,8 +117,8 @@ void DynamicTile::update() {
   MapEntity::update();
 
   if (waiting_enabled) {
-    Hero *hero = game->get_hero();
-    if (tile_pattern->get_obstacle() < OBSTACLE || !overlaps(hero)) {
+    Hero &hero = game->get_hero();
+    if (tile_pattern->get_obstacle() < OBSTACLE || !overlaps(&hero)) {
       this->enabled = true;
       this->waiting_enabled = false;
     }

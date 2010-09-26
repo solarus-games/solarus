@@ -22,8 +22,8 @@
 #include "DialogBox.h"
 #include "Counter.h"
 #include "Map.h"
-#include "MapScript.h"
 #include "Sprite.h"
+#include "lua/Scripts.h"
 #include "lowlevel/Surface.h"
 
 /**
@@ -147,8 +147,8 @@ void Treasure::give_to_player() {
   // give the item
   game->get_equipment()->add_item(item_name, variant);
 
-  // notify the script
-  game->get_current_script()->event_treasure_obtaining(item_name, variant, savegame_variable);
+  // notify the scripts
+  game->get_scripts().event_treasure_obtaining(item_name, variant, savegame_variable);
 }
 
 /**

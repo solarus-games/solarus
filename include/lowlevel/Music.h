@@ -18,6 +18,7 @@
 #define SOLARUS_MUSIC_H
 
 #include "Common.h"
+#include <map>
 #include <AL/al.h>
 
 /**
@@ -42,24 +43,28 @@ class Music {
       IT   /**< Impulse Tracker module (TODO implement with the modplug lib) */
     };
 
-    std::string file_name;           /**< name of the file to play */
-    Format format;                   /**< format of the music, detected from the file name */
+    MusicId id;							/**< id of this music */
+    std::string file_name;					/**< name of the file to play */
+    Format format;						/**< format of the music, detected from the file name */
 
     static const int nb_buffers = 8;
-    ALuint buffers[nb_buffers];      /**< multiple buffers used to stream the music */
-    ALuint source;                   /**< the OpenAL source streaming the buffers */
+    ALuint buffers[nb_buffers];					/**< multiple buffers used to stream the music */
+    ALuint source;						/**< the OpenAL source streaming the buffers */
 
-    static Music *current_music;     /**< the music currently played (if any) */
-    static SpcDecoder *spc_decoder;  /**< the SPC decoder */
-    static float volume;             /**< volume of musics (0.0 to 1.0) */
+    static SpcDecoder *spc_decoder;				/**< the SPC decoder */
+    static float volume;					/**< volume of musics (0.0 to 1.0) */
+
+    static Music *current_music;				/**< the music currently played (if any) */
+    static std::map<MusicId,Music> all_musics;			/**< all musics created before */
 
     void update_playing();
 
   public:
 
-    static const MusicId none;       /**< special id indicating that there is no music */
-    static const MusicId unchanged;  /**< special id indicating that the music is the same as before */
+    static const MusicId none;					/**< special id indicating that there is no music */
+    static const MusicId unchanged;				/**< special id indicating that the music is the same as before */
 
+    Music();
     Music(const MusicId &music_id);
     ~Music();
 
@@ -71,16 +76,16 @@ class Music {
     static int get_volume();
     static void set_volume(int volume);
 
-    bool play();
+    static void play(const MusicId &music_id);
+    static Music* get_current_music();
+    static const MusicId& get_current_music_id();
+
+    bool start();
     void stop();
     bool is_paused();
     void set_paused(bool pause);
 
     void decode_spc(ALuint destination_buffer, ALsizei nb_samples);
-
-    static bool isNoneId(const MusicId &music_id);
-    static bool isUnchangedId(const MusicId &music_id);
-    static bool isEqualId(const MusicId &music_id, const MusicId &other_music_id);
 };
 
 #endif

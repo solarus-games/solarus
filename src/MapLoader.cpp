@@ -16,10 +16,11 @@
  */
 #include "MapLoader.h"
 #include "Map.h"
-#include "MapScript.h"
+#include "Game.h"
 #include "ResourceManager.h"
 #include "Camera.h"
 #include "lowlevel/FileTools.h"
+#include "lua/MapScript.h"
 #include "entities/Obstacle.h"
 #include "entities/Layer.h"
 #include "entities/Tileset.h"
@@ -128,7 +129,7 @@ void MapLoader::load_map(Game *game, Map *map) {
   FileTools::data_file_close(map_file);
 
   // load the script
-  map->script = new MapScript(map);
+  map->script = new MapScript(game->get_scripts(), *map);
   map->camera = new Camera(map);
 }
 

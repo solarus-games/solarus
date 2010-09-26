@@ -24,6 +24,7 @@
 #include "lowlevel/TextSurface.h"
 #include "lowlevel/Color.h"
 #include "lowlevel/Surface.h"
+#include "lowlevel/Sound.h"
 #include <sstream>
 
 /**
@@ -200,12 +201,12 @@ void PauseSubmenuOptions::key_pressed(GameControls::GameKey key) {
     break;
 
   case GameControls::UP:
-    game->play_sound("cursor");
+    Sound::play("cursor");
     set_cursor_position((cursor_position + 9) % 10);
     break;
 
   case GameControls::DOWN:
-    game->play_sound("cursor");
+    Sound::play("cursor");
     set_cursor_position((cursor_position + 1) % 10);
     break;
 
@@ -223,7 +224,7 @@ void PauseSubmenuOptions::key_pressed(GameControls::GameKey key) {
  */
 void PauseSubmenuOptions::action_key_pressed() {
 
-  game->play_sound("danger");
+  Sound::play("danger");
   if (cursor_position == 0) {
     VideoManager::get_instance()->switch_video_mode();
   }
@@ -253,7 +254,7 @@ void PauseSubmenuOptions::update() {
   cursor_sprite->update();
 
   if (customizing && controls->is_customization_done()) {
-    game->play_sound("danger");
+    Sound::play("danger");
     customizing = false;
     set_caption_text(caption_strings[1]);
     cursor_sprite->set_current_animation("small");

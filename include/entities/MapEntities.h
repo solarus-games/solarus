@@ -54,7 +54,7 @@ class MapEntities {
     Obstacle *obstacle_tiles[LAYER_NB];                     /**< array of Obstacle representing which
 							     * tiles are obstacles and how */
     // dynamic entities
-    Hero *hero;                                             /**< the hero (also stored in game because it is kepts when changing maps) */
+    Hero &hero;                                             /**< the hero (also stored in game because it is kepts when changing maps) */
 
     std::list<MapEntity*> all_entities;                     /**< all map entities execept the tiles and the hero;
 							     * this vector is used to delete the entities 
@@ -92,7 +92,7 @@ class MapEntities {
     ~MapEntities();
 
     // information about the entities
-    Hero * get_hero();
+    Hero& get_hero();
     Obstacle get_obstacle_tile(Layer layer, int x, int y);
     std::list<MapEntity*> * get_obstacle_entities(Layer layer);
     std::list<Detector*> * get_detectors();

@@ -10,7 +10,7 @@ function event_map_started(destination_point_name)
     if savegame_get_boolean(63) and savegame_get_boolean(64) then
       -- the boss was already killed and the heart container was also picked:
       -- make the hero leave the map since the room is closed
-      if not dungeon_is_finished(1) then
+      if not equipment_is_dungeon_finished(1) then
 	start_final_room()
       else
         hero_freeze()
@@ -18,7 +18,7 @@ function event_map_started(destination_point_name)
       end
     else
       -- normal case
-      boss_start_battle("boss")
+      enemy_start_boss("boss")
     end
   end
 end
@@ -32,7 +32,7 @@ end
 function event_treasure_obtained(item_name, variant, savegame_variable)
 
   if item_name == "heart_container" then
-    boss_end_battle()
+    enemy_end_boss()
     timer_start(9000, "start_final_room", false);
   end
 end

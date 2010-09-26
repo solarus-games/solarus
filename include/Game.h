@@ -70,12 +70,6 @@ class Game: public Screen {
     bool hud_enabled;          /**< true if the HUD is currently displayed */
     DialogBox *dialog_box;     /**< the dialog box manager */
 
-    // music
-    MusicId current_music_id;  /**< id of the music currently played (a valid music,
-				* or MUSIC_NONE if no music is being played) */
-    Music *current_music;      /**< the music currently played, or NULL if no music is being played */
-    MusicId previous_music_id; /**< id of the previous music played (useful after a mini-boss) */
-
     // update functions
     void update_keys_effect();
     void update_dialog_box();
@@ -91,13 +85,12 @@ class Game: public Screen {
     ~Game();
 
     // global objects
-    Hero *get_hero();
-    const Rectangle & get_hero_xy();
-    GameControls *get_controls();
-    KeysEffect *get_keys_effect();
-    Savegame *get_savegame();
-    Equipment *get_equipment();
-    MapScript *get_current_script();
+    Hero& get_hero();
+    const Rectangle& get_hero_xy();
+    GameControls* get_controls();
+    KeysEffect* get_keys_effect();
+    Savegame* get_savegame();
+    Equipment* get_equipment();
 
     // functions called by the main loop
     void notify_event(InputEvent &event);
@@ -109,24 +102,16 @@ class Game: public Screen {
     void key_released(GameControls::GameKey key);
 
     // map
-    Map *get_current_map();
+    Map* get_current_map();
     void set_current_map(MapId map_id, const std::string &destination_point_name,
 	Transition::Style transition_style);
 
     // world
-    const Rectangle & get_outside_world_size();
+    const Rectangle& get_outside_world_size();
     bool is_in_dungeon();
-    Dungeon *get_current_dungeon();
+    Dungeon* get_current_dungeon();
     bool get_crystal_switch_state();
     void change_crystal_switch_state();
-
-    // audio
-    void play_sound(SoundId sound_id);
-    void play_music(MusicId new_music_id);
-    void pause_or_resume_music();
-    void stop_music();
-    void restore_music();
-    const MusicId & get_current_music_id();
 
     // current game state
     bool is_paused();
@@ -145,10 +130,10 @@ class Game: public Screen {
     bool is_pause_key_available();
     void set_pause_key_available(bool pause_key_available);
     void set_paused(bool paused);
-    PauseMenu *get_pause_menu();
+    PauseMenu* get_pause_menu();
 
     // dialog box
-    DialogBox *get_dialog_box();
+    DialogBox* get_dialog_box();
 
     // game over
     void start_gameover_sequence();

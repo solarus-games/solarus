@@ -18,7 +18,7 @@ function event_switch_enabled(switch_name)
   elseif switch_name == "door_switch" then
     camera_move(376, 384, 15)
   elseif switch_name == "final_barrier_switch" then
-    tiles_set_enabled("final_barrier", false)
+    tile_set_group_enabled("final_barrier", false)
     play_sound("secret")
   end
 end

@@ -66,7 +66,6 @@ class TitleScreen: public Screen {
     void exit_phase_introduction_message();
 
     // phase 3
-    Music *title_screen_music;
     Surface *background_img;
     Surface *clouds_img;
     Surface *logo_img;

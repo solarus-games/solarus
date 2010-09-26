@@ -22,6 +22,7 @@
 #include "Map.h"
 #include "Sprite.h"
 #include "lowlevel/FileTools.h"
+#include "lowlevel/Sound.h"
 #include <list>
 
 /**
@@ -192,7 +193,7 @@ bool CrystalSwitchBlock::try_jump(Hero *hero, const Rectangle &collision_box,
       && !map->get_entities()->overlaps_raised_blocks(get_layer(), collision_box)) {
 
     hero->start_jumping(jump_direction, jump_length, true, false);
-    game->play_sound("hero_lands");
+    Sound::play("hero_lands");
     return true;
   }
 

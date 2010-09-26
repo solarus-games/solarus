@@ -15,7 +15,6 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "Timer.h"
-#include "ResourceManager.h"
 #include "Game.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/System.h"
@@ -31,15 +30,7 @@ Timer::Timer(uint32_t duration, const std::string &name, bool with_sound):
 
   uint32_t now = System::now();
   expiration_date = now + duration;
-
-  if (with_sound) {
-    next_sound_date = now;
-    countdown_sound = ResourceManager::get_sound("timer");
-    countdown_hurry_sound = ResourceManager::get_sound("timer_hurry");
-  }
-  else {
-    next_sound_date = 0;
-  }
+  next_sound_date = with_sound ? now : 0;
 }
 
 /**
@@ -83,11 +74,11 @@ void Timer::update() {
 
     uint32_t remaining_time = expiration_date - now;
     if (remaining_time > 6000) {
-      countdown_sound->play();
+      Sound::play("timer");
       next_sound_date += 1000;
     }
     else {
-      countdown_hurry_sound->play();
+      Sound::play("timer_hurry");
       if (remaining_time > 2000) {
 	next_sound_date += 1000;
       }

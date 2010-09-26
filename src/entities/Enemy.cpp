@@ -36,6 +36,7 @@
 #include "lowlevel/System.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
+#include "lowlevel/Sound.h"
 #include "enemies/SimpleGreenSoldier.h"
 #include "enemies/Bubble.h"
 #include "enemies/Tentacle.h"
@@ -662,7 +663,7 @@ void Enemy::attack_hero(Hero *hero, Sprite *this_sprite) {
  * By default, the shield sound is played and the enemy cannot attack again for a while.
  */
 void Enemy::attack_stopped_by_hero_shield() {
-  game->play_sound("shield");
+  Sound::play("shield");
 
   uint32_t now = System::now();
   can_attack = false;
@@ -715,7 +716,7 @@ void Enemy::play_hurt_sound() {
       break;
   }
 
-  game->play_sound(sound_id);
+  Sound::play(sound_id);
 }
 
 /**
@@ -748,7 +749,7 @@ void Enemy::try_hurt(EnemyAttack attack, MapEntity *source, Sprite *this_sprite)
     
     if (consequence == -1) {
       // attack failure sound
-      game->play_sound("sword_tapping");
+      Sound::play("sword_tapping");
       result = -1;
     }
     else if (consequence == -2) {
@@ -867,7 +868,7 @@ void Enemy::kill() {
     // replace the enemy sprite
     remove_sprites();
     create_sprite("enemies/enemy_killed");
-    game->play_sound("enemy_killed");
+    Sound::play("enemy_killed");
   }
   else {
     // create some explosions

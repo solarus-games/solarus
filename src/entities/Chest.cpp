@@ -28,6 +28,7 @@
 #include "lua/Scripts.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/System.h"
+#include "lowlevel/Sound.h"
 
 /**
  * @brief Creates a new chest with the specified treasure.
@@ -272,7 +273,7 @@ void Chest::update() {
 
 	  // the script does not define any behavior:
 	  // by default, we tell the player the chest is empty
-	  game->play_sound("wrong");
+	  Sound::play("wrong");
 	  game->get_dialog_box()->start_dialog("_empty_chest");
 	  hero.start_free();
 	}
@@ -299,7 +300,7 @@ void Chest::action_key_pressed() {
   if (is_visible() && hero.is_free()) {
 
     if (!big_chest || equipment->has_item("big_key")) {
-      game->play_sound("chest_open");
+      Sound::play("chest_open");
       set_open(true);
       treasure_date = System::now() + 300;
 
@@ -307,7 +308,7 @@ void Chest::action_key_pressed() {
       hero.start_freezed();
     }
     else {
-      game->play_sound("wrong");
+      Sound::play("wrong");
       game->get_dialog_box()->start_dialog("_big_key_required");
     }
   }

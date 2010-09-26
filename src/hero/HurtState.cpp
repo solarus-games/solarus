@@ -18,6 +18,7 @@
 #include "hero/FreeState.h"
 #include "hero/HeroSprites.h"
 #include "movements/StraightMovement.h"
+#include "lowlevel/Sound.h"
 #include "Game.h"
 #include "Equipment.h"
 
@@ -49,13 +50,13 @@ void Hero::HurtState::start(State *previous_state) {
   State::start(previous_state);
 
   Equipment *equipment = game->get_equipment();
-  game->play_sound("hero_hurt");
+  Sound::play("hero_hurt");
   life_points = std::max(1, life_points / (equipment->get_ability("tunic") + 1));
   equipment->remove_life(life_points);
 
   if (magic_points > 0 && equipment->get_magic() > 0) {
     equipment->remove_magic(magic_points);
-    game->play_sound("magic_bar");
+    Sound::play("magic_bar");
   }
   sprites->set_animation_hurt();
   sprites->blink();

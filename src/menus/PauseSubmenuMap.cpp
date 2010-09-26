@@ -286,7 +286,7 @@ void PauseSubmenuMap::key_pressed(GameControls::GameKey key) {
       int new_selected_floor = selected_floor + ((key == GameControls::UP) ? 1 : -1);
       if (new_selected_floor >= lowest_floor && new_selected_floor <= highest_floor) {
 
-	ResourceManager::get_sound("cursor")->play();
+	Sound::play("cursor");
 	hero_head_sprite->restart_animation();
 	selected_floor = new_selected_floor;
 	load_dungeon_map_image();

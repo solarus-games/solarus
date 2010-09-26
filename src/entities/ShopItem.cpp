@@ -27,6 +27,7 @@
 #include "Savegame.h"
 #include "lowlevel/TextSurface.h"
 #include "lowlevel/FileTools.h"
+#include "lowlevel/Sound.h"
 #include <sstream>
 
 /**
@@ -214,12 +215,12 @@ void ShopItem::update() {
 
       if (equipment->get_money() < price) {
 	// not enough rupees
-	game->play_sound("wrong");
+	Sound::play("wrong");
 	game->get_dialog_box()->start_dialog("_shop.not_enough_money");
       }
       else if (equipment->has_item_maximum(treasure->get_item_name())) {
 	// the player already has the maximum amount of this item
-	game->play_sound("wrong");
+	Sound::play("wrong");
 	game->get_dialog_box()->start_dialog("_shop.amount_full");
       }
       else {

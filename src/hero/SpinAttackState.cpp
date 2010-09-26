@@ -17,6 +17,7 @@
 #include "hero/SpinAttackState.h"
 #include "hero/FreeState.h"
 #include "hero/HeroSprites.h"
+#include "lowlevel/Sound.h"
 #include "Game.h"
 
 /**
@@ -44,7 +45,7 @@ void Hero::SpinAttackState::start(State *previous_state) {
   State::start(previous_state);
 
   // play the sound
-  game->play_sound("sword_spin_attack_release");
+  Sound::play("sword_spin_attack_release");
 
   // start the animation
   sprites->set_animation_spin_attack();

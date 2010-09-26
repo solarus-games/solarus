@@ -17,6 +17,7 @@
 #include "hero/VictoryState.h"
 #include "hero/HeroSprites.h"
 #include "lowlevel/System.h"
+#include "lowlevel/Sound.h"
 #include "lua/Scripts.h"
 #include "Game.h"
 #include "Map.h"
@@ -46,7 +47,7 @@ void Hero::VictoryState::start(State *previous_state) {
   State::start(previous_state);
 
   sprites->set_animation_victory();
-  game->play_sound("victory");
+  Sound::play("victory");
 
   // compute the date when the victory state is considered as finished,
   // but the game may be currently suspended

@@ -19,6 +19,7 @@
 #include "entities/Hero.h"
 #include "movements/StraightMovement.h"
 #include "movements/PathFindingMovement.h"
+#include "lowlevel/Sound.h"
 #include "Sprite.h"
 #include "Game.h"
 #include "Map.h"
@@ -92,7 +93,7 @@ void Minillosaur::restart() {
 int Minillosaur::custom_attack(EnemyAttack attack, Sprite *this_sprite) {
 
   if (attack == ATTACK_SWORD && get_sprite()->get_current_animation() == "egg") {
-    game->play_sound("monster_hurt");
+    Sound::play("monster_hurt");
     clear_movement();
     get_sprite()->set_current_animation("egg_breaking");
   }

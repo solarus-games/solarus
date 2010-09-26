@@ -21,6 +21,7 @@
 #include "movements/StraightMovement.h"
 #include "movements/JumpMovement.h"
 #include "lowlevel/System.h"
+#include "lowlevel/Sound.h"
 #include "Game.h"
 #include "GameControls.h"
 #include "Map.h"
@@ -85,7 +86,7 @@ void Hero::RunningState::update() {
   uint32_t now = System::now();
 
   if (!is_bouncing() && now >= next_sound_date) {
-    game->play_sound("running");
+    Sound::play("running");
     next_sound_date = now + 170;
   }
 
@@ -168,7 +169,7 @@ void Hero::RunningState::notify_movement_tried(bool success) {
     int opposite_direction = (sprites->get_animation_direction8() + 4) % 8;
     hero->set_movement(new JumpMovement(opposite_direction, 32, false, 15));
     sprites->set_animation_hurt();
-    game->play_sound("explosion");
+    Sound::play("explosion");
     phase++;
   }
 }

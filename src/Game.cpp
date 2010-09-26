@@ -35,6 +35,7 @@
 #include "lowlevel/Surface.h"
 #include "lowlevel/IniFile.h"
 #include "lowlevel/Debug.h"
+#include "lowlevel/Music.h"
 #include <sstream>
 
 Rectangle Game::outside_world_size(0, 0, 0, 0); // loaded from quest.dat
@@ -82,7 +83,7 @@ Game::~Game() {
   delete current_map;
 
   solarus->get_debug_keys()->set_game(NULL);
-  stop_music();
+  Music::play(Music::none);
 
   delete transition;
   delete dialog_box;

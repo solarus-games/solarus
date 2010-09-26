@@ -17,7 +17,6 @@
 #include "Message.h"
 #include "DialogBox.h"
 #include "Game.h"
-#include "ResourceManager.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/TextSurface.h"
 #include "lowlevel/Sound.h"
@@ -286,7 +285,7 @@ void Message::add_character() {
 
     uint32_t now = System::now();
     if (now >= next_sound_date && dialog_box->is_letter_sound_enabled()) {
-      ResourceManager::get_sound("message_letter")->play();
+      Sound::play("message_letter");
       next_sound_date = now + 100;
     }
   }

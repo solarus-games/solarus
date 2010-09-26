@@ -24,6 +24,7 @@
 #include "lowlevel/FileTools.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Debug.h"
+#include "lowlevel/Sound.h"
 
 /**
  * @brief Creates a block.
@@ -265,7 +266,7 @@ void Block::notify_position_changed() {
   // now we know that the block moves at least of 1 pixel:
   // we can play the sound
   if (!sound_played) {
-    game->play_sound("hero_pushes");
+    Sound::play("hero_pushes");
     sound_played = true;
   }
 }

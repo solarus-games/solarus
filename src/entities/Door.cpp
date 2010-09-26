@@ -27,6 +27,7 @@
 #include "Map.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
+#include "lowlevel/Sound.h"
 #include <list>
 
 const std::string Door::animations[] = {
@@ -314,8 +315,8 @@ void Door::action_key_pressed() {
 
   if (hero.is_free()) {
     if (can_open()) {
-      game->play_sound("door_unlocked");
-      game->play_sound("door_open");
+      Sound::play("door_unlocked");
+      Sound::play("door_open");
 
       game->get_savegame()->set_boolean(savegame_variable, true);
       if (subtype == SMALL_KEY_BLOCK) {
@@ -330,7 +331,7 @@ void Door::action_key_pressed() {
       }
     }
     else {
-      game->play_sound("wrong");
+      Sound::play("wrong");
       game->get_dialog_box()->start_dialog(key_required_message_ids[subtype]);
     }
   }

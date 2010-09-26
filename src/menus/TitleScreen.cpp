@@ -175,7 +175,7 @@ void TitleScreen::init_phase_introduction_message() {
   current_phase = PHASE_ZS_PRESENTS;
 
   introduction_message_img = new Surface("title_screen_initialization.png", Surface::DIR_LANGUAGE);
-  ResourceManager::get_sound("intro")->play();
+  Sound::play("intro");
   introduction_message_position.set_x(160 - (introduction_message_img->get_width() / 2));
   introduction_message_position.set_y(120 - (introduction_message_img->get_height() / 2));
 
@@ -204,8 +204,7 @@ void TitleScreen::init_phase_title() {
 
   current_phase = PHASE_TITLE;
 
-  title_screen_music = ResourceManager::get_music("title_screen.spc");
-  title_screen_music->play();
+  Music::play("title_screen.spc");
 
   const std::string &time_of_day_name = time_of_day_strings[time_of_day];
   std::string background_img_name = (std::string) "menus/title_" + time_of_day_name + "_background.png";
@@ -257,7 +256,7 @@ void TitleScreen::exit_phase_title() {
   delete website_img;
   delete press_space_img;
   delete title_surface;
-  title_screen_music->stop();
+  Music::play(Music::none);
 }
 
 /**
@@ -273,7 +272,7 @@ void TitleScreen::update_phase_title() {
   if (now >= next_image_date) {
 
     if (counter == 0) {
-      ResourceManager::get_sound("ok")->play();
+      Sound::play("ok");
       next_image_date = now + 1000;
       counter++;
     }

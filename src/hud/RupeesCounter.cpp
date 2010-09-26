@@ -20,6 +20,7 @@
 #include "Equipment.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Surface.h"
+#include "lowlevel/Sound.h"
 
 /**
  * @brief Position of the 3 rupee icons in the source image.
@@ -89,12 +90,12 @@ void RupeesCounter::update() {
 
     // if we have just reached the right value, we play a specific sound
     if (counter->get_value() == nb_current_rupees) {
-      game->play_sound("rupee_counter_end");
+      Sound::play("rupee_counter_end");
     }
 
     // while the counter is scrolling, play a sound (every 3 values)
     else if (nb_current_rupees_displayed % 3 == 0) {
-      game->play_sound("rupee_counter");
+      Sound::play("rupee_counter");
     }
 
     need_rebuild = true;

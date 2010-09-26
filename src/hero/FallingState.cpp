@@ -18,6 +18,7 @@
 #include "hero/BackToSolidGroundState.h"
 #include "hero/HeroSprites.h"
 #include "entities/Teletransporter.h"
+#include "lowlevel/Sound.h"
 #include "Game.h"
 #include "Equipment.h"
 
@@ -47,7 +48,7 @@ void Hero::FallingState::start(State *previous_state) {
 
   sprites->save_animation_direction();
   sprites->set_animation_falling();
-  game->play_sound("hero_falls");
+  Sound::play("hero_falls");
 }
 
 /**

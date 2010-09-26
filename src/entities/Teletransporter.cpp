@@ -22,6 +22,7 @@
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
+#include "lowlevel/Sound.h"
 
 /**
  * @brief Constructor.
@@ -215,7 +216,7 @@ void Teletransporter::transport_hero(Hero *hero) {
   transporting_hero = true;
 
   if (sound_id.size() != 0) {
-    game->play_sound(sound_id);
+    Sound::play(sound_id);
   }
 
   std::string name = destination_point_name;

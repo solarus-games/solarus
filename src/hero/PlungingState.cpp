@@ -19,6 +19,7 @@
 #include "hero/SwimmingState.h"
 #include "hero/BackToSolidGroundState.h"
 #include "hero/HeroSprites.h"
+#include "lowlevel/Sound.h"
 #include "Game.h"
 #include "Equipment.h"
 
@@ -47,7 +48,7 @@ void Hero::PlungingState::start(State *previous_state) {
   State::start(previous_state);
 
   sprites->set_animation_plunging();
-  game->play_sound("splash");
+  Sound::play("splash");
 }
 
 /**
@@ -69,7 +70,7 @@ void Hero::PlungingState::update() {
     }
     else {
       equipment->remove_life(1);
-      game->play_sound("message_end");
+      Sound::play("message_end");
       hero->set_state(new BackToSolidGroundState(hero, false));
     }
   }

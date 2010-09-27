@@ -51,7 +51,6 @@ typedef std::string MessageId;
 class Solarus;
 class Screen;
 class Configuration;
-class ResourceManager;
 class KeysEffect;
 
 // low level

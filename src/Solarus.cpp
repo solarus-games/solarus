@@ -22,7 +22,6 @@
 #include "lowlevel/FileTools.h"
 #include "menus/LanguageScreen.h"
 #include "Game.h"
-#include "ResourceManager.h"
 #include "Savegame.h"
 #include "StringResource.h"
 #include "DebugKeys.h"

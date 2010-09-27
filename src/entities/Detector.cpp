@@ -16,7 +16,6 @@
  */
 #include "entities/Detector.h"
 #include "entities/Hero.h"
-#include "ResourceManager.h"
 #include "Map.h"
 #include "KeysEffect.h"
 #include "Sprite.h"

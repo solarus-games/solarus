@@ -17,7 +17,6 @@
 #include "hud/MagicBar.h"
 #include "Equipment.h"
 #include "Game.h"
-#include "ResourceManager.h"
 #include "Sprite.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/System.h"

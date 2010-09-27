@@ -18,7 +18,6 @@
 #include "menus/SelectionMenu.h"
 #include "Solarus.h"
 #include "TransitionFade.h"
-#include "ResourceManager.h"
 #include "StringResource.h"
 #include "lowlevel/Music.h"
 #include "lowlevel/Sound.h"

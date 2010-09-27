@@ -19,7 +19,6 @@
 #include "Sprite.h"
 #include "hud/HeartsView.h"
 #include "KeysEffect.h"
-#include "ResourceManager.h"
 #include "Savegame.h"
 #include "Game.h"
 #include "Solarus.h"

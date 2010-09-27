@@ -38,7 +38,7 @@ class Sprite {
   private:
 
     // animation set
-    static std::map<SpriteAnimationSetId, SpriteAnimationSet> all_animation_sets;
+    static std::map<SpriteAnimationSetId, SpriteAnimationSet*> all_animation_sets;
     const SpriteAnimationSetId animation_set_id;	/**< id of this sprite's animation set */
     SpriteAnimationSet &animation_set;			/**< animation set of this sprite */
 

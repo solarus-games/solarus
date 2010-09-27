@@ -20,7 +20,6 @@
 #include "movements/FallingOnFloorMovement.h"
 #include "movements/FollowMovement.h"
 #include "Sprite.h"
-#include "Treasure.h"
 #include "ItemProperties.h"
 #include "Game.h"
 #include "Map.h"
@@ -35,7 +34,7 @@
  * @param y y coordinate of the pickable item to create
  * @param treasure the treasure to give when the item is picked (cannot be NULL)
  */
-PickableItem::PickableItem(Layer layer, int x, int y, Treasure *treasure):
+PickableItem::PickableItem(Layer layer, int x, int y, const Treasure &treasure):
   Detector(COLLISION_RECTANGLE, "", layer, x, y, 0, 0), treasure(treasure),
   shadow_xy(Rectangle(x, y)), appear_date(System::now()), is_following_boomerang(false) {
 
@@ -46,7 +45,6 @@ PickableItem::PickableItem(Layer layer, int x, int y, Treasure *treasure):
  */
 PickableItem::~PickableItem() {
 
-  delete treasure;
   delete shadow_sprite;
 }
 
@@ -80,7 +78,7 @@ MapEntity* PickableItem::parse(Game &game, std::istream &is, Layer layer, int x,
   FileTools::read(is, treasure_savegame_variable);
 
   return create(game, Layer(layer), x, y,
-      new Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable),
+      Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable),
       FALLING_NONE, false);
 }
 
@@ -103,11 +101,11 @@ MapEntity* PickableItem::parse(Game &game, std::istream &is, Layer layer, int x,
  * @param will_disappear true to make the item disappear after an amout of time
  * @return the pickable item created, or NULL depending on the subtype
  */
-PickableItem * PickableItem::create(Game &game, Layer layer, int x, int y, Treasure *treasure,
+PickableItem * PickableItem::create(Game &game, Layer layer, int x, int y, const Treasure &treasure,
     FallingHeight falling_height, bool will_disappear) {
 
   // don't create anything if there is no treasure to give
-  if (treasure->is_empty()) {
+  if (treasure.is_empty()) {
     return NULL;
   }
 
@@ -134,7 +132,7 @@ PickableItem * PickableItem::create(Game &game, Layer layer, int x, int y, Treas
  */
 void PickableItem::initialize_sprites() {
 
-  ItemProperties &properties = treasure->get_item_properties();
+  ItemProperties &properties = treasure.get_item_properties();
 
   // create the shadow
   switch (properties.get_shadow_size()) {
@@ -157,8 +155,8 @@ void PickableItem::initialize_sprites() {
   // create the sprite and set its animation
   create_sprite("entities/items");
   Sprite *item_sprite = get_sprite();
-  item_sprite->set_current_animation(treasure->get_item_name());
-  item_sprite->set_current_direction(treasure->get_variant() - 1);
+  item_sprite->set_current_animation(treasure.get_item_name());
+  item_sprite->set_current_direction(treasure.get_variant() - 1);
 
   // set the origin point and the size of the entity
   set_bounding_box_from_sprite();
@@ -234,7 +232,7 @@ void PickableItem::notify_collision(MapEntity *entity_overlapping, CollisionMode
  */
 void PickableItem::give_item_to_player() {
 
-  ItemProperties &properties = treasure->get_item_properties();
+  ItemProperties &properties = treasure.get_item_properties();
 
   // play the sound
   Sound::play(properties.get_sound_when_picked());
@@ -244,9 +242,8 @@ void PickableItem::give_item_to_player() {
     get_hero().start_treasure(treasure);
   }
   else {
-    treasure->give_to_player();
+    treasure.give_to_player();
   }
-  treasure = NULL; // we don't handle the treasure from here anymore
 }
 
 /**

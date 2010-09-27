@@ -20,6 +20,7 @@
 #include "Common.h"
 #include "Detector.h"
 #include "Ground.h"
+#include "Treasure.h"
 
 /**
  * @brief An entity that the hero can destroy and that may contain a pickable item.
@@ -69,7 +70,7 @@ class DestructibleItem: public Detector {
     };
 
     Subtype subtype;				/**< the subtype of destructible item */
-    Treasure *treasure;				/**< the pickable item that appears when the item is lifted or cut */
+    Treasure treasure;				/**< the pickable item that appears when the item is lifted or cut */
 
     bool is_being_cut;				/**< indicates that the item is being cut */
     uint32_t regeneration_date;			/**< date when the item starts regenerating */
@@ -83,7 +84,7 @@ class DestructibleItem: public Detector {
   public:
 
     // creation and destruction
-    DestructibleItem(Layer layer, int x, int y, Subtype subtype, Treasure *treasure);
+    DestructibleItem(Layer layer, int x, int y, Subtype subtype, const Treasure &treasure);
     ~DestructibleItem();
     static CreationFunction parse;
 
@@ -91,7 +92,7 @@ class DestructibleItem: public Detector {
     bool is_displayed_in_y_order();
 
     const std::string& get_animation_set_id();
-    const SoundId & get_destruction_sound_id();
+    const SoundId& get_destruction_sound_id();
     int get_damage_on_enemies();
     bool has_special_ground();
     Ground get_special_ground();

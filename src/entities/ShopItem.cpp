@@ -20,7 +20,6 @@
 #include "Game.h"
 #include "Map.h"
 #include "KeysEffect.h"
-#include "Treasure.h"
 #include "Sprite.h"
 #include "DialogBox.h"
 #include "Equipment.h"
@@ -41,7 +40,7 @@
  * @param message_id id of the message describing the item when the player watches it
  */
 ShopItem::ShopItem(const std::string &name, Layer layer, int x, int y,
-		   Treasure *treasure, int price, const MessageId &message_id):
+		   const Treasure &treasure, int price, const MessageId &message_id):
   Detector(COLLISION_FACING_POINT, name, layer, x, y, 32, 32),
   treasure(treasure), price(price), message_id(message_id),
   is_looking_item(false), is_asking_question(false) {
@@ -59,7 +58,6 @@ ShopItem::ShopItem(const std::string &name, Layer layer, int x, int y,
  * @brief Destructor.
  */
 ShopItem::~ShopItem() {
-  delete treasure;
   delete rupee_icon_sprite;
 }
 
@@ -89,7 +87,7 @@ MapEntity* ShopItem::parse(Game &game, std::istream &is, Layer layer, int x, int
   FileTools::read(is, message_id);
 
   return create(game, name, Layer(layer), x, y,
-      new Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable),
+      Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable),
       price, message_id);
 }
 
@@ -106,10 +104,10 @@ MapEntity* ShopItem::parse(Game &game, std::istream &is, Layer layer, int x, int
  * @param message_id id of the message describing the item when the player watches it
  */
 ShopItem* ShopItem::create(Game &game, const std::string &name, Layer layer, int x, int y,
-			    Treasure *treasure, int price, const MessageId &message_id) {
+			    const Treasure &treasure, int price, const MessageId &message_id) {
 
   // see if the item was not been already bought
-  if (treasure->is_found()) {
+  if (treasure.is_found()) {
     return NULL;
   }
 
@@ -214,7 +212,7 @@ void ShopItem::update() {
 	Sound::play("wrong");
 	get_dialog_box().start_dialog("_shop.not_enough_money");
       }
-      else if (equipment.has_item_maximum(treasure->get_item_name())) {
+      else if (equipment.has_item_maximum(treasure.get_item_name())) {
 	// the player already has the maximum amount of this item
 	Sound::play("wrong");
 	get_dialog_box().start_dialog("_shop.amount_full");
@@ -223,8 +221,8 @@ void ShopItem::update() {
 	// give the treasure
 	equipment.remove_money(price);
 
-	int savegame_variable = treasure->get_savegame_variable();
-	get_hero().start_treasure(new Treasure(*treasure)); // make a copy of the treasure since the shop item may be still available
+	int savegame_variable = treasure.get_savegame_variable();
+	get_hero().start_treasure(treasure);
 	if (savegame_variable != -1) {
 	  remove_from_map();
 	  get_savegame().set_boolean(savegame_variable, true);
@@ -246,7 +244,7 @@ void ShopItem::display_on_map() {
 
   // display the treasure
   const Rectangle &camera_position = get_map().get_camera_position();
-  treasure->display(map_surface, x + 16 - camera_position.get_x(), y + 13 - camera_position.get_y());
+  treasure.display(map_surface, x + 16 - camera_position.get_x(), y + 13 - camera_position.get_y());
 
   // also display the price
   price_digits->display(map_surface);

@@ -96,32 +96,6 @@ Sprite::Sprite(const SpriteAnimationSetId &id):
 }
 
 /**
- * @brief Copy constructor.
- *
- * Creates a sprite with the same animation set,
- * current animation and current direction as another sprite.
- *
- * @param other the sprite to copy
- */
-Sprite::Sprite(const Sprite &other):
-
-  animation_set_id(other.animation_set_id),
-  animation_set(other.animation_set),
-  current_direction(other.current_direction),
-  current_frame(-1),
-  suspended(false),
-  ignore_suspend(false),
-  paused(false),
-  finished(false),
-  blink_delay(0),
-  alpha(255),
-  alpha_next_change_date(0) {
-
-  set_current_animation(other.get_current_animation());
-  set_current_direction(other.get_current_direction());
-}
-
-/**
  * @brief Destructor.
  */
 Sprite::~Sprite() {

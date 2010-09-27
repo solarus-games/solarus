@@ -62,7 +62,9 @@ void Khotor::initialize() {
 
   // chain and ball
   chain = (ChainAndBall*) create(get_game(), CHAIN_AND_BALL, RANK_NORMAL, -1, "chain_and_ball", get_layer(),
-      get_x(), get_y(), 0, NULL);
+      get_x(), get_y(), 0,
+      Treasure(get_game(), "_none", 1, -1));
+
   get_entities().add_entity(chain);
 }
 

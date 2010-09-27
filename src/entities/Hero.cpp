@@ -1732,7 +1732,7 @@ void Hero::start_free() {
  * @brief Makes the hero brandish a treasure.
  * @param treasure the treasure to give him (you have to delete it after the hero brandishes it)
  */
-void Hero::start_treasure(Treasure *treasure) {
+void Hero::start_treasure(const Treasure &treasure) {
   set_state(new TreasureState(*this, treasure));
 }
 

@@ -18,6 +18,7 @@
 #define SOLARUS_CHEST_H
 
 #include "Common.h"
+#include "Treasure.h"
 #include "entities/Detector.h"
 
 /**
@@ -29,8 +30,8 @@ class Chest: public Detector {
 
   private:
 
+    Treasure treasure;			/**< the treasure placed in this chest (possibly "_none") */
     bool big_chest;			/**< true for a big chest, false for normal chests */
-    Treasure *treasure;			/**< the treasure placed in this chest, or NULL if the chest contains nothing */
     bool open;				/**< true if the chest is open (but the treasure may not have
 					 * been given yet because there is a delay of 500 ms) */
     bool treasure_given;		/**< true if the chest is open and the treasure has been given to the player */
@@ -40,7 +41,7 @@ class Chest: public Detector {
 
   public:
 
-    Chest(const std::string &name, Layer layer, int x, int y, bool big_chest, Treasure *treasure);
+    Chest(const std::string &name, Layer layer, int x, int y, bool big_chest, const Treasure &treasure);
     ~Chest();
     static CreationFunction parse;
 

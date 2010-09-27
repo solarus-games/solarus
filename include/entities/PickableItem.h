@@ -18,6 +18,7 @@
 #define SOLARUS_PICKABLE_ITEM_H
 
 #include "Common.h"
+#include "Treasure.h"
 #include "entities/Detector.h"
 #include "movements/FallingHeight.h"
 #include "lowlevel/Rectangle.h"
@@ -29,7 +30,7 @@ class PickableItem: public Detector {
 
   private:
 
-    Treasure *treasure;				/**< the treasure obtained when the player picks this item */
+    Treasure treasure;				/**< the treasure obtained when the player picks this item */
 
     Sprite *shadow_sprite;			/**< sprite of the shadow (if any) */
     FallingHeight falling_height;		/**< indicates whether the item is falling when it appears (except for a fairy) */
@@ -47,7 +48,7 @@ class PickableItem: public Detector {
     bool is_following_boomerang;		/**< true if this item is currently attached to the boomerang */
 
     // creation and initialization
-    PickableItem(Layer layer, int x, int y, Treasure *treasure);
+    PickableItem(Layer layer, int x, int y, const Treasure &treasure);
 
     void initialize_sprites();
     void initialize_movement();
@@ -62,7 +63,7 @@ class PickableItem: public Detector {
   public:
 
     // creation and destruction
-    static PickableItem * create(Game &game, Layer layer, int x, int y,	Treasure *treasure,
+    static PickableItem * create(Game &game, Layer layer, int x, int y,	const Treasure &treasure,
 	FallingHeight falling_height, bool will_disappear);
 
     ~PickableItem();

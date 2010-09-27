@@ -18,6 +18,7 @@
 #define SOLARUS_SHOP_ITEM_H
 
 #include "Common.h"
+#include "Treasure.h"
 #include "entities/Detector.h"
 
 /**
@@ -33,7 +34,7 @@ class ShopItem: public Detector {
   private:
 
     // data
-    Treasure *treasure;               /**< the treasure the player can buy */
+    Treasure treasure;                /**< the treasure the player can buy */
     int price;                        /**< the treasure's price in rupees */
     MessageId message_id;             /**< id of the message describing the shop item */
 
@@ -46,13 +47,13 @@ class ShopItem: public Detector {
     bool is_asking_question;          /**< indicates that the buy question is being shown */
 
     ShopItem(const std::string &name, Layer layer, int x, int y,
-	Treasure *treasure, int price, const MessageId &message_id);
+	const Treasure &treasure, int price, const MessageId &message_id);
 
   public:
 
     ~ShopItem();
     static ShopItem* create(Game &game, const std::string &name, Layer layer, int x, int y,
-	Treasure *treasure, int price, const MessageId &message_id);
+	const Treasure &treasure, int price, const MessageId &message_id);
     static CreationFunction parse;
 
     EntityType get_type();

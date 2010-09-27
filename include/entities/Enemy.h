@@ -18,6 +18,7 @@
 #define SOLARUS_ENEMY_H
 
 #include "Common.h"
+#include "Treasure.h"
 #include "entities/Detector.h"
 #include "entities/EnemyAttack.h"
 #include "entities/Explosion.h"
@@ -84,6 +85,8 @@ class Enemy: public Detector {
      * @brief This structure contains the parameters needed by the subclasses constructors.
      */
     struct ConstructionParameters {
+      Game &game;				/**< the game */
+      const Treasure &treasure;			/**< the treasure dropped by the enemy */
       std::string name;				/**< name of the instance of enemy */
       Layer layer;				/**< initial layer of the enemy */
       int x;					/**< initial x coordinate of the enemy */
@@ -142,7 +145,7 @@ class Enemy: public Detector {
     uint32_t end_shaking_date;				/**< date when the enemy stops shaking and walks again */ 
 
     // treasure
-    Treasure *treasure;					/**< pickable item that appears when this enemy gets killed */
+    Treasure treasure;					/**< pickable item that appears when this enemy gets killed */
 
     // boss or mini-boss
     bool exploding;					/**< indicates that the boss is dying and some explosions are triggered on him */
@@ -205,7 +208,7 @@ class Enemy: public Detector {
     static CreationFunction parse;
     static MapEntity* create(Game &game, Subtype type, Rank rank, int savegame_variable,
 	const std::string &name, Layer layer, int x, int y, int direction,
-	Treasure *treasure);
+	const Treasure &treasure);
 
     EntityType get_type();
     void set_map(Map &map);

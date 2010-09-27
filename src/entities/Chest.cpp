@@ -16,7 +16,6 @@
  */
 #include "entities/Chest.h"
 #include "entities/Hero.h"
-#include "Treasure.h"
 #include "KeysEffect.h"
 #include "Game.h"
 #include "DialogBox.h"
@@ -40,12 +39,13 @@
  * @param treasure the treasure in the chest (will be deleted automatically)
  */
 Chest::Chest(const std::string &name, Layer layer, int x, int y,
-	     bool big_chest, Treasure *treasure):
-  Detector(COLLISION_FACING_POINT, name, layer, x, y, 16, 16),
-  big_chest(big_chest) {
+	     bool big_chest, const Treasure &treasure):
 
-  open = treasure_given = treasure->is_found();
-  this->treasure = treasure;
+  Detector(COLLISION_FACING_POINT, name, layer, x, y, 16, 16),
+  treasure(treasure),
+  big_chest(big_chest),
+  open(treasure.is_found()),
+  treasure_given(open) {
 
   initialize_sprite();
 }
@@ -54,8 +54,6 @@ Chest::Chest(const std::string &name, Layer layer, int x, int y,
  * @brief Destructor.
  */
 Chest::~Chest() {
-
-  delete treasure;
 }
 
 /**
@@ -82,7 +80,7 @@ MapEntity* Chest::parse(Game &game, std::istream &is, Layer layer, int x, int y)
   FileTools::read(is, treasure_savegame_variable);
 
   return new Chest(name, Layer(layer), x, y, (big_chest != 0),
-      new Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable));
+      Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable));
 }
 
 /**
@@ -184,12 +182,9 @@ void Chest::set_open(bool open) {
       get_sprite()->set_current_animation(big_chest ? "big_open" : "small_open");
     }
     else {
+      // close the chest
       get_sprite()->set_current_animation(big_chest ? "big_closed" : "small_closed");
       treasure_given = false;
-
-      if (treasure == NULL) {
-	treasure = new Treasure(get_game(), "_none", 0, -1);
-      }
     }
   }
 }
@@ -238,27 +233,21 @@ void Chest::update() {
 
     if (!treasure_given && System::now() >= treasure_date) {
 
-      if (treasure->get_item_name() != "_none") {
+      if (treasure.get_item_name() != "_none") {
 	// give a treasure to the player
 
-	Treasure *t = treasure;
-	treasure = NULL;
-	get_hero().start_treasure(t); // from now the hero handles the treasure
+	get_hero().start_treasure(treasure);
 	treasure_given = true;
       }
       else { // the chest is empty
 
 	// mark the chest as found in the savegame
-	int savegame_variable = treasure->get_savegame_variable();
+	int savegame_variable = treasure.get_savegame_variable();
 	if (savegame_variable != -1) {
 	  get_savegame().set_boolean(savegame_variable, true);
 	}
 
 	treasure_given = true;
-
-	// restore the control
-	delete treasure;
-	treasure = NULL;
 
 	if (!get_scripts().event_chest_empty(get_name())) {
 

@@ -324,8 +324,10 @@ void InventoryItem::update_bottle() {
 	// release the fairy
 	Map &map = game.get_current_map();
 	Hero &hero = game.get_hero();
-	map.get_entities().add_entity(PickableItem::create(game, hero.get_layer(), hero.get_x(), hero.get_y(),
-	      new Treasure(game, "fairy", 1, -1), FALLING_LOW, true));
+	map.get_entities().add_entity(PickableItem::create(
+	      game, hero.get_layer(), hero.get_x(), hero.get_y(),
+	      Treasure(game, "fairy", 1, -1),
+	      FALLING_LOW, true));
 	game.get_equipment().set_item_variant(item_name, 1);
 
       }

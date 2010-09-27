@@ -23,7 +23,6 @@
 #include "Savegame.h"
 #include "Equipment.h"
 #include "ItemProperties.h"
-#include "Treasure.h"
 #include "Sprite.h"
 #include "SpriteAnimationSet.h"
 #include "Map.h"
@@ -54,10 +53,22 @@
  * @param params the name and position of the enemy
  */
 Enemy::Enemy(const ConstructionParameters &params):
+
   Detector(COLLISION_RECTANGLE | COLLISION_SPRITE, params.name, params.layer, params.x, params.y, 0, 0),
-  being_hurt(false), stop_hurt_date(0), normal_movement(NULL), invulnerable(false), vulnerable_again_date(0),
-  can_attack(true), can_attack_again_date(0), immobilized(false),
-  start_shaking_date(0), end_shaking_date(0), exploding(false), nb_explosions(0), next_explosion_date(0) {
+  being_hurt(false),
+  stop_hurt_date(0),
+  normal_movement(NULL),
+  invulnerable(false),
+  vulnerable_again_date(0),
+  can_attack(true),
+  can_attack_again_date(0),
+  immobilized(false),
+  start_shaking_date(0),
+  end_shaking_date(0),
+  treasure(params.treasure),
+  exploding(false),
+  nb_explosions(0),
+  next_explosion_date(0) {
 
 }
 
@@ -65,7 +76,6 @@ Enemy::Enemy(const ConstructionParameters &params):
  * @brief Destructor.
  */
 Enemy::~Enemy() {
-  delete treasure;
 }
 
 /**
@@ -95,7 +105,7 @@ MapEntity* Enemy::parse(Game &game, std::istream &is, Layer layer, int x, int y)
   FileTools::read(is, treasure_savegame_variable);
 
   return create(game, Subtype(subtype), Enemy::Rank(rank), savegame_variable, name, Layer(layer), x, y, direction, 
-      new Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable));
+      Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable));
 }
 
 /**
@@ -120,7 +130,7 @@ MapEntity* Enemy::parse(Game &game, std::istream &is, Layer layer, int x, int y)
  * @param treasure the pickable item that the enemy drops (possibly NULL)
  */
 MapEntity * Enemy::create(Game &game, Subtype type, Rank rank, int savegame_variable,
-    const std::string &name, Layer layer, int x, int y, int direction, Treasure *treasure) {
+    const std::string &name, Layer layer, int x, int y, int direction, const Treasure &treasure) {
 
   // see if the enemy is dead
   if (savegame_variable != -1
@@ -132,7 +142,7 @@ MapEntity * Enemy::create(Game &game, Subtype type, Rank rank, int savegame_vari
 
   // create the enemy
   Enemy *enemy;
-  const ConstructionParameters params = {name, layer, x, y};
+  const ConstructionParameters params = {game, treasure, name, layer, x, y};
 
   switch (type) {
     
@@ -153,7 +163,6 @@ MapEntity * Enemy::create(Game &game, Subtype type, Rank rank, int savegame_vari
   enemy->rank = rank;
   enemy->enabled = (rank == RANK_NORMAL);
   enemy->savegame_variable = savegame_variable;
-  enemy->treasure = treasure;
 
   // set the default enemy features
   enemy->damage_on_hero = 1;
@@ -311,6 +320,7 @@ void Enemy::set_features(int damage_on_hero, int life, HurtSoundStyle hurt_sound
  */
 void Enemy::set_features(int damage_on_hero, int life, HurtSoundStyle hurt_sound_style,
 			 bool pushed_back_when_hurt, bool push_back_hero_on_sword, int minimum_shield_needed) {
+
   set_features(damage_on_hero, life, hurt_sound_style);
   this->pushed_back_when_hurt = pushed_back_when_hurt;
   this->push_back_hero_on_sword = push_back_hero_on_sword;
@@ -330,6 +340,7 @@ void Enemy::set_attack_consequence(EnemyAttack attack, int consequence) {
  * @brief Sets the enemy insensible to all attacks.
  */
 void Enemy::set_no_attack_consequences() {
+
   for (int i = 0; i < ATTACK_NUMBER; i++) {
     set_attack_consequence(EnemyAttack(i), 0);
   }
@@ -378,6 +389,7 @@ void Enemy::set_animation(const std::string &animation) {
  * @brief Updates the enemy.
  */
 void Enemy::update() {
+
   MapEntity::update();
 
   if (suspended || !is_enabled()) {
@@ -460,16 +472,12 @@ void Enemy::update() {
   if (is_killed() && is_dying_animation_finished()) {
 
     // create the pickable treasure
-    if (!treasure->is_empty()) {
+    if (!treasure.is_empty()) {
 
-      bool will_disappear = treasure->get_item_properties().can_disappear();
-      get_entities().add_entity(PickableItem::create(get_game(), get_layer(), get_x(), get_y(), treasure,
-	    FALLING_HIGH, will_disappear));
+      bool will_disappear = treasure.get_item_properties().can_disappear();
+      get_entities().add_entity(PickableItem::create(get_game(), get_layer(), get_x(), get_y(),
+	    treasure, FALLING_HIGH, will_disappear));
     }
-    else {
-      delete treasure;
-    }
-    treasure = NULL;
 
     // notify the enemy
     just_dead();
@@ -852,7 +860,7 @@ void Enemy::just_hurt(MapEntity *source, EnemyAttack attack, int life_points) {
 void Enemy::kill() {
 
   // if the enemy is immobilized, give a rupee
-  if (rank == RANK_NORMAL && is_immobilized() && !treasure->is_saved()) {
+  if (rank == RANK_NORMAL && is_immobilized() && !treasure.is_saved()) {
     // TODO choose random money
   }
 

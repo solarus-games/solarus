@@ -27,7 +27,7 @@
  * @brief Constructor.
  * @param hero the hero controlled by this state
  */
-Hero::PlungingState::PlungingState(Hero *hero):
+Hero::PlungingState::PlungingState(Hero &hero):
   State(hero) {
 
 }
@@ -47,7 +47,7 @@ void Hero::PlungingState::start(State *previous_state) {
 
   State::start(previous_state);
 
-  sprites->set_animation_plunging();
+  get_sprites().set_animation_plunging();
   Sound::play("splash");
 }
 
@@ -58,20 +58,18 @@ void Hero::PlungingState::update() {
 
   State::update();
 
-  Equipment &equipment = game->get_equipment();
+  if (get_sprites().is_animation_finished()) {
 
-  if (sprites->is_animation_finished()) {
-
-    if (hero->get_ground() != GROUND_DEEP_WATER) {
-      hero->set_state(new FreeState(hero));
+    if (hero.get_ground() != GROUND_DEEP_WATER) {
+      hero.set_state(new FreeState(hero));
     }
-    else if (equipment.has_ability("swim")) {
-      hero->set_state(new SwimmingState(hero));
+    else if (get_equipment().has_ability("swim")) {
+      hero.set_state(new SwimmingState(hero));
     }
     else {
-      equipment.remove_life(1);
+      get_equipment().remove_life(1);
       Sound::play("message_end");
-      hero->set_state(new BackToSolidGroundState(hero, false));
+      hero.set_state(new BackToSolidGroundState(hero, false));
     }
   }
 }

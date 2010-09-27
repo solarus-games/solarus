@@ -28,7 +28,7 @@
  * @param hero the hero controlled by this state
  * @param conveyor_belt the conveyor belt to take
  */
-Hero::ConveyorBeltState::ConveyorBeltState(Hero *hero, ConveyorBelt *conveyor_belt):
+Hero::ConveyorBeltState::ConveyorBeltState(Hero &hero, ConveyorBelt *conveyor_belt):
   State(hero), conveyor_belt(conveyor_belt) {
 
 }
@@ -48,11 +48,11 @@ void Hero::ConveyorBeltState::start(State *previous_state) {
 
   State::start(previous_state);
 
-  sprites->set_animation_stopped_normal();
+  get_sprites().set_animation_stopped_normal();
 
   // first, snap the hero to the center of the conveyor belt
   snapping = true;
-  hero->set_movement(new TargetMovement(conveyor_belt, hero->get_walking_speed() * 2 / 3));
+  hero.set_movement(new TargetMovement(conveyor_belt, hero.get_walking_speed() * 2 / 3));
 }
 
 /**
@@ -63,7 +63,7 @@ void Hero::ConveyorBeltState::stop(State *next_state) {
 
   State::stop(next_state);
 
-  hero->clear_movement();
+  hero.clear_movement();
 }
 
 /**
@@ -77,24 +77,24 @@ void Hero::ConveyorBeltState::update() {
     return;
   }
 
-  if (snapping && hero->get_movement()->is_finished()) {
+  if (snapping && hero.get_movement()->is_finished()) {
 
     // the hero is now exactly placed on the conveyor belt: start the conveyor belt's movement
     snapping = false;
     std::string path = "  ";
     path[0] = path[1] = '0' + conveyor_belt->get_direction();
-    hero->clear_movement();
-    hero->set_movement(new PathMovement(path, hero->get_walking_speed() * 2 / 3, false, false, false));
+    hero.clear_movement();
+    hero.set_movement(new PathMovement(path, hero.get_walking_speed() * 2 / 3, false, false, false));
   }
   else {
 
     // see if the conveyor belt's movement is finished
-    if (hero->get_movement()->is_finished() || !hero->on_conveyor_belt) {
+    if (hero.get_movement()->is_finished() || !hero.on_conveyor_belt) {
 
       this->conveyor_belt = NULL;
-      hero->set_state(new FreeState(hero));
+      hero.set_state(new FreeState(hero));
     }
-    hero->on_conveyor_belt = false;
+    hero.on_conveyor_belt = false;
   }
 }
 

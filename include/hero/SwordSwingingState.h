@@ -26,7 +26,7 @@ class Hero::SwordSwingingState: public Hero::State {
 
   public:
 
-    SwordSwingingState(Hero *hero);
+    SwordSwingingState(Hero &hero);
     ~SwordSwingingState();
 
     void start(State *previous_state);

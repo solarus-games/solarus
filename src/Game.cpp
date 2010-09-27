@@ -33,6 +33,7 @@
 #include "lowlevel/Surface.h"
 #include "lowlevel/IniFile.h"
 #include "lowlevel/Debug.h"
+#include "lowlevel/StringConcat.h"
 #include "lowlevel/Music.h"
 #include <sstream>
 
@@ -327,13 +328,12 @@ void Game::update_transitions() {
 
           if (next_map->is_in_dungeon()) {
             // show the dungeon name
-	    std::ostringstream oss;
-	    oss << "dungeon_" << next_map->get_world_number();
-	    next_map->set_welcome_message(oss.str());
+	    next_map->set_welcome_message(StringConcat() << "dungeon_" << next_map->get_world_number());
 	  }
 	}
 
-	// before closing the map, draw it on a backup surface for transition effects that display two maps
+	// before closing the map, draw it on a backup surface for transition effects
+	// that want to display both maps at the same time
 	if (needs_previous_surface) {
 	  previous_map_surface = new Surface(320, 240);
 	  current_map->display();
@@ -369,7 +369,7 @@ void Game::update_transitions() {
 
     hero->place_on_destination_point(*current_map);
     transition->start();
-    current_map->start(*this);
+    current_map->start();
   }
 }
 

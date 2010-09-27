@@ -30,7 +30,7 @@ class Hero::VictoryState: public Hero::State {
 
   public:
 
-    VictoryState(Hero *hero);
+    VictoryState(Hero &hero);
     ~VictoryState();
 
     void start(State *previous_state);

@@ -20,7 +20,7 @@
  * @brief Constructor.
  * @param hero the hero controlled by this state
  */
-Hero::SwimmingState::SwimmingState(Hero *hero):
+Hero::SwimmingState::SwimmingState(Hero &hero):
   PlayerMovementState(hero) {
 
 }

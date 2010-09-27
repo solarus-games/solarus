@@ -45,6 +45,7 @@
 #include "lowlevel/StringConcat.h"
 #include "Sprite.h"
 #include "SpriteAnimationSet.h"
+#include "Game.h"
 #include "Map.h"
 
 MapEntity::CreationFunction* MapEntity::creation_functions[] = {
@@ -111,7 +112,7 @@ const Rectangle MapEntity::directions_to_xy_moves[] = {
  * @brief Creates a map entity without specifying its properties now.
  */
 MapEntity::MapEntity():
-  map(NULL), game(NULL), layer(LAYER_LOW), name(""), direction(0), first_sprite(NULL), visible(true),
+  map(NULL), layer(LAYER_LOW), name(""), direction(0), first_sprite(NULL), visible(true),
   movement(NULL), old_movement(NULL), suspended(false), when_suspended(0), being_removed(false) {
 
   bounding_box.set_xy(0, 0);
@@ -131,7 +132,7 @@ MapEntity::MapEntity():
  * @param height height of the entity
  */
 MapEntity::MapEntity(Layer layer, int x, int y, int width, int height):
-  map(NULL), game(NULL), layer(layer), bounding_box(x, y), name(""), direction(0), first_sprite(NULL), visible(true),
+  map(NULL), layer(layer), bounding_box(x, y), name(""), direction(0), first_sprite(NULL), visible(true),
   movement(NULL), old_movement(NULL), suspended(false), when_suspended(0), being_removed(false) {
 
   origin.set_xy(0, 0);
@@ -150,7 +151,7 @@ MapEntity::MapEntity(Layer layer, int x, int y, int width, int height):
  */
 MapEntity::MapEntity(const std::string &name, int direction, Layer layer,
 		     int x, int y, int width, int height):
-  map(NULL), game(NULL), layer(layer), bounding_box(x, y), name(name), direction(direction), visible(true),
+  map(NULL), layer(layer), bounding_box(x, y), name(name), direction(direction), visible(true),
   movement(NULL), old_movement(NULL), suspended(false), when_suspended(0), being_removed(false) {
 
   origin.set_xy(0, 0);
@@ -239,11 +240,11 @@ bool MapEntity::is_displayed_in_y_order() {
 }
 
 /**
- * @brief Returns whether this entity is initialized, that is,
+ * @brief Returns whether this entity is on a map, that is,
  * whether set_map() has been called.
- * @return true if the entity is initialized
+ * @return true if the entity is on a map
  */
-bool MapEntity::is_initialized() {
+bool MapEntity::is_on_map() {
   return map != NULL;
 }
 
@@ -254,9 +255,8 @@ bool MapEntity::is_initialized() {
 void MapEntity::set_map(Map &map) {
 
   this->map = &map;
-  this->game = &map.get_game();
 
-  // notify the sprites (useful for tileset dependent sprites such as doors and blocks)
+  // notify the sprites (useful for tileset-dependent sprites such as doors and blocks)
   std::map<std::string, Sprite*>::iterator it;
   for (it = sprites.begin(); it != sprites.end(); it++) {
     it->second->set_map(map);
@@ -276,7 +276,72 @@ Map& MapEntity::get_map() {
  * @return the game
  */
 Game& MapEntity::get_game() {
-  return *game;
+  return map->get_game();
+}
+
+/**
+ * @brief Returns the entities of the current map.
+ * @return the entities
+ */
+MapEntities& MapEntity::get_entities() {
+  return map->get_entities();
+}
+
+/**
+ * @brief Returns the current equipment.
+ * @return the equipment
+ */
+Equipment& MapEntity::get_equipment() {
+  return get_game().get_equipment();
+}
+
+/**
+ * @brief Returns the keys effect manager.
+ * @return the keys effect
+ */
+KeysEffect& MapEntity::get_keys_effect() {
+  return get_game().get_keys_effect();
+}
+
+/**
+ * @brief Returns the game controls.
+ * @return the controls
+ */
+GameControls& MapEntity::get_controls() {
+  return get_game().get_controls();
+}
+
+/**
+ * @brief Returns the dialog box manager.
+ * @return the dialog box
+ */
+DialogBox& MapEntity::get_dialog_box() {
+  return get_game().get_dialog_box();
+}
+
+/**
+ * @brief Returns the list of current scripts
+ * @return the current scripts
+ */
+Scripts& MapEntity::get_scripts() {
+  return get_game().get_scripts();
+}
+
+/**
+ * @brief Returns the savegame.
+ * @return the savegame
+ */
+Savegame& MapEntity::get_savegame() {
+  return get_game().get_savegame();
+}
+
+
+/**
+ * @brief Returns the hero
+ * @return the hero
+ */
+Hero& MapEntity::get_hero() {
+  return get_entities().get_hero();
 }
 
 /**
@@ -287,7 +352,7 @@ Game& MapEntity::get_game() {
  */
 void MapEntity::remove_from_map() {
 
-  map->get_entities().remove_entity(this);
+  get_map().get_entities().remove_entity(this);
 }
 
 /**
@@ -329,10 +394,12 @@ Layer MapEntity::get_layer() {
  * you should not call this function directly: call
  * MapEntities::set_entity_layer() instead because the class MapEntities
  * stores different lists of entities for each layer.
+ * TODO: use notify_layer_changed to update MapEntities instead
  *
  * @param layer the layer of the entity on the map
  */
 void MapEntity::set_layer(Layer layer) {
+
   this->layer = layer;
   notify_layer_changed();
 }
@@ -526,7 +593,7 @@ void MapEntity::set_size(const Rectangle &size) {
  *
  * @return the position and size of the entity
  */
-const Rectangle & MapEntity::get_bounding_box() {
+const Rectangle& MapEntity::get_bounding_box() {
   return bounding_box;
 }
 
@@ -708,7 +775,7 @@ bool MapEntity::has_sprite() {
  * @brief Returns the sprite created with the first call to create_sprite() for this entity.
  * @return the first sprite created
  */
-Sprite * MapEntity::get_sprite() {
+Sprite* MapEntity::get_sprite() {
   return first_sprite;
 }
 
@@ -717,7 +784,7 @@ Sprite * MapEntity::get_sprite() {
  * @param id name of the animation set of the sprite to get
  * @return the sprite with the specified animation set
  */
-Sprite * MapEntity::get_sprite(const SpriteAnimationSetId &id) {
+Sprite* MapEntity::get_sprite(const SpriteAnimationSetId &id) {
 
   Debug::assert(sprites.count(id) > 0, 
     StringConcat() << "Cannot find sprite '" << id << "' for entity '" << get_name() << "'");
@@ -732,7 +799,7 @@ Sprite * MapEntity::get_sprite(const SpriteAnimationSetId &id) {
  */
 void MapEntity::create_sprite(const SpriteAnimationSetId &id, bool enable_pixel_collisions) {
 
-  Sprite *sprite = new Sprite(id);
+  Sprite* sprite = new Sprite(id);
 
   if (enable_pixel_collisions) {
     sprite->enable_pixel_collisions();
@@ -755,7 +822,7 @@ void MapEntity::create_sprite(const SpriteAnimationSetId &id, bool enable_pixel_
  */
 void MapEntity::remove_sprite(const SpriteAnimationSetId &id) {
 
-  Sprite *sprite = get_sprite(id);
+  Sprite* sprite = get_sprite(id);
 
   if (sprite == first_sprite) {
     first_sprite = NULL;
@@ -856,14 +923,14 @@ void MapEntity::notify_movement_tried(bool success) {
  */
 void MapEntity::notify_position_changed() {
 
-  map->check_collision_with_detectors(this);
+  get_map().check_collision_with_detectors(this);
 
   std::map<std::string, Sprite*>::iterator it;
   for (it = sprites.begin(); it != sprites.end(); it++) {
 
     Sprite *sprite = it->second;
     if (sprite->are_pixel_collisions_enabled()) {
-      map->check_collision_with_detectors(this, sprite);
+      get_map().check_collision_with_detectors(this, sprite);
     }
   }
 }
@@ -1206,9 +1273,9 @@ int MapEntity::get_distance(MapEntity *other) {
 /* I think this function should never be used 
 void MapEntity::ensure_no_obstacles() {
 
-  Rectangle collision_box = get_rectangle();
+  Rectangle collision_box = get_bounding_box();
 
-  if (!map->test_collision_with_obstacles(get_layer(), collision_box, this)) {
+  if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, this)) {
     return;
   }
 
@@ -1222,7 +1289,7 @@ void MapEntity::ensure_no_obstacles() {
       collision_box.add_x(dx[j] * i);
       collision_box.add_y(dy[j] * i);
 
-      if (!map->test_collision_with_obstacles(get_layer(), collision_box, this)) {
+      if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, this)) {
 	found = true;
 	set_rectangle(collision_box);
 	notify_position_changed();
@@ -1422,7 +1489,7 @@ void MapEntity::update() {
 
     sprite->update();
     if (sprite->has_frame_changed() && sprite->are_pixel_collisions_enabled()) {
-      map->check_collision_with_detectors(this, sprite);
+      get_map().check_collision_with_detectors(this, sprite);
     }
   }
 
@@ -1448,7 +1515,7 @@ void MapEntity::display_on_map() {
     // display the sprites
     std::map<std::string, Sprite*>::iterator it;
     for (it = sprites.begin(); it != sprites.end(); it++) {
-      map->display_sprite(it->second, get_x(), get_y());
+      get_map().display_sprite(it->second, get_x(), get_y());
     }
   }
 }

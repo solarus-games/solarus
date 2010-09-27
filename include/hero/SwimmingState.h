@@ -26,7 +26,7 @@ class Hero::SwimmingState: public Hero::PlayerMovementState {
 
   public:
 
-    SwimmingState(Hero *hero);
+    SwimmingState(Hero &hero);
     ~SwimmingState();
 };
 

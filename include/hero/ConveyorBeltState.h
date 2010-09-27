@@ -32,7 +32,7 @@ class Hero::ConveyorBeltState: public Hero::State {
 
   public:
 
-    ConveyorBeltState(Hero *hero, ConveyorBelt *conveyor_belt);
+    ConveyorBeltState(Hero &hero, ConveyorBelt *conveyor_belt);
     ~ConveyorBeltState();
 
     void start(State *previous_state);

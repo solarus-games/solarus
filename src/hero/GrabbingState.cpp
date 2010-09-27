@@ -26,7 +26,7 @@
  * @brief Constructor.
  * @param hero the hero controlled by this state
  */
-Hero::GrabbingState::GrabbingState(Hero *hero):
+Hero::GrabbingState::GrabbingState(Hero &hero):
   State(hero) {
 
 }
@@ -46,7 +46,7 @@ void Hero::GrabbingState::start(State *previous_state) {
 
   State::start(previous_state);
 
-  sprites->set_animation_grabbing();
+  get_sprites().set_animation_grabbing();
 }
 
 /**
@@ -55,24 +55,23 @@ void Hero::GrabbingState::start(State *previous_state) {
 void Hero::GrabbingState::update() {
 
   // the hero is grabbing an obstacle: check the direction pressed
-  GameControls &controls = game->get_controls();
 
-  int wanted_direction8 = controls.get_wanted_direction8();
-  int sprite_direction8 = sprites->get_animation_direction8();
+  int wanted_direction8 = get_controls().get_wanted_direction8();
+  int sprite_direction8 = get_sprites().get_animation_direction8();
 
   // release the obstacle
-  if (!controls.is_key_pressed(GameControls::ACTION)) {
-    hero->set_state(new FreeState(hero));
+  if (!get_controls().is_key_pressed(GameControls::ACTION)) {
+    hero.set_state(new FreeState(hero));
   }
 
   // push the obstacle
   else if (wanted_direction8 == sprite_direction8) {
-    hero->set_state(new PushingState(hero));
+    hero.set_state(new PushingState(hero));
   }
 
   // pull the obstacle
   else if (wanted_direction8 == (sprite_direction8 + 4) % 8) {
-    hero->set_state(new PullingState(hero));
+    hero.set_state(new PullingState(hero));
   }
 }
 

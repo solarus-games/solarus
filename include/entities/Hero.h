@@ -67,7 +67,6 @@ class Hero: public MapEntity {
     State *old_state;                           /**< the previous state, to delete as soon as possible */
 
     // sprites
-    Equipment &equipment;			/**< equipment of the player */
     HeroSprites *sprites;			/**< the hero's sprites (note that we don't use the sprites structure from MapEntity) */
 
     // position

@@ -29,7 +29,7 @@
  * @brief Constructor.
  * @param hero the hero controlled by this state
  */
-Hero::SwordLoadingState::SwordLoadingState(Hero *hero):
+Hero::SwordLoadingState::SwordLoadingState(Hero &hero):
   PlayerMovementState(hero) {
 
 }
@@ -72,19 +72,17 @@ void Hero::SwordLoadingState::update() {
     sword_loaded = true;
   }
 
-  GameControls &controls = game->get_controls();
-
-  if (!controls.is_key_pressed(GameControls::SWORD)) {
+  if (!get_controls().is_key_pressed(GameControls::SWORD)) {
     // the player has just released the sword key
 
     // stop loading the sword, go to the normal state or make a spin attack
     if (!sword_loaded) {
       // the sword was not loaded yet: go to the normal state
-      hero->set_state(new FreeState(hero));
+      hero.set_state(new FreeState(hero));
     }
     else {
       // the sword is loaded: release a spin attack
-      hero->set_state(new SpinAttackState(hero));
+      hero.set_state(new SpinAttackState(hero));
     }
   }
 }
@@ -110,14 +108,14 @@ void Hero::SwordLoadingState::notify_movement_tried(bool success) {
 
   PlayerMovementState::notify_movement_tried(success);
 
-  Detector *facing_entity = hero->get_facing_entity();
+  Detector *facing_entity = hero.get_facing_entity();
 
   if (!success					// the hero has just tried to move unsuccessfuly
-      && hero->is_facing_point_on_obstacle()	// he is really facing an obstacle
-      && get_wanted_movement_direction8() == sprites->get_animation_direction8()	// he is trying to move towards the obstacle
+      && hero.is_facing_point_on_obstacle()	// he is really facing an obstacle
+      && get_wanted_movement_direction8() == get_sprites().get_animation_direction8()	// he is trying to move towards the obstacle
       && (facing_entity == NULL || !facing_entity->is_sword_ignored())) {		// the obstacle allows him to tap with his sword
 
-    hero->set_state(new SwordTappingState(hero));
+    hero.set_state(new SwordTappingState(hero));
   }
 }
 
@@ -131,7 +129,7 @@ void Hero::SwordLoadingState::notify_movement_tried(bool success) {
 void Hero::SwordLoadingState::notify_attacked_enemy(EnemyAttack attack, Enemy *victim, int result, bool killed) {
 
   if (result != 0 && attack == ATTACK_SWORD) {
-    hero->set_state(new FreeState(hero));
+    hero.set_state(new FreeState(hero));
   }
 }
 
@@ -156,13 +154,13 @@ bool Hero::SwordLoadingState::can_take_jump_sensor() {
  * Gives the sprites the animation stopped corresponding to this state.
  */
 void Hero::SwordLoadingState::set_animation_stopped() {
-  sprites->set_animation_stopped_sword_loading();
+  get_sprites().set_animation_stopped_sword_loading();
 }
 
 /**
  * Gives the sprites the animation walking corresponding to this state.
  */
 void Hero::SwordLoadingState::set_animation_walking() {
-  sprites->set_animation_walking_sword_loading();
+  get_sprites().set_animation_walking_sword_loading();
 }
 

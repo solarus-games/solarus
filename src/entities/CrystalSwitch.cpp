@@ -115,14 +115,11 @@ void CrystalSwitch::notify_collision(MapEntity *other_entity, Sprite *other_spri
  */
 void CrystalSwitch::action_key_pressed() {
 
-  KeysEffect &keys_effect = game->get_keys_effect();
-  Hero &hero = game->get_hero();
-
-  if (hero.is_free()) {
-    keys_effect.set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
+  if (get_hero().is_free()) {
+    get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
 
     // start a dialog
-    game->get_dialog_box().start_dialog("_crystal_switch");
+    get_dialog_box().start_dialog("_crystal_switch");
   }
 }
 
@@ -141,7 +138,7 @@ void CrystalSwitch::activate(MapEntity *entity_activating) {
   uint32_t now = System::now();
   if (!recently_activated || now >= next_possible_hit_date) {
     Sound::play("switch");
-    game->change_crystal_switch_state();
+    get_game().change_crystal_switch_state();
     next_possible_hit_date = now + 1000;
     entities_activating.push_back(entity_activating);
   }
@@ -161,7 +158,7 @@ void CrystalSwitch::twinkle() {
  */
 void CrystalSwitch::update() {
 
-  bool state = game->get_crystal_switch_state();
+  bool state = get_game().get_crystal_switch_state();
   if (state != this->state) {
 
     this->state = state;
@@ -193,7 +190,7 @@ void CrystalSwitch::display_on_map() {
   MapEntity::display_on_map();
 
   // display the star
-  map->display_sprite(star_sprite, get_top_left_x() + star_xy.get_x(), get_top_left_y() + star_xy.get_y());
+  get_map().display_sprite(star_sprite, get_top_left_x() + star_xy.get_x(), get_top_left_y() + star_xy.get_y());
 }
 
 /**

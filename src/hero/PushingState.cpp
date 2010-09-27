@@ -28,7 +28,7 @@
  * @brief Constructor.
  * @param hero the hero controlled by this state
  */
-Hero::PushingState::PushingState(Hero *hero):
+Hero::PushingState::PushingState(Hero &hero):
   State(hero) {
 
 }
@@ -49,8 +49,8 @@ void Hero::PushingState::start(State *previous_state) {
   State::start(previous_state);
 
   pushed_entity = NULL;
-  pushing_direction4 = sprites->get_animation_direction();
-  sprites->set_animation_pushing();
+  pushing_direction4 = get_sprites().get_animation_direction();
+  get_sprites().set_animation_pushing();
 }
 
 /**
@@ -61,7 +61,7 @@ void Hero::PushingState::stop(State *next_state) {
   State::stop(next_state);
 
   if (is_moving_grabbed_entity()) {
-    hero->clear_movement();
+    hero.clear_movement();
   }
 }
 
@@ -77,11 +77,11 @@ void Hero::PushingState::update() {
     // detect when the hero movement is finished
     // because the hero has covered 16 pixels, has reached an obstacle or has aligned the entity on the grid
 
-    PathMovement *movement = (PathMovement*) hero->get_movement();
+    PathMovement *movement = (PathMovement*) hero.get_movement();
 
     bool horizontal = pushing_direction4 % 2 == 0;
     bool has_reached_grid = movement->get_total_distance_covered() > 8
-      && ((horizontal && hero->is_x_aligned_to_grid()) || (!horizontal && hero->is_y_aligned_to_grid()));
+      && ((horizontal && hero.is_x_aligned_to_grid()) || (!horizontal && hero.is_y_aligned_to_grid()));
 
     if (movement->is_finished() || has_reached_grid) {
       stop_moving_pushed_entity();
@@ -89,32 +89,30 @@ void Hero::PushingState::update() {
   }
   else { // the hero is pushing a fixed obstacle
 
-    GameControls &controls = game->get_controls();
-
     // stop pushing if there is no more obstacle
-    if (!hero->is_facing_obstacle()) {
-      hero->set_state(new FreeState(hero));
+    if (!hero.is_facing_obstacle()) {
+      hero.set_state(new FreeState(hero));
     }
 
     // stop pushing if the player changes his direction
-    else if (controls.get_wanted_direction8() != pushing_direction4 * 2) {
+    else if (get_controls().get_wanted_direction8() != pushing_direction4 * 2) {
 
-      if (controls.is_key_pressed(GameControls::ACTION)) {
-	hero->set_state(new GrabbingState(hero));
+      if (get_controls().is_key_pressed(GameControls::ACTION)) {
+	hero.set_state(new GrabbingState(hero));
       }
       else {
-	hero->set_state(new FreeState(hero));
+	hero.set_state(new FreeState(hero));
       }
     }
 
     // see if the obstacle pushed is an entity that the hero can move
     else {
  
-      Detector *facing_entity = hero->get_facing_entity();
+      Detector *facing_entity = hero.get_facing_entity();
       if (facing_entity != NULL) { // the obstacle pushed is an entity
 
-	if (facing_entity->get_type() == BLOCK) { // it can be moved by the hero (TODO dynamic linking)
-	  hero->try_snap_to_facing_entity();
+	if (facing_entity->get_type() == BLOCK) { // it can be moved by the hero (TODO dynamic binding)
+	  hero.try_snap_to_facing_entity();
 	}
 
 	if (facing_entity->moved_by_hero()) {
@@ -122,7 +120,7 @@ void Hero::PushingState::update() {
 	  std::string path = "  ";
 	  path[0] = path[1] = '0' + pushing_direction4 * 2;
 
-	  hero->set_movement(new PathMovement(path, 8, false, false, false));
+	  hero.set_movement(new PathMovement(path, 8, false, false, false));
 	  pushed_entity = facing_entity;
 	}
       }
@@ -170,9 +168,9 @@ void Hero::PushingState::notify_grabbed_entity_collision() {
   };
 
   // go back one pixel into the opposite direction
-  Rectangle bounding_box = hero->get_bounding_box();
+  Rectangle bounding_box = hero.get_bounding_box();
   bounding_box.add_xy(opposite_dxy[pushing_direction4]);
-  hero->set_bounding_box(bounding_box);
+  hero.set_bounding_box(bounding_box);
 
   stop_moving_pushed_entity();
 }
@@ -187,19 +185,18 @@ void Hero::PushingState::notify_grabbed_entity_collision() {
 void Hero::PushingState::stop_moving_pushed_entity() {
 
   pushed_entity = NULL;
-  hero->clear_movement();
+  hero.clear_movement();
 
-  GameControls &controls = game->get_controls();
-  if (!controls.is_key_pressed(GameControls::ACTION)) {
+  if (!get_controls().is_key_pressed(GameControls::ACTION)) {
     // the hero was pushing an entity without grabbing it
 
     // stop the animation pushing if his direction changed
-    if (controls.get_wanted_direction8() != pushing_direction4 * 2) {
-      hero->set_state(new FreeState(hero));
+    if (get_controls().get_wanted_direction8() != pushing_direction4 * 2) {
+      hero.set_state(new FreeState(hero));
     }
   }
   else {
-    hero->set_state(new GrabbingState(hero));
+    hero.set_state(new GrabbingState(hero));
   }
 }
 

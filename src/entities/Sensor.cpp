@@ -167,19 +167,19 @@ void Sensor::activate(Hero *hero) {
 
       case CUSTOM:
 	// we notify the scripts
-	map->get_scripts().event_hero_on_sensor(get_name());
-	hero->reset_movement();
+	get_scripts().event_hero_on_sensor(get_name());
+	get_hero().reset_movement();
 	break;
 
       case CHANGE_LAYER:
 	// we change the hero's layer
-	map->get_entities().set_entity_layer(hero, get_layer());
+	get_entities().set_entity_layer(hero, get_layer());
 	break;
 
       case RETURN_FROM_BAD_GROUND:
 	// we indicate to the hero a location to return
 	// after falling into a hole or some other ground
-	hero->set_target_solid_ground_coords(get_xy(), get_layer());
+	get_hero().set_target_solid_ground_coords(get_xy(), get_layer());
 	break;
     }
   }

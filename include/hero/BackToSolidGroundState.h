@@ -31,7 +31,7 @@ class Hero::BackToSolidGroundState: public Hero::State {
 
   public:
 
-    BackToSolidGroundState(Hero *hero, bool use_memorized_xy);
+    BackToSolidGroundState(Hero &hero, bool use_memorized_xy);
     ~BackToSolidGroundState();
 
     void start(State *previous_state);

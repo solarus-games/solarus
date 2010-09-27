@@ -28,7 +28,7 @@
  * @param hero the hero controlled by this state
  * @param item_to_lift the item to lift
  */
-Hero::LiftingState::LiftingState(Hero *hero, DestructibleItem *item_to_lift):
+Hero::LiftingState::LiftingState(Hero &hero, DestructibleItem *item_to_lift):
   State(hero), item_to_lift(item_to_lift) {
 
 }
@@ -50,13 +50,13 @@ void Hero::LiftingState::start(State *previous_state) {
   State::start(previous_state);
 
   // create the entity that will actually be lifted
-  lifted_item = new CarriedItem(hero, item_to_lift);
-  lifted_item->set_map(*map);
+  lifted_item = new CarriedItem(&hero, item_to_lift);
+  lifted_item->set_map(get_map());
 
-  game->get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_THROW);
-  sprites->set_animation_lifting();
-  sprites->set_lifted_item(lifted_item);
-  hero->set_facing_entity(NULL);
+  get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_THROW);
+  get_sprites().set_animation_lifting();
+  get_sprites().set_lifted_item(lifted_item);
+  hero.set_facing_entity(NULL);
 }
 
 /**
@@ -67,7 +67,7 @@ void Hero::LiftingState::stop(State *next_state) {
 
   State::stop(next_state);
 
-  sprites->set_lifted_item(NULL);
+  get_sprites().set_lifted_item(NULL);
 
   if (lifted_item != NULL) {
 
@@ -79,7 +79,7 @@ void Hero::LiftingState::stop(State *next_state) {
       delete lifted_item;
       lifted_item = NULL;
     }
-    game->get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
+    get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
   }
 }
 
@@ -96,7 +96,7 @@ void Hero::LiftingState::update() {
 
     CarriedItem *carried_item = lifted_item;
     lifted_item = NULL; // we do not take care of the carried item from this state anymore
-    hero->set_state(new CarryingState(hero, carried_item));
+    hero.set_state(new CarryingState(hero, carried_item));
   }
 }
 
@@ -116,8 +116,8 @@ bool Hero::LiftingState::can_be_hurt() {
  */
 void Hero::LiftingState::throw_item() {
 
-  lifted_item->throw_item(sprites->get_animation_direction());
-  map->get_entities().add_entity(lifted_item);
+  lifted_item->throw_item(get_sprites().get_animation_direction());
+  get_entities().add_entity(lifted_item);
   lifted_item = NULL;
 }
 

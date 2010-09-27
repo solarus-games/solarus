@@ -58,8 +58,7 @@ void Minillosaur::initialize() {
   set_origin(12, 20);
 
   // initial movement
-  Hero &hero = map->get_entities().get_hero();
-  set_movement(new StraightMovement(12, get_xy(), hero.get_xy(), 1500, false));
+  set_movement(new StraightMovement(12, get_xy(), get_hero().get_xy(), 1500, false));
 
   // reactions to attacks
   set_no_attack_consequences();
@@ -122,7 +121,7 @@ void Minillosaur::update() {
     set_size(16, 16);
     set_origin(8, 12);
     set_aligned_to_grid();
-    set_movement(new PathFindingMovement(&map->get_entities().get_hero(), 4));
+    set_movement(new PathFindingMovement(&get_hero(), 4));
     set_default_attack_consequences();
     in_egg = false;
   }

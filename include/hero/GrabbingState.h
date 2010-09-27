@@ -26,7 +26,7 @@ class Hero::GrabbingState: public Hero::State {
 
   public:
 
-    GrabbingState(Hero *hero);
+    GrabbingState(Hero &hero);
     ~GrabbingState();
 
     void start(State *previous_state);

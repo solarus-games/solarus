@@ -241,7 +241,7 @@ void PickableItem::give_item_to_player() {
 
   // give the item
   if (properties.is_brandished_when_picked()) {
-    game->get_hero().start_treasure(treasure);
+    get_hero().start_treasure(treasure);
   }
   else {
     treasure->give_to_player();
@@ -330,7 +330,7 @@ void PickableItem::update() {
     // wait 0.7 second before allowing the hero to take the item
     if (!can_be_picked && now >= allow_pick_date) {
       can_be_picked = true;
-      map->check_collision_with_detectors(&game->get_hero());
+      get_map().check_collision_with_detectors(&get_hero());
     }
     else {
       // make the item blink and then disappear
@@ -358,7 +358,7 @@ void PickableItem::display_on_map() {
 
   // display the shadow
   if (shadow_sprite != NULL) {
-    map->display_sprite(shadow_sprite, shadow_xy.get_x(), shadow_xy.get_y());
+    get_map().display_sprite(shadow_sprite, shadow_xy.get_x(), shadow_xy.get_y());
   }
 
   // display the sprite

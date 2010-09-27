@@ -30,17 +30,30 @@
  */
 class Hero::State {
 
+  private:
+
+    Map *map;				/**< the current map (it may change during this state) */
+
   protected:
 
-    Game *game;				/**< the game */
-    Map *map;				/**< the current map */
-    Hero *hero;				/**< the hero controlled by this state */
-    HeroSprites *sprites;		/**< sprites of the hero */
+    Hero &hero;				/**< the hero controlled by this state */
     bool suspended;			/**< indicates whether this state is suspended */
     uint32_t when_suspended;		/**< indicates when this state was suspended */
 
-    State(Hero *hero);
+    State(Hero &hero);
+
     bool is_current_state();
+
+    // access to various game objects
+    HeroSprites& get_sprites();
+    Map& get_map();
+    MapEntities& get_entities();
+    Game& get_game();
+    Equipment& get_equipment();
+    KeysEffect& get_keys_effect();
+    GameControls& get_controls();
+    DialogBox& get_dialog_box();
+    Scripts& get_scripts();
 
   public:
 

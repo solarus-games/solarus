@@ -26,7 +26,7 @@
  * @brief Constructor.
  * @param hero the hero controlled by this state
  */
-Hero::SwordSwingingState::SwordSwingingState(Hero *hero):
+Hero::SwordSwingingState::SwordSwingingState(Hero &hero):
   State(hero) {
 
 }
@@ -44,8 +44,8 @@ Hero::SwordSwingingState::~SwordSwingingState() {
  */
 void Hero::SwordSwingingState::start(State *previous_state) {
 
-  sprites->play_sword_sound();
-  sprites->set_animation_sword();
+  get_sprites().play_sword_sound();
+  get_sprites().set_animation_sword();
 }
 
 /**
@@ -53,14 +53,14 @@ void Hero::SwordSwingingState::start(State *previous_state) {
  */
 void Hero::SwordSwingingState::update() {
 
-  if (sprites->is_animation_finished()) {
+  if (get_sprites().is_animation_finished()) {
 
     // if the player is still pressing the sword key, start loading the sword
-    if (game->get_controls().is_key_pressed(GameControls::SWORD)) {
-      hero->set_state(new SwordLoadingState(hero));
+    if (get_controls().is_key_pressed(GameControls::SWORD)) {
+      hero.set_state(new SwordLoadingState(hero));
     }
     else {
-      hero->set_state(new FreeState(hero));
+      hero.set_state(new FreeState(hero));
     }
   }
 }
@@ -98,10 +98,10 @@ bool Hero::SwordSwingingState::can_sword_hit_crystal_switch() {
 bool Hero::SwordSwingingState::is_cutting_with_sword(Detector *detector) {
 
   // check the distance to the detector
-  int distance = detector->is_obstacle_for(hero) ? 14 : 4;
-  Rectangle tested_point = hero->get_facing_point();
+  int distance = detector->is_obstacle_for(&hero) ? 14 : 4;
+  Rectangle tested_point = hero.get_facing_point();
 
-  switch (sprites->get_animation_direction()) {
+  switch (get_sprites().get_animation_direction()) {
 
     case 0: // right
       tested_point.add_x(distance);

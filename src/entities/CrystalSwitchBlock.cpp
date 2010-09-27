@@ -189,8 +189,8 @@ bool CrystalSwitchBlock::try_jump(Hero *hero, const Rectangle &collision_box,
 				  int jump_direction, int jump_length) {
 
   // jump if there is no collision and no other raised crystal switch blocks
-  if (!map->test_collision_with_obstacles(get_layer(), collision_box, hero)
-      && !map->get_entities().overlaps_raised_blocks(get_layer(), collision_box)) {
+  if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, hero)
+      && !get_entities().overlaps_raised_blocks(get_layer(), collision_box)) {
 
     hero->start_jumping(jump_direction, jump_length, true, false);
     Sound::play("hero_lands");
@@ -206,7 +206,7 @@ bool CrystalSwitchBlock::try_jump(Hero *hero, const Rectangle &collision_box,
 void CrystalSwitchBlock::update() {
 
   // see if the state has to be changed
-  bool orange_raised = game->get_crystal_switch_state();
+  bool orange_raised = get_game().get_crystal_switch_state();
   if (orange_raised != this->orange_raised) {
 
     this->orange_raised = orange_raised;
@@ -238,7 +238,7 @@ void CrystalSwitchBlock::display_on_map() {
 
   for (int y = y1; y < y2; y += 16) {
     for (int x = x1; x < x2; x += 16) {
-      map->display_sprite(sprite, x, y);
+      get_map().display_sprite(sprite, x, y);
     }
   }
 }

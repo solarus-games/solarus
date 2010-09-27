@@ -28,7 +28,7 @@
  * @param hero the hero controlled by this state
  * @param carried_item the item to carry
  */
-Hero::CarryingState::CarryingState(Hero *hero, CarriedItem *carried_item):
+Hero::CarryingState::CarryingState(Hero &hero, CarriedItem *carried_item):
   PlayerMovementState(hero), carried_item(carried_item) {
 
 }
@@ -50,10 +50,10 @@ void Hero::CarryingState::start(State *previous_state) {
   PlayerMovementState::start(previous_state);
 
   if (is_current_state()) {
-    sprites->set_lifted_item(carried_item);
+    get_sprites().set_lifted_item(carried_item);
 
     // action icon "throw"
-    game->get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_THROW);
+    get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_THROW);
   }
 }
 
@@ -65,8 +65,8 @@ void Hero::CarryingState::stop(State *next_state) {
 
   PlayerMovementState::stop(next_state);
 
-  sprites->set_lifted_item(NULL);
-  game->get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
+  get_sprites().set_lifted_item(NULL);
+  get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
 
   if (carried_item != NULL && next_state->can_throw_item()) {
     throw_item();
@@ -112,7 +112,7 @@ void Hero::CarryingState::update() {
     if (carried_item->is_broken()) {
       delete carried_item;
       carried_item = NULL;
-      hero->set_state(new FreeState(hero));
+      hero.set_state(new FreeState(hero));
     }
   }
 }
@@ -122,11 +122,9 @@ void Hero::CarryingState::update() {
  */
 void Hero::CarryingState::action_key_pressed() {
 
-  KeysEffect &keys_effect = game->get_keys_effect();
-
-  if (keys_effect.get_action_key_effect() == KeysEffect::ACTION_KEY_THROW) {
+  if (get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_THROW) {
     throw_item();
-    hero->set_state(new FreeState(hero));
+    hero.set_state(new FreeState(hero));
   }
 }
 
@@ -138,8 +136,8 @@ void Hero::CarryingState::action_key_pressed() {
  */
 void Hero::CarryingState::throw_item() {
 
-  carried_item->throw_item(sprites->get_animation_direction());
-  map->get_entities().add_entity(carried_item);
+  carried_item->throw_item(get_sprites().get_animation_direction());
+  get_entities().add_entity(carried_item);
   carried_item = NULL;
 }
 
@@ -164,13 +162,13 @@ bool Hero::CarryingState::can_take_jump_sensor() {
  * Gives the sprites the animation stopped corresponding to this state.
  */
 void Hero::CarryingState::set_animation_stopped() {
-  sprites->set_animation_stopped_carrying();
+  get_sprites().set_animation_stopped_carrying();
 }
 
 /**
  * Gives the sprites the animation walking corresponding to this state.
  */
 void Hero::CarryingState::set_animation_walking() {
-  sprites->set_animation_walking_carrying();
+  get_sprites().set_animation_walking_carrying();
 }
 

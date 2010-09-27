@@ -32,7 +32,7 @@ class Hero::PullingState: public Hero::State {
 
   public:
 
-    PullingState(Hero *hero);
+    PullingState(Hero &hero);
     ~PullingState();
 
     void start(State *previous_state);

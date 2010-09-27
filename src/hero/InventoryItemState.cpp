@@ -24,8 +24,8 @@
  * @param hero the hero controlled by this state
  * @param item_name name of the inventory item to use
  */
-Hero::InventoryItemState::InventoryItemState(Hero *hero, const std::string &item_name):
-  State(hero), item(new InventoryItem(item_name)) {
+Hero::InventoryItemState::InventoryItemState(Hero &hero, const std::string &item_name):
+  State(hero), item(hero.get_game(), item_name) {
 
 }
 
@@ -33,7 +33,6 @@ Hero::InventoryItemState::InventoryItemState(Hero *hero, const std::string &item
  * @brief Destructor.
  */
 Hero::InventoryItemState::~InventoryItemState() {
-  delete item;
 }
 
 /**
@@ -44,11 +43,11 @@ void Hero::InventoryItemState::start(State *previous_state) {
 
   State::start(previous_state);
 
-  hero->last_inventory_item_name = item->get_name();
+  hero.last_inventory_item_name = item.get_name();
   // TODO delay of 500 ms for the bow
   // hero->can_use_inventory_item_date = System::now() + item->get_reuse_delay();
-  hero->can_use_inventory_item_date = System::now();
-  item->start(*game);
+  hero.can_use_inventory_item_date = System::now();
+  item.start();
 }
 
 /**
@@ -58,10 +57,10 @@ void Hero::InventoryItemState::update() {
 
   State::update();
 
-  item->update();
-  if (item->is_finished() && is_current_state()) {
+  item.update();
+  if (item.is_finished() && is_current_state()) {
     // if the state was not modified by the item, return to the normal state
-    hero->set_state(new FreeState(hero));
+    hero.set_state(new FreeState(hero));
   }
 }
 

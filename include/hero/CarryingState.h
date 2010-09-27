@@ -32,7 +32,7 @@ class Hero::CarryingState: public Hero::PlayerMovementState {
 
   public:
 
-    CarryingState(Hero *hero, CarriedItem *carried_item);
+    CarryingState(Hero &hero, CarriedItem *carried_item);
     ~CarryingState();
 
     void start(State *previous_state);

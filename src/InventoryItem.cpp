@@ -36,10 +36,14 @@
 
 /**
  * @brief Creates a new inventory item.
+ * @param game the game
  * @param item_id id of the item to create
  */
-InventoryItem::InventoryItem(const std::string &item_name):
-  item_name(item_name) {
+InventoryItem::InventoryItem(Game &game, const std::string &item_name):
+
+  game(game),
+  item_name(item_name),
+  variant(game.get_equipment().get_item_variant(item_name)) {
 
 }
 
@@ -54,7 +58,7 @@ InventoryItem::~InventoryItem() {
  * @brief Returns the name of this inventory item.
  * @return the name of this inventory item
  */
-const std::string & InventoryItem::get_name() {
+const std::string& InventoryItem::get_name() {
   return item_name;
 }
 
@@ -68,16 +72,13 @@ int InventoryItem::get_variant() {
 
 /**
  * @brief Starts using this item.
- * @param game the game
  */
-void InventoryItem::start(Game &game) {
+void InventoryItem::start() {
 
   Hero &hero = game.get_hero();
   Map &map = game.get_current_map();
   Equipment &equipment = game.get_equipment();
 
-  this->game = &game;
-  this->variant = equipment.get_item_variant(item_name);
   this->finished = false;
   this->item_sound_id = "";
 
@@ -88,7 +89,7 @@ void InventoryItem::start(Game &game) {
     start_bottle();
   }
   else {
-    
+ 
     if (item_name == "boomerang") {
 
       if (map.get_entities().is_boomerang_present()) {
@@ -153,8 +154,8 @@ void InventoryItem::start(Game &game) {
  */
 void InventoryItem::update() {
 
-  Hero &hero = game->get_hero();
-  Equipment &equipment = game->get_equipment();
+  Hero &hero = game.get_hero();
+  Equipment &equipment = game.get_equipment();
 
   if (item_sound_id.size() != 0) {
     uint32_t now = System::now();
@@ -177,7 +178,7 @@ void InventoryItem::update() {
 
 	if (direction_pressed8 == -1) {
 	  // the player can press the diagonal arrows before or after the boomerang key
-	  direction_pressed8 = game->get_controls().get_wanted_direction8();
+	  direction_pressed8 = game.get_controls().get_wanted_direction8();
 	}
 
 	int boomerang_direction8;
@@ -187,14 +188,14 @@ void InventoryItem::update() {
 	else {
 	  boomerang_direction8 = direction_pressed8;
 	}
-	game->get_current_map().get_entities().add_entity(new Boomerang(&hero, boomerang_direction8 * 45));
+	game.get_current_map().get_entities().add_entity(new Boomerang(&hero, boomerang_direction8 * 45));
       }
     }
     else if (item_name == "bow") {
 
       if (hero.is_animation_finished()) {
 	finished = true;
-	game->get_current_map().get_entities().add_entity(new Arrow(&hero));
+	game.get_current_map().get_entities().add_entity(new Arrow(&hero));
 	Sound::play("bow");
       }
     }
@@ -206,9 +207,9 @@ void InventoryItem::update() {
     }
     else if (item_name == "apples" || item_name == "pains_au_chocolat" || item_name == "croissants") {
 
-      if (!game->is_showing_message()) {
+      if (!game.is_showing_message()) {
 
-	if (game->get_dialog_box().get_last_answer() == 0 &&
+	if (game.get_dialog_box().get_last_answer() == 0 &&
 	    equipment.get_item_amount(item_name) > 0) {
 
 	  equipment.remove_item_amount(item_name, 1);
@@ -242,7 +243,7 @@ void InventoryItem::start_bottle() {
     // empty bottle
   case 1:
     {
-      Detector *facing_entity = game->get_hero().get_facing_entity();
+      Detector *facing_entity = game.get_hero().get_facing_entity();
       if (facing_entity == NULL ||
 	  !facing_entity->interaction_with_inventory_item(this)) {
 
@@ -256,7 +257,7 @@ void InventoryItem::start_bottle() {
     // water
   case 2:
     // ask the hero to pour away the water
-    game->get_dialog_box().start_dialog("_use_bottle_with_water");
+    game.get_dialog_box().start_dialog("_use_bottle_with_water");
     break;
 
     // red potion
@@ -280,7 +281,7 @@ void InventoryItem::start_bottle() {
     // fairy
   case 6:
     // ask the hero to release the fairy
-    game->get_dialog_box().start_dialog("_use_bottle_with_fairy");
+    game.get_dialog_box().start_dialog("_use_bottle_with_fairy");
     break;
 
   }
@@ -292,19 +293,19 @@ void InventoryItem::start_bottle() {
 void InventoryItem::update_bottle() {
 
   // see if a dialog is finished
-  if (!game->is_showing_message()) {
+  if (!game.is_showing_message()) {
 
     // bottle with water
     if (variant == 2) {
 
-      int answer = game->get_dialog_box().get_last_answer();
+      int answer = game.get_dialog_box().get_last_answer();
 
       if (answer == 0) {
 	// empty the water
-	game->get_equipment().set_item_variant(item_name, 1);
+	game.get_equipment().set_item_variant(item_name, 1);
 	Sound::play("item_in_water");
 
-	Detector *facing_entity = game->get_hero().get_facing_entity();
+	Detector *facing_entity = game.get_hero().get_facing_entity();
 
 	if (facing_entity != NULL) {
 	  // the player has just poured water onto an entity
@@ -317,15 +318,15 @@ void InventoryItem::update_bottle() {
     // bottle with a fairy
     else if (variant == 6) {
       
-      int answer = game->get_dialog_box().get_last_answer();
+      int answer = game.get_dialog_box().get_last_answer();
 
       if (answer == 1) {
 	// release the fairy
-	Map &map = game->get_current_map();
-	Hero &hero = game->get_hero();
-	map.get_entities().add_entity(PickableItem::create(*game, hero.get_layer(), hero.get_x(), hero.get_y(),
-	      new Treasure(*game, "fairy", 1, -1), FALLING_LOW, true));
-	game->get_equipment().set_item_variant(item_name, 1);
+	Map &map = game.get_current_map();
+	Hero &hero = game.get_hero();
+	map.get_entities().add_entity(PickableItem::create(game, hero.get_layer(), hero.get_x(), hero.get_y(),
+	      new Treasure(game, "fairy", 1, -1), FALLING_LOW, true));
+	game.get_equipment().set_item_variant(item_name, 1);
 
       }
       finished = true;

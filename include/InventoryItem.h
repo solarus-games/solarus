@@ -31,11 +31,11 @@ class InventoryItem {
 
   private:
 
+    Game &game;			/**< the game this item is used in */
     std::string item_name;	/**< name of the item being used */
     int variant;		/**< the possession state of this item when it is used */
 
     // state
-    Game *game;			/**< the game this item is used in */
     bool finished;		/**< true if we have finished using this item */
 
     // additionnal state information used by certain items
@@ -52,7 +52,7 @@ class InventoryItem {
   public:
 
     // creation and destruction
-    InventoryItem(const std::string &item_name);
+    InventoryItem(Game &game, const std::string &item_name);
     ~InventoryItem();
 
     // item information
@@ -60,7 +60,7 @@ class InventoryItem {
     int get_variant();
 
     // state
-    void start(Game &game);
+    void start();
     void update();
     void set_map(Map &map);
     bool is_finished();

@@ -28,7 +28,7 @@
  * @brief Constructor.
  * @param hero the hero controlled by this state
  */
-Hero::FreeState::FreeState(Hero *hero):
+Hero::FreeState::FreeState(Hero &hero):
   PlayerMovementState(hero) {
 
 }
@@ -60,7 +60,7 @@ void Hero::FreeState::stop(State *next_state) {
 
   PlayerMovementState::stop(next_state);
 
-  game->get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
+  get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
 }
 
 /**
@@ -96,17 +96,15 @@ void Hero::FreeState::set_suspended(bool suspended) {
  */
 void Hero::FreeState::action_key_pressed() {
 
-  KeysEffect &keys_effect = game->get_keys_effect();
-
-  if (keys_effect.is_action_key_acting_on_facing_entity()) {
+  if (get_keys_effect().is_action_key_acting_on_facing_entity()) {
 
     // action on the facing entity
-    hero->get_facing_entity()->action_key_pressed();
+    hero.get_facing_entity()->action_key_pressed();
   }
-  else if (hero->is_facing_point_on_obstacle()) {
+  else if (hero.is_facing_point_on_obstacle()) {
 
     // grab an obstacle
-    hero->set_state(new GrabbingState(hero));
+    hero.set_state(new GrabbingState(hero));
   }
 }
 
@@ -119,15 +117,15 @@ void Hero::FreeState::notify_movement_tried(bool success) {
   PlayerMovementState::notify_movement_tried(success);
 
   if (!success // the hero has just tried to move unsuccessfuly
-      &&  hero->is_facing_point_on_obstacle()) { // he is really facing an obstacle
+      &&  hero.is_facing_point_on_obstacle()) { // he is really facing an obstacle
 
     uint32_t now = System::now();
     if (pushing_direction4 == -1) { // we start counting to trigger animation "pushing"
       start_pushing_date = now + 800; // start animation "pushing" after 800 ms
-      pushing_direction4 = hero->get_animation_direction();
+      pushing_direction4 = hero.get_animation_direction();
     }
     else if (now >= start_pushing_date) {
-      hero->set_state(new PushingState(hero));
+      hero.set_state(new PushingState(hero));
     }
   }
 }
@@ -154,7 +152,7 @@ bool Hero::FreeState::can_start_sword() {
  * @return true if the hero can use an inventoy item in this state
  */
 bool Hero::FreeState::can_start_inventory_item() {
-  return hero->get_ground() != GROUND_HOLE;
+  return hero.get_ground() != GROUND_HOLE;
 }
 
 /**
@@ -187,13 +185,13 @@ bool Hero::FreeState::can_throw_item() {
  * Gives the sprites the animation stopped corresponding to this state.
  */
 void Hero::FreeState::set_animation_stopped() {
-  hero->get_sprites().set_animation_stopped_normal();
+  get_sprites().set_animation_stopped_normal();
 }
 
 /**
  * Gives the sprites the animation walking corresponding to this state.
  */
 void Hero::FreeState::set_animation_walking() {
-  hero->get_sprites().set_animation_walking_normal();
+  get_sprites().set_animation_walking_normal();
 }
 

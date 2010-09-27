@@ -29,7 +29,7 @@
  * @param life_points number of heart quarters to remove (this number may be reduced by the tunic)
  * @param magic_points number of magic points to remove
  */
-Hero::HurtState::HurtState(Hero *hero, MapEntity *source, int life_points, int magic_points):
+Hero::HurtState::HurtState(Hero &hero, MapEntity *source, int life_points, int magic_points):
   State(hero), source(source), life_points(life_points), magic_points(magic_points) {
 
 }
@@ -49,20 +49,19 @@ void Hero::HurtState::start(State *previous_state) {
 
   State::start(previous_state);
 
-  Equipment &equipment = game->get_equipment();
   Sound::play("hero_hurt");
-  life_points = std::max(1, life_points / (equipment.get_ability("tunic") + 1));
-  equipment.remove_life(life_points);
+  life_points = std::max(1, life_points / (get_equipment().get_ability("tunic") + 1));
+  get_equipment().remove_life(life_points);
 
-  if (magic_points > 0 && equipment.get_magic() > 0) {
-    equipment.remove_magic(magic_points);
+  if (magic_points > 0 && get_equipment().get_magic() > 0) {
+    get_equipment().remove_magic(magic_points);
     Sound::play("magic_bar");
   }
-  sprites->set_animation_hurt();
-  sprites->blink();
+  get_sprites().set_animation_hurt();
+  get_sprites().blink();
 
-  double angle = source->get_vector_angle(hero);
-  hero->set_movement(new StraightMovement(12, angle, 200));
+  double angle = source->get_vector_angle(&hero);
+  hero.set_movement(new StraightMovement(12, angle, 200));
 }
 
 /**
@@ -73,7 +72,7 @@ void Hero::HurtState::stop(State *next_state) {
 
   State::stop(next_state);
 
-  hero->clear_movement();
+  hero.clear_movement();
 }
 
 /**
@@ -83,9 +82,9 @@ void Hero::HurtState::update() {
 
   State::update();
 
-  if (hero->get_movement()->is_finished()) {
-    hero->clear_movement();
-    hero->set_state(new FreeState(hero));
+  if (hero.get_movement()->is_finished()) {
+    hero.clear_movement();
+    hero.set_state(new FreeState(hero));
   }
 }
 

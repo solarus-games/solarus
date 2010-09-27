@@ -30,7 +30,7 @@ class Hero::SwordTappingState: public Hero::State {
 
   public:
 
-    SwordTappingState(Hero *hero);
+    SwordTappingState(Hero &hero);
     ~SwordTappingState();
 
     void start(State *previous_state);

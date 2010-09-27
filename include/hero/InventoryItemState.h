@@ -18,6 +18,7 @@
 #define SOLARUS_HERO_INVENTORY_ITEM_STATE_H
 
 #include "hero/State.h"
+#include "InventoryItem.h"
 
 /**
  * @brief The state "inventory item" of the hero.
@@ -26,11 +27,11 @@ class Hero::InventoryItemState: public Hero::State {
 
   private:
 
-    InventoryItem *item;	/**< the inventory item that the hero is currently using */
+    InventoryItem item;			/**< the inventory item that the hero is currently using */
 
   public:
 
-    InventoryItemState(Hero *hero, const std::string &item_name);
+    InventoryItemState(Hero &hero, const std::string &item_name);
     ~InventoryItemState();
 
     void start(State *previous_state);

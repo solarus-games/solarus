@@ -319,7 +319,7 @@ void Arrow::update() {
     if (entity_reached == NULL) {
       clear_movement();
     }
-    map->check_collision_with_detectors(this);
+    get_map().check_collision_with_detectors(this);
   }
 
   // destroy the arrow when disappear_date is reached
@@ -455,6 +455,6 @@ bool Arrow::has_reached_map_border() {
     return false;
   }
 
-  return map->test_collision_with_border(get_movement()->get_last_collision_box_on_obstacle());
+  return get_map().test_collision_with_border(get_movement()->get_last_collision_box_on_obstacle());
 }
 

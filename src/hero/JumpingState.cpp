@@ -34,19 +34,20 @@
  * @param layer_after_jump the layer to set when the jump is finished
  * (or LAYER_NB to keep the same layer)
  */
-Hero::JumpingState::JumpingState(Hero *hero, int direction8, int length,
+Hero::JumpingState::JumpingState(Hero &hero, int direction8, int length,
     bool ignore_obstacles, bool with_sound, uint32_t movement_delay, Layer layer_after_jump):
+  
   State(hero) {
 
-    this->movement = new JumpMovement(direction8, length, ignore_obstacles);
-    this->direction8 = direction8;
-    this->with_sound = with_sound;
+  this->movement = new JumpMovement(direction8, length, ignore_obstacles);
+  this->direction8 = direction8;
+  this->with_sound = with_sound;
 
-    if (layer_after_jump == LAYER_NB) {
-      layer_after_jump = hero->get_layer();
-    }
+  if (layer_after_jump == LAYER_NB) {
+    layer_after_jump = hero.get_layer();
+  }
 
-    this->layer_after_jump = layer_after_jump;
+  this->layer_after_jump = layer_after_jump;
 }
 
 /**
@@ -65,11 +66,11 @@ void Hero::JumpingState::start(State *previous_state) {
   State::start(previous_state);
 
   // update the sprites
-  sprites->set_animation_direction8(direction8);
-  sprites->set_animation_jumping();
+  get_sprites().set_animation_direction8(direction8);
+  get_sprites().set_animation_jumping();
 
   // jump
-  hero->set_movement(movement);
+  hero.set_movement(movement);
 
   if (with_sound) {
     Sound::play("jump");
@@ -85,7 +86,7 @@ void Hero::JumpingState::stop(State *next_state) {
 
   State::stop(next_state);
 
-  hero->clear_movement();
+  hero.clear_movement();
 }
 
 /**
@@ -96,13 +97,13 @@ void Hero::JumpingState::update() {
   State::update();
 
   if (movement->is_finished()) {
-    map->get_entities().set_entity_layer(hero, layer_after_jump);
+    get_entities().set_entity_layer(&hero, layer_after_jump);
 
-    if (hero->get_ground() == GROUND_DEEP_WATER) {
-      hero->start_deep_water();
+    if (hero.get_ground() == GROUND_DEEP_WATER) {
+      hero.start_deep_water();
     }
     else {
-      hero->set_state(new FreeState(hero));
+      hero.set_state(new FreeState(hero));
     }
   }
 }
@@ -117,7 +118,7 @@ void Hero::JumpingState::update() {
  * @return the hero's wanted direction between 0 and 7, or -1 if he is stopped
  */
 int Hero::JumpingState::get_wanted_movement_direction8() {
-  return sprites->get_animation_direction8();
+  return get_sprites().get_animation_direction8();
 }
 
 /**

@@ -43,8 +43,8 @@ void PlayerMovement::update() {
 
   SmoothCollisionMovement::update();
 
-  if (!entity->is_initialized()) {
-    return;
+  if (!entity->is_on_map()) {
+    return; // the entity is not ready yet
   }
 
   // someone may have stopped the movement from outside (e.g. Hero::reset_movement())
@@ -96,7 +96,7 @@ void PlayerMovement::set_moving_speed(int moving_speed) {
  */
 void PlayerMovement::set_wanted_direction() {
 
-  if (entity->is_initialized()) {
+  if (entity->is_on_map()) {
     GameControls &controls = entity->get_game().get_controls();
     direction8 = controls.get_wanted_direction8();
   }

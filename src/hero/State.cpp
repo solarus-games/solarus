@@ -35,12 +35,10 @@
  *
  * @param hero the hero to control with this state
  */
-Hero::State::State(Hero *hero):
+Hero::State::State(Hero &hero):
 
-  game(&hero->get_game()),
-  map(&hero->get_map()),
+  map(&hero.get_map()),
   hero(hero),
-  sprites(&hero->get_sprites()),
   suspended(false),
   when_suspended(0) {
 
@@ -60,7 +58,79 @@ Hero::State::~State() {
  * @return true if this state is the current state
  */
 bool Hero::State::is_current_state() {
-  return hero->state == this;
+  return hero.state == this;
+}
+
+/**
+ * @brief Returns the hero's sprites.
+ * @return the sprites
+ */
+HeroSprites& Hero::State::get_sprites() {
+  return hero.get_sprites();
+}
+
+/**
+ * @brief Returns the current map.
+ * @return the map
+ */
+Map& Hero::State::get_map() {
+  return *map;
+}
+
+/**
+ * @brief Returns the entities of the current map.
+ * @return the entities
+ */
+MapEntities& Hero::State::get_entities() {
+  return map->get_entities();
+}
+
+/**
+ * @brief Returns the current game.
+ * @return the game
+ */
+Game& Hero::State::get_game() {
+  return map->get_game();
+}
+
+/**
+ * @brief Returns the current equipment.
+ * @return the equipment
+ */
+Equipment& Hero::State::get_equipment() {
+  return get_game().get_equipment();
+}
+
+/**
+ * @brief Returns the keys effect manager.
+ * @return the keys effect
+ */
+KeysEffect& Hero::State::get_keys_effect() {
+  return get_game().get_keys_effect();
+}
+
+/**
+ * @brief Returns the game controls.
+ * @return the controls
+ */
+GameControls& Hero::State::get_controls() {
+  return get_game().get_controls();
+}
+
+/**
+ * @brief Returns the dialog box manager.
+ * @return the dialog box
+ */
+DialogBox& Hero::State::get_dialog_box() {
+  return get_game().get_dialog_box();
+}
+
+/**
+ * @brief Returns the list of current scripts
+ * @return the current scripts
+ */
+Scripts& Hero::State::get_scripts() {
+  return get_game().get_scripts();
 }
 
 /**
@@ -72,7 +142,7 @@ bool Hero::State::is_current_state() {
  * @param previous_state the previous state or NULL if this is the first state (for information)
  */
 void Hero::State::start(State *previous_state) {
-  set_suspended(hero->is_suspended());
+  set_suspended(hero.is_suspended());
 }
 
 /**
@@ -104,7 +174,7 @@ void Hero::State::update() {
  */
 void Hero::State::display_on_map() {
 
-  hero->get_sprites().display_on_map();
+  get_sprites().display_on_map();
 }
 
 /**
@@ -235,12 +305,11 @@ void Hero::State::action_key_released() {
  */
 void Hero::State::sword_key_pressed() {
 
-  KeysEffect &keys_effect = game->get_keys_effect();
-  if (!hero->is_suspended()
-      && keys_effect.get_sword_key_effect() == KeysEffect::SWORD_KEY_SWORD
+  if (!hero.is_suspended()
+      && get_keys_effect().get_sword_key_effect() == KeysEffect::SWORD_KEY_SWORD
       && can_start_sword()) {
 
-    hero->set_state(new SwordSwingingState(hero));
+    hero.set_state(new SwordSwingingState(hero));
   }
 }
 
@@ -270,15 +339,14 @@ void Hero::State::directional_key_released(int direction4) {
  */
 void Hero::State::item_key_pressed(int slot) {
 
-  Equipment &equipment = game->get_equipment();
-  const std::string item_name = equipment.get_item_assigned(slot);
+  const std::string item_name = get_equipment().get_item_assigned(slot);
 
-  if (equipment.get_item_properties(item_name).can_be_assigned()
-      && equipment.has_item(item_name)
-      && (item_name != hero->last_inventory_item_name || System::now() >= hero->can_use_inventory_item_date)
+  if (get_equipment().get_item_properties(item_name).can_be_assigned()
+      && get_equipment().has_item(item_name)
+      && (item_name != hero.last_inventory_item_name || System::now() >= hero.can_use_inventory_item_date)
       && can_start_inventory_item()) {
 
-    hero->set_state(new InventoryItemState(hero, item_name));
+    hero.set_state(new InventoryItemState(hero, item_name));
   }
 }
 
@@ -298,7 +366,6 @@ void Hero::State::item_key_released(int slot) {
  */
 void Hero::State::set_map(Map &map) {
   this->map = &map;
-  this->game = &map.get_game(); // TODO store a reference instead
 }
 
 /**
@@ -631,7 +698,7 @@ void Hero::State::notify_attacked_enemy(EnemyAttack attack, Enemy *victim, int r
 int Hero::State::get_sword_damage_factor() {
 
   static const int sword_factors[] = {0, 1, 2, 4, 8};
-  int sword = game->get_equipment().get_ability("sword");
+  int sword = get_equipment().get_ability("sword");
   return sword_factors[sword];
 }
 

@@ -56,14 +56,13 @@ class InventoryItem {
     ~InventoryItem();
 
     // item information
-    const std::string & get_name();
+    const std::string& get_name();
     int get_variant();
-    ItemProperties * get_properties();
 
     // state
-    void start(Game *game);
+    void start(Game &game);
     void update();
-    void set_map(Map *map);
+    void set_map(Map &map);
     bool is_finished();
 };
 

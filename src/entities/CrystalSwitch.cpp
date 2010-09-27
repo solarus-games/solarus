@@ -63,7 +63,7 @@ CrystalSwitch::~CrystalSwitch() {
  * @param y y coordinate of the entity
  * @return the instance created
  */
-MapEntity * CrystalSwitch::parse(Game *game, std::istream &is, Layer layer, int x, int y) {
+MapEntity* CrystalSwitch::parse(Game &game, std::istream &is, Layer layer, int x, int y) {
   return new CrystalSwitch(layer, x, y);
 }
 
@@ -115,14 +115,14 @@ void CrystalSwitch::notify_collision(MapEntity *other_entity, Sprite *other_spri
  */
 void CrystalSwitch::action_key_pressed() {
 
-  KeysEffect *keys_effect = game->get_keys_effect();
+  KeysEffect &keys_effect = game->get_keys_effect();
   Hero &hero = game->get_hero();
 
   if (hero.is_free()) {
-    keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
+    keys_effect.set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
 
     // start a dialog
-    game->get_dialog_box()->start_dialog("_crystal_switch");
+    game->get_dialog_box().start_dialog("_crystal_switch");
   }
 }
 

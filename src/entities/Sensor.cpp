@@ -67,7 +67,7 @@ Sensor::~Sensor() {
  * @param y y coordinate of the entity
  * @return the instance created
  */
-MapEntity * Sensor::parse(Game *game, std::istream &is, Layer layer, int x, int y) {
+MapEntity * Sensor::parse(Game &game, std::istream &is, Layer layer, int x, int y) {
 
   std::string name;
   int width, height, subtype;
@@ -173,7 +173,7 @@ void Sensor::activate(Hero *hero) {
 
       case CHANGE_LAYER:
 	// we change the hero's layer
-	map->get_entities()->set_entity_layer(hero, this->get_layer());
+	map->get_entities().set_entity_layer(hero, get_layer());
 	break;
 
       case RETURN_FROM_BAD_GROUND:

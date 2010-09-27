@@ -31,7 +31,7 @@ class PauseSubmenuOptions: public PauseSubmenu {
 
   private:
 
-    GameControls *controls;
+    GameControls &controls;
 
     std::string *video_mode_strings;
     std::string caption_strings[3];
@@ -67,7 +67,7 @@ class PauseSubmenuOptions: public PauseSubmenu {
 
   public:
 
-    PauseSubmenuOptions(PauseMenu *pause_menu, Game *game);
+    PauseSubmenuOptions(PauseMenu &pause_menu, Game &game);
     ~PauseSubmenuOptions();
 
     void key_pressed(GameControls::GameKey key);

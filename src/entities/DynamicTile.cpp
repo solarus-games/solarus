@@ -60,7 +60,7 @@ DynamicTile::~DynamicTile() {
  * @param y y coordinate of the entity
  * @return the instance created
  */
-MapEntity * DynamicTile::parse(Game *game, std::istream &is, Layer layer, int x, int y) {
+MapEntity* DynamicTile::parse(Game &game, std::istream &is, Layer layer, int x, int y) {
 
   int width, height, tile_pattern_id, enabled;
   std::string name;
@@ -86,9 +86,9 @@ EntityType DynamicTile::get_type() {
  * @brief Sets the map of this entity.
  * @param map the map
  */
-void DynamicTile::set_map(Map *map) {
+void DynamicTile::set_map(Map &map) {
   MapEntity::set_map(map);
-  this->tile_pattern = map->get_tileset()->get_tile_pattern(tile_pattern_id);
+  this->tile_pattern = &map.get_tileset().get_tile_pattern(tile_pattern_id);
 }
 
 /**

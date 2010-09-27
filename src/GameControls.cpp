@@ -67,8 +67,8 @@ const int GameControls::masks_to_directions8[] = {
  * @brief Constructor.
  * @param game the game
  */
-GameControls::GameControls(Game *game):
-  game(game), savegame(game->get_savegame()), customizing(false) {
+GameControls::GameControls(Game &game):
+  game(game), savegame(game.get_savegame()), customizing(false) {
 
   // load the controls from the savegame
   for (int i = 0; i < 9; i++) {
@@ -77,12 +77,12 @@ GameControls::GameControls(Game *game):
 
     // keyboard
     int index = Savegame::KEYBOARD_ACTION_KEY + i;
-    InputEvent::KeyboardKey keyboard_symbol = InputEvent::KeyboardKey(savegame->get_integer(index));
+    InputEvent::KeyboardKey keyboard_symbol = InputEvent::KeyboardKey(savegame.get_integer(index));
     keyboard_mapping[keyboard_symbol] = game_key;
 
     // joypad
     index = Savegame::JOYPAD_ACTION_KEY + i;
-    const std::string &joypad_string = savegame->get_string(index);
+    const std::string &joypad_string = savegame.get_string(index);
     joypad_mapping[joypad_string] = game_key;
 
     // game key state
@@ -223,14 +223,14 @@ void GameControls::key_pressed(InputEvent::KeyboardKey keyboard_key_pressed) {
 	// this keyboard key was already assigned to a game key
 	keyboard_mapping[previous_keyboard_key] = game_key;
 	int index = Savegame::KEYBOARD_ACTION_KEY + game_key - 1;
-	savegame->set_integer(index, previous_keyboard_key);
+	savegame.set_integer(index, previous_keyboard_key);
       }
       else {
 	keyboard_mapping.erase(previous_keyboard_key);
       }
       keyboard_mapping[keyboard_key_pressed] = key_to_customize;
       int index = Savegame::KEYBOARD_ACTION_KEY + key_to_customize - 1;
-      savegame->set_integer(index, keyboard_key_pressed);
+      savegame.set_integer(index, keyboard_key_pressed);
 
       keys_pressed[key_to_customize - 1] = true;
     }
@@ -286,14 +286,14 @@ void GameControls::joypad_button_pressed(int button) {
 	// this button was already assigned to a game key
 	joypad_mapping[previous_joypad_string] = game_key;
 	int index = Savegame::JOYPAD_ACTION_KEY + game_key - 1;
-	savegame->set_string(index, previous_joypad_string);
+	savegame.set_string(index, previous_joypad_string);
       }
       else {
 	joypad_mapping.erase(previous_joypad_string);
       }
       joypad_mapping[joypad_string] = key_to_customize;
       int index = Savegame::JOYPAD_ACTION_KEY + key_to_customize - 1;
-      savegame->set_string(index, joypad_string);
+      savegame.set_string(index, joypad_string);
 
       keys_pressed[key_to_customize - 1] = true;
     }
@@ -382,14 +382,14 @@ void GameControls::joypad_axis_moved(int axis, int state) {
 	  // this axis movement was already assigned to a game key
 	  joypad_mapping[previous_joypad_string] = game_key;
 	  int index = Savegame::JOYPAD_ACTION_KEY + game_key - 1;
-	  savegame->set_string(index, previous_joypad_string);
+	  savegame.set_string(index, previous_joypad_string);
 	}
 	else {
 	  joypad_mapping.erase(previous_joypad_string);
 	}
 	joypad_mapping[joypad_string] = key_to_customize;
 	int index = Savegame::JOYPAD_ACTION_KEY + key_to_customize - 1;
-	savegame->set_string(index, joypad_string);
+	savegame.set_string(index, joypad_string);
 
 	keys_pressed[key_to_customize - 1] = true;
       }
@@ -535,14 +535,14 @@ void GameControls::joypad_hat_moved(int hat, int value) {
 	  // this hat movement was already assigned to a game key
 	  joypad_mapping[previous_joypad_string] = game_key;
 	  int index = Savegame::JOYPAD_ACTION_KEY + game_key - 1;
-	  savegame->set_string(index, previous_joypad_string);
+	  savegame.set_string(index, previous_joypad_string);
 	}
 	else {
 	  joypad_mapping.erase(previous_joypad_string);
 	}
 	joypad_mapping[joypad_string] = key_to_customize;
 	int index = Savegame::JOYPAD_ACTION_KEY + key_to_customize - 1;
-	savegame->set_string(index, joypad_string);
+	savegame.set_string(index, joypad_string);
 
 	keys_pressed[key_to_customize - 1] = true;
       }
@@ -565,7 +565,7 @@ void GameControls::game_key_pressed(GameKey key) {
   }
 
   keys_pressed[index] = true;
-  game->key_pressed(key);
+  game.key_pressed(key);
 }
 
 /**
@@ -583,7 +583,7 @@ void GameControls::game_key_released(GameKey key) {
   }
 
   keys_pressed[index] = false;
-  game->key_released(key);
+  game.key_released(key);
 }
 
 

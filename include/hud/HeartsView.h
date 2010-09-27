@@ -46,8 +46,8 @@ class HeartsView: public HudElement {
 
   public:
 
-    HeartsView(Game *game, int x, int y);
-    HeartsView(Equipment *equipment, int x, int y);
+    HeartsView(Game &game, int x, int y);
+    HeartsView(Equipment &equipment, int x, int y);
     ~HeartsView();
     void create();
 

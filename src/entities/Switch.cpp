@@ -80,7 +80,7 @@ Switch::~Switch() {
  * @param y y coordinate of the entity
  * @return the instance created
  */
-MapEntity * Switch::parse(Game *game, std::istream &is, Layer layer, int x, int y) {
+MapEntity* Switch::parse(Game &game, std::istream &is, Layer layer, int x, int y) {
 
   std::string name;
   int subtype, needs_block, disabled_when_leaving;

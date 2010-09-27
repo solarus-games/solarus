@@ -15,7 +15,6 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "Savegame.h"
-#include "Equipment.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/InputEvent.h"
 #include "lowlevel/IniFile.h"
@@ -26,10 +25,8 @@
  * @brief Creates a savegame with a specified file name, existing or not.
  * @param file_name name of the savegame file (can be a new file), relative to the savegames directory
  */
-Savegame::Savegame(const std::string &file_name) {
-
-  this->file_name = file_name;
-  this->equipment = new Equipment(this);
+Savegame::Savegame(const std::string &file_name):
+  file_name(file_name), equipment(*this) {
 
   if (!FileTools::data_file_exists(file_name)) {
     // this save slot is free
@@ -68,20 +65,19 @@ Savegame::Savegame(const std::string &file_name) {
  * it is not saved in its current state.
  * @param other the savegame to copy
  */
-Savegame::Savegame(Savegame *other) {
+Savegame::Savegame(const Savegame &other):
 
-  this->empty = other->empty;
-  this->file_name = other->file_name;
-  this->saved_data = other->saved_data;
+  empty(other.empty),
+  file_name(other.file_name),
+  saved_data(other.saved_data),
+  equipment(*this) {
 
-  this->equipment = new Equipment(this);
 }
 
 /**
  * @brief Destructor.
  */
 Savegame::~Savegame() {
-  delete equipment;
 }
 
 /**
@@ -121,7 +117,7 @@ void Savegame::set_initial_values() {
       "destination point where the hero should be placed on the initial map.");
 
   // the equipment may give some initial items
-  equipment->set_initial_items();
+  equipment.set_initial_items();
 
   set_integer(STARTING_MAP, starting_map_id);
   set_string(STARTING_POINT, starting_destination_point_name);
@@ -201,7 +197,7 @@ const std::string& Savegame::get_file_name() {
  * @brief Returns the player's equipment corresponding to this savegame.
  * @return the equipment
  */
-Equipment * Savegame::get_equipment() {
+Equipment& Savegame::get_equipment() {
   return equipment;
 }
 

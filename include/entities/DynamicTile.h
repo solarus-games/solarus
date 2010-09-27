@@ -46,7 +46,7 @@ class DynamicTile: public MapEntity {
     static CreationFunction parse;
 
     EntityType get_type();
-    void set_map(Map *map);
+    void set_map(Map &map);
     bool is_obstacle_for(MapEntity *other);
     void display_on_map();
     void update();

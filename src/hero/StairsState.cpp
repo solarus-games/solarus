@@ -74,12 +74,12 @@ void Hero::StairsState::start(State *previous_state) {
   // sprites and sound
   sprites->set_animation_walking_normal();
   sprites->set_animation_direction((path[0] - '0') / 2);
-  game->get_keys_effect()->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
+  game->get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
 
   if (stairs->is_inside_floor()) {
     if (way == Stairs::NORMAL_WAY) {
       // low layer to intermediate layer: change the layer now
-      map->get_entities()->set_entity_layer(hero, LAYER_INTERMEDIATE);
+      map->get_entities().set_entity_layer(hero, LAYER_INTERMEDIATE);
     }
   }
   else {
@@ -120,7 +120,7 @@ void Hero::StairsState::update() {
     if (hero->get_movement()->is_finished()) {
 
       if (way == Stairs::REVERSE_WAY) {
-	map->get_entities()->set_entity_layer(hero, LAYER_LOW);
+	map->get_entities().set_entity_layer(hero, LAYER_LOW);
       }
       hero->clear_movement();
       hero->set_state(new FreeState(hero));

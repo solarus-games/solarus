@@ -74,7 +74,7 @@ Teletransporter::~Teletransporter() {
  * @param y y coordinate of the entity
  * @return the instance created
  */
-MapEntity * Teletransporter::parse(Game *game, std::istream &is, Layer layer, int x, int y) {
+MapEntity* Teletransporter::parse(Game &game, std::istream &is, Layer layer, int x, int y) {
 	
   int width, height, subtype, transition_style;
   MapId destination_map_id;
@@ -97,7 +97,7 @@ MapEntity * Teletransporter::parse(Game *game, std::istream &is, Layer layer, in
  * @brief Sets the map.
  * @param map the map
  */
-void Teletransporter::set_map(Map *map) {
+void Teletransporter::set_map(Map &map) {
 
   MapEntity::set_map(map);
 
@@ -109,13 +109,13 @@ void Teletransporter::set_map(Map *map) {
     if (get_width() == 16 && x == -16) {
       destination_side = 0;
     }
-    else if (get_width() == 16 && x == map->get_width()) {
+    else if (get_width() == 16 && x == map.get_width()) {
       destination_side = 2;
     }
     else if (get_height() == 16 && y == -16) {
       destination_side = 3;
     }
-    else if (get_height() == 16 && y == map->get_height()) {
+    else if (get_height() == 16 && y == map.get_height()) {
       destination_side = 1;
     }
     else {

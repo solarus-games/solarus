@@ -66,7 +66,7 @@ class Teletransporter: public Detector {
     static CreationFunction parse;
 
     EntityType get_type();
-    void set_map(Map *map);
+    void set_map(Map &map);
 
     bool is_obstacle_for(MapEntity *other);
     bool test_collision_custom(MapEntity *entity);

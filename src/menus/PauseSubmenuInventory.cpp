@@ -71,7 +71,7 @@ static const std::string item_names[] = {
  * @param pause_menu the pause menu object
  * @param game the game
  */
-PauseSubmenuInventory::PauseSubmenuInventory(PauseMenu *pause_menu, Game *game):
+PauseSubmenuInventory::PauseSubmenuInventory(PauseMenu &pause_menu, Game &game):
   PauseSubmenu(pause_menu, game) {
 
   cursor_sprite = new Sprite("menus/pause_cursor");
@@ -81,15 +81,15 @@ PauseSubmenuInventory::PauseSubmenuInventory(PauseMenu *pause_menu, Game *game):
 
     // get the item, its counter property and the possession state
     const std::string &item_name = item_names[k];
-    int variant = equipment->get_item_variant(item_name);
-    ItemProperties *item_properties = equipment->get_item_properties(item_name);
+    int variant = equipment.get_item_variant(item_name);
+    ItemProperties &item_properties = equipment.get_item_properties(item_name);
 
-    if (variant != 0 && item_properties->has_counter()) {
+    if (variant != 0 && item_properties.has_counter()) {
 
       // if the player has the item and this item has an amount, we show a counter
 
-      int amount = equipment->get_item_amount(item_name);
-      int maximum = equipment->get_item_maximum(item_name);
+      int amount = equipment.get_item_amount(item_name);
+      int maximum = equipment.get_item_maximum(item_name);
       int x = 60 + (k % 7) * 32;
       int y = 81 + (k / 7) * 32;
 
@@ -122,7 +122,7 @@ PauseSubmenuInventory::PauseSubmenuInventory(PauseMenu *pause_menu, Game *game):
   }
 
   // initialize the cursor
-  int index = savegame->get_integer(Savegame::INVENTORY_LAST_ITEM_INDEX);
+  int index = savegame.get_integer(Savegame::INVENTORY_LAST_ITEM_INDEX);
   int row = index / 7;
   int column = index % 7;
   set_cursor_position(row, column);
@@ -140,7 +140,7 @@ PauseSubmenuInventory::~PauseSubmenuInventory() {
     finish_assigning_item();
   }
 
-  game->get_keys_effect()->set_item_keys_enabled(true);
+  game.get_keys_effect().set_item_keys_enabled(true);
 
   // free the memory
   delete cursor_sprite;
@@ -166,21 +166,21 @@ void PauseSubmenuInventory::set_cursor_position(int row, int column) {
   cursor_column = column;
 
   int index = row * 7 + column;
-  savegame->set_integer(Savegame::INVENTORY_LAST_ITEM_INDEX, index);
+  savegame.set_integer(Savegame::INVENTORY_LAST_ITEM_INDEX, index);
 
   // update the caption text, show or hide the action icon
-  KeysEffect *keys_effect = game->get_keys_effect();
+  KeysEffect &keys_effect = game.get_keys_effect();
   const std::string item_name = item_names[index];
-  int variant = equipment->get_item_variant(item_name);
+  int variant = equipment.get_item_variant(item_name);
 
   set_caption_text(caption_strings[index]);
   if (variant != 0) {
-    keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_INFO);
-    keys_effect->set_item_keys_enabled(equipment->get_item_properties(item_name)->can_be_assigned());
+    keys_effect.set_action_key_effect(KeysEffect::ACTION_KEY_INFO);
+    keys_effect.set_item_keys_enabled(equipment.get_item_properties(item_name).can_be_assigned());
   }
   else {
-    keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
-    keys_effect->set_item_keys_enabled(false);
+    keys_effect.set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
+    keys_effect.set_item_keys_enabled(false);
   }
 }
 
@@ -205,7 +205,7 @@ int PauseSubmenuInventory::get_selected_index() {
  */
 bool PauseSubmenuInventory::is_item_selected() {
   
-  return equipment->has_item(item_names[get_selected_index()]);
+  return equipment.has_item(item_names[get_selected_index()]);
 }
 
 /**
@@ -214,12 +214,12 @@ bool PauseSubmenuInventory::is_item_selected() {
  */
 void PauseSubmenuInventory::key_pressed(GameControls::GameKey key) {
 
-  KeysEffect *keys_effect = game->get_keys_effect();
+  KeysEffect &keys_effect = game.get_keys_effect();
 
   switch (key) {
 
   case GameControls::ACTION:
-    if (keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_INFO) {
+    if (keys_effect.get_action_key_effect() == KeysEffect::ACTION_KEY_INFO) {
       show_info_message();
     }
     break;
@@ -238,7 +238,7 @@ void PauseSubmenuInventory::key_pressed(GameControls::GameKey key) {
 
   case GameControls::LEFT:
     if (cursor_column == 0) {
-      pause_menu->show_left_submenu();
+      pause_menu.show_left_submenu();
     }
     else {
       play_cursor_sound();
@@ -248,7 +248,7 @@ void PauseSubmenuInventory::key_pressed(GameControls::GameKey key) {
 
   case GameControls::RIGHT:
     if (cursor_column == 6) {
-      pause_menu->show_right_submenu();
+      pause_menu.show_right_submenu();
     }
     else {
       play_cursor_sound();
@@ -314,7 +314,7 @@ void PauseSubmenuInventory::display(Surface *destination) {
       // get the possession state of this item
       const std::string item_name = item_names[k];
 
-      if (equipment->has_item(item_name)) {
+      if (equipment.has_item(item_name)) {
 
 	// the player has this item, display the variant he has
 	sprites[k]->display(destination, dst_xy.get_x(), dst_xy.get_y());
@@ -351,14 +351,14 @@ void PauseSubmenuInventory::display(Surface *destination) {
 void PauseSubmenuInventory::show_info_message() {
 
   const std::string &item_name = item_names[get_selected_index()];
-  int variant = equipment->get_item_variant(item_name);
+  int variant = equipment.get_item_variant(item_name);
 
   std::ostringstream oss;
   oss << "_item_description." << item_name << '.' << variant;
 
   DialogBox::VerticalPosition vertical_position = (cursor_row >= 2) ? DialogBox::POSITION_TOP : DialogBox::POSITION_BOTTOM;
 
-  game->get_dialog_box()->start_dialog(oss.str(), vertical_position);
+  game.get_dialog_box().start_dialog(oss.str(), vertical_position);
 }
 
 /**
@@ -376,7 +376,7 @@ void PauseSubmenuInventory::assign_item(int slot) {
   const std::string &item_name = item_names[index];
 
   // if this item is not assignable, do nothing
-  if (!equipment->get_item_properties(item_name)->can_be_assigned()) {
+  if (!equipment.get_item_properties(item_name).can_be_assigned()) {
     return;
   }
 
@@ -388,7 +388,7 @@ void PauseSubmenuInventory::assign_item(int slot) {
   // memorize this item
   this->item_assigned_name = item_name;
   this->item_assigned_sprite = sprites[index];
-  this->item_assigned_variant = equipment->has_item(item_assigned_name);
+  this->item_assigned_variant = equipment.has_item(item_assigned_name);
   this->item_assigned_destination = slot;
 
   // play the sound
@@ -423,13 +423,13 @@ void PauseSubmenuInventory::finish_assigning_item() {
 
   // if the item to assign is already assigned to the other icon, switch the two items
   int slot = item_assigned_destination;
-  const std::string &current_item_name = equipment->get_item_assigned(slot);
-  const std::string &other_item_name = equipment->get_item_assigned(1 - slot);
+  const std::string &current_item_name = equipment.get_item_assigned(slot);
+  const std::string &other_item_name = equipment.get_item_assigned(1 - slot);
 
   if (other_item_name == item_assigned_name) {
-    equipment->set_item_assigned(1 - slot, current_item_name);
+    equipment.set_item_assigned(1 - slot, current_item_name);
   }
-  equipment->set_item_assigned(slot, item_assigned_name);
+  equipment.set_item_assigned(slot, item_assigned_name);
 
   delete item_assigned_movement;
   item_assigned_movement = NULL;

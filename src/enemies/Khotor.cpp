@@ -61,9 +61,9 @@ void Khotor::initialize() {
   set_movement(new RandomWalkMovement(3));
 
   // chain and ball
-  chain = (ChainAndBall*) create(game, CHAIN_AND_BALL, RANK_NORMAL, -1, "chain_and_ball", get_layer(),
+  chain = (ChainAndBall*) create(*game, CHAIN_AND_BALL, RANK_NORMAL, -1, "chain_and_ball", get_layer(),
       get_x(), get_y(), 0, NULL);
-  map->get_entities()->add_entity(chain);
+  map->get_entities().add_entity(chain);
 }
 
 /**

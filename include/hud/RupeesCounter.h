@@ -43,7 +43,7 @@ class RupeesCounter: public HudElement {
 
   public:
 
-    RupeesCounter(Game *game, int x, int y);
+    RupeesCounter(Game &game, int x, int y);
     ~RupeesCounter();
 
     void update();

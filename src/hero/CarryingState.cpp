@@ -53,8 +53,7 @@ void Hero::CarryingState::start(State *previous_state) {
     sprites->set_lifted_item(carried_item);
 
     // action icon "throw"
-    KeysEffect *keys_effect = game->get_keys_effect();
-    keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_THROW);
+    game->get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_THROW);
   }
 }
 
@@ -67,7 +66,7 @@ void Hero::CarryingState::stop(State *next_state) {
   PlayerMovementState::stop(next_state);
 
   sprites->set_lifted_item(NULL);
-  game->get_keys_effect()->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
+  game->get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
 
   if (carried_item != NULL && next_state->can_throw_item()) {
     throw_item();
@@ -82,7 +81,7 @@ void Hero::CarryingState::stop(State *next_state) {
  * @brief Changes the map.
  * @param map the new map
  */
-void Hero::CarryingState::set_map(Map *map) {
+void Hero::CarryingState::set_map(Map &map) {
 
   PlayerMovementState::set_map(map);
 
@@ -123,9 +122,9 @@ void Hero::CarryingState::update() {
  */
 void Hero::CarryingState::action_key_pressed() {
 
-  KeysEffect *keys_effect = game->get_keys_effect();
+  KeysEffect &keys_effect = game->get_keys_effect();
 
-  if (keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_THROW) {
+  if (keys_effect.get_action_key_effect() == KeysEffect::ACTION_KEY_THROW) {
     throw_item();
     hero->set_state(new FreeState(hero));
   }
@@ -140,7 +139,7 @@ void Hero::CarryingState::action_key_pressed() {
 void Hero::CarryingState::throw_item() {
 
   carried_item->throw_item(sprites->get_animation_direction());
-  map->get_entities()->add_entity(carried_item);
+  map->get_entities().add_entity(carried_item);
   carried_item = NULL;
 }
 

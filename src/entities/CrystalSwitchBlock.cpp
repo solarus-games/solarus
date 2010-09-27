@@ -35,13 +35,13 @@
  * @param height height of the block (the pattern can be repeated)
  * @param subtype subtype of raised block
  */
-CrystalSwitchBlock::CrystalSwitchBlock(Game *game, Layer layer, int x, int y, int width, int height, Subtype subtype):
+CrystalSwitchBlock::CrystalSwitchBlock(Game &game, Layer layer, int x, int y, int width, int height, Subtype subtype):
   Detector(COLLISION_RECTANGLE, "", layer, x, y, width, height),
   subtype(subtype) {
 
   create_sprite("entities/crystal_switch_block");
 
-  this->orange_raised = game->get_crystal_switch_state();
+  this->orange_raised = game.get_crystal_switch_state();
 
   if (subtype == ORANGE) {
     get_sprite()->set_current_animation(orange_raised ? "orange_raised" : "orange_lowered");
@@ -71,7 +71,7 @@ CrystalSwitchBlock::~CrystalSwitchBlock() {
  * @param y y coordinate of the entity
  * @return the instance created
  */
-MapEntity * CrystalSwitchBlock::parse(Game *game, std::istream &is, Layer layer, int x, int y) {
+MapEntity* CrystalSwitchBlock::parse(Game &game, std::istream &is, Layer layer, int x, int y) {
 
   int width, height, subtype;
 
@@ -190,7 +190,7 @@ bool CrystalSwitchBlock::try_jump(Hero *hero, const Rectangle &collision_box,
 
   // jump if there is no collision and no other raised crystal switch blocks
   if (!map->test_collision_with_obstacles(get_layer(), collision_box, hero)
-      && !map->get_entities()->overlaps_raised_blocks(get_layer(), collision_box)) {
+      && !map->get_entities().overlaps_raised_blocks(get_layer(), collision_box)) {
 
     hero->start_jumping(jump_direction, jump_length, true, false);
     Sound::play("hero_lands");

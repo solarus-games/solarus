@@ -119,7 +119,7 @@ InteractiveEntity::~InteractiveEntity() {
  * @param y y coordinate of the entity
  * @return the instance created
  */
-MapEntity * InteractiveEntity::parse(Game *game, std::istream &is, Layer layer, int x, int y) {
+MapEntity* InteractiveEntity::parse(Game &game, std::istream &is, Layer layer, int x, int y) {
 
   int direction, subtype;
   std::string name;
@@ -235,14 +235,14 @@ void InteractiveEntity::notify_collision(MapEntity *entity_overlapping, Collisio
   if (entity_overlapping->is_hero()) {
 
     Hero *hero = (Hero*) entity_overlapping;
-    KeysEffect *keys_effect = game->get_keys_effect();
+    KeysEffect &keys_effect = game->get_keys_effect();
 
-    if (keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
+    if (keys_effect.get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
 	&& hero->is_free()
 	&& (subtype != SIGN || hero->is_facing_direction4(1))) { // TODO move to future class Sign
 
       // we show the action icon
-      keys_effect->set_action_key_effect(action_key_effects[subtype]);
+      keys_effect.set_action_key_effect(action_key_effects[subtype]);
     }
   }
 }
@@ -255,11 +255,11 @@ void InteractiveEntity::notify_collision(MapEntity *entity_overlapping, Collisio
  */
 void InteractiveEntity::action_key_pressed() {
 
-  KeysEffect *keys_effect = game->get_keys_effect();
+  KeysEffect &keys_effect = game->get_keys_effect();
   Hero &hero = game->get_hero();
 
   if (hero.is_free()) {
-    keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
+    keys_effect.set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
 
     // for a place with water: start the dialog
     if (subtype == WATER_FOR_BOTTLE) {
@@ -275,7 +275,7 @@ void InteractiveEntity::action_key_pressed() {
 
       // start the message or call the script
       if (message_to_show != "_none") {
-	game->get_dialog_box()->start_dialog(message_to_show);
+	game->get_dialog_box().start_dialog(message_to_show);
       }
       else {
 	// there is no message specified: we call the script
@@ -415,12 +415,12 @@ void InteractiveEntity::notify_position_changed() {
     }
 
     Hero &hero = game->get_hero();
-    KeysEffect *keys_effect = game->get_keys_effect();
+    KeysEffect &keys_effect = game->get_keys_effect();
     if (hero.get_facing_entity() == this &&
-	keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_SPEAK &&
+	keys_effect.get_action_key_effect() == KeysEffect::ACTION_KEY_SPEAK &&
 	!hero.is_facing_point_in(get_bounding_box())) {
 
-      keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
+      keys_effect.set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
     }
   }
 }

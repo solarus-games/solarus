@@ -38,7 +38,7 @@ const Rectangle HeartsView::fraction_heart_positions[3] = {
  * @param x x coordinate of the top-left corner of this HUD element on the destination surface
  * @param y y coordinate of the top-left corner of this HUD element on the destination surface
  */
-HeartsView::HeartsView(Game *game, int x, int y):
+HeartsView::HeartsView(Game &game, int x, int y):
   HudElement(game, x, y, 90, 18) {
 
   create();
@@ -50,7 +50,7 @@ HeartsView::HeartsView(Game *game, int x, int y):
  * @param x x coordinate of the top-left corner of this HUD element on the destination surface
  * @param y y coordinate of the top-left corner of this HUD element on the destination surface
  */
-HeartsView::HeartsView(Equipment *equipment, int x, int y):
+HeartsView::HeartsView(Equipment &equipment, int x, int y):
   HudElement(equipment, x, y, 90, 18) {
 
   create();

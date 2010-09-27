@@ -38,7 +38,7 @@ const std::string ItemIcon::background_file_names[2] = {
  * @param x x position of the icon on the screen
  * @param y y position of the icon on the screen
  */
-ItemIcon::ItemIcon(Game *game, int slot, int x, int y):
+ItemIcon::ItemIcon(Game &game, int slot, int x, int y):
   HudElement(game, x, y, 32, 28) {
 
   this->slot = slot;
@@ -73,7 +73,7 @@ void ItemIcon::update() {
 
   bool need_rebuild = false;
 
-  KeysEffect *keys_effect = game->get_keys_effect();
+  KeysEffect &keys_effect = game->get_keys_effect();
 
   // item assigned
   const std::string &current_item = equipment->get_item_assigned(slot);
@@ -96,7 +96,7 @@ void ItemIcon::update() {
     }
 
     // counter index
-    int counter_index = equipment->get_item_properties(current_item)->get_counter_savegame_variable();
+    int counter_index = equipment->get_item_properties(current_item).get_counter_savegame_variable();
     if (counter_index != -1) {
 
       int current_counter_value = equipment->get_item_amount(current_item);
@@ -117,10 +117,10 @@ void ItemIcon::update() {
   }
 
   // icon opacity
-  if (keys_effect->are_item_keys_enabled() && get_opacity() == 128) {
+  if (keys_effect.are_item_keys_enabled() && get_opacity() == 128) {
     set_opacity(255);
   }
-  else if (!keys_effect->are_item_keys_enabled() && get_opacity() == 255) {
+  else if (!keys_effect.are_item_keys_enabled() && get_opacity() == 255) {
     set_opacity(128);
   }
 

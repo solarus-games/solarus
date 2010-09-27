@@ -70,6 +70,7 @@ Bugs :
 - Rendre Movement abstrait et faire une classe pour le movement rectiligne, afin d'éviter que les sous-classes violent les contrats de Movement
 - Remplacer les cast
 - Quand on crée une sauvegarde, laisser le curseur sur celle-ci
+- Passer les Treasure par valeur en faisant des copies au lieu de gérer leur mémoire manuellement
 
 
 A venir :

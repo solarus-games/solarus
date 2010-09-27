@@ -92,10 +92,7 @@ void SelectionMenuChooseMode::update() {
   if (menu->is_transition_finished()) {
 
     Savegame *savegame = menu->get_savegame(menu->get_cursor_position() - 1);
-    Savegame *savegame_copy = new Savegame(savegame->get_file_name());
-    // because the first one will be deleted
-
-    menu->start_game(savegame_copy);
+    menu->start_game(*savegame);
   }
 }
 

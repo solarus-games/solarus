@@ -64,7 +64,7 @@ Stairs::~Stairs() {
  * @param y y coordinate of the entity
  * @return the instance created
  */
-MapEntity * Stairs::parse(Game *game, std::istream &is, Layer layer, int x, int y) {
+MapEntity* Stairs::parse(Game &game, std::istream &is, Layer layer, int x, int y) {
 
   int direction, subtype;
   FileTools::read(is, direction);

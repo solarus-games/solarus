@@ -28,12 +28,12 @@
  * @param equipment the equipment object that stores all item properties
  * @param ini the ini file to parse
  */
-ItemProperties::ItemProperties(Equipment *equipment, IniFile *ini) {
+ItemProperties::ItemProperties(Equipment &equipment, IniFile &ini) {
 
-  name = ini->get_group();
-  savegame_variable = ini->get_integer_value("savegame_variable", -1);
-  nb_variants = ini->get_integer_value("nb_variants", 1);
-  initial_variant = ini->get_integer_value("initial_variant", 0);
+  name = ini.get_group();
+  savegame_variable = ini.get_integer_value("savegame_variable", -1);
+  nb_variants = ini.get_integer_value("nb_variants", 1);
+  initial_variant = ini.get_integer_value("initial_variant", 0);
 
   amounts = new int[nb_variants + 1];
   amounts[0] = 0;
@@ -43,32 +43,32 @@ ItemProperties::ItemProperties(Equipment *equipment, IniFile *ini) {
 
     std::ostringstream oss;
     oss << "amount_" << i;
-    amounts[i] = ini->get_integer_value(oss.str(), 1);
+    amounts[i] = ini.get_integer_value(oss.str(), 1);
     oss.str("");
     oss << "probability_" << i;
-    probabilities[i] = ini->get_integer_value(oss.str(), 0);
+    probabilities[i] = ini.get_integer_value(oss.str(), 0);
   }
-  amounts[1] = ini->get_integer_value("amount", amounts[1]);
-  probabilities[1] = ini->get_integer_value("probability", probabilities[1]);
+  amounts[1] = ini.get_integer_value("amount", amounts[1]);
+  probabilities[1] = ini.get_integer_value("probability", probabilities[1]);
 
-  allow_assigned = ini->get_boolean_value("can_be_assigned", false);
-  counter_savegame_variable = ini->get_integer_value("counter", -1);
-  fixed_limit = ini->get_integer_value("limit", 0);
+  allow_assigned = ini.get_boolean_value("can_be_assigned", false);
+  counter_savegame_variable = ini.get_integer_value("counter", -1);
+  fixed_limit = ini.get_integer_value("limit", 0);
   item_limiting = "";
-  item_limited = ini->get_string_value("limit_for_counter", "");
+  item_limited = ini.get_string_value("limit_for_counter", "");
   if (item_limited.size() != 0
       && item_limited != "life"
       && item_limited != "money"
       && item_limited != "magic") {
-    equipment->get_item_properties(item_limited)->item_limiting = this->name;
+    equipment.get_item_properties(item_limited).item_limiting = this->name;
   }
-  item_counter_changed = ini->get_string_value("changes_counter", "");
-  disappears = ini->get_boolean_value("can_disappear", false);
-  brandish_when_picked = ini->get_boolean_value("brandish_when_picked", true);
-  sound_when_picked = ini->get_string_value("sound_when_picked", "picked_item");
-  sound_when_brandished = ini->get_string_value("sound_when_brandished", "treasure");
+  item_counter_changed = ini.get_string_value("changes_counter", "");
+  disappears = ini.get_boolean_value("can_disappear", false);
+  brandish_when_picked = ini.get_boolean_value("brandish_when_picked", true);
+  sound_when_picked = ini.get_string_value("sound_when_picked", "picked_item");
+  sound_when_brandished = ini.get_string_value("sound_when_brandished", "treasure");
  
-  const std::string &shadow_name = ini->get_string_value("shadow", "big");
+  const std::string &shadow_name = ini.get_string_value("shadow", "big");
 
   std::map<std::string, ShadowSize> shadows;
   shadows["none"] = SHADOW_NONE;
@@ -90,7 +90,7 @@ ItemProperties::~ItemProperties() {
  * @brief Returns the name identifying the item.
  * @return the name of the item
  */
-const std::string & ItemProperties::get_name() {
+const std::string& ItemProperties::get_name() {
   return name;
 }
 
@@ -167,7 +167,7 @@ int ItemProperties::get_fixed_limit() {
  * @brief Returns the name of an item that sets the limit to the counter of this item.
  * @return the name of the item that sets the limit of the counter of this item, or an empty string
  */
-const std::string & ItemProperties::get_item_limiting() {
+const std::string& ItemProperties::get_item_limiting() {
   return item_limiting;
 }
 
@@ -178,7 +178,7 @@ const std::string & ItemProperties::get_item_limiting() {
  *
  * @return the name of the item whose counter is limited by this item, or an empty string
  */
-const std::string & ItemProperties::get_item_limited() {
+const std::string& ItemProperties::get_item_limited() {
   return item_limited;
 }
 
@@ -189,7 +189,7 @@ const std::string & ItemProperties::get_item_limited() {
  *
  * @return the name of the item whose counter is changed by this item, or an empty string
  */
-const std::string & ItemProperties::get_item_counter_changed() {
+const std::string& ItemProperties::get_item_counter_changed() {
   return item_counter_changed;
 }
 
@@ -247,7 +247,7 @@ bool ItemProperties::is_brandished_when_picked() {
  * @brief Returns the sound to play when this item is picked on the ground.
  * @return the sound to play when this item is picked
  */
-const SoundId & ItemProperties::get_sound_when_picked() {
+const SoundId& ItemProperties::get_sound_when_picked() {
   return sound_when_picked;
 }
 
@@ -255,7 +255,7 @@ const SoundId & ItemProperties::get_sound_when_picked() {
  * @brief Returns the sound to play when this item is brandished.
  * @return the sound to play when this item is brandished
  */
-const SoundId & ItemProperties::get_sound_when_brandished() {
+const SoundId& ItemProperties::get_sound_when_brandished() {
   return sound_when_brandished;
 }
 

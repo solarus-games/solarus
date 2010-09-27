@@ -87,13 +87,13 @@ void Hero::PullingState::update() {
   }
   else { // he is not moving an entity
 
-    GameControls *controls = game->get_controls();
+    GameControls &controls = game->get_controls();
 
-    int wanted_direction8 = controls->get_wanted_direction8();
+    int wanted_direction8 = controls.get_wanted_direction8();
     int opposite_direction8 = (sprites->get_animation_direction8() + 4) % 8;
 
     // stop pulling if the action key is released or if there is no more obstacle
-    if (!controls->is_key_pressed(GameControls::ACTION)
+    if (!controls.is_key_pressed(GameControls::ACTION)
 	|| !hero->is_facing_obstacle()) {
       hero->set_state(new FreeState(hero));
     }

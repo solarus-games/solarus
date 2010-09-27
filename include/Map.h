@@ -108,7 +108,7 @@ class Map {
 
     // map properties
     MapId get_id();
-    Tileset *get_tileset();
+    Tileset& get_tileset();
     int get_world_number();
     bool is_in_dungeon();
     bool is_in_outside_world();
@@ -124,7 +124,7 @@ class Map {
     int get_height8();
 
     // camera
-    Surface *get_visible_surface();
+    Surface* get_visible_surface();
     const Rectangle &get_camera_position();
     void move_camera(int x, int y, int speed);
     void restore_camera();
@@ -133,20 +133,20 @@ class Map {
 
     // loading
     bool is_loaded();
-    void load(Game *game);
+    void load(Game &game);
     void unload();
     Game& get_game();
     Scripts& get_scripts();
     void notify_opening_transition_finished();
 
     // entities
-    MapEntities *get_entities();
+    MapEntities& get_entities();
 
     // presence of the hero
     bool is_started();
-    void start(Game *game);
+    void start(Game &game);
     void leave();
-    void set_welcome_message(std::string welcome_message_id);
+    void set_welcome_message(const std::string &welcome_message_id);
 
     // current destination point
     void set_destination_point(const std::string &destination_point_name);

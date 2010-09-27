@@ -30,8 +30,8 @@ class Tile: public MapEntity {
 
   private:
 
-    int tile_pattern_id;       /**< id of the tile pattern */
-    TilePattern *tile_pattern; /**< pattern of the tile: instance of SimpleTile or AnimatedTile */
+    int tile_pattern_id;		/**< id of the tile pattern */
+    TilePattern *tile_pattern;		/**< pattern of the tile: instance of SimpleTile or AnimatedTile */
 
   public:
 
@@ -40,9 +40,9 @@ class Tile: public MapEntity {
     static CreationFunction parse;
 
     EntityType get_type();
-    void set_map(Map *map);
+    void set_map(Map &map);
     void display_on_map();
-    TilePattern *get_tile_pattern();
+    TilePattern& get_tile_pattern();
 };
 
 #endif

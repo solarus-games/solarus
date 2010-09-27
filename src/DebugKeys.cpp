@@ -25,7 +25,7 @@
  * @brief Constructor.
  * @param solarus the application object
  */
-DebugKeys::DebugKeys(Solarus *solarus):
+DebugKeys::DebugKeys(Solarus &solarus):
   solarus(solarus), game(NULL) {
 }
 
@@ -38,7 +38,7 @@ DebugKeys::~DebugKeys() {
 
 /**
  * @brief Sets the current game.
- * @param game the current game
+ * @param game the current game, or NULL if there is no game
  */
 void DebugKeys::set_game(Game *game) {
   this->game = game;
@@ -54,71 +54,71 @@ void DebugKeys::key_pressed(InputEvent::KeyboardKey key) {
   // don't consider the debug keys in release mode
 
   if (game != NULL) {
-    Equipment *equipment = game->get_equipment();
+    Equipment &equipment = game->get_equipment();
 
     switch (key) {
 
       case InputEvent::KEY_p:
-	equipment->add_life(2);
+	equipment.add_life(2);
 	break;
 
       case InputEvent::KEY_m:
-	equipment->remove_life(1);
+	equipment.remove_life(1);
 	break;
 
       case InputEvent::KEY_o:
-	equipment->add_money(23);
+	equipment.add_money(23);
 	break;
 
       case InputEvent::KEY_l:
-	equipment->remove_money(14);
+	equipment.remove_money(14);
 	break;
 
       case InputEvent::KEY_i:
-	equipment->add_magic(10);
+	equipment.add_magic(10);
 	break;
 
       case InputEvent::KEY_k:
-	equipment->remove_magic(4);
+	equipment.remove_magic(4);
 	break;
 
       case InputEvent::KEY_j:
-	if (!equipment->is_magic_decreasing()) {
-	  equipment->start_removing_magic(200);
+	if (!equipment.is_magic_decreasing()) {
+	  equipment.start_removing_magic(200);
 	}
 	else {
-	  equipment->stop_removing_magic();
+	  equipment.stop_removing_magic();
 	}
 	break;
 
       case InputEvent::KEY_t:
 	// quest-specific temporary code
-	equipment->add_item("bow", 1);
-	equipment->add_item("bottle_2", 6);
-	equipment->add_item("bombs_counter", 1);
-	equipment->add_item("boomerang", 1);
-	equipment->add_item("lamp", 1);
-	equipment->add_item("hookshot", 1);
-	equipment->add_item("pegasus_shoes", 1);
-	equipment->add_item("bottle_1", 1);
-	equipment->add_item("glove", 1);
-	equipment->add_item("pain_au_chocolat", 1);
-	equipment->add_item("croissant", 1);
-	equipment->add_item("red_key", 1);
-	equipment->add_item("clay_key", 1);
-	equipment->add_item("world_map", 1);
-	equipment->set_item_assigned(0, "boomerang");
-	equipment->set_item_assigned(1, "bottle_2");
+	equipment.add_item("bow", 1);
+	equipment.add_item("bottle_2", 6);
+	equipment.add_item("bombs_counter", 1);
+	equipment.add_item("boomerang", 1);
+	equipment.add_item("lamp", 1);
+	equipment.add_item("hookshot", 1);
+	equipment.add_item("pegasus_shoes", 1);
+	equipment.add_item("bottle_1", 1);
+	equipment.add_item("glove", 1);
+	equipment.add_item("pain_au_chocolat", 1);
+	equipment.add_item("croissant", 1);
+	equipment.add_item("red_key", 1);
+	equipment.add_item("clay_key", 1);
+	equipment.add_item("world_map", 1);
+	equipment.set_item_assigned(0, "boomerang");
+	equipment.set_item_assigned(1, "bottle_2");
 	break;
 
       case InputEvent::KEY_g:
-	equipment->add_item("arrow", 2);
+	equipment.add_item("arrow", 2);
 	break;
 
 	/*
 	   case InputEvent::KEY_SPACE:
 	// almost the feather, actually
-	if (game->get_keys_effect()->get_action_key_effect() == KeysEffect::ACTION_KEY_NONE) {
+	if (game->get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_NONE) {
 	Hero *hero = game->get_hero();
 	hero->start_jumping(hero->get_animation_direction() * 2, 40, true);
 	}
@@ -126,44 +126,44 @@ void DebugKeys::key_pressed(InputEvent::KeyboardKey key) {
 	*/
 
       case InputEvent::KEY_KP7:
-	equipment->set_max_magic(0);
+	equipment.set_max_magic(0);
 	break;
 
       case InputEvent::KEY_KP8:
-	equipment->set_max_magic(42);
+	equipment.set_max_magic(42);
 	break;
 
       case InputEvent::KEY_KP9:
-	equipment->set_max_magic(84);
+	equipment.set_max_magic(84);
 	break;
 
       case InputEvent::KEY_KP1:
-	equipment->set_ability("tunic", std::max(equipment->get_ability("tunic") - 1, 1));
+	equipment.set_ability("tunic", std::max(equipment.get_ability("tunic") - 1, 1));
 	game->get_hero().rebuild_equipment();
 	break;
 
       case InputEvent::KEY_KP4:
-	equipment->set_ability("tunic", std::min(equipment->get_ability("tunic") + 1, 3));
+	equipment.set_ability("tunic", std::min(equipment.get_ability("tunic") + 1, 3));
 	game->get_hero().rebuild_equipment();
 	break;
 
       case InputEvent::KEY_KP2:
-	equipment->set_ability("sword", std::max(equipment->get_ability("sword") - 1, 0));
+	equipment.set_ability("sword", std::max(equipment.get_ability("sword") - 1, 0));
 	game->get_hero().rebuild_equipment();
 	break;
 
       case InputEvent::KEY_KP5:
-	equipment->set_ability("sword", std::min(equipment->get_ability("sword") + 1, 4));
+	equipment.set_ability("sword", std::min(equipment.get_ability("sword") + 1, 4));
 	game->get_hero().rebuild_equipment();
 	break;
 
       case InputEvent::KEY_KP3:
-	equipment->set_ability("shield", std::max(equipment->get_ability("shield") - 1, 0));
+	equipment.set_ability("shield", std::max(equipment.get_ability("shield") - 1, 0));
 	game->get_hero().rebuild_equipment();
 	break;
 
       case InputEvent::KEY_KP6:
-	equipment->set_ability("shield", std::min(equipment->get_ability("shield") + 1, 3));
+	equipment.set_ability("shield", std::min(equipment.get_ability("shield") + 1, 3));
 	game->get_hero().rebuild_equipment();
 	break;
 
@@ -173,7 +173,7 @@ void DebugKeys::key_pressed(InputEvent::KeyboardKey key) {
   }
   else if (key == InputEvent::KEY_TABULATION) {
     // no game yet
-    solarus->skip_menus();
+    solarus.skip_menus();
   }
 #endif
 }
@@ -192,7 +192,7 @@ void DebugKeys::update() {
 
   if (InputEvent::is_shift_down()) {
     if (game != NULL && game->is_showing_message()) {
-      game->get_dialog_box()->show_all_now();
+      game->get_dialog_box().show_all_now();
     }
   }
 

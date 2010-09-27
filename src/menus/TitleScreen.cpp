@@ -32,7 +32,7 @@
  * @brief Creates a title screen.
  * @param solarus the Solarus object
  */
-TitleScreen::TitleScreen(Solarus *solarus):
+TitleScreen::TitleScreen(Solarus &solarus):
   Screen(solarus) {
 
   // go to phase 1
@@ -140,7 +140,7 @@ void TitleScreen::notify_event(InputEvent &event) {
   static const InputEvent::KeyboardKey keys[] = { InputEvent::KEY_SPACE, InputEvent::KEY_RETURN, InputEvent::KEY_NONE };
 
   if (event.is_keyboard_key_pressed(InputEvent::KEY_ESCAPE)) {
-    solarus->set_exiting();
+    solarus.set_exiting();
   }
   else if (current_phase == PHASE_TITLE
       && (event.is_joypad_button_pressed() || event.is_keyboard_key_pressed(keys))

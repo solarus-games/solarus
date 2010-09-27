@@ -51,7 +51,7 @@ class ShopItem: public Detector {
   public:
 
     ~ShopItem();
-    static ShopItem * create(Game *game, const std::string &name, Layer layer, int x, int y,
+    static ShopItem* create(Game &game, const std::string &name, Layer layer, int x, int y,
 	Treasure *treasure, int price, const MessageId &message_id);
     static CreationFunction parse;
 

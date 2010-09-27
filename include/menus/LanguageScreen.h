@@ -48,7 +48,7 @@ class LanguageScreen: public Screen {
   public:
 
     // creation and destruction
-    LanguageScreen(Solarus *solarus);
+    LanguageScreen(Solarus &solarus);
     ~LanguageScreen();
 
     // update and display

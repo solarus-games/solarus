@@ -36,8 +36,13 @@
  * @param hero the hero to control with this state
  */
 Hero::State::State(Hero *hero):
-  game(hero->get_game()), map(hero->get_map()), hero(hero), sprites(hero->get_sprites()),
-  suspended(false), when_suspended(0) {
+
+  game(&hero->get_game()),
+  map(&hero->get_map()),
+  hero(hero),
+  sprites(&hero->get_sprites()),
+  suspended(false),
+  when_suspended(0) {
 
 }
 
@@ -99,7 +104,7 @@ void Hero::State::update() {
  */
 void Hero::State::display_on_map() {
 
-  hero->get_sprites()->display_on_map();
+  hero->get_sprites().display_on_map();
 }
 
 /**
@@ -230,9 +235,9 @@ void Hero::State::action_key_released() {
  */
 void Hero::State::sword_key_pressed() {
 
-  KeysEffect *keys_effect = game->get_keys_effect();
+  KeysEffect &keys_effect = game->get_keys_effect();
   if (!hero->is_suspended()
-      && keys_effect->get_sword_key_effect() == KeysEffect::SWORD_KEY_SWORD
+      && keys_effect.get_sword_key_effect() == KeysEffect::SWORD_KEY_SWORD
       && can_start_sword()) {
 
     hero->set_state(new SwordSwingingState(hero));
@@ -265,11 +270,11 @@ void Hero::State::directional_key_released(int direction4) {
  */
 void Hero::State::item_key_pressed(int slot) {
 
-  Equipment *equipment = game->get_equipment();
-  const std::string item_name = equipment->get_item_assigned(slot);
+  Equipment &equipment = game->get_equipment();
+  const std::string item_name = equipment.get_item_assigned(slot);
 
-  if (equipment->get_item_properties(item_name)->can_be_assigned()
-      && equipment->has_item(item_name)
+  if (equipment.get_item_properties(item_name).can_be_assigned()
+      && equipment.has_item(item_name)
       && (item_name != hero->last_inventory_item_name || System::now() >= hero->can_use_inventory_item_date)
       && can_start_inventory_item()) {
 
@@ -291,9 +296,9 @@ void Hero::State::item_key_released(int slot) {
  *
  * @param map the new map
  */
-void Hero::State::set_map(Map *map) {
-  this->map = map;
-  this->game = &map->get_game(); // TODO store a reference instead
+void Hero::State::set_map(Map &map) {
+  this->map = &map;
+  this->game = &map.get_game(); // TODO store a reference instead
 }
 
 /**
@@ -626,7 +631,7 @@ void Hero::State::notify_attacked_enemy(EnemyAttack attack, Enemy *victim, int r
 int Hero::State::get_sword_damage_factor() {
 
   static const int sword_factors[] = {0, 1, 2, 4, 8};
-  int sword = game->get_equipment()->get_ability("sword");
+  int sword = game->get_equipment().get_ability("sword");
   return sword_factors[sword];
 }
 

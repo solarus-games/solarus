@@ -35,10 +35,10 @@ using std::list;
  * @param game the game
  * @param map the map
  */
-MapEntities::MapEntities(Game *game, Map *map):
+MapEntities::MapEntities(Game &game, Map &map):
   game(game),
   map(map),
-  hero(game->get_hero()),
+  hero(game.get_hero()),
   music_before_miniboss(Music::none) {
 
   Layer layer = hero.get_layer();
@@ -110,7 +110,7 @@ Obstacle MapEntities::get_obstacle_tile(Layer layer, int x, int y) {
 
 #if SOLARUS_DEBUG_LEVEL >= 2
   static const std::string error_message = "get_obstacle_tile(): invalid coordinates";
-  Debug::assert(!map->test_collision_with_border(x,y), error_message);
+  Debug::assert(!map.test_collision_with_border(x,y), error_message);
 #endif
 
   // optimization of: return obstacle_tiles[layer][(y / 8) * map_width8 + (x / 8)];
@@ -122,16 +122,16 @@ Obstacle MapEntities::get_obstacle_tile(Layer layer, int x, int y) {
  * @param layer the layer
  * @return the obstacle entities on that layer
  */
-list<MapEntity*> * MapEntities::get_obstacle_entities(Layer layer) {
-  return &obstacle_entities[layer];
+list<MapEntity*>& MapEntities::get_obstacle_entities(Layer layer) {
+  return obstacle_entities[layer];
 }
 
 /**
  * @brief Returns all detectors on the map.
  * @return the detectors
  */
-list<Detector*> * MapEntities::get_detectors() {
-  return &detectors;
+list<Detector*>& MapEntities::get_detectors() {
+  return detectors;
 }
 
 /**
@@ -139,8 +139,8 @@ list<Detector*> * MapEntities::get_detectors() {
  * @param layer the layer
  * @return the stairs on this layer
  */
-list<Stairs*> * MapEntities::get_stairs(Layer layer) {
-  return &stairs[layer];
+list<Stairs*>& MapEntities::get_stairs(Layer layer) {
+  return stairs[layer];
 }
 
 /**
@@ -148,8 +148,8 @@ list<Stairs*> * MapEntities::get_stairs(Layer layer) {
  * @param layer the layer
  * @return the crystal switch blocks on this layer
  */
-list<CrystalSwitchBlock*> * MapEntities::get_crystal_switch_blocks(Layer layer) {
-  return &crystal_switch_blocks[layer];
+list<CrystalSwitchBlock*>& MapEntities::get_crystal_switch_blocks(Layer layer) {
+  return crystal_switch_blocks[layer];
 }
 
 /**
@@ -176,7 +176,7 @@ void MapEntities::set_obstacle(int layer, int x8, int y8, Obstacle obstacle) {
  * @param name name of the entity to get
  * @return the entity requested
  */
-MapEntity * MapEntities::get_entity(EntityType type, const std::string &name) {
+MapEntity* MapEntities::get_entity(EntityType type, const std::string &name) {
 
   MapEntity *entity = find_entity(type, name);
 
@@ -191,7 +191,7 @@ MapEntity * MapEntities::get_entity(EntityType type, const std::string &name) {
  * @param name name of the entity to get
  * @return the entity requested, or NULL if there is no entity with the specified type and name
  */
-MapEntity * MapEntities::find_entity(EntityType type, const std::string &name) {
+MapEntity* MapEntities::find_entity(EntityType type, const std::string &name) {
 
   list<MapEntity*>::iterator i;
   for (i = all_entities.begin(); i != all_entities.end(); i++) {
@@ -207,22 +207,19 @@ MapEntity * MapEntities::find_entity(EntityType type, const std::string &name) {
 
 /**
  * @brief Returns all entities of the map with the specified type.
- *
- * Don't forget to delete the list when you don't need it anymore.
- *
  * @param type type of entity
  * @return the entities of this type
  */
-list<MapEntity*> * MapEntities::get_entities(EntityType type) {
+list<MapEntity*> MapEntities::get_entities(EntityType type) {
 
-  list<MapEntity*> *entities = new list<MapEntity*>();
+  list<MapEntity*> entities;
 
   list<MapEntity*>::iterator i;
   for (i = all_entities.begin(); i != all_entities.end(); i++) {
 
     MapEntity *entity = *i;
     if (entity->get_type() == type && !entity->is_being_removed()) {
-      entities->push_back(entity);
+      entities.push_back(entity);
     }
   }
 
@@ -231,23 +228,20 @@ list<MapEntity*> * MapEntities::get_entities(EntityType type) {
 
 /**
  * @brief Returns the entities of the map with the specified type and having the specified name prefix.
- *
- * Don't forget to delete the list when you don't need it anymore.
- *
  * @param type type of entity
  * @param prefix prefix of the name
  * @return the entities of this type and having this prefix in their name
  */
-list<MapEntity*> * MapEntities::get_entities_with_prefix(EntityType type, const std::string &prefix) {
+list<MapEntity*> MapEntities::get_entities_with_prefix(EntityType type, const std::string &prefix) {
 
-  list<MapEntity*> *entities = new list<MapEntity*>();
+  list<MapEntity*> entities;
 
   list<MapEntity*>::iterator i;
   for (i = all_entities.begin(); i != all_entities.end(); i++) {
 
     MapEntity *entity = *i;
     if (entity->get_type() == type && entity->has_prefix(prefix) && !entity->is_being_removed()) {
-      entities->push_back(entity);
+      entities.push_back(entity);
     }
   }
 
@@ -288,7 +282,7 @@ void MapEntities::add_tile(Tile *tile) {
   tile->set_map(map);
 
   // update the collision list
-  Obstacle obstacle = tile->get_tile_pattern()->get_obstacle();
+  Obstacle obstacle = tile->get_tile_pattern().get_obstacle();
 
   int tile_x8 = tile->get_x() / 8;
   int tile_y8 = tile->get_y() / 8;
@@ -392,8 +386,8 @@ void MapEntities::add_tile(Tile *tile) {
  * @brief Adds an entity to the map.
  *
  * This function is called when loading the map. If the entity
- * specified is NULL (because some entity creation function
- * sometimes return NULL), nothing is done.
+ * specified is NULL (because some entity creation functions
+ * may return NULL), nothing is done.
  *
  * @param entity the entity to add (can be NULL)
  */
@@ -682,10 +676,10 @@ void MapEntities::set_entity_layer(MapEntity *entity, Layer layer) {
 bool MapEntities::overlaps_raised_blocks(Layer layer, const Rectangle &rectangle) {
 
   bool overlaps = false;
-  std::list<CrystalSwitchBlock*> *blocks = get_crystal_switch_blocks(layer);
+  std::list<CrystalSwitchBlock*> blocks = get_crystal_switch_blocks(layer);
 
   std::list<CrystalSwitchBlock*>::iterator it;
-  for (it = blocks->begin(); it != blocks->end() && !overlaps; it++) {
+  for (it = blocks.begin(); it != blocks.end() && !overlaps; it++) {
     overlaps = (*it)->overlaps(rectangle) && (*it)->is_raised();
   }
 
@@ -737,7 +731,7 @@ void MapEntities::start_boss_battle(Enemy *boss) {
 void MapEntities::end_boss_battle() {
 
   Music::play("victory.spc");
-  game->set_pause_key_available(false);
+  game.set_pause_key_available(false);
   hero.set_animation_direction(3);
   hero.start_freezed();
 }

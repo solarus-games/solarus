@@ -41,7 +41,7 @@ class SpriteAnimationSet {
     SpriteAnimationSet(const SpriteAnimationSetId &id);
     ~SpriteAnimationSet();
 
-    void set_map(Map *map);
+    void set_map(Map &map);
 
     const SpriteAnimation *get_animation(const std::string &animation_name) const;
     SpriteAnimation *get_animation(const std::string &animation_name);

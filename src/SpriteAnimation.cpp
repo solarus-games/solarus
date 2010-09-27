@@ -65,10 +65,10 @@ SpriteAnimation::~SpriteAnimation() {
  *
  * @param map the map
  */
-void SpriteAnimation::set_map(Map *map) {
+void SpriteAnimation::set_map(Map &map) {
 
   if (!src_image_loaded) {
-    this->src_image = map->get_tileset()->get_entities_image();
+    this->src_image = map.get_tileset().get_entities_image();
   }
 }
 

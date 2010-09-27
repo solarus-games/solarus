@@ -86,7 +86,7 @@ class Sprite {
     Sprite(const Sprite &other);
     ~Sprite();
 
-    void set_map(Map *map);
+    void set_map(Map &map);
 
     // animation set
     const SpriteAnimationSetId& get_animation_set_id() const;

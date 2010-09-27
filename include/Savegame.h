@@ -18,6 +18,7 @@
 #define SOLARUS_SAVEGAME_H
 
 #include "Common.h"
+#include "Equipment.h"
 
 /**
  * @brief Manages the game data saved.
@@ -203,7 +204,7 @@ class Savegame {
     std::string file_name;
     SavedData saved_data;
 
-    Equipment *equipment;
+    Equipment equipment;
 
     void set_initial_values();
     void set_default_keyboard_controls();
@@ -214,7 +215,7 @@ class Savegame {
 
     // creation and destruction
     Savegame(const std::string &file_name);
-    Savegame(Savegame *other);
+    Savegame(const Savegame &other);
     ~Savegame();
 
     // file state
@@ -233,7 +234,7 @@ class Savegame {
     void set_boolean(int index, bool value);
 
     // unsaved data
-    Equipment *get_equipment();
+    Equipment& get_equipment();
 };
 
 #endif

@@ -29,7 +29,7 @@
  * @param x x coordinate of the top-left corner of the magic bar on the destination surface
  * @param y y coordinate of the top-left corner of the magic bar on the destination surface
  */
-MagicBar::MagicBar(Game *game, int x, int y):
+MagicBar::MagicBar(Game &game, int x, int y):
   HudElement(game, x, y, 88, 8),
   next_magic_update_date(System::now()) {
 

@@ -89,7 +89,7 @@ Door::~Door() {
  * @param y y coordinate of the entity
  * @return the instance created
  */
-MapEntity * Door::parse(Game *game, std::istream &is, Layer layer, int x, int y) {
+MapEntity* Door::parse(Game &game, std::istream &is, Layer layer, int x, int y) {
 
   std::string name;
   int direction, subtype, savegame_variable;
@@ -101,9 +101,9 @@ MapEntity * Door::parse(Game *game, std::istream &is, Layer layer, int x, int y)
 
   Door *door = new Door(name, Layer(layer), x, y, direction, Subtype(subtype), savegame_variable);
 
-  door->game = game;
+  door->game = &game;
   if (savegame_variable != -1) {
-    door->set_open(game->get_savegame()->get_boolean(savegame_variable));
+    door->set_open(game.get_savegame().get_boolean(savegame_variable));
   }
   else {
     door->set_open(false);
@@ -165,7 +165,7 @@ void Door::set_open(bool door_open) {
   }
 
   if (savegame_variable != -1) {
-    game->get_savegame()->set_boolean(savegame_variable, door_open);
+    game->get_savegame().set_boolean(savegame_variable, door_open);
   }
 }
 
@@ -177,20 +177,18 @@ void Door::set_open(bool door_open) {
  */
 void Door::update_dynamic_tiles() {
   
-  std::list<MapEntity*> *tiles = map->get_entities()->get_entities_with_prefix(DYNAMIC_TILE, get_name() + "_closed");
+  std::list<MapEntity*> tiles = map->get_entities().get_entities_with_prefix(DYNAMIC_TILE, get_name() + "_closed");
   std::list<MapEntity*>::iterator it;
-  for (it = tiles->begin(); it != tiles->end(); it++) {
+  for (it = tiles.begin(); it != tiles.end(); it++) {
     DynamicTile *tile = (DynamicTile*) *it;
     tile->set_enabled(!door_open);
   }
-  delete tiles;
 
-  tiles = map->get_entities()->get_entities_with_prefix(DYNAMIC_TILE, get_name() + "_open");
-  for (it = tiles->begin(); it != tiles->end(); it++) {
+  tiles = map->get_entities().get_entities_with_prefix(DYNAMIC_TILE, get_name() + "_open");
+  for (it = tiles.begin(); it != tiles.end(); it++) {
     DynamicTile *tile = (DynamicTile*) *it;
     tile->set_enabled(door_open);
   }
-  delete tiles;
 }
 
 /**
@@ -206,13 +204,13 @@ void Door::notify_collision(MapEntity *entity_overlapping, CollisionMode collisi
   if (!is_open() && entity_overlapping->is_hero() && requires_key()) {
 
     Hero *hero = (Hero*) entity_overlapping;
-    KeysEffect *keys_effect = game->get_keys_effect();
+    KeysEffect &keys_effect = game->get_keys_effect();
 
-    if (keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
+    if (keys_effect.get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
 	&& hero->is_free()) {
 
       // we show the action icon
-      keys_effect->set_action_key_effect(can_open() ? KeysEffect::ACTION_KEY_OPEN : KeysEffect::ACTION_KEY_LOOK);
+      keys_effect.set_action_key_effect(can_open() ? KeysEffect::ACTION_KEY_OPEN : KeysEffect::ACTION_KEY_LOOK);
     }
   }
 }
@@ -250,11 +248,11 @@ bool Door::requires_bomb() {
  */
 bool Door::can_open() {
 
-  Equipment *equipment = game->get_equipment();
+  Equipment &equipment = game->get_equipment();
 
-  return (requires_small_key() && equipment->has_small_key())
-    || (subtype == BIG_KEY && equipment->has_item("big_key"))
-    || (subtype == BOSS_KEY && equipment->has_item("boss_key"));
+  return (requires_small_key() && equipment.has_small_key())
+    || (subtype == BIG_KEY && equipment.has_item("big_key"))
+    || (subtype == BOSS_KEY && equipment.has_item("boss_key"));
 }
 
 /**
@@ -282,7 +280,7 @@ void Door::update() {
   }
 
   if (savegame_variable != -1) {
-    bool open_in_savegame = game->get_savegame()->get_boolean(savegame_variable);
+    bool open_in_savegame = game->get_savegame().get_boolean(savegame_variable);
     if (open_in_savegame && !is_open() && !changing) {
       set_opening();
     }
@@ -311,14 +309,14 @@ void Door::display_on_map() {
 void Door::action_key_pressed() {
 
   Hero &hero = game->get_hero();
-  Equipment *equipment = game->get_equipment();
+  Equipment &equipment = game->get_equipment();
 
   if (hero.is_free()) {
     if (can_open()) {
       Sound::play("door_unlocked");
       Sound::play("door_open");
 
-      game->get_savegame()->set_boolean(savegame_variable, true);
+      game->get_savegame().set_boolean(savegame_variable, true);
       if (subtype == SMALL_KEY_BLOCK) {
 	set_open(true);
       }
@@ -327,12 +325,12 @@ void Door::action_key_pressed() {
       }
 
       if (requires_small_key()) {
-	equipment->remove_small_key();
+	equipment.remove_small_key();
       }
     }
     else {
       Sound::play("wrong");
-      game->get_dialog_box()->start_dialog(key_required_message_ids[subtype]);
+      game->get_dialog_box().start_dialog(key_required_message_ids[subtype]);
     }
   }
 }
@@ -358,7 +356,7 @@ void Door::open() {
   set_opening();
 
   if (savegame_variable != -1) {
-    game->get_savegame()->set_boolean(savegame_variable, true);
+    game->get_savegame().set_boolean(savegame_variable, true);
   }
 }
 
@@ -384,7 +382,7 @@ void Door::close() {
   set_closing();
 
   if (savegame_variable != -1) {
-    game->get_savegame()->set_boolean(savegame_variable, false);
+    game->get_savegame().set_boolean(savegame_variable, false);
   }
 }
 

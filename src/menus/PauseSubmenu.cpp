@@ -24,9 +24,9 @@
  * @param pause_menu the pause menu object
  * @param game the game
  */
-PauseSubmenu::PauseSubmenu(PauseMenu *pause_menu, Game *game):
-  pause_menu(pause_menu), game(game), savegame(game->get_savegame()),
-  equipment(game->get_equipment()) {
+PauseSubmenu::PauseSubmenu(PauseMenu &pause_menu, Game &game):
+  pause_menu(pause_menu), game(game), savegame(game.get_savegame()),
+  equipment(game.get_equipment()) {
 
   caption_text_1 = new TextSurface(160, 0,
 				   TextSurface::ALIGN_CENTER,

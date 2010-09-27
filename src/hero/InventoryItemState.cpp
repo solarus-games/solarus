@@ -48,7 +48,7 @@ void Hero::InventoryItemState::start(State *previous_state) {
   // TODO delay of 500 ms for the bow
   // hero->can_use_inventory_item_date = System::now() + item->get_reuse_delay();
   hero->can_use_inventory_item_date = System::now();
-  item->start(game);
+  item->start(*game);
 }
 
 /**

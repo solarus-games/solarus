@@ -73,7 +73,7 @@ class DialogBox {
   private:
 
     // dialog properties
-    Game *game;                                     /**< the game this dialog box belongs to */
+    Game &game;                                     /**< the game this dialog box belongs to */
     Style style;                                    /**< style of the dialog box */
 
     // current message
@@ -116,11 +116,11 @@ class DialogBox {
   public:
 
     // creation and destruction
-    DialogBox(Game *game);
+    DialogBox(Game &game);
     ~DialogBox();
 
     // dialog properties
-    Game * get_game();
+    Game& get_game();
     void set_style(Style style);
     bool is_enabled();
 

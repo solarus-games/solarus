@@ -215,10 +215,10 @@ Surface * Tileset::get_entities_image() {
  * @param id id of the tile pattern to get
  * @return the tile pattern with this id
  */
-TilePattern * Tileset::get_tile_pattern(int id) {
+TilePattern& Tileset::get_tile_pattern(int id) {
 
   TilePattern *tile_pattern =  tile_patterns[id - 1];
   Debug::assert(tile_pattern != NULL, StringConcat() << "There is not tile pattern with id '" << id << "' in this tileset'");
-  return tile_pattern;
+  return *tile_pattern;
 }
 

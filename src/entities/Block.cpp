@@ -80,7 +80,7 @@ Block::~Block() {
  * @param y y coordinate of the entity
  * @return the instance created
  */
-MapEntity * Block::parse(Game *game, std::istream &is, Layer layer, int x, int y) {
+MapEntity* Block::parse(Game &game, std::istream &is, Layer layer, int x, int y) {
 
   int direction, subtype, maximum_moves;
   std::string name;
@@ -163,13 +163,13 @@ void Block::notify_collision(MapEntity *entity_overlapping, CollisionMode collis
   if (entity_overlapping->is_hero()) {
 
     Hero *hero = (Hero*) entity_overlapping;
-    KeysEffect *keys_effect = game->get_keys_effect();
+    KeysEffect &keys_effect = game->get_keys_effect();
 
-    if (keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
+    if (keys_effect.get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
 	&& hero->is_free()) {
 
       // we show the action icon
-      keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_GRAB);
+      keys_effect.set_action_key_effect(KeysEffect::ACTION_KEY_GRAB);
     }
   }
 }
@@ -182,8 +182,8 @@ void Block::notify_collision(MapEntity *entity_overlapping, CollisionMode collis
  */
 void Block::action_key_pressed() {
 
-  KeysEffect *keys_effect = game->get_keys_effect();
-  if (keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_GRAB) {
+  KeysEffect &keys_effect = game->get_keys_effect();
+  if (keys_effect.get_action_key_effect() == KeysEffect::ACTION_KEY_GRAB) {
     game->get_hero().start_grabbing();
   }
 }

@@ -135,14 +135,14 @@ bool Hero::RunningState::is_bouncing() {
  */
 bool Hero::RunningState::is_pressing_running_key() {
 
-  Equipment *equipment = game->get_equipment();
-  int slot = equipment->get_item_slot("pegasus_shoes"); // TODO make quest-dependent
+  Equipment &equipment = game->get_equipment();
+  int slot = equipment.get_item_slot("pegasus_shoes"); // TODO make quest-dependent
   if (slot == -1) {
     return false;
   }
 
   GameControls::GameKey key = (slot == 0) ? GameControls::ITEM_1 : GameControls::ITEM_2;
-  return game->get_controls()->is_key_pressed(key);
+  return game->get_controls().is_key_pressed(key);
 }
 
 /**

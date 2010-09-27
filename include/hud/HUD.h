@@ -26,8 +26,7 @@ class HUD {
 
   private:
 
-    Game *game;
-    Equipment *equipment;
+    Game &game;
 
     int nb_elements;
     HudElement *elements[16];
@@ -38,7 +37,7 @@ class HUD {
 
   public:
 
-    HUD(Game *game);
+    HUD(Game &game);
     ~HUD();
 
     void update();

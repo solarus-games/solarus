@@ -43,7 +43,7 @@ class PauseSubmenuQuestStatus: public PauseSubmenu {
 
   public:
 
-    PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *game);
+    PauseSubmenuQuestStatus(PauseMenu &pause_menu, Game &game);
     ~PauseSubmenuQuestStatus();
 
     void key_pressed(GameControls::GameKey key);

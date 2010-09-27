@@ -47,7 +47,7 @@ class Screen {
 
   protected:
 
-    Solarus *solarus;           /**< the main object of the program (it manages the screens) */
+    Solarus &solarus;           /**< the main object of the program (it manages the screens) */
 
   private:
 
@@ -56,7 +56,7 @@ class Screen {
 
   protected:
 
-    Screen(Solarus *solarus);
+    Screen(Solarus &solarus);
 
     void set_next_screen(Screen *next_screen);
 

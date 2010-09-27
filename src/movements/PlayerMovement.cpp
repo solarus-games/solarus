@@ -43,7 +43,7 @@ void PlayerMovement::update() {
 
   SmoothCollisionMovement::update();
 
-  if (entity->get_game() == NULL) {
+  if (!entity->is_initialized()) {
     return;
   }
 
@@ -54,8 +54,8 @@ void PlayerMovement::update() {
   }
 
   // check whether the wanted direction has changed
-  GameControls *controls = entity->get_game()->get_controls();
-  int wanted_direction8 = controls->get_wanted_direction8(); 
+  GameControls &controls = entity->get_game().get_controls();
+  int wanted_direction8 = controls.get_wanted_direction8(); 
   if (wanted_direction8 != direction8 && !is_suspended()) {
     direction8 = wanted_direction8;
     compute_movement();
@@ -96,9 +96,9 @@ void PlayerMovement::set_moving_speed(int moving_speed) {
  */
 void PlayerMovement::set_wanted_direction() {
 
-  if (entity->get_game() != NULL) {
-    GameControls *controls = entity->get_game()->get_controls();
-    direction8 = controls->get_wanted_direction8();
+  if (entity->is_initialized()) {
+    GameControls &controls = entity->get_game().get_controls();
+    direction8 = controls.get_wanted_direction8();
   }
   else {
     direction8 = -1;

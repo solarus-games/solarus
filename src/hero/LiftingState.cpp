@@ -51,9 +51,9 @@ void Hero::LiftingState::start(State *previous_state) {
 
   // create the entity that will actually be lifted
   lifted_item = new CarriedItem(hero, item_to_lift);
-  lifted_item->set_map(map);
+  lifted_item->set_map(*map);
 
-  game->get_keys_effect()->set_action_key_effect(KeysEffect::ACTION_KEY_THROW);
+  game->get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_THROW);
   sprites->set_animation_lifting();
   sprites->set_lifted_item(lifted_item);
   hero->set_facing_entity(NULL);
@@ -79,7 +79,7 @@ void Hero::LiftingState::stop(State *next_state) {
       delete lifted_item;
       lifted_item = NULL;
     }
-    game->get_keys_effect()->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
+    game->get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
   }
 }
 
@@ -117,7 +117,7 @@ bool Hero::LiftingState::can_be_hurt() {
 void Hero::LiftingState::throw_item() {
 
   lifted_item->throw_item(sprites->get_animation_direction());
-  map->get_entities()->add_entity(lifted_item);
+  map->get_entities().add_entity(lifted_item);
   lifted_item = NULL;
 }
 

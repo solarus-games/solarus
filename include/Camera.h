@@ -31,20 +31,20 @@ class Camera {
 
   private:
 
-    Map *map;                 /**< the map */
-    bool fixed_on_hero;       /**< true if the camera is fixed on the hero */
-    bool restoring;           /**< true if the camera is moving back to the hero */
-    Rectangle position;       /**< position of the camera on the map */
-    int speed;                /**< speed of the movement */
-    TargetMovement *movement; /**< movement of the camera, or NULL for no movement */
+    Map &map;				/**< the map */
+    bool fixed_on_hero;			/**< true if the camera is fixed on the hero */
+    bool restoring;			/**< true if the camera is moving back to the hero */
+    Rectangle position;			/**< position of the camera on the map */
+    int speed;				/**< speed of the movement */
+    TargetMovement *movement;		/**< movement of the camera, or NULL for no movement */
 
   public:
 
-    Camera(Map *map);
+    Camera(Map &map);
     ~Camera();
 
     void update();
-    Rectangle & get_position();
+    const Rectangle& get_position();
 
     bool is_fixed_on_hero();
     void set_speed(int speed);

@@ -55,13 +55,13 @@ void Hero::GrabbingState::start(State *previous_state) {
 void Hero::GrabbingState::update() {
 
   // the hero is grabbing an obstacle: check the direction pressed
-  GameControls *controls = game->get_controls();
+  GameControls &controls = game->get_controls();
 
-  int wanted_direction8 = controls->get_wanted_direction8();
+  int wanted_direction8 = controls.get_wanted_direction8();
   int sprite_direction8 = sprites->get_animation_direction8();
 
   // release the obstacle
-  if (!controls->is_key_pressed(GameControls::ACTION)) {
+  if (!controls.is_key_pressed(GameControls::ACTION)) {
     hero->set_state(new FreeState(hero));
   }
 

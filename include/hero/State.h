@@ -65,7 +65,7 @@ class Hero::State {
     virtual void item_key_released(int slot);
 
     // game
-    virtual void set_map(Map *map);
+    virtual void set_map(Map &map);
     virtual bool can_start_gameover_sequence();
 
     // sprites

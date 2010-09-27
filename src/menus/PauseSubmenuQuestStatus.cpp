@@ -31,10 +31,8 @@
  * @param pause_menu the pause menu object
  * @param game the game
  */
-PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *game):
+PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu &pause_menu, Game &game):
   PauseSubmenu(pause_menu, game) {
-
-  Equipment *equipment = game->get_equipment();
 
   // draw the items on a surface
   quest_items_surface = new Surface(320, 240);
@@ -48,7 +46,7 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *ga
 
   // tunic
   {
-    int tunic = equipment->get_ability("tunic");
+    int tunic = equipment.get_ability("tunic");
     Rectangle src_position((tunic - 1) * 16, 96, 16, 16);
     Rectangle dst_position(177, 164);
     treasures_img->blit(src_position, quest_items_surface, dst_position);
@@ -59,8 +57,8 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *ga
   }
 
   // sword
-  if (equipment->has_ability("sword")) {
-    int sword = equipment->get_ability("sword");
+  if (equipment.has_ability("sword")) {
+    int sword = equipment.get_ability("sword");
     Rectangle src_position(80 + sword * 16, 96, 16, 16);
     Rectangle dst_position(211, 164);
     treasures_img->blit(src_position, quest_items_surface, dst_position);
@@ -71,8 +69,8 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *ga
   }
 
   // shield
-  if (equipment->has_ability("shield")) {
-    int shield = equipment->get_ability("shield");
+  if (equipment.has_ability("shield")) {
+    int shield = equipment.get_ability("shield");
     Rectangle src_position(32 + shield * 16, 96, 16, 16);
     Rectangle dst_position(245, 164);
     treasures_img->blit(src_position, quest_items_surface, dst_position);
@@ -84,7 +82,7 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *ga
 
   // rupee bag
   {
-    int rupee_bag = equipment->get_item_variant("rupee_bag");
+    int rupee_bag = equipment.get_item_variant("rupee_bag");
     
     Rectangle src_position(rupee_bag * 16, 80, 16, 16);
     Rectangle dst_position(60, 71);
@@ -96,7 +94,7 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *ga
   }
 
   // bomb bag
-  int bomb_bag = equipment->get_item_variant("bomb_bag");
+  int bomb_bag = equipment.get_item_variant("bomb_bag");
   if (bomb_bag != 0) {
     Rectangle src_position(48 + bomb_bag * 16, 80, 16, 16);
     Rectangle dst_position(60, 100);
@@ -108,7 +106,7 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *ga
   }
 
   // quiver
-  int quiver = equipment->get_item_variant("quiver");
+  int quiver = equipment.get_item_variant("quiver");
   if (quiver != 0) {
     
     Rectangle src_position(96 + quiver * 16, 80, 16, 16);
@@ -121,7 +119,7 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *ga
   }
 
   // world map
-  if (equipment->has_item("world_map")) {
+  if (equipment.has_item("world_map")) {
     Rectangle src_position(0, 80, 16, 16);
     Rectangle dst_position(60, 164);
     treasures_img->blit(src_position, quest_items_surface, dst_position);
@@ -131,7 +129,7 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu *pause_menu, Game *ga
 
   // heart pieces
   {
-    int x = 51 * savegame->get_integer(1030); // TODO script
+    int x = 51 * savegame.get_integer(1030); // TODO script
     Rectangle src_position(x, 0, 51, 50);
     Rectangle dst_position(101, 82);
     pieces_of_heart_img->blit(src_position, quest_items_surface, dst_position);
@@ -217,7 +215,7 @@ void PauseSubmenuQuestStatus::key_pressed(GameControls::GameKey key) {
   case GameControls::LEFT:
 
     if (cursor_position <= 3) {
-      pause_menu->show_left_submenu();
+      pause_menu.show_left_submenu();
     }
     else {
       Sound::play("cursor");
@@ -237,7 +235,7 @@ void PauseSubmenuQuestStatus::key_pressed(GameControls::GameKey key) {
   case GameControls::RIGHT:
 
     if (cursor_position == 4 || cursor_position == 7) {
-      pause_menu->show_right_submenu();
+      pause_menu.show_right_submenu();
     }
     else {
       Sound::play("cursor");

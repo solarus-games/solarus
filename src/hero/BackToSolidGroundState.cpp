@@ -60,8 +60,8 @@ void Hero::BackToSolidGroundState::start(State *previous_state) {
   State::start(previous_state);
 
   hero->set_movement(new TargetMovement(target_xy.get_x(), target_xy.get_y(), hero->get_walking_speed()));
-  map->get_entities()->set_entity_layer(hero, target_layer);
-  map->get_entities()->remove_boomerang();
+  map->get_entities().set_entity_layer(hero, target_layer);
+  map->get_entities().remove_boomerang();
 }
 
 /**

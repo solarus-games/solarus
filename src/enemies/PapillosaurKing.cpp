@@ -124,8 +124,8 @@ void PapillosaurKing::update() {
   if (is_in_normal_state() && now >= next_egg_phase_date - 500) {
 
     // count the number of sons
-    std::list<MapEntity*> *sons = map->get_entities()->get_entities_with_prefix(ENEMY, get_name() + "_minillosaur");
-    int nb_sons = sons->size();
+    std::list<MapEntity*> sons = map->get_entities().get_entities_with_prefix(ENEMY, get_name() + "_minillosaur");
+    int nb_sons = sons.size();
     if (nb_sons >= 5 && nb_eggs_to_create == 0) {
       // delay the egg phase if there are already too much sons
       next_egg_phase_date += 5000;
@@ -146,9 +146,9 @@ void PapillosaurKing::update() {
       }
       else if (now >= next_egg_date) {
 
-	MapEntity *egg = create(game, MINILLOSAUR, RANK_NORMAL, -1, get_name() + "_minillosaur",
+	MapEntity *egg = create(*game, MINILLOSAUR, RANK_NORMAL, -1, get_name() + "_minillosaur",
 	    get_layer(), get_x(), get_y() + 16, 0, NULL);
-	map->get_entities()->add_entity(egg);
+	map->get_entities().add_entity(egg);
 	Sound::play("boss_fireball");
 
 	if (--nb_eggs_to_create > 0) {
@@ -174,8 +174,8 @@ void PapillosaurKing::just_hurt(MapEntity *source, EnemyAttack attack, int life_
 
   if (get_life() <= 0) {
     // the papillosaur is dying: remove the minillosaur eggs
-    std::list<MapEntity*> *sons = map->get_entities()->get_entities_with_prefix(ENEMY, get_name() + "_minillosaur");
-    for (std::list<MapEntity*>::iterator it = sons->begin(); it != sons->end(); it++) {
+    std::list<MapEntity*> sons = map->get_entities().get_entities_with_prefix(ENEMY, get_name() + "_minillosaur");
+    for (std::list<MapEntity*>::iterator it = sons.begin(); it != sons.end(); it++) {
       (*it)->remove_from_map();
     }
   }

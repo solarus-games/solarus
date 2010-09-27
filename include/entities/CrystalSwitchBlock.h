@@ -49,7 +49,7 @@ class CrystalSwitchBlock: public Detector {
 
   public:
 
-    CrystalSwitchBlock(Game *game, Layer layer, int x, int y, int width, int height, Subtype subtype);
+    CrystalSwitchBlock(Game &game, Layer layer, int x, int y, int width, int height, Subtype subtype);
     ~CrystalSwitchBlock();
     static CreationFunction parse;
 

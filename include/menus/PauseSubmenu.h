@@ -27,15 +27,15 @@ class PauseSubmenu {
 
   protected:
 
-    PauseMenu *pause_menu;                    /**< the pause menu this submenu belongs to */
-    Game *game;                               /**< the current game */
-    Savegame *savegame;                       /**< the savegame */
-    Equipment *equipment;                     /**< the player's equipment */
+    PauseMenu &pause_menu;                    /**< the pause menu this submenu belongs to */
+    Game &game;                               /**< the current game */
+    Savegame &savegame;                       /**< the savegame */
+    Equipment &equipment;                     /**< the player's equipment */
 
     TextSurface *caption_text_1;              /**< the bottom text displayed at left */
     TextSurface *caption_text_2;              /**< the bottom text displayed at right */
 
-    PauseSubmenu(PauseMenu *pause_menu, Game *game);
+    PauseSubmenu(PauseMenu &pause_menu, Game &game);
 
     void set_caption_text(const std::string &text);
     void play_cursor_sound();

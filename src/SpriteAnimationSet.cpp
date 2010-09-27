@@ -141,7 +141,7 @@ SpriteAnimationSet::~SpriteAnimationSet() {
  *
  * @param map the map
  */
-void SpriteAnimationSet::set_map(Map *map) {
+void SpriteAnimationSet::set_map(Map &map) {
 
   std::map<SpriteAnimationSetId, SpriteAnimation*>::const_iterator it;
 

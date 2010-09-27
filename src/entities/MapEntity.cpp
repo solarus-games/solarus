@@ -239,13 +239,22 @@ bool MapEntity::is_displayed_in_y_order() {
 }
 
 /**
+ * @brief Returns whether this entity is initialized, that is,
+ * whether set_map() has been called.
+ * @return true if the entity is initialized
+ */
+bool MapEntity::is_initialized() {
+  return map != NULL;
+}
+
+/**
  * @brief Sets the map where this entity is.
  * @param map the map
  */
-void MapEntity::set_map(Map *map) {
+void MapEntity::set_map(Map &map) {
 
-  this->map = map;
-  this->game = &map->get_game(); // TODO store a reference instead
+  this->map = &map;
+  this->game = &map.get_game();
 
   // notify the sprites (useful for tileset dependent sprites such as doors and blocks)
   std::map<std::string, Sprite*>::iterator it;
@@ -258,16 +267,16 @@ void MapEntity::set_map(Map *map) {
  * @brief Returns the map where this entity is.
  * @return the map
  */
-Map * MapEntity::get_map() {
-  return map;
+Map& MapEntity::get_map() {
+  return *map;
 }
 
 /**
  * @brief Returns the game that is running the map where this entity is.
  * @return the game
  */
-Game * MapEntity::get_game() {
-  return game;
+Game& MapEntity::get_game() {
+  return *game;
 }
 
 /**
@@ -278,7 +287,7 @@ Game * MapEntity::get_game() {
  */
 void MapEntity::remove_from_map() {
 
-  map->get_entities()->remove_entity(this);
+  map->get_entities().remove_entity(this);
 }
 
 /**

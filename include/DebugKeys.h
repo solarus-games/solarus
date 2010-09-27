@@ -31,12 +31,12 @@ class DebugKeys {
 
   private:
 
-    Solarus *solarus;      /**< the Solarus object */
+    Solarus &solarus;      /**< the Solarus object */
     Game *game;            /**< the current game, or NULL if no game is started */
 
   public:
 
-    DebugKeys(Solarus *solarus);
+    DebugKeys(Solarus &solarus);
     ~DebugKeys();
 
     void set_game(Game *game);

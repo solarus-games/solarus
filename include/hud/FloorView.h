@@ -39,7 +39,7 @@ class FloorView: public HudElement {
 
   public:
 
-    FloorView(Game *game, int x, int y);
+    FloorView(Game &game, int x, int y);
     ~FloorView();
 
     void update();

@@ -25,6 +25,7 @@
 #include "Sprite.h"
 #include "Game.h"
 #include "Map.h"
+#include "lowlevel/Sound.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
@@ -315,7 +316,8 @@ void Arrow::update() {
     // an obstacle or an entity was just reached
     disappear_date = now + 1500;
     get_sprite()->set_current_animation("reached_obstacle");
-    
+    Sound::play("arrow_hit");
+
     if (entity_reached == NULL) {
       clear_movement();
     }

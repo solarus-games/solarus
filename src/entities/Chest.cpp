@@ -55,10 +55,7 @@ Chest::Chest(const std::string &name, Layer layer, int x, int y,
  */
 Chest::~Chest() {
 
-  if (treasure != NULL && !treasure_given) {
-    // delete the treasure only if the player didn't take it
-    delete treasure;
-  }
+  delete treasure;
 }
 
 /**

@@ -92,10 +92,8 @@ void MapLoader::load_map(Game *game, Map *map) {
   map->height8 = height / 8;
   map->location.set_xy(x, y);
 
-  map->tileset = ResourceManager::get_tileset(tileset_id);
-  if (!map->tileset->is_loaded()) {
-    map->tileset->load();
-  }
+  map->tileset = new Tileset(tileset_id);
+  map->tileset->load();
 
   // create the lists of entities and initialize obstacle_tiles
   MapEntities *entities = map->get_entities();

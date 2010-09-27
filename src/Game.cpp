@@ -30,7 +30,6 @@
 #include "menus/TitleScreen.h"
 #include "menus/PauseMenu.h"
 #include "entities/Hero.h"
-#include "entities/Tileset.h"
 #include "lowlevel/Color.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/IniFile.h"
@@ -333,13 +332,6 @@ void Game::update_transitions() {
 	  previous_map_surface = new Surface(320, 240);
 	  current_map->display();
 	  current_map->get_visible_surface()->blit(previous_map_surface);
-	}
-
-	// unload the previous tileset if the new map uses another one
-	Tileset *old_tileset = current_map->get_tileset();
-	Tileset *new_tileset = next_map->get_tileset();
-	if (new_tileset != old_tileset) {
-	  old_tileset->unload();
 	}
 
 	// set the next map

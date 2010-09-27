@@ -37,8 +37,9 @@ class SpriteAnimationSet {
 
   public:
 
+    SpriteAnimationSet();
     SpriteAnimationSet(const SpriteAnimationSetId &id);
-    virtual ~SpriteAnimationSet();
+    ~SpriteAnimationSet();
 
     void set_map(Map *map);
 

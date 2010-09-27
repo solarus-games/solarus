@@ -226,6 +226,7 @@ bool Map::is_loaded() {
  */
 void Map::unload() {
 
+  delete tileset;
   delete visible_surface;
   delete entities;
   entities = NULL;

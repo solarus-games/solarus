@@ -17,7 +17,6 @@
 #include "menus/LanguageScreen.h"
 #include "menus/TitleScreen.h"
 #include "Transition.h"
-#include "ResourceManager.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Surface.h"

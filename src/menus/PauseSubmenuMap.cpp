@@ -18,7 +18,6 @@
 #include "menus/PauseMenu.h"
 #include "Game.h"
 #include "Dungeon.h"
-#include "ResourceManager.h"
 #include "Sprite.h"
 #include "Map.h"
 #include "Equipment.h"

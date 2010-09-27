@@ -17,7 +17,6 @@
 #include "Game.h"
 #include "Solarus.h"
 #include "Map.h"
-#include "ResourceManager.h"
 #include "Savegame.h"
 #include "KeysEffect.h"
 #include "Equipment.h"

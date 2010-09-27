@@ -22,7 +22,6 @@
 #include "lowlevel/Sound.h"
 #include "lowlevel/Random.h"
 #include "lowlevel/InputEvent.h"
-#include "ResourceManager.h"
 #include "Sprite.h"
 #include <SDL/SDL.h>
 
@@ -44,7 +43,6 @@ void System::initialize(int argc, char **argv) {
 
   // files
   FileTools::initialize(argc, argv);
-  ResourceManager::initialize();
 
   // video
   VideoManager::initialize();
@@ -69,7 +67,6 @@ void System::initialize(int argc, char **argv) {
  */
 void System::quit() {
 
-  ResourceManager::quit();
   Random::quit();
   InputEvent::quit();
   Sound::quit();

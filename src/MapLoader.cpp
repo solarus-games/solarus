@@ -17,7 +17,6 @@
 #include "MapLoader.h"
 #include "Map.h"
 #include "Game.h"
-#include "ResourceManager.h"
 #include "Camera.h"
 #include "lowlevel/FileTools.h"
 #include "lua/MapScript.h"

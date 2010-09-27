@@ -19,7 +19,6 @@
 #include "Equipment.h"
 #include "Savegame.h"
 #include "Timer.h"
-#include "ResourceManager.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/Music.h"
 #include "lowlevel/FileTools.h"

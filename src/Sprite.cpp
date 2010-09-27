@@ -18,7 +18,6 @@
 #include "SpriteAnimationSet.h"
 #include "SpriteAnimation.h"
 #include "SpriteAnimationDirection.h"
-#include "ResourceManager.h"
 #include "Game.h"
 #include "Map.h"
 #include "lowlevel/PixelBits.h"
@@ -28,7 +27,7 @@
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 
-std::map<SpriteAnimationSetId, SpriteAnimationSet> Sprite::all_animation_sets;
+std::map<SpriteAnimationSetId, SpriteAnimationSet*> Sprite::all_animation_sets;
 Surface *Sprite::alpha_surface = NULL;
 
 /**
@@ -45,6 +44,15 @@ void Sprite::initialize() {
  * @brief Uninitializes the sprites system.
  */
 void Sprite::quit() {
+
+  // delete the animations loaded
+  std::map<SpriteAnimationSetId, SpriteAnimationSet*>::iterator it;
+  for (it = all_animation_sets.begin(); it != all_animation_sets.end(); it++) {
+    delete it->second;
+  }
+  all_animation_sets.clear();
+
+  // delete the static alpha_surface
   delete alpha_surface;
 }
 
@@ -60,10 +68,10 @@ void Sprite::quit() {
 SpriteAnimationSet& Sprite::get_animation_set(const SpriteAnimationSetId &id) {
 
   if (all_animation_sets.count(id) == 0) {
-    all_animation_sets[id] = SpriteAnimationSet(id);
+    all_animation_sets[id] = new SpriteAnimationSet(id);
   }
 
-  return all_animation_sets[id];
+  return *all_animation_sets[id];
 }
 
 /**

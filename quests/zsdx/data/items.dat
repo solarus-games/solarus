@@ -303,7 +303,7 @@ shadow = small
 
 [rupee]
 changes_counter = money
-nb_variants = 3
+nb_variants = 6
 amount_1 = 1
 amount_2 = 5
 amount_3 = 20

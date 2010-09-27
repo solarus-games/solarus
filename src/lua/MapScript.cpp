@@ -318,7 +318,7 @@ int MapScript::l_treasure_give(lua_State *l) {
   int variant = lua_tointeger(l, 2);
   int savegame_variable = lua_tointeger(l, 3);
 
-  script->hero.start_treasure(new Treasure(script->game, item_name, variant, savegame_variable));
+  script->hero.start_treasure(Treasure(script->game, item_name, variant, savegame_variable));
 
   return 0;
 }

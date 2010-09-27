@@ -83,7 +83,6 @@ class Sprite {
 
     // creation and destruction
     Sprite(const SpriteAnimationSetId &id);
-    Sprite(const Sprite &other);
     ~Sprite();
 
     void set_map(Map &map);

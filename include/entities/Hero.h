@@ -284,7 +284,7 @@ class Hero: public MapEntity {
 
     void start_next_state();
     void start_free();
-    void start_treasure(Treasure *treasure);
+    void start_treasure(const Treasure &treasure);
     void start_jumping(int direction8, int length, bool ignore_obstacles, bool with_sound,
 	uint32_t movement_delay = 0, Layer layer_after_jump = LAYER_NB);
     void start_freezed();

@@ -35,12 +35,12 @@ class Treasure {
 
   private:
 
-    Game &game;			/**< the current game */
-    std::string item_name;	/**< content of the treasure (can be "_none") */
-    int variant;		/**< variant of this content */
-    int savegame_variable;	/**< index of the savegame boolean variable corresponding to this treasure,
-				 * or -1 if the treasure state is not saved */
-    Sprite *sprite;		/**< the sprite of the treasure */
+    Game &game;				/**< the current game */
+    std::string item_name;		/**< content of the treasure (can be "_none") */
+    int variant;			/**< variant of this content */
+    int savegame_variable;		/**< index of the savegame boolean variable corresponding to this treasure,
+					 * or -1 if the treasure state is not saved */
+    Sprite *sprite;			/**< the sprite of the treasure */
 
   public:
 
@@ -49,14 +49,14 @@ class Treasure {
     ~Treasure();
 
     ItemProperties& get_item_properties();
-    const std::string & get_item_name();
-    int get_variant();
-    int get_savegame_variable();
-    bool is_saved();
-    bool is_empty();
+    const std::string & get_item_name() const;
+    int get_variant() const;
+    int get_savegame_variable() const;
+    bool is_saved() const;
+    bool is_empty() const;
 
-    void give_to_player();
-    bool is_found();
+    void give_to_player() const;
+    bool is_found() const;
 
     void display(Surface *destination, int x, int y);
 };

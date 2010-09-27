@@ -54,10 +54,15 @@ const DestructibleItem::Features DestructibleItem::features[] = {
  * @param treasure the pickable item that appears when the destructible
  * item is lifted or cut
  */
-DestructibleItem::DestructibleItem(Layer layer, int x, int y, DestructibleItem::Subtype subtype,
-    Treasure *treasure):
-  Detector(COLLISION_NONE, "", layer, x, y, 16, 16), subtype(subtype), treasure(treasure),
-  is_being_cut(false), regeneration_date(0), is_regenerating(false) {
+DestructibleItem::DestructibleItem(Layer layer, int x, int y,
+    DestructibleItem::Subtype subtype, const Treasure &treasure):
+
+  Detector(COLLISION_NONE, "", layer, x, y, 16, 16),
+  subtype(subtype),
+  treasure(treasure),
+  is_being_cut(false),
+  regeneration_date(0),
+  is_regenerating(false) {
 
   set_origin(8, 13);
   create_sprite(get_animation_set_id());
@@ -80,7 +85,6 @@ DestructibleItem::DestructibleItem(Layer layer, int x, int y, DestructibleItem::
  * @brief Destructor.
  */
 DestructibleItem::~DestructibleItem() {
-  delete treasure;
 }
 
 /**
@@ -106,7 +110,7 @@ MapEntity* DestructibleItem::parse(Game &game, std::istream &is, Layer layer, in
   FileTools::read(is, treasure_savegame_variable);
 
   return new DestructibleItem(Layer(layer), x, y, Subtype(subtype),
-      new Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable));
+      Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable));
 }
 
 /**
@@ -152,7 +156,7 @@ const std::string& DestructibleItem::get_animation_set_id() {
  * @brief Returns the id of the sound to play when this item is destroyed.
  * @return the destruction sound id
  */
-const SoundId & DestructibleItem::get_destruction_sound_id() {
+const SoundId& DestructibleItem::get_destruction_sound_id() {
   return features[subtype].destruction_sound_id;
 }
 
@@ -202,16 +206,12 @@ bool DestructibleItem::test_collision_custom(MapEntity *entity) {
  */
 void DestructibleItem::create_pickable_item() {
 
-  if (!treasure->is_empty()) {
+  if (!treasure.is_empty()) {
 
-    bool will_disappear = treasure->get_item_properties().can_disappear();
+    bool will_disappear = treasure.get_item_properties().can_disappear();
     get_entities().add_entity(PickableItem::create(get_game(), get_layer(), get_x(), get_y(),
 	  treasure, FALLING_MEDIUM, will_disappear));
   }
-  else {
-    delete treasure;
-  }
-  treasure = NULL;
 }
 
 /**

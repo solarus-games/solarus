@@ -18,6 +18,7 @@
 #define SOLARUS_HERO_TREASURE_STATE_H
 
 #include "hero/State.h"
+#include "Treasure.h"
 
 /**
  * @brief The state "Treasure" of the hero.
@@ -26,11 +27,11 @@ class Hero::TreasureState: public Hero::State {
 
   private:
 
-    Treasure *treasure;		/**< the treasure to give to the hero */
+    Treasure treasure;		/**< the treasure to give to the hero */
 
   public:
 
-    TreasureState(Hero &hero, Treasure *treasure);
+    TreasureState(Hero &hero, const Treasure &treasure);
     ~TreasureState();
 
     void start(State *previous_state);

@@ -19,7 +19,6 @@
 #include "hero/HeroSprites.h"
 #include "lua/Scripts.h"
 #include "lowlevel/Sound.h"
-#include "Treasure.h"
 #include "ItemProperties.h"
 #include "Game.h"
 #include "DialogBox.h"
@@ -31,7 +30,7 @@
  * @param hero the hero controlled by this state
  * @param treasure the treasure to give to the hero
  */
-Hero::TreasureState::TreasureState(Hero &hero, Treasure *treasure):
+Hero::TreasureState::TreasureState(Hero &hero, const Treasure &treasure):
   State(hero), treasure(treasure) {
 
 }
@@ -41,7 +40,6 @@ Hero::TreasureState::TreasureState(Hero &hero, Treasure *treasure):
  */
 Hero::TreasureState::~TreasureState() {
 
-  delete treasure;
 }
 
 /**
@@ -57,15 +55,15 @@ void Hero::TreasureState::start(State *previous_state) {
   get_sprites().set_animation_brandish();
 
   // play the sound
-  const SoundId &sound_id = treasure->get_item_properties().get_sound_when_brandished();
+  const SoundId &sound_id = treasure.get_item_properties().get_sound_when_brandished();
   Sound::play(sound_id);
 
   // give the treasure
-  treasure->give_to_player();
+  treasure.give_to_player();
 
   // show a message
   std::ostringstream oss;
-  oss << "_treasure." << treasure->get_item_name() << "." << treasure->get_variant();
+  oss << "_treasure." << treasure.get_item_name() << "." << treasure.get_variant();
   get_dialog_box().start_dialog(oss.str());
 }
 
@@ -92,16 +90,13 @@ void Hero::TreasureState::update() {
 
     // the treasure's dialog is over: if the treasure was a tunic,
     // a sword or a shield, we have to reload the hero's sprites now
-    const std::string &item_name = treasure->get_item_name();
+    const std::string &item_name = treasure.get_item_name();
     if (item_name == "tunic" || item_name == "sword" || item_name == "shield") {
       hero.rebuild_equipment();
     }
 
-    int variant = treasure->get_variant();
-    int savegame_variable = treasure->get_savegame_variable();
-
-    delete treasure;
-    treasure = NULL;
+    int variant = treasure.get_variant();
+    int savegame_variable = treasure.get_savegame_variable();
 
     get_scripts().event_treasure_obtained(item_name, variant, savegame_variable);
 
@@ -120,7 +115,7 @@ void Hero::TreasureState::display_on_map() {
   int y = hero.get_y();
 
   const Rectangle &camera_position = get_map().get_camera_position();
-  treasure->display(get_map().get_visible_surface(),
+  treasure.display(get_map().get_visible_surface(),
       x - camera_position.get_x(),
       y - 24 - camera_position.get_y());
 }

@@ -75,7 +75,7 @@ ShopItem::~ShopItem() {
  * @param y y coordinate of the entity
  * @return the instance created
  */
-MapEntity * ShopItem::parse(Game *game, std::istream &is, Layer layer, int x, int y) {
+MapEntity* ShopItem::parse(Game &game, std::istream &is, Layer layer, int x, int y) {
 
   std::string name, treasure_name;
   int treasure_variant, treasure_savegame_variable, price;
@@ -105,7 +105,7 @@ MapEntity * ShopItem::parse(Game *game, std::istream &is, Layer layer, int x, in
  * @param price the treasure's price in rupees
  * @param message_id id of the message describing the item when the player watches it
  */
-ShopItem * ShopItem::create(Game *game, const std::string &name, Layer layer, int x, int y,
+ShopItem* ShopItem::create(Game &game, const std::string &name, Layer layer, int x, int y,
 			    Treasure *treasure, int price, const MessageId &message_id) {
 
   // see if the item was not been already bought
@@ -157,13 +157,13 @@ void ShopItem::notify_collision(MapEntity *entity_overlapping, CollisionMode col
   if (entity_overlapping->is_hero() && !game->is_suspended()) {
 
     Hero &hero = game->get_hero();
-    KeysEffect *keys_effect = game->get_keys_effect();
+    KeysEffect &keys_effect = game->get_keys_effect();
 
-    if (keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
+    if (keys_effect.get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
 	&& hero.is_free()) {
 
       // we show the 'look' icon
-      keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_LOOK);
+      keys_effect.set_action_key_effect(KeysEffect::ACTION_KEY_LOOK);
     }
   }
 }
@@ -178,12 +178,12 @@ void ShopItem::notify_collision(MapEntity *entity_overlapping, CollisionMode col
 void ShopItem::action_key_pressed() {
 
   Hero &hero = game->get_hero();
-  KeysEffect *keys_effect = game->get_keys_effect();
+  KeysEffect &keys_effect = game->get_keys_effect();
 
   if (hero.is_free()
-      && keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_LOOK) {
+      && keys_effect.get_action_key_effect() == KeysEffect::ACTION_KEY_LOOK) {
 
-    game->get_dialog_box()->start_dialog(message_id);
+    game->get_dialog_box().start_dialog(message_id);
     is_looking_item = true;
   }
 }
@@ -197,8 +197,8 @@ void ShopItem::update() {
 
     // the description message has just finished
     std::string question_message_id = "_shop.question";
-    game->get_dialog_box()->start_dialog(question_message_id);
-    game->get_dialog_box()->set_variable(question_message_id, price);
+    game->get_dialog_box().start_dialog(question_message_id);
+    game->get_dialog_box().set_variable(question_message_id, price);
     is_asking_question = true;
     is_looking_item = false;
   }
@@ -206,32 +206,32 @@ void ShopItem::update() {
 
     // the question has just finished
     is_asking_question = false;
-    int answer = game->get_dialog_box()->get_last_answer();
+    int answer = game->get_dialog_box().get_last_answer();
 
     if (answer == 0) {
 
       // the player wants to buy the item
-      Equipment *equipment = game->get_equipment();
+      Equipment &equipment = game->get_equipment();
 
-      if (equipment->get_money() < price) {
+      if (equipment.get_money() < price) {
 	// not enough rupees
 	Sound::play("wrong");
-	game->get_dialog_box()->start_dialog("_shop.not_enough_money");
+	game->get_dialog_box().start_dialog("_shop.not_enough_money");
       }
-      else if (equipment->has_item_maximum(treasure->get_item_name())) {
+      else if (equipment.has_item_maximum(treasure->get_item_name())) {
 	// the player already has the maximum amount of this item
 	Sound::play("wrong");
-	game->get_dialog_box()->start_dialog("_shop.amount_full");
+	game->get_dialog_box().start_dialog("_shop.amount_full");
       }
       else {
 	// give the treasure
-	equipment->remove_money(price);
+	equipment.remove_money(price);
 
 	int savegame_variable = treasure->get_savegame_variable();
 	game->get_hero().start_treasure(new Treasure(*treasure)); // make a copy of the treasure since the shop item may be still available
 	if (savegame_variable != -1) {
 	  remove_from_map();
-	  game->get_savegame()->set_boolean(savegame_variable, true);
+	  game->get_savegame().set_boolean(savegame_variable, true);
 	}
 	map->get_scripts().event_shop_item_bought(get_name());
       }

@@ -32,7 +32,7 @@ class Equipment {
 
   private:
 
-    Savegame *savegame;							/**< the savegame encapsulated by this equipment object */
+    Savegame &savegame;							/**< the savegame encapsulated by this equipment object */
     Game *game;								/**< the current game (may be NULL when the savegame is loaded outside a game) */
 
     // static properties of items
@@ -48,9 +48,9 @@ class Equipment {
   public:
 
     // creation and destruction
-    Equipment(Savegame *savegame);
+    Equipment(Savegame &savegame);
     ~Equipment();
-    void set_game(Game *game);
+    void set_game(Game &game);
 
     void update();
 
@@ -89,7 +89,7 @@ class Equipment {
     void stop_removing_magic();
 
     // equipment items saved
-    ItemProperties * get_item_properties(const std::string &item_name);
+    ItemProperties& get_item_properties(const std::string &item_name);
     bool has_item(const std::string &item_name);
     int get_item_variant(const std::string &item_name);
     void set_item_variant(const std::string &item_name, int variant);

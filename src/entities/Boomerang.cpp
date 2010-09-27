@@ -271,7 +271,7 @@ void Boomerang::update() {
       going_back = true;
       clear_movement();
       set_movement(new TargetMovement(hero, 16));
-      map->get_entities()->set_entity_layer(this, hero->get_layer()); // because the hero's layer may have changed
+      map->get_entities().set_entity_layer(this, hero->get_layer()); // because the hero's layer may have changed
     }
     else if (get_movement()->is_stopped()) {
       // collision with an obstacle

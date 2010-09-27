@@ -57,11 +57,19 @@ const int Hero::normal_walking_speed = 9;
  * @brief Creates a hero.
  * @param equipment the equipment
  */
-Hero::Hero(Equipment *equipment):
-  state(NULL), old_state(NULL), equipment(equipment), facing_entity(NULL),
-  walking_speed(normal_walking_speed), on_conveyor_belt(false), on_raised_blocks(false),
-  last_inventory_item_name(""), can_use_inventory_item_date(0),
-  ground(GROUND_NORMAL), next_ground_date(0) {
+Hero::Hero(Equipment &equipment):
+
+  state(NULL),
+  old_state(NULL),
+  equipment(equipment),
+  facing_entity(NULL),
+  walking_speed(normal_walking_speed),
+  on_conveyor_belt(false),
+  on_raised_blocks(false),
+  last_inventory_item_name(""),
+  can_use_inventory_item_date(0),
+  ground(GROUND_NORMAL),
+  next_ground_date(0) {
 
   // position
   set_size(16, 16);
@@ -70,7 +78,7 @@ Hero::Hero(Equipment *equipment):
   last_solid_ground_layer = LAYER_LOW;
  
   // sprites
-  sprites = new HeroSprites(this, equipment);
+  sprites = new HeroSprites(*this, equipment);
   rebuild_equipment();
 
   // state
@@ -235,7 +243,7 @@ void Hero::update_state() {
  */
 void Hero::update_movement() {
 
-  on_raised_blocks = map->get_entities()->overlaps_raised_blocks(get_layer(), get_bounding_box());
+  on_raised_blocks = map->get_entities().overlaps_raised_blocks(get_layer(), get_bounding_box());
 
   if (movement == NULL) {
     return;
@@ -323,7 +331,7 @@ void Hero::update_ground() {
  */
 void Hero::check_gameover() {
 
-  if (equipment->get_life() <= 0 && state->can_start_gameover_sequence()) {
+  if (equipment.get_life() <= 0 && state->can_start_gameover_sequence()) {
     sprites->stop_blinking();
     game->start_gameover_sequence();
   }
@@ -365,8 +373,8 @@ void Hero::key_released(GameControls::GameKey key) {
  * @brief Returns the sprites currently representing the hero.
  * @return the sprites
  */
-HeroSprites * Hero::get_sprites() {
-  return sprites;
+HeroSprites& Hero::get_sprites() {
+  return *sprites;
 }
 
 /**
@@ -446,7 +454,7 @@ int Hero::get_height_above_shadow() {
  *
  * @param map the map
  */
-void Hero::set_map(Map *map) {
+void Hero::set_map(Map &map) {
 
   MapEntity::set_map(map);
 
@@ -466,7 +474,7 @@ void Hero::set_map(Map *map) {
  * @param initial_direction the direction of the hero (0 to 3)
  * or -1 to let the direction unchanged
  */
-void Hero::set_map(Map *map, int initial_direction) {
+void Hero::set_map(Map &map, int initial_direction) {
 
   // take the specified direction
   if (initial_direction != -1) {
@@ -480,11 +488,11 @@ void Hero::set_map(Map *map, int initial_direction) {
  * @brief Places the hero on the map specified and at its destination point selected.
  * @param map the new map
  */
-void Hero::place_on_destination_point(Map *map) {
+void Hero::place_on_destination_point(Map &map) {
 
-  MapEntities *entities = map->get_entities();
+  MapEntities &entities = map.get_entities();
 
-  std::string destination_point_name = map->get_destination_point_name();
+  const std::string &destination_point_name = map.get_destination_point_name();
 
   if (destination_point_name == "_same") {
 
@@ -492,16 +500,16 @@ void Hero::place_on_destination_point(Map *map) {
     // but we may have to change the layer
     
     Layer layer = LAYER_INTERMEDIATE;
-    if (entities->get_obstacle_tile(LAYER_INTERMEDIATE, get_x(), get_y()) == OBSTACLE_EMPTY) {
+    if (entities.get_obstacle_tile(LAYER_INTERMEDIATE, get_x(), get_y()) == OBSTACLE_EMPTY) {
       layer = LAYER_LOW;
     }
     set_map(map);
-    map->get_entities()->set_entity_layer(this, layer);
+    map.get_entities().set_entity_layer(this, layer);
 
     start_free();
   }
   else {
-    int side = map->get_destination_side();
+    int side = map.get_destination_side();
 
     if (side != -1) {
 
@@ -511,7 +519,7 @@ void Hero::place_on_destination_point(Map *map) {
       switch (side) {
 
 	case 0: // right side
-	  set_x(map->get_width());
+	  set_x(map.get_width());
 	  break;
 
 	case 1: // top side
@@ -523,7 +531,7 @@ void Hero::place_on_destination_point(Map *map) {
 	  break;
 
 	case 3: // bottom side
-	  set_y(map->get_height() + 5);
+	  set_y(map.get_height() + 5);
 	  break;
 
 	default:
@@ -536,13 +544,13 @@ void Hero::place_on_destination_point(Map *map) {
       // normal case: the location is specified by a destination point object
 
       DestinationPoint *destination_point = (DestinationPoint*)
-	entities->get_entity(DESTINATION_POINT, destination_point_name);
+	entities.get_entity(DESTINATION_POINT, destination_point_name);
 
       set_map(map, destination_point->get_direction());
       set_xy(destination_point->get_x(), destination_point->get_y());
-      entities->set_entity_layer(this, destination_point->get_layer());
+      entities.set_entity_layer(this, destination_point->get_layer());
 
-      entities->remove_boomerang(); // useful when the map remains the same
+      entities.remove_boomerang(); // useful when the map remains the same
 
       Stairs *stairs = get_stairs_overlapping();
       if (stairs != NULL) {
@@ -673,13 +681,13 @@ void Hero::set_facing_entity(Detector *detector) {
 
   this->facing_entity = detector;
 
-  KeysEffect *keys_effect = game->get_keys_effect();
+  KeysEffect &keys_effect = game->get_keys_effect();
 
   if (facing_entity == NULL &&
-      keys_effect->is_action_key_acting_on_facing_entity()) {
+      keys_effect.is_action_key_acting_on_facing_entity()) {
 
     // the hero stopped facing an entity that was showing an action icon
-    keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
+    keys_effect.set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
   }
 }
 
@@ -776,9 +784,9 @@ bool Hero::is_on_raised_blocks() {
 Stairs * Hero::get_stairs_overlapping() {
 
   Stairs *stairs = NULL;
-  std::list<Stairs*> *all_stairs = map->get_entities()->get_stairs(get_layer());
+  std::list<Stairs*> all_stairs = map->get_entities().get_stairs(get_layer());
   std::list<Stairs*>::iterator it;
-  for (it = all_stairs->begin(); it != all_stairs->end() && stairs == NULL; it++) {
+  for (it = all_stairs.begin(); it != all_stairs.end() && stairs == NULL; it++) {
 
     if (overlaps(*it)) {
       stairs = *it;
@@ -1419,13 +1427,13 @@ void Hero::notify_collision_with_crystal_switch(CrystalSwitch *crystal_switch, C
   if (collision_mode == COLLISION_FACING_POINT) {
     // the hero is touching the crystal switch and is looking in its direction
 
-    KeysEffect *keys_effect = game->get_keys_effect();
+    KeysEffect &keys_effect = game->get_keys_effect();
 
-    if (keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
+    if (keys_effect.get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
 	&& is_free()) {
 
       // we show the action icon
-      keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_LOOK);
+      keys_effect.set_action_key_effect(KeysEffect::ACTION_KEY_LOOK);
     }
   }
 }
@@ -1605,7 +1613,7 @@ void Hero::start_deep_water() {
   }
   else {
     // move to state swimming or jumping
-    if (equipment->has_ability("swim")) {
+    if (equipment.has_ability("swim")) {
       set_state(new SwimmingState(this));
     }
     else {

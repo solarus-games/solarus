@@ -33,7 +33,7 @@
  * @brief Creates a new dialog box.
  * @param game the game this dialog box belongs to
  */
-DialogBox::DialogBox(Game *game):
+DialogBox::DialogBox(Game &game):
   game(game), current_message(NULL) {
 
   // initialize the surface
@@ -70,7 +70,7 @@ DialogBox::~DialogBox() {
  * @brief Returns the game where this dialog box is displayed.
  * @return the current game
  */
-Game * DialogBox::get_game() {
+Game& DialogBox::get_game() {
   return game;
 }
 
@@ -106,10 +106,10 @@ void DialogBox::set_vertical_position(VerticalPosition vertical_position) {
 
   if (vertical_position == POSITION_AUTO) {
     // determine the position
-    const Rectangle &camera_position = game->get_current_map()->get_camera_position();
+    const Rectangle &camera_position = game.get_current_map().get_camera_position();
     vertical_position = POSITION_BOTTOM;
 
-    if (game->get_hero().get_y() >= camera_position.get_y() + 130) {
+    if (game.get_hero().get_y() >= camera_position.get_y() + 130) {
       vertical_position = POSITION_TOP;
     }
   }
@@ -259,9 +259,9 @@ void DialogBox::start_dialog(const MessageId &first_message_id, VerticalPosition
   Debug::assert(!is_enabled(), StringConcat() << "Cannot start message sequence '" << first_message_id << ": the dialog box is already enabled");
 
   // save the action and sword keys
-  KeysEffect *keys_effect = game->get_keys_effect();
-  action_key_effect_saved = keys_effect->get_action_key_effect();
-  sword_key_effect_saved = keys_effect->get_sword_key_effect();
+  KeysEffect &keys_effect = game.get_keys_effect();
+  action_key_effect_saved = keys_effect.get_action_key_effect();
+  sword_key_effect_saved = keys_effect.get_sword_key_effect();
 
   // initialize the dialog box with the default parameters
   set_vertical_position(vertical_position);
@@ -273,7 +273,7 @@ void DialogBox::start_dialog(const MessageId &first_message_id, VerticalPosition
   show_message(first_message_id);
 
   // notify the scripts
-  game->get_scripts().event_dialog_started(first_message_id);
+  game.get_scripts().event_dialog_started(first_message_id);
 }
 
 /**
@@ -296,14 +296,14 @@ void DialogBox::show_message(const MessageId &message_id) {
   question_dst_position.set_y(box_dst_position.get_y() + 27);
   
   // hide the action icon
-  KeysEffect *keys_effect = game->get_keys_effect();
-  keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
+  KeysEffect &keys_effect = game.get_keys_effect();
+  keys_effect.set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
 
   if (get_skip_mode() != SKIP_NONE) {
-    keys_effect->set_sword_key_effect(KeysEffect::SWORD_KEY_SKIP);
+    keys_effect.set_sword_key_effect(KeysEffect::SWORD_KEY_SKIP);
   }
   else {
-    keys_effect->set_sword_key_effect(KeysEffect::SWORD_KEY_HIDDEN);
+    keys_effect.set_sword_key_effect(KeysEffect::SWORD_KEY_HIDDEN);
   }
 }
 
@@ -332,14 +332,14 @@ void DialogBox::close() {
   current_message = NULL;
 
   // restore the action and sword keys
-  KeysEffect *keys_effect = game->get_keys_effect();
-  keys_effect->set_action_key_effect(action_key_effect_saved);
-  keys_effect->set_sword_key_effect(sword_key_effect_saved);
+  KeysEffect &keys_effect = game.get_keys_effect();
+  keys_effect.set_action_key_effect(action_key_effect_saved);
+  keys_effect.set_sword_key_effect(sword_key_effect_saved);
 
   // notify the script if necessary
   if (!skipped && first_message_id[0] != '_') {
     // a dialog of the quest was just finished: notify the script
-    game->get_scripts().event_dialog_finished(first_message_id, last_answer);
+    game.get_scripts().event_dialog_finished(first_message_id, last_answer);
   }
 }
 
@@ -476,8 +476,8 @@ void DialogBox::update() {
     end_message_sprite->update();
 
     // show the appropriate action icon
-    KeysEffect *keys_effect = game->get_keys_effect();
-    KeysEffect::ActionKeyEffect action_key_effect = keys_effect->get_action_key_effect();
+    KeysEffect &keys_effect = game.get_keys_effect();
+    KeysEffect::ActionKeyEffect action_key_effect = keys_effect.get_action_key_effect();
     if (action_key_effect != KeysEffect::ACTION_KEY_NEXT
 	&& action_key_effect != KeysEffect::ACTION_KEY_RETURN) {
 
@@ -486,16 +486,16 @@ void DialogBox::update() {
 	if (end_message_sprite->get_current_animation() != "next") {
 	  end_message_sprite->set_current_animation("next");
 	}
-	keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_NEXT);
+	keys_effect.set_action_key_effect(KeysEffect::ACTION_KEY_NEXT);
       }
       else {
-	keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_RETURN);
+	keys_effect.set_action_key_effect(KeysEffect::ACTION_KEY_RETURN);
 	if (end_message_sprite->get_current_animation() != "last") {
 	  end_message_sprite->set_current_animation("last");
 	}
       }
 
-      keys_effect->set_sword_key_effect(KeysEffect::SWORD_KEY_HIDDEN);
+      keys_effect.set_sword_key_effect(KeysEffect::SWORD_KEY_HIDDEN);
       Sound::play("message_end");
     }
   }

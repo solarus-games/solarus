@@ -61,7 +61,7 @@ class PauseSubmenuInventory: public PauseSubmenu {
   public:
 
     // construction and destruction
-    PauseSubmenuInventory(PauseMenu *pause_menu, Game *game);
+    PauseSubmenuInventory(PauseMenu &pause_menu, Game &game);
     ~PauseSubmenuInventory();
 
     // main loop

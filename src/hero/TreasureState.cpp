@@ -57,7 +57,7 @@ void Hero::TreasureState::start(State *previous_state) {
   sprites->set_animation_brandish();
 
   // play the sound
-  const SoundId &sound_id = treasure->get_item_properties()->get_sound_when_brandished();
+  const SoundId &sound_id = treasure->get_item_properties().get_sound_when_brandished();
   Sound::play(sound_id);
 
   // give the treasure
@@ -66,7 +66,7 @@ void Hero::TreasureState::start(State *previous_state) {
   // show a message
   std::ostringstream oss;
   oss << "_treasure." << treasure->get_item_name() << "." << treasure->get_variant();
-  game->get_dialog_box()->start_dialog(oss.str());
+  game->get_dialog_box().start_dialog(oss.str());
 }
 
 /**

@@ -32,8 +32,8 @@
  * @param pause_menu the pause menu object
  * @param game the game
  */
-PauseSubmenuOptions::PauseSubmenuOptions(PauseMenu *pause_menu, Game *game):
-  PauseSubmenu(pause_menu, game), controls(game->get_controls()) {
+PauseSubmenuOptions::PauseSubmenuOptions(PauseMenu &pause_menu, Game &game):
+  PauseSubmenu(pause_menu, game), controls(game.get_controls()) {
 
   // get the strings
   video_mode_strings = new std::string[VideoManager::NB_MODES];
@@ -73,7 +73,7 @@ PauseSubmenuOptions::PauseSubmenuOptions(PauseMenu *pause_menu, Game *game):
 
     game_key_texts[i] = new TextSurface(4, y, TextSurface::ALIGN_LEFT, TextSurface::ALIGN_TOP);
     game_key_texts[i]->set_font("fixed");
-    game_key_texts[i]->set_text(controls->get_key_name((GameControls::GameKey) (i + 1)));
+    game_key_texts[i]->set_text(controls.get_key_name((GameControls::GameKey) (i + 1)));
 
     keyboard_control_texts[i] = new TextSurface(74, y, TextSurface::ALIGN_LEFT, TextSurface::ALIGN_TOP);
     keyboard_control_texts[i]->set_font("fixed");
@@ -96,8 +96,7 @@ PauseSubmenuOptions::PauseSubmenuOptions(PauseMenu *pause_menu, Game *game):
   customizing = false;
 
   // action icon
-  KeysEffect *keys_effect = game->get_keys_effect();
-  keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_CHANGE);
+  game.get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_CHANGE);
 }
 
 /**
@@ -130,17 +129,15 @@ PauseSubmenuOptions::~PauseSubmenuOptions() {
  */
 void PauseSubmenuOptions::load_control_texts() {
   
-  GameControls *controls = game->get_controls();
-
   controls_surface->fill_with_color(Color::get_black());
   for (int i = 0; i < 9; i++) {
 
     GameControls::GameKey key = (GameControls::GameKey) (i + 1);
 
-    const std::string &keyboard_text = controls->get_keyboard_string(key);
+    const std::string &keyboard_text = controls.get_keyboard_string(key);
     keyboard_control_texts[i]->set_text(keyboard_text.substr(0, 9));
 
-    const std::string &joypad_text = controls->get_joypad_string(key);
+    const std::string &joypad_text = controls.get_joypad_string(key);
     joypad_control_texts[i]->set_text(joypad_text.substr(0, 9));
 
     game_key_texts[i]->display(controls_surface);
@@ -193,11 +190,11 @@ void PauseSubmenuOptions::key_pressed(GameControls::GameKey key) {
   switch (key) {
 
   case GameControls::LEFT:
-    pause_menu->show_left_submenu();
+    pause_menu.show_left_submenu();
     break;
 
   case GameControls::RIGHT:
-    pause_menu->show_right_submenu();
+    pause_menu.show_right_submenu();
     break;
 
   case GameControls::UP:
@@ -232,14 +229,14 @@ void PauseSubmenuOptions::action_key_pressed() {
     set_caption_text(caption_strings[2]);
     cursor_sprite->set_current_animation("small_blink");
     GameControls::GameKey key_to_customize = (GameControls::GameKey) cursor_position;
-    controls->customize(key_to_customize);
+    controls.customize(key_to_customize);
     customizing = true;
 
-    KeysEffect *keys_effect = game->get_keys_effect();
-    keys_effect->set_item_keys_enabled(false);
-    keys_effect->set_action_key_enabled(false);
-    keys_effect->set_sword_key_enabled(false);
-    keys_effect->set_pause_key_enabled(false);
+    KeysEffect &keys_effect = game.get_keys_effect();
+    keys_effect.set_item_keys_enabled(false);
+    keys_effect.set_action_key_enabled(false);
+    keys_effect.set_sword_key_enabled(false);
+    keys_effect.set_pause_key_enabled(false);
   }
 }
 
@@ -253,18 +250,18 @@ void PauseSubmenuOptions::update() {
 
   cursor_sprite->update();
 
-  if (customizing && controls->is_customization_done()) {
+  if (customizing && controls.is_customization_done()) {
     Sound::play("danger");
     customizing = false;
     set_caption_text(caption_strings[1]);
     cursor_sprite->set_current_animation("small");
     load_control_texts();
 
-    KeysEffect *keys_effect = game->get_keys_effect();
-    keys_effect->set_item_keys_enabled(true);
-    keys_effect->set_action_key_enabled(true);
-    keys_effect->set_sword_key_enabled(true);
-    keys_effect->set_pause_key_enabled(true);
+    KeysEffect &keys_effect = game.get_keys_effect();
+    keys_effect.set_item_keys_enabled(true);
+    keys_effect.set_action_key_enabled(true);
+    keys_effect.set_sword_key_enabled(true);
+    keys_effect.set_pause_key_enabled(true);
   }
 }
 

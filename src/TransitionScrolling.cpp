@@ -62,7 +62,7 @@ void TransitionScrolling::start() {
   }
 
   // get the scrolling direction
-  scrolling_direction = (game->get_current_map()->get_destination_side() + 2) % 4;
+  scrolling_direction = (game->get_current_map().get_destination_side() + 2) % 4;
 
   const int scrolling_step = 5;
   int width = 320;

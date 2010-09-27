@@ -62,7 +62,7 @@ void PathFindingMovement::recompute_movement() {
 
 //  uint32_t start = System::now();
 
-  PathFinding path_finding = PathFinding(entity->get_map(), entity, target);
+  PathFinding path_finding(entity->get_map(), entity, target);
   remaining_path = path_finding.compute_path();
 
 //  uint32_t end = System::now();

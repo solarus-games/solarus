@@ -37,9 +37,7 @@ class PauseSubmenuMap: public PauseSubmenu {
     static const Rectangle outside_world_minimap_size;
 
     // data
-    Equipment *equipment;        /**< general equipment */
-    Dungeon *dungeon;            /**< the dungeon whose map is displayed, or NULL if we are not in a dungeon */
-    Rectangle hero_position;     /**< position of the hero on the minimap */
+    Rectangle hero_position;		/**< position of the hero on the minimap */
 
     // graphics
     Sprite *hero_head_sprite;
@@ -48,8 +46,8 @@ class PauseSubmenuMap: public PauseSubmenu {
 
     // outside world map
     Surface *world_map_img;
-    int world_minimap_visible_y; /**< when the world map is displayed: y position of the minimap visible rectangle */
-    int moving_visible_y;        /**< 0, -1 or 1 depending on the arrow pressed */
+    int world_minimap_visible_y;	/**< when the world map is displayed: y position of the minimap visible rectangle */
+    int moving_visible_y;		/**< 0, -1 or 1 depending on the arrow pressed */
     uint32_t next_moving_visible_y_date;
 
     // dungeon map
@@ -70,7 +68,7 @@ class PauseSubmenuMap: public PauseSubmenu {
 
   public:
 
-    PauseSubmenuMap(PauseMenu *pause_menu, Game *game);
+    PauseSubmenuMap(PauseMenu &pause_menu, Game &game);
     ~PauseSubmenuMap();
 
     void key_pressed(GameControls::GameKey key);

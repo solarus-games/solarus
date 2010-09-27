@@ -39,7 +39,7 @@ class MagicBar: public HudElement {
 
   public:
 
-    MagicBar(Game *game, int x, int y);
+    MagicBar(Game &game, int x, int y);
     ~MagicBar();
 
     void update();

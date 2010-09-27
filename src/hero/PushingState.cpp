@@ -89,7 +89,7 @@ void Hero::PushingState::update() {
   }
   else { // the hero is pushing a fixed obstacle
 
-    GameControls *controls = game->get_controls();
+    GameControls &controls = game->get_controls();
 
     // stop pushing if there is no more obstacle
     if (!hero->is_facing_obstacle()) {
@@ -97,9 +97,9 @@ void Hero::PushingState::update() {
     }
 
     // stop pushing if the player changes his direction
-    else if (controls->get_wanted_direction8() != pushing_direction4 * 2) {
+    else if (controls.get_wanted_direction8() != pushing_direction4 * 2) {
 
-      if (controls->is_key_pressed(GameControls::ACTION)) {
+      if (controls.is_key_pressed(GameControls::ACTION)) {
 	hero->set_state(new GrabbingState(hero));
       }
       else {
@@ -189,12 +189,12 @@ void Hero::PushingState::stop_moving_pushed_entity() {
   pushed_entity = NULL;
   hero->clear_movement();
 
-  GameControls *controls = game->get_controls();
-  if (!controls->is_key_pressed(GameControls::ACTION)) {
+  GameControls &controls = game->get_controls();
+  if (!controls.is_key_pressed(GameControls::ACTION)) {
     // the hero was pushing an entity without grabbing it
 
     // stop the animation pushing if his direction changed
-    if (controls->get_wanted_direction8() != pushing_direction4 * 2) {
+    if (controls.get_wanted_direction8() != pushing_direction4 * 2) {
       hero->set_state(new FreeState(hero));
     }
   }

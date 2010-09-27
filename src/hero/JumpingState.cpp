@@ -96,7 +96,7 @@ void Hero::JumpingState::update() {
   State::update();
 
   if (movement->is_finished()) {
-    map->get_entities()->set_entity_layer(hero, layer_after_jump);
+    map->get_entities().set_entity_layer(hero, layer_after_jump);
 
     if (hero->get_ground() == GROUND_DEEP_WATER) {
       hero->start_deep_water();

@@ -35,7 +35,7 @@ class GameoverSequence {
   private:
 
     // data
-    Game *game;                     /**< the game */
+    Game &game;                     /**< the game */
     MusicId music_id;               /**< the music played before game over */
 
     // graphics
@@ -75,7 +75,7 @@ class GameoverSequence {
   public:
 
     // creation and destruction
-    GameoverSequence(Game *game, int hero_direction);
+    GameoverSequence(Game &game, int hero_direction);
     ~GameoverSequence();
 
     // state

@@ -31,7 +31,7 @@
  * @brief Constructor.
  * @param game the current game (cannot be NULL)
  */
-HUD::HUD(Game *game):
+HUD::HUD(Game &game):
   game(game), nb_elements(0), showing_message(false) {
 
   elements[nb_elements++] = new HeartsView(game, 216, 14);
@@ -63,9 +63,9 @@ void HUD::update_blinking() {
 
   // detect whether a key is being customized
   int index = -1;
-  GameControls *controls = game->get_controls();
-  if (controls->is_customizing()) {
-    GameControls::GameKey key = controls->get_key_to_customize();
+  GameControls &controls = game.get_controls();
+  if (controls.is_customizing()) {
+    GameControls::GameKey key = controls.get_key_to_customize();
     switch (key) {
 
       case GameControls::ACTION:
@@ -111,7 +111,7 @@ void HUD::update_blinking() {
 void HUD::update() {
 
   // detect when the game is showing a message
-  if (game->is_showing_message() && !showing_message) {
+  if (game.is_showing_message() && !showing_message) {
       showing_message = true;
 
       // a message is shown: hide or move the top-left icons
@@ -121,7 +121,7 @@ void HUD::update() {
       elements[5]->set_position(-11, 17); // sword icon
       elements[7]->set_position(-11, 43); // action icon
   }
-  else if (!game->is_showing_message()) {
+  else if (!game.is_showing_message()) {
 
     if (showing_message) {
       showing_message = false;
@@ -136,8 +136,8 @@ void HUD::update() {
     else {
 
       // if the hero is below the top-left icons, make them semi-transparent
-      const Rectangle &hero_xy = game->get_hero_xy();
-      if (elements[6]->get_opacity() == 255 && !game->is_suspended()
+      const Rectangle &hero_xy = game.get_hero_xy();
+      if (elements[6]->get_opacity() == 255 && !game.is_suspended()
 	  && hero_xy.get_x() < 88 && hero_xy.get_y() < 80) {
 	elements[3]->set_opacity(96); // item 0
 	elements[4]->set_opacity(96); // item 1
@@ -146,7 +146,7 @@ void HUD::update() {
 	elements[7]->set_opacity(96); // action icon
       }
       else if (elements[6]->get_opacity() == 96
-	       && (hero_xy.get_x() >= 88 || hero_xy.get_y() >= 80 || game->is_suspended())) {
+	       && (hero_xy.get_x() >= 88 || hero_xy.get_y() >= 80 || game.is_suspended())) {
 	elements[3]->set_opacity(255); // item 0
 	elements[4]->set_opacity(255); // item 1
 	elements[6]->set_opacity(255); // pause icon

@@ -67,7 +67,7 @@ class Hero: public MapEntity {
     State *old_state;                           /**< the previous state, to delete as soon as possible */
 
     // sprites
-    Equipment *equipment;			/**< equipment of the player */
+    Equipment &equipment;			/**< equipment of the player */
     HeroSprites *sprites;			/**< the hero's sprites (note that we don't use the sprites structure from MapEntity) */
 
     // position
@@ -119,7 +119,7 @@ class Hero: public MapEntity {
     /**
      * @name Creation and destruction.
      */
-    Hero(Equipment *equipment);
+    Hero(Equipment &equipment);
     ~Hero();
 
     /**
@@ -151,7 +151,7 @@ class Hero: public MapEntity {
      * Functions relative to the sprites.
      * The sprites are managed and displayed by the class HeroSprites.
      */
-    HeroSprites *get_sprites();
+    HeroSprites& get_sprites();
     int get_animation_direction();
     void set_animation_direction(int direction);
     bool is_animation_finished();
@@ -165,9 +165,9 @@ class Hero: public MapEntity {
      *
      * Functions called when the player goes to another map.
      */
-    void set_map(Map *map);
-    void set_map(Map *map, int initial_direction);
-    void place_on_destination_point(Map *map);
+    void set_map(Map &map);
+    void set_map(Map &map, int initial_direction);
+    void place_on_destination_point(Map &map);
     void notify_opening_transition_finished();
 
     /**
@@ -186,7 +186,7 @@ class Hero: public MapEntity {
     bool is_facing_direction4(int direction4);
     bool is_facing_direction8(int direction8);
     bool is_on_raised_blocks();
-    Stairs *get_stairs_overlapping();
+    Stairs* get_stairs_overlapping();
 
     /**
      * @name Movement.

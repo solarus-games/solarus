@@ -54,8 +54,8 @@ class GameControls {
 
   private:
 
-    Game *game;						/**< the game */
-    Savegame *savegame;					/**< the savegame, which stores the keyboard and joypad mappings of the game keys */
+    Game &game;						/**< the game */
+    Savegame &savegame;					/**< the savegame, which stores the keyboard and joypad mappings of the game keys */
 
     std::string game_key_names[9];			/**< human name of each game key, in the current language */
     std::map<InputEvent::KeyboardKey, GameKey> keyboard_mapping;	/**< associates each game key to the keyboard key that triggers it */
@@ -88,7 +88,7 @@ class GameControls {
   public:
 
     // creation and destruction
-    GameControls(Game *game);
+    GameControls(Game &game);
     ~GameControls();
 
     // controls

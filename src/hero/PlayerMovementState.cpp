@@ -91,7 +91,7 @@ void Hero::PlayerMovementState::stop(State *next_state) {
  *
  * @param map the new map
  */
-void Hero::PlayerMovementState::set_map(Map *map) {
+void Hero::PlayerMovementState::set_map(Map &map) {
 
   State::set_map(map);
   set_animation_stopped();
@@ -172,7 +172,7 @@ void Hero::PlayerMovementState::notify_movement_changed() {
   // the movement has changed: update the animation of the sprites
 
   bool movement_walking = get_wanted_movement_direction8() != -1;
-  bool sprites_walking = hero->get_sprites()->is_walking();
+  bool sprites_walking = hero->get_sprites().is_walking();
 
   if (movement_walking && !sprites_walking) {
     set_animation_walking();

@@ -80,7 +80,7 @@ Enemy::~Enemy() {
  * @param y y coordinate of the entity
  * @return the instance created
  */
-MapEntity * Enemy::parse(Game *game, std::istream &is, Layer layer, int x, int y) {
+MapEntity* Enemy::parse(Game &game, std::istream &is, Layer layer, int x, int y) {
 
   int direction, subtype, rank, savegame_variable, treasure_variant, treasure_savegame_variable;
   std::string name, treasure_name;
@@ -119,12 +119,12 @@ MapEntity * Enemy::parse(Game *game, std::istream &is, Layer layer, int x, int y
  * this enemy is killed, or -1 if this enemy is not saved
  * @param treasure the pickable item that the enemy drops (possibly NULL)
  */
-MapEntity * Enemy::create(Game *game, Subtype type, Rank rank, int savegame_variable,
+MapEntity * Enemy::create(Game &game, Subtype type, Rank rank, int savegame_variable,
     const std::string &name, Layer layer, int x, int y, int direction, Treasure *treasure) {
 
   // see if the enemy is dead
   if (savegame_variable != -1
-      && game->get_savegame()->get_boolean(savegame_variable)) {
+      && game.get_savegame().get_boolean(savegame_variable)) {
 
     // the enemy is dead: create its pickable treasure (if any) instead
     return PickableItem::create(game, layer, x, y, treasure, FALLING_NONE, false);
@@ -181,7 +181,7 @@ EntityType Enemy::get_type() {
  * @brief Sets the map.
  * @param map the map
  */
-void Enemy::set_map(Map *map) {
+void Enemy::set_map(Map &map) {
 
   MapEntity::set_map(map);
 
@@ -355,7 +355,7 @@ void Enemy::set_default_attack_consequences() {
  *
  * @return name of the current animation of the first sprite
  */
-const std::string & Enemy::get_animation() {
+const std::string& Enemy::get_animation() {
   return get_sprite()->get_current_animation();
 }
 
@@ -446,7 +446,7 @@ void Enemy::update() {
       Rectangle xy;
       xy.set_x(get_top_left_x() + Random::get_number(get_width()));
       xy.set_y(get_top_left_y() + Random::get_number(get_height()));
-      map->get_entities()->add_entity(new Explosion(LAYER_HIGH, xy, false));
+      map->get_entities().add_entity(new Explosion(LAYER_HIGH, xy, false));
 
       next_explosion_date = now + 200;
       nb_explosions++;
@@ -462,8 +462,8 @@ void Enemy::update() {
     // create the pickable treasure
     if (!treasure->is_empty()) {
 
-      bool will_disappear = treasure->get_item_properties()->can_disappear();
-      map->get_entities()->add_entity(PickableItem::create(game, get_layer(), get_x(), get_y(), treasure,
+      bool will_disappear = treasure->get_item_properties().can_disappear();
+      map->get_entities().add_entity(PickableItem::create(*game, get_layer(), get_x(), get_y(), treasure,
 	    FALLING_HIGH, will_disappear));
     }
     else {
@@ -639,7 +639,7 @@ void Enemy::attack_hero(Hero *hero, Sprite *this_sprite) {
 
     bool hero_protected = false;
     if (minimum_shield_needed != 0 &&
-	game->get_equipment()->has_ability("shield", minimum_shield_needed)) {
+	game->get_equipment().has_ability("shield", minimum_shield_needed)) {
 
       double angle = hero->get_vector_angle(this);
       int protected_direction = (int) ((angle + Geometry::PI_OVER_2 / 2.0) * 4 / Geometry::TWO_PI);
@@ -879,7 +879,7 @@ void Enemy::kill() {
 
   // save the enemy state if required
   if (savegame_variable != -1) {
-    game->get_savegame()->set_boolean(savegame_variable, true);
+    game->get_savegame().set_boolean(savegame_variable, true);
   }
 }
 

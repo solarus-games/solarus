@@ -41,34 +41,42 @@ Rectangle Game::outside_world_size(0, 0, 0, 0); // loaded from quest.dat
 /**
  * @brief Creates a game.
  * @param solarus the application object
- * @param savegame the saved data of this game
+ * @param savegame the saved data of this game (the specified object will be copied and stored into the game)
  */
-Game::Game(Solarus *solarus, Savegame *savegame):
-  Screen(solarus),
+Game::Game(Solarus &solarus, Savegame &savegame):
 
-  savegame(savegame), pause_key_available(true), pause_menu(NULL), 
+  Screen(solarus),
+  savegame(savegame),
+  pause_key_available(true),
+  pause_menu(NULL), 
   gameover_sequence(NULL),
-  reseting(false), restarting(false), keys_effect(NULL),
-  current_map(NULL), next_map(NULL), previous_map_surface(NULL),
-  transition_style(Transition::IMMEDIATE), transition(NULL),
-  dungeon(NULL), crystal_switch_state(false),
-  hud(NULL), hud_enabled(true), dialog_box(NULL) {
+  reseting(false),
+  restarting(false),
+  keys_effect(NULL),
+  current_map(NULL),
+  next_map(NULL),
+  previous_map_surface(NULL),
+  transition_style(Transition::IMMEDIATE),
+  transition(NULL),
+  dungeon(NULL),
+  crystal_switch_state(false),
+  hud(NULL),
+  hud_enabled(true),
+  dialog_box(NULL) {
 
   // notify objects
-  get_equipment()->set_game(this);
-  solarus->get_debug_keys()->set_game(this);
-  controls = new GameControls(this);
-  dialog_box = new DialogBox(this);
+  get_equipment().set_game(*this);
+  solarus.get_debug_keys().set_game(this);
 
-  // initialize the hero
+  // initialize members
+  controls = new GameControls(*this);
+  dialog_box = new DialogBox(*this);
   hero = new Hero(get_equipment());
-
-  // initialize the keys effect and the HUD
   keys_effect = new KeysEffect();
-  hud = new HUD(this);
+  hud = new HUD(*this);
 
   // launch the starting map
-  set_current_map(savegame->get_integer(Savegame::STARTING_MAP), "", Transition::FADE);
+  set_current_map(savegame.get_integer(Savegame::STARTING_MAP), "", Transition::FADE);
 }
 
 /**
@@ -80,7 +88,7 @@ Game::~Game() {
   current_map->leave(); // tell the map that the hero is not there anymore
   delete current_map;
 
-  solarus->get_debug_keys()->set_game(NULL);
+  solarus.get_debug_keys().set_game(NULL);
   Music::play(Music::none);
 
   delete transition;
@@ -92,7 +100,6 @@ Game::~Game() {
   delete keys_effect;
   delete hud;
   delete hero;
-  delete savegame;
   delete controls;
 
   if (previous_map_surface != NULL) {
@@ -116,7 +123,7 @@ Hero& Game::get_hero() {
  *
  * @return the position of the hero
  */
-const Rectangle & Game::get_hero_xy() {
+const Rectangle& Game::get_hero_xy() {
 
   static Rectangle xy;
   xy = hero->get_xy();
@@ -127,35 +134,35 @@ const Rectangle & Game::get_hero_xy() {
  * @brief Returns the game controls for the keyboard and the joypad.
  * @return the game controls
  */
-GameControls * Game::get_controls() {
-  return controls;
+GameControls& Game::get_controls() {
+  return *controls;
 }
 
 /**
  * @brief Returns the current effect of the main keys (action, sword, pause, etc.).
  * @return the current effect of the main keys
  */
-KeysEffect * Game::get_keys_effect() {
-  return keys_effect;
+KeysEffect& Game::get_keys_effect() {
+  return *keys_effect;
 }
 
 /**
  * @brief Returns the saved data associated to this game.
  * @return the saved data
  */
-Savegame * Game::get_savegame() {
+Savegame& Game::get_savegame() {
   return savegame;
 }
 
 /**
  * @brief Returns the equipment of the player.
  *
- * It is equivalent to get_savegame()->get_equipment().
+ * It is equivalent to get_savegame().get_equipment().
  *
  * @return the equipment
  */
-Equipment * Game::get_equipment() {
-  return savegame->get_equipment();
+Equipment& Game::get_equipment() {
+  return savegame.get_equipment();
 }
 
 /**
@@ -234,7 +241,7 @@ void Game::update() {
   current_map->update();
 
   // update the equipment and HUD
-  get_equipment()->update();
+  get_equipment().update();
   update_keys_effect();
   hud->update();
   dialog_box->update();
@@ -292,12 +299,12 @@ void Game::update_transitions() {
     }
     else if (restarting) {
       current_map->unload();
-      set_next_screen(new Game(solarus, new Savegame(savegame)));
+      set_next_screen(new Game(solarus, savegame));
     }
     else if (transition_direction == Transition::OUT) {
 
       if (next_map == current_map) {
-	hero->place_on_destination_point(current_map);
+	hero->place_on_destination_point(*current_map);
 	transition = Transition::create(transition_style, Transition::IN, this);
 	transition->start();
 	next_map = NULL;
@@ -315,8 +322,8 @@ void Game::update_transitions() {
 	  crystal_switch_state = false;
 
 	  // save the location
-	  savegame->set_integer(Savegame::STARTING_MAP, next_map->get_id());
-	  savegame->set_string(Savegame::STARTING_POINT, next_map->get_destination_point_name());
+	  savegame.set_integer(Savegame::STARTING_MAP, next_map->get_id());
+	  savegame.set_string(Savegame::STARTING_POINT, next_map->get_destination_point_name());
 
           if (next_map->is_in_dungeon()) {
             // show the dungeon name
@@ -360,9 +367,9 @@ void Game::update_transitions() {
       transition->set_previous_surface(previous_map_surface);
     }
 
-    hero->place_on_destination_point(current_map);
+    hero->place_on_destination_point(*current_map);
     transition->start();
-    current_map->start(this);
+    current_map->start(*this);
   }
 }
 
@@ -377,12 +384,12 @@ void Game::update_keys_effect() {
   }
 
   // make sure the sword key is coherent with having a sword
-  if (get_equipment()->has_ability("sword")
+  if (get_equipment().has_ability("sword")
       && keys_effect->get_sword_key_effect() != KeysEffect::SWORD_KEY_SWORD) {
 
     keys_effect->set_sword_key_effect(KeysEffect::SWORD_KEY_SWORD);
   }
-  else if (!get_equipment()->has_ability("sword")
+  else if (!get_equipment().has_ability("sword")
       && keys_effect->get_sword_key_effect() == KeysEffect::SWORD_KEY_SWORD) {
 
     keys_effect->set_sword_key_effect(KeysEffect::SWORD_KEY_NONE);
@@ -440,11 +447,23 @@ void Game::display(Surface *screen_surface) {
 }
 
 /**
+ * @brief Returns whether there is a current map in this game.
+ *
+ * This function always returns true except when the game is being created
+ * and no map is loaded yet.
+ *
+ * @return true if there is a map
+ */
+bool Game::has_current_map() {
+  return current_map != NULL;
+}
+
+/**
  * @brief Returns the current map.
  * @return the current map
  */
-Map * Game::get_current_map() {
-  return current_map;
+Map& Game::get_current_map() {
+  return *current_map;
 }
 
 /**
@@ -465,7 +484,7 @@ void Game::set_current_map(MapId map_id, const std::string &destination_point_na
 
   // load the next map
   next_map = new Map(map_id);
-  next_map->load(this);
+  next_map->load(*this);
   next_map->check_suspended();
 
   if (current_map != NULL) {
@@ -474,7 +493,7 @@ void Game::set_current_map(MapId map_id, const std::string &destination_point_na
 
   // initialize the destination point, from the specified name or from the savegame
   if (destination_point_name == "") {
-    next_map->set_destination_point(savegame->get_string(Savegame::STARTING_POINT));
+    next_map->set_destination_point(savegame.get_string(Savegame::STARTING_POINT));
   }
   else {
     next_map->set_destination_point(destination_point_name);
@@ -486,7 +505,7 @@ void Game::set_current_map(MapId map_id, const std::string &destination_point_na
  * @brief Returns the size of the oustide world in pixels.
  * @return the size of the oustide world
  */
-const Rectangle & Game::get_outside_world_size() {
+const Rectangle& Game::get_outside_world_size() {
 
   if (outside_world_size.get_width() == 0) {
     // first time: read the information
@@ -505,7 +524,7 @@ const Rectangle & Game::get_outside_world_size() {
  * @return true if the current map is in a dungeon
  */
 bool Game::is_in_dungeon() {
-  return current_map->is_in_dungeon();
+  return has_current_map() && get_current_map().is_in_dungeon();
 }
 
 /**
@@ -515,8 +534,8 @@ bool Game::is_in_dungeon() {
  *
  * @return the current dungeon
  */
-Dungeon * Game::get_current_dungeon() {
-  return dungeon;
+Dungeon& Game::get_current_dungeon() {
+  return *dungeon;
 }
 
 /**
@@ -579,11 +598,11 @@ bool Game::is_showing_message() {
 }
 
 /**
- * @brief Returns the dialog box currently displayed.
- * @return the dialog box, or NULL if no message is currently displayed
+ * @brief Returns the dialog box manager.
+ * @return the dialog box manager
  */
-DialogBox * Game::get_dialog_box() {
-  return dialog_box;
+DialogBox& Game::get_dialog_box() {
+  return *dialog_box;
 }
 
 /**
@@ -602,10 +621,10 @@ void Game::set_hud_enabled(bool hud_enabled) {
  *
  * @return true if the player is currently allowed to pause the game
  */
-  bool Game::can_pause() {
-    return is_pause_key_available()		// see if the map currently allows the pause key
-      && get_equipment()->get_life() > 0;	// don't allow to pause the game if the gameover sequence is about to start
-  }
+bool Game::can_pause() {
+  return is_pause_key_available()		// see if the map currently allows the pause key
+    && get_equipment().get_life() > 0;	// don't allow to pause the game if the gameover sequence is about to start
+}
 
 /**
  * @brief Returns whether the pause key is available.
@@ -642,21 +661,13 @@ void Game::set_paused(bool paused) {
   if (paused != is_paused()) {
 
     if (paused) {
-      pause_menu = new PauseMenu(this);
+      pause_menu = new PauseMenu(*this);
     }
     else {
       delete pause_menu;
       pause_menu = NULL;
     }
   }
-}
-
-/**
- * @brief Returns the pause menu.
- * @return the pause menu, or NULL if the game is not paused
- */
-PauseMenu * Game::get_pause_menu() {
-  return pause_menu;
 }
 
 /**
@@ -703,7 +714,7 @@ void Game::restart() {
  * @brief Launches the gameover sequence.
  */
 void Game::start_gameover_sequence() {
-  gameover_sequence = new GameoverSequence(this, hero->get_animation_direction());
+  gameover_sequence = new GameoverSequence(*this, hero->get_animation_direction());
 }
 
 /**

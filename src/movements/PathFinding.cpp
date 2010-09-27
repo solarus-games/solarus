@@ -48,7 +48,7 @@ const Rectangle PathFinding::transition_collision_boxes[] = {
  * (its position must be a 16*16 rectangle aligned on the map grid)
  * @param target_entity the target entity (its size must be 16*16)
  */
-PathFinding::PathFinding(Map *map, MapEntity *source_entity, MapEntity *target_entity):
+PathFinding::PathFinding(Map &map, MapEntity *source_entity, MapEntity *target_entity):
   map(map), source_entity(source_entity), target_entity(target_entity) {
 
   const Rectangle &source = source_entity->get_bounding_box();
@@ -195,7 +195,7 @@ int PathFinding::get_square_index(const Rectangle &location) {
 
   int x8 = location.get_x() / 8;
   int y8 = location.get_y() / 8;
-  return y8 * map->get_width8() + x8;
+  return y8 * map.get_width8() + x8;
 }
 
 /**
@@ -270,6 +270,6 @@ bool PathFinding::is_node_transition_valid(const Node &initial_node, int directi
   collision_box.set_x(collision_box.get_x() + initial_node.location.get_x());
   collision_box.set_y(collision_box.get_y() + initial_node.location.get_y());
 
-  return !map->test_collision_with_obstacles(source_entity->get_layer(), collision_box, source_entity);
+  return !map.test_collision_with_obstacles(source_entity->get_layer(), collision_box, source_entity);
 }
 

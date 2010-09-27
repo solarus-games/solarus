@@ -98,7 +98,7 @@ void TilePattern::update() {
 void TilePattern::display_on_map(Map *map, const Rectangle &position_in_map) {
 
   Surface *map_surface = map->get_visible_surface();
-  Surface *tileset_image = map->get_tileset()->get_tiles_image();
+  Surface *tileset_image = map->get_tileset().get_tiles_image();
 
   Rectangle dst;
   const Rectangle &camera_position = map->get_camera_position();

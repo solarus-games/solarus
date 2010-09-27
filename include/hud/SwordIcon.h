@@ -45,7 +45,7 @@ class SwordIcon: public HudElement {
 
   public:
 
-    SwordIcon(Game *game, int x, int y);
+    SwordIcon(Game &game, int x, int y);
     ~SwordIcon();
 
     bool is_visible();

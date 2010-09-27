@@ -30,7 +30,7 @@
  * @brief Constructor.
  * @param savegame the savegame to encapsulate
  */
-Equipment::Equipment(Savegame *savegame):
+Equipment::Equipment(Savegame &savegame):
   savegame(savegame), game(NULL), magic_decrease_delay(0) {
 
   // load the equipment specification from items.dat
@@ -38,7 +38,7 @@ Equipment::Equipment(Savegame *savegame):
   ini.start_group_iteration();
   while (ini.has_more_groups()) {
 
-    item_properties[ini.get_group()] = new ItemProperties(this, &ini);
+    item_properties[ini.get_group()] = new ItemProperties(*this, ini);
     ini.next_group();
   }
 }
@@ -60,8 +60,8 @@ Equipment::~Equipment() {
  * @brief Sets the current game.
  * @param game the game
  */
-void Equipment::set_game(Game *game) {
-  this->game = game;
+void Equipment::set_game(Game &game) {
+  this->game = &game;
 }
 
 /**
@@ -110,7 +110,7 @@ void Equipment::update() {
  * @return the player's maximum number of money
  */
 int Equipment::get_max_money() {
-  return savegame->get_integer(Savegame::MAX_MONEY);
+  return savegame.get_integer(Savegame::MAX_MONEY);
 }
 
 /**
@@ -121,7 +121,7 @@ void Equipment::set_max_money(int max_money) {
 
   Debug::assert(max_money > 0, StringConcat() << "Illegal maximum amount of money: " << max_money);
 
-  savegame->set_integer(Savegame::MAX_MONEY, max_money);
+  savegame.set_integer(Savegame::MAX_MONEY, max_money);
 }
 
 /**
@@ -129,7 +129,7 @@ void Equipment::set_max_money(int max_money) {
  * @return the player's current amount of money
  */
 int Equipment::get_money() {
-  return savegame->get_integer(Savegame::CURRENT_MONEY);
+  return savegame.get_integer(Savegame::CURRENT_MONEY);
 }
 
 
@@ -144,7 +144,7 @@ void Equipment::set_money(int money) {
 
   Debug::assert(money >= 0 && money <= get_max_money(), StringConcat() << "Illegal amount of money: " << money);
 
-  savegame->set_integer(Savegame::CURRENT_MONEY, money);
+  savegame.set_integer(Savegame::CURRENT_MONEY, money);
 }
 
 /**
@@ -183,7 +183,7 @@ void Equipment::remove_money(int money_to_remove) {
  * @return the player's maximum level of life
  */
 int Equipment::get_max_life() {
-  return savegame->get_integer(Savegame::MAX_LIFE);
+  return savegame.get_integer(Savegame::MAX_LIFE);
 }
 
 /**
@@ -198,7 +198,7 @@ void Equipment::set_max_life(int max_life) {
 
   Debug::assert(max_life > 0, StringConcat() << "Illegal maximum life: " << max_life);
 
-  savegame->set_integer(Savegame::MAX_LIFE, max_life);
+  savegame.set_integer(Savegame::MAX_LIFE, max_life);
 }
 
 /**
@@ -206,7 +206,7 @@ void Equipment::set_max_life(int max_life) {
  * @return the player's current life
  */
 int Equipment::get_life() {
-  return savegame->get_integer(Savegame::CURRENT_LIFE);
+  return savegame.get_integer(Savegame::CURRENT_LIFE);
 }
 
 /**
@@ -220,7 +220,7 @@ void Equipment::set_life(int life) {
 
   Debug::assert(life > 0 && life <= get_max_life(), StringConcat() << "Illegal level of life: " << life);
 
-  savegame->set_integer(Savegame::CURRENT_LIFE, life);
+  savegame.set_integer(Savegame::CURRENT_LIFE, life);
 }
 
 /**
@@ -262,7 +262,7 @@ void Equipment::restore_all_life() {
  * @return the maximum level of magic
  */
 int Equipment::get_max_magic() {
-  return savegame->get_integer(Savegame::MAX_MAGIC);
+  return savegame.get_integer(Savegame::MAX_MAGIC);
 }
 
 /**
@@ -277,7 +277,7 @@ void Equipment::set_max_magic(int max_magic) {
 
   Debug::assert(max_magic >= 0, StringConcat() << "Illegal maximum number of magic points: " << max_magic);
 
-  savegame->set_integer(Savegame::MAX_MAGIC, max_magic);
+  savegame.set_integer(Savegame::MAX_MAGIC, max_magic);
 
   restore_all_magic();
 }
@@ -287,7 +287,7 @@ void Equipment::set_max_magic(int max_magic) {
  * @return the player's current number of magic points
  */
 int Equipment::get_magic() {
-  return savegame->get_integer(Savegame::CURRENT_MAGIC);
+  return savegame.get_integer(Savegame::CURRENT_MAGIC);
 }
 
 /**
@@ -302,7 +302,7 @@ void Equipment::set_magic(int magic) {
 
   Debug::assert(magic > 0 && magic <= get_max_magic(), StringConcat() << "Illegal number of magic points: " << magic);
 
-  savegame->set_integer(Savegame::CURRENT_MAGIC, magic);
+  savegame.set_integer(Savegame::CURRENT_MAGIC, magic);
 }
 
 /**
@@ -378,11 +378,11 @@ void Equipment::stop_removing_magic() {
  * @brief Returns the static properties of the specified item.
  * @param item_name name of the item to get
  */
-ItemProperties * Equipment::get_item_properties(const std::string &item_name) {
+ItemProperties& Equipment::get_item_properties(const std::string &item_name) {
 
   ItemProperties *properties = item_properties[item_name];
   Debug::assert(properties != NULL, StringConcat() << "Cannot find item with name '" << item_name << "'");
-  return properties;
+  return *properties;
 }
 
 /**
@@ -409,12 +409,12 @@ bool Equipment::has_item(const std::string &item_name) {
  */
 int Equipment::get_item_variant(const std::string &item_name) {
 
-  int index = get_item_properties(item_name)->get_savegame_variable();
+  int index = get_item_properties(item_name).get_savegame_variable();
   if (index == -1) {
     return 0;
   }
 
-  return savegame->get_integer(index);
+  return savegame.get_integer(index);
 }
 
 /**
@@ -426,10 +426,10 @@ int Equipment::get_item_variant(const std::string &item_name) {
 void Equipment::set_item_variant(const std::string &item_name, int variant) {
 
   // set the possession state in the savegame
-  int index = get_item_properties(item_name)->get_savegame_variable();
+  int index = get_item_properties(item_name).get_savegame_variable();
   Debug::assert(index != -1, StringConcat() << "The item '" << item_name << "' is not saved");
 
-  savegame->set_integer(index, variant);
+  savegame.set_integer(index, variant);
 
   // if we are removing the item, unassign it
   if (variant == 0) {
@@ -460,10 +460,10 @@ void Equipment::remove_item(const std::string &item_name) {
  */
 int Equipment::get_item_amount(const std::string &item_name) {
 
-  int counter_index = get_item_properties(item_name)->get_counter_savegame_variable();
+  int counter_index = get_item_properties(item_name).get_counter_savegame_variable();
   Debug::assert(counter_index != -1, StringConcat() << "No amount for item '" << item_name << "'");
 
-  return savegame->get_integer(counter_index);
+  return savegame.get_integer(counter_index);
 }
 
 /**
@@ -477,13 +477,13 @@ int Equipment::get_item_amount(const std::string &item_name) {
  */
 void Equipment::set_item_amount(const std::string &item_name, int amount) {
 
-  int counter_index = get_item_properties(item_name)->get_counter_savegame_variable();
+  int counter_index = get_item_properties(item_name).get_counter_savegame_variable();
   int max = get_item_maximum(item_name);
 
   Debug::assert(counter_index != -1, StringConcat() << "No amount for item '" << item_name << "'");
   Debug::assert(amount >= 0 && amount <= max, StringConcat() << "Illegal amount for item '" << item_name << "': " << amount);
 
-  savegame->set_integer(counter_index, amount);
+  savegame.set_integer(counter_index, amount);
 }
 
 /**
@@ -524,15 +524,15 @@ int Equipment::get_item_maximum(const std::string &item_name) {
   // find the maximum as a fixed value or a value that depends on another item
   int maximum = 0;
 
-  ItemProperties *properties = get_item_properties(item_name);
-  int fixed_limit = properties->get_fixed_limit();
+  ItemProperties &properties = get_item_properties(item_name);
+  int fixed_limit = properties.get_fixed_limit();
   if (fixed_limit != 0) {
     maximum = fixed_limit;
   }
   else {
-    const std::string &item_limiting = properties->get_item_limiting();
+    const std::string &item_limiting = properties.get_item_limiting();
     int item_limiting_variant = get_item_variant(item_limiting);
-    maximum = get_item_properties(item_limiting)->get_amount(item_limiting_variant);
+    maximum = get_item_properties(item_limiting).get_amount(item_limiting_variant);
   }
 
   Debug::assert(maximum != 0, StringConcat() << "No maximum amount for item '" << item_name << "'");
@@ -548,7 +548,7 @@ int Equipment::get_item_maximum(const std::string &item_name) {
 bool Equipment::has_item_maximum(const std::string &item_name) {
 
   bool result;
-  const std::string &item_counter_changed = get_item_properties(item_name)->get_item_counter_changed();
+  const std::string &item_counter_changed = get_item_properties(item_name).get_item_counter_changed();
   if (item_counter_changed.size() == 0) {
     result = false;
   }
@@ -596,7 +596,7 @@ void Equipment::get_random_item(std::string &item_name, int &variant) {
 const std::string Equipment::get_item_assigned(int slot) {
 
   int index = Savegame::ITEM_SLOT_0 + slot;
-  return savegame->get_string(index);
+  return savegame.get_string(index);
 }
 
 /**
@@ -612,11 +612,11 @@ void Equipment::set_item_assigned(int slot, const std::string &item_name) {
 
   if (item_name.size() != 0) {
     Debug::assert(has_item(item_name), StringConcat() << "Cannot assign item '" << item_name << "' because the player does not have it");
-    Debug::assert(get_item_properties(item_name)->can_be_assigned(), StringConcat() << "The item '" << item_name << "' cannot be assigned");
+    Debug::assert(get_item_properties(item_name).can_be_assigned(), StringConcat() << "The item '" << item_name << "' cannot be assigned");
   }
 
   int index = Savegame::ITEM_SLOT_0 + slot;
-  savegame->set_string(index, item_name);
+  savegame.set_string(index, item_name);
 }
 
 /**
@@ -644,7 +644,7 @@ int Equipment::get_item_slot(const std::string &item_name) {
  * @return true if the small keys are enabled in the current map
  */
 bool Equipment::are_small_keys_enabled() {
-  return game->get_current_map()->has_small_keys();
+  return game->get_current_map().has_small_keys();
 }
 
 /**
@@ -657,7 +657,7 @@ int Equipment::get_small_keys_variable() {
 
   Debug::assert(are_small_keys_enabled(), "The small keys are not enabled on this map");
 
-  return game->get_current_map()->get_small_keys_variable();
+  return game->get_current_map().get_small_keys_variable();
 }
 
 /**
@@ -680,7 +680,7 @@ bool Equipment::has_small_key() {
  */
 int Equipment::get_small_keys() {
   int index = get_small_keys_variable();
-  return savegame->get_integer(index);
+  return savegame.get_integer(index);
 }
 
 /**
@@ -690,7 +690,7 @@ int Equipment::get_small_keys() {
 void Equipment::add_small_keys(int amount_to_add) {
 
   int index = get_small_keys_variable();
-  savegame->set_integer(index, get_small_keys() + amount_to_add);
+  savegame.set_integer(index, get_small_keys() + amount_to_add);
 }
 
 /**
@@ -703,7 +703,7 @@ void Equipment::remove_small_key() {
   Debug::assert(has_small_key(), "The player has no small keys");
 
   int index = get_small_keys_variable();
-  savegame->set_integer(index, get_small_keys() - 1);
+  savegame.set_integer(index, get_small_keys() - 1);
 }
 
 // abilities
@@ -775,7 +775,7 @@ bool Equipment::has_ability(const std::string &ability_name, int level) {
  * @return the level of this ability
  */
 int Equipment::get_ability(const std::string &ability_name) {
-  return savegame->get_integer(get_ability_savegame_variable(ability_name));
+  return savegame.get_integer(get_ability_savegame_variable(ability_name));
 }
 
 /**
@@ -784,7 +784,7 @@ int Equipment::get_ability(const std::string &ability_name) {
  * @param level the level of this ability
  */
 void Equipment::set_ability(const std::string &ability_name, int level) {
-  savegame->set_integer(get_ability_savegame_variable(ability_name), level);
+  savegame.set_integer(get_ability_savegame_variable(ability_name), level);
 }
 
 /**
@@ -807,13 +807,11 @@ void Equipment::use_ability(const std::string &ability_name) {
  */
 int Equipment::get_current_dungeon() {
 
-  Map *current_map = game->get_current_map();
-
-  if (current_map == NULL || !current_map->is_in_dungeon()) {
+  if (!game->is_in_dungeon()) {
     return 0;
   }
 
-  return current_map->get_world_number();
+  return game->get_current_map().get_world_number();
 }
 
 /**
@@ -824,7 +822,7 @@ int Equipment::get_current_dungeon() {
 bool Equipment::is_dungeon_finished(int dungeon) {
 
   int index = Savegame::DUNGEON_1_FINISHED + 10 * (dungeon - 1);
-  return savegame->get_integer(index) > 0;
+  return savegame.get_integer(index) > 0;
 }
 
 /**
@@ -842,7 +840,7 @@ bool Equipment::is_dungeon_finished() {
 void Equipment::set_dungeon_finished(int dungeon) {
 
   int index = Savegame::DUNGEON_1_FINISHED + 10 * (dungeon - 1);
-  savegame->set_integer(index, 1);
+  savegame.set_integer(index, 1);
 }
 
 // obtaining items
@@ -878,18 +876,18 @@ void Equipment::set_initial_items() {
  */
 void Equipment::add_item(const std::string &item_name, int variant) {
 
-  ItemProperties *properties = get_item_properties(item_name);
+  ItemProperties &properties = get_item_properties(item_name);
 
-  if (properties->is_saved()) {
+  if (properties.is_saved()) {
 
     // the item is saved
     set_item_variant(item_name, variant);
 
-    if (properties->has_counter()) {
+    if (properties.has_counter()) {
       // the item has a counter
 
       // if another item acts as a limit for the counter of this item
-      const std::string &item_limiting = properties->get_item_limiting();
+      const std::string &item_limiting = properties.get_item_limiting();
       if (item_limiting.size() > 0) {
 
 	// make sure we have at least the first variant of that item
@@ -905,10 +903,10 @@ void Equipment::add_item(const std::string &item_name, int variant) {
     }
 
     // see if this item acts as a limit for another item
-    const std::string &item_limited = properties->get_item_limited();
+    const std::string &item_limited = properties.get_item_limited();
     if (item_limited.size() > 0) {
 
-      int maximum = properties->get_amount(variant);
+      int maximum = properties.get_amount(variant);
 
       // consider built-in counters
       if (item_limited == "life") {
@@ -939,10 +937,10 @@ void Equipment::add_item(const std::string &item_name, int variant) {
 
   else {
     // now, see if this obtaining this item changes the counter of another item
-    const std::string &item_counter_changed = properties->get_item_counter_changed();
+    const std::string &item_counter_changed = properties.get_item_counter_changed();
     if (item_counter_changed.size() > 0) {
 
-      int amount = properties->get_amount(variant);
+      int amount = properties.get_amount(variant);
 
       // consider built-in counters
       if (item_counter_changed == "life") {

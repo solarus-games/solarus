@@ -119,7 +119,7 @@ const SoundId HeroSprites::ground_sound_ids[] = {
  * @param hero the hero
  * @param equipment the equipment
  */
-HeroSprites::HeroSprites(Hero *hero, Equipment *equipment):
+HeroSprites::HeroSprites(Hero &hero, Equipment &equipment):
   hero(hero), equipment(equipment), tunic_sprite(NULL), sword_sprite(NULL),
   sword_stars_sprite(NULL), shield_sprite(NULL), shadow_sprite(NULL), ground_sprite(NULL), trail_sprite(NULL),
   end_blink_date(0), walking(false), clipping_rectangle(Rectangle()), lifted_item(NULL) {
@@ -157,7 +157,7 @@ void HeroSprites::rebuild_equipment() {
     delete tunic_sprite;
   }
 
-  int tunic_number = equipment->get_ability("tunic");
+  int tunic_number = equipment.get_ability("tunic");
   
   Debug::assert(tunic_number > 0, StringConcat() << "Invalid tunic number: " << tunic_number);
 
@@ -178,7 +178,7 @@ void HeroSprites::rebuild_equipment() {
     sword_stars_sprite = NULL;
   }
 
-  int sword_number = equipment->get_ability("sword");
+  int sword_number = equipment.get_ability("sword");
 
   if (sword_number > 0) {
     // the hero has a sword: get the sprite and the sound
@@ -198,7 +198,7 @@ void HeroSprites::rebuild_equipment() {
     shield_sprite = NULL;
   }
 
-  int shield_number = equipment->get_ability("shield");
+  int shield_number = equipment.get_ability("shield");
 
   if (shield_number > 0) {
     // the hero has a shield
@@ -220,7 +220,7 @@ void HeroSprites::rebuild_equipment() {
  * @return true if the sword is currently displayed on the screen
  */
 bool HeroSprites::is_sword_visible() {
-  return equipment->has_ability("sword") && sword_sprite != NULL && sword_sprite->is_animation_started();
+  return equipment.has_ability("sword") && sword_sprite != NULL && sword_sprite->is_animation_started();
 }
 
 /**
@@ -228,7 +228,7 @@ bool HeroSprites::is_sword_visible() {
  * @return true if the stars of the sword are currently displayed on the screen
  */
 bool HeroSprites::is_sword_stars_visible() {
-  return equipment->has_ability("sword") && sword_stars_sprite != NULL && sword_stars_sprite->is_animation_started();
+  return equipment.has_ability("sword") && sword_stars_sprite != NULL && sword_stars_sprite->is_animation_started();
 }
 
 /**
@@ -236,7 +236,7 @@ bool HeroSprites::is_sword_stars_visible() {
  * @return true if the shield is currently displayed on the screen
  */
 bool HeroSprites::is_shield_visible() {
-  return equipment->has_ability("shield") && shield_sprite != NULL && shield_sprite->is_animation_started();
+  return equipment.has_ability("shield") && shield_sprite != NULL && shield_sprite->is_animation_started();
 }
 
 /**
@@ -273,7 +273,7 @@ void HeroSprites::stop_displaying_sword_stars() {
  */
 void HeroSprites::stop_displaying_shield() {
 
-  if (equipment->has_ability("shield")) {
+  if (equipment.has_ability("shield")) {
     shield_sprite->stop_animation();
   }
 }
@@ -292,10 +292,10 @@ void HeroSprites::stop_displaying_trail() {
 void HeroSprites::blink() {
   tunic_sprite->set_blinking(50);
 
-  if (equipment->has_ability("shield")) {
+  if (equipment.has_ability("shield")) {
     shield_sprite->set_blinking(50);
   }
-  if (equipment->has_ability("sword")) {
+  if (equipment.has_ability("sword")) {
     sword_sprite->set_blinking(50);
   }
   trail_sprite->set_blinking(50);
@@ -310,10 +310,10 @@ void HeroSprites::stop_blinking() {
 
   tunic_sprite->set_blinking(0);
 
-  if (equipment->has_ability("shield")) {
+  if (equipment.has_ability("shield")) {
     shield_sprite->set_blinking(0);
   }
-  if (equipment->has_ability("sword")) {
+  if (equipment.has_ability("sword")) {
     sword_sprite->set_blinking(0);
   }
   trail_sprite->set_blinking(0);
@@ -503,9 +503,9 @@ void HeroSprites::update() {
   if (is_sword_visible()) {
     sword_sprite->update();
     sword_sprite->set_current_frame(tunic_sprite->get_current_frame());
-    hero->get_map()->check_collision_with_detectors(hero, sword_sprite);
+    hero.get_map().check_collision_with_detectors(&hero, sword_sprite);
   }
-  hero->get_map()->check_collision_with_detectors(hero, tunic_sprite);
+  hero.get_map().check_collision_with_detectors(&hero, tunic_sprite);
 
   if (is_sword_stars_visible()) {
     // the stars are not synchronized with the other sprites
@@ -523,7 +523,7 @@ void HeroSprites::update() {
     trail_sprite->update();
   }
 
-  if (hero->is_ground_visible()) {
+  if (hero.is_ground_visible()) {
     ground_sprite->update();
   }
 
@@ -542,41 +542,41 @@ void HeroSprites::update() {
  */
 void HeroSprites::display_on_map() {
 
-  int x = hero->get_x();
-  int y = hero->get_y();
+  int x = hero.get_x();
+  int y = hero.get_y();
 
-  Map *map = hero->get_map();
+  Map &map = hero.get_map();
 
   if (clipping_rectangle.get_width() > 0) {
     // restrict the map displaying to the clipping rectangle specified (just for the hero's sprites)
-    map->set_clipping_rectangle(clipping_rectangle);
+    map.set_clipping_rectangle(clipping_rectangle);
   }
 
-  if (hero->is_shadow_visible()) {
-    map->display_sprite(shadow_sprite, x, y);
-    y -= hero->get_height_above_shadow();
+  if (hero.is_shadow_visible()) {
+    map.display_sprite(shadow_sprite, x, y);
+    y -= hero.get_height_above_shadow();
   }
 
-  map->display_sprite(tunic_sprite, x, y);
+  map.display_sprite(tunic_sprite, x, y);
 
   if (is_sword_visible()) {
-    map->display_sprite(sword_sprite, x, y);
+    map.display_sprite(sword_sprite, x, y);
   }
 
   if (is_sword_stars_visible()) {
-    map->display_sprite(sword_stars_sprite, x, y);
+    map.display_sprite(sword_stars_sprite, x, y);
   }
 
   if (is_shield_visible()) {
-    map->display_sprite(shield_sprite, x, y);
+    map.display_sprite(shield_sprite, x, y);
   }
 
   if (is_trail_visible()) {
-    map->display_sprite(trail_sprite, x, y);
+    map.display_sprite(trail_sprite, x, y);
   }
 
-  if (hero->is_ground_visible()) {
-    map->display_sprite(ground_sprite, x, y);
+  if (hero.is_ground_visible()) {
+    map.display_sprite(ground_sprite, x, y);
   }
 
   if (lifted_item != NULL) {
@@ -585,7 +585,7 @@ void HeroSprites::display_on_map() {
   
   if (clipping_rectangle.get_width() > 0) {
     // restore the normal map displaying
-    map->set_clipping_rectangle();
+    map.set_clipping_rectangle();
   }
 }
 
@@ -600,12 +600,12 @@ void HeroSprites::set_suspended(bool suspended) {
 
   tunic_sprite->set_suspended(suspended);
 
-  if (equipment->has_ability("sword") && sword_sprite != NULL) {
+  if (equipment.has_ability("sword") && sword_sprite != NULL) {
     sword_sprite->set_suspended(suspended);
     sword_stars_sprite->set_suspended(suspended);
   }
 
-  if (equipment->has_ability("shield") && shield_sprite != NULL) {
+  if (equipment.has_ability("shield") && shield_sprite != NULL) {
     shield_sprite->set_suspended(suspended);
   }
 
@@ -646,7 +646,7 @@ void HeroSprites::restart_animation() {
     trail_sprite->restart_animation();
   }
 
-  if (hero->is_ground_visible()) {
+  if (hero.is_ground_visible()) {
     ground_sprite->restart_animation();
   }
 }
@@ -659,7 +659,7 @@ void HeroSprites::restart_animation() {
  */
 void HeroSprites::set_animation_stopped_common() {
 
-  if (hero->is_ground_visible() && hero->get_ground() != GROUND_SHALLOW_WATER) {
+  if (hero.is_ground_visible() && hero.get_ground() != GROUND_SHALLOW_WATER) {
     ground_sprite->set_current_animation("stopped");
   }
   walking = false;
@@ -672,7 +672,7 @@ void HeroSprites::set_animation_stopped_normal() {
 
   set_animation_stopped_common();
 
-  if (equipment->has_ability("shield")) {
+  if (equipment.has_ability("shield")) {
 
     tunic_sprite->set_current_animation("stopped_with_shield");
     shield_sprite->set_current_animation("stopped");
@@ -700,7 +700,7 @@ void HeroSprites::set_animation_stopped_sword_loading() {
   sword_stars_sprite->set_current_animation("loading");
   sword_stars_sprite->set_current_direction(direction);
 
-  if (equipment->has_ability("shield")) {
+  if (equipment.has_ability("shield")) {
 
     if (direction % 2 != 0) {
       shield_sprite->set_current_animation("sword_loading_stopped");
@@ -738,7 +738,7 @@ void HeroSprites::set_animation_stopped_carrying() {
  */
 void HeroSprites::set_animation_walking_common() {
 
-  if (hero->is_ground_visible() && hero->get_ground() != GROUND_SHALLOW_WATER) {
+  if (hero.is_ground_visible() && hero.get_ground() != GROUND_SHALLOW_WATER) {
     ground_sprite->set_current_animation("walking");
   }
 
@@ -752,7 +752,7 @@ void HeroSprites::set_animation_walking_normal() {
 
   set_animation_walking_common();
 
-  if (equipment->has_ability("shield")) {
+  if (equipment.has_ability("shield")) {
 
     tunic_sprite->set_current_animation("walking_with_shield");
 
@@ -776,14 +776,14 @@ void HeroSprites::set_animation_walking_sword_loading() {
   int direction = get_animation_direction();
 
   tunic_sprite->set_current_animation("sword_loading_walking");
-  if (equipment->has_ability("sword")) {
+  if (equipment.has_ability("sword")) {
     sword_sprite->set_current_animation("sword_loading_walking");
     sword_sprite->set_current_direction(direction);
     sword_stars_sprite->set_current_animation("loading");
     sword_stars_sprite->set_current_direction(direction);
   }
 
-  if (equipment->has_ability("shield")) {
+  if (equipment.has_ability("shield")) {
 
     if (direction % 2 != 0) {
       shield_sprite->set_current_animation("sword_loading_walking");
@@ -841,7 +841,7 @@ void HeroSprites::set_animation_sword() {
   sword_sprite->restart_animation();
   sword_stars_sprite->stop_animation();
 
-  if (equipment->has_ability("shield")) {
+  if (equipment.has_ability("shield")) {
 
     if (direction % 2 != 0) {
       shield_sprite->set_current_animation("sword");
@@ -877,7 +877,7 @@ void HeroSprites::set_animation_sword_tapping() {
   sword_sprite->restart_animation();
   sword_stars_sprite->stop_animation();
 
-  if (equipment->has_ability("shield")) {
+  if (equipment.has_ability("shield")) {
 
     if (direction % 2 != 0) {
       shield_sprite->set_current_animation("sword_tapping");
@@ -950,7 +950,7 @@ void HeroSprites::set_animation_jumping() {
 
   tunic_sprite->set_current_animation("jumping");
 
-  if (equipment->has_ability("shield")) {
+  if (equipment.has_ability("shield")) {
     shield_sprite->set_current_animation("stopped");
     shield_sprite->set_current_direction(get_animation_direction());
   }
@@ -998,7 +998,7 @@ void HeroSprites::set_animation_falling() {
 void HeroSprites::set_animation_boomerang() {
   tunic_sprite->set_current_animation("boomerang");
 
-  if (equipment->has_ability("shield")) {
+  if (equipment.has_ability("shield")) {
     shield_sprite->set_current_animation("boomerang");
   }
   stop_displaying_trail();
@@ -1067,7 +1067,7 @@ void HeroSprites::set_animation_running() {
 void HeroSprites::create_ground(Ground ground) {
  
   ground_sprite = new Sprite(ground_sprite_ids[ground - 1]);
-  if (hero->get_ground() != GROUND_SHALLOW_WATER) {
+  if (hero.get_ground() != GROUND_SHALLOW_WATER) {
     ground_sprite->set_current_animation(walking ? "walking" : "stopped");
   }
   ground_sound_id = ground_sound_ids[ground - 1];

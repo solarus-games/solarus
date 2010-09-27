@@ -62,7 +62,7 @@ class PickableItem: public Detector {
   public:
 
     // creation and destruction
-    static PickableItem * create(Game *game, Layer layer, int x, int y,	Treasure *treasure,
+    static PickableItem * create(Game &game, Layer layer, int x, int y,	Treasure *treasure,
 	FallingHeight falling_height, bool will_disappear);
 
     ~PickableItem();

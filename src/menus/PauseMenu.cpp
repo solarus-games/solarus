@@ -32,8 +32,8 @@
  * @brief Opens a pause menu.
  * @param game the game
  */
-PauseMenu::PauseMenu(Game *game):
-  game(game), savegame(game->get_savegame()), keys_effect(game->get_keys_effect()) {
+PauseMenu::PauseMenu(Game &game):
+  game(game), savegame(game.get_savegame()), keys_effect(game.get_keys_effect()) {
 
   this->current_submenu = NULL;
   this->backgrounds_surface = new Surface("pause_submenus.png", Surface::DIR_LANGUAGE);
@@ -43,9 +43,9 @@ PauseMenu::PauseMenu(Game *game):
   this->save_dialog_state = 0;
 
   Sound::play("pause_open");
-  keys_effect->set_pause_key_effect(KeysEffect::PAUSE_KEY_RETURN);
-  keys_effect->save_action_key_effect();
-  keys_effect->save_sword_key_effect();
+  keys_effect.set_pause_key_effect(KeysEffect::PAUSE_KEY_RETURN);
+  keys_effect.save_action_key_effect();
+  keys_effect.save_sword_key_effect();
 
   question_text[0] = new TextSurface(160, 112, TextSurface::ALIGN_CENTER, TextSurface::ALIGN_MIDDLE);
   question_text[0]->set_text_color(8, 8, 8);
@@ -59,7 +59,7 @@ PauseMenu::PauseMenu(Game *game):
   answer_text[1]->set_text_color(8, 8, 8);
   answer_text[1]->set_text(StringResource::get_string("save_dialog.no"));
 
-  set_current_submenu(savegame->get_integer(Savegame::PAUSE_LAST_SUBMENU));
+  set_current_submenu(savegame.get_integer(Savegame::PAUSE_LAST_SUBMENU));
 }
 
 /**
@@ -82,9 +82,9 @@ PauseMenu::~PauseMenu() {
 void PauseMenu::quit() {
 
   Sound::play("pause_closed");
-  keys_effect->set_pause_key_effect(KeysEffect::PAUSE_KEY_PAUSE);
-  keys_effect->restore_action_key_effect();
-  keys_effect->restore_sword_key_effect();
+  keys_effect.set_pause_key_effect(KeysEffect::PAUSE_KEY_PAUSE);
+  keys_effect.restore_action_key_effect();
+  keys_effect.restore_sword_key_effect();
 }
 
 /**
@@ -95,7 +95,7 @@ void PauseMenu::key_pressed(GameControls::GameKey key) {
  
   if (key == GameControls::PAUSE) {
     quit();
-    game->set_paused(false);
+    game.set_paused(false);
   }
 
   // the user is in one of the submenus
@@ -112,10 +112,10 @@ void PauseMenu::key_pressed(GameControls::GameKey key) {
       question_text[0]->set_text(StringResource::get_string("save_dialog.save_question_0"));
       question_text[1]->set_text(StringResource::get_string("save_dialog.save_question_1"));
 
-      action_key_effect_saved = keys_effect->get_action_key_effect();
-      sword_key_effect_saved = keys_effect->get_sword_key_effect();
-      keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_VALIDATE);
-      keys_effect->set_sword_key_effect(KeysEffect::SWORD_KEY_VALIDATE);
+      action_key_effect_saved = keys_effect.get_action_key_effect();
+      sword_key_effect_saved = keys_effect.get_sword_key_effect();
+      keys_effect.set_action_key_effect(KeysEffect::ACTION_KEY_VALIDATE);
+      keys_effect.set_sword_key_effect(KeysEffect::SWORD_KEY_VALIDATE);
     }
     else {
       current_submenu->key_pressed(key);
@@ -137,7 +137,7 @@ void PauseMenu::key_pressed(GameControls::GameKey key) {
       save_dialog_state = 2;
  
       if (save_dialog_choice == 0) {
-	savegame->save();
+	savegame.save();
 	Sound::play("piece_of_heart");
       }
       else {
@@ -154,13 +154,13 @@ void PauseMenu::key_pressed(GameControls::GameKey key) {
       Sound::play("danger");
 
       save_dialog_state = 0;
-      keys_effect->set_action_key_effect(action_key_effect_saved);
-      keys_effect->set_sword_key_effect(sword_key_effect_saved);
+      keys_effect.set_action_key_effect(action_key_effect_saved);
+      keys_effect.set_sword_key_effect(sword_key_effect_saved);
 
       if (save_dialog_choice == 1) {
-	game->reset();
+	game.reset();
 	quit();
-	game->set_paused(false);
+	game.set_paused(false);
       }
     }
   }
@@ -180,7 +180,7 @@ void PauseMenu::update() {
 void PauseMenu::display(Surface *destination) {
 
   // display the background for the current submenu
-  int submenu_index = savegame->get_integer(Savegame::PAUSE_LAST_SUBMENU);
+  int submenu_index = savegame.get_integer(Savegame::PAUSE_LAST_SUBMENU);
   Rectangle src_position(320 * submenu_index, 0, 320, 240);
   backgrounds_surface->blit(src_position, destination);
 
@@ -204,11 +204,11 @@ void PauseMenu::display(Surface *destination) {
 void PauseMenu::set_current_submenu(int submenu_index) {
 
   // show the default action and sword keys
-  keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
-  keys_effect->set_sword_key_effect(KeysEffect::SWORD_KEY_SAVE);
+  keys_effect.set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
+  keys_effect.set_sword_key_effect(KeysEffect::SWORD_KEY_SAVE);
 
   // go to the specified submenu
-  savegame->set_integer(Savegame::PAUSE_LAST_SUBMENU, submenu_index);
+  savegame.set_integer(Savegame::PAUSE_LAST_SUBMENU, submenu_index);
 
   if (current_submenu != NULL) {
     delete current_submenu;
@@ -217,19 +217,19 @@ void PauseMenu::set_current_submenu(int submenu_index) {
   switch (submenu_index) {
 
   case 0:
-    current_submenu = new PauseSubmenuInventory(this, game);
+    current_submenu = new PauseSubmenuInventory(*this, game);
     break;
 
   case 1:
-    current_submenu = new PauseSubmenuMap(this, game);
+    current_submenu = new PauseSubmenuMap(*this, game);
     break;
 
   case 2:
-    current_submenu = new PauseSubmenuQuestStatus(this, game);
+    current_submenu = new PauseSubmenuQuestStatus(*this, game);
     break;
 
   case 3:
-    current_submenu = new PauseSubmenuOptions(this, game);
+    current_submenu = new PauseSubmenuOptions(*this, game);
     break;
   }
 }
@@ -240,7 +240,7 @@ void PauseMenu::set_current_submenu(int submenu_index) {
 void PauseMenu::show_left_submenu() {
 
   Sound::play("pause_closed");
-  int submenu_index = savegame->get_integer(Savegame::PAUSE_LAST_SUBMENU);
+  int submenu_index = savegame.get_integer(Savegame::PAUSE_LAST_SUBMENU);
   set_current_submenu((submenu_index + 3) % 4);
 }
 
@@ -250,7 +250,7 @@ void PauseMenu::show_left_submenu() {
 void PauseMenu::show_right_submenu() {
 
   Sound::play("pause_closed");
-  int submenu_index = savegame->get_integer(Savegame::PAUSE_LAST_SUBMENU);
+  int submenu_index = savegame.get_integer(Savegame::PAUSE_LAST_SUBMENU);
   set_current_submenu((submenu_index + 1) % 4);
 }
 

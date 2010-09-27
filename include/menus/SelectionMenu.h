@@ -80,7 +80,7 @@ class SelectionMenu: public Screen {
   public:
 
     // creation and destruction
-    SelectionMenu(Solarus *solarus);
+    SelectionMenu(Solarus &solarus);
     ~SelectionMenu();
 
     // update and display (called by Solarus)
@@ -90,7 +90,7 @@ class SelectionMenu: public Screen {
 
     // phase
     void set_next_phase(SelectionMenuPhase *next_phase);
-    void start_game(Savegame *savegame);
+    void start_game(Savegame &savegame);
     void set_exiting();
 
     // transitions

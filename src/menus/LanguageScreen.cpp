@@ -29,7 +29,7 @@ const int LanguageScreen::max_visible_languages = 10;
  * @brief Creates a language screen.
  * @param solarus the Solarus object
  */
-LanguageScreen::LanguageScreen(Solarus *solarus):
+LanguageScreen::LanguageScreen(Solarus &solarus):
   Screen(solarus), transition(NULL), intermediate_surface(NULL), 
   language_codes(NULL), language_texts(NULL),
   cursor_position(0), nb_languages(0), finished(false) {

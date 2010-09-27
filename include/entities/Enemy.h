@@ -203,12 +203,12 @@ class Enemy: public Detector {
     virtual ~Enemy();
 
     static CreationFunction parse;
-    static MapEntity * create(Game *game, Subtype type, Rank rank, int savegame_variable,
+    static MapEntity* create(Game &game, Subtype type, Rank rank, int savegame_variable,
 	const std::string &name, Layer layer, int x, int y, int direction,
 	Treasure *treasure);
 
     EntityType get_type();
-    void set_map(Map *map);
+    void set_map(Map &map);
     Rank get_rank();
 
     // obstacles

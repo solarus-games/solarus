@@ -26,7 +26,7 @@
  * @param x x coordinate of the top-left corner of the icon on the destination surface
  * @param y y coordinate of the top-left corner of the icon on the destination surface
  */
-SwordIcon::SwordIcon(Game *game, int x, int y):
+SwordIcon::SwordIcon(Game &game, int x, int y):
   HudElement(game, x, y, 72, 24) {
 
   // static icon

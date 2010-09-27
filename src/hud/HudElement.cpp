@@ -29,8 +29,8 @@
  * @param width width of the hud element surface
  * @param height height of the hud element surface
  */
-HudElement::HudElement(Game *game, int x, int y, int width, int height):
-  game(game), equipment(game->get_equipment()), keys_effect(game->get_keys_effect()),
+HudElement::HudElement(Game &game, int x, int y, int width, int height):
+  game(&game), equipment(&game.get_equipment()), keys_effect(&game.get_keys_effect()),
   visible(true), opacity(255), blinking(false) {
 
   surface_drawn = new Surface(width, height);
@@ -50,8 +50,8 @@ HudElement::HudElement(Game *game, int x, int y, int width, int height):
  * @param width width of the hud element surface
  * @param height height of the hud element surface
  */
-HudElement::HudElement(Equipment *equipment, int x, int y, int width, int height):
-  game(NULL), equipment(equipment), keys_effect(NULL),
+HudElement::HudElement(Equipment &equipment, int x, int y, int width, int height):
+  game(NULL), equipment(&equipment), keys_effect(NULL),
   visible(true), opacity(255), blinking(false) {
 
   surface_drawn = new Surface(width, height);
@@ -71,8 +71,8 @@ HudElement::HudElement(Equipment *equipment, int x, int y, int width, int height
  * @param width width of the hud element surface
  * @param height height of the hud element surface
  */
-HudElement::HudElement(KeysEffect *keys_effect, int x, int y, int width, int height):
-  game(NULL), equipment(NULL), keys_effect(keys_effect),
+HudElement::HudElement(KeysEffect &keys_effect, int x, int y, int width, int height):
+  game(NULL), equipment(NULL), keys_effect(&keys_effect),
   visible(true), opacity(255), blinking(false) {
 
   surface_drawn = new Surface(width, height);

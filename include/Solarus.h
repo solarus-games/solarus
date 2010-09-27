@@ -53,7 +53,7 @@ class Solarus {
     Scripts& get_scripts();
 
     void skip_menus();
-    DebugKeys * get_debug_keys();
+    DebugKeys& get_debug_keys();
 };
 
 #endif

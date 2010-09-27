@@ -54,7 +54,7 @@ ConveyorBelt::~ConveyorBelt() {
  * @param y y coordinate of the entity
  * @return the instance created
  */
-MapEntity * ConveyorBelt::parse(Game *game, std::istream &is, Layer layer, int x, int y) {
+MapEntity* ConveyorBelt::parse(Game &game, std::istream &is, Layer layer, int x, int y) {
 
   int direction;
   FileTools::read(is, direction);

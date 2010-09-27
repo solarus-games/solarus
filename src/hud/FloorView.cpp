@@ -27,7 +27,7 @@
  * @param x x coordinate of the top-left corner of the element on the destination surface
  * @param y y coordinate of the top-left corner of the element on the destination surface
  */
-FloorView::FloorView(Game *game, int x, int y):
+FloorView::FloorView(Game &game, int x, int y):
   HudElement(game, x, y, 32, 85), current_map(NULL), current_floor(-100),
   is_floor_displayed(false) {
 
@@ -53,10 +53,10 @@ void FloorView::update() {
   bool need_rebuild = false;
 
   // detect when the hero enters a new map
-  if (game->get_current_map() != current_map) {
+  if (&game->get_current_map() != current_map) {
 
     int old_floor = (current_map != NULL) ? current_floor : -100;
-    current_map = game->get_current_map();
+    current_map = &game->get_current_map();
 
     if (current_map->has_floor() && old_floor != current_map->get_floor()) {
       is_floor_displayed = true;
@@ -93,11 +93,11 @@ void FloorView::rebuild() {
     // if we are in a dungeon, show several floors (but no more than 7)
     if (current_map->is_in_dungeon() && current_floor != -99) {
 
-      Dungeon *dungeon = game->get_current_dungeon();
-      highest_floor = dungeon->get_highest_floor();
+      Dungeon &dungeon = game->get_current_dungeon();
+      highest_floor = dungeon.get_highest_floor();
 
-      int nb_floors_displayed = dungeon->get_nb_floors_displayed();
-      highest_floor_displayed = dungeon->get_highest_floor_displayed(current_floor);
+      int nb_floors_displayed = dungeon.get_nb_floors_displayed();
+      highest_floor_displayed = dungeon.get_highest_floor_displayed(current_floor);
 
       /*
       std::cout << "lowest_floor: " << lowest_floor

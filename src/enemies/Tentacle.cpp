@@ -52,6 +52,6 @@ void Tentacle::initialize() {
   set_origin(8, 13);
 
   // movement
-  set_movement(new PathFindingMovement(&map->get_entities()->get_hero(), 3));
+  set_movement(new PathFindingMovement(&map->get_entities().get_hero(), 3));
 }
 

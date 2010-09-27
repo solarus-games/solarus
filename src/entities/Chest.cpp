@@ -70,7 +70,7 @@ Chest::~Chest() {
  * @param y y coordinate of the entity
  * @return the instance created
  */
-MapEntity * Chest::parse(Game *game, std::istream &is, Layer layer, int x, int y) {
+MapEntity* Chest::parse(Game &game, std::istream &is, Layer layer, int x, int y) {
 
   std::string name, treasure_name;
   int big_chest, treasure_variant, treasure_savegame_variable;
@@ -191,7 +191,7 @@ void Chest::set_open(bool open) {
       treasure_given = false;
 
       if (treasure == NULL) {
-	treasure = new Treasure(game, "_none", 0, -1);
+	treasure = new Treasure(*game, "_none", 0, -1);
       }
     }
   }
@@ -216,15 +216,15 @@ void Chest::notify_collision(MapEntity *entity_overlapping, CollisionMode collis
   if (entity_overlapping->is_hero() && is_visible()) {
 
     Hero *hero = (Hero*) entity_overlapping;
-    KeysEffect *keys_effect = game->get_keys_effect();
+    KeysEffect &keys_effect = game->get_keys_effect();
 
-    if (keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
+    if (keys_effect.get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
 	&& hero->is_free()
 	&& hero->is_facing_direction4(1)
 	&& !is_open()) {
 
       // we show the 'open' icon, even if this is a big chest and the player does not have the big key
-      keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_OPEN);
+      keys_effect.set_action_key_effect(KeysEffect::ACTION_KEY_OPEN);
     }
   }
 }
@@ -257,7 +257,7 @@ void Chest::update() {
 	// mark the chest as found in the savegame
 	int savegame_variable = treasure->get_savegame_variable();
 	if (savegame_variable != -1) {
-	  game->get_savegame()->set_boolean(savegame_variable, true);
+	  game->get_savegame().set_boolean(savegame_variable, true);
 	}
 
 	treasure_given = true;
@@ -271,7 +271,7 @@ void Chest::update() {
 	  // the script does not define any behavior:
 	  // by default, we tell the player the chest is empty
 	  Sound::play("wrong");
-	  game->get_dialog_box()->start_dialog("_empty_chest");
+	  game->get_dialog_box().start_dialog("_empty_chest");
 	  hero.start_free();
 	}
       }
@@ -290,23 +290,23 @@ void Chest::update() {
  */
 void Chest::action_key_pressed() {
 
-  KeysEffect *keys_effect = game->get_keys_effect();
+  KeysEffect &keys_effect = game->get_keys_effect();
   Hero &hero = game->get_hero();
-  Equipment *equipment = game->get_equipment();
+  Equipment &equipment = game->get_equipment();
 
   if (is_visible() && hero.is_free()) {
 
-    if (!big_chest || equipment->has_item("big_key")) {
+    if (!big_chest || equipment.has_item("big_key")) {
       Sound::play("chest_open");
       set_open(true);
       treasure_date = System::now() + 300;
 
-      keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
+      keys_effect.set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
       hero.start_freezed();
     }
     else {
       Sound::play("wrong");
-      game->get_dialog_box()->start_dialog("_big_key_required");
+      game->get_dialog_box().start_dialog("_big_key_required");
     }
   }
 }

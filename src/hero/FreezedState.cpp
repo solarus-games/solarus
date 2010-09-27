@@ -44,6 +44,6 @@ void Hero::FreezedState::start(State *previous_state) {
   State::start(previous_state);
 
   sprites->set_animation_stopped_normal();
-  game->get_keys_effect()->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
+  game->get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
 }
 

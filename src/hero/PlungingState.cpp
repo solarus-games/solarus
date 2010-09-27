@@ -58,18 +58,18 @@ void Hero::PlungingState::update() {
 
   State::update();
 
-  Equipment *equipment = game->get_equipment();
+  Equipment &equipment = game->get_equipment();
 
   if (sprites->is_animation_finished()) {
 
     if (hero->get_ground() != GROUND_DEEP_WATER) {
       hero->set_state(new FreeState(hero));
     }
-    else if (equipment->has_ability("swim")) {
+    else if (equipment.has_ability("swim")) {
       hero->set_state(new SwimmingState(hero));
     }
     else {
-      equipment->remove_life(1);
+      equipment.remove_life(1);
       Sound::play("message_end");
       hero->set_state(new BackToSolidGroundState(hero, false));
     }

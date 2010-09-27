@@ -35,19 +35,19 @@
  * @param savegame_variable index of the savegame boolean indicating that the hero has found this treasure
  * or -1 if this treasure is not saved
  */
-Treasure::Treasure(Game *game, const std::string &item_name, int variant, int savegame_variable):
+Treasure::Treasure(Game &game, const std::string &item_name, int variant, int savegame_variable):
   game(game), savegame_variable(savegame_variable), sprite(NULL) {
 
   std::string real_item_name;
 
   if (item_name == "_random") {
-    game->get_equipment()->get_random_item(real_item_name, variant);
+    game.get_equipment().get_random_item(real_item_name, variant);
   }
   else {
     real_item_name = item_name;
   }
 
-  if (savegame_variable != -1 && game->get_savegame()->get_boolean(savegame_variable)) {
+  if (savegame_variable != -1 && game.get_savegame().get_boolean(savegame_variable)) {
     real_item_name = "_none";
   }
 
@@ -76,15 +76,15 @@ Treasure::~Treasure() {
  * @brief Returns the properties of the item given with this treasure.
  * @return the item properties
  */
-ItemProperties * Treasure::get_item_properties() {
-  return game->get_equipment()->get_item_properties(item_name);
+ItemProperties& Treasure::get_item_properties() {
+  return game.get_equipment().get_item_properties(item_name);
 }
 
 /**
  * @brief Returns the name of the item.
  * @return the name of the item
  */
-const std::string & Treasure::get_item_name() {
+const std::string& Treasure::get_item_name() {
   return item_name;
 }
 
@@ -112,7 +112,7 @@ bool Treasure::is_saved() {
  * @return true if the player has found this treasure
  */
 bool Treasure::is_found() {
-  return savegame_variable != -1 && game->get_savegame()->get_boolean(savegame_variable);
+  return savegame_variable != -1 && game.get_savegame().get_boolean(savegame_variable);
 }
 
 /**
@@ -141,14 +141,14 @@ void Treasure::give_to_player() {
 
   // mark the treasure as found in the savegame
   if (savegame_variable != -1) {
-    game->get_savegame()->set_boolean(savegame_variable, true);
+    game.get_savegame().set_boolean(savegame_variable, true);
   }
 
   // give the item
-  game->get_equipment()->add_item(item_name, variant);
+  game.get_equipment().add_item(item_name, variant);
 
   // notify the scripts
-  game->get_scripts().event_treasure_obtaining(item_name, variant, savegame_variable);
+  game.get_scripts().event_treasure_obtaining(item_name, variant, savegame_variable);
 }
 
 /**

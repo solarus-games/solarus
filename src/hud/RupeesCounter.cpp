@@ -37,7 +37,7 @@ const Rectangle RupeesCounter::rupee_icon_positions[3] = {
  * @param x x coordinate of the top-left corner of the rupees on the destination surface
  * @param y y coordinate of the top-left corner of the rupees on the destination surface
  */
-RupeesCounter::RupeesCounter(Game *game, int x, int y):
+RupeesCounter::RupeesCounter(Game &game, int x, int y):
   HudElement(game, x, y, 48, 12),
   counter(new Counter(3, true, 16, 2)),
   next_rupee_update_date(System::now()) {

@@ -41,7 +41,7 @@ class MapEntity {
 
   public:
 
-    typedef MapEntity* (CreationFunction)(Game *game, std::istream &is, Layer layer, int x, int y);	/**< a function to parse a certain type of entity */
+    typedef MapEntity* (CreationFunction)(Game &game, std::istream &is, Layer layer, int x, int y);	/**< a function to parse a certain type of entity */
     static CreationFunction* creation_functions[];			/**< the creation functions of all types of entities */
     static const Rectangle directions_to_xy_moves[8];			/**< converts a direction (0 to 7) into a one-pixel xy move */
 
@@ -178,8 +178,8 @@ class MapEntity {
 
     int get_width();
     int get_height();
-    const Rectangle & get_bounding_box();
-    const Rectangle & get_origin();
+    const Rectangle& get_bounding_box();
+    const Rectangle& get_origin();
     int get_top_left_x();
     int get_top_left_y();
     void set_top_left_x(int x);
@@ -196,16 +196,17 @@ class MapEntity {
     void set_aligned_to_grid();
 
     // properties
-    virtual void set_map(Map *map);
-    Map * get_map();
-    Game * get_game();
+    bool is_initialized();
+    virtual void set_map(Map &map);
+    Map& get_map();
+    Game& get_game();
     const std::string& get_name() const;
     bool has_prefix(const std::string &prefix);
     int get_direction();
 
     // sprites
-    Sprite * get_sprite(const SpriteAnimationSetId &id);
-    Sprite * get_sprite();
+    Sprite* get_sprite(const SpriteAnimationSetId &id);
+    Sprite* get_sprite();
     int get_nb_sprites();
     bool has_sprite();
     void remove_sprite(const SpriteAnimationSetId &id);
@@ -216,13 +217,13 @@ class MapEntity {
     void start_fading(int direction);
 
     // movement
-    Movement * get_movement();
+    Movement* get_movement();
     virtual void notify_movement_tried(bool success);
     virtual void notify_position_changed();
     virtual void notify_layer_changed();
     virtual void notify_movement_changed();
     virtual void set_facing_entity(Detector *detector);
-    static const Rectangle & direction_to_xy_move(int direction8);
+    static const Rectangle& direction_to_xy_move(int direction8);
 
     // geometry
     bool overlaps(const Rectangle &rectangle);

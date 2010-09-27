@@ -192,7 +192,7 @@ int MapScript::l_dialog_start(lua_State *l) {
   called_by_script(l, 1, &script);
   const std::string &message_id = lua_tostring(l, 1);
 
-  script->game.get_dialog_box()->start_dialog(message_id);
+  script->game.get_dialog_box().start_dialog(message_id);
 
   return 0;
 }
@@ -213,7 +213,7 @@ int MapScript::l_dialog_set_variable(lua_State *l) {
   const MessageId &message_id = lua_tostring(l, 1);
   const std::string &value = lua_tostring(l, 2);
 
-  script->game.get_dialog_box()->set_variable(message_id, value);
+  script->game.get_dialog_box().set_variable(message_id, value);
 
   return 0;
 }
@@ -229,7 +229,7 @@ int MapScript::l_dialog_set_style(lua_State *l) {
   called_by_script(l, 1, &script);
   int style = lua_tointeger(l, 1);
 
-  script->game.get_dialog_box()->set_style(DialogBox::Style(style));
+  script->game.get_dialog_box().set_style(DialogBox::Style(style));
 
   return 0;
 }
@@ -279,7 +279,7 @@ int MapScript::l_camera_move(lua_State *l) {
   int y = lua_tointeger(l, 2);
   int speed = lua_tointeger(l, 3);
 
-  script->game.get_current_map()->move_camera(x, y, speed);
+  script->game.get_current_map().move_camera(x, y, speed);
 
   return 0;
 }
@@ -292,7 +292,7 @@ int MapScript::l_camera_restore(lua_State *l) {
   MapScript *script;
   called_by_script(l, 0, &script);
 
-  script->game.get_current_map()->restore_camera();
+  script->game.get_current_map().restore_camera();
 
   return 0;
 }
@@ -318,7 +318,7 @@ int MapScript::l_treasure_give(lua_State *l) {
   int variant = lua_tointeger(l, 2);
   int savegame_variable = lua_tointeger(l, 3);
 
-  script->hero.start_treasure(new Treasure(&script->game, item_name, variant, savegame_variable));
+  script->hero.start_treasure(new Treasure(script->game, item_name, variant, savegame_variable));
 
   return 0;
 }
@@ -405,8 +405,8 @@ int MapScript::l_hero_align_on_sensor(lua_State *l) {
 
   const std::string &name = lua_tostring(l, 1);
 
-  MapEntities *entities = script->map.get_entities();
-  Sensor *sensor = (Sensor*) entities->get_entity(SENSOR, name);
+  MapEntities &entities = script->map.get_entities();
+  Sensor *sensor = (Sensor*) entities.get_entity(SENSOR, name);
   script->hero.set_xy(sensor->get_xy());
 
   return 0;
@@ -511,8 +511,8 @@ int MapScript::l_npc_get_position(lua_State *l) {
 
   const std::string &name = lua_tostring(l, 1);
 
-  MapEntities *entities = script->map.get_entities();
-  InteractiveEntity *npc = (InteractiveEntity*) entities->get_entity(INTERACTIVE_ENTITY, name);
+  MapEntities &entities = script->map.get_entities();
+  InteractiveEntity *npc = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, name);
   const Rectangle &coordinates = npc->get_xy();
 
   lua_pushinteger(l, coordinates.get_x());
@@ -539,8 +539,8 @@ int MapScript::l_npc_set_position(lua_State *l) {
   int x = lua_tointeger(l, 2);
   int y = lua_tointeger(l, 3);
 
-  MapEntities *entities = script->map.get_entities();
-  InteractiveEntity *npc = (InteractiveEntity*) entities->get_entity(INTERACTIVE_ENTITY, name);
+  MapEntities &entities = script->map.get_entities();
+  InteractiveEntity *npc = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, name);
   npc->set_xy(x, y);
 
   return 0;
@@ -566,8 +566,8 @@ int MapScript::l_npc_walk(lua_State *l) {
   bool loop = lua_toboolean(l, 3) != 0;
   bool ignore_obstacles = lua_toboolean(l, 4) != 0;
 
-  MapEntities *entities = script->map.get_entities();
-  InteractiveEntity *npc = (InteractiveEntity*) entities->get_entity(INTERACTIVE_ENTITY, name);
+  MapEntities &entities = script->map.get_entities();
+  InteractiveEntity *npc = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, name);
   npc->walk(path, loop, ignore_obstacles);
 
   return 0;
@@ -587,8 +587,8 @@ int MapScript::l_npc_random_walk(lua_State *l) {
 
   const std::string &name = lua_tostring(l, 1);
 
-  MapEntities *entities = script->map.get_entities();
-  InteractiveEntity *npc = (InteractiveEntity*) entities->get_entity(INTERACTIVE_ENTITY, name);
+  MapEntities &entities = script->map.get_entities();
+  InteractiveEntity *npc = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, name);
   npc->walk_random();
 
   return 0;
@@ -615,8 +615,8 @@ int MapScript::l_npc_jump(lua_State *l) {
   int length = lua_tointeger(l, 3);
   bool ignore_obstacles = lua_toboolean(l, 4) != 0;
 
-  MapEntities *entities = script->map.get_entities();
-  InteractiveEntity *npc = (InteractiveEntity*) entities->get_entity(INTERACTIVE_ENTITY, name);
+  MapEntities &entities = script->map.get_entities();
+  InteractiveEntity *npc = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, name);
   npc->jump(direction, length, ignore_obstacles);
 
   return 0;
@@ -650,8 +650,8 @@ int MapScript::l_npc_set_animation_ignore_suspend(lua_State *l) {
   const std::string &name = lua_tostring(l, 1);
   bool ignore_suspend = lua_toboolean(l, 2) != 0;
 
-  MapEntities *entities = script->map.get_entities();
-  MapEntity *npc = entities->get_entity(INTERACTIVE_ENTITY, name);
+  MapEntities &entities = script->map.get_entities();
+  MapEntity *npc = entities.get_entity(INTERACTIVE_ENTITY, name);
   npc->set_animation_ignore_suspend(ignore_suspend);
 
   return 0;
@@ -675,8 +675,8 @@ int MapScript::l_npc_set_direction(lua_State *l) {
 
   Debug::assert(direction >= 0 && direction < 4, StringConcat() << "Invalid NPC direction: " << direction);
 
-  MapEntities *entities = script->map.get_entities();
-  InteractiveEntity *npc = (InteractiveEntity*) entities->get_entity(INTERACTIVE_ENTITY, name);
+  MapEntities &entities = script->map.get_entities();
+  InteractiveEntity *npc = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, name);
   npc->set_sprite_direction(direction);
 
   return 0;
@@ -696,8 +696,8 @@ int MapScript::l_npc_remove(lua_State *l) {
 
   const std::string &name = lua_tostring(l, 1);
 
-  MapEntities *entities = script->map.get_entities();
-  entities->remove_entity(INTERACTIVE_ENTITY, name);
+  MapEntities &entities = script->map.get_entities();
+  entities.remove_entity(INTERACTIVE_ENTITY, name);
 
   return 0;
 }
@@ -720,8 +720,8 @@ int MapScript::l_chest_set_open(lua_State *l) {
   const std::string &name = lua_tostring(l, 1);
   bool open = lua_toboolean(l, 2) != 0;
 
-  MapEntities *entities = script->map.get_entities();
-  Chest *chest = (Chest*) entities->get_entity(CHEST, name);
+  MapEntities &entities = script->map.get_entities();
+  Chest *chest = (Chest*) entities.get_entity(CHEST, name);
   chest->set_open(open);
 
   return 0;
@@ -744,8 +744,8 @@ int MapScript::l_chest_set_hidden(lua_State *l) {
   const std::string &name = lua_tostring(l, 1);
   bool hidden = lua_toboolean(l, 2) != 0;
 
-  MapEntities *entities = script->map.get_entities();
-  Chest *chest = (Chest*) entities->get_entity(CHEST, name);
+  MapEntities &entities = script->map.get_entities();
+  Chest *chest = (Chest*) entities.get_entity(CHEST, name);
   chest->set_visible(!hidden);
 
   return 0;
@@ -766,8 +766,8 @@ int MapScript::l_chest_is_hidden(lua_State *l) {
 
   const std::string &name = lua_tostring(l, 1);
 
-  MapEntities *entities = script->map.get_entities();
-  Chest *chest = (Chest*) entities->get_entity(CHEST, name);
+  MapEntities &entities = script->map.get_entities();
+  Chest *chest = (Chest*) entities.get_entity(CHEST, name);
   lua_pushboolean(l, chest->is_visible() ? 0 : 1);
 
   return 1;
@@ -789,8 +789,8 @@ int MapScript::l_tile_set_enabled(lua_State *l) {
   const std::string &name = lua_tostring(l, 1);
   bool enable = lua_toboolean(l, 2) != 0;
 
-  MapEntities *entities = script->map.get_entities();
-  DynamicTile *dynamic_tile = (DynamicTile*) entities->get_entity(DYNAMIC_TILE, name);
+  MapEntities &entities = script->map.get_entities();
+  DynamicTile *dynamic_tile = (DynamicTile*) entities.get_entity(DYNAMIC_TILE, name);
   dynamic_tile->set_enabled(enable);
 
   return 0;
@@ -812,16 +812,15 @@ int MapScript::l_tile_set_group_enabled(lua_State *l) {
   const std::string &prefix = lua_tostring(l, 1);
   bool enable = lua_toboolean(l, 2) != 0;
 
-  MapEntities *entities = script->map.get_entities();
-  std::list<MapEntity*> *dynamic_tiles = entities->get_entities_with_prefix(DYNAMIC_TILE, prefix);
+  MapEntities &entities = script->map.get_entities();
+  std::list<MapEntity*> dynamic_tiles = entities.get_entities_with_prefix(DYNAMIC_TILE, prefix);
 
   std::list<MapEntity*>::iterator it;
-  for (it = dynamic_tiles->begin(); it != dynamic_tiles->end(); it++) {
+  for (it = dynamic_tiles.begin(); it != dynamic_tiles.end(); it++) {
     DynamicTile *dynamic_tile = (DynamicTile*) (*it);
     dynamic_tile->set_enabled(enable);
   }
 
-  delete dynamic_tiles;
   return 0;
 }
 
@@ -840,8 +839,8 @@ int MapScript::l_tile_is_enabled(lua_State *l) {
 
   const std::string &name = lua_tostring(l, 1);
 
-  MapEntities *entities = script->map.get_entities();
-  DynamicTile *dynamic_tile = (DynamicTile*) entities->get_entity(DYNAMIC_TILE, name);
+  MapEntities &entities = script->map.get_entities();
+  DynamicTile *dynamic_tile = (DynamicTile*) entities.get_entity(DYNAMIC_TILE, name);
   lua_pushboolean(l, dynamic_tile->is_enabled() ? 1 : 0);
 
   return 1;
@@ -861,8 +860,8 @@ int MapScript::l_block_reset(lua_State *l) {
 
   const std::string &block_name = lua_tostring(l, 1);
 
-  MapEntities *entities = script->map.get_entities();
-  Block *block = (Block*) entities->get_entity(BLOCK, block_name);
+  MapEntities &entities = script->map.get_entities();
+  Block *block = (Block*) entities.get_entity(BLOCK, block_name);
   block->reset();
 
   return 0;
@@ -877,15 +876,13 @@ int MapScript::l_block_reset_all(lua_State *l) {
   MapScript *script;
   called_by_script(l, 0, &script);
 
-  MapEntities *entities = script->map.get_entities();
-  std::list<MapEntity*> *blocks = entities->get_entities(BLOCK);
+  MapEntities &entities = script->map.get_entities();
+  std::list<MapEntity*> blocks = entities.get_entities(BLOCK);
 
   std::list<MapEntity*>::iterator i;
-  for (i = blocks->begin(); i != blocks->end(); i++) {
+  for (i = blocks.begin(); i != blocks.end(); i++) {
     ((Block*) (*i))->reset();
   }
-
-  delete blocks;
 
   return 0;
 }
@@ -905,8 +902,8 @@ int MapScript::l_interactive_entity_get_animation(lua_State *l) {
 
   const std::string &name = lua_tostring(l, 1);
 
-  MapEntities *entities = script->map.get_entities();
-  InteractiveEntity *entity = (InteractiveEntity*) entities->get_entity(INTERACTIVE_ENTITY, name);
+  MapEntities &entities = script->map.get_entities();
+  InteractiveEntity *entity = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, name);
   std::string animation = entity->get_sprite()->get_current_animation();
 
   lua_pushstring(l, animation.c_str());
@@ -929,8 +926,8 @@ int MapScript::l_interactive_entity_get_animation_delay(lua_State *l) {
 
   const std::string &name = lua_tostring(l, 1);
 
-  MapEntities *entities = script->map.get_entities();
-  InteractiveEntity *entity = (InteractiveEntity*) entities->get_entity(INTERACTIVE_ENTITY, name);
+  MapEntities &entities = script->map.get_entities();
+  InteractiveEntity *entity = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, name);
   uint32_t delay = entity->get_sprite()->get_frame_delay();
 
   lua_pushinteger(l, delay);
@@ -953,8 +950,8 @@ int MapScript::l_interactive_entity_get_animation_frame(lua_State *l) {
 
   const std::string &name = lua_tostring(l, 1);
 
-  MapEntities *entities = script->map.get_entities();
-  InteractiveEntity *entity = (InteractiveEntity*) entities->get_entity(INTERACTIVE_ENTITY, name);
+  MapEntities &entities = script->map.get_entities();
+  InteractiveEntity *entity = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, name);
   int frame = entity->get_sprite()->get_current_frame();
 
   lua_pushinteger(l, frame);
@@ -977,8 +974,8 @@ int MapScript::l_interactive_entity_get_direction(lua_State *l) {
 
   const std::string &name = lua_tostring(l, 1);
 
-  MapEntities *entities = script->map.get_entities();
-  InteractiveEntity *entity = (InteractiveEntity*) entities->get_entity(INTERACTIVE_ENTITY, name);
+  MapEntities &entities = script->map.get_entities();
+  InteractiveEntity *entity = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, name);
   int frame = entity->get_sprite()->get_current_direction();
 
   lua_pushinteger(l, frame);
@@ -1001,8 +998,8 @@ int MapScript::l_interactive_entity_is_animation_paused(lua_State *l) {
 
   const std::string &name = lua_tostring(l, 1);
 
-  MapEntities *entities = script->map.get_entities();
-  InteractiveEntity *entity = (InteractiveEntity*) entities->get_entity(INTERACTIVE_ENTITY, name);
+  MapEntities &entities = script->map.get_entities();
+  InteractiveEntity *entity = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, name);
   bool paused = entity->get_sprite()->is_paused();
 
   lua_pushboolean(l, paused ? 1 : 0);
@@ -1026,8 +1023,8 @@ int MapScript::l_interactive_entity_set_animation(lua_State *l) {
   const std::string &name = lua_tostring(l, 1);
   const std::string &animation = lua_tostring(l, 2);
 
-  MapEntities *entities = script->map.get_entities();
-  InteractiveEntity *entity = (InteractiveEntity*) entities->get_entity(INTERACTIVE_ENTITY, name);
+  MapEntities &entities = script->map.get_entities();
+  InteractiveEntity *entity = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, name);
   entity->get_sprite()->set_current_animation(animation);
   entity->get_sprite()->restart_animation();
 
@@ -1050,8 +1047,8 @@ int MapScript::l_interactive_entity_set_animation_delay(lua_State *l) {
   const std::string &name = lua_tostring(l, 1);
   uint32_t delay = lua_tointeger(l, 2);
 
-  MapEntities *entities = script->map.get_entities();
-  InteractiveEntity *entity = (InteractiveEntity*) entities->get_entity(INTERACTIVE_ENTITY, name);
+  MapEntities &entities = script->map.get_entities();
+  InteractiveEntity *entity = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, name);
   entity->get_sprite()->set_frame_delay(delay);
 
   return 0;
@@ -1073,8 +1070,8 @@ int MapScript::l_interactive_entity_set_animation_frame(lua_State *l) {
   const std::string &name = lua_tostring(l, 1);
   int frame = lua_tointeger(l, 2);
 
-  MapEntities *entities = script->map.get_entities();
-  InteractiveEntity *entity = (InteractiveEntity*) entities->get_entity(INTERACTIVE_ENTITY, name);
+  MapEntities &entities = script->map.get_entities();
+  InteractiveEntity *entity = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, name);
   entity->get_sprite()->set_current_frame(frame);
 
   return 0;
@@ -1109,8 +1106,8 @@ int MapScript::l_interactive_entity_set_animation_paused(lua_State *l) {
   const std::string &name = lua_tostring(l, 1);
   bool paused = lua_toboolean(l, 2) != 0;
 
-  MapEntities *entities = script->map.get_entities();
-  InteractiveEntity *entity = (InteractiveEntity*) entities->get_entity(INTERACTIVE_ENTITY, name);
+  MapEntities &entities = script->map.get_entities();
+  InteractiveEntity *entity = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, name);
   entity->get_sprite()->set_paused(paused);
 
   return 0;
@@ -1132,8 +1129,8 @@ int MapScript::l_interactive_entity_fade(lua_State *l) {
   const std::string &name = lua_tostring(l, 1);
   int direction = lua_tointeger(l, 2);
 
-  MapEntities *entities = script->map.get_entities();
-  InteractiveEntity *entity = (InteractiveEntity*) entities->get_entity(INTERACTIVE_ENTITY, name);
+  MapEntities &entities = script->map.get_entities();
+  InteractiveEntity *entity = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, name);
   entity->start_fading(direction);
 
   return 0;
@@ -1176,7 +1173,7 @@ int MapScript::l_shop_item_remove(lua_State *l) {
 
   const std::string &name = lua_tostring(l, 1);
 
-  script->map.get_entities()->remove_entity(SHOP_ITEM, name);
+  script->map.get_entities().remove_entity(SHOP_ITEM, name);
 
   return 0;
 }
@@ -1196,8 +1193,8 @@ int MapScript::l_switch_is_enabled(lua_State *l) {
 
   const std::string &name = lua_tostring(l, 1);
 
-  MapEntities *entities = script->map.get_entities();
-  Switch *sw = (Switch*) entities->get_entity(SWITCH, name);
+  MapEntities &entities = script->map.get_entities();
+  Switch *sw = (Switch*) entities.get_entity(SWITCH, name);
 
   lua_pushboolean(l, sw->is_enabled());
 
@@ -1220,8 +1217,8 @@ int MapScript::l_switch_set_enabled(lua_State *l) {
   const std::string &name = lua_tostring(l, 1);
   bool enable = lua_toboolean(l, 2) != 0;
 
-  MapEntities *entities = script->map.get_entities();
-  Switch *sw = (Switch*) entities->get_entity(SWITCH, name);
+  MapEntities &entities = script->map.get_entities();
+  Switch *sw = (Switch*) entities.get_entity(SWITCH, name);
   sw->set_enabled(enable);
 
   return 0;
@@ -1243,8 +1240,8 @@ int MapScript::l_switch_set_locked(lua_State *l) {
   const std::string &name = lua_tostring(l, 1);
   bool lock = lua_toboolean(l, 2) != 0;
 
-  MapEntities *entities = script->map.get_entities();
-  Switch *sw = (Switch*) entities->get_entity(SWITCH, name);
+  MapEntities &entities = script->map.get_entities();
+  Switch *sw = (Switch*) entities.get_entity(SWITCH, name);
   sw->set_locked(lock);
 
   return 0;
@@ -1266,8 +1263,8 @@ int MapScript::l_enemy_is_dead(lua_State *l) {
 
   const std::string &name = lua_tostring(l, 1);
 
-  MapEntities *entities = script->map.get_entities();
-  Enemy *enemy = (Enemy*) entities->find_entity(ENEMY, name);
+  MapEntities &entities = script->map.get_entities();
+  Enemy *enemy = (Enemy*) entities.find_entity(ENEMY, name);
 
   lua_pushboolean(l, (enemy == NULL));
 
@@ -1291,12 +1288,11 @@ int MapScript::l_enemy_is_group_dead(lua_State *l) {
 
   const std::string &prefix = lua_tostring(l, 1);
 
-  MapEntities *entities = script->map.get_entities();
-  std::list<MapEntity*> *enemies = entities->get_entities_with_prefix(ENEMY, prefix);
+  MapEntities &entities = script->map.get_entities();
+  std::list<MapEntity*> enemies = entities.get_entities_with_prefix(ENEMY, prefix);
 
-  lua_pushboolean(l, enemies->empty());
+  lua_pushboolean(l, enemies.empty());
 
-  delete enemies;
   return 1;
 }
 
@@ -1317,8 +1313,8 @@ int MapScript::l_enemy_set_enabled(lua_State *l) {
   const std::string &name = lua_tostring(l, 1);
   bool enable = lua_toboolean(l, 2) != 0;
 
-  MapEntities *entities = script->map.get_entities();
-  Enemy *enemy = (Enemy*) entities->get_entity(ENEMY, name);
+  MapEntities &entities = script->map.get_entities();
+  Enemy *enemy = (Enemy*) entities.get_entity(ENEMY, name);
   enemy->set_enabled(enable);
 
   return 0;
@@ -1340,9 +1336,9 @@ int MapScript::l_enemy_start_boss(lua_State *l) {
 
   const std::string &name = lua_tostring(l, 1);
 
-  MapEntities *entities = script->map.get_entities();
-  Enemy *enemy = (Enemy*) entities->find_entity(ENEMY, name); 
-  entities->start_boss_battle(enemy);
+  MapEntities &entities = script->map.get_entities();
+  Enemy *enemy = (Enemy*) entities.find_entity(ENEMY, name); 
+  entities.start_boss_battle(enemy);
 
   return 0;
 }
@@ -1360,7 +1356,7 @@ int MapScript::l_enemy_end_boss(lua_State *l) {
   MapScript *script;
   called_by_script(l, 0, &script);
 
-  script->map.get_entities()->end_boss_battle();
+  script->map.get_entities().end_boss_battle();
 
   return 0;
 }
@@ -1381,9 +1377,9 @@ int MapScript::l_enemy_start_miniboss(lua_State *l) {
 
   const std::string &name = lua_tostring(l, 1);
 
-  MapEntities *entities = script->map.get_entities();
-  Enemy *enemy = (Enemy*) entities->find_entity(ENEMY, name); 
-  entities->start_miniboss_battle(enemy);
+  MapEntities &entities = script->map.get_entities();
+  Enemy *enemy = (Enemy*) entities.find_entity(ENEMY, name); 
+  entities.start_miniboss_battle(enemy);
 
   return 0;
 }
@@ -1400,7 +1396,7 @@ int MapScript::l_enemy_end_miniboss(lua_State *l) {
   MapScript *script;
   called_by_script(l, 0, &script);
 
-  script->map.get_entities()->end_miniboss_battle();
+  script->map.get_entities().end_miniboss_battle();
 
   return 0;
 }
@@ -1419,7 +1415,7 @@ int MapScript::l_sensor_remove(lua_State *l) {
 
   const std::string &name = lua_tostring(l, 1);
 
-  script->map.get_entities()->remove_entity(SENSOR, name);
+  script->map.get_entities().remove_entity(SENSOR, name);
 
   return 0;
 }
@@ -1440,15 +1436,14 @@ int MapScript::l_door_open(lua_State *l) {
 
   const std::string &prefix = lua_tostring(l, 1);
 
-  MapEntities *entities = script->map.get_entities();
-  std::list<MapEntity*> *doors = entities->get_entities_with_prefix(DOOR, prefix);
+  MapEntities &entities = script->map.get_entities();
+  std::list<MapEntity*> doors = entities.get_entities_with_prefix(DOOR, prefix);
   std::list<MapEntity*>::iterator it;
-  for (it = doors->begin(); it != doors->end(); it++) {
+  for (it = doors.begin(); it != doors.end(); it++) {
     Door *door = (Door*) (*it);
     door->open();
   }
   Sound::play("door_open");
-  delete doors;
 
   return 0;
 }
@@ -1469,15 +1464,14 @@ int MapScript::l_door_close(lua_State *l) {
 
   const std::string &prefix = lua_tostring(l, 1);
 
-  MapEntities *entities = script->map.get_entities();
-  std::list<MapEntity*> *doors = entities->get_entities_with_prefix(DOOR, prefix);
+  MapEntities &entities = script->map.get_entities();
+  std::list<MapEntity*> doors = entities.get_entities_with_prefix(DOOR, prefix);
   std::list<MapEntity*>::iterator it;
-  for (it = doors->begin(); it != doors->end(); it++) {
+  for (it = doors.begin(); it != doors.end(); it++) {
     Door *door = (Door*) (*it);
     door->close();
   }
   Sound::play("door_closed");
-  delete doors;
 
   return 0;
 }
@@ -1496,8 +1490,8 @@ int MapScript::l_door_is_open(lua_State *l) {
   called_by_script(l, 1, &script);
   const std::string &name = lua_tostring(l, 1);
 
-  MapEntities *entities = script->map.get_entities();
-  Door *door = (Door*) entities->get_entity(DOOR, name);
+  MapEntities &entities = script->map.get_entities();
+  Door *door = (Door*) entities.get_entity(DOOR, name);
   lua_pushboolean(l, door->is_open() ? 1 : 0);
 
   return 1;
@@ -1519,14 +1513,13 @@ int MapScript::l_door_set_open(lua_State *l) {
   const std::string &prefix = lua_tostring(l, 1);
   bool open = lua_toboolean(l, 2) != 0;
 
-  MapEntities *entities = script->map.get_entities();
-  std::list<MapEntity*> *doors = entities->get_entities_with_prefix(DOOR, prefix);
+  MapEntities &entities = script->map.get_entities();
+  std::list<MapEntity*> doors = entities.get_entities_with_prefix(DOOR, prefix);
   std::list<MapEntity*>::iterator it;
-  for (it = doors->begin(); it != doors->end(); it++) {
+  for (it = doors.begin(); it != doors.end(); it++) {
     Door *door = (Door*) (*it);
     door->set_open(open);
   }
-  delete doors;
 
   return 0;
 }

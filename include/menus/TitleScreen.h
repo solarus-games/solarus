@@ -89,7 +89,7 @@ class TitleScreen: public Screen {
   public:
 
     // creation and destruction
-    TitleScreen(Solarus *solarus);
+    TitleScreen(Solarus &solarus);
     ~TitleScreen();
 
     // update and display

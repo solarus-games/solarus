@@ -39,9 +39,9 @@ class PauseMenu {
 
   private:
 
-    Game *game;
-    Savegame *savegame;
-    KeysEffect *keys_effect;
+    Game &game;
+    Savegame &savegame;
+    KeysEffect &keys_effect;
 
     Surface *backgrounds_surface;
     PauseSubmenu *current_submenu;
@@ -59,7 +59,7 @@ class PauseMenu {
 
   public:
 
-    PauseMenu(Game *game);
+    PauseMenu(Game &game);
     ~PauseMenu();
     void quit();
 

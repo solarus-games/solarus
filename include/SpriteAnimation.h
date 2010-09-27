@@ -45,7 +45,7 @@ class SpriteAnimation {
 	int nb_directions, SpriteAnimationDirection **directions, uint32_t frame_interval, int loop_on_frame);
     virtual ~SpriteAnimation();
 
-    void set_map(Map *map);
+    void set_map(Map &map);
 
     int get_next_frame(int current_direction, int current_frame) const;
     void display(Surface *destination, int x, int y,

@@ -95,7 +95,7 @@ DestructibleItem::~DestructibleItem() {
  * @param y y coordinate of the entity
  * @return the instance created
  */
-MapEntity * DestructibleItem::parse(Game *game, std::istream &is, Layer layer, int x, int y) {
+MapEntity* DestructibleItem::parse(Game &game, std::istream &is, Layer layer, int x, int y) {
 
   std::string treasure_name;
   int subtype, treasure_variant, treasure_savegame_variable;
@@ -204,8 +204,8 @@ void DestructibleItem::create_pickable_item() {
 
   if (!treasure->is_empty()) {
 
-    bool will_disappear = treasure->get_item_properties()->can_disappear();
-    map->get_entities()->add_entity(PickableItem::create(game, get_layer(), get_x(), get_y(),
+    bool will_disappear = treasure->get_item_properties().can_disappear();
+    map->get_entities().add_entity(PickableItem::create(*game, get_layer(), get_x(), get_y(),
 	  treasure, FALLING_MEDIUM, will_disappear));
   }
   else {
@@ -234,21 +234,21 @@ void DestructibleItem::notify_collision(MapEntity *entity_overlapping, Collision
  */
 void DestructibleItem::notify_collision_with_hero(Hero *hero, CollisionMode collision_mode) {
 
-  KeysEffect *keys_effect = game->get_keys_effect();
+  KeysEffect &keys_effect = game->get_keys_effect();
 
   if (features[subtype].can_be_lifted
       && !is_being_cut
       && !is_disabled()
-      && keys_effect->get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
+      && keys_effect.get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
       && hero->is_free()) {
 
-    Equipment *equipment = game->get_equipment();
+    Equipment &equipment = game->get_equipment();
     int weight = features[subtype].weight;
-    if (equipment->has_ability("lift", weight)) {
-      keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_LIFT);
+    if (equipment.has_ability("lift", weight)) {
+      keys_effect.set_action_key_effect(KeysEffect::ACTION_KEY_LIFT);
     }
     else {
-      keys_effect->set_action_key_effect(KeysEffect::ACTION_KEY_LOOK);
+      keys_effect.set_action_key_effect(KeysEffect::ACTION_KEY_LOOK);
     }
   }
 
@@ -294,9 +294,9 @@ void DestructibleItem::notify_collision(MapEntity *other_entity, Sprite *other_s
  */
 void DestructibleItem::action_key_pressed() {
 
-  KeysEffect *keys_effect = game->get_keys_effect();
+  KeysEffect &keys_effect = game->get_keys_effect();
   Hero &hero = game->get_hero();
-  KeysEffect::ActionKeyEffect effect = keys_effect->get_action_key_effect();
+  KeysEffect::ActionKeyEffect effect = keys_effect.get_action_key_effect();
 
   if ((effect == KeysEffect::ACTION_KEY_LIFT || effect == KeysEffect::ACTION_KEY_LOOK)
       && features[subtype].can_be_lifted
@@ -304,9 +304,9 @@ void DestructibleItem::action_key_pressed() {
       && !is_disabled()) {
 
     int weight = features[subtype].weight;
-    Equipment *equipment = game->get_equipment();
+    Equipment &equipment = game->get_equipment();
 
-    if (equipment->has_ability("lift", weight)) {
+    if (equipment.has_ability("lift", weight)) {
       hero.start_lifting(this);
 
       // play the sound
@@ -326,13 +326,13 @@ void DestructibleItem::action_key_pressed() {
     }
     else {
       if (features[subtype].can_be_cut) {
-        game->get_dialog_box()->start_dialog("_cannot_lift_should_cut");
+        game->get_dialog_box().start_dialog("_cannot_lift_should_cut");
       }
-      else if (!equipment->has_ability("lift", 1)) {
-	game->get_dialog_box()->start_dialog("_cannot_lift_too_heavy");
+      else if (!equipment.has_ability("lift", 1)) {
+	game->get_dialog_box().start_dialog("_cannot_lift_too_heavy");
       }
       else {
-	game->get_dialog_box()->start_dialog("_cannot_lift_still_too_heavy");
+	game->get_dialog_box().start_dialog("_cannot_lift_still_too_heavy");
       }
     }
   }
@@ -347,7 +347,7 @@ void DestructibleItem::play_destroy_animation() {
   Sound::play(get_destruction_sound_id());
   get_sprite()->set_current_animation("destroy");
   if (!is_displayed_in_y_order()) {
-    map->get_entities()->bring_to_front(this); // show animation destroy to front
+    map->get_entities().bring_to_front(this); // show animation destroy to front
   }
 }
 

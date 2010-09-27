@@ -36,10 +36,10 @@ Solarus::Solarus(int argc, char **argv) {
   // initialize the lowlevel features (audio, video, files...)
   System::initialize(argc, argv);
   root_surface = new Surface(320, 240);
-  debug_keys = new DebugKeys(this);
+  debug_keys = new DebugKeys(*this);
 
   // create the first screen
-  current_screen = new LanguageScreen(this);
+  current_screen = new LanguageScreen(*this);
   exiting = false;
 }
 
@@ -57,8 +57,8 @@ Solarus::~Solarus() {
  * @brief Returns the debugging keys object.
  * @return the debbuging keys object
  */
-DebugKeys * Solarus::get_debug_keys() {
-  return debug_keys;
+DebugKeys& Solarus::get_debug_keys() {
+  return *debug_keys;
 }
 
 /**
@@ -70,7 +70,9 @@ DebugKeys * Solarus::get_debug_keys() {
 void Solarus::skip_menus() {
 
   if (FileTools::data_file_exists("save1.dat")) {
-    Game *game = new Game(this, new Savegame("save1.dat"));
+
+    Savegame savegame("save1.dat");
+    Game *game = new Game(*this, savegame);
     delete current_screen;
     current_screen = game;
   }
@@ -141,7 +143,7 @@ void Solarus::main_loop() {
 	current_screen = next_screen;
       }
       else {
-	current_screen = new LanguageScreen(this);
+	current_screen = new LanguageScreen(*this);
       }
     }
     else {

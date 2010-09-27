@@ -60,7 +60,7 @@ void Hero::FreeState::stop(State *next_state) {
 
   PlayerMovementState::stop(next_state);
 
-  game->get_keys_effect()->set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
+  game->get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
 }
 
 /**
@@ -96,9 +96,9 @@ void Hero::FreeState::set_suspended(bool suspended) {
  */
 void Hero::FreeState::action_key_pressed() {
 
-  KeysEffect *keys_effect = game->get_keys_effect();
+  KeysEffect &keys_effect = game->get_keys_effect();
 
-  if (keys_effect->is_action_key_acting_on_facing_entity()) {
+  if (keys_effect.is_action_key_acting_on_facing_entity()) {
 
     // action on the facing entity
     hero->get_facing_entity()->action_key_pressed();
@@ -187,13 +187,13 @@ bool Hero::FreeState::can_throw_item() {
  * Gives the sprites the animation stopped corresponding to this state.
  */
 void Hero::FreeState::set_animation_stopped() {
-  hero->get_sprites()->set_animation_stopped_normal();
+  hero->get_sprites().set_animation_stopped_normal();
 }
 
 /**
  * Gives the sprites the animation walking corresponding to this state.
  */
 void Hero::FreeState::set_animation_walking() {
-  hero->get_sprites()->set_animation_walking_normal();
+  hero->get_sprites().set_animation_walking_normal();
 }
 

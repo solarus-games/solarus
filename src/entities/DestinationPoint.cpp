@@ -65,7 +65,7 @@ DestinationPoint::~DestinationPoint() {
  * @param y y coordinate of the entity
  * @return the instance created
  */
-MapEntity * DestinationPoint::parse(Game *game, std::istream &is, Layer layer, int x, int y) {
+MapEntity* DestinationPoint::parse(Game &game, std::istream &is, Layer layer, int x, int y) {
 	
   std::string name;
   int direction, is_visible;

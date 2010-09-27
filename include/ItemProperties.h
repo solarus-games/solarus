@@ -62,10 +62,10 @@ class ItemProperties {
 
   public:
 
-    ItemProperties(Equipment *equipment, IniFile *ini);
+    ItemProperties(Equipment &equipment, IniFile &ini);
     ~ItemProperties();
 
-    const std::string & get_name();
+    const std::string& get_name();
     bool is_saved();
     int get_savegame_variable();
     int get_nb_variants();
@@ -74,16 +74,16 @@ class ItemProperties {
     int get_counter_savegame_variable();
     bool has_fixed_limit();
     int get_fixed_limit();
-    const std::string & get_item_limiting();
-    const std::string & get_item_limited();
-    const std::string & get_item_counter_changed();
+    const std::string& get_item_limiting();
+    const std::string& get_item_limited();
+    const std::string& get_item_counter_changed();
     int get_amount(int variant = 1);
     int get_probability(int variant = 1);
     bool can_be_assigned();
     bool can_disappear();
     bool is_brandished_when_picked();
-    const SoundId & get_sound_when_picked();
-    const SoundId & get_sound_when_brandished();
+    const SoundId& get_sound_when_picked();
+    const SoundId& get_sound_when_brandished();
     ShadowSize get_shadow_size();
 };
 

@@ -21,6 +21,7 @@
 #include "Screen.h"
 #include "Transition.h"
 #include "GameControls.h"
+#include "Savegame.h"
 
 /**
  * @brief Represents the game currently running.
@@ -34,7 +35,7 @@ class Game: public Screen {
   private:
 
     // savegame
-    Savegame *savegame;        /**< the game data saved */
+    Savegame savegame;         /**< the game data saved */
 
     // the hero
     Hero *hero;
@@ -81,16 +82,16 @@ class Game: public Screen {
   public:
 
     // creation and destruction
-    Game(Solarus *solarus, Savegame *savegame);
+    Game(Solarus &solarus, Savegame &savegame);
     ~Game();
 
     // global objects
     Hero& get_hero();
     const Rectangle& get_hero_xy();
-    GameControls* get_controls();
-    KeysEffect* get_keys_effect();
-    Savegame* get_savegame();
-    Equipment* get_equipment();
+    GameControls& get_controls();
+    KeysEffect& get_keys_effect();
+    Savegame& get_savegame();
+    Equipment& get_equipment();
 
     // functions called by the main loop
     void notify_event(InputEvent &event);
@@ -102,14 +103,15 @@ class Game: public Screen {
     void key_released(GameControls::GameKey key);
 
     // map
-    Map* get_current_map();
+    bool has_current_map();
+    Map& get_current_map();
     void set_current_map(MapId map_id, const std::string &destination_point_name,
 	Transition::Style transition_style);
 
     // world
     const Rectangle& get_outside_world_size();
     bool is_in_dungeon();
-    Dungeon* get_current_dungeon();
+    Dungeon& get_current_dungeon();
     bool get_crystal_switch_state();
     void change_crystal_switch_state();
 
@@ -130,10 +132,9 @@ class Game: public Screen {
     bool is_pause_key_available();
     void set_pause_key_available(bool pause_key_available);
     void set_paused(bool paused);
-    PauseMenu* get_pause_menu();
 
     // dialog box
-    DialogBox* get_dialog_box();
+    DialogBox& get_dialog_box();
 
     // game over
     void start_gameover_sequence();

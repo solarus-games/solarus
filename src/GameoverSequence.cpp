@@ -32,7 +32,7 @@
  * @param game the game
  * @param hero_direction direction of the hero sprite before game over
  */
-GameoverSequence::GameoverSequence(Game *game, int hero_direction):
+GameoverSequence::GameoverSequence(Game &game, int hero_direction):
   game(game), music_id(Music::get_current_music_id()), state(WAITING_START) {
 
   gameover_menu_img = new Surface("gameover_menu.png", Surface::DIR_LANGUAGE);
@@ -41,14 +41,14 @@ GameoverSequence::GameoverSequence(Game *game, int hero_direction):
   red_screen_color = Color(224, 32, 32);
 
   std::ostringstream oss;
-  oss << "hero/tunic" << game->get_equipment()->get_ability("tunic");
+  oss << "hero/tunic" << game.get_equipment().get_ability("tunic");
   hero_dead_sprite = new Sprite(oss.str());
   hero_dead_sprite->set_current_animation("hurt");
   hero_dead_sprite->set_current_direction(hero_direction);
   hero_dead_sprite->set_suspended(true);
 
-  const Rectangle &camera_position = game->get_current_map()->get_camera_position();
-  const Rectangle &hero_xy = game->get_hero_xy();
+  const Rectangle &camera_position = game.get_current_map().get_camera_position();
+  const Rectangle &hero_xy = game.get_hero_xy();
   hero_dead_x = hero_xy.get_x() - camera_position.get_x();
   hero_dead_y = hero_xy.get_y() - camera_position.get_y();
 
@@ -114,8 +114,8 @@ void GameoverSequence::update() {
     fade_sprite->update();
     if (fade_sprite->is_animation_finished()) {
 
-      Equipment *equipment = game->get_equipment();
-      if (equipment->has_ability("get_back_from_death")) {
+      Equipment &equipment = game.get_equipment();
+      if (equipment.has_ability("get_back_from_death")) {
 	state = SAVED_BY_FAIRY;
 	fairy_x = hero_dead_x + 12;
 	fairy_y = hero_dead_y + 21;
@@ -141,14 +141,14 @@ void GameoverSequence::update() {
     if (fairy_movement->is_finished()) {
       state = WAITING_END;
       next_state_date = now + 1000;
-      game->get_equipment()->add_life(7 * 4);
+      game.get_equipment().add_life(7 * 4);
     }
     break;
 
   case WAITING_END:
     if (now >= next_state_date) {
       state = RESUME_GAME;
-      game->get_back_from_death();
+      game.get_back_from_death();
       Music::play(music_id);
     }
     break;
@@ -217,26 +217,26 @@ void GameoverSequence::key_pressed(GameControls::GameKey key) {
     }
     else if (key == GameControls::ACTION || key == GameControls::SWORD) {
       Sound::play("danger");
-      game->get_equipment()->add_life(7 * 4);
+      game.get_equipment().add_life(7 * 4);
 
       switch (cursor_position) {
 
       case 0: // save and continue
-	game->get_savegame()->save();
-	game->restart();
+	game.get_savegame().save();
+	game.restart();
 	break;
 
       case 1: // save and quit
-	game->get_savegame()->save();
-	game->reset();
+	game.get_savegame().save();
+	game.reset();
 	break;
 
       case 2: // continue without saving
-	game->restart();
+	game.restart();
 	break;
 
       case 3: // quit without saving
-	game->reset();
+	game.reset();
 	break;
 
       }

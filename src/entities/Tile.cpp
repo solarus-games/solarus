@@ -46,7 +46,7 @@ Tile::Tile(Layer layer, int x, int y, int width, int height, int tile_pattern_id
  * @param y y coordinate of the entity
  * @return the instance created
  */
-MapEntity * Tile::parse(Game *game, std::istream &is, Layer layer, int x, int y) {
+MapEntity* Tile::parse(Game &game, std::istream &is, Layer layer, int x, int y) {
 
   int width, height, tile_pattern_id;
 
@@ -76,9 +76,9 @@ EntityType Tile::get_type() {
  * @brief Sets the map of this entity.
  * @param map the map
  */
-void Tile::set_map(Map *map) {
+void Tile::set_map(Map &map) {
   MapEntity::set_map(map);
-  this->tile_pattern = map->get_tileset()->get_tile_pattern(tile_pattern_id);
+  this->tile_pattern = &map.get_tileset().get_tile_pattern(tile_pattern_id);
 }
 
 /**
@@ -92,7 +92,7 @@ void Tile::display_on_map() {
  * @brief Returns the pattern of this tile.
  * @return the tile pattern
  */
-TilePattern * Tile::get_tile_pattern() {
-  return tile_pattern;
+TilePattern& Tile::get_tile_pattern() {
+  return *tile_pattern;
 }
 

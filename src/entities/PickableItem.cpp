@@ -70,7 +70,7 @@ EntityType PickableItem::get_type() {
  * @param y y coordinate of the entity
  * @return the instance created
  */
-MapEntity * PickableItem::parse(Game *game, std::istream &is, Layer layer, int x, int y) {
+MapEntity* PickableItem::parse(Game &game, std::istream &is, Layer layer, int x, int y) {
 
   std::string treasure_name;
   int treasure_variant, treasure_savegame_variable;
@@ -103,7 +103,7 @@ MapEntity * PickableItem::parse(Game *game, std::istream &is, Layer layer, int x
  * @param will_disappear true to make the item disappear after an amout of time
  * @return the pickable item created, or NULL depending on the subtype
  */
-PickableItem * PickableItem::create(Game *game, Layer layer, int x, int y, Treasure *treasure,
+PickableItem * PickableItem::create(Game &game, Layer layer, int x, int y, Treasure *treasure,
     FallingHeight falling_height, bool will_disappear) {
 
   // don't create anything if there is no treasure to give
@@ -134,10 +134,10 @@ PickableItem * PickableItem::create(Game *game, Layer layer, int x, int y, Treas
  */
 void PickableItem::initialize_sprites() {
 
-  ItemProperties *properties = treasure->get_item_properties();
+  ItemProperties &properties = treasure->get_item_properties();
 
   // create the shadow
-  switch (properties->get_shadow_size()) {
+  switch (properties.get_shadow_size()) {
 
     case ItemProperties::SHADOW_SMALL:
       shadow_sprite = new Sprite("entities/shadow");
@@ -234,13 +234,13 @@ void PickableItem::notify_collision(MapEntity *entity_overlapping, CollisionMode
  */
 void PickableItem::give_item_to_player() {
 
-  ItemProperties *properties = treasure->get_item_properties();
+  ItemProperties &properties = treasure->get_item_properties();
 
   // play the sound
-  Sound::play(properties->get_sound_when_picked());
+  Sound::play(properties.get_sound_when_picked());
 
   // give the item
-  if (properties->is_brandished_when_picked()) {
+  if (properties.is_brandished_when_picked()) {
     game->get_hero().start_treasure(treasure);
   }
   else {

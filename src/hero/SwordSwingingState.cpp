@@ -56,7 +56,7 @@ void Hero::SwordSwingingState::update() {
   if (sprites->is_animation_finished()) {
 
     // if the player is still pressing the sword key, start loading the sword
-    if (game->get_controls()->is_key_pressed(GameControls::SWORD)) {
+    if (game->get_controls().is_key_pressed(GameControls::SWORD)) {
       hero->set_state(new SwordLoadingState(hero));
     }
     else {

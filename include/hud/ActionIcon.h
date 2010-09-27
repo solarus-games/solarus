@@ -43,7 +43,7 @@ class ActionIcon: public HudElement {
 
   public:
 
-    ActionIcon(Game *game, int x, int y);
+    ActionIcon(Game &game, int x, int y);
     ~ActionIcon();
 
     void update();

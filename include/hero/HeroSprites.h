@@ -35,8 +35,8 @@ class HeroSprites {
 
   private:
 
-    Hero *hero;				/**< the hero */
-    Equipment *equipment;		/**< equipment of the player */
+    Hero &hero;				/**< the hero */
+    Equipment &equipment;		/**< equipment of the player */
 
     Sprite *tunic_sprite;		/**< sprite of the current tunic */
     Sprite *sword_sprite;		/**< current sword sprite */
@@ -85,7 +85,7 @@ class HeroSprites {
 
   public:
 
-    HeroSprites(Hero *hero, Equipment *equipment);
+    HeroSprites(Hero &hero, Equipment &equipment);
     ~HeroSprites();
 
     void update();

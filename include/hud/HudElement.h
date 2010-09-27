@@ -54,9 +54,9 @@ class HudElement {
     bool blinking_is_visible;       /**< When blinking, indicates that this hud element is currently displayed. */
     uint32_t next_blink_date;       /**< When blinkig, date when the element will appear or disappear next time. */
 
-    HudElement(Game *game, int x, int y, int width, int height);
-    HudElement(Equipment *equipment, int x, int y, int width, int height);
-    HudElement(KeysEffect *keys_effect, int x, int y, int width, int height);
+    HudElement(Game &game, int x, int y, int width, int height);
+    HudElement(Equipment &equipment, int x, int y, int width, int height);
+    HudElement(KeysEffect &keys_effect, int x, int y, int width, int height);
 
   public:
 

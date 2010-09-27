@@ -21,7 +21,7 @@
  * @brief Creates a screen.
  * @param solarus the application object (some screens need it)
  */
-Screen::Screen(Solarus *solarus):
+Screen::Screen(Solarus &solarus):
   solarus(solarus), screen_finished(false), next_screen(NULL) {
 
 }
@@ -72,6 +72,6 @@ bool Screen::is_screen_finished() {
  * @return the current scripts
  */
 Scripts& Screen::get_scripts() {
-  return solarus->get_scripts();
+  return solarus.get_scripts();
 }
 

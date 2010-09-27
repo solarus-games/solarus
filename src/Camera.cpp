@@ -26,7 +26,7 @@
  * @brief Creates a camera.
  * @param map the map
  */
-Camera::Camera(Map *map):
+Camera::Camera(Map &map):
   map(map), fixed_on_hero(true), restoring(false), speed(12), movement(NULL) {
 
   position.set_xy(0, 0);
@@ -48,11 +48,11 @@ void Camera::update() {
 
   int x = position.get_x();
   int y = position.get_y();
-  const Rectangle &map_location = map->get_location();
+  const Rectangle &map_location = map.get_location();
 
   // if the camera is not moving, center it on the hero
   if (is_fixed_on_hero()) {
-    Hero &hero = map->get_entities()->get_hero();
+    Hero &hero = map.get_entities().get_hero();
     x = hero.get_x();
     y = hero.get_y();
     x = std::min(std::max(x - 160, 0), map_location.get_width() - 320);
@@ -70,10 +70,10 @@ void Camera::update() {
       if (restoring) {
 	restoring = false;
 	fixed_on_hero = true;
-	map->get_scripts().event_camera_back();
+	map.get_scripts().event_camera_back();
       }
       else {
-	map->get_scripts().event_camera_reached_target();
+	map.get_scripts().event_camera_reached_target();
       }
     }
   }
@@ -89,7 +89,7 @@ void Camera::update() {
  *
  * @return the visible area
  */
-Rectangle & Camera::get_position() {
+const Rectangle& Camera::get_position() {
   return position;
 }
 
@@ -128,7 +128,7 @@ void Camera::move(int target_x, int target_y) {
     delete movement;
   }
 
-  const Rectangle &map_location = map->get_location();
+  const Rectangle &map_location = map.get_location();
   target_x = std::min(std::max(target_x, 160), map_location.get_width() - 160);
   target_y = std::min(std::max(target_y, 120), map_location.get_height() - 120);
 
@@ -158,7 +158,7 @@ void Camera::move(MapEntity *entity) {
  * Once the movement is finished, the camera starts following the hero again.
  */
 void Camera::restore() {
-  move(&map->get_entities()->get_hero());
+  move(&map.get_entities().get_hero());
   restoring = true;
 }
 

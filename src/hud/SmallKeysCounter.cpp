@@ -25,7 +25,7 @@
  * @param x x coordinate of the top-left corner of the key icon on the destination surface
  * @param y y coordinate of the top-left corner of the key icon on the destination surface
  */
-SmallKeysCounter::SmallKeysCounter(Game *game, int x, int y):
+SmallKeysCounter::SmallKeysCounter(Game &game, int x, int y):
   HudElement(game, x, y, 40, 8), counter(NULL) {
 
   img_icon = new Surface("hud/small_key_icon.png");

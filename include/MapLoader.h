@@ -31,7 +31,7 @@ class MapLoader {
     MapLoader();
     ~MapLoader();
 
-    void load_map(Game *game, Map *map);
+    void load_map(Game &game, Map &map);
 
 };
 

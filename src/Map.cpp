@@ -68,8 +68,8 @@ MapId Map::get_id() {
  * @brief Returns the tileset associated to this map.
  * @return the tileset
  */
-Tileset * Map::get_tileset() {
-  return tileset;
+Tileset& Map::get_tileset() {
+  return *tileset;
 }
 
 /**
@@ -242,13 +242,13 @@ void Map::unload() {
  *
  * @param game the game
  */
-void Map::load(Game *game) {
+void Map::load(Game &game) {
 
   this->visible_surface = new Surface(320, 240);
-  entities = new MapEntities(game, this);
+  entities = new MapEntities(game, *this);
 
   // read the map file
-  map_loader.load_map(game, this);
+  map_loader.load_map(game, *this);
 }
 
 /**
@@ -262,8 +262,8 @@ Game& Map::get_game() {
 /**
  * @brief Returns the entities on the map.
  */
-MapEntities * Map::get_entities() {
-  return entities;
+MapEntities& Map::get_entities() {
+  return *entities;
 }
 
 /**
@@ -302,7 +302,7 @@ int Map::get_destination_side() {
  * @brief Sets a message to show when the map is started.
  * @param welcome_message_id id of the message to show
  */
-void Map::set_welcome_message(MessageId welcome_message_id) {
+void Map::set_welcome_message(const MessageId &welcome_message_id) {
   this->welcome_message_id = welcome_message_id;
 }
 
@@ -315,7 +315,7 @@ void Map::set_welcome_message(MessageId welcome_message_id) {
  *
  * @return the surface where the map is displayed
  */
-Surface * Map::get_visible_surface() {
+Surface* Map::get_visible_surface() {
   return visible_surface;
 }
 
@@ -324,7 +324,7 @@ Surface * Map::get_visible_surface() {
  * top-left corner.
  * @return the position of the visible area
  */
-const Rectangle & Map::get_camera_position() {
+const Rectangle& Map::get_camera_position() {
   return camera->get_position();
 }
 
@@ -453,9 +453,9 @@ void Map::display_sprite(Sprite *sprite, int x, int y) {
  *
  * @param game the game containing this map
  */
-void Map::start(Game *game) {
+void Map::start(Game &game) {
 
-  this->game = game;
+  this->game = &game;
   this->started = true;
   this->visible_surface->set_opacity(255);
   Music::play(music_id);
@@ -493,7 +493,7 @@ void Map::notify_opening_transition_finished() {
   check_suspended();
   game->get_hero().notify_opening_transition_finished();
   if (welcome_message_id != "") {
-    game->get_dialog_box()->start_dialog(welcome_message_id);
+    game->get_dialog_box().start_dialog(welcome_message_id);
     welcome_message_id = "";
   }
   else {
@@ -604,13 +604,13 @@ bool Map::test_collision_with_tiles(Layer layer, int x, int y, MapEntity *entity
  */
 bool Map::test_collision_with_entities(Layer layer, const Rectangle &collision_box, MapEntity *entity_to_check) {
 
-  std::list<MapEntity*> *obstacle_entities = entities->get_obstacle_entities(layer);
+  std::list<MapEntity*> &obstacle_entities = entities->get_obstacle_entities(layer);
 
   bool collision = false;
 
   std::list<MapEntity*>::iterator i;
-  for (i = obstacle_entities->begin();
-       i != obstacle_entities->end() && !collision;
+  for (i = obstacle_entities.begin();
+       i != obstacle_entities.end() && !collision;
        i++) {
 
     collision = (*i) != entity_to_check &&
@@ -759,13 +759,13 @@ void Map::check_collision_with_detectors(MapEntity *entity) {
     return;
   }
 
-  std::list<Detector*> *detectors = entities->get_detectors();
+  std::list<Detector*> &detectors = entities->get_detectors();
 
   // check each detector
   std::list<Detector*>::iterator i;
 
-  for (i = detectors->begin();
-       i != detectors->end();
+  for (i = detectors.begin();
+       i != detectors.end();
        i++) {
 
     if (!(*i)->is_being_removed()) {
@@ -791,11 +791,11 @@ void Map::check_collision_with_detectors(MapEntity *entity, Sprite *sprite) {
     return;
   }
 
-  std::list<Detector*> *detectors = entities->get_detectors();
+  std::list<Detector*> &detectors = entities->get_detectors();
   // check each detector
   std::list<Detector*>::iterator i;
-  for (i = detectors->begin();
-       i != detectors->end();
+  for (i = detectors.begin();
+       i != detectors.end();
        i++) {
 
     if (!(*i)->is_being_removed()) {

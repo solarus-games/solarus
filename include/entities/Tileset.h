@@ -32,7 +32,7 @@ class Tileset {
   private:
 
     TilesetId id;                     /**< id of the tileset */
-    TilePattern *tile_patterns[1024]; /**< tile patterns in this tileset (the maximum id is 1024) */
+    TilePattern *tile_patterns[1024]; /**< tile patterns in this tileset (the maximum id is 1024) */ // TODO use an std::map
     int nb_tile_patterns;             /**< number of tile patterns in the tileset */
     int max_tile_id;                  /**< current maximum id of a tile pattern in this tileset */
     Color background_color;           /**< background color of the tileset */
@@ -49,11 +49,11 @@ class Tileset {
     void load();
     void unload();
 
-    Color & get_background_color();
+    Color& get_background_color();
     bool is_loaded();
-    Surface *get_tiles_image();
-    Surface *get_entities_image();
-    TilePattern *get_tile_pattern(int id);
+    Surface* get_tiles_image();
+    Surface* get_entities_image();
+    TilePattern& get_tile_pattern(int id);
 };
 
 #endif

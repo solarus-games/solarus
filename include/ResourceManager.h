@@ -37,7 +37,6 @@ class ResourceManager {
 
     static ResourceManager *instance;
 
-    std::map<TilesetId, Tileset*> tilesets;
     std::map<SpriteAnimationSetId, SpriteAnimationSet*> sprite_animations;
 
     ResourceManager();
@@ -48,7 +47,6 @@ class ResourceManager {
     static void initialize();
     static void quit();
 
-    static Tileset* get_tileset(TilesetId id);
     static SpriteAnimationSet* get_sprite_animation_set(const SpriteAnimationSetId &id);
 };
 

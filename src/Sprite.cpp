@@ -28,6 +28,7 @@
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 
+std::map<SpriteAnimationSetId, SpriteAnimationSet> Sprite::all_animation_sets;
 Surface *Sprite::alpha_surface = NULL;
 
 /**
@@ -48,13 +49,31 @@ void Sprite::quit() {
 }
 
 /**
+ * @brief Returns the sprite animation set corresponding to the specified id.
+ *
+ * The animation set may be created if it is new, or just retrieved from
+ * memory if it way already used before.
+ *
+ * @param id id of the animation set
+ * @return the corresponding animation set
+ */
+SpriteAnimationSet& Sprite::get_animation_set(const SpriteAnimationSetId &id) {
+
+  if (all_animation_sets.count(id) == 0) {
+    all_animation_sets[id] = SpriteAnimationSet(id);
+  }
+
+  return all_animation_sets[id];
+}
+
+/**
  * @brief Creates a sprite with the specified animation set.
  * @param id name of an animation set
  */
 Sprite::Sprite(const SpriteAnimationSetId &id):
 
   animation_set_id(id),
-  animation_set(ResourceManager::get_sprite_animation_set(id)),
+  animation_set(get_animation_set(id)),
   current_direction(0),
   current_frame(-1),
   suspended(false),
@@ -64,8 +83,8 @@ Sprite::Sprite(const SpriteAnimationSetId &id):
   blink_delay(0),
   alpha(255),
   alpha_next_change_date(0) {
-  
-  set_current_animation(animation_set->get_default_animation());
+ 
+  set_current_animation(animation_set.get_default_animation());
 }
 
 /**
@@ -79,7 +98,7 @@ Sprite::Sprite(const SpriteAnimationSetId &id):
 Sprite::Sprite(const Sprite &other):
 
   animation_set_id(other.animation_set_id),
-  animation_set(ResourceManager::get_sprite_animation_set(animation_set_id)),
+  animation_set(other.animation_set),
   current_direction(other.current_direction),
   current_frame(-1),
   suspended(false),
@@ -127,7 +146,7 @@ bool Sprite::contains(const std::string &s) const {
  *
  * @return the animation set of this sprite
  */
-const SpriteAnimationSet * Sprite::get_animation_set() const {
+SpriteAnimationSet& Sprite::get_animation_set() {
   return animation_set;
 }
 
@@ -140,7 +159,7 @@ const SpriteAnimationSet * Sprite::get_animation_set() const {
  */
 void Sprite::set_map(Map *map) {
 
-  animation_set->set_map(map);
+  animation_set.set_map(map);
 }
 
 
@@ -150,7 +169,7 @@ void Sprite::set_map(Map *map) {
  * All sprites that use the same animation set as this one will be affected.
  */
 void Sprite::enable_pixel_collisions() {
-  animation_set->enable_pixel_collisions();
+  animation_set.enable_pixel_collisions();
 }
 
 /**
@@ -158,7 +177,7 @@ void Sprite::enable_pixel_collisions() {
  * @return true if the pixel-perfect collisions are enabled
  */
 bool Sprite::are_pixel_collisions_enabled() const {
-  return animation_set->are_pixel_collisions_enabled();
+  return animation_set.are_pixel_collisions_enabled();
 }
 
 /**
@@ -167,7 +186,7 @@ bool Sprite::are_pixel_collisions_enabled() const {
  */
 const Rectangle & Sprite::get_size() const {
 
-  const SpriteAnimation *animation = animation_set->get_animation(current_animation_name);
+  const SpriteAnimation *animation = animation_set.get_animation(current_animation_name);
   return animation->get_direction(current_direction)->get_size();
 }
 
@@ -177,7 +196,7 @@ const Rectangle & Sprite::get_size() const {
  */
 const Rectangle & Sprite::get_origin() const {
 
-  const SpriteAnimation *animation = animation_set->get_animation(current_animation_name);
+  const SpriteAnimation *animation = animation_set.get_animation(current_animation_name);
   return animation->get_direction(current_direction)->get_origin();
 }
 
@@ -234,7 +253,7 @@ void Sprite::set_current_animation(const std::string &animation_name) {
 
   if (animation_name != this->current_animation_name || !is_animation_started()) {
 
-    SpriteAnimation *animation = animation_set->get_animation(animation_name);
+    SpriteAnimation *animation = animation_set.get_animation(animation_name);
 
     Debug::assert(animation != NULL, StringConcat() << "Unknown animation '" << animation_name << "' for animation set '" << animation_set_id << "'");
 

@@ -22,6 +22,13 @@
 #include "lowlevel/StringConcat.h"
 
 /**
+ * @brief Empty constructor.
+ */
+SpriteAnimationSet::SpriteAnimationSet() {
+
+}
+
+/**
  * @brief Loads the animations of a sprite from a file.
  * @param id id of the sprite (used to determine the sprite file)
  */

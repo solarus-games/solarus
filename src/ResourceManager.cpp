@@ -39,16 +39,6 @@ ResourceManager::ResourceManager() {
  */
 ResourceManager::~ResourceManager() {
 
-  // tilesets
-  {
-    map<TilesetId, Tileset*>::const_iterator it;
-
-    for (it = tilesets.begin(); it != tilesets.end(); it++) {
-      delete it->second;
-    }
-    tilesets.clear();
-  }
-  //
   // sprite animations
   {
     map<SpriteAnimationSetId, SpriteAnimationSet*>::const_iterator it;
@@ -72,20 +62,6 @@ void ResourceManager::initialize() {
  */
 void ResourceManager::quit() {
   delete instance;
-}
-
-/**
- * @brief Returns a tileset.
- * @param id id of the tileset to get
- * @return the tileset
- */
-Tileset * ResourceManager::get_tileset(TilesetId id) {
-
-  if (instance->tilesets[id] == NULL) {
-    instance->tilesets[id] = new Tileset(id);
-  }
-
-  return instance->tilesets[id];
 }
 
 /**

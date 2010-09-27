@@ -18,6 +18,7 @@
 #define SOLARUS_SPRITE_H
 
 #include "Common.h"
+#include <map>
 
 /**
  * @brief Represents an animated sprite.
@@ -37,8 +38,9 @@ class Sprite {
   private:
 
     // animation set
+    static std::map<SpriteAnimationSetId, SpriteAnimationSet> all_animation_sets;
     const SpriteAnimationSetId animation_set_id;	/**< id of this sprite's animation set */
-    SpriteAnimationSet * const animation_set;		/**< animation set of this sprite */
+    SpriteAnimationSet &animation_set;			/**< animation set of this sprite */
 
     // current state of the sprite
 
@@ -70,6 +72,7 @@ class Sprite {
     int alpha_increment;				/**< increment of the alpha value while fading */
     static Surface *alpha_surface;			/**< an intermediary surface used when blitting with transparency */
 
+    static SpriteAnimationSet& get_animation_set(const SpriteAnimationSetId &id);
     int get_next_frame() const;
 
   public:
@@ -88,13 +91,13 @@ class Sprite {
     // animation set
     const SpriteAnimationSetId& get_animation_set_id() const;
     bool contains(const std::string &s) const;
-    const SpriteAnimationSet * get_animation_set() const;
+    SpriteAnimationSet& get_animation_set();
     void enable_pixel_collisions();
     bool are_pixel_collisions_enabled() const;
 
     // size and origin point
-    const Rectangle & get_size() const;
-    const Rectangle & get_origin() const;
+    const Rectangle& get_size() const;
+    const Rectangle& get_origin() const;
 
     // current animation, direction and frame
     const std::string& get_current_animation() const;

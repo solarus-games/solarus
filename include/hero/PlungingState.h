@@ -26,7 +26,7 @@ class Hero::PlungingState: public Hero::State {
 
   public:
 
-    PlungingState(Hero *hero);
+    PlungingState(Hero &hero);
     ~PlungingState();
 
     void start(State *previous_state);

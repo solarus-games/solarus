@@ -26,7 +26,7 @@ class Hero::FallingState: public Hero::State {
 
   public:
 
-    FallingState(Hero *hero);
+    FallingState(Hero &hero);
     ~FallingState();
     void start(State *previous_state);
     void stop(State *next_state);

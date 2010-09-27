@@ -105,7 +105,7 @@ bool DynamicTile::is_obstacle_for(MapEntity *other) {
  */
 void DynamicTile::display_on_map() {
   if (enabled) {
-    tile_pattern->display_on_map(map, bounding_box);
+    tile_pattern->display_on_map(&get_map(), bounding_box);
   }
 }
 
@@ -117,8 +117,8 @@ void DynamicTile::update() {
   MapEntity::update();
 
   if (waiting_enabled) {
-    Hero &hero = game->get_hero();
-    if (tile_pattern->get_obstacle() < OBSTACLE || !overlaps(&hero)) {
+
+    if (tile_pattern->get_obstacle() < OBSTACLE || !overlaps(&get_hero())) {
       this->enabled = true;
       this->waiting_enabled = false;
     }

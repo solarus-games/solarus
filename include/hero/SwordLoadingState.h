@@ -31,7 +31,7 @@ class Hero::SwordLoadingState: public Hero::PlayerMovementState {
 
   public:
 
-    SwordLoadingState(Hero *hero);
+    SwordLoadingState(Hero &hero);
     ~SwordLoadingState();
 
     void start(State *previous_state);

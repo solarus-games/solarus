@@ -30,7 +30,7 @@ class Hero::TreasureState: public Hero::State {
 
   public:
 
-    TreasureState(Hero *hero, Treasure *treasure);
+    TreasureState(Hero &hero, Treasure *treasure);
     ~TreasureState();
 
     void start(State *previous_state);

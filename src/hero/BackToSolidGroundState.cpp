@@ -28,18 +28,18 @@
  * @param use_memorized_xy true to get back to the place previously memorized (if any),
  * false to get back to the last coordinates with solid ground
  */
-Hero::BackToSolidGroundState::BackToSolidGroundState(Hero *hero, bool use_memorized_xy):
+Hero::BackToSolidGroundState::BackToSolidGroundState(Hero &hero, bool use_memorized_xy):
   State(hero) {
 
-  if (use_memorized_xy && hero->target_solid_ground_coords.get_x() != -1) {
+  if (use_memorized_xy && hero.target_solid_ground_coords.get_x() != -1) {
     // go back to a target point specified earlier
-    this->target_xy.set_xy(hero->target_solid_ground_coords);
-    this->target_layer = hero->target_solid_ground_layer;
+    this->target_xy.set_xy(hero.target_solid_ground_coords);
+    this->target_layer = hero.target_solid_ground_layer;
   }
   else {
     // just go back to the last solid ground location
-    this->target_xy.set_xy(hero->last_solid_ground_coords);
-    this->target_layer = hero->last_solid_ground_layer;
+    this->target_xy.set_xy(hero.last_solid_ground_coords);
+    this->target_layer = hero.last_solid_ground_layer;
   }
 
 }
@@ -59,9 +59,9 @@ void Hero::BackToSolidGroundState::start(State *previous_state) {
 
   State::start(previous_state);
 
-  hero->set_movement(new TargetMovement(target_xy.get_x(), target_xy.get_y(), hero->get_walking_speed()));
-  map->get_entities().set_entity_layer(hero, target_layer);
-  map->get_entities().remove_boomerang();
+  hero.set_movement(new TargetMovement(target_xy.get_x(), target_xy.get_y(), hero.get_walking_speed()));
+  get_entities().set_entity_layer(&hero, target_layer);
+  get_entities().remove_boomerang();
 }
 
 /**
@@ -72,7 +72,7 @@ void Hero::BackToSolidGroundState::stop(State *next_state) {
 
   State::stop(next_state);
 
-  hero->clear_movement();
+  hero.clear_movement();
 }
 
 /**
@@ -83,9 +83,9 @@ void Hero::BackToSolidGroundState::update() {
   State::update();
 
   // the current movement is an instance of TargetMovement
-  if (hero->get_movement()->is_finished()) {
-    sprites->blink();
-    hero->set_state(new FreeState(hero));
+  if (hero.get_movement()->is_finished()) {
+    get_sprites().blink();
+    hero.set_state(new FreeState(hero));
   }
 }
 

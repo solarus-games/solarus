@@ -31,7 +31,7 @@ class Hero::PlayerMovementState: public Hero::State {
 
   protected:
 
-    PlayerMovementState(Hero *hero);
+    PlayerMovementState(Hero &hero);
 
   public:
 

@@ -26,7 +26,7 @@
  * @brief Constructor.
  * @param hero the hero controlled by this state
  */
-Hero::FallingState::FallingState(Hero *hero):
+Hero::FallingState::FallingState(Hero &hero):
   State(hero) {
 
 }
@@ -46,8 +46,8 @@ void Hero::FallingState::start(State *previous_state) {
 
   State::start(previous_state);
 
-  sprites->save_animation_direction();
-  sprites->set_animation_falling();
+  get_sprites().save_animation_direction();
+  get_sprites().set_animation_falling();
   Sound::play("hero_falls");
 }
 
@@ -59,8 +59,8 @@ void Hero::FallingState::stop(State *next_state) {
 
   State::stop(next_state);
 
-  sprites->set_animation_stopped_normal();
-  sprites->restore_animation_direction();
+  get_sprites().set_animation_stopped_normal();
+  get_sprites().restore_animation_direction();
 }
 
 /**
@@ -70,18 +70,18 @@ void Hero::FallingState::update() {
 
   State::update();
 
-  if (!suspended && sprites->is_animation_finished()) {
+  if (!suspended && get_sprites().is_animation_finished()) {
 
     // the hero has just finished falling
-    Teletransporter *teletransporter = hero->get_delayed_teletransporter();
+    Teletransporter *teletransporter = hero.get_delayed_teletransporter();
     if (teletransporter != NULL) {
       // special hole with a teletransporter
       teletransporter->transport_hero(hero);
     }
     else {
       // normal hole that hurts the hero
-      game->get_equipment().remove_life(2);
-      hero->set_state(new BackToSolidGroundState(hero, true));
+      get_equipment().remove_life(2);
+      hero.set_state(new BackToSolidGroundState(hero, true));
     }
   }
 }

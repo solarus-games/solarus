@@ -78,7 +78,7 @@ void ChainAndBall::display_on_map() {
   if (is_visible()) {
     // also display the chain
     for (int i = 0; i < nb_links; i++) {
-      map->display_sprite(link_sprite, link_xy[i].get_x(), link_xy[i].get_y());
+      get_map().display_sprite(link_sprite, link_xy[i].get_x(), link_xy[i].get_y());
     }
   }
 }

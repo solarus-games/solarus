@@ -267,7 +267,7 @@ void CarriedItem::break_item() {
     get_sprite()->set_current_animation("destroy");
   }
   else {
-    map->get_entities().add_entity(new Explosion(get_layer(), get_xy(), true));
+    get_entities().add_entity(new Explosion(get_layer(), get_xy(), true));
     if (is_throwing) {
       remove_from_map(); // because if the item was still carried by the hero, then the hero class will destroy it
     }
@@ -369,7 +369,7 @@ void CarriedItem::update() {
     }
     else if (break_on_intermediate_layer) {
       break_item();
-      map->get_entities().set_entity_layer(this, LAYER_INTERMEDIATE);
+      get_entities().set_entity_layer(this, LAYER_INTERMEDIATE);
       break_on_intermediate_layer = false;
     }
     else if (movement->is_stopped() || y_increment >= 7) {
@@ -400,8 +400,8 @@ void CarriedItem::display_on_map() {
   }
   else {
     // when the item is being thrown, display the shadow and the item separately
-    map->display_sprite(shadow_sprite, get_x(), get_y());
-    map->display_sprite(get_sprite(), get_x(), get_y() - item_height);
+    get_map().display_sprite(shadow_sprite, get_x(), get_y());
+    get_map().display_sprite(get_sprite(), get_x(), get_y() - item_height);
   }
 }
 

@@ -31,7 +31,7 @@
  * @brief Constructor.
  * @param hero the hero controlled by this state
  */
-Hero::RunningState::RunningState(Hero *hero):
+Hero::RunningState::RunningState(Hero &hero):
   State(hero) {
 
 }
@@ -51,7 +51,7 @@ void Hero::RunningState::start(State *previous_state) {
 
   State::start(previous_state);
 
-  sprites->set_animation_prepare_running();
+  get_sprites().set_animation_prepare_running();
 
   phase = 0;
 
@@ -68,7 +68,7 @@ void Hero::RunningState::stop(State *next_state) {
   State::stop(next_state);
 
   if (phase != 0) {
-    hero->clear_movement();
+    hero.clear_movement();
   }
 }
 
@@ -93,16 +93,16 @@ void Hero::RunningState::update() {
   if (phase == 0) {
     
     if (now >= next_phase_date) {
-      hero->set_movement(new StraightMovement(30, sprites->get_animation_direction() * 90, 10000));
-      sprites->set_animation_running();
+      hero.set_movement(new StraightMovement(30, get_sprites().get_animation_direction() * 90, 10000));
+      get_sprites().set_animation_running();
       phase++;
     }
     else if (!is_pressing_running_key()) {
-      hero->set_state(new FreeState(hero));
+      hero.set_state(new FreeState(hero));
     }
   }
-  else if (hero->get_movement()->is_finished()) {
-    hero->set_state(new FreeState(hero));
+  else if (hero.get_movement()->is_finished()) {
+    hero.set_state(new FreeState(hero));
   }
 }
 
@@ -135,14 +135,13 @@ bool Hero::RunningState::is_bouncing() {
  */
 bool Hero::RunningState::is_pressing_running_key() {
 
-  Equipment &equipment = game->get_equipment();
-  int slot = equipment.get_item_slot("pegasus_shoes"); // TODO make quest-dependent
+  int slot = get_equipment().get_item_slot("pegasus_shoes"); // TODO make this quest-dependent
   if (slot == -1) {
     return false;
   }
 
   GameControls::GameKey key = (slot == 0) ? GameControls::ITEM_1 : GameControls::ITEM_2;
-  return game->get_controls().is_key_pressed(key);
+  return get_controls().is_key_pressed(key);
 }
 
 /**
@@ -152,8 +151,8 @@ bool Hero::RunningState::is_pressing_running_key() {
 void Hero::RunningState::directional_key_pressed(int direction4) {
 
   if (!is_bouncing()
-      && direction4 != sprites->get_animation_direction()) {
-    hero->set_state(new FreeState(hero));
+      && direction4 != get_sprites().get_animation_direction()) {
+    hero.set_state(new FreeState(hero));
   }
 }
 
@@ -166,9 +165,9 @@ void Hero::RunningState::notify_movement_tried(bool success) {
   State::notify_movement_tried(success);
 
   if (!success && phase == 1) {
-    int opposite_direction = (sprites->get_animation_direction8() + 4) % 8;
-    hero->set_movement(new JumpMovement(opposite_direction, 32, false, 15));
-    sprites->set_animation_hurt();
+    int opposite_direction = (get_sprites().get_animation_direction8() + 4) % 8;
+    hero.set_movement(new JumpMovement(opposite_direction, 32, false, 15));
+    get_sprites().set_animation_hurt();
     Sound::play("explosion");
     phase++;
   }
@@ -184,7 +183,7 @@ void Hero::RunningState::notify_movement_tried(bool success) {
  * @return the hero's wanted direction between 0 and 7, or -1 if he is stopped
  */
 int Hero::RunningState::get_wanted_movement_direction8() {
-  return sprites->get_animation_direction8();
+  return get_sprites().get_animation_direction8();
 }
 
 /**
@@ -228,7 +227,7 @@ bool Hero::RunningState::can_start_gameover_sequence() {
 int Hero::RunningState::get_height_above_shadow() {
 
   if (is_bouncing()) {
-    return ((JumpMovement*) hero->get_movement())->get_jump_height();
+    return ((JumpMovement*) hero.get_movement())->get_jump_height();
   }
 
   return 0;
@@ -293,9 +292,9 @@ bool Hero::RunningState::is_cutting_with_sword(Detector *detector) {
 
   // check the distance to the detector
   int distance = 8;
-  Rectangle tested_point = hero->get_facing_point();
+  Rectangle tested_point = hero.get_facing_point();
 
-  switch (sprites->get_animation_direction()) {
+  switch (get_sprites().get_animation_direction()) {
 
     case 0: // right
       tested_point.add_x(distance);

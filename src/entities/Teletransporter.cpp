@@ -165,8 +165,8 @@ bool Teletransporter::test_collision_custom(MapEntity *entity) {
       normal_case = false;
     }
 
-    else if (!map->test_collision_with_border(get_center_point()) &&
-	map->get_tile_ground(get_layer(), get_center_point()) == GROUND_HOLE) {
+    else if (!get_map().test_collision_with_border(get_center_point()) &&
+	get_map().get_tile_ground(get_layer(), get_center_point()) == GROUND_HOLE) {
       // falling into a hole
       collision = test_collision_origin_point(hero);
       normal_case = false;
@@ -207,7 +207,7 @@ void Teletransporter::notify_collision(MapEntity *entity_overlapping, CollisionM
  * @brief Makes the teletransporter move the hero to the destination.
  * @param hero the hero
  */
-void Teletransporter::transport_hero(Hero *hero) {
+void Teletransporter::transport_hero(Hero &hero) {
 
   if (transporting_hero) {
     // already done
@@ -220,8 +220,8 @@ void Teletransporter::transport_hero(Hero *hero) {
   }
 
   std::string name = destination_point_name;
-  int hero_x = hero->get_x();
-  int hero_y = hero->get_y();
+  int hero_x = hero.get_x();
+  int hero_y = hero.get_y();
 
   if (is_on_map_side()) {
 
@@ -238,12 +238,12 @@ void Teletransporter::transport_hero(Hero *hero) {
 
     case 1:
       name += '1'; // scroll to the south
-      hero_y = map->get_height() + 5;
+      hero_y = get_map().get_height() + 5;
       break;
 
     case 2:
       name += '2'; // scroll to the east
-      hero_x = map->get_width();
+      hero_x = get_map().get_width();
       break;
 
     case 3:
@@ -256,8 +256,8 @@ void Teletransporter::transport_hero(Hero *hero) {
     }
   }
 
-  game->set_current_map(destination_map_id, name, transition_style);
-  hero->set_xy(hero_x, hero_y);
+  get_game().set_current_map(destination_map_id, name, transition_style);
+  hero.set_xy(hero_x, hero_y);
 }
 
 /**

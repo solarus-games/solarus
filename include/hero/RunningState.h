@@ -34,7 +34,7 @@ class Hero::RunningState: public Hero::State {
 
   public:
 
-    RunningState(Hero *hero);
+    RunningState(Hero &hero);
     ~RunningState();
 
     void start(State *previous_state);

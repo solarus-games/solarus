@@ -74,11 +74,8 @@ class MapEntity {
 
     static const EntityTypeFeatures entity_types_features[];	/**< The features of each entity type stored in map files. */
 
-  protected:
-
-    // these fields are automatically set by class MapEntities after adding the entity to the map
-    Map *map;							/**< The map where this entity is. */
-    Game *game;							/**< The game running that map. */
+    Map *map;							/**< The map where this entity is, or NULL
+								 * (automatically set by class MapEntities after adding the entity to the map) */
 
   private:
 
@@ -143,6 +140,16 @@ class MapEntity {
     void set_movement(Movement *movement);
     void clear_movement();
 
+    // easy access to various game objects
+    MapEntities& get_entities();
+    Equipment& get_equipment();
+    KeysEffect& get_keys_effect();
+    GameControls& get_controls();
+    DialogBox& get_dialog_box();
+    Scripts& get_scripts();
+    Savegame& get_savegame();
+    Hero& get_hero();
+
   public:
 
     // destruction
@@ -163,6 +170,12 @@ class MapEntity {
     virtual bool can_detect_entities();
     virtual bool can_be_displayed();
     virtual bool is_displayed_in_y_order();
+
+    // adding to a map
+    bool is_on_map();
+    virtual void set_map(Map &map);
+    Map& get_map();
+    Game& get_game();
 
     // position in the map
     Layer get_layer();
@@ -196,10 +209,6 @@ class MapEntity {
     void set_aligned_to_grid();
 
     // properties
-    bool is_initialized();
-    virtual void set_map(Map &map);
-    Map& get_map();
-    Game& get_game();
     const std::string& get_name() const;
     bool has_prefix(const std::string &prefix);
     int get_direction();

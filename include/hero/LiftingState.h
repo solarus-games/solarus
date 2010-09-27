@@ -33,7 +33,7 @@ class Hero::LiftingState: public Hero::State {
 
   public:
 
-    LiftingState(Hero *hero, DestructibleItem *item_to_lift);
+    LiftingState(Hero &hero, DestructibleItem *item_to_lift);
     ~LiftingState();
 
     void start(State *previous_state);

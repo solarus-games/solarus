@@ -26,7 +26,7 @@ class Hero::SpinAttackState: public Hero::State {
 
   public:
 
-    SpinAttackState(Hero *hero);
+    SpinAttackState(Hero &hero);
     ~SpinAttackState();
 
     void start(State *previous_state);

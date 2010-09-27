@@ -40,7 +40,7 @@ class Hero::StairsState: public Hero::State {
 
   public:
 
-    StairsState(Hero *hero, Stairs *stairs, Stairs::Way way);
+    StairsState(Hero &hero, Stairs *stairs, Stairs::Way way);
     ~StairsState();
 
     void start(State *previous_state);

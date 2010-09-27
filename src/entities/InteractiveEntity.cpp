@@ -235,14 +235,13 @@ void InteractiveEntity::notify_collision(MapEntity *entity_overlapping, Collisio
   if (entity_overlapping->is_hero()) {
 
     Hero *hero = (Hero*) entity_overlapping;
-    KeysEffect &keys_effect = game->get_keys_effect();
 
-    if (keys_effect.get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
+    if (get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
 	&& hero->is_free()
 	&& (subtype != SIGN || hero->is_facing_direction4(1))) { // TODO move to future class Sign
 
       // we show the action icon
-      keys_effect.set_action_key_effect(action_key_effects[subtype]);
+      get_keys_effect().set_action_key_effect(action_key_effects[subtype]);
     }
   }
 }
@@ -255,11 +254,8 @@ void InteractiveEntity::notify_collision(MapEntity *entity_overlapping, Collisio
  */
 void InteractiveEntity::action_key_pressed() {
 
-  KeysEffect &keys_effect = game->get_keys_effect();
-  Hero &hero = game->get_hero();
-
-  if (hero.is_free()) {
-    keys_effect.set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
+  if (get_hero().is_free()) {
+    get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
 
     // for a place with water: start the dialog
     if (subtype == WATER_FOR_BOTTLE) {
@@ -269,13 +265,13 @@ void InteractiveEntity::action_key_pressed() {
 
       // for an NPC: look in the hero's direction 
       if (subtype == NON_PLAYING_CHARACTER) {
-	int direction = (hero.get_animation_direction() + 2) % 4;
+	int direction = (get_hero().get_animation_direction() + 2) % 4;
 	get_sprite()->set_current_direction(direction);
       }
 
       // start the message or call the script
       if (message_to_show != "_none") {
-	game->get_dialog_box().start_dialog(message_to_show);
+	get_dialog_box().start_dialog(message_to_show);
       }
       else {
 	// there is no message specified: we call the script
@@ -311,7 +307,7 @@ bool InteractiveEntity::interaction_with_inventory_item(InventoryItem *item) {
   }
   else {
     // in other cases, nothing is predefined in the engine: we call the script
-    interaction = game->get_scripts().event_hero_interaction_item(get_name(), item->get_name(), item->get_variant());
+    interaction = get_scripts().event_hero_interaction_item(get_name(), item->get_name(), item->get_variant());
   }
 
   return interaction;
@@ -323,10 +319,10 @@ bool InteractiveEntity::interaction_with_inventory_item(InventoryItem *item) {
 void InteractiveEntity::call_script() {
 
   if (subtype == NON_PLAYING_CHARACTER) {
-    map->get_scripts().event_npc_dialog(get_name());
+    get_scripts().event_npc_dialog(get_name());
   }
   else {
-    map->get_scripts().event_hero_interaction(get_name());
+    get_scripts().event_hero_interaction(get_name());
   }
 }
 
@@ -342,7 +338,7 @@ void InteractiveEntity::update() {
     if (get_movement()->is_finished()) {
       get_sprite()->set_current_animation("stopped");
       clear_movement();
-      map->get_scripts().event_npc_movement_finished(get_name());
+      get_scripts().event_npc_movement_finished(get_name());
     }
   }
 }
@@ -414,13 +410,11 @@ void InteractiveEntity::notify_position_changed() {
       get_sprite()->set_current_direction(animation_directions[movement_direction]);
     }
 
-    Hero &hero = game->get_hero();
-    KeysEffect &keys_effect = game->get_keys_effect();
-    if (hero.get_facing_entity() == this &&
-	keys_effect.get_action_key_effect() == KeysEffect::ACTION_KEY_SPEAK &&
-	!hero.is_facing_point_in(get_bounding_box())) {
+    if (get_hero().get_facing_entity() == this &&
+	get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_SPEAK &&
+	!get_hero().is_facing_point_in(get_bounding_box())) {
 
-      keys_effect.set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
+      get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
     }
   }
 }
@@ -430,6 +424,7 @@ void InteractiveEntity::notify_position_changed() {
  * @param direction a direction between 0 and 3
  */
 void InteractiveEntity::set_sprite_direction(int direction) {
+
   get_sprite()->set_current_direction(direction);
 }
 
@@ -445,7 +440,7 @@ void InteractiveEntity::display_on_map() {
       get_sprite()->get_current_animation() == "jumping") {
 
     int jump_height = ((JumpMovement*) get_movement())->get_jump_height();
-    map->display_sprite(get_sprite(), get_x(), get_y() - jump_height);
+    get_map().display_sprite(get_sprite(), get_x(), get_y() - jump_height);
   }
   else {
     MapEntity::display_on_map();

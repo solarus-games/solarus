@@ -55,13 +55,12 @@ const int Hero::normal_walking_speed = 9;
 
 /**
  * @brief Creates a hero.
- * @param equipment the equipment
+ * @param equipment the equipment (needed to build the sprites even outside a game)
  */
 Hero::Hero(Equipment &equipment):
 
   state(NULL),
   old_state(NULL),
-  equipment(equipment),
   facing_entity(NULL),
   walking_speed(normal_walking_speed),
   on_conveyor_belt(false),
@@ -82,7 +81,7 @@ Hero::Hero(Equipment &equipment):
   rebuild_equipment();
 
   // state
-  set_state(new FreeState(this));
+  set_state(new FreeState(*this));
 }
 
 /**
@@ -214,7 +213,7 @@ void Hero::update() {
     
     sprites->update();
     update_ground();
-    map->check_collision_with_detectors(this);
+    get_map().check_collision_with_detectors(this);
     check_gameover();
   }
 }
@@ -243,7 +242,7 @@ void Hero::update_state() {
  */
 void Hero::update_movement() {
 
-  on_raised_blocks = map->get_entities().overlaps_raised_blocks(get_layer(), get_bounding_box());
+  on_raised_blocks = get_entities().overlaps_raised_blocks(get_layer(), get_bounding_box());
 
   if (movement == NULL) {
     return;
@@ -279,7 +278,7 @@ void Hero::update_ground() {
       if (get_distance(last_solid_ground_coords.get_x(), last_solid_ground_coords.get_y()) >= 8) {
 	// too far from the solid ground: make the hero fall
 	set_walking_speed(normal_walking_speed);
-        set_state(new FallingState(this));
+        set_state(new FallingState(*this));
       }
       else {
 
@@ -288,7 +287,7 @@ void Hero::update_ground() {
         Rectangle collision_box = get_bounding_box();
         collision_box.add_xy(hole_dxy);
 
-        if (!map->test_collision_with_obstacles(get_layer(), collision_box, this)) {
+        if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, this)) {
           set_bounding_box(collision_box);
           notify_position_changed();
 	  moved = true;
@@ -297,7 +296,7 @@ void Hero::update_ground() {
 	if (!moved && hole_dxy.get_x() != 0) { // try x only
 	  collision_box = get_bounding_box();
 	  collision_box.add_xy(hole_dxy.get_x(), 0);
-	  if (!map->test_collision_with_obstacles(get_layer(), collision_box, this)) {
+	  if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, this)) {
 	    set_bounding_box(collision_box);
 	    notify_position_changed();
 	    moved = true;
@@ -307,7 +306,7 @@ void Hero::update_ground() {
 	if (!moved && hole_dxy.get_y() != 0) { // try y only
 	  collision_box = get_bounding_box();
 	  collision_box.add_xy(0, hole_dxy.get_y());
-	  if (!map->test_collision_with_obstacles(get_layer(), collision_box, this)) {
+	  if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, this)) {
 	    set_bounding_box(collision_box);
 	    notify_position_changed();
 	    moved = true;
@@ -317,7 +316,7 @@ void Hero::update_ground() {
 	if (!moved) {
 	  // the hero cannot be moved towards the direction previously calculated
 	  set_walking_speed(normal_walking_speed);
-	  set_state(new FallingState(this));
+	  set_state(new FallingState(*this));
 	}
       }
     }
@@ -331,9 +330,9 @@ void Hero::update_ground() {
  */
 void Hero::check_gameover() {
 
-  if (equipment.get_life() <= 0 && state->can_start_gameover_sequence()) {
+  if (get_equipment().get_life() <= 0 && state->can_start_gameover_sequence()) {
     sprites->stop_blinking();
-    game->start_gameover_sequence();
+    get_game().start_gameover_sequence();
   }
 }
 
@@ -427,7 +426,7 @@ bool Hero::is_visible() {
 
   return MapEntity::is_visible()
     && state->is_hero_visible()
-    && !game->is_showing_gameover();
+    && !get_game().is_showing_gameover();
 }
 
 /**
@@ -490,8 +489,6 @@ void Hero::set_map(Map &map, int initial_direction) {
  */
 void Hero::place_on_destination_point(Map &map) {
 
-  MapEntities &entities = map.get_entities();
-
   const std::string &destination_point_name = map.get_destination_point_name();
 
   if (destination_point_name == "_same") {
@@ -500,7 +497,7 @@ void Hero::place_on_destination_point(Map &map) {
     // but we may have to change the layer
     
     Layer layer = LAYER_INTERMEDIATE;
-    if (entities.get_obstacle_tile(LAYER_INTERMEDIATE, get_x(), get_y()) == OBSTACLE_EMPTY) {
+    if (map.get_entities().get_obstacle_tile(LAYER_INTERMEDIATE, get_x(), get_y()) == OBSTACLE_EMPTY) {
       layer = LAYER_LOW;
     }
     set_map(map);
@@ -544,18 +541,18 @@ void Hero::place_on_destination_point(Map &map) {
       // normal case: the location is specified by a destination point object
 
       DestinationPoint *destination_point = (DestinationPoint*)
-	entities.get_entity(DESTINATION_POINT, destination_point_name);
+	map.get_entities().get_entity(DESTINATION_POINT, destination_point_name);
 
       set_map(map, destination_point->get_direction());
       set_xy(destination_point->get_x(), destination_point->get_y());
-      entities.set_entity_layer(this, destination_point->get_layer());
+      map.get_entities().set_entity_layer(this, destination_point->get_layer());
 
-      entities.remove_boomerang(); // useful when the map remains the same
+      map.get_entities().remove_boomerang(); // useful when the map remains the same
 
       Stairs *stairs = get_stairs_overlapping();
       if (stairs != NULL) {
         // the hero arrived on the map by stairs
-	set_state(new StairsState(this, stairs, Stairs::REVERSE_WAY));
+	set_state(new StairsState(*this, stairs, Stairs::REVERSE_WAY));
       }
       else {
 	// the hero arrived on the map by a usual destination point
@@ -572,7 +569,7 @@ void Hero::place_on_destination_point(Map &map) {
  */
 void Hero::notify_opening_transition_finished() {
 
-  int side = map->get_destination_side();  
+  int side = get_map().get_destination_side();  
   if (side != -1) {
     // the hero was placed on the side of the map:
     // there was a scrolling between the previous map and this one
@@ -580,7 +577,7 @@ void Hero::notify_opening_transition_finished() {
     switch (side) {
 
       case 0: // right side
-	set_x(map->get_width() - 8);
+	set_x(get_map().get_width() - 8);
 	break;
 
       case 1: // top side
@@ -592,7 +589,7 @@ void Hero::notify_opening_transition_finished() {
 	break;
 
       case 3: // bottom side
-	set_y(map->get_height() - 3);
+	set_y(get_map().get_height() - 3);
 	break;
 
       default:
@@ -681,13 +678,11 @@ void Hero::set_facing_entity(Detector *detector) {
 
   this->facing_entity = detector;
 
-  KeysEffect &keys_effect = game->get_keys_effect();
-
   if (facing_entity == NULL &&
-      keys_effect.is_action_key_acting_on_facing_entity()) {
+      get_keys_effect().is_action_key_acting_on_facing_entity()) {
 
     // the hero stopped facing an entity that was showing an action icon
-    keys_effect.set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
+    get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
   }
 }
 
@@ -729,7 +724,7 @@ bool Hero::is_facing_obstacle() {
       break;
   }
 
-  return map->test_collision_with_obstacles(get_layer(), collision_box, this);
+  return get_map().test_collision_with_obstacles(get_layer(), collision_box, this);
 }
 
 /**
@@ -743,7 +738,7 @@ bool Hero::is_facing_obstacle() {
 bool Hero::is_facing_point_on_obstacle() {
 
   const Rectangle &facing_point = get_facing_point();
-  return map->test_collision_with_obstacles(get_layer(), facing_point.get_x(), facing_point.get_y(), this);
+  return get_map().test_collision_with_obstacles(get_layer(), facing_point.get_x(), facing_point.get_y(), this);
 }
 
 /**
@@ -784,7 +779,7 @@ bool Hero::is_on_raised_blocks() {
 Stairs * Hero::get_stairs_overlapping() {
 
   Stairs *stairs = NULL;
-  std::list<Stairs*> all_stairs = map->get_entities().get_stairs(get_layer());
+  std::list<Stairs*> all_stairs = get_entities().get_stairs(get_layer());
   std::list<Stairs*>::iterator it;
   for (it = all_stairs.begin(); it != all_stairs.end() && stairs == NULL; it++) {
 
@@ -862,7 +857,7 @@ int Hero::get_real_movement_direction8() {
     // if we can move towards the wanted direction, no problem
     Rectangle xy_move = direction_to_xy_move(wanted_direction8);
     collision_box.add_xy(xy_move.get_x(), xy_move.get_y());
-    if (!map->test_collision_with_obstacles(get_layer(), collision_box, this)) {
+    if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, this)) {
       result = wanted_direction8;
     }
     else {
@@ -872,7 +867,7 @@ int Hero::get_real_movement_direction8() {
       collision_box = get_bounding_box();
       xy_move = direction_to_xy_move(alternative_direction8);
       collision_box.add_xy(xy_move.get_x(), xy_move.get_y());
-      if (!map->test_collision_with_obstacles(get_layer(), collision_box, this)) {
+      if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, this)) {
 	result = alternative_direction8;
       }
       else {
@@ -880,7 +875,7 @@ int Hero::get_real_movement_direction8() {
         collision_box = get_bounding_box();
 	xy_move = direction_to_xy_move(alternative_direction8);
 	collision_box.add_xy(xy_move.get_x(), xy_move.get_y());
-        if (!map->test_collision_with_obstacles(get_layer(), collision_box, this)) {
+        if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, this)) {
 	  result = alternative_direction8;
         }
 	else {
@@ -964,7 +959,7 @@ void Hero::notify_position_changed() {
 
   // see the ground indicated by the tiles
   if (!is_suspended()) { // when the game is suspended, the hero may have invalid coordinates (e.g. transition between maps)
-    Ground tiles_ground = map->get_tile_ground(get_layer(), get_x(), get_y() - 2);
+    Ground tiles_ground = get_map().get_tile_ground(get_layer(), get_x(), get_y() - 2);
     set_ground(tiles_ground);
   }
 
@@ -1021,8 +1016,8 @@ void Hero::notify_movement_changed() {
   // let the state pick the animation corresponding to the movement tried by the player
   state->notify_movement_changed();
 
-  // check the collisions
-  if (map != NULL) {
+  // check collisions
+  if (is_on_map()) {
     notify_position_changed();
   }
 }
@@ -1139,6 +1134,7 @@ bool Hero::is_ground_visible() {
  * @param layer the layer
  */
 void Hero::set_target_solid_ground_coords(const Rectangle &target_solid_ground_coords, Layer layer) {
+
   this->target_solid_ground_coords = target_solid_ground_coords;
   this->target_solid_ground_layer = layer;
 }
@@ -1296,12 +1292,12 @@ void Hero::notify_collision_with_teletransporter(Teletransporter *teletransporte
 
   if (teletransporter->is_on_map_side() || !state->can_avoid_teletransporter()) {
 
-    bool on_hole = map->get_tile_ground(get_layer(), get_x(), get_y()) == GROUND_HOLE;
+    bool on_hole = get_map().get_tile_ground(get_layer(), get_x(), get_y()) == GROUND_HOLE;
     if (on_hole || state->is_teletransporter_delayed()) {
       this->delayed_teletransporter = teletransporter; // fall into the hole (or do something else) first, transport later
     }
     else {
-      teletransporter->transport_hero(this); // usual case: transport right now
+      teletransporter->transport_hero(*this); // usual case: transport right now
     }
   }
 }
@@ -1339,9 +1335,9 @@ void Hero::notify_collision_with_conveyor_belt(ConveyorBelt *conveyor_belt, int 
       Rectangle collision_box = get_bounding_box();
       collision_box.add_xy(dx, dy);
  
-      if (!map->test_collision_with_obstacles(get_layer(), collision_box, this)) {
+      if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, this)) {
 	// move the hero
-	set_state(new ConveyorBeltState(this, conveyor_belt));
+	set_state(new ConveyorBeltState(*this, conveyor_belt));
       }
     }
   }
@@ -1367,7 +1363,7 @@ void Hero::notify_collision_with_stairs(Stairs *stairs, CollisionMode collision_
     // check whether the hero is trying to move in the direction of the stairs
     int correct_direction = stairs->get_movement_direction(stairs_way);
     if (is_moving_towards(correct_direction / 2)) {
-      set_state(new StairsState(this, stairs, stairs_way));
+      set_state(new StairsState(*this, stairs, stairs_way));
     }
   }
 }
@@ -1427,13 +1423,11 @@ void Hero::notify_collision_with_crystal_switch(CrystalSwitch *crystal_switch, C
   if (collision_mode == COLLISION_FACING_POINT) {
     // the hero is touching the crystal switch and is looking in its direction
 
-    KeysEffect &keys_effect = game->get_keys_effect();
-
-    if (keys_effect.get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
+    if (get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
 	&& is_free()) {
 
       // we show the action icon
-      keys_effect.set_action_key_effect(KeysEffect::ACTION_KEY_LOOK);
+      get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_LOOK);
     }
   }
 }
@@ -1545,7 +1539,7 @@ void Hero::try_snap_to_facing_entity() {
     }
   }
 
-  if (!map->test_collision_with_obstacles(get_layer(), collision_box, this)) {
+  if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, this)) {
     set_bounding_box(collision_box);
     notify_position_changed();
   }
@@ -1588,7 +1582,7 @@ int Hero::get_sword_damage_factor() {
 void Hero::hurt(MapEntity *source, int life_points, int magic_points) {
 
   if (!sprites->is_blinking() && state->can_be_hurt()) {
-    set_state(new HurtState(this, source, life_points, magic_points));
+    set_state(new HurtState(*this, source, life_points, magic_points));
   }
 }
 
@@ -1609,12 +1603,12 @@ void Hero::start_deep_water() {
 
   if (!state->is_touching_ground()) {
     // plunge into the water
-    set_state(new PlungingState(this));
+    set_state(new PlungingState(*this));
   }
   else {
     // move to state swimming or jumping
-    if (equipment.has_ability("swim")) {
-      set_state(new SwimmingState(this));
+    if (get_equipment().has_ability("swim")) {
+      set_state(new SwimmingState(*this));
     }
     else {
       start_jumping(get_wanted_movement_direction8(), 32, false, true, 13);
@@ -1632,7 +1626,7 @@ void Hero::start_hole() {
   if (!state->can_control_movement()) {
     // the player has no control (e.g. he is running or being hurt):
     // fall immediately
-    set_state(new FallingState(this));
+    set_state(new FallingState(*this));
   }
   else {
     // otherwise, push the hero towards the hole
@@ -1663,7 +1657,7 @@ void Hero::start_hole() {
 
     if (hole_dxy.get_x() == 0 && hole_dxy.get_y() == 0) {
       // fall immediately because the hero was not moving but directly placed on the hole
-      set_state(new FallingState(this));
+      set_state(new FallingState(*this));
     }
     else {
       set_walking_speed(normal_walking_speed / 3);
@@ -1673,7 +1667,7 @@ void Hero::start_hole() {
     if (last_solid_ground_coords.get_x() == -1 ||
 	(last_solid_ground_coords.get_x() == get_x() && last_solid_ground_coords.get_y() == get_y())) {
       // fall immediately because the hero was not moving but directly placed on the hole
-      set_state(new FallingState(this));
+      set_state(new FallingState(*this));
     }
     else {
 
@@ -1730,7 +1724,7 @@ bool Hero::is_grabbing_or_pulling() {
 void Hero::start_free() {
 
   if (!state->is_free()) {
-    set_state(new FreeState(this));
+    set_state(new FreeState(*this));
   }
 }
 
@@ -1739,7 +1733,7 @@ void Hero::start_free() {
  * @param treasure the treasure to give him (you have to delete it after the hero brandishes it)
  */
 void Hero::start_treasure(Treasure *treasure) {
-  set_state(new TreasureState(this, treasure));
+  set_state(new TreasureState(*this, treasure));
 }
 
 /**
@@ -1757,7 +1751,7 @@ void Hero::start_treasure(Treasure *treasure) {
  */
 void Hero::start_jumping(int direction8, int length, bool ignore_obstacles, bool with_sound, uint32_t movement_delay, Layer layer_after_jump) {
 
-  JumpingState *state = new JumpingState(this, direction8, length, ignore_obstacles, with_sound, movement_delay, layer_after_jump);
+  JumpingState *state = new JumpingState(*this, direction8, length, ignore_obstacles, with_sound, movement_delay, layer_after_jump);
   set_state(state);
 }
 
@@ -1765,7 +1759,7 @@ void Hero::start_jumping(int direction8, int length, bool ignore_obstacles, bool
  * @brief Makes the hero brandish his sword meaning a victory.
  */
 void Hero::start_victory() {
-  set_state(new VictoryState(this));
+  set_state(new VictoryState(*this));
 }
 
 /**
@@ -1776,7 +1770,7 @@ void Hero::start_victory() {
  * You can call start_free() to unfreeze him.
  */
 void Hero::start_freezed() {
-  set_state(new FreezedState(this));
+  set_state(new FreezedState(*this));
 }
 
 /**
@@ -1784,20 +1778,20 @@ void Hero::start_freezed() {
  * @param item_to_lift the destructible item to lift
  */
 void Hero::start_lifting(DestructibleItem *item_to_lift) {
-  set_state(new LiftingState(this, item_to_lift));
+  set_state(new LiftingState(*this, item_to_lift));
 }
 
 /**
  * @brief Starts running with the speed shoes.
  */
 void Hero::start_running() {
-  set_state(new RunningState(this));
+  set_state(new RunningState(*this));
 }
 
 /**
  * @brief Starts grabbing an obstacle.
  */
 void Hero::start_grabbing() {
-  set_state(new GrabbingState(this));
+  set_state(new GrabbingState(*this));
 }
 

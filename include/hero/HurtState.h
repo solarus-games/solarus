@@ -32,7 +32,7 @@ class Hero::HurtState: public Hero::State {
 
   public:
 
-    HurtState(Hero *hero, MapEntity *source, int life_points, int magic_points);
+    HurtState(Hero &hero, MapEntity *source, int life_points, int magic_points);
     ~HurtState();
 
     void start(State *previous_state);

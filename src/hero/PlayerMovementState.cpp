@@ -22,7 +22,7 @@
  * @brief Constructor.
  * @param hero the hero
  */
-Hero::PlayerMovementState::PlayerMovementState(Hero *hero):
+Hero::PlayerMovementState::PlayerMovementState(Hero &hero):
   State(hero) {
 
 }
@@ -43,7 +43,7 @@ Hero::PlayerMovementState::~PlayerMovementState() {
  * @return the movement
  */
 PlayerMovement * Hero::PlayerMovementState::get_player_movement() {
-  return (PlayerMovement*) hero->get_movement();
+  return (PlayerMovement*) hero.get_movement();
 }
 
 /**
@@ -55,7 +55,7 @@ PlayerMovement * Hero::PlayerMovementState::get_player_movement() {
  */
 void Hero::PlayerMovementState::start(State *previous_state) {
 
-  hero->set_movement(new PlayerMovement(hero->get_walking_speed()));
+  hero.set_movement(new PlayerMovement(hero.get_walking_speed()));
   get_player_movement()->compute_movement();
 
   if (is_current_state()) { // yes, the state may have already changed
@@ -80,8 +80,8 @@ void Hero::PlayerMovementState::start(State *previous_state) {
 void Hero::PlayerMovementState::stop(State *next_state) {
  
   get_player_movement()->stop();
-  hero->clear_movement();
-  sprites->set_animation_stopped_normal();
+  hero.clear_movement();
+  get_sprites().set_animation_stopped_normal();
 }
 
 /**
@@ -157,7 +157,7 @@ int Hero::PlayerMovementState::get_wanted_movement_direction8() {
  * to set the new speed.
  */
 void Hero::PlayerMovementState::notify_walking_speed_changed() {
-  get_player_movement()->set_moving_speed(hero->get_walking_speed());
+  get_player_movement()->set_moving_speed(hero.get_walking_speed());
 }
 
 /**
@@ -172,7 +172,7 @@ void Hero::PlayerMovementState::notify_movement_changed() {
   // the movement has changed: update the animation of the sprites
 
   bool movement_walking = get_wanted_movement_direction8() != -1;
-  bool sprites_walking = hero->get_sprites().is_walking();
+  bool sprites_walking = get_sprites().is_walking();
 
   if (movement_walking && !sprites_walking) {
     set_animation_walking();

@@ -260,7 +260,7 @@ std::string Stairs::get_path(Way way) {
  */
 Rectangle Stairs::get_clipping_rectangle(Way way) {
 
-  Rectangle clipping_rectangle(get_top_left_x(), 0, 16, map->get_height());
+  Rectangle clipping_rectangle(get_top_left_x(), 0, 16, get_map().get_height());
 
   if (subtype == STRAIGHT_DOWNSTAIRS) {
     

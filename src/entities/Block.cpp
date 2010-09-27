@@ -163,13 +163,12 @@ void Block::notify_collision(MapEntity *entity_overlapping, CollisionMode collis
   if (entity_overlapping->is_hero()) {
 
     Hero *hero = (Hero*) entity_overlapping;
-    KeysEffect &keys_effect = game->get_keys_effect();
 
-    if (keys_effect.get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
+    if (get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
 	&& hero->is_free()) {
 
       // we show the action icon
-      keys_effect.set_action_key_effect(KeysEffect::ACTION_KEY_GRAB);
+      get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_GRAB);
     }
   }
 }
@@ -182,9 +181,8 @@ void Block::notify_collision(MapEntity *entity_overlapping, CollisionMode collis
  */
 void Block::action_key_pressed() {
 
-  KeysEffect &keys_effect = game->get_keys_effect();
-  if (keys_effect.get_action_key_effect() == KeysEffect::ACTION_KEY_GRAB) {
-    game->get_hero().start_grabbing();
+  if (get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_GRAB) {
+    get_hero().start_grabbing();
   }
 }
  
@@ -194,7 +192,7 @@ void Block::action_key_pressed() {
  */
 bool Block::moved_by_hero() {
 
-  Hero &hero = game->get_hero();
+  Hero &hero = get_hero();
 
   if (get_movement() != NULL							// the block is already moving
       || maximum_moves == 0							// the block cannot move anymore
@@ -220,7 +218,7 @@ void Block::update() {
 
   Detector::update();
 
-  Hero &hero = game->get_hero();
+  Hero &hero = get_hero();
 
   if (movement != NULL) {
     // the block is being pushed or pulled by the hero

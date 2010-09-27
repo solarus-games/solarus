@@ -154,16 +154,15 @@ bool ShopItem::is_obstacle_for(MapEntity *other) {
  */
 void ShopItem::notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
 
-  if (entity_overlapping->is_hero() && !game->is_suspended()) {
+  if (entity_overlapping->is_hero() && !get_game().is_suspended()) {
 
-    Hero &hero = game->get_hero();
-    KeysEffect &keys_effect = game->get_keys_effect();
+    Hero *hero = (Hero*) entity_overlapping;
 
-    if (keys_effect.get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
-	&& hero.is_free()) {
+    if (get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
+	&& hero->is_free()) {
 
       // we show the 'look' icon
-      keys_effect.set_action_key_effect(KeysEffect::ACTION_KEY_LOOK);
+      get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_LOOK);
     }
   }
 }
@@ -177,13 +176,10 @@ void ShopItem::notify_collision(MapEntity *entity_overlapping, CollisionMode col
  */
 void ShopItem::action_key_pressed() {
 
-  Hero &hero = game->get_hero();
-  KeysEffect &keys_effect = game->get_keys_effect();
+  if (get_hero().is_free()
+      && get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_LOOK) {
 
-  if (hero.is_free()
-      && keys_effect.get_action_key_effect() == KeysEffect::ACTION_KEY_LOOK) {
-
-    game->get_dialog_box().start_dialog(message_id);
+    get_dialog_box().start_dialog(message_id);
     is_looking_item = true;
   }
 }
@@ -193,47 +189,47 @@ void ShopItem::action_key_pressed() {
  */
 void ShopItem::update() {
 
-  if (is_looking_item && !game->is_showing_message()) {
+  if (is_looking_item && !get_game().is_showing_message()) {
 
     // the description message has just finished
     std::string question_message_id = "_shop.question";
-    game->get_dialog_box().start_dialog(question_message_id);
-    game->get_dialog_box().set_variable(question_message_id, price);
+    get_dialog_box().start_dialog(question_message_id);
+    get_dialog_box().set_variable(question_message_id, price);
     is_asking_question = true;
     is_looking_item = false;
   }
-  else if (is_asking_question && !game->is_showing_message()) {
+  else if (is_asking_question && !get_game().is_showing_message()) {
 
     // the question has just finished
     is_asking_question = false;
-    int answer = game->get_dialog_box().get_last_answer();
+    int answer = get_dialog_box().get_last_answer();
 
     if (answer == 0) {
 
       // the player wants to buy the item
-      Equipment &equipment = game->get_equipment();
+      Equipment &equipment = get_equipment();
 
       if (equipment.get_money() < price) {
 	// not enough rupees
 	Sound::play("wrong");
-	game->get_dialog_box().start_dialog("_shop.not_enough_money");
+	get_dialog_box().start_dialog("_shop.not_enough_money");
       }
       else if (equipment.has_item_maximum(treasure->get_item_name())) {
 	// the player already has the maximum amount of this item
 	Sound::play("wrong");
-	game->get_dialog_box().start_dialog("_shop.amount_full");
+	get_dialog_box().start_dialog("_shop.amount_full");
       }
       else {
 	// give the treasure
 	equipment.remove_money(price);
 
 	int savegame_variable = treasure->get_savegame_variable();
-	game->get_hero().start_treasure(new Treasure(*treasure)); // make a copy of the treasure since the shop item may be still available
+	get_hero().start_treasure(new Treasure(*treasure)); // make a copy of the treasure since the shop item may be still available
 	if (savegame_variable != -1) {
 	  remove_from_map();
-	  game->get_savegame().set_boolean(savegame_variable, true);
+	  get_savegame().set_boolean(savegame_variable, true);
 	}
-	map->get_scripts().event_shop_item_bought(get_name());
+	get_scripts().event_shop_item_bought(get_name());
       }
     }
   }
@@ -244,12 +240,12 @@ void ShopItem::update() {
  */
 void ShopItem::display_on_map() {
 
-  Surface *map_surface = map->get_visible_surface();
+  Surface *map_surface = get_map().get_visible_surface();
   int x = get_x();
   int y = get_y();
 
   // display the treasure
-  const Rectangle &camera_position = map->get_camera_position();
+  const Rectangle &camera_position = get_map().get_camera_position();
   treasure->display(map_surface, x + 16 - camera_position.get_x(), y + 13 - camera_position.get_y());
 
   // also display the price

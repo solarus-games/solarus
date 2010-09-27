@@ -450,12 +450,9 @@ void Map::display_sprite(Sprite *sprite, int x, int y) {
  *
  * The map must be loaded.
  * The background music starts and the map script is initialized.
- *
- * @param game the game containing this map
  */
-void Map::start(Game &game) {
+void Map::start() {
 
-  this->game = &game;
   this->started = true;
   this->visible_surface->set_opacity(255);
   Music::play(music_id);
@@ -469,7 +466,6 @@ void Map::start(Game &game) {
  */
 void Map::leave() {
   started = false;
-  game = NULL;
 }
 
 /**

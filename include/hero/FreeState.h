@@ -32,7 +32,7 @@ class Hero::FreeState: public Hero::PlayerMovementState {
 
   public:
 
-    FreeState(Hero *hero);
+    FreeState(Hero &hero);
     ~FreeState();
 
     void start(State *previous_state);

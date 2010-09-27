@@ -169,9 +169,9 @@ void Switch::update() {
       entity_overlapping = NULL;
       if (is_enabled() && disable_when_leaving && !locked) {
         set_enabled(false);
-	map->get_scripts().event_switch_disabled(get_name());
+	get_scripts().event_switch_disabled(get_name());
       }
-      map->get_scripts().event_switch_left(get_name());
+      get_scripts().event_switch_left(get_name());
     }
   }
 }
@@ -236,7 +236,7 @@ void Switch::notify_collision(MapEntity *entity_overlapping, CollisionMode colli
       Sound::play("switch");
     }
 
-    map->get_scripts().event_switch_enabled(get_name());
+    get_scripts().event_switch_enabled(get_name());
   }
 }
 

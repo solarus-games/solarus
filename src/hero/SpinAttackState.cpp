@@ -24,7 +24,7 @@
  * @brief Constructor.
  * @param hero the hero controlled by this state
  */
-Hero::SpinAttackState::SpinAttackState(Hero *hero):
+Hero::SpinAttackState::SpinAttackState(Hero &hero):
   State(hero) {
 
 }
@@ -48,7 +48,7 @@ void Hero::SpinAttackState::start(State *previous_state) {
   Sound::play("sword_spin_attack_release");
 
   // start the animation
-  sprites->set_animation_spin_attack();
+  get_sprites().set_animation_spin_attack();
 }
 
 /**
@@ -56,8 +56,8 @@ void Hero::SpinAttackState::start(State *previous_state) {
  */
 void Hero::SpinAttackState::update() {
 
-  if (sprites->is_animation_finished()) {
-    hero->set_state(new FreeState(hero));
+  if (get_sprites().is_animation_finished()) {
+    hero.set_state(new FreeState(hero));
   }
 }
 

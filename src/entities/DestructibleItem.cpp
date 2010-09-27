@@ -205,7 +205,7 @@ void DestructibleItem::create_pickable_item() {
   if (!treasure->is_empty()) {
 
     bool will_disappear = treasure->get_item_properties().can_disappear();
-    map->get_entities().add_entity(PickableItem::create(*game, get_layer(), get_x(), get_y(),
+    get_entities().add_entity(PickableItem::create(get_game(), get_layer(), get_x(), get_y(),
 	  treasure, FALLING_MEDIUM, will_disappear));
   }
   else {
@@ -234,21 +234,18 @@ void DestructibleItem::notify_collision(MapEntity *entity_overlapping, Collision
  */
 void DestructibleItem::notify_collision_with_hero(Hero *hero, CollisionMode collision_mode) {
 
-  KeysEffect &keys_effect = game->get_keys_effect();
-
   if (features[subtype].can_be_lifted
       && !is_being_cut
       && !is_disabled()
-      && keys_effect.get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
+      && get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
       && hero->is_free()) {
 
-    Equipment &equipment = game->get_equipment();
     int weight = features[subtype].weight;
-    if (equipment.has_ability("lift", weight)) {
-      keys_effect.set_action_key_effect(KeysEffect::ACTION_KEY_LIFT);
+    if (get_equipment().has_ability("lift", weight)) {
+      get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_LIFT);
     }
     else {
-      keys_effect.set_action_key_effect(KeysEffect::ACTION_KEY_LOOK);
+      get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_LOOK);
     }
   }
 
@@ -294,9 +291,7 @@ void DestructibleItem::notify_collision(MapEntity *other_entity, Sprite *other_s
  */
 void DestructibleItem::action_key_pressed() {
 
-  KeysEffect &keys_effect = game->get_keys_effect();
-  Hero &hero = game->get_hero();
-  KeysEffect::ActionKeyEffect effect = keys_effect.get_action_key_effect();
+  KeysEffect::ActionKeyEffect effect = get_keys_effect().get_action_key_effect();
 
   if ((effect == KeysEffect::ACTION_KEY_LIFT || effect == KeysEffect::ACTION_KEY_LOOK)
       && features[subtype].can_be_lifted
@@ -304,10 +299,9 @@ void DestructibleItem::action_key_pressed() {
       && !is_disabled()) {
 
     int weight = features[subtype].weight;
-    Equipment &equipment = game->get_equipment();
 
-    if (equipment.has_ability("lift", weight)) {
-      hero.start_lifting(this);
+    if (get_equipment().has_ability("lift", weight)) {
+      get_hero().start_lifting(this);
 
       // play the sound
       Sound::play("lift");
@@ -326,13 +320,13 @@ void DestructibleItem::action_key_pressed() {
     }
     else {
       if (features[subtype].can_be_cut) {
-        game->get_dialog_box().start_dialog("_cannot_lift_should_cut");
+        get_dialog_box().start_dialog("_cannot_lift_should_cut");
       }
-      else if (!equipment.has_ability("lift", 1)) {
-	game->get_dialog_box().start_dialog("_cannot_lift_too_heavy");
+      else if (!get_equipment().has_ability("lift", 1)) {
+	get_dialog_box().start_dialog("_cannot_lift_too_heavy");
       }
       else {
-	game->get_dialog_box().start_dialog("_cannot_lift_still_too_heavy");
+	get_dialog_box().start_dialog("_cannot_lift_still_too_heavy");
       }
     }
   }
@@ -347,7 +341,7 @@ void DestructibleItem::play_destroy_animation() {
   Sound::play(get_destruction_sound_id());
   get_sprite()->set_current_animation("destroy");
   if (!is_displayed_in_y_order()) {
-    map->get_entities().bring_to_front(this); // show animation destroy to front
+    get_entities().bring_to_front(this); // show animation destroy to front
   }
 }
 
@@ -405,7 +399,7 @@ void DestructibleItem::update() {
     }
   }
 
-  else if (is_disabled() && System::now() >= regeneration_date && !overlaps(&game->get_hero())) {
+  else if (is_disabled() && System::now() >= regeneration_date && !overlaps(&get_hero())) {
     get_sprite()->set_current_animation("regenerating");
     is_regenerating = true;
     regeneration_date = 0;

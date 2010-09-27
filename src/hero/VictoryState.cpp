@@ -26,7 +26,7 @@
  * @brief Constructor.
  * @param hero the hero controlled by this state
  */
-Hero::VictoryState::VictoryState(Hero *hero):
+Hero::VictoryState::VictoryState(Hero &hero):
   State(hero), end_victory_date(0) {
 
 }
@@ -46,7 +46,7 @@ void Hero::VictoryState::start(State *previous_state) {
 
   State::start(previous_state);
 
-  sprites->set_animation_victory();
+  get_sprites().set_animation_victory();
   Sound::play("victory");
 
   // compute the date when the victory state is considered as finished,
@@ -63,7 +63,7 @@ void Hero::VictoryState::update() {
   State::update();
 
   if (System::now() >= end_victory_date) {
-    map->get_scripts().event_hero_victory_sequence_finished();
+    get_scripts().event_hero_victory_sequence_finished();
   }
 }
 

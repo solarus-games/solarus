@@ -144,7 +144,7 @@ class Map {
 
     // presence of the hero
     bool is_started();
-    void start(Game &game);
+    void start();
     void leave();
     void set_welcome_message(const std::string &welcome_message_id);
 

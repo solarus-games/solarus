@@ -31,7 +31,7 @@
  * @param hero the hero controlled by this state
  * @param treasure the treasure to give to the hero
  */
-Hero::TreasureState::TreasureState(Hero *hero, Treasure *treasure):
+Hero::TreasureState::TreasureState(Hero &hero, Treasure *treasure):
   State(hero), treasure(treasure) {
 
 }
@@ -53,8 +53,8 @@ void Hero::TreasureState::start(State *previous_state) {
   State::start(previous_state);
 
   // show the animation
-  sprites->save_animation_direction();
-  sprites->set_animation_brandish();
+  get_sprites().save_animation_direction();
+  get_sprites().set_animation_brandish();
 
   // play the sound
   const SoundId &sound_id = treasure->get_item_properties().get_sound_when_brandished();
@@ -66,7 +66,7 @@ void Hero::TreasureState::start(State *previous_state) {
   // show a message
   std::ostringstream oss;
   oss << "_treasure." << treasure->get_item_name() << "." << treasure->get_variant();
-  game->get_dialog_box().start_dialog(oss.str());
+  get_dialog_box().start_dialog(oss.str());
 }
 
 /**
@@ -78,7 +78,7 @@ void Hero::TreasureState::stop(State *next_state) {
   State::start(next_state);
 
   // restore the sprite's direction
-  sprites->restore_animation_direction();
+  get_sprites().restore_animation_direction();
 }
 
 /**
@@ -88,13 +88,13 @@ void Hero::TreasureState::update() {
 
   State::update();
 
-  if (!game->is_showing_message()) {
+  if (!get_game().is_showing_message()) {
 
     // the treasure's dialog is over: if the treasure was a tunic,
     // a sword or a shield, we have to reload the hero's sprites now
     const std::string &item_name = treasure->get_item_name();
     if (item_name == "tunic" || item_name == "sword" || item_name == "shield") {
-      hero->rebuild_equipment();
+      hero.rebuild_equipment();
     }
 
     int variant = treasure->get_variant();
@@ -103,9 +103,9 @@ void Hero::TreasureState::update() {
     delete treasure;
     treasure = NULL;
 
-    map->get_scripts().event_treasure_obtained(item_name, variant, savegame_variable);
+    get_scripts().event_treasure_obtained(item_name, variant, savegame_variable);
 
-    hero->set_state(new FreeState(hero));
+    hero.set_state(new FreeState(hero));
   }
 }
 
@@ -116,11 +116,11 @@ void Hero::TreasureState::display_on_map() {
 
   State::display_on_map();
 
-  int x = hero->get_x();
-  int y = hero->get_y();
+  int x = hero.get_x();
+  int y = hero.get_y();
 
-  const Rectangle &camera_position = map->get_camera_position();
-  treasure->display(map->get_visible_surface(),
+  const Rectangle &camera_position = get_map().get_camera_position();
+  treasure->display(get_map().get_visible_surface(),
       x - camera_position.get_x(),
       y - 24 - camera_position.get_y());
 }

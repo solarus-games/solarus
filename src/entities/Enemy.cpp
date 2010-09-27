@@ -446,7 +446,7 @@ void Enemy::update() {
       Rectangle xy;
       xy.set_x(get_top_left_x() + Random::get_number(get_width()));
       xy.set_y(get_top_left_y() + Random::get_number(get_height()));
-      map->get_entities().add_entity(new Explosion(LAYER_HIGH, xy, false));
+      get_entities().add_entity(new Explosion(LAYER_HIGH, xy, false));
 
       next_explosion_date = now + 200;
       nb_explosions++;
@@ -463,7 +463,7 @@ void Enemy::update() {
     if (!treasure->is_empty()) {
 
       bool will_disappear = treasure->get_item_properties().can_disappear();
-      map->get_entities().add_entity(PickableItem::create(*game, get_layer(), get_x(), get_y(), treasure,
+      get_entities().add_entity(PickableItem::create(get_game(), get_layer(), get_x(), get_y(), treasure,
 	    FALLING_HIGH, will_disappear));
     }
     else {
@@ -478,7 +478,7 @@ void Enemy::update() {
     remove_from_map();
 
     // notify the scripts
-    map->get_scripts().event_enemy_dead(get_name());
+    get_scripts().event_enemy_dead(get_name());
   }
 }
 
@@ -639,7 +639,7 @@ void Enemy::attack_hero(Hero *hero, Sprite *this_sprite) {
 
     bool hero_protected = false;
     if (minimum_shield_needed != 0 &&
-	game->get_equipment().has_ability("shield", minimum_shield_needed)) {
+	get_equipment().has_ability("shield", minimum_shield_needed)) {
 
       double angle = hero->get_vector_angle(this);
       int protected_direction = (int) ((angle + Geometry::PI_OVER_2 / 2.0) * 4 / Geometry::TWO_PI);
@@ -663,6 +663,7 @@ void Enemy::attack_hero(Hero *hero, Sprite *this_sprite) {
  * By default, the shield sound is played and the enemy cannot attack again for a while.
  */
 void Enemy::attack_stopped_by_hero_shield() {
+
   Sound::play("shield");
 
   uint32_t now = System::now();
@@ -879,7 +880,7 @@ void Enemy::kill() {
 
   // save the enemy state if required
   if (savegame_variable != -1) {
-    game->get_savegame().set_boolean(savegame_variable, true);
+    get_savegame().set_boolean(savegame_variable, true);
   }
 }
 

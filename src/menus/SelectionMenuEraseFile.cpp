@@ -57,7 +57,7 @@ void SelectionMenuEraseFile::notify_event(InputEvent &event) {
     else if (cursor_position == 4) {
       // the user chose "Cancel"
       menu->play_ok_sound();
-      menu->set_next_phase(new SelectionMenuSelectFile(menu));
+      menu->set_next_phase(new SelectionMenuSelectFile(menu, 4));
     }
     else {
 

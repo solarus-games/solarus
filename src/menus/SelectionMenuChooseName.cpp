@@ -125,7 +125,7 @@ void SelectionMenuChooseName::notify_event(InputEvent &event) {
     }
 
     if (finished) {
-      menu->set_next_phase(new SelectionMenuSelectFile(menu));
+      menu->set_next_phase(new SelectionMenuSelectFile(menu, menu->get_cursor_position()));
     }
   }
 }

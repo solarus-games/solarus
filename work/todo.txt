@@ -66,11 +66,9 @@ Bugs :
 - permettre de zapper l'intro
 - eau froide pour faire fondre la glace : trouver autre chose
 - utiliser une bouteille ayant une fée : relâcher la fée directement au lieu de mettre un message (on l'active souvent par erreur)
-- On peut probablement parser les entités plus facilement en redéfinissant l'opérateur >> pour chaque sous-classe (ou même avec des constructeurs virtuels ?)
 - Rendre Movement abstrait et faire une classe pour le movement rectiligne, afin d'éviter que les sous-classes violent les contrats de Movement
 - Remplacer les cast
 - Quand on crée une sauvegarde, laisser le curseur sur celle-ci
-- Passer les Treasure par valeur en faisant des copies au lieu de gérer leur mémoire manuellement
 
 
 A venir :

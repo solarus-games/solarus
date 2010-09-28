@@ -30,7 +30,7 @@ class SelectionMenuSelectFile: public SelectionMenuPhase {
   public:
 
     // creation and destruction
-    SelectionMenuSelectFile(SelectionMenu *selection_menu);
+    SelectionMenuSelectFile(SelectionMenu *selection_menu, int initial_cursor_position);
     ~SelectionMenuSelectFile();
 
     // update and display

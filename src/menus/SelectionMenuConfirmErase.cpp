@@ -54,13 +54,12 @@ void SelectionMenuConfirmErase::notify_event(InputEvent &event) {
       // the user chose "Yes"
       menu->play_erase_sound();
       delete_save_file(save_number_to_erase);
-      menu->set_cursor_position(save_number_to_erase + 1);
-      menu->set_next_phase(new SelectionMenuSelectFile(menu));
+      menu->set_next_phase(new SelectionMenuSelectFile(menu, save_number_to_erase + 1));
     }
     else if (cursor_position == 4) {
       // the user chose "No"
       menu->play_ok_sound();
-      menu->set_next_phase(new SelectionMenuSelectFile(menu));
+      menu->set_next_phase(new SelectionMenuSelectFile(menu, 4));
     }
   }
 

@@ -85,7 +85,7 @@ SelectionMenu::SelectionMenu(Solarus &solarus):
   initialize_clouds();
 
   // first phase: select a file
-  current_phase = new SelectionMenuSelectFile(this);
+  current_phase = new SelectionMenuSelectFile(this, 1);
 }
 
 /**

@@ -371,8 +371,7 @@ void SelectionMenuOptions::notify_event(InputEvent &event) {
     }
     else if (cursor_position == nb_options) { // back
       menu->play_ok_sound();
-      menu->set_next_phase(new SelectionMenuSelectFile(menu));
-      menu->set_cursor_position(5);
+      menu->set_next_phase(new SelectionMenuSelectFile(menu, 5));
     }
   }
 }

@@ -27,15 +27,16 @@
 /**
  * @brief Creates a selection menu phase where the player selects a file.
  * @param menu the selection menu this phase will belong to
+ * @param initial_cursor_position position of the cursor to set (1 to 5)
  */
-SelectionMenuSelectFile::SelectionMenuSelectFile(SelectionMenu *menu):
+SelectionMenuSelectFile::SelectionMenuSelectFile(SelectionMenu *menu, int initial_cursor_position):
   SelectionMenuPhase(menu, "selection_menu.phase.select_file") {
 
   menu->set_bottom_options("selection_menu.erase", "selection_menu.options");
 
   // initialize the cursor
   menu->get_cursor_sprite()->set_current_animation("blue");
-  menu->set_cursor_position(1);
+  menu->set_cursor_position(initial_cursor_position);
 }
 
 

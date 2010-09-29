@@ -67,69 +67,74 @@ void MapScript::register_available_functions() {
   GameScript::register_available_functions();
 
   // functions specific to map scripts
-  lua_register(context, "dialog_start", l_dialog_start);
-  lua_register(context, "dialog_set_variable", l_dialog_set_variable);
-  lua_register(context, "dialog_set_style", l_dialog_set_style);
-  lua_register(context, "hud_set_enabled", l_hud_set_enabled);
-  lua_register(context, "hud_set_pause_enabled", l_hud_set_pause_enabled);
-  lua_register(context, "treasure_give", l_treasure_give);
-  lua_register(context, "camera_move", l_camera_move);
-  lua_register(context, "camera_restore", l_camera_restore);
-  lua_register(context, "hero_freeze", l_hero_freeze);
-  lua_register(context, "hero_unfreeze", l_hero_unfreeze);
-  lua_register(context, "hero_set_map", l_hero_set_map);
-  lua_register(context, "hero_set_direction", l_hero_set_direction);
-  lua_register(context, "hero_align_on_sensor", l_hero_align_on_sensor);
-  lua_register(context, "hero_walk", l_hero_walk);
-  lua_register(context, "hero_jump", l_hero_jump);
-  lua_register(context, "hero_start_victory_sequence", l_hero_start_victory_sequence);
-  lua_register(context, "hero_set_visible", l_hero_set_visible);
-  lua_register(context, "npc_get_position", l_npc_get_position);
-  lua_register(context, "npc_set_position", l_npc_set_position);
-  lua_register(context, "npc_walk", l_npc_walk);
-  lua_register(context, "npc_random_walk", l_npc_random_walk);
-  lua_register(context, "npc_jump", l_npc_jump);
-  lua_register(context, "npc_set_animation", l_npc_set_animation);
-  lua_register(context, "npc_set_animation_ignore_suspend", l_npc_set_animation_ignore_suspend);
-  lua_register(context, "npc_set_direction", l_npc_set_direction);
-  lua_register(context, "npc_remove", l_npc_remove);
-  lua_register(context, "chest_set_open", l_chest_set_open);
-  lua_register(context, "chest_set_hidden", l_chest_set_hidden);
-  lua_register(context, "chest_is_hidden", l_chest_is_hidden);
-  lua_register(context, "tile_set_enabled", l_tile_set_enabled);
-  lua_register(context, "tile_set_group_enabled", l_tile_set_group_enabled);
-  lua_register(context, "tile_is_enabled", l_tile_is_enabled);
-  lua_register(context, "block_reset", l_block_reset);
-  lua_register(context, "block_reset_all", l_block_reset_all);
-  lua_register(context, "interactive_entity_get_animation", l_interactive_entity_get_animation);
-  lua_register(context, "interactive_entity_get_animation_delay", l_interactive_entity_get_animation_delay);
-  lua_register(context, "interactive_entity_get_animation_frame", l_interactive_entity_get_animation_frame);
-  lua_register(context, "interactive_entity_get_direction", l_interactive_entity_get_direction);
-  lua_register(context, "interactive_entity_is_animation_paused", l_interactive_entity_is_animation_paused);
-  lua_register(context, "interactive_entity_set_animation", l_interactive_entity_set_animation);
-  lua_register(context, "interactive_entity_set_animation_delay", l_interactive_entity_set_animation_delay);
-  lua_register(context, "interactive_entity_set_animation_frame", l_interactive_entity_set_animation_frame);
-  lua_register(context, "interactive_entity_set_direction", l_interactive_entity_set_direction);
-  lua_register(context, "interactive_entity_set_animation_paused", l_interactive_entity_set_animation_paused);
-  lua_register(context, "interactive_entity_set_animation_ignore_suspend", l_interactive_entity_set_animation_ignore_suspend);
-  lua_register(context, "interactive_entity_fade", l_interactive_entity_fade);
-  lua_register(context, "interactive_entity_remove", l_interactive_entity_remove);
-  lua_register(context, "shop_item_remove", l_shop_item_remove);
-  lua_register(context, "switch_is_enabled", l_switch_is_enabled);
-  lua_register(context, "switch_set_enabled", l_switch_set_enabled);
-  lua_register(context, "switch_set_locked", l_switch_set_locked);
-  lua_register(context, "enemy_is_dead", l_enemy_is_dead);
-  lua_register(context, "enemy_is_group_dead", l_enemy_is_group_dead);
-  lua_register(context, "enemy_set_enabled", l_enemy_set_enabled);
-  lua_register(context, "enemy_start_boss", l_enemy_start_boss);
-  lua_register(context, "enemy_end_boss", l_enemy_end_boss);
-  lua_register(context, "enemy_start_miniboss", l_enemy_start_miniboss);
-  lua_register(context, "enemy_end_miniboss", l_enemy_end_miniboss);
-  lua_register(context, "sensor_remove", l_sensor_remove);
-  lua_register(context, "door_open", l_door_open);
-  lua_register(context, "door_close", l_door_close);
-  lua_register(context, "door_is_open", l_door_is_open);
-  lua_register(context, "door_set_open", l_door_set_open);
+  static luaL_Reg functions[] = {
+    { "dialog_start", l_dialog_start },
+    { "dialog_set_variable", l_dialog_set_variable },
+    { "dialog_set_style", l_dialog_set_style },
+    { "hud_set_enabled", l_hud_set_enabled },
+    { "hud_set_pause_enabled", l_hud_set_pause_enabled },
+    { "treasure_give", l_treasure_give },
+    { "camera_move", l_camera_move },
+    { "camera_restore", l_camera_restore },
+    { "hero_freeze", l_hero_freeze },
+    { "hero_unfreeze", l_hero_unfreeze },
+    { "hero_set_map", l_hero_set_map },
+    { "hero_set_direction", l_hero_set_direction },
+    { "hero_align_on_sensor", l_hero_align_on_sensor },
+    { "hero_walk", l_hero_walk },
+    { "hero_jump", l_hero_jump },
+    { "hero_start_victory_sequence", l_hero_start_victory_sequence },
+    { "hero_set_visible", l_hero_set_visible },
+    { "npc_get_position", l_npc_get_position },
+    { "npc_set_position", l_npc_set_position },
+    { "npc_walk", l_npc_walk },
+    { "npc_random_walk", l_npc_random_walk },
+    { "npc_jump", l_npc_jump },
+    { "npc_set_animation", l_npc_set_animation },
+    { "npc_set_animation_ignore_suspend", l_npc_set_animation_ignore_suspend },
+    { "npc_set_direction", l_npc_set_direction },
+    { "npc_remove", l_npc_remove },
+    { "chest_set_open", l_chest_set_open },
+    { "chest_set_hidden", l_chest_set_hidden },
+    { "chest_is_hidden", l_chest_is_hidden },
+    { "tile_set_enabled", l_tile_set_enabled },
+    { "tile_set_group_enabled", l_tile_set_group_enabled },
+    { "tile_is_enabled", l_tile_is_enabled },
+    { "block_reset", l_block_reset },
+    { "block_reset_all", l_block_reset_all },
+    { "interactive_entity_get_animation", l_interactive_entity_get_animation },
+    { "interactive_entity_get_animation_delay", l_interactive_entity_get_animation_delay },
+    { "interactive_entity_get_animation_frame", l_interactive_entity_get_animation_frame },
+    { "interactive_entity_get_direction", l_interactive_entity_get_direction },
+    { "interactive_entity_is_animation_paused", l_interactive_entity_is_animation_paused },
+    { "interactive_entity_set_animation", l_interactive_entity_set_animation },
+    { "interactive_entity_set_animation_delay", l_interactive_entity_set_animation_delay },
+    { "interactive_entity_set_animation_frame", l_interactive_entity_set_animation_frame },
+    { "interactive_entity_set_direction", l_interactive_entity_set_direction },
+    { "interactive_entity_set_animation_paused", l_interactive_entity_set_animation_paused },
+    { "interactive_entity_set_animation_ignore_suspend", l_interactive_entity_set_animation_ignore_suspend },
+    { "interactive_entity_fade", l_interactive_entity_fade },
+    { "interactive_entity_remove", l_interactive_entity_remove },
+    { "shop_item_remove", l_shop_item_remove },
+    { "switch_is_enabled", l_switch_is_enabled },
+    { "switch_set_enabled", l_switch_set_enabled },
+    { "switch_set_locked", l_switch_set_locked },
+    { "enemy_is_dead", l_enemy_is_dead },
+    { "enemy_is_group_dead", l_enemy_is_group_dead },
+    { "enemy_set_enabled", l_enemy_set_enabled },
+    { "enemy_start_boss", l_enemy_start_boss },
+    { "enemy_end_boss", l_enemy_end_boss },
+    { "enemy_start_miniboss", l_enemy_start_miniboss },
+    { "enemy_end_miniboss", l_enemy_end_miniboss },
+    { "sensor_remove", l_sensor_remove },
+    { "door_open", l_door_open },
+    { "door_close", l_door_close },
+    { "door_is_open", l_door_is_open },
+    { "door_set_open", l_door_set_open },
+    { NULL, NULL }
+  };
+
+  luaL_register(context, "sol.map", functions);
 }
 
 /**

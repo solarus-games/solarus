@@ -5,14 +5,14 @@
 -- Function call when the map starts
 function event_map_started(destination_point_name)
 
-   if savegame_get_boolean(35) then
+   if sol.game.savegame_get_boolean(35) then
       -- remove the frozen door
-      interactive_entity_remove("frozen_door")
-      interactive_entity_remove("frozen_door_opposite")
+      sol.map.interactive_entity_remove("frozen_door")
+      sol.map.interactive_entity_remove("frozen_door_opposite")
    else
       -- initialize the direction of the frozen door sprites
-      interactive_entity_set_direction("frozen_door", 3)
-      interactive_entity_set_direction("frozen_door_opposite", 1)
+      sol.map.interactive_entity_set_direction("frozen_door", 3)
+      sol.map.interactive_entity_set_direction("frozen_door_opposite", 1)
    end
 end
 
@@ -20,8 +20,8 @@ end
 function event_hero_interaction(entity_name)
 
    if entity_name == "frozen_door" then
-      dialog_start("sahasrahla_house.frozen_door")
-      savegame_set_boolean(34, true)
+      sol.map.dialog_start("sahasrahla_house.frozen_door")
+      sol.game.savegame_set_boolean(34, true)
    end
 end
 
@@ -32,10 +32,10 @@ function event_hero_interaction_item(entity_name, item_name, variant)
       string.match(item_name, "^bottle") and variant == 2 then
 
       -- using water on the frozen door
-      hero_freeze()
-      interactive_entity_set_animation("frozen_door", "disappearing")
-      interactive_entity_set_animation("frozen_door_opposite", "disappearing")
-      timer_start(800, "timer_frozen_door", false)
+      sol.map.hero_freeze()
+      sol.map.interactive_entity_set_animation("frozen_door", "disappearing")
+      sol.map.interactive_entity_set_animation("frozen_door_opposite", "disappearing")
+      sol.main.timer_start(800, "timer_frozen_door", false)
       return true
    end
 
@@ -44,9 +44,9 @@ end
 
 -- Function called when the door is unfreezed
 function timer_frozen_door()
-   play_sound("secret")
-   savegame_set_boolean(35, true)
-   interactive_entity_remove("frozen_door")
-   interactive_entity_remove("frozen_door_opposite")
-   hero_unfreeze()
+   sol.main.play_sound("secret")
+   sol.game.savegame_set_boolean(35, true)
+   sol.map.interactive_entity_remove("frozen_door")
+   sol.map.interactive_entity_remove("frozen_door_opposite")
+   sol.map.hero_unfreeze()
 end

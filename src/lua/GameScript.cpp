@@ -48,31 +48,36 @@ void GameScript::register_available_functions() {
   Script::register_available_functions();
 
   // functions specific to game scripts
-  lua_register(context, "savegame_get_string", l_savegame_get_string);
-  lua_register(context, "savegame_get_integer", l_savegame_get_integer);
-  lua_register(context, "savegame_get_boolean", l_savegame_get_boolean);
-  lua_register(context, "savegame_set_string", l_savegame_set_string);
-  lua_register(context, "savegame_set_integer", l_savegame_set_integer);
-  lua_register(context, "savegame_set_boolean", l_savegame_set_boolean);
-  lua_register(context, "savegame_get_name", l_savegame_get_name);
-  lua_register(context, "equipment_get_life", l_equipment_get_life);
-  lua_register(context, "equipment_add_life", l_equipment_add_life);
-  lua_register(context, "equipment_remove_life", l_equipment_remove_life);
-  lua_register(context, "equipment_get_money", l_equipment_get_money);
-  lua_register(context, "equipment_add_money", l_equipment_add_money);
-  lua_register(context, "equipment_remove_money", l_equipment_remove_money);
-  lua_register(context, "equipment_has_ability", l_equipment_has_ability);
-  lua_register(context, "equipment_get_ability", l_equipment_get_ability);
-  lua_register(context, "equipment_set_ability", l_equipment_set_ability);
-  lua_register(context, "equipment_has_item", l_equipment_has_item);
-  lua_register(context, "equipment_get_item", l_equipment_get_item);
-  lua_register(context, "equipment_set_item", l_equipment_set_item);
-  lua_register(context, "equipment_has_item_amount", l_equipment_has_item_amount);
-  lua_register(context, "equipment_get_item_amount", l_equipment_get_item_amount);
-  lua_register(context, "equipment_add_item_amount", l_equipment_add_item_amount);
-  lua_register(context, "equipment_remove_item_amount", l_equipment_remove_item_amount);
-  lua_register(context, "equipment_is_dungeon_finished", l_equipment_is_dungeon_finished);
-  lua_register(context, "equipment_set_dungeon_finished", l_equipment_set_dungeon_finished);
+  static luaL_Reg functions[] = {
+    { "savegame_get_string", l_savegame_get_string },
+    { "savegame_get_integer", l_savegame_get_integer },
+    { "savegame_get_boolean", l_savegame_get_boolean },
+    { "savegame_set_string", l_savegame_set_string },
+    { "savegame_set_integer", l_savegame_set_integer },
+    { "savegame_set_boolean", l_savegame_set_boolean },
+    { "savegame_get_name", l_savegame_get_name },
+    { "equipment_get_life", l_equipment_get_life },
+    { "equipment_add_life", l_equipment_add_life },
+    { "equipment_remove_life", l_equipment_remove_life },
+    { "equipment_get_money", l_equipment_get_money },
+    { "equipment_add_money", l_equipment_add_money },
+    { "equipment_remove_money", l_equipment_remove_money },
+    { "equipment_has_ability", l_equipment_has_ability },
+    { "equipment_get_ability", l_equipment_get_ability },
+    { "equipment_set_ability", l_equipment_set_ability },
+    { "equipment_has_item", l_equipment_has_item },
+    { "equipment_get_item", l_equipment_get_item },
+    { "equipment_set_item", l_equipment_set_item },
+    { "equipment_has_item_amount", l_equipment_has_item_amount },
+    { "equipment_get_item_amount", l_equipment_get_item_amount },
+    { "equipment_add_item_amount", l_equipment_add_item_amount },
+    { "equipment_remove_item_amount", l_equipment_remove_item_amount },
+    { "equipment_is_dungeon_finished", l_equipment_is_dungeon_finished },
+    { "equipment_set_dungeon_finished", l_equipment_set_dungeon_finished },
+    { NULL, NULL }
+  };
+
+  luaL_register(context, "sol.game", functions);
 }
 
 /**

@@ -6,12 +6,12 @@
 function event_npc_dialog(npc_name)
 
    -- smith dialog
-   if not savegame_get_boolean(30) then
+   if not sol.game.savegame_get_boolean(30) then
       -- the player has no sword yet
-      dialog_start("smith_cave.without_sword")
+      sol.map.dialog_start("smith_cave.without_sword")
    else
       -- the player already has the sword
-      dialog_start("smith_cave.with_sword")
+      sol.map.dialog_start("smith_cave.with_sword")
    end
 end
 
@@ -23,17 +23,17 @@ function event_dialog_finished(first_message_id, answer)
 
       if answer == 1 then
 	 -- the player does not want to buy the sword
-	 dialog_start("smith_cave.not_buying")
+	 sol.map.dialog_start("smith_cave.not_buying")
       else
 	 -- wants to buy the sword
-	 if equipment_get_money() < 80 then
+	 if sol.game.equipment_get_money() < 80 then
 	    -- not enough money
-	    play_sound("wrong")
-	    dialog_start("smith_cave.not_enough_money")
+	    sol.main.play_sound("wrong")
+	    sol.map.dialog_start("smith_cave.not_enough_money")
 	 else
 	    -- enough money: buy the sword
-	    equipment_remove_money(80)
-	    treasure_give("sword", 1, 30)
+	    sol.game.equipment_remove_money(80)
+	    sol.map.treasure_give("sword", 1, 30)
 	 end
       end
    end
@@ -42,7 +42,7 @@ end
 -- Function called when the player has bought the sword.
 function event_treasure_obtained(item_name, variant, savegame_variable)
    if (savegame_variable == 30) then
-      dialog_start("smith_cave.thank_you")
+      sol.map.dialog_start("smith_cave.thank_you")
    end
 end
 

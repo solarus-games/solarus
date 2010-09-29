@@ -18,6 +18,7 @@ The engine classes are organized in several directories:
 - movements: many types of movements that can be applied to objects;
 - entities: all objects that are present on a map: the tiles, the hero, the enemies, the chests, etc;
 - enemies: all types of enemies with their specific behavior;
-- hero: all possible states of the hero.
+- hero: all possible states of the hero;
+- lua: handles calling C++ from Lua scripts and calling Lua from C++.
 
 */

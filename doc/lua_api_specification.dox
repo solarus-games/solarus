@@ -7,20 +7,325 @@ and the list of C++ functions that may be called by Lua scripts.
 This documentation page is intented to Lua programers who want to know the functions available.
 For the point of view of the engine, see the documentation of the C++ class Script.
 
-For now, only one type of script exists: the script of a map.
-In the future, we may create other types such as scriptable enemies and scriptable items.
-The API is divided in two parts:
-- A common API for all types of scripts
-- A specific API to a particular type of script
+A Lua script can call C++ functions through a global table called <tt>sol</tt>.
+The functions are organized into several modules.
+For now, there are three modules:
+- <tt>sol.main</tt>: functions available to all types of scripts, even outside a game.
+- <tt>sol.game</tt>: this module represents the current game. It provides
+functions to manage game information such as the savegame and the equipment.
+- <tt>sol.map</tt>: this module respresents the current map.
+It provides functions to manage the entities placed on the map,
+including the hero.
+The modules that are available to your script depends
+on the type of script.
 
-@section common_api Common API
+The C++ code can also call Lua functions to notify the scripts that an event happened.
+All scripts currently running are then notified.
 
-The following functions are available to all types of scripts.
+Note: for now, only one type of script exists (the script of a map).
+Other types such as scriptable enemies and scriptable items will come soon.
 
-@subsection cpp_to_lua Lua functions called by the engine
+@section lua_to_cpp Calling C++ from Lua
 
-These functions are called, if they exist, by the C++ engine when it wants to notify
-the script that an event just occured.
+We describe here all functions provided to Lua scripts
+through the <tt>sol</tt> object.
+
+@subsection sol.main Module <tt>sol.main</tt>
+
+The <tt>sol.main</tt> module is available to any type of Lua script,
+even when to game is running.
+
+- <tt>sol.main.play_sound(sound_id)</tt>: 	
+plays a sound
+
+- <tt>sol.main.play_music(music_id)</tt>: 
+plays a music
+
+- <tt>sol.main.timer_start(duration, callback, with_sound)</tt>: 
+starts a timer which will call a function of your script once finished
+
+- <tt>sol.main.timer_stop(callback)</tt>: 
+stops a timer that is currently running
+
+@subsection sol.game Module <tt>sol.game</tt>
+
+The <tt>sol.game</tt> module is available to scripts running into a game.
+<tt>sol.game</tt> can be seen as an object that represents the current game.
+It provides functions to manage the game data.
+
+- <tt>sol.game.savegame_get_string(index)</tt>:
+returns a string saved
+
+- <tt>sol.game.savegame_get_integer(index)</tt>: 
+returns an integer saved
+
+- <tt>sol.game.savegame_get_boolean(index)</tt>: 
+returns a boolean saved
+
+- <tt>sol.game.savegame_set_string(index, value)</tt>: 
+sets a string in the savegame
+
+- <tt>sol.game.savegame_set_integer(index, value)</tt>: 
+sets an integer in the savegame
+
+- <tt>sol.game.savegame_set_boolean(index, value)</tt>: 
+sets a boolean in the savegame
+
+- <tt>sol.game.savegame_get_name()</tt>:
+returns the name of the hero (cannot exceed 5 characters)
+
+- <tt>sol.game.equipment_get_life()</tt>:
+returns the current level of life of the player
+
+- <tt>sol.game.equipment_add_life(life)</tt>: 
+adds some life to the player
+
+- <tt>sol.game.equipment_remove_life(life)</tt>: 
+removes some life from the player
+
+- <tt>sol.game.equipment_get_money()</tt>:
+returns the amount of money of the player
+
+- <tt>sol.game.equipment_add_money(money)</tt>: 
+adds some money to the player
+
+- <tt>sol.game.equipment_remove_money(money)</tt>: 
+removes some money from the player
+
+- <tt>sol.game.equipment_has_ability(ability_name)</tt>: 
+returns whether the player has an ability
+
+- <tt>sol.game.equipment_get_ability(ability_name)</tt>: 
+returns the level of an ability
+
+- <tt>sol.game.equipment_set_ability(ability_name, level)</tt>: 
+sets the level of an ability
+
+- <tt>sol.game.equipment_has_item(item_name)</tt>: 
+returns whether the player has an item
+
+- <tt>sol.game.equipment_get_item(item_name)</tt>: 
+returns the possession state of an item
+
+- <tt>sol.game.equipment_set_item(item_name, variant)</tt>: 
+sets the possession state of an item
+
+- <tt>sol.game.equipment_has_item_amount(item_name, amount)</tt>: 
+returns the amount the player has for an item
+
+- <tt>sol.game.equipment_get_item_amount(item_name)</tt>: 
+returns whether the player has at least the specified amount of an item
+
+- <tt>sol.game.equipment_add_item_amount(item_name, amount)</tt>: 
+adds an amount of the specified item
+
+- <tt>sol.game.equipment_remove_item_amount(item_name, amount)</tt>: 
+removes an amount of the specified item
+
+- <tt>sol.game.equipment_is_dungeon_finished(dungeon)</tt>:
+returns whether the specified dungeon is finished
+
+- <tt>sol.game.equipment_set_dungeon_finished(dungeon)</tt>:
+sets the specified dungeon as finished
+
+@subsection sol.map Module <tt>sol.map</tt>
+
+The <tt>sol.map</tt> module is available to scripts attached to a map.
+<tt>sol.map</tt> can be seen as an object that represents the current map
+and the elements displayed with it.
+Most of the functions provided here apply to an entity of the map (possibly the hero)
+and are prefixed by the type of entity.
+
+- <tt>sol.map.dialog_start(first_message_id)</tt>: 
+starts a dialog (a sequence of messages) by displaying a first message
+
+- <tt>sol.map.dialog_set_variable(first_message_id, value)</tt>: 
+specifies a value to display inside a dialog
+
+- <tt>sol.map.dialog_set_style(style)</tt>: 
+sets the style of the dialog box for subsequent messages
+
+- <tt>sol.map.hud_set_pause_enabled(bool enabled)</tt>: 
+allows or disallows to pause the game (and to save the game)
+
+- <tt>sol.map.hud_set_enabled(enabled)</tt>: 
+enables or disables the HUD displaying
+
+- <tt>sol.map.treasure_give(item_name, variant, savegame_variable)</tt>: 
+gives a treasure to the player (without using a chest)
+
+- <tt>sol.map.camera_move(x, y, speed)</tt>: 
+suspends the game and moves the camera towards a target point
+
+- <tt>sol.map.camera_restore()</tt>: 
+sents the camera back to the hero after a call to camera_move()
+
+- <tt>sol.map.hero_freeze()</tt>: 
+prevents the hero from moving until you call <tt>sol.map.hero_unfreeze()</tt>
+
+- <tt>sol.map.hero_unfreeze()</tt>: 
+restores the control to the hero, typically after a call to <tt>sol.map.hero_freeze()</tt>
+
+- <tt>sol.map.hero_set_map(map_id, destination_point, transition)</tt>:
+sents the hero on a map (possibly the same one)
+
+- <tt>sol.map.hero_set_direction(direction)</tt>:
+sets the direction of the hero's sprites
+
+- <tt>sol.map.hero_align_on_sensor(sensor_name)</tt>:
+places the hero's bounding box exactly on the rectangle of a sensor
+
+- <tt>sol.map.hero_walk(path, loop, ignore_obstacles)</tt>:
+makes the hero move with the specified path
+
+- <tt>sol.map.hero_jump(direction, length, ignore_obstacles)</tt>:
+makes the hero jump towards the specified direction (0 to 7)
+
+- <tt>sol.map.hero_start_victory_sequence()</tt>:
+starts the animation where the hero brandishes his sword for a victory
+
+- <tt>sol.map.hero_set_visible(visible)</tt>:
+hides or unhides the hero
+
+- <tt>sol.map.npc_set_position(npc, x, y)</tt>:
+sets the position of an NPC
+
+- <tt>sol.map.npc_walk(npc, path, loop, ignore_obstacles)</tt>:
+makes an NPC move with the specified path
+
+- <tt>sol.map.npc_random_walk(npc)</tt>:
+makes an NPC walk randomly
+
+- <tt>sol.map.npc_jump(npc, direction, length, ignore_obstacles)</tt>:
+makes an NPC jump towards the specified direction (0 to 7)
+
+- <tt>sol.map.npc_set_animation(npc, animation_name)</tt>:
+sets the animation of the sprite of an NPC
+
+- <tt>sol.map.npc_set_animation_ignore_suspend(npc, ignore)</tt>:
+sets whether the animation of an NPS'c sprite should keep playing when the game is suspended
+
+- <tt>sol.map.npc_set_direction(npc, direction)</tt>:
+sets the direction of an NPC's sprite (0 to 3)
+
+- <tt>sol.map.npc_remove(npc)</tt>:
+removes an NPC from the map
+
+- <tt>sol.map.chest_set_open(chest_name, bool open)</tt>:
+sets the state of a chest (without giving or reseting its content)
+
+- <tt>sol.map.chest_set_hidden(chest_name, bool hidden)</tt>:
+hides or unhides a chest
+
+- <tt>sol.map.chest_is_hidden(chest_name)</tt>:
+returns whether a chest is hidden
+
+- <tt>sol.map.tile_set_enabled(tile_name, enable)</tt>:
+enables or disables a dynamic tile
+
+- <tt>sol.map.tile_set_group_enabled(tiles_prefix, enable)</tt>:
+active ou désactive un ensemble de tiles dynamiques
+
+- <tt>sol.map.tile_is_enabled(tile_name)</tt>:
+returns where a dynamic tile is enabled
+
+- <tt>sol.map.block_reset(block_name)</tt>:
+places a block where it was when the map started
+
+- <tt>sol.map.block_reset_all()</tt>:
+resets all blocks of the map
+
+- <tt>sol.map.interactive_entity_get_animation(entity)</tt>:
+returns the current sprite animation of an interactive entity
+
+- <tt>sol.map.interactive_entity_get_animation_delay(entity)</tt>:
+returns the delay (in milliseconds) between two frames for the sprite of an interactive entity
+
+- <tt>sol.map.interactive_entity_get_animation_frame(entity)</tt>:
+returns the current animation frame of an interactive entity
+
+- <tt>sol.map.interactive_entity_get_direction(entity)</tt>:
+returns the sprite direction of an interactive entity
+
+- <tt>sol.map.interactive_entity_is_animation_paused(entity)</tt>:
+returns whether the sprite animation of an interactive entity is paused
+
+- <tt>sol.map.interactive_entity_set_animation(entity, animation_name)</tt>:
+sets the sprite animation of an interactive entity
+
+- <tt>sol.map.interactive_entity_set_animation_delay(entity, delay)</tt>:
+sets the delay (in milliseconds) between two frames for the sprite of an interactive entity
+
+- <tt>sol.map.interactive_entity_set_animation_frame(entity, frame)</tt>:
+sets the animation frame of an interactive entity
+
+- <tt>sol.map.interactive_entity_set_direction(entity, direction)</tt>:
+sets the sprite direction of an interactive entity
+
+- <tt>sol.map.interactive_entity_set_animation_paused(entity, paused)</tt>:
+pauses or resumes the sprite animation of an interactive entity
+
+- <tt>sol.map.interactive_entity_set_animation_ignore_suspend(npc, ignore)</tt>:
+sets whether the sprite of an NPC should keep playing its animation when the game is suspended
+
+- <tt>sol.map.interactive_entity_fade(entity, direction)</tt>:
+displays a fade-in (0) or a fade-out (1) effect on an interactive entity
+
+- <tt>sol.map.interactive_entity_remove(entity)</tt>:
+removes an interactive entity from the map
+
+- <tt>sol.map.shop_item_remove(shop_item_name)</tt>:
+removes a shop item from the map
+
+- <tt>sol.map.switch_is_enabled(switch_name)</tt>:
+returns whether a switch is enabled
+
+- <tt>sol.map.switch_set_enabled(switch_name, enabled)</tt>:
+enables or disables a switch
+
+- <tt>sol.map.switch_set_locked(switch_name, locked)</tt>:
+locks a switch in its current state or unlocks it
+
+- <tt>sol.map.enemy_is_dead(enemy_name)</tt>:
+returns whether an enemy is dead
+
+- <tt>sol.map.enemy_is_group_dead(enemies_name_prefix)</tt>:
+returns whether all enemies having a common prefix are dead
+
+- <tt>sol.map.enemy_set_enabled(enemy_name)</tt>:
+enables or disables an enemy
+
+- <tt>sol.map.enemy_start_boss(enemy_name)</tt>:
+starts fighting a boss if it is alive
+
+- <tt>sol.map.enemy_end_boss()</tt>:
+sets the fight with a boss as finished (usually called after picking the life container)
+
+- <tt>sol.map.enemy_start_miniboss(enemy_name)</tt>:
+starts fighting a miniboss if it is alive
+
+- <tt>sol.map.enemy_end_miniboss()</tt>:
+sets the fight with a miniboss as finished
+
+- <tt>sol.map.sensor_remove(sensor_name)</tt>:
+removes a sensor from the map
+
+- <tt>sol.map.door_open(door_prefix)</tt>:
+opens one or several doors, playing their animation and sound
+
+- <tt>sol.map.door_close(door_prefix)</tt>:
+closes one or several doors, playing their animation and sound
+
+- <tt>sol.map.door_set_open(door_name, open)</tt>:
+changes immediately the state of a door (without playing animation and sound)
+
+@section cpp_to_lua Calling Lua from C++
+
+When the C++ engine triggers an event, all current scripts are notified.
+Their corresponding event function is called if it exists.
+An event function is a Lua function prefixed by <tt>event_</tt>.
+We give here the list of event functions that the engine will call if
+you define them in your script.
 
 - <tt>event_update()</tt>: 
 called at each cycle (but take care of the performances)
@@ -45,113 +350,6 @@ called when the player is obtaining a treasure (coming from a chest or not)
 
 - <tt>event_treasure_obtained(item_name, variant, savegame_variable)</tt>: 
 called when the player has just finished obtaining a treasure
-
-
-@subsection lua_to_cpp Engine functions that a Lua script can call
-
-These functions of the C++ engine can be called by any type of script.
-
-- <tt>play_sound(sound_id)</tt>: 	
-plays a sound
-
-- <tt>play_music(music_id)</tt>: 
-plays a music
-
-- <tt>timer_start(duration, callback, with_sound)</tt>: 
-starts a timer which will call a function of your script once finished
-
-- <tt>timer_stop(callback)</tt>: 
-stops a timer that is currently running
-
-- <tt>savegame_get_string(index)</tt>:
-returns a string saved
-
-- <tt>savegame_get_integer(index)</tt>: 
-returns an integer saved
-
-- <tt>savegame_get_boolean(index)</tt>: 
-returns a boolean saved
-
-- <tt>savegame_set_string(index, value)</tt>: 
-sets a string in the savegame
-
-- <tt>savegame_set_integer(index, value)</tt>: 
-sets an integer in the savegame
-
-- <tt>savegame_set_boolean(index, value)</tt>: 
-sets a boolean in the savegame
-
-- <tt>savegame_get_name()</tt>:
-returns the name of the hero (cannot exceed 5 characters)
-
-- <tt>equipment_get_life()</tt>:
-returns the current level of life of the player
-
-- <tt>equipment_add_life(life)</tt>: 
-adds some life to the player
-
-- <tt>equipment_remove_life(life)</tt>: 
-removes some life from the player
-
-- <tt>equipment_get_money()</tt>:
-returns the amount of money of the player
-
-- <tt>equipment_add_money(money)</tt>: 
-adds some money to the player
-
-- <tt>equipment_remove_money(money)</tt>: 
-removes some money from the player
-
-- <tt>equipment_has_ability(ability_name)</tt>: 
-returns whether the player has an ability
-
-- <tt>equipment_get_ability(ability_name)</tt>: 
-returns the level of an ability
-
-- <tt>equipment_set_ability(ability_name, level)</tt>: 
-sets the level of an ability
-
-- <tt>equipment_has_item(item_name)</tt>: 
-returns whether the player has an item
-
-- <tt>equipment_get_item(item_name)</tt>: 
-returns the possession state of an item
-
-- <tt>equipment_set_item(item_name, variant)</tt>: 
-sets the possession state of an item
-
-- <tt>equipment_has_item_amount(item_name, amount)</tt>: 
-returns the amount the player has for an item
-
-- <tt>equipment_get_item_amount(item_name)</tt>: 
-returns whether the player has at least the specified amount of an item
-
-- <tt>equipment_add_item_amount(item_name, amount)</tt>: 
-adds an amount of the specified item
-
-- <tt>equipment_remove_item_amount(item_name, amount)</tt>: 
-removes an amount of the specified item
-
-- <tt>equipment_is_dungeon_finished(dungeon)</tt>:
-returns whether the specified dungeon is finished
-
-- <tt>equipment_set_dungeon_finished(dungeon)</tt>:
-sets the specified dungeon as finished
-
-
-- <tt>treasure_give(item_name, variant, savegame_variable)</tt>: 
-gives a treasure to the player (without using a chest)
-
-
-@section map_script_api Map scripts API
-
-The following functions are specific to the scripts of maps.
-Most of them apply to the entities of the map.
-
-@subsection cpp_to_lua Lua functions called by the engine
-
-These Lua functions are called, if they exist, by the C++ engine
-when it wants to notify the script of the current map that an event just occured.
 
 - <tt>event_map_started(destination_point_name)</tt>:
 called when the map starts, before the opening transition
@@ -198,191 +396,6 @@ called when the player has just bought an item in a shop
 
 - <tt>event_enemy_dead(enemy_name)</tt>:
 called when an enemy is killed
-
-
-@subsection lua_to_cpp Engine functions that a Lua script can call
-
-These engine functions can be called by the Lua script of a map.
-
-- <tt>hud_set_pause_enabled(bool enabled)</tt>: 
-allows or disallows to pause the game (and to save the game)
-
-- <tt>dialog_start(first_message_id)</tt>: 
-starts a dialog (a sequence of messages) by displaying a first message
-
-- <tt>dialog_set_variable(first_message_id, value)</tt>: 
-specifies a value to display inside a dialog
-
-- <tt>dialog_set_style(style)</tt>: 
-sets the style of the dialog box for subsequent messages
-
-- <tt>hud_set_enabled(enabled)</tt>: 
-enables or disables the HUD displaying
-
-- <tt>camera_move(x, y, speed)</tt>: 
-suspends the game and moves the camera towards a target point
-
-- <tt>camera_restore()</tt>: 
-sents the camera back to the hero after a call to camera_move()
-
-- <tt>hero_freeze()</tt>: 
-prevents the hero from moving until you call <tt>hero_unfreeze()</tt>
-
-- <tt>hero_unfreeze()</tt>: 
-restores the control to the hero, typically after a call to <tt>hero_freeze()</tt>
-
-- <tt>hero_set_map(map_id, destination_point, transition)</tt>:
-sents the hero on a map (possibly the same one)
-
-- <tt>hero_set_direction(direction)</tt>:
-sets the direction of the hero's sprites
-
-- <tt>hero_align_on_sensor(sensor_name)</tt>:
-places the hero's bounding box exactly on the rectangle of a sensor
-
-- <tt>hero_walk(path, loop, ignore_obstacles)</tt>:
-makes the hero move with the specified path
-
-- <tt>hero_jump(direction, length, ignore_obstacles)</tt>:
-makes the hero jump towards the specified direction (0 to 7)
-
-- <tt>hero_start_victory_sequence()</tt>:
-starts the animation where the hero brandishes his sword for a victory
-
-- <tt>hero_set_visible(visible)</tt>:
-hides or unhides the hero
-
-- <tt>npc_set_position(npc, x, y)</tt>:
-sets the position of an NPC
-
-- <tt>npc_walk(npc, path, loop, ignore_obstacles)</tt>:
-makes an NPC move with the specified path
-
-- <tt>npc_random_walk(npc)</tt>:
-makes an NPC walk randomly
-
-- <tt>npc_jump(npc, direction, length, ignore_obstacles)</tt>:
-makes an NPC jump towards the specified direction (0 to 7)
-
-- <tt>npc_set_animation(npc, animation_name)</tt>:
-sets the animation of the sprite of an NPC
-
-- <tt>npc_set_animation_ignore_suspend(npc, ignore)</tt>:
-sets whether the animation of an NPS'c sprite should keep playing when the game is suspended
-
-- <tt>npc_set_direction(npc, direction)</tt>:
-sets the direction of an NPC's sprite (0 to 3)
-
-- <tt>npc_remove(npc)</tt>:
-removes an NPC from the map
-
-- <tt>chest_set_open(chest_name, bool open)</tt>:
-sets the state of a chest (without giving or reseting its content)
-
-- <tt>chest_set_hidden(chest_name, bool hidden)</tt>:
-hides or unhides a chest
-
-- <tt>chest_is_hidden(chest_name)</tt>:
-returns whether a chest is hidden
-
-- <tt>tile_set_enabled(tile_name, enable)</tt>:
-enables or disables a dynamic tile
-
-- <tt>tile_set_group_enabled(tiles_prefix, enable)</tt>:
-active ou désactive un ensemble de tiles dynamiques
-
-- <tt>tile_is_enabled(tile_name)</tt>:
-returns where a dynamic tile is enabled
-
-- <tt>block_reset(block_name)</tt>:
-places a block where it was when the map started
-
-- <tt>block_reset_all()</tt>:
-resets all blocks of the map
-
-- <tt>interactive_entity_get_animation(entity)</tt>:
-returns the current sprite animation of an interactive entity
-
-- <tt>interactive_entity_get_animation_delay(entity)</tt>:
-returns the delay (in milliseconds) between two frames for the sprite of an interactive entity
-
-- <tt>interactive_entity_get_animation_frame(entity)</tt>:
-returns the current animation frame of an interactive entity
-
-- <tt>interactive_entity_get_direction(entity)</tt>:
-returns the sprite direction of an interactive entity
-
-- <tt>interactive_entity_is_animation_paused(entity)</tt>:
-returns whether the sprite animation of an interactive entity is paused
-
-- <tt>interactive_entity_set_animation(entity, animation_name)</tt>:
-sets the sprite animation of an interactive entity
-
-- <tt>interactive_entity_set_animation_delay(entity, delay)</tt>:
-sets the delay (in milliseconds) between two frames for the sprite of an interactive entity
-
-- <tt>interactive_entity_set_animation_frame(entity, frame)</tt>:
-sets the animation frame of an interactive entity
-
-- <tt>interactive_entity_set_direction(entity, direction)</tt>:
-sets the sprite direction of an interactive entity
-
-- <tt>interactive_entity_set_animation_paused(entity, paused)</tt>:
-pauses or resumes the sprite animation of an interactive entity
-
-- <tt>interactive_entity_set_animation_ignore_suspend(npc, ignore)</tt>:
-sets whether the sprite of an NPC should keep playing its animation when the game is suspended
-
-- <tt>interactive_entity_fade(entity, direction)</tt>:
-displays a fade-in (0) or a fade-out (1) effect on an interactive entity
-
-- <tt>interactive_entity_remove(entity)</tt>:
-removes an interactive entity from the map
-
-- <tt>shop_item_remove(shop_item_name)</tt>:
-removes a shop item from the map
-
-- <tt>switch_is_enabled(switch_name)</tt>:
-returns whether a switch is enabled
-
-- <tt>switch_set_enabled(switch_name, enabled)</tt>:
-enables or disables a switch
-
-- <tt>switch_set_locked(switch_name, locked)</tt>:
-locks a switch in its current state or unlocks it
-
-- <tt>enemy_is_dead(enemy_name)</tt>:
-returns whether an enemy is dead
-
-- <tt>enemy_is_group_dead(enemies_name_prefix)</tt>:
-returns whether all enemies having a common prefix are dead
-
-- <tt>enemy_set_enabled(enemy_name)</tt>:
-enables or disables an enemy
-
-- <tt>enemy_start_boss(enemy_name)</tt>:
-starts fighting a boss if it is alive
-
-- <tt>enemy_end_boss()</tt>:
-sets the fight with a boss as finished (usually called after picking the life container)
-
-- <tt>enemy_start_miniboss(enemy_name)</tt>:
-starts fighting a miniboss if it is alive
-
-- <tt>enemy_end_miniboss()</tt>:
-sets the fight with a miniboss as finished
-
-- <tt>sensor_remove(sensor_name)</tt>:
-removes a sensor from the map
-
-- <tt>door_open(door_prefix)</tt>:
-opens one or several doors, playing their animation and sound
-
-- <tt>door_close(door_prefix)</tt>:
-closes one or several doors, playing their animation and sound
-
-- <tt>door_set_open(door_name, open)</tt>:
-changes immediately the state of a door (without playing animation and sound)
 
 */
 

@@ -32,7 +32,7 @@ class AnimatedTilePattern: public TilePattern {
   public:
 
     /**
-     * Tile animation sequence mode: 0-1-2 or 0-1-2-1.
+     * @brief Tile animation sequence mode: 0-1-2 or 0-1-2-1.
      */
     enum AnimationSequence {
       ANIMATION_SEQUENCE_012  = 1,

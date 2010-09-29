@@ -161,7 +161,7 @@ void Switch::update() {
 
     // if an entity was on the switch, see if it is still there
     entity_overlapping_still_present = false;
-    check_collision(entity_overlapping);
+    check_collision(*entity_overlapping);
 
     if (!entity_overlapping_still_present) {
       // the entity just left the switch or disappeared from the map (it may even have been freed)
@@ -181,11 +181,11 @@ void Switch::update() {
  * @param entity an entity
  * @return true if the entity's collides with this entity
  */
-bool Switch::test_collision_custom(MapEntity *entity) {
+bool Switch::test_collision_custom(MapEntity &entity) {
 
   // this collision test is performed for walkable switches only
 
-  const Rectangle &entity_rectangle = entity->get_bounding_box();
+  const Rectangle &entity_rectangle = entity.get_bounding_box();
   int x1 = entity_rectangle.get_x() + 4;
   int x2 = x1 + entity_rectangle.get_width() - 9;
   int y1 = entity_rectangle.get_y() + 4;
@@ -200,9 +200,9 @@ bool Switch::test_collision_custom(MapEntity *entity) {
  * @param entity_overlapping the entity overlapping the detector
  * @param collision_mode the collision mode that detected the collision
  */
-void Switch::notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
+void Switch::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
 
-  if (entity_overlapping == this->entity_overlapping) {
+  if (&entity_overlapping == this->entity_overlapping) {
     // already overlapping
     entity_overlapping_still_present = true;
     return;
@@ -214,20 +214,20 @@ void Switch::notify_collision(MapEntity *entity_overlapping, CollisionMode colli
 
   if (is_walkable()) {
     // walkable switch: allow the hero or a block
-    if (entity_overlapping->is_hero()) {
+    if (entity_overlapping.is_hero()) {
       set_enabled(!needs_block);
-      this->entity_overlapping = entity_overlapping;
+      this->entity_overlapping = &entity_overlapping;
     }
-    else if (entity_overlapping->get_type() == BLOCK) {
+    else if (entity_overlapping.get_type() == BLOCK) {
       // blocks can only enable walkable, visible switches
       set_enabled(subtype == WALKABLE_VISIBLE);
-      this->entity_overlapping = entity_overlapping;
+      this->entity_overlapping = &entity_overlapping;
     }
   }
-  else if (subtype == ARROW_TARGET && entity_overlapping->get_type() == ARROW) {
+  else if (subtype == ARROW_TARGET && entity_overlapping.get_type() == ARROW) {
     // arrow target: only allow an arrow
-    Arrow *arrow = (Arrow*) entity_overlapping;
-    set_enabled(arrow->is_stopped());
+    Arrow &arrow = (Arrow&) entity_overlapping;
+    set_enabled(arrow.is_stopped());
   }
 
   if (enabled) {

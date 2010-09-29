@@ -95,10 +95,10 @@ bool Hero::SwordSwingingState::can_sword_hit_crystal_switch() {
  * @param detector the detector to check
  * @return true if the sword is cutting this detector
  */
-bool Hero::SwordSwingingState::is_cutting_with_sword(Detector *detector) {
+bool Hero::SwordSwingingState::is_cutting_with_sword(Detector &detector) {
 
   // check the distance to the detector
-  int distance = detector->is_obstacle_for(&hero) ? 14 : 4;
+  int distance = detector.is_obstacle_for(hero) ? 14 : 4;
   Rectangle tested_point = hero.get_facing_point();
 
   switch (get_sprites().get_animation_direction()) {
@@ -120,6 +120,6 @@ bool Hero::SwordSwingingState::is_cutting_with_sword(Detector *detector) {
       break;
   }
 
-  return detector->get_bounding_box().contains(tested_point.get_x(), tested_point.get_y());
+  return detector.overlaps(tested_point.get_x(), tested_point.get_y());
 }
 

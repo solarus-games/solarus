@@ -226,36 +226,36 @@ class Hero: public MapEntity {
      *
      * Information about what is considered as an obstacle for the hero.
      */
-    bool is_obstacle_for(MapEntity *other);
+    bool is_obstacle_for(MapEntity &other);
     bool is_water_obstacle();
     bool is_hole_obstacle();
     bool is_ladder_obstacle();
-    bool is_block_obstacle(Block *block);
-    bool is_teletransporter_obstacle(Teletransporter *teletransporter);
-    bool is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt);
-    bool is_stairs_obstacle(Stairs *stairs);
-    bool is_sensor_obstacle(Sensor *sensor);
-    bool is_raised_block_obstacle(CrystalSwitchBlock *raised_block);
-    bool is_jump_sensor_obstacle(JumpSensor *jump_sensor);
+    bool is_block_obstacle(Block &block);
+    bool is_teletransporter_obstacle(Teletransporter &teletransporter);
+    bool is_conveyor_belt_obstacle(ConveyorBelt &conveyor_belt);
+    bool is_stairs_obstacle(Stairs &stairs);
+    bool is_sensor_obstacle(Sensor &sensor);
+    bool is_raised_block_obstacle(CrystalSwitchBlock &raised_block);
+    bool is_jump_sensor_obstacle(JumpSensor &jump_sensor);
 
     /**
      * @name Collisions.
      *
      * Functions called when a collision is detected with another entity.
      */
-    void notify_collision_with_destructible_item(DestructibleItem *destructible_item, CollisionMode collision_mode);
-    void notify_collision_with_enemy(Enemy *enemy);
-    void notify_collision_with_enemy(Enemy *enemy, Sprite *enemy_sprite, Sprite *this_sprite);
-    void notify_collision_with_teletransporter(Teletransporter *teletransporter, CollisionMode collision_mode);
-    void notify_collision_with_conveyor_belt(ConveyorBelt *conveyor_belt, int dx, int dy);
-    void notify_collision_with_stairs(Stairs *stairs, CollisionMode collision_mode);
-    void notify_collision_with_jump_sensor(JumpSensor *jump_sensor);
-    void notify_collision_with_sensor(Sensor *sensor);
-    void notify_collision_with_explosion(Explosion *explosion, Sprite *sprite_overlapping);
-    void notify_collision_with_crystal_switch(CrystalSwitch *crystal_switch, CollisionMode collision_mode);
-    void notify_collision_with_crystal_switch(CrystalSwitch *crystal_switch, Sprite *sprite_overlapping);
-    void avoid_collision(MapEntity *entity, int direction);
-    bool is_striking_with_sword(Detector *detector);
+    void notify_collision_with_destructible_item(DestructibleItem &destructible_item, CollisionMode collision_mode);
+    void notify_collision_with_enemy(Enemy &enemy);
+    void notify_collision_with_enemy(Enemy &enemy, Sprite &enemy_sprite, Sprite &this_sprite);
+    void notify_collision_with_teletransporter(Teletransporter &teletransporter, CollisionMode collision_mode);
+    void notify_collision_with_conveyor_belt(ConveyorBelt &conveyor_belt, int dx, int dy);
+    void notify_collision_with_stairs(Stairs &stairs, CollisionMode collision_mode);
+    void notify_collision_with_jump_sensor(JumpSensor &jump_sensor);
+    void notify_collision_with_sensor(Sensor &sensor);
+    void notify_collision_with_explosion(Explosion &explosion, Sprite &sprite_overlapping);
+    void notify_collision_with_crystal_switch(CrystalSwitch &crystal_switch, CollisionMode collision_mode);
+    void notify_collision_with_crystal_switch(CrystalSwitch &crystal_switch, Sprite &sprite_overlapping);
+    void avoid_collision(MapEntity &entity, int direction);
+    bool is_striking_with_sword(Detector &detector);
 
     /**
      * @name Enemies.

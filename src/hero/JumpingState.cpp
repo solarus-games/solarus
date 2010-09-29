@@ -183,7 +183,7 @@ bool Hero::JumpingState::can_avoid_conveyor_belt() {
  * @param sensor a sensor
  * @return true if the sensor is an obstacle in this state
  */
-bool Hero::JumpingState::is_sensor_obstacle(Sensor *sensor) {
+bool Hero::JumpingState::is_sensor_obstacle(Sensor &sensor) {
 
   // we allow small jumps (e.g. falling from a raised crystal switch block)
   // but not jumping with the feather

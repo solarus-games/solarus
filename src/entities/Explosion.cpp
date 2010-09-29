@@ -130,8 +130,9 @@ void Explosion::update() {
  * @param other_sprite the sprite of other_entity that is overlapping this detector
  * @param this_sprite the sprite of this detector that is overlapping the other entity's sprite
  */
-void Explosion::notify_collision(MapEntity *other_entity, Sprite *other_sprite, Sprite *this_sprite) {
-  other_entity->notify_collision_with_explosion(this, other_sprite);
+void Explosion::notify_collision(MapEntity &other_entity, Sprite &other_sprite, Sprite &this_sprite) {
+
+  other_entity.notify_collision_with_explosion(*this, other_sprite);
 }
 
 /**
@@ -140,8 +141,9 @@ void Explosion::notify_collision(MapEntity *other_entity, Sprite *other_sprite, 
  * @param crystal_switch the crystal switch
  * @param sprite_overlapping the sprite of the current entity that collides with the crystal switch
  */
-void Explosion::notify_collision_with_crystal_switch(CrystalSwitch *crystal_switch, Sprite *sprite_overlapping) {
-  crystal_switch->activate(this);
+void Explosion::notify_collision_with_crystal_switch(CrystalSwitch &crystal_switch, Sprite &sprite_overlapping) {
+
+  crystal_switch.activate(*this);
 }
 
 /**
@@ -150,7 +152,8 @@ void Explosion::notify_collision_with_crystal_switch(CrystalSwitch *crystal_swit
  * @param enemy_sprite the enemy's sprite that overlaps a sprite of this entity
  * @param this_sprite this entity's sprite that overlaps the enemy's sprite
  */
-void Explosion::notify_collision_with_enemy(Enemy *enemy, Sprite *enemy_sprite, Sprite *this_sprite) {
+void Explosion::notify_collision_with_enemy(Enemy &enemy, Sprite &enemy_sprite, Sprite &this_sprite) {
+
   try_attack_enemy(enemy, enemy_sprite);
 }
 
@@ -162,17 +165,17 @@ void Explosion::notify_collision_with_enemy(Enemy *enemy, Sprite *enemy_sprite, 
  * @param enemy the enemy to attack
  * @param enemy_sprite the enemy's sprite detected by the explosion
  */
-void Explosion::try_attack_enemy(Enemy *enemy, Sprite *enemy_sprite) {
+void Explosion::try_attack_enemy(Enemy &enemy, Sprite &enemy_sprite) {
   
   // see if the enemy was already hurt by this explosion
   bool found = false;
   std::list<Enemy*>::iterator it;
   for (it = victims.begin(); it != victims.end() && !found; it++) {
-    found = ((*it) == enemy);
+    found = ((*it) == &enemy);
   }
 
   if (!found) {
-    enemy->try_hurt(ATTACK_EXPLOSION, this, enemy_sprite);
+    enemy.try_hurt(ATTACK_EXPLOSION, *this, &enemy_sprite);
   }
 }
 
@@ -190,10 +193,10 @@ void Explosion::try_attack_enemy(Enemy *enemy, Sprite *enemy_sprite) {
  * - a value of -2 means that the attack immobilized the enemy
  * @param killed indicates that the attack has just killed the enemy
  */
-void Explosion::notify_attacked_enemy(EnemyAttack attack, Enemy *victim, int result, bool killed) {
+void Explosion::notify_attacked_enemy(EnemyAttack attack, Enemy &victim, int result, bool killed) {
 
   if (result > 0) {
-    victims.push_back(victim);
+    victims.push_back(&victim);
   }
 }
 

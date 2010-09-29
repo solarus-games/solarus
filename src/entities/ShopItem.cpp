@@ -138,7 +138,7 @@ bool ShopItem::is_sword_ignored() {
  * @param other another entity
  * @return true
  */
-bool ShopItem::is_obstacle_for(MapEntity *other) {
+bool ShopItem::is_obstacle_for(MapEntity &other) {
   return true;
 }
 
@@ -150,14 +150,14 @@ bool ShopItem::is_obstacle_for(MapEntity *other) {
  * @param entity_overlapping the entity overlapping the detector
  * @param collision_mode the collision mode that detected the collision
  */
-void ShopItem::notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
+void ShopItem::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
 
-  if (entity_overlapping->is_hero() && !get_game().is_suspended()) {
+  if (entity_overlapping.is_hero() && !get_game().is_suspended()) {
 
-    Hero *hero = (Hero*) entity_overlapping;
+    Hero &hero = (Hero&) entity_overlapping;
 
     if (get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
-	&& hero->is_free()) {
+	&& hero.is_free()) {
 
       // we show the 'look' icon
       get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_LOOK);

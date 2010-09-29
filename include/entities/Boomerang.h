@@ -52,16 +52,16 @@ class Boomerang: public MapEntity {
     bool can_be_displayed();
     bool is_displayed_in_y_order();
 
-    bool is_teletransporter_obstacle(Teletransporter *teletransporter);
-    bool is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt);
-    bool is_stairs_obstacle(Stairs *stairs);
+    bool is_teletransporter_obstacle(Teletransporter &teletransporter);
+    bool is_conveyor_belt_obstacle(ConveyorBelt &conveyor_belt);
+    bool is_stairs_obstacle(Stairs &stairs);
     bool is_water_obstacle();
     bool is_hole_obstacle();
     bool is_ladder_obstacle();
-    bool is_raised_block_obstacle(CrystalSwitchBlock *raised_block);
-    bool is_crystal_switch_obstacle(CrystalSwitch *crystal_switch);
-    bool is_npc_obstacle(InteractiveEntity *npc);
-    bool is_jump_sensor_obstacle(JumpSensor *jump_sensor);
+    bool is_raised_block_obstacle(CrystalSwitchBlock &raised_block);
+    bool is_crystal_switch_obstacle(CrystalSwitch &crystal_switch);
+    bool is_npc_obstacle(InteractiveEntity &npc);
+    bool is_jump_sensor_obstacle(JumpSensor &jump_sensor);
 
     // state
     bool is_going_back();
@@ -70,9 +70,9 @@ class Boomerang: public MapEntity {
     void update();
 
     // collisions
-    void notify_collision_with_crystal_switch(CrystalSwitch *crystal_switch, CollisionMode collision_mode);
-    void notify_collision_with_enemy(Enemy *enemy);
-    void notify_attacked_enemy(EnemyAttack attack, Enemy *victim, int result, bool killed);
+    void notify_collision_with_crystal_switch(CrystalSwitch &crystal_switch, CollisionMode collision_mode);
+    void notify_collision_with_enemy(Enemy &enemy);
+    void notify_attacked_enemy(EnemyAttack attack, Enemy &victim, int result, bool killed);
 };
 
 

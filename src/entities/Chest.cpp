@@ -108,7 +108,7 @@ bool Chest::is_displayed_in_y_order() {
  * @param other another entity
  * @return true if this entity is an obstacle for the other one
  */
-bool Chest::is_obstacle_for(MapEntity *other) {
+bool Chest::is_obstacle_for(MapEntity &other) {
   return is_visible();
 }
 
@@ -148,7 +148,7 @@ void Chest::set_visible(bool visible) {
 
     // make sure the chest does not appear on the hero
     if (visible && overlaps(get_hero())) {
-      get_hero().avoid_collision(this, 3);
+      get_hero().avoid_collision(*this, 3);
     }
   }
 }
@@ -199,19 +199,19 @@ void Chest::set_open(bool open) {
  * @param entity_overlapping the entity overlapping the detector
  * @param collision_mode the collision mode that detected the collision
  */
-void Chest::notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
+void Chest::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
 
   if (is_suspended()) {
     return;
   }
 
-  if (entity_overlapping->is_hero() && is_visible()) {
+  if (entity_overlapping.is_hero() && is_visible()) {
 
-    Hero *hero = (Hero*) entity_overlapping;
+    Hero &hero = (Hero&) entity_overlapping;
 
     if (get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
-	&& hero->is_free()
-	&& hero->is_facing_direction4(1)
+	&& hero.is_free()
+	&& hero.is_facing_direction4(1)
 	&& !is_open()) {
 
       // we show the 'open' icon, even if this is a big chest and the player does not have the big key

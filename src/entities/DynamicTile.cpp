@@ -79,6 +79,7 @@ MapEntity* DynamicTile::parse(Game &game, std::istream &is, Layer layer, int x, 
  * @return the type of entity
  */
 EntityType DynamicTile::get_type() {
+
   return DYNAMIC_TILE;
 }
 
@@ -87,6 +88,7 @@ EntityType DynamicTile::get_type() {
  * @param map the map
  */
 void DynamicTile::set_map(Map &map) {
+
   MapEntity::set_map(map);
   this->tile_pattern = &map.get_tileset().get_tile_pattern(tile_pattern_id);
 }
@@ -96,7 +98,8 @@ void DynamicTile::set_map(Map &map) {
  * @param other an entity
  * @return true if this tile is an obstacle for the entity
  */
-bool DynamicTile::is_obstacle_for(MapEntity *other) {
+bool DynamicTile::is_obstacle_for(MapEntity &other) {
+
   return enabled && tile_pattern->get_obstacle() >= OBSTACLE;
 }
 
@@ -104,6 +107,7 @@ bool DynamicTile::is_obstacle_for(MapEntity *other) {
  * @brief Displays the tile on the map.
  */
 void DynamicTile::display_on_map() {
+
   if (enabled) {
     tile_pattern->display_on_map(&get_map(), bounding_box);
   }

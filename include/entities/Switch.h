@@ -70,8 +70,8 @@ class Switch: public Detector {
     void set_enabled(bool enabled);
     void set_locked(bool locked);
     void update();
-    bool test_collision_custom(MapEntity *entity);
-    void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
+    bool test_collision_custom(MapEntity &entity);
+    void notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode);
 };
 
 #endif

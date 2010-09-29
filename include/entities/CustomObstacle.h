@@ -42,7 +42,7 @@ class CustomObstacle: public MapEntity {
     static CreationFunction parse;
 
     EntityType get_type();
-    bool is_obstacle_for(MapEntity *other);
+    bool is_obstacle_for(MapEntity &other);
 };
 
 #endif

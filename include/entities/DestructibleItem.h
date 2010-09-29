@@ -99,11 +99,11 @@ class DestructibleItem: public Detector {
     bool can_explode();
     bool is_disabled();
 
-    bool is_obstacle_for(MapEntity *other);
-    bool test_collision_custom(MapEntity *entity);
-    void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
-    void notify_collision(MapEntity *other_entity, Sprite *other_sprite, Sprite *this_sprite);
-    void notify_collision_with_hero(Hero *hero, CollisionMode collision_mode);
+    bool is_obstacle_for(MapEntity &other);
+    bool test_collision_custom(MapEntity &entity);
+    void notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode);
+    void notify_collision(MapEntity &other_entity, Sprite &other_sprite, Sprite &this_sprite);
+    void notify_collision_with_hero(Hero &hero, CollisionMode collision_mode);
     void action_key_pressed();
 
     void set_suspended(bool suspended);

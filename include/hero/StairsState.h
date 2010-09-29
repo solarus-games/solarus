@@ -27,7 +27,7 @@ class Hero::StairsState: public Hero::State {
 
   private:
 
-    Stairs *stairs;			/**< the stairs the hero is currently taking */
+    Stairs &stairs;			/**< the stairs the hero is currently taking */
     Stairs::Way way;			/**< indicates the way the hero is taking the stairs:
 					 * - for stairs inside a single floor, NORMAL_WAY means that the hero is going upstairs
 					 * and REVERSE_WAY means the contrary;
@@ -40,7 +40,7 @@ class Hero::StairsState: public Hero::State {
 
   public:
 
-    StairsState(Hero &hero, Stairs *stairs, Stairs::Way way);
+    StairsState(Hero &hero, Stairs &stairs, Stairs::Way way);
     ~StairsState();
 
     void start(State *previous_state);

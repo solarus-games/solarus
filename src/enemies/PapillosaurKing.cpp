@@ -88,7 +88,7 @@ void PapillosaurKing::restart() {
  * @param destructible_item a destructible item
  * @return true if the destructible item is currently an obstacle for this entity
  */
-bool PapillosaurKing::is_destructible_item_obstacle(DestructibleItem *destructible_item) {
+bool PapillosaurKing::is_destructible_item_obstacle(DestructibleItem &destructible_item) {
   // as the papillosaur is a big flying boss, it can fly over destructible items
   return false;
 }
@@ -172,7 +172,7 @@ void PapillosaurKing::update() {
  * @param attack the attack that was just successful
  * @param life_points the number of life points lost by this enemy
  */
-void PapillosaurKing::just_hurt(MapEntity *source, EnemyAttack attack, int life_points) {
+void PapillosaurKing::just_hurt(MapEntity &source, EnemyAttack attack, int life_points) {
 
   if (get_life() <= 0) {
     // the papillosaur is dying: remove the minillosaur eggs

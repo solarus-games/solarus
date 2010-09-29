@@ -89,7 +89,7 @@ EntityType CustomObstacle::get_type() {
  * @param other another entity
  * @return true if this entity is an obstacle for the other one
  */
-bool CustomObstacle::is_obstacle_for(MapEntity *other) {
-  return entity_types_stopped[other->get_type()];
+bool CustomObstacle::is_obstacle_for(MapEntity &other) {
+  return entity_types_stopped[other.get_type()];
 }
 

@@ -129,7 +129,7 @@ MapEntity* Enemy::parse(Game &game, std::istream &is, Layer layer, int x, int y)
  * this enemy is killed, or -1 if this enemy is not saved
  * @param treasure the pickable item that the enemy drops (possibly NULL)
  */
-MapEntity * Enemy::create(Game &game, Subtype type, Rank rank, int savegame_variable,
+MapEntity* Enemy::create(Game &game, Subtype type, Rank rank, int savegame_variable,
     const std::string &name, Layer layer, int x, int y, int direction, const Treasure &treasure) {
 
   // see if the enemy is dead
@@ -215,8 +215,9 @@ Enemy::Rank Enemy::get_rank() {
  * @param other another entity
  * @return true if this entity is an obstacle for the other one
  */
-bool Enemy::is_obstacle_for(MapEntity *other) {
-  return is_enabled() && other->is_enemy_obstacle(this);
+bool Enemy::is_obstacle_for(MapEntity &other) {
+
+  return is_enabled() && other.is_enemy_obstacle(*this);
 }
 
 /**
@@ -224,7 +225,7 @@ bool Enemy::is_obstacle_for(MapEntity *other) {
  * @param sensor a sensor
  * @return true if the sensor is currently an obstacle this entity
  */
-bool Enemy::is_sensor_obstacle(Sensor *sensor) {
+bool Enemy::is_sensor_obstacle(Sensor &sensor) {
   return true;
 }
 
@@ -233,7 +234,7 @@ bool Enemy::is_sensor_obstacle(Sensor *sensor) {
  * @param destructible_item a destructible item
  * @return true if the destructible item is currently an obstacle this entity
  */
-bool Enemy::is_destructible_item_obstacle(DestructibleItem *destructible_item) {
+bool Enemy::is_destructible_item_obstacle(DestructibleItem &destructible_item) {
   return true;
 }
 
@@ -304,6 +305,7 @@ void Enemy::set_features(int damage_on_hero, int life) {
  * @param hurt_sound_style the sound played when this kind of enemy gets hurt by the hero
  */
 void Enemy::set_features(int damage_on_hero, int life, HurtSoundStyle hurt_sound_style) {
+
   set_features(damage_on_hero, life);
   this->hurt_sound_style = hurt_sound_style;
 }
@@ -333,6 +335,7 @@ void Enemy::set_features(int damage_on_hero, int life, HurtSoundStyle hurt_sound
  * @param consequence how the enemy will react
  */
 void Enemy::set_attack_consequence(EnemyAttack attack, int consequence) {
+
   attack_consequences[attack] = consequence;
 }
 
@@ -367,6 +370,7 @@ void Enemy::set_default_attack_consequences() {
  * @return name of the current animation of the first sprite
  */
 const std::string& Enemy::get_animation() {
+
   return get_sprite().get_current_animation();
 }
 
@@ -577,15 +581,15 @@ void Enemy::restart() {
  * @param entity_overlapping the other entity
  * @param collision_mode the collision mode that detected the collision
  */
-void Enemy::notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
+void Enemy::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
 
   if (is_enabled()) {
-    entity_overlapping->notify_collision_with_enemy(this);
+    entity_overlapping.notify_collision_with_enemy(*this);
   }
 }
 
 /**
- * @brief Notifies this enemy that a pixel-perfect collision was just detected with another sprite.
+ * @brief Notifies this enemy that a pixel-precise collision was just detected with another sprite.
  *
  * This function is called by check_collision(MapEntity*, Sprite*) when another entity's
  * sprite overlaps a sprite of this enemy.
@@ -594,10 +598,10 @@ void Enemy::notify_collision(MapEntity *entity_overlapping, CollisionMode collis
  * @param other_sprite the sprite of other_entity that is overlapping this detector
  * @param this_sprite the sprite of this detector that is overlapping the other entity's sprite
  */
-void Enemy::notify_collision(MapEntity *other_entity, Sprite *other_sprite, Sprite *this_sprite) {
+void Enemy::notify_collision(MapEntity &other_entity, Sprite &other_sprite, Sprite &this_sprite) {
 
   if (is_enabled()) {
-    other_entity->notify_collision_with_enemy(this, this_sprite, other_sprite);
+    other_entity.notify_collision_with_enemy(*this, this_sprite, other_sprite);
   }
 }
 
@@ -606,8 +610,9 @@ void Enemy::notify_collision(MapEntity *other_entity, Sprite *other_sprite, Spri
  * @param explosion the explosion
  * @param sprite_overlapping the sprite of this enemy that collides with the explosion
  */
-void Enemy::notify_collision_with_explosion(Explosion *explosion, Sprite *sprite_overlapping) {
-  explosion->try_attack_enemy(this, sprite_overlapping);
+void Enemy::notify_collision_with_explosion(Explosion &explosion, Sprite &sprite_overlapping) {
+
+  explosion.try_attack_enemy(*this, sprite_overlapping);
 }
 
 /**
@@ -639,9 +644,9 @@ void Enemy::restore_movement() {
  *
  * @param hero the hero
  * @param this_sprite the sprite of this enemy that detected the collision with the hero,
- * or NULL if it was not a pixel-perfect collision.
+ * or NULL if it was not a pixel-precise collision.
  */
-void Enemy::attack_hero(Hero *hero, Sprite *this_sprite) {
+void Enemy::attack_hero(Hero &hero, Sprite *this_sprite) {
 
   if (is_enabled() && !is_immobilized() && can_attack) {
 
@@ -649,18 +654,18 @@ void Enemy::attack_hero(Hero *hero, Sprite *this_sprite) {
     if (minimum_shield_needed != 0 &&
 	get_equipment().has_ability("shield", minimum_shield_needed)) {
 
-      double angle = hero->get_vector_angle(*this);
+      double angle = hero.get_vector_angle(*this);
       int protected_direction = (int) ((angle + Geometry::PI_OVER_2 / 2.0) * 4 / Geometry::TWO_PI);
       protected_direction = (protected_direction + 4) % 4;
 
-      hero_protected = hero->is_facing_direction4(protected_direction);
+      hero_protected = hero.is_facing_direction4(protected_direction);
     }
 
     if (hero_protected) {
       attack_stopped_by_hero_shield();
     }
     else {
-      hero->hurt(*this, damage_on_hero, magic_damage_on_hero);
+      hero.hurt(*this, damage_on_hero, magic_damage_on_hero);
     }
   }
 }
@@ -685,6 +690,7 @@ void Enemy::attack_stopped_by_hero_shield() {
  * @return the corresponding consequence
  */
 int Enemy::get_attack_consequence(EnemyAttack attack) {
+
   return attack_consequences[attack];
 }
 
@@ -697,10 +703,11 @@ int Enemy::get_attack_consequence(EnemyAttack attack) {
  *
  * @param attack an attack this enemy is subject to
  * @param this_sprite the sprite attacked, or NULL if the attack does not come from
- * a pixel-perfect collision test
+ * a pixel-precise collision test
  * @return the corresponding attack.
  */
 int Enemy::get_attack_consequence(EnemyAttack attack, Sprite *this_sprite) {
+
   return get_attack_consequence(attack);
 }
 
@@ -736,9 +743,9 @@ void Enemy::play_hurt_sound() {
  * @param attack type of attack
  * @param source the entity attacking the enemy (often the hero)
  * @param this_sprite the sprite of this enemy that received the attack, or NULL
- * if the attack comes from a non pixel-perfect collision test.
+ * if the attack comes from a non pixel-precise collision test.
  */
-void Enemy::try_hurt(EnemyAttack attack, MapEntity *source, Sprite *this_sprite) {
+void Enemy::try_hurt(EnemyAttack attack, MapEntity &source, Sprite *this_sprite) {
 
   if (!is_enabled()) {
     return;
@@ -785,11 +792,11 @@ void Enemy::try_hurt(EnemyAttack attack, MapEntity *source, Sprite *this_sprite)
       if (attack == ATTACK_SWORD) {
 
 	// for a sword attack, the damage depends on the sword and the variant of sword attack used
-	int damage_multiplicator = ((Hero*) source)->get_sword_damage_factor();
+	int damage_multiplicator = ((Hero&) source).get_sword_damage_factor();
 	life_lost *= damage_multiplicator;
       }
       else if (attack == ATTACK_THROWN_ITEM) {
-	life_lost *= ((CarriedItem*) source)->get_damage_on_enemies();
+	life_lost *= ((CarriedItem&) source).get_damage_on_enemies();
       }
       life -= life_lost;
 
@@ -800,7 +807,7 @@ void Enemy::try_hurt(EnemyAttack attack, MapEntity *source, Sprite *this_sprite)
     }
 
     // notify the source
-    source->notify_attacked_enemy(attack, this, result, get_life() <= 0);
+    source.notify_attacked_enemy(attack, *this, result, get_life() <= 0);
   }
 }
 
@@ -811,7 +818,7 @@ void Enemy::try_hurt(EnemyAttack attack, MapEntity *source, Sprite *this_sprite)
  *
  * @param source the entity attacking the enemy (often the hero)
  */
-void Enemy::hurt(MapEntity *source) {
+void Enemy::hurt(MapEntity &source) {
 
   if (!is_enabled()) {
     return;
@@ -834,7 +841,7 @@ void Enemy::hurt(MapEntity *source) {
 
   // push the enemy back
   if (pushed_back_when_hurt) {
-    double angle = source->get_vector_angle(*this);
+    double angle = source.get_vector_angle(*this);
     set_movement(new StraightMovement(12, angle, 200));
   }
   else {
@@ -848,7 +855,7 @@ void Enemy::hurt(MapEntity *source) {
  * @param attack the attack that was just successful
  * @param life_points the number of life points lost by this enemy
  */
-void Enemy::just_hurt(MapEntity *source, EnemyAttack attack, int life_points) {
+void Enemy::just_hurt(MapEntity &source, EnemyAttack attack, int life_points) {
 
 }
 
@@ -926,6 +933,7 @@ bool Enemy::is_dying_animation_finished() {
  * @return true if the enemy is dying
  */
 bool Enemy::is_dying() {
+
   return get_life() <= 0;
 }
 
@@ -943,6 +951,7 @@ bool Enemy::is_sprite_finished_or_looping() {
  * @brief Immobilizes this enemy.
  */
 void Enemy::immobilize() {
+
   immobilized = true;
   start_shaking_date = System::now() + 5000; 
 }
@@ -951,6 +960,7 @@ void Enemy::immobilize() {
  * @brief Stops immobilizing the enemy.
  */
 void Enemy::stop_immobilized() {
+
   immobilized = false;
   end_shaking_date = 0;
   restore_movement();
@@ -962,6 +972,7 @@ void Enemy::stop_immobilized() {
  * @return true if this enemy is immobilized 
  */
 bool Enemy::is_immobilized() {
+
   return immobilized;
 }
 
@@ -972,7 +983,7 @@ bool Enemy::is_immobilized() {
  *
  * @param attack the attack
  * @param this_sprite the sprite of this enemy subject to the attack, or NULL
- * if the attack does not come from a pixel-perfect collision test.
+ * if the attack does not come from a pixel-precise collision test.
  * @return the number of health points lost (can be 0)
  */
 int Enemy::custom_attack(EnemyAttack attack, Sprite *this_sprite) {
@@ -981,26 +992,3 @@ int Enemy::custom_attack(EnemyAttack attack, Sprite *this_sprite) {
   return 0;
 }
 
-// TODO make the boomerang script choose rupees?
-/**
- * @brief Computes randomly a type of pickable rupee.
- * @return a type of pickable rupee
- */
-/*
-PickableItem::Subtype Enemy::get_random_rupee() {
-
-  PickableItem::Subtype rupee;
-  int r = Random::get_number(10);
-
-  if (r < 6) {
-    rupee = PickableItem::RUPEE_1;
-  }
-  else if (r < 9) {
-    rupee = PickableItem::RUPEE_5;
-  }
-  else {
-    rupee = PickableItem::RUPEE_20;
-  }
-  return rupee;
-}
-*/

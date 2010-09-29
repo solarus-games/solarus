@@ -105,13 +105,13 @@ bool ChainAndBall::is_displayed_in_y_order() {
  * @param max_rotations number of rotations to make (see CircleMovement::set_max_rotations)
  * @param loop_delay the movement will restart after this delay in milliseconds (see CircleMovement::set_loop)
  */
-void ChainAndBall::attach_to(MapEntity *entity, int x, int y,
+void ChainAndBall::attach_to(MapEntity &entity, int x, int y,
     int radius, int radius_speed, int max_rotations, uint32_t loop_delay) {
 
   clear_movement();
 
   CircleMovement *movement = new CircleMovement();
-  movement->set_center(entity, x, y);
+  movement->set_center(&entity, x, y);
   movement->set_angle_speed(360);
   movement->set_radius_speed(radius_speed);
   movement->set_radius(radius);
@@ -120,7 +120,7 @@ void ChainAndBall::attach_to(MapEntity *entity, int x, int y,
   movement->start();
   set_movement(movement);
 
-  this->center_entity = entity;
+  this->center_entity = &entity;
   this->center_entity_dxy = Rectangle(x, y);
 }
 

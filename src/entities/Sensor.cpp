@@ -67,7 +67,7 @@ Sensor::~Sensor() {
  * @param y y coordinate of the entity
  * @return the instance created
  */
-MapEntity * Sensor::parse(Game &game, std::istream &is, Layer layer, int x, int y) {
+MapEntity* Sensor::parse(Game &game, std::istream &is, Layer layer, int x, int y) {
 
   std::string name;
   int width, height, subtype;
@@ -112,8 +112,9 @@ bool Sensor::has_layer_independent_collisions() {
  * @param other another entity
  * @return true if this entity is an obstacle for the other one
  */
-bool Sensor::is_obstacle_for(MapEntity *other) {
-  return other->is_sensor_obstacle(this);
+bool Sensor::is_obstacle_for(MapEntity &other) {
+
+  return other.is_sensor_obstacle(*this);
 }
 
 /**
@@ -121,9 +122,9 @@ bool Sensor::is_obstacle_for(MapEntity *other) {
  * @param entity an entity
  * @return true if the entity's collides with this entity
  */
-bool Sensor::test_collision_custom(MapEntity *entity) {
+bool Sensor::test_collision_custom(MapEntity &entity) {
 
-  const Rectangle &entity_rectangle = entity->get_bounding_box();
+  const Rectangle &entity_rectangle = entity.get_bounding_box();
   int x1 = entity_rectangle.get_x() + 4;
   int x2 = x1 + entity_rectangle.get_width() - 9;
   int y1 = entity_rectangle.get_y() + 4;
@@ -132,7 +133,7 @@ bool Sensor::test_collision_custom(MapEntity *entity) {
   bool collision = overlaps(x1, y1) && overlaps(x2, y1) &&
     overlaps(x1, y2) && overlaps(x2, y2);
 
-  if (entity->is_hero() && !collision) {
+  if (entity.is_hero() && !collision) {
     this->hero_already_overlaps = false;
   }
 
@@ -147,8 +148,9 @@ bool Sensor::test_collision_custom(MapEntity *entity) {
  * @param entity_overlapping the entity overlapping the detector
  * @param collision_mode the collision mode that detected the collision
  */
-void Sensor::notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
-  entity_overlapping->notify_collision_with_sensor(this);
+void Sensor::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
+
+  entity_overlapping.notify_collision_with_sensor(*this);
 }
 
 /**
@@ -158,9 +160,10 @@ void Sensor::notify_collision(MapEntity *entity_overlapping, CollisionMode colli
  *
  * @param hero the hero
  */
-void Sensor::activate(Hero *hero) {
+void Sensor::activate(Hero &hero) {
 
   if (!hero_already_overlaps) {
+ 
     hero_already_overlaps = true;
 
     switch (subtype) {
@@ -173,7 +176,7 @@ void Sensor::activate(Hero *hero) {
 
       case CHANGE_LAYER:
 	// we change the hero's layer
-	get_entities().set_entity_layer(hero, get_layer());
+	get_entities().set_entity_layer(&hero, get_layer());
 	break;
 
       case RETURN_FROM_BAD_GROUND:

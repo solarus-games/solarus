@@ -147,7 +147,7 @@ bool Boomerang::is_displayed_in_y_order() {
  * @param teletransporter a teletransporter
  * @return true if the teletransporter is currently an obstacle for this entity
  */
-bool Boomerang::is_teletransporter_obstacle(Teletransporter *teletransporter) {
+bool Boomerang::is_teletransporter_obstacle(Teletransporter &teletransporter) {
   return false;
 }
 
@@ -156,7 +156,7 @@ bool Boomerang::is_teletransporter_obstacle(Teletransporter *teletransporter) {
  * @param conveyor_belt a conveyor belt
  * @return true if the conveyor belt is currently an obstacle for this entity
  */
-bool Boomerang::is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt) {
+bool Boomerang::is_conveyor_belt_obstacle(ConveyorBelt &conveyor_belt) {
   return false;
 }
 
@@ -165,8 +165,8 @@ bool Boomerang::is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt) {
  * @param stairs an stairs entity
  * @return true if the stairs are currently an obstacle for this entity
  */
-bool Boomerang::is_stairs_obstacle(Stairs *stairs) {
-  return stairs->is_inside_floor() && get_layer() == LAYER_LOW;
+bool Boomerang::is_stairs_obstacle(Stairs &stairs) {
+  return stairs.is_inside_floor() && get_layer() == LAYER_LOW;
 }
 
 /**
@@ -198,7 +198,7 @@ bool Boomerang::is_ladder_obstacle() {
  * @param raised_block a crystal switch block raised
  * @return false 
  */
-bool Boomerang::is_raised_block_obstacle(CrystalSwitchBlock *raised_block) {
+bool Boomerang::is_raised_block_obstacle(CrystalSwitchBlock &raised_block) {
   // the boomerang can traverse the crystal switch blocks
   return false;
 }
@@ -208,7 +208,7 @@ bool Boomerang::is_raised_block_obstacle(CrystalSwitchBlock *raised_block) {
  * @param crystal_switch a crystal switch
  * @return true if the crystal switch is currently an obstacle for this entity
  */
-bool Boomerang::is_crystal_switch_obstacle(CrystalSwitch *crystal_switch) {
+bool Boomerang::is_crystal_switch_obstacle(CrystalSwitch &crystal_switch) {
   return false;
 }
 
@@ -217,7 +217,7 @@ bool Boomerang::is_crystal_switch_obstacle(CrystalSwitch *crystal_switch) {
  * @param npc a non-playing character
  * @return true if the NPC is currently an obstacle for this entity
  */
-bool Boomerang::is_npc_obstacle(InteractiveEntity *npc) {
+bool Boomerang::is_npc_obstacle(InteractiveEntity &npc) {
   return false;
 }
 
@@ -226,7 +226,7 @@ bool Boomerang::is_npc_obstacle(InteractiveEntity *npc) {
  * @param jump_sensor a non-diagonal jump sensor
  * @return true if the jump sensor is currently an obstacle for this entity
  */
-bool Boomerang::is_jump_sensor_obstacle(JumpSensor *jump_sensor) {
+bool Boomerang::is_jump_sensor_obstacle(JumpSensor &jump_sensor) {
   return false;
 }
 
@@ -296,11 +296,11 @@ void Boomerang::update() {
  * @param crystal_switch the crystal switch
  * @param collision_mode the collision mode that detected the event
  */
-void Boomerang::notify_collision_with_crystal_switch(CrystalSwitch *crystal_switch, CollisionMode collision_mode) {
+void Boomerang::notify_collision_with_crystal_switch(CrystalSwitch &crystal_switch, CollisionMode collision_mode) {
 
   if (collision_mode == COLLISION_RECTANGLE) {
 
-    crystal_switch->activate(this);
+    crystal_switch.activate(*this);
     if (!is_going_back()) {
       go_back();
     }
@@ -311,10 +311,10 @@ void Boomerang::notify_collision_with_crystal_switch(CrystalSwitch *crystal_swit
  * @brief This function is called when an enemy collides with the entity.
  * @param enemy the enemy
  */
-void Boomerang::notify_collision_with_enemy(Enemy *enemy) {
+void Boomerang::notify_collision_with_enemy(Enemy &enemy) {
 
   if (!overlaps(hero)) {
-    enemy->try_hurt(ATTACK_BOOMERANG, this, NULL);
+    enemy.try_hurt(ATTACK_BOOMERANG, *this, NULL);
   }
 }
 
@@ -332,7 +332,7 @@ void Boomerang::notify_collision_with_enemy(Enemy *enemy) {
  * - a value of -2 means that the attack immobilized the enemy
  * @param killed indicates that the attack has just killed the enemy
  */
-void Boomerang::notify_attacked_enemy(EnemyAttack attack, Enemy *victim, int result, bool killed) {
+void Boomerang::notify_attacked_enemy(EnemyAttack attack, Enemy &victim, int result, bool killed) {
 
   if (result != 0 && !is_going_back()) {
     go_back();

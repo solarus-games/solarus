@@ -48,7 +48,7 @@ class Hero::JumpingState: public Hero::State {
     bool can_avoid_hole();
     bool can_avoid_teletransporter();
     bool can_avoid_conveyor_belt();
-    bool is_sensor_obstacle(Sensor *sensor);
+    bool is_sensor_obstacle(Sensor &sensor);
     bool can_avoid_sensor();
     bool can_be_hurt();
 };

@@ -166,7 +166,7 @@ bool Sprite::are_pixel_collisions_enabled() const {
  * @brief Returns the size of a frame for the current animation and the current direction.
  * @return the size of a frame
  */
-const Rectangle & Sprite::get_size() const {
+const Rectangle& Sprite::get_size() const {
 
   const SpriteAnimation *animation = animation_set.get_animation(current_animation_name);
   return animation->get_direction(current_direction)->get_size();
@@ -176,7 +176,7 @@ const Rectangle & Sprite::get_size() const {
  * @brief Returns the origin point of a frame for the current animation and the current direction.
  * @return the origin point of a frame
  */
-const Rectangle & Sprite::get_origin() const {
+const Rectangle& Sprite::get_origin() const {
 
   const SpriteAnimation *animation = animation_set.get_animation(current_animation_name);
   return animation->get_direction(current_direction)->get_origin();
@@ -515,17 +515,17 @@ void Sprite::start_fading(int direction) {
  * @param y2 y coordinate of the other sprite's origin point
  * @return true if the sprites are overlapping
  */
-bool Sprite::test_collision(Sprite *other, int x1, int y1, int x2, int y2) {
+bool Sprite::test_collision(Sprite &other, int x1, int y1, int x2, int y2) {
 
   const SpriteAnimationDirection *direction1 = current_animation->get_direction(current_direction);
   const Rectangle &origin1 = direction1->get_origin();
   Rectangle location1(x1 - origin1.get_x(), y1 - origin1.get_y());
   PixelBits *pixel_bits1 = direction1->get_pixel_bits(current_frame);
 
-  const SpriteAnimationDirection *direction2 = other->current_animation->get_direction(other->current_direction);
+  const SpriteAnimationDirection *direction2 = other.current_animation->get_direction(other.current_direction);
   const Rectangle &origin2 = direction2->get_origin();
   Rectangle location2(x2 - origin2.get_x(), y2 - origin2.get_y());
-  PixelBits *pixel_bits2 = direction2->get_pixel_bits(other->current_frame);
+  PixelBits *pixel_bits2 = direction2->get_pixel_bits(other.current_frame);
 
   return pixel_bits1->test_collision(pixel_bits2, location1, location2);
 }

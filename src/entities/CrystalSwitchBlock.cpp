@@ -105,7 +105,7 @@ bool CrystalSwitchBlock::is_raised() {
  * @param other another entity
  * @return true if this entity is an obstacle for the other one
  */
-bool CrystalSwitchBlock::is_obstacle_for(MapEntity *other) {
+bool CrystalSwitchBlock::is_obstacle_for(MapEntity &other) {
 
   // if this block is lowered, it is obviously not an obstacle
   if (!is_raised()) {
@@ -113,7 +113,7 @@ bool CrystalSwitchBlock::is_obstacle_for(MapEntity *other) {
   }
 
   // if the block is raised, only some specific entities may overlap it
-  return other->is_raised_block_obstacle(this);
+  return other.is_raised_block_obstacle(*this);
 }
 
 /**
@@ -121,16 +121,16 @@ bool CrystalSwitchBlock::is_obstacle_for(MapEntity *other) {
  * @param entity_overlapping the other entity
  * @param collision_mode the collision mode that detected the collision
  */
-void CrystalSwitchBlock::notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
+void CrystalSwitchBlock::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
 
-  if (entity_overlapping->is_hero() && is_raised()) {
+  if (entity_overlapping.is_hero() && is_raised()) {
 
     // see if we have to make fim fall
 
-    Hero *hero = (Hero*) entity_overlapping;
-    if (hero->can_control_movement()) {
+    Hero &hero = (Hero&) entity_overlapping;
+    if (hero.can_control_movement()) {
 
-      Rectangle collision_box = hero->get_bounding_box();
+      Rectangle collision_box = hero.get_bounding_box();
       int x1 = get_top_left_x();
       int x2 = x1 + get_width();
       int y1 = get_top_left_y();
@@ -139,21 +139,21 @@ void CrystalSwitchBlock::notify_collision(MapEntity *entity_overlapping, Collisi
       int jump_length = 0;
       bool jumped = false;
 
-      const Rectangle &hero_center = hero->get_center_point();
+      const Rectangle &hero_center = hero.get_center_point();
 
       if (hero_center.get_y() < y1) {
 	// fall to the north
 	collision_box.set_y(y1 - 16);
 	jump_direction = 2;
-	jump_length = hero->get_top_left_y() + 16 - y1;
-	jumped = try_jump(*hero, collision_box, jump_direction, jump_length);
+	jump_length = hero.get_top_left_y() + 16 - y1;
+	jumped = try_jump(hero, collision_box, jump_direction, jump_length);
       }
       else if (hero_center.get_y() >= y2) {
 	// fall to the south
 	collision_box.set_y(y2);
 	jump_direction = 6;
-	jump_length = y2 - hero->get_top_left_y();
-	jumped = try_jump(*hero, collision_box, jump_direction, jump_length);
+	jump_length = y2 - hero.get_top_left_y();
+	jumped = try_jump(hero, collision_box, jump_direction, jump_length);
       }
 
       if (!jumped) {
@@ -161,15 +161,15 @@ void CrystalSwitchBlock::notify_collision(MapEntity *entity_overlapping, Collisi
 	  // fall to the east
 	  collision_box.set_x(x2);
 	  jump_direction = 0;
-	  jump_length = x2 - hero->get_top_left_x();
-	  try_jump(*hero, collision_box, jump_direction, jump_length);
+	  jump_length = x2 - hero.get_top_left_x();
+	  try_jump(hero, collision_box, jump_direction, jump_length);
 	}
 	else if (hero_center.get_x() < x1) {
 	  // fall to the west
 	  collision_box.set_x(x1 - 16);
 	  jump_direction = 4;
-	  jump_length = hero->get_top_left_x() + 16 - x1;
-	  try_jump(*hero, collision_box, jump_direction, jump_length);
+	  jump_length = hero.get_top_left_x() + 16 - x1;
+	  try_jump(hero, collision_box, jump_direction, jump_length);
 	}
       }
     }

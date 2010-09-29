@@ -33,7 +33,7 @@
  * @param stairs the stairs to take
  * @param way the way you are taking the stairs
  */
-Hero::StairsState::StairsState(Hero &hero, Stairs *stairs, Stairs::Way way):
+Hero::StairsState::StairsState(Hero &hero, Stairs &stairs, Stairs::Way way):
   State(hero), stairs(stairs), way(way), phase(0), next_phase_date(0) {
 
 }
@@ -67,8 +67,8 @@ void Hero::StairsState::start(State *previous_state) {
   State::start(previous_state);
 
   // movement
-  int speed = stairs->is_inside_floor() ? 4 : 2;
-  std::string path = stairs->get_path(way);
+  int speed = stairs.is_inside_floor() ? 4 : 2;
+  std::string path = stairs.get_path(way);
   PathMovement *movement = new PathMovement(path, speed, false, true, false);
 
   // sprites and sound
@@ -77,14 +77,14 @@ void Hero::StairsState::start(State *previous_state) {
   sprites.set_animation_direction((path[0] - '0') / 2);
   get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
 
-  if (stairs->is_inside_floor()) {
+  if (stairs.is_inside_floor()) {
     if (way == Stairs::NORMAL_WAY) {
       // low layer to intermediate layer: change the layer now
       get_entities().set_entity_layer(&hero, LAYER_INTERMEDIATE);
     }
   }
   else {
-    sprites.set_clipping_rectangle(stairs->get_clipping_rectangle(way));
+    sprites.set_clipping_rectangle(stairs.get_clipping_rectangle(way));
     if (way == Stairs::REVERSE_WAY) {
       Rectangle dxy = movement->get_xy_change();
       int fix_y = 8;
@@ -110,12 +110,12 @@ void Hero::StairsState::update() {
 
   // first time: we play the sound and initialize
   if (phase == 0) {
-    stairs->play_sound(way);
+    stairs.play_sound(way);
     next_phase_date = System::now() + 450;
     phase++;
   }
 
-  if (stairs->is_inside_floor()) {
+  if (stairs.is_inside_floor()) {
 
     // inside a single floor: return to normal state as soon as the movement is finished
     if (hero.get_movement()->is_finished()) {
@@ -159,7 +159,7 @@ void Hero::StairsState::update() {
 	// main movement direction corresponding to each animation direction while taking stairs
 	static const int movement_directions[] = { 0, 0, 2, 4, 4, 4, 6, 0 };
 
-	int animation_direction = stairs->get_animation_direction(way);
+	int animation_direction = stairs.get_animation_direction(way);
 	if (phase == 2) { // the first phase of the movement is finished
 	  if (animation_direction % 2 != 0) {
 	    // if the stairs are spiral, take a diagonal direction of animation
@@ -180,7 +180,7 @@ void Hero::StairsState::update() {
 	  }
 	  else {
 	    // on the new floor, take the opposite direction from the stairs
-	    sprites.set_animation_direction((stairs->get_direction() + 2) % 4);
+	    sprites.set_animation_direction((stairs.get_direction() + 2) % 4);
 	  }
 	}
       }

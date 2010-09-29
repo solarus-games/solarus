@@ -8,7 +8,7 @@ integers (above 1024):
 1027	current number of croissants
 1028	current number of apples
 1029	current number of fire stones
-1030	current number of pieces of heart
+1030	current number of pieces of heart (0 to 3)
 1031	world map (0 or 1)
 1032	bomb bag
 1033	quiver

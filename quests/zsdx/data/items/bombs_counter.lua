@@ -1,0 +1,11 @@
+function event_use()
+
+  if sol.item.get_amount() == 0 then
+    sol.main.play_sound("wrong")
+  else
+    sol.item.remove_amount("bombs_counter", 1)
+    sol.map.hero_set_state("dropping_bomb")
+  end
+  sol.item.set_finished()
+end
+

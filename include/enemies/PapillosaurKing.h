@@ -41,10 +41,10 @@ class PapillosaurKing: public Enemy {
     PapillosaurKing(const ConstructionParameters &params);
     ~PapillosaurKing();
 
-    bool is_destructible_item_obstacle(DestructibleItem *destructible_item);
+    bool is_destructible_item_obstacle(DestructibleItem &destructible_item);
     void set_suspended(bool suspended);
     void update();
-    void just_hurt(MapEntity *source, EnemyAttack attack, int life_points);
+    void just_hurt(MapEntity &source, EnemyAttack attack, int life_points);
 };
 
 #endif

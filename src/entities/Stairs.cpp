@@ -113,8 +113,9 @@ bool Stairs::is_sword_ignored() {
  * @param other another entity
  * @return true if this entity is an obstacle for the other one
  */
-bool Stairs::is_obstacle_for(MapEntity *other) {
-  return other->is_stairs_obstacle(this);
+bool Stairs::is_obstacle_for(MapEntity &other) {
+
+  return other.is_stairs_obstacle(*this);
 }
 
 /**
@@ -122,8 +123,9 @@ bool Stairs::is_obstacle_for(MapEntity *other) {
  * @param entity_overlapping the other entity
  * @param collision_mode the collision mode that detected the collision
  */
-void Stairs::notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
-  entity_overlapping->notify_collision_with_stairs(this, collision_mode);
+void Stairs::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
+
+  entity_overlapping.notify_collision_with_stairs(*this, collision_mode);
 }
 
 /**

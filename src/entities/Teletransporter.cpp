@@ -139,8 +139,9 @@ EntityType Teletransporter::get_type() {
  * @param other another entity
  * @return true if this entity is an obstacle for the other one
  */
-bool Teletransporter::is_obstacle_for(MapEntity *other) {
-  return other->is_teletransporter_obstacle(this);
+bool Teletransporter::is_obstacle_for(MapEntity &other) {
+
+  return other.is_teletransporter_obstacle(*this);
 }
 
 /**
@@ -148,19 +149,19 @@ bool Teletransporter::is_obstacle_for(MapEntity *other) {
  * @param entity an entity
  * @return true if the entity's collides with this entity
  */
-bool Teletransporter::test_collision_custom(MapEntity *entity) {
+bool Teletransporter::test_collision_custom(MapEntity &entity) {
 
   bool collision = false;
   bool normal_case = true;
 
   // specific collision tests for some situations
-  if (entity->is_hero()) {
+  if (entity.is_hero()) {
 
-    Hero *hero = (Hero*) entity;
+    Hero &hero = (Hero&) entity;
     if (is_on_map_side()) {
       // scrolling towards an adjacent map
-      Rectangle facing_point = hero->get_facing_point(transition_direction);
-      collision = hero->is_moving_towards(transition_direction)
+      Rectangle facing_point = hero.get_facing_point(transition_direction);
+      collision = hero.is_moving_towards(transition_direction)
 	&& overlaps(facing_point.get_x(), facing_point.get_y());
       normal_case = false;
     }
@@ -175,7 +176,7 @@ bool Teletransporter::test_collision_custom(MapEntity *entity) {
 
   // normal case
   if (normal_case) {
-    const Rectangle &entity_rectangle = entity->get_bounding_box();
+    const Rectangle &entity_rectangle = entity.get_bounding_box();
     int x1 = entity_rectangle.get_x() + 4;
     int x2 = x1 + entity_rectangle.get_width() - 9;
     int y1 = entity_rectangle.get_y() + 4;
@@ -198,9 +199,9 @@ bool Teletransporter::test_collision_custom(MapEntity *entity) {
  * @param entity_overlapping the entity overlapping the detector
  * @param collision_mode the collision mode that detected the collision
  */
-void Teletransporter::notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
+void Teletransporter::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
 
-  entity_overlapping->notify_collision_with_teletransporter(this, collision_mode);
+  entity_overlapping.notify_collision_with_teletransporter(*this, collision_mode);
 }
 
 /**

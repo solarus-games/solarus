@@ -188,12 +188,12 @@ class Enemy: public Detector {
     bool is_immobilized();
     bool is_killed();
     bool is_dying_animation_finished();
-    void hurt(MapEntity *source);
+    void hurt(MapEntity &source);
     bool is_sprite_finished_or_looping();
     void immobilize();
     void stop_immobilized();
     virtual int custom_attack(EnemyAttack attack, Sprite *this_sprite);
-    virtual void just_hurt(MapEntity *source, EnemyAttack attack, int life_points);
+    virtual void just_hurt(MapEntity &source, EnemyAttack attack, int life_points);
     virtual void just_dead();
 
     // animation
@@ -215,9 +215,9 @@ class Enemy: public Detector {
     Rank get_rank();
 
     // obstacles
-    bool is_obstacle_for(MapEntity *other);
-    bool is_sensor_obstacle(Sensor *sensor);
-    bool is_destructible_item_obstacle(DestructibleItem *destructible_item);
+    bool is_obstacle_for(MapEntity &other);
+    bool is_sensor_obstacle(Sensor &sensor);
+    bool is_destructible_item_obstacle(DestructibleItem &destructible_item);
 
     // enemy state
     virtual void update();
@@ -225,18 +225,18 @@ class Enemy: public Detector {
     bool is_enabled();
     void set_enabled(bool enabled);
     bool is_visible();
-    void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
-    void notify_collision(MapEntity *other_entity, Sprite *other_sprite, Sprite *this_sprite);
-    void notify_collision_with_explosion(Explosion *explosion, Sprite *sprite_overlapping);
+    void notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode);
+    void notify_collision(MapEntity &other_entity, Sprite &other_sprite, Sprite &this_sprite);
+    void notify_collision_with_explosion(Explosion &explosion, Sprite &sprite_overlapping);
 
     // attack the hero
-    void attack_hero(Hero *hero, Sprite *this_sprite);
+    void attack_hero(Hero &hero, Sprite *this_sprite);
     void attack_stopped_by_hero_shield();
 
     // be subject to an attack
     int get_attack_consequence(EnemyAttack attack);
     virtual int get_attack_consequence(EnemyAttack attack, Sprite *this_sprite);
-    void try_hurt(EnemyAttack attack, MapEntity *source, Sprite *this_sprite);
+    void try_hurt(EnemyAttack attack, MapEntity &source, Sprite *this_sprite);
     void kill();
     bool is_dying();
 };

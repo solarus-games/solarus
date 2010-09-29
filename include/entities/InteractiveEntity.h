@@ -68,15 +68,15 @@ class InteractiveEntity: public Detector {
     EntityType get_type();
     bool is_displayed_in_y_order();
 
-    bool is_obstacle_for(MapEntity *other);
-    bool is_hero_obstacle(Hero *hero);
-    bool is_npc_obstacle(InteractiveEntity *npc);
-    bool is_enemy_obstacle(Enemy *enemy);
+    bool is_obstacle_for(MapEntity &other);
+    bool is_hero_obstacle(Hero &hero);
+    bool is_npc_obstacle(InteractiveEntity &npc);
+    bool is_enemy_obstacle(Enemy &enemy);
     bool is_sword_ignored();
 
-    void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
+    void notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode);
     void action_key_pressed();
-    bool interaction_with_inventory_item(InventoryItem *item);
+    bool interaction_with_inventory_item(InventoryItem &item);
 
     void update();
     void display_on_map();

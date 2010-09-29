@@ -556,7 +556,7 @@ bool Hero::State::is_ladder_obstacle() {
  * @param teletransporter a teletransporter
  * @return true if the teletransporter is an obstacle in this state
  */
-bool Hero::State::is_teletransporter_obstacle(Teletransporter *teletransporter) {
+bool Hero::State::is_teletransporter_obstacle(Teletransporter &teletransporter) {
   return false;
 }
 
@@ -590,7 +590,7 @@ bool Hero::State::is_teletransporter_delayed() {
  * @param conveyor_belt a conveyor belt
  * @return true if the conveyor belt is an obstacle in this state
  */
-bool Hero::State::is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt) {
+bool Hero::State::is_conveyor_belt_obstacle(ConveyorBelt &conveyor_belt) {
   return false;
 }
 
@@ -637,7 +637,7 @@ bool Hero::State::can_take_jump_sensor() {
  * @param sensor a sensor
  * @return true if the sensor is an obstacle in this state
  */
-bool Hero::State::is_sensor_obstacle(Sensor *sensor) {
+bool Hero::State::is_sensor_obstacle(Sensor &sensor) {
   return false;
 }
 
@@ -684,7 +684,7 @@ bool Hero::State::can_sword_hit_crystal_switch() {
  * @param result indicates how the enemy has reacted to the attack (see Enemy.h)
  * @param killed indicates that the attack has just killed the enemy
  */
-void Hero::State::notify_attacked_enemy(EnemyAttack attack, Enemy *victim, int result, bool killed) {
+void Hero::State::notify_attacked_enemy(EnemyAttack attack, Enemy &victim, int result, bool killed) {
 }
 
 /**
@@ -773,7 +773,7 @@ void Hero::State::notify_grabbed_entity_collision() {
  * @param detector the detector to check
  * @return true if the sword is cutting this detector
  */
-bool Hero::State::is_cutting_with_sword(Detector *detector) {
+bool Hero::State::is_cutting_with_sword(Detector &detector) {
   return false;
 }
 

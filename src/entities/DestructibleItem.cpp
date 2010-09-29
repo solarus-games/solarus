@@ -183,20 +183,20 @@ bool DestructibleItem::has_special_ground() {
  * @param other another entity
  * @return true if this entity is an obstacle for others
  */
-bool DestructibleItem::is_obstacle_for(MapEntity *other) {
-  return features[subtype].can_be_lifted && !is_being_cut && other->is_destructible_item_obstacle(this);
+bool DestructibleItem::is_obstacle_for(MapEntity &other) {
+  return features[subtype].can_be_lifted && !is_being_cut && other.is_destructible_item_obstacle(*this);
 }
 
 /**
  * @brief Tests whether an entity's collides with this entity.
  *
- * This custom collision is used for destructible items that change the ground displayed under the hero.
+ * This custom collision test is used for destructible items that change the ground displayed under the hero.
  *
  * @param entity an entity
  * @return true if the entity's collides with this entity
  */
-bool DestructibleItem::test_collision_custom(MapEntity *entity) {
-  return overlaps(entity->get_x(), entity->get_y() - 2);
+bool DestructibleItem::test_collision_custom(MapEntity &entity) {
+  return overlaps(entity.get_x(), entity.get_y() - 2);
 }
 
 /**
@@ -220,9 +220,9 @@ void DestructibleItem::create_pickable_item() {
  * @param entity_overlapping the entity overlapping the detector
  * @param collision_mode the collision mode that detected the collision
  */
-void DestructibleItem::notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
+void DestructibleItem::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
 
-  entity_overlapping->notify_collision_with_destructible_item(this, collision_mode);
+  entity_overlapping.notify_collision_with_destructible_item(*this, collision_mode);
 }
 
 /**
@@ -230,13 +230,13 @@ void DestructibleItem::notify_collision(MapEntity *entity_overlapping, Collision
  * @param hero the hero
  * @param collision_mode the collision mode that detected the collision
  */
-void DestructibleItem::notify_collision_with_hero(Hero *hero, CollisionMode collision_mode) {
+void DestructibleItem::notify_collision_with_hero(Hero &hero, CollisionMode collision_mode) {
 
   if (features[subtype].can_be_lifted
       && !is_being_cut
       && !is_disabled()
       && get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
-      && hero->is_free()) {
+      && hero.is_free()) {
 
     int weight = features[subtype].weight;
     if (get_equipment().has_ability("lift", weight)) {
@@ -248,7 +248,7 @@ void DestructibleItem::notify_collision_with_hero(Hero *hero, CollisionMode coll
   }
 
   else if (collision_mode == COLLISION_CUSTOM && has_special_ground() && !is_being_cut) {
-    hero->set_ground(get_special_ground());
+    hero.set_ground(get_special_ground());
   }
 }
 
@@ -262,19 +262,19 @@ void DestructibleItem::notify_collision_with_hero(Hero *hero, CollisionMode coll
  * @param other_sprite the sprite of other_entity that is overlapping this detector
  * @param this_sprite the sprite of this detector that is overlapping the other entity's sprite
  */
-void DestructibleItem::notify_collision(MapEntity *other_entity, Sprite *other_sprite, Sprite *this_sprite) {
+void DestructibleItem::notify_collision(MapEntity &other_entity, Sprite &other_sprite, Sprite &this_sprite) {
 
   if (features[subtype].can_be_cut
       && !is_being_cut
       && !is_disabled()
-      && other_entity->is_hero()
-      && other_sprite->contains("sword")) {
+      && other_entity.is_hero()
+      && other_sprite.contains("sword")) {
 
-    Hero *hero = (Hero*) other_entity;
-    if (hero->is_striking_with_sword(this)) {
+    Hero &hero = (Hero&) other_entity;
+    if (hero.is_striking_with_sword(*this)) {
 
       play_destroy_animation();
-      hero->notify_position_changed(); // to update the ground under the hero
+      hero.notify_position_changed(); // to update the ground under the hero
       create_pickable_item();
     }
   }

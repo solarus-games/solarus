@@ -118,10 +118,10 @@ bool Hero::SwordTappingState::can_sword_hit_crystal_switch() {
  * @param detector the detector to check
  * @return true if the sword is cutting this detector
  */
-bool Hero::SwordTappingState::is_cutting_with_sword(Detector *detector) {
+bool Hero::SwordTappingState::is_cutting_with_sword(Detector &detector) {
 
-  return detector->is_obstacle_for(&hero)	// only obstacle entities can be cut
-    && hero.get_facing_entity() == detector	// only one entity at a time
+  return detector.is_obstacle_for(hero)		// only obstacle entities can be cut
+    && hero.get_facing_entity() == &detector	// only one entity at a time
     && get_sprites().get_current_frame() >= 3;	// wait until the animation shows an appropriate frame
 }
 

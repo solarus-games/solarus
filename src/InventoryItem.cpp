@@ -245,7 +245,7 @@ void InventoryItem::start_bottle() {
     {
       Detector *facing_entity = game.get_hero().get_facing_entity();
       if (facing_entity == NULL ||
-	  !facing_entity->interaction_with_inventory_item(this)) {
+	  !facing_entity->interaction_with_inventory_item(*this)) {
 
 	// unless an interaction occurs, we play the "wrong" sound
 	Sound::play("wrong");
@@ -309,7 +309,7 @@ void InventoryItem::update_bottle() {
 
 	if (facing_entity != NULL) {
 	  // the player has just poured water onto an entity
-	  facing_entity->interaction_with_inventory_item(this);
+	  facing_entity->interaction_with_inventory_item(*this);
 	}
       }
       finished = true;

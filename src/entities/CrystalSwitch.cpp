@@ -80,8 +80,8 @@ EntityType CrystalSwitch::get_type() {
  * @param other another entity
  * @return true if this entity is an obstacle for the other one 
  */
-bool CrystalSwitch::is_obstacle_for(MapEntity *other) {
-  return other->is_crystal_switch_obstacle(this);
+bool CrystalSwitch::is_obstacle_for(MapEntity &other) {
+  return other.is_crystal_switch_obstacle(*this);
 }
 
 /**
@@ -89,8 +89,8 @@ bool CrystalSwitch::is_obstacle_for(MapEntity *other) {
  * @param entity_overlapping the other entity
  * @param collision_mode the collision mode that detected the collision
  */
-void CrystalSwitch::notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
-  entity_overlapping->notify_collision_with_crystal_switch(this, collision_mode);
+void CrystalSwitch::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
+  entity_overlapping.notify_collision_with_crystal_switch(*this, collision_mode);
 }
 
 /**
@@ -103,8 +103,8 @@ void CrystalSwitch::notify_collision(MapEntity *entity_overlapping, CollisionMod
  * @param other_sprite the sprite of other_entity that is overlapping this detector
  * @param this_sprite the sprite of this detector that is overlapping the other entity's sprite
  */
-void CrystalSwitch::notify_collision(MapEntity *other_entity, Sprite *other_sprite, Sprite *this_sprite) {
-  other_entity->notify_collision_with_crystal_switch(this, other_sprite);
+void CrystalSwitch::notify_collision(MapEntity &other_entity, Sprite &other_sprite, Sprite &this_sprite) {
+  other_entity.notify_collision_with_crystal_switch(*this, other_sprite);
 }
 
 /**
@@ -127,12 +127,12 @@ void CrystalSwitch::action_key_pressed() {
  * @brief Activates the crystal switch if the delay since the last activation allows it.
  * @param entity_activating the entity that activates this crystal switch
  */
-void CrystalSwitch::activate(MapEntity *entity_activating) {
+void CrystalSwitch::activate(MapEntity &entity_activating) {
 
   bool recently_activated = false;
   std::list<MapEntity*>::iterator it;
   for (it = entities_activating.begin(); it != entities_activating.end() && !recently_activated; it++) {
-    recently_activated  = (*it == entity_activating);
+    recently_activated  = (*it == &entity_activating);
   }
 
   uint32_t now = System::now();
@@ -140,7 +140,7 @@ void CrystalSwitch::activate(MapEntity *entity_activating) {
     Sound::play("switch");
     get_game().change_crystal_switch_state();
     next_possible_hit_date = now + 1000;
-    entities_activating.push_back(entity_activating);
+    entities_activating.push_back(&entity_activating);
   }
 }
 

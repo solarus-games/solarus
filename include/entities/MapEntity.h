@@ -247,36 +247,36 @@ class MapEntity {
     int get_distance(int x, int y);
 
     // collisions
-    virtual bool is_obstacle_for(MapEntity *other);
+    virtual bool is_obstacle_for(MapEntity &other);
     virtual bool has_layer_independent_collisions();
-    virtual void notify_collision_with_enemy(Enemy *enemy);
-    virtual void notify_collision_with_destructible_item(DestructibleItem *destructible_item, CollisionMode collision_mode);
-    virtual void notify_collision_with_teletransporter(Teletransporter *teletransporter, CollisionMode collision_mode);
-    virtual void notify_collision_with_conveyor_belt(ConveyorBelt *conveyor_belt, int dx, int dy);
-    virtual void notify_collision_with_stairs(Stairs *stairs, CollisionMode collision_mode);
-    virtual void notify_collision_with_jump_sensor(JumpSensor *jump_sensor);
-    virtual void notify_collision_with_sensor(Sensor *sensor);
-    virtual void notify_collision_with_explosion(Explosion *explosion, Sprite *sprite_overlapping);
-    virtual void notify_collision_with_crystal_switch(CrystalSwitch *crystal_switch, CollisionMode collision_mode);
-    virtual void notify_collision_with_crystal_switch(CrystalSwitch *crystal_switch, Sprite *sprite_overlapping);
-    virtual void notify_collision_with_enemy(Enemy *enemy, Sprite *enemy_sprite, Sprite *this_sprite);
-    virtual void notify_attacked_enemy(EnemyAttack attack, Enemy *victim, int result, bool killed);
+    virtual void notify_collision_with_enemy(Enemy &enemy);
+    virtual void notify_collision_with_destructible_item(DestructibleItem &destructible_item, CollisionMode collision_mode);
+    virtual void notify_collision_with_teletransporter(Teletransporter &teletransporter, CollisionMode collision_mode);
+    virtual void notify_collision_with_conveyor_belt(ConveyorBelt &conveyor_belt, int dx, int dy);
+    virtual void notify_collision_with_stairs(Stairs &stairs, CollisionMode collision_mode);
+    virtual void notify_collision_with_jump_sensor(JumpSensor &jump_sensor);
+    virtual void notify_collision_with_sensor(Sensor &sensor);
+    virtual void notify_collision_with_explosion(Explosion &explosion, Sprite &sprite_overlapping);
+    virtual void notify_collision_with_crystal_switch(CrystalSwitch &crystal_switch, CollisionMode collision_mode);
+    virtual void notify_collision_with_crystal_switch(CrystalSwitch &crystal_switch, Sprite &sprite_overlapping);
+    virtual void notify_collision_with_enemy(Enemy &enemy, Sprite &enemy_sprite, Sprite &this_sprite);
+    virtual void notify_attacked_enemy(EnemyAttack attack, Enemy &victim, int result, bool killed);
 
     virtual bool is_water_obstacle();
     virtual bool is_hole_obstacle();
     virtual bool is_ladder_obstacle();
-    virtual bool is_hero_obstacle(Hero *hero);
-    virtual bool is_block_obstacle(Block *block);
-    virtual bool is_teletransporter_obstacle(Teletransporter *teletransporter);
-    virtual bool is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt);
-    virtual bool is_stairs_obstacle(Stairs *stairs);
-    virtual bool is_sensor_obstacle(Sensor *sensor);
-    virtual bool is_raised_block_obstacle(CrystalSwitchBlock *raised_block);
-    virtual bool is_crystal_switch_obstacle(CrystalSwitch *crystal_switch);
-    virtual bool is_npc_obstacle(InteractiveEntity *npc);
-    virtual bool is_enemy_obstacle(Enemy *enemy);
-    virtual bool is_jump_sensor_obstacle(JumpSensor *jump_sensor);
-    virtual bool is_destructible_item_obstacle(DestructibleItem *destructible_item);
+    virtual bool is_hero_obstacle(Hero &hero);
+    virtual bool is_block_obstacle(Block &block);
+    virtual bool is_teletransporter_obstacle(Teletransporter &teletransporter);
+    virtual bool is_conveyor_belt_obstacle(ConveyorBelt &conveyor_belt);
+    virtual bool is_stairs_obstacle(Stairs &stairs);
+    virtual bool is_sensor_obstacle(Sensor &sensor);
+    virtual bool is_raised_block_obstacle(CrystalSwitchBlock &raised_block);
+    virtual bool is_crystal_switch_obstacle(CrystalSwitch &crystal_switch);
+    virtual bool is_npc_obstacle(InteractiveEntity &npc);
+    virtual bool is_enemy_obstacle(Enemy &enemy);
+    virtual bool is_jump_sensor_obstacle(JumpSensor &jump_sensor);
+    virtual bool is_destructible_item_obstacle(DestructibleItem &destructible_item);
     virtual bool is_sword_ignored();
 
     // suspended

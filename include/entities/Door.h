@@ -75,11 +75,11 @@ class Door: public Detector {
 
     EntityType get_type();
 
-    bool is_obstacle_for(MapEntity *other);
+    bool is_obstacle_for(MapEntity &other);
     void set_suspended(bool suspended);
     void update();
     void display_on_map();
-    void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
+    void notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode);
     void action_key_pressed();
     SoundId get_sword_tapping_sound();
 

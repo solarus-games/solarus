@@ -68,9 +68,9 @@ class Teletransporter: public Detector {
     EntityType get_type();
     void set_map(Map &map);
 
-    bool is_obstacle_for(MapEntity *other);
-    bool test_collision_custom(MapEntity *entity);
-    void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
+    bool is_obstacle_for(MapEntity &other);
+    bool test_collision_custom(MapEntity &entity);
+    void notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode);
     void transport_hero(Hero &hero);
     bool is_on_map_side();
 };

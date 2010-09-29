@@ -727,7 +727,7 @@ bool MapEntity::has_prefix(const std::string &prefix) {
  * relative to the top-left corner of its rectangle.
  * @return the origin point
  */
-const Rectangle & MapEntity::get_origin() {
+const Rectangle& MapEntity::get_origin() {
   return origin;
 }
 
@@ -958,7 +958,7 @@ const Rectangle& MapEntity::direction_to_xy_move(int direction8) {
  * @param other another entity
  * @return true if this entity is an obstacle for the other one
  */
-bool MapEntity::is_obstacle_for(MapEntity *other) {
+bool MapEntity::is_obstacle_for(MapEntity &other) {
   return false;
 }
 
@@ -1015,7 +1015,7 @@ bool MapEntity::is_ladder_obstacle() {
  * @param hero the hero
  * @return true if the hero is currently an obstacle for this entity
  */
-bool MapEntity::is_hero_obstacle(Hero *hero) {
+bool MapEntity::is_hero_obstacle(Hero &hero) {
   return false;
 }
 
@@ -1027,7 +1027,7 @@ bool MapEntity::is_hero_obstacle(Hero *hero) {
  * @param block a block
  * @return true if the teletransporter is currently an obstacle for this entity
  */
-bool MapEntity::is_block_obstacle(Block *block) {
+bool MapEntity::is_block_obstacle(Block &block) {
   return true;
 }
 
@@ -1039,7 +1039,7 @@ bool MapEntity::is_block_obstacle(Block *block) {
  * @param teletransporter a teletransporter
  * @return true if the teletransporter is currently an obstacle for this entity
  */
-bool MapEntity::is_teletransporter_obstacle(Teletransporter *teletransporter) {
+bool MapEntity::is_teletransporter_obstacle(Teletransporter &teletransporter) {
   return true;
 }
 
@@ -1051,7 +1051,7 @@ bool MapEntity::is_teletransporter_obstacle(Teletransporter *teletransporter) {
  * @param conveyor_belt a conveyor belt
  * @return true if the conveyor belt is currently an obstacle for this entity
  */
-bool MapEntity::is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt) {
+bool MapEntity::is_conveyor_belt_obstacle(ConveyorBelt &conveyor_belt) {
   return true;
 }
 
@@ -1063,7 +1063,7 @@ bool MapEntity::is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt) {
  * @param stairs an stairs entity
  * @return true if the stairs are currently an obstacle for this entity
  */
-bool MapEntity::is_stairs_obstacle(Stairs *stairs) {
+bool MapEntity::is_stairs_obstacle(Stairs &stairs) {
   return true;
 }
 
@@ -1075,7 +1075,7 @@ bool MapEntity::is_stairs_obstacle(Stairs *stairs) {
  * @param sensor a sensor
  * @return true if the sensor are currently an obstacle for this entity
  */
-bool MapEntity::is_sensor_obstacle(Sensor *sensor) {
+bool MapEntity::is_sensor_obstacle(Sensor &sensor) {
   return false;
 }
 
@@ -1087,7 +1087,7 @@ bool MapEntity::is_sensor_obstacle(Sensor *sensor) {
  * @param raised_block a crystal switch block raised
  * @return true if the raised block is currently an obstacle for this entity
  */
-bool MapEntity::is_raised_block_obstacle(CrystalSwitchBlock *raised_block) {
+bool MapEntity::is_raised_block_obstacle(CrystalSwitchBlock &raised_block) {
   return true;
 }
 
@@ -1100,7 +1100,7 @@ bool MapEntity::is_raised_block_obstacle(CrystalSwitchBlock *raised_block) {
  * @param crystal_switch a crystal switch
  * @return true if the crystal switch is currently an obstacle for this entity
  */
-bool MapEntity::is_crystal_switch_obstacle(CrystalSwitch *crystal_switch) {
+bool MapEntity::is_crystal_switch_obstacle(CrystalSwitch &crystal_switch) {
   return true;
 }
 
@@ -1112,7 +1112,7 @@ bool MapEntity::is_crystal_switch_obstacle(CrystalSwitch *crystal_switch) {
  * @param npc a non-playing character
  * @return true if the NPC is currently an obstacle for this entity
  */
-bool MapEntity::is_npc_obstacle(InteractiveEntity *npc) {
+bool MapEntity::is_npc_obstacle(InteractiveEntity &npc) {
   return true;
 }
 
@@ -1124,7 +1124,7 @@ bool MapEntity::is_npc_obstacle(InteractiveEntity *npc) {
  * @param enemy an enemy
  * @return true if the enemy is currently an obstacle for this entity
  */
-bool MapEntity::is_enemy_obstacle(Enemy *enemy) {
+bool MapEntity::is_enemy_obstacle(Enemy &enemy) {
   return false;
 }
 
@@ -1136,7 +1136,7 @@ bool MapEntity::is_enemy_obstacle(Enemy *enemy) {
  * @param jump_sensor a non-diagonal jump sensor
  * @return true if the jump sensor is currently an obstacle for this entity
  */
-bool MapEntity::is_jump_sensor_obstacle(JumpSensor *jump_sensor) {
+bool MapEntity::is_jump_sensor_obstacle(JumpSensor &jump_sensor) {
   return true;
 }
 
@@ -1149,8 +1149,9 @@ bool MapEntity::is_jump_sensor_obstacle(JumpSensor *jump_sensor) {
  * @param destructible_item a destructible item
  * @return true if the destructible item is currently an obstacle for this entity
  */
-bool MapEntity::is_destructible_item_obstacle(DestructibleItem *destructible_item) {
-  return !destructible_item->is_disabled();
+bool MapEntity::is_destructible_item_obstacle(DestructibleItem &destructible_item) {
+
+  return !destructible_item.is_disabled();
 }
 
 /**
@@ -1262,7 +1263,7 @@ int MapEntity::get_distance(MapEntity &other) {
  * @param destructible_item the destructible item
  * @param collision_mode the collision mode that detected the event
  */
-void MapEntity::notify_collision_with_destructible_item(DestructibleItem *destructible_item, CollisionMode collision_mode) {
+void MapEntity::notify_collision_with_destructible_item(DestructibleItem &destructible_item, CollisionMode collision_mode) {
 }
 
 /**
@@ -1270,7 +1271,7 @@ void MapEntity::notify_collision_with_destructible_item(DestructibleItem *destru
  * @param teletransporter the teletransporter
  * @param collision_mode the collision mode that detected the event
  */
-void MapEntity::notify_collision_with_teletransporter(Teletransporter *teletransporter, CollisionMode collision_mode) {
+void MapEntity::notify_collision_with_teletransporter(Teletransporter &teletransporter, CollisionMode collision_mode) {
 }
 
 /**
@@ -1279,7 +1280,7 @@ void MapEntity::notify_collision_with_teletransporter(Teletransporter *teletrans
  * @param dx direction of the x move in pixels (0, 1 or -1)
  * @param dy direction of the y move in pixels (0, 1 or -1)
  */
-void MapEntity::notify_collision_with_conveyor_belt(ConveyorBelt *conveyor_belt, int dx, int dy) {
+void MapEntity::notify_collision_with_conveyor_belt(ConveyorBelt &conveyor_belt, int dx, int dy) {
 }
 
 /**
@@ -1287,21 +1288,21 @@ void MapEntity::notify_collision_with_conveyor_belt(ConveyorBelt *conveyor_belt,
  * @param stairs the stairs
  * @param collision_mode the collision mode that detected the event
  */
-void MapEntity::notify_collision_with_stairs(Stairs *stairs, CollisionMode collision_mode) {
+void MapEntity::notify_collision_with_stairs(Stairs &stairs, CollisionMode collision_mode) {
 }
 
 /**
  * @brief This function is called when a jump sensor detects a collision with this entity.
  * @param jump_sensor the jump sensor
  */
-void MapEntity::notify_collision_with_jump_sensor(JumpSensor *jump_sensor) {
+void MapEntity::notify_collision_with_jump_sensor(JumpSensor &jump_sensor) {
 }
 
 /**
  * @brief This function is called when a sensor detects a collision with this entity.
  * @param sensor a sensor
  */
-void MapEntity::notify_collision_with_sensor(Sensor *sensor) {
+void MapEntity::notify_collision_with_sensor(Sensor &sensor) {
 }
 
 /**
@@ -1310,7 +1311,7 @@ void MapEntity::notify_collision_with_sensor(Sensor *sensor) {
  * @param explosion the explosion
  * @param sprite_overlapping the sprite of the current entity that collides with the explosion
  */
-void MapEntity::notify_collision_with_explosion(Explosion *explosion, Sprite *sprite_overlapping) {
+void MapEntity::notify_collision_with_explosion(Explosion &explosion, Sprite &sprite_overlapping) {
 }
 
 /**
@@ -1318,7 +1319,7 @@ void MapEntity::notify_collision_with_explosion(Explosion *explosion, Sprite *sp
  * @param crystal_switch the crystal switch
  * @param collision_mode the collision mode that detected the event
  */
-void MapEntity::notify_collision_with_crystal_switch(CrystalSwitch *crystal_switch, CollisionMode collision_mode) {
+void MapEntity::notify_collision_with_crystal_switch(CrystalSwitch &crystal_switch, CollisionMode collision_mode) {
 }
 
 /**
@@ -1327,14 +1328,14 @@ void MapEntity::notify_collision_with_crystal_switch(CrystalSwitch *crystal_swit
  * @param crystal_switch the crystal switch
  * @param sprite_overlapping the sprite of the current entity that collides with the crystal switch
  */
-void MapEntity::notify_collision_with_crystal_switch(CrystalSwitch *crystal_switch, Sprite *sprite_overlapping) {
+void MapEntity::notify_collision_with_crystal_switch(CrystalSwitch &crystal_switch, Sprite &sprite_overlapping) {
 }
 
 /**
  * @brief This function is called when an enemy's rectangle detects a collision with this entity's rectangle.
  * @param enemy the enemy
  */
-void MapEntity::notify_collision_with_enemy(Enemy *enemy) {
+void MapEntity::notify_collision_with_enemy(Enemy &enemy) {
 }
 
 /**
@@ -1343,7 +1344,7 @@ void MapEntity::notify_collision_with_enemy(Enemy *enemy) {
  * @param enemy_sprite the enemy's sprite that overlaps a sprite of this entity
  * @param this_sprite this entity's sprite that overlaps the enemy's sprite
  */
-void MapEntity::notify_collision_with_enemy(Enemy *enemy, Sprite *enemy_sprite, Sprite *this_sprite) {
+void MapEntity::notify_collision_with_enemy(Enemy &enemy, Sprite &enemy_sprite, Sprite &this_sprite) {
 }
 
 /**
@@ -1360,7 +1361,7 @@ void MapEntity::notify_collision_with_enemy(Enemy *enemy, Sprite *enemy_sprite, 
  * - a value of -2 means that the attack immobilized the enemy
  * @param killed indicates that the attack has just killed the enemy
  */
-void MapEntity::notify_attacked_enemy(EnemyAttack attack, Enemy *victim, int result, bool killed) {
+void MapEntity::notify_attacked_enemy(EnemyAttack attack, Enemy &victim, int result, bool killed) {
 }
 
 /**

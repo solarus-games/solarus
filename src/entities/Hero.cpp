@@ -552,7 +552,7 @@ void Hero::place_on_destination_point(Map &map) {
       Stairs *stairs = get_stairs_overlapping();
       if (stairs != NULL) {
         // the hero arrived on the map by stairs
-	set_state(new StairsState(*this, stairs, Stairs::REVERSE_WAY));
+	set_state(new StairsState(*this, *stairs, Stairs::REVERSE_WAY));
       }
       else {
 	// the hero arrived on the map by a usual destination point
@@ -1145,8 +1145,8 @@ void Hero::set_target_solid_ground_coords(const Rectangle &target_solid_ground_c
  * @param other another entity
  * @return true if this entity is an obstacle for the other one
  */
-bool Hero::is_obstacle_for(MapEntity *other) {
-  return other->is_hero_obstacle(this);
+bool Hero::is_obstacle_for(MapEntity &other) {
+  return other.is_hero_obstacle(*this);
 }
 
 /**
@@ -1178,8 +1178,8 @@ bool Hero::is_ladder_obstacle() {
  * @param block a block
  * @return true if the teletransporter is currently an obstacle for this entity
  */
-bool Hero::is_block_obstacle(Block *block) {
-  return block->is_hero_obstacle(this);
+bool Hero::is_block_obstacle(Block &block) {
+  return block.is_hero_obstacle(*this);
 }
 
 /**
@@ -1190,7 +1190,7 @@ bool Hero::is_block_obstacle(Block *block) {
  * @param teletransporter a teletransporter
  * @return true if the teletransporter is currently an obstacle for the hero
  */
-bool Hero::is_teletransporter_obstacle(Teletransporter *teletransporter) {
+bool Hero::is_teletransporter_obstacle(Teletransporter &teletransporter) {
   return state->is_teletransporter_obstacle(teletransporter);
 }
 
@@ -1202,7 +1202,7 @@ bool Hero::is_teletransporter_obstacle(Teletransporter *teletransporter) {
  * @param conveyor_belt a conveyor belt
  * @return true if the conveyor belt is currently an obstacle for this entity
  */
-bool Hero::is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt) {
+bool Hero::is_conveyor_belt_obstacle(ConveyorBelt &conveyor_belt) {
   return state->is_conveyor_belt_obstacle(conveyor_belt);
 }
 
@@ -1211,7 +1211,7 @@ bool Hero::is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt) {
  * @param stairs an stairs entity
  * @return true if the stairs are currently an obstacle for this entity
  */
-bool Hero::is_stairs_obstacle(Stairs *stairs) {
+bool Hero::is_stairs_obstacle(Stairs &stairs) {
   return true;
 }
 
@@ -1220,7 +1220,7 @@ bool Hero::is_stairs_obstacle(Stairs *stairs) {
  * @param sensor a sensor (not used here)
  * @return true if this sensor is currently an obstacle for the hero
  */
-bool Hero::is_sensor_obstacle(Sensor *sensor) {
+bool Hero::is_sensor_obstacle(Sensor &sensor) {
   return state->is_sensor_obstacle(sensor);
 }
 
@@ -1229,7 +1229,7 @@ bool Hero::is_sensor_obstacle(Sensor *sensor) {
  * @param raised_block a crystal switch block raised
  * @return true if the raised block is currently an obstacle for this entity
  */
-bool Hero::is_raised_block_obstacle(CrystalSwitchBlock *raised_block) {
+bool Hero::is_raised_block_obstacle(CrystalSwitchBlock &raised_block) {
   return !is_on_raised_blocks();
 }
 
@@ -1238,7 +1238,7 @@ bool Hero::is_raised_block_obstacle(CrystalSwitchBlock *raised_block) {
  * @param jump_sensor a non-diagonal jump sensor
  * @return true if the jump sensor is currently an obstacle for this entity
  */
-bool Hero::is_jump_sensor_obstacle(JumpSensor *jump_sensor) {
+bool Hero::is_jump_sensor_obstacle(JumpSensor &jump_sensor) {
   return !state->can_take_jump_sensor(); // if the jump sensors cannot be used in this state, consider them as obstacles
 }
 
@@ -1247,16 +1247,16 @@ bool Hero::is_jump_sensor_obstacle(JumpSensor *jump_sensor) {
  * @param destructible_item the destructible item
  * @param collision_mode the collision mode that detected the event
  */
-void Hero::notify_collision_with_destructible_item(DestructibleItem *destructible_item, CollisionMode collision_mode) {
-  destructible_item->notify_collision_with_hero(this, collision_mode);
+void Hero::notify_collision_with_destructible_item(DestructibleItem &destructible_item, CollisionMode collision_mode) {
+  destructible_item.notify_collision_with_hero(*this, collision_mode);
 }
 
 /**
  * @brief This function is called when a non-pixel perfect enemy collides with the hero.
  * @param enemy the enemy
  */
-void Hero::notify_collision_with_enemy(Enemy *enemy) {
-  enemy->attack_hero(this, NULL);
+void Hero::notify_collision_with_enemy(Enemy &enemy) {
+  enemy.attack_hero(*this, NULL);
 }
 
 /**
@@ -1265,21 +1265,21 @@ void Hero::notify_collision_with_enemy(Enemy *enemy) {
  * @param enemy_sprite the enemy's sprite that overlaps a sprite of the hero
  * @param this_sprite the hero's sprite that overlaps the enemy's sprite
  */
-void Hero::notify_collision_with_enemy(Enemy *enemy, Sprite *enemy_sprite, Sprite *this_sprite) {
+void Hero::notify_collision_with_enemy(Enemy &enemy, Sprite &enemy_sprite, Sprite &this_sprite) {
 
-  if (this_sprite->contains("sword")) {
+  if (this_sprite.contains("sword")) {
     // the hero's sword overlaps the enemy
-    enemy->try_hurt(ATTACK_SWORD, this, enemy_sprite);
+    enemy.try_hurt(ATTACK_SWORD, *this, &enemy_sprite);
   }
-  else if (this_sprite->contains("tunic")) {
+  else if (this_sprite.contains("tunic")) {
     // the hero's body overlaps the enemy: ensure that the 16*16 rectangle of the hero also overlaps the enemy
-    Rectangle enemy_sprite_rectangle = enemy_sprite->get_size();
-    const Rectangle &enemy_sprite_origin = enemy_sprite->get_origin();
-    enemy_sprite_rectangle.set_x(enemy->get_x() - enemy_sprite_origin.get_x());
-    enemy_sprite_rectangle.set_y(enemy->get_y() - enemy_sprite_origin.get_y());
+    Rectangle enemy_sprite_rectangle = enemy_sprite.get_size();
+    const Rectangle &enemy_sprite_origin = enemy_sprite.get_origin();
+    enemy_sprite_rectangle.set_x(enemy.get_x() - enemy_sprite_origin.get_x());
+    enemy_sprite_rectangle.set_y(enemy.get_y() - enemy_sprite_origin.get_y());
 
     if (overlaps(enemy_sprite_rectangle)) {
-      enemy->attack_hero(this, enemy_sprite);
+      enemy.attack_hero(*this, &enemy_sprite);
     }
   }
 }
@@ -1289,16 +1289,16 @@ void Hero::notify_collision_with_enemy(Enemy *enemy, Sprite *enemy_sprite, Sprit
  * @param teletransporter the teletransporter
  * @param collision_mode the collision mode that detected the event
  */
-void Hero::notify_collision_with_teletransporter(Teletransporter *teletransporter, CollisionMode collision_mode) {
+void Hero::notify_collision_with_teletransporter(Teletransporter &teletransporter, CollisionMode collision_mode) {
 
-  if (teletransporter->is_on_map_side() || !state->can_avoid_teletransporter()) {
+  if (teletransporter.is_on_map_side() || !state->can_avoid_teletransporter()) {
 
     bool on_hole = get_map().get_tile_ground(get_layer(), get_x(), get_y()) == GROUND_HOLE;
     if (on_hole || state->is_teletransporter_delayed()) {
-      this->delayed_teletransporter = teletransporter; // fall into the hole (or do something else) first, transport later
+      this->delayed_teletransporter = &teletransporter; // fall into the hole (or do something else) first, transport later
     }
     else {
-      teletransporter->transport_hero(*this); // usual case: transport right now
+      teletransporter.transport_hero(*this); // usual case: transport right now
     }
   }
 }
@@ -1309,7 +1309,7 @@ void Hero::notify_collision_with_teletransporter(Teletransporter *teletransporte
  * (e.g. falling into a hole or taking stairs).
  * @return the delayed teletransporter
  */
-Teletransporter * Hero::get_delayed_teletransporter() {
+Teletransporter* Hero::get_delayed_teletransporter() {
   return delayed_teletransporter;
 }
 
@@ -1319,7 +1319,7 @@ Teletransporter * Hero::get_delayed_teletransporter() {
  * @param dx direction of the x move in pixels (0, 1 or -1)
  * @param dy direction of the y move in pixels (0, 1 or -1)
  */
-void Hero::notify_collision_with_conveyor_belt(ConveyorBelt *conveyor_belt, int dx, int dy) {
+void Hero::notify_collision_with_conveyor_belt(ConveyorBelt &conveyor_belt, int dx, int dy) {
 
   on_conveyor_belt = true;
 
@@ -1330,7 +1330,7 @@ void Hero::notify_collision_with_conveyor_belt(ConveyorBelt *conveyor_belt, int 
     center.add_xy(-1, -1);
     center.set_size(2, 2);
 
-    if (conveyor_belt->overlaps(center)) {
+    if (conveyor_belt.overlaps(center)) {
 
       // check that the movement is possible for at least one pixel
       Rectangle collision_box = get_bounding_box();
@@ -1349,12 +1349,12 @@ void Hero::notify_collision_with_conveyor_belt(ConveyorBelt *conveyor_belt, int 
  * @param stairs the stairs
  * @param collision_mode the collision mode that detected the event
  */
-void Hero::notify_collision_with_stairs(Stairs *stairs, CollisionMode collision_mode) {
+void Hero::notify_collision_with_stairs(Stairs &stairs, CollisionMode collision_mode) {
 
   if (state->can_take_stairs()) {
 
     Stairs::Way stairs_way;
-    if (stairs->is_inside_floor()) {
+    if (stairs.is_inside_floor()) {
       stairs_way = (get_layer() == LAYER_LOW) ? Stairs::NORMAL_WAY : Stairs::REVERSE_WAY;
     }
     else {
@@ -1362,7 +1362,7 @@ void Hero::notify_collision_with_stairs(Stairs *stairs, CollisionMode collision_
     }
 
     // check whether the hero is trying to move in the direction of the stairs
-    int correct_direction = stairs->get_movement_direction(stairs_way);
+    int correct_direction = stairs.get_movement_direction(stairs_way);
     if (is_moving_towards(correct_direction / 2)) {
       set_state(new StairsState(*this, stairs, stairs_way));
     }
@@ -1373,11 +1373,11 @@ void Hero::notify_collision_with_stairs(Stairs *stairs, CollisionMode collision_
  * @brief This function is called when a jump sensor detects a collision with this entity.
  * @param jump_sensor the jump sensor
  */
-void Hero::notify_collision_with_jump_sensor(JumpSensor *jump_sensor) {
+void Hero::notify_collision_with_jump_sensor(JumpSensor &jump_sensor) {
   
   if (state->can_take_jump_sensor()) {
 
-    if (jump_sensor->get_direction() % 2 == 0) {
+    if (jump_sensor.get_direction() % 2 == 0) {
       // this non-diagonal jump sensor is not currently an obstacle for the hero
       // (in order to allow his smooth collision movement),
       // so the hero may have one pixel inside the sensor before jumping
@@ -1385,7 +1385,7 @@ void Hero::notify_collision_with_jump_sensor(JumpSensor *jump_sensor) {
     }
 
     // jump
-    start_jumping(jump_sensor->get_direction(), jump_sensor->get_jump_length(), true, true, 0, LAYER_LOW);
+    start_jumping(jump_sensor.get_direction(), jump_sensor.get_jump_length(), true, true, 0, LAYER_LOW);
   }
 }
 
@@ -1393,10 +1393,10 @@ void Hero::notify_collision_with_jump_sensor(JumpSensor *jump_sensor) {
  * @brief This function is called when a sensor detects a collision with this entity.
  * @param sensor a sensor
  */
-void Hero::notify_collision_with_sensor(Sensor *sensor) {
+void Hero::notify_collision_with_sensor(Sensor &sensor) {
 
   if (!state->can_avoid_sensor()) {
-    sensor->activate(this);
+    sensor.activate(*this);
   }
 }
 
@@ -1405,11 +1405,11 @@ void Hero::notify_collision_with_sensor(Sensor *sensor) {
  * @param explosion the explosion
  * @param sprite_overlapping the sprite of the hero that collides with the explosion
  */
-void Hero::notify_collision_with_explosion(Explosion *explosion, Sprite *sprite_overlapping) {
+void Hero::notify_collision_with_explosion(Explosion &explosion, Sprite &sprite_overlapping) {
 
   if (!state->can_avoid_explosion()) {
-    if (sprite_overlapping->contains("tunic")) {
-      hurt(*explosion, 2, 0);
+    if (sprite_overlapping.contains("tunic")) {
+      hurt(explosion, 2, 0);
     }
   }
 }
@@ -1419,7 +1419,7 @@ void Hero::notify_collision_with_explosion(Explosion *explosion, Sprite *sprite_
  * @param crystal_switch the crystal switch
  * @param collision_mode the collision mode that detected the event
  */
-void Hero::notify_collision_with_crystal_switch(CrystalSwitch *crystal_switch, CollisionMode collision_mode) {
+void Hero::notify_collision_with_crystal_switch(CrystalSwitch &crystal_switch, CollisionMode collision_mode) {
 
   if (collision_mode == COLLISION_FACING_POINT) {
     // the hero is touching the crystal switch and is looking in its direction
@@ -1439,12 +1439,12 @@ void Hero::notify_collision_with_crystal_switch(CrystalSwitch *crystal_switch, C
  * @param crystal_switch the crystal switch
  * @param sprite_overlapping the sprite of the current entity that collides with the crystal switch
  */
-void Hero::notify_collision_with_crystal_switch(CrystalSwitch *crystal_switch, Sprite *sprite_overlapping) {
+void Hero::notify_collision_with_crystal_switch(CrystalSwitch &crystal_switch, Sprite &sprite_overlapping) {
 
-  if (sprite_overlapping->contains("sword") // the hero's sword is overlapping the crystal switch
+  if (sprite_overlapping.contains("sword") // the hero's sword is overlapping the crystal switch
       && state->can_sword_hit_crystal_switch()) {
     
-    crystal_switch->activate(this);
+    crystal_switch.activate(*this);
   }
 }
 
@@ -1458,29 +1458,29 @@ void Hero::notify_collision_with_crystal_switch(CrystalSwitch *crystal_switch, S
  * @param direction the direction of the hero relative to the entity
  * (the hero will be moved into this direction): 0 to 3
  */
-void Hero::avoid_collision(MapEntity *entity, int direction) {
+void Hero::avoid_collision(MapEntity &entity, int direction) {
 
   // fix the hero's position, whatever the entity size is
   switch (direction) {
 
     case 0:
-      set_top_left_x(entity->get_top_left_x() + entity->get_width());
-      set_y(entity->get_center_point().get_y());
+      set_top_left_x(entity.get_top_left_x() + entity.get_width());
+      set_y(entity.get_center_point().get_y());
       break;
 
     case 1:
-      set_top_left_y(entity->get_top_left_y() - this->get_height());
-      set_x(entity->get_center_point().get_x());
+      set_top_left_y(entity.get_top_left_y() - this->get_height());
+      set_x(entity.get_center_point().get_x());
       break;
 
     case 2:
-      set_top_left_x(entity->get_top_left_x() - this->get_width());
-      set_y(entity->get_center_point().get_y());
+      set_top_left_x(entity.get_top_left_x() - this->get_width());
+      set_y(entity.get_center_point().get_y());
       break;
 
     case 3:
-      set_top_left_y(entity->get_top_left_y() + entity->get_height());
-      set_x(entity->get_center_point().get_x());
+      set_top_left_y(entity.get_top_left_y() + entity.get_height());
+      set_x(entity.get_center_point().get_x());
       break;
 
     default:
@@ -1516,7 +1516,7 @@ void Hero::notify_grabbed_entity_collision() {
  * @param detector the detector to check
  * @return true if the sword is cutting this detector
  */
-bool Hero::is_striking_with_sword(Detector *detector) {
+bool Hero::is_striking_with_sword(Detector &detector) {
   return state->is_cutting_with_sword(detector);
 }
 
@@ -1558,7 +1558,7 @@ void Hero::try_snap_to_facing_entity() {
  */
 void Hero::notify_attacked_enemy(EnemyAttack attack, Enemy &victim, int result, bool killed) {
 
-  state->notify_attacked_enemy(attack, &victim, result, killed);
+  state->notify_attacked_enemy(attack, victim, result, killed);
 }
 
 /**
@@ -1697,6 +1697,7 @@ void Hero::start_hole() {
  * @return true if the hero can walk normally
  */
 bool Hero::is_free() {
+
   return state->is_free();
 }
 
@@ -1708,6 +1709,7 @@ bool Hero::is_free() {
  * @return true if the hero is grabbing and moving an entity
  */
 bool Hero::is_moving_grabbed_entity() {
+ 
   return state->is_moving_grabbed_entity();
 }
 
@@ -1716,6 +1718,7 @@ bool Hero::is_moving_grabbed_entity() {
  * @return true if the hero is grabbing or pulling an entity
  */
 bool Hero::is_grabbing_or_pulling() {
+
   return state->is_grabbing_or_pulling();
 }
 

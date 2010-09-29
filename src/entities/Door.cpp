@@ -125,7 +125,7 @@ EntityType Door::get_type() {
  * @param other another entity
  * @return true
  */
-bool Door::is_obstacle_for(MapEntity *other) {
+bool Door::is_obstacle_for(MapEntity &other) {
   return !is_open() || changing;
 }
 
@@ -157,7 +157,7 @@ void Door::set_open(bool door_open) {
 
     // ensure we are not closing the door on the hero
     if (is_on_map() && overlaps(get_hero())) {
-      get_hero().avoid_collision(this, 3);
+      get_hero().avoid_collision(*this, 3);
     }
 
     update_dynamic_tiles();
@@ -198,14 +198,14 @@ void Door::update_dynamic_tiles() {
  * @param entity_overlapping the entity overlapping the detector
  * @param collision_mode the collision mode that detected the collision
  */
-void Door::notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
+void Door::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
 
-  if (!is_open() && entity_overlapping->is_hero() && requires_key()) {
+  if (!is_open() && entity_overlapping.is_hero() && requires_key()) {
 
-    Hero *hero = (Hero*) entity_overlapping;
+    Hero &hero = (Hero&) entity_overlapping;
 
     if (get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
-	&& hero->is_free()) {
+	&& hero.is_free()) {
 
       // we show the action icon
       get_keys_effect().set_action_key_effect(can_open() ? KeysEffect::ACTION_KEY_OPEN : KeysEffect::ACTION_KEY_LOOK);

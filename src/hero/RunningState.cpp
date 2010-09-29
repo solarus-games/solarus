@@ -278,7 +278,7 @@ bool Hero::RunningState::can_avoid_conveyor_belt() {
  * @param sensor a sensor
  * @return true if the sensor is an obstacle in this state
  */
-bool Hero::RunningState::is_sensor_obstacle(Sensor *sensor) {
+bool Hero::RunningState::is_sensor_obstacle(Sensor &sensor) {
   return is_bouncing();
 }
 
@@ -288,7 +288,7 @@ bool Hero::RunningState::is_sensor_obstacle(Sensor *sensor) {
  * @param detector the detector to check
  * @return true if the sword is cutting this detector
  */
-bool Hero::RunningState::is_cutting_with_sword(Detector *detector) {
+bool Hero::RunningState::is_cutting_with_sword(Detector &detector) {
 
   // check the distance to the detector
   int distance = 8;
@@ -313,7 +313,7 @@ bool Hero::RunningState::is_cutting_with_sword(Detector *detector) {
       break;
   }
 
-  return detector->get_bounding_box().contains(tested_point.get_x(), tested_point.get_y());
+  return detector.overlaps(tested_point.get_x(), tested_point.get_y());
 }
 
 /**

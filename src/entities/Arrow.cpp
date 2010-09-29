@@ -129,7 +129,7 @@ bool Arrow::is_displayed_in_y_order() {
  * @param teletransporter a teletransporter
  * @return true if the teletransporter is currently an obstacle for this entity
  */
-bool Arrow::is_teletransporter_obstacle(Teletransporter *teletransporter) {
+bool Arrow::is_teletransporter_obstacle(Teletransporter &teletransporter) {
   return false;
 }
 
@@ -138,7 +138,7 @@ bool Arrow::is_teletransporter_obstacle(Teletransporter *teletransporter) {
  * @param conveyor_belt a conveyor belt
  * @return true if the conveyor belt is currently an obstacle for this entity
  */
-bool Arrow::is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt) {
+bool Arrow::is_conveyor_belt_obstacle(ConveyorBelt &conveyor_belt) {
   return false;
 }
 
@@ -147,8 +147,8 @@ bool Arrow::is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt) {
  * @param stairs an stairs entity
  * @return true if the stairs are currently an obstacle for this entity
  */
-bool Arrow::is_stairs_obstacle(Stairs *stairs) {
-  return stairs->is_inside_floor() && get_layer() == LAYER_LOW;
+bool Arrow::is_stairs_obstacle(Stairs &stairs) {
+  return stairs.is_inside_floor() && get_layer() == LAYER_LOW;
 }
 
 /**
@@ -180,7 +180,7 @@ bool Arrow::is_ladder_obstacle() {
  * @param raised_block a crystal switch block raised
  * @return false 
  */
-bool Arrow::is_raised_block_obstacle(CrystalSwitchBlock *raised_block) {
+bool Arrow::is_raised_block_obstacle(CrystalSwitchBlock &raised_block) {
   // arrows can traverse the crystal switch blocks
   return false;
 }
@@ -190,7 +190,7 @@ bool Arrow::is_raised_block_obstacle(CrystalSwitchBlock *raised_block) {
  * @param crystal_switch a crystal switch
  * @return true if the crystal switch is currently an obstacle for this entity
  */
-bool Arrow::is_crystal_switch_obstacle(CrystalSwitch *crystal_switch) {
+bool Arrow::is_crystal_switch_obstacle(CrystalSwitch &crystal_switch) {
   return false;
 }
 
@@ -199,7 +199,7 @@ bool Arrow::is_crystal_switch_obstacle(CrystalSwitch *crystal_switch) {
  * @param npc a non-playing character
  * @return true if the NPC is currently an obstacle for this entity
  */
-bool Arrow::is_npc_obstacle(InteractiveEntity *npc) {
+bool Arrow::is_npc_obstacle(InteractiveEntity &npc) {
   return false;
 }
 
@@ -208,7 +208,7 @@ bool Arrow::is_npc_obstacle(InteractiveEntity *npc) {
  * @param jump_sensor a non-diagonal jump sensor
  * @return true if the jump sensor is currently an obstacle for this entity
  */
-bool Arrow::is_jump_sensor_obstacle(JumpSensor *jump_sensor) {
+bool Arrow::is_jump_sensor_obstacle(JumpSensor &jump_sensor) {
   return false;
 }
 
@@ -281,7 +281,7 @@ void Arrow::update() {
       // the arrow is stopped because the entity that was reached just disappeared
       disappear_date = now;
     }
-    else if (entity_reached->get_type() == DESTRUCTIBLE_ITEM && !entity_reached->is_obstacle_for(this)) {
+    else if (entity_reached->get_type() == DESTRUCTIBLE_ITEM && !entity_reached->is_obstacle_for(*this)) {
       disappear_date = now;
     }
     else if (entity_reached->get_type() == ENEMY && ((Enemy*) entity_reached)->is_dying()) {
@@ -371,11 +371,11 @@ bool Arrow::is_flying() {
  * @brief Stops the arrow movement and attaches the arrow to an entity that was just reached.
  * @param entity_reached the entity that was reached
  */
-void Arrow::attach_to(MapEntity *entity_reached) {
+void Arrow::attach_to(MapEntity &entity_reached) {
 
   Debug::assert(this->entity_reached == NULL, "This arrow is already attached to an entity");
 
-  this->entity_reached = entity_reached;
+  this->entity_reached = &entity_reached;
   stop_now = true;
 }
 
@@ -384,11 +384,11 @@ void Arrow::attach_to(MapEntity *entity_reached) {
  * @param crystal_switch the crystal switch
  * @param collision_mode the collision mode that detected the event
  */
-void Arrow::notify_collision_with_crystal_switch(CrystalSwitch *crystal_switch, CollisionMode collision_mode) {
+void Arrow::notify_collision_with_crystal_switch(CrystalSwitch &crystal_switch, CollisionMode collision_mode) {
 
   if (collision_mode == COLLISION_RECTANGLE && is_flying()) {
 
-    crystal_switch->activate(this);
+    crystal_switch.activate(*this);
     attach_to(crystal_switch);
   }
 }
@@ -398,9 +398,9 @@ void Arrow::notify_collision_with_crystal_switch(CrystalSwitch *crystal_switch, 
  * @param destructible_item the destructible item
  * @param collision_mode the collision mode that detected the event
  */
-void Arrow::notify_collision_with_destructible_item(DestructibleItem *destructible_item, CollisionMode collision_mode) {
+void Arrow::notify_collision_with_destructible_item(DestructibleItem &destructible_item, CollisionMode collision_mode) {
 
-  if (destructible_item->is_obstacle_for(this) && is_flying()) {
+  if (destructible_item.is_obstacle_for(*this) && is_flying()) {
     attach_to(destructible_item);
   }
 }
@@ -411,10 +411,10 @@ void Arrow::notify_collision_with_destructible_item(DestructibleItem *destructib
  * @param enemy_sprite the enemy's sprite that overlaps the hero
  * @param this_sprite the arrow sprite
  */
-void Arrow::notify_collision_with_enemy(Enemy *enemy, Sprite *enemy_sprite, Sprite *this_sprite) {
+void Arrow::notify_collision_with_enemy(Enemy &enemy, Sprite &enemy_sprite, Sprite &this_sprite) {
 
   if (!overlaps(hero) && is_flying()) {
-    enemy->try_hurt(ATTACK_BOW, this, NULL);
+    enemy.try_hurt(ATTACK_BOW, *this, NULL);
   }
 }
 
@@ -432,7 +432,7 @@ void Arrow::notify_collision_with_enemy(Enemy *enemy, Sprite *enemy_sprite, Spri
  * - a value of -2 means that the attack immobilized the enemy
  * @param killed indicates that the attack has just killed the enemy
  */
-void Arrow::notify_attacked_enemy(EnemyAttack attack, Enemy *victim, int result, bool killed) {
+void Arrow::notify_attacked_enemy(EnemyAttack attack, Enemy &victim, int result, bool killed) {
 
   if (result == -1) {
     stop();

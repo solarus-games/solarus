@@ -88,6 +88,7 @@ bool Khotor::is_displayed_in_y_order() {
  * or it was just hurt).
  */
 void Khotor::restart() {
+
   Enemy::restart();
   chain->set_enabled(true);
   start_chain();
@@ -97,7 +98,8 @@ void Khotor::restart() {
  * Starts the chain and ball.
  */
 void Khotor::start_chain() {
-  chain->attach_to(this, -16, -33, 64);
+
+  chain->attach_to(*this, -16, -33, 64);
 }
 
 /**

@@ -37,7 +37,7 @@ class Hero::SwordTappingState: public Hero::State {
     void update();
     void set_suspended(bool suspended);
     bool can_sword_hit_crystal_switch();
-    bool is_cutting_with_sword(Detector *detector);
+    bool is_cutting_with_sword(Detector &detector);
 };
 
 #endif

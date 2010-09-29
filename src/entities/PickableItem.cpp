@@ -205,24 +205,24 @@ bool PickableItem::is_falling() {
  * @param entity_overlapping the entity overlapping the detector
  * @param collision_mode the collision mode that detected the collision
  */
-void PickableItem::notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
+void PickableItem::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
 
-  if (entity_overlapping->is_hero() && can_be_picked) {
+  if (entity_overlapping.is_hero() && can_be_picked) {
     remove_from_map();
     give_item_to_player();
   }
-  else if (entity_overlapping->get_type() == BOOMERANG && !is_following_boomerang) {
+  else if (entity_overlapping.get_type() == BOOMERANG && !is_following_boomerang) {
 
-    Boomerang *boomerang = (Boomerang*) entity_overlapping;
+    Boomerang &boomerang = (Boomerang&) entity_overlapping;
     
     clear_movement();
-    set_movement(new FollowMovement(entity_overlapping, 0, 0, true));
+    set_movement(new FollowMovement(&boomerang, 0, 0, true));
     is_following_boomerang = true;
     falling_height = FALLING_NONE;
     set_blinking(false);
 
-    if (!boomerang->is_going_back()) {
-      boomerang->go_back();
+    if (!boomerang.is_going_back()) {
+      boomerang.go_back();
     }
   }
 }

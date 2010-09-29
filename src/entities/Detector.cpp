@@ -101,10 +101,10 @@ void Detector::enable_pixel_collisions() {
  *
  * @param entity the entity to check
  */
-void Detector::check_collision(MapEntity *entity) {
+void Detector::check_collision(MapEntity &entity) {
 
-  if (entity != this
-      && (has_layer_independent_collisions() || get_layer() == entity->get_layer())) { // the entity is in the same layer as the detector
+  if (&entity != this
+      && (has_layer_independent_collisions() || get_layer() == entity.get_layer())) { // the entity is in the same layer as the detector
 
     // detect the collision depending on the collision mode
 
@@ -121,7 +121,7 @@ void Detector::check_collision(MapEntity *entity) {
     }
 
     if (has_collision_mode(COLLISION_FACING_POINT) && test_collision_facing_point(entity)) {
-      entity->set_facing_entity(this);
+      entity.set_facing_entity(this);
       notify_collision(entity, COLLISION_FACING_POINT);
     }
 
@@ -143,19 +143,19 @@ void Detector::check_collision(MapEntity *entity) {
  * @param entity the entity to check
  * @param sprite the sprite of that entity
  */
-void Detector::check_collision(MapEntity *entity, Sprite *sprite) {
+void Detector::check_collision(MapEntity &entity, Sprite &sprite) {
 
   if (has_collision_mode(COLLISION_SPRITE)
-      && entity != this
-      && (has_layer_independent_collisions() || get_layer() == entity->get_layer())
-      && sprite->are_pixel_collisions_enabled()) {
+      && &entity != this
+      && (has_layer_independent_collisions() || get_layer() == entity.get_layer())
+      && sprite.are_pixel_collisions_enabled()) {
 
     // we check the collision between the specified entity's sprite and all sprites of the current entity
     std::map<std::string, Sprite*>::iterator it;
     for (it = sprites.begin(); it != sprites.end(); it++) {
-      Sprite *this_sprite = it->second;
-      if (this_sprite->are_pixel_collisions_enabled()
-	  && this_sprite->test_collision(sprite, get_x(), get_y(), entity->get_x(), entity->get_y())) {
+      Sprite &this_sprite = *(it->second);
+      if (this_sprite.are_pixel_collisions_enabled()
+	  && this_sprite.test_collision(sprite, get_x(), get_y(), entity.get_x(), entity.get_y())) {
 	notify_collision(entity, sprite, this_sprite);
       }
     }
@@ -171,9 +171,9 @@ void Detector::check_collision(MapEntity *entity, Sprite *sprite) {
  * @param entity the entity
  * @return true if the entity's rectangle is overlapping the detector's rectangle
  */
-bool Detector::test_collision_rectangle(MapEntity *entity) {
+bool Detector::test_collision_rectangle(MapEntity &entity) {
 
-  return entity->overlaps(*this);
+  return entity.overlaps(*this);
 }
 
 /**
@@ -185,9 +185,9 @@ bool Detector::test_collision_rectangle(MapEntity *entity) {
  * @param entity the entity
  * @return true if the entity's rectangle is entirely inside the detector's rectangle
  */
-bool Detector::test_collision_inside(MapEntity *entity) {
+bool Detector::test_collision_inside(MapEntity &entity) {
 
-  return this->get_bounding_box().contains(entity->get_bounding_box());;
+  return get_bounding_box().contains(entity.get_bounding_box());;
 }
 
 
@@ -200,9 +200,9 @@ bool Detector::test_collision_inside(MapEntity *entity) {
  * @param entity the entity
  * @return true if the entity's origin point is overlapping the detector's rectangle
  */
-bool Detector::test_collision_origin_point(MapEntity *entity) {
+bool Detector::test_collision_origin_point(MapEntity &entity) {
 
-  return entity->is_origin_point_in(get_bounding_box());
+  return entity.is_origin_point_in(get_bounding_box());
 }
 
 /**
@@ -214,9 +214,9 @@ bool Detector::test_collision_origin_point(MapEntity *entity) {
  * @param entity the entity
  * @return true if the entity's facing point is overlapping the detector's rectangle
  */
-bool Detector::test_collision_facing_point(MapEntity *entity) {
+bool Detector::test_collision_facing_point(MapEntity &entity) {
 
-  return entity->is_facing_point_in(get_bounding_box());
+  return entity.is_facing_point_in(get_bounding_box());
 }
 
 /**
@@ -228,9 +228,9 @@ bool Detector::test_collision_facing_point(MapEntity *entity) {
  * @param entity the entity
  * @return true if the entity's center is overlapping the detector's rectangle
  */
-bool Detector::test_collision_center(MapEntity *entity) {
+bool Detector::test_collision_center(MapEntity &entity) {
 
-  return entity->is_center_in(get_bounding_box());
+  return entity.is_center_in(get_bounding_box());
 }
 
 /**
@@ -243,7 +243,7 @@ bool Detector::test_collision_center(MapEntity *entity) {
  * @param entity the entity
  * @return true if the entity's collides with this detector with respect to the custom rule
  */
-bool Detector::test_collision_custom(MapEntity *entity) {
+bool Detector::test_collision_custom(MapEntity &entity) {
 
   Debug::die("Custom collision mode invoked but not defined");
   return false;
@@ -260,7 +260,7 @@ bool Detector::test_collision_custom(MapEntity *entity) {
  * @param collision_mode the collision mode that detected the collision (useful if
  * the detector has several collision modes)
  */
-void Detector::notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
+void Detector::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
 
 }
 
@@ -275,7 +275,7 @@ void Detector::notify_collision(MapEntity *entity_overlapping, CollisionMode col
  * @param other_sprite the sprite of other_entity that is overlapping this detector
  * @param this_sprite the sprite of this detector that is overlapping the other entity's sprite
  */
-void Detector::notify_collision(MapEntity *other_entity, Sprite *other_sprite, Sprite *this_sprite) {
+void Detector::notify_collision(MapEntity &other_entity, Sprite &other_sprite, Sprite &this_sprite) {
 
 }
 
@@ -306,7 +306,7 @@ void Detector::action_key_pressed() {
  * @param item the inventory item used
  * @return true if an interaction occured
  */
-bool Detector::interaction_with_inventory_item(InventoryItem *item) {
+bool Detector::interaction_with_inventory_item(InventoryItem &item) {
   return false;
 }
 

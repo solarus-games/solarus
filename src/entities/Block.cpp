@@ -118,8 +118,9 @@ bool Block::is_displayed_in_y_order() {
  * @param other another entity
  * @return true
  */
-bool Block::is_obstacle_for(MapEntity *other) {
-  return other->is_block_obstacle(this);
+bool Block::is_obstacle_for(MapEntity &other) {
+
+  return other.is_block_obstacle(*this);
 }
 
 /**
@@ -127,7 +128,7 @@ bool Block::is_obstacle_for(MapEntity *other) {
  * @param hero the hero
  * @return true if the hero is an obstacle for this entity.
  */
-bool Block::is_hero_obstacle(Hero *hero) {
+bool Block::is_hero_obstacle(Hero &hero) {
   return get_movement() == NULL;
 }
 
@@ -136,7 +137,7 @@ bool Block::is_hero_obstacle(Hero *hero) {
  * @param enemy an enemy
  * @return true if this enemy is currently considered as an obstacle by this entity.
  */
-bool Block::is_enemy_obstacle(Enemy *enemy) {
+bool Block::is_enemy_obstacle(Enemy &enemy) {
   return true;
 }
 
@@ -145,7 +146,7 @@ bool Block::is_enemy_obstacle(Enemy *enemy) {
  * @param destructible_item a destructible item
  * @return true if the destructible item is currently an obstacle by this entity
  */
-bool Block::is_destructible_item_obstacle(DestructibleItem *destructible_item) {
+bool Block::is_destructible_item_obstacle(DestructibleItem &destructible_item) {
   return true;
 }
 
@@ -158,14 +159,14 @@ bool Block::is_destructible_item_obstacle(DestructibleItem *destructible_item) {
  * @param entity_overlapping the entity overlapping the detector
  * @param collision_mode the collision mode that detected the collision
  */
-void Block::notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
+void Block::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
 
-  if (entity_overlapping->is_hero()) {
+  if (entity_overlapping.is_hero()) {
 
-    Hero *hero = (Hero*) entity_overlapping;
+    Hero &hero = (Hero&) entity_overlapping;
 
     if (get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
-	&& hero->is_free()) {
+	&& hero.is_free()) {
 
       // we show the action icon
       get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_GRAB);

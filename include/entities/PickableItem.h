@@ -63,7 +63,7 @@ class PickableItem: public Detector {
   public:
 
     // creation and destruction
-    static PickableItem * create(Game &game, Layer layer, int x, int y,	const Treasure &treasure,
+    static PickableItem* create(Game &game, Layer layer, int x, int y,	const Treasure &treasure,
 	FallingHeight falling_height, bool will_disappear);
 
     ~PickableItem();
@@ -73,7 +73,7 @@ class PickableItem: public Detector {
 
     // item state
     void set_suspended(bool suspended);
-    void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
+    void notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode);
     void update();
     void display_on_map();
 };

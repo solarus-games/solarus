@@ -56,8 +56,8 @@ class Hero::RunningState: public Hero::State {
     bool can_avoid_hole();
     bool can_avoid_teletransporter();
     bool can_avoid_conveyor_belt();
-    bool is_sensor_obstacle(Sensor *sensor);
-    bool is_cutting_with_sword(Detector *detector);
+    bool is_sensor_obstacle(Sensor &sensor);
+    bool is_cutting_with_sword(Detector &detector);
     int get_sword_damage_factor();
 };
 

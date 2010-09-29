@@ -48,16 +48,16 @@ class Detector: public MapEntity {
     void enable_pixel_collisions();
 
     // specialized collision checking functions
-    bool test_collision_rectangle(MapEntity *entity);
-    bool test_collision_inside(MapEntity *entity);
-    bool test_collision_origin_point(MapEntity *entity);
-    bool test_collision_facing_point(MapEntity *entity);
-    bool test_collision_center(MapEntity *entity);
-    virtual bool test_collision_custom(MapEntity *entity);
+    bool test_collision_rectangle(MapEntity &entity);
+    bool test_collision_inside(MapEntity &entity);
+    bool test_collision_origin_point(MapEntity &entity);
+    bool test_collision_facing_point(MapEntity &entity);
+    bool test_collision_center(MapEntity &entity);
+    virtual bool test_collision_custom(MapEntity &entity);
 
     // functions called when a collision is detected
-    virtual void notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode);
-    virtual void notify_collision(MapEntity *entity, Sprite *this_sprite, Sprite *other_sprite);
+    virtual void notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode);
+    virtual void notify_collision(MapEntity &entity, Sprite &this_sprite, Sprite &other_sprite);
 
   public:
 
@@ -65,11 +65,11 @@ class Detector: public MapEntity {
     virtual ~Detector();
 
     // general collision checking functions
-    void check_collision(MapEntity *entity);
-    void check_collision(MapEntity *entity, Sprite *sprite);
+    void check_collision(MapEntity &entity);
+    void check_collision(MapEntity &entity, Sprite &sprite);
 
     virtual void action_key_pressed();
-    virtual bool interaction_with_inventory_item(InventoryItem *item);
+    virtual bool interaction_with_inventory_item(InventoryItem &item);
     virtual bool moved_by_hero();
     virtual SoundId get_sword_tapping_sound();
 };

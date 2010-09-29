@@ -173,11 +173,11 @@ void InteractiveEntity::initialize_sprite(SpriteAnimationSetId sprite_name, int 
  * @param other another entity
  * @return true
  */
-bool InteractiveEntity::is_obstacle_for(MapEntity *other) {
+bool InteractiveEntity::is_obstacle_for(MapEntity &other) {
 
   if (subtype == NON_PLAYING_CHARACTER) {
     // only NPCs have specific collisions
-    return other->is_npc_obstacle(this);
+    return other.is_npc_obstacle(*this);
   }
 
   // other interactive entities are always obstacles
@@ -189,7 +189,7 @@ bool InteractiveEntity::is_obstacle_for(MapEntity *other) {
  * @param hero the hero
  * @return true if the hero is an obstacle for this entity.
  */
-bool InteractiveEntity::is_hero_obstacle(Hero *hero) {
+bool InteractiveEntity::is_hero_obstacle(Hero &hero) {
   return true;
 }
 
@@ -198,7 +198,7 @@ bool InteractiveEntity::is_hero_obstacle(Hero *hero) {
  * @param npc a non-playing character
  * @return true if this NPC is currently considered as an obstacle by this entity.
  */
-bool InteractiveEntity::is_npc_obstacle(InteractiveEntity *npc) {
+bool InteractiveEntity::is_npc_obstacle(InteractiveEntity &npc) {
   return subtype != NON_PLAYING_CHARACTER;
 }
 
@@ -207,7 +207,7 @@ bool InteractiveEntity::is_npc_obstacle(InteractiveEntity *npc) {
  * @param enemy an enemy
  * @return true if this enemy is currently considered as an obstacle by this entity.
  */
-bool InteractiveEntity::is_enemy_obstacle(Enemy *enemy) {
+bool InteractiveEntity::is_enemy_obstacle(Enemy &enemy) {
   return subtype != NON_PLAYING_CHARACTER;
 }
 
@@ -230,15 +230,15 @@ bool InteractiveEntity::is_sword_ignored() {
  * @param entity_overlapping the entity overlapping the detector
  * @param collision_mode the collision mode that detected the collision
  */
-void InteractiveEntity::notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
+void InteractiveEntity::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
 
-  if (entity_overlapping->is_hero()) {
+  if (entity_overlapping.is_hero()) {
 
-    Hero *hero = (Hero*) entity_overlapping;
+    Hero &hero = (Hero&) entity_overlapping;
 
     if (get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
-	&& hero->is_free()
-	&& (subtype != SIGN || hero->is_facing_direction4(1))) { // TODO move to future class Sign
+	&& hero.is_free()
+	&& (subtype != SIGN || hero.is_facing_direction4(1))) { // TODO move to future class Sign
 
       // we show the action icon
       get_keys_effect().set_action_key_effect(action_key_effects[subtype]);
@@ -293,21 +293,21 @@ void InteractiveEntity::action_key_pressed() {
  * @param item the inventory item used
  * @return true if an interaction occured
  */
-bool InteractiveEntity::interaction_with_inventory_item(InventoryItem *item) {
+bool InteractiveEntity::interaction_with_inventory_item(InventoryItem &item) {
 
   bool interaction = false;
 
   // if the player uses an empty bottle on a place with water, we let him fill the bottle
   if (subtype == WATER_FOR_BOTTLE
-      && item->get_name().substr(0, 7) == "bottle_" // TODO make a script
-      && item->get_variant() == 1) {
+      && item.get_name().substr(0, 7) == "bottle_" // TODO make a script
+      && item.get_variant() == 1) {
 
     // TODO game->get_equipment()->found_water();
     interaction = true;
   }
   else {
     // in other cases, nothing is predefined in the engine: we call the script
-    interaction = get_scripts().event_hero_interaction_item(get_name(), item->get_name(), item->get_variant());
+    interaction = get_scripts().event_hero_interaction_item(get_name(), item.get_name(), item.get_variant());
   }
 
   return interaction;

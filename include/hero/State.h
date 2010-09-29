@@ -104,17 +104,17 @@ class Hero::State {
     virtual bool is_water_obstacle();
     virtual bool is_hole_obstacle();
     virtual bool is_ladder_obstacle();
-    virtual bool is_teletransporter_obstacle(Teletransporter *teletransporter);
+    virtual bool is_teletransporter_obstacle(Teletransporter &teletransporter);
     virtual bool can_avoid_teletransporter();
     virtual bool is_teletransporter_delayed();
-    virtual bool is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt);
+    virtual bool is_conveyor_belt_obstacle(ConveyorBelt &conveyor_belt);
     virtual bool can_avoid_conveyor_belt();
-    virtual bool is_sensor_obstacle(Sensor *sensor);
+    virtual bool is_sensor_obstacle(Sensor &sensor);
     virtual bool can_avoid_sensor();
     virtual bool can_avoid_explosion();
 
     // enemies
-    virtual void notify_attacked_enemy(EnemyAttack attack, Enemy *victim, int result, bool killed);
+    virtual void notify_attacked_enemy(EnemyAttack attack, Enemy &victim, int result, bool killed);
     virtual int get_sword_damage_factor();
     virtual bool can_be_hurt();
 
@@ -123,7 +123,7 @@ class Hero::State {
     virtual bool is_grabbing_or_pulling();
     virtual bool is_moving_grabbed_entity();
     virtual void notify_grabbed_entity_collision();
-    virtual bool is_cutting_with_sword(Detector *detector);
+    virtual bool is_cutting_with_sword(Detector &detector);
     virtual bool can_start_sword();
     virtual bool can_start_inventory_item();
     virtual bool can_take_stairs();

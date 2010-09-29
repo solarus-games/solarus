@@ -190,6 +190,7 @@ void CarriedItem::set_animation_stopped() {
  * The item moves like him.
  */
 void CarriedItem::set_animation_walking() {
+
   if (!is_lifting && !is_throwing) {
     std::string animation = will_explode_soon() ? "walking_explosion_soon" : "walking";
     get_sprite().set_current_animation(animation);
@@ -409,10 +410,10 @@ void CarriedItem::display_on_map() {
  * @brief This function is called when this carried item collides an enemy.
  * @param enemy the enemy
  */
-void CarriedItem::notify_collision_with_enemy(Enemy *enemy) {
+void CarriedItem::notify_collision_with_enemy(Enemy &enemy) {
 
   if (is_throwing && !can_explode()) {
-    enemy->try_hurt(ATTACK_THROWN_ITEM, this, NULL);
+    enemy.try_hurt(ATTACK_THROWN_ITEM, *this, NULL);
   }
 }
 
@@ -430,7 +431,7 @@ void CarriedItem::notify_collision_with_enemy(Enemy *enemy) {
  * - a value of -2 means that the attack immobilized the enemy
  * @param killed indicates that the attack has just killed the enemy
  */
-void CarriedItem::notify_attacked_enemy(EnemyAttack attack, Enemy *victim, int result, bool killed) {
+void CarriedItem::notify_attacked_enemy(EnemyAttack attack, Enemy &victim, int result, bool killed) {
 
   if (result != 0) {
     break_item();
@@ -442,7 +443,7 @@ void CarriedItem::notify_attacked_enemy(EnemyAttack attack, Enemy *victim, int r
  * @param teletransporter a teletransporter
  * @return true if the teletransporter is currently an obstacle for this entity
  */
-bool CarriedItem::is_teletransporter_obstacle(Teletransporter *teletransporter) {
+bool CarriedItem::is_teletransporter_obstacle(Teletransporter &teletransporter) {
   return false;
 }
 
@@ -451,7 +452,7 @@ bool CarriedItem::is_teletransporter_obstacle(Teletransporter *teletransporter) 
  * @param conveyor_belt a conveyor belt
  * @return true if the conveyor belt is currently an obstacle for this entity
  */
-bool CarriedItem::is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt) {
+bool CarriedItem::is_conveyor_belt_obstacle(ConveyorBelt &conveyor_belt) {
   return false;
 }
 
@@ -460,7 +461,7 @@ bool CarriedItem::is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt) {
  * @param stairs an stairs entity
  * @return true if the stairs are currently an obstacle for this entity
  */
-bool CarriedItem::is_stairs_obstacle(Stairs *stairs) {
+bool CarriedItem::is_stairs_obstacle(Stairs &stairs) {
   return false;
 }
 
@@ -493,7 +494,7 @@ bool CarriedItem::is_ladder_obstacle() {
  * @param raised_block a crystal switch block raised
  * @return false 
  */
-bool CarriedItem::is_raised_block_obstacle(CrystalSwitchBlock *raised_block) {
+bool CarriedItem::is_raised_block_obstacle(CrystalSwitchBlock &raised_block) {
   // the thrown items can traverse the crystal switch blocks
   return false;
 }
@@ -503,7 +504,7 @@ bool CarriedItem::is_raised_block_obstacle(CrystalSwitchBlock *raised_block) {
  * @param crystal_switch a crystal switch
  * @return true if the crystal switch is currently an obstacle for this entity
  */
-bool CarriedItem::is_crystal_switch_obstacle(CrystalSwitch *crystal_switch) {
+bool CarriedItem::is_crystal_switch_obstacle(CrystalSwitch &crystal_switch) {
   return !is_being_thrown();
 }
 
@@ -512,7 +513,7 @@ bool CarriedItem::is_crystal_switch_obstacle(CrystalSwitch *crystal_switch) {
  * @param npc a non-playing character
  * @return true if the NPC is currently an obstacle for this entity
  */
-bool CarriedItem::is_npc_obstacle(InteractiveEntity *npc) {
+bool CarriedItem::is_npc_obstacle(InteractiveEntity &npc) {
   return false;
 }
 
@@ -521,7 +522,7 @@ bool CarriedItem::is_npc_obstacle(InteractiveEntity *npc) {
  * @param jump_sensor a non-diagonal jump sensor
  * @return true if the jump sensor is currently an obstacle for this entity
  */
-bool CarriedItem::is_jump_sensor_obstacle(JumpSensor *jump_sensor) {
+bool CarriedItem::is_jump_sensor_obstacle(JumpSensor &jump_sensor) {
   return false;
 }
 
@@ -530,7 +531,7 @@ bool CarriedItem::is_jump_sensor_obstacle(JumpSensor *jump_sensor) {
  * @param sensor a sensor
  * @return true if this sensor is currently an obstacle for this entity.
  */
-bool CarriedItem::is_sensor_obstacle(Sensor *sensor) {
+bool CarriedItem::is_sensor_obstacle(Sensor &sensor) {
   return false;
 }
 
@@ -539,7 +540,7 @@ bool CarriedItem::is_sensor_obstacle(Sensor *sensor) {
  * @param enemy an enemy
  * @return true if this enemy is considered as an obstacle for this entity.
  */
-bool CarriedItem::is_enemy_obstacle(Enemy *enemy) {
+bool CarriedItem::is_enemy_obstacle(Enemy &enemy) {
   // if this item explodes when reaching an obstacle, then we consider enemies as obstacles
   return can_explode();
 }
@@ -549,13 +550,13 @@ bool CarriedItem::is_enemy_obstacle(Enemy *enemy) {
  * @param crystal_switch the crystal switch
  * @param collision_mode the collision mode that detected the event
  */
-void CarriedItem::notify_collision_with_crystal_switch(CrystalSwitch *crystal_switch, CollisionMode collision_mode) {
+void CarriedItem::notify_collision_with_crystal_switch(CrystalSwitch &crystal_switch, CollisionMode collision_mode) {
 
   if (collision_mode == COLLISION_RECTANGLE
       && is_being_thrown()
       && !can_explode()) {
 
-    crystal_switch->activate(this);
+    crystal_switch.activate(*this);
     break_item();
   }
 }
@@ -565,10 +566,10 @@ void CarriedItem::notify_collision_with_crystal_switch(CrystalSwitch *crystal_sw
  * @param stairs the stairs entity
  * @param collision_mode the collision mode that detected the event
  */
-void CarriedItem::notify_collision_with_stairs(Stairs *stairs, CollisionMode collision_mode) {
+void CarriedItem::notify_collision_with_stairs(Stairs &stairs, CollisionMode collision_mode) {
 
   if (is_throwing && !is_breaking
-      && stairs->is_inside_floor() && get_layer() == LAYER_LOW) {
+      && stairs.is_inside_floor() && get_layer() == LAYER_LOW) {
     break_on_intermediate_layer = true; // show the destruction animation above the stairs
   }
 }

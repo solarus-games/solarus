@@ -109,7 +109,7 @@ bool Hero::HurtState::is_touching_ground() {
  * @param teletransporter a teletransporter
  * @return true if the teletransporter is an obstacle in this state
  */
-bool Hero::HurtState::is_teletransporter_obstacle(Teletransporter *teletransporter) {
+bool Hero::HurtState::is_teletransporter_obstacle(Teletransporter &teletransporter) {
   return true;
 }
 
@@ -118,7 +118,7 @@ bool Hero::HurtState::is_teletransporter_obstacle(Teletransporter *teletransport
  * @param conveyor_belt a conveyor belt
  * @return true if the conveyor belt is an obstacle in this state
  */
-bool Hero::HurtState::is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt) {
+bool Hero::HurtState::is_conveyor_belt_obstacle(ConveyorBelt &conveyor_belt) {
   return true;
 }
 
@@ -127,7 +127,7 @@ bool Hero::HurtState::is_conveyor_belt_obstacle(ConveyorBelt *conveyor_belt) {
  * @param sensor a sensor
  * @return true if the sensor is an obstacle in this state
  */
-bool Hero::HurtState::is_sensor_obstacle(Sensor *sensor) {
+bool Hero::HurtState::is_sensor_obstacle(Sensor &sensor) {
   return true;
 }
 

@@ -83,7 +83,7 @@ bool Hero::SpinAttackState::can_be_hurt() {
  * @param detector the detector to check
  * @return true if the sword is cutting this detector
  */
-bool Hero::SpinAttackState::is_cutting_with_sword(Detector *detector) {
+bool Hero::SpinAttackState::is_cutting_with_sword(Detector &detector) {
 
   // during a spin attack, any sprite collision can cut things
   return true;

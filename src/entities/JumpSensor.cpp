@@ -99,14 +99,14 @@ EntityType JumpSensor::get_type() {
  * @param other another entity
  * @return true if this entity is an obstacle for the other one
  */
-bool JumpSensor::is_obstacle_for(MapEntity *other) {
+bool JumpSensor::is_obstacle_for(MapEntity &other) {
 
   if (direction % 2 != 0) {
     return false; // diagonal jump sensor: never obstacle (the tiles below the jump sensor should block entities)
   }
 
   // non-diagonal jump sensor: it depends on the entities (the tiles below the jump sensor should NOT block entities)
-  return other->is_jump_sensor_obstacle(this);
+  return other.is_jump_sensor_obstacle(*this);
 }
 
 /**
@@ -117,23 +117,24 @@ bool JumpSensor::is_obstacle_for(MapEntity *other) {
  * @param entity the entity
  * @return true if the entity's collides with this jump sensor
  */
-bool JumpSensor::test_collision_custom(MapEntity *entity) {
+bool JumpSensor::test_collision_custom(MapEntity &entity) {
 
-  if (!entity->is_hero()) {
+  if (!entity.is_hero()) {
     return false;
   }
-  Hero *hero = (Hero*) entity;
+
+  Hero &hero = (Hero&) entity;
 
   // if the sensor's has one of the four main directions, then
   // its shape is exactly its rectangle
   if (direction % 2 == 0) {
 
-    if (!hero->is_moving_towards(direction / 2)) {
+    if (!hero.is_moving_towards(direction / 2)) {
       return false;
     }
 
     bool horizontal = (direction % 4 == 0);
-    const Rectangle &facing_point = hero->get_facing_point(direction / 2);
+    const Rectangle &facing_point = hero.get_facing_point(direction / 2);
     return overlaps(facing_point.get_x() + (horizontal ? 0 : -8),
 		    facing_point.get_y() + (horizontal ? -8 : 0))
       && overlaps(facing_point.get_x() + (horizontal ? 0 : 7),
@@ -142,8 +143,8 @@ bool JumpSensor::test_collision_custom(MapEntity *entity) {
 
   // otherwise, the sensor's shape is a diagonal bar
 
-  return is_point_in_diagonal(hero->get_facing_point((direction - 1) / 2))
-    || is_point_in_diagonal(hero->get_facing_point((direction + 1) % 8 / 2));
+  return is_point_in_diagonal(hero.get_facing_point((direction - 1) / 2))
+    || is_point_in_diagonal(hero.get_facing_point((direction + 1) % 8 / 2));
 }
 
 /**
@@ -196,8 +197,9 @@ bool JumpSensor::is_point_in_diagonal(const Rectangle &point) {
  * @param collision_mode the collision mode that triggered the event
  * (not used here since a jump sensor has only one collision mode)
  */
-void JumpSensor::notify_collision(MapEntity *entity_overlapping, CollisionMode collision_mode) {
-  entity_overlapping->notify_collision_with_jump_sensor(this);
+void JumpSensor::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
+
+  entity_overlapping.notify_collision_with_jump_sensor(*this);
 }
 
 /**

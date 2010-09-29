@@ -34,16 +34,16 @@
  * @brief Creates an arrow.
  * @param hero the hero
  */
-Arrow::Arrow(Hero *hero):
+Arrow::Arrow(Hero &hero):
   hero(hero) {
 
   // initialize the entity
-  int direction = hero->get_animation_direction();
-  set_layer(hero->get_layer());
+  int direction = hero.get_animation_direction();
+  set_layer(hero.get_layer());
   create_sprite("entities/arrow", true);
-  get_sprite()->set_current_direction(direction);
+  get_sprite().set_current_direction(direction);
   set_bounding_box_from_sprite();
-  set_xy(hero->get_center_point());
+  set_xy(hero.get_center_point());
 
   std::string path = " ";
   path[0] = '0' + (direction * 2);
@@ -220,7 +220,7 @@ const Rectangle Arrow::get_facing_point() {
 
   Rectangle facing_point = get_xy();
 
-  switch (get_sprite()->get_current_direction()) {
+  switch (get_sprite().get_current_direction()) {
 
     // right
     case 0:
@@ -293,7 +293,7 @@ void Arrow::update() {
   // see if the arrow just hit a wall or an entity
   bool reached_obstacle = false;
 
-  if (get_sprite()->get_current_animation() != "reached_obstacle") {
+  if (get_sprite().get_current_animation() != "reached_obstacle") {
 
     if (entity_reached != NULL) {
       // the arrow was just attached to an entity
@@ -315,13 +315,13 @@ void Arrow::update() {
   if (reached_obstacle) {
     // an obstacle or an entity was just reached
     disappear_date = now + 1500;
-    get_sprite()->set_current_animation("reached_obstacle");
+    get_sprite().set_current_animation("reached_obstacle");
     Sound::play("arrow_hit");
 
     if (entity_reached == NULL) {
       clear_movement();
     }
-    get_map().check_collision_with_detectors(this);
+    get_map().check_collision_with_detectors(*this);
   }
 
   // destroy the arrow when disappear_date is reached
@@ -453,7 +453,7 @@ void Arrow::notify_attacked_enemy(EnemyAttack attack, Enemy *victim, int result,
  */
 bool Arrow::has_reached_map_border() {
 
-  if (get_sprite()->get_current_animation() != "flying" || get_movement() == NULL) {
+  if (get_sprite().get_current_animation() != "flying" || get_movement() == NULL) {
     return false;
   }
 

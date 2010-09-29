@@ -42,7 +42,7 @@ DestinationPoint::DestinationPoint(const std::string &name, Layer layer, int x, 
 
   if (is_visible) {
     create_sprite("entities/teletransporter");
-    get_sprite()->set_current_animation("destination");
+    get_sprite().set_current_animation("destination");
   }
 }
 

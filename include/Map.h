@@ -29,7 +29,7 @@
  * A map is where a game sequence takes place. It contains various information, including:
  * - the map dimensions
  * - the tileset
- * - the tiles and the other entities
+ * - the tiles and the other entities initially placed on the map
  * - the obstacles
  * - the background music
  * - the position of the camera
@@ -96,7 +96,7 @@ class Map {
     MapEntities *entities;        /**< the entities on the map */
     bool suspended;               /**< indicates whether the game is suspended */
 
-    MapScript *script;            /**< LUA script of the map */
+    MapScript *script;            /**< Lua script of the map */
 
     void set_suspended(bool suspended);
 
@@ -114,7 +114,7 @@ class Map {
     bool is_in_outside_world();
     int get_floor();
     bool has_floor();
-    const Rectangle &get_location();
+    const Rectangle& get_location();
     int get_small_keys_variable();
     bool has_small_keys();
 
@@ -125,7 +125,7 @@ class Map {
 
     // camera
     Surface* get_visible_surface();
-    const Rectangle &get_camera_position();
+    const Rectangle& get_camera_position();
     void move_camera(int x, int y, int speed);
     void restore_camera();
     bool is_camera_fixed_on_hero();
@@ -156,22 +156,22 @@ class Map {
     // collisions with obstacles (checked before a move)
     bool test_collision_with_border(int x, int y);
     bool test_collision_with_border(const Rectangle &collision_box);
-    bool test_collision_with_tiles(Layer layer, int x, int y, MapEntity *entity_to_check);
-    bool test_collision_with_entities(Layer layer, const Rectangle &collision_box, MapEntity *entity_to_check);
-    bool test_collision_with_obstacles(Layer layer, const Rectangle &collision_box, MapEntity *entity_to_check);
-    bool test_collision_with_obstacles(Layer layer, int x, int y, MapEntity *entity_to_check);
+    bool test_collision_with_tiles(Layer layer, int x, int y, MapEntity &entity_to_check);
+    bool test_collision_with_entities(Layer layer, const Rectangle &collision_box, MapEntity &entity_to_check);
+    bool test_collision_with_obstacles(Layer layer, const Rectangle &collision_box, MapEntity &entity_to_check);
+    bool test_collision_with_obstacles(Layer layer, int x, int y, MapEntity &entity_to_check);
     Ground get_tile_ground(Layer layer, int x, int y);
     Ground get_tile_ground(Layer layer, const Rectangle &coordinates);
 
     // collisions with detectors (checked after a move)
-    void check_collision_with_detectors(MapEntity *entity);
-    void check_collision_with_detectors(MapEntity *entity, Sprite *sprite);
+    void check_collision_with_detectors(MapEntity &entity);
+    void check_collision_with_detectors(MapEntity &entity, Sprite &sprite);
 
     // update and display
     void update();
     void check_suspended();
     void display();
-    void display_sprite(Sprite *sprite, int x, int y);
+    void display_sprite(Sprite &sprite, int x, int y);
 };
 
 /**

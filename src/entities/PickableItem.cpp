@@ -154,9 +154,9 @@ void PickableItem::initialize_sprites() {
 
   // create the sprite and set its animation
   create_sprite("entities/items");
-  Sprite *item_sprite = get_sprite();
-  item_sprite->set_current_animation(treasure.get_item_name());
-  item_sprite->set_current_direction(treasure.get_variant() - 1);
+  Sprite &item_sprite = get_sprite();
+  item_sprite.set_current_animation(treasure.get_item_name());
+  item_sprite.set_current_direction(treasure.get_variant() - 1);
 
   // set the origin point and the size of the entity
   set_bounding_box_from_sprite();
@@ -254,7 +254,7 @@ void PickableItem::set_blinking(bool blinking) {
 
   uint32_t blink_delay = blinking ? 75 : 0;
 
-  get_sprite()->set_blinking(blink_delay);
+  get_sprite().set_blinking(blink_delay);
 
   if (shadow_sprite != NULL) {
     shadow_sprite->set_blinking(blink_delay);
@@ -327,13 +327,13 @@ void PickableItem::update() {
     // wait 0.7 second before allowing the hero to take the item
     if (!can_be_picked && now >= allow_pick_date) {
       can_be_picked = true;
-      get_map().check_collision_with_detectors(&get_hero());
+      get_map().check_collision_with_detectors(get_hero());
     }
     else {
       // make the item blink and then disappear
       if (will_disappear) {
 
-	if (now >= blink_date && !get_sprite()->is_blinking() && !is_following_boomerang) {
+	if (now >= blink_date && !get_sprite().is_blinking() && !is_following_boomerang) {
 	  set_blinking(true);
 	}
     
@@ -355,7 +355,7 @@ void PickableItem::display_on_map() {
 
   // display the shadow
   if (shadow_sprite != NULL) {
-    get_map().display_sprite(shadow_sprite, shadow_xy.get_x(), shadow_xy.get_y());
+    get_map().display_sprite(*shadow_sprite, shadow_xy.get_x(), shadow_xy.get_y());
   }
 
   // display the sprite

@@ -107,7 +107,7 @@ MapEntity* Door::parse(Game &game, std::istream &is, Layer layer, int x, int y) 
   else {
     door->set_open(false);
   }
-  door->get_sprite()->set_current_direction(direction);
+  door->get_sprite().set_current_direction(direction);
 
   return door;
 }
@@ -149,14 +149,14 @@ void Door::set_open(bool door_open) {
     set_collision_modes(COLLISION_NONE); // to avoid being the hero's facing entity
   }
   else {
-    get_sprite()->set_current_animation(animations[subtype]);
+    get_sprite().set_current_animation(animations[subtype]);
     set_collision_modes(COLLISION_FACING_POINT);
   }
 
   if (is_on_map()) {
 
     // ensure we are not closing the door on the hero
-    if (is_on_map() && overlaps(&get_hero())) {
+    if (is_on_map() && overlaps(get_hero())) {
       get_hero().avoid_collision(this, 3);
     }
 
@@ -272,7 +272,7 @@ void Door::update() {
     initialized = true;
   }
 
-  if (changing && get_sprite()->is_animation_finished()) {
+  if (changing && get_sprite().is_animation_finished()) {
     changing = false;
     set_open(!is_open());
   }
@@ -362,7 +362,7 @@ void Door::open() {
 void Door::set_opening() {
 
   std::string animation = requires_key() ? "opening_key" : "opening";
-  get_sprite()->set_current_animation(animation);
+  get_sprite().set_current_animation(animation);
   changing = true;
 }
 
@@ -387,7 +387,7 @@ void Door::close() {
  */
 void Door::set_closing() {
 
-  get_sprite()->set_current_animation("opening");
+  get_sprite().set_current_animation("opening");
   changing = true;
 }
 

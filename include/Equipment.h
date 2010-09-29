@@ -82,7 +82,6 @@ class Equipment {
     void add_magic(int magic_to_add);
     void remove_magic(int magic_to_remove);
     void restore_all_magic();
-    bool needs_magic();
 
     bool is_magic_decreasing();
     void start_removing_magic(uint32_t delay);

@@ -31,7 +31,7 @@ ConveyorBelt::ConveyorBelt(Layer layer, int x, int y, int direction):
 
   set_origin(8, 13);
   create_sprite("entities/conveyor_belt");
-  get_sprite()->set_current_direction(direction);
+  get_sprite().set_current_direction(direction);
   set_direction(direction);
 }
 

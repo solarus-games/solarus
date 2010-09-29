@@ -28,6 +28,9 @@ class ItemProperties {
 
   public:
 
+    /**
+     * @brief Possible sizes of the shadow of an item placed on the ground.
+     */
     enum ShadowSize {
       SHADOW_NONE,
       SHADOW_SMALL,

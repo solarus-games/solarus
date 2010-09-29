@@ -164,7 +164,7 @@ void InteractiveEntity::initialize_sprite(SpriteAnimationSetId sprite_name, int 
 
   if (sprite_name != "_none") {
     create_sprite(sprite_name);
-    get_sprite()->set_current_direction(initial_direction);
+    get_sprite().set_current_direction(initial_direction);
   }
 }
 
@@ -266,7 +266,7 @@ void InteractiveEntity::action_key_pressed() {
       // for an NPC: look in the hero's direction 
       if (subtype == NON_PLAYING_CHARACTER) {
 	int direction = (get_hero().get_animation_direction() + 2) % 4;
-	get_sprite()->set_current_direction(direction);
+	get_sprite().set_current_direction(direction);
       }
 
       // start the message or call the script
@@ -336,7 +336,7 @@ void InteractiveEntity::update() {
   if (subtype == NON_PLAYING_CHARACTER && get_movement() != NULL) {
 
     if (get_movement()->is_finished()) {
-      get_sprite()->set_current_animation("stopped");
+      get_sprite().set_current_animation("stopped");
       clear_movement();
       get_scripts().event_npc_movement_finished(get_name());
     }
@@ -358,7 +358,7 @@ void InteractiveEntity::walk(std::string path, bool loop, bool ignore_obstacles)
 
   clear_movement();
   set_movement(new PathMovement(path, 6, loop, ignore_obstacles, false));
-  get_sprite()->set_current_animation("walking");
+  get_sprite().set_current_animation("walking");
 }
 
 /**
@@ -372,7 +372,7 @@ void InteractiveEntity::walk_random() {
 
   clear_movement();
   set_movement(new RandomWalkMovement(3));
-  get_sprite()->set_current_animation("walking");
+  get_sprite().set_current_animation("walking");
 }
 
 /**
@@ -388,7 +388,7 @@ void InteractiveEntity::jump(int direction, int length, bool ignore_obstacles) {
 
   Debug::assert(subtype == NON_PLAYING_CHARACTER, "This entity is not a non-playing character");
 
-  get_sprite()->set_current_animation("jumping");
+  get_sprite().set_current_animation("jumping");
   clear_movement();
   JumpMovement *movement = new JumpMovement(direction, length, ignore_obstacles);
   movement->set_delay(20);
@@ -404,10 +404,10 @@ void InteractiveEntity::notify_position_changed() {
 
   if (subtype == NON_PLAYING_CHARACTER) {
 
-    if (get_sprite()->get_current_animation() == "walking") {
+    if (get_sprite().get_current_animation() == "walking") {
       PathMovement *movement = (PathMovement*) get_movement();
       int movement_direction = movement->get_current_direction();
-      get_sprite()->set_current_direction(animation_directions[movement_direction]);
+      get_sprite().set_current_direction(animation_directions[movement_direction]);
     }
 
     if (get_hero().get_facing_entity() == this &&
@@ -425,7 +425,7 @@ void InteractiveEntity::notify_position_changed() {
  */
 void InteractiveEntity::set_sprite_direction(int direction) {
 
-  get_sprite()->set_current_direction(direction);
+  get_sprite().set_current_direction(direction);
 }
 
 /**
@@ -437,7 +437,7 @@ void InteractiveEntity::set_sprite_direction(int direction) {
 void InteractiveEntity::display_on_map() {
 
   if (subtype == NON_PLAYING_CHARACTER &&
-      get_sprite()->get_current_animation() == "jumping") {
+      get_sprite().get_current_animation() == "jumping") {
 
     int jump_height = ((JumpMovement*) get_movement())->get_jump_height();
     get_map().display_sprite(get_sprite(), get_x(), get_y() - jump_height);

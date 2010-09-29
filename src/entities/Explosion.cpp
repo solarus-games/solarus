@@ -36,7 +36,7 @@ Explosion::Explosion(Layer layer, const Rectangle &xy, bool with_damages):
   Sound::play("explosion");
 
   if (with_damages) {
-    get_sprite()->enable_pixel_collisions();
+    get_sprite().enable_pixel_collisions();
     set_bounding_box_from_sprite();
   }
 }
@@ -115,7 +115,7 @@ bool Explosion::is_displayed_in_y_order() {
  */
 void Explosion::update() {
   Detector::update();
-  if (get_sprite()->is_animation_finished()) {
+  if (get_sprite().is_animation_finished()) {
     remove_from_map();
   }
 }

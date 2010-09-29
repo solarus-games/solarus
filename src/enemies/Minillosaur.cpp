@@ -51,7 +51,7 @@ void Minillosaur::initialize() {
 
   // sprite
   create_sprite("enemies/minillosaur");
-  get_sprite()->set_current_animation("egg");
+  get_sprite().set_current_animation("egg");
 
   // rectangle
   set_size(24, 32);
@@ -91,10 +91,10 @@ void Minillosaur::restart() {
  */
 int Minillosaur::custom_attack(EnemyAttack attack, Sprite *this_sprite) {
 
-  if (attack == ATTACK_SWORD && get_sprite()->get_current_animation() == "egg") {
+  if (attack == ATTACK_SWORD && get_sprite().get_current_animation() == "egg") {
     Sound::play("monster_hurt");
     clear_movement();
-    get_sprite()->set_current_animation("egg_breaking");
+    get_sprite().set_current_animation("egg_breaking");
   }
   return 0;
 }
@@ -108,15 +108,15 @@ void Minillosaur::update() {
     return;
   }
 
-  std::string animation = get_sprite()->get_current_animation();
+  std::string animation = get_sprite().get_current_animation();
 
   if (animation == "egg" && get_movement()->is_stopped()) {
     clear_movement();
-    get_sprite()->set_current_animation("egg_breaking");
+    get_sprite().set_current_animation("egg_breaking");
   }
 
-  if (animation == "egg_breaking" && get_sprite()->is_animation_finished()) {
-    get_sprite()->set_current_animation("walking");
+  if (animation == "egg_breaking" && get_sprite().is_animation_finished()) {
+    get_sprite().set_current_animation("walking");
 
     set_size(16, 16);
     set_origin(8, 12);

@@ -213,7 +213,7 @@ void Hero::update() {
     
     sprites->update();
     update_ground();
-    get_map().check_collision_with_detectors(this);
+    get_map().check_collision_with_detectors(*this);
     check_gameover();
   }
 }
@@ -287,7 +287,7 @@ void Hero::update_ground() {
         Rectangle collision_box = get_bounding_box();
         collision_box.add_xy(hole_dxy);
 
-        if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, this)) {
+        if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, *this)) {
           set_bounding_box(collision_box);
           notify_position_changed();
 	  moved = true;
@@ -296,7 +296,7 @@ void Hero::update_ground() {
 	if (!moved && hole_dxy.get_x() != 0) { // try x only
 	  collision_box = get_bounding_box();
 	  collision_box.add_xy(hole_dxy.get_x(), 0);
-	  if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, this)) {
+	  if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, *this)) {
 	    set_bounding_box(collision_box);
 	    notify_position_changed();
 	    moved = true;
@@ -306,7 +306,7 @@ void Hero::update_ground() {
 	if (!moved && hole_dxy.get_y() != 0) { // try y only
 	  collision_box = get_bounding_box();
 	  collision_box.add_xy(0, hole_dxy.get_y());
-	  if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, this)) {
+	  if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, *this)) {
 	    set_bounding_box(collision_box);
 	    notify_position_changed();
 	    moved = true;
@@ -724,7 +724,7 @@ bool Hero::is_facing_obstacle() {
       break;
   }
 
-  return get_map().test_collision_with_obstacles(get_layer(), collision_box, this);
+  return get_map().test_collision_with_obstacles(get_layer(), collision_box, *this);
 }
 
 /**
@@ -738,7 +738,7 @@ bool Hero::is_facing_obstacle() {
 bool Hero::is_facing_point_on_obstacle() {
 
   const Rectangle &facing_point = get_facing_point();
-  return get_map().test_collision_with_obstacles(get_layer(), facing_point.get_x(), facing_point.get_y(), this);
+  return get_map().test_collision_with_obstacles(get_layer(), facing_point.get_x(), facing_point.get_y(), *this);
 }
 
 /**
@@ -776,19 +776,20 @@ bool Hero::is_on_raised_blocks() {
  *
  * @return the stairs the hero is currently overlapping, or NULL
  */
-Stairs * Hero::get_stairs_overlapping() {
+Stairs* Hero::get_stairs_overlapping() {
 
-  Stairs *stairs = NULL;
   std::list<Stairs*> all_stairs = get_entities().get_stairs(get_layer());
   std::list<Stairs*>::iterator it;
-  for (it = all_stairs.begin(); it != all_stairs.end() && stairs == NULL; it++) {
+  for (it = all_stairs.begin(); it != all_stairs.end(); it++) {
 
-    if (overlaps(*it)) {
-      stairs = *it;
+    Stairs *stairs = *it;
+
+    if (overlaps(*stairs)) {
+      return stairs;
     }
   }
 
-  return stairs;
+  return NULL;
 }
 
 /**
@@ -857,7 +858,7 @@ int Hero::get_real_movement_direction8() {
     // if we can move towards the wanted direction, no problem
     Rectangle xy_move = direction_to_xy_move(wanted_direction8);
     collision_box.add_xy(xy_move.get_x(), xy_move.get_y());
-    if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, this)) {
+    if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, *this)) {
       result = wanted_direction8;
     }
     else {
@@ -867,7 +868,7 @@ int Hero::get_real_movement_direction8() {
       collision_box = get_bounding_box();
       xy_move = direction_to_xy_move(alternative_direction8);
       collision_box.add_xy(xy_move.get_x(), xy_move.get_y());
-      if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, this)) {
+      if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, *this)) {
 	result = alternative_direction8;
       }
       else {
@@ -875,7 +876,7 @@ int Hero::get_real_movement_direction8() {
         collision_box = get_bounding_box();
 	xy_move = direction_to_xy_move(alternative_direction8);
 	collision_box.add_xy(xy_move.get_x(), xy_move.get_y());
-        if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, this)) {
+        if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, *this)) {
 	  result = alternative_direction8;
         }
 	else {
@@ -1335,7 +1336,7 @@ void Hero::notify_collision_with_conveyor_belt(ConveyorBelt *conveyor_belt, int 
       Rectangle collision_box = get_bounding_box();
       collision_box.add_xy(dx, dy);
  
-      if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, this)) {
+      if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, *this)) {
 	// move the hero
 	set_state(new ConveyorBeltState(*this, conveyor_belt));
       }
@@ -1408,7 +1409,7 @@ void Hero::notify_collision_with_explosion(Explosion *explosion, Sprite *sprite_
 
   if (!state->can_avoid_explosion()) {
     if (sprite_overlapping->contains("tunic")) {
-      hurt(explosion, 2, 0);
+      hurt(*explosion, 2, 0);
     }
   }
 }
@@ -1539,7 +1540,7 @@ void Hero::try_snap_to_facing_entity() {
     }
   }
 
-  if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, this)) {
+  if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, *this)) {
     set_bounding_box(collision_box);
     notify_position_changed();
   }
@@ -1555,9 +1556,9 @@ void Hero::try_snap_to_facing_entity() {
  * @param result indicates how the enemy has reacted to the attack (see Enemy.h)
  * @param killed indicates that the attack has just killed the enemy
  */
-void Hero::notify_attacked_enemy(EnemyAttack attack, Enemy *victim, int result, bool killed) {
+void Hero::notify_attacked_enemy(EnemyAttack attack, Enemy &victim, int result, bool killed) {
 
-  state->notify_attacked_enemy(attack, victim, result, killed);
+  state->notify_attacked_enemy(attack, &victim, result, killed);
 }
 
 /**
@@ -1579,7 +1580,7 @@ int Hero::get_sword_damage_factor() {
  * @param life_points number of heart quarters to remove (this number may be reduced by the tunic)
  * @param magic_points number of magic points to remove
  */
-void Hero::hurt(MapEntity *source, int life_points, int magic_points) {
+void Hero::hurt(MapEntity &source, int life_points, int magic_points) {
 
   if (!sprites->is_blinking() && state->can_be_hurt()) {
     set_state(new HurtState(*this, source, life_points, magic_points));
@@ -1700,7 +1701,7 @@ bool Hero::is_free() {
 }
 
 /**
- * @brief Returns whether the hero is grabbing and moving an entity in this state.
+ * @brief Returns whether the hero is grabbing and moving an entity in its current state.
  *
  * If he is not grabbing any entity, false is returned.
  *
@@ -1777,7 +1778,7 @@ void Hero::start_freezed() {
  * @brief Makes the hero lift a destructible item.
  * @param item_to_lift the destructible item to lift
  */
-void Hero::start_lifting(DestructibleItem *item_to_lift) {
+void Hero::start_lifting(DestructibleItem &item_to_lift) {
   set_state(new LiftingState(*this, item_to_lift));
 }
 

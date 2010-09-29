@@ -75,7 +75,7 @@ void PapillosaurKing::restart() {
   // state
   next_egg_phase_date = System::now() + 2500;
   next_egg_date = 0;
-  get_sprite()->set_current_animation("walking");
+  get_sprite().set_current_animation("walking");
 
   // movement
   if (movement == NULL) {
@@ -137,10 +137,10 @@ void PapillosaurKing::update() {
     else if (now >= next_egg_phase_date) {
       // time to start an egg phase
 
-      if (get_sprite()->get_current_animation() != "preparing_egg") {
+      if (get_sprite().get_current_animation() != "preparing_egg") {
 	// after a delay, start the fast animation and play a sound
 	Sound::play("boss_charge");
-	get_sprite()->set_current_animation("preparing_egg");
+	get_sprite().set_current_animation("preparing_egg");
 	next_egg_date = now + 1500;
 	nb_eggs_to_create = (get_life() < 3) ? 3 : 1;
       }
@@ -158,7 +158,7 @@ void PapillosaurKing::update() {
 	}
 	else {
 	  next_egg_phase_date = now + 5000 + (1 + Random::get_number(3) * 1000);
-	  get_sprite()->set_current_animation("walking");
+	  get_sprite().set_current_animation("walking");
 	  set_movement(new RandomWalkMovement(5));
 	}
       }

@@ -40,9 +40,9 @@ class Khorneth: public Enemy {
 
     void start_final_phase();
 
-    Sprite * get_main_sprite();
-    Sprite * get_left_blade_sprite();
-    Sprite * get_right_blade_sprite();
+    Sprite* get_main_sprite();
+    Sprite* get_left_blade_sprite();
+    Sprite* get_right_blade_sprite();
     bool has_left_blade();
     bool has_right_blade();
     bool has_blade();

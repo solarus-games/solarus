@@ -44,12 +44,12 @@ CrystalSwitchBlock::CrystalSwitchBlock(Game &game, Layer layer, int x, int y, in
   this->orange_raised = game.get_crystal_switch_state();
 
   if (subtype == ORANGE) {
-    get_sprite()->set_current_animation(orange_raised ? "orange_raised" : "orange_lowered");
+    get_sprite().set_current_animation(orange_raised ? "orange_raised" : "orange_lowered");
   }
   else {
-    get_sprite()->set_current_animation(orange_raised ? "blue_lowered" : "blue_raised");
+    get_sprite().set_current_animation(orange_raised ? "blue_lowered" : "blue_raised");
   }
-  get_sprite()->set_current_frame(3); // to avoid the animations at the map beginning
+  get_sprite().set_current_frame(3); // to avoid the animations at the map beginning
 }
 
 /**
@@ -146,14 +146,14 @@ void CrystalSwitchBlock::notify_collision(MapEntity *entity_overlapping, Collisi
 	collision_box.set_y(y1 - 16);
 	jump_direction = 2;
 	jump_length = hero->get_top_left_y() + 16 - y1;
-	jumped = try_jump(hero, collision_box, jump_direction, jump_length);
+	jumped = try_jump(*hero, collision_box, jump_direction, jump_length);
       }
       else if (hero_center.get_y() >= y2) {
 	// fall to the south
 	collision_box.set_y(y2);
 	jump_direction = 6;
 	jump_length = y2 - hero->get_top_left_y();
-	jumped = try_jump(hero, collision_box, jump_direction, jump_length);
+	jumped = try_jump(*hero, collision_box, jump_direction, jump_length);
       }
 
       if (!jumped) {
@@ -162,14 +162,14 @@ void CrystalSwitchBlock::notify_collision(MapEntity *entity_overlapping, Collisi
 	  collision_box.set_x(x2);
 	  jump_direction = 0;
 	  jump_length = x2 - hero->get_top_left_x();
-	  try_jump(hero, collision_box, jump_direction, jump_length);
+	  try_jump(*hero, collision_box, jump_direction, jump_length);
 	}
 	else if (hero_center.get_x() < x1) {
 	  // fall to the west
 	  collision_box.set_x(x1 - 16);
 	  jump_direction = 4;
 	  jump_length = hero->get_top_left_x() + 16 - x1;
-	  try_jump(hero, collision_box, jump_direction, jump_length);
+	  try_jump(*hero, collision_box, jump_direction, jump_length);
 	}
       }
     }
@@ -185,14 +185,14 @@ void CrystalSwitchBlock::notify_collision(MapEntity *entity_overlapping, Collisi
  * @return true if the jump was done, i.e. if the collision box was overlapping
  * no obstacle and no raised crystal switch block.
  */
-bool CrystalSwitchBlock::try_jump(Hero *hero, const Rectangle &collision_box,
+bool CrystalSwitchBlock::try_jump(Hero &hero, const Rectangle &collision_box,
 				  int jump_direction, int jump_length) {
 
   // jump if there is no collision and no other raised crystal switch blocks
   if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, hero)
       && !get_entities().overlaps_raised_blocks(get_layer(), collision_box)) {
 
-    hero->start_jumping(jump_direction, jump_length, true, false);
+    hero.start_jumping(jump_direction, jump_length, true, false);
     Sound::play("hero_lands");
     return true;
   }
@@ -212,13 +212,13 @@ void CrystalSwitchBlock::update() {
     this->orange_raised = orange_raised;
 
     if (subtype == ORANGE) {
-      get_sprite()->set_current_animation(orange_raised ? "orange_raised" : "orange_lowered");
+      get_sprite().set_current_animation(orange_raised ? "orange_raised" : "orange_lowered");
     }
     else {
-      get_sprite()->set_current_animation(orange_raised ? "blue_lowered" : "blue_raised");
+      get_sprite().set_current_animation(orange_raised ? "blue_lowered" : "blue_raised");
     }
   }
-  get_sprite()->update();
+  get_sprite().update();
 
   MapEntity::update();
 }
@@ -229,7 +229,7 @@ void CrystalSwitchBlock::update() {
  */
 void CrystalSwitchBlock::display_on_map() {
 
-  Sprite *sprite = get_sprite();
+  Sprite &sprite = get_sprite();
 
   int x1 = get_top_left_x();
   int y1 = get_top_left_y();

@@ -162,7 +162,7 @@ void CrystalSwitch::update() {
   if (state != this->state) {
 
     this->state = state;
-    get_sprite()->set_current_animation(state ? "blue_lowered" : "orange_lowered");
+    get_sprite().set_current_animation(state ? "blue_lowered" : "orange_lowered");
   }
 
   star_sprite->update();
@@ -190,7 +190,7 @@ void CrystalSwitch::display_on_map() {
   MapEntity::display_on_map();
 
   // display the star
-  get_map().display_sprite(star_sprite, get_top_left_x() + star_xy.get_x(), get_top_left_y() + star_xy.get_y());
+  get_map().display_sprite(*star_sprite, get_top_left_x() + star_xy.get_x(), get_top_left_y() + star_xy.get_y());
 }
 
 /**

@@ -28,7 +28,7 @@
  * @param hero the hero controlled by this state
  * @param item_to_lift the item to lift
  */
-Hero::LiftingState::LiftingState(Hero &hero, DestructibleItem *item_to_lift):
+Hero::LiftingState::LiftingState(Hero &hero, DestructibleItem &item_to_lift):
   State(hero), item_to_lift(item_to_lift) {
 
 }
@@ -50,7 +50,7 @@ void Hero::LiftingState::start(State *previous_state) {
   State::start(previous_state);
 
   // create the entity that will actually be lifted
-  lifted_item = new CarriedItem(&hero, item_to_lift);
+  lifted_item = new CarriedItem(hero, item_to_lift);
   lifted_item->set_map(get_map());
 
   get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_THROW);

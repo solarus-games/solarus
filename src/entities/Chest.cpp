@@ -119,12 +119,12 @@ void Chest::initialize_sprite() {
 
   // create the sprite
   create_sprite("entities/chest");
-  Sprite *sprite = get_sprite();
+  Sprite &sprite = get_sprite();
 
   // set its animation
   std::string animation = big_chest ? "big_" : "small_";
   animation += is_open() ? "open" : "closed";
-  sprite->set_current_animation(animation);
+  sprite.set_current_animation(animation);
 
   // set the entity size
   if (big_chest) {
@@ -147,7 +147,7 @@ void Chest::set_visible(bool visible) {
     MapEntity::set_visible(visible);
 
     // make sure the chest does not appear on the hero
-    if (visible && overlaps(&get_hero())) {
+    if (visible && overlaps(get_hero())) {
       get_hero().avoid_collision(this, 3);
     }
   }
@@ -179,11 +179,11 @@ void Chest::set_open(bool open) {
 
     if (open) {
       // open the chest
-      get_sprite()->set_current_animation(big_chest ? "big_open" : "small_open");
+      get_sprite().set_current_animation(big_chest ? "big_open" : "small_open");
     }
     else {
       // close the chest
-      get_sprite()->set_current_animation(big_chest ? "big_closed" : "small_closed");
+      get_sprite().set_current_animation(big_chest ? "big_closed" : "small_closed");
       treasure_given = false;
     }
   }

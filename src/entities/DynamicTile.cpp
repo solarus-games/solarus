@@ -118,7 +118,7 @@ void DynamicTile::update() {
 
   if (waiting_enabled) {
 
-    if (tile_pattern->get_obstacle() < OBSTACLE || !overlaps(&get_hero())) {
+    if (tile_pattern->get_obstacle() < OBSTACLE || !overlaps(get_hero())) {
       this->enabled = true;
       this->waiting_enabled = false;
     }

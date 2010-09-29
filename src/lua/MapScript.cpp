@@ -909,7 +909,7 @@ int MapScript::l_interactive_entity_get_animation(lua_State *l) {
 
   MapEntities &entities = script->map.get_entities();
   InteractiveEntity *entity = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, name);
-  std::string animation = entity->get_sprite()->get_current_animation();
+  std::string animation = entity->get_sprite().get_current_animation();
 
   lua_pushstring(l, animation.c_str());
 
@@ -933,7 +933,7 @@ int MapScript::l_interactive_entity_get_animation_delay(lua_State *l) {
 
   MapEntities &entities = script->map.get_entities();
   InteractiveEntity *entity = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, name);
-  uint32_t delay = entity->get_sprite()->get_frame_delay();
+  uint32_t delay = entity->get_sprite().get_frame_delay();
 
   lua_pushinteger(l, delay);
 
@@ -957,7 +957,7 @@ int MapScript::l_interactive_entity_get_animation_frame(lua_State *l) {
 
   MapEntities &entities = script->map.get_entities();
   InteractiveEntity *entity = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, name);
-  int frame = entity->get_sprite()->get_current_frame();
+  int frame = entity->get_sprite().get_current_frame();
 
   lua_pushinteger(l, frame);
 
@@ -981,7 +981,7 @@ int MapScript::l_interactive_entity_get_direction(lua_State *l) {
 
   MapEntities &entities = script->map.get_entities();
   InteractiveEntity *entity = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, name);
-  int frame = entity->get_sprite()->get_current_direction();
+  int frame = entity->get_sprite().get_current_direction();
 
   lua_pushinteger(l, frame);
 
@@ -1005,7 +1005,7 @@ int MapScript::l_interactive_entity_is_animation_paused(lua_State *l) {
 
   MapEntities &entities = script->map.get_entities();
   InteractiveEntity *entity = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, name);
-  bool paused = entity->get_sprite()->is_paused();
+  bool paused = entity->get_sprite().is_paused();
 
   lua_pushboolean(l, paused ? 1 : 0);
 
@@ -1030,8 +1030,8 @@ int MapScript::l_interactive_entity_set_animation(lua_State *l) {
 
   MapEntities &entities = script->map.get_entities();
   InteractiveEntity *entity = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, name);
-  entity->get_sprite()->set_current_animation(animation);
-  entity->get_sprite()->restart_animation();
+  entity->get_sprite().set_current_animation(animation);
+  entity->get_sprite().restart_animation();
 
   return 0;
 }
@@ -1054,7 +1054,7 @@ int MapScript::l_interactive_entity_set_animation_delay(lua_State *l) {
 
   MapEntities &entities = script->map.get_entities();
   InteractiveEntity *entity = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, name);
-  entity->get_sprite()->set_frame_delay(delay);
+  entity->get_sprite().set_frame_delay(delay);
 
   return 0;
 }
@@ -1077,7 +1077,7 @@ int MapScript::l_interactive_entity_set_animation_frame(lua_State *l) {
 
   MapEntities &entities = script->map.get_entities();
   InteractiveEntity *entity = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, name);
-  entity->get_sprite()->set_current_frame(frame);
+  entity->get_sprite().set_current_frame(frame);
 
   return 0;
 }
@@ -1113,7 +1113,7 @@ int MapScript::l_interactive_entity_set_animation_paused(lua_State *l) {
 
   MapEntities &entities = script->map.get_entities();
   InteractiveEntity *entity = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, name);
-  entity->get_sprite()->set_paused(paused);
+  entity->get_sprite().set_paused(paused);
 
   return 0;
 }

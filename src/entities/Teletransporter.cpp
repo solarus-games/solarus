@@ -47,7 +47,7 @@ Teletransporter::Teletransporter(const std::string &name, Layer layer, int x, in
   
   if (subtype == YELLOW) {
     create_sprite("entities/teletransporter");
-    get_sprite()->set_current_animation("yellow");
+    get_sprite().set_current_animation("yellow");
     sound_id = "warp";
   }
   else {

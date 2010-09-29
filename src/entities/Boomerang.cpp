@@ -33,17 +33,17 @@
  * @param hero the hero
  * @param boomerang_direction the boomerang direction (0 to 360)
  */
-Boomerang::Boomerang(Hero *hero, int boomerang_direction):
+Boomerang::Boomerang(Hero &hero, int boomerang_direction):
   MapEntity(), hero(hero), has_to_go_back(false), going_back(false) {
 
   // initialize the entity
-  set_layer(hero->get_layer());
+  set_layer(hero.get_layer());
   create_sprite("entities/boomerang");
   set_bounding_box_from_sprite();
 
-  int hero_x = hero->get_top_left_x();
-  int hero_y = hero->get_top_left_y();
-  switch (hero->get_animation_direction()) {
+  int hero_x = hero.get_top_left_x();
+  int hero_y = hero.get_top_left_y();
+  switch (hero.get_animation_direction()) {
 
     case 0:
       set_xy(hero_x + 24, hero_y + 8);
@@ -270,8 +270,8 @@ void Boomerang::update() {
     if (has_to_go_back) {
       going_back = true;
       clear_movement();
-      set_movement(new TargetMovement(hero, 16));
-      get_entities().set_entity_layer(this, hero->get_layer()); // because the hero's layer may have changed
+      set_movement(new TargetMovement(&hero, 16));
+      get_entities().set_entity_layer(this, hero.get_layer()); // because the hero's layer may have changed
     }
     else if (get_movement()->is_stopped()) {
       // collision with an obstacle

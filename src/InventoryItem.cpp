@@ -37,7 +37,7 @@
 /**
  * @brief Creates a new inventory item.
  * @param game the game
- * @param item_id id of the item to create
+ * @param item_name id of the item to create (according to items.dat)
  */
 InventoryItem::InventoryItem(Game &game, const std::string &item_name):
 
@@ -188,14 +188,14 @@ void InventoryItem::update() {
 	else {
 	  boomerang_direction8 = direction_pressed8;
 	}
-	game.get_current_map().get_entities().add_entity(new Boomerang(&hero, boomerang_direction8 * 45));
+	game.get_current_map().get_entities().add_entity(new Boomerang(hero, boomerang_direction8 * 45));
       }
     }
     else if (item_name == "bow") {
 
       if (hero.is_animation_finished()) {
 	finished = true;
-	game.get_current_map().get_entities().add_entity(new Arrow(&hero));
+	game.get_current_map().get_entities().add_entity(new Arrow(hero));
 	Sound::play("bow");
       }
     }

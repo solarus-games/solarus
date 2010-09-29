@@ -78,24 +78,24 @@ void Khorneth::initialize() {
  * @brief Returns the main sprite of Khorneth.
  * @return the main sprite
  */
-Sprite * Khorneth::get_main_sprite() {
-  return get_sprite("enemies/khorneth");
+Sprite* Khorneth::get_main_sprite() {
+  return &get_sprite("enemies/khorneth");
 }
 
 /**
  * @brief Returns the left blade sprite.
  * @return the left blade sprite, or NULL if the left blade was destroyed
  */
-Sprite * Khorneth::get_left_blade_sprite() {
-  return has_left_blade() ? get_sprite("enemies/khorneth_left_blade") : NULL;
+Sprite* Khorneth::get_left_blade_sprite() {
+  return has_left_blade() ? &get_sprite("enemies/khorneth_left_blade") : NULL;
 }
 
 /**
  * @brief Returns the right blade sprite.
  * @return the right blade sprite, or NULL if the right blade was destroyed
  */
-Sprite * Khorneth::get_right_blade_sprite() {
-  return has_right_blade() ? get_sprite("enemies/khorneth_right_blade") : NULL;
+Sprite* Khorneth::get_right_blade_sprite() {
+  return has_right_blade() ? &get_sprite("enemies/khorneth_right_blade") : NULL;
 }
 
 /**

@@ -65,9 +65,13 @@ void Script::load(const std::string &script_name) {
   context = lua_open();
   luaL_openlibs(context);
 
-  // put a pointer to this Script object in the global area of the Lua context
+  // create the Solarus table that will be available to the script
+  lua_newtable(context);
+  lua_setglobal(context, "sol");
+
+  // put a pointer to this Script object in the Lua context
   lua_pushlightuserdata(context, this);
-  lua_setglobal(context, "_cpp_object");
+  lua_setglobal(context, "sol.cpp_object");
 
   // register the C++ functions accessible to the script
   register_available_functions();
@@ -111,10 +115,15 @@ void Script::load(const std::string &script_name) {
  */
 void Script::register_available_functions() {
 
-  lua_register(context, "play_sound", l_play_sound);
-  lua_register(context, "play_music", l_play_music);
-  lua_register(context, "timer_start", l_timer_start);
-  lua_register(context, "timer_stop", l_timer_stop);
+  static luaL_Reg functions[] = {
+    { "play_sound", l_play_sound },
+    { "play_music", l_play_music },
+    { "timer_start", l_timer_start },
+    { "timer_stop", l_timer_stop },
+    { NULL, NULL }
+  };
+
+  luaL_register(context, "sol.main", functions);
 }
 
 /**
@@ -138,7 +147,7 @@ void Script::called_by_script(lua_State *context, int nb_arguments, Script **scr
 
   // retrieve the Script object
   if (script != NULL) {
-    lua_getglobal(context, "_cpp_object");
+    lua_getglobal(context, "sol.cpp_object");
     *script = (Script*) lua_touserdata(context, -1);
     lua_pop(context, 1);
   }

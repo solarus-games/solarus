@@ -3,6 +3,8 @@
 *.luac
 *.class
 tags
+doc/html/
+tools/javadoc/
 work/unversioned/
 CMakeCache.txt
 install_manifest.txt

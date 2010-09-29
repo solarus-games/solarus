@@ -1,7 +1,6 @@
 Prochaines mises à jour :
 
 - fausse boîte
-- mode d'emploi
 
 
 Démo :
@@ -34,7 +33,6 @@ Feature requests :
 - Ajouter un "map marker" pour indiquer où il faut se rendre ensuite
 - Voir si la police supporte des caractères unicode comme U+2192 (→) et U+2190 (←)
 - faire un type d'ennemi "CustomEnemy" qui est en fait scripté
-- renommer Tileset en Skin ?
 - Faire une function lua event_npc_interaction_item
 
 
@@ -68,7 +66,6 @@ Bugs :
 - utiliser une bouteille ayant une fée : relâcher la fée directement au lieu de mettre un message (on l'active souvent par erreur)
 - Rendre Movement abstrait et faire une classe pour le movement rectiligne, afin d'éviter que les sous-classes violent les contrats de Movement
 - Remplacer les cast
-- Quand on crée une sauvegarde, laisser le curseur sur celle-ci
 
 
 A venir :

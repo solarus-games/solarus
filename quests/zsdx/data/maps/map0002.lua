@@ -21,7 +21,7 @@ game_2_slots = {
 -- Function called when the map starts
 function event_map_started(destination_point_name)
   for k, v in pairs(game_2_slots) do
-    interactive_entity_set_animation_frame(k, game_2_slots[k].initial_frame)
+    sol.map.interactive_entity_set_animation_frame(k, game_2_slots[k].initial_frame)
   end
 end
 
@@ -33,22 +33,22 @@ function event_npc_dialog(npc_name)
 
     if playing_game_1 then
       -- the player is already playing: tell him to choose a chest
-      dialog_start("rupee_house.game_1.choose_chest")
+      sol.map.dialog_start("rupee_house.game_1.choose_chest")
     else
 
       -- see if the player can still play
-      unauthorized = savegame_get_boolean(16)
+      unauthorized = sol.game.savegame_get_boolean(16)
 
       if unauthorized then
 	-- the player already won much money
-	dialog_start("rupee_house.game_1.not_allowed_to_play")
+	sol.map.dialog_start("rupee_house.game_1.not_allowed_to_play")
       else 
 	if not already_played_game_1 then
 	  -- first time: long dialog with the game rules
-	  dialog_start("rupee_house.game_1.intro")
+	  sol.map.dialog_start("rupee_house.game_1.intro")
 	else
 	  -- quick dialog to play again
-	  dialog_start("rupee_house.game_1.play_again_question")
+	  sol.map.dialog_start("rupee_house.game_1.play_again_question")
 	end
       end
     end
@@ -58,10 +58,10 @@ function event_npc_dialog(npc_name)
 
     if playing_game_2 then
       -- the player is already playing: tell him to stop the reels
-      dialog_start("rupee_house.game_2.playing")
+      sol.map.dialog_start("rupee_house.game_2.playing")
     else
       -- dialog with the game rules
-      dialog_start("rupee_house.game_2.intro")
+      sol.map.dialog_start("rupee_house.game_2.intro")
     end
 
   elseif npc_name == "game_3_man" then
@@ -69,17 +69,17 @@ function event_npc_dialog(npc_name)
 
     if playing_game_3 then
       -- the player is already playing: let him restart the game
-      dialog_start("rupee_house.game_3.restart_question")
+      sol.map.dialog_start("rupee_house.game_3.restart_question")
     else
       -- see if the player can still play
-      unauthorized = savegame_get_boolean(17)
+      unauthorized = sol.game.savegame_get_boolean(17)
 
       if unauthorized then
 	-- the player already won this game
-	dialog_start("rupee_house.game_3.not_allowed_to_play")
+	sol.map.dialog_start("rupee_house.game_3.not_allowed_to_play")
       else
 	-- game rules
-	dialog_start("rupee_house.game_3.intro")
+	sol.map.dialog_start("rupee_house.game_3.intro")
       end
     end
   end
@@ -96,23 +96,23 @@ function event_dialog_finished(first_message_id, answer)
 
     if answer == 1 then
       -- the player does not want to play the game
-      dialog_start("rupee_house.game_1.not_playing")
+      sol.map.dialog_start("rupee_house.game_1.not_playing")
     else
       -- wants to play game 1
 
-      if equipment_get_money() < 20 then
+      if sol.game.equipment_get_money() < 20 then
 	-- not enough money
-	play_sound("wrong")
-	dialog_start("rupee_house.not_enough_money")
+	sol.main.play_sound("wrong")
+	sol.map.dialog_start("rupee_house.not_enough_money")
 
       else
 	-- enough money: reset the 3 chests, pay and start the game
-	chest_set_open("chest_1", false)
-	chest_set_open("chest_2", false)
-	chest_set_open("chest_3", false)
+	sol.map.chest_set_open("chest_1", false)
+	sol.map.chest_set_open("chest_2", false)
+	sol.map.chest_set_open("chest_3", false)
 
-	equipment_remove_money(20)
-	dialog_start("rupee_house.game_1.good_luck")
+	sol.game.equipment_remove_money(20)
+	sol.map.dialog_start("rupee_house.game_1.good_luck")
 	playing_game_1 = true
       end
     end
@@ -122,10 +122,10 @@ function event_dialog_finished(first_message_id, answer)
 
     if answer == 1 then
       -- don't want to play the game
-      dialog_start("rupee_house.game_2.not_playing")
+      sol.map.dialog_start("rupee_house.game_2.not_playing")
     else
       -- wants to play game 2
-      dialog_start("rupee_house.game_2.choose_bet")
+      sol.map.dialog_start("rupee_house.game_2.choose_bet")
     end
 
   elseif first_message_id == "rupee_house.game_2.choose_bet" then
@@ -138,29 +138,29 @@ function event_dialog_finished(first_message_id, answer)
       game_2_bet = 20
     end
 
-    if equipment_get_money() < game_2_bet then
+    if sol.game.equipment_get_money() < game_2_bet then
       -- not enough money
-      play_sound("wrong")
-      dialog_start("rupee_house.not_enough_money")
+      sol.main.play_sound("wrong")
+      sol.map.dialog_start("rupee_house.not_enough_money")
     else
       -- enough money: pay and start the game
-      equipment_remove_money(game_2_bet)
-      dialog_start("rupee_house.game_2.just_paid")
+      sol.game.equipment_remove_money(game_2_bet)
+      sol.map.dialog_start("rupee_house.game_2.just_paid")
       playing_game_2 = true
 
       -- start the slot machine animations
       for k, v in pairs(game_2_slots) do
 	v.symbol = -1
 	v.current_delay = v.initial_delay
-	interactive_entity_set_animation(k, "started")
-	interactive_entity_set_animation_delay(k, v.current_delay)
-	interactive_entity_set_animation_frame(k, v.initial_frame)
-	interactive_entity_set_animation_paused(k, false)
+	sol.map.interactive_entity_set_animation(k, "started")
+	sol.map.interactive_entity_set_animation_delay(k, v.current_delay)
+	sol.map.interactive_entity_set_animation_frame(k, v.initial_frame)
+	sol.map.interactive_entity_set_animation_paused(k, false)
       end
     end
   elseif string.match(first_message_id, "^rupee_house.game_2.reward.") then
     -- reward in game 2
-    equipment_add_money(game_2_reward)
+    sol.game.equipment_add_money(game_2_reward)
 
   elseif first_message_id == "rupee_house.game_3.intro" or 
     first_message_id == "rupee_house.game_3.restart_question" then
@@ -168,33 +168,33 @@ function event_dialog_finished(first_message_id, answer)
 
     if answer == 1 then
       -- don't want to play the game
-      dialog_start("rupee_house.game_3.not_playing")
+      sol.map.dialog_start("rupee_house.game_3.not_playing")
     else
       -- wants to play game 3
 
-      if equipment_get_money() < 10 then
+      if sol.game.equipment_get_money() < 10 then
 	-- not enough money
-	play_sound("wrong")
-	dialog_start("rupee_house.not_enough_money")
+	sol.main.play_sound("wrong")
+	sol.map.dialog_start("rupee_house.not_enough_money")
 
       else
 	-- enough money: reset the game, pay and start the game
 
-	block_reset_all();
-	tile_set_enabled("game_3_barrier_1", false);
-	tile_set_enabled("game_3_barrier_2", false);
-	tile_set_enabled("game_3_barrier_3", false);
-	tile_set_enabled("game_3_middle_barrier", false);
-	timer_stop("game_3_timer")
+	sol.map.block_reset_all();
+	sol.map.tile_set_enabled("game_3_barrier_1", false);
+	sol.map.tile_set_enabled("game_3_barrier_2", false);
+	sol.map.tile_set_enabled("game_3_barrier_3", false);
+	sol.map.tile_set_enabled("game_3_middle_barrier", false);
+	sol.main.timer_stop("game_3_timer")
 
-	equipment_remove_money(10)
-	dialog_start("rupee_house.game_3.go")
+	sol.game.equipment_remove_money(10)
+	sol.map.dialog_start("rupee_house.game_3.go")
 	playing_game_3 = true
       end
     end
   elseif first_message_id == "rupee_house.game_3.go" then 
-    timer_start(8000, "game_3_timer", true);
-    switch_set_enabled("switch", false);
+    sol.main.timer_start(8000, "game_3_timer", true);
+    sol.map.switch_set_enabled("switch", false);
   end
 end
 
@@ -205,10 +205,10 @@ function event_chest_empty(chest_name)
 
   if not playing_game_1 then
     -- trying to open a chest but not playing yet
-    dialog_start("rupee_house.pay_first") -- the game man is angry
-    chest_set_open(chest_name, false) -- close the chest again
-    play_sound("wrong")
-    hero_unfreeze() -- restore the control
+    sol.map.dialog_start("rupee_house.pay_first") -- the game man is angry
+    sol.map.chest_set_open(chest_name, false) -- close the chest again
+    sol.main.play_sound("wrong")
+    sol.map.hero_unfreeze() -- restore the control
   else
     -- give a random reward
     index = math.random(#game_1_rewards)
@@ -220,16 +220,16 @@ function event_chest_empty(chest_name)
 
     -- give the rupees
     if (amount == 5) then
-      treasure_give("rupee", 2, -1)
+      sol.map.treasure_give("rupee", 2, -1)
     elseif (amount == 20) then
-      treasure_give("rupee", 3, -1)
+      sol.map.treasure_give("rupee", 3, -1)
     elseif (amount == 50) then
-      treasure_give("rupee", 4, -1)
+      sol.map.treasure_give("rupee", 4, -1)
     end
 
     if amount == 50 then
       -- the maximum reward was found: the game will now refuse to let the hero play again
-      savegame_set_boolean(16, true)
+      sol.game.savegame_set_boolean(16, true)
     end
 
     playing_game_1 = false
@@ -239,8 +239,8 @@ end
 
 -- Function called when the timer of game 3 ends.
 function game_3_timer()
-  play_sound("door_closed")
-  tile_set_enabled("game_3_middle_barrier", true)
+  sol.main.play_sound("door_closed")
+  sol.map.tile_set_enabled("game_3_middle_barrier", true)
 end
 
 -- Function called when the player is obtaining a treasure
@@ -248,8 +248,8 @@ function event_treasure_obtained(item_name, variant, savegame_variable)
 
   -- stop game 3 when the player founds the piece of heart
   if savegame_variable == 17 then
-    tile_set_enabled("game_3_final_barrier", false)
-    play_sound("secret")
+    sol.map.tile_set_enabled("game_3_final_barrier", false)
+    sol.main.play_sound("secret")
     playing_game_3 = false
   end
 end
@@ -258,8 +258,8 @@ end
 function event_switch_enabled(switch_name)
 
   -- stop the timer when the player reaches the invisible switch
-  timer_stop("game_3_timer")
-  play_sound("secret")
+  sol.main.timer_stop("game_3_timer")
+  sol.main.play_sound("secret")
 end
 
 -- Function called when the player interacts with the slot machine
@@ -267,30 +267,30 @@ function event_hero_interaction(entity_name)
 
   if playing_game_2 then
 
-    npc_set_direction("game_2_man", 0)
+    sol.map.npc_set_direction("game_2_man", 0)
 
     if game_2_slots[entity_name].symbol == -1 then
       -- stop this reel
 
-      current_symbol = math.floor(interactive_entity_get_animation_frame(entity_name) / 3)
+      current_symbol = math.floor(sol.map.interactive_entity_get_animation_frame(entity_name) / 3)
       game_2_slots[entity_name].symbol = (current_symbol + math.random(2)) % 7
       game_2_slots[entity_name].current_delay = game_2_slots[entity_name].current_delay + 100
-      interactive_entity_set_animation_delay(entity_name, game_2_slots[entity_name].current_delay)
+      sol.map.interactive_entity_set_animation_delay(entity_name, game_2_slots[entity_name].current_delay)
 
       -- test code (temporary code to win every game)
       --	 for k, v in pairs(game_2_slots) do
       --	    v.symbol = game_2_slots[entity_name].symbol
       --	    v.current_delay = game_2_slots[entity_name].current_delay + 100
-      --	    interactive_entity_set_animation_delay(k, v.current_delay)
+      --	    sol.map.interactive_entity_set_animation_delay(k, v.current_delay)
       --	 end
       -----------
 
-      play_sound("switch")
-      hero_freeze()
+      sol.main.play_sound("switch")
+      sol.map.hero_freeze()
     end
   else
-    play_sound("wrong")
-    dialog_start("rupee_house.pay_first")
+    sol.main.play_sound("wrong")
+    sol.map.dialog_start("rupee_house.pay_first")
   end
 end
 
@@ -302,24 +302,24 @@ function event_update()
     -- stop the reels when necessary
     nb_finished = 0
     for k, v in pairs(game_2_slots) do
-      if interactive_entity_is_animation_paused(k) then
+      if sol.map.interactive_entity_is_animation_paused(k) then
 	nb_finished = nb_finished + 1
       end
     end
 
     for k, v in pairs(game_2_slots) do
-      frame = interactive_entity_get_animation_frame(k)
+      frame = sol.map.interactive_entity_get_animation_frame(k)
 
-      if not interactive_entity_is_animation_paused(k) and frame == v.symbol * 3 then
-	interactive_entity_set_animation_paused(k, true)
+      if not sol.map.interactive_entity_is_animation_paused(k) and frame == v.symbol * 3 then
+	sol.map.interactive_entity_set_animation_paused(k, true)
 	v.initial_frame = frame
 	nb_finished = nb_finished + 1
 
 	if nb_finished < 3 then
-	  hero_unfreeze()
+	  sol.map.hero_unfreeze()
 	else
 	  playing_game_2 = false
-	  timer_start(500, "game_2_timer", false)
+	  sol.main.timer_start(500, "game_2_timer", false)
 	end
       end
     end
@@ -353,36 +353,36 @@ function game_2_timer()
     -- three identical symbols
 
     if symbols[1] == 0 then -- 3 green rupees
-      dialog_start("rupee_house.game_2.reward.green_rupees")
+      sol.map.dialog_start("rupee_house.game_2.reward.green_rupees")
       game_2_reward = 5 * game_2_bet
     elseif symbols[1] == 2 then -- 3 blue rupees
-      dialog_start("rupee_house.game_2.reward.blue_rupees")
+      sol.map.dialog_start("rupee_house.game_2.reward.blue_rupees")
       game_2_reward = 7 * game_2_bet
     elseif symbols[1] == 4 then -- 3 red rupees
-      dialog_start("rupee_house.game_2.reward.red_rupees")
+      sol.map.dialog_start("rupee_house.game_2.reward.red_rupees")
       game_2_reward = 10 * game_2_bet
     elseif symbols[1] == 5 then -- 3 Yoshi
-      dialog_start("rupee_house.game_2.reward.yoshi")
+      sol.map.dialog_start("rupee_house.game_2.reward.yoshi")
       game_2_reward = 20 * game_2_bet
     else -- other symbol
-      dialog_start("rupee_house.game_2.reward.same_any")
+      sol.map.dialog_start("rupee_house.game_2.reward.same_any")
       game_2_reward = 4 * game_2_bet
     end
 
   elseif green_found and blue_found and red_found then
     -- three rupees with different colors
-    dialog_start("rupee_house.game_2.reward.different_rupees")
+    sol.map.dialog_start("rupee_house.game_2.reward.different_rupees")
     game_2_reward = 15 * game_2_bet
   else
-    dialog_start("rupee_house.game_2.reward.none")
+    sol.map.dialog_start("rupee_house.game_2.reward.none")
     game_2_reward = 0
   end
 
   if game_2_reward ~= 0 then
-    play_sound("secret")
+    sol.main.play_sound("secret")
   else
-    play_sound("wrong")
+    sol.main.play_sound("wrong")
   end
 
-  hero_unfreeze()
+  sol.map.hero_unfreeze()
 end

@@ -74,23 +74,23 @@ void SimpleGreenSoldier::update() {
   Enemy::update();
 
   if (is_in_normal_state()) {
-    Sprite *sprite = get_sprite();
-    const std::string &animation = sprite->get_current_animation();
+    Sprite &sprite = get_sprite();
+    const std::string &animation = sprite.get_current_animation();
 
     if (get_movement()->is_finished() && animation == "walking") {
       int rand = Random::get_number(2);
 
       if (rand == 0) {
-	sprite->set_current_animation("stopped_watching_left");
+	sprite.set_current_animation("stopped_watching_left");
       }
       else {
-	sprite->set_current_animation("stopped_watching_right");
+	sprite.set_current_animation("stopped_watching_right");
       }
     }
 
-    if (sprite->is_animation_finished()) {
+    if (sprite.is_animation_finished()) {
 
-      int direction = sprite->get_current_direction();
+      int direction = sprite.get_current_direction();
       if (animation == "stopped_watching_left") {
 	walk((direction + 1) % 4);
       }
@@ -107,9 +107,9 @@ void SimpleGreenSoldier::update() {
  */
 void SimpleGreenSoldier::walk(int direction) {
 
-  Sprite *sprite = get_sprite();
-  sprite->set_current_animation("walking");
-  sprite->set_current_direction(direction);
+  Sprite &sprite = get_sprite();
+  sprite.set_current_animation("walking");
+  sprite.set_current_direction(direction);
 
   StraightMovement *movement = (StraightMovement*) get_movement();
   int seconds = 2 + Random::get_number(3);
@@ -125,17 +125,17 @@ void SimpleGreenSoldier::notify_movement_tried(bool success) {
   Enemy::notify_movement_tried(success);
 
   if (is_in_normal_state()) {
-    Sprite *sprite = get_sprite();
-    const std::string &animation = sprite->get_current_animation();
+    Sprite &sprite = get_sprite();
+    const std::string &animation = sprite.get_current_animation();
     if (!success && animation == "walking") {
 
       int rand = Random::get_number(2);
 
       if (rand == 0) {
-	sprite->set_current_animation("stopped_watching_left");
+	sprite.set_current_animation("stopped_watching_left");
       }
       else {
-	sprite->set_current_animation("stopped_watching_right");
+	sprite.set_current_animation("stopped_watching_right");
       }
     }
   }

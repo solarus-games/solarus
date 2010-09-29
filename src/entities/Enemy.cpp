@@ -367,7 +367,7 @@ void Enemy::set_default_attack_consequences() {
  * @return name of the current animation of the first sprite
  */
 const std::string& Enemy::get_animation() {
-  return get_sprite()->get_current_animation();
+  return get_sprite().get_current_animation();
 }
 
 /**
@@ -436,17 +436,17 @@ void Enemy::update() {
   }
 
   if (is_immobilized() && !is_killed() && now >= end_shaking_date &&
-      get_sprite()->get_current_animation() == "shaking") {
+      get_sprite().get_current_animation() == "shaking") {
 
     stop_immobilized();
   }
 
   if (is_immobilized() && !is_killed() && !is_being_hurt() && now >= start_shaking_date &&
-      get_sprite()->get_current_animation() != "shaking") {
+      get_sprite().get_current_animation() != "shaking") {
 
     end_shaking_date = now + 2000;
     for (int i = 0; i < get_nb_sprites(); i++) {
-      get_sprite()->set_current_animation("shaking");
+      get_sprite().set_current_animation("shaking");
     }
   }
 
@@ -649,7 +649,7 @@ void Enemy::attack_hero(Hero *hero, Sprite *this_sprite) {
     if (minimum_shield_needed != 0 &&
 	get_equipment().has_ability("shield", minimum_shield_needed)) {
 
-      double angle = hero->get_vector_angle(this);
+      double angle = hero->get_vector_angle(*this);
       int protected_direction = (int) ((angle + Geometry::PI_OVER_2 / 2.0) * 4 / Geometry::TWO_PI);
       protected_direction = (protected_direction + 4) % 4;
 
@@ -660,7 +660,7 @@ void Enemy::attack_hero(Hero *hero, Sprite *this_sprite) {
       attack_stopped_by_hero_shield();
     }
     else {
-      hero->hurt(this, damage_on_hero, magic_damage_on_hero);
+      hero->hurt(*this, damage_on_hero, magic_damage_on_hero);
     }
   }
 }
@@ -775,7 +775,7 @@ void Enemy::try_hurt(EnemyAttack attack, MapEntity *source, Sprite *this_sprite)
     else {
       // hurt the enemy
 
-      if (is_immobilized() && get_sprite()->get_current_animation() == "shaking") {
+      if (is_immobilized() && get_sprite().get_current_animation() == "shaking") {
 	stop_immobilized();
       }
 
@@ -834,7 +834,7 @@ void Enemy::hurt(MapEntity *source) {
 
   // push the enemy back
   if (pushed_back_when_hurt) {
-    double angle = source->get_vector_angle(this);
+    double angle = source->get_vector_angle(*this);
     set_movement(new StraightMovement(12, angle, 200));
   }
   else {
@@ -905,7 +905,7 @@ bool Enemy::is_being_hurt() {
  * @return true if the enemy is killed
  */
 bool Enemy::is_killed() {
-  return life <= 0 && (get_sprite()->get_animation_set_id() == "enemies/enemy_killed" || !exploding);
+  return life <= 0 && (get_sprite().get_animation_set_id() == "enemies/enemy_killed" || !exploding);
 }
 
 /**
@@ -915,7 +915,7 @@ bool Enemy::is_killed() {
 bool Enemy::is_dying_animation_finished() {
   
   if (rank == RANK_NORMAL) {
-    return get_sprite()->is_animation_finished();
+    return get_sprite().is_animation_finished();
   }
 
   return nb_explosions > 0 && !exploding;
@@ -935,8 +935,8 @@ bool Enemy::is_dying() {
  */
 bool Enemy::is_sprite_finished_or_looping() {
 
-  Sprite *sprite = get_sprite();
-  return sprite->is_animation_finished() || sprite->is_animation_looping();
+  Sprite &sprite = get_sprite();
+  return sprite.is_animation_finished() || sprite.is_animation_looping();
 }
 
 /**

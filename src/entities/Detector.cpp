@@ -173,7 +173,7 @@ void Detector::check_collision(MapEntity *entity, Sprite *sprite) {
  */
 bool Detector::test_collision_rectangle(MapEntity *entity) {
 
-  return entity->overlaps(this);
+  return entity->overlaps(*this);
 }
 
 /**

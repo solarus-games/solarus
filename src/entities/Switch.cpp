@@ -49,7 +49,7 @@ Switch::Switch(const std::string &name, Layer layer, int x, int y,
   // sprite
   if (subtype == WALKABLE_VISIBLE) {
     create_sprite("entities/switch");
-    get_sprite()->set_current_animation("disabled");
+    get_sprite().set_current_animation("disabled");
   }
 
   // collisions
@@ -131,10 +131,10 @@ void Switch::set_enabled(bool enabled) {
 
     if (subtype == WALKABLE_VISIBLE) {
       if (enabled) {
-        get_sprite()->set_current_animation("enabled");
+        get_sprite().set_current_animation("enabled");
       }
       else {
-        get_sprite()->set_current_animation("disabled");
+        get_sprite().set_current_animation("disabled");
       }
     }
   }

@@ -60,8 +60,8 @@ class PathFinding {
     static const Rectangle transition_collision_boxes[];
 
     Map &map;					/**< the map */
-    MapEntity *source_entity;			/**< the entity to move */
-    MapEntity *target_entity;			/**< the target point */
+    MapEntity &source_entity;			/**< the entity to move */
+    MapEntity &target_entity;			/**< the target point */
 
     std::map<int,Node> closed_list;		/**< the closed list, indexed by the node locations on the map */
     std::map<int,Node> open_list;		/**< the open list, indexed by the node locations on the map */
@@ -75,7 +75,7 @@ class PathFinding {
 
   public:
 
-    PathFinding(Map &map, MapEntity *source_entity, MapEntity *target_entity);
+    PathFinding(Map &map, MapEntity &source_entity, MapEntity &target_entity);
     ~PathFinding();
 
     std::string compute_path();

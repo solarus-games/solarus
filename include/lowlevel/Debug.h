@@ -45,7 +45,7 @@ class Debug {
  * This function does nothing if SOLARUS_DEBUG_LEVEL is 0.
  *
  * @param message the message to print.
- * @param the output stream to write (default is std::cout)
+ * @param os the output stream to write (default is std::cout)
  */
 inline void Debug::print(const std::string &message, std::ostream &os) {
 

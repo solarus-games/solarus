@@ -52,42 +52,42 @@ static const Rectangle lifting_translations[4][6] = {
  * @param hero the hero
  * @param destructible_item a destructible item
  */
-CarriedItem::CarriedItem(Hero *hero, DestructibleItem *destructible_item):
+CarriedItem::CarriedItem(Hero &hero, DestructibleItem &destructible_item):
   MapEntity(), hero(hero), is_lifting(true), is_throwing(false), is_breaking(false),
   break_on_intermediate_layer(false), explosion_date(0) {
 
   // put the item on the hero's layer
-  set_layer(hero->get_layer());
+  set_layer(hero.get_layer());
 
   // align correctly the item with the hero
-  int direction = hero->get_animation_direction();
+  int direction = hero.get_animation_direction();
   if (direction % 2 == 0) {
-    set_xy(destructible_item->get_x(), hero->get_y());
+    set_xy(destructible_item.get_x(), hero.get_y());
   }
   else {
-    set_xy(hero->get_x(), destructible_item->get_y());
+    set_xy(hero.get_x(), destructible_item.get_y());
   }
-  set_origin(destructible_item->get_origin());
-  set_size(destructible_item->get_width(), destructible_item->get_height());
+  set_origin(destructible_item.get_origin());
+  set_size(destructible_item.get_width(), destructible_item.get_height());
 
   // create the lift movement and the sprite
   PixelMovement *movement = new PixelMovement(lifting_translations[direction], 6, 100, false, true);
-  create_sprite(destructible_item->get_animation_set_id());
-  get_sprite()->set_current_animation("stopped");
+  create_sprite(destructible_item.get_animation_set_id());
+  get_sprite().set_current_animation("stopped");
   set_movement(movement);
 
   // create the breaking sound
-  destruction_sound_id = destructible_item->get_destruction_sound_id();
+  destruction_sound_id = destructible_item.get_destruction_sound_id();
 
   // create the shadow (not visible yet)
   shadow_sprite = new Sprite("entities/shadow");
   shadow_sprite->set_current_animation("big");
 
   // damage on enemies
-  damage_on_enemies = destructible_item->get_damage_on_enemies();
+  damage_on_enemies = destructible_item.get_damage_on_enemies();
 
   // explosion
-  if (destructible_item->can_explode()) {
+  if (destructible_item.can_explode()) {
     explosion_date = System::now() + 6000;
   }
 }
@@ -179,7 +179,7 @@ void CarriedItem::set_animation_stopped() {
 
   if (!is_lifting && !is_throwing) {
     std::string animation = will_explode_soon() ? "stopped_explosion_soon" : "stopped";
-    get_sprite()->set_current_animation(animation);
+    get_sprite().set_current_animation(animation);
   }
 }
 
@@ -192,7 +192,7 @@ void CarriedItem::set_animation_stopped() {
 void CarriedItem::set_animation_walking() {
   if (!is_lifting && !is_throwing) {
     std::string animation = will_explode_soon() ? "walking_explosion_soon" : "walking";
-    get_sprite()->set_current_animation(animation);
+    get_sprite().set_current_animation(animation);
   }
 }
 
@@ -210,11 +210,11 @@ void CarriedItem::throw_item(int direction) {
   Sound::play("throw");
 
   // stop the sprite animation
-  Sprite *sprite = get_sprite();
-  sprite->set_current_animation("stopped");
+  Sprite &sprite = get_sprite();
+  sprite.set_current_animation("stopped");
 
   // set the movement of the item sprite
-  set_y(hero->get_y());
+  set_y(hero.get_y());
   CollisionMovement *movement = new CollisionMovement();
   movement->set_speed(20);
   movement->set_direction(direction * 90);
@@ -264,7 +264,7 @@ void CarriedItem::break_item() {
 
   if (!can_explode()) {
     Sound::play(destruction_sound_id);
-    get_sprite()->set_current_animation("destroy");
+    get_sprite().set_current_animation("destroy");
   }
   else {
     get_entities().add_entity(new Explosion(get_layer(), get_xy(), true));
@@ -284,7 +284,7 @@ void CarriedItem::break_item() {
  * @return true if the item is broken
  */
 bool CarriedItem::is_broken() {
-  return is_breaking && (get_sprite()->is_animation_finished() || can_explode());
+  return is_breaking && (get_sprite().is_animation_finished() || can_explode());
 }
 
 /**
@@ -338,7 +338,7 @@ void CarriedItem::update() {
 
     // make the item follow the hero
     clear_movement();
-    set_movement(new FollowMovement(hero, 0, -18, true));
+    set_movement(new FollowMovement(&hero, 0, -18, true));
   }
 
   // when the item has finished flying, destroy it
@@ -351,12 +351,12 @@ void CarriedItem::update() {
     }
     else if (will_explode_soon()) {
 
-      std::string animation = get_sprite()->get_current_animation();
+      std::string animation = get_sprite().get_current_animation();
       if (animation == "stopped") {
-	get_sprite()->set_current_animation("stopped_explosion_soon");
+	get_sprite().set_current_animation("stopped_explosion_soon");
       }
       else if (animation == "walking") {
-	get_sprite()->set_current_animation("walking_explosion_soon");
+	get_sprite().set_current_animation("walking_explosion_soon");
       }
     }
   }
@@ -400,7 +400,7 @@ void CarriedItem::display_on_map() {
   }
   else {
     // when the item is being thrown, display the shadow and the item separately
-    get_map().display_sprite(shadow_sprite, get_x(), get_y());
+    get_map().display_sprite(*shadow_sprite, get_x(), get_y());
     get_map().display_sprite(get_sprite(), get_x(), get_y() - item_height);
   }
 }

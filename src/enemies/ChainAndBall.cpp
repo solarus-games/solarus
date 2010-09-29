@@ -48,7 +48,7 @@ void ChainAndBall::initialize() {
 
   // sprites
   create_sprite("enemies/chain_and_ball");
-  get_sprite()->set_current_animation("walking");
+  get_sprite().set_current_animation("walking");
   link_sprite = new Sprite("enemies/chain_and_ball");
   link_sprite->set_current_animation("chain");
 
@@ -78,7 +78,7 @@ void ChainAndBall::display_on_map() {
   if (is_visible()) {
     // also display the chain
     for (int i = 0; i < nb_links; i++) {
-      get_map().display_sprite(link_sprite, link_xy[i].get_x(), link_xy[i].get_y());
+      get_map().display_sprite(*link_sprite, link_xy[i].get_x(), link_xy[i].get_y());
     }
   }
 }

@@ -48,13 +48,13 @@ const Rectangle PathFinding::transition_collision_boxes[] = {
  * (its position must be a 16*16 rectangle aligned on the map grid)
  * @param target_entity the target entity (its size must be 16*16)
  */
-PathFinding::PathFinding(Map &map, MapEntity *source_entity, MapEntity *target_entity):
+PathFinding::PathFinding(Map &map, MapEntity &source_entity, MapEntity &target_entity):
   map(map), source_entity(source_entity), target_entity(target_entity) {
 
-  const Rectangle &source = source_entity->get_bounding_box();
-  const Rectangle &target = target_entity->get_bounding_box();
+  const Rectangle &source = source_entity.get_bounding_box();
+  const Rectangle &target = target_entity.get_bounding_box();
 
-  Debug::assert(source_entity->is_aligned_to_grid()
+  Debug::assert(source_entity.is_aligned_to_grid()
       && source.get_width() % 16 == 0
       && source.get_height() % 16 == 0
       && target.get_width() % 16 == 0
@@ -75,11 +75,11 @@ PathFinding::~PathFinding() {
  */
 std::string PathFinding::compute_path() {
 
-//  std::cout << "will compute a path from " << source_entity->get_top_left_x() << "," << source_entity->get_top_left_y()
-//    << " to " << target_entity->get_top_left_x() << "," << target_entity->get_top_left_y() << std::endl;
+//  std::cout << "will compute a path from " << source_entity.get_top_left_x() << "," << source_entity.get_top_left_y()
+//    << " to " << target_entity.get_top_left_x() << "," << target_entity.get_top_left_y() << std::endl;
 
-  Rectangle source = source_entity->get_bounding_box();
-  Rectangle target = target_entity->get_bounding_box();
+  Rectangle source = source_entity.get_bounding_box();
+  Rectangle target = target_entity.get_bounding_box();
 
   target.add_x(4);
   target.add_x(-target.get_x() % 8);
@@ -91,7 +91,7 @@ std::string PathFinding::compute_path() {
       "Could not snap the target to the map grid");
 
   int total_mdistance = get_manhattan_distance(source, target) * 10;
-  if (total_mdistance > 250 || target_entity->get_layer() != source_entity->get_layer()) {
+  if (total_mdistance > 250 || target_entity.get_layer() != source_entity.get_layer()) {
 //    std::cout << "too far, not computing a path\n";
     return ""; // too far to compute a path
   }
@@ -270,6 +270,6 @@ bool PathFinding::is_node_transition_valid(const Node &initial_node, int directi
   collision_box.set_x(collision_box.get_x() + initial_node.location.get_x());
   collision_box.set_y(collision_box.get_y() + initial_node.location.get_y());
 
-  return !map.test_collision_with_obstacles(source_entity->get_layer(), collision_box, source_entity);
+  return !map.test_collision_with_obstacles(source_entity.get_layer(), collision_box, source_entity);
 }
 

@@ -144,7 +144,7 @@ bool Map::has_floor() {
  *
  * @return the location of this map in its context.
  */
-const Rectangle & Map::get_location() {
+const Rectangle& Map::get_location() {
   return location;
 }
 
@@ -253,6 +253,9 @@ void Map::load(Game &game) {
 
 /**
  * @brief Returns the game that loaded this map.
+ *
+ * This function should not be called before the map is loaded into a game.
+ *
  * @return the game
  */
 Game& Map::get_game() {
@@ -260,7 +263,11 @@ Game& Map::get_game() {
 }
 
 /**
- * @brief Returns the entities on the map.
+ * @brief Returns the entities of the map.
+ *
+ * This function should not be called before the map is loaded into a game.
+ *
+ * @return the entities of the map
  */
 MapEntities& Map::get_entities() {
   return *entities;
@@ -437,12 +444,12 @@ void Map::display() {
  * @param x x coordinate of the sprite's origin point in the map
  * @param y y coordinate of the sprite's origin point in the map
  */
-void Map::display_sprite(Sprite *sprite, int x, int y) {
+void Map::display_sprite(Sprite &sprite, int x, int y) {
 
   // the position is given in the map coordinate system:
   // convert it to the visible surface coordinate system
   const Rectangle &camera_position = get_camera_position();
-  sprite->display(visible_surface, x - camera_position.get_x(), y - camera_position.get_y());
+  sprite.display(visible_surface, x - camera_position.get_x(), y - camera_position.get_y());
 }
 
 /**
@@ -519,7 +526,7 @@ bool Map::test_collision_with_border(const Rectangle &collision_box) {
  * @param entity_to_check the entity to check (used to decide what tiles are considered as an obstacle)
  * @return true if this point is on an obstacle
  */
-bool Map::test_collision_with_tiles(Layer layer, int x, int y, MapEntity *entity_to_check) {
+bool Map::test_collision_with_tiles(Layer layer, int x, int y, MapEntity &entity_to_check) {
 
   Obstacle obstacle_type;
   bool on_obstacle = false;
@@ -576,15 +583,15 @@ bool Map::test_collision_with_tiles(Layer layer, int x, int y, MapEntity *entity
 
   case OBSTACLE_SHALLOW_WATER:
   case OBSTACLE_DEEP_WATER:
-    on_obstacle = entity_to_check->is_water_obstacle();
+    on_obstacle = entity_to_check.is_water_obstacle();
     break;
 
   case OBSTACLE_HOLE:
-    on_obstacle = entity_to_check->is_hole_obstacle();
+    on_obstacle = entity_to_check.is_hole_obstacle();
     break;
 
   case OBSTACLE_LADDER:
-    on_obstacle = entity_to_check->is_ladder_obstacle();
+    on_obstacle = entity_to_check.is_ladder_obstacle();
     break;
   }
 
@@ -598,7 +605,7 @@ bool Map::test_collision_with_tiles(Layer layer, int x, int y, MapEntity *entity
  * @param entity_to_check the entity to check (used to decide what is considered as an obstacle)
  * @return true if there is an obstacle entity at this point
  */
-bool Map::test_collision_with_entities(Layer layer, const Rectangle &collision_box, MapEntity *entity_to_check) {
+bool Map::test_collision_with_entities(Layer layer, const Rectangle &collision_box, MapEntity &entity_to_check) {
 
   std::list<MapEntity*> &obstacle_entities = entities->get_obstacle_entities(layer);
 
@@ -609,8 +616,8 @@ bool Map::test_collision_with_entities(Layer layer, const Rectangle &collision_b
        i != obstacle_entities.end() && !collision;
        i++) {
 
-    collision = (*i) != entity_to_check &&
-      (*i)->is_obstacle_for(entity_to_check) && (*i)->overlaps(collision_box);
+    collision = (*i) != &entity_to_check &&
+      (*i)->is_obstacle_for(&entity_to_check) && (*i)->overlaps(collision_box);
   }
 
   return collision;
@@ -623,7 +630,8 @@ bool Map::test_collision_with_entities(Layer layer, const Rectangle &collision_b
  * @param entity_to_check the entity to check (used to decide what is considered as an obstacle)
  * @return true if the rectangle is overlapping an obstacle, false otherwise
  */
-bool Map::test_collision_with_obstacles(Layer layer, const Rectangle &collision_box, MapEntity *entity_to_check) {
+bool Map::test_collision_with_obstacles(Layer layer, const Rectangle &collision_box, MapEntity &entity_to_check) {
+
   int x, y, x1, x2, y1, y2;
   bool collision = false;
 
@@ -668,7 +676,7 @@ bool Map::test_collision_with_obstacles(Layer layer, const Rectangle &collision_
  * @param entity_to_check the entity to check (used to decide what is considered as an obstacle)
  * @return true if the point is overlapping an obstacle, false otherwise
  */
-bool Map::test_collision_with_obstacles(Layer layer, int x, int y, MapEntity *entity_to_check) {
+bool Map::test_collision_with_obstacles(Layer layer, int x, int y, MapEntity &entity_to_check) {
 
   bool collision;
 
@@ -749,7 +757,7 @@ Ground Map::get_tile_ground(Layer layer, const Rectangle &coordinates) {
  * @param entity the entity that has just moved (this entity should have
  * a movement sensible to the collisions)
  */
-void Map::check_collision_with_detectors(MapEntity *entity) {
+void Map::check_collision_with_detectors(MapEntity &entity) {
 
   if (suspended) {
     return;
@@ -765,7 +773,7 @@ void Map::check_collision_with_detectors(MapEntity *entity) {
        i++) {
 
     if (!(*i)->is_being_removed()) {
-      (*i)->check_collision(entity);
+      (*i)->check_collision(&entity);
     }
   }
 }
@@ -781,7 +789,7 @@ void Map::check_collision_with_detectors(MapEntity *entity) {
  * @param entity the sprite that has just changed
  * @param sprite the sprite that has just changed
  */
-void Map::check_collision_with_detectors(MapEntity *entity, Sprite *sprite) {
+void Map::check_collision_with_detectors(MapEntity &entity, Sprite &sprite) {
 
   if (suspended) {
     return;
@@ -795,7 +803,7 @@ void Map::check_collision_with_detectors(MapEntity *entity, Sprite *sprite) {
        i++) {
 
     if (!(*i)->is_being_removed()) {
-      (*i)->check_collision(entity, sprite);
+      (*i)->check_collision(&entity, &sprite);
     }
   }
 }

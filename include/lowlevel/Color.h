@@ -68,7 +68,7 @@ class Color {
 
 /**
  * @brief Returns the black color.
- * @param the black color
+ * @return the black color
  */
 inline Color& Color::get_black() {
   return black;
@@ -76,7 +76,7 @@ inline Color& Color::get_black() {
 
 /**
  * @brief Returns the white color.
- * @param the white color
+ * @return the white color
  */
 inline Color& Color::get_white() {
   return white;

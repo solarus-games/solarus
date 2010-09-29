@@ -130,8 +130,6 @@ EntityType DestructibleItem::get_type() {
  * @return true if this entity is displayed at the same level as the hero
  */
 bool DestructibleItem::is_displayed_in_y_order() {
-//  const Rectangle& size = get_sprite()->get_size();
-//  return size.get_height() > 16;
   return false;
 }
 
@@ -301,7 +299,7 @@ void DestructibleItem::action_key_pressed() {
     int weight = features[subtype].weight;
 
     if (get_equipment().has_ability("lift", weight)) {
-      get_hero().start_lifting(this);
+      get_hero().start_lifting(*this);
 
       // play the sound
       Sound::play("lift");
@@ -339,7 +337,7 @@ void DestructibleItem::play_destroy_animation() {
 
   is_being_cut = true;
   Sound::play(get_destruction_sound_id());
-  get_sprite()->set_current_animation("destroy");
+  get_sprite().set_current_animation("destroy");
   if (!is_displayed_in_y_order()) {
     get_entities().bring_to_front(this); // show animation destroy to front
   }
@@ -387,7 +385,7 @@ void DestructibleItem::update() {
     return;
   }
 
-  if (is_being_cut && get_sprite()->is_animation_finished()) {
+  if (is_being_cut && get_sprite().is_animation_finished()) {
 
     if (!features[subtype].can_regenerate) {
       // remove the item from the map
@@ -399,13 +397,13 @@ void DestructibleItem::update() {
     }
   }
 
-  else if (is_disabled() && System::now() >= regeneration_date && !overlaps(&get_hero())) {
-    get_sprite()->set_current_animation("regenerating");
+  else if (is_disabled() && System::now() >= regeneration_date && !overlaps(get_hero())) {
+    get_sprite().set_current_animation("regenerating");
     is_regenerating = true;
     regeneration_date = 0;
   }
-  else if (is_regenerating && get_sprite()->is_animation_finished()) {
-    get_sprite()->set_current_animation("on_ground");
+  else if (is_regenerating && get_sprite().is_animation_finished()) {
+    get_sprite().set_current_animation("on_ground");
     is_regenerating = false;
   }
 }

@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<classpath>
-	<classpathentry kind="src" path="tools"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="tools/ini4j.jar"/>
-	<classpathentry kind="output" path="tools"/>
-</classpath>

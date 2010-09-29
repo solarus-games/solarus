@@ -214,8 +214,8 @@ class MapEntity {
     int get_direction();
 
     // sprites
-    Sprite* get_sprite(const SpriteAnimationSetId &id);
-    Sprite* get_sprite();
+    Sprite& get_sprite(const SpriteAnimationSetId &id);
+    Sprite& get_sprite();
     int get_nb_sprites();
     bool has_sprite();
     void remove_sprite(const SpriteAnimationSetId &id);
@@ -237,13 +237,13 @@ class MapEntity {
     // geometry
     bool overlaps(const Rectangle &rectangle);
     bool overlaps(int x, int y);
-    bool overlaps(MapEntity *other);
+    bool overlaps(MapEntity &other);
     bool is_origin_point_in(const Rectangle &rectangle);
     bool is_facing_point_in(const Rectangle &rectangle);
     bool is_center_in(const Rectangle &rectangle);
 
-    double get_vector_angle(MapEntity *other);
-    int get_distance(MapEntity *other);
+    double get_vector_angle(MapEntity &other);
+    int get_distance(MapEntity &other);
     int get_distance(int x, int y);
 
     // collisions

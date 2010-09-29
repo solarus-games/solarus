@@ -27,14 +27,14 @@ class Arrow: public MapEntity {
 
   private:
 
-    Hero *hero;                /**< the hero */
+    Hero &hero;                /**< the hero */
     uint32_t disappear_date;   /**< date when the arrow disappears */
     bool stop_now;             /**< true to make the arrow stop now */
     MapEntity *entity_reached; /**< a dynamic entity reached by the arrow (i.e. an enemy or a crystal switch, not a usual wall) */
 
   public:
 
-    Arrow(Hero *hero);
+    Arrow(Hero &hero);
     ~Arrow();
 
     EntityType get_type();

@@ -104,7 +104,7 @@ class Hero: public MapEntity {
     void update_movement();
     void movement_just_changed();
     void try_snap_to_facing_entity();
-    Teletransporter *get_delayed_teletransporter();
+    Teletransporter* get_delayed_teletransporter();
 
     // ground
     void update_ground();
@@ -262,9 +262,9 @@ class Hero: public MapEntity {
      *
      * Attacking enemies or getting hurt by them.
      */
-    void notify_attacked_enemy(EnemyAttack attack, Enemy *victim, int result, bool killed);
+    void notify_attacked_enemy(EnemyAttack attack, Enemy &victim, int result, bool killed);
     int get_sword_damage_factor();
-    void hurt(MapEntity *source, int life_points, int magic_points);
+    void hurt(MapEntity &source, int life_points, int magic_points);
     void get_back_from_death();
 
     /**
@@ -289,7 +289,7 @@ class Hero: public MapEntity {
 	uint32_t movement_delay = 0, Layer layer_after_jump = LAYER_NB);
     void start_freezed();
     void start_victory();
-    void start_lifting(DestructibleItem *destructible_item);
+    void start_lifting(DestructibleItem &destructible_item);
     void start_running();
     void start_grabbing();
 };

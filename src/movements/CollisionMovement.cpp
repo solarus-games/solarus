@@ -56,7 +56,7 @@ bool CollisionMovement::test_collision_with_map(int dx, int dy) {
   Rectangle collision_box = entity->get_bounding_box();
   collision_box.add_xy(dx, dy);
 
-  bool collision = map.test_collision_with_obstacles(entity->get_layer(), collision_box, entity);
+  bool collision = map.test_collision_with_obstacles(entity->get_layer(), collision_box, *entity);
 
   if (collision) {
     last_collision_box_on_obstacle = collision_box;

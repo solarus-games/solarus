@@ -503,9 +503,9 @@ void HeroSprites::update() {
   if (is_sword_visible()) {
     sword_sprite->update();
     sword_sprite->set_current_frame(tunic_sprite->get_current_frame());
-    hero.get_map().check_collision_with_detectors(&hero, sword_sprite);
+    hero.get_map().check_collision_with_detectors(hero, *sword_sprite);
   }
-  hero.get_map().check_collision_with_detectors(&hero, tunic_sprite);
+  hero.get_map().check_collision_with_detectors(hero, *tunic_sprite);
 
   if (is_sword_stars_visible()) {
     // the stars are not synchronized with the other sprites
@@ -528,7 +528,7 @@ void HeroSprites::update() {
   }
 
   if (lifted_item != NULL && walking) {
-    lifted_item->get_sprite()->set_current_frame(tunic_sprite->get_current_frame() % 3);
+    lifted_item->get_sprite().set_current_frame(tunic_sprite->get_current_frame() % 3);
   }
 
   // blinking
@@ -553,30 +553,30 @@ void HeroSprites::display_on_map() {
   }
 
   if (hero.is_shadow_visible()) {
-    map.display_sprite(shadow_sprite, x, y);
+    map.display_sprite(*shadow_sprite, x, y);
     y -= hero.get_height_above_shadow();
   }
 
-  map.display_sprite(tunic_sprite, x, y);
+  map.display_sprite(*tunic_sprite, x, y);
 
   if (is_sword_visible()) {
-    map.display_sprite(sword_sprite, x, y);
+    map.display_sprite(*sword_sprite, x, y);
   }
 
   if (is_sword_stars_visible()) {
-    map.display_sprite(sword_stars_sprite, x, y);
+    map.display_sprite(*sword_stars_sprite, x, y);
   }
 
   if (is_shield_visible()) {
-    map.display_sprite(shield_sprite, x, y);
+    map.display_sprite(*shield_sprite, x, y);
   }
 
   if (is_trail_visible()) {
-    map.display_sprite(trail_sprite, x, y);
+    map.display_sprite(*trail_sprite, x, y);
   }
 
   if (hero.is_ground_visible()) {
-    map.display_sprite(ground_sprite, x, y);
+    map.display_sprite(*ground_sprite, x, y);
   }
 
   if (lifted_item != NULL) {

@@ -68,8 +68,6 @@ class GameScript: public Script {
     // loading and closing a script
     GameScript(Scripts &scripts, Game &game);
     virtual ~GameScript();
-    void start(const std::string &destination_point_name);
-
 };
 
 #endif

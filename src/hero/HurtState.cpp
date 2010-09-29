@@ -29,7 +29,7 @@
  * @param life_points number of heart quarters to remove (this number may be reduced by the tunic)
  * @param magic_points number of magic points to remove
  */
-Hero::HurtState::HurtState(Hero &hero, MapEntity *source, int life_points, int magic_points):
+Hero::HurtState::HurtState(Hero &hero, MapEntity &source, int life_points, int magic_points):
   State(hero), source(source), life_points(life_points), magic_points(magic_points) {
 
 }
@@ -60,7 +60,7 @@ void Hero::HurtState::start(State *previous_state) {
   get_sprites().set_animation_hurt();
   get_sprites().blink();
 
-  double angle = source->get_vector_angle(&hero);
+  double angle = source.get_vector_angle(hero);
   hero.set_movement(new StraightMovement(12, angle, 200));
 }
 

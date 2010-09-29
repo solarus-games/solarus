@@ -101,7 +101,7 @@ bool GameScript::is_new_timer_suspended(void) {
  *
  * @param context the Lua context
  * @param nb_arguments the number of arguments to check (if it is incorrect, the program stops)
- * @param map_script if not NULL, a pointer to the MapScript object will be copied there so that the static C++ function
+ * @param game_script if not NULL, a pointer to the MapScript object will be copied there so that the static C++ function
  * called by the Lua script can access it
  */
 

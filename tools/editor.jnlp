@@ -16,6 +16,6 @@
     <jar href="solarus-editor.jar" />
     <jar href="ini4j.jar" />
   </resources>
-  <application-desc main-class="org.solarus.editor.MapEditor" />
+  <application-desc main-class="org.solarus.editor.Editor" />
 </jnlp>
 

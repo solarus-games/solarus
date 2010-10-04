@@ -37,19 +37,19 @@ public class GuiTools {
 
 	// set Windows look and feel by default
 	try {
-	    UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-	    return;
+	    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+	    //return;
 	}
 	catch (Exception e) {
 	}
-
-	// try Mac OS
-	try {
-	    UIManager.setLookAndFeel("it.unitn.ing.swing.plaf.macos.MacOSLookAndFeel");
-	    return;
-	}
-	catch (Exception e) {
-	}
+//
+//	// try Mac OS
+//	try {
+//	    UIManager.setLookAndFeel("it.unitn.ing.swing.plaf.macos.MacOSLookAndFeel");
+//	    return;
+//	}
+//	catch (Exception e) {
+//	}
 
 	// otherwise, try GTK
 // 	try {

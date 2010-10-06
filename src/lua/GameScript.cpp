@@ -24,7 +24,6 @@
 
 /**
  * @brief Creates a game script.
- * @param scripts the list of scripts
  * @param game the game
  */
 GameScript::GameScript(Game &game):

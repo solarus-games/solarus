@@ -420,15 +420,6 @@ void InteractiveEntity::notify_position_changed() {
 }
 
 /**
- * @brief Sets the direction of the entity's sprite.
- * @param direction a direction between 0 and 3
- */
-void InteractiveEntity::set_sprite_direction(int direction) {
-
-  get_sprite().set_current_direction(direction);
-}
-
-/**
  * @brief Displays the entity on the map.
  *
  * This is a redefinition of MapEntity::display_on_map() to handle the special

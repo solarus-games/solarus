@@ -20,9 +20,12 @@ game_2_slots = {
 
 -- Function called when the map starts
 function event_map_started(destination_point_name)
+
   for k, v in pairs(game_2_slots) do
-    sol.map.interactive_entity_set_animation_frame(k, game_2_slots[k].initial_frame)
+    sol.map.interactive_entity_create_sprite_id(k, k)
+    sol.main.sprite_set_frame(k, game_2_slots[k].initial_frame)
   end
+  sol.map.npc_create_sprite_id("game_2_man", "game_2_man_sprite")
 end
 
 -- Function called when the player wants to talk to a non-playing character
@@ -152,10 +155,10 @@ function event_dialog_finished(first_message_id, answer)
       for k, v in pairs(game_2_slots) do
 	v.symbol = -1
 	v.current_delay = v.initial_delay
-	sol.map.interactive_entity_set_animation(k, "started")
-	sol.map.interactive_entity_set_animation_delay(k, v.current_delay)
-	sol.map.interactive_entity_set_animation_frame(k, v.initial_frame)
-	sol.map.interactive_entity_set_animation_paused(k, false)
+	sol.main.sprite_set_animation(k, "started")
+	sol.main.sprite_set_frame_delay(k, v.current_delay)
+	sol.main.sprite_set_frame(k, v.initial_frame)
+	sol.main.sprite_set_paused(k, false)
       end
     end
   elseif string.match(first_message_id, "^rupee_house.game_2.reward.") then
@@ -267,21 +270,21 @@ function event_hero_interaction(entity_name)
 
   if playing_game_2 then
 
-    sol.map.npc_set_direction("game_2_man", 0)
+    sol.main.sprite_set_direction("game_2_man_sprite", 0)
 
     if game_2_slots[entity_name].symbol == -1 then
       -- stop this reel
 
-      current_symbol = math.floor(sol.map.interactive_entity_get_animation_frame(entity_name) / 3)
+      current_symbol = math.floor(sol.main.sprite_get_frame(entity_name) / 3)
       game_2_slots[entity_name].symbol = (current_symbol + math.random(2)) % 7
       game_2_slots[entity_name].current_delay = game_2_slots[entity_name].current_delay + 100
-      sol.map.interactive_entity_set_animation_delay(entity_name, game_2_slots[entity_name].current_delay)
+      sol.main.sprite_set_frame_delay(entity_name, game_2_slots[entity_name].current_delay)
 
       -- test code (temporary code to win every game)
       --	 for k, v in pairs(game_2_slots) do
       --	    v.symbol = game_2_slots[entity_name].symbol
       --	    v.current_delay = game_2_slots[entity_name].current_delay + 100
-      --	    sol.map.interactive_entity_set_animation_delay(k, v.current_delay)
+      --	    sol.main.sprite_set_frame_delay(k, v.current_delay)
       --	 end
       -----------
 
@@ -302,16 +305,16 @@ function event_update()
     -- stop the reels when necessary
     nb_finished = 0
     for k, v in pairs(game_2_slots) do
-      if sol.map.interactive_entity_is_animation_paused(k) then
+      if sol.main.sprite_is_paused(k) then
 	nb_finished = nb_finished + 1
       end
     end
 
     for k, v in pairs(game_2_slots) do
-      frame = sol.map.interactive_entity_get_animation_frame(k)
+      frame = sol.main.sprite_get_frame(k)
 
-      if not sol.map.interactive_entity_is_animation_paused(k) and frame == v.symbol * 3 then
-	sol.map.interactive_entity_set_animation_paused(k, true)
+      if not sol.main.sprite_is_paused(k) and frame == v.symbol * 3 then
+	sol.main.sprite_set_paused(k, true)
 	v.initial_frame = frame
 	nb_finished = nb_finished + 1
 

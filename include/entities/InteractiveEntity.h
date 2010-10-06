@@ -85,7 +85,6 @@ class InteractiveEntity: public Detector {
     void walk_random();
     void jump(int direction, int length, bool ignore_obstacles);
     void notify_position_changed();
-    void set_sprite_direction(int direction);
 };
 
 #endif

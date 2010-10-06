@@ -43,7 +43,6 @@
 
 /**
  * @brief Creates a map script.
- * @param scripts the list of scripts
  * @param map the map
  */
 MapScript::MapScript(Map &map):
@@ -90,10 +89,10 @@ void MapScript::register_available_functions() {
     { "npc_walk", l_npc_walk },
     { "npc_random_walk", l_npc_random_walk },
     { "npc_jump", l_npc_jump },
-    { "npc_set_animation", l_npc_set_animation },
-    { "npc_set_animation_ignore_suspend", l_npc_set_animation_ignore_suspend },
-    { "npc_set_direction", l_npc_set_direction },
+    { "npc_create_sprite_id", l_npc_create_sprite_id },
     { "npc_remove", l_npc_remove },
+    { "interactive_entity_create_sprite_id", l_interactive_entity_create_sprite_id },
+    { "interactive_entity_remove", l_interactive_entity_remove },
     { "chest_set_open", l_chest_set_open },
     { "chest_set_hidden", l_chest_set_hidden },
     { "chest_is_hidden", l_chest_is_hidden },
@@ -102,19 +101,6 @@ void MapScript::register_available_functions() {
     { "tile_is_enabled", l_tile_is_enabled },
     { "block_reset", l_block_reset },
     { "block_reset_all", l_block_reset_all },
-    { "interactive_entity_get_animation", l_interactive_entity_get_animation },
-    { "interactive_entity_get_animation_delay", l_interactive_entity_get_animation_delay },
-    { "interactive_entity_get_animation_frame", l_interactive_entity_get_animation_frame },
-    { "interactive_entity_get_direction", l_interactive_entity_get_direction },
-    { "interactive_entity_is_animation_paused", l_interactive_entity_is_animation_paused },
-    { "interactive_entity_set_animation", l_interactive_entity_set_animation },
-    { "interactive_entity_set_animation_delay", l_interactive_entity_set_animation_delay },
-    { "interactive_entity_set_animation_frame", l_interactive_entity_set_animation_frame },
-    { "interactive_entity_set_direction", l_interactive_entity_set_direction },
-    { "interactive_entity_set_animation_paused", l_interactive_entity_set_animation_paused },
-    { "interactive_entity_set_animation_ignore_suspend", l_interactive_entity_set_animation_ignore_suspend },
-    { "interactive_entity_fade", l_interactive_entity_fade },
-    { "interactive_entity_remove", l_interactive_entity_remove },
     { "shop_item_remove", l_shop_item_remove },
     { "switch_is_enabled", l_switch_is_enabled },
     { "switch_set_enabled", l_switch_set_enabled },
@@ -647,63 +633,17 @@ int MapScript::l_npc_jump(lua_State *l) {
 }
 
 /**
- * @brief Sets the animation of an NPC's sprite.
+ * @brief Makes the sprite of an NPC accessible from the script.
  *
- * - Argument 1 (string): name of the NPC
- * - Argument 2 (string): name of the animation to set
- *
- * @param l the Lua context that is calling this function
- */
-int MapScript::l_npc_set_animation(lua_State *l) {
-  return l_interactive_entity_set_animation(l);
-}
-
-/**
- * @brief Sets whether the animation of an NPC should continue even when the game is suspended.
- *
- * Argument 1 (string): name of the NPC
- * Argument 2 (boolean): true to ignore when the game is suspended
+ * - Argument 1 (string): name of the interactive entity
+ * - Argument 2 (string): a name that will identify the sprite from the script
  *
  * @param l the Lua context that is calling this function
  */
-int MapScript::l_npc_set_animation_ignore_suspend(lua_State *l) {
+int MapScript::l_npc_create_sprite_id(lua_State *l) {
 
-  MapScript *script;
-  called_by_script(l, 2, &script);
-
-  const std::string &name = lua_tostring(l, 1);
-  bool ignore_suspend = lua_toboolean(l, 2) != 0;
-
-  MapEntities &entities = script->map.get_entities();
-  MapEntity *npc = entities.get_entity(INTERACTIVE_ENTITY, name);
-  npc->set_animation_ignore_suspend(ignore_suspend);
-
-  return 0;
-}
-
-/**
- * @brief Sets the direction of an NPC's sprite.
- *
- * - Argument 1 (string): name of the NPC
- * - Argument 2 (integer): the sprite's direction between 0 and 3
- *
- * @param l the Lua context that is calling this function
- */
-int MapScript::l_npc_set_direction(lua_State *l) {
-
-  MapScript *script;
-  called_by_script(l, 2, &script);
-
-  const std::string &name = lua_tostring(l, 1);
-  int direction = lua_tointeger(l, 2);
-
-  Debug::assert(direction >= 0 && direction < 4, StringConcat() << "Invalid NPC direction: " << direction);
-
-  MapEntities &entities = script->map.get_entities();
-  InteractiveEntity *npc = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, name);
-  npc->set_sprite_direction(direction);
-
-  return 0;
+  // an NPC is actually a subtype of interactive entity
+  return l_interactive_entity_create_sprite_id(l);
 }
 
 /**
@@ -714,6 +654,43 @@ int MapScript::l_npc_set_direction(lua_State *l) {
  * @param l the Lua context that is calling this function
  */
 int MapScript::l_npc_remove(lua_State *l) {
+
+  // an NPC is actually a subtype of interactive entity
+  return l_interactive_entity_remove(l);
+}
+
+/**
+ * @brief Makes the sprite of an interactive entity accessible from the script.
+ *
+ * - Argument 1 (string): name of the interactive entity
+ * - Argument 2 (string): a name that will identify the sprite from the script
+ *
+ * @param l the Lua context that is calling this function
+ */
+int MapScript::l_interactive_entity_create_sprite_id(lua_State *l) {
+
+  MapScript *script;
+  called_by_script(l, 2, &script);
+
+  const std::string &entity_name = lua_tostring(l, 1);
+  const std::string &sprite_id = lua_tostring(l, 2);
+
+  MapEntities &entities = script->map.get_entities();
+  InteractiveEntity *entity = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, entity_name);
+
+  script->add_existing_sprite(sprite_id, entity->get_sprite());
+
+  return 0;
+}
+
+/**
+ * @brief Removes an interactive entity from the map.
+ *
+ * - Argument 1 (string): name of the interactive entity
+ *
+ * @param l the Lua context that is calling this function
+ */
+int MapScript::l_interactive_entity_remove(lua_State *l) {
 
   MapScript *script;
   called_by_script(l, 1, &script);
@@ -909,278 +886,6 @@ int MapScript::l_block_reset_all(lua_State *l) {
   }
 
   return 0;
-}
-
-/**
- * @brief Returns the current animation of an interactive entity's sprite.
- *
- * - Argument 1 (string): name of the interactive entity
- * - Return value (string): name of the current animation
- *
- * @param l the Lua context that is calling this function
- */
-int MapScript::l_interactive_entity_get_animation(lua_State *l) {
-
-  MapScript *script;
-  called_by_script(l, 1, &script);
-
-  const std::string &name = lua_tostring(l, 1);
-
-  MapEntities &entities = script->map.get_entities();
-  InteractiveEntity *entity = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, name);
-  std::string animation = entity->get_sprite().get_current_animation();
-
-  lua_pushstring(l, animation.c_str());
-
-  return 1;
-}
-
-/**
- * @brief Returns the animation speed of an interactive entity's sprite.
- *
- * - Argument 1 (string): name of the interactive entity
- * - Return value (integer): delay between two frames in milliseconds
- *
- * @param l the Lua context that is calling this function
- */
-int MapScript::l_interactive_entity_get_animation_delay(lua_State *l) {
-
-  MapScript *script;
-  called_by_script(l, 1, &script);
-
-  const std::string &name = lua_tostring(l, 1);
-
-  MapEntities &entities = script->map.get_entities();
-  InteractiveEntity *entity = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, name);
-  uint32_t delay = entity->get_sprite().get_frame_delay();
-
-  lua_pushinteger(l, delay);
-
-  return 1;
-}
-
-/**
- * @brief Returns the current animation frame of an interactive entity's sprite.
- *
- * - Argument 1 (string): name of the interactive entity
- * - Return value (integer): frame number
- *
- * @param l the Lua context that is calling this function
- */
-int MapScript::l_interactive_entity_get_animation_frame(lua_State *l) {
-
-  MapScript *script;
-  called_by_script(l, 1, &script);
-
-  const std::string &name = lua_tostring(l, 1);
-
-  MapEntities &entities = script->map.get_entities();
-  InteractiveEntity *entity = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, name);
-  int frame = entity->get_sprite().get_current_frame();
-
-  lua_pushinteger(l, frame);
-
-  return 1;
-}
-
-/**
- * @brief Returns the current direction of an interactive entity's sprite.
- *
- * - Argument 1 (string): name of the interactive entity
- * - Return value (integer): the direction between 0 and 3
- *
- * @param l the Lua context that is calling this function
- */
-int MapScript::l_interactive_entity_get_direction(lua_State *l) {
-
-  MapScript *script;
-  called_by_script(l, 1, &script);
-
-  const std::string &name = lua_tostring(l, 1);
-
-  MapEntities &entities = script->map.get_entities();
-  InteractiveEntity *entity = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, name);
-  int frame = entity->get_sprite().get_current_direction();
-
-  lua_pushinteger(l, frame);
-
-  return 1;
-}
-
-/**
- * @brief Returns whether the animation of an interactive entity's sprite is paused.
- *
- * - Argument 1 (string): name of the interactive entity
- * - Return value (boolean): true if the animation is paused
- *
- * @param l the Lua context that is calling this function
- */
-int MapScript::l_interactive_entity_is_animation_paused(lua_State *l) {
-
-  MapScript *script;
-  called_by_script(l, 1, &script);
-
-  const std::string &name = lua_tostring(l, 1);
-
-  MapEntities &entities = script->map.get_entities();
-  InteractiveEntity *entity = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, name);
-  bool paused = entity->get_sprite().is_paused();
-
-  lua_pushboolean(l, paused ? 1 : 0);
-
-  return 1;
-}
-
-/**
- * @brief Sets the animation of an interactive entity's sprite.
- *
- * - Argument 1 (string): name of the interactive entity
- * - Argument 2 (string): name of the animation to set
- *
- * @param l the Lua context that is calling this function
- */
-int MapScript::l_interactive_entity_set_animation(lua_State *l) {
-
-  MapScript *script;
-  called_by_script(l, 2, &script);
-
-  const std::string &name = lua_tostring(l, 1);
-  const std::string &animation = lua_tostring(l, 2);
-
-  MapEntities &entities = script->map.get_entities();
-  InteractiveEntity *entity = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, name);
-  entity->get_sprite().set_current_animation(animation);
-  entity->get_sprite().restart_animation();
-
-  return 0;
-}
-
-/**
- * @brief Sets the animation speed of an interactive entity's sprite.
- *
- * - Argument 1 (string): name of the interactive entity
- * - Argument 2 (integer): delay between two frames in milliseconds
- *
- * @param l the Lua context that is calling this function
- */
-int MapScript::l_interactive_entity_set_animation_delay(lua_State *l) {
-
-  MapScript *script;
-  called_by_script(l, 2, &script);
-
-  const std::string &name = lua_tostring(l, 1);
-  uint32_t delay = lua_tointeger(l, 2);
-
-  MapEntities &entities = script->map.get_entities();
-  InteractiveEntity *entity = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, name);
-  entity->get_sprite().set_frame_delay(delay);
-
-  return 0;
-}
-
-/**
- * @brief Sets the current animation frame of an interactive entity's sprite.
- *
- * - Argument 1 (string): name of the interactive entity
- * - Argument 2 (integer): frame number
- *
- * @param l the Lua context that is calling this function
- */
-int MapScript::l_interactive_entity_set_animation_frame(lua_State *l) {
-
-  MapScript *script;
-  called_by_script(l, 2, &script);
-
-  const std::string &name = lua_tostring(l, 1);
-  int frame = lua_tointeger(l, 2);
-
-  MapEntities &entities = script->map.get_entities();
-  InteractiveEntity *entity = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, name);
-  entity->get_sprite().set_current_frame(frame);
-
-  return 0;
-}
-
-/**
- * @brief Sets the direction of an interactive entity's sprite.
- *
- * - Argument 1 (string): name of the interactive entity
- * - Argument 2 (integer): the sprite's direction between 0 and 3
- *
- * @param l the Lua context that is calling this function
- */
-int MapScript::l_interactive_entity_set_direction(lua_State *l) {
-
-  return l_npc_set_direction(l);
-}
-
-/**
- * @brief Pauses or resumes the animation of an interactive entity's sprite.
- *
- * - Argument 1 (string): name of the interactive entity
- * - Argument 2 (boolean): true to pause, false to resume
- *
- * @param l the Lua context that is calling this function
- */
-int MapScript::l_interactive_entity_set_animation_paused(lua_State *l) {
-
-  MapScript *script;
-  called_by_script(l, 2, &script);
-
-  const std::string &name = lua_tostring(l, 1);
-  bool paused = lua_toboolean(l, 2) != 0;
-
-  MapEntities &entities = script->map.get_entities();
-  InteractiveEntity *entity = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, name);
-  entity->get_sprite().set_paused(paused);
-
-  return 0;
-}
-
-/**
- * @brief Starts a fade-in or a fade-out effect on an interactive entity
- *
- * - Argument 1 (string): name of the interactive entity
- * - Argument 2 (integer): direction of the effect: 0 for fade-in, 1 for fade-out
- *
- * @param l the Lua context that is calling this function
- */
-int MapScript::l_interactive_entity_fade(lua_State *l) {
-
-  MapScript *script;
-  called_by_script(l, 2, &script);
-
-  const std::string &name = lua_tostring(l, 1);
-  int direction = lua_tointeger(l, 2);
-
-  MapEntities &entities = script->map.get_entities();
-  InteractiveEntity *entity = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, name);
-  entity->start_fading(direction);
-
-  return 0;
-}
-
-/**
- * @brief Sets whether the animation of an interactive entity should continue even when the game is suspended.
- *
- * - Argument 1 (string): name of the interactive entity
- * - Argument 2 (boolean): true to ignore when the game is suspended
- *
- * @param l the Lua context that is calling this function
- */
-int MapScript::l_interactive_entity_set_animation_ignore_suspend(lua_State *l) {
-  return l_npc_set_animation_ignore_suspend(l);
-}
-
-/**
- * @brief Removes an interactive entity from the map.
- *
- * - Argument 1 (string): name of the interactive entity
- *
- * @param l the Lua context that is calling this function
- */
-int MapScript::l_interactive_entity_remove(lua_State *l) {
-  return l_npc_remove(l);
 }
 
 /**

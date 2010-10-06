@@ -11,6 +11,8 @@ function event_map_started(destination_point_name)
 
   if has_finished_cavern() and not has_boomerang_of_tom() then
     sol.map.npc_remove("tom")
+  else
+    sol.map.npc_create_sprite_id("tom", "tom_sprite")
   end
 
   if sol.game.savegame_get_boolean(38) then
@@ -121,7 +123,7 @@ function event_npc_movement_finished(npc)
     end
   else
     sol.map.npc_set_position("tom", tom_initial_x, tom_initial_y)
-    sol.map.npc_set_direction("tom", 3)
+    sol.main.sprite_set_direction("tom_sprite", 3)
     sol.map.hero_unfreeze()
   end
 end

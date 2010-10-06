@@ -3,14 +3,15 @@
 ---------------------------------
 
 function event_map_started()
+  sol.map.npc_create_sprite_id("solarus_child", "solarus_child_sprite")
   sol.map.hero_freeze()
 end
 
 function event_map_opening_transition_finished(destination_point_name)
   sol.main.play_music("dungeon_finished.spc")
-  sol.map.npc_set_position("solarus_child", 160, 165)
-  sol.map.npc_set_animation("solarus_child", "stopped")
-  sol.map.npc_set_animation_ignore_suspend("solarus_child", true)
+  sol.main.sprite_set_position("solarus_child_sprite", 160, 165)
+  sol.main.sprite_set_animation("solarus_child_sprite", "stopped")
+  sol.main.sprite_set_animation_ignore_suspend("solarus_child_sprite", true)
   sol.main.timer_start(5000, "dialog", false)
 end
 

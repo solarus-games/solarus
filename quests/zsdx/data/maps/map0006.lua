@@ -3,6 +3,7 @@
 -----------------------------
 
 function event_map_started(destination_point_name)
+
   if is_ladder_activated() then
     sol.map.tile_set_group_enabled("ladder_step", true)
     sol.map.tile_set_group_enabled("no_ladder", false)
@@ -11,6 +12,7 @@ function event_map_started(destination_point_name)
   else
     sol.map.tile_set_group_enabled("ladder_step", false)
     sol.map.tile_set_group_enabled("no_ladder", true)
+    sol.map.npc_create_sprite_id("tom", "tom_sprite") -- create a sprite id "tom_sprite" to refer to the sprite of NPC "tom"
   end
 end
 
@@ -36,13 +38,13 @@ function event_dialog_finished(first_message_id, answer)
     sol.map.npc_set_position("tom", 528, 245)
     sol.map.npc_walk("tom", "44444444444444444444222", false, true)
   elseif first_message_id == "outside_world.tom_dungeon_1_entrance.need_help" then
-    sol.map.npc_set_direction("tom", 1)
+    sol.main.sprite_set_direction("tom_sprite", 1)
     sol.main.timer_start(1500, "tom_timer_1", false)
   elseif first_message_id == "outside_world.tom_dungeon_1_entrance.let_me_see" then
     sol.main.play_sound("jump")
     sol.map.npc_jump("tom", 4, 16, true)
   elseif first_message_id == "outside_world.tom_dungeon_1_entrance.open" then
-    sol.map.npc_set_animation("tom", "walking")
+    sol.main.sprite_set_animation("tom_sprite", "walking")
     sol.main.timer_start(300, "tom_timer_3", false)
   end
 
@@ -52,17 +54,17 @@ function event_npc_movement_finished(npc_name)
 
   x,y = sol.map.npc_get_position("tom")
   if x ~= 352 then
-    sol.map.npc_set_direction("tom", 2)
+    sol.main.sprite_set_direction("tom_sprite", 2)
     sol.map.dialog_start("outside_world.tom_dungeon_1_entrance.need_help")
   else
-    sol.map.npc_set_direction("tom", 1)
+    sol.main.sprite_set_direction("tom_sprite", 1)
     sol.main.timer_start(1000, "tom_timer_2", false)
   end
 end
 
 function tom_timer_1()
   sol.map.dialog_start("outside_world.tom_dungeon_1_entrance.let_me_see")
-  sol.map.npc_set_direction("tom", 2)
+  sol.main.sprite_set_direction("tom_sprite", 2)
 end
 
 function tom_timer_2()
@@ -70,7 +72,7 @@ function tom_timer_2()
 end
 
 function tom_timer_3()
-  sol.map.npc_set_animation("tom", "stopped")
+  sol.main.sprite_set_animation("tom_sprite", "stopped")
   ladder_step1()
 end
 

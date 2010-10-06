@@ -20,17 +20,27 @@
 #include "lowlevel/System.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
+#include "Map.h"
 #include <cmath>
 
 /**
  * @brief Constructor.
+ * @param ignore_obstacles when there is a map and the movement is attached to an entity of this map,
+ * indicates whether the movement should ignore obstacles
  */
-Movement::Movement():
-  x_speed(0), y_speed(0),
+Movement::Movement(bool ignore_obstacles):
+
+  x_speed(0),
+  y_speed(0),
   next_move_date_x(System::now()),
   next_move_date_y(System::now()),
-  x_move(0), y_move(0),
-  suspended(false), when_suspended(0) {
+  x_move(0),
+  y_move(0),
+  suspended(false),
+  last_collision_box_on_obstacle(-1, -1),
+  default_ignore_obstacles(ignore_obstacles),
+  current_ignore_obstacles(ignore_obstacles),
+  when_suspended(0) {
 
   set_entity(NULL);
 }
@@ -49,7 +59,8 @@ Movement::~Movement() {
  * However, some subclasses of Movement may require a non NULL entity because they
  * implement movements that depend on the map content (e.g. to handle the collisions).
  *
- * @param entity the entity to control
+ * @param entity the entity to control, or NULL if the movement should not be
+ * attached to a map entity
  */
 void Movement::set_entity(MapEntity *entity) {
 
@@ -71,11 +82,7 @@ void Movement::set_entity(MapEntity *entity) {
  */
 int Movement::get_x() {
 
-  if (entity == NULL) {
-    return x;
-  }
-
-  return entity->get_x();
+  return (entity != NULL) ? entity->get_x() : x;
 }
 
 /**
@@ -84,11 +91,7 @@ int Movement::get_x() {
  */
 int Movement::get_y() {
 
-  if (entity == NULL) {
-    return y;
-  }
-
-  return entity->get_y();
+  return (entity != NULL) ? entity->get_y() : y;
 }
 
 /**
@@ -128,8 +131,8 @@ void Movement::set_position(int x, int y) {
 }
 
 /**
- * @brief Sets the position of the entity.
- * @param xy the new coordinates
+ * @brief Sets the position of the entity or the point controlled by this movement.
+ * @param xy the new coordinates (only x and y are used, the size of the rectangle is ignored)
  */
 void Movement::set_position(const Rectangle &xy) {
   set_position(xy.get_x(), xy.get_y());
@@ -148,7 +151,7 @@ void Movement::notify_position_changed() {
 }
 
 /**
- * @brief Moves the entity on x.
+ * @brief Moves the object on x.
  * @param dx number of pixels of the move
  */
 void Movement::translate_x(int dx) {
@@ -156,7 +159,7 @@ void Movement::translate_x(int dx) {
 }
 
 /**
- * @brief Moves the entity on y.
+ * @brief Moves the object on y.
  * @param dy number of pixels of the move
  */
 void Movement::translate_y(int dy) {
@@ -164,7 +167,7 @@ void Movement::translate_y(int dy) {
 }
 
 /**
- * @brief Moves the entity.
+ * @brief Moves the object.
  * @param dx number of pixels of the move on x
  * @param dy number of pixels of the move on y
  */
@@ -173,7 +176,7 @@ void Movement::translate(int dx, int dy) {
 }
 
 /**
- * @brief Returns the x speed of the entity.
+ * @brief Returns the x speed of the object.
  * @return the x speed of the entity, between -100 and 100
  */
 double Movement::get_x_speed() {
@@ -181,7 +184,7 @@ double Movement::get_x_speed() {
 }
 
 /**
- * @brief Returns the y speed of the entity.
+ * @brief Returns the y speed of the object.
  * @return the y speed of the entity, between -100 and 100
  */
 double Movement::get_y_speed() {
@@ -189,7 +192,7 @@ double Movement::get_y_speed() {
 }
 
 /**
- * @brief Returns the total speed of the entity.
+ * @brief Returns the total speed of the object.
  *
  * The speed is calculated as sqrt(x_speed^2 + y_speed^2).
  */
@@ -199,7 +202,7 @@ double Movement::get_speed() {
 
 /**
  * @brief Sets the x speed.
- * @param x_speed the x speed of the entity, between -100 and 100
+ * @param x_speed the x speed of the object, between -100 and 100
  */
 void Movement::set_x_speed(double x_speed) {
 
@@ -228,7 +231,7 @@ void Movement::set_x_speed(double x_speed) {
 }
 
 /**
- * @brief Sets the y speed.
+ * @brief Sets the y object.
  * @param y_speed the y speed of the entity, between -100 and 100
  */
 void Movement::set_y_speed(double y_speed) {
@@ -278,7 +281,7 @@ void Movement::set_speed(double speed) {
 
 /**
  * @brief Returns whether the speed is zero.
- * @return true if the entity is stopped, false otherwise
+ * @return true if the object is stopped, false otherwise
  */
 bool Movement::is_stopped() {
   return !is_started();
@@ -288,7 +291,7 @@ bool Movement::is_stopped() {
  * @brief Returns whether the speed is not zero.
  *
  * Subclasses of Movement that don't use the speed feature of this class
- * should redefine this function to indicated whether the object is moving.
+ * should redefine this function to indicate whether the object is moving.
  *
  * @return true if the entity is moving, false otherwise
  */
@@ -300,6 +303,7 @@ bool Movement::is_started() {
  * @brief Sets the speed to zero.
  */
 void Movement::stop() {
+
   set_x_speed(0);
   set_y_speed(0);
   set_x_move(0);
@@ -382,8 +386,7 @@ void Movement::set_direction(double angle) {
 }
 
 /**
- * @brief Returns true if the entity is about to try to move
- * on the next update().
+ * @brief Returns true if the object is about to try to move.
  *
  * This function returns true if x_move is not equal to zero
  * and next_move_date_x is past, or the same thing for y.
@@ -434,34 +437,48 @@ void Movement::set_suspended(bool suspended) {
 }
 
 /**
- * @brief Updates the x position of the entity if it has to be changed.
+ * @brief Updates the x position of the entity if it wants to move.
+ *
+ * If the movement is attached to a map entity and obstacles are not ignored,
+ * the move is done only only if there is no collision with the map.
  */
 void Movement::update_x() {
 
-  if (x_move != 0) { // if we want to move on x
+  uint32_t now = System::now();
+  int x_move = get_x_move();
+  if (x_move != 0 && now >= get_next_move_date_x()) { // if it's time to try a move
 
-    // update the x position while next_move_date_x is past
-    uint32_t now = System::now();
-    while (now >= next_move_date_x) {
+    // make the move only if there is no collision
+    if (!test_collision_with_map(x_move, get_y_move())) {
       translate_x(x_move);
-      set_next_move_date_x(next_move_date_x + x_delay);
     }
+    else {
+      stop(); // also stop on y
+    }
+    set_next_move_date_x(get_next_move_date_x() + get_x_delay());
   }
 }
 
 /**
- * @brief Updates the y position of the entity if it has changed.
+ * @brief Updates the y position of the entity if it wants to move
+ *
+ * If the movement is attached to a map entity and obstacles are not ignored,
+ * the move is done only only if there is no collision with the map.
  */
 void Movement::update_y() {
 
-  if (y_move != 0) { // if we want to move on y
+  uint32_t now = System::now();
+  int y_move = get_y_move();
+  if (y_move != 0 && now >= get_next_move_date_y()) { // if it's time to try a move
 
-    // update the x position while next_move_date_y is past
-    uint32_t now = System::now();
-    while (now >= next_move_date_y) {
+    // make the move only if there is no collision
+    if (!test_collision_with_map(get_x_move(), y_move)) {
       translate_y(y_move);
-      set_next_move_date_y(next_move_date_y + y_delay);
     }
+    else {
+      stop(); // also stop on x
+    }
+    set_next_move_date_y(get_next_move_date_y() + get_y_delay());
   }
 }
 
@@ -526,41 +543,83 @@ void Movement::update() {
 }
 
 /**
+ * @brief Returns whether the entity would collide with the map
+ * if it was moved a few pixels from its position.
+ *
+ * If the movement is not attached to an entity of a map,
+ * or if obstacles are ignored, false is always returned.
+ *
+ * @param dx x distance between the current position and the position to check
+ * @param dy y distance between the current position and the position to check
+ * @return true if the entity would overlap the map obstacles in this position
+ */
+bool Movement::test_collision_with_map(int dx, int dy) {
+
+  if (entity == NULL || current_ignore_obstacles) {
+    return false;
+  }
+
+  Map &map = entity->get_map();
+
+  // place the collision box where we want to check the collisions
+  Rectangle collision_box = entity->get_bounding_box();
+  collision_box.add_xy(dx, dy);
+
+  bool collision = map.test_collision_with_obstacles(entity->get_layer(), collision_box, *entity);
+
+  if (collision) {
+    last_collision_box_on_obstacle = collision_box;
+    entity->notify_movement_changed();
+  }
+
+  return collision;
+}
+
+/**
  * @brief Returns the collision box of the last collision check that detected an obstacle.
- *
- * This function is useful only for subclasses of Movement that handle collisions.
- *
  * @return the collision box of the last collision detected, or (-1, -1) if no obstacle was detected
  */
-const Rectangle & Movement::get_last_collision_box_on_obstacle() {
-  static const Rectangle collision_box(-1, -1);
-  return collision_box;
+const Rectangle& Movement::get_last_collision_box_on_obstacle() {
+
+  return last_collision_box_on_obstacle;
 }
 
 /**
  * @brief Returns whether this movement currently ignores obstacles.
- *
- * This function is useful only for subclasses of Movement that handle collisions.
- *
  * @return true if the obstacles are ignored
  */
 bool Movement::are_obstacles_ignored() {
-  return true;
+
+  return current_ignore_obstacles;
 }
 
 /**
- * @brief Allows temporarily this movement to traverse obstacles.
- *
- * This function is useful only for subclasses of Movement that handle collisions.
+ * @brief Sets whether this movement has the property to traverse obstacles.
+ * @param ignore_obstacles true to ignore obstacles
  */
-void Movement::set_ignore_obstacles() {
+void Movement::set_default_ignore_obstacles(bool ignore_obstacles) {
+
+  this->default_ignore_obstacles = ignore_obstacles;
+  this->current_ignore_obstacles = ignore_obstacles;
 }
 
 /**
- * @brief Restores the initial value of ignore_obstacles.
+ * @brief Overrides temporarily the ability of this movement to traverse obstacles.
  *
- * This function is useful only for subclasses of Movement that handle collisions.
+ * Use restore_default_ignore_obstacles() to restore the normal property of the movement.
+ *
+ * @param ignore_obstacles true to ignore obstacles
  */
-void Movement::restore_ignore_obstacles() {
+void Movement::set_ignore_obstacles(bool ignore_obstacles) {
+
+  this->current_ignore_obstacles = ignore_obstacles;
+}
+
+/**
+ * @brief Restores the normal value of ignore_obstacles.
+ */
+void Movement::restore_default_ignore_obstacles() {
+
+  this->current_ignore_obstacles = default_ignore_obstacles;
 }
 

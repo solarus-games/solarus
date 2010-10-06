@@ -18,7 +18,7 @@
 #define SOLARUS_FOLLOW_MOVEMENT_H
 
 #include "Common.h"
-#include "movements/CollisionMovement.h"
+#include "movements/Movement.h"
 
 /**
  * @brief Movement of an entity attached to another entity.
@@ -26,7 +26,7 @@
  * At each moment, the entity is placed at a position
  * relative to the entity followed.
  */
-class FollowMovement: public CollisionMovement {
+class FollowMovement: public Movement {
 
   private:
 

@@ -21,7 +21,7 @@
 /**
  * @brief Constructor.
  * @param smooth true to actually make the movement smooth
- * (false makes the movement identical to CollisionMovement)
+ * (false makes the movement identical to Movement)
  */
 SmoothCollisionMovement::SmoothCollisionMovement(bool smooth):
   smooth(smooth) {
@@ -38,13 +38,13 @@ SmoothCollisionMovement::~SmoothCollisionMovement() {
 /**
  * @brief Updates the x position of the entity if it wants to move
  *
- * This is a redefinition of CollisionMovement::update_x() to
+ * This is a redefinition of Movement::update_x() to
  * handle the smooth collisions.
  */
 void SmoothCollisionMovement::update_x() {
 
   if (!smooth) {
-    CollisionMovement::update_x();
+    Movement::update_x();
     return;
   }
 
@@ -114,13 +114,13 @@ void SmoothCollisionMovement::update_x() {
 /**
  * @brief Updates the y position of the entity if it wants to move
  *
- * This is a redefinition of CollisionMovement::update_y() to to
+ * This is a redefinition of Movement::update_y() to to
  * handle the smooth collisions.
  */
 void SmoothCollisionMovement::update_y() {
 
   if (!smooth) {
-    CollisionMovement::update_y();
+    Movement::update_y();
     return;
   }
 

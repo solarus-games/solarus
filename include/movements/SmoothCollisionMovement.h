@@ -18,18 +18,18 @@
 #define SOLARUS_SMOOTH_COLLISION_MOVEMENT_H
 
 #include "Common.h"
-#include "movements/CollisionMovement.h"
+#include "movements/Movement.h"
 
 /**
  * @brief Movement capable of fixing the trajectory to continue walking when
  * an obstacle is reached.
  */
-class SmoothCollisionMovement: public CollisionMovement {
+class SmoothCollisionMovement: public Movement {
 
   private:
 
     bool smooth;		/**< indicates that the movement fixes its trajectory
-				 * (if not, the movement is identical to a normal CollisionMovement) */
+				 * (if not, the movement is identical to a normal Movement) */
 
   public:
 

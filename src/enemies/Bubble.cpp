@@ -15,7 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "enemies/Bubble.h"
-#include "movements/CollisionMovement.h"
+#include "movements/Movement.h"
 #include "Sprite.h"
 #include "lowlevel/Random.h"
 #include "lowlevel/Debug.h"
@@ -55,7 +55,7 @@ void Bubble::initialize() {
   set_no_attack_consequences();
 
   // movement
-  set_movement(new CollisionMovement());
+  set_movement(new Movement());
 }
 
 /**
@@ -123,7 +123,7 @@ void Bubble::bounce() {
   int try2 = (movement_direction8 + 6) % 8;
   int try3 = (movement_direction8 + 4) % 8;
 
-  CollisionMovement *movement = (CollisionMovement*) get_movement();
+  Movement *movement = get_movement();
 
   if (!movement->test_collision_with_map(dxy[try1][0], dxy[try1][1])) {
     go(try1);

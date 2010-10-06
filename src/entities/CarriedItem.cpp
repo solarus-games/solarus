@@ -25,7 +25,6 @@
 #include "entities/MapEntities.h"
 #include "movements/PixelMovement.h"
 #include "movements/FollowMovement.h"
-#include "movements/CollisionMovement.h"
 #include "Sprite.h"
 #include "Game.h"
 #include "Map.h"
@@ -216,7 +215,7 @@ void CarriedItem::throw_item(int direction) {
 
   // set the movement of the item sprite
   set_y(hero.get_y());
-  CollisionMovement *movement = new CollisionMovement();
+  Movement *movement = new Movement();
   movement->set_speed(20);
   movement->set_direction(direction * 90);
   clear_movement();

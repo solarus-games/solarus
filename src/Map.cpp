@@ -20,7 +20,6 @@
 #include "DialogBox.h"
 #include "Sprite.h"
 #include "Camera.h"
-#include "lua/Scripts.h"
 #include "lua/MapScript.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Surface.h"
@@ -73,14 +72,11 @@ Tileset& Map::get_tileset() {
 }
 
 /**
- * @brief Returns the scripts currently running.
- *
- * This function is equivalent to get_game().get_scripts().
- *
- * @return the scripts
+ * @brief Returns the script of this map.
+ * @return the map script
  */
-Scripts& Map::get_scripts() {
-  return game->get_scripts();
+MapScript& Map::get_script() {
+  return *script;
 }
 
 /**
@@ -390,6 +386,7 @@ void Map::set_clipping_rectangle(const Rectangle &clipping_rectangle) {
 void Map::set_suspended(bool suspended) {
 
   this->suspended = suspended;
+
   entities->set_suspended(suspended);
   script->set_suspended(suspended);
 }
@@ -500,7 +497,7 @@ void Map::notify_opening_transition_finished() {
     welcome_message_id = "";
   }
   else {
-    get_scripts().event_map_opening_transition_finished(destination_point_name);
+    get_script().event_map_opening_transition_finished(destination_point_name);
   }
 }
 

@@ -19,7 +19,7 @@
 #include "entities/MapEntities.h"
 #include "Game.h"
 #include "Map.h"
-#include "lua/Scripts.h"
+#include "lua/MapScript.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
@@ -170,7 +170,7 @@ void Sensor::activate(Hero &hero) {
 
       case CUSTOM:
 	// we notify the scripts
-	get_scripts().event_hero_on_sensor(get_name());
+	get_map_script().event_hero_on_sensor(get_name());
 	get_hero().reset_movement();
 	break;
 

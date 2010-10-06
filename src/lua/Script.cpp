@@ -15,7 +15,6 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lua/Script.h"
-#include "lua/Scripts.h"
 #include "Equipment.h"
 #include "Savegame.h"
 #include "Timer.h"
@@ -28,10 +27,9 @@
 
 /**
  * @brief Creates a script.
- * @param scripts the list of all scripts
  */
-Script::Script(Scripts &scripts):
-  scripts(scripts), context(NULL) {
+Script::Script():
+  context(NULL) {
 
 }
 
@@ -50,9 +48,6 @@ Script::~Script() {
   for (it = timers.begin(); it != timers.end(); it++) {
     delete *it;
   }
-
-  // update the script list
-  scripts.remove_script(*this);
 }
 
 /**
@@ -105,9 +100,6 @@ void Script::load(const std::string &script_name) {
   luaL_loadbuffer(context, buffer, size, file_name.c_str());
   FileTools::data_file_close_buffer(buffer);
   lua_call(context, 0, 0);
-
-  // update the script list
-  scripts.add_script(*this);
 }
 
 /**
@@ -411,25 +403,6 @@ bool Script::notify_script(const std::string &function_name, bool arg1) {
 }
 
 /**
- * @brief This function is called when the game is being suspended or resumed.
- * @param suspended true if the game is suspended, false if it is resumed
- */
-void Script::set_suspended(bool suspended) {
-
-  if (context != NULL) {
-
-    // notify the timers
-    std::list<Timer*>::iterator it;
-    for (it = timers.begin(); it != timers.end(); it++) {
-      (*it)->set_suspended(suspended);
-    }
-
-    // notify the script
-    notify_script("event_set_suspended", suspended);
-  }
-}
-
-/**
  * @brief Updates the script.
  */
 void Script::update() {
@@ -451,7 +424,7 @@ void Script::update() {
   }
 
   // update the script
-  notify_script("event_update");
+  event_update();
 }
 
 /**
@@ -568,4 +541,18 @@ int Script::l_timer_stop(lua_State *l) {
 
   return 0;
 }
+
+// event functions, i.e. calling Lua from C++
+
+/**
+ * @brief Notifies the script that it can update itself.
+ *
+ * This function is called at each cycle of the main loop,
+ * so if you define it in your script, take care of the performances.
+ */
+void Script::event_update() {
+
+  notify_script("event_update");
+}
+
 

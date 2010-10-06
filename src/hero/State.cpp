@@ -86,6 +86,14 @@ MapEntities& Hero::State::get_entities() {
 }
 
 /**
+ * @brief Returns the script of the current map.
+ * @return the current script
+ */
+MapScript& Hero::State::get_map_script() {
+  return map->get_script();
+}
+
+/**
  * @brief Returns the current game.
  * @return the game
  */
@@ -123,14 +131,6 @@ GameControls& Hero::State::get_controls() {
  */
 DialogBox& Hero::State::get_dialog_box() {
   return get_game().get_dialog_box();
-}
-
-/**
- * @brief Returns the list of current scripts
- * @return the current scripts
- */
-Scripts& Hero::State::get_scripts() {
-  return get_game().get_scripts();
 }
 
 /**

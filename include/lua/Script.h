@@ -33,13 +33,9 @@ struct lua_State;
  */
 class Script {
 
-  friend class Scripts;
-
   protected:
 
     typedef int (FunctionAvailableToScript) (lua_State *l);		/**< type of the functions that can be called by a Lua script */
-
-    Scripts &scripts;							/**< the list of all scripts */
 
     // script data
     lua_State* context;							/**< the execution context of the Lua script */
@@ -77,12 +73,14 @@ class Script {
   public:
 
     // loading and closing a script
-    Script(Scripts &scripts);
+    Script();
     virtual ~Script();
 
     // update functions
     virtual void update();
-    virtual void set_suspended(bool suspended);
+
+    // calling Lua from C++
+    void event_update();
 };
 
 #endif

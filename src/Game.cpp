@@ -502,6 +502,15 @@ void Game::set_current_map(MapId map_id, const std::string &destination_point_na
 }
 
 /**
+ * @brief Returns the script of the current map.
+ * @return the map script
+ */
+MapScript& Game::get_map_script() {
+
+  return current_map->get_script();
+}
+
+/**
  * @brief Returns the size of the oustide world in pixels.
  * @return the size of the oustide world
  */

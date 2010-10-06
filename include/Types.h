@@ -109,7 +109,6 @@ class GameoverSequence;
 class Camera;
 
 // scripts
-class Scripts;
 class Script;
 class GameScript;
 class MapScript;

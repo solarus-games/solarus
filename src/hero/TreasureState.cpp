@@ -17,7 +17,7 @@
 #include "hero/TreasureState.h"
 #include "hero/FreeState.h"
 #include "hero/HeroSprites.h"
-#include "lua/Scripts.h"
+#include "lua/MapScript.h"
 #include "lowlevel/Sound.h"
 #include "ItemProperties.h"
 #include "Game.h"
@@ -98,7 +98,7 @@ void Hero::TreasureState::update() {
     int variant = treasure.get_variant();
     int savegame_variable = treasure.get_savegame_variable();
 
-    get_scripts().event_treasure_obtained(item_name, variant, savegame_variable);
+    get_map_script().event_treasure_obtained(item_name, variant, savegame_variable);
 
     hero.set_state(new FreeState(hero));
   }

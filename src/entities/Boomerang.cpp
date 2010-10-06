@@ -20,7 +20,6 @@
 #include "entities/Stairs.h"
 #include "entities/CrystalSwitch.h"
 #include "entities/MapEntities.h"
-#include "movements/CollisionMovement.h"
 #include "movements/TargetMovement.h"
 #include "Game.h"
 #include "Map.h"
@@ -65,7 +64,7 @@ Boomerang::Boomerang(Hero &hero, int boomerang_direction):
 
   initial_coords.set_xy(get_xy());
 
-  CollisionMovement *movement = new CollisionMovement();
+  Movement *movement = new Movement();
   movement->set_speed(16);
   movement->set_direction(boomerang_direction);
   set_movement(movement);

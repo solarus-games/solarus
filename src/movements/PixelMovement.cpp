@@ -28,7 +28,7 @@
  */
 PixelMovement::PixelMovement(int nb_vectors, uint32_t delay,
 			     bool loop, bool ignore_obstacles):
-  CollisionMovement(ignore_obstacles),
+  Movement(ignore_obstacles),
   nb_vectors(nb_vectors), delay(delay), loop(loop),
   vector_index(0), finished(false) {
 
@@ -39,7 +39,7 @@ PixelMovement::PixelMovement(int nb_vectors, uint32_t delay,
  * @param translation_vectors the succession of translations
  * composing this movement (each element of the array represents
  * a translation vector in pixels; only the fields x and y of the
- * Rectangle are used.
+ * Rectangle are used).
  * @param nb_vectors number of translation vectors in the array
  * @param delay delay in milliseconds between two translations
  * @param loop true to make the movement return to the beginning
@@ -48,7 +48,7 @@ PixelMovement::PixelMovement(int nb_vectors, uint32_t delay,
  */
 PixelMovement::PixelMovement(const Rectangle *translation_vectors,
 			     int nb_vectors, uint32_t delay, bool loop, bool ignore_obstacles):
-  CollisionMovement(ignore_obstacles),
+  Movement(ignore_obstacles),
   translation_vectors(translation_vectors), nb_vectors(nb_vectors),
   delay(delay), loop(loop), vector_index(0), finished(false) {
 

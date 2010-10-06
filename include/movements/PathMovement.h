@@ -18,7 +18,7 @@
 #define SOLARUS_PATH_MOVEMENT_H
 
 #include "Common.h"
-#include "movements/CollisionMovement.h"
+#include "movements/Movement.h"
 
 /**
  * @brief Movement of an entity that follows a predetermined path.
@@ -27,7 +27,7 @@
  * is an 8-pixel movement in one of the 8 main directions.
  * The movement may or may not be sensible to obstacles.
  */
-class PathMovement: public CollisionMovement {
+class PathMovement: public Movement {
 
   protected:
 

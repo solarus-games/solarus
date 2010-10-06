@@ -18,6 +18,7 @@
 #define SOLARUS_MOVEMENT_H
 
 #include "Common.h"
+#include "lowlevel/Rectangle.h"
 
 /**
  * @brief Base class for representing a movement.
@@ -74,9 +75,16 @@ class Movement {
 
     bool suspended;            /**< Indicates whether the movement is suspended. */
 
+    // collisions
+    Rectangle last_collision_box_on_obstacle;	/**< copy of the collision box of the last call
+						 * to test_collision_with_map() returning true */ 
+
+    bool default_ignore_obstacles;		/**< indicates that this movement normally ignores obstacles */
+    bool current_ignore_obstacles;		/**< indicates that this movement currently ignore obstacles */
+
   protected:
 
-    uint32_t when_suspended;   /**< Indicates when the movement is currently suspended. */
+    uint32_t when_suspended;   /**< Indicates when the movement was suspended. */
 
     inline int get_x_move()        { return x_move; }
     inline int get_y_move()        { return y_move; }
@@ -100,9 +108,12 @@ class Movement {
     virtual void update_x();
     virtual void update_y();
 
+    // obstacles
+    void set_default_ignore_obstacles(bool ignore_obstacles);
+
   public:
 
-    Movement();
+    Movement(bool ignore_obstacles = false);
     virtual ~Movement();
 
     // entity
@@ -141,10 +152,11 @@ class Movement {
     void set_direction(double angle);
 
     // obstacles
-    virtual const Rectangle & get_last_collision_box_on_obstacle();
-    virtual bool are_obstacles_ignored();
-    virtual void set_ignore_obstacles();
-    virtual void restore_ignore_obstacles();
+    bool test_collision_with_map(int dx, int dy);
+    const Rectangle& get_last_collision_box_on_obstacle();
+    bool are_obstacles_ignored();
+    void set_ignore_obstacles(bool ignore_obstacles);
+    void restore_default_ignore_obstacles();
 };
 
 #endif

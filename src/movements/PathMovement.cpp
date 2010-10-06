@@ -33,7 +33,7 @@
  */
 PathMovement::PathMovement(const std::string &path, int speed,
     bool loop, bool ignore_obstacles, bool must_be_aligned):
-  CollisionMovement(ignore_obstacles),
+  Movement(ignore_obstacles),
   initial_path(path), remaining_path(path), normal_speed(speed), current_direction(0),
   distance_covered(0), total_distance_covered(0),
   loop(loop), finished(false), must_be_aligned(must_be_aligned), snapping(false) {
@@ -52,14 +52,14 @@ PathMovement::~PathMovement() {
  * @param entity the entity to control
  */
 void PathMovement::set_entity(MapEntity *entity) {
-  CollisionMovement::set_entity(entity);
+  Movement::set_entity(entity);
   start_next_move();
 }
 
 /**
  * @brief Sets the position of the entity.
  *
- * This is a redefinition of CollisionMovement::set_position() because we need
+ * This is a redefinition of Movement::set_position() because we need
  * to update the number of pixels covered.
  *
  * @param x the new x position
@@ -80,7 +80,7 @@ void PathMovement::set_position(int x, int y) {
     distance_covered++;
     total_distance_covered++;
   }
-  CollisionMovement::set_position(x, y);
+  Movement::set_position(x, y);
 }
 
 /**
@@ -89,7 +89,7 @@ void PathMovement::set_position(int x, int y) {
  */
 void PathMovement::set_speed(int speed) {
   this->normal_speed = speed; // memorize the speed to allow restarting later
-  CollisionMovement::set_speed(speed);
+  Movement::set_speed(speed);
 }
 
 /**
@@ -102,7 +102,7 @@ void PathMovement::update() {
     start_next_move();
   }
 
-  CollisionMovement::update();
+  Movement::update();
 }
 
 /**
@@ -190,7 +190,7 @@ void PathMovement::start_next_move() {
 	if (!test_collision_with_map(x, y)) {
 	  // no problem, we can align the entity right now
 //	  std::cout << "aligning directly\n";
-	  CollisionMovement::set_position(entity->get_x() + x, entity->get_y() + y);
+	  Movement::set_position(entity->get_x() + x, entity->get_y() + y);
 	  stop();
 	  snapping = false;
 	}

@@ -18,12 +18,12 @@
 #define SOLARUS_PIXEL_MOVEMENT_H
 
 #include "Common.h"
-#include "movements/CollisionMovement.h"
+#include "movements/Movement.h"
 
 /**
  * @brief Movement of an entity that follows a predetermined sequence of pixel-precise moves.
  */
-class PixelMovement: public CollisionMovement {
+class PixelMovement: public Movement {
 
   private:
 

@@ -15,13 +15,13 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lua/MapScript.h"
-#include "lua/Scripts.h"
 #include "Map.h"
 #include "Game.h"
 #include "Sprite.h"
 #include "InventoryItem.h"
 #include "DialogBox.h"
 #include "Treasure.h"
+#include "Timer.h"
 #include "entities/EntityType.h"
 #include "entities/MapEntities.h"
 #include "entities/InteractiveEntity.h"
@@ -46,8 +46,8 @@
  * @param scripts the list of scripts
  * @param map the map
  */
-MapScript::MapScript(Scripts &scripts, Map &map):
-  GameScript(scripts, map.get_game()), map(map), hero(map.get_game().get_hero()) {
+MapScript::MapScript(Map &map):
+  GameScript(map.get_game()), map(map), hero(map.get_game().get_hero()) {
 
 }
 
@@ -154,8 +154,27 @@ void MapScript::start(const std::string &destination_point_name) {
   // load the script
   load(oss.str());
 
-  // notify the map
-  scripts.event_map_started(destination_point_name);
+  // notify the script
+  event_map_started(destination_point_name);
+}
+
+/**
+ * @brief This function is called when the game is being suspended or resumed.
+ * @param suspended true if the game is suspended, false if it is resumed
+ */
+void MapScript::set_suspended(bool suspended) {
+
+  if (context != NULL) {
+
+    // notify the timers
+    std::list<Timer*>::iterator it;
+    for (it = timers.begin(); it != timers.end(); it++) {
+      (*it)->set_suspended(suspended);
+    }
+
+    // notify the script
+    event_set_suspended(suspended);
+  }
 }
 
 /**
@@ -1527,5 +1546,243 @@ int MapScript::l_door_set_open(lua_State *l) {
   }
 
   return 0;
+}
+
+// event functions, i.e. calling Lua from C++
+
+/**
+ * @brief Notifies the script that the game is being suspended or resumed.
+ * @param suspended true if the game becomes suspended, false if it is resumed.
+ */
+void MapScript::event_set_suspended(bool suspended) {
+
+  notify_script("event_suspended", suspended);
+}
+
+/**
+ * @brief Notifies the script that a dialog has just started to be displayed
+ * in the dialog box.
+ * @param message_id id of the first message in this dialog
+ */
+void MapScript::event_dialog_started(const MessageId &message_id) {
+
+  notify_script("event_dialog_started", message_id);
+}
+
+/**
+ * @brief Notifies the script that the dialog box has just finished.
+ *
+ * This function is called when the last message of a dialog is finished.
+ * The dialog box has just been closed but the game is still suspended.
+ * Note that this event is not called if the dialog was skipped.
+ *
+ * @param first_message_id id of the first message in the dialog
+ * that has just finished
+ * @param answer the answer selected by the player: 0 for the first one,
+ * 1 for the second one, -1 if there was no question
+ */
+void MapScript::event_dialog_finished(const MessageId &first_message_id, int answer) {
+
+  notify_script("event_dialog_finished", first_message_id, answer);
+}
+
+/**
+ * @brief Notifies the script that the camera moved by a call to camera_move() has reached its target.
+ */
+void MapScript::event_camera_reached_target() {
+
+  notify_script("event_camera_reached_target");
+}
+
+/**
+ * @brief Notifies the script that the camera moved by a call to camera_restore() has reached the hero.
+ */
+void MapScript::event_camera_back() {
+
+  notify_script("event_camera_back");
+}
+
+/**
+ * @brief Notifies the script that the player is obtaining a treasure.
+ *
+ * The treasure source does not matter: it can come from a chest,
+ * a pickable item or a script.
+ *
+ * @param item_name name of the item obtained
+ * @param variant variant of this item
+ * @param savegame_variable the boolean variable where this treasure is saved
+ * (or -1 if the treasure is not saved)
+ */
+void MapScript::event_treasure_obtaining(const std::string &item_name, int variant, int savegame_variable) {
+
+  notify_script("event_treasure_obtaining", item_name, variant, savegame_variable);
+}
+
+/**
+ * @brief Notifies the script that the player has just finished obtaining a treasure.
+ *
+ * The treasure source does not matter: it can come from a chest,
+ * a pickable item or a script.
+ *
+ * @param item_name name of the item obtained
+ * @param variant variant of this item
+ * @param savegame_variable the boolean variable where this treasure is saved
+ * (or -1 if the treasure is not saved)
+ */
+void MapScript::event_treasure_obtained(const std::string &item_name, int variant, int savegame_variable) {
+
+  notify_script("event_treasure_obtained", item_name, variant, savegame_variable);
+}
+
+/**
+ * @brief Notifies the script that the map has just been started.
+ * @param destination_point_name name of the destination point where the hero is
+ */
+void MapScript::event_map_started(const std::string &destination_point_name) {
+  
+  notify_script("event_map_started",  destination_point_name);
+}
+
+/**
+ * @brief Notifies the script that the opening transition of the map has just finished.
+ * @param destination_point_name name of the destination point where the hero is
+ */
+void MapScript::event_map_opening_transition_finished(const std::string &destination_point_name) {
+  
+  notify_script("event_map_opening_transition_finished", destination_point_name);
+}
+
+/**
+ * @brief Notifies the script that a switch has just been enabled.
+ * @param switch_name name of the switch
+ */
+void MapScript::event_switch_enabled(const std::string &switch_name) {
+  
+  notify_script("event_switch_enabled", switch_name);
+}
+
+/**
+ * @brief Notifies the script that a switch has just been disabled.
+ * @param switch_name name of the switch
+ */
+void MapScript::event_switch_disabled(const std::string &switch_name) {
+  
+  notify_script("event_switch_disabled", switch_name);
+}
+
+/**
+ * @brief Notifies the script that a switch has just been left by the entity that was on it.
+ *
+ * The fact that the switch is enabled or disabled does not matter here.
+ *
+ * @param switch_name name of the switch
+ */
+void MapScript::event_switch_left(const std::string &switch_name) {
+  
+  notify_script("event_switch_left", switch_name);
+}
+
+/**
+ * @brief Notifies the script that the victory sequence of the hero has just finished.
+ */
+void MapScript::event_hero_victory_sequence_finished() {
+  
+  notify_script("event_hero_victory_sequence_finished");
+}
+
+/**
+ * @brief Notifies the script that the hero is overlapping a sensor.
+ * @param sensor_name name of the sensor
+ */
+void MapScript::event_hero_on_sensor(const std::string &sensor_name) {
+  
+  notify_script("event_hero_on_sensor", sensor_name);
+}
+
+/**
+ * @brief Notifies the script that the player has just pressed the action
+ * key in front of an interactive entity.
+ * @param entity_name name of the interactive entity
+ */
+void MapScript::event_hero_interaction(const std::string &entity_name) {
+  
+  notify_script("event_hero_interaction", entity_name);
+}
+
+/**
+ * @brief Notifies the script that the hero is using an inventory item
+ * in front of an interactive entity.
+ *
+ * This event is called only for inventory items that want to use an interactive entity
+ * (e.g. a key that is being used in front of a door).
+ *
+ * @param entity_name name of the interactive entity the hero is facing
+ * @param item_name name of the inventory item that is being used
+ * @param variant variant of this inventory item
+ * @return true if the script has handled the event,
+ * i.e. if the function event_hero_interaction_item exists in the script and returned true
+ */
+bool MapScript::event_hero_interaction_item(const std::string &entity_name, const std::string &item_name, int variant) {
+
+  bool exists = notify_script("event_hero_interaction_item", entity_name, item_name, variant);
+  bool interaction = lua_toboolean(context, 1);
+
+  return exists && interaction;
+}
+
+/**
+ * @brief Notifies the script that the player has just pressed the action
+ * key in front an NPC.
+ * @param npc_name name of the NPC
+ */
+void MapScript::event_npc_dialog(const std::string &npc_name) {
+   
+  notify_script("event_npc_dialog", npc_name);
+}
+
+/**
+ * @brief Notifies the script that an NPC has just finished its movement.
+ * @param npc_name name of the NPC
+ */
+void MapScript::event_npc_movement_finished(const std::string &npc_name) {
+   
+  notify_script("event_npc_movement_finished", npc_name);
+}
+
+/**
+ * @brief Notifies the script that the player has just open an empty chest.
+ *
+ * What happens next is controlled by your script if it handles this event.
+ * The hero is in state FREEZE,
+ * so if you do something else than giving the player a treasure,
+ * don't forget to call hero_unfreeze() once you have finished.
+ * The script function does not have to return any value.
+ *
+ * @param chest_name name of the chest
+ * @return true if a script has handled the event, i.e. if the
+ * event_chest_empty exists in the script
+ */
+bool MapScript::event_chest_empty(const std::string &chest_name) {
+   
+  bool exists = notify_script("event_chest_empty", chest_name);
+  return exists;
+}
+
+/**
+ * @brief Notifies the script that the player has just bought an item in a shop.
+ * @param shop_item_name name of the item bought
+ */
+void MapScript::event_shop_item_bought(const std::string &shop_item_name) {
+
+  notify_script("event_shop_item_bought", shop_item_name);
+}
+
+/**
+ * @brief Notifies the script that an enemy has just been killed.
+ * @param enemy_name name of the enemy
+ */
+void MapScript::event_enemy_dead(const std::string &enemy_name) {
+
+  notify_script("event_enemy_dead", enemy_name);
 }
 

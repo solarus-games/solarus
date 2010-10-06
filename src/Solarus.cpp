@@ -47,6 +47,7 @@ Solarus::Solarus(int argc, char **argv) {
  * @brief Cleans everything.
  */
 Solarus::~Solarus() {
+
   delete root_surface;
   delete current_screen;
   delete debug_keys;
@@ -58,6 +59,7 @@ Solarus::~Solarus() {
  * @return the debbuging keys object
  */
 DebugKeys& Solarus::get_debug_keys() {
+
   return *debug_keys;
 }
 
@@ -95,14 +97,6 @@ bool Solarus::is_exiting() {
  */
 void Solarus::set_exiting() {
   exiting = true;
-}
-
-/**
- * @brief Returns the list of scripts currently running.
- * @return the current scripts
- */
-Scripts& Solarus::get_scripts() {
-  return scripts;
 }
 
 /**

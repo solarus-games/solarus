@@ -27,8 +27,8 @@
  * @param scripts the list of scripts
  * @param game the game
  */
-GameScript::GameScript(Scripts &scripts, Game &game):
-  Script(scripts), game(game) {
+GameScript::GameScript(Game &game):
+  Script(), game(game) {
 
 }
 

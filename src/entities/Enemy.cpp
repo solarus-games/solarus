@@ -26,7 +26,7 @@
 #include "Sprite.h"
 #include "SpriteAnimationSet.h"
 #include "Map.h"
-#include "lua/Scripts.h"
+#include "lua/MapScript.h"
 #include "movements/StraightMovement.h"
 #include "movements/FallingHeight.h"
 #include "lowlevel/Geometry.h"
@@ -490,7 +490,7 @@ void Enemy::update() {
     remove_from_map();
 
     // notify the scripts
-    get_scripts().event_enemy_dead(get_name());
+    get_map_script().event_enemy_dead(get_name());
   }
 }
 

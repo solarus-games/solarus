@@ -19,7 +19,7 @@
 #include "Sprite.h"
 #include "Game.h"
 #include "Map.h"
-#include "lua/Scripts.h"
+#include "lua/MapScript.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
@@ -169,9 +169,9 @@ void Switch::update() {
       entity_overlapping = NULL;
       if (is_enabled() && disable_when_leaving && !locked) {
         set_enabled(false);
-	get_scripts().event_switch_disabled(get_name());
+	get_map_script().event_switch_disabled(get_name());
       }
-      get_scripts().event_switch_left(get_name());
+      get_map_script().event_switch_left(get_name());
     }
   }
 }
@@ -236,7 +236,7 @@ void Switch::notify_collision(MapEntity &entity_overlapping, CollisionMode colli
       Sound::play("switch");
     }
 
-    get_scripts().event_switch_enabled(get_name());
+    get_map_script().event_switch_enabled(get_name());
   }
 }
 

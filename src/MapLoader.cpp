@@ -126,7 +126,7 @@ void MapLoader::load_map(Game &game, Map &map) {
   FileTools::data_file_close(map_file);
 
   // load the script
-  map.script = new MapScript(game.get_scripts(), map);
+  map.script = new MapScript(map);
   map.camera = new Camera(map);
 }
 

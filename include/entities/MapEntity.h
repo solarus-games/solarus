@@ -142,11 +142,11 @@ class MapEntity {
 
     // easy access to various game objects
     MapEntities& get_entities();
+    MapScript& get_map_script();
     Equipment& get_equipment();
     KeysEffect& get_keys_effect();
     GameControls& get_controls();
     DialogBox& get_dialog_box();
-    Scripts& get_scripts();
     Savegame& get_savegame();
     Hero& get_hero();
 

@@ -23,7 +23,7 @@
 #include "Counter.h"
 #include "Map.h"
 #include "Sprite.h"
-#include "lua/Scripts.h"
+#include "lua/MapScript.h"
 #include "lowlevel/Surface.h"
 
 /**
@@ -148,7 +148,7 @@ void Treasure::give_to_player() const {
   game.get_equipment().add_item(item_name, variant);
 
   // notify the scripts
-  game.get_scripts().event_treasure_obtaining(item_name, variant, savegame_variable);
+  game.get_map_script().event_treasure_obtaining(item_name, variant, savegame_variable);
 }
 
 /**

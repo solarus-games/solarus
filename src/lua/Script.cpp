@@ -25,6 +25,7 @@
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 #include <lua.hpp>
+#include <cstdarg>
 
 /**
  * @brief Creates a script.
@@ -272,188 +273,122 @@ bool Script::find_lua_function(const std::string &function_name) {
 }
 
 /**
- * @brief Calls a function without argument in the script.
+ * @brief Calls a Lua function of the current script, possibly with arguments and return values of various types.
  *
- * If the function does not exists in the script, nothing happens:
- * it just means that the function corresponds to an event that
+ * This is just a convenient method to push the parameters and pop the results for you
+ * in addition to calling the Lua function.
+ * However, this function uses the variable number of parameters mechanism of cstdarg, which
+ * is inherently C and not C++.
+ * This means you have to use C-style strings instead of std::string.
+ *
+ * The arguments and results of the Lua function are passed thanks to the variable number of
+ * parameters (possibly of different types) of this C++ method.
+ * The format parameter of this C++ method specifies the type of each
+ * argument and each result.
+ * The types of the arguments should be described in the format string as a sequence of characters
+ * where each character represents a type ('i': int, 'b': bool, 's': const char*).
+ * If you expect some results to get returned by the Lua function,
+ * the format string should then take a space character,
+ * and the types of the results are then specified in the same way,
+ * The space character is optional if no result is returned.
+ * This means an empty format string can be used when the Lua function has no argument
+ * and no return value.
+ *
+ * The remaining parameters of this C++ function (of variable number)
+ * must match the specified format,
+ * passing values for the arguments and pointers for the results.
+ *
+ * Let's take an example:
+ * assuming that the Lua function you want to call takes as arguments
+ * a string plus two integers and returns a boolean,
+ * the format string you should specify is: "sii b".
+ * You should then give four parameters of types const char*, int, int and bool*.
+ *
+ * If the Lua function returns a string, the C++ paramater that will receive it
+ * should be naturally of type const char**.
+ * The necessary memory will be allocated with new[] to store the string and
+ * you are responsible to release it later with delete[].
+ * This inconvenience is because of the cstdarg restriction
+ * (one cannot pass std::string in function with variable argument number).
+ *
+ * If the Lua function exists, it is executed, the results (if any) are stored in your pointed areas,
+ * and this C++ method returns true.
+ * You then have to pop the Lua results from the stack yourself.
+ * If a result is of type string, the memory used by its const char* pointer is discarded
+ * when you pop it from the stack
+ * (and that's why this C++ method cannot pop the Lua results for you).
+ * This inconvenience is because the variable argument number mechanism cannot use std::string
+ * (maybe it was a bad idea to use this mechanism with C++).
+ * If you need to memorize the string, you should make a copy of it (normally in an std::string) before
+ * you pop the Lua results.
+ * However, in Solarus, calling Lua from C++ is currently used only to notify a script that something
+ * happened (this explains the name of this C++ method), not to ask strings to them.
+ *
+ * If the Lua function does not exists in the script,
+ * nothing happens and this C++ function returns false.
+ * It just means that the function corresponds to an event that
  * the script does not want to handle.
  *
  * @param function_name name of the function to call
  * (may be prefixed by the name of several Lua tables, typically sol.main.some_function)
+ * @param format a string describing the types of arguments to pass to the Lua function
+ * and the types of return values to get.
  * @return true if the function was called, false if it does not exist
  */
-bool Script::notify_script(const std::string &function_name) {
+bool Script::notify_script(const std::string &function_name, const std::string &format, ...) {
 
   // find the function and push it onto the stack
   bool exists = find_lua_function(function_name);
 
-  // call the function
   if (exists) {
-    lua_call(context, 0, 0);
+
+    va_list args;
+    va_start(args, format);
+
+    // push the arguments
+    unsigned int i, nb_arguments;
+    bool end_arguments = false;
+    for (i = 0; i < format.size() && !end_arguments; i++) {
+      switch (format[i]) {
+	case 'i':	lua_pushinteger(context, va_arg(args, int));	break;
+	case 'b':	lua_pushboolean(context, va_arg(args, int));	break; 		// cstdarg refuses bool
+	case 's':	lua_pushstring(context, va_arg(args, const char*));	break;	// and std::string
+	case ' ':	end_arguments = true;
+	default:	Debug::die(StringConcat() << "Invalid character '" << format[i] << "' in format string '" << format);
+      }
+
+      if (format[i] != ' ') {
+	nb_arguments++;
+      }
+    }
+
+    // call the function
+    int nb_results = format.size() - i;
+    lua_call(context, nb_arguments, nb_results);
+
+    // get the results
+    for (int i = 0; i < nb_results; i++) {
+      char type = format[nb_arguments + i + 1];
+      int stack_index = -nb_results + i;
+      switch (type) {
+	case 'i':	*va_arg(args, int*) = lua_tointeger(context, stack_index);	break;
+	case 'b':	*va_arg(args, int*) = lua_toboolean(context, stack_index);	break;
+	case 's':	*va_arg(args, const char**) = lua_tostring(context, stack_index);	break;
+	default:	Debug::die(StringConcat() << "Invalid character '" << type << "' in format string '" << format);
+      }
+    }
+    /*
+     * Notice that we do NOT pop the results because if some of them are strings, they would be discarded
+     * but we have pointers to them. Another solution would be to make copies of those strings,
+     * but this would give the caller the responsability to delete them with delete[].
+     * I prefer give him the responsability to pop the stack when the Lua function has results.
+     * This mess is because the variable argument number mechanism refuses to use std::string.
+     */
+
+    va_end(args);
   }
-
-  return exists;
-}
-
-/**
- * @brief Calls a function in the script.
- * @param function_name name of the function to call
- * @param arg1 argument of the function
- * @return true if the function was called, false if it does not exist
- */
-bool Script::notify_script(const std::string &function_name, const std::string &arg1) {
-
-  bool exists = find_lua_function(function_name);
-
-  if (exists) {
-    lua_pushstring(context, arg1.c_str());
-    lua_call(context, 1, 0);
-  }
-
-  return exists;
-}
-
-/**
- * @brief Calls a function in the script.
- * @param function_name name of the function to call
- * @param arg1 first argument of the function
- * @param arg2 second argument of the function
- * @return true if the function was called, false if it does not exist
- */
-bool Script::notify_script(const std::string &function_name,
-				  const std::string &arg1, int arg2) {
-
-  bool exists = find_lua_function(function_name);
-
-  if (exists) {
-    lua_pushstring(context, arg1.c_str());
-    lua_pushinteger(context, arg2);
-    lua_call(context, 2, 0);
-  }
-
-  return exists;
-}
-
-/**
- * @brief Calls a function in the script.
- * @param function_name name of the function to call
- * @param arg1 first argument of the function
- * @param arg2 second argument of the function
- * @param arg3 third argument of the function
- * @return true if the function was called, false if it does not exist
- */
-bool Script::notify_script(const std::string &function_name,
-				  const std::string &arg1, int arg2, int arg3) {
-
-  bool exists = find_lua_function(function_name);
-
-  if (exists) {
-    lua_pushstring(context, arg1.c_str());
-    lua_pushinteger(context, arg2);
-    lua_pushinteger(context, arg3);
-    lua_call(context, 3, 0);
-  }
-
-  return exists;
-}
-
-/**
- * @brief Calls a function in the script.
- * @param function_name name of the function to call
- * @param arg1 first argument of the function
- * @param arg2 second argument of the function
- * @param arg3 third argument of the function
- * @return true if the function was called, false if it does not exist
- */
-bool Script::notify_script(const std::string &function_name,
-				  const std::string &arg1, const std::string &arg2, int arg3) {
-
-  bool exists = find_lua_function(function_name);
-
-  if (exists) {
-    lua_pushstring(context, arg1.c_str());
-    lua_pushstring(context, arg2.c_str());
-    lua_pushinteger(context, arg3);
-    lua_call(context, 3, 0);
-  }
-
-  return exists;
-}
-
-/**
- * @brief Calls a function in the script.
- * @param function_name name of the function to call
- * @param arg1 first argument of the function
- * @param arg2 second argument of the function
- * @param arg3 third argument of the function
- * @return true if the function was called, false if it does not exist
- */
-bool Script::notify_script(const std::string &function_name,
-				  int arg1, const std::string &arg2, int arg3) {
-
-  bool exists = find_lua_function(function_name);
-
-  if (exists) {
-    lua_pushinteger(context, arg1);
-    lua_pushstring(context, arg2.c_str());
-    lua_pushinteger(context, arg3);
-    lua_call(context, 3, 0);
-  }
-
-  return exists;
-}
-
-/**
- * @brief Calls a function in the script.
- * @param function_name name of the function to call
- * @param arg1 argument of the function
- * @return true if the function was called, false if it does not exist
- */
-bool Script::notify_script(const std::string &function_name, int arg1) {
-
-  bool exists = find_lua_function(function_name);
-
-  if (exists) {
-    lua_pushinteger(context, arg1);
-    lua_call(context, 1, 0);
-  }
-
-  return exists;
-}
-
-/**
- * @brief Calls a function in the script.
- * @param function_name name of the function to call
- * @param arg1 first argument of the function
- * @param arg2 second argument of the function
- * @return true if the function was called, false if it does not exist
- */
-bool Script::notify_script(const std::string &function_name, int arg1, int arg2) {
-
-  bool exists = find_lua_function(function_name);
-
-  if (exists) {
-    lua_pushinteger(context, arg1);
-    lua_pushinteger(context, arg2);
-    lua_call(context, 2, 0);
-  }
-
-  return exists;
-}
-
-/**
- * @brief Calls a function in the script.
- * @param function_name name of the function to call
- * @param arg1 argument of the function
- * @return true if the function was called, false if it does not exist
- */
-bool Script::notify_script(const std::string &function_name, bool arg1) {
-
-  bool exists = find_lua_function(function_name);
-
-  if (exists) {
-    lua_pushboolean(context, arg1);
-    lua_call(context, 1, 0);
+  else {
+    lua_pop(context, 1);
   }
 
   return exists;

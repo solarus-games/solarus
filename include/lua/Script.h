@@ -46,17 +46,9 @@ class Script {
 
     // calling a Lua function from C++
     bool find_lua_function(const std::string &function_name);
-    bool notify_script(const std::string &function_name);
-    bool notify_script(const std::string &function_name, const std::string &arg1);
-    bool notify_script(const std::string &function_name, const std::string &arg1, int arg2);
-    bool notify_script(const std::string &function_name, const std::string &arg1, int arg2, int arg3);
-    bool notify_script(const std::string &function_name, const std::string &arg1, const std::string &arg2, int arg3);
-    bool notify_script(const std::string &function_name, int arg1, const std::string &arg2, int arg3);
-    bool notify_script(const std::string &function_name, int arg1);
-    bool notify_script(const std::string &function_name, int arg1, int arg2);
-    bool notify_script(const std::string &function_name, bool arg1);
+    bool notify_script(const std::string &function_name, const std::string &format = "", ...);
 
-    // calling a C++ function from Lua
+    // calling a C++ function from Lua (and also retreive the instance of Script)
     static void called_by_script(lua_State *context, int nb_arguments, Script **script);
 
     static FunctionAvailableToScript 

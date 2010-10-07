@@ -1261,7 +1261,7 @@ int MapScript::l_door_set_open(lua_State *l) {
  */
 void MapScript::event_set_suspended(bool suspended) {
 
-  notify_script("event_suspended", suspended);
+  notify_script("event_suspended", "b", suspended);
 }
 
 /**
@@ -1271,7 +1271,7 @@ void MapScript::event_set_suspended(bool suspended) {
  */
 void MapScript::event_dialog_started(const MessageId &message_id) {
 
-  notify_script("event_dialog_started", message_id);
+  notify_script("event_dialog_started", "s", message_id.c_str());
 }
 
 /**
@@ -1431,6 +1431,7 @@ bool MapScript::event_hero_interaction_item(const std::string &entity_name, cons
 
   bool exists = notify_script("event_hero_interaction_item", entity_name, item_name, variant);
   bool interaction = lua_toboolean(context, 1) != 0;
+  lua_pop(context);
 
   return exists && interaction;
 }

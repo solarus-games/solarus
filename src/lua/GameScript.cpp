@@ -123,7 +123,7 @@ int GameScript::l_savegame_get_string(lua_State *l) {
 
   GameScript *script;
   called_by_script(l, 1, &script);
-  int index = lua_tointeger(l, 1);
+  int index = luaL_checkinteger(l, 1);
 
   const std::string &value = script->game.get_savegame().get_string(index);
   lua_pushstring(l, value.c_str());
@@ -141,7 +141,7 @@ int GameScript::l_savegame_get_integer(lua_State *l) {
 
   GameScript *script;
   called_by_script(l, 1, &script);
-  int index = lua_tointeger(l, 1);
+  int index = luaL_checkinteger(l, 1);
 
   int value = script->game.get_savegame().get_integer(index);
   lua_pushinteger(l, value);
@@ -159,7 +159,7 @@ int GameScript::l_savegame_get_boolean(lua_State *l) {
 
   GameScript *script;
   called_by_script(l, 1, &script);
-  int index = lua_tointeger(l, 1);
+  int index = luaL_checkinteger(l, 1);
 
   bool value = script->game.get_savegame().get_boolean(index);
   lua_pushboolean(l, value ? 1 : 0);
@@ -178,8 +178,8 @@ int GameScript::l_savegame_set_string(lua_State *l) {
 
   GameScript *script;
   called_by_script(l, 2, &script);
-  int index = lua_tointeger(l, 1);
-  const std::string &value = lua_tostring(l, 2);
+  int index = luaL_checkinteger(l, 1);
+  const std::string &value = luaL_checkstring(l, 2);
 
   Debug::assert(index >= 32, StringConcat() << "Cannot change savegame string #" << index << ": string variables below 32 are read-only");
 
@@ -199,8 +199,8 @@ int GameScript::l_savegame_set_integer(lua_State *l) {
 
   GameScript *script;
   called_by_script(l, 2, &script);
-  int index = lua_tointeger(l, 1);
-  int value = lua_tointeger(l, 2);
+  int index = luaL_checkinteger(l, 1);
+  int value = luaL_checkinteger(l, 2);
 
   Debug::assert(index >= 1024, StringConcat() << "Cannot change savegame integer #" << index << ": integer variables below 1024 are read-only");
 
@@ -219,10 +219,10 @@ int GameScript::l_savegame_set_boolean(lua_State *l) {
 
   GameScript *script;
   called_by_script(l, 2, &script);
-  int index = lua_tointeger(l, 1);
-  int value = lua_toboolean(l, 2);
+  int index = luaL_checkinteger(l, 1);
+  bool value = lua_toboolean(l, 2) != 0;
 
-  script->game.get_savegame().set_boolean(index, value != 0);
+  script->game.get_savegame().set_boolean(index, value);
 
   return 0;
 }
@@ -269,7 +269,7 @@ int GameScript::l_equipment_add_life(lua_State *l) {
   GameScript *script;
   called_by_script(l, 1, &script);
 
-  int life = lua_tointeger(l, 1);
+  int life = luaL_checkinteger(l, 1);
 
   script->game.get_equipment().add_life(life);
 
@@ -286,7 +286,7 @@ int GameScript::l_equipment_remove_life(lua_State *l) {
   GameScript *script;
   called_by_script(l, 1, &script);
 
-  int life = lua_tointeger(l, 1);
+  int life = luaL_checkinteger(l, 1);
 
   script->game.get_equipment().remove_life(life);
 
@@ -319,7 +319,7 @@ int GameScript::l_equipment_add_money(lua_State *l) {
   GameScript *script;
   called_by_script(l, 1, &script);
 
-  int money = lua_tointeger(l, 1);
+  int money = luaL_checkinteger(l, 1);
 
   script->game.get_equipment().add_money(money);
 
@@ -336,7 +336,7 @@ int GameScript::l_equipment_remove_money(lua_State *l) {
   GameScript *script;
   called_by_script(l, 1, &script);
 
-  int money = lua_tointeger(l, 1);
+  int money = luaL_checkinteger(l, 1);
 
   script->game.get_equipment().remove_money(money);
 
@@ -356,7 +356,7 @@ int GameScript::l_equipment_has_ability(lua_State *l) {
   GameScript *script;
   called_by_script(l, 1, &script);
 
-  const std::string &ability_name = lua_tostring(l, 1);
+  const std::string &ability_name = luaL_checkstring(l, 1);
 
   bool has_ability = script->game.get_equipment().has_ability(ability_name);
   lua_pushboolean(l, has_ability);
@@ -378,8 +378,8 @@ int GameScript::l_equipment_set_ability(lua_State *l) {
   GameScript *script;
   called_by_script(l, 2, &script);
 
-  const std::string &ability_name = lua_tostring(l, 1);
-  int level = lua_tointeger(l, 2);
+  const std::string &ability_name = luaL_checkstring(l, 1);
+  int level = luaL_checkinteger(l, 2);
 
   script->game.get_equipment().set_ability(ability_name, level);
 
@@ -397,7 +397,7 @@ int GameScript::l_equipment_get_ability(lua_State *l) {
   GameScript *script;
   called_by_script(l, 1, &script);
 
-  const std::string &ability_name = lua_tostring(l, 1);
+  const std::string &ability_name = luaL_checkstring(l, 1);
 
   int ability_level = script->game.get_equipment().get_ability(ability_name);
   lua_pushinteger(l, ability_level);
@@ -418,7 +418,7 @@ int GameScript::l_equipment_has_item(lua_State *l) {
   GameScript *script;
   called_by_script(l, 1, &script);
 
-  const std::string &item_name = lua_tostring(l, 1);
+  const std::string &item_name = luaL_checkstring(l, 1);
 
   bool has_item = script->game.get_equipment().has_item(item_name);
   lua_pushboolean(l, has_item);
@@ -438,7 +438,7 @@ int GameScript::l_equipment_get_item(lua_State *l) {
   GameScript *script;
   called_by_script(l, 1, &script);
 
-  const std::string &item_name = lua_tostring(l, 1);
+  const std::string &item_name = luaL_checkstring(l, 1);
 
   int variant = script->game.get_equipment().get_item_variant(item_name);
   lua_pushinteger(l, variant);
@@ -458,8 +458,8 @@ int GameScript::l_equipment_set_item(lua_State *l) {
   GameScript *script;
   called_by_script(l, 2, &script);
 
-  const std::string &item_name = lua_tostring(l, 1);
-  int variant = lua_tointeger(l, 2);
+  const std::string &item_name = luaL_checkstring(l, 1);
+  int variant = luaL_checkinteger(l, 2);
 
   script->game.get_equipment().set_item_variant(item_name, variant);
 
@@ -480,8 +480,8 @@ int GameScript::l_equipment_has_item_amount(lua_State *l) {
   GameScript *script;
   called_by_script(l, 1, &script);
 
-  const std::string &item_name = lua_tostring(l, 1);
-  int amount = lua_tointeger(l, 2);
+  const std::string &item_name = luaL_checkstring(l, 1);
+  int amount = luaL_checkinteger(l, 2);
 
   bool has_amount = script->game.get_equipment().get_item_amount(item_name) > amount;
   lua_pushboolean(l, has_amount);
@@ -500,7 +500,7 @@ int GameScript::l_equipment_get_item_amount(lua_State *l) {
   GameScript *script;
   called_by_script(l, 1, &script);
 
-  const std::string &item_name = lua_tostring(l, 1);
+  const std::string &item_name = luaL_checkstring(l, 1);
 
   int amount = script->game.get_equipment().get_item_amount(item_name);
   lua_pushinteger(l, amount);
@@ -519,8 +519,8 @@ int GameScript::l_equipment_add_item_amount(lua_State *l) {
   GameScript *script;
   called_by_script(l, 2, &script);
 
-  const std::string &item_name = lua_tostring(l, 1);
-  int amount = lua_tointeger(l, 2);
+  const std::string &item_name = luaL_checkstring(l, 1);
+  int amount = luaL_checkinteger(l, 2);
 
   script->game.get_equipment().add_item_amount(item_name, amount);
 
@@ -538,8 +538,8 @@ int GameScript::l_equipment_remove_item_amount(lua_State *l) {
   GameScript *script;
   called_by_script(l, 2, &script);
 
-  const std::string &item_name = lua_tostring(l, 1);
-  int amount = lua_tointeger(l, 2);
+  const std::string &item_name = luaL_checkstring(l, 1);
+  int amount = luaL_checkinteger(l, 2);
 
   script->game.get_equipment().remove_item_amount(item_name, amount);
 
@@ -562,7 +562,7 @@ int GameScript::l_equipment_is_dungeon_finished(lua_State *l) {
   GameScript *script;
   called_by_script(l, 1, &script);
 
-  int dungeon = lua_tointeger(l, 1);
+  int dungeon = luaL_checkinteger(l, 1);
   bool finished = script->game.get_equipment().is_dungeon_finished(dungeon);
   lua_pushboolean(l, finished);
 
@@ -583,7 +583,7 @@ int GameScript::l_equipment_set_dungeon_finished(lua_State *l) {
   GameScript *script;
   called_by_script(l, 1, &script);
 
-  int dungeon = lua_tointeger(l, 1);
+  int dungeon = luaL_checkinteger(l, 1);
   script->game.get_equipment().set_dungeon_finished(dungeon);
 
   return 0;

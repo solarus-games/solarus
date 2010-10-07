@@ -120,7 +120,6 @@ void MapScript::register_available_functions() {
     { NULL, NULL }
   };
 
-  luaL_newmetatable(context, "sol.map"); // TODO useful?
   luaL_register(context, "sol.map", functions);
 }
 

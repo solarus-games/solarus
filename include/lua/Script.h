@@ -45,6 +45,7 @@ class Script {
     std::list<Sprite*> created_sprites;					/**< the sprites managed by this script that were created by it */
 
     // calling a Lua function from C++
+    bool find_lua_function(const std::string &function_name);
     bool notify_script(const std::string &function_name);
     bool notify_script(const std::string &function_name, const std::string &arg1);
     bool notify_script(const std::string &function_name, const std::string &arg1, int arg2);
@@ -97,6 +98,9 @@ class Script {
     void create_sprite(const std::string &sprite_id, const SpriteAnimationSetId &animation_set_id);
     void add_existing_sprite(const std::string &sprite_id, Sprite &sprite);
     Sprite& get_sprite(const std::string &sprite_id);
+
+    // debugging
+    void print_stack();
 
   public:
 

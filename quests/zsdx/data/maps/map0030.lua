@@ -111,13 +111,13 @@ function barrier_camera_timer()
   sol.main.play_sound("secret")
   sol.map.tile_set_enabled("barrier", false)
   sol.game.savegame_set_boolean(78, true)
-  sol.main.timer_start(1000, "camera_restore", false)
+  sol.main.timer_start(1000, "sol.map.camera_restore", false)
 end
 
 function pegasus_run_camera_timer()
   sol.main.play_sound("secret")
   sol.map.tile_set_enabled("pegasus_run_barrier", false)
-  sol.main.timer_start(1000, "camera_restore", false)
+  sol.main.timer_start(1000, "sol.map.camera_restore", false)
 end
 
 function pegasus_run_timer()
@@ -131,14 +131,14 @@ function hidden_stairs_timer()
   sol.main.play_sound("secret")
   open_hidden_stairs()
   sol.game.savegame_set_boolean(90, true)
-  sol.main.timer_start(1000, "camera_restore", false)
+  sol.main.timer_start(1000, "sol.map.camera_restore", false)
 end
 
 function hidden_door_timer()
   sol.main.play_sound("secret")
   open_hidden_door()
   sol.game.savegame_set_boolean(91, true)
-  sol.main.timer_start(1000, "camera_restore", false)
+  sol.main.timer_start(1000, "sol.map.camera_restore", false)
 end
 
 function open_hidden_stairs()

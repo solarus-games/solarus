@@ -49,7 +49,7 @@ end
 
 function se_room_timer()
   open_se_door()
-  sol.main.timer_start(1000, "camera_restore", false)
+  sol.main.timer_start(1000, "sol.map.camera_restore", false)
 end
 
 function open_se_door()

@@ -81,7 +81,7 @@ booleans:
 39      piece of heart in lyriann cave
 40	lyriann cave: chest with 20 rupees
 41	lyriann cave: the player has Tom's boomerang
-42	lyriann cave: the player gave the boomerang back to Tom
+42	lyriann cave: the player gave the boomerang back to Tom (TODO: seems actually unused)
 43-45	smith cave: 3 blue rupees taken
 46	cake shop: the seller asked the player whether he had some apples
 47	lyriann cave: the player talked to Tom

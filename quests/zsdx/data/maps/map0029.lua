@@ -35,12 +35,12 @@ function barrier_timer()
   sol.map.tile_set_enabled("barrier", false)
   sol.main.play_sound("secret")
   sol.game.savegame_set_boolean(69, true)
-  sol.main.timer_start(1000, "camera_restore", false)
+  sol.main.timer_start(1000, "sol.map.camera_restore", false)
 end
 
 function door_timer()
   sol.map.door_open("door")
   sol.main.play_sound("secret")
-  sol.main.timer_start(1000, "camera_restore", false)
+  sol.main.timer_start(1000, "sol.map.camera_restore", false)
 end
 

@@ -26,6 +26,8 @@
  * @param speed speed of the movement
  */
 TargetMovement::TargetMovement(int target_x, int target_y, int speed):
+
+  Movement(true),
   target_x(target_x), target_y(target_y), target_entity(NULL), sign_x(0), sign_y(0),
   speed(speed), next_recomputation_date(System::now()), finished(false) {
 
@@ -40,6 +42,8 @@ TargetMovement::TargetMovement(int target_x, int target_y, int speed):
  * @param speed speed of the movement
  */
 TargetMovement::TargetMovement(MapEntity *target_entity, int speed):
+
+  Movement(true),
   target_x(target_entity->get_x()), target_y(target_entity->get_y()), target_entity(target_entity),
   sign_x(0), sign_y(0), speed(speed), next_recomputation_date(System::now()), finished(false) {
 

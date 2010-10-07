@@ -182,6 +182,7 @@ void Script::called_by_script(lua_State *context, int nb_arguments, Script **scr
  * the script does not want to handle.
  *
  * @param function_name name of the function to call
+ * (may be prefixed by the name of a Lua table, typically sol.main.some_function)
  * @return true if the function was called, false if it does not exist
  */
 bool Script::notify_script(const std::string &function_name) {
@@ -191,13 +192,14 @@ bool Script::notify_script(const std::string &function_name) {
   }
 
   lua_getglobal(context, function_name.c_str());
+
   bool exists = lua_isfunction(context, -1);
 
   if (exists) {
     lua_call(context, 0, 0);
   }
   else {
-    lua_pop(context, -1);
+    lua_pop(context, 1);
   }
 
   return exists;
@@ -223,7 +225,7 @@ bool Script::notify_script(const std::string &function_name, const std::string &
     lua_call(context, 1, 0);
   }
   else {
-    lua_pop(context, -1);
+    lua_pop(context, 1);
   }
 
   return exists;
@@ -252,7 +254,7 @@ bool Script::notify_script(const std::string &function_name,
     lua_call(context, 2, 0);
   }
   else {
-    lua_pop(context, -1);
+    lua_pop(context, 1);
   }
 
   return exists;
@@ -283,7 +285,7 @@ bool Script::notify_script(const std::string &function_name,
     lua_call(context, 3, 0);
   }
   else {
-    lua_pop(context, -1);
+    lua_pop(context, 1);
   }
 
   return exists;
@@ -314,7 +316,7 @@ bool Script::notify_script(const std::string &function_name,
     lua_call(context, 3, 0);
   }
   else {
-    lua_pop(context, -1);
+    lua_pop(context, 1);
   }
 
   return exists;
@@ -345,7 +347,7 @@ bool Script::notify_script(const std::string &function_name,
     lua_call(context, 3, 0);
   }
   else {
-    lua_pop(context, -1);
+    lua_pop(context, 1);
   }
 
   return exists;
@@ -371,7 +373,7 @@ bool Script::notify_script(const std::string &function_name, int arg1) {
     lua_call(context, 1, 0);
   }
   else {
-    lua_pop(context, -1);
+    lua_pop(context, 1);
   }
 
   return exists;
@@ -399,7 +401,7 @@ bool Script::notify_script(const std::string &function_name, int arg1, int arg2)
     lua_call(context, 2, 0);
   }
   else {
-    lua_pop(context, -1);
+    lua_pop(context, 1);
   }
 
   return exists;
@@ -425,7 +427,7 @@ bool Script::notify_script(const std::string &function_name, bool arg1) {
     lua_call(context, 1, 0);
   }
   else {
-    lua_pop(context, -1);
+    lua_pop(context, 1);
   }
 
   return exists;
@@ -445,7 +447,12 @@ void Script::update() {
 
     timer->update();
     if (timer->is_finished()) {
-      notify_script(timer->get_name());
+      
+      bool invoked = notify_script(timer->get_name()); 
+      if (!invoked) {
+	Debug::die(StringConcat() << "No such timer callback function: '" << timer->get_name() << "'");
+      }
+
       delete timer;
       timers.erase(it);
       it = timers.begin();
@@ -515,9 +522,8 @@ void Script::create_sprite(const std::string &sprite_id, const SpriteAnimationSe
  */
 void Script::add_existing_sprite(const std::string &sprite_id, Sprite &sprite) {
 
-  if (sprites.count(sprite_id) > 0) {
-    Debug::die(StringConcat() << "This script already has a sprite with id '" << sprite_id << "'");
-  }
+  Debug::assert(sprites.count(sprite_id) == 0,
+    StringConcat() << "This script already has a sprite with id '" << sprite_id << "'");
 
   sprites[sprite_id] = &sprite;
 }
@@ -529,9 +535,9 @@ void Script::add_existing_sprite(const std::string &sprite_id, Sprite &sprite) {
  */
 Sprite& Script::get_sprite(const std::string &sprite_id) {
 
-  if (sprites.count(sprite_id) == 0) {
-    Debug::die(StringConcat() << "No sprite with id '" << sprite_id << "'");
-  }
+  Debug::assert(sprites.count(sprite_id) > 0,
+    StringConcat() << "No sprite with id '" << sprite_id << "'");
+
   return *sprites[sprite_id];
 }
 

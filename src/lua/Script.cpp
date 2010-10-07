@@ -71,13 +71,14 @@ void Script::load(const std::string &script_name) {
   context = lua_open();
   luaL_openlibs(context);
 
+  // put a pointer to this Script object in the Lua context
+  lua_pushstring(context, "sol.cpp_object");
+  lua_pushlightuserdata(context, this);
+  lua_settable(context, LUA_REGISTRYINDEX); // registry["sol.cpp_object"] = this
+
   // create the Solarus table that will be available to the script
   lua_newtable(context);
   lua_setglobal(context, "sol");
-
-  // put a pointer to this Script object in the Lua context
-  lua_pushlightuserdata(context, this);
-  lua_setglobal(context, "sol.cpp_object");
 
   // register the C++ functions accessible to the script
   register_available_functions();
@@ -168,10 +169,106 @@ void Script::called_by_script(lua_State *context, int nb_arguments, Script **scr
 
   // retrieve the Script object
   if (script != NULL) {
-    lua_getglobal(context, "sol.cpp_object");
+    lua_pushstring(context, "sol.cpp_object");
+    lua_gettable(context, LUA_REGISTRYINDEX);
     *script = (Script*) lua_touserdata(context, -1);
     lua_pop(context, 1);
   }
+}
+
+/**
+ * @brief Prints on a line the content of the Lua stack for debugging purposes.
+ */
+void Script::print_stack() {
+
+  int i;
+  int top = lua_gettop(context);
+
+  for (i = 1; i <= top; i++) {
+
+    int type = lua_type(context, i);
+    switch (type) {
+
+      case LUA_TSTRING:
+	std::cout << lua_tostring(context, i);
+	break;
+
+      case LUA_TBOOLEAN:
+	std::cout << (lua_toboolean(context, i) ? "true" : "false");
+	break;
+
+      case LUA_TNUMBER:
+	std::cout << lua_tonumber(context, i);
+	break;
+
+      default:
+	std::cout << lua_typename(context, type);
+	break;
+
+    }
+    std::cout << " ";
+  }
+  std::cout << std::endl;
+}
+
+/**
+ * @brief Looks up the specified Lua function and places it onto the stack if it exists.
+ *
+ * If the function is not found, the stack is left unchanged.
+ *
+ * @param name of the function to find
+ * (may be prefixed by the name of several Lua tables, typically sol.main.some_function)
+ * @return true if the function was found
+ */
+bool Script::find_lua_function(const std::string &function_name) {
+
+  if (context == NULL) {
+    return false;
+  }
+
+  // TODO implement a simpler solution to the timer problem
+  // (which is: allowing to set sol.main.some_function as a timer callback, even if it is not a global function):
+  // store the callback as a lua function object instead of a string, if possible
+
+  size_t index = function_name.find(".");
+  if (index == std::string::npos) {
+
+    // usual Lua function
+    lua_getglobal(context, function_name.c_str());
+  }
+  else {
+
+    // function in a table (e.g. sol.main.some_function)
+    std::string table_name = function_name.substr(0, index);
+    std::string tail = function_name.substr(index + 1);
+
+    lua_getglobal(context, table_name.c_str());
+
+    index = tail.find(".");
+    while (index != std::string::npos) { // there may even be several intermediary tables
+
+      table_name = tail.substr(0, index);
+      tail = tail.substr(index + 1);
+
+      lua_pushstring(context, table_name.c_str());
+      lua_gettable(context, -2);
+      lua_remove(context, -2);
+
+      index = tail.find(".");
+    }
+
+    // now tail is the function name without prefix, and the table that contains it is on the top of the stack
+    lua_pushstring(context, tail.c_str());
+    lua_gettable(context, -2);
+    lua_remove(context, -2);
+  }
+
+  bool exists = lua_isfunction(context, -1);
+  if (!exists) { // restore the stack
+    lua_pop(context, 1);
+  }
+
+  return exists;
 }
 
 /**
@@ -182,24 +279,17 @@ void Script::called_by_script(lua_State *context, int nb_arguments, Script **scr
  * the script does not want to handle.
  *
  * @param function_name name of the function to call
- * (may be prefixed by the name of a Lua table, typically sol.main.some_function)
+ * (may be prefixed by the name of several Lua tables, typically sol.main.some_function)
  * @return true if the function was called, false if it does not exist
  */
 bool Script::notify_script(const std::string &function_name) {
 
-  if (context == NULL) {
-    return false;
-  }
+  // find the function and push it onto the stack
+  bool exists = find_lua_function(function_name);
 
-  lua_getglobal(context, function_name.c_str());
-
-  bool exists = lua_isfunction(context, -1);
-
+  // call the function
   if (exists) {
     lua_call(context, 0, 0);
-  }
-  else {
-    lua_pop(context, 1);
   }
 
   return exists;
@@ -213,19 +303,11 @@ bool Script::notify_script(const std::string &function_name) {
  */
 bool Script::notify_script(const std::string &function_name, const std::string &arg1) {
 
-  if (context == NULL) {
-    return false;
-  }
-
-  lua_getglobal(context, function_name.c_str());
-  bool exists = lua_isfunction(context, -1);
+  bool exists = find_lua_function(function_name);
 
   if (exists) {
     lua_pushstring(context, arg1.c_str());
     lua_call(context, 1, 0);
-  }
-  else {
-    lua_pop(context, 1);
   }
 
   return exists;
@@ -241,20 +323,12 @@ bool Script::notify_script(const std::string &function_name, const std::string &
 bool Script::notify_script(const std::string &function_name,
 				  const std::string &arg1, int arg2) {
 
-  if (context == NULL) {
-    return false;
-  }
-
-  lua_getglobal(context, function_name.c_str());
-  bool exists = lua_isfunction(context, -1);
+  bool exists = find_lua_function(function_name);
 
   if (exists) {
     lua_pushstring(context, arg1.c_str());
     lua_pushinteger(context, arg2);
     lua_call(context, 2, 0);
-  }
-  else {
-    lua_pop(context, 1);
   }
 
   return exists;
@@ -271,21 +345,13 @@ bool Script::notify_script(const std::string &function_name,
 bool Script::notify_script(const std::string &function_name,
 				  const std::string &arg1, int arg2, int arg3) {
 
-  if (context == NULL) {
-    return false;
-  }
-
-  lua_getglobal(context, function_name.c_str());
-  bool exists = lua_isfunction(context, -1);
+  bool exists = find_lua_function(function_name);
 
   if (exists) {
     lua_pushstring(context, arg1.c_str());
     lua_pushinteger(context, arg2);
     lua_pushinteger(context, arg3);
     lua_call(context, 3, 0);
-  }
-  else {
-    lua_pop(context, 1);
   }
 
   return exists;
@@ -302,21 +368,13 @@ bool Script::notify_script(const std::string &function_name,
 bool Script::notify_script(const std::string &function_name,
 				  const std::string &arg1, const std::string &arg2, int arg3) {
 
-  if (context == NULL) {
-    return false;
-  }
-
-  lua_getglobal(context, function_name.c_str());
-  bool exists = lua_isfunction(context, -1);
+  bool exists = find_lua_function(function_name);
 
   if (exists) {
     lua_pushstring(context, arg1.c_str());
     lua_pushstring(context, arg2.c_str());
     lua_pushinteger(context, arg3);
     lua_call(context, 3, 0);
-  }
-  else {
-    lua_pop(context, 1);
   }
 
   return exists;
@@ -333,21 +391,13 @@ bool Script::notify_script(const std::string &function_name,
 bool Script::notify_script(const std::string &function_name,
 				  int arg1, const std::string &arg2, int arg3) {
 
-  if (context == NULL) {
-    return false;
-  }
-
-  lua_getglobal(context, function_name.c_str());
-  bool exists = lua_isfunction(context, -1);
+  bool exists = find_lua_function(function_name);
 
   if (exists) {
     lua_pushinteger(context, arg1);
     lua_pushstring(context, arg2.c_str());
     lua_pushinteger(context, arg3);
     lua_call(context, 3, 0);
-  }
-  else {
-    lua_pop(context, 1);
   }
 
   return exists;
@@ -361,19 +411,11 @@ bool Script::notify_script(const std::string &function_name,
  */
 bool Script::notify_script(const std::string &function_name, int arg1) {
 
-  if (context == NULL) {
-    return false;
-  }
-
-  lua_getglobal(context, function_name.c_str());
-  bool exists = lua_isfunction(context, -1);
+  bool exists = find_lua_function(function_name);
 
   if (exists) {
     lua_pushinteger(context, arg1);
     lua_call(context, 1, 0);
-  }
-  else {
-    lua_pop(context, 1);
   }
 
   return exists;
@@ -388,20 +430,12 @@ bool Script::notify_script(const std::string &function_name, int arg1) {
  */
 bool Script::notify_script(const std::string &function_name, int arg1, int arg2) {
 
-  if (context == NULL) {
-    return false;
-  }
-
-  lua_getglobal(context, function_name.c_str());
-  bool exists = lua_isfunction(context, -1);
+  bool exists = find_lua_function(function_name);
 
   if (exists) {
     lua_pushinteger(context, arg1);
     lua_pushinteger(context, arg2);
     lua_call(context, 2, 0);
-  }
-  else {
-    lua_pop(context, 1);
   }
 
   return exists;
@@ -415,19 +449,11 @@ bool Script::notify_script(const std::string &function_name, int arg1, int arg2)
  */
 bool Script::notify_script(const std::string &function_name, bool arg1) {
 
-  if (context == NULL) {
-    return false;
-  }
-
-  lua_getglobal(context, function_name.c_str());
-  bool exists = lua_isfunction(context, -1);
+  bool exists = find_lua_function(function_name);
 
   if (exists) {
     lua_pushboolean(context, arg1);
     lua_call(context, 1, 0);
-  }
-  else {
-    lua_pop(context, 1);
   }
 
   return exists;

@@ -23,7 +23,9 @@
 /**
  * @brief Creates a fairy movement.
  */
-FairyMovement::FairyMovement() {
+FairyMovement::FairyMovement():
+  Movement(true) {
+
   set_speed(3);
   set_next_direction();
 }

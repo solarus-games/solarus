@@ -70,6 +70,6 @@ end
 function boss_key_chest_timer()
   sol.map.chest_set_hidden("boss_key_chest", false)
   sol.main.play_sound("secret")
-  sol.main.timer_start(1000, "camera_restore", false)
+  sol.main.timer_start(1000, "sol.map.camera_restore", false)
 end
 

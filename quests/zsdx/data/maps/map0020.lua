@@ -39,20 +39,20 @@ function camera_1_timer()
   sol.main.play_sound("secret")
   sol.map.tile_set_enabled("barrier", false)
   sol.game.savegame_set_boolean(38, true)
-  sol.main.timer_start(1000, "camera_restore", false)
+  sol.main.timer_start(1000, "sol.map.camera_restore", false)
 end
 
 function battle_1_camera_timer()
   sol.main.play_sound("secret")
   sol.map.tile_set_enabled("battle_1_barrier", false)
-  sol.main.timer_start(1000, "camera_restore", false)
+  sol.main.timer_start(1000, "sol.map.camera_restore", false)
 end
 
 
 function battle_2_camera_timer()
   sol.main.play_sound("secret")
   sol.map.tile_set_enabled("battle_2_barrier", false)
-  sol.main.timer_start(1000, "camera_restore", false)
+  sol.main.timer_start(1000, "sol.map.camera_restore", false)
 end
 
 function event_npc_dialog(npc)
@@ -142,10 +142,6 @@ end
 
 function has_boomerang_of_tom()
   return sol.game.savegame_get_boolean(41)
-end
-
-function has_gave_back_boomerang()
-  return sol.game.savegame_get_boolean(42)
 end
 
 function has_finished_cavern()

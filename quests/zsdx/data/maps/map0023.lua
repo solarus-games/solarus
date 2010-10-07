@@ -35,13 +35,13 @@ end
 
 function sw_camera_timer()
   open_sw_door()
-  sol.main.timer_start(1000, "camera_restore", false)
+  sol.main.timer_start(1000, "sol.map.camera_restore", false)
 end
 
 function compass_room_timer()
   sol.main.play_sound("chest_appears")
   sol.map.chest_set_hidden("compass_chest", false)
-  sol.main.timer_start(1000, "camera_restore", false)
+  sol.main.timer_start(1000, "sol.map.camera_restore", false)
 end
 
 function event_hero_on_sensor(sensor_name)

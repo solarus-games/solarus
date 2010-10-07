@@ -580,7 +580,7 @@ int Script::l_play_sound(lua_State *l) {
 
   Script *script;
   called_by_script(l, 1, &script);
-  const SoundId &sound_id = lua_tostring(l, 1);
+  const SoundId &sound_id = luaL_checkstring(l, 1);
 
   Sound::play(sound_id);
 
@@ -598,7 +598,7 @@ int Script::l_play_music(lua_State *l) {
 
   Script *script;
   called_by_script(l, 1, &script);
-  const MusicId &music_id = lua_tostring(l, 1);
+  const MusicId &music_id = luaL_checkstring(l, 1);
   Music::play(music_id);
 
   return 0;
@@ -618,8 +618,8 @@ int Script::l_timer_start(lua_State *l) {
 
   Script *script;
   called_by_script(l, 3, &script);
-  uint32_t duration = lua_tointeger(l, 1);
-  const std::string &callback_name = lua_tostring(l, 2);
+  uint32_t duration = luaL_checkinteger(l, 1);
+  const std::string &callback_name = luaL_checkstring(l, 2);
   bool with_sound = lua_toboolean(l, 3) != 0;
 
   Timer *timer = new Timer(duration, callback_name, with_sound);
@@ -643,7 +643,7 @@ int Script::l_timer_stop(lua_State *l) {
 
   Script *script;
   called_by_script(l, 1, &script);
-  const std::string &callback_name = lua_tostring(l, 1);
+  const std::string &callback_name = luaL_checkstring(l, 1);
 
   script->remove_timer(callback_name);
 
@@ -666,8 +666,8 @@ int Script::l_sprite_create(lua_State *l) {
 
   Script *script;
   called_by_script(l, 2, &script);
-  const std::string &sprite_id = lua_tostring(l, 1);
-  const std::string &animation_set_id = lua_tostring(l, 2);
+  const std::string &sprite_id = luaL_checkstring(l, 1);
+  const std::string &animation_set_id = luaL_checkstring(l, 2);
 
   script->create_sprite(sprite_id, animation_set_id);
 
@@ -688,7 +688,7 @@ int Script::l_sprite_remove(lua_State *l) {
 
   Script *script;
   called_by_script(l, 1, &script);
-  const std::string &sprite_id = lua_tostring(l, 1);
+  const std::string &sprite_id = luaL_checkstring(l, 1);
 
   Sprite *sprite = &script->get_sprite(sprite_id);
 
@@ -711,7 +711,7 @@ int Script::l_sprite_get_animation(lua_State *l) {
 
   Script *script;
   called_by_script(l, 1, &script);
-  const std::string &sprite_id = lua_tostring(l, 1);
+  const std::string &sprite_id = luaL_checkstring(l, 1);
 
   const Sprite &sprite = script->get_sprite(sprite_id);
   const std::string animation_name = sprite.get_current_animation();
@@ -732,8 +732,8 @@ int Script::l_sprite_set_animation(lua_State *l) {
 
   Script *script;
   called_by_script(l, 2, &script);
-  const std::string &sprite_id = lua_tostring(l, 1);
-  const std::string &animation_name = lua_tostring(l, 2);
+  const std::string &sprite_id = luaL_checkstring(l, 1);
+  const std::string &animation_name = luaL_checkstring(l, 2);
 
   Sprite &sprite = script->get_sprite(sprite_id);
   sprite.set_current_animation(animation_name);
@@ -754,7 +754,7 @@ int Script::l_sprite_get_direction(lua_State *l) {
 
   Script *script;
   called_by_script(l, 1, &script);
-  const std::string &sprite_id = lua_tostring(l, 1);
+  const std::string &sprite_id = luaL_checkstring(l, 1);
 
   const Sprite &sprite = script->get_sprite(sprite_id);
   lua_pushinteger(l, sprite.get_current_direction());
@@ -774,8 +774,8 @@ int Script::l_sprite_set_direction(lua_State *l) {
 
   Script *script;
   called_by_script(l, 2, &script);
-  const std::string &sprite_id = lua_tostring(l, 1);
-  int direction = lua_tointeger(l, 2);
+  const std::string &sprite_id = luaL_checkstring(l, 1);
+  int direction = luaL_checkinteger(l, 2);
 
   Sprite &sprite = script->get_sprite(sprite_id);
   sprite.set_current_direction(direction);
@@ -795,7 +795,7 @@ int Script::l_sprite_get_frame(lua_State *l) {
 
   Script *script;
   called_by_script(l, 1, &script);
-  const std::string &sprite_id = lua_tostring(l, 1);
+  const std::string &sprite_id = luaL_checkstring(l, 1);
 
   const Sprite &sprite = script->get_sprite(sprite_id);
   lua_pushinteger(l, sprite.get_current_frame());
@@ -815,8 +815,8 @@ int Script::l_sprite_set_frame(lua_State *l) {
 
   Script *script;
   called_by_script(l, 2, &script);
-  const std::string &sprite_id = lua_tostring(l, 1);
-  int frame = lua_tointeger(l, 2);
+  const std::string &sprite_id = luaL_checkstring(l, 1);
+  int frame = luaL_checkinteger(l, 2);
 
   Sprite &sprite = script->get_sprite(sprite_id);
   sprite.set_current_frame(frame);
@@ -836,7 +836,7 @@ int Script::l_sprite_get_frame_delay(lua_State *l) {
 
   Script *script;
   called_by_script(l, 1, &script);
-  const std::string &sprite_id = lua_tostring(l, 1);
+  const std::string &sprite_id = luaL_checkstring(l, 1);
 
   const Sprite &sprite = script->get_sprite(sprite_id);
   lua_pushinteger(l, sprite.get_frame_delay());
@@ -856,8 +856,8 @@ int Script::l_sprite_set_frame_delay(lua_State *l) {
 
   Script *script;
   called_by_script(l, 2, &script);
-  const std::string &sprite_id = lua_tostring(l, 1);
-  uint32_t delay = lua_tointeger(l, 2);
+  const std::string &sprite_id = luaL_checkstring(l, 1);
+  uint32_t delay = luaL_checkinteger(l, 2);
 
   Sprite &sprite = script->get_sprite(sprite_id);
   sprite.set_frame_delay(delay);
@@ -877,7 +877,7 @@ int Script::l_sprite_is_paused(lua_State *l) {
 
   Script *script;
   called_by_script(l, 1, &script);
-  const std::string &sprite_id = lua_tostring(l, 1);
+  const std::string &sprite_id = luaL_checkstring(l, 1);
 
   Sprite &sprite = script->get_sprite(sprite_id);
   lua_pushboolean(l, sprite.is_paused() ? 1 : 0);
@@ -897,7 +897,7 @@ int Script::l_sprite_set_paused(lua_State *l) {
 
   Script *script;
   called_by_script(l, 2, &script);
-  const std::string &sprite_id = lua_tostring(l, 1);
+  const std::string &sprite_id = luaL_checkstring(l, 1);
   bool paused = lua_toboolean(l, 2) != 0;
 
   Sprite &sprite = script->get_sprite(sprite_id);
@@ -919,7 +919,7 @@ int Script::l_sprite_set_animation_ignore_suspend(lua_State *l) {
 
   Script *script;
   called_by_script(l, 1, &script);
-  const std::string &sprite_id = lua_tostring(l, 1);
+  const std::string &sprite_id = luaL_checkstring(l, 1);
   bool ignore_suspend = lua_toboolean(l, 2) != 0;
 
   Sprite &sprite = script->get_sprite(sprite_id);
@@ -940,8 +940,8 @@ int Script::l_sprite_fade(lua_State *l) {
 
   Script *script;
   called_by_script(l, 2, &script);
-  const std::string &sprite_id = lua_tostring(l, 1);
-  int direction = lua_tointeger(l, 2);
+  const std::string &sprite_id = luaL_checkstring(l, 1);
+  int direction = luaL_checkinteger(l, 2);
 
   Sprite &sprite = script->get_sprite(sprite_id);
   sprite.start_fading(direction);

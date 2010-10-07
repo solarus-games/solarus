@@ -200,7 +200,7 @@ int MapScript::l_dialog_start(lua_State *l) {
 
   MapScript *script;
   called_by_script(l, 1, &script);
-  const std::string &message_id = lua_tostring(l, 1);
+  const std::string &message_id = luaL_checkstring(l, 1);
 
   script->game.get_dialog_box().start_dialog(message_id);
 
@@ -220,8 +220,8 @@ int MapScript::l_dialog_set_variable(lua_State *l) {
 
   MapScript *script;
   called_by_script(l, 2, &script);
-  const MessageId &message_id = lua_tostring(l, 1);
-  const std::string &value = lua_tostring(l, 2);
+  const MessageId &message_id = luaL_checkstring(l, 1);
+  const std::string &value = luaL_checkstring(l, 2);
 
   script->game.get_dialog_box().set_variable(message_id, value);
 
@@ -237,7 +237,7 @@ int MapScript::l_dialog_set_style(lua_State *l) {
 
   MapScript *script;
   called_by_script(l, 1, &script);
-  int style = lua_tointeger(l, 1);
+  int style = luaL_checkinteger(l, 1);
 
   script->game.get_dialog_box().set_style(DialogBox::Style(style));
 
@@ -285,9 +285,9 @@ int MapScript::l_camera_move(lua_State *l) {
 
   MapScript *script;
   called_by_script(l, 3, &script);
-  int x = lua_tointeger(l, 1);
-  int y = lua_tointeger(l, 2);
-  int speed = lua_tointeger(l, 3);
+  int x = luaL_checkinteger(l, 1);
+  int y = luaL_checkinteger(l, 2);
+  int speed = luaL_checkinteger(l, 3);
 
   script->game.get_current_map().move_camera(x, y, speed);
 
@@ -324,9 +324,9 @@ int MapScript::l_treasure_give(lua_State *l) {
 
   MapScript *script;
   called_by_script(l, 3, &script);
-  const std::string &item_name = lua_tostring(l, 1);
-  int variant = lua_tointeger(l, 2);
-  int savegame_variable = lua_tointeger(l, 3);
+  const std::string &item_name = luaL_checkstring(l, 1);
+  int variant = luaL_checkinteger(l, 2);
+  int savegame_variable = luaL_checkinteger(l, 3);
 
   script->hero.start_treasure(Treasure(script->game, item_name, variant, savegame_variable));
 
@@ -373,9 +373,9 @@ int MapScript::l_hero_set_map(lua_State *l) {
   MapScript *script;
   called_by_script(l, 3, &script);
 
-  MapId map_id = lua_tointeger(l, 1);
-  const std::string &destination_point_name = lua_tostring(l, 2);
-  Transition::Style transition_style = Transition::Style(lua_tointeger(l, 3));
+  MapId map_id = luaL_checkinteger(l, 1);
+  const std::string &destination_point_name = luaL_checkstring(l, 2);
+  Transition::Style transition_style = Transition::Style(luaL_checkinteger(l, 3));
 
   script->game.set_current_map(map_id, destination_point_name, transition_style);
 
@@ -394,7 +394,7 @@ int MapScript::l_hero_set_direction(lua_State *l) {
   MapScript *script;
   called_by_script(l, 1, &script);
 
-  int direction = lua_tointeger(l, 1);
+  int direction = luaL_checkinteger(l, 1);
 
   script->hero.set_animation_direction(direction);
 
@@ -413,7 +413,7 @@ int MapScript::l_hero_align_on_sensor(lua_State *l) {
   MapScript *script;
   called_by_script(l, 1, &script);
 
-  const std::string &name = lua_tostring(l, 1);
+  const std::string &name = luaL_checkstring(l, 1);
 
   MapEntities &entities = script->map.get_entities();
   Sensor *sensor = (Sensor*) entities.get_entity(SENSOR, name);
@@ -436,7 +436,7 @@ int MapScript::l_hero_walk(lua_State *l) {
   called_by_script(l, 3, NULL);
 
   /* TODO
-  const std::string &path = lua_tostring(l, 1);
+  const std::string &path = luaL_checkstring(l, 1);
   bool loop = lua_toboolean(l, 2) != 0;
   bool ignore_obstacles = lua_toboolean(l, 3) != 0;
 
@@ -460,8 +460,8 @@ int MapScript::l_hero_jump(lua_State *l) {
   MapScript *script;
   called_by_script(l, 3, &script);
 
-  int direction = lua_tointeger(l, 1);
-  int length = lua_tointeger(l, 2);
+  int direction = luaL_checkinteger(l, 1);
+  int length = luaL_checkinteger(l, 2);
   bool ignore_obstacles = lua_toboolean(l, 3) != 0;
 
   script->hero.start_jumping(direction, length, ignore_obstacles, false);
@@ -519,7 +519,7 @@ int MapScript::l_npc_get_position(lua_State *l) {
   MapScript *script;
   called_by_script(l, 1, &script);
 
-  const std::string &name = lua_tostring(l, 1);
+  const std::string &name = luaL_checkstring(l, 1);
 
   MapEntities &entities = script->map.get_entities();
   InteractiveEntity *npc = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, name);
@@ -545,9 +545,9 @@ int MapScript::l_npc_set_position(lua_State *l) {
   MapScript *script;
   called_by_script(l, 3, &script);
 
-  const std::string &name = lua_tostring(l, 1);
-  int x = lua_tointeger(l, 2);
-  int y = lua_tointeger(l, 3);
+  const std::string &name = luaL_checkstring(l, 1);
+  int x = luaL_checkinteger(l, 2);
+  int y = luaL_checkinteger(l, 3);
 
   MapEntities &entities = script->map.get_entities();
   InteractiveEntity *npc = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, name);
@@ -571,8 +571,8 @@ int MapScript::l_npc_walk(lua_State *l) {
   MapScript *script;
   called_by_script(l, 4, &script);
 
-  const std::string &name = lua_tostring(l, 1);
-  const std::string &path = lua_tostring(l, 2);
+  const std::string &name = luaL_checkstring(l, 1);
+  const std::string &path = luaL_checkstring(l, 2);
   bool loop = lua_toboolean(l, 3) != 0;
   bool ignore_obstacles = lua_toboolean(l, 4) != 0;
 
@@ -595,7 +595,7 @@ int MapScript::l_npc_random_walk(lua_State *l) {
   MapScript *script;
   called_by_script(l, 1, &script);
 
-  const std::string &name = lua_tostring(l, 1);
+  const std::string &name = luaL_checkstring(l, 1);
 
   MapEntities &entities = script->map.get_entities();
   InteractiveEntity *npc = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, name);
@@ -620,9 +620,9 @@ int MapScript::l_npc_jump(lua_State *l) {
   MapScript *script;
   called_by_script(l, 4, &script);
 
-  const std::string &name = lua_tostring(l, 1);
-  int direction = lua_tointeger(l, 2);
-  int length = lua_tointeger(l, 3);
+  const std::string &name = luaL_checkstring(l, 1);
+  int direction = luaL_checkinteger(l, 2);
+  int length = luaL_checkinteger(l, 3);
   bool ignore_obstacles = lua_toboolean(l, 4) != 0;
 
   MapEntities &entities = script->map.get_entities();
@@ -672,8 +672,8 @@ int MapScript::l_interactive_entity_create_sprite_id(lua_State *l) {
   MapScript *script;
   called_by_script(l, 2, &script);
 
-  const std::string &entity_name = lua_tostring(l, 1);
-  const std::string &sprite_id = lua_tostring(l, 2);
+  const std::string &entity_name = luaL_checkstring(l, 1);
+  const std::string &sprite_id = luaL_checkstring(l, 2);
 
   MapEntities &entities = script->map.get_entities();
   InteractiveEntity *entity = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, entity_name);
@@ -695,7 +695,7 @@ int MapScript::l_interactive_entity_remove(lua_State *l) {
   MapScript *script;
   called_by_script(l, 1, &script);
 
-  const std::string &name = lua_tostring(l, 1);
+  const std::string &name = luaL_checkstring(l, 1);
 
   MapEntities &entities = script->map.get_entities();
   entities.remove_entity(INTERACTIVE_ENTITY, name);
@@ -718,7 +718,7 @@ int MapScript::l_chest_set_open(lua_State *l) {
   MapScript *script;
   called_by_script(l, 2, &script);
 
-  const std::string &name = lua_tostring(l, 1);
+  const std::string &name = luaL_checkstring(l, 1);
   bool open = lua_toboolean(l, 2) != 0;
 
   MapEntities &entities = script->map.get_entities();
@@ -742,7 +742,7 @@ int MapScript::l_chest_set_hidden(lua_State *l) {
   MapScript *script;
   called_by_script(l, 2, &script);
 
-  const std::string &name = lua_tostring(l, 1);
+  const std::string &name = luaL_checkstring(l, 1);
   bool hidden = lua_toboolean(l, 2) != 0;
 
   MapEntities &entities = script->map.get_entities();
@@ -765,7 +765,7 @@ int MapScript::l_chest_is_hidden(lua_State *l) {
   MapScript *script;
   called_by_script(l, 1, &script);
 
-  const std::string &name = lua_tostring(l, 1);
+  const std::string &name = luaL_checkstring(l, 1);
 
   MapEntities &entities = script->map.get_entities();
   Chest *chest = (Chest*) entities.get_entity(CHEST, name);
@@ -787,7 +787,7 @@ int MapScript::l_tile_set_enabled(lua_State *l) {
   MapScript *script;
   called_by_script(l, 2, &script);
 
-  const std::string &name = lua_tostring(l, 1);
+  const std::string &name = luaL_checkstring(l, 1);
   bool enable = lua_toboolean(l, 2) != 0;
 
   MapEntities &entities = script->map.get_entities();
@@ -810,7 +810,7 @@ int MapScript::l_tile_set_group_enabled(lua_State *l) {
   MapScript *script;
   called_by_script(l, 2, &script);
 
-  const std::string &prefix = lua_tostring(l, 1);
+  const std::string &prefix = luaL_checkstring(l, 1);
   bool enable = lua_toboolean(l, 2) != 0;
 
   MapEntities &entities = script->map.get_entities();
@@ -838,7 +838,7 @@ int MapScript::l_tile_is_enabled(lua_State *l) {
   MapScript *script;
   called_by_script(l, 1, &script);
 
-  const std::string &name = lua_tostring(l, 1);
+  const std::string &name = luaL_checkstring(l, 1);
 
   MapEntities &entities = script->map.get_entities();
   DynamicTile *dynamic_tile = (DynamicTile*) entities.get_entity(DYNAMIC_TILE, name);
@@ -859,7 +859,7 @@ int MapScript::l_block_reset(lua_State *l) {
   MapScript *script;
   called_by_script(l, 1, &script);
 
-  const std::string &block_name = lua_tostring(l, 1);
+  const std::string &block_name = luaL_checkstring(l, 1);
 
   MapEntities &entities = script->map.get_entities();
   Block *block = (Block*) entities.get_entity(BLOCK, block_name);
@@ -900,7 +900,7 @@ int MapScript::l_shop_item_remove(lua_State *l) {
   MapScript *script;
   called_by_script(l, 1, &script);
 
-  const std::string &name = lua_tostring(l, 1);
+  const std::string &name = luaL_checkstring(l, 1);
 
   script->map.get_entities().remove_entity(SHOP_ITEM, name);
 
@@ -920,7 +920,7 @@ int MapScript::l_switch_is_enabled(lua_State *l) {
   MapScript *script;
   called_by_script(l, 1, &script);
 
-  const std::string &name = lua_tostring(l, 1);
+  const std::string &name = luaL_checkstring(l, 1);
 
   MapEntities &entities = script->map.get_entities();
   Switch *sw = (Switch*) entities.get_entity(SWITCH, name);
@@ -943,7 +943,7 @@ int MapScript::l_switch_set_enabled(lua_State *l) {
   MapScript *script;
   called_by_script(l, 2, &script);
 
-  const std::string &name = lua_tostring(l, 1);
+  const std::string &name = luaL_checkstring(l, 1);
   bool enable = lua_toboolean(l, 2) != 0;
 
   MapEntities &entities = script->map.get_entities();
@@ -966,7 +966,7 @@ int MapScript::l_switch_set_locked(lua_State *l) {
   MapScript *script;
   called_by_script(l, 2, &script);
 
-  const std::string &name = lua_tostring(l, 1);
+  const std::string &name = luaL_checkstring(l, 1);
   bool lock = lua_toboolean(l, 2) != 0;
 
   MapEntities &entities = script->map.get_entities();
@@ -990,7 +990,7 @@ int MapScript::l_enemy_is_dead(lua_State *l) {
   MapScript *script;
   called_by_script(l, 1, &script);
 
-  const std::string &name = lua_tostring(l, 1);
+  const std::string &name = luaL_checkstring(l, 1);
 
   MapEntities &entities = script->map.get_entities();
   Enemy *enemy = (Enemy*) entities.find_entity(ENEMY, name);
@@ -1015,7 +1015,7 @@ int MapScript::l_enemy_is_group_dead(lua_State *l) {
   MapScript *script;
   called_by_script(l, 1, &script);
 
-  const std::string &prefix = lua_tostring(l, 1);
+  const std::string &prefix = luaL_checkstring(l, 1);
 
   MapEntities &entities = script->map.get_entities();
   std::list<MapEntity*> enemies = entities.get_entities_with_prefix(ENEMY, prefix);
@@ -1039,7 +1039,7 @@ int MapScript::l_enemy_set_enabled(lua_State *l) {
   MapScript *script;
   called_by_script(l, 2, &script);
 
-  const std::string &name = lua_tostring(l, 1);
+  const std::string &name = luaL_checkstring(l, 1);
   bool enable = lua_toboolean(l, 2) != 0;
 
   MapEntities &entities = script->map.get_entities();
@@ -1063,7 +1063,7 @@ int MapScript::l_enemy_start_boss(lua_State *l) {
   MapScript *script;
   called_by_script(l, 1, &script);
 
-  const std::string &name = lua_tostring(l, 1);
+  const std::string &name = luaL_checkstring(l, 1);
 
   MapEntities &entities = script->map.get_entities();
   Enemy *enemy = (Enemy*) entities.find_entity(ENEMY, name); 
@@ -1104,7 +1104,7 @@ int MapScript::l_enemy_start_miniboss(lua_State *l) {
   MapScript *script;
   called_by_script(l, 1, &script);
 
-  const std::string &name = lua_tostring(l, 1);
+  const std::string &name = luaL_checkstring(l, 1);
 
   MapEntities &entities = script->map.get_entities();
   Enemy *enemy = (Enemy*) entities.find_entity(ENEMY, name); 
@@ -1142,7 +1142,7 @@ int MapScript::l_sensor_remove(lua_State *l) {
   MapScript *script;
   called_by_script(l, 1, &script);
 
-  const std::string &name = lua_tostring(l, 1);
+  const std::string &name = luaL_checkstring(l, 1);
 
   script->map.get_entities().remove_entity(SENSOR, name);
 
@@ -1163,7 +1163,7 @@ int MapScript::l_door_open(lua_State *l) {
   MapScript *script;
   called_by_script(l, 1, &script);
 
-  const std::string &prefix = lua_tostring(l, 1);
+  const std::string &prefix = luaL_checkstring(l, 1);
 
   MapEntities &entities = script->map.get_entities();
   std::list<MapEntity*> doors = entities.get_entities_with_prefix(DOOR, prefix);
@@ -1191,7 +1191,7 @@ int MapScript::l_door_close(lua_State *l) {
   MapScript *script;
   called_by_script(l, 1, &script);
 
-  const std::string &prefix = lua_tostring(l, 1);
+  const std::string &prefix = luaL_checkstring(l, 1);
 
   MapEntities &entities = script->map.get_entities();
   std::list<MapEntity*> doors = entities.get_entities_with_prefix(DOOR, prefix);
@@ -1217,7 +1217,7 @@ int MapScript::l_door_is_open(lua_State *l) {
 
   MapScript *script;
   called_by_script(l, 1, &script);
-  const std::string &name = lua_tostring(l, 1);
+  const std::string &name = luaL_checkstring(l, 1);
 
   MapEntities &entities = script->map.get_entities();
   Door *door = (Door*) entities.get_entity(DOOR, name);
@@ -1239,7 +1239,7 @@ int MapScript::l_door_set_open(lua_State *l) {
   MapScript *script;
   called_by_script(l, 2, &script);
 
-  const std::string &prefix = lua_tostring(l, 1);
+  const std::string &prefix = luaL_checkstring(l, 1);
   bool open = lua_toboolean(l, 2) != 0;
 
   MapEntities &entities = script->map.get_entities();
@@ -1430,7 +1430,7 @@ void MapScript::event_hero_interaction(const std::string &entity_name) {
 bool MapScript::event_hero_interaction_item(const std::string &entity_name, const std::string &item_name, int variant) {
 
   bool exists = notify_script("event_hero_interaction_item", entity_name, item_name, variant);
-  bool interaction = lua_toboolean(context, 1);
+  bool interaction = lua_toboolean(context, 1) != 0;
 
   return exists && interaction;
 }

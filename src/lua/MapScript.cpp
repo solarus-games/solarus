@@ -1288,7 +1288,7 @@ void MapScript::event_dialog_started(const MessageId &message_id) {
  */
 void MapScript::event_dialog_finished(const MessageId &first_message_id, int answer) {
 
-  notify_script("event_dialog_finished", first_message_id, answer);
+  notify_script("event_dialog_finished", "si", first_message_id.c_str(), answer);
 }
 
 /**
@@ -1320,7 +1320,7 @@ void MapScript::event_camera_back() {
  */
 void MapScript::event_treasure_obtaining(const std::string &item_name, int variant, int savegame_variable) {
 
-  notify_script("event_treasure_obtaining", item_name, variant, savegame_variable);
+  notify_script("event_treasure_obtaining", "sii", item_name.c_str(), variant, savegame_variable);
 }
 
 /**
@@ -1336,7 +1336,7 @@ void MapScript::event_treasure_obtaining(const std::string &item_name, int varia
  */
 void MapScript::event_treasure_obtained(const std::string &item_name, int variant, int savegame_variable) {
 
-  notify_script("event_treasure_obtained", item_name, variant, savegame_variable);
+  notify_script("event_treasure_obtained", "sii", item_name.c_str(), variant, savegame_variable);
 }
 
 /**
@@ -1345,7 +1345,7 @@ void MapScript::event_treasure_obtained(const std::string &item_name, int varian
  */
 void MapScript::event_map_started(const std::string &destination_point_name) {
   
-  notify_script("event_map_started",  destination_point_name);
+  notify_script("event_map_started",  "s", destination_point_name.c_str());
 }
 
 /**
@@ -1354,7 +1354,7 @@ void MapScript::event_map_started(const std::string &destination_point_name) {
  */
 void MapScript::event_map_opening_transition_finished(const std::string &destination_point_name) {
   
-  notify_script("event_map_opening_transition_finished", destination_point_name);
+  notify_script("event_map_opening_transition_finished", "s", destination_point_name.c_str());
 }
 
 /**
@@ -1363,7 +1363,7 @@ void MapScript::event_map_opening_transition_finished(const std::string &destina
  */
 void MapScript::event_switch_enabled(const std::string &switch_name) {
   
-  notify_script("event_switch_enabled", switch_name);
+  notify_script("event_switch_enabled", "s", switch_name.c_str());
 }
 
 /**
@@ -1372,7 +1372,7 @@ void MapScript::event_switch_enabled(const std::string &switch_name) {
  */
 void MapScript::event_switch_disabled(const std::string &switch_name) {
   
-  notify_script("event_switch_disabled", switch_name);
+  notify_script("event_switch_disabled", "s", switch_name.c_str());
 }
 
 /**
@@ -1384,7 +1384,7 @@ void MapScript::event_switch_disabled(const std::string &switch_name) {
  */
 void MapScript::event_switch_left(const std::string &switch_name) {
   
-  notify_script("event_switch_left", switch_name);
+  notify_script("event_switch_left", "s", switch_name.c_str());
 }
 
 /**
@@ -1401,7 +1401,7 @@ void MapScript::event_hero_victory_sequence_finished() {
  */
 void MapScript::event_hero_on_sensor(const std::string &sensor_name) {
   
-  notify_script("event_hero_on_sensor", sensor_name);
+  notify_script("event_hero_on_sensor", "s", sensor_name.c_str());
 }
 
 /**
@@ -1411,7 +1411,7 @@ void MapScript::event_hero_on_sensor(const std::string &sensor_name) {
  */
 void MapScript::event_hero_interaction(const std::string &entity_name) {
   
-  notify_script("event_hero_interaction", entity_name);
+  notify_script("event_hero_interaction", "s", entity_name.c_str());
 }
 
 /**
@@ -1429,11 +1429,10 @@ void MapScript::event_hero_interaction(const std::string &entity_name) {
  */
 bool MapScript::event_hero_interaction_item(const std::string &entity_name, const std::string &item_name, int variant) {
 
-  bool exists = notify_script("event_hero_interaction_item", entity_name, item_name, variant);
-  bool interaction = lua_toboolean(context, 1) != 0;
-  lua_pop(context);
+  bool interaction = false;
+  notify_script("event_hero_interaction_item", "sss b", entity_name.c_str(), item_name.c_str(), variant, &interaction);
 
-  return exists && interaction;
+  return interaction;
 }
 
 /**
@@ -1443,7 +1442,7 @@ bool MapScript::event_hero_interaction_item(const std::string &entity_name, cons
  */
 void MapScript::event_npc_dialog(const std::string &npc_name) {
    
-  notify_script("event_npc_dialog", npc_name);
+  notify_script("event_npc_dialog", "s", npc_name.c_str());
 }
 
 /**
@@ -1452,7 +1451,7 @@ void MapScript::event_npc_dialog(const std::string &npc_name) {
  */
 void MapScript::event_npc_movement_finished(const std::string &npc_name) {
    
-  notify_script("event_npc_movement_finished", npc_name);
+  notify_script("event_npc_movement_finished", "s", npc_name.c_str());
 }
 
 /**
@@ -1470,7 +1469,7 @@ void MapScript::event_npc_movement_finished(const std::string &npc_name) {
  */
 bool MapScript::event_chest_empty(const std::string &chest_name) {
    
-  bool exists = notify_script("event_chest_empty", chest_name);
+  bool exists = notify_script("event_chest_empty", "s", chest_name.c_str());
   return exists;
 }
 
@@ -1480,7 +1479,7 @@ bool MapScript::event_chest_empty(const std::string &chest_name) {
  */
 void MapScript::event_shop_item_bought(const std::string &shop_item_name) {
 
-  notify_script("event_shop_item_bought", shop_item_name);
+  notify_script("event_shop_item_bought", "s", shop_item_name.c_str());
 }
 
 /**
@@ -1489,6 +1488,6 @@ void MapScript::event_shop_item_bought(const std::string &shop_item_name) {
  */
 void MapScript::event_enemy_dead(const std::string &enemy_name) {
 
-  notify_script("event_enemy_dead", enemy_name);
+  notify_script("event_enemy_dead", "s", enemy_name.c_str());
 }
 

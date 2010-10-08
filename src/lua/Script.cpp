@@ -166,7 +166,7 @@ void Script::register_available_functions() {
 void Script::called_by_script(lua_State *context, int nb_arguments, Script **script) {
 
   // check the number of arguments
-  Debug::assert(lua_gettop(context) == nb_arguments, "Invalid number of arguments");
+  Debug::assert(lua_gettop(context) == nb_arguments, "Invalid number of arguments when calling C++ from Lua");
 
   // retrieve the Script object
   if (script != NULL) {
@@ -284,17 +284,18 @@ bool Script::find_lua_function(const std::string &function_name) {
  * The arguments and results of the Lua function are passed thanks to the variable number of
  * parameters (possibly of different types) of this C++ method.
  * The format parameter of this C++ method specifies the type of each
- * argument and each result.
+ * argument and each result of the Lua function to call.
  * The types of the arguments should be described in the format string as a sequence of characters
  * where each character represents a type ('i': int, 'b': bool, 's': const char*).
  * If you expect some results to get returned by the Lua function,
  * the format string should then take a space character,
  * and the types of the results are then specified in the same way,
+ * except that results of type string are not accepted.
  * The space character is optional if no result is returned.
  * This means an empty format string can be used when the Lua function has no argument
  * and no return value.
  *
- * The remaining parameters of this C++ function (of variable number)
+ * The remaining parameters of this C++ method (of variable number)
  * must match the specified format,
  * passing values for the arguments and pointers for the results.
  *
@@ -304,36 +305,39 @@ bool Script::find_lua_function(const std::string &function_name) {
  * the format string you should specify is: "sii b".
  * You should then give four parameters of types const char*, int, int and bool*.
  *
- * If the Lua function returns a string, the C++ paramater that will receive it
- * should be naturally of type const char**.
- * The necessary memory will be allocated with new[] to store the string and
- * you are responsible to release it later with delete[].
- * This inconvenience is because of the cstdarg restriction
- * (one cannot pass std::string in function with variable argument number).
- *
- * If the Lua function exists, it is executed, the results (if any) are stored in your pointed areas,
- * and this C++ method returns true.
- * You then have to pop the Lua results from the stack yourself.
- * If a result is of type string, the memory used by its const char* pointer is discarded
- * when you pop it from the stack
- * (and that's why this C++ method cannot pop the Lua results for you).
- * This inconvenience is because the variable argument number mechanism cannot use std::string
- * (maybe it was a bad idea to use this mechanism with C++).
- * If you need to memorize the string, you should make a copy of it (normally in an std::string) before
- * you pop the Lua results.
- * However, in Solarus, calling Lua from C++ is currently used only to notify a script that something
- * happened (this explains the name of this C++ method), not to ask strings to them.
- *
  * If the Lua function does not exists in the script,
  * nothing happens and this C++ function returns false.
  * It just means that the function corresponds to an event that
  * the script does not want to handle.
+ * If the Lua function exists, the arguments are pushed onto the stack, the function is executed,
+ * the results (if any) are popped from the stack and stored into your pointed areas,
+ * and this C++ method returns true.
+ * In both cases, the Lua stack is left unchanged.
+ *
+ * This function does not support results of type string because it would cause some
+ * complications and we want to keep its usage simple.
+ * If you need to call a function with a result of type string, you can still do it,
+ * but not with this C++ method.
+ * I explain now what the problem is with string results.
+ * If a Lua function returns a string, the memory used by the const char* pointer is discarded
+ * when the C++ code pops it from the stack.
+ * And this C++ method is supposed to to the job for you, so it pops the results
+ * from the stack before returning them to you.
+ * As a consequence, allowing string results
+ * would require that you pop the results yourself, after having read them.
+ * Another solution would be to return a copy of the string,
+ * but because the variable number of parameters mechanism cannot use std::string,
+ * the copy would be a const char* that you would have to free yourselft.
+ * As this function wants to simplify your code by doing the job for you,
+ * both solutions are bad ideas.
+ * However, in Solarus, calling Lua from C++ is used only to notify a script that something
+ * happened (recall the name of this C++ method), not to ask strings to them.
  *
  * @param function_name name of the function to call
  * (may be prefixed by the name of several Lua tables, typically sol.main.some_function)
  * @param format a string describing the types of arguments to pass to the Lua function
- * and the types of return values to get.
- * @return true if the function was called, false if it does not exist
+ * and the types of return values to get (see above)
+ * @return true if the function was called successfully, false if it does not exist
  */
 bool Script::notify_script(const std::string &function_name, const std::string &format, ...) {
 
@@ -346,7 +350,8 @@ bool Script::notify_script(const std::string &function_name, const std::string &
     va_start(args, format);
 
     // push the arguments
-    unsigned int i, nb_arguments;
+    unsigned int i;
+    unsigned int nb_arguments = 0;
     bool end_arguments = false;
     for (i = 0; i < format.size() && !end_arguments; i++) {
       switch (format[i]) {
@@ -373,18 +378,11 @@ bool Script::notify_script(const std::string &function_name, const std::string &
       switch (type) {
 	case 'i':	*va_arg(args, int*) = lua_tointeger(context, stack_index);	break;
 	case 'b':	*va_arg(args, int*) = lua_toboolean(context, stack_index);	break;
-	case 's':	*va_arg(args, const char**) = lua_tostring(context, stack_index);	break;
+	case 's':	Debug::die("String results are not supported by Script::notify_script(), please make the call yourself");
 	default:	Debug::die(StringConcat() << "Invalid character '" << type << "' in format string '" << format);
       }
     }
-    /*
-     * Notice that we do NOT pop the results because if some of them are strings, they would be discarded
-     * but we have pointers to them. Another solution would be to make copies of those strings,
-     * but this would give the caller the responsability to delete them with delete[].
-     * I prefer give him the responsability to pop the stack when the Lua function has results.
-     * This mess is because the variable argument number mechanism refuses to use std::string.
-     */
-
+    lua_pop(context, nb_results);
     va_end(args);
   }
   else {
@@ -853,7 +851,7 @@ int Script::l_sprite_set_paused(lua_State *l) {
 int Script::l_sprite_set_animation_ignore_suspend(lua_State *l) {
 
   Script *script;
-  called_by_script(l, 1, &script);
+  called_by_script(l, 2, &script);
   const std::string &sprite_id = luaL_checkstring(l, 1);
   bool ignore_suspend = lua_toboolean(l, 2) != 0;
 

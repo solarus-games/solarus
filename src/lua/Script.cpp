@@ -385,9 +385,6 @@ bool Script::notify_script(const std::string &function_name, const std::string &
     lua_pop(context, nb_results);
     va_end(args);
   }
-  else {
-    lua_pop(context, 1);
-  }
 
   return exists;
 }

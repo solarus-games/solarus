@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "movements/SmoothCollisionMovement.h"
+#include "movements/SmoothMovement.h"
 #include "lowlevel/Geometry.h"
 #include "lowlevel/System.h"
 
@@ -23,7 +23,7 @@
  * @param smooth true to actually make the movement smooth
  * (false makes the movement identical to Movement)
  */
-SmoothCollisionMovement::SmoothCollisionMovement(bool smooth):
+SmoothMovement::SmoothMovement(bool smooth):
   smooth(smooth) {
 
 }
@@ -31,7 +31,7 @@ SmoothCollisionMovement::SmoothCollisionMovement(bool smooth):
 /**
  * @brief Destructor.
  */
-SmoothCollisionMovement::~SmoothCollisionMovement() {
+SmoothMovement::~SmoothMovement() {
 
 }
 
@@ -41,7 +41,7 @@ SmoothCollisionMovement::~SmoothCollisionMovement() {
  * This is a redefinition of Movement::update_x() to
  * handle the smooth collisions.
  */
-void SmoothCollisionMovement::update_x() {
+void SmoothMovement::update_x() {
 
   if (!smooth) {
     Movement::update_x();
@@ -117,7 +117,7 @@ void SmoothCollisionMovement::update_x() {
  * This is a redefinition of Movement::update_y() to to
  * handle the smooth collisions.
  */
-void SmoothCollisionMovement::update_y() {
+void SmoothMovement::update_y() {
 
   if (!smooth) {
     Movement::update_y();

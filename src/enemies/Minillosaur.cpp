@@ -17,7 +17,7 @@
 #include "enemies/Minillosaur.h"
 #include "entities/MapEntities.h"
 #include "entities/Hero.h"
-#include "movements/StraightMovement.h"
+#include "movements/TemporalMovement.h"
 #include "movements/PathFindingMovement.h"
 #include "lowlevel/Sound.h"
 #include "Sprite.h"
@@ -58,7 +58,7 @@ void Minillosaur::initialize() {
   set_origin(12, 20);
 
   // initial movement
-  set_movement(new StraightMovement(12, get_xy(), get_hero().get_xy(), 1500, false));
+  set_movement(new TemporalMovement(12, get_xy(), get_hero().get_xy(), 1500, false));
 
   // reactions to attacks
   set_no_attack_consequences();

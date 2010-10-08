@@ -217,7 +217,7 @@ void Script::print_stack() {
  *
  * If the function is not found, the stack is left unchanged.
  *
- * @param name of the function to find
+ * @param function_name of the function to find
  * (may be prefixed by the name of several Lua tables, typically sol.main.some_function)
  * @return true if the function was found
  */

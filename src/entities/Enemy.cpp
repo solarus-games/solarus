@@ -27,7 +27,7 @@
 #include "SpriteAnimationSet.h"
 #include "Map.h"
 #include "lua/MapScript.h"
-#include "movements/StraightMovement.h"
+#include "movements/TemporalMovement.h"
 #include "movements/FallingHeight.h"
 #include "lowlevel/Geometry.h"
 #include "lowlevel/FileTools.h"
@@ -842,7 +842,7 @@ void Enemy::hurt(MapEntity &source) {
   // push the enemy back
   if (pushed_back_when_hurt) {
     double angle = source.get_vector_angle(*this);
-    set_movement(new StraightMovement(12, angle, 200));
+    set_movement(new TemporalMovement(12, angle, 200));
   }
   else {
     stop_hurt_date = now + 300;

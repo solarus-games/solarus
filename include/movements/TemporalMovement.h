@@ -14,20 +14,21 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_STRAIGHT_MOVEMENT_H
-#define SOLARUS_STRAIGHT_MOVEMENT_H
+#ifndef SOLARUS_TEMPORAL_MOVEMENT_H
+#define SOLARUS_TEMPORAL_MOVEMENT_H
 
 #include "Common.h"
-#include "movements/SmoothCollisionMovement.h"
+#include "movements/SmoothMovement.h"
 
 /**
  * @brief Movement of an entity that follows a straight trajectory
  * for an amount of time.
  *
  * If an obstacle is reached, the movement tries to fix the trajectory
- * so that the movement can continue.
+ * so that the movement can continue (assuming the option <tt>smooth</tt>
+ * is set).
  */
-class StraightMovement: public SmoothCollisionMovement {
+class TemporalMovement: public SmoothMovement {
 
   private:
 
@@ -36,10 +37,10 @@ class StraightMovement: public SmoothCollisionMovement {
 
   public:
 
-    StraightMovement(int speed, int direction, uint32_t time, bool smooth = true);
-    StraightMovement(int speed, double direction, uint32_t time, bool smooth = true);
-    StraightMovement(int speed, const Rectangle &source_xy, const Rectangle &target_xy, uint32_t time, bool smooth = true);
-    ~StraightMovement();
+    TemporalMovement(int speed, int direction, uint32_t time, bool smooth = true);
+    TemporalMovement(int speed, double direction, uint32_t time, bool smooth = true);
+    TemporalMovement(int speed, const Rectangle &source_xy, const Rectangle &target_xy, uint32_t time, bool smooth = true);
+    ~TemporalMovement();
 
     void update();
     void set_suspended(bool suspended);

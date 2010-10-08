@@ -18,7 +18,7 @@
 #define SOLARUS_PLAYER_MOVEMENT_H
 
 #include "Common.h"
-#include "movements/SmoothCollisionMovement.h"
+#include "movements/SmoothMovement.h"
 
 /**
  * @brief Movement of an entity controlled by the player.
@@ -27,7 +27,7 @@
  * This class basically converts the combination of directional keys pressed
  * (from the class GameControls) into a movement.
  */
-class PlayerMovement: public SmoothCollisionMovement {
+class PlayerMovement: public SmoothMovement {
 
   protected:
 

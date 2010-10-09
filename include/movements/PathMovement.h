@@ -58,7 +58,7 @@ class PathMovement: public Movement {
     static const std::string get_random_path();
     bool is_current_move_finished();
     void set_entity(MapEntity *entity);
-    void set_speed(int speed);
+    void set_speed(int speed); // TODD RectilinearMovement::set_speed is not virtual anymore, find a cleaner solution
 
   public:
 
@@ -68,11 +68,13 @@ class PathMovement: public Movement {
     virtual bool is_finished();
 
     int get_current_direction();
-    void set_position(int x, int y);
+    void set_position(int x, int y); // TODO Movement::set_position is now Movement::set_xy and is not virtual anymore, find a cleaner solution
     int get_total_distance_covered();
     Rectangle get_xy_change();
 
     void update();
+
+    // TODO PathMovement should probably inherit PixelMovement instead of RectilinearMovement
 };
 
 #endif

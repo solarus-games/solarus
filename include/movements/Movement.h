@@ -21,142 +21,90 @@
 #include "lowlevel/Rectangle.h"
 
 /**
- * @brief Base class for representing a movement.
+ * @brief Abstract class for representing a movement.
  *
  * This is the parent class of all kinds of movement.
- * It implements a simple speed vector and provides basic functions
- * such as setting the speed and the direction of a straight movement.
- * Subclassses can use this speed vector and extend it or implement totally different movements.
- *
  * An instance of Movement can be applied to a map entity during the game,
  * or to any arbitrary coordinates.
- * A moving map entity has an instance of Movement that modifies its coordinates.
  */
 class Movement {
 
-  protected:
-
-    MapEntity *entity;         /**< The entity controlled by this movement.
-                                * If it is NULL, the movement is applied to the internal x and y fields below. */
-
   private:
 
-    int x;                     /**< X coordinate of the object controlled by this movement. */
-    int y;                     /**< Y coordinate of the object controlled by this movement. */
+    // object to move
+    MapEntity *entity;					/**< the entity controlled by this movement (if NULL, the movement
+							 * is applied to the xy field below instead) */
 
-    // speed vector
+    Rectangle xy;					/**< coordinates of the object controlled by this movement when it is not an entity */
 
-    double x_speed;            /**< X speed of the entity, between -100 and 100.
-				* 0: stopped
-				* positive value: moving to the right
-				* negative value: moving to the left */
+    // suspended
+    bool suspended;					/**< indicates whether the movement is suspended */
+    uint32_t when_suspended;				/**< indicates when the movement was suspended */
 
-    double y_speed;            /**< Y speed of the entity, between -100 and 100.
-				* 0: stopped
-				* positive value: moving downwards
-				* negative value: moving upwards */
+    // obstacles (only when the movement is applied to an entity)
+    Rectangle last_collision_box_on_obstacle;		/**< copy of the entity's collision box of the last call
+							 * to test_collision_with_map() returning true */ 
 
-    uint32_t next_move_date_x; /**< Date of the next x move in ticks. */
-    uint32_t next_move_date_y; /**< Date of the next y move in ticks. */
+    bool default_ignore_obstacles;			/**< indicates that this movement normally ignores obstacles */
+    bool current_ignore_obstacles;			/**< indicates that this movement currently ignores obstacles */
 
-    uint32_t last_move_date;   /**< Date of the last x or y move. */
-
-    // the following fields are redundant and can be computed
-    // with x_speed and y_speed
-
-    uint32_t x_delay;          /**< Delay in ticks between an x move of 1 pixel.
-				* x_delay = 200 / |x_speed|  */
-    uint32_t y_delay;          /**< Delay in ticks between an y move of 1 pixel.
-				* y_delay = 200 / |y_speed|
-				*/
-
-    int x_move;                /**< Number of pixels of the next x move : 0, 1 or -1. */
-    int y_move;                /**< Number of pixels of the next y move : 0, 1 or -1. */
-
-    bool suspended;            /**< Indicates whether the movement is suspended. */
-
-    // collisions
-    Rectangle last_collision_box_on_obstacle;	/**< copy of the collision box of the last call
-						 * to test_collision_with_map() returning true */ 
-
-    bool default_ignore_obstacles;		/**< indicates that this movement normally ignores obstacles */
-    bool current_ignore_obstacles;		/**< indicates that this movement currently ignore obstacles */
+    // properties
+    std::map<std::string, std::string> properties;	/**< a key-value map of properties, used to handle the movement from a script
+    							 * (each subclass accepts a precise list of keys) */
 
   protected:
 
-    uint32_t when_suspended;   /**< Indicates when the movement was suspended. */
+    Movement(bool ignore_obstacles = false);
 
-    inline int get_x_move()        { return x_move; }
-    inline int get_y_move()        { return y_move; }
-    inline void set_x_move(int x_move) { this->x_move = x_move; }
-    inline void set_y_move(int y_move) { this->y_move = y_move; }
-
-    inline uint32_t get_next_move_date_x()                  { return next_move_date_x; }
-    inline uint32_t get_next_move_date_y()                  { return next_move_date_y; }
-    void set_next_move_date_x(uint32_t next_move_date_x);
-    void set_next_move_date_y(uint32_t next_move_date_y);
-
-    inline uint32_t get_x_delay()         { return x_delay; }
-    inline uint32_t get_y_delay()         { return y_delay; }
-    inline void set_x_delay(uint32_t x_delay) { this->x_delay = x_delay; }
-    inline void set_y_delay(uint32_t y_delay) { this->y_delay = y_delay; }
-
-    void translate_x(int dx);
-    void translate_y(int dy);
-    void translate(int dx, int dy);
-
-    virtual void update_x();
-    virtual void update_y();
+    // suspended
+    uint32_t get_when_suspended();
 
     // obstacles
     void set_default_ignore_obstacles(bool ignore_obstacles);
 
   public:
 
-    Movement(bool ignore_obstacles = false);
     virtual ~Movement();
 
     // entity
     virtual void set_entity(MapEntity *entity);
 
-    // position
-    int get_x();
-    int get_y();
-    void set_x(int x);
-    void set_y(int y);
-    virtual void set_position(int x, int y);
-    void set_position(const Rectangle &xy);
-    virtual void notify_position_changed();
+    // update
+    virtual void update(); // called repeatedly
 
-    virtual void update();
-    bool has_to_move_now();
-
-    // movement
-
-    double get_x_speed();
-    double get_y_speed();
-    double get_speed();
-    bool is_stopped();
-    virtual bool is_started();
-    virtual bool is_finished();
-
-    void set_x_speed(double x_speed);
-    void set_y_speed(double y_speed);
-    virtual void set_speed(double speed);
-    void stop();
-
+    // suspended
     bool is_suspended();
     virtual void set_suspended(bool suspended);
 
-    void set_direction(int direction);
-    void set_direction(double angle);
+    // position
+    int get_x();
+    int get_y();
+    const Rectangle& get_xy();
+    void set_x(int x);
+    void set_y(int y);
+    void set_xy(const Rectangle &xy);
+    void translate_x(int dx);
+    void translate_y(int dy);
+    void translate_xy(const Rectangle &dxy);
+    virtual void notify_position_changed(); // called whenever x or y is changed
+
+    // movement
+    virtual bool is_stopped();
+    virtual bool is_started();
+    virtual bool is_finished();
+    virtual void stop();
 
     // obstacles
-    bool test_collision_with_map(int dx, int dy);
+    bool test_collision_with_obstacles(int dx, int dy);
+    bool test_collision_with_obstacles(const Rectangle &dxy);
     const Rectangle& get_last_collision_box_on_obstacle();
     bool are_obstacles_ignored();
     void set_ignore_obstacles(bool ignore_obstacles);
     void restore_default_ignore_obstacles();
+
+    // properties
+    const std::string& get_property(const std::string &key);
+    void set_property(const std::string &key, const std::string &value);
 };
 
 #endif

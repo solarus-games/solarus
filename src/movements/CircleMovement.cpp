@@ -277,6 +277,7 @@ void CircleMovement::recompute_position() {
  * @param suspended true to suspend the movement, false to resume it
  */
 void CircleMovement::set_suspended(bool suspended) {
+
   Movement::set_suspended(suspended);
 
   if (!suspended) {

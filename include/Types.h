@@ -185,7 +185,7 @@ class SmoothMovement;
 class PlayerMovement;
 class FallingOnFloorMovement;
 class PixelMovement;
-class FairyMovement;
+class BoundedRandomMovement;
 class FollowMovement;
 class TargetMovement;
 class JumpMovement;

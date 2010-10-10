@@ -18,14 +18,14 @@
 #define SOLARUS_TARGET_MOVEMENT_H
 
 #include "Common.h"
-#include "movements/Movement.h"
+#include "movements/RectilinearMovement.h"
 
 /**
  * @brief Movement of an object that goes to a target point.
  *
  * The target point may be a fixed point or a moving entity.
  */
-class TargetMovement: public Movement {
+class TargetMovement: public RectilinearMovement {
 
   protected:
 

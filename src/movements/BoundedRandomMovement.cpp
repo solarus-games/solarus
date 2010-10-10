@@ -14,17 +14,17 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "movements/FairyMovement.h"
+#include "movements/BounedRandomMovement.h"
 #include "entities/MapEntity.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Random.h"
 #include "lowlevel/Geometry.h"
 
 /**
- * @brief Creates a fairy movement.
+ * @brief Constructor.
  */
-FairyMovement::FairyMovement():
-  Movement(true) {
+BoundedRandomMovement::BoundedRandomMovement():
+  RectilinearMovement(true) {
 
   set_speed(3);
   set_next_direction();
@@ -33,7 +33,7 @@ FairyMovement::FairyMovement():
 /**
  * @brief Destructor.
  */
-FairyMovement::~FairyMovement() {
+BoundedRandomMovement::~BoundedRandomMovement() {
 
 }
 
@@ -41,7 +41,7 @@ FairyMovement::~FairyMovement() {
  * @brief Sets the entity to be controlled by this movement object.
  * @param entity the entity to control
  */
-void FairyMovement::set_entity(MapEntity *entity) {
+void BoundedRandomMovement::set_entity(MapEntity *entity) {
 
   Movement::set_entity(entity);
 
@@ -54,7 +54,7 @@ void FairyMovement::set_entity(MapEntity *entity) {
 /**
  * @brief Chooses a new direction for the fairy.
  */
-void FairyMovement::set_next_direction() {
+void BoundedRandomMovement::set_next_direction() {
 
   if (entity == NULL || bounds.contains(get_x(), get_y())) {
 
@@ -79,9 +79,9 @@ void FairyMovement::set_next_direction() {
  * This is a redefinition of Movement::update()
  * to change the fairy's direction sometimes.
  */
-void FairyMovement::update() {
+void BoundedRandomMovement::update() {
 
-  Movement::update();
+  RectilinearMovement::update();
 
   if (!is_suspended()) {
 
@@ -89,6 +89,19 @@ void FairyMovement::update() {
     if (now >= next_direction_change_date) {
       set_next_direction();
     }
+  }
+}
+
+/**
+ * @brief Suspends or resumes this movement.
+ * @param suspended true to suspend the movement, false to resume it
+ */
+void BoundedRandomMovement::set_suspended(bool suspended) {
+
+  RectilinearMovement::set_suspended(suspended);
+
+  if (!suspended) {
+    next_direction_change_date += System::now() - get_when_suspended();
   }
 }
 

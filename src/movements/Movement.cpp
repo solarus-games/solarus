@@ -1,3 +1,5 @@
+#ifdef NOT_IMPLEMENTED_YET
+
 /*
  * Copyright (C) 2009 Christopho, Solarus - http://www.solarus-engine.org
  *
@@ -622,4 +624,6 @@ void Movement::restore_default_ignore_obstacles() {
 
   this->current_ignore_obstacles = default_ignore_obstacles;
 }
+
+#endif
 

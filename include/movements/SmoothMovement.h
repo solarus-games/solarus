@@ -18,18 +18,18 @@
 #define SOLARUS_SMOOTH_MOVEMENT_H
 
 #include "Common.h"
-#include "movements/Movement.h"
+#include "movements/RectilinearMovement.h"
 
 /**
  * @brief Rectilinear movement capable of fixing the trajectory to continue walking when
  * an obstacle is reached.
  */
-class SmoothMovement: public Movement {
+class SmoothMovement: public RectilinearMovement {
 
   private:
 
     bool smooth;		/**< indicates that the movement fixes its trajectory
-				 * (if not, the movement is identical to a normal Movement) */
+				 * (if not, the movement is identical to a normal RectilinearMovement) */
 
   public:
 

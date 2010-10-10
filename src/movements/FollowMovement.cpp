@@ -71,7 +71,7 @@ void FollowMovement::update() {
 
       if (!finished && (dx != 0 || dy != 0)) {
 
-	if (!test_collision_with_map(dx, dy)) {
+	if (!test_collision_with_obstacles(dx, dy)) {
 	  set_x(next_x);
 	  set_y(next_y);
 	}

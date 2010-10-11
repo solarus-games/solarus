@@ -223,6 +223,14 @@ public class MapEditorWindow extends AbstractEditorWindow implements Observer, P
     }
 
     /**
+     * Give the name of the resource opened in the editor
+     * @return the name of the map
+     */
+    public String getResourceName() {
+        return map.getName();
+    }
+
+    /**
      * Sets the current map. This method is called when the user opens a map,
      * closes the map, or creates a new one.
      * @param map the new map, or null if there is no map loaded

@@ -58,7 +58,7 @@ public class EditorDesktop extends JPanel {
         desktopPane = new JDesktopPane();
         toolBar = new JToolBar(JToolBar.HORIZONTAL);
         //toolBar.add(new JLabel("Editeurs ouverts"));
-        toolBar.setBorder(BorderFactory.createTitledBorder("Editeurs ouverts"));
+        toolBar.setBorder(BorderFactory.createTitledBorder("Current Files"));
         toolBar.setFloatable(false);
         add(desktopPane, BorderLayout.CENTER);
         add(toolBar, BorderLayout.SOUTH);
@@ -110,7 +110,7 @@ public class EditorDesktop extends JPanel {
         private AbstractEditorWindow editor;
 
         public CustomToggleButton(AbstractEditorWindow editor) {
-            super(editor.getTitle());
+            super(editor.getResourceName());
             this.editor = editor;
             addChangeListener(this);
         }

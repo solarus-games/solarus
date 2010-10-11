@@ -17,6 +17,7 @@
 package org.solarus.editor.gui;
 
 import java.awt.BorderLayout;
+import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -65,6 +66,12 @@ public class EditorDesktop extends JPanel {
     }
 
     public void addEditor(AbstractEditorWindow editor) {
+        for(CustomToggleButton button : editorToButton.values()) {
+            if(button.getText().equals(editor.getResourceName())) {
+                button.setSelected(true);
+                return;
+            }
+        }
         final CustomToggleButton ctb = new CustomToggleButton(editor);
         editor.setVisible(true);
         buttonGroup.add(ctb);

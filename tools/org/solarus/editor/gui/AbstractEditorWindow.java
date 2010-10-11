@@ -26,7 +26,8 @@ import org.solarus.editor.ProjectObserver;
  */
 public abstract class AbstractEditorWindow extends JInternalFrame implements Observer, ProjectObserver {
 
-
     public abstract boolean checkCurrentFileSaved();
+
+    public abstract String getResourceName();
 
 }

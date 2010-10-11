@@ -36,16 +36,14 @@ import org.solarus.editor.ZSDXException;
  */
 public class EditorWindow extends JFrame implements ProjectObserver {
 
-   
     private EditorDesktop desktop;
-
     private JMenu menuMap;
     /**
      * The quest to load in the editor, for use in the sub-editors
      */
     private String quest;
 
-      /**
+    /**
      * Creates a new window.
      * @param quest name of a quest to load, or null to show a dialog to select the quest
      */
@@ -63,12 +61,11 @@ public class EditorWindow extends JFrame implements ProjectObserver {
         // add a window listener to confirm when the user closes the window
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
+
             public void windowClosing(WindowEvent e) {
-                if (desktop.countEditors() > 0) {
-                    for (AbstractEditorWindow editor : desktop.getEditors()) {
-                        if (editor.checkCurrentFileSaved()) {
-                            System.exit(0);
-                        }
+                if (checkCurrentFilesSaved()) {
+                    if (GuiTools.yesNoDialog("Do you really want to quit the editor ?")) {
+                        System.exit(0);
                     }
                 }
             }
@@ -118,13 +115,11 @@ public class EditorWindow extends JFrame implements ProjectObserver {
         item.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent ev) {
-                boolean noChange = true;
-                if (desktop.countEditors() > 0) {
-                    for (AbstractEditorWindow editor : desktop.getEditors()) {
-                        noChange = noChange && editor.checkCurrentFileSaved();
+                if (checkCurrentFilesSaved()) {
+                    if (GuiTools.yesNoDialog("Do you really want to quit the editor ?")) {
+                        System.exit(0);
                     }
                 }
-                if(noChange) System.exit(0);
             }
         });
         menu.add(item);
@@ -156,10 +151,25 @@ public class EditorWindow extends JFrame implements ProjectObserver {
     }
 
     /**
+     * This function is called when the user wants to quit the editor
+     * If any resource opened is not saved, we propose to save it.
+     * @return false if the user cancelled
+     */
+    public boolean checkCurrentFilesSaved() {
+        boolean result = true;
+        if (desktop.countEditors() > 0) {
+            for (AbstractEditorWindow editor : desktop.getEditors()) {
+                result = result && editor.checkCurrentFileSaved();
+            }
+        }
+        return result;
+    }
+
+    /**
      * This method is called just after a project is loaded.
      */
     public void currentProjectChanged() {
-	menuMap.setEnabled(true);
+        menuMap.setEnabled(true);
 
 //	if (map != null) {
 //	    closeMap(); // close the map that was open with the previous project
@@ -171,13 +181,10 @@ public class EditorWindow extends JFrame implements ProjectObserver {
      * in that directory.
      */
     private void newProject() {
-        if (desktop.countEditors() > 0) {
-            for (AbstractEditorWindow editor : desktop.getEditors()) {
-                if (editor.checkCurrentFileSaved()) {
-                    return;
-                }
-            }
+        if (!checkCurrentFilesSaved()) {
+            return;
         }
+        
         ProjectFileChooser chooser = new ProjectFileChooser();
         String projectPath = chooser.getProjectPath();
 

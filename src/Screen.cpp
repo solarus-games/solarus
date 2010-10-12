@@ -67,11 +67,3 @@ bool Screen::is_screen_finished() {
   return screen_finished;
 }
 
-/**
- * @brief Returns the list of scripts currently running.
- * @return the current scripts
- */
-Scripts& Screen::get_scripts() {
-  return solarus.get_scripts();
-}
-

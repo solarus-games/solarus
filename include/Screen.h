@@ -66,7 +66,6 @@ class Screen {
 
     bool is_screen_finished();
     Screen* get_next_screen();
-    Scripts& get_scripts();
 
     // functions to implement in subclasses and that will be called by the main loop
 

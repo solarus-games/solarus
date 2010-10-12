@@ -285,6 +285,14 @@ MapEntities& MapEntity::get_entities() {
 }
 
 /**
+ * @brief Returns the script of the current map.
+ * @return the map script
+ */
+MapScript& MapEntity::get_map_script() {
+  return map->get_script();
+}
+
+/**
  * @brief Returns the current equipment.
  * @return the equipment
  */
@@ -314,14 +322,6 @@ GameControls& MapEntity::get_controls() {
  */
 DialogBox& MapEntity::get_dialog_box() {
   return get_game().get_dialog_box();
-}
-
-/**
- * @brief Returns the list of current scripts
- * @return the current scripts
- */
-Scripts& MapEntity::get_scripts() {
-  return get_game().get_scripts();
 }
 
 /**

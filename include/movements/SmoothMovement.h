@@ -14,37 +14,30 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_FAIRY_MOVEMENT_H
-#define SOLARUS_FAIRY_MOVEMENT_H
+#ifndef SOLARUS_SMOOTH_MOVEMENT_H
+#define SOLARUS_SMOOTH_MOVEMENT_H
 
 #include "Common.h"
-#include "movements/Movement.h"
-#include "lowlevel/Rectangle.h"
+#include "movements/RectilinearMovement.h"
 
 /**
- * @brief Defines the movement of a pickable fairy.
- *
- * This movement is typically used by the PickableItemFairy entity.
- * The entity makes successive small straight steps
- * and changes its direction randomly.
- * It stays inside a limited rectangle.
+ * @brief Rectilinear movement capable of fixing the trajectory to continue walking when
+ * an obstacle is reached.
  */
-class FairyMovement: public Movement {
+class SmoothMovement: public RectilinearMovement {
 
   private:
 
-    Rectangle bounds;                        /**< a rectangle the fairy cannot escape from */
-    uint32_t next_direction_change_date;     /**< date of the next direction change */
-
-    void set_next_direction();
+    bool smooth;		/**< indicates that the movement fixes its trajectory
+				 * (if not, the movement is identical to a normal RectilinearMovement) */
 
   public:
 
-    FairyMovement();
-    ~FairyMovement();
+    SmoothMovement(bool smooth = true);
+    virtual ~SmoothMovement();
 
-    void set_entity(MapEntity *entity);
-    void update();
+    void update_x();
+    void update_y();
 };
 
 #endif

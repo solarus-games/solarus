@@ -15,13 +15,13 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lua/MapScript.h"
-#include "lua/Scripts.h"
 #include "Map.h"
 #include "Game.h"
 #include "Sprite.h"
 #include "InventoryItem.h"
 #include "DialogBox.h"
 #include "Treasure.h"
+#include "Timer.h"
 #include "entities/EntityType.h"
 #include "entities/MapEntities.h"
 #include "entities/InteractiveEntity.h"
@@ -43,11 +43,10 @@
 
 /**
  * @brief Creates a map script.
- * @param scripts the list of scripts
  * @param map the map
  */
-MapScript::MapScript(Scripts &scripts, Map &map):
-  GameScript(scripts, map.get_game()), map(map), hero(map.get_game().get_hero()) {
+MapScript::MapScript(Map &map):
+  GameScript(map.get_game()), map(map), hero(map.get_game().get_hero()) {
 
 }
 
@@ -90,10 +89,10 @@ void MapScript::register_available_functions() {
     { "npc_walk", l_npc_walk },
     { "npc_random_walk", l_npc_random_walk },
     { "npc_jump", l_npc_jump },
-    { "npc_set_animation", l_npc_set_animation },
-    { "npc_set_animation_ignore_suspend", l_npc_set_animation_ignore_suspend },
-    { "npc_set_direction", l_npc_set_direction },
+    { "npc_create_sprite_id", l_npc_create_sprite_id },
     { "npc_remove", l_npc_remove },
+    { "interactive_entity_create_sprite_id", l_interactive_entity_create_sprite_id },
+    { "interactive_entity_remove", l_interactive_entity_remove },
     { "chest_set_open", l_chest_set_open },
     { "chest_set_hidden", l_chest_set_hidden },
     { "chest_is_hidden", l_chest_is_hidden },
@@ -102,19 +101,6 @@ void MapScript::register_available_functions() {
     { "tile_is_enabled", l_tile_is_enabled },
     { "block_reset", l_block_reset },
     { "block_reset_all", l_block_reset_all },
-    { "interactive_entity_get_animation", l_interactive_entity_get_animation },
-    { "interactive_entity_get_animation_delay", l_interactive_entity_get_animation_delay },
-    { "interactive_entity_get_animation_frame", l_interactive_entity_get_animation_frame },
-    { "interactive_entity_get_direction", l_interactive_entity_get_direction },
-    { "interactive_entity_is_animation_paused", l_interactive_entity_is_animation_paused },
-    { "interactive_entity_set_animation", l_interactive_entity_set_animation },
-    { "interactive_entity_set_animation_delay", l_interactive_entity_set_animation_delay },
-    { "interactive_entity_set_animation_frame", l_interactive_entity_set_animation_frame },
-    { "interactive_entity_set_direction", l_interactive_entity_set_direction },
-    { "interactive_entity_set_animation_paused", l_interactive_entity_set_animation_paused },
-    { "interactive_entity_set_animation_ignore_suspend", l_interactive_entity_set_animation_ignore_suspend },
-    { "interactive_entity_fade", l_interactive_entity_fade },
-    { "interactive_entity_remove", l_interactive_entity_remove },
     { "shop_item_remove", l_shop_item_remove },
     { "switch_is_enabled", l_switch_is_enabled },
     { "switch_set_enabled", l_switch_set_enabled },
@@ -154,8 +140,27 @@ void MapScript::start(const std::string &destination_point_name) {
   // load the script
   load(oss.str());
 
-  // notify the map
-  scripts.event_map_started(destination_point_name);
+  // notify the script
+  event_map_started(destination_point_name);
+}
+
+/**
+ * @brief This function is called when the game is being suspended or resumed.
+ * @param suspended true if the game is suspended, false if it is resumed
+ */
+void MapScript::set_suspended(bool suspended) {
+
+  if (context != NULL) {
+
+    // notify the timers
+    std::list<Timer*>::iterator it;
+    for (it = timers.begin(); it != timers.end(); it++) {
+      (*it)->set_suspended(suspended);
+    }
+
+    // notify the script
+    event_set_suspended(suspended);
+  }
 }
 
 /**
@@ -195,7 +200,7 @@ int MapScript::l_dialog_start(lua_State *l) {
 
   MapScript *script;
   called_by_script(l, 1, &script);
-  const std::string &message_id = lua_tostring(l, 1);
+  const std::string &message_id = luaL_checkstring(l, 1);
 
   script->game.get_dialog_box().start_dialog(message_id);
 
@@ -215,8 +220,8 @@ int MapScript::l_dialog_set_variable(lua_State *l) {
 
   MapScript *script;
   called_by_script(l, 2, &script);
-  const MessageId &message_id = lua_tostring(l, 1);
-  const std::string &value = lua_tostring(l, 2);
+  const MessageId &message_id = luaL_checkstring(l, 1);
+  const std::string &value = luaL_checkstring(l, 2);
 
   script->game.get_dialog_box().set_variable(message_id, value);
 
@@ -232,7 +237,7 @@ int MapScript::l_dialog_set_style(lua_State *l) {
 
   MapScript *script;
   called_by_script(l, 1, &script);
-  int style = lua_tointeger(l, 1);
+  int style = luaL_checkinteger(l, 1);
 
   script->game.get_dialog_box().set_style(DialogBox::Style(style));
 
@@ -280,9 +285,9 @@ int MapScript::l_camera_move(lua_State *l) {
 
   MapScript *script;
   called_by_script(l, 3, &script);
-  int x = lua_tointeger(l, 1);
-  int y = lua_tointeger(l, 2);
-  int speed = lua_tointeger(l, 3);
+  int x = luaL_checkinteger(l, 1);
+  int y = luaL_checkinteger(l, 2);
+  int speed = luaL_checkinteger(l, 3);
 
   script->game.get_current_map().move_camera(x, y, speed);
 
@@ -319,9 +324,9 @@ int MapScript::l_treasure_give(lua_State *l) {
 
   MapScript *script;
   called_by_script(l, 3, &script);
-  const std::string &item_name = lua_tostring(l, 1);
-  int variant = lua_tointeger(l, 2);
-  int savegame_variable = lua_tointeger(l, 3);
+  const std::string &item_name = luaL_checkstring(l, 1);
+  int variant = luaL_checkinteger(l, 2);
+  int savegame_variable = luaL_checkinteger(l, 3);
 
   script->hero.start_treasure(Treasure(script->game, item_name, variant, savegame_variable));
 
@@ -368,9 +373,9 @@ int MapScript::l_hero_set_map(lua_State *l) {
   MapScript *script;
   called_by_script(l, 3, &script);
 
-  MapId map_id = lua_tointeger(l, 1);
-  const std::string &destination_point_name = lua_tostring(l, 2);
-  Transition::Style transition_style = Transition::Style(lua_tointeger(l, 3));
+  MapId map_id = luaL_checkinteger(l, 1);
+  const std::string &destination_point_name = luaL_checkstring(l, 2);
+  Transition::Style transition_style = Transition::Style(luaL_checkinteger(l, 3));
 
   script->game.set_current_map(map_id, destination_point_name, transition_style);
 
@@ -389,7 +394,7 @@ int MapScript::l_hero_set_direction(lua_State *l) {
   MapScript *script;
   called_by_script(l, 1, &script);
 
-  int direction = lua_tointeger(l, 1);
+  int direction = luaL_checkinteger(l, 1);
 
   script->hero.set_animation_direction(direction);
 
@@ -408,7 +413,7 @@ int MapScript::l_hero_align_on_sensor(lua_State *l) {
   MapScript *script;
   called_by_script(l, 1, &script);
 
-  const std::string &name = lua_tostring(l, 1);
+  const std::string &name = luaL_checkstring(l, 1);
 
   MapEntities &entities = script->map.get_entities();
   Sensor *sensor = (Sensor*) entities.get_entity(SENSOR, name);
@@ -431,7 +436,7 @@ int MapScript::l_hero_walk(lua_State *l) {
   called_by_script(l, 3, NULL);
 
   /* TODO
-  const std::string &path = lua_tostring(l, 1);
+  const std::string &path = luaL_checkstring(l, 1);
   bool loop = lua_toboolean(l, 2) != 0;
   bool ignore_obstacles = lua_toboolean(l, 3) != 0;
 
@@ -455,8 +460,8 @@ int MapScript::l_hero_jump(lua_State *l) {
   MapScript *script;
   called_by_script(l, 3, &script);
 
-  int direction = lua_tointeger(l, 1);
-  int length = lua_tointeger(l, 2);
+  int direction = luaL_checkinteger(l, 1);
+  int length = luaL_checkinteger(l, 2);
   bool ignore_obstacles = lua_toboolean(l, 3) != 0;
 
   script->hero.start_jumping(direction, length, ignore_obstacles, false);
@@ -514,7 +519,7 @@ int MapScript::l_npc_get_position(lua_State *l) {
   MapScript *script;
   called_by_script(l, 1, &script);
 
-  const std::string &name = lua_tostring(l, 1);
+  const std::string &name = luaL_checkstring(l, 1);
 
   MapEntities &entities = script->map.get_entities();
   InteractiveEntity *npc = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, name);
@@ -540,9 +545,9 @@ int MapScript::l_npc_set_position(lua_State *l) {
   MapScript *script;
   called_by_script(l, 3, &script);
 
-  const std::string &name = lua_tostring(l, 1);
-  int x = lua_tointeger(l, 2);
-  int y = lua_tointeger(l, 3);
+  const std::string &name = luaL_checkstring(l, 1);
+  int x = luaL_checkinteger(l, 2);
+  int y = luaL_checkinteger(l, 3);
 
   MapEntities &entities = script->map.get_entities();
   InteractiveEntity *npc = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, name);
@@ -566,8 +571,8 @@ int MapScript::l_npc_walk(lua_State *l) {
   MapScript *script;
   called_by_script(l, 4, &script);
 
-  const std::string &name = lua_tostring(l, 1);
-  const std::string &path = lua_tostring(l, 2);
+  const std::string &name = luaL_checkstring(l, 1);
+  const std::string &path = luaL_checkstring(l, 2);
   bool loop = lua_toboolean(l, 3) != 0;
   bool ignore_obstacles = lua_toboolean(l, 4) != 0;
 
@@ -590,7 +595,7 @@ int MapScript::l_npc_random_walk(lua_State *l) {
   MapScript *script;
   called_by_script(l, 1, &script);
 
-  const std::string &name = lua_tostring(l, 1);
+  const std::string &name = luaL_checkstring(l, 1);
 
   MapEntities &entities = script->map.get_entities();
   InteractiveEntity *npc = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, name);
@@ -615,9 +620,9 @@ int MapScript::l_npc_jump(lua_State *l) {
   MapScript *script;
   called_by_script(l, 4, &script);
 
-  const std::string &name = lua_tostring(l, 1);
-  int direction = lua_tointeger(l, 2);
-  int length = lua_tointeger(l, 3);
+  const std::string &name = luaL_checkstring(l, 1);
+  int direction = luaL_checkinteger(l, 2);
+  int length = luaL_checkinteger(l, 3);
   bool ignore_obstacles = lua_toboolean(l, 4) != 0;
 
   MapEntities &entities = script->map.get_entities();
@@ -628,63 +633,17 @@ int MapScript::l_npc_jump(lua_State *l) {
 }
 
 /**
- * @brief Sets the animation of an NPC's sprite.
+ * @brief Makes the sprite of an NPC accessible from the script.
  *
- * - Argument 1 (string): name of the NPC
- * - Argument 2 (string): name of the animation to set
- *
- * @param l the Lua context that is calling this function
- */
-int MapScript::l_npc_set_animation(lua_State *l) {
-  return l_interactive_entity_set_animation(l);
-}
-
-/**
- * @brief Sets whether the animation of an NPC should continue even when the game is suspended.
- *
- * Argument 1 (string): name of the NPC
- * Argument 2 (boolean): true to ignore when the game is suspended
+ * - Argument 1 (string): name of the interactive entity
+ * - Argument 2 (string): a name that will identify the sprite from the script
  *
  * @param l the Lua context that is calling this function
  */
-int MapScript::l_npc_set_animation_ignore_suspend(lua_State *l) {
+int MapScript::l_npc_create_sprite_id(lua_State *l) {
 
-  MapScript *script;
-  called_by_script(l, 2, &script);
-
-  const std::string &name = lua_tostring(l, 1);
-  bool ignore_suspend = lua_toboolean(l, 2) != 0;
-
-  MapEntities &entities = script->map.get_entities();
-  MapEntity *npc = entities.get_entity(INTERACTIVE_ENTITY, name);
-  npc->set_animation_ignore_suspend(ignore_suspend);
-
-  return 0;
-}
-
-/**
- * @brief Sets the direction of an NPC's sprite.
- *
- * - Argument 1 (string): name of the NPC
- * - Argument 2 (integer): the sprite's direction between 0 and 3
- *
- * @param l the Lua context that is calling this function
- */
-int MapScript::l_npc_set_direction(lua_State *l) {
-
-  MapScript *script;
-  called_by_script(l, 2, &script);
-
-  const std::string &name = lua_tostring(l, 1);
-  int direction = lua_tointeger(l, 2);
-
-  Debug::assert(direction >= 0 && direction < 4, StringConcat() << "Invalid NPC direction: " << direction);
-
-  MapEntities &entities = script->map.get_entities();
-  InteractiveEntity *npc = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, name);
-  npc->set_sprite_direction(direction);
-
-  return 0;
+  // an NPC is actually a subtype of interactive entity
+  return l_interactive_entity_create_sprite_id(l);
 }
 
 /**
@@ -696,10 +655,47 @@ int MapScript::l_npc_set_direction(lua_State *l) {
  */
 int MapScript::l_npc_remove(lua_State *l) {
 
+  // an NPC is actually a subtype of interactive entity
+  return l_interactive_entity_remove(l);
+}
+
+/**
+ * @brief Makes the sprite of an interactive entity accessible from the script.
+ *
+ * - Argument 1 (string): name of the interactive entity
+ * - Argument 2 (string): a name that will identify the sprite from the script
+ *
+ * @param l the Lua context that is calling this function
+ */
+int MapScript::l_interactive_entity_create_sprite_id(lua_State *l) {
+
+  MapScript *script;
+  called_by_script(l, 2, &script);
+
+  const std::string &entity_name = luaL_checkstring(l, 1);
+  const std::string &sprite_id = luaL_checkstring(l, 2);
+
+  MapEntities &entities = script->map.get_entities();
+  InteractiveEntity *entity = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, entity_name);
+
+  script->add_existing_sprite(sprite_id, entity->get_sprite());
+
+  return 0;
+}
+
+/**
+ * @brief Removes an interactive entity from the map.
+ *
+ * - Argument 1 (string): name of the interactive entity
+ *
+ * @param l the Lua context that is calling this function
+ */
+int MapScript::l_interactive_entity_remove(lua_State *l) {
+
   MapScript *script;
   called_by_script(l, 1, &script);
 
-  const std::string &name = lua_tostring(l, 1);
+  const std::string &name = luaL_checkstring(l, 1);
 
   MapEntities &entities = script->map.get_entities();
   entities.remove_entity(INTERACTIVE_ENTITY, name);
@@ -722,7 +718,7 @@ int MapScript::l_chest_set_open(lua_State *l) {
   MapScript *script;
   called_by_script(l, 2, &script);
 
-  const std::string &name = lua_tostring(l, 1);
+  const std::string &name = luaL_checkstring(l, 1);
   bool open = lua_toboolean(l, 2) != 0;
 
   MapEntities &entities = script->map.get_entities();
@@ -746,7 +742,7 @@ int MapScript::l_chest_set_hidden(lua_State *l) {
   MapScript *script;
   called_by_script(l, 2, &script);
 
-  const std::string &name = lua_tostring(l, 1);
+  const std::string &name = luaL_checkstring(l, 1);
   bool hidden = lua_toboolean(l, 2) != 0;
 
   MapEntities &entities = script->map.get_entities();
@@ -769,7 +765,7 @@ int MapScript::l_chest_is_hidden(lua_State *l) {
   MapScript *script;
   called_by_script(l, 1, &script);
 
-  const std::string &name = lua_tostring(l, 1);
+  const std::string &name = luaL_checkstring(l, 1);
 
   MapEntities &entities = script->map.get_entities();
   Chest *chest = (Chest*) entities.get_entity(CHEST, name);
@@ -791,7 +787,7 @@ int MapScript::l_tile_set_enabled(lua_State *l) {
   MapScript *script;
   called_by_script(l, 2, &script);
 
-  const std::string &name = lua_tostring(l, 1);
+  const std::string &name = luaL_checkstring(l, 1);
   bool enable = lua_toboolean(l, 2) != 0;
 
   MapEntities &entities = script->map.get_entities();
@@ -814,7 +810,7 @@ int MapScript::l_tile_set_group_enabled(lua_State *l) {
   MapScript *script;
   called_by_script(l, 2, &script);
 
-  const std::string &prefix = lua_tostring(l, 1);
+  const std::string &prefix = luaL_checkstring(l, 1);
   bool enable = lua_toboolean(l, 2) != 0;
 
   MapEntities &entities = script->map.get_entities();
@@ -842,7 +838,7 @@ int MapScript::l_tile_is_enabled(lua_State *l) {
   MapScript *script;
   called_by_script(l, 1, &script);
 
-  const std::string &name = lua_tostring(l, 1);
+  const std::string &name = luaL_checkstring(l, 1);
 
   MapEntities &entities = script->map.get_entities();
   DynamicTile *dynamic_tile = (DynamicTile*) entities.get_entity(DYNAMIC_TILE, name);
@@ -863,7 +859,7 @@ int MapScript::l_block_reset(lua_State *l) {
   MapScript *script;
   called_by_script(l, 1, &script);
 
-  const std::string &block_name = lua_tostring(l, 1);
+  const std::string &block_name = luaL_checkstring(l, 1);
 
   MapEntities &entities = script->map.get_entities();
   Block *block = (Block*) entities.get_entity(BLOCK, block_name);
@@ -893,278 +889,6 @@ int MapScript::l_block_reset_all(lua_State *l) {
 }
 
 /**
- * @brief Returns the current animation of an interactive entity's sprite.
- *
- * - Argument 1 (string): name of the interactive entity
- * - Return value (string): name of the current animation
- *
- * @param l the Lua context that is calling this function
- */
-int MapScript::l_interactive_entity_get_animation(lua_State *l) {
-
-  MapScript *script;
-  called_by_script(l, 1, &script);
-
-  const std::string &name = lua_tostring(l, 1);
-
-  MapEntities &entities = script->map.get_entities();
-  InteractiveEntity *entity = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, name);
-  std::string animation = entity->get_sprite().get_current_animation();
-
-  lua_pushstring(l, animation.c_str());
-
-  return 1;
-}
-
-/**
- * @brief Returns the animation speed of an interactive entity's sprite.
- *
- * - Argument 1 (string): name of the interactive entity
- * - Return value (integer): delay between two frames in milliseconds
- *
- * @param l the Lua context that is calling this function
- */
-int MapScript::l_interactive_entity_get_animation_delay(lua_State *l) {
-
-  MapScript *script;
-  called_by_script(l, 1, &script);
-
-  const std::string &name = lua_tostring(l, 1);
-
-  MapEntities &entities = script->map.get_entities();
-  InteractiveEntity *entity = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, name);
-  uint32_t delay = entity->get_sprite().get_frame_delay();
-
-  lua_pushinteger(l, delay);
-
-  return 1;
-}
-
-/**
- * @brief Returns the current animation frame of an interactive entity's sprite.
- *
- * - Argument 1 (string): name of the interactive entity
- * - Return value (integer): frame number
- *
- * @param l the Lua context that is calling this function
- */
-int MapScript::l_interactive_entity_get_animation_frame(lua_State *l) {
-
-  MapScript *script;
-  called_by_script(l, 1, &script);
-
-  const std::string &name = lua_tostring(l, 1);
-
-  MapEntities &entities = script->map.get_entities();
-  InteractiveEntity *entity = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, name);
-  int frame = entity->get_sprite().get_current_frame();
-
-  lua_pushinteger(l, frame);
-
-  return 1;
-}
-
-/**
- * @brief Returns the current direction of an interactive entity's sprite.
- *
- * - Argument 1 (string): name of the interactive entity
- * - Return value (integer): the direction between 0 and 3
- *
- * @param l the Lua context that is calling this function
- */
-int MapScript::l_interactive_entity_get_direction(lua_State *l) {
-
-  MapScript *script;
-  called_by_script(l, 1, &script);
-
-  const std::string &name = lua_tostring(l, 1);
-
-  MapEntities &entities = script->map.get_entities();
-  InteractiveEntity *entity = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, name);
-  int frame = entity->get_sprite().get_current_direction();
-
-  lua_pushinteger(l, frame);
-
-  return 1;
-}
-
-/**
- * @brief Returns whether the animation of an interactive entity's sprite is paused.
- *
- * - Argument 1 (string): name of the interactive entity
- * - Return value (boolean): true if the animation is paused
- *
- * @param l the Lua context that is calling this function
- */
-int MapScript::l_interactive_entity_is_animation_paused(lua_State *l) {
-
-  MapScript *script;
-  called_by_script(l, 1, &script);
-
-  const std::string &name = lua_tostring(l, 1);
-
-  MapEntities &entities = script->map.get_entities();
-  InteractiveEntity *entity = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, name);
-  bool paused = entity->get_sprite().is_paused();
-
-  lua_pushboolean(l, paused ? 1 : 0);
-
-  return 1;
-}
-
-/**
- * @brief Sets the animation of an interactive entity's sprite.
- *
- * - Argument 1 (string): name of the interactive entity
- * - Argument 2 (string): name of the animation to set
- *
- * @param l the Lua context that is calling this function
- */
-int MapScript::l_interactive_entity_set_animation(lua_State *l) {
-
-  MapScript *script;
-  called_by_script(l, 2, &script);
-
-  const std::string &name = lua_tostring(l, 1);
-  const std::string &animation = lua_tostring(l, 2);
-
-  MapEntities &entities = script->map.get_entities();
-  InteractiveEntity *entity = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, name);
-  entity->get_sprite().set_current_animation(animation);
-  entity->get_sprite().restart_animation();
-
-  return 0;
-}
-
-/**
- * @brief Sets the animation speed of an interactive entity's sprite.
- *
- * - Argument 1 (string): name of the interactive entity
- * - Argument 2 (integer): delay between two frames in milliseconds
- *
- * @param l the Lua context that is calling this function
- */
-int MapScript::l_interactive_entity_set_animation_delay(lua_State *l) {
-
-  MapScript *script;
-  called_by_script(l, 2, &script);
-
-  const std::string &name = lua_tostring(l, 1);
-  uint32_t delay = lua_tointeger(l, 2);
-
-  MapEntities &entities = script->map.get_entities();
-  InteractiveEntity *entity = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, name);
-  entity->get_sprite().set_frame_delay(delay);
-
-  return 0;
-}
-
-/**
- * @brief Sets the current animation frame of an interactive entity's sprite.
- *
- * - Argument 1 (string): name of the interactive entity
- * - Argument 2 (integer): frame number
- *
- * @param l the Lua context that is calling this function
- */
-int MapScript::l_interactive_entity_set_animation_frame(lua_State *l) {
-
-  MapScript *script;
-  called_by_script(l, 2, &script);
-
-  const std::string &name = lua_tostring(l, 1);
-  int frame = lua_tointeger(l, 2);
-
-  MapEntities &entities = script->map.get_entities();
-  InteractiveEntity *entity = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, name);
-  entity->get_sprite().set_current_frame(frame);
-
-  return 0;
-}
-
-/**
- * @brief Sets the direction of an interactive entity's sprite.
- *
- * - Argument 1 (string): name of the interactive entity
- * - Argument 2 (integer): the sprite's direction between 0 and 3
- *
- * @param l the Lua context that is calling this function
- */
-int MapScript::l_interactive_entity_set_direction(lua_State *l) {
-
-  return l_npc_set_direction(l);
-}
-
-/**
- * @brief Pauses or resumes the animation of an interactive entity's sprite.
- *
- * - Argument 1 (string): name of the interactive entity
- * - Argument 2 (boolean): true to pause, false to resume
- *
- * @param l the Lua context that is calling this function
- */
-int MapScript::l_interactive_entity_set_animation_paused(lua_State *l) {
-
-  MapScript *script;
-  called_by_script(l, 2, &script);
-
-  const std::string &name = lua_tostring(l, 1);
-  bool paused = lua_toboolean(l, 2) != 0;
-
-  MapEntities &entities = script->map.get_entities();
-  InteractiveEntity *entity = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, name);
-  entity->get_sprite().set_paused(paused);
-
-  return 0;
-}
-
-/**
- * @brief Starts a fade-in or a fade-out effect on an interactive entity
- *
- * - Argument 1 (string): name of the interactive entity
- * - Argument 2 (integer): direction of the effect: 0 for fade-in, 1 for fade-out
- *
- * @param l the Lua context that is calling this function
- */
-int MapScript::l_interactive_entity_fade(lua_State *l) {
-
-  MapScript *script;
-  called_by_script(l, 2, &script);
-
-  const std::string &name = lua_tostring(l, 1);
-  int direction = lua_tointeger(l, 2);
-
-  MapEntities &entities = script->map.get_entities();
-  InteractiveEntity *entity = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, name);
-  entity->start_fading(direction);
-
-  return 0;
-}
-
-/**
- * @brief Sets whether the animation of an interactive entity should continue even when the game is suspended.
- *
- * - Argument 1 (string): name of the interactive entity
- * - Argument 2 (boolean): true to ignore when the game is suspended
- *
- * @param l the Lua context that is calling this function
- */
-int MapScript::l_interactive_entity_set_animation_ignore_suspend(lua_State *l) {
-  return l_npc_set_animation_ignore_suspend(l);
-}
-
-/**
- * @brief Removes an interactive entity from the map.
- *
- * - Argument 1 (string): name of the interactive entity
- *
- * @param l the Lua context that is calling this function
- */
-int MapScript::l_interactive_entity_remove(lua_State *l) {
-  return l_npc_remove(l);
-}
-
-/**
  * @brief Removes a shop item from the map.
  *
  * - Argument 1 (string): name of the shop item
@@ -1176,7 +900,7 @@ int MapScript::l_shop_item_remove(lua_State *l) {
   MapScript *script;
   called_by_script(l, 1, &script);
 
-  const std::string &name = lua_tostring(l, 1);
+  const std::string &name = luaL_checkstring(l, 1);
 
   script->map.get_entities().remove_entity(SHOP_ITEM, name);
 
@@ -1196,7 +920,7 @@ int MapScript::l_switch_is_enabled(lua_State *l) {
   MapScript *script;
   called_by_script(l, 1, &script);
 
-  const std::string &name = lua_tostring(l, 1);
+  const std::string &name = luaL_checkstring(l, 1);
 
   MapEntities &entities = script->map.get_entities();
   Switch *sw = (Switch*) entities.get_entity(SWITCH, name);
@@ -1219,7 +943,7 @@ int MapScript::l_switch_set_enabled(lua_State *l) {
   MapScript *script;
   called_by_script(l, 2, &script);
 
-  const std::string &name = lua_tostring(l, 1);
+  const std::string &name = luaL_checkstring(l, 1);
   bool enable = lua_toboolean(l, 2) != 0;
 
   MapEntities &entities = script->map.get_entities();
@@ -1242,7 +966,7 @@ int MapScript::l_switch_set_locked(lua_State *l) {
   MapScript *script;
   called_by_script(l, 2, &script);
 
-  const std::string &name = lua_tostring(l, 1);
+  const std::string &name = luaL_checkstring(l, 1);
   bool lock = lua_toboolean(l, 2) != 0;
 
   MapEntities &entities = script->map.get_entities();
@@ -1266,7 +990,7 @@ int MapScript::l_enemy_is_dead(lua_State *l) {
   MapScript *script;
   called_by_script(l, 1, &script);
 
-  const std::string &name = lua_tostring(l, 1);
+  const std::string &name = luaL_checkstring(l, 1);
 
   MapEntities &entities = script->map.get_entities();
   Enemy *enemy = (Enemy*) entities.find_entity(ENEMY, name);
@@ -1291,7 +1015,7 @@ int MapScript::l_enemy_is_group_dead(lua_State *l) {
   MapScript *script;
   called_by_script(l, 1, &script);
 
-  const std::string &prefix = lua_tostring(l, 1);
+  const std::string &prefix = luaL_checkstring(l, 1);
 
   MapEntities &entities = script->map.get_entities();
   std::list<MapEntity*> enemies = entities.get_entities_with_prefix(ENEMY, prefix);
@@ -1315,7 +1039,7 @@ int MapScript::l_enemy_set_enabled(lua_State *l) {
   MapScript *script;
   called_by_script(l, 2, &script);
 
-  const std::string &name = lua_tostring(l, 1);
+  const std::string &name = luaL_checkstring(l, 1);
   bool enable = lua_toboolean(l, 2) != 0;
 
   MapEntities &entities = script->map.get_entities();
@@ -1339,7 +1063,7 @@ int MapScript::l_enemy_start_boss(lua_State *l) {
   MapScript *script;
   called_by_script(l, 1, &script);
 
-  const std::string &name = lua_tostring(l, 1);
+  const std::string &name = luaL_checkstring(l, 1);
 
   MapEntities &entities = script->map.get_entities();
   Enemy *enemy = (Enemy*) entities.find_entity(ENEMY, name); 
@@ -1380,7 +1104,7 @@ int MapScript::l_enemy_start_miniboss(lua_State *l) {
   MapScript *script;
   called_by_script(l, 1, &script);
 
-  const std::string &name = lua_tostring(l, 1);
+  const std::string &name = luaL_checkstring(l, 1);
 
   MapEntities &entities = script->map.get_entities();
   Enemy *enemy = (Enemy*) entities.find_entity(ENEMY, name); 
@@ -1418,7 +1142,7 @@ int MapScript::l_sensor_remove(lua_State *l) {
   MapScript *script;
   called_by_script(l, 1, &script);
 
-  const std::string &name = lua_tostring(l, 1);
+  const std::string &name = luaL_checkstring(l, 1);
 
   script->map.get_entities().remove_entity(SENSOR, name);
 
@@ -1439,7 +1163,7 @@ int MapScript::l_door_open(lua_State *l) {
   MapScript *script;
   called_by_script(l, 1, &script);
 
-  const std::string &prefix = lua_tostring(l, 1);
+  const std::string &prefix = luaL_checkstring(l, 1);
 
   MapEntities &entities = script->map.get_entities();
   std::list<MapEntity*> doors = entities.get_entities_with_prefix(DOOR, prefix);
@@ -1467,7 +1191,7 @@ int MapScript::l_door_close(lua_State *l) {
   MapScript *script;
   called_by_script(l, 1, &script);
 
-  const std::string &prefix = lua_tostring(l, 1);
+  const std::string &prefix = luaL_checkstring(l, 1);
 
   MapEntities &entities = script->map.get_entities();
   std::list<MapEntity*> doors = entities.get_entities_with_prefix(DOOR, prefix);
@@ -1493,7 +1217,7 @@ int MapScript::l_door_is_open(lua_State *l) {
 
   MapScript *script;
   called_by_script(l, 1, &script);
-  const std::string &name = lua_tostring(l, 1);
+  const std::string &name = luaL_checkstring(l, 1);
 
   MapEntities &entities = script->map.get_entities();
   Door *door = (Door*) entities.get_entity(DOOR, name);
@@ -1515,7 +1239,7 @@ int MapScript::l_door_set_open(lua_State *l) {
   MapScript *script;
   called_by_script(l, 2, &script);
 
-  const std::string &prefix = lua_tostring(l, 1);
+  const std::string &prefix = luaL_checkstring(l, 1);
   bool open = lua_toboolean(l, 2) != 0;
 
   MapEntities &entities = script->map.get_entities();
@@ -1527,5 +1251,243 @@ int MapScript::l_door_set_open(lua_State *l) {
   }
 
   return 0;
+}
+
+// event functions, i.e. calling Lua from C++
+
+/**
+ * @brief Notifies the script that the game is being suspended or resumed.
+ * @param suspended true if the game becomes suspended, false if it is resumed.
+ */
+void MapScript::event_set_suspended(bool suspended) {
+
+  notify_script("event_suspended", "b", suspended);
+}
+
+/**
+ * @brief Notifies the script that a dialog has just started to be displayed
+ * in the dialog box.
+ * @param message_id id of the first message in this dialog
+ */
+void MapScript::event_dialog_started(const MessageId &message_id) {
+
+  notify_script("event_dialog_started", "s", message_id.c_str());
+}
+
+/**
+ * @brief Notifies the script that the dialog box has just finished.
+ *
+ * This function is called when the last message of a dialog is finished.
+ * The dialog box has just been closed but the game is still suspended.
+ * Note that this event is not called if the dialog was skipped.
+ *
+ * @param first_message_id id of the first message in the dialog
+ * that has just finished
+ * @param answer the answer selected by the player: 0 for the first one,
+ * 1 for the second one, -1 if there was no question
+ */
+void MapScript::event_dialog_finished(const MessageId &first_message_id, int answer) {
+
+  notify_script("event_dialog_finished", "si", first_message_id.c_str(), answer);
+}
+
+/**
+ * @brief Notifies the script that the camera moved by a call to camera_move() has reached its target.
+ */
+void MapScript::event_camera_reached_target() {
+
+  notify_script("event_camera_reached_target");
+}
+
+/**
+ * @brief Notifies the script that the camera moved by a call to camera_restore() has reached the hero.
+ */
+void MapScript::event_camera_back() {
+
+  notify_script("event_camera_back");
+}
+
+/**
+ * @brief Notifies the script that the player is obtaining a treasure.
+ *
+ * The treasure source does not matter: it can come from a chest,
+ * a pickable item or a script.
+ *
+ * @param item_name name of the item obtained
+ * @param variant variant of this item
+ * @param savegame_variable the boolean variable where this treasure is saved
+ * (or -1 if the treasure is not saved)
+ */
+void MapScript::event_treasure_obtaining(const std::string &item_name, int variant, int savegame_variable) {
+
+  notify_script("event_treasure_obtaining", "sii", item_name.c_str(), variant, savegame_variable);
+}
+
+/**
+ * @brief Notifies the script that the player has just finished obtaining a treasure.
+ *
+ * The treasure source does not matter: it can come from a chest,
+ * a pickable item or a script.
+ *
+ * @param item_name name of the item obtained
+ * @param variant variant of this item
+ * @param savegame_variable the boolean variable where this treasure is saved
+ * (or -1 if the treasure is not saved)
+ */
+void MapScript::event_treasure_obtained(const std::string &item_name, int variant, int savegame_variable) {
+
+  notify_script("event_treasure_obtained", "sii", item_name.c_str(), variant, savegame_variable);
+}
+
+/**
+ * @brief Notifies the script that the map has just been started.
+ * @param destination_point_name name of the destination point where the hero is
+ */
+void MapScript::event_map_started(const std::string &destination_point_name) {
+  
+  notify_script("event_map_started",  "s", destination_point_name.c_str());
+}
+
+/**
+ * @brief Notifies the script that the opening transition of the map has just finished.
+ * @param destination_point_name name of the destination point where the hero is
+ */
+void MapScript::event_map_opening_transition_finished(const std::string &destination_point_name) {
+  
+  notify_script("event_map_opening_transition_finished", "s", destination_point_name.c_str());
+}
+
+/**
+ * @brief Notifies the script that a switch has just been enabled.
+ * @param switch_name name of the switch
+ */
+void MapScript::event_switch_enabled(const std::string &switch_name) {
+  
+  notify_script("event_switch_enabled", "s", switch_name.c_str());
+}
+
+/**
+ * @brief Notifies the script that a switch has just been disabled.
+ * @param switch_name name of the switch
+ */
+void MapScript::event_switch_disabled(const std::string &switch_name) {
+  
+  notify_script("event_switch_disabled", "s", switch_name.c_str());
+}
+
+/**
+ * @brief Notifies the script that a switch has just been left by the entity that was on it.
+ *
+ * The fact that the switch is enabled or disabled does not matter here.
+ *
+ * @param switch_name name of the switch
+ */
+void MapScript::event_switch_left(const std::string &switch_name) {
+  
+  notify_script("event_switch_left", "s", switch_name.c_str());
+}
+
+/**
+ * @brief Notifies the script that the victory sequence of the hero has just finished.
+ */
+void MapScript::event_hero_victory_sequence_finished() {
+  
+  notify_script("event_hero_victory_sequence_finished");
+}
+
+/**
+ * @brief Notifies the script that the hero is overlapping a sensor.
+ * @param sensor_name name of the sensor
+ */
+void MapScript::event_hero_on_sensor(const std::string &sensor_name) {
+  
+  notify_script("event_hero_on_sensor", "s", sensor_name.c_str());
+}
+
+/**
+ * @brief Notifies the script that the player has just pressed the action
+ * key in front of an interactive entity.
+ * @param entity_name name of the interactive entity
+ */
+void MapScript::event_hero_interaction(const std::string &entity_name) {
+  
+  notify_script("event_hero_interaction", "s", entity_name.c_str());
+}
+
+/**
+ * @brief Notifies the script that the hero is using an inventory item
+ * in front of an interactive entity.
+ *
+ * This event is called only for inventory items that want to use an interactive entity
+ * (e.g. a key that is being used in front of a door).
+ *
+ * @param entity_name name of the interactive entity the hero is facing
+ * @param item_name name of the inventory item that is being used
+ * @param variant variant of this inventory item
+ * @return true if the script has handled the event,
+ * i.e. if the function event_hero_interaction_item exists in the script and returned true
+ */
+bool MapScript::event_hero_interaction_item(const std::string &entity_name, const std::string &item_name, int variant) {
+
+  bool interaction = false;
+  notify_script("event_hero_interaction_item", "sss b", entity_name.c_str(), item_name.c_str(), variant, &interaction);
+
+  return interaction;
+}
+
+/**
+ * @brief Notifies the script that the player has just pressed the action
+ * key in front an NPC.
+ * @param npc_name name of the NPC
+ */
+void MapScript::event_npc_dialog(const std::string &npc_name) {
+   
+  notify_script("event_npc_dialog", "s", npc_name.c_str());
+}
+
+/**
+ * @brief Notifies the script that an NPC has just finished its movement.
+ * @param npc_name name of the NPC
+ */
+void MapScript::event_npc_movement_finished(const std::string &npc_name) {
+   
+  notify_script("event_npc_movement_finished", "s", npc_name.c_str());
+}
+
+/**
+ * @brief Notifies the script that the player has just open an empty chest.
+ *
+ * What happens next is controlled by your script if it handles this event.
+ * The hero is in state FREEZE,
+ * so if you do something else than giving the player a treasure,
+ * don't forget to call hero_unfreeze() once you have finished.
+ * The script function does not have to return any value.
+ *
+ * @param chest_name name of the chest
+ * @return true if a script has handled the event, i.e. if the
+ * event_chest_empty exists in the script
+ */
+bool MapScript::event_chest_empty(const std::string &chest_name) {
+   
+  bool exists = notify_script("event_chest_empty", "s", chest_name.c_str());
+  return exists;
+}
+
+/**
+ * @brief Notifies the script that the player has just bought an item in a shop.
+ * @param shop_item_name name of the item bought
+ */
+void MapScript::event_shop_item_bought(const std::string &shop_item_name) {
+
+  notify_script("event_shop_item_bought", "s", shop_item_name.c_str());
+}
+
+/**
+ * @brief Notifies the script that an enemy has just been killed.
+ * @param enemy_name name of the enemy
+ */
+void MapScript::event_enemy_dead(const std::string &enemy_name) {
+
+  notify_script("event_enemy_dead", "s", enemy_name.c_str());
 }
 

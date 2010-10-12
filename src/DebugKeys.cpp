@@ -204,10 +204,10 @@ void DebugKeys::update() {
     if (movement != NULL) {
 
       if (InputEvent::is_control_down()) {
-	movement->set_ignore_obstacles();
+	movement->set_ignore_obstacles(true);
       }
       else {
-	movement->restore_ignore_obstacles();
+	movement->restore_default_ignore_obstacles();
       }
     }
   }

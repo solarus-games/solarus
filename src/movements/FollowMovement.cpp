@@ -25,7 +25,7 @@
  * @param ignore_obstacles true to make the movement ignore obstacles
  */
 FollowMovement::FollowMovement(MapEntity *entity_followed, int x, int y, bool ignore_obstacles):
-  CollisionMovement(ignore_obstacles), entity_followed(entity_followed), x(x), y(y), finished(false) {
+  Movement(ignore_obstacles), entity_followed(entity_followed), x(x), y(y), finished(false) {
 
 }
 
@@ -71,7 +71,7 @@ void FollowMovement::update() {
 
       if (!finished && (dx != 0 || dy != 0)) {
 
-	if (!test_collision_with_map(dx, dy)) {
+	if (!test_collision_with_obstacles(dx, dy)) {
 	  set_x(next_x);
 	  set_y(next_y);
 	}

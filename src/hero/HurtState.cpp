@@ -17,7 +17,7 @@
 #include "hero/HurtState.h"
 #include "hero/FreeState.h"
 #include "hero/HeroSprites.h"
-#include "movements/StraightMovement.h"
+#include "movements/TemporalMovement.h"
 #include "lowlevel/Sound.h"
 #include "Game.h"
 #include "Equipment.h"
@@ -61,7 +61,7 @@ void Hero::HurtState::start(State *previous_state) {
   get_sprites().blink();
 
   double angle = source.get_vector_angle(hero);
-  hero.set_movement(new StraightMovement(12, angle, 200));
+  hero.set_movement(new TemporalMovement(12, angle, 200));
 }
 
 /**

@@ -497,7 +497,7 @@ bool Sprite::is_fading() const {
 }
 
 /**
- * @brief Starts a fade-in effect on this sprite.
+ * @brief Starts a fade-in or fade_out effect on this sprite.
  * @param direction direction of the effect (0: fade-in, 1: fade-out)
  */
 void Sprite::start_fading(int direction) {

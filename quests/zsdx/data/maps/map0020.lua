@@ -11,6 +11,8 @@ function event_map_started(destination_point_name)
 
   if has_finished_cavern() and not has_boomerang_of_tom() then
     sol.map.npc_remove("tom")
+  else
+    sol.map.npc_create_sprite_id("tom", "tom_sprite")
   end
 
   if sol.game.savegame_get_boolean(38) then
@@ -37,20 +39,20 @@ function camera_1_timer()
   sol.main.play_sound("secret")
   sol.map.tile_set_enabled("barrier", false)
   sol.game.savegame_set_boolean(38, true)
-  sol.main.timer_start(1000, "camera_restore", false)
+  sol.main.timer_start(1000, "sol.map.camera_restore", false)
 end
 
 function battle_1_camera_timer()
   sol.main.play_sound("secret")
   sol.map.tile_set_enabled("battle_1_barrier", false)
-  sol.main.timer_start(1000, "camera_restore", false)
+  sol.main.timer_start(1000, "sol.map.camera_restore", false)
 end
 
 
 function battle_2_camera_timer()
   sol.main.play_sound("secret")
   sol.map.tile_set_enabled("battle_2_barrier", false)
-  sol.main.timer_start(1000, "camera_restore", false)
+  sol.main.timer_start(1000, "sol.map.camera_restore", false)
 end
 
 function event_npc_dialog(npc)
@@ -121,7 +123,7 @@ function event_npc_movement_finished(npc)
     end
   else
     sol.map.npc_set_position("tom", tom_initial_x, tom_initial_y)
-    sol.map.npc_set_direction("tom", 3)
+    sol.main.sprite_set_direction("tom_sprite", 3)
     sol.map.hero_unfreeze()
   end
 end
@@ -140,10 +142,6 @@ end
 
 function has_boomerang_of_tom()
   return sol.game.savegame_get_boolean(41)
-end
-
-function has_gave_back_boomerang()
-  return sol.game.savegame_get_boolean(42)
 end
 
 function has_finished_cavern()

@@ -25,6 +25,8 @@
  * @brief Creates a circle movement.
  */
 CircleMovement::CircleMovement():
+
+  Movement(true),
   center_entity(NULL), current_angle(0), initial_angle(0), angle_increment(1), next_angle_change_date(0), angle_change_delay(5),
   current_radius(0), wanted_radius(0), previous_radius(0), next_radius_change_date(0), radius_change_delay(0),
   duration(0), end_movement_date(0), max_rotations(0), loop_delay(0), restart_date(0) {
@@ -275,10 +277,11 @@ void CircleMovement::recompute_position() {
  * @param suspended true to suspend the movement, false to resume it
  */
 void CircleMovement::set_suspended(bool suspended) {
+
   Movement::set_suspended(suspended);
 
   if (!suspended) {
-    uint32_t diff = System::now() - when_suspended;
+    uint32_t diff = System::now() - get_when_suspended();
     next_angle_change_date += diff;
     next_radius_change_date += diff;
     end_movement_date += diff;

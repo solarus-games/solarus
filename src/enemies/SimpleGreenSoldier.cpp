@@ -15,7 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "enemies/SimpleGreenSoldier.h"
-#include "movements/StraightMovement.h"
+#include "movements/TemporalMovement.h"
 #include "lowlevel/Random.h"
 #include "Sprite.h"
 
@@ -50,7 +50,7 @@ void SimpleGreenSoldier::initialize() {
   set_origin(8, 13);
 
   // movement
-  set_movement(new StraightMovement(0, 0, 0));
+  set_movement(new TemporalMovement(0, 0, 0));
 }
 
 /**
@@ -111,7 +111,7 @@ void SimpleGreenSoldier::walk(int direction) {
   sprite.set_current_animation("walking");
   sprite.set_current_direction(direction);
 
-  StraightMovement *movement = (StraightMovement*) get_movement();
+  TemporalMovement *movement = (TemporalMovement*) get_movement();
   int seconds = 2 + Random::get_number(3);
   movement->start(4, direction * 90, seconds * 1000);
 }

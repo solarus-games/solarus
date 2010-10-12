@@ -66,7 +66,7 @@ class GameScript: public Script {
   public:
 
     // loading and closing a script
-    GameScript(Scripts &scripts, Game &game);
+    GameScript(Game &game);
     virtual ~GameScript();
 };
 

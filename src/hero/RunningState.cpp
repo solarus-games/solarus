@@ -18,7 +18,7 @@
 #include "hero/FreeState.h"
 #include "hero/HeroSprites.h"
 #include "entities/Detector.h"
-#include "movements/StraightMovement.h"
+#include "movements/TemporalMovement.h"
 #include "movements/JumpMovement.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Sound.h"
@@ -93,7 +93,7 @@ void Hero::RunningState::update() {
   if (phase == 0) {
     
     if (now >= next_phase_date) {
-      hero.set_movement(new StraightMovement(30, get_sprites().get_animation_direction() * 90, 10000));
+      hero.set_movement(new TemporalMovement(30, get_sprites().get_animation_direction() * 90, 10000));
       get_sprites().set_animation_running();
       phase++;
     }

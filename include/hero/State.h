@@ -53,7 +53,7 @@ class Hero::State {
     KeysEffect& get_keys_effect();
     GameControls& get_controls();
     DialogBox& get_dialog_box();
-    Scripts& get_scripts();
+    MapScript& get_map_script();
 
   public:
 

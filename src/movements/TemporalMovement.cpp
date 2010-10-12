@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "movements/StraightMovement.h"
+#include "movements/TemporalMovement.h"
 #include "lowlevel/Geometry.h"
 #include "lowlevel/System.h"
 
@@ -25,8 +25,8 @@
  * @param time duration of the movement in milliseconds
  * @param smooth true to make the movement smooth
  */
-StraightMovement::StraightMovement(int speed, int direction, uint32_t time, bool smooth):
-  SmoothCollisionMovement(smooth) {
+TemporalMovement::TemporalMovement(int speed, int direction, uint32_t time, bool smooth):
+  SmoothMovement(smooth) {
   start(speed, direction, time);
 }
 
@@ -37,8 +37,8 @@ StraightMovement::StraightMovement(int speed, int direction, uint32_t time, bool
  * @param time duration of the movement in milliseconds
  * @param smooth true to make the movement smooth
  */
-StraightMovement::StraightMovement(int speed, double direction, uint32_t time, bool smooth):
-  SmoothCollisionMovement(smooth) {
+TemporalMovement::TemporalMovement(int speed, double direction, uint32_t time, bool smooth):
+  SmoothMovement(smooth) {
   start(speed, direction, time);
 }
 
@@ -50,8 +50,8 @@ StraightMovement::StraightMovement(int speed, double direction, uint32_t time, b
  * @param time duration of the movement in milliseconds
  * @param smooth true to make the movement smooth
  */
-StraightMovement::StraightMovement(int speed, const Rectangle &source_xy, const Rectangle &target_xy, uint32_t time, bool smooth):
-  SmoothCollisionMovement(smooth) {
+TemporalMovement::TemporalMovement(int speed, const Rectangle &source_xy, const Rectangle &target_xy, uint32_t time, bool smooth):
+  SmoothMovement(smooth) {
 
   double angle = Geometry::get_angle(source_xy.get_x(), source_xy.get_y(), target_xy.get_x(), target_xy.get_y());
   start(speed, angle, time);
@@ -60,7 +60,7 @@ StraightMovement::StraightMovement(int speed, const Rectangle &source_xy, const 
 /**
  * @brief Destructor.
  */
-StraightMovement::~StraightMovement() {
+TemporalMovement::~TemporalMovement() {
 
 }
 
@@ -70,7 +70,7 @@ StraightMovement::~StraightMovement() {
  * @param direction angle of the movement (0 to 359)
  * @param time duration of the movement in milliseconds
  */
-void StraightMovement::start(int speed, int direction, uint32_t time) {
+void TemporalMovement::start(int speed, int direction, uint32_t time) {
 
   start(speed, direction * Geometry::TWO_PI / 360.0, time);
 }
@@ -81,7 +81,7 @@ void StraightMovement::start(int speed, int direction, uint32_t time) {
  * @param direction angle of the movement in radians
  * @param time duration of the movement in milliseconds
  */
-void StraightMovement::start(int speed, double direction, uint32_t time) {
+void TemporalMovement::start(int speed, double direction, uint32_t time) {
 
   finished = false;
   end_movement_date = System::now() + time;
@@ -94,9 +94,9 @@ void StraightMovement::start(int speed, double direction, uint32_t time) {
 /**
  * @brief Updates the movement.
  */
-void StraightMovement::update() {
+void TemporalMovement::update() {
 
-  SmoothCollisionMovement::update();
+  SmoothMovement::update();
 
   uint32_t now = System::now();
   if (now >= end_movement_date) {
@@ -109,9 +109,9 @@ void StraightMovement::update() {
  * @brief Suspends or resumes the movement
  * @param suspended true to suspend the movement, false to resume it
  */
-void StraightMovement::set_suspended(bool suspended) {
+void TemporalMovement::set_suspended(bool suspended) {
 
-  SmoothCollisionMovement::set_suspended(suspended);
+  SmoothMovement::set_suspended(suspended);
 
   if (!suspended) {
     end_movement_date += System::now() - when_suspended;
@@ -126,14 +126,14 @@ void StraightMovement::set_suspended(bool suspended) {
  *
  * @return true if the movement is finished
  */
-bool StraightMovement::is_finished() {
+bool TemporalMovement::is_finished() {
   return finished;
 }
 
 /**
  * @brief Stops the movement finished even if the delay planned is not finished yet.
  */
-void StraightMovement::set_finished() {
+void TemporalMovement::set_finished() {
   stop();
   this->finished = true;
 }

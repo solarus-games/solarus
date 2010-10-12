@@ -15,23 +15,23 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lua/Script.h"
-#include "lua/Scripts.h"
 #include "Equipment.h"
 #include "Savegame.h"
 #include "Timer.h"
+#include "Sprite.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/Music.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 #include <lua.hpp>
+#include <cstdarg>
 
 /**
  * @brief Creates a script.
- * @param scripts the list of all scripts
  */
-Script::Script(Scripts &scripts):
-  scripts(scripts), context(NULL) {
+Script::Script():
+  context(NULL) {
 
 }
 
@@ -46,13 +46,20 @@ Script::~Script() {
   }
 
   // delete the timers
-  std::list<Timer*>::iterator it;
-  for (it = timers.begin(); it != timers.end(); it++) {
-    delete *it;
+  {
+    std::list<Timer*>::iterator it;
+    for (it = timers.begin(); it != timers.end(); it++) {
+      delete *it;
+    }
   }
 
-  // update the script list
-  scripts.remove_script(*this);
+  // delete the sprites created by this script
+  {
+    std::list<Sprite*>::iterator it;
+    for (it = created_sprites.begin(); it != created_sprites.end(); it++) {
+      delete *it;
+    }
+  }
 }
 
 /**
@@ -65,13 +72,14 @@ void Script::load(const std::string &script_name) {
   context = lua_open();
   luaL_openlibs(context);
 
+  // put a pointer to this Script object in the Lua context
+  lua_pushstring(context, "sol.cpp_object");
+  lua_pushlightuserdata(context, this);
+  lua_settable(context, LUA_REGISTRYINDEX); // registry["sol.cpp_object"] = this
+
   // create the Solarus table that will be available to the script
   lua_newtable(context);
   lua_setglobal(context, "sol");
-
-  // put a pointer to this Script object in the Lua context
-  lua_pushlightuserdata(context, this);
-  lua_setglobal(context, "sol.cpp_object");
 
   // register the C++ functions accessible to the script
   register_available_functions();
@@ -105,9 +113,6 @@ void Script::load(const std::string &script_name) {
   luaL_loadbuffer(context, buffer, size, file_name.c_str());
   FileTools::data_file_close_buffer(buffer);
   lua_call(context, 0, 0);
-
-  // update the script list
-  scripts.add_script(*this);
 }
 
 /**
@@ -116,10 +121,28 @@ void Script::load(const std::string &script_name) {
 void Script::register_available_functions() {
 
   static luaL_Reg functions[] = {
+
     { "play_sound", l_play_sound },
     { "play_music", l_play_music },
+
     { "timer_start", l_timer_start },
     { "timer_stop", l_timer_stop },
+
+    { "sprite_create", l_sprite_create },
+    { "sprite_remove", l_sprite_remove },
+    { "sprite_get_animation", l_sprite_get_animation },
+    { "sprite_set_animation", l_sprite_set_animation },
+    { "sprite_get_direction", l_sprite_get_direction },
+    { "sprite_set_direction", l_sprite_set_direction },
+    { "sprite_get_frame", l_sprite_get_frame },
+    { "sprite_set_frame", l_sprite_set_frame },
+    { "sprite_get_frame_delay", l_sprite_get_frame_delay },
+    { "sprite_set_frame_delay", l_sprite_set_frame_delay },
+    { "sprite_is_paused", l_sprite_is_paused },
+    { "sprite_set_paused", l_sprite_set_paused },
+    { "sprite_set_animation_ignore_suspend", l_sprite_set_animation_ignore_suspend },
+    { "sprite_fade", l_sprite_fade },
+
     { NULL, NULL }
   };
 
@@ -143,290 +166,227 @@ void Script::register_available_functions() {
 void Script::called_by_script(lua_State *context, int nb_arguments, Script **script) {
 
   // check the number of arguments
-  Debug::assert(lua_gettop(context) == nb_arguments, "Invalid number of arguments");
+  Debug::assert(lua_gettop(context) == nb_arguments, "Invalid number of arguments when calling C++ from Lua");
 
   // retrieve the Script object
   if (script != NULL) {
-    lua_getglobal(context, "sol.cpp_object");
+    lua_pushstring(context, "sol.cpp_object");
+    lua_gettable(context, LUA_REGISTRYINDEX);
     *script = (Script*) lua_touserdata(context, -1);
     lua_pop(context, 1);
   }
 }
 
 /**
- * @brief Calls a function without argument in the script.
+ * @brief Prints on a line the content of the Lua stack for debugging purposes.
+ */
+void Script::print_stack() {
+
+  int i;
+  int top = lua_gettop(context);
+
+  for (i = 1; i <= top; i++) {
+
+    int type = lua_type(context, i);
+    switch (type) {
+
+      case LUA_TSTRING:
+	std::cout << lua_tostring(context, i);
+	break;
+
+      case LUA_TBOOLEAN:
+	std::cout << (lua_toboolean(context, i) ? "true" : "false");
+	break;
+
+      case LUA_TNUMBER:
+	std::cout << lua_tonumber(context, i);
+	break;
+
+      default:
+	std::cout << lua_typename(context, type);
+	break;
+
+    }
+    std::cout << " ";
+  }
+  std::cout << std::endl;
+}
+
+/**
+ * @brief Looks up the specified Lua function and places it onto the stack if it exists.
  *
- * If the function does not exists in the script, nothing happens:
- * it just means that the function corresponds to an event that
- * the script does not want to handle.
+ * If the function is not found, the stack is left unchanged.
  *
- * @param function_name name of the function to call
- * @return true if the function was called, false if it does not exist
+ * @param function_name of the function to find
+ * (may be prefixed by the name of several Lua tables, typically sol.main.some_function)
+ * @return true if the function was found
  */
-bool Script::notify_script(const std::string &function_name) {
+bool Script::find_lua_function(const std::string &function_name) {
 
   if (context == NULL) {
     return false;
   }
 
-  lua_getglobal(context, function_name.c_str());
-  bool exists = lua_isfunction(context, -1);
+  // TODO implement a simpler solution to the timer problem
+  // (which is: allowing to set sol.main.some_function as a timer callback, even if it is not a global function):
+  // store the callback as a lua function object instead of a string, if possible
 
-  if (exists) {
-    lua_call(context, 0, 0);
+  size_t index = function_name.find(".");
+  if (index == std::string::npos) {
+
+    // usual Lua function
+    lua_getglobal(context, function_name.c_str());
   }
   else {
-    lua_pop(context, -1);
-  }
 
-  return exists;
-}
+    // function in a table (e.g. sol.main.some_function)
+    std::string table_name = function_name.substr(0, index);
+    std::string tail = function_name.substr(index + 1);
 
-/**
- * @brief Calls a function in the script.
- * @param function_name name of the function to call
- * @param arg1 argument of the function
- * @return true if the function was called, false if it does not exist
- */
-bool Script::notify_script(const std::string &function_name, const std::string &arg1) {
+    lua_getglobal(context, table_name.c_str());
 
-  if (context == NULL) {
-    return false;
-  }
+    index = tail.find(".");
+    while (index != std::string::npos) { // there may even be several intermediary tables
 
-  lua_getglobal(context, function_name.c_str());
-  bool exists = lua_isfunction(context, -1);
+      table_name = tail.substr(0, index);
+      tail = tail.substr(index + 1);
 
-  if (exists) {
-    lua_pushstring(context, arg1.c_str());
-    lua_call(context, 1, 0);
-  }
-  else {
-    lua_pop(context, -1);
-  }
+      lua_pushstring(context, table_name.c_str());
+      lua_gettable(context, -2);
+      lua_remove(context, -2);
 
-  return exists;
-}
-
-/**
- * @brief Calls a function in the script.
- * @param function_name name of the function to call
- * @param arg1 first argument of the function
- * @param arg2 second argument of the function
- * @return true if the function was called, false if it does not exist
- */
-bool Script::notify_script(const std::string &function_name,
-				  const std::string &arg1, int arg2) {
-
-  if (context == NULL) {
-    return false;
-  }
-
-  lua_getglobal(context, function_name.c_str());
-  bool exists = lua_isfunction(context, -1);
-
-  if (exists) {
-    lua_pushstring(context, arg1.c_str());
-    lua_pushinteger(context, arg2);
-    lua_call(context, 2, 0);
-  }
-  else {
-    lua_pop(context, -1);
-  }
-
-  return exists;
-}
-
-/**
- * @brief Calls a function in the script.
- * @param function_name name of the function to call
- * @param arg1 first argument of the function
- * @param arg2 second argument of the function
- * @param arg3 third argument of the function
- * @return true if the function was called, false if it does not exist
- */
-bool Script::notify_script(const std::string &function_name,
-				  const std::string &arg1, int arg2, int arg3) {
-
-  if (context == NULL) {
-    return false;
-  }
-
-  lua_getglobal(context, function_name.c_str());
-  bool exists = lua_isfunction(context, -1);
-
-  if (exists) {
-    lua_pushstring(context, arg1.c_str());
-    lua_pushinteger(context, arg2);
-    lua_pushinteger(context, arg3);
-    lua_call(context, 3, 0);
-  }
-  else {
-    lua_pop(context, -1);
-  }
-
-  return exists;
-}
-
-/**
- * @brief Calls a function in the script.
- * @param function_name name of the function to call
- * @param arg1 first argument of the function
- * @param arg2 second argument of the function
- * @param arg3 third argument of the function
- * @return true if the function was called, false if it does not exist
- */
-bool Script::notify_script(const std::string &function_name,
-				  const std::string &arg1, const std::string &arg2, int arg3) {
-
-  if (context == NULL) {
-    return false;
-  }
-
-  lua_getglobal(context, function_name.c_str());
-  bool exists = lua_isfunction(context, -1);
-
-  if (exists) {
-    lua_pushstring(context, arg1.c_str());
-    lua_pushstring(context, arg2.c_str());
-    lua_pushinteger(context, arg3);
-    lua_call(context, 3, 0);
-  }
-  else {
-    lua_pop(context, -1);
-  }
-
-  return exists;
-}
-
-/**
- * @brief Calls a function in the script.
- * @param function_name name of the function to call
- * @param arg1 first argument of the function
- * @param arg2 second argument of the function
- * @param arg3 third argument of the function
- * @return true if the function was called, false if it does not exist
- */
-bool Script::notify_script(const std::string &function_name,
-				  int arg1, const std::string &arg2, int arg3) {
-
-  if (context == NULL) {
-    return false;
-  }
-
-  lua_getglobal(context, function_name.c_str());
-  bool exists = lua_isfunction(context, -1);
-
-  if (exists) {
-    lua_pushinteger(context, arg1);
-    lua_pushstring(context, arg2.c_str());
-    lua_pushinteger(context, arg3);
-    lua_call(context, 3, 0);
-  }
-  else {
-    lua_pop(context, -1);
-  }
-
-  return exists;
-}
-
-/**
- * @brief Calls a function in the script.
- * @param function_name name of the function to call
- * @param arg1 argument of the function
- * @return true if the function was called, false if it does not exist
- */
-bool Script::notify_script(const std::string &function_name, int arg1) {
-
-  if (context == NULL) {
-    return false;
-  }
-
-  lua_getglobal(context, function_name.c_str());
-  bool exists = lua_isfunction(context, -1);
-
-  if (exists) {
-    lua_pushinteger(context, arg1);
-    lua_call(context, 1, 0);
-  }
-  else {
-    lua_pop(context, -1);
-  }
-
-  return exists;
-}
-
-/**
- * @brief Calls a function in the script.
- * @param function_name name of the function to call
- * @param arg1 first argument of the function
- * @param arg2 second argument of the function
- * @return true if the function was called, false if it does not exist
- */
-bool Script::notify_script(const std::string &function_name, int arg1, int arg2) {
-
-  if (context == NULL) {
-    return false;
-  }
-
-  lua_getglobal(context, function_name.c_str());
-  bool exists = lua_isfunction(context, -1);
-
-  if (exists) {
-    lua_pushinteger(context, arg1);
-    lua_pushinteger(context, arg2);
-    lua_call(context, 2, 0);
-  }
-  else {
-    lua_pop(context, -1);
-  }
-
-  return exists;
-}
-
-/**
- * @brief Calls a function in the script.
- * @param function_name name of the function to call
- * @param arg1 argument of the function
- * @return true if the function was called, false if it does not exist
- */
-bool Script::notify_script(const std::string &function_name, bool arg1) {
-
-  if (context == NULL) {
-    return false;
-  }
-
-  lua_getglobal(context, function_name.c_str());
-  bool exists = lua_isfunction(context, -1);
-
-  if (exists) {
-    lua_pushboolean(context, arg1);
-    lua_call(context, 1, 0);
-  }
-  else {
-    lua_pop(context, -1);
-  }
-
-  return exists;
-}
-
-/**
- * @brief This function is called when the game is being suspended or resumed.
- * @param suspended true if the game is suspended, false if it is resumed
- */
-void Script::set_suspended(bool suspended) {
-
-  if (context != NULL) {
-
-    // notify the timers
-    std::list<Timer*>::iterator it;
-    for (it = timers.begin(); it != timers.end(); it++) {
-      (*it)->set_suspended(suspended);
+      index = tail.find(".");
     }
 
-    // notify the script
-    notify_script("event_set_suspended", suspended);
+    // now tail is the function name without prefix, and the table that contains it is on the top of the stack
+    lua_pushstring(context, tail.c_str());
+    lua_gettable(context, -2);
+    lua_remove(context, -2);
   }
+
+  bool exists = lua_isfunction(context, -1);
+  if (!exists) { // restore the stack
+    lua_pop(context, 1);
+  }
+
+  return exists;
+}
+
+/**
+ * @brief Calls a Lua function of the current script, possibly with arguments and return values of various types.
+ *
+ * This is just a convenient method to push the parameters and pop the results for you
+ * in addition to calling the Lua function.
+ * However, this function uses the variable number of parameters mechanism of cstdarg, which
+ * is inherently C and not C++.
+ * This means you have to use C-style strings instead of std::string.
+ *
+ * The arguments and results of the Lua function are passed thanks to the variable number of
+ * parameters (possibly of different types) of this C++ method.
+ * The format parameter of this C++ method specifies the type of each
+ * argument and each result of the Lua function to call.
+ * The types of the arguments should be described in the format string as a sequence of characters
+ * where each character represents a type ('i': int, 'b': bool, 's': const char*).
+ * If you expect some results to get returned by the Lua function,
+ * the format string should then take a space character,
+ * and the types of the results are then specified in the same way,
+ * except that results of type string are not accepted.
+ * The space character is optional if no result is returned.
+ * This means an empty format string can be used when the Lua function has no argument
+ * and no return value.
+ *
+ * The remaining parameters of this C++ method (of variable number)
+ * must match the specified format,
+ * passing values for the arguments and pointers for the results.
+ *
+ * Let's take an example:
+ * assuming that the Lua function you want to call takes as arguments
+ * a string plus two integers and returns a boolean,
+ * the format string you should specify is: "sii b".
+ * You should then give four parameters of types const char*, int, int and bool*.
+ *
+ * If the Lua function does not exists in the script,
+ * nothing happens and this C++ function returns false.
+ * It just means that the function corresponds to an event that
+ * the script does not want to handle.
+ * If the Lua function exists, the arguments are pushed onto the stack, the function is executed,
+ * the results (if any) are popped from the stack and stored into your pointed areas,
+ * and this C++ method returns true.
+ * In both cases, the Lua stack is left unchanged.
+ *
+ * This function does not support results of type string because it would cause some
+ * complications and we want to keep its usage simple.
+ * If you need to call a function with a result of type string, you can still do it,
+ * but not with this C++ method.
+ * I explain now what the problem is with string results.
+ * If a Lua function returns a string, the memory used by the const char* pointer is discarded
+ * when the C++ code pops it from the stack.
+ * And this C++ method is supposed to to the job for you, so it pops the results
+ * from the stack before returning them to you.
+ * As a consequence, allowing string results
+ * would require that you pop the results yourself, after having read them.
+ * Another solution would be to return a copy of the string,
+ * but because the variable number of parameters mechanism cannot use std::string,
+ * the copy would be a const char* that you would have to free yourselft.
+ * As this function wants to simplify your code by doing the job for you,
+ * both solutions are bad ideas.
+ * However, in Solarus, calling Lua from C++ is used only to notify a script that something
+ * happened (recall the name of this C++ method), not to ask strings to them.
+ *
+ * @param function_name name of the function to call
+ * (may be prefixed by the name of several Lua tables, typically sol.main.some_function)
+ * @param format a string describing the types of arguments to pass to the Lua function
+ * and the types of return values to get (see above)
+ * @return true if the function was called successfully, false if it does not exist
+ */
+bool Script::notify_script(const std::string &function_name, const std::string &format, ...) {
+
+  // find the function and push it onto the stack
+  bool exists = find_lua_function(function_name);
+
+  if (exists) {
+
+    va_list args;
+    va_start(args, format);
+
+    // push the arguments
+    unsigned int i;
+    unsigned int nb_arguments = 0;
+    bool end_arguments = false;
+    for (i = 0; i < format.size() && !end_arguments; i++) {
+      switch (format[i]) {
+	case 'i':	lua_pushinteger(context, va_arg(args, int));	break;
+	case 'b':	lua_pushboolean(context, va_arg(args, int));	break; 		// cstdarg refuses bool
+	case 's':	lua_pushstring(context, va_arg(args, const char*));	break;	// and std::string
+	case ' ':	end_arguments = true;
+	default:	Debug::die(StringConcat() << "Invalid character '" << format[i] << "' in format string '" << format);
+      }
+
+      if (format[i] != ' ') {
+	nb_arguments++;
+      }
+    }
+
+    // call the function
+    int nb_results = format.size() - i;
+    lua_call(context, nb_arguments, nb_results);
+
+    // get the results
+    for (int i = 0; i < nb_results; i++) {
+      char type = format[nb_arguments + i + 1];
+      int stack_index = -nb_results + i;
+      switch (type) {
+	case 'i':	*va_arg(args, int*) = lua_tointeger(context, stack_index);	break;
+	case 'b':	*va_arg(args, int*) = lua_toboolean(context, stack_index);	break;
+	case 's':	Debug::die("String results are not supported by Script::notify_script(), please make the call yourself");
+	default:	Debug::die(StringConcat() << "Invalid character '" << type << "' in format string '" << format);
+      }
+    }
+    lua_pop(context, nb_results);
+    va_end(args);
+  }
+
+  return exists;
 }
 
 /**
@@ -443,7 +403,12 @@ void Script::update() {
 
     timer->update();
     if (timer->is_finished()) {
-      notify_script(timer->get_name());
+      
+      bool invoked = notify_script(timer->get_name()); 
+      if (!invoked) {
+	Debug::die(StringConcat() << "No such timer callback function: '" << timer->get_name() << "'");
+      }
+
       delete timer;
       timers.erase(it);
       it = timers.begin();
@@ -451,7 +416,7 @@ void Script::update() {
   }
 
   // update the script
-  notify_script("event_update");
+  event_update();
 }
 
 /**
@@ -494,18 +459,58 @@ bool Script::is_new_timer_suspended(void) {
   return false;
 }
 
+/**
+ * @brief Creates a new sprite that will be accessible from the script.
+ * @param sprite_id a name that will identify the sprite from the script
+ * @param animation_set_id animation set of the sprite to create
+ */
+void Script::create_sprite(const std::string &sprite_id, const SpriteAnimationSetId &animation_set_id) {
+
+  Sprite *sprite = new Sprite(animation_set_id);
+  add_existing_sprite(sprite_id, *sprite);
+  created_sprites.push_back(sprite);
+}
+
+/**
+ * @brief Makes an existing sprite accessible from the script.
+ * @param sprite_id a name that will identify the sprite from the script
+ * @param sprite the existing sprite to associate to sprite_id
+ */
+void Script::add_existing_sprite(const std::string &sprite_id, Sprite &sprite) {
+
+  Debug::assert(sprites.count(sprite_id) == 0,
+    StringConcat() << "This script already has a sprite with id '" << sprite_id << "'");
+
+  sprites[sprite_id] = &sprite;
+}
+
+/**
+ * @brief Returns a sprite handled by this script.
+ * @param sprite_id id of the sprite to get
+ * @return the corresponding sprite
+ */
+Sprite& Script::get_sprite(const std::string &sprite_id) {
+
+  Debug::assert(sprites.count(sprite_id) > 0,
+    StringConcat() << "No sprite with id '" << sprite_id << "'");
+
+  return *sprites[sprite_id];
+}
+
 // functions that can be called by the Lua script
 
 /**
  * @brief Plays a sound.
  *
  * - Argument 1 (string): name of the sound
+ *
+ * @param l the Lua context that is calling this function
  */
 int Script::l_play_sound(lua_State *l) {
 
   Script *script;
   called_by_script(l, 1, &script);
-  const SoundId &sound_id = lua_tostring(l, 1);
+  const SoundId &sound_id = luaL_checkstring(l, 1);
 
   Sound::play(sound_id);
 
@@ -516,12 +521,14 @@ int Script::l_play_sound(lua_State *l) {
  * @brief Plays a music.
  * 
  * - Argument 1 (string): name of the music (possibly "none" or "same")
+ *
+ * @param l the Lua context that is calling this function
  */
 int Script::l_play_music(lua_State *l) {
 
   Script *script;
   called_by_script(l, 1, &script);
-  const MusicId &music_id = lua_tostring(l, 1);
+  const MusicId &music_id = luaL_checkstring(l, 1);
   Music::play(music_id);
 
   return 0;
@@ -534,13 +541,15 @@ int Script::l_play_music(lua_State *l) {
  * - Argument 2 (string): name of the Lua function to call when the timer is finished
  * (no argument, no return value)
  * - Argument 3 (boolean): plays a sound until the timer expires
+ *
+ * @param l the Lua context that is calling this function
  */
 int Script::l_timer_start(lua_State *l) {
 
   Script *script;
   called_by_script(l, 3, &script);
-  uint32_t duration = lua_tointeger(l, 1);
-  const std::string &callback_name = lua_tostring(l, 2);
+  uint32_t duration = luaL_checkinteger(l, 1);
+  const std::string &callback_name = luaL_checkstring(l, 2);
   bool with_sound = lua_toboolean(l, 3) != 0;
 
   Timer *timer = new Timer(duration, callback_name, with_sound);
@@ -557,15 +566,330 @@ int Script::l_timer_start(lua_State *l) {
  *
  * - Argument 1 (string): name of the Lua function that is supposed to be called
  * when the timer is finished
+ *
+ * @param l the Lua context that is calling this function
  */
 int Script::l_timer_stop(lua_State *l) {
 
   Script *script;
   called_by_script(l, 1, &script);
-  const std::string &callback_name = lua_tostring(l, 1);
+  const std::string &callback_name = luaL_checkstring(l, 1);
 
   script->remove_timer(callback_name);
 
   return 0;
 }
+
+/**
+ * @brief Creates a sprite that will be stored by the script.
+ *
+ * The sprite created will be accessible only from this script.
+ * No other sprite will the same id should exist in this script.
+ * You can destroy your sprite later with sol.main.sprite_remove().
+ * If you don't, it will be destroyed automatically when the script is destroyed.
+ * - Argument 1 (string): a name to identify the created sprite later
+ * - Argument 2 (string): animation set to use
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::l_sprite_create(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 2, &script);
+  const std::string &sprite_id = luaL_checkstring(l, 1);
+  const std::string &animation_set_id = luaL_checkstring(l, 2);
+
+  script->create_sprite(sprite_id, animation_set_id);
+
+  return 0;
+}
+
+/**
+ * @brief Destroys a sprite previously created inside this script with sol.main.sprite_create().
+ *
+ * Sprites handled by this script but created elsewhere (e.g. an NPC's sprite)
+ * must never be destroyed here. Call this function only for sprites that were created
+ * by calling sol.main.sprite_create().
+ * - Argument 1 (string): id of the sprite to destroy
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::l_sprite_remove(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 1, &script);
+  const std::string &sprite_id = luaL_checkstring(l, 1);
+
+  Sprite *sprite = &script->get_sprite(sprite_id);
+
+  script->created_sprites.remove(sprite);
+  script->sprites.erase(sprite_id);
+  delete sprite;
+
+  return 0;
+}
+
+/**
+ * @brief Returns the current animation of a sprite.
+ * 
+ * - Argument 1 (string): id of the sprite
+ * - Return value (string): name of the current animation
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::l_sprite_get_animation(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 1, &script);
+  const std::string &sprite_id = luaL_checkstring(l, 1);
+
+  const Sprite &sprite = script->get_sprite(sprite_id);
+  const std::string animation_name = sprite.get_current_animation();
+  lua_pushstring(l, animation_name.c_str());
+
+  return 1;
+}
+
+/**
+ * @brief Sets the current animation of a sprite.
+ * 
+ * - Argument 1 (string): id of the sprite
+ * - Argument 2 (string): name of the animation to set
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::l_sprite_set_animation(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 2, &script);
+  const std::string &sprite_id = luaL_checkstring(l, 1);
+  const std::string &animation_name = luaL_checkstring(l, 2);
+
+  Sprite &sprite = script->get_sprite(sprite_id);
+  sprite.set_current_animation(animation_name);
+  sprite.restart_animation();
+
+  return 0;
+}
+
+/**
+ * @brief Returns the current direction of a sprite.
+ * 
+ * - Argument 1 (string): id of the sprite
+ * - Return value (integer): direction of the sprite
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::l_sprite_get_direction(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 1, &script);
+  const std::string &sprite_id = luaL_checkstring(l, 1);
+
+  const Sprite &sprite = script->get_sprite(sprite_id);
+  lua_pushinteger(l, sprite.get_current_direction());
+
+  return 1;
+}
+
+/**
+ * @brief Sets the current direction of a sprite.
+ * 
+ * - Argument 1 (string): id of the sprite
+ * - Argument 2 (integer): direction to set
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::l_sprite_set_direction(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 2, &script);
+  const std::string &sprite_id = luaL_checkstring(l, 1);
+  int direction = luaL_checkinteger(l, 2);
+
+  Sprite &sprite = script->get_sprite(sprite_id);
+  sprite.set_current_direction(direction);
+
+  return 0;
+}
+
+/**
+ * @brief Returns the current frame of a sprite.
+ * 
+ * - Argument 1 (string): id of the sprite
+ * - Return value (integer): index of the current frame of the animation
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::l_sprite_get_frame(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 1, &script);
+  const std::string &sprite_id = luaL_checkstring(l, 1);
+
+  const Sprite &sprite = script->get_sprite(sprite_id);
+  lua_pushinteger(l, sprite.get_current_frame());
+
+  return 1;
+}
+
+/**
+ * @brief Sets the current frame of a sprite.
+ * 
+ * - Argument 1 (string): id of the sprite
+ * - Argument 2 (integer): index of the frame to set in the animation
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::l_sprite_set_frame(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 2, &script);
+  const std::string &sprite_id = luaL_checkstring(l, 1);
+  int frame = luaL_checkinteger(l, 2);
+
+  Sprite &sprite = script->get_sprite(sprite_id);
+  sprite.set_current_frame(frame);
+
+  return 0;
+}
+
+/**
+ * @brief Returns the delay between two frames of the animation of a sprite.
+ * 
+ * - Argument 1 (string): id of the sprite
+ * - Return value: the delay between two frames in milliseconds
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::l_sprite_get_frame_delay(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 1, &script);
+  const std::string &sprite_id = luaL_checkstring(l, 1);
+
+  const Sprite &sprite = script->get_sprite(sprite_id);
+  lua_pushinteger(l, sprite.get_frame_delay());
+
+  return 1;
+}
+
+/**
+ * @brief Sets the delay between two frames of the animation of a sprite.
+ * 
+ * - Argument 1 (string): id of the sprite
+ * - Argument 2 (integer): the new delay in milliseconds
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::l_sprite_set_frame_delay(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 2, &script);
+  const std::string &sprite_id = luaL_checkstring(l, 1);
+  uint32_t delay = luaL_checkinteger(l, 2);
+
+  Sprite &sprite = script->get_sprite(sprite_id);
+  sprite.set_frame_delay(delay);
+
+  return 0;
+}
+
+/**
+ * @brief Returns whether the animation of a sprite is paused.
+ * 
+ * - Argument 1 (string): id of the sprite
+ * - Return value (boolean): true if the animation is currently paused
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::l_sprite_is_paused(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 1, &script);
+  const std::string &sprite_id = luaL_checkstring(l, 1);
+
+  Sprite &sprite = script->get_sprite(sprite_id);
+  lua_pushboolean(l, sprite.is_paused() ? 1 : 0);
+
+  return 1;
+}
+
+/**
+ * @brief Pauses or resumes the animation of a sprite.
+ * 
+ * - Argument 1 (string): id of the sprite
+ * - Argument 2 (boolean): true to pause the animation, false to resume it
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::l_sprite_set_paused(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 2, &script);
+  const std::string &sprite_id = luaL_checkstring(l, 1);
+  bool paused = lua_toboolean(l, 2) != 0;
+
+  Sprite &sprite = script->get_sprite(sprite_id);
+  sprite.set_paused(paused);
+
+  return 0;
+}
+
+/**
+ * @brief Sets whether the animation of a sprite should continue even when
+ * the sprite receives a set_suspended(true) call.
+ *
+ * - Argument 1 (string): id of the sprite
+ * - Argument 2 (boolean): true to continue the animation when the sprite is suspended
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::l_sprite_set_animation_ignore_suspend(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 2, &script);
+  const std::string &sprite_id = luaL_checkstring(l, 1);
+  bool ignore_suspend = lua_toboolean(l, 2) != 0;
+
+  Sprite &sprite = script->get_sprite(sprite_id);
+  sprite.set_ignore_suspend(ignore_suspend);
+
+  return 0;
+}
+
+/**
+ * @brief Starts a fade-in or a fade-out effect on a sprite.
+ * 
+ * - Argument 1 (string): id of the sprite
+ * - Argument 2 (integer): direction of the effect: 0 for fade-in, 1 for fade-out
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::l_sprite_fade(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 2, &script);
+  const std::string &sprite_id = luaL_checkstring(l, 1);
+  int direction = luaL_checkinteger(l, 2);
+
+  Sprite &sprite = script->get_sprite(sprite_id);
+  sprite.start_fading(direction);
+
+  return 0;
+}
+
+// event functions, i.e. calling Lua from C++
+
+/**
+ * @brief Notifies the script that it can update itself.
+ *
+ * This function is called at each cycle of the main loop,
+ * so if you define it in your script, take care of the performances.
+ */
+void Script::event_update() {
+
+  notify_script("event_update");
+}
+
 

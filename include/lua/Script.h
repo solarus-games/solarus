@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include <list>
+#include <map>
 
 struct lua_State;
 
@@ -33,37 +34,48 @@ struct lua_State;
  */
 class Script {
 
-  friend class Scripts;
-
   protected:
 
     typedef int (FunctionAvailableToScript) (lua_State *l);		/**< type of the functions that can be called by a Lua script */
 
-    Scripts &scripts;							/**< the list of all scripts */
-
     // script data
     lua_State* context;							/**< the execution context of the Lua script */
     std::list<Timer*> timers;						/**< the timers currently running for this script */
+    std::map<std::string, Sprite*> sprites;				/**< the sprites managed by this script */
+    std::list<Sprite*> created_sprites;					/**< the sprites managed by this script that were created by it */
 
     // calling a Lua function from C++
-    bool notify_script(const std::string &function_name);
-    bool notify_script(const std::string &function_name, const std::string &arg1);
-    bool notify_script(const std::string &function_name, const std::string &arg1, int arg2);
-    bool notify_script(const std::string &function_name, const std::string &arg1, int arg2, int arg3);
-    bool notify_script(const std::string &function_name, const std::string &arg1, const std::string &arg2, int arg3);
-    bool notify_script(const std::string &function_name, int arg1, const std::string &arg2, int arg3);
-    bool notify_script(const std::string &function_name, int arg1);
-    bool notify_script(const std::string &function_name, int arg1, int arg2);
-    bool notify_script(const std::string &function_name, bool arg1);
+    bool find_lua_function(const std::string &function_name);
+    bool notify_script(const std::string &function_name, const std::string &format = "", ...);
 
-    // calling a C++ function from Lua
+    // calling a C++ function from Lua (and also retreive the instance of Script)
     static void called_by_script(lua_State *context, int nb_arguments, Script **script);
 
     static FunctionAvailableToScript 
+
+      // audio
       l_play_sound,
       l_play_music,
+
+      // timers
       l_timer_start,
-      l_timer_stop;
+      l_timer_stop,
+
+      // sprites
+      l_sprite_create,
+      l_sprite_remove,
+      l_sprite_get_animation,
+      l_sprite_set_animation,
+      l_sprite_get_direction,
+      l_sprite_set_direction,
+      l_sprite_get_frame,
+      l_sprite_set_frame,
+      l_sprite_get_frame_delay,
+      l_sprite_set_frame_delay,
+      l_sprite_is_paused,
+      l_sprite_set_paused,
+      l_sprite_set_animation_ignore_suspend,
+      l_sprite_fade;
 
     // initialization
     void load(const std::string &script_name);
@@ -74,15 +86,25 @@ class Script {
     void remove_timer(const std::string &callback_name);
     virtual bool is_new_timer_suspended(void);
 
+    // sprites
+    void create_sprite(const std::string &sprite_id, const SpriteAnimationSetId &animation_set_id);
+    void add_existing_sprite(const std::string &sprite_id, Sprite &sprite);
+    Sprite& get_sprite(const std::string &sprite_id);
+
+    // debugging
+    void print_stack();
+
   public:
 
     // loading and closing a script
-    Script(Scripts &scripts);
+    Script();
     virtual ~Script();
 
     // update functions
     virtual void update();
-    virtual void set_suspended(bool suspended);
+
+    // calling Lua from C++
+    void event_update();
 };
 
 #endif

@@ -26,8 +26,8 @@
 #include "Sprite.h"
 #include "SpriteAnimationSet.h"
 #include "Map.h"
-#include "lua/Scripts.h"
-#include "movements/StraightMovement.h"
+#include "lua/MapScript.h"
+#include "movements/TemporalMovement.h"
 #include "movements/FallingHeight.h"
 #include "lowlevel/Geometry.h"
 #include "lowlevel/FileTools.h"
@@ -490,7 +490,7 @@ void Enemy::update() {
     remove_from_map();
 
     // notify the scripts
-    get_scripts().event_enemy_dead(get_name());
+    get_map_script().event_enemy_dead(get_name());
   }
 }
 
@@ -842,7 +842,7 @@ void Enemy::hurt(MapEntity &source) {
   // push the enemy back
   if (pushed_back_when_hurt) {
     double angle = source.get_vector_angle(*this);
-    set_movement(new StraightMovement(12, angle, 200));
+    set_movement(new TemporalMovement(12, angle, 200));
   }
   else {
     stop_hurt_date = now + 300;

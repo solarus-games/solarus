@@ -109,7 +109,6 @@ class GameoverSequence;
 class Camera;
 
 // scripts
-class Scripts;
 class Script;
 class GameScript;
 class MapScript;
@@ -181,16 +180,16 @@ class ScrollingTilePattern;
 
 // movements
 class Movement;
-class CollisionMovement;
-class SmoothCollisionMovement;
+class RectilinearMovement;
+class SmoothMovement;
 class PlayerMovement;
 class FallingOnFloorMovement;
 class PixelMovement;
-class FairyMovement;
+class BoundedRandomMovement;
 class FollowMovement;
 class TargetMovement;
 class JumpMovement;
-class StraightMovement;
+class TemporalMovement;
 class PathMovement;
 class RandomWalkMovement;
 class PathFindingMovement;

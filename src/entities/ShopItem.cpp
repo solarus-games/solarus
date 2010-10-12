@@ -16,7 +16,7 @@
  */
 #include "entities/ShopItem.h"
 #include "entities/Hero.h"
-#include "lua/Scripts.h"
+#include "lua/MapScript.h"
 #include "Game.h"
 #include "Map.h"
 #include "KeysEffect.h"
@@ -227,7 +227,7 @@ void ShopItem::update() {
 	  remove_from_map();
 	  get_savegame().set_boolean(savegame_variable, true);
 	}
-	get_scripts().event_shop_item_bought(get_name());
+	get_map_script().event_shop_item_bought(get_name());
       }
     }
   }

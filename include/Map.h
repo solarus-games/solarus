@@ -96,7 +96,7 @@ class Map {
     MapEntities *entities;        /**< the entities on the map */
     bool suspended;               /**< indicates whether the game is suspended */
 
-    MapScript *script;            /**< Lua script of the map */
+    MapScript *script;            /**< Lua script of this map */
 
     void set_suspended(bool suspended);
 
@@ -136,7 +136,7 @@ class Map {
     void load(Game &game);
     void unload();
     Game& get_game();
-    Scripts& get_scripts();
+    MapScript& get_script();
     void notify_opening_transition_finished();
 
     // entities

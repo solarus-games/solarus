@@ -28,7 +28,7 @@
  */
 PixelMovement::PixelMovement(int nb_vectors, uint32_t delay,
 			     bool loop, bool ignore_obstacles):
-  CollisionMovement(ignore_obstacles),
+  Movement(ignore_obstacles),
   nb_vectors(nb_vectors), delay(delay), loop(loop),
   vector_index(0), finished(false) {
 
@@ -39,7 +39,7 @@ PixelMovement::PixelMovement(int nb_vectors, uint32_t delay,
  * @param translation_vectors the succession of translations
  * composing this movement (each element of the array represents
  * a translation vector in pixels; only the fields x and y of the
- * Rectangle are used.
+ * Rectangle are used).
  * @param nb_vectors number of translation vectors in the array
  * @param delay delay in milliseconds between two translations
  * @param loop true to make the movement return to the beginning
@@ -48,9 +48,9 @@ PixelMovement::PixelMovement(int nb_vectors, uint32_t delay,
  */
 PixelMovement::PixelMovement(const Rectangle *translation_vectors,
 			     int nb_vectors, uint32_t delay, bool loop, bool ignore_obstacles):
-  CollisionMovement(ignore_obstacles),
+  Movement(ignore_obstacles),
   translation_vectors(translation_vectors), nb_vectors(nb_vectors),
-  delay(delay), loop(loop), vector_index(0), finished(false) {
+  delay(delay), next_move_date(System::now()), loop(loop), vector_index(0), finished(false) {
 
 }
 
@@ -88,7 +88,7 @@ void PixelMovement::update() {
 
   uint32_t now = System::now();
 
-  while (now >= get_next_move_date_x() && !finished) {
+  while (now >= next_move_date && !finished) {
 
     Rectangle old_xy(get_x(), get_y());
     make_next_move();
@@ -97,6 +97,19 @@ void PixelMovement::update() {
     if (!is_suspended() && entity != NULL) {
       entity->notify_movement_tried(success);
     }
+  }
+}
+
+/**
+ * @brief Suspends or resumes this movement.
+ * @param suspended true to suspend the movement, false to resume it
+ */
+void PixelMovement::set_suspended(bool suspended) {
+
+  Movement::set_suspended(suspended);
+
+  if (!suspended) {
+    next_move_date += System::now() - get_when_suspended();
   }
 }
 
@@ -112,7 +125,7 @@ void PixelMovement::make_next_move() {
     translate(dx, dy);
   }
 
-  set_next_move_date_x(get_next_move_date_x() + delay);
+  next_move_date += delay;
 
   vector_index++;
   if (vector_index >= nb_vectors) {

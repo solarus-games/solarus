@@ -18,12 +18,12 @@
 #define SOLARUS_PIXEL_MOVEMENT_H
 
 #include "Common.h"
-#include "movements/CollisionMovement.h"
+#include "movements/Movement.h"
 
 /**
  * @brief Movement of an entity that follows a predetermined sequence of pixel-precise moves.
  */
-class PixelMovement: public CollisionMovement {
+class PixelMovement: public Movement {
 
   private:
 
@@ -35,6 +35,7 @@ class PixelMovement: public CollisionMovement {
     const int nb_vectors;                 /**< Number of translation vectors: this is the size of the
 					   * translation_vectors array. */
 
+    uint32_t next_move_date;              /**< Date of the next move */
     uint32_t delay;                       /**< Delay in milliseconds between two translations. */
 
     const bool loop;                      /**< Should the movement return to the beginning once finished? */ 
@@ -61,6 +62,7 @@ class PixelMovement: public CollisionMovement {
 
     void set_delay(uint32_t delay);
     virtual void update();
+    virtual void set_suspended(bool suspended);
     bool is_started();
     bool is_finished();
     int get_length();

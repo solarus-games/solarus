@@ -19,7 +19,7 @@
 #include "movements/PathMovement.h"
 #include "movements/RandomWalkMovement.h"
 #include "movements/JumpMovement.h"
-#include "lua/Scripts.h"
+#include "lua/MapScript.h"
 #include "Game.h"
 #include "DialogBox.h"
 #include "Map.h"
@@ -307,7 +307,7 @@ bool InteractiveEntity::interaction_with_inventory_item(InventoryItem &item) {
   }
   else {
     // in other cases, nothing is predefined in the engine: we call the script
-    interaction = get_scripts().event_hero_interaction_item(get_name(), item.get_name(), item.get_variant());
+    interaction = get_map_script().event_hero_interaction_item(get_name(), item.get_name(), item.get_variant());
   }
 
   return interaction;
@@ -319,10 +319,10 @@ bool InteractiveEntity::interaction_with_inventory_item(InventoryItem &item) {
 void InteractiveEntity::call_script() {
 
   if (subtype == NON_PLAYING_CHARACTER) {
-    get_scripts().event_npc_dialog(get_name());
+    get_map_script().event_npc_dialog(get_name());
   }
   else {
-    get_scripts().event_hero_interaction(get_name());
+    get_map_script().event_hero_interaction(get_name());
   }
 }
 
@@ -338,7 +338,7 @@ void InteractiveEntity::update() {
     if (get_movement()->is_finished()) {
       get_sprite().set_current_animation("stopped");
       clear_movement();
-      get_scripts().event_npc_movement_finished(get_name());
+      get_map_script().event_npc_movement_finished(get_name());
     }
   }
 }
@@ -417,15 +417,6 @@ void InteractiveEntity::notify_position_changed() {
       get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
     }
   }
-}
-
-/**
- * @brief Sets the direction of the entity's sprite.
- * @param direction a direction between 0 and 3
- */
-void InteractiveEntity::set_sprite_direction(int direction) {
-
-  get_sprite().set_current_direction(direction);
 }
 
 /**

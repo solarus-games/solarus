@@ -14,31 +14,3 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_SMOOTH_COLLISION_MOVEMENT_H
-#define SOLARUS_SMOOTH_COLLISION_MOVEMENT_H
-
-#include "Common.h"
-#include "movements/CollisionMovement.h"
-
-/**
- * @brief Movement capable of fixing the trajectory to continue walking when
- * an obstacle is reached.
- */
-class SmoothCollisionMovement: public CollisionMovement {
-
-  private:
-
-    bool smooth;		/**< indicates that the movement fixes its trajectory
-				 * (if not, the movement is identical to a normal CollisionMovement) */
-
-  public:
-
-    SmoothCollisionMovement(bool smooth = true);
-    virtual ~SmoothCollisionMovement();
-
-    void update_x();
-    void update_y();
-};
-
-#endif
-

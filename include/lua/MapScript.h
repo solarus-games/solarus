@@ -58,10 +58,10 @@ class MapScript: public GameScript {
       l_npc_walk,
       l_npc_random_walk,
       l_npc_jump,
-      l_npc_set_animation,
-      l_npc_set_animation_ignore_suspend,
-      l_npc_set_direction,
+      l_npc_create_sprite_id,
       l_npc_remove,
+      l_interactive_entity_create_sprite_id,
+      l_interactive_entity_remove,
       l_chest_set_open,
       l_chest_set_hidden,
       l_chest_is_hidden,
@@ -70,19 +70,6 @@ class MapScript: public GameScript {
       l_tile_set_group_enabled,
       l_block_reset,
       l_block_reset_all,
-      l_interactive_entity_get_animation,
-      l_interactive_entity_get_animation_delay,
-      l_interactive_entity_get_animation_frame,
-      l_interactive_entity_get_direction,
-      l_interactive_entity_is_animation_paused,
-      l_interactive_entity_set_animation,
-      l_interactive_entity_set_animation_delay,
-      l_interactive_entity_set_animation_frame,
-      l_interactive_entity_set_direction,
-      l_interactive_entity_set_animation_paused,
-      l_interactive_entity_set_animation_ignore_suspend,
-      l_interactive_entity_fade,
-      l_interactive_entity_remove,
       l_shop_item_remove,
       l_switch_is_enabled,
       l_switch_set_enabled,
@@ -106,10 +93,33 @@ class MapScript: public GameScript {
   public:
 
     // loading and closing a script
-    MapScript(Scripts &scripts, Map &map);
+    MapScript(Map &map);
     virtual ~MapScript();
     void start(const std::string &destination_point_name);
+    void set_suspended(bool suspended);
 
+    // calling Lua from C++
+    void event_set_suspended(bool suspended);
+    void event_dialog_started(const MessageId &message_id);
+    void event_dialog_finished(const MessageId &first_message_id, int answer);
+    void event_camera_reached_target();
+    void event_camera_back();
+    void event_treasure_obtaining(const std::string &item_name, int variant, int savegame_variable);
+    void event_treasure_obtained(const std::string &item_name, int variant, int savegame_variable);
+    void event_map_started(const std::string &destination_point_name);
+    void event_map_opening_transition_finished(const std::string &destination_point_name);
+    void event_switch_enabled(const std::string &switch_name);
+    void event_switch_disabled(const std::string &switch_name);
+    void event_switch_left(const std::string &switch_name);
+    void event_hero_victory_sequence_finished();
+    void event_hero_on_sensor(const std::string &sensor_name);
+    void event_hero_interaction(const std::string &entity_name);
+    bool event_hero_interaction_item(const std::string &entity_name, const std::string &item_name, int variant);
+    void event_npc_dialog(const std::string &npc_name);
+    void event_npc_movement_finished(const std::string &npc_name);
+    bool event_chest_empty(const std::string &chest_name);
+    void event_shop_item_bought(const std::string &shop_item_name);
+    void event_enemy_dead(const std::string &enemy_name);
 };
 
 #endif

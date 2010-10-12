@@ -41,7 +41,7 @@ PlayerMovement::~PlayerMovement() {
  */
 void PlayerMovement::update() {
 
-  SmoothCollisionMovement::update();
+  SmoothMovement::update();
 
   if (!entity->is_on_map()) {
     return; // the entity is not ready yet

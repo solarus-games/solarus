@@ -29,6 +29,7 @@ class PixelMovement: public Movement {
 
     // movement properties
 
+    // TODO use a better structure than array
     const Rectangle *translation_vectors; /**< The succession of translations.
 					   * Each element of the array represents a move
 					   * in pixels (only the x and y fields of the Rectangle are used). */

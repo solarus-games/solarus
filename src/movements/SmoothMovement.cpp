@@ -76,12 +76,12 @@ void SmoothMovement::update_x() {
 	// the move on x is not possible: let's try
 	// to add a move on y to make a diagonal move
 
-	if (!test_collision_with_map(x_move, 1)) {
-	  translate(x_move, 1);
+	if (!test_collision_with_obstacles(x_move, 1)) {
+	  translate_xy(x_move, 1);
 	  next_move_date_x_increment = (int) (x_delay * Geometry::SQRT_2); // fix the speed
 	}
-	else if (!test_collision_with_map(x_move, -1)) {
-	  translate(x_move, -1);
+	else if (!test_collision_with_obstacles(x_move, -1)) {
+	  translate_xy(x_move, -1);
 	  next_move_date_x_increment = (int) (x_delay * Geometry::SQRT_2);
 	}
 	else {
@@ -153,11 +153,11 @@ void SmoothMovement::update_y() {
 	// to add a move on x to make a diagonal move.
 
 	if (!test_collision_with_obstacles(1, y_move)) {
-	  translate(1, y_move);
+	  translate_xy(1, y_move);
 	  next_move_date_y_increment = (int) (y_delay * Geometry::SQRT_2); // fix the speed
 	}
-	else if (!test_collision_with_map(-1, y_move)) {
-	  translate(-1, y_move);
+	else if (!test_collision_with_obstacles(-1, y_move)) {
+	  translate_xy(-1, y_move);
 	  next_move_date_y_increment = (int) (y_delay * Geometry::SQRT_2);
 	}
 	else {

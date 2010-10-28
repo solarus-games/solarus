@@ -18,11 +18,12 @@
 #define SOLARUS_RECTILINEAR_MOVEMENT_H
 
 #include "Common.h"
+#include "movements/Movement.h"
 
 /**
  * @brief A straight movement represented as a speed vector whose properties (speed and direction) can be changed.
  */
-class RectilinearMovement {
+class RectilinearMovement: public Movement {
 
   private:
 

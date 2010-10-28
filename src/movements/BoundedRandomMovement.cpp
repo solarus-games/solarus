@@ -66,7 +66,7 @@ void BoundedRandomMovement::set_next_direction() {
 
     // we are outside the bounds: we get back into the rectangle to avoid going to far
     double angle = Geometry::get_angle(get_x(), get_y(), bounds.get_x() + bounds.get_width() / 2, bounds.get_y() + bounds.get_height() / 2);
-    set_direction(angle);
+    set_direction_radians(angle);
   }
 
   next_direction_change_date = System::now() + 500 + Random::get_number(3) * 500; // change again in 0.5 to 2 seconds

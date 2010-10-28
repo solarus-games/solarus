@@ -15,7 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "enemies/Khorneth.h"
-#include "movements/RandomWalkMovement.h"
+#include "movements/RandomPathMovement.h"
 #include "Game.h"
 #include "Sprite.h"
 #include "SpriteAnimationSet.h"
@@ -62,7 +62,7 @@ void Khorneth::initialize() {
   set_no_attack_consequences();
 
   // movement
-  set_movement(new RandomWalkMovement(3));
+  set_movement(new RandomPathMovement(3));
 
   // blades
   left_blade_life = 4;
@@ -211,7 +211,7 @@ void Khorneth::start_final_phase() {
   blades_destroyed = true;
   set_attack_consequence(ATTACK_SWORD, 1);
   clear_movement();
-  set_movement(new RandomWalkMovement(4));
+  set_movement(new RandomPathMovement(4));
 }
 
 /**

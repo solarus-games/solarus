@@ -191,7 +191,7 @@ class TargetMovement;
 class JumpMovement;
 class TemporalMovement;
 class PathMovement;
-class RandomWalkMovement;
+class RandomPathMovement;
 class PathFindingMovement;
 class PathFinding;
 class CircleMovement;

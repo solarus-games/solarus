@@ -27,7 +27,7 @@
  * random move goes to one of the 4 main directions
  * and with a length that is a multiple of 8 pixels.
  */
-class RandomWalkMovement: public PathMovement {
+class RandomPathMovement: public PathMovement {
 
   protected:
 
@@ -35,8 +35,8 @@ class RandomWalkMovement: public PathMovement {
 
   public:
 
-    RandomWalkMovement(int speed);
-    ~RandomWalkMovement();
+    RandomPathMovement(int speed);
+    ~RandomPathMovement();
 
     void update();
     bool is_finished();

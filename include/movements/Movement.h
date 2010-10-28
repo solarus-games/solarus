@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include "lowlevel/Rectangle.h"
+#include <map>
 
 /**
  * @brief Abstract class for representing a movement.
@@ -56,6 +57,9 @@ class Movement {
 
     Movement(bool ignore_obstacles = false);
 
+    // entity
+    MapEntity* get_entity();
+
     // suspended
     uint32_t get_when_suspended();
 
@@ -82,9 +86,11 @@ class Movement {
     const Rectangle& get_xy();
     void set_x(int x);
     void set_y(int y);
+    void set_xy(int x, int y);
     void set_xy(const Rectangle &xy);
     void translate_x(int dx);
     void translate_y(int dy);
+    void translate_xy(int dx, int dy);
     void translate_xy(const Rectangle &dxy);
     virtual void notify_position_changed(); // called whenever x or y is changed
 

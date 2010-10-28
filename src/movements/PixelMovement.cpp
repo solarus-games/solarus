@@ -50,7 +50,7 @@ PixelMovement::PixelMovement(const Rectangle *translation_vectors,
 			     int nb_vectors, uint32_t delay, bool loop, bool ignore_obstacles):
   Movement(ignore_obstacles),
   translation_vectors(translation_vectors), nb_vectors(nb_vectors),
-  delay(delay), next_move_date(System::now()), loop(loop), vector_index(0), finished(false) {
+  next_move_date(System::now()), delay(delay), loop(loop), vector_index(0), finished(false) {
 
 }
 
@@ -94,8 +94,8 @@ void PixelMovement::update() {
     make_next_move();
 
     bool success = (get_x() != old_xy.get_x() || get_y() != old_xy.get_y());
-    if (!is_suspended() && entity != NULL) {
-      entity->notify_movement_tried(success);
+    if (!is_suspended() && get_entity() != NULL) {
+      get_entity()->notify_movement_tried(success);
     }
   }
 }
@@ -121,8 +121,8 @@ void PixelMovement::make_next_move() {
   int dx = translation_vectors[vector_index].get_x();
   int dy = translation_vectors[vector_index].get_y();
 
-  if (!test_collision_with_map(dx, dy)) {
-    translate(dx, dy);
+  if (!test_collision_with_obstacles(dx, dy)) {
+    translate_xy(dx, dy);
   }
 
   next_move_date += delay;

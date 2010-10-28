@@ -43,7 +43,7 @@ void PlayerMovement::update() {
 
   SmoothMovement::update();
 
-  if (!entity->is_on_map()) {
+  if (!get_entity()->is_on_map()) {
     return; // the entity is not ready yet
   }
 
@@ -54,7 +54,7 @@ void PlayerMovement::update() {
   }
 
   // check whether the wanted direction has changed
-  GameControls &controls = entity->get_game().get_controls();
+  GameControls &controls = get_entity()->get_game().get_controls();
   int wanted_direction8 = controls.get_wanted_direction8(); 
   if (wanted_direction8 != direction8 && !is_suspended()) {
     direction8 = wanted_direction8;
@@ -96,8 +96,8 @@ void PlayerMovement::set_moving_speed(int moving_speed) {
  */
 void PlayerMovement::set_wanted_direction() {
 
-  if (entity->is_on_map()) {
-    GameControls &controls = entity->get_game().get_controls();
+  if (get_entity()->is_on_map()) {
+    GameControls &controls = get_entity()->get_game().get_controls();
     direction8 = controls.get_wanted_direction8();
   }
   else {
@@ -125,6 +125,6 @@ void PlayerMovement::compute_movement() {
 
   // notify the entity that its movement has just changed:
   // indeed, the entity may need to update its sprites
-  entity->notify_movement_changed();
+  get_entity()->notify_movement_changed();
 }
 

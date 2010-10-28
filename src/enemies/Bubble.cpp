@@ -15,7 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "enemies/Bubble.h"
-#include "movements/Movement.h"
+#include "movements/RectilinearMovement.h"
 #include "Sprite.h"
 #include "lowlevel/Random.h"
 #include "lowlevel/Debug.h"
@@ -55,7 +55,7 @@ void Bubble::initialize() {
   set_no_attack_consequences();
 
   // movement
-  set_movement(new Movement());
+  set_movement(new RectilinearMovement());
 }
 
 /**
@@ -66,6 +66,7 @@ void Bubble::initialize() {
  * or it was just hurt).
  */
 void Bubble::restart() {
+
   Enemy::restart();
 
   int movement_direction8 = Random::get_number(4) * 2 + 1;
@@ -85,8 +86,10 @@ void Bubble::go(int movement_direction8) {
       StringConcat() << "Invalid Bubble direction: " << movement_direction8);
 
   this->movement_direction8 = movement_direction8;
-  get_movement()->set_speed(8);
-  get_movement()->set_direction(movement_direction8 * 45);
+
+  RectilinearMovement *movement = (RectilinearMovement*) get_movement();
+  movement->set_speed(8);
+  movement->set_direction(movement_direction8 * 45);
 }
 
 
@@ -125,10 +128,10 @@ void Bubble::bounce() {
 
   Movement *movement = get_movement();
 
-  if (!movement->test_collision_with_map(dxy[try1][0], dxy[try1][1])) {
+  if (!movement->test_collision_with_obstacles(dxy[try1][0], dxy[try1][1])) {
     go(try1);
   }
-  else if (!movement->test_collision_with_map(dxy[try2][0], dxy[try2][1])) {
+  else if (!movement->test_collision_with_obstacles(dxy[try2][0], dxy[try2][1])) {
     go(try2);
   }
   else {

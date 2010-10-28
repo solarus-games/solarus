@@ -1,3 +1,5 @@
+#ifdef NOT_IMPLEMENTED_YET // code disabled
+
 /*
  * Copyright (C) 2009 Christopho, Solarus - http://www.solarus-engine.org
  * 
@@ -80,7 +82,7 @@ void PathMovement::set_position(int x, int y) {
     distance_covered++;
     total_distance_covered++;
   }
-  Movement::set_position(x, y);
+  Movement::set_xy(x, y);
 }
 
 /**
@@ -297,4 +299,6 @@ Rectangle PathMovement::get_xy_change() {
 
   return xy;
 }
+
+#endif
 

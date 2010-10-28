@@ -62,7 +62,7 @@ void PathFindingMovement::recompute_movement() {
 
 //  uint32_t start = System::now();
 
-  PathFinding path_finding(entity->get_map(), *entity, *target);
+  PathFinding path_finding(get_entity()->get_map(), *get_entity(), *target);
   remaining_path = path_finding.compute_path();
 
 //  uint32_t end = System::now();
@@ -99,7 +99,7 @@ void PathFindingMovement::start_next_move() {
   uint32_t now = System::now();
 
   if (remaining_path.size() == 0 || now >= next_recomputation_date) {
-    if (entity->is_aligned_to_grid()) {
+    if (get_entity()->is_aligned_to_grid()) {
       recompute_movement();
     }
   }

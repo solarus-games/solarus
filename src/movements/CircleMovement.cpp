@@ -269,7 +269,7 @@ void CircleMovement::recompute_position() {
   }
 
   const Rectangle &xy = Geometry::get_xy(center, Geometry::degrees_to_radians(current_angle), current_radius);
-  set_position(xy);
+  set_xy(xy);
 }
 
 /**

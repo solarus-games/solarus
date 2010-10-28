@@ -21,6 +21,7 @@
 #include "entities/CrystalSwitch.h"
 #include "entities/MapEntities.h"
 #include "movements/TargetMovement.h"
+#include "movements/RectilinearMovement.h"
 #include "Game.h"
 #include "Map.h"
 #include "lowlevel/System.h"
@@ -64,7 +65,7 @@ Boomerang::Boomerang(Hero &hero, int boomerang_direction):
 
   initial_coords.set_xy(get_xy());
 
-  Movement *movement = new Movement();
+  RectilinearMovement *movement = new RectilinearMovement();
   movement->set_speed(16);
   movement->set_direction(boomerang_direction);
   set_movement(movement);

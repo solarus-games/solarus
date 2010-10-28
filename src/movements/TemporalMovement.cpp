@@ -114,7 +114,7 @@ void TemporalMovement::set_suspended(bool suspended) {
   SmoothMovement::set_suspended(suspended);
 
   if (!suspended) {
-    end_movement_date += System::now() - when_suspended;
+    end_movement_date += System::now() - get_when_suspended();
   }
 }
 

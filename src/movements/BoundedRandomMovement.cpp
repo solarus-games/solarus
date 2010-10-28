@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "movements/BounedRandomMovement.h"
+#include "movements/BoundedRandomMovement.h"
 #include "entities/MapEntity.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Random.h"
@@ -56,7 +56,7 @@ void BoundedRandomMovement::set_entity(MapEntity *entity) {
  */
 void BoundedRandomMovement::set_next_direction() {
 
-  if (entity == NULL || bounds.contains(get_x(), get_y())) {
+  if (get_entity() == NULL || bounds.contains(get_x(), get_y())) {
 
     // we are inside the bounds: we pick a random direction
     int nb = Random::get_number(8);

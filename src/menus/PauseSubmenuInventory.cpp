@@ -401,7 +401,7 @@ void PauseSubmenuInventory::assign_item(int slot) {
   int y2 = 33;
 
   item_assigned_movement = new TargetMovement(x2, y2, 50);
-  item_assigned_movement->set_position(x1, y1);
+  item_assigned_movement->set_xy(x1, y1);
 }
 
 /**

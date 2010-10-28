@@ -41,7 +41,7 @@
 #include "hero/SwimmingState.h"
 #include "hero/TreasureState.h"
 #include "hero/VictoryState.h"
-#include "movements/Movement.h"
+#include "movements/RectilinearMovement.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
@@ -264,7 +264,8 @@ void Hero::update_ground() {
     if (is_ground_visible() && get_movement() != NULL) {
 
       // a special ground is displayed under the hero and it's time to play a sound
-      next_ground_date = now + std::max(150, (int) (2000 / get_movement()->get_speed()));
+      double speed = ((RectilinearMovement*) get_movement())->get_speed();
+      next_ground_date = now + std::max(150, (int) (2000 / speed));
       if (sprites->is_walking() && state->is_touching_ground()) {
         sprites->play_ground_sound();
       }

@@ -17,7 +17,7 @@
 #include "entities/InteractiveEntity.h"
 #include "entities/Hero.h"
 #include "movements/PathMovement.h"
-#include "movements/RandomWalkMovement.h"
+#include "movements/RandomPathMovement.h"
 #include "movements/JumpMovement.h"
 #include "lua/MapScript.h"
 #include "Game.h"
@@ -371,7 +371,7 @@ void InteractiveEntity::walk_random() {
   Debug::assert(subtype == NON_PLAYING_CHARACTER, "This entity is not a non-playing character");
 
   clear_movement();
-  set_movement(new RandomWalkMovement(3));
+  set_movement(new RandomPathMovement(3));
   get_sprite().set_current_animation("walking");
 }
 

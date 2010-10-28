@@ -73,7 +73,7 @@ double Geometry::get_distance(int x1, int y1, int x2, int y2) {
 
   int dx = x2 - x1;
   int dy = y2 - y1;
-  return sqrt(dx * dx + dy * dy);
+  return std::sqrt(dx * dx + dy * dy);
 }
 
 /**
@@ -91,7 +91,7 @@ double Geometry::get_angle(int x1, int y1, int x2, int y2) {
 
   double angle;
   if (dx != 0) {
-    angle = atan((double) -dy / (double) dx);
+    angle = std::atan((double) -dy / (double) dx);
 
     if (dx < 0) {
       angle += PI;
@@ -113,7 +113,7 @@ double Geometry::get_angle(int x1, int y1, int x2, int y2) {
  */
 const Rectangle Geometry::get_xy(double angle, int distance) {
 
-  return Rectangle((int) (distance * cos(angle)), (int) (-distance * sin(angle)));
+  return Rectangle((int) (distance * std::cos(angle)), (int) (-distance * std::sin(angle)));
 }
 
 /**

@@ -37,6 +37,7 @@ class Movement {
 							 * is applied to the xy field below instead) */
 
     Rectangle xy;					/**< coordinates of the object controlled by this movement when it is not an entity */
+    uint32_t last_move_date;				/**< date of the last x or y move */
 
     // suspended
     bool suspended;					/**< indicates whether the movement is suspended */
@@ -75,8 +76,6 @@ class Movement {
 
     // update
     virtual void update(); // called repeatedly
-
-    // suspended
     bool is_suspended();
     virtual void set_suspended(bool suspended);
 
@@ -86,7 +85,7 @@ class Movement {
     const Rectangle& get_xy();
     void set_x(int x);
     void set_y(int y);
-    void set_xy(int x, int y);
+    virtual void set_xy(int x, int y); // TODO make non virtual once PathMovement is fixed
     void set_xy(const Rectangle &xy);
     void translate_x(int dx);
     void translate_y(int dy);
@@ -95,10 +94,10 @@ class Movement {
     virtual void notify_position_changed(); // called whenever x or y is changed
 
     // movement
-    virtual bool is_stopped();
+    bool is_stopped();
     virtual bool is_started();
-    virtual bool is_finished();
     virtual void stop();
+    virtual bool is_finished();
 
     // obstacles
     bool test_collision_with_obstacles(int dx, int dy);

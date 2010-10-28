@@ -1,5 +1,3 @@
-#ifdef NOT_IMPLEMENTED_YET // code disabled
-
 /*
  * Copyright (C) 2009 Christopho, Solarus - http://www.solarus-engine.org
  * 
@@ -35,10 +33,18 @@
  */
 PathMovement::PathMovement(const std::string &path, int speed,
     bool loop, bool ignore_obstacles, bool must_be_aligned):
-  Movement(ignore_obstacles),
-  initial_path(path), remaining_path(path), normal_speed(speed), current_direction(0),
-  distance_covered(0), total_distance_covered(0),
-  loop(loop), finished(false), must_be_aligned(must_be_aligned), snapping(false) {
+
+  RectilinearMovement(ignore_obstacles),
+  initial_path(path),
+  remaining_path(path),
+  normal_speed(speed),
+  current_direction(0),
+  distance_covered(0),
+  total_distance_covered(0),
+  loop(loop),
+  finished(false),
+  must_be_aligned(must_be_aligned),
+  snapping(false) {
 
 }
 
@@ -61,13 +67,13 @@ void PathMovement::set_entity(MapEntity *entity) {
 /**
  * @brief Sets the position of the entity.
  *
- * This is a redefinition of Movement::set_position() because we need
+ * This is a redefinition of Movement::set_xy() because we need
  * to update the number of pixels covered.
  *
  * @param x the new x position
  * @param y the new y position
  */
-void PathMovement::set_position(int x, int y) {
+void PathMovement::set_xy(int x, int y) {
 
   if (is_current_move_finished()) {
     // because this function is called by a 'while' loop
@@ -82,7 +88,7 @@ void PathMovement::set_position(int x, int y) {
     distance_covered++;
     total_distance_covered++;
   }
-  Movement::set_xy(x, y);
+  RectilinearMovement::set_xy(x, y);
 }
 
 /**
@@ -90,8 +96,8 @@ void PathMovement::set_position(int x, int y) {
  * @param speed the new speed
  */
 void PathMovement::set_speed(int speed) {
-  this->normal_speed = speed; // memorize the speed to allow restarting later
-  Movement::set_speed(speed);
+  this->normal_speed = speed; // memorize the speed to allow to restart later
+  RectilinearMovement::set_speed(speed);
 }
 
 /**
@@ -147,6 +153,8 @@ void PathMovement::start_next_move() {
 
 //  std::cout << "PathMovement::start_next_move()\n";
 
+  MapEntity *entity = get_entity();
+
   // don't move while the entity is unknown
   if (entity == NULL) {
 //    std::cout << "NULL\n";
@@ -159,8 +167,8 @@ void PathMovement::start_next_move() {
     // the entity has to be aligned but is not
 
     // calculate the coordinates of the closest grid intersection from the top-left corner of the entity
-    int x = entity->get_top_left_x();
-    int y = entity->get_top_left_y();
+    int x = get_entity()->get_top_left_x();
+    int y = get_entity()->get_top_left_y();
     int snapped_x = x + 4;
     int snapped_y = y + 4;
     snapped_x -= snapped_x % 8;
@@ -168,7 +176,7 @@ void PathMovement::start_next_move() {
 
     if (!snapping) {
       // if we haven't started to move the entity into the direction of the closest grid intersection, we do it
-      snapping_angle = Geometry::get_angle(entity->get_top_left_x(), entity->get_top_left_y(), snapped_x, snapped_y);
+      snapping_angle = Geometry::get_angle(x, y, snapped_x, snapped_y);
 //      std::cout << "start snapping, going to direction " << (snapping_angle * 360 / Geometry::TWO_PI) << "\n";
       set_speed(normal_speed);
       set_direction(snapping_angle);
@@ -189,10 +197,10 @@ void PathMovement::start_next_move() {
 	x = snapped_x - x;
 	y = snapped_y - y;
 
-	if (!test_collision_with_map(x, y)) {
+	if (!test_collision_with_obstacles(x, y)) {
 	  // no problem, we can align the entity right now
 //	  std::cout << "aligning directly\n";
-	  Movement::set_position(entity->get_x() + x, entity->get_y() + y);
+	  RectilinearMovement::set_xy(entity->get_x() + x, entity->get_y() + y);
 	  stop();
 	  snapping = false;
 	}
@@ -299,6 +307,4 @@ Rectangle PathMovement::get_xy_change() {
 
   return xy;
 }
-
-#endif
 

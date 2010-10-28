@@ -14,13 +14,13 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "movements/RandomWalkMovement.h"
+#include "movements/RandomPathMovement.h"
 
 /**
  * @brief Creates a random walk movement object.
  * @param speed speed of the movement
  */
-RandomWalkMovement::RandomWalkMovement(int speed):
+RandomPathMovement::RandomPathMovement(int speed):
   PathMovement(get_random_path(), speed, false, false, false) {
 
 }
@@ -28,7 +28,7 @@ RandomWalkMovement::RandomWalkMovement(int speed):
 /**
  * @brief Destructor.
  */
-RandomWalkMovement::~RandomWalkMovement() {
+RandomPathMovement::~RandomPathMovement() {
 
 }
 
@@ -36,7 +36,7 @@ RandomWalkMovement::~RandomWalkMovement() {
  * @brief Updates the movements: detects the collisions
  * in order to restart the movement.
  */
-void RandomWalkMovement::update() {
+void RandomPathMovement::update() {
 
   PathMovement::update();
 
@@ -50,7 +50,7 @@ void RandomWalkMovement::update() {
 /**
  * @brief Starts the next step of the movement.
  */
-void RandomWalkMovement::start_next_move() {
+void RandomPathMovement::start_next_move() {
 
   if (remaining_path.size() == 0) {
     remaining_path = get_random_path();
@@ -63,7 +63,7 @@ void RandomWalkMovement::start_next_move() {
  * @brief Returns whether the movement is finished.
  * @return false
  */
-bool RandomWalkMovement::is_finished() {
+bool RandomPathMovement::is_finished() {
   return false;
 }
 

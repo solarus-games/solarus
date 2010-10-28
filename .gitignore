@@ -2,6 +2,9 @@
 *.swp
 *.luac
 *.class
+.cproject
+.project
+.settings
 tags
 doc/html/
 tools/javadoc/

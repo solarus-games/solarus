@@ -21,7 +21,8 @@
 #include "movements/Movement.h"
 
 /**
- * @brief A straight movement represented as a speed vector whose properties (speed and direction) can be changed.
+ * @brief A straight movement represented as a speed vector
+ * whose properties (speed and direction) can be changed.
  */
 class RectilinearMovement: public Movement {
 
@@ -40,7 +41,6 @@ class RectilinearMovement: public Movement {
 
     uint32_t next_move_date_x;			/**< Date of the next x move in ticks. */
     uint32_t next_move_date_y;			/**< Date of the next y move in ticks. */
-    uint32_t last_move_date;			/**< Date of the last x or y move. */
 
     // the following fields are redundant and can be computed from x_speed and y_speed
     uint32_t x_delay;				/**< Delay in ticks between an x move of 1 pixel.
@@ -49,7 +49,6 @@ class RectilinearMovement: public Movement {
 						 * y_delay = 200 / |y_speed| */
     int x_move;					/**< Number of pixels of the next x move : 0, 1 or -1. */
     int y_move;					/**< Number of pixels of the next y move : 0, 1 or -1. */
-
 
   protected:
 
@@ -86,14 +85,12 @@ class RectilinearMovement: public Movement {
     double get_speed();
     void set_x_speed(double x_speed);
     void set_y_speed(double y_speed);
-    void set_speed(double speed);
+    virtual void set_speed(double speed); // TODO make non virtual once PathMovement is fixed
     void set_direction(int direction);
-    void set_direction(double angle);
+    void set_direction_radians(double angle);
 
     // movement
-    bool is_stopped();
     virtual bool is_started();
-    virtual bool is_finished();
     void stop();
 };
 

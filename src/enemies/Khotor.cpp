@@ -17,7 +17,7 @@
 #include "enemies/Khotor.h"
 #include "enemies/ChainAndBall.h"
 #include "entities/MapEntities.h"
-#include "movements/RandomWalkMovement.h"
+#include "movements/RandomPathMovement.h"
 #include "Map.h"
 
 /**
@@ -58,7 +58,7 @@ void Khotor::initialize() {
   set_attack_consequence(ATTACK_BOW, 1);
 
   // movement
-  set_movement(new RandomWalkMovement(3));
+  set_movement(new RandomPathMovement(3));
 
   // chain and ball
   chain = (ChainAndBall*) create(get_game(), CHAIN_AND_BALL, RANK_NORMAL, -1, "chain_and_ball", get_layer(),

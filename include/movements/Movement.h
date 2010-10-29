@@ -50,11 +50,11 @@ class Movement {
     bool default_ignore_obstacles;			/**< indicates that this movement normally ignores obstacles */
     bool current_ignore_obstacles;			/**< indicates that this movement currently ignores obstacles */
 
-    // properties
-    std::map<std::string, std::string> properties;	/**< a key-value map of properties, used to handle the movement from a script
+    std::map<std::string, Property> properties;		/**< a map of properties, used to handle the movement from a script
     							 * (each subclass accepts a precise list of keys) */
 
   protected:
+
 
     Movement(bool ignore_obstacles = false);
 

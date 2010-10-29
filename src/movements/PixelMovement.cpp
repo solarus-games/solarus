@@ -17,41 +17,28 @@
 #include "movements/PixelMovement.h"
 #include "entities/MapEntity.h"
 #include "lowlevel/System.h"
-
-/**
- * @brief Creates a pixel movement object, not specifying the trajectory for now.
- * @param nb_vectors number of translation vectors in the array
- * @param delay delay in milliseconds between two translations
- * @param loop true to make the movement return to the beginning
- * once finished
- * @param ignore_obstacles true to make the movement ignore obstacles
- */
-PixelMovement::PixelMovement(int nb_vectors, uint32_t delay,
-			     bool loop, bool ignore_obstacles):
-  Movement(ignore_obstacles),
-  nb_vectors(nb_vectors), delay(delay), loop(loop),
-  vector_index(0), finished(false) {
-
-}
+#include "lowlevel/Debug.h"
+#include "lowlevel/StringConcat.h"
+#include <sstream>
 
 /**
  * @brief Creates a pixel movement object.
- * @param translation_vectors the succession of translations
- * composing this movement (each element of the array represents
- * a translation vector in pixels; only the fields x and y of the
- * Rectangle are used).
- * @param nb_vectors number of translation vectors in the array
+ * @param trajectory_string a string describing the succession of translations that compose this movement,
+ * with the syntax "dx1 dy1  dx2 dy2  dx3 dy3 ..." (the number of spaces between values does not matter)
  * @param delay delay in milliseconds between two translations
- * @param loop true to make the movement return to the beginning
- * once finished
+ * @param loop true to make the movement return to the beginning once finished
  * @param ignore_obstacles true to make the movement ignore obstacles
  */
-PixelMovement::PixelMovement(const Rectangle *translation_vectors,
-			     int nb_vectors, uint32_t delay, bool loop, bool ignore_obstacles):
+PixelMovement::PixelMovement(const std::string &trajectory_string,
+			     uint32_t delay, bool loop, bool ignore_obstacles):
   Movement(ignore_obstacles),
-  translation_vectors(translation_vectors), nb_vectors(nb_vectors),
-  next_move_date(System::now()), delay(delay), loop(loop), vector_index(0), finished(false) {
+  next_move_date(0), delay(delay), loop(loop), finished(false) {
 
+  register_property("trajectory", get_trajectory, set_trajectory);
+  register_property("delay", get_delay, set_delay);
+  register_property("loop", get_loop, set_loop);
+
+  set_trajectory(trajectory_string);
 }
 
 /**
@@ -62,19 +49,96 @@ PixelMovement::~PixelMovement() {
 }
 
 /**
- * @brief Sets the translation vectors of the trajectory.
- * @param translation_vectors the trajectory
+ * @brief Returns the trajectory of this movement.
+ * @return a string describing the succession of translations that compose this movement
  */
-void PixelMovement::set_translation_vectors(const Rectangle *translation_vectors) {
-  this->translation_vectors = translation_vectors;
+const std::string& PixelMovement::get_trajectory() {
+  return trajectory_string;
+}
+
+/**
+ * @brief Sets the trajectory of this movement.
+ *
+ * This function can be called even if the object was moving with a previous trajectory.
+ * The old trajectory is replaced and the movement starts the from beginning of the
+ * new trajectory.
+ *
+ * @param trajectory_string a string describing the succession of translations that compose this movement,
+ * with the syntax "dx1 dy1  dx2 dy2  dx3 dy3 ..." (the number of spaces between values does not matter)
+ */
+void PixelMovement::set_trajectory(const std::string &trajectory_string) {
+
+  int dx = 0;
+  int dy = 0;
+
+  std::istringstream iss(trajectory_string);
+  while (!iss.eof()) {
+    if (! (iss >> dx) || ! (iss >> dy)) {
+      Debug::die(StringConcat() << "Invalid trajectory string '" << trajectory_string << "'");
+    }
+    trajectory.push_back(Rectangle(dx, dy));
+  }
+  this->trajectory_string = trajectory_string;
+
+  restart();
+}
+
+/**
+ * @brief Returns the delay between two moves.
+ * @return the delay between two moves, in milliseconds
+ */
+uint32_t PixelMovement::get_delay() {
+
+  return delay;
 }
 
 /**
  * @brief Changes the delay between two moves.
- * @param delay the new delay
+ * @param delay the new delay, in milliseconds
  */
 void PixelMovement::set_delay(uint32_t delay) {
+
   this->delay = delay;
+}
+
+/**
+ * @brief Returns whether this movement loops when the end of the trajectory is reached.
+ * @return true if the movement loops
+ */
+bool PixelMovement::get_loop() {
+
+  return loop;
+}
+
+/**
+ * @brief Sets whether this movement loops when the end of the trajectory is reached.
+ *
+ * Is the movement was finished and loops is set to true, the movement restarts.
+ *
+ * @param loop true to make the movement loop
+ */
+void PixelMovement::set_loop(bool loop) {
+
+  this->loop = loop;
+
+  if (finished && loop) {
+    restart();
+  }
+}
+
+/**
+ * @brief Restarts this movement to the beginning.
+ */
+void PixelMovement::restart() {
+
+  if (get_length() == 0) {
+    finished = true;
+  }
+  else {
+    finished = false;
+    trajectory_iterator = trajectory.begin();
+    next_move_date = System::now();
+  }
 }
 
 /**
@@ -115,22 +179,23 @@ void PixelMovement::set_suspended(bool suspended) {
 
 /**
  * @brief Makes a move in the path.
+ *
+ * This function must be called only when the path is not finished yet.
  */
 void PixelMovement::make_next_move() {
 
-  int dx = translation_vectors[vector_index].get_x();
-  int dy = translation_vectors[vector_index].get_y();
+  const Rectangle &dxy = *trajectory_iterator;
 
-  if (!test_collision_with_obstacles(dx, dy)) {
-    translate_xy(dx, dy);
+  if (!test_collision_with_obstacles(dxy.get_x(), dxy.get_y())) {
+    translate_xy(dxy);
   }
 
   next_move_date += delay;
+  trajectory_iterator++;
 
-  vector_index++;
-  if (vector_index >= nb_vectors) {
+  if (trajectory_iterator == trajectory.end()) {
     if (loop) {
-      vector_index = 0;
+      trajectory_iterator = trajectory.begin();
     }
     else {
       finished = true;
@@ -143,15 +208,7 @@ void PixelMovement::make_next_move() {
  * @return the total number of moves in this trajectory
  */
 int PixelMovement::get_length() {
-  return nb_vectors;
-}
-
-/**
- * @brief Returns the current iteration number.
- * @return the current iteration number of the movement
- */
-int PixelMovement::get_vector_index() {
-  return vector_index;
+  return trajectory.size();
 }
 
 /**

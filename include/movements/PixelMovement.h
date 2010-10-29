@@ -71,6 +71,7 @@ class PixelMovement: public Movement {
 
     virtual void update();
     virtual void set_suspended(bool suspended);
+
 };
 
 #endif

@@ -19,6 +19,8 @@
 
 #include "Common.h"
 #include "movements/Movement.h"
+#include "lowlevel/Rectangle.h"
+#include <list>
 
 /**
  * @brief Movement of an entity that follows a predetermined sequence of pixel-precise moves.
@@ -29,45 +31,46 @@ class PixelMovement: public Movement {
 
     // movement properties
 
-    // TODO use a better structure than array
-    const Rectangle *translation_vectors; /**< The succession of translations.
-					   * Each element of the array represents a move
-					   * in pixels (only the x and y fields of the Rectangle are used). */
-    const int nb_vectors;                 /**< Number of translation vectors: this is the size of the
-					   * translation_vectors array. */
-
-    uint32_t next_move_date;              /**< Date of the next move */
-    uint32_t delay;                       /**< Delay in milliseconds between two translations. */
-
-    const bool loop;                      /**< Should the movement return to the beginning once finished? */ 
+    std::list<Rectangle> trajectory;				/**< The trajectory. Each element of the
+					 			 * represents a move in pixels (only the
+					 			 * x and y fields of the Rectangle are used). */
+    std::string trajectory_string;				/**< String representation of the trajectory, like "dx1 dy1  dx2 dy2  dx3 dy3 ..." */
+    uint32_t next_move_date;					/**< Date of the next move */
+    uint32_t delay;						/**< Delay in milliseconds between two translations. */
+    bool loop;							/**< Should the movement return to the beginning once finished? */
 
     // current state
 
-    int vector_index;                     /**< Current translation vector in the array. */
-    bool finished;                        /**< Indicates whether the entity has reached the end of the trajectory
-					   * (only possible when loop is false). */
+    std::list<Rectangle>::iterator trajectory_iterator;		/**< Current element of the trajectory. */
+    bool finished;						/**< Indicates whether the object has reached the end of the trajectory
+								 * (only possible when loop is false). */
 
   protected:
 
-    PixelMovement(int nb_vectors, uint32_t delay, bool loop, bool ignore_obstacles);
-
-    void set_translation_vectors(const Rectangle *translation_vectors);
     virtual void make_next_move();
-    int get_vector_index();
 
   public:
 
-    PixelMovement(const Rectangle *translation_vectors,
-	int nb_vectors, uint32_t delay, bool loop, bool ignore_obstacles);
+    // creation and destruction
+    PixelMovement(const std::string &trajectory_string, uint32_t delay, bool loop, bool ignore_obstacles);
     virtual ~PixelMovement();
 
+    // properties
+    const std::string &get_trajectory();
+    void set_trajectory(const std::string &trajectory_string);
+    uint32_t get_delay();
     void set_delay(uint32_t delay);
-    virtual void update();
-    virtual void set_suspended(bool suspended);
+    bool get_loop();
+    void set_loop(bool loop);
+
+    // state
     bool is_started();
     bool is_finished();
     int get_length();
+    void restart();
 
+    virtual void update();
+    virtual void set_suspended(bool suspended);
 };
 
 #endif

@@ -34,9 +34,9 @@ PixelMovement::PixelMovement(const std::string &trajectory_string,
   Movement(ignore_obstacles),
   next_move_date(0), delay(delay), loop(loop), finished(false) {
 
-  register_property("trajectory", get_trajectory, set_trajectory);
-  register_property("delay", get_delay, set_delay);
-  register_property("loop", get_loop, set_loop);
+  register_property("trajectory");
+  register_property("delay");
+  register_property("loop");
 
   set_trajectory(trajectory_string);
 }

@@ -19,7 +19,7 @@
 
 #include "Common.h"
 #include "lowlevel/Rectangle.h"
-#include <map>
+#include <set>
 
 /**
  * @brief Abstract class for representing a movement.
@@ -50,11 +50,10 @@ class Movement {
     bool default_ignore_obstacles;			/**< indicates that this movement normally ignores obstacles */
     bool current_ignore_obstacles;			/**< indicates that this movement currently ignores obstacles */
 
-    std::map<std::string, Property> properties;		/**< a map of properties, used to handle the movement from a script
-    							 * (each subclass accepts a precise list of keys) */
+    // properties
+    std::set<std::string> properties;			/**< list of recognized properties */
 
   protected:
-
 
     Movement(bool ignore_obstacles = false);
 
@@ -66,6 +65,9 @@ class Movement {
 
     // obstacles
     void set_default_ignore_obstacles(bool ignore_obstacles);
+
+    // properties
+    void register_property(const std::string &property);
 
   public:
 

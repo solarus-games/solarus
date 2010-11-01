@@ -81,7 +81,7 @@ class Movement {
     // position
     int get_x();
     int get_y();
-    const Rectangle& get_xy();
+    const Rectangle get_xy();
     void set_x(int x);
     void set_y(int y);
     virtual void set_xy(int x, int y); // TODO make non virtual once PathMovement is fixed

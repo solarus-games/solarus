@@ -17,7 +17,7 @@ cmake_install.cmake
 src/CMakeFiles/
 src/Makefile
 src/cmake_install.cmake
-src/liblibsolarus.a
+src/libsolarus_static.a
 src/solarus
 quests/*/data/CMakeFiles/
 quests/*/data/Makefile

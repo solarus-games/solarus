@@ -30,13 +30,14 @@ class JumpMovement: public PixelMovement {
 
   private:
 
-    static const Rectangle basic_translations[8];
-    Rectangle *translation_vectors;
+    static const std::string basic_trajectories[];
     int jump_height;
+
+    static const std::string compute_trajectory(int direction8, int length);
 
   protected:
 
-    void make_next_move();
+    void notify_step_done(int step_index, bool success);
 
   public:
 

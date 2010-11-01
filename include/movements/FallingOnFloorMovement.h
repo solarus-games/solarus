@@ -33,8 +33,7 @@ class FallingOnFloorMovement: public PixelMovement {
 
   private:
 
-    static const Rectangle moves[][26];
-    static const int nb_moves[];
+    static const std::string trajectories[];
 
   public:
 

@@ -161,6 +161,15 @@ void Movement::translate_xy(int dx, int dy) {
 }
 
 /**
+ * @brief Moves the object.
+ * @param dxy number of pixel of the move on x and y
+ * (the size of the rectangle is ignored)
+ */
+void Movement::translate_xy(const Rectangle &dxy) {
+  translate_xy(dxy.get_x(), dxy.get_y());
+}
+
+/**
  * @brief Notifies this movement that the coordinates controlled by it
  * have just been changed.
  * By default, the entity (if any) is notified.

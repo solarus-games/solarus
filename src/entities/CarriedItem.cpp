@@ -35,11 +35,11 @@
 /**
  * @brief Movement of the item when the hero is lifting it.
  */
-static const Rectangle lifting_translations[4][6] = {
-  { Rectangle(0, 0), Rectangle(0, 0), Rectangle(-3, -3), Rectangle(-5, -3), Rectangle(-5,-2) },
-  { Rectangle(0, 0), Rectangle(0, 0), Rectangle( 0, -1), Rectangle( 0, -1), Rectangle( 0, 0) },
-  { Rectangle(0, 0), Rectangle(0, 0), Rectangle( 3, -3), Rectangle( 5, -3), Rectangle( 5,-2) },
-  { Rectangle(0, 0), Rectangle(0, 0), Rectangle( 0,-10), Rectangle( 0,-12), Rectangle( 0, 0) },
+const std::string CarriedItem::lifting_trajectories[4] = {
+    "0 0  0 0  -3 -3  -5 -3  -5 -2",
+    "0 0  0 0  0 -1  0 -1  0 0",
+    "0 0  0 0  3 -3  5 -3  5 -2",
+    "0 0  0 0  0 -10  0 -12  0 0"
 };
 
 /**
@@ -71,7 +71,7 @@ CarriedItem::CarriedItem(Hero &hero, DestructibleItem &destructible_item):
   set_size(destructible_item.get_width(), destructible_item.get_height());
 
   // create the lift movement and the sprite
-  PixelMovement *movement = new PixelMovement(lifting_translations[direction], 6, 100, false, true);
+  PixelMovement *movement = new PixelMovement(lifting_trajectories[direction], 100, false, true);
   create_sprite(destructible_item.get_animation_set_id());
   get_sprite().set_current_animation("stopped");
   set_movement(movement);

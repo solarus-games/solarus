@@ -32,11 +32,7 @@
 PixelMovement::PixelMovement(const std::string &trajectory_string,
 			     uint32_t delay, bool loop, bool ignore_obstacles):
   Movement(ignore_obstacles),
-  next_move_date(0), delay(delay), loop(loop), finished(false) {
-
-  register_property("trajectory");
-  register_property("delay");
-  register_property("loop");
+  next_move_date(0), delay(delay), loop(loop), nb_steps_done(0), finished(false) {
 
   set_trajectory(trajectory_string);
 }
@@ -135,6 +131,7 @@ void PixelMovement::restart() {
     finished = true;
   }
   else {
+    nb_steps_done = 0;
     finished = false;
     trajectory_iterator = trajectory.begin();
     next_move_date = System::now();
@@ -155,7 +152,7 @@ void PixelMovement::update() {
   while (now >= next_move_date && !finished) {
 
     Rectangle old_xy(get_x(), get_y());
-    make_next_move();
+    make_next_step();
 
     bool success = (get_x() != old_xy.get_x() || get_y() != old_xy.get_y());
     if (!is_suspended() && get_entity() != NULL) {
@@ -182,12 +179,14 @@ void PixelMovement::set_suspended(bool suspended) {
  *
  * This function must be called only when the path is not finished yet.
  */
-void PixelMovement::make_next_move() {
+void PixelMovement::make_next_step() {
 
+  bool success = false;
   const Rectangle &dxy = *trajectory_iterator;
 
   if (!test_collision_with_obstacles(dxy.get_x(), dxy.get_y())) {
     translate_xy(dxy);
+    success = true;
   }
 
   next_move_date += delay;
@@ -201,6 +200,19 @@ void PixelMovement::make_next_move() {
       finished = true;
     }
   }
+
+  int step_index = nb_steps_done;
+  nb_steps_done++;
+  notify_step_done(step_index, success);
+}
+
+/**
+ * @brief This function is called when a step of the trajectory just occured.
+ * @param step_index index of the step in the trajectory (the first one is 0)
+ * @param success true if the move was made, false if there was an obstacle
+ */
+void PixelMovement::notify_step_done(int step_index, bool success) {
+
 }
 
 /**

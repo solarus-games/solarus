@@ -66,9 +66,6 @@ class Movement {
     // obstacles
     void set_default_ignore_obstacles(bool ignore_obstacles);
 
-    // properties
-    void register_property(const std::string &property);
-
   public:
 
     virtual ~Movement();

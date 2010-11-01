@@ -42,12 +42,15 @@ class PixelMovement: public Movement {
     // current state
 
     std::list<Rectangle>::iterator trajectory_iterator;		/**< Current element of the trajectory. */
+    int nb_steps_done;						/**< Number of steps already done in the trajectory */
     bool finished;						/**< Indicates whether the object has reached the end of the trajectory
 								 * (only possible when loop is false). */
 
+    void make_next_step();
+
   protected:
 
-    virtual void make_next_move();
+    virtual void notify_step_done(int step_index, bool success);
 
   public:
 

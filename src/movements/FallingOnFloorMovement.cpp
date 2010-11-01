@@ -19,43 +19,22 @@
 /**
  * @brief Y move at each time frame.
  */
-const Rectangle FallingOnFloorMovement::moves[3][26] = {
+const std::string FallingOnFloorMovement::trajectories[3] = {
 
-  // low
-  { 
-    Rectangle(0, -1),  Rectangle(0, 1),
-  },
+    "0 -1  0 1", // low
 
-  // medium
-  {
-    Rectangle(0, -1),  Rectangle(0, -1),  Rectangle(0, -1),  Rectangle(0, -1),
-    Rectangle(0,  1),  Rectangle(0,  1),  Rectangle(0,  1),  Rectangle(0,  1),
-    Rectangle(0, -1),  Rectangle(0, -1),  Rectangle(0,  1),  Rectangle(0,  1),
-  },
+    "0 -1  0 -1  0 -1  0 -1  0 1  0 1  0 1  0 1  0 -1  0 -1  0 1  0 1", // medium
 
-  // high
-  {
-    Rectangle(0, -4),  Rectangle(0, -3),  Rectangle(0, -3),  Rectangle(0, -2),
-    Rectangle(0, -2),  Rectangle(0, -1),  Rectangle(0,  1),  Rectangle(0,  2),
-    Rectangle(0,  2),  Rectangle(0,  3),  Rectangle(0,  3),  Rectangle(0,  4),
-    Rectangle(0, -2),  Rectangle(0, -1),  Rectangle(0, -1),  Rectangle(0, -1),  
-    Rectangle(0, -1),  Rectangle(0,  1),  Rectangle(0,  1),  Rectangle(0,  1),
-    Rectangle(0,  1),  Rectangle(0,  2),  Rectangle(0, -1),  Rectangle(0, -1),
-    Rectangle(0,  1),  Rectangle(0,  1),
-  }
+    "0 -4  0 -3  0 -3  0 -2  0 -2  0 -1  0 1  0 2  0 2  0 3  0 3  0 4"
+    "0 -2  0 -1  0 -1  0 -1  0 -1  0 1  0 1  0 1  0 1  0 2  0 -1  0 -1  0 1  0 1" // high
 };
-
-/**
- * @brief Number of moves for each height.
- */
-const int FallingOnFloorMovement::nb_moves[3] = {2, 12, 26};
 
 /**
  * @brief Creates a movement falling object.
  * @param height height the entity will fall from
  */
 FallingOnFloorMovement::FallingOnFloorMovement(FallingHeight height):
-  PixelMovement(moves[height], nb_moves[height], 30, false, true) {
+  PixelMovement(trajectories[height], 30, false, true) {
 
 }
 

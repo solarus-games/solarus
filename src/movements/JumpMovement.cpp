@@ -17,17 +17,17 @@
 #include "movements/JumpMovement.h"
 
 /**
- * @brief Basic movement vector of each direction.
+ * @brief Trajectory of the basic jump movement for each direction.
  */
-const Rectangle JumpMovement::basic_translations[8] = {
-  Rectangle( 1,  0), // right
-  Rectangle( 1, -1),
-  Rectangle( 0, -1),
-  Rectangle(-1, -1),
-  Rectangle(-1,  0),
-  Rectangle(-1,  1),
-  Rectangle( 0,  1),
-  Rectangle( 1,  1)
+const std::string JumpMovement::basic_trajectories[8] = {
+    "1 0",	// right
+    "1 -1",	// right-up
+    "0 -1",	// up
+    "-1 -1",	// left-up
+    "-1 0",	// left
+    "-1 1",	// left-down
+    "0 1",	// down
+    "1 1"	// right-down
 };
 
 /**
@@ -38,14 +38,7 @@ const Rectangle JumpMovement::basic_translations[8] = {
  * @param movement_delay delay between each one-pixel move in the jump movement in milliseconds (0: default)
  */
 JumpMovement::JumpMovement(int direction8, int length, bool ignore_obstacles, uint32_t movement_delay):
-  PixelMovement(length, 10, false, ignore_obstacles), jump_height(0) {
-
-  // compute the path
-  translation_vectors = new Rectangle[length];
-  for (int i = 0; i < length; i++) {
-    translation_vectors[i] = basic_translations[direction8];
-  }
-  set_translation_vectors(translation_vectors);
+  PixelMovement(compute_trajectory(direction8, length), 10, false, ignore_obstacles), jump_height(0) {
 
   // set the speed
   if (movement_delay == 0) {
@@ -57,10 +50,26 @@ JumpMovement::JumpMovement(int direction8, int length, bool ignore_obstacles, ui
 }
 
 /**
+ * @brief Computes the trajectory provided the direction and the length.
+ * @param direction8 direction of the movement (0 to 7)
+ * @param length length in pixels
+ */
+const std::string JumpMovement::compute_trajectory(int direction8, int length) {
+
+  std::string trajectory;
+
+  for (int i = 0; i < length; i++) {
+    trajectory += " ";
+    trajectory += basic_trajectories[direction8];
+  }
+
+  return trajectory;
+}
+
+/**
  * @brief Destructor.
  */
 JumpMovement::~JumpMovement() {
-  delete[] translation_vectors;
 }
 
 /**
@@ -72,18 +81,20 @@ int JumpMovement::get_jump_height() {
 }
 
 /**
- * @brief Makes a move in the path.
+ * @brief This function is called when a step of the trajectory just occured.
+ *
+ * If updates the height of the jump when a step of the basic movement is made.
+ *
+ * @param step_index index of the step in the trajectory (the first one is 0)
+ * @param success true if the move was made, false if there was an obstacle
  */
-void JumpMovement::make_next_move() {
+void JumpMovement::notify_step_done(int step_index, bool success) {
 
-  PixelMovement::make_next_move();
-
-  int i = get_vector_index();
-  if (i == 1 || i == get_length()) {
+  if (step_index == 1 || step_index == get_length()) {
     jump_height = 0;
   }
   else {
-    int jump_sign = (i <= get_length() / 2) ? 1 : -1;
+    int jump_sign = (step_index <= get_length() / 2) ? 1 : -1;
     int jump_unit = (get_length() <= 16) ? 2 : 1;
     
     jump_height += jump_sign * jump_unit;

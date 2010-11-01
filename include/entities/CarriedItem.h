@@ -53,6 +53,8 @@ class CarriedItem: public MapEntity {
     // explosion of the item
     uint32_t explosion_date;		/**< date when the item explodes (0 if there is no explosion) */
 
+    static const std::string lifting_trajectories[4];	/**< trajectory of the lifting movement for each direction */
+
     bool will_explode_soon();
 
   public:

@@ -17,10 +17,13 @@ cmake_install.cmake
 src/CMakeFiles/
 src/Makefile
 src/cmake_install.cmake
+src/liblibsolarus.a
 src/solarus
 quests/*/data/CMakeFiles/
 quests/*/data/Makefile
 quests/*/data/cmake_install.cmake
 quests/*/data/data.solarus
 quests/zsdx/data/zsdx
+tests/CTestTestfile.cmake
+tests/Testing/
 

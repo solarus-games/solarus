@@ -25,8 +25,15 @@ file(
   ../include/*.h
 )
 
-add_executable(solarus
+set(main_source_file Main.cc)
+
+add_library(libsolarus
+  STATIC
   ${source_files}
+)
+
+add_executable(solarus
+  ${main_source_file}
 )
 
 if(NOT WIN32)
@@ -38,6 +45,7 @@ if (DEFINED DATAPATH)
 endif (DEFINED DATAPATH)
 
 target_link_libraries(solarus
+  libsolarus
   ${SDL_LIBRARY}
   ${SDLIMAGE_LIBRARY}
   ${SDLTTF_LIBRARY}

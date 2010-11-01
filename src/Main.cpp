@@ -14,6 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#ifndef SOLARUS_NOMAIN
+
 #include "Solarus.h"
 
 /**
@@ -32,4 +34,6 @@ int main(int argc, char **argv) {
   Solarus(argc, argv).main_loop();
   return 0;
 }
+
+#endif
 

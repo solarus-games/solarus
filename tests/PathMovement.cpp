@@ -15,14 +15,14 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "Solarus.h"
-#include "movements/PixelMovement.h"
+#include "movements/PathMovement.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 
 static void basic_test() {
 
-  PixelMovement m("1 -2  2 1", 50, false, false);
+  PathMovement m("0", 10, false, false, false); // 8 pixels to the right
 
   while (!m.is_finished()) {
 
@@ -30,49 +30,18 @@ static void basic_test() {
     System::update();
   }
   
-  Debug::assert(m.get_x() == 3 && m.get_y() == -1,
+  Debug::assert(m.get_x() == 8 && m.get_y() == 0,
       StringConcat() << "Unexcepted coordinates for 'basic_test': " << m.get_xy());
 }
 
-static void loop_test() {
-
-  uint32_t start_date = System::now();
-  PixelMovement m("1 -2", 50, true, true);
-
-  while (!m.is_finished() && System::now() < start_date + 200) {
-
-    m.update();
-    System::update();
-  }
-  
-  Debug::assert(m.get_x() == 4 && m.get_y() == -8,
-      StringConcat() << "Unexcepted coordinates for 'loop_test': " << m.get_xy());
-}
-
-static void syntax_test() {
-
-  bool no_error = false;
-  try {
-    PixelMovement m("1", 50, false, false);
-    no_error = true;
-  }
-  catch (std::logic_error &e) {
-    // expected behavior
-  }
-
-  Debug::assert(!no_error, "'syntax_test' failed to detect a syntax error");
-}
-
 /*
- * Test for the pixel movement.
+ * Test for the path movement.
  */
 int main(int argc, char **argv) {
 
   Solarus solarus(argc, argv);
 
   basic_test();
-  loop_test();
-  syntax_test();
 
   return 0;
 }

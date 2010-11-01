@@ -24,41 +24,25 @@
  * @brief Movement of an entity that follows a predetermined path.
  *
  * The path is a succession of basic moves, where each basic move
- * is an 8-pixel movement in one of the 8 main directions.
- * The movement may or may not be sensible to obstacles.
+ * is an 8-pixel movement towards one of the 8 main directions.
+ * The movement may or may not stop on obstacles.
  */
-class PathMovement: public RectilinearMovement {
-
-  protected:
-
-    const std::string initial_path;  /**< the path: each character is a direction ('0' to '7') */
-    std::string remaining_path;      /**< the remaining part of the path */
-    int normal_speed;                /**< the movement speed */
+class PathMovement: public PixelMovement {
 
   private:
 
-    static const std::string random_directions[];
+    std::string initial_path;		/**< the path: each character is a direction ('0' to '7')
+    					 * and corresponds to a move of 8 pixels */
+    std::string remaining_path;		/**< the remaining part of the path */
 
-    int current_direction;           /**< direction of the current move (0 to 7) */
-    int distance_covered;            /**< counts the number of pixels covered during the current move */
-    int total_distance_covered;      /**< counts the total number of pixels covered since the beginning of this movement */
+    int speed;				/**< the movement speed in pixels per second */
+    bool loop;				/**< should the movement return to the beginning once finished?  */
 
-    const bool loop;                 /**< should the movement return to the beginning once finished?  */
+    bool snap_to_grid;			/**< indicates that the entity must be aligned to the grid before moving */
 
-    bool finished;                   /**< indicates that the path is finished
-				      * (possible if loop is false or when there is a collision) */
-    bool must_be_aligned;            /**< indicates that the entity must be snapped to the grid before moving */
-    bool snapping;                   /**< indicates that the movement is currently snapping the entity on the grid */
-    double snapping_angle;           /**< angle of the movement when snapping */
-    uint32_t stop_snapping_date;     /**< date when we stop trying to snap the entity when it is unsuccessful */
-
-  protected:
-
-    virtual void start_next_move();
-    static const std::string get_random_path();
-    bool is_current_move_finished();
-    void set_entity(MapEntity *entity);
-    void set_speed(int speed); // TODD RectilinearMovement::set_speed is not virtual anymore, find a cleaner solution
+    // snapping
+    bool snapping;			/**< indicates that the movement is currently snapping the entity on the grid */
+    uint32_t stop_snapping_date;	/**< date when we stop trying to snap the entity when it is unsuccessful */
 
   public:
 
@@ -67,15 +51,7 @@ class PathMovement: public RectilinearMovement {
 
     virtual bool is_finished();
 
-    int get_current_direction();
-    void set_xy(int x, int y); // TODO Movement::set_position is now Movement::set_xy and is not virtual anymore, find a cleaner solution
-    int get_total_distance_covered();
-    Rectangle get_xy_change();
-
     void update();
-
-    // TODO PathMovement should probably inherit PixelMovement instead of RectilinearMovement
-    // and Movement::set_xy should not be virtual
 };
 
 #endif

@@ -28,6 +28,12 @@
 
 /**
  * @brief Initializes the game engine.
+ *
+ * The following optional command-line arguments are supported:
+ *   -datapath=/some/path/to/datadir            loads the data files from the specified directory
+ *   -no-audio                                  disables sounds and musics
+ *   -no-video                                  disables displaying (used for unitary tests)
+ *
  * @param argc number of arguments of the command line
  * @param argv command-line arguments
  */
@@ -235,21 +241,5 @@ void Solarus::display() {
   root_surface->fill_with_color(Color::get_black());
   current_screen->display(root_surface);
   VideoManager::get_instance()->display(root_surface);
-}
-
-/**
- * @brief Entry point of the program.
- *
- * The following optional command-line arguments are supported:
- *   -datapath=/some/path/to/datadir            loads the data files from the specified directory
- *   -disable-audio                             disables sounds and musics
- *
- * @param argc number of command-line arguments
- * @param argv command-line arguments
- */
-int main(int argc, char **argv) {
-
-  Solarus(argc, argv).main_loop();
-  return 0;
 }
 

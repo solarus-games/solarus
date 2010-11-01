@@ -49,23 +49,24 @@ class VideoManager {
 
  private:
 
-  static VideoManager *instance;                 /**< the only instance */
-  static Rectangle default_mode_sizes[NB_MODES]; /**< default size of the surface for each video mode */
+  static VideoManager *instance;			/**< the only instance */
+  static Rectangle default_mode_sizes[NB_MODES];	/**< default size of the surface for each video mode */
 
-  Rectangle mode_sizes[NB_MODES];                /**< verified size of the surface for each video mode */
-  Rectangle dst_position_wide;                   /**< position of the 640*480 surface on the 768*480 or 720*480
-					          * video surface */
+  bool disable_window;					/**< indicates that no window is displayed (used for unitary tests) */
+  Rectangle mode_sizes[NB_MODES];			/**< verified size of the surface for each video mode */
+  Rectangle dst_position_wide;				/**< position of the 640*480 surface on the 768*480 or 720*480
+							 * video surface */
 
-  VideoMode video_mode;                          /**< current video mode of the screen */
-  Surface *screen_surface;                       /**< the screen surface */
+  VideoMode video_mode;					/**< current video mode of the screen */
+  Surface *screen_surface;				/**< the screen surface */
 
-  Rectangle dst_position_centered;               /**< position of the 320*240 game surface on the screen surface */
-  int width;                                     /**< width of the current screen surface */
-  int offset;                                    /**< width of a side bar when using a widescreen resolution */
-  int end_row_increment;                         /**< increment used by the stretching and scaling functions 
-					          * when changing the row */
+  Rectangle dst_position_centered;			/**< position of the 320*240 game surface on the screen surface */
+  int width;						/**< width of the current screen surface */
+  int offset;						/**< width of a side bar when using a widescreen resolution */
+  int end_row_increment;                         	/**< increment used by the stretching and scaling functions
+							 * when changing the row */
 
-  VideoManager();
+  VideoManager(bool disable_window);
   ~VideoManager();
 
   bool is_mode_supported(VideoMode mode);
@@ -78,9 +79,9 @@ class VideoManager {
 
  public:
 
-  static void initialize();
+  static void initialize(int argc, char **argv);
   static void quit();
-  static VideoManager * get_instance();
+  static VideoManager* get_instance();
 
   void switch_video_mode();
   void set_initial_video_mode();

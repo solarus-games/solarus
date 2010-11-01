@@ -39,9 +39,24 @@ Rectangle VideoManager::default_mode_sizes[] = {
 
 /**
  * @brief Initializes the video system and creates the window.
+ *
+ * This method should be called when the application starts.
+ * If the argument -no-video is provided, no window will be displayed
+ * but all surfaces will exist internally.
+ *
+ * @param argc command-line arguments number
+ * @param argv command-line arguments
  */
-void VideoManager::initialize() {
-  instance = new VideoManager();
+void VideoManager::initialize(int argc, char **argv) {
+
+  // check the -no-video option
+  bool disable = false;
+  for (argv++; argc > 1 && !disable; argv++, argc--) {
+    const std::string arg = *argv;
+    disable = (arg.find("-no-video") == 0);
+  }
+
+  instance = new VideoManager(disable);
 }
 
 /**
@@ -55,14 +70,15 @@ void VideoManager::quit() {
  * @brief Returns the video manager.
  * @return the only video manager
  */
-VideoManager * VideoManager::get_instance() {
+VideoManager* VideoManager::get_instance() {
   return instance;
 }
 
 /**
  * @brief Constructor.
  */
-VideoManager::VideoManager() {
+VideoManager::VideoManager(bool disable_window):
+  disable_window(disable_window), screen_surface(NULL) {
 
   // initialize the window
   IniFile ini("quest.dat", IniFile::READ);
@@ -208,13 +224,15 @@ void VideoManager::set_video_mode(VideoMode mode) {
   }
   end_row_increment = 2 * offset + width;
 
-  SDL_Surface *screen_internal_surface = SDL_SetVideoMode(size.get_width(), size.get_height(), 32, flags);
+  if (!disable_window) {
+    SDL_Surface *screen_internal_surface = SDL_SetVideoMode(size.get_width(), size.get_height(), 32, flags);
 
-  Debug::assert(screen_internal_surface != NULL, StringConcat() << "Cannot create the video surface for mode " << mode);
+    Debug::assert(screen_internal_surface != NULL, StringConcat() << "Cannot create the video surface for mode " << mode);
 
-  SDL_ShowCursor(show_cursor);
+    SDL_ShowCursor(show_cursor);
+    this->screen_surface = new Surface(screen_internal_surface);
+  }
   this->video_mode = mode;
-  this->screen_surface = new Surface(screen_internal_surface);
 
   // write the configuration file
   Configuration::set_value("video_mode", mode);
@@ -230,9 +248,13 @@ VideoManager::VideoMode VideoManager::get_video_mode() {
 
 /**
  * @brief Blits a surface on the screen with the current video mode.
- * @param src_surface the source surface
+ * @param src_surface the source surface to display on the screen
  */
 void VideoManager::display(Surface *src_surface) {
+
+  if (disable_window) {
+    return;
+  }
 
   switch (video_mode) {
 

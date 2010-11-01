@@ -20,7 +20,7 @@
  */
 #include "lowlevel/Color.h"
 
-SDL_PixelFormat * Color::format = NULL;
+SDL_Surface * Color::format_surface = NULL;
 
 Color Color::black;
 Color Color::white;
@@ -34,7 +34,7 @@ Color Color::yellow;
  */
 void Color::initialize() {
 
-  format = SDL_GetVideoSurface()->format;
+  format_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 1, 1, 32, 0, 0, 0, 0);
 
   black =    Color(  0,   0,   0); 
   white =    Color(255, 255, 255);
@@ -49,6 +49,8 @@ void Color::initialize() {
  */
 void Color::quit() {
 
+  SDL_FreeSurface(format_surface);
+  format_surface = NULL;
 }
 
 /**
@@ -81,7 +83,7 @@ Color::Color(int r, int g, int b) {
   internal_color.g = g;
   internal_color.b = b;
 
-  internal_value = SDL_MapRGB(format, r, g, b);
+  internal_value = SDL_MapRGB(format_surface->format, r, g, b);
 }
 
 /**
@@ -102,7 +104,7 @@ uint32_t Color::get_internal_value() {
  *
  * @return the SDL color encapsulated
  */
-SDL_Color * Color::get_internal_color() {
+SDL_Color* Color::get_internal_color() {
   return &internal_color;
 }
 

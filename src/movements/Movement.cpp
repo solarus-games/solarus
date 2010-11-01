@@ -94,6 +94,15 @@ int Movement::get_y() {
 }
 
 /**
+ * @brief Returns the coordinates of the object controlled by this movement.
+ * @return the coordinates of the object controlled by this movement
+ */
+const Rectangle Movement::get_xy() {
+
+  return (entity != NULL) ? entity->get_xy() : xy;
+}
+
+/**
  * @brief Sets the x position of the object controlled by this movement.
  * @param x the new x position
  */

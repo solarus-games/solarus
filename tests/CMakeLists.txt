@@ -27,7 +27,7 @@ foreach(test_main_file ${tests_main_files})
   endif(NOT WIN32)
 
   target_link_libraries(${test_bin_file}
-    libsolarus
+    solarus_static
     ${SDL_LIBRARY}
     ${SDLIMAGE_LIBRARY}
     ${SDLTTF_LIBRARY}

@@ -27,7 +27,7 @@ file(
 
 set(main_source_file Main.cc)
 
-add_library(libsolarus
+add_library(solarus_static
   STATIC
   ${source_files}
 )
@@ -45,7 +45,7 @@ if (DEFINED DATAPATH)
 endif (DEFINED DATAPATH)
 
 target_link_libraries(solarus
-  libsolarus
+  solarus_static
   ${SDL_LIBRARY}
   ${SDLIMAGE_LIBRARY}
   ${SDLTTF_LIBRARY}

@@ -34,7 +34,7 @@ class Color {
 
   private:
 
-    static SDL_PixelFormat *format;		/**< the pixel format used for all colors */
+    static SDL_Surface *format_surface;		/**< a dummy surface used to get a pixel format */
     uint32_t internal_value;			/**< the SDL 32-bit value representing this color */
     SDL_Color internal_color;			/**< the SDL color encapsulated */
 
@@ -47,7 +47,7 @@ class Color {
     static Color yellow;
 
     uint32_t get_internal_value();
-    SDL_Color * get_internal_color();
+    SDL_Color* get_internal_color();
 
   public:
 

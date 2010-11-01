@@ -45,7 +45,7 @@ void System::initialize(int argc, char **argv) {
   FileTools::initialize(argc, argv);
 
   // video
-  VideoManager::initialize();
+  VideoManager::initialize(argc, argv);
   Color::initialize();
   TextSurface::initialize();
   Sprite::initialize();

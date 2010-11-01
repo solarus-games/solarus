@@ -19,7 +19,6 @@
 
 #include "Common.h"
 #include "lowlevel/Rectangle.h"
-#include <set>
 
 /**
  * @brief Abstract class for representing a movement.
@@ -49,9 +48,6 @@ class Movement {
 
     bool default_ignore_obstacles;			/**< indicates that this movement normally ignores obstacles */
     bool current_ignore_obstacles;			/**< indicates that this movement currently ignores obstacles */
-
-    // properties
-    std::set<std::string> properties;			/**< list of recognized properties */
 
   protected:
 
@@ -84,7 +80,7 @@ class Movement {
     const Rectangle get_xy();
     void set_x(int x);
     void set_y(int y);
-    virtual void set_xy(int x, int y); // TODO make non virtual once PathMovement is fixed
+    void set_xy(int x, int y);
     void set_xy(const Rectangle &xy);
     void translate_x(int dx);
     void translate_y(int dy);

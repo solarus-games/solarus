@@ -85,7 +85,7 @@ class RectilinearMovement: public Movement {
     double get_speed();
     void set_x_speed(double x_speed);
     void set_y_speed(double y_speed);
-    virtual void set_speed(double speed); // TODO make non virtual once PathMovement is fixed
+    void set_speed(double speed);
     void set_direction(int direction);
     void set_direction_radians(double angle);
 

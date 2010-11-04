@@ -19,6 +19,7 @@ file(
 foreach(test_main_file ${tests_main_files})
 
   get_filename_component(test_bin_file ${test_main_file} NAME_WE)
+  set(test_bin_file Test${test_bin_file}.bin)
   add_executable(${test_bin_file} ${test_main_file})
   set(tests_bin_files ${tests_bin_files} ${test_bin_file})
 

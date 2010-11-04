@@ -85,8 +85,6 @@ Game::Game(Solarus &solarus, Savegame &savegame):
  */
 Game::~Game() {
 
-  // quit the game
-  current_map->leave(); // tell the map that the hero is not there anymore
   delete current_map;
 
   solarus.get_debug_keys().set_game(NULL);

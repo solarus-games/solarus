@@ -16,24 +16,32 @@
  */
 #include "Solarus.h"
 #include "movements/PathMovement.h"
+#include "Game.h"
+#include "Savegame.h"
+#include "Map.h"
+#include "entities/MapEntities.h"
+#include "entities/InteractiveEntity.h"
+
 #include "lowlevel/System.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 
-static void basic_test() {
+static void one_step_test(InteractiveEntity &npc) {
 
-  PathMovement m("0", 100, false, false, false); // 8 pixels to the right
+  Rectangle old_xy = npc.get_xy();
 
-  /* PathMovement does not work without entity
-  while (!m.is_finished()) {
+  PathMovement *movement = new PathMovement("0", 40, false, false, false); // 8 pixels to the right
+  npc.set_movement(movement);
 
-    m.update();
+  while (!movement->is_finished()) {
+
+    npc.get_game().update();
     System::update();
   }
-  
-  Debug::assert(m.get_x() == 8 && m.get_y() == 0,
-      StringConcat() << "Unexcepted coordinates for 'basic_test': " << m.get_xy());
-  */
+
+  Debug::assert(npc.get_x() - old_xy.get_x() == 8
+      && npc.get_y() - old_xy.get_y() == 0,
+      StringConcat() << "Unexcepted coordinates for 'basic_test': " << npc.get_xy());
 }
 
 /*
@@ -42,8 +50,16 @@ static void basic_test() {
 int main(int argc, char **argv) {
 
   Solarus solarus(argc, argv);
+  Savegame savegame("save_initial.dat");
+  Game game(solarus, savegame);
+  game.update();
 
-  basic_test();
+  Map &map = game.get_current_map();
+  InteractiveEntity *npc = new InteractiveEntity("npc1", LAYER_LOW, 160, 117,
+      InteractiveEntity::NON_PLAYING_CHARACTER, "npc/sahasrahla", 0, "_none");
+  map.get_entities().add_entity(npc);
+
+  one_step_test(*npc);
 
   return 0;
 }

@@ -113,6 +113,7 @@ void PathMovement::set_suspended(bool suspended) {
   }
 }
 
+#include <iostream>
 /**
  * @brief Returns whether the movement is finished.
  * @return true if the end of the path was reached or the entity 
@@ -120,7 +121,13 @@ void PathMovement::set_suspended(bool suspended) {
  */
 bool PathMovement::is_finished() {
 
-  return (remaining_path.size() == 0 && !loop)
+  std::cout << "PathMovement::is_finished() : "
+      << ((remaining_path.size() == 0 && !loop) || stopped_by_obstacle)
+      << ", remaining path: " << remaining_path
+      << ", stopped by obstacle: " << stopped_by_obstacle
+      << "\n";
+
+  return (PixelMovement::is_finished() && remaining_path.size() == 0 && !loop)
       || stopped_by_obstacle;
 }
 
@@ -170,6 +177,8 @@ bool PathMovement::is_current_elementary_move_finished() {
  * the entity's top-left corner tries to get aligned with the 8*8 squares of the grid.
  */
 void PathMovement::start_next_elementary_move() {
+
+  std::cout << "start next elementary move, remaining path = '" << remaining_path << "'\n";
 
   MapEntity *entity = get_entity();
 

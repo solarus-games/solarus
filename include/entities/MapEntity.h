@@ -137,8 +137,6 @@ class MapEntity {
     void set_bounding_box_from_sprite();
     void set_bounding_box(const Rectangle &bounding_box);
     void create_sprite(const SpriteAnimationSetId &id, bool enable_pixel_collisions = false);
-    void set_movement(Movement *movement);
-    void clear_movement();
 
     // easy access to various game objects
     MapEntities& get_entities();
@@ -227,6 +225,9 @@ class MapEntity {
 
     // movement
     Movement* get_movement();
+    void set_movement(Movement *movement);
+    void clear_movement();
+
     virtual void notify_movement_tried(bool success);
     virtual void notify_position_changed();
     virtual void notify_layer_changed();

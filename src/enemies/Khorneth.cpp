@@ -62,7 +62,7 @@ void Khorneth::initialize() {
   set_no_attack_consequences();
 
   // movement
-  set_movement(new RandomPathMovement(3));
+  set_movement(new RandomPathMovement(40));
 
   // blades
   left_blade_life = 4;
@@ -211,7 +211,7 @@ void Khorneth::start_final_phase() {
   blades_destroyed = true;
   set_attack_consequence(ATTACK_SWORD, 1);
   clear_movement();
-  set_movement(new RandomPathMovement(4));
+  set_movement(new RandomPathMovement(48));
 }
 
 /**

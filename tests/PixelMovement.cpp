@@ -45,7 +45,7 @@ static void loop_test() {
     System::update();
   }
   
-  Debug::assert(m.get_x() == 4 && m.get_y() == -8,
+  Debug::assert(m.get_x() == 3 && m.get_y() == -6,
       StringConcat() << "Unexcepted coordinates for 'loop_test': " << m.get_xy());
 }
 
@@ -63,6 +63,13 @@ static void syntax_test() {
   Debug::assert(!no_error, "'syntax_test' failed to detect a syntax error");
 }
 
+static void empty_test() {
+
+  PixelMovement m("", 50, true, true);
+
+  Debug::assert(m.is_finished());
+}
+
 /*
  * Test for the pixel movement.
  */
@@ -73,6 +80,7 @@ int main(int argc, char **argv) {
   basic_test();
   loop_test();
   syntax_test();
+  empty_test();
 
   return 0;
 }

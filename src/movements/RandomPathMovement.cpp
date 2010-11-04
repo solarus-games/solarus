@@ -18,10 +18,10 @@
 
 /**
  * @brief Creates a random walk movement object.
- * @param speed speed of the movement
+ * @param speed speed of the movement in pixels per second
  */
 RandomPathMovement::RandomPathMovement(int speed):
-  PathMovement(get_random_path(), speed, false, false, false) {
+  PathMovement(create_random_path(), speed, false, false, false) {
 
 }
 
@@ -41,22 +41,9 @@ void RandomPathMovement::update() {
   PathMovement::update();
 
   if (!is_suspended() && is_stopped()) {
-    // there was a collision
-    set_speed(normal_speed);
-    start_next_move();
+    // there was a collision or the random path is finished: restart with a new random path
+    set_path(create_random_path());
   }
-}
-
-/**
- * @brief Starts the next step of the movement.
- */
-void RandomPathMovement::start_next_move() {
-
-  if (remaining_path.size() == 0) {
-    remaining_path = get_random_path();
-  }
-
-  PathMovement::start_next_move();
 }
 
 /**

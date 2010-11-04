@@ -19,7 +19,6 @@
 #include "lowlevel/System.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
-#include <sstream>
 
 /**
  * @brief Creates a pixel movement object.
@@ -49,7 +48,28 @@ PixelMovement::~PixelMovement() {
  * @return a string describing the succession of translations that compose this movement
  */
 const std::string& PixelMovement::get_trajectory() {
+  // TODO make sure trajectory_string was actually computed
   return trajectory_string;
+}
+
+/**
+ * @brief Sets the trajectory of this movement.
+ *
+ * This function can be called even if the object was moving with a previous trajectory.
+ * The old trajectory is replaced and the movement starts the from beginning of the
+ * new trajectory.
+ *
+ * @param trajectory a list of rectangles describing the succession of translations that compose this movement,
+ * where each rectangle is an xy value representing a translation (the size is ignored)
+ */
+void PixelMovement::set_trajectory(const std::list<Rectangle> &trajectory) {
+
+  //std::cout << "PixelMovement::set_trajectory(list)\n";
+
+  this->trajectory = trajectory;
+  this->trajectory_string = ""; // will be computed only on demand
+
+  restart();
 }
 
 /**
@@ -64,12 +84,14 @@ const std::string& PixelMovement::get_trajectory() {
  */
 void PixelMovement::set_trajectory(const std::string &trajectory_string) {
 
+  //std::cout << "PixelMovement::set_trajectory(" << trajectory_string << ")\n";
+
   int dx = 0;
   int dy = 0;
 
   std::istringstream iss(trajectory_string);
-  while (!iss.eof()) {
-    if (! (iss >> dx) || ! (iss >> dy)) {
+  while (iss >> dx) {
+    if (!(iss >> dy)) {
       Debug::die(StringConcat() << "Invalid trajectory string '" << trajectory_string << "'");
     }
     trajectory.push_back(Rectangle(dx, dy));
@@ -134,7 +156,7 @@ void PixelMovement::restart() {
     nb_steps_done = 0;
     finished = false;
     trajectory_iterator = trajectory.begin();
-    next_move_date = System::now();
+    next_move_date = System::now() + delay;
   }
 }
 
@@ -209,7 +231,7 @@ void PixelMovement::make_next_step() {
 /**
  * @brief This function is called when a step of the trajectory just occured.
  * @param step_index index of the step in the trajectory (the first one is 0)
- * @param success true if the move was made, false if there was an obstacle
+ * @param success true if the move was made, false if the movement was stopped by an obstacle
  */
 void PixelMovement::notify_step_done(int step_index, bool success) {
 

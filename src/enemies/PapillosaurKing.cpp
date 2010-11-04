@@ -79,7 +79,7 @@ void PapillosaurKing::restart() {
 
   // movement
   if (movement == NULL) {
-    set_movement(new RandomPathMovement(5));
+    set_movement(new RandomPathMovement(48));
   }
 }
 
@@ -159,7 +159,7 @@ void PapillosaurKing::update() {
 	else {
 	  next_egg_phase_date = now + 5000 + (1 + Random::get_number(3) * 1000);
 	  get_sprite().set_current_animation("walking");
-	  set_movement(new RandomPathMovement(5));
+	  set_movement(new RandomPathMovement(48));
 	}
       }
     }

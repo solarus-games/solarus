@@ -38,7 +38,6 @@ class PathFindingMovement: public PathMovement {
   protected:
 
     void update();
-    void start_next_move();
     void recompute_movement();
 
   public:

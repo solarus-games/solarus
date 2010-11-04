@@ -18,7 +18,7 @@
 #define SOLARUS_PATH_MOVEMENT_H
 
 #include "Common.h"
-#include "movements/RectilinearMovement.h"
+#include "movements/PixelMovement.h"
 
 /**
  * @brief Movement of an entity that follows a predetermined path.
@@ -26,32 +26,59 @@
  * The path is a succession of basic moves, where each basic move
  * is an 8-pixel movement towards one of the 8 main directions.
  * The movement may or may not stop on obstacles.
+ * This movement can be used only on a map entity.
  */
 class PathMovement: public PixelMovement {
 
   private:
 
-    std::string initial_path;		/**< the path: each character is a direction ('0' to '7')
-    					 * and corresponds to a move of 8 pixels */
-    std::string remaining_path;		/**< the remaining part of the path */
+    std::string initial_path;					/**< the path: each character is a direction ('0' to '7')
+								* and corresponds to a trajectory of 8 pixels (performed by PixelMovement) */
+    std::string remaining_path;					/**< the remaining part of the path */
+    int total_distance_covered;					/**< total number of pixels covered (each element of the path counts for 8) */
+    bool stopped_by_obstacle;					/**< true if the movement was stopped by an obstacle */
 
-    int speed;				/**< the movement speed in pixels per second */
-    bool loop;				/**< should the movement return to the beginning once finished?  */
-
-    bool snap_to_grid;			/**< indicates that the entity must be aligned to the grid before moving */
+    int speed;							/**< the movement speed in pixels per second (corrected for diagonal moves) */
+    bool loop;							/**< should the movement restart from the beginning once finished? */
 
     // snapping
-    bool snapping;			/**< indicates that the movement is currently snapping the entity on the grid */
-    uint32_t stop_snapping_date;	/**< date when we stop trying to snap the entity when it is unsuccessful */
+    bool snap_to_grid;						/**< indicates that the entity must be aligned to the grid before moving */
+    bool snapping;						/**< indicates that the entity is currently being aligned to the grid */
+    uint32_t stop_snapping_date;				/**< date when we stop trying to snap the entity when it is unsuccessful */
+
+    static const std::string elementary_moves[];		/**< 8 pixel trajectory (in the PixelMovement sense) for each direction (0 to 7) */
+
+  private:
+
+    static uint32_t speed_to_delay(int speed, int direction);
+
+    void start_next_elementary_move();
+    bool is_current_elementary_move_finished();
+
+    void snap();
+    void set_snapping_trajectory(const Rectangle &src, const Rectangle &dst);
+
+  protected:
+
+    void notify_step_done(int step_index, bool success);
 
   public:
 
     PathMovement(const std::string &path, int speed, bool loop, bool ignore_obstacles, bool snap_to_grid);
     ~PathMovement();
 
+    void set_entity(MapEntity *entity);
+    virtual void update();
+    virtual void set_suspended(bool suspended);
     virtual bool is_finished();
+    void restart();
 
-    void update();
+    void set_path(const std::string &path);
+    Rectangle get_xy_change();
+    int get_current_direction();
+    int get_total_distance_covered();
+
+    static const std::string create_random_path();
 };
 
 #endif

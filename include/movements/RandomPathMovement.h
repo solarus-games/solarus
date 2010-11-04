@@ -29,10 +29,6 @@
  */
 class RandomPathMovement: public PathMovement {
 
-  protected:
-
-    void start_next_move();
-
   public:
 
     RandomPathMovement(int speed);

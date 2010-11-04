@@ -23,7 +23,7 @@
 /**
  * @brief Creates a chase movement.
  * @param target the entity to target
- * @param speed speed of the movement
+ * @param speed speed of the movement in pixels per second
  */
 PathFindingMovement::PathFindingMovement(MapEntity *target, int speed):
   PathMovement("", speed, false, false, true),
@@ -43,15 +43,22 @@ PathFindingMovement::~PathFindingMovement() {
  */
 void PathFindingMovement::update() {
 
-  if (!is_suspended() && is_stopped()) {
-    // there was a collision
-    set_speed(normal_speed);
-    remaining_path = get_random_path();
-//    std::cout << "stopped, made random path: " << remaining_path << "\n";
-    start_next_move();
-  } 
-
   PathMovement::update();
+
+  if (is_suspended()) {
+    return;
+  }
+
+  if (PathMovement::is_finished()) {
+
+    // there was a collision or the path was made
+    if (System::now() >= next_recomputation_date && get_entity()->is_aligned_to_grid()) {
+      recompute_movement();
+    }
+    else {
+      set_path(create_random_path());
+    }
+  } 
 }
 
 /**
@@ -60,51 +67,25 @@ void PathFindingMovement::update() {
  */
 void PathFindingMovement::recompute_movement() { 
 
-//  uint32_t start = System::now();
-
   PathFinding path_finding(get_entity()->get_map(), *get_entity(), *target);
-  remaining_path = path_finding.compute_path();
-
-//  uint32_t end = System::now();
-//  std::cout << "path computed in " << (end - start) << " ms\n";
+  std::string path = path_finding.compute_path();
 
   uint32_t min_delay;
-  if (remaining_path == "") {
+  if (path.size() == 0) {
     // the target is too far or there is no path
-    remaining_path = get_random_path();
+    path = create_random_path();
 
     // no path was found: no need to try again very soon
     // (note that the A* algorithm is very costly when it explores all nodes without finding a solution)
     min_delay = 3000;
-//    std::cout << "PathFindingMovement::recompute_path(): generated a random path: " << remaining_path << std::endl;
   }
   else {
     // a path was found: we need to update it frequently (and the A* algorithm is much faster in general when there is a solution)
     min_delay = 300;
-//    std::cout << "PathFindingMovement::recompute_path(): calculated a path to the hero: " << remaining_path << std::endl;
   }
   // compute a new path every random delay to avoid
-  // making all path-finding entities of the map compute a path at the same time
+  // having all path-finding entities of the map compute a path at the same time
   next_recomputation_date += System::now() + min_delay + Random::get_number(200);
-}
-
-/**
- * @brief Starts the next step of the movement.
- *
- * This is a redefinition of PathMovement::start_next_move() to recalculate the path when it is finished
- * or when the recomputation delay is over.
- */
-void PathFindingMovement::start_next_move() {
-
-  uint32_t now = System::now();
-
-  if (remaining_path.size() == 0 || now >= next_recomputation_date) {
-    if (get_entity()->is_aligned_to_grid()) {
-      recompute_movement();
-    }
-  }
-
-  PathMovement::start_next_move(); // must be done after the recomputation to update immediately the direction
 }
 
 /**

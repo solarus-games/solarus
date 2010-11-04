@@ -1,0 +1,8 @@
+small_key hud/message_and_treasure_icons.png 1 0 -1
+36	112	8	16	4	13	1	1
+
+big_key hud/message_and_treasure_icons.png 1 0 -1
+48	112	16	16	8	13	1	1
+
+boss_key hud/message_and_treasure_icons.png 1 0 -1
+64	112	16	16	8	13	1	1

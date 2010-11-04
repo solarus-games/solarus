@@ -5,7 +5,7 @@ project(SOLARUS)
 add_subdirectory(src)
 
 # quests
-set(quests "zsdx") # put here your list of quests 
+set(quests "zsdx" "debug_quest") # put here your list of quests 
 
 foreach(quest_name ${quests})
   if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/quests/${quest_name})

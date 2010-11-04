@@ -1,0 +1,12 @@
+stopped entities/bed.png 1 0 -1
+0	0	32	40	16	13	1	1
+
+empty_open entities/bed.png 1 0 -1
+32	0	32	40	16	13	1	1
+
+hero_sleeping entities/bed.png 1 0 -1
+64	0	32	40	16	13	1	1
+
+hero_waking entities/bed.png 1 200 1
+96	0	32	40	16	13	2	2
+

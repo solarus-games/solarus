@@ -18,6 +18,7 @@
 #define SOLARUS_MUSIC_H
 
 #include "Common.h"
+#include "lowlevel/Sound.h"
 #include <map>
 #include <AL/al.h>
 
@@ -31,7 +32,7 @@
  * initialized, by calling Sound::initialize().
  * Sound and Music are the only classes that depends on audio libraries.
  */
-class Music {
+class Music { // TODO make a subclass for each format, or at least make a better separation between them
 
   private:
 
@@ -39,13 +40,19 @@ class Music {
      * The music file formats recognized.
      */
     enum Format {
-      SPC, /**< Snes */
-      IT   /**< Impulse Tracker module (TODO implement with the modplug lib) */
+      SPC,	/**< Snes */
+      OGG,	/**< Ogg Vorbis */
+      IT	/**< Impulse Tracker module (TODO implement with the modplug lib) */
     };
 
     MusicId id;							/**< id of this music */
     std::string file_name;					/**< name of the file to play */
     Format format;						/**< format of the music, detected from the file name */
+
+    // OGG specific
+    SNDFILE *sf_file;						/**< the file used by libsndfile */
+    SF_INFO sf_file_info;					/**< properties of the sound file */
+    Sound::SoundFromMemory sf_mem;				/**< the encoded music loaded in memory, passed to libsndfile as user data */
 
     static const int nb_buffers = 8;
     ALuint buffers[nb_buffers];					/**< multiple buffers used to stream the music */
@@ -86,6 +93,7 @@ class Music {
     void set_paused(bool pause);
 
     void decode_spc(ALuint destination_buffer, ALsizei nb_samples);
+    void decode_ogg(ALuint destination_buffer, ALsizei nb_samples);
 };
 
 #endif

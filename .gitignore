@@ -25,5 +25,6 @@ quests/*/data/cmake_install.cmake
 quests/*/data/data.solarus
 quests/zsdx/data/zsdx
 tests/CTestTestfile.cmake
+tests/*.bin
 tests/Testing/
 

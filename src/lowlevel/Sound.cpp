@@ -16,7 +16,7 @@
  */
 #include <iostream> // std::cerr
 #include <cstring>  // memcpy
-#include <cmath>    // memcpy
+#include <cmath>
 #include "lowlevel/Sound.h"
 #include "lowlevel/Music.h"
 #include "lowlevel/FileTools.h"
@@ -396,7 +396,7 @@ sf_count_t Sound::sf_get_filelen(void *user_data) {
 sf_count_t Sound::sf_seek(sf_count_t offset, int whence, void *user_data) {
 
   SoundFromMemory *mem = (SoundFromMemory*) user_data;
-  
+
   switch (whence) {
 
     case SEEK_SET:
@@ -416,7 +416,7 @@ sf_count_t Sound::sf_seek(sf_count_t offset, int whence, void *user_data) {
 }
 
 sf_count_t Sound::sf_read(void *ptr, sf_count_t count, void *user_data) {
-  
+
   SoundFromMemory *mem = (SoundFromMemory*) user_data;
   if (mem->position + count >= mem->size) {
     count = mem->size - mem->position;

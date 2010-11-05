@@ -121,11 +121,13 @@ void PathMovement::set_suspended(bool suspended) {
  */
 bool PathMovement::is_finished() {
 
+  /*
   std::cout << "PathMovement::is_finished() : "
       << ((remaining_path.size() == 0 && !loop) || stopped_by_obstacle)
       << ", remaining path: " << remaining_path
       << ", stopped by obstacle: " << stopped_by_obstacle
       << "\n";
+*/
 
   return (PixelMovement::is_finished() && remaining_path.size() == 0 && !loop)
       || stopped_by_obstacle;
@@ -178,7 +180,7 @@ bool PathMovement::is_current_elementary_move_finished() {
  */
 void PathMovement::start_next_elementary_move() {
 
-  std::cout << "start next elementary move, remaining path = '" << remaining_path << "'\n";
+  //std::cout << "start next elementary move, remaining path = '" << remaining_path << "'\n";
 
   MapEntity *entity = get_entity();
 

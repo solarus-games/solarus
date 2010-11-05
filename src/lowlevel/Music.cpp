@@ -20,11 +20,12 @@
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 #include "Configuration.h"
+#include <sndfile.h>
 
 const int Music::nb_buffers;
-SpcDecoder * Music::spc_decoder = NULL;
+SpcDecoder *Music::spc_decoder = NULL;
 float Music::volume = 1.0;
-Music * Music::current_music = NULL;
+Music *Music::current_music = NULL;
 std::map<MusicId,Music> Music::all_musics;
 
 const MusicId Music::none = "none";
@@ -58,11 +59,14 @@ Music::Music(const MusicId &music_id):
     StringConcat() << "Invalid music file name: " << music_id);
   std::string extension = music_id.substr(index + 1);
 
-  if (extension == "spc") {
+  if (extension == "spc" || extension == "SPC" || extension == "Spc") {
     format = SPC;
   }
+  else if (extension == "ogg" || extension == "OGG" || extension == "Ogg") {
+    format = OGG;
+  }
 /* not yet implemented
-  else if (extension == "it") {
+  else if (extension == "it" || extension == "IT" || extension == "It") {
     format = IT;
   }
   */
@@ -234,7 +238,18 @@ void Music::update_playing() {
   for (int i = 0; i < nb_empty; i++) {
     ALuint buffer;
     alSourceUnqueueBuffers(source, 1, &buffer); // unqueue the buffer
-    decode_spc(buffer, 4096);                   // fill it by decoding more SPC data
+
+    switch (format) {
+
+      case SPC:
+	decode_spc(buffer, 4096);                   // fill it by decoding more SPC data
+	break;
+
+      case OGG:
+	decode_ogg(buffer, 4096);
+	break;
+
+    }
     alSourceQueueBuffers(source, 1, &buffer);   // queue it again
   }
 
@@ -268,6 +283,35 @@ void Music::decode_spc(ALuint destination_buffer, ALsizei nb_samples) {
 }
 
 /**
+ * @brief Decodes a chunk of OGG data into PCM data for the current music.
+ * @param destination_buffer the destination buffer to write
+ * @param nb_samples number of samples to write
+ */
+void Music::decode_ogg(ALuint destination_buffer, ALsizei nb_samples) {
+
+  // decode the OGG data
+  ALshort *raw_data = new ALshort[nb_samples];
+  sf_read_short(sf_file, raw_data, nb_samples); // TODO check errors
+
+  // put this decoded data into the buffer
+  ALsizei sample_rate = (ALsizei) sf_file_info.samplerate;
+  ALenum al_format = AL_NONE;
+  if (sf_file_info.channels == 1) {
+    al_format = AL_FORMAT_MONO16;
+  }
+  else if (sf_file_info.channels == 2) {
+    al_format = AL_FORMAT_STEREO16;
+  }
+  alBufferData(destination_buffer, al_format, raw_data, nb_samples * sizeof(ALushort), sample_rate);
+
+  delete[] raw_data;
+
+  int error = alGetError();
+  Debug::assert(error == AL_NO_ERROR,
+      StringConcat() << "Failed to fill the audio buffer with decoded OGG data for music file '" << file_name << ": error " << error);
+}
+
+/**
  * @brief Loads the file and starts playing this music.
  *
  * No other music should be playing.
@@ -280,26 +324,48 @@ bool Music::start() {
     return false;
   }
 
-  Debug::assert(format == SPC, StringConcat() << "Cannot play music file '" << file_name << "': unknown music format");
   Debug::assert(current_music == NULL, StringConcat() << "Cannot play music file '" << file_name << "': a music is already playing");
+  Debug::assert(format == SPC || format == OGG, StringConcat() << "Cannot play music file '" << file_name << "': unknown music format");
 
   bool success = true;
-
-  // load the music into memory
-  size_t sound_size;
-  char *sound_data;
-  FileTools::data_file_open_buffer(file_name, &sound_data, &sound_size);
-
-  // load the SPC data into the SPC decoding library
-  spc_decoder->load((int16_t*) sound_data, sound_size);
-  FileTools::data_file_close_buffer(sound_data);
 
   // create the two buffers and the source
   alGenBuffers(nb_buffers, buffers);
   alGenSources(1, &source);
   alSourcef(source, AL_GAIN, volume);
-  for (int i = 0; i < nb_buffers; i++) {
-    decode_spc(buffers[i], 4096);
+
+  // load the music into memory
+  if (format == SPC) {
+
+    size_t sound_size;
+    char *sound_data;
+    FileTools::data_file_open_buffer(file_name, &sound_data, &sound_size);
+
+    // load the SPC data into the SPC decoding library
+    spc_decoder->load((int16_t*) sound_data, sound_size);
+    FileTools::data_file_close_buffer(sound_data);
+
+    for (int i = 0; i < nb_buffers; i++) {
+      decode_spc(buffers[i], 4096);
+    }
+  }
+  else if (format == OGG) {
+
+    sf_mem.position = 0;
+    FileTools::data_file_open_buffer(file_name, &sf_mem.data, &sf_mem.size);
+    // now, mem contains the encoded data
+
+    sf_file_info.channels = 0;
+    sf_file_info.format = 0;
+    sf_file_info.frames = 0;
+    sf_file_info.samplerate = 0;
+    sf_file_info.sections = 0;
+    sf_file_info.seekable = 0;
+    sf_file = sf_open_virtual(&Sound::sf_virtual, SFM_READ, &sf_file_info, &sf_mem); // TODO check errors
+
+    for (int i = 0; i < nb_buffers; i++) {
+      decode_ogg(buffers[i], 4096);
+    }
   }
 
   // start the streaming
@@ -353,6 +419,11 @@ void Music::stop() {
   alDeleteBuffers(nb_buffers, buffers);
 
   current_music = NULL;
+
+  if (format == OGG) {
+    sf_close(sf_file);
+    FileTools::data_file_close_buffer(sf_mem.data);
+  }
 }
 
 /**

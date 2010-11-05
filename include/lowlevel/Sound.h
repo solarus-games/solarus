@@ -48,7 +48,13 @@ class Sound {
 
     static bool initialized;					/**< indicates that the audio system is initialized */
     static float volume;					/**< the volume of sound effects (0.0 to 1.0) */
- 
+
+    ALuint decode_file(const std::string &file_name);
+    bool update_playing();
+
+  public:
+
+    // libsndfile
     struct SoundFromMemory {					/**< buffer containing a encoded sound file */
       char *data;
       size_t size;
@@ -63,11 +69,6 @@ class Sound {
     static sf_count_t sf_read(void *ptr, sf_count_t count, void *user_data);
     static sf_count_t sf_write(const void *ptr, sf_count_t count, void *user_data);
     static sf_count_t sf_tell(void *user_data);
-
-    ALuint decode_file(const std::string &file_name);
-    bool update_playing();
-
-  public:
 
     Sound();
     Sound(const SoundId &sound_id);

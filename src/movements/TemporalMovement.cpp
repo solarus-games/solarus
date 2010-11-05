@@ -19,31 +19,19 @@
 #include "lowlevel/System.h"
 
 /**
- * @brief Creates a straight movement.
+ * @brief Constructor.
  * @param speed the speed
- * @param direction angle of the movement (0 to 359)
+ * @param angle angle of the movement in radians
  * @param time duration of the movement in milliseconds
  * @param smooth true to make the movement smooth
  */
-TemporalMovement::TemporalMovement(int speed, int direction, uint32_t time, bool smooth):
+TemporalMovement::TemporalMovement(int speed, double angle, uint32_t time, bool smooth):
   SmoothMovement(smooth) {
-  start(speed, direction, time);
+  start(speed, angle, time);
 }
 
 /**
- * @brief Creates a straight movement.
- * @param speed the speed
- * @param direction angle of the movement in radians
- * @param time duration of the movement in milliseconds
- * @param smooth true to make the movement smooth
- */
-TemporalMovement::TemporalMovement(int speed, double direction, uint32_t time, bool smooth):
-  SmoothMovement(smooth) {
-  start(speed, direction, time);
-}
-
-/**
- * @brief Creates a straight movement.
+ * @brief Constructor.
  * @param speed the speed
  * @param source_xy the movement will start from this point
  * @param target_xy the movement will go into this point's direction
@@ -67,17 +55,6 @@ TemporalMovement::~TemporalMovement() {
 /**
  * @brief Starts the straight movement into a direction.
  * @param speed the speed
- * @param direction angle of the movement (0 to 359)
- * @param time duration of the movement in milliseconds
- */
-void TemporalMovement::start(int speed, int direction, uint32_t time) {
-
-  start(speed, direction * Geometry::TWO_PI / 360.0, time);
-}
-
-/**
- * @brief Starts the straight movement into a direction.
- * @param speed the speed
  * @param direction angle of the movement in radians
  * @param time duration of the movement in milliseconds
  */
@@ -87,7 +64,7 @@ void TemporalMovement::start(int speed, double direction, uint32_t time) {
   end_movement_date = System::now() + time;
   set_speed(speed);
   if (speed != 0) {
-    set_direction(direction);
+    set_angle(direction);
   }
 }
 

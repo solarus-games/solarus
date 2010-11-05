@@ -139,6 +139,18 @@ static void multi_step_test(MapEntity &e) {
   Debug::assert(movement->get_total_distance_covered() == 16,
       StringConcat() << "Unexpected distance covered for 'multi_step_test #1': " << movement->get_total_distance_covered());
 
+  movement->set_path("220");
+
+  while (!movement->is_finished()) {
+    game.update();
+    System::update();
+  }
+
+  Debug::assert(e.get_x() - old_xy.get_x() == 8 && e.get_y() - old_xy.get_y() == 0,
+      StringConcat() << "Unexcepted coordinates for 'multi_step_test #2': " << e.get_xy());
+  Debug::assert(movement->get_total_distance_covered() == 40,
+      StringConcat() << "Unexpected distance covered for 'multi_step_test #2': " << movement->get_total_distance_covered());
+
   e.clear_movement();
 }
 

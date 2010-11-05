@@ -37,8 +37,7 @@ class TemporalMovement: public SmoothMovement {
 
   public:
 
-    TemporalMovement(int speed, int direction, uint32_t time, bool smooth = true);
-    TemporalMovement(int speed, double direction, uint32_t time, bool smooth = true);
+    TemporalMovement(int speed, double angle, uint32_t time, bool smooth = true);
     TemporalMovement(int speed, const Rectangle &source_xy, const Rectangle &target_xy, uint32_t time, bool smooth = true);
     ~TemporalMovement();
 
@@ -46,7 +45,6 @@ class TemporalMovement: public SmoothMovement {
     void set_suspended(bool suspended);
     bool is_finished();
     void set_finished();
-    void start(int speed, int direction, uint32_t time);
     void start(int speed, double direction, uint32_t time);
 };
 

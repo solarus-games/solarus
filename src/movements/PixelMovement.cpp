@@ -259,6 +259,7 @@ bool PixelMovement::is_started() {
 /**
  * @brief Returns whether the movement is finished, i.e.
  * whether the end of the trajectory was reached.
+ * @return true if the end of the trajectory was reached
  */
 bool PixelMovement::is_finished() {
   return finished;

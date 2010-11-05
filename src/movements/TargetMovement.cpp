@@ -129,7 +129,7 @@ void TargetMovement::recompute_movement() {
     sign_y = (dy >= 0) ? 1 : -1;
 
     set_speed(speed);
-    set_direction(angle);
+    set_angle(angle);
   }
 }
 

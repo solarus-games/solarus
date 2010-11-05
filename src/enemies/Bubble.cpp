@@ -20,6 +20,7 @@
 #include "lowlevel/Random.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
+#include "lowlevel/Geometry.h"
 
 /**
  * @brief Constructor.
@@ -89,7 +90,7 @@ void Bubble::go(int movement_direction8) {
 
   RectilinearMovement *movement = (RectilinearMovement*) get_movement();
   movement->set_speed(8);
-  movement->set_direction(movement_direction8 * 45);
+  movement->set_angle(Geometry::degrees_to_radians(movement_direction8 * 45));
 }
 
 

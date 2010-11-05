@@ -25,7 +25,7 @@ class Geometry {
   public:
 
     // Mathematic constants:
-    // we don't use the ones from math.h
+    // we don't use the ones from cmath
     // because they are not ANSI
     static const double PI;
     static const double TWO_PI;
@@ -34,7 +34,7 @@ class Geometry {
     static const double SQRT_2;
 
     static const int radians_to_degrees(double radians);
-    static const double degrees_to_radians(int degrees);
+    static const double degrees_to_radians(double degrees);
 
     static double get_distance(int x1, int y1, int x2, int y2);
     static double get_angle(int x1, int y1, int x2, int y2);

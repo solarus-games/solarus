@@ -33,6 +33,7 @@
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 #include "lowlevel/Sound.h"
+#include "lowlevel/Geometry.h"
 
 /**
  * @brief Creates a new inventory item.
@@ -188,7 +189,8 @@ void InventoryItem::update() {
 	else {
 	  boomerang_direction8 = direction_pressed8;
 	}
-	game.get_current_map().get_entities().add_entity(new Boomerang(hero, boomerang_direction8 * 45));
+	double angle = Geometry::degrees_to_radians(boomerang_direction8 * 45);
+	game.get_current_map().get_entities().add_entity(new Boomerang(hero, angle));
       }
     }
     else if (item_name == "bow") {

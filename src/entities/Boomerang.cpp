@@ -31,9 +31,9 @@
 /**
  * @brief Creates a boomerang.
  * @param hero the hero
- * @param boomerang_direction the boomerang direction (0 to 360)
+ * @param boomerang_angle the angle of the boomerang trajectory in radians
  */
-Boomerang::Boomerang(Hero &hero, int boomerang_direction):
+Boomerang::Boomerang(Hero &hero, double boomerang_angle):
   MapEntity(), hero(hero), has_to_go_back(false), going_back(false) {
 
   // initialize the entity
@@ -67,7 +67,7 @@ Boomerang::Boomerang(Hero &hero, int boomerang_direction):
 
   RectilinearMovement *movement = new RectilinearMovement();
   movement->set_speed(16);
-  movement->set_direction(boomerang_direction);
+  movement->set_angle(boomerang_angle);
   set_movement(movement);
 
   next_sound_date = System::now();

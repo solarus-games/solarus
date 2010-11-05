@@ -357,7 +357,7 @@ void InteractiveEntity::walk(std::string path, bool loop, bool ignore_obstacles)
   Debug::assert(subtype == NON_PLAYING_CHARACTER, "This entity is not a non-playing character");
 
   clear_movement();
-  set_movement(new PathMovement(path, 6, loop, ignore_obstacles, false));
+  set_movement(new PathMovement(path, 32, loop, ignore_obstacles, false));
   get_sprite().set_current_animation("walking");
 }
 

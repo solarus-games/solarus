@@ -116,7 +116,7 @@ void Hero::PullingState::update() {
 	  std::string path = "  ";
 	  path[0] = path[1] = '0' + opposite_direction8;
 
-	  hero.set_movement(new PathMovement(path, 8, false, false, false));
+	  hero.set_movement(new PathMovement(path, 40, false, false, false));
 	  pulled_entity = facing_entity;
 	}
       }

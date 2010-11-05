@@ -89,6 +89,7 @@ void PixelMovement::set_trajectory(const std::string &trajectory_string) {
   int dx = 0;
   int dy = 0;
 
+  trajectory.clear();
   std::istringstream iss(trajectory_string);
   while (iss >> dx) {
     if (!(iss >> dy)) {
@@ -157,6 +158,7 @@ void PixelMovement::restart() {
     finished = false;
     trajectory_iterator = trajectory.begin();
     next_move_date = System::now() + delay;
+//    std::cout << "starting new trajectory " << trajectory_string << ", current pos = " << get_xy() << "\n";
   }
 }
 
@@ -208,6 +210,7 @@ void PixelMovement::make_next_step() {
 
   if (!test_collision_with_obstacles(dxy.get_x(), dxy.get_y())) {
     translate_xy(dxy);
+//    std::cout << "translated of " << dxy << ", new pos = " << get_xy() << "\n";
     success = true;
   }
 

@@ -37,6 +37,7 @@ add_executable(solarus
 )
 
 if(NOT WIN32)
+  set_target_properties(solarus_static PROPERTIES COMPILE_FLAGS "-g -ansi -pedantic -Wall -Werror")
   set_target_properties(solarus PROPERTIES COMPILE_FLAGS "-g -ansi -pedantic -Wall -Werror")
 endif(NOT WIN32)
 

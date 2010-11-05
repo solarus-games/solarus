@@ -41,8 +41,8 @@ class Music { // TODO make a subclass for each format, or at least make a better
      */
     enum Format {
       SPC,	/**< Snes */
-      OGG,	/**< Ogg Vorbis */
-      IT	/**< Impulse Tracker module (TODO implement with the modplug lib) */
+      OGG	/**< Ogg Vorbis */
+//      IT	/**< Impulse Tracker module (TODO implement with the modplug lib) */
     };
 
     MusicId id;							/**< id of this music */

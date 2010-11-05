@@ -44,7 +44,7 @@ void Tentacle::initialize() {
 
   // attack/defense features
   set_damage(2);
-  set_life(1);
+  set_life(10); // TODO 1
 
   // sprite
   create_sprite("enemies/tentacle");
@@ -52,6 +52,6 @@ void Tentacle::initialize() {
   set_origin(8, 13);
 
   // movement
-  set_movement(new PathFindingMovement(&get_hero(), 3));
+  set_movement(new PathFindingMovement(&get_hero(), 32));
 }
 

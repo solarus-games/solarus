@@ -120,7 +120,7 @@ void PlayerMovement::compute_movement() {
   }
   else { // the directional keys currently pressed define a valid movement
     set_speed(moving_speed);
-    set_direction(direction8 * 45);
+    set_angle(Geometry::degrees_to_radians(direction8 * 45));
   }
 
   // notify the entity that its movement has just changed:

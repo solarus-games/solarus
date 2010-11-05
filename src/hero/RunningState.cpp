@@ -22,6 +22,7 @@
 #include "movements/JumpMovement.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Sound.h"
+#include "lowlevel/Geometry.h"
 #include "Game.h"
 #include "GameControls.h"
 #include "Map.h"
@@ -93,7 +94,8 @@ void Hero::RunningState::update() {
   if (phase == 0) {
     
     if (now >= next_phase_date) {
-      hero.set_movement(new TemporalMovement(30, get_sprites().get_animation_direction() * 90, 10000));
+      double angle = Geometry::degrees_to_radians(get_sprites().get_animation_direction() * 90);
+      hero.set_movement(new TemporalMovement(30, angle , 10000));
       get_sprites().set_animation_running();
       phase++;
     }

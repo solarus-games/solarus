@@ -206,24 +206,9 @@ void RectilinearMovement::set_next_move_date_y(uint32_t next_move_date_y) {
  * Warning: if x_speed and y_speed are both equal to zero, this function
  * stops the program on an error message.
  *
- * @param direction the new movement direction, between 0 and 359
- */
-void RectilinearMovement::set_direction(int direction) {
-
-  double angle = Geometry::degrees_to_radians(direction);
-  set_direction_radians(angle);
-}
-
-/**
- * @brief Changes the direction of the movement vector, keeping the same speed.
- *
- * x_speed and y_speed are recomputed so that the total speed is unchanged.
- * Warning: if x_speed and y_speed are both equal to zero, this function
- * stops the program on an error message.
- *
  * @param angle the new movement direction in radians
  */
-void RectilinearMovement::set_direction_radians(double angle) {
+void RectilinearMovement::set_angle(double angle) {
 
   Debug::assert(x_speed != 0 || y_speed != 0,
     StringConcat() << "Cannot set the direction when the speed is zero (entity: " << get_entity() << ")");

@@ -90,7 +90,8 @@ void PathFindingMovement::recompute_movement() {
 
 /**
  * @brief Returns whether the movement is finished.
- * @return false
+ * @return always false because the movement is restarted as soon as the path is finished
+ * or an obstacle is reached
  */
 bool PathFindingMovement::is_finished() {
   return false;

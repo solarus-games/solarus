@@ -57,7 +57,7 @@ const int Geometry::radians_to_degrees(double radians) {
  * @param degrees angle in degrees
  * @return the radians value
  */
-const double Geometry::degrees_to_radians(int degrees) {
+const double Geometry::degrees_to_radians(double degrees) {
   return degrees * TWO_PI / 360.0;
 }
 

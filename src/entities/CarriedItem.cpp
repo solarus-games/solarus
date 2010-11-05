@@ -31,6 +31,7 @@
 #include "Map.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Sound.h"
+#include "lowlevel/Geometry.h"
 
 /**
  * @brief Movement of the item when the hero is lifting it.
@@ -218,7 +219,7 @@ void CarriedItem::throw_item(int direction) {
   set_y(hero.get_y());
   RectilinearMovement *movement = new RectilinearMovement();
   movement->set_speed(20);
-  movement->set_direction(direction * 90);
+  movement->set_angle(Geometry::degrees_to_radians(direction * 90));
   clear_movement();
   set_movement(movement);
 

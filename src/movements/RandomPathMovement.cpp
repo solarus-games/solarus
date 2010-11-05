@@ -40,7 +40,8 @@ void RandomPathMovement::update() {
 
   PathMovement::update();
 
-  if (!is_suspended() && is_stopped()) {
+  if (!is_suspended() && PathMovement::is_finished()) {
+
     // there was a collision or the random path is finished: restart with a new random path
     set_path(create_random_path());
   }
@@ -48,7 +49,8 @@ void RandomPathMovement::update() {
 
 /**
  * @brief Returns whether the movement is finished.
- * @return false
+ * @return always false because the movement is restarted as soon as the path is finished
+ * or an obstacle is reached
  */
 bool RandomPathMovement::is_finished() {
   return false;

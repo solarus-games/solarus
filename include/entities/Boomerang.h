@@ -41,7 +41,7 @@ class Boomerang: public MapEntity {
 
   public:
 
-    Boomerang(Hero &hero, int boomerang_direction);
+    Boomerang(Hero &hero, double boomerang_angle);
     ~Boomerang();
 
     EntityType get_type();

@@ -371,7 +371,7 @@ void InteractiveEntity::walk_random() {
   Debug::assert(subtype == NON_PLAYING_CHARACTER, "This entity is not a non-playing character");
 
   clear_movement();
-  set_movement(new RandomPathMovement(40));
+  set_movement(new RandomPathMovement(32));
   get_sprite().set_current_animation("walking");
 }
 

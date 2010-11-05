@@ -62,7 +62,6 @@ class PathMovement: public PixelMovement {
   protected:
 
     void notify_step_done(int step_index, bool success);
-
   public:
 
     PathMovement(const std::string &path, int speed, bool loop, bool ignore_obstacles, bool snap_to_grid);

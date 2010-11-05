@@ -52,22 +52,22 @@ void BoundedRandomMovement::set_entity(MapEntity *entity) {
 }
 
 /**
- * @brief Chooses a new direction for the fairy.
+ * @brief Chooses a new direction for the movement.
  */
 void BoundedRandomMovement::set_next_direction() {
 
+  double angle;
   if (get_entity() == NULL || bounds.contains(get_x(), get_y())) {
 
     // we are inside the bounds: we pick a random direction
-    int nb = Random::get_number(8);
-    set_direction(nb * 45 + 22); // 8 possible directions but no "simple" direction
+    angle = Geometry::degrees_to_radians(Random::get_number(8) * 45 + 22.5);
   }
   else {
 
-    // we are outside the bounds: we get back into the rectangle to avoid going to far
-    double angle = Geometry::get_angle(get_x(), get_y(), bounds.get_x() + bounds.get_width() / 2, bounds.get_y() + bounds.get_height() / 2);
-    set_direction_radians(angle);
+    // we are outside the bounds: we get back into the rectangle to avoid going too far
+    angle = Geometry::get_angle(get_x(), get_y(), bounds.get_x() + bounds.get_width() / 2, bounds.get_y() + bounds.get_height() / 2);
   }
+  set_angle(angle);
 
   next_direction_change_date = System::now() + 500 + Random::get_number(3) * 500; // change again in 0.5 to 2 seconds
 }

@@ -67,7 +67,7 @@ void Hero::StairsState::start(State *previous_state) {
   State::start(previous_state);
 
   // movement
-  int speed = stairs.is_inside_floor() ? 4 : 2;
+  int speed = stairs.is_inside_floor() ? 40 : 24;
   std::string path = stairs.get_path(way);
   PathMovement *movement = new PathMovement(path, speed, false, true, false);
 

@@ -35,6 +35,7 @@ class PathMovement: public PixelMovement {
     std::string initial_path;					/**< the path: each character is a direction ('0' to '7')
 								* and corresponds to a trajectory of 8 pixels (performed by PixelMovement) */
     std::string remaining_path;					/**< the remaining part of the path */
+    int current_direction;					/**< current element in the path (0 to 7) */
     int total_distance_covered;					/**< total number of pixels covered (each element of the path counts for 8) */
     bool stopped_by_obstacle;					/**< true if the movement was stopped by an obstacle */
 

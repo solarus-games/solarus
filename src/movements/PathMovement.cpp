@@ -19,6 +19,8 @@
 #include "lowlevel/Geometry.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Random.h"
+#include "lowlevel/Debug.h"
+#include "lowlevel/StringConcat.h"
 
 const std::string PathMovement::elementary_moves[] = {
     " 1  0   1  0   1  0   1  0   1  0   1  0   1  0   1  0", // 8 pixels right
@@ -27,8 +29,8 @@ const std::string PathMovement::elementary_moves[] = {
     "-1 -1  -1 -1  -1 -1  -1 -1  -1 -1  -1 -1  -1 -1  -1 -1", // 8 pixels left-up
     "-1  0  -1  0  -1  0  -1  0  -1  0  -1  0  -1  0  -1  0", // 8 pixels left
     "-1  1  -1  1  -1  1  -1  1  -1  1  -1  1  -1  1  -1  1", // 8 pixels left-down
-    " 0 -1   0 -1   0 -1   0 -1   0 -1   0 -1   0 -1   0 -1", // 8 pixels down
-    " 1 -1   1 -1   1 -1   1 -1   1 -1   1 -1   1 -1   1 -1"  // 8 pixels right-down
+    " 0  1   0  1   0  1   0  1   0  1   0  1   0  1   0  1", // 8 pixels down
+    " 1  1   1  1   1  1   1  1   1  1   1  1   1  1   1  1"  // 8 pixels right-down
 };
 
 /**
@@ -46,8 +48,7 @@ PathMovement::PathMovement(const std::string &path, int speed,
     bool loop, bool ignore_obstacles, bool must_be_aligned):
 
   PixelMovement("", loop, 0, ignore_obstacles),
-  initial_path(path),
-  remaining_path(path),
+  current_direction(6),
   total_distance_covered(0),
   stopped_by_obstacle(false),
   speed(speed),
@@ -56,6 +57,7 @@ PathMovement::PathMovement(const std::string &path, int speed,
   snapping(false),
   stop_snapping_date(0) {
 
+  set_path(path);
 }
 
 /**
@@ -215,7 +217,9 @@ void PathMovement::start_next_elementary_move() {
     if (remaining_path.size() != 0) {
       // normal case: there is a next trajectory to do
 
-      int current_direction = get_current_direction();
+      current_direction = remaining_path[0] - '0';
+      Debug::assert(current_direction >= 0 && current_direction < 8,
+          StringConcat() << "Invalid path '" << initial_path << "' (bad direction '" << current_direction << "')");
 
       PixelMovement::set_delay(speed_to_delay(speed, current_direction));
       PixelMovement::set_trajectory(elementary_moves[current_direction]);
@@ -259,10 +263,14 @@ Rectangle PathMovement::get_xy_change() {
 
 /**
  * @brief Returns the current direction in the path.
+ *
+ * If the movement is finished, the last direction used is returned.
+ *
  * @return the current direction (0 to 7)
  */
 int PathMovement::get_current_direction() {
-  return remaining_path[0] - '0';
+
+  return current_direction;
 }
 
 /**

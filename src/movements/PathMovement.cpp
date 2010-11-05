@@ -275,7 +275,8 @@ int PathMovement::get_current_direction() {
 
 /**
  * @brief Returns the total distance covered by this movement.
- * @return the total distance in pixels (diagonal moves count for the same distance as non-diagonal moves)
+ * @return the total distance in pixels (diagonal moves count for the same distance as non-diagonal moves),
+ * not including the possible initial snapping phase
  */
 int PathMovement::get_total_distance_covered() {
   return total_distance_covered;

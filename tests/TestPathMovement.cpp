@@ -154,6 +154,40 @@ static void multi_step_test(MapEntity &e) {
   e.clear_movement();
 }
 
+static void snap_test(MapEntity &e) {
+
+  Game &game = e.get_game();
+
+  e.set_top_left_xy(155, 108); // not aligned to the grid
+
+  // #1: a path movement that does not require the entity to snap to the grid
+  PathMovement *movement = new PathMovement("56", 100, false, false, false);
+  e.set_movement(movement);
+  while (!movement->is_finished()) {
+    game.update();
+    System::update();
+  }
+  Debug::assert(e.get_top_left_x() == 147 && e.get_top_left_y() == 124,
+      StringConcat() << "Unexcepted coordinates for 'snap_test #1': " << e.get_xy());
+  Debug::assert(movement->get_total_distance_covered() == 16,
+      StringConcat() << "Unexpected distance covered for 'snap_test #1': " << movement->get_total_distance_covered());
+  e.clear_movement();
+
+  // #2: a path movement that does requires the entity to snap to the grid
+  movement = new PathMovement("21", 100, false, false, true);
+  e.set_movement(movement);
+  while (!movement->is_finished()) {
+    game.update();
+    System::update();
+  }
+  Debug::assert(e.get_top_left_x() == 152 && e.get_top_left_y() == 112,
+      StringConcat() << "Unexcepted coordinates for 'snap_test #2': " << e.get_xy());
+  Debug::assert(movement->get_total_distance_covered() == 16,
+      StringConcat() << "Unexpected distance covered for 'snap_test #2': " << movement->get_total_distance_covered());
+
+
+}
+
 /*
  * Test for the path movement.
  */
@@ -173,6 +207,7 @@ int main(int argc, char **argv) {
   one_step_test(*e);
   multi_step_test(*e);
   direction_test(*e);
+  snap_test(*e);
 
   return 0;
 }

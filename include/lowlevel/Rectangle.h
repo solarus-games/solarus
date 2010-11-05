@@ -38,7 +38,7 @@ class Rectangle {
 
     SDL_Rect rect;		/**< the SDL_Rect encapsulated */
 
-    SDL_Rect * get_internal_rect();
+    SDL_Rect* get_internal_rect();
 
   public:
 
@@ -72,6 +72,9 @@ class Rectangle {
     bool contains(const Rectangle &other) const;
     bool overlaps(const Rectangle &other) const;
     Rectangle get_center();
+
+    bool equals(const Rectangle &other) const;
+    bool equals_xy(const Rectangle &other) const;
 };
 
 std::ostream & operator <<(std::ostream &stream, const Rectangle &rectangle);
@@ -234,6 +237,28 @@ inline void Rectangle::add_xy(int dx, int dy) {
  */
 inline void Rectangle::add_xy(const Rectangle &dxy) {
   add_xy(dxy.get_x(), dxy.get_y());
+}
+
+/**
+ * @brief Compares this rectangle with another one.
+ * @param other another rectangle
+ * @return true if both rectangles have the same coordinates and size
+ */
+inline bool Rectangle::equals(const Rectangle &other) const {
+
+  return equals_xy(other)
+      && other.get_width() == get_width()
+      && other.get_height() == get_height();
+}
+
+/**
+ * @brief Compares the x and y values of this rectangle with another one.
+ * @param other another rectangle
+ * @return true if both rectangles have the same x and y values (the size are ignored)
+ */
+inline bool Rectangle::equals_xy(const Rectangle &other) const {
+
+  return other.get_x() == get_x() && other.get_y() == get_y();
 }
 
 #endif

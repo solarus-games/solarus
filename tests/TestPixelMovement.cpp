@@ -29,7 +29,7 @@ static void basic_test() {
     m.update();
     System::update();
   }
-  
+
   Debug::assert(m.get_x() == 3 && m.get_y() == -1,
       StringConcat() << "Unexcepted coordinates for 'basic_test': " << m.get_xy());
 }
@@ -44,7 +44,7 @@ static void loop_test() {
     m.update();
     System::update();
   }
-  
+
   Debug::assert(m.get_x() == 3 && m.get_y() == -6,
       StringConcat() << "Unexcepted coordinates for 'loop_test': " << m.get_xy());
 }
@@ -70,6 +70,31 @@ static void empty_test() {
   Debug::assert(m.is_finished());
 }
 
+static void restart_test() {
+
+  PixelMovement m("2 1", 50, false, false);
+
+  while (!m.is_finished()) {
+
+    m.update();
+    System::update();
+  }
+
+  Debug::assert(m.get_x() == 2 && m.get_y() == 1,
+      StringConcat() << "Unexcepted coordinates for 'restart_test #1': " << m.get_xy());
+
+  m.set_trajectory("0 2");
+
+  while (!m.is_finished()) {
+
+    m.update();
+    System::update();
+  }
+
+  Debug::assert(m.get_x() == 2 && m.get_y() == 3,
+      StringConcat() << "Unexcepted coordinates for 'restart_test #2': " << m.get_xy());
+}
+
 /*
  * Test for the pixel movement.
  */
@@ -81,6 +106,7 @@ int main(int argc, char **argv) {
   loop_test();
   syntax_test();
   empty_test();
+  restart_test();
 
   return 0;
 }

@@ -113,7 +113,6 @@ void PathMovement::set_suspended(bool suspended) {
   }
 }
 
-#include <iostream>
 /**
  * @brief Returns whether the movement is finished.
  * @return true if the end of the path was reached or the entity 
@@ -271,7 +270,7 @@ int PathMovement::get_current_direction() {
  * @return the total distance in pixels (diagonal moves count for the same distance as non-diagonal moves)
  */
 int PathMovement::get_total_distance_covered() {
-
+  return total_distance_covered;
 }
 
 /**

@@ -4,10 +4,6 @@ include_directories(
   ${SOLARUS_SOURCE_DIR}/include
 )
 
-if (DEFINED DATAPATH)
-  add_definitions(-DDATAPATH=\"${DATAPATH}\")
-endif (DEFINED DATAPATH)
-
 # each .cpp file of the 'tests' directory is a test with a main() function
 add_definitions(-DSOLARUS_NOMAIN)
 file(
@@ -19,7 +15,7 @@ file(
 foreach(test_main_file ${tests_main_files})
 
   get_filename_component(test_bin_file ${test_main_file} NAME_WE)
-  set(test_bin_file Test${test_bin_file}.bin)
+  set(test_bin_file ${test_bin_file}.bin)
   add_executable(${test_bin_file} ${test_main_file})
   set(tests_bin_files ${tests_bin_files} ${test_bin_file})
 
@@ -38,7 +34,7 @@ foreach(test_main_file ${tests_main_files})
     ${SNDFILE_LIBRARY}
   )
 
-  add_test(${test_main_file} ${EXECUTABLE_OUTPUT_PATH}/${test_bin_file} -no-audio -no-video)
+  add_test(${test_main_file} ${EXECUTABLE_OUTPUT_PATH}/${test_bin_file} -no-audio -no-video -datapath=${SOLARUS_SOURCE_DIR}/quests/debug_quest)
 
 endforeach(test_main_file ${test_main_files})
 

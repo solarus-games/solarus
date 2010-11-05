@@ -47,7 +47,7 @@ Arrow::Arrow(Hero &hero):
 
   std::string path = " ";
   path[0] = '0' + (direction * 2);
-  Movement *movement = new PathMovement(path, 24, true, false, false);
+  Movement *movement = new PathMovement(path, 192, true, false, false);
   set_movement(movement);
 
   disappear_date = System::now() + 1500;

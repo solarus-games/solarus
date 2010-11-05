@@ -31,7 +31,7 @@ static void basic_test() {
   }
 
   Debug::assert(m.get_x() == 3 && m.get_y() == -1,
-      StringConcat() << "Unexcepted coordinates for 'basic_test': " << m.get_xy());
+      StringConcat() << "Unexpected coordinates for 'basic_test': " << m.get_xy());
 }
 
 static void loop_test() {
@@ -46,7 +46,7 @@ static void loop_test() {
   }
 
   Debug::assert(m.get_x() == 3 && m.get_y() == -6,
-      StringConcat() << "Unexcepted coordinates for 'loop_test': " << m.get_xy());
+      StringConcat() << "Unexpected coordinates for 'loop_test': " << m.get_xy());
 }
 
 static void syntax_test() {
@@ -81,7 +81,7 @@ static void restart_test() {
   }
 
   Debug::assert(m.get_x() == 2 && m.get_y() == 1,
-      StringConcat() << "Unexcepted coordinates for 'restart_test #1': " << m.get_xy());
+      StringConcat() << "Unexpected coordinates for 'restart_test #1': " << m.get_xy());
 
   m.set_trajectory("0 2");
 
@@ -92,7 +92,7 @@ static void restart_test() {
   }
 
   Debug::assert(m.get_x() == 2 && m.get_y() == 3,
-      StringConcat() << "Unexcepted coordinates for 'restart_test #2': " << m.get_xy());
+      StringConcat() << "Unexpected coordinates for 'restart_test #2': " << m.get_xy());
 }
 
 /*

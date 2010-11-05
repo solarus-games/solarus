@@ -21,48 +21,125 @@
 #include "Map.h"
 #include "entities/MapEntities.h"
 #include "entities/InteractiveEntity.h"
-
 #include "lowlevel/System.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 
+static void syntax_test(MapEntity &e) {
+
+  Game &game = e.get_game();
+
+  bool no_error = false;
+  try {
+
+    PathMovement *movement = new PathMovement("abc", 100, false, false, false); // incorrect path
+    e.set_movement(movement);
+    while (!movement->is_finished()) {
+      game.update();
+      System::update();
+    }
+
+    no_error = true;
+  }
+  catch (std::logic_error &e) {
+    // expected behavior
+  }
+
+  e.clear_movement();
+  Debug::assert(!no_error, "'syntax_test' failed to detect a syntax error");
+}
+
 static void one_step_test(MapEntity &e) {
 
+  Game &game = e.get_game();
   Rectangle old_xy = e.get_xy();
 
-  PathMovement *movement = new PathMovement("0", 40, false, false, false); // 8 pixels to the right
+  PathMovement *movement = new PathMovement("0", 100, false, false, false); // 8 pixels to the right
   e.set_movement(movement);
 
   while (!movement->is_finished()) {
-    e.get_game().update();
+    game.update();
     System::update();
   }
 
   Debug::assert(e.get_x() - old_xy.get_x() == 8 && e.get_y() - old_xy.get_y() == 0,
       StringConcat() << "Unexcepted coordinates for 'one_step_test #1': " << e.get_xy());
   Debug::assert(movement->get_total_distance_covered() == 8,
-      StringConcat() << "Unexcepted distance covered for 'one_step_test #1': " << movement->get_total_distance_covered());
+      StringConcat() << "Unexpected distance covered for 'one_step_test #1': " << movement->get_total_distance_covered());
 
   movement->set_path("4");
   while (!movement->is_finished()) {
-    e.get_game().update();
+    game.update();
     System::update();
   }
   Debug::assert(e.get_x() == old_xy.get_x() && e.get_y() == old_xy.get_y(),
-      StringConcat() << "Unexcepted coordinates for 'one_step_test #2': " << e.get_xy());
+      StringConcat() << "Unexpected coordinates for 'one_step_test #2': " << e.get_xy());
   Debug::assert(movement->get_total_distance_covered() == 16,
-      StringConcat() << "Unexcepted distance covered for 'one_step_test #2': " << movement->get_total_distance_covered());
+      StringConcat() << "Unexpected distance covered for 'one_step_test #2': " << movement->get_total_distance_covered());
 
   movement->set_path("3");
   while (!movement->is_finished()) {
-    e.get_game().update();
+    game.update();
     System::update();
   }
   Debug::assert(e.get_x() - old_xy.get_x() == -8 && e.get_y() - old_xy.get_y() == -8,
-      StringConcat() << "Unexcepted coordinates for 'one_step_test #3': " << e.get_xy());
+      StringConcat() << "Unexpected coordinates for 'one_step_test #3': " << e.get_xy());
   Debug::assert(movement->get_total_distance_covered() == 24,
-      StringConcat() << "Unexcepted distance covered for 'one_step_test #3': " << movement->get_total_distance_covered());
+      StringConcat() << "Unexpected distance covered for 'one_step_test #3': " << movement->get_total_distance_covered());
 
+  movement->set_path("7");
+  while (!movement->is_finished()) {
+    game.update();
+    System::update();
+  }
+  Debug::assert(e.get_x() == old_xy.get_x() && e.get_y() == old_xy.get_y(),
+      StringConcat() << "Unexpected coordinates for 'one_step_test #4': " << e.get_xy());
+  Debug::assert(movement->get_total_distance_covered() == 32,
+      StringConcat() << "Unexpected distance covered for 'one_step_test #4': " << movement->get_total_distance_covered());
+
+  e.clear_movement();
+}
+
+static void direction_test(MapEntity &e) {
+
+  Game &game = e.get_game();
+  Rectangle old_xy = e.get_xy();
+
+  PathMovement *movement = new PathMovement("5", 100, false, false, false); // 8 pixels to the right
+  e.set_movement(movement);
+
+  Debug::assert(movement->get_current_direction() == 5,
+      StringConcat() << "Unexcepted current direction for 'direction_test #1': " << movement->get_current_direction());
+
+  while (!movement->is_finished()) {
+    game.update();
+    System::update();
+  }
+
+  // when the movement is finished, PathMovement::get_current_direction() must return the last direction
+  Debug::assert(movement->get_current_direction() == 5,
+      StringConcat() << "Unexcepted last direction for 'direction_test #1': " << movement->get_current_direction());
+}
+
+static void multi_step_test(MapEntity &e) {
+
+  Game &game = e.get_game();
+  Rectangle old_xy = e.get_xy();
+
+  PathMovement *movement = new PathMovement("66", 100, false, false, false); // 16 pixels downwards
+  e.set_movement(movement);
+
+  while (!movement->is_finished()) {
+    game.update();
+    System::update();
+  }
+
+  Debug::assert(e.get_x() - old_xy.get_x() == 0 && e.get_y() - old_xy.get_y() == 16,
+      StringConcat() << "Unexcepted coordinates for 'multi_step_test #1': " << e.get_xy());
+  Debug::assert(movement->get_total_distance_covered() == 16,
+      StringConcat() << "Unexpected distance covered for 'multi_step_test #1': " << movement->get_total_distance_covered());
+
+  e.clear_movement();
 }
 
 /*
@@ -80,7 +157,10 @@ int main(int argc, char **argv) {
       InteractiveEntity::CUSTOM, "npc/sahasrahla", 0, "_none");
   map.get_entities().add_entity(e);
 
+  syntax_test(*e);
   one_step_test(*e);
+  multi_step_test(*e);
+  direction_test(*e);
 
   return 0;
 }

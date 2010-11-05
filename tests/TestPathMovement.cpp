@@ -173,7 +173,7 @@ static void snap_test(MapEntity &e) {
       StringConcat() << "Unexpected distance covered for 'snap_test #1': " << movement->get_total_distance_covered());
   e.clear_movement();
 
-  // #2: a path movement that does requires the entity to snap to the grid
+  // #2: a path movement that requires the entity to snap to the grid
   movement = new PathMovement("21", 100, false, false, true);
   e.set_movement(movement);
   while (!movement->is_finished()) {

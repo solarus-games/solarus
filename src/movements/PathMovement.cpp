@@ -155,7 +155,9 @@ void PathMovement::restart() {
 void PathMovement::notify_step_done(int step_index, bool success) {
 
   if (success) {
-    total_distance_covered++;
+    if (!snapping) {
+      total_distance_covered++;
+    }
   }
   else {
     stopped_by_obstacle = true;
@@ -334,7 +336,7 @@ void PathMovement::set_snapping_trajectory(const Rectangle &src, const Rectangle
 
   std::list<Rectangle> trajectory;
   Rectangle xy = src;
-  while (xy.get_x() != dst.get_x() && xy.get_y() != dst.get_y()) {
+  while (!xy.equals_xy(dst)) {
 
     int dx = dst.get_x() - xy.get_x();
     int dy = dst.get_y() - xy.get_y();

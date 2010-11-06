@@ -85,7 +85,9 @@ void PathFindingMovement::recompute_movement() {
   }
   // compute a new path every random delay to avoid
   // having all path-finding entities of the map compute a path at the same time
-  next_recomputation_date += System::now() + min_delay + Random::get_number(200);
+  next_recomputation_date = System::now() + min_delay + Random::get_number(200);
+
+  set_path(path);
 }
 
 /**

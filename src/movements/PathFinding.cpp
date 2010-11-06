@@ -75,8 +75,9 @@ PathFinding::~PathFinding() {
  */
 std::string PathFinding::compute_path() {
 
-//  std::cout << "will compute a path from " << source_entity.get_top_left_x() << "," << source_entity.get_top_left_y()
-//    << " to " << target_entity.get_top_left_x() << "," << target_entity.get_top_left_y() << std::endl;
+  //std::cout << "will compute a path from " << source_entity.get_top_left_x() << ","
+  //  << source_entity.get_top_left_y() << " to " << target_entity.get_top_left_x() << ","
+  //  << target_entity.get_top_left_y() << std::endl;
 
   Rectangle source = source_entity.get_bounding_box();
   Rectangle target = target_entity.get_bounding_box();
@@ -90,9 +91,9 @@ std::string PathFinding::compute_path() {
   Debug::assert(target.get_x() % 8 == 0 && target.get_y() % 8 == 0,
       "Could not snap the target to the map grid");
 
-  int total_mdistance = get_manhattan_distance(source, target) * 10;
-  if (total_mdistance > 250 || target_entity.get_layer() != source_entity.get_layer()) {
-//    std::cout << "too far, not computing a path\n";
+  int total_mdistance = get_manhattan_distance(source, target);
+  if (total_mdistance > 200 || target_entity.get_layer() != source_entity.get_layer()) {
+    //std::cout << "too far, not computing a path\n";
     return ""; // too far to compute a path
   }
 
@@ -122,48 +123,52 @@ std::string PathFinding::compute_path() {
     open_list.erase(index);
     current_node = &closed_list[index];
 
-    // std::cout << System::now() << " picking the lowest cost node in the open list (" << (open_list_indices.size() + 1) << " elements): "
-    //  << current_node->location.x << "," << current_node->location.y << ", cost = " << current_node->previous_cost << " + " << current_node->heuristic << "\n";
+    //std::cout << System::now() << " picking the lowest cost node in the open list ("
+    //  << (open_list_indices.size() + 1) << " elements): "
+    //  << current_node->location << ", index = " << current_node->index
+    //  << ", cost = " << current_node->previous_cost << " + " << current_node->heuristic << "\n";
 
     if (index == target_index) {
-      // std::cout << "target node was added to the closed list\n";
+      //std::cout << "target node was added to the closed list\n";
       finished = true;
       path = rebuild_path(current_node);
-      // std::cout << "rebuild done\n";
+      //std::cout << "rebuild done\n";
     }
     else {
       // look at the accessible nodes from it
-      // std::cout << System::now() << " looking for accessible states\n";
+      //std::cout << System::now() << " looking for accessible states\n";
       for (int i = 0; i < 8; i++) {
 
 	Node new_node;
-	int immediate_cost = (i % 2 == 0) ? 10 : 14;
+	int immediate_cost = (i % 2 == 0) ? 8 : 11;
 	new_node.previous_cost = current_node->previous_cost + immediate_cost;
 	new_node.location = current_node->location;
-	new_node.location.add_xy(neighbours_locations[i].get_x(), neighbours_locations[i].get_y());
+	new_node.location.add_xy(neighbours_locations[i]);
 	new_node.index = get_square_index(new_node.location);
-	// std::cout << "  node in direction " << i << ": index = " << new_node.index << std::endl;
+	//std::cout << "  node in direction " << i << ": index = " << new_node.index << std::endl;
 
 	bool in_closed_list = (closed_list.find(new_node.index) != closed_list.end());
-	if (!in_closed_list && get_manhattan_distance(new_node.location, target) < 25 && is_node_transition_valid(*current_node, i)) {
-	  // std::cout << "  node in direction " << i << " is not in the closed list\n";
+	if (!in_closed_list && get_manhattan_distance(new_node.location, target) < 200
+	    && is_node_transition_valid(*current_node, i)) {
+	  //std::cout << "  node in direction " << i << " is not in the closed list\n";
 	  // not in the closed list: look in the open list
 	  
 	  bool in_open_list = open_list.find(new_node.index) != open_list.end();
 
 	  if (!in_open_list) {
 	    // not in the open list: add it
-	    new_node.heuristic = get_manhattan_distance(new_node.location, target) * 10;
+	    new_node.heuristic = get_manhattan_distance(new_node.location, target);
 	    new_node.total_cost = new_node.previous_cost + new_node.heuristic;
 	    new_node.parent_index = index;
 	    new_node.direction = '0' + i;
             open_list[new_node.index] = new_node; 
 	    add_index_sorted(&open_list[new_node.index]);
-	    // std::cout << "  node in direction " << i << " is not in the open list, adding it with cost " << new_node.previous_cost << " (" 
-	    //  << current_node->previous_cost << " + " << immediate_cost << ") + " << new_node.heuristic << " and parent " << new_node.parent_index << "\n";
+	    //std::cout << "  node in direction " << i << " is not in the open list, adding it with cost "
+	    //  << new_node.previous_cost << " (" << current_node->previous_cost << " + "
+	    //  << immediate_cost << ") + " << new_node.heuristic << " and parent " << new_node.parent_index << "\n";
 	  }
 	  else {
-	    // std::cout << "  node in direction " << i << " is already in the open list\n";
+	    //std::cout << "  node in direction " << i << " is already in the open list\n";
 	    Node *existing_node = &open_list[new_node.index];
 	    // already in the open list: see if the current path is better
 	    if (new_node.previous_cost < existing_node->previous_cost) {
@@ -174,6 +179,12 @@ std::string PathFinding::compute_path() {
 	    }
 	  }
 	}
+	else {
+	  //std::cout << "skipping node in direction " << i << ": already in closed list = "
+	  //  << in_closed_list << ", too far from target = "
+	  //  << (get_manhattan_distance(new_node.location, target) >= 200) << ", invalid transition = "
+	  //  << (!is_node_transition_valid(*current_node, i)) << std::endl;
+	}
       }
       if (open_list_indices.empty()) {
 	finished = true;
@@ -181,7 +192,7 @@ std::string PathFinding::compute_path() {
     }
   }
 
-//  std::cout << "path found: " << path << ", open nodes: " << open_list.size() << ", closed nodes: " << closed_list.size() << std::endl;
+  //std::cout << "path found: " << path << ", open nodes: " << open_list.size() << ", closed nodes: " << closed_list.size() << std::endl;
   return path;
 }
 
@@ -199,7 +210,7 @@ int PathFinding::get_square_index(const Rectangle &location) {
 }
 
 /**
- * @brief Returns the Manhattan distance of two points, measured in number of 8*8 squares.
+ * @brief Returns the Manhattan distance of two points, measured in number of pixels.
  * @param point1 a first point
  * @param point2 a second point
  * @return the Manhattan distance between these points
@@ -207,7 +218,7 @@ int PathFinding::get_square_index(const Rectangle &location) {
 int PathFinding::get_manhattan_distance(const Rectangle &point1, const Rectangle &point2) {
 
   int distance = abs(point2.get_x() - point1.get_x()) + abs(point2.get_y() - point1.get_y());
-  return distance / 8;
+  return distance;
 }
 
 
@@ -253,7 +264,7 @@ std::string PathFinding::rebuild_path(const Node *final_node) {
   while (current_node->direction != ' ') {
     path = current_node->direction + path;
     current_node = &closed_list[current_node->parent_index];
-    // std::cout << "current_node: " << current_node->index << ", path = " << path << std::endl;
+    //std::cout << "current_node: " << current_node->index << ", path = " << path << std::endl;
   }
   return path;
 }
@@ -267,8 +278,7 @@ std::string PathFinding::rebuild_path(const Node *final_node) {
 bool PathFinding::is_node_transition_valid(const Node &initial_node, int direction) {
 
   Rectangle collision_box = transition_collision_boxes[direction];
-  collision_box.set_x(collision_box.get_x() + initial_node.location.get_x());
-  collision_box.set_y(collision_box.get_y() + initial_node.location.get_y());
+  collision_box.add_xy(initial_node.location);
 
   return !map.test_collision_with_obstacles(source_entity.get_layer(), collision_box, source_entity);
 }

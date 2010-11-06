@@ -23,7 +23,7 @@
 #include <map>
 
 /**
- * @brief Implementation of the A* algorithm to computes a path.
+ * @brief Implementation of the A* algorithm to compute a path.
  *
  * This class implements the A* algorithm to compute the path.
  * The entity to move is supposed to have a size of 16*16.

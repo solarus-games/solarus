@@ -240,7 +240,7 @@ uint32_t PathMovement::speed_to_delay(int speed, int direction) {
 
   uint32_t delay = 1000 / speed; // speed in pixels per second, delay in milliseconds
   if (direction % 2 != 0) {
-    delay = (uint32_t) (delay / Geometry::SQRT_2); // diagonal move
+    delay = (uint32_t) (delay * Geometry::SQRT_2); // diagonal move
   }
   return delay;
 }
@@ -379,3 +379,4 @@ const std::string PathMovement::create_random_path() {
 
   return path;
 }
+

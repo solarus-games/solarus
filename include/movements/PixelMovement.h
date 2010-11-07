@@ -24,6 +24,12 @@
 
 /**
  * @brief Movement of an entity that follows a predetermined sequence of pixel-precise moves.
+ *
+ * Properties:
+ * - trajectory
+ * - delay
+ * - loop
+ * - ignore_obstacles
  */
 class PixelMovement: public Movement {
 
@@ -66,6 +72,8 @@ class PixelMovement: public Movement {
     void set_delay(uint32_t delay);
     bool get_loop();
     void set_loop(bool loop);
+    bool get_ignore_obstacles();
+    void set_ignore_obstacles(bool ignore_obstacles);
 
     // state
     bool is_started();
@@ -76,6 +84,9 @@ class PixelMovement: public Movement {
     virtual void update();
     virtual void set_suspended(bool suspended);
 
+    // properties
+    virtual const std::string get_property(const std::string &key);
+    virtual void set_property(const std::string &key, const std::string &value);
 };
 
 #endif

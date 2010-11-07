@@ -48,7 +48,22 @@ PixelMovement::~PixelMovement() {
  * @return a string describing the succession of translations that compose this movement
  */
 const std::string& PixelMovement::get_trajectory() {
-  // TODO make sure trajectory_string was actually computed
+
+  // compute the trajectory string on demand
+  if (trajectory.size() > 0 && trajectory_string.size() == 0) {
+
+    // the trajectory does not exist as string yet
+
+    std::list<Rectangle>::iterator it;
+    std::ostringstream oss;
+    for (it = trajectory.begin(); it != trajectory.end(); it++) {
+
+      const Rectangle &step = *it;
+      oss << step.get_x() << " " << step.get_y() << "  ";
+    }
+    trajectory_string = oss.str();
+  }
+
   return trajectory_string;
 }
 
@@ -263,5 +278,75 @@ bool PixelMovement::is_started() {
  */
 bool PixelMovement::is_finished() {
   return finished;
+}
+
+/**
+ * @brief Returns the value of a property of this movement.
+ *
+ * Accepted keys:
+ * - trajectory
+ * - delay
+ * - loop
+ * - ignore_obstacles
+ *
+ * @param key key of the property to get
+ * @return the corresponding value as a string
+ */
+const std::string PixelMovement::get_property(const std::string &key) {
+
+  std::ostringstream oss;
+
+  if (key == "trajectory") {
+    oss << get_trajectory();
+  }
+  else if (key == "delay") {
+    oss << get_delay();
+  }
+  else if (key == "loop") {
+    oss << get_loop();
+  }
+  else if (key == "ignore_obstacles") {
+    oss << are_obstacles_ignored();
+  }
+
+  return oss.str();
+}
+
+/**
+ * @brief Sets the value of a property of this movement.
+ *
+ * Subclasses whose movement type is available to the script API should redefine this function
+ * to allow scripts to interact with the movement.
+ *
+ * @param key key of the property to set (the accepted keys depend on the movement type)
+ * @param the value to set
+ */
+void PixelMovement::set_property(const std::string &key, const std::string &value) {
+
+  std::istringstream iss(value);
+
+  if (key == "trajectory") {
+    std::string trajectory_string;
+    iss >> trajectory_string;
+    set_trajectory(trajectory_string);
+  }
+  else if (key == "delay") {
+    uint32_t delay;
+    iss >> delay;
+    set_delay(delay);
+  }
+  else if (key == "loop") {
+    bool loop;
+    iss >> loop;
+    set_loop(loop);
+  }
+  else if (key == "ignore_obstacles") {
+    bool ignore_obstacles;
+    iss >> ignore_obstacles;
+    set_default_ignore_obstacles(ignore_obstacles);
+  }
+  else {
+    Debug::die(StringConcat() << "Unknown property of PixelMovement: '" << key << "'");
+  }
 }
 

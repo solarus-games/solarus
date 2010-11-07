@@ -95,6 +95,25 @@ static void restart_test() {
       StringConcat() << "Unexpected coordinates for 'restart_test #2': " << m.get_xy());
 }
 
+static void list_test() {
+
+  std::list<Rectangle> trajectory;
+  trajectory.push_back(Rectangle(3, 2));
+  trajectory.push_back(Rectangle(-4, -5));
+
+  PixelMovement m("", 50, false, false);
+  m.set_trajectory(trajectory);
+
+  while (!m.is_finished()) {
+
+    m.update();
+    System::update();
+  }
+
+  Debug::assert(m.get_x() == -1 && m.get_y() == -3,
+      StringConcat() << "Unexpected coordinates for 'list_test': " << m.get_xy());
+}
+
 /*
  * Test for the pixel movement.
  */
@@ -107,6 +126,7 @@ int main(int argc, char **argv) {
   syntax_test();
   empty_test();
   restart_test();
+  list_test();
 
   return 0;
 }

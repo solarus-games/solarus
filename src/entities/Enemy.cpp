@@ -842,7 +842,7 @@ void Enemy::hurt(MapEntity &source) {
   // push the enemy back
   if (pushed_back_when_hurt) {
     double angle = source.get_vector_angle(*this);
-    set_movement(new TemporalMovement(12, angle, 200));
+    set_movement(new TemporalMovement(120, angle, 200));
   }
   else {
     stop_hurt_date = now + 300;

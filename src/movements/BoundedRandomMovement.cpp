@@ -26,7 +26,7 @@
 BoundedRandomMovement::BoundedRandomMovement():
   RectilinearMovement(true) {
 
-  set_speed(3);
+  set_speed(32);
   set_next_direction();
 }
 

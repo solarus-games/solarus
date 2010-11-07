@@ -40,7 +40,7 @@ function event_switch_enabled(switch_name)
     if switches_puzzle_nb_enabled == 6 then
 
       if switches_puzzle_correct then
-	sol.map.camera_move(240, 328, 15)
+	sol.map.camera_move(240, 328, 150)
       else
 	sol.main.play_sound("wrong")
 	switches_puzzle_nb_enabled = 0

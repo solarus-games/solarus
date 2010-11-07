@@ -14,9 +14,9 @@ function event_switch_enabled(switch_name)
   
   current_switch_name = switch_name
   if switch_name == "barrier_switch" then
-    sol.map.camera_move(616, 672, 15)
+    sol.map.camera_move(616, 672, 150)
   elseif switch_name == "door_switch" then
-    sol.map.camera_move(376, 384, 15)
+    sol.map.camera_move(376, 384, 150)
   elseif switch_name == "final_barrier_switch" then
     sol.map.tile_set_group_enabled("final_barrier", false)
     sol.main.play_sound("secret")

@@ -56,10 +56,10 @@ function event_switch_enabled(switch_name)
 
   current_switch = switch_name
   if switch_name == "barrier_switch" then
-    sol.map.camera_move(120, 536, 15)
+    sol.map.camera_move(120, 536, 150)
   elseif switch_name == "pegasus_run_switch" then
     sol.map.switch_set_enabled("pegasus_run_switch_2", true)
-    sol.map.camera_move(904, 88, 30)
+    sol.map.camera_move(904, 88, 300)
   elseif switch_name == "pegasus_run_switch_2" then
     sol.main.play_sound("door_open")
     sol.map.tile_set_enabled("pegasus_run_barrier", false)
@@ -99,10 +99,10 @@ function check_eye_statues()
 
     if not sol.game.savegame_get_boolean(90) then
       sol.main.play_sound("switch")
-      sol.map.camera_move(456, 232, 15)
+      sol.map.camera_move(456, 232, 150)
     elseif not sol.game.savegame_get_boolean(91) then
       sol.main.play_sound("switch")
-      sol.map.camera_move(520, 320, 15)
+      sol.map.camera_move(520, 320, 150)
     end
   end
 end

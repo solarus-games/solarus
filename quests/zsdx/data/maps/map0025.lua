@@ -34,7 +34,7 @@ function event_enemy_dead(enemy_name)
   end
 
   if sol.map.enemy_is_group_dead("boss_key_battle") and sol.map.chest_is_hidden("boss_key_chest") then
-    sol.map.camera_move(104, 72, 15)
+    sol.map.camera_move(104, 72, 150)
   end
 end
 

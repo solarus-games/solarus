@@ -218,7 +218,7 @@ void CarriedItem::throw_item(int direction) {
   // set the movement of the item sprite
   set_y(hero.get_y());
   RectilinearMovement *movement = new RectilinearMovement();
-  movement->set_speed(20);
+  movement->set_speed(200);
   movement->set_angle(Geometry::degrees_to_radians(direction * 90));
   clear_movement();
   set_movement(movement);

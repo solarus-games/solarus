@@ -279,7 +279,7 @@ int MapScript::l_hud_set_pause_enabled(lua_State *l) {
  *
  * - Argument 1 (integer): x coordinate of the target point
  * - Argument 2 (integer): y coordinate of the target point
- * - Argument 3 (integer): speed of the camera movement (10 is normal)
+ * - Argument 3 (integer): speed of the camera movement in pixels per second (150 is a normal speed)
  */
 int MapScript::l_camera_move(lua_State *l) {
 

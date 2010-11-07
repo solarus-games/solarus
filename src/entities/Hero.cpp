@@ -51,7 +51,7 @@
 #include "KeysEffect.h"
 #include "Sprite.h"
 
-const int Hero::normal_walking_speed = 9;
+const int Hero::normal_walking_speed = 88; // pixels per second
 
 /**
  * @brief Creates a hero.

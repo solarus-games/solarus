@@ -58,7 +58,7 @@ void Minillosaur::initialize() {
   set_origin(12, 20);
 
   // initial movement
-  set_movement(new TemporalMovement(12, get_xy(), get_hero().get_xy(), 1500, false));
+  set_movement(new TemporalMovement(120, get_xy(), get_hero().get_xy(), 1500, false));
 
   // reactions to attacks
   set_no_attack_consequences();

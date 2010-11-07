@@ -89,7 +89,7 @@ void Bubble::go(int movement_direction8) {
   this->movement_direction8 = movement_direction8;
 
   RectilinearMovement *movement = (RectilinearMovement*) get_movement();
-  movement->set_speed(8);
+  movement->set_speed(80);
   movement->set_angle(Geometry::degrees_to_radians(movement_direction8 * 45));
 }
 

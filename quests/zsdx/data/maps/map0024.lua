@@ -39,7 +39,7 @@ end
 
 function event_switch_enabled(switch_name)
   if switch_name == "se_switch" or switch_name == "ne_switch" then
-    sol.map.camera_move(960, 496, 15)
+    sol.map.camera_move(960, 496, 150)
   end
 end
 

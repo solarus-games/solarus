@@ -29,12 +29,11 @@ class RectilinearMovement: public Movement {
   private:
 
     // speed vector
-    // TODO use a real unit for the speed (e.g. pixels per second) instead of an arbitrary unit
-    double x_speed;				/**< X speed of the object to move, between -100 and 100.
+    double x_speed;				/**< X speed of the object to move in pixels per second.
 						 * 0: stopped
 						 * positive value: moving to the right
 						 * negative value: moving to the left */
-    double y_speed;				/**< Y speed of the object to move, between -100 and 100.
+    double y_speed;				/**< Y speed of the object to move in pixels per second.
 						 * 0: stopped
 						 * positive value: moving downwards
 						 * negative value: moving upwards */

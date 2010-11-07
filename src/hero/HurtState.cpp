@@ -61,7 +61,7 @@ void Hero::HurtState::start(State *previous_state) {
   get_sprites().blink();
 
   double angle = source.get_vector_angle(hero);
-  hero.set_movement(new TemporalMovement(12, angle, 200));
+  hero.set_movement(new TemporalMovement(120, angle, 200));
 }
 
 /**

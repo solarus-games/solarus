@@ -103,8 +103,8 @@ class Movement {
     void restore_default_ignore_obstacles();
 
     // properties
-    const std::string& get_property(const std::string &key);
-    void set_property(const std::string &key, const std::string &value);
+    virtual const std::string get_property(const std::string &key);
+    virtual void set_property(const std::string &key, const std::string &value);
 };
 
 #endif

@@ -103,6 +103,19 @@ sets whether the animation should continue even when the sprite is suspended
 - <tt>sol.main.sprite_fade(sprite_id, direction)</tt>:
 shows a fade effect on a sprite (0: fade-in, 1: fade-out)
 
+- <tt>sol.main.movement_create(movement_id, movement_type)</tt>:
+creates a movement that will be stored by this script
+
+- <tt>sol.main.movement_remove(movement_id)</tt>:
+destroys a movement previously created with sol.main.movement_create
+(when the script is destroyed, remaining movements are automatically destroyed)
+
+- <tt>sol.main.movement_get_property(movement_id, key)</tt>:
+returns a string property from a movement
+
+- <tt>sol.main.movement_set_property(movement_id, key, value</tt>:
+sets a property of a movement
+
 @subsection sol.game Module <tt>sol.game</tt>
 
 The <tt>sol.game</tt> module is available to scripts running into a game.

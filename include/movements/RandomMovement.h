@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_BOUNDED_RANDOM_MOVEMENT_H
-#define SOLARUS_BOUNDED_RANDOM_MOVEMENT_H
+#ifndef SOLARUS_RANDOM_MOVEMENT_H
+#define SOLARUS_RANDOM_MOVEMENT_H
 
 #include "Common.h"
 #include "movements/RectilinearMovement.h"
@@ -23,18 +23,18 @@
 
 /**
  * @brief A movement that makes successive steps of random directions
- * and stays inside a limited rectangle.
+ * and (possibly) stays inside a limited rectangle.
  *
  * Properties:
  * - speed
  * - max_distance
- *
- * TODO: rename to RandomMovement? and max_distance = 0 means no bounds
  */
-class BoundedRandomMovement: public RectilinearMovement {
+class RandomMovement: public RectilinearMovement {
 
   private:
 
+    int max_distance;					/**< if the object goes further than this distance in x or y, it will come back
+							 * (this is not a hard limit, there is no guarantee) */
     Rectangle bounds;					/**< a rectangle the object should not escape from */
     uint32_t next_direction_change_date;		/**< date of the next direction change */
 
@@ -42,12 +42,14 @@ class BoundedRandomMovement: public RectilinearMovement {
 
   public:
 
-    BoundedRandomMovement();
-    ~BoundedRandomMovement();
+    RandomMovement(int speed, int max_distance = 0);
+    ~RandomMovement();
 
     void set_entity(MapEntity *entity);
     void update();
     void set_suspended(bool suspended);
+
+    // TODO get_property, set_property
 };
 
 #endif

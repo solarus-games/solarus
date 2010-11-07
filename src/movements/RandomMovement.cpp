@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "movements/BoundedRandomMovement.h"
+#include "movements/RandomMovement.h"
 #include "entities/MapEntity.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Random.h"
@@ -22,18 +22,21 @@
 
 /**
  * @brief Constructor.
+ * @param speed speed of the movement in pixels per seconds
+ * @param max_distance if the object goes further than this distance, it will come back
  */
-BoundedRandomMovement::BoundedRandomMovement():
-  RectilinearMovement(true) {
+RandomMovement::RandomMovement(int speed, int max_distance):
+  RectilinearMovement(true),
+  max_distance(max_distance) {
 
-  set_speed(32);
+  set_speed(speed);
   set_next_direction();
 }
 
 /**
  * @brief Destructor.
  */
-BoundedRandomMovement::~BoundedRandomMovement() {
+RandomMovement::~RandomMovement() {
 
 }
 
@@ -41,30 +44,32 @@ BoundedRandomMovement::~BoundedRandomMovement() {
  * @brief Sets the entity to be controlled by this movement object.
  * @param entity the entity to control
  */
-void BoundedRandomMovement::set_entity(MapEntity *entity) {
+void RandomMovement::set_entity(MapEntity *entity) {
 
   Movement::set_entity(entity);
 
-  // restrict the movement in a 80*80 rectangle
+  // restrict the movement in a rectangle
   bounds.set_xy(entity->get_xy());
-  bounds.add_xy(-40, -40);
-  bounds.set_size(80, 80);
+  bounds.add_xy(-max_distance, -max_distance);
+  bounds.set_size(max_distance * 2, max_distance * 2);
 }
 
 /**
  * @brief Chooses a new direction for the movement.
  */
-void BoundedRandomMovement::set_next_direction() {
+void RandomMovement::set_next_direction() {
 
   double angle;
-  if (get_entity() == NULL || bounds.contains(get_x(), get_y())) {
+  if (get_entity() == NULL
+      || max_distance == 0 // means no limit
+      || bounds.contains(get_x(), get_y())) {
 
-    // we are inside the bounds: we pick a random direction
+    // we are inside the bounds (or there is no bound): pick a random direction
     angle = Geometry::degrees_to_radians(Random::get_number(8) * 45 + 22.5);
   }
   else {
 
-    // we are outside the bounds: we get back into the rectangle to avoid going too far
+    // we are outside the bounds: get back into the rectangle to avoid going too far
     angle = Geometry::get_angle(get_x(), get_y(), bounds.get_x() + bounds.get_width() / 2, bounds.get_y() + bounds.get_height() / 2);
   }
   set_angle(angle);
@@ -79,7 +84,7 @@ void BoundedRandomMovement::set_next_direction() {
  * This is a redefinition of Movement::update()
  * to change the fairy's direction sometimes.
  */
-void BoundedRandomMovement::update() {
+void RandomMovement::update() {
 
   RectilinearMovement::update();
 
@@ -96,7 +101,7 @@ void BoundedRandomMovement::update() {
  * @brief Suspends or resumes this movement.
  * @param suspended true to suspend the movement, false to resume it
  */
-void BoundedRandomMovement::set_suspended(bool suspended) {
+void RandomMovement::set_suspended(bool suspended) {
 
   RectilinearMovement::set_suspended(suspended);
 

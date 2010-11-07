@@ -184,17 +184,17 @@ class Movement;
 class RectilinearMovement;
 class SmoothMovement;
 class PlayerMovement;
-class FallingOnFloorMovement;
-class PixelMovement;
-class BoundedRandomMovement;
-class FollowMovement;
-class TargetMovement;
-class JumpMovement;
 class TemporalMovement;
+class PixelMovement;
+class FallingOnFloorMovement;
+class JumpMovement;
 class PathMovement;
 class RandomPathMovement;
 class PathFindingMovement;
 class PathFinding;
+class RandomMovement;
+class FollowMovement;
+class TargetMovement;
 class CircleMovement;
 
 // enemies

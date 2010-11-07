@@ -17,7 +17,7 @@ end
 function event_switch_enabled(switch_name)
 
   if switch_name == "sw_switch" or switch_name == "nw_switch" then
-    sol.map.camera_move(176, 392, 15)
+    sol.map.camera_move(176, 392, 150)
     current_room = "sw"
   elseif switch_name == "map_room_switch" then
     sol.main.play_sound("chest_appears")
@@ -75,7 +75,7 @@ end
 function event_enemy_dead(enemy_name)
 
   if sol.map.enemy_is_group_dead("compass_room_battle") and sol.map.chest_is_hidden("compass_chest") then
-    sol.map.camera_move(408, 456, 15)
+    sol.map.camera_move(408, 456, 150)
     current_room = "compass_room"
   end
 end

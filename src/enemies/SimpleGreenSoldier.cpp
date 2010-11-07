@@ -115,7 +115,7 @@ void SimpleGreenSoldier::walk(int direction) {
   TemporalMovement *movement = (TemporalMovement*) get_movement();
   int seconds = 2 + Random::get_number(3);
   double angle = Geometry::degrees_to_radians(direction * 90);
-  movement->start(4, angle, seconds * 1000);
+  movement->start(40, angle, seconds * 1000);
 }
 
 /**

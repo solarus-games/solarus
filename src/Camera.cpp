@@ -27,7 +27,7 @@
  * @param map the map
  */
 Camera::Camera(Map &map):
-  map(map), fixed_on_hero(true), restoring(false), speed(12), movement(NULL) {
+  map(map), fixed_on_hero(true), restoring(false), speed(120), movement(NULL) {
 
   position.set_xy(0, 0);
 }
@@ -107,7 +107,7 @@ bool Camera::is_fixed_on_hero() {
 
 /**
  * @brief Sets the speed of the camera movement.
- * @param speed speed of the movement
+ * @param speed speed of the movement in pixels per second
  */
 void Camera::set_speed(int speed) {
   this->speed = speed;

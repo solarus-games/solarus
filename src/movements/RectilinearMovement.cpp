@@ -71,7 +71,7 @@ double RectilinearMovement::get_speed() {
 
 /**
  * @brief Sets the x speed.
- * @param x_speed the x speed of the object, between -100 and 100
+ * @param x_speed the x speed of the object in pixels per second
  */
 void RectilinearMovement::set_x_speed(double x_speed) {
 
@@ -88,11 +88,11 @@ void RectilinearMovement::set_x_speed(double x_speed) {
   }
   else {
     if (x_speed > 0) {
-      set_x_delay((uint32_t) (100 / x_speed));
+      set_x_delay((uint32_t) (1000 / x_speed));
       set_x_move(1);
     }
     else {
-      set_x_delay((uint32_t) (100 / (-x_speed)));
+      set_x_delay((uint32_t) (1000 / (-x_speed)));
       set_x_move(-1);
     }
     set_next_move_date_x(now + x_delay);
@@ -101,7 +101,7 @@ void RectilinearMovement::set_x_speed(double x_speed) {
 
 /**
  * @brief Sets the y speed.
- * @param y_speed the y speed of the object, between -100 and 100
+ * @param y_speed the y speed of the object in pixels per second
  */
 void RectilinearMovement::set_y_speed(double y_speed) {
 
@@ -118,11 +118,11 @@ void RectilinearMovement::set_y_speed(double y_speed) {
   }
   else {
     if (y_speed > 0) {
-      set_y_delay((uint32_t) (100 / y_speed));
+      set_y_delay((uint32_t) (1000 / y_speed));
       set_y_move(1);
     }
     else {
-      set_y_delay((uint32_t) (100 / (-y_speed)));
+      set_y_delay((uint32_t) (1000 / (-y_speed)));
       set_y_move(-1);
     }
     set_next_move_date_y(now + y_delay);

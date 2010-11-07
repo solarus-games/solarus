@@ -66,7 +66,7 @@ Boomerang::Boomerang(Hero &hero, double boomerang_angle):
   initial_coords.set_xy(get_xy());
 
   RectilinearMovement *movement = new RectilinearMovement();
-  movement->set_speed(16);
+  movement->set_speed(160);
   movement->set_angle(boomerang_angle);
   set_movement(movement);
 

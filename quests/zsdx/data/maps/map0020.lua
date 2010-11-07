@@ -22,7 +22,7 @@ function event_map_started(destination_point_name)
 end
 
 function event_switch_enabled(switch_name)
-  sol.map.camera_move(136, 304, 10)
+  sol.map.camera_move(136, 304, 150)
 end
 
 function event_camera_reached_target()
@@ -151,10 +151,10 @@ end
 
 function event_enemy_dead(enemy_name)
   if sol.map.enemy_is_group_dead("battle_1") and sol.map.tile_is_enabled("battle_1_barrier") then
-    sol.map.camera_move(352, 288, 10)
+    sol.map.camera_move(352, 288, 150)
   end
   if sol.map.enemy_is_group_dead("battle_2") and sol.map.tile_is_enabled("battle_2_barrier") then
-    sol.map.camera_move(344, 488, 10)
+    sol.map.camera_move(344, 488, 150)
   end
 end
 

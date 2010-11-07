@@ -22,14 +22,20 @@
 #include "lowlevel/Rectangle.h"
 
 /**
- * @brief A movement that makes successive steps of random direction 
+ * @brief A movement that makes successive steps of random directions
  * and stays inside a limited rectangle.
+ *
+ * Properties:
+ * - speed
+ * - max_distance
+ *
+ * TODO: rename to RandomMovement? and max_distance = 0 means no bounds
  */
 class BoundedRandomMovement: public RectilinearMovement {
 
   private:
 
-    Rectangle bounds;					/**< a rectangle the fairy cannot escape from */
+    Rectangle bounds;					/**< a rectangle the object should not escape from */
     uint32_t next_direction_change_date;		/**< date of the next direction change */
 
     void set_next_direction();

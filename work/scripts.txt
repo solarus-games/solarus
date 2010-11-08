@@ -160,7 +160,6 @@ event_use()
 
 => fonctions manquantes dans d'autres modules :
 - sol.map.hero_set_state() ? ou plusieurs fonctions, une par état activable par les scripts : dropping_bomb, boomerang, shooting_arrow, jumping (direction8, speed, ignore_obstacles), running
-- sol.map.hero_get_animation_direction() (ou juste sol.map.hero_get_direction() si cohérent avec sol.map.hero_set_direction())
 
 
 Questions ouvertes :

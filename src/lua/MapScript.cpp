@@ -78,15 +78,15 @@ void MapScript::register_available_functions() {
     { "hero_freeze", l_hero_freeze },
     { "hero_unfreeze", l_hero_unfreeze },
     { "hero_set_map", l_hero_set_map },
+    { "hero_set_visible", l_hero_set_visible },
     { "hero_get_direction", l_hero_get_direction },
     { "hero_set_direction", l_hero_set_direction },
+    { "npc_get_position", l_npc_get_position },
+    { "npc_set_position", l_npc_set_position },
     { "hero_align_on_sensor", l_hero_align_on_sensor },
     { "hero_walk", l_hero_walk },
     { "hero_jump", l_hero_jump },
     { "hero_start_victory_sequence", l_hero_start_victory_sequence },
-    { "hero_set_visible", l_hero_set_visible },
-    { "npc_get_position", l_npc_get_position },
-    { "npc_set_position", l_npc_set_position },
     { "npc_walk", l_npc_walk },
     { "npc_random_walk", l_npc_random_walk },
     { "npc_jump", l_npc_jump },
@@ -384,6 +384,27 @@ int MapScript::l_hero_set_map(lua_State *l) {
 }
 
 /**
+ * @brief Hides or shows the hero.
+ *
+ * Hiding the hero does not disable its movements, so when using this function
+ * you will usually also need to freeze the hero.
+ * - Argument 1 (boolean): true to make the hero visible
+ *
+ * @param l the Lua context that is calling this function
+ */
+int MapScript::l_hero_set_visible(lua_State *l) {
+
+  MapScript *script;
+  called_by_script(l, 1, &script);
+
+  bool visible = lua_toboolean(l, 1) != 0;
+
+  script->hero.set_visible(visible);
+
+  return 0;
+}
+
+/**
  * @brief Returns the current direction of the hero's sprite.
  *
  * - Return value (integer): the direction between 0 and 3
@@ -499,27 +520,6 @@ int MapScript::l_hero_start_victory_sequence(lua_State *l) {
   called_by_script(l, 0, &script);
 
   script->hero.start_victory();
-
-  return 0;
-}
-
-/**
- * @brief Hides or shows the hero.
- *
- * Hiding the hero does not disable its movements, so when using this function
- * you will usually also need to freeze the hero.
- * - Argument 1 (boolean): true to make the hero visible
- *
- * @param l the Lua context that is calling this function
- */
-int MapScript::l_hero_set_visible(lua_State *l) {
-
-  MapScript *script;
-  called_by_script(l, 1, &script);
-
-  bool visible = lua_toboolean(l, 1) != 0;
-
-  script->hero.set_visible(visible);
 
   return 0;
 }

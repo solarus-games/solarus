@@ -47,6 +47,7 @@ class MapScript: public GameScript {
       l_camera_restore,
       l_treasure_give,
       l_hero_set_map,
+      l_hero_get_direction,
       l_hero_set_direction,
       l_hero_align_on_sensor,
       l_hero_walk,

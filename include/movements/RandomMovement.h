@@ -49,7 +49,11 @@ class RandomMovement: public RectilinearMovement {
     void update();
     void set_suspended(bool suspended);
 
-    // TODO get_property, set_property
+    void set_max_distance(int max_distance);
+
+    // properties
+    virtual const std::string get_property(const std::string &key);
+    virtual void set_property(const std::string &key, const std::string &value);
 };
 
 #endif

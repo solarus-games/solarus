@@ -308,6 +308,9 @@ const std::string PixelMovement::get_property(const std::string &key) {
   else if (key == "ignore_obstacles") {
     oss << are_obstacles_ignored();
   }
+  else {
+    Debug::die(StringConcat() << "Unknown property of PixelMovement: '" << key << "'");
+  }
 
   return oss.str();
 }
@@ -315,8 +318,11 @@ const std::string PixelMovement::get_property(const std::string &key) {
 /**
  * @brief Sets the value of a property of this movement.
  *
- * Subclasses whose movement type is available to the script API should redefine this function
- * to allow scripts to interact with the movement.
+ * Accepted keys:
+ * - trajectory
+ * - delay
+ * - loop
+ * - ignore_obstacles
  *
  * @param key key of the property to set (the accepted keys depend on the movement type)
  * @param the value to set

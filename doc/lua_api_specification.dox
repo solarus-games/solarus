@@ -244,6 +244,9 @@ restores the control to the hero, typically after a call to <tt>sol.map.hero_fre
 - <tt>sol.map.hero_set_map(map_id, destination_point, transition)</tt>:
 sents the hero on a map (possibly the same one)
 
+- <tt>sol.map.hero_set_visible(visible)</tt>:
+hides or unhides the hero
+
 - <tt>sol.map.hero_get_direction(direction)</tt>:
 returns the direction of the hero's sprites
 
@@ -261,9 +264,6 @@ makes the hero jump towards the specified direction (0 to 7)
 
 - <tt>sol.map.hero_start_victory_sequence()</tt>:
 starts the animation where the hero brandishes his sword for a victory
-
-- <tt>sol.map.hero_set_visible(visible)</tt>:
-hides or unhides the hero
 
 - <tt>sol.map.npc_set_position(npc, x, y)</tt>:
 sets the position of an NPC

@@ -43,6 +43,8 @@ class GameScript: public Script {
       l_equipment_get_life,
       l_equipment_add_life,
       l_equipment_remove_life,
+      l_equipment_get_max_life,
+      l_equipment_add_max_life,
       l_equipment_get_money,
       l_equipment_add_money,
       l_equipment_remove_money,

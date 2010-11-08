@@ -152,6 +152,12 @@ adds some life to the player
 - <tt>sol.game.equipment_remove_life(life)</tt>: 
 removes some life from the player
 
+- <tt>sol.game.equipment_get_max_life()</tt>:
+returns the maximum level of life of the player
+
+- <tt>sol.game.equipment_add_max_life(life)</tt>:
+increases the maximum level of life of the player
+
 - <tt>sol.game.equipment_get_money()</tt>:
 returns the amount of money of the player
 

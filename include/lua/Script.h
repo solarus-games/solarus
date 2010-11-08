@@ -42,8 +42,8 @@ class Script {
     lua_State* context;							/**< the execution context of the Lua script */
     std::list<Timer*> timers;						/**< the timers currently running for this script */
 
-    std::map<std::string, Sprite*> sprites;				/**< the sprites managed by this script */
-    std::list<Sprite*> created_sprites;					/**< the sprites managed by this script that were created by it */
+    std::map<int, Sprite*> sprites;					/**< the sprites managed by this script */
+    int next_sprite_handle;						/**< handle of the next sprite */
 
     std::map<std::string, Movement*> movements;				/**< the movements managed by this script */
     std::list<Movement*> created_movements;				/**< the movements managed by this script that were created by it */
@@ -66,8 +66,6 @@ class Script {
       l_timer_stop,
 
       // sprites
-      l_sprite_create,
-      l_sprite_remove,
       l_sprite_get_animation,
       l_sprite_set_animation,
       l_sprite_get_direction,
@@ -97,9 +95,8 @@ class Script {
     virtual bool is_new_timer_suspended(void);
 
     // sprites
-    void create_sprite(const std::string &sprite_id, const SpriteAnimationSetId &animation_set_id);
-    void add_existing_sprite(const std::string &sprite_id, Sprite &sprite);
-    Sprite& get_sprite(const std::string &sprite_id);
+    int create_sprite_handle(Sprite &sprite);
+    Sprite& get_sprite(int sprite_handle);
 
     // movements
     void create_movement(const std::string &movement_id, const std::string &movement_type);

@@ -55,14 +55,6 @@ Script::~Script() {
     }
   }
 
-  // delete the sprites created by this script
-  {
-    std::list<Sprite*>::iterator it;
-    for (it = created_sprites.begin(); it != created_sprites.end(); it++) {
-      delete *it;
-    }
-  }
-
   // delete the movements created by this script
   {
     std::list<Movement*>::iterator it;
@@ -77,6 +69,9 @@ Script::~Script() {
  * @param script_name name of a Lua script file (without extension)
  */
 void Script::load(const std::string &script_name) {
+
+  // initialize the sprite API
+  next_sprite_handle = 0;
 
   // create an execution context
   context = lua_open();
@@ -138,8 +133,6 @@ void Script::register_available_functions() {
     { "timer_start", l_timer_start },
     { "timer_stop", l_timer_stop },
 
-    { "sprite_create", l_sprite_create },
-    { "sprite_remove", l_sprite_remove },
     { "sprite_get_animation", l_sprite_get_animation },
     { "sprite_set_animation", l_sprite_set_animation },
     { "sprite_get_direction", l_sprite_get_direction },
@@ -475,41 +468,28 @@ bool Script::is_new_timer_suspended(void) {
 }
 
 /**
- * @brief Creates a new sprite that will be accessible from the script.
- * @param sprite_id a name that will identify the sprite from the script
- * @param animation_set_id animation set of the sprite to create
+ * @brief Makes a sprite accessible from the script.
+ * @param sprite the sprite to make accessible
+ * @return a handle that can be used by scripts to refer to this sprite
  */
-void Script::create_sprite(const std::string &sprite_id, const SpriteAnimationSetId &animation_set_id) {
+int Script::create_sprite_handle(Sprite &sprite) {
 
-  Sprite *sprite = new Sprite(animation_set_id);
-  add_existing_sprite(sprite_id, *sprite);
-  created_sprites.push_back(sprite);
-}
-
-/**
- * @brief Makes an existing sprite accessible from the script.
- * @param sprite_id a name that will identify the sprite from the script
- * @param sprite the existing sprite to associate to sprite_id
- */
-void Script::add_existing_sprite(const std::string &sprite_id, Sprite &sprite) {
-
-  Debug::assert(sprites.count(sprite_id) == 0,
-    StringConcat() << "This script already has a sprite with id '" << sprite_id << "'");
-
-  sprites[sprite_id] = &sprite;
+  int handle = next_sprite_handle++;
+  sprites[handle] = &sprite;
+  return handle;
 }
 
 /**
  * @brief Returns a sprite handled by this script.
- * @param sprite_id id of the sprite to get
+ * @param sprite_handle id of the sprite to get
  * @return the corresponding sprite
  */
-Sprite& Script::get_sprite(const std::string &sprite_id) {
+Sprite& Script::get_sprite(int sprite_handle) {
 
-  Debug::assert(sprites.count(sprite_id) > 0,
-    StringConcat() << "No sprite with id '" << sprite_id << "'");
+  Debug::assert(sprites.count(sprite_handle) > 0,
+    StringConcat() << "No sprite with handle '" << sprite_handle << "'");
 
-  return *sprites[sprite_id];
+  return *sprites[sprite_handle];
 }
 
 /**
@@ -634,58 +614,9 @@ int Script::l_timer_stop(lua_State *l) {
 }
 
 /**
- * @brief Creates a sprite that will be stored by the script.
- *
- * The sprite created will be accessible only from this script.
- * No other sprite will the same id should exist in this script.
- * You can destroy your sprite later with sol.main.sprite_remove().
- * If you don't, it will be destroyed automatically when the script is destroyed.
- * - Argument 1 (string): a name to identify the created sprite later
- * - Argument 2 (string): animation set to use
- *
- * @param l the Lua context that is calling this function
- */
-int Script::l_sprite_create(lua_State *l) {
-
-  Script *script;
-  called_by_script(l, 2, &script);
-  const std::string &sprite_id = luaL_checkstring(l, 1);
-  const std::string &animation_set_id = luaL_checkstring(l, 2);
-
-  script->create_sprite(sprite_id, animation_set_id);
-
-  return 0;
-}
-
-/**
- * @brief Destroys a sprite previously created inside this script with sol.main.sprite_create().
- *
- * Sprites handled by this script but created elsewhere (e.g. an NPC's sprite)
- * must never be destroyed here. Call this function only for sprites that were created
- * by calling sol.main.sprite_create().
- * - Argument 1 (string): id of the sprite to destroy
- *
- * @param l the Lua context that is calling this function
- */
-int Script::l_sprite_remove(lua_State *l) {
-
-  Script *script;
-  called_by_script(l, 1, &script);
-  const std::string &sprite_id = luaL_checkstring(l, 1);
-
-  Sprite *sprite = &script->get_sprite(sprite_id);
-
-  script->created_sprites.remove(sprite);
-  script->sprites.erase(sprite_id);
-  delete sprite;
-
-  return 0;
-}
-
-/**
  * @brief Returns the current animation of a sprite.
  * 
- * - Argument 1 (string): id of the sprite
+ * - Argument 1 (sprite): a sprite
  * - Return value (string): name of the current animation
  *
  * @param l the Lua context that is calling this function
@@ -694,9 +625,9 @@ int Script::l_sprite_get_animation(lua_State *l) {
 
   Script *script;
   called_by_script(l, 1, &script);
-  const std::string &sprite_id = luaL_checkstring(l, 1);
+  int sprite_handle = luaL_checkinteger(l, 1);
 
-  const Sprite &sprite = script->get_sprite(sprite_id);
+  const Sprite &sprite = script->get_sprite(sprite_handle);
   const std::string animation_name = sprite.get_current_animation();
   lua_pushstring(l, animation_name.c_str());
 
@@ -706,7 +637,7 @@ int Script::l_sprite_get_animation(lua_State *l) {
 /**
  * @brief Sets the current animation of a sprite.
  * 
- * - Argument 1 (string): id of the sprite
+ * - Argument 1 (sprite): a sprite
  * - Argument 2 (string): name of the animation to set
  *
  * @param l the Lua context that is calling this function
@@ -715,10 +646,10 @@ int Script::l_sprite_set_animation(lua_State *l) {
 
   Script *script;
   called_by_script(l, 2, &script);
-  const std::string &sprite_id = luaL_checkstring(l, 1);
+  int sprite_handle = luaL_checkinteger(l, 1);
   const std::string &animation_name = luaL_checkstring(l, 2);
 
-  Sprite &sprite = script->get_sprite(sprite_id);
+  Sprite &sprite = script->get_sprite(sprite_handle);
   sprite.set_current_animation(animation_name);
   sprite.restart_animation();
 
@@ -728,7 +659,7 @@ int Script::l_sprite_set_animation(lua_State *l) {
 /**
  * @brief Returns the current direction of a sprite.
  * 
- * - Argument 1 (string): id of the sprite
+ * - Argument 1 (sprite): a sprite
  * - Return value (integer): direction of the sprite
  *
  * @param l the Lua context that is calling this function
@@ -737,9 +668,9 @@ int Script::l_sprite_get_direction(lua_State *l) {
 
   Script *script;
   called_by_script(l, 1, &script);
-  const std::string &sprite_id = luaL_checkstring(l, 1);
+  int sprite_handle = luaL_checkinteger(l, 1);
 
-  const Sprite &sprite = script->get_sprite(sprite_id);
+  const Sprite &sprite = script->get_sprite(sprite_handle);
   lua_pushinteger(l, sprite.get_current_direction());
 
   return 1;
@@ -748,7 +679,7 @@ int Script::l_sprite_get_direction(lua_State *l) {
 /**
  * @brief Sets the current direction of a sprite.
  * 
- * - Argument 1 (string): id of the sprite
+ * - Argument 1 (sprite): a sprite
  * - Argument 2 (integer): direction to set
  *
  * @param l the Lua context that is calling this function
@@ -757,10 +688,10 @@ int Script::l_sprite_set_direction(lua_State *l) {
 
   Script *script;
   called_by_script(l, 2, &script);
-  const std::string &sprite_id = luaL_checkstring(l, 1);
+  int sprite_handle = luaL_checkinteger(l, 1);
   int direction = luaL_checkinteger(l, 2);
 
-  Sprite &sprite = script->get_sprite(sprite_id);
+  Sprite &sprite = script->get_sprite(sprite_handle);
   sprite.set_current_direction(direction);
 
   return 0;
@@ -769,7 +700,7 @@ int Script::l_sprite_set_direction(lua_State *l) {
 /**
  * @brief Returns the current frame of a sprite.
  * 
- * - Argument 1 (string): id of the sprite
+ * - Argument 1 (sprite): a sprite
  * - Return value (integer): index of the current frame of the animation
  *
  * @param l the Lua context that is calling this function
@@ -778,9 +709,9 @@ int Script::l_sprite_get_frame(lua_State *l) {
 
   Script *script;
   called_by_script(l, 1, &script);
-  const std::string &sprite_id = luaL_checkstring(l, 1);
+  int sprite_handle = luaL_checkinteger(l, 1);
 
-  const Sprite &sprite = script->get_sprite(sprite_id);
+  const Sprite &sprite = script->get_sprite(sprite_handle);
   lua_pushinteger(l, sprite.get_current_frame());
 
   return 1;
@@ -789,7 +720,7 @@ int Script::l_sprite_get_frame(lua_State *l) {
 /**
  * @brief Sets the current frame of a sprite.
  * 
- * - Argument 1 (string): id of the sprite
+ * - Argument 1 (sprite): a sprite
  * - Argument 2 (integer): index of the frame to set in the animation
  *
  * @param l the Lua context that is calling this function
@@ -798,10 +729,10 @@ int Script::l_sprite_set_frame(lua_State *l) {
 
   Script *script;
   called_by_script(l, 2, &script);
-  const std::string &sprite_id = luaL_checkstring(l, 1);
+  int sprite_handle = luaL_checkinteger(l, 1);
   int frame = luaL_checkinteger(l, 2);
 
-  Sprite &sprite = script->get_sprite(sprite_id);
+  Sprite &sprite = script->get_sprite(sprite_handle);
   sprite.set_current_frame(frame);
 
   return 0;
@@ -810,7 +741,7 @@ int Script::l_sprite_set_frame(lua_State *l) {
 /**
  * @brief Returns the delay between two frames of the animation of a sprite.
  * 
- * - Argument 1 (string): id of the sprite
+ * - Argument 1 (sprite): a sprite
  * - Return value: the delay between two frames in milliseconds
  *
  * @param l the Lua context that is calling this function
@@ -819,9 +750,9 @@ int Script::l_sprite_get_frame_delay(lua_State *l) {
 
   Script *script;
   called_by_script(l, 1, &script);
-  const std::string &sprite_id = luaL_checkstring(l, 1);
+  int sprite_handle = luaL_checkinteger(l, 1);
 
-  const Sprite &sprite = script->get_sprite(sprite_id);
+  const Sprite &sprite = script->get_sprite(sprite_handle);
   lua_pushinteger(l, sprite.get_frame_delay());
 
   return 1;
@@ -830,7 +761,7 @@ int Script::l_sprite_get_frame_delay(lua_State *l) {
 /**
  * @brief Sets the delay between two frames of the animation of a sprite.
  * 
- * - Argument 1 (string): id of the sprite
+ * - Argument 1 (sprite): a sprite
  * - Argument 2 (integer): the new delay in milliseconds
  *
  * @param l the Lua context that is calling this function
@@ -839,10 +770,10 @@ int Script::l_sprite_set_frame_delay(lua_State *l) {
 
   Script *script;
   called_by_script(l, 2, &script);
-  const std::string &sprite_id = luaL_checkstring(l, 1);
+  int sprite_handle = luaL_checkinteger(l, 1);
   uint32_t delay = luaL_checkinteger(l, 2);
 
-  Sprite &sprite = script->get_sprite(sprite_id);
+  Sprite &sprite = script->get_sprite(sprite_handle);
   sprite.set_frame_delay(delay);
 
   return 0;
@@ -851,7 +782,7 @@ int Script::l_sprite_set_frame_delay(lua_State *l) {
 /**
  * @brief Returns whether the animation of a sprite is paused.
  * 
- * - Argument 1 (string): id of the sprite
+ * - Argument 1 (sprite): a sprite
  * - Return value (boolean): true if the animation is currently paused
  *
  * @param l the Lua context that is calling this function
@@ -860,9 +791,9 @@ int Script::l_sprite_is_paused(lua_State *l) {
 
   Script *script;
   called_by_script(l, 1, &script);
-  const std::string &sprite_id = luaL_checkstring(l, 1);
+  int sprite_handle = luaL_checkinteger(l, 1);
 
-  Sprite &sprite = script->get_sprite(sprite_id);
+  const Sprite &sprite = script->get_sprite(sprite_handle);
   lua_pushboolean(l, sprite.is_paused() ? 1 : 0);
 
   return 1;
@@ -871,7 +802,7 @@ int Script::l_sprite_is_paused(lua_State *l) {
 /**
  * @brief Pauses or resumes the animation of a sprite.
  * 
- * - Argument 1 (string): id of the sprite
+ * - Argument 1 (sprite): a sprite
  * - Argument 2 (boolean): true to pause the animation, false to resume it
  *
  * @param l the Lua context that is calling this function
@@ -880,10 +811,10 @@ int Script::l_sprite_set_paused(lua_State *l) {
 
   Script *script;
   called_by_script(l, 2, &script);
-  const std::string &sprite_id = luaL_checkstring(l, 1);
+  int sprite_handle = luaL_checkinteger(l, 1);
   bool paused = lua_toboolean(l, 2) != 0;
 
-  Sprite &sprite = script->get_sprite(sprite_id);
+  Sprite &sprite = script->get_sprite(sprite_handle);
   sprite.set_paused(paused);
 
   return 0;
@@ -893,7 +824,7 @@ int Script::l_sprite_set_paused(lua_State *l) {
  * @brief Sets whether the animation of a sprite should continue even when
  * the sprite receives a set_suspended(true) call.
  *
- * - Argument 1 (string): id of the sprite
+ * - Argument 1 (sprite): a sprite
  * - Argument 2 (boolean): true to continue the animation when the sprite is suspended
  *
  * @param l the Lua context that is calling this function
@@ -902,10 +833,10 @@ int Script::l_sprite_set_animation_ignore_suspend(lua_State *l) {
 
   Script *script;
   called_by_script(l, 2, &script);
-  const std::string &sprite_id = luaL_checkstring(l, 1);
+  int sprite_handle = luaL_checkinteger(l, 1);
   bool ignore_suspend = lua_toboolean(l, 2) != 0;
 
-  Sprite &sprite = script->get_sprite(sprite_id);
+  Sprite &sprite = script->get_sprite(sprite_handle);
   sprite.set_ignore_suspend(ignore_suspend);
 
   return 0;
@@ -914,7 +845,7 @@ int Script::l_sprite_set_animation_ignore_suspend(lua_State *l) {
 /**
  * @brief Starts a fade-in or a fade-out effect on a sprite.
  * 
- * - Argument 1 (string): id of the sprite
+ * - Argument 1 (sprite): a sprite
  * - Argument 2 (integer): direction of the effect: 0 for fade-in, 1 for fade-out
  *
  * @param l the Lua context that is calling this function
@@ -923,10 +854,10 @@ int Script::l_sprite_fade(lua_State *l) {
 
   Script *script;
   called_by_script(l, 2, &script);
-  const std::string &sprite_id = luaL_checkstring(l, 1);
+  int sprite_handle = luaL_checkinteger(l, 1);
   int direction = luaL_checkinteger(l, 2);
 
-  Sprite &sprite = script->get_sprite(sprite_id);
+  Sprite &sprite = script->get_sprite(sprite_handle);
   sprite.start_fading(direction);
 
   return 0;

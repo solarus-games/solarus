@@ -37,12 +37,8 @@ even when no game is running.
 It contains functions to play sounds or musics, set timers
 and manage sprites.
 
-Your script can create a sprite (which is then attached to the script)
-or refer to an existing sprite (e.g. a sprite attached to an NPC).
-In both cases, your script chooses an id (a name) for the sprite
-to create or to refer to.
-Then, you can call all sprite-related functions and give the sprite id as first paramater,
-no matter whether the corresponding sprite was created by the script or not.
+Your script can get a handle to an existing sprite (e.g. a sprite attached to an NPC).
+Then, you can call all sprite-related functions and give the sprite handle as first paramater.
 
 - <tt>sol.main.play_sound(sound_id)</tt>: 	
 plays a sound
@@ -56,51 +52,44 @@ starts a timer which will call a function of your script once finished
 - <tt>sol.main.timer_stop(callback)</tt>: 
 stops a timer that is currently running
 
-- <tt>sol.main.sprite_create(sprite_id, animation_set)</tt>:
-creates a sprite that will be stored by this script
-
-- <tt>sol.main.sprite_remove(sprite_id)</tt>:
-destroys a sprite previously created with sol.main.sprite_create
-(when the script is destroyed, remaining sprites are automatically destroyed)
-
-- <tt>sol.main.sprite_get_animation(sprite_id)</tt>:
+- <tt>sol.main.sprite_get_animation(sprite)</tt>:
 returns the name of the current animation of a sprite
 
-- <tt>sol.main.sprite_set_animation(sprite_id, animation_name)</tt>:
+- <tt>sol.main.sprite_set_animation(sprite, animation_name)</tt>:
 sets the current animation of a sprite
 
-- <tt>sol.main.sprite_get_direction(sprite_id)</tt>:
+- <tt>sol.main.sprite_get_direction(sprite)</tt>:
 returns the current direction of a sprite
 (<tt>0</tt> to <tt>nb_directions-1</tt>)
 
-- <tt>sol.main.sprite_set_direction(sprite_id, direction)</tt>:
+- <tt>sol.main.sprite_set_direction(sprite, direction)</tt>:
 sets the current direction of a sprite
 (<tt>0</tt> to <tt>nb_directions-1</tt>)
 
-- <tt>sol.main.sprite_get_frame(sprite_id)</tt>:
+- <tt>sol.main.sprite_get_frame(sprite)</tt>:
 returns the index of the current frame of a sprite
 (<tt>0</tt> to <tt>nb_frames-1</tt>)
 
-- <tt>sol.main.sprite_set_frame(sprite_id, frame)</tt>:
+- <tt>sol.main.sprite_set_frame(sprite, frame)</tt>:
 sets the current frame of a sprite
 (<tt>0</tt> to <tt>nb_frames-1</tt>)
 
-- <tt>sol.main.sprite_get_frame_delay(sprite_id)</tt>:
+- <tt>sol.main.sprite_get_frame_delay(sprite)</tt>:
 returns the delay between two frames of a sprite, in milliseconds
 
-- <tt>sol.main.sprite_set_frame_delay(sprite_id, delay)</tt>:
+- <tt>sol.main.sprite_set_frame_delay(sprite, delay)</tt>:
 sets the delay between two frames of a sprite, in milliseconds
 
-- <tt>sol.main.sprite_is_paused(sprite_id)</tt>:
+- <tt>sol.main.sprite_is_paused(sprite)</tt>:
 returns whether a sprite is paused
 
-- <tt>sol.main.sprite_set_paused(sprite_id, paused)</tt>:
+- <tt>sol.main.sprite_set_paused(sprite, paused)</tt>:
 pauses or resumes the animation of a sprite
 
-- <tt>sol.main.sprite_set_animation_ignore_suspend(sprite_id, ignore)</tt>:
+- <tt>sol.main.sprite_set_animation_ignore_suspend(sprite, ignore)</tt>:
 sets whether the animation should continue even when the sprite is suspended
 
-- <tt>sol.main.sprite_fade(sprite_id, direction)</tt>:
+- <tt>sol.main.sprite_fade(sprite, direction)</tt>:
 shows a fade effect on a sprite (0: fade-in, 1: fade-out)
 
 - <tt>sol.main.movement_create(movement_id, movement_type)</tt>:
@@ -277,14 +266,14 @@ makes an NPC walk randomly
 - <tt>sol.map.npc_jump(npc, direction, length, ignore_obstacles)</tt>:
 makes an NPC jump towards the specified direction (0 to 7)
 
-- <tt>sol.map.npc_create_sprite_id(npc, sprite_id)</tt>:
+- <tt>sol.map.npc_get_sprite(npc)</tt>:
 makes the sprite of an NPC accessible from the script
 through <tt>sol.main.sprite_*</tt> functions
 
 - <tt>sol.map.npc_remove(npc)</tt>:
 removes an NPC from the map
 
-- <tt>sol.map.npc_create_sprite_id(npc, sprite_id)</tt>:
+- <tt>sol.map.npc_get_sprite(npc)</tt>:
 makes the sprite of an interactive entity accessible from the script
 through <tt>sol.main.sprite_*</tt> functions
 

@@ -59,6 +59,7 @@ void GameScript::register_available_functions() {
     { "equipment_add_life", l_equipment_add_life },
     { "equipment_remove_life", l_equipment_remove_life },
     { "equipment_get_max_life", l_equipment_get_max_life },
+    { "equipment_set_max_life", l_equipment_set_max_life },
     { "equipment_add_max_life", l_equipment_add_max_life },
     { "equipment_get_money", l_equipment_get_money },
     { "equipment_add_money", l_equipment_add_money },
@@ -309,6 +310,22 @@ int GameScript::l_equipment_get_max_life(lua_State *l) {
   lua_pushinteger(l, life);
 
   return 1;
+}
+
+/**
+ * @brief Sets the maximum level of life of the player.
+ *
+ * - Argument 1 (integer): the maximum level of life to set
+ */
+int GameScript::l_equipment_set_max_life(lua_State *l) {
+
+  GameScript *script;
+  called_by_script(l, 1, &script);
+
+  int life = luaL_checkinteger(l, 1);
+  script->game.get_equipment().set_max_life(life);
+
+  return 0;
 }
 
 /**

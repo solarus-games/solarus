@@ -16,32 +16,48 @@
  */
 #include "movements/MovementFactory.h"
 #include "movements/PixelMovement.h"
+#include "movements/RandomMovement.h"
+#include "lowlevel/Debug.h"
+#include "lowlevel/StringConcat.h"
 
 MovementFactory::CreationFunction MovementFactory::creation_functions[] = {
-  MovementFactory::create_pixel_movement
+  MovementFactory::create_pixel_movement,
+  MovementFactory::create_random_movement
 };
 
 std::map<std::string, MovementFactory::MovementType> MovementFactory::strings_to_types;
 
 /**
- * Initialized strings_to_types.
+ * @brief Initializes strings_to_types.
  */
 void MovementFactory::initialize_map() {
 
   strings_to_types["pixel_movement"] = PIXEL_MOVEMENT;
+  strings_to_types["random_movement"] = RANDOM_MOVEMENT;
 }
 
-
+/**
+ * @brief Creates a movement of the specified type with some default properties.
+ * @param type type of movement
+ */
 Movement* MovementFactory::create(MovementType type) {
 
   return creation_functions[type]();
 }
 
+/**
+ * @brief Creates a movement of the specified type with some default properties.
+ * @param type a string describing the type of movement:
+ * "pixel_movement" or "random_movement"
+ */
 Movement* MovementFactory::create(const std::string type) {
 
   if (strings_to_types.size() == 0) {
     initialize_map();
   }
+
+  Debug::assert(strings_to_types.find(type) != strings_to_types.end(),
+      StringConcat() << "Invalid movement type: '" << type << "'");
 
   return create(strings_to_types[type]);
 }
@@ -49,4 +65,9 @@ Movement* MovementFactory::create(const std::string type) {
 Movement* MovementFactory::create_pixel_movement() {
 
   return new PixelMovement("", 10, false, false);
+}
+
+Movement* MovementFactory::create_random_movement() {
+
+  return new RandomMovement(32);
 }

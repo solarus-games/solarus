@@ -28,7 +28,8 @@ class MovementFactory {
   public:
 
     enum MovementType {
-      PIXEL_MOVEMENT
+      PIXEL_MOVEMENT,
+      RANDOM_MOVEMENT
       // TODO others
     };
 
@@ -50,6 +51,7 @@ class MovementFactory {
     static Movement* create(const std::string type);
 
     static Movement* create_pixel_movement();
+    static Movement* create_random_movement();
 };
 
 #endif

@@ -19,6 +19,9 @@
 #include "lowlevel/System.h"
 #include "lowlevel/Random.h"
 #include "lowlevel/Geometry.h"
+#include "lowlevel/Debug.h"
+#include "lowlevel/StringConcat.h"
+#include <sstream>
 
 /**
  * @brief Constructor.
@@ -48,8 +51,20 @@ void RandomMovement::set_entity(MapEntity *entity) {
 
   Movement::set_entity(entity);
 
+  set_max_distance(max_distance);
+}
+
+/**
+ * @brief Sets the maximum distance of the movement.
+ * @param max_distance if the object goes further than this distance, it will come back (0 means no limit)
+ */
+void RandomMovement::set_max_distance(int max_distance) {
+
+  Debug::assert(max_distance >= 0, StringConcat() << "Invalid value of max_distance: " << max_distance);
+  this->max_distance = max_distance;
+
   // restrict the movement in a rectangle
-  bounds.set_xy(entity->get_xy());
+  bounds.set_xy(get_entity()->get_xy());
   bounds.add_xy(-max_distance, -max_distance);
   bounds.set_size(max_distance * 2, max_distance * 2);
 }
@@ -107,6 +122,62 @@ void RandomMovement::set_suspended(bool suspended) {
 
   if (!suspended) {
     next_direction_change_date += System::now() - get_when_suspended();
+  }
+}
+
+/**
+ * @brief Returns the value of a property of this movement.
+ *
+ * Accepted keys:
+ * - speed
+ * - max_distance
+ *
+ * @param key key of the property to get
+ * @return the corresponding value as a string
+ */
+const std::string RandomMovement::get_property(const std::string &key) {
+
+  std::ostringstream oss;
+
+  if (key == "speed") {
+    oss << get_speed();
+  }
+  else if (key == "max_distance") {
+    oss << max_distance;
+  }
+  else {
+    Debug::die(StringConcat() << "Unknown property of RandomMovement: '" << key << "'");
+  }
+
+  return oss.str();
+}
+
+/**
+ * @brief Sets the value of a property of this movement.
+ *
+ * Accepted keys:
+ * - speed
+ * - max_distance
+ *
+ * @param key key of the property to set (the accepted keys depend on the movement type)
+ * @param the value to set
+ */
+void RandomMovement::set_property(const std::string &key, const std::string &value) {
+
+  std::istringstream iss(value);
+
+  if (key == "speed") {
+    int speed;
+    iss >> speed;
+    set_speed(speed);
+  }
+  else if (key == "max_distance") {
+    int max_distance;
+    iss >> max_distance;
+    set_max_distance(max_distance);
+  }
+  else {
+    Debug::die(StringConcat() << "Unknown property of RandomMovement: '" << key << "'");
   }
 }
 

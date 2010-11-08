@@ -78,6 +78,7 @@ void MapScript::register_available_functions() {
     { "hero_freeze", l_hero_freeze },
     { "hero_unfreeze", l_hero_unfreeze },
     { "hero_set_map", l_hero_set_map },
+    { "hero_get_direction", l_hero_get_direction },
     { "hero_set_direction", l_hero_set_direction },
     { "hero_align_on_sensor", l_hero_align_on_sensor },
     { "hero_walk", l_hero_walk },
@@ -380,6 +381,24 @@ int MapScript::l_hero_set_map(lua_State *l) {
   script->game.set_current_map(map_id, destination_point_name, transition_style);
 
   return 0;
+}
+
+/**
+ * @brief Returns the current direction of the hero's sprite.
+ *
+ * - Return value (integer): the direction between 0 and 3
+ *
+ * @param l the Lua context that is calling this function
+ */
+int MapScript::l_hero_get_direction(lua_State *l) {
+
+  MapScript *script;
+  called_by_script(l, 0, &script);
+
+  int direction = script->hero.get_animation_direction();
+  lua_pushinteger(l, direction);
+
+  return 1;
 }
 
 /**

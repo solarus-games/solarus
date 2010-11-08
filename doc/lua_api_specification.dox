@@ -244,6 +244,9 @@ restores the control to the hero, typically after a call to <tt>sol.map.hero_fre
 - <tt>sol.map.hero_set_map(map_id, destination_point, transition)</tt>:
 sents the hero on a map (possibly the same one)
 
+- <tt>sol.map.hero_get_direction(direction)</tt>:
+returns the direction of the hero's sprites
+
 - <tt>sol.map.hero_set_direction(direction)</tt>:
 sets the direction of the hero's sprites
 

@@ -90,9 +90,9 @@ void MapScript::register_available_functions() {
     { "npc_walk", l_npc_walk },
     { "npc_random_walk", l_npc_random_walk },
     { "npc_jump", l_npc_jump },
-    { "npc_create_sprite_id", l_npc_create_sprite_id },
+    { "npc_get_sprite", l_npc_get_sprite },
     { "npc_remove", l_npc_remove },
-    { "interactive_entity_create_sprite_id", l_interactive_entity_create_sprite_id },
+    { "interactive_entity_get_sprite", l_interactive_entity_get_sprite },
     { "interactive_entity_remove", l_interactive_entity_remove },
     { "chest_set_open", l_chest_set_open },
     { "chest_set_hidden", l_chest_set_hidden },
@@ -654,15 +654,16 @@ int MapScript::l_npc_jump(lua_State *l) {
 /**
  * @brief Makes the sprite of an NPC accessible from the script.
  *
- * - Argument 1 (string): name of the interactive entity
- * - Argument 2 (string): a name that will identify the sprite from the script
+ * - Argument 1 (string): name of the NPC
+ * - Return value (sprite): the sprite of this NPC (your script can then pass it as a parameter
+ * to all sol.main.sprite_* functions)
  *
  * @param l the Lua context that is calling this function
  */
-int MapScript::l_npc_create_sprite_id(lua_State *l) {
+int MapScript::l_npc_get_sprite(lua_State *l) {
 
   // an NPC is actually a subtype of interactive entity
-  return l_interactive_entity_create_sprite_id(l);
+  return l_interactive_entity_get_sprite(l);
 }
 
 /**
@@ -682,24 +683,25 @@ int MapScript::l_npc_remove(lua_State *l) {
  * @brief Makes the sprite of an interactive entity accessible from the script.
  *
  * - Argument 1 (string): name of the interactive entity
- * - Argument 2 (string): a name that will identify the sprite from the script
+ * - Return value (sprite): the sprite of this interactive entity (your script can then pass it as a parameter
+ * to all sol.main.sprite_* functions)
  *
  * @param l the Lua context that is calling this function
  */
-int MapScript::l_interactive_entity_create_sprite_id(lua_State *l) {
+int MapScript::l_interactive_entity_get_sprite(lua_State *l) {
 
   MapScript *script;
-  called_by_script(l, 2, &script);
+  called_by_script(l, 1, &script);
 
   const std::string &entity_name = luaL_checkstring(l, 1);
-  const std::string &sprite_id = luaL_checkstring(l, 2);
 
   MapEntities &entities = script->map.get_entities();
   InteractiveEntity *entity = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, entity_name);
 
-  script->add_existing_sprite(sprite_id, entity->get_sprite());
+  int handle = script->create_sprite_handle(entity->get_sprite());
+  lua_pushinteger(l, handle);
 
-  return 0;
+  return 1;
 }
 
 /**

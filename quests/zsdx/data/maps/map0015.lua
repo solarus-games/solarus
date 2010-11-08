@@ -2,6 +2,9 @@
 -- Sahasrahla's cave icy room script --
 ---------------------------------------
 
+frozen_door_sprite = nil
+frozen_door_opposite_sprite = nil
+
 -- Function call when the map starts
 function event_map_started(destination_point_name)
 
@@ -11,10 +14,10 @@ function event_map_started(destination_point_name)
       sol.map.interactive_entity_remove("frozen_door_opposite")
    else
       -- initialize the direction of the frozen door sprites
-      sol.map.interactive_entity_create_sprite_id("frozen_door", "frozen_door_sprite")
-      sol.map.interactive_entity_create_sprite_id("frozen_door_opposite", "frozen_door_opposite_sprite")
-      sol.main.sprite_set_direction("frozen_door_sprite", 3)
-      sol.main.sprite_set_direction("frozen_door_opposite_sprite", 1)
+      frozen_door_sprite = sol.map.interactive_entity_get_sprite("frozen_door")
+      frozen_door_opposite_sprite = sol.map.interactive_entity_get_sprite("frozen_door_opposite")
+      sol.main.sprite_set_direction(frozen_door_sprite, 3)
+      sol.main.sprite_set_direction(frozen_door_opposite_sprite, 1)
    end
 end
 
@@ -35,8 +38,8 @@ function event_hero_interaction_item(entity_name, item_name, variant)
 
       -- using water on the frozen door
       sol.map.hero_freeze()
-      sol.main.sprite_set_animation("frozen_door_sprite", "disappearing")
-      sol.main.sprite_set_animation("frozen_door_opposite_sprite", "disappearing")
+      sol.main.sprite_set_animation(frozen_door_sprite, "disappearing")
+      sol.main.sprite_set_animation(frozen_door_opposite_sprite, "disappearing")
       sol.main.timer_start(800, "timer_frozen_door", false)
       return true
    end

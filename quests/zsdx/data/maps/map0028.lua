@@ -2,17 +2,19 @@
 -- Link's house script --
 -------------------------
 
+bed_sprite = nil
+
 function event_map_started(destination_point_name)
 
-  sol.map.interactive_entity_create_sprite_id("bed", "bed_sprite")
+  bed_sprite = sol.map.interactive_entity_get_sprite("bed")
   if destination_point_name == "from_intro" then
     -- the intro scene is playing
     sol.map.hud_set_enabled(true)
     sol.map.hud_set_pause_enabled(false)
     sol.map.dialog_set_style(0)
-    sol.map.interactive_entity_create_sprite_id("snores", "snores_sprite")
-    sol.main.sprite_set_animation_ignore_suspend("snores_sprite", true)
-    sol.main.sprite_set_animation("bed_sprite", "hero_sleeping")
+    snores_sprite = sol.map.interactive_entity_get_sprite("snores")
+    sol.main.sprite_set_animation_ignore_suspend(snores_sprite, true)
+    sol.main.sprite_set_animation(bed_sprite, "hero_sleeping")
     sol.map.hero_freeze()
     sol.map.hero_set_visible(false)
     sol.main.timer_start(2000, "sahasrahla_dream", false)
@@ -35,7 +37,7 @@ end
 
 function wake_up()
   sol.map.interactive_entity_remove("snores")
-  sol.main.sprite_set_animation("bed_sprite", "hero_waking")
+  sol.main.sprite_set_animation(bed_sprite, "hero_waking")
   sol.main.timer_start(500, "jump_from_bed", false)
 end
 
@@ -43,7 +45,7 @@ function jump_from_bed()
   sol.map.hero_set_visible(true)
   sol.map.hero_jump(4, 24, true)
   sol.map.hud_set_pause_enabled(true)
-  sol.main.sprite_set_animation("bed_sprite", "empty_open")
+  sol.main.sprite_set_animation(bed_sprite, "empty_open")
   sol.main.play_sound("hero_lands");
 end
 

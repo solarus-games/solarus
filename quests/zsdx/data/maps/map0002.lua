@@ -10,22 +10,23 @@ already_played_game_1 = false
 game_1_rewards = {5, 20, 50} -- possible rupee rewards in game 1
 game_2_bet = 0
 game_2_reward = 0
+game_2_man_sprite = nil
 
 -- game 2 behavior
 game_2_slots = {
-  slot_machine_left =   {initial_frame = 6, initial_delay = 70, current_delay = 0, symbol = -1},
-  slot_machine_middle = {initial_frame = 15, initial_delay = 90, current_delay = 0, symbol = -1},
-  slot_machine_right =  {initial_frame = 9, initial_delay = 60, current_delay = 0, symbol = -1}
-}
+  slot_machine_left =   {initial_frame = 6, initial_delay = 70, current_delay = 0, symbol = -1, sprite = nil},
+  slot_machine_middle = {initial_frame = 15, initial_delay = 90, current_delay = 0, symbol = -1, sprite = nil},
+  slot_machine_right =  {initial_frame = 9, initial_delay = 60, current_delay = 0, symbol = -1, sprite = nil}
+} -- the key is also the entity name
 
 -- Function called when the map starts
 function event_map_started(destination_point_name)
 
   for k, v in pairs(game_2_slots) do
-    sol.map.interactive_entity_create_sprite_id(k, k)
-    sol.main.sprite_set_frame(k, game_2_slots[k].initial_frame)
+    v.sprite = sol.map.interactive_entity_get_sprite(k)
+    sol.main.sprite_set_frame(v.sprite, v.initial_frame)
   end
-  sol.map.npc_create_sprite_id("game_2_man", "game_2_man_sprite")
+  game_2_man_sprite = sol.map.npc_get_sprite("game_2_man")
 end
 
 -- Function called when the player wants to talk to a non-playing character
@@ -155,10 +156,10 @@ function event_dialog_finished(first_message_id, answer)
       for k, v in pairs(game_2_slots) do
 	v.symbol = -1
 	v.current_delay = v.initial_delay
-	sol.main.sprite_set_animation(k, "started")
-	sol.main.sprite_set_frame_delay(k, v.current_delay)
-	sol.main.sprite_set_frame(k, v.initial_frame)
-	sol.main.sprite_set_paused(k, false)
+	sol.main.sprite_set_animation(v.sprite, "started")
+	sol.main.sprite_set_frame_delay(v.sprite, v.current_delay)
+	sol.main.sprite_set_frame(v.sprite, v.initial_frame)
+	sol.main.sprite_set_paused(v.sprite, false)
       end
     end
   elseif string.match(first_message_id, "^rupee_house.game_2.reward.") then
@@ -270,21 +271,22 @@ function event_hero_interaction(entity_name)
 
   if playing_game_2 then
 
-    sol.main.sprite_set_direction("game_2_man_sprite", 0)
+    sol.main.sprite_set_direction(game_2_man_sprite, 0)
 
     if game_2_slots[entity_name].symbol == -1 then
       -- stop this reel
 
-      current_symbol = math.floor(sol.main.sprite_get_frame(entity_name) / 3)
+      sprite = game_2_slots[entity_name].sprite
+      current_symbol = math.floor(sol.main.sprite_get_frame(sprite) / 3)
       game_2_slots[entity_name].symbol = (current_symbol + math.random(2)) % 7
       game_2_slots[entity_name].current_delay = game_2_slots[entity_name].current_delay + 100
-      sol.main.sprite_set_frame_delay(entity_name, game_2_slots[entity_name].current_delay)
+      sol.main.sprite_set_frame_delay(sprite, game_2_slots[entity_name].current_delay)
 
       -- test code (temporary code to win every game)
       --	 for k, v in pairs(game_2_slots) do
       --	    v.symbol = game_2_slots[entity_name].symbol
       --	    v.current_delay = game_2_slots[entity_name].current_delay + 100
-      --	    sol.main.sprite_set_frame_delay(k, v.current_delay)
+      --	    sol.main.sprite_set_frame_delay(v.sprite, v.current_delay)
       --	 end
       -----------
 
@@ -305,16 +307,16 @@ function event_update()
     -- stop the reels when necessary
     nb_finished = 0
     for k, v in pairs(game_2_slots) do
-      if sol.main.sprite_is_paused(k) then
+      if sol.main.sprite_is_paused(v.sprite) then
 	nb_finished = nb_finished + 1
       end
     end
 
     for k, v in pairs(game_2_slots) do
-      frame = sol.main.sprite_get_frame(k)
+      frame = sol.main.sprite_get_frame(v.sprite)
 
-      if not sol.main.sprite_is_paused(k) and frame == v.symbol * 3 then
-	sol.main.sprite_set_paused(k, true)
+      if not sol.main.sprite_is_paused(v.sprite) and frame == v.symbol * 3 then
+	sol.main.sprite_set_paused(v.sprite, true)
 	v.initial_frame = frame
 	nb_finished = nb_finished + 1
 
@@ -389,3 +391,4 @@ function game_2_timer()
 
   sol.map.hero_unfreeze()
 end
+

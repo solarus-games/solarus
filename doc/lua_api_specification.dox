@@ -92,7 +92,7 @@ sets whether the animation should continue even when the sprite is suspended
 - <tt>sol.main.sprite_fade(sprite, direction)</tt>:
 shows a fade effect on a sprite (0: fade-in, 1: fade-out)
 
-- <tt>sol.main.pixel_movement_create(trajectory, speed)</tt>:
+- <tt>sol.main.pixel_movement_create(trajectory, delay)</tt>:
 creates a movement of type PixelMovement that will be accessible from this script
 
 - <tt>sol.main.random_movement_create(speed)</tt>:

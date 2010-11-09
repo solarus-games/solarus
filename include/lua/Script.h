@@ -42,11 +42,13 @@ class Script {
     lua_State* context;							/**< the execution context of the Lua script */
     std::list<Timer*> timers;						/**< the timers currently running for this script */
 
-    std::map<int, Sprite*> sprites;					/**< the sprites managed by this script */
-    int next_sprite_handle;						/**< handle of the next sprite */
+    std::map<int, Sprite*> sprites;					/**< the sprites accessible from this script */
+    int next_sprite_handle;						/**< next handle of a sprite */
 
-    std::map<std::string, Movement*> movements;				/**< the movements managed by this script */
-    std::list<Movement*> created_movements;				/**< the movements managed by this script that were created by it */
+    std::map<int, Movement*> movements;					/**< the movements accessible from this script */
+    std::map<int, Movement*> unassigned_movements;			/**< the movements accessible from this script and that
+    									 * are not assigned to an object yet (the script has to delete them) */
+    int next_movement_handle;						/**< handle of the next movement created */
 
     // calling a Lua function from C++
     bool find_lua_function(const std::string &function_name);
@@ -80,8 +82,8 @@ class Script {
       l_sprite_fade,
 
       // movements
-      l_movement_create,
-      l_movement_remove,
+      l_pixel_movement_create,
+      l_random_movement_create,
       l_movement_get_property,
       l_movement_set_property;
 
@@ -99,9 +101,8 @@ class Script {
     Sprite& get_sprite(int sprite_handle);
 
     // movements
-    void create_movement(const std::string &movement_id, const std::string &movement_type);
-    void add_existing_movement(const std::string &movement_id, Movement *movement);
-    Movement* get_movement(const std::string &movement_id);
+    int create_movement_handle(Movement &movement);
+    Movement& get_movement(int movement_handle);
 
     // debugging
     void print_stack();

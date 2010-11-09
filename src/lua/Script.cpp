@@ -20,7 +20,8 @@
 #include "Timer.h"
 #include "Sprite.h"
 #include "movements/Movement.h"
-#include "movements/MovementFactory.h"
+#include "movements/PixelMovement.h"
+#include "movements/RandomMovement.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/Music.h"
 #include "lowlevel/FileTools.h"
@@ -55,11 +56,11 @@ Script::~Script() {
     }
   }
 
-  // delete the movements created by this script
+  // delete the movements still stored by this script, if any
   {
-    std::list<Movement*>::iterator it;
-    for (it = created_movements.begin(); it != created_movements.end(); it++) {
-      delete *it;
+    std::map<int, Movement*>::iterator it;
+    for (it = unassigned_movements.begin(); it != unassigned_movements.end(); it++) {
+      delete it->second;
     }
   }
 }
@@ -70,8 +71,9 @@ Script::~Script() {
  */
 void Script::load(const std::string &script_name) {
 
-  // initialize the sprite API
-  next_sprite_handle = 0;
+  // initialize fields
+  next_sprite_handle = 1;
+  next_movement_handle = 1;
 
   // create an execution context
   context = lua_open();
@@ -146,8 +148,8 @@ void Script::register_available_functions() {
     { "sprite_set_animation_ignore_suspend", l_sprite_set_animation_ignore_suspend },
     { "sprite_fade", l_sprite_fade },
 
-    { "movement_create", l_movement_create },
-    { "movement_remove", l_movement_remove },
+    { "pixel_movement_create", l_pixel_movement_create },
+    { "random_movement_create", l_random_movement_create },
     { "movement_get_property", l_movement_get_property },
     { "movement_set_property", l_movement_set_property },
 
@@ -235,9 +237,7 @@ bool Script::find_lua_function(const std::string &function_name) {
     return false;
   }
 
-  // TODO implement a simpler solution to the timer problem
-  // (which is: allowing to set sol.main.some_function as a timer callback, even if it is not a global function):
-  // store the callback as a lua function object instead of a string, if possible
+  // we want to allow to set sol.main.some_function as a timer callback, even if it is not a global function
 
   size_t index = function_name.find(".");
   if (index == std::string::npos) {
@@ -481,7 +481,7 @@ int Script::create_sprite_handle(Sprite &sprite) {
 
 /**
  * @brief Returns a sprite handled by this script.
- * @param sprite_handle id of the sprite to get
+ * @param sprite_handle handle of the sprite to get
  * @return the corresponding sprite
  */
 Sprite& Script::get_sprite(int sprite_handle) {
@@ -493,41 +493,29 @@ Sprite& Script::get_sprite(int sprite_handle) {
 }
 
 /**
- * @brief Creates a new movement that will be accessible from the script.
- * @param movement_id a name that will identify the movement from the script
- * @param movement_type a string describing the type of movement to create
+ * @brief Makes a movement accessible from the script.
+ * @param movement the movement to make accessible
+ * @return a handle that can be used by scripts to refer to this movement
  */
-void Script::create_movement(const std::string &movement_id, const std::string &movement_type) {
+int Script::create_movement_handle(Movement &movement) {
 
-  Movement *movement = MovementFactory::create(movement_type);
-  add_existing_movement(movement_id, movement);
-  created_movements.push_back(movement);
-}
-
-/**
- * @brief Makes an existing movement accessible from the script.
- * @param movement_id a name that will identify the movement from the script
- * @param movement the existing movement to associate to movement_id
- */
-void Script::add_existing_movement(const std::string &movement_id, Movement *movement) {
-
-  Debug::assert(movements.count(movement_id) == 0,
-    StringConcat() << "This script already has a movement with id '" << movement_id << "'");
-
-  movements[movement_id] = movement;
+  int handle = next_movement_handle++;
+  movements[handle] = &movement;
+  unassigned_movements[handle] = &movement;
+  return handle;
 }
 
 /**
  * @brief Returns a movement handled by this script.
- * @param movement_id id of the movement to get
+ * @param movement_handle handle of the movement to get
  * @return the corresponding movement
  */
-Movement* Script::get_movement(const std::string &movement_id) {
+Movement& Script::get_movement(int movement_handle) {
 
-  Debug::assert(movements.count(movement_id) > 0,
-    StringConcat() << "No movement with id '" << movement_id << "'");
+  Debug::assert(movements.count(movement_handle) > 0,
+    StringConcat() << "No movement with handle '" << movement_handle << "'");
 
-  return movements[movement_id];
+  return *movements[movement_handle];
 }
 
 // functions that can be called by the Lua script
@@ -864,58 +852,53 @@ int Script::l_sprite_fade(lua_State *l) {
 }
 
 /**
- * @brief Creates a movement that will be stored by the script.
+ * @brief Creates a movement of type PixelMovement that will be accessible from the script.
  *
- * The movement created will be accessible only from this script.
- * No other movement will the same id should exist in this script.
- * You can destroy your sprite later with sol.main.movement_remove().
- * If you don't, it will be destroyed automatically when the script is destroyed.
- * - Argument 1 (string): a name to identify the created movement later
- * - Argument 2 (string): a string describing the type of movement
+ * - Argument 1 (string): the pixel-by-pixel trajectory of the movement
+ * - Argument 2 (int): the delay in millisecond between each step of the trajectory
+ * - Return value (movement): a handle to the movement created
  *
  * @param l the Lua context that is calling this function
  */
-int Script::l_movement_create(lua_State *l) {
+int Script::l_pixel_movement_create(lua_State *l) {
 
   Script *script;
   called_by_script(l, 2, &script);
-  const std::string &movement_id = luaL_checkstring(l, 1);
-  const std::string &movement_type = luaL_checkstring(l, 2);
+  const std::string &trajectory = luaL_checkstring(l, 1);
+  uint32_t delay = luaL_checkinteger(l, 2);
 
-  script->create_movement(movement_id, movement_type);
+  Movement *movement = new PixelMovement(trajectory, delay, false, false);
+  int movement_handle = script->create_movement_handle(*movement);
+  lua_pushinteger(l, movement_handle);
 
-  return 0;
+  return 1;
 }
 
 /**
- * @brief Destroys a movement previously created inside this script with sol.main.movement_create().
+ * @brief Creates a movement of type RandomMovement that will be accessible from the script.
  *
- * Movements handled by this script but created elsewhere (e.g. an NPC's movement)
- * must never be destroyed here. Call this function only for movements that were created
- * by calling sol.main.movement_create().
- * - Argument 1 (string): id of the movement to destroy
+ * - Argument 1 (int): the speed of the movement in pixels per second
+ * - Return value (movement): a handle to the movement created
  *
  * @param l the Lua context that is calling this function
  */
-int Script::l_movement_remove(lua_State *l) {
+int Script::l_random_movement_create(lua_State *l) {
 
   Script *script;
   called_by_script(l, 1, &script);
-  const std::string &movement_id = luaL_checkstring(l, 1);
+  int speed = luaL_checkinteger(l, 1);
 
-  Movement *movement = script->get_movement(movement_id);
+  Movement *movement = new RandomMovement(speed, 0);
+  int movement_handle = script->create_movement_handle(*movement);
+  lua_pushinteger(l, movement_handle);
 
-  script->created_movements.remove(movement);
-  script->movements.erase(movement_id);
-  delete movement;
-
-  return 0;
+  return 1;
 }
 
 /**
  * @brief Returns the value of a property of a movement.
  *
- * - Argument 1 (string): id ofo the movement
+ * - Argument 1 (movement): a movement
  * - Argument 2 (string): key of the property to get (the keys accepted depend of the movement type)
  * - Return value (string): the value of this property
  *
@@ -925,11 +908,11 @@ int Script::l_movement_get_property(lua_State *l) {
 
   Script *script;
   called_by_script(l, 2, &script);
-  const std::string &movement_id = luaL_checkstring(l, 1);
+  int movement_handle = luaL_checkinteger(l, 1);
   const std::string &key = luaL_checkstring(l, 2);
 
-  Movement *movement = script->get_movement(movement_id);
-  const std::string &value = movement->get_property(key);
+  Movement &movement = script->get_movement(movement_handle);
+  const std::string &value = movement.get_property(key);
   lua_pushstring(l, value.c_str());
 
   return 1;
@@ -938,7 +921,7 @@ int Script::l_movement_get_property(lua_State *l) {
 /**
  * @brief Sets a property of a movement.
  *
- * - Argument 1 (string): id ofo the movement
+ * - Argument 1 (movement): a movement
  * - Argument 2 (string): key of the property to set (the keys accepted depend of the movement type)
  * - Argument 3 (string): the new value of this property
  *
@@ -948,12 +931,12 @@ int Script::l_movement_set_property(lua_State *l) {
 
   Script *script;
   called_by_script(l, 3, &script);
-  const std::string &movement_id = luaL_checkstring(l, 1);
+  int movement_handle = luaL_checkinteger(l, 1);
   const std::string &key = luaL_checkstring(l, 2);
   const std::string &value = luaL_checkstring(l, 3);
 
-  Movement *movement = script->get_movement(movement_id);
-  movement->set_property(key, value);
+  Movement &movement = script->get_movement(movement_handle);
+  movement.set_property(key, value);
 
   return 0;
 }

@@ -867,8 +867,12 @@ Movement* MapEntity::get_movement() {
 /**
  * @brief Sets the movement of this entity.
  *
- * If a movement was already set, it is not deleted (so that you can reassign
- * it later). If you want to delete it, call clear_movement() first.
+ * Once you have called this function, the pointer to the movement is managed by the entity only.
+ * Never delete it from outside! The movement will be deleted if clear_movement() is called
+ * or when the entity is destroyed.
+ *
+ * If a previous movement was already set, it is not deleted (so that you can reassign it later).
+ * Thus, most of the time, you should call clear_movement() before set_movement() to avoid a memory leak.
  *
  * @param movement the movement to set, or NULL to set no movement
  */
@@ -886,11 +890,11 @@ void MapEntity::set_movement(Movement *movement) {
 }
 
 /**
- * @brief Removes the movement of this entity.
+ * @brief Destroys the movement of this entity.
  *
  * The entity immediately stops moving.
  * The movement object will be destroyed at the next cycle,
- * thus this function can be called by the movement itself.
+ * thus this function can be called by the movement object itself.
  */
 void MapEntity::clear_movement() {
 

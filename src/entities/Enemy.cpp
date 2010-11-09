@@ -76,6 +76,10 @@ Enemy::Enemy(const ConstructionParameters &params):
  * @brief Destructor.
  */
 Enemy::~Enemy() {
+
+  if (get_movement() != normal_movement) {
+    delete normal_movement;
+  }
 }
 
 /**

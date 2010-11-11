@@ -43,7 +43,7 @@ end
 
 function jump_from_bed()
   sol.map.hero_set_visible(true)
-  sol.map.hero_jump(4, 24, true)
+  sol.map.hero_start_jumping(4, 24, true)
   sol.map.hud_set_pause_enabled(true)
   sol.main.sprite_set_animation(bed_sprite, "empty_open")
   sol.main.play_sound("hero_lands");

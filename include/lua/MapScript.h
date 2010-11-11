@@ -52,7 +52,7 @@ class MapScript: public GameScript {
       l_hero_set_direction,
       l_hero_align_on_sensor,
       l_hero_walk,
-      l_hero_jump,
+      l_hero_start_jumping,
       l_hero_start_victory_sequence,
       l_npc_get_position,
       l_npc_set_position,

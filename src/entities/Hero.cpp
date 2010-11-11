@@ -41,6 +41,8 @@
 #include "hero/SwimmingState.h"
 #include "hero/TreasureState.h"
 #include "hero/VictoryState.h"
+#include "hero/BoomerangState.h"
+#include "hero/BowState.h"
 #include "movements/RectilinearMovement.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Debug.h"
@@ -1798,5 +1800,19 @@ void Hero::start_running() {
  */
 void Hero::start_grabbing() {
   set_state(new GrabbingState(*this));
+}
+
+/**
+ * @brief Starts shooting a boomerang.
+ */
+void Hero::start_boomerang() {
+  set_state(new BoomerangState(*this));
+}
+
+/**
+ * @brief Starts shooting an arrow with a bow.
+ */
+void Hero::start_bow() {
+  set_state(new BowState(*this));
 }
 

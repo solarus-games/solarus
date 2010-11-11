@@ -49,7 +49,7 @@ class Treasure {
     ~Treasure();
 
     ItemProperties& get_item_properties();
-    const std::string & get_item_name() const;
+    const std::string& get_item_name() const;
     int get_variant() const;
     int get_savegame_variable() const;
     bool is_saved() const;

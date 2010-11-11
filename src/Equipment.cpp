@@ -21,6 +21,7 @@
 #include "InventoryItem.h"
 #include "ItemProperties.h"
 #include "Map.h"
+#include "lua/ItemScript.h"
 #include "lowlevel/System.h"
 #include "lowlevel/IniFile.h"
 #include "lowlevel/Debug.h"
@@ -48,12 +49,19 @@ Equipment::Equipment(Savegame &savegame):
  */
 Equipment::~Equipment() {
 
-  std::map<std::string, ItemProperties*>::const_iterator it;
-
-  for (it = item_properties.begin(); it != item_properties.end(); it++) {
-    delete it->second;
+  {
+    std::map<std::string, ItemProperties*>::const_iterator it;
+    for (it = item_properties.begin(); it != item_properties.end(); it++) {
+      delete it->second;
+    }
   }
-  item_properties.clear();
+
+  {
+    std::map<std::string, ItemScript*>::const_iterator it;
+    for (it = item_scripts.begin(); it != item_scripts.end(); it++) {
+      delete it->second;
+    }
+  }
 }
 
 /**
@@ -61,7 +69,17 @@ Equipment::~Equipment() {
  * @param game the game
  */
 void Equipment::set_game(Game &game) {
+
+  Debug::assert(this->game == NULL, "The game is already set");
+
   this->game = &game;
+
+  // create the scripts
+  std::map<std::string, ItemProperties*>::const_iterator it;
+  for (it = item_properties.begin(); it != item_properties.end(); it++) {
+    ItemProperties *properties = it->second;
+    item_scripts[properties->get_name()] = new ItemScript(game, *properties);
+  }
 }
 
 /**

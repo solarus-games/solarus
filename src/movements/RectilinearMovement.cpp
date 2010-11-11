@@ -28,6 +28,7 @@
  * indicates whether the movement should ignore obstacles
  */
 RectilinearMovement::RectilinearMovement(bool ignore_obstacles):
+  Movement(ignore_obstacles),
   x_speed(0),
   y_speed(0),
   next_move_date_x(System::now()),

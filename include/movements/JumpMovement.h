@@ -23,17 +23,27 @@
 /**
  * @brief Movement of an entity that jumps towards a direction.
  *
- * This movement is used by the hero when he jumps from a cliff
- * or when he uses the feather.
+ * Properties:
+ * - direction8
+ * - length
+ * - speed
+ * - ignore_obstacles
  */
 class JumpMovement: public PixelMovement {
 
   private:
 
-    static const std::string basic_trajectories[];
-    int jump_height;
+    static const std::string basic_trajectories[];		/**< one-pixel trajectory of each direction s*/
 
-    static const std::string compute_trajectory(int direction8, int length);
+    // properties
+    int direction8;						/**< direction of the jump (0 to 7) */
+    int length;							/**< jump length in pixels */
+    int speed;							/**< speed in pixels per second */
+
+    // state
+    int jump_height;						/**< current height of the object while jumping */
+
+    void restart();
 
   protected:
 
@@ -41,11 +51,17 @@ class JumpMovement: public PixelMovement {
 
   public:
 
-    JumpMovement(int direction8, int length, bool ignore_obstacles, uint32_t movement_delay = 0);
+    JumpMovement(int direction8, int length, int speed, bool ignore_obstacles);
     ~JumpMovement();
 
+    void set_direction8(int direction8);
+    void set_length(int length);
+    void set_speed(int speed);
+
     int get_jump_height();
-};
+
+    virtual const std::string get_property(const std::string &key);
+    virtual void set_property(const std::string &key, const std::string &value);};
 
 #endif
 

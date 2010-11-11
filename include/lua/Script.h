@@ -85,6 +85,7 @@ class Script {
       l_pixel_movement_create,
       l_random_movement_create,
       l_path_movement_create,
+      l_jump_movement_create,
       l_movement_get_property,
       l_movement_set_property;
 

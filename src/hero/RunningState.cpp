@@ -168,7 +168,7 @@ void Hero::RunningState::notify_movement_tried(bool success) {
 
   if (!success && phase == 1) {
     int opposite_direction = (get_sprites().get_animation_direction8() + 4) % 8;
-    hero.set_movement(new JumpMovement(opposite_direction, 32, false, 15));
+    hero.set_movement(new JumpMovement(opposite_direction, 32, 64, false));
     get_sprites().set_animation_hurt();
     Sound::play("explosion");
     phase++;

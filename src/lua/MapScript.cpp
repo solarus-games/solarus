@@ -87,6 +87,9 @@ void MapScript::register_available_functions() {
     { "hero_walk", l_hero_walk },
     { "hero_start_jumping", l_hero_start_jumping },
     { "hero_start_victory_sequence", l_hero_start_victory_sequence },
+    { "hero_start_boomerang", l_hero_start_boomerang },
+    { "hero_start_bow", l_hero_start_bow },
+    { "hero_start_running", l_hero_start_running },
     { "npc_start_movement", l_npc_start_movement },
     { "npc_get_sprite", l_npc_get_sprite },
     { "npc_remove", l_npc_remove },
@@ -518,6 +521,48 @@ int MapScript::l_hero_start_victory_sequence(lua_State *l) {
   called_by_script(l, 0, &script);
 
   script->hero.start_victory();
+
+  return 0;
+}
+
+/**
+ * @brief Makes the hero shoot a boomerang.
+ * @param l the Lua context that is calling this function
+ */
+int MapScript::l_hero_start_boomerang(lua_State *l) {
+
+  MapScript *script;
+  called_by_script(l, 0, &script);
+
+  script->hero.start_boomerang();
+
+  return 0;
+}
+
+/**
+ * @brief Makes the hero shoot an arrow with a bow.
+ * @param l the Lua context that is calling this function
+ */
+int MapScript::l_hero_start_bow(lua_State *l) {
+
+  MapScript *script;
+  called_by_script(l, 0, &script);
+
+  script->hero.start_bow();
+
+  return 0;
+}
+
+/**
+ * @brief Makes the hero run.
+ * @param l the Lua context that is calling this function
+ */
+int MapScript::l_hero_start_running(lua_State *l) {
+
+  MapScript *script;
+  called_by_script(l, 0, &script);
+
+  script->hero.start_running();
 
   return 0;
 }

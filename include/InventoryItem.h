@@ -44,7 +44,7 @@ class InventoryItem {
     uint32_t sound_delay;	/**< delay before playing the sound again */
     uint32_t next_sound_date;	/**< when the sound is played again */
     int direction_pressed8;	/**< direction defined by the directional keys pressed when starting using this item
-				 * (0 to 8) or -1 if there is no direction */
+				 * (0 to 7) or -1 if there is no direction */
 
     void start_bottle();
     void update_bottle();

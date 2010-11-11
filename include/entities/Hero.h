@@ -60,6 +60,8 @@ class Hero: public MapEntity {
     class StairsState;				/**< the hero is being moved by stairs */
     class VictoryState;				/**< the hero is make a victory sequence with his sword */
     class InventoryItemState;			/**< the hero is currently using an item from the inventory */
+    class BoomerangState;			/**< the hero is shooting a boomerang */
+    class BowState;				/**< the hero is shooting an arrow with a bow */
     class FreezedState;				/**< the hero cannot move for various possible reasons,
 						 * including an instruction from the script */
 
@@ -292,6 +294,8 @@ class Hero: public MapEntity {
     void start_lifting(DestructibleItem &destructible_item);
     void start_running();
     void start_grabbing();
+    void start_boomerang();
+    void start_bow();
 };
 
 #endif

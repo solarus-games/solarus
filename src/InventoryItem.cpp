@@ -77,7 +77,6 @@ int InventoryItem::get_variant() {
 void InventoryItem::start() {
 
   Hero &hero = game.get_hero();
-  Map &map = game.get_current_map();
   Equipment &equipment = game.get_equipment();
 
   this->finished = false;
@@ -90,16 +89,10 @@ void InventoryItem::start() {
     start_bottle();
   }
   else {
- 
-    if (item_name == "boomerang") {
 
-      if (map.get_entities().is_boomerang_present()) {
-	finished = true;
-      }
-      else {
-	hero.get_sprites().set_animation_boomerang();
-	this->direction_pressed8 = game.get_controls().get_wanted_direction8();
-      }
+    if (item_name == "boomerang") {
+      hero.start_boomerang();
+      finished = true;
     }
     else if (item_name == "bow") {
 
@@ -109,8 +102,9 @@ void InventoryItem::start() {
       }
       else {
 	equipment.remove_item_amount("bow", 1);
-	hero.get_sprites().set_animation_bow();
+        hero.start_bow();
       }
+      finished = true;
     }
     else if (item_name == "pegasus_shoes") {
 
@@ -155,7 +149,6 @@ void InventoryItem::start() {
  */
 void InventoryItem::update() {
 
-  Hero &hero = game.get_hero();
   Equipment &equipment = game.get_equipment();
 
   if (item_sound_id.size() != 0) {
@@ -171,43 +164,8 @@ void InventoryItem::update() {
     update_bottle();
   }
   else {
-   
-    if (item_name == "boomerang") {
-      
-      if (hero.is_animation_finished()) {
-	finished = true;
 
-	if (direction_pressed8 == -1) {
-	  // the player can press the diagonal arrows before or after the boomerang key
-	  direction_pressed8 = game.get_controls().get_wanted_direction8();
-	}
-
-	int boomerang_direction8;
-	if (direction_pressed8 == -1 || direction_pressed8 % 2 == 0) {
-	  boomerang_direction8 = hero.get_animation_direction() * 2;
-	}
-	else {
-	  boomerang_direction8 = direction_pressed8;
-	}
-	double angle = Geometry::degrees_to_radians(boomerang_direction8 * 45);
-	game.get_current_map().get_entities().add_entity(new Boomerang(hero, angle));
-      }
-    }
-    else if (item_name == "bow") {
-
-      if (hero.is_animation_finished()) {
-	finished = true;
-	game.get_current_map().get_entities().add_entity(new Arrow(hero));
-	Sound::play("bow");
-      }
-    }
-    else if (item_name == "pegasus_shoes") {
-
-      // it's immediately finished for us : from the point of view of the InventoryItem class,
-      // the only effect of the speed shoes is to make the hero take its state "running"
-      finished = true;
-    }
-    else if (item_name == "apples" || item_name == "pains_au_chocolat" || item_name == "croissants") {
+    if (item_name == "apples" || item_name == "pains_au_chocolat" || item_name == "croissants") {
 
       if (!game.is_showing_message()) {
 
@@ -319,7 +277,7 @@ void InventoryItem::update_bottle() {
 
     // bottle with a fairy
     else if (variant == 6) {
-      
+
       int answer = game.get_dialog_box().get_last_answer();
 
       if (answer == 1) {

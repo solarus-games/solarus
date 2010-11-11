@@ -265,7 +265,7 @@ void Hero::update_ground() {
 
       // a special ground is displayed under the hero and it's time to play a sound
       double speed = ((RectilinearMovement*) get_movement())->get_speed();
-      next_ground_date = now + std::max(150, (int) (2000 / speed));
+      next_ground_date = now + std::max(150, (int) (20000 / speed));
       if (sprites->is_walking() && state->is_touching_ground()) {
         sprites->play_ground_sound();
       }

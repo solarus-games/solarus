@@ -98,6 +98,9 @@ creates a movement of type PixelMovement that will be accessible from this scrip
 - <tt>sol.main.random_movement_create(speed)</tt>:
 creates a movement of type RandomMovement that will be accessible from this script
 
+- <tt>sol.main.path_movement_create(path, speed)</tt>:
+creates a movement of type PathMovement that will be accessible from this script
+
 - <tt>sol.main.movement_get_property(movement, key)</tt>:
 returns a string property from a movement
 

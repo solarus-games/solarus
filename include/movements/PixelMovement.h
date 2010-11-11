@@ -43,7 +43,7 @@ class PixelMovement: public Movement {
     std::string trajectory_string;				/**< String representation of the trajectory, like "dx1 dy1  dx2 dy2  dx3 dy3 ..." */
     uint32_t next_move_date;					/**< Date of the next move */
     uint32_t delay;						/**< Delay in milliseconds between two translations. */
-    bool loop;							/**< Should the movement return to the beginning once finished? */
+    bool loop;							/**< Should the trajectory return to the beginning once finished? */
 
     // current state
 

@@ -46,6 +46,7 @@ sol.main.sprite_fade(sprite, direction)
 sol.main.pixel_movement_create(trajectory, delay)
 sol.main.random_movement_create(speed)
 sol.main.path_movement_create(path, speed)
+sol.main.random_path_movement_create(speed)
 sol.main.jump_movement_create(direction8, length)
 sol.main.movement_get_property(movement, key)
 sol.main.movement_set_property(movement, key, value)
@@ -109,9 +110,7 @@ sol.map.hero_jump(direction, length, ignore_obstacles)
 sol.map.hero_start_victory_sequence()
 sol.map.hero_set_visible(visible)
 sol.map.npc_set_position(npc, x, y)
-sol.map.npc_walk(npc, path, loop, ignore_obstacles)
-sol.map.npc_random_walk(npc)
-sol.map.npc_jump(npc, direction, length, ignore_obstacles)
+sol.map.npc_start_movement(npc, movement)
 sol.map.npc_get_sprite(entity, sprite_id)
 sol.map.npc_remove(npc)
 sol.map.chest_set_open(chest_name, bool open)
@@ -139,9 +138,6 @@ sol.map.sensor_remove(sensor_name)
 sol.map.door_open(door_prefix)
 sol.map.door_close(door_prefix)
 sol.map.door_set_open(door_name, open)
-
-TODO: prochaine étape = remplacer sol.map.npc_random_walk, sol.map.npc_jump et sol.map.npc_walk
-par sol.map.npc_start_movement(movement), et rendre scriptables PathMovement et JumpMovement
 
 
 Module enemy : activé pour les scripts attachés à un type d'ennemi précis (sol.enemy désigne l'ennemi courant)

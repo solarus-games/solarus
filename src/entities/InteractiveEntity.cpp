@@ -404,7 +404,7 @@ void InteractiveEntity::notify_position_changed() {
   if (subtype == NON_PLAYING_CHARACTER) {
 
     if (get_sprite().get_current_animation() == "walking") {
-      PathMovement *movement = (PathMovement*) get_movement();
+      PathMovement *movement = (PathMovement*) get_movement(); // FIXME: the movement may be an instance of something else now
       int movement_direction = movement->get_current_direction();
       get_sprite().set_current_direction(animation_directions[movement_direction]);
     }

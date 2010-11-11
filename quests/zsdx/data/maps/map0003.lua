@@ -2,6 +2,7 @@
 -- Outside world C1 script --
 -----------------------------
 
+monkey_sprite = nil
 monkey_jumps = 0
 
 -- Function called when the map starts.
@@ -11,6 +12,8 @@ function event_map_started(destination_point_name)
    if sol.game.savegame_get_boolean(24) then
       -- remove the monkey from Link's house entrance
       sol.map.npc_remove("monkey")
+   else
+      monkey_sprite = sol.map.npc_get_sprite("monkey")
    end
 
    if sol.game.savegame_get_boolean(89) then
@@ -19,9 +22,16 @@ function event_map_started(destination_point_name)
    end
 
    -- make the NPCs walk
-   sol.map.npc_random_walk("hat_man")
-   sol.map.npc_random_walk("how_to_save_npc")
-   sol.map.npc_random_walk("grand_son")
+   random_walk("hat_man")
+   random_walk("how_to_save_npc")
+   random_walk("grand_son")
+end
+
+function random_walk(npc_name)
+
+   m = sol.main.random_path_movement_create(32)
+   sol.map.npc_start_movement(npc_name, m)
+   sol.main.sprite_set_animation(sol.map.npc_get_sprite(npc_name), "walking")
 end
 
 -- Function called when the player wants to talk to a non-playing character.
@@ -58,7 +68,10 @@ function event_dialog_finished(first_message_id, answer)
       -- make the monkey leave
       sol.map.hero_freeze()
       sol.main.play_sound("monkey")
-      sol.map.npc_jump("monkey", 1, 24, true)
+      m = sol.main.jump_movement_create(1, 24)
+      sol.main.movement_set_property(m, "ignore_obstacles", true)
+      sol.map.npc_start_movement("monkey", m)
+      sol.main.sprite_set_animation(monkey_sprite, "jumping")
       monkey_jumps = 1
       sol.game.savegame_set_boolean(24, true)
 
@@ -76,7 +89,10 @@ function event_npc_movement_finished(npc_name)
    elseif monkey_jumps == 2 then
       -- second jump finished: start the last jump
       sol.main.play_sound("monkey")
-      sol.map.npc_jump("monkey", 1, 64, true)
+      m = sol.main.jump_movement_create(1, 32)
+      sol.main.movement_set_property(m, "ignore_obstacles", true)
+      sol.map.npc_start_movement("monkey", m)
+      sol.main.sprite_set_animation(monkey_sprite, "jumping")
       monkey_jumps = 3
    else
       -- last jump finished: remove the monkey from the map and unfreeze the hero
@@ -89,7 +105,10 @@ end
 function monkey_timer()
    -- start the second jump
    sol.main.play_sound("monkey")
-   sol.map.npc_jump("monkey", 2, 56, true)
+   m = sol.main.jump_movement_create(2, 56)
+   sol.main.movement_set_property(m, "ignore_obstacles", true)
+   sol.map.npc_start_movement("monkey", m)
+   sol.main.sprite_set_animation(monkey_sprite, "jumping")
    monkey_jumps = 2
 end
 

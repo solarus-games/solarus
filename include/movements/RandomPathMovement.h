@@ -26,6 +26,9 @@
  * The movement is composed of small random moves. Each
  * random move goes to one of the 4 main directions
  * and with a length that is a multiple of 8 pixels.
+ *
+ * Properties:
+ * - speed
  */
 class RandomPathMovement: public PathMovement {
 
@@ -37,6 +40,9 @@ class RandomPathMovement: public PathMovement {
     void update();
     bool is_finished();
 
+    // properties
+    virtual const std::string get_property(const std::string &key);
+    virtual void set_property(const std::string &key, const std::string &value);
 };
 
 #endif

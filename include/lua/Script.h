@@ -85,6 +85,7 @@ class Script {
       l_pixel_movement_create,
       l_random_movement_create,
       l_path_movement_create,
+      l_random_path_movement_create,
       l_jump_movement_create,
       l_movement_get_property,
       l_movement_set_property;
@@ -105,6 +106,7 @@ class Script {
     // movements
     int create_movement_handle(Movement &movement);
     Movement& get_movement(int movement_handle);
+    Movement& start_movement(int movement_handle);
 
     // debugging
     void print_stack();

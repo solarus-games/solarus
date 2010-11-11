@@ -87,9 +87,7 @@ void MapScript::register_available_functions() {
     { "hero_walk", l_hero_walk },
     { "hero_jump", l_hero_jump },
     { "hero_start_victory_sequence", l_hero_start_victory_sequence },
-    { "npc_walk", l_npc_walk },
-    { "npc_random_walk", l_npc_random_walk },
-    { "npc_jump", l_npc_jump },
+    { "npc_start_movement", l_npc_start_movement },
     { "npc_get_sprite", l_npc_get_sprite },
     { "npc_remove", l_npc_remove },
     { "interactive_entity_get_sprite", l_interactive_entity_get_sprite },
@@ -576,77 +574,27 @@ int MapScript::l_npc_set_position(lua_State *l) {
 }
 
 /**
- * @brief Makes an NPC walk with respect to a path.
+ * @brief Makes an NPC move.
  *
  * - Argument 1 (string): name of the NPC to make move
- * - Argument 2 (string): the path (each character is a direction between '0' and '7'
- * - Argument 3 (boolean): true to make the movement loop
- * - Argument 4 (boolean): true to make the movement ignore obstacles
+ * - Argument 2 (movement): the movement to set
  *
  * @param l the Lua context that is calling this function
  */
-int MapScript::l_npc_walk(lua_State *l) {
+int MapScript::l_npc_start_movement(lua_State *l) {
 
   MapScript *script;
-  called_by_script(l, 4, &script);
+  called_by_script(l, 2, &script);
 
   const std::string &name = luaL_checkstring(l, 1);
-  const std::string &path = luaL_checkstring(l, 2);
-  bool loop = lua_toboolean(l, 3) != 0;
-  bool ignore_obstacles = lua_toboolean(l, 4) != 0;
+  int movement_handle = luaL_checkinteger(l, 2);
 
   MapEntities &entities = script->map.get_entities();
   InteractiveEntity *npc = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, name);
-  npc->walk(path, loop, ignore_obstacles);
+  Movement &movement = script->start_movement(movement_handle);
 
-  return 0;
-}
-
-/**
- * @brief Makes an NPC walk randomly.
- *
- * - Argument 1 (string): name of the NPC to make move
- *
- * @param l the Lua context that is calling this function
- */
-int MapScript::l_npc_random_walk(lua_State *l) {
-
-  MapScript *script;
-  called_by_script(l, 1, &script);
-
-  const std::string &name = luaL_checkstring(l, 1);
-
-  MapEntities &entities = script->map.get_entities();
-  InteractiveEntity *npc = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, name);
-  npc->walk_random();
-
-  return 0;
-}
-
-/**
- * @brief Makes an NPC jump into a direction.
- *
- * The NPC's sprite must have an animation "jumping".
- * - Argument 1 (string): name of the NPC to make move
- * - Argument 2 (integer): the jump direction, between 0 and 7
- * - Argument 3 (integer): the jump length in pixels
- * - Argument 4 (boolean): true to make the movement ignore obstacles
- *
- * @param l the Lua context that is calling this function
- */
-int MapScript::l_npc_jump(lua_State *l) {
-
-  MapScript *script;
-  called_by_script(l, 4, &script);
-
-  const std::string &name = luaL_checkstring(l, 1);
-  int direction = luaL_checkinteger(l, 2);
-  int length = luaL_checkinteger(l, 3);
-  bool ignore_obstacles = lua_toboolean(l, 4) != 0;
-
-  MapEntities &entities = script->map.get_entities();
-  InteractiveEntity *npc = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, name);
-  npc->jump(direction, length, ignore_obstacles);
+  npc->clear_movement();
+  npc->set_movement(&movement);
 
   return 0;
 }

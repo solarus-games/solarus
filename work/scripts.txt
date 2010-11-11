@@ -151,6 +151,9 @@ sol.item.add_amount(amount)
 sol.item.set_amount(amount)
 sol.item.set_movement(movement_id)
 sol.item.set_finished()
+event_appear()
+event_obtaining()
+event_obtained()
 event_use()
 
 

@@ -35,8 +35,9 @@ class Equipment {
     Savegame &savegame;							/**< the savegame encapsulated by this equipment object */
     Game *game;								/**< the current game (may be NULL when the savegame is loaded outside a game) */
 
-    // static properties of items
+    // items
     std::map<std::string, ItemProperties*> item_properties;		/**< static properties of each item (loaded from the file items.dat) */
+    std::map<std::string, ItemScript*> item_scripts;			/**< the script of each item (only when there is a game) */
 
     // magic bar decrease handling
     uint32_t magic_decrease_delay;					/**< when the magic bar decreases with time,
@@ -133,6 +134,9 @@ class Equipment {
     // giving items
     void set_initial_items();
     void add_item(const std::string &item_name, int variant);
+
+    // scripts
+    ItemScript &get_item_script(const std::string &item_name);
 };
 
 #endif

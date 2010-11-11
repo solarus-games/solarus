@@ -16,6 +16,11 @@ Types de scripts :
 - lua/EnemyScript : script d'ennemi : comme map, avec module enemy (qui désigne l'ennemi courant) en +
 - lua/ItemScript : script d'item : comme map, avec module item (qui désigne l'item courant) en +
 
+TODO : ne pas utiliser d'héritage (ItemScript n'est pas le script de la map, la map peut changer sans recharger les scripts d'item)
+Chaque type de script (MapScript et ItemScript pour l'instant) devrait hériter directement de Script, et sa fonction
+register_available_functions activerait différents modules parmi main, game (en redéfinissant get_game()),
+map (en redéfinissant get_map(), item (en redéfinissant get_item_name()).
+
 
 Module main : fonctions disponibles pour tous les scripts même en dehors d'un Game
 
@@ -146,19 +151,15 @@ Module item : activé pour les scripts attachés à un item précis (sol.item d�
 Les scripts d'items possèdent ce module en plus de main, game et map.
 
 sol.item.get_amount()
-sol.item.remove_amount(amount)
-sol.item.add_amount(amount)
 sol.item.set_amount(amount)
+sol.item.add_amount(amount)
+sol.item.remove_amount(amount)
 sol.item.set_movement(movement_id)
 sol.item.set_finished()
 event_appear()
 event_obtaining()
 event_obtained()
 event_use()
-
-
-=> fonctions manquantes dans d'autres modules :
-- sol.map.hero_set_state() ? ou plusieurs fonctions, une par état activable par les scripts : dropping_bomb, boomerang, shooting_arrow, jumping (direction8, speed, ignore_obstacles), running
 
 
 Questions ouvertes :

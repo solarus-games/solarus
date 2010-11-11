@@ -70,9 +70,26 @@ Script::~Script() {
 
 /**
  * @brief Initializes the Lua context and loads the script from a file.
+ *
+ * The script file must exist.
+ *
  * @param script_name name of a Lua script file (without extension)
  */
 void Script::load(const std::string &script_name) {
+
+  load_if_exists(script_name);
+  Debug::assert(context != NULL,
+      StringConcat() << "The script '" << script_name << "' does not exist");
+}
+
+/**
+ * @brief Initializes the Lua context and loads the script from a file.
+ *
+ * If the script file does not exist, the field context is NULL.
+ *
+ * @param script_name name of a Lua script file (without extension)
+ */
+void Script::load_if_exists(const std::string &script_name) {
 
   // initialize fields
   next_sprite_handle = 1;
@@ -116,13 +133,18 @@ void Script::load(const std::string &script_name) {
   }
 #endif
 
-  // load the file
-  size_t size;
-  char *buffer;
-  FileTools::data_file_open_buffer(file_name, &buffer, &size);
-  luaL_loadbuffer(context, buffer, size, file_name.c_str());
-  FileTools::data_file_close_buffer(buffer);
-  lua_call(context, 0, 0);
+  if (FileTools::data_file_exists(file_name)) {
+    // load the file
+    size_t size;
+    char *buffer;
+    FileTools::data_file_open_buffer(file_name, &buffer, &size);
+    luaL_loadbuffer(context, buffer, size, file_name.c_str());
+    FileTools::data_file_close_buffer(buffer);
+    lua_call(context, 0, 0);
+  }
+  else {
+    context = NULL;
+  }
 }
 
 /**

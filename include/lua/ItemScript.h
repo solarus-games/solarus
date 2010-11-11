@@ -1,0 +1,68 @@
+/*
+ * Copyright (C) 2009 Christopho, Solarus - http://www.solarus-engine.org
+ *
+ * Solarus is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Solarus is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+#ifndef SOLARUS_ITEM_SCRIPT_H
+#define SOLARUS_ITEM_SCRIPT_H
+
+#include "Common.h"
+#include "lua/MapScript.h"
+
+/**
+ * @brief Represents the Lua script of an item of the equipment.
+ *
+ * Such a script only exist in-game since it manages the dynamic behavior of an item.
+ * The static properties of an item are handled by the ItemProperties class.
+ * If the Lua file of the item does not exist, this class has no effect.
+ *
+ * This class makes the interface between the engine C++ code and the Lua script of an item.
+ */
+class ItemScript: public MapScript {
+
+  private:
+
+    Game &game;						/**< the game */
+    ItemProperties &item_properties;			/**< static properties of the item */
+
+    PickableItem *pickable_item;			/**< the pickable item that just appeared in event_appear(), or NULL */
+    InventoryItem *inventory_item;			/**< the inventory item that is being used when event_used() is called,
+    							 * or NULL if no inventory item is being used */
+
+    static FunctionAvailableToScript
+      l_get_amount,
+      l_set_amount,
+      l_add_amount,
+      l_remove_amount,
+      l_start_movement,
+      l_set_finished;
+
+  protected:
+
+    void register_available_functions();
+    void called_by_script(lua_State *context, int nb_arguments, ItemScript **item_script);
+
+  public:
+
+    ItemScript(Game &game, ItemProperties &item_properties);
+    ~ItemScript();
+
+    void event_appear(PickableItem &pickable_item);
+    void event_obtaining(const Treasure &treasure);
+    void event_obtained(const Treasure &treasure);
+    void event_use(InventoryItem &inventory_item);
+};
+
+#endif
+

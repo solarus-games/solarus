@@ -112,6 +112,7 @@ class Camera;
 class Script;
 class GameScript;
 class MapScript;
+class ItemScript;
 
 // HUD
 class HUD;

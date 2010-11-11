@@ -92,6 +92,7 @@ class Script {
 
     // initialization
     void load(const std::string &script_name);
+    void load_if_exists(const std::string &script_name);
     virtual void register_available_functions();
 
     // timers

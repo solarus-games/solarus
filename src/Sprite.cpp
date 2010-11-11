@@ -330,7 +330,6 @@ void Sprite::start_animation() {
  */
 void Sprite::restart_animation() {
   set_current_frame(0);
-  set_suspended(false);
   set_paused(false);
 }
 

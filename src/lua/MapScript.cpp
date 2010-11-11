@@ -85,7 +85,7 @@ void MapScript::register_available_functions() {
     { "npc_set_position", l_npc_set_position },
     { "hero_align_on_sensor", l_hero_align_on_sensor },
     { "hero_walk", l_hero_walk },
-    { "hero_jump", l_hero_jump },
+    { "hero_start_jumping", l_hero_start_jumping },
     { "hero_start_victory_sequence", l_hero_start_victory_sequence },
     { "npc_start_movement", l_npc_start_movement },
     { "npc_get_sprite", l_npc_get_sprite },
@@ -493,7 +493,7 @@ int MapScript::l_hero_walk(lua_State *l) {
  *
  * @param l the Lua context that is calling this function
  */
-int MapScript::l_hero_jump(lua_State *l) {
+int MapScript::l_hero_start_jumping(lua_State *l) {
 
   MapScript *script;
   called_by_script(l, 3, &script);

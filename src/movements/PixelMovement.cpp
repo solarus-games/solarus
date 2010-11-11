@@ -147,7 +147,7 @@ bool PixelMovement::get_loop() {
 /**
  * @brief Sets whether this movement loops when the end of the trajectory is reached.
  *
- * Is the movement was finished and loops is set to true, the movement restarts.
+ * Is the movement was finished and loop is set to true, the movement restarts.
  *
  * @param loop true to make the movement loop
  */

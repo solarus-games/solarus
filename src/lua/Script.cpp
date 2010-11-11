@@ -22,6 +22,7 @@
 #include "movements/Movement.h"
 #include "movements/PixelMovement.h"
 #include "movements/RandomMovement.h"
+#include "movements/PathMovement.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/Music.h"
 #include "lowlevel/FileTools.h"
@@ -150,6 +151,7 @@ void Script::register_available_functions() {
 
     { "pixel_movement_create", l_pixel_movement_create },
     { "random_movement_create", l_random_movement_create },
+    { "path_movement_create", l_path_movement_create },
     { "movement_get_property", l_movement_get_property },
     { "movement_set_property", l_movement_set_property },
 
@@ -889,6 +891,29 @@ int Script::l_random_movement_create(lua_State *l) {
   int speed = luaL_checkinteger(l, 1);
 
   Movement *movement = new RandomMovement(speed, 0);
+  int movement_handle = script->create_movement_handle(*movement);
+  lua_pushinteger(l, movement_handle);
+
+  return 1;
+}
+
+/**
+ * @brief Creates a movement of type PathMovement that will be accessible from the script.
+ *
+ * - Argument 1 (string): the square-by-square trajectory of the movement
+ * - Argument 2 (int): the speed in pixels per second
+ * - Return value (movement): a handle to the movement created
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::l_path_movement_create(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 2, &script);
+  const std::string &path = luaL_checkstring(l, 1);
+  int speed = luaL_checkinteger(l, 2);
+
+  Movement *movement = new PathMovement(path, speed, false, false, false);
   int movement_handle = script->create_movement_handle(*movement);
   lua_pushinteger(l, movement_handle);
 

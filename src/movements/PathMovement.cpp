@@ -47,7 +47,7 @@ const std::string PathMovement::elementary_moves[] = {
 PathMovement::PathMovement(const std::string &path, int speed,
     bool loop, bool ignore_obstacles, bool must_be_aligned):
 
-  PixelMovement("", loop, 0, ignore_obstacles),
+  PixelMovement("", false, 0, ignore_obstacles),
   current_direction(6),
   total_distance_covered(0),
   stopped_by_obstacle(false),
@@ -77,6 +77,39 @@ void PathMovement::set_path(const std::string &path) {
 
   this->initial_path = path;
   restart();
+}
+
+/**
+ * @brief Sets the speed of this movement.
+ * @param speed the speed in pixels per second
+ */
+void PathMovement::set_speed(int speed) {
+  this->speed = speed;
+}
+
+/**
+ * @brief Sets whether this movement restarts when the path is finished
+ *
+ * Is the movement was finished and loop is set to true, the movement restarts.
+ *
+ * @param loop true to make the movement loop
+ */
+void PathMovement::set_loop(bool loop) {
+
+  this->loop = loop;
+
+  if (PixelMovement::is_finished() && remaining_path.size() == 0 && loop) {
+    restart();
+  }
+}
+
+/**
+ * @brief Sets whether the entity is snapped to the map grid before the path starts.
+ * @param snap_to_grid true to make the entity aligned to the grid
+ */
+void PathMovement::set_snap_to_grid(bool snap_to_grid) {
+
+  this->snap_to_grid = snap_to_grid;
 }
 
 /**
@@ -378,5 +411,91 @@ const std::string PathMovement::create_random_path() {
   }
 
   return path;
+}
+
+/**
+ * @brief Returns the value of a property of this movement.
+ *
+ * Accepted keys:
+ * - path
+ * - speed
+ * - loop
+ * - ignore_obstacles
+ * - snap_to_grid
+ *
+ * @param key key of the property to get
+ * @return the corresponding value as a string
+ */
+const std::string PathMovement::get_property(const std::string &key) {
+
+  std::ostringstream oss;
+
+  if (key == "path") {
+    oss << initial_path;
+  }
+  else if (key == "speed") {
+    oss << speed;
+  }
+  else if (key == "loop") {
+    oss << loop;
+  }
+  else if (key == "ignore_obstacles") {
+    oss << are_obstacles_ignored();
+  }
+  else if (key == "snap_to_grid") {
+    oss << snap_to_grid;
+  }
+  else {
+    Debug::die(StringConcat() << "Unknown property of PathMovement: '" << key << "'");
+  }
+
+  return oss.str();
+}
+
+/**
+ * @brief Sets the value of a property of this movement.
+ *
+ * Accepted keys:
+ * - path
+ * - speed
+ * - loop
+ * - ignore_obstacles
+ * - snap_to_grid
+ *
+ * @param key key of the property to set (the accepted keys depend on the movement type)
+ * @param the value to set
+ */
+void PathMovement::set_property(const std::string &key, const std::string &value) {
+
+  std::istringstream iss(value);
+
+  if (key == "path") {
+    std::string path;
+    iss >> path;
+    set_path(path);
+  }
+  else if (key == "speed") {
+    int speed;
+    iss >> speed;
+    set_speed(speed);
+  }
+  else if (key == "loop") {
+    bool loop;
+    iss >> loop;
+    set_loop(loop);
+  }
+  else if (key == "ignore_obstacles") {
+    bool ignore_obstacles;
+    iss >> ignore_obstacles;
+    set_default_ignore_obstacles(ignore_obstacles);
+  }
+  else if (key == "snap_to_grid") {
+    bool snap_to_grid;
+    iss >> snap_to_grid;
+    set_snap_to_grid(snap_to_grid);
+  }
+  else {
+    Debug::die(StringConcat() << "Unknown property of PathMovement: '" << key << "'");
+  }
 }
 

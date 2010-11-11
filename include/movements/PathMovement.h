@@ -32,6 +32,13 @@
  * The notion of path is specific to PathMovement and its subclasses (like PathFindingMovement and RandomPathMovement).
  * A "trajectory" is a move of 8 pixels in the sense of the PixelMovement class.
  * A path is composed of several trajectories. The notion of trajectory is hidden from the public interface of PathMovement.
+ *
+ * Properties:
+ * - path
+ * - speed
+ * - loop
+ * - ignore_obstacles
+ * - snap_to_grid
  */
 class PathMovement: public PixelMovement {
 
@@ -45,7 +52,7 @@ class PathMovement: public PixelMovement {
     bool stopped_by_obstacle;					/**< true if the movement was stopped by an obstacle */
 
     int speed;							/**< the movement speed in pixels per second (corrected for diagonal moves) */
-    bool loop;							/**< should the movement restart from the beginning once finished? */
+    bool loop;							/**< should the path restart from the beginning once finished? */
 
     // snapping
     bool snap_to_grid;						/**< indicates that the entity must be aligned to the grid before moving */
@@ -80,11 +87,19 @@ class PathMovement: public PixelMovement {
     void restart();
 
     void set_path(const std::string &path);
+    void set_speed(int speed);
+    void set_loop(bool loop);
+    void set_snap_to_grid(bool snap_to_grid);
+
     Rectangle get_xy_change();
     int get_current_direction();
     int get_total_distance_covered();
 
     static const std::string create_random_path();
+
+    // properties
+    virtual const std::string get_property(const std::string &key);
+    virtual void set_property(const std::string &key, const std::string &value);
 };
 
 #endif

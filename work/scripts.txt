@@ -45,6 +45,7 @@ sol.main.sprite_fade(sprite, direction)
 
 sol.main.pixel_movement_create(trajectory, delay)
 sol.main.random_movement_create(speed)
+sol.main.path_movement_create(path, speed)
 sol.main.movement_get_property(movement, key)
 sol.main.movement_set_property(movement, key, value)
 

@@ -15,6 +15,9 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "movements/RandomPathMovement.h"
+#include "lowlevel/Debug.h"
+#include "lowlevel/StringConcat.h"
+#include <sstream>
 
 /**
  * @brief Creates a random walk movement object.
@@ -54,5 +57,51 @@ void RandomPathMovement::update() {
  */
 bool RandomPathMovement::is_finished() {
   return false;
+}
+
+/**
+ * @brief Returns the value of a property of this movement.
+ *
+ * Accepted keys:
+ * - speed
+ *
+ * @param key key of the property to get
+ * @return the corresponding value as a string
+ */
+const std::string RandomPathMovement::get_property(const std::string &key) {
+
+  std::ostringstream oss;
+
+  if (key == "speed") {
+    oss << get_speed();
+  }
+  else {
+    Debug::die(StringConcat() << "Unknown property of RandomPathMovement: '" << key << "'");
+  }
+
+  return oss.str();
+}
+
+/**
+ * @brief Sets the value of a property of this movement.
+ *
+ * Accepted keys:
+ * - speed
+ *
+ * @param key key of the property to set (the accepted keys depend on the movement type)
+ * @param the value to set
+ */
+void RandomPathMovement::set_property(const std::string &key, const std::string &value) {
+
+  std::istringstream iss(value);
+
+  if (key == "speed") {
+    int speed;
+    iss >> speed;
+    set_speed(speed);
+  }
+  else {
+    Debug::die(StringConcat() << "Unknown property of RandomPathMovement: '" << key << "'");
+  }
 }
 

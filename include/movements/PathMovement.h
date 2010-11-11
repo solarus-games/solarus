@@ -87,6 +87,7 @@ class PathMovement: public PixelMovement {
     void restart();
 
     void set_path(const std::string &path);
+    int get_speed();
     void set_speed(int speed);
     void set_loop(bool loop);
     void set_snap_to_grid(bool snap_to_grid);

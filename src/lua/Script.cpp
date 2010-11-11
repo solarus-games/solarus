@@ -23,6 +23,7 @@
 #include "movements/PixelMovement.h"
 #include "movements/RandomMovement.h"
 #include "movements/PathMovement.h"
+#include "movements/RandomPathMovement.h"
 #include "movements/JumpMovement.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/Music.h"
@@ -153,6 +154,8 @@ void Script::register_available_functions() {
     { "pixel_movement_create", l_pixel_movement_create },
     { "random_movement_create", l_random_movement_create },
     { "path_movement_create", l_path_movement_create },
+    { "random_path_movement_create", l_random_path_movement_create },
+    { "jump_movement_create", l_jump_movement_create },
     { "movement_get_property", l_movement_get_property },
     { "movement_set_property", l_movement_set_property },
 
@@ -505,6 +508,7 @@ int Script::create_movement_handle(Movement &movement) {
   int handle = next_movement_handle++;
   movements[handle] = &movement;
   unassigned_movements[handle] = &movement;
+  movement.set_suspended(true); // suspended until it is assigned to an object
   return handle;
 }
 
@@ -519,6 +523,24 @@ Movement& Script::get_movement(int movement_handle) {
     StringConcat() << "No movement with handle '" << movement_handle << "'");
 
   return *movements[movement_handle];
+}
+
+/**
+ * @brief Starts a movement handled by this script and removes it from the list of unassigned movements.
+ *
+ * This function is called when the movement is assigned to an object.
+ *
+ * @param movement_handle handle of the movement
+ * @return the corresponding movement
+ */
+Movement& Script::start_movement(int movement_handle) {
+
+  Movement &movement = get_movement(movement_handle);
+
+  movement.set_suspended(false);
+  unassigned_movements.erase(movement_handle);
+
+  return movement;
 }
 
 // functions that can be called by the Lua script
@@ -922,6 +944,27 @@ int Script::l_path_movement_create(lua_State *l) {
 }
 
 /**
+ * @brief Creates a movement of type RandomPathMovement that will be accessible from the script.
+ *
+ * - Argument 1 (int): the speed in pixels per second
+ * - Return value (movement): a handle to the movement created
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::l_random_path_movement_create(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 1, &script);
+  int speed = luaL_checkinteger(l, 1);
+
+  Movement *movement = new RandomPathMovement(speed);
+  int movement_handle = script->create_movement_handle(*movement);
+  lua_pushinteger(l, movement_handle);
+
+  return 1;
+}
+
+/**
  * @brief Creates a movement of type JumpMovement that will be accessible from the script.
  *
  * - Argument 1 (int): direction of the jump (0 to 7)
@@ -972,7 +1015,7 @@ int Script::l_movement_get_property(lua_State *l) {
  *
  * - Argument 1 (movement): a movement
  * - Argument 2 (string): key of the property to set (the keys accepted depend of the movement type)
- * - Argument 3 (string): the new value of this property
+ * - Argument 3 (string, integer or boolean): the new value of this property
  *
  * @param l the Lua context that is calling this function
  */
@@ -982,7 +1025,23 @@ int Script::l_movement_set_property(lua_State *l) {
   called_by_script(l, 3, &script);
   int movement_handle = luaL_checkinteger(l, 1);
   const std::string &key = luaL_checkstring(l, 2);
-  const std::string &value = luaL_checkstring(l, 3);
+
+  std::string value;
+  if (lua_isstring(l, 3)) {
+    value = lua_tostring(l, 3);
+  }
+  else if (lua_isnumber(l, 3)) {
+    int v = lua_tointeger(l, 3);
+    std::ostringstream oss;
+    oss << v;
+    value = oss.str();
+  }
+  else if (lua_isboolean(l, 3)) {
+    value = lua_toboolean(l, 3) ? "1" : "0";
+  }
+  else {
+    Debug::die("Invalid type of value in movement_set_property");
+  }
 
   Movement &movement = script->get_movement(movement_handle);
   movement.set_property(key, value);

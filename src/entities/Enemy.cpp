@@ -77,7 +77,7 @@ Enemy::Enemy(const ConstructionParameters &params):
  */
 Enemy::~Enemy() {
 
-  if (get_movement() != normal_movement) {
+  if (get_movement() != NULL && get_movement() != normal_movement) {
     delete normal_movement;
   }
 }

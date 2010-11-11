@@ -23,6 +23,7 @@
 #include "movements/PixelMovement.h"
 #include "movements/RandomMovement.h"
 #include "movements/PathMovement.h"
+#include "movements/JumpMovement.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/Music.h"
 #include "lowlevel/FileTools.h"
@@ -914,6 +915,29 @@ int Script::l_path_movement_create(lua_State *l) {
   int speed = luaL_checkinteger(l, 2);
 
   Movement *movement = new PathMovement(path, speed, false, false, false);
+  int movement_handle = script->create_movement_handle(*movement);
+  lua_pushinteger(l, movement_handle);
+
+  return 1;
+}
+
+/**
+ * @brief Creates a movement of type JumpMovement that will be accessible from the script.
+ *
+ * - Argument 1 (int): direction of the jump (0 to 7)
+ * - Argument 2 (int): length of the jump in pixels
+ * - Return value (movement): a handle to the movement created
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::l_jump_movement_create(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 2, &script);
+  int direction8 = luaL_checkinteger(l, 1);
+  int length = luaL_checkinteger(l, 2);
+
+  Movement *movement = new JumpMovement(direction8, length, 0, false);
   int movement_handle = script->create_movement_handle(*movement);
   lua_pushinteger(l, movement_handle);
 

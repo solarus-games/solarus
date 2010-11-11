@@ -390,8 +390,7 @@ void InteractiveEntity::jump(int direction, int length, bool ignore_obstacles) {
 
   get_sprite().set_current_animation("jumping");
   clear_movement();
-  JumpMovement *movement = new JumpMovement(direction, length, ignore_obstacles);
-  movement->set_delay(20);
+  JumpMovement *movement = new JumpMovement(direction, length, 64, ignore_obstacles);
   set_movement(movement);
 }
 

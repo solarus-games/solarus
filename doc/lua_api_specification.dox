@@ -101,6 +101,9 @@ creates a movement of type RandomMovement that will be accessible from this scri
 - <tt>sol.main.path_movement_create(path, speed)</tt>:
 creates a movement of type PathMovement that will be accessible from this script
 
+- <tt>sol.main.jump_movement_create(path, speed)</tt>:
+creates a movement of type JumpMovement that will be accessible from this script
+
 - <tt>sol.main.movement_get_property(movement, key)</tt>:
 returns a string property from a movement
 

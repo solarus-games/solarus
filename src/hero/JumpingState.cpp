@@ -39,7 +39,7 @@ Hero::JumpingState::JumpingState(Hero &hero, int direction8, int length,
   
   State(hero) {
 
-  this->movement = new JumpMovement(direction8, length, ignore_obstacles);
+  this->movement = new JumpMovement(direction8, length, 0, ignore_obstacles);
   this->direction8 = direction8;
   this->with_sound = with_sound;
 

@@ -80,7 +80,6 @@ void InventoryItem::start() {
   Equipment &equipment = game.get_equipment();
 
   this->finished = false;
-  this->item_sound_id = "";
 
   Debug::assert(variant > 0, StringConcat() << "Trying to use inventory item '" << item_name << "' without having it");
 
@@ -150,14 +149,6 @@ void InventoryItem::start() {
 void InventoryItem::update() {
 
   Equipment &equipment = game.get_equipment();
-
-  if (item_sound_id.size() != 0) {
-    uint32_t now = System::now();
-    if (now >= next_sound_date) {
-      Sound::play(item_sound_id);
-      next_sound_date = now + sound_delay;
-    }
-  }
 
   // TODO use scripts
   if (item_name.substr(0, 7) == "bottle_") {

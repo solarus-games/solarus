@@ -218,7 +218,7 @@ class Script {
 
     virtual Game& get_game();
     virtual Map& get_map();
-    virtual const std::string& get_item_name();
+    virtual ItemProperties& get_item_properties();
 
   public:
 

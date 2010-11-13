@@ -44,7 +44,7 @@ class ItemScript: public Script {
 
     Game &get_game();
     Map &get_map();
-    const std::string& get_item_name();
+    ItemProperties& get_item_properties();
 
   public:
 
@@ -55,6 +55,9 @@ class ItemScript: public Script {
     void event_obtaining(const Treasure &treasure);
     void event_obtained(const Treasure &treasure);
     void event_use(InventoryItem &inventory_item);
+
+    PickableItem* get_pickable_item();
+    InventoryItem* get_inventory_item();
 };
 
 #endif

@@ -16,7 +16,11 @@
  */
 #include "lua/ItemScript.h"
 #include "ItemProperties.h"
+#include "InventoryItem.h"
 #include "Game.h"
+#include "Treasure.h"
+#include "lowlevel/Debug.h"
+#include "lowlevel/StringConcat.h"
 #include <lua.hpp>
 
 /**
@@ -29,7 +33,7 @@ ItemScript::ItemScript(Game &game, ItemProperties &item_properties):
   game(game),
   item_properties(item_properties) {
 
-  std::string script_name = (std::string) "items" + get_item_name();
+  std::string script_name = (std::string) "items/" + item_properties.get_name();
   load_if_exists(script_name);
 }
 
@@ -57,27 +61,69 @@ Map& ItemScript::get_map() {
 }
 
 /**
- * @brief Returns the name of the equipment item controlled by this script.
- * @return the item name
+ * @brief Returns the properties of the equipment item controlled by this script.
+ * @return the item properties
  */
-const std::string& ItemScript::get_item_name() {
-  return item_properties.get_name();
+ItemProperties& ItemScript::get_item_properties() {
+  return item_properties;
 }
 
-// TODO
+/**
+ * @brief Returns the pickable item related to the current call to event_appear().
+ * @return the current pickable item, or NULL
+ */
+PickableItem* ItemScript::get_pickable_item() {
+  return pickable_item;
+}
+
+/**
+ * @brief Returns the inventory item related to the current call to event_use().
+ * @return the current inventory item, or NULL
+ */
+InventoryItem* ItemScript::get_inventory_item() {
+  return inventory_item;
+}
+
+/**
+ * @brief Notifies the script that a pickable item of its type has just appeared on the map.
+ * @param pickable_item the pickable item
+ */
 void ItemScript::event_appear(PickableItem &pickable_item) {
 
+  this->pickable_item = &pickable_item;
+  notify_script("event_appear");
+  this->pickable_item = NULL;
 }
 
+/**
+ * @brief Notifies the script that the player is obtaining a treasure of its type.
+ * @param treasure the treasure
+ */
 void ItemScript::event_obtaining(const Treasure &treasure) {
 
+  notify_script("event_obtaining", "ii", treasure.get_variant(), treasure.get_savegame_variable());
 }
 
+/**
+ * @brief Notifies the script that the player has just obtained a treasure of its type.
+ * @param treasure the treasure
+ */
 void ItemScript::event_obtained(const Treasure &treasure) {
 
+  notify_script("event_obtained", "ii", treasure.get_variant(), treasure.get_savegame_variable());
 }
 
+#include <iostream>
+/**
+ * @brief Notifies the script that the player starts using an inventory item of its type.
+ * @param inventory_item the inventory item
+ */
 void ItemScript::event_use(InventoryItem &inventory_item) {
 
+  this->inventory_item = &inventory_item;
+  if (!notify_script("event_use")) {
+    Debug::die(StringConcat() << "No script for inventory item '" << item_properties.get_name());
+  }
+  this->inventory_item = NULL;
 }
 

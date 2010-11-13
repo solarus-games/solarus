@@ -52,8 +52,8 @@ class MapScript: public Script {
     void event_dialog_finished(const MessageId &first_message_id, int answer);
     void event_camera_reached_target();
     void event_camera_back();
-    void event_treasure_obtaining(const std::string &item_name, int variant, int savegame_variable);
-    void event_treasure_obtained(const std::string &item_name, int variant, int savegame_variable);
+    void event_treasure_obtaining(const Treasure &treasure);
+    void event_treasure_obtained(const Treasure &treasure);
     void event_map_started(const std::string &destination_point_name);
     void event_map_opening_transition_finished(const std::string &destination_point_name);
     void event_switch_enabled(const std::string &switch_name);

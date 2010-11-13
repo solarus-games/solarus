@@ -16,11 +16,6 @@ Types de scripts :
 - lua/EnemyScript : script d'ennemi : comme map, avec module enemy (qui désigne l'ennemi courant) en +
 - lua/ItemScript : script d'item : comme map, avec module item (qui désigne l'item courant) en +
 
-TODO : ne pas utiliser d'héritage (ItemScript n'est pas le script de la map, la map peut changer sans recharger les scripts d'item)
-Chaque type de script (MapScript et ItemScript pour l'instant) devrait hériter directement de Script, et sa fonction
-register_available_functions activerait différents modules parmi main, game (en redéfinissant get_game()),
-map (en redéfinissant get_map(), item (en redéfinissant get_item_name()).
-
 
 Module main : fonctions disponibles pour tous les scripts même en dehors d'un Game
 

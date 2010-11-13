@@ -29,7 +29,7 @@
  *
  * This class makes the interface between the engine C++ code and the Lua script of an item.
  */
-class ItemScript: public MapScript {
+class ItemScript: public Script {
 
   private:
 
@@ -40,18 +40,11 @@ class ItemScript: public MapScript {
     InventoryItem *inventory_item;			/**< the inventory item that is being used when event_used() is called,
     							 * or NULL if no inventory item is being used */
 
-    static FunctionAvailableToScript
-      l_get_amount,
-      l_set_amount,
-      l_add_amount,
-      l_remove_amount,
-      l_start_movement,
-      l_set_finished;
-
   protected:
 
-    void register_available_functions();
-    void called_by_script(lua_State *context, int nb_arguments, ItemScript **item_script);
+    Game &get_game();
+    Map &get_map();
+    const std::string& get_item_name();
 
   public:
 

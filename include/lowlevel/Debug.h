@@ -70,7 +70,7 @@ inline void Debug::assert(bool assertion, const std::string &error_message) {
 
   if (!assertion) {
     print(error_message, std::cerr);
-    throw std::logic_error(error_message);
+    die(error_message);
   }
 }
 
@@ -83,7 +83,7 @@ inline void Debug::assert(bool assertion, const std::string &error_message) {
  */
 inline void Debug::die(const std::string &error_message) {
 
-  assert(false, error_message);
+  throw std::logic_error(error_message);
 }
 
 #endif

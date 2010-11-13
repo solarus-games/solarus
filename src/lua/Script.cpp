@@ -15,29 +15,23 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lua/Script.h"
-#include "Equipment.h"
-#include "Savegame.h"
+#include "Game.h"
 #include "Timer.h"
-#include "Sprite.h"
 #include "movements/Movement.h"
-#include "movements/PixelMovement.h"
-#include "movements/RandomMovement.h"
-#include "movements/PathMovement.h"
-#include "movements/RandomPathMovement.h"
-#include "movements/JumpMovement.h"
-#include "lowlevel/Sound.h"
-#include "lowlevel/Music.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 #include <lua.hpp>
+#include <sstream>
 #include <cstdarg>
 
 /**
  * @brief Creates a script.
+ * @param apis_enabled an OR-combination of APIs to enable
  */
-Script::Script():
-  context(NULL) {
+Script::Script(uint32_t apis_enabled):
+  context(NULL),
+  apis_enabled(apis_enabled) {
 
 }
 
@@ -109,7 +103,7 @@ void Script::load_if_exists(const std::string &script_name) {
   lua_setglobal(context, "sol");
 
   // register the C++ functions accessible to the script
-  register_available_functions();
+  register_apis();
 
   // initialize the script
   luaL_dostring(context, "math.randomseed(os.time())");
@@ -148,43 +142,225 @@ void Script::load_if_exists(const std::string &script_name) {
 }
 
 /**
+ * @brief Returns whether this script is loaded.
+ * @return true if the script is loaded
+ */
+bool Script::is_loaded() {
+  return context != NULL;
+}
+
+/**
+ * @brief Returns the game associated to this script (if any).
+ *
+ * Scripts that enable the game API must redefine this function.
+ * This function is called by the implementation of the game API.
+ *
+ * @return the game
+ */
+Game& Script::get_game() {
+
+  Debug::die("This script does not provide the game API");
+  throw; // to make the compiler happy
+}
+
+/**
+ * @brief Returns the map associated to this script (if any).
+ *
+ * Scripts that enable the map API must redefine this function.
+ * This function is called by the implementation of the map API.
+ *
+ * @return the map
+ */
+Map& Script::get_map() {
+
+  Debug::die("This script does not provide the map API");
+  throw;
+}
+
+/**
+ * @brief Returns the item associated to this script (if any).
+ *
+ * Scripts that enable the item API must redefine this function.
+ * This function is called by the implementation of the item API.
+ *
+ * @return the item name
+ */
+const std::string& Script::get_item_name() {
+
+  Debug::die("This script does not provide the item API");
+  throw;
+}
+
+/**
  * @brief Tells the Lua context what C++ functions it can call.
  */
-void Script::register_available_functions() {
+void Script::register_apis() {
 
-  static luaL_Reg functions[] = {
+  if (apis_enabled && MAIN_API) {
+    register_main_api();
+  }
+  if (apis_enabled && GAME_API) {
+    register_game_api();
+  }
+  if (apis_enabled && MAP_API) {
+    register_map_api();
+  }
+  if (apis_enabled && ITEM_API) {
+    register_item_api();
+  }
+}
 
-    { "play_sound", l_play_sound },
-    { "play_music", l_play_music },
+/**
+ * @brief Registers to the script the functions of the main API.
+ */
+void Script::register_main_api() {
 
-    { "timer_start", l_timer_start },
-    { "timer_stop", l_timer_stop },
-
-    { "sprite_get_animation", l_sprite_get_animation },
-    { "sprite_set_animation", l_sprite_set_animation },
-    { "sprite_get_direction", l_sprite_get_direction },
-    { "sprite_set_direction", l_sprite_set_direction },
-    { "sprite_get_frame", l_sprite_get_frame },
-    { "sprite_set_frame", l_sprite_set_frame },
-    { "sprite_get_frame_delay", l_sprite_get_frame_delay },
-    { "sprite_set_frame_delay", l_sprite_set_frame_delay },
-    { "sprite_is_paused", l_sprite_is_paused },
-    { "sprite_set_paused", l_sprite_set_paused },
-    { "sprite_set_animation_ignore_suspend", l_sprite_set_animation_ignore_suspend },
-    { "sprite_fade", l_sprite_fade },
-
-    { "pixel_movement_create", l_pixel_movement_create },
-    { "random_movement_create", l_random_movement_create },
-    { "path_movement_create", l_path_movement_create },
-    { "random_path_movement_create", l_random_path_movement_create },
-    { "jump_movement_create", l_jump_movement_create },
-    { "movement_get_property", l_movement_get_property },
-    { "movement_set_property", l_movement_set_property },
-
-    { NULL, NULL }
+  static luaL_Reg main_api[] = {
+      { "play_sound", main_api_play_sound },
+      { "play_music", main_api_play_music },
+      { "timer_start", main_api_timer_start },
+      { "timer_stop", main_api_timer_stop },
+      { "sprite_get_animation", main_api_sprite_get_animation },
+      { "sprite_set_animation", main_api_sprite_set_animation },
+      { "sprite_get_direction", main_api_sprite_get_direction },
+      { "sprite_set_direction", main_api_sprite_set_direction },
+      { "sprite_get_frame", main_api_sprite_get_frame },
+      { "sprite_set_frame", main_api_sprite_set_frame },
+      { "sprite_get_frame_delay", main_api_sprite_get_frame_delay },
+      { "sprite_set_frame_delay", main_api_sprite_set_frame_delay },
+      { "sprite_is_paused", main_api_sprite_is_paused },
+      { "sprite_set_paused", main_api_sprite_set_paused },
+      { "sprite_set_animation_ignore_suspend", main_api_sprite_set_animation_ignore_suspend },
+      { "sprite_fade", main_api_sprite_fade },
+      { "pixel_movement_create", main_api_pixel_movement_create },
+      { "random_movement_create", main_api_random_movement_create },
+      { "path_movement_create", main_api_path_movement_create },
+      { "random_path_movement_create", main_api_random_path_movement_create },
+      { "jump_movement_create", main_api_jump_movement_create },
+      { "movement_get_property", main_api_movement_get_property },
+      { "movement_set_property", main_api_movement_set_property },
+      { NULL, NULL }
   };
+  luaL_register(context, "sol.main", main_api);
+}
 
-  luaL_register(context, "sol.main", functions);
+/**
+ * @brief Registers to the script the functions of the game API.
+ */
+void Script::register_game_api() {
+
+  static luaL_Reg game_api[] = {
+      { "savegame_get_string", game_api_savegame_get_string },
+      { "savegame_get_integer", game_api_savegame_get_integer },
+      { "savegame_get_boolean", game_api_savegame_get_boolean },
+      { "savegame_set_string", game_api_savegame_set_string },
+      { "savegame_set_integer", game_api_savegame_set_integer },
+      { "savegame_set_boolean", game_api_savegame_set_boolean },
+      { "savegame_get_name", game_api_savegame_get_name },
+      { "equipment_get_life", game_api_equipment_get_life },
+      { "equipment_add_life", game_api_equipment_add_life },
+      { "equipment_remove_life", game_api_equipment_remove_life },
+      { "equipment_get_max_life", game_api_equipment_get_max_life },
+      { "equipment_set_max_life", game_api_equipment_set_max_life },
+      { "equipment_add_max_life", game_api_equipment_add_max_life },
+      { "equipment_get_money", game_api_equipment_get_money },
+      { "equipment_add_money", game_api_equipment_add_money },
+      { "equipment_remove_money", game_api_equipment_remove_money },
+      { "equipment_has_ability", game_api_equipment_has_ability },
+      { "equipment_get_ability", game_api_equipment_get_ability },
+      { "equipment_set_ability", game_api_equipment_set_ability },
+      { "equipment_has_item", game_api_equipment_has_item },
+      { "equipment_get_item", game_api_equipment_get_item },
+      { "equipment_set_item", game_api_equipment_set_item },
+      { "equipment_has_item_amount", game_api_equipment_has_item_amount },
+      { "equipment_get_item_amount", game_api_equipment_get_item_amount },
+      { "equipment_add_item_amount", game_api_equipment_add_item_amount },
+      { "equipment_remove_item_amount", game_api_equipment_remove_item_amount },
+      { "equipment_is_dungeon_finished", game_api_equipment_is_dungeon_finished },
+      { "equipment_set_dungeon_finished", game_api_equipment_set_dungeon_finished },
+      { NULL, NULL }
+  };
+  luaL_register(context, "sol.game", game_api);
+}
+
+/**
+ * @brief Registers to the script the functions of the map API.
+ */
+void Script::register_map_api() {
+
+  static luaL_Reg map_api[] = {
+      { "dialog_start", map_api_dialog_start },
+      { "dialog_set_variable", map_api_dialog_set_variable },
+      { "dialog_set_style", map_api_dialog_set_style },
+      { "hud_set_enabled", map_api_hud_set_enabled },
+      { "hud_set_pause_enabled", map_api_hud_set_pause_enabled },
+      { "treasure_give", map_api_treasure_give },
+      { "camera_move", map_api_camera_move },
+      { "camera_restore", map_api_camera_restore },
+      { "hero_freeze", map_api_hero_freeze },
+      { "hero_unfreeze", map_api_hero_unfreeze },
+      { "hero_set_map", map_api_hero_set_map },
+      { "hero_set_visible", map_api_hero_set_visible },
+      { "hero_get_direction", map_api_hero_get_direction },
+      { "hero_set_direction", map_api_hero_set_direction },
+      { "npc_get_position", map_api_npc_get_position },
+      { "npc_set_position", map_api_npc_set_position },
+      { "hero_align_on_sensor", map_api_hero_align_on_sensor },
+      { "hero_walk", map_api_hero_walk },
+      { "hero_start_jumping", map_api_hero_start_jumping },
+      { "hero_start_victory_sequence", map_api_hero_start_victory_sequence },
+      { "hero_start_boomerang", map_api_hero_start_boomerang },
+      { "hero_start_bow", map_api_hero_start_bow },
+      { "hero_start_running", map_api_hero_start_running },
+      { "npc_start_movement", map_api_npc_start_movement },
+      { "npc_get_sprite", map_api_npc_get_sprite },
+      { "npc_remove", map_api_npc_remove },
+      { "interactive_entity_get_sprite", map_api_interactive_entity_get_sprite },
+      { "interactive_entity_remove", map_api_interactive_entity_remove },
+      { "chest_set_open", map_api_chest_set_open },
+      { "chest_set_hidden", map_api_chest_set_hidden },
+      { "chest_is_hidden", map_api_chest_is_hidden },
+      { "tile_set_enabled", map_api_tile_set_enabled },
+      { "tile_set_group_enabled", map_api_tile_set_group_enabled },
+      { "tile_is_enabled", map_api_tile_is_enabled },
+      { "block_reset", map_api_block_reset },
+      { "block_reset_all", map_api_block_reset_all },
+      { "shop_item_remove", map_api_shop_item_remove },
+      { "switch_is_enabled", map_api_switch_is_enabled },
+      { "switch_set_enabled", map_api_switch_set_enabled },
+      { "switch_set_locked", map_api_switch_set_locked },
+      { "enemy_is_dead", map_api_enemy_is_dead },
+      { "enemy_is_group_dead", map_api_enemy_is_group_dead },
+      { "enemy_set_enabled", map_api_enemy_set_enabled },
+      { "enemy_start_boss", map_api_enemy_start_boss },
+      { "enemy_end_boss", map_api_enemy_end_boss },
+      { "enemy_start_miniboss", map_api_enemy_start_miniboss },
+      { "enemy_end_miniboss", map_api_enemy_end_miniboss },
+      { "sensor_remove", map_api_sensor_remove },
+      { "door_open", map_api_door_open },
+      { "door_close", map_api_door_close },
+      { "door_is_open", map_api_door_is_open },
+      { "door_set_open", map_api_door_set_open },
+      { NULL, NULL }
+  };
+  luaL_register(context, "sol.map", map_api);
+}
+
+/**
+ * @brief Registers to the script the functions of the item API.
+ */
+void Script::register_item_api() {
+
+  static luaL_Reg item_api[] = {
+      { "get_amount", item_api_get_amount },
+      { "set_amount", item_api_set_amount },
+      { "add_amount", item_api_add_amount },
+      { "remove_amount", item_api_remove_amount },
+      { "start_movement", item_api_start_movement },
+      { "set_finished", item_api_set_finished },
+      { NULL, NULL }
+  };
+  luaL_register(context, "sol.item", item_api);
 }
 
 /**
@@ -450,11 +626,23 @@ void Script::update() {
       it = timers.begin();
     }
   }
-
-  // update the script
-  event_update();
 }
 
+/**
+ * @brief This function is called when the game (if any) is being suspended or resumed.
+ * @param suspended true if the game is suspended, false if it is resumed
+ */
+void Script::set_suspended(bool suspended) {
+
+  if (context != NULL) {
+
+    // notify the timers
+    std::list<Timer*>::iterator it;
+    for (it = timers.begin(); it != timers.end(); it++) {
+      (*it)->set_suspended(suspended);
+    }
+  }
+}
 /**
  * @brief Adds a timer to the script.
  * @param timer the timer
@@ -492,6 +680,13 @@ void Script::remove_timer(const std::string &callback_name) {
  * @return true to initially suspend a new timer
  */
 bool Script::is_new_timer_suspended(void) {
+
+  if (apis_enabled && GAME_API) {
+    // start the timer even if the game is suspended (e.g. a timer started during a camera movement)
+    // except when it is suspended because of a dialog box
+    return get_game().is_showing_message();
+  }
+
   return false;
 }
 
@@ -564,524 +759,3 @@ Movement& Script::start_movement(int movement_handle) {
 
   return movement;
 }
-
-// functions that can be called by the Lua script
-
-/**
- * @brief Plays a sound.
- *
- * - Argument 1 (string): name of the sound
- *
- * @param l the Lua context that is calling this function
- */
-int Script::l_play_sound(lua_State *l) {
-
-  Script *script;
-  called_by_script(l, 1, &script);
-  const SoundId &sound_id = luaL_checkstring(l, 1);
-
-  Sound::play(sound_id);
-
-  return 0;
-}
-
-/**
- * @brief Plays a music.
- * 
- * - Argument 1 (string): name of the music (possibly "none" or "same")
- *
- * @param l the Lua context that is calling this function
- */
-int Script::l_play_music(lua_State *l) {
-
-  Script *script;
-  called_by_script(l, 1, &script);
-  const MusicId &music_id = luaL_checkstring(l, 1);
-  Music::play(music_id);
-
-  return 0;
-}
-
-/**
- * @brief Starts a timer to run a Lua function after a delay.
- *
- * - Argument 1 (integer): the timer duration in milliseconds
- * - Argument 2 (string): name of the Lua function to call when the timer is finished
- * (no argument, no return value)
- * - Argument 3 (boolean): plays a sound until the timer expires
- *
- * @param l the Lua context that is calling this function
- */
-int Script::l_timer_start(lua_State *l) {
-
-  Script *script;
-  called_by_script(l, 3, &script);
-  uint32_t duration = luaL_checkinteger(l, 1);
-  const std::string &callback_name = luaL_checkstring(l, 2);
-  bool with_sound = lua_toboolean(l, 3) != 0;
-
-  Timer *timer = new Timer(duration, callback_name, with_sound);
-  if (script->is_new_timer_suspended()) {
-    timer->set_suspended(true);
-  }
-  script->add_timer(timer);
-
-  return 0;
-}
-
-/**
- * @brief Stops an existing timer.
- *
- * - Argument 1 (string): name of the Lua function that is supposed to be called
- * when the timer is finished
- *
- * @param l the Lua context that is calling this function
- */
-int Script::l_timer_stop(lua_State *l) {
-
-  Script *script;
-  called_by_script(l, 1, &script);
-  const std::string &callback_name = luaL_checkstring(l, 1);
-
-  script->remove_timer(callback_name);
-
-  return 0;
-}
-
-/**
- * @brief Returns the current animation of a sprite.
- * 
- * - Argument 1 (sprite): a sprite
- * - Return value (string): name of the current animation
- *
- * @param l the Lua context that is calling this function
- */
-int Script::l_sprite_get_animation(lua_State *l) {
-
-  Script *script;
-  called_by_script(l, 1, &script);
-  int sprite_handle = luaL_checkinteger(l, 1);
-
-  const Sprite &sprite = script->get_sprite(sprite_handle);
-  const std::string animation_name = sprite.get_current_animation();
-  lua_pushstring(l, animation_name.c_str());
-
-  return 1;
-}
-
-/**
- * @brief Sets the current animation of a sprite.
- * 
- * - Argument 1 (sprite): a sprite
- * - Argument 2 (string): name of the animation to set
- *
- * @param l the Lua context that is calling this function
- */
-int Script::l_sprite_set_animation(lua_State *l) {
-
-  Script *script;
-  called_by_script(l, 2, &script);
-  int sprite_handle = luaL_checkinteger(l, 1);
-  const std::string &animation_name = luaL_checkstring(l, 2);
-
-  Sprite &sprite = script->get_sprite(sprite_handle);
-  sprite.set_current_animation(animation_name);
-  sprite.restart_animation();
-
-  return 0;
-}
-
-/**
- * @brief Returns the current direction of a sprite.
- * 
- * - Argument 1 (sprite): a sprite
- * - Return value (integer): direction of the sprite
- *
- * @param l the Lua context that is calling this function
- */
-int Script::l_sprite_get_direction(lua_State *l) {
-
-  Script *script;
-  called_by_script(l, 1, &script);
-  int sprite_handle = luaL_checkinteger(l, 1);
-
-  const Sprite &sprite = script->get_sprite(sprite_handle);
-  lua_pushinteger(l, sprite.get_current_direction());
-
-  return 1;
-}
-
-/**
- * @brief Sets the current direction of a sprite.
- * 
- * - Argument 1 (sprite): a sprite
- * - Argument 2 (integer): direction to set
- *
- * @param l the Lua context that is calling this function
- */
-int Script::l_sprite_set_direction(lua_State *l) {
-
-  Script *script;
-  called_by_script(l, 2, &script);
-  int sprite_handle = luaL_checkinteger(l, 1);
-  int direction = luaL_checkinteger(l, 2);
-
-  Sprite &sprite = script->get_sprite(sprite_handle);
-  sprite.set_current_direction(direction);
-
-  return 0;
-}
-
-/**
- * @brief Returns the current frame of a sprite.
- * 
- * - Argument 1 (sprite): a sprite
- * - Return value (integer): index of the current frame of the animation
- *
- * @param l the Lua context that is calling this function
- */
-int Script::l_sprite_get_frame(lua_State *l) {
-
-  Script *script;
-  called_by_script(l, 1, &script);
-  int sprite_handle = luaL_checkinteger(l, 1);
-
-  const Sprite &sprite = script->get_sprite(sprite_handle);
-  lua_pushinteger(l, sprite.get_current_frame());
-
-  return 1;
-}
-
-/**
- * @brief Sets the current frame of a sprite.
- * 
- * - Argument 1 (sprite): a sprite
- * - Argument 2 (integer): index of the frame to set in the animation
- *
- * @param l the Lua context that is calling this function
- */
-int Script::l_sprite_set_frame(lua_State *l) {
-
-  Script *script;
-  called_by_script(l, 2, &script);
-  int sprite_handle = luaL_checkinteger(l, 1);
-  int frame = luaL_checkinteger(l, 2);
-
-  Sprite &sprite = script->get_sprite(sprite_handle);
-  sprite.set_current_frame(frame);
-
-  return 0;
-}
-
-/**
- * @brief Returns the delay between two frames of the animation of a sprite.
- * 
- * - Argument 1 (sprite): a sprite
- * - Return value: the delay between two frames in milliseconds
- *
- * @param l the Lua context that is calling this function
- */
-int Script::l_sprite_get_frame_delay(lua_State *l) {
-
-  Script *script;
-  called_by_script(l, 1, &script);
-  int sprite_handle = luaL_checkinteger(l, 1);
-
-  const Sprite &sprite = script->get_sprite(sprite_handle);
-  lua_pushinteger(l, sprite.get_frame_delay());
-
-  return 1;
-}
-
-/**
- * @brief Sets the delay between two frames of the animation of a sprite.
- * 
- * - Argument 1 (sprite): a sprite
- * - Argument 2 (integer): the new delay in milliseconds
- *
- * @param l the Lua context that is calling this function
- */
-int Script::l_sprite_set_frame_delay(lua_State *l) {
-
-  Script *script;
-  called_by_script(l, 2, &script);
-  int sprite_handle = luaL_checkinteger(l, 1);
-  uint32_t delay = luaL_checkinteger(l, 2);
-
-  Sprite &sprite = script->get_sprite(sprite_handle);
-  sprite.set_frame_delay(delay);
-
-  return 0;
-}
-
-/**
- * @brief Returns whether the animation of a sprite is paused.
- * 
- * - Argument 1 (sprite): a sprite
- * - Return value (boolean): true if the animation is currently paused
- *
- * @param l the Lua context that is calling this function
- */
-int Script::l_sprite_is_paused(lua_State *l) {
-
-  Script *script;
-  called_by_script(l, 1, &script);
-  int sprite_handle = luaL_checkinteger(l, 1);
-
-  const Sprite &sprite = script->get_sprite(sprite_handle);
-  lua_pushboolean(l, sprite.is_paused() ? 1 : 0);
-
-  return 1;
-}
-
-/**
- * @brief Pauses or resumes the animation of a sprite.
- * 
- * - Argument 1 (sprite): a sprite
- * - Argument 2 (boolean): true to pause the animation, false to resume it
- *
- * @param l the Lua context that is calling this function
- */
-int Script::l_sprite_set_paused(lua_State *l) {
-
-  Script *script;
-  called_by_script(l, 2, &script);
-  int sprite_handle = luaL_checkinteger(l, 1);
-  bool paused = lua_toboolean(l, 2) != 0;
-
-  Sprite &sprite = script->get_sprite(sprite_handle);
-  sprite.set_paused(paused);
-
-  return 0;
-}
-
-/**
- * @brief Sets whether the animation of a sprite should continue even when
- * the sprite receives a set_suspended(true) call.
- *
- * - Argument 1 (sprite): a sprite
- * - Argument 2 (boolean): true to continue the animation when the sprite is suspended
- *
- * @param l the Lua context that is calling this function
- */
-int Script::l_sprite_set_animation_ignore_suspend(lua_State *l) {
-
-  Script *script;
-  called_by_script(l, 2, &script);
-  int sprite_handle = luaL_checkinteger(l, 1);
-  bool ignore_suspend = lua_toboolean(l, 2) != 0;
-
-  Sprite &sprite = script->get_sprite(sprite_handle);
-  sprite.set_ignore_suspend(ignore_suspend);
-
-  return 0;
-}
-
-/**
- * @brief Starts a fade-in or a fade-out effect on a sprite.
- * 
- * - Argument 1 (sprite): a sprite
- * - Argument 2 (integer): direction of the effect: 0 for fade-in, 1 for fade-out
- *
- * @param l the Lua context that is calling this function
- */
-int Script::l_sprite_fade(lua_State *l) {
-
-  Script *script;
-  called_by_script(l, 2, &script);
-  int sprite_handle = luaL_checkinteger(l, 1);
-  int direction = luaL_checkinteger(l, 2);
-
-  Sprite &sprite = script->get_sprite(sprite_handle);
-  sprite.start_fading(direction);
-
-  return 0;
-}
-
-/**
- * @brief Creates a movement of type PixelMovement that will be accessible from the script.
- *
- * - Argument 1 (string): the pixel-by-pixel trajectory of the movement
- * - Argument 2 (int): the delay in millisecond between each step of the trajectory
- * - Return value (movement): a handle to the movement created
- *
- * @param l the Lua context that is calling this function
- */
-int Script::l_pixel_movement_create(lua_State *l) {
-
-  Script *script;
-  called_by_script(l, 2, &script);
-  const std::string &trajectory = luaL_checkstring(l, 1);
-  uint32_t delay = luaL_checkinteger(l, 2);
-
-  Movement *movement = new PixelMovement(trajectory, delay, false, false);
-  int movement_handle = script->create_movement_handle(*movement);
-  lua_pushinteger(l, movement_handle);
-
-  return 1;
-}
-
-/**
- * @brief Creates a movement of type RandomMovement that will be accessible from the script.
- *
- * - Argument 1 (int): the speed of the movement in pixels per second
- * - Return value (movement): a handle to the movement created
- *
- * @param l the Lua context that is calling this function
- */
-int Script::l_random_movement_create(lua_State *l) {
-
-  Script *script;
-  called_by_script(l, 1, &script);
-  int speed = luaL_checkinteger(l, 1);
-
-  Movement *movement = new RandomMovement(speed, 0);
-  int movement_handle = script->create_movement_handle(*movement);
-  lua_pushinteger(l, movement_handle);
-
-  return 1;
-}
-
-/**
- * @brief Creates a movement of type PathMovement that will be accessible from the script.
- *
- * - Argument 1 (string): the square-by-square trajectory of the movement
- * - Argument 2 (int): the speed in pixels per second
- * - Return value (movement): a handle to the movement created
- *
- * @param l the Lua context that is calling this function
- */
-int Script::l_path_movement_create(lua_State *l) {
-
-  Script *script;
-  called_by_script(l, 2, &script);
-  const std::string &path = luaL_checkstring(l, 1);
-  int speed = luaL_checkinteger(l, 2);
-
-  Movement *movement = new PathMovement(path, speed, false, false, false);
-  int movement_handle = script->create_movement_handle(*movement);
-  lua_pushinteger(l, movement_handle);
-
-  return 1;
-}
-
-/**
- * @brief Creates a movement of type RandomPathMovement that will be accessible from the script.
- *
- * - Argument 1 (int): the speed in pixels per second
- * - Return value (movement): a handle to the movement created
- *
- * @param l the Lua context that is calling this function
- */
-int Script::l_random_path_movement_create(lua_State *l) {
-
-  Script *script;
-  called_by_script(l, 1, &script);
-  int speed = luaL_checkinteger(l, 1);
-
-  Movement *movement = new RandomPathMovement(speed);
-  int movement_handle = script->create_movement_handle(*movement);
-  lua_pushinteger(l, movement_handle);
-
-  return 1;
-}
-
-/**
- * @brief Creates a movement of type JumpMovement that will be accessible from the script.
- *
- * - Argument 1 (int): direction of the jump (0 to 7)
- * - Argument 2 (int): length of the jump in pixels
- * - Return value (movement): a handle to the movement created
- *
- * @param l the Lua context that is calling this function
- */
-int Script::l_jump_movement_create(lua_State *l) {
-
-  Script *script;
-  called_by_script(l, 2, &script);
-  int direction8 = luaL_checkinteger(l, 1);
-  int length = luaL_checkinteger(l, 2);
-
-  Movement *movement = new JumpMovement(direction8, length, 0, false);
-  int movement_handle = script->create_movement_handle(*movement);
-  lua_pushinteger(l, movement_handle);
-
-  return 1;
-}
-
-/**
- * @brief Returns the value of a property of a movement.
- *
- * - Argument 1 (movement): a movement
- * - Argument 2 (string): key of the property to get (the keys accepted depend of the movement type)
- * - Return value (string): the value of this property
- *
- * @param l the Lua context that is calling this function
- */
-int Script::l_movement_get_property(lua_State *l) {
-
-  Script *script;
-  called_by_script(l, 2, &script);
-  int movement_handle = luaL_checkinteger(l, 1);
-  const std::string &key = luaL_checkstring(l, 2);
-
-  Movement &movement = script->get_movement(movement_handle);
-  const std::string &value = movement.get_property(key);
-  lua_pushstring(l, value.c_str());
-
-  return 1;
-}
-
-/**
- * @brief Sets a property of a movement.
- *
- * - Argument 1 (movement): a movement
- * - Argument 2 (string): key of the property to set (the keys accepted depend of the movement type)
- * - Argument 3 (string, integer or boolean): the new value of this property
- *
- * @param l the Lua context that is calling this function
- */
-int Script::l_movement_set_property(lua_State *l) {
-
-  Script *script;
-  called_by_script(l, 3, &script);
-  int movement_handle = luaL_checkinteger(l, 1);
-  const std::string &key = luaL_checkstring(l, 2);
-
-  std::string value;
-  if (lua_isstring(l, 3)) {
-    value = lua_tostring(l, 3);
-  }
-  else if (lua_isnumber(l, 3)) {
-    int v = lua_tointeger(l, 3);
-    std::ostringstream oss;
-    oss << v;
-    value = oss.str();
-  }
-  else if (lua_isboolean(l, 3)) {
-    value = lua_toboolean(l, 3) ? "1" : "0";
-  }
-  else {
-    Debug::die("Invalid type of value in movement_set_property");
-  }
-
-  Movement &movement = script->get_movement(movement_handle);
-  movement.set_property(key, value);
-
-  return 0;
-}
-
-// event functions, i.e. calling Lua from C++
-
-/**
- * @brief Notifies the script that it can update itself.
- *
- * This function is called at each cycle of the main loop,
- * so if you define it in your script, take care of the performances.
- */
-void Script::event_update() {
-
-  notify_script("event_update");
-}
-
-

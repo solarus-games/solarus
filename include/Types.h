@@ -110,7 +110,6 @@ class Camera;
 
 // scripts
 class Script;
-class GameScript;
 class MapScript;
 class ItemScript;
 

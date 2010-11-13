@@ -16,6 +16,7 @@
  */
 #include "lua/MapScript.h"
 #include "Map.h"
+#include "Treasure.h"
 #include <sstream>
 #include <iomanip>
 
@@ -172,9 +173,12 @@ void MapScript::event_camera_back() {
  * @param savegame_variable the boolean variable where this treasure is saved
  * (or -1 if the treasure is not saved)
  */
-void MapScript::event_treasure_obtaining(const std::string &item_name, int variant, int savegame_variable) {
+void MapScript::event_treasure_obtaining(const Treasure &treasure) {
 
-  notify_script("event_treasure_obtaining", "sii", item_name.c_str(), variant, savegame_variable);
+  notify_script("event_treasure_obtaining", "sii",
+      treasure.get_item_name().c_str(),
+      treasure.get_variant(),
+      treasure.get_savegame_variable());
 }
 
 /**
@@ -188,9 +192,12 @@ void MapScript::event_treasure_obtaining(const std::string &item_name, int varia
  * @param savegame_variable the boolean variable where this treasure is saved
  * (or -1 if the treasure is not saved)
  */
-void MapScript::event_treasure_obtained(const std::string &item_name, int variant, int savegame_variable) {
+void MapScript::event_treasure_obtained(const Treasure &treasure) {
 
-  notify_script("event_treasure_obtained", "sii", item_name.c_str(), variant, savegame_variable);
+  notify_script("event_treasure_obtained", "sii",
+      treasure.get_item_name().c_str(),
+      treasure.get_variant(),
+      treasure.get_savegame_variable());
 }
 
 /**

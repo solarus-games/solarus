@@ -52,6 +52,7 @@ class Equipment {
     Equipment(Savegame &savegame);
     ~Equipment();
     void set_game(Game &game);
+    ItemScript& get_item_script(const std::string &item_name);
 
     void update();
 
@@ -134,9 +135,6 @@ class Equipment {
     // giving items
     void set_initial_items();
     void add_item(const std::string &item_name, int variant);
-
-    // scripts
-    ItemScript &get_item_script(const std::string &item_name);
 };
 
 #endif

@@ -19,10 +19,11 @@
 #include "entities/Boomerang.h"
 #include "movements/FallingOnFloorMovement.h"
 #include "movements/FollowMovement.h"
-#include "Sprite.h"
-#include "ItemProperties.h"
 #include "Game.h"
 #include "Map.h"
+#include "Sprite.h"
+#include "ItemProperties.h"
+#include "lua/ItemScript.h"
 #include "lowlevel/System.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Sound.h"
@@ -118,6 +119,9 @@ PickableItem * PickableItem::create(Game &game, Layer layer, int x, int y, const
   // initialize the item
   item->initialize_sprites();
   item->initialize_movement();
+
+  // notify the item script
+  game.get_equipment().get_item_script(treasure.get_item_name()).event_appear(*item);
 
   return item;
 }

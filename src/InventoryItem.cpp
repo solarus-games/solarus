@@ -14,26 +14,12 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "InventoryItem.h"
-#include "ItemProperties.h"
-#include "Treasure.h"
+#include "InventoryItem.h" // TODO many useless headers here
 #include "Game.h"
-#include "Savegame.h"
 #include "Equipment.h"
-#include "DialogBox.h"
-#include "Map.h"
-#include "entities/MapEntities.h"
-#include "entities/Hero.h"
-#include "entities/Boomerang.h"
-#include "entities/Arrow.h"
-#include "entities/PickableItem.h"
-#include "hero/HeroSprites.h"
-#include "movements/FallingHeight.h"
-#include "lowlevel/System.h"
+#include "lua/ItemScript.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
-#include "lowlevel/Sound.h"
-#include "lowlevel/Geometry.h"
 
 /**
  * @brief Creates a new inventory item.
@@ -76,71 +62,10 @@ int InventoryItem::get_variant() {
  */
 void InventoryItem::start() {
 
-  Hero &hero = game.get_hero();
-  Equipment &equipment = game.get_equipment();
-
-  this->finished = false;
-
   Debug::assert(variant > 0, StringConcat() << "Trying to use inventory item '" << item_name << "' without having it");
 
-  // TODO use scripts
-  if (item_name.substr(0, 7) == "bottle_") {
-    start_bottle();
-  }
-  else {
-
-    if (item_name == "boomerang") {
-      hero.start_boomerang();
-      finished = true;
-    }
-    else if (item_name == "bow") {
-
-      if (equipment.get_item_amount("bow") == 0) {
-	Sound::play("wrong");
-	finished = true;
-      }
-      else {
-	equipment.remove_item_amount("bow", 1);
-        hero.start_bow();
-      }
-      finished = true;
-    }
-    else if (item_name == "pegasus_shoes") {
-
-      hero.start_running();
-      finished = true;
-    }
-    else if (item_name == "apples") {
-      if (equipment.get_item_amount(item_name) == 0) {
-	Sound::play("wrong");
-	finished = true;
-      }
-      else {
-	game.get_dialog_box().start_dialog("_use_apples");
-      }
-    }
-    else if (item_name == "pains_au_chocolat") {
-      if (equipment.get_item_amount(item_name) == 0) {
-	Sound::play("wrong");
-	finished = true;
-      }
-      else {
-	game.get_dialog_box().start_dialog("_use_pains_au_chocolat");
-      }
-    }
-    else if (item_name == "croissants") {
-      if (equipment.get_item_amount(item_name) == 0) {
-	Sound::play("wrong");
-	finished = true;
-      }
-      else {
-	game.get_dialog_box().start_dialog("_use_croissants");
-      }
-    }
-    else {
-      finished = true;
-    }
-  }
+  this->finished = false;
+  game.get_equipment().get_item_script(item_name).event_use(*this);
 }
 
 /**
@@ -148,31 +73,7 @@ void InventoryItem::start() {
  */
 void InventoryItem::update() {
 
-  Equipment &equipment = game.get_equipment();
-
-  // TODO use scripts
-  if (item_name.substr(0, 7) == "bottle_") {
-    update_bottle();
-  }
-  else {
-
-    if (item_name == "apples" || item_name == "pains_au_chocolat" || item_name == "croissants") {
-
-      if (!game.is_showing_message()) {
-
-	if (game.get_dialog_box().get_last_answer() == 0 &&
-	    equipment.get_item_amount(item_name) > 0) {
-
-	  equipment.remove_item_amount(item_name, 1);
-	  int nb_hearts =
-	    (item_name == "apples") ? 1 :
-	    (item_name == "pains_au_chocolat") ? 3 : 7;
-	  equipment.add_life(nb_hearts * 4);
-	}
-	finished = true;
-      }
-    }
-  }
+  // TODO  game.get_equipment().get_item_script(item_name).event_use_update();
 }
 
 /**
@@ -184,8 +85,13 @@ bool InventoryItem::is_finished() {
 }
 
 /**
- * @brief Starts using this item when it is a bottle.
+ * @brief Indicates that the player has finished using this item.
  */
+void InventoryItem::set_finished() {
+  this->finished = true;
+}
+
+/*
 void InventoryItem::start_bottle() {
 
   // TODO use the script
@@ -238,9 +144,6 @@ void InventoryItem::start_bottle() {
   }
 }
 
-/**
- * @brief Updates this item when it is a bottle.
- */
 void InventoryItem::update_bottle() {
 
   // see if a dialog is finished
@@ -286,6 +189,7 @@ void InventoryItem::update_bottle() {
     }
   }
 }
+*/
 
 /**
  * @brief Sets the current map.

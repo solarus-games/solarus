@@ -24,6 +24,7 @@
 #include "Map.h"
 #include "Sprite.h"
 #include "lua/MapScript.h"
+#include "lua/ItemScript.h"
 #include "lowlevel/Surface.h"
 
 /**
@@ -145,10 +146,12 @@ void Treasure::give_to_player() const {
   }
 
   // give the item
-  game.get_equipment().add_item(item_name, variant);
+  Equipment &equipment = game.get_equipment();
+  equipment.add_item(item_name, variant);
 
   // notify the scripts
-  game.get_map_script().event_treasure_obtaining(item_name, variant, savegame_variable);
+  equipment.get_item_script(item_name).event_obtaining(*this);
+  game.get_map_script().event_treasure_obtaining(*this);
 }
 
 /**

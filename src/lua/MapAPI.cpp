@@ -40,6 +40,8 @@
  * then you have to call dialog_set_variable() to specify its value.
  *
  * - Argument 1 (string): id of the message to display
+ *
+ * @param l the Lua context that is calling this function
  */
 int Script::map_api_dialog_start(lua_State *l) {
 
@@ -60,6 +62,8 @@ int Script::map_api_dialog_start(lua_State *l) {
  *
  * - Argument 1 (string): id of the message containing the variable
  * - Argument 2 (string): value of the variable
+ *
+ * @param l the Lua context that is calling this function
  */
 int Script::map_api_dialog_set_variable(lua_State *l) {
 
@@ -77,6 +81,8 @@ int Script::map_api_dialog_set_variable(lua_State *l) {
  * @brief Changes the style of the future dialog boxes.
  *
  * - Argument 1 (integer): the style to set (see the DialogBox::Style enum)
+ *
+ * @param l the Lua context that is calling this function
  */
 int Script::map_api_dialog_set_style(lua_State *l) {
 
@@ -93,6 +99,8 @@ int Script::map_api_dialog_set_style(lua_State *l) {
  * @brief Enables or disables the head up display.
  *
  * - Argument 1 (boolean): true to enable it, false to disable it
+ *
+ * @param l the Lua context that is calling this function
  */
 int Script::map_api_hud_set_enabled(lua_State *l) {
 
@@ -106,7 +114,10 @@ int Script::map_api_hud_set_enabled(lua_State *l) {
 
 /**
  * @brief Sets whether the player can pause the game.
+ *
  * - Argument 1 (boolean): true to enable the pause key
+ *
+ * @param l the Lua context that is calling this function
  */
 int Script::map_api_hud_set_pause_enabled(lua_State *l) {
 
@@ -125,6 +136,8 @@ int Script::map_api_hud_set_pause_enabled(lua_State *l) {
  * - Argument 1 (integer): x coordinate of the target point
  * - Argument 2 (integer): y coordinate of the target point
  * - Argument 3 (integer): speed of the camera movement in pixels per second (150 is a normal speed)
+ *
+ * @param l the Lua context that is calling this function
  */
 int Script::map_api_camera_move(lua_State *l) {
 
@@ -141,6 +154,7 @@ int Script::map_api_camera_move(lua_State *l) {
 
 /**
  * @brief Moves the camera back to the hero.
+ * @param l the Lua context that is calling this function
  */
 int Script::map_api_camera_restore(lua_State *l) {
 
@@ -164,6 +178,8 @@ int Script::map_api_camera_restore(lua_State *l) {
  * - Argument 2 (integer): variant of this item (1 if the item has only one variant)
  * - Argument 3 (integer): index of the savegame boolean variable that stores
  * the possession state of the treasure (or -1 if you don't want to save this treasure)
+ *
+ * @param l the Lua context that is calling this function
  */
 int Script::map_api_treasure_give(lua_State *l) {
 
@@ -180,6 +196,7 @@ int Script::map_api_treasure_give(lua_State *l) {
 
 /**
  * @brief Prevents the player from moving until hero_unfreeze() is called.
+ * @param l the Lua context that is calling this function
  */
 int Script::map_api_hero_freeze(lua_State *l) {
 
@@ -193,6 +210,7 @@ int Script::map_api_hero_freeze(lua_State *l) {
 
 /**
  * @brief Allows the player to move again after a call to hero_freeze().
+ * @param l the Lua context that is calling this function
  */
 int Script::map_api_hero_unfreeze(lua_State *l) {
 

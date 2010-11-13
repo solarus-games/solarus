@@ -65,6 +65,19 @@ Equipment::~Equipment() {
 }
 
 /**
+ * @brief Returns the script of an item.
+ * @param item_name name of the item
+ * @return the corresponding script
+ */
+ItemScript& Equipment::get_item_script(const std::string &item_name) {
+
+  Debug::assert(item_scripts.count(item_name) != 0,
+                StringConcat() << "Cannot find item script '" << item_name << "'");
+
+  return *item_scripts[item_name];
+}
+
+/**
  * @brief Sets the current game.
  * @param game the game
  */

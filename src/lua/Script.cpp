@@ -178,14 +178,14 @@ Map& Script::get_map() {
 }
 
 /**
- * @brief Returns the item associated to this script (if any).
+ * @brief Returns the properties of the item associated to this script (if any).
  *
  * Scripts that enable the item API must redefine this function.
  * This function is called by the implementation of the item API.
  *
- * @return the item name
+ * @return the item properties
  */
-const std::string& Script::get_item_name() {
+ItemProperties& Script::get_item_properties() {
 
   Debug::die("This script does not provide the item API");
   throw;

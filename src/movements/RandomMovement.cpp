@@ -64,7 +64,7 @@ void RandomMovement::set_max_distance(int max_distance) {
   this->max_distance = max_distance;
 
   // restrict the movement in a rectangle
-  bounds.set_xy(get_entity()->get_xy());
+  bounds.set_xy(get_xy());
   bounds.add_xy(-max_distance, -max_distance);
   bounds.set_size(max_distance * 2, max_distance * 2);
 }

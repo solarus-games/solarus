@@ -38,9 +38,6 @@ class InventoryItem {
     // state
     bool finished;		/**< true if we have finished using this item */
 
-    void start_bottle();
-    void update_bottle();
-
   public:
 
     // creation and destruction
@@ -56,6 +53,7 @@ class InventoryItem {
     void update();
     void set_map(Map &map);
     bool is_finished();
+    void set_finished();
 };
 
 #endif

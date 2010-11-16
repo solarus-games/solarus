@@ -1770,7 +1770,7 @@ icon = 73
 line1 = "Tu as trouvé la"
 line2 = "Grande Clé ! Tu peux"
 line3 = "désormais ouvrir les"
-next = _treasure.big_key.1
+next = _treasure.big_key.1.1
 
 [_treasure.big_key.1.1]
 #       |--------------------|

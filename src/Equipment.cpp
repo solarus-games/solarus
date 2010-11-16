@@ -950,8 +950,9 @@ bool Equipment::can_receive_item(const std::string &item_name, int variant) {
     else if (item_counter_changed != "life"
 	    && item_counter_changed != "money"
 	    && item_counter_changed != "small_keys") { // general case
-      // check that the player has the item to increase
-      authorized = has_item(item_counter_changed);
+      // check that the player has unlocked the counter of the item to increase
+      const std::string &item_limiting = get_item_properties(item_counter_changed).get_item_limiting();
+      authorized = (item_limiting.size() == 0) || has_item(item_limiting);
     }
   }
 

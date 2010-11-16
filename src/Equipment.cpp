@@ -109,34 +109,46 @@ void Equipment::update() {
     return;
   }
 
-  // magic bar
-  if (magic_decrease_delay != 0) {
-    // the magic bar is decreasing
+  // check if the game is suspended
+  bool game_suspended = game->is_suspended();
+  if (suspended != game_suspended) {
+    set_suspended(game_suspended);
+  }
 
-    if (!game->is_suspended()) {
+  if (!suspended) {
 
-      if (System::now() > next_magic_decrease_date) {
+    // update the decreasing magic bar
+    if (magic_decrease_delay != 0
+	&& System::now() > next_magic_decrease_date) {
 
-	remove_magic(1);
+      remove_magic(1);
 
-	if (get_magic() > 0) {
-	  next_magic_decrease_date += magic_decrease_delay;
-	}
-	else {
-	  stop_removing_magic();
-	}
+      if (get_magic() > 0) {
+	next_magic_decrease_date += magic_decrease_delay;
       }
-    }
-    else {
-      // delay the next decrease while the game is suspended
-      next_magic_decrease_date = System::now();
+      else {
+	stop_removing_magic();
+      }
     }
   }
 
-  // update the scripts
+  // update the item scripts
   std::map<std::string, ItemScript*>::iterator it;
   for (it = item_scripts.begin(); it != item_scripts.end(); it++) {
     it->second->update();
+  }
+}
+
+/**
+ * @brief This functions is called when the game is suspended or resumed.
+ * @param suspended true if the game is suspended, false if it is resumed
+ */
+void Equipment::set_suspended(bool suspended) {
+
+  // notify the item scripts
+  std::map<std::string, ItemScript*>::iterator it;
+  for (it = item_scripts.begin(); it != item_scripts.end(); it++) {
+    it->second->set_suspended(suspended);
   }
 }
 

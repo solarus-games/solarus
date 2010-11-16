@@ -34,6 +34,7 @@ class Equipment {
 
     Savegame &savegame;							/**< the savegame encapsulated by this equipment object */
     Game *game;								/**< the current game (may be NULL when the savegame is loaded outside a game) */
+    bool suspended;							/**< indicates that the game is suspended */
 
     // items
     std::map<std::string, ItemProperties*> item_properties;		/**< static properties of each item (loaded from the file items.dat) */
@@ -55,6 +56,7 @@ class Equipment {
     ItemScript& get_item_script(const std::string &item_name);
 
     void update();
+    void set_suspended(bool suspended);
 
     // money
     int get_max_money();

@@ -645,6 +645,7 @@ void Script::set_suspended(bool suspended) {
     }
   }
 }
+
 /**
  * @brief Adds a timer to the script.
  * @param timer the timer

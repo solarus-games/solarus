@@ -42,7 +42,7 @@ DialogBox::DialogBox(Game &game):
 
   // load the images
   box_img = new Surface("hud/dialog_box.png");
-  icons_img = new Surface("hud/message_and_treasure_icons.png");
+  icons_img = new Surface("hud/dialog_icons.png");
   box_src_position = Rectangle(0, 0, 220, 60);
   box_dst_position.set_size(box_src_position);
   question_src_position = Rectangle(96, 60, 8, 8);

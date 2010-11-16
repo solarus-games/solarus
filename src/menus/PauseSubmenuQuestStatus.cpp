@@ -39,7 +39,7 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu &pause_menu, Game &ga
   quest_items_surface->set_transparency_color(Color::get_black());
   quest_items_surface->fill_with_color(Color::get_black());
 
-  Surface *treasures_img = new Surface("hud/message_and_treasure_icons.png"); // TODO use sprite entities/items
+  Surface *treasures_img = new Surface("hud/dialog_icons.png"); // TODO use sprite entities/items
   Surface *pieces_of_heart_img = new Surface("menus/quest_status_pieces_of_heart.png");
 
   std::ostringstream oss;

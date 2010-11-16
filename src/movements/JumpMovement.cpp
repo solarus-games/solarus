@@ -44,10 +44,10 @@ JumpMovement::JumpMovement(int direction8, int length, int speed, bool ignore_ob
   PixelMovement("", 10, false, ignore_obstacles),
   direction8(direction8),
   length(length),
-  speed(speed),
+  speed(0),
   jump_height(0) {
 
-  restart();
+  set_speed(speed);
 }
 
 /**
@@ -108,6 +108,7 @@ void JumpMovement::set_speed(int speed) {
   else {
     set_delay(1000 / speed);
   }
+  restart();
 }
 
 /**

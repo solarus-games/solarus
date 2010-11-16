@@ -85,6 +85,28 @@ InventoryItem* ItemScript::get_inventory_item() {
 }
 
 /**
+ * @brief This function is called when the game is being suspended or resumed.
+ * @param suspended true if the game is suspended, false if it is resumed
+ */
+void ItemScript::set_suspended(bool suspended) {
+
+  Script::set_suspended(suspended);
+
+  if (is_loaded()) {
+    event_set_suspended(suspended);
+  }
+}
+
+/**
+ * @brief Notifies the script that the game is being suspended or resumed.
+ * @param suspended true if the game becomes suspended, false if it is resumed.
+ */
+void ItemScript::event_set_suspended(bool suspended) {
+
+  notify_script("event_suspended", "b", suspended);
+}
+
+/**
  * @brief Notifies the script that a pickable item of its type has just appeared on the map.
  * @param pickable_item the pickable item
  */

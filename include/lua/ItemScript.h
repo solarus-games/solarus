@@ -51,6 +51,9 @@ class ItemScript: public Script {
     ItemScript(Game &game, ItemProperties &item_properties);
     ~ItemScript();
 
+    void set_suspended(bool suspended);
+
+    void event_set_suspended(bool suspended);
     void event_appear(PickableItem &pickable_item);
     void event_obtaining(const Treasure &treasure);
     void event_obtained(const Treasure &treasure);

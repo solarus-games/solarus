@@ -113,7 +113,6 @@ void ItemScript::event_obtained(const Treasure &treasure) {
   notify_script("event_obtained", "ii", treasure.get_variant(), treasure.get_savegame_variable());
 }
 
-#include <iostream>
 /**
  * @brief Notifies the script that the player starts using an inventory item of its type.
  * @param inventory_item the inventory item

@@ -610,6 +610,9 @@ bool Equipment::has_item_maximum(const std::string &item_name) {
 /**
  * @brief Chooses randomly the name and variant of an item, with respect
  * to the probabilities indicated in the file items.dat.
+ *
+ * This function may return an item that the player is not authorized to have yet.
+ *
  * @param item_name the name of an item randomly chosen (possibly "_none")
  * @param variant variant of this item
  */
@@ -897,6 +900,42 @@ void Equipment::set_initial_items() {
 }
 
 /**
+ * @brief Retruns whether the player is authorized to have the specified item.
+ *
+ * The player is not authorized to receive an item if
+ * the item increases a counter whose maximum value is currently zero
+ * (for example receiving magic without magic bar, receiving bombs without bomb bag, etc.)
+ *
+ * @param item_name name of the item to test
+ * @param variant variant of the item
+ * @return true if the player can have this item
+ */
+bool Equipment::can_receive_item(const std::string &item_name, int variant) {
+
+  bool authorized = true;
+
+  ItemProperties &properties = get_item_properties(item_name);
+
+  // see if obtaining this item increases the counter of another item
+  const std::string &item_counter_changed = properties.get_item_counter_changed();
+  if (item_counter_changed.size() > 0) {
+
+    // consider built-in counters
+    if (item_counter_changed == "magic") {
+      authorized = get_max_magic() > 0;
+    }
+    else if (item_counter_changed != "life"
+	    && item_counter_changed != "money"
+	    && item_counter_changed != "small_keys") { // general case
+      // check that the player has the item to increase
+      authorized = has_item(item_counter_changed);
+    }
+  }
+
+  return authorized;
+}
+
+/**
  * @brief Adds an item to the equipment.
  *
  * This function can be called with any kind of item and it makes the
@@ -967,7 +1006,7 @@ void Equipment::add_item(const std::string &item_name, int variant) {
   }
 
   else {
-    // now, see if this obtaining this item changes the counter of another item
+    // now, see if obtaining this item changes the counter of another item
     const std::string &item_counter_changed = properties.get_item_counter_changed();
     if (item_counter_changed.size() > 0) {
 

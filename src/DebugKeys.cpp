@@ -107,8 +107,9 @@ void DebugKeys::key_pressed(InputEvent::KeyboardKey key) {
 	equipment.add_item("red_key", 1);
 	equipment.add_item("clay_key", 1);
 	equipment.add_item("world_map", 1);
-	equipment.set_item_assigned(0, "boomerang");
-	equipment.set_item_assigned(1, "bottle_2");
+	equipment.add_item("feather", 1);
+	equipment.set_item_assigned(0, "bow");
+	equipment.set_item_assigned(1, "feather");
 	break;
 
       case InputEvent::KEY_g:

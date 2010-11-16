@@ -19,6 +19,7 @@
 #include "hero/HeroSprites.h"
 #include "entities/MapEntities.h"
 #include "entities/Arrow.h"
+#include "lowlevel/Sound.h"
 
 /**
  * @brief Constructor.
@@ -52,6 +53,7 @@ void Hero::BowState::update() {
   State::update();
 
   if (get_sprites().is_animation_finished()) {
+    Sound::play("bow");
     get_entities().add_entity(new Arrow(hero));
     hero.set_state(new FreeState(hero));
   }

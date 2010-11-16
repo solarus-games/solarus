@@ -8,7 +8,7 @@ message_id = {
 function event_obtained(variant)
 
   nb_pieces_of_heart = sol.game.savegame_get_integer(1030)
-  sol.game.savegame.set_integer((nb_pieces_of_heart + 1) % 4)
+  sol.game.savegame_set_integer(1030, (nb_pieces_of_heart + 1) % 4)
   if (nb_pieces_of_heart == 3) then
     sol.game.equipment.add_max_life(4)
   end

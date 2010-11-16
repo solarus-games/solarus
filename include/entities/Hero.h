@@ -83,8 +83,6 @@ class Hero: public MapEntity {
 						 * (even if the collision is not enough to take the conveyor belt and move the hero) */
     bool on_raised_blocks;			/**< indicates that the hero is currently on
 						 * raised crystal switch blocks */
-    std::string last_inventory_item_name;	/**< name of the last inventory item used */
-    uint32_t can_use_inventory_item_date;	/**< date when the player can use the same inventory item next time */
 
     // ground
     Ground ground;				/**< kind of ground under the hero: grass, shallow water, etc. */

@@ -132,6 +132,12 @@ void Equipment::update() {
       next_magic_decrease_date = System::now();
     }
   }
+
+  // update the scripts
+  std::map<std::string, ItemScript*>::iterator it;
+  for (it = item_scripts.begin(); it != item_scripts.end(); it++) {
+    it->second->update();
+  }
 }
 
 // money
@@ -456,10 +462,13 @@ int Equipment::get_item_variant(const std::string &item_name) {
  */
 void Equipment::set_item_variant(const std::string &item_name, int variant) {
 
-  // set the possession state in the savegame
-  int index = get_item_properties(item_name).get_savegame_variable();
+  ItemProperties &properties = get_item_properties(item_name);
+  int index = properties.get_savegame_variable();
   Debug::assert(index != -1, StringConcat() << "The item '" << item_name << "' is not saved");
+  Debug::assert(variant >= 0 && variant <= properties.get_nb_variants(),
+      StringConcat() << "Invalid variant '" << variant << "' for item '" << item_name);
 
+  // set the possession state in the savegame
   savegame.set_integer(index, variant);
 
   // if we are removing the item, unassign it
@@ -515,6 +524,8 @@ void Equipment::set_item_amount(const std::string &item_name, int amount) {
   Debug::assert(amount >= 0 && amount <= max, StringConcat() << "Illegal amount for item '" << item_name << "': " << amount);
 
   savegame.set_integer(counter_index, amount);
+
+  get_item_script(item_name).event_amount_changed(amount);
 }
 
 /**

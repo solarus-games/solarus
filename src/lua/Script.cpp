@@ -352,6 +352,8 @@ void Script::register_map_api() {
 void Script::register_item_api() {
 
   static luaL_Reg item_api[] = {
+      { "get_variant", item_api_get_variant },
+      { "set_variant", item_api_set_variant },
       { "get_amount", item_api_get_amount },
       { "set_amount", item_api_set_amount },
       { "add_amount", item_api_add_amount },

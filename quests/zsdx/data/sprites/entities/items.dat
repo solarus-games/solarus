@@ -4,8 +4,9 @@ feather entities/items.png 1 0 -1
 bombs_counter entities/items.png 1 0 -1
 16	0	16	16	8	13	1	1
 
-bow entities/items.png 1 0 -1
+bow entities/items.png 2 0 -1
 32	0	16	16	8	13	1	1
+32	16	16	16	8	13	1	1
 
 boomerang entities/items.png 1 0 -1
 48	0	16	16	8	13	1	1

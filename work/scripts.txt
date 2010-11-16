@@ -145,6 +145,8 @@ Module item : activé pour les scripts attachés à un item précis (sol.item d�
 
 Les scripts d'items possèdent ce module en plus de main, game et map.
 
+sol.item.get_variant()
+sol.item.set_variant()
 sol.item.get_amount()
 sol.item.set_amount(amount)
 sol.item.add_amount(amount)

@@ -1,4 +1,4 @@
-#!/bin/tcsh
+#!/bin/csh
 
 # This script converts one or several .wav files into .ogg, using the command oggenc.
 

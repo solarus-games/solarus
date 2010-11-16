@@ -64,7 +64,6 @@ Bugs :
 - permettre de zapper l'intro
 - eau froide pour faire fondre la glace : trouver autre chose
 - utiliser une bouteille ayant une fée : relâcher la fée directement au lieu de mettre un message (on l'active souvent par erreur)
-- Rendre Movement abstrait et faire une classe pour le movement rectiligne, afin d'éviter que les sous-classes violent les contrats de Movement
 - Remplacer les cast
 
 

@@ -40,14 +40,23 @@ Treasure::Treasure(Game &game, const std::string &item_name, int variant, int sa
   game(game), savegame_variable(savegame_variable), sprite(NULL) {
 
   std::string real_item_name;
+  Equipment &equipment = game.get_equipment();
 
   if (item_name == "_random") {
-    game.get_equipment().get_random_item(real_item_name, variant);
+    // choose a random item
+    equipment.get_random_item(real_item_name, variant);
   }
   else {
     real_item_name = item_name;
   }
 
+  // check that the item is authorized
+  if (real_item_name != "_none"
+      && !equipment.can_receive_item(real_item_name, variant)) {
+    real_item_name = "_none";
+  }
+
+  // if the treasure is unique, check its state
   if (savegame_variable != -1 && game.get_savegame().get_boolean(savegame_variable)) {
     real_item_name = "_none";
   }

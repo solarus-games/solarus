@@ -134,6 +134,7 @@ class Equipment {
 
     // giving items
     void set_initial_items();
+    bool can_receive_item(const std::string &item_name, int variant);
     void add_item(const std::string &item_name, int variant);
 };
 

@@ -178,8 +178,8 @@ arrow entities/items.png 3 0 -1
 688	32	16	16	8	13	1	1
 
 magic_flask entities/items.png 2 0 -1
-704	0	16	16	4	8	1	1
-704	16	16	16	4	16	1	1
+704	0	16	16	8	13	1	1
+704	16	16	16	8	13	1	1
 
 rupee entities/items.png 6 100 0
 0	48	8	16	4	13	10	10

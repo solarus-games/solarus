@@ -114,6 +114,15 @@ void ItemScript::event_obtained(const Treasure &treasure) {
 }
 
 /**
+ * @brief Notifies the script that the amount of this item has just changed.
+ * @param amount the new amount
+ */
+void ItemScript::event_amount_changed(int amount) {
+
+  notify_script("event_amount_changed", "i", amount);
+}
+
+/**
  * @brief Notifies the script that the player starts using an inventory item of its type.
  * @param inventory_item the inventory item
  */

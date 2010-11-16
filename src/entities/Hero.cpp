@@ -67,8 +67,6 @@ Hero::Hero(Equipment &equipment):
   walking_speed(normal_walking_speed),
   on_conveyor_belt(false),
   on_raised_blocks(false),
-  last_inventory_item_name(""),
-  can_use_inventory_item_date(0),
   ground(GROUND_NORMAL),
   next_ground_date(0) {
 
@@ -194,7 +192,6 @@ void Hero::set_suspended(bool suspended) {
 
     uint32_t diff = System::now() - when_suspended;
     next_ground_date += diff;
-    can_use_inventory_item_date += diff;
   }
 
   sprites->set_suspended(suspended);

@@ -200,6 +200,8 @@ class Script {
       map_api_door_set_open,
 
       // item API
+      item_api_get_variant,
+      item_api_set_variant,
       item_api_get_amount,
       item_api_set_amount,
       item_api_add_amount,

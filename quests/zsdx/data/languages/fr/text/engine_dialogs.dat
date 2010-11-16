@@ -176,6 +176,15 @@ line1 = "Tu n'as plus de"
 line2 = "Flèches !"
 skip = all
 
+[_item_description.bow.2]
+# Arc & Flèches / Bow & Arrows
+#       |--------------------|
+icon = 3
+line1 = "Tire des Flèches"
+line2 = "pour vaincre des"
+line3 = "ennemis coriaces."
+skip = all
+
 [_item_description.boomerang.1]
 # Boomerang
 #       |--------------------|
@@ -763,6 +772,19 @@ next = _treasure.bow.1.1
 line1 = "vaincre à distance"
 line2 = "les ennemis"
 line3 = "coriaces !"
+
+[_treasure.bow.2]
+# Arc & Flèches
+#       |--------------------|
+icon = 3
+line1 = "Tu as trouvé l'Arc !$0"
+line2 = "Tu peux combattre"
+line3 = "ennemis coriaces"
+next = _treasure.bow.2.1
+
+[_treasure.bow.2.1]
+#       |--------------------|
+line1 = "à distance !"
 
 [_treasure.boomerang.1]
 # Boomerang

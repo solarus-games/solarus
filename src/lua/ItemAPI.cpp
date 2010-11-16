@@ -25,6 +25,48 @@
 #include <lua.hpp>
 
 /**
+ * @brief Returns the possession state of the current item
+ * (only for an item whose possession state is saved).
+ *
+ * - Return value: the possession state
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::item_api_get_variant(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 0, &script);
+
+  ItemProperties &properties = script->get_item_properties();
+  Equipment &equipment = script->get_game().get_equipment();
+  int variant = equipment.get_item_variant(properties.get_name());
+  lua_pushinteger(l, variant);
+
+  return 1;
+}
+
+/**
+ * @brief Sets the possession state of the current item
+ * (only for an item whose possession state is saved).
+ *
+ * - Argument 1 (integer): the new possession state of this item
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::item_api_set_variant(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 1, &script);
+
+  int variant = luaL_checkinteger(l, 1);
+  ItemProperties &properties = script->get_item_properties();
+  Equipment &equipment = script->get_game().get_equipment();
+  equipment.set_item_variant(properties.get_name(), variant);
+
+  return 0;
+}
+
+/**
  * @brief Returns the amount of the current item
  * (only for an item with amount).
  *

@@ -17,6 +17,7 @@
 #include "hero/InventoryItemState.h"
 #include "hero/FreeState.h"
 #include "lowlevel/System.h"
+#include "lua/ItemScript.h"
 #include "InventoryItem.h"
 
 /**
@@ -58,5 +59,21 @@ void Hero::InventoryItemState::update() {
     // if the state was not modified by the item, return to the normal state
     hero.set_state(new FreeState(hero));
   }
+}
+
+/**
+ * @brief Notifies this state that a dialog box has just finished.
+ *
+ * This function is called when the last message of a dialog is finished.
+ * The dialog box has just been closed but the game is still suspended.
+ * This function is not called if the dialog was skipped.
+ *
+ * @param first_message_id id of the first message in the dialog
+ * that has just finished
+ * @param answer the answer selected by the player: 0 for the first one,
+ * 1 for the second one, -1 if there was no question
+ */
+void Hero::InventoryItemState::notify_dialog_finished(const MessageId &first_message_id, int answer) {
+  get_equipment().get_item_script(item.get_name()).event_dialog_finished(first_message_id, answer);
 }
 

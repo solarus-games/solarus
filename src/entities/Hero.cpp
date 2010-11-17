@@ -369,6 +369,22 @@ void Hero::key_released(GameControls::GameKey key) {
 }
 
 /**
+ * @brief Notifies the hero that a dialog box has just finished.
+ *
+ * This function is called when the last message of a dialog is finished.
+ * The dialog box has just been closed but the game is still suspended.
+ * This function is not called if the dialog was skipped.
+ *
+ * @param first_message_id id of the first message in the dialog
+ * that has just finished
+ * @param answer the answer selected by the player: 0 for the first one,
+ * 1 for the second one, -1 if there was no question
+ */
+void Hero::notify_dialog_finished(const MessageId &first_message_id, int answer) {
+  state->notify_dialog_finished(first_message_id, answer);
+}
+
+/**
  * @brief Returns the sprites currently representing the hero.
  * @return the sprites
  */

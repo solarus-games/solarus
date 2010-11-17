@@ -18,7 +18,7 @@
 #define SOLARUS_TILE_H
 
 #include "Common.h"
-#include "MapEntity.h"
+#include "entities/MapEntity.h"
 
 /**
  * @brief A small fixed piece of the map background.

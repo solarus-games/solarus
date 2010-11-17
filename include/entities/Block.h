@@ -18,7 +18,7 @@
 #define SOLARUS_BLOCK_H
 
 #include "Common.h"
-#include "Detector.h"
+#include "entities/Detector.h"
 
 /**
  * @brief A block or a statue that the hero can push.

@@ -18,7 +18,7 @@
 #define SOLARUS_TELETRANSPORTER_H
 
 #include "Common.h"
-#include "Detector.h"
+#include "entities/Detector.h"
 #include "Transition.h"
 
 /**

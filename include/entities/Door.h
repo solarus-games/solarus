@@ -18,7 +18,7 @@
 #define SOLARUS_DOOR_H
 
 #include "Common.h"
-#include "Detector.h"
+#include "entities/Detector.h"
 
 /**
  * @brief A door that may be open or closed.

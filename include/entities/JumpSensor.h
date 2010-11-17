@@ -18,7 +18,7 @@
 #define SOLARUS_JUMP_SENSOR_H
 
 #include "Common.h"
-#include "Detector.h"
+#include "entities/Detector.h"
 
 /**
  * @brief A sensor that makes the hero jump.

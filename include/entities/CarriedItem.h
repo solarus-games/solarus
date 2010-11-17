@@ -18,7 +18,7 @@
 #define SOLARUS_CARRIED_ITEM_H
 
 #include "Common.h"
-#include "MapEntity.h"
+#include "entities/MapEntity.h"
 
 /**
  * @brief An item carried or thrown by the hero.

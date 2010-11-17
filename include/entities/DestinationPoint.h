@@ -18,7 +18,7 @@
 #define SOLARUS_DESTINATION_POINT_H
 
 #include "Common.h"
-#include "MapEntity.h"
+#include "entities/MapEntity.h"
 
 /**
  * @brief A location of the map where the hero can arrive when using a teletransporter.

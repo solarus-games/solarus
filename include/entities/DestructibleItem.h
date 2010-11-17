@@ -18,8 +18,8 @@
 #define SOLARUS_DESTRUCTIBLE_ITEM_H
 
 #include "Common.h"
-#include "Detector.h"
-#include "Ground.h"
+#include "entities/Detector.h"
+#include "entities/Ground.h"
 #include "Treasure.h"
 
 /**

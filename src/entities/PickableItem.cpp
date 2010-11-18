@@ -80,7 +80,7 @@ MapEntity* PickableItem::parse(Game &game, std::istream &is, Layer layer, int x,
 
   return create(game, Layer(layer), x, y,
       Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable),
-      FALLING_NONE, false);
+      FALLING_NONE, true);
 }
 
 /**
@@ -91,19 +91,24 @@ MapEntity* PickableItem::parse(Game &game, std::istream &is, Layer layer, int x,
  * or:
  * - the treasure is empty ("_none"),
  * or:
+ * - the treasure is random ("_random") and the random content chosen is "_none",
+ * or:
  * - the item cannot be picked by the hero yet.
  *
  * @param game the current game
  * @param layer layer of the pickable item to create on the map
  * @param x x coordinate of the pickable item to create
  * @param y y coordinate of the pickable item to create
- * @param treasure the treasure to give, or NULL
+ * @param treasure the treasure to give, possibly "_none" or "_random"
  * @param falling_height to make the item fall when it appears
- * @param will_disappear true to make the item disappear after an amout of time
- * @return the pickable item created, or NULL depending on the subtype
+ * @param force_persistent true to make the item stay forever (otherwise, the properties of the item
+ * decide if it disappears after some time)
+ * @return the pickable item created, or NULL
  */
-PickableItem* PickableItem::create(Game &game, Layer layer, int x, int y, const Treasure &treasure,
-    FallingHeight falling_height, bool will_disappear) {
+PickableItem* PickableItem::create(Game &game, Layer layer, int x, int y, Treasure treasure,
+    FallingHeight falling_height, bool force_persistent) {
+
+  treasure.decide_content();
 
   // don't create anything if there is no treasure to give
   if (treasure.is_empty()) {
@@ -114,7 +119,7 @@ PickableItem* PickableItem::create(Game &game, Layer layer, int x, int y, const 
 
   // set the item properties
   item->falling_height = falling_height;
-  item->will_disappear = will_disappear;
+  item->will_disappear = !force_persistent && treasure.get_item_properties().can_disappear();
 
   // initialize the item
   item->initialize_sprites();

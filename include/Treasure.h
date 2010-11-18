@@ -48,13 +48,14 @@ class Treasure {
     Treasure(const Treasure &other);
     ~Treasure();
 
-    ItemProperties& get_item_properties();
+    ItemProperties& get_item_properties() const;
     const std::string& get_item_name() const;
     int get_variant() const;
     int get_savegame_variable() const;
     bool is_saved() const;
     bool is_empty() const;
 
+    void decide_content();
     void give_to_player() const;
     bool is_found() const;
 

@@ -26,43 +26,39 @@
 #include "lua/MapScript.h"
 #include "lua/ItemScript.h"
 #include "lowlevel/Surface.h"
+#include "lowlevel/Debug.h"
 
 /**
  * @brief Creates a new treasure.
  * @param game the current game (cannot be NULL)
  * @param item_name name of the item to give, according to items.dat
- * ("_random" and "_none" are also accepted)
+ * ("_random" and "_none" are also accepted; if you specify "_random", you must call
+ * decide_content() later)
  * @param variant variant of this item
  * @param savegame_variable index of the savegame boolean indicating that the hero has found this treasure
  * or -1 if this treasure is not saved
  */
 Treasure::Treasure(Game &game, const std::string &item_name, int variant, int savegame_variable):
-  game(game), savegame_variable(savegame_variable), sprite(NULL) {
+  game(game),
+  item_name(item_name),
+  variant(variant),
+  savegame_variable(savegame_variable),
+  sprite(NULL) {
 
-  std::string real_item_name;
   Equipment &equipment = game.get_equipment();
 
-  if (item_name == "_random") {
-    // choose a random item
-    equipment.get_random_item(real_item_name, variant);
-  }
-  else {
-    real_item_name = item_name;
-  }
-
   // check that the item is authorized
-  if (real_item_name != "_none"
-      && !equipment.can_receive_item(real_item_name, variant)) {
-    real_item_name = "_none";
+  if (item_name != "_none" && item_name != "_random"
+      && !equipment.can_receive_item(item_name, variant)) {
+    this->item_name = "_none";
+    this->variant = 1;
   }
 
   // if the treasure is unique, check its state
   if (savegame_variable != -1 && game.get_savegame().get_boolean(savegame_variable)) {
-    real_item_name = "_none";
+    this->item_name = "_none";
+    this->variant = 1;
   }
-
-  this->item_name = real_item_name;
-  this->variant = variant;
 }
 
 /**
@@ -83,11 +79,35 @@ Treasure::~Treasure() {
 }
 
 /**
+ * @brief If the treasure is "_random", chooses a random item and variant according to the probabilities of items.dat.
+ *
+ * If the item is "_random", this function must be called before any function
+ * that needs to know the treasure content:
+ * get_item_name(), get_item_properties(), is_empty(), give_to_player() and display().
+ * If the item is not "_random", this function has no effect.
+ */
+void Treasure::decide_content() {
+
+  Equipment &equipment = game.get_equipment();
+  if (item_name == "_random") {
+    // choose a random item
+    equipment.get_random_item(item_name, variant);
+
+    // check that the item is authorized
+    if (item_name != "_none"
+        && !equipment.can_receive_item(item_name, variant)) {
+      item_name = "_none";
+      variant = 1;
+    }
+  }
+}
+
+/**
  * @brief Returns the properties of the item given with this treasure.
  * @return the item properties
  */
-ItemProperties& Treasure::get_item_properties() {
-  return game.get_equipment().get_item_properties(item_name);
+ItemProperties& Treasure::get_item_properties() const {
+  return game.get_equipment().get_item_properties(get_item_name());
 }
 
 /**
@@ -95,6 +115,9 @@ ItemProperties& Treasure::get_item_properties() {
  * @return the name of the item
  */
 const std::string& Treasure::get_item_name() const {
+
+  Debug::assert(item_name != "_random", "This treasure has a random content and it is not decided yet");
+
   return item_name;
 }
 
@@ -156,10 +179,10 @@ void Treasure::give_to_player() const {
 
   // give the item
   Equipment &equipment = game.get_equipment();
-  equipment.add_item(item_name, variant);
+  equipment.add_item(get_item_name(), get_variant());
 
   // notify the scripts
-  equipment.get_item_script(item_name).event_obtaining(*this);
+  equipment.get_item_script(get_item_name()).event_obtaining(*this);
   game.get_map_script().event_treasure_obtaining(*this);
 }
 
@@ -174,8 +197,8 @@ void Treasure::display(Surface *destination, int x, int y) {
   if (sprite == NULL) {
     // create the sprite only if needed (many treasures are actually never displayed)
     sprite = new Sprite("entities/items");
-    sprite->set_current_animation(item_name);
-    sprite->set_current_direction(variant - 1);
+    sprite->set_current_animation(get_item_name());
+    sprite->set_current_direction(get_variant() - 1);
   }
 
   // display the item

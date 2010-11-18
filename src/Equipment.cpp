@@ -33,7 +33,7 @@
  * @param savegame the savegame to encapsulate
  */
 Equipment::Equipment(Savegame &savegame):
-  savegame(savegame), game(NULL), magic_decrease_delay(0) {
+  savegame(savegame), game(NULL), suspended(true), magic_decrease_delay(0) {
 
   // load the equipment specification from items.dat
   IniFile ini("items.dat", IniFile::READ);

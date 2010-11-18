@@ -26,6 +26,7 @@
 #include "lowlevel/IniFile.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
+#include "lowlevel/Random.h"
 
 /**
  * @brief Constructor.
@@ -634,15 +635,37 @@ bool Equipment::has_item_maximum(const std::string &item_name) {
  * @brief Chooses randomly the name and variant of an item, with respect
  * to the probabilities indicated in the file items.dat.
  *
- * This function may return an item that the player is not authorized to have yet.
+ * This function may choose an item that the player is not authorized to have yet.
  *
  * @param item_name the name of an item randomly chosen (possibly "_none")
- * @param variant variant of this item
+ * @param variant variant of this item (also random)
  */
 void Equipment::get_random_item(std::string &item_name, int &variant) {
+
+  int r = Random::get_number(1000);
+  int sum = 0;
+
+  // this can be optimized to avoid always traversing the item properties
+  std::map<std::string, ItemProperties*>::iterator it;
+  for (it = item_properties.begin(); it != item_properties.end(); it++) {
+
+    ItemProperties *properties = it->second;
+    int nb_variants = properties->get_nb_variants();
+    for (int i = 1; i <= nb_variants; i++) {
+
+      int prob = properties->get_probability(i);
+      sum += prob;
+      if (sum > r) {
+	item_name = it->first;
+	variant = i;
+	return;
+      }
+    }
+  }
+
+  // if the function has not returned yet, then no item was choosen
   item_name = "_none";
   variant = 1;
-  // TODO
 }
 
 /**

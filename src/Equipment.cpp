@@ -645,7 +645,8 @@ void Equipment::get_random_item(std::string &item_name, int &variant) {
   int r = Random::get_number(1000);
   int sum = 0;
 
-  // this can be optimized to avoid always traversing the item properties
+  // this can be optimized to avoid always traversing all item properties,
+  // unless we decide to make dynamic probabilities (i.e. call the item scripts to know them)
   std::map<std::string, ItemProperties*>::iterator it;
   for (it = item_properties.begin(); it != item_properties.end(); it++) {
 

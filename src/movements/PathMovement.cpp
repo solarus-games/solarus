@@ -261,7 +261,7 @@ void PathMovement::start_next_elementary_move() {
 
       current_direction = remaining_path[0] - '0';
       Debug::assert(current_direction >= 0 && current_direction < 8,
-          StringConcat() << "Invalid path '" << initial_path << "' (bad direction '" << current_direction << "')");
+          StringConcat() << "Invalid path '" << initial_path << "' (bad direction '" << remaining_path[0] << "')");
 
       PixelMovement::set_delay(speed_to_delay(speed, current_direction));
       PixelMovement::set_trajectory(elementary_moves[current_direction]);

@@ -36,7 +36,6 @@ class Hero::InventoryItemState: public Hero::State {
 
     void start(State *previous_state);
     void update();
-    void notify_dialog_finished(const MessageId &first_message_id, int answer);
 };
 
 #endif

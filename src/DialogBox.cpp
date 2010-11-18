@@ -340,7 +340,7 @@ void DialogBox::close() {
   if (!skipped && first_message_id[0] != '_') {
     // a dialog of the quest was just finished: notify the scripts
     game.get_map_script().event_dialog_finished(first_message_id, last_answer);
-    game.get_hero().notify_dialog_finished(first_message_id, last_answer);
+    game.get_equipment().notify_dialog_finished(first_message_id, last_answer);
   }
 }
 

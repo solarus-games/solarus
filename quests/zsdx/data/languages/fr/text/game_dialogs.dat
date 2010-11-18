@@ -14,6 +14,39 @@ line2 = "   Donjon de la Forêt  "
 line1 = "        Niveau 2       "
 line2 = "     Caverne de Roc    "
 
+[found_piece_of_heart.first]
+#       |--------------------|
+icon = 75
+line1 = "Collecte-en quatre"
+line2 = "pour former un"
+line3 = "nouveau Coeur."
+
+[found_piece_of_heart.second]
+#       |--------------------|
+icon = 76
+line1 = "Encore deux et"
+line2 = "tu obtiendras"
+line3 = "un nouveau Coeur."
+
+[found_piece_of_heart.third]
+#       |--------------------|
+icon = 77
+line1 = "Plus qu'un à trouver"
+line2 = "pour former un"
+line3 = "nouveau Coeur !"
+
+[found_piece_of_heart.fourth]
+#       |--------------------|
+icon = 78
+line1 = "Tu as trouvé quatre"
+line2 = "Fragments de Coeur."
+next = found_piece_of_heart.fourth.1
+
+[found_piece_of_heart.fourth.1]
+#       |--------------------|
+line1 = "Tu obtiens un Coeur"
+line2 = "supplémentaire !"
+
 [intro0]
 # Intro : écran noir
 #       |-----------------------|

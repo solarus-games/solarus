@@ -196,9 +196,16 @@ function event_dialog_finished(first_message_id, answer)
 	playing_game_3 = true
       end
     end
+
   elseif first_message_id == "rupee_house.game_3.go" then 
     sol.main.timer_start(8000, "game_3_timer", true);
     sol.map.switch_set_enabled("switch", false);
+
+  -- stop game 3 when the player founds the piece of heart
+  elseif string.match(first_message_id, "^found_piece_of_heart") then
+    sol.map.tile_set_enabled("game_3_final_barrier", false)
+    sol.main.play_sound("secret")
+    playing_game_3 = false
   end
 end
 
@@ -245,17 +252,6 @@ end
 function game_3_timer()
   sol.main.play_sound("door_closed")
   sol.map.tile_set_enabled("game_3_middle_barrier", true)
-end
-
--- Function called when the player is obtaining a treasure
-function event_treasure_obtained(item_name, variant, savegame_variable)
-
-  -- stop game 3 when the player founds the piece of heart
-  if savegame_variable == 17 then
-    sol.map.tile_set_enabled("game_3_final_barrier", false)
-    sol.main.play_sound("secret")
-    playing_game_3 = false
-  end
 end
 
 -- Function called when the switch is enabled in game 3

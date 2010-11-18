@@ -27,6 +27,8 @@
 #include "lowlevel/TextSurface.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Sound.h"
+#include "lowlevel/Debug.h"
+#include "lowlevel/StringConcat.h"
 #include <sstream>
 
 /**
@@ -98,15 +100,18 @@ MapEntity* ShopItem::parse(Game &game, std::istream &is, Layer layer, int x, int
  * @param layer layer of the entity to create
  * @param x x coordinate of the entity to create
  * @param y y coordinate of the entity to create
- * @param treasure the treasure that the hero can buy (will be deleted automatically)
- * or NULL if the item is already bought
+ * @param treasure the treasure that the hero can buy
  * @param price the treasure's price in rupees
  * @param message_id id of the message describing the item when the player watches it
+ * @return the shop item created, or NULL if it is already bought
  */
 ShopItem* ShopItem::create(Game &game, const std::string &name, Layer layer, int x, int y,
 			    const Treasure &treasure, int price, const MessageId &message_id) {
 
-  // see if the item was not been already bought
+  Debug::assert(treasure.get_item_name() != "_none",
+      StringConcat() << "Invalid shop item: '" << treasure.get_item_name());
+
+  // see if the item is not already bought
   if (treasure.is_found()) {
     return NULL;
   }

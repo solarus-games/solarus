@@ -204,12 +204,9 @@ bool DestructibleItem::test_collision_custom(MapEntity &entity) {
  */
 void DestructibleItem::create_pickable_item() {
 
-  if (!treasure.is_empty()) {
-
-    bool will_disappear = treasure.get_item_properties().can_disappear();
-    get_entities().add_entity(PickableItem::create(get_game(), get_layer(), get_x(), get_y(),
-	  treasure, FALLING_MEDIUM, will_disappear));
-  }
+  treasure.decide_content();
+  get_entities().add_entity(PickableItem::create(get_game(), get_layer(), get_x(), get_y(),
+      treasure, FALLING_MEDIUM, false));
 }
 
 /**

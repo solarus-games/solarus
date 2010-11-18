@@ -141,7 +141,7 @@ MapEntity* Enemy::create(Game &game, Subtype type, Rank rank, int savegame_varia
       && game.get_savegame().get_boolean(savegame_variable)) {
 
     // the enemy is dead: create its pickable treasure (if any) instead
-    return PickableItem::create(game, layer, x, y, treasure, FALLING_NONE, false);
+    return PickableItem::create(game, layer, x, y, treasure, FALLING_NONE, true);
   }
 
   // create the enemy
@@ -479,13 +479,9 @@ void Enemy::update() {
 
   if (is_killed() && is_dying_animation_finished()) {
 
-    // create the pickable treasure
-    if (!treasure.is_empty()) {
-
-      bool will_disappear = treasure.get_item_properties().can_disappear();
-      get_entities().add_entity(PickableItem::create(get_game(), get_layer(), get_x(), get_y(),
-	    treasure, FALLING_HIGH, will_disappear));
-    }
+    // create the pickable treasure if any
+    get_entities().add_entity(PickableItem::create(get_game(), get_layer(), get_x(), get_y(),
+	treasure, FALLING_HIGH, false));
 
     // notify the enemy
     just_dead();

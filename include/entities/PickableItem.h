@@ -60,8 +60,8 @@ class PickableItem: public Detector {
   public:
 
     // creation and destruction
-    static PickableItem* create(Game &game, Layer layer, int x, int y, const Treasure &treasure,
-	FallingHeight falling_height, bool will_disappear);
+    static PickableItem* create(Game &game, Layer layer, int x, int y, Treasure treasure,
+	FallingHeight falling_height, bool force_persistent);
 
     ~PickableItem();
     static CreationFunction parse;

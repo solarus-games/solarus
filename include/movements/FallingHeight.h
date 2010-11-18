@@ -25,10 +25,10 @@
  * when an enemy is killed or when a pot is lifted.
  */
 enum FallingHeight {
-  FALLING_NONE = -1,
-  FALLING_LOW = 0,
-  FALLING_MEDIUM,
-  FALLING_HIGH
+  FALLING_NONE		= 0,
+  FALLING_LOW		= 1,
+  FALLING_MEDIUM	= 2,
+  FALLING_HIGH		= 3
 };
 
 #endif

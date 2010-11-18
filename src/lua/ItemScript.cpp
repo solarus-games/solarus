@@ -15,6 +15,8 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lua/ItemScript.h"
+#include "entities/PickableItem.h"
+#include "movements/FallingHeight.h"
 #include "ItemProperties.h"
 #include "InventoryItem.h"
 #include "Game.h"
@@ -113,7 +115,9 @@ void ItemScript::event_set_suspended(bool suspended) {
 void ItemScript::event_appear(PickableItem &pickable_item) {
 
   this->pickable_item = &pickable_item;
-  notify_script("event_appear");
+  const Treasure &treasure = pickable_item.get_treasure();
+  FallingHeight falling_height = pickable_item.get_falling_height();
+  notify_script("event_appear", "iii", treasure.get_variant(), treasure.get_savegame_variable(), falling_height);
   this->pickable_item = NULL;
 }
 

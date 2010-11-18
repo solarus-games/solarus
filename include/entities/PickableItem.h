@@ -53,9 +53,6 @@ class PickableItem: public Detector {
     void initialize_sprites();
     void initialize_movement();
 
-    // falling
-    bool is_falling();
-
     // item
     void give_item_to_player();
     void set_blinking(bool blinking);
@@ -63,13 +60,18 @@ class PickableItem: public Detector {
   public:
 
     // creation and destruction
-    static PickableItem* create(Game &game, Layer layer, int x, int y,	const Treasure &treasure,
+    static PickableItem* create(Game &game, Layer layer, int x, int y, const Treasure &treasure,
 	FallingHeight falling_height, bool will_disappear);
 
     ~PickableItem();
     static CreationFunction parse;
 
     EntityType get_type();
+
+    // properties
+    bool is_falling();
+    FallingHeight get_falling_height();
+    const Treasure& get_treasure();
 
     // item state
     void set_suspended(bool suspended);

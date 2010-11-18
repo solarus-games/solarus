@@ -33,7 +33,7 @@
  * @param layer layer of the pickable item to create on the map
  * @param x x coordinate of the pickable item to create
  * @param y y coordinate of the pickable item to create
- * @param treasure the treasure to give when the item is picked (cannot be NULL)
+ * @param treasure the treasure to give when the item is picked
  */
 PickableItem::PickableItem(Layer layer, int x, int y, const Treasure &treasure):
   Detector(COLLISION_RECTANGLE, "", layer, x, y, 0, 0), treasure(treasure),
@@ -102,7 +102,7 @@ MapEntity* PickableItem::parse(Game &game, std::istream &is, Layer layer, int x,
  * @param will_disappear true to make the item disappear after an amout of time
  * @return the pickable item created, or NULL depending on the subtype
  */
-PickableItem * PickableItem::create(Game &game, Layer layer, int x, int y, const Treasure &treasure,
+PickableItem* PickableItem::create(Game &game, Layer layer, int x, int y, const Treasure &treasure,
     FallingHeight falling_height, bool will_disappear) {
 
   // don't create anything if there is no treasure to give
@@ -198,7 +198,23 @@ void PickableItem::initialize_movement() {
  * @return true if the entity is currently falling
  */
 bool PickableItem::is_falling() {
-  return falling_height != FALLING_NONE;
+  return get_falling_height() != FALLING_NONE;
+}
+
+/**
+ * @brief Returns the height this pickable item falls from when it appears.
+ * @return the falling height
+ */
+FallingHeight PickableItem::get_falling_height() {
+  return falling_height;
+}
+
+/**
+ * @brief Returns the treasure the player receives if he picks this item.
+ * @return the treasure
+ */
+const Treasure& PickableItem::get_treasure() {
+  return treasure;
 }
 
 /**

@@ -173,7 +173,7 @@ void PixelMovement::restart() {
     finished = false;
     trajectory_iterator = trajectory.begin();
     next_move_date = System::now() + delay;
-//    std::cout << "starting new trajectory " << trajectory_string << ", current pos = " << get_xy() << "\n";
+    //std::cout << "starting new trajectory " << trajectory_string << ", current pos = " << get_xy() << "\n";
   }
 }
 
@@ -225,7 +225,7 @@ void PixelMovement::make_next_step() {
 
   if (!test_collision_with_obstacles(dxy.get_x(), dxy.get_y())) {
     translate_xy(dxy);
-//    std::cout << "translated of " << dxy << ", new pos = " << get_xy() << "\n";
+    //std::cout << "translated " << get_entity() << " of " << dxy << ", new pos = " << get_xy() << "\n";
     success = true;
   }
 

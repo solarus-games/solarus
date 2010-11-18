@@ -335,8 +335,9 @@ void PickableItem::update() {
     shadow_sprite->update();
   }
 
+  shadow_xy.set_x(get_x());
   if (!is_falling()) {
-    shadow_xy.set_xy(get_xy());
+    shadow_xy.set_y(get_y());
   }
 
   if (!is_suspended()) {

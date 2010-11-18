@@ -80,7 +80,6 @@ class Hero::State {
     // game
     virtual void set_map(Map &map);
     virtual bool can_start_gameover_sequence();
-    virtual void notify_dialog_finished(const MessageId &first_message_id, int answer);
 
     // sprites
     virtual bool is_hero_visible();

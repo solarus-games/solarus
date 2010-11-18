@@ -143,7 +143,6 @@ class Hero: public MapEntity {
     void set_suspended(bool suspended);
     void key_pressed(GameControls::GameKey key);
     void key_released(GameControls::GameKey key);
-    void notify_dialog_finished(const MessageId &first_message_id, int answer);
 
     /**
      * @name Sprites.

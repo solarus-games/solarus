@@ -53,7 +53,6 @@ class Equipment {
     Equipment(Savegame &savegame);
     ~Equipment();
     void set_game(Game &game);
-    ItemScript& get_item_script(const std::string &item_name);
 
     void update();
     void set_suspended(bool suspended);
@@ -138,6 +137,11 @@ class Equipment {
     void set_initial_items();
     bool can_receive_item(const std::string &item_name, int variant);
     void add_item(const std::string &item_name, int variant);
+
+    // scripts
+    ItemScript& get_item_script(const std::string &item_name);
+    void notify_dialog_finished(const MessageId &first_message_id, int answer);
+
 };
 
 #endif

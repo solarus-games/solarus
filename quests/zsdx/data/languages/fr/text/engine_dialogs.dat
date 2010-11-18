@@ -1800,39 +1800,6 @@ icon = 79
 line1 = "Tu as trouvé un"
 line2 = "Fragment de Coeur !"
 
-[_treasure.piece_of_heart.1.first]
-#       |--------------------|
-icon = 75
-line1 = "Collecte-en quatre"
-line2 = "pour former un"
-line3 = "nouveau Coeur."
-
-[_treasure.piece_of_heart.1.second]
-#       |--------------------|
-icon = 76
-line1 = "Encore deux et"
-line2 = "tu obtiendras"
-line3 = "un nouveau Coeur."
-
-[_treasure.piece_of_heart.1.third]
-#       |--------------------|
-icon = 77
-line1 = "Plus qu'un à trouver"
-line2 = "pour former un"
-line3 = "nouveau Coeur !"
-
-[_treasure.piece_of_heart.1.fourth]
-#       |--------------------|
-icon = 78
-line1 = "Tu as trouvé quatre"
-line2 = "Fragments de Coeur."
-next = _treasure.piece_of_heart.1.fourth.1
-
-[_treasure.piece_of_heart.1.fourth.1]
-#       |--------------------|
-line1 = "Tu obtiens un Coeur"
-line2 = "supplémentaire !"
-
 [_treasure.heart_container.1]
 # Réceptacle de Coeur
 #       |--------------------|

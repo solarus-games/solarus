@@ -119,3 +119,16 @@ void Hero::TreasureState::display_on_map() {
       y - 24 - camera_position.get_y());
 }
 
+/**
+ * @brief Returns whether an item previously carried by the hero should be thrown when this state starts.
+ *
+ * If false is returned, the item will be directly removed.
+ * If true is returned, the item will be thrown in the direction the hero is looking towards.
+ * Returns true by default.
+ *
+ * @return true if an item previously carried by the hero should be thrown when this state starts
+ */
+bool Hero::TreasureState::can_throw_item() {
+  return false;
+}
+

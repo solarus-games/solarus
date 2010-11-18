@@ -38,6 +38,7 @@ class Hero::TreasureState: public Hero::State {
     void stop(State *next_state);
     void update();
     void display_on_map();
+    bool can_throw_item();
 };
 
 #endif

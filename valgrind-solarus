@@ -1,3 +1,3 @@
 #!/bin/bash
-valgrind --suppressions=valgrind.supp --leak-check=full --show-reachable=yes --num-callers=40 --track-origins=yes solarus $* 2>&1 | more
+valgrind --suppressions=valgrind.supp --leak-check=full --show-reachable=yes --num-callers=40 --track-origins=yes ./src/solarus $* 2>&1 | more
 

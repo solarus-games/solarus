@@ -19,7 +19,9 @@
 /**
  * @brief Y move at each time frame.
  */
-const std::string FallingOnFloorMovement::trajectories[3] = {
+const std::string FallingOnFloorMovement::trajectories[4] = {
+
+    "", // none
 
     "0 -1  0 1", // low
 

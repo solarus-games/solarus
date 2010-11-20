@@ -46,6 +46,7 @@ void Hero::FallingState::start(State *previous_state) {
 
   State::start(previous_state);
 
+  hero.delayed_teletransporter = NULL;
   get_sprites().save_animation_direction();
   get_sprites().set_animation_falling();
   Sound::play("hero_falls");

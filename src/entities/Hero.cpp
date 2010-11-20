@@ -1622,8 +1622,6 @@ void Hero::start_deep_water() {
  */
 void Hero::start_hole() {
 
-  delayed_teletransporter = NULL;
-
   if (!state->can_control_movement()) {
     // the player has no control (e.g. he is running or being hurt):
     // fall immediately

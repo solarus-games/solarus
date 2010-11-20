@@ -126,14 +126,15 @@ void HeartsView::update() {
    */
   if (game != NULL) {
 
-    if (equipment->get_life() <= equipment->get_max_life() / 4) {
+    if (equipment->get_life() <= equipment->get_max_life() / 4 && !game->is_suspended()) {
 
+      uint32_t now = System::now();
       if (empty_heart_sprite->get_current_animation() != "danger") {
 	empty_heart_sprite->set_current_animation("danger");
+	next_danger_sound_date = now + 250;
       }
       empty_heart_sprite->update();
 
-      uint32_t now = System::now();
       if (now > next_danger_sound_date) {
 	next_danger_sound_date = now + 750;
 	Sound::play("danger");

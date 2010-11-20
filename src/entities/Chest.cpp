@@ -165,7 +165,7 @@ bool Chest::is_open() {
  * @brief Sets whether the chest is open.
  *
  * If you don't change the chest state, this function has no effect.
- * If you make the chest opened, its sprite is updated but this function does not give any treasur
+ * If you make the chest opened, its sprite is updated but this function does not give any treasure
  * to the player.
  * If you close the chest, its sprite is updated and the chest will then be empty.
  *

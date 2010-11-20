@@ -18,6 +18,7 @@
 #include "entities/Hero.h"
 #include "entities/Enemy.h"
 #include "entities/Stairs.h"
+#include "entities/Switch.h"
 #include "entities/CrystalSwitch.h"
 #include "entities/DestructibleItem.h"
 #include "movements/PathMovement.h"
@@ -377,6 +378,17 @@ void Arrow::attach_to(MapEntity &entity_reached) {
 
   this->entity_reached = &entity_reached;
   stop_now = true;
+}
+
+/**
+ * @brief This function is called when a switch detects a collision with this entity.
+ * @param sw the switch
+ */
+void Arrow::notify_collision_with_switch(Switch &sw) {
+
+  if (is_stopped()) {
+    sw.try_activate(*this);
+  }
 }
 
 /**

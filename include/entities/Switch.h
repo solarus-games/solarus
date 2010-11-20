@@ -67,8 +67,14 @@ class Switch: public Detector {
 
     bool is_walkable();
     bool is_enabled();
+    void activate();
     void set_enabled(bool enabled);
     void set_locked(bool locked);
+
+    void try_activate(Hero &hero);
+    void try_activate(Block &block);
+    void try_activate(Arrow &arrow);
+
     void update();
     bool test_collision_custom(MapEntity &entity);
     void notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode);

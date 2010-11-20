@@ -257,9 +257,10 @@ class MapEntity {
     virtual void notify_collision_with_stairs(Stairs &stairs, CollisionMode collision_mode);
     virtual void notify_collision_with_jump_sensor(JumpSensor &jump_sensor);
     virtual void notify_collision_with_sensor(Sensor &sensor);
-    virtual void notify_collision_with_explosion(Explosion &explosion, Sprite &sprite_overlapping);
+    virtual void notify_collision_with_switch(Switch &sw);
     virtual void notify_collision_with_crystal_switch(CrystalSwitch &crystal_switch, CollisionMode collision_mode);
     virtual void notify_collision_with_crystal_switch(CrystalSwitch &crystal_switch, Sprite &sprite_overlapping);
+    virtual void notify_collision_with_explosion(Explosion &explosion, Sprite &sprite_overlapping);
     virtual void notify_collision_with_enemy(Enemy &enemy, Sprite &enemy_sprite, Sprite &this_sprite);
     virtual void notify_attacked_enemy(EnemyAttack attack, Enemy &victim, int result, bool killed);
 

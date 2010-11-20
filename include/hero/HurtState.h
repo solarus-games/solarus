@@ -44,6 +44,7 @@ class Hero::HurtState: public Hero::State {
     bool is_conveyor_belt_obstacle(ConveyorBelt &conveyor_belt);
     bool is_sensor_obstacle(Sensor &sensor);
     bool can_be_hurt();
+    bool can_avoid_switch();
 };
 
 #endif

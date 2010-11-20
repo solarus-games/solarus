@@ -139,3 +139,11 @@ bool Hero::HurtState::can_be_hurt() {
   return false;
 }
 
+/**
+ * @brief Returns whether the hero ignores the effect of switches in this state.
+ * @return true if the hero ignores the effect of switches in this state
+ */
+bool Hero::HurtState::can_avoid_switch() {
+  return true;
+}
+

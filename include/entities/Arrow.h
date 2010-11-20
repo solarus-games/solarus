@@ -66,6 +66,7 @@ class Arrow: public MapEntity {
     const Rectangle get_facing_point();
 
     // collisions
+    void notify_collision_with_switch(Switch &sw);
     void notify_collision_with_crystal_switch(CrystalSwitch &crystal_switch, CollisionMode collision_mode);
     void notify_collision_with_destructible_item(DestructibleItem &destructible_item, CollisionMode collision_mode);
     void notify_collision_with_enemy(Enemy &enemy, Sprite &enemy_sprite, Sprite &this_sprite);

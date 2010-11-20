@@ -195,7 +195,15 @@ bool Hero::JumpingState::is_sensor_obstacle(Sensor &sensor) {
  * @return true if the hero ignores the effect of sensors in this state
  */
 bool Hero::JumpingState::can_avoid_sensor() {
-  return true; // however, the sensor is an obstacle if the jump length is important
+  return true; // this is safe because the sensor is an obstacle if the jump length is important
+}
+
+/**
+ * @brief Returns whether the hero ignores the effect of switches in this state.
+ * @return true if the hero ignores the effect of switches in this state
+ */
+bool Hero::JumpingState::can_avoid_switch() {
+  return true;
 }
 
 /**

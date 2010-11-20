@@ -112,6 +112,7 @@ class Hero::State {
     virtual bool is_sensor_obstacle(Sensor &sensor);
     virtual bool can_avoid_sensor();
     virtual bool can_avoid_explosion();
+    virtual bool can_avoid_switch();
 
     // enemies
     virtual void notify_attacked_enemy(EnemyAttack attack, Enemy &victim, int result, bool killed);

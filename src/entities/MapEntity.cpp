@@ -938,9 +938,12 @@ void MapEntity::notify_position_changed() {
 
 /**
  * @brief This function can be called by the movement object
- * to notify the entity when its movement has just changed.
+ * to notify the entity when the movement has just changed
+ * (e.g. the speed, the angle or the trajectory).
  *
  * By default, nothing is done.
+ * TODO: actually call this function from all movement subclasses
+ * (for now, only PlayerMovement and RandomMovement call it)
  */
 void MapEntity::notify_movement_changed() {
 }

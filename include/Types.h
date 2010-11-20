@@ -179,7 +179,6 @@ class ParallaxTilePattern;
 class ScrollingTilePattern;
 
 // movements
-class MovementFactory;
 class Movement;
 class RectilinearMovement;
 class SmoothMovement;

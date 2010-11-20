@@ -55,6 +55,7 @@ class ItemScript: public Script {
 
     void event_set_suspended(bool suspended);
     void event_appear(PickableItem &pickable_item);
+    void event_movement_changed(PickableItem &pickable_item);
     void event_obtaining(const Treasure &treasure);
     void event_obtained(const Treasure &treasure);
     void event_amount_changed(int amount);

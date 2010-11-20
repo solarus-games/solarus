@@ -52,8 +52,8 @@ class RandomMovement: public RectilinearMovement {
     void set_max_distance(int max_distance);
 
     // properties
-    virtual const std::string get_property(const std::string &key);
-    virtual void set_property(const std::string &key, const std::string &value);
+    const std::string get_property(const std::string &key);
+    void set_property(const std::string &key, const std::string &value);
 };
 
 #endif

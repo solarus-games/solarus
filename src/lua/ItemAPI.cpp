@@ -151,10 +151,41 @@ int Script::item_api_remove_amount(lua_State *l) {
 }
 
 /**
+ * @brief Makes the sprite of the current pickable item accessible from the script.
+ *
+ * This function should be called only when there a current pickable item,
+ * i.e. from the event_item_appear() function.
+ * - Return value (sprite): the sprite of the current pickable item
+ * (your script can then pass it as a parameter
+ * to all sol.main.sprite_* functions)
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::item_api_get_sprite(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 0, &script);
+
+  // retrieve the pickable item
+  const std::string &item_name = script->get_item_properties().get_name();
+  Equipment &equipment = script->get_game().get_equipment();
+  ItemScript &item_script = equipment.get_item_script(item_name);
+  PickableItem *pickable_item = item_script.get_pickable_item();
+
+  Debug::assert(pickable_item != NULL,
+                "Cannot call sol.item.get_sprite(): there is no current pickable item");
+
+  int handle = script->create_sprite_handle(pickable_item->get_sprite());
+  lua_pushinteger(l, handle);
+
+  return 1;
+}
+
+/**
  * @brief Sets a movement to the pickable item that just appeared.
  *
- * This function should be called only when there a current pickable item has just appeared,
- * i.e. from the event_item_appear() function.
+ * This function should be called only when there a current pickable item,
+ * i.e. from the event_appear() function.
  * The default movement of the pickable item (FallingOnFloorMovement)
  * will be replaced to the one you specify.
  *

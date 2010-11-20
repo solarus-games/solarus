@@ -212,6 +212,9 @@ void Switch::notify_collision(MapEntity &entity_overlapping, CollisionMode colli
     return;
   }
 
+  // FIXME: make MapEntity::notify_collision_with_switch() and Hero::State::can_activate_switch()
+  // make enable() (sound + script event) and set_enabled() (like Door::open() and Door::set_open())
+  // make can_hero_activate(), can_block_activate(), can_arrow_activate()
   if (is_walkable()) {
     // walkable switch: allow the hero or a block
     if (entity_overlapping.is_hero()) {

@@ -141,7 +141,7 @@ void Equipment::update() {
 }
 
 /**
- * @brief This functions is called when the game is suspended or resumed.
+ * @brief This function is called when the game is suspended or resumed.
  * @param suspended true if the game is suspended, false if it is resumed
  */
 void Equipment::set_suspended(bool suspended) {

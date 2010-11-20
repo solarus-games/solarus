@@ -122,6 +122,18 @@ void ItemScript::event_appear(PickableItem &pickable_item) {
 }
 
 /**
+ * @brief Notifies the script that the movement a pickable item of its type present on the map
+ * has changed.
+ * @param pickable_item the pickable item
+ */
+void ItemScript::event_movement_changed(PickableItem &pickable_item) {
+
+  this->pickable_item = &pickable_item;
+  notify_script("event_movement_changed");
+  this->pickable_item = NULL;
+}
+
+/**
  * @brief Notifies the script that the player is obtaining a treasure of its type.
  * @param treasure the treasure
  */

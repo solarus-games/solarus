@@ -25,6 +25,7 @@
 #include "lowlevel/Sound.h"
 #include "lowlevel/Music.h"
 #include "lowlevel/Debug.h"
+#include "lowlevel/Geometry.h"
 #include <lua.hpp>
 #include <sstream>
 
@@ -531,3 +532,4 @@ int Script::main_api_movement_set_property(lua_State *l) {
 
   return 0;
 }
+

@@ -75,6 +75,7 @@ class PickableItem: public Detector {
 
     // item state
     void set_suspended(bool suspended);
+    void notify_movement_changed();
     void notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode);
     void update();
     void display_on_map();

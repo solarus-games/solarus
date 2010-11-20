@@ -90,6 +90,10 @@ void RandomMovement::set_next_direction() {
   set_angle(angle);
 
   next_direction_change_date = System::now() + 500 + Random::get_number(3) * 500; // change again in 0.5 to 2 seconds
+
+  if (get_entity() != NULL) {
+    get_entity()->notify_movement_changed(); // TODO make sure it is the only place we should make the notification
+  }
 }
 
 /**

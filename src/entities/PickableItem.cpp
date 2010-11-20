@@ -223,6 +223,15 @@ const Treasure& PickableItem::get_treasure() {
 }
 
 /**
+ * @brief Notifies this pickable item that its movement has just changed.
+ */
+void PickableItem::notify_movement_changed() {
+
+  // notify the item script
+  get_equipment().get_item_script(treasure.get_item_name()).event_movement_changed(*this);
+}
+
+/**
  * @brief This function is called by the engine when an entity overlaps the pickable item.
  *
  * If the entity is the player, we give him the item, and the map is notified

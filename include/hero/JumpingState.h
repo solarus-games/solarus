@@ -50,6 +50,7 @@ class Hero::JumpingState: public Hero::State {
     bool can_avoid_conveyor_belt();
     bool is_sensor_obstacle(Sensor &sensor);
     bool can_avoid_sensor();
+    bool can_avoid_switch();
     bool can_be_hurt();
 };
 

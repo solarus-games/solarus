@@ -16,6 +16,7 @@
  */
 #include "entities/Block.h"
 #include "entities/Hero.h"
+#include "entities/Switch.h"
 #include "movements/FollowMovement.h"
 #include "Game.h"
 #include "Map.h"
@@ -172,6 +173,15 @@ void Block::notify_collision(MapEntity &entity_overlapping, CollisionMode collis
       get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_GRAB);
     }
   }
+}
+
+/**
+ * @brief This function is called when a switch detects a collision with this entity.
+ * @param sw the switch
+ */
+void Block::notify_collision_with_switch(Switch &sw) {
+
+  sw.try_activate(*this);
 }
 
 /**

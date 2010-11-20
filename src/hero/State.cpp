@@ -653,13 +653,13 @@ bool Hero::State::can_avoid_sensor() {
 }
 
 /**
- * @brief Returns whether the hero ignores the effect of explosions in this state.
+ * @brief Returns whether the hero ignores the effect of switches in this state.
  *
  * Returns false by default.
  *
- * @return true if the hero ignores the effect of explosions in this state
+ * @return true if the hero ignores the effect of switches in this state
  */
-bool Hero::State::can_avoid_explosion() {
+bool Hero::State::can_avoid_switch() {
   return false;
 }
 
@@ -671,6 +671,17 @@ bool Hero::State::can_avoid_explosion() {
  * @return true if crystal switches can be activated by the sword in this state
  */
 bool Hero::State::can_sword_hit_crystal_switch() {
+  return false;
+}
+
+/**
+ * @brief Returns whether the hero ignores the effect of explosions in this state.
+ *
+ * Returns false by default.
+ *
+ * @return true if the hero ignores the effect of explosions in this state
+ */
+bool Hero::State::can_avoid_explosion() {
   return false;
 }
 

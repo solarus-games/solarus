@@ -154,6 +154,14 @@ bool Hero::BackToSolidGroundState::can_avoid_sensor() {
 }
 
 /**
+ * @brief Returns whether the hero ignores the effect of switches in this state.
+ * @return true if the hero ignores the effect of switches in this state
+ */
+bool Hero::BackToSolidGroundState::can_avoid_switch() {
+  return true;
+}
+
+/**
  * @brief Returns whether the hero ignores the effect of explosions in this state.
  * @return true if the hero ignores the effect of explosions in this state
  */

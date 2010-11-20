@@ -1310,12 +1310,10 @@ void MapEntity::notify_collision_with_sensor(Sensor &sensor) {
 }
 
 /**
- * @brief This function is called when an explosion's sprite
- * detects a pixel-perfect collision with a sprite of this entity.
- * @param explosion the explosion
- * @param sprite_overlapping the sprite of the current entity that collides with the explosion
+ * @brief This function is called when a switch detects a collision with this entity.
+ * @param sw a switch
  */
-void MapEntity::notify_collision_with_explosion(Explosion &explosion, Sprite &sprite_overlapping) {
+void MapEntity::notify_collision_with_switch(Switch &sw) {
 }
 
 /**
@@ -1333,6 +1331,15 @@ void MapEntity::notify_collision_with_crystal_switch(CrystalSwitch &crystal_swit
  * @param sprite_overlapping the sprite of the current entity that collides with the crystal switch
  */
 void MapEntity::notify_collision_with_crystal_switch(CrystalSwitch &crystal_switch, Sprite &sprite_overlapping) {
+}
+
+/**
+ * @brief This function is called when an explosion's sprite
+ * detects a pixel-perfect collision with a sprite of this entity.
+ * @param explosion the explosion
+ * @param sprite_overlapping the sprite of the current entity that collides with the explosion
+ */
+void MapEntity::notify_collision_with_explosion(Explosion &explosion, Sprite &sprite_overlapping) {
 }
 
 /**

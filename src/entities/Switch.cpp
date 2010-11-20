@@ -16,6 +16,8 @@
  */
 #include "entities/Switch.h"
 #include "entities/Arrow.h"
+#include "entities/Block.h"
+#include "entities/Hero.h"
 #include "Sprite.h"
 #include "Game.h"
 #include "Map.h"
@@ -118,6 +120,25 @@ bool Switch::is_enabled() {
 }
 
 /**
+ * @brief Enables the switch, playing a sound and notifying the map script.
+ *
+ * This function does nothing if the switch is locked or if it is already enabled.
+ */
+void Switch::activate() {
+
+  if (!enabled && !locked) {
+
+    set_enabled(true);
+
+    if (subtype == WALKABLE_VISIBLE) {
+      Sound::play("switch");
+    }
+
+    get_map_script().event_switch_enabled(get_name());
+  }
+}
+
+/**
  * @brief Enables or disables the switch, not playing any sound.
  *
  * This function can change the switch state even if the switch is locked.
@@ -208,38 +229,55 @@ void Switch::notify_collision(MapEntity &entity_overlapping, CollisionMode colli
     return;
   }
 
-  if (enabled || locked) {
-    return;
+  if (!enabled && !locked) {
+    entity_overlapping.notify_collision_with_switch(*this);
   }
+}
 
-  // FIXME: make MapEntity::notify_collision_with_switch() and Hero::State::can_activate_switch()
-  // make enable() (sound + script event) and set_enabled() (like Door::open() and Door::set_open())
-  // make can_hero_activate(), can_block_activate(), can_arrow_activate()
-  if (is_walkable()) {
-    // walkable switch: allow the hero or a block
-    if (entity_overlapping.is_hero()) {
-      set_enabled(!needs_block);
-      this->entity_overlapping = &entity_overlapping;
-    }
-    else if (entity_overlapping.get_type() == BLOCK) {
-      // blocks can only enable walkable, visible switches
-      set_enabled(subtype == WALKABLE_VISIBLE);
-      this->entity_overlapping = &entity_overlapping;
-    }
+/**
+ * @brief This function is called when the hero overlaps this switch.
+ *
+ * The switch is activated if its properties allow it.
+ *
+ * @param hero the hero
+ */
+void Switch::try_activate(Hero &hero) {
+
+  if (is_walkable() && !needs_block) {
+    // this switch allows the hero to activate it
+    activate();
   }
-  else if (subtype == ARROW_TARGET && entity_overlapping.get_type() == ARROW) {
-    // arrow target: only allow an arrow
-    Arrow &arrow = (Arrow&) entity_overlapping;
-    set_enabled(arrow.is_stopped());
+  this->entity_overlapping = &hero;
+}
+
+/**
+ * @brief This function is called when a block overlaps this switch.
+ *
+ * The switch is activated if its properties allow it.
+ *
+ * @param block the block overlapping this switch
+ */
+void Switch::try_activate(Block &block) {
+
+  if (subtype == WALKABLE_VISIBLE) {
+    // blocks can only activate walkable, visible switches
+    activate();
   }
+  this->entity_overlapping = &block;
+}
 
-  if (enabled) {
+/**
+ * @brief This function is called when an arrow overlaps this switch.
+ *
+ * The switch is activated if its properties allow it.
+ *
+ * @param block the arrow overlapping this switch
+ */
+void Switch::try_activate(Arrow &arrow) {
 
-    if (subtype == WALKABLE_VISIBLE) {
-      Sound::play("switch");
-    }
-
-    get_map_script().event_switch_enabled(get_name());
+  if (subtype == ARROW_TARGET) {
+    // arrows can only activate arrow targets
+    activate();
   }
 }
 

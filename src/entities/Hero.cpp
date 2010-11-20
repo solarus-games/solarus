@@ -21,6 +21,7 @@
 #include "entities/Stairs.h"
 #include "entities/DestructibleItem.h"
 #include "entities/ConveyorBelt.h"
+#include "entities/Switch.h"
 #include "entities/CrystalSwitch.h"
 #include "entities/Block.h"
 #include "entities/JumpSensor.h"
@@ -1401,16 +1402,13 @@ void Hero::notify_collision_with_sensor(Sensor &sensor) {
 }
 
 /**
- * @brief This function is called when an explosion's sprite detects a collision with a sprite of the hero.
- * @param explosion the explosion
- * @param sprite_overlapping the sprite of the hero that collides with the explosion
+ * @brief This function is called when a switch detects a collision with this entity.
+ * @param sw the switch
  */
-void Hero::notify_collision_with_explosion(Explosion &explosion, Sprite &sprite_overlapping) {
+void Hero::notify_collision_with_switch(Switch &sw) {
 
-  if (!state->can_avoid_explosion()) {
-    if (sprite_overlapping.contains("tunic")) {
-      hurt(explosion, 2, 0);
-    }
+  if (!state->can_avoid_switch()) {
+    sw.try_activate(*this);
   }
 }
 
@@ -1445,6 +1443,20 @@ void Hero::notify_collision_with_crystal_switch(CrystalSwitch &crystal_switch, S
       && state->can_sword_hit_crystal_switch()) {
     
     crystal_switch.activate(*this);
+  }
+}
+
+/**
+ * @brief This function is called when an explosion's sprite detects a collision with a sprite of the hero.
+ * @param explosion the explosion
+ * @param sprite_overlapping the sprite of the hero that collides with the explosion
+ */
+void Hero::notify_collision_with_explosion(Explosion &explosion, Sprite &sprite_overlapping) {
+
+  if (!state->can_avoid_explosion()) {
+    if (sprite_overlapping.contains("tunic")) {
+      hurt(explosion, 2, 0);
+    }
   }
 }
 

@@ -268,7 +268,7 @@ int Equipment::get_life() {
  */
 void Equipment::set_life(int life) {
 
-  Debug::assert(life > 0 && life <= get_max_life(), StringConcat() << "Illegal level of life: " << life);
+  Debug::assert(life >= 0 && life <= get_max_life(), StringConcat() << "Illegal level of life: " << life);
 
   savegame.set_integer(Savegame::CURRENT_LIFE, life);
 }
@@ -821,6 +821,9 @@ int Equipment::get_ability_savegame_variable(const std::string &ability_name) {
   }
   else if (ability_name == "see_outside_world_minimap") {
     index = Savegame::ABILITY_SEE_OUTSIDE_WORLD_MINIMAP;
+  }
+  else if (ability_name == "get_back_from_death") {
+    index = Savegame::ABILITY_GET_BACK_FROM_DEATH;
   }
   else if (ability_name == "see_dungeon_minimap_rooms") {
     index = Savegame::DUNGEON_1_ABILITY_SEE_MINIMAP_ROOMS + 10 * (get_current_dungeon() - 1);

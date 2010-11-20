@@ -165,6 +165,7 @@ class Savegame {
       ABILITY_SEE_IN_DARK			= 55,
       ABILITY_DETECT_WEAK_WALLS			= 56,
       ABILITY_SEE_OUTSIDE_WORLD_MINIMAP		= 57,
+      ABILITY_GET_BACK_FROM_DEATH		= 58,
       /**
        * @}
        */

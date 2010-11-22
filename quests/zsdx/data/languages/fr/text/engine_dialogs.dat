@@ -2075,141 +2075,117 @@ skip = all
 
 # TODO: make the messages below quest-specific (call them from scripts)
 
-[_found_fairy]
-# Lorsqu'on trouve une Fée en ayant au moins un Flacon (même dialogue que dans ALTTP)
-#       |--------------------|
-icon = 81
-line1 = "Tu as trouvé une"
-line2 = "Fée, elle est"
-line3 = "merveilleuse !"
-next = _found_fairy.1
-skip = all
-
-[_found_fairy.1]
-#       |--------------------___|
-icon = -1
-line1 = "Que vas-tu en faire ?"
-line2 = "Récupérer des Coeurs"
-line3 = "La conserver"
-question = true
-
-[_found_fairy.no_empty_bottle]
-# Lorsqu'on veut conserver une Fée mais qu'on n'a pas de Flacon vide
-#       |-----------------------|
-line1 = "Tu n'as pas de Flacon"
-line2 = "vide !"
-
-[_found_water]
+[found_water]
 # Lorsqu'on trouve de l'eau et qu'on a un Flacon vide
 #       |--------------------|
 icon = 8
 line1 = "Veux-tu mettre de"
 line2 = "l'eau dans ton"
-next = _found_water.2
+next = found_water.2
 
-[_found_water.2]
+[found_water.2]
 #       |--------------------|
 line1 = "Flacon Magique ?"
 line2 = "Oui"
 line3 = "Non"
 question = true
 
-[_found_water.no_bottle]
+[found_water.no_bottle]
 # Lorsqu'on trouve de l'eau mais qu'on n'a aucun Flacon
 #       |--------------------|
 line1 = "Il y a de l'eau ici,"
 line2 = "mais tu n'as pas"
 line3 = "de récipient"
-next = _found_water.no_bottle.2
+next = found_water.no_bottle.2
 
-[_found_water.no_bottle.2]
+[found_water.no_bottle.2]
 #       |--------------------|
 line1 = "pour la stocker..."
 
-[_found_water.no_empty_bottle]
+[found_water.no_empty_bottle]
 # Lorsqu'on trouve de l'eau et qu'on a au moins un Flacon, mais pas de Flacon vide
 #       |--------------------|
 icon = 8
 line1 = "Il y a de l'eau ici,"
 line2 = "mais il te faut"
 line3 = "un Flacon vide"
-next = _found_water.no_empty_bottle.2
+next = found_water.no_empty_bottle.2
 
 [_found_water.no_empty_bottle.2]
 #       |--------------------|
 line1 = "pour la stocker..."
 
-[_use_bottle_with_water]
+[use_bottle_with_water]
 # Utiliser un Flacon contenant de l'eau
 #       |--------------------|
 icon = 8
 line1 = "Ton Flacon Magique"
 line2 = "contient de l'eau."
-next = _use_bottle_with_water.2
+next = use_bottle_with_water.2
 
-[_use_bottle_with_water.2]
+[use_bottle_with_water.2]
 #       |--------------------|
 line1 = "Que veux-tu faire ?"
 line2 = "Vider l'eau"
 line3 = "La conserver"
 question = true
 
-[_use_bottle_with_fairy]
+[use_bottle_with_fairy]
 # Utiliser un Flacon contenant une Fée
 #       |--------------------|
 icon = 12
 line1 = "Ton Flacon Magique"
 line2 = "contient une fée."
-next = _use_bottle_with_fairy.2
+next = use_bottle_with_fairy.2
 
-[_use_bottle_with_fairy.2]
+[use_bottle_with_fairy.2]
 #       |--------------------|
 line1 = "Que veux-tu faire ?"
 line2 = "La conserver"
 line3 = "La relâcher"
 question = true
 
-[_use_apples]
+[use_apples]
 # Utiliser une Pomme
 #       |--------------------|
 icon = 16
 line1 = "Prendre une pomme te"
 line2 = "permet de récupérer"
 line3 = "un Coeur."
-next = _use_apples.2
+next = use_apples.2
 
-[_use_apples.2]
+[use_apples.2]
 #       |--------------------|
 line1 = "Que veux-tu faire ?"
 line2 = "Manger une pomme"
 line3 = "Ne rien faire"
 question = true
 
-[_use_pains_au_chocolat]
+[use_pains_au_chocolat]
 # Utiliser un Pain au Chocolat
 #       |--------------------|
 icon = 17
 line1 = "Un Pain au Chocolat"
 line2 = "te redonne 3 Coeurs."
-next = _use_pains_au_chocolat.2
+next = use_pains_au_chocolat.2
 
-[_use_pains_au_chocolat.2]
+[use_pains_au_chocolat.2]
 #       |--------------------|
 line1 = "Que veux-tu faire ?"
 line2 = "En manger un"
 line3 = "Ne rien faire"
 question = true
 
-[_use_croissants]
+[use_croissants]
 # Utiliser un Croissant
 #       |--------------------|
 icon = 18
 line1 = "Un Croissant te"
 line2 = "permet de retrouver"
 line3 = "7 Coeurs."
-next = _use_croissants.2
+next = use_croissants.2
 
-[_use_croissants.2]
+[use_croissants.2]
 #       |--------------------|
 line1 = "Que veux-tu faire ?"
 line2 = "En manger un"

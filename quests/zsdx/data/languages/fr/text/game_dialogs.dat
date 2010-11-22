@@ -47,6 +47,30 @@ next = found_piece_of_heart.fourth.1
 line1 = "Tu obtiens un Coeur"
 line2 = "supplémentaire !"
 
+[found_fairy]
+# Lorsqu'on trouve une Fée en ayant au moins un Flacon (même dialogue que dans ALTTP)
+#       |--------------------|
+icon = 81
+line1 = "Tu as trouvé une"
+line2 = "Fée, elle est"
+line3 = "merveilleuse !"
+next = found_fairy.1
+skip = all
+
+[found_fairy.1]
+#       |--------------------___|
+icon = -1
+line1 = "Que vas-tu en faire ?"
+line2 = "Récupérer des Coeurs"
+line3 = "La conserver"
+question = true
+
+[found_fairy.no_empty_bottle]
+# Lorsqu'on veut conserver une Fée mais qu'on n'a pas de Flacon vide
+#       |-----------------------|
+line1 = "Tu n'as pas de Flacon"
+line2 = "vide !"
+
 [intro0]
 # Intro : écran noir
 #       |-----------------------|

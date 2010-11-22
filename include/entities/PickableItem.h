@@ -65,6 +65,7 @@ class PickableItem: public Detector {
 
     ~PickableItem();
     static CreationFunction parse;
+    void set_map(Map &map);
 
     EntityType get_type();
 

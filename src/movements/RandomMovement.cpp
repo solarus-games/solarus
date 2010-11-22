@@ -52,6 +52,9 @@ void RandomMovement::set_entity(MapEntity *entity) {
   Movement::set_entity(entity);
 
   set_max_distance(max_distance);
+  if (entity != NULL) {
+    entity->notify_movement_changed();
+  }
 }
 
 /**
@@ -92,7 +95,7 @@ void RandomMovement::set_next_direction() {
   next_direction_change_date = System::now() + 500 + Random::get_number(3) * 500; // change again in 0.5 to 2 seconds
 
   if (get_entity() != NULL) {
-    get_entity()->notify_movement_changed(); // TODO make sure it is the only place we should make the notification
+    get_entity()->notify_movement_changed();
   }
 }
 

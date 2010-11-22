@@ -125,9 +125,6 @@ PickableItem* PickableItem::create(Game &game, Layer layer, int x, int y, Treasu
   item->initialize_sprites();
   item->initialize_movement();
 
-  // notify the item script
-  game.get_equipment().get_item_script(treasure.get_item_name()).event_appear(*item);
-
   return item;
 }
 
@@ -185,6 +182,18 @@ void PickableItem::initialize_sprites() {
     blink_date = now + 8000;      // the item blinks at 8s
     disappear_date = now + 10000; // the item disappears at 10s
   }
+}
+
+/**
+ * @brief Sets the map of this pickable item.
+ * @param map the map
+ */
+void PickableItem::set_map(Map &map) {
+
+  MapEntity::set_map(map);
+
+  // notify the item script
+  get_equipment().get_item_script(treasure.get_item_name()).event_appear(*this);
 }
 
 /**

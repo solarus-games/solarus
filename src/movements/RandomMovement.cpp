@@ -149,6 +149,9 @@ const std::string RandomMovement::get_property(const std::string &key) {
   else if (key == "max_distance") {
     oss << max_distance;
   }
+  else if (key == "angle") {
+    oss << Geometry::radians_to_degrees(get_angle());
+  }
   else {
     Debug::die(StringConcat() << "Unknown property of RandomMovement: '" << key << "'");
   }
@@ -179,6 +182,9 @@ void RandomMovement::set_property(const std::string &key, const std::string &val
     int max_distance;
     iss >> max_distance;
     set_max_distance(max_distance);
+  }
+  else if (key == "angle") {
+    Debug::die("The property 'angle' of RandomMovement is read-only");
   }
   else {
     Debug::die(StringConcat() << "Unknown property of RandomMovement: '" << key << "'");

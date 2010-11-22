@@ -85,7 +85,7 @@ class RectilinearMovement: public Movement {
     void set_x_speed(double x_speed);
     void set_y_speed(double y_speed);
     void set_speed(double speed);
-    void set_direction(int direction);
+    double get_angle();
     void set_angle(double angle);
 
     // movement

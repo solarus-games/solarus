@@ -10,11 +10,12 @@ end
 
 function event_movement_changed()
 
-  direction360 = sol.main.movement_get_property(movement, "direction360") -- TODO
-  if direction360 >= 90 and direction360 < 270 then
-    sol.main.sprite_set_direction(1)
+  -- the direction of the movement may have changed, update the direction of the fairy's sprite
+  angle = tonumber(sol.main.movement_get_property(movement, "angle"))
+  if angle >= 90 and angle < 270 then
+    sol.main.sprite_set_direction(sprite, 1)
   else
-    sol.main.sprite_set_direction(0)
+    sol.main.sprite_set_direction(sprite, 0)
   end
 end
 

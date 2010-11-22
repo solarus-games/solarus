@@ -154,7 +154,7 @@ int Script::item_api_remove_amount(lua_State *l) {
  * @brief Makes the sprite of the current pickable item accessible from the script.
  *
  * This function should be called only when there a current pickable item,
- * i.e. from the event_item_appear() function.
+ * i.e. from event_appear() or event_movement_changed().
  * - Return value (sprite): the sprite of the current pickable item
  * (your script can then pass it as a parameter
  * to all sol.main.sprite_* functions)
@@ -177,6 +177,43 @@ int Script::item_api_get_sprite(lua_State *l) {
 
   int handle = script->create_sprite_handle(pickable_item->get_sprite());
   lua_pushinteger(l, handle);
+
+  return 1;
+}
+
+/**
+ * @brief Makes the movement of the current pickable item accessible from the script.
+ *
+ * This function should be called only when there a current pickable item,
+ * i.e. from event_appear() or event_movement_changed().
+ * - Return value (mvoement): the movement of the current pickable item
+ * (your script can then pass it as a parameter
+ * to all sol.main.movement_* functions)
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::item_api_get_movement(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 0, &script);
+
+  // retrieve the pickable item
+  const std::string &item_name = script->get_item_properties().get_name();
+  Equipment &equipment = script->get_game().get_equipment();
+  ItemScript &item_script = equipment.get_item_script(item_name);
+  PickableItem *pickable_item = item_script.get_pickable_item();
+
+  Debug::assert(pickable_item != NULL,
+                "Cannot call sol.item.get_movement(): there is no current pickable item");
+
+  // TODO don't create several handles for the same movement
+  // and don't keep handles to deleted movements
+
+  // Movement *movement = pickable_item->get_movement();
+  // int handle = script->create_movement_handle(*movement);
+  // lua_pushinteger(l, handle);
+  lua_pushinteger(l, 0);
+
 
   return 1;
 }

@@ -359,6 +359,7 @@ void Script::register_item_api() {
       { "add_amount", item_api_add_amount },
       { "remove_amount", item_api_remove_amount },
       { "get_sprite", item_api_get_sprite },
+      { "get_movement", item_api_get_movement },
       { "start_movement", item_api_start_movement },
       { "set_finished", item_api_set_finished },
       { NULL, NULL }
@@ -730,6 +731,7 @@ int Script::create_movement_handle(Movement &movement) {
   movements[handle] = &movement;
   unassigned_movements[handle] = &movement;
   movement.set_suspended(true); // suspended until it is assigned to an object
+
   return handle;
 }
 

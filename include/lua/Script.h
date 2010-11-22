@@ -207,6 +207,7 @@ class Script {
       item_api_add_amount,
       item_api_remove_amount,
       item_api_get_sprite,
+      item_api_get_movement,
       item_api_start_movement,
       item_api_set_finished;
 

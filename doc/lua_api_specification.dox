@@ -108,10 +108,10 @@ creates a movement of type RandomPathMovement that will be accessible from this 
 creates a movement of type JumpMovement that will be accessible from this script
 
 - <tt>sol.main.movement_get_property(movement, key)</tt>:
-returns a string property from a movement
+returns a string property from a movement (warning: it always returns a string!)
 
-- <tt>sol.main.movement_set_property(movement, key, value</tt>:
-sets a property of a movement
+- <tt>sol.main.movement_set_property(movement, key, value)</tt>:
+sets a property of a movement (the value may be a string, an integer or a boolean)
 
 @subsection sol.game Module <tt>sol.game</tt>
 

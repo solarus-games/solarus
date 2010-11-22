@@ -476,7 +476,7 @@ int Script::main_api_jump_movement_create(lua_State *l) {
  *
  * - Argument 1 (movement): a movement
  * - Argument 2 (string): key of the property to get (the keys accepted depend of the movement type)
- * - Return value (string): the value of this property
+ * - Return value (string): the value of this property (warning: always a string)
  *
  * @param l the Lua context that is calling this function
  */

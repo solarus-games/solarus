@@ -201,6 +201,15 @@ void RectilinearMovement::set_next_move_date_y(uint32_t next_move_date_y) {
 }
 
 /**
+ * @brief Computes and returns the direction of the speed vector.
+ * @return the current angle of the speed vector in degrees
+ */
+double RectilinearMovement::get_angle() {
+
+  return Geometry::get_angle(0, 0, (int) (get_x_speed() * 1000), (int) (get_y_speed() * 1000));
+}
+
+/**
  * @brief Changes the direction of the movement vector, keeping the same speed.
  *
  * x_speed and y_speed are recomputed so that the total speed is unchanged.
@@ -212,7 +221,7 @@ void RectilinearMovement::set_next_move_date_y(uint32_t next_move_date_y) {
 void RectilinearMovement::set_angle(double angle) {
 
   Debug::assert(x_speed != 0 || y_speed != 0,
-    StringConcat() << "Cannot set the direction when the speed is zero (entity: " << get_entity() << ")");
+    StringConcat() << "Cannot set the angle when the speed is zero (entity: " << get_entity() << ")");
 
   double speed = get_speed();
   set_x_speed(speed * std::cos(angle));

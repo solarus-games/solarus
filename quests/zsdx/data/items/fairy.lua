@@ -2,9 +2,10 @@
 
 -- A fairy appears on the map: create its movement
 function event_appear(variant)
+   -- create a movement that goes into random directions, with a speed of 28 pixels per second
   movement = sol.main.random_movement_create(28)
-  sol.main.movement_set_property(movement, "max_distance", 40)
-  sol.item.start_movement(movement)
+  sol.main.movement_set_property(movement, "max_distance", 40) -- don't go too far
+  sol.item.start_movement(movement) -- associate this movement to the fairy
 end
 
 -- The direction of the movement may have changed:
@@ -13,11 +14,11 @@ function event_movement_changed()
 
   movement = sol.item.get_movement()
   sprite = sol.item.get_sprite()
-  angle = tonumber(sol.main.movement_get_property(movement, "angle"))
+  angle = tonumber(sol.main.movement_get_property(movement, "angle")) -- retrieve the current movement's direction
   if angle >= 90 and angle < 270 then
-    sol.main.sprite_set_direction(sprite, 1)
+    sol.main.sprite_set_direction(sprite, 1) -- look to the left
   else
-    sol.main.sprite_set_direction(sprite, 0)
+    sol.main.sprite_set_direction(sprite, 0) -- look to the right
   end
 end
 
@@ -29,9 +30,11 @@ function event_obtaining(variant, savegame_variable)
     or sol.game.equipment_has_item("bottle_3")
     or sol.game.equipment_has_item("bottle_4") then
 
+    -- the player has a bottle: start the dialog
     sol.map.dialog_start("found_fairy")
 
   else
+    -- the player has no bottle: just restore 7 hearts
     sol.game.equipment_add_life(7 * 4)
   end
 end
@@ -58,6 +61,7 @@ function event_dialog_finished(first_message_id, answer)
     end
 
   elseif first_message_id == "found_fairy.no_empty_bottle" then
+    -- after the 'no empty bottle' message, restore 7 hearts
     sol.game.equipment_add_life(7 * 4)
   end
 end

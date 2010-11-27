@@ -2,15 +2,16 @@
 
 -- A fairy appears on the map: create its movement
 function event_appear(variant)
-  movement = sol.main.random_movement_create(32)
+  movement = sol.main.random_movement_create(28)
   sol.main.movement_set_property(movement, "max_distance", 40)
   sol.item.start_movement(movement)
 end
 
 -- The direction of the movement may have changed:
 -- update the direction of the fairy's sprite
-function event_movement_changed(movement)
+function event_movement_changed()
 
+  movement = sol.item.get_movement()
   sprite = sol.item.get_sprite()
   angle = tonumber(sol.main.movement_get_property(movement, "angle"))
   if angle >= 90 and angle < 270 then

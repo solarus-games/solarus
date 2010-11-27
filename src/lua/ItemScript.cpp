@@ -129,12 +129,7 @@ void ItemScript::event_appear(PickableItem &pickable_item) {
 void ItemScript::event_movement_changed(PickableItem &pickable_item) {
 
   this->pickable_item = &pickable_item;
-
-// TODO don't create several handles for the same movement
-// and don't keep handles to deleted movements
-
-//  Movement *movement = pickable_item.get_movement();
-//  notify_script("event_movement_changed", "i", create_movement_handle(*movement));
+  notify_script("event_movement_changed");
   this->pickable_item = NULL;
 }
 

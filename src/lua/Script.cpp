@@ -87,7 +87,6 @@ void Script::load_if_exists(const std::string &script_name) {
 
   // initialize fields
   next_sprite_handle = 1;
-  next_movement_handle = 1;
 
   // create an execution context
   context = lua_open();
@@ -722,15 +721,21 @@ Sprite& Script::get_sprite(int sprite_handle) {
 
 /**
  * @brief Makes a movement accessible from the script.
+ *
+ * If the movement is already accessible from this script,
+ * this returns the already known handle.
+ *
  * @param movement the movement to make accessible
  * @return a handle that can be used by scripts to refer to this movement
  */
 int Script::create_movement_handle(Movement &movement) {
 
-  int handle = next_movement_handle++;
-  movements[handle] = &movement;
-  unassigned_movements[handle] = &movement;
-  movement.set_suspended(true); // suspended until it is assigned to an object
+  int handle = movement.get_unique_id();
+  if (movements.find(handle) == movements.end()) {
+    movements[handle] = &movement;
+    unassigned_movements[handle] = &movement;
+    movement.set_suspended(true); // suspended until it is assigned to an object
+  }
 
   return handle;
 }

@@ -17,6 +17,7 @@
 #include "lua/Script.h"
 #include "lua/ItemScript.h"
 #include "entities/PickableItem.h"
+#include "movements/Movement.h"
 #include "ItemProperties.h"
 #include "Equipment.h"
 #include "Game.h"
@@ -206,14 +207,9 @@ int Script::item_api_get_movement(lua_State *l) {
   Debug::assert(pickable_item != NULL,
                 "Cannot call sol.item.get_movement(): there is no current pickable item");
 
-  // TODO don't create several handles for the same movement
-  // and don't keep handles to deleted movements
-
-  // Movement *movement = pickable_item->get_movement();
-  // int handle = script->create_movement_handle(*movement);
-  // lua_pushinteger(l, handle);
-  lua_pushinteger(l, 0);
-
+  Movement *movement = pickable_item->get_movement();
+  int handle = script->create_movement_handle(*movement);
+  lua_pushinteger(l, handle);
 
   return 1;
 }

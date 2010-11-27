@@ -53,7 +53,6 @@ class Script {
     std::map<int, Movement*> movements;					/**< the movements accessible from this script */
     std::map<int, Movement*> unassigned_movements;			/**< the movements accessible from this script and that
     									 * are not assigned to an object yet (the script has to delete them) */
-    int next_movement_handle;						/**< handle of the next movement created */
 
     // APIs
     uint32_t apis_enabled;						/**< an OR combination of APIs enabled */

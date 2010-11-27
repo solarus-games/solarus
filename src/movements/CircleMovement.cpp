@@ -177,7 +177,7 @@ void CircleMovement::set_duration(uint32_t duration) {
  */
 void CircleMovement::set_max_rotations(int max_rotations) {
 
-  Debug::assert(max_rotations < 0, StringConcat() << "Invalid maximum rotations number: " << max_rotations);
+  Debug::assert(max_rotations >= 0, StringConcat() << "Invalid maximum rotations number: " << max_rotations);
 
   this->max_rotations = max_rotations;
   this->nb_rotations = 0;

@@ -31,6 +31,9 @@ class Movement {
 
   private:
 
+    static int next_unique_id;				/**< next unique id to attribute to a movement instance */
+    int unique_id;					/**< a number identifying this instance */
+
     // object to move
     MapEntity *entity;					/**< the entity controlled by this movement (if NULL, the movement
 							 * is applied to the xy field below instead) */
@@ -65,6 +68,7 @@ class Movement {
   public:
 
     virtual ~Movement();
+    int get_unique_id();
 
     // entity
     virtual void set_entity(MapEntity *entity);

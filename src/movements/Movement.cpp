@@ -20,6 +20,8 @@
 #include "lowlevel/System.h"
 #include "lowlevel/Debug.h"
 
+int Movement::next_unique_id = 0;
+
 /**
  * @brief Constructor.
  * @param ignore_obstacles when there is a map and the movement is attached to an entity of this map,
@@ -27,6 +29,7 @@
  */
 Movement::Movement(bool ignore_obstacles):
 
+  unique_id(next_unique_id++),
   entity(NULL),
   xy(0, 0),
   last_move_date(0),
@@ -43,6 +46,18 @@ Movement::Movement(bool ignore_obstacles):
  */
 Movement::~Movement() {
 
+}
+
+/**
+ * @brief Returns the unique id of this movement.
+ *
+ * It is guaranteed that no other movement instance will have the same id as this one
+ * during the execution of the program, even after this instance is deleted.
+ *
+ * @return the unique id of this movement
+ */
+int Movement::get_unique_id() {
+  return unique_id;
 }
 
 /**

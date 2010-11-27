@@ -519,7 +519,6 @@
 19	0	168	48	1	1
 19	0	168	640	1	1
 19	0	80	592	1	4
-1	0	176	69	destination_point	1	0
 1	0	456	237	from_B1_east	3	0
 2	0	448	224	16	16	to_B1_east	0	1	31	from_1F_east
 19	0	448	224	1	1
@@ -807,7 +806,7 @@
 5	1	56	536	chest_4	0	rupee	2	87
 10	1	448	216	16	8	hidden_stairs_open	273	0
 10	1	528	304	8	32	hidden_door_open	163	0
-2	1	832	728	16	16	teletransporter_2	0	1	31	from_1F_east
+2	1	832	728	16	16	teletransporter_2	0	1	30	from_B1_north
 10	1	168	40	16	8	miniboss_door_open	273	1
 0	2	808	744	96	8	357
 0	2	160	592	32	16	170

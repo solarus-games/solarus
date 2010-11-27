@@ -151,15 +151,14 @@ void Door::set_open(bool door_open) {
   else {
     get_sprite().set_current_animation(animations[subtype]);
     set_collision_modes(COLLISION_FACING_POINT);
-  }
-
-  if (is_on_map()) {
 
     // ensure we are not closing the door on the hero
     if (is_on_map() && overlaps(get_hero())) {
       get_hero().avoid_collision(*this, 3);
     }
+  }
 
+  if (is_on_map()) {
     update_dynamic_tiles();
 
     if (savegame_variable != -1) {

@@ -157,7 +157,7 @@ int Script::game_api_savegame_get_name(lua_State *l) {
  *
  * - Return value (integer): the level of life
  */
-int Script::game_api_equipment_get_life(lua_State *l) {
+int Script::game_api_get_life(lua_State *l) {
 
   Script *script;
   called_by_script(l, 0, &script);
@@ -173,7 +173,7 @@ int Script::game_api_equipment_get_life(lua_State *l) {
  *
  * - Argument 1 (integer): amount of life to add
  */
-int Script::game_api_equipment_add_life(lua_State *l) {
+int Script::game_api_add_life(lua_State *l) {
 
   Script *script;
   called_by_script(l, 1, &script);
@@ -190,7 +190,7 @@ int Script::game_api_equipment_add_life(lua_State *l) {
  *
  * - Argument 1 (integer): amount of life to remove
  */
-int Script::game_api_equipment_remove_life(lua_State *l) {
+int Script::game_api_remove_life(lua_State *l) {
 
   Script *script;
   called_by_script(l, 1, &script);
@@ -207,7 +207,7 @@ int Script::game_api_equipment_remove_life(lua_State *l) {
  *
  * - Return value (integer): the maximum level of life
  */
-int Script::game_api_equipment_get_max_life(lua_State *l) {
+int Script::game_api_get_max_life(lua_State *l) {
 
   Script *script;
   called_by_script(l, 0, &script);
@@ -223,7 +223,7 @@ int Script::game_api_equipment_get_max_life(lua_State *l) {
  *
  * - Argument 1 (integer): the maximum level of life to set
  */
-int Script::game_api_equipment_set_max_life(lua_State *l) {
+int Script::game_api_set_max_life(lua_State *l) {
 
   Script *script;
   called_by_script(l, 1, &script);
@@ -239,7 +239,7 @@ int Script::game_api_equipment_set_max_life(lua_State *l) {
  *
  * - Argument 1 (integer): amount of life to add to the current maximum
  */
-int Script::game_api_equipment_add_max_life(lua_State *l) {
+int Script::game_api_add_max_life(lua_State *l) {
 
   Script *script;
   called_by_script(l, 1, &script);
@@ -257,7 +257,7 @@ int Script::game_api_equipment_add_max_life(lua_State *l) {
  *
  * - Return value (integer): the amount of money
  */
-int Script::game_api_equipment_get_money(lua_State *l) {
+int Script::game_api_get_money(lua_State *l) {
 
   Script *script;
   called_by_script(l, 0, &script);
@@ -273,7 +273,7 @@ int Script::game_api_equipment_get_money(lua_State *l) {
  *
  * - Argument 1 (integer): amount of money to add
  */
-int Script::game_api_equipment_add_money(lua_State *l) {
+int Script::game_api_add_money(lua_State *l) {
 
   Script *script;
   called_by_script(l, 1, &script);
@@ -290,7 +290,7 @@ int Script::game_api_equipment_add_money(lua_State *l) {
  *
  * - Argument 1 (integer): amount of money to remove
  */
-int Script::game_api_equipment_remove_money(lua_State *l) {
+int Script::game_api_remove_money(lua_State *l) {
 
   Script *script;
   called_by_script(l, 1, &script);
@@ -310,7 +310,7 @@ int Script::game_api_equipment_remove_money(lua_State *l) {
  * - Argument 1 (string): name of the ability to get
  * - Return value (boolean): true if the level of this ability is greater than 0
  */
-int Script::game_api_equipment_has_ability(lua_State *l) {
+int Script::game_api_has_ability(lua_State *l) {
 
   Script *script;
   called_by_script(l, 1, &script);
@@ -332,7 +332,7 @@ int Script::game_api_equipment_has_ability(lua_State *l) {
  * - Argument 1 (string): name of the ability to set
  * - Argument 2 (integer): the level of this ability
  */
-int Script::game_api_equipment_set_ability(lua_State *l) {
+int Script::game_api_set_ability(lua_State *l) {
 
   Script *script;
   called_by_script(l, 2, &script);
@@ -351,7 +351,7 @@ int Script::game_api_equipment_set_ability(lua_State *l) {
  * - Argument 1 (string): name of the ability to get
  * - Return value (integer): the level of this ability
  */
-int Script::game_api_equipment_get_ability(lua_State *l) {
+int Script::game_api_get_ability(lua_State *l) {
 
   Script *script;
   called_by_script(l, 1, &script);
@@ -372,7 +372,7 @@ int Script::game_api_equipment_get_ability(lua_State *l) {
  * - Argument 1 (string): an item name
  * - Return value (boolean): true if the player has this item
  */
-int Script::game_api_equipment_has_item(lua_State *l) {
+int Script::game_api_has_item(lua_State *l) {
 
   Script *script;
   called_by_script(l, 1, &script);
@@ -392,7 +392,7 @@ int Script::game_api_equipment_has_item(lua_State *l) {
  * - Return value (integer): the possession state of this item
  *   (0 if the player does not have the item)
  */
-int Script::game_api_equipment_get_item(lua_State *l) {
+int Script::game_api_get_item(lua_State *l) {
 
   Script *script;
   called_by_script(l, 1, &script);
@@ -412,7 +412,7 @@ int Script::game_api_equipment_get_item(lua_State *l) {
  * - Argument 2 (integer): the possession state of this inventory item
  * (a value of 0 removes the item)
  */
-int Script::game_api_equipment_set_item(lua_State *l) {
+int Script::game_api_set_item(lua_State *l) {
 
   Script *script;
   called_by_script(l, 2, &script);
@@ -434,7 +434,7 @@ int Script::game_api_equipment_set_item(lua_State *l) {
  * - Argument 2 (integer): the amount to check
  * - Return value (integer): true if the player has at least this amount
  */
-int Script::game_api_equipment_has_item_amount(lua_State *l) {
+int Script::game_api_has_item_amount(lua_State *l) {
 
   Script *script;
   called_by_script(l, 1, &script);
@@ -454,7 +454,7 @@ int Script::game_api_equipment_has_item_amount(lua_State *l) {
  * - Argument 1 (string): the name of an item having an amount
  * - Return value (integer): the amount possessed
  */
-int Script::game_api_equipment_get_item_amount(lua_State *l) {
+int Script::game_api_get_item_amount(lua_State *l) {
 
   Script *script;
   called_by_script(l, 1, &script);
@@ -473,7 +473,7 @@ int Script::game_api_equipment_get_item_amount(lua_State *l) {
  * - Argument 1 (string): the name of an item having an amount
  * - Argument 2 (integer): the amount to add
  */
-int Script::game_api_equipment_add_item_amount(lua_State *l) {
+int Script::game_api_add_item_amount(lua_State *l) {
 
   Script *script;
   called_by_script(l, 2, &script);
@@ -492,7 +492,7 @@ int Script::game_api_equipment_add_item_amount(lua_State *l) {
  * - Argument 1 (string): the name of an item having an amount
  * - Argument 2 (integer): the amount to remove
  */
-int Script::game_api_equipment_remove_item_amount(lua_State *l) {
+int Script::game_api_remove_item_amount(lua_State *l) {
 
   Script *script;
   called_by_script(l, 2, &script);
@@ -516,7 +516,7 @@ int Script::game_api_equipment_remove_item_amount(lua_State *l) {
  *
  * @param l the Lua context that is calling this function
  */
-int Script::game_api_equipment_is_dungeon_finished(lua_State *l) {
+int Script::game_api_is_dungeon_finished(lua_State *l) {
 
   Script *script;
   called_by_script(l, 1, &script);
@@ -537,7 +537,7 @@ int Script::game_api_equipment_is_dungeon_finished(lua_State *l) {
  *
  * @param l the Lua context that is calling this function
  */
-int Script::game_api_equipment_set_dungeon_finished(lua_State *l) {
+int Script::game_api_set_dungeon_finished(lua_State *l) {
 
   Script *script;
   called_by_script(l, 1, &script);

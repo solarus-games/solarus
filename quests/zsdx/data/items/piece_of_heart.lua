@@ -20,9 +20,9 @@ function event_dialog_finished(first_message_id, answer)
 
     sol.game.savegame_set_integer(1030, (nb_pieces_of_heart + 1) % 4)
     if (nb_pieces_of_heart == 3) then
-      sol.game.equipment_add_max_life(4)
+      sol.game.add_max_life(4)
     end
-    sol.game.equipment_add_life(sol.game.equipment_get_max_life())
+    sol.game.add_life(sol.game.get_max_life())
   end
 end
 

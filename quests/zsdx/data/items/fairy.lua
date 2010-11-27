@@ -25,17 +25,17 @@ end
 -- Obtaining a fairy
 function event_obtaining(variant, savegame_variable)
 
-  if sol.game.equipment_has_item("bottle_1")
-    or sol.game.equipment_has_item("bottle_2")
-    or sol.game.equipment_has_item("bottle_3")
-    or sol.game.equipment_has_item("bottle_4") then
+  if sol.game.has_item("bottle_1")
+    or sol.game.has_item("bottle_2")
+    or sol.game.has_item("bottle_3")
+    or sol.game.has_item("bottle_4") then
 
     -- the player has a bottle: start the dialog
     sol.map.dialog_start("found_fairy")
 
   else
     -- the player has no bottle: just restore 7 hearts
-    sol.game.equipment_add_life(7 * 4)
+    sol.game.add_life(7 * 4)
   end
 end
 
@@ -45,7 +45,7 @@ function event_dialog_finished(first_message_id, answer)
 
     if answer ~= 1 then
       -- restore 7 hearts
-      sol.game.equipment_add_life(7 * 4)
+      sol.game.add_life(7 * 4)
     else
       -- keep the fairy in a bottle
       first_empty_bottle = get_first_empty_bottle()
@@ -55,14 +55,14 @@ function event_dialog_finished(first_message_id, answer)
         sol.main.play_sound("wrong")
       else
         -- okay, empty bottle 
-        sol.game.equipment_set_item(first_empty_bottle, 6)
+        sol.game.set_item(first_empty_bottle, 6)
         sol.main.play_sound("danger")
       end
     end
 
   elseif first_message_id == "found_fairy.no_empty_bottle" then
     -- after the 'no empty bottle' message, restore 7 hearts
-    sol.game.equipment_add_life(7 * 4)
+    sol.game.add_life(7 * 4)
   end
 end
 
@@ -71,13 +71,13 @@ function get_first_empty_bottle()
 
   result = ""
 
-  if sol.game.equipment_get_item("bottle_1") == 1 then
+  if sol.game.get_item("bottle_1") == 1 then
     result = "bottle_1"
-  elseif sol.game.equipment_get_item("bottle_2") == 1 then
+  elseif sol.game.get_item("bottle_2") == 1 then
     result = "bottle_2"
-  elseif sol.game.equipment_get_item("bottle_3") == 1 then
+  elseif sol.game.get_item("bottle_3") == 1 then
     result = "bottle_3"
-  elseif sol.game.equipment_get_item("bottle_4") == 1 then
+  elseif sol.game.get_item("bottle_4") == 1 then
     result = "bottle_4"
   end
 

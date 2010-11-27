@@ -104,7 +104,7 @@ function event_dialog_finished(first_message_id, answer)
     else
       -- wants to play game 1
 
-      if sol.game.equipment_get_money() < 20 then
+      if sol.game.get_money() < 20 then
 	-- not enough money
 	sol.main.play_sound("wrong")
 	sol.map.dialog_start("rupee_house.not_enough_money")
@@ -115,7 +115,7 @@ function event_dialog_finished(first_message_id, answer)
 	sol.map.chest_set_open("chest_2", false)
 	sol.map.chest_set_open("chest_3", false)
 
-	sol.game.equipment_remove_money(20)
+	sol.game.remove_money(20)
 	sol.map.dialog_start("rupee_house.game_1.good_luck")
 	playing_game_1 = true
       end
@@ -142,13 +142,13 @@ function event_dialog_finished(first_message_id, answer)
       game_2_bet = 20
     end
 
-    if sol.game.equipment_get_money() < game_2_bet then
+    if sol.game.get_money() < game_2_bet then
       -- not enough money
       sol.main.play_sound("wrong")
       sol.map.dialog_start("rupee_house.not_enough_money")
     else
       -- enough money: pay and start the game
-      sol.game.equipment_remove_money(game_2_bet)
+      sol.game.remove_money(game_2_bet)
       sol.map.dialog_start("rupee_house.game_2.just_paid")
       playing_game_2 = true
 
@@ -164,7 +164,7 @@ function event_dialog_finished(first_message_id, answer)
     end
   elseif string.match(first_message_id, "^rupee_house.game_2.reward.") then
     -- reward in game 2
-    sol.game.equipment_add_money(game_2_reward)
+    sol.game.add_money(game_2_reward)
 
   elseif first_message_id == "rupee_house.game_3.intro" or 
     first_message_id == "rupee_house.game_3.restart_question" then
@@ -176,7 +176,7 @@ function event_dialog_finished(first_message_id, answer)
     else
       -- wants to play game 3
 
-      if sol.game.equipment_get_money() < 10 then
+      if sol.game.get_money() < 10 then
 	-- not enough money
 	sol.main.play_sound("wrong")
 	sol.map.dialog_start("rupee_house.not_enough_money")
@@ -191,7 +191,7 @@ function event_dialog_finished(first_message_id, answer)
 	sol.map.tile_set_enabled("game_3_middle_barrier", false);
 	sol.main.timer_stop("game_3_timer")
 
-	sol.game.equipment_remove_money(10)
+	sol.game.remove_money(10)
 	sol.map.dialog_start("rupee_house.game_3.go")
 	playing_game_3 = true
       end

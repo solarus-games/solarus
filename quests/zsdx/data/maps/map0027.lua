@@ -29,7 +29,7 @@ function event_dialog_finished(first_message_id, answer)
 end
 
 function event_hero_victory_sequence_finished()
-  sol.game.equipment_set_dungeon_finished(1)
+  sol.game.set_dungeon_finished(1)
   sol.map.hero_set_map(6, "from_dungeon_1_1F", 1)
   sol.map.hud_set_pause_enabled(true);
 end

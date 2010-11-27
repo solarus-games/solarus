@@ -58,7 +58,7 @@ function event_dialog_finished(first_message_id, answer)
    if first_message_id == "outside_world.village.monkey" then
 
       -- show another message depending on the shield
-      if sol.game.equipment_has_ability("shield") then
+      if sol.game.has_ability("shield") then
 	 sol.map.dialog_start("outside_world.village.monkey.with_shield")
       else
 	 sol.map.dialog_start("outside_world.village.monkey.without_shield")
@@ -119,7 +119,7 @@ function event_hero_interaction(entity_name)
    if entity_name == "dungeon_2_door" then
 
       -- open the door if the player has the Rock Key
-      if sol.game.equipment_has_item("rock_key") then
+      if sol.game.has_item("rock_key") then
 	 sol.main.play_sound("door_open")
 	 sol.main.play_sound("secret")
 	 sol.game.savegame_set_boolean(89, true)

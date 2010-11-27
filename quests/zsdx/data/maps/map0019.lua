@@ -25,10 +25,10 @@ function event_dialog_finished(first_message_id, answer)
     sol.game.savegame_set_boolean(46, true)
 
     if answer == 0 then
-      if sol.game.equipment_has_item("apples_counter") then
-	if sol.game.equipment_get_item_amount("apples_counter") >= 6 then
+      if sol.game.has_item("apples_counter") then
+	if sol.game.get_item_amount("apples_counter") >= 6 then
 	  sol.map.dialog_start("cake_shop.thank_you")
-	  sol.game.equipment_remove_item_amount("apples_counter", 6)
+	  sol.game.remove_item_amount("apples_counter", 6)
 	else
 	  sol.map.dialog_start("cake_shop.not_enough_apples")
 	end

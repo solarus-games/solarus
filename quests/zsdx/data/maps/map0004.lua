@@ -22,7 +22,7 @@ function event_hero_interaction(entity_name)
    if entity_name == "tom_cave_door" then
 
       -- open the door if the player has the Clay Key
-      if sol.game.equipment_has_item("clay_key") then
+      if sol.game.has_item("clay_key") then
 	 sol.main.play_sound("door_open")
 	 sol.main.play_sound("secret")
 	 sol.game.savegame_set_boolean(36, true)

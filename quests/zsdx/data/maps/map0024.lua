@@ -10,7 +10,7 @@ function event_map_started(destination_point_name)
     if sol.game.savegame_get_boolean(63) and savegame_get_boolean(64) then
       -- the boss was already killed and the heart container was also picked:
       -- make the hero leave the map since the room is closed
-      if not sol.game.equipment_is_dungeon_finished(1) then
+      if not sol.game.is_dungeon_finished(1) then
 	start_final_room()
       else
         sol.map.hero_freeze()

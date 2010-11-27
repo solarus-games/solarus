@@ -72,8 +72,8 @@ Script::~Script() {
 void Script::load(const std::string &script_name) {
 
   load_if_exists(script_name);
-  Debug::assert(context != NULL,
-      StringConcat() << "The script '" << script_name << "' does not exist");
+  Debug::assert(is_loaded(),
+      StringConcat() << "Cannot load script '" << script_name << "'");
 }
 
 /**
@@ -136,6 +136,7 @@ void Script::load_if_exists(const std::string &script_name) {
     lua_call(context, 0, 0);
   }
   else {
+    lua_close(context);
     context = NULL;
   }
 }

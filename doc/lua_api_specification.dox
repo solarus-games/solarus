@@ -7,23 +7,26 @@ and the list of C++ functions that may be called by Lua scripts.
 This documentation page is intented to Lua programers who want to know the functions available.
 For the point of view of the engine, see the documentation of the C++ class Script.
 
+For now, the following types of scripts exist:
+- the script of a map (<tt>maps/mapXXXX.lua</tt>): controls the map #XXXX,
+- the script of an item (<tt>items/XXXX.lua</tt>): controls the item named "XXXX" in <tt>items.dat</tt>.
+Other types such as scriptable enemies and scriptable menus will come soon.
+
 A Lua script can call C++ functions through a global table called <tt>sol</tt>.
-The functions are organized into several modules.
-For now, there are three modules:
+The functions are organized into several APIs.
+The APIs that are available to your script depend on the type of script.
+For now, the following APIs are implemented:
 - <tt>sol.main</tt>: functions available to all types of scripts, even outside a game.
 - <tt>sol.game</tt>: this module represents the current game. It provides
 functions to manage game information such as the savegame and the equipment.
 - <tt>sol.map</tt>: this module respresents the current map.
 It provides functions to manage the entities placed on the map,
 including the hero.
-The modules that are available to your script depends
-on the type of script.
+- <tt>sol.item</tt>: this module represents a particular type of equipment item, and
+possibly, depending on the current context, an instance of pickable item present on the map
+or an instance of inventory item currently being used by the hero.
 
 The C++ code can also call Lua functions to notify the scripts that an event happened.
-All scripts currently running are then notified.
-
-Note: for now, only one type of script exists (the script of a map).
-Other types such as scriptable enemies and scriptable items will come soon.
 
 @section lua_to_cpp Calling C++ from Lua
 
@@ -140,64 +143,64 @@ sets a boolean in the savegame
 - <tt>sol.game.savegame_get_name()</tt>:
 returns the name of the hero (cannot exceed 5 characters)
 
-- <tt>sol.game.equipment_get_life()</tt>:
+- <tt>sol.game.get_life()</tt>:
 returns the current level of life of the player
 
-- <tt>sol.game.equipment_add_life(life)</tt>: 
+- <tt>sol.game.add_life(life)</tt>:
 adds some life to the player
 
-- <tt>sol.game.equipment_remove_life(life)</tt>: 
+- <tt>sol.game.remove_life(life)</tt>:
 removes some life from the player
 
-- <tt>sol.game.equipment_get_max_life()</tt>:
+- <tt>sol.game.get_max_life()</tt>:
 returns the maximum level of life of the player
 
-- <tt>sol.game.equipment_add_max_life(life)</tt>:
+- <tt>sol.game.add_max_life(life)</tt>:
 increases the maximum level of life of the player
 
-- <tt>sol.game.equipment_get_money()</tt>:
+- <tt>sol.game.get_money()</tt>:
 returns the amount of money of the player
 
-- <tt>sol.game.equipment_add_money(money)</tt>: 
+- <tt>sol.game.add_money(money)</tt>:
 adds some money to the player
 
-- <tt>sol.game.equipment_remove_money(money)</tt>: 
+- <tt>sol.game.remove_money(money)</tt>:
 removes some money from the player
 
-- <tt>sol.game.equipment_has_ability(ability_name)</tt>: 
+- <tt>sol.game.has_ability(ability_name)</tt>:
 returns whether the player has an ability
 
-- <tt>sol.game.equipment_get_ability(ability_name)</tt>: 
+- <tt>sol.game.get_ability(ability_name)</tt>:
 returns the level of an ability
 
-- <tt>sol.game.equipment_set_ability(ability_name, level)</tt>: 
+- <tt>sol.game.set_ability(ability_name, level)</tt>:
 sets the level of an ability
 
-- <tt>sol.game.equipment_has_item(item_name)</tt>: 
+- <tt>sol.game.has_item(item_name)</tt>:
 returns whether the player has an item
 
-- <tt>sol.game.equipment_get_item(item_name)</tt>: 
+- <tt>sol.game.get_item(item_name)</tt>:
 returns the possession state of an item
 
-- <tt>sol.game.equipment_set_item(item_name, variant)</tt>: 
+- <tt>sol.game.set_item(item_name, variant)</tt>:
 sets the possession state of an item
 
-- <tt>sol.game.equipment_has_item_amount(item_name, amount)</tt>: 
+- <tt>sol.game.has_item_amount(item_name, amount)</tt>:
 returns the amount the player has for an item
 
-- <tt>sol.game.equipment_get_item_amount(item_name)</tt>: 
+- <tt>sol.game.get_item_amount(item_name)</tt>:
 returns whether the player has at least the specified amount of an item
 
-- <tt>sol.game.equipment_add_item_amount(item_name, amount)</tt>: 
+- <tt>sol.game.add_item_amount(item_name, amount)</tt>:
 adds an amount of the specified item
 
-- <tt>sol.game.equipment_remove_item_amount(item_name, amount)</tt>: 
+- <tt>sol.game.remove_item_amount(item_name, amount)</tt>:
 removes an amount of the specified item
 
-- <tt>sol.game.equipment_is_dungeon_finished(dungeon)</tt>:
+- <tt>sol.game.is_dungeon_finished(dungeon)</tt>:
 returns whether the specified dungeon is finished
 
-- <tt>sol.game.equipment_set_dungeon_finished(dungeon)</tt>:
+- <tt>sol.game.set_dungeon_finished(dungeon)</tt>:
 sets the specified dungeon as finished
 
 @subsection sol.map Module <tt>sol.map</tt>
@@ -360,6 +363,48 @@ closes one or several doors, playing their animation and sound
 - <tt>sol.map.door_set_open(door_name, open)</tt>:
 changes immediately the state of a door (without playing animation and sound)
 
+@subsection sol.item Module <tt>sol.item</tt>
+
+The <tt>sol.item</tt> module is available to scripts attached to an item defined in the items.dat file.
+<tt>sol.item</tt> can be seen as an object that represents a particular item of the equipment.
+Depending on the current context, <tt>sol.item</tt> may additionally represent an instance of pickable item present on the map
+or an instance of inventory item currently being used by the hero.
+
+- <tt>sol.item.get_variant()</tt>:
+returns the possession state of the item controlled by this script (0: not possessed, 1: first variant, 2: second variant, etc.)
+
+- <tt>sol.item.set_variant(variant)</tt>:
+sets the possession state of the item controlled by this script (0: not possessed, 1: first variant, 2: second variant, etc.)
+
+- <tt>sol.item.get_amount()</tt>:
+returns the amount of the item controlled by this script (only for an item with amount)
+
+- <tt>sol.item.set_amount(amount)</tt>:
+sets the amount of the item controlled by this script (only for an item with amount)
+
+- <tt>sol.item.add_amount(amount)</tt>:
+increases the amount of the item controlled by this script (only for an item with amount)
+
+- <tt>sol.item.remove_amount(amount)</tt>:
+decreases the amount of the item controlled by this script (only for an item with amount)
+
+- <tt>sol.item.get_sprite()</tt>:
+returns the sprite representing the current pickable item
+(can be called only when there is a current pickable item in the context)
+
+- <tt>sol.item.get_movement()</tt>:
+returns the movement of the current pickable item
+(can be called only when there is a current pickable item in the context)
+
+- <tt>sol.item.start_movement(movement)</tt>:
+gives another movement to the current pickable item instead of the default one
+(can be called only when there is a current pickable item in the context)
+
+- <tt>sol.item.set_finished()</tt>:
+notifies the hero that he has finished using the current inventory item and can get back to a normal state
+(can be called only when the hero is currently using the inventory item controlled by this script)
+
+
 @section cpp_to_lua Calling Lua from C++
 
 The C++ engine sometimes notifies a script that an event just happened.
@@ -370,16 +415,16 @@ you define them in your script.
 As several scripts of different types may exist,
 we also specify what scripts are notified for each event.
 
-- <tt>event_update()</tt> (triggered for all current scripts): 
+- <tt>event_update()</tt> (triggered for the map script):
 called at each cycle (but take care of the performances)
 
-- <tt>event_set_suspended(suspended)</tt> (triggered for the map script): 
+- <tt>event_set_suspended(suspended)</tt> (triggered for the map script and all item scripts):
 called when the game is suspended or resumed
 
 - <tt>event_dialog_started(message_id)</tt> (triggered for the map script): 
 called when a dialog starts (i.e. at the beginning of its first message)
 
-- <tt>event_dialog_finished(first_message_id, answer)</tt> (triggered for the map script):
+- <tt>event_dialog_finished(first_message_id, answer)</tt> (triggered for the map script and all item scripts):
 called when a dialog finishes (i.e. once its last message is finished)
 
 - <tt>event_camera_reached_target()</tt> (triggered for the map script): 
@@ -439,6 +484,24 @@ called when the player has just bought an item in a shop
 
 - <tt>event_enemy_dead(enemy_name)</tt> (triggered for the map script):
 called when an enemy is killed
+
+- <tt>event_appear</tt> (triggered for an item script):
+called when a pickable item whose type is controlled by this script just appeared on the map
+
+- <tt>event_movement_changed</tt> (triggered for an item script):
+called when something changes in the movement of a pickable item whose type is controlled by this script
+
+- <tt>event_obtaining</tt> (triggered for an item script):
+called when the player is obtaining a treasure corresponding to the item controlled by this script
+
+- <tt>event_obtained</tt> (triggered for an item script):
+called when the player has finished brandishing a treasure corresponding to the item controlled by this script
+
+- <tt>event_amount_changed</tt> (triggered for an item script):
+called when the amount of the item controlled by this script has just changed
+
+- <tt>event_use</tt> (triggered for an item script):
+called when the hero starts using the item controlled by this script from his inventory
 
 */
 

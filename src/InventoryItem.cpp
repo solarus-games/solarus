@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "InventoryItem.h" // TODO many useless headers here
+#include "InventoryItem.h"
 #include "Game.h"
 #include "Equipment.h"
 #include "lua/ItemScript.h"

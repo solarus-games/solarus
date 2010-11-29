@@ -43,6 +43,9 @@ and manage sprites.
 Your script can get a handle to an existing sprite (e.g. a sprite attached to an NPC).
 Then, you can call all sprite-related functions and give the sprite handle as first paramater.
 
+- <tt>sol.main.include(script_name)</tt>: 	
+includes another script into this one
+
 - <tt>sol.main.play_sound(sound_id)</tt>: 	
 plays a sound
 

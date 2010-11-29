@@ -30,6 +30,25 @@
 #include <sstream>
 
 /**
+ * @brief Includes a script into the current Lua context.
+ *
+ * - Argument 1 (string): file name of the script without extension,
+ *   relative to the data directory of the quest
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::main_api_include(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 1, &script);
+  const std::string &file_name = luaL_checkstring(l, 1);
+
+  script->load(file_name);
+
+  return 0;
+}
+
+/**
  * @brief Plays a sound.
  *
  * - Argument 1 (string): name of the sound

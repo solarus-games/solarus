@@ -62,6 +62,31 @@ Script::~Script() {
   }
 }
 
+void Script::initialize_lua_context() {
+
+  // initialize fields
+  next_sprite_handle = 1;
+
+  // create an execution context
+  context = lua_open();
+  luaL_openlibs(context);
+
+  // put a pointer to this Script object in the Lua context
+  lua_pushstring(context, "sol.cpp_object");
+  lua_pushlightuserdata(context, this);
+  lua_settable(context, LUA_REGISTRYINDEX); // registry["sol.cpp_object"] = this
+
+  // create the Solarus table that will be available to the script
+  lua_newtable(context);
+  lua_setglobal(context, "sol");
+
+  // register the C++ functions accessible to the script
+  register_apis();
+
+  // initialize the script
+  luaL_dostring(context, "math.randomseed(os.time())");
+}
+
 /**
  * @brief Initializes the Lua context and loads the script from a file.
  *
@@ -85,27 +110,9 @@ void Script::load(const std::string &script_name) {
  */
 void Script::load_if_exists(const std::string &script_name) {
 
-  // initialize fields
-  next_sprite_handle = 1;
-
-  // create an execution context
-  context = lua_open();
-  luaL_openlibs(context);
-
-  // put a pointer to this Script object in the Lua context
-  lua_pushstring(context, "sol.cpp_object");
-  lua_pushlightuserdata(context, this);
-  lua_settable(context, LUA_REGISTRYINDEX); // registry["sol.cpp_object"] = this
-
-  // create the Solarus table that will be available to the script
-  lua_newtable(context);
-  lua_setglobal(context, "sol");
-
-  // register the C++ functions accessible to the script
-  register_apis();
-
-  // initialize the script
-  luaL_dostring(context, "math.randomseed(os.time())");
+  if (context == NULL) {
+    initialize_lua_context();
+  }
 
   // determine the file name (.lua or .luac)
   std::ostringstream oss;
@@ -136,6 +143,7 @@ void Script::load_if_exists(const std::string &script_name) {
     lua_call(context, 0, 0);
   }
   else {
+    // uninitialize Lua
     lua_close(context);
     context = NULL;
   }
@@ -216,6 +224,7 @@ void Script::register_apis() {
 void Script::register_main_api() {
 
   static luaL_Reg main_api[] = {
+      { "include", main_api_include },
       { "play_sound", main_api_play_sound },
       { "play_music", main_api_play_music },
       { "timer_start", main_api_timer_start },

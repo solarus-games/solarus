@@ -19,6 +19,7 @@ Types de scripts :
 
 Module main : fonctions disponibles pour tous les scripts même en dehors d'un Game
 
+sol.main.include(script_name)
 sol.main.timer_start(duration, callback, with_sound) 
 sol.main.timer_stop(callback) 
 sol.main.play_sound(sound_id) 	

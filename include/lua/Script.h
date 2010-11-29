@@ -90,6 +90,7 @@ class Script {
     static FunctionAvailableToScript 
 
       // main API
+      main_api_include,
       main_api_play_sound,
       main_api_play_music,
       main_api_timer_start,
@@ -215,6 +216,7 @@ class Script {
     Script(uint32_t apis_enabled);
 
     bool notify_script(const std::string &function_name, const std::string &format = "", ...);
+    void initialize_lua_context();
     void load(const std::string &script_name);
     void load_if_exists(const std::string &script_name);
     bool is_loaded();

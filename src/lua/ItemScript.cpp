@@ -173,15 +173,3 @@ void ItemScript::event_use(InventoryItem &inventory_item) {
   this->inventory_item = NULL;
 }
 
-/**
- * @brief Notifies the script that a dialog box has just finished while using this item.
- * @param first_message_id id of the first message in the dialog
- * that has just finished
- * @param answer the answer selected by the player: 0 for the first one,
- * 1 for the second one, -1 if there was no question
- */
-void ItemScript::event_dialog_finished(const MessageId &first_message_id, int answer) {
-
-  notify_script("event_dialog_finished", "si", first_message_id.c_str(), answer);
-}
-

@@ -269,15 +269,15 @@ int Script::item_api_set_finished(lua_State *l) {
   Hero &hero = script->get_game().get_hero();
   const std::string &item_name = script->get_item_properties().get_name();
 
-  Debug::assert(hero.is_using_inventory_item(),
-                "Cannot call sol.item.set_finished(): the hero is not currently using an inventory item");
+  if (hero.is_using_inventory_item()) { // we do nothing if the script has already changed the hero's state
 
-  InventoryItem &inventory_item = hero.get_current_inventory_item();
-  Debug::assert(inventory_item.get_name() == item_name,
-                StringConcat() << "This script controls the item '" << item_name
-                << "' but the current inventory item is '" << inventory_item.get_name() << "'");
+    InventoryItem &inventory_item = hero.get_current_inventory_item();
+    Debug::assert(inventory_item.get_name() == item_name,
+                  StringConcat() << "This script controls the item '" << item_name
+                  << "' but the current inventory item is '" << inventory_item.get_name() << "'");
 
-  inventory_item.set_finished();
+    inventory_item.set_finished();
+  }
 
   return 0;
 }

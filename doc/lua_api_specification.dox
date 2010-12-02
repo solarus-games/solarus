@@ -430,7 +430,7 @@ called at each cycle (but take care of the performances)
 - <tt>event_set_suspended(suspended)</tt> (triggered for the map script and all item scripts):
 called when the game is suspended or resumed
 
-- <tt>event_dialog_started(message_id)</tt> (triggered for the map script): 
+- <tt>event_dialog_started(message_id)</tt> (triggered for the map script and for the script that started the dialog):
 called when a dialog starts (i.e. at the beginning of its first message)
 
 - <tt>event_dialog_finished(first_message_id, answer)</tt> (triggered for the map script and for the script that started the dialog):

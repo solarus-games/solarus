@@ -73,8 +73,8 @@ function event_dialog_finished(first_message_id, answer)
       -- TODO notify the facing entity (if any) of the interaction
       -- facing_entity->interaction_with_inventory_item(*this);
 
-      sol.item.set_finished()
     end
+    sol.item.set_finished()
 
   elseif first_message_id == "use_bottle_with_fairy" then
 
@@ -84,8 +84,8 @@ function event_dialog_finished(first_message_id, answer)
       x, y, layer = sol.map.hero_get_position();
       sol.map.pickable_item_create("fairy", 1, -1, x, y, layer);
       sol.item.set_variant(1) -- make the bottle empty
-      sol.item.set_finished()
     end
+    sol.item.set_finished()
   end
 end
 

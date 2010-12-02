@@ -120,33 +120,6 @@ void MapScript::event_set_suspended(bool suspended) {
 }
 
 /**
- * @brief Notifies the script that a dialog has just started to be displayed
- * in the dialog box.
- * @param message_id id of the first message in this dialog
- */
-void MapScript::event_dialog_started(const MessageId &message_id) {
-
-  notify_script("event_dialog_started", "s", message_id.c_str());
-}
-
-/**
- * @brief Notifies the script that the dialog box has just finished.
- *
- * This function is called when the last message of a dialog is finished.
- * The dialog box has just been closed but the game is still suspended.
- * Note that this event is not called if the dialog was skipped.
- *
- * @param first_message_id id of the first message in the dialog
- * that has just finished
- * @param answer the answer selected by the player: 0 for the first one,
- * 1 for the second one, -1 if there was no question
- */
-void MapScript::event_dialog_finished(const MessageId &first_message_id, int answer) {
-
-  notify_script("event_dialog_finished", "si", first_message_id.c_str(), answer);
-}
-
-/**
  * @brief Notifies the script that the camera moved by a call to camera_move() has reached its target.
  */
 void MapScript::event_camera_reached_target() {

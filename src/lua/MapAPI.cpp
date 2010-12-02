@@ -50,7 +50,7 @@ int Script::map_api_dialog_start(lua_State *l) {
   called_by_script(l, 1, &script);
   const std::string &message_id = luaL_checkstring(l, 1);
 
-  script->get_game().get_dialog_box().start_dialog(message_id);
+  script->get_game().get_dialog_box().start_dialog(message_id, script);
 
   return 0;
 }

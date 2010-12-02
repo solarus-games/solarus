@@ -233,6 +233,9 @@ class Script {
 
     virtual void update();
     virtual void set_suspended(bool suspended);
+
+    void event_dialog_started(const MessageId &message_id);
+    void event_dialog_finished(const MessageId &first_message_id, int answer);
 };
 
 #endif

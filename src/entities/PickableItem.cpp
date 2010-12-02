@@ -170,8 +170,9 @@ void PickableItem::initialize_sprites() {
   uint32_t now = System::now();
 
   if (falling_height != FALLING_NONE) {
+
     allow_pick_date = now + 700;  // the player will be allowed to take the item after 0.7 seconds
-    can_be_picked = false;  
+    can_be_picked = false;
   }
   else {
     can_be_picked = true;
@@ -325,7 +326,7 @@ void PickableItem::set_suspended(bool suspended) {
 
     uint32_t now = System::now();
 
-    if (!can_be_picked) {
+    if (!can_be_picked && when_suspended != 0) { // TODO make a better implementation of the when_suspended stuff
       allow_pick_date = now + (allow_pick_date - when_suspended);
     }
 

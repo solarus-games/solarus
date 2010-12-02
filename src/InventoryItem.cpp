@@ -73,7 +73,7 @@ void InventoryItem::start() {
  */
 void InventoryItem::update() {
 
-  // TODO  game.get_equipment().get_item_script(item_name).event_use_update();
+  // TODO?  game.get_equipment().get_item_script(item_name).event_use_update();
 }
 
 /**

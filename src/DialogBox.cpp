@@ -252,9 +252,12 @@ void DialogBox::set_last_answer(int answer) {
  * Starts a sequence of messages.
  * The dialog box should not be enabled already when you call this function.
  * @param first_message_id id of the first message of the sequence
+ * @param issuer_script the script that issued the request to start a dialog
+ * (will be notified when the dialog finishes), or NULL
  * @param vertical_position vertical position where to display the dialog box (default: auto)
  */
-void DialogBox::start_dialog(const MessageId &first_message_id, VerticalPosition vertical_position) {
+void DialogBox::start_dialog(const MessageId &first_message_id, Script *issuer_script,
+    VerticalPosition vertical_position) {
 
   Debug::assert(!is_enabled(), StringConcat() << "Cannot start message sequence '" << first_message_id << ": the dialog box is already enabled");
 
@@ -274,6 +277,10 @@ void DialogBox::start_dialog(const MessageId &first_message_id, VerticalPosition
 
   // notify the scripts
   game.get_map_script().event_dialog_started(first_message_id);
+  this->issuer_script = issuer_script;
+  if (issuer_script != NULL) {
+    issuer_script->event_dialog_started(first_message_id);
+  }
 }
 
 /**
@@ -339,8 +346,13 @@ void DialogBox::close() {
   // notify the script if necessary
   if (!skipped && first_message_id[0] != '_') {
     // a dialog of the quest was just finished: notify the scripts
-    game.get_map_script().event_dialog_finished(first_message_id, last_answer);
-    game.get_equipment().notify_dialog_finished(first_message_id, last_answer);
+    Script &map_script = game.get_map_script();
+    map_script.event_dialog_finished(first_message_id, last_answer);
+
+    if (issuer_script != NULL && issuer_script != &map_script) {
+      // also notify the issuer script if different
+      issuer_script->event_dialog_finished(first_message_id, last_answer);
+    }
   }
 }
 

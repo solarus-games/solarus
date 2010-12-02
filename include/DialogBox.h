@@ -83,6 +83,7 @@ class DialogBox {
     Message *current_message;                       /**< the message currently shown (NULL if the dialog box is disabled) */
     MessageId current_message_id;                   /**< id of the message currently shown */
     std::map<MessageId, std::string> variables;     /**< variables to display if the next messages */
+    Script* issuer_script;                          /**< the script (if any) that started the current sequence of messages */
 
     Speed speed;                                    /**< speed of the text */
     SkipMode skip_mode;                             /**< indicates what happens when the user tries to skip the current message */
@@ -125,7 +126,8 @@ class DialogBox {
     bool is_enabled();
 
     // current message
-    void start_dialog(const MessageId &first_message_id, VerticalPosition vertical_position = POSITION_AUTO);
+    void start_dialog(const MessageId &first_message_id, Script *issuer_script = NULL,
+	VerticalPosition vertical_position = POSITION_AUTO);
     Speed get_speed();
     void set_speed(Speed speed);
     SkipMode get_skip_mode();

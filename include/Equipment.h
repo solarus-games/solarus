@@ -140,8 +140,6 @@ class Equipment {
 
     // scripts
     ItemScript& get_item_script(const std::string &item_name);
-    void notify_dialog_finished(const MessageId &first_message_id, int answer);
-
 };
 
 #endif

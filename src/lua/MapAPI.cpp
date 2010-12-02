@@ -28,6 +28,7 @@
 #include "entities/Block.h"
 #include "entities/Switch.h"
 #include "entities/Hero.h"
+#include "entities/PickableItem.h"
 #include "lowlevel/Sound.h"
 #include <lua.hpp>
 
@@ -303,6 +304,28 @@ int Script::map_api_hero_set_direction(lua_State *l) {
   return 0;
 }
 
+/**
+ * @brief Returns the position of the hero.
+ *
+ * - Return value 1 (integer): x coordinate
+ * - Return value 2 (integer): y coordinate
+ * - Return value 3 (integer): layer
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_hero_get_position(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 0, &script);
+
+  Hero &hero = script->get_game().get_hero();
+
+  lua_pushinteger(l, hero.get_x());
+  lua_pushinteger(l, hero.get_y());
+  lua_pushinteger(l, hero.get_layer());
+
+  return 3;
+}
 /**
  * @brief Places the hero on the exact position of a sensor's name.
  *
@@ -1128,5 +1151,37 @@ int Script::map_api_door_set_open(lua_State *l) {
   return 0;
 }
 
-// event functions, i.e. calling Lua from C++
+/**
+ * @brief Places a new pickable item on the map.
+ *
+ * - Argument 1 (string): name of the item to create (according to items.dat)
+ * - Argument 2 (integer): variant of the item
+ * - Argument 3 (integer): savegame variable (-1: not saved)
+ * - Argument 4 (integer): x
+ * - Argument 5 (integer): y
+ * - Argument 6 (integer): layer
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_pickable_item_create(lua_State *l) {
 
+  Script *script;
+  called_by_script(l, 6, &script);
+
+  const std::string &item_name = luaL_checkstring(l, 1);
+  int variant = luaL_checkinteger(l, 2);
+  int savegame_variable = luaL_checkinteger(l, 3);
+  int x = luaL_checkinteger(l, 4);
+  int y = luaL_checkinteger(l, 5);
+  Layer layer = Layer(luaL_checkinteger(l, 6));
+
+  Game &game = script->get_game();
+  MapEntities &entities = script->get_map().get_entities();
+  entities.add_entity(PickableItem::create(
+      game, layer, x, y,
+      Treasure(game, item_name, variant, savegame_variable),
+      FALLING_MEDIUM, false
+      ));
+
+  return 0;
+}

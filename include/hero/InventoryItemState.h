@@ -36,6 +36,8 @@ class Hero::InventoryItemState: public Hero::State {
 
     void start(State *previous_state);
     void update();
+    bool is_using_inventory_item();
+    InventoryItem& get_current_inventory_item();
 };
 
 #endif

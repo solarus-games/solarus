@@ -71,6 +71,83 @@ question = true
 line1 = "Tu n'as pas de Flacon"
 line2 = "vide !"
 
+[use_bottle_with_water]
+# Utiliser un Flacon contenant de l'eau
+#       |--------------------|
+icon = 8
+line1 = "Ton Flacon Magique"
+line2 = "contient de l'eau."
+next = use_bottle_with_water.2
+
+[use_bottle_with_water.2]
+#       |--------------------|
+line1 = "Que veux-tu faire ?"
+line2 = "Vider l'eau"
+line3 = "La conserver"
+question = true
+
+[use_bottle_with_fairy]
+# Utiliser un Flacon contenant une Fée
+#       |--------------------|
+icon = 12
+line1 = "Ton Flacon Magique"
+line2 = "contient une fée."
+next = use_bottle_with_fairy.2
+
+[use_bottle_with_fairy.2]
+#       |--------------------|
+line1 = "Que veux-tu faire ?"
+line2 = "La conserver"
+line3 = "La relâcher"
+question = true
+
+[use_apples]
+# Utiliser une Pomme
+#       |--------------------|
+icon = 16
+line1 = "Prendre une pomme te"
+line2 = "permet de récupérer"
+line3 = "un Coeur."
+next = use_apples.2
+
+[use_apples.2]
+#       |--------------------|
+line1 = "Que veux-tu faire ?"
+line2 = "Manger une pomme"
+line3 = "Ne rien faire"
+question = true
+
+[use_pains_au_chocolat]
+# Utiliser un Pain au Chocolat
+#       |--------------------|
+icon = 17
+line1 = "Un Pain au Chocolat"
+line2 = "te redonne 3 Coeurs."
+next = use_pains_au_chocolat.2
+
+[use_pains_au_chocolat.2]
+#       |--------------------|
+line1 = "Que veux-tu faire ?"
+line2 = "En manger un"
+line3 = "Ne rien faire"
+question = true
+
+[use_croissants]
+# Utiliser un Croissant
+#       |--------------------|
+icon = 18
+line1 = "Un Croissant te"
+line2 = "permet de retrouver"
+line3 = "7 Coeurs."
+next = use_croissants.2
+
+[use_croissants.2]
+#       |--------------------|
+line1 = "Que veux-tu faire ?"
+line2 = "En manger un"
+line3 = "Ne rien faire"
+question = true
+
 [intro0]
 # Intro : écran noir
 #       |-----------------------|

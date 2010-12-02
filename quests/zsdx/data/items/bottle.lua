@@ -81,7 +81,8 @@ function event_dialog_finished(first_message_id, answer)
     if answer == 1 then
 
       -- release the fairy
-      -- TODO create pickable fairy on the map
+      x, y, layer = sol.map.hero_get_position();
+      sol.map.pickable_item_create("fairy", 1, -1, x, y, layer);
       sol.item.set_variant(1) -- make the bottle empty
       sol.item.set_finished()
     end

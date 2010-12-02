@@ -160,6 +160,7 @@ class Script {
       map_api_hero_set_visible,
       map_api_hero_get_direction,
       map_api_hero_set_direction,
+      map_api_hero_get_position,
       map_api_hero_align_on_sensor,
       map_api_hero_walk,
       map_api_hero_start_jumping,
@@ -198,6 +199,7 @@ class Script {
       map_api_door_close,
       map_api_door_is_open,
       map_api_door_set_open,
+      map_api_pickable_item_create,
 
       // item API
       item_api_get_variant,

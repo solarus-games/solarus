@@ -312,6 +312,7 @@ void Script::register_map_api() {
       { "hero_set_visible", map_api_hero_set_visible },
       { "hero_get_direction", map_api_hero_get_direction },
       { "hero_set_direction", map_api_hero_set_direction },
+      { "hero_get_position", map_api_hero_get_position },
       { "npc_get_position", map_api_npc_get_position },
       { "npc_set_position", map_api_npc_set_position },
       { "hero_align_on_sensor", map_api_hero_align_on_sensor },
@@ -350,6 +351,7 @@ void Script::register_map_api() {
       { "door_close", map_api_door_close },
       { "door_is_open", map_api_door_is_open },
       { "door_set_open", map_api_door_set_open },
+      { "pickable_item_create", map_api_pickable_item_create },
       { NULL, NULL }
   };
   luaL_register(context, "sol.map", map_api);

@@ -1712,6 +1712,24 @@ bool Hero::is_free() {
 }
 
 /**
+ * @brief Returns whether the hero is currently using an inventory item.
+ * @return true if the hero is using an inventory item
+ */
+bool Hero::is_using_inventory_item() {
+
+  return state->is_using_inventory_item();
+}
+
+/**
+ * @brief When the hero is using an inventory item, returns the inventory item.
+ * @return the current inventory item
+ */
+InventoryItem& Hero::get_current_inventory_item() {
+
+  return state->get_current_inventory_item();
+}
+
+/**
  * @brief Returns whether the hero is grabbing and moving an entity in its current state.
  *
  * If he is not grabbing any entity, false is returned.

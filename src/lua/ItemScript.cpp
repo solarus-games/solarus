@@ -175,11 +175,6 @@ void ItemScript::event_use(InventoryItem &inventory_item) {
 
 /**
  * @brief Notifies the script that a dialog box has just finished while using this item.
- *
- * This function is called when the last message of the dialog is finished.
- * The dialog box has just been closed but the game is still suspended.
- * Note that this event is not called if the dialog was skipped.
- *
  * @param first_message_id id of the first message in the dialog
  * that has just finished
  * @param answer the answer selected by the player: 0 for the first one,

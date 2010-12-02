@@ -61,3 +61,21 @@ void Hero::InventoryItemState::update() {
   }
 }
 
+/**
+ * @brief Returns whether the hero is using an inventory item in this state. *
+ * @return true if the hero is using an inventory item
+ */
+bool Hero::InventoryItemState::is_using_inventory_item() {
+
+  return true;
+}
+
+/**
+ * @brief When the hero is using an inventory item, returns the inventory item.
+ * @return the current inventory item
+ */
+InventoryItem& Hero::InventoryItemState::get_current_inventory_item() {
+
+  return item;
+}
+

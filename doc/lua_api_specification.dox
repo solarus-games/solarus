@@ -256,6 +256,9 @@ returns the direction of the hero's sprites
 - <tt>sol.map.hero_set_direction(direction)</tt>:
 sets the direction of the hero's sprites
 
+- <tt>sol.map.hero_get_position()</tt>:
+returns the coordinates and the layer of the hero (3 return values)
+
 - <tt>sol.map.hero_align_on_sensor(sensor_name)</tt>:
 places the hero's bounding box exactly on the rectangle of a sensor
 
@@ -366,6 +369,9 @@ closes one or several doors, playing their animation and sound
 - <tt>sol.map.door_set_open(door_name, open)</tt>:
 changes immediately the state of a door (without playing animation and sound)
 
+- <tt>sol.map.pickable_item_create(item_name, variant, savegame_variable, x, y, layer)</tt>:
+creates a pickable item and places it on the map
+
 @subsection sol.item Module <tt>sol.item</tt>
 
 The <tt>sol.item</tt> module is available to scripts attached to an item defined in the items.dat file.
@@ -427,7 +433,7 @@ called when the game is suspended or resumed
 - <tt>event_dialog_started(message_id)</tt> (triggered for the map script): 
 called when a dialog starts (i.e. at the beginning of its first message)
 
-- <tt>event_dialog_finished(first_message_id, answer)</tt> (triggered for the map script and all item scripts):
+- <tt>event_dialog_finished(first_message_id, answer)</tt> (triggered for the map script and for the script that started the dialog):
 called when a dialog finishes (i.e. once its last message is finished)
 
 - <tt>event_camera_reached_target()</tt> (triggered for the map script): 

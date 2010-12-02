@@ -17,12 +17,14 @@
 #include "lua/Script.h"
 #include "lua/ItemScript.h"
 #include "entities/PickableItem.h"
+#include "entities/Hero.h"
 #include "movements/Movement.h"
 #include "ItemProperties.h"
 #include "Equipment.h"
 #include "Game.h"
 #include "InventoryItem.h"
 #include "lowlevel/Debug.h"
+#include "lowlevel/StringConcat.h"
 #include <lua.hpp>
 
 /**
@@ -263,16 +265,19 @@ int Script::item_api_set_finished(lua_State *l) {
   Script *script;
   called_by_script(l, 0, &script);
 
-  // retrieve the inventory item
+  // retrieve the inventory item from the hero
+  Hero &hero = script->get_game().get_hero();
   const std::string &item_name = script->get_item_properties().get_name();
-  Equipment &equipment = script->get_game().get_equipment();
-  ItemScript &item_script = equipment.get_item_script(item_name);
-  InventoryItem *inventory_item = item_script.get_inventory_item();
 
-  Debug::assert(inventory_item != NULL,
-                "Cannot call sol.item.set_finished(): there is no current inventory item being used");
+  Debug::assert(hero.is_using_inventory_item(),
+                "Cannot call sol.item.set_finished(): the hero is not currently using an inventory item");
 
-  inventory_item->set_finished();
+  InventoryItem &inventory_item = hero.get_current_inventory_item();
+  Debug::assert(inventory_item.get_name() == item_name,
+                StringConcat() << "This script controls the item '" << item_name
+                << "' but the current inventory item is '" << inventory_item.get_name() << "'");
+
+  inventory_item.set_finished();
 
   return 0;
 }

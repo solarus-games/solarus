@@ -276,6 +276,8 @@ class Hero: public MapEntity {
      * Actions can be triggered by inventory items, entities or scripts.
      */
     bool is_free();
+    bool is_using_inventory_item();
+    InventoryItem& get_current_inventory_item();
     bool is_grabbing_or_pulling();
     bool is_moving_grabbed_entity();
     void notify_grabbed_entity_collision();

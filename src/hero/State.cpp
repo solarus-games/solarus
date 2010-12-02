@@ -20,6 +20,7 @@
 #include "hero/HeroSprites.h"
 #include "entities/Hero.h"
 #include "lowlevel/System.h"
+#include "lowlevel/Debug.h"
 #include "Game.h"
 #include "Map.h"
 #include "Equipment.h"
@@ -734,6 +735,27 @@ bool Hero::State::can_be_hurt() {
  */
 bool Hero::State::is_free() {
   return false;
+}
+
+/**
+ * @brief Returns whether the hero is using an inventory item in this state.
+ *
+ * Returns false by default.
+ *
+ * @return true if the hero is using an inventory item
+ */
+bool Hero::State::is_using_inventory_item() {
+  return false;
+}
+
+/**
+ * @brief When the hero is using an inventory item, returns the inventory item.
+ * @return the current inventory item
+ */
+InventoryItem& Hero::State::get_current_inventory_item() {
+
+  Debug::die("No inventory item in this state");
+  throw;
 }
 
 /**

@@ -236,6 +236,8 @@ class Script {
 
     void event_dialog_started(const MessageId &message_id);
     void event_dialog_finished(const MessageId &first_message_id, int answer);
+    void event_hero_interaction(const std::string &entity_name);
+    void event_npc_dialog(const std::string &npc_name);
 };
 
 #endif

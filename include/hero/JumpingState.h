@@ -42,7 +42,6 @@ class Hero::JumpingState: public Hero::State {
     void update();
     int get_wanted_movement_direction8();
     bool can_start_gameover_sequence();
-    int get_height_above_shadow();
     bool is_touching_ground();
     bool can_avoid_deep_water();
     bool can_avoid_hole();

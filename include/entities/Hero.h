@@ -157,7 +157,6 @@ class Hero: public MapEntity {
     void rebuild_equipment();
     bool is_visible();
     bool is_shadow_visible();
-    int get_height_above_shadow();
 
     /**
      * @name Changing map.

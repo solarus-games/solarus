@@ -325,6 +325,16 @@ int PathMovement::get_total_distance_covered() {
 }
 
 /**
+ * @brief Returns the direction a sprite controlled by this movement should take.
+ * @return the direction to use to display the object controlled by this movement (0 to 4)
+ */
+int PathMovement::get_displayed_direction4() {
+
+  static const int displayed_directions[] = {0, 0, 1, 2, 2, 2, 3, 0};
+  return displayed_directions[current_direction];
+}
+
+/**
  * Tries to move the top-left corner of the entity towards an intersection of the 8*8 grid of the map.
  * This function is called only when the entity is not already aligned to the grid.
  */

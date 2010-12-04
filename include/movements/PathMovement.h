@@ -95,6 +95,7 @@ class PathMovement: public PixelMovement {
     Rectangle get_xy_change();
     int get_current_direction();
     int get_total_distance_covered();
+    int get_displayed_direction4();
 
     static const std::string create_random_path();
 

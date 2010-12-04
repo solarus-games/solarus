@@ -171,6 +171,7 @@ class Map {
     void update();
     void check_suspended();
     void display();
+    void display_sprite(Sprite &sprite, const Rectangle &xy);
     void display_sprite(Sprite &sprite, int x, int y);
 };
 

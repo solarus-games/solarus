@@ -28,12 +28,14 @@
  * - length
  * - speed
  * - ignore_obstacles
+ *
+ * TODO: inherit SmoothMovement instead?
  */
 class JumpMovement: public PixelMovement {
 
   private:
 
-    static const std::string basic_trajectories[];		/**< one-pixel trajectory of each direction s*/
+    static const std::string basic_trajectories[];		/**< one-pixel trajectory of each direction */
 
     // properties
     int direction8;						/**< direction of the jump (0 to 7) */
@@ -58,7 +60,8 @@ class JumpMovement: public PixelMovement {
     void set_length(int length);
     void set_speed(int speed);
 
-    int get_jump_height();
+    int get_displayed_direction4();
+    const Rectangle get_displayed_xy();
 
     virtual const std::string get_property(const std::string &key);
     virtual void set_property(const std::string &key, const std::string &value);};

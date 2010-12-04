@@ -186,6 +186,7 @@ class MapEntity {
     const Rectangle get_xy();
     void set_xy(const Rectangle &xy);
     void set_xy(int x, int y);
+    const Rectangle get_displayed_xy();
 
     int get_width();
     int get_height();
@@ -285,7 +286,7 @@ class MapEntity {
     bool is_suspended();
     virtual void set_suspended(bool suspended);
 
-    // update and display
+    // game loop
     virtual void update();
     virtual void display_on_map();
 };

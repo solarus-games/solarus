@@ -376,6 +376,27 @@ void Movement::restore_default_ignore_obstacles() {
 }
 
 /**
+ * @brief Returns the direction a sprite controlled by this movement should take.
+ * @return the direction to use to display the object controlled by this movement (0 to 4)
+ */
+int Movement::get_displayed_direction4() {
+  return 3; // by default, look down
+}
+
+/**
+ * @brief Returns the coordinates where an object controlled by this movement
+ * should be displayed.
+ *
+ * By default, it returns the coordinates of the object itself. Redefine this function
+ * if you want the object to be displayed at different coordinates than its real position.
+ *
+ * @return the coordinates to use to display the object controlled by this movement
+ */
+const Rectangle Movement::get_displayed_xy() {
+  return get_xy();
+}
+
+/**
  * @brief Returns the value of a property of this movement.
  *
  * Subclasses whose movement type is available to the script API should redefine this function

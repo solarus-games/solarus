@@ -435,16 +435,7 @@ bool Hero::is_visible() {
  * @return true if the shadow should be currently displayed.
  */
 bool Hero::is_shadow_visible() {
-  return get_height_above_shadow() > 0;
-}
-
-/**
- * @brief When a shadow is displayed separate from the tunic sprite,
- * returns the height where the tunic sprite should be displayed.
- * @return the height in pixels, or zero if there is no separate shadow in this state
- */
-int Hero::get_height_above_shadow() {
-  return state->get_height_above_shadow();
+  return get_displayed_xy().get_y() != get_y();
 }
 
 /**

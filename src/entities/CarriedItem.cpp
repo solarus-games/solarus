@@ -402,6 +402,7 @@ void CarriedItem::display_on_map() {
   }
   else {
     // when the item is being thrown, display the shadow and the item separately
+    // TODO: this could probably be simplified by using a JumpMovement
     get_map().display_sprite(*shadow_sprite, get_x(), get_y());
     get_map().display_sprite(get_sprite(), get_x(), get_y() - item_height);
   }

@@ -98,7 +98,7 @@ void JumpMovement::set_length(int length) {
 
 /**
  * @brief Sets the speed of the movement.
- * @param speed the speed in pixels per second (0: default, based on the length of the jump)
+ * @param speed the speed in pixels per second (0 means auto, based on the length of the jump)
  */
 void JumpMovement::set_speed(int speed) {
 
@@ -112,11 +112,29 @@ void JumpMovement::set_speed(int speed) {
 }
 
 /**
- * @brief Returns the height in pixels where the entity should be displayed over its shadow.
- * @return the current height of the jump
+ * @brief Returns the direction a sprite controlled by this movement should take.
+ * @return the direction to use to display the object controlled by this movement (0 to 4)
  */
-int JumpMovement::get_jump_height() {
-  return jump_height;
+int JumpMovement::get_displayed_direction4() {
+
+  static const int displayed_directions[] = {0, 0, 1, 2, 2, 2, 3, 0};
+  return displayed_directions[direction8];
+}
+
+/**
+ * @brief Returns the coordinates where an object controlled by this movement
+ * should be displayed.
+ *
+ * The movement is applied to the shadow of the entity and
+ * this function returns the coordinates where the entity should be displayed instead.
+ *
+ * @return the coordinates to use to display the object controlled by this movement
+ */
+const Rectangle JumpMovement::get_displayed_xy() {
+
+  Rectangle displayed_xy = get_xy();
+  displayed_xy.add_y(-jump_height); // display the entity over its shadow
+  return displayed_xy;
 }
 
 /**

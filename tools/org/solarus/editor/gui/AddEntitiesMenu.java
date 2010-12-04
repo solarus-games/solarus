@@ -52,9 +52,7 @@ public class AddEntitiesMenu extends JMenu {
 	),
 	new ItemDefinition(EntityType.INTERACTIVE, KeyEvent.VK_I,
 		InteractiveEntity.Subtype.CUSTOM,
-		InteractiveEntity.Subtype.NON_PLAYING_CHARACTER,
-		InteractiveEntity.Subtype.SIGN,
-		InteractiveEntity.Subtype.WATER_FOR_BOTTLE
+		InteractiveEntity.Subtype.NON_PLAYING_CHARACTER
 	),	
 	new ItemDefinition(EntityType.BLOCK, KeyEvent.VK_B,
 		Block.Subtype.NORMAL_BLOCK,

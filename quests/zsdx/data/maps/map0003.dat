@@ -1900,8 +1900,8 @@
 8	0	792	613	shop_sign	3	0	entities/sign	dialog#outside_world.village.shop_sign
 8	0	880	605	letter_box	3	0	_none	outside_world.village.letter_box
 8	0	816	501	hat_man	3	1	npc/newlink4	outside_world.village.hat_man_npc
-8	0	1024	944	water_for_bottle	-1	0	_none	item#bottle_1
-8	0	1040	944	water_for_bottle_2	-1	0	_none	item#bottle_1
+8	0	1032	957	water_for_bottle	-1	0	_none	item#bottle_1
+8	0	1048	957	water_for_bottle_2	-1	0	_none	item#bottle_1
 2	0	704	744	16	16	to_sahasrahla_house	0	1	12	main_entrance
 1	0	712	773	out_sahasrahla_house	3	0
 7	0	784	853	enemy	3	0	0	-1	_random	0	-1

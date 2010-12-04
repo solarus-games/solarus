@@ -50,7 +50,6 @@ class Hero::RunningState: public Hero::State {
     bool can_take_jump_sensor();
     bool can_be_hurt();
     bool can_start_gameover_sequence();
-    int get_height_above_shadow();
     bool is_touching_ground();
     bool can_avoid_deep_water();
     bool can_avoid_hole();

@@ -84,8 +84,8 @@ class Hero::State {
     // sprites
     virtual bool is_hero_visible();
     virtual bool is_direction_locked();
-    virtual int get_height_above_shadow();
 
+    // movement
     virtual bool can_control_movement();
     virtual int get_wanted_movement_direction8();
     virtual void notify_walking_speed_changed();

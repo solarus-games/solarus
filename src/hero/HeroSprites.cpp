@@ -554,8 +554,11 @@ void HeroSprites::display_on_map() {
 
   if (hero.is_shadow_visible()) {
     map.display_sprite(*shadow_sprite, x, y);
-    y -= hero.get_height_above_shadow();
   }
+
+  const Rectangle &displayed_xy = hero.get_displayed_xy();
+  x = displayed_xy.get_x();
+  y = displayed_xy.get_y();
 
   map.display_sprite(*tunic_sprite, x, y);
 

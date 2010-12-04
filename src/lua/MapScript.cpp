@@ -239,16 +239,6 @@ void MapScript::event_hero_on_sensor(const std::string &sensor_name) {
 }
 
 /**
- * @brief Notifies the script that the player has just pressed the action
- * key in front of an interactive entity.
- * @param entity_name name of the interactive entity
- */
-void MapScript::event_hero_interaction(const std::string &entity_name) {
-
-  notify_script("event_hero_interaction", "s", entity_name.c_str());
-}
-
-/**
  * @brief Notifies the script that the hero is using an inventory item
  * in front of an interactive entity.
  *
@@ -267,16 +257,6 @@ bool MapScript::event_hero_interaction_item(const std::string &entity_name, cons
   notify_script("event_hero_interaction_item", "sss b", entity_name.c_str(), item_name.c_str(), variant, &interaction);
 
   return interaction;
-}
-
-/**
- * @brief Notifies the script that the player has just pressed the action
- * key in front an NPC.
- * @param npc_name name of the NPC
- */
-void MapScript::event_npc_dialog(const std::string &npc_name) {
-
-  notify_script("event_npc_dialog", "s", npc_name.c_str());
 }
 
 /**

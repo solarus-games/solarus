@@ -550,6 +550,22 @@ void MapEntity::set_top_left_xy(int x, int y) {
 }
 
 /**
+ * @brief Returns the coordinates of the origin point of the entity, relative to the map.
+ *
+ * These are the coordinates of the point as returned by get_x() and get_y().
+ *
+ * @return the coordinates of the entity on the map
+ */
+const Rectangle MapEntity::get_displayed_xy() {
+
+  if (get_movement() == NULL) {
+    return get_xy();
+  }
+
+  return get_movement()->get_displayed_xy();
+}
+
+/**
  * @brief Returns the width of the entity.
  * @return the width of the entity
  */
@@ -1492,7 +1508,7 @@ void MapEntity::display_on_map() {
     for (it = sprites.begin(); it != sprites.end(); it++) {
 
       Sprite &sprite = *(it->second);
-      get_map().display_sprite(sprite, get_x(), get_y());
+      get_map().display_sprite(sprite, get_displayed_xy());
     }
   }
 }

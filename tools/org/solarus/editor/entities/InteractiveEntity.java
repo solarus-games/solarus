@@ -30,15 +30,11 @@ public class InteractiveEntity extends MapEntity {
      */
     public enum Subtype implements EntitySubtype {
 	CUSTOM,
-	NON_PLAYING_CHARACTER,
-	SIGN,
-	WATER_FOR_BOTTLE;
+	NON_PLAYING_CHARACTER;
 
 	public static final String[] humanNames = {
 	    "Custom",
-	    "Non-playing character",
-	    "Sign",
-	    "Water for bottle"
+	    "Non-playing character"
 	};
 
 	public static Subtype get(int id) {
@@ -55,9 +51,7 @@ public class InteractiveEntity extends MapEntity {
      */
     public static final EntityImageDescription[] generalImageDescriptions = {
 	new EntityImageDescription("interactive_entities.png", 0, 0, 32, 32),
-	new EntityImageDescription("interactive_entities.png", 32, 0, 16, 16),
-	new EntityImageDescription("interactive_entities.png", 48, 0, 16, 16),
-	new EntityImageDescription("interactive_entities.png", 64, 0, 32, 32)
+	new EntityImageDescription("interactive_entities.png", 32, 0, 16, 16)
     };
 
     /**
@@ -65,9 +59,7 @@ public class InteractiveEntity extends MapEntity {
      */
     public static final EntityImageDescription[] currentImageDescriptions = {
 	generalImageDescriptions[0],
-	new EntityImageDescription("interactive_entities.png", 32, 0, 16, 24),
-	generalImageDescriptions[2],
-	generalImageDescriptions[3]
+	new EntityImageDescription("interactive_entities.png", 32, 0, 16, 24)
     };
 
     /**
@@ -75,9 +67,7 @@ public class InteractiveEntity extends MapEntity {
      */
     private static final Point[] origins = {
 	new Point(8, 13),
-	new Point(8, 21),
-	new Point(8, 13),
-	new Point(0, 0)
+	new Point(8, 21)
     };
 
     /**
@@ -85,9 +75,7 @@ public class InteractiveEntity extends MapEntity {
      */
     private static final Dimension[] sizes = {
 	new Dimension(16, 16),
-	new Dimension(16, 24),
-	new Dimension(16, 16),
-	new Dimension(16, 16)
+	new Dimension(16, 24)
     };
 
     /**
@@ -116,6 +104,25 @@ public class InteractiveEntity extends MapEntity {
     }
 
     /**
+     * Returns whether this entity can have the special direction value -1
+     * indicating that no direction is set.
+     * @return true if this entity can have the special direction value -1
+     */
+    public boolean canHaveNoDirection() {
+	return true;
+    }
+
+    /**
+     * For an entity that includes an option to set 'no direction'
+     * (i.e. when canHaveNoDirection() returns true),
+     * this method returns the text that will be displayed in the direction chooser.
+     * @return the text that will be displayed in the direction chooser for the 'no direction' option if any
+     */
+    public String getNoDirectionText() {
+	return "Any";
+    }
+
+    /**
      * Returns whether the entity has an identifier.
      * @return true
      */
@@ -141,23 +148,30 @@ public class InteractiveEntity extends MapEntity {
 	Dimension size = sizes[getSubtypeId()];
 	setSizeImpl(size.width, size.height);
 
-	if (subtype == Subtype.SIGN) {
-	    setProperty("sprite", "entities/sign");
-	}
-
 	setChanged();
 	notifyObservers();
     }
 
     /**
-     * Returns whether the specified sprite name or message id is valid
-     * @param value a sprite name or a message id
+     * Returns whether the specified sprite name id is valid
+     * @param sprite_name a sprite name
      * @return true if it is valid
      */
-    private boolean isStringValid(String value) {
-	return (value != null &&
-		value.length() != 0 && 
-		(value.charAt(0) != '_' || value.equals("_none")));
+    private boolean isSpriteNameValid(String sprite_name) {
+	return sprite_name != null
+	  && sprite_name.length() != 0
+	  && (sprite_name.charAt(0) != '_' || sprite_name.equals("_none"));
+    }
+
+    /**
+     * Returns whether the specified behavior string is valid
+     * @param behavior a behavior string
+     * @return true if it is valid
+     */
+    private boolean isBehaviorValid(String behavior) {
+	return behavior.equals("map")
+	    || behavior.substring(0, 5).equals("item#")
+	    || behavior.substring(0, 7).equals("dialog#");
     }
 
     /**
@@ -172,7 +186,7 @@ public class InteractiveEntity extends MapEntity {
      */
     public void setPropertiesDefaultValues() throws MapException {
 	setProperty("sprite", "");
-	setProperty("messageId", "");
+	setProperty("behavior", "map");
     }
 
     /**
@@ -181,12 +195,17 @@ public class InteractiveEntity extends MapEntity {
      */
     public void checkProperties() throws MapException {
 
-	if (!isStringValid(getProperty("sprite"))) {
+	if (!isSpriteNameValid(getProperty("sprite"))) {
 	    throw new MapException("Invalid sprite name: '" + getProperty("sprite") + "'");
 	}
 
-	if (!isStringValid(getProperty("messageId"))) {
-	    throw new MapException("Invalid message id");
+	if (!isBehaviorValid(getProperty("behavior"))) {
+	    throw new MapException("Invalid behavior string: '" + getProperty("behavior") + "'");
+	}
+
+	if (getSubtype() == Subtype.NON_PLAYING_CHARACTER && getDirection() == -1) {
+	    throw new MapException("An NPC must have an initial direction");
 	}
     }
 }
+

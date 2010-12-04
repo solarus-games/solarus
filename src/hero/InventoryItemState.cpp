@@ -18,6 +18,7 @@
 #include "hero/FreeState.h"
 #include "lowlevel/System.h"
 #include "lua/ItemScript.h"
+#include "entities/Detector.h"
 #include "InventoryItem.h"
 
 /**
@@ -45,6 +46,10 @@ void Hero::InventoryItemState::start(State *previous_state) {
   State::start(previous_state);
 
   item.start();
+  Detector *facing_entity = hero.get_facing_entity();
+  if (facing_entity != NULL) {
+    facing_entity->interaction_with_inventory_item(item);
+  }
 }
 
 /**

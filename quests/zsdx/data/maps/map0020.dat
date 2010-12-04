@@ -298,7 +298,7 @@
 2	0	288	560	16	16	teletransporter_11	0	1	21	from_1F_hole_2_west
 2	0	304	560	16	16	teletransporter_12	0	1	21	from_1F_hole_2_east
 15	0	248	192	32	16	0
-8	0	208	381	tom	3	1	npc/tom	_none
+8	0	208	381	tom	3	1	npc/tom	map
 13	0	112	597	16	16	leave_cavern_sensor	0
 7	0	352	197	battle_1_enemy_5	3	2	0	-1	_random	0	-1
 10	0	344	288	16	8	battle_1_barrier	70	1

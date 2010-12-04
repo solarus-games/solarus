@@ -20,6 +20,7 @@
 #include "movements/RandomPathMovement.h"
 #include "movements/JumpMovement.h"
 #include "lua/MapScript.h"
+#include "lua/ItemScript.h"
 #include "Game.h"
 #include "DialogBox.h"
 #include "Map.h"
@@ -29,17 +30,6 @@
 #include "ItemProperties.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
-
-/**
- * @brief Action key effect depending on the type of interaction.
- */
-const KeysEffect::ActionKeyEffect InteractiveEntity::action_key_effects[] = {
-
-  KeysEffect::ACTION_KEY_LOOK,
-  KeysEffect::ACTION_KEY_SPEAK, // NPC
-  KeysEffect::ACTION_KEY_LOOK,
-  KeysEffect::ACTION_KEY_LOOK,
-};
 
 /**
  * @brief Indicates the direction of an NPC's animation (from 0 to 3)
@@ -65,14 +55,15 @@ const int InteractiveEntity::animation_directions[] = {
  * @param y y coordinate of the entity to create
  * @param sprite_name sprite animation set of the entity, or "_none" to create no sprite
  * @param initial_direction direction of the entity's sprite (only used if the entity has a sprite)
- * @param message_to_show id of the message to show when the player presses the action key in front
- * of this entity, or "_none" to call the script instead (with an event_hero_interaction() call)
+ * @param behavior indicates what happens when the hero interacts with this entity:
+ * "message#XXX" to start the dialog XXX, "map" to call the map script (with an event_hero_interaction() call)
+ * or "item#XXX" to call the script of item XXX  (with an event_hero_interaction() call)
  */
 InteractiveEntity::InteractiveEntity(const std::string &name, Layer layer, int x, int y,
 				     Subtype subtype, SpriteAnimationSetId sprite_name,
-				     int initial_direction, MessageId message_to_show):
+				     int initial_direction, const std::string &behavior):
   Detector(COLLISION_FACING_POINT, name, layer, x, y, 0, 0),
-  subtype(subtype), message_to_show(message_to_show) {
+  subtype(subtype) {
 
   switch (subtype) {
 
@@ -341,57 +332,6 @@ void InteractiveEntity::update() {
       get_map_script().event_npc_movement_finished(get_name());
     }
   }
-}
-
-/**
- * @brief Makes the entity walk (only for an NPC).
- *
- * The NPC's sprite must have an animation "walking".
- *
- * @param path the path to follow (see class PathMovement)
- * @param loop true to make the movement loop
- * @param ignore_obstacles true to make the movement sensitive to obstacles
- */
-void InteractiveEntity::walk(std::string path, bool loop, bool ignore_obstacles) {
-
-  Debug::assert(subtype == NON_PLAYING_CHARACTER, "This entity is not a non-playing character");
-
-  clear_movement();
-  set_movement(new PathMovement(path, 32, loop, ignore_obstacles, false));
-  get_sprite().set_current_animation("walking");
-}
-
-/**
- * @brief Makes the entity walk randomly (only for an NPC).
- *
- * The NPC's sprite must have an animation "walking".
- */
-void InteractiveEntity::walk_random() {
-
-  Debug::assert(subtype == NON_PLAYING_CHARACTER, "This entity is not a non-playing character");
-
-  clear_movement();
-  set_movement(new RandomPathMovement(32));
-  get_sprite().set_current_animation("walking");
-}
-
-/**
- * @brief Makes the entity jump into a direction (only for an NPC).
- *
- * The NPC's sprite must have an animation "jumping".
- *
- * @param direction direction of the movement (0 to 7)
- * @param length length of the jump in pixels
- * @param ignore_obstacles true to make the movement sensitive to obstacles
- */
-void InteractiveEntity::jump(int direction, int length, bool ignore_obstacles) {
-
-  Debug::assert(subtype == NON_PLAYING_CHARACTER, "This entity is not a non-playing character");
-
-  get_sprite().set_current_animation("jumping");
-  clear_movement();
-  JumpMovement *movement = new JumpMovement(direction, length, 64, ignore_obstacles);
-  set_movement(movement);
 }
 
 /**

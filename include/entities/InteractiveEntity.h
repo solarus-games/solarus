@@ -35,24 +35,20 @@ class InteractiveEntity: public Detector {
 
     /**
      * @brief The different kinds of interactions.
-     *
-     * They indicate what happens when the player presses the action key in front of this entity.
      */
     enum Subtype {
 
-      CUSTOM,                /**< no predetermined behavior: just displays the message specified or calls the script */
-      NON_PLAYING_CHARACTER, /**< same thing except that the script can make the engine move an NPC */
-      SIGN,                  /**< a sign with a message (TODO to make it destructible,
-			      * an instance of Sign is actually created) */
-      WATER_FOR_BOTTLE       /**< a place where the hero can fill a bottle with water */
+      CUSTOM,                           /**< no predetermined behavior: just displays the message specified or calls a script */
+      NON_PLAYING_CHARACTER             /**< same thing with additional specific NPC stuff */
     };
 
   private:
 
-    Subtype subtype;
-    MessageId message_to_show;
+    Subtype subtype;                    /**< subtpype of interactive entity */
+    std::string message_to_show;        /**< message to show when an interaction occurs, or an empty string */
+    MapScript *map_script_to_call;      /**< map script to call when an interarction occurs, or NULL */
+    ItemScript *item_script_to_call;    /**< map script to call when an interarction occurs, or NULL */
 
-    static const KeysEffect::ActionKeyEffect action_key_effects[];
     static const int animation_directions[];
 
     void initialize_sprite(SpriteAnimationSetId sprite_name, int initial_direction);
@@ -61,7 +57,7 @@ class InteractiveEntity: public Detector {
   public:
 
     InteractiveEntity(const std::string &name, Layer layer, int x, int y, Subtype subtype,
-	SpriteAnimationSetId sprite_name, int initial_direction, MessageId message_to_show);
+	SpriteAnimationSetId sprite_name, int initial_direction, const std::string &behavior);
     ~InteractiveEntity();
     static CreationFunction parse;
 
@@ -77,14 +73,10 @@ class InteractiveEntity: public Detector {
     void notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode);
     void action_key_pressed();
     bool interaction_with_inventory_item(InventoryItem &item);
+    void notify_position_changed();
 
     void update();
     void display_on_map();
-
-    void walk(std::string path, bool loop, bool ignore_obstacles);
-    void walk_random();
-    void jump(int direction, int length, bool ignore_obstacles);
-    void notify_position_changed();
 };
 
 #endif

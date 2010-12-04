@@ -934,19 +934,19 @@
 6	0	88	296	32	8	Jump_sensor	6	184
 6	0	320	120	8	56	Jump_sensor_2	0	48
 6	0	264	56	16	8	Jump_sensor_4	6	88
-8	0	64	701	welcome_sign	0	2	entities/sign	outside_world.village.welcome_sign
-8	0	144	629	rupee_house_sign	3	2	entities/sign	outside_world.village.rupee_house_sign
-8	0	152	469	waterfall_sign	3	2	entities/sign	outside_world.village.waterfall_sign
-8	0	176	480	interactive_entity	3	3	_none	_none
-8	0	192	480	interactive_entity_2	3	3	_none	_none
-8	0	208	480	interactive_entity_3	3	3	_none	_none
-8	0	160	480	interactive_entity_4	3	3	_none	_none
-8	0	160	464	interactive_entity_5	3	3	_none	_none
-8	0	224	480	interactive_entity_6	3	3	_none	_none
-8	0	224	464	interactive_entity_7	3	3	_none	_none
-8	0	224	448	interactive_entity_8	3	3	_none	_none
-8	0	64	237	warning_holes_sign	3	2	entities/sign	outside_world.warning_holes_sign
-8	0	728	101	flower_hole_sign	3	2	entities/sign	outside_world.flower_hole_sign
+8	0	64	701	welcome_sign	3	0	entities/sign	dialog#outside_world.village.welcome_sign
+8	0	144	629	rupee_house_sign	3	0	entities/sign	dialog#outside_world.village.rupee_house_sign
+8	0	152	469	waterfall_sign	3	0	entities/sign	dialog#outside_world.village.waterfall_sign
+8	0	176	480	water_for_bottle	-1	0	_none	item#bottle_1
+8	0	192	480	water_for_bottle_2	-1	0	_none	item#bottle_1
+8	0	208	480	water_for_bottle_3	-1	0	_none	item#bottle_1
+8	0	160	480	water_for_bottle_4	-1	0	_none	item#bottle_1
+8	0	160	464	water_for_bottle_5	-1	0	_none	item#bottle_1
+8	0	224	480	water_for_bottle_6	-1	0	_none	item#bottle_1
+8	0	224	464	water_for_bottle_7	-1	0	_none	item#bottle_1
+8	0	224	448	water_for_bottle_8	-1	0	_none	item#bottle_1
+8	0	64	237	warning_holes_sign	3	0	entities/sign	dialog#outside_world.warning_holes_sign
+8	0	728	101	flower_hole_sign	3	0	entities/sign	dialog#outside_world.flower_hole_sign
 1	0	424	109	from_B2_left_jump	3	0
 1	0	544	109	from_B2_middle_jump	3	0
 1	0	664	61	from_B2_right_jump	3	0
@@ -1008,8 +1008,8 @@
 7	0	176	813	enemy_2	3	0	0	-1	_random	0	-1
 7	0	424	573	enemy	3	0	0	-1	_random	0	-1
 7	0	560	957	enemy_3	3	0	0	-1	_random	0	-1
-8	0	152	685	chignon_woman	3	1	npc/newlink5	outside_world.village.chignon_woman_npc
-8	0	128	469	cliff_man	3	1	npc/static_villager14	outside_world.village.cliff_man_npc
+8	0	152	685	chignon_woman	3	1	npc/newlink5	dialog#outside_world.village.chignon_woman_npc
+8	0	128	469	cliff_man	3	1	npc/static_villager14	dialog#outside_world.village.cliff_man_npc
 1	0	208	725	out_grandma_house	3	0
 2	0	200	696	16	16	to_grandma_house	0	1	11	entrance
 4	0	648	93	3	_random	0	-1
@@ -1023,7 +1023,7 @@
 4	0	280	477	3	_random	0	-1
 4	0	296	461	3	_random	0	-1
 10	0	56	448	32	16	tom_cave_door_tile	909	1
-8	0	72	461	tom_cave_door	3	0	_none	_none
+8	0	72	461	tom_cave_door	3	0	_none	map
 0	1	56	424	32	24	901
 0	2	712	848	192	40	511
 0	2	472	368	240	40	511

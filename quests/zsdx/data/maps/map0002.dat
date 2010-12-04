@@ -162,7 +162,7 @@
 5	0	48	80	chest_1	0	_none	0	-1
 5	0	96	80	chest_2	0	_none	0	-1
 5	0	144	80	chest_3	0	_none	0	-1
-8	0	80	85	game_1_man	3	1	npc/static_villager11	_none
+8	0	80	85	game_1_man	3	1	npc/static_villager11	map
 9	0	240	141	block_3	-1	0	2
 9	0	208	157	block_2	-1	0	2
 9	0	240	173	block_4	-1	0	2
@@ -175,7 +175,7 @@
 9	0	224	205	block_11	-1	0	2
 9	0	208	221	block_12	-1	0	2
 3	0	400	85	piece_of_heart	1	17
-8	0	368	85	game_3_man	3	1	npc/static_villager8	_none
+8	0	368	85	game_3_man	3	1	npc/static_villager8	map
 10	0	336	120	16	8	game_3_barrier_1	70	1
 10	0	360	120	16	8	game_3_barrier_2	70	1
 10	0	384	120	16	8	game_3_barrier_3	70	1
@@ -190,10 +190,10 @@
 9	0	272	221	block_14	-1	0	0
 9	0	240	157	block_15	-1	0	0
 9	0	256	173	block_16	-1	0	0
-8	0	224	101	game_2_man	3	1	npc/static_villager2	_none
-8	0	240	93	slot_machine_left	3	0	entities/slot_machine	_none
-8	0	264	93	slot_machine_middle	3	0	entities/slot_machine	_none
-8	0	288	93	slot_machine_right	3	0	entities/slot_machine	_none
+8	0	224	101	game_2_man	3	1	npc/static_villager2	map
+8	0	240	93	slot_machine_left	3	0	entities/slot_machine	map
+8	0	264	93	slot_machine_middle	3	0	entities/slot_machine	map
+8	0	288	93	slot_machine_right	3	0	entities/slot_machine	map
 0	2	72	312	96	8	148
 0	2	104	312	32	8	153
 0	2	0	32	16	304	170

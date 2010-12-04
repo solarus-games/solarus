@@ -52,7 +52,7 @@
 0	0	240	72	16	16	277
 0	0	64	232	16	16	277
 0	0	240	232	16	16	277
-8	0	160	-11	solarus_child	3	1	npc/solarus_child1	_none
+8	0	160	-11	solarus_child	3	1	npc/solarus_child1	map
 1	0	160	213	from_boss	1	0
 0	1	64	56	16	16	278
 0	1	240	56	16	16	278

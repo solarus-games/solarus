@@ -308,26 +308,32 @@ define the pickable item given by this enemy when it is killed,
 
 An interactive entity is an entity (visible or not) the hero can interact with
 by pressing the action key or using an inventory item just in front of it.
-Depending on the subtype of interactive entity, the hero may
-talk to it, read what it shows or do another action.
+The hero may talk to it, read what it shows or do another action.
 Most of the time, the action consists in starting a dialog,
 but you can define a custom action with a script.
 
 @verbatim
-8	layer	x	y	entity_name	direction	subtype	sprite_name	message_id
+8	layer	x	y	entity_name	direction	subtype	sprite_name	behavior
 @endverbatim
 
 Subtypes of interactive entities:
-- 0: normal interaction (displays a dialog or calls the script)
+- 0: custom interaction (displays a dialog or calls a script),
 - 1: an NPC (same thing but a sprite is required, with four directions and the animations "stopped" and possibly "walking")
-- 2: a sign (<tt>direction</tt> et <tt>sprite_name</tt> are then ignored by the engine)
-- 3: some water the player can put in a bottle (<tt>message_id</tt> is then ignored because the engine handles everything)
+
+<tt>direction</tt> has a different meaning depending on the subtype of interactive entity.
+For an NPC, it indicates the initial direction of its sprite (0 to 4)
+For a custom interaction, it indicates the direction for which the interaction is possible (0 to 4,
+or -1 to allow the interaction in any direction). For example, if the direction is 3,
+the interaction will be started only if the hero touches the south face of the entity.
 
 <tt>sprite_name</tt> is the name of the animation set of the sprite to display with this entity
 (or <tt>_none</tt> to make the entity invisible)
 
-<tt>message_id</tt> is the id of the message to show when the player presses the action key near this entity.
-The value <tt>_none</tt> means that instead of displaying a message, the Lua script of the map is called.
+<tt>behavior</tt> describes what happens when the player presses the action key near this entity.
+There are three possible options:
+- dialog#XXX: starts a dialog with first message XXX
+- map: calls the map script (event_hero_interaction)
+- item#XXX calls the script of the item XXX (event_hero_interaction)
 
 @section block Block (9)
 

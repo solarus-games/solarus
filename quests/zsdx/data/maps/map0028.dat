@@ -115,7 +115,7 @@
 1	0	128	213	from_outside	1	0
 18	0	344	104	weak_wall	0	6	65
 1	0	352	125	from_secret_room	2	0
-8	0	200	53	bed	3	0	entities/bed	_none
+8	0	200	53	bed	3	0	entities/bed	map
 1	0	200	53	from_intro	2	0
 2	0	368	112	16	16	teletransporter	0	1	1	from_main_room
 0	2	80	216	96	8	148
@@ -131,4 +131,4 @@
 0	2	240	16	32	208	170
 0	2	368	16	16	208	170
 10	2	360	104	8	32	weak_wall_open	161	1
-8	2	208	45	snores	3	0	entities/snores	_none
+8	2	208	45	snores	3	0	entities/snores	map

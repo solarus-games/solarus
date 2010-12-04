@@ -1445,14 +1445,14 @@
 7	0	816	245	enemy_3	3	0	0	-1	_random	0	-1
 7	0	816	429	enemy_4	3	0	0	-1	_random	0	-1
 5	0	728	24	chest	0	rupee	3	23
-8	0	136	117	beaumont_hill_sign	3	2	entities/sign	outside_world.beaumont_hill_sign
+8	0	136	117	beaumont_hill_sign	3	0	entities/sign	dialog#outside_world.beaumont_hill_sign
 6	0	152	48	16	8	jump_sensor	2	32
 6	0	176	64	8	16	jump_sensor_2	0	40
 6	0	136	64	8	16	jump_sensor_3	4	40
 4	0	760	485	3	_random	0	-1
 4	0	312	245	4	_random	0	-1
 6	0	376	152	80	8	jump_sensor_4	6	56
-8	0	-24	109	tom	3	1	npc/tom	_none
+8	0	-24	109	tom	3	1	npc/tom	map
 13	0	328	221	32	48	tom_appears_sensor	0
 12	0	400	192	8	96	custom_obstacle	0	1	0	0
 2	0	328	136	16	16	to_dungeon_1_1F	0	1	23	from_outside

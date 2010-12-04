@@ -26,9 +26,9 @@
 --     - show a message
 --     - call the map script (event_hero_interaction)
 --     - call an item script (event_hero_interaction?)
---   - info/additional_info/description/user_data: an arbitrary string to forward to the script notified
+--   (- info/additional_info/description/user_data: an arbitrary string to forward to the script notified
 --     (may describe the entity better than just its name), for instance "water_for_bottle"
---   => need to replace message_id by behavior (more general) and to add user_data
+--   => need to replace message_id by behavior (more general) and to add user_data)
 
 function event_use()
 

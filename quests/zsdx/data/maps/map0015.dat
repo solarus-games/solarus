@@ -74,8 +74,8 @@
 4	0	232	221	0	_random	0	-1
 1	0	160	61	from_B2	3	0
 2	0	152	16	16	16	to_B2	0	1	14	from_icy_room
-8	0	160	109	frozen_door	3	0	entities/frozen_door	_none
-8	0	160	205	frozen_door_opposite	1	0	entities/frozen_door	_none
+8	0	160	109	frozen_door	1	0	entities/frozen_door	map
+8	0	160	205	frozen_door_opposite	3	0	entities/frozen_door	map
 9	0	248	221	block	-1	1	2
 9	0	72	221	block_2	-1	1	2
 9	0	72	269	block_3	-1	1	2

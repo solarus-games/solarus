@@ -2,5 +2,5 @@
 1	0	8	13	start_position	3	0
 0	1	0	0	320	240	3
 0	1	-48	272	320	176	2
-8	1	16	21	fresco	3	0	entities/fresco	_none
+8	1	16	21	fresco	3	0	entities/fresco	map
 10	2	0	0	320	240	black_screen	3	1

@@ -71,7 +71,7 @@
 0	0	168	200	8	24	71
 1	0	160	189	entrance	1	0
 2	0	152	208	16	16	to_outside	0	1	4	out_grandma_house
-8	0	120	85	grandma	3	1	npc/newlink8	_none
+8	0	120	85	grandma	3	1	npc/newlink8	map
 4	0	72	85	0	rupee	1	-1
 4	0	72	101	0	rupee	1	-1
 4	0	72	173	0	_random	0	-1

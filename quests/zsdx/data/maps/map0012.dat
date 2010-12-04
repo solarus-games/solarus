@@ -159,10 +159,10 @@
 0	1	160	112	8	8	206
 0	1	432	40	16	8	158
 0	1	424	160	32	8	254
-8	1	104	117	sahasrahla	3	1	npc/sahasrahla	_none
-8	1	80	165	library_2	3	0	_none	sahasrahla_house.memories
+8	1	104	117	sahasrahla	3	1	npc/sahasrahla	map
+8	1	80	165	library_2	3	0	_none	dialog#sahasrahla_house.memories
 1	1	192	213	main_entrance	1	0
-2	1	184	224	16	16	to_outside*	0	1	3	out_sahasrahla_house
+2	1	184	224	16	16	to_outside	0	1	3	out_sahasrahla_house
 4	1	472	189	0	_random	0	-1
 4	1	488	189	0	heart	1	-1
 6	1	376	112	8	16	jump_sensor	0	40

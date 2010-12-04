@@ -1126,9 +1126,9 @@
 4	0	848	125	3	_random	0	-1
 4	0	864	109	3	_random	0	-1
 4	0	896	645	3	_random	0	-1
-8	0	760	405	surprise_wall_sign	3	2	entities/sign	outside_world.surprise_wall_sign
+8	0	760	405	surprise_wall_sign	3	0	entities/sign	dialog#outside_world.surprise_wall_sign
 3	0	376	61	piece_of_heart	1	21
-8	0	880	109	billy_cavern_sign	3	2	entities/sign	outside_world.billy_cavern_sign
+8	0	880	109	billy_cavern_sign	3	0	entities/sign	dialog#outside_world.billy_cavern_sign
 12	0	840	72	16	8	custom_obstacle	1	1	1	1
 0	2	568	320	48	40	511
 0	2	568	416	48	40	511

@@ -33,8 +33,9 @@ public class EditInteractiveEntityComponent extends EditEntityComponent {
     // specific fields of this entity
     private JCheckBox withSpriteField;
     private ResourceChooser spriteField;
-    private RadioField withMessageField;
+    private RadioField behaviorField;
     private JTextField messageField;
+    private ItemChooser itemField;
 
     /**
      * Constructor.
@@ -58,13 +59,17 @@ public class EditInteractiveEntityComponent extends EditEntityComponent {
 	spriteField = new ResourceChooser(ResourceType.SPRITE, true);
 	addField("Sprite name", spriteField);
 
-	// show a message?
-	withMessageField = new RadioField("Show a message", "Call the script");
-	addField("Action", withMessageField);
+	// behavior
+	behaviorField = new RadioField("Show a message", "Call the map script", "Call an item script");
+	addField("Action", behaviorField);
 
 	// message
 	messageField = new JTextField(15);
-	addField("Message id", messageField);
+	addField("Message to show", messageField);
+
+	// item
+	itemField = new ItemChooser(false, false);
+	addField("Item script to call", itemField);
 
 	// listeners
 	withSpriteField.addChangeListener(new ChangeListener() {
@@ -73,9 +78,10 @@ public class EditInteractiveEntityComponent extends EditEntityComponent {
 	    }
 	});
 
-	withMessageField.addActionListener(new ActionListener() {
+	behaviorField.addActionListener(new ActionListener() {
 	    public void actionPerformed(ActionEvent ev) {
-		messageField.setEnabled(withMessageField.getSelectedIndex() == 0);
+		messageField.setEnabled(behaviorField.getSelectedIndex() == 0);
+		itemField.setEnabled(behaviorField.getSelectedIndex() == 2);
 	    }
 	});
 
@@ -83,37 +89,7 @@ public class EditInteractiveEntityComponent extends EditEntityComponent {
 	    public void actionPerformed(ActionEvent ev) {
 
 		Subtype subtype = (Subtype) subtypeField.getValue();
-
-		withSpriteField.setEnabled(true);
-		spriteField.setEnabled(true);
-		withMessageField.setEnabled(true);
-		messageField.setEnabled(true);
-
-		switch (subtype) {
-
-		case NON_PLAYING_CHARACTER:
-		    withSpriteField.setEnabled(false);
-		    withSpriteField.setSelected(true);
-		    spriteField.setSelectedId("");
-		    break;
-
-		case SIGN:
-		    withSpriteField.setEnabled(false);
-		    withSpriteField.setSelected(true);
-		    spriteField.setSelectedId("entities/sign");
-		    spriteField.setEnabled(false);
-		    break;
-
-		case WATER_FOR_BOTTLE:
-		    withSpriteField.setSelected(false);
-		    withSpriteField.setEnabled(false);
-		    spriteField.setSelectedId("");
-		    spriteField.setEnabled(false);
-		    withMessageField.setSelectedIndex(1);
-		    withMessageField.setEnabled(false);
-		    messageField.setEnabled(false);
-		    break;
-		}
+		withSpriteField.setEnabled(subtype != Subtype.NON_PLAYING_CHARACTER);
 	    }
 	});
     }
@@ -126,19 +102,33 @@ public class EditInteractiveEntityComponent extends EditEntityComponent {
 
 	InteractiveEntity interactiveEntity = (InteractiveEntity) entity;
 	String sprite = interactiveEntity.getProperty("sprite");
-	String message = interactiveEntity.getProperty("messageId");
+	String behavior = interactiveEntity.getProperty("behavior");
 	EntitySubtype subtype = interactiveEntity.getSubtype();
 
 	boolean hasSprite = (!sprite.equals("_none"));
-	boolean hasMessage = (!message.equals("_none"));
 
 	withSpriteField.setSelected(hasSprite);
 	spriteField.setSelectedId(hasSprite ? sprite : "");
 
-	spriteField.setEnabled(hasSprite && subtype != Subtype.SIGN);
-	withMessageField.setSelectedIndex(hasMessage ? 0 : 1);
-	messageField.setText(hasMessage ? message : "");
-	messageField.setEnabled(hasMessage);
+	spriteField.setEnabled(hasSprite);
+
+	if (behavior.equals("map")) {
+	  behaviorField.setSelectedIndex(1);
+	  messageField.setEnabled(false);
+	  itemField.setEnabled(false);
+	}
+	else if (behavior.substring(0, 5).equals("item#")) {
+	  behaviorField.setSelectedIndex(2);
+	  messageField.setEnabled(false);
+	  itemField.setEnabled(true);
+	  itemField.setSelectedId(behavior.substring(5));
+	}
+	else if (behavior.substring(0, 7).equals("dialog#")) {
+	  behaviorField.setSelectedIndex(0);
+	  messageField.setEnabled(true);
+	  itemField.setEnabled(false);
+	  messageField.setText(behavior.substring(7));
+	}
     }
 
     /**
@@ -152,11 +142,14 @@ public class EditInteractiveEntityComponent extends EditEntityComponent {
 	    sprite = "_none";
 	}
 
-	String message = messageField.getText();
-	if (withMessageField.getSelectedIndex() != 0) {
-	    message = "_none";
+	String behavior = "map";
+	if (messageField.isEnabled()) {
+	  behavior = "dialog#" + messageField.getText();
+	}
+	else if (itemField.isEnabled()) {
+	  behavior = "item#" + itemField.getSelectedId();
 	}
 
-	return new ActionEditEntitySpecific(entity, sprite, message);
+	return new ActionEditEntitySpecific(entity, sprite, behavior);
     }
 }

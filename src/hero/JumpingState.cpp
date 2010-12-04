@@ -130,15 +130,6 @@ bool Hero::JumpingState::can_start_gameover_sequence() {
 }
 
 /**
- * @brief When a shadow is displayed separate from the tunic sprite,
- * returns the height where the tunic sprite should be displayed.
- * @return the height in pixels, or zero if there is no separate shadow in this state
- */
-int Hero::JumpingState::get_height_above_shadow() {
-  return movement->get_jump_height();
-}
-
-/**
  * @brief Returns whether the hero is touching the ground in the current state.
  * @return true if the hero is touching the ground in the current state
  */

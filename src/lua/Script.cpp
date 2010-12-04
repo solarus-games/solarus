@@ -810,3 +810,23 @@ void Script::event_dialog_finished(const MessageId &first_message_id, int answer
   notify_script("event_dialog_finished", "si", first_message_id.c_str(), answer);
 }
 
+/**
+ * @brief Notifies the script that the player has just pressed the action
+ * key in front of an interactive entity.
+ * @param entity_name name of the interactive entity
+ */
+void Script::event_hero_interaction(const std::string &entity_name) {
+
+  notify_script("event_hero_interaction", "s", entity_name.c_str());
+}
+
+/**
+ * @brief Notifies the script that the player has just pressed the action
+ * key in front an NPC.
+ * @param npc_name name of the NPC
+ */
+void Script::event_npc_dialog(const std::string &npc_name) {
+
+  notify_script("event_npc_dialog", "s", npc_name.c_str());
+}
+

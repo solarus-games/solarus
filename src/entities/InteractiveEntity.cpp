@@ -16,11 +16,12 @@
  */
 #include "entities/InteractiveEntity.h"
 #include "entities/Hero.h"
-#include "movements/PathMovement.h"
-#include "movements/RandomPathMovement.h"
-#include "movements/JumpMovement.h"
+#include "movements/Movement.h"
 #include "lua/MapScript.h"
 #include "lua/ItemScript.h"
+#include "lowlevel/FileTools.h"
+#include "lowlevel/Debug.h"
+#include "lowlevel/StringConcat.h"
 #include "Game.h"
 #include "DialogBox.h"
 #include "Map.h"
@@ -28,23 +29,6 @@
 #include "Equipment.h"
 #include "InventoryItem.h"
 #include "ItemProperties.h"
-#include "lowlevel/FileTools.h"
-#include "lowlevel/Debug.h"
-
-/**
- * @brief Indicates the direction of an NPC's animation (from 0 to 3)
- * depending on the movement direction.
- */
-const int InteractiveEntity::animation_directions[] = {
-  0, // right
-  0,
-  1,
-  2,
-  2,
-  2,
-  3,
-  0
-};
 
 /**
  * @brief Creates an interactive entity.
@@ -54,40 +38,50 @@ const int InteractiveEntity::animation_directions[] = {
  * @param subtype the subtype of interaction
  * @param y y coordinate of the entity to create
  * @param sprite_name sprite animation set of the entity, or "_none" to create no sprite
- * @param initial_direction direction of the entity's sprite (only used if the entity has a sprite)
+ * @param direction for a custom interactive entity: direction for which the interactions are allowed (0 to 4, or -1 for any direction),
+ * for an NPC: initial direction of the NPC's sprite
  * @param behavior indicates what happens when the hero interacts with this entity:
  * "message#XXX" to start the dialog XXX, "map" to call the map script (with an event_hero_interaction() call)
  * or "item#XXX" to call the script of item XXX  (with an event_hero_interaction() call)
  */
-InteractiveEntity::InteractiveEntity(const std::string &name, Layer layer, int x, int y,
+InteractiveEntity::InteractiveEntity(Game &game, const std::string &name, Layer layer, int x, int y,
 				     Subtype subtype, SpriteAnimationSetId sprite_name,
-				     int initial_direction, const std::string &behavior):
+				     int direction, const std::string &behavior):
   Detector(COLLISION_FACING_POINT, name, layer, x, y, 0, 0),
-  subtype(subtype) {
+  subtype(subtype),
+  message_to_show(""),
+  script_to_call(NULL) {
 
   switch (subtype) {
 
   case CUSTOM:
-    initialize_sprite(sprite_name, 0); // the direction is ignored
+    initialize_sprite(sprite_name, 0);
     set_size(16, 16);
     set_origin(8, 13);
+    set_direction(direction);
     break;
 
   case NON_PLAYING_CHARACTER:
-    initialize_sprite(sprite_name, initial_direction);
+    initialize_sprite(sprite_name, direction);
     set_size(16, 16);
     set_origin(8, 13);
     break;
+  }
 
-  case SIGN:
-    create_sprite("entities/sign");
-    set_size(16, 16);
-    set_origin(8, 13);
-    break;
-
-  case WATER_FOR_BOTTLE:
-    set_size(16, 16);
-    break;
+  // behavior
+  if (behavior == "map") {
+    script_to_call = NULL; // the script may be not available yet
+  }
+  else if (behavior.substr(0, 5) == "item#") {
+    const std::string &item_name = behavior.substr(5);
+    script_to_call = &game.get_equipment().get_item_script(item_name);
+  }
+  else if (behavior.substr(0, 7) == "dialog#") {
+    message_to_show = behavior.substr(7);
+  }
+  else {
+    Debug::die(StringConcat() << "Invalid behavior string for interactive entity '" << name
+	<< "': '" << behavior << "'");
   }
 }
 
@@ -115,15 +109,15 @@ MapEntity* InteractiveEntity::parse(Game &game, std::istream &is, Layer layer, i
   int direction, subtype;
   std::string name;
   SpriteAnimationSetId sprite_name;
-  MessageId message_to_show;
+  std::string behavior;
 
   FileTools::read(is, name);
   FileTools::read(is, direction);
   FileTools::read(is, subtype);
   FileTools::read(is, sprite_name);
-  FileTools::read(is, message_to_show);
+  FileTools::read(is, behavior);
 
-  return new InteractiveEntity(name, Layer(layer), x, y, Subtype(subtype), sprite_name, direction, message_to_show);
+  return new InteractiveEntity(game, name, Layer(layer), x, y, Subtype(subtype), sprite_name, direction, behavior);
 }
 
 /**
@@ -151,7 +145,7 @@ bool InteractiveEntity::is_displayed_in_y_order() {
  * @param sprite_name sprite animation set of the entity, or "_none" to create no sprite
  * @param initial_direction direction of the entity's sprite (ignored if there is no sprite)
  */
-void InteractiveEntity::initialize_sprite(SpriteAnimationSetId sprite_name, int initial_direction) {
+void InteractiveEntity::initialize_sprite(SpriteAnimationSetId &sprite_name, int initial_direction) {
 
   if (sprite_name != "_none") {
     create_sprite(sprite_name);
@@ -229,10 +223,13 @@ void InteractiveEntity::notify_collision(MapEntity &entity_overlapping, Collisio
 
     if (get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
 	&& hero.is_free()
-	&& (subtype != SIGN || hero.is_facing_direction4(1))) { // TODO move to future class Sign
+	&& (subtype == NON_PLAYING_CHARACTER
+	    || direction == -1
+	    || hero.is_facing_direction4((get_direction() + 2) % 4))) {
 
-      // we show the action icon
-      get_keys_effect().set_action_key_effect(action_key_effects[subtype]);
+      // show the appropriate action icon
+      get_keys_effect().set_action_key_effect(subtype == NON_PLAYING_CHARACTER ?
+	  KeysEffect::ACTION_KEY_SPEAK : KeysEffect::ACTION_KEY_LOOK);
     }
   }
 }
@@ -248,28 +245,37 @@ void InteractiveEntity::action_key_pressed() {
   if (get_hero().is_free()) {
     get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
 
-    // for a place with water: start the dialog
-    if (subtype == WATER_FOR_BOTTLE) {
-      // TODO game->get_equipment()->found_water();
+    // if this is an NPC, look towards the hero
+    if (subtype == NON_PLAYING_CHARACTER) {
+      int direction = (get_hero().get_animation_direction() + 2) % 4;
+      get_sprite().set_current_direction(direction);
+    }
+
+    // start the behavior
+    if (message_to_show.size() > 0) {
+      get_dialog_box().start_dialog(message_to_show);
     }
     else {
-
-      // for an NPC: look in the hero's direction 
-      if (subtype == NON_PLAYING_CHARACTER) {
-	int direction = (get_hero().get_animation_direction() + 2) % 4;
-	get_sprite().set_current_direction(direction);
-      }
-
-      // start the message or call the script
-      if (message_to_show != "_none") {
-	get_dialog_box().start_dialog(message_to_show);
-      }
-      else {
-	// there is no message specified: we call the script
-	call_script();
-      }
+      call_script();
     }
-  } 
+  }
+}
+
+/**
+ * @brief Notifies the appropriate script that the player is interacting with this entity.
+ */
+void InteractiveEntity::call_script() {
+
+  if (script_to_call == NULL) { // first time
+    script_to_call = &get_map_script();
+  }
+
+  if (subtype == NON_PLAYING_CHARACTER) {
+    script_to_call->event_npc_dialog(get_name());
+  }
+  else {
+    script_to_call->event_hero_interaction(get_name());
+  }
 }
 
 /**
@@ -277,44 +283,13 @@ void InteractiveEntity::action_key_pressed() {
  *
  * This function is called when the player uses an inventory item
  * while the hero is facing this interactive entity.
- * The exact conditions where this function is called depend on the type of inventory item.
- * For some items, the function is called as soon as the player uses the item.
- * For others, it is called after the player confirms the action in a dialog box.
  *
  * @param item the inventory item used
  * @return true if an interaction occured
  */
 bool InteractiveEntity::interaction_with_inventory_item(InventoryItem &item) {
 
-  bool interaction = false;
-
-  // if the player uses an empty bottle on a place with water, we let him fill the bottle
-  if (subtype == WATER_FOR_BOTTLE
-      && item.get_name().substr(0, 7) == "bottle_" // TODO make a script
-      && item.get_variant() == 1) {
-
-    // TODO game->get_equipment()->found_water();
-    interaction = true;
-  }
-  else {
-    // in other cases, nothing is predefined in the engine: we call the script
-    interaction = get_map_script().event_hero_interaction_item(get_name(), item.get_name(), item.get_variant());
-  }
-
-  return interaction;
-}
-
-/**
- * @brief Notifies the script that the player is interacting with this entity.
- */
-void InteractiveEntity::call_script() {
-
-  if (subtype == NON_PLAYING_CHARACTER) {
-    get_map_script().event_npc_dialog(get_name());
-  }
-  else {
-    get_map_script().event_hero_interaction(get_name());
-  }
+  return get_map_script().event_hero_interaction_item(get_name(), item.get_name(), item.get_variant());
 }
 
 /**
@@ -344,9 +319,8 @@ void InteractiveEntity::notify_position_changed() {
   if (subtype == NON_PLAYING_CHARACTER) {
 
     if (get_sprite().get_current_animation() == "walking") {
-      PathMovement *movement = (PathMovement*) get_movement(); // FIXME: the movement may be an instance of something else now
-      int movement_direction = movement->get_current_direction();
-      get_sprite().set_current_direction(animation_directions[movement_direction]);
+      int direction4 = get_movement()->get_displayed_direction4();
+      get_sprite().set_current_direction(direction4);
     }
 
     if (get_hero().get_facing_entity() == this &&
@@ -355,25 +329,6 @@ void InteractiveEntity::notify_position_changed() {
 
       get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
     }
-  }
-}
-
-/**
- * @brief Displays the entity on the map.
- *
- * This is a redefinition of MapEntity::display_on_map() to handle the special
- * display when the entity is jumping.
- */
-void InteractiveEntity::display_on_map() {
-
-  if (subtype == NON_PLAYING_CHARACTER &&
-      get_sprite().get_current_animation() == "jumping") {
-
-    int jump_height = ((JumpMovement*) get_movement())->get_jump_height();
-    get_map().display_sprite(get_sprite(), get_x(), get_y() - jump_height);
-  }
-  else {
-    MapEntity::display_on_map();
   }
 }
 

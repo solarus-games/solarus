@@ -937,14 +937,14 @@
 8	0	64	701	welcome_sign	3	0	entities/sign	dialog#outside_world.village.welcome_sign
 8	0	144	629	rupee_house_sign	3	0	entities/sign	dialog#outside_world.village.rupee_house_sign
 8	0	152	469	waterfall_sign	3	0	entities/sign	dialog#outside_world.village.waterfall_sign
-8	0	176	480	water_for_bottle	-1	0	_none	item#bottle_1
-8	0	192	480	water_for_bottle_2	-1	0	_none	item#bottle_1
-8	0	208	480	water_for_bottle_3	-1	0	_none	item#bottle_1
-8	0	160	480	water_for_bottle_4	-1	0	_none	item#bottle_1
-8	0	160	464	water_for_bottle_5	-1	0	_none	item#bottle_1
-8	0	224	480	water_for_bottle_6	-1	0	_none	item#bottle_1
-8	0	224	464	water_for_bottle_7	-1	0	_none	item#bottle_1
-8	0	224	448	water_for_bottle_8	-1	0	_none	item#bottle_1
+8	0	184	493	water_for_bottle	-1	0	_none	item#bottle_1
+8	0	200	493	water_for_bottle_2	-1	0	_none	item#bottle_1
+8	0	216	493	water_for_bottle_3	-1	0	_none	item#bottle_1
+8	0	168	493	water_for_bottle_4	-1	0	_none	item#bottle_1
+8	0	168	477	water_for_bottle_5	-1	0	_none	item#bottle_1
+8	0	232	493	water_for_bottle_6	-1	0	_none	item#bottle_1
+8	0	232	477	water_for_bottle_7	-1	0	_none	item#bottle_1
+8	0	232	461	water_for_bottle_8	-1	0	_none	item#bottle_1
 8	0	64	237	warning_holes_sign	3	0	entities/sign	dialog#outside_world.warning_holes_sign
 8	0	728	101	flower_hole_sign	3	0	entities/sign	dialog#outside_world.flower_hole_sign
 1	0	424	109	from_B2_left_jump	3	0

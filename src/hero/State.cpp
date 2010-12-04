@@ -401,15 +401,6 @@ bool Hero::State::is_direction_locked() {
 }
 
 /**
- * @brief When a shadow is displayed separate from the tunic sprite,
- * returns the height where the tunic sprite should be displayed.
- * @return the height in pixels, or zero if there is no separate shadow in this state
- */
-int Hero::State::get_height_above_shadow() {
-  return 0;
-}
-
-/**
  * @brief Returns whether the player can control his movements in the current state.
  *
  * This function returns true if and only if the current movement of the hero is

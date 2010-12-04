@@ -106,6 +106,10 @@ class Movement {
     void set_ignore_obstacles(bool ignore_obstacles);
     void restore_default_ignore_obstacles();
 
+    // displaying moving objects
+    virtual int get_displayed_direction4();
+    virtual const Rectangle get_displayed_xy();
+
     // properties
     virtual const std::string get_property(const std::string &key);
     virtual void set_property(const std::string &key, const std::string &value);

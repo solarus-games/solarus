@@ -28,6 +28,8 @@
  * Note that complex entities such as chests, pots and doors are not included
  * in this class because they have additional properties (e.g. some content
  * or some variables saved).
+ *
+ * TOOD: reimplement NPC as a subclass of InteractiveEntity, but keep using the same parse function
  */
 class InteractiveEntity: public Detector {
 
@@ -45,18 +47,15 @@ class InteractiveEntity: public Detector {
   private:
 
     Subtype subtype;                    /**< subtpype of interactive entity */
-    std::string message_to_show;        /**< message to show when an interaction occurs, or an empty string */
-    MapScript *map_script_to_call;      /**< map script to call when an interarction occurs, or NULL */
-    ItemScript *item_script_to_call;    /**< map script to call when an interarction occurs, or NULL */
+    MessageId message_to_show;          /**< message to show when an interaction occurs, or an empty string */
+    Script *script_to_call;             /**< map script or item script to call when an interarction occurs, or NULL */
 
-    static const int animation_directions[];
-
-    void initialize_sprite(SpriteAnimationSetId sprite_name, int initial_direction);
+    void initialize_sprite(SpriteAnimationSetId &sprite_name, int initial_direction);
     void call_script();
 
   public:
 
-    InteractiveEntity(const std::string &name, Layer layer, int x, int y, Subtype subtype,
+    InteractiveEntity(Game &game, const std::string &name, Layer layer, int x, int y, Subtype subtype,
 	SpriteAnimationSetId sprite_name, int initial_direction, const std::string &behavior);
     ~InteractiveEntity();
     static CreationFunction parse;
@@ -76,7 +75,6 @@ class InteractiveEntity: public Detector {
     void notify_position_changed();
 
     void update();
-    void display_on_map();
 };
 
 #endif

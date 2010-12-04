@@ -438,6 +438,17 @@ void Map::display() {
 /**
  * @brief Displays a sprite on the map surface.
  * @param sprite the sprite to display
+ * @param xy coordinates of the sprite's origin point in the map
+ * (the size of the rectangle is ignored)
+ */
+void Map::display_sprite(Sprite &sprite, const Rectangle &xy) {
+
+  display_sprite(sprite, xy.get_x(), xy.get_y());
+}
+
+/**
+ * @brief Displays a sprite on the map surface.
+ * @param sprite the sprite to display
  * @param x x coordinate of the sprite's origin point in the map
  * @param y y coordinate of the sprite's origin point in the map
  */

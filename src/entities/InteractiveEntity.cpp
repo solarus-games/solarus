@@ -40,13 +40,13 @@
  * @param sprite_name sprite animation set of the entity, or "_none" to create no sprite
  * @param direction for a custom interactive entity: direction for which the interactions are allowed (0 to 4, or -1 for any direction),
  * for an NPC: initial direction of the NPC's sprite
- * @param behavior indicates what happens when the hero interacts with this entity:
+ * @param behavior_string indicates what happens when the hero interacts with this entity:
  * "message#XXX" to start the dialog XXX, "map" to call the map script (with an event_hero_interaction() call)
  * or "item#XXX" to call the script of item XXX  (with an event_hero_interaction() call)
  */
 InteractiveEntity::InteractiveEntity(Game &game, const std::string &name, Layer layer, int x, int y,
 				     Subtype subtype, SpriteAnimationSetId sprite_name,
-				     int direction, const std::string &behavior):
+				     int direction, const std::string &behavior_string):
   Detector(COLLISION_FACING_POINT, name, layer, x, y, 0, 0),
   subtype(subtype),
   message_to_show(""),
@@ -69,19 +69,22 @@ InteractiveEntity::InteractiveEntity(Game &game, const std::string &name, Layer 
   }
 
   // behavior
-  if (behavior == "map") {
-    script_to_call = NULL; // the script may be not available yet
+  if (behavior_string == "map") {
+    behavior = BEHAVIOR_MAP_SCRIPT;
+    script_to_call = NULL; // the map script may be not available yet
   }
-  else if (behavior.substr(0, 5) == "item#") {
-    const std::string &item_name = behavior.substr(5);
+  else if (behavior_string.substr(0, 5) == "item#") {
+    behavior = BEHAVIOR_ITEM_SCRIPT;
+    const std::string &item_name = behavior_string.substr(5);
     script_to_call = &game.get_equipment().get_item_script(item_name);
   }
-  else if (behavior.substr(0, 7) == "dialog#") {
-    message_to_show = behavior.substr(7);
+  else if (behavior_string.substr(0, 7) == "dialog#") {
+    behavior = BEHAVIOR_DIALOG;
+    message_to_show = behavior_string.substr(7);
   }
   else {
     Debug::die(StringConcat() << "Invalid behavior string for interactive entity '" << name
-	<< "': '" << behavior << "'");
+	<< "': '" << behavior_string << "'");
   }
 }
 
@@ -252,7 +255,7 @@ void InteractiveEntity::action_key_pressed() {
     }
 
     // start the behavior
-    if (message_to_show.size() > 0) {
+    if (behavior == BEHAVIOR_DIALOG) {
       get_dialog_box().start_dialog(message_to_show);
     }
     else {
@@ -266,7 +269,7 @@ void InteractiveEntity::action_key_pressed() {
  */
 void InteractiveEntity::call_script() {
 
-  if (script_to_call == NULL) { // first time
+  if (behavior == BEHAVIOR_MAP_SCRIPT && script_to_call == NULL) { // first time
     script_to_call = &get_map_script();
   }
 
@@ -289,7 +292,15 @@ void InteractiveEntity::call_script() {
  */
 bool InteractiveEntity::interaction_with_inventory_item(InventoryItem &item) {
 
-  return get_map_script().event_hero_interaction_item(get_name(), item.get_name(), item.get_variant());
+  bool result;
+  Script *script = behavior == BEHAVIOR_ITEM_SCRIPT ? script_to_call : &get_map_script();
+  if (subtype == NON_PLAYING_CHARACTER) {
+    result = script->event_npc_dialog_item(get_name(), item.get_name(), item.get_variant());
+  }
+  else {
+    result = script->event_hero_interaction_item(get_name(), item.get_name(), item.get_variant());
+  }
+  return result;
 }
 
 /**

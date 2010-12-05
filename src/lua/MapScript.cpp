@@ -239,27 +239,6 @@ void MapScript::event_hero_on_sensor(const std::string &sensor_name) {
 }
 
 /**
- * @brief Notifies the script that the hero is using an inventory item
- * in front of an interactive entity.
- *
- * This event is called only for inventory items that want to use an interactive entity
- * (e.g. a key that is being used in front of a door).
- *
- * @param entity_name name of the interactive entity the hero is facing
- * @param item_name name of the inventory item that is being used
- * @param variant variant of this inventory item
- * @return true if the script has handled the event,
- * i.e. if the function event_hero_interaction_item exists in the script and returned true
- */
-bool MapScript::event_hero_interaction_item(const std::string &entity_name, const std::string &item_name, int variant) {
-
-  bool interaction = false;
-  notify_script("event_hero_interaction_item", "sss b", entity_name.c_str(), item_name.c_str(), variant, &interaction);
-
-  return interaction;
-}
-
-/**
  * @brief Notifies the script that an NPC has just finished its movement.
  * @param npc_name name of the NPC
  */

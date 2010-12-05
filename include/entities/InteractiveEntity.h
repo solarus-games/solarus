@@ -39,14 +39,23 @@ class InteractiveEntity: public Detector {
      * @brief The different kinds of interactions.
      */
     enum Subtype {
-
       CUSTOM,                           /**< no predetermined behavior: just displays the message specified or calls a script */
       NON_PLAYING_CHARACTER             /**< same thing with additional specific NPC stuff */
+    };
+
+    /**
+     * @brief Type of action done when an interaction occurs.
+     */
+    enum Behavior {
+       BEHAVIOR_DIALOG,                 /**< start a dialog */
+       BEHAVIOR_MAP_SCRIPT,             /**< call the map script */
+       BEHAVIOR_ITEM_SCRIPT             /**< call an item script */
     };
 
   private:
 
     Subtype subtype;                    /**< subtpype of interactive entity */
+    Behavior behavior;                  /**< type of action done when the player interacts with this entity */
     MessageId message_to_show;          /**< message to show when an interaction occurs, or an empty string */
     Script *script_to_call;             /**< map script or item script to call when an interarction occurs, or NULL */
 
@@ -56,7 +65,7 @@ class InteractiveEntity: public Detector {
   public:
 
     InteractiveEntity(Game &game, const std::string &name, Layer layer, int x, int y, Subtype subtype,
-	SpriteAnimationSetId sprite_name, int initial_direction, const std::string &behavior);
+	SpriteAnimationSetId sprite_name, int initial_direction, const std::string &behavior_string);
     ~InteractiveEntity();
     static CreationFunction parse;
 

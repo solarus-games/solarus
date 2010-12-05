@@ -237,7 +237,9 @@ class Script {
     void event_dialog_started(const MessageId &message_id);
     void event_dialog_finished(const MessageId &first_message_id, int answer);
     void event_hero_interaction(const std::string &entity_name);
+    bool event_hero_interaction_item(const std::string &entity_name, const std::string &item_name, int variant);
     void event_npc_dialog(const std::string &npc_name);
+    bool event_npc_dialog_item(const std::string &npc_name, const std::string &item_name, int variant);
 };
 
 #endif

@@ -1,35 +1,5 @@
 -- This script handles all bottles (each bottle script includes it)
 
--- TODO missing features in Lua API:
--- - create a pickable item on the map:
---   sol.map.create_pickable_item(item_name, x, y, layer) + falling height?
--- - detect the interaction between the item and an interactive entity
---   - when pressing the action key in front of the item:
---     for now, only the map script is notified (with event_hero_interaction)
---     solution 1: the CUSTOM subtype of InteractiveEntity can have a
---     paramater that tells which script should be notified
---     (by default, the map script)
---     solution 2 (much better): add a subtype of InteractiveEntity:
---     INTERACTION_WITH_ITEM with a parameter item_name (or just use CUSTOM!)
---   - when using the item explicitely: for now, only event_use() is called
---     and we ignore the existence of an interactive item
---     also notify the facing entity from C++ so that
---     event_interaction_with_item() is triggered
---   remove subtype WATER_FOR_BOTTLE from InteractiveEntity
---   parameters of InteractiveEntity:
---   - subtype: CUSTOM or NPC (NPCs are very specific, we keep them as interactive entities because they use the same parameters)
---   - name
---   - direction (0 to 4, -1 means any): the event is triggered only if the hero interacts with this direction of the entity
---   - sprite (if any)
---   - action_icon?
---   - behavior (when pressing the space key): "message#XXX" or "map" or "item#XXX" (no spaces), maybe more one day
---     - show a message
---     - call the map script (event_hero_interaction)
---     - call an item script (event_hero_interaction?)
---   (- info/additional_info/description/user_data: an arbitrary string to forward to the script notified
---     (may describe the entity better than just its name), for instance "water_for_bottle"
---   => need to replace message_id by behavior (more general) and to add user_data)
-
 function event_use()
 
   variant = sol.item.get_variant()
@@ -37,10 +7,6 @@ function event_use()
   -- TODO switch
   -- empty bottle
   if variant == 1 then
-
-    -- TODO interact with the facing entity if any
-    -- sol.map.hero_interact...
-    -- if !interaction_with_facing_entity then
     sol.main.play_sound("wrong")
     sol.item.set_finished()
 
@@ -83,9 +49,6 @@ function event_dialog_finished(first_message_id, answer)
       sol.item.set_variant(1) -- make the bottle empty
       sol.main.play_sound("item_in_water")
 
-      -- TODO notify the facing entity (if any) of the interaction
-      -- facing_entity->interaction_with_inventory_item(*this);
-
     end
     sol.item.set_finished()
 
@@ -99,6 +62,71 @@ function event_dialog_finished(first_message_id, answer)
       sol.item.set_variant(1) -- make the bottle empty
     end
     sol.item.set_finished()
+
+  elseif first_message_id == "found_water" then
+
+    if answer == 0 then
+      sol.map.treasure_give(get_first_empty_bottle(), 2, -1)
+    end
+  
   end
 end
 
+function event_hero_interaction(entity_name)
+
+  if string.match(entity_name, "^water_for_bottle") then
+    -- the hero interacts with a place where he can get some water
+    if has_bottle() then
+      if has_empty_bottle() then
+        sol.map.dialog_start("found_water")
+      else
+        sol.map.dialog_start("found_water.no_empty_bottle")
+      end
+    else  
+      sol.map.dialog_start("found_water.no_bottle")
+    end
+  end
+end
+
+function event_hero_interaction_item(entity_name, item_name, variant)
+
+  if string.match(item_name, "^bottle") and string.match(entity_name, "^water_for_bottle") then
+    -- the hero interacts with a place where he can get some water:
+    -- no matter whether he pressed the action key or the item key of a bottle, we do the same thing
+    event_hero_interaction(entity_name)
+    return true
+  end
+
+  return false
+end
+
+function has_bottle()
+
+  return sol.game.has_item("bottle_1")
+    or sol.game.has_item("bottle_2")
+    or sol.game.has_item("bottle_3")
+    or sol.game.has_item("bottle_4")
+end
+
+function has_empty_bottle()
+
+  return get_first_empty_bottle() ~= ""
+end
+
+function get_first_empty_bottle()
+
+  result = ""
+
+  if sol.game.get_item("bottle_1") == 1 then
+    result = "bottle_1"
+  elseif sol.game.get_item("bottle_2") == 1 then
+    result = "bottle_2"
+  elseif sol.game.get_item("bottle_3") == 1 then
+    result = "bottle_3"
+  elseif sol.game.get_item("bottle_4") == 1 then
+    result = "bottle_4"
+  end
+
+  return result
+
+end

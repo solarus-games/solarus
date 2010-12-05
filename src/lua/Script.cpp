@@ -585,7 +585,7 @@ bool Script::notify_script(const std::string &function_name, const std::string &
 	case 'i':	lua_pushinteger(context, va_arg(args, int));	break;
 	case 'b':	lua_pushboolean(context, va_arg(args, int));	break; 		// cstdarg refuses bool
 	case 's':	lua_pushstring(context, va_arg(args, const char*));	break;	// and std::string
-	case ' ':	end_arguments = true;
+	case ' ':	end_arguments = true;	break;
 	default:	Debug::die(StringConcat() << "Invalid character '" << format[i] << "' in format string '" << format);
       }
 
@@ -821,6 +821,24 @@ void Script::event_hero_interaction(const std::string &entity_name) {
 }
 
 /**
+ * @brief Notifies the script that the hero is using an inventory item
+ * in front of an interactive entity.
+ *
+ * @param entity_name name of the interactive entity the hero is facing
+ * @param item_name name of the inventory item that is being used
+ * @param variant variant of this inventory item
+ * @return true if the script has handled the event,
+ * i.e. if the function event_hero_interaction_item exists in the script and returned true
+ */
+bool Script::event_hero_interaction_item(const std::string &entity_name, const std::string &item_name, int variant) {
+
+  int interaction = 0;
+  notify_script("event_hero_interaction_item", "ssi b", entity_name.c_str(), item_name.c_str(), variant, &interaction);
+
+  return interaction != 0;
+}
+
+/**
  * @brief Notifies the script that the player has just pressed the action
  * key in front an NPC.
  * @param npc_name name of the NPC
@@ -828,5 +846,23 @@ void Script::event_hero_interaction(const std::string &entity_name) {
 void Script::event_npc_dialog(const std::string &npc_name) {
 
   notify_script("event_npc_dialog", "s", npc_name.c_str());
+}
+
+/**
+ * @brief Notifies the script that the hero is using an inventory item
+ * in front of an NPC.
+ *
+ * @param npc_name name of the NPC the hero is facing
+ * @param item_name name of the inventory item that is being used
+ * @param variant variant of this inventory item
+ * @return true if the script has handled the event,
+ * i.e. if the function event_npc_dialog_item exists in the script and returned true
+ */
+bool Script::event_npc_dialog_item(const std::string &entity_name, const std::string &item_name, int variant) {
+
+  int interaction = 0;
+  notify_script("event_npc_dialog_item", "ssi b", entity_name.c_str(), item_name.c_str(), variant, &interaction);
+
+  return interaction != 0;
 }
 

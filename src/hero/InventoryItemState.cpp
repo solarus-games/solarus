@@ -45,10 +45,16 @@ void Hero::InventoryItemState::start(State *previous_state) {
 
   State::start(previous_state);
 
-  item.start();
+  bool interaction = false;
   Detector *facing_entity = hero.get_facing_entity();
   if (facing_entity != NULL) {
-    facing_entity->interaction_with_inventory_item(item);
+    // maybe the facing entity (e.g. an NPC) accepts an interaction with this particular item
+    interaction = facing_entity->interaction_with_inventory_item(item);
+  }
+
+  if (!interaction) {
+    // no interaction occured with the facing entity: use the item normally
+    item.start();
   }
 }
 

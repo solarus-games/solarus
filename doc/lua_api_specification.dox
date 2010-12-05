@@ -470,16 +470,24 @@ called when the victory animation of the hero is finished
 - <tt>event_hero_on_sensor(sensor_name)</tt> (triggered for the map script):
 called when the hero walks on a sensor
 
-- <tt>event_hero_interaction(entity_name)</tt> (triggered for the map script):
+- <tt>event_hero_interaction(entity_name)</tt>
+(triggered for the map script or an item script, depending on the interactive entity):
 called when the hero interacts with an interactive entity (other than an NPC)
 by pressing the action key when there is no predetermined dialog to show
 
-- <tt>event_hero_interaction_item(entity_name, item_name, variant)</tt> (triggered for the map script):
+- <tt>event_hero_interaction_item(entity_name, item_name, variant)</tt>
+(triggered for the map script or the item script, depending on the interactive entity):
 called when the hero interacts with an interactive entity (other than an NPC)
 by using an inventory item; returns true if an interaction actually happened
 
-- <tt>event_npc_dialog(npc_name)</tt> (triggered for the map script):
+- <tt>event_npc_dialog(npc_name)</tt>
+(triggered for the map script or an item script, depending on the NPC):
 called when the player talks to an NPC without predetermined dialog
+
+- <tt>event_npc_dialog_item(npc_name)</tt>
+(triggered for the map script or an item script, depending on the NPC):
+called when the player uses an inventory item in front of NPC;
+returns true if an interaction actually happened
 
 - <tt>event_npc_movement_finished(npc_name)</tt> (triggered for the map script):
 called when an NPC has finished its movement started by the script

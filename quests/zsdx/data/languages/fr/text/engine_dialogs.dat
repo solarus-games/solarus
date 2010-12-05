@@ -230,7 +230,7 @@ next = _item_description.hookshot.1.1
 #       |--------------------|
 line1 = "au Grappin."
 
-[_item_description.bootle_1.1]
+[_item_description.bottle_1.1]
 # Flacon Magique vide / Empty bottle
 #       |--------------------|
 icon = 7
@@ -239,7 +239,7 @@ line2 = "peut contenir di-"
 line3 = "verses substances..."
 skip = all
 
-[_item_description.bootle_1.2]
+[_item_description.bottle_1.2]
 # Eau dans Flacon / Water in Bottle
 #       |--------------------|
 icon = 8
@@ -302,7 +302,7 @@ next = _item_description.bottle_1.6.2
 line1 = "récupérer des"
 line2 = "Coeurs !"
 
-[_item_description.bootle_2.1]
+[_item_description.bottle_2.1]
 # Flacon Magique vide / Empty bottle
 #       |--------------------|
 icon = 7
@@ -311,7 +311,7 @@ line2 = "peut contenir di-"
 line3 = "verses substances..."
 skip = all
 
-[_item_description.bootle_2.2]
+[_item_description.bottle_2.2]
 # Eau dans Flacon / Water in Bottle
 #       |--------------------|
 icon = 8
@@ -374,7 +374,7 @@ next = _item_description.bottle_2.6.2
 line1 = "récupérer des"
 line2 = "Coeurs !"
 
-[_item_description.bootle_3.1]
+[_item_description.bottle_3.1]
 # Flacon Magique vide / Empty bottle
 #       |--------------------|
 icon = 7
@@ -383,7 +383,7 @@ line2 = "peut contenir di-"
 line3 = "verses substances..."
 skip = all
 
-[_item_description.bootle_3.2]
+[_item_description.bottle_3.2]
 # Eau dans Flacon / Water in Bottle
 #       |--------------------|
 icon = 8
@@ -446,7 +446,7 @@ next = _item_description.bottle_3.6.2
 line1 = "récupérer des"
 line2 = "Coeurs !"
 
-[_item_description.bootle_4.1]
+[_item_description.bottle_4.1]
 # Flacon Magique vide / Empty bottle
 #       |--------------------|
 icon = 7
@@ -455,7 +455,7 @@ line2 = "peut contenir di-"
 line3 = "verses substances..."
 skip = all
 
-[_item_description.bootle_4.2]
+[_item_description.bottle_4.2]
 # Eau dans Flacon / Water in Bottle
 #       |--------------------|
 icon = 8
@@ -2072,46 +2072,4 @@ line1 = "C'est un interrupteur"
 line2 = "de cristal. Frappe-le"
 line3 = "avec quelque chose..."
 skip = all
-
-# TODO: make the messages below quest-specific (call them from scripts)
-
-[found_water]
-# Lorsqu'on trouve de l'eau et qu'on a un Flacon vide
-#       |--------------------|
-icon = 8
-line1 = "Veux-tu mettre de"
-line2 = "l'eau dans ton"
-next = found_water.2
-
-[found_water.2]
-#       |--------------------|
-line1 = "Flacon Magique ?"
-line2 = "Oui"
-line3 = "Non"
-question = true
-
-[found_water.no_bottle]
-# Lorsqu'on trouve de l'eau mais qu'on n'a aucun Flacon
-#       |--------------------|
-line1 = "Il y a de l'eau ici,"
-line2 = "mais tu n'as pas"
-line3 = "de récipient"
-next = found_water.no_bottle.2
-
-[found_water.no_bottle.2]
-#       |--------------------|
-line1 = "pour la stocker..."
-
-[found_water.no_empty_bottle]
-# Lorsqu'on trouve de l'eau et qu'on a au moins un Flacon, mais pas de Flacon vide
-#       |--------------------|
-icon = 8
-line1 = "Il y a de l'eau ici,"
-line2 = "mais il te faut"
-line3 = "un Flacon vide"
-next = found_water.no_empty_bottle.2
-
-[_found_water.no_empty_bottle.2]
-#       |--------------------|
-line1 = "pour la stocker..."
 

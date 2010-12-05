@@ -4,6 +4,7 @@
 
 monkey_sprite = nil
 monkey_jumps = 0
+monkey_jump_speed = 48
 
 -- Function called when the map starts.
 -- The NPCs are initialized.
@@ -70,6 +71,7 @@ function event_dialog_finished(first_message_id, answer)
       sol.main.play_sound("monkey")
       m = sol.main.jump_movement_create(1, 24)
       sol.main.movement_set_property(m, "ignore_obstacles", true)
+      sol.main.movement_set_property(m, "speed", monkey_jump_speed)
       sol.map.npc_start_movement("monkey", m)
       sol.main.sprite_set_animation(monkey_sprite, "jumping")
       monkey_jumps = 1
@@ -91,6 +93,7 @@ function event_npc_movement_finished(npc_name)
       sol.main.play_sound("monkey")
       m = sol.main.jump_movement_create(1, 32)
       sol.main.movement_set_property(m, "ignore_obstacles", true)
+      sol.main.movement_set_property(m, "speed", monkey_jump_speed)
       sol.map.npc_start_movement("monkey", m)
       sol.main.sprite_set_animation(monkey_sprite, "jumping")
       monkey_jumps = 3
@@ -107,6 +110,7 @@ function monkey_timer()
    sol.main.play_sound("monkey")
    m = sol.main.jump_movement_create(2, 56)
    sol.main.movement_set_property(m, "ignore_obstacles", true)
+   sol.main.movement_set_property(m, "speed", monkey_jump_speed)
    sol.map.npc_start_movement("monkey", m)
    sol.main.sprite_set_animation(monkey_sprite, "jumping")
    monkey_jumps = 2

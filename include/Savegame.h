@@ -103,6 +103,7 @@ class Savegame {
       STARTING_MAP			= 0,		/**< when starting the game, this map is loaded */
       PAUSE_LAST_SUBMENU		= 1,		/**< last submenu shown in the pause menu */
       INVENTORY_LAST_ITEM_INDEX		= 2,		/**< index of the last item selected in the inventory */
+      EQUIPMENT_INITIALIZED		= 3,		/**< 1 if the initial items of the equipment have been set */
       /**
        * @}
        */

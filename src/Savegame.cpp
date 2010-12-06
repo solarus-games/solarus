@@ -116,9 +116,6 @@ void Savegame::set_initial_values() {
       "No starting point defined in quest.dat. Please set the value starting_point to the name of the "
       "destination point where the hero should be placed on the initial map.");
 
-  // the equipment may give some initial items
-  equipment.set_initial_items();
-
   set_integer(STARTING_MAP, starting_map_id);
   set_string(STARTING_POINT, starting_destination_point_name);
   set_integer(MAX_LIFE, max_life);

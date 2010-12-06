@@ -94,6 +94,13 @@ void Equipment::set_game(Game &game) {
     ItemProperties *properties = it->second;
     item_scripts[properties->get_name()] = new ItemScript(game, *properties);
   }
+
+  // if this is a new game, give the initial items
+  // (we could not do this before because giving items is a dynamic, in-game operation)
+  if (!game.get_savegame().get_integer(Savegame::EQUIPMENT_INITIALIZED)) {
+    set_initial_items();
+    game.get_savegame().set_integer(Savegame::EQUIPMENT_INITIALIZED, 1);
+  }
 }
 
 /**

@@ -882,11 +882,18 @@ void Equipment::set_ability(const std::string &ability_name, int level) {
 }
 
 /**
- * @brief This function is called when the player used an ability.
+ * @brief This function is called when the player has just used an ability.
+ *
+ * All item scripts are notified.
+ *
  * @param ability_name the ability used
  */
-void Equipment::use_ability(const std::string &ability_name) {
-  // TODO notify the script
+void Equipment::notify_ability_used(const std::string &ability_name) {
+
+  std::map<std::string, ItemScript*>::iterator it;
+  for (it = item_scripts.begin(); it != item_scripts.end(); it++) {
+    it->second->event_ability_used(ability_name);
+  }
 }
 
 // dungeons
@@ -1097,13 +1104,6 @@ void Equipment::add_item(const std::string &item_name, int variant) {
 	add_item_amount(item_counter_changed, amount);
       }
     }
-  }
-
-  // TODO notify the script instead of this quest-specific code
-  if (item_name == "tunic"
-      || item_name == "sword"
-      || item_name == "shield") {
-    set_ability(item_name, variant);
   }
 }
 

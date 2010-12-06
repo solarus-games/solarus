@@ -46,6 +46,7 @@ void Hero::SwordSwingingState::start(State *previous_state) {
 
   get_sprites().play_sword_sound();
   get_sprites().set_animation_sword();
+  get_equipment().notify_ability_used("sword");
 }
 
 /**

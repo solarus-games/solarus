@@ -49,12 +49,17 @@ void Hero::HurtState::start(State *previous_state) {
 
   State::start(previous_state);
 
-  Sound::play("hero_hurt");
-  life_points = std::max(1, life_points / (get_equipment().get_ability("tunic") + 1));
-  get_equipment().remove_life(life_points);
+  Equipment &equipment = get_equipment();
 
-  if (magic_points > 0 && get_equipment().get_magic() > 0) {
-    get_equipment().remove_magic(magic_points);
+  Sound::play("hero_hurt");
+  life_points = std::max(1, life_points / (equipment.get_ability("tunic") + 1));
+  equipment.remove_life(life_points);
+  if (equipment.has_ability("tunic")) {
+    equipment.notify_ability_used("tunic");
+  }
+
+  if (magic_points > 0 && equipment.get_magic() > 0) {
+    equipment.remove_magic(magic_points);
     Sound::play("magic_bar");
   }
   get_sprites().set_animation_hurt();

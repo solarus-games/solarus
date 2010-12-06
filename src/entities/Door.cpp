@@ -248,8 +248,8 @@ bool Door::can_open() {
   Equipment &equipment = get_equipment();
 
   return (requires_small_key() && equipment.has_small_key())
-    || (subtype == BIG_KEY && equipment.has_item("big_key"))
-    || (subtype == BOSS_KEY && equipment.has_item("boss_key"));
+    || (subtype == BIG_KEY && equipment.has_ability("dungeon_open_big_locks"))
+    || (subtype == BOSS_KEY && equipment.has_ability("dungeon_open_boss_lock"));
 }
 
 /**
@@ -321,6 +321,12 @@ void Door::action_key_pressed() {
 
       if (requires_small_key()) {
 	get_equipment().remove_small_key();
+      }
+      else if (subtype == BIG_KEY) {
+	get_equipment().notify_ability_used("dungeon_open_big_locks");
+      }
+      else if (subtype == BOSS_KEY) {
+	get_equipment().notify_ability_used("dungeon_open_boss_lock");
       }
     }
     else {

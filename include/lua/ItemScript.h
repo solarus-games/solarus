@@ -61,6 +61,7 @@ class ItemScript: public Script {
     void event_amount_changed(int amount);
     void event_variant_changed(int variant);
     void event_use(InventoryItem &inventory_item);
+    void event_ability_used(const std::string ability_name);
 
     PickableItem* get_pickable_item();
     InventoryItem* get_inventory_item();

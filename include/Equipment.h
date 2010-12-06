@@ -125,7 +125,7 @@ class Equipment {
     bool has_ability(const std::string &ability_name, int level = 1);
     int get_ability(const std::string &ability_name);
     void set_ability(const std::string &ability_name, int level);
-    void use_ability(const std::string &ability_name);
+    void notify_ability_used(const std::string &ability_name);
 
     // dungeons
     int get_current_dungeon();

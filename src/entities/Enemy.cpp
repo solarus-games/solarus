@@ -682,6 +682,8 @@ void Enemy::attack_stopped_by_hero_shield() {
   uint32_t now = System::now();
   can_attack = false;
   can_attack_again_date = now + 1000;
+
+  get_equipment().notify_ability_used("shield");
 }
 
 /**

@@ -1302,7 +1302,7 @@ next = smith_cave.without_sword.2
 #       |-----------------------|
 line1 = "Je te la vends pour la"
 line2 = "modique somme de 80"
-line3 = "rubis seulement !"
+line3 = "rubis !"
 next = smith_cave.without_sword.3
 
 [smith_cave.without_sword.3]
@@ -1511,49 +1511,49 @@ line3 = "Triforce."
 next = sahasrahla_house.beginning.6
 
 
-[sahasrahla_house.beginning.5]
+[sahasrahla_house.beginning.6]
 #       |-----------------------|
 line1 = "Qui a pu faire cela ?"
 line2 = "Probablement Ganondorf"
 line3 = "et ses sbires..."
-next = sahasrahla_house.beginning.6
-
-[sahasrahla_house.beginning.6]
-#       |-----------------------|
-line1 = "Le Sceau des Sept Sages"
-line2 = "a été fragilisé à la"
-line3 = "suite de la mort de"
 next = sahasrahla_house.beginning.7
 
 [sahasrahla_house.beginning.7]
 #       |-----------------------|
+line1 = "Le Sceau des Sept Sages"
+line2 = "a été fragilisé à la"
+line3 = "suite de la mort de"
+next = sahasrahla_house.beginning.8
+
+[sahasrahla_house.beginning.8]
+#       |-----------------------|
 line1 = "notre pauvre Roi, et il"
 line2 = "est possible que Ganon"
 line3 = "soit parvenu à fuir de"
-next = sahasrahla_house.beginning.8
+next = sahasrahla_house.beginning.9
 
 [sahasrahla_house.beginning.8]
 #       |-----------------------|
 line1 = "son Monde des Ténèbres."
 line2 = "Il ne faut pas le"
 line3 = "laisser s'emparer d'un"
-next = sahasrahla_house.beginning.9
-
-[sahasrahla_house.beginning.9]
-#       |-----------------------|
-line1 = "tel pouvoir !"
-line2 = "Je sens le courage en"
-line3 = "toi, $v."
 next = sahasrahla_house.beginning.10
 
 [sahasrahla_house.beginning.10]
 #       |-----------------------|
-line1 = "Te sens-tu capable de"
-line2 = "partir à la recherche"
-line3 = "des enfants et de"
+line1 = "tel pouvoir !"
+line2 = "Je sens le courage en"
+line3 = "toi, $v."
 next = sahasrahla_house.beginning.11
 
 [sahasrahla_house.beginning.11]
+#       |-----------------------|
+line1 = "Te sens-tu capable de"
+line2 = "partir à la recherche"
+line3 = "des enfants et de"
+next = sahasrahla_house.beginning.12
+
+[sahasrahla_house.beginning.12]
 #       |-----------------------|
 line1 = "protéger la Triforce ?"
 line2 = "C'est d'accord"

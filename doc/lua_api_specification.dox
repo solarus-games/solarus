@@ -110,7 +110,7 @@ creates a movement of type PathMovement that will be accessible from this script
 - <tt>sol.main.random_path_movement_create(path, speed)</tt>:
 creates a movement of type RandomPathMovement that will be accessible from this script
 
-- <tt>sol.main.jump_movement_create(path, speed)</tt>:
+- <tt>sol.main.jump_movement_create(direction, length)</tt>:
 creates a movement of type JumpMovement that will be accessible from this script
 
 - <tt>sol.main.movement_get_property(movement, key)</tt>:
@@ -515,7 +515,7 @@ called when the player is obtaining a treasure corresponding to the item control
 called when the player has finished brandishing a treasure corresponding to the item controlled by this script
 
 - <tt>event_variant_changed</tt> (triggered for an item script):
-called when the possession state of the item controlled by this script has just changed
+called when the saved possession state of the item controlled by this script has just changed
 
 - <tt>event_amount_changed</tt> (triggered for an item script):
 called when the amount of the item controlled by this script has just changed

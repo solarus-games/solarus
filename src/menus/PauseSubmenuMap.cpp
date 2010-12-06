@@ -109,11 +109,11 @@ PauseSubmenuMap::PauseSubmenuMap(PauseMenu &pause_menu, Game &game):
     dungeon_map_img->set_transparency_color(Color::get_black());
     load_dungeon_map_image();
 
-    if (equipment.has_ability("dungeon_see_minimap_rooms")) {
-      equipment.notify_ability_used("dungeon_see_minimap_rooms");
+    if (equipment.has_ability("see_dungeon_minimap_rooms")) {
+      equipment.notify_ability_used("see_dungeon_minimap_rooms");
     }
-    if (equipment.has_ability("dungeon_see_minimap_elements")) {
-      equipment.notify_ability_used("dungeon_see_minimap_elements");
+    if (equipment.has_ability("see_dungeon_minimap_elements")) {
+      equipment.notify_ability_used("see_dungeon_minimap_elements");
     }
   }
 

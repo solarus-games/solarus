@@ -260,13 +260,16 @@ can_be_assigned = true
 nb_variants = 6
 
 [tunic]
+savegame_variable = 1128
 nb_variants = 3
 initial_variant = 1
 
 [sword]
+savegame_variable = 1129
 nb_variants = 4
 
 [shield]
+savegame_variable = 1130
 nb_variants = 3
 
 [world_map]

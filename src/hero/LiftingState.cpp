@@ -29,7 +29,7 @@
  * @param item_to_lift the item to lift
  */
 Hero::LiftingState::LiftingState(Hero &hero, DestructibleItem &item_to_lift):
-  State(hero), item_to_lift(item_to_lift) {
+  State(hero), item_to_lift(item_to_lift), lifted_item(NULL) {
 
 }
 
@@ -94,11 +94,24 @@ void Hero::LiftingState::update() {
 
   lifted_item->update();
 
-  if (!lifted_item->is_being_lifted()) { // the item has finished being lifted
+  if (!suspended && !lifted_item->is_being_lifted()) { // the item has finished being lifted
 
     CarriedItem *carried_item = lifted_item;
     lifted_item = NULL; // we do not take care of the carried item from this state anymore
     hero.set_state(new CarryingState(hero, carried_item));
+  }
+}
+
+/**
+ * @brief Notifies this state that the game was just suspended or resumed.
+ * @param suspended true if the game is suspended
+ */
+void Hero::LiftingState::set_suspended(bool suspended) {
+
+  State::set_suspended(suspended);
+
+  if (lifted_item != NULL) {
+    lifted_item->set_suspended(suspended);
   }
 }
 

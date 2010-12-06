@@ -63,6 +63,7 @@ Bugs :
 - eau froide pour faire fondre la glace : trouver autre chose
 - utiliser une bouteille ayant une fée : relâcher la fée directement au lieu de mettre un message (on l'active souvent par erreur)
 - Remplacer les cast
+- Quand on met le jeu en pause, les timers des gardes verts continuent
 
 
 A venir :

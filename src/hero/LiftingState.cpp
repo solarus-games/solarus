@@ -57,6 +57,8 @@ void Hero::LiftingState::start(State *previous_state) {
   get_sprites().set_animation_lifting();
   get_sprites().set_lifted_item(lifted_item);
   hero.set_facing_entity(NULL);
+
+  get_equipment().notify_ability_used("lift");
 }
 
 /**

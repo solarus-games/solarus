@@ -110,6 +110,16 @@ function event_variant_changed(variant)
   end
 end
 
+function event_ability_used(ability_name)
+
+  if ability_name == "get_back_from_death" then
+    -- the hero was just saved by a fairy:
+    -- let's find a bottle with a fairy and make it empty
+    bottle_name = get_first_bottle_with(6)
+    sol.game.set_item(bottle_name, 1)
+  end
+end
+
 function has_bottle()
 
   return sol.game.has_item("bottle_1")

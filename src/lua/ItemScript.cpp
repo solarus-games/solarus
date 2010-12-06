@@ -182,3 +182,12 @@ void ItemScript::event_use(InventoryItem &inventory_item) {
   this->inventory_item = NULL;
 }
 
+/**
+ * @brief Notifies the script that the player has just used an ability from his equipment.
+ * @param ability_name name of the ability
+ */
+void ItemScript::event_ability_used(const std::string ability_name) {
+
+  notify_script("event_ability_used", "s", ability_name.c_str());
+}
+

@@ -67,10 +67,12 @@ PauseSubmenuMap::PauseSubmenuMap(PauseMenu &pause_menu, Game &game):
       world_minimap_visible_y = 0;
     }
     moving_visible_y = 0;
-
     hero_position.add_xy(48 - 8, 59 - 6);
-
     hero_point_sprite = NULL;
+
+    if (equipment.has_ability("see_outside_world_minimap")) {
+      equipment.notify_ability_used("see_outside_world_minimap");
+    }
   }
 
   // dungeon
@@ -106,6 +108,13 @@ PauseSubmenuMap::PauseSubmenuMap(PauseMenu &pause_menu, Game &game):
     dungeon_map_img = new Surface(123, 119);
     dungeon_map_img->set_transparency_color(Color::get_black());
     load_dungeon_map_image();
+
+    if (equipment.has_ability("dungeon_see_minimap_rooms")) {
+      equipment.notify_ability_used("dungeon_see_minimap_rooms");
+    }
+    if (equipment.has_ability("dungeon_see_minimap_elements")) {
+      equipment.notify_ability_used("dungeon_see_minimap_elements");
+    }
   }
 
   hero_head_sprite = new Sprite("menus/hero_head");

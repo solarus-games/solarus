@@ -32,3 +32,4 @@ Hero::SwimmingState::~SwimmingState() {
 
 }
 
+// TODO in start(): equipment.notify_ability_used("swim");

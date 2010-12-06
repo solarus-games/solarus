@@ -493,6 +493,9 @@ void Equipment::set_item_variant(const std::string &item_name, int variant) {
       set_item_assigned(1, "");
     }
   }
+
+  // notify the script
+  get_item_script(item_name).event_variant_changed(variant);
 }
 
 /**

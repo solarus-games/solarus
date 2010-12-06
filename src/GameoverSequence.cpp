@@ -122,6 +122,7 @@ void GameoverSequence::update() {
 	fairy_y = hero_dead_y + 21;
 	fairy_movement = new TargetMovement(240, 22, 96);
 	fairy_movement->set_xy(fairy_x, fairy_y);
+	// TODO notify the equipment that we just used the ability
       }
       else {
 	state = MENU;

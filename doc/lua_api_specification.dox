@@ -514,6 +514,9 @@ called when the player is obtaining a treasure corresponding to the item control
 - <tt>event_obtained</tt> (triggered for an item script):
 called when the player has finished brandishing a treasure corresponding to the item controlled by this script
 
+- <tt>event_variant_changed</tt> (triggered for an item script):
+called when the possession state of the item controlled by this script has just changed
+
 - <tt>event_amount_changed</tt> (triggered for an item script):
 called when the amount of the item controlled by this script has just changed
 

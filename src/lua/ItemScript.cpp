@@ -152,6 +152,15 @@ void ItemScript::event_obtained(const Treasure &treasure) {
 }
 
 /**
+ * @brief Notifies the script that the possession state of the item has just changed.
+ * @param variant the new possession state
+ */
+void ItemScript::event_variant_changed(int variant) {
+
+  notify_script("event_variant_changed", "ii", variant);
+}
+
+/**
  * @brief Notifies the script that the amount of this item has just changed.
  * @param amount the new amount
  */

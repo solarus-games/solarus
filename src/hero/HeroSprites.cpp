@@ -54,9 +54,9 @@ const int HeroSprites::animation_directions[][2] = {
  * @brief String constants corresponding to the sprites of the tunics.
  */
 const SpriteAnimationSetId HeroSprites::tunic_sprite_ids[] = {
-  "hero/tunic0", // green tunic
-  "hero/tunic1", // blue tunic
-  "hero/tunic2", // red tunic
+  "hero/tunic1", // green tunic
+  "hero/tunic2", // blue tunic
+  "hero/tunic3", // red tunic
 };
 
 /**

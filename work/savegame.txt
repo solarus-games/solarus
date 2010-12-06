@@ -44,7 +44,11 @@ integers (above 1024):
 	ice key
 	glove
 	fire stones
-1127	bottle 4	
+1127	bottle 4
+
+1128	tunic
+1129	sword
+1130	shield
 
 booleans:
 

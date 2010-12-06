@@ -41,7 +41,7 @@ GameoverSequence::GameoverSequence(Game &game, int hero_direction):
   red_screen_color = Color(224, 32, 32);
 
   std::ostringstream oss;
-  oss << "hero/tunic" << game.get_equipment().get_ability("tunic") - 1;
+  oss << "hero/tunic" << game.get_equipment().get_ability("tunic");
   hero_dead_sprite = new Sprite(oss.str());
   hero_dead_sprite->set_current_animation("hurt");
   hero_dead_sprite->set_current_direction(hero_direction);

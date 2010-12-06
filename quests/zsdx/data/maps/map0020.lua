@@ -98,7 +98,7 @@ function event_dialog_finished(message_id, answer)
     give_boomerang_back()
     x,y = sol.map.npc_get_position("tom")
     if y ~= tom_initial_y then
-      m = sol.main.path_movement_create("2222220000002222222222222222", 32)
+      m = sol.main.path_movement_create("2222220000002222222222222222", 48)
       sol.map.npc_start_movement("tom", m)
       sol.main.sprite_set_animation(tom_sprite, "walking")
     end
@@ -112,7 +112,7 @@ function give_boomerang_back()
 end
 
 function start_moving_tom()
-  m = sol.main.path_movement_create("0000666666", 32)
+  m = sol.main.path_movement_create("0000666666", 48)
   sol.map.npc_set_position("tom", 88, 509)
   sol.map.npc_start_movement("tom", m)
   sol.main.sprite_set_animation(tom_sprite, "walking")

@@ -82,7 +82,10 @@ void ItemIcon::update() {
     need_rebuild = true;
     item_displayed = current_item;
     item_variant_displayed = 0;
-    item_sprite->set_current_animation(current_item);
+
+    if (current_item.size() > 0) {
+      item_sprite->set_current_animation(current_item);
+    }
   }
 
   if (current_item.size() > 0) {

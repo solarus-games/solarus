@@ -40,7 +40,7 @@ end
 function event_npc_dialog(npc_name)
 
    if string.find(npc_name, "monkey") then
-     
+
      if not sol.game.savegame_get_boolean(24) then
        -- monkey first dialog
        sol.main.play_sound("monkey")

@@ -44,6 +44,8 @@ Hero::SwordSwingingState::~SwordSwingingState() {
  */
 void Hero::SwordSwingingState::start(State *previous_state) {
 
+  State::start(previous_state);
+
   get_sprites().play_sword_sound();
   get_sprites().set_animation_sword();
   get_equipment().notify_ability_used("sword");
@@ -53,6 +55,8 @@ void Hero::SwordSwingingState::start(State *previous_state) {
  * @brief Updates this state.
  */
 void Hero::SwordSwingingState::update() {
+
+  State::update();
 
   if (get_sprites().is_animation_finished()) {
 

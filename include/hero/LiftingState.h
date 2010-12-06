@@ -39,6 +39,7 @@ class Hero::LiftingState: public Hero::State {
     void start(State *previous_state);
     void stop(State *next_state);
     void update();
+    void set_suspended(bool suspended);
     bool can_be_hurt();
 };
 

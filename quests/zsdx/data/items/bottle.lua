@@ -100,6 +100,16 @@ function event_hero_interaction_item(entity_name, item_name, variant)
   return false
 end
 
+function event_variant_changed(variant)
+
+  -- the possession state of a bottle has changed: see if the player has at least a fairy
+  if has_bottle_with(6) then
+    sol.game.set_ability("get_back_from_death", 1)
+  else
+    sol.game.set_ability("get_back_from_death", 0)
+  end
+end
+
 function has_bottle()
 
   return sol.game.has_item("bottle_1")
@@ -113,20 +123,29 @@ function has_empty_bottle()
   return get_first_empty_bottle() ~= ""
 end
 
+function has_bottle_with(variant)
+
+  return get_first_bottle_with(variant) ~= ""
+end
+
 function get_first_empty_bottle()
+
+  return get_first_bottle_with(1)
+end
+
+function get_first_bottle_with(variant)
 
   result = ""
 
-  if sol.game.get_item("bottle_1") == 1 then
+  if sol.game.get_item("bottle_1") == variant then
     result = "bottle_1"
-  elseif sol.game.get_item("bottle_2") == 1 then
+  elseif sol.game.get_item("bottle_2") == variant then
     result = "bottle_2"
-  elseif sol.game.get_item("bottle_3") == 1 then
+  elseif sol.game.get_item("bottle_3") == variant then
     result = "bottle_3"
-  elseif sol.game.get_item("bottle_4") == 1 then
+  elseif sol.game.get_item("bottle_4") == variant then
     result = "bottle_4"
   end
 
   return result
-
 end

@@ -59,6 +59,7 @@ class ItemScript: public Script {
     void event_obtaining(const Treasure &treasure);
     void event_obtained(const Treasure &treasure);
     void event_amount_changed(int amount);
+    void event_variant_changed(int variant);
     void event_use(InventoryItem &inventory_item);
 
     PickableItem* get_pickable_item();

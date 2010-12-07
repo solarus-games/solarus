@@ -18,13 +18,13 @@
 package org.solarus.editor.gui;
 
 import java.util.Observer;
-import javax.swing.JInternalFrame;
+import javax.swing.JPanel;
 import org.solarus.editor.ProjectObserver;
 
 /**
  * Main window of an editor. Every editor (map, langages, tileset ...) will extends this class
  */
-public abstract class AbstractEditorWindow extends JInternalFrame implements Observer, ProjectObserver {
+public abstract class AbstractEditorWindow extends JPanel implements Observer, ProjectObserver {
 
     public abstract boolean checkCurrentFileSaved();
 

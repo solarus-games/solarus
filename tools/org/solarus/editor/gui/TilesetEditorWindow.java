@@ -18,6 +18,7 @@ package org.solarus.editor.gui;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Observable;
 import javax.swing.*;
 import org.solarus.editor.*;
 import org.solarus.editor.entities.*;
@@ -25,23 +26,21 @@ import org.solarus.editor.entities.*;
 /**
  * Main window of the tileset editor.
  */
-public class TilesetEditorWindow extends JFrame implements ProjectObserver {
+public class TilesetEditorWindow extends AbstractEditorWindow implements ProjectObserver {
 
+    private EditorWindow parentEditor;
     /**
      * The current tileset.
      */
     private Tileset tileset;
-
     /**
      * The list of tile patterns.
      */
     private TilePatternsView tilePatternsView;
-
     /**
      * The tileset image.
      */
     private TilesetImageView tilesetImageView;
-
     // menus or menu items memorized to enable it later
     private JMenu menuTileset;
     private JMenuItem menuItemClose;
@@ -50,128 +49,48 @@ public class TilesetEditorWindow extends JFrame implements ProjectObserver {
     /**
      * Creates a new window.
      */
-    public TilesetEditorWindow() {
-	super("Zelda Solarus Deluxe - Tileset Editor");
-	Project.addProjectObserver(this);
+    public TilesetEditorWindow(String quest, EditorWindow parentEditor) {
+        setLayout(new BorderLayout());
+        Project.addProjectObserver(this);
+        this.parentEditor = parentEditor;
+        // set a nice look and feel
+        GuiTools.setLookAndFeel();
 
-	// set a nice look and feel
-	GuiTools.setLookAndFeel();
+        // create the menu bar
+//	createMenuBar();
 
-	// create the menu bar
-	createMenuBar();
+        // tile patterns list and tileset image
 
-	// tile patterns list and tileset image
+        // tile patterns list
+        tilePatternsView = new TilePatternsView();
+        tilePatternsView.setAlignmentY(Component.TOP_ALIGNMENT);
+        tilePatternsView.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
 
-	// tile patterns list
-	tilePatternsView = new TilePatternsView();
-	tilePatternsView.setAlignmentY(Component.TOP_ALIGNMENT);
- 	tilePatternsView.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
+        // tileset image
+        tilesetImageView = new TilesetImageView(true);
+        JScrollPane tilesetImageScroller = new JScrollPane(tilesetImageView);
+        tilesetImageScroller.setAlignmentY(Component.TOP_ALIGNMENT);
+        tilesetImageScroller.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
 
-	// tileset image
-	tilesetImageView = new TilesetImageView(true);
-	JScrollPane tilesetImageScroller = new JScrollPane(tilesetImageView);
-	tilesetImageScroller.setAlignmentY(Component.TOP_ALIGNMENT);
- 	tilesetImageScroller.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
+        JSplitPane tilesetPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, tilePatternsView, tilesetImageScroller);
+        tilesetPanel.setContinuousLayout(true);
+        tilesetPanel.resetToPreferredSizes();
+        // we must put our main panel in another panel
+        // otherwise the background color of the window is bad
+        add(tilesetPanel);
+        //add(rootPanel);
 
-	JSplitPane tilesetPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, tilePatternsView, tilesetImageScroller);
-	tilesetPanel.setContinuousLayout(true); 
-
-	// we must put our main panel in another panel
-	// otherwise the background color of the window is bad
-	JPanel rootPanel = new JPanel(new BorderLayout());
-	rootPanel.add(tilesetPanel);
-	setContentPane(rootPanel);
-
-	// add a window listener to confirm when the user closes the window
-	setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-	addWindowListener(new WindowAdapter() {
-		public void windowClosing(WindowEvent e) {
-		    if (checkCurrentFileSaved()) {
-			dispose();
-		    }
-		}
-	    });
-	
-	loadProject();
-    }
-
-    /**
-     * Creates the menu bar and adds it to the window.
-     */
-    private void createMenuBar() {
-	JMenuBar menuBar = new JMenuBar();
-
-	JMenu menu;
-	JMenuItem item;
-
-	// menu Project
-	menu = new JMenu("Project");
-	menu.setMnemonic(KeyEvent.VK_P);
-
-	item = new JMenuItem("New project...");
-	item.setMnemonic(KeyEvent.VK_N);
-	item.getAccessibleContext().setAccessibleDescription("Create a new ZSDX project");
-	item.addActionListener(new ActionNewProject());
-	menu.add(item);
-
-	item = new JMenuItem("Load project...");
-	item.setMnemonic(KeyEvent.VK_O);
-	item.getAccessibleContext().setAccessibleDescription("Open an existing ZSDX project");
-	item.addActionListener(new ActionLoadProject());
-	menu.add(item);
-
-	menu.addSeparator();
-
-	item = new JMenuItem("Quit");
-	item.setMnemonic(KeyEvent.VK_Q);
-	item.getAccessibleContext().setAccessibleDescription("Teletransporter the tileset editor");
-	item.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent ev) {
-		    if (checkCurrentFileSaved()) {
-			dispose();
-		    }
-		}
-	    });
-	menu.add(item);
-
-	menuBar.add(menu);
-
-	// menu Tileset
-	menuTileset = new JMenu("Tileset");
-	menuTileset.setEnabled(false);
-	menuTileset.setMnemonic(KeyEvent.VK_T);
-
-	item = new JMenuItem("New");
-	item.setMnemonic(KeyEvent.VK_N);
-	item.getAccessibleContext().setAccessibleDescription("Create a new tileset");
-	item.addActionListener(new ActionNew());
-	menuTileset.add(item);
-
-	item = new JMenuItem("Open...");
-	item.setMnemonic(KeyEvent.VK_O);
-	item.getAccessibleContext().setAccessibleDescription("Open an existing tileset");
-	item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
-	item.addActionListener(new ActionOpen());
-	menuTileset.add(item);
-
-	menuItemClose = new JMenuItem("Close");
-	menuItemClose.setMnemonic(KeyEvent.VK_C);
-	menuItemClose.getAccessibleContext().setAccessibleDescription("Close the current tileset");
-	menuItemClose.addActionListener(new ActionClose());
-	menuItemClose.setEnabled(false);
-	menuTileset.add(menuItemClose);
-
-	menuItemSave = new JMenuItem("Save");
-	menuItemSave.setMnemonic(KeyEvent.VK_S);
-	menuItemSave.getAccessibleContext().setAccessibleDescription("Save the current tileset");
-	menuItemSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
-	menuItemSave.addActionListener(new ActionSave());
-	menuItemSave.setEnabled(false);
-	menuTileset.add(menuItemSave);
-
-	menuBar.add(menuTileset);
-
-	setJMenuBar(menuBar);
+//	// add a window listener to confirm when the user closes the window
+//	setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+//	addWindowListener(new WindowAdapter() {
+//		public void windowClosing(WindowEvent e) {
+//		    if (checkCurrentFileSaved()) {
+//			dispose();
+//		    }
+//		}
+//	    });
+//
+//	loadProject();
     }
 
     /**
@@ -179,11 +98,11 @@ public class TilesetEditorWindow extends JFrame implements ProjectObserver {
      * The tileset menu is enabled.
      */
     public void currentProjectChanged() {
-	menuTileset.setEnabled(true);
+        menuTileset.setEnabled(true);
 
-	if (tileset != null) {
-	    closeTileset(); // close the tileset that was open with the previous project 
-	}
+        if (tileset != null) {
+            closeTileset(); // close the tileset that was open with the previous project
+        }
     }
 
     /**
@@ -192,20 +111,32 @@ public class TilesetEditorWindow extends JFrame implements ProjectObserver {
      * @param tileset the new tileset, or null if no tileset is loaded
      */
     private void setTileset(Tileset tileset) {
-	// if there was already a tileset, remove its observers
-	if (this.tileset != null) {
-	    this.tileset.deleteObservers();
-	}
+        // if there was already a tileset, remove its observers
+        if (this.tileset != null) {
+            this.tileset.deleteObservers();
+        }
 
-	this.tileset = tileset;
+        this.tileset = tileset;
 
-	// enable or disable the menu items
-	menuItemClose.setEnabled(tileset != null);
-	menuItemSave.setEnabled(tileset != null);
+        tileset.addObserver(parentEditor);
+        // enable or disable the menu items
+//	menuItemClose.setEnabled(tileset != null);
+//	menuItemSave.setEnabled(tileset != null);
 
-	// notify the views
-	tilePatternsView.setTileset(tileset);
-	tilesetImageView.setTileset(tileset);
+        // notify the views
+        tilePatternsView.setTileset(tileset);
+        tilesetImageView.setTileset(tileset);
+
+
+    }
+
+    /**
+     * This function is called when the tileset changes.
+     * @param o the history
+     * @param obj additional parameter
+     */
+    public void update(Observable o, Object obj) {
+        this.parentEditor.update(o, obj);
     }
 
     /**
@@ -213,24 +144,39 @@ public class TilesetEditorWindow extends JFrame implements ProjectObserver {
      * If the tileset is not saved, we propose to save it.
      * @return false if the user cancelled
      */
-    private boolean checkCurrentFileSaved() {
-	boolean result = true;
+    public boolean checkCurrentFileSaved() {
+        boolean result = true;
 
-	if (tileset != null && !tileset.isSaved()) {
-	    int answer =  JOptionPane.showConfirmDialog(this,
-							"The tileset has been modified. Do you want to save it?",
-							"Save the modifications",
-							JOptionPane.YES_NO_CANCEL_OPTION,
-							JOptionPane.WARNING_MESSAGE);
-	    if (answer == JOptionPane.YES_OPTION) {
-		new ActionSave().actionPerformed(null);
-	    }
-	    else if (answer == JOptionPane.CANCEL_OPTION) {
-		result = false;
-	    }
-	}
+        if (tileset != null && !tileset.isSaved()) {
+            int answer = JOptionPane.showConfirmDialog(this,
+                    "The tileset has been modified. Do you want to save it?",
+                    "Save the modifications",
+                    JOptionPane.YES_NO_CANCEL_OPTION,
+                    JOptionPane.WARNING_MESSAGE);
+            if (answer == JOptionPane.YES_OPTION) {
+                saveTileset();
+            } else if (answer == JOptionPane.CANCEL_OPTION) {
+                result = false;
+            }
+        }
 
-	return result;
+        return result;
+    }
+
+    /**
+     * Give the name of the resource opened in the editor
+     * @return the name of the map
+     */
+    public Tileset getTileset() {
+        return tileset;
+    }
+
+    /**
+     * Give the name of the resource opened in the editor
+     * @return the name of the map
+     */
+    public String getResourceName() {
+        return "Tileset "+getTileset().getName();
     }
 
     /**
@@ -239,20 +185,20 @@ public class TilesetEditorWindow extends JFrame implements ProjectObserver {
      */
     private void newProject() {
 
-	if (!checkCurrentFileSaved()) {
-	    return;
-	}
+        if (!checkCurrentFileSaved()) {
+            return;
+        }
 
-	ProjectFileChooser chooser = new ProjectFileChooser();
-	String projectPath = chooser.getProjectPath();
+        ProjectFileChooser chooser = new ProjectFileChooser();
+        String projectPath = chooser.getProjectPath();
 
-	if (projectPath != null) {
-	    Project project = Project.createNew(projectPath);
+        if (projectPath != null) {
+            Project project = Project.createNew(projectPath);
 
-	    if (project == null) {
-		GuiTools.warningDialog("A project already exists in this directory.");
-	    }
-	}
+            if (project == null) {
+                GuiTools.warningDialog("A project already exists in this directory.");
+            }
+        }
     }
 
     /**
@@ -261,149 +207,100 @@ public class TilesetEditorWindow extends JFrame implements ProjectObserver {
      */
     private void loadProject() {
 
-	if (!checkCurrentFileSaved()) {
-	    return;
-	}
+        if (!checkCurrentFileSaved()) {
+            return;
+        }
 
-	ProjectFileChooser chooser = new ProjectFileChooser();
-	String projectPath = chooser.getProjectPath();
+        ProjectFileChooser chooser = new ProjectFileChooser();
+        String projectPath = chooser.getProjectPath();
 
-	if (projectPath != null) {
-	    try {
-		Project project = Project.createExisting(projectPath);
+        if (projectPath != null) {
+            try {
+                Project project = Project.createExisting(projectPath);
 
-		if (project == null) {
-		    if (GuiTools.yesNoDialog("No project was found in this directory. Do you want to create a new one?")) {
-			Project.createNew(projectPath);
+                if (project == null) {
+                    if (GuiTools.yesNoDialog("No project was found in this directory. Do you want to create a new one?")) {
+                        Project.createNew(projectPath);
 
-			if (project == null) {
-			    GuiTools.warningDialog("A project already exists in this directory.");
-			}
-			else {
-			    menuTileset.setEnabled(true);
-			}
-		    }
-		}
-	    }
-	    catch (ZSDXException ex) {
-		GuiTools.errorDialog("Cannot load the project: " + ex.getMessage());
-	    }
-	}
+                        if (project == null) {
+                            GuiTools.warningDialog("A project already exists in this directory.");
+                        } else {
+                            menuTileset.setEnabled(true);
+                        }
+                    }
+                }
+            } catch (ZSDXException ex) {
+                GuiTools.errorDialog("Cannot load the project: " + ex.getMessage());
+            }
+        }
     }
 
     /**
      * Creates a new tileset in the project and sets it as the current tileset.
      */
-    private void newTileset() {
+    protected void newTileset() {
 
-	if (!checkCurrentFileSaved()) {
-	    return;
-	}
+        if (!checkCurrentFileSaved()) {
+            return;
+        }
 
-	try {
-	    Tileset tileset = new Tileset();
-	    setTileset(tileset);
-	}
-	catch (ZSDXException ex) {
-	    GuiTools.errorDialog("Cannot create the tileset: " + ex.getMessage());
-	}
+        try {
+            Tileset tileset = new Tileset();
+            setTileset(tileset);
+        } catch (ZSDXException ex) {
+            GuiTools.errorDialog("Cannot create the tileset: " + ex.getMessage());
+        }
     }
 
     /**
      * Loads a tileset of the project ans sets it as the current tileset.
      */
-    private void openTileset() {
+    protected void openTileset() {
 
-	if (!checkCurrentFileSaved()) {
-	    return;
-	}
+        if (!checkCurrentFileSaved()) {
+            return;
+        }
 
-	ResourceChooserDialog dialog = new ResourceChooserDialog(ResourceType.TILESET);
-	dialog.setLocationRelativeTo(TilesetEditorWindow.this);
-	dialog.pack();
-	dialog.setVisible(true);
-	String tilesetId = dialog.getSelectedId();
+        ResourceChooserDialog dialog = new ResourceChooserDialog(ResourceType.TILESET);
+        dialog.setLocationRelativeTo(TilesetEditorWindow.this);
+        dialog.pack();
+        dialog.setVisible(true);
+        String tilesetId = dialog.getSelectedId();
 
-	if (tilesetId.length() == 0) {
-	    return;
-	}
+        if (tilesetId.length() == 0) {
+            return;
+        }
 
-	try {
-	    Tileset tileset = new Tileset(tilesetId);
-	    setTileset(tileset);
-	}
-	catch (ZSDXException ex) {
-	    GuiTools.errorDialog("Could not load the tileset: " + ex.getMessage());
-	}
+        try {
+            Tileset tileset = new Tileset(tilesetId);
+            setTileset(tileset);
+        } catch (ZSDXException ex) {
+            GuiTools.errorDialog("Could not load the tileset: " + ex.getMessage());
+        }
     }
 
     /**
      * Closes the current tileset.
      */
-    private void closeTileset() {
+    protected void closeTileset() {
 
-	if (!checkCurrentFileSaved()) {
-	    return;
-	}
+        if (!checkCurrentFileSaved()) {
+            return;
+        }
 
-	setTileset(null);
+        setTileset(null);
     }
 
     /**
      * Saves the current tileset.
      */
-    private void saveTileset() {
+    protected void saveTileset() {
 
-	try {
-	    tileset.save();
-	}
-	catch (ZSDXException ex) {
-	    GuiTools.errorDialog("Could not save the tileset: " + ex.getMessage());
-	}
-    }
-
-    /**
-     * Action performed when the user clicks on Tileset > New.
-     * Creates a new tileset, asking to the user the tileset name and the tileset file.
-     */
-    private class ActionNew implements ActionListener {
-	
-	public void actionPerformed(ActionEvent ev) {	    
-	    newTileset();
-	}
-    }
-
-    /**
-     * Action performed when the user clicks on Tileset > Load.
-     * Opens an existing tileset, asking to the user the tileset name.
-     */
-    private class ActionOpen implements ActionListener {
-	
-	public void actionPerformed(ActionEvent ev) {	    
-	    openTileset();
-	}
-    }
-
-    /**
-     * Action performed when the user clicks on Tileset > Close.
-     * Closes the current tileset.
-     */
-    private class ActionClose implements ActionListener {
-	
-	public void actionPerformed(ActionEvent ev) {
-	    closeTileset();
-	}
-    }
-    
-    /**
-     * Action performed when the user clicks on Tileset > Save.
-     * Saves the tileset into its file.
-     */
-    private class ActionSave implements ActionListener {
-	
-	public void actionPerformed(ActionEvent ev) {
-	    saveTileset();
-	}
+        try {
+            tileset.save();
+        } catch (ZSDXException ex) {
+            GuiTools.errorDialog("Could not save the tileset: " + ex.getMessage());
+        }
     }
 
     /**
@@ -411,10 +308,10 @@ public class TilesetEditorWindow extends JFrame implements ProjectObserver {
      * Creates a new project, asking to the user the project path.
      */
     private class ActionNewProject implements ActionListener {
-	
-	public void actionPerformed(ActionEvent ev) {
-	    newProject();
-	}
+
+        public void actionPerformed(ActionEvent ev) {
+            newProject();
+        }
     }
 
     /**
@@ -422,9 +319,9 @@ public class TilesetEditorWindow extends JFrame implements ProjectObserver {
      * Loads an existing project, asking to the user the project path.
      */
     private class ActionLoadProject implements ActionListener {
-	
-	public void actionPerformed(ActionEvent ev) {
-	    loadProject();
-	}
+
+        public void actionPerformed(ActionEvent ev) {
+            loadProject();
+        }
     }
 }

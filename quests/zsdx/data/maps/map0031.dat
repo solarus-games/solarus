@@ -412,8 +412,8 @@
 8	1	960	37	interactive_entity_3	3	0	entities/hint_stone	dialog#dungeon_2.code_hint
 19	1	168	48	1	0
 19	1	72	304	1	0
-3	1	1024	93	fairy	1	0
-3	1	896	93	fairy	1	0
+3	1	1024	93	fairy	1	-1
+3	1	896	93	fairy	1	-1
 0	2	912	168	96	8	357
 0	2	912	192	96	8	356
 0	2	32	296	96	8	356

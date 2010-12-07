@@ -396,7 +396,7 @@ public class Map extends Observable {
 	    else { // dungeon: first floor by default
 		dungeon = new Dungeon(world);
 		setFloor(dungeon.getDefaultFloor());
-		setSmallKeysVariable(204 + 10 * (world - 1));
+		setSmallKeysVariable(205 + 10 * (world - 1));
 	    }
 
 	    setChanged();
@@ -483,7 +483,7 @@ public class Map extends Observable {
 		throw new MapException("Incorrect variable to save the small keys: " + smallKeysVariable);
 	    }
 
-	    if (isInDungeon() && smallKeysVariable != 204 + 10 * (getWorld() - 1)) {
+	    if (isInDungeon() && smallKeysVariable != 205 + 10 * (getWorld() - 1)) {
 		throw new MapException("Cannot change the variable to save the small keys because this map is in a dungeon");
 	    }
 

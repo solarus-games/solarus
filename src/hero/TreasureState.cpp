@@ -99,7 +99,9 @@ void Hero::TreasureState::update() {
     get_equipment().get_item_script(item_name).event_obtained(treasure);
     get_map_script().event_treasure_obtained(treasure);
 
-    hero.set_state(new FreeState(hero));
+    if (is_current_state()) { // because the script may have changed the state
+      hero.set_state(new FreeState(hero));
+    }
   }
 }
 

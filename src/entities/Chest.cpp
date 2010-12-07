@@ -275,7 +275,7 @@ void Chest::action_key_pressed() {
 
   if (is_visible() && get_hero().is_free()) {
 
-    if (!big_chest || get_equipment().has_item("big_key")) {
+    if (!big_chest || get_equipment().has_ability("open_dungeon_big_locks")) {
       Sound::play("chest_open");
       set_open(true);
       treasure_date = System::now() + 300;

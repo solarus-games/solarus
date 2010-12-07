@@ -16,29 +16,20 @@
  */
 package org.solarus.editor.gui;
 
-import java.awt.BorderLayout;
-import java.util.ArrayList;
-import java.util.HashMap;
-import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
-import javax.swing.JDesktopPane;
-import javax.swing.JInternalFrame;
-import javax.swing.JPanel;
-import javax.swing.JToggleButton;
+import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 /**
  *
  */
-public class EditorDesktop extends JPanel {
+public class EditorDesktop extends JTabbedPane {
 
     public static final long serialVersionUID = 1L;
     /**
      * The JDesktopPane use to contained the editors
      */
-    private JDesktopPane desktopPane;
+    private JTabbedPane desktopPane;
     /**
      * The tool bar which allow access to the editors
      */
@@ -47,88 +38,39 @@ public class EditorDesktop extends JPanel {
      * Button group of the tool bar
      */
     private ButtonGroup buttonGroup;
-    /**
-     * Map
-     */
-    private HashMap<AbstractEditorWindow, CustomToggleButton> editorToButton;
 
     public EditorDesktop() {
-        super(new BorderLayout());
-        editorToButton = new HashMap<AbstractEditorWindow, CustomToggleButton>();
-        buttonGroup = new ButtonGroup();
-        desktopPane = new JDesktopPane();
-        toolBar = new JToolBar(JToolBar.HORIZONTAL);
-        //toolBar.add(new JLabel("Editeurs ouverts"));
-        toolBar.setBorder(BorderFactory.createTitledBorder("Current Files"));
-        toolBar.setFloatable(false);
-        add(desktopPane, BorderLayout.CENTER);
-        add(toolBar, BorderLayout.SOUTH);
+        setTabLayoutPolicy(SCROLL_TAB_LAYOUT);
+//        addChangeListener(this);
     }
 
     public void addEditor(AbstractEditorWindow editor) {
-        for(CustomToggleButton button : editorToButton.values()) {
-            if(button.getText().equals(editor.getResourceName())) {
-                button.setSelected(true);
-                return;
-            }
-        }
-        final CustomToggleButton ctb = new CustomToggleButton(editor);
-        editor.setVisible(true);
-        buttonGroup.add(ctb);
-        desktopPane.add(editor);
-        toolBar.add(ctb);
-        ctb.setSelected(true);
-        editorToButton.put(editor, ctb);
+        add(editor.getResourceName(), editor);
+        setSelectedIndex(getTabCount()-1);
         repaint();
     }
 
     public void removeEditor(AbstractEditorWindow editor) {
-        CustomToggleButton ctb = editorToButton.get(editor);
-        editor.dispose();
-        toolBar.remove(ctb);
-        buttonGroup.remove(ctb);
+        remove(editor);
         repaint();
-//        try {
-//        ((CustomToggleButton)toolBar.getComponent(0)).setSelected(true);
-//        }
-//        catch(Exception e) {// to prevent index problems
-//
-//        }
     }
 
     public AbstractEditorWindow[] getEditors() {
-        JInternalFrame[] frames = desktopPane.getAllFrames();
-        AbstractEditorWindow[] editors = new AbstractEditorWindow[frames.length];
-        for(int i = 0; i < frames.length; i++) {
-            editors[i] = (AbstractEditorWindow) frames[i];
+        int nb = getTabCount();
+        if (nb > 0) {
+            AbstractEditorWindow[] editors = new AbstractEditorWindow[nb];
+            for (int i = 0; i < nb; i++) {
+                editors[i] = (AbstractEditorWindow) getComponentAt(i);
+            }
+            return editors;
         }
-        return editors ;
+        return null;
     }
 
     public int countEditors() {
         //System.out.println("Comptage editeurs : "+desktopPane.getComponentCount());
-        return desktopPane.getComponentCount();
+        return getTabCount();
     }
 
-
-    class CustomToggleButton extends JToggleButton implements ChangeListener {
-
-        public static final long serialVersionUID = 1L;
-        private AbstractEditorWindow editor;
-
-        public CustomToggleButton(AbstractEditorWindow editor) {
-            super(editor.getResourceName());
-            this.editor = editor;
-            addChangeListener(this);
-        }
-
-        public void stateChanged(ChangeEvent e) {
-            this.editor.setVisible(isSelected());
-            try {
-                this.editor.setMaximum(true);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        }
-    }
+//    }
 }

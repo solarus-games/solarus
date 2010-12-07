@@ -141,7 +141,10 @@ MapEntity* Enemy::create(Game &game, Subtype type, Rank rank, int savegame_varia
       && game.get_savegame().get_boolean(savegame_variable)) {
 
     // the enemy is dead: create its pickable treasure (if any) instead
-    return PickableItem::create(game, layer, x, y, treasure, FALLING_NONE, true);
+    if (treasure.is_saved() && !game.get_savegame().get_boolean(treasure.get_savegame_variable())) {
+      return PickableItem::create(game, layer, x, y, treasure, FALLING_NONE, true);
+    }
+    return NULL;
   }
 
   // create the enemy

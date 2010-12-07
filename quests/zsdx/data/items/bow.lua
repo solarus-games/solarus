@@ -21,6 +21,15 @@ function event_amount_changed(amount)
   end
 end
 
+function event_obtaining(variant, savegame_variable)
+
+  if variant == 1 then
+    -- the player just obtained the bow in its variant without arrows:
+    -- we need to set the arrows to zero manually because they are set to their maximum by default
+    sol.item.set_amount(0)
+  end
+end
+
 function remove_arrow()
   -- we remove the arrow from the equipemnt after a small delay because the hero
   -- does not shoot immediately

@@ -92,7 +92,7 @@ end
 
 function check_eye_statues()
 
-  if sol.map.switch_is_enabled("left_eye_switch") and switch_is_enabled("right_eye_switch") then
+  if sol.map.switch_is_enabled("left_eye_switch") and sol.map.switch_is_enabled("right_eye_switch") then
 
     sol.map.switch_set_enabled("left_eye_switch", false)
     sol.map.switch_set_enabled("right_eye_switch", false)

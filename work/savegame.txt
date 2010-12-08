@@ -31,9 +31,9 @@ integers (above 1024):
 	bottle 2
 
 	rock key
-	red key
+	bone key
 	clay key
-	apple pie, gold bar, edelweiss, bone key
+	apple pie, gold bar, edelweiss
 	flippers
 	magic cape
 	bottle 3
@@ -74,7 +74,7 @@ booleans:
 28	chest with the clay key in Sahasrahla's icy cave
 29	empty chest in the smith cave
 30	the smith gave the sword to the player
-31	bomb bag in the shop
+31	lamp in the shop
 32	the player obtained the bottle from the cake shop seller
 33	the player obtained the world map from Sahasrahla
 34	Sahasrahla's cave: the player has seen the frozen door
@@ -89,7 +89,7 @@ booleans:
 43-45	smith cave: 3 blue rupees taken
 46	cake shop: the seller asked the player whether he had some apples
 47	lyriann cave: the player talked to Tom
-48-51   outside world: 5 pickable items under the trees near dungeon 1
+48-51	outside world: 5 pickable items under the trees near dungeon 1
 52	outside world: ladder of the dungeon entrance
 53	dungeon 1: big chest (iron glove)
 54	dungeon 1: chest with map

@@ -1371,12 +1371,12 @@ line3 = "rapporte un Coeur."
 # cela permet d'afficher une flèche en bas de la boîte de dialogue au lieu du carré
 next = _unknown
 
-[lyriann_shop.bomb_bag]
-# Boutique : quand on regarde le sac de bombes
+[lyriann_shop.lamp]
+# Boutique : quand on regarde la lanterne
 #       |-----------------------|
-line1 = "Un sac de Bombes."
+line1 = "Une Lanterne."
 line2 = "Indispensable pour"
-line3 = "les transporter !"
+line3 = "s'éclairer !"
 next = _unknown
 
 [lyriann_shop.heart]

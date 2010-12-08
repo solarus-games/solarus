@@ -210,15 +210,15 @@ nb_variants = 6
 [rock_key]
 savegame_variable = 1114
 
-[red_key]
+[bone_key]
 savegame_variable = 1115
 
 [clay_key]
 savegame_variable = 1116
 
-[level_4_way_bone_key]
+[level_4_way]
 savegame_variable = 1117
-nb_variants = 4
+nb_variants = 3
 
 [flippers]
 savegame_variable = 1118

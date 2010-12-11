@@ -50,9 +50,9 @@ static const std::string item_names[] = {
   "bottle_2",
 
   "rock_key",
-  "red_key",
+  "bone_key",
   "clay_key",
-  "level_4_way_bone_key",
+  "level_4_way",
   "flippers",
   "magic_cape",
   "bottle_3",

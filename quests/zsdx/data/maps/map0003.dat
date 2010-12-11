@@ -1919,7 +1919,7 @@
 1	0	1000	949	out_cake_shop	3	0
 2	0	992	920	16	16	to_cake_shop	0	1	19	main_entrance
 8	0	936	685	grand_son	3	1	npc/newlink1	dialog#outside_world.village.grand_son_npc
-4	0	656	877	4	_random	0	-1
+4	0	656	877	3	_random	0	-1
 8	0	1016	125	how_to_save_npc	3	1	npc/newlink6	dialog#outside_world.how_to_save_npc
 2	0	928	144	16	16	to_dungeon2	0	1	30	from_outside
 12	0	680	328	16	8	custom_obstacle_5	1	1	1	1

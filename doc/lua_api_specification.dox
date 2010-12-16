@@ -170,6 +170,27 @@ adds some money to the player
 - <tt>sol.game.remove_money(money)</tt>:
 removes some money from the player
 
+- <tt>sol.game.game_api_get_magic()</tt>:
+returns the current number of magic points
+
+- <tt>sol.game.game_api_add_magic(magic)</tt>:
+adds some magic points
+
+- <tt>sol.game.game_api_remove_magic(magic)</tt>:
+removes some magic points
+
+- <tt>sol.game.game_api_start_decreasing_magic(delay)</tt>:
+starts removing magic points continuously
+
+- <tt>sol.game.game_api_stop_decreasing_magic()</tt>:
+stops removing magic points continuously
+
+- <tt>sol.game.game_api_get_max_magic()</tt>:
+returns the maximum number of magic points
+
+- <tt>sol.game.game_api_set_max_magic(magic)</tt>:
+sets the maximum number of magic points
+
 - <tt>sol.game.has_ability(ability_name)</tt>:
 returns whether the player has an ability
 
@@ -502,25 +523,25 @@ called when the player has just bought an item in a shop
 - <tt>event_enemy_dead(enemy_name)</tt> (triggered for the map script):
 called when an enemy is killed
 
-- <tt>event_appear</tt> (triggered for an item script):
+- <tt>event_appear(variant, savegame_variable, falling_height)</tt> (triggered for an item script):
 called when a pickable item whose type is controlled by this script just appeared on the map
 
-- <tt>event_movement_changed</tt> (triggered for an item script):
+- <tt>event_movement_changed()</tt> (triggered for an item script):
 called when something changes in the movement of a pickable item whose type is controlled by this script
 
-- <tt>event_obtaining</tt> (triggered for an item script):
+- <tt>event_obtaining(variant, savegame_variable)</tt> (triggered for an item script):
 called when the player is obtaining a treasure corresponding to the item controlled by this script
 
-- <tt>event_obtained</tt> (triggered for an item script):
+- <tt>event_obtained(variant, savegame_variable)</tt> (triggered for an item script):
 called when the player has finished brandishing a treasure corresponding to the item controlled by this script
 
-- <tt>event_variant_changed</tt> (triggered for an item script):
+- <tt>event_variant_changed(variant)</tt> (triggered for an item script):
 called when the saved possession state of the item controlled by this script has just changed
 
-- <tt>event_amount_changed</tt> (triggered for an item script):
+- <tt>event_amount_changed(amount)</tt> (triggered for an item script):
 called when the amount of the item controlled by this script has just changed
 
-- <tt>event_use</tt> (triggered for an item script):
+- <tt>event_use()</tt> (triggered for an item script):
 called when the hero starts using the item controlled by this script from his inventory
 
 */

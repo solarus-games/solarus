@@ -303,6 +303,118 @@ int Script::game_api_remove_money(lua_State *l) {
 }
 
 /**
+ * @brief Returns the current number of magic points.
+ *
+ * - Return value: the current number of magic points
+ */
+int Script::game_api_get_magic(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 0, &script);
+
+  int magic = script->get_game().get_equipment().get_magic();
+  lua_pushinteger(l, magic);
+
+  return 1;
+}
+
+/**
+ * @brief Gives some magic points to the player.
+ *
+ * - Argument 1 (integer): number of magic points to add
+ */
+int Script::game_api_add_magic(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 1, &script);
+
+  int magic = luaL_checkinteger(l, 1);
+
+  script->get_game().get_equipment().add_magic(magic);
+
+  return 0;
+}
+
+/**
+ * @brief Removes some magic points from the player.
+ *
+ * - Argument 1 (integer): number of magic points to remove
+ */
+int Script::game_api_remove_magic(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 1, &script);
+
+  int magic = luaL_checkinteger(l, 1);
+
+  script->get_game().get_equipment().remove_magic(magic);
+
+  return 0;
+}
+
+/**
+ * @brief Starts a continuous decrease of the magic points.
+ *
+ * - Argument 1 (integer): delay in miliseconds between each decrease of 1 point
+ */
+int Script::game_api_start_decreasing_magic(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 1, &script);
+
+  uint32_t delay = luaL_checkinteger(l, 1);
+
+  script->get_game().get_equipment().start_removing_magic(delay);
+
+  return 0;
+}
+
+/**
+ * @brief Stops a continuous decrease of the magic points.
+ */
+int Script::game_api_stop_decreasing_magic(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 0, &script);
+
+  script->get_game().get_equipment().stop_removing_magic();
+
+  return 0;
+}
+
+/**
+ * @brief Returns the maximum number of magic points of the player.
+ *
+ * - Return value (integer): the maximum number of magic points
+ */
+int Script::game_api_get_max_magic(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 0, &script);
+
+  int magic = script->get_game().get_equipment().get_max_magic();
+  lua_pushinteger(l, magic);
+
+  return 1;
+}
+
+/**
+ * @brief Sets the maximum number of magic points of the player.
+ *
+ * - Argument 1 (integer): the maximum number of magic points to set
+ */
+int Script::game_api_set_max_magic(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 1, &script);
+
+  int magic = luaL_checkinteger(l, 1);
+  script->get_game().get_equipment().set_max_magic(magic);
+
+  return 0;
+}
+
+/**
  * @brief Returns whether the player has the specified ability.
  *
  * This is equivalent to equipment_get_ability(ability_name) > 0.

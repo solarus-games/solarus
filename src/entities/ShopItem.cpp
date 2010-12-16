@@ -108,9 +108,6 @@ MapEntity* ShopItem::parse(Game &game, std::istream &is, Layer layer, int x, int
 ShopItem* ShopItem::create(Game &game, const std::string &name, Layer layer, int x, int y,
 			    const Treasure &treasure, int price, const MessageId &message_id) {
 
-  Debug::assert(treasure.get_item_name() != "_none",
-      StringConcat() << "Invalid shop item: '" << treasure.get_item_name());
-
   // see if the item is not already bought
   if (treasure.is_found()) {
     return NULL;

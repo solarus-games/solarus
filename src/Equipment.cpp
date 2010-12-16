@@ -153,6 +153,8 @@ void Equipment::update() {
  */
 void Equipment::set_suspended(bool suspended) {
 
+  this->suspended = suspended;
+
   // notify the item scripts
   std::map<std::string, ItemScript*>::iterator it;
   for (it = item_scripts.begin(); it != item_scripts.end(); it++) {

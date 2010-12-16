@@ -357,7 +357,7 @@ int Equipment::get_magic() {
  */
 void Equipment::set_magic(int magic) {
 
-  Debug::assert(magic > 0 && magic <= get_max_magic(), StringConcat() << "Illegal number of magic points: " << magic);
+  Debug::assert(magic >= 0 && magic <= get_max_magic(), StringConcat() << "Illegal number of magic points: " << magic);
 
   savegame.set_integer(Savegame::CURRENT_MAGIC, magic);
 }

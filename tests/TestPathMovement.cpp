@@ -199,7 +199,7 @@ int main(int argc, char **argv) {
   game.update();
 
   Map &map = game.get_current_map();
-  MapEntity *e = new InteractiveEntity("e", LAYER_LOW, 160, 117,
+  MapEntity *e = new InteractiveEntity(game, "e", LAYER_LOW, 160, 117,
       InteractiveEntity::CUSTOM, "npc/sahasrahla", 0, "_none");
   map.get_entities().add_entity(e);
 

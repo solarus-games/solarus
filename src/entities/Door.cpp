@@ -68,6 +68,7 @@ Door::Door(const std::string &name, Layer layer, int x, int y,
   if (subtype != WEAK_INVISIBLE) {
     create_sprite("entities/door");
   }
+  set_direction(direction);
 }
 
 /**
@@ -154,7 +155,7 @@ void Door::set_open(bool door_open) {
 
     // ensure we are not closing the door on the hero
     if (is_on_map() && overlaps(get_hero())) {
-      get_hero().avoid_collision(*this, 3);
+      get_hero().avoid_collision(*this, (get_direction() + 2) % 4);
     }
   }
 

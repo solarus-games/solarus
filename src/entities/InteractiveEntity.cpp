@@ -278,6 +278,7 @@ void InteractiveEntity::call_script() {
   }
   else {
     script_to_call->event_hero_interaction(get_name());
+    get_map_script().event_hero_interaction_finished(get_name()); // always notify the map script when finished
   }
 }
 
@@ -292,15 +293,20 @@ void InteractiveEntity::call_script() {
  */
 bool InteractiveEntity::interaction_with_inventory_item(InventoryItem &item) {
 
-  bool result;
+  bool interaction_occured;
   Script *script = behavior == BEHAVIOR_ITEM_SCRIPT ? script_to_call : &get_map_script();
   if (subtype == NON_PLAYING_CHARACTER) {
-    result = script->event_npc_dialog_item(get_name(), item.get_name(), item.get_variant());
+    interaction_occured = script->event_npc_dialog_item(get_name(), item.get_name(), item.get_variant());
   }
   else {
-    result = script->event_hero_interaction_item(get_name(), item.get_name(), item.get_variant());
+    interaction_occured = script->event_hero_interaction_item(get_name(), item.get_name(), item.get_variant());
   }
-  return result;
+
+  if (interaction_occured) {
+    // always notify the map script when finished
+    get_map_script().event_hero_interaction_item_finished(get_name(), item.get_name(), item.get_variant());
+  }
+  return interaction_occured;
 }
 
 /**

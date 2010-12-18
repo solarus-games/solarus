@@ -56,7 +56,10 @@ plays a music
 starts a timer which will call a function of your script once finished
 
 - <tt>sol.main.timer_stop(callback)</tt>: 
-stops a timer that is currently running
+stops a timer that is currently running from your script
+
+- <tt>sol.main.timer_stop_all()</tt>: 
+stops all timers started by your script
 
 - <tt>sol.main.sprite_get_animation(sprite)</tt>:
 returns the name of the current animation of a sprite
@@ -314,12 +317,22 @@ through <tt>sol.main.sprite_*</tt> functions
 - <tt>sol.map.npc_remove(npc)</tt>:
 removes an NPC from the map
 
+- <tt>sol.map.npc_exists(npc)</tt>:
+checks the existence of an NPC
+
 - <tt>sol.map.npc_get_sprite(npc)</tt>:
+makes the sprite of an interactive entity accessible from the script
+through <tt>sol.main.sprite_*</tt> functions
+
+- <tt>sol.map.interactive_entity_get_sprite(npc)</tt>:
 makes the sprite of an interactive entity accessible from the script
 through <tt>sol.main.sprite_*</tt> functions
 
 - <tt>sol.map.interactive_entity_remove(entity)</tt>:
 removes an interactive entity from the map
+
+- <tt>sol.map.interactive_entity_exists(npc)</tt>:
+checks the existence of an interactive entity
 
 - <tt>sol.map.chest_set_open(chest_name, bool open)</tt>:
 sets the state of a chest (without giving or reseting its content)
@@ -451,6 +464,9 @@ called at each cycle (but take care of the performances)
 - <tt>event_set_suspended(suspended)</tt> (triggered for the map script and all item scripts):
 called when the game is suspended or resumed
 
+- <tt>event_map_changed(new_map_id)</tt> (trigger for all item scripts):
+called when a map becomes the current map
+
 - <tt>event_dialog_started(message_id)</tt> (triggered for the map script and for the script that started the dialog):
 called when a dialog starts (i.e. at the beginning of its first message)
 
@@ -496,10 +512,20 @@ called when the hero walks on a sensor
 called when the hero interacts with an interactive entity (other than an NPC)
 by pressing the action key when there is no predetermined dialog to show
 
+- <tt>event_hero_interaction_finished(entity_name)</tt>
+(triggered for the map script):
+called when the hero has just interacted with an interactive entity (other than an NPC)
+by pressing the action key when there is no predetermined dialog to show
+
 - <tt>event_hero_interaction_item(entity_name, item_name, variant)</tt>
-(triggered for the map script or the item script, depending on the interactive entity):
+(triggered for the map script or an item script, depending on the interactive entity):
 called when the hero interacts with an interactive entity (other than an NPC)
-by using an inventory item; returns true if an interaction actually happened
+by using ANY inventory item; returns true if an interaction actually happened
+
+- <tt>event_hero_interaction_item_finished(entity_name, item_name, variant)</tt>
+(triggered for the map script):
+called when the hero has just interacted with an interactive entity (other than an NPC)
+by using an inventory item
 
 - <tt>event_npc_dialog(npc_name)</tt>
 (triggered for the map script or an item script, depending on the NPC):

@@ -53,6 +53,7 @@ class Equipment {
     Equipment(Savegame &savegame);
     ~Equipment();
     void set_game(Game &game);
+    void set_map(Map &map);
 
     void update();
     void set_suspended(bool suspended);

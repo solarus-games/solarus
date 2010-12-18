@@ -30,6 +30,7 @@
 0	23	Dungeon 1 1F
 0	24	Dungeon 1 B1
 0	27	Dungeon 1 final room
+0	32	Telepathic house
 1	0	House
 1	1	Light World
 1	2	Ice dungeon
@@ -111,6 +112,7 @@
 3	entities/bed	Hero's bed
 3	entities/snores	Snoring (zzz)
 3	entities/hint_stone	Hint stone
+3	entities/torch	Torch
 4	bomb	bomb
 4	boss_charge	boss_charge
 4	boss_dead	boss_dead

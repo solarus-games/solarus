@@ -1,0 +1,5 @@
+unlit entities/quest_entities.png 1 0 -1
+32	32	16	16	8	13	1	1
+
+lit entities/quest_entities.png 1 250 0
+48	32	16	16	8	13	3	3

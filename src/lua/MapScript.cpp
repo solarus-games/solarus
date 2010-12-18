@@ -239,6 +239,30 @@ void MapScript::event_hero_on_sensor(const std::string &sensor_name) {
 }
 
 /**
+ * @brief Notifies the script that the hero has just finished interacting with an
+ * interactive entity (other than an NPC) by pressing the action key,
+ * for an interaction that was handled via a script (possibly this script or an item's script).
+ * @param entity_name name of the entity in interaction
+ */
+void MapScript::event_hero_interaction_finished(const std::string &entity_name) {
+
+  notify_script("event_hero_interaction_finished", "s", entity_name.c_str());
+}
+
+/**
+ * @brief Notifies the script that the hero has just finished interacting with an
+ * interactive entity (other than an NPC) by pressing an item's key,
+ * for an interaction that was handled via a script (possibly this script or an item's script).
+ * @param entity_name name of the entity in interaction
+ */
+void MapScript::event_hero_interaction_item_finished(const std::string &entity_name,
+    const std::string &item_name, int variant) {
+
+  notify_script("event_hero_interaction_item_finished", "ssi", entity_name.c_str(),
+      item_name.c_str(), variant);
+}
+
+/**
  * @brief Notifies the script that an NPC has just finished its movement.
  * @param npc_name name of the NPC
  */

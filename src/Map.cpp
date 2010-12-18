@@ -472,6 +472,7 @@ void Map::start() {
   this->visible_surface->set_opacity(255);
   Music::play(music_id);
   this->script->start(destination_point_name);
+  get_game().get_equipment().set_map(*this);
 }
 
 /**

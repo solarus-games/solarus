@@ -557,6 +557,20 @@ int Script::map_api_npc_remove(lua_State *l) {
 }
 
 /**
+ * @brief Returns whether an NPC exists on the map.
+ *
+ * - Argument 1 (string): name of the NPC to check
+ * - Return value (boolean): true if an NPC with this name exists on the map
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_npc_exists(lua_State *l) {
+
+  // an NPC is actually a subtype of interactive entity
+  return map_api_interactive_entity_exists(l);
+}
+
+/**
  * @brief Makes the sprite of an interactive entity accessible from the script.
  *
  * - Argument 1 (string): name of the interactive entity
@@ -599,6 +613,29 @@ int Script::map_api_interactive_entity_remove(lua_State *l) {
   entities.remove_entity(INTERACTIVE_ENTITY, name);
 
   return 0;
+}
+
+/**
+ * @brief Returns whether an interactive entity exists on the map.
+ *
+ * - Argument 1 (string): name of the interactive entity to check
+ * - Return value (boolean): true if an interactive entity with this name exists on the map
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_interactive_entity_exists(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 1, &script);
+
+  const std::string &name = luaL_checkstring(l, 1);
+
+  MapEntities &entities = script->get_map().get_entities();
+  InteractiveEntity *entity = (InteractiveEntity*) entities.find_entity(INTERACTIVE_ENTITY, name);
+
+  lua_pushboolean(l, entity != NULL);
+
+  return 1;
 }
 
 /**

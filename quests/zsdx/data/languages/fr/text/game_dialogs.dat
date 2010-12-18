@@ -2104,4 +2104,43 @@ line2 = "      ---|---|---"
 line3 = "       C | D | A "
 skip = all
 
+[fairy_cave.first_time]
+#       |-----------------------|
+line1 = "Sois le bienvenu, jeune"
+line2 = "homme au grand courage."
+line3 = "J'attendais ta venue."
+next = fairy_cave.first_time.2
+
+[fairy_cave.first_time.2]
+#       |-----------------------|
+line1 = "Je suis la Fée des"
+line2 = "Enchantements. Toi qui"
+line3 = "veilles sur la justice,"
+next = fairy_cave.first_time.3
+
+[fairy_cave.first_time.3]
+#       |-----------------------|
+line1 = "permets-moi de t'offrir"
+line2 = "ce présent..."
+next = fairy_cave.first_time.4
+
+[fairy_cave.first_time.4]
+#       |-----------------------|
+line1 = "Tu as prouvé par le"
+line2 = "passé que tu méritais"
+line3 = "de le posséder."
+
+[fairy_cave.restore_health]
+#       |-----------------------|
+line1 = "Sois le bienvenu, jeune"
+line2 = "homme au grand courage."
+next = fairy_cave.restore_health.2
+
+[fairy_cave.restore_health.2]
+#       |-----------------------|
+line1 = "Je suis la Fée des"
+line2 = "Enchantements. Ferme"
+line3 = "les yeux et relaxe-toi."
+
+
 

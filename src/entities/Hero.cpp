@@ -1452,7 +1452,7 @@ void Hero::notify_collision_with_explosion(Explosion &explosion, Sprite &sprite_
 }
 
 /**
- * @brief Makes the hero escape from an entity that is overlapping it.
+ * @brief Makes the hero escape from an entity that is overlapping him.
  *
  * This function is called when an entity that just appeared may overlap the hero
  * (e.g. a chest or a door).
@@ -1463,27 +1463,27 @@ void Hero::notify_collision_with_explosion(Explosion &explosion, Sprite &sprite_
  */
 void Hero::avoid_collision(MapEntity &entity, int direction) {
 
-  // fix the hero's position, whatever the entity size is
+  // fix the hero's position, whatever the entity's) size is
   switch (direction) {
 
     case 0:
       set_top_left_x(entity.get_top_left_x() + entity.get_width());
-      set_y(entity.get_center_point().get_y());
+      set_top_left_y(entity.get_center_point().get_y() - 8);
       break;
 
     case 1:
       set_top_left_y(entity.get_top_left_y() - this->get_height());
-      set_x(entity.get_center_point().get_x());
+      set_top_left_x(entity.get_center_point().get_x() - 8);
       break;
 
     case 2:
       set_top_left_x(entity.get_top_left_x() - this->get_width());
-      set_y(entity.get_center_point().get_y());
+      set_top_left_y(entity.get_center_point().get_y() - 8);
       break;
 
     case 3:
       set_top_left_y(entity.get_top_left_y() + entity.get_height());
-      set_x(entity.get_center_point().get_x());
+      set_top_left_x(entity.get_center_point().get_x() - 8);
       break;
 
     default:

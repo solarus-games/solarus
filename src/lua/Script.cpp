@@ -16,6 +16,7 @@
  */
 #include "lua/Script.h"
 #include "Game.h"
+#include "Map.h"
 #include "Timer.h"
 #include "movements/Movement.h"
 #include "lowlevel/FileTools.h"
@@ -229,6 +230,7 @@ void Script::register_main_api() {
       { "play_music", main_api_play_music },
       { "timer_start", main_api_timer_start },
       { "timer_stop", main_api_timer_stop },
+      { "timer_stop_all", main_api_timer_stop_all },
       { "sprite_get_animation", main_api_sprite_get_animation },
       { "sprite_set_animation", main_api_sprite_set_animation },
       { "sprite_get_direction", main_api_sprite_get_direction },
@@ -332,8 +334,10 @@ void Script::register_map_api() {
       { "npc_start_movement", map_api_npc_start_movement },
       { "npc_get_sprite", map_api_npc_get_sprite },
       { "npc_remove", map_api_npc_remove },
+      { "npc_exists", map_api_npc_exists },
       { "interactive_entity_get_sprite", map_api_interactive_entity_get_sprite },
       { "interactive_entity_remove", map_api_interactive_entity_remove },
+      { "interactive_entity_exists", map_api_interactive_entity_exists },
       { "chest_set_open", map_api_chest_set_open },
       { "chest_set_hidden", map_api_chest_set_hidden },
       { "chest_is_hidden", map_api_chest_is_hidden },
@@ -675,7 +679,7 @@ void Script::add_timer(Timer *timer) {
 }
 
 /**
- * @brief Removes a timer if it exists.
+ * @brief Removes a timer if it exists in this script.
  * @param callback_name name of the timer callback
  */
 void Script::remove_timer(const std::string &callback_name) {
@@ -696,6 +700,20 @@ void Script::remove_timer(const std::string &callback_name) {
   if (found) {
     timers.remove(timer);
   }
+}
+
+/**
+ * @brief Removes all timers started by this script.
+ */
+void Script::remove_all_timers() {
+
+  std::list<Timer*>::iterator it;
+
+  for (it = timers.begin(); it != timers.end(); it++) {
+    delete *it;
+  }
+
+  timers.clear();
 }
 
 /**
@@ -788,6 +806,15 @@ Movement& Script::start_movement(int movement_handle) {
   unassigned_movements.erase(movement_handle);
 
   return movement;
+}
+
+/**
+ * @brief Notifies the script that another map has just been started.
+ * @param map the new current map
+ */
+void Script::event_map_changed(Map &map) {
+
+  notify_script("event_map_changed", "i", map.get_id());
 }
 
 /**

@@ -104,6 +104,19 @@ void Equipment::set_game(Game &game) {
 }
 
 /**
+ * @brief Notifies the equipment system has another map has just been started.
+ * @param map the new current map
+ */
+void Equipment::set_map(Map &map) {
+
+  // notify the scripts
+  std::map<std::string, ItemScript*>::iterator it;
+  for (it = item_scripts.begin(); it != item_scripts.end(); it++) {
+    it->second->event_map_changed(map);
+  }
+}
+
+/**
  * @brief This function is be called repeatedly by the game.
  *
  * Most of the time, there is nothing to update in this class.

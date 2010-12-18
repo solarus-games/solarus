@@ -73,6 +73,7 @@ class Script {
     // timers
     void add_timer(Timer *timer);
     void remove_timer(const std::string &callback_name);
+    void remove_all_timers();
     bool is_new_timer_suspended(void);
 
     // sprites
@@ -95,6 +96,7 @@ class Script {
       main_api_play_music,
       main_api_timer_start,
       main_api_timer_stop,
+      main_api_timer_stop_all,
       main_api_sprite_get_animation,
       main_api_sprite_set_animation,
       main_api_sprite_get_direction,
@@ -180,8 +182,10 @@ class Script {
       map_api_npc_start_movement,
       map_api_npc_get_sprite,
       map_api_npc_remove,
+      map_api_npc_exists,
       map_api_interactive_entity_get_sprite,
       map_api_interactive_entity_remove,
+      map_api_interactive_entity_exists,
       map_api_chest_set_open,
       map_api_chest_set_hidden,
       map_api_chest_is_hidden,
@@ -241,6 +245,7 @@ class Script {
     virtual void update();
     virtual void set_suspended(bool suspended);
 
+    void event_map_changed(Map &map);
     void event_dialog_started(const MessageId &message_id);
     void event_dialog_finished(const MessageId &first_message_id, int answer);
     void event_hero_interaction(const std::string &entity_name);

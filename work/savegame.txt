@@ -133,4 +133,6 @@ booleans:
 92	dungeon 2: mini boss
 93	dungeon 2: boss
 94-98	outside world: green, blue or red rupees under 5 stones in the maze near the twin caves
+99	fairy cave: the fairy has appeared
+100	fairy cave: the fairy gave the boomerang
 

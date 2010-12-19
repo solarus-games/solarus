@@ -104,7 +104,6 @@ void DebugKeys::key_pressed(InputEvent::KeyboardKey key) {
 	equipment.add_item("glove", 1);
 	equipment.add_item("pain_au_chocolat", 1);
 	equipment.add_item("croissant", 1);
-	equipment.add_item("red_key", 1);
 	equipment.add_item("clay_key", 1);
 	equipment.add_item("world_map", 1);
 	equipment.add_item("feather", 1);

@@ -50,21 +50,30 @@ function event_use()
   sol.item.set_finished()
 end
 
+-- Called when the hero presses the action key in front of any interactive entity
+-- that wants to notify the lamp
+function event_hero_interaction(entity_name)
+
+  if string.match(entity_name, "^torch") then
+    sol.map.dialog_start("torch.need_lamp")
+  end
+end
+
 -- Called when the hero uses any inventory item in front of an interactive entity
 -- sensible to the Lamp
-function event_hero_interaction_item(entity, item_name, variant)
+function event_hero_interaction_item(entity_name, item_name, variant)
 
-  if item_name == "lamp" and string.match(entity, "^torch") then
+  if item_name == "lamp" and string.match(entity_name, "^torch") then
     -- using the Lamp on a torch
     success = try_use_lamp()
     if success then
       -- lamp successfully used
-      torch_sprite = sol.map.interactive_entity_get_sprite(entity)
+      torch_sprite = sol.map.interactive_entity_get_sprite(entity_name)
       if sol.main.sprite_get_animation(torch_sprite) == "unlit" then
         -- temporarily light the torch up
         sol.main.sprite_set_animation(torch_sprite, "lit")
         sol.main.timer_start(10000, "unlight_oldest_torch", false)
-        table.insert(temporary_lit_torches, entity)
+        table.insert(temporary_lit_torches, entity_name)
       end
     end
     return true

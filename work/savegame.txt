@@ -137,7 +137,8 @@ booleans:
 100	fairy cave: the fairy gave the boomerang
 101	cave of the hole near the flower: piece of heart
 102	bomb cave 3F: chest with the bomb bag
-
+103	dungeon 2: boss heart container
+104	billy's cave: chest with 50 rupees
 
 
 

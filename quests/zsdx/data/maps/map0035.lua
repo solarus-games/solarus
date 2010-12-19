@@ -13,9 +13,8 @@ function event_hero_on_sensor(sensor_name)
   end
 end
 
-function event_opening_transition_finished(destination_point_name)
+function event_map_opening_transition_finished(destination_point_name)
 
-  -- TODO
   if destination_point_name == "from_3F" then
     sol.map.door_close("door")
   end

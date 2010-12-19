@@ -188,6 +188,13 @@ line2 = "En manger un"
 line3 = "Ne rien faire"
 question = true
 
+[torch.need_lamp]
+#       |--------------------|
+line1 = "Il y a sûrement un"
+line2 = "moyen d'allumer"
+line3 = "cette torche..."
+skip = all
+
 [intro0]
 # Intro : écran noir
 #       |-----------------------|
@@ -479,7 +486,7 @@ next = outside_world.village.grand_son_npc.2
 [outside_world.village.grand_son_npc.2]
 #       |-----------------------|
 line1 = "devrais aller voir"
-line2 = "Mamie, elle adore"
+line2 = "Mamie Lyly, elle adore"
 line3 = "donner des conseils et"
 next = outside_world.village.grand_son_npc.3
 
@@ -1290,6 +1297,31 @@ next = grandma_house.go_telepathic_booth.3
 line1 = "communication moderne"
 line2 = "comme la télépathie ?"
 
+[telepathic_booth.not_working]
+#       |-----------------------|
+line1 = "Allo ? ... Allo ? ..."
+line2 = "Y'a quelqu'un ? ..."
+
+[telepathic_booth.go_master_arbror]
+#       |-----------------------|
+line1 = "$v, tu m'entends ?"
+line2 = "C'est Mamie Lyly ! La"
+line3 = "télépathie, ça marche !"
+next = telepathic_booth.go_master_arbror.2
+
+[telepathic_booth.go_master_arbror.2]
+#       |-----------------------|
+line1 = "Il paraît qu'il y a un"
+line2 = "passage dans les arbres"
+line3 = "au nord."
+next = telepathic_booth.go_master_arbror.3
+
+[telepathic_booth.go_master_arbror.3]
+#       |-----------------------|
+line1 = "On dit que Maître"
+line2 = "Arbror hante ces lieux"
+line3 = "inondés par la rivière."
+
 [smith_cave.without_sword]
 # Dialogue avec le forgeron
 #       |-----------------------|
@@ -1682,15 +1714,15 @@ next = sahasrahla_house.go_grandma.2
 
 [sahasrahla_house.go_grandma.2]
 #       |-----------------------|
-line1 = "la grand-mère du petit,"
-line2 = "à l'est du village."
-line3 = "C'est une vieille amie"
+line1 = "Mamie Lyly, à l'est du"
+line2 = "village. C'est une"
+line3 = "vieille amie et"
 next = sahasrahla_house.go_grandma.3
 
 [sahasrahla_house.go_grandma.3]
 #       |-----------------------|
-line1 = "et elle connaît tout"
-line2 = "sur les environs."
+line1 = "elle connaît tout sur"
+line2 = "les environs."
 
 [sahasrahla_house.frozen_door]
 # Cave de Sahasrahla : quand on regarde la porte gelée

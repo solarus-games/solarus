@@ -346,14 +346,19 @@ SoundId Door::get_sword_tapping_sound() {
 }
 
 /**
- * @brief Opens the door and plays the corresponding animations.
+ * @brief Starts opening the door and plays the corresponding animations.
  *
  * This function can be called only for a door with subtype CLOSED.
+ * Nothing is done if the door is already in the process of being open.
  */
 void Door::open() {
 
   Debug::assert(subtype == CLOSED, "This kind of door cannot be open or closed directly");
   Debug::assert(!is_open(), "This door is already open");
+
+  if (changing) {
+    return; // already being open
+  }
 
   set_opening();
 
@@ -373,13 +378,18 @@ void Door::set_opening() {
 }
 
 /**
- * @brief Closes the door and plays the corresponding animations.
+ * @brief Starts closing the door and plays the corresponding animations.
  *
  * This function can be called only for a door with subtype CLOSED.
+ * Nothing is done if the door is already in the process of being closed.
  */
 void Door::close() {
 
   Debug::assert(is_open(), "This door is already closed");
+
+  if (changing) {
+    return; // already being closed
+  }
 
   set_closing();
 
@@ -395,5 +405,13 @@ void Door::set_closing() {
 
   get_sprite().set_current_animation("opening");
   changing = true;
+}
+
+/**
+ * @brief Returns true if the door is currently being open or closed.
+ * @true true if the door is currently being open or closed
+ */
+bool Door::is_changing() {
+  return changing;
 }
 

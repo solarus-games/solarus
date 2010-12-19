@@ -87,6 +87,7 @@ class Door: public Detector {
     void open();
     void close();
     void set_open(bool open);
+    bool is_changing();
 };
 
 #endif

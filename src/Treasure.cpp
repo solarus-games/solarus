@@ -30,10 +30,13 @@
 
 /**
  * @brief Creates a new treasure.
+ *
+ * You must call decide_content() later because the real content of the treasure may differ
+ * from the item name you specify, because of random treasures and unauthorized ones.
+ *
  * @param game the current game (cannot be NULL)
  * @param item_name name of the item to give, according to items.dat
- * ("_random" and "_none" are also accepted; if you specify "_random", you must call
- * decide_content() later)
+ * ("_random" and "_none" are also accepted 
  * @param variant variant of this item
  * @param savegame_variable index of the savegame boolean indicating that the hero has found this treasure
  * or -1 if this treasure is not saved
@@ -44,15 +47,6 @@ Treasure::Treasure(Game &game, const std::string &item_name, int variant, int sa
   variant(variant),
   savegame_variable(savegame_variable),
   sprite(NULL) {
-
-  Equipment &equipment = game.get_equipment();
-
-  // check that the item is authorized
-  if (item_name != "_none" && item_name != "_random"
-      && !equipment.can_receive_item(item_name, variant)) {
-    this->item_name = "_none";
-    this->variant = 1;
-  }
 
   // if the treasure is unique, check its state
   if (savegame_variable != -1 && game.get_savegame().get_boolean(savegame_variable)) {
@@ -92,13 +86,13 @@ void Treasure::decide_content() {
   if (item_name == "_random") {
     // choose a random item
     equipment.get_random_item(item_name, variant);
+  }
 
-    // check that the item is authorized
-    if (item_name != "_none"
-        && !equipment.can_receive_item(item_name, variant)) {
-      item_name = "_none";
-      variant = 1;
-    }
+  // check that the item is authorized
+  if (item_name != "_none"
+      && !equipment.can_receive_item(item_name, variant)) {
+    item_name = "_none";
+    variant = 1;
   }
 }
 
@@ -117,6 +111,8 @@ ItemProperties& Treasure::get_item_properties() const {
 const std::string& Treasure::get_item_name() const {
 
   Debug::assert(item_name != "_random", "This treasure has a random content and it is not decided yet");
+  Debug::assert(item_name == "_none" || game.get_equipment().can_receive_item(item_name, variant),
+      "This treasure is not authorized by the equipment, did you call decide_content()?");
 
   return item_name;
 }

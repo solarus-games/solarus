@@ -1100,14 +1100,22 @@ int Script::map_api_door_open(lua_State *l) {
 
   const std::string &prefix = luaL_checkstring(l, 1);
 
+  bool done = false;
   MapEntities &entities = script->get_map().get_entities();
   std::list<MapEntity*> doors = entities.get_entities_with_prefix(DOOR, prefix);
   std::list<MapEntity*>::iterator it;
   for (it = doors.begin(); it != doors.end(); it++) {
     Door *door = (Door*) (*it);
+    if (!door->is_changing()) {
+      done = true;
+    }
     door->open();
   }
-  Sound::play("door_open");
+
+  // make sure the sound is played only once even if the script calls this function repeatedly while the door is still changing
+  if (done) {
+    Sound::play("door_open");
+  }
 
   return 0;
 }
@@ -1128,14 +1136,22 @@ int Script::map_api_door_close(lua_State *l) {
 
   const std::string &prefix = luaL_checkstring(l, 1);
 
+  bool done = false;
   MapEntities &entities = script->get_map().get_entities();
   std::list<MapEntity*> doors = entities.get_entities_with_prefix(DOOR, prefix);
   std::list<MapEntity*>::iterator it;
   for (it = doors.begin(); it != doors.end(); it++) {
     Door *door = (Door*) (*it);
+    if (!door->is_changing()) {
+      done = true;
+    }
     door->close();
   }
-  Sound::play("door_closed");
+
+  // make sure the sound is played only once even if the script calls this function repeatedly while the door is still changing
+  if (done) {
+    Sound::play("door_closed");
+  }
 
   return 0;
 }

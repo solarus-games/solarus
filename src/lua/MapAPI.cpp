@@ -1120,6 +1120,7 @@ int Script::map_api_door_open(lua_State *l) {
   return 0;
 }
 
+#include <iostream>
 /**
  * @brief Closes one or several doors.
  *

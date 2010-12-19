@@ -4,7 +4,8 @@ function event_use()
     sol.main.play_sound("wrong")
   else
     sol.item.remove_amount(1)
-    sol.map.hero_set_state("dropping_bomb")
+    x, y, layer = sol.map.hero_get_position();
+-- TODO   sol.map.bomb_create(x, y, layer)
   end
   sol.item.set_finished()
 end

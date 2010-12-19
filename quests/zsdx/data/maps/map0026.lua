@@ -62,3 +62,4 @@ function event_dialog_finished(first_message_id, answer)
     sol.game.add_life(sol.game.get_max_life())
   end
 end
+

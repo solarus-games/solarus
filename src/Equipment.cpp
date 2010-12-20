@@ -608,14 +608,15 @@ int Equipment::get_item_maximum(const std::string &item_name) {
   int fixed_limit = properties.get_fixed_limit();
   if (fixed_limit != 0) {
     maximum = fixed_limit;
+    Debug::assert(maximum > 0, StringConcat() << "No maximum amount for item '" << item_name << "'");
   }
   else {
     const std::string &item_limiting = properties.get_item_limiting();
+    Debug::assert(item_limiting.size() != 0,
+	StringConcat() << "No maximum amount for item '" << item_name << "'");
     int item_limiting_variant = get_item_variant(item_limiting);
     maximum = get_item_properties(item_limiting).get_amount(item_limiting_variant);
   }
-
-  Debug::assert(maximum != 0, StringConcat() << "No maximum amount for item '" << item_name << "'");
 
   return maximum;
 }

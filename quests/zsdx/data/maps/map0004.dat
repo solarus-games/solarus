@@ -1024,6 +1024,9 @@
 4	0	296	461	3	_random	0	-1
 10	0	56	448	32	16	tom_cave_door_tile	909	1
 8	0	72	461	tom_cave_door	3	0	_none	map
+12	0	416	72	16	8	custom_obstacle_2	1	1	1	1
+12	0	256	8	16	8	custom_obstacle_3	1	1	1	1
+12	0	656	24	16	8	custom_obstacle_4	1	1	1	1
 0	1	56	424	32	24	901
 0	2	712	848	192	40	511
 0	2	472	368	240	40	511

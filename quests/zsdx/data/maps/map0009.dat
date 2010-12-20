@@ -947,6 +947,7 @@
 1	0	776	237	from_mountain_cave_2F	3	0
 2	0	768	208	16	16	to_mountain_cave_2F	0	1	39	from_outside
 2	0	768	336	16	16	to_mountain_cave_2F_2	0	1	38	from_outside
+12	0	768	328	16	8	custom_obstacle	1	1	1	1
 0	2	1000	328	8	40	514
 0	2	800	328	8	40	513
 0	2	808	320	192	16	512

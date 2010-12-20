@@ -30,12 +30,8 @@
  * @param id id of the tileset to create
  */
 Tileset::Tileset(TilesetId id):
-  id(id), nb_tile_patterns(0), max_tile_id(0),
+  id(id), max_tile_id(0),
   tiles_image(NULL), entities_image(NULL) {
-  
-  for (int i = 0; i < 1024; i++) {
-    tile_patterns[i] = NULL;
-  }
 }
 
 /**
@@ -55,9 +51,9 @@ Tileset::~Tileset() {
  * @param id id of this tile pattern (1 to 1024)
  * @param tile_pattern the tile pattern to add
  */
-void Tileset::add_tile_pattern(int id, TilePattern *tile) {
-  tile_patterns[id - 1] = tile;
-  nb_tile_patterns++;
+void Tileset::add_tile_pattern(int id, TilePattern *tile_pattern) {
+
+  tile_patterns[id] = tile_pattern;
 
   max_tile_id = std::max(id, max_tile_id);
 }
@@ -162,14 +158,12 @@ void Tileset::load() {
  * by the tileset image.
  */
 void Tileset::unload() {
-  int i;
 
-  for (i = 0; i < max_tile_id; i++) {
-    if (tile_patterns[i] != NULL) {
-      delete tile_patterns[i];
-    }
+  std::map<int, TilePattern*>::iterator it;
+  for (it = tile_patterns.begin(); it != tile_patterns.end(); it++) {
+    delete it->second;
   }
-  nb_tile_patterns = 0;
+  tile_patterns.clear();
 
   delete tiles_image;
   tiles_image = NULL;
@@ -217,7 +211,7 @@ Surface * Tileset::get_entities_image() {
  */
 TilePattern& Tileset::get_tile_pattern(int id) {
 
-  TilePattern *tile_pattern =  tile_patterns[id - 1];
+  TilePattern *tile_pattern =  tile_patterns[id];
   Debug::assert(tile_pattern != NULL, StringConcat() << "There is not tile pattern with id '" << id << "' in this tileset'");
   return *tile_pattern;
 }

@@ -2174,5 +2174,31 @@ line1 = "Je suis la Fée des"
 line2 = "Enchantements. Ferme"
 line3 = "les yeux et relaxe-toi."
 
+[mountain_cave.mountain_sign]
+#       |-----------------------|
+line1 = "Montagne des Terreurs"
+line2 = "        --->"
+line3 = ""
+skip = all
+
+[mountain_cave.not_much_done]
+#       |-----------------------|
+line1 = "Si tu lis ce message,"
+line2 = "c'est que tu n'as pas"
+line3 = "beaucoup avancé."
+skip = all
+
+[mountain_cave.patience]
+#       |-----------------------|
+line1 = "La patience est la"
+line2 = "vertu du vrai héros."
+line3 = " - Auteur inconnu (?) -"
+skip = all
+
+[mountain_cave.almost_done]
+#       |-----------------------|
+line1 = "Le pire n'est pas"
+line2 = "à venir."
+skip = all
 
 

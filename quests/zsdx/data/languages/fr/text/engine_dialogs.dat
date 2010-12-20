@@ -722,7 +722,7 @@ line1 = "Trouve les trois"
 line2 = "Pierres de Feu et"
 line3 = "apporte-les"
 skip = all
-next = _item_description.fire_stones_counter.1
+next = _item_description.fire_stones_counter.1.1
 
 [_item_description.fire_stones_counter.1.1]
 #       |--------------------|

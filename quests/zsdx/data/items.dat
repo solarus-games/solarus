@@ -250,9 +250,10 @@ nb_variants = 2
 [fire_stones_counter]
 savegame_variable = 1126
 counter = 1029
+limit = 3
 
 [fire_stone]
-changes_counter = fire_stone_counter
+changes_counter = fire_stones_counter
 
 [bottle_4]
 savegame_variable = 1127

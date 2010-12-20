@@ -943,6 +943,10 @@
 6	0	144	600	8	32	jump_sensor_3	4	32
 6	0	192	824	8	32	jump_sensor_4	4	32
 4	0	1000	877	4	_random	1	-1
+1	0	776	365	from_mountain_cave_1F	3	0
+1	0	776	237	from_mountain_cave_2F	3	0
+2	0	768	208	16	16	to_mountain_cave_2F	0	1	39	from_outside
+2	0	768	336	16	16	to_mountain_cave_2F_2	0	1	38	from_outside
 0	2	1000	328	8	40	514
 0	2	800	328	8	40	513
 0	2	808	320	192	16	512

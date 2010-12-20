@@ -104,6 +104,9 @@ glove entities/items.png 2 0 -1
 fire_stones_counter entities/items.png 1 0 -1
 416	0	16	16	8	13	1	1
 
+fire_stone entities/items.png 1 0 -1
+416	0	16	16	8	13	1	1
+
 bottle_4 entities/items.png 6 0 -1
 96	0	16	16	8	13	1	1
 96	16	16	16	8	13	1	1

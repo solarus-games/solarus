@@ -64,7 +64,7 @@ public class DestinationPoint extends MapEntity {
     public DestinationPoint(Map map) throws MapException {
 	super(map, 16, 16);
 	subtype = Subtype.INVISIBLE;
-	setDirection(1);
+	setDirection(3);
     }
 
     /**
@@ -118,7 +118,7 @@ public class DestinationPoint extends MapEntity {
 	if (subtype != this.subtype) {
 	    if (subtype == Subtype.INVISIBLE) {
 		if (this.subtype != null) {
-		    setDirection(1);
+		    setDirection(3);
 		}
 	    }
 	    else {

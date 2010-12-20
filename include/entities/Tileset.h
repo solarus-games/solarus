@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include "lowlevel/Color.h"
+#include <map>
 
 /**
  * @brief An image containing all tile patterns.
@@ -31,13 +32,12 @@ class Tileset {
 
   private:
 
-    TilesetId id;                     /**< id of the tileset */
-    TilePattern *tile_patterns[1024]; /**< tile patterns in this tileset (the maximum id is 1024) */ // TODO use an std::map
-    int nb_tile_patterns;             /**< number of tile patterns in the tileset */
-    int max_tile_id;                  /**< current maximum id of a tile pattern in this tileset */
-    Color background_color;           /**< background color of the tileset */
-    Surface *tiles_image;             /**< image from which the tile patterns are extracted */
-    Surface *entities_image;          /**< image from which the skin-dependent entities are extracted */
+    TilesetId id;                                     /**< id of the tileset */
+    std::map<int, TilePattern*> tile_patterns;        /**< tile patterns in this tileset */
+    int max_tile_id;                                  /**< current maximum id of a tile pattern in this tileset */
+    Color background_color;                           /**< background color of the tileset */
+    Surface *tiles_image;                             /**< image from which the tile patterns are extracted */
+    Surface *entities_image;                          /**< image from which the skin-dependent entities are extracted */
 
     void add_tile_pattern(int id, TilePattern *tile_pattern);
 

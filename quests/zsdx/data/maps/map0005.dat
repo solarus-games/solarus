@@ -1132,6 +1132,8 @@
 12	0	840	72	16	8	custom_obstacle	1	1	1	1
 2	0	840	80	16	16	to_billy_cave	0	1	37	from_outside
 1	0	848	109	from_billy_cave	3	0
+12	0	352	24	16	8	custom_obstacle_2	1	1	1	1
+12	0	320	632	16	8	custom_obstacle_3	1	1	1	1
 0	2	568	320	48	40	511
 0	2	568	416	48	40	511
 0	2	544	464	48	40	511

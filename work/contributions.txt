@@ -67,6 +67,8 @@ Bruno de C (affiche, dessins)
 Morwenn (une musique)
 Joker : graphismes (tileset de forêt pour niveau 3)
 Tifredi : graphismes (intéressé par les boss)
+MultiSync_XV17 : rip de tous les ennemis de ALTTP
+
 
 Candidatures a priori refusées :
 

@@ -2201,4 +2201,11 @@ line1 = "Le pire n'est pas"
 line2 = "à venir."
 skip = all
 
+[outside_world.old_castle_sign]
+#       |-----------------------|
+line1 = "Ancien Château d'Hyrule"
+line2 = "         <---"
+line3 = ""
+skip = all
+
 

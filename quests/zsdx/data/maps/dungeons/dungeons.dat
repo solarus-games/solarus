@@ -137,3 +137,19 @@ y = 536
 save = 87
 big = 0
 
+[dungeon_3.floor_0]
+width = 1024
+height = 1024
+
+[dungeon_3.floor_1]
+width = 1024
+height = 1024
+
+[dungeon_3.floor_2]
+width = 1024
+height = 1024
+
+[dungeon_3.floor_3]
+width = 1024
+height = 1024
+

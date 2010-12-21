@@ -44,8 +44,9 @@
 1	3	Cave
 1	4	Blue dungeon
 1	5	Green dungeon
-1	6	Intro
 1	7	Brown dungeon
+1	8	Blue dungeon (dark world style)
+1	6	Intro
 2	agahnim.spc	Agahnim theme
 2	beginning.spc	Beginning
 2	boss.spc	Boss

@@ -14,6 +14,12 @@ line2 = "   Donjon de la Forêt  "
 line1 = "        Niveau 2       "
 line2 = "     Caverne de Roc    "
 
+[dungeon_3]
+# Lorsqu'on pénètre dans le donjon 3
+#       |-----------------------|
+line1 = "        Niveau 3       "
+line2 = " Antre de Maître Arbror"
+
 [found_piece_of_heart.first]
 #       |--------------------|
 icon = 75

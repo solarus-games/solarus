@@ -153,3 +153,10 @@ height = 1024
 width = 1024
 height = 1024
 
+[dungeon_3.map_40.chest_0]
+floor = 0
+x = 936
+y = 432
+save = -1
+big = 0
+

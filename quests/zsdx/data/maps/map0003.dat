@@ -1966,6 +1966,8 @@
 12	0	520	856	16	8	custom_obstacle_6	1	1	1	1
 1	0	528	893	out_bomb_cave	3	0
 2	0	520	864	16	16	to_bomb_cave	0	1	34	from_outside
+1	0	376	605	from_dungeon_3	3	0
+2	0	368	568	16	16	to_dungeon_3	0	1	40	from_outside
 0	1	256	400	240	40	511
 0	1	232	448	288	40	511
 0	1	208	480	336	16	512

@@ -81,7 +81,7 @@ Transition::Direction Transition::get_direction() {
  */
 void Transition::set_previous_surface(Surface *previous_surface) {
 
-  Debug::assert(get_direction() != OUT, "Cannot show a previous surface with an OUT transition effect");
+  Debug::check_assertion(get_direction() != OUT, "Cannot show a previous surface with an OUT transition effect");
 
   this->previous_surface = previous_surface;
 }

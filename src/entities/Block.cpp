@@ -48,7 +48,7 @@ Block::Block(const std::string &name, Layer layer, int x, int y,
   set_origin(8, 13);
   if (subtype == STATUE) {
 
-    Debug::assert(direction == -1, "Cannot set a direction for a statue");
+    Debug::check_assertion(direction == -1, "Cannot set a direction for a statue");
     create_sprite("entities/statue");
   }
   else {

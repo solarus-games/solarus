@@ -37,7 +37,7 @@ static void basic_test(MapEntity &e) {
   PathFinding pf(map, e, hero);
   std::string path = pf.compute_path();
 
-  Debug::assert(path == "7777700",
+  Debug::check_assertion(path == "7777700",
       StringConcat() << "Unexpected path for 'basic_test': '" << path << "'");
 }
 

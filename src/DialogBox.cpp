@@ -223,7 +223,7 @@ const std::string& DialogBox::get_variable() {
 
   const std::string &value = variables[first_message_id];
 
-  Debug::assert(value.size() > 0, StringConcat() << "Missing variable in message '" << current_message_id << "'");
+  Debug::check_assertion(value.size() > 0, StringConcat() << "Missing variable in message '" << current_message_id << "'");
 
   return value;
 }
@@ -244,7 +244,7 @@ int DialogBox::get_last_answer() {
  */
 void DialogBox::set_last_answer(int answer) {
 
-  Debug::assert(answer >= -1 && answer <= 1, StringConcat() << "Invalid value of answer: " << answer);
+  Debug::check_assertion(answer >= -1 && answer <= 1, StringConcat() << "Invalid value of answer: " << answer);
   this->last_answer = answer;
 }
 
@@ -259,7 +259,7 @@ void DialogBox::set_last_answer(int answer) {
 void DialogBox::start_dialog(const MessageId &first_message_id, Script *issuer_script,
     VerticalPosition vertical_position) {
 
-  Debug::assert(!is_enabled(), StringConcat() << "Cannot start message sequence '" << first_message_id << ": the dialog box is already enabled");
+  Debug::check_assertion(!is_enabled(), StringConcat() << "Cannot start message sequence '" << first_message_id << ": the dialog box is already enabled");
 
   // save the action and sword keys
   KeysEffect &keys_effect = game.get_keys_effect();

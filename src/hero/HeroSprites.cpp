@@ -159,7 +159,7 @@ void HeroSprites::rebuild_equipment() {
 
   int tunic_number = equipment.get_ability("tunic");
   
-  Debug::assert(tunic_number > 0, StringConcat() << "Invalid tunic number: " << tunic_number);
+  Debug::check_assertion(tunic_number > 0, StringConcat() << "Invalid tunic number: " << tunic_number);
 
   tunic_sprite = new Sprite(tunic_sprite_ids[tunic_number - 1]);
   tunic_sprite->enable_pixel_collisions();
@@ -420,7 +420,7 @@ int HeroSprites::get_animation_direction(int keys_direction, int real_movement_d
  */
 void HeroSprites::set_animation_direction(int direction) {
 
-  Debug::assert(direction >= 0 && direction < 4,
+  Debug::check_assertion(direction >= 0 && direction < 4,
     StringConcat() << "Invalid direction for set_animation_direction: " << direction);
 
   tunic_sprite->set_current_direction(direction);

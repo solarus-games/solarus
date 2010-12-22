@@ -156,7 +156,7 @@ void TransitionScrolling::display(Surface *surface) {
     return;
   }
 
-  Debug::assert(previous_surface != NULL, "No previous surface defined for scrolling");
+  Debug::check_assertion(previous_surface != NULL, "No previous surface defined for scrolling");
 
   // draw the old map
   previous_surface->blit(both_maps_surface, previous_map_dst_position); 

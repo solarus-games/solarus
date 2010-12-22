@@ -110,8 +110,8 @@ ItemProperties& Treasure::get_item_properties() const {
  */
 const std::string& Treasure::get_item_name() const {
 
-  Debug::assert(item_name != "_random", "This treasure has a random content and it is not decided yet");
-  Debug::assert(item_name == "_none" || game.get_equipment().can_receive_item(item_name, variant),
+  Debug::check_assertion(item_name != "_random", "This treasure has a random content and it is not decided yet");
+  Debug::check_assertion(item_name == "_none" || game.get_equipment().can_receive_item(item_name, variant),
       "This treasure is not authorized by the equipment, did you call decide_content()?");
 
   return item_name;

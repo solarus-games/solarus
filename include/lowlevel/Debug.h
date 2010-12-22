@@ -34,7 +34,7 @@ class Debug {
   public:
 
     static void print(const std::string &message, std::ostream &os = std::cout);
-    static void assert(bool assertion, const std::string &error_message = "");
+    static void check_assertion(bool assertion, const std::string &error_message = "");
     static void die(const std::string &error_message = "");
 };
 
@@ -66,7 +66,7 @@ inline void Debug::print(const std::string &message, std::ostream &os) {
  * @param assertion the boolean condition to check
  * @param error_message the error message to attach to the exception when the assertion fails
  */
-inline void Debug::assert(bool assertion, const std::string &error_message) {
+inline void Debug::check_assertion(bool assertion, const std::string &error_message) {
 
   if (!assertion) {
     print(error_message, std::cerr);

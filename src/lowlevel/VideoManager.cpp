@@ -227,7 +227,7 @@ void VideoManager::set_video_mode(VideoMode mode) {
   if (!disable_window) {
     SDL_Surface *screen_internal_surface = SDL_SetVideoMode(size.get_width(), size.get_height(), 32, flags);
 
-    Debug::assert(screen_internal_surface != NULL, StringConcat() << "Cannot create the video surface for mode " << mode);
+    Debug::check_assertion(screen_internal_surface != NULL, StringConcat() << "Cannot create the video surface for mode " << mode);
 
     SDL_ShowCursor(show_cursor);
     this->screen_surface = new Surface(screen_internal_surface);

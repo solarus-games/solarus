@@ -63,7 +63,7 @@ void RandomMovement::set_entity(MapEntity *entity) {
  */
 void RandomMovement::set_max_distance(int max_distance) {
 
-  Debug::assert(max_distance >= 0, StringConcat() << "Invalid value of max_distance: " << max_distance);
+  Debug::check_assertion(max_distance >= 0, StringConcat() << "Invalid value of max_distance: " << max_distance);
   this->max_distance = max_distance;
 
   // restrict the movement in a rectangle

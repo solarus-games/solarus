@@ -72,7 +72,7 @@ Equipment::~Equipment() {
  */
 ItemScript& Equipment::get_item_script(const std::string &item_name) {
 
-  Debug::assert(item_scripts.count(item_name) != 0,
+  Debug::check_assertion(item_scripts.count(item_name) != 0,
                 StringConcat() << "Cannot find item script '" << item_name << "'");
 
   return *item_scripts[item_name];
@@ -84,7 +84,7 @@ ItemScript& Equipment::get_item_script(const std::string &item_name) {
  */
 void Equipment::set_game(Game &game) {
 
-  Debug::assert(this->game == NULL, "The game is already set");
+  Debug::check_assertion(this->game == NULL, "The game is already set");
 
   this->game = &game;
 
@@ -191,7 +191,7 @@ int Equipment::get_max_money() {
  */
 void Equipment::set_max_money(int max_money) {
 
-  Debug::assert(max_money > 0, StringConcat() << "Illegal maximum amount of money: " << max_money);
+  Debug::check_assertion(max_money > 0, StringConcat() << "Illegal maximum amount of money: " << max_money);
 
   savegame.set_integer(Savegame::MAX_MONEY, max_money);
 }
@@ -214,7 +214,7 @@ int Equipment::get_money() {
  */
 void Equipment::set_money(int money) {
 
-  Debug::assert(money >= 0 && money <= get_max_money(), StringConcat() << "Illegal amount of money: " << money);
+  Debug::check_assertion(money >= 0 && money <= get_max_money(), StringConcat() << "Illegal amount of money: " << money);
 
   savegame.set_integer(Savegame::CURRENT_MONEY, money);
 }
@@ -268,7 +268,7 @@ int Equipment::get_max_life() {
  */
 void Equipment::set_max_life(int max_life) {
 
-  Debug::assert(max_life > 0, StringConcat() << "Illegal maximum life: " << max_life);
+  Debug::check_assertion(max_life > 0, StringConcat() << "Illegal maximum life: " << max_life);
 
   savegame.set_integer(Savegame::MAX_LIFE, max_life);
 }
@@ -290,7 +290,7 @@ int Equipment::get_life() {
  */
 void Equipment::set_life(int life) {
 
-  Debug::assert(life >= 0 && life <= get_max_life(), StringConcat() << "Illegal level of life: " << life);
+  Debug::check_assertion(life >= 0 && life <= get_max_life(), StringConcat() << "Illegal level of life: " << life);
 
   savegame.set_integer(Savegame::CURRENT_LIFE, life);
 }
@@ -347,7 +347,7 @@ int Equipment::get_max_magic() {
  */
 void Equipment::set_max_magic(int max_magic) {
 
-  Debug::assert(max_magic >= 0, StringConcat() << "Illegal maximum number of magic points: " << max_magic);
+  Debug::check_assertion(max_magic >= 0, StringConcat() << "Illegal maximum number of magic points: " << max_magic);
 
   savegame.set_integer(Savegame::MAX_MAGIC, max_magic);
 
@@ -372,7 +372,7 @@ int Equipment::get_magic() {
  */
 void Equipment::set_magic(int magic) {
 
-  Debug::assert(magic >= 0 && magic <= get_max_magic(), StringConcat() << "Illegal number of magic points: " << magic);
+  Debug::check_assertion(magic >= 0 && magic <= get_max_magic(), StringConcat() << "Illegal number of magic points: " << magic);
 
   savegame.set_integer(Savegame::CURRENT_MAGIC, magic);
 }
@@ -427,7 +427,7 @@ bool Equipment::is_magic_decreasing() {
  */
 void Equipment::start_removing_magic(uint32_t delay) {
 
-  Debug::assert(delay > 0, StringConcat() << "Illegal magic bar decrease delay: " << delay);
+  Debug::check_assertion(delay > 0, StringConcat() << "Illegal magic bar decrease delay: " << delay);
 
   if (get_magic() > 0) {
     this->magic_decrease_delay = delay;
@@ -453,7 +453,7 @@ void Equipment::stop_removing_magic() {
 ItemProperties& Equipment::get_item_properties(const std::string &item_name) {
 
   ItemProperties *properties = item_properties[item_name];
-  Debug::assert(properties != NULL, StringConcat() << "Cannot find item with name '" << item_name << "'");
+  Debug::check_assertion(properties != NULL, StringConcat() << "Cannot find item with name '" << item_name << "'");
   return *properties;
 }
 
@@ -499,8 +499,8 @@ void Equipment::set_item_variant(const std::string &item_name, int variant) {
 
   ItemProperties &properties = get_item_properties(item_name);
   int index = properties.get_savegame_variable();
-  Debug::assert(index != -1, StringConcat() << "The item '" << item_name << "' is not saved");
-  Debug::assert(variant >= 0 && variant <= properties.get_nb_variants(),
+  Debug::check_assertion(index != -1, StringConcat() << "The item '" << item_name << "' is not saved");
+  Debug::check_assertion(variant >= 0 && variant <= properties.get_nb_variants(),
       StringConcat() << "Invalid variant '" << variant << "' for item '" << item_name);
 
   // set the possession state in the savegame
@@ -539,7 +539,7 @@ void Equipment::remove_item(const std::string &item_name) {
 int Equipment::get_item_amount(const std::string &item_name) {
 
   int counter_index = get_item_properties(item_name).get_counter_savegame_variable();
-  Debug::assert(counter_index != -1, StringConcat() << "No amount for item '" << item_name << "'");
+  Debug::check_assertion(counter_index != -1, StringConcat() << "No amount for item '" << item_name << "'");
 
   return savegame.get_integer(counter_index);
 }
@@ -558,8 +558,8 @@ void Equipment::set_item_amount(const std::string &item_name, int amount) {
   int counter_index = get_item_properties(item_name).get_counter_savegame_variable();
   int max = get_item_maximum(item_name);
 
-  Debug::assert(counter_index != -1, StringConcat() << "No amount for item '" << item_name << "'");
-  Debug::assert(amount >= 0 && amount <= max, StringConcat() << "Illegal amount for item '" << item_name << "': " << amount);
+  Debug::check_assertion(counter_index != -1, StringConcat() << "No amount for item '" << item_name << "'");
+  Debug::check_assertion(amount >= 0 && amount <= max, StringConcat() << "Illegal amount for item '" << item_name << "': " << amount);
 
   savegame.set_integer(counter_index, amount);
 
@@ -608,11 +608,11 @@ int Equipment::get_item_maximum(const std::string &item_name) {
   int fixed_limit = properties.get_fixed_limit();
   if (fixed_limit != 0) {
     maximum = fixed_limit;
-    Debug::assert(maximum > 0, StringConcat() << "No maximum amount for item '" << item_name << "'");
+    Debug::check_assertion(maximum > 0, StringConcat() << "No maximum amount for item '" << item_name << "'");
   }
   else {
     const std::string &item_limiting = properties.get_item_limiting();
-    Debug::assert(item_limiting.size() != 0,
+    Debug::check_assertion(item_limiting.size() != 0,
 	StringConcat() << "No maximum amount for item '" << item_name << "'");
     int item_limiting_variant = get_item_variant(item_limiting);
     maximum = get_item_properties(item_limiting).get_amount(item_limiting_variant);
@@ -718,8 +718,8 @@ const std::string Equipment::get_item_assigned(int slot) {
 void Equipment::set_item_assigned(int slot, const std::string &item_name) {
 
   if (item_name.size() != 0) {
-    Debug::assert(has_item(item_name), StringConcat() << "Cannot assign item '" << item_name << "' because the player does not have it");
-    Debug::assert(get_item_properties(item_name).can_be_assigned(), StringConcat() << "The item '" << item_name << "' cannot be assigned");
+    Debug::check_assertion(has_item(item_name), StringConcat() << "Cannot assign item '" << item_name << "' because the player does not have it");
+    Debug::check_assertion(get_item_properties(item_name).can_be_assigned(), StringConcat() << "The item '" << item_name << "' cannot be assigned");
   }
 
   int index = Savegame::ITEM_SLOT_0 + slot;
@@ -762,7 +762,7 @@ bool Equipment::are_small_keys_enabled() {
  */
 int Equipment::get_small_keys_variable() {
 
-  Debug::assert(are_small_keys_enabled(), "The small keys are not enabled on this map");
+  Debug::check_assertion(are_small_keys_enabled(), "The small keys are not enabled on this map");
 
   return game->get_current_map().get_small_keys_variable();
 }
@@ -807,7 +807,7 @@ void Equipment::add_small_keys(int amount_to_add) {
  */
 void Equipment::remove_small_key() {
 
-  Debug::assert(has_small_key(), "The player has no small keys");
+  Debug::check_assertion(has_small_key(), "The player has no small keys");
 
   int index = get_small_keys_variable();
   savegame.set_integer(index, get_small_keys() - 1);
@@ -864,7 +864,7 @@ int Equipment::get_ability_savegame_variable(const std::string &ability_name) {
     index = Savegame::DUNGEON_1_ABILITY_OPEN_BOSS_LOCK + 10 * (get_current_dungeon() - 1);    
   }
 
-  Debug::assert(index != -1, StringConcat() << "Unknown ability '" << ability_name << "'");
+  Debug::check_assertion(index != -1, StringConcat() << "Unknown ability '" << ability_name << "'");
 
   return index;
 }

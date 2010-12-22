@@ -220,7 +220,7 @@ double RectilinearMovement::get_angle() {
  */
 void RectilinearMovement::set_angle(double angle) {
 
-  Debug::assert(x_speed != 0 || y_speed != 0,
+  Debug::check_assertion(x_speed != 0 || y_speed != 0,
     StringConcat() << "Cannot set the angle when the speed is zero (entity: " << get_entity() << ")");
 
   double speed = get_speed();

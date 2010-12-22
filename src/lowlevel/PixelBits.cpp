@@ -29,7 +29,7 @@
 PixelBits::PixelBits(Surface *surface, const Rectangle &image_position) {
 
   SDL_PixelFormat *format = surface->get_internal_surface()->format;
-  Debug::assert(format->BitsPerPixel == 8, "This surface should have an 8-bit pixel format");
+  Debug::check_assertion(format->BitsPerPixel == 8, "This surface should have an 8-bit pixel format");
 
   uint8_t colorkey = (uint8_t) format->colorkey;
 

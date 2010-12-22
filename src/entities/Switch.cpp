@@ -45,7 +45,7 @@ Switch::Switch(const std::string &name, Layer layer, int x, int y,
   needs_block(needs_block), disable_when_leaving(disable_when_leaving),
   entity_overlapping(NULL) {
 
-  Debug::assert(subtype != WALKABLE_INVISIBLE || !needs_block,
+  Debug::check_assertion(subtype != WALKABLE_INVISIBLE || !needs_block,
       StringConcat() << "The switch '" << name << "' is invisible but needs a block");
 
   // sprite

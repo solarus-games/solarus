@@ -60,7 +60,7 @@ Surface::Surface(const std::string &file_name, ImageDirectory base_directory):
   FileTools::data_file_close_buffer(buffer);
   SDL_RWclose(rw);
 
-  Debug::assert(internal_surface != NULL, StringConcat() << "Cannot load image '" << prefixed_file_name << "'");
+  Debug::check_assertion(internal_surface != NULL, StringConcat() << "Cannot load image '" << prefixed_file_name << "'");
 }
 
 /**

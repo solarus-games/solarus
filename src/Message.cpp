@@ -99,7 +99,7 @@ void Message::parse(MessageId message_id) {
   // parse the message
   IniFile ini_file(file_name, IniFile::READ_LANGUAGE);
 
-  Debug::assert(ini_file.has_group(message_id), StringConcat() << "The message '" << message_id << "' does not exist");
+  Debug::check_assertion(ini_file.has_group(message_id), StringConcat() << "The message '" << message_id << "' does not exist");
   ini_file.set_group(message_id);
 
   // text

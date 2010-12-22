@@ -33,7 +33,7 @@ Stairs::Stairs(Layer layer, int x, int y, int direction, Subtype subtype):
   Detector(COLLISION_FACING_POINT | COLLISION_RECTANGLE, "", layer, x, y, 16, 16),
   subtype(subtype) {
 
-  Debug::assert(!is_inside_floor() || layer != LAYER_HIGH, "Cannot put single floor stairs on the high layer");
+  Debug::check_assertion(!is_inside_floor() || layer != LAYER_HIGH, "Cannot put single floor stairs on the high layer");
 
   set_direction(direction);
 

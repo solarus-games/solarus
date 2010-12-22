@@ -30,7 +30,7 @@ static void basic_test() {
     System::update();
   }
 
-  Debug::assert(m.get_x() == 3 && m.get_y() == -1,
+  Debug::check_assertion(m.get_x() == 3 && m.get_y() == -1,
       StringConcat() << "Unexpected coordinates for 'basic_test': " << m.get_xy());
 }
 
@@ -45,7 +45,7 @@ static void loop_test() {
     System::update();
   }
 
-  Debug::assert(m.get_x() == 3 && m.get_y() == -6,
+  Debug::check_assertion(m.get_x() == 3 && m.get_y() == -6,
       StringConcat() << "Unexpected coordinates for 'loop_test': " << m.get_xy());
 }
 
@@ -60,14 +60,14 @@ static void syntax_test() {
     // expected behavior
   }
 
-  Debug::assert(!no_error, "'syntax_test' failed to detect a syntax error");
+  Debug::check_assertion(!no_error, "'syntax_test' failed to detect a syntax error");
 }
 
 static void empty_test() {
 
   PixelMovement m("", 50, true, true);
 
-  Debug::assert(m.is_finished());
+  Debug::check_assertion(m.is_finished());
 }
 
 static void restart_test() {
@@ -80,7 +80,7 @@ static void restart_test() {
     System::update();
   }
 
-  Debug::assert(m.get_x() == 2 && m.get_y() == 1,
+  Debug::check_assertion(m.get_x() == 2 && m.get_y() == 1,
       StringConcat() << "Unexpected coordinates for 'restart_test #1': " << m.get_xy());
 
   m.set_trajectory("0 2");
@@ -91,7 +91,7 @@ static void restart_test() {
     System::update();
   }
 
-  Debug::assert(m.get_x() == 2 && m.get_y() == 3,
+  Debug::check_assertion(m.get_x() == 2 && m.get_y() == 3,
       StringConcat() << "Unexpected coordinates for 'restart_test #2': " << m.get_xy());
 }
 
@@ -110,7 +110,7 @@ static void list_test() {
     System::update();
   }
 
-  Debug::assert(m.get_x() == -1 && m.get_y() == -3,
+  Debug::check_assertion(m.get_x() == -1 && m.get_y() == -3,
       StringConcat() << "Unexpected coordinates for 'list_test': " << m.get_xy());
 }
 

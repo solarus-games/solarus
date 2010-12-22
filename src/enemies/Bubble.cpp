@@ -80,7 +80,7 @@ void Bubble::restart() {
  */
 void Bubble::go(int movement_direction8) {
 
-  Debug::assert(movement_direction8 == 1
+  Debug::check_assertion(movement_direction8 == 1
       || movement_direction8 == 3
       || movement_direction8 == 5
       || movement_direction8 == 7,

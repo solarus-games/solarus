@@ -108,7 +108,7 @@ SpriteAnimationSet::SpriteAnimationSet(const SpriteAnimationSetId &id) {
       directions[i] = new SpriteAnimationDirection(nb_frames, positions_in_src, x_origin, y_origin);
     }
 
-    Debug::assert(animations.count(name) == 0, StringConcat() << "Animation '" << name << "' is defined twice in sprite '" << id << "'");
+    Debug::check_assertion(animations.count(name) == 0, StringConcat() << "Animation '" << name << "' is defined twice in sprite '" << id << "'");
     animations[name] = new SpriteAnimation(image_file_name, nb_directions, directions,
 					   frame_delay, loop_on_frame);
 
@@ -157,7 +157,7 @@ void SpriteAnimationSet::set_map(Map &map) {
  */
 const SpriteAnimation * SpriteAnimationSet::get_animation(const std::string &animation_name) const {
 
-  Debug::assert(animations.count(animation_name) > 0,
+  Debug::check_assertion(animations.count(animation_name) > 0,
       StringConcat() << "No animation '" << animation_name << "' in this animation set");
 
   return animations.find(animation_name)->second; // the [] operator is not const in std::map
@@ -170,7 +170,7 @@ const SpriteAnimation * SpriteAnimationSet::get_animation(const std::string &ani
  */
 SpriteAnimation * SpriteAnimationSet::get_animation(const std::string &animation_name) {
 
-  Debug::assert(animations.count(animation_name) > 0,
+  Debug::check_assertion(animations.count(animation_name) > 0,
       StringConcat() << "No animation '" << animation_name << "' in this animation set");
 
   return animations[animation_name];

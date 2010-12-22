@@ -90,7 +90,7 @@ int Script::game_api_savegame_set_string(lua_State *l) {
   int index = luaL_checkinteger(l, 1);
   const std::string &value = luaL_checkstring(l, 2);
 
-  Debug::assert(index >= 32, StringConcat() << "Cannot change savegame string #" << index << ": string variables below 32 are read-only");
+  Debug::check_assertion(index >= 32, StringConcat() << "Cannot change savegame string #" << index << ": string variables below 32 are read-only");
 
   script->get_game().get_savegame().set_string(index, value);
 
@@ -111,7 +111,7 @@ int Script::game_api_savegame_set_integer(lua_State *l) {
   int index = luaL_checkinteger(l, 1);
   int value = luaL_checkinteger(l, 2);
 
-  Debug::assert(index >= 1024, StringConcat() << "Cannot change savegame integer #" << index << ": integer variables below 1024 are read-only");
+  Debug::check_assertion(index >= 1024, StringConcat() << "Cannot change savegame integer #" << index << ": integer variables below 1024 are read-only");
 
   script->get_game().get_savegame().set_integer(index, value);
 

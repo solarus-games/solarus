@@ -374,7 +374,7 @@ bool Arrow::is_flying() {
  */
 void Arrow::attach_to(MapEntity &entity_reached) {
 
-  Debug::assert(this->entity_reached == NULL, "This arrow is already attached to an entity");
+  Debug::check_assertion(this->entity_reached == NULL, "This arrow is already attached to an entity");
 
   this->entity_reached = &entity_reached;
   stop_now = true;

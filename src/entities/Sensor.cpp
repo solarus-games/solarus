@@ -41,7 +41,7 @@ Sensor::Sensor(const std::string &name, Layer layer, int x, int y,
 
   if (subtype == RETURN_FROM_BAD_GROUND) {
     
-    Debug::assert(width == 16 && height == 16,
+    Debug::check_assertion(width == 16 && height == 16,
 	StringConcat() << "This place to return from bad grounds has an incorrect size: " << width << "x" << height);
   }
 

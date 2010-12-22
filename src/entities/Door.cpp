@@ -353,8 +353,8 @@ SoundId Door::get_sword_tapping_sound() {
  */
 void Door::open() {
 
-  Debug::assert(subtype == CLOSED, "This kind of door cannot be open or closed directly");
-  Debug::assert(!is_open(), "This door is already open");
+  Debug::check_assertion(subtype == CLOSED, "This kind of door cannot be open or closed directly");
+  Debug::check_assertion(!is_open(), "This door is already open");
 
   if (changing) {
     return; // already being open
@@ -385,7 +385,7 @@ void Door::set_opening() {
  */
 void Door::close() {
 
-  Debug::assert(is_open(), "This door is already closed");
+  Debug::check_assertion(is_open(), "This door is already closed");
 
   if (changing) {
     return; // already being closed

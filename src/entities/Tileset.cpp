@@ -212,7 +212,7 @@ Surface * Tileset::get_entities_image() {
 TilePattern& Tileset::get_tile_pattern(int id) {
 
   TilePattern *tile_pattern =  tile_patterns[id];
-  Debug::assert(tile_pattern != NULL, StringConcat() << "There is not tile pattern with id '" << id << "' in this tileset'");
+  Debug::check_assertion(tile_pattern != NULL, StringConcat() << "There is not tile pattern with id '" << id << "' in this tileset'");
   return *tile_pattern;
 }
 

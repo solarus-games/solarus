@@ -55,7 +55,7 @@ Music::Music(const MusicId &music_id):
 
   // get the format
   size_t index = music_id.find_last_of(".");
-  Debug::assert(index != std::string::npos && index != music_id.size(),
+  Debug::check_assertion(index != std::string::npos && index != music_id.size(),
     StringConcat() << "Invalid music file name: " << music_id);
   std::string extension = music_id.substr(index + 1);
 
@@ -139,7 +139,7 @@ int Music::get_volume() {
  */
 void Music::set_volume(int volume) {
 
-  Debug::assert(volume >= 0 && volume <= 100, StringConcat() << "Illegal volume for music:" << volume);
+  Debug::check_assertion(volume >= 0 && volume <= 100, StringConcat() << "Illegal volume for music:" << volume);
 
   Configuration::set_value("music_volume", volume);
   Music::volume = volume / 100.0;
@@ -278,7 +278,7 @@ void Music::decode_spc(ALuint destination_buffer, ALsizei nb_samples) {
   delete[] raw_data;
 
   int error = alGetError();
-  Debug::assert(error == AL_NO_ERROR,
+  Debug::check_assertion(error == AL_NO_ERROR,
       StringConcat() << "Failed to fill the audio buffer with decoded SPC data for music file '" << file_name << ": error " << error);
 }
 
@@ -307,7 +307,7 @@ void Music::decode_ogg(ALuint destination_buffer, ALsizei nb_samples) {
   delete[] raw_data;
 
   int error = alGetError();
-  Debug::assert(error == AL_NO_ERROR,
+  Debug::check_assertion(error == AL_NO_ERROR,
       StringConcat() << "Failed to fill the audio buffer with decoded OGG data for music file '" << file_name << ": error " << error);
 }
 
@@ -324,8 +324,8 @@ bool Music::start() {
     return false;
   }
 
-  Debug::assert(current_music == NULL, StringConcat() << "Cannot play music file '" << file_name << "': a music is already playing");
-  Debug::assert(format == SPC || format == OGG, StringConcat() << "Cannot play music file '" << file_name << "': unknown music format");
+  Debug::check_assertion(current_music == NULL, StringConcat() << "Cannot play music file '" << file_name << "': a music is already playing");
+  Debug::check_assertion(format == SPC || format == OGG, StringConcat() << "Cannot play music file '" << file_name << "': unknown music format");
 
   bool success = true;
 

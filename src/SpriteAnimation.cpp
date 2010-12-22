@@ -114,7 +114,7 @@ bool SpriteAnimation::is_looping() const {
  */
 int SpriteAnimation::get_next_frame(int current_direction, int current_frame) const {
 
-  Debug::assert(current_direction >= 0 && current_direction < nb_directions,
+  Debug::check_assertion(current_direction >= 0 && current_direction < nb_directions,
     StringConcat() << "Invalid sprite direction '" << current_direction
     << "': this sprite animation has only " << nb_directions << " direction(s)");
 

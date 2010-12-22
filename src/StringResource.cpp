@@ -63,7 +63,7 @@ void StringResource::initialize() {
 
     // get the value
     size_t index = line.find_last_of("\t");
-    Debug::assert(index != std::string::npos && index + 1 < line.size(),
+    Debug::check_assertion(index != std::string::npos && index + 1 < line.size(),
       StringConcat() << "strings.dat, line " << i << ": cannot read string value for key '" << key << "'");
     strings[key] = line.substr(index + 1);
   }
@@ -84,7 +84,7 @@ void StringResource::quit() {
  */
 const std::string& StringResource::get_string(const std::string& key) {
 
-  Debug::assert(strings.count(key) > 0, StringConcat() << "Cannot find string with key '" << key << "'");
+  Debug::check_assertion(strings.count(key) > 0, StringConcat() << "Cannot find string with key '" << key << "'");
   return strings[key];
 }
 

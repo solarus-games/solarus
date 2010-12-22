@@ -243,7 +243,7 @@ bool Boomerang::is_going_back() {
  */
 void Boomerang::go_back() {
 
-  Debug::assert(!is_going_back(), "The boomerang is already going back");
+  Debug::check_assertion(!is_going_back(), "The boomerang is already going back");
 
   has_to_go_back = true;
 }

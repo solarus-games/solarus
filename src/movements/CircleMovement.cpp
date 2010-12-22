@@ -65,7 +65,7 @@ void CircleMovement::set_center(const Rectangle &center_point) {
  */
 void CircleMovement::set_center(MapEntity *center_entity, int x, int y) {
 
-  Debug::assert(center_entity != NULL,  "The center entity is NULL");
+  Debug::check_assertion(center_entity != NULL,  "The center entity is NULL");
 
   this->center_entity = center_entity;
   this->center_point.set_xy(x, y);
@@ -78,7 +78,7 @@ void CircleMovement::set_center(MapEntity *center_entity, int x, int y) {
  */
 void CircleMovement::set_radius(int radius) {
 
-  Debug::assert(radius >= 0, StringConcat() << "Invalid radius: " << radius);
+  Debug::check_assertion(radius >= 0, StringConcat() << "Invalid radius: " << radius);
 
   this->wanted_radius = radius;
   if (radius_change_delay == 0) {
@@ -104,7 +104,7 @@ void CircleMovement::set_radius(int radius) {
  */
 void CircleMovement::set_radius_speed(int radius_speed) {
 
-  Debug::assert(radius_speed >= 0, StringConcat() << "Invalid speed: " << radius_speed);
+  Debug::check_assertion(radius_speed >= 0, StringConcat() << "Invalid speed: " << radius_speed);
 
   if (radius_speed == 0) {
     this->radius_change_delay = 0;
@@ -122,7 +122,7 @@ void CircleMovement::set_radius_speed(int radius_speed) {
  */
 void CircleMovement::set_angle_speed(int angle_speed) {
 
-  Debug::assert(angle_speed > 0, StringConcat() << "Invalid angle speed: " << angle_speed);
+  Debug::check_assertion(angle_speed > 0, StringConcat() << "Invalid angle speed: " << angle_speed);
 
   this->angle_change_delay = 1000 / angle_speed;
   this->next_angle_change_date = System::now();
@@ -135,7 +135,7 @@ void CircleMovement::set_angle_speed(int angle_speed) {
  */
 void CircleMovement::set_initial_angle(int initial_angle) {
 
-  Debug::assert(initial_angle >= 0 && initial_angle < 360, StringConcat() << "Invalid initial angle: " << initial_angle);
+  Debug::check_assertion(initial_angle >= 0 && initial_angle < 360, StringConcat() << "Invalid initial angle: " << initial_angle);
 
   this->initial_angle = initial_angle;
 }
@@ -177,7 +177,7 @@ void CircleMovement::set_duration(uint32_t duration) {
  */
 void CircleMovement::set_max_rotations(int max_rotations) {
 
-  Debug::assert(max_rotations >= 0, StringConcat() << "Invalid maximum rotations number: " << max_rotations);
+  Debug::check_assertion(max_rotations >= 0, StringConcat() << "Invalid maximum rotations number: " << max_rotations);
 
   this->max_rotations = max_rotations;
   this->nb_rotations = 0;

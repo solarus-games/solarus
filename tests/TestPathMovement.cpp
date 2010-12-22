@@ -46,7 +46,7 @@ static void syntax_test(MapEntity &e) {
   }
 
   e.clear_movement();
-  Debug::assert(!no_error, "'syntax_test' failed to detect a syntax error");
+  Debug::check_assertion(!no_error, "'syntax_test' failed to detect a syntax error");
 }
 
 static void one_step_test(MapEntity &e) {
@@ -62,9 +62,9 @@ static void one_step_test(MapEntity &e) {
     System::update();
   }
 
-  Debug::assert(e.get_x() - old_xy.get_x() == 8 && e.get_y() - old_xy.get_y() == 0,
+  Debug::check_assertion(e.get_x() - old_xy.get_x() == 8 && e.get_y() - old_xy.get_y() == 0,
       StringConcat() << "Unexcepted coordinates for 'one_step_test #1': " << e.get_xy());
-  Debug::assert(movement->get_total_distance_covered() == 8,
+  Debug::check_assertion(movement->get_total_distance_covered() == 8,
       StringConcat() << "Unexpected distance covered for 'one_step_test #1': " << movement->get_total_distance_covered());
 
   movement->set_path("4");
@@ -72,9 +72,9 @@ static void one_step_test(MapEntity &e) {
     game.update();
     System::update();
   }
-  Debug::assert(e.get_x() == old_xy.get_x() && e.get_y() == old_xy.get_y(),
+  Debug::check_assertion(e.get_x() == old_xy.get_x() && e.get_y() == old_xy.get_y(),
       StringConcat() << "Unexpected coordinates for 'one_step_test #2': " << e.get_xy());
-  Debug::assert(movement->get_total_distance_covered() == 16,
+  Debug::check_assertion(movement->get_total_distance_covered() == 16,
       StringConcat() << "Unexpected distance covered for 'one_step_test #2': " << movement->get_total_distance_covered());
 
   movement->set_path("3");
@@ -82,9 +82,9 @@ static void one_step_test(MapEntity &e) {
     game.update();
     System::update();
   }
-  Debug::assert(e.get_x() - old_xy.get_x() == -8 && e.get_y() - old_xy.get_y() == -8,
+  Debug::check_assertion(e.get_x() - old_xy.get_x() == -8 && e.get_y() - old_xy.get_y() == -8,
       StringConcat() << "Unexpected coordinates for 'one_step_test #3': " << e.get_xy());
-  Debug::assert(movement->get_total_distance_covered() == 24,
+  Debug::check_assertion(movement->get_total_distance_covered() == 24,
       StringConcat() << "Unexpected distance covered for 'one_step_test #3': " << movement->get_total_distance_covered());
 
   movement->set_path("7");
@@ -92,9 +92,9 @@ static void one_step_test(MapEntity &e) {
     game.update();
     System::update();
   }
-  Debug::assert(e.get_x() == old_xy.get_x() && e.get_y() == old_xy.get_y(),
+  Debug::check_assertion(e.get_x() == old_xy.get_x() && e.get_y() == old_xy.get_y(),
       StringConcat() << "Unexpected coordinates for 'one_step_test #4': " << e.get_xy());
-  Debug::assert(movement->get_total_distance_covered() == 32,
+  Debug::check_assertion(movement->get_total_distance_covered() == 32,
       StringConcat() << "Unexpected distance covered for 'one_step_test #4': " << movement->get_total_distance_covered());
 
   e.clear_movement();
@@ -108,7 +108,7 @@ static void direction_test(MapEntity &e) {
   PathMovement *movement = new PathMovement("5", 100, false, false, false); // 8 pixels to the right
   e.set_movement(movement);
 
-  Debug::assert(movement->get_current_direction() == 5,
+  Debug::check_assertion(movement->get_current_direction() == 5,
       StringConcat() << "Unexcepted current direction for 'direction_test #1': " << movement->get_current_direction());
 
   while (!movement->is_finished()) {
@@ -117,7 +117,7 @@ static void direction_test(MapEntity &e) {
   }
 
   // when the movement is finished, PathMovement::get_current_direction() must return the last direction
-  Debug::assert(movement->get_current_direction() == 5,
+  Debug::check_assertion(movement->get_current_direction() == 5,
       StringConcat() << "Unexcepted last direction for 'direction_test #1': " << movement->get_current_direction());
 }
 
@@ -134,9 +134,9 @@ static void multi_step_test(MapEntity &e) {
     System::update();
   }
 
-  Debug::assert(e.get_x() - old_xy.get_x() == 0 && e.get_y() - old_xy.get_y() == 16,
+  Debug::check_assertion(e.get_x() - old_xy.get_x() == 0 && e.get_y() - old_xy.get_y() == 16,
       StringConcat() << "Unexcepted coordinates for 'multi_step_test #1': " << e.get_xy());
-  Debug::assert(movement->get_total_distance_covered() == 16,
+  Debug::check_assertion(movement->get_total_distance_covered() == 16,
       StringConcat() << "Unexpected distance covered for 'multi_step_test #1': " << movement->get_total_distance_covered());
 
   movement->set_path("220");
@@ -146,9 +146,9 @@ static void multi_step_test(MapEntity &e) {
     System::update();
   }
 
-  Debug::assert(e.get_x() - old_xy.get_x() == 8 && e.get_y() - old_xy.get_y() == 0,
+  Debug::check_assertion(e.get_x() - old_xy.get_x() == 8 && e.get_y() - old_xy.get_y() == 0,
       StringConcat() << "Unexcepted coordinates for 'multi_step_test #2': " << e.get_xy());
-  Debug::assert(movement->get_total_distance_covered() == 40,
+  Debug::check_assertion(movement->get_total_distance_covered() == 40,
       StringConcat() << "Unexpected distance covered for 'multi_step_test #2': " << movement->get_total_distance_covered());
 
   e.clear_movement();
@@ -167,9 +167,9 @@ static void snap_test(MapEntity &e) {
     game.update();
     System::update();
   }
-  Debug::assert(e.get_top_left_x() == 147 && e.get_top_left_y() == 124,
+  Debug::check_assertion(e.get_top_left_x() == 147 && e.get_top_left_y() == 124,
       StringConcat() << "Unexcepted coordinates for 'snap_test #1': " << e.get_xy());
-  Debug::assert(movement->get_total_distance_covered() == 16,
+  Debug::check_assertion(movement->get_total_distance_covered() == 16,
       StringConcat() << "Unexpected distance covered for 'snap_test #1': " << movement->get_total_distance_covered());
   e.clear_movement();
 
@@ -180,9 +180,9 @@ static void snap_test(MapEntity &e) {
     game.update();
     System::update();
   }
-  Debug::assert(e.get_top_left_x() == 152 && e.get_top_left_y() == 112,
+  Debug::check_assertion(e.get_top_left_x() == 152 && e.get_top_left_y() == 112,
       StringConcat() << "Unexcepted coordinates for 'snap_test #2': " << e.get_xy());
-  Debug::assert(movement->get_total_distance_covered() == 16,
+  Debug::check_assertion(movement->get_total_distance_covered() == 16,
       StringConcat() << "Unexpected distance covered for 'snap_test #2': " << movement->get_total_distance_covered());
 
 

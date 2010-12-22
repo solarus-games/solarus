@@ -799,7 +799,7 @@ Sprite& MapEntity::get_sprite() {
  */
 Sprite& MapEntity::get_sprite(const SpriteAnimationSetId &id) {
 
-  Debug::assert(sprites.count(id) > 0, 
+  Debug::check_assertion(sprites.count(id) > 0, 
     StringConcat() << "Cannot find sprite '" << id << "' for entity '" << get_name() << "'");
 
   return *sprites[id];

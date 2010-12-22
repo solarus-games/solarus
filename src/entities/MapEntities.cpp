@@ -110,7 +110,7 @@ Obstacle MapEntities::get_obstacle_tile(Layer layer, int x, int y) {
 
 #if SOLARUS_DEBUG_LEVEL >= 2
   static const std::string error_message = "get_obstacle_tile(): invalid coordinates";
-  Debug::assert(!map.test_collision_with_border(x,y), error_message);
+  Debug::check_assertion(!map.test_collision_with_border(x,y), error_message);
 #endif
 
   // optimization of: return obstacle_tiles[layer][(y / 8) * map_width8 + (x / 8)];
@@ -180,7 +180,7 @@ MapEntity* MapEntities::get_entity(EntityType type, const std::string &name) {
 
   MapEntity *entity = find_entity(type, name);
 
-  Debug::assert(entity != NULL, StringConcat() << "Cannot find entity with type '" << type << "' and name '" << name << "'");
+  Debug::check_assertion(entity != NULL, StringConcat() << "Cannot find entity with type '" << type << "' and name '" << name << "'");
 
   return entity;
 }
@@ -254,10 +254,10 @@ list<MapEntity*> MapEntities::get_entities_with_prefix(EntityType type, const st
  */
 void MapEntities::bring_to_front(MapEntity *entity) {
 
-  Debug::assert(entity->can_be_displayed(),
+  Debug::check_assertion(entity->can_be_displayed(),
       StringConcat() << "Cannot bring to front entity '" << entity->get_name() << "' since it is not displayed");
 
-  Debug::assert(!entity->is_displayed_in_y_order(),
+  Debug::check_assertion(!entity->is_displayed_in_y_order(),
     StringConcat() << "Cannot bring to front entity '" << entity->get_name() << "' since it is displayed in the y order");
 
   Layer layer = entity->get_layer();

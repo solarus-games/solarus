@@ -98,7 +98,7 @@ void Script::initialize_lua_context() {
 void Script::load(const std::string &script_name) {
 
   load_if_exists(script_name);
-  Debug::assert(is_loaded(),
+  Debug::check_assertion(is_loaded(),
       StringConcat() << "Cannot load script '" << script_name << "'");
 }
 
@@ -406,7 +406,7 @@ void Script::register_item_api() {
 void Script::called_by_script(lua_State *context, int nb_arguments, Script **script) {
 
   // check the number of arguments
-  Debug::assert(lua_gettop(context) == nb_arguments, "Invalid number of arguments when calling C++ from Lua");
+  Debug::check_assertion(lua_gettop(context) == nb_arguments, "Invalid number of arguments when calling C++ from Lua");
 
   // retrieve the Script object
   if (script != NULL) {
@@ -750,7 +750,7 @@ int Script::create_sprite_handle(Sprite &sprite) {
  */
 Sprite& Script::get_sprite(int sprite_handle) {
 
-  Debug::assert(sprites.count(sprite_handle) > 0,
+  Debug::check_assertion(sprites.count(sprite_handle) > 0,
     StringConcat() << "No sprite with handle '" << sprite_handle << "'");
 
   return *sprites[sprite_handle];
@@ -784,7 +784,7 @@ int Script::create_movement_handle(Movement &movement) {
  */
 Movement& Script::get_movement(int movement_handle) {
 
-  Debug::assert(movements.count(movement_handle) > 0,
+  Debug::check_assertion(movements.count(movement_handle) > 0,
     StringConcat() << "No movement with handle '" << movement_handle << "'");
 
   return *movements[movement_handle];

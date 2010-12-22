@@ -54,7 +54,7 @@ PathFinding::PathFinding(Map &map, MapEntity &source_entity, MapEntity &target_e
   const Rectangle &source = source_entity.get_bounding_box();
   const Rectangle &target = target_entity.get_bounding_box();
 
-  Debug::assert(source_entity.is_aligned_to_grid()
+  Debug::check_assertion(source_entity.is_aligned_to_grid()
       && source.get_width() % 16 == 0
       && source.get_height() % 16 == 0
       && target.get_width() % 16 == 0
@@ -88,7 +88,7 @@ std::string PathFinding::compute_path() {
   target.add_y(-target.get_y() % 8);
   int target_index = get_square_index(target);
 
-  Debug::assert(target.get_x() % 8 == 0 && target.get_y() % 8 == 0,
+  Debug::check_assertion(target.get_x() % 8 == 0 && target.get_y() % 8 == 0,
       "Could not snap the target to the map grid");
 
   int total_mdistance = get_manhattan_distance(source, target);

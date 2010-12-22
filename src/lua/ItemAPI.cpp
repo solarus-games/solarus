@@ -175,7 +175,7 @@ int Script::item_api_get_sprite(lua_State *l) {
   ItemScript &item_script = equipment.get_item_script(item_name);
   PickableItem *pickable_item = item_script.get_pickable_item();
 
-  Debug::assert(pickable_item != NULL,
+  Debug::check_assertion(pickable_item != NULL,
                 "Cannot call sol.item.get_sprite(): there is no current pickable item");
 
   int handle = script->create_sprite_handle(pickable_item->get_sprite());
@@ -206,7 +206,7 @@ int Script::item_api_get_movement(lua_State *l) {
   ItemScript &item_script = equipment.get_item_script(item_name);
   PickableItem *pickable_item = item_script.get_pickable_item();
 
-  Debug::assert(pickable_item != NULL,
+  Debug::check_assertion(pickable_item != NULL,
                 "Cannot call sol.item.get_movement(): there is no current pickable item");
 
   Movement *movement = pickable_item->get_movement();
@@ -243,7 +243,7 @@ int Script::item_api_start_movement(lua_State *l) {
   ItemScript &item_script = equipment.get_item_script(item_name);
   PickableItem *pickable_item = item_script.get_pickable_item();
 
-  Debug::assert(pickable_item != NULL,
+  Debug::check_assertion(pickable_item != NULL,
                 "Cannot call sol.item.start_movement(): there is no current pickable item");
 
   pickable_item->clear_movement();
@@ -272,7 +272,7 @@ int Script::item_api_set_finished(lua_State *l) {
   if (hero.is_using_inventory_item()) { // we do nothing if the script has already changed the hero's state
 
     InventoryItem &inventory_item = hero.get_current_inventory_item();
-    Debug::assert(inventory_item.get_name() == item_name,
+    Debug::check_assertion(inventory_item.get_name() == item_name,
                   StringConcat() << "This script controls the item '" << item_name
                   << "' but the current inventory item is '" << inventory_item.get_name() << "'");
 

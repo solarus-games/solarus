@@ -520,7 +520,7 @@ const Rectangle& Game::get_outside_world_size() {
     ini.set_group("info");
     int width = ini.get_integer_value("outside_world_width", 0);
     int height = ini.get_integer_value("outside_world_height", 0);
-    Debug::assert(width > 0 && height > 0, "Missing outside world size in file quest.dat");
+    Debug::check_assertion(width > 0 && height > 0, "Missing outside world size in file quest.dat");
     outside_world_size.set_size(width, height);
   }
   return outside_world_size;

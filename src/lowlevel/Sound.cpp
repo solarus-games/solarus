@@ -211,7 +211,7 @@ int Sound::get_volume() {
  */
 void Sound::set_volume(int volume) {
 
-  Debug::assert(volume >= 0 && volume <= 100, StringConcat() << "Illegal volume for sound effects:" << volume);
+  Debug::check_assertion(volume >= 0 && volume <= 100, StringConcat() << "Illegal volume for sound effects:" << volume);
 
   Configuration::set_value("sound_volume", volume);
   Sound::volume = volume / 100.0;

@@ -237,7 +237,7 @@ void Sprite::set_current_animation(const std::string &animation_name) {
 
     SpriteAnimation *animation = animation_set.get_animation(animation_name);
 
-    Debug::assert(animation != NULL, StringConcat() << "Unknown animation '" << animation_name << "' for animation set '" << animation_set_id << "'");
+    Debug::check_assertion(animation != NULL, StringConcat() << "Unknown animation '" << animation_name << "' for animation set '" << animation_set_id << "'");
 
     this->current_animation_name = animation_name;
     this->current_animation = animation;
@@ -265,7 +265,7 @@ void Sprite::set_current_direction(int current_direction) {
 
   if (current_direction != this->current_direction) {
 
-    Debug::assert(current_direction >= 0, StringConcat() << "Invalid sprite direction: " << current_direction);
+    Debug::check_assertion(current_direction >= 0, StringConcat() << "Invalid sprite direction: " << current_direction);
 
     this->current_direction = current_direction;
     set_current_frame(0);

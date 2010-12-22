@@ -62,7 +62,7 @@ int InventoryItem::get_variant() {
  */
 void InventoryItem::start() {
 
-  Debug::assert(variant > 0, StringConcat() << "Trying to use inventory item '" << item_name << "' without having it");
+  Debug::check_assertion(variant > 0, StringConcat() << "Trying to use inventory item '" << item_name << "' without having it");
 
   this->finished = false;
   game.get_equipment().get_item_script(item_name).event_use(*this);

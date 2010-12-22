@@ -39,9 +39,9 @@ void TextSurface::initialize() {
     // get the font metadata
     std::string font_id = ini.get_group();
     std::string file_name = ini.get_string_value("file", "");
-    Debug::assert(file_name.size() > 0, StringConcat() << "Missing font file name in file 'text/fonts.dat' for group '" << font_id << "'");
+    Debug::check_assertion(file_name.size() > 0, StringConcat() << "Missing font file name in file 'text/fonts.dat' for group '" << font_id << "'");
     int font_size = ini.get_integer_value("size", 0);
-    Debug::assert(font_size > 0, StringConcat() << "Missing font size in file 'text/fonts.dat' for group '" << font_id << "'");
+    Debug::check_assertion(font_size > 0, StringConcat() << "Missing font size in file 'text/fonts.dat' for group '" << font_id << "'");
     fonts[font_id].file_name = file_name;
     fonts[font_id].font_size = font_size;
 
@@ -54,10 +54,10 @@ void TextSurface::initialize() {
     FileTools::data_file_open_buffer(file_name, &fonts[font_id].buffer, &size);
     fonts[font_id].rw = SDL_RWFromMem(fonts[font_id].buffer, size);
     fonts[font_id].internal_font = TTF_OpenFontRW(fonts[font_id].rw, 0, font_size);
-    Debug::assert(fonts[font_id].internal_font != NULL, StringConcat() << "Cannot load font from file '" << file_name << "': " << TTF_GetError());
+    Debug::check_assertion(fonts[font_id].internal_font != NULL, StringConcat() << "Cannot load font from file '" << file_name << "': " << TTF_GetError());
   }
 
-  Debug::assert(default_font_id.size() > 0, "No default font set in file 'text/fonts.dat'");
+  Debug::check_assertion(default_font_id.size() > 0, "No default font set in file 'text/fonts.dat'");
 }
 
 /**
@@ -342,7 +342,7 @@ void TextSurface::rebuild() {
     break;
   }
 
-  Debug::assert(internal_surface != NULL, StringConcat() << "Cannot create the text surface for string '" << text << "': " << SDL_GetError());
+  Debug::check_assertion(internal_surface != NULL, StringConcat() << "Cannot create the text surface for string '" << text << "': " << SDL_GetError());
   surface = new Surface(internal_surface);
 
   // calculate the coordinates of the top-left corner

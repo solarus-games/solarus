@@ -658,7 +658,7 @@ bool GameControls::is_customizing() {
  */
 GameControls::GameKey GameControls::get_key_to_customize() {
 
-  Debug::assert(is_customizing(), "The player is not customizing a key");
+  Debug::check_assertion(is_customizing(), "The player is not customizing a key");
   return key_to_customize;
 }
 

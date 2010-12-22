@@ -93,7 +93,7 @@ SelectionMenuOptions::~SelectionMenuOptions() {
  */
 void SelectionMenuOptions::set_cursor_position(int cursor_position) {
 
-  Debug::assert(cursor_position >= 0 && cursor_position <= nb_options,
+  Debug::check_assertion(cursor_position >= 0 && cursor_position <= nb_options,
       StringConcat() << "Illegal cursor position: " << cursor_position);
 
   if (this->cursor_position < nb_options) {

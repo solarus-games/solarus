@@ -39,18 +39,18 @@ JumpSensor::JumpSensor(const std::string &name, Layer layer, int x, int y, int w
 
   // check the size
   if (direction % 2 != 0) {
-    Debug::assert(width == height, "This jump sensor has a diagonal direction but is not square");
+    Debug::check_assertion(width == height, "This jump sensor has a diagonal direction but is not square");
   }
   else {
     if (direction % 4 == 0) {
-      Debug::assert(width == 8, "This jump sensor is horizontal but its height is not 8");
+      Debug::check_assertion(width == 8, "This jump sensor is horizontal but its height is not 8");
     }
     else {
-      Debug::assert(height == 8, "This jump sensor is vertical but its width is not 8");
+      Debug::check_assertion(height == 8, "This jump sensor is vertical but its width is not 8");
     }
   }
   // check the jump length
-  Debug::assert(jump_length >= 16, "The jump length of this jump sensor is lower than 16");
+  Debug::check_assertion(jump_length >= 16, "The jump length of this jump sensor is lower than 16");
 }
 
 /**

@@ -69,7 +69,7 @@ IniFile::~IniFile() {
  */
 void IniFile::save() {
 
-  Debug::assert(mode == WRITE, "Cannot save ini file: the mode should be WRITE");
+  Debug::check_assertion(mode == WRITE, "Cannot save ini file: the mode should be WRITE");
 
   // save the data into a buffer
   std::string s;
@@ -96,7 +96,7 @@ bool IniFile::has_group(const std::string &group) {
  */
 void IniFile::set_group(const std::string &group) {
 
-  Debug::assert(has_group(group) || mode == WRITE,
+  Debug::check_assertion(has_group(group) || mode == WRITE,
       StringConcat() << "Cannot select group '" << group << "' in ini file: no such group");
   this->group = group;
 
@@ -171,7 +171,7 @@ const std::string IniFile::get_string_value(const std::string &key, const std::s
 const std::string IniFile::get_string_value(const std::string &key) {
 
   std::string value = get_string_value(key, "");
-  Debug::assert(value.size() > 0, StringConcat() << "No value for key '" << key << "' in file '" << file_name << "'");
+  Debug::check_assertion(value.size() > 0, StringConcat() << "No value for key '" << key << "' in file '" << file_name << "'");
   return value;
 }
 

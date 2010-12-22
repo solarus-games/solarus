@@ -118,7 +118,7 @@ void FileTools::initialize_languages(const std::string &arg_language) {
 
     std::string language_code = ini.get_group();
     std::string language_name = ini.get_string_value("name", "");
-    Debug::assert(language_name.size() != 0,
+    Debug::check_assertion(language_name.size() != 0,
 	StringConcat() << "Missing language name in file 'languages/languages.dat' for group '" << language_code << "'");
     languages[language_code] = language_name;
 
@@ -148,7 +148,7 @@ void FileTools::initialize_languages(const std::string &arg_language) {
  */
 void FileTools::set_language(const std::string &language_code) {
 
-  Debug::assert(languages[language_code].size() > 0, StringConcat() << "Unknown language '" << language_code << "'");
+  Debug::check_assertion(languages[language_code].size() > 0, StringConcat() << "Unknown language '" << language_code << "'");
   FileTools::language_code = language_code;
   Configuration::set_value("language", language_code);
   StringResource::initialize();
@@ -246,15 +246,15 @@ void FileTools::data_file_open_buffer(const std::string &file_name, char **buffe
   }
 
   // open the file
-  Debug::assert(PHYSFS_exists(full_file_name.c_str()), StringConcat() << "Data file " << full_file_name << " does not exist");
+  Debug::check_assertion(PHYSFS_exists(full_file_name.c_str()), StringConcat() << "Data file " << full_file_name << " does not exist");
   PHYSFS_file* file = PHYSFS_openRead(full_file_name.c_str());
-  Debug::assert(file != NULL, StringConcat() << "Cannot open data file " << full_file_name);
+  Debug::check_assertion(file != NULL, StringConcat() << "Cannot open data file " << full_file_name);
 
   // load it into memory
   *size = PHYSFS_fileLength(file);
 
   *buffer = new char[*size];
-  Debug::assert(buffer != NULL, StringConcat() << "Cannot allocate memory to read file " << full_file_name);
+  Debug::check_assertion(buffer != NULL, StringConcat() << "Cannot allocate memory to read file " << full_file_name);
 
   PHYSFS_read(file, *buffer, 1, *size);
   PHYSFS_close(file);
@@ -271,7 +271,7 @@ void FileTools::data_file_save_buffer(const std::string &file_name, const char *
 
   // open the file to write
   PHYSFS_file *file = PHYSFS_openWrite(file_name.c_str());
-  Debug::assert(file != NULL, StringConcat() << "Cannot open file '" << file_name << "' for writing: " << PHYSFS_getLastError());
+  Debug::check_assertion(file != NULL, StringConcat() << "Cannot open file '" << file_name << "' for writing: " << PHYSFS_getLastError());
  
   // save the memory buffer 
   if (PHYSFS_write(file, buffer, size, 1) == -1) {
@@ -323,7 +323,7 @@ void FileTools::read(std::istream &is, uint32_t &value) {
 
   int v;
   read(is, v);
-  Debug::assert(v >= 0, "Positive integer value expected from input stream");
+  Debug::check_assertion(v >= 0, "Positive integer value expected from input stream");
   value = (uint32_t) v;
 }
 

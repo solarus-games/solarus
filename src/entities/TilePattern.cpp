@@ -35,7 +35,7 @@ TilePattern::TilePattern(Obstacle obstacle, int width, int height):
   obstacle(obstacle), width(width), height(height) {
 
   // check the width and the height
-  Debug::assert(width > 0
+  Debug::check_assertion(width > 0
       && height > 0
       && width % 8 == 0
       && height % 8 == 0,
@@ -43,7 +43,7 @@ TilePattern::TilePattern(Obstacle obstacle, int width, int height):
       ") but should be positive and multiple of 8 pixels");
 
   // diagonal obstacle: check that the tile is square
-  Debug::assert(obstacle < OBSTACLE_TOP_RIGHT
+  Debug::check_assertion(obstacle < OBSTACLE_TOP_RIGHT
       || obstacle > OBSTACLE_BOTTOM_RIGHT
       || width == height,
       "Invalid tile pattern: a tile pattern with a diagonal obstacle must be square");

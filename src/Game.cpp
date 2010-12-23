@@ -323,11 +323,6 @@ void Game::update_transitions() {
 	  // save the location
 	  savegame.set_integer(Savegame::STARTING_MAP, next_map->get_id());
 	  savegame.set_string(Savegame::STARTING_POINT, next_map->get_destination_point_name());
-
-          if (next_map->is_in_dungeon()) {
-            // show the dungeon name
-	    next_map->set_welcome_message(StringConcat() << "dungeon_" << next_map->get_world_number());
-	  }
 	}
 
 	// before closing the map, draw it on a backup surface for transition effects

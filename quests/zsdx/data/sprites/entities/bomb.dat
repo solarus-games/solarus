@@ -1,0 +1,6 @@
+stopped entities/destructible_items.png 1 0 -1
+272	0	16	24	8	21	1	1
+
+explosion_soon entities/destructible_items.png 1 50 0
+256	32	16	24	8	21	4	4
+

@@ -363,6 +363,7 @@ void Script::register_map_api() {
       { "door_is_open", map_api_door_is_open },
       { "door_set_open", map_api_door_set_open },
       { "pickable_item_create", map_api_pickable_item_create },
+      { "bomb_create", map_api_bomb_create },
       { NULL, NULL }
   };
   luaL_register(context, "sol.map", map_api);

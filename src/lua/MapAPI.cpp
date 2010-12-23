@@ -29,6 +29,7 @@
 #include "entities/Switch.h"
 #include "entities/Hero.h"
 #include "entities/PickableItem.h"
+#include "entities/Bomb.h"
 #include "lowlevel/Sound.h"
 #include <lua.hpp>
 
@@ -1236,6 +1237,30 @@ int Script::map_api_pickable_item_create(lua_State *l) {
       Treasure(game, item_name, variant, savegame_variable),
       FALLING_MEDIUM, false
       ));
+
+  return 0;
+}
+
+/**
+ * @brief Places a bomb on the map.
+ *
+ * - Argument 1 (integer): x
+ * - Argument 2 (integer): y
+ * - Argument 3 (integer): layer
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_bomb_create(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 3, &script);
+
+  int x = luaL_checkinteger(l, 1);
+  int y = luaL_checkinteger(l, 2);
+  Layer layer = Layer(luaL_checkinteger(l, 3));
+
+  MapEntities &entities = script->get_map().get_entities();
+  entities.add_entity(new Bomb(layer, x, y));
 
   return 0;
 }

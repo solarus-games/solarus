@@ -41,7 +41,7 @@ MapLoader Map::map_loader;
  */
 Map::Map(MapId id):
   game(NULL), id(id), started(false), destination_point_name(""),
-  welcome_message_id(""), entities(NULL), suspended(false) {
+  entities(NULL), suspended(false) {
 
 }
 
@@ -302,14 +302,6 @@ int Map::get_destination_side() {
 }
 
 /**
- * @brief Sets a message to show when the map is started.
- * @param welcome_message_id id of the message to show
- */
-void Map::set_welcome_message(const MessageId &welcome_message_id) {
-  this->welcome_message_id = welcome_message_id;
-}
-
-/**
  * @brief Returns the surface where the map is displayed.
  *
  * This surface is only the visible part of the map, so the
@@ -504,13 +496,7 @@ void Map::notify_opening_transition_finished() {
   visible_surface->set_opacity(255); // because the transition effect may have changed the opacity
   check_suspended();
   game->get_hero().notify_opening_transition_finished();
-  if (welcome_message_id != "") {
-    game->get_dialog_box().start_dialog(welcome_message_id);
-    welcome_message_id = "";
-  }
-  else {
-    get_script().event_map_opening_transition_finished(destination_point_name);
-  }
+  get_script().event_map_opening_transition_finished(destination_point_name);
 }
 
 /**

@@ -14,6 +14,14 @@ function event_map_started(destination_point_name)
   end
 end
 
+function event_map_opening_transition_finished(destination_point_name)
+
+  -- show the welcome message
+  if destination_point_name == "from_outside" then
+    sol.map.dialog_start("dungeon_1")
+  end
+end
+
 function event_switch_enabled(switch_name)
 
   if switch_name == "sw_switch" or switch_name == "nw_switch" then

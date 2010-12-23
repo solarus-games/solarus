@@ -91,7 +91,6 @@ class Map {
 					   * or "_same" to keep the hero's coordinates,
 					   * or "_side0", "_side1", "_side2" or "_side3"
 					   * to place the hero on a side of the map */
-    MessageId welcome_message_id;         /**< id of the message to show when the hero arrives in this map */
 
     MapEntities *entities;        /**< the entities on the map */
     bool suspended;               /**< indicates whether the game is suspended */
@@ -146,7 +145,6 @@ class Map {
     bool is_started();
     void start();
     void leave();
-    void set_welcome_message(const std::string &welcome_message_id);
 
     // current destination point
     void set_destination_point(const std::string &destination_point_name);

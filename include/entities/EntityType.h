@@ -61,7 +61,8 @@ enum EntityType {
   CARRIED_ITEM              = 1001, /**< item carried and thrown by the hero (comes from a destructible item) */
   BOOMERANG                 = 1002, /**< a boomerang thrown */
   EXPLOSION                 = 1003, /**< an explosion, that may be caused by a bomb, a bomb flower, an enemy, etc. */
-  ARROW                     = 1004  /**< an arrow thrown by the bow */
+  ARROW                     = 1004, /**< an arrow thrown by the bow */
+  BOMB                      = 1005  /**< a bomb that will explode soon */
 };
 
 #endif

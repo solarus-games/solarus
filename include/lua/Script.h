@@ -211,6 +211,7 @@ class Script {
       map_api_door_is_open,
       map_api_door_set_open,
       map_api_pickable_item_create,
+      map_api_bomb_create,
 
       // item API
       item_api_get_variant,

@@ -34,6 +34,7 @@ Feature requests :
 - Voir si la police supporte des caractères unicode comme U+2192 (→) et U+2190 (←)
 - faire un type d'ennemi "CustomEnemy" qui est en fait scripté
 
+
 Bugs :
 
 - plein écran se déclenche parfois avec des combinaisons de espace, gauche, haut (il croit que F5 a été appuyé)
@@ -66,7 +67,7 @@ Bugs :
 - Quand on met le jeu en pause, les timers des gardes verts continuent
 - Son du heart_container trop fort
 - BackToSolidGroundState : il faut attendre le mouvement alors que la caméra ne bouge même pas (voir Caverne de Billy)
-
+- On peut probablement supprimer sprites/entities/blocks.png
 
 
 Ennemis à faire (reprendre graphismes de MC + graphismes rippés) :

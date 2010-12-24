@@ -135,7 +135,7 @@ void Bomb::update() {
 
   uint32_t now = System::now();
   if (now >= explosion_date) {
-    get_entities().add_entity(new Explosion(get_layer(), get_xy(), true));
+    get_entities().add_entity(new Explosion(get_layer(), get_center_point(), true));
     remove_from_map();
   }
   else if (now >= explosion_date - 1500

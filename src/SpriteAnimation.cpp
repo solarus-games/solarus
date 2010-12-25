@@ -35,7 +35,7 @@ SpriteAnimation::SpriteAnimation(const std::string &image_file_name,
     int nb_directions, SpriteAnimationDirection **directions, uint32_t frame_delay, int loop_on_frame):
 
   src_image(NULL), src_image_loaded(false), nb_directions(nb_directions), directions(directions),
-  frame_delay(frame_delay), loop_on_frame(loop_on_frame) {
+  frame_delay(frame_delay), loop_on_frame(loop_on_frame), should_enable_pixel_collisions(false) {
 
   if (image_file_name != "tileset") {
     src_image = new Surface(image_file_name);
@@ -47,6 +47,7 @@ SpriteAnimation::SpriteAnimation(const std::string &image_file_name,
  * @brief Destructor.
  */
 SpriteAnimation::~SpriteAnimation() {
+
   for (int i = 0; i < nb_directions; i++) {
     delete directions[i];
   }
@@ -69,6 +70,9 @@ void SpriteAnimation::set_map(Map &map) {
 
   if (!src_image_loaded) {
     this->src_image = map.get_tileset().get_entities_image();
+    if (should_enable_pixel_collisions) {
+      do_enable_pixel_collisions();
+    }
   }
 }
 
@@ -151,6 +155,20 @@ void SpriteAnimation::display(Surface *destination, int x, int y,
  */
 void SpriteAnimation::enable_pixel_collisions() {
 
+  if (src_image_loaded) {
+    do_enable_pixel_collisions();
+  }
+  else {
+    // wait for the source image to be available before analyzing its pixels
+    should_enable_pixel_collisions = true;
+  }
+}
+
+/**
+ * @brief Internal function that enables the pixel-perfect collision detection for this animation now.
+ */
+void SpriteAnimation::do_enable_pixel_collisions() {
+
   for (int i = 0; i < nb_directions; i++) {
     directions[i]->enable_pixel_collisions(src_image);
   }
@@ -161,6 +179,6 @@ void SpriteAnimation::enable_pixel_collisions() {
  * @return true if the pixel-perfect collisions are enabled
  */
 bool SpriteAnimation::are_pixel_collisions_enabled() const {
-  return directions[0]->are_pixel_collisions_enabled();
+  return directions[0]->are_pixel_collisions_enabled() || should_enable_pixel_collisions;
 }
 

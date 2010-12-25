@@ -51,7 +51,7 @@ const MessageId key_required_message_ids[] = { // TODO static in Door
  */
 Door::Door(const std::string &name, Layer layer, int x, int y,
 	     int direction, Subtype subtype, int savegame_variable):
-  Detector(COLLISION_FACING_POINT, name, layer, x, y, 16, 16),
+  Detector(COLLISION_FACING_POINT | COLLISION_SPRITE, name, layer, x, y, 16, 16),
   subtype(subtype), savegame_variable(savegame_variable), door_open(true),
   changing(false), initialized(false) {
 
@@ -66,7 +66,8 @@ Door::Door(const std::string &name, Layer layer, int x, int y,
   }
 
   if (subtype != WEAK_INVISIBLE) {
-    create_sprite("entities/door");
+    create_sprite("entities/door", true);
+    // FIXME: if WEAK_INVISIBLE has no sprite, we cannot detect collisions, this is sad.
   }
   set_direction(direction);
 }
@@ -151,7 +152,7 @@ void Door::set_open(bool door_open) {
   }
   else {
     get_sprite().set_current_animation(animations[subtype]);
-    set_collision_modes(COLLISION_FACING_POINT);
+    set_collision_modes(COLLISION_FACING_POINT | COLLISION_SPRITE);
 
     // ensure we are not closing the door on the hero
     if (is_on_map() && overlaps(get_hero())) {
@@ -214,6 +215,36 @@ void Door::notify_collision(MapEntity &entity_overlapping, CollisionMode collisi
 }
 
 /**
+ * @brief Notifies this detector that a pixel-perfect collision was just detected with another sprite.
+ *
+ * This function is called by check_collision(MapEntity*, Sprite*) when another entity's
+ * sprite overlaps a sprite of this detector.
+ *
+ * @param other_entity the entity overlapping this detector
+ * @param other_sprite the sprite of other_entity that is overlapping this detector
+ * @param this_sprite the sprite of this detector that is overlapping the other entity's sprite
+ */
+void Door::notify_collision(MapEntity &other_entity, Sprite &other_sprite, Sprite &this_sprite) {
+
+  if (other_entity.get_type() == EXPLOSION) {
+    notify_collision_with_explosion((Explosion&) other_entity, other_sprite);
+  }
+}
+
+/**
+ * @brief This function is called when an explosion's sprite
+ * detects a pixel-perfect collision with a sprite of this entity.
+ * @param explosion the explosion
+ * @param sprite_overlapping the sprite of the current entity that collides with the explosion
+ */
+void Door::notify_collision_with_explosion(Explosion &explosion, Sprite &sprite_overlapping) {
+
+  if (requires_bomb() && !is_open() && !changing) {
+    set_opening();
+  }
+}
+
+/**
  * @brief Returns whether this door requires a key to be open.
  * @return true if this door requires a key to be open
  */
@@ -265,6 +296,7 @@ void Door::set_suspended(bool suspended) {
  * @brief Updates the entity.
  */
 void Door::update() {
+
   Detector::update();
 
   if (!initialized) {
@@ -373,6 +405,7 @@ void Door::open() {
 void Door::set_opening() {
 
   std::string animation = requires_key() ? "opening_key" : "opening";
+  // FIXME add the animation of a weak wall destroyed by an explosion
   get_sprite().set_current_animation(animation);
   changing = true;
 }

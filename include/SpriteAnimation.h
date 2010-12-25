@@ -38,6 +38,10 @@ class SpriteAnimation {
     const uint32_t frame_delay;  /**< default interval in milliseconds between two frames
 				  * (this delay is the same for all directions) */
     const int loop_on_frame;     /**< number of the frame to loop on, or -1 to make no loop */
+    bool should_enable_pixel_collisions; /**< indicates that pixel-perfect collisions should be
+                                           * enabled as soon as the image becomes available */
+
+    void do_enable_pixel_collisions();
 
   public:
 

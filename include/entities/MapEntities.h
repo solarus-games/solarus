@@ -122,7 +122,8 @@ class MapEntities {
     void start_miniboss_battle(Enemy *miniboss);
     void end_miniboss_battle();
 
-    // update and display
+    // game loop
+    void notify_map_started();
     void set_suspended(bool suspended);
     void update();
     void display();

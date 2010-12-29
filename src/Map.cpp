@@ -463,6 +463,7 @@ void Map::start() {
   this->started = true;
   this->visible_surface->set_opacity(255);
   Music::play(music_id);
+  this->entities->notify_map_started();
   this->script->start(destination_point_name);
   get_game().get_equipment().set_map(*this);
 }

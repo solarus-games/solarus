@@ -31,11 +31,11 @@
 #include <list>
 
 const std::string Door::animations[] = {
-  "closed", "small_key", "small_key_block", "big_key", "boss_key", "weak", "very_weak", ""
+  "closed", "small_key", "small_key_block", "big_key", "boss_key", "weak", "very_weak", "", "weak_block"
 };
 
 const MessageId key_required_message_ids[] = { // TODO static in Door
-  "", "_small_key_required", "_small_key_required", "_big_key_required", "_boss_key_required"
+  "", "_small_key_required", "_small_key_required", "_big_key_required", "_boss_key_required", "", "", "", ""
 };
 
 /**
@@ -55,7 +55,7 @@ Door::Door(const std::string &name, Layer layer, int x, int y,
   subtype(subtype), savegame_variable(savegame_variable), door_open(true),
   changing(false), initialized(false) {
 
-  if (subtype == SMALL_KEY_BLOCK) {
+  if (subtype == SMALL_KEY_BLOCK || subtype == WEAK_BLOCK) {
     set_size(16, 16);
   }
   else if (direction % 2 == 0) {
@@ -265,7 +265,7 @@ bool Door::requires_small_key() {
  * @return true if this door must be open with a bomb explosion
  */
 bool Door::requires_bomb() {
-  return subtype == WEAK || subtype == VERY_WEAK || subtype == WEAK_INVISIBLE;
+  return subtype == WEAK || subtype == VERY_WEAK || subtype == WEAK_INVISIBLE || subtype == WEAK_BLOCK;
 }
 
 /**
@@ -345,7 +345,7 @@ void Door::action_key_pressed() {
       Sound::play("door_open");
 
       get_savegame().set_boolean(savegame_variable, true);
-      if (subtype == SMALL_KEY_BLOCK) {
+      if (subtype == SMALL_KEY_BLOCK || subtype == WEAK_BLOCK) {
 	set_open(true);
       }
       else {
@@ -404,10 +404,22 @@ void Door::open() {
  */
 void Door::set_opening() {
 
-  std::string animation = requires_key() ? "opening_key" : "opening";
+  std::string animation = "";
+  if (requires_key()) {
+    animation = "opening_key";
+  }
+  else if (!requires_bomb()) {
+    animation = "opening";
+  }
   // FIXME add the animation of a weak wall destroyed by an explosion
-  get_sprite().set_current_animation(animation);
-  changing = true;
+
+  if (animation.size() > 0) {
+    get_sprite().set_current_animation(animation);
+    changing = true;
+  }
+  else {
+    set_open(true);
+  }
 }
 
 /**

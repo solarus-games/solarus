@@ -36,6 +36,7 @@ public class Door extends MapEntity {
 	WEAK,
 	VERY_WEAK,
 	WEAK_INVISIBLE,
+	WEAK_BLOCK
 	;
 
 	public static final String[] humanNames = {
@@ -47,6 +48,7 @@ public class Door extends MapEntity {
 	    "Weak",
 	    "Very weak",
 	    "Weak (invisible)",
+	    "Weak (block)"
 	};
 
 	public static Subtype get(int id) {
@@ -74,13 +76,14 @@ public class Door extends MapEntity {
 	new EntityImageDescription("door.png", 136, 48, 16, 16),
 	new EntityImageDescription("door.png", 136, 48, 16, 16),
 	new EntityImageDescription("door.png", 136, 48, 16, 16),
+	new EntityImageDescription("door.png", 16, 0, 16, 16),
     };
 
     /**
      * X coordinate of the door in the tileset entities image for each kind of entity
      * and for the direction top.
      */
-    private static final int[] imageX = { 0, 64, 16, 96, 128, 192, 192, 192 };
+    private static final int[] imageX = { 0, 64, 16, 96, 128, 192, 192, 192, 16 };
         
 
     /**
@@ -166,6 +169,10 @@ public class Door extends MapEntity {
       if (getSubtype() == Subtype.SMALL_KEY_BLOCK) {
         currentImageDescription.setXY(16, 0);
       }
+      else if (getSubtype() == Subtype.WEAK_BLOCK) {
+        currentImageDescription.setXY(32, 0);
+      }
+
       else {
 	int x = imageX[getSubtype().ordinal()];
 	int y = 0;
@@ -231,7 +238,7 @@ public class Door extends MapEntity {
      */
     private void setDoorSize() {
 
-      if (getSubtype() == Subtype.SMALL_KEY_BLOCK || getSubtype() == Subtype.WEAK) {
+      if (getSubtype() == Subtype.SMALL_KEY_BLOCK || getSubtype() == Subtype.WEAK_BLOCK || getSubtype() == Subtype.WEAK) {
 	setSizeImpl(16, 16);
       }
       else if (getDirection() % 2 == 0) {

@@ -87,7 +87,7 @@ void SmoothMovement::update_x() {
 	else {
 
 	  /* The diagonal moves didn't work either.
-	   * So we look for a place (up to 8 pixels up and right)
+	   * So we look for a place (up to 8 pixels up and down)
 	   * where the required move would be allowed.
 	   * If we find a such place, then we move towards this place.
 	   */

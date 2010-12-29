@@ -74,7 +74,7 @@ void SimpleGreenSoldier::update() {
 
   Enemy::update();
 
-  if (is_in_normal_state()) {
+  if (!is_suspended() && is_in_normal_state()) {
     Sprite &sprite = get_sprite();
     const std::string &animation = sprite.get_current_animation();
 

@@ -64,10 +64,8 @@ Bugs :
 - eau froide pour faire fondre la glace : trouver autre chose
 - utiliser une bouteille ayant une fée : relâcher la fée directement au lieu de mettre un message (on l'active souvent par erreur)
 - Remplacer les cast
-- Quand on met le jeu en pause, les timers des gardes verts continuent
 - Son du heart_container trop fort
 - BackToSolidGroundState : il faut attendre le mouvement alors que la caméra ne bouge même pas (voir Caverne de Billy)
-- On peut probablement supprimer sprites/entities/blocks.png
 
 
 Ennemis à faire (reprendre graphismes de MC + graphismes rippés) :

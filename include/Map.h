@@ -95,9 +95,14 @@ class Map {
     MapEntities *entities;        /**< the entities on the map */
     bool suspended;               /**< indicates whether the game is suspended */
 
+    // light
+    int light;                    /**< light level (0: dark, 1: full light) */
+    Surface* dark_surfaces[4];    /**< dark foreground shown when there is no light */
+
     MapScript *script;            /**< Lua script of this map */
 
     void set_suspended(bool suspended);
+    void display_foreground();
 
   public:
 

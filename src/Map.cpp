@@ -41,7 +41,7 @@ MapLoader Map::map_loader;
  */
 Map::Map(MapId id):
   game(NULL), id(id), started(false), destination_point_name(""),
-  entities(NULL), suspended(false) {
+  entities(NULL), suspended(false), light(1) {
 
 }
 
@@ -229,6 +229,10 @@ void Map::unload() {
 
   delete script;
   delete camera;
+
+  for (int i = 0; i < 4; i++) {
+    delete dark_surfaces[i];
+  }
 }
 
 /**
@@ -245,6 +249,12 @@ void Map::load(Game &game) {
 
   // read the map file
   map_loader.load_map(game, *this);
+
+  // initialize the light
+  dark_surfaces[0] = new Surface("entities/dark0.png");
+  dark_surfaces[1] = new Surface("entities/dark1.png");
+  dark_surfaces[2] = new Surface("entities/dark2.png");
+  dark_surfaces[3] = new Surface("entities/dark3.png");
 }
 
 /**
@@ -427,20 +437,26 @@ void Map::display() {
   entities->display();
 
   // foreground
-/* TODO (in a separate function)
-  if (light == 0) {
+  display_foreground();
+}
 
-    static Surface* lamp_surface = new Surface("entities/dark0.png");
+/**
+ * @brief Displays the foreground of the map.
+ */
+void Map::display_foreground() {
+
+  if (light == 0) {
+    // no light
+
+    int hero_direction = get_entities().get_hero().get_animation_direction();
     const Rectangle& hero_position = get_entities().get_hero().get_center_point();
     const Rectangle& camera_position = camera->get_position();
     int x = 320 - hero_position.get_x() + camera_position.get_x();
     int y = 240 - hero_position.get_y() + camera_position.get_y();
     Rectangle src(x, y, 320, 240);
-    lamp_surface->blit(src, visible_surface);
-
+    dark_surfaces[hero_direction]->blit(src, visible_surface);
   }
   // TODO intermediate light levels
-   */
 }
 
 /**

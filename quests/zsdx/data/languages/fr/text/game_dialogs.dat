@@ -132,21 +132,6 @@ line2 = "Vider l'eau"
 line3 = "La conserver"
 question = true
 
-[use_bottle_with_fairy]
-# Utiliser un Flacon contenant une Fée
-#       |--------------------|
-icon = 12
-line1 = "Ton Flacon Magique"
-line2 = "contient une fée."
-next = use_bottle_with_fairy.2
-
-[use_bottle_with_fairy.2]
-#       |--------------------|
-line1 = "Que veux-tu faire ?"
-line2 = "La conserver"
-line3 = "La relâcher"
-question = true
-
 [use_apples]
 # Utiliser une Pomme
 #       |--------------------|

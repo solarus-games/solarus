@@ -34,8 +34,11 @@ function event_use()
     -- fairy
   elseif variant == 6 then
 
-    -- ask the hero to release the fairy
-    sol.map.dialog_start("use_bottle_with_fairy")
+      -- release the fairy
+      x, y, layer = sol.map.hero_get_position();
+      sol.map.pickable_item_create("fairy", 1, -1, x, y, layer);
+      sol.item.set_variant(1) -- make the bottle empty
+      sol.item.set_finished()
   end
 end
 
@@ -49,17 +52,6 @@ function event_dialog_finished(first_message_id, answer)
       sol.item.set_variant(1) -- make the bottle empty
       sol.main.play_sound("item_in_water")
 
-    end
-    sol.item.set_finished()
-
-  elseif first_message_id == "use_bottle_with_fairy" then
-
-    if answer == 1 then
-
-      -- release the fairy
-      x, y, layer = sol.map.hero_get_position();
-      sol.map.pickable_item_create("fairy", 1, -1, x, y, layer);
-      sol.item.set_variant(1) -- make the bottle empty
     end
     sol.item.set_finished()
 

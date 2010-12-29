@@ -266,6 +266,18 @@ void MapEntities::bring_to_front(MapEntity *entity) {
 }
 
 /**
+ * @brief Notifies all entities of the map that the map has just become active.
+ */
+void MapEntities::notify_map_started() {
+
+  list<MapEntity*>::iterator i;
+  for (i = all_entities.begin(); i != all_entities.end(); i++) {
+    MapEntity *entity = *i;
+    entity->notify_map_started();
+  }
+}
+
+/**
  * @brief Adds a tile on the map.
  *
  * This function is called for each tile when loading the map.

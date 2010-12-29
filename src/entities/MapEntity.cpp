@@ -250,13 +250,19 @@ bool MapEntity::is_on_map() {
 void MapEntity::set_map(Map &map) {
 
   this->map = &map;
+}
+
+/**
+ * @brief Notifies this entity that its map has just become active.
+ */
+void MapEntity::notify_map_started() {
 
   // notify the sprites (useful for tileset-dependent sprites such as doors and blocks)
   std::map<std::string, Sprite*>::iterator it;
   for (it = sprites.begin(); it != sprites.end(); it++) {
 
     Sprite &sprite = *(it->second);
-    sprite.set_map(map);
+    sprite.set_map(*map);
   }
 }
 

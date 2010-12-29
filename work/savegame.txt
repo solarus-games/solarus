@@ -144,7 +144,7 @@ booleans:
 107	piece of heart on the small island near the castle
 108	dungeon 3 RC: small key in a pot (south-east corner)
 109	dungeon 3 RC: small key block (north)
-
+110-112	outside world: weak block of the dungeon 3 entrance
 
 
 

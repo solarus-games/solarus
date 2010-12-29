@@ -420,11 +420,27 @@ void Map::check_suspended() {
  */
 void Map::display() {
 
-  // background color
+  // background
   visible_surface->fill_with_color(tileset->get_background_color());
 
   // display all entities (including the hero)
   entities->display();
+
+  // foreground
+/* TODO (in a separate function)
+  if (light == 0) {
+
+    static Surface* lamp_surface = new Surface("entities/dark0.png");
+    const Rectangle& hero_position = get_entities().get_hero().get_center_point();
+    const Rectangle& camera_position = camera->get_position();
+    int x = 320 - hero_position.get_x() + camera_position.get_x();
+    int y = 240 - hero_position.get_y() + camera_position.get_y();
+    Rectangle src(x, y, 320, 240);
+    lamp_surface->blit(src, visible_surface);
+
+  }
+  // TODO intermediate light levels
+   */
 }
 
 /**

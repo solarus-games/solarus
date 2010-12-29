@@ -54,7 +54,7 @@ void Camera::update() {
   if (is_fixed_on_hero()) {
     Hero &hero = map.get_entities().get_hero();
     x = hero.get_x();
-    y = hero.get_y();
+    y = hero.get_y() - 5;
     x = std::min(std::max(x - 160, 0), map_location.get_width() - 320);
     y = std::min(std::max(y - 120, 0), map_location.get_height() - 240);
   }

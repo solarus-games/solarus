@@ -39,9 +39,10 @@ class Door: public Detector {
       SMALL_KEY_BLOCK,                /**< a block to open with a small key (this does not look like a door) */
       BIG_KEY,                        /**< the big key is required to open the door (only in a dungeon) */
       BOSS_KEY,                       /**< the boss key is required to open the door (only in a dungeon) */
-      WEAK,                           /**< a weak wall, to blow with an explosion */
+      WEAK,                           /**< a weak wall to blast with an explosion */
       VERY_WEAK,                      /**< same as WEAK but more visible */
-      WEAK_INVISIBLE                  /**< same as WEAK but no visible sign of weakness */
+      WEAK_INVISIBLE,                 /**< same as WEAK but no visible sign of weakness */
+      WEAK_BLOCK                      /**< a block to blast with an explosion */
     };
 
   private:

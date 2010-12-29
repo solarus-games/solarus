@@ -253,6 +253,12 @@ allows or disallows to pause the game (and to save the game)
 - <tt>sol.map.hud_set_enabled(enabled)</tt>: 
 enables or disables the HUD displaying
 
+- <tt>sol.map.light_get()</tt>:
+returns the current light level of the map
+
+- <tt>sol.map.light_set(light_level)</tt>:
+sets the light level of the map (0: no light, positive values: full light)
+
 - <tt>sol.map.treasure_give(item_name, variant, savegame_variable)</tt>: 
 gives a treasure to the player (without using a chest)
 

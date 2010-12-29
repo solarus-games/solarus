@@ -377,6 +377,22 @@ void Map::set_clipping_rectangle(const Rectangle &clipping_rectangle) {
 }
 
 /**
+ * @brief Returns the current level of light of the map.
+ * @return the light level (0: no light, a positive value: full light)
+ */
+int Map::get_light() {
+  return light;
+}
+
+/**
+ * @brief Sets the level of light of the map.
+ * @param light the new light level (0: no light, a positive value: full light)
+ */
+void Map::set_light(int light) {
+  this->light = light;
+}
+
+/**
  * @brief Suspends or resumes the movement and animations of the entities.
  *
  * This function is called when the game is being suspended

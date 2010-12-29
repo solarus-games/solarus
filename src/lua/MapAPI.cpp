@@ -133,6 +133,45 @@ int Script::map_api_hud_set_pause_enabled(lua_State *l) {
 }
 
 /**
+ * @brief Returns the current level of light of the map.
+ *
+ * - Return value (integer): 0 for no light, a positive value if there is some light
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_light_get(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 1, &script);
+
+  int light = script->get_map().get_light();
+
+  lua_pushinteger(l, light);
+
+  return 1;
+}
+
+/**
+ * @brief Sets the level of light of the map.
+ *
+ * - Argument 1 (integer): the level of light
+ * (0: no light, a positive value: full light)
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_light_set(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 1, &script);
+
+  int light = luaL_checkinteger(l, 1);
+
+  script->get_map().set_light(light);
+
+  return 0;
+}
+
+/**
  * @brief Moves the camera towards a target point.
  *
  * - Argument 1 (integer): x coordinate of the target point

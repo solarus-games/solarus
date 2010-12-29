@@ -312,6 +312,8 @@ void Script::register_map_api() {
       { "dialog_set_style", map_api_dialog_set_style },
       { "hud_set_enabled", map_api_hud_set_enabled },
       { "hud_set_pause_enabled", map_api_hud_set_pause_enabled },
+      { "light_get", map_api_light_get },
+      { "light_set", map_api_light_set },
       { "treasure_give", map_api_treasure_give },
       { "camera_move", map_api_camera_move },
       { "camera_restore", map_api_camera_restore },

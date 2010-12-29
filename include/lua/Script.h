@@ -162,6 +162,8 @@ class Script {
       map_api_dialog_set_style,
       map_api_hud_set_enabled,
       map_api_hud_set_pause_enabled,
+      map_api_light_get,
+      map_api_light_set,
       map_api_camera_move,
       map_api_camera_restore,
       map_api_treasure_give,

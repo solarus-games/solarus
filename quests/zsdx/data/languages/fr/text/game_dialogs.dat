@@ -2206,4 +2206,9 @@ line2 = "         <---"
 line3 = ""
 skip = all
 
+[dungeon_3.arbror_direction_hint]
+#       |-----------------------|
+line1 = ""
+line2 = "  Nord : Maître Arbror "
+line3 = ""
 

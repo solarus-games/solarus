@@ -23,6 +23,7 @@ function event_hero_interaction_item_finished(entity_name, item_name, variant)
 
   if item_name == "lamp"
       and string.match(entity_name, "^torch")
+      and not sol.map.door_is_open("door")
       and are_all_torches_on() then
 
     sol.main.play_sound("secret")

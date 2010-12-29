@@ -142,9 +142,10 @@ booleans:
 105	mountain cave: piece of heart
 106	mountain cave: chest with the fire stone
 107	piece of heart on the small island near the castle
-108	dungeon 3 RC: small key in a pot (south-east corner)
-109	dungeon 3 RC: small key block (north)
+108	dungeon 3 1F: small key in a pot (south-east corner)
+109	dungeon 3 1F: small key block (north)
 110-112	outside world: weak block of the dungeon 3 entrance
+113	dungeon 3 1F: door to open with the five torches
 
 
 

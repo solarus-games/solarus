@@ -1,5 +1,4 @@
 # List of built-in abilities
-see_in_dark
 swim
 detect_weak_walls
 lift

@@ -467,7 +467,7 @@ void PauseSubmenuMap::display_dungeon_items(Surface *destination) {
   }
 
   // boss key
-  if (equipment.has_ability("open_dungeon_boss_lock")) {
+  if (equipment.has_ability("open_dungeon_boss_locks")) {
     Rectangle src_position(51, 0, 17, 17);
     Rectangle dst_position(107, 168);
     dungeon_map_icons->blit(src_position, destination, dst_position);

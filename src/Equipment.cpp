@@ -839,9 +839,6 @@ int Equipment::get_ability_savegame_variable(const std::string &ability_name) {
   else if (ability_name == "swim") {
     index = Savegame::ABILITY_SWIM;
   }
-  else if (ability_name == "see_in_dark") {
-    index = Savegame::ABILITY_SEE_IN_DARK;
-  }
   else if (ability_name == "detect_weak_walls") {
     index = Savegame::ABILITY_DETECT_WEAK_WALLS;
   }
@@ -860,8 +857,8 @@ int Equipment::get_ability_savegame_variable(const std::string &ability_name) {
   else if (ability_name == "open_dungeon_big_locks") {
     index = Savegame::DUNGEON_1_ABILITY_OPEN_BIG_LOCKS + 10 * (get_current_dungeon() - 1);
   }
-  else if (ability_name == "open_dungeon_boss_lock") {
-    index = Savegame::DUNGEON_1_ABILITY_OPEN_BOSS_LOCK + 10 * (get_current_dungeon() - 1);    
+  else if (ability_name == "open_dungeon_boss_locks") {
+    index = Savegame::DUNGEON_1_ABILITY_OPEN_BOSS_LOCKS + 10 * (get_current_dungeon() - 1);
   }
 
   Debug::check_assertion(index != -1, StringConcat() << "Unknown ability '" << ability_name << "'");

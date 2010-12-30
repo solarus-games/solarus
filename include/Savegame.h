@@ -163,7 +163,7 @@ class Savegame {
       ABILITY_SHIELD				= 52,
       ABILITY_LIFT				= 53,
       ABILITY_SWIM				= 54,
-      ABILITY_SEE_IN_DARK			= 55,
+      // 55: unused (was ABILITY_SEE_IN_DARK before)
       ABILITY_DETECT_WEAK_WALLS			= 56,
       ABILITY_SEE_OUTSIDE_WORLD_MINIMAP		= 57,
       ABILITY_GET_BACK_FROM_DEATH		= 58,
@@ -179,7 +179,7 @@ class Savegame {
       DUNGEON_1_ABILITY_SEE_MINIMAP_ROOMS	= 201,
       DUNGEON_1_ABILITY_SEE_MINIMAP_ELEMENTS	= 202,
       DUNGEON_1_ABILITY_OPEN_BIG_LOCKS		= 203,
-      DUNGEON_1_ABILITY_OPEN_BOSS_LOCK		= 204,
+      DUNGEON_1_ABILITY_OPEN_BOSS_LOCKS		= 204,
       DUNGEON_1_SMALL_KEYS			= 205,		/**< small key counter in dungeon #1 */
       DUNGEON_1_UNUSED_1			= 206,		/**< empty place for future new data in dungeon #1 */
       DUNGEON_1_UNUSED_2			= 207,		/**< empty place for future new data in dungeon #1 */

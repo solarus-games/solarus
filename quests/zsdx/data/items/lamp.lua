@@ -27,9 +27,6 @@ end
 
 -- Called when the player obtains the Lamp
 function event_obtained(variant, savegame_variable)
-
-  -- give the ability to see in the dark
-  sol.game.set_ability("see_in_dark", 1)
   
   -- give the magic bar if necessary
   if sol.game.get_max_magic() == 0 then

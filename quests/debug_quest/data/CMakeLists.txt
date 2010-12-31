@@ -3,11 +3,13 @@ set(quest_name "debug_quest")
 # compile the Lua scripts
 file(GLOB lua_source_files 
   RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
-  maps/*.lua)
+  maps/*.lua
+  items/*.lua)
 
 set(lua_bin_files "")
 
 MAKE_DIRECTORY("${CMAKE_CURRENT_BINARY_DIR}/maps")
+MAKE_DIRECTORY("${CMAKE_CURRENT_BINARY_DIR}/items")
 
 # convert to Lua bytecode
 foreach(lua_source_file ${lua_source_files})
@@ -19,9 +21,9 @@ foreach(lua_source_file ${lua_source_files})
   set(lua_bin_files ${lua_bin_files} ${lua_source_file}c)
 endforeach(lua_source_file ${lua_source_files})
 
-# add maps to zip archive
+# add lua bytecode to the zip archive
 add_custom_command(
-  OUTPUT compiled_maps
+  OUTPUT compiled_lua
   DEPENDS ${lua_bin_files}
   COMMAND zip -q data.solarus ${lua_bin_files}
 )
@@ -41,7 +43,7 @@ add_custom_command(
 
 add_custom_target(${quest_name}_data
   ALL
-  DEPENDS data.solarus compiled_maps
+  DEPENDS data.solarus compiled_lua
 )
 
 # create a script that executes the game with this quest

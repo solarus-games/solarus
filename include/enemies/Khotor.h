@@ -43,7 +43,7 @@ class Khotor: public Enemy {
     ~Khotor();
 
     bool is_displayed_in_y_order();
-    void just_hurt(MapEntity *source, EnemyAttack attack, int life_points);
+    void just_hurt(MapEntity &source, EnemyAttack attack, int life_points);
 };
 
 #endif

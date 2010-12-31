@@ -27,6 +27,7 @@
 #include "lua/ItemScript.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/Debug.h"
+#include "lowlevel/StringConcat.h"
 
 /**
  * @brief Creates a new treasure.
@@ -112,7 +113,7 @@ const std::string& Treasure::get_item_name() const {
 
   Debug::check_assertion(item_name != "_random", "This treasure has a random content and it is not decided yet");
   Debug::check_assertion(item_name == "_none" || game.get_equipment().can_receive_item(item_name, variant),
-      "This treasure is not authorized by the equipment, did you call decide_content()?");
+      StringConcat() << "The treasure '" << item_name << "' is not authorized by the equipment, did you call decide_content()?");
 
   return item_name;
 }

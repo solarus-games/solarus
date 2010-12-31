@@ -68,7 +68,6 @@ class PickableItem: public Detector {
     void set_map(Map &map);
 
     EntityType get_type();
-    bool is_displayed_in_y_order();
 
     // properties
     bool is_falling();

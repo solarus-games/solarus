@@ -108,7 +108,7 @@ void Khotor::start_chain() {
  * @param attack the attack that was just successful
  * @param life_points the number of life points lost by this enemy
  */
-void Khotor::just_hurt(MapEntity *source, EnemyAttack attack, int life_points) {
+void Khotor::just_hurt(MapEntity &source, EnemyAttack attack, int life_points) {
 
   if (get_life() <= 0) {
 

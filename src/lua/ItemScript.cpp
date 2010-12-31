@@ -177,7 +177,7 @@ void ItemScript::event_use(InventoryItem &inventory_item) {
 
   this->inventory_item = &inventory_item;
   if (!notify_script("event_use")) {
-    Debug::die(StringConcat() << "No script for inventory item '" << item_properties.get_name());
+    Debug::die(StringConcat() << "No script for inventory item '" << item_properties.get_name() << "'");
   }
   this->inventory_item = NULL;
 }

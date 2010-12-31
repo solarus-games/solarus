@@ -1,2 +1,2 @@
 #!/bin/bash
-solarus -datapath=/home/christophe/share/solarus/debug_quest 
+/home/christophe/bin/solarus -datapath=/home/christophe/share/solarus/debug_quest 

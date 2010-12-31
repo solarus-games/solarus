@@ -186,6 +186,19 @@ void PickableItem::initialize_sprites() {
 }
 
 /**
+ * @brief Returns whether this entity has to be displayed in y order.
+ *
+ * This function returns whether an entity of this type should be displayed above
+ * the hero and other entities when it is in front of them.
+ *
+ * @return true if this entity is displayed at the same level as the hero
+ */
+bool PickableItem::is_displayed_in_y_order() {
+  // because of fairies
+  return true;
+}
+
+/**
  * @brief Sets the map of this pickable item.
  * @param map the map
  */

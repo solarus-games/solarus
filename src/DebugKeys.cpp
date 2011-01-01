@@ -96,23 +96,25 @@ void DebugKeys::key_pressed(InputEvent::KeyboardKey key) {
 
       case InputEvent::KEY_t:
 	// quest-specific temporary code
-	equipment.add_item("bow", 1);
-	equipment.add_item("bottle_2", 6);
-	equipment.add_item("bombs_counter", 1);
-	equipment.add_item("boomerang", 1);
-	equipment.add_item("lamp", 1);
-	equipment.add_item("hookshot", 1);
-	equipment.add_item("pegasus_shoes", 1);
-	equipment.add_item("bottle_1", 1);
-	equipment.add_item("glove", 1);
-	equipment.add_item("pain_au_chocolat", 1);
-	equipment.add_item("croissant", 1);
-	equipment.add_item("clay_key", 1);
-	equipment.add_item("world_map", 1);
-	equipment.add_item("feather", 1);
-	equipment.set_item_assigned(0, "bow");
-	equipment.set_item_assigned(1, "feather");
-	game->get_savegame().set_string(Savegame::PLAYER_NAME, "VOYOU");
+	if (!game->is_paused()) {
+	  equipment.add_item("bow", 1);
+	  equipment.add_item("bottle_2", 6);
+	  equipment.add_item("bombs_counter", 1);
+	  equipment.add_item("boomerang", 1);
+	  equipment.add_item("lamp", 1);
+	  equipment.add_item("hookshot", 1);
+	  equipment.add_item("pegasus_shoes", 1);
+	  equipment.add_item("bottle_1", 1);
+	  equipment.add_item("glove", 1);
+	  equipment.add_item("pain_au_chocolat", 1);
+	  equipment.add_item("croissant", 1);
+	  equipment.add_item("clay_key", 1);
+	  equipment.add_item("world_map", 1);
+	  equipment.add_item("feather", 1);
+	  equipment.set_item_assigned(0, "bow");
+	  equipment.set_item_assigned(1, "feather");
+	  game->get_savegame().set_string(Savegame::PLAYER_NAME, "VOYOU");
+	}
 	break;
 
       case InputEvent::KEY_g:

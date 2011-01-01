@@ -34,6 +34,7 @@ Bomb::Bomb(Layer layer, int x, int y):
   MapEntity(layer, x, y, 16, 16), explosion_date(System::now() + 6000) {
 
   create_sprite("entities/bomb");
+  get_sprite().enable_pixel_collisions();
   set_bounding_box_from_sprite();
 }
 
@@ -107,6 +108,19 @@ bool Bomb::is_displayed_in_y_order() {
 }
 
 /**
+ * @brief This function is called when an explosion's sprite
+ * detects a pixel-perfect collision with a sprite of this entity.
+ * @param explosion the explosion
+ * @param sprite_overlapping the sprite of the current entity that collides with the explosion
+ */
+void Bomb::notify_collision_with_explosion(Explosion &explosion, Sprite &sprite_overlapping) {
+
+  if (!is_being_removed()) {
+    explode();
+  }
+}
+
+/**
  * @brief This function is called by the map when the game is suspended or resumed.
  * @param suspended true to suspend the entity, false to resume it
  */
@@ -135,12 +149,23 @@ void Bomb::update() {
 
   uint32_t now = System::now();
   if (now >= explosion_date) {
-    get_entities().add_entity(new Explosion(get_layer(), get_center_point(), true));
-    remove_from_map();
+    explode();
   }
   else if (now >= explosion_date - 1500
       && get_sprite().get_current_animation() != "explosion_soon") {
     get_sprite().set_current_animation("explosion_soon");
   }
+
+  // check collision with explosions
+  get_map().check_collision_with_detectors(*this, get_sprite());
+}
+
+/**
+ * @brief Makes the bomb explode.
+ */
+void Bomb::explode() {
+
+  get_entities().add_entity(new Explosion(get_layer(), get_center_point(), true));
+  remove_from_map();
 }
 

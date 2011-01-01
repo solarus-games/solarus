@@ -20,6 +20,12 @@ line2 = "     Caverne de Roc    "
 line1 = "        Niveau 3       "
 line2 = " Antre de Maître Arbror"
 
+[dungeon_10]
+# Lorsqu'on pénètre dans le donjon 10
+#       |-----------------------|
+line1 = "     Niveau secret       "
+line2 = "     Tour du Roxor  "
+
 [found_piece_of_heart.first]
 #       |--------------------|
 icon = 75

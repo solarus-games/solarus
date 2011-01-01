@@ -95,6 +95,7 @@ void Hero::RunningState::update() {
     
     if (now >= next_phase_date) {
       double angle = Geometry::degrees_to_radians(get_sprites().get_animation_direction() * 90);
+      hero.clear_movement();
       hero.set_movement(new TemporalMovement(300, angle , 10000));
       get_sprites().set_animation_running();
       phase++;

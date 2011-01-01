@@ -72,7 +72,8 @@ DestructibleItem::DestructibleItem(Layer layer, int x, int y,
     add_collision_mode(COLLISION_FACING_POINT);
   }
 
-  if (features[subtype].can_be_cut) {
+  if (features[subtype].can_be_cut
+      || features[subtype].can_explode) {
     add_collision_mode(COLLISION_SPRITE);
   }
 
@@ -274,6 +275,17 @@ void DestructibleItem::notify_collision(MapEntity &other_entity, Sprite &other_s
       hero.notify_position_changed(); // to update the ground under the hero
       create_pickable_item();
     }
+  }
+
+  // TODO use dynamic dispatch
+  if (other_entity.get_type() == EXPLOSION
+      && can_explode()
+      && !is_being_cut
+      && !is_disabled()) {
+
+    play_destroy_animation();
+    create_pickable_item();
+    get_entities().add_entity(new Explosion(get_layer(), get_xy(), true));
   }
 }
 

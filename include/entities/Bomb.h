@@ -40,9 +40,11 @@ class Bomb: public MapEntity {
     bool can_detect_entities();
     bool can_be_displayed();
     bool is_displayed_in_y_order();
-
+    void notify_collision_with_explosion(Explosion &explosion, Sprite &sprite_overlapping);
     void set_suspended(bool suspended);
     void update();
+
+    void explode();
 };
 
 #endif

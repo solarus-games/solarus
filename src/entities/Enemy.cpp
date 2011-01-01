@@ -19,6 +19,7 @@
 #include "entities/MapEntities.h"
 #include "entities/CarriedItem.h"
 #include "entities/PickableItem.h"
+#include "entities/DestructibleItem.h"
 #include "Game.h"
 #include "Savegame.h"
 #include "Equipment.h"
@@ -242,7 +243,10 @@ bool Enemy::is_sensor_obstacle(Sensor &sensor) {
  * @return true if the destructible item is currently an obstacle this entity
  */
 bool Enemy::is_destructible_item_obstacle(DestructibleItem &destructible_item) {
-  return true;
+
+  // the destructible item is an obstacle unless the enemy is already overlapping it,
+  // which is possible with bomb flowers
+  return !this->overlaps(destructible_item);
 }
 
 /**

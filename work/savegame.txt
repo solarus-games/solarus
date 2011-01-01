@@ -147,7 +147,9 @@ booleans:
 110-112	outside world: weak block of the dungeon 3 entrance
 113	dungeon 3 1F: door to open with the five torches
 
-
+200-299: binbin dungeon
+200	1F: small key 1 door
+201     1F: small key chest 1 
 
 
 

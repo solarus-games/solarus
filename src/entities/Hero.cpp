@@ -172,7 +172,10 @@ void Hero::set_state(State *new_state) {
     this->state->stop(new_state);
   }
 
-  old_state = this->state;
+  if (this->old_state != NULL) {
+    delete this->old_state;
+  }
+  this->old_state = this->state;
 
   this->state = new_state;
   this->state->start(old_state);

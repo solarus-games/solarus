@@ -51,7 +51,6 @@ Hero::State::State(Hero &hero):
  * The state is destroyed once it is not the current state of the hero anymore.
  */
 Hero::State::~State() {
-
 }
 
 /**

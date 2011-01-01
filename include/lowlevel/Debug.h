@@ -68,10 +68,12 @@ inline void Debug::print(const std::string &message, std::ostream &os) {
  */
 inline void Debug::check_assertion(bool assertion, const std::string &error_message) {
 
+#if SOLARUS_DEBUG_LEVEL > 0
   if (!assertion) {
     print(error_message, std::cerr);
     die(error_message);
   }
+#endif
 }
 
 /**

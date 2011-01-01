@@ -181,10 +181,10 @@
 10	0	384	120	16	8	game_3_barrier_3	70	1
 10	0	384	96	16	8	game_3_final_barrier	70	1
 10	0	280	160	8	16	game_3_middle_barrier	71	1
-3	0	224	157	rupee	2	-1
-3	0	256	157	rupee	2	-1
-3	0	240	205	rupee	2	-1
-3	0	408	285	rupee	3	-1
+3	0	224	157	rupee	2	114
+3	0	256	157	rupee	2	115
+3	0	240	205	rupee	2	116
+3	0	408	285	rupee	3	117
 11	0	264	160	switch	0	0	0
 9	0	240	221	block_13	-1	0	0
 9	0	272	221	block_14	-1	0	0

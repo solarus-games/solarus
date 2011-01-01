@@ -37,7 +37,6 @@ Hero::FreeState::FreeState(Hero &hero):
  * @brief Destructor.
  */
 Hero::FreeState::~FreeState() {
-
 }
 
 /**

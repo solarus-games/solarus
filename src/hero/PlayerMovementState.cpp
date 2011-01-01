@@ -31,7 +31,6 @@ Hero::PlayerMovementState::PlayerMovementState(Hero &hero):
  * @brief Destructor.
  */
 Hero::PlayerMovementState::~PlayerMovementState() {
-
 }
 
 /**

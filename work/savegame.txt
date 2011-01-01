@@ -146,6 +146,7 @@ booleans:
 109	dungeon 3 1F: small key block (north)
 110-112	outside world: weak block of the dungeon 3 entrance
 113	dungeon 3 1F: door to open with the five torches
+114-117	rupee house: pickable rupees in game 3
 
 200-299: binbin dungeon
 200	1F: small key 1 door

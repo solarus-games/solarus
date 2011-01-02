@@ -33,7 +33,7 @@
  */
 Stairs::Stairs(const std::string &name, Layer layer, int x, int y,
                int direction, Subtype subtype):
-  Detector(COLLISION_FACING_POINT | COLLISION_RECTANGLE, "", layer, x, y, 16, 16),
+  Detector(COLLISION_FACING_POINT | COLLISION_RECTANGLE, name, layer, x, y, 16, 16),
   subtype(subtype), enabled(true) {
 
   Debug::check_assertion(!is_inside_floor() || layer != LAYER_HIGH, "Cannot put single floor stairs on the high layer");
@@ -132,7 +132,7 @@ bool Stairs::is_sword_ignored() {
  */
 bool Stairs::is_obstacle_for(MapEntity &other) {
 
-  return other.is_stairs_obstacle(*this);
+  return is_enabled() && other.is_stairs_obstacle(*this);
 }
 
 /**
@@ -142,7 +142,9 @@ bool Stairs::is_obstacle_for(MapEntity &other) {
  */
 void Stairs::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
 
-  entity_overlapping.notify_collision_with_stairs(*this, collision_mode);
+  if (is_enabled()) {
+    entity_overlapping.notify_collision_with_stairs(*this, collision_mode);
+  }
 }
 
 /**

@@ -101,7 +101,7 @@ EntityType JumpSensor::get_type() {
  */
 bool JumpSensor::is_obstacle_for(MapEntity &other) {
 
-  if (direction % 2 != 0) {
+  if (get_direction() % 2 != 0) {
     return false; // diagonal jump sensor: never obstacle (the tiles below the jump sensor should block entities)
   }
 
@@ -124,6 +124,7 @@ bool JumpSensor::test_collision_custom(MapEntity &entity) {
   }
 
   Hero &hero = (Hero&) entity;
+  int direction = get_direction();
 
   // if the sensor's has one of the four main directions, then
   // its shape is exactly its rectangle
@@ -166,7 +167,7 @@ bool JumpSensor::is_point_in_diagonal(const Rectangle &point) {
   int y = point.get_y() - this->get_y();
   int width = get_width();
 
-  switch (direction) {
+  switch (get_direction()) {
 
   case 1:
     collision = (y >= x) && (y - 8 < x);

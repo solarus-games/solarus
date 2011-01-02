@@ -247,10 +247,10 @@ void Hero::update_movement() {
 
   on_raised_blocks = get_entities().overlaps_raised_blocks(get_layer(), get_bounding_box());
 
-  if (movement == NULL) {
+  if (get_movement() == NULL) {
     return;
   }
-  movement->update();
+  get_movement()->update();
 }
 
 /**
@@ -445,6 +445,8 @@ bool Hero::is_shadow_visible() {
  * @brief Sets the hero's current map.
  *
  * This function is called when the map is changed.
+ * Warning: as this function is called when initializing the map,
+ * the current map of the game is still the old one.
  *
  * @param map the map
  */
@@ -621,6 +623,7 @@ const Rectangle Hero::get_facing_point() {
 const Rectangle Hero::get_facing_point(int direction) {
 
   Rectangle facing_point;
+  const Rectangle& bounding_box = get_bounding_box();
 
   switch (direction) {
 

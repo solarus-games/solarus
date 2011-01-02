@@ -36,8 +36,12 @@
  * @param treasure the treasure to give when the item is picked
  */
 PickableItem::PickableItem(Layer layer, int x, int y, const Treasure &treasure):
-  Detector(COLLISION_RECTANGLE, "", layer, x, y, 0, 0), treasure(treasure),
-  shadow_xy(Rectangle(x, y)), appear_date(System::now()), is_following_boomerang(false) {
+  Detector(COLLISION_RECTANGLE, "", layer, x, y, 0, 0),
+  treasure(treasure),
+  layer_independent_collisions(false),
+  shadow_xy(Rectangle(x, y)),
+  appear_date(System::now()),
+  is_following_boomerang(false) {
 
 }
 
@@ -186,12 +190,26 @@ void PickableItem::initialize_sprites() {
 }
 
 /**
- * @brief Sets the map of this pickable item.
+ * @brief Notifies this entity that it has just been added to a map.
  * @param map the map
  */
-void PickableItem::set_map(Map &map) {
+void PickableItem::set_map(Map& map) {
 
   MapEntity::set_map(map);
+
+  if (map.is_started()) {
+    // notify the item script
+    get_equipment().get_item_script(treasure.get_item_name()).event_appear(*this);
+  }
+  // otherwise, notify_map_started() will do the job
+}
+
+/**
+ * @brief Notifies this entity that its map has just become active.
+ */
+void PickableItem::notify_map_started() {
+
+  MapEntity::notify_map_started();
 
   // notify the item script
   get_equipment().get_item_script(treasure.get_item_name()).event_appear(*this);
@@ -222,6 +240,24 @@ bool PickableItem::is_falling() {
  */
 FallingHeight PickableItem::get_falling_height() {
   return falling_height;
+}
+
+/**
+ * @brief Returns whether this entity can have collisions with entities even if
+ * they are not on the same layer.
+ * @return true if this entity can collide with entities that are on another layer
+ */
+bool PickableItem::has_layer_independent_collisions() {
+  return layer_independent_collisions;
+}
+
+/**
+ * @brief Sets whether this entity can have collisions with entities even if
+ * they are not on the same layer.
+ * @param true if this entity can collide with entities that are on another layer
+ */
+void PickableItem::set_layer_independent_collisions(bool independent) {
+  this->layer_independent_collisions = independent;
 }
 
 /**

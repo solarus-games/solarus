@@ -29,6 +29,8 @@
 #include "entities/CustomObstacle.h"
 #include "entities/Block.h"
 #include "entities/Switch.h"
+#include "entities/CrystalSwitch.h"
+#include "entities/Teletransporter.h"
 #include "entities/Hero.h"
 #include "entities/PickableItem.h"
 #include "entities/Bomb.h"
@@ -706,38 +708,38 @@ int Script::map_api_chest_set_open(lua_State *l) {
 }
 
 /**
- * @brief Hides or unhides a chest.
+ * @brief Enables or disables a chest.
  *
- * If the chest is already open, hiding it has not effect.
+ * If the chest is already open, disabling it has not effect.
  * - Argument 1 (string): name of the chest
- * - Argument 2 (boolean): true to make the chest hidden, false to make it appear
+ * - Argument 2 (boolean): true to make the chest appear, false to make it disappear
  *
  * @param l the Lua context that is calling this function
  */
-int Script::map_api_chest_set_hidden(lua_State *l) {
+int Script::map_api_chest_set_enabled(lua_State *l) {
 
   Script *script;
   called_by_script(l, 2, &script);
 
   const std::string &name = luaL_checkstring(l, 1);
-  bool hidden = lua_toboolean(l, 2) != 0;
+  bool enabled = lua_toboolean(l, 2) != 0;
 
   MapEntities &entities = script->get_map().get_entities();
   Chest *chest = (Chest*) entities.get_entity(CHEST, name);
-  chest->set_visible(!hidden);
+  chest->set_visible(enabled);
 
   return 0;
 }
 
 /**
- * @brief Returns whether a chest is hidden.
+ * @brief Returns whether a chest is enabled.
  *
  * - Argument 1 (string): name of the chest
- * - Return value (boolean): true if this chest is hidden
+ * - Return value (boolean): true if this chest is enabled
  *
  * @param l the Lua context that is calling this function
  */
-int Script::map_api_chest_is_hidden(lua_State *l) {
+int Script::map_api_chest_is_enabled(lua_State *l) {
 
   Script *script;
   called_by_script(l, 1, &script);
@@ -746,7 +748,7 @@ int Script::map_api_chest_is_hidden(lua_State *l) {
 
   MapEntities &entities = script->get_map().get_entities();
   Chest *chest = (Chest*) entities.get_entity(CHEST, name);
-  lua_pushboolean(l, chest->is_visible() ? 0 : 1);
+  lua_pushboolean(l, chest->is_visible() ? 1 : 0);
 
   return 1;
 }
@@ -873,7 +875,7 @@ int Script::map_api_stairs_set_enabled(lua_State *l) {
 }
 
 /**
- * @brief Returns whether a custom obstacle enabled.
+ * @brief Returns whether a custom obstacle is enabled.
  *
  * - Argument 1 (string): name of the custom obstacle
  * - Return value (boolean): true if this custom obstacle is enabled
@@ -913,6 +915,182 @@ int Script::map_api_obstacle_set_enabled(lua_State *l) {
   MapEntities &entities = script->get_map().get_entities();
   CustomObstacle *obstacle = (CustomObstacle*) entities.get_entity(CUSTOM_OBSTACLE, name);
   obstacle->set_enabled(enable);
+
+  return 0;
+}
+
+/**
+ * @brief Returns whether a sensor is enabled.
+ *
+ * - Argument 1 (string): name of the sensor
+ * - Return value (boolean): true if this sensor is enabled
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_sensor_is_enabled(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 1, &script);
+
+  const std::string &name = luaL_checkstring(l, 1);
+
+  MapEntities &entities = script->get_map().get_entities();
+  Sensor *sensor = (Sensor*) entities.get_entity(SENSOR, name);
+  lua_pushboolean(l, sensor->is_enabled() ? 1 : 0);
+
+  return 1;
+}
+
+/**
+ * @brief Enables or disables a sensor.
+ *
+ * - Argument 1 (string): name of the sensor
+ * - Argument 2 (boolean): true to enable it, false to disable it
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_sensor_set_enabled(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 2, &script);
+
+  const std::string &name = luaL_checkstring(l, 1);
+  bool enable = lua_toboolean(l, 2) != 0;
+
+  MapEntities &entities = script->get_map().get_entities();
+  Sensor *sensor = (Sensor*) entities.get_entity(SENSOR, name);
+  sensor->set_enabled(enable);
+
+  return 0;
+}
+
+/**
+ * @brief Returns whether a crystal switch is enabled.
+ *
+ * - Argument 1 (string): name of the crystal switch
+ * - Return value (boolean): true if this crystal switch are enabled
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_crystal_switch_is_enabled(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 1, &script);
+
+  const std::string &name = luaL_checkstring(l, 1);
+
+  MapEntities &entities = script->get_map().get_entities();
+  CrystalSwitch *crystal_switch = (CrystalSwitch*) entities.get_entity(CRYSTAL_SWITCH, name);
+  lua_pushboolean(l, crystal_switch->is_enabled() ? 1 : 0);
+
+  return 1;
+}
+
+/**
+ * @brief Enables or disables a crystal switch.
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_crystal_switch_set_enabled(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 2, &script);
+
+  const std::string &name = luaL_checkstring(l, 1);
+  bool enable = lua_toboolean(l, 2) != 0;
+
+  MapEntities &entities = script->get_map().get_entities();
+  CrystalSwitch *crystal_switch = (CrystalSwitch*) entities.get_entity(CRYSTAL_SWITCH, name);
+  crystal_switch->set_enabled(enable);
+
+  return 0;
+}
+
+/**
+ * @brief Returns whether a teletransporter is enabled.
+ *
+ * - Argument 1 (string): name of the teletransporter
+ * - Return value (boolean): true if this teletransporter is enabled
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_teletransporter_is_enabled(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 1, &script);
+
+  const std::string &name = luaL_checkstring(l, 1);
+
+  MapEntities &entities = script->get_map().get_entities();
+  Teletransporter *teletransporter = (Teletransporter*) entities.get_entity(TELETRANSPORTER, name);
+  lua_pushboolean(l, teletransporter->is_enabled() ? 1 : 0);
+
+  return 1;
+}
+
+/**
+ * @brief Enables or disables a teletransporter.
+ *
+ * - Argument 1 (string): name of the teletransporter
+ * - Argument 2 (boolean): true to enable it, false to disable it
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_teletransporter_set_enabled(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 2, &script);
+
+  const std::string &name = luaL_checkstring(l, 1);
+  bool enable = lua_toboolean(l, 2) != 0;
+
+  MapEntities &entities = script->get_map().get_entities();
+  Teletransporter *teletransporter = (Teletransporter*) entities.get_entity(TELETRANSPORTER, name);
+  teletransporter->set_enabled(enable);
+
+  return 0;
+}
+
+/**
+ * @brief Returns whether a block is enabled.
+ *
+ * - Argument 1 (string): name of the block
+ * - Return value (boolean): true if this block is enabled
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_block_is_enabled(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 1, &script);
+
+  const std::string &name = luaL_checkstring(l, 1);
+
+  MapEntities &entities = script->get_map().get_entities();
+  Block *block = (Block*) entities.get_entity(BLOCK, name);
+  lua_pushboolean(l, block->is_enabled() ? 1 : 0);
+
+  return 1;
+}
+
+/**
+ * @brief Enables or disables a block.
+ *
+ * - Argument 1 (string): name of the block
+ * - Argument 2 (boolean): true to enable it, false to disable it
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_block_set_enabled(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 2, &script);
+
+  const std::string &name = luaL_checkstring(l, 1);
+  bool enable = lua_toboolean(l, 2) != 0;
+
+  MapEntities &entities = script->get_map().get_entities();
+  Block *block = (Block*) entities.get_entity(BLOCK, name);
+  block->set_enabled(enable);
 
   return 0;
 }
@@ -978,14 +1156,14 @@ int Script::map_api_shop_item_remove(lua_State *l) {
 }
 
 /**
- * @brief Returns whether a switch is currently enabled.
+ * @brief Returns whether a switch is currently activated.
  *
  * - Argument 1 (string): name of the switch
- * - Return value (boolean): true if the switch is enabled
+ * - Return value (boolean): true if the switch is activated
  *
  * @param l the Lua context that is calling this function
  */
-int Script::map_api_switch_is_enabled(lua_State *l) {
+int Script::map_api_switch_is_activated(lua_State *l) {
 
   Script *script;
   called_by_script(l, 1, &script);
@@ -995,30 +1173,30 @@ int Script::map_api_switch_is_enabled(lua_State *l) {
   MapEntities &entities = script->get_map().get_entities();
   Switch *sw = (Switch*) entities.get_entity(SWITCH, name);
 
-  lua_pushboolean(l, sw->is_enabled());
+  lua_pushboolean(l, sw->is_activated());
 
   return 1;
 }
 
 /**
- * @brief Enables or disables a switch.
+ * @brief Activates or inactivates a switch.
  *
  * - Argument 1 (string): name of the switch
- * - Argument 2 (boolean): true to enable the switch, false to disable it
+ * - Argument 2 (boolean): true to activate the switch, false to inactivate it
  *
  * @param l the Lua context that is calling this function
  */
-int Script::map_api_switch_set_enabled(lua_State *l) {
+int Script::map_api_switch_set_activated(lua_State *l) {
 
   Script *script;
   called_by_script(l, 2, &script);
 
   const std::string &name = luaL_checkstring(l, 1);
-  bool enable = lua_toboolean(l, 2) != 0;
+  bool activate = lua_toboolean(l, 2) != 0;
 
   MapEntities &entities = script->get_map().get_entities();
   Switch *sw = (Switch*) entities.get_entity(SWITCH, name);
-  sw->set_enabled(enable);
+  sw->set_activated(activate);
 
   return 0;
 }
@@ -1042,6 +1220,51 @@ int Script::map_api_switch_set_locked(lua_State *l) {
   MapEntities &entities = script->get_map().get_entities();
   Switch *sw = (Switch*) entities.get_entity(SWITCH, name);
   sw->set_locked(lock);
+
+  return 0;
+}
+
+/**
+ * @brief Returns whether a switch is enabled (i.e. visible).
+ *
+ * - Argument 1 (string): name of the switch
+ * - Return value (boolean): true if this switch is enabled (i.e. visible)
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_switch_is_enabled(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 1, &script);
+
+  const std::string &name = luaL_checkstring(l, 1);
+
+  MapEntities &entities = script->get_map().get_entities();
+  Switch *sw = (Switch*) entities.get_entity(SWITCH, name);
+  lua_pushboolean(l, sw->is_enabled() ? 1 : 0);
+
+  return 1;
+}
+
+/**
+ * @brief Enables or disables a switch.
+ *
+ * - Argument 1 (string): name of the switch
+ * - Argument 2 (boolean): true to enable it, false to disable it
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_switch_set_enabled(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 2, &script);
+
+  const std::string &name = luaL_checkstring(l, 1);
+  bool enable = lua_toboolean(l, 2) != 0;
+
+  MapEntities &entities = script->get_map().get_entities();
+  Switch *sw = (Switch*) entities.get_entity(SWITCH, name);
+  sw->set_enabled(enable);
 
   return 0;
 }
@@ -1201,25 +1424,6 @@ int Script::map_api_enemy_end_miniboss(lua_State *l) {
 }
 
 /**
- * @brief Removes a sensor from the map.
- *
- * - Argument 1 (string): name of the sensor
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_sensor_remove(lua_State *l) {
-
-  Script *script;
-  called_by_script(l, 1, &script);
-
-  const std::string &name = luaL_checkstring(l, 1);
-
-  script->get_map().get_entities().remove_entity(SENSOR, name);
-
-  return 0;
-}
-
-/**
  * @brief Opens one or several doors.
  *
  * The doors must be normal closed doors
@@ -1255,7 +1459,6 @@ int Script::map_api_door_open(lua_State *l) {
   return 0;
 }
 
-#include <iostream>
 /**
  * @brief Closes one or several doors.
  *

@@ -35,7 +35,7 @@ DestinationPoint::DestinationPoint(const std::string &name, Layer layer, int x, 
 
   set_origin(8, 13);
 
-  this->change_direction = (direction != -1);
+  this->change_direction = (get_direction() != -1);
   if (change_direction) {
     set_direction(hero_direction);
   }

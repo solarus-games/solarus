@@ -89,6 +89,10 @@ EntityType Stairs::get_type() {
 
 /**
  * @brief Sets the map.
+ *
+ * Warning: as this function is called when initializing the map,
+ * the current map of the game is still the old one.
+ *
  * @param map the map
  */
 void Stairs::set_map(Map &map) {
@@ -299,23 +303,14 @@ Rectangle Stairs::get_clipping_rectangle(Way way) {
 }
 
 /**
- * @brief Returns whether this stairs are enabled.
- * @return true if these stairs are enabled
- */
-bool Stairs::is_enabled() {
-  return enabled;
-}
-
-/**
- * @brief Enables or disables these stairs.
- * @param enabled true to enable the stairs, false to disable them
+ * @brief Notifies this entity that it was just enabled or disabled.
+ * @param enabled true if the entity is now enabled
  *
  * All dynamic tiles whose prefix is "<stairsname>_enabled"
  * and "<stairsame>_disabled" will be updated depending on the stairs state
  * (where <stairsname> is the name of the stairs).
  */
-void Stairs::set_enabled(bool enabled) {
-  this->enabled = enabled;
+void Stairs::notify_enabled(bool enabled) {
   update_dynamic_tiles();
 }
 

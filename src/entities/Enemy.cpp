@@ -169,8 +169,11 @@ MapEntity* Enemy::create(Game &game, Subtype type, Rank rank, int savegame_varia
   // initialize the fields
   enemy->set_direction(direction);
   enemy->rank = rank;
-  enemy->enabled = (rank == RANK_NORMAL);
   enemy->savegame_variable = savegame_variable;
+
+  if (rank != RANK_NORMAL) {
+    enemy->set_enabled(false);
+  }
 
   // set the default enemy features
   enemy->damage_on_hero = 1;
@@ -196,6 +199,10 @@ EntityType Enemy::get_type() {
 
 /**
  * @brief Sets the map.
+ *
+ * Warning: as this function is called when initializing the map,
+ * the current map of the game is still the old one.
+ *
  * @param map the map
  */
 void Enemy::set_map(Map &map) {
@@ -394,8 +401,8 @@ const std::string& Enemy::get_animation() {
  */
 void Enemy::set_animation(const std::string &animation) {
   
-  std::map<std::string, Sprite*>::iterator it;
-  for (it = sprites.begin(); it != sprites.end(); it++) {
+  std::map<SpriteAnimationSetId, Sprite*>::iterator it;
+  for (it = get_sprites().begin(); it != get_sprites().end(); it++) {
     it->second->set_current_animation(animation);
   }
 }
@@ -526,37 +533,16 @@ void Enemy::set_suspended(bool suspended) {
     next_explosion_date += diff;
   }
 }
-
 /**
- * @brief Enables or disables the enemy.
- * @param enabled true to enable it, false to disable it
+ * @brief Notifies this entity that it was just enabled or disabled.
+ * @param enabled true if the entity is now enabled
  */
-void Enemy::set_enabled(bool enabled) {
+void Enemy::notify_enabled(bool enabled) {
 
-  if (enabled != this->enabled) {
-    this->enabled = enabled;
-
-    if (enabled) {
-      initialize();
-      restart();
-    }
+  if (enabled) {
+    initialize();
+    restart();
   }
-}
-
-/**
- * @brief Returns whether the enemy is enabled.
- * @return true if the enemy is enabled
- */
-bool Enemy::is_enabled() {
-  return enabled;
-}
-
-/**
- * @brief Returns whether this entity is currently visible.
- * @return true if this entity is currently visible
- */
-bool Enemy::is_visible() {
-  return MapEntity::is_visible() && is_enabled();
 }
 
 /**
@@ -590,9 +576,7 @@ void Enemy::restart() {
  */
 void Enemy::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
 
-  if (is_enabled()) {
-    entity_overlapping.notify_collision_with_enemy(*this);
-  }
+  entity_overlapping.notify_collision_with_enemy(*this);
 }
 
 /**
@@ -607,9 +591,7 @@ void Enemy::notify_collision(MapEntity &entity_overlapping, CollisionMode collis
  */
 void Enemy::notify_collision(MapEntity &other_entity, Sprite &other_sprite, Sprite &this_sprite) {
 
-  if (is_enabled()) {
-    other_entity.notify_collision_with_enemy(*this, this_sprite, other_sprite);
-  }
+  other_entity.notify_collision_with_enemy(*this, this_sprite, other_sprite);
 }
 
 /**
@@ -655,7 +637,7 @@ void Enemy::restore_movement() {
  */
 void Enemy::attack_hero(Hero &hero, Sprite *this_sprite) {
 
-  if (is_enabled() && !is_immobilized() && can_attack) {
+  if (!is_immobilized() && can_attack) {
 
     bool hero_protected = false;
     if (minimum_shield_needed != 0 &&
@@ -756,10 +738,6 @@ void Enemy::play_hurt_sound() {
  */
 void Enemy::try_hurt(EnemyAttack attack, MapEntity &source, Sprite *this_sprite) {
 
-  if (!is_enabled()) {
-    return;
-  }
-
   int result;
 
   int consequence = get_attack_consequence(attack, this_sprite);
@@ -828,10 +806,6 @@ void Enemy::try_hurt(EnemyAttack attack, MapEntity &source, Sprite *this_sprite)
  * @param source the entity attacking the enemy (often the hero)
  */
 void Enemy::hurt(MapEntity &source) {
-
-  if (!is_enabled()) {
-    return;
-  }
 
   uint32_t now = System::now();
 

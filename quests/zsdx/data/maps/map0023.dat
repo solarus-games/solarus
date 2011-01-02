@@ -499,12 +499,12 @@
 2	1	600	232	32	32	to_B1_hole	0	1	24	from_1F_hole
 1	1	616	253	from_2F_hole	-1	0
 7	1	400	165	enemy_9	3	0	0	-1	_random	0	-1
-1	1	176	597	from_outside	1	0
 13	1	432	173	16	16	sensor_9	2
 2	1	848	256	16	16	teletransporter	0	1	25	from_1F
 15	1	824	272	16	48	0
 19	1	800	256	stairs_6	1	1
 19	1	848	256	stairs_7	1	0
+1	1	176	597	from_outside	1	0
 0	2	776	248	64	8	356
 0	2	824	248	64	8	356
 0	2	480	136	8	64	352

@@ -34,7 +34,8 @@
 CustomObstacle::CustomObstacle(const std::string &name, Layer layer, int x, int y, int width, int height,
 			       bool stops_hero, bool stops_enemies, bool stops_npcs, bool stops_blocks):
   MapEntity(name, 0, layer, x, y, width, height),
-  enabled(true) {
+  enabled(true),
+  waiting_enabled(false) {
 
   entity_types_stopped[HERO] = stops_hero;
   entity_types_stopped[ENEMY] = stops_enemies;
@@ -87,51 +88,12 @@ EntityType CustomObstacle::get_type() {
 }
 
 /**
- * @brief Returns whether this entity is an obstacle for another one.
+ * @brief Returns whether this entity is an obstacle for another one
+ * when it is enabled.
  * @param other another entity
  * @return true if this entity is an obstacle for the other one
  */
 bool CustomObstacle::is_obstacle_for(MapEntity &other) {
-  return is_enabled() && entity_types_stopped[other.get_type()];
-}
-
-/**
- * @brief Updates the entity.
- */
-void CustomObstacle::update() {
-
-  MapEntity::update();
-
-  if (waiting_enabled) {
-
-    if (!overlaps(get_hero())) {
-      this->enabled = true;
-      this->waiting_enabled = false;
-    }
-  }
-}
-
-/**
- * @brief Returns whether this obstacle is enabled.
- * @return true if this obstacle is enabled
- */
-bool CustomObstacle::is_enabled() {
-  return enabled;
-}
-
-/**
- * @brief Enables or disables this obstacle.
- * @param enabled true to enable the obstacle, false to disable it
- */
-void CustomObstacle::set_enabled(bool enabled) {
-
-  if (enabled) {
-    // enable the tile as soon as possible
-    this->waiting_enabled = true;
-  }
-  else {
-    this->enabled = false;
-    this->waiting_enabled = false;
-  }
+  return entity_types_stopped[other.get_type()];
 }
 

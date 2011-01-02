@@ -10,7 +10,7 @@ function event_map_started(destination_point_name)
     sol.map.tile_set_group_enabled("ladder_step", true)
     sol.map.tile_set_group_enabled("no_ladder", false)
     sol.map.npc_remove("tom")
-    sol.map.sensor_remove("tom_appears_sensor")
+    sol.map.sensor_set_enabled("tom_appears_sensor", false)
   else
     sol.map.tile_set_group_enabled("ladder_step", false)
     sol.map.tile_set_group_enabled("no_ladder", true)
@@ -104,7 +104,7 @@ end
 
 function ladder_step4()
   sol.map.tile_set_group_enabled("no_ladder", false)
-  sol.map.sensor_remove("tom_appears_sensor")
+  sol.map.sensor_set_enabled("tom_appears_sensor", false)
   sol.main.play_sound("secret")
   sol.game.savegame_set_boolean(52, true)
   sol.map.hero_unfreeze()

@@ -74,6 +74,10 @@ EntityType Tile::get_type() {
 
 /**
  * @brief Sets the map of this entity.
+ *
+ * Warning: as this function is called when initializing the map,
+ * the current map of the game is still the old one.
+ *
  * @param map the map
  */
 void Tile::set_map(Map &map) {
@@ -85,7 +89,7 @@ void Tile::set_map(Map &map) {
  * @brief Displays the tile on the map.
  */
 void Tile::display_on_map() {
-  tile_pattern->display_on_map(&get_map(), bounding_box);
+  tile_pattern->display_on_map(&get_map(), get_bounding_box());
 }
 
 /**

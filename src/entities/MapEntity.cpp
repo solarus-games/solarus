@@ -38,6 +38,7 @@
 #include "entities/Door.h"
 #include "entities/Stairs.h"
 #include "entities/Arrow.h"
+#include "entities/Hero.h"
 #include "movements/Movement.h"
 #include "lowlevel/Geometry.h"
 #include "lowlevel/System.h"
@@ -112,8 +113,19 @@ const Rectangle MapEntity::directions_to_xy_moves[] = {
  * @brief Creates a map entity without specifying its properties now.
  */
 MapEntity::MapEntity():
-  map(NULL), layer(LAYER_LOW), name(""), direction(0), first_sprite(NULL), visible(true),
-  movement(NULL), old_movement(NULL), suspended(false), when_suspended(0), being_removed(false) {
+  map(NULL),
+  layer(LAYER_LOW),
+  name(""),
+  direction(0),
+  first_sprite(NULL),
+  visible(true),
+  movement(NULL),
+  old_movement(NULL),
+  being_removed(false),
+  enabled(true),
+  waiting_enabled(false),
+  suspended(false),
+  when_suspended(0) {
 
   bounding_box.set_xy(0, 0);
   origin.set_xy(0, 0);
@@ -132,8 +144,20 @@ MapEntity::MapEntity():
  * @param height height of the entity
  */
 MapEntity::MapEntity(Layer layer, int x, int y, int width, int height):
-  map(NULL), layer(layer), bounding_box(x, y), name(""), direction(0), first_sprite(NULL), visible(true),
-  movement(NULL), old_movement(NULL), suspended(false), when_suspended(0), being_removed(false) {
+  map(NULL),
+  layer(layer),
+  bounding_box(x, y),
+  name(""),
+  direction(0),
+  first_sprite(NULL),
+  visible(true),
+  movement(NULL),
+  old_movement(NULL),
+  being_removed(false),
+  enabled(true),
+  waiting_enabled(false),
+  suspended(false),
+  when_suspended(0) {
 
   origin.set_xy(0, 0);
   set_size(width, height);
@@ -151,8 +175,19 @@ MapEntity::MapEntity(Layer layer, int x, int y, int width, int height):
  */
 MapEntity::MapEntity(const std::string &name, int direction, Layer layer,
 		     int x, int y, int width, int height):
-  map(NULL), layer(layer), bounding_box(x, y), name(name), direction(direction), visible(true),
-  movement(NULL), old_movement(NULL), suspended(false), when_suspended(0), being_removed(false) {
+  map(NULL),
+  layer(layer),
+  bounding_box(x, y),
+  name(name),
+  direction(direction),
+  visible(true),
+  movement(NULL),
+  old_movement(NULL),
+  being_removed(false),
+  enabled(true),
+  waiting_enabled(false),
+  suspended(false),
+  when_suspended(0) {
 
   origin.set_xy(0, 0);
   set_size(width, height);
@@ -245,6 +280,10 @@ bool MapEntity::is_on_map() {
 
 /**
  * @brief Sets the map where this entity is.
+ *
+ * Warning: as this function is called when initializing the map,
+ * the current map of the game is still the old one.
+ *
  * @param map the map
  */
 void MapEntity::set_map(Map &map) {
@@ -812,6 +851,14 @@ Sprite& MapEntity::get_sprite(const SpriteAnimationSetId &id) {
 }
 
 /**
+ * @brief Returns all sprites of this entity.
+ * @return the sprites indexed by their animation set id
+ */
+std::map<SpriteAnimationSetId, Sprite*>& MapEntity::get_sprites() {
+  return sprites;
+}
+
+/**
  * @brief Adds a sprite to this entity.
  * @param id id of the sprite's animations to add
  * @param enable_pixel_collisions true to enable the pixel-perfect collision tests for this sprite
@@ -980,7 +1027,40 @@ const Rectangle& MapEntity::direction_to_xy_move(int direction8) {
 }
 
 /**
- * @brief Returns whether this entity is an obstacle for another one.
+ * @brief Returns whether this entity is enabled.
+ * @return true if this entity is enabled
+ */
+bool MapEntity::is_enabled() {
+  return enabled;
+}
+
+/**
+ * @brief Enables or disables this entity.
+ * @param enabled true to enable the entity, false to disable it
+ */
+void MapEntity::set_enabled(bool enabled) {
+
+  if (enabled) {
+    // enable the entity as soon as possible
+    this->waiting_enabled = true;
+  }
+  else {
+    this->enabled = false;
+    this->waiting_enabled = false;
+    notify_enabled(false);
+  }
+}
+
+/**
+ * @brief Notifies this entity that it was just enabled or disabled.
+ * @param enabled true if the entity is now enabled
+ */
+void MapEntity::notify_enabled(bool enabled) {
+}
+
+/**
+ * @brief Returns whether this entity is an obstacle for another one when
+ * it is enabled.
  *
  * By default, this function returns false.
  *
@@ -1478,6 +1558,16 @@ void MapEntity::start_fading(int direction) {
  * to handle the movement and the sprites.
  */
 void MapEntity::update() {
+
+  // enable if necessary
+  if (waiting_enabled) {
+    Hero &hero = get_hero();
+    if (!is_obstacle_for(hero) || !overlaps(hero)) {
+      this->enabled = true;
+      this->waiting_enabled = false;
+      notify_enabled(true);
+    }
+  }
 
   // update the sprites
   std::map<std::string, Sprite*>::iterator it;

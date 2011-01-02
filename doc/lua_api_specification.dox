@@ -343,11 +343,11 @@ checks the existence of an interactive entity
 - <tt>sol.map.chest_set_open(chest_name, bool open)</tt>:
 sets the state of a chest (without giving or reseting its content)
 
-- <tt>sol.map.chest_set_hidden(chest_name, bool hidden)</tt>:
-hides or unhides a chest
+- <tt>sol.map.chest_set_enabled(chest_name, bool enable)</tt>:
+enables or disables a chest
 
-- <tt>sol.map.chest_is_hidden(chest_name)</tt>:
-returns whether a chest is hidden
+- <tt>sol.map.chest_is_enabled(chest_name)</tt>:
+returns whether a chest is enabled
 
 - <tt>sol.map.tile_is_enabled(tile_name)</tt>:
 returns whether a dynamic tile is enabled
@@ -370,6 +370,30 @@ returns whether a custom obstacle is enabled
 - <tt>sol.map.obstacle_set_enabled(custom_obstacle_name, enable)</tt>:
 enables or disables a custom obstacle
 
+- <tt>sol.map.sensor_is_enabled(sensor_name)</tt>:
+returns whether a sensor is enabled
+
+- <tt>sol.map.sensor_set_enabled(sensor_name, enable)</tt>:
+enables or disables a sensor
+
+- <tt>sol.map.crystal_switch_is_enabled(crystal_switch_name)</tt>:
+returns whether a crystal switch is enabled
+
+- <tt>sol.map.crystal_switch_set_enabled(crystal_switch_name, enable)</tt>:
+enables or disables a crystal switch
+
+- <tt>sol.map.teletransporter_is_enabled(teletransporter_name)</tt>:
+returns whether a teletransporter is enabled
+
+- <tt>sol.map.teletransporter_set_enabled(teletransporter_name, enable)</tt>:
+enables or disables a teletransporter
+
+- <tt>sol.map.block_is_enabled(block_name)</tt>:
+returns whether a block is enabled
+
+- <tt>sol.map.block_set_enabled(block_name, enable)</tt>:
+enables or disables a block
+
 - <tt>sol.map.block_reset(block_name)</tt>:
 places a block where it was when the map started
 
@@ -379,14 +403,20 @@ resets all blocks of the map
 - <tt>sol.map.shop_item_remove(shop_item_name)</tt>:
 removes a shop item from the map
 
-- <tt>sol.map.switch_is_enabled(switch_name)</tt>:
-returns whether a switch is enabled
+- <tt>sol.map.switch_is_activated(switch_name)</tt>:
+returns whether a switch is activated
 
-- <tt>sol.map.switch_set_enabled(switch_name, enabled)</tt>:
-enables or disables a switch
+- <tt>sol.map.switch_set_activated(switch_name, activated)</tt>:
+activates or inactivates a switch
 
 - <tt>sol.map.switch_set_locked(switch_name, locked)</tt>:
 locks a switch in its current state or unlocks it
+
+- <tt>sol.map.switch_is_enabled(switch_name)</tt>:
+returns whether a switch is enabled
+
+- <tt>sol.map.sensor_set_enabled(sensor_name, enable)</tt>:
+enables or disables a sensor
 
 - <tt>sol.map.enemy_is_dead(enemy_name)</tt>:
 returns whether an enemy is dead
@@ -409,14 +439,14 @@ starts fighting a miniboss if it is alive
 - <tt>sol.map.enemy_end_miniboss()</tt>:
 sets the fight with a miniboss as finished
 
-- <tt>sol.map.sensor_remove(sensor_name)</tt>:
-removes a sensor from the map
-
 - <tt>sol.map.door_open(door_prefix)</tt>:
 opens one or several doors, playing their animation and sound
 
 - <tt>sol.map.door_close(door_prefix)</tt>:
 closes one or several doors, playing their animation and sound
+
+- <tt>sol.map.door_is_open(door_name)</tt>:
+returns whether a door is open
 
 - <tt>sol.map.door_set_open(door_name, open)</tt>:
 changes immediately the state of a door (without playing animation and sound)
@@ -459,6 +489,27 @@ returns the movement of the current pickable item
 
 - <tt>sol.item.start_movement(movement)</tt>:
 gives another movement to the current pickable item instead of the default one
+(can be called only when there is a current pickable item in the context)
+
+- <tt>sol.item.get_position(x, y)</tt>
+returns the position of the current pickable item
+(can be called only when there is a current pickable item in the context)
+
+- <tt>sol.item.set_position(x, y)</tt>
+sets the position of the current pickable item
+(can be called only when there is a current pickable item in the context)
+
+- <tt>sol.item.get_layer(layer)</tt>
+returns the layer (0 to 2) of the current pickable item
+(can be called only when there is a current pickable item in the context)
+
+- <tt>sol.item.set_layer(layer)</tt>
+sets the layer (0 to 2) of the current pickable item
+(can be called only when there is a current pickable item in the context)
+
+- <tt>sol.item.set_layer_independent_collisions(independent)</tt>
+sets whether the collisions with the current pickable item should be detected
+from every layer
 (can be called only when there is a current pickable item in the context)
 
 - <tt>sol.item.set_finished()</tt>:

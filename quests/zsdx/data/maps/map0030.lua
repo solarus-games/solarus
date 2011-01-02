@@ -9,7 +9,7 @@ function event_map_started(destination_point_name)
   -- west barrier
   if sol.game.savegame_get_boolean(78) then
     sol.map.tile_set_enabled("barrier", false)
-    sol.map.switch_set_enabled("barrier_switch", true)
+    sol.map.switch_set_activated("barrier_switch", true)
   end
 
   -- hidden stairs
@@ -60,18 +60,18 @@ function event_enemy_dead(enemy_name)
   end
 end
 
-function event_switch_enabled(switch_name)
+function event_switch_activated(switch_name)
 
   current_switch = switch_name
   if switch_name == "barrier_switch" then
     sol.map.camera_move(120, 536, 150)
   elseif switch_name == "pegasus_run_switch" then
-    sol.map.switch_set_enabled("pegasus_run_switch_2", true)
+    sol.map.switch_set_activated("pegasus_run_switch_2", true)
     sol.map.camera_move(904, 88, 300)
   elseif switch_name == "pegasus_run_switch_2" then
     sol.main.play_sound("door_open")
     sol.map.tile_set_enabled("pegasus_run_barrier", false)
-    sol.map.switch_set_enabled("pegasus_run_switch", true)
+    sol.map.switch_set_activated("pegasus_run_switch", true)
   elseif switch_name == "left_eye_switch" then
     check_eye_statues()
   elseif switch_name == "right_eye_switch" then
@@ -100,10 +100,10 @@ end
 
 function check_eye_statues()
 
-  if sol.map.switch_is_enabled("left_eye_switch") and sol.map.switch_is_enabled("right_eye_switch") then
+  if sol.map.switch_is_activated("left_eye_switch") and sol.map.switch_is_enabled("right_eye_switch") then
 
-    sol.map.switch_set_enabled("left_eye_switch", false)
-    sol.map.switch_set_enabled("right_eye_switch", false)
+    sol.map.switch_set_activated("left_eye_switch", false)
+    sol.map.switch_set_activated("right_eye_switch", false)
 
     if not sol.game.savegame_get_boolean(90) then
       sol.main.play_sound("switch")
@@ -131,8 +131,8 @@ end
 function pegasus_run_timer()
   sol.main.play_sound("door_closed")
   sol.map.tile_set_enabled("pegasus_run_barrier", true)
-  sol.map.switch_set_enabled("pegasus_run_switch", false)
-  sol.map.switch_set_enabled("pegasus_run_switch_2", false)
+  sol.map.switch_set_activated("pegasus_run_switch", false)
+  sol.map.switch_set_activated("pegasus_run_switch_2", false)
 end
 
 function hidden_stairs_timer()

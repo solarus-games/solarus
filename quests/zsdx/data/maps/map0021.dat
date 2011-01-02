@@ -393,7 +393,7 @@
 12	0	152	160	32	8	custom_obstacle	1	1	1	1
 1	0	144	37	from_1F_north_stairs	3	0
 2	0	136	24	16	16	to_1F_north_stairs	0	1	20	from_B1_north_stairs
-14	0	272	149
+14	0	272	149	crystal_switch
 15	0	112	96	32	16	0
 15	0	112	112	32	16	1
 1	0	168	189	from_1F_middle_stairs	3	0

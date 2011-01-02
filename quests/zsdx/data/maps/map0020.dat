@@ -263,7 +263,7 @@
 2	0	96	512	16	16	teletransporter_2	0	1	21	_same
 2	0	96	544	16	16	teletransporter_3	0	1	21	_same
 2	0	64	512	32	48	teletransporter_4	0	1	21	_same
-14	0	192	509
+14	0	192	509	crystal_switch
 1	0	80	381	from_B1_stairs_2	1	0
 10	0	136	296	8	16	barrier	71	1
 1	0	248	421	destination_point_4	-1	1
@@ -280,7 +280,7 @@
 15	0	248	160	32	16	0
 15	0	248	176	32	16	1
 15	0	264	224	16	16	0
-14	0	256	237
+14	0	256	237	crystal_switch_2
 5	0	208	160	chest	0	_none	0	0
 15	0	136	160	16	32	0
 15	0	120	128	32	16	1

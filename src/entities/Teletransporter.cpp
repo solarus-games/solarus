@@ -95,6 +95,10 @@ MapEntity* Teletransporter::parse(Game &game, std::istream &is, Layer layer, int
 
 /**
  * @brief Sets the map.
+ *
+ * Warning: as this function is called when initializing the map,
+ * the current map of the game is still the old one.
+ *
  * @param map the map
  */
 void Teletransporter::set_map(Map &map) {

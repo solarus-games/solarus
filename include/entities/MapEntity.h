@@ -83,8 +83,6 @@ class MapEntity {
 								 * The layer is constant for the tiles and can change for the hero and the dynamic entities.
 								 * The layer is private to make sure the set_layer() function is always called. */
 
-  protected:
-
     Rectangle bounding_box;					/**< This rectangle represents the position of the entity of the map and is
 								 * used for the collision tests. It corresponds to the bounding box of the entity.
 								 * It can be different from the sprite's rectangle of the entity.
@@ -108,7 +106,7 @@ class MapEntity {
 
     int direction;						/**< direction of the entity, not used for all kinds of entities */
 
-    std::map<std::string, Sprite*> sprites;			/**< sprite(s) representing the entity, indexed by their animation set id;
+    std::map<SpriteAnimationSetId, Sprite*> sprites;		/**< sprite(s) representing the entity, indexed by their animation set id;
 								 * note that some entities manage their sprites themselves rather than using this field */
     Sprite *first_sprite;					/**< the first sprite that was created into the sprites map,
 								 * stored here because the map does not keep the order from which its elements are added */
@@ -118,10 +116,15 @@ class MapEntity {
     Movement *old_movement;					/**< an old movement to destroy as soon as possible */
 
     // entity state
+    bool being_removed;						/**< indicates that the entity is not valid anymore because it is about to be removed */
+    bool enabled;						/**< indicates that the entity is enabled
+    								 * (if not, it will not be displayed and collisions will not be notified) */
+    bool waiting_enabled;					/**< indicates that the entity will be enabled as soon as the hero stops overlapping it */
+
+  protected:
 
     bool suspended;						/**< indicates that the animation and movement of this entity are suspended */
     uint32_t when_suspended;					/**< indicates when this entity was suspended */
-    bool being_removed;						/**< indicates that the entity is not valid anymore because it is about to be removed */
 
     // creation
     MapEntity();
@@ -208,6 +211,10 @@ class MapEntity {
     bool is_y_aligned_to_grid();
     void set_aligned_to_grid();
 
+    bool is_enabled();
+    void set_enabled(bool enable);
+    virtual void notify_enabled(bool enabled);
+
     // properties
     const std::string& get_name() const;
     bool has_prefix(const std::string &prefix);
@@ -216,6 +223,7 @@ class MapEntity {
     // sprites
     Sprite& get_sprite(const SpriteAnimationSetId &id);
     Sprite& get_sprite();
+    std::map<SpriteAnimationSetId, Sprite*>& get_sprites();
     int get_nb_sprites();
     bool has_sprite();
     void remove_sprite(const SpriteAnimationSetId &id);

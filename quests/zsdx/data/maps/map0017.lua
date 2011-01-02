@@ -30,7 +30,7 @@ function event_enemy_dead(enemy_name)
 
 end
 
-function event_switch_enabled(switch_name)
+function event_switch_activated(switch_name)
 
 	-- center
 	if switch_name == "croom_switch_1" and not sol.map.door_is_open("seroom_door_close_1")  then

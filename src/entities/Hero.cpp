@@ -247,10 +247,10 @@ void Hero::update_movement() {
 
   on_raised_blocks = get_entities().overlaps_raised_blocks(get_layer(), get_bounding_box());
 
-  if (movement == NULL) {
+  if (get_movement() == NULL) {
     return;
   }
-  movement->update();
+  get_movement()->update();
 }
 
 /**
@@ -623,6 +623,7 @@ const Rectangle Hero::get_facing_point() {
 const Rectangle Hero::get_facing_point(int direction) {
 
   Rectangle facing_point;
+  const Rectangle& bounding_box = get_bounding_box();
 
   switch (direction) {
 

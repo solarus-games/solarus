@@ -661,8 +661,11 @@ bool Map::test_collision_with_entities(Layer layer, const Rectangle &collision_b
        i++) {
 
     MapEntity *entity = *i;
-    collision = entity != &entity_to_check &&
-      entity->is_obstacle_for(entity_to_check) && entity->overlaps(collision_box);
+    collision =
+	entity != &entity_to_check
+	&& entity->is_enabled()
+	&& entity->is_obstacle_for(entity_to_check)
+	&& entity->overlaps(collision_box);
   }
 
   return collision;
@@ -817,7 +820,8 @@ void Map::check_collision_with_detectors(MapEntity &entity) {
        i != detectors.end();
        i++) {
 
-    if (!(*i)->is_being_removed()) {
+    if (!(*i)->is_being_removed()
+	&& (*i)->is_enabled()) {
       (*i)->check_collision(entity);
     }
   }

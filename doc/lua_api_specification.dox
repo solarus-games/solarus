@@ -370,6 +370,12 @@ returns whether a custom obstacle is enabled
 - <tt>sol.map.obstacle_set_enabled(custom_obstacle_name, enable)</tt>:
 enables or disables a custom obstacle
 
+- <tt>sol.map.sensor_set_enabled(sensor_name)</tt>:
+returns whether a sensor is enabled
+
+- <tt>sol.map.sensor_set_enabled(sensor_name, enable)</tt>:
+enables or disables a sensor
+
 - <tt>sol.map.block_reset(block_name)</tt>:
 places a block where it was when the map started
 
@@ -408,9 +414,6 @@ starts fighting a miniboss if it is alive
 
 - <tt>sol.map.enemy_end_miniboss()</tt>:
 sets the fight with a miniboss as finished
-
-- <tt>sol.map.sensor_remove(sensor_name)</tt>:
-removes a sensor from the map
 
 - <tt>sol.map.door_open(door_prefix)</tt>:
 opens one or several doors, playing their animation and sound

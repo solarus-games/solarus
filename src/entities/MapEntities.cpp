@@ -626,7 +626,9 @@ void MapEntities::display() {
 	  StringConcat() << "Trying to display entity " << entity << " on layer "
 	  << layer << " but it is actually on layer " << entity->get_layer());
       */
-      entity->display_on_map();
+      if (entity->is_enabled()) {
+        entity->display_on_map();
+      }
     }
 
     // put the sprites displayed at the hero's level, in the order
@@ -636,7 +638,9 @@ void MapEntities::display() {
 	 i++) {
 
       MapEntity *entity = *i;
-      entity->display_on_map();
+      if (entity->is_enabled()) {
+        entity->display_on_map();
+      }
     }
   }
 }

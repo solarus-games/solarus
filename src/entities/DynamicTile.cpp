@@ -18,8 +18,9 @@
 #include "entities/Tileset.h"
 #include "entities/TilePattern.h"
 #include "entities/Hero.h"
-#include "Game.h"
 #include "lowlevel/FileTools.h"
+#include "lowlevel/Debug.h"
+#include "Game.h"
 #include "Map.h"
 
 /**
@@ -36,9 +37,9 @@
 DynamicTile::DynamicTile(const std::string &name, Layer layer, int x, int y,
 			 int width, int height, int tile_pattern_id, bool enabled):
   MapEntity(name, 0, layer, x, y, width, height),
-  tile_pattern_id(tile_pattern_id), tile_pattern(NULL),
-  enabled(enabled), waiting_enabled(false) {
+  tile_pattern_id(tile_pattern_id), tile_pattern(NULL) {
 
+  set_enabled(enabled);
 }
 
 /**
@@ -104,7 +105,7 @@ void DynamicTile::set_map(Map &map) {
  */
 bool DynamicTile::is_obstacle_for(MapEntity &other) {
 
-  return enabled && tile_pattern->get_obstacle() >= OBSTACLE;
+  return tile_pattern->get_obstacle() >= OBSTACLE;
 }
 
 /**
@@ -112,48 +113,6 @@ bool DynamicTile::is_obstacle_for(MapEntity &other) {
  */
 void DynamicTile::display_on_map() {
 
-  if (enabled) {
-    tile_pattern->display_on_map(&get_map(), bounding_box);
-  }
-}
-
-/**
- * @brief Updates the entity.
- */
-void DynamicTile::update() {
-
-  MapEntity::update();
-
-  if (waiting_enabled) {
-
-    if (tile_pattern->get_obstacle() < OBSTACLE || !overlaps(get_hero())) {
-      this->enabled = true;
-      this->waiting_enabled = false;
-    }
-  }
-}
-
-/**
- * @brief Returns whether this dynamic tile is enabled.
- * @return true if this tile is enabled
- */
-bool DynamicTile::is_enabled() {
-  return enabled;
-}
-
-/**
- * @brief Enables or disables this dynamic tile.
- * @param enabled true to enable the tile, false to disable it
- */
-void DynamicTile::set_enabled(bool enabled) {
-
-  if (enabled) {
-    // enable the tile as soon as possible
-    this->waiting_enabled = true;
-  }
-  else {
-    this->enabled = false;
-    this->waiting_enabled = false;
-  }
+  tile_pattern->display_on_map(&get_map(), get_bounding_box());
 }
 

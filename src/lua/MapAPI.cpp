@@ -873,7 +873,7 @@ int Script::map_api_stairs_set_enabled(lua_State *l) {
 }
 
 /**
- * @brief Returns whether a custom obstacle enabled.
+ * @brief Returns whether a custom obstacle is enabled.
  *
  * - Argument 1 (string): name of the custom obstacle
  * - Return value (boolean): true if this custom obstacle is enabled
@@ -913,6 +913,51 @@ int Script::map_api_obstacle_set_enabled(lua_State *l) {
   MapEntities &entities = script->get_map().get_entities();
   CustomObstacle *obstacle = (CustomObstacle*) entities.get_entity(CUSTOM_OBSTACLE, name);
   obstacle->set_enabled(enable);
+
+  return 0;
+}
+
+/**
+ * @brief Returns whether a sensor is enabled.
+ *
+ * - Argument 1 (string): name of the sensor
+ * - Return value (boolean): true if this sensor is enabled
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_sensor_is_enabled(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 1, &script);
+
+  const std::string &name = luaL_checkstring(l, 1);
+
+  MapEntities &entities = script->get_map().get_entities();
+  Sensor *sensor= (Sensor*) entities.get_entity(SENSOR, name);
+  lua_pushboolean(l, sensor->is_enabled() ? 1 : 0);
+
+  return 1;
+}
+
+/**
+ * @brief Enables or disables a sensor.
+ *
+ * - Argument 1 (string): name of the sensor
+ * - Argument 2 (boolean): true to enable it, false to disable it
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_sensor_set_enabled(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 2, &script);
+
+  const std::string &name = luaL_checkstring(l, 1);
+  bool enable = lua_toboolean(l, 2) != 0;
+
+  MapEntities &entities = script->get_map().get_entities();
+  Sensor *sensor= (Sensor*) entities.get_entity(SENSOR, name);
+  sensor->set_enabled(enable);
 
   return 0;
 }
@@ -1196,25 +1241,6 @@ int Script::map_api_enemy_end_miniboss(lua_State *l) {
   called_by_script(l, 0, &script);
 
   script->get_map().get_entities().end_miniboss_battle();
-
-  return 0;
-}
-
-/**
- * @brief Removes a sensor from the map.
- *
- * - Argument 1 (string): name of the sensor
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_sensor_remove(lua_State *l) {
-
-  Script *script;
-  called_by_script(l, 1, &script);
-
-  const std::string &name = luaL_checkstring(l, 1);
-
-  script->get_map().get_entities().remove_entity(SENSOR, name);
 
   return 0;
 }

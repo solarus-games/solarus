@@ -244,7 +244,8 @@ const Rectangle Arrow::get_facing_point() {
       break;
 
     default:
-      Debug::die(StringConcat() << "Invalid direction for Arrow::get_facing_point(): " << direction);
+      Debug::die(StringConcat() << "Invalid direction for Arrow::get_facing_point(): "
+	  << get_sprite().get_current_direction());
   }
 
   return facing_point;

@@ -190,6 +190,21 @@ void PickableItem::initialize_sprites() {
 }
 
 /**
+ * @brief Notifies this entity that it has just been added to a map.
+ * @param map the map
+ */
+void PickableItem::set_map(Map& map) {
+
+  MapEntity::set_map(map);
+
+  if (map.is_started()) {
+    // notify the item script
+    get_equipment().get_item_script(treasure.get_item_name()).event_appear(*this);
+  }
+  // otherwise, notify_map_started() will do the job
+}
+
+/**
  * @brief Notifies this entity that its map has just become active.
  */
 void PickableItem::notify_map_started() {

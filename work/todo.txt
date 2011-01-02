@@ -67,6 +67,8 @@ Bugs :
 - Ajouter set_enabled()/is_enabled() à CrystalSwitch, Block, ConveyorBelt, Teletransporter, Sensor, Switch
   -> supprimer sensor_remove (remplacé par sensor_set_enabled) -> sprite, script
   -> faire un set_enabled() dans MapEntity
+- Les pickable item fairy et heart ne changent plus de mouvement depuis que event_appear est appelé
+  par notify_map_started() au lieu de set_map()
 
 
 Ennemis à faire (reprendre graphismes de MC + graphismes rippés) :

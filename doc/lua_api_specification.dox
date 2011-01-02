@@ -370,11 +370,29 @@ returns whether a custom obstacle is enabled
 - <tt>sol.map.obstacle_set_enabled(custom_obstacle_name, enable)</tt>:
 enables or disables a custom obstacle
 
-- <tt>sol.map.sensor_set_enabled(sensor_name)</tt>:
+- <tt>sol.map.sensor_is_enabled(sensor_name)</tt>:
 returns whether a sensor is enabled
 
 - <tt>sol.map.sensor_set_enabled(sensor_name, enable)</tt>:
 enables or disables a sensor
+
+- <tt>sol.map.crystal_switch_is_enabled(crystal_switch_name)</tt>:
+returns whether a crystal switch is enabled
+
+- <tt>sol.map.crystal_switch_set_enabled(crystal_switch_name, enable)</tt>:
+enables or disables a crystal switch
+
+- <tt>sol.map.teletransporter_is_enabled(teletransporter_name)</tt>:
+returns whether a teletransporter is enabled
+
+- <tt>sol.map.teletransporter_set_enabled(teletransporter_name, enable)</tt>:
+enables or disables a teletransporter
+
+- <tt>sol.map.block_is_enabled(block_name)</tt>:
+returns whether a block is enabled
+
+- <tt>sol.map.block_set_enabled(block_name, enable)</tt>:
+enables or disables a block
 
 - <tt>sol.map.block_reset(block_name)</tt>:
 places a block where it was when the map started
@@ -393,6 +411,12 @@ activates or inactivates a switch
 
 - <tt>sol.map.switch_set_locked(switch_name, locked)</tt>:
 locks a switch in its current state or unlocks it
+
+- <tt>sol.map.switch_is_enabled(switch_name)</tt>:
+returns whether a switch is enabled
+
+- <tt>sol.map.sensor_set_enabled(sensor_name, enable)</tt>:
+enables or disables a sensor
 
 - <tt>sol.map.enemy_is_dead(enemy_name)</tt>:
 returns whether an enemy is dead

@@ -113,6 +113,10 @@ bool Switch::is_walkable() {
 
 /**
  * @brief Returns whether this switch is currently enabled.
+ *
+ * TODO: rename to is_activated/set_activated
+ * because "enabled" has another meaning in DynamicTile, CustomObstacle, Stairs and Enemy
+ *
  * @return true if the switch is enabled
  */
 bool Switch::is_enabled() {

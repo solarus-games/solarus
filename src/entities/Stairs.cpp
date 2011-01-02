@@ -15,6 +15,8 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "entities/Stairs.h"
+#include "entities/DynamicTile.h"
+#include "entities/MapEntities.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/Sound.h"
@@ -32,7 +34,7 @@
 Stairs::Stairs(const std::string &name, Layer layer, int x, int y,
                int direction, Subtype subtype):
   Detector(COLLISION_FACING_POINT | COLLISION_RECTANGLE, "", layer, x, y, 16, 16),
-  subtype(subtype) {
+  subtype(subtype), enabled(true) {
 
   Debug::check_assertion(!is_inside_floor() || layer != LAYER_HIGH, "Cannot put single floor stairs on the high layer");
 
@@ -83,6 +85,16 @@ MapEntity* Stairs::parse(Game &game, std::istream &is, Layer layer, int x, int y
  */
 EntityType Stairs::get_type() {
   return STAIRS;
+}
+
+/**
+ * @brief Sets the map.
+ * @param map the map
+ */
+void Stairs::set_map(Map &map) {
+
+  MapEntity::set_map(map);
+  update_dynamic_tiles();
 }
 
 /**
@@ -282,5 +294,48 @@ Rectangle Stairs::get_clipping_rectangle(Way way) {
   }
 
   return clipping_rectangle;
+}
+
+/**
+ * @brief Returns whether this stairs are enabled.
+ * @return true if these stairs are enabled
+ */
+bool Stairs::is_enabled() {
+  return enabled;
+}
+
+/**
+ * @brief Enables or disables these stairs.
+ * @param enabled true to enable the stairs, false to disable them
+ *
+ * All dynamic tiles whose prefix is "<stairsname>_enabled"
+ * and "<stairsame>_disabled" will be updated depending on the stairs state
+ * (where <stairsname> is the name of the stairs).
+ */
+void Stairs::set_enabled(bool enabled) {
+  this->enabled = enabled;
+  update_dynamic_tiles();
+}
+
+/**
+ * @brief Enables or disables the dynamic tiles related to these stairs.
+ *
+ * The dynamic tiles impacted by this function are the ones whose prefix is the stairs's name
+ * followed by "_enabled" or "_disabled", depending on the stairs state.
+ */
+void Stairs::update_dynamic_tiles() {
+
+  std::list<MapEntity*> tiles = get_entities().get_entities_with_prefix(DYNAMIC_TILE, get_name() + "_enabled");
+  std::list<MapEntity*>::iterator it;
+  for (it = tiles.begin(); it != tiles.end(); it++) {
+    DynamicTile *tile = (DynamicTile*) *it;
+    tile->set_enabled(is_enabled());
+  }
+
+  tiles = get_entities().get_entities_with_prefix(DYNAMIC_TILE, get_name() + "_disabled");
+  for (it = tiles.begin(); it != tiles.end(); it++) {
+    DynamicTile *tile = (DynamicTile*) *it;
+    tile->set_enabled(!is_enabled());
+  }
 }
 

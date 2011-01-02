@@ -70,6 +70,10 @@ class Stairs: public Detector {
   private:
 
     Subtype subtype;            /**< subtype of stairs */
+    bool enabled;               /**< indicates that the stairs are enabled
+                                 * (if not, they have no effect and are not obstacle) */
+
+    void update_dynamic_tiles();
 
   public:
 
@@ -80,6 +84,7 @@ class Stairs: public Detector {
 
     EntityType get_type();
 
+    void set_map(Map &map);
     bool is_inside_floor();
     bool has_layer_independent_collisions();
     bool is_sword_ignored();
@@ -91,6 +96,9 @@ class Stairs: public Detector {
     void play_sound(Way way);
     std::string get_path(Way way);
     Rectangle get_clipping_rectangle(Way way);
+
+    bool is_enabled();
+    void set_enabled(bool enable);
 };
 
 #endif

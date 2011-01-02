@@ -42,6 +42,7 @@ class Hero::SwordLoadingState: public Hero::PlayerMovementState {
 
     bool is_direction_locked();
     bool can_take_jump_sensor();
+    bool can_take_stairs();
     void set_animation_stopped();
     void set_animation_walking();
 };

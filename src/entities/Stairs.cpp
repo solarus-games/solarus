@@ -136,7 +136,7 @@ bool Stairs::is_sword_ignored() {
  */
 bool Stairs::is_obstacle_for(MapEntity &other) {
 
-  return is_enabled() && other.is_stairs_obstacle(*this);
+  return other.is_stairs_obstacle(*this);
 }
 
 /**

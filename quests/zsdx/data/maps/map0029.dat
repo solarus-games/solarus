@@ -482,7 +482,7 @@
 1	0	656	421	destination_point_U	-1	1
 1	0	624	469	destination_point_T	-1	1
 1	0	688	469	destination_point_S	-1	1
-14	0	440	77
+14	0	440	77	crystal_switch
 17	0	472	77	0
 17	0	488	77	0
 17	0	504	77	0

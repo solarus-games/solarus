@@ -54,6 +54,15 @@ public class CrystalSwitch extends MapEntity {
     }
 
     /**
+     * Returns whether the entity has an identifier.
+     * @return true
+     */
+    public boolean hasName() {
+	return true;
+    }
+
+
+    /**
      * Returns whether this entity is an obstacle.
      * @return Obstacle.OBSTACLE
      */

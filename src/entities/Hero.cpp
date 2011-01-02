@@ -445,6 +445,8 @@ bool Hero::is_shadow_visible() {
  * @brief Sets the hero's current map.
  *
  * This function is called when the map is changed.
+ * Warning: as this function is called when initializing the map,
+ * the current map of the game is still the old one.
  *
  * @param map the map
  */

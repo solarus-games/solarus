@@ -245,6 +245,10 @@ bool MapEntity::is_on_map() {
 
 /**
  * @brief Sets the map where this entity is.
+ *
+ * Warning: as this function is called when initializing the map,
+ * the current map of the game is still the old one.
+ *
  * @param map the map
  */
 void MapEntity::set_map(Map &map) {

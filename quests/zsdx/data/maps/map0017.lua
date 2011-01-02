@@ -59,7 +59,7 @@ function event_hero_on_sensor(sensor_name)
 	if sensor_name=="seroom_door_sensor_2" and seroom_door_sensor_1 == true then
 		sol.map.door_close("seroom_door_close")
 		seroom_door_sensor_1 = false
-		sol.map.switch_set_enabled("seroom_switch_1", false)
+		sol.map.switch_set_activated("seroom_switch_1", false)
 	end
 
 end

@@ -150,7 +150,6 @@ void Switch::set_activated(bool activated) {
 
   if (activated != this->activated) {
     this->activated = activated;
-    std::cout << "switch " << get_name() << ": " << activated << std::endl;
 
     if (subtype == WALKABLE_VISIBLE) {
       if (activated) {
@@ -180,7 +179,7 @@ void Switch::set_locked(bool locked) {
  */
 void Switch::update() {
 
-  if (is_walkable() && entity_overlapping != NULL) {
+  if (is_enabled() && is_walkable() && entity_overlapping != NULL) {
 
     // if an entity was on the switch, see if it is still there
     entity_overlapping_still_present = false;

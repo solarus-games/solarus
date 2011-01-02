@@ -851,7 +851,8 @@ void Map::check_collision_with_detectors(MapEntity &entity, Sprite &sprite) {
        i != detectors.end();
        i++) {
 
-    if (!(*i)->is_being_removed()) {
+    if (!(*i)->is_being_removed()
+	&& (*i)->is_enabled()) {
       (*i)->check_collision(entity, sprite);
     }
   }

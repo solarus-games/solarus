@@ -26,7 +26,7 @@ function event_enemy_dead(enemy_name)
 
 end
 
-function event_switch_enabled(switch_name)
+function event_switch_activated(switch_name)
 
 	if switch_name == "so_switch_stair_1" then
 		sol.map.tile_set_group_enabled("so_stair_wall",false)

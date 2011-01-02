@@ -54,8 +54,8 @@ class MapScript: public Script {
     void event_treasure_obtained(const Treasure &treasure);
     void event_map_started(const std::string &destination_point_name);
     void event_map_opening_transition_finished(const std::string &destination_point_name);
-    void event_switch_enabled(const std::string &switch_name);
-    void event_switch_disabled(const std::string &switch_name);
+    void event_switch_activated(const std::string &switch_name);
+    void event_switch_inactivated(const std::string &switch_name);
     void event_switch_left(const std::string &switch_name);
     void event_hero_victory_sequence_finished();
     void event_hero_on_sensor(const std::string &sensor_name);

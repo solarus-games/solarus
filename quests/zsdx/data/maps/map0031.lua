@@ -22,12 +22,12 @@ function event_map_started(destination_point)
   if sol.game.savegame_get_boolean(81) then
     -- boss key chest already found
     for k,v in pairs(switches_puzzle_order) do
-      sol.map.switch_set_enabled(k, true)
+      sol.map.switch_set_activated(k, true)
     end
   end
 end
 
-function event_switch_enabled(switch_name)
+function event_switch_activated(switch_name)
 
   order = switches_puzzle_order[switch_name]
   if order ~= nil then 
@@ -47,7 +47,7 @@ function event_switch_enabled(switch_name)
 	switches_puzzle_correct = true
 	sol.map.switch_set_locked(switch_name, true)
 	for k,v in pairs(switches_puzzle_order) do
-	  sol.map.switch_set_enabled(k, false)
+	  sol.map.switch_set_activated(k, false)
 	end
       end
     end

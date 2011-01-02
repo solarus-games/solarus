@@ -35,14 +35,14 @@
  * @param y y position of the entity's rectangle
  * @param subtype the subtype of switch
  * @param needs_block true if a block is required to enabled this switch
- * @param disable_when_leaving true to disable the switch when the hero or 
+ * @param inactivate_when_leaving true to inactivate the switch when the hero or
  * the block leaves it
  */
 Switch::Switch(const std::string &name, Layer layer, int x, int y,
 	       Subtype subtype, bool needs_block, bool disable_when_leaving):
   Detector(COLLISION_NONE, name, layer, x, y, 16, 16),
-  subtype(subtype), enabled(false), locked(false), 
-  needs_block(needs_block), disable_when_leaving(disable_when_leaving),
+  subtype(subtype), activated(false), locked(false),
+  needs_block(needs_block), inactivate_when_leaving(inactivate_when_leaving),
   entity_overlapping(NULL) {
 
   Debug::check_assertion(subtype != WALKABLE_INVISIBLE || !needs_block,
@@ -51,7 +51,7 @@ Switch::Switch(const std::string &name, Layer layer, int x, int y,
   // sprite
   if (subtype == WALKABLE_VISIBLE) {
     create_sprite("entities/switch");
-    get_sprite().set_current_animation("disabled");
+    get_sprite().set_current_animation("inactivated");
   }
 
   // collisions
@@ -85,14 +85,14 @@ Switch::~Switch() {
 MapEntity* Switch::parse(Game &game, std::istream &is, Layer layer, int x, int y) {
 
   std::string name;
-  int subtype, needs_block, disabled_when_leaving;
+  int subtype, needs_block, inactivate_when_leaving;
 
   FileTools::read(is, name);
   FileTools::read(is, subtype);
   FileTools::read(is, needs_block);
-  FileTools::read(is, disabled_when_leaving);
+  FileTools::read(is, inactivate_when_leaving);
 
-  return new Switch(name, Layer(layer), x, y, Subtype(subtype), needs_block != 0, disabled_when_leaving != 0);
+  return new Switch(name, Layer(layer), x, y, Subtype(subtype), needs_block != 0, inactivate_when_leaving != 0);
 }
 
 /**
@@ -112,54 +112,51 @@ bool Switch::is_walkable() {
 }
 
 /**
- * @brief Returns whether this switch is currently enabled.
+ * @brief Returns whether this switch is currently activated.
  *
- * TODO: rename to is_activated/set_activated
- * because "enabled" has another meaning in DynamicTile, CustomObstacle, Stairs and Enemy
- *
- * @return true if the switch is enabled
+ * @return true if the switch is activated
  */
-bool Switch::is_enabled() {
-  return enabled;
+bool Switch::is_activated() {
+  return activated;
 }
 
 /**
- * @brief Enables the switch, playing a sound and notifying the map script.
+ * @brief Activates the switch, playing a sound and notifying the map script.
  *
- * This function does nothing if the switch is locked or if it is already enabled.
+ * This function does nothing if the switch is locked or already activated.
  */
 void Switch::activate() {
 
-  if (!enabled && !locked) {
+  if (!activated && !locked) {
 
-    set_enabled(true);
+    set_activated(true);
 
     if (subtype == WALKABLE_VISIBLE) {
       Sound::play("switch");
     }
 
-    get_map_script().event_switch_enabled(get_name());
+    get_map_script().event_switch_activated(get_name());
   }
 }
 
 /**
- * @brief Enables or disables the switch, not playing any sound.
+ * @brief Activates or inactivates the switch, not playing any sound.
  *
  * This function can change the switch state even if the switch is locked.
  *
- * @param enabled true to make the switch enabled, false to make it disabled
+ * @param activated true to make the switch on, false to make it off
  */
-void Switch::set_enabled(bool enabled) {
+void Switch::set_activated(bool activated) {
 
-  if (enabled != this->enabled) {
-    this->enabled = enabled;
+  if (activated != this->activated) {
+    this->activated = activated;
 
     if (subtype == WALKABLE_VISIBLE) {
-      if (enabled) {
-        get_sprite().set_current_animation("enabled");
+      if (activated) {
+        get_sprite().set_current_animation("activated");
       }
       else {
-        get_sprite().set_current_animation("disabled");
+        get_sprite().set_current_animation("inactivated");
       }
     }
   }
@@ -168,8 +165,8 @@ void Switch::set_enabled(bool enabled) {
 /**
  * @brief Locks this switch is its current state or unlocks it.
  *
- * When the switch is locked, it cannot be enabled or disabled by other entities.
- * However, the state can still be changed manually by calling set_enabled().
+ * When the switch is locked, it cannot be activated or inactivated by other entities.
+ * However, the state can still be changed manually by calling set_activated().
  *
  * @param locked true to lock the switch in its current state, false to unlock it
  */
@@ -192,9 +189,9 @@ void Switch::update() {
       // the entity just left the switch or disappeared from the map (it may even have been freed)
 
       entity_overlapping = NULL;
-      if (is_enabled() && disable_when_leaving && !locked) {
-        set_enabled(false);
-	get_map_script().event_switch_disabled(get_name());
+      if (is_activated() && inactivate_when_leaving && !locked) {
+        set_activated(false);
+	get_map_script().event_switch_inactivated(get_name());
       }
       get_map_script().event_switch_left(get_name());
     }
@@ -233,7 +230,7 @@ void Switch::notify_collision(MapEntity &entity_overlapping, CollisionMode colli
     return;
   }
 
-  if (!enabled && !locked) {
+  if (!activated && !locked) {
     entity_overlapping.notify_collision_with_switch(*this);
   }
 }

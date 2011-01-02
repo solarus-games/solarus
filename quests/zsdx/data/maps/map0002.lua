@@ -199,7 +199,7 @@ function event_dialog_finished(first_message_id, answer)
 
   elseif first_message_id == "rupee_house.game_3.go" then 
     sol.main.timer_start(8000, "game_3_timer", true);
-    sol.map.switch_set_enabled("switch", false);
+    sol.map.switch_set_activated("switch", false);
 
   -- stop game 3 when the player founds the piece of heart
   elseif string.match(first_message_id, "^found_piece_of_heart") then
@@ -255,7 +255,7 @@ function game_3_timer()
 end
 
 -- Function called when the switch is enabled in game 3
-function event_switch_enabled(switch_name)
+function event_switch_activated(switch_name)
 
   -- stop the timer when the player reaches the invisible switch
   sol.main.timer_stop("game_3_timer")

@@ -374,13 +374,13 @@ When the tile is disabled, it is invisible and can be traversed.
 
 When the hero triggers a switch, the map script is called.
 Some switches can only be activated by a block.
-Some switches are disabled when the hero leaves them.
+Some switches are inactivated when the hero leaves them.
 The size of a switch is always 16*16 pixels.
 Its sprite depends on its subtype.
 
 Syntax of a switch:
 @verbatim
-11	layer	x	y	entity_name	subtype	needs_block	disable_when_leaving
+11	layer	x	y	entity_name	subtype	needs_block	inactivate_when_leaving
 @endverbatim
 
 Subtypes of switches:
@@ -391,8 +391,8 @@ Subtypes of switches:
 <tt>needs_block</tt> is a boolean value indicating that the walkable switch needs a block to
 be activated (nothing happens when the hero walks on it).
 
-<tt>disable_when_leaving</tt> is a boolean value indicating that when the hero (or the block)
-leaves the switch, the switch is disabled.
+<tt>inactivate_when_leaving</tt> is a boolean value indicating that when the hero (or the block)
+leaves the switch, the switch is inactivated.
 
 @section custom_obstacle Custom obstacle (12)
 

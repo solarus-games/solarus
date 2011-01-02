@@ -978,14 +978,14 @@ int Script::map_api_shop_item_remove(lua_State *l) {
 }
 
 /**
- * @brief Returns whether a switch is currently enabled.
+ * @brief Returns whether a switch is currently activated.
  *
  * - Argument 1 (string): name of the switch
- * - Return value (boolean): true if the switch is enabled
+ * - Return value (boolean): true if the switch is activated
  *
  * @param l the Lua context that is calling this function
  */
-int Script::map_api_switch_is_enabled(lua_State *l) {
+int Script::map_api_switch_is_activated(lua_State *l) {
 
   Script *script;
   called_by_script(l, 1, &script);
@@ -995,30 +995,30 @@ int Script::map_api_switch_is_enabled(lua_State *l) {
   MapEntities &entities = script->get_map().get_entities();
   Switch *sw = (Switch*) entities.get_entity(SWITCH, name);
 
-  lua_pushboolean(l, sw->is_enabled());
+  lua_pushboolean(l, sw->is_activated());
 
   return 1;
 }
 
 /**
- * @brief Enables or disables a switch.
+ * @brief Activates or inactivates a switch.
  *
  * - Argument 1 (string): name of the switch
- * - Argument 2 (boolean): true to enable the switch, false to disable it
+ * - Argument 2 (boolean): true to activate the switch, false to inactivate it
  *
  * @param l the Lua context that is calling this function
  */
-int Script::map_api_switch_set_enabled(lua_State *l) {
+int Script::map_api_switch_set_activated(lua_State *l) {
 
   Script *script;
   called_by_script(l, 2, &script);
 
   const std::string &name = luaL_checkstring(l, 1);
-  bool enable = lua_toboolean(l, 2) != 0;
+  bool activate = lua_toboolean(l, 2) != 0;
 
   MapEntities &entities = script->get_map().get_entities();
   Switch *sw = (Switch*) entities.get_entity(SWITCH, name);
-  sw->set_enabled(enable);
+  sw->set_activated(activate);
 
   return 0;
 }

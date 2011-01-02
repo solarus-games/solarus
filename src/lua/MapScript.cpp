@@ -192,21 +192,21 @@ void MapScript::event_map_opening_transition_finished(const std::string &destina
 }
 
 /**
- * @brief Notifies the script that a switch has just been enabled.
+ * @brief Notifies the script that a switch has just been activated.
  * @param switch_name name of the switch
  */
-void MapScript::event_switch_enabled(const std::string &switch_name) {
+void MapScript::event_switch_activated(const std::string &switch_name) {
 
-  notify_script("event_switch_enabled", "s", switch_name.c_str());
+  notify_script("event_switch_activated", "s", switch_name.c_str());
 }
 
 /**
- * @brief Notifies the script that a switch has just been disabled.
+ * @brief Notifies the script that a switch has just been inactivated.
  * @param switch_name name of the switch
  */
-void MapScript::event_switch_disabled(const std::string &switch_name) {
+void MapScript::event_switch_inactivated(const std::string &switch_name) {
 
-  notify_script("event_switch_disabled", "s", switch_name.c_str());
+  notify_script("event_switch_inactivated", "s", switch_name.c_str());
 }
 
 /**

@@ -10,7 +10,7 @@ function event_map_started(destination_point_name)
   sol.map.chest_set_hidden("map_chest", true)
   sol.map.chest_set_hidden("compass_chest", true)
   if sol.game.savegame_get_boolean(54) then
-    sol.map.switch_set_enabled("map_room_switch", true)
+    sol.map.switch_set_activated("map_room_switch", true)
   end
 end
 
@@ -22,7 +22,7 @@ function event_map_opening_transition_finished(destination_point_name)
   end
 end
 
-function event_switch_enabled(switch_name)
+function event_switch_activated(switch_name)
 
   if switch_name == "sw_switch" or switch_name == "nw_switch" then
     sol.map.camera_move(176, 392, 150)
@@ -70,14 +70,14 @@ end
 function open_sw_door()
   sol.main.play_sound("secret")
   sol.map.door_open("sw_door")
-  sol.map.switch_set_enabled("sw_switch", true)
-  sol.map.switch_set_enabled("nw_switch", true)
+  sol.map.switch_set_activated("sw_switch", true)
+  sol.map.switch_set_activated("nw_switch", true)
 end
 
 function close_sw_door()
   sol.map.door_close("sw_door")
-  sol.map.switch_set_enabled("sw_switch", false)
-  sol.map.switch_set_enabled("nw_switch", false)
+  sol.map.switch_set_activated("sw_switch", false)
+  sol.map.switch_set_activated("nw_switch", false)
 end
 
 function event_enemy_dead(enemy_name)

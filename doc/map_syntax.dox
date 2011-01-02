@@ -516,7 +516,7 @@ Stairs allow the hero to change his floor, or to get on a platform inside the sa
 
 Syntax of a stairs entity:
 @verbatim
-19	layer	x	y	direction	subtype
+19	layer	x	y	entity_name	direction	subtype
 @endverbatim
 
 Subtypes of stairs:

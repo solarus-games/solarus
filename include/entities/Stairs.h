@@ -73,7 +73,8 @@ class Stairs: public Detector {
 
   public:
 
-    Stairs(Layer layer, int x, int y, int direction, Subtype subtype);
+    Stairs(const std::string &name, Layer layer, int x, int y,
+	   int direction, Subtype subtype);
     ~Stairs();
     static CreationFunction parse;
 

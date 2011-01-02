@@ -29,7 +29,8 @@
  * @param direction direction of the stairs (0 to 3)
  * @param subtype the subtype of stairs
  */
-Stairs::Stairs(Layer layer, int x, int y, int direction, Subtype subtype):
+Stairs::Stairs(const std::string &name, Layer layer, int x, int y,
+               int direction, Subtype subtype):
   Detector(COLLISION_FACING_POINT | COLLISION_RECTANGLE, "", layer, x, y, 16, 16),
   subtype(subtype) {
 
@@ -66,10 +67,14 @@ Stairs::~Stairs() {
  */
 MapEntity* Stairs::parse(Game &game, std::istream &is, Layer layer, int x, int y) {
 
+  std::string name;
   int direction, subtype;
+
+  FileTools::read(is, name);
   FileTools::read(is, direction);
   FileTools::read(is, subtype);
-  return new Stairs(Layer(layer), x, y, direction, Subtype(subtype));
+
+  return new Stairs(name, Layer(layer), x, y, direction, Subtype(subtype));
 }
 
 /**

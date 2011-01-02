@@ -119,10 +119,10 @@
 4	0	120	85	3	_random	0	-1
 12	0	248	80	8	16	custom_obstacle_11	0	1	1	1
 7	0	160	389	boss_key_battle_7	3	0	0	-1	_random	0	-1
-19	0	280	336	1	4
-19	0	448	320	3	4
-19	0	272	112	3	4
-19	0	528	80	0	4
+19	0	280	336	stairs_1	1	4
+19	0	448	320	stairs_2	3	4
+19	0	272	112	stairs_3	3	4
+19	0	528	80	stairs_4	0	4
 12	0	96	64	16	16	custom_obstacle_13	0	1	1	1
 5	0	96	64	boss_key_chest	0	boss_key	1	57
 0	1	136	216	32	80	2
@@ -419,7 +419,7 @@
 4	1	416	381	0	heart	1	-1
 6	1	232	328	40	8	jump_sensor_3	6	40
 7	1	784	141	khorneth	3	1001	1	62	fairy	1	-1
-19	1	848	256	1	1
+19	1	848	256	stairs_5	1	1
 18	1	840	256	miniboss_door_3	1	0	-1
 13	1	856	285	16	16	start_miniboss_sensor	0
 2	1	432	424	16	16	teletransporter	0	1	27	from_boss

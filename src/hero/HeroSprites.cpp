@@ -810,9 +810,11 @@ void HeroSprites::set_animation_walking_carrying() {
   set_animation_walking_common();
 
   tunic_sprite->set_current_animation("carrying_walking");
+
   if (lifted_item != NULL) {
     lifted_item->set_animation_walking();
   }
+  stop_displaying_shield();
   stop_displaying_trail();
 }
 

@@ -159,6 +159,15 @@ bool Hero::CarryingState::can_take_jump_sensor() {
 }
 
 /**
+ * @brief Returns whether the hero can take stairs in this state.
+ * If false is returned, stairs have no effect (but they are obstacle for the hero).
+ * @return true if the hero ignores the effect of stairs in this state
+ */
+bool Hero::CarryingState::can_take_stairs() {
+  return true;
+}
+
+/**
  * Gives the sprites the animation stopped corresponding to this state.
  */
 void Hero::CarryingState::set_animation_stopped() {

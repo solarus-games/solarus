@@ -90,15 +90,13 @@ class Stairs: public Detector {
     bool is_sword_ignored();
     bool is_obstacle_for(MapEntity &other);
     void notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode);
+    void notify_enabled(bool enabled);
 
     int get_movement_direction(Way way);
     int get_animation_direction(Way way);
     void play_sound(Way way);
     std::string get_path(Way way);
     Rectangle get_clipping_rectangle(Way way);
-
-    bool is_enabled();
-    void set_enabled(bool enable);
 };
 
 #endif

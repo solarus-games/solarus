@@ -78,7 +78,7 @@ void PapillosaurKing::restart() {
   get_sprite().set_current_animation("walking");
 
   // movement
-  if (movement == NULL) {
+  if (get_movement() == NULL) {
     set_movement(new RandomPathMovement(48));
   }
 }

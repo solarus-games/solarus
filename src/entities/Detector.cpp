@@ -84,8 +84,8 @@ bool Detector::has_collision_mode(CollisionMode collision_mode) {
  */
 void Detector::enable_pixel_collisions() {
 
-  std::map<std::string, Sprite*>::iterator it;
-  for (it = sprites.begin(); it != sprites.end(); it++) {
+  std::map<SpriteAnimationSetId, Sprite*>::iterator it;
+  for (it = get_sprites().begin(); it != get_sprites().end(); it++) {
     it->second->enable_pixel_collisions();
   }
 }
@@ -151,8 +151,8 @@ void Detector::check_collision(MapEntity &entity, Sprite &sprite) {
       && sprite.are_pixel_collisions_enabled()) {
 
     // we check the collision between the specified entity's sprite and all sprites of the current entity
-    std::map<std::string, Sprite*>::iterator it;
-    for (it = sprites.begin(); it != sprites.end(); it++) {
+    std::map<SpriteAnimationSetId, Sprite*>::iterator it;
+    for (it = get_sprites().begin(); it != get_sprites().end(); it++) {
       Sprite &this_sprite = *(it->second);
 
       if (this_sprite.are_pixel_collisions_enabled()

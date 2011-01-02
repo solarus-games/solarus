@@ -398,8 +398,8 @@ const std::string& Enemy::get_animation() {
  */
 void Enemy::set_animation(const std::string &animation) {
   
-  std::map<std::string, Sprite*>::iterator it;
-  for (it = sprites.begin(); it != sprites.end(); it++) {
+  std::map<SpriteAnimationSetId, Sprite*>::iterator it;
+  for (it = get_sprites().begin(); it != get_sprites().end(); it++) {
     it->second->set_current_animation(animation);
   }
 }

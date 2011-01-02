@@ -64,11 +64,9 @@ Bugs :
 - Remplacer les cast
 - Son du heart_container trop fort
 - BackToSolidGroundState : il faut attendre le mouvement alors que la caméra ne bouge même pas (voir Caverne de Billy)
-- Ajouter set_enabled()/is_enabled() à CrystalSwitch, Block, ConveyorBelt, Teletransporter, Sensor, Switch
-  -> supprimer sensor_remove (remplacé par sensor_set_enabled) -> sprite, script
+- Ajouter set_enabled()/is_enabled() à CrystalSwitch, Block, ConveyorBelt, Teletransporter, Sensor, Switch, InteractiveEntity ?
+  -> supprimer sensor_remove (remplacé par sensor_set_enabled)
   -> faire un set_enabled() dans MapEntity
-- Les pickable item fairy et heart ne changent plus de mouvement depuis que event_appear est appelé
-  par notify_map_started() au lieu de set_map()
 
 
 Ennemis à faire (reprendre graphismes de MC + graphismes rippés) :

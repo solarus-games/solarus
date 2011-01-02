@@ -46,10 +46,6 @@ class CustomObstacle: public MapEntity {
 
     EntityType get_type();
     bool is_obstacle_for(MapEntity &other);
-    void update();
-
-    bool is_enabled();
-    void set_enabled(bool enable);
 };
 
 #endif

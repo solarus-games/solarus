@@ -227,7 +227,7 @@ void InteractiveEntity::notify_collision(MapEntity &entity_overlapping, Collisio
     if (get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
 	&& hero.is_free()
 	&& (subtype == NON_PLAYING_CHARACTER
-	    || direction == -1
+	    || get_direction() == -1
 	    || hero.is_facing_direction4((get_direction() + 2) % 4))) {
 
       // show the appropriate action icon

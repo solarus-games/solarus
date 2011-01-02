@@ -262,7 +262,7 @@ void CarriedItem::break_item() {
     set_y(get_y() - item_height);
   }
 
-  movement->stop();
+  get_movement()->stop();
 
   if (!can_explode()) {
     Sound::play(destruction_sound_id);
@@ -374,7 +374,7 @@ void CarriedItem::update() {
       get_entities().set_entity_layer(this, LAYER_INTERMEDIATE);
       break_on_intermediate_layer = false;
     }
-    else if (movement->is_stopped() || y_increment >= 7) {
+    else if (get_movement()->is_stopped() || y_increment >= 7) {
       break_item();
     }
     else {

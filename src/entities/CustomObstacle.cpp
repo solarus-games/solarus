@@ -34,7 +34,8 @@
 CustomObstacle::CustomObstacle(const std::string &name, Layer layer, int x, int y, int width, int height,
 			       bool stops_hero, bool stops_enemies, bool stops_npcs, bool stops_blocks):
   MapEntity(name, 0, layer, x, y, width, height),
-  enabled(true) {
+  enabled(true),
+  waiting_enabled(false) {
 
   entity_types_stopped[HERO] = stops_hero;
   entity_types_stopped[ENEMY] = stops_enemies;

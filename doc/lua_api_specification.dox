@@ -461,6 +461,27 @@ returns the movement of the current pickable item
 gives another movement to the current pickable item instead of the default one
 (can be called only when there is a current pickable item in the context)
 
+- <tt>sol.item.get_position(x, y)</tt>
+returns the position of the current pickable item
+(can be called only when there is a current pickable item in the context)
+
+- <tt>sol.item.set_position(x, y)</tt>
+sets the position of the current pickable item
+(can be called only when there is a current pickable item in the context)
+
+- <tt>sol.item.get_layer(layer)</tt>
+returns the layer (0 to 2) of the current pickable item
+(can be called only when there is a current pickable item in the context)
+
+- <tt>sol.item.set_layer(layer)</tt>
+sets the layer (0 to 2) of the current pickable item
+(can be called only when there is a current pickable item in the context)
+
+- <tt>sol.item.set_layer_independent_collisions(independent)</tt>
+sets whether the collisions with the current pickable item should be detected
+from every layer
+(can be called only when there is a current pickable item in the context)
+
 - <tt>sol.item.set_finished()</tt>:
 notifies the hero that he has finished using the current inventory item and can get back to a normal state
 (can be called only when the hero is currently using the inventory item controlled by this script)

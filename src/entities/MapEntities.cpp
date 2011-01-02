@@ -619,7 +619,14 @@ void MapEntities::display() {
     for (i = entities_displayed_first[layer].begin();
 	 i != entities_displayed_first[layer].end();
 	 i++) {
-      (*i)->display_on_map();
+
+      MapEntity *entity = *i;
+      /*
+      Debug::check_assertion(entity->get_layer() == layer,
+	  StringConcat() << "Trying to display entity " << entity << " on layer "
+	  << layer << " but it is actually on layer " << entity->get_layer());
+      */
+      entity->display_on_map();
     }
 
     // put the sprites displayed at the hero's level, in the order
@@ -627,7 +634,9 @@ void MapEntities::display() {
     for (i = entities_displayed_y_order[layer].begin();
 	 i != entities_displayed_y_order[layer].end();
 	 i++) {
-      (*i)->display_on_map();
+
+      MapEntity *entity = *i;
+      entity->display_on_map();
     }
   }
 }
@@ -662,7 +671,7 @@ void MapEntities::set_entity_layer(MapEntity *entity, Layer layer) {
     entity->set_layer(layer);
 
     // update the obstacle list
-    if (entity->can_be_obstacle()) {
+    if (entity->can_be_obstacle() && !entity->has_layer_independent_collisions()) {
       obstacle_entities[old_layer].remove(entity);
       obstacle_entities[layer].push_back(entity);
     }

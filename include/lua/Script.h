@@ -229,6 +229,11 @@ class Script {
       item_api_get_sprite,
       item_api_get_movement,
       item_api_start_movement,
+      item_api_get_position,
+      item_api_set_position,
+      item_api_get_layer,
+      item_api_set_layer,
+      item_api_set_layer_independent_collisions,
       item_api_set_finished;
 
   protected:

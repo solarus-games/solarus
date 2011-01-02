@@ -2,10 +2,15 @@
 
 -- A fairy appears on the map: create its movement
 function event_appear(variant)
+
    -- create a movement that goes into random directions, with a speed of 28 pixels per second
   movement = sol.main.random_movement_create(28)
   sol.main.movement_set_property(movement, "max_distance", 40) -- don't go too far
   sol.item.start_movement(movement) -- associate this movement to the fairy
+
+  -- put the fairy on the highest layer to show it above all walls
+  sol.item.set_layer(2)
+  sol.item.set_layer_independent_collisions(true) -- but detect collisions with lower layers anyway
 end
 
 -- The direction of the movement may have changed:

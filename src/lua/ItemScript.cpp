@@ -33,7 +33,9 @@
 ItemScript::ItemScript(Game &game, ItemProperties &item_properties):
   Script(MAIN_API | GAME_API | MAP_API | ITEM_API),
   game(game),
-  item_properties(item_properties) {
+  item_properties(item_properties),
+  pickable_item(NULL),
+  inventory_item(NULL) {
 
   std::string script_name = (std::string) "items/" + item_properties.get_name();
   load_if_exists(script_name);
@@ -114,11 +116,12 @@ void ItemScript::event_set_suspended(bool suspended) {
  */
 void ItemScript::event_appear(PickableItem &pickable_item) {
 
+  PickableItem *old = this->pickable_item;
   this->pickable_item = &pickable_item;
   const Treasure &treasure = pickable_item.get_treasure();
   FallingHeight falling_height = pickable_item.get_falling_height();
   notify_script("event_appear", "iii", treasure.get_variant(), treasure.get_savegame_variable(), falling_height);
-  this->pickable_item = NULL;
+  this->pickable_item = old;
 }
 
 /**
@@ -128,9 +131,10 @@ void ItemScript::event_appear(PickableItem &pickable_item) {
  */
 void ItemScript::event_movement_changed(PickableItem &pickable_item) {
 
+  PickableItem *old = this->pickable_item;
   this->pickable_item = &pickable_item;
   notify_script("event_movement_changed");
-  this->pickable_item = NULL;
+  this->pickable_item = old;
 }
 
 /**
@@ -175,11 +179,12 @@ void ItemScript::event_amount_changed(int amount) {
  */
 void ItemScript::event_use(InventoryItem &inventory_item) {
 
+  InventoryItem *old = this->inventory_item;
   this->inventory_item = &inventory_item;
   if (!notify_script("event_use")) {
     Debug::die(StringConcat() << "No script for inventory item '" << item_properties.get_name() << "'");
   }
-  this->inventory_item = NULL;
+  this->inventory_item = old;
 }
 
 /**

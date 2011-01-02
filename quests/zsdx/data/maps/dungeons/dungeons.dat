@@ -164,13 +164,6 @@ y = 536
 save = 87
 big = 0
 
-[dungeon_10.map_17.chest_0]
-floor = 0
-x = 920
-y = 928
-save = 201
-big = 0
-
 [dungeon_1.map_25.chest_0]
 floor = 1
 x = 224
@@ -183,5 +176,12 @@ floor = 1
 x = 912
 y = 141
 save = 62
+big = 0
+
+[dungeon_10.map_17.chest_0]
+floor = 0
+x = 784
+y = 512
+save = -1
 big = 0
 

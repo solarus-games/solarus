@@ -418,6 +418,9 @@ opens one or several doors, playing their animation and sound
 - <tt>sol.map.door_close(door_prefix)</tt>:
 closes one or several doors, playing their animation and sound
 
+- <tt>sol.map.door_is_open(door_name)</tt>:
+returns whether a door is open
+
 - <tt>sol.map.door_set_open(door_name, open)</tt>:
 changes immediately the state of a door (without playing animation and sound)
 

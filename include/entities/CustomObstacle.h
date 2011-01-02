@@ -32,7 +32,10 @@ class CustomObstacle: public MapEntity {
 
   private:
 
-    std::map<int, bool> entity_types_stopped;
+    std::map<EntityType, bool> entity_types_stopped;
+
+    bool enabled;              /**< indicates that the obstacle is enabled (default: yes) */
+    bool waiting_enabled;      /**< indicates that the obstacle is waiting to be enabled */
 
   public:
 
@@ -43,6 +46,10 @@ class CustomObstacle: public MapEntity {
 
     EntityType get_type();
     bool is_obstacle_for(MapEntity &other);
+    void update();
+
+    bool is_enabled();
+    void set_enabled(bool enable);
 };
 
 #endif

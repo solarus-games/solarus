@@ -25,6 +25,8 @@
 #include "entities/Sensor.h"
 #include "entities/Chest.h"
 #include "entities/DynamicTile.h"
+#include "entities/Stairs.h"
+#include "entities/CustomObstacle.h"
 #include "entities/Block.h"
 #include "entities/Switch.h"
 #include "entities/Hero.h"
@@ -750,6 +752,28 @@ int Script::map_api_chest_is_hidden(lua_State *l) {
 }
 
 /**
+ * @brief Returns whether a dynamic tile is enabled.
+ *
+ * - Argument 1 (string): name of the dynamic tile
+ * - Return value (boolean): true if this tile is enabled
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_tile_is_enabled(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 1, &script);
+
+  const std::string &name = luaL_checkstring(l, 1);
+
+  MapEntities &entities = script->get_map().get_entities();
+  DynamicTile *dynamic_tile = (DynamicTile*) entities.get_entity(DYNAMIC_TILE, name);
+  lua_pushboolean(l, dynamic_tile->is_enabled() ? 1 : 0);
+
+  return 1;
+}
+
+/**
  * @brief Enables or disables a dynamic tile.
  *
  * - Argument 1 (string): name of the dynamic tile
@@ -801,14 +825,14 @@ int Script::map_api_tile_set_group_enabled(lua_State *l) {
 }
 
 /**
- * @brief Returns whether a dynamic tile is enabled.
+ * @brief Returns whether some stairs are enabled.
  *
- * - Argument 1 (string): name of the dynamic tile
- * - Return value (boolean): true if this tile is enabled
+ * - Argument 1 (string): name of the stairs
+ * - Return value (boolean): true if these stairs are enabled
  *
  * @param l the Lua context that is calling this function
  */
-int Script::map_api_tile_is_enabled(lua_State *l) {
+int Script::map_api_stairs_is_enabled(lua_State *l) {
 
   Script *script;
   called_by_script(l, 1, &script);
@@ -816,10 +840,81 @@ int Script::map_api_tile_is_enabled(lua_State *l) {
   const std::string &name = luaL_checkstring(l, 1);
 
   MapEntities &entities = script->get_map().get_entities();
-  DynamicTile *dynamic_tile = (DynamicTile*) entities.get_entity(DYNAMIC_TILE, name);
-  lua_pushboolean(l, dynamic_tile->is_enabled() ? 1 : 0);
+  Stairs *stairs = (Stairs*) entities.get_entity(STAIRS, name);
+  lua_pushboolean(l, stairs->is_enabled() ? 1 : 0);
 
   return 1;
+}
+
+/**
+ * @brief Enables or disables some stairs.
+ *
+ * All dynamic tiles whose prefix is "<stairsname>_enabled"
+ * and "<stairsame>_disabled" will be updated depending on the stairs state
+ * (where <stairsname> is the name of the stairs).
+ * - Argument 1 (string): name of the stairs
+ * - Argument 2 (boolean): true to enable them, false to disable them
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_stairs_set_enabled(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 2, &script);
+
+  const std::string &name = luaL_checkstring(l, 1);
+  bool enable = lua_toboolean(l, 2) != 0;
+
+  MapEntities &entities = script->get_map().get_entities();
+  Stairs *stairs = (Stairs*) entities.get_entity(STAIRS, name);
+  stairs->set_enabled(enable);
+
+  return 0;
+}
+
+/**
+ * @brief Returns whether a custom obstacle enabled.
+ *
+ * - Argument 1 (string): name of the custom obstacle
+ * - Return value (boolean): true if this custom obstacle is enabled
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_obstacle_is_enabled(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 1, &script);
+
+  const std::string &name = luaL_checkstring(l, 1);
+
+  MapEntities &entities = script->get_map().get_entities();
+  CustomObstacle *obstacle = (CustomObstacle*) entities.get_entity(CUSTOM_OBSTACLE, name);
+  lua_pushboolean(l, obstacle->is_enabled() ? 1 : 0);
+
+  return 1;
+}
+
+/**
+ * @brief Enables or disables a custom obstacle.
+ *
+ * - Argument 1 (string): name of the custom obstacle
+ * - Argument 2 (boolean): true to enable it, false to disable it
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_obstacle_set_enabled(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 2, &script);
+
+  const std::string &name = luaL_checkstring(l, 1);
+  bool enable = lua_toboolean(l, 2) != 0;
+
+  MapEntities &entities = script->get_map().get_entities();
+  CustomObstacle *obstacle = (CustomObstacle*) entities.get_entity(CUSTOM_OBSTACLE, name);
+  obstacle->set_enabled(enable);
+
+  return 0;
 }
 
 /**

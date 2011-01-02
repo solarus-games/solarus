@@ -349,14 +349,26 @@ hides or unhides a chest
 - <tt>sol.map.chest_is_hidden(chest_name)</tt>:
 returns whether a chest is hidden
 
+- <tt>sol.map.tile_is_enabled(tile_name)</tt>:
+returns whether a dynamic tile is enabled
+
 - <tt>sol.map.tile_set_enabled(tile_name, enable)</tt>:
 enables or disables a dynamic tile
 
 - <tt>sol.map.tile_set_group_enabled(tiles_prefix, enable)</tt>:
-active ou désactive un ensemble de tiles dynamiques
+enables or disables all dynamic tiles having a common prefix
 
-- <tt>sol.map.tile_is_enabled(tile_name)</tt>:
-returns where a dynamic tile is enabled
+- <tt>sol.map.stairs_is_enabled(stairs_name)</tt>:
+returns whether some stairs are enabled
+
+- <tt>sol.map.stairs_set_enabled(stairs_name, enable)</tt>:
+enables or disables some stairs
+
+- <tt>sol.map.obstacle_is_enabled(custom_obstacle_name)</tt>:
+returns whether a custom obstacle is enabled
+
+- <tt>sol.map.obstacle_set_enabled(custom_obstacle_name, enable)</tt>:
+enables or disables a custom obstacle
 
 - <tt>sol.map.block_reset(block_name)</tt>:
 places a block where it was when the map started

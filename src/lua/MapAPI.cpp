@@ -706,38 +706,38 @@ int Script::map_api_chest_set_open(lua_State *l) {
 }
 
 /**
- * @brief Hides or unhides a chest.
+ * @brief Enables or disables a chest.
  *
- * If the chest is already open, hiding it has not effect.
+ * If the chest is already open, disabling it has not effect.
  * - Argument 1 (string): name of the chest
- * - Argument 2 (boolean): true to make the chest hidden, false to make it appear
+ * - Argument 2 (boolean): true to make the chest appear, false to make it disappear
  *
  * @param l the Lua context that is calling this function
  */
-int Script::map_api_chest_set_hidden(lua_State *l) {
+int Script::map_api_chest_set_enabled(lua_State *l) {
 
   Script *script;
   called_by_script(l, 2, &script);
 
   const std::string &name = luaL_checkstring(l, 1);
-  bool hidden = lua_toboolean(l, 2) != 0;
+  bool enabled = lua_toboolean(l, 2) != 0;
 
   MapEntities &entities = script->get_map().get_entities();
   Chest *chest = (Chest*) entities.get_entity(CHEST, name);
-  chest->set_visible(!hidden);
+  chest->set_visible(enabled);
 
   return 0;
 }
 
 /**
- * @brief Returns whether a chest is hidden.
+ * @brief Returns whether a chest is enabled.
  *
  * - Argument 1 (string): name of the chest
- * - Return value (boolean): true if this chest is hidden
+ * - Return value (boolean): true if this chest is enabled
  *
  * @param l the Lua context that is calling this function
  */
-int Script::map_api_chest_is_hidden(lua_State *l) {
+int Script::map_api_chest_is_enabled(lua_State *l) {
 
   Script *script;
   called_by_script(l, 1, &script);
@@ -746,7 +746,7 @@ int Script::map_api_chest_is_hidden(lua_State *l) {
 
   MapEntities &entities = script->get_map().get_entities();
   Chest *chest = (Chest*) entities.get_entity(CHEST, name);
-  lua_pushboolean(l, chest->is_visible() ? 0 : 1);
+  lua_pushboolean(l, chest->is_visible() ? 1 : 0);
 
   return 1;
 }

@@ -4,7 +4,7 @@
 
 function event_map_started(destination_point_name)
 
-  sol.map.chest_set_hidden("boss_key_chest", true)
+  sol.map.chest_set_enabled("boss_key_chest", false)
   sol.map.door_set_open("stairs_door", true)
   sol.map.door_set_open("miniboss_door", true)
 end
@@ -41,7 +41,8 @@ function event_enemy_dead(enemy_name)
     sol.map.door_open("miniboss_door")
   end
 
-  if sol.map.enemy_is_group_dead("boss_key_battle") and sol.map.chest_is_hidden("boss_key_chest") then
+  if sol.map.enemy_is_group_dead("boss_key_battle")
+    and not sol.map.chest_is_enabled("boss_key_chest") then
     sol.map.camera_move(104, 72, 150)
   end
 end
@@ -52,7 +53,7 @@ end
 
 function boss_key_timer()
   sol.main.play_sound("chest_appears")
-  sol.map.chest_set_hidden("boss_key_chest", false)
+  sol.map.chest_set_enabled("boss_key_chest", true)
   sol.main.timer_start(1000, "sol.map.camera_restore", false)
 end
 

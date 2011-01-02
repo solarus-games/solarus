@@ -390,6 +390,11 @@ void Script::register_item_api() {
       { "get_sprite", item_api_get_sprite },
       { "get_movement", item_api_get_movement },
       { "start_movement", item_api_start_movement },
+      { "get_position", item_api_get_position },
+      { "set_position", item_api_set_position },
+      { "get_layer", item_api_get_layer },
+      { "set_layer", item_api_set_layer },
+      { "set_layer_independent_collisions", item_api_set_layer_independent_collisions },
       { "set_finished", item_api_set_finished },
       { NULL, NULL }
   };

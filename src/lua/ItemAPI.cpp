@@ -18,10 +18,12 @@
 #include "lua/ItemScript.h"
 #include "entities/PickableItem.h"
 #include "entities/Hero.h"
+#include "entities/MapEntities.h"
 #include "movements/Movement.h"
 #include "ItemProperties.h"
 #include "Equipment.h"
 #include "Game.h"
+#include "Map.h"
 #include "InventoryItem.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
@@ -248,6 +250,163 @@ int Script::item_api_start_movement(lua_State *l) {
 
   pickable_item->clear_movement();
   pickable_item->set_movement(&movement);
+
+  return 0;
+}
+
+/**
+ * @brief Returns the position of the pickable item that just appeared.
+ *
+ * This function should be called only when there a current pickable item,
+ * i.e. from the event_appear() function.
+ *
+ * - Return value 1 (integer): x coordinate of the pickable item
+ * - Return value 2 (integer): y coordinate of the pickable item
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::item_api_get_position(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 0, &script);
+
+  // retrieve the pickable item
+  const std::string &item_name = script->get_item_properties().get_name();
+  Equipment &equipment = script->get_game().get_equipment();
+  ItemScript &item_script = equipment.get_item_script(item_name);
+  PickableItem *pickable_item = item_script.get_pickable_item();
+
+  Debug::check_assertion(pickable_item != NULL,
+                "Cannot call sol.item.get_position(): there is no current pickable item");
+
+  const Rectangle& xy = pickable_item->get_xy();
+  lua_pushinteger(l, xy.get_x());
+  lua_pushinteger(l, xy.get_y());
+
+  return 2;
+}
+
+/**
+ * @brief Sets the position of the pickable item that just appeared.
+ *
+ * This function should be called only when there a current pickable item,
+ * i.e. from the event_appear() function.
+ *
+ * - Argument 1 (integer): x coordinate of the pickable item
+ * - Argument 2 (integer): y coordinate of the pickable item
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::item_api_set_position(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 2, &script);
+
+  int x = luaL_checkinteger(l, 1);
+  int y = luaL_checkinteger(l, 2);
+
+  // retrieve the pickable item
+  const std::string &item_name = script->get_item_properties().get_name();
+  Equipment &equipment = script->get_game().get_equipment();
+  ItemScript &item_script = equipment.get_item_script(item_name);
+  PickableItem *pickable_item = item_script.get_pickable_item();
+
+  Debug::check_assertion(pickable_item != NULL,
+                "Cannot call sol.item.set_position(): there is no current pickable item");
+
+  pickable_item->set_xy(x, y);
+
+  return 0;
+}
+
+/**
+ * @brief Returns the layer of the pickable item that just appeared.
+ *
+ * This function should be called only when there a current pickable item,
+ * i.e. from the event_appear() function.
+ *
+ * - Return value (integer): layer of the pickable item (0 to 2)
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::item_api_get_layer(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 0, &script);
+
+  // retrieve the pickable item
+  const std::string &item_name = script->get_item_properties().get_name();
+  Equipment &equipment = script->get_game().get_equipment();
+  ItemScript &item_script = equipment.get_item_script(item_name);
+  PickableItem *pickable_item = item_script.get_pickable_item();
+
+  Debug::check_assertion(pickable_item != NULL,
+                "Cannot call sol.item.get_layer(): there is no current pickable item");
+
+  lua_pushinteger(l, pickable_item->get_layer());
+
+  return 1;
+}
+
+/**
+ * @brief Sets the layer of the pickable item that just appeared.
+ *
+ * This function should be called only when there a current pickable item,
+ * i.e. from the event_appear() function.
+ *
+ * - Argument 1 (integer): layer of the pickable item
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::item_api_set_layer(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 1, &script);
+
+  int layer = luaL_checkinteger(l, 1);
+
+  // retrieve the pickable item
+  const std::string &item_name = script->get_item_properties().get_name();
+  Equipment &equipment = script->get_game().get_equipment();
+  ItemScript &item_script = equipment.get_item_script(item_name);
+  PickableItem *pickable_item = item_script.get_pickable_item();
+
+  Debug::check_assertion(pickable_item != NULL,
+                "Cannot call sol.item.set_layer(): there is no current pickable item");
+
+  MapEntities &entities = script->get_map().get_entities();
+  entities.set_entity_layer(pickable_item, Layer(layer));
+
+  return 0;
+}
+
+/**
+ * @brief Sets whether the pickable item detects collisions on every layer.
+ *
+ * This function should be called only when there a current pickable item,
+ * i.e. from the event_appear() function.
+ *
+ * - Argument 1 (boolean): true to detect collisions from every layer (default: false)
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::item_api_set_layer_independent_collisions(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 1, &script);
+
+  bool independent = lua_toboolean(l, 1) != 0;
+
+  // retrieve the pickable item
+  const std::string &item_name = script->get_item_properties().get_name();
+  Equipment &equipment = script->get_game().get_equipment();
+  ItemScript &item_script = equipment.get_item_script(item_name);
+  PickableItem *pickable_item = item_script.get_pickable_item();
+
+  Debug::check_assertion(pickable_item != NULL,
+                "Cannot call sol.item.set_layer_independent_collisions(): there is no current pickable item");
+
+  pickable_item->set_layer_independent_collisions(independent);
 
   return 0;
 }

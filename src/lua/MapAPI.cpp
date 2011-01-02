@@ -29,6 +29,8 @@
 #include "entities/CustomObstacle.h"
 #include "entities/Block.h"
 #include "entities/Switch.h"
+#include "entities/CrystalSwitch.h"
+#include "entities/Teletransporter.h"
 #include "entities/Hero.h"
 #include "entities/PickableItem.h"
 #include "entities/Bomb.h"
@@ -933,7 +935,7 @@ int Script::map_api_sensor_is_enabled(lua_State *l) {
   const std::string &name = luaL_checkstring(l, 1);
 
   MapEntities &entities = script->get_map().get_entities();
-  Sensor *sensor= (Sensor*) entities.get_entity(SENSOR, name);
+  Sensor *sensor = (Sensor*) entities.get_entity(SENSOR, name);
   lua_pushboolean(l, sensor->is_enabled() ? 1 : 0);
 
   return 1;
@@ -956,8 +958,139 @@ int Script::map_api_sensor_set_enabled(lua_State *l) {
   bool enable = lua_toboolean(l, 2) != 0;
 
   MapEntities &entities = script->get_map().get_entities();
-  Sensor *sensor= (Sensor*) entities.get_entity(SENSOR, name);
+  Sensor *sensor = (Sensor*) entities.get_entity(SENSOR, name);
   sensor->set_enabled(enable);
+
+  return 0;
+}
+
+/**
+ * @brief Returns whether a crystal switch is enabled.
+ *
+ * - Argument 1 (string): name of the crystal switch
+ * - Return value (boolean): true if this crystal switch are enabled
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_crystal_switch_is_enabled(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 1, &script);
+
+  const std::string &name = luaL_checkstring(l, 1);
+
+  MapEntities &entities = script->get_map().get_entities();
+  CrystalSwitch *crystal_switch = (CrystalSwitch*) entities.get_entity(CRYSTAL_SWITCH, name);
+  lua_pushboolean(l, crystal_switch->is_enabled() ? 1 : 0);
+
+  return 1;
+}
+
+/**
+ * @brief Enables or disables a crystal switch.
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_crystal_switch_set_enabled(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 2, &script);
+
+  const std::string &name = luaL_checkstring(l, 1);
+  bool enable = lua_toboolean(l, 2) != 0;
+
+  MapEntities &entities = script->get_map().get_entities();
+  CrystalSwitch *crystal_switch = (CrystalSwitch*) entities.get_entity(CRYSTAL_SWITCH, name);
+  crystal_switch->set_enabled(enable);
+
+  return 0;
+}
+
+/**
+ * @brief Returns whether a teletransporter is enabled.
+ *
+ * - Argument 1 (string): name of the teletransporter
+ * - Return value (boolean): true if this teletransporter is enabled
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_teletransporter_is_enabled(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 1, &script);
+
+  const std::string &name = luaL_checkstring(l, 1);
+
+  MapEntities &entities = script->get_map().get_entities();
+  Teletransporter *teletransporter = (Teletransporter*) entities.get_entity(TELETRANSPORTER, name);
+  lua_pushboolean(l, teletransporter->is_enabled() ? 1 : 0);
+
+  return 1;
+}
+
+/**
+ * @brief Enables or disables a teletransporter.
+ *
+ * - Argument 1 (string): name of the teletransporter
+ * - Argument 2 (boolean): true to enable it, false to disable it
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_teletransporter_set_enabled(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 2, &script);
+
+  const std::string &name = luaL_checkstring(l, 1);
+  bool enable = lua_toboolean(l, 2) != 0;
+
+  MapEntities &entities = script->get_map().get_entities();
+  Teletransporter *teletransporter = (Teletransporter*) entities.get_entity(TELETRANSPORTER, name);
+  teletransporter->set_enabled(enable);
+
+  return 0;
+}
+
+/**
+ * @brief Returns whether a block is enabled.
+ *
+ * - Argument 1 (string): name of the block
+ * - Return value (boolean): true if this block is enabled
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_block_is_enabled(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 1, &script);
+
+  const std::string &name = luaL_checkstring(l, 1);
+
+  MapEntities &entities = script->get_map().get_entities();
+  Block *block = (Block*) entities.get_entity(BLOCK, name);
+  lua_pushboolean(l, block->is_enabled() ? 1 : 0);
+
+  return 1;
+}
+
+/**
+ * @brief Enables or disables a block.
+ *
+ * - Argument 1 (string): name of the block
+ * - Argument 2 (boolean): true to enable it, false to disable it
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_block_set_enabled(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 2, &script);
+
+  const std::string &name = luaL_checkstring(l, 1);
+  bool enable = lua_toboolean(l, 2) != 0;
+
+  MapEntities &entities = script->get_map().get_entities();
+  Block *block = (Block*) entities.get_entity(BLOCK, name);
+  block->set_enabled(enable);
 
   return 0;
 }
@@ -1087,6 +1220,51 @@ int Script::map_api_switch_set_locked(lua_State *l) {
   MapEntities &entities = script->get_map().get_entities();
   Switch *sw = (Switch*) entities.get_entity(SWITCH, name);
   sw->set_locked(lock);
+
+  return 0;
+}
+
+/**
+ * @brief Returns whether a switch is enabled (i.e. visible).
+ *
+ * - Argument 1 (string): name of the switch
+ * - Return value (boolean): true if this switch is enabled (i.e. visible)
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_switch_is_enabled(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 1, &script);
+
+  const std::string &name = luaL_checkstring(l, 1);
+
+  MapEntities &entities = script->get_map().get_entities();
+  Switch *sw = (Switch*) entities.get_entity(SWITCH, name);
+  lua_pushboolean(l, sw->is_enabled() ? 1 : 0);
+
+  return 1;
+}
+
+/**
+ * @brief Enables or disables a switch.
+ *
+ * - Argument 1 (string): name of the switch
+ * - Argument 2 (boolean): true to enable it, false to disable it
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_switch_set_enabled(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 2, &script);
+
+  const std::string &name = luaL_checkstring(l, 1);
+  bool enable = lua_toboolean(l, 2) != 0;
+
+  MapEntities &entities = script->get_map().get_entities();
+  Switch *sw = (Switch*) entities.get_entity(SWITCH, name);
+  sw->set_enabled(enable);
 
   return 0;
 }

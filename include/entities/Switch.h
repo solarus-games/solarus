@@ -59,7 +59,7 @@ class Switch: public Detector {
   public:
 
     Switch(const std::string &name, Layer layer, int x, int y,
-	Subtype subtype, bool needs_block, bool disabled_when_leaving);
+	Subtype subtype, bool needs_block, bool inactivate_when_leaving);
     ~Switch();
     static CreationFunction parse;
 

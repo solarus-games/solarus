@@ -343,11 +343,11 @@ checks the existence of an interactive entity
 - <tt>sol.map.chest_set_open(chest_name, bool open)</tt>:
 sets the state of a chest (without giving or reseting its content)
 
-- <tt>sol.map.chest_set_hidden(chest_name, bool hidden)</tt>:
-hides or unhides a chest
+- <tt>sol.map.chest_set_enabled(chest_name, bool enable)</tt>:
+enables or disables a chest
 
-- <tt>sol.map.chest_is_hidden(chest_name)</tt>:
-returns whether a chest is hidden
+- <tt>sol.map.chest_is_enabled(chest_name)</tt>:
+returns whether a chest is enabled
 
 - <tt>sol.map.tile_is_enabled(tile_name)</tt>:
 returns whether a dynamic tile is enabled

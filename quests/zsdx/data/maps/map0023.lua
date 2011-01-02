@@ -7,8 +7,8 @@ sw_sensor_enabled = false
 
 function event_map_started(destination_point_name)
 
-  sol.map.chest_set_hidden("map_chest", true)
-  sol.map.chest_set_hidden("compass_chest", true)
+  sol.map.chest_set_enabled("map_chest", false)
+  sol.map.chest_set_enabled("compass_chest", false)
   if sol.game.savegame_get_boolean(54) then
     sol.map.switch_set_activated("map_room_switch", true)
   end
@@ -29,7 +29,7 @@ function event_switch_activated(switch_name)
     current_room = "sw"
   elseif switch_name == "map_room_switch" then
     sol.main.play_sound("chest_appears")
-    sol.map.chest_set_hidden("map_chest", false)
+    sol.map.chest_set_enabled("map_chest", true)
   end
 end
 
@@ -48,7 +48,7 @@ end
 
 function compass_room_timer()
   sol.main.play_sound("chest_appears")
-  sol.map.chest_set_hidden("compass_chest", false)
+  sol.map.chest_set_enabled("compass_chest", true)
   sol.main.timer_start(1000, "sol.map.camera_restore", false)
 end
 
@@ -82,7 +82,8 @@ end
 
 function event_enemy_dead(enemy_name)
 
-  if sol.map.enemy_is_group_dead("compass_room_battle") and sol.map.chest_is_hidden("compass_chest") then
+  if sol.map.enemy_is_group_dead("compass_room_battle")
+    and not sol.map.chest_is_enabled("compass_chest") then
     sol.map.camera_move(408, 456, 150)
     current_room = "compass_room"
   end

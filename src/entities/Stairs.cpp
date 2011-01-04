@@ -130,7 +130,8 @@ bool Stairs::is_sword_ignored() {
 }
 
 /**
- * @brief Returns whether this entity is an obstacle for another one.
+ * @brief Returns whether this entity is an obstacle for another one
+ * when it is enabled.
  * @param other another entity
  * @return true if this entity is an obstacle for the other one
  */

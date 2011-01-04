@@ -37,7 +37,7 @@ public class GuiTools {
 
 	// set Windows look and feel by default
 	try {
-	    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+	 //   UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 	    //return;
 	}
 	catch (Exception e) {

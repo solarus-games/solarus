@@ -35,7 +35,8 @@ Bomb::Bomb(Layer layer, int x, int y):
 
   create_sprite("entities/bomb");
   get_sprite().enable_pixel_collisions();
-  set_bounding_box_from_sprite();
+  set_size(16, 16);
+  set_origin(8, 13);
 }
 
 /**

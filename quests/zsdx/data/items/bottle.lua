@@ -108,7 +108,9 @@ function event_ability_used(ability_name)
     -- the hero was just saved by a fairy:
     -- let's find a bottle with a fairy and make it empty
     bottle_name = get_first_bottle_with(6)
-    sol.game.set_item(bottle_name, 1)
+    if bottle_name ~= "" then
+      sol.game.set_item(bottle_name, 1)
+    end
   end
 end
 

@@ -82,6 +82,7 @@ class InteractiveEntity: public Detector {
     void action_key_pressed();
     bool interaction_with_inventory_item(InventoryItem &item);
     void notify_position_changed();
+    bool can_be_lifted();
 
     void update();
 };

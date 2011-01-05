@@ -21,7 +21,6 @@ Feature requests :
 
 - Mettre de la couleur dans les messages
 - Ajouter des infos de statut quête dans l'écran de sélection des sauvegardes, en particulier quand une sauvegarde est choisie
-- Rendre les pancartes soulevables
 - Permettre aux ennemis de tomber dans les trous
 - Permettre aux objets portés de tomber dans les trous et dans l'eau
 - Mettre des constantes dans les scripts

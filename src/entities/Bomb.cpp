@@ -174,6 +174,19 @@ void Bomb::notify_collision_with_conveyor_belt(ConveyorBelt &conveyor_belt, int 
 }
 
 /**
+ * @brief This function is called when the entity has just moved.
+ */
+void Bomb::notify_position_changed() {
+
+  if (get_hero().get_facing_entity() == this
+      && get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_LIFT
+      && !get_hero().is_facing_point_in(get_bounding_box())) {
+
+    get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
+  }
+}
+
+/**
  * @brief Notifies this entity that the player is interacting with it.
  *
  * This function is called when the player presses the action key
@@ -184,7 +197,9 @@ void Bomb::action_key_pressed() {
 
   KeysEffect::ActionKeyEffect effect = get_keys_effect().get_action_key_effect();
 
-  if (effect == KeysEffect::ACTION_KEY_LIFT) {
+  if (effect == KeysEffect::ACTION_KEY_LIFT
+      && get_hero().get_facing_entity() == this
+      && get_hero().is_facing_point_in(get_bounding_box())) {
 
     get_hero().start_lifting(new CarriedItem(get_hero(), get_xy(), get_size(), get_origin(),
 	"entities/bomb", "", 0, true));

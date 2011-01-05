@@ -44,6 +44,7 @@ class Bomb: public Detector {
     void notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode);
     void notify_collision_with_explosion(Explosion &explosion, Sprite &sprite_overlapping);
     void notify_collision_with_conveyor_belt(ConveyorBelt &conveyor_belt, int dx, int dy);
+    void notify_position_changed();
     void action_key_pressed();
     void set_suspended(bool suspended);
     void update();

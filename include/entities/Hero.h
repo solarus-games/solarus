@@ -66,7 +66,7 @@ class Hero: public MapEntity {
 						 * including an instruction from the script */
 
     State *state;				/**< the current internal state */
-    State *old_state;                           /**< the previous state, to delete as soon as possible */
+    std::list<State*> old_states;               /**< previous state objects to delete as soon as possible */
 
     // sprites
     HeroSprites *sprites;			/**< the hero's sprites (note that we don't use the sprites structure from MapEntity) */

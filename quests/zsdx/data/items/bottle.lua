@@ -1,5 +1,7 @@
 -- This script handles all bottles (each bottle script includes it)
 
+bottle_to_make_empty = "" -- name of a bottle to make empty at the next cycle
+
 function event_use()
 
   variant = sol.item.get_variant()
@@ -104,13 +106,23 @@ end
 
 function event_ability_used(ability_name)
 
-  if ability_name == "get_back_from_death" then
-    -- the hero was just saved by a fairy:
-    -- let's find a bottle with a fairy and make it empty
-    bottle_name = get_first_bottle_with(6)
-    if bottle_name ~= "" then
-      sol.game.set_item(bottle_name, 1)
-    end
+  -- if the hero was just saved by a fairy,
+  -- let's find a bottle with a fairy and make it empty
+
+  -- remember that all bottles are notified, but only
+  -- one should remove its fairy
+
+  if ability_name == "get_back_from_death"
+    and sol.game.has_ability("get_back_from_death") then
+
+    bottle_to_make_empty = get_first_bottle_with(6)
+  end
+end
+
+function event_update()
+
+  if bottle_to_make_empty ~= "" then
+    sol.game.set_item(bottle_to_make_empty, 1)
   end
 end
 

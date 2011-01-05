@@ -89,6 +89,18 @@ InventoryItem* ItemScript::get_inventory_item() {
 }
 
 /**
+ * @brief Updates the script.
+ */
+void ItemScript::update() {
+
+  Script::update();
+
+  if (is_loaded()) {
+    event_update();
+  }
+}
+
+/**
  * @brief This function is called when the game is being suspended or resumed.
  * @param suspended true if the game is suspended, false if it is resumed
  */
@@ -99,6 +111,17 @@ void ItemScript::set_suspended(bool suspended) {
   if (is_loaded()) {
     event_set_suspended(suspended);
   }
+}
+
+/**
+ * @brief Notifies the script that it can update itself.
+ *
+ * This function is called at each cycle of the main loop,
+ * so if you define it in your script, take care of the performances.
+ */
+void ItemScript::event_update() {
+
+  notify_script("event_update");
 }
 
 /**

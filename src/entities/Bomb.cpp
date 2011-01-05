@@ -19,6 +19,8 @@
 #include "entities/MapEntities.h"
 #include "entities/Hero.h"
 #include "entities/CarriedItem.h"
+#include "entities/ConveyorBelt.h"
+#include "movements/PathMovement.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Sound.h"
 #include "Sprite.h"
@@ -114,6 +116,15 @@ bool Bomb::is_displayed_in_y_order() {
 }
 
 /**
+ * @brief Returns whether a conveyor belt is currently considered as an obstacle by this entity.
+ * @param conveyor_belt a conveyor belt
+ * @return true if the conveyor belt is currently an obstacle for this entity
+ */
+bool Bomb::is_conveyor_belt_obstacle(ConveyorBelt &conveyor_belt) {
+  return false;
+}
+
+/**
  * @brief This function is called by the engine when an entity overlaps this detector.
  * @param entity_overlapping the entity overlapping the detector
  * @param collision_mode the collision mode that detected the collision
@@ -133,6 +144,32 @@ void Bomb::notify_collision_with_explosion(Explosion &explosion, Sprite &sprite_
 
   if (!is_being_removed()) {
     explode();
+  }
+}
+
+/**
+ * @brief This function is called when a conveyor belt detects a collision with this entity.
+ * @param conveyor_belt a conveyor belt
+ * @param dx direction of the x move in pixels (0, 1 or -1)
+ * @param dy direction of the y move in pixels (0, 1 or -1)
+ */
+void Bomb::notify_collision_with_conveyor_belt(ConveyorBelt &conveyor_belt, int dx, int dy) {
+
+  if (get_movement() == NULL) {
+
+    // check that a significant part of the bomb is on the conveyor belt
+    Rectangle center = get_center_point();
+    center.add_xy(-1, -1);
+    center.set_size(2, 2);
+
+    if (conveyor_belt.overlaps(center)) {
+      set_xy(conveyor_belt.get_xy());
+
+      std::string path = "  ";
+      path[0] = path[1] = '0' + conveyor_belt.get_direction();
+      clear_movement();
+      set_movement(new PathMovement(path, 64, false, false, false));
+    }
   }
 }
 
@@ -182,6 +219,7 @@ void Bomb::update() {
     return;
   }
 
+  // check the explosion date
   uint32_t now = System::now();
   if (now >= explosion_date) {
     explode();
@@ -191,7 +229,13 @@ void Bomb::update() {
     get_sprite().set_current_animation("stopped_explosion_soon");
   }
 
-  // check collision with explosions
+  // destroy the movement once finished
+  if (get_movement() != NULL && get_movement()->is_finished()) {
+    clear_movement();
+  }
+
+  // check collision with other explosions, conveyor belts, etc.
+  get_map().check_collision_with_detectors(*this);
   get_map().check_collision_with_detectors(*this, get_sprite());
 }
 

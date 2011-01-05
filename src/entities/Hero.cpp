@@ -63,7 +63,6 @@ const int Hero::normal_walking_speed = 88; // pixels per second
 Hero::Hero(Equipment &equipment):
 
   state(NULL),
-  old_state(NULL),
   walking_speed(normal_walking_speed),
   on_conveyor_belt(false),
   on_raised_blocks(false),
@@ -91,7 +90,11 @@ Hero::~Hero() {
 
   delete sprites;
   delete state;
-  delete old_state;
+
+  std::list<State*>::iterator it;
+  for (it = old_states.begin(); it != old_states.end(); it++) {
+    delete *it;
+  }
 }
 
 /**
@@ -164,17 +167,16 @@ bool Hero::is_displayed_in_y_order() {
  *
  * @param state the new state of the hero
  */
-void Hero::set_state(State *new_state) {
+void Hero::set_state(State* new_state) {
 
   // stop the previous state
-  if (this->state != NULL) {
-    this->state->stop(new_state);
+  State* old_state = this->state;
+  if (old_state != NULL) {
+    old_state->stop(new_state);
   }
 
-  if (this->old_state != NULL) {
-    delete this->old_state;
-  }
-  this->old_state = this->state;
+  // don't delete the previous state immediately since it may be the caller of this function
+  this->old_states.push_back(old_state);
 
   this->state = new_state;
   this->state->start(old_state);
@@ -230,11 +232,12 @@ void Hero::update_state() {
   // update the current state
   state->update();
 
-  // see if there is an old state to destroy
-  if (old_state != NULL) {
-    delete old_state;
-    old_state = NULL;
+  // see if there is old states to cleanup
+  std::list<State*>::iterator it;
+  for (it = old_states.begin(); it != old_states.end(); it++) {
+    delete *it;
   }
+  old_states.clear();
 }
 
 /**

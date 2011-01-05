@@ -51,8 +51,10 @@ class ItemScript: public Script {
     ItemScript(Game &game, ItemProperties &item_properties);
     ~ItemScript();
 
+    void update();
     void set_suspended(bool suspended);
 
+    void event_update();
     void event_set_suspended(bool suspended);
     void event_appear(PickableItem &pickable_item);
     void event_movement_changed(PickableItem &pickable_item);

@@ -527,7 +527,7 @@ you define them in your script.
 As several scripts of different types may exist,
 we also specify what scripts are notified for each event.
 
-- <tt>event_update()</tt> (triggered for the map script):
+- <tt>event_update()</tt> (triggered for the map script and all item scripts):
 called at each cycle (but take care of the performances)
 
 - <tt>event_set_suspended(suspended)</tt> (triggered for the map script and all item scripts):

@@ -201,8 +201,8 @@ void Bomb::action_key_pressed() {
       && get_hero().get_facing_entity() == this
       && get_hero().is_facing_point_in(get_bounding_box())) {
 
-    get_hero().start_lifting(new CarriedItem(get_hero(), get_xy(), get_size(), get_origin(),
-	"entities/bomb", "", 0, true));
+    get_hero().start_lifting(new CarriedItem(get_hero(), *this,
+	"entities/bomb", "", 0, explosion_date));
     Sound::play("lift");
     remove_from_map();
   }

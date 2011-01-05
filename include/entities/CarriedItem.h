@@ -59,18 +59,17 @@ class CarriedItem: public MapEntity {
 	const Rectangle& origin,
         const SpriteAnimationSetId& animation_set_id,
         const SoundId& destruction_sound_id,
-        int damage_on_enemies, bool can_explode);
+        int damage_on_enemies, uint32_t explosion_date);
 
     bool will_explode_soon();
 
   public:
 
-    CarriedItem(Hero &hero, DestructibleItem &destructible_item);
-    CarriedItem(Hero &hero, const Rectangle& xy, const Rectangle& size,
-        const Rectangle& origin,
-        const SpriteAnimationSetId& animation_set_id,
+    CarriedItem(Hero &hero, MapEntity &original_entity,
+	const SpriteAnimationSetId& animation_set_id,
         const SoundId& destruction_sound_id,
-        int damage_on_enemies, bool can_explode);
+        int damage_on_enemies,
+        uint32_t explosion_date);
     ~CarriedItem();
 
     EntityType get_type();

@@ -277,8 +277,8 @@ void InteractiveEntity::action_key_pressed() {
       // lift the entity
       if (get_equipment().has_ability("lift")) {
 
-	hero.start_lifting(new CarriedItem(hero, get_xy(), get_size(), get_origin(),
-	    get_sprite().get_animation_set_id(), "stone", 2, false));
+	hero.start_lifting(new CarriedItem(hero, *this,
+	    get_sprite().get_animation_set_id(), "stone", 2, 0));
 	Sound::play("lift");
 	remove_from_map();
       }

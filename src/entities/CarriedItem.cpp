@@ -44,86 +44,29 @@ const std::string CarriedItem::lifting_trajectories[4] = {
 };
 
 /**
- * @brief Constructor.
- *
- * Creates a carried item (i.e. an item carried by the hero)
- * based on a destructible item (i.e. the item placed on the map
- * before the hero lifts it).
- *
- * @param hero the hero
- * @param destructible_item a destructible item
- */
-CarriedItem::CarriedItem(Hero &hero, DestructibleItem &destructible_item):
-
-  MapEntity(),
-  hero(hero),
-  is_lifting(true),
-  is_throwing(false),
-  is_breaking(false),
-  break_on_intermediate_layer(false),
-  explosion_date(0) {
-
-  // all properties are copied from the original destructible item
-  initialize(destructible_item.get_xy(),
-      destructible_item.get_size(), destructible_item.get_origin(),
-      destructible_item.get_animation_set_id(),
-      destructible_item.get_destruction_sound_id(),
-      destructible_item.get_damage_on_enemies(),
-      destructible_item.can_explode());
-}
-
-/**
- * @brief Creates a carried item (i.e. an item carried by the hero)
- * by specifying all its properties.
+ * @brief Creates a carried item (i.e. an item carried by the hero).
  * @param hero the hero who is lifting the item to be created
- * @param xy coordinates of the original entity from which this new carried item comes
- * @param size size of the carried item
- * @param origin origin point of the carried item
+ * @param original_entity the entity that will be replaced by this carried item
+ * (its coordinates, size and origin will be copied)
  * @param animation_set_id name of the animation set for the sprite to create
  * @param destruction_sound_id name of the sound to play when this item is destroyed
  * (or an empty string)
  * @param damage_on_enemies damage received by an enemy if the item is thrown on him
  * (possibly 0)
- * @param can_explode indicates that the item should explodes when it is destroyed
+ * @param explosion_date date of the explosion if the item should explode,
+ * or 0 if the item does not explode
  */
-CarriedItem::CarriedItem(Hero &hero, const Rectangle& xy, const Rectangle& size,
-    const Rectangle& origin,
+CarriedItem::CarriedItem(Hero& hero, MapEntity& original_entity,
     const SpriteAnimationSetId& animation_set_id,
     const SoundId& destruction_sound_id,
-    int damage_on_enemies, bool can_explode):
+    int damage_on_enemies, uint32_t explosion_date):
 
   MapEntity(),
   hero(hero),
   is_lifting(true),
   is_throwing(false),
   is_breaking(false),
-  break_on_intermediate_layer(false),
-  explosion_date(0) {
-
-  initialize(xy, size, origin, animation_set_id, destruction_sound_id,
-      damage_on_enemies, can_explode);
-}
-
-/**
- * @brief Initializes all properties of this carried item.
- *
- * This function is called by the constructors.
- *
- * @param xy coordinates of the original entity from which this new carried item comes
- * @param size size of the carried item
- * @param origin origin point of the carried item
- * @param animation_set_id name of the animation set for the sprite to create
- * @param destruction_sound_id name of the sound to play when this item is destroyed
- * (or an empty string)
- * @param damage_on_enemies damage received by an enemy if the item is thrown on him
- * (possibly 0)
- * @param can_explode indicates that the item should explodes when it is destroyed
- */
-void CarriedItem::initialize(const Rectangle& xy, const Rectangle& size,
-    const Rectangle& origin,
-    const SpriteAnimationSetId& animation_set_id,
-    const SoundId& destruction_sound_id,
-    int damage_on_enemies, bool can_explode) {
+  break_on_intermediate_layer(false) {
 
   // put the item on the hero's layer
   set_layer(hero.get_layer());
@@ -131,13 +74,13 @@ void CarriedItem::initialize(const Rectangle& xy, const Rectangle& size,
   // align correctly the item with the hero
   int direction = hero.get_animation_direction();
   if (direction % 2 == 0) {
-    set_xy(xy.get_x(), hero.get_y());
+    set_xy(original_entity.get_x(), hero.get_y());
   }
   else {
-    set_xy(hero.get_x(), xy.get_y());
+    set_xy(hero.get_x(), original_entity.get_y());
   }
-  set_origin(origin);
-  set_size(size);
+  set_origin(original_entity.get_origin());
+  set_size(original_entity.get_size());
 
   // create the lift movement and the sprite
   PixelMovement *movement = new PixelMovement(lifting_trajectories[direction], 100, false, true);
@@ -156,9 +99,7 @@ void CarriedItem::initialize(const Rectangle& xy, const Rectangle& size,
   this->damage_on_enemies = damage_on_enemies;
 
   // explosion
-  if (can_explode) {
-    this->explosion_date = System::now() + 6000;
-  }
+  this->explosion_date = explosion_date;
 }
 
 /**

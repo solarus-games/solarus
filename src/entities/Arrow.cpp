@@ -414,7 +414,14 @@ void Arrow::notify_collision_with_crystal_switch(CrystalSwitch &crystal_switch, 
 void Arrow::notify_collision_with_destructible_item(DestructibleItem &destructible_item, CollisionMode collision_mode) {
 
   if (destructible_item.is_obstacle_for(*this) && is_flying()) {
-    attach_to(destructible_item);
+
+    if (destructible_item.can_explode()) {
+      destructible_item.explode();
+      remove_from_map();
+    }
+    else {
+      attach_to(destructible_item);
+    }
   }
 }
 

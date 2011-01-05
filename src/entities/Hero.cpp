@@ -64,7 +64,6 @@ Hero::Hero(Equipment &equipment):
 
   state(NULL),
   old_state(NULL),
-  facing_entity(NULL),
   walking_speed(normal_walking_speed),
   on_conveyor_belt(false),
   on_raised_blocks(false),
@@ -657,29 +656,15 @@ const Rectangle Hero::get_facing_point(int direction) {
 }
 
 /**
- * @brief Returns the entity in front of the hero.
- * @return the detector the hero is touching, or NULL if he is not touching a detector in front of him
+ * @brief Notifies this entity that its facing entity has just changed.
+ * @param facing_entity the detector this entity is now facing (possibly NULL)
  */
-Detector * Hero::get_facing_entity() {
-  return facing_entity;
-}
-
-/**
- * @brief Sets the entity the hero is currently facing.
- *
- * This function may be called by an entity that has just detected
- * that the player was facing it.
- *
- * @param detector the detector the hero is facing (may be NULL)
- */
-void Hero::set_facing_entity(Detector *detector) {
-
-  this->facing_entity = detector;
+void Hero::notify_facing_entity_changed(Detector* facing_entity) {
 
   if (facing_entity == NULL &&
       get_keys_effect().is_action_key_acting_on_facing_entity()) {
 
-    // the hero stopped facing an entity that was showing an action icon
+    // the hero just stopped facing an entity that was showing an action icon
     get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
   }
 }
@@ -1444,6 +1429,25 @@ void Hero::notify_collision_with_crystal_switch(CrystalSwitch &crystal_switch, S
 }
 
 /**
+ * @brief This function is called when a bomb detects a collision with this entity.
+ * @param bomb the bomb
+ * @param collision_mode the collision mode that detected the event
+ */
+void Hero::notify_collision_with_bomb(Bomb& bomb, CollisionMode collision_mode) {
+
+  if (collision_mode == COLLISION_FACING_POINT) {
+    // the hero is touching the bomb and is looking in its direction
+
+    if (get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
+	&& is_free()) {
+
+      // we show the action icon
+      get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_LIFT);
+    }
+  }
+}
+
+/**
  * @brief This function is called when an explosion's sprite detects a collision with a sprite of the hero.
  * @param explosion the explosion
  * @param sprite_overlapping the sprite of the hero that collides with the explosion
@@ -1537,6 +1541,7 @@ bool Hero::is_striking_with_sword(Detector &detector) {
 void Hero::try_snap_to_facing_entity() {
 
   Rectangle collision_box = get_bounding_box();
+  Detector* facing_entity = get_facing_entity();
 
   if (get_animation_direction() % 2 == 0) {
     if (abs(collision_box.get_y() - facing_entity->get_top_left_y()) <= 5) {
@@ -1804,9 +1809,9 @@ void Hero::start_freezed() {
 
 /**
  * @brief Makes the hero lift a destructible item.
- * @param item_to_lift the destructible item to lift
+ * @param item_to_lift the item to lift (will be destroyed automatically)
  */
-void Hero::start_lifting(DestructibleItem &item_to_lift) {
+void Hero::start_lifting(CarriedItem *item_to_lift) {
   set_state(new LiftingState(*this, item_to_lift));
 }
 

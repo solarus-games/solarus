@@ -237,13 +237,20 @@ void Sprite::set_current_animation(const std::string &animation_name) {
 
     SpriteAnimation *animation = animation_set.get_animation(animation_name);
 
-    Debug::check_assertion(animation != NULL, StringConcat() << "Unknown animation '" << animation_name << "' for animation set '" << animation_set_id << "'");
-
     this->current_animation_name = animation_name;
     this->current_animation = animation;
     set_frame_delay(animation->get_frame_delay());
     set_current_frame(0);
   }
+}
+
+/**
+ * @brief Returns whether this sprite has an animation with the specified name.
+ * @param animation an animation name
+ * @return true if this animation exists
+ */
+bool Sprite::has_animation(const std::string& animation_name) {
+  return animation_set.has_animation(animation_name);
 }
 
 /**

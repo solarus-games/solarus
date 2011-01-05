@@ -18,12 +18,12 @@
 #define SOLARUS_BOMB_H
 
 #include "Common.h"
-#include "entities/MapEntity.h"
+#include "entities/Detector.h"
 
 /**
  * @brief A bomb that will explode soon.
  */
-class Bomb: public MapEntity {
+class Bomb: public Detector {
 
   private:
 
@@ -40,7 +40,9 @@ class Bomb: public MapEntity {
     bool can_detect_entities();
     bool can_be_displayed();
     bool is_displayed_in_y_order();
+    void notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode);
     void notify_collision_with_explosion(Explosion &explosion, Sprite &sprite_overlapping);
+    void action_key_pressed();
     void set_suspended(bool suspended);
     void update();
 

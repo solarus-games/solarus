@@ -18,6 +18,7 @@
 #include "entities/Hero.h"
 #include "entities/MapEntities.h"
 #include "entities/PickableItem.h"
+#include "entities/CarriedItem.h"
 #include "movements/FallingHeight.h"
 #include "Game.h"
 #include "DialogBox.h"
@@ -312,7 +313,7 @@ void DestructibleItem::action_key_pressed() {
     int weight = features[subtype].weight;
 
     if (get_equipment().has_ability("lift", weight)) {
-      get_hero().start_lifting(*this);
+      get_hero().start_lifting(new CarriedItem(get_hero(), *this));
 
       // play the sound
       Sound::play("lift");

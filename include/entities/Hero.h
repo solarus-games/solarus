@@ -72,7 +72,6 @@ class Hero: public MapEntity {
     HeroSprites *sprites;			/**< the hero's sprites (note that we don't use the sprites structure from MapEntity) */
 
     // position
-    Detector *facing_entity;			/**< the entity just in front of the hero (or NULL) */
     static const int normal_walking_speed;	/**< default speed when walking */
     int walking_speed;				/**< current walking speed */
 
@@ -177,8 +176,7 @@ class Hero: public MapEntity {
      */
     const Rectangle get_facing_point();
     const Rectangle get_facing_point(int direction4);
-    Detector *get_facing_entity();
-    void set_facing_entity(Detector *detector);
+    void notify_facing_entity_changed(Detector* facing_entity);
     bool is_facing_obstacle();
     bool is_facing_point_on_obstacle();
     bool is_facing_direction4(int direction4);
@@ -253,6 +251,7 @@ class Hero: public MapEntity {
     void notify_collision_with_switch(Switch &sw);
     void notify_collision_with_crystal_switch(CrystalSwitch &crystal_switch, CollisionMode collision_mode);
     void notify_collision_with_crystal_switch(CrystalSwitch &crystal_switch, Sprite &sprite_overlapping);
+    void notify_collision_with_bomb(Bomb& bomb, CollisionMode collision_mode);
     void notify_collision_with_explosion(Explosion &explosion, Sprite &sprite_overlapping);
     void avoid_collision(MapEntity &entity, int direction);
     bool is_striking_with_sword(Detector &detector);
@@ -291,7 +290,7 @@ class Hero: public MapEntity {
 	uint32_t movement_delay = 0, Layer layer_after_jump = LAYER_NB);
     void start_freezed();
     void start_victory();
-    void start_lifting(DestructibleItem &destructible_item);
+    void start_lifting(CarriedItem* item_to_lift);
     void start_running();
     void start_grabbing();
     void start_boomerang();

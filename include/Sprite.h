@@ -100,7 +100,8 @@ class Sprite {
 
     // current animation, direction and frame
     const std::string& get_current_animation() const;
-    void set_current_animation(const std::string &animation_name);
+    void set_current_animation(const std::string& animation_name);
+    bool has_animation(const std::string& animation_name);
     int get_current_direction() const;
     void set_current_direction(int current_direction);
     int get_current_frame() const;

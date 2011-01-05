@@ -241,6 +241,7 @@ void Door::notify_collision_with_explosion(Explosion &explosion, Sprite &sprite_
 
   if (requires_bomb() && !is_open() && !changing) {
     set_opening();
+    Sound::play("secret");
   }
 }
 

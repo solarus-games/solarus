@@ -303,6 +303,7 @@ void Game::update_transitions() {
     else if (transition_direction == Transition::OUT) {
 
       if (next_map == current_map) {
+	// same map
 	hero->place_on_destination_point(*current_map);
 	transition = Transition::create(transition_style, Transition::IN, this);
 	transition->start();
@@ -475,10 +476,17 @@ void Game::set_current_map(MapId map_id, const std::string &destination_point_na
   // stop the hero's movement
   hero->reset_movement();
 
-  // load the next map
-  next_map = new Map(map_id);
-  next_map->load(*this);
-  next_map->check_suspended();
+  // prepare the next map
+  if (current_map == NULL || map_id != current_map->get_id()) {
+    // another map
+    next_map = new Map(map_id);
+    next_map->load(*this);
+    next_map->check_suspended();
+  }
+  else {
+    // same map
+    next_map = current_map;
+  }
 
   if (current_map != NULL) {
     current_map->check_suspended();

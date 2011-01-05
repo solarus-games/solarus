@@ -121,8 +121,11 @@ void Detector::check_collision(MapEntity &entity) {
     }
 
     if (has_collision_mode(COLLISION_FACING_POINT) && test_collision_facing_point(entity)) {
-      entity.set_facing_entity(this);
-      notify_collision(entity, COLLISION_FACING_POINT);
+
+      if (entity.get_facing_entity() == NULL) { // make sure only one entity can think "I am the facing entity"
+        entity.set_facing_entity(this);
+        notify_collision(entity, COLLISION_FACING_POINT);
+      }
     }
 
     if (has_collision_mode(COLLISION_CENTER) && test_collision_center(entity)) {

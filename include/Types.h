@@ -169,6 +169,7 @@ class ConveyorBelt;
 class Stairs;
 class Door;
 class Explosion;
+class Bomb;
 
 // tile patterns
 class Tileset;

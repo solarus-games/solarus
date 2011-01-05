@@ -17,9 +17,13 @@
 #include "entities/Bomb.h"
 #include "entities/Explosion.h"
 #include "entities/MapEntities.h"
+#include "entities/Hero.h"
+#include "entities/CarriedItem.h"
+#include "lowlevel/System.h"
+#include "lowlevel/Sound.h"
 #include "Sprite.h"
 #include "Map.h"
-#include "lowlevel/System.h"
+#include "KeysEffect.h"
 
 /**
  * @brief Constructor.
@@ -31,7 +35,8 @@
  * @param y y coordinate of the entity to create
  */
 Bomb::Bomb(Layer layer, int x, int y):
-  MapEntity(layer, x, y, 16, 16), explosion_date(System::now() + 6000) {
+  Detector(COLLISION_FACING_POINT, "", layer, x, y, 16, 16),
+  explosion_date(System::now() + 6000) {
 
   create_sprite("entities/bomb");
   get_sprite().enable_pixel_collisions();
@@ -77,7 +82,7 @@ bool Bomb::can_be_obstacle() {
  * @return true if this type of entity can detect other entities
  */
 bool Bomb::can_detect_entities() {
-  return false;
+  return true;
 }
 
 /**
@@ -109,6 +114,16 @@ bool Bomb::is_displayed_in_y_order() {
 }
 
 /**
+ * @brief This function is called by the engine when an entity overlaps this detector.
+ * @param entity_overlapping the entity overlapping the detector
+ * @param collision_mode the collision mode that detected the collision
+ */
+void Bomb::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
+
+  entity_overlapping.notify_collision_with_bomb(*this, collision_mode);
+}
+
+/**
  * @brief This function is called when an explosion's sprite
  * detects a pixel-perfect collision with a sprite of this entity.
  * @param explosion the explosion
@@ -122,12 +137,32 @@ void Bomb::notify_collision_with_explosion(Explosion &explosion, Sprite &sprite_
 }
 
 /**
+ * @brief Notifies this entity that the player is interacting with it.
+ *
+ * This function is called when the player presses the action key
+ * when the hero is facing this detector, and the action icon lets him do this.
+ * The hero lifts the bomb if possible.
+ */
+void Bomb::action_key_pressed() {
+
+  KeysEffect::ActionKeyEffect effect = get_keys_effect().get_action_key_effect();
+
+  if (effect == KeysEffect::ACTION_KEY_LIFT) {
+
+    get_hero().start_lifting(new CarriedItem(get_hero(), get_xy(), get_size(), get_origin(),
+	"entities/bomb", "", 0, true));
+    Sound::play("lift");
+    remove_from_map();
+  }
+}
+
+/**
  * @brief This function is called by the map when the game is suspended or resumed.
  * @param suspended true to suspend the entity, false to resume it
  */
 void Bomb::set_suspended(bool suspended) {
 
-  MapEntity::set_suspended(suspended); // suspend the animation and the movement
+  Detector::set_suspended(suspended); // suspend the animation and the movement
 
   if (!suspended && when_suspended != 0) {
     // recalculate the timer
@@ -141,8 +176,7 @@ void Bomb::set_suspended(bool suspended) {
  */
 void Bomb::update() {
 
-  // update the sprite and the position
-  MapEntity::update();
+  Detector::update();
 
   if (suspended) {
     return;
@@ -153,8 +187,8 @@ void Bomb::update() {
     explode();
   }
   else if (now >= explosion_date - 1500
-      && get_sprite().get_current_animation() != "explosion_soon") {
-    get_sprite().set_current_animation("explosion_soon");
+      && get_sprite().get_current_animation() != "stopped_explosion_soon") {
+    get_sprite().set_current_animation("stopped_explosion_soon");
   }
 
   // check collision with explosions

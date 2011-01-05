@@ -208,7 +208,7 @@ void PixelMovement::set_suspended(bool suspended) {
 
   Movement::set_suspended(suspended);
 
-  if (!suspended) {
+  if (!suspended && get_when_suspended() != 0) {
     next_move_date += System::now() - get_when_suspended();
   }
 }

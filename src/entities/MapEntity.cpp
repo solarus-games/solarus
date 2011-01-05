@@ -121,6 +121,7 @@ MapEntity::MapEntity():
   visible(true),
   movement(NULL),
   old_movement(NULL),
+  facing_entity(NULL),
   being_removed(false),
   enabled(true),
   waiting_enabled(false),
@@ -153,6 +154,7 @@ MapEntity::MapEntity(Layer layer, int x, int y, int width, int height):
   visible(true),
   movement(NULL),
   old_movement(NULL),
+  facing_entity(NULL),
   being_removed(false),
   enabled(true),
   waiting_enabled(false),
@@ -183,6 +185,7 @@ MapEntity::MapEntity(const std::string &name, int direction, Layer layer,
   visible(true),
   movement(NULL),
   old_movement(NULL),
+  facing_entity(NULL),
   being_removed(false),
   enabled(true),
   waiting_enabled(false),
@@ -627,6 +630,15 @@ int MapEntity::get_height() {
 }
 
 /**
+ * @brief Returns the size of the entity.
+ * @return a rectangle whose width and height represent the size of the entity
+ * (its coordinates should be ignored)
+ */
+const Rectangle& MapEntity::get_size() {
+  return bounding_box;
+}
+
+/**
  * @brief Sets the size of the entity.
  * @param width the entity's width
  * @param height the entity's height
@@ -747,15 +759,30 @@ const Rectangle MapEntity::get_facing_point(int direction) {
 }
 
 /**
+ * @brief Returns the detector in front of this entity.
+ * @return the detector this entity is touching, or NULL if there is no detector in front of him
+ */
+Detector* MapEntity::get_facing_entity() {
+  return facing_entity;
+}
+
+/**
  * @brief Sets the entity this entity is currently facing.
  *
- * This function is called when this entity is facing a new entity.
- * By default, nothing is done.
+ * This function is called when this entity is facing a new detector.
  *
- * @param detector the detector this entity is now facing
+ * @param facing_entity the detector this entity is now facing (possibly NULL)
  */
-void MapEntity::set_facing_entity(Detector *detector) {
+void MapEntity::set_facing_entity(Detector* facing_entity) {
+  this->facing_entity = facing_entity;
+  notify_facing_entity_changed(facing_entity);
+}
 
+/**
+ * @brief Notifies this entity that its facing entity has just changed.
+ * @param facing_entity the detector this entity is now facing (possibly NULL)
+ */
+void MapEntity::notify_facing_entity_changed(Detector* facing_entity) {
 }
 
 /**
@@ -1436,6 +1463,14 @@ void MapEntity::notify_collision_with_crystal_switch(CrystalSwitch &crystal_swit
  * @param sprite_overlapping the sprite of the current entity that collides with the crystal switch
  */
 void MapEntity::notify_collision_with_crystal_switch(CrystalSwitch &crystal_switch, Sprite &sprite_overlapping) {
+}
+
+/**
+ * @brief This function is called when bomb detects a collision with a this entity.
+ * @param explosion the explosion
+ * @param collision_mode the collision mode that detected the event
+ */
+void MapEntity::notify_collision_with_bomb(Bomb& bomb, CollisionMode collision_mode) {
 }
 
 /**

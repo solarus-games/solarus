@@ -151,13 +151,22 @@ void SpriteAnimationSet::set_map(Map &map) {
 }
 
 /**
+ * @brief Returns whether this animation set has an animation with the specified name.
+ * @param animation an animation name
+ * @return true if this animation exists
+ */
+bool SpriteAnimationSet::has_animation(const std::string& animation_name) const {
+  return animations.count(animation_name) > 0;
+}
+
+/**
  * @brief Returns an animation.
  * @param animation_name name of the animation to get
  * @return the specified animation
  */
 const SpriteAnimation * SpriteAnimationSet::get_animation(const std::string &animation_name) const {
 
-  Debug::check_assertion(animations.count(animation_name) > 0,
+  Debug::check_assertion(has_animation(animation_name),
       StringConcat() << "No animation '" << animation_name << "' in this animation set");
 
   return animations.find(animation_name)->second; // the [] operator is not const in std::map
@@ -170,7 +179,7 @@ const SpriteAnimation * SpriteAnimationSet::get_animation(const std::string &ani
  */
 SpriteAnimation * SpriteAnimationSet::get_animation(const std::string &animation_name) {
 
-  Debug::check_assertion(animations.count(animation_name) > 0,
+  Debug::check_assertion(has_animation(animation_name),
       StringConcat() << "No animation '" << animation_name << "' in this animation set");
 
   return animations[animation_name];

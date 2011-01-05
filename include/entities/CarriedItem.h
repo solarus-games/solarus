@@ -55,11 +55,22 @@ class CarriedItem: public MapEntity {
 
     static const std::string lifting_trajectories[4];	/**< trajectory of the lifting movement for each direction */
 
+    void initialize(const Rectangle& xy, const Rectangle& size,
+	const Rectangle& origin,
+        const SpriteAnimationSetId& animation_set_id,
+        const SoundId& destruction_sound_id,
+        int damage_on_enemies, bool can_explode);
+
     bool will_explode_soon();
 
   public:
 
     CarriedItem(Hero &hero, DestructibleItem &destructible_item);
+    CarriedItem(Hero &hero, const Rectangle& xy, const Rectangle& size,
+        const Rectangle& origin,
+        const SpriteAnimationSetId& animation_set_id,
+        const SoundId& destruction_sound_id,
+        int damage_on_enemies, bool can_explode);
     ~CarriedItem();
 
     EntityType get_type();

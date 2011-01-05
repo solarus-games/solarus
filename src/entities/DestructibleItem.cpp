@@ -42,7 +42,7 @@ const DestructibleItem::Features DestructibleItem::features[] = {
   {"entities/stone_small_white", "stone", true,  false, false, false, 1, 2, GROUND_NORMAL},
   {"entities/stone_small_black", "stone", true,  false, false, false, 2, 4, GROUND_NORMAL},
   {"entities/grass",             "bush",  false, true,  false, false, 0, 0, GROUND_GRASS},
-  {"entities/bomb_flower",       "bush",  true,  false, true,  true,  1, 1, GROUND_NORMAL},
+  {"entities/bomb_flower",       "bush",  true,   true, true,  true,  1, 1, GROUND_NORMAL},
 };
 
 /**
@@ -274,6 +274,10 @@ void DestructibleItem::notify_collision(MapEntity &other_entity, Sprite &other_s
       play_destroy_animation();
       hero.notify_position_changed(); // to update the ground under the hero
       create_pickable_item();
+
+      if (can_explode()) {
+	explode();
+      }
     }
   }
 
@@ -285,7 +289,7 @@ void DestructibleItem::notify_collision(MapEntity &other_entity, Sprite &other_s
 
     play_destroy_animation();
     create_pickable_item();
-    get_entities().add_entity(new Explosion(get_layer(), get_xy(), true));
+    explode();
   }
 }
 
@@ -367,6 +371,13 @@ bool DestructibleItem::is_disabled() {
  */
 bool DestructibleItem::can_explode() {
   return features[subtype].can_explode;
+}
+
+/**
+ * @brief Creates an explosion on the item.
+ */
+void DestructibleItem::explode() {
+  get_entities().add_entity(new Explosion(get_layer(), get_xy(), true));
 }
 
 /**

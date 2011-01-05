@@ -96,6 +96,7 @@ class DestructibleItem: public Detector {
     int get_damage_on_enemies();
     bool has_special_ground();
     Ground get_special_ground();
+    void explode();
     bool can_explode();
     bool is_disabled();
 

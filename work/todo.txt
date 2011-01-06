@@ -32,6 +32,7 @@ Feature requests :
 - Ajouter un "map marker" pour indiquer où il faut se rendre ensuite
 - Voir si la police supporte des caractères unicode comme U+2192 (→) et U+2190 (←)
 - faire un type d'ennemi "CustomEnemy" qui est en fait scripté
+- Boomerang 2 : ajouter dans l'api Lua les paramètres sprite, speed et length
 
 
 Bugs :

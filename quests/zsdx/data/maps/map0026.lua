@@ -50,7 +50,7 @@ function event_hero_on_sensor(sensor_name)
     else
       sol.map.dialog_start("fairy_cave.restore_health")
     end
-    sol.map.sensor_remove("fairy_sensor")
+    sol.map.sensor_set_enabled(sensor_name, false)
   end
 end
 

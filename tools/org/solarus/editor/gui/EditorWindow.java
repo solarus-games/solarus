@@ -17,13 +17,16 @@
 package org.solarus.editor.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.util.Observable;
 import java.util.Observer;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -41,6 +44,12 @@ import org.solarus.editor.ZSDXException;
  */
 public class EditorWindow extends JFrame implements Observer, ProjectObserver, ChangeListener {
 
+    /**
+     *
+     */
+    private static final String mapEditorClass = "org.solarus.editor.gui.MapEditorWindow";
+    private static final String tilesetEditorClass = "org.solarus.editor.gui.TilesetEditorWindow";
+    private static final String fileEditorClass = "org.solarus.editor.gui.FileEditorWindow";
     private EditorDesktop desktop;
     private JMenu menuMap;
     private JMenuItem menuItemCloseMap;
@@ -54,6 +63,10 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
     private JMenu menuTileset;
     private JMenuItem menuItemCloseTileset;
     private JMenuItem menuItemSaveTileset;
+    //
+    private JMenu menuFile;
+    private JMenuItem menuItemCloseFile;
+    private JMenuItem menuItemSaveFile;
     /**
      * The quest to load in the editor, for use in the sub-editors
      */
@@ -81,9 +94,9 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
 
             public void windowClosing(WindowEvent e) {
                 if (checkCurrentFilesSaved()) {
-                    if (GuiTools.yesNoDialog("Do you really want to quit the editor ?")) {
-                        System.exit(0);
-                    }
+                    //if (GuiTools.yesNoDialog("Do you really want to quit the editor ?")) {
+                    System.exit(0);
+                    //}
                 }
             }
         });
@@ -108,13 +121,19 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
      * @param obj additional parameter
      */
     public void update(Observable o, Object obj) {
-        if (desktop.getSelectedComponent() == null) {
-            menuMap.setEnabled(false);
-            menuTileset.setEnabled(false);
-        } else {
-            menuMap.setEnabled(true);
-            menuTileset.setEnabled(true);
-            try {
+
+        menuMap.setEnabled(Project.isLoaded());
+        menuTileset.setEnabled(Project.isLoaded());
+        menuFile.setEnabled(Project.isLoaded());
+
+        if (desktop.getSelectedComponent() != null) {
+            String editorClass = desktop.getSelectedComponent().getClass().getName();
+            //System.out.println(c.getClass().getName());
+            boolean isMapEditor = mapEditorClass.equals(editorClass);
+            boolean isTilesetEditor = tilesetEditorClass.equals(editorClass);
+            boolean isFileEditor = fileEditorClass.equals(editorClass);
+
+            if (isMapEditor) {
 
                 MapEditorWindow mapEditor = (MapEditorWindow) desktop.getSelectedComponent();
                 MapEditorHistory history = mapEditor.getMap().getHistory();
@@ -127,25 +146,28 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
                 menuItemCutMap.setEnabled(!emptySelection);
                 menuItemCopyMap.setEnabled(!emptySelection);
                 menuItemPasteMap.setEnabled(mapEditor.getMapView().canPaste());
-            } catch (ClassCastException cce) {
-                menuItemCloseMap.setEnabled(false);
-                menuItemSaveMap.setEnabled(false);
-                menuItemUndoMap.setEnabled(false);
-                menuItemRedoMap.setEnabled(false);
-                menuItemCutMap.setEnabled(false);
-                menuItemCopyMap.setEnabled(false);
-                menuItemPasteMap.setEnabled(false);
             }
-            try {
+            menuItemCloseTileset.setEnabled(isTilesetEditor);
+            menuItemSaveTileset.setEnabled(isTilesetEditor);
+            
+            menuItemCloseFile.setEnabled(isFileEditor);
+            menuItemSaveFile.setEnabled(isFileEditor);
 
-                TilesetEditorWindow tiilesetEditor = (TilesetEditorWindow) desktop.getSelectedComponent();
-                menuItemCloseTileset.setEnabled(true);
-                menuItemSaveTileset.setEnabled(true);
-            } catch (ClassCastException cce) {
-                menuItemCloseTileset.setEnabled(false);
-                menuItemSaveTileset.setEnabled(false);
-            }
+        } else {
+            // No resource opened interface the editor : only new/open actions are enabled
+            menuItemCloseMap.setEnabled(false);
+            menuItemSaveMap.setEnabled(false);
+            menuItemUndoMap.setEnabled(false);
+            menuItemRedoMap.setEnabled(false);
+            menuItemCutMap.setEnabled(false);
+            menuItemCopyMap.setEnabled(false);
+            menuItemPasteMap.setEnabled(false);
 
+            menuItemCloseTileset.setEnabled(false);
+            menuItemSaveTileset.setEnabled(false);
+
+            menuItemCloseFile.setEnabled(false);
+            menuItemSaveFile.setEnabled(false);
         }
     }
 
@@ -156,18 +178,18 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
         JMenuItem item;
 
         // menu Project
-        menu = new JMenu("Project");
+        menu = new JMenu("Quest");
         menu.setMnemonic(KeyEvent.VK_P);
 
-        item = new JMenuItem("New project...");
+        item = new JMenuItem("New quest...");
         item.setMnemonic(KeyEvent.VK_N);
-        item.getAccessibleContext().setAccessibleDescription("Create a new ZSDX project");
+        item.getAccessibleContext().setAccessibleDescription("Create a new ZSDX quest");
         item.addActionListener(new ActionListenerNewProject());
         menu.add(item);
 
-        item = new JMenuItem("Load project...");
+        item = new JMenuItem("Load quest...");
         item.setMnemonic(KeyEvent.VK_O);
-        item.getAccessibleContext().setAccessibleDescription("Open an existing ZSDX project");
+        item.getAccessibleContext().setAccessibleDescription("Open an existing ZSDX quest");
         item.addActionListener(new ActionListenerLoadProject());
         menu.add(item);
 
@@ -180,9 +202,9 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
 
             public void actionPerformed(ActionEvent ev) {
                 if (checkCurrentFilesSaved()) {
-                    if (GuiTools.yesNoDialog("Do you really want to quit the editor ?")) {
-                        System.exit(0);
-                    }
+                    //if (GuiTools.yesNoDialog("Do you really want to quit the editor ?")) {
+                    System.exit(0);
+                    //}
                 }
             }
         });
@@ -312,8 +334,33 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
 
         menuBar.add(menuTileset);
 
+        menuFile = new JMenu("File");
+        menuFile.setEnabled(false);
+        menuFile.setMnemonic(KeyEvent.VK_F);
 
+        item = new JMenuItem("Open...");
+        item.setMnemonic(KeyEvent.VK_O);
+        item.getAccessibleContext().setAccessibleDescription("Open an existing file");
+        item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
+        item.addActionListener(new ActionOpenFile());
+        menuFile.add(item);
 
+        menuItemCloseFile = new JMenuItem("Close");
+        menuItemCloseFile.setMnemonic(KeyEvent.VK_C);
+        menuItemCloseFile.getAccessibleContext().setAccessibleDescription("Close the current File");
+        menuItemCloseFile.addActionListener(new ActionCloseFile());
+        menuItemCloseFile.setEnabled(false);
+        menuFile.add(menuItemCloseFile);
+
+        menuItemSaveFile = new JMenuItem("Save");
+        menuItemSaveFile.setMnemonic(KeyEvent.VK_S);
+        menuItemSaveFile.getAccessibleContext().setAccessibleDescription("Save the current File");
+        menuItemSaveFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
+        menuItemSaveFile.addActionListener(new ActionSaveFile());
+        menuItemSaveFile.setEnabled(false);
+        menuFile.add(menuItemSaveFile);
+
+        menuBar.add(menuFile);
 
         setJMenuBar(menuBar);
 
@@ -340,6 +387,7 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
     public void currentProjectChanged() {
         menuMap.setEnabled(true);
         menuTileset.setEnabled(true);
+        menuFile.setEnabled(true);
     }
 
     /**
@@ -444,8 +492,10 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
         public void actionPerformed(ActionEvent ev) {
             MapEditorWindow mapEditor = new MapEditorWindow(EditorWindow.this.quest, EditorWindow.this);
             mapEditor.openMap();
-            EditorWindow.this.desktop.addEditor(mapEditor);
-            mapEditor.getMap().addObserver(EditorWindow.this);
+            if (mapEditor.getMap() != null) {
+                EditorWindow.this.desktop.addEditor(mapEditor);
+                mapEditor.getMap().addObserver(EditorWindow.this);
+            }
         }
     }
 
@@ -570,6 +620,9 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
         public void actionPerformed(ActionEvent ev) {
             TilesetEditorWindow tilesetEditor = new TilesetEditorWindow(EditorWindow.this.quest, EditorWindow.this);
             tilesetEditor.openTileset();
+            if (tilesetEditor.getTileset() == null) {
+                return;//user cancellation
+            }
             EditorWindow.this.desktop.addEditor(tilesetEditor);
         }
     }
@@ -589,6 +642,49 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
             desktop.remove(tilesetEditor);
 
 
+        }
+    }
+
+    /**
+     * Action performed when the user clicks on File > Save.
+     * Saves the file into its file.
+     */
+    private class ActionSaveFile implements ActionListener {
+
+        public void actionPerformed(ActionEvent ev) {
+            FileEditorWindow fileEditor = (FileEditorWindow) desktop.getSelectedComponent();
+            fileEditor.saveFile();
+        }
+    }
+
+    /**
+     * Action performed when the user clicks on File > Load.
+     * Opens an existing file
+     */
+    private class ActionOpenFile implements ActionListener {
+
+        public void actionPerformed(ActionEvent ev) {
+            FileEditorWindow fileEditor = new FileEditorWindow(EditorWindow.this.quest, EditorWindow.this);
+            JFileChooser jfc = new JFileChooser(Project.getRootPath());
+            jfc.showOpenDialog(EditorWindow.this);
+            File selectedFile = jfc.getSelectedFile();
+            if (selectedFile != null) {
+                fileEditor.setFile(selectedFile);
+                EditorWindow.this.desktop.addEditor(fileEditor);
+            }
+
+        }
+    }
+
+    /**
+     * Action performed when the user clicks on File > Close.
+     * Closes the current file.
+     */
+    private class ActionCloseFile implements ActionListener {
+
+        public void actionPerformed(ActionEvent ev) {
+            FileEditorWindow fileEditor = (FileEditorWindow) desktop.getSelectedComponent();
+            desktop.remove(fileEditor);
         }
     }
 

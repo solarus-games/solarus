@@ -16,9 +16,7 @@
  */
 package org.solarus.editor.gui;
 
-import javax.swing.ButtonGroup;
 import javax.swing.JTabbedPane;
-import javax.swing.JToolBar;
 
 /**
  *
@@ -26,35 +24,45 @@ import javax.swing.JToolBar;
 public class EditorDesktop extends JTabbedPane {
 
     public static final long serialVersionUID = 1L;
-    /**
-     * The JDesktopPane use to contained the editors
-     */
-    private JTabbedPane desktopPane;
-    /**
-     * The tool bar which allow access to the editors
-     */
-    private JToolBar toolBar;
-    /**
-     * Button group of the tool bar
-     */
-    private ButtonGroup buttonGroup;
 
     public EditorDesktop() {
         setTabLayoutPolicy(SCROLL_TAB_LAYOUT);
 //        addChangeListener(this);
     }
 
-    public void addEditor(AbstractEditorWindow editor) {
-        add(editor.getResourceName(), editor);
-        setSelectedIndex(getTabCount()-1);
+    /**
+     * Add an editor in the tabbedpane
+     * @param editor the editor to add
+     */
+    public void addEditor(AbstractEditorWindow editor) {        
+        String title = editor.getResourceName();
+        AbstractEditorWindow[] editors = getEditors();
+        if (editors != null) {
+            for (AbstractEditorWindow e : editors) {
+                if (e.getResourceName().equals(title)) {
+                    setSelectedComponent(e);
+                    return;
+                }
+            }
+        }
+        add(title, editor);
+        setSelectedIndex(getTabCount() - 1);
         repaint();
     }
 
+    /**
+     * Remove an editor of the tabbedpane
+     * @param editor the editor to remove
+     */
     public void removeEditor(AbstractEditorWindow editor) {
         remove(editor);
         repaint();
     }
 
+    /**
+     * Returns the editors currently opened
+     * @return A table containing the editors currently opened
+     */
     public AbstractEditorWindow[] getEditors() {
         int nb = getTabCount();
         if (nb > 0) {
@@ -67,10 +75,11 @@ public class EditorDesktop extends JTabbedPane {
         return null;
     }
 
+    /**
+     * Count the editors currently opened
+     * @return the number of editos currently opened
+     */
     public int countEditors() {
-        //System.out.println("Comptage editeurs : "+desktopPane.getComponentCount());
         return getTabCount();
     }
-
-//    }
 }

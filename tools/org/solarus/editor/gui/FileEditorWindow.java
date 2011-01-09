@@ -20,9 +20,11 @@ import java.awt.BorderLayout;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.Observable;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -76,7 +78,9 @@ public class FileEditorWindow extends AbstractEditorWindow implements ProjectObs
 
         String text = "";
         try {
-            BufferedReader br = new BufferedReader(new FileReader(file));
+            BufferedReader br = new BufferedReader(
+               new InputStreamReader(
+                     new FileInputStream(file),"UTF-8"));
             String line = br.readLine();
 
             while (line != null) {
@@ -95,13 +99,13 @@ public class FileEditorWindow extends AbstractEditorWindow implements ProjectObs
      */
     public void saveFile() {
         try {
-            FileWriter lu = new FileWriter(file);
-            BufferedWriter out = new BufferedWriter(lu);
+            OutputStreamWriter ost = new OutputStreamWriter(new FileOutputStream(file) , "UTF-8");
+            BufferedWriter out = new BufferedWriter(ost);
             out.write(textArea.getText());
             out.close();
             textChanged = false;
         } catch (IOException er) {
-            ;
+            er.printStackTrace();
         }
     }
 

@@ -44,9 +44,14 @@ public class ResourceChooserDialog extends OkCancelDialog {
      * Constructor.
      */
     public ResourceChooserDialog(ResourceType resourceType) {
-	super("Select a " + resourceNames[resourceType.getId()], false);
-    
-	setBorderTitle("Please select a " + resourceNames[resourceType.getId()]);
+//	super("Select a " + resourceNames[resourceType.getId()], false);
+//
+//	setBorderTitle("Please select a " + resourceNames[resourceType.getId()]);
+
+        super("Select a " + resourceType.getName(), false);
+
+	setBorderTitle("Please select a " + resourceType.getName());
+
     	chooser = new ResourceChooser(resourceType, false);
     	setComponent(chooser);
     }

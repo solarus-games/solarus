@@ -69,9 +69,16 @@ void Hero::JumpingState::start(State *previous_state) {
   State::start(previous_state);
 
   // update the sprites
-  get_sprites().set_animation_direction8(direction8);
-  get_sprites().set_animation_jumping();
-  get_sprites().set_lifted_item(carried_item);
+  HeroSprites& sprites = get_sprites();
+  sprites.set_animation_direction8(direction8);
+
+  if (carried_item == NULL) {
+    sprites.set_animation_jumping();
+  }
+  else {
+    sprites.set_animation_walking_carrying();
+    sprites.set_lifted_item(carried_item);
+  }
 
   // jump
   hero.set_movement(movement);

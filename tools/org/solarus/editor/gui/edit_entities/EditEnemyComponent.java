@@ -30,6 +30,7 @@ import org.solarus.editor.map_editor_actions.*;
 public class EditEnemyComponent extends EditEntityComponent {
 
     // specific fields
+    private ResourceChooser breedField;
     private EnumerationChooser<Enemy.Rank> rankField;
     private JCheckBox saveField;
     private NumberChooser savegameVariableField;
@@ -48,6 +49,10 @@ public class EditEnemyComponent extends EditEntityComponent {
      * Creates the specific fields for this kind of entity.
      */
     protected void createSpecificFields() {
+
+	// breed
+	breedField = new ResourceChooser(ResourceType.ENEMY, false);
+	addField("Breed", breedField);
 
 	// rank
 	rankField = new EnumerationChooser<Rank>(Rank.class);
@@ -81,6 +86,7 @@ public class EditEnemyComponent extends EditEntityComponent {
 
 	Enemy enemy = (Enemy) entity;
 
+	breedField.setSelectedId(enemy.getProperty("breed"));
 	rankField.setValue(Rank.get(enemy.getIntegerProperty("rank")));
 
 	int savegameVariable = enemy.getIntegerProperty("savegameVariable");
@@ -110,6 +116,7 @@ public class EditEnemyComponent extends EditEntityComponent {
 		savegameVariableField.getNumber() : -1;
 
 	return new ActionEditEntitySpecific(entity,
+		breedField.getSelectedId(),
 		Integer.toString(rankField.getValue().getId()),
 		Integer.toString(savegameVariable),
 		treasureField.getTreasure().getItemName(),

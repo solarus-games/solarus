@@ -5,12 +5,13 @@ package org.solarus.editor;
  */
 public enum ResourceType {
 
-    MAP(true,"Map"),
-    TILESET(true,"Tileset"),
-    MUSIC(false,"Music"),
-    SPRITE(false,"Sprite"),
-    SOUND(false,"Sound"),
-    ITEM(false,"Item");
+    MAP(true, "Map"),
+    TILESET(true, "Tileset"),
+    MUSIC(false, "Music"),
+    SPRITE(false, "Sprite"),
+    SOUND(false, "Sound"),
+    ITEM(false, "Item"),
+    ENEMY(false, "Enemy");
 
     /**
      * Indicates that the id of elements from this resource type is an integer

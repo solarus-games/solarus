@@ -1439,10 +1439,10 @@
 4	0	624	389	3	rupee	3	94
 4	0	640	389	3	rupee	2	95
 4	0	656	389	3	rupee	1	96
-7	0	464	237	enemy	3	0	0	-1	_random	0	-1
-7	0	880	117	enemy_2	3	0	0	-1	_random	0	-1
-7	0	816	245	enemy_3	3	0	0	-1	_random	0	-1
-7	0	816	429	enemy_4	3	0	0	-1	_random	0	-1
+7	0	464	237	enemy	3	0	simple_green_soldier	0	-1	_random	0	-1
+7	0	880	117	enemy_2	3	0	simple_green_soldier	0	-1	_random	0	-1
+7	0	816	245	enemy_3	3	0	simple_green_soldier	0	-1	_random	0	-1
+7	0	816	429	enemy_4	3	0	simple_green_soldier	0	-1	_random	0	-1
 5	0	728	24	chest	0	rupee	3	23
 8	0	136	125	beaumont_hill_sign	3	0	entities/sign	dialog#outside_world.beaumont_hill_sign
 6	0	152	48	16	8	jump_sensor	2	32

@@ -49,7 +49,7 @@ class Enemy: public Detector {
      * @brief Subtypes of enemies.
      */
     enum Subtype {
-      // TODO CUSTOM = -1
+      CUSTOM = -1,
       SIMPLE_GREEN_SOLDIER = 0,
       BUBBLE,
       TENTACLE,
@@ -206,9 +206,10 @@ class Enemy: public Detector {
     virtual ~Enemy();
 
     static CreationFunction parse;
-    static MapEntity* create(Game &game, Subtype type, Rank rank, int savegame_variable,
-	const std::string &name, Layer layer, int x, int y, int direction,
-	const Treasure &treasure);
+    static MapEntity* create(Game& game, Subtype subtype,
+	const std::string& breed, Rank rank, int savegame_variable,
+	const std::string& name, Layer layer, int x, int y, int direction,
+	const Treasure& treasure);
 
     EntityType get_type();
     void set_map(Map &map);

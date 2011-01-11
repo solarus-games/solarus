@@ -61,7 +61,8 @@ void Khotor::initialize() {
   set_movement(new RandomPathMovement(40));
 
   // chain and ball
-  chain = (ChainAndBall*) create(get_game(), CHAIN_AND_BALL, RANK_NORMAL, -1, "chain_and_ball", get_layer(),
+  chain = (ChainAndBall*) create(get_game(), CHAIN_AND_BALL, "chain_and_ball",
+      RANK_NORMAL, -1, "chain_and_ball", get_layer(),
       get_x(), get_y(), 0,
       Treasure(get_game(), "_none", 1, -1));
 

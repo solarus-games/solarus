@@ -18,10 +18,12 @@ package org.solarus.editor.gui;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.LinkedList;
 import javax.swing.*;
 import javax.swing.event.*;
-import java.util.*;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 import org.solarus.editor.*;
 import org.solarus.editor.Map;
 import org.solarus.editor.entities.*;
@@ -82,7 +84,7 @@ public class MapView extends JComponent implements Observer, Scrollable {
     private EntityType entityTypeBeingAdded;       // in state ADDING_ENTITY: type of the entity that is about to be added
     private EntitySubtype entitySubtypeBeingAdded; // in state ADDING_ENTITY: subtype of the entity that is about to be added
     private MapEntity entityBeingAdded;            // in state ADDING_ENTITY: the entity that is about to be added (except for a tile)s
-    private List<MapEntity> copiedEntities;        // entities cut or copied, ready to be pasted (or null)
+    private static List<MapEntity> copiedEntities; // entities cut or copied, ready to be pasted (or null)
 
     // headers of the map view
 

@@ -47,6 +47,20 @@ Hero::StairsState::~StairsState() {
 }
 
 /**
+ * @brief Changes the map.
+ * @param map the new map
+ */
+void Hero::StairsState::set_map(Map& map) {
+
+  State::set_map(map);
+
+  // the hero may go to another map while taking stairs and carrying an item
+  if (carried_item != NULL) {
+    carried_item->set_map(map);
+  }
+}
+
+/**
  * @brief Notifies this state that the game was just suspended or resumed.
  * @param suspended true if the game is suspended
  */

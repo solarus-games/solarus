@@ -17,6 +17,8 @@
 
 package org.solarus.editor.gui;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.Observer;
 import javax.swing.JPanel;
 import org.solarus.editor.ProjectObserver;
@@ -25,6 +27,8 @@ import org.solarus.editor.ProjectObserver;
  * Main window of an editor. Every editor (map, langages, tileset ...) will extends this class
  */
 public abstract class AbstractEditorWindow extends JPanel implements Observer, ProjectObserver {
+
+    protected EditorWindow parentEditor;
 
     public abstract boolean checkCurrentFileSaved();
 

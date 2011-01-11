@@ -272,7 +272,7 @@
 2	0	264	320	16	16	teletransporter_7	1	1	20	destination_point_4
 2	0	200	432	16	16	teletransporter_8	1	1	20	destination_point_2
 11	0	88	328	open_barrier_switch	1	0	0
-4	0	96	341	0	_none	0	-1
+4	0	96	341	0	_none	1	-1
 1	0	112	269	destination_point_5	-1	1
 15	0	184	512	16	16	0
 12	0	120	80	32	8	custom_obstacle	1	1	1	1

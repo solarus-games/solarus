@@ -27,9 +27,9 @@
 0	0	416	136	16	24	257
 0	0	432	136	8	24	256
 1	0	424	61	from_B1	3	0
-4	0	456	141	0	_random	0	-1
-4	0	392	93	0	_random	0	-1
-4	0	392	77	0	_random	0	-1
+4	0	456	141	0	_random	1	-1
+4	0	392	93	0	_random	1	-1
+4	0	392	77	0	_random	1	-1
 2	0	416	48	16	16	to_B1	0	1	13	from_1F
 19	0	416	144	stairs_1	3	4
 19	0	416	48	stairs_2	1	1
@@ -163,7 +163,7 @@
 8	1	80	165	library_2	3	0	_none	dialog#sahasrahla_house.memories
 1	1	192	213	main_entrance	1	0
 2	1	184	224	16	16	to_outside	0	1	3	out_sahasrahla_house
-4	1	456	189	0	_random	0	-1
+4	1	456	189	0	_random	1	-1
 4	1	472	189	0	heart	1	-1
 6	1	360	112	8	16	jump_sensor	0	40
 12	1	408	136	8	32	custom_obstacle	1	1	1	1

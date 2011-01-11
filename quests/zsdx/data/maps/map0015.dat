@@ -68,10 +68,10 @@
 0	0	224	256	16	16	101
 0	0	224	208	16	16	101
 5	0	152	232	chest	0	clay_key	1	28
-4	0	88	221	0	_random	0	-1
-4	0	88	269	0	_random	0	-1
+4	0	88	221	0	_random	1	-1
+4	0	88	269	0	_random	1	-1
 4	0	232	269	0	fairy	1	-1
-4	0	232	221	0	_random	0	-1
+4	0	232	221	0	_random	1	-1
 1	0	160	61	from_B2	3	0
 2	0	152	16	16	16	to_B2	0	1	14	from_icy_room
 8	0	160	109	frozen_door	1	0	entities/frozen_door	map

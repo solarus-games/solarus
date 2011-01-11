@@ -228,10 +228,10 @@ Subtypes of destructible items:
 - 0: a pot
 - 1: a skull
 - 2: a bush
-- 3 : white stone
-- 4 : black stone
-- 5 : grass
-- 6 : bomb flower
+- 3: white stone
+- 4: black stone
+- 5: grass
+- 6: bomb flower
 
 <tt>treasure_name</tt>, <tt>treasure_variant</tt> and <tt>treasure_savegame_variable</tt>
 define the pickable item hidden under the destructible item.

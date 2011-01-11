@@ -74,7 +74,7 @@
 8	0	120	85	grandma	3	1	npc/newlink8	map
 4	0	72	85	0	rupee	1	-1
 4	0	72	101	0	rupee	1	-1
-4	0	72	173	0	_random	0	-1
+4	0	72	173	0	_random	1	-1
 4	0	248	173	0	arrow	1	-1
 4	0	248	157	0	bomb	1	-1
 4	0	248	141	0	magic_flask	2	-1

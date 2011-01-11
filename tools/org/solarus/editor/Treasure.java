@@ -34,6 +34,7 @@ public class Treasure {
 	this.variant = variant;
 	this.savegameVariable = savegameVariable;
     }
+
     /**
      * Parses a treasure from a string.
      * @param description a string containing the item name, the variant and the savegame

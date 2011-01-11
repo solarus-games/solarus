@@ -1344,7 +1344,7 @@ void Hero::notify_collision_with_stairs(Stairs &stairs, CollisionMode collision_
       stairs_way = (get_layer() == LAYER_LOW) ? Stairs::NORMAL_WAY : Stairs::REVERSE_WAY;
     }
     else {
-      stairs_way = (collision_mode == COLLISION_FACING_POINT) ? Stairs::NORMAL_WAY : Stairs::REVERSE_WAY;
+      stairs_way = (collision_mode == COLLISION_FACING_POINT_ANY) ? Stairs::NORMAL_WAY : Stairs::REVERSE_WAY;
     }
 
     // check whether the hero is trying to move in the direction of the stairs

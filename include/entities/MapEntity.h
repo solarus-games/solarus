@@ -253,6 +253,7 @@ class MapEntity {
     bool overlaps(MapEntity &other);
     bool is_origin_point_in(const Rectangle &rectangle);
     bool is_facing_point_in(const Rectangle &rectangle);
+    bool is_facing_point_in(const Rectangle &rectangle, int direction);
     bool is_center_in(const Rectangle &rectangle);
 
     double get_vector_angle(MapEntity &other);

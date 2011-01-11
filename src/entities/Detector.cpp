@@ -128,6 +128,10 @@ void Detector::check_collision(MapEntity &entity) {
       notify_collision(entity, COLLISION_FACING_POINT);
     }
 
+    if (has_collision_mode(COLLISION_FACING_POINT_ANY) && test_collision_facing_point_any(entity)) {
+      notify_collision(entity, COLLISION_FACING_POINT_ANY);
+    }
+
     if (has_collision_mode(COLLISION_CENTER) && test_collision_center(entity)) {
       notify_collision(entity, COLLISION_CENTER);
     }
@@ -221,6 +225,25 @@ bool Detector::test_collision_origin_point(MapEntity &entity) {
 bool Detector::test_collision_facing_point(MapEntity &entity) {
 
   return entity.is_facing_point_in(get_bounding_box());
+}
+
+/**
+ * @brief Returns whether the facing point of an entity (in any of the four main directions)
+ * is overlapping the detector's rectangle.
+ *
+ * This method is called by check_collision(MapEntity*) when the detector's collision
+ * mode is COLLISION_FACING_POINT_ANY.
+ *
+ * @param entity the entity
+ * @return true if a facing point of the entity is overlapping the detector's rectangle
+ */
+bool Detector::test_collision_facing_point_any(MapEntity& entity) {
+
+  const Rectangle& bounding_box = get_bounding_box();
+  return entity.is_facing_point_in(bounding_box, 0)
+      || entity.is_facing_point_in(bounding_box, 1)
+      || entity.is_facing_point_in(bounding_box, 2)
+      || entity.is_facing_point_in(bounding_box, 3);
 }
 
 /**

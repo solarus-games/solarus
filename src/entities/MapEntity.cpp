@@ -1617,6 +1617,11 @@ void MapEntity::update() {
     }
   }
 
+  // check the facing entity
+  if (facing_entity != NULL && facing_entity->is_being_removed()) {
+    set_facing_entity(NULL);
+  }
+
   // update the sprites
   std::map<std::string, Sprite*>::iterator it;
   for (it = sprites.begin(); it != sprites.end(); it++) {

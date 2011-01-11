@@ -143,6 +143,7 @@ DialogBox& Hero::State::get_dialog_box() {
  */
 void Hero::State::start(State *previous_state) {
   set_suspended(hero.is_suspended());
+  hero.set_facing_entity(NULL);
 }
 
 /**

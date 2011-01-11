@@ -409,10 +409,10 @@
 15	0	344	96	16	16	0
 15	0	360	96	32	64	0
 15	0	392	96	16	128	0
-7	0	320	325	enemy	3	2	0	-1	_random	0	-1
-7	0	256	517	enemy_2	3	2	0	-1	_random	0	-1
-7	0	176	317	enemy_4	3	0	0	-1	_random	0	-1
-7	0	328	541	enemy_3	3	2	0	-1	_random	0	-1
+7	0	320	325	enemy	3	2	tentacle	0	-1	_random	0	-1
+7	0	256	517	enemy_2	3	2	tentacle	0	-1	_random	0	-1
+7	0	176	317	enemy_4	3	0	simple_green_soldier	0	-1	_random	0	-1
+7	0	328	541	enemy_3	3	2	tentacle	0	-1	_random	0	-1
 19	0	56	456	stairs_1	1	0
 19	0	56	376	stairs_2	3	0
 19	0	232	600	stairs_3	3	0

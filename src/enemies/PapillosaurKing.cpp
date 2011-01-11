@@ -146,7 +146,8 @@ void PapillosaurKing::update() {
       }
       else if (now >= next_egg_date) {
 
-	MapEntity *egg = create(get_game(), MINILLOSAUR, RANK_NORMAL, -1, get_name() + "_minillosaur",
+	MapEntity *egg = create(get_game(), MINILLOSAUR, "minillosaur_egg",
+	    RANK_NORMAL, -1, get_name() + "_minillosaur",
 	    get_layer(), get_x(), get_y() + 16, 0,
 	    Treasure(get_game(), "_none", 1, -1));
 

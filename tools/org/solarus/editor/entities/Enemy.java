@@ -37,6 +37,8 @@ public class Enemy extends MapEntity {
 	new EntityImageDescription("bosses.png", 0, 0, 176, 96),
 	new EntityImageDescription("bosses.png", 176, 0, 48, 72),
 	new EntityImageDescription("bosses.png", 224, 0, 48, 48),
+
+	new EntityImageDescription("enemies.png", 0, 4, 16, 16),
     };
 
     /**
@@ -52,6 +54,8 @@ public class Enemy extends MapEntity {
 	new EntityImageDescription("bosses.png", 0, 0, 176, 96),
 	new EntityImageDescription("bosses.png", 176, 0, 48, 72),
 	new EntityImageDescription("bosses.png", 224, 0, 48, 48),
+
+	new EntityImageDescription("enemies.png", 0, 0, 16, 32),
     };
 
     /**
@@ -67,6 +71,8 @@ public class Enemy extends MapEntity {
 	new Point(88, 64),
 	new Point(24, 69),
 	new Point(24, 29),
+
+	new Point(8, 29),
     };
 
     /**
@@ -78,10 +84,12 @@ public class Enemy extends MapEntity {
 	new Dimension(16, 16),
 	new Dimension(32, 24),
 	new Dimension(16, 16),
-	
+
 	new Dimension(176, 96),
 	new Dimension(48, 72),
 	new Dimension(48, 48),
+
+	new Dimension(16, 32),
     };
 
     /**
@@ -96,7 +104,8 @@ public class Enemy extends MapEntity {
 	
 	PAPILLAUSOR_KING,
 	KHORNETH,
-	KHOTOR;
+	KHOTOR,
+	CUSTOM;
 
 	public static final String[] humanNames = {
 	    "Simple green soldier",
@@ -108,11 +117,12 @@ public class Enemy extends MapEntity {
 	    "Papillausor King",
 	    "Khorneth",
 	    "Khotor",
+	    "Custom",
 	};
 
 	public int getId() {
 	    // make the bosses have an id greater than 1000
-	    int index = ordinal();
+	    int index = ordinal(); // CUSTOM is -1
 	    int firstBossIndex = PAPILLAUSOR_KING.ordinal();
 	    if (index < firstBossIndex) {
 		return index;
@@ -204,6 +214,7 @@ public class Enemy extends MapEntity {
      * Sets the default values of all properties specific to the current entity type.
      */
     public void setPropertiesDefaultValues() throws MapException {
+	setProperty("breed", "_none");
 	setProperty("rank", Rank.NORMAL.ordinal());
 	setProperty("savegameVariable", -1);
 	setProperty("treasureName", Item.randomId);
@@ -216,6 +227,13 @@ public class Enemy extends MapEntity {
      * @throws MapException if a property is not valid
      */
     public void checkProperties() throws MapException {
+
+	String breed = getProperty("breed");
+	if (breed.length() == 0
+	    || breed.indexOf(' ') != -1
+	    || breed.indexOf(' ') != -1) {
+	    throw new MapException("An enemy's breed cannot be empty or have whitespaces");
+	}
 
 	int savegameVariable = getIntegerProperty("savegameVariable");
 	if (savegameVariable < -1 || savegameVariable >= 32768) {

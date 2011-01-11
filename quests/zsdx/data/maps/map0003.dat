@@ -1926,8 +1926,8 @@
 8	0	1048	957	water_for_bottle_2	-1	0	_none	item#bottle_1
 2	0	704	744	16	16	to_sahasrahla_house	0	1	12	main_entrance
 1	0	712	773	out_sahasrahla_house	3	0
-7	0	784	853	enemy	3	0	0	-1	_random	0	-1
-7	0	976	829	enemy_2	3	0	0	-1	_random	0	-1
+7	0	784	853	enemy	3	0	simple_green_soldier	0	-1	_random	0	-1
+7	0	976	829	enemy_2	3	0	simple_green_soldier	0	-1	_random	0	-1
 8	0	1008	645	monkey	3	1	npc/monkey	map
 12	0	912	456	16	16	custom_obstacle	0	0	1	1
 2	0	680	336	16	16	to_smith_cave	0	1	16	main_entrance
@@ -1943,7 +1943,7 @@
 2	0	928	144	16	16	to_dungeon2	0	1	30	from_outside
 12	0	680	328	16	8	custom_obstacle_5	1	1	1	1
 1	0	936	173	from_dungeon2	3	0
-7	0	680	837	enemy_3	3	0	0	-1	_random	0	-1
+7	0	680	837	enemy_3	3	0	simple_green_soldier	0	-1	_random	0	-1
 4	0	784	693	2	_random	1	-1
 4	0	784	709	2	_random	1	-1
 4	0	784	725	2	_random	1	-1

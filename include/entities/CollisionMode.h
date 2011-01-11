@@ -23,21 +23,23 @@
  * The collision mode indicates what kind of collisions a detector will detect.
  */
 enum CollisionMode {
-  COLLISION_NONE         = 0x0000, /**< no collision will be detected
-				    * (the detector doesn't detect any entity) */
-  COLLISION_RECTANGLE    = 0x0001, /**< collision if the entity's rectangle
-				    * overlaps the detector's rectangle */
-  COLLISION_INSIDE       = 0x0002, /**< collision if the entity's rectangle
-				    * is inside the detector's rectangle */
-  COLLISION_ORIGIN_POINT = 0x0004, /**< collision if the entity's origin point
-				    * is inside the detector's rectangle */
-  COLLISION_FACING_POINT = 0x0008, /**< collision if the entity's facing point
-				    * is inside the detector's rectangle */
-  COLLISION_CENTER       = 0x0010, /**< collision if the entity's center
-				    * is inside the detector's rectangle */
-  COLLISION_SPRITE       = 0x0020, /**< collision if an entity's sprite has pixels
-				    * overlapping pixels of the detector's sprite */
-  COLLISION_CUSTOM       = 0x0040  /**< custom collision function, defined by a subclass of Detector */
+  COLLISION_NONE              = 0x0000, /**< no collision will be detected
+                                         * (the detector doesn't detect any entity) */
+  COLLISION_RECTANGLE         = 0x0001, /**< collision if the entity's rectangle
+                                         * overlaps the detector's rectangle */
+  COLLISION_INSIDE            = 0x0002, /**< collision if the entity's rectangle
+                                         * is inside the detector's rectangle */
+  COLLISION_ORIGIN_POINT      = 0x0004, /**< collision if the entity's origin point
+                                         * is inside the detector's rectangle */
+  COLLISION_FACING_POINT      = 0x0008, /**< collision if the entity's facing point corresponding to
+                                         * its movement direction is inside the detector's rectangle */
+  COLLISION_FACING_POINT_ANY  = 0x0010, /**< collision if any entity's facing point (i.e. in any of
+                                         * the four main directions) is inside the detector's rectangle */
+  COLLISION_CENTER            = 0x0020, /**< collision if the entity's center
+                                         * is inside the detector's rectangle */
+  COLLISION_SPRITE            = 0x0040, /**< collision if an entity's sprite has pixels
+                                         * overlapping pixels of the detector's sprite */
+  COLLISION_CUSTOM            = 0x0080  /**< custom collision function, defined by a subclass of Detector */
 };
 
 #endif

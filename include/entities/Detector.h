@@ -52,6 +52,7 @@ class Detector: public MapEntity {
     bool test_collision_inside(MapEntity &entity);
     bool test_collision_origin_point(MapEntity &entity);
     bool test_collision_facing_point(MapEntity &entity);
+    bool test_collision_facing_point_any(MapEntity &entity);
     bool test_collision_center(MapEntity &entity);
     virtual bool test_collision_custom(MapEntity &entity);
 

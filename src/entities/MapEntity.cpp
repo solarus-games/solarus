@@ -1341,7 +1341,7 @@ bool MapEntity::is_origin_point_in(const Rectangle &rectangle) {
 }
 
 /**
- * @brief Returns whether or not this entity's facing point is in
+ * @brief Returns whether this entity's facing point is in
  * the specified rectangle.
  * @param rectangle the rectangle to check
  * @return true if this entity's facing point is in the specified rectangle 
@@ -1349,6 +1349,19 @@ bool MapEntity::is_origin_point_in(const Rectangle &rectangle) {
 bool MapEntity::is_facing_point_in(const Rectangle &rectangle) {
 
   const Rectangle &facing_point = get_facing_point();
+  return rectangle.contains(facing_point.get_x(), facing_point.get_y());
+}
+
+/**
+ * @brief Returns whether a facing point of this entity is in
+ * the specified rectangle.
+ * @param rectangle the rectangle to check
+ * @param direction direction of the facing point to consider (0 to 3)
+ * @return true if this facing point is in the specified rectangle
+ */
+bool MapEntity::is_facing_point_in(const Rectangle &rectangle, int direction) {
+
+  const Rectangle &facing_point = get_facing_point(direction);
   return rectangle.contains(facing_point.get_x(), facing_point.get_y());
 }
 

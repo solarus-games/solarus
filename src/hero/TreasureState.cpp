@@ -122,15 +122,11 @@ void Hero::TreasureState::display_on_map() {
 }
 
 /**
- * @brief Returns whether an item previously carried by the hero should be thrown when this state starts.
- *
- * If false is returned, the item will be directly removed.
- * If true is returned, the item will be thrown in the direction the hero is looking towards.
- * Returns true by default.
- *
- * @return true if an item previously carried by the hero should be thrown when this state starts
+ * @brief Returns the action to do with an item previously carried by the hero when this state starts.
+ * @param carried_item the item carried in the previous state
+ * @return the action to do with a previous carried item when this state starts
  */
-bool Hero::TreasureState::can_throw_item() {
-  return false;
+CarriedItem::Behavior Hero::TreasureState::get_previous_carried_item_behavior(CarriedItem& carried_item) {
+  return CarriedItem::BEHAVIOR_DESTROY;
 }
 

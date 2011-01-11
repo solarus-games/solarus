@@ -16,6 +16,7 @@
  */
 #include "hero/StairsState.h"
 #include "hero/FreeState.h"
+#include "hero/CarryingState.h"
 #include "hero/HeroSprites.h"
 #include "entities/MapEntities.h"
 #include "entities/Teletransporter.h"
@@ -34,7 +35,7 @@
  * @param way the way you are taking the stairs
  */
 Hero::StairsState::StairsState(Hero &hero, Stairs &stairs, Stairs::Way way):
-  State(hero), stairs(stairs), way(way), phase(0), next_phase_date(0) {
+  State(hero), stairs(stairs), way(way), phase(0), next_phase_date(0), carried_item(NULL) {
 
 }
 
@@ -52,6 +53,10 @@ Hero::StairsState::~StairsState() {
 void Hero::StairsState::set_suspended(bool suspended) {
 
   State::set_suspended(suspended);
+
+  if (carried_item != NULL) {
+    carried_item->set_suspended(suspended);
+  }
 
   if (!suspended) {
     next_phase_date += System::now() - when_suspended;
@@ -73,7 +78,13 @@ void Hero::StairsState::start(State *previous_state) {
 
   // sprites and sound
   HeroSprites &sprites = get_sprites();
-  sprites.set_animation_walking_normal();
+  if (carried_item == NULL) {
+    sprites.set_animation_walking_normal();
+  }
+  else {
+    sprites.set_lifted_item(carried_item);
+    sprites.set_animation_walking_carrying();
+  }
   sprites.set_animation_direction((path[0] - '0') / 2);
   get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
 
@@ -115,6 +126,11 @@ void Hero::StairsState::update() {
     phase++;
   }
 
+  // update the carried item if any
+  if (carried_item != NULL) {
+    carried_item->update();
+  }
+
   if (stairs.is_inside_floor()) {
 
     // inside a single floor: return to normal state as soon as the movement is finished
@@ -124,7 +140,12 @@ void Hero::StairsState::update() {
 	get_entities().set_entity_layer(&hero, LAYER_LOW);
       }
       hero.clear_movement();
-      hero.set_state(new FreeState(hero));
+      if (carried_item == NULL) {
+        hero.set_state(new FreeState(hero));
+      }
+      else {
+	hero.set_state(new CarryingState(hero, carried_item));
+      }
     }
   }
   else {
@@ -133,7 +154,13 @@ void Hero::StairsState::update() {
     HeroSprites &sprites = get_sprites();
     if (hero.get_movement()->is_finished()) {
       hero.clear_movement();
-      hero.set_state(new FreeState(hero));
+
+      if (carried_item == NULL) {
+        hero.set_state(new FreeState(hero));
+      }
+      else {
+	hero.set_state(new CarryingState(hero, carried_item));
+      }
 
       if (way == Stairs::NORMAL_WAY) {
 	// we are on the old floor:
@@ -146,7 +173,6 @@ void Hero::StairsState::update() {
       else {
 	// we are on the new floor: everything is finished
 	sprites.set_clipping_rectangle();
-	hero.set_state(new FreeState(hero));
       }
     }
     else { // movement not finished yet
@@ -196,5 +222,19 @@ void Hero::StairsState::update() {
  */
 bool Hero::StairsState::is_teletransporter_delayed() {
   return true;
+}
+
+/**
+ * @brief Returns the action to do with an item previously carried by the hero when this state starts.
+ * @param carried_item the item carried in the previous state
+ * @return the action to do with a previous carried item when this state starts
+ */
+CarriedItem::Behavior Hero::StairsState::get_previous_carried_item_behavior(CarriedItem& carried_item) {
+
+  if (stairs.is_inside_floor()) {
+    this->carried_item = &carried_item;
+    return CarriedItem::BEHAVIOR_KEEP;
+  }
+  return CarriedItem::BEHAVIOR_DESTROY;
 }
 

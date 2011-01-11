@@ -16,10 +16,12 @@
  */
 #include "hero/JumpingState.h"
 #include "hero/FreeState.h"
+#include "hero/CarryingState.h"
 #include "hero/HeroSprites.h"
 #include "entities/MapEntities.h"
 #include "movements/JumpMovement.h"
 #include "lowlevel/Sound.h"
+#include "lowlevel/Debug.h"
 #include "Game.h"
 #include "Map.h"
 
@@ -37,7 +39,8 @@
 Hero::JumpingState::JumpingState(Hero &hero, int direction8, int length,
     bool ignore_obstacles, bool with_sound, uint32_t movement_delay, Layer layer_after_jump):
   
-  State(hero) {
+  State(hero),
+  carried_item(NULL) {
 
   this->movement = new JumpMovement(direction8, length, 0, ignore_obstacles);
   this->direction8 = direction8;
@@ -54,7 +57,7 @@ Hero::JumpingState::JumpingState(Hero &hero, int direction8, int length,
  * @brief Destructor.
  */
 Hero::JumpingState::~JumpingState() {
-
+  delete carried_item;
 }
 
 /**
@@ -68,6 +71,7 @@ void Hero::JumpingState::start(State *previous_state) {
   // update the sprites
   get_sprites().set_animation_direction8(direction8);
   get_sprites().set_animation_jumping();
+  get_sprites().set_lifted_item(carried_item);
 
   // jump
   hero.set_movement(movement);
@@ -87,6 +91,45 @@ void Hero::JumpingState::stop(State *next_state) {
   State::stop(next_state);
 
   hero.clear_movement();
+
+  if (carried_item != NULL) {
+
+    switch (next_state->get_previous_carried_item_behavior(*carried_item)) {
+
+      case CarriedItem::BEHAVIOR_THROW:
+	carried_item->throw_item(get_sprites().get_animation_direction());
+	get_entities().add_entity(carried_item);
+	carried_item = NULL;
+        break;
+
+      case CarriedItem::BEHAVIOR_DESTROY:
+	delete carried_item;
+	carried_item = NULL;
+	get_sprites().set_lifted_item(NULL);
+	break;
+
+      case CarriedItem::BEHAVIOR_KEEP:
+	carried_item = NULL;
+	break;
+
+      default:
+	Debug::die("Invalid carried item behavior");
+    }
+  }
+}
+
+/**
+ * @brief Changes the map.
+ * @param map the new map
+ */
+void Hero::JumpingState::set_map(Map& map) {
+
+  State::set_map(map);
+
+  // the hero may go to another map while jumping and carrying an item
+  if (carried_item != NULL) {
+    carried_item->set_map(map);
+  }
 }
 
 /**
@@ -96,15 +139,35 @@ void Hero::JumpingState::update() {
 
   State::update();
 
+  if (carried_item != NULL) {
+    carried_item->update();
+  }
+
   if (movement->is_finished()) {
     get_entities().set_entity_layer(&hero, layer_after_jump);
 
     if (hero.get_ground() == GROUND_DEEP_WATER) {
       hero.start_deep_water();
     }
+    else if (carried_item != NULL) {
+      hero.set_state(new CarryingState(hero, carried_item));
+    }
     else {
       hero.set_state(new FreeState(hero));
     }
+  }
+}
+
+/**
+ * @brief Notifies this state that the game was just suspended or resumed.
+ * @param suspended true if the game is suspended
+ */
+void Hero::JumpingState::set_suspended(bool suspended) {
+
+  State::set_suspended(suspended);
+
+  if (carried_item != NULL) {
+    carried_item->set_suspended(suspended);
   }
 }
 
@@ -203,5 +266,16 @@ bool Hero::JumpingState::can_avoid_switch() {
  */
 bool Hero::JumpingState::can_be_hurt() {
   return false;
+}
+
+/**
+ * @brief Returns the action to do with an item previously carried by the hero when this state starts.
+ * @param carried_item the item carried in the previous state
+ * @return the action to do with a previous carried item when this state starts
+ */
+CarriedItem::Behavior Hero::JumpingState::get_previous_carried_item_behavior(CarriedItem& carried_item) {
+
+  this->carried_item = &carried_item;
+  return CarriedItem::BEHAVIOR_KEEP;
 }
 

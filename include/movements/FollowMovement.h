@@ -48,7 +48,7 @@ class FollowMovement: public Movement {
     ~FollowMovement();
 
     bool is_finished();
-
+    const Rectangle get_displayed_xy();
 };
 
 #endif

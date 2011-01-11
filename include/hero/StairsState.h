@@ -37,6 +37,7 @@ class Hero::StairsState: public Hero::State {
 					 * phase of the animations (0: not started, 1: initial animation,
 					 * 2: diagonal animation, 3: final animation) */
     uint32_t next_phase_date;	 	/**< date when the stairs phase changes */
+    CarriedItem* carried_item;		/**< an item carried by the hero while taking the stairs, or NULL */
 
   public:
 
@@ -47,6 +48,7 @@ class Hero::StairsState: public Hero::State {
     void update();
     void set_suspended(bool suspended);
     bool is_teletransporter_delayed();
+    CarriedItem::Behavior get_previous_carried_item_behavior(CarriedItem& carried_item);
 };
 
 #endif

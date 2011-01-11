@@ -30,6 +30,7 @@ class Hero::JumpingState: public Hero::State {
     int direction8;				/**< direction of the jump (0 to 7) */
     bool with_sound;				/**< indicates that a jump sound is played */
     Layer layer_after_jump;			/**< layer where the hero arrives (LAYER_NB means unchanged) */
+    CarriedItem* carried_item;			/**< an item carried by the hero while making this jump, or NULL */
 
   public:
 
@@ -39,7 +40,9 @@ class Hero::JumpingState: public Hero::State {
 
     void start(State *previous_state);
     void stop(State *next_state);
+    void set_map(Map& map);
     void update();
+    void set_suspended(bool suspended);
     int get_wanted_movement_direction8();
     bool can_start_gameover_sequence();
     bool is_touching_ground();
@@ -51,6 +54,7 @@ class Hero::JumpingState: public Hero::State {
     bool can_avoid_sensor();
     bool can_avoid_switch();
     bool can_be_hurt();
+    CarriedItem::Behavior get_previous_carried_item_behavior(CarriedItem& carried_item);
 };
 
 #endif

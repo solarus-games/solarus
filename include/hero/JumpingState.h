@@ -43,6 +43,7 @@ class Hero::JumpingState: public Hero::State {
     void set_map(Map& map);
     void update();
     void set_suspended(bool suspended);
+    void notify_layer_changed();
     int get_wanted_movement_direction8();
     bool can_start_gameover_sequence();
     bool is_touching_ground();

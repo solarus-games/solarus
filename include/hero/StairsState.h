@@ -48,6 +48,7 @@ class Hero::StairsState: public Hero::State {
     void set_map(Map& map);
     void update();
     void set_suspended(bool suspended);
+    void notify_layer_changed();
     bool is_teletransporter_delayed();
     CarriedItem::Behavior get_previous_carried_item_behavior(CarriedItem& carried_item);
 };

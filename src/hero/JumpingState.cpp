@@ -172,6 +172,16 @@ void Hero::JumpingState::set_suspended(bool suspended) {
 }
 
 /**
+ * @brief Notifies this state that the layer has changed.
+ */
+void Hero::JumpingState::notify_layer_changed() {
+
+  if (carried_item != NULL) {
+    carried_item->set_layer(hero.get_layer());
+  }
+}
+
+/**
  * @brief Returns the direction of the hero's movement as defined by the controls applied by the player
  * and the movements allowed is the current state.
  *

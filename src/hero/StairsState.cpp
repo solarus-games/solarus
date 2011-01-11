@@ -78,6 +78,16 @@ void Hero::StairsState::set_suspended(bool suspended) {
 }
 
 /**
+ * @brief Notifies this state that the layer has changed.
+ */
+void Hero::StairsState::notify_layer_changed() {
+
+  if (carried_item != NULL) {
+    carried_item->set_layer(hero.get_layer());
+  }
+}
+
+/**
  * @brief Starts this state.
  * @param previous_state the previous state
  */

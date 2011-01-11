@@ -1377,27 +1377,27 @@
 3	0	592	109	rupee	3	49
 3	0	640	109	rupee	2	50
 3	0	688	109	rupee	1	51
-4	0	176	253	5	_random	0	-1
-4	0	160	253	5	_random	0	-1
-4	0	144	253	5	_random	0	-1
-4	0	128	253	5	_random	0	-1
-4	0	112	253	5	_random	0	-1
-4	0	96	253	5	_random	0	-1
-4	0	96	237	5	_random	0	-1
-4	0	112	237	5	_random	0	-1
-4	0	160	269	5	_random	0	-1
-4	0	144	269	5	_random	0	-1
-4	0	112	269	5	_random	0	-1
-4	0	96	269	5	_random	0	-1
-4	0	112	285	5	_random	0	-1
-4	0	128	285	5	_random	0	-1
-4	0	144	285	5	_random	0	-1
-4	0	336	221	5	_random	0	-1
-4	0	344	237	5	_random	0	-1
-4	0	344	253	5	_random	0	-1
-4	0	328	237	5	_random	0	-1
-4	0	328	253	5	_random	0	-1
-4	0	328	269	5	_random	0	-1
+4	0	176	253	5	_random	1	-1
+4	0	160	253	5	_random	1	-1
+4	0	144	253	5	_random	1	-1
+4	0	128	253	5	_random	1	-1
+4	0	112	253	5	_random	1	-1
+4	0	96	253	5	_random	1	-1
+4	0	96	237	5	_random	1	-1
+4	0	112	237	5	_random	1	-1
+4	0	160	269	5	_random	1	-1
+4	0	144	269	5	_random	1	-1
+4	0	112	269	5	_random	1	-1
+4	0	96	269	5	_random	1	-1
+4	0	112	285	5	_random	1	-1
+4	0	128	285	5	_random	1	-1
+4	0	144	285	5	_random	1	-1
+4	0	336	221	5	_random	1	-1
+4	0	344	237	5	_random	1	-1
+4	0	344	253	5	_random	1	-1
+4	0	328	237	5	_random	1	-1
+4	0	328	253	5	_random	1	-1
+4	0	328	269	5	_random	1	-1
 2	0	0	-16	1120	16	to_C1	0	2	3	_side
 2	0	1120	0	16	976	to_D2	0	2	5	_side
 6	0	968	368	8	24	Jump_sensor	0	40
@@ -1406,36 +1406,36 @@
 6	0	312	744	32	8	Jump_sensor_6	6	56
 3	0	448	141	piece_of_heart	1	14
 3	0	288	621	piece_of_heart	1	15
-4	0	240	485	4	_random	0	-1
-4	0	128	357	4	_random	0	-1
-4	0	128	269	4	_random	0	-1
-4	0	304	405	3	_random	0	-1
-4	0	288	517	3	_random	0	-1
-4	0	376	365	3	_random	0	-1
-4	0	424	357	3	_random	0	-1
-4	0	480	389	3	_random	0	-1
-4	0	472	421	3	_random	0	-1
-4	0	376	469	3	_random	0	-1
-4	0	464	501	3	_random	0	-1
-4	0	488	485	3	_random	0	-1
-4	0	504	341	3	_random	0	-1
+4	0	240	485	4	_random	1	-1
+4	0	128	357	4	_random	1	-1
+4	0	128	269	4	_random	1	-1
+4	0	304	405	3	_random	1	-1
+4	0	288	517	3	_random	1	-1
+4	0	376	365	3	_random	1	-1
+4	0	424	357	3	_random	1	-1
+4	0	480	389	3	_random	1	-1
+4	0	472	421	3	_random	1	-1
+4	0	376	469	3	_random	1	-1
+4	0	464	501	3	_random	1	-1
+4	0	488	485	3	_random	1	-1
+4	0	504	341	3	_random	1	-1
 4	0	528	389	3	fairy	1	-1
-4	0	600	341	3	_random	0	-1
-4	0	600	325	3	_random	0	-1
-4	0	624	325	3	_random	0	-1
-4	0	624	341	3	_random	0	-1
-4	0	592	421	3	_random	0	-1
+4	0	600	341	3	_random	1	-1
+4	0	600	325	3	_random	1	-1
+4	0	624	325	3	_random	1	-1
+4	0	624	341	3	_random	1	-1
+4	0	592	421	3	_random	1	-1
 4	0	608	453	3	rupee	3	97
-4	0	648	469	3	_random	0	-1
-4	0	624	533	3	_random	0	-1
-4	0	704	357	3	_random	0	-1
-4	0	744	405	3	_random	0	-1
+4	0	648	469	3	_random	1	-1
+4	0	624	533	3	_random	1	-1
+4	0	704	357	3	_random	1	-1
+4	0	744	405	3	_random	1	-1
 4	0	720	469	3	rupee	3	98
-4	0	728	549	3	_random	0	-1
+4	0	728	549	3	_random	1	-1
 6	0	248	296	64	8	Jump_sensor_4	6	56
-4	0	328	525	4	_random	0	-1
+4	0	328	525	4	_random	1	-1
 5	0	320	704	Chest	0	rupee	5	22
-4	0	568	469	3	_random	0	-1
+4	0	568	469	3	_random	1	-1
 4	0	624	389	3	rupee	3	94
 4	0	640	389	3	rupee	2	95
 4	0	656	389	3	rupee	1	96
@@ -1448,8 +1448,8 @@
 6	0	152	48	16	8	jump_sensor	2	32
 6	0	176	64	8	16	jump_sensor_2	0	40
 6	0	136	64	8	16	jump_sensor_3	4	40
-4	0	760	485	3	_random	0	-1
-4	0	312	245	3	_random	0	-1
+4	0	760	485	3	_random	1	-1
+4	0	312	245	3	_random	1	-1
 6	0	376	152	80	8	jump_sensor_4	6	56
 8	0	-24	109	tom	3	1	npc/tom	map
 13	0	328	221	32	48	tom_appears_sensor	0
@@ -1489,9 +1489,9 @@
 12	0	272	312	16	8	custom_obstacle_2	1	1	1	1
 12	0	368	312	16	8	custom_obstacle_3	1	1	1	1
 2	0	368	320	16	16	to_twin_caves_east	0	1	29	from_outside_east
-4	0	280	373	3	_random	0	-1
-4	0	264	373	3	_random	0	-1
-4	0	296	373	3	_random	0	-1
+4	0	280	373	3	_random	1	-1
+4	0	264	373	3	_random	1	-1
+4	0	296	373	3	_random	1	-1
 1	0	280	349	from_twin_caves_west	3	0
 1	0	376	349	from_twin_caves_east	3	0
 2	0	272	320	16	16	to_twin_caves_west	0	1	29	from_outside_west

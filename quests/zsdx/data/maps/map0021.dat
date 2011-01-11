@@ -360,8 +360,8 @@
 2	0	56	456	16	16	to_1F_first_stairs	0	1	20	from_B1_first_stairs
 2	0	232	600	16	16	to_B1_final_stairs	0	1	20	from_B1_final_stairs
 15	0	80	544	48	16	1
-4	0	48	597	0	_random	0	-1
-4	0	64	597	0	_random	0	-1
+4	0	48	597	0	_random	1	-1
+4	0	64	597	0	_random	1	-1
 15	0	80	528	48	16	0
 15	0	80	512	48	16	1
 15	0	128	528	16	16	1
@@ -371,11 +371,11 @@
 1	0	424	589	destination_point	-1	1
 15	0	136	568	16	16	1
 4	0	256	469	0	heart	1	-1
-4	0	416	325	0	_none	0	-1
+4	0	416	325	0	_none	1	-1
 5	0	80	184	chest	0	piece_of_heart	1	39
 5	0	368	168	chest_2	0	rupee	3	40
-4	0	120	597	0	_random	0	-1
-4	0	104	597	0	_random	0	-1
+4	0	120	597	0	_random	1	-1
+4	0	104	597	0	_random	1	-1
 2	0	416	176	16	16	teletransporter	1	1	21	destination_point
 11	0	168	240	open_barrier_1_switch	0	0	0
 11	0	168	216	close_barrier_1_switch	0	0	0
@@ -390,9 +390,9 @@
 15	0	112	112	32	16	1
 1	0	168	189	from_1F_middle_stairs	3	0
 4	0	248	253	0	rupee	2	-1
-4	0	296	253	0	_random	0	-1
+4	0	296	253	0	_random	1	-1
 4	0	296	229	0	heart	1	-1
-4	0	248	229	0	_random	0	-1
+4	0	248	229	0	_random	1	-1
 4	0	168	445	0	rupee	1	-1
 2	0	160	176	16	16	to_1F_middle_stairs	0	1	20	from_B1_middle_stairs
 11	0	144	216	open_barrier_2_switch	0	0	0

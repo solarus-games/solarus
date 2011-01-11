@@ -158,6 +158,11 @@ public class DestructibleItem extends MapEntity {
      */
     public void checkProperties() throws MapException {
 
+	int variant = getIntegerProperty("treasureVariant");
+	if (variant < 1) {
+	    throw new MapException("Invalid treasure variant: " + variant);
+	}
+
 	int savegameVariable = getIntegerProperty("treasureSavegameVariable");
 	if (savegameVariable < -1 || savegameVariable >= 32768) {
 	    throw new MapException("Invalid treasure savegame variable");

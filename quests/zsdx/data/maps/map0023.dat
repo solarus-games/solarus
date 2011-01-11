@@ -199,7 +199,7 @@
 13	0	176	333	16	16	sensor_7	2
 13	0	104	77	16	16	sensor_8	2
 11	0	64	544	sw_switch	1	0	0
-4	0	72	557	0	_none	0	-1
+4	0	72	557	0	_none	1	-1
 4	0	72	461	0	heart	1	-1
 4	0	280	461	0	heart	1	-1
 4	0	280	477	0	heart	1	-1
@@ -209,7 +209,7 @@
 12	0	104	80	8	32	custom_obstacle	1	1	1	1
 12	0	88	248	32	8	custom_obstacle_2	1	1	1	1
 11	0	128	64	nw_switch	1	0	0
-4	0	136	77	0	_none	0	-1
+4	0	136	77	0	_none	1	-1
 5	0	400	448	compass_chest	0	compass	1	55
 7	0	488	501	compass_room_battle	3	2	0	-1	_random	0	-1
 7	0	536	525	compass_room_battle_3	3	2	0	-1	_random	0	-1
@@ -226,7 +226,7 @@
 18	0	384	488	door_2	2	1	58
 12	0	144	304	8	32	custom_obstacle_10	0	1	1	1
 4	0	72	477	0	heart	1	-1
-4	0	280	333	0	_none	0	-1
+4	0	280	333	0	_none	1	-1
 2	0	600	448	16	16	to_B1_south	0	1	24	from_1F_south
 19	0	96	256	stairs_1	1	4
 19	0	88	88	stairs_2	0	4

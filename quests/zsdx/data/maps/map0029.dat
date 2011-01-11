@@ -449,12 +449,12 @@
 2	0	192	752	16	16	to_outside_west	0	1	6	from_twin_caves_west
 9	0	312	389	block	-1	0	2
 11	0	304	704	door_switch	1	0	0
-4	0	312	717	0	_none	0	-1
-4	0	88	717	0	_random	0	-1
+4	0	312	717	0	_none	1	-1
+4	0	88	717	0	_random	1	-1
 4	0	72	717	0	rupee	1	-1
-4	0	72	701	0	_random	0	-1
-4	0	296	717	0	_random	0	-1
-4	0	312	701	0	_random	0	-1
+4	0	72	701	0	_random	1	-1
+4	0	296	717	0	_random	1	-1
+4	0	312	701	0	_random	1	-1
 12	0	184	640	32	8	custom_obstacle	1	1	1	1
 12	0	248	608	32	8	custom_obstacle_2	1	1	1	1
 1	0	200	733	from_outside_west	1	0
@@ -527,7 +527,7 @@
 1	0	480	701	destination_point_K	-1	1
 4	0	496	573	0	rupee	2	-1
 11	0	464	400	barrier_switch	1	0	0
-4	0	472	413	0	_none	0	-1
+4	0	472	413	0	_none	1	-1
 10	0	600	656	32	32	barrier	399	1
 15	0	608	96	48	16	1
 15	0	576	112	64	16	1

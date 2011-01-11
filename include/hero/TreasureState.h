@@ -38,7 +38,7 @@ class Hero::TreasureState: public Hero::State {
     void stop(State *next_state);
     void update();
     void display_on_map();
-    bool can_throw_item();
+    CarriedItem::Behavior get_previous_carried_item_behavior(CarriedItem& carried_item);
 };
 
 #endif

@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include "entities/Hero.h"
+#include "entities/CarriedItem.h"
 
 /**
  * @brief Abstract base class for a state of the hero.
@@ -132,7 +133,7 @@ class Hero::State {
     virtual bool can_take_stairs();
     virtual bool can_take_jump_sensor();
     virtual bool can_sword_hit_crystal_switch();
-    virtual bool can_throw_item();
+    virtual CarriedItem::Behavior get_previous_carried_item_behavior(CarriedItem& carried_item);
 };
 
 #endif

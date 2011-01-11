@@ -74,12 +74,21 @@ void Hero::LiftingState::stop(State *next_state) {
   if (lifted_item != NULL) {
 
     // the lifted item is still managed by this state
-    if (next_state->can_throw_item()) {
-      throw_item();
-    }
-    else {
-      delete lifted_item;
-      lifted_item = NULL;
+    switch (next_state->get_previous_carried_item_behavior(*lifted_item)) {
+
+      case CarriedItem::BEHAVIOR_THROW:
+        throw_item();
+        break;
+
+      case CarriedItem::BEHAVIOR_DESTROY:
+        delete lifted_item;
+        lifted_item = NULL;
+	get_sprites().set_lifted_item(NULL);
+        break;
+
+      case CarriedItem::BEHAVIOR_KEEP:
+        lifted_item = NULL;
+	break;
     }
     get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
   }

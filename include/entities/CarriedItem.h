@@ -65,6 +65,15 @@ class CarriedItem: public MapEntity {
 
   public:
 
+    /**
+     * Indicates what to do with a carried item.
+     */
+    enum Behavior {
+      BEHAVIOR_THROW,          /**< make the hero throw the item */
+      BEHAVIOR_DESTROY,        /**< destroy the item silently */
+      BEHAVIOR_KEEP            /**< let the hero continue to carry the item */
+    };
+
     CarriedItem(Hero &hero, MapEntity &original_entity,
 	const SpriteAnimationSetId& animation_set_id,
         const SoundId& destruction_sound_id,

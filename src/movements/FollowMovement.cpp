@@ -44,7 +44,6 @@ bool FollowMovement::is_finished() {
   return finished;
 }
 
-
 /**
  * @brief Updates the position.
  */
@@ -85,5 +84,26 @@ void FollowMovement::update() {
       set_y(next_y);
     }
   }
+}
+
+/**
+ * @brief Returns the coordinates where an object controlled by this movement
+ * should be displayed.
+ * @return the coordinates to use to display the object controlled by this movement
+ */
+const Rectangle FollowMovement::get_displayed_xy() {
+
+  // if the followed entity is displayed at a different position than its real position,
+  // we apply the same difference when displaying this entity
+
+  const Rectangle& followed_xy = entity_followed->get_xy();
+  const Rectangle& followed_displayed_xy = entity_followed->get_displayed_xy();
+
+  int dx = followed_displayed_xy.get_x() - followed_xy.get_x();
+  int dy = followed_displayed_xy.get_y() - followed_xy.get_y();
+
+  Rectangle displayed_xy = get_xy();
+  displayed_xy.add_xy(dx, dy);
+  return displayed_xy;
 }
 

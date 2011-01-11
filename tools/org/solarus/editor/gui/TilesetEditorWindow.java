@@ -28,7 +28,6 @@ import org.solarus.editor.entities.*;
  */
 public class TilesetEditorWindow extends AbstractEditorWindow implements ProjectObserver {
 
-    private EditorWindow parentEditor;
     /**
      * The current tileset.
      */

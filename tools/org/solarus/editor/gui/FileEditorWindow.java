@@ -17,6 +17,7 @@
 package org.solarus.editor.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Font;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -39,7 +40,6 @@ import org.solarus.editor.ProjectObserver;
  */
 public class FileEditorWindow extends AbstractEditorWindow implements ProjectObserver, DocumentListener {
 
-    private EditorWindow parentEditor;
     /**
      * The file opened in the editor
      */
@@ -64,6 +64,7 @@ public class FileEditorWindow extends AbstractEditorWindow implements ProjectObs
         GuiTools.setLookAndFeel();
 
         textArea = new JTextArea();
+        textArea.setFont(new Font("Courier New", Font.PLAIN, 12));
         textArea.getDocument().addDocumentListener(this);
         JScrollPane jsp = new JScrollPane(textArea);
         add(jsp, BorderLayout.CENTER);
@@ -95,7 +96,7 @@ public class FileEditorWindow extends AbstractEditorWindow implements ProjectObs
     }
 
     /**
-     * Saves the contennt of the text area into the file
+     * Saves the content of the text area into the file
      */
     public void saveFile() {
         try {

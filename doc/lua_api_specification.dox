@@ -113,6 +113,18 @@ creates a movement of type PathMovement that will be accessible from this script
 - <tt>sol.main.random_path_movement_create(speed)</tt>:
 creates a movement of type RandomPathMovement that will be accessible from this script
 
+- <tt>sol.main.path_finding_movement_create(speed)</tt>:
+creates a movement of type PathFindingMovement targetting the hero and that will be accessible from this script
+
+- <tt>sol.main.rectilinear_movement_create(speed, angle)</tt>:
+creates a movement of type RectilinearMovement that will be accessible from this script
+
+- <tt>sol.main.temporal_movement_create(speed, angle, duration)</tt>:
+creates a movement of type TemporalMovement that will be accessible from this script
+
+- <tt>sol.main.circle_movement_create(center_type, center, radius)</tt>:
+creates a movement of type CircleMovement that will be accessible from this script
+
 - <tt>sol.main.jump_movement_create(direction, length)</tt>:
 creates a movement of type JumpMovement that will be accessible from this script
 

@@ -15,17 +15,22 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lua/Script.h"
-#include "Timer.h"
-#include "Sprite.h"
 #include "movements/PixelMovement.h"
 #include "movements/PathMovement.h"
 #include "movements/RandomMovement.h"
 #include "movements/RandomPathMovement.h"
+#include "movements/PathFindingMovement.h"
+#include "movements/TemporalMovement.h"
+#include "movements/CircleMovement.h"
 #include "movements/JumpMovement.h"
+#include "entities/Hero.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/Music.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/Geometry.h"
+#include "Timer.h"
+#include "Sprite.h"
+#include "Game.h"
 #include <lua.hpp>
 #include <sstream>
 
@@ -477,6 +482,112 @@ int Script::main_api_random_path_movement_create(lua_State *l) {
   Movement *movement = new RandomPathMovement(speed);
   int movement_handle = script->create_movement_handle(*movement);
   lua_pushinteger(l, movement_handle);
+
+  return 1;
+}
+
+/**
+ * @brief Creates a movement of type PathFindingMovement that will be accessible from the script.
+ *
+ * The movement will compute a path to the hero.
+ * - Argument 1 (int): the speed in pixels per second
+ * - Return value (movement): a handle to the movement created
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::main_api_path_finding_movement_create(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 1, &script);
+  int speed = luaL_checkinteger(l, 1);
+
+  PathFindingMovement *movement = new PathFindingMovement(&script->get_game().get_hero(), speed);
+  int movement_handle = script->create_movement_handle(*movement);
+  lua_pushinteger(l, movement_handle);
+
+  return 1;
+}
+
+/**
+ * @brief Creates a movement of type RectilinearMovement that will be accessible from the script.
+ *
+ * - Argument 1 (int): the speed in pixels per second
+ * - Argument 2 (float): angle of the speed vector in radians
+ * - Return value (movement): a handle to the movement created
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::main_api_rectilinear_movement_create(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 2, &script);
+  int speed = luaL_checkinteger(l, 1);
+  double angle = luaL_checknumber(l, 2);
+
+  RectilinearMovement *movement = new RectilinearMovement(false);
+  movement->set_speed(speed);
+  movement->set_angle(angle);
+  int movement_handle = script->create_movement_handle(*movement);
+  lua_pushinteger(l, movement_handle);
+
+  return 1;
+}
+
+/**
+ * @brief Creates a movement of type TemporalMovement that will be accessible from the script.
+ *
+ * - Argument 1 (int): the speed in pixels per second
+ * - Argument 2 (float): angle of the speed vector in radians
+ * - Argument 3 (int): the duration of the movement in milliseconds
+ * - Return value (movement): a handle to the movement created
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::main_api_temporal_movement_create(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 3, &script);
+  int speed = luaL_checkinteger(l, 1);
+  double angle = luaL_checknumber(l, 2);
+  uint32_t duration = luaL_checkinteger(l, 3);
+
+  TemporalMovement *movement = new TemporalMovement(speed, angle, duration);
+  movement->set_speed(speed);
+  movement->set_angle(angle);
+  int movement_handle = script->create_movement_handle(*movement);
+  lua_pushinteger(l, movement_handle);
+
+  return 1;
+}
+
+/**
+ * @brief Creates a movement of type CircleMovement that will be accessible from the script.
+ *
+ * - Argument 1 (string): type of the center entity (e.g. "enemy")
+ * - Argument 2 (string): name of the center entity
+ * - Argument 3 (int): the radius of the circle in pixels
+ * - Return value (movement): a handle to the movement created
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::main_api_circle_movement_create(lua_State *l) {
+
+  /* TODO
+  Script *script;
+  called_by_script(l, 3, &script);
+  const std::string& center_type = luaL_checkstring(l, 1);
+  const std::string& center_name = luaL_checkstring(l, 2);
+  int radius = luaL_checkinteger(l, 3);
+
+  MapEntity* center_entity = script->get_map().get_entities().
+      get_entity(MapEntity::get_type_by_name(center_type), center_name);
+
+  CircleMovement *movement = new CircleMovement();
+  movement->set_center(center_entity);
+  movement->set_radius(radius);
+  int movement_handle = script->create_movement_handle(*movement);
+  lua_pushinteger(l, movement_handle);
+*/
 
   return 1;
 }

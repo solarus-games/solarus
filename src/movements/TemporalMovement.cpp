@@ -22,12 +22,12 @@
  * @brief Constructor.
  * @param speed the speed
  * @param angle angle of the movement in radians
- * @param time duration of the movement in milliseconds
+ * @param duration duration of the movement in milliseconds
  * @param smooth true to make the movement smooth
  */
-TemporalMovement::TemporalMovement(int speed, double angle, uint32_t time, bool smooth):
+TemporalMovement::TemporalMovement(int speed, double angle, uint32_t duration, bool smooth):
   SmoothMovement(smooth) {
-  start(speed, angle, time);
+  start(speed, angle, duration);
 }
 
 /**
@@ -35,14 +35,14 @@ TemporalMovement::TemporalMovement(int speed, double angle, uint32_t time, bool 
  * @param speed the speed
  * @param source_xy the movement will start from this point
  * @param target_xy the movement will go into this point's direction
- * @param time duration of the movement in milliseconds
+ * @param duration duration of the movement in milliseconds
  * @param smooth true to make the movement smooth
  */
-TemporalMovement::TemporalMovement(int speed, const Rectangle &source_xy, const Rectangle &target_xy, uint32_t time, bool smooth):
+TemporalMovement::TemporalMovement(int speed, const Rectangle &source_xy, const Rectangle &target_xy, uint32_t duration, bool smooth):
   SmoothMovement(smooth) {
 
   double angle = Geometry::get_angle(source_xy.get_x(), source_xy.get_y(), target_xy.get_x(), target_xy.get_y());
-  start(speed, angle, time);
+  start(speed, angle, duration);
 }
 
 /**
@@ -56,12 +56,12 @@ TemporalMovement::~TemporalMovement() {
  * @brief Starts the straight movement into a direction.
  * @param speed the speed
  * @param direction angle of the movement in radians
- * @param time duration of the movement in milliseconds
+ * @param duration duration of the movement in milliseconds
  */
-void TemporalMovement::start(int speed, double direction, uint32_t time) {
+void TemporalMovement::start(int speed, double direction, uint32_t duration) {
 
   finished = false;
-  end_movement_date = System::now() + time;
+  end_movement_date = System::now() + duration;
   set_speed(speed);
   if (speed != 0) {
     set_angle(direction);

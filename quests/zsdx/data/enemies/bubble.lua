@@ -12,7 +12,7 @@ invincible = true
 
 -- The enemy appears: create its movement
 function event_appear()
-  m = sol.main.rectilinear_movement_create(32, 1)
+  m = sol.main.rectilinear_movement_create(32, 0)
   sol.enemy.start_movement(m)
 end
 

@@ -60,6 +60,8 @@ class Sprite {
     bool ignore_suspend;				/**< true to continue playing the animation even when the game is suspended */
     bool paused;					/**< true if the animation is paused */
     bool finished;					/**< true if the animation has been stopped because the last frame is finished */
+    Sprite* synchronize_to;				/**< another sprite to synchronize the frame to
+							 * when they have the same animation name (or NULL) */
 
     // effects
 
@@ -98,7 +100,7 @@ class Sprite {
     const Rectangle& get_size() const;
     const Rectangle& get_origin() const;
 
-    // current animation, direction and frame
+    // animation state
     const std::string& get_current_animation() const;
     void set_current_animation(const std::string& animation_name);
     bool has_animation(const std::string& animation_name);
@@ -106,11 +108,10 @@ class Sprite {
     void set_current_direction(int current_direction);
     int get_current_frame() const;
     void set_current_frame(int current_frame);
-
     uint32_t get_frame_delay() const;
     void set_frame_delay(uint32_t frame_delay);
+    void set_synchronized_to(Sprite* other);
 
-    // animation state
     bool is_animation_started() const;
     void start_animation();
     void restart_animation();

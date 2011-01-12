@@ -88,6 +88,7 @@ Sprite::Sprite(const SpriteAnimationSetId &id):
   ignore_suspend(false),
   paused(false),
   finished(false),
+  synchronize_to(NULL),
   blink_delay(0),
   alpha(255),
   alpha_next_change_date(0) {
@@ -312,6 +313,15 @@ void Sprite::set_current_frame(int current_frame) {
  */
 bool Sprite::has_frame_changed() const {
   return frame_changed;
+}
+
+/**
+ * @brief Makes this sprite always synchronized with another one as soon as
+ * they have the same animation name.
+ * @param other the sprite to synchronize to, or NULL to stop any previous synchronization
+ */
+void Sprite::set_synchronized_to(Sprite* other) {
+  this->synchronize_to = other;
 }
 
 /**
@@ -551,20 +561,33 @@ void Sprite::update() {
   uint32_t now = System::now();
 
   // update the current frame
-  int next_frame;
-  while (!finished && !suspended && !paused && get_frame_delay() > 0
-	 && now >= next_frame_date) {
+  if (synchronize_to == NULL
+      || current_animation_name != synchronize_to->get_current_animation()) {
+    // update the frames normally (with the time)
+    int next_frame;
+    while (!finished && !suspended && !paused && get_frame_delay() > 0
+	&& now >= next_frame_date) {
 
-    // we get the next frame
-    next_frame = get_next_frame();
+      // we get the next frame
+      next_frame = get_next_frame();
 
-    // test whether the animation is finished
-    if (next_frame == -1) {
-      finished = true;
+      // test whether the animation is finished
+      if (next_frame == -1) {
+	finished = true;
+      }
+      else {
+	current_frame = next_frame;
+	next_frame_date += get_frame_delay();
+	frame_changed = true;
+      }
     }
-    else {
-      current_frame = next_frame;
-      next_frame_date += get_frame_delay();
+  }
+  else {
+    // take the same frame as the other sprite
+    int other_frame = synchronize_to->get_current_frame();
+    if (other_frame != current_frame) {
+      current_frame = other_frame;
+      next_frame_date = now + get_frame_delay();
       frame_changed = true;
     }
   }

@@ -110,7 +110,7 @@ creates a movement of type RandomMovement that will be accessible from this scri
 - <tt>sol.main.path_movement_create(path, speed)</tt>:
 creates a movement of type PathMovement that will be accessible from this script
 
-- <tt>sol.main.random_path_movement_create(path, speed)</tt>:
+- <tt>sol.main.random_path_movement_create(speed)</tt>:
 creates a movement of type RandomPathMovement that will be accessible from this script
 
 - <tt>sol.main.jump_movement_create(direction, length)</tt>:

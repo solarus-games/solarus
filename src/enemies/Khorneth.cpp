@@ -44,6 +44,15 @@ Khorneth::~Khorneth() {
  */
 void Khorneth::initialize() {
 
+  // blades
+  left_blade_life = 4;
+  end_left_blade_hurt_date = 0;
+  right_blade_life = 4;
+  end_right_blade_hurt_date = 0;
+  next_blade_attack_date = 0;
+  blade_attack = false;
+  blades_destroyed = false;
+
   // attack/defense features
   set_damage(2, 0);
   set_life(5);
@@ -57,21 +66,14 @@ void Khorneth::initialize() {
   set_size(40, 48);
   set_origin(20, 45);
   set_collision_modes(COLLISION_SPRITE);
+  get_left_blade_sprite()->set_synchronized_to(get_main_sprite());
+  get_right_blade_sprite()->set_synchronized_to(get_main_sprite());
 
   // reactions to attacks
   set_no_attack_consequences();
 
   // movement
   set_movement(new RandomPathMovement(40));
-
-  // blades
-  left_blade_life = 4;
-  end_left_blade_hurt_date = 0;
-  right_blade_life = 4;
-  end_right_blade_hurt_date = 0;
-  next_blade_attack_date = 0;
-  blade_attack = false;
-  blades_destroyed = false;
 }
 
 /**
@@ -292,6 +294,7 @@ void Khorneth::update() {
       restart();
     }
 
+    /*
     // synchronize the blade animations
     Sprite *main_sprite = get_main_sprite();
     if (main_sprite->get_current_animation() != "stopped") {
@@ -303,6 +306,7 @@ void Khorneth::update() {
 	get_right_blade_sprite()->set_current_frame(frame);
       }
     }
+    */
   }
 
   Enemy::update();

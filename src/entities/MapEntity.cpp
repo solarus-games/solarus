@@ -1480,7 +1480,7 @@ void MapEntity::notify_collision_with_crystal_switch(CrystalSwitch &crystal_swit
 
 /**
  * @brief This function is called when bomb detects a collision with a this entity.
- * @param explosion the explosion
+ * @param bomb the bomb
  * @param collision_mode the collision mode that detected the event
  */
 void MapEntity::notify_collision_with_bomb(Bomb& bomb, CollisionMode collision_mode) {

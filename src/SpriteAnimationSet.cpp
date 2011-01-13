@@ -152,7 +152,7 @@ void SpriteAnimationSet::set_map(Map &map) {
 
 /**
  * @brief Returns whether this animation set has an animation with the specified name.
- * @param animation an animation name
+ * @param animation_name an animation name
  * @return true if this animation exists
  */
 bool SpriteAnimationSet::has_animation(const std::string& animation_name) const {

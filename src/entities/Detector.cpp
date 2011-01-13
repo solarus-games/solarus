@@ -73,6 +73,7 @@ void Detector::add_collision_mode(CollisionMode collision_mode) {
  * @brief Returns whether the detector's collision modes includes
  * the specified collision mode.
  * @param collision_mode a collision mode
+ * @return true if this collision mode is detected by this detector
  */
 bool Detector::has_collision_mode(CollisionMode collision_mode) {
   return (this->collision_modes & collision_mode) != 0;

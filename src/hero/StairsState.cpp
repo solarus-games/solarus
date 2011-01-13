@@ -243,6 +243,8 @@ void Hero::StairsState::update() {
  *
  * When overlapping a teletransporter, if this function returns true, the teletransporter
  * will not be activated immediately. The state then has to activate it when it is ready.
+ *
+ * @return true if the effect of teletransporters is delayed in this state
  */
 bool Hero::StairsState::is_teletransporter_delayed() {
   return true;

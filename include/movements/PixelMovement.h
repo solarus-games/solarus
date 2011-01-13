@@ -72,8 +72,6 @@ class PixelMovement: public Movement {
     void set_delay(uint32_t delay);
     bool get_loop();
     void set_loop(bool loop);
-    bool get_ignore_obstacles();
-    void set_ignore_obstacles(bool ignore_obstacles);
 
     // state
     bool is_started();

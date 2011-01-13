@@ -247,7 +247,7 @@ void Sprite::set_current_animation(const std::string &animation_name) {
 
 /**
  * @brief Returns whether this sprite has an animation with the specified name.
- * @param animation an animation name
+ * @param animation_name an animation name
  * @return true if this animation exists
  */
 bool Sprite::has_animation(const std::string& animation_name) {

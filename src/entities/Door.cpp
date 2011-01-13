@@ -455,7 +455,7 @@ void Door::set_closing() {
 
 /**
  * @brief Returns true if the door is currently being open or closed.
- * @true true if the door is currently being open or closed
+ * @return true if the door is currently being open or closed
  */
 bool Door::is_changing() {
   return changing;

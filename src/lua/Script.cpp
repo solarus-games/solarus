@@ -63,6 +63,9 @@ Script::~Script() {
   }
 }
 
+/**
+ * @brief Initializes the Lua context for this script.
+ */
 void Script::initialize_lua_context() {
 
   // initialize fields
@@ -917,10 +920,10 @@ void Script::event_npc_dialog(const std::string &npc_name) {
  * @return true if the script has handled the event,
  * i.e. if the function event_npc_dialog_item exists in the script and returned true
  */
-bool Script::event_npc_dialog_item(const std::string &entity_name, const std::string &item_name, int variant) {
+bool Script::event_npc_dialog_item(const std::string &npc_name, const std::string &item_name, int variant) {
 
   int interaction = 0;
-  notify_script("event_npc_dialog_item", "ssi b", entity_name.c_str(), item_name.c_str(), variant, &interaction);
+  notify_script("event_npc_dialog_item", "ssi b", npc_name.c_str(), item_name.c_str(), variant, &interaction);
 
   return interaction != 0;
 }

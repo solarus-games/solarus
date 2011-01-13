@@ -203,7 +203,7 @@ const std::string JumpMovement::get_property(const std::string &key) {
  * - ignore_obstacles
  *
  * @param key key of the property to set (the accepted keys depend on the movement type)
- * @param the value to set
+ * @param value the value to set
  */
 void JumpMovement::set_property(const std::string &key, const std::string &value) {
 

@@ -65,6 +65,8 @@ double RectilinearMovement::get_y_speed() {
  * @brief Returns the total speed of the object.
  *
  * The speed is calculated as sqrt(x_speed^2 + y_speed^2).
+ *
+ * @return the speed in pixels per second
  */
 double RectilinearMovement::get_speed() {
   return std::sqrt(x_speed * x_speed + y_speed * y_speed);

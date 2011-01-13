@@ -25,6 +25,7 @@
 
 /**
  * @brief Creates a new stairs entity.
+ * @param name name of the entity to create
  * @param layer layer of the entity to create on the map
  * @param x x coordinate of the entity to create
  * @param y y coordinate of the entity to create

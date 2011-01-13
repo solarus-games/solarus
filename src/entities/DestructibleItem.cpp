@@ -364,6 +364,8 @@ void DestructibleItem::play_destroy_animation() {
  * @brief Returns whether the item is disabled.
  *
  * The item is disabled if it was lifted and is about to regenerate.
+ *
+ * @return true if the item is disabled
  */
 bool DestructibleItem::is_disabled() {
   return regeneration_date != 0 && !is_regenerating;

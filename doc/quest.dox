@@ -41,37 +41,48 @@ Two files are directly placed inside the <tt>data</tt> directory: <tt>info.dat</
 
 @subsection info General quest information file
 
-The <tt>info.dat</tt> file is an ini-like file that contains some general data regarding the quest.
-This includes a group named <tt>info</tt> which contains (for now) the following four values:
+The <tt>quest</tt> file is an ini-like file that contains some general data regarding the quest.
+This includes a group named <tt>info</tt> which contains (for now) the following values:
 - <tt>title_bar</tt>: the text to display in the title bar of the game window.
 - <tt>write_dir</tt>: name of the directory where the data of this quest will be saved
 (this will be a subdirectory of <tt>$HOME/.solarus</tt>). This is usually a short name for your quest.
 This allows games of different quests to be saved in different directories.
 - <tt>outside_world_width</tt> and <tt>outside_world_height</tt>: size of the whole outside world in pixels (used to manage the minimap).
+
+Another group named <tt>initial</tt> indicates some initialization parameters of the quest:
 - <tt>starting_map</tt> and <tt>starting_point</tt>: initial location of the hero (id of the initial map
 and name of the initial destination point) when starting a new game.
+- <tt>max_life</tt>: maximum level of life when starting a new game.
 
 Example:
 
 @verbatim
 [info]
+# General information about this quest
 title_bar = Zelda: Mystery of Solarus DX
 write_dir = zsdx
 outside_world_width = 2080
 outside_world_height = 3584
+
+# Somes initial values when creating a new savegame
+[initial]
 starting_map = 0
 starting_point = start_position
+max_life = 12
+
+
 @endverbatim
 
 @subsection projet_db Project database
 
 The <tt>project_db.dat</tt> file is NOT used by the engine,
-but only by the map editor. The map editor is still in development and
+but only by the quest editor. The quest editor is still in development and
 there is no stable release.
-This file contains a list of all resources (maps, musics, sprites, etc.) of the quest.
+This file contains a list of all resources (maps, musics, sprites, items, enemies, etc.)
+of the quest and their human-readable names.
 Each resource is usually represented by a data file.
 The map editor needs it only to provide graphical components that let the user choose a resource
-in a list of human readable names.
+in a list of human-readable names.
 
 For instance, when the user creates a teletransporter on the map, a graphical list
 lets him choose the destination map of the teletransporter.
@@ -98,6 +109,8 @@ The current types of resources are:
 - 2: a music (the id is the music file name with its extension),
 - 3: a sprite (the id is the sprite file name without extension),
 - 4: a sound (the id is the music file name without its extension),
+- 5: an item (the id is the name of item's Lua script without its extension),
+- 6: an enemy (the id is the name of enemy's Lua script without its extension),
 
 @section sounds Sounds
 
@@ -110,8 +123,10 @@ The files are lighter with the Ogg compression.
 @section musics Musics
 
 The <tt>musics</tt> directory contains all musics used by both the engine and the quest.
-For now, the only format recognized is SPC, i.e. a Super NES original music file.
-Future release will support more music formats.
+For now, two formats are recognized:
+- SPC: a Super NES original music file,
+- OGG: Ogg Vorbis audio file.
+Future releases may support more music formats. You can ask me.
 
 @section fonts Fonts
 
@@ -123,7 +138,7 @@ An example is self-speaking:
 @verbatim
 # This file defines the fonts available to the game engine.
 # The engine relies on 3 fonts named 'dialog', 'dialog_big' and 'fixed'.
-# The main purpose of this file is to make the engine independant from the font file names.
+# The main purpose of this file is to make the engine independent from the font file names.
 
 [dialog]
 # the font used in dialog boxes
@@ -231,6 +246,37 @@ such as doors and blocks have a skin that actually depends on
 the tileset. A door inside a dungeon has different graphics and colors from a door inside a cave.
 Such dynamic entities are skin-dependent and we need to store their graphics in this file.
 There is no description file (this file is organized the same way for each tileset).
+
+@section items Items
+
+The list of all items the player can get (e.g. the inventory items, the equipment items,
+the treasures dropped by enemies or hidden under bushes, etc.) is specified in the
+file <tt>items.dat</tt>.
+This file as an ini-like syntax which is not specified in this documentation yet.
+However, the syntax is entirely specified in the comments of the <tt>items.dat</tt>
+file of the <tt>zsdx</tt> quest.
+
+TODO specification of the format of items.dat
+
+<tt>items.dat</tt> specifies the static properties of each item
+(e.g. its number of variants, its probability to be dropped by an enemy,
+its counter if any, etc.).
+The dynamic properties of each item is defined by a Lua script
+(e.g. what happens when the item appears, what happens when the player receives the
+items, etc.).
+These Lua scripts are located in the <tt>items</tt> subdirectory of the <tt>data</tt>
+directory of your quest.
+
+See the section @subpage lua_api_specification to know the Lua API provided by Solarus
+to item scripts.
+
+@section enemies Enemies
+
+The properties and the behavior of each enemy is defined by a Lua script in the
+<tt>enemies</tt> subdirectory of the <tt>data</tt> directory of your quest.
+
+See the section @subpage lua_api_specification to know the Lua API provided by Solarus
+to enemy scripts.
 
 */
 

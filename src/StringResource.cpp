@@ -81,6 +81,7 @@ void StringResource::quit() {
 /**
  * @brief Returns a string stored in the language-specific file "text/strings.dat".
  * @param key id of the string to retrieve
+ * @return the corresponding localized string
  */
 const std::string& StringResource::get_string(const std::string& key) {
 

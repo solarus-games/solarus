@@ -32,6 +32,9 @@ class Script {
 
   protected:
 
+    /**
+     * @brief The APIs available depending on the type of scripts.
+     */
     enum API {
       MAIN_API			= 0x0001,
       GAME_API			= 0x0002,

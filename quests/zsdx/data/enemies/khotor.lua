@@ -8,9 +8,9 @@ sprite = "enemies/khotor"
 size = {48, 48}
 origin = {24, 29}
 attack_consequences = {
-  sword = 2
-  thrown_item = 1
-  bow = 1
+  sword = 2,
+  thrown_item = 1,
+  bow = 1,
   others = "ignored"
 }
 
@@ -39,7 +39,7 @@ function event_hurt(attack, life_lost)
 
     -- Khotor is dying: remove the chain and ball
     sol.map.enemy_remove(chain_name)
-  else if (life_lost > 0) {
+  elseif (life_lost > 0) then
 
     -- Khotor is hurt: restart the chain and ball
     sol.map.enemy_set_enabled(chain_name, false);

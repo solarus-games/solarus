@@ -4,12 +4,14 @@ set(quest_name "zsdx")
 file(GLOB lua_source_files 
   RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
   maps/*.lua
-  items/*.lua)
+  items/*.lua
+  enemies/*.lua)
 
 set(lua_bin_files "")
 
 MAKE_DIRECTORY("${CMAKE_CURRENT_BINARY_DIR}/maps")
 MAKE_DIRECTORY("${CMAKE_CURRENT_BINARY_DIR}/items")
+MAKE_DIRECTORY("${CMAKE_CURRENT_BINARY_DIR}/enemies")
 
 # convert to Lua bytecode
 foreach(lua_source_file ${lua_source_files})

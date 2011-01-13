@@ -44,7 +44,7 @@ function event_sprite_animation_finished(sprite, animation)
   direction = sol.main.sprite_get_direction(sprite)
   if animation == "stopped_watching_left" then
     go((direction + 1) % 4)
-  else if animation == "stopped_watching_right" then
+  elseif animation == "stopped_watching_right" then
     go((direction + 3) % 4)
   end
 end

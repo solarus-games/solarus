@@ -15,7 +15,7 @@ size = {40, 48}
 origin = {20, 25}
 collision_modes = {"sprite"}
 attack_consequences = {
-  sword = "custom" -- to handle the blades
+  sword = "custom", -- to handle the blades
   others = "ignored"
 }
 

@@ -9,7 +9,7 @@ sprite_animation = "egg"
 size = {24, 32}
 origin = {12, 20}
 attack_consequences = {
-  sword = "custom"
+  sword = "custom",
   others = "ignored"
 }
 

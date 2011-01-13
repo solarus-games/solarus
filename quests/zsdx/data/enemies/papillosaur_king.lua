@@ -8,8 +8,8 @@ size = {176, 96}
 origin = {88, 64}
 collision_modes = {"sprite"}
 attack_consequences = {
-  explosion = 1
-  sword = "protected"
+  explosion = 1,
+  sword = "protected",
   others = "ignored"
 }
 obstacles = {

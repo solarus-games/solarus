@@ -38,7 +38,7 @@ function event_appear()
   center_enemy_dxy.y = y
 end
 
-function event_display()
+function event_pre_display()
 
   for i = 0, nb_links - 1 do
     sol.map.sprite_display(link_sprite, link_xy[i].x, link_xy[i].y)

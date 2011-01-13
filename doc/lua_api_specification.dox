@@ -544,117 +544,230 @@ you define them in your script.
 As several scripts of different types may exist,
 we also specify what scripts are notified for each event.
 
-- <tt>event_update()</tt> (triggered for the map script and all item scripts):
+@subsection events_map Map scripts
+
+- <tt>event_update()</tt>:
 called at each cycle (but take care of the performances)
 
-- <tt>event_set_suspended(suspended)</tt> (triggered for the map script and all item scripts):
+- <tt>event_set_suspended(suspended)</tt>:
 called when the game is suspended or resumed
 
-- <tt>event_map_changed(new_map_id)</tt> (trigger for all item scripts):
-called when a map becomes the current map
+- <tt>event_dialog_started(message_id)</tt>:
+called when a dialog starts (i.e. at the beginning of its first message),
+even if the dialog was started by another script
 
-- <tt>event_dialog_started(message_id)</tt> (triggered for the map script and for the script that started the dialog):
-called when a dialog starts (i.e. at the beginning of its first message)
+- <tt>event_dialog_finished(first_message_id, answer)</tt>:
+called when a dialog finishes (i.e. once its last message is finished),
+even if the dialog was started by another script
 
-- <tt>event_dialog_finished(first_message_id, answer)</tt> (triggered for the map script and for the script that started the dialog):
-called when a dialog finishes (i.e. once its last message is finished)
-
-- <tt>event_camera_reached_target()</tt> (triggered for the map script): 
+- <tt>event_camera_reached_target()</tt>: 
 called when the camera (previously started by <tt>camera_move()</tt>) reaches its target
 
-- <tt>event_camera_back()</tt> (triggered for the map script): 
+- <tt>event_camera_back()</tt>: 
 called when the camera (previously sent back by <tt>camera_restore()</tt>) reaches the hero
 
-- <tt>event_treasure_obtaining(item_name, variant, savegame_variable)</tt> (triggered for the map script): 
+- <tt>event_treasure_obtaining(item_name, variant, savegame_variable)</tt>: 
 called when the player is obtaining a treasure (coming from a chest or not)
 
-- <tt>event_treasure_obtained(item_name, variant, savegame_variable)</tt> (triggered for the map script): 
+- <tt>event_treasure_obtained(item_name, variant, savegame_variable)</tt>: 
 called when the player has just finished obtaining a treasure
 
-- <tt>event_map_started(destination_point_name)</tt> (triggered for the map script):
+- <tt>event_map_started(destination_point_name)</tt>:
 called when the map starts, before the opening transition
 
-- <tt>event_map_opening_transition_finished(destination_point_name)</tt> (triggered for the map script):
+- <tt>event_map_opening_transition_finished(destination_point_name)</tt>:
 called after the opening transition of the map
 
-- <tt>event_switch_enabled(switch_name)</tt> (triggered for the map script):
+- <tt>event_switch_enabled(switch_name)</tt>:
 called when a switch has just been activated
 
-- <tt>event_switch_disabled(switch_name)</tt> (triggered for the map script):
+- <tt>event_switch_disabled(switch_name)</tt>:
 called when a switch has just been disabled
 
-- <tt>event_switch_left(switch_name)</tt> (triggered for the map script):
+- <tt>event_switch_left(switch_name)</tt>:
 called when an entity placed on a switch (the hero or a block)
 has just left the switch, no matter the switch was enabled or disabled
 
-- <tt>event_hero_victory_sequence_finished()</tt> (triggered for the map script):
+- <tt>event_hero_victory_sequence_finished()</tt>:
 called when the victory animation of the hero is finished
 
-- <tt>event_hero_on_sensor(sensor_name)</tt> (triggered for the map script):
+- <tt>event_hero_on_sensor(sensor_name)</tt>:
 called when the hero walks on a sensor
 
 - <tt>event_hero_interaction(entity_name)</tt>
-(triggered for the map script or an item script, depending on the interactive entity):
+(triggered only if the interactive entity has the property to call the map script):
 called when the hero interacts with an interactive entity (other than an NPC)
-by pressing the action key when there is no predetermined dialog to show
+by pressing the action key
 
-- <tt>event_hero_interaction_finished(entity_name)</tt>
-(triggered for the map script):
+- <tt>event_hero_interaction_finished(entity_name)</tt>:
+(triggered only if the interactive entity has the property to call the map script):
 called when the hero has just interacted with an interactive entity (other than an NPC)
-by pressing the action key when there is no predetermined dialog to show
+by pressing the action key
 
 - <tt>event_hero_interaction_item(entity_name, item_name, variant)</tt>
-(triggered for the map script or an item script, depending on the interactive entity):
+(triggered only if the interactive entity has the property to call the map script):
+called when the hero interacts with an interactive entity (other than an NPC)
+by using ANY inventory item; returns true if an interaction actually happened
+
+- <tt>event_hero_interaction_item_finished(entity_name, item_name, variant)</tt>:
+called when the hero has just interacted with an interactive entity (other than an NPC)
+by using ANY inventory item
+
+- <tt>event_npc_dialog(npc_name)</tt>
+(triggered only if the interactive entity has the property to call the map script):
+called when the player talks to an NPC
+
+- <tt>event_npc_dialog_item(npc_name)</tt>
+(triggered only if the interactive entity has the property to call the map script):
+called when the player uses an inventory item in front of NPC;
+returns true if an interaction actually happened
+
+- <tt>event_npc_movement_finished(npc_name)</tt>:
+called when an NPC has finished its movement started by the script
+
+- <tt>event_chest_empty(chest_name)</tt>:
+called when the hero opens an empty chest: the hero is freezed, your script has
+to define its behavior and then call hero_unfreeze()
+
+- <tt>event_shop_item_bought(shop_item_name)</tt>:
+called when the player has just bought an item in a shop
+
+- <tt>event_enemy_dead(enemy_name)</tt>:
+called when an enemy of this map is dead (and its kill animation is finished)
+
+@subsection events_item Item scripts
+
+- <tt>event_update()</tt>:
+called at each cycle (but take care of the performances)
+
+- <tt>event_set_suspended(suspended)</tt>:
+called when the game is suspended or resumed
+
+- <tt>event_map_changed(new_map_id)</tt>:
+called when a map becomes the current map
+
+- <tt>event_dialog_started(message_id)</tt>
+(triggered only if this item script started the dialog):
+called when a dialog starts (i.e. at the beginning of its first message)
+
+- <tt>event_dialog_finished(first_message_id, answer)</tt>
+(triggered only if this item script started the dialog):
+called when a dialog finishes (i.e. once its last message is finished)
+
+- <tt>event_hero_interaction(entity_name)</tt>
+(triggered only if the interactive entity has the property to notify the item controlled by this script):
+called when the hero interacts with an interactive entity (other than an NPC)
+by pressing the action key
+
+- <tt>event_hero_interaction_finished(entity_name)</tt>
+(triggered only if the interactive entity has the property to notify the item controlled by this script):
+called when the hero has just interacted with an interactive entity (other than an NPC)
+by pressing the action key
+
+- <tt>event_hero_interaction_item(entity_name, item_name, variant)</tt>
+(triggered only if the interactive entity has the property to notify the item controlled by this script):
 called when the hero interacts with an interactive entity (other than an NPC)
 by using ANY inventory item; returns true if an interaction actually happened
 
 - <tt>event_hero_interaction_item_finished(entity_name, item_name, variant)</tt>
-(triggered for the map script):
+(triggered only if the interactive entity has the property to notify the item controlled by this script):
 called when the hero has just interacted with an interactive entity (other than an NPC)
-by using an inventory item
+by using ANY inventory item
 
 - <tt>event_npc_dialog(npc_name)</tt>
-(triggered for the map script or an item script, depending on the NPC):
-called when the player talks to an NPC without predetermined dialog
+(triggered only if the NPC has the property to notify the item controlled by this script):
+called when the player talks to an NPC
 
 - <tt>event_npc_dialog_item(npc_name)</tt>
-(triggered for the map script or an item script, depending on the NPC):
+(triggered only if the NPC has the property to notify the item controlled by this script):
 called when the player uses an inventory item in front of NPC;
 returns true if an interaction actually happened
 
-- <tt>event_npc_movement_finished(npc_name)</tt> (triggered for the map script):
-called when an NPC has finished its movement started by the script
-
-- <tt>event_chest_empty(chest_name)</tt> (triggered for the map script):
-called when the hero opens an empty chest: the hero is freezed, your script has
-to define its behavior and then call hero_unfreeze()
-
-- <tt>event_shop_item_bought(shop_item_name)</tt> (triggered for the map script):
-called when the player has just bought an item in a shop
-
-- <tt>event_enemy_dead(enemy_name)</tt> (triggered for the map script):
-called when an enemy is killed
-
-- <tt>event_appear(variant, savegame_variable, falling_height)</tt> (triggered for an item script):
+- <tt>event_appear(variant, savegame_variable, falling_height)</tt>:
 called when a pickable item whose type is controlled by this script just appeared on the map
 
-- <tt>event_movement_changed()</tt> (triggered for an item script):
+- <tt>event_movement_changed()</tt>:
 called when something changes in the movement of a pickable item whose type is controlled by this script
 
-- <tt>event_obtaining(variant, savegame_variable)</tt> (triggered for an item script):
+- <tt>event_obtaining(variant, savegame_variable)</tt>:
 called when the player is obtaining a treasure corresponding to the item controlled by this script
 
-- <tt>event_obtained(variant, savegame_variable)</tt> (triggered for an item script):
+- <tt>event_obtained(variant, savegame_variable)</tt>:
 called when the player has finished brandishing a treasure corresponding to the item controlled by this script
 
-- <tt>event_variant_changed(variant)</tt> (triggered for an item script):
+- <tt>event_variant_changed(variant)</tt>:
 called when the saved possession state of the item controlled by this script has just changed
 
-- <tt>event_amount_changed(amount)</tt> (triggered for an item script):
+- <tt>event_amount_changed(amount)</tt>:
 called when the amount of the item controlled by this script has just changed
 
-- <tt>event_use()</tt> (triggered for an item script):
+- <tt>event_use()</tt>:
 called when the hero starts using the item controlled by this script from his inventory
+
+@subsection events_enemy Enemy scripts
+
+- <tt>event_update()</tt>:
+called at each cycle (but take care of the performances)
+
+- <tt>event_set_suspended(suspended)</tt>:
+called when the game is suspended or resumed
+
+- <tt>event_dialog_started(message_id)</tt>
+(triggered only if this enemy script started the dialog):
+called when a dialog starts (i.e. at the beginning of its first message)
+
+- <tt>event_dialog_finished(first_message_id, answer)</tt>
+(triggered only if this enemy script started the dialog):
+called when a dialog finishes (i.e. once its last message is finished)
+
+- <tt>event_appear()</tt>:
+called when an instance of the enemy controlled by this script has just been created on the map
+
+- <tt>event_enabled()</tt>:
+called when the enemy has just been enabled
+
+- <tt>event_disabled()</tt>:
+called when the enemy has just been disabled
+
+- <tt>event_restart()</tt>:
+called when the enemy is restarting its movement because
+something happended (for example the enemy has just been created,
+or it was just hurt)
+
+- <tt>event_pre_display()</tt>:
+called just before the enemy is disabled (you may display additional things under the enemy)
+
+- <tt>event_post_display()</tt>:
+called just after the enemy is disabled (you may display additional things over the enemy)
+
+- <tt>event_position_changed(x, y)</tt>:
+called when the enemy has moved
+
+- <tt>event_layer_changed(layer)</tt>:
+called when the layer of the enemy has changed
+
+- <tt>event_obstacle_reached()</tt>:
+called when the movement of the enemy was stopped because of an obstacle.
+
+- <tt>event_movement_changed()</tt>:
+called when something changes in the movement of the enemy
+
+- <tt>event_sprite_frame_changed(sprite, animation)</tt>:
+called when the current frame of a sprite of the enemy has changed
+
+- <tt>event_sprite_animation_finished(sprite, animation)</tt>:
+called when the animation of a sprite of the enemy has changed
+
+- <tt>event_custom_attack_received(attack, sprite)</tt>:
+called when an attack with a custom effect is received by the enemy:
+you have to define what happens and return the number of life points to remove
+(possibly zero)
+
+- <tt>event_hurt(attack, life_lost)</tt>:
+called when the enemy is hurt
+
+- <tt>event_dead()</tt>:
+called when the enemy is killed and has finished to die
 
 */
 

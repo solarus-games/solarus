@@ -16,6 +16,8 @@
  */
 package org.solarus.editor.gui;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import javax.swing.JTabbedPane;
 
 /**
@@ -27,14 +29,13 @@ public class EditorDesktop extends JTabbedPane {
 
     public EditorDesktop() {
         setTabLayoutPolicy(SCROLL_TAB_LAYOUT);
-//        addChangeListener(this);
     }
 
     /**
      * Add an editor in the tabbedpane
      * @param editor the editor to add
      */
-    public void addEditor(AbstractEditorWindow editor) {        
+    public void addEditor(AbstractEditorWindow editor) {
         String title = editor.getResourceName();
         AbstractEditorWindow[] editors = getEditors();
         if (editors != null) {
@@ -46,6 +47,7 @@ public class EditorDesktop extends JTabbedPane {
             }
         }
         add(title, editor);
+
         setSelectedIndex(getTabCount() - 1);
         repaint();
     }
@@ -55,8 +57,16 @@ public class EditorDesktop extends JTabbedPane {
      * @param editor the editor to remove
      */
     public void removeEditor(AbstractEditorWindow editor) {
-        remove(editor);
+        if (editor.checkCurrentFileSaved()) {
+            remove(editor);
+        }
         repaint();
+    }
+
+    public void removeCurrentEditor() {
+        if (getSelectedComponent() != null) {
+            removeEditor((AbstractEditorWindow) getSelectedComponent());
+        }
     }
 
     /**

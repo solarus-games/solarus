@@ -16,8 +16,9 @@
  */
 package org.solarus.editor.gui;
 
+import java.awt.AWTEvent;
 import java.awt.BorderLayout;
-import java.awt.Component;
+import java.awt.event.AWTEventListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -101,6 +102,8 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
             }
         });
 
+        getToolkit().addAWTEventListener(new ActionCloseCurrentEditor(),AWTEvent.KEY_EVENT_MASK);
+
         // create the menu bar
         createMenuBar();
         update(null, null);
@@ -149,7 +152,7 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
             }
             menuItemCloseTileset.setEnabled(isTilesetEditor);
             menuItemSaveTileset.setEnabled(isTilesetEditor);
-            
+
             menuItemCloseFile.setEnabled(isFileEditor);
             menuItemSaveFile.setEnabled(isFileEditor);
 
@@ -313,7 +316,7 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
         item = new JMenuItem("Open...");
         item.setMnemonic(KeyEvent.VK_O);
         item.getAccessibleContext().setAccessibleDescription("Open an existing tileset");
-        item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
+        item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.ALT_MASK));
         item.addActionListener(new ActionOpenTileset());
         menuTileset.add(item);
 
@@ -327,21 +330,21 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
         menuItemSaveTileset = new JMenuItem("Save");
         menuItemSaveTileset.setMnemonic(KeyEvent.VK_S);
         menuItemSaveTileset.getAccessibleContext().setAccessibleDescription("Save the current tileset");
-        menuItemSaveTileset.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
+        menuItemSaveTileset.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.ALT_MASK));
         menuItemSaveTileset.addActionListener(new ActionSaveTileset());
         menuItemSaveTileset.setEnabled(false);
         menuTileset.add(menuItemSaveTileset);
 
         menuBar.add(menuTileset);
 
-        menuFile = new JMenu("File");
+        menuFile = new JMenu("Text File");
         menuFile.setEnabled(false);
         menuFile.setMnemonic(KeyEvent.VK_F);
 
         item = new JMenuItem("Open...");
         item.setMnemonic(KeyEvent.VK_O);
         item.getAccessibleContext().setAccessibleDescription("Open an existing file");
-        item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
+        item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.SHIFT_MASK));
         item.addActionListener(new ActionOpenFile());
         menuFile.add(item);
 
@@ -355,7 +358,7 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
         menuItemSaveFile = new JMenuItem("Save");
         menuItemSaveFile.setMnemonic(KeyEvent.VK_S);
         menuItemSaveFile.getAccessibleContext().setAccessibleDescription("Save the current File");
-        menuItemSaveFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
+        menuItemSaveFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.SHIFT_MASK));
         menuItemSaveFile.addActionListener(new ActionSaveFile());
         menuItemSaveFile.setEnabled(false);
         menuFile.add(menuItemSaveFile);
@@ -366,6 +369,7 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
 
     }
 
+   
     /**
      * This function is called when the user wants to quit the editor
      * If any resource opened is not saved, we propose to save it.
@@ -665,7 +669,7 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
 
         public void actionPerformed(ActionEvent ev) {
             FileEditorWindow fileEditor = new FileEditorWindow(EditorWindow.this.quest, EditorWindow.this);
-            JFileChooser jfc = new JFileChooser(Project.getRootPath());
+            JFileChooser jfc = new JFileChooser(Project.getRootPath() + File.separator + "data");
             jfc.showOpenDialog(EditorWindow.this);
             File selectedFile = jfc.getSelectedFile();
             if (selectedFile != null) {
@@ -684,6 +688,9 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
 
         public void actionPerformed(ActionEvent ev) {
             FileEditorWindow fileEditor = (FileEditorWindow) desktop.getSelectedComponent();
+            if (!fileEditor.checkCurrentFileSaved()) {
+                return;
+            }
             desktop.remove(fileEditor);
         }
     }
@@ -697,6 +704,26 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
         public void actionPerformed(ActionEvent ev) {
             TilesetEditorWindow tilesetEditor = (TilesetEditorWindow) desktop.getSelectedComponent();
             tilesetEditor.saveTileset();
+        }
+    }
+
+    /**
+     * Action performed when the user uses the Ctrl-W keys
+     * Closes the current editor
+     */
+    private class ActionCloseCurrentEditor implements AWTEventListener {
+
+        public void eventDispatched(AWTEvent ev) {
+            if (ev instanceof KeyEvent) {
+                KeyEvent kev = (KeyEvent) ev;
+                System.out.println("Touche appuyée depuis " + this.getClass().getName());
+                int code = kev.getKeyCode();
+                if (code == KeyEvent.VK_W) {
+                    if (kev.isControlDown()) {
+                        desktop.removeCurrentEditor();
+                    }
+                }
+            }
         }
     }
 

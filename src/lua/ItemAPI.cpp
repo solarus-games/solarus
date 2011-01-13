@@ -14,7 +14,6 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "lua/Script.h"
 #include "lua/ItemScript.h"
 #include "entities/PickableItem.h"
 #include "entities/Hero.h"

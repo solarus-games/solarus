@@ -204,6 +204,20 @@ ItemProperties& Script::get_item_properties() {
 }
 
 /**
+ * @brief Returns the enemy associated to this script (if any).
+ *
+ * Scripts that enable the enemy API must redefine this function.
+ * This function is called by the implementation of the enemy API.
+ *
+ * @return the enemy
+ */
+Enemy& Script::get_enemy() {
+
+  Debug::die("This script does not provide the enemy API");
+  throw;
+}
+
+/**
  * @brief Tells the Lua context what C++ functions it can call.
  */
 void Script::register_apis() {
@@ -219,6 +233,9 @@ void Script::register_apis() {
   }
   if (apis_enabled && ITEM_API) {
     register_item_api();
+  }
+  if (apis_enabled && ENEMY_API) {
+    register_enemy_api();
   }
 }
 
@@ -415,6 +432,18 @@ void Script::register_item_api() {
       { NULL, NULL }
   };
   luaL_register(context, "sol.item", item_api);
+}
+
+/**
+ * @brief Registers to the script the functions of the enemy API.
+ */
+void Script::register_enemy_api() {
+
+  static luaL_Reg enemy_api[] = {
+      // TODO
+      { NULL, NULL }
+  };
+  luaL_register(context, "sol.enemy", enemy_api);
 }
 
 /**

@@ -39,7 +39,8 @@ class Script {
       MAIN_API			= 0x0001,
       GAME_API			= 0x0002,
       MAP_API			= 0x0004,
-      ITEM_API			= 0x0008
+      ITEM_API			= 0x0008,
+      ENEMY_API                 = 0x0010
     };
 
   private:
@@ -72,6 +73,7 @@ class Script {
     void register_game_api();
     void register_map_api();
     void register_item_api();
+    void register_enemy_api();
 
     // timers
     void add_timer(Timer *timer);
@@ -252,6 +254,9 @@ class Script {
       item_api_set_layer_independent_collisions,
       item_api_set_finished;
 
+      // enemy API
+      // TODO
+
   protected:
 
     Script(uint32_t apis_enabled);
@@ -265,6 +270,7 @@ class Script {
     virtual Game& get_game();
     virtual Map& get_map();
     virtual ItemProperties& get_item_properties();
+    virtual Enemy& get_enemy();
 
   public:
 

@@ -24,8 +24,7 @@ function event_appear(creator_name)
 
   -- create the chain and ball
   chain_name = sol.enemy.get_name().."_chain"
-  sol.map.enemy_create(chain_name, "chain_and_ball", layer, x, y)
-  sol.map.enemy_set_creator(chain_name, sol.enemy.get_name(), -16, -33)
+  sol.enemy.create_son(chain_name, "chain_and_ball", layer, -16, -33, true)
 end
 
 function event_restart()

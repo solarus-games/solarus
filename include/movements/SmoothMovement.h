@@ -38,6 +38,9 @@ class SmoothMovement: public RectilinearMovement {
 
     void update_x();
     void update_y();
+
+    bool is_smooth();
+    void set_smooth(bool smooth);
 };
 
 #endif

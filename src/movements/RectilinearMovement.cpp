@@ -375,3 +375,73 @@ void RectilinearMovement::update() {
     }
   }
 }
+
+/**
+ * @brief Returns the value of a property of this movement.
+ *
+ * Accepted keys:
+ * - speed
+ * - angle
+ * - ignore_obstacles
+ *
+ * @param key key of the property to get
+ * @return the corresponding value as a string
+ */
+const std::string RectilinearMovement::get_property(const std::string &key) {
+
+  std::ostringstream oss;
+
+  if (key == "speed") {
+    oss << get_speed();
+  }
+  else if (key == "angle") {
+    oss << get_angle();
+  }
+  else if (key == "ignore_obstacles") {
+    oss << are_obstacles_ignored();
+  }
+  else {
+    Debug::die(StringConcat() << "Unknown property of RectilinearMovement: '" << key << "'");
+  }
+
+  return oss.str();
+}
+
+/**
+ * @brief Sets the value of a property of this movement.
+ *
+ * Accepted keys:
+ * - speed
+ * - angle
+ * - ignore_obstacles
+ *
+ * @param key key of the property to set (the accepted keys depend on the movement type)
+ * @param value the value to set
+ */
+void RectilinearMovement::set_property(const std::string &key, const std::string &value) {
+
+  std::istringstream iss(value);
+
+  if (key == "speed") {
+    int speed;
+    iss >> speed;
+    set_speed(speed);
+  }
+  else if (key == "angle") {
+    double angle;
+    iss >> angle;
+    if (get_speed() == 0) {
+      set_speed(1);
+    }
+    set_angle(angle);
+  }
+  else if (key == "ignore_obstacles") {
+    bool ignore_obstacles;
+    iss >> ignore_obstacles;
+    set_default_ignore_obstacles(ignore_obstacles);
+  }
+  else {
+    Debug::die(StringConcat() << "Unknown property of RectilinearMovement: '" << key << "'");
+  }
+}
+

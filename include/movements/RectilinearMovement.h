@@ -22,7 +22,12 @@
 
 /**
  * @brief A straight movement represented as a speed vector
- * whose properties (speed and direction) can be changed.
+ * whose properties (speed and angle) can be changed.
+ *
+ * Properties:
+ * - speed
+ * - angle
+ * - ignore_obstacles
  */
 class RectilinearMovement: public Movement {
 
@@ -91,6 +96,10 @@ class RectilinearMovement: public Movement {
     // movement
     virtual bool is_started();
     void stop();
+
+    // properties
+    virtual const std::string get_property(const std::string &key);
+    virtual void set_property(const std::string &key, const std::string &value);
 };
 
 /**

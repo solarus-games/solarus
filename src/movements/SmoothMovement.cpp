@@ -36,6 +36,24 @@ SmoothMovement::~SmoothMovement() {
 }
 
 /**
+ * @brief Returns whether the movement adjusts its trajectory when
+ * an obstacle is reached.
+ * @return true if the movement is smooth
+ */
+bool SmoothMovement::is_smooth() {
+  return this->smooth;
+}
+
+/**
+ * @brief Sets whether the movement adjusts its trajectory when
+ * an obstacle is reached.
+ * @param smooth true if the movement is smooth
+ */
+void SmoothMovement::set_smooth(bool smooth) {
+  this->smooth = smooth;
+}
+
+/**
  * @brief Updates the x position of the entity if it wants to move
  *
  * This is a redefinition of RectilinearMovement::update_x() to

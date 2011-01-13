@@ -24,6 +24,7 @@
 #include "movements/CircleMovement.h"
 #include "movements/JumpMovement.h"
 #include "entities/Hero.h"
+#include "entities/MapEntities.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/Music.h"
 #include "lowlevel/Debug.h"
@@ -31,8 +32,10 @@
 #include "Timer.h"
 #include "Sprite.h"
 #include "Game.h"
+#include "Map.h"
 #include <lua.hpp>
 #include <sstream>
+#include <cmath>
 
 /**
  * @brief Includes a script into the current Lua context.
@@ -563,7 +566,8 @@ int Script::main_api_temporal_movement_create(lua_State *l) {
 /**
  * @brief Creates a movement of type CircleMovement that will be accessible from the script.
  *
- * - Argument 1 (string): type of the center entity (e.g. "enemy")
+ * - Argument 1 (integer): type of the center entity
+ * (must match the enumeration EntityType)
  * - Argument 2 (string): name of the center entity
  * - Argument 3 (int): the radius of the circle in pixels
  * - Return value (movement): a handle to the movement created
@@ -572,22 +576,20 @@ int Script::main_api_temporal_movement_create(lua_State *l) {
  */
 int Script::main_api_circle_movement_create(lua_State *l) {
 
-  /* TODO
   Script *script;
   called_by_script(l, 3, &script);
-  const std::string& center_type = luaL_checkstring(l, 1);
+  int center_type = luaL_checkinteger(l, 1);
   const std::string& center_name = luaL_checkstring(l, 2);
   int radius = luaL_checkinteger(l, 3);
 
   MapEntity* center_entity = script->get_map().get_entities().
-      get_entity(MapEntity::get_type_by_name(center_type), center_name);
+      get_entity(EntityType(center_type), center_name);
 
   CircleMovement *movement = new CircleMovement();
   movement->set_center(center_entity);
   movement->set_radius(radius);
   int movement_handle = script->create_movement_handle(*movement);
   lua_pushinteger(l, movement_handle);
-*/
 
   return 1;
 }
@@ -659,9 +661,14 @@ int Script::main_api_movement_set_property(lua_State *l) {
     value = lua_tostring(l, 3);
   }
   else if (lua_isnumber(l, 3)) {
-    int v = lua_tointeger(l, 3);
+    double v = lua_tointeger(l, 3);
     std::ostringstream oss;
-    oss << v;
+    if (std::fabs(v - (int) v) < 1e-6) {
+      oss << (int) v;
+    }
+    else {
+      oss << v;
+    }
     value = oss.str();
   }
   else if (lua_isboolean(l, 3)) {

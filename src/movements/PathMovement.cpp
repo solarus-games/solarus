@@ -86,6 +86,7 @@ void PathMovement::set_path(const std::string &path) {
 int PathMovement::get_speed() {
   return speed;
 }
+
 /**
  * @brief Sets the speed of this movement.
  * @param speed the speed in pixels per second

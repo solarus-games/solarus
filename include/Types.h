@@ -112,6 +112,7 @@ class Camera;
 class Script;
 class MapScript;
 class ItemScript;
+class EnemyScript;
 
 // HUD
 class HUD;
@@ -198,6 +199,7 @@ class TargetMovement;
 class CircleMovement;
 
 // enemies
+class CustomEnemy;
 class SimpleGreenSoldier;
 class Bubble;
 class Tentacle;

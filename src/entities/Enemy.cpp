@@ -37,6 +37,7 @@
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 #include "lowlevel/Sound.h"
+#include "enemies/CustomEnemy.h"
 #include "enemies/SimpleGreenSoldier.h"
 #include "enemies/Bubble.h"
 #include "enemies/Tentacle.h"
@@ -156,7 +157,8 @@ MapEntity* Enemy::create(Game &game, Subtype subtype, const std::string& breed, 
   const ConstructionParameters params = {game, treasure, name, layer, x, y};
 
   switch (subtype) {
-    
+
+  case CUSTOM:                          enemy = new CustomEnemy(params, breed);         break;
   case SIMPLE_GREEN_SOLDIER:		enemy = new SimpleGreenSoldier(params);		break;
   case BUBBLE:				enemy = new Bubble(params);			break;
   case TENTACLE:			enemy = new Tentacle(params);			break;

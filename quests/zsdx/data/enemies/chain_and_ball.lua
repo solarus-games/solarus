@@ -48,7 +48,7 @@ end
 function event_position_changed(x, y)
 
   -- recalculate the chain position
-  if creator_name != "" then
+  if creator_name ~= "" then
 
     x, y = sol.map.enemy_get_position(creator_name)
     x1 = x + center_enemy_dxy.x;
@@ -56,10 +56,10 @@ function event_position_changed(x, y)
     x2 = get_x();
     y2 = get_y();
 
-
-  for i = 0, nb_links - 1 do
-    link_xy[i].x = x1 + (x2 - x1) * i / nb_links;
-    link_xy[i].y = y1 + (y2 - y1) * i / nb_links;
+    for i = 0, nb_links - 1 do
+      link_xy[i].x = x1 + (x2 - x1) * i / nb_links;
+      link_xy[i].y = y1 + (y2 - y1) * i / nb_links;
+    end
   end
 end
 

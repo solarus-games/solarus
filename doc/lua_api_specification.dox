@@ -9,8 +9,9 @@ For the point of view of the engine, see the documentation of the C++ class Scri
 
 For now, the following types of scripts exist:
 - the script of a map (<tt>maps/mapXXXX.lua</tt>): controls the map #XXXX,
-- the script of an item (<tt>items/XXXX.lua</tt>): controls the item named "XXXX" in <tt>items.dat</tt>.
-Other types such as scriptable enemies and scriptable menus will come soon.
+- the script of an item (<tt>items/XXXX.lua</tt>): controls the item named "XXXX" in <tt>items.dat</tt>,
+- (work in progress) the script of an item (<tt>enemies/XXXX.lua</tt>): controls the enemies whose breed is "XXXX".
+Other types such as scriptable menus will come eventually.
 
 A Lua script can call C++ functions through a global table called <tt>sol</tt>.
 The functions are organized into several APIs.
@@ -25,6 +26,7 @@ including the hero.
 - <tt>sol.item</tt>: this module represents a particular type of equipment item, and
 possibly, depending on the current context, an instance of pickable item present on the map
 or an instance of inventory item currently being used by the hero.
+- <tt>sol.enemy</tt>: this module represents the current instance of an enemy.
 
 The C++ code can also call Lua functions to notify the scripts that an event happened.
 
@@ -528,6 +530,9 @@ from every layer
 notifies the hero that he has finished using the current inventory item and can get back to a normal state
 (can be called only when the hero is currently using the inventory item controlled by this script)
 
+@subsection sol.main Module <tt>sol.enemy</tt>
+
+This API is still under construction!
 
 @section cpp_to_lua Calling Lua from C++
 

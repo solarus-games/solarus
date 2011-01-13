@@ -135,6 +135,7 @@ MapEntity* Enemy::parse(Game &game, std::istream &is, Layer layer, int x, int y)
  * @param direction initial direction of the enemy on the map (0 to 3)
  * this enemy is killed, or -1 if this enemy is not saved
  * @param treasure the pickable item that the enemy drops (possibly NULL)
+ * @return the enemy created (may be NULL)
  */
 MapEntity* Enemy::create(Game &game, Subtype subtype, const std::string& breed, Rank rank, int savegame_variable,
     const std::string &name, Layer layer, int x, int y, int direction, const Treasure &treasure) {
@@ -554,6 +555,8 @@ void Enemy::notify_enabled(bool enabled) {
  * it is not disabled, dying, being hurt or immobilized.
  * When this method returns false, the subclasses of Enemy
  * should not change the enemy properties.
+ *
+ * @return true if this enemy is in a normal state
  */
 bool Enemy::is_in_normal_state() {
   return is_enabled() && !is_being_hurt() && get_life() > 0 && !is_immobilized();

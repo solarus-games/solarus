@@ -34,6 +34,7 @@
 
 /**
  * @brief Creates an interactive entity.
+ * @param game the game
  * @param name name identifying this interactive entity
  * @param layer layer of the entity to create
  * @param x x coordinate of the entity to create

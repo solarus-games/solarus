@@ -272,7 +272,7 @@ void Switch::try_activate(Block &block) {
  *
  * The switch is activated if its properties allow it.
  *
- * @param block the arrow overlapping this switch
+ * @param arrow the arrow overlapping this switch
  */
 void Switch::try_activate(Arrow &arrow) {
 

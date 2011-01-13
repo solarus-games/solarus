@@ -55,10 +55,14 @@ class Sound {
   public:
 
     // libsndfile
-    struct SoundFromMemory {					/**< buffer containing a encoded sound file */
-      char *data;
-      size_t size;
-      size_t position;
+
+    /**
+     * @brief Buffer containing an encoded sound file.
+     */
+    struct SoundFromMemory {
+      char *data;               /**< the buffer */
+      size_t size;              /**< size of the buffer in bytes */
+      size_t position;          /**< current position in the buffer */
     };
 
     static SF_VIRTUAL_IO sf_virtual;				/**< libsndfile object used to load the encoded sound from memory */

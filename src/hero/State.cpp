@@ -569,6 +569,8 @@ bool Hero::State::can_avoid_teletransporter() {
  * When overlapping a teletransporter, if this function returns true, the teletransporter
  * will not be activated immediately. The state then has to activate it when it is ready.
  * Returns false by default.
+ *
+ * @return true if the effect of teletransporters is delayed in this state
  */
 bool Hero::State::is_teletransporter_delayed() {
   return false;

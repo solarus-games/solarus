@@ -255,7 +255,7 @@ bool PickableItem::has_layer_independent_collisions() {
 /**
  * @brief Sets whether this entity can have collisions with entities even if
  * they are not on the same layer.
- * @param true if this entity can collide with entities that are on another layer
+ * @param independent true if this entity can collide with entities that are on another layer
  */
 void PickableItem::set_layer_independent_collisions(bool independent) {
   this->layer_independent_collisions = independent;

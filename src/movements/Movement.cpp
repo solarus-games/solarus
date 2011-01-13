@@ -328,6 +328,20 @@ bool Movement::test_collision_with_obstacles(int dx, int dy) {
 }
 
 /**
+ * @brief Returns whether the entity would collide with the map
+ * if it was moved a few pixels from its position.
+ *
+ * If the movement is not attached to an entity of a map,
+ * or if obstacles are ignored, false is always returned.
+ *
+ * @param dxy distance between the current position and the position to check
+ * @return true if the entity would overlap the map obstacles in this position
+ */
+bool Movement::test_collision_with_obstacles(const Rectangle& dxy) {
+  return test_collision_with_obstacles(dxy.get_x(), dxy.get_y());
+}
+
+/**
  * @brief Returns the collision box of the last collision check that detected an obstacle.
  * @return the collision box of the last collision detected, or (-1, -1) if no obstacle was detected
  */
@@ -419,7 +433,7 @@ const std::string Movement::get_property(const std::string &key) {
  * to allow scripts to interact with the movement.
  *
  * @param key key of the property to set (the accepted keys depend on the movement type)
- * @param the value to set
+ * @param value the value to set
  */
 void Movement::set_property(const std::string &key, const std::string &value) {
 

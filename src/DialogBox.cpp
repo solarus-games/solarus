@@ -201,9 +201,11 @@ void DialogBox::set_variable(const MessageId &first_message_id, const std::strin
 }
 
 /**
- * Same thing as set_variable(MessageId, string) but with an integer parameter.
+ * @brief Same thing as set_variable(MessageId, string) but with an integer parameter.
+ *
  * This function just converts the integer value to a string
  * add calls the other function.
+ *
  * @param first_message_id id of the first message of the sequence where this value will appear
  * @param value the value to set
  */
@@ -214,10 +216,11 @@ void DialogBox::set_variable(const MessageId &first_message_id, int value) {
 }
 
 /**
- * Returns the variable specified by a previous
+ * @brief Returns the variable specified by a previous
  * call to set_variable(), for the current sequence of messages.
  * This function is called by
  * the current message when it reads the '$v' sequence.
+ * @return the value of the variable
  */
 const std::string& DialogBox::get_variable() {
 
@@ -229,7 +232,7 @@ const std::string& DialogBox::get_variable() {
 }
 
 /**
- * Returns the answer selected by the player in the last message with a question.
+ * @brief Returns the answer selected by the player in the last message with a question.
  * @return the answer selected: 0 for the first one, 1 for the second one,
  * -1 if the last dialog was not a question
  */
@@ -238,7 +241,7 @@ int DialogBox::get_last_answer() {
 }
 
 /**
- * Remembers the answer selected by the player in the last dialog with a question.
+ * @brief Remembers the answer selected by the player in the last dialog with a question.
  * @param answer the answer selected: 0 for the first one, 1 for the second one,
  * -1 if the last dialog was not a question
  */
@@ -249,8 +252,10 @@ void DialogBox::set_last_answer(int answer) {
 }
 
 /**
- * Starts a sequence of messages.
+ * @brief Starts a sequence of messages.
+ *
  * The dialog box should not be enabled already when you call this function.
+ *
  * @param first_message_id id of the first message of the sequence
  * @param issuer_script the script that issued the request to start a dialog
  * (will be notified when the dialog finishes), or NULL
@@ -284,7 +289,7 @@ void DialogBox::start_dialog(const MessageId &first_message_id, Script *issuer_s
 }
 
 /**
- * Shows a new message in the dialog box.
+ * @brief Shows a new message in the dialog box.
  * @param message_id id of the message to create (must be a valid id)
  */
 void DialogBox::show_message(const MessageId &message_id) {
@@ -315,7 +320,7 @@ void DialogBox::show_message(const MessageId &message_id) {
 }
 
 /** 
- * Shows the next message (if any).
+ * @brief Shows the next message (if any).
  */
 void DialogBox::show_next_message() {
 
@@ -330,7 +335,7 @@ void DialogBox::show_next_message() {
 }
 
 /**
- * Closes the dialog box.
+ * @brief Closes the dialog box.
  */
 void DialogBox::close() {
 
@@ -357,7 +362,7 @@ void DialogBox::close() {
 }
 
 /**
- * This function is called by the game when a key is pressed
+ * @brief This function is called by the game when a key is pressed
  * while displaying a message.
  * @param key the key pressed
  */
@@ -385,7 +390,7 @@ void DialogBox::key_pressed(GameControls::GameKey key) {
 }
 
 /**
- * This function is called when the user presses the action key.
+ * @brief This function is called when the user presses the action key.
  */
 void DialogBox::action_key_pressed() {
 
@@ -395,7 +400,7 @@ void DialogBox::action_key_pressed() {
 }
 
 /**
- * This function is called when the user presses the sword key.
+ * @brief This function is called when the user presses the sword key.
  */
 void DialogBox::sword_key_pressed() {
 
@@ -412,7 +417,7 @@ void DialogBox::sword_key_pressed() {
 }
 
 /**
- * This function is called when the user pressed the up or down arrow key.
+ * @brief This function is called when the user pressed the up or down arrow key.
  */
 void DialogBox::up_or_down_key_pressed() {
 
@@ -427,7 +432,7 @@ void DialogBox::up_or_down_key_pressed() {
 }
 
 /**
- * Shows immediately this message up to the end.
+ * @brief Shows immediately this message up to the end.
  * If the message was already finished, the next message starts.
  */
 void DialogBox::show_all_now() {
@@ -442,7 +447,7 @@ void DialogBox::show_all_now() {
 }
 
 /**
- * Returns the id of the first message shown in the current dialog box sequence.
+ * @brief Returns the id of the first message shown in the current dialog box sequence.
  * @return the id of the first message shown
  */
 MessageId DialogBox::get_first_message_id() {
@@ -450,7 +455,7 @@ MessageId DialogBox::get_first_message_id() {
 }
 
 /**
- * Returns whether the dialog box has been closed, i.e.
+ * @brief Returns whether the dialog box has been closed, i.e.
  * whether the last message was shown and the
  * user has pressed the key, or the dialog was skiped.
  * @return true if the dialog is finished
@@ -460,7 +465,7 @@ bool DialogBox::is_finished() {
 }
 
 /**
- * When the dialog box is finished, returns whether
+ * @brief When the dialog box is finished, returns whether
  * it was skipped.
  * @return true if the dialog was skipped
  */
@@ -469,7 +474,8 @@ bool DialogBox::was_skipped() {
 }
 
 /**
- * Updates the dialog box.
+ * @brief Updates the dialog box.
+ *
  * This function is called repeatedly by the game
  * while the dialog box exists.
  */
@@ -515,7 +521,7 @@ void DialogBox::update() {
 }
 
 /**
- * Displays the dialog box on a surface.
+ * @brief Displays the dialog box on a surface.
  * @param destination_surface the surface
  */
 void DialogBox::display(Surface *destination_surface) {

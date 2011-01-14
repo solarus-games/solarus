@@ -175,7 +175,7 @@ public class TilesetEditorWindow extends AbstractEditorWindow implements Project
      * @return the name of the map
      */
     public String getResourceName() {
-        return "Tileset "+getTileset().getName();
+        return "Tileset " + getTileset().getName();
     }
 
     /**
@@ -288,6 +288,10 @@ public class TilesetEditorWindow extends AbstractEditorWindow implements Project
         }
 
         setTileset(null);
+    }
+
+    public void save() {
+        saveTileset();
     }
 
     /**

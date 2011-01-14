@@ -241,6 +241,10 @@ public class MapEditorWindow extends AbstractEditorWindow implements Observer, P
         setMap(null);
     }
 
+    public void save() {
+        saveMap();
+    }
+
     /**
      * Saves the current map.
      */

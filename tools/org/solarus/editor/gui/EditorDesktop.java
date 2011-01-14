@@ -63,9 +63,21 @@ public class EditorDesktop extends JTabbedPane {
         repaint();
     }
 
+    /**
+     * Remove the current editor
+     */
     public void removeCurrentEditor() {
         if (getSelectedComponent() != null) {
             removeEditor((AbstractEditorWindow) getSelectedComponent());
+        }
+    }
+
+    /**
+     * Save the resource of the current editor
+     */
+    public void saveCurrentEditor() {
+        if (getSelectedComponent() != null) {
+           ((AbstractEditorWindow) getSelectedComponent()).save();
         }
     }
 

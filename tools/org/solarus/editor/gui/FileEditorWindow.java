@@ -95,6 +95,10 @@ public class FileEditorWindow extends AbstractEditorWindow implements ProjectObs
         }
     }
 
+    public void save() {
+        saveFile();
+    }
+
     /**
      * Saves the content of the text area into the file
      */

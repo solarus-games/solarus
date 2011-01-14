@@ -532,7 +532,130 @@ notifies the hero that he has finished using the current inventory item and can 
 
 @subsection sol.main Module <tt>sol.enemy</tt>
 
-This API is still under construction!
+The <tt>enemy</tt> module is available to scripts attached to an enemy.
+<tt>sol.enemy</tt> represents a particular instance of enemy.
+
+- <tt>sol.enemy.get_name()</tt>:
+returns the name of the current enemy
+
+- <tt>sol.enemy.get_life()</tt>:
+returns the current level of life of the enemy
+
+- <tt>sol.enemy.set_life(life)</tt>:
+sets the level of life of the enemy
+(default is 1)
+
+- <tt>sol.enemy.add_life(life)</tt>:
+adds some life to the enemy
+
+- <tt>sol.enemy.remove_life(life)</tt>:
+remove some life from the enemy
+
+- <tt>sol.enemy.get_damage()</tt>:
+returns the number of life points that the enemy removes from the hero when touching him
+(assuming that the hero's defense level is minimal)
+
+- <tt>sol.enemy.set_damage(damage)</tt>:
+sets the number of life points that the enemy removes from the hero when touching him
+(assuming that the hero's defense level is minimal)
+(default is 1)
+
+- <tt>sol.enemy.get_magic_damage()</tt>:
+returns the number of magic points that the enemy removes from the hero when touching him
+
+- <tt>sol.enemy.set_magic_damage(magic_damage)</tt>:
+sets the number of magic points that the enemy removes from the hero when touching him
+(default is 0)
+
+- <tt>sol.enemy.get_pushed_back_when_hurt()</tt>:
+returns whether the enemy is pushed away when it is hurt
+
+- <tt>sol.enemy.set_pushed_back_when_hurt(pushed_back_when_hurt)</tt>:
+sets whether the enemy is pushed away when it is hurt
+(default is true)
+
+- <tt>sol.enemy.get_hurt_sound_style()</tt>:
+returns the style of sound to play when the enemy is hurt:
+"normal", "monster" or "boss"
+
+- <tt>sol.enemy.set_hurt_sound_style(sound_style)</tt>:
+sets the style of sound to play when the enemy is hurt:
+"normal", "monster" or "boss" (default is "normal")
+
+- <tt>sol.enemy.get_minimum_shield_needed()</tt>:
+returns the hero's level of defense that allow him to stop attacks from this enemy
+(0 means that he cannot stop the attacks)
+
+- <tt>sol.enemy.set_minimum_shield_needed(shield_level)</tt>:
+returns the hero's level of defense that allow him to stop attacks from this enemy
+(0 means that he cannot stop the attacks and is the default)
+
+- <tt>sol.enemy.get_displayed_in_y_order()</tt>:
+returns whether the enemy is displayed at the same level as the hero
+(i.e. the one closest to north is displayed first)
+
+- <tt>sol.enemy.set_displayed_in_y_order(display_in_y_order)</tt>:
+sets whether the enemy is displayed at the same level as the hero
+(i.e. the one closest to north is displayed first),
+default is true, false will display the enemy below the hero
+
+- <tt>sol.enemy.has_collision_mode(collision_mode)</tt>:
+returns whether the enemy detects a kind of collisions, among
+"inside", "origin", "facing_point", "facing_point_any",
+"center", "sprite" and "custom" (see the CollisionMode enumeration)
+
+- <tt>sol.enemy.add_collison_mode(collision_mode)</tt>:
+adds a kind of collisions to the list of collisions detected by the enemy
+
+- <tt>sol.enemy.remove_collison_mode(collision_mode)</tt>:
+remove a kind of collisions to the list of collisions detected by the enemy
+
+- <tt>sol.enemy.get_obstacle(key)</tt>:
+returns whether some kind of possible obstacle stops this enemy
+
+- <tt>sol.enemy.set_obstacle(key, obstacle)</tt>:
+sets whether some kind of possible obstacle stops this enemy
+
+- <tt>sol.enemy.get_size()</tt>:
+returns the size of the enemy's bounding box (two return values: width and height in pixels)
+
+- <tt>sol.enemy.set_size(width, height)</tt>:
+sets the size of the enemy's bounding box (default: 16, 16)
+
+- <tt>sol.enemy.get_origin()</tt>:
+returns the coordinates of the origin point of the enemy, relative to its
+bounding box top-left corner (two returns values: x and y)
+
+- <tt>sol.enemy.set_origin(x, y)</tt>:
+sets the coordinates of the origin point of the enemy, relative to its
+bounding box top-left corner (default: 0, 0)
+
+- <tt>sol.enemy.snap_to_grid()</tt>:
+- <tt>sol.enemy.get_sprite()</tt>:
+- <tt>sol.enemy.get_sprite(sprite_name)</tt>:
+- <tt>sol.enemy.has_sprite(sprite_name)</tt>:
+- <tt>sol.enemy.add_sprite(sprite)</tt>:
+- <tt>sol.enemy.remove_sprite(sprite)</tt>:
+- <tt>sol.enemy.set_sprites_animation(animation_name)</tt>:
+- <tt>sol.enemy.set_sprites_direction(direction)</tt>:
+- <tt>sol.enemy.set_sprites_frame(frame)</tt>:
+- <tt>sol.enemy.set_sprites_frame_delay(frame_delay)</tt>:
+- <tt>sol.enemy.set_sprites_set_paused(paused)</tt>:
+- <tt>sol.enemy.set_sprites_set_animation_ignore_suspend(ignore)</tt>:
+- <tt>sol.enemy.set_sprites_fade(direction)</tt>:
+- <tt>sol.enemy.get_position()</tt>:
+- <tt>sol.enemy.set_position(x, y)</tt>:
+- <tt>sol.enemy.get_layer()</tt>:
+- <tt>sol.enemy.set_layer(layer)</tt>:
+- <tt>sol.enemy.start_movement(movement)</tt>:
+- <tt>sol.enemy.stop_movement()</tt>:
+- <tt>sol.enemy.get_movement()</tt>:
+- <tt>sol.enemy.restart()</tt>:
+- <tt>sol.enemy.set_default_attack_consequences()</tt>:
+- <tt>sol.enemy.set_attack_consequence(attack, consequence)</tt>:
+- <tt>sol.enemy.set_invincible()</tt>:
+- <tt>sol.enemy.create_son(enemy_name, breed, layer, x, y, relative_to_father)</tt>:
+- <tt>sol.enemy.get_father()</tt>:
 
 @section cpp_to_lua Calling Lua from C++
 

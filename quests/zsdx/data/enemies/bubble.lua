@@ -45,9 +45,9 @@ function event_obstacle_reached()
   try2 = (direction8 + 6) % 8;
   try3 = (direction8 + 4) % 8;
 
-  if not sol.main.movement_collision_obstacles(m, dxy[try1].x, dxy[try1].y) then
+  if not sol.main.movement_test_obstacles(m, dxy[try1].x, dxy[try1].y) then
     go(try1)
-  elseif not sol.movement_collision_obstacles(m, dxy[try2].x, dxy[try2].y) then
+  elseif not sol.main.movement_test_obstacles(m, dxy[try2].x, dxy[try2].y) then
     go(try2)
   else
     go(try3)

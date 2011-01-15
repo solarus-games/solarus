@@ -980,10 +980,10 @@ something happended (for example the enemy has just been created,
 or it was just hurt)
 
 - <tt>event_pre_display()</tt>:
-called just before the enemy is disabled (you may display additional things under the enemy)
+called just before the enemy is displayed (you may display additional things below the enemy)
 
 - <tt>event_post_display()</tt>:
-called just after the enemy is disabled (you may display additional things over the enemy)
+called just after the enemy is displayed (you may display additional things above the enemy)
 
 - <tt>event_position_changed(x, y)</tt>:
 called when the enemy has moved
@@ -994,14 +994,17 @@ called when the layer of the enemy has changed
 - <tt>event_obstacle_reached()</tt>:
 called when the movement of the enemy was stopped because of an obstacle.
 
-- <tt>event_movement_changed()</tt>:
+- <tt>event_movement_changed(movement)</tt>:
 called when something changes in the movement of the enemy
 
-- <tt>event_sprite_frame_changed(sprite, animation)</tt>:
+- <tt>event_movement_finished(movement)</tt>:
+called when the movement of the enemy is finished
+
+- <tt>event_sprite_frame_changed(sprite, animation, frame)</tt>:
 called when the current frame of a sprite of the enemy has changed
 
 - <tt>event_sprite_animation_finished(sprite, animation)</tt>:
-called when the animation of a sprite of the enemy has changed
+called when the animation of a sprite of the enemy has just finished
 
 - <tt>event_custom_attack_received(attack, sprite)</tt>:
 called when an attack with a custom effect is received by the enemy:

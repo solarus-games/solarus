@@ -27,6 +27,7 @@
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 
+int Sprite::next_unique_id = 0;
 std::map<SpriteAnimationSetId, SpriteAnimationSet*> Sprite::all_animation_sets;
 Surface *Sprite::alpha_surface = NULL;
 
@@ -80,6 +81,7 @@ SpriteAnimationSet& Sprite::get_animation_set(const SpriteAnimationSetId &id) {
  */
 Sprite::Sprite(const SpriteAnimationSetId &id):
 
+  unique_id(next_unique_id++),
   animation_set_id(id),
   animation_set(get_animation_set(id)),
   current_direction(0),
@@ -101,6 +103,18 @@ Sprite::Sprite(const SpriteAnimationSetId &id):
  */
 Sprite::~Sprite() {
 
+}
+
+/**
+ * @brief Returns the unique id of this sprite.
+ *
+ * It is guaranteed that no other sprite instance will have the same id as this one
+ * during the execution of the program, even after this sprite is deleted.
+ *
+ * @return the unique id of this movement
+ */
+int Sprite::get_unique_id() const {
+  return unique_id;
 }
 
 /**

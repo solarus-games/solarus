@@ -115,7 +115,7 @@ class Enemy: public Detector {
 							 * - a number greater than 0 represents the number of health points lost when
 							 *   he is subject to this attack
 							 *     - for a sword attack, this number is multiplied depending on
-							 *       the sword strongness and the presence of a spin attack
+							 *       the sword strength and the presence of a spin attack
 							 *     - for a thrown item, this number is multiplied by the weight
 							 * - a value of 0 means that the attack is just ignored (this is the case
 							 *   for some special enemies like Octorok's stones),
@@ -123,7 +123,9 @@ class Enemy: public Detector {
 							 *   sound is played),
 							 * - a value of -2 means that this attack immobilizes the enemy
 							 * - a value of -3 means a custom effect for the attack
-							 *   (the custom_attack() fonction is called) */
+							 *   (the custom_attack() function is called) */
+    static const std::string attack_names[];            /**< name of each type of attack an enemy can receive */
+
 
     // enemy characteristics
     Rank rank;						/**< is this enemy a normal enemy, a miniboss or a boss? */
@@ -212,7 +214,7 @@ class Enemy: public Detector {
 	const Treasure& treasure);
 
     EntityType get_type();
-    void set_map(Map &map);
+    virtual void set_map(Map &map);
     Rank get_rank();
 
     // obstacles
@@ -232,12 +234,15 @@ class Enemy: public Detector {
     void attack_hero(Hero &hero, Sprite *this_sprite);
     void attack_stopped_by_hero_shield();
 
-    // be subject to an attack
+    // receive an attack
     int get_attack_consequence(EnemyAttack attack);
     virtual int get_attack_consequence(EnemyAttack attack, Sprite *this_sprite);
     void try_hurt(EnemyAttack attack, MapEntity &source, Sprite *this_sprite);
     void kill();
     bool is_dying();
+
+    static const std::string& get_attack_name(EnemyAttack attack);
+    static EnemyAttack get_attack_by_name(const std::string& attack_name);
 };
 
 #endif

@@ -28,7 +28,7 @@ EnemyScript::EnemyScript(CustomEnemy& enemy):
   game(enemy.get_game()),
   enemy(enemy) {
 
-  std::string script_name = (std::string) "enemies/" + enemy.get_breed();
+  std::string script_name = std::string("enemies/" + enemy.get_breed());
   load_if_exists(script_name);
 }
 
@@ -108,3 +108,170 @@ void EnemyScript::event_set_suspended(bool suspended) {
   notify_script("event_suspended", "b", suspended);
 }
 
+/**
+ * @brief Notifies the script that an instance of the enemy has just been created on the map.
+ */
+void EnemyScript::event_appear() {
+
+  notify_script("event_appear");
+}
+
+/**
+ * @brief Notifies the script that the enemy has just been enabled.
+ */
+void EnemyScript::event_enabled() {
+
+  notify_script("event_enabled");
+}
+
+/**
+ * @brief Notifies the script that the enemy has just been disabled.
+ */
+void EnemyScript::event_disabled() {
+
+  notify_script("event_disabled");
+}
+
+/**
+ * @brief Notifies the script that the enemy is restarting its movement because
+ * something happended (for example the enemy has just been created,
+ * or it was just hurt)
+ */
+void EnemyScript::event_restart() {
+
+  notify_script("event_restart");
+}
+
+/**
+ * @brief Notifies the script that the enemy is about to be displayed.
+ *
+ * Your script may display additional things below the enemy.
+ */
+void EnemyScript::event_pre_display() {
+
+  notify_script("event_pre_display");
+
+}
+
+/**
+ * @brief Notifies the script that the enemy is about to be displayed.
+ *
+ * Your script may display additional things above the enemy.
+ */
+void EnemyScript::event_post_display() {
+
+  notify_script("event_post_display");
+}
+
+/**
+ * @brief Notifies the script that the enemy has just moved.
+ * @param xy the new position of the enemy on the map
+ */
+void EnemyScript::event_position_changed(const Rectangle& xy) {
+
+  notify_script("event_position_changed", "ii", xy.get_x(), xy.get_y());
+}
+
+/**
+ * @brief Notifies the script that the layer of the enemy has changed.
+ * @param layer the new layer
+ */
+void EnemyScript::event_layer_changed(Layer layer) {
+
+  notify_script("event_layer_changed", "i", layer);
+}
+
+/**
+ * @brief Notifies the script that the movement of the enemy
+ * was stopped because of an obstacle.
+ */
+void EnemyScript::event_obstacle_reached() {
+
+  notify_script("event_obstacle_reached");
+}
+
+/**
+ * @brief Notifies the script that something has just changed
+ * in the movement of the enemy.
+ * @param movement the current movement of the enemy
+ */
+void EnemyScript::event_movement_changed(Movement& movement) {
+
+  notify_script("event_movement_changed", "i", create_movement_handle(movement));
+}
+
+/**
+ * @brief Notifies the script that the movement of the enemy has just finished.
+ * @param movement the current movement of the enemy
+ */
+void EnemyScript::event_movement_finished(Movement& movement) {
+
+  notify_script("event_movement_finished", "i", create_movement_handle(movement));
+}
+
+/**
+ * @brief Notifies the script that the animation of a sprite of the enemy has just finished.
+ * @param sprite a sprite of the enemy
+ * @param animation the animation that was playing
+ */
+void EnemyScript::event_sprite_animation_finished(Sprite& sprite, const std::string& animation) {
+
+  notify_script("event_sprite_animation_finished", "is",
+      create_sprite_handle(sprite), animation.c_str());
+}
+
+/**
+ * @brief Notifies the script that the animation of a sprite of the enemy has just finished.
+ * @param sprite a sprite of the enemy
+ * @param animation the current animation
+ * @param frame the new frame
+ */
+void EnemyScript::event_sprite_frame_changed(Sprite& sprite, const std::string& animation, int frame) {
+
+  notify_script("event_sprite_frame_changed", "isi",
+      create_sprite_handle(sprite), animation.c_str(), frame);
+}
+
+/**
+ * @brief Notifies the script that the enemy is receiving an attack
+ * with a custom effect, which means that your script decides what happens.
+ * and returns the number of life points to remove.
+ * @param attack the type of attack received
+ * @param sprite the sprite of the enemy that receives the attack, or NULL
+ * if the attack does not come from a pixel-precise collision test.
+ * @return the number of life points to remove from the enemy
+ */
+int EnemyScript::event_custom_attack_received(EnemyAttack attack, Sprite* sprite) {
+
+  int result;
+  if (sprite != NULL) {
+    // pixel-perfect collision
+    result = notify_script("event_custom_attack_received", "si i",
+        Enemy::get_attack_name(attack).c_str(), create_sprite_handle(*sprite));
+  }
+  else {
+    result = notify_script("event_custom_attack_received", "s i",
+        Enemy::get_attack_name(attack).c_str());
+  }
+  return result;
+}
+
+/**
+ * @brief Notifies the script that the enemy has just been hurt.
+ * @param attack the type of attack received
+ * @param life_lost the number of life points just lost
+ */
+void EnemyScript::event_hurt(EnemyAttack attack, int life_lost) {
+
+  notify_script("event_hurt", "si", Enemy::get_attack_name(attack).c_str(), life_lost);
+}
+
+/**
+ * @brief Notifies the script that the enemy just died.
+ *
+ * This function is called when the dying animation is totally finished.
+ */
+void EnemyScript::event_dead() {
+
+  notify_script("event_dead");
+}

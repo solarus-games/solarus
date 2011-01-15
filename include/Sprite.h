@@ -37,6 +37,10 @@ class Sprite {
 
   private:
 
+    // unique id
+    static int next_unique_id;                          /**< next unique id to attribute to a sprite instance */
+    int unique_id;                                      /**< a number identifying this instance */
+
     // animation set
     static std::map<SpriteAnimationSetId, SpriteAnimationSet*> all_animation_sets;
     const SpriteAnimationSetId animation_set_id;	/**< id of this sprite's animation set */
@@ -86,6 +90,7 @@ class Sprite {
     // creation and destruction
     Sprite(const SpriteAnimationSetId &id);
     ~Sprite();
+    int get_unique_id() const;
 
     void set_map(Map &map);
 

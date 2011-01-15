@@ -23,18 +23,19 @@ sol.main.movement_test_obstacles(movement, dx, dy)
 sol.main.get_angle(x1, y1, x2, y2)
 
 sol.map.sprite_display(sprite, x, y)
+sol.map.enemy_create(enemy_name, breed, layer, x, y)
+sol.map.enemy_remove(enemy_name)
+sol.map.enemy_remove_group(enemies_name_prefix)
 sol.map.enemy_is_enabled(enemy_name)
+sol.map.enemy_set_enabled(enemy_name, enabled)
+sol.map.enemy_get_group_count(enemies_name_prefix)
 sol.map.enemy_get_position(enemy_name)
 sol.map.enemy_set_position(enemy_name, x, y)
 sol.map.enemy_get_layer(enemy_name)
 sol.map.enemy_set_layer(enemy_name, layer)
-sol.map.enemy_get_group_count(enemies_name_prefix)
 sol.map.enemy_set_treasure(enemy_name, item_name, variant, savegame_variable)
 sol.map.enemy_set_no_treasure(enemy_name)
 sol.map.enemy_set_random_treasure(enemy_name)
-sol.map.enemy_create(enemy_name, breed, layer, x, y)
-sol.map.enemy_remove(enemy_name)
-sol.map.enemy_remove_group(enemies_name_prefix)
 
 sol.enemy.get_name()
 sol.enemy.get_life()
@@ -45,7 +46,7 @@ sol.enemy.get_damage()
 sol.enemy.set_damage(damage)
 sol.enemy.get_magic_damage()
 sol.enemy.set_magic_damage(magic_damage)
-sol.enemy.get_pushed_back_when_hurt()
+sol.enemy.is_pushed_back_when_hurt()
 sol.enemy.set_pushed_back_when_hurt(pushed_back_when_hurt)
 sol.enemy.get_hurt_sound_style()
 sol.enemy.set_hurt_sound_style(sound_style)
@@ -87,7 +88,26 @@ sol.enemy.set_sprites_frame_delay(frame_delay)
 sol.enemy.set_sprites_set_paused(paused)
 sol.enemy.set_sprites_set_animation_ignore_suspend(ignore)
 sol.enemy.set_sprites_fade(direction)
-sol.enemy.get_displayed_in_y_order()
+sol.enemy.is_displayed_in_y_order()
 sol.enemy.set_displayed_in_y_order(display_in_y_order)
 sol.enemy.create_son(enemy_name, breed, layer, x, y, relative_to_father)
 sol.enemy.get_father()
+
+global variables read when initializing the enemy:
+
+life
+damage
+magic_damage
+pushed_back_when_hurt
+hurt_sound_style
+minimum_shield_needed
+invincible
+collision_mode
+collision_modes
+size
+origin
+sprite
+sprites
+displayed_in_y_order
+attack_consequences (<integer>, "ignored", "protected", "custom"): sword, thrown_item, explosion, arrow, hookshot, boomerang, lamp, others
+obstacle (true, false): water, hole, destructible item

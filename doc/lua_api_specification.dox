@@ -110,7 +110,8 @@ sets whether the animation should continue even when the sprite is suspended
 shows a fade effect on a sprite (0: fade-in, 1: fade-out)
 
 - <tt>sol.main.sprite_synchronize(sprite, reference_sprite)</tt>:
-Synchronizes the frames of a sprite with the frame on a reference sprite.
+Synchronizes the frames of a sprite with the frames of a reference sprite
+when their animation name match.
 Stops any previous synchronization if <tt>reference_sprite</tt> is <tt>nil</tt>.
 
 - <tt>sol.main.pixel_movement_create(trajectory, delay)</tt>:
@@ -148,7 +149,7 @@ sets a property of a movement (the value may be a string, an integer or a boolea
 
 - <tt>sol.main.movement_test_obstacles(movement, dx, dy)</tt>:
 Returns whether there would be a collision if the entity controlled by a movement
-object was translated with the given paramaters.
+object was translated with the given parameters.
 
 - <tt>sol.main.get_angle(x1, y1, x2, y2)</tt>:
 Returns the angle in radians between the specified vector and the x axis.
@@ -290,9 +291,6 @@ returns the current light level of the map
 - <tt>sol.map.light_set(light_level)</tt>:
 sets the light level of the map (0: no light, positive values: full light)
 
-- <tt>sol.map.treasure_give(item_name, variant, savegame_variable)</tt>: 
-gives a treasure to the player (without using a chest)
-
 - <tt>sol.map.camera_move(x, y, speed)</tt>: 
 suspends the game and moves the camera towards a target point
 
@@ -301,6 +299,9 @@ sents the camera back to the hero after a call to camera_move()
 
 - <tt>sol.map.sprite_display(sprite, x, y)</tt>:
 displays a sprite at the given position (relative to the the map)
+
+- <tt>sol.map.treasure_give(item_name, variant, savegame_variable)</tt>: 
+gives a treasure to the player (without using a chest)
 
 - <tt>sol.map.hero_freeze()</tt>: 
 prevents the hero from moving until you call <tt>sol.map.hero_unfreeze()</tt>
@@ -467,15 +468,6 @@ changes immediately the state of a door (without playing animation and sound)
 - <tt>sol.map.pickable_item_create(item_name, variant, savegame_variable, x, y, layer)</tt>:
 creates a pickable item and places it on the map
 
-- <tt>sol.map.enemy_is_dead(enemy_name)</tt>:
-returns whether an enemy is dead
-
-- <tt>sol.map.enemy_is_group_dead(enemies_name_prefix)</tt>:
-returns whether all enemies having a common prefix are dead
-
-- <tt>sol.map.enemy_get_group_count(enemies_name_prefix)</tt>:
-Returns the number of living enemies of the map whose name starts with the specified prefix.
-
 - <tt>sol.map.enemy_create(enemy_name, breed, layer, x, y)</tt>:
 Creates an enemy on the map.
 
@@ -490,6 +482,15 @@ returns whether an enemy is enabled
 
 - <tt>sol.map.enemy_set_enabled(enemy_name)</tt>:
 enables or disables an enemy
+
+- <tt>sol.map.enemy_is_dead(enemy_name)</tt>:
+returns whether an enemy is dead
+
+- <tt>sol.map.enemy_is_group_dead(enemies_name_prefix)</tt>:
+returns whether all enemies having a common prefix are dead
+
+- <tt>sol.map.enemy_get_group_count(enemies_name_prefix)</tt>:
+Returns the number of living enemies of the map whose name starts with the specified prefix.
 
 - <tt>sol.map.enemy_start_boss(enemy_name)</tt>:
 starts fighting a boss if it is alive

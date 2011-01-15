@@ -494,6 +494,20 @@ void MapEntities::remove_entity(EntityType type, const std::string &name) {
 }
 
 /**
+ * @brief Removes all entities of a type whose name starts with the specified prefix.
+ * @param type a type of entities
+ * @param prefix prefix of the name of the entities to remove
+ */
+void MapEntities::remove_entities_with_prefix(EntityType type, const std::string& prefix) {
+
+  std::list<MapEntity*> entities = get_entities_with_prefix(type, prefix);
+  std::list<MapEntity*>::iterator it;
+  for (it = entities.begin(); it != entities.end(); it++) {
+    remove_entity(*it);
+  }
+}
+
+/**
  * @brief Removes and destroys the entities placed in the entities_to_remove list. 
  */
 void MapEntities::remove_marked_entities() {

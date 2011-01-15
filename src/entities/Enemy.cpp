@@ -938,6 +938,14 @@ bool Enemy::is_dying() {
 }
 
 /**
+ * @brief Sets the treasure dropped by this enemy.
+ * @param treasure the treasure to set
+ */
+void Enemy::set_treasure(const Treasure& treasure) {
+  this->treasure = treasure;
+}
+
+/**
  * @brief Returns true if the current sprite animation is finished or is looping.
  * @return true if the current sprite animation is finished or is looping 
  */

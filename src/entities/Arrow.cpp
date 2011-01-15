@@ -434,7 +434,7 @@ void Arrow::notify_collision_with_destructible_item(DestructibleItem &destructib
 void Arrow::notify_collision_with_enemy(Enemy &enemy, Sprite &enemy_sprite, Sprite &this_sprite) {
 
   if (!overlaps(hero) && is_flying()) {
-    enemy.try_hurt(ATTACK_BOW, *this, NULL);
+    enemy.try_hurt(ATTACK_ARROW, *this, NULL);
   }
 }
 

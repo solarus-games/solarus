@@ -40,6 +40,7 @@ class Movement {
 
     Rectangle xy;					/**< coordinates of the object controlled by this movement when it is not an entity */
     uint32_t last_move_date;				/**< date of the last x or y move */
+    bool finished;                                      /**< true if is_finished() returns true */
 
     // suspended
     bool suspended;					/**< indicates whether the movement is suspended */

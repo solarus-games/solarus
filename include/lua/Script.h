@@ -52,8 +52,8 @@ class Script {
     std::list<Timer*> timers;						/**< the timers currently running for this script */
 
     std::map<int, Sprite*> sprites;					/**< the sprites accessible from this script */
-    int next_sprite_handle;						/**< next handle of a sprite */
-
+    std::map<int, Sprite*> unassigned_sprites;                          /**< the sprites accessible from this script and that
+                                                                         * are not assigned to an object yet (the script has to delete them) */
     std::map<int, Movement*> movements;					/**< the movements accessible from this script */
     std::map<int, Movement*> unassigned_movements;			/**< the movements accessible from this script and that
     									 * are not assigned to an object yet (the script has to delete them) */
@@ -80,15 +80,6 @@ class Script {
     void remove_timer(const std::string &callback_name);
     void remove_all_timers();
     bool is_new_timer_suspended(void);
-
-    // sprites
-    int create_sprite_handle(Sprite &sprite);
-    Sprite& get_sprite(int sprite_handle);
-
-    // movements
-    int create_movement_handle(Movement &movement);
-    Movement& get_movement(int movement_handle);
-    Movement& start_movement(int movement_handle);
 
     // debugging
     void print_stack();
@@ -261,12 +252,23 @@ class Script {
 
     Script(uint32_t apis_enabled);
 
+    // sprites
+    int create_sprite_handle(Sprite &sprite);
+    Sprite& get_sprite(int sprite_handle);
+
+    // movements
+    int create_movement_handle(Movement &movement);
+    Movement& get_movement(int movement_handle);
+    Movement& start_movement(int movement_handle);
+
+    // Lua
     bool notify_script(const std::string &function_name, const std::string &format = "", ...);
     void initialize_lua_context();
     void load(const std::string &script_name);
     void load_if_exists(const std::string &script_name);
     bool is_loaded();
 
+    // game objects
     virtual Game& get_game();
     virtual Map& get_map();
     virtual ItemProperties& get_item_properties();

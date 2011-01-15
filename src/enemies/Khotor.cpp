@@ -55,7 +55,7 @@ void Khotor::initialize() {
   set_no_attack_consequences();
   set_attack_consequence(ATTACK_SWORD, 2);
   set_attack_consequence(ATTACK_THROWN_ITEM, 1);
-  set_attack_consequence(ATTACK_BOW, 1);
+  set_attack_consequence(ATTACK_ARROW, 1);
 
   // movement
   set_movement(new RandomPathMovement(40));

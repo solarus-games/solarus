@@ -47,6 +47,16 @@
 #include "enemies/Khorneth.h"
 #include "enemies/Khotor.h"
 
+const std::string Enemy::attack_names[] = {
+  "sword",
+  "thrown_item",
+  "explosion",
+  "arrow",
+  "hookshot",
+  "boomerang",
+  "lamp"
+};
+
 /**
  * @brief Creates an enemy.
  *
@@ -980,5 +990,35 @@ int Enemy::custom_attack(EnemyAttack attack, Sprite *this_sprite) {
 
   Debug::die(StringConcat() << "The custom attack for enemy '" << get_name() << "' is not defined");
   return 0;
+}
+
+/**
+ * @brief Converts an attack enumerated value into a string.
+ * @param attack an attack
+ * @return the corresponding string
+ */
+const std::string& Enemy::get_attack_name(EnemyAttack attack) {
+
+  Debug::check_assertion(attack >= 0 && attack < ATTACK_NUMBER,
+      StringConcat() << "Invalid attack number: " << attack);
+
+  return attack_names[attack];
+}
+
+/**
+ * @brief Converts a string into an attack enumerated value.
+ * @param attack_name name of an attack
+ * @return the corresponding attack
+ */
+EnemyAttack Enemy::get_attack_by_name(const std::string& attack_name) {
+
+  for (int i = 0; i < ATTACK_NUMBER; i++) {
+    if (attack_names[i] == attack_name) {
+      return EnemyAttack(i);
+    }
+  }
+
+  Debug::die(StringConcat() << "Invalid attack name: " << attack_name);
+  throw;
 }
 

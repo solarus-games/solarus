@@ -228,6 +228,8 @@ class MapEntity {
     bool has_sprite();
     void remove_sprite(const SpriteAnimationSetId &id);
     void remove_sprites();
+    virtual void notify_sprite_frame_changed(Sprite& sprite, const std::string& animation, int frame);
+    virtual void notify_sprite_animation_finished(Sprite& sprite, const std::string& animation);
     virtual bool is_visible();
     virtual void set_visible(bool visible);
     void set_animation_ignore_suspend(bool ignore_suspend);
@@ -242,6 +244,7 @@ class MapEntity {
     virtual void notify_position_changed();
     virtual void notify_layer_changed();
     virtual void notify_movement_changed();
+    virtual void notify_movement_finished();
     Detector* get_facing_entity();
     void set_facing_entity(Detector* facing_entity);
     virtual void notify_facing_entity_changed(Detector* facing_entity);

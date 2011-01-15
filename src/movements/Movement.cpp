@@ -33,6 +33,7 @@ Movement::Movement(bool ignore_obstacles):
   entity(NULL),
   xy(0, 0),
   last_move_date(0),
+  finished(false),
   suspended(false),
   when_suspended(0),
   last_collision_box_on_obstacle(-1, -1),
@@ -292,6 +293,13 @@ uint32_t Movement::get_when_suspended() {
  */
 void Movement::update() {
 
+  if (!finished && is_finished()) {
+    finished = true;
+    entity->notify_movement_finished();
+  }
+  else if (finished && !is_finished()) {
+    finished = false;
+  }
 }
 
 /**

@@ -15,13 +15,14 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lua/Script.h"
-#include "Game.h"
-#include "Map.h"
-#include "Timer.h"
 #include "movements/Movement.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
+#include "Game.h"
+#include "Map.h"
+#include "Timer.h"
+#include "Sprite.h"
 #include <lua.hpp>
 #include <sstream>
 #include <cstdarg>
@@ -54,10 +55,17 @@ Script::~Script() {
     }
   }
 
-  // delete the movements still stored by this script, if any
+  // delete the movements and sprites still stored by this script, if any
   {
     std::map<int, Movement*>::iterator it;
     for (it = unassigned_movements.begin(); it != unassigned_movements.end(); it++) {
+      delete it->second;
+    }
+  }
+
+  {
+    std::map<int, Sprite*>::iterator it;
+    for (it = unassigned_sprites.begin(); it != unassigned_sprites.end(); it++) {
       delete it->second;
     }
   }
@@ -67,9 +75,6 @@ Script::~Script() {
  * @brief Initializes the Lua context for this script.
  */
 void Script::initialize_lua_context() {
-
-  // initialize fields
-  next_sprite_handle = 1;
 
   // create an execution context
   context = lua_open();
@@ -790,13 +795,22 @@ bool Script::is_new_timer_suspended(void) {
 
 /**
  * @brief Makes a sprite accessible from the script.
+ *
+ * If the sprite is already accessible from this script,
+ * this function returns the already known handle.
+ *
  * @param sprite the sprite to make accessible
  * @return a handle that can be used by scripts to refer to this sprite
  */
 int Script::create_sprite_handle(Sprite &sprite) {
 
-  int handle = next_sprite_handle++;
-  sprites[handle] = &sprite;
+  int handle = sprite.get_unique_id();
+  if (sprites.find(handle) == sprites.end()) {
+    sprites[handle] = &sprite;
+    unassigned_sprites[handle] = &sprite;
+    sprite.set_suspended(true); // suspended until it is assigned to an object
+  }
+
   return handle;
 }
 
@@ -817,7 +831,7 @@ Sprite& Script::get_sprite(int sprite_handle) {
  * @brief Makes a movement accessible from the script.
  *
  * If the movement is already accessible from this script,
- * this returns the already known handle.
+ * this function returns the already known handle.
  *
  * @param movement the movement to make accessible
  * @return a handle that can be used by scripts to refer to this movement

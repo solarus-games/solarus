@@ -284,7 +284,7 @@ bool MapEntity::is_on_map() {
 /**
  * @brief Sets the map where this entity is.
  *
- * Warning: as this function is called when initializing the map,
+ * Warning: when this function is called during the initialization of a new map,
  * the current map of the game is still the old one.
  *
  * @param map the map
@@ -937,6 +937,30 @@ void MapEntity::remove_sprites() {
 }
 
 /**
+ * @brief Notifies this entity that the frame of one of its sprites has just changed.
+ *
+ * By default, nothing is done.
+ *
+ * @param sprite the sprite
+ * @param animation the current animation
+ * @param frame the new frame
+ */
+void MapEntity::notify_sprite_frame_changed(Sprite& sprite, const std::string& animation, int frame) {
+}
+
+/**
+ * @brief Notifies this entity that the animation of one of its sprites
+ * has just finished.
+ *
+ * By default, nothing is done.
+ *
+ * @param sprite the sprite
+ * @param animation the animation just finished
+ */
+void MapEntity::notify_sprite_animation_finished(Sprite& sprite, const std::string& animation) {
+}
+
+/**
  * @brief Returns whether this entity is currently visible.
  * @return true if this entity is currently visible
  */
@@ -1003,7 +1027,7 @@ void MapEntity::clear_movement() {
 }
 
 /**
- * @brief Notifies this entity that it has just tried to change his position.
+ * @brief Notifies this entity that it has just tried to change its position.
  *
  * This function is called only when the movement is not suspended.
  * By default, nothing is done.
@@ -1042,6 +1066,14 @@ void MapEntity::notify_position_changed() {
  * (for now, only PlayerMovement and RandomMovement call it)
  */
 void MapEntity::notify_movement_changed() {
+}
+
+/**
+ * @brief This function is called when the movement of the entity is finished.
+ *
+ * By default, nothing is done.
+ */
+void MapEntity::notify_movement_finished() {
 }
 
 /**
@@ -1628,8 +1660,16 @@ void MapEntity::update() {
 
     Sprite &sprite = *(it->second);
     sprite.update();
-    if (sprite.has_frame_changed() && sprite.are_pixel_collisions_enabled()) {
-      get_map().check_collision_with_detectors(*this, sprite);
+    if (sprite.has_frame_changed()) {
+
+      if (sprite.are_pixel_collisions_enabled()) {
+        get_map().check_collision_with_detectors(*this, sprite);
+      }
+
+      notify_sprite_frame_changed(sprite, sprite.get_current_animation(), sprite.get_current_frame());
+      if (sprite.is_animation_finished()) {
+        notify_sprite_animation_finished(sprite, sprite.get_current_animation());
+      }
     }
   }
 

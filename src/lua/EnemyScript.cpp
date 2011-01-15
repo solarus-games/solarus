@@ -243,15 +243,15 @@ void EnemyScript::event_sprite_frame_changed(Sprite& sprite, const std::string& 
  */
 int EnemyScript::event_custom_attack_received(EnemyAttack attack, Sprite* sprite) {
 
-  int result;
+  int result = 0;
   if (sprite != NULL) {
     // pixel-perfect collision
-    result = notify_script("event_custom_attack_received", "si i",
-        Enemy::get_attack_name(attack).c_str(), create_sprite_handle(*sprite));
+    notify_script("event_custom_attack_received", "si i",
+        Enemy::get_attack_name(attack).c_str(), create_sprite_handle(*sprite), &result);
   }
   else {
-    result = notify_script("event_custom_attack_received", "s i",
-        Enemy::get_attack_name(attack).c_str());
+    notify_script("event_custom_attack_received", "s i",
+        Enemy::get_attack_name(attack).c_str(), &result);
   }
   return result;
 }

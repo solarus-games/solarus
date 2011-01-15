@@ -5,24 +5,25 @@ main_sprite_name = "enemies/khorneth"
 left_blade_sprite_name = "enemies/khorneth_left_blade"
 right_blade_sprite_name = "enemies/khorneth_right_blade"
 
--- Properties
-life = 5
-damage = 2
-pushed_back_when_hurt = false
-push_back_hero_on_sword = true  -- TODO (not implemented yet)
-sprites = {main_sprite_name, left_blade_sprite_name, right_blade_sprite_name}
-size = {40, 48}
-origin = {20, 25}
-collision_mode = "sprite"
-attack_consequences = {
-  sword = "custom", -- to handle the blades
-  others = "ignored"
-}
-
 -- State
 left_blade_life = 4
 right_blade_life = 4
 blade_attack = false;
+
+function event_appear()
+
+  -- set the properties
+  sol.enemy.set_life(5)
+  sol.enemy.set_damage(2)
+  sol.enemy.set_pushed_back_when_hurt(false)
+  sol.enemy.create_sprite(main_sprite_name)
+  sol.enemy.create_sprite(left_blade_sprite_name)
+  sol.enemy.create_sprite(right_blade_sprite_name)
+  sol.enemy.set_size(40, 48)
+  sol.enemy.set_origin(20, 25)
+  sol.enemy.set_invincible()
+  sol.enemy.set_attack_consequence("sword", "custom")
+end
 
 function event_restart()
 
@@ -119,7 +120,15 @@ function blade_attack()
     else
       animation = "right_blade_attack"
     end
-    sol.enemy.set_sprites_animation(animation)
+
+    sol.main.sprite_set_animation(get_main_sprite(), animation)
+    if has_left_blade() then
+      sol.main.sprite_set_animation(get_left_blade_sprite(), animation)
+    end
+    if has_right_blade() then
+      sol.main.sprite_set_animation(get_right_blade_sprite(), animation)
+    end
+
     sol.enemy.stop_movement()
 
   end

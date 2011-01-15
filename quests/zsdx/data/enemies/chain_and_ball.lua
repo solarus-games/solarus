@@ -3,16 +3,6 @@
 -- the chain is a sprite that automatically fits the space between the other enemy and the ball.
 -- They usually disappear when the enemy is killed.
 
--- Properties
-life = 1
-damage = 2
-sprite = "enemies/chain_and_ball"
-size = {16, 16}
-origin = {8, 8}
-invincible = true
-displayed_in_y_order = false
-
--- Specific
 nb_links = 10
 link_sprite = nil
 link_xy = {x = 0, y = 0}
@@ -21,7 +11,16 @@ center_xy = {x = 0, y = 0}        -- center point of the circles, relative to th
 
 function event_appear()
 
-  -- set the sprite
+  -- set the properties
+  sol.enemy.set_life(1)
+  sol.enemy.set_damage(2)
+  sol.enemy.create_sprite("enemies/chain_and_ball")
+  sol.enemy.set_size(16, 16)
+  sol.enemy.set_origin(8, 8)
+  sol.enemy.set_invincible()
+  sol.enemy.set_displayed_in_y_order()
+
+  -- create a second sprite that stays in the script
   link_sprite = sol.main.sprite_create("enemies/chain_and_ball")
   sol.main.sprite_set_animation("chain")
 

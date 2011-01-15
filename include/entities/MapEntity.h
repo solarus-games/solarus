@@ -139,6 +139,8 @@ class MapEntity {
     void set_bounding_box_from_sprite();
     void set_bounding_box(const Rectangle &bounding_box);
     void create_sprite(const SpriteAnimationSetId &id, bool enable_pixel_collisions = false);
+    void remove_sprite(const SpriteAnimationSetId &id);
+    void remove_sprites();
 
     // easy access to various game objects
     MapEntities& get_entities();
@@ -221,13 +223,12 @@ class MapEntity {
     int get_direction();
 
     // sprites
-    Sprite& get_sprite(const SpriteAnimationSetId &id);
     Sprite& get_sprite();
+    Sprite& get_sprite(const SpriteAnimationSetId &id);
     std::map<SpriteAnimationSetId, Sprite*>& get_sprites();
     int get_nb_sprites();
     bool has_sprite();
-    void remove_sprite(const SpriteAnimationSetId &id);
-    void remove_sprites();
+    bool has_sprite(const SpriteAnimationSetId &id);
     virtual void notify_sprite_frame_changed(Sprite& sprite, const std::string& animation, int frame);
     virtual void notify_sprite_animation_finished(Sprite& sprite, const std::string& animation);
     virtual bool is_visible();

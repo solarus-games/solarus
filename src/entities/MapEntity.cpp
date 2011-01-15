@@ -857,6 +857,15 @@ bool MapEntity::has_sprite() {
 }
 
 /**
+ * @brief Returns whether the entity has a sprite with the specified animation set name.
+ * @param id name of an animation set
+ * @return true if the entity has a sprite with this animation set.
+ */
+bool MapEntity::has_sprite(const SpriteAnimationSetId &id) {
+  return sprites.count(id) > 0;
+}
+
+/**
  * @brief Returns the sprite created with the first call to create_sprite() for this entity.
  * @return the first sprite created
  */
@@ -871,7 +880,7 @@ Sprite& MapEntity::get_sprite() {
  */
 Sprite& MapEntity::get_sprite(const SpriteAnimationSetId &id) {
 
-  Debug::check_assertion(sprites.count(id) > 0, 
+  Debug::check_assertion(has_sprite(id),
     StringConcat() << "Cannot find sprite '" << id << "' for entity '" << get_name() << "'");
 
   return *sprites[id];

@@ -190,7 +190,7 @@ int Script::item_api_get_sprite(lua_State *l) {
  *
  * This function should be called only when there a current pickable item,
  * i.e. from event_appear() or event_movement_changed().
- * - Return value (mvoement): the movement of the current pickable item
+ * - Return value (movement): the movement of the current pickable item
  * (your script can then pass it as a parameter
  * to all sol.main.movement_* functions)
  *

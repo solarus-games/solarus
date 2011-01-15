@@ -1832,7 +1832,7 @@ int Script::map_api_enemy_set_layer(lua_State *l) {
 
   MapEntities& entities = script->get_map().get_entities();
   Enemy* enemy = (Enemy*) entities.get_entity(ENEMY, name);
-  enemy->set_layer(Layer(layer));
+  entities.set_entity_layer(enemy, Layer(layer));
 
   return 0;
 }
@@ -1908,3 +1908,4 @@ int Script::map_api_enemy_set_random_treasure(lua_State *l) {
 
   return 0;
 }
+

@@ -52,17 +52,14 @@ sol.enemy.get_hurt_sound_style()
 sol.enemy.set_hurt_sound_style(sound_style)
 sol.enemy.get_minimum_shield_needed()
 sol.enemy.set_minimum_shield_needed(shield_level)
-sol.enemy.set_default_attack_consequences()
 sol.enemy.set_attack_consequence(attack, consequence)
+sol.enemy.set_default_attack_consequences()
 sol.enemy.set_invincible()
-sol.enemy_set_treasure(item_name, variant, savegame_variable)
-sol.enemy_set_no_treasure()
-sol.enemy_set_random_treasure()
-sol.enemy.has_collision_mode(collision_mode)
-sol.enemy.add_collison_mode(collision_mode)
-sol.enemy.remove_collison_mode(collision_mode)
-sol.enemy.get_obstacle(key)
-sol.enemy.set_obstacle(key, obstacle)
+sol.enemy.set_treasure(item_name, variant, savegame_variable)
+sol.enemy.set_no_treasure()
+sol.enemy.set_random_treasure()
+sol.enemy.get_obstacle_behavior()
+sol.enemy.set_obstacle_behavior(behavior)
 sol.enemy.get_size()
 sol.enemy.set_size(width, height)
 sol.enemy.get_origin()
@@ -72,22 +69,15 @@ sol.enemy.set_position(x, y)
 sol.enemy.get_layer()
 sol.enemy.set_layer(layer)
 sol.enemy.snap_to_grid()
+sol.enemy.get_movement()
 sol.enemy.start_movement(movement)
 sol.enemy.stop_movement()
-sol.enemy.get_movement()
 sol.enemy.restart()
 sol.enemy.get_sprite()
 sol.enemy.get_sprite(sprite_name)
 sol.enemy.has_sprite(sprite_name)
-sol.enemy.add_sprite(sprite)
-sol.enemy.remove_sprite(sprite)
-sol.enemy.set_sprites_animation(animation_name)
-sol.enemy.set_sprites_direction(direction)
-sol.enemy.set_sprites_frame(frame)
-sol.enemy.set_sprites_frame_delay(frame_delay)
-sol.enemy.set_sprites_set_paused(paused)
-sol.enemy.set_sprites_set_animation_ignore_suspend(ignore)
-sol.enemy.set_sprites_fade(direction)
+sol.enemy.create_sprite(sprite_name)
+sol.enemy.remove_sprite(sprite_name)
 sol.enemy.is_displayed_in_y_order()
 sol.enemy.set_displayed_in_y_order(display_in_y_order)
 sol.enemy.create_son(enemy_name, breed, layer, x, y, relative_to_father)
@@ -101,13 +91,11 @@ magic_damage
 pushed_back_when_hurt
 hurt_sound_style
 minimum_shield_needed
-invincible
-collision_mode
-collision_modes
 size
 origin
 sprite
 sprites
 displayed_in_y_order
-attack_consequences (<integer>, "ignored", "protected", "custom"): sword, thrown_item, explosion, arrow, hookshot, boomerang, lamp, others
-obstacle (true, false): water, hole, destructible item
+invincible
+attack_consequences (<integer>, "ignored", "protected", "immobilize", "custom"): sword, thrown_item, explosion, arrow, hookshot, boomerang, lamp, others
+obstacle_behavior: "normal", "flying", "swimming"

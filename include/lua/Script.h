@@ -48,7 +48,6 @@ class Script {
     typedef int (FunctionAvailableToScript) (lua_State *l);		/**< type of the functions that can be called by a Lua script */
 
     // script data
-    lua_State* context;							/**< the execution context of the Lua script */
     std::list<Timer*> timers;						/**< the timers currently running for this script */
 
     std::map<int, Sprite*> sprites;					/**< the sprites accessible from this script */
@@ -260,12 +259,57 @@ class Script {
       item_api_get_layer,
       item_api_set_layer,
       item_api_set_layer_independent_collisions,
-      item_api_set_finished;
+      item_api_set_finished,
 
       // enemy API
-      // TODO
+      enemy_api_get_name,
+      enemy_api_get_life,
+      enemy_api_set_life,
+      enemy_api_add_life,
+      enemy_api_remove_life,
+      enemy_api_get_damage,
+      enemy_api_set_damage,
+      enemy_api_get_magic_damage,
+      enemy_api_set_magic_damage,
+      enemy_api_is_pushed_back_when_hurt,
+      enemy_api_set_pushed_back_when_hurt,
+      enemy_api_get_hurt_sound_style,
+      enemy_api_set_hurt_sound_style,
+      enemy_api_get_minimum_shield_needed,
+      enemy_api_set_minimum_shield_needed,
+      enemy_api_set_attack_consequence,
+      enemy_api_set_default_attack_consequences,
+      enemy_api_set_invincible,
+      enemy_api_set_treasure,
+      enemy_api_set_no_treasure,
+      enemy_api_set_random_treasure,
+      enemy_api_get_obstacle_behavior,
+      enemy_api_set_obstacle_behavior,
+      enemy_api_get_size,
+      enemy_api_set_size,
+      enemy_api_get_origin,
+      enemy_api_set_origin,
+      enemy_api_get_position,
+      enemy_api_set_position,
+      enemy_api_get_layer,
+      enemy_api_set_layer,
+      enemy_api_snap_to_grid,
+      enemy_api_get_movement,
+      enemy_api_start_movement,
+      enemy_api_stop_movement,
+      enemy_api_restart,
+      enemy_api_get_sprite,
+      enemy_api_has_sprite,
+      enemy_api_create_sprite,
+      enemy_api_remove_sprite,
+      enemy_api_is_displayed_in_y_order,
+      enemy_api_set_displayed_in_y_order,
+      enemy_api_create_son,
+      enemy_api_get_father;
 
   protected:
+
+    lua_State* context;                                                 /**< the execution context of the Lua script */
 
     Script(uint32_t apis_enabled);
 

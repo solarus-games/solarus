@@ -1,24 +1,20 @@
 -- A big butterfly boss from Newlink.
 
--- Properties
-life = 6
-damage = 2
-sprite = "enemies/papillosaur_king"
-size = {176, 96}
-origin = {88, 64}
-collision_mode = "sprite"
-attack_consequences = {
-  explosion = 1,
-  sword = "protected",
-  others = "ignored"
-}
-obstacles = {
-  destructible_item = false  -- as the papillosaur is a big flying boss, it can fly over destructible items
-}
-
--- State
 nb_eggs_to_create = 0
 nb_eggs_created = 0
+
+function event_appear()
+
+  sol.enemy.set_life(6)
+  sol.enemy.set_damage(2)
+  sol.enemy.create_sprite("enemies/papillosaur_king")
+  sol.enemy.set_size(176, 96)
+  sol.enemy.set_origin(88, 64)
+  sol.enemy.set_invincible()
+  sol.enemy.set_attack_consequence("explosion", 1)
+  sol.enemy.set_attack_consequence("sword", "protected")
+  sol.enemy.set_obstacle_behavior("flying")
+end
 
 function event_restart()
 

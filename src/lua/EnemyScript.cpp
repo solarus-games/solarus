@@ -16,6 +16,7 @@
  */
 #include "lua/EnemyScript.h"
 #include "enemies/CustomEnemy.h"
+#include "lowlevel/Debug.h"
 #include "Game.h"
 #include <lua.hpp>
 
@@ -62,6 +63,59 @@ Map& EnemyScript::get_map() {
 Enemy& EnemyScript::get_enemy() {
   return enemy;
 }
+
+/**
+ * @brief Reads some global variables from the sprite to initializes the
+ * corresponding properties for the enemy.
+ */
+/* I'm not sure allowing to set properties like this is a good idea.
+void EnemyScript::read_globals() {
+
+  lua_State* l = context;
+
+  // life
+  lua_getglobal(l, "life");
+  if (!lua_isnil(l, 1)) {
+    int life = luaL_checkinteger(l, 1);
+    enemy.set_life(life);
+  }
+
+  // damage
+  lua_getglobal(l, "damage");
+  if (!lua_isnil(l, 1)) {
+    int damage = luaL_checkinteger(l, 1);
+    enemy.damage_on_hero = damage;
+  }
+
+  // magic damage
+  lua_getglobal(l, "magic_damage");
+  if (!lua_isnil(l, 1)) {
+    int magic_damage = luaL_checkinteger(l, 1);
+    enemy.magic_damage_on_hero = magic_damage;
+  }
+
+  // pushed back when hurt
+  lua_getglobal(l, "pushed_back_when_hurt");
+  if (!lua_isnil(l, 1)) {
+    bool push_back = lua_toboolean(l, 1);
+    enemy.set_pushed_back_when_hurt(push_back);
+  }
+
+  // hurt sound style
+  lua_getglobal(l, "hurt_sound_style");
+  if (!lua_isnil(l, 1)) {
+    const std::string& style_name = luaL_checkstring(l, 1);
+    enemy.hurt_sound_style = Enemy::get_hurt_sound_style_by_name(style_name);
+  }
+
+  // minimum shield needed
+  lua_getglobal(l, "minimum_shield_needed");
+  if (!lua_isnil(l, 1)) {
+    int shield_level = luaL_checkinteger(l, 1);
+    enemy.minimum_shield_needed = shield_level;
+  }
+}
+*/
 
 /**
  * @brief Updates the script.

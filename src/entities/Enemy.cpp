@@ -57,6 +57,12 @@ const std::string Enemy::attack_names[] = {
   "lamp"
 };
 
+const std::string Enemy::hurt_sound_style_names[] = {
+  "normal",
+  "monster",
+  "boss",
+};
+
 /**
  * @brief Creates an enemy.
  *
@@ -67,6 +73,7 @@ const std::string Enemy::attack_names[] = {
 Enemy::Enemy(const ConstructionParameters &params):
 
   Detector(COLLISION_RECTANGLE | COLLISION_SPRITE, params.name, params.layer, params.x, params.y, 0, 0),
+  father_name(""),
   being_hurt(false),
   stop_hurt_date(0),
   normal_movement(NULL),
@@ -188,6 +195,7 @@ MapEntity* Enemy::create(Game &game, Subtype subtype, const std::string& breed, 
 
   if (rank != RANK_NORMAL) {
     enemy->set_enabled(false);
+    enemy->set_collision_modes(COLLISION_SPRITE);
   }
 
   // set the default enemy features
@@ -198,7 +206,7 @@ MapEntity* Enemy::create(Game &game, Subtype subtype, const std::string& breed, 
   enemy->pushed_back_when_hurt = true;
   enemy->push_back_hero_on_sword = false;
   enemy->minimum_shield_needed = 0;
-
+  enemy->displayed_in_y_order = true;
   enemy->set_default_attack_consequences();
 
   return enemy;
@@ -268,7 +276,26 @@ bool Enemy::is_destructible_item_obstacle(DestructibleItem &destructible_item) {
 
   // the destructible item is an obstacle unless the enemy is already overlapping it,
   // which is possible with bomb flowers
-  return !this->overlaps(destructible_item);
+  if (this->overlaps(destructible_item)) {
+    return false;
+  }
+  return obstacle_behavior != "flying";
+}
+
+/**
+ * @brief Returns whether a water tile is currently considered as an obstacle by this entity.
+ * @return true if the water tiles are currently an obstacle for this entity
+ */
+bool Enemy::is_water_obstacle() {
+  return obstacle_behavior != "flying" && obstacle_behavior != "swimming";
+}
+
+/**
+ * @brief Returns whether a hole is currently considered as an obstacle by this entity.
+ * @return true if the holes are currently an obstacle for this entity
+ */
+bool Enemy::is_hole_obstacle() {
+  return obstacle_behavior != "flying";
 }
 
 /**
@@ -295,6 +322,9 @@ void Enemy::set_damage(int damage_on_hero, int magic_damage_on_hero) {
  */
 void Enemy::set_life(int life) {
   this->life = life;
+  if (!being_hurt && this->life <= 0) {
+    kill();
+  }
 }
 
 /**
@@ -423,6 +453,18 @@ void Enemy::set_animation(const std::string &animation) {
 }
 
 /**
+ * @brief Returns whether this entity has to be displayed in y order.
+ *
+ * This function returns whether the entity should be displayed above
+ * the hero and other entities having this property when it is in front of them.
+ *
+ * @return true if this type of entity is displayed at the same level as the hero
+ */
+bool Enemy::is_displayed_in_y_order() {
+  return displayed_in_y_order;
+}
+
+/**
  * @brief Updates the enemy.
  */
 void Enemy::update() {
@@ -524,13 +566,6 @@ void Enemy::update() {
 }
 
 /**
- * @brief This function is called when the enemy has just finished dying.
- */
-void Enemy::just_dead() {
-
-}
-
-/**
  * @brief Suspends or resumes the entity.
  * @param suspended true to suspend the entity, false to resume it
  */
@@ -548,6 +583,7 @@ void Enemy::set_suspended(bool suspended) {
     next_explosion_date += diff;
   }
 }
+
 /**
  * @brief Notifies this entity that it was just enabled or disabled.
  * @param enabled true if the entity is now enabled
@@ -738,6 +774,10 @@ void Enemy::play_hurt_sound() {
     case HURT_SOUND_BOSS:
       sound_id = (life > 0) ? "boss_hurt" : "boss_killed";
       break;
+
+    case HURT_SOUND_NUMBER:
+      Debug::die(StringConcat() << "Invalid hurt sound style" << hurt_sound_style);
+      break;
   }
 
   Sound::play(sound_id);
@@ -860,15 +900,22 @@ void Enemy::just_hurt(MapEntity &source, EnemyAttack attack, int life_points) {
 }
 
 /**
+ * @brief This function is called when the enemy has just finished dying.
+ */
+void Enemy::just_dead() {
+
+}
+
+/**
  * @brief Kills the enemy.
  *
  * This function is called when the enemy has no more health points.
  */
 void Enemy::kill() {
 
-  // if the enemy is immobilized, give a rupee
+  // if the enemy is immobilized, give some money
   if (rank == RANK_NORMAL && is_immobilized() && !treasure.is_saved()) {
-    // TODO choose random money
+    // TODO choose random money (can we do this from scripts?)
   }
 
   // stop any movement and disable attacks
@@ -1027,6 +1074,36 @@ EnemyAttack Enemy::get_attack_by_name(const std::string& attack_name) {
   }
 
   Debug::die(StringConcat() << "Invalid attack name: " << attack_name);
+  throw;
+}
+
+/**
+ * @brief Converts a value of the HurtSoundStyle enumeration into a string.
+ * @param style a hurt sound style
+ * @return the corresponding string
+ */
+const std::string& Enemy::get_hurt_sound_style_name(HurtSoundStyle style) {
+
+  Debug::check_assertion(style >= 0 && style < HURT_SOUND_NUMBER,
+      StringConcat() << "Invalid hurt sound style number: " << style);
+
+  return hurt_sound_style_names[style];
+}
+
+/**
+ * @brief Converts a string into a value of the HurtSoundStyle enumeration.
+ * @param name name of a hurt sound style
+ * @return the corresponding hurt sound style
+ */
+Enemy::HurtSoundStyle Enemy::get_hurt_sound_style_by_name(const std::string& name) {
+
+  for (int i = 0; i < HURT_SOUND_NUMBER; i++) {
+    if (hurt_sound_style_names[i] == name) {
+      return HurtSoundStyle(i);
+    }
+  }
+
+  Debug::die(StringConcat() << "Invalid hurt sound style name: " << name);
   throw;
 }
 

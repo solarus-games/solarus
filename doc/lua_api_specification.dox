@@ -611,11 +611,11 @@ remove some life from the enemy
 
 - <tt>sol.enemy.get_damage()</tt>:
 returns the number of life points that the enemy removes from the hero when touching him
-(assuming that the hero's defense level is minimal)
+(when the hero's defense level is minimal)
 
 - <tt>sol.enemy.set_damage(damage)</tt>:
 sets the number of life points that the enemy removes from the hero when touching him
-(assuming that the hero's defense level is minimal)
+(when the hero's defense level is minimal)
 (default is 1)
 
 - <tt>sol.enemy.get_magic_damage()</tt>:
@@ -638,21 +638,22 @@ returns the style of sound to play when the enemy is hurt:
 
 - <tt>sol.enemy.set_hurt_sound_style(sound_style)</tt>:
 sets the style of sound to play when the enemy is hurt:
-"normal", "monster" or "boss" (default is "normal")
+"normal", "monster" or "boss" (default is "normal" for usual enemies
+and "boss" for bosses and minibosses)
 
 - <tt>sol.enemy.get_minimum_shield_needed()</tt>:
-returns the hero's level of defense that allow him to stop attacks from this enemy
+returns the minimum hero's level of shield that allows him to stop attacks from this enemy
 (0 means that he cannot stop the attacks)
 
 - <tt>sol.enemy.set_minimum_shield_needed(shield_level)</tt>:
-returns the hero's level of defense that allow him to stop attacks from this enemy
+returns the minimum hero's level of shield that allows him to stop attacks from this enemy
 (0 means that he cannot stop the attacks and is the default)
-
-- <tt>sol.enemy.set_default_attack_consequences()</tt>:
-Sets the default attack consequences for the enemy.
 
 - <tt>sol.enemy.set_attack_consequence(attack, consequence)</tt>:
 Sets the reaction of the enemy when it receives an attack.
+
+- <tt>sol.enemy.set_default_attack_consequences()</tt>:
+Sets the default attack consequences for the enemy.
 
 - <tt>sol.enemy.set_invincible()</tt>:
 Makes the enemy ignore all attacks.
@@ -666,22 +667,11 @@ Sets no treasure of the enemy.
 - <tt>sol.enemy_set_random_treasure()</tt>:
 Sets a random treasure for the enemy.
 
-- <tt>sol.enemy.has_collision_mode(collision_mode)</tt>:
-returns whether the enemy detects a kind of collisions, among
-"inside", "origin", "facing_point", "facing_point_any",
-"center", "sprite" and "custom" (see the CollisionMode enumeration)
+- <tt>sol.enemy.get_obstacle_behavior()</tt>:
+returns how the enemy behaves with obstacles: "normal", "flying" or "swimming"
 
-- <tt>sol.enemy.add_collison_mode(collision_mode)</tt>:
-adds a kind of collisions to the list of collisions detected by the enemy
-
-- <tt>sol.enemy.remove_collison_mode(collision_mode)</tt>:
-remove a kind of collisions to the list of collisions detected by the enemy
-
-- <tt>sol.enemy.get_obstacle(key)</tt>:
-returns whether some kind of possible obstacle stops this enemy
-
-- <tt>sol.enemy.set_obstacle(key, obstacle)</tt>:
-sets whether some kind of possible obstacle stops this enemy
+- <tt>sol.enemy.set_obstacle_behavior(behavior)</tt>:
+sets how the enemy behaves with obstacles: "normal", "flying" or "swimming"
 
 - <tt>sol.enemy.get_size()</tt>:
 returns the size of the enemy's bounding box (two return values: width and height in pixels)
@@ -713,14 +703,14 @@ Sets the layer of the enemy.
 - <tt>sol.enemy.snap_to_grid()</tt>:
 makes sure the enemy's top-left corner is aligned with the 8*8 grid of the map
 
+- <tt>sol.enemy.get_movement()</tt>:
+Returns the current movement of the enemy.
+
 - <tt>sol.enemy.start_movement(movement)</tt>:
 Sets a movement to the enemy (any previous movement is destroyed).
 
 - <tt>sol.enemy.stop_movement()</tt>:
 Stops and destroys the current movement of the enemy (if any).
-
-- <tt>sol.enemy.get_movement()</tt>:
-Returns the current movement of the enemy.
 
 - <tt>sol.enemy.restart()</tt>:
 Restarts the enemy. This plays animation "walking" on its sprites
@@ -736,42 +726,19 @@ Returns a sprite of the enemy given its name (i.e. the name of its animation set
 - <tt>sol.enemy.has_sprite(sprite_name)</tt>:
 Returns whether the enemy has a sprite with the specified name
 
-- <tt>sol.enemy.add_sprite(sprite)</tt>:
-Adds a sprite to the enemy.
+- <tt>sol.enemy.create_sprite(sprite_name)</tt>:
+Creates a sprite attached to the enemy.
 
-- <tt>sol.enemy.remove_sprite(sprite)</tt>:
+- <tt>sol.enemy.remove_sprite(sprite_name)</tt>:
 Removes a sprite from the enemy.
 
-- <tt>sol.enemy.set_sprites_animation(animation_name)</tt>:
-Sets the animation of all sprites of the enemy.
-
-- <tt>sol.enemy.set_sprites_direction(direction)</tt>:
-Sets the direction of all sprites of the enemy.
-
-- <tt>sol.enemy.set_sprites_frame(frame)</tt>:
-Sets the current frame of all sprites of the enemy.
-
-- <tt>sol.enemy.set_sprites_frame_delay(frame_delay)</tt>:
-Sets the delay between two frames (in milliseconds) for all sprites of the enemy.
-
-- <tt>sol.enemy.set_sprites_set_paused(paused)</tt>:
-Pauses or resumes all sprites of the enemy.
-
-- <tt>sol.enemy.set_sprites_set_animation_ignore_suspend(ignore)</tt>:
-For all sprites of the enemy, sets whether the animation should continue when the game is suspended.
-
-- <tt>sol.enemy.set_sprites_fade(direction)</tt>:
-Starts a fade-in (direction = "in") or fade-out (direction = "out") effect
-on all sprites of the enemy.
-
-- <tt>sol.enemy.get_displayed_in_y_order()</tt>:
+- <tt>sol.enemy.is_displayed_in_y_order()</tt>:
 returns whether the enemy is displayed at the same level as the hero
 (i.e. the one closest to north is displayed first)
 
 - <tt>sol.enemy.set_displayed_in_y_order(display_in_y_order)</tt>:
 sets whether the enemy is displayed at the same level as the hero
-(i.e. the one closest to north is displayed first),
-default is true, false will display the enemy below the hero
+(default is true, false will always display the enemy below the hero)
 
 - <tt>sol.enemy.create_son(enemy_name, breed, layer, x, y, relative_to_father)</tt>:
 Creates another enemy, specifying its coordinates as absolute or relative to the current enemy.

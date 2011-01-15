@@ -15,10 +15,10 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #ifndef SOLARUS_ENEMY_SCRIPT_H
-#define SOLARUS_ITEM_SCRIPT_H
+#define SOLARUS_ENEMY_SCRIPT_H
 
 #include "Common.h"
-#include "lua/MapScript.h"
+#include "lua/Script.h"
 #include "entities/EnemyAttack.h"
 #include "entities/Layer.h"
 

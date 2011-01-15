@@ -45,7 +45,8 @@ class Enemy: public Detector {
 
   public:
 
-    friend class EnemyScript;     // allow enemy scripts to access private fields
+    friend class EnemyScript;     // allow enemy scripts to access private data
+    friend class Script;          // allow scripts with the enemy API to access private data
 
     /**
      * @brief Subtypes of enemies.
@@ -80,7 +81,8 @@ class Enemy: public Detector {
     enum HurtSoundStyle {
       HURT_SOUND_NORMAL,			/**< "enemy_hurt" (and if necessary "enemy_killed") is played */
       HURT_SOUND_MONSTER,			/**< "monster_hurt" (and if necessary "enemy_killed") is played */
-      HURT_SOUND_BOSS				/**< "boss_hurt" or "boss_killed" is played */
+      HURT_SOUND_BOSS,				/**< "boss_hurt" or "boss_killed" is played */
+      HURT_SOUND_NUMBER
     };
 
     /**
@@ -105,6 +107,7 @@ class Enemy: public Detector {
     int life;						/**< number of health points of the enemy (default: 1) */
     HurtSoundStyle hurt_sound_style;			/**< the sound played when this kind of enemy gets hurt by the hero
 							 * (default: HURT_SOUND_NORMAL) */
+    static const std::string hurt_sound_style_names[];  /**< name of each hurt sound style */
     bool pushed_back_when_hurt;				/**< indicates whether the enemy is pushed back when it gets hurt by the hero
 							 * (default: true) */
     bool push_back_hero_on_sword;			/**< indicates whether the hero is pushed back when he hurts the enemy with his
@@ -133,6 +136,9 @@ class Enemy: public Detector {
     Rank rank;						/**< is this enemy a normal enemy, a miniboss or a boss? */
     int savegame_variable;				/**< index of the boolean variable indicating whether this enemy is killed,
 							 * or -1 if it is not saved */
+    std::string obstacle_behavior;                      /**< behavior with obstacles: "normal", "flying" or "swimming" */
+    bool displayed_in_y_order;                          /**< indicates that the enemy is displayed as the same level as the hero */
+    std::string father_name;                            /**< name of the enemy who created this enemy (or an empty string) */
 
     // enemy state
     bool enabled;					/**< indicates that the enemy is enabled */
@@ -223,8 +229,11 @@ class Enemy: public Detector {
     bool is_obstacle_for(MapEntity &other);
     bool is_sensor_obstacle(Sensor &sensor);
     bool is_destructible_item_obstacle(DestructibleItem &destructible_item);
+    bool is_water_obstacle();
+    bool is_hole_obstacle();
 
     // enemy state
+    bool is_displayed_in_y_order();
     virtual void update();
     virtual void set_suspended(bool suspended);
     void notify_enabled(bool enabled);
@@ -244,9 +253,11 @@ class Enemy: public Detector {
     bool is_dying();
     void set_treasure(const Treasure& treasure);
 
-
     static const std::string& get_attack_name(EnemyAttack attack);
     static EnemyAttack get_attack_by_name(const std::string& attack_name);
+
+    static const std::string& get_hurt_sound_style_name(HurtSoundStyle style);
+    static HurtSoundStyle get_hurt_sound_style_by_name(const std::string& name);
 };
 
 #endif

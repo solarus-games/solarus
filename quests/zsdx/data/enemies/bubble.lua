@@ -1,17 +1,16 @@
 -- Bubble: an invincible enemy that moves in diagonal directions and bounces against walls.
 -- It removes life and magic points to the hero.
 
--- Properties
-life = 1
-damage = 2
-magic_damage = 4
-sprite = "enemies/bubble"
-size = {12, 12}
-origin = {6, 6}
-invincible = true
-
--- The enemy appears: create its movement
+-- The enemy appears: set its properties
 function event_appear()
+
+  sol.enemy.set_life(1)
+  sol.enemy.set_damage(2)
+  sol.enemy.set_magic_damage(4)
+  sol.enemy.create_sprite("enemies/bubble")
+  sol.enemy.set_size(12, 12)
+  sol.enemy.set_origin(6, 6)
+  sol.enemy.set_invincible()
   m = sol.main.rectilinear_movement_create(32, 0)
   sol.enemy.start_movement(m)
 end

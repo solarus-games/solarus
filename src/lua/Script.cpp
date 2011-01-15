@@ -32,8 +32,8 @@
  * @param apis_enabled an OR-combination of APIs to enable
  */
 Script::Script(uint32_t apis_enabled):
-  context(NULL),
-  apis_enabled(apis_enabled) {
+  apis_enabled(apis_enabled),
+  context(NULL) {
 
 }
 
@@ -462,7 +462,50 @@ void Script::register_item_api() {
 void Script::register_enemy_api() {
 
   static luaL_Reg enemy_api[] = {
-      // TODO
+      { "get_name", enemy_api_get_name },
+      { "get_life", enemy_api_get_life },
+      { "set_life", enemy_api_set_life },
+      { "add_life", enemy_api_add_life },
+      { "remove_life", enemy_api_remove_life },
+      { "get_damage", enemy_api_get_damage },
+      { "set_damage", enemy_api_set_damage },
+      { "get_magic_damage", enemy_api_get_magic_damage },
+      { "set_magic_damage", enemy_api_set_magic_damage },
+      { "is_pushed_back_when_hurt", enemy_api_is_pushed_back_when_hurt },
+      { "set_pushed_back_when_hurt", enemy_api_set_pushed_back_when_hurt },
+      { "get_hurt_sound_style", enemy_api_get_hurt_sound_style },
+      { "set_hurt_sound_style", enemy_api_set_hurt_sound_style },
+      { "get_minimum_shield_needed", enemy_api_get_minimum_shield_needed },
+      { "set_minimum_shield_needed", enemy_api_set_minimum_shield_needed },
+      { "set_attack_consequence", enemy_api_set_attack_consequence },
+      { "set_default_attack_consequences", enemy_api_set_default_attack_consequences },
+      { "set_invincible", enemy_api_set_invincible },
+      { "set_treasure", enemy_api_set_treasure },
+      { "set_no_treasure", enemy_api_set_no_treasure },
+      { "set_random_treasure", enemy_api_set_random_treasure },
+      { "get_obstacle_behavior", enemy_api_get_obstacle_behavior },
+      { "set_obstacle_behavior", enemy_api_set_obstacle_behavior },
+      { "get_size", enemy_api_get_size },
+      { "set_size", enemy_api_set_size },
+      { "get_origin", enemy_api_get_origin },
+      { "set_origin", enemy_api_set_origin },
+      { "get_position", enemy_api_get_position },
+      { "set_position", enemy_api_set_position },
+      { "get_layer", enemy_api_get_layer },
+      { "set_layer", enemy_api_set_layer },
+      { "snap_to_grid", enemy_api_snap_to_grid },
+      { "get_movement", enemy_api_get_movement },
+      { "start_movement", enemy_api_start_movement },
+      { "stop_movement", enemy_api_stop_movement },
+      { "restart", enemy_api_restart },
+      { "get_sprite", enemy_api_get_sprite },
+      { "has_sprite", enemy_api_has_sprite },
+      { "create_sprite", enemy_api_create_sprite },
+      { "remove_sprite", enemy_api_remove_sprite },
+      { "is_displayed_in_y_order", enemy_api_is_displayed_in_y_order },
+      { "set_displayed_in_y_order", enemy_api_set_displayed_in_y_order },
+      { "create_son", enemy_api_create_son },
+      { "get_father", enemy_api_get_father },
       { NULL, NULL }
   };
   luaL_register(context, "sol.enemy", enemy_api);

@@ -1,22 +1,20 @@
 -- The boss Khotor. He controls a chain and ball.
 
--- Properties
-life = 12
-damage = 2
-pushed_back_when_hurt = false
-sprite = "enemies/khotor"
-size = {48, 48}
-origin = {24, 29}
-attack_consequences = {
-  sword = 2,
-  thrown_item = 1,
-  bow = 1,
-  others = "ignored"
-}
-
 chain_name = ""
 
 function event_appear(creator_name)
+
+  -- set the properties
+  sol.enemy.set_life(12)
+  sol.enemy.set_damage(2)
+  sol.enemy.set_pushed_back_when_hurt(false)
+  sol.enemy.create_sprite("enemies/khotor")
+  sol.enemy.set_size(48, 48)
+  sol.enemy.set_origin(24, 29)
+  sol.enemy.set_invincible()
+  sol.enemy.set_attack_consequence("sword", 2)
+  sol.enemy.set_attack_consequence("thrown_item", 1)
+  sol.enemy.set_attack_consequence("arrow", 1)
 
   -- set the movement
   m = sol.main.random_path_movement_create(40)

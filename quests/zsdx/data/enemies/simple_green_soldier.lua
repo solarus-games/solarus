@@ -2,15 +2,15 @@
 -- who goes in a random direction.
 -- Unlike the normal green soldier, he cannot see or follow the hero.
 
--- Properties
-life = 2
-damage = 2
-sprite = "enemies/simple_green_soldier"
-size = {16, 16}
-origin = {8, 13}
-
--- The enemy appears: create its movement
+-- The enemy appears: set its properties
 function event_appear()
+
+  sol.enemy.set_life(2)
+  sol.enemy.set_damage(2)
+  sol.enemy.create_sprite("enemies/simple_green_soldier")
+  sol.enemy.set_size(16, 16)
+  sol.enemy.set_origin(8, 13)
+
   m = sol.main.temporal_movement_create(0, 0, 0)
   sol.enemy.start_movement(m)
 end

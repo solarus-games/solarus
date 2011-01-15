@@ -42,8 +42,8 @@
  * @param savegame_variable index of the savegame boolean indicating that the hero has found this treasure
  * or -1 if this treasure is not saved
  */
-Treasure::Treasure(Game &game, const std::string &item_name, int variant, int savegame_variable):
-  game(game),
+Treasure::Treasure(Game& game, const std::string& item_name, int variant, int savegame_variable):
+  game(&game),
   item_name(item_name),
   variant(variant),
   savegame_variable(savegame_variable),
@@ -60,7 +60,7 @@ Treasure::Treasure(Game &game, const std::string &item_name, int variant, int sa
  * @brief Copy constructor.
  * @param other the treasure to copy
  */
-Treasure::Treasure(const Treasure &other):
+Treasure::Treasure(const Treasure& other):
   game(other.game), item_name(other.item_name), variant(other.variant),
   savegame_variable(other.savegame_variable), sprite(NULL) {
 
@@ -74,6 +74,20 @@ Treasure::~Treasure() {
 }
 
 /**
+ * @brief Assignment operator.
+ * @param other the treasure to copy
+ */
+Treasure& Treasure::operator=(const Treasure& other) {
+
+  this->game = other.game;
+  this->item_name = other.item_name;
+  this->variant = other.variant;
+  this->savegame_variable = other.savegame_variable;
+  this->sprite = other.sprite;
+  return *this;
+}
+
+/**
  * @brief If the treasure is "_random", chooses a random item and variant according to the probabilities of items.dat.
  *
  * If the item is "_random", this function must be called before any function
@@ -83,7 +97,7 @@ Treasure::~Treasure() {
  */
 void Treasure::decide_content() {
 
-  Equipment &equipment = game.get_equipment();
+  Equipment &equipment = game->get_equipment();
   if (item_name == "_random") {
     // choose a random item
     equipment.get_random_item(item_name, variant);
@@ -102,7 +116,7 @@ void Treasure::decide_content() {
  * @return the item properties
  */
 ItemProperties& Treasure::get_item_properties() const {
-  return game.get_equipment().get_item_properties(get_item_name());
+  return game->get_equipment().get_item_properties(get_item_name());
 }
 
 /**
@@ -112,7 +126,7 @@ ItemProperties& Treasure::get_item_properties() const {
 const std::string& Treasure::get_item_name() const {
 
   Debug::check_assertion(item_name != "_random", "This treasure has a random content and it is not decided yet");
-  Debug::check_assertion(item_name == "_none" || game.get_equipment().can_receive_item(item_name, variant),
+  Debug::check_assertion(item_name == "_none" || game->get_equipment().can_receive_item(item_name, variant),
       StringConcat() << "The treasure '" << item_name << "' is not authorized by the equipment, did you call decide_content()?");
 
   return item_name;
@@ -142,7 +156,7 @@ bool Treasure::is_saved() const {
  * @return true if the player has found this treasure
  */
 bool Treasure::is_found() const {
-  return savegame_variable != -1 && game.get_savegame().get_boolean(savegame_variable);
+  return savegame_variable != -1 && game->get_savegame().get_boolean(savegame_variable);
 }
 
 /**
@@ -171,16 +185,16 @@ void Treasure::give_to_player() const {
 
   // mark the treasure as found in the savegame
   if (savegame_variable != -1) {
-    game.get_savegame().set_boolean(savegame_variable, true);
+    game->get_savegame().set_boolean(savegame_variable, true);
   }
 
   // give the item
-  Equipment &equipment = game.get_equipment();
+  Equipment &equipment = game->get_equipment();
   equipment.add_item(get_item_name(), get_variant());
 
   // notify the scripts
   equipment.get_item_script(get_item_name()).event_obtaining(*this);
-  game.get_map_script().event_treasure_obtaining(*this);
+  game->get_map_script().event_treasure_obtaining(*this);
 }
 
 /**

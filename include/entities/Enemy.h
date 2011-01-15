@@ -45,6 +45,8 @@ class Enemy: public Detector {
 
   public:
 
+    friend class EnemyScript;     // allow enemy scripts to access private fields
+
     /**
      * @brief Subtypes of enemies.
      */
@@ -240,6 +242,8 @@ class Enemy: public Detector {
     void try_hurt(EnemyAttack attack, MapEntity &source, Sprite *this_sprite);
     void kill();
     bool is_dying();
+    void set_treasure(const Treasure& treasure);
+
 
     static const std::string& get_attack_name(EnemyAttack attack);
     static EnemyAttack get_attack_by_name(const std::string& attack_name);

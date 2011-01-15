@@ -10,7 +10,7 @@ sprite = "enemies/chain_and_ball"
 size = {16, 16}
 origin = {8, 8}
 invincible = true
-display_in_y_order = false
+displayed_in_y_order = false
 
 -- Specific
 nb_links = 10

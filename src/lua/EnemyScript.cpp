@@ -52,7 +52,7 @@ Game& EnemyScript::get_game() {
  * @return the map
  */
 Map& EnemyScript::get_map() {
-  return game.get_current_map();
+  return enemy.get_map();
 }
 
 /**

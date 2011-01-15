@@ -19,6 +19,8 @@
 
 #include "Common.h"
 #include "lua/MapScript.h"
+#include "entities/EnemyAttack.h"
+#include "entities/Layer.h"
 
 /**
  * @brief Represents the Lua script of an instance of enemy.
@@ -49,6 +51,21 @@ class EnemyScript: public Script {
 
     void event_update();
     void event_set_suspended(bool suspended);
+    void event_appear();
+    void event_enabled();
+    void event_disabled();
+    void event_restart();
+    void event_pre_display();
+    void event_post_display();
+    void event_position_changed(int x, int y);
+    void event_layer_changed(Layer layer);
+    void event_obstacle_reached();
+    void event_movement_changed();
+    void event_movement_finished();
+    void event_sprite_animation_finished(Sprite* sprite, const std::string& animation);
+    void event_custom_attack_received(EnemyAttack attack, Sprite* sprite);
+    void event_hurt(EnemyAttack attack, int life_lost);
+    void event_dead();
 };
 
 #endif

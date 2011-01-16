@@ -47,9 +47,7 @@ public class AddEntitiesMenu extends JMenu {
 		DestructibleItem.Subtype.BOMB_FLOWER
 	),
 	new ItemDefinition(EntityType.CHEST, KeyEvent.VK_C),
-	new ItemDefinition(EntityType.ENEMY, KeyEvent.VK_E,
-	        Enemy.Subtype.values()
-	),
+	new ItemDefinition(EntityType.ENEMY, KeyEvent.VK_E),
 	new ItemDefinition(EntityType.INTERACTIVE, KeyEvent.VK_I,
 		InteractiveEntity.Subtype.CUSTOM,
 		InteractiveEntity.Subtype.NON_PLAYING_CHARACTER

@@ -49,22 +49,6 @@ class Enemy: public Detector {
     friend class Script;          // allow scripts with the enemy API to access private data
 
     /**
-     * @brief Subtypes of enemies.
-     */
-    enum Subtype {
-      CUSTOM = -1,
-      SIMPLE_GREEN_SOLDIER = 0,
-      BUBBLE,
-      TENTACLE,
-      MINILLOSAUR,
-      CHAIN_AND_BALL,
-
-      PAPILLOSAUR_KING = 1000,
-      KHORNETH,
-      KHOTOR
-    };
-
-    /**
      * @brief Enemy ranks.
      */
     enum Rank {
@@ -216,7 +200,7 @@ class Enemy: public Detector {
     virtual ~Enemy();
 
     static CreationFunction parse;
-    static MapEntity* create(Game& game, Subtype subtype,
+    static MapEntity* create(Game& game,
 	const std::string& breed, Rank rank, int savegame_variable,
 	const std::string& name, Layer layer, int x, int y, int direction,
 	const Treasure& treasure);

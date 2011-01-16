@@ -18,11 +18,11 @@ function event_appear(creator_name)
 
   -- set the movement
   m = sol.main.random_path_movement_create(40)
-  sol.enemy.set_movement(m)
+  sol.enemy.start_movement(m)
 
   -- create the chain and ball
   chain_name = sol.enemy.get_name().."_chain"
-  sol.enemy.create_son(chain_name, "chain_and_ball", layer, -16, -33, true)
+  sol.enemy.create_son(chain_name, "chain_and_ball", -16, -33)
 end
 
 function event_restart()

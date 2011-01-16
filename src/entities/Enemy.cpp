@@ -591,6 +591,7 @@ void Enemy::set_suspended(bool suspended) {
 void Enemy::notify_enabled(bool enabled) {
 
   if (enabled) {
+
     initialize();
     restart();
   }
@@ -821,7 +822,7 @@ void Enemy::try_hurt(EnemyAttack attack, MapEntity &source, Sprite *this_sprite)
     else if (consequence == -3) {
       // custom attack (defined in the subclass)
       result = custom_attack(attack, this_sprite);
-      result = -3;
+      result = -3; // TODO wtf?
     }
     else {
       // hurt the enemy

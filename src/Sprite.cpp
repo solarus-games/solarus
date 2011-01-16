@@ -287,7 +287,10 @@ void Sprite::set_current_direction(int current_direction) {
 
   if (current_direction != this->current_direction) {
 
-    Debug::check_assertion(current_direction >= 0, StringConcat() << "Invalid sprite direction: " << current_direction);
+    Debug::check_assertion(current_direction >= 0
+        && current_direction < current_animation->get_nb_directions(),
+        StringConcat() << "Invalid direction of sprite '" << get_animation_set_id()
+        << "': " << current_direction);
 
     this->current_direction = current_direction;
     set_current_frame(0);
@@ -592,8 +595,8 @@ void Sprite::update() {
       else {
 	current_frame = next_frame;
 	next_frame_date += get_frame_delay();
-	frame_changed = true;
       }
+      frame_changed = true;
     }
   }
   else {

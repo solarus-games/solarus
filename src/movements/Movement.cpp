@@ -295,7 +295,9 @@ void Movement::update() {
 
   if (!finished && is_finished()) {
     finished = true;
-    entity->notify_movement_finished();
+    if (entity != NULL) {
+      entity->notify_movement_finished();
+    }
   }
   else if (finished && !is_finished()) {
     finished = false;

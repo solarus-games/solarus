@@ -55,7 +55,7 @@ int Script::enemy_api_get_life(lua_State *l) {
 
   lua_pushinteger(l, enemy.get_life());
 
-  return 0;
+  return 1;
 }
 
 /**
@@ -215,7 +215,6 @@ int Script::enemy_api_is_pushed_back_when_hurt(lua_State *l) {
   return 1;
 }
 
-
 /**
  * @brief Sets whether the enemy is pushed away when it is hurt.
  *
@@ -226,7 +225,7 @@ int Script::enemy_api_is_pushed_back_when_hurt(lua_State *l) {
 int Script::enemy_api_set_pushed_back_when_hurt(lua_State *l) {
 
   Script* script;
-  called_by_script(l, 0, &script);
+  called_by_script(l, 1, &script);
   Enemy& enemy = script->get_enemy();
 
   bool push_back = lua_toboolean(l, 1);
@@ -264,7 +263,7 @@ int Script::enemy_api_get_hurt_sound_style(lua_State *l) {
 int Script::enemy_api_set_hurt_sound_style(lua_State *l) {
 
   Script* script;
-  called_by_script(l, 0, &script);
+  called_by_script(l, 1, &script);
   Enemy& enemy = script->get_enemy();
 
   const std::string& style_name = luaL_checkstring(l, 1);
@@ -272,7 +271,6 @@ int Script::enemy_api_set_hurt_sound_style(lua_State *l) {
 
   return 0;
 }
-
 
 /**
  * @brief Returns the minimum level of shield that allows the hero
@@ -295,7 +293,6 @@ int Script::enemy_api_get_minimum_shield_needed(lua_State *l) {
   return 1;
 }
 
-
 /**
  * @brief Sets the minimum level of shield that allows the hero
  * to stop attacks from this enemy
@@ -308,7 +305,7 @@ int Script::enemy_api_get_minimum_shield_needed(lua_State *l) {
 int Script::enemy_api_set_minimum_shield_needed(lua_State *l) {
 
   Script* script;
-  called_by_script(l, 0, &script);
+  called_by_script(l, 1, &script);
   Enemy& enemy = script->get_enemy();
 
   int shield_level = luaL_checkinteger(l, 1);
@@ -316,7 +313,6 @@ int Script::enemy_api_set_minimum_shield_needed(lua_State *l) {
 
   return 0;
 }
-
 
 /**
  * @brief Sets how the enemy reacts when it receives the specified attack.
@@ -332,7 +328,7 @@ int Script::enemy_api_set_minimum_shield_needed(lua_State *l) {
 int Script::enemy_api_set_attack_consequence(lua_State *l) {
 
   Script* script;
-  called_by_script(l, 0, &script);
+  called_by_script(l, 2, &script);
   Enemy& enemy = script->get_enemy();
 
   const std::string& attack_name = luaL_checkstring(l, 1);
@@ -383,7 +379,6 @@ int Script::enemy_api_set_default_attack_consequences(lua_State *l) {
 
   return 0;
 }
-
 
 /**
  * @brief Sets the enemy invincible.
@@ -528,7 +523,7 @@ int Script::enemy_api_get_size(lua_State *l) {
 int Script::enemy_api_set_size(lua_State *l) {
 
   Script* script;
-  called_by_script(l, 0, &script);
+  called_by_script(l, 2, &script);
   Enemy& enemy = script->get_enemy();
 
   int width = luaL_checkinteger(l, 1);
@@ -572,7 +567,7 @@ int Script::enemy_api_get_origin(lua_State *l) {
 int Script::enemy_api_set_origin(lua_State *l) {
 
   Script* script;
-  called_by_script(l, 0, &script);
+  called_by_script(l, 2, &script);
   Enemy& enemy = script->get_enemy();
 
   int x = luaL_checkinteger(l, 1);
@@ -613,7 +608,7 @@ int Script::enemy_api_get_position(lua_State *l) {
 int Script::enemy_api_set_position(lua_State *l) {
 
   Script* script;
-  called_by_script(l, 0, &script);
+  called_by_script(l, 2, &script);
   Enemy& enemy = script->get_enemy();
 
   int x = luaL_checkinteger(l, 1);
@@ -698,12 +693,13 @@ int Script::enemy_api_get_movement(lua_State *l) {
   called_by_script(l, 0, &script);
   Enemy& enemy = script->get_enemy();
 
-  Movement *movement = enemy.get_movement();
+  Movement* movement = enemy.get_movement();
   if (movement == NULL) {
     lua_pushnil(l);
   }
   else {
     int handle = script->create_movement_handle(*movement);
+    script->start_movement(handle);
     lua_pushinteger(l, handle);
   }
 
@@ -742,7 +738,7 @@ int Script::enemy_api_start_movement(lua_State *l) {
 int Script::enemy_api_stop_movement(lua_State *l) {
 
   Script* script;
-  called_by_script(l, 1, &script);
+  called_by_script(l, 0, &script);
   Enemy& enemy = script->get_enemy();
 
   enemy.clear_movement();
@@ -910,37 +906,29 @@ int Script::enemy_api_set_displayed_in_y_order(lua_State *l) {
  *
  * - Argument 1 (string): name of the enemy to create
  * - Argument 2 (string): breed of the enemy to create
- * - Argument 3 (integer): layer on the map
- * - Argument 4 (int): x x coordinate
- * - Argument 5 (int): y y coordinate
- * - Argument 6 (boolean): whether the coordinates are relative to the current enemy
- * (true to consider them as relative to the enemy, false to consider them as
- * absolute in the map)
+ * - Argument 3 (integer): x position relative to the father
+ * - Argument 4 (integer): y position relative to the father
  *
  * @param l the Lua context that is calling this function
  */
 int Script::enemy_api_create_son(lua_State *l) {
 
   Script* script;
-  called_by_script(l, 6, &script);
+  called_by_script(l, 4, &script);
   Enemy& enemy = script->get_enemy();
 
   const std::string& name = luaL_checkstring(l, 1);
   const std::string& breed = luaL_checkstring(l, 2);
-  int layer = luaL_checkinteger(l, 3);
-  int x = luaL_checkinteger(l, 4);
-  int y = luaL_checkinteger(l, 5);
-  bool relative = lua_toboolean(l, 6);
+  int x = luaL_checkinteger(l, 3);
+  int y = luaL_checkinteger(l, 4);
 
-  if (relative) {
-    x += enemy.get_x();
-    y += enemy.get_y();
-  }
+  x += enemy.get_x();
+  y += enemy.get_y();
 
   MapEntities& entities = script->get_map().get_entities();
   Treasure treasure = Treasure(script->get_game(), "_none", 1, -1);
   Enemy* son = (Enemy*) Enemy::create(script->get_game(), Enemy::CUSTOM, breed, Enemy::RANK_NORMAL, -1,
-      name, Layer(layer), x, y, 0, treasure);
+      name, enemy.get_layer(), x, y, 0, treasure);
   son->father_name = enemy.get_name();
   entities.add_entity(son);
 

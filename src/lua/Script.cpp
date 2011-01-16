@@ -867,8 +867,6 @@ int Script::create_sprite_handle(Sprite &sprite) {
   int handle = sprite.get_unique_id();
   if (sprites.find(handle) == sprites.end()) {
     sprites[handle] = &sprite;
-    unassigned_sprites[handle] = &sprite;
-    sprite.set_suspended(true); // suspended until it is assigned to an object
   }
 
   return handle;

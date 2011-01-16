@@ -7,7 +7,7 @@ function event_appear()
 
   sol.enemy.set_life(6)
   sol.enemy.set_damage(2)
-  sol.enemy.create_sprite("enemies/papillosaur_king")
+  sol.enemy.create_sprite("enemies/boss_papillosaurking")
   sol.enemy.set_size(176, 96)
   sol.enemy.set_origin(88, 64)
   sol.enemy.set_invincible()
@@ -24,10 +24,12 @@ end
 
 function event_hurt(attack, life_lost)
 
+  sol.main.timer_stop_all()
   if sol.enemy.get_life() <= 0 then
     -- I am dying: remove the minillosaur eggs
-    sons_prefix = sol.enemy.get_name().."_minillosaur" 
+    sons_prefix = sol.enemy.get_name().."_minillosaur"
     sol.map.enemy_remove_group(sons_prefix)
+    -- TODO sol.map.enemy_remove_sons or even sol.map.enemy_kill_sons
   end
 end
 
@@ -45,7 +47,7 @@ function egg_phase_soon()
     sol.main.timer_start(5000, "egg_phase_soon", false)
   else
     sol.enemy.stop_movement()
-    sol.main.timer_start(500, "egg_phase")
+    sol.main.timer_start(500, "egg_phase", false)
   end
 end
 
@@ -68,8 +70,8 @@ function throw_egg()
 
   -- create the egg
   nb_eggs_created = nb_eggs_created + 1
-  egg_name = sol.enemy.get_name().."_minillosaur_"..nb_eggs_created 
-  sol.map.enemy_create(egg_name, "minillosaur_egg", layer, x, y + 16)
+  egg_name = sol.enemy.get_name().."_minillosaur_"..nb_eggs_created
+  sol.enemy.create_son(egg_name, "minillosaur_egg", 0, 16)
   sol.map.enemy_set_treasure(egg_name, "_none", 1, -1)
   sol.main.play_sound("boss_fireball")
 
@@ -82,7 +84,7 @@ function throw_egg()
     -- finish the egg phase and schedule the next one in a few seconds
     sprite = sol.enemy.get_sprite()
     sol.main.sprite_set_animation(sprite, "walking")
-    duration = 4500 + (math.random(3) * 1000)
+    duration = 3500 + (math.random(3) * 1000)
     sol.main.timer_start(duration, "egg_phase_soon", false)
     go()
   end

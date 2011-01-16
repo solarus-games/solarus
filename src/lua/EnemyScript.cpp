@@ -15,7 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lua/EnemyScript.h"
-#include "enemies/CustomEnemy.h"
+#include "entities/CustomEnemy.h"
 #include "lowlevel/Debug.h"
 #include "Game.h"
 #include <lua.hpp>

@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "entities/Enemy.h"
+#include "entities/CustomEnemy.h"
 #include "entities/Hero.h"
 #include "entities/MapEntities.h"
 #include "entities/CarriedItem.h"
@@ -37,15 +38,6 @@
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 #include "lowlevel/Sound.h"
-#include "enemies/CustomEnemy.h"
-#include "enemies/SimpleGreenSoldier.h"
-#include "enemies/Bubble.h"
-#include "enemies/Tentacle.h"
-#include "enemies/Minillosaur.h"
-#include "enemies/ChainAndBall.h"
-#include "enemies/PapillosaurKing.h"
-#include "enemies/Khorneth.h"
-#include "enemies/Khotor.h"
 
 const std::string Enemy::attack_names[] = {
   "sword",
@@ -170,23 +162,8 @@ MapEntity* Enemy::create(Game &game, Subtype subtype, const std::string& breed, 
   }
 
   // create the enemy
-  Enemy *enemy;
   const ConstructionParameters params = {game, treasure, name, layer, x, y};
-
-  switch (subtype) {
-
-  case CUSTOM:                          enemy = new CustomEnemy(params, breed);         break;
-  case SIMPLE_GREEN_SOLDIER:		enemy = new SimpleGreenSoldier(params);		break;
-  case BUBBLE:				enemy = new Bubble(params);			break;
-  case TENTACLE:			enemy = new Tentacle(params);			break;
-  case MINILLOSAUR:			enemy = new Minillosaur(params);		break;
-  case CHAIN_AND_BALL:			enemy = new ChainAndBall(params);		break;
-  case PAPILLOSAUR_KING:		enemy = new PapillosaurKing(params);		break;
-  case KHORNETH:			enemy = new Khorneth(params);			break;
-  case KHOTOR:				enemy = new Khotor(params);			break;
-
-  default:				Debug::die(StringConcat() << "Unknown enemy subtype '" << subtype << "'");
-  }
+  Enemy *enemy = new CustomEnemy(params, breed);
 
   // initialize the fields
   enemy->set_direction(direction);

@@ -146,6 +146,7 @@ void CustomEnemy::restart() {
   script->event_restart();
 }
 
+#include <iostream>
 /**
  * @brief Notifies this entity that it has just tried to change its position.
  *

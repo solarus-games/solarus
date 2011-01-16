@@ -27,6 +27,7 @@ end
 -- An obstacle is reached: make the Bubble bounce
 function event_obstacle_reached()
 
+  print("bubble "..sol.enemy.get_name()..": obstacle reached")
   dxy = {
     { x =  1, y =  0},
     { x =  1, y = -1},
@@ -43,15 +44,15 @@ function event_obstacle_reached()
   try2 = (last_direction8 + 6) % 8;
   try3 = (last_direction8 + 4) % 8;
 
-  print("bubble "..sol.enemy.get_name()..": ld8 = "..last_direction8..", try "..try1.." "..try2.." "..try3)
   if not sol.main.movement_test_obstacles(m, dxy[try1 + 1].x, dxy[try1 + 1].y) then
-    print("try1 is ok")
+
+    x, y = sol.enemy.get_position()
     go(try1)
   elseif not sol.main.movement_test_obstacles(m, dxy[try2 + 1].x, dxy[try2 + 1].y) then
-    print("try2 is ok")
+
+    x, y = sol.enemy.get_position()
     go(try2)
   else
-    print("take try3 anyway")
     go(try3)
   end
 
@@ -65,4 +66,5 @@ function go(direction8)
   sol.main.movement_set_property(m, "angle", direction8 * math.pi / 4)
   last_direction8 = direction8
 end
+
 

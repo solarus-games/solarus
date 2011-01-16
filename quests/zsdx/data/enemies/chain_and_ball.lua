@@ -78,7 +78,7 @@ end
 
 function event_enabled()
 
-  m = sol.main.circle_movement_create(7, father_name, 64)
+  m = sol.main.circle_movement_create(7, father_name, 56)
   sol.main.movement_set_property(m, "center_dx", center_xy.x)
   sol.main.movement_set_property(m, "center_dy", center_xy.y)
   sol.main.movement_set_property(m, "radius_speed", 50)

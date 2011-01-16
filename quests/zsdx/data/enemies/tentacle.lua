@@ -1,12 +1,5 @@
 -- Tentacle: a basic enemy that follows the hero
 
--- Properties
-life = 1
-damage = 2
-sprite = "enemies/tentacle"
-size = {16, 16}
-origin = {8, 13}
-
 -- The enemy appears: set its properties
 function event_appear()
 

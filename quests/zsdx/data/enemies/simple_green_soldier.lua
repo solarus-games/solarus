@@ -17,16 +17,17 @@ end
 
 -- The enemy was stopped for some reason and should restart
 function event_restart()
-  direction4 = math.random(4)
+  direction4 = math.random(4) - 1
   go(direction4)
 end
 
 -- An obstacle is reached: stop for a while, looking to a next direction
 function event_obstacle_reached()
 
-  -- if the enemy was walking, look to the left or to the right
+  -- look to the left or to the right
   sprite = sol.enemy.get_sprite()
-  if sol.main.sprite_get_animation(sprite) == "walking" then
+  animation = sol.main.sprite_get_animation(sprite)
+  if animation == "walking" then
     look_left_or_right()
   end
 end
@@ -59,16 +60,16 @@ function go(direction4)
 
   -- set the movement
   m = sol.enemy.get_movement()
-  seconds = 2 + math.random(3)
+  seconds = 1 + math.random(3)
   sol.main.movement_set_property(m, "duration", seconds * 1000)
   sol.main.movement_set_property(m, "speed", 40)
-  sol.main.movement.set_property(m, "angle", direction4 * math.pi / 2)
+  sol.main.movement_set_property(m, "angle", direction4 * math.pi / 2)
 end
 
 -- Makes the soldier look to its left or to its right (random choice)
 function look_left_or_right()
 
-  if math.random(2) == 0 then
+  if math.random(2) == 1 then
     sol.main.sprite_set_animation(sprite, "stopped_watching_left")
   else
     sol.main.sprite_set_animation(sprite, "stopped_watching_right")

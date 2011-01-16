@@ -23,6 +23,10 @@ function event_appear()
   sol.enemy.set_origin(20, 25)
   sol.enemy.set_invincible()
   sol.enemy.set_attack_consequence("sword", "custom")
+
+  -- when a blade sprite has the same animation than the main sprite, synchronize their frames
+  sol.main.sprite_synchronize(get_left_blade_sprite(), get_main_sprite())
+  sol.main.sprite_synchronize(get_right_blade_sprite(), get_main_sprite())
 end
 
 function event_restart()
@@ -33,14 +37,10 @@ function event_restart()
 
   -- schedule a blade attack
   if has_blade() then
-    duration = 1000 * (2 + math.random(4))
-    sol.main.timer_start(duration, "blade_attack", false)
+    duration = 1000 * (1 + math.random(4))
+    sol.main.timer_start(duration, "start_blade_attack", false)
     blade_attack = false;
   end
-
-  -- when a blade sprite has the same animation than the main sprite, synchronize their frames
-  sol.main.sprite_synchronize(get_left_blade_sprite(), get_main_sprite())
-  sol.main.sprite_synchronize(get_right_blade_sprite(), get_main_sprite())
 end
 
 function has_left_blade()
@@ -56,22 +56,22 @@ function has_blade()
 end
 
 function get_main_sprite()
-  return sol.enemy.get_sprite_by_name(main_sprite_name)
+  return sol.enemy.get_sprite(main_sprite_name)
 end
 
 function get_left_blade_sprite()
-  return sol.enemy.get_sprite_by_name(left_blade_sprite_name)
+  return sol.enemy.get_sprite(left_blade_sprite_name)
 end
 
 function get_right_blade_sprite()
-  return sol.enemy.get_sprite_by_name(right_blade_sprite_name)
+  return sol.enemy.get_sprite(right_blade_sprite_name)
 end
 
 -- The enemy receives an attack whose consequence is "custom"
 function event_custom_attack_received(attack, sprite)
 
-  if sprite == get_left_blade_sprite()
-    and has_left_blade()
+  if has_left_blade()
+    and sprite == get_left_blade_sprite()
     and sol.main.sprite_get_animation(sprite) ~= "stopped" then  
 
     sol.main.sprite_set_animation(sprite, "hurt")
@@ -84,8 +84,8 @@ function event_custom_attack_received(attack, sprite)
     left_blade_life = left_blade_life - 1
     sol.main.timer_start(400, "stop_hurting_left_blade", false)
 
-  elseif sprite == get_right_blade_sprite()
-    and has_right_blade()
+  elseif has_right_blade()
+    and sprite == get_right_blade_sprite()
     and sol.main.sprite_get_animation(sprite) ~= "stopped" then  
 
     sol.main.sprite_set_animation(sprite, "hurt")
@@ -102,7 +102,7 @@ function event_custom_attack_received(attack, sprite)
   return 0 -- don't remove any life points
 end
 
-function blade_attack()
+function start_blade_attack()
 
   if has_blade() and not blade_attack then
 
@@ -112,7 +112,7 @@ function blade_attack()
     elseif not has_left_blade() then
       side = 1
     else
-      side = math.random(2)
+      side = math.random(2) - 1
     end
 
     if side == 0 then
@@ -147,7 +147,7 @@ function stop_hurting_left_blade()
   sol.enemy.restart();
   if left_blade_life <= 0 then
     sol.main.play_sound("stone")
-    sol.enemy.remove_sprite(get_left_blade_sprite())
+    sol.enemy.remove_sprite(left_blade_sprite_name)
 
     if not has_right_blade() then
       start_final_phase()
@@ -160,9 +160,9 @@ function stop_hurting_right_blade()
   sol.enemy.restart();
   if right_blade_life <= 0 then
     sol.main.play_sound("stone")
-    sol.enemy.remove_sprite(get_left_blade_sprite())
+    sol.enemy.remove_sprite(right_blade_sprite_name)
 
-    if not has_right_blade() then
+    if not has_left_blade() then
       start_final_phase()
     end
   end

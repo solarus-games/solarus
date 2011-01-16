@@ -740,8 +740,8 @@ returns whether the enemy is displayed at the same level as the hero
 sets whether the enemy is displayed at the same level as the hero
 (default is true, false will always display the enemy below the hero)
 
-- <tt>sol.enemy.create_son(enemy_name, breed, layer, x, y, relative_to_father)</tt>:
-Creates another enemy, specifying its coordinates as absolute or relative to the current enemy.
+- <tt>sol.enemy.create_son(enemy_name, breed, x, y)</tt>:
+Creates another enemy, specifying its coordinates as relative to the current enemy.
 
 - <tt>sol.enemy.get_father()</tt>:
 Returns the name of the father of the enemy (i.e. the enemy that created the current one),

@@ -167,6 +167,7 @@ int Script::main_api_sprite_create(lua_State *l) {
 
   Sprite* sprite = new Sprite(animation_set_id);
   int sprite_handle = script->create_sprite_handle(*sprite);
+  script->unassigned_sprites[sprite_handle] = sprite;
   lua_pushinteger(l, sprite_handle);
 
   return 1;
@@ -609,7 +610,9 @@ int Script::main_api_temporal_movement_create(lua_State *l) {
 
   TemporalMovement *movement = new TemporalMovement(speed, angle, duration);
   movement->set_speed(speed);
-  movement->set_angle(angle);
+  if (speed != 0) {
+    movement->set_angle(angle);
+  }
   int movement_handle = script->create_movement_handle(*movement);
   lua_pushinteger(l, movement_handle);
 

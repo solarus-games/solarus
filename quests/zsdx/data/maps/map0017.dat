@@ -275,16 +275,16 @@
 18	0	736	712	seroom_door_close_2	3	0	-1
 11	0	728	952	seroom_switch_1	1	0	0
 9	0	800	893	seroom_block_2	-1	0	0
-7	0	752	917	seroom_enemy_2	2	2	tentacle	0	-1	_random	1	-1
-7	0	904	877	seroom_enemy_1	2	2	tentacle	0	-1	_random	1	-1
-7	0	784	941	seroom_enemy_3	2	2	tentacle	0	-1	_random	1	-1
+7	0	752	917	seroom_enemy_2	2	-1	tentacle	0	-1	_random	1	-1
+7	0	904	877	seroom_enemy_1	2	-1	tentacle	0	-1	_random	1	-1
+7	0	784	941	seroom_enemy_3	2	-1	tentacle	0	-1	_random	1	-1
 4	0	608	965	0	arrow	1	-1
 4	0	584	965	0	arrow	1	-1
 9	0	736	965	block_3	-1	1	2
 15	0	864	832	16	128	1
-7	0	936	893	seroom_enemy_4	2	2	tentacle	0	-1	_random	1	-1
-7	0	768	861	seroom_enemy_5	2	2	tentacle	0	-1	_random	1	-1
-7	0	952	861	seroom_enemy_6	2	2	tentacle	0	-1	_random	1	-1
+7	0	936	893	seroom_enemy_4	2	-1	tentacle	0	-1	_random	1	-1
+7	0	768	861	seroom_enemy_5	2	-1	tentacle	0	-1	_random	1	-1
+7	0	952	861	seroom_enemy_6	2	-1	tentacle	0	-1	_random	1	-1
 9	0	200	549	block	-1	0	0
 9	0	184	549	block_2	-1	0	0
 9	0	168	549	block_4	-1	0	0
@@ -628,35 +628,35 @@
 8	1	152	597	torch_2	3	0	entities/torch	item#lamp
 8	1	200	565	torch_3	3	0	entities/torch	item#lamp
 8	1	152	565	torch_4	3	0	entities/torch	item#lamp
-7	1	648	669	croom_enemy_11	2	2	tentacle	0	-1	_random	1	-1
-7	1	424	605	croom_enemy_14	2	2	tentacle	0	-1	_random	1	-1
-7	1	576	709	croom_enemy_15	2	2	tentacle	0	-1	_random	1	-1
+7	1	648	669	croom_enemy_11	2	-1	tentacle	0	-1	_random	1	-1
+7	1	424	605	croom_enemy_14	2	-1	tentacle	0	-1	_random	1	-1
+7	1	576	709	croom_enemy_15	2	-1	tentacle	0	-1	_random	1	-1
 4	1	792	541	3	_random	1	-1
 9	1	288	693	block_14	-1	0	0
 9	1	304	693	block_15	-1	0	0
 18	1	360	584	s_door_weak_3	2	5	0
 18	1	312	584	s_door_weak_4	0	5	0
-7	1	952	317	neroom_enemy_1	2	2	tentacle	0	-1	_random	1	-1
-7	1	912	317	neroom_enemy_2	2	2	tentacle	0	-1	_random	1	-1
-7	1	872	317	neroom_enemy_3	2	2	tentacle	0	-1	_random	1	-1
-7	1	928	293	neroom_enemy_4	2	2	tentacle	0	-1	_random	1	-1
-7	1	888	293	neroom_enemy_5	2	2	tentacle	0	-1	_random	1	-1
-7	1	848	293	neroom_enemy_6	2	2	tentacle	0	-1	_random	1	-1
-7	1	968	293	neroom_enemy_7	2	2	tentacle	0	-1	_random	1	-1
-7	1	952	269	neroom_enemy_8	2	2	tentacle	0	-1	_random	1	-1
-7	1	912	269	neroom_enemy_9	2	2	tentacle	0	-1	_random	1	-1
-7	1	872	269	neroom_enemy_10	2	2	tentacle	0	-1	_random	1	-1
-7	1	928	245	neroom_enemy_11	2	2	tentacle	0	-1	_random	1	-1
-7	1	888	245	neroom_enemy_12	2	2	tentacle	0	-1	_random	1	-1
-7	1	848	245	neroom_enemy_13	2	2	tentacle	0	-1	_random	1	-1
-7	1	968	245	neroom_enemy_14	2	2	tentacle	0	-1	_random	1	-1
-7	1	952	221	neroom_enemy_22	2	2	tentacle	0	-1	_random	1	-1
-7	1	912	221	neroom_enemy_15	2	2	tentacle	0	-1	_random	1	-1
-7	1	872	221	neroom_enemy_16	2	2	tentacle	0	-1	_random	1	-1
-7	1	928	197	neroom_enemy_17	2	2	tentacle	0	-1	_random	1	-1
-7	1	888	197	neroom_enemy_18	2	2	tentacle	0	-1	_random	1	-1
-7	1	848	197	neroom_enemy_19	2	2	tentacle	0	-1	_random	1	-1
-7	1	968	197	neroom_enemy_20	2	2	tentacle	0	-1	_random	1	-1
+7	1	952	317	neroom_enemy_1	2	-1	tentacle	0	-1	_random	1	-1
+7	1	912	317	neroom_enemy_2	2	-1	tentacle	0	-1	_random	1	-1
+7	1	872	317	neroom_enemy_3	2	-1	tentacle	0	-1	_random	1	-1
+7	1	928	293	neroom_enemy_4	2	-1	tentacle	0	-1	_random	1	-1
+7	1	888	293	neroom_enemy_5	2	-1	tentacle	0	-1	_random	1	-1
+7	1	848	293	neroom_enemy_6	2	-1	tentacle	0	-1	_random	1	-1
+7	1	968	293	neroom_enemy_7	2	-1	tentacle	0	-1	_random	1	-1
+7	1	952	269	neroom_enemy_8	2	-1	tentacle	0	-1	_random	1	-1
+7	1	912	269	neroom_enemy_9	2	-1	tentacle	0	-1	_random	1	-1
+7	1	872	269	neroom_enemy_10	2	-1	tentacle	0	-1	_random	1	-1
+7	1	928	245	neroom_enemy_11	2	-1	tentacle	0	-1	_random	1	-1
+7	1	888	245	neroom_enemy_12	2	-1	tentacle	0	-1	_random	1	-1
+7	1	848	245	neroom_enemy_13	2	-1	tentacle	0	-1	_random	1	-1
+7	1	968	245	neroom_enemy_14	2	-1	tentacle	0	-1	_random	1	-1
+7	1	952	221	neroom_enemy_22	2	-1	tentacle	0	-1	_random	1	-1
+7	1	912	221	neroom_enemy_15	2	-1	tentacle	0	-1	_random	1	-1
+7	1	872	221	neroom_enemy_16	2	-1	tentacle	0	-1	_random	1	-1
+7	1	928	197	neroom_enemy_17	2	-1	tentacle	0	-1	_random	1	-1
+7	1	888	197	neroom_enemy_18	2	-1	tentacle	0	-1	_random	1	-1
+7	1	848	197	neroom_enemy_19	2	-1	tentacle	0	-1	_random	1	-1
+7	1	968	197	neroom_enemy_20	2	-1	tentacle	0	-1	_random	1	-1
 0	2	256	376	104	16	170
 0	2	464	1008	96	8	324
 0	2	128	776	96	8	323

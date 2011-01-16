@@ -35,6 +35,7 @@ CustomEnemy::CustomEnemy(const ConstructionParameters &params, const std::string
  */
 CustomEnemy::~CustomEnemy() {
 
+  delete script;
 }
 
 /**
@@ -42,7 +43,10 @@ CustomEnemy::~CustomEnemy() {
  */
 void CustomEnemy::initialize() {
 
-  script = new EnemyScript(*this);
+  if (script == NULL) {   // TODO when CustomEnemy is merged with Enemy, make this test in notify_enabled() instead
+    script = new EnemyScript(*this);
+    script->event_appear();
+  }
 }
 
 /**
@@ -61,12 +65,6 @@ const std::string& CustomEnemy::get_breed() {
 void CustomEnemy::set_map(Map& map) {
 
   Enemy::set_map(map);
-
-  if (get_map().is_started()) {
-    // notify the enemy script
-    script->event_appear();
-  }
-  // otherwise, notify_map_started() will do the job
 }
 
 /**
@@ -75,9 +73,6 @@ void CustomEnemy::set_map(Map& map) {
 void CustomEnemy::notify_map_started() {
 
   Enemy::notify_map_started();
-
-  // notify the item script
-  script->event_appear();
 }
 
 /**
@@ -86,7 +81,10 @@ void CustomEnemy::notify_map_started() {
 void CustomEnemy::update() {
 
   Enemy::update();
-  script->update();
+
+  if (script != NULL) {
+    script->update();
+  }
 }
 
 /**
@@ -96,7 +94,10 @@ void CustomEnemy::update() {
 void CustomEnemy::set_suspended(bool suspended) {
 
   Enemy::set_suspended(suspended);
-  script->set_suspended(suspended);
+
+  if (script != NULL) {
+    script->set_suspended(suspended);
+  }
 }
 
 /**
@@ -121,11 +122,14 @@ void CustomEnemy::display_on_map() {
 void CustomEnemy::notify_enabled(bool enabled) {
 
   Enemy::notify_enabled(enabled);
-  if (enabled) {
-    script->event_enabled();
-  }
-  else {
-    script->event_disabled();
+
+  if (script != NULL) {
+    if (enabled) {
+      script->event_enabled();
+    }
+    else {
+      script->event_disabled();
+    }
   }
 }
 
@@ -186,7 +190,10 @@ void CustomEnemy::notify_layer_changed() {
 void CustomEnemy::notify_movement_changed() {
 
   Enemy::notify_movement_changed();
-  script->event_movement_changed(*get_movement());
+
+  if (!is_being_hurt()) {
+    script->event_movement_changed(*get_movement());
+  }
 }
 
 /**
@@ -195,7 +202,10 @@ void CustomEnemy::notify_movement_changed() {
 void CustomEnemy::notify_movement_finished() {
 
   Enemy::notify_movement_finished();
-  script->event_movement_finished(*get_movement());
+
+  if (!is_being_hurt()) {
+    script->event_movement_finished(*get_movement());
+  }
 }
 
 /**

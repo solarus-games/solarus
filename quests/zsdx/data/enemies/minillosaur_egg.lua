@@ -15,7 +15,7 @@ function event_appear()
   sol.enemy.set_attack_consequence("sword", "custom")
 
   sprite = sol.enemy.get_sprite()
-  sol.main.sprite_set_animation("enemies/minillosaur", "egg")
+  sol.main.sprite_set_animation(sprite, "egg")
   in_egg = true
   x, y = sol.enemy.get_position()
   hero_x, hero_y = sol.map.hero_get_position()
@@ -30,7 +30,7 @@ function event_restart()
 
   if in_egg then
     sprite = sol.enemy.get_sprite()
-    sol.main.sprite_set_animation("in_egg")
+    sol.main.sprite_set_animation(sprite, "egg")
   end
 end
 

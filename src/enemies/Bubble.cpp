@@ -93,7 +93,6 @@ void Bubble::go(int movement_direction8) {
   movement->set_angle(Geometry::degrees_to_radians(movement_direction8 * 45));
 }
 
-
 /**
  * @brief Updates the enemy.
  */

@@ -362,7 +362,8 @@ void RectilinearMovement::update() {
       }
 
       // see if the movement was successful (i.e. if the hero's coordinates have changed)
-      bool success = (get_x() != old_xy.get_x() || get_y() != old_xy.get_y());
+      bool success = (!x_move_now || get_x() != old_xy.get_x())
+          && (!y_move_now || get_y() != old_xy.get_y());
 
       if (!is_suspended() && get_entity() != NULL) {
 	// notify the entity

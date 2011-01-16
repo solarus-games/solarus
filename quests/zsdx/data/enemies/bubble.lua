@@ -27,7 +27,6 @@ end
 -- An obstacle is reached: make the Bubble bounce
 function event_obstacle_reached()
 
-  print("bubble "..sol.enemy.get_name()..": obstacle reached")
   dxy = {
     { x =  1, y =  0},
     { x =  1, y = -1},

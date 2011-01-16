@@ -107,12 +107,11 @@ Enemy::~Enemy() {
  */
 MapEntity* Enemy::parse(Game &game, std::istream &is, Layer layer, int x, int y) {
 
-  int direction, subtype, rank, savegame_variable, treasure_variant, treasure_savegame_variable;
+  int direction, rank, savegame_variable, treasure_variant, treasure_savegame_variable;
   std::string name, breed, treasure_name;
 
   FileTools::read(is, name);
   FileTools::read(is, direction);
-  FileTools::read(is, subtype);
   FileTools::read(is, breed);
   FileTools::read(is, rank);
   FileTools::read(is, savegame_variable);
@@ -120,12 +119,12 @@ MapEntity* Enemy::parse(Game &game, std::istream &is, Layer layer, int x, int y)
   FileTools::read(is, treasure_variant);
   FileTools::read(is, treasure_savegame_variable);
 
-  return create(game, Subtype(subtype), breed, Enemy::Rank(rank), savegame_variable, name, Layer(layer), x, y, direction,
+  return create(game, breed, Enemy::Rank(rank), savegame_variable, name, Layer(layer), x, y, direction,
       Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable));
 }
 
 /**
- * @brief Creates an enemy with the specified type.
+ * @brief Creates an enemy.
  *
  * This method acts like a constructor, and usually returns an enemy.
  * However, if the enemy is already dead and cannot be killed again,
@@ -134,7 +133,6 @@ MapEntity* Enemy::parse(Game &game, std::istream &is, Layer layer, int x, int y)
  * - or a pickable treasure if the enemy has one
  *
  * @param game the current game
- * @param subtype subtype of enemy to create
  * @param breed breed of the enemy to create
  * @param name a name identifying the enemy
  * @param rank rank of the enemy: normal, miniboss or boss
@@ -147,7 +145,7 @@ MapEntity* Enemy::parse(Game &game, std::istream &is, Layer layer, int x, int y)
  * @param treasure the pickable item that the enemy drops (possibly NULL)
  * @return the enemy created (may be NULL)
  */
-MapEntity* Enemy::create(Game &game, Subtype subtype, const std::string& breed, Rank rank, int savegame_variable,
+MapEntity* Enemy::create(Game &game, const std::string& breed, Rank rank, int savegame_variable,
     const std::string &name, Layer layer, int x, int y, int direction, const Treasure &treasure) {
 
   // see if the enemy is dead

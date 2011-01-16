@@ -927,7 +927,7 @@ int Script::enemy_api_create_son(lua_State *l) {
 
   MapEntities& entities = script->get_map().get_entities();
   Treasure treasure = Treasure(script->get_game(), "_none", 1, -1);
-  Enemy* son = (Enemy*) Enemy::create(script->get_game(), Enemy::CUSTOM, breed, Enemy::RANK_NORMAL, -1,
+  Enemy* son = (Enemy*) Enemy::create(script->get_game(), breed, Enemy::RANK_NORMAL, -1,
       name, enemy.get_layer(), x, y, 0, treasure);
   son->father_name = enemy.get_name();
   entities.add_entity(son);

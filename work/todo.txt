@@ -69,8 +69,6 @@ Bugs :
 - Khorneth : empêcher d'aller trop au nord dans la salle sinon sa tête s'affiche en-dessous du plafond
 - Khorneth : il faut pouvoir spécifier des attack consequences différentes selon les sprites
 - Message incorrect quand on regarde un chou-péteur sans la poigne de fer
-- Les carried item thrown ne détectent plus les boss et mini-boss car il n'y a plus le mode COLLISION_RECTANGLE
-- Chaîne de Khotor: ne se replie pas
 
 
 Ennemis à faire (reprendre graphismes de MC + graphismes rippés) :

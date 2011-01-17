@@ -54,7 +54,7 @@ public class SpriteAnimationDirection {
         frames = new BufferedImage[nbFrames];
 
         int nbRows = nbFrames / nbColumns;
-        if (nbFrames % nbColumns == 0) {
+        if (nbFrames % nbColumns != 0) {
             nbRows++;
         }
 
@@ -71,6 +71,24 @@ public class SpriteAnimationDirection {
                 frame++;
             }
         }
+    }
+
+    /**
+     * Returns the origin point of this direction.
+     * @return the origin point
+     */
+    public Point getOrigin() {
+
+        return origin;
+    }
+
+    /**
+     * Returns the size of frames in this direction.
+     * @return the size
+     */
+    public Dimension getSize() {
+
+        return new Dimension(frames[0].getWidth(), frames[0].getHeight());
     }
 
     /**

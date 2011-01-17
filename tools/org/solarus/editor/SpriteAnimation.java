@@ -55,6 +55,26 @@ public class SpriteAnimation {
     }
 
     /**
+     * Returns the origin point of this animation.
+     * @param direction direction of animation
+     * @return the corresponding origin point
+     */
+    public Point getOrigin(int direction) {
+
+        return directions[direction].getOrigin();
+    }
+
+    /**
+     * Returns the size of frames in this animation.
+     * @param direction direction of animation
+     * @return the corresponding size
+     */
+    public Dimension getSize(int direction) {
+
+        return directions[direction].getSize();
+    }
+
+    /**
      * Returns a frame of this animation.
      * @param direction direction to use
      * @param frame index of the frame to show

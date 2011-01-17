@@ -636,6 +636,19 @@ public abstract class MapEntity extends Observable {
     }
 
     /**
+     * Changes the size of the entity on the map.
+     * The location of the entity is not changed.
+     * @param size of the entity in pixels
+     * @throws MapException if the entity is not resizable,
+     * or the size specified is lower than or equal to zero,
+     * or the size specified is not divisible by 8
+     */
+    public void setSize(Dimension size) throws MapException {
+
+        setSize(size.width, size.height);
+    }
+
+    /**
      * Changes the size of the entity.
      * @param width width of the entity in pixels
      * @param height height of the entity in pixels
@@ -643,6 +656,16 @@ public abstract class MapEntity extends Observable {
     protected void setSizeImpl(int width, int height) {
 	positionInMap.width = width;
 	positionInMap.height = height;
+    }
+
+    /**
+     * Changes the size of the entity.
+     * @param width width of the entity in pixels
+     * @param height height of the entity in pixels
+     */
+    protected void setSizeImpl(Dimension size) {
+
+        setSizeImpl(size.width, size.height);
     }
 
     /**

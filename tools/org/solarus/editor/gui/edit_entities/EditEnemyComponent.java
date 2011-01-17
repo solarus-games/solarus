@@ -51,7 +51,7 @@ public class EditEnemyComponent extends EditEntityComponent {
     protected void createSpecificFields() {
 
 	// breed
-	breedField = new ResourceChooser(ResourceType.ENEMY, false);
+	breedField = new ResourceChooser(ResourceType.ENEMY, true);
 	addField("Breed", breedField);
 
 	// rank

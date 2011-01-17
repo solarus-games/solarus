@@ -155,6 +155,34 @@ public class Sprite {
     }
 
     /**
+     * Returns the origin point of this sprite.
+     * @param animationName name of the animation to consider (null to pick the default one)
+     * @param direction direction of animation
+     * @return the corresponding origin point
+     */
+    public Point getOrigin(String animationName, int direction) {
+
+        if (animationName == null) {
+            animationName = getDefaultAnimationName();
+        }
+        return animations.get(animationName).getOrigin(direction);
+    }
+
+    /**
+     * Returns the size of this sprite.
+     * @param animationName name of the animation to consider (null to pick the default one)
+     * @param direction direction of animation
+     * @return the corresponding size
+     */
+    public Dimension getSize(String animationName, int direction) {
+
+        if (animationName == null) {
+            animationName = getDefaultAnimationName();
+        }
+        return animations.get(animationName).getSize(direction);
+    }
+
+    /**
      * Displays a frame of this sprite.
      * @param g graphic context
      * @param zoom zoom of the image (for example, 1: unchanged, 2: zoom of 200%)

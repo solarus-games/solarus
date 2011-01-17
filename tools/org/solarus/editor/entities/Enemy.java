@@ -17,6 +17,7 @@
 package org.solarus.editor.entities;
 
 import java.awt.*;
+
 import org.solarus.editor.*;
 
 /**
@@ -32,25 +33,9 @@ public class Enemy extends MapEntity {
     };
 
     /**
-     * Description of the image representing currently the entity.
+     * The sprite representing this entity (if any).
      */
-    public static final EntityImageDescription[] currentImageDescriptions = {
-	new EntityImageDescription("enemies.png", 0, 0, 16, 32),
-    };
-
-    /**
-     * Origin point of each type of enemy.
-     */
-    private static final Point[] origins = {
-	new Point(8, 29),
-    };
-
-    /**
-     * Size of each type of enemy.
-     */
-    private static final Dimension[] sizes = {
-	new Dimension(16, 32),
-    };
+    private Sprite sprite;
 
     /**
      * Enemy ranks.
@@ -77,10 +62,7 @@ public class Enemy extends MapEntity {
      */
     public Enemy(Map map)throws MapException {
 	super(map, 16, 16);
-
-	setDirection(3);
-	Dimension size = sizes[0];
-	setSizeImpl(size.width, size.height);
+        setDirection(3);
     }
 
     /**
@@ -88,7 +70,11 @@ public class Enemy extends MapEntity {
      * @return the coordinates of the origin point of the entity
      */
     protected Point getOrigin() {
-	return origins[0];
+
+        if (sprite == null) {
+            return new Point(8, 29);
+        }
+        return sprite.getOrigin(null, getDirection());
     }
 
     /**
@@ -111,12 +97,33 @@ public class Enemy extends MapEntity {
      * Sets the default values of all properties specific to the current entity type.
      */
     public void setPropertiesDefaultValues() throws MapException {
-	setProperty("breed", "_none");
+	setProperty("breed", "");
 	setProperty("rank", Rank.NORMAL.ordinal());
 	setProperty("savegameVariable", -1);
 	setProperty("treasureName", Item.randomId);
 	setProperty("treasureVariant", 1);
 	setProperty("treasureSavegameVariable", -1);
+    }
+
+    /**
+     * Sets a property specific to this kind of entity.
+     * @param name name of the property
+     * @param value value of the property
+     */
+    public void setProperty(String name, String value) throws MapException {
+
+        super.setProperty(name, value);
+
+        if (name.equals("breed")) {
+
+            if (value.length() > 0) {
+                sprite = new Sprite("enemies/" + value);
+                setSizeImpl(sprite.getSize(null, 0));
+            }
+            else {
+                sprite = null;
+            }
+        }
     }
 
     /**
@@ -128,7 +135,7 @@ public class Enemy extends MapEntity {
 	String breed = getProperty("breed");
 	if (breed.length() == 0
 	    || breed.indexOf(' ') != -1
-	    || breed.indexOf(' ') != -1) {
+	    || breed.indexOf('\t') != -1) {
 	    throw new MapException("An enemy's breed cannot be empty or have whitespaces");
 	}
 
@@ -146,6 +153,26 @@ public class Enemy extends MapEntity {
 	if (treasureSavegameVariable < -1 || treasureSavegameVariable >= 32768) {
 	    throw new MapException("Invalid treasure savegame variable");
 	}
+    }
+
+    /**
+     * Draws this entity on the map editor.
+     * @param g graphic context
+     * @param zoom zoom of the image (for example, 1: unchanged, 2: zoom of 200%)
+     * @param showTransparency true to make transparent pixels,
+     * false to replace them by a background color
+     */
+    public void paint(Graphics g, double zoom, boolean showTransparency) {
+
+        if (sprite == null) {
+            // display a default enemy icon
+            super.paint(g, zoom, showTransparency);
+        }
+        else {
+            // display the sprite
+            sprite.paint(g, zoom, showTransparency,
+                    getX(), getY(), null, getDirection(), 0);
+        }
     }
 }
 

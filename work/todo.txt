@@ -66,6 +66,9 @@ Bugs :
 - BackToSolidGroundState : il faut attendre le mouvement alors que la caméra ne bouge même pas (voir Caverne de Billy)
 - Ajouter set_enabled()/is_enabled() à InteractiveEntity/NPC
 - event_camera_reached_target() et event_camera_back() : notifier le script qui a effectué la requête, pas forcément le script de la map
+- Khorneth : empêcher d'aller trop au nord dans la salle sinon sa tête s'affiche en-dessous du plafond
+- Khorneth : il faut pouvoir spécifier des attack consequences différentes selon les sprites
+- Message incorrect quand on regarde un chou-péteur sans la poigne de fer
 
 
 Ennemis à faire (reprendre graphismes de MC + graphismes rippés) :

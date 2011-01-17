@@ -1021,9 +1021,9 @@
 4	0	184	765	2	_random	1	-1
 4	0	216	765	2	_random	1	-1
 4	0	248	765	2	_random	1	-1
-7	0	176	813	enemy_2	3	0	simple_green_soldier	0	-1	_random	0	-1
-7	0	424	573	enemy	3	0	simple_green_soldier	0	-1	_random	0	-1
-7	0	560	957	enemy_3	3	0	simple_green_soldier	0	-1	_random	0	-1
+7	0	176	813	enemy_2	3	simple_green_soldier	0	-1	_random	0	-1
+7	0	424	573	enemy	3	simple_green_soldier	0	-1	_random	0	-1
+7	0	560	957	enemy_3	3	simple_green_soldier	0	-1	_random	0	-1
 8	0	152	685	chignon_woman	3	1	npc/newlink5	dialog#outside_world.village.chignon_woman_npc
 8	0	128	469	cliff_man	3	1	npc/static_villager14	dialog#outside_world.village.cliff_man_npc
 1	0	208	725	out_grandma_house	3	0

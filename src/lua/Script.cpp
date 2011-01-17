@@ -15,13 +15,14 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lua/Script.h"
-#include "Game.h"
-#include "Map.h"
-#include "Timer.h"
 #include "movements/Movement.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
+#include "Game.h"
+#include "Map.h"
+#include "Timer.h"
+#include "Sprite.h"
 #include <lua.hpp>
 #include <sstream>
 #include <cstdarg>
@@ -31,8 +32,8 @@
  * @param apis_enabled an OR-combination of APIs to enable
  */
 Script::Script(uint32_t apis_enabled):
-  context(NULL),
-  apis_enabled(apis_enabled) {
+  apis_enabled(apis_enabled),
+  context(NULL) {
 
 }
 
@@ -54,10 +55,17 @@ Script::~Script() {
     }
   }
 
-  // delete the movements still stored by this script, if any
+  // delete the movements and sprites still stored by this script, if any
   {
     std::map<int, Movement*>::iterator it;
     for (it = unassigned_movements.begin(); it != unassigned_movements.end(); it++) {
+      delete it->second;
+    }
+  }
+
+  {
+    std::map<int, Sprite*>::iterator it;
+    for (it = unassigned_sprites.begin(); it != unassigned_sprites.end(); it++) {
       delete it->second;
     }
   }
@@ -67,9 +75,6 @@ Script::~Script() {
  * @brief Initializes the Lua context for this script.
  */
 void Script::initialize_lua_context() {
-
-  // initialize fields
-  next_sprite_handle = 1;
 
   // create an execution context
   context = lua_open();
@@ -251,6 +256,7 @@ void Script::register_main_api() {
       { "timer_start", main_api_timer_start },
       { "timer_stop", main_api_timer_stop },
       { "timer_stop_all", main_api_timer_stop_all },
+      { "sprite_create", main_api_sprite_create },
       { "sprite_get_animation", main_api_sprite_get_animation },
       { "sprite_set_animation", main_api_sprite_set_animation },
       { "sprite_get_direction", main_api_sprite_get_direction },
@@ -263,6 +269,7 @@ void Script::register_main_api() {
       { "sprite_set_paused", main_api_sprite_set_paused },
       { "sprite_set_animation_ignore_suspend", main_api_sprite_set_animation_ignore_suspend },
       { "sprite_fade", main_api_sprite_fade },
+      { "sprite_synchronize", main_api_sprite_synchronize },
       { "pixel_movement_create", main_api_pixel_movement_create },
       { "random_movement_create", main_api_random_movement_create },
       { "path_movement_create", main_api_path_movement_create },
@@ -274,6 +281,8 @@ void Script::register_main_api() {
       { "jump_movement_create", main_api_jump_movement_create },
       { "movement_get_property", main_api_movement_get_property },
       { "movement_set_property", main_api_movement_set_property },
+      { "movement_test_obstacles", main_api_movement_test_obstacles },
+      { "get_angle", main_api_get_angle },
       { NULL, NULL }
   };
   luaL_register(context, "sol.main", main_api);
@@ -341,6 +350,7 @@ void Script::register_map_api() {
       { "treasure_give", map_api_treasure_give },
       { "camera_move", map_api_camera_move },
       { "camera_restore", map_api_camera_restore },
+      { "sprite_display", map_api_sprite_display },
       { "hero_freeze", map_api_hero_freeze },
       { "hero_unfreeze", map_api_hero_unfreeze },
       { "hero_set_map", map_api_hero_set_map },
@@ -390,19 +400,31 @@ void Script::register_map_api() {
       { "switch_set_locked", map_api_switch_set_locked },
       { "switch_is_enabled", map_api_switch_is_enabled },
       { "switch_set_enabled", map_api_switch_set_enabled },
-      { "enemy_is_dead", map_api_enemy_is_dead },
-      { "enemy_is_group_dead", map_api_enemy_is_group_dead },
-      { "enemy_set_enabled", map_api_enemy_set_enabled },
-      { "enemy_start_boss", map_api_enemy_start_boss },
-      { "enemy_end_boss", map_api_enemy_end_boss },
-      { "enemy_start_miniboss", map_api_enemy_start_miniboss },
-      { "enemy_end_miniboss", map_api_enemy_end_miniboss },
       { "door_open", map_api_door_open },
       { "door_close", map_api_door_close },
       { "door_is_open", map_api_door_is_open },
       { "door_set_open", map_api_door_set_open },
       { "pickable_item_create", map_api_pickable_item_create },
       { "bomb_create", map_api_bomb_create },
+      { "enemy_create", map_api_enemy_create },
+      { "enemy_remove", map_api_enemy_remove },
+      { "enemy_remove_group", map_api_enemy_remove_group },
+      { "enemy_is_enabled", map_api_enemy_is_enabled },
+      { "enemy_set_enabled", map_api_enemy_set_enabled },
+      { "enemy_is_dead", map_api_enemy_is_dead },
+      { "enemy_is_group_dead", map_api_enemy_is_group_dead },
+      { "enemy_get_group_count", map_api_enemy_get_group_count },
+      { "enemy_start_boss", map_api_enemy_start_boss },
+      { "enemy_end_boss", map_api_enemy_end_boss },
+      { "enemy_start_miniboss", map_api_enemy_start_miniboss },
+      { "enemy_end_miniboss", map_api_enemy_end_miniboss },
+      { "enemy_get_position", map_api_enemy_get_position },
+      { "enemy_set_position", map_api_enemy_set_position },
+      { "enemy_get_layer", map_api_enemy_get_layer },
+      { "enemy_set_layer", map_api_enemy_set_layer },
+      { "enemy_set_treasure", map_api_enemy_set_treasure },
+      { "enemy_set_no_treasure", map_api_enemy_set_no_treasure },
+      { "enemy_set_random_treasure", map_api_enemy_set_random_treasure },
       { NULL, NULL }
   };
   luaL_register(context, "sol.map", map_api);
@@ -440,7 +462,50 @@ void Script::register_item_api() {
 void Script::register_enemy_api() {
 
   static luaL_Reg enemy_api[] = {
-      // TODO
+      { "get_name", enemy_api_get_name },
+      { "get_life", enemy_api_get_life },
+      { "set_life", enemy_api_set_life },
+      { "add_life", enemy_api_add_life },
+      { "remove_life", enemy_api_remove_life },
+      { "get_damage", enemy_api_get_damage },
+      { "set_damage", enemy_api_set_damage },
+      { "get_magic_damage", enemy_api_get_magic_damage },
+      { "set_magic_damage", enemy_api_set_magic_damage },
+      { "is_pushed_back_when_hurt", enemy_api_is_pushed_back_when_hurt },
+      { "set_pushed_back_when_hurt", enemy_api_set_pushed_back_when_hurt },
+      { "get_hurt_sound_style", enemy_api_get_hurt_sound_style },
+      { "set_hurt_sound_style", enemy_api_set_hurt_sound_style },
+      { "get_minimum_shield_needed", enemy_api_get_minimum_shield_needed },
+      { "set_minimum_shield_needed", enemy_api_set_minimum_shield_needed },
+      { "set_attack_consequence", enemy_api_set_attack_consequence },
+      { "set_default_attack_consequences", enemy_api_set_default_attack_consequences },
+      { "set_invincible", enemy_api_set_invincible },
+      { "set_treasure", enemy_api_set_treasure },
+      { "set_no_treasure", enemy_api_set_no_treasure },
+      { "set_random_treasure", enemy_api_set_random_treasure },
+      { "get_obstacle_behavior", enemy_api_get_obstacle_behavior },
+      { "set_obstacle_behavior", enemy_api_set_obstacle_behavior },
+      { "get_size", enemy_api_get_size },
+      { "set_size", enemy_api_set_size },
+      { "get_origin", enemy_api_get_origin },
+      { "set_origin", enemy_api_set_origin },
+      { "get_position", enemy_api_get_position },
+      { "set_position", enemy_api_set_position },
+      { "get_layer", enemy_api_get_layer },
+      { "set_layer", enemy_api_set_layer },
+      { "snap_to_grid", enemy_api_snap_to_grid },
+      { "get_movement", enemy_api_get_movement },
+      { "start_movement", enemy_api_start_movement },
+      { "stop_movement", enemy_api_stop_movement },
+      { "restart", enemy_api_restart },
+      { "get_sprite", enemy_api_get_sprite },
+      { "has_sprite", enemy_api_has_sprite },
+      { "create_sprite", enemy_api_create_sprite },
+      { "remove_sprite", enemy_api_remove_sprite },
+      { "is_displayed_in_y_order", enemy_api_is_displayed_in_y_order },
+      { "set_displayed_in_y_order", enemy_api_set_displayed_in_y_order },
+      { "create_son", enemy_api_create_son },
+      { "get_father", enemy_api_get_father },
       { NULL, NULL }
   };
   luaL_register(context, "sol.enemy", enemy_api);
@@ -790,13 +855,20 @@ bool Script::is_new_timer_suspended(void) {
 
 /**
  * @brief Makes a sprite accessible from the script.
+ *
+ * If the sprite is already accessible from this script,
+ * this function returns the already known handle.
+ *
  * @param sprite the sprite to make accessible
  * @return a handle that can be used by scripts to refer to this sprite
  */
 int Script::create_sprite_handle(Sprite &sprite) {
 
-  int handle = next_sprite_handle++;
-  sprites[handle] = &sprite;
+  int handle = sprite.get_unique_id();
+  if (sprites.find(handle) == sprites.end()) {
+    sprites[handle] = &sprite;
+  }
+
   return handle;
 }
 
@@ -817,7 +889,7 @@ Sprite& Script::get_sprite(int sprite_handle) {
  * @brief Makes a movement accessible from the script.
  *
  * If the movement is already accessible from this script,
- * this returns the already known handle.
+ * this function returns the already known handle.
  *
  * @param movement the movement to make accessible
  * @return a handle that can be used by scripts to refer to this movement

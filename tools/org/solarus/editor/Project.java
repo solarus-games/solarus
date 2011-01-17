@@ -20,7 +20,7 @@ import java.io.*;
 import java.text.*;
 import java.util.*;
 import java.net.*;
-import java.awt.Image;
+import java.awt.image.*;
 import javax.swing.*;
 import javax.imageio.*;
 
@@ -43,8 +43,8 @@ public class Project {
     /**
      * Table of the images that have been read.
      */
-    private TreeMap<String, Image> editorImagesLoaded;
-    private TreeMap<String, Image> projectImagesLoaded;
+    private TreeMap<String, BufferedImage> editorImagesLoaded;
+    private TreeMap<String, BufferedImage> projectImagesLoaded;
 
     /**
      * Objects to notify when a project is loaded.
@@ -63,8 +63,8 @@ public class Project {
     private Project(String path) {
 	this.projectPath = path;
 	resourceDatabase = new ResourceDatabase(this);
-	editorImagesLoaded = new TreeMap<String, Image>();
-	projectImagesLoaded = new TreeMap<String, Image>();
+	editorImagesLoaded = new TreeMap<String, BufferedImage>();
+	projectImagesLoaded = new TreeMap<String, BufferedImage>();
     }
 
     /**
@@ -189,10 +189,10 @@ public class Project {
      * images directory of the editor
      * @return the image
      */
-    public static Image getEditorImage(String imageFileName) {
+    public static BufferedImage getEditorImage(String imageFileName) {
 
 	// see if the image has been already loaded
-	Image image = currentProject.editorImagesLoaded.get(imageFileName);
+        BufferedImage image = currentProject.editorImagesLoaded.get(imageFileName);
 
 	if (image == null) {
 	    try {
@@ -247,10 +247,10 @@ public class Project {
      * data path of the project
      * @return the image
      */
-    public static Image getProjectImage(String imageFileName) {
+    public static BufferedImage getProjectImage(String imageFileName) {
 
 	// see if the image has been already loaded
-	Image image = currentProject.projectImagesLoaded.get(imageFileName);
+        BufferedImage image = currentProject.projectImagesLoaded.get(imageFileName);
 
 	if (image == null) {
 	  String path = getDataPath() + "/" + imageFileName;
@@ -356,6 +356,24 @@ public class Project {
 	nf.setGroupingUsed(false);
 
 	return new File(getMapPath() + "/map" + nf.format(Integer.parseInt(mapId)) + ".dat");
+    }
+
+    /**
+     * Returns the path of the sprite files, determined with the current project root path.
+     * @return the path of the sprite files
+     */
+    public static String getSpritePath() {
+        return getDataPath() + "/sprites";
+    }
+
+    /**
+     * Returns a sprite animation set description file knowing its id for the current project.
+     * @param animationSetId id of a spite animation set
+     * @return the file corresponding to this id
+     */
+    public static File getSpriteFile(String animationSetId) {
+
+        return new File(getSpritePath() + "/" + animationSetId + ".dat");
     }
 
     /**

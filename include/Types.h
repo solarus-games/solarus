@@ -156,6 +156,7 @@ class DestructibleItem;
 class Chest;
 class JumpSensor;
 class Enemy;
+class CustomEnemy;
 class InteractiveEntity;
 class Block;
 class Switch;
@@ -197,17 +198,6 @@ class RandomMovement;
 class FollowMovement;
 class TargetMovement;
 class CircleMovement;
-
-// enemies
-class CustomEnemy;
-class SimpleGreenSoldier;
-class Bubble;
-class Tentacle;
-class ChainAndBall;
-class Minillosaur;
-class PapillosaurKing;
-class Khorneth;
-class Khotor;
 
 #endif
 

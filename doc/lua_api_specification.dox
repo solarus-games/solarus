@@ -8,7 +8,7 @@ This documentation page is intented to Lua programers who want to know the funct
 For the point of view of the engine, see the documentation of the C++ class Script.
 
 For now, the following types of scripts exist:
-- the script of a map (<tt>maps/mapXXXX.lua</tt>): controls the map #XXXX,
+- the script of a map (<tt>maps/mapXXXX.lua</tt>): controls the map XXXX,
 - the script of an item (<tt>items/XXXX.lua</tt>): controls the item named "XXXX" in <tt>items.dat</tt>,
 - (work in progress) the script of an item (<tt>enemies/XXXX.lua</tt>): controls the enemies whose breed is "XXXX".
 Other types such as scriptable menus will come eventually.
@@ -39,11 +39,13 @@ through the <tt>sol</tt> object.
 
 The <tt>sol.main</tt> module is available to any type of Lua script,
 even when no game is running.
-It contains functions to play sounds or musics, set timers
-and manage sprites.
+It contains functions to play sounds or musics, set timers,
+and manage sprites and movements.
 
-Your script can get a handle to an existing sprite (e.g. a sprite attached to an NPC).
-Then, you can call all sprite-related functions and give the sprite handle as first paramater.
+Your script can create a sprite or get a handle to an existing sprite
+(e.g. a sprite attached to an NPC).
+In both cases, you can then call all sprite-related functions
+and give the sprite handle as first paramater.
 
 - <tt>sol.main.include(script_name)</tt>: 	
 includes another script into this one
@@ -62,6 +64,10 @@ stops a timer that is currently running from your script
 
 - <tt>sol.main.timer_stop_all()</tt>: 
 stops all timers started by your script
+
+- <tt>sol.main.sprite_create(sprite_name)</tt>:
+Creates a sprite given its name (i.e. its animation set)
+and returns a handle to it.
 
 - <tt>sol.main.sprite_get_animation(sprite)</tt>:
 returns the name of the current animation of a sprite
@@ -103,6 +109,11 @@ sets whether the animation should continue even when the sprite is suspended
 - <tt>sol.main.sprite_fade(sprite, direction)</tt>:
 shows a fade effect on a sprite (0: fade-in, 1: fade-out)
 
+- <tt>sol.main.sprite_synchronize(sprite, reference_sprite)</tt>:
+Synchronizes the frames of a sprite with the frames of a reference sprite
+when their animation name match.
+Stops any previous synchronization if <tt>reference_sprite</tt> is <tt>nil</tt>.
+
 - <tt>sol.main.pixel_movement_create(trajectory, delay)</tt>:
 creates a movement of type PixelMovement that will be accessible from this script
 
@@ -135,6 +146,13 @@ returns a string property from a movement (warning: it always returns a string!)
 
 - <tt>sol.main.movement_set_property(movement, key, value)</tt>:
 sets a property of a movement (the value may be a string, an integer or a boolean)
+
+- <tt>sol.main.movement_test_obstacles(movement, dx, dy)</tt>:
+Returns whether there would be a collision if the entity controlled by a movement
+object was translated with the given parameters.
+
+- <tt>sol.main.get_angle(x1, y1, x2, y2)</tt>:
+Returns the angle in radians between the specified vector and the x axis.
 
 @subsection sol.game Module <tt>sol.game</tt>
 
@@ -273,14 +291,17 @@ returns the current light level of the map
 - <tt>sol.map.light_set(light_level)</tt>:
 sets the light level of the map (0: no light, positive values: full light)
 
-- <tt>sol.map.treasure_give(item_name, variant, savegame_variable)</tt>: 
-gives a treasure to the player (without using a chest)
-
 - <tt>sol.map.camera_move(x, y, speed)</tt>: 
 suspends the game and moves the camera towards a target point
 
 - <tt>sol.map.camera_restore()</tt>: 
 sents the camera back to the hero after a call to camera_move()
+
+- <tt>sol.map.sprite_display(sprite, x, y)</tt>:
+displays a sprite at the given position (relative to the the map)
+
+- <tt>sol.map.treasure_give(item_name, variant, savegame_variable)</tt>: 
+gives a treasure to the player (without using a chest)
 
 - <tt>sol.map.hero_freeze()</tt>: 
 prevents the hero from moving until you call <tt>sol.map.hero_unfreeze()</tt>
@@ -432,27 +453,6 @@ returns whether a switch is enabled
 - <tt>sol.map.sensor_set_enabled(sensor_name, enable)</tt>:
 enables or disables a sensor
 
-- <tt>sol.map.enemy_is_dead(enemy_name)</tt>:
-returns whether an enemy is dead
-
-- <tt>sol.map.enemy_is_group_dead(enemies_name_prefix)</tt>:
-returns whether all enemies having a common prefix are dead
-
-- <tt>sol.map.enemy_set_enabled(enemy_name)</tt>:
-enables or disables an enemy
-
-- <tt>sol.map.enemy_start_boss(enemy_name)</tt>:
-starts fighting a boss if it is alive
-
-- <tt>sol.map.enemy_end_boss()</tt>:
-sets the fight with a boss as finished (usually called after picking the life container)
-
-- <tt>sol.map.enemy_start_miniboss(enemy_name)</tt>:
-starts fighting a miniboss if it is alive
-
-- <tt>sol.map.enemy_end_miniboss()</tt>:
-sets the fight with a miniboss as finished
-
 - <tt>sol.map.door_open(door_prefix)</tt>:
 opens one or several doors, playing their animation and sound
 
@@ -467,6 +467,64 @@ changes immediately the state of a door (without playing animation and sound)
 
 - <tt>sol.map.pickable_item_create(item_name, variant, savegame_variable, x, y, layer)</tt>:
 creates a pickable item and places it on the map
+
+- <tt>sol.map.enemy_create(enemy_name, breed, layer, x, y)</tt>:
+Creates an enemy on the map.
+
+- <tt>sol.map.enemy_remove(enemy_name)</tt>:
+Removes an enemy from the map.
+
+- <tt>sol.map.enemy_remove_group(enemies_name_prefix)</tt>:
+Removes a group of enemies from the map.
+
+- <tt>sol.map.enemy_is_enabled(enemy_name)</tt>:
+returns whether an enemy is enabled
+
+- <tt>sol.map.enemy_set_enabled(enemy_name)</tt>:
+enables or disables an enemy
+
+- <tt>sol.map.enemy_is_dead(enemy_name)</tt>:
+returns whether an enemy is dead
+
+- <tt>sol.map.enemy_is_group_dead(enemies_name_prefix)</tt>:
+returns whether all enemies having a common prefix are dead
+
+- <tt>sol.map.enemy_get_group_count(enemies_name_prefix)</tt>:
+Returns the number of living enemies of the map whose name starts with the specified prefix.
+
+- <tt>sol.map.enemy_start_boss(enemy_name)</tt>:
+starts fighting a boss if it is alive
+
+- <tt>sol.map.enemy_end_boss()</tt>:
+sets the fight with a boss as finished (usually called after picking the life container)
+
+- <tt>sol.map.enemy_start_miniboss(enemy_name)</tt>:
+starts fighting a miniboss if it is alive
+
+- <tt>sol.map.enemy_end_miniboss()</tt>:
+sets the fight with a miniboss as finished
+
+- <tt>sol.map.enemy_get_position(enemy_name)</tt>:
+Returns the current position of an enemy on the map.
+Two values are returned (x and y).
+
+- <tt>sol.map.enemy_set_position(enemy_name, x, y)</tt>:
+Sets the positions of an enemy on the map.
+
+- <tt>sol.map.enemy_get_layer(enemy_name)</tt>:
+Returns the layer of an enemy on the map.
+
+- <tt>sol.map.enemy_set_layer(enemy_name, layer)</tt>:
+Sets the layer of an enemy.
+
+- <tt>sol.map.enemy_set_treasure(enemy_name, item_name, variant, savegame_variable)</tt>:
+Sets the treasure of an enemy.
+
+- <tt>sol.map.enemy_set_no_treasure(enemy_name)</tt>:
+Sets no treasure for an enemy.
+
+- <tt>sol.map.enemy_set_random_treasure(enemy_name)</tt>:
+Sets a random treasure for an enemy.
 
 @subsection sol.item Module <tt>sol.item</tt>
 
@@ -532,7 +590,162 @@ notifies the hero that he has finished using the current inventory item and can 
 
 @subsection sol.main Module <tt>sol.enemy</tt>
 
-This API is still under construction!
+The <tt>sol.enemy</tt> module is available to scripts attached to an enemy.
+<tt>sol.enemy</tt> represents a particular instance of enemy.
+
+- <tt>sol.enemy.get_name()</tt>:
+returns the name of the current enemy
+
+- <tt>sol.enemy.get_life()</tt>:
+returns the current level of life of the enemy
+
+- <tt>sol.enemy.set_life(life)</tt>:
+sets the level of life of the enemy
+(default is 1)
+
+- <tt>sol.enemy.add_life(life)</tt>:
+adds some life to the enemy
+
+- <tt>sol.enemy.remove_life(life)</tt>:
+remove some life from the enemy
+
+- <tt>sol.enemy.get_damage()</tt>:
+returns the number of life points that the enemy removes from the hero when touching him
+(when the hero's defense level is minimal)
+
+- <tt>sol.enemy.set_damage(damage)</tt>:
+sets the number of life points that the enemy removes from the hero when touching him
+(when the hero's defense level is minimal)
+(default is 1)
+
+- <tt>sol.enemy.get_magic_damage()</tt>:
+returns the number of magic points that the enemy removes from the hero when touching him
+
+- <tt>sol.enemy.set_magic_damage(magic_damage)</tt>:
+sets the number of magic points that the enemy removes from the hero when touching him
+(default is 0)
+
+- <tt>sol.enemy.get_pushed_back_when_hurt()</tt>:
+returns whether the enemy is pushed away when it is hurt
+
+- <tt>sol.enemy.set_pushed_back_when_hurt(pushed_back_when_hurt)</tt>:
+sets whether the enemy is pushed away when it is hurt
+(default is true)
+
+- <tt>sol.enemy.get_hurt_sound_style()</tt>:
+returns the style of sound to play when the enemy is hurt:
+"normal", "monster" or "boss"
+
+- <tt>sol.enemy.set_hurt_sound_style(sound_style)</tt>:
+sets the style of sound to play when the enemy is hurt:
+"normal", "monster" or "boss" (default is "normal" for usual enemies
+and "boss" for bosses and minibosses)
+
+- <tt>sol.enemy.get_minimum_shield_needed()</tt>:
+returns the minimum hero's level of shield that allows him to stop attacks from this enemy
+(0 means that he cannot stop the attacks)
+
+- <tt>sol.enemy.set_minimum_shield_needed(shield_level)</tt>:
+returns the minimum hero's level of shield that allows him to stop attacks from this enemy
+(0 means that he cannot stop the attacks and is the default)
+
+- <tt>sol.enemy.set_attack_consequence(attack, consequence)</tt>:
+Sets the reaction of the enemy when it receives an attack.
+
+- <tt>sol.enemy.set_default_attack_consequences()</tt>:
+Sets the default attack consequences for the enemy.
+
+- <tt>sol.enemy.set_invincible()</tt>:
+Makes the enemy ignore all attacks.
+
+- <tt>sol.enemy_set_treasure(item_name, variant, savegame_variable)</tt>:
+Sets the treasure of the enemy.
+
+- <tt>sol.enemy_set_no_treasure()</tt>:
+Sets no treasure of the enemy.
+
+- <tt>sol.enemy_set_random_treasure()</tt>:
+Sets a random treasure for the enemy.
+
+- <tt>sol.enemy.get_obstacle_behavior()</tt>:
+returns how the enemy behaves with obstacles: "normal", "flying" or "swimming"
+
+- <tt>sol.enemy.set_obstacle_behavior(behavior)</tt>:
+sets how the enemy behaves with obstacles: "normal", "flying" or "swimming"
+
+- <tt>sol.enemy.get_size()</tt>:
+returns the size of the enemy's bounding box (two return values: width and height in pixels)
+
+- <tt>sol.enemy.set_size(width, height)</tt>:
+sets the size of the enemy's bounding box (default: 16, 16)
+
+- <tt>sol.enemy.get_origin()</tt>:
+returns the coordinates of the origin point of the enemy, relative to its
+bounding box top-left corner (two returns values: x and y)
+
+- <tt>sol.enemy.set_origin(x, y)</tt>:
+sets the coordinates of the origin point of the enemy, relative to its
+bounding box top-left corner (default: 0, 0)
+
+- <tt>sol.enemy.get_position()</tt>:
+Returns the current position of the enemy on the map (i.e. the position of its origin point).
+Two values are returned (x and y).
+
+- <tt>sol.enemy.set_position(x, y)</tt>:
+Sets the position of the enemy on the map.
+
+- <tt>sol.enemy.get_layer()</tt>:
+Returns the layer where the enemy is placed on the map.
+
+- <tt>sol.enemy.set_layer(layer)</tt>:
+Sets the layer of the enemy.
+
+- <tt>sol.enemy.snap_to_grid()</tt>:
+makes sure the enemy's top-left corner is aligned with the 8*8 grid of the map
+
+- <tt>sol.enemy.get_movement()</tt>:
+Returns the current movement of the enemy.
+
+- <tt>sol.enemy.start_movement(movement)</tt>:
+Sets a movement to the enemy (any previous movement is destroyed).
+
+- <tt>sol.enemy.stop_movement()</tt>:
+Stops and destroys the current movement of the enemy (if any).
+
+- <tt>sol.enemy.restart()</tt>:
+Restarts the enemy. This plays animation "walking" on its sprites
+and triggers event_restart().
+
+- <tt>sol.enemy.get_sprite()</tt>:
+Returns the sprite of the enemy. If the enemy has several sprites,
+the first one created is returned.
+
+- <tt>sol.enemy.get_sprite(sprite_name)</tt>:
+Returns a sprite of the enemy given its name (i.e. the name of its animation set).
+
+- <tt>sol.enemy.has_sprite(sprite_name)</tt>:
+Returns whether the enemy has a sprite with the specified name
+
+- <tt>sol.enemy.create_sprite(sprite_name)</tt>:
+Creates a sprite attached to the enemy.
+
+- <tt>sol.enemy.remove_sprite(sprite_name)</tt>:
+Removes a sprite from the enemy.
+
+- <tt>sol.enemy.is_displayed_in_y_order()</tt>:
+returns whether the enemy is displayed at the same level as the hero
+(i.e. the one closest to north is displayed first)
+
+- <tt>sol.enemy.set_displayed_in_y_order(display_in_y_order)</tt>:
+sets whether the enemy is displayed at the same level as the hero
+(default is true, false will always display the enemy below the hero)
+
+- <tt>sol.enemy.create_son(enemy_name, breed, x, y)</tt>:
+Creates another enemy, specifying its coordinates as relative to the current enemy.
+
+- <tt>sol.enemy.get_father()</tt>:
+Returns the name of the father of the enemy (i.e. the enemy that created the current one),
+or an empty string.
 
 @section cpp_to_lua Calling Lua from C++
 
@@ -735,10 +948,10 @@ something happended (for example the enemy has just been created,
 or it was just hurt)
 
 - <tt>event_pre_display()</tt>:
-called just before the enemy is disabled (you may display additional things under the enemy)
+called just before the enemy is displayed (you may display additional things below the enemy)
 
 - <tt>event_post_display()</tt>:
-called just after the enemy is disabled (you may display additional things over the enemy)
+called just after the enemy is displayed (you may display additional things above the enemy)
 
 - <tt>event_position_changed(x, y)</tt>:
 called when the enemy has moved
@@ -749,14 +962,17 @@ called when the layer of the enemy has changed
 - <tt>event_obstacle_reached()</tt>:
 called when the movement of the enemy was stopped because of an obstacle.
 
-- <tt>event_movement_changed()</tt>:
+- <tt>event_movement_changed(movement)</tt>:
 called when something changes in the movement of the enemy
 
-- <tt>event_sprite_frame_changed(sprite, animation)</tt>:
+- <tt>event_movement_finished(movement)</tt>:
+called when the movement of the enemy is finished
+
+- <tt>event_sprite_frame_changed(sprite, animation, frame)</tt>:
 called when the current frame of a sprite of the enemy has changed
 
 - <tt>event_sprite_animation_finished(sprite, animation)</tt>:
-called when the animation of a sprite of the enemy has changed
+called when the animation of a sprite of the enemy has just finished
 
 - <tt>event_custom_attack_received(attack, sprite)</tt>:
 called when an attack with a custom effect is received by the enemy:

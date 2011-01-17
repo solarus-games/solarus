@@ -18,7 +18,7 @@
 #define SOLARUS_ITEM_SCRIPT_H
 
 #include "Common.h"
-#include "lua/MapScript.h"
+#include "lua/Script.h"
 
 /**
  * @brief Represents the Lua script of an item of the equipment.

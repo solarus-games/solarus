@@ -540,7 +540,7 @@ void CircleMovement::set_property(const std::string &key, const std::string &val
   else if (key == "center_dy") {
     int dy;
     iss >> dy;
-    set_center(center_entity, center_point.get_x(), center_point.get_y());
+    set_center(center_entity, center_point.get_x(), dy);
   }
   else if (key == "radius") {
     int radius;
@@ -570,7 +570,7 @@ void CircleMovement::set_property(const std::string &key, const std::string &val
   else if (key == "max_rotations") {
     int max_rotations;
     iss >> max_rotations;
-    set_angle_speed(max_rotations);
+    set_max_rotations(max_rotations);
   }
   else if (key == "duration") {
     uint32_t duration;

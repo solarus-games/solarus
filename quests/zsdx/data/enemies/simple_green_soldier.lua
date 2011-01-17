@@ -2,31 +2,32 @@
 -- who goes in a random direction.
 -- Unlike the normal green soldier, he cannot see or follow the hero.
 
--- Properties
-life = 2
-damage = 2
-sprite = "enemies/simple_green_soldier"
-size = {16, 16}
-origin = {8, 13}
-
--- The enemy appears: create its movement
+-- The enemy appears: set its properties
 function event_appear()
+
+  sol.enemy.set_life(2)
+  sol.enemy.set_damage(2)
+  sol.enemy.create_sprite("enemies/simple_green_soldier")
+  sol.enemy.set_size(16, 16)
+  sol.enemy.set_origin(8, 13)
+
   m = sol.main.temporal_movement_create(0, 0, 0)
   sol.enemy.start_movement(m)
 end
 
 -- The enemy was stopped for some reason and should restart
 function event_restart()
-  direction4 = math.random(4)
+  direction4 = math.random(4) - 1
   go(direction4)
 end
 
 -- An obstacle is reached: stop for a while, looking to a next direction
 function event_obstacle_reached()
 
-  -- if the enemy was walking, look to the left or to the right
+  -- look to the left or to the right
   sprite = sol.enemy.get_sprite()
-  if sol.main.sprite_get_animation(sprite) == "walking" then
+  animation = sol.main.sprite_get_animation(sprite)
+  if animation == "walking" then
     look_left_or_right()
   end
 end
@@ -59,16 +60,16 @@ function go(direction4)
 
   -- set the movement
   m = sol.enemy.get_movement()
-  seconds = 2 + math.random(3)
+  seconds = 1 + math.random(3)
   sol.main.movement_set_property(m, "duration", seconds * 1000)
   sol.main.movement_set_property(m, "speed", 40)
-  sol.main.movement.set_property(m, "angle", direction4 * math.pi / 2)
+  sol.main.movement_set_property(m, "angle", direction4 * math.pi / 2)
 end
 
 -- Makes the soldier look to its left or to its right (random choice)
 function look_left_or_right()
 
-  if math.random(2) == 0 then
+  if math.random(2) == 1 then
     sol.main.sprite_set_animation(sprite, "stopped_watching_left")
   else
     sol.main.sprite_set_animation(sprite, "stopped_watching_right")

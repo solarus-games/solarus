@@ -102,15 +102,15 @@
 0	0	144	328	24	24	67
 0	0	136	352	8	8	316
 0	0	136	320	8	8	308
-7	0	128	328	enemy	3	1	bubble	0	-1	_random	0	-1
-7	0	248	376	enemy_2	3	1	bubble	0	-1	_random	0	-1
+7	0	128	328	enemy	3	bubble	0	-1	_random	0	-1
+7	0	248	376	enemy_2	3	bubble	0	-1	_random	0	-1
 12	0	144	80	8	16	custom_obstacle_2	0	1	1	1
-7	0	112	173	boss_key_battle	3	0	simple_green_soldier	0	-1	_random	0	-1
-7	0	88	317	boss_key_battle_4	3	0	simple_green_soldier	0	-1	_random	0	-1
-7	0	80	189	boss_key_battle_2	3	2	tentacle	0	-1	_random	0	-1
-7	0	216	381	boss_key_battle_3	3	2	tentacle	0	-1	_random	0	-1
-7	0	88	389	boss_key_battle_6	3	2	tentacle	0	-1	_random	0	-1
-7	0	456	176	enemy_3	3	1	bubble	0	-1	_random	0	-1
+7	0	112	173	boss_key_battle	3	simple_green_soldier	0	-1	_random	0	-1
+7	0	88	317	boss_key_battle_4	3	simple_green_soldier	0	-1	_random	0	-1
+7	0	80	189	boss_key_battle_2	3	tentacle	0	-1	_random	0	-1
+7	0	216	381	boss_key_battle_3	3	tentacle	0	-1	_random	0	-1
+7	0	88	389	boss_key_battle_6	3	tentacle	0	-1	_random	0	-1
+7	0	456	176	enemy_3	3	bubble	0	-1	_random	0	-1
 4	0	440	77	0	_random	1	-1
 4	0	456	77	0	heart	1	-1
 4	0	472	77	0	_random	1	-1
@@ -118,7 +118,7 @@
 4	0	104	109	3	_random	1	-1
 4	0	120	85	3	_random	1	-1
 12	0	248	80	8	16	custom_obstacle_11	0	1	1	1
-7	0	160	389	boss_key_battle_7	3	0	simple_green_soldier	0	-1	_random	0	-1
+7	0	160	389	boss_key_battle_7	3	simple_green_soldier	0	-1	_random	0	-1
 19	0	280	336	stairs_1	1	4
 19	0	448	320	stairs_2	3	4
 19	0	272	112	stairs_3	3	4
@@ -414,11 +414,11 @@
 18	1	680	72	miniboss_door	2	0	-1
 1	1	456	437	from_outside	1	0
 12	1	168	248	8	16	custom_obstacle_12	0	1	1	1
-7	1	152	253	boss_key_battle_5	3	2	tentacle	0	-1	_random	0	-1
+7	1	152	253	boss_key_battle_5	3	tentacle	0	-1	_random	0	-1
 6	1	128	248	8	16	jump_sensor_2	4	40
 4	1	416	381	0	heart	1	-1
 6	1	232	328	40	8	jump_sensor_3	6	40
-7	1	784	141	khorneth	3	1001	khorneth	1	62	fairy	1	-1
+7	1	784	141	khorneth	3	khorneth	1	62	fairy	1	-1
 19	1	848	256	stairs_5	1	1
 18	1	840	256	miniboss_door_3	1	0	-1
 13	1	856	285	16	16	start_miniboss_sensor	0

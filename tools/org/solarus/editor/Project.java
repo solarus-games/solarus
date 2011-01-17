@@ -365,6 +365,26 @@ public class Project {
     public static String getMusicPath() {
 	return getDataPath() + "/music";
     }
+
+    /**
+     * Returns the path of the languages files, determined with the current project root path.
+     * @return the path of the languages files
+     */
+    public static String getDialogsPath() {
+        return getDataPath() + "/languages";
+    }
+
+    /**
+     * Returns a map file knowing its id for the current project.
+     * @param mapId id of a map
+     * @return the file corresponding to this id
+     */
+    public static File getDialogsFile(String fileName) {
+
+
+
+	return new File(getDialogsPath() + File.separator + fileName);
+    }
     
     /**
      * Adds an object to notify when a project is created or loaded.

@@ -4,6 +4,7 @@
 *.class
 .cproject
 .project
+.classpath
 .settings
 tags
 doc/html/

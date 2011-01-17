@@ -136,7 +136,7 @@ public class DestinationPoint extends MapEntity {
 	    currentImageDescription.setRectangle((getDirection() + 1) * 32, 0, 32, 32);
 	}
 	else {
-	    currentImageDescription.setRectangle(160, 0, 16, 16);	    
+	    currentImageDescription.setRectangle(160, 0, 16, 16);
 	}
     }
 }

@@ -65,7 +65,7 @@ import org.solarus.editor.Map;
  *   - Redefine if necessary the non-static updateImageDescription() method:
  *       public void updateImageDescription()
  *       which updates the image representing the entity on the map in its current state.
- *   - If your entity is not drawn from an image file but in a more complex way,
+ *   - If your entity is not drawn from a fixed image file but in a more complex way,
  *       you cannot use updateImageDescription() and you have to redefine directly the paint() method:
  *       public abstract void paint(Graphics g, double zoom, boolean showTransparency).
  * - If your entity type has specific properties, create a subclass of EditEntityComponent.

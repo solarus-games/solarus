@@ -35,6 +35,11 @@ public class Sprite {
     private String animationSetId;
 
     /**
+     * Name of the default animation in the animation set.
+     */
+    private String defaultAnimationName;
+
+    /**
      * The animation set of this sprite.
      */
     private Map<String, SpriteAnimation> animations;
@@ -100,6 +105,9 @@ public class Sprite {
                 }
                 SpriteAnimation animation = new SpriteAnimation(directions, frameDelay, loopOnFrame);
                 animations.put(animationName, animation);
+                if (defaultAnimationName == null) {
+                    defaultAnimationName = animationName; // set first animation as the default one
+                }
             }
         }
         catch (IOException ex) {
@@ -124,6 +132,14 @@ public class Sprite {
     }
 
     /**
+     * Returns the name of the default animation of this sprite.
+     * @return return default animation name, i.e. the first one in the description file
+     */
+    public String getDefaultAnimationName() {
+        return defaultAnimationName;
+    }
+
+    /**
      * Returns a frame of this sprite.
      * @param animationName name of animation to use (null to pick the default one)
      * @param direction direction of animation
@@ -133,7 +149,7 @@ public class Sprite {
     public Image getFrame(String animationName, int direction, int frame) {
 
         if (animationName == null) {
-            animationName = animations.keySet().iterator().next();
+            animationName = getDefaultAnimationName();
         }
         return animations.get(animationName).getFrame(direction, frame);
     }
@@ -153,7 +169,7 @@ public class Sprite {
             int x, int y, String animationName, int direction, int frame) {
 
         if (animationName == null) {
-            animationName = animations.keySet().iterator().next();
+            animationName = getDefaultAnimationName();
         }
         animations.get(animationName).paint(g, zoom, showTransparency,
                 x, y, direction, frame);        

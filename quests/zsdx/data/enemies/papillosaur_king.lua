@@ -7,7 +7,7 @@ function event_appear()
 
   sol.enemy.set_life(6)
   sol.enemy.set_damage(2)
-  sol.enemy.create_sprite("enemies/boss_papillosaurking")
+  sol.enemy.create_sprite("enemies/papillosaur_king")
   sol.enemy.set_size(176, 96)
   sol.enemy.set_origin(88, 64)
   sol.enemy.set_invincible()

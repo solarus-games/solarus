@@ -8,7 +8,7 @@ function event_appear()
   
   sol.enemy.set_life(2)
   sol.enemy.set_damage(2)
-  sol.enemy.create_sprite("enemies/minillosaur")
+  sol.enemy.create_sprite("enemies/minillosaur_egg")
   sol.enemy.set_size(24, 32)
   sol.enemy.set_origin(12, 20)
   sol.enemy.set_invincible()

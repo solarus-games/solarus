@@ -16,9 +16,7 @@
  */
 package org.solarus.editor.gui;
 
-import java.awt.AWTEvent;
 import java.awt.BorderLayout;
-import java.awt.event.AWTEventListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -27,6 +25,8 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -35,9 +35,11 @@ import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import org.solarus.editor.Dialogs;
 import org.solarus.editor.MapEditorHistory;
 import org.solarus.editor.Project;
 import org.solarus.editor.ProjectObserver;
+import org.solarus.editor.ResourceType;
 import org.solarus.editor.ZSDXException;
 
 /**
@@ -56,6 +58,7 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
     private JMenu menuOpen;
     private JMenuItem menuOpenMap;
     private JMenuItem menuOpenTileset;
+    private JMenuItem menuOpenIniFile;
     private JMenuItem menuOpenTextFile;
     private JMenuItem menuItemSave;
     private JMenuItem menuItemClose;
@@ -238,11 +241,17 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
         menuOpenTileset.addActionListener(new ActionOpenTileset());
         menuOpen.add(menuOpenTileset);
 
+        menuOpenIniFile = new JMenuItem("Dialogs");
+        menuOpenIniFile.setMnemonic(KeyEvent.VK_D);
+        menuOpenIniFile.getAccessibleContext().setAccessibleDescription("Open an existing dialogs file");
+        menuOpenIniFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.SHIFT_MASK));
+        menuOpenIniFile.addActionListener(new ActionOpenIniFile());
+        menuOpen.add(menuOpenIniFile);
 
         menuOpenTextFile = new JMenuItem("Text File");
         menuOpenTextFile.setMnemonic(KeyEvent.VK_F);
         menuOpenTextFile.getAccessibleContext().setAccessibleDescription("Open an existing file");
-        menuOpenTextFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.SHIFT_MASK));
+        //menuOpenTextFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.SHIFT_MASK));
         menuOpenTextFile.addActionListener(new ActionOpenFile());
         menuOpen.add(menuOpenTextFile);
 
@@ -540,6 +549,23 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
                 return;//user cancellation
             }
             EditorWindow.this.desktop.addEditor(tilesetEditor);
+        }
+    }
+
+    /**
+     * Action performed when the user clicks on File > Load.
+     * Opens an existing file
+     */
+    private class ActionOpenIniFile implements ActionListener {
+
+        public void actionPerformed(ActionEvent ev) {
+            DialogsEditorWindow dialogsEditor = new DialogsEditorWindow(EditorWindow.this.quest, EditorWindow.this);
+            dialogsEditor.openDialogs();
+            if (dialogsEditor.getDialogs() == null) {
+                return;//user cancellation
+            }
+            EditorWindow.this.desktop.addEditor(dialogsEditor);
+
         }
     }
 

@@ -11,7 +11,8 @@ public enum ResourceType {
     SPRITE(false, "Sprite"),
     SOUND(false, "Sound"),
     ITEM(false, "Item"),
-    ENEMY(false, "Enemy");
+    ENEMY(false, "Enemy"),
+    DIALOGS(false, "Dialogs File");
 
     /**
      * Indicates that the id of elements from this resource type is an integer
@@ -44,7 +45,7 @@ public enum ResourceType {
     public static ResourceType get(int id) throws ZSDXException {
 
 	try {
-	    return values()[id];
+            return values()[id];
 	}
 	catch (ArrayIndexOutOfBoundsException ex) {
 	    throw new ZSDXException("Unknown resource type '" + id + "'");

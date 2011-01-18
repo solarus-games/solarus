@@ -16,6 +16,7 @@
  */
 package org.solarus.editor.gui;
 
+import com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel;
 import javax.swing.*;
 
 /**
@@ -37,6 +38,7 @@ public class GuiTools {
 
 	// set Windows look and feel by default
 	try {
+             //UIManager.setLookAndFeel(new NimbusLookAndFeel());
 	 //   UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 	    //return;
 	}

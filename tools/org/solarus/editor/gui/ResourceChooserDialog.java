@@ -54,6 +54,7 @@ public class ResourceChooserDialog extends OkCancelDialog {
 
     	chooser = new ResourceChooser(resourceType, false);
     	setComponent(chooser);
+        
     }
 
     /**

@@ -337,29 +337,52 @@ int Script::enemy_api_set_attack_consequence(lua_State *l) {
   if (lua_isnumber(l, 2)) {
     int life_points = luaL_checkinteger(l, 2);
     Debug::check_assertion(life_points > 0, StringConcat() << "Invalid attack consequence: " << life_points);
-    enemy.set_attack_consequence(attack, life_points);
+    enemy.set_attack_consequence(attack, EnemyReaction::HURT, life_points);
   }
   else {
     // TODO: simplify or encapsulate the C++ part of specifying attack consequences
     // (but the important thing is that the Lua API is easy to use)
-    int consequence;
-    const std::string& consequence_name = lua_tostring(l, 2);
-    if (consequence_name == "ignored") {
-      consequence = 0;
-    }
-    else if (consequence_name == "protected") {
-      consequence = -1;
-    }
-    else if (consequence_name == "immobilized") {
-      consequence = -2;
-    }
-    else if (consequence_name == "custom") {
-      consequence = -3;
-    }
-    else {
-      Debug::die(StringConcat() << "Invalid attack consequence: " << consequence_name);
-    }
-    enemy.set_attack_consequence(attack, consequence);
+    const std::string& reaction_name = lua_tostring(l, 2);
+    EnemyReaction::ReactionType reaction = EnemyReaction::get_reaction_by_name(reaction_name);
+    enemy.set_attack_consequence(attack, reaction);
+  }
+
+  return 0;
+}
+
+/**
+ * @brief Sets how the enemy reacts when one of its sprites
+ * receives the specified attack.
+ *
+ * - Argument 1 (sprite): the sprite to consider
+ * - Argument 2 (string): name of the attack to set
+ * ("sword", "thrown_item", "explosion", "arrow", "hookshot", "boomerang", or "lamp")
+ * - Argument 3 (integer or string): an integer means a number of life points lost by the enemy
+ * (must be greater than 0),
+ * a string can specify "ignored", "protected", "immobilized" or "custom"
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::enemy_api_set_attack_consequence_sprite(lua_State *l) {
+
+  Script* script;
+  called_by_script(l, 3, &script);
+  Enemy& enemy = script->get_enemy();
+
+  int sprite_handle = luaL_checkinteger(l, 1);
+  const std::string& attack_name = luaL_checkstring(l, 2);
+  Sprite& sprite = script->get_sprite(sprite_handle);
+  EnemyAttack attack = Enemy::get_attack_by_name(attack_name);
+
+  if (lua_isnumber(l, 3)) {
+    int life_points = luaL_checkinteger(l, 3);
+    Debug::check_assertion(life_points > 0, StringConcat() << "Invalid attack consequence: " << life_points);
+    enemy.set_attack_consequence_sprite(sprite, attack, EnemyReaction::HURT, life_points);
+  }
+  else {
+    const std::string& reaction_name = lua_tostring(l, 3);
+    EnemyReaction::ReactionType reaction = EnemyReaction::get_reaction_by_name(reaction_name);
+    enemy.set_attack_consequence_sprite(sprite, attack, reaction);
   }
 
   return 0;

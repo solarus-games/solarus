@@ -70,7 +70,7 @@ class Arrow: public MapEntity {
     void notify_collision_with_crystal_switch(CrystalSwitch &crystal_switch, CollisionMode collision_mode);
     void notify_collision_with_destructible_item(DestructibleItem &destructible_item, CollisionMode collision_mode);
     void notify_collision_with_enemy(Enemy &enemy, Sprite &enemy_sprite, Sprite &this_sprite);
-    void notify_attacked_enemy(EnemyAttack attack, Enemy &victim, int result, bool killed);
+    void notify_attacked_enemy(EnemyAttack attack, Enemy& victim, EnemyReaction::Reaction& result, bool killed);
     bool has_reached_map_border();
 };
 

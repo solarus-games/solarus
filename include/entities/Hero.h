@@ -261,7 +261,7 @@ class Hero: public MapEntity {
      *
      * Attacking enemies or getting hurt by them.
      */
-    void notify_attacked_enemy(EnemyAttack attack, Enemy &victim, int result, bool killed);
+    void notify_attacked_enemy(EnemyAttack attack, Enemy& victim, EnemyReaction::Reaction& result, bool killed);
     int get_sword_damage_factor();
     void hurt(MapEntity &source, int life_points, int magic_points);
     void get_back_from_death();

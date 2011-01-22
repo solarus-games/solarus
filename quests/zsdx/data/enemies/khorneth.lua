@@ -22,7 +22,8 @@ function event_appear()
   sol.enemy.set_size(40, 48)
   sol.enemy.set_origin(20, 25)
   sol.enemy.set_invincible()
-  sol.enemy.set_attack_consequence("sword", "custom")
+  sol.enemy.set_attack_consequence_sprite(get_left_blade_sprite(), "sword", "custom")
+  sol.enemy.set_attack_consequence_sprite(get_right_blade_sprite(), "sword", "custom")
 
   -- when a blade sprite has the same animation than the main sprite, synchronize their frames
   sol.main.sprite_synchronize(get_left_blade_sprite(), get_main_sprite())

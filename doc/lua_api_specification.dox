@@ -650,7 +650,10 @@ returns the minimum hero's level of shield that allows him to stop attacks from 
 (0 means that he cannot stop the attacks and is the default)
 
 - <tt>sol.enemy.set_attack_consequence(attack, consequence)</tt>:
-Sets the reaction of the enemy when it receives an attack.
+Sets how reacts the enemy when it receives an attack.
+
+- <tt>sol.enemy.set_attack_consequence_sprite(sprite, attack, consequence)</tt>:
+Sets how reacts the enemy when a particular sprite receives an attack.
 
 - <tt>sol.enemy.set_default_attack_consequences()</tt>:
 Sets the default attack consequences for the enemy.

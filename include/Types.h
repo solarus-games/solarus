@@ -157,6 +157,7 @@ class Chest;
 class JumpSensor;
 class Enemy;
 class CustomEnemy;
+class EnemyReaction;
 class InteractiveEntity;
 class Block;
 class Switch;

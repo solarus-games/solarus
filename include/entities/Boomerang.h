@@ -72,7 +72,7 @@ class Boomerang: public MapEntity {
     // collisions
     void notify_collision_with_crystal_switch(CrystalSwitch &crystal_switch, CollisionMode collision_mode);
     void notify_collision_with_enemy(Enemy &enemy);
-    void notify_attacked_enemy(EnemyAttack attack, Enemy &victim, int result, bool killed);
+    void notify_attacked_enemy(EnemyAttack attack, Enemy& victim, EnemyReaction::Reaction& result, bool killed);
 };
 
 

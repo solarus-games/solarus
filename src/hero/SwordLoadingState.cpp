@@ -126,9 +126,10 @@ void Hero::SwordLoadingState::notify_movement_tried(bool success) {
  * @param result indicates how the enemy has reacted to the attack (see Enemy.h)
  * @param killed indicates that the attack has just killed the enemy
  */
-void Hero::SwordLoadingState::notify_attacked_enemy(EnemyAttack attack, Enemy &victim, int result, bool killed) {
+void Hero::SwordLoadingState::notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
+    EnemyReaction::Reaction& result, bool killed) {
 
-  if (result != 0 && attack == ATTACK_SWORD) {
+  if (result.type != EnemyReaction::IGNORED && attack == ATTACK_SWORD) {
     hero.set_state(new FreeState(hero));
   }
 }

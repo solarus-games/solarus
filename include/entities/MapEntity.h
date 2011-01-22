@@ -22,6 +22,7 @@
 #include "entities/Layer.h"
 #include "entities/CollisionMode.h"
 #include "entities/EnemyAttack.h"
+#include "entities/EnemyReaction.h"
 #include "lowlevel/Rectangle.h"
 #include <map>
 #include <list>
@@ -280,7 +281,8 @@ class MapEntity {
     virtual void notify_collision_with_bomb(Bomb& bomb, CollisionMode collision_mode);
     virtual void notify_collision_with_explosion(Explosion &explosion, Sprite &sprite_overlapping);
     virtual void notify_collision_with_enemy(Enemy &enemy, Sprite &enemy_sprite, Sprite &this_sprite);
-    virtual void notify_attacked_enemy(EnemyAttack attack, Enemy &victim, int result, bool killed);
+    virtual void notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
+        EnemyReaction::Reaction& result, bool killed);
 
     virtual bool is_water_obstacle();
     virtual bool is_hole_obstacle();

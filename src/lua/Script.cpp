@@ -478,6 +478,7 @@ void Script::register_enemy_api() {
       { "get_minimum_shield_needed", enemy_api_get_minimum_shield_needed },
       { "set_minimum_shield_needed", enemy_api_set_minimum_shield_needed },
       { "set_attack_consequence", enemy_api_set_attack_consequence },
+      { "set_attack_consequence_sprite", enemy_api_set_attack_consequence_sprite },
       { "set_default_attack_consequences", enemy_api_set_default_attack_consequences },
       { "set_invincible", enemy_api_set_invincible },
       { "set_treasure", enemy_api_set_treasure },

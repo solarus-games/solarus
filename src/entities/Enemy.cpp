@@ -369,13 +369,32 @@ void Enemy::set_features(int damage_on_hero, int life, HurtSoundStyle hurt_sound
 }
 
 /**
- * @brief Sets whether the enemy is vulnerable to a specified attack.
+ * @brief Sets how the enemy reacts to an attack.
+ *
+ * This reaction will be used unless the attack is received by a sprite
+ * that has a specific reaction (see set_attack_consequence_sprite()).
+ *
  * @param attack an attack
- * @param consequence how the enemy will react
+ * @param reaction how the enemy will react
  */
-void Enemy::set_attack_consequence(EnemyAttack attack, int consequence) {
+void Enemy::set_attack_consequence(EnemyAttack attack,
+    EnemyReaction::ReactionType reaction, int life_lost) {
 
-  attack_consequences[attack] = consequence;
+  Debug::check_assertion(life_lost >= 0, StringConcat() << "Invalid amount of life: " << life_lost);
+  attack_reactions[attack].set_general_reaction(reaction, life_lost);
+}
+
+/**
+ * @brief Sets how the enemy reacts to an attack on a particular sprite.
+ * @param sprite a sprite of this enemy
+ * @param attack an attack
+ * @param reaction how the enemy will react
+ */
+void Enemy::set_attack_consequence_sprite(Sprite& sprite, EnemyAttack attack,
+    EnemyReaction::ReactionType reaction, int life_lost) {
+
+  Debug::check_assertion(life_lost >= 0, StringConcat() << "Invalid amount of life: " << life_lost);
+  attack_reactions[attack].set_sprite_reaction(&sprite, reaction, life_lost);
 }
 
 /**
@@ -384,7 +403,7 @@ void Enemy::set_attack_consequence(EnemyAttack attack, int consequence) {
 void Enemy::set_no_attack_consequences() {
 
   for (int i = 0; i < ATTACK_NUMBER; i++) {
-    set_attack_consequence(EnemyAttack(i), 0);
+    set_attack_consequence(EnemyAttack(i), EnemyReaction::IGNORED);
   }
 }
 
@@ -394,11 +413,12 @@ void Enemy::set_no_attack_consequences() {
 void Enemy::set_default_attack_consequences() {
 
   for (int i = 0; i < ATTACK_NUMBER; i++) {
-    set_attack_consequence(EnemyAttack(i), 1);
+    attack_reactions[i].set_default_reaction();
+    set_attack_consequence(EnemyAttack(i), EnemyReaction::HURT, 1);
   }
-  set_attack_consequence(ATTACK_EXPLOSION, 2);
-  set_attack_consequence(ATTACK_HOOKSHOT, -2);
-  set_attack_consequence(ATTACK_BOOMERANG, -2);
+  set_attack_consequence(ATTACK_EXPLOSION, EnemyReaction::HURT, 2);
+  set_attack_consequence(ATTACK_HOOKSHOT, EnemyReaction::IMMOBILIZED);
+  set_attack_consequence(ATTACK_BOOMERANG, EnemyReaction::IMMOBILIZED);
 }
 
 /**
@@ -706,30 +726,15 @@ void Enemy::attack_stopped_by_hero_shield() {
 }
 
 /**
- * @brief Returns the consequence corresponding to the specified attack.
- * @param attack an attack this enemy is subject to
- * @return the corresponding consequence
- */
-int Enemy::get_attack_consequence(EnemyAttack attack) {
-
-  return attack_consequences[attack];
-}
-
-/**
- * @brief Returns the consequence corresponding to the specified attack on the specified sprite of this enemy.
- *
- * By default, this function does not take the sprite into account and just calls 
- * get_attack_consequence(EnemyAttack). Redefine it in subclasses of enemies that have to react differently
- * depending on their sprite attacked.
- *
- * @param attack an attack this enemy is subject to
+ * @brief Returns the reaction corresponding to an attack on a sprite of this enemy.
+ * @param attack an attack this enemy receives
  * @param this_sprite the sprite attacked, or NULL if the attack does not come from
  * a pixel-precise collision test
- * @return the corresponding attack.
+ * @return the corresponding reaction
  */
-int Enemy::get_attack_consequence(EnemyAttack attack, Sprite *this_sprite) {
+const EnemyReaction::Reaction& Enemy::get_attack_consequence(EnemyAttack attack, Sprite *this_sprite) {
 
-  return get_attack_consequence(attack);
+  return attack_reactions[attack].get_reaction(this_sprite);
 }
 
 /**
@@ -772,64 +777,64 @@ void Enemy::play_hurt_sound() {
  */
 void Enemy::try_hurt(EnemyAttack attack, MapEntity &source, Sprite *this_sprite) {
 
-  int result;
-
-  int consequence = get_attack_consequence(attack, this_sprite);
-  if (invulnerable || consequence == 0) {
+  EnemyReaction::Reaction reaction = get_attack_consequence(attack, this_sprite);
+  if (invulnerable || reaction.type == EnemyReaction::IGNORED) {
     // ignore the attack
-    result = 0;
+    return;
   }
 
-  else {
-    invulnerable = true;
-    vulnerable_again_date = System::now() + 500;
-    
-    if (consequence == -1) {
+  invulnerable = true;
+  vulnerable_again_date = System::now() + 500;
+
+  switch (reaction.type) {
+
+    case EnemyReaction::PROTECTED:
       // attack failure sound
       Sound::play("sword_tapping");
-      result = -1;
-    }
-    else if (consequence == -2) {
+      break;
+
+    case EnemyReaction::IMMOBILIZED:
       // get immobilized
       hurt(source);
       immobilize();
-      result = -2;
-    }
-    else if (consequence == -3) {
-      // custom attack (defined in the subclass)
-      result = custom_attack(attack, this_sprite);
-      result = -3; // TODO wtf?
-    }
-    else {
-      // hurt the enemy
+      break;
+
+    case EnemyReaction::CUSTOM:
+      // custom attack (defined in the script)
+      custom_attack(attack, this_sprite);
+      break;
+
+    case EnemyReaction::HURT:
 
       if (is_immobilized() && get_sprite().get_current_animation() == "shaking") {
-	stop_immobilized();
+        stop_immobilized();
       }
 
       // compute the number of health points lost by the enemy
-      int life_lost = consequence;
 
       if (attack == ATTACK_SWORD) {
 
-	// for a sword attack, the damage depends on the sword and the variant of sword attack used
-	int damage_multiplicator = ((Hero&) source).get_sword_damage_factor();
-	life_lost *= damage_multiplicator;
+        // for a sword attack, the damage depends on the sword and the variant of sword attack used
+        int damage_multiplicator = ((Hero&) source).get_sword_damage_factor();
+        reaction.life_lost *= damage_multiplicator;
       }
       else if (attack == ATTACK_THROWN_ITEM) {
-	life_lost *= ((CarriedItem&) source).get_damage_on_enemies();
+        reaction.life_lost *= ((CarriedItem&) source).get_damage_on_enemies();
       }
-      life -= life_lost;
+      life -= reaction.life_lost;
 
       hurt(source);
-      just_hurt(source, attack, life_lost);
+      just_hurt(source, attack, reaction.life_lost);
+      break;
 
-      result = life_lost;
-    }
-
-    // notify the source
-    source.notify_attacked_enemy(attack, *this, result, get_life() <= 0);
+    case EnemyReaction::IGNORED:
+    case EnemyReaction::REACTION_NUMBER:
+      Debug::die(StringConcat() << "Invalid enemy reaction" << reaction.type);
+      break;
   }
+
+  // notify the source
+  source.notify_attacked_enemy(attack, *this, reaction, get_life() <= 0);
 }
 
 /**

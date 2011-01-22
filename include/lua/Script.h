@@ -278,6 +278,7 @@ class Script {
       enemy_api_get_minimum_shield_needed,
       enemy_api_set_minimum_shield_needed,
       enemy_api_set_attack_consequence,
+      enemy_api_set_attack_consequence_sprite,
       enemy_api_set_default_attack_consequences,
       enemy_api_set_invincible,
       enemy_api_set_treasure,

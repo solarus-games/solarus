@@ -686,10 +686,11 @@ bool Hero::State::can_avoid_explosion() {
  *
  * @param attack the attack
  * @param victim the enemy just hurt
- * @param result indicates how the enemy has reacted to the attack (see Enemy.h)
+ * @param result indicates how the enemy has reacted to the attack
  * @param killed indicates that the attack has just killed the enemy
  */
-void Hero::State::notify_attacked_enemy(EnemyAttack attack, Enemy &victim, int result, bool killed) {
+void Hero::State::notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
+    EnemyReaction::Reaction& result, bool killed) {
 }
 
 /**

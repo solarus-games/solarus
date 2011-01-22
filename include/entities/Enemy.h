@@ -21,6 +21,7 @@
 #include "Treasure.h"
 #include "entities/Detector.h"
 #include "entities/EnemyAttack.h"
+#include "entities/EnemyReaction.h"
 #include "entities/Explosion.h"
 
 /**
@@ -99,20 +100,8 @@ class Enemy: public Detector {
     int minimum_shield_needed;				/**< shield number needed by the hero to avoid the attack of this enemy,
 							 * or 0 to make the attack unavoidable (default: 0) */
 
-    int attack_consequences[ATTACK_NUMBER];		/**< indicates how the enemy reacts to each attack
-							 * (by default, it depends on the attacks):
-							 * - a number greater than 0 represents the number of health points lost when
-							 *   he is subject to this attack
-							 *     - for a sword attack, this number is multiplied depending on
-							 *       the sword strength and the presence of a spin attack
-							 *     - for a thrown item, this number is multiplied by the weight
-							 * - a value of 0 means that the attack is just ignored (this is the case
-							 *   for some special enemies like Octorok's stones),
-							 * - a value of -1 means that the enemy is protected against this attack (a
-							 *   sound is played),
-							 * - a value of -2 means that this attack immobilizes the enemy
-							 * - a value of -3 means a custom effect for the attack
-							 *   (the custom_attack() function is called) */
+    EnemyReaction attack_reactions[ATTACK_NUMBER];      /**< indicates how the enemy reacts to each attack
+							 * (by default, it depends on the attacks) */
     static const std::string attack_names[];            /**< name of each type of attack an enemy can receive */
 
 
@@ -171,7 +160,9 @@ class Enemy: public Detector {
     void set_features(int damage_on_hero, int life, HurtSoundStyle hurt_sound_style);
     void set_features(int damage_on_hero, int life, HurtSoundStyle hurt_sound_style,
 	bool pushed_back_when_hurt, bool push_back_hero_on_sword, int minimum_shield_needed);
-    void set_attack_consequence(EnemyAttack attack, int consequence);
+    void set_attack_consequence(EnemyAttack attack, EnemyReaction::ReactionType reaction, int life_lost = 0);
+    void set_attack_consequence_sprite(Sprite& sprite, EnemyAttack attack,
+        EnemyReaction::ReactionType reaction, int life_lost = 0);
     void set_no_attack_consequences();
     void set_default_attack_consequences();
 
@@ -230,8 +221,7 @@ class Enemy: public Detector {
     void attack_stopped_by_hero_shield();
 
     // receive an attack
-    int get_attack_consequence(EnemyAttack attack);
-    virtual int get_attack_consequence(EnemyAttack attack, Sprite *this_sprite);
+    const EnemyReaction::Reaction& get_attack_consequence(EnemyAttack attack, Sprite *this_sprite);
     void try_hurt(EnemyAttack attack, MapEntity &source, Sprite *this_sprite);
     void kill();
     bool is_dying();

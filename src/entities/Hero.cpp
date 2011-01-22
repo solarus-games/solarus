@@ -1573,7 +1573,8 @@ void Hero::try_snap_to_facing_entity() {
  * @param result indicates how the enemy has reacted to the attack (see Enemy.h)
  * @param killed indicates that the attack has just killed the enemy
  */
-void Hero::notify_attacked_enemy(EnemyAttack attack, Enemy &victim, int result, bool killed) {
+void Hero::notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
+    EnemyReaction::Reaction& result, bool killed) {
 
   state->notify_attacked_enemy(attack, victim, result, killed);
 }

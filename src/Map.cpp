@@ -601,27 +601,27 @@ bool Map::test_collision_with_tiles(Layer layer, int x, int y, MapEntity &entity
   case OBSTACLE_TOP_RIGHT:
     // the upper right half of the square is an obstacle
     // so we have to test the position of the point
-    x_in_tile = x % 8;
-    y_in_tile = y % 8;
+    x_in_tile = x & 7;
+    y_in_tile = y & 7;
     on_obstacle = y_in_tile <= x_in_tile;
     break;
 
   case OBSTACLE_TOP_LEFT:
     // same thing
-    x_in_tile = x % 8;
-    y_in_tile = y % 8;
+    x_in_tile = x & 7;
+    y_in_tile = y & 7;
     on_obstacle = y_in_tile <= 7 - x_in_tile;
     break;
 
   case OBSTACLE_BOTTOM_LEFT:
-    x_in_tile = x % 8;
-    y_in_tile = y % 8;
+    x_in_tile = x & 7;
+    y_in_tile = y & 7;
     on_obstacle = y_in_tile >= x_in_tile;
     break;
 
   case OBSTACLE_BOTTOM_RIGHT:
-    x_in_tile = x % 8;
-    y_in_tile = y % 8;
+    x_in_tile = x & 7;
+    y_in_tile = y & 7;
     on_obstacle = y_in_tile >= 7 - x_in_tile;
     break;
 

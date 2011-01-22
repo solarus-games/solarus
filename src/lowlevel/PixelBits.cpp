@@ -36,8 +36,8 @@ PixelBits::PixelBits(Surface *surface, const Rectangle &image_position) {
   width = image_position.get_width();
   height = image_position.get_height();
 
-  nb_integers_per_row = width / 32;
-  if (width % 32 != 0) {
+  nb_integers_per_row = width >> 5; // width / 32
+  if ((width & 31) != 0) { // width % 32 != 0
     nb_integers_per_row++;
   }
 
@@ -153,8 +153,8 @@ bool PixelBits::test_collision(PixelBits *other, const Rectangle &location1, con
   int nb_used_bits_row_b;    // number of bits used on the first used mask of row b
 
   // compute the number of masks on row a
-  nb_masks_per_row_a = intersection.get_width() / 32;
-  if (intersection.get_width() % 32 != 0) {
+  nb_masks_per_row_a = intersection.get_width() >> 5;
+  if ((intersection.get_width() & 31) != 0) {
     nb_masks_per_row_a++;
   }
 
@@ -162,15 +162,15 @@ bool PixelBits::test_collision(PixelBits *other, const Rectangle &location1, con
   if (bounding_box1.get_x() > bounding_box2.get_x()) {
     rows_a = &this->bits[offset_y1];
     rows_b = &other->bits[offset_y2];
-    nb_unused_masks_row_b = offset_x2 / 32;
-    nb_unused_bits_row_b = offset_x2 % 32;
+    nb_unused_masks_row_b = offset_x2 >> 5;
+    nb_unused_bits_row_b = offset_x2 & 31;
     has_row_b_additional_mask = (nb_masks_per_row_a + nb_unused_masks_row_b < other->nb_integers_per_row);
   }
   else {
     rows_a = &other->bits[offset_y2];
     rows_b = &this->bits[offset_y1]; 
-    nb_unused_masks_row_b = offset_x1 / 32;
-    nb_unused_bits_row_b = offset_x1 % 32;
+    nb_unused_masks_row_b = offset_x1 >> 5;
+    nb_unused_bits_row_b = offset_x1 & 31;
     has_row_b_additional_mask = (nb_masks_per_row_a + nb_unused_masks_row_b < this->nb_integers_per_row);
   }
   nb_used_bits_row_b = 32 - nb_unused_bits_row_b;

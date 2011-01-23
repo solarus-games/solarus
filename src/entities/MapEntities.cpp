@@ -99,19 +99,18 @@ Hero& MapEntities::get_hero() {
 
 /**
  * @brief Returns the obstacle property of the tile located at a specified point.
+ *
+ * This function assumes that the parameters are correct: for performance reasons,
+ * no check is done here.
+ *
  * @param layer of the tile to get
  * @param x x coordinate of the point
- * @param y y coordiate of the point
+ * @param y y coordinate of the point
  * @return the obstacle property of this tile
  */
 Obstacle MapEntities::get_obstacle_tile(Layer layer, int x, int y) {
 
   // warning: this function is called very often so it has been optimized and should remain so
-
-#if SOLARUS_DEBUG_LEVEL >= 2
-  static const std::string error_message = "get_obstacle_tile(): invalid coordinates";
-  Debug::check_assertion(!map.test_collision_with_border(x,y), error_message);
-#endif
 
   // optimization of: return obstacle_tiles[layer][(y / 8) * map_width8 + (x / 8)];
   return obstacle_tiles[layer][(y >> 3) * map_width8 + (x >> 3)];

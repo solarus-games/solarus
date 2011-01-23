@@ -57,7 +57,7 @@ class SpriteAnimationDirection {
     // pixel collisions
     void enable_pixel_collisions(Surface *src_image);
     bool are_pixel_collisions_enabled() const;
-    PixelBits *get_pixel_bits(int frame) const;
+    PixelBits* get_pixel_bits(int frame) const;
 };
 
 #endif

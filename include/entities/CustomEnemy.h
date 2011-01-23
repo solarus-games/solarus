@@ -22,6 +22,7 @@
 
 /**
  * @brief An enemy controlled by a Lua script.
+ * TODO: merge with Enemy since all enemies are custom enemies now
  */
 class CustomEnemy: public Enemy {
 

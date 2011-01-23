@@ -191,6 +191,5 @@ inline bool Map::test_collision_with_border(int x, int y) {
   return (x < 0 || y < 0 || x >= location.get_width() || y >= location.get_height());
 }
 
-
 #endif
 

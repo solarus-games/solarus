@@ -141,9 +141,9 @@ bool SpriteAnimationDirection::are_pixel_collisions_enabled() const {
  * @param frame a frame of the animation
  * @return the pixel bits object of a frame
  */
-PixelBits * SpriteAnimationDirection::get_pixel_bits(int frame) const {
+PixelBits* SpriteAnimationDirection::get_pixel_bits(int frame) const {
 
-  Debug::check_assertion(pixel_bits != NULL, ("The pixel collisions are not enabled for this sprite"));
+  Debug::check_assertion(pixel_bits != NULL);
 
   return pixel_bits[frame];
 }

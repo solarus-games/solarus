@@ -2,20 +2,29 @@
 -- Dungeon 1 final room script --
 ---------------------------------
 
-function event_map_started()
-  sol.map.hero_freeze()
-end
-
 function event_map_opening_transition_finished(destination_point_name)
   sol.main.play_music("dungeon_finished.spc")
   solarus_child_sprite = sol.map.npc_get_sprite("solarus_child")
   sol.map.npc_set_position("solarus_child", 160, 165)
   sol.main.sprite_set_animation(solarus_child_sprite, "stopped")
   sol.main.sprite_set_animation_ignore_suspend(solarus_child_sprite, true)
-  sol.main.timer_start(5000, "dialog", false)
 end
 
-function dialog()
+function event_npc_dialog(npc_name)
+
+  if npc_name == "solarus_child" then
+    if sol.game.is_dungeon_finished(1) then
+      -- dialog already done
+      sol.main.play_sound("warp")
+      sol.map.hero_set_map(6, "from_dungeon_1_1F", 1)
+    else
+      -- start the final sequence
+      sol.map.camera_move(160, 120, 100)
+    end
+  end
+end
+
+function event_camera_reached_target()
   sol.map.dialog_start("dungeon_1.solarus_child")
   sol.map.dialog_set_variable("dungeon_1.solarus_child", sol.game.savegame_get_name());
 end

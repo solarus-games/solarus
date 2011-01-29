@@ -239,10 +239,6 @@ class Script {
       map_api_enemy_set_treasure,
       map_api_enemy_set_no_treasure,
       map_api_enemy_set_random_treasure,
-      map_api_enemy_start_boss,
-      map_api_enemy_end_boss,
-      map_api_enemy_start_miniboss,
-      map_api_enemy_end_miniboss,
 
       // item API
       item_api_get_variant,

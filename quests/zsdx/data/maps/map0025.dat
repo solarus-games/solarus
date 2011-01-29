@@ -422,8 +422,9 @@
 19	1	848	256	stairs_5	1	1
 18	1	840	256	miniboss_door_3	1	0	-1
 13	1	856	285	16	16	start_miniboss_sensor	0
-2	1	432	424	16	16	teletransporter	0	1	27	from_boss
+2	1	432	424	16	16	teletransporter	0	1	24	from_1F_hole
 12	1	696	40	176	16	custom_obstacle_14	0	1	0	0
+2	1	464	424	16	16	teletransporter_2	0	1	25	from_1F
 0	2	208	224	8	64	352
 0	2	184	224	8	64	353
 0	2	552	216	8	64	353

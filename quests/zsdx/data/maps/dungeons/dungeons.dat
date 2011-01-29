@@ -22,20 +22,6 @@ height = 768
 width = 512
 height = 512
 
-[dungeon_1.map_24.chest_0]
-floor = -1
-x = 808
-y = 440
-save = 56
-big = 0
-
-[dungeon_1.map_24.boss_0]
-floor = -1
-x = 648
-y = 184
-save = 63
-big = 1
-
 [dungeon_2.map_31.chest_0]
 floor = -1
 x = 200
@@ -169,6 +155,20 @@ floor = 0
 x = 288
 y = 488
 save = 5
+big = 1
+
+[dungeon_1.map_24.chest_0]
+floor = -1
+x = 808
+y = 440
+save = 56
+big = 0
+
+[dungeon_1.map_24.boss_0]
+floor = -1
+x = 648
+y = 144
+save = 63
 big = 1
 
 [dungeon_1.map_25.chest_0]

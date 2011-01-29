@@ -100,7 +100,10 @@ carrying_walking hero/carrying.png 4 100 0
 72	0	24	24	12	21	3	3
 0	48	24	24	12	21	6	6
 
-brandish hero/miscellaneous.png 1 0 -1
+brandish hero/miscellaneous.png 4 0 -1
+0	0	16	24	8	21	1	1
+0	0	16	24	8	21	1	1
+0	0	16	24	8	21	1	1
 0	0	16	24	8	21	1	1
 
 jumping hero/jumping.png 4 0 -1

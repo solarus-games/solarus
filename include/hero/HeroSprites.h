@@ -109,6 +109,7 @@ class HeroSprites {
     int get_current_frame();
     void save_animation_direction();
     void restore_animation_direction();
+    void set_ignore_suspend(bool ignore_suspend);
 
     void set_animation_stopped_common();
     void set_animation_stopped_normal();

@@ -47,12 +47,23 @@ void Hero::VictoryState::start(State *previous_state) {
   State::start(previous_state);
 
   get_sprites().set_animation_victory();
+  get_sprites().set_ignore_suspend(true);
   Sound::play("victory");
 
   // compute the date when the victory state is considered as finished,
   // but the game may be currently suspended
   uint32_t start_victory_date = suspended ? when_suspended : System::now();
   end_victory_date = start_victory_date + 1500;
+}
+
+/**
+ * @brief Stops this state.
+ * @param next_state the next state
+ */
+void Hero::VictoryState::stop(State *next_state) {
+
+  State::stop(next_state);
+  get_sprites().set_ignore_suspend(false);
 }
 
 /**

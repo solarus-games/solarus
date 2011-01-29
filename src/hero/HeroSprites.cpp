@@ -655,6 +655,37 @@ void HeroSprites::restart_animation() {
 }
 
 /**
+ * @brief Sets whether the hero's sprite should keep playing their animation
+ * when the game is suspended.
+ * @param ignore_suspend true to make the sprites continue their animation even
+ * when the game is suspended
+ */
+void HeroSprites::set_ignore_suspend(bool ignore_suspend) {
+
+  tunic_sprite->set_ignore_suspend(ignore_suspend);
+
+  if (is_sword_visible()) {
+    sword_sprite->set_ignore_suspend(ignore_suspend);
+  }
+
+  if (is_sword_stars_visible()) {
+    sword_stars_sprite->set_ignore_suspend(ignore_suspend);
+  }
+
+  if (is_shield_visible()) {
+    shield_sprite->set_ignore_suspend(ignore_suspend);
+  }
+
+  if (is_trail_visible()) {
+    trail_sprite->set_ignore_suspend(ignore_suspend);
+  }
+
+  if (hero.is_ground_visible()) {
+    ground_sprite->set_ignore_suspend(ignore_suspend);
+  }
+}
+
+/**
  * @brief This function is called when the sprites take a "stopped" animation.
  *
  * It makes instructions common to all states having a "stopped" animation.
@@ -705,13 +736,8 @@ void HeroSprites::set_animation_stopped_sword_loading() {
 
   if (equipment.has_ability("shield")) {
 
-    if (direction % 2 != 0) {
-      shield_sprite->set_current_animation("sword_loading_stopped");
-      shield_sprite->set_current_direction(direction / 2);
-    }
-    else {
-      stop_displaying_shield();
-    }
+    shield_sprite->set_current_animation("sword_loading_stopped");
+    shield_sprite->set_current_direction(direction);
   }
   stop_displaying_trail();
 }
@@ -787,14 +813,8 @@ void HeroSprites::set_animation_walking_sword_loading() {
   }
 
   if (equipment.has_ability("shield")) {
-
-    if (direction % 2 != 0) {
-      shield_sprite->set_current_animation("sword_loading_walking");
-      shield_sprite->set_current_direction(direction / 2);
-    }
-    else {
-      stop_displaying_shield();
-    }
+    shield_sprite->set_current_animation("sword_loading_walking");
+    shield_sprite->set_current_direction(direction);
   }
   stop_displaying_trail();
 }
@@ -884,14 +904,9 @@ void HeroSprites::set_animation_sword_tapping() {
 
   if (equipment.has_ability("shield")) {
 
-    if (direction % 2 != 0) {
-      shield_sprite->set_current_animation("sword_tapping");
-      shield_sprite->set_current_direction(direction / 2);
-      shield_sprite->restart_animation();
-    }
-    else {
-      stop_displaying_shield();
-    }
+    shield_sprite->set_current_animation("sword_tapping");
+    shield_sprite->set_current_direction(direction);
+    shield_sprite->restart_animation();
   }
   stop_displaying_trail();
 }

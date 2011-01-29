@@ -100,6 +100,10 @@ void RectilinearMovement::set_x_speed(double x_speed) {
     }
     set_next_move_date_x(now + x_delay);
   }
+
+  if (get_entity() != NULL) {
+    get_entity()->notify_movement_changed();
+  }
 }
 
 /**
@@ -129,6 +133,10 @@ void RectilinearMovement::set_y_speed(double y_speed) {
       set_y_move(-1);
     }
     set_next_move_date_y(now + y_delay);
+  }
+
+  if (get_entity() != NULL) {
+    get_entity()->notify_movement_changed();
   }
 }
 
@@ -228,6 +236,21 @@ void RectilinearMovement::set_angle(double angle) {
   double speed = get_speed();
   set_x_speed(speed * std::cos(angle));
   set_y_speed(-speed * std::sin(angle));
+
+  if (get_entity() != NULL) {
+    get_entity()->notify_movement_changed();
+  }
+}
+
+/**
+ * @brief Returns the direction a sprite controlled by this movement should take.
+ * @return the direction to use to display the object controlled by this movement (0 to 3)
+ */
+int RectilinearMovement::get_displayed_direction4() {
+
+  double angle = get_angle();
+  int direction = (Geometry::radians_to_degrees(angle) + 45 + 360) / 90;
+  return direction % 4;
 }
 
 /**

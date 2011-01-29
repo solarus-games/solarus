@@ -18,6 +18,9 @@
 #include "entities/MapEntity.h"
 #include "lowlevel/Geometry.h"
 #include "lowlevel/System.h"
+#include "lowlevel/Debug.h"
+#include "lowlevel/StringConcat.h"
+#include <sstream>
 
 /**
  * @brief Creates a new target movement towards a fixed point.
@@ -28,8 +31,14 @@
 TargetMovement::TargetMovement(int target_x, int target_y, int speed):
 
   RectilinearMovement(true),
-  target_x(target_x), target_y(target_y), target_entity(NULL), sign_x(0), sign_y(0),
-  speed(speed), next_recomputation_date(System::now()), finished(false) {
+  target_x(target_x),
+  target_y(target_y),
+  target_entity(NULL),
+  sign_x(0),
+  sign_y(0),
+  speed(speed),
+  next_recomputation_date(System::now()),
+  finished(false) {
 
 }
 
@@ -44,8 +53,14 @@ TargetMovement::TargetMovement(int target_x, int target_y, int speed):
 TargetMovement::TargetMovement(MapEntity *target_entity, int speed):
 
   RectilinearMovement(true),
-  target_x(target_entity->get_x()), target_y(target_entity->get_y()), target_entity(target_entity),
-  sign_x(0), sign_y(0), speed(speed), next_recomputation_date(System::now()), finished(false) {
+  target_x(target_entity->get_x()),
+  target_y(target_entity->get_y()),
+  target_entity(target_entity),
+  sign_x(0),
+  sign_y(0),
+  speed(speed),
+  next_recomputation_date(System::now()),
+  finished(false) {
 
 }
 
@@ -140,5 +155,58 @@ void TargetMovement::recompute_movement() {
 bool TargetMovement::is_finished() {
 
   return finished;
+}
+
+/**
+ * @brief Returns the value of a property of this movement.
+ *
+ * Accepted keys:
+ * - speed
+ * - displayed_direction
+ *
+ * @param key key of the property to get
+ * @return the corresponding value as a string
+ */
+const std::string TargetMovement::get_property(const std::string &key) {
+
+  std::ostringstream oss;
+
+  if (key == "speed") {
+    oss << get_speed();
+  }
+  else if (key == "displayed_direction") {
+    oss << get_displayed_direction4();
+  }
+  else {
+    Debug::die(StringConcat() << "Unknown property of TargetMovement: '" << key << "'");
+  }
+
+  return oss.str();
+}
+
+/**
+ * @brief Sets the value of a property of this movement.
+ *
+ * Accepted keys:
+ * - speed
+ *
+ * @param key key of the property to set (the accepted keys depend on the movement type)
+ * @param value the value to set
+ */
+void TargetMovement::set_property(const std::string &key, const std::string &value) {
+
+  std::istringstream iss(value);
+
+  if (key == "speed") {
+    int speed;
+    iss >> speed;
+    set_speed(speed);
+  }
+  else if (key == "displayed_direction") {
+    Debug::die("The property 'displayed_direction' of TargetMovement is read-only");
+  }
+  else {
+    Debug::die(StringConcat() << "Unknown property of TargetMovement: '" << key << "'");
+  }
 }
 

@@ -20,6 +20,7 @@
 #include "movements/RandomMovement.h"
 #include "movements/RandomPathMovement.h"
 #include "movements/PathFindingMovement.h"
+#include "movements/TargetMovement.h"
 #include "movements/TemporalMovement.h"
 #include "movements/CircleMovement.h"
 #include "movements/JumpMovement.h"
@@ -559,6 +560,31 @@ int Script::main_api_path_finding_movement_create(lua_State *l) {
   int speed = luaL_checkinteger(l, 1);
 
   PathFindingMovement *movement = new PathFindingMovement(&script->get_game().get_hero(), speed);
+  int movement_handle = script->create_movement_handle(*movement);
+  lua_pushinteger(l, movement_handle);
+
+  return 1;
+}
+
+/**
+ * @brief Creates a movement of type TargetMovement (targeting the hero)
+ * that will be accessible from the script.
+ *
+ * - Argument 1 (int): the speed in pixels per second
+ * - Return value (movement): a handle to the movement created
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::main_api_target_movement_create(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 1, &script);
+  int speed = luaL_checkinteger(l, 1);
+
+  Hero& hero = script->get_game().get_hero();
+  TargetMovement *movement = new TargetMovement(&hero, speed);
+  movement->set_ignore_obstacles(false);
+  movement->set_speed(speed);
   int movement_handle = script->create_movement_handle(*movement);
   lua_pushinteger(l, movement_handle);
 

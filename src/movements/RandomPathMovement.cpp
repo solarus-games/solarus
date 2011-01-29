@@ -64,6 +64,7 @@ bool RandomPathMovement::is_finished() {
  *
  * Accepted keys:
  * - speed
+ * - displayed_direction
  *
  * @param key key of the property to get
  * @return the corresponding value as a string
@@ -74,6 +75,9 @@ const std::string RandomPathMovement::get_property(const std::string &key) {
 
   if (key == "speed") {
     oss << get_speed();
+  }
+  else if (key == "displayed_direction") {
+    oss << get_displayed_direction4();
   }
   else {
     Debug::die(StringConcat() << "Unknown property of RandomPathMovement: '" << key << "'");
@@ -99,6 +103,9 @@ void RandomPathMovement::set_property(const std::string &key, const std::string 
     int speed;
     iss >> speed;
     set_speed(speed);
+  }
+  else if (key == "displayed_direction") {
+    Debug::die("The property 'displayed_direction' of RandomPathMovement is read-only");
   }
   else {
     Debug::die(StringConcat() << "Unknown property of RandomPathMovement: '" << key << "'");

@@ -111,6 +111,7 @@ class Script {
       main_api_path_movement_create,
       main_api_random_path_movement_create,
       main_api_path_finding_movement_create,
+      main_api_target_movement_create,
       main_api_rectilinear_movement_create,
       main_api_temporal_movement_create,
       main_api_circle_movement_create,

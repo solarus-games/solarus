@@ -965,7 +965,7 @@
 8	0	728	101	flower_hole_sign	3	0	entities/sign	dialog#outside_world.flower_hole_sign
 1	0	424	109	from_B2_left_jump	3	0
 1	0	544	109	from_B2_middle_jump	3	0
-1	0	664	61	from_B2_right_jump	3	0
+1	0	664	61	from_chest_game_cave	3	0
 4	0	696	469	4	_random	1	-1
 4	0	712	469	4	_random	1	-1
 4	0	728	469	4	_random	1	-1
@@ -1029,7 +1029,7 @@
 1	0	208	725	out_grandma_house	3	0
 2	0	200	696	16	16	to_grandma_house	0	1	11	entrance
 4	0	648	93	3	_random	1	-1
-2	0	256	432	16	16	to_binbin_dungeon	0	1	17	main_entrance
+2	0	272	432	16	16	to_binbin_dungeon	0	1	17	main_entrance
 1	0	280	461	from_binbin_dungeon	3	0
 1	0	72	477	out_lyriann_cave	3	0
 3	0	48	109	piece_of_heart	1	18

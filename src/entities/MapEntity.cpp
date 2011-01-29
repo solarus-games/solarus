@@ -1072,7 +1072,6 @@ void MapEntity::notify_position_changed() {
  *
  * By default, nothing is done.
  * TODO: actually call this function from all movement subclasses
- * (for now, only PlayerMovement and RandomMovement call it)
  */
 void MapEntity::notify_movement_changed() {
 }

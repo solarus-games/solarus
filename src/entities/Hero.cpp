@@ -1005,11 +1005,6 @@ void Hero::notify_movement_changed() {
 
   // let the state pick the animation corresponding to the movement tried by the player
   state->notify_movement_changed();
-
-  // check collisions
-  if (is_on_map()) {
-    notify_position_changed();
-  }
 }
 
 /**

@@ -29,6 +29,7 @@
  *
  * Properties:
  * - speed
+ * - displayed_direction (read-only)
  */
 class RandomPathMovement: public PathMovement {
 

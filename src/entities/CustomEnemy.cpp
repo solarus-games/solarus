@@ -157,7 +157,7 @@ void CustomEnemy::notify_movement_tried(bool success) {
 
   Enemy::notify_movement_tried(success);
 
-  if (!success) {
+  if (!is_being_hurt() && !success) {
     script->event_obstacle_reached();
   }
 }
@@ -168,7 +168,10 @@ void CustomEnemy::notify_movement_tried(bool success) {
 void CustomEnemy::notify_position_changed() {
 
   Enemy::notify_position_changed();
-  script->event_position_changed(get_xy());
+
+  if (!is_being_hurt()) {
+    script->event_position_changed(get_xy());
+  }
 }
 
 /**
@@ -179,7 +182,10 @@ void CustomEnemy::notify_position_changed() {
 void CustomEnemy::notify_layer_changed() {
 
   Enemy::notify_layer_changed();
-  script->event_layer_changed(get_layer());
+
+  if (!is_being_hurt()) {
+    script->event_layer_changed(get_layer());
+  }
 }
 
 /**

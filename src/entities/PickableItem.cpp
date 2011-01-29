@@ -274,8 +274,10 @@ const Treasure& PickableItem::get_treasure() {
  */
 void PickableItem::notify_movement_changed() {
 
-  // notify the item script
-  get_equipment().get_item_script(treasure.get_item_name()).event_movement_changed(*this);
+  if (is_on_map()) {
+    // notify the item script
+    get_equipment().get_item_script(treasure.get_item_name()).event_movement_changed(*this);
+  }
 }
 
 /**

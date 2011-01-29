@@ -92,6 +92,7 @@ class RectilinearMovement: public Movement {
     void set_speed(double speed);
     double get_angle();
     void set_angle(double angle);
+    int get_displayed_direction4();
 
     // movement
     virtual bool is_started();

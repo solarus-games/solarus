@@ -42,7 +42,7 @@
 0	37	Billy's cave
 0	39	True hero cave 2F
 0	38	True hero cave 1F
-0	44	Enemy test area
+0	44	Enemies testing area
 1	0	House
 1	1	Light World
 1	2	Ice dungeon
@@ -250,6 +250,7 @@
 6	simple_green_soldier	Simple green soldier
 6	bubble	Bubble
 6	tentacle	Tentacle
+6	globul	Globul
 6	minillosaur_egg	Minillosaur Egg
 6	chain_and_ball	Chain and ball
 6	papillosaur_king	Papillosaur King

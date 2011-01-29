@@ -275,6 +275,7 @@ void Script::register_main_api() {
       { "path_movement_create", main_api_path_movement_create },
       { "random_path_movement_create", main_api_random_path_movement_create },
       { "path_finding_movement_create", main_api_path_finding_movement_create },
+      { "target_movement_create", main_api_target_movement_create },
       { "rectilinear_movement_create", main_api_rectilinear_movement_create },
       { "temporal_movement_create", main_api_temporal_movement_create },
       { "circle_movement_create", main_api_circle_movement_create },
@@ -928,8 +929,11 @@ Movement& Script::start_movement(int movement_handle) {
 
   Movement &movement = get_movement(movement_handle);
 
-  movement.set_suspended(false);
-  unassigned_movements.erase(movement_handle);
+  if (unassigned_movements.count(movement_handle) > 0) {
+    // the movemnt is still stored by the script: detach it
+    movement.set_suspended(false);
+    unassigned_movements.erase(movement_handle);
+  }
 
   return movement;
 }

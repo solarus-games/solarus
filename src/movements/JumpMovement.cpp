@@ -113,7 +113,7 @@ void JumpMovement::set_speed(int speed) {
 
 /**
  * @brief Returns the direction a sprite controlled by this movement should take.
- * @return the direction to use to display the object controlled by this movement (0 to 4)
+ * @return the direction to use to display the object controlled by this movement (0 to 3)
  */
 int JumpMovement::get_displayed_direction4() {
 

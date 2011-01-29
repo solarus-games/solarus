@@ -118,10 +118,7 @@ class MapEntities {
     bool overlaps_raised_blocks(Layer layer, const Rectangle &rectangle);
     bool is_boomerang_present();
     void remove_boomerang();
-    void start_boss_battle(Enemy *boss);
-    void end_boss_battle();
-    void start_miniboss_battle(Enemy *miniboss);
-    void end_miniboss_battle();
+
 
     // game loop
     void notify_map_started();

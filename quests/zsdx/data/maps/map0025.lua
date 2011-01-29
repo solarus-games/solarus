@@ -30,14 +30,15 @@ function event_hero_on_sensor(sensor_name)
 end
 
 function miniboss_timer()
-  sol.map.enemy_start_miniboss("khorneth")
+  sol.main.play_music("boss.spc")
+  sol.map.enemy_set_enabled("khorneth", true)
   sol.map.hero_unfreeze()
 end
 
 function event_enemy_dead(enemy_name)
 
   if enemy_name == "khorneth" then
-    sol.map.enemy_end_miniboss()
+    sol.main.play_music("light_world_dungeon.spc")
     sol.map.door_open("miniboss_door")
   end
 

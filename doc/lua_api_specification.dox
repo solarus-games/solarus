@@ -492,18 +492,6 @@ returns whether all enemies having a common prefix are dead
 - <tt>sol.map.enemy_get_group_count(enemies_name_prefix)</tt>:
 Returns the number of living enemies of the map whose name starts with the specified prefix.
 
-- <tt>sol.map.enemy_start_boss(enemy_name)</tt>:
-starts fighting a boss if it is alive
-
-- <tt>sol.map.enemy_end_boss()</tt>:
-sets the fight with a boss as finished (usually called after picking the life container)
-
-- <tt>sol.map.enemy_start_miniboss(enemy_name)</tt>:
-starts fighting a miniboss if it is alive
-
-- <tt>sol.map.enemy_end_miniboss()</tt>:
-sets the fight with a miniboss as finished
-
 - <tt>sol.map.enemy_get_position(enemy_name)</tt>:
 Returns the current position of an enemy on the map.
 Two values are returned (x and y).

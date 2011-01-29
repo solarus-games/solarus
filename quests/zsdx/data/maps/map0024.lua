@@ -7,33 +7,33 @@ function event_map_started(destination_point_name)
   if destination_point_name == "from_1F_hole" then
     -- we are in the boss room
 
-    if sol.game.savegame_get_boolean(63) and sol.game.savegame_get_boolean(64) then
-      -- the boss was already killed and the heart container was also picked:
-      -- make the hero leave the map since the room is closed
-      if not sol.game.is_dungeon_finished(1) then
-	start_final_room()
-      else
-        sol.map.hero_freeze()
-        sol.main.timer_start(1000, "boss_already_killed", false)
+    if sol.game.savegame_get_boolean(63) then
+      -- the boss is already dead
+
+      if sol.game.savegame_get_boolean(64) then
+        -- the heart container was also picked: open the final room door
+        sol.map.door_set_open("final_room_door", true)
       end
     else
       -- normal case
-      sol.map.enemy_start_boss("boss")
+      start_boss()
     end
   end
 end
 
-function boss_already_killed()
-  -- leave the dungeon
-  sol.main.play_sound("warp")
-  sol.map.hero_set_map(6, "from_dungeon_1_1F", 1)
+function start_boss()
+
+  sol.map.enemy_set_enabled("boss", true)
+  sol.main.play_music("boss.spc")
 end
 
 function event_treasure_obtained(item_name, variant, savegame_variable)
 
   if item_name == "heart_container" then
-    sol.map.enemy_end_boss()
-    sol.main.timer_start(9000, "start_final_room", false);
+    sol.main.timer_start(9000, "open_final_room", false);
+    sol.main.play_music("victory.spc")
+    sol.map.hero_freeze()
+    sol.map.hero_set_direction(3)
   end
 end
 
@@ -57,6 +57,12 @@ function open_se_door()
   sol.map.door_open("se_door")
   sol.map.switch_set_activated("se_switch", true)
   sol.map.switch_set_activated("ne_switch", true)
+end
+
+function open_final_room()
+  sol.map.door_open("final_room_door")
+  sol.main.play_sound("secret")
+  sol.map.hero_unfreeze()
 end
 
 function start_final_room()

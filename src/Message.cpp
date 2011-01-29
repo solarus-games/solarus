@@ -87,14 +87,7 @@ Message::~Message() {
 void Message::parse(MessageId message_id) {
 
   // open the file
-  std::string file_name;
-  if (message_id[0] == '_') {
-    // message from the engine
-    file_name = "text/engine_dialogs.dat";
-  }
-  else {
-    file_name = "text/game_dialogs.dat";
-  }
+  std::string file_name = "text/dialogs.dat";
 
   // parse the message
   IniFile ini_file(file_name, IniFile::READ_LANGUAGE);

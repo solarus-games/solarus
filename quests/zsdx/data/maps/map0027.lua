@@ -3,7 +3,6 @@
 ---------------------------------
 
 function event_map_opening_transition_finished(destination_point_name)
-  sol.main.play_music("dungeon_finished.spc")
   solarus_child_sprite = sol.map.npc_get_sprite("solarus_child")
   sol.map.npc_set_position("solarus_child", 160, 165)
   sol.main.sprite_set_animation(solarus_child_sprite, "stopped")

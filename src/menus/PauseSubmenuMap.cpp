@@ -101,8 +101,14 @@ PauseSubmenuMap::PauseSubmenuMap(PauseMenu &pause_menu, Game &game):
     nb_floors = dungeon.get_nb_floors();
 
     nb_floors_displayed = dungeon.get_nb_floors_displayed();
-    highest_floor_displayed = dungeon.get_highest_floor_displayed(hero_floor);
-    selected_floor = hero_floor;
+
+    if (hero_floor != -99) {
+      highest_floor_displayed = dungeon.get_highest_floor_displayed(hero_floor);
+    }
+    else {
+      highest_floor_displayed = highest_floor;
+    }
+    selected_floor = hero_floor != -99 ? hero_floor : lowest_floor;
 
     // map
     dungeon_map_img = new Surface(123, 119);

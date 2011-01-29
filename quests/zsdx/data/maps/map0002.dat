@@ -194,7 +194,7 @@
 8	0	240	93	slot_machine_left	3	0	entities/slot_machine	map
 8	0	264	93	slot_machine_middle	3	0	entities/slot_machine	map
 8	0	288	93	slot_machine_right	3	0	entities/slot_machine	map
-0	2	72	312	96	8	148
+0	2	64	312	96	8	263
 0	2	104	312	32	8	153
 0	2	0	32	16	304	170
 0	2	448	32	16	304	170

@@ -80,7 +80,8 @@
 8	0	248	61	torch_3	-1	0	entities/torch	item#lamp
 8	0	248	189	torch_4	-1	0	entities/torch	item#lamp
 13	0	152	125	32	16	fairy_sensor	0
-0	2	112	216	96	8	148
+0	2	296	80	8	96	416
+0	2	112	216	96	8	412
 0	2	16	16	16	16	170
 0	2	16	208	16	16	170
 0	2	288	208	16	16	170

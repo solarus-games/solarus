@@ -34,6 +34,7 @@ class Hero::VictoryState: public Hero::State {
     ~VictoryState();
 
     void start(State *previous_state);
+    void stop(State *next_state);
     void update();
     void set_suspended(bool suspended);
 };

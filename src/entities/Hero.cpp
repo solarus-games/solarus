@@ -212,10 +212,8 @@ void Hero::update() {
 
   update_movement();
   update_state();
-
+  sprites->update();
   if (!is_suspended()) {
-    
-    sprites->update();
     update_ground();
     get_map().check_collision_with_detectors(*this);
     check_gameover();
@@ -509,25 +507,30 @@ void Hero::place_on_destination_point(Map &map) {
 
     if (side != -1) {
 
-      // only one coordinate is changed
+      // go to a side of the other map
+      Map& old_map = get_map();
       set_map(map);
 
       switch (side) {
 
 	case 0: // right side
 	  set_x(map.get_width());
+	  set_y(get_y() - map.get_location().get_y() + old_map.get_location().get_y());
 	  break;
 
 	case 1: // top side
 	  set_y(5);
+          set_x(get_x() - map.get_location().get_x() + old_map.get_location().get_x());
 	  break;
 
 	case 2: // left side
 	  set_x(0);
+          set_y(get_y() - map.get_location().get_y() + old_map.get_location().get_y());
 	  break;
 
 	case 3: // bottom side
 	  set_y(map.get_height() + 5);
+          set_x(get_x() - map.get_location().get_x() + old_map.get_location().get_x());
 	  break;
 
 	default:

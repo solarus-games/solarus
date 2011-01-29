@@ -249,8 +249,12 @@ public class InteractiveEntity extends MapEntity {
         }
         else {
             // display the sprite
+            int direction = getDirection();
+            if (direction == -1) {
+                direction = 3;
+            }
             sprite.paint(g, zoom, showTransparency,
-                    getX(), getY(), null, getDirection(), 0);
+                    getX(), getY(), null, direction, 0);
         }
     }
 }

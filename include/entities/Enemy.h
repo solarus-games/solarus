@@ -164,7 +164,9 @@ class Enemy: public Detector {
     void set_attack_consequence_sprite(Sprite& sprite, EnemyAttack attack,
         EnemyReaction::ReactionType reaction, int life_lost = 0);
     void set_no_attack_consequences();
+    void set_no_attack_consequences_sprite(Sprite& sprite);
     void set_default_attack_consequences();
+    void set_default_attack_consequences_sprite(Sprite& sprite);
 
     // hurt the enemy
     void play_hurt_sound();

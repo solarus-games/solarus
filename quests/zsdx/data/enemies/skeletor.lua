@@ -1,4 +1,4 @@
--- Globul
+-- Skeletor
 
 function event_appear()
 

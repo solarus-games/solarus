@@ -404,6 +404,26 @@ int Script::enemy_api_set_default_attack_consequences(lua_State *l) {
 }
 
 /**
+ * @brief Sets the default reactions to attacks for a particular sprite of the enemy.
+ *
+ * - Parameter 1 (sprite): the sprite to consider
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::enemy_api_set_default_attack_consequences_sprite(lua_State *l) {
+
+  Script* script;
+  called_by_script(l, 1, &script);
+  Enemy& enemy = script->get_enemy();
+  int sprite_handle = luaL_checkinteger(l, 1);
+  Sprite& sprite = script->get_sprite(sprite_handle);
+
+  enemy.set_default_attack_consequences_sprite(sprite);
+
+  return 0;
+}
+
+/**
  * @brief Sets the enemy invincible.
  *
  * This is equivalent to setting all the attack consequences as "ignored".
@@ -417,6 +437,28 @@ int Script::enemy_api_set_invincible(lua_State *l) {
   Enemy& enemy = script->get_enemy();
 
   enemy.set_no_attack_consequences();
+
+  return 0;
+}
+
+/**
+ * @brief Sets a particular sprite of the enemy invincible.
+ *
+ * This is equivalent to setting all the attack consequences as "ignored"
+ * for that sprite.
+ * - Parameter 1 (sprite): the sprite to consider
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::enemy_api_set_invincible_sprite(lua_State *l) {
+
+  Script* script;
+  called_by_script(l, 1, &script);
+  Enemy& enemy = script->get_enemy();
+  int sprite_handle = luaL_checkinteger(l, 1);
+  Sprite& sprite = script->get_sprite(sprite_handle);
+
+  enemy.set_no_attack_consequences_sprite(sprite);
 
   return 0;
 }

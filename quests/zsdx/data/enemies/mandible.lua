@@ -1,4 +1,4 @@
--- Globul
+-- Mandible
 
 function event_appear()
 

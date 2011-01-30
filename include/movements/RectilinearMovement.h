@@ -34,6 +34,7 @@ class RectilinearMovement: public Movement {
   private:
 
     // speed vector
+    double angle;                               /**< angle between the speed vector and the horizontal axis in radians */
     double x_speed;				/**< X speed of the object to move in pixels per second.
 						 * 0: stopped
 						 * positive value: moving to the right

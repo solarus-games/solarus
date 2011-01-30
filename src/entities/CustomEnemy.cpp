@@ -247,6 +247,10 @@ void CustomEnemy::notify_sprite_animation_finished(Sprite& sprite, const std::st
  */
 int CustomEnemy::custom_attack(EnemyAttack attack, Sprite* this_sprite) {
 
+  if (!is_in_normal_state()) {
+    return 0;
+  }
+
   return script->event_custom_attack_received(attack, this_sprite);
 }
 

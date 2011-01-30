@@ -4,22 +4,21 @@ hero_seen = false
 being_pushed = false
 
 function get_main_sprite()
-  return sol.enemy.get_sprite("enemies/bee_guard")
+  return sol.enemy.get_sprite("enemies/red_bullblin")
 end
 
 function get_sword_sprite()
-  return sol.enemy.get_sprite("enemies/bee_guard_sword")
+  return sol.enemy.get_sprite("enemies/red_bullblin_sword")
 end
 
 function event_appear()
 
-  sol.enemy.set_life(3)
+  sol.enemy.set_life(4)
   sol.enemy.set_damage(2)
-  sol.enemy.create_sprite("enemies/bee_guard_sword")
-  sol.enemy.create_sprite("enemies/bee_guard")
+  sol.enemy.create_sprite("enemies/red_bullblin_sword")
+  sol.enemy.create_sprite("enemies/red_bullblin")
   sol.enemy.set_size(16, 16)
   sol.enemy.set_origin(8, 13)
-  sol.enemy.set_hurt_sound_style("monster")
 
   sword_sprite = get_sword_sprite()
   sol.enemy.set_invincible_sprite(sword_sprite)
@@ -67,7 +66,6 @@ function event_movement_finished(movement)
   end
 end
 
--- The enemy receives an attack whose consequence is "custom"
 function event_custom_attack_received(attack, sprite)
 
   if attack == "sword" and sprite == get_sword_sprite() then

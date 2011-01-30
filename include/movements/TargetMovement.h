@@ -18,7 +18,7 @@
 #define SOLARUS_TARGET_MOVEMENT_H
 
 #include "Common.h"
-#include "movements/RectilinearMovement.h"
+#include "movements/SmoothMovement.h"
 
 /**
  * @brief Movement of an object that goes to a target point.
@@ -29,7 +29,7 @@
  * - speed
  * - displayed_direction (read-only)
  */
-class TargetMovement: public RectilinearMovement {
+class TargetMovement: public SmoothMovement {
 
   protected:
 

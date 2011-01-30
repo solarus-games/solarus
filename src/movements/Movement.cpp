@@ -332,7 +332,6 @@ bool Movement::test_collision_with_obstacles(int dx, int dy) {
 
   if (collision) {
     last_collision_box_on_obstacle = collision_box;
-    entity->notify_movement_changed();
   }
 
   return collision;

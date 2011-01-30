@@ -29,6 +29,7 @@
  */
 RectilinearMovement::RectilinearMovement(bool ignore_obstacles):
   Movement(ignore_obstacles),
+  angle(0),
   x_speed(0),
   y_speed(0),
   next_move_date_x(System::now()),
@@ -100,6 +101,7 @@ void RectilinearMovement::set_x_speed(double x_speed) {
     }
     set_next_move_date_x(now + x_delay);
   }
+  angle = Geometry::get_angle(0, 0, (int) (x_speed * 100), (int) (y_speed * 100));
 
   if (get_entity() != NULL) {
     get_entity()->notify_movement_changed();
@@ -134,6 +136,7 @@ void RectilinearMovement::set_y_speed(double y_speed) {
     }
     set_next_move_date_y(now + y_delay);
   }
+  angle = Geometry::get_angle(0, 0, (int) (x_speed * 100), (int) (y_speed * 100));
 
   if (get_entity() != NULL) {
     get_entity()->notify_movement_changed();
@@ -154,11 +157,14 @@ void RectilinearMovement::set_speed(double speed) {
   }
 
   // compute the new speed vector
-  double angle = Geometry::get_angle(0, 0,
-                                     (int) (x_speed * 100),
-                                     (int) (y_speed * 100)); // angle in radians
+  double old_angle = this->angle;
   set_x_speed(speed * std::cos(angle));
   set_y_speed(-speed * std::sin(angle));
+  this->angle = old_angle;
+
+  if (get_entity() != NULL) {
+    get_entity()->notify_movement_changed();
+  }
 }
 
 /**
@@ -174,10 +180,16 @@ bool RectilinearMovement::is_started() {
  */
 void RectilinearMovement::stop() {
 
+  double old_angle = this->angle;
   set_x_speed(0);
   set_y_speed(0);
   set_x_move(0);
   set_y_move(0);
+  this->angle = old_angle;
+
+  if (get_entity() != NULL) {
+    get_entity()->notify_movement_changed();
+  }
 }
 
 /**
@@ -216,7 +228,7 @@ void RectilinearMovement::set_next_move_date_y(uint32_t next_move_date_y) {
  */
 double RectilinearMovement::get_angle() {
 
-  return Geometry::get_angle(0, 0, (int) (get_x_speed() * 1000), (int) (get_y_speed() * 1000));
+  return angle;
 }
 
 /**
@@ -230,12 +242,12 @@ double RectilinearMovement::get_angle() {
  */
 void RectilinearMovement::set_angle(double angle) {
 
-  Debug::check_assertion(x_speed != 0 || y_speed != 0,
-    StringConcat() << "Cannot set the angle when the speed is zero (entity: " << get_entity() << ")");
-
-  double speed = get_speed();
-  set_x_speed(speed * std::cos(angle));
-  set_y_speed(-speed * std::sin(angle));
+  if (!is_stopped()) {
+    double speed = get_speed();
+    set_x_speed(speed * std::cos(angle));
+    set_y_speed(-speed * std::sin(angle));
+  }
+  this->angle = angle;
 
   if (get_entity() != NULL) {
     get_entity()->notify_movement_changed();
@@ -248,7 +260,6 @@ void RectilinearMovement::set_angle(double angle) {
  */
 int RectilinearMovement::get_displayed_direction4() {
 
-  double angle = get_angle();
   int direction = (Geometry::radians_to_degrees(angle) + 45 + 360) / 90;
   return direction % 4;
 }
@@ -456,9 +467,6 @@ void RectilinearMovement::set_property(const std::string &key, const std::string
   else if (key == "angle") {
     double angle;
     iss >> angle;
-    if (get_speed() == 0) {
-      set_speed(1);
-    }
     set_angle(angle);
   }
   else if (key == "ignore_obstacles") {

@@ -5695,8 +5695,9 @@
 7	1	464	1693	enemy_3	3	tentacle	0	-1	_random	1	-1
 7	1	464	1912	enemy_2	3	bubble	0	-1	_random	1	-1
 7	1	464	2149	enemy	3	simple_green_soldier	0	-1	_random	1	-1
-7	1	160	2149	enemy_5	3	mandible	0	-1	_random	1	-1
+7	1	160	1469	enemy_5	3	mandible	0	-1	_random	1	-1
 7	1	160	1701	enemy_6	3	skeletor	0	-1	_random	1	-1
+7	1	152	2141	enemy_7	3	bee_guard	0	-1	_random	1	-1
 0	2	112	2032	96	8	411
 0	2	296	1856	8	96	416
 0	2	112	1808	96	8	411

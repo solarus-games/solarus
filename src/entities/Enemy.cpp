@@ -408,6 +408,17 @@ void Enemy::set_no_attack_consequences() {
 }
 
 /**
+ * @brief Sets a particular sprite of the enemy insensible to all attacks.
+ * @param sprite a sprite of this enemy
+ */
+void Enemy::set_no_attack_consequences_sprite(Sprite& sprite) {
+
+  for (int i = 0; i < ATTACK_NUMBER; i++) {
+    set_attack_consequence_sprite(sprite, EnemyAttack(i), EnemyReaction::IGNORED);
+  }
+}
+
+/**
  * @brief Set some default values for the reactions of the attacks.
  */
 void Enemy::set_default_attack_consequences() {
@@ -419,6 +430,21 @@ void Enemy::set_default_attack_consequences() {
   set_attack_consequence(ATTACK_EXPLOSION, EnemyReaction::HURT, 2);
   set_attack_consequence(ATTACK_HOOKSHOT, EnemyReaction::IMMOBILIZED);
   set_attack_consequence(ATTACK_BOOMERANG, EnemyReaction::IMMOBILIZED);
+}
+
+/**
+ * @brief Set some default values for the reactions of the attacks
+ * on a particular sprite of this enemy.
+ * @param sprite a sprite of this enemy
+ */
+void Enemy::set_default_attack_consequences_sprite(Sprite& sprite) {
+
+  for (int i = 0; i < ATTACK_NUMBER; i++) {
+    set_attack_consequence_sprite(sprite, EnemyAttack(i), EnemyReaction::HURT, 1);
+  }
+  set_attack_consequence_sprite(sprite, ATTACK_EXPLOSION, EnemyReaction::HURT, 2);
+  set_attack_consequence_sprite(sprite, ATTACK_HOOKSHOT, EnemyReaction::IMMOBILIZED);
+  set_attack_consequence_sprite(sprite, ATTACK_BOOMERANG, EnemyReaction::IMMOBILIZED);
 }
 
 /**

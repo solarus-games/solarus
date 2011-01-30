@@ -649,8 +649,14 @@ Sets how reacts the enemy when a particular sprite receives an attack.
 - <tt>sol.enemy.set_default_attack_consequences()</tt>:
 Sets the default attack consequences for the enemy.
 
+- <tt>sol.enemy.set_default_attack_consequences_sprite(sprite)</tt>:
+Sets the default attack consequences for a particular sprite of the enemy.
+
 - <tt>sol.enemy.set_invincible()</tt>:
 Makes the enemy ignore all attacks.
+
+- <tt>sol.enemy.set_invincible_sprite(sprite)</tt>:
+Makes a particular sprite of the enemy ignore all attacks.
 
 - <tt>sol.enemy_set_treasure(item_name, variant, savegame_variable)</tt>:
 Sets the treasure of the enemy.

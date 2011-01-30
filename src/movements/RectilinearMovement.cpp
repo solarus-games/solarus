@@ -158,8 +158,8 @@ void RectilinearMovement::set_speed(double speed) {
 
   // compute the new speed vector
   double old_angle = this->angle;
-  set_x_speed(speed * std::cos(angle));
-  set_y_speed(-speed * std::sin(angle));
+  set_x_speed(speed * std::cos(old_angle));
+  set_y_speed(-speed * std::sin(old_angle));
   this->angle = old_angle;
 
   if (get_entity() != NULL) {

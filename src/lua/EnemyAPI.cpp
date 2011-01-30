@@ -16,9 +16,11 @@
  */
 #include "lua/EnemyScript.h"
 #include "entities/Enemy.h"
+#include "entities/Hero.h"
 #include "entities/MapEntities.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
+#include "Game.h"
 #include "Map.h"
 #include <lua.hpp>
 
@@ -720,6 +722,25 @@ int Script::enemy_api_set_layer(lua_State *l) {
   entities.set_entity_layer(&enemy, Layer(layer));
 
   return 0;
+}
+
+/**
+ * @brief Returns the distance between the enemy and the hero
+ *
+ * - Return value (integer): the distance in pixels
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::enemy_api_get_distance_to_hero(lua_State *l) {
+
+  Script* script;
+  called_by_script(l, 0, &script);
+  Enemy& enemy = script->get_enemy();
+  Hero& hero = script->get_game().get_hero();
+
+  lua_pushinteger(l, enemy.get_distance(hero));
+
+  return 1;
 }
 
 /**

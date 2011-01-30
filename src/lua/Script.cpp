@@ -493,6 +493,7 @@ void Script::register_enemy_api() {
       { "set_position", enemy_api_set_position },
       { "get_layer", enemy_api_get_layer },
       { "set_layer", enemy_api_set_layer },
+      { "get_distance_to_hero", enemy_api_get_distance_to_hero },
       { "snap_to_grid", enemy_api_snap_to_grid },
       { "get_movement", enemy_api_get_movement },
       { "start_movement", enemy_api_start_movement },

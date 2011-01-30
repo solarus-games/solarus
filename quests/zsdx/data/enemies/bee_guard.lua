@@ -1,6 +1,15 @@
 -- Bee Guard
 
+hero_seen = false
 being_pushed = false
+
+function get_main_sprite()
+  return sol.enemy.get_sprite("enemies/bee_guard")
+end
+
+function get_sword_sprite()
+  return sol.enemy.get_sprite("enemies/bee_guard_sword")
+end
 
 function event_appear()
 
@@ -15,7 +24,29 @@ function event_appear()
   sol.enemy.set_invincible_sprite(sword_sprite)
   sol.enemy.set_attack_consequence_sprite(sword_sprite, "sword", "custom")
 
-  restart()
+  go_random()
+end
+
+function event_restart()
+  sol.main.timer_start(1000, "check_hero", false)
+end
+
+function event_hurt()
+  sol.main.timer_stop("check_hero")
+end
+
+function check_hero()
+
+  near_hero = sol.enemy.get_distance_to_hero() < 100
+  if near_hero and not hero_seen then
+    hero_seen = true
+    sol.main.play_sound("hero_seen")
+    go_hero()
+  elseif not near_hero and hero_seen then
+    hero_seen = false
+    go_random()
+  end
+  sol.main.timer_start(1000, "check_hero", false)
 end
 
 function event_movement_changed()
@@ -28,12 +59,11 @@ function event_movement_changed()
   end
 end
 
-function get_main_sprite()
-  return sol.enemy.get_sprite("enemies/bee_guard")
-end
+function event_movement_finished(movement)
 
-function get_sword_sprite()
-  return sol.enemy.get_sprite("enemies/bee_guard_sword")
+  if being_pushed then
+    go_hero()
+  end
 end
 
 -- The enemy receives an attack whose consequence is "custom"
@@ -50,13 +80,15 @@ function event_custom_attack_received(attack, sprite)
   end
 end
 
-function event_movement_finished(movement)
-  restart()
+function go_random()
+  being_pushed = false
+  m = sol.main.random_path_movement_create(32)
+  sol.enemy.start_movement(m)
 end
 
-function restart()
+function go_hero()
   being_pushed = false
-  m = sol.main.target_movement_create(48)
+  m = sol.main.target_movement_create(64)
   sol.enemy.start_movement(m)
 end
 

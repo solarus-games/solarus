@@ -546,9 +546,7 @@ void Enemy::update() {
       get_sprite().get_current_animation() != "shaking") {
 
     end_shaking_date = now + 2000;
-    for (int i = 0; i < get_nb_sprites(); i++) {
-      get_sprite().set_current_animation("shaking");
-    }
+    set_animation("shaking");
   }
 
   if (exploding) {
@@ -823,6 +821,7 @@ void Enemy::try_hurt(EnemyAttack attack, MapEntity &source, Sprite *this_sprite)
       // get immobilized
       hurt(source);
       immobilize();
+      just_hurt(source, attack, 0);
       break;
 
     case EnemyReaction::CUSTOM:

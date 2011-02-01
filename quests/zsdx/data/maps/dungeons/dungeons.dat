@@ -73,13 +73,6 @@ height = 1024
 width = 1024
 height = 1024
 
-[dungeon_3.map_40.chest_0]
-floor = 0
-x = 936
-y = 432
-save = -1
-big = 0
-
 [dungeon_10.map_17.chest_0]
 floor = 0
 x = 920
@@ -183,17 +176,24 @@ y = 141
 save = 62
 big = 0
 
+[dungeon_3.map_40.chest_0]
+floor = 0
+x = 936
+y = 432
+save = -1
+big = 0
+
 [dungeon_3.map_41.chest_0]
 floor = 1
-x = 712
-y = 48
+x = 944
+y = 880
 save = -1
 big = 0
 
 [dungeon_3.map_41.chest_1]
 floor = 1
-x = 944
-y = 880
+x = 712
+y = 48
 save = -1
 big = 0
 

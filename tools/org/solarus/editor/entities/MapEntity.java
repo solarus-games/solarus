@@ -379,6 +379,14 @@ public abstract class MapEntity extends Observable {
     }
 
     /**
+     * Changes the map of this entity.
+     * @param map the new map
+     */
+    public void setMap(Map map) {
+        this.map = map;
+    }
+
+    /**
      * Checks the entity validity. An entity must be valid before it is saved.
      * @return true if the entity is valid
      */

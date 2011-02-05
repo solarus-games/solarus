@@ -2,6 +2,8 @@
 -- Dungeon 3 1F --
 ------------------
 
+camera_timer = nil
+
 -- Returns whether all fives torches are on
 function are_all_torches_on()
 
@@ -52,5 +54,32 @@ function event_hero_interaction_item_finished(entity_name, item_name, variant)
     sol.map.door_open("torches_door")
     lock_torches()
   end
+end
+
+function event_switch_activated(switch_name)
+
+  if switch_name == "se_door_switch" and not sol.map.door_is_open("se_door") then
+    sol.map.camera_move(800, 728, 150)
+    camera_timer = "open_se_door"
+  elseif switch_name == "ce_door_switch" and not sol.map.door_is_open("ce_door") then
+    sol.map.camera_move(736, 552, 150)
+    camera_timer = "open_ce_door"
+  end
+end
+
+function event_camera_reached_target()
+  sol.main.timer_start(1000, camera_timer, false)
+end
+
+function open_se_door()
+  sol.main.play_sound("secret")
+  sol.map.door_open("se_door")
+  sol.main.timer_start(1000, "sol.map.camera_restore", false)
+end
+
+function open_ce_door()
+  sol.main.play_sound("secret")
+  sol.map.door_open("ce_door")
+  sol.main.timer_start(1000, "sol.map.camera_restore", false)
 end
 

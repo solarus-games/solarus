@@ -98,6 +98,7 @@ class Hero::State {
     virtual bool can_avoid_deep_water();
     virtual bool can_avoid_hole();
     virtual bool is_touching_ground();
+    virtual bool can_come_from_bad_ground();
     virtual void notify_ground_changed();
 
     // obstacles and collisions
@@ -105,12 +106,13 @@ class Hero::State {
     virtual bool is_water_obstacle();
     virtual bool is_hole_obstacle();
     virtual bool is_ladder_obstacle();
-    virtual bool is_teletransporter_obstacle(Teletransporter &teletransporter);
+    virtual bool is_teletransporter_obstacle(Teletransporter& teletransporter);
     virtual bool can_avoid_teletransporter();
     virtual bool is_teletransporter_delayed();
-    virtual bool is_conveyor_belt_obstacle(ConveyorBelt &conveyor_belt);
+    virtual bool is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt);
     virtual bool can_avoid_conveyor_belt();
-    virtual bool is_sensor_obstacle(Sensor &sensor);
+    virtual bool is_stairs_obstacle(Stairs& stairs);
+    virtual bool is_sensor_obstacle(Sensor& sensor);
     virtual bool can_avoid_sensor();
     virtual bool can_avoid_explosion();
     virtual bool can_avoid_switch();

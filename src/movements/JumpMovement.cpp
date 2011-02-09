@@ -47,6 +47,8 @@ JumpMovement::JumpMovement(int direction8, int length, int speed, bool ignore_ob
   speed(0),
   jump_height(0) {
 
+  Debug::check_assertion(direction8 >= 0 && direction8 < 8,
+      StringConcat() << "Invalid jump direction: " << direction8);
   set_speed(speed);
 }
 

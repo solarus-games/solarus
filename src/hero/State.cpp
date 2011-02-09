@@ -494,6 +494,18 @@ bool Hero::State::is_touching_ground() {
 }
 
 /**
+ * @brief Returns whether the hero's current position can be considered
+ * as a place to come back after a bad ground (hole, deep water, etc).
+ *
+ * Returns is_touching_ground() by default.
+ *
+ * @return true if the hero can come back here
+ */
+bool Hero::State::can_come_from_bad_ground() {
+  return is_touching_ground();
+}
+
+/**
  * @brief Notifies this state that the ground was just changed.
  */
 void Hero::State::notify_ground_changed() {
@@ -548,7 +560,7 @@ bool Hero::State::is_ladder_obstacle() {
  * @param teletransporter a teletransporter
  * @return true if the teletransporter is an obstacle in this state
  */
-bool Hero::State::is_teletransporter_obstacle(Teletransporter &teletransporter) {
+bool Hero::State::is_teletransporter_obstacle(Teletransporter& teletransporter) {
   return false;
 }
 
@@ -584,7 +596,7 @@ bool Hero::State::is_teletransporter_delayed() {
  * @param conveyor_belt a conveyor belt
  * @return true if the conveyor belt is an obstacle in this state
  */
-bool Hero::State::is_conveyor_belt_obstacle(ConveyorBelt &conveyor_belt) {
+bool Hero::State::is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt) {
   return false;
 }
 
@@ -624,6 +636,18 @@ bool Hero::State::can_take_jump_sensor() {
 }
 
 /**
+ * @brief Returns whether some stairs are considered as obstacle in this state.
+ *
+ * Returns true by default.
+ *
+ * @param stairs some stairs
+ * @return true if the stairs are obstacle in this state
+ */
+bool Hero::State::is_stairs_obstacle(Stairs& stairs) {
+  return true;
+}
+
+/**
  * @brief Returns whether a sensor is considered as an obstacle in this state.
  *
  * Returns false by default.
@@ -631,7 +655,7 @@ bool Hero::State::can_take_jump_sensor() {
  * @param sensor a sensor
  * @return true if the sensor is an obstacle in this state
  */
-bool Hero::State::is_sensor_obstacle(Sensor &sensor) {
+bool Hero::State::is_sensor_obstacle(Sensor& sensor) {
   return false;
 }
 

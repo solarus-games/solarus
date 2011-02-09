@@ -33,11 +33,9 @@
  * @param ignore_obstacles true to make the movement ignore obstacles
  * @param with_sound true to play the "jump" sound
  * @param movement_delay delay between each one-pixel move in the jump movement (0: default)
- * @param layer_after_jump the layer to set when the jump is finished
- * (or LAYER_NB to keep the same layer)
  */
 Hero::JumpingState::JumpingState(Hero &hero, int direction8, int length,
-    bool ignore_obstacles, bool with_sound, uint32_t movement_delay, Layer layer_after_jump):
+    bool ignore_obstacles, bool with_sound, uint32_t movement_delay):
   
   State(hero),
   carried_item(NULL) {
@@ -45,12 +43,6 @@ Hero::JumpingState::JumpingState(Hero &hero, int direction8, int length,
   this->movement = new JumpMovement(direction8, length, 0, ignore_obstacles);
   this->direction8 = direction8;
   this->with_sound = with_sound;
-
-  if (layer_after_jump == LAYER_NB) {
-    layer_after_jump = hero.get_layer();
-  }
-
-  this->layer_after_jump = layer_after_jump;
 }
 
 /**
@@ -86,7 +78,6 @@ void Hero::JumpingState::start(State *previous_state) {
   if (with_sound) {
     Sound::play("jump");
   }
-  this->layer_after_jump = layer_after_jump;
 }
 
 /**
@@ -151,7 +142,6 @@ void Hero::JumpingState::update() {
   }
 
   if (movement->is_finished()) {
-    get_entities().set_entity_layer(&hero, layer_after_jump);
 
     if (hero.get_ground() == GROUND_DEEP_WATER) {
       hero.start_deep_water();
@@ -250,11 +240,21 @@ bool Hero::JumpingState::can_avoid_conveyor_belt() {
 }
 
 /**
+ * @brief Returns whether some stairs are considered as obstacle in this state.
+ * @param stairs some stairs
+ * @return true if the stairs are obstacle in this state
+ */
+bool Hero::JumpingState::is_stairs_obstacle(Stairs& stairs) {
+  // allow to jump over stairs covered by water
+  return hero.get_ground() != GROUND_DEEP_WATER;
+}
+
+/**
  * @brief Returns whether a sensor is considered as an obstacle in this state.
  * @param sensor a sensor
  * @return true if the sensor is an obstacle in this state
  */
-bool Hero::JumpingState::is_sensor_obstacle(Sensor &sensor) {
+bool Hero::JumpingState::is_sensor_obstacle(Sensor& sensor) {
 
   // we allow small jumps (e.g. falling from a raised crystal switch block)
   // but not jumping with the feather

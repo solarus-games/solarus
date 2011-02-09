@@ -699,39 +699,62 @@ void MapEntity::set_bounding_box_from_sprite() {
  * @return true if the entity's bounding box is aligned
  */
 bool MapEntity::is_aligned_to_grid() {
-  return is_x_aligned_to_grid() && is_y_aligned_to_grid();
+  return is_aligned_to_grid_x() && is_aligned_to_grid_y();
 }
 
 /**
- * @brief Returns whether the entity's bounding box is aligned horizontally with the 8*8 grid of the map.
- * @return true if the entity's bounding box is aligned hotizontally
+ * @brief Returns whether the entity's top-left corner is aligned
+ * horizontally with the 8*8 grid of the map.
+ * @return true if the entity's top-left corner is aligned hotizontally
  */
-bool MapEntity::is_x_aligned_to_grid() {
+bool MapEntity::is_aligned_to_grid_x() {
   return get_top_left_x() % 8 == 0;
 }
 
 /**
- * @brief Returns whether the entity's bounding box is aligned vertically with the 8*8 grid of the map.
- * @return true if the entity's bounding box is aligned vertically
+ * @brief Returns whether the entity's top-left corner is aligned
+ * vertically with the 8*8 grid of the map.
+ * @return true if the entity's top-left corner is aligned vertically
  */
-bool MapEntity::is_y_aligned_to_grid() {
+bool MapEntity::is_aligned_to_grid_y() {
   return get_top_left_y() % 8 == 0;
 }
 
 /**
- * @brief Makes the entity's bounding box aligned with the 8*8 grid of the map.
+ * @brief Makes the entity's top-left corner aligned with the 8*8 grid of the map.
  *
- * This function does not check the collisions with obstacles.
+ * Be careful: This function does not check the collisions with obstacles.
  */
 void MapEntity::set_aligned_to_grid() {
 
+  set_aligned_to_grid_x();
+  set_aligned_to_grid_y();
+}
+
+/**
+ * @brief Makes the entity's top-left corner aligned horizontally
+ * with the 8*8 grid of the map.
+ *
+ * Be careful: This function does not check the collisions with obstacles.
+ */
+void MapEntity::set_aligned_to_grid_x() {
+
   int x = get_top_left_x() + 4;
-  int y = get_top_left_y() + 4;
-
   x -= x % 8;
-  y -= y % 8;
+  set_top_left_x(x);
+}
 
-  set_top_left_xy(x, y);
+/**
+ * @brief Makes the entity's top-left corner aligned vertically
+ * with the 8*8 grid of the map.
+ *
+ * Be careful: This function does not check the collisions with obstacles.
+ */
+void MapEntity::set_aligned_to_grid_y() {
+
+  int y = get_top_left_y() + 4;
+  y -= y % 8;
+  set_top_left_y(y);
 }
 
 /**
@@ -1053,8 +1076,18 @@ void MapEntity::notify_movement_tried(bool success) {
  */
 void MapEntity::notify_position_changed() {
 
+  check_collision_with_detectors();
+}
+
+/**
+ * @brief Checks collisions between this entity and the detectors of the map.
+ */
+void MapEntity::check_collision_with_detectors() {
+
+  // detect simple collisions
   get_map().check_collision_with_detectors(*this);
 
+  // detect pixel-precise collisions
   std::map<std::string, Sprite*>::iterator it;
   for (it = sprites.begin(); it != sprites.end(); it++) {
 

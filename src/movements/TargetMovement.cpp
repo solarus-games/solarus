@@ -40,7 +40,7 @@ TargetMovement::TargetMovement(int target_x, int target_y, int speed):
   next_recomputation_date(System::now()),
   finished(false) {
 
-  set_ignore_obstacles(true);
+  set_default_ignore_obstacles(true);
 }
 
 /**

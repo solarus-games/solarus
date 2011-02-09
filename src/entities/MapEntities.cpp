@@ -98,25 +98,6 @@ Hero& MapEntities::get_hero() {
 }
 
 /**
- * @brief Returns the obstacle property of the tile located at a specified point.
- *
- * This function assumes that the parameters are correct: for performance reasons,
- * no check is done here.
- *
- * @param layer of the tile to get
- * @param x x coordinate of the point
- * @param y y coordinate of the point
- * @return the obstacle property of this tile
- */
-Obstacle MapEntities::get_obstacle_tile(Layer layer, int x, int y) {
-
-  // warning: this function is called very often so it has been optimized and should remain so
-
-  // optimization of: return obstacle_tiles[layer][(y / 8) * map_width8 + (x / 8)];
-  return obstacle_tiles[layer][(y >> 3) * map_width8 + (x >> 3)];
-}
-
-/**
  * @brief Returns the entities (other that tiles) such that the hero cannot walk on them.
  * @param layer the layer
  * @return the obstacle entities on that layer

@@ -752,9 +752,18 @@ bool Map::test_collision_with_obstacles(Layer layer, int x, int y, MapEntity &en
  */
 Ground Map::get_tile_ground(Layer layer, int x, int y) {
 
-  Obstacle obstacle = entities->get_obstacle_tile(layer, x, y);
-  Ground ground;
+  return obstacle_to_ground(entities->get_obstacle_tile(layer, x, y));
+}
 
+/**
+ * @brief Returns the value of ground equivalent to a value of obstacle.
+ * TODO: remove Obstacle, only use Ground
+ * @param obstacle an obstacle property
+ * @return the corresponding ground
+ */
+Ground Map::obstacle_to_ground(Obstacle obstacle) {
+
+  Ground ground;
   switch (obstacle) {
 
     case OBSTACLE_SHALLOW_WATER:

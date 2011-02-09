@@ -21,6 +21,7 @@
 #include "Transition.h"
 #include "entities/Layer.h"
 #include "entities/Ground.h"
+#include "entities/Obstacle.h"
 #include "lowlevel/Rectangle.h"
 
 /**
@@ -171,6 +172,7 @@ class Map {
     // collisions with detectors (checked after a move)
     void check_collision_with_detectors(MapEntity &entity);
     void check_collision_with_detectors(MapEntity &entity, Sprite &sprite);
+    static Ground obstacle_to_ground(Obstacle obstacle);
 
     // update and display
     void update();

@@ -61,33 +61,6 @@ void Hero::StairsState::set_map(Map& map) {
 }
 
 /**
- * @brief Notifies this state that the game was just suspended or resumed.
- * @param suspended true if the game is suspended
- */
-void Hero::StairsState::set_suspended(bool suspended) {
-
-  State::set_suspended(suspended);
-
-  if (carried_item != NULL) {
-    carried_item->set_suspended(suspended);
-  }
-
-  if (!suspended) {
-    next_phase_date += System::now() - when_suspended;
-  }
-}
-
-/**
- * @brief Notifies this state that the layer has changed.
- */
-void Hero::StairsState::notify_layer_changed() {
-
-  if (carried_item != NULL) {
-    carried_item->set_layer(hero.get_layer());
-  }
-}
-
-/**
  * @brief Starts this state.
  * @param previous_state the previous state
  */
@@ -239,6 +212,32 @@ void Hero::StairsState::update() {
 }
 
 /**
+ * @brief Notifies this state that the game was just suspended or resumed.
+ * @param suspended true if the game is suspended
+ */
+void Hero::StairsState::set_suspended(bool suspended) {
+
+  State::set_suspended(suspended);
+
+  if (carried_item != NULL) {
+    carried_item->set_suspended(suspended);
+  }
+
+  if (!suspended) {
+    next_phase_date += System::now() - when_suspended;
+  }
+}
+
+/**
+ * @brief Returns whether the hero's current position can be considered
+ * as a place to come back after a bad ground (hole, deep water, etc).
+ * @return true if the hero can come back here
+ */
+bool Hero::StairsState::can_come_from_bad_ground() {
+  return false;
+}
+
+/**
  * @brief Returns whether the effect of teletransporters is delayed in this state.
  *
  * When overlapping a teletransporter, if this function returns true, the teletransporter
@@ -248,6 +247,19 @@ void Hero::StairsState::update() {
  */
 bool Hero::StairsState::is_teletransporter_delayed() {
   return true;
+}
+
+/**
+ * @brief Returns the direction of the hero's movement as defined by the controls applied by the player
+ * and the movements allowed is the current state.
+ *
+ * If he is not moving, -1 is returned.
+ * This direction may be different from the real movement direction because of obstacles.
+ *
+ * @return the hero's wanted direction between 0 and 7, or -1 if he is stopped
+ */
+int Hero::StairsState::get_wanted_movement_direction8() {
+  return get_sprites().get_animation_direction8();
 }
 
 /**
@@ -262,5 +274,15 @@ CarriedItem::Behavior Hero::StairsState::get_previous_carried_item_behavior(Carr
     return CarriedItem::BEHAVIOR_KEEP;
   }
   return CarriedItem::BEHAVIOR_DESTROY;
+}
+
+/**
+ * @brief Notifies this state that the layer has changed.
+ */
+void Hero::StairsState::notify_layer_changed() {
+
+  if (carried_item != NULL) {
+    carried_item->set_layer(hero.get_layer());
+  }
 }
 

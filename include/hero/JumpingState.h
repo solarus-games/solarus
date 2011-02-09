@@ -29,13 +29,12 @@ class Hero::JumpingState: public Hero::State {
     JumpMovement *movement;			/**< the movement applied to the hero */
     int direction8;				/**< direction of the jump (0 to 7) */
     bool with_sound;				/**< indicates that a jump sound is played */
-    Layer layer_after_jump;			/**< layer where the hero arrives (LAYER_NB means unchanged) */
     CarriedItem* carried_item;			/**< an item carried by the hero while making this jump, or NULL */
 
   public:
 
     JumpingState(Hero &hero, int direction8, int length, bool ignore_obstacles, bool with_sound,
-	uint32_t movement_delay = 0, Layer layer_after_jump = LAYER_NB);
+	uint32_t movement_delay = 0);
     ~JumpingState();
 
     void start(State *previous_state);
@@ -51,7 +50,8 @@ class Hero::JumpingState: public Hero::State {
     bool can_avoid_hole();
     bool can_avoid_teletransporter();
     bool can_avoid_conveyor_belt();
-    bool is_sensor_obstacle(Sensor &sensor);
+    bool is_stairs_obstacle(Stairs& stairs);
+    bool is_sensor_obstacle(Sensor& sensor);
     bool can_avoid_sensor();
     bool can_avoid_switch();
     bool can_be_hurt();

@@ -180,6 +180,7 @@ void Hero::set_state(State* new_state) {
 
   this->state = new_state;
   this->state->start(old_state);
+  check_position();
 }
 
 /**
@@ -598,7 +599,7 @@ void Hero::notify_opening_transition_finished() {
 	Debug::die(StringConcat() << "Invalid destination side: " << side);
     }
   }
-  notify_position_changed();
+  check_position();
 }
 
 /**
@@ -931,10 +932,25 @@ void Hero::notify_movement_tried(bool success) {
 }
 
 /**
- * @brief This function is called when the hero's position is changed,
- * or when his direction changes.
+ * @brief This function is called when the hero's position is changed.
  */
 void Hero::notify_position_changed() {
+
+  check_position();
+}
+
+/**
+ * @brief Checks collisions with detectors, determines the facing entity
+ * and the ground below the hero in its current position.
+ *
+ * This function is called when these checks have to be done again,
+ * e.g. when the position, the direction or the state of the hero changes.
+ */
+void Hero::check_position() {
+
+  if (!is_on_map()) {
+    return;
+  }
 
   if (state->are_collisions_ignored()) {
     // do not take care of the ground or detectors
@@ -948,25 +964,48 @@ void Hero::notify_position_changed() {
   Ground previous_ground = this->ground;
 
   // see the ground indicated by the tiles
-  if (!is_suspended()) { // when the game is suspended, the hero may have invalid coordinates (e.g. transition between maps)
+  if (!is_suspended()) {
+    // when the game is suspended, the hero may have invalid coordinates
+    // (e.g. transition between maps) so we don't try to determine a ground
+    this->ground = GROUND_EMPTY;
     Ground tiles_ground = get_map().get_tile_ground(get_layer(), get_x(), get_y() - 2);
     set_ground(tiles_ground);
   }
 
   // see the ground indicated by the dynamic entities, also find the facing entity
-  MapEntity::notify_position_changed();
+  check_collision_with_detectors();
 
   if (this->ground != previous_ground) {
     notify_ground_changed();
   }
 
-  if (ground < GROUND_DEEP_WATER
-      && state->is_touching_ground()
+  // save the hero's last valid position
+  if (ground != GROUND_DEEP_WATER
+      && ground != GROUND_HOLE
+      && ground != GROUND_EMPTY
+      && state->can_come_from_bad_ground()
       && (get_x() != last_solid_ground_coords.get_x() || get_y() != last_solid_ground_coords.get_y())) {
 
-    // save the hero's last valid position
     last_solid_ground_coords.set_xy(get_xy());
     last_solid_ground_layer = get_layer();
+  }
+
+  // with empty ground, possibly go to the lower layer
+  if (ground == GROUND_EMPTY) {
+
+    int x = get_top_left_x();
+    int y = get_top_left_y();
+    Layer layer = get_layer();
+    MapEntities& entities = get_entities();
+
+    if (layer > LAYER_LOW
+        && entities.get_obstacle_tile(layer, x, y) == OBSTACLE_EMPTY
+        && entities.get_obstacle_tile(layer, x + 15, y) == OBSTACLE_EMPTY
+        && entities.get_obstacle_tile(layer, x, y + 15) == OBSTACLE_EMPTY
+        && entities.get_obstacle_tile(layer, x + 15, y + 15) == OBSTACLE_EMPTY) {
+
+      get_entities().set_entity_layer(this, Layer(layer - 1));
+    }
   }
 }
 
@@ -1066,6 +1105,9 @@ void Hero::notify_ground_changed() {
   case GROUND_LADDER:
     set_walking_speed(normal_walking_speed * 3 / 5);
     break;
+
+  case GROUND_EMPTY:
+    break;
   }
 
   // notify the state
@@ -1090,7 +1132,7 @@ Ground Hero::get_ground() {
  */
 void Hero::set_ground(Ground ground) {
 
-  if (ground != this->ground) {
+  if (ground != this->ground && ground != GROUND_EMPTY) {
     this->ground = ground;
   }
   // we don't call notify_ground_changed() from here because set_ground()
@@ -1195,8 +1237,8 @@ bool Hero::is_conveyor_belt_obstacle(ConveyorBelt &conveyor_belt) {
  * @param stairs an stairs entity
  * @return true if the stairs are currently an obstacle for this entity
  */
-bool Hero::is_stairs_obstacle(Stairs &stairs) {
-  return true;
+bool Hero::is_stairs_obstacle(Stairs& stairs) {
+  return state->is_stairs_obstacle(stairs);
 }
 
 /**
@@ -1335,6 +1377,10 @@ void Hero::notify_collision_with_conveyor_belt(ConveyorBelt &conveyor_belt, int 
  */
 void Hero::notify_collision_with_stairs(Stairs &stairs, CollisionMode collision_mode) {
 
+  if (get_ground() == GROUND_EMPTY) {
+    set_ground(GROUND_NORMAL); // allow the hero to stay on the intermediate layer
+  }
+
   if (state->can_take_stairs()) {
 
     Stairs::Way stairs_way;
@@ -1358,18 +1404,24 @@ void Hero::notify_collision_with_stairs(Stairs &stairs, CollisionMode collision_
  * @param jump_sensor the jump sensor
  */
 void Hero::notify_collision_with_jump_sensor(JumpSensor &jump_sensor) {
-  
+
   if (state->can_take_jump_sensor()) {
 
-    if (jump_sensor.get_direction() % 2 == 0) {
+    int jump_direction = jump_sensor.get_direction();
+    if (jump_direction % 2 == 0) {
       // this non-diagonal jump sensor is not currently an obstacle for the hero
       // (in order to allow his smooth collision movement),
-      // so the hero may have one pixel inside the sensor before jumping
-      set_aligned_to_grid();
+      // so the hero may be one pixel inside the sensor before jumping
+      if (jump_direction % 4 == 0) {
+        set_aligned_to_grid_x();
+      }
+      else {
+        set_aligned_to_grid_y();
+      }
     }
 
     // jump
-    start_jumping(jump_sensor.get_direction(), jump_sensor.get_jump_length(), true, true, 0, LAYER_LOW);
+    start_jumping(jump_direction, jump_sensor.get_jump_length(), true, true, 0);
   }
 }
 
@@ -1782,12 +1834,11 @@ void Hero::start_treasure(const Treasure &treasure) {
  * @param ignore_obstacles true make the movement ignore obstacles
  * @param with_sound true to play the "jump" sound
  * @param movement_delay delay between each one-pixel move in the jump movement in milliseconds (0: default)
- * @param layer_after_jump the layer to set when the jump is finished
- * (or LAYER_NB to keep the same layer)
  */
-void Hero::start_jumping(int direction8, int length, bool ignore_obstacles, bool with_sound, uint32_t movement_delay, Layer layer_after_jump) {
+void Hero::start_jumping(int direction8, int length, bool ignore_obstacles,
+    bool with_sound, uint32_t movement_delay) {
 
-  JumpingState *state = new JumpingState(*this, direction8, length, ignore_obstacles, with_sound, movement_delay, layer_after_jump);
+  JumpingState *state = new JumpingState(*this, direction8, length, ignore_obstacles, with_sound, movement_delay);
   set_state(state);
 }
 

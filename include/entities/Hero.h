@@ -101,7 +101,6 @@ class Hero: public MapEntity {
 
     // position
     void update_movement();
-    void movement_just_changed();
     void try_snap_to_facing_entity();
     Teletransporter* get_delayed_teletransporter();
 
@@ -238,8 +237,9 @@ class Hero: public MapEntity {
     /**
      * @name Collisions.
      *
-     * Functions called when a collision is detected with another entity.
+     * Handle collisions between the hero and other entities.
      */
+    void check_position();
     void notify_collision_with_destructible_item(DestructibleItem &destructible_item, CollisionMode collision_mode);
     void notify_collision_with_enemy(Enemy &enemy);
     void notify_collision_with_enemy(Enemy &enemy, Sprite &enemy_sprite, Sprite &this_sprite);
@@ -286,8 +286,8 @@ class Hero: public MapEntity {
     void start_next_state();
     void start_free();
     void start_treasure(const Treasure &treasure);
-    void start_jumping(int direction8, int length, bool ignore_obstacles, bool with_sound,
-	uint32_t movement_delay = 0, Layer layer_after_jump = LAYER_NB);
+    void start_jumping(int direction8, int length, bool ignore_obstacles,
+        bool with_sound, uint32_t movement_delay = 0);
     void start_freezed();
     void start_victory();
     void start_lifting(CarriedItem* item_to_lift);

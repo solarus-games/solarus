@@ -273,7 +273,7 @@ void DestructibleItem::notify_collision(MapEntity &other_entity, Sprite &other_s
     if (hero.is_striking_with_sword(*this)) {
 
       play_destroy_animation();
-      hero.notify_position_changed(); // to update the ground under the hero
+      hero.check_position(); // to update the ground under the hero
       create_pickable_item();
 
       if (can_explode()) {

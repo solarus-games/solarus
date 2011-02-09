@@ -756,6 +756,7 @@ Ground Map::get_tile_ground(Layer layer, int x, int y) {
   Ground ground;
 
   switch (obstacle) {
+
     case OBSTACLE_SHALLOW_WATER:
       ground = GROUND_SHALLOW_WATER;
       break;
@@ -770,6 +771,10 @@ Ground Map::get_tile_ground(Layer layer, int x, int y) {
 
     case OBSTACLE_LADDER:
       ground = GROUND_LADDER;
+      break;
+
+    case OBSTACLE_EMPTY:
+      ground = GROUND_EMPTY;
       break;
 
     default:

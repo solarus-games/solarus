@@ -143,6 +143,9 @@ class MapEntity {
     void remove_sprite(const SpriteAnimationSetId &id);
     void remove_sprites();
 
+    // collisions
+    void check_collision_with_detectors();
+
     // easy access to various game objects
     MapEntities& get_entities();
     MapScript& get_map_script();
@@ -210,9 +213,11 @@ class MapEntity {
     const Rectangle get_center_point();
 
     bool is_aligned_to_grid();
-    bool is_x_aligned_to_grid();
-    bool is_y_aligned_to_grid();
+    bool is_aligned_to_grid_x();
+    bool is_aligned_to_grid_y();
     void set_aligned_to_grid();
+    void set_aligned_to_grid_x();
+    void set_aligned_to_grid_y();
 
     bool is_enabled();
     void set_enabled(bool enable);

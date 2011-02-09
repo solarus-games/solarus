@@ -119,13 +119,32 @@ class MapEntities {
     bool is_boomerang_present();
     void remove_boomerang();
 
-
     // game loop
     void notify_map_started();
     void set_suspended(bool suspended);
     void update();
     void display();
 };
+
+/**
+ * @brief Returns the obstacle property of the tile located at a specified point.
+ *
+ * This function assumes that the parameters are correct: for performance reasons,
+ * no check is done here.
+ * Dynamic tiles are not considered here.
+ *
+ * @param layer of the tile to get
+ * @param x x coordinate of the point
+ * @param y y coordinate of the point
+ * @return the obstacle property of this tile
+ */
+inline Obstacle MapEntities::get_obstacle_tile(Layer layer, int x, int y) {
+
+  // warning: this function is called very often so it has been optimized and should remain so
+
+  // optimization of: return obstacle_tiles[layer][(y / 8) * map_width8 + (x / 8)];
+  return obstacle_tiles[layer][(y >> 3) * map_width8 + (x >> 3)];
+}
 
 #endif
 

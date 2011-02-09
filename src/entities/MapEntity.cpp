@@ -75,6 +75,7 @@ MapEntity::CreationFunction* MapEntity::creation_functions[] = {
 
 const MapEntity::EntityTypeFeatures MapEntity::entity_types_features[] = {
   // can_be_obstacle, can_detect_entities, can_be_displayed, is_displayed_in_y_order
+  // TODO isn't can_detect_entities stupid? just redefine the function in Detector should work
   {false, false, false, false}, // tile (not used)
   {false, false,  true, false}, // destination point
   { true,  true,  true, false}, // teletransporter
@@ -85,7 +86,7 @@ const MapEntity::EntityTypeFeatures MapEntity::entity_types_features[] = {
   { true,  true,  true,  true}, // enemy
   { true,  true,  true,  true}, // interactive entity
   { true,  true,  true,  true}, // block
-  { true, false,  true, false}, // dynamic tile
+  { true,  true,  true, false}, // dynamic tile
   {false,  true,  true, false}, // switch
   { true, false, false, false}, // custom obstacle
   { true,  true, false, false}, // sensor

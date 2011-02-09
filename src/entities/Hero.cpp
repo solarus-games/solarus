@@ -963,11 +963,12 @@ void Hero::check_position() {
   // save the current ground
   Ground previous_ground = this->ground;
 
-  // see the ground indicated by the tiles
-  if (!is_suspended()) {
-    // when the game is suspended, the hero may have invalid coordinates
-    // (e.g. transition between maps) so we don't try to determine a ground
+  // see the ground indicated by the non-dynamic tiles
+  if (!is_suspended()) { // when suspended, the hero may have invalid coordinates
+                         // (e.g. transition between maps)
+
     this->ground = GROUND_EMPTY;
+    // we must test the same coordinates as dynamic tiles (see DynamicTile::test_collision_custom)
     Ground tiles_ground = get_map().get_tile_ground(get_layer(), get_x(), get_y() - 2);
     set_ground(tiles_ground);
   }
@@ -991,7 +992,7 @@ void Hero::check_position() {
   }
 
   // with empty ground, possibly go to the lower layer
-  if (ground == GROUND_EMPTY) {
+  if (ground == GROUND_EMPTY && state->is_touching_ground()) {
 
     int x = get_top_left_x();
     int y = get_top_left_y();

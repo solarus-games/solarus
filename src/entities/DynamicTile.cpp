@@ -36,7 +36,7 @@
  */
 DynamicTile::DynamicTile(const std::string &name, Layer layer, int x, int y,
 			 int width, int height, int tile_pattern_id, bool enabled):
-  MapEntity(name, 0, layer, x, y, width, height),
+  Detector(COLLISION_CUSTOM, name, layer, x, y, width, height),
   tile_pattern_id(tile_pattern_id), tile_pattern(NULL) {
 
   set_enabled(enabled);
@@ -114,5 +114,32 @@ bool DynamicTile::is_obstacle_for(MapEntity &other) {
 void DynamicTile::display_on_map() {
 
   tile_pattern->display_on_map(&get_map(), get_bounding_box());
+}
+
+/**
+ * @brief Returns whether an entity collides with this detector with respect to a custom rule.
+ * @param entity the entity
+ * @return true if the entity's collides with this detector with respect to the custom rule
+ */
+bool DynamicTile::test_collision_custom(MapEntity &entity) {
+
+  // must be the same coordinates as static tiles (see Hero::check_position())
+  return overlaps(entity.get_x(), entity.get_y() - 2);
+}
+
+/**
+ * @brief Notifies this detector that a collision was just detected with an entity.
+ * @param entity_overlapping the entity overlapping the detector
+ * @param collision_mode the collision mode that detected the collision (useful if
+ * the detector has several collision modes)
+ */
+void DynamicTile::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
+
+  if (entity_overlapping.is_hero()) {
+    // tell the hero that he is on the ground of this tile
+    Hero& hero = (Hero&) entity_overlapping;
+    Ground ground = Map::obstacle_to_ground(tile_pattern->get_obstacle());
+    hero.set_ground(ground);
+  }
 }
 

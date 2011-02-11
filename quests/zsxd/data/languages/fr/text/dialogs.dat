@@ -2249,3 +2249,13 @@ skip = all
 line1 = "Seul le vrai héros"
 line2 = "obtiendra le trésor"
 skip = all
+[maison_boulet.boulet]
+#       |--------------------|
+line1 = "XD lol ! Zelda xd c"
+line2 = "tro lol xd mdr gro b"
+line3 = "isous t nul lol mdr!"
+[maison_boulet.fakechest]
+#       |--------------------|
+line1 = "lolilol ! T'as"
+line2 = "vraiment pas de "
+line3 = "chance !!! xd"

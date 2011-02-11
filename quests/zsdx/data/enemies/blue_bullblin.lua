@@ -87,7 +87,7 @@ end
 
 function go_hero()
   being_pushed = false
-  m = sol.main.target_movement_create(64)
+  m = sol.main.target_movement_create(48)
   sol.enemy.start_movement(m)
 end
 

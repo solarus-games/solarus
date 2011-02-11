@@ -150,6 +150,8 @@ booleans:
 118	dungeon 3 1F: chest with map
 119	dungeon 3 2F: chest with a small key
 120	dungeon 3 2F: weak block
+121	dungeon 3 1F: water (center)
+122	dungeon 3 2F: water (east)
 
 200-299: binbin dungeon
 200	1F: small key 1 door

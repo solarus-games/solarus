@@ -559,8 +559,8 @@
 6	1	792	72	8	48	jump_sensor	0	40
 2	1	40	40	32	32	teletransporter_11	0	1	40	_same
 11	1	432	504	switch	2	0	0
-18	1	840	488	ce_door	1	0	-1
-18	1	840	440	ce_door_2	3	0	-1
+18	1	840	488	e_door	1	0	-1
+18	1	840	440	e_door_2	3	0	-1
 11	1	792	520	switch_2	2	0	0
 11	1	904	520	switch_3	2	0	0
 18	1	320	512	door_2	1	8	120
@@ -572,6 +572,12 @@
 9	1	344	541	block_6	-1	0	0
 9	1	312	493	block_7	0	0	1
 9	1	296	509	block_8	-1	0	0
+7	1	776	269	e_room_enemy	3	blue_bullblin	0	-1	_random	1	-1
+7	1	776	269	e_room_enemy	3	blue_bullblin	0	-1	_random	1	-1
+7	1	912	333	e_room_enemy_4	3	blue_bullblin	0	-1	_random	1	-1
+7	1	744	429	e_room_enemy_5	3	blue_bullblin	0	-1	_random	1	-1
+7	1	968	429	e_room_enemy_6	3	blue_bullblin	0	-1	_random	1	-1
+7	1	800	333	e_room_enemy_3	3	blue_bullblin	0	-1	_random	1	-1
 0	2	536	112	64	8	437
 0	2	264	352	96	8	437
 0	2	40	832	128	8	437

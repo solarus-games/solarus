@@ -278,5 +278,16 @@ The properties and the behavior of each enemy is defined by a Lua script in the
 See the section @subpage lua_api_specification to know the Lua API provided by Solarus
 to enemy scripts.
 
+@section hud Head up display
+
+The HUD includes the elements shown on the screen such as the icons,
+the life bar, the money counter as well as the pause subscreens.
+Most of the HUD is hardcoded in the C++ code of the engine, but eventually,
+it will be defined by each quest as Lua scripts.
+In the meantime, the <tt>hud</tt> subdirectory of the <tt>data</tt> directory of a
+quest contains a single file <tt>inventory.dat</tt>.
+<tt>inventory.dat</tt> defines the names of the 28 items that will be shown
+in the inventory.
+
 */
 

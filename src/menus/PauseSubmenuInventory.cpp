@@ -17,6 +17,9 @@
 #include "menus/PauseSubmenuInventory.h"
 #include "menus/PauseMenu.h"
 #include "movements/TargetMovement.h"
+#include "lowlevel/Surface.h"
+#include "lowlevel/Sound.h"
+#include "lowlevel/IniFile.h"
 #include "Sprite.h"
 #include "Game.h"
 #include "DialogBox.h"
@@ -27,44 +30,7 @@
 #include "InventoryItem.h"
 #include "ItemProperties.h"
 #include "StringResource.h"
-#include "lowlevel/Surface.h"
-#include "lowlevel/Sound.h"
 #include <sstream>
-
-// TODO load from external data
-static const std::string item_names[] = {
-  "feather",
-  "bombs_counter",
-  "bow",
-  "boomerang",
-  "lamp",
-  "hookshot",
-  "bottle_1",
-
-  "pegasus_shoes",
-  "mystic_mirror",
-  "cane_of_somaria",
-  "apples_counter",
-  "pains_au_chocolat_counter",
-  "croissants_counter",
-  "bottle_2",
-
-  "rock_key",
-  "bone_key",
-  "clay_key",
-  "level_4_way",
-  "flippers",
-  "magic_cape",
-  "bottle_3",
-
-  "iron_key",
-  "stone_key",
-  "wooden_key",
-  "ice_key",
-  "glove",
-  "fire_stones_counter",
-  "bottle_4"
-};
 
 /**
  * @brief Constructor.
@@ -76,20 +42,26 @@ PauseSubmenuInventory::PauseSubmenuInventory(PauseMenu &pause_menu, Game &game):
 
   cursor_sprite = new Sprite("menus/pause_cursor");
 
+  IniFile ini = IniFile("hud/inventory.dat", IniFile::READ);
+  ini.set_group("items");
+
   // set the sprites, counters and caption strings
+  std::ostringstream oss;
   for (int k = 0; k < 28; k++) {
 
     // get the item, its counter property and the possession state
-    const std::string &item_name = item_names[k];
-    int variant = equipment.get_item_variant(item_name);
-    ItemProperties &item_properties = equipment.get_item_properties(item_name);
+    oss.str("");
+    oss << "item_" << k;
+    item_names[k] = ini.get_string_value(oss.str());
+    int variant = equipment.get_item_variant(item_names[k]);
+    ItemProperties &item_properties = equipment.get_item_properties(item_names[k]);
 
     if (variant != 0 && item_properties.has_counter()) {
 
       // if the player has the item and this item has an amount, we show a counter
 
-      int amount = equipment.get_item_amount(item_name);
-      int maximum = equipment.get_item_maximum(item_name);
+      int amount = equipment.get_item_amount(item_names[k]);
+      int maximum = equipment.get_item_maximum(item_names[k]);
       int x = 60 + (k % 7) * 32;
       int y = 81 + (k / 7) * 32;
 
@@ -108,12 +80,12 @@ PauseSubmenuInventory::PauseSubmenuInventory(PauseMenu &pause_menu, Game &game):
 
       // sprite
       sprites[k] = new Sprite("entities/items");
-      sprites[k]->set_current_animation(item_name);
+      sprites[k]->set_current_animation(item_names[k]);
       sprites[k]->set_current_direction(variant - 1);
 
       // caption string
       oss.str("");
-      oss << "inventory.caption.item." << item_name << "." << variant;
+      oss << "inventory.caption.item." << item_names[k] << "." << variant;
       caption_strings[k] = StringResource::get_string(oss.str());
     }
     else {

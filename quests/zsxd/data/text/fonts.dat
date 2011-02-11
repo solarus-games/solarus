@@ -1,0 +1,20 @@
+# This file defines the fonts available to the game engine.
+# The engine relies on 3 fonts named 'dialog', 'dialog_big' and 'fixed'.
+# The main purpose of this file is to make the engine independant from the font file names.
+
+[dialog]
+# the font used in dialog boxes
+file = text/la.ttf
+size = 11
+default = true
+
+[dialog_big]
+# same as 'dialog' but bigger
+file = text/la.ttf
+size = 18
+
+[fixed]
+# fixed-width font used in the menus
+file = text/fixed8.fon
+size = 11
+

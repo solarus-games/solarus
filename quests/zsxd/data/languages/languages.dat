@@ -1,0 +1,14 @@
+[fr]
+name = Français
+default = true
+
+#[en]
+#name = English
+#default = true
+
+#[de]
+#name = Deutsch
+
+#[nl]
+#name = Nederlands
+

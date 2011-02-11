@@ -1,0 +1,11 @@
+stopped entities/bomb.png 1 0 -1
+0	0	16	16	8	13	1	1
+
+stopped_explosion_soon entities/bomb.png 1 50 0
+0	0	16	16	8	13	4	4
+
+walking entities/bomb.png 1 100 0
+0	16	16	24	8	13	3	3
+
+walking_explosion_soon entities/bomb.png 1 50 0
+48	16	16	24	8	13	3	3

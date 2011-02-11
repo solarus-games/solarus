@@ -1,0 +1,13 @@
+# General information about this quest
+[info]
+title_bar = Zelda: Mystery of Solarus XD
+write_dir = zsxd
+outside_world_width = 1024
+outside_world_height = 1024
+
+# Somes initial values when creating a new savegame
+[initial]
+starting_map = 0
+starting_point = start_position
+max_life = 12
+

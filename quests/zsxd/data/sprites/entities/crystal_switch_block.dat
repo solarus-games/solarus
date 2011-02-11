@@ -1,0 +1,12 @@
+orange_lowered entities/miscellaneous.png 1 50 3
+0	48	16	16	0	0	4	4
+
+orange_raised entities/miscellaneous.png 1 50 3
+0	32	16	16	0	0	4	4
+
+blue_lowered entities/miscellaneous.png 1 50 3
+0	80	16	16	0	0	4	4
+
+blue_raised entities/miscellaneous.png 1 50 3
+0	64	16	16	0	0	4	4
+

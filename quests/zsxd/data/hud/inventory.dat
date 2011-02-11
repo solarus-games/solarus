@@ -1,0 +1,38 @@
+# Some properties of the inventory subscreen.
+# One day this ini file will be replaced by a Lua script
+# that defines entirely the subscreens. 
+
+[items]
+# list of items to show in the inventory
+item_0 = feather
+item_1 = bombs_counter
+item_2 = bow
+item_3 = boomerang
+item_4 = lamp
+item_5 = hookshot
+item_6 = bottle_1
+
+item_7 = pegasus_shoes
+item_8 = mystic_mirror
+item_9 = cane_of_somaria
+item_10 = apples_counter
+item_11 = pains_au_chocolat_counter
+item_12 = croissants_counter
+item_13 = bottle_2
+
+item_14 = rock_key
+item_15 = bone_key
+item_16 = clay_key
+item_17 = level_4_way
+item_18 = flippers
+item_19 = magic_cape
+item_20 = bottle_3
+
+item_21 = iron_key
+item_22 = stone_key
+item_23 = wooden_key
+item_24 = ice_key
+item_25 = glove
+item_26 = fire_stones_counter
+item_27 = bottle_4
+

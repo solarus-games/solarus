@@ -1,0 +1,21 @@
+on_ground entities/destructible_items.png 1 0 -1
+256	0	16	24	8	21	1	1
+
+stopped entities/destructible_items.png 1 0 -1
+272	0	16	24	8	21	1	1
+
+stopped_explosion_soon entities/destructible_items.png 1 50 0
+256	32	16	24	8	21	4	4
+
+walking entities/destructible_items.png 1 100 0
+272	0	16	32	8	21	3	3
+
+walking_explosion_soon entities/destructible_items.png 1 50 0
+272	56	16	32	8	21	3	3
+
+destroy entities/destructible_items.png 1 100 -1
+0	96	40	48	24	32	8	8
+
+regenerating entities/destructible_items.png 1 200 -1
+240	56	16	24	8	21	2	2
+

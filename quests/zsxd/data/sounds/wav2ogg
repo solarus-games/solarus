@@ -1,0 +1,14 @@
+#!/bin/csh
+
+# This script converts one or several .wav files into .ogg, using the command oggenc.
+
+if ($#argv == 0) then
+  echo "No input file"
+  exit 1
+endif
+
+foreach f ($argv)
+  set output = `echo $f | sed -e 's/\.wav$/.ogg/'`
+  oggenc -o $output $f
+end
+

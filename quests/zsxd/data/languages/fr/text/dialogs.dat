@@ -2244,3 +2244,8 @@ line2 = "moyen d'allumer"
 line3 = "cette torche..."
 skip = all
 
+[caverne_fragments.sign]
+#       |--------------------|
+line1 = "Seul le vrai héros"
+line2 = "obtiendra le trésor"
+skip = all

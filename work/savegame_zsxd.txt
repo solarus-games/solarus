@@ -53,8 +53,11 @@ integers (above 1024):
 booleans:
 
 0 to 9  reserved for tests
-10	Bottle 1 pot
+10	Bottle 1 pot (map "Maison des pots")
 
-100	crazy_house: Quart de coeur caché
+100 to 199	reserved for crazy_house
+100	Hidden Piece of Heart
+101	Empty chest 1 switch
+102	Empty chest 1
 
 

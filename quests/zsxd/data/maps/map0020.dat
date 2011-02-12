@@ -171,11 +171,13 @@
 4	0	400	421	0	_none	1	-1
 5	0	1256	392	empty_chest_2	0	_none	1	103
 15	0	1096	264	112	16	0
-15	0	1096	176	32	16	1
+15	0	1096	176	48	16	1
 3	0	808	45	piece_of_heart	1	-1
 19	0	1136	360	stairs_4	2	4
 19	0	1432	128	stairs_5	3	4
 10	0	1424	88	8	8	tile	206	1
+5	0	72	360	chest	0	small_key	1	-1
+13	0	1104	245	112	16	passage_sensor_A	0
 0	1	1648	304	224	144	2
 0	1	1424	304	144	144	2
 0	1	1576	296	24	80	50
@@ -737,7 +739,7 @@
 12	1	616	128	32	8	custom_obstacle_5	1	1	1	1
 1	1	864	469	start_position	1	0
 2	1	856	480	16	16	exit	0	1	3	start_position
-2	1	856	480	16	16	exit_2	0	1	3	start_position
+2	1	856	480	16	16	exit_2	0	1	3	crazy_house.out
 3	1	696	149	heart_container	1	100
 3	1	696	149	heart_container	1	100
 8	1	624	325	mario_message_1	3	0	_none	map
@@ -765,9 +767,10 @@
 19	1	1832	136	stairs_6	1	0
 1	1	1840	149	from2Fb	3	0
 2	1	1832	136	16	16	to2Fb	0	1	23	from1Fb
-2	1	1832	136	16	16	to2Fb	0	1	23	from1Fb
-18	1	1608	176	weak_wall_A	0	5	105
-18	1	1656	176	weak_wall_A_2	2	5	105
+2	1	1832	136	16	16	to2Fb_2	0	1	23	from1Fb
+18	1	1608	184	weak_wall_A	0	5	105
+18	1	1656	184	weak_wall_A_2	2	5	105
+14	1	1216	189	crystal_switch
 0	2	1040	320	8	96	266
 0	2	1016	336	8	64	267
 0	2	0	0	16	496	170

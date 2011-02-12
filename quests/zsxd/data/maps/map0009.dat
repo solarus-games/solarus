@@ -1,5 +1,5 @@
 352	336	-1	-100	0	0	-1	0	same
-1	0	176	309	start_position	3	0
+0	1	168	304	16	32	2
 0	1	40	40	272	256	2
 0	1	136	48	8	16	20
 0	1	88	56	48	8	18
@@ -123,6 +123,9 @@
 0	1	128	224	16	16	1
 0	1	208	208	16	16	1
 0	1	208	224	16	16	1
+0	1	168	336	16	8	70
+0	1	160	320	8	16	71
+0	1	184	320	8	16	71
 8	1	112	61	interactive_entity	3	0	entities/hint_stone	dialog#geek_house.sign_a
 8	1	240	61	interactive_entity_4	3	0	entities/hint_stone	dialog#geek_house.sign_b
 8	1	48	117	interactive_entity_5	0	0	entities/hint_stone	dialog#geek_house.sign_c
@@ -138,6 +141,9 @@
 4	1	136	237	0	_random	1	-1
 4	1	216	221	0	_random	1	-1
 4	1	216	237	0	_random	1	-1
+2	1	168	320	16	16	teletransporter	0	1	1	geek_house_out
+1	1	176	309	start_position	1	0
+0	2	144	312	64	8	263
 0	2	0	112	16	128	170
 0	2	0	0	32	112	170
 0	2	48	320	256	16	170

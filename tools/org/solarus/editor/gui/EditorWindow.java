@@ -111,7 +111,7 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
             new ActionListenerLoadProject().actionPerformed(null);
         } else {
             try {
-                Project.createExisting("../quests/zsdx");
+                Project.createExisting("../quests/" + quest);
             } catch (ZSDXException ex) {
                 new ActionListenerLoadProject().actionPerformed(null);
             }

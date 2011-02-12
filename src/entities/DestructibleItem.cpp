@@ -384,6 +384,7 @@ bool DestructibleItem::can_explode() {
  */
 void DestructibleItem::explode() {
   get_entities().add_entity(new Explosion(get_layer(), get_xy(), true));
+  Sound::play("explode");
 }
 
 /**

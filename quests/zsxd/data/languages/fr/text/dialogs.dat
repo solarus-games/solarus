@@ -2240,3 +2240,11 @@ line1 = "Nous aussi nous"
 line2 = "respectons le quota"
 line3 = "féminin."
 
+[outside_fields_SO_endofgame1]
+line1 = "Téléporteur vers la "
+line2 = "fin du jeu."
+next = outside_fields_SO_endofgame2
+
+[outside_fields_SO_endofgame2]
+line1 = "-- en panne --"
+

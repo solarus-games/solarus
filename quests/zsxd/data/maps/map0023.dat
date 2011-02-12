@@ -423,6 +423,12 @@
 0	1	1184	864	8	8	17
 0	1	1016	864	8	8	16
 0	1	904	760	32	16	108
+0	1	656	848	16	16	270
+0	1	800	848	16	16	270
+0	1	1064	784	16	16	270
+0	1	1096	752	16	16	270
+0	1	1096	816	16	16	270
+0	1	1128	784	16	16	270
 1	1	768	485	from1Fa	3	0
 19	1	64	24	stairs	1	1
 1	1	72	37	destination_point	3	0
@@ -440,6 +446,7 @@
 5	1	352	496	prankster_chest_bottom	0	_none	1	-1
 8	1	216	157	dishonest_old_man	3	1	npc/static_villager3	map
 8	1	744	621	caution_message_sign	3	0	entities/sign	dialog#crazy_house.caution_message
+2	1	1096	784	16	16	teletransporter	1	1	5	start_position
 0	2	56	16	32	8	154
 0	2	64	16	16	8	158
 0	2	112	240	96	8	262

@@ -2203,4 +2203,9 @@ line3 = "bla"
 
 [crazy_house.welcome_message]
 line1 = "Bienvenue !"
+skip = current
+
+[crazy_house.mario_message_1]
+line1 = "It's me, Mario !"
+skip = current
 

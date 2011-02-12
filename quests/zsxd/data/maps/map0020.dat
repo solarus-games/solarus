@@ -62,8 +62,8 @@
 0	0	536	352	24	8	247
 0	0	536	376	24	8	249
 0	0	536	424	8	8	29
-0	0	392	408	32	16	1
-0	0	504	408	16	16	1
+0	0	504	408	32	16	1
+0	0	408	408	16	16	1
 0	0	544	312	24	24	58
 0	0	392	336	144	8	30
 0	0	384	336	8	8	26
@@ -74,12 +74,12 @@
 0	0	296	376	64	8	70
 0	0	728	64	24	24	59
 19	0	160	304	stairs	1	4
-4	0	400	421	0	_random	1	-1
-4	0	416	421	0	_random	1	-1
 4	0	512	421	0	_random	1	-1
-11	0	520	408	switch	1	0	0
+4	0	416	421	0	_random	1	-1
+11	0	392	408	empty_chest_1_switch	1	0	0
 4	0	528	421	0	_random	1	-1
 19	0	544	360	stairs_3	0	4
+4	0	400	421	0	_none	1	-1
 0	1	840	136	8	80	20
 0	1	848	128	32	80	2
 0	1	880	96	8	112	19
@@ -345,20 +345,20 @@
 0	1	688	376	16	8	70
 0	1	848	240	8	16	71
 0	1	872	240	8	16	71
-0	1	520	208	8	16	71
+0	1	496	208	8	16	71
 0	1	688	96	16	8	70
 0	1	688	120	16	8	70
 0	1	728	88	8	8	69
 0	1	880	88	8	8	69
 0	1	736	88	144	8	70
+0	1	608	312	32	16	108
 19	1	160	24	stairs_2	1	1
 12	1	152	296	8	8	custom_obstacle	1	1	1	1
 12	1	176	296	8	8	custom_obstacle_2	1	1	1	1
 15	1	456	256	16	48	0
 12	1	560	352	8	8	custom_obstacle_3	1	1	1	1
 12	1	560	376	8	8	custom_obstacle_4	1	1	1	1
-8	1	864	365	welcome_sign	3	0	entities/sign	dialog#welcome_message
-8	1	864	365	welcome_sign_2	3	0	entities/sign	dialog#crazy_house.welcome_message
+8	1	864	365	welcome_sign	3	0	entities/sign	dialog#crazy_house.welcome_message
 11	1	624	144	switch_2	1	0	0
 11	1	544	64	switch_3	1	0	0
 11	1	544	144	switch_4	1	0	0
@@ -381,6 +381,9 @@
 2	1	856	480	16	16	exit	0	1	3	start_position
 3	1	696	149	heart_container	1	100
 3	1	696	149	heart_container	1	100
+8	1	624	325	mario_message_1	3	0	_none	map
+8	1	624	325	mario_message_1	3	0	_none	map
+5	1	408	272	empty_chest_1	0	_none	1	102
 0	2	0	0	16	496	170
 0	2	16	480	672	16	170
 0	2	16	0	672	16	170

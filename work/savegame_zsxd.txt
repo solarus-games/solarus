@@ -65,6 +65,8 @@ booleans:
 101	Empty chest 1 switch
 102	Empty chest 1
 103 Empty chest 2
+104 Hidden 50 rupees
+105 Weak Wall A
 
 140	Key Door A
 

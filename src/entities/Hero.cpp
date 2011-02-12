@@ -277,7 +277,7 @@ void Hero::update_ground() {
 
     else if (ground == GROUND_HOLE && !state->can_avoid_hole()) {
       // the hero is being attracted by a hole and it's time to move one more pixel into the hole
-      
+
       next_ground_date = now + 60;
 
       if (get_distance(last_solid_ground_coords.get_x(), last_solid_ground_coords.get_y()) >= 8) {
@@ -1045,6 +1045,7 @@ void Hero::notify_movement_changed() {
 
   // let the state pick the animation corresponding to the movement tried by the player
   state->notify_movement_changed();
+  check_position();
 }
 
 /**

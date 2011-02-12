@@ -17,7 +17,6 @@
 #include "entities/Explosion.h"
 #include "entities/CrystalSwitch.h"
 #include "entities/Enemy.h"
-#include "lowlevel/Sound.h"
 #include "Game.h"
 #include "Sprite.h"
 #include "SpriteAnimationSet.h"
@@ -33,7 +32,6 @@ Explosion::Explosion(Layer layer, const Rectangle &xy, bool with_damages):
 
   // initialize the entity
   create_sprite("entities/explosion");
-  Sound::play("explosion");
 
   if (with_damages) {
     get_sprite().enable_pixel_collisions();

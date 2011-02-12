@@ -1472,6 +1472,30 @@ int Script::map_api_bomb_create(lua_State *l) {
 }
 
 /**
+ * @brief Creates an explosion on the map.
+ *
+ * - Argument 1 (integer): x
+ * - Argument 2 (integer): y
+ * - Argument 3 (integer): layer
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_explosion_create(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 3, &script);
+
+  int x = luaL_checkinteger(l, 1);
+  int y = luaL_checkinteger(l, 2);
+  Layer layer = Layer(luaL_checkinteger(l, 3));
+
+  MapEntities &entities = script->get_map().get_entities();
+  entities.add_entity(new Explosion(layer, Rectangle(x, y), true));
+
+  return 0;
+}
+
+/**
  * @brief Creates an enemy on the map.
  *
  * - Argument 1 (string): name of the enemy to create

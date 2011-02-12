@@ -58,14 +58,14 @@
 0	57	Caverne Maudite -14
 0	58	Caverne Maudite -15
 0	59	Caverne Maudite -16
-0	60	Dungeon
-0	61	Dungeon
-0	62	Dungeon
-0	63	Dungeon
-0	64	Dungeon
-0	65	Dungeon
-0	66	Dungeon
-0	67	Dungeon
+0	60	Dungeon 1F NW
+0	61	Dungeon 1F NE
+0	62	Dungeon 1F SW
+0	63	Dungeon 1F SE
+0	64	Dungeon 2F NW
+0	65	Dungeon 2F NE
+0	66	Dungeon 2F SW
+0	67	Dungeon 2F SE
 0	68	Dungeon
 0	69	Dungeon
 0	70	New map

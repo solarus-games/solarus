@@ -308,6 +308,7 @@
 1	1	312	885	from_outside	1	0
 2	1	0	-16	1536	16	teletransporter_3	0	2	61	_side
 2	1	-16	0	16	912	teletransporter_4	0	2	62	_side
+7	1	312	589	enemy	3	creeper	0	-1	_random	1	-1
 0	2	264	440	96	8	438
 0	2	264	464	96	8	437
 0	2	912	672	304	240	170

@@ -70,6 +70,8 @@
 0	1	128	224	8	16	71
 0	1	152	224	8	16	71
 0	1	400	16	24	24	46
+0	1	136	216	16	32	2
+0	1	136	240	16	8	70
 1	1	144	213	start_position	3	0
 2	1	120	48	16	16	teletransporter	1	1	42	entrance
 2	1	160	48	16	16	teletransporter_2	1	1	6	start_position

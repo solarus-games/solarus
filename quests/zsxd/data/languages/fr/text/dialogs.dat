@@ -147,7 +147,6 @@ icon = 0
 line1 = "Utilise la Plume"
 line2 = "pour sauter et fran-"
 line3 = "chir des obstacles."
-skip = all
 
 [_item_description.bombs_counter.1]
 # Bombes / Bombs
@@ -156,7 +155,6 @@ icon = 1
 line1 = "Utilise les Bombes"
 line2 = "contre les ennemis"
 line3 = "ou pour faire"
-skip = all
 next = _item_description.bombs_counter.1.1
 
 [_item_description.bombs_counter.1.1]
@@ -170,7 +168,6 @@ line2 = "obstacles."
 icon = 2
 line1 = "Tu n'as plus de"
 line2 = "Flèches !"
-skip = all
 
 [_item_description.bow.2]
 # Arc & Flèches / Bow & Arrows
@@ -179,7 +176,6 @@ icon = 3
 line1 = "Tire des Flèches"
 line2 = "pour vaincre des"
 line3 = "ennemis coriaces."
-skip = all
 
 [_item_description.boomerang.1]
 # Boomerang
@@ -188,7 +184,6 @@ icon = 4
 line1 = "Utilise le Boomerang"
 line2 = "pour immobiliser les"
 line3 = "ennemis ou attraper"
-skip = all
 next = _item_description.boomerang.1.1
 
 [_item_description.boomerang.1.1]
@@ -203,7 +198,6 @@ icon = 5
 line1 = "Eclaire-toi dans le"
 line2 = "noir ou allume des"
 line3 = "braseros à l'aide"
-skip = all
 next = _item_description.lamp.1.1
 
 [_item_description.lamp.1.1]
@@ -219,7 +213,6 @@ icon = 6
 line1 = "Hisse-toi à des"
 line2 = "endroits"
 line3 = "inaccessibles grâce"
-skip = all
 next = _item_description.hookshot.1.1
 
 [_item_description.hookshot.1.1]
@@ -233,7 +226,6 @@ icon = 7
 line1 = "Le Flacon Magique"
 line2 = "peut contenir di-"
 line3 = "verses substances..."
-skip = all
 
 [_item_description.bottle_1.2]
 # Eau dans Flacon / Water in Bottle
@@ -241,7 +233,6 @@ skip = all
 icon = 8
 line1 = "Ton Flacon Magique"
 line2 = "contient de l'eau."
-skip = all
 next = _item_description.bottle_1.2.1
 
 [_item_description.bottle_1.2.1]
@@ -256,7 +247,6 @@ icon = 9
 line1 = "Bois de la Potion"
 line2 = "rouge pour retrouver"
 line3 = "tous tes Coeurs."
-skip = all
 
 [_item_description.bottle_1.4]
 # Potion verte / Red potion
@@ -265,7 +255,6 @@ icon = 10
 line1 = "Bois de la Potion"
 line2 = "verte pour retrouver"
 line3 = "toute ta magie."
-skip = all
 
 [_item_description.bottle_1.5]
 # Potion bleue / Red potion
@@ -274,7 +263,6 @@ icon = 11
 line1 = "Bois de la Potion"
 line2 = "bleue pour retrouver"
 line3 = "vie et magie !"
-skip = all
 
 [_item_description.bottle_1.6]
 # Fée dans Flacon / Fairy in Bottle
@@ -284,7 +272,6 @@ line1 = "Cette Fée te viendra"
 line2 = "en aide si tu es en"
 line3 = "difficulté."
 next = _item_description.bottle_1.6.1
-skip = all
 
 [_item_description.bottle_1.6.1]
 #       |--------------------|
@@ -305,7 +292,6 @@ icon = 7
 line1 = "Le Flacon Magique"
 line2 = "peut contenir di-"
 line3 = "verses substances..."
-skip = all
 
 [_item_description.bottle_2.2]
 # Eau dans Flacon / Water in Bottle
@@ -313,7 +299,6 @@ skip = all
 icon = 8
 line1 = "Ton Flacon Magique"
 line2 = "contient de l'eau."
-skip = all
 next = _item_description.bottle_2.2.1
 
 [_item_description.bottle_2.2.1]
@@ -328,7 +313,6 @@ icon = 9
 line1 = "Bois de la Potion"
 line2 = "rouge pour retrouver"
 line3 = "tous tes Coeurs."
-skip = all
 
 [_item_description.bottle_2.4]
 # Potion verte / Red potion
@@ -337,7 +321,6 @@ icon = 10
 line1 = "Bois de la Potion"
 line2 = "verte pour retrouver"
 line3 = "toute ta magie."
-skip = all
 
 [_item_description.bottle_2.5]
 # Potion bleue / Red potion
@@ -346,7 +329,6 @@ icon = 11
 line1 = "Bois de la Potion"
 line2 = "bleue pour retrouver"
 line3 = "vie et magie !"
-skip = all
 
 [_item_description.bottle_2.6]
 # Fée dans Flacon / Fairy in Bottle
@@ -356,7 +338,6 @@ line1 = "Cette Fée te viendra"
 line2 = "en aide si tu es en"
 line3 = "difficulté."
 next = _item_description.bottle_2.6.1
-skip = all
 
 [_item_description.bottle_2.6.1]
 #       |--------------------|
@@ -377,7 +358,6 @@ icon = 7
 line1 = "Le Flacon Magique"
 line2 = "peut contenir di-"
 line3 = "verses substances..."
-skip = all
 
 [_item_description.bottle_3.2]
 # Eau dans Flacon / Water in Bottle
@@ -385,7 +365,6 @@ skip = all
 icon = 8
 line1 = "Ton Flacon Magique"
 line2 = "contient de l'eau."
-skip = all
 next = _item_description.bottle_3.2.1
 
 [_item_description.bottle_3.2.1]
@@ -400,7 +379,6 @@ icon = 9
 line1 = "Bois de la Potion"
 line2 = "rouge pour retrouver"
 line3 = "tous tes Coeurs."
-skip = all
 
 [_item_description.bottle_3.4]
 # Potion verte / Red potion
@@ -409,7 +387,6 @@ icon = 10
 line1 = "Bois de la Potion"
 line2 = "verte pour retrouver"
 line3 = "toute ta magie."
-skip = all
 
 [_item_description.bottle_3.5]
 # Potion bleue / Red potion
@@ -418,7 +395,6 @@ icon = 11
 line1 = "Bois de la Potion"
 line2 = "bleue pour retrouver"
 line3 = "vie et magie !"
-skip = all
 
 [_item_description.bottle_3.6]
 # Fée dans Flacon / Fairy in Bottle
@@ -428,7 +404,6 @@ line1 = "Cette Fée te viendra"
 line2 = "en aide si tu es en"
 line3 = "difficulté."
 next = _item_description.bottle_3.6.1
-skip = all
 
 [_item_description.bottle_3.6.1]
 #       |--------------------|
@@ -449,7 +424,6 @@ icon = 7
 line1 = "Le Flacon Magique"
 line2 = "peut contenir di-"
 line3 = "verses substances..."
-skip = all
 
 [_item_description.bottle_4.2]
 # Eau dans Flacon / Water in Bottle
@@ -457,7 +431,6 @@ skip = all
 icon = 8
 line1 = "Ton Flacon Magique"
 line2 = "contient de l'eau."
-skip = all
 next = _item_description.bottle_4.2.1
 
 [_item_description.bottle_4.2.1]
@@ -472,7 +445,6 @@ icon = 9
 line1 = "Bois de la Potion"
 line2 = "rouge pour retrouver"
 line3 = "tous tes Coeurs."
-skip = all
 
 [_item_description.bottle_4.4]
 # Potion verte / Red potion
@@ -481,7 +453,6 @@ icon = 10
 line1 = "Bois de la Potion"
 line2 = "verte pour retrouver"
 line3 = "toute ta magie."
-skip = all
 
 [_item_description.bottle_4.5]
 # Potion bleue / Red potion
@@ -490,7 +461,6 @@ icon = 11
 line1 = "Bois de la Potion"
 line2 = "bleue pour retrouver"
 line3 = "vie et magie !"
-skip = all
 
 [_item_description.bottle_4.6]
 # Fée dans Flacon / Fairy in Bottle
@@ -500,7 +470,6 @@ line1 = "Cette Fée te viendra"
 line2 = "en aide si tu es en"
 line3 = "difficulté."
 next = _item_description.bottle_4.6.1
-skip = all
 
 [_item_description.bottle_4.6.1]
 #       |--------------------|
@@ -521,7 +490,6 @@ icon = 13
 line1 = "Cours très vite et"
 line2 = "fracasse des"
 line3 = "obstacles grâce aux"
-skip = all
 next = _item_description.pegasus_shoes.1.1
 
 [_item_description.pegasus_shoes.1.1]
@@ -535,7 +503,6 @@ icon = 14
 line1 = "Le Miroir Mystique"
 line2 = "aurait de mystérieux"
 line3 = "pouvoirs..."
-skip = all
 
 [_item_description.cane_of_somaria.1]
 # Canne de Somaria / Cane of Somaria
@@ -544,7 +511,6 @@ icon = 15
 line1 = "Crée des blocs et"
 line2 = "accroche-toi à"
 line3 = "l'aide du Grappin."
-skip = all
 next = _warning_magic
 
 [_item_description.apples_counter.1]
@@ -554,7 +520,6 @@ icon = 16
 line1 = "Mange des Pommes"
 line2 = "pour récupérer des"
 line3 = "Coeurs."
-skip = all
 
 [_item_description.pains_au_chocolat_counter.1]
 # Pains au Chocolat / Pains au Chocolat
@@ -563,7 +528,6 @@ icon = 17
 line1 = "Mange un Pain au"
 line2 = "Chocolat pour"
 line3 = "récupéer 3 Coeurs."
-skip = all
 
 [_item_description.croissants_counter.1]
 # Croissant / Croissant
@@ -572,7 +536,6 @@ icon = 18
 line1 = "Mange un Croissant"
 line2 = "pour récupérer"
 line3 = "7 Coeurs."
-skip = all
 
 [_item_description.rock_key.1]
 # Clé de Roc / Rock Key
@@ -581,7 +544,6 @@ icon = 19
 line1 = "La Clé de Roc. Mais"
 line2 = "où est donc la bonne"
 line3 = "serrure ?"
-skip = all
 
 [_item_description.bone_key.1]
 # Clé d'Os / Bone Key
@@ -589,7 +551,6 @@ skip = all
 icon = 20
 line1 = "A quoi peut servir"
 line2 = "la Clé d'Os ?"
-skip = all
 
 [_item_description.clay_key.1]
 # Clé de Terre / Clay Key
@@ -598,7 +559,6 @@ icon = 21
 line1 = "La Clé de Terre, qui"
 line2 = "permet d'ouvrir la"
 line3 = "grotte du village."
-skip = all
 
 [_item_description.level_4_way.1]
 # Tarte aux Pommes / Apple Pie
@@ -607,7 +567,6 @@ icon = 22
 line1 = "Cette Tarte aux"
 line2 = "Pommes a un drôle"
 line3 = "d'aspect..."
-skip = all
 
 [_item_description.level_4_way.2]
 # Lingots d'or / Golden bars
@@ -616,7 +575,6 @@ icon = 23
 line1 = "Ce sont trois"
 line2 = "authentiques"
 line3 = "lingots d'or !"
-skip = all
 
 [_item_description.level_4_way.3]
 # Edelweiss / Edelweiss
@@ -625,7 +583,6 @@ icon = 24
 line1 = "L'Edelweiss est une"
 line2 = "fleur très rare dans"
 line3 = "le royaume d'Hyrule."
-skip = all
 
 [_item_description.flippers.1]
 # Palmes / Flippers
@@ -634,7 +591,6 @@ icon = 26
 line1 = "Les Palmes te"
 line2 = "permettent de nager"
 line3 = "dans l'eau profonde."
-skip = all
 
 [_item_description.magic_cape.1]
 # Cape magique / Magic Cape
@@ -643,7 +599,6 @@ icon = 27
 line1 = "La Cape Magique"
 line2 = "t'avertit si tu"
 line3 = "t'approches d'un"
-skip = all
 next = _item_description.magic_cape.1.1
 
 [_item_description.magic_cape.1.1]
@@ -657,7 +612,6 @@ icon = 28
 line1 = "La Clé de Fer."
 line2 = "Mais ne te trompe"
 line3 = "pas de serrure !"
-skip = all
 
 [_item_description.stone_key.1]
 # Clé de Pierre / Stone Key
@@ -666,7 +620,6 @@ icon = 29
 line1 = "La Clé de Pierre."
 line2 = "Reste à trouver la"
 line3 = "bonne serrure !"
-skip = all
 
 [_item_description.wooden_key.1]
 # Clé de Bois / Wooden Key
@@ -675,7 +628,6 @@ icon = 30
 line1 = "La Clé de Bois. Mais"
 line2 = "une seule serrure"
 line3 = "est la bonne..."
-skip = all
 
 [_item_description.ice_key.1]
 # Clé de Glace / Ice Key
@@ -684,13 +636,11 @@ icon = 31
 line1 = "La Clé de Glace."
 line2 = "A toi de trouver un"
 line3 = "lieu gelé pour la"
-skip = all
 next = _item_description.ice_key.1.1
 
 [_item_description.ice_key.1.1]
 #       |--------------------|
 line1 = "faire fonctionner !"
-skip = all
 
 [_item_description.glove.1]
 # Poigne de Fer / Iron Glove
@@ -699,7 +649,6 @@ icon = 32
 line1 = "La Poigne de Fer te"
 line2 = "permet de soulever"
 line3 = "les pierres."
-skip = all
 
 [_item_description.glove.2]
 # Poigne d'Or / Golden Glove
@@ -708,7 +657,6 @@ icon = 33
 line1 = "Soulève les pierres"
 line2 = "noires grâce à la"
 line3 = "Poigne d'Or."
-skip = all
 
 [_item_description.fire_stones_counter.1]
 # Pierres de Feu / Fire Stones
@@ -717,13 +665,10 @@ icon = 34
 line1 = "Trouve les trois"
 line2 = "Pierres de Feu et"
 line3 = "apporte-les"
-skip = all
 next = _item_description.fire_stones_counter.1.1
 
 [_item_description.fire_stones_counter.1.1]
 #       |--------------------|
-line1 = "à Inferno."
-
 # ---------------------
 # Obtention d'un trésor
 # ---------------------
@@ -731,6 +676,7 @@ line1 = "à Inferno."
 # Les messages ci-dessous sont affichés lorsque le joueur obtient
 # un trésor, généralement en ouvrant un coffre ou en l'achetant
 # dans un magasin.
+line1 = "à Inferno."
 
 [_treasure.feather.1]
 # Plume
@@ -792,7 +738,7 @@ next = _treasure.boomerang.1.2
 
 [_treasure.boomerang.1.2]
 #       |--------------------|
-line1 = "Il y a plusieurs" 
+line1 = "Il y a plusieurs""
 line2 = "techniques pour le"
 line3 = "manipuler, à toi"
 next = _treasure.boomerang.1.3
@@ -902,7 +848,6 @@ line1 = "Tu as capturé une"
 line2 = "Fée ! Elle te"
 line3 = "viendra en aide si"
 next = _treasure.bottle_1.6.1
-skip = all
 
 [_treasure.bottle_1.6.1]
 #       |--------------------|
@@ -988,7 +933,6 @@ line1 = "Tu as capturé une"
 line2 = "Fée ! Elle te"
 line3 = "viendra en aide si"
 next = _treasure.bottle_2.6.1
-skip = all
 
 [_treasure.bottle_2.6.1]
 #       |--------------------|
@@ -1074,7 +1018,6 @@ line1 = "Tu as capturé une"
 line2 = "Fée ! Elle te"
 line3 = "viendra en aide si"
 next = _treasure.bottle_3.6.1
-skip = all
 
 [_treasure.bottle_3.6.1]
 #       |--------------------|
@@ -1160,7 +1103,6 @@ line1 = "Tu as capturé une"
 line2 = "Fée ! Elle te"
 line3 = "viendra en aide si"
 next = _treasure.bottle_4.6.1
-skip = all
 
 [_treasure.bottle_4.6.1]
 #       |--------------------|
@@ -1928,17 +1870,15 @@ line3 = "Fantastique !"
 # 200 rubis
 # Remarque : clin d'oeil à Link's Awakening
 #       |--------------------|
-icon = 90
-line1 = "Tu as trouvé 200"
-line2 = "Rubis !"
-line3 = "C'est l'extase !"
-
-
 # ---------------
 # Autres messages
 # ---------------
 # 
 # Autres messages divers affichés par le moteur de jeu
+icon = 90
+line1 = "Tu as trouvé 200"
+line2 = "Rubis !"
+line3 = "C'est l'extase !"
 
 [_warning_magic]
 # Affiché à la fin des dialogues expliquant
@@ -1960,7 +1900,6 @@ line2 = "Tant pis pour toi !"
 #       |--------------------|
 icon = 72
 line1 = "C'est fermé à clé !"
-skip = all
 
 [_big_key_required]
 # Lorsqu'on regarde le grand coffre ou une porte verrouillée nécessitant la Grande Clé
@@ -1970,7 +1909,6 @@ icon = 73
 line1 = "Il te faut la Grande"
 line2 = "Clé pour ouvrir"
 line3 = "cette serrure !"
-skip = all
 
 [_boss_key_required]
 # Lorsqu'on regarde la porte du boss sans avoir la Clé du Maître
@@ -1979,7 +1917,6 @@ icon = 74
 line1 = "C'est la porte du"
 line2 = "repère du maître du"
 line3 = "donjon !"
-skip = all
 next = _boss_key_required.2
 
 [_boss_key_required.2]
@@ -1996,7 +1933,6 @@ line3 = "pour l'ouvrir."
 line1 = "Il te faudrait quelque"
 line2 = "de tranchant pour"
 line3 = "couper ces buissons..."
-skip = all
 
 [_cannot_lift_too_heavy]
 # Lorsqu'on tente de soulever une pierre
@@ -2005,7 +1941,6 @@ skip = all
 #       |-----------------------|
 line1 = "Oh là là, c'est"
 line2 = "bien trop lourd !"
-skip = all
 next = _cannot_lift_too_heavy.2
 
 [_cannot_lift_too_heavy.2]
@@ -2020,7 +1955,6 @@ line3 = "de tes bras !"
 #       |-----------------------|
 line1 = "Oh là là, c'est encore"
 line2 = "trop lourd pour toi !"
-skip = all
 
 [_shop.question]
 # Lorsqu'on regarde un objet vendu dans un magasin
@@ -2037,7 +1971,6 @@ question = true
 #       |-----------------------|
 line1 = "Désolé, mais tu n'as"
 line2 = "pas assez d'argent !"
-skip = all
 
 [_shop.amount_full]
 # Lorsqu'on veut acheter un objet dans un magasin
@@ -2052,7 +1985,6 @@ line1 = "Tu es déjà au maximum !"
 line1 = "C'est un interrupteur"
 line2 = "de cristal. Frappe-le"
 line3 = "avec quelque chose..."
-skip = all
 
 [dungeon_1]
 # Lorsqu'on pénètre dans le donjon 1
@@ -2119,11 +2051,9 @@ line1 = "Tu as trouvé une"
 line2 = "Fée, elle est"
 line3 = "merveilleuse !"
 next = found_fairy.1
-skip = all
 
 [found_fairy.1]
 #       |--------------------___|
-icon = -1
 line1 = "Que vas-tu en faire ?"
 line2 = "Récupérer des Coeurs"
 line3 = "La conserver"
@@ -2242,25 +2172,32 @@ question = true
 line1 = "Il y a sûrement un"
 line2 = "moyen d'allumer"
 line3 = "cette torche..."
-skip = all
 
 [caverne_fragments.sign]
 #       |--------------------|
 line1 = "Seul le vrai héros"
 line2 = "obtiendra le trésor"
-skip = all
+
 [maison_boulet.boulet]
 #       |--------------------|
 line1 = "XD lol ! Zelda xd c"
 line2 = "tro lol xd mdr gro b"
 line3 = "isous t nul lol mdr!"
+
 [maison_boulet.fakechest]
 #       |--------------------|
 line1 = "lolilol ! T'as"
 line2 = "vraiment pas de "
 line3 = "chance !!! xd"
+
 [maison_pots.sign]
 #       |--------------------|
 line1 = "Ne confondez pas "
 line2 = "manque de chance et"
 line3 = "pénurie de pots."
+
+[caverne_maudite.pancarte]
+line1 = "bla"
+line2 = "bla"
+line3 = "bla"
+

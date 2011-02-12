@@ -451,10 +451,10 @@ activates or inactivates a switch
 locks a switch in its current state or unlocks it
 
 - <tt>sol.map.switch_is_enabled(switch_name)</tt>:
-returns whether a switch is enabled
+returns whether a switch is enabled (i.e. visible)
 
-- <tt>sol.map.sensor_set_enabled(sensor_name, enable)</tt>:
-enables or disables a sensor
+- <tt>sol.map.switch_set_enabled(switch_name, enable)</tt>:
+enables or disables a switch
 
 - <tt>sol.map.door_open(door_prefix)</tt>:
 opens one or several doors, playing their animation and sound

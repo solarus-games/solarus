@@ -1,4 +1,4 @@
-set(quest_name "zsdx")
+set(quest_name "zsxd")
 
 # compile the Lua scripts
 file(GLOB lua_source_files 

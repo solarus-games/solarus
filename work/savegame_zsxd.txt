@@ -1,0 +1,58 @@
+This file describes the usage of all savegame variables except the engine ones (see Savegame.h for them).
+
+integers (above 1024):
+
+1024	current number of bombs
+1025	current number of arrows
+1026	current number of pains au chocolat
+1027	current number of croissants
+1028	current number of apples
+1029	current number of fire stones
+1030	current number of pieces of heart (0 to 3)
+1031	world map (0 or 1)
+1032	bomb bag
+1033	quiver
+1034	rupee bag
+
+1100	feather
+	bombs
+	bow
+	boomerang
+	lamp
+	hookshot
+	bottle 1
+
+	speed shoes
+	mystic mirror
+	cane of somaria
+	apples
+	pains au chocolat
+	croissant
+	bottle 2
+
+	rock key
+	bone key
+	clay key
+	apple pie, gold bar, edelweiss
+	flippers
+	magic cape
+	bottle 3
+
+	iron key
+	wooden key
+	stone key
+	ice key
+	glove
+	fire stones
+1127	bottle 4
+
+1128	tunic
+1129	sword
+1130	shield
+
+booleans:
+
+0 to 9  reserved for tests
+10	Bottle 1 pot
+
+

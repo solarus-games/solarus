@@ -31,6 +31,26 @@
 0	0	224	40	24	24	57
 0	1	40	200	352	24	52
 0	1	40	48	176	160	2
+0	0	48	40	32	40	125
+0	0	184	24	32	32	129
+0	0	120	16	32	16	108
+0	0	40	144	64	48	1
+1	0	144	197	start_position	3	0
+2	0	120	64	16	16	teletransporter	1	1	42	entrance
+2	0	136	64	16	16	teletransporter_2	1	1	5	start_position
+4	0	48	173	0	_random	1	-1
+4	0	48	157	0	_random	1	-1
+4	0	64	157	0	_random	1	-1
+4	0	64	173	0	_random	1	-1
+4	0	48	189	0	_random	1	-1
+4	0	64	189	0	_random	1	-1
+4	0	80	189	0	_random	1	-1
+4	0	96	157	0	_random	1	-1
+4	0	80	173	0	_random	1	-1
+4	0	96	173	0	_random	1	-1
+4	0	80	157	0	_random	1	-1
+4	0	96	189	0	_random	1	-1
+2	0	152	64	16	16	teletransporter_3	1	1	43	start_position
 0	1	224	104	8	32	250
 0	1	48	192	176	8	21
 0	1	48	40	160	8	18

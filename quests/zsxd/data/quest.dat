@@ -7,7 +7,7 @@ outside_world_height = 1024
 
 # Somes initial values when creating a new savegame
 [initial]
-starting_map = 0
+starting_map = 20
 starting_point = start_position
 max_life = 12
 

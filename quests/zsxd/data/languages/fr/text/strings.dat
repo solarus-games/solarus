@@ -135,8 +135,8 @@ save_dialog.continue_question_0	Tu veux continuer
 save_dialog.continue_question_1	la partie ?
 
 # Savegame selection menu (with maximum 45 characters for phase titles)
-selection_menu.phase.select_file	Choisit un fichier
-selection_menu.phase.choose_mode	Choisit un mode de jeu
+selection_menu.phase.select_file	Choisis un fichier
+selection_menu.phase.choose_mode	Choisis un mode de jeu
 selection_menu.phase.choose_name	Comment tu t'appelles ?
 selection_menu.phase.confirm_erase	T'es sûr ?
 selection_menu.phase.erase_file		Tu veux effacer quoi ?

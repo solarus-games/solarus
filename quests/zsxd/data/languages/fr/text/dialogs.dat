@@ -2201,3 +2201,6 @@ line1 = "bla"
 line2 = "bla"
 line3 = "bla"
 
+[crazy_house.welcome_message]
+line1 = "Bienvenue !"
+

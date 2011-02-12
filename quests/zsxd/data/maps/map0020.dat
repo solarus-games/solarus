@@ -350,7 +350,7 @@
 12	1	560	352	8	8	custom_obstacle_3	1	1	1	1
 12	1	560	376	8	8	custom_obstacle_4	1	1	1	1
 8	1	864	365	welcome_sign	3	0	entities/sign	dialog#welcome_message
-8	1	864	365	welcome_sign	3	0	entities/sign	dialog#welcome_message
+8	1	864	365	welcome_sign_2	3	0	entities/sign	dialog#crazy_house.welcome_message
 11	1	624	144	switch_2	1	0	0
 11	1	544	64	switch_3	1	0	0
 11	1	544	144	switch_4	1	0	0

@@ -77,8 +77,7 @@ void Hero::PlayerMovementState::start(State *previous_state) {
  * @param next_state the next state (for information)
  */
 void Hero::PlayerMovementState::stop(State *next_state) {
- 
-  get_player_movement()->stop();
+
   hero.clear_movement();
   get_sprites().set_animation_stopped_normal();
 }

@@ -255,6 +255,8 @@
 2	0	96	-16	320	16	teletransporter	0	2	1	_side
 1	0	392	237	destination_point	-1	1
 8	0	424	237	interactive_entity	3	0	entities/sign	dialog#outside_fields_SO_endofgame1
+1	0	272	821	crazy_house.out	3	0
+2	0	264	792	16	16	crazy_house.in	0	1	20	start_position
 0	2	400	-16	96	40	511
 0	2	392	-24	8	40	513
 0	2	496	-24	8	40	514

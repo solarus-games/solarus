@@ -2197,19 +2197,43 @@ line2 = "manque de chance et"
 line3 = "pénurie de pots."
 
 [caverne_maudite.pancarte]
+#       |--------------------|
 line1 = "Libère-toi de tout."
 line2 = "Oublie la peur, le doute,"
 line3 = "et la vraisemblance."
 next = caverne_maudite.pancarte2
 
+[caverne_maudite.pancarte2]
+line1 = "Libère ton esprit $v."
+
 [crazy_house.welcome_message]
+#       |--------------------|
 line1 = "Bienvenue !"
 
 [crazy_house.mario_message_1]
+#       |--------------------|
 line1 = "It's me, Mario !"
 
-[caverne_maudite.pancarte2]
-line1 = "Libère ton esprit $v."
+[crazy_house.receptionist_1]
+#       |--------------------|
+line1 = "Bonjour, si vous"
+line2 = "voulez récupérer vos"
+line3 = "objets perdus,"
+next = crazy_house.receptionist_1_2
+
+[crazy_house.receptionist_1_2]
+#       |--------------------|
+line1 = "veuillez patienter"
+line2 = "dans la salle"
+line3 = "d'attente."
+next = crazy_house.receptionist_1_3
+
+[crazy_house.receptionist_1_3]
+#       |--------------------|
+line1 = "Cela vous va ?"
+line2 = "Ouais c'est bon"
+line3 = "Tu plaisantes ?"
+question = true
 
 [geek_house.sign_a]
 line1 = "Itération des politiques optimistes et apprentissage du jeu de Zelda."

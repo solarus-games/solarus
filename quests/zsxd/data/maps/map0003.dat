@@ -2,3 +2,4 @@
 0	0	16	200	24	24	47
 1	0	160	133	start_position	3	0
 2	0	152	200	16	16	crazy_house	1	1	20	start_position
+2	0	0	-16	320	16	teletransporter	0	2	1	_side

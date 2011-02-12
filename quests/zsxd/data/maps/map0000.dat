@@ -68,7 +68,7 @@
 19	1	224	112	stairs	2	4
 1	1	144	157	start_position	3	0
 2	1	120	48	16	16	teletransporter	1	1	42	entrance
-2	1	160	48	16	16	teletransporter_2	1	1	5	start_position
+2	1	160	48	16	16	teletransporter_2	1	1	6	start_position
 4	1	208	173	0	_random	1	-1
 4	1	192	157	0	_random	1	-1
 4	1	160	157	0	_random	1	-1

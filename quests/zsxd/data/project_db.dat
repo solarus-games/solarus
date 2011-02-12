@@ -41,23 +41,23 @@
 0	40	New map
 0	41	New map
 0	42	Caverne des fragments de coeur
-0	43	Caverne Maudite 0
-0	44	Caverne Maudite -1
-0	45	Caverne Maudite -2
-0	46	Caverne Maudite -3
-0	47	Caverne Maudite -4
-0	48	Caverne Maudite -5
-0	49	Caverne Maudite -6
-0	50	Caverne Maudite -7
-0	51	Caverne Maudite -8
-0	52	Caverne Maudite -9
-0	53	Caverne Maudite -10
-0	54	Caverne Maudite -11
-0	55	Caverne Maudite -12
-0	56	Caverne Maudite -13
-0	57	Caverne Maudite -14
-0	58	Caverne Maudite -15
-0	59	Caverne Maudite -16
+0	43	New map
+0	44	New map
+0	45	New map
+0	46	New map
+0	47	New map
+0	48	New map
+0	49	New map
+0	50	New map
+0	51	New map
+0	52	New map
+0	53	New map
+0	54	New map
+0	55	New map
+0	56	New map
+0	57	New map
+0	58	New map
+0	59	New map
 0	60	New map
 0	61	New map
 0	62	New map
@@ -317,3 +317,6 @@
 6	khorneth	Khorneth
 6	khotor	Khotor
 7	fr/text/dialogs.dat	French dialogs
+7	en/text/dialogs.dat	English dialogs
+7	de/text/dialogs.dat	Deutsch dialogs
+7	nl/text/dialogs.dat	Nederlands dialogs

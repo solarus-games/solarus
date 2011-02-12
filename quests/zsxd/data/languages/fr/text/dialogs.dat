@@ -2236,6 +2236,7 @@ line1 = "FIXME"
 line1 = "TODO"
 
 [outside_fields_NE_girly_sign]
-line1 = "Nous aussi nous respectons le quota féminin."
-line2 = "(L)"
+line1 = "Nous aussi nous"
+line2 = "respectons le quota"
+line3 = "féminin."
 

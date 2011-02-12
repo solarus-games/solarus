@@ -2257,7 +2257,6 @@ line1 = "Il faut que je définisse les case pour ce panneau."
 line1 = "FIXME"
 
 [geek_house.sign_d]
-line1 = "TODO"
 
 [outside_fields_NE_girly_sign]
 line1 = "Nous aussi nous"
@@ -2271,4 +2270,18 @@ next = outside_fields_SO_endofgame2
 
 [outside_fields_SO_endofgame2]
 line1 = "-- en panne --"
+
+[geek_house.sign_e]
+line1 = "42"
+
+[geek_house.sign_f]
+
+[geek_house.sign_g]
+
+[geek_house.sign_h]
+line1 = "TODO"
+
+[geek_house.sign_i]
+
+[geek_house.sign_j]
 

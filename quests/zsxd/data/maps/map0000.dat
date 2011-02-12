@@ -83,4 +83,5 @@
 4	1	192	189	0	_random	1	-1
 12	1	216	56	16	48	custom_obstacle	1	1	1	1
 12	1	216	128	16	72	custom_obstacle_2	1	1	1	1
+2	1	80	48	16	16	teletransporter_3	1	1	43	start_position
 0	2	296	40	32	8	152

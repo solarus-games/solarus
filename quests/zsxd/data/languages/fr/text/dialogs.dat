@@ -2197,7 +2197,11 @@ line2 = "manque de chance et"
 line3 = "pénurie de pots."
 
 [caverne_maudite.pancarte]
-line1 = "bla"
-line2 = "bla"
-line3 = "bla"
+line1 = "Libère-toi de tout."
+line2 = "Oublie la peur, le doute,"
+line3 = "et la vraisemblance."
+next = caverne_maudite.pancarte2
+
+[caverne_maudite.pancarte2]
+line1 = "Libère ton esprit $v."
 

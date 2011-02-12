@@ -695,7 +695,7 @@ int Script::enemy_api_set_position(lua_State *l) {
 int Script::enemy_api_get_layer(lua_State *l) {
 
   Script* script;
-  called_by_script(l, 1, &script);
+  called_by_script(l, 0, &script);
   Enemy& enemy = script->get_enemy();
 
   lua_pushinteger(l, enemy.get_layer());

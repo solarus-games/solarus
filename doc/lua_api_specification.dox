@@ -471,6 +471,12 @@ changes immediately the state of a door (without playing animation and sound)
 - <tt>sol.map.pickable_item_create(item_name, variant, savegame_variable, x, y, layer)</tt>:
 creates a pickable item and places it on the map
 
+- <tt>sol.map.bomb_create(x, y, layer)</tt>:
+creates a bomb and places it on the map
+
+- <tt>sol.map.explosion_create(x, y, layer)</tt>:
+creates an explosion on the map
+
 - <tt>sol.map.enemy_create(enemy_name, breed, layer, x, y)</tt>:
 Creates an enemy on the map.
 

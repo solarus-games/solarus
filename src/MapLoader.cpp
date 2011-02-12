@@ -102,8 +102,9 @@ void MapLoader::load_map(Game &game, Map &map) {
   for (int layer = 0; layer < LAYER_NB; layer++) {
 
     entities.obstacle_tiles[layer] = new Obstacle[entities.obstacle_tiles_size];
+    Obstacle initial_obstacle = (layer == LAYER_LOW) ? OBSTACLE_NONE : OBSTACLE_EMPTY;
     for (int i = 0; i < entities.obstacle_tiles_size; i++) {
-      entities.obstacle_tiles[layer][i] = OBSTACLE_EMPTY;
+      entities.obstacle_tiles[layer][i] = initial_obstacle;
     }
   }
   entities.boomerang = NULL;

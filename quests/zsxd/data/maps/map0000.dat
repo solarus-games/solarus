@@ -2,3 +2,4 @@
 0	0	16	200	24	24	47
 1	0	144	197	start_position	3	0
 2	0	0	0	16	16	teletransporter	1	1	42	entrance
+2	0	136	224	16	16	teletransporter_2	1	1	5	start_position

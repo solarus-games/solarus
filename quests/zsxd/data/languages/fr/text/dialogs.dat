@@ -2197,7 +2197,35 @@ line2 = "manque de chance et"
 line3 = "pénurie de pots."
 
 [caverne_maudite.pancarte]
-line1 = "bla"
-line2 = "bla"
-line3 = "bla"
+line1 = "Libère-toi de tout."
+line2 = "Oublie la peur, le doute,"
+line3 = "et la vraisemblance."
+next = caverne_maudite.pancarte2
+
+[caverne_maudite.pancarte2]
+line1 = "Libère ton esprit $v."
+
+[geek_house.sign_a]
+line1 = "Itération des politiques optimistes et apprentissage du jeu de Zelda."
+
+[geek_house.sign_b]
+line1 = "switch (panneau)"
+line2 = "case 1:"
+line3 = "case 2:"
+next = geek_house.sign_b2
+
+[geek_house.sign_b2]
+line1 = "case 3:"
+line2 = "case 4:"
+line3 = "case 5:"
+next = geek_house.sign_b3
+
+[geek_house.sign_b3]
+line1 = "Il faut que je définisse les case pour ce panneau."
+
+[geek_house.sign_c]
+line1 = "FIXME"
+
+[geek_house.sign_d]
+line1 = "TODO"
 

@@ -50,6 +50,11 @@ integers (above 1024):
 1129	sword
 1130	shield
 
+1400 to 1499	reserved for crazy_house
+
+1400	Small key counter
+
+
 booleans:
 
 0 to 9  reserved for tests
@@ -59,5 +64,8 @@ booleans:
 100	Hidden Piece of Heart
 101	Empty chest 1 switch
 102	Empty chest 1
+103 Empty chest 2
+
+140	Key Door A
 
 

@@ -2202,6 +2202,12 @@ line2 = "Oublie la peur, le doute,"
 line3 = "et la vraisemblance."
 next = caverne_maudite.pancarte2
 
+[crazy_house.welcome_message]
+line1 = "Bienvenue !"
+
+[crazy_house.mario_message_1]
+line1 = "It's me, Mario !"
+
 [caverne_maudite.pancarte2]
 line1 = "Libère ton esprit $v."
 
@@ -2229,11 +2235,7 @@ line1 = "FIXME"
 [geek_house.sign_d]
 line1 = "TODO"
 
-[crazy_house.welcome_message]
-line1 = "Bienvenue !"
-skip = current
-
-[crazy_house.mario_message_1]
-line1 = "It's me, Mario !"
-skip = current
+[outside_fields_NE_girly_sign]
+line1 = "Nous aussi nous respectons le quota féminin."
+line2 = "(L)"
 

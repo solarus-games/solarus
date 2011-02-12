@@ -2205,3 +2205,6 @@ next = caverne_maudite.pancarte2
 [caverne_maudite.pancarte2]
 line1 = "Libère ton esprit $v."
 
+[crazy_house.welcome_message]
+line1 = "Bienvenue !"
+

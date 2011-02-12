@@ -67,6 +67,7 @@ Bugs :
 - Ajouter set_enabled()/is_enabled() à InteractiveEntity/NPC
 - event_camera_reached_target() et event_camera_back() : notifier le script qui a effectué la requête, pas forcément le script de la map
 - Message incorrect quand on regarde un chou-péteur sans la poigne de fer
+- Bottes de pégase vers trou avec fond : le téléporteur ne se déclenche pas
 
 
 Ennemis à faire (reprendre graphismes de MC + graphismes rippés) :

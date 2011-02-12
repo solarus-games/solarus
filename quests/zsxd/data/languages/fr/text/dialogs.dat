@@ -2259,3 +2259,8 @@ line3 = "isous t nul lol mdr!"
 line1 = "lolilol ! T'as"
 line2 = "vraiment pas de "
 line3 = "chance !!! xd"
+[maison_pots.sign]
+#       |--------------------|
+line1 = "Ne confondez pas "
+line2 = "manque de chance et"
+line3 = "pénurie de pots."

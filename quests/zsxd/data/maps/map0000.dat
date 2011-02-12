@@ -43,5 +43,6 @@
 4	0	96	173	0	_random	1	-1
 4	0	80	157	0	_random	1	-1
 4	0	96	189	0	_random	1	-1
+2	0	152	64	16	16	teletransporter_3	1	1	43	start_position
 0	1	224	104	8	32	250
 0	2	296	40	32	8	152

@@ -53,6 +53,6 @@ integers (above 1024):
 booleans:
 
 0 to 9  reserved for tests
-10	Bottle 1 pot
+10	Bottle 1 pot (map "Maison des pots")
 
 

@@ -1058,6 +1058,7 @@
 1	0	968	829	geek_house_out	3	0
 2	0	632	744	16	16	teletransporter_6	0	1	5	start_position
 2	0	944	88	16	16	teletransporter_7	0	1	8	start_position
+3	0	792	861	shield	1	43
 0	2	792	968	96	40	511
 0	2	584	560	80	24	717
 0	2	696	880	8	40	514

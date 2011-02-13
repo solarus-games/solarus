@@ -75,7 +75,6 @@
 0	1	184	24	32	32	129
 1	1	144	213	start_position	1	0
 2	1	120	48	16	16	teletransporter	1	1	42	entrance
-2	1	160	48	16	16	teletransporter_2	1	1	6	start_position
 4	1	192	157	0	_random	1	-1
 4	1	160	157	0	_random	1	-1
 4	1	160	189	0	_random	1	-1

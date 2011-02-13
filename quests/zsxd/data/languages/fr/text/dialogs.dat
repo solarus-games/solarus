@@ -2294,3 +2294,12 @@ line1 = "Ceci est une "
 line2 = "boite aux lettres"
 line3 = "très pénible..."
 
+[outside_fields_NO_linkhouse]
+line1 = "Sud : Maison de"
+line2 = "<insérer script ici>"
+next = outside_fields_NO_linkhouse_b
+
+[outside_fields_NO_linkhouse_b]
+line1 = "Feignasse de"
+line2 = "programmeur !"
+

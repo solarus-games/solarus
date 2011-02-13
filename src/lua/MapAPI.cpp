@@ -1029,6 +1029,62 @@ int Script::map_api_crystal_switch_set_enabled(lua_State *l) {
 }
 
 /**
+ * @brief Returns the current state of crystal switches in the map.
+ *
+ * - Return value (boolean): true if the state of crystal switches is modified,
+ * false if it is the normal (initial) state
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_crystal_switch_get_state(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 0, &script);
+
+  Game& game = script->get_game();
+  lua_pushboolean(l, game.get_crystal_switch_state());
+
+  return 1;
+}
+
+/**
+ * @brief Sets the current state of crystal switches in the map.
+ *
+ * - Parameter 1 (boolean): true to make the state modified,
+ * false to make it normal (initial)
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_crystal_switch_set_state(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 1, &script);
+  bool state = lua_toboolean(l, 1);
+
+  Game& game = script->get_game();
+  if (game.get_crystal_switch_state() != state) {
+    game.change_crystal_switch_state();
+  }
+
+  return 0;
+}
+
+/**
+ * @brief Inverts the current state of crystal switches in the map.
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_crystal_switch_change_state(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 0, &script);
+
+  Game& game = script->get_game();
+  game.change_crystal_switch_state();
+
+  return 0;
+}
+
+/**
  * @brief Returns whether a teletransporter is enabled.
  *
  * - Argument 1 (string): name of the teletransporter

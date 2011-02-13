@@ -19,7 +19,7 @@ end
 
 function check_hero()
 
-  near_hero = sol.enemy.get_distance_to_hero() < 50
+  near_hero = sol.enemy.get_distance_to_hero() < 40
   if near_hero and not explosion_soon then
     explosion_soon = true
     sprite = sol.enemy.get_sprite()

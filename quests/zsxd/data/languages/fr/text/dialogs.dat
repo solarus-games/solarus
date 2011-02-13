@@ -2285,3 +2285,12 @@ line1 = "TODO"
 
 [geek_house.sign_j]
 
+[outside_fields_SO_sh]
+line1 = "Steak haché le"
+line2 = "panneau !"
+
+[outside_fields_SO_mailbox]
+line1 = "Ceci est une "
+line2 = "boite aux lettres"
+line3 = "très pénible..."
+

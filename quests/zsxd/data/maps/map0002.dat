@@ -567,6 +567,8 @@
 4	0	160	509	2	_random	1	-1
 4	0	160	525	2	_random	1	-1
 4	0	144	509	3	_random	1	-1
+2	0	832	912	16	16	teletransporter_3	0	1	38	start_position
+1	0	840	941	freaking_cave_out	3	0
 0	2	-104	1000	288	40	511
 0	2	-104	984	288	16	512
 0	2	8	440	384	40	511

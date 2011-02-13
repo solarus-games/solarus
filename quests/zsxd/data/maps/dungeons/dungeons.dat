@@ -40,8 +40,8 @@ big = 0
 
 [dungeon_1.map_61.chest_1]
 floor = 0
-x = 2608
-y = 96
+x = 2600
+y = 136
 save = -1
 big = 0
 

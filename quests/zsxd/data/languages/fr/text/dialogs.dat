@@ -1544,15 +1544,14 @@ line3 = "les ennemis !"
 # Bouclier
 #       |--------------------|
 icon = 63
-line1 = "Tu as trouvé le"
+line1 = "Tu as retrouvé ton"
 line2 = "Bouclier !$0"
 next = _treasure.shield.1.1
 
 [_treasure.shield.1.1]
 #       |--------------------|
-line1 = "Tu peux repousser"
-line2 = "les attaques des"
-line3 = "ennemis !"
+line1 = "Franchement tu as"
+line2 = "fait quoi hier soir?"
 
 [_treasure.shield.2]
 # Bouclier de Feu
@@ -1586,15 +1585,15 @@ line2 = "contrer les lasers !"
 # Epée 1 (Epée du courage)
 #       |--------------------|
 icon = 66
-line1 = "Tu as obtenu l'Epée"
-line2 = "du Courage !$0"
+line1 = "Tu as trouvé ton"
+line2 = "épée d’entraînement."
 next = _treasure.sword.1.1
 
 [_treasure.sword.1.1]
 #       |--------------------|
-line1 = "Tu peux croiser le"
-line2 = "fer et affronter"
-line3 = "les ennemis !"
+line1 = "Mais pourquoi l'as"
+line2 = "tu laissé traîner"
+line3 = "dehors?"
 
 [_treasure.sword.2]
 # Epée 2 (Glaive Hylien)

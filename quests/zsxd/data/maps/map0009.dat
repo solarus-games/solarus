@@ -135,8 +135,8 @@
 8	1	312	165	interactive_entity_9	2	0	entities/hint_stone	dialog#geek_house.sign_f
 8	1	312	197	interactive_entity_10	2	0	entities/hint_stone	dialog#geek_house.sign_h
 8	1	72	253	interactive_entity_2	0	0	entities/hint_stone	dialog#geek_house.sign_i
-8	1	280	253	interactive_entity_3	0	0	entities/hint_stone	dialog#geek_house.sign_j
-8	1	176	157	interactive_entity_11	3	1	npc/static_villager12	map
+8	1	280	253	interactive_entity_3	2	0	entities/hint_stone	dialog#geek_house.sign_j
+8	1	176	157	Geek	3	1	npc/static_villager12	dialog#geek_house.geek
 4	1	136	221	0	_random	1	-1
 4	1	136	237	0	_random	1	-1
 4	1	216	221	0	_random	1	-1

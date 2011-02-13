@@ -2188,7 +2188,7 @@ line3 = "isous t nul lol mdr!"
 #       |--------------------|
 line1 = "lolilol ! T'as"
 line2 = "vraiment pas de "
-line3 = "chance !!! xd"
+line3 = "chance !!! XD"
 
 [maison_pots.sign]
 #       |--------------------|
@@ -2236,22 +2236,27 @@ line3 = "Tu plaisantes ?"
 question = true
 
 [geek_house.sign_a]
-line1 = "Itération des politiques optimistes et apprentissage du jeu de Zelda."
+line1 = "Itération des politiques"
+line2 = "optimistes et"
+line3 = "apprentissage"
+next = geek_house.sign_a2
 
 [geek_house.sign_b]
 line1 = "switch (panneau)"
-line2 = "case 1:"
-line3 = "case 2:"
+line2 = "case 1: break;"
+line3 = "case 2: break;"
 next = geek_house.sign_b2
 
 [geek_house.sign_b2]
-line1 = "case 3:"
-line2 = "case 4:"
-line3 = "case 5:"
+line1 = "case 3: break;"
+line2 = "case 4: break;"
+line3 = "case 5: break;"
 next = geek_house.sign_b3
 
 [geek_house.sign_b3]
-line1 = "Il faut que je définisse les case pour ce panneau."
+line1 = "/*Il faut que je"
+line2 = "définisse les cases"
+line3 = "pour ce panneau.*/"
 
 [geek_house.sign_c]
 line1 = "FIXME"
@@ -2329,4 +2334,12 @@ line3 = "que vous pouvez voir"
 line1 = "Gardez le fessier serré"
 line2 = "si vous entrez dans la "
 line3 = "maison d'à côté..."
+
+[geek_house.sign_a2]
+line1 = "du jeu de Zelda."
+
+[geek_house.geek]
+line1 = "Hey!"
+line2 = "Est-ce que tu savais que"
+line3 = "Pi% de 1337 donnait 42?"
 

@@ -17,12 +17,18 @@ end
 -- Function called when the dialog box is being closed.
 -- If the player was talking to the guard, we do the appropriate action
 function event_dialog_finished(first_message_id, answer)
-
    if first_message_id == "outside_fields_SO.guard_ok" then
       -- make the guard move
       m = sol.main.path_movement_create("000000000066", 24)
       s = sol.map.npc_get_sprite("guard")
       sol.main.sprite_set_animation(s, "walking")
       sol.map.npc_start_movement("guard", m)
+  end
+end
+
+function event_chest_empty(chest_name)
+   if chest_name == "chest_link_house" then
+    sol.map.dialog_start("outside_fields_SO.chest_link_house")
+    sol.map.hero_unfreeze()
   end
 end

@@ -62,6 +62,7 @@ booleans:
 
 42 first sword
 43 first shield
+44 outside link's house heart
 
 100 to 199	reserved for crazy_house
 100	Hidden Piece of Heart

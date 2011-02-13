@@ -738,7 +738,6 @@
 12	1	608	96	8	32	custom_obstacle_6	1	1	1	1
 12	1	616	128	32	8	custom_obstacle_5	1	1	1	1
 1	1	864	469	start_position	1	0
-2	1	856	480	16	16	exit	0	1	3	start_position
 2	1	856	480	16	16	exit_2	0	1	3	crazy_house.out
 3	1	696	149	heart_container	1	100
 3	1	696	149	heart_container	1	100
@@ -768,8 +767,8 @@
 1	1	1840	149	from2Fb	3	0
 2	1	1832	136	16	16	to2Fb	0	1	23	from1Fb
 2	1	1832	136	16	16	to2Fb_2	0	1	23	from1Fb
-18	1	1608	200	weak_wall_A	0	5	105
-18	1	1656	200	weak_wall_A_2	2	5	105
+18	1	1608	208	weak_wall_A	0	5	105
+18	1	1656	208	weak_wall_A_2	2	5	105
 14	1	1216	189	crystal_switch
 0	2	1040	320	8	96	266
 0	2	1016	336	8	64	267

@@ -2309,12 +2309,14 @@ line1 = "Feignasse de"
 line2 = "programmeur !"
 
 [outside_fields_NO_indic]
+#       |-----------------------|
 line1 = "Ouest : Chateau"
 line2 = "Est : Desert Bakasable"
 line3 = "Monts Tipiton"
 next = outside_fields_NO_indic_b
 
 [outside_fields_NO_indic_b]
+#       |-----------------------|
 line1 = "Sud Est :"
 line2 = "Bureau des objets"
 line3 = "trouvés et affinitées"
@@ -2331,6 +2333,7 @@ line2 = "Rien ou rien de ce"
 line3 = "que vous pouvez voir"
 
 [outside_fields_NO_goa]
+#       |-----------------------|
 line1 = "Trouvez le secret du "
 line2 = "lol doré"
 
@@ -2338,7 +2341,52 @@ line2 = "lol doré"
 line1 = "du jeu de Zelda."
 
 [geek_house.geek]
+#       |-----------------------|
 line1 = "Hey!"
 line2 = "Est-ce que tu savais que"
 line3 = "Pi% de 1337 donnait 42?"
 
+[outside_fields_SO.attente_a]
+#       |-----------------------|
+line1 = "      BUREAU DES       "
+line2 = "    OBJETS TROUVES     "
+next = outside_fields_SO.attente_a2
+
+[outside_fields_SO.attente_a2]
+#       |-----------------------|
+line1 = "A partir de ce point,"
+line2 = "un jour d'attente."
+
+[outside_fields_SO.attente_b]
+#       |-----------------------|
+line1 = "      BUREAU DES       "
+line2 = "    OBJETS TROUVES     "
+next = outside_fields_SO.attente_b2
+
+[outside_fields_SO.attente_b2]
+#       |-----------------------|
+line1 = "A partir de ce point,"
+line2 = "douze heures d'attente."
+
+[outside_fields_SO.attente_c]
+#       |-----------------------|
+line1 = "      BUREAU DES       "
+line2 = "    OBJETS TROUVES     "
+next = outside_fields_SO.attente_c2
+
+[outside_fields_SO.attente_c2]
+#       |-----------------------|
+line1 = "A partir de ce point,"
+line2 = "six heures d'attente."
+
+[outside_fields_SO.attente_d]
+#       |-----------------------|
+line1 = "      BUREAU DES       "
+line2 = "    OBJETS TROUVES     "
+next = outside_fields_SO.attente_d2
+
+[outside_fields_SO.attente_d2]
+#       |-----------------------|
+line1 = "Vous y êtes presque!"
+line2 = "Plus qu'à faire la"
+line3 = "queue à l'intérieur."

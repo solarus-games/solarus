@@ -19,7 +19,17 @@ end
 
 function check_hero()
 
-  near_hero = sol.enemy.get_distance_to_hero() < 40
+  distance_to_hero = sol.enemy.get_distance_to_hero()
+  near_hero = distance_to_hero < 40
+
+  if not near_hero and distance_to_hero < 60 then
+    x, y = sol.enemy.get_position()
+    hero_x, hero_y = sol.map.hero_get_position()
+    if hero_y < y and y - hero_y >= 40 then
+      near_hero = true
+    end
+  end
+
   if near_hero and not explosion_soon then
     explosion_soon = true
     sprite = sol.enemy.get_sprite()
@@ -34,15 +44,15 @@ function explode()
   x, y = sol.enemy.get_position()
   layer = sol.enemy.get_layer()
   sol.main.play_sound("explosion")
-  sol.map.explosion_create(x, y, layer)
-  sol.map.explosion_create(x + 32, y, layer)
-  sol.map.explosion_create(x + 24, y - 24, layer)
-  sol.map.explosion_create(x, y - 32, layer)
-  sol.map.explosion_create(x - 24, y - 24, layer)
-  sol.map.explosion_create(x - 32, y, layer)
-  sol.map.explosion_create(x - 24, y + 24, layer)
-  sol.map.explosion_create(x, y + 32, layer)
-  sol.map.explosion_create(x + 24, y + 24, layer)
+  sol.map.explosion_create(x, y - 16, layer)
+  sol.map.explosion_create(x + 32, y - 16, layer)
+  sol.map.explosion_create(x + 24, y - 40, layer)
+  sol.map.explosion_create(x, y - 48, layer)
+  sol.map.explosion_create(x - 24, y - 40, layer)
+  sol.map.explosion_create(x - 32, y - 16, layer)
+  sol.map.explosion_create(x - 24, y + 8, layer)
+  sol.map.explosion_create(x, y + 16, layer)
+  sol.map.explosion_create(x + 24, y + 8, layer)
   sol.map.enemy_remove(sol.enemy.get_name())
 end
 

@@ -994,7 +994,7 @@
 4	0	888	293	3	_random	1	-1
 4	0	904	293	3	_random	1	-1
 4	0	808	189	4	_random	1	-1
-8	0	560	493	sign	3	0	entities/sign	dialog#
+8	0	560	493	sign	3	0	entities/sign	dialog#outside_fields_NO_indic
 8	0	344	949	sign2	3	0	entities/sign	dialog#outside_fields_NO_linkhouse
 4	0	96	389	5	_random	1	-1
 4	0	112	389	5	_random	1	-1

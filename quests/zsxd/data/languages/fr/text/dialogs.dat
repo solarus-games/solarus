@@ -2303,3 +2303,25 @@ next = outside_fields_NO_linkhouse_b
 line1 = "Feignasse de"
 line2 = "programmeur !"
 
+[outside_fields_NO_indic]
+line1 = "Ouest : Chateau"
+line2 = "Est : Desert Bakasable"
+line3 = "Monts Tipiton"
+next = outside_fields_NO_indic_b
+
+[outside_fields_NO_indic_b]
+line1 = "Sud Est :"
+line2 = "Bureau des objets"
+line3 = "trouvés et affinitées"
+next = outside_fields_NO_indic_c
+
+[outside_fields_NO_indic_c]
+line1 = "Sous vos pieds :"
+line2 = "Herbe verte"
+next = outside_fields_NO_indic_d
+
+[outside_fields_NO_indic_d]
+line1 = "Au dessus :"
+line2 = "Rien ou rien de ce"
+line3 = "que vous pouvez voir"
+

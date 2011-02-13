@@ -2262,6 +2262,37 @@ line3 = "pour ce panneau.*/"
 line1 = "FIXME"
 
 [geek_house.sign_d]
+#       |-----------------------|
+line1 = "La cuillière"
+line2 = "n'existe pas."
+
+[geek_house.sign_e]
+line1 = "42"
+
+[geek_house.sign_f]
+line1 = "The cake is lie."
+
+[geek_house.sign_g]
+#       |-----------------------|
+line1 = "I have a bad feeling"
+line2 = "about this."
+
+[geek_house.sign_h]
+line1 = "TODO"
+
+[geek_house.sign_i]
+#       |-----------------------|
+line1 = "2.21 gigowatts !!!"
+line2 = "2.21 gigowatts !!!"
+line3 = "Mon Dieu !!!"
+next = geek_house.sign_i2
+
+[geek_house.sign_i2]
+#       |-----------------------|
+line1 = "Mais enfin c'est"
+line2 = "quoi un gigowatt ?"
+
+[geek_house.sign_j]
 
 [outside_fields_NE_girly_sign]
 line1 = "Nous aussi nous"
@@ -2275,20 +2306,6 @@ next = outside_fields_SO_endofgame2
 
 [outside_fields_SO_endofgame2]
 line1 = "-- en panne --"
-
-[geek_house.sign_e]
-line1 = "42"
-
-[geek_house.sign_f]
-
-[geek_house.sign_g]
-
-[geek_house.sign_h]
-line1 = "TODO"
-
-[geek_house.sign_i]
-
-[geek_house.sign_j]
 
 [outside_fields_SO_sh]
 line1 = "Steak haché le"
@@ -2390,3 +2407,4 @@ next = outside_fields_SO.attente_d2
 line1 = "Vous y êtes presque!"
 line2 = "Plus qu'à faire la"
 line3 = "queue à l'intérieur."
+

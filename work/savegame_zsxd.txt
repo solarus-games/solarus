@@ -70,5 +70,6 @@ booleans:
 106 Small key chest A
 
 140	Key Door A
+141 Key Door B
 
 

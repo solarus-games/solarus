@@ -2408,3 +2408,8 @@ line1 = "Vous y êtes presque!"
 line2 = "Plus qu'à faire la"
 line3 = "queue à l'intérieur."
 
+[freaking_cave_indic1]
+line1 = "Vous vous sentez"
+line2 = "harcelé ?"
+line3 = "Courrez !"
+

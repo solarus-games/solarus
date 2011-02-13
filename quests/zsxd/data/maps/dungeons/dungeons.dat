@@ -27,3 +27,15 @@ y = 912
 save = -1
 big = 0
 
+[dungeon_2.floor_0]
+width = 2800
+width = 1856
+
+[dungeon_2.floor_1]
+width = 3056
+height = 1600
+
+[dungeon_2.floor_2]
+width = 3056
+height = 1136
+

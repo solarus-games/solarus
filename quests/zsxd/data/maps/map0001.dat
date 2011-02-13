@@ -1064,7 +1064,6 @@
 12	0	888	912	16	88	custom_obstacle_2	0	0	1	0
 12	0	624	808	32	16	custom_obstacle_3	0	0	1	0
 12	0	600	584	48	16	custom_obstacle_4	0	0	1	0
-12	0	824	680	88	16	custom_obstacle_5	0	0	1	0
 12	0	512	936	16	16	custom_obstacle_6	0	0	1	0
 8	0	808	805	lady_b	3	1	npc/villager2	dialog#outside_fields_NO.lady_b
 8	0	640	869	lady_a	3	1	npc/villager1	dialog#outside_fields_NO.lady_a

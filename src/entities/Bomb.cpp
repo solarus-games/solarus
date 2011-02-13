@@ -260,7 +260,7 @@ void Bomb::update() {
 void Bomb::explode() {
 
   get_entities().add_entity(new Explosion(get_layer(), get_center_point(), true));
-  Sound::play("explode");
+  Sound::play("explosion");
   remove_from_map();
 }
 

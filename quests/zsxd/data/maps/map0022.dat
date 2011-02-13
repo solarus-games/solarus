@@ -1015,8 +1015,8 @@
 19	1	2280	576	stairs_4	1	1
 1	1	2288	589	from1Fb	3	0
 2	1	2280	576	16	16	to1Fb	0	1	20	from2Fb
-18	1	2512	472	weak_wall_B_2	1	5	0
-18	1	2512	424	weak_wall_B	3	5	0
+18	1	2520	472	weak_wall_B_2	1	5	0
+18	1	2520	424	weak_wall_B	3	5	0
 10	1	2480	424	48	24	weak_wall_B_closed_2	52	1
 10	1	2480	464	48	24	weak_wall_B_closed	49	1
 9	1	2680	637	block_4	-1	1	2

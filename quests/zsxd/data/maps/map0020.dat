@@ -738,11 +738,10 @@
 12	1	608	96	8	32	custom_obstacle_6	1	1	1	1
 12	1	616	128	32	8	custom_obstacle_5	1	1	1	1
 1	1	864	469	start_position	1	0
-2	1	856	480	16	16	exit_2	0	1	3	crazy_house.out
+2	1	856	480	16	16	exit	0	1	3	crazy_house.out
 3	1	696	149	heart_container	1	100
 3	1	696	149	heart_container	1	100
 8	1	624	325	mario_message_1	3	0	_none	map
-8	1	624	325	mario_message_2	3	0	_none	map
 5	1	408	272	empty_chest_1	0	_none	1	102
 5	1	1256	248	useless_chest_1	0	_none	1	-1
 1	1	1264	229	useless_destination_point	-1	1

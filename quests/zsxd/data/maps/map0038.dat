@@ -81,9 +81,9 @@
 0	1	152	56	16	16	353
 0	1	144	48	32	8	311
 1	1	160	365	start_position	1	0
-8	1	232	301	fc_torch_1	3	0	entities/torch	map
+8	1	232	301	fc_torch_3	3	0	entities/torch	map
 6	1	136	256	48	8	jump_sensor	2	40
-8	1	88	301	fc_torch_2	3	0	entities/torch	map
+8	1	88	301	fc_torch_1	3	0	entities/torch	map
 0	2	144	384	32	8	400
 0	2	144	120	8	8	170
 0	2	152	120	8	8	170

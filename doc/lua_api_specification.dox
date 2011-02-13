@@ -415,10 +415,19 @@ returns whether a sensor is enabled
 enables or disables a sensor
 
 - <tt>sol.map.crystal_switch_is_enabled(crystal_switch_name)</tt>:
-returns whether a crystal switch is enabled
+returns whether a crystal switch is enabled (i.e. whether it is visible)  
 
 - <tt>sol.map.crystal_switch_set_enabled(crystal_switch_name, enable)</tt>:
 enables or disables a crystal switch
+
+- <tt>sol.map.crystal_switch_get_state()</tt>
+returns the state of crystal switches (false: initial, true: modified)
+
+- <tt>sol.map.crystal_switch_set_state(state)</tt>
+sets the state of crystal switches (false: initial, true: modified)
+
+- <tt>sol.map.crystal_switch_change_state()</tt>
+inverts the state of crystal switches
 
 - <tt>sol.map.teletransporter_is_enabled(teletransporter_name)</tt>:
 returns whether a teletransporter is enabled

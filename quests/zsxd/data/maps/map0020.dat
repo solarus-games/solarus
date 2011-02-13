@@ -171,7 +171,7 @@
 4	0	400	421	0	_none	1	-1
 5	0	1256	392	empty_chest_2	0	_none	1	103
 15	0	1096	264	112	16	0
-15	0	1096	176	48	16	1
+15	0	1096	176	32	16	1
 3	0	808	45	piece_of_heart	1	-1
 19	0	1136	360	stairs_4	2	4
 19	0	1432	128	stairs_5	3	4
@@ -752,7 +752,7 @@
 18	1	848	264	key_door_A	1	1	0
 12	1	1128	352	8	8	custom_obstacle_17	1	1	1	1
 12	1	1128	376	8	8	custom_obstacle_18	1	1	1	1
-2	1	160	24	16	16	to2Fa	0	1	23	from1Fa
+2	1	160	24	16	16	to2Fa	0	1	22	from1Fa
 1	1	168	37	from2Fa	3	0
 6	1	1488	64	8	64	jump_sensor	4	40
 12	1	1424	144	8	8	custom_obstacle_19	1	1	1	1
@@ -768,8 +768,8 @@
 1	1	1840	149	from2Fb	3	0
 2	1	1832	136	16	16	to2Fb	0	1	23	from1Fb
 2	1	1832	136	16	16	to2Fb_2	0	1	23	from1Fb
-18	1	1608	184	weak_wall_A	0	5	105
-18	1	1656	184	weak_wall_A_2	2	5	105
+18	1	1608	200	weak_wall_A	0	5	105
+18	1	1656	200	weak_wall_A_2	2	5	105
 14	1	1216	189	crystal_switch
 0	2	1040	320	8	96	266
 0	2	1016	336	8	64	267

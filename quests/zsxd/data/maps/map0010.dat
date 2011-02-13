@@ -69,6 +69,7 @@
 0	1	160	216	16	16	77
 1	1	168	229	arrival_point	1	0
 2	1	160	240	16	16	teletransporter	0	1	1	humid_house_out
+8	1	168	157	interactive_entity	3	1	npc/static_villager14	map
 0	2	136	232	64	8	263
 0	2	0	0	336	16	170
 0	2	0	16	16	240	170
@@ -77,4 +78,3 @@
 0	2	152	232	32	8	153
 0	2	136	128	16	16	204
 0	2	184	128	16	16	204
-8	2	168	157	interactive_entity	3	1	npc/static_villager14	map

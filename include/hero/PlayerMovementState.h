@@ -49,6 +49,7 @@ class Hero::PlayerMovementState: public Hero::State {
     int get_wanted_movement_direction8();
     void notify_walking_speed_changed();
     void notify_movement_changed();
+    void notify_layer_changed();
     bool can_be_hurt();
 };
 

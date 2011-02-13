@@ -54,7 +54,6 @@
 0	1	736	224	240	208	319
 0	1	880	40	96	8	439
 0	1	840	880	8	32	295
-0	1	248	48	16	16	278
 0	1	912	40	32	8	429
 0	1	920	40	16	8	433
 0	1	40	856	688	64	319
@@ -573,7 +572,7 @@
 9	1	312	493	block_7	0	0	1
 9	1	296	509	block_8	-1	0	0
 7	1	776	269	e_room_enemy	3	blue_bullblin	0	-1	_random	1	-1
-7	1	776	269	e_room_enemy	3	blue_bullblin	0	-1	_random	1	-1
+7	1	776	269	e_room_enemy_2	3	blue_bullblin	0	-1	_random	1	-1
 7	1	912	333	e_room_enemy_4	3	blue_bullblin	0	-1	_random	1	-1
 7	1	744	429	e_room_enemy_5	3	blue_bullblin	0	-1	_random	1	-1
 7	1	968	429	e_room_enemy_6	3	blue_bullblin	0	-1	_random	1	-1
@@ -639,3 +638,4 @@
 0	2	632	232	16	16	278
 0	2	328	264	16	16	278
 0	2	56	744	16	16	278
+0	2	248	48	16	16	278

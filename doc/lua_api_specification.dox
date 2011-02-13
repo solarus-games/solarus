@@ -318,7 +318,7 @@ sents the hero on a map (possibly the same one)
 - <tt>sol.map.hero_set_visible(visible)</tt>:
 hides or unhides the hero
 
-- <tt>sol.map.hero_get_direction(direction)</tt>:
+- <tt>sol.map.hero_get_direction()</tt>:
 returns the direction of the hero's sprites
 
 - <tt>sol.map.hero_set_direction(direction)</tt>:
@@ -378,10 +378,10 @@ removes an interactive entity from the map
 - <tt>sol.map.interactive_entity_exists(npc)</tt>:
 checks the existence of an interactive entity
 
-- <tt>sol.map.chest_set_open(chest_name, bool open)</tt>:
+- <tt>sol.map.chest_set_open(chest_name, open)</tt>:
 sets the state of a chest (without giving or reseting its content)
 
-- <tt>sol.map.chest_set_enabled(chest_name, bool enable)</tt>:
+- <tt>sol.map.chest_set_enabled(chest_name, enable)</tt>:
 enables or disables a chest
 
 - <tt>sol.map.chest_is_enabled(chest_name)</tt>:

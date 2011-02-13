@@ -70,7 +70,7 @@
 0	0	488	80	16	24	679
 0	0	432	88	8	8	680
 0	0	440	152	16	16	805
-0	0	392	144	16	24	712
+0	0	376	160	16	24	712
 0	0	528	144	8	8	669
 0	0	528	88	8	56	668
 0	0	528	80	8	8	667
@@ -309,6 +309,8 @@
 1	0	344	813	crazy_house.out	3	0
 2	0	336	784	16	16	crazy_house.in	0	1	20	start_position
 8	0	576	341	interactive_entity_2	3	0	entities/sign	dialog#outside_fields_SO_sh
+2	0	440	136	16	16	teletransporter_2	0	1	0	start_position
+8	0	384	181	interactive_entity_3	3	0	_none	dialog#outside_fields_SO_mailbox
 0	2	392	-16	96	40	511
 0	2	384	-24	8	40	513
 0	2	488	-24	8	40	514

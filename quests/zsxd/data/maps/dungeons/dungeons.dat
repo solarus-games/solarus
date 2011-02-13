@@ -6,9 +6,23 @@ height = 2048
 width = 3072
 height = 2048
 
+[dungeon_1.map_62.chest_0]
+floor = 0
+x = 1304
+y = 1872
+save = -1
+big = 0
+
+[dungeon_1.map_62.chest_1]
+floor = 0
+x = 1064
+y = 1216
+save = -1
+big = 0
+
 [dungeon_1.map_61.chest_0]
 floor = 0
-x = 1992
+x = 1936
 y = 912
 save = -1
 big = 0

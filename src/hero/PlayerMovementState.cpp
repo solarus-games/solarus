@@ -181,6 +181,13 @@ void Hero::PlayerMovementState::notify_movement_changed() {
 }
 
 /**
+ * @brief Notifies this state that the layer has changed.
+ */
+void Hero::PlayerMovementState::notify_layer_changed() {
+  hero.update_movement();
+}
+
+/**
  * @brief Returns whether the hero can be hurt in this state.
  * @return true if the hero can be hurt in this state
  */

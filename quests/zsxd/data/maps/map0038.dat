@@ -51,6 +51,8 @@
 0	0	176	184	16	8	170
 0	0	152	56	16	16	353
 13	0	144	229	48	16	sensor_light_off	0
+1	0	160	85	from_part_2	3	0
+2	0	152	56	16	16	teletransporter_2	0	1	39	start_position
 0	1	64	256	192	112	2
 0	1	96	368	128	24	52
 0	1	152	360	16	24	379
@@ -110,11 +112,11 @@
 0	1	80	336	8	16	181
 0	1	64	328	16	8	180
 0	1	80	328	8	8	184
-1	1	160	381	start_position	1	0
+1	1	160	365	start_position	1	0
 8	1	232	301	fc_torch_2	3	0	entities/torch	map
 6	1	136	248	48	8	jump_sensor	2	40
 8	1	88	301	fc_torch_1	3	0	entities/torch	map
-2	1	152	384	16	16	teletransporter	0	1	2	freaking_cave_out
+2	1	152	368	16	16	teletransporter	0	1	2	freaking_cave_out
 0	2	144	384	32	8	400
 0	2	0	32	40	384	170
 0	2	280	32	40	384	170

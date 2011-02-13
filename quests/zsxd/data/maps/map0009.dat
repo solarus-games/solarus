@@ -1,5 +1,4 @@
 352	336	-1	-100	0	0	-1	0	same
-0	1	168	304	16	32	2
 0	1	40	40	272	256	2
 0	1	136	48	8	16	20
 0	1	88	56	48	8	18
@@ -97,7 +96,6 @@
 0	1	72	272	16	8	21
 0	1	272	272	8	8	17
 0	1	72	272	8	8	16
-0	1	168	296	16	16	77
 0	1	184	296	8	16	75
 0	1	160	296	8	16	74
 0	1	160	176	16	32	2
@@ -126,6 +124,8 @@
 0	1	168	336	16	8	70
 0	1	160	320	8	16	71
 0	1	184	320	8	16	71
+0	1	168	304	16	32	2
+0	1	168	296	16	16	77
 8	1	112	61	interactive_entity	3	0	entities/hint_stone	dialog#geek_house.sign_a
 8	1	240	61	interactive_entity_4	3	0	entities/hint_stone	dialog#geek_house.sign_b
 8	1	48	117	interactive_entity_5	0	0	entities/hint_stone	dialog#geek_house.sign_c

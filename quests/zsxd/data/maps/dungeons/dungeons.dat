@@ -33,15 +33,15 @@ height = 1136
 
 [dungeon_1.map_61.chest_0]
 floor = 0
-x = 1936
-y = 912
+x = 2576
+y = 104
 save = -1
 big = 0
 
 [dungeon_1.map_61.chest_1]
 floor = 0
-x = 2600
-y = 136
+x = 1936
+y = 912
 save = -1
 big = 0
 

@@ -2240,6 +2240,9 @@ line2 = "optimistes et"
 line3 = "apprentissage"
 next = geek_house.sign_a2
 
+[geek_house.sign_a2]
+line1 = "du jeu de Zelda."
+
 [geek_house.sign_b]
 line1 = "switch (panneau)"
 line2 = "case 1: break;"
@@ -2356,8 +2359,48 @@ line3 = "que vous pouvez voir"
 line1 = "Trouvez le secret du "
 line2 = "lol doré"
 
-[geek_house.sign_a2]
-line1 = "du jeu de Zelda."
+[outside_fields_NO.lawn_master]
+#       |-----------------------|
+line1 = "Je t'offre 100 rubis"
+line2 = "si tu tonds toute ma"
+line3 = "pelouse."
+
+[outside_fields_NO.drunk]
+#       |-----------------------|
+line1 = "Tu ne te souviens plus"
+line2 = "de ta soirée?"
+next = outside_fields_NO.drunk2
+
+[outside_fields_NO.drunk2]
+#       |-----------------------|
+line1 = "Moi non plus..."
+next = outside_fields_NO.drunk3
+
+[outside_fields_NO.drunk3]
+#       |-----------------------|
+line1 = "Ca m'arrive tout le"
+line2 = "temps."
+
+[outside_fields_NO.lady_a]
+#       |-----------------------|
+line1 = "Zelda?"
+line2 = "Non je ne l'ai pas vue."
+
+[outside_fields_NO.lady_b]
+#       |-----------------------|
+line1 = "Tu as perdu où Zelda?"
+line2 = "..."
+next = outside_fields_NO.lady_b2
+
+[outside_fields_NO.lady_b2]
+#       |-----------------------|
+line1 = "**Mari indigne...**"
+next = outside_fields_NO.lady_b3
+
+[outside_fields_NO.lady_b3]
+#       |-----------------------|
+line1 = "Non je ne sais pas"
+line2 = "où elle est."
 
 [geek_house.geek]
 #       |-----------------------|

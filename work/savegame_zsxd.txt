@@ -72,6 +72,7 @@ booleans:
 105 Weak Wall A
 106 Small key chest A
 107 20 rupees chest A
+108	50 rupees chest A
 
 140	Key Door A
 141 Key Door B

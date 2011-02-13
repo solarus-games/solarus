@@ -2324,8 +2324,8 @@ line3 = "très pénible..."
 [outside_fields_SO.chest_link_house]
 #       |-----------------------|
 line1 = "C'est vide!"
-line2 = "Tu croiyais vraiment"
-line3 = " qu'il y avait"
+line2 = "Tu croyais vraiment"
+line3 = "qu'il y avait"
 next = outside_fields_SO.chest_link_house2
 
 [outside_fields_SO.chest_link_house2]

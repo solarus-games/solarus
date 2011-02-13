@@ -1544,15 +1544,14 @@ line3 = "les ennemis !"
 # Bouclier
 #       |--------------------|
 icon = 63
-line1 = "Tu as trouvé le"
+line1 = "Tu as retrouvé ton"
 line2 = "Bouclier !$0"
 next = _treasure.shield.1.1
 
 [_treasure.shield.1.1]
 #       |--------------------|
-line1 = "Tu peux repousser"
-line2 = "les attaques des"
-line3 = "ennemis !"
+line1 = "Franchement tu as"
+line2 = "fait quoi hier soir?"
 
 [_treasure.shield.2]
 # Bouclier de Feu
@@ -1586,15 +1585,15 @@ line2 = "contrer les lasers !"
 # Epée 1 (Epée du courage)
 #       |--------------------|
 icon = 66
-line1 = "Tu as obtenu l'Epée"
-line2 = "du Courage !$0"
+line1 = "Tu as trouvé ton"
+line2 = "épée d’entraînement."
 next = _treasure.sword.1.1
 
 [_treasure.sword.1.1]
 #       |--------------------|
-line1 = "Tu peux croiser le"
-line2 = "fer et affronter"
-line3 = "les ennemis !"
+line1 = "Mais pourquoi l'as"
+line2 = "tu laissé traîner"
+line3 = "dehors?"
 
 [_treasure.sword.2]
 # Epée 2 (Glaive Hylien)
@@ -2241,6 +2240,9 @@ line2 = "optimistes et"
 line3 = "apprentissage"
 next = geek_house.sign_a2
 
+[geek_house.sign_a2]
+line1 = "du jeu de Zelda."
+
 [geek_house.sign_b]
 line1 = "switch (panneau)"
 line2 = "case 1: break;"
@@ -2293,6 +2295,9 @@ line1 = "Mais enfin c'est"
 line2 = "quoi un gigowatt ?"
 
 [geek_house.sign_j]
+#       |-----------------------|
+line1 = "Chuck Norris a fini"
+line2 = "Zelda sans épée."
 
 [outside_fields_NE_girly_sign]
 line1 = "Nous aussi nous"
@@ -2354,8 +2359,48 @@ line3 = "que vous pouvez voir"
 line1 = "Trouvez le secret du "
 line2 = "lol doré"
 
-[geek_house.sign_a2]
-line1 = "du jeu de Zelda."
+[outside_fields_NO.lawn_master]
+#       |-----------------------|
+line1 = "Je t'offre 100 rubis"
+line2 = "si tu tonds toute ma"
+line3 = "pelouse."
+
+[outside_fields_NO.drunk]
+#       |-----------------------|
+line1 = "Tu ne te souviens plus"
+line2 = "de ta soirée?"
+next = outside_fields_NO.drunk2
+
+[outside_fields_NO.drunk2]
+#       |-----------------------|
+line1 = "Moi non plus..."
+next = outside_fields_NO.drunk3
+
+[outside_fields_NO.drunk3]
+#       |-----------------------|
+line1 = "Ca m'arrive tout le"
+line2 = "temps."
+
+[outside_fields_NO.lady_a]
+#       |-----------------------|
+line1 = "Zelda?"
+line2 = "Non je ne l'ai pas vue."
+
+[outside_fields_NO.lady_b]
+#       |-----------------------|
+line1 = "Tu as perdu où Zelda?"
+line2 = "..."
+next = outside_fields_NO.lady_b2
+
+[outside_fields_NO.lady_b2]
+#       |-----------------------|
+line1 = "**Mari indigne...**"
+next = outside_fields_NO.lady_b3
+
+[outside_fields_NO.lady_b3]
+#       |-----------------------|
+line1 = "Non je ne sais pas"
+line2 = "où elle est."
 
 [geek_house.geek]
 #       |-----------------------|

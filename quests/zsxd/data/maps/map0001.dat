@@ -1043,7 +1043,7 @@
 4	0	40	789	2	_random	1	-1
 4	0	40	805	2	_random	1	-1
 4	0	56	805	2	_random	1	-1
-8	0	1000	573	panel1_4	3	0	entities/sign	dialog#
+8	0	1000	573	panel1_4	3	0	entities/sign	dialog#outside_fields_NO_goa
 2	0	1024	88	16	960	teletransporter	0	2	2	_side
 1	0	520	965	humid_house_out	3	0
 1	0	640	773	stupid_guy_house_out	3	0

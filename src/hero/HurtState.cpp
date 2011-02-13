@@ -52,7 +52,7 @@ void Hero::HurtState::start(State *previous_state) {
   Equipment &equipment = get_equipment();
 
   Sound::play("hero_hurt");
-  life_points = std::max(1, life_points / (equipment.get_ability("tunic") + 1));
+  life_points = std::max(1, life_points / (equipment.get_ability("tunic")));
   equipment.remove_life(life_points);
   if (equipment.has_ability("tunic")) {
     equipment.notify_ability_used("tunic");

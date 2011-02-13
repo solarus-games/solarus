@@ -752,7 +752,7 @@
 18	1	848	264	key_door_A	1	1	0
 12	1	1128	352	8	8	custom_obstacle_17	1	1	1	1
 12	1	1128	376	8	8	custom_obstacle_18	1	1	1	1
-2	1	160	24	16	16	to2Fa	0	1	23	from1Fa
+2	1	160	24	16	16	to2Fa	0	1	22	from1Fa
 1	1	168	37	from2Fa	3	0
 6	1	1488	64	8	64	jump_sensor	4	40
 12	1	1424	144	8	8	custom_obstacle_19	1	1	1	1
@@ -768,8 +768,8 @@
 1	1	1840	149	from2Fb	3	0
 2	1	1832	136	16	16	to2Fb	0	1	23	from1Fb
 2	1	1832	136	16	16	to2Fb_2	0	1	23	from1Fb
-18	1	1608	192	weak_wall_A	0	5	105
-18	1	1656	192	weak_wall_A_2	2	5	105
+18	1	1608	200	weak_wall_A	0	5	105
+18	1	1656	200	weak_wall_A_2	2	5	105
 14	1	1216	189	crystal_switch
 0	2	1040	320	8	96	266
 0	2	1016	336	8	64	267

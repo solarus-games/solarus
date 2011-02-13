@@ -2292,6 +2292,9 @@ line1 = "Mais enfin c'est"
 line2 = "quoi un gigowatt ?"
 
 [geek_house.sign_j]
+#       |-----------------------|
+line1 = "Chuck Norris a fini"
+line2 = "Zelda sans épée."
 
 [outside_fields_NE_girly_sign]
 line1 = "Nous aussi nous"

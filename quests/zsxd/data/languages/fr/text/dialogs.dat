@@ -2321,6 +2321,28 @@ line1 = "Ceci est une "
 line2 = "boite aux lettres"
 line3 = "très pénible..."
 
+[outside_fields_SO.chest_link_house]
+#       |-----------------------|
+line1 = "C'est vide!"
+line2 = "Tu croiyais vraiment"
+line3 = " qu'il y avait"
+next = outside_fields_SO.chest_link_house2
+
+[outside_fields_SO.chest_link_house2]
+#       |-----------------------|
+line1 = "un trésor juste"
+line2 = "derrière ta maison ?!?"
+
+[outside_fields_SO.guard_nok]
+#       |-----------------------|
+line1 = "Pas de resquilleur !"
+line2 = "Va faire la queue comme"
+line3 = "tout le monde."
+
+[outside_fields_SO.guard_ok]
+#       |-----------------------|
+line1 = "Bonne journée à vous."
+
 [outside_fields_NO_linkhouse]
 line1 = "Sud : Maison de"
 line2 = "<insérer script ici>"

@@ -568,7 +568,7 @@
 4	0	960	357	2	_random	1	-1
 4	0	976	373	2	_random	1	-1
 4	0	976	357	2	_random	1	-1
-8	0	904	533	interactive_entity_8	3	1	npc/static_villager8	map
+8	0	840	533	guard	3	1	npc/newlink4	map
 3	0	584	365	piece_of_heart	1	44
 4	0	792	677	5	_random	1	-1
 4	0	792	709	5	_random	1	-1

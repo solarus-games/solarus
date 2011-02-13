@@ -118,10 +118,10 @@
 2	light_world_dungeon.spc	Dungeon (light world)
 2	dark_world_dungeon.spc	Dungeon (dark world)
 2	dungeon_finished.spc	Dungeon finished
-2	eagle_tower.it	Eagle's Tower
 2	excalibur.spc	Excalibur
 2	fanfare.spc	Fanfare
 2	fortune_teller.spc	Fortune Teller
+2	found_items.it	Found Items House
 2	ganon_appears.spc	Ganon appears
 2	ganon_battle.spc	Ganon battle
 2	ganon_theme.spc	Ganon theme
@@ -319,5 +319,4 @@
 6	papillosaur_king	Papillosaur King
 6	khorneth	Khorneth
 6	khotor	Khotor
-6	lizarmen	Lizarmen
 7	fr/text/dialogs.dat	French dialogs

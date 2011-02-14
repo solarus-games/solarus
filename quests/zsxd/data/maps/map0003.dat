@@ -560,7 +560,7 @@
 4	0	464	61	2	_random	1	-1
 4	0	432	61	2	_random	1	-1
 4	0	448	69	2	_random	1	-1
-5	0	552	16	chest	0	_none	1	-1
+5	0	552	16	chest_link_house	0	_none	1	45
 4	0	560	45	3	_random	1	-1
 4	0	944	373	2	_random	1	-1
 4	0	960	389	2	_random	1	-1

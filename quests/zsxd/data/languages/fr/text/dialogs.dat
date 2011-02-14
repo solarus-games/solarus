@@ -2186,17 +2186,17 @@ line3 = "isous t nul lol mdr!"
 [maison_boulet.fakechest]
 #       |--------------------|
 line1 = "lolilol ! T'as"
-line2 = "vraiment pas de "
+line2 = "vraiment pas de"
 line3 = "chance !!! XD"
 
 [maison_pots.sign]
-#       |--------------------|
+#       |-----------------------|
 line1 = "Ne confondez pas "
 line2 = "manque de chance et"
 line3 = "pénurie de pots."
 
 [caverne_maudite.pancarte]
-#       |--------------------|
+#       |-----------------------|
 line1 = "Libère-toi de tout."
 line2 = "Oublie la peur, le doute,"
 line3 = "et la vraisemblance."
@@ -2206,11 +2206,11 @@ next = caverne_maudite.pancarte2
 line1 = "Libère ton esprit $v."
 
 [crazy_house.welcome_message]
-#       |--------------------|
+#       |-----------------------|
 line1 = "Bienvenue !"
 
 [crazy_house.mario_message_1]
-#       |--------------------|
+#       |-----------------------|
 line1 = "It's me, Mario !"
 
 [crazy_house.receptionist_1]
@@ -2324,8 +2324,8 @@ line3 = "très pénible..."
 [outside_fields_SO.chest_link_house]
 #       |-----------------------|
 line1 = "C'est vide!"
-line2 = "Tu croiyais vraiment"
-line3 = " qu'il y avait"
+line2 = "Tu croyais vraiment"
+line3 = "qu'il y avait"
 next = outside_fields_SO.chest_link_house2
 
 [outside_fields_SO.chest_link_house2]
@@ -2423,6 +2423,18 @@ next = outside_fields_NO.lady_b3
 #       |-----------------------|
 line1 = "Non je ne sais pas"
 line2 = "où elle est."
+
+[outside_fields_NO.guy_a]
+#       |-----------------------|
+line1 = "Tu as perdu quelque"
+line2 = "chose?"
+next = outside_fields_NO.guy_a2
+
+[outside_fields_NO.guy_a2]
+#       |-----------------------|
+line1 = "As tu été voir au"
+line2 = "bureau des objets"
+line3 = "trouvés?"
 
 [geek_house.geek]
 #       |-----------------------|

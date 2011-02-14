@@ -34,6 +34,7 @@ function check_hero()
     explosion_soon = true
     sprite = sol.enemy.get_sprite()
     sol.main.sprite_set_animation(sprite, "hurt")
+    sol.main.play_sound("creeper")
     sol.main.timer_start(400, "explode", false)
   else
     sol.main.timer_start(100, "check_hero", false)

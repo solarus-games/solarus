@@ -123,8 +123,9 @@ The files are lighter with the Ogg compression.
 @section musics Musics
 
 The <tt>musics</tt> directory contains all musics used by both the engine and the quest.
-For now, two formats are recognized:
+For now, the following formats are recognized:
 - SPC: a Super NES original music file,
+- IT: Impulse Tracker Module,
 - OGG: Ogg Vorbis audio file.
 Future releases may support more music formats. You can ask me.
 

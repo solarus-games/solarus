@@ -25,8 +25,8 @@
 /**
  * @brief Represents a music that can be played.
  *
- * A music should be in format .spc (Snes).
- * The .it format (Impulse Tracker Module) will probably be supported in a future version.
+ * A music should be in format .spc (Snes), .it (Impulse Tracker module) or .ogg.
+ * The .mp3 format will probably be supported in a future version.
  * Only one music can be played at the same time.
  * Before using this class, the audio system should have been
  * initialized, by calling Sound::initialize().
@@ -40,9 +40,9 @@ class Music { // TODO make a subclass for each format, or at least make a better
      * The music file formats recognized.
      */
     enum Format {
-      SPC,	/**< Snes */
-      OGG	/**< Ogg Vorbis */
-//      IT	/**< Impulse Tracker module (TODO implement with the modplug lib) */
+      SPC,	/**< original Snes music */
+      IT,	/**< Impulse Tracker module */
+      OGG       /**< Ogg Vorbis */
     };
 
     MusicId id;							/**< id of this music */
@@ -59,6 +59,7 @@ class Music { // TODO make a subclass for each format, or at least make a better
     ALuint source;						/**< the OpenAL source streaming the buffers */
 
     static SpcDecoder *spc_decoder;				/**< the SPC decoder */
+    static ItDecoder *it_decoder;                               /**< the IT decoder */
     static float volume;					/**< volume of musics (0.0 to 1.0) */
 
     static Music *current_music;				/**< the music currently played (if any) */
@@ -93,6 +94,7 @@ class Music { // TODO make a subclass for each format, or at least make a better
     void set_paused(bool pause);
 
     void decode_spc(ALuint destination_buffer, ALsizei nb_samples);
+    void decode_it(ALuint destination_buffer, ALsizei nb_samples);
     void decode_ogg(ALuint destination_buffer, ALsizei nb_samples);
 };
 

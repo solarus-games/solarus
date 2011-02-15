@@ -11,6 +11,7 @@ find_package(OpenAL)
 find_package(Lua51)
 find_package(PhysFS)
 find_package(Sndfile)
+find_package(ModPlug)
 
 include_directories(
   ${SOLARUS_SOURCE_DIR}/include
@@ -54,6 +55,7 @@ target_link_libraries(solarus
   ${LUA_LIBRARY}
   ${PHYSFS_LIBRARY}
   ${SNDFILE_LIBRARY}
+  ${MODPLUG_LIBRARY}
 )
 
 install(TARGETS	solarus

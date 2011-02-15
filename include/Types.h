@@ -63,6 +63,7 @@ class Color;
 class Sound;
 class Music;
 class SpcDecoder;
+class ItDecoder;
 class Random;
 class Geometry;
 class Rectangle;

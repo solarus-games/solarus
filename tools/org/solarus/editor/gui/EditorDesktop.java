@@ -16,19 +16,24 @@
  */
 package org.solarus.editor.gui;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.Point;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import javax.swing.JTabbedPane;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 /**
  *
  */
-public class EditorDesktop extends JTabbedPane {
+public class EditorDesktop extends JTabbedPane implements MouseListener, ChangeListener {
 
     public static final long serialVersionUID = 1L;
 
     public EditorDesktop() {
         setTabLayoutPolicy(SCROLL_TAB_LAYOUT);
+        addMouseListener(this);
+        addChangeListener(this);
     }
 
     /**
@@ -103,5 +108,43 @@ public class EditorDesktop extends JTabbedPane {
      */
     public int countEditors() {
         return getTabCount();
+    }
+
+    /**
+     * Allow to close the editor with a click on his tab
+     * @param e
+     */
+    public void mouseClicked(MouseEvent e) {        
+        if(e.getButton() == MouseEvent.BUTTON2) {
+            Point clic = e.getPoint();
+            int idx = indexAtLocation(clic.x, clic.y);
+           AbstractEditorWindow editor = (AbstractEditorWindow) getComponentAt(idx);
+           removeEditor(editor);
+        }
+    }
+
+    public void mousePressed(MouseEvent e) {
+        
+    }
+
+    public void mouseReleased(MouseEvent e) {
+       
+    }
+
+    public void mouseEntered(MouseEvent e) {
+      
+    }
+
+    public void mouseExited(MouseEvent e) {
+       
+    }
+
+    public void stateChanged(ChangeEvent e) {
+        try {
+            ((MapEditorWindow) getSelectedComponent()).getMapView().requestFocus();
+        }
+        catch(ClassCastException cce) {
+            System.out.println("Dans le cul le cast !");
+        }
     }
 }

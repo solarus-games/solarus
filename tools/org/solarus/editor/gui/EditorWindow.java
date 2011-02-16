@@ -244,7 +244,7 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
         menuOpenIniFile = new JMenuItem("Dialogs");
         menuOpenIniFile.setMnemonic(KeyEvent.VK_D);
         menuOpenIniFile.getAccessibleContext().setAccessibleDescription("Open an existing dialogs file");
-        menuOpenIniFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.SHIFT_MASK));
+        //menuOpenIniFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.SHIFT_MASK));
         menuOpenIniFile.addActionListener(new ActionOpenIniFile());
         menuOpen.add(menuOpenIniFile);
 

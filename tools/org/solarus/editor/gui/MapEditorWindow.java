@@ -96,6 +96,7 @@ public class MapEditorWindow extends AbstractEditorWindow implements Observer, P
         add(rootPanel);
         setMap(null);
 
+     
     }
 
     /**

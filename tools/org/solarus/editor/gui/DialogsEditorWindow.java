@@ -162,32 +162,40 @@ public class DialogsEditorWindow extends AbstractEditorWindow implements Project
 
         sectionPanel.add(new JLabel("Name"));
         name = new JTextField();
+        name.setFont(new Font("Courier New", Font.PLAIN, 12));
         sectionPanel.add(name);
 
 
         sectionPanel.add(new JLabel("Icon"));
         icon = new JTextField();
+        icon.setFont(new Font("Courier New", Font.PLAIN, 12));
         sectionPanel.add(icon);
         sectionPanel.add(new JLabel("Line 1"));
         line1 = new JTextField();
+        line1.setFont(new Font("Courier New", Font.PLAIN, 12));
         sectionPanel.add(line1);
         sectionPanel.add(new JLabel("Line 2"));
         line2 = new JTextField();
+        line2.setFont(new Font("Courier New", Font.PLAIN, 12));
         sectionPanel.add(line2);
         sectionPanel.add(new JLabel("Line 3"));
         line3 = new JTextField();
+        line3.setFont(new Font("Courier New", Font.PLAIN, 12));
         sectionPanel.add(line3);
         sectionPanel.add(new JLabel("Question"));
         question = new JCheckBox();
         sectionPanel.add(question);
         sectionPanel.add(new JLabel("Skip Action"));
         skipAction = new JComboBox(new String[]{DialogSection.SKIP_ACTION_NONE, DialogSection.SKIP_ACTION_CURRENT, DialogSection.SKIP_ACTION_ALL});
+        skipAction.setFont(new Font("Courier New", Font.PLAIN, 12));
         sectionPanel.add(skipAction);
         sectionPanel.add(new JLabel("Next Section"));
         nextSection = new JTextField();
+        nextSection.setFont(new Font("Courier New", Font.PLAIN, 12));
         sectionPanel.add(nextSection);
         sectionPanel.add(new JLabel("Next Section 2"));
         nextSection2 = new JTextField();
+        nextSection2.setFont(new Font("Courier New", Font.PLAIN, 12));
         sectionPanel.add(nextSection2);
 
 
@@ -456,7 +464,7 @@ public class DialogsEditorWindow extends AbstractEditorWindow implements Project
 
         public void removeSection(DialogSection section) {
             int idx = filteredElements.indexOf(section);
-             sectionsList.setSelectedValue((DialogSection) getElementAt(0), true);
+            sectionsList.setSelectedValue((DialogSection) getElementAt(0), true);
             elements.remove(section);
             filteredElements.remove(section);
             fireContentsChanged(this, 0, getSize());
@@ -464,7 +472,7 @@ public class DialogsEditorWindow extends AbstractEditorWindow implements Project
 //                setSection((DialogSection) getElementAt(idx));
 //            } else {
             //currentSection = newSection;
-            
+
 //            }
             sectionsList.setPreferredSize(new Dimension(250, sectionsList.getModel().getSize() * 18));
             setSection((DialogSection) getElementAt(0));

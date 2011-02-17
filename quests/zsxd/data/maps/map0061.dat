@@ -243,7 +243,7 @@
 19	0	992	784	stairs_6	2	4
 18	0	1032	320	door_4	1	0	-1
 18	0	1032	224	door_5	3	0	-1
-5	0	1040	104	chest_2	0	_none	1	-1
+5	0	1040	104	chest_2	0	big_key	1	204
 18	0	1072	720	door_6	1	0	-1
 18	0	1072	624	door_7	3	0	-1
 0	1	712	200	64	24	52
@@ -911,8 +911,8 @@
 6	1	984	808	8	16	jump_sensor_8	0	40
 4	1	1112	229	0	_random	1	-1
 7	1	408	365	enemy_2	3	blue_bullblin	0	-1	heart	1	-1
-7	1	408	365	enemy_2	3	blue_bullblin	0	-1	heart	1	-1
-7	1	384	285	enemy_3	3	blue_bullblin	0	-1	heart	1	-1
+7	1	408	365	enemy_3	3	blue_bullblin	0	-1	heart	1	-1
+7	1	384	285	enemy_4	3	blue_bullblin	0	-1	heart	1	-1
 7	1	360	397	enemy_5	3	blue_bullblin	0	-1	heart	1	-1
 7	1	440	333	enemy_6	3	blue_bullblin	0	-1	heart	1	-1
 7	1	384	365	enemy_7	3	blue_bullblin	0	-1	heart	1	-1
@@ -936,6 +936,8 @@
 4	1	360	413	0	fairy	1	-1
 4	1	568	285	0	fairy	1	-1
 4	1	568	413	0	fairy	1	-1
+5	1	784	1008	chest_4	1	tunic	3	205
+5	1	672	1016	chest_3	0	compass	1	203
 0	2	880	72	8	96	441
 0	2	856	72	8	96	442
 0	2	1032	1112	96	8	438

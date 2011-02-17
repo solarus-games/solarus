@@ -2490,5 +2490,10 @@ line3 = "queue à l'intérieur."
 [freaking_cave_indic1]
 line1 = "Vous vous sentez"
 line2 = "harcelé ?"
-line3 = "Courrez !"
+line3 = "Courez !"
+
+[dungeon_1.welcome]
+#       |-----------------------|
+line1 = "        Niveau 2       " 
+line2 = " Temple des Stupidités "
 

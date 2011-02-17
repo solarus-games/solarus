@@ -65,7 +65,7 @@ booleans:
 44 outside link's house heart
 45 outside link's house chest
 
-100 to 199	reserved for crazy_house
+100 to 199	reserved for crazy_house (dungeon 2)
 100	Hidden Piece of Heart
 101	Empty chest 1 switch
 102	Empty chest 1
@@ -79,4 +79,11 @@ booleans:
 140	Key Door A
 141 Key Door B
 
+200 to 299	reserved for the stupid temple (dungeon 1)
+201	1F SW: chest with the boss key
+202	1F SW: chest with the map
+203	1F NE: chest with the compass
+204	1F NE: chest with the big key
+205	1F NE: big chest with the red tunic
+206	2F SW: big chest with the bow
 

@@ -134,6 +134,13 @@ function event_hero_interaction(entity_name)
    end
 end
 
+function event_door_open(door_name)
+
+  if door_name == "dungeon_3_entrance_weak_block" then
+    sol.main.play_sound("secret") -- play the sound only once
+  end
+end
+
 function remove_dungeon_2_door()
    sol.map.interactive_entity_remove("dungeon_2_door")
    sol.map.tile_set_enabled("dungeon_2_door_tile", false)

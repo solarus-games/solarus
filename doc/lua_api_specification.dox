@@ -863,6 +863,12 @@ to define its behavior and then call hero_unfreeze()
 - <tt>event_shop_item_bought(shop_item_name)</tt>:
 called when the player has just bought an item in a shop
 
+- <tt>event_door_open(door_name)</tt>:
+called when a door has just been open
+
+- <tt>event_door_closed(door_name)</tt>:
+called when a door has just been closed
+
 - <tt>event_enemy_dead(enemy_name)</tt>:
 called when an enemy of this map is dead (and its kill animation is finished)
 

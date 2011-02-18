@@ -296,6 +296,24 @@ void MapScript::event_shop_item_bought(const std::string &shop_item_name) {
 }
 
 /**
+ * @brief Notifies the script that a door has just been open.
+ * @param door_name name of the door
+ */
+void MapScript::event_door_open(const std::string& door_name) {
+
+  notify_script("event_door_open", "s", door_name.c_str());
+}
+
+/**
+ * @brief Notifies the script that a door has just been closed.
+ * @param door_name name of the door
+ */
+void MapScript::event_door_closed(const std::string& door_name) {
+
+  notify_script("event_door_closed", "s", door_name.c_str());
+}
+
+/**
  * @brief Notifies the script that an enemy has just been killed.
  * @param enemy_name name of the enemy
  */

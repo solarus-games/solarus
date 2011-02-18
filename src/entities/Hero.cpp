@@ -510,7 +510,7 @@ void Hero::place_on_destination_point(Map &map) {
     if (side != -1) {
 
       // go to a side of the other map
-      Map& old_map = get_map();
+      Map& old_map = get_map(); // FIXME the old map is already destroyed
       set_map(map);
 
       switch (side) {

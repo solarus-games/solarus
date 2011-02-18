@@ -18,6 +18,10 @@
 #include "entities/Door.h"
 #include "entities/Hero.h"
 #include "entities/DynamicTile.h"
+#include "lowlevel/FileTools.h"
+#include "lowlevel/Debug.h"
+#include "lowlevel/Sound.h"
+#include "lua/MapScript.h"
 #include "Sprite.h"
 #include "Game.h"
 #include "DialogBox.h"
@@ -25,9 +29,6 @@
 #include "KeysEffect.h"
 #include "Savegame.h"
 #include "Map.h"
-#include "lowlevel/FileTools.h"
-#include "lowlevel/Debug.h"
-#include "lowlevel/Sound.h"
 #include <list>
 
 const std::string Door::animations[] = {
@@ -154,7 +155,7 @@ void Door::set_open(bool door_open) {
     get_sprite().set_current_animation(animations[subtype]);
     set_collision_modes(COLLISION_FACING_POINT | COLLISION_SPRITE);
 
-    // ensure we are not closing the door on the hero
+    // ensure that we are not closing the door on the hero
     if (is_on_map() && overlaps(get_hero())) {
       get_hero().avoid_collision(*this, (get_direction() + 2) % 4);
     }
@@ -165,6 +166,13 @@ void Door::set_open(bool door_open) {
 
     if (savegame_variable != -1) {
       get_savegame().set_boolean(savegame_variable, door_open);
+    }
+
+    if (door_open) {
+      get_map_script().event_door_open(get_name());
+    }
+    else {
+      get_map_script().event_door_closed(get_name());
     }
   }
 }
@@ -241,7 +249,6 @@ void Door::notify_collision_with_explosion(Explosion &explosion, Sprite &sprite_
 
   if (requires_bomb() && !is_open() && !changing) {
     set_opening();
-    Sound::play("secret");
   }
 }
 

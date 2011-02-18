@@ -26,6 +26,7 @@
 #include "entities/Block.h"
 #include "entities/JumpSensor.h"
 #include "entities/Sensor.h"
+#include "entities/Bomb.h"
 #include "hero/HeroSprites.h"
 #include "hero/CarryingState.h"
 #include "hero/ConveyorBeltState.h"
@@ -1494,6 +1495,7 @@ void Hero::notify_collision_with_bomb(Bomb& bomb, CollisionMode collision_mode) 
     // the hero is touching the bomb and is looking in its direction
 
     if (get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
+        && get_facing_entity() == &bomb
 	&& is_free()) {
 
       // we show the action icon

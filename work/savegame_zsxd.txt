@@ -79,11 +79,11 @@ booleans:
 140	Key Door A
 141 Key Door B
 
-200 to 299	reserved for the stupid temple (dungeon 1)
+200 to 399	reserved for the stupid temple (dungeon 1)
 201	1F SW: chest with the boss key
 202	1F SW: chest with the map
 203	1F NE: chest with the compass
 204	1F NE: chest with the big key
 205	1F NE: big chest with the red tunic
 206	2F SW: big chest with the bow
-
+207-232	2F SW: weak blocks in the creepers room

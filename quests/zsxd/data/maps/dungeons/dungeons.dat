@@ -167,15 +167,15 @@ big = 0
 
 [dungeon_1.map_61.chest_2]
 floor = 0
-x = 2320
-y = 1008
+x = 2296
+y = 952
 save = 205
 big = 1
 
 [dungeon_1.map_61.chest_3]
 floor = 0
 x = 2208
-y = 1016
+y = 960
 save = 203
 big = 0
 

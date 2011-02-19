@@ -87,3 +87,6 @@ booleans:
 205	1F NE: big chest with the red tunic
 206	2F SW: big chest with the bow
 207-232	2F SW: weak blocks in the creepers room
+233	1F NE: weak wall to the compass
+234	1F NE/SE: weak wall to the red tunic
+

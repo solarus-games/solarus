@@ -2497,3 +2497,9 @@ line3 = "Courez !"
 line1 = "        Niveau 2       " 
 line2 = " Temple des Stupidités "
 
+[dungeon_1.lizarmen_sign]
+#       |-----------------------|
+line1 = "En hommage au pire boss"
+line2 = "de l'histoire du jeu"
+line3 = "amateur."
+

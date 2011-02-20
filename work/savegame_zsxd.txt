@@ -89,4 +89,22 @@ booleans:
 207-232	2F SW: weak blocks in the creepers room
 233	1F NE: weak wall to the compass
 234	1F NE/SE: weak wall to the red tunic
+235	1F SE: locked door
+236	1F NW: door that requires the code
+237	1F NW: door locked (big key required)
+238	1F NW: big chest with the feather
 
+241	small key 1
+242	small key 2
+243	small key 3
+244	small key 4
+245	small key 5
+246	small key 6
+247	small key 7
+248	small key 8
+249	small key 9
+250	small key 10
+251-258	2F NE: 8 locked doors
+259-282 2F NE: 24 weak blocks
+283	water of 2F SW removed
+284-290 2F NE: 7 stairs

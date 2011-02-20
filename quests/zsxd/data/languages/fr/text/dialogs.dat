@@ -2503,3 +2503,9 @@ line1 = "En hommage au pire boss"
 line2 = "de l'histoire du jeu"
 line3 = "amateur."
 
+[dungeon_1.big_code]
+#       |-----------------------|
+line1 = "3-1-4-2-3-2-1-1-4-3-2-2"
+line2 = "1-3-2-3-3-1-4-4-2-1-2-3"
+line3 = "3-2-1-1-3-4-2-2-1-3-4-1"
+

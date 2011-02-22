@@ -830,6 +830,13 @@
 0	1	256	272	80	80	446
 0	1	160	272	96	48	446
 0	1	488	176	8	8	241
+0	1	840	24	8	16	517
+0	1	864	24	8	16	518
+0	1	848	24	16	16	88
+0	1	840	0	8	16	71
+0	1	864	0	8	16	71
+0	1	848	-8	16	32	319
+10	1	840	16	32	24	weak_wall_red_tunic_closed	49	1
 10	1	888	136	128	32	tile	399	1
 1	1	312	885	from_outside	1	0
 2	1	0	-16	1536	16	teletransporter_3	0	2	61	_side
@@ -861,7 +868,7 @@
 6	1	912	168	80	8	jump_sensor_10	6	16
 6	1	912	128	80	8	jump_sensor_18	2	16
 2	1	288	872	16	16	teletransporter_5	0	1	65	blocks_dp
-18	1	832	24	weak_wall_red_tunic	1	5	234
+18	1	848	24	weak_wall_red_tunic	1	5	234
 12	1	80	312	8	32	custom_obstacle_8	1	1	1	1
 12	1	104	312	8	32	custom_obstacle_9	1	1	1	1
 18	1	448	200	door	3	1	235
@@ -918,3 +925,5 @@
 0	2	320	96	88	128	170
 0	2	320	16	288	80	170
 0	2	520	208	88	16	170
+10	2	808	16	96	8	weak_wall_red_tunic_open_2	437	0
+10	2	840	16	32	8	weak_wall_red_tunic_open	187	0

@@ -843,13 +843,13 @@
 1	1	376	621	destination_point_g	-1	1
 2	1	128	544	16	16	teletransporter_21	1	1	65	destination_point_g
 7	1	184	744	enemy	3	bubble	0	-1	_random	1	-1
-7	1	184	744	enemy	3	bubble	0	-1	_random	1	-1
+7	1	184	744	enemy_2	3	bubble	0	-1	_random	1	-1
 7	1	248	656	enemy_3	3	bubble	0	-1	_random	1	-1
-7	1	264	749	enemy_2	3	bee_guard	0	-1	_random	1	-1
-7	1	200	725	enemy_4	3	globul	0	-1	_random	1	-1
-7	1	120	749	enemy_5	3	mandible	0	-1	_random	1	-1
-7	1	136	693	enemy_6	3	blue_bullblin	0	-1	_random	1	-1
-7	1	72	712	enemy_7	3	bubble	0	-1	_random	1	-1
+7	1	264	749	enemy_4	3	bee_guard	0	-1	heart	1	-1
+7	1	200	725	enemy_5	3	globul	0	-1	heart	1	-1
+7	1	120	749	enemy_6	3	mandible	0	-1	heart	1	-1
+7	1	136	693	enemy_7	3	blue_bullblin	0	-1	heart	1	-1
+7	1	72	712	enemy_8	3	bubble	0	-1	_random	1	-1
 12	1	64	616	16	16	custom_obstacle	0	1	1	1
 12	1	64	760	16	16	custom_obstacle_2	0	1	1	1
 12	1	280	720	16	16	custom_obstacle_3	0	1	1	1

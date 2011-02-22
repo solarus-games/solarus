@@ -99,11 +99,7 @@ public class Door extends MapEntity {
      * @return the coordinates of the origin point of the entity
      */
     protected Point getOrigin() {
-      if (subtype != Subtype.WEAK) {
 	return new Point(0, 0);
-      }
-      
-      return (getDirection() % 2 == 0) ? new Point (0, -8) : new Point(-8, 0);
     }
 
     /**

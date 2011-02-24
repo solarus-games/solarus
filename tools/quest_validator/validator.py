@@ -6,8 +6,12 @@ import os
 import sys
 import argparse
 
-## Pads 0's if needed to filename
+
 def padzeroes(id):
+    """Pads zeroes until string is at least 4 chars long.
+
+    Returns string."""
+
     while len(id) < 4:
         id = '0' + id
     return id
@@ -16,11 +20,11 @@ def validate():
 
     ## Removed python 2.7 features
     parser = argparse.ArgumentParser(description='Verifies the existence of quest data files outlined in project_db.dat.')
-    parser.add_argument('data path', metavar='quest_data_directory', type=str, 
-                        help='[your quest]/data/')
+    parser.add_argument('quest path', metavar='quest_directory', type=str, 
+                        help=False)
     foo = parser.parse_args()
 
-    data_path = os.path.abspath(sys.argv[1])
+    data_path = os.path.join(sys.argv[1],'data/')
     project_db_path = os.path.join(data_path,'project_db.dat')
 
     ## Attempts to open project_db.dat
@@ -85,4 +89,5 @@ def validate():
 
     f.close()
 
-validate()
+if __name__ == '__main__':
+    validate()

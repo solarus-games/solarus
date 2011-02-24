@@ -223,6 +223,9 @@
 0	1	472	224	8	16	71
 0	1	40	432	8	48	237
 0	1	272	432	8	48	238
+0	1	584	352	24	32	406
+0	1	584	360	8	16	478
+0	1	576	352	8	32	477
 2	1	-16	0	16	912	teletransporter_3	0	2	66	_side
 2	1	0	-16	1536	16	teletransporter_4	0	2	65	_side
 12	1	168	88	8	32	custom_obstacle	1	1	1	1
@@ -244,7 +247,7 @@
 6	1	176	416	72	8	jump_sensor_9	2	40
 6	1	272	264	8	48	jump_sensor_10	4	40
 8	1	464	37	interactive_entity	3	0	entities/hint_stone	dialog#dungeon_1.big_code
-8	1	464	37	interactive_entity	3	0	entities/hint_stone	dialog#dungeon_1.big_code
+8	1	464	37	interactive_entity_2	3	0	entities/hint_stone	dialog#dungeon_1.big_code
 7	1	464	64	enemy	3	bubble	0	-1	_random	1	-1
 0	2	408	216	96	8	438
 0	2	408	240	96	8	437

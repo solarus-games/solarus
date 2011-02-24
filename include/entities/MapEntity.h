@@ -289,7 +289,8 @@ class MapEntity {
     virtual void notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
         EnemyReaction::Reaction& result, bool killed);
 
-    virtual bool is_water_obstacle();
+    virtual bool is_shallow_water_obstacle();
+    virtual bool is_deep_water_obstacle();
     virtual bool is_hole_obstacle();
     virtual bool is_ladder_obstacle();
     virtual bool is_hero_obstacle(Hero &hero);

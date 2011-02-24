@@ -626,8 +626,11 @@ bool Map::test_collision_with_tiles(Layer layer, int x, int y, MapEntity &entity
     break;
 
   case OBSTACLE_SHALLOW_WATER:
+    on_obstacle = entity_to_check.is_shallow_water_obstacle();
+    break;
+
   case OBSTACLE_DEEP_WATER:
-    on_obstacle = entity_to_check.is_water_obstacle();
+    on_obstacle = entity_to_check.is_deep_water_obstacle();
     break;
 
   case OBSTACLE_HOLE:

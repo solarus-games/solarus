@@ -2509,3 +2509,27 @@ line1 = "3-1-4-2-3-2-1-1-4-3-2-2"
 line2 = "1-3-2-3-3-1-4-4-2-1-2-3"
 line3 = "3-2-1-1-3-4-2-2-1-3-4-1"
 
+[dungeon_1.danger_north_sign]
+#       |-----------------------|
+line1 = "Nord : danger"
+line2 = "Ne pas entrer svp"
+line3 = ""
+
+[dungeon_1.danger_west_sign]
+#       |-----------------------|
+line1 = "Ouest : danger"
+line2 = "Ce serait une mauvaise"
+line3 = "idée d'y aller."
+
+[dungeon_1.danger_south_sign]
+#       |-----------------------|
+line1 = "Sud : danger"
+line2 = "C'est à vos risques et"
+line3 = "périls."
+
+[dungeon_1.small_key_danger_east]
+#       |-----------------------|
+line1 = "Cela dit, n'allez pas"
+line2 = "à l'est, c'est toujours"
+line3 = "dangereux."
+

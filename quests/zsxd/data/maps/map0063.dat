@@ -441,6 +441,16 @@
 7	0	160	797	enemy_10	3	tentacle	0	-1	_random	1	-1
 7	0	160	573	enemy_11	3	tentacle	0	-1	_random	1	-1
 7	0	456	573	enemy_12	3	tentacle	0	-1	_random	1	-1
+12	0	560	560	16	16	custom_obstacle_15	0	1	1	0
+12	0	352	560	16	16	custom_obstacle_16	0	1	1	0
+12	0	560	784	16	16	custom_obstacle_17	0	1	1	0
+12	0	352	784	16	16	custom_obstacle_18	0	1	1	0
+12	0	256	560	16	16	custom_obstacle_19	0	1	1	0
+12	0	48	560	16	16	custom_obstacle_20	0	1	1	0
+12	0	256	784	16	16	custom_obstacle_21	0	1	1	0
+12	0	48	784	16	16	custom_obstacle_22	0	1	1	0
+12	0	760	400	16	16	custom_obstacle_23	0	1	1	0
+12	0	1064	400	16	16	custom_obstacle_24	0	1	1	0
 0	1	264	360	80	64	319
 0	1	344	264	240	160	319
 0	1	344	264	240	8	179
@@ -944,6 +954,9 @@
 4	1	56	701	0	_random	1	-1
 4	1	56	685	0	_random	1	-1
 4	1	72	669	0	_random	1	-1
+12	1	88	200	16	16	custom_obstacle_25	0	1	1	0
+12	1	24	120	16	16	custom_obstacle_26	0	1	1	0
+12	1	248	24	16	16	custom_obstacle_27	0	1	1	0
 0	2	624	288	8	96	441
 0	2	600	296	8	96	442
 0	2	1032	16	96	8	437

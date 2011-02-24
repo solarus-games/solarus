@@ -481,10 +481,10 @@ bool CarriedItem::is_stairs_obstacle(Stairs &stairs) {
 }
 
 /**
- * @brief Returns whether a water tile is currently considered as an obstacle for this entity.
- * @return true if the water tiles are currently an obstacle for this entity
+ * @brief Returns whether a deep water tile is currently considered as an obstacle for this entity.
+ * @return true if the deep water tiles are currently an obstacle for this entity
  */
-bool CarriedItem::is_water_obstacle() {
+bool CarriedItem::is_deep_water_obstacle() {
   return false;
 }
 

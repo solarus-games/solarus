@@ -1182,8 +1182,8 @@ bool Hero::is_obstacle_for(MapEntity &other) {
  * @brief Returns whether a deep water tile is currently considered as an obstacle for the hero.
  * @return true if the deep water tiles are currently an obstacle for the hero
  */
-bool Hero::is_water_obstacle() {
-  return state->is_water_obstacle();
+bool Hero::is_deep_water_obstacle() {
+  return state->is_deep_water_obstacle();
 }
 
 /**

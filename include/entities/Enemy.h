@@ -206,7 +206,8 @@ class Enemy: public Detector {
     bool is_obstacle_for(MapEntity &other);
     bool is_sensor_obstacle(Sensor &sensor);
     bool is_destructible_item_obstacle(DestructibleItem &destructible_item);
-    bool is_water_obstacle();
+    bool is_deep_water_obstacle();
+    bool is_shallow_water_obstacle();
     bool is_hole_obstacle();
 
     // enemy state

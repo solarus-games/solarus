@@ -1185,13 +1185,24 @@ bool MapEntity::has_layer_independent_collisions() {
 }
 
 /**
- * @brief Returns whether a water tile is currently considered as an obstacle by this entity.
+ * @brief Returns whether a shallow water tile is currently considered as an obstacle by this entity.
  *
- * This function returns true by default.
+ * This function returns is_deep_water_obstacle() by default.
  *
  * @return true if the water tiles are currently an obstacle for this entity
  */
-bool MapEntity::is_water_obstacle() {
+bool MapEntity::is_shallow_water_obstacle() {
+  return is_deep_water_obstacle();
+}
+
+/**
+ * @brief Returns whether a deep water tile is currently considered as an obstacle by this entity.
+ *
+ * This function returns true by default.
+ *
+ * @return true if the deep water tiles are currently an obstacle for this entity
+ */
+bool MapEntity::is_deep_water_obstacle() {
   return true;
 }
 

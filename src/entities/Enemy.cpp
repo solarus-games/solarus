@@ -259,11 +259,19 @@ bool Enemy::is_destructible_item_obstacle(DestructibleItem &destructible_item) {
 }
 
 /**
- * @brief Returns whether a water tile is currently considered as an obstacle by this entity.
- * @return true if the water tiles are currently an obstacle for this entity
+ * @brief Returns whether a deep water tile is currently considered as an obstacle by this entity.
+ * @return true if the deep water tiles are currently an obstacle for this entity
  */
-bool Enemy::is_water_obstacle() {
+bool Enemy::is_deep_water_obstacle() {
   return obstacle_behavior != "flying" && obstacle_behavior != "swimming";
+}
+
+/**
+ * @brief Returns whether a shallow water tile is currently considered as an obstacle by this entity.
+ * @return true if the shallow water tiles are currently an obstacle for this entity
+ */
+bool Enemy::is_shallow_water_obstacle() {
+  return false;
 }
 
 /**

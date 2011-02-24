@@ -272,7 +272,7 @@
 19	0	736	784	stairs_7	1	4
 19	0	688	816	stairs_8	2	4
 19	0	784	816	stairs_9	1	4
-8	0	1088	797	lizarmen_sign	3	0	entities/sign	dialog#dungeon_1.lizarmen_sign
+8	0	1088	797	sign_5	3	0	entities/sign	dialog#dungeon_1.lizarmen_sign
 0	1	32	152	80	24	52
 0	1	808	776	32	96	319
 0	1	536	744	144	128	319
@@ -1043,6 +1043,54 @@
 0	1	848	1112	16	32	319
 0	1	864	1120	8	16	71
 0	1	840	1120	8	16	71
+0	1	64	288	16	16	276
+0	1	240	288	16	16	276
+0	1	240	384	16	16	276
+0	1	64	384	16	16	276
+0	1	672	288	16	16	276
+0	1	800	288	16	16	276
+0	1	800	384	16	16	276
+0	1	672	384	16	16	276
+0	1	368	64	16	16	276
+0	1	544	64	16	16	276
+0	1	544	160	16	16	276
+0	1	368	160	16	16	276
+0	1	128	320	64	48	417
+0	1	120	320	8	48	401
+0	1	192	320	8	48	401
+0	1	120	312	80	8	401
+0	1	120	368	80	8	401
+0	1	432	96	64	48	417
+0	1	424	96	8	48	401
+0	1	496	96	8	48	401
+0	1	424	88	80	8	401
+0	1	424	144	80	8	401
+0	1	712	320	64	48	417
+0	1	704	320	8	48	401
+0	1	776	320	8	48	401
+0	1	704	312	80	8	401
+0	1	704	368	80	8	401
+0	1	976	216	16	16	2
+0	1	368	512	16	16	276
+0	1	544	512	16	16	276
+0	1	544	576	16	16	276
+0	1	368	576	16	16	276
+0	1	432	528	64	48	417
+0	1	424	528	8	48	401
+0	1	496	528	8	48	401
+0	1	424	520	80	8	401
+0	1	424	576	80	8	401
+0	1	728	872	32	24	405
+0	1	736	872	16	8	472
+0	1	728	864	32	8	471
+0	1	64	72	32	16	337
+0	1	224	72	32	16	337
+0	1	672	72	32	16	337
+0	1	784	72	32	16	337
+0	1	376	16	16	32	341
+0	1	536	16	16	32	341
+0	1	376	192	16	32	342
+0	1	536	192	16	32	342
 10	1	840	1096	32	24	weak_wall_red_tunic_closed	52	1
 10	1	576	872	48	24	weak_wall_compass_closed	52	1
 10	1	576	912	48	24	weak_wall_compass_closed_2	49	1
@@ -1080,19 +1128,19 @@
 6	1	984	808	8	16	jump_sensor_8	0	40
 4	1	1112	229	0	_random	1	-1
 7	1	408	365	enemy_2	3	blue_bullblin	0	-1	heart	1	-1
-7	1	408	365	enemy_3	3	blue_bullblin	0	-1	heart	1	-1
-7	1	384	285	enemy_4	3	blue_bullblin	0	-1	heart	1	-1
-7	1	360	397	enemy_5	3	blue_bullblin	0	-1	heart	1	-1
-7	1	440	333	enemy_6	3	blue_bullblin	0	-1	heart	1	-1
-7	1	384	365	enemy_7	3	blue_bullblin	0	-1	heart	1	-1
-7	1	488	333	enemy_9	3	blue_bullblin	0	-1	heart	1	-1
-7	1	488	365	enemy_11	3	blue_bullblin	0	-1	heart	1	-1
-7	1	392	333	enemy_12	3	blue_bullblin	0	-1	heart	1	-1
-7	1	448	357	enemy_13	3	blue_bullblin	0	-1	heart	1	-1
-7	1	528	325	enemy_14	3	blue_bullblin	0	-1	heart	1	-1
-7	1	544	293	enemy_16	3	blue_bullblin	0	-1	heart	1	-1
-7	1	552	413	enemy_17	3	blue_bullblin	0	-1	heart	1	-1
-7	1	536	373	enemy_18	3	blue_bullblin	0	-1	heart	1	-1
+7	1	408	365	wtf_room_enemy_8	3	blue_bullblin	0	-1	heart	1	-1
+7	1	384	285	wtf_room_enemy	3	blue_bullblin	0	-1	heart	1	-1
+7	1	360	397	wtf_room_enemy_12	3	blue_bullblin	0	-1	heart	1	-1
+7	1	440	333	wtf_room_enemy_4	3	blue_bullblin	0	-1	heart	1	-1
+7	1	384	365	wtf_room_enemy_7	3	blue_bullblin	0	-1	heart	1	-1
+7	1	488	333	wtf_room_enemy_5	3	blue_bullblin	0	-1	heart	1	-1
+7	1	488	365	wtf_room_enemy_10	3	blue_bullblin	0	-1	heart	1	-1
+7	1	392	333	wtf_room_enemy_3	3	blue_bullblin	0	-1	heart	1	-1
+7	1	448	357	wtf_room_enemy_9	3	blue_bullblin	0	-1	heart	1	-1
+7	1	528	325	wtf_room_enemy_6	3	blue_bullblin	0	-1	heart	1	-1
+7	1	544	293	wtf_room_enemy_2	3	blue_bullblin	0	-1	heart	1	-1
+7	1	552	413	wtf_room_enemy_13	3	blue_bullblin	0	-1	heart	1	-1
+7	1	536	373	wtf_room_enemy_11	3	blue_bullblin	0	-1	heart	1	-1
 18	1	448	248	door_8	1	0	-1
 18	1	448	200	door_9	3	0	-1
 18	1	448	472	door_10	1	0	-1
@@ -1131,6 +1179,14 @@
 6	1	760	776	24	8	jump_sensor_10	6	40
 15	1	688	712	96	16	0
 15	1	688	696	16	16	0
+13	1	464	277	16	16	sensor	0
+13	1	576	349	16	16	sensor_2	0
+13	1	464	421	16	16	sensor_3	0
+13	1	352	349	16	16	sensor_4	0
+8	1	464	557	sign_4	3	0	entities/sign	dialog#dungeon_1.danger_north
+8	1	464	125	sign_2	3	0	entities/sign	dialog#dungeon_1.danger_south
+8	1	744	349	sign_6	3	0	entities/sign	dialog#dungeon_1.danger_east
+4	1	984	229	0	_random	1	-1
 0	2	16	72	8	96	441
 0	2	880	72	8	96	441
 0	2	856	72	8	96	442

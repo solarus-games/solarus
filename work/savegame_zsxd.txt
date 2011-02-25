@@ -93,6 +93,7 @@ booleans:
 236	1F NW: door that requires the code
 237	1F NW: door locked (big key required)
 238	1F NW: big chest with the feather
+239	1F NE: boss door
 
 241	small key 1
 242	small key 2

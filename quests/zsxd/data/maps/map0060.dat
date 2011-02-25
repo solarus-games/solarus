@@ -332,6 +332,7 @@
 7	0	1320	976	enemy_8	3	bubble	0	-1	_random	1	-1
 7	0	1456	1000	enemy_7	3	bubble	0	-1	_random	1	-1
 7	0	1064	536	enemy_6	3	bubble	0	-1	_random	1	-1
+12	0	1264	1032	16	16	custom_obstacle_15	0	1	1	1
 0	1	1264	760	96	8	179
 0	1	1360	736	128	48	319
 0	1	1192	712	24	160	50
@@ -699,6 +700,15 @@
 12	1	1368	472	16	16	custom_obstacle_12	0	1	1	1
 12	1	1496	560	16	16	custom_obstacle_13	0	1	1	1
 12	1	1192	784	16	16	custom_obstacle_14	0	1	1	1
+1	1	464	485	from_2F_a	3	0
+1	1	704	933	from_2F_c	3	0
+1	1	1376	485	from_2F_b	3	0
+2	1	456	472	16	16	teletransporter_5	0	1	64	from_1F_a
+2	1	1368	472	16	16	teletransporter_6	0	1	64	from_1F_b
+2	1	696	920	16	16	teletransporter_7	0	1	64	from_1F_c
+19	1	456	472	stairs_5	1	0
+19	1	1368	472	stairs_6	1	0
+19	1	696	920	stairs_7	1	0
 0	2	408	464	96	8	437
 0	2	1512	712	8	96	442
 0	2	928	0	592	16	170

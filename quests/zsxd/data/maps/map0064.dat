@@ -842,7 +842,7 @@
 9	1	464	645	block	0	0	1
 15	1	1120	1064	16	32	1
 7	1	1168	709	enemy	3	creeper	0	-1	_random	1	-1
-7	1	1168	709	enemy	3	creeper	0	-1	_random	1	-1
+7	1	1168	709	enemy_2	3	creeper	0	-1	_random	1	-1
 15	1	1032	552	48	32	1
 15	1	712	488	32	48	1
 15	1	856	712	32	48	1
@@ -852,7 +852,7 @@
 18	1	1192	552	door	0	0	-1
 13	1	1184	573	16	16	sensor	0
 18	1	1240	552	door_2	2	0	-1
-7	1	672	709	enemy_2	3	creeper	0	-1	_random	1	-1
+7	1	672	709	enemy_3	3	creeper	0	-1	_random	1	-1
 15	1	856	824	32	48	0
 15	1	1032	776	48	32	0
 11	1	1168	848	switch_2	1	0	0
@@ -882,14 +882,14 @@
 15	1	1304	840	16	32	0
 18	1	1360	872	door_5	3	0	-1
 18	1	1360	920	door_6	1	0	-1
-7	1	784	629	enemy_3	3	tentacle	0	-1	_random	1	-1
-7	1	944	629	enemy_4	3	tentacle	0	-1	_random	1	-1
-7	1	800	741	enemy_5	3	tentacle	0	-1	_random	1	-1
-7	1	944	853	enemy_6	3	tentacle	0	-1	_random	1	-1
-7	1	1056	853	enemy_7	3	tentacle	0	-1	_random	1	-1
-7	1	1056	741	enemy_8	3	tentacle	0	-1	_random	1	-1
-7	1	944	749	enemy_9	3	tentacle	0	-1	_random	1	-1
-7	1	1056	517	enemy_10	3	tentacle	0	-1	_random	1	-1
+7	1	784	629	enemy_4	3	tentacle	0	-1	_random	1	-1
+7	1	944	629	enemy_5	3	tentacle	0	-1	_random	1	-1
+7	1	800	741	enemy_6	3	tentacle	0	-1	_random	1	-1
+7	1	944	853	enemy_7	3	tentacle	0	-1	_random	1	-1
+7	1	1056	853	enemy_8	3	tentacle	0	-1	_random	1	-1
+7	1	1056	741	enemy_9	3	tentacle	0	-1	_random	1	-1
+7	1	944	749	enemy_10	3	tentacle	0	-1	_random	1	-1
+7	1	1056	517	enemy_11	3	tentacle	0	-1	_random	1	-1
 4	1	912	501	0	rupee	1	-1
 4	1	912	517	0	rupee	1	-1
 4	1	912	533	0	rupee	1	-1
@@ -903,6 +903,15 @@
 4	1	472	573	0	_random	1	-1
 4	1	456	589	0	_random	1	-1
 4	1	472	589	0	_random	1	-1
+1	1	464	485	from_1F_a	3	0
+1	1	1376	485	from_1F_b	3	0
+1	1	704	933	from_1F_c	3	0
+2	1	456	472	16	16	teletransporter_5	0	1	60	from_2F_a
+2	1	1368	472	16	16	teletransporter_6	0	1	60	from_2F_b
+2	1	696	920	16	16	teletransporter_7	0	1	60	from_2F_c
+19	1	696	920	stairs_3	1	1
+19	1	1368	472	stairs_4	1	1
+19	1	456	472	stairs_5	1	1
 0	2	408	464	96	8	437
 0	2	24	912	256	8	437
 0	2	24	888	256	8	438

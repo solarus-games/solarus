@@ -2533,3 +2533,9 @@ line1 = "Cela dit, n'allez pas"
 line2 = "à l'est, c'est toujours"
 line3 = "dangereux."
 
+[dungeon_1.stupid_run_sign]
+#       |-----------------------|
+line1 = "Sur votre droite : "
+line2 = "hommage à une épreuve"
+line3 = "vraiment stupide."
+

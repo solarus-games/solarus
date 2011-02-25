@@ -94,7 +94,7 @@ booleans:
 237	1F NW: door locked (big key required)
 238	1F NW: big chest with the feather
 239	1F NE: boss door
-
+240	1F SE: water removed
 241	small key 1
 242	small key 2
 243	small key 3
@@ -109,3 +109,6 @@ booleans:
 259-282 2F NE: 24 weak blocks
 283	water of 2F SW removed
 284-290 2F NE: 7 stairs
+291	1F SE: piece of heart
+292	1F NE: chest with 100 rupees in the ALTTP room
+

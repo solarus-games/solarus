@@ -60,7 +60,7 @@ plays a music
 starts a timer which will call a function of your script once finished
 
 - <tt>sol.main.timer_stop(callback)</tt>: 
-stops a timer that is currently running from your script
+stops a timer that of the script if it exists
 
 - <tt>sol.main.timer_stop_all()</tt>: 
 stops all timers started by your script

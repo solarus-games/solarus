@@ -89,16 +89,12 @@ EntityType Stairs::get_type() {
 }
 
 /**
- * @brief Sets the map.
- *
- * Warning: as this function is called when initializing the map,
- * the current map of the game is still the old one.
- *
+ * @brief Notifies this entity that its map has just become active.
  * @param map the map
  */
-void Stairs::set_map(Map &map) {
+void Stairs::notify_map_started() {
 
-  MapEntity::set_map(map);
+  MapEntity::notify_map_started();
   update_dynamic_tiles();
 }
 

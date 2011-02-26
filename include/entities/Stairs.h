@@ -84,7 +84,7 @@ class Stairs: public Detector {
 
     EntityType get_type();
 
-    void set_map(Map &map);
+    void notify_map_started();
     bool is_inside_floor();
     bool has_layer_independent_collisions();
     bool is_sword_ignored();

@@ -111,4 +111,13 @@ booleans:
 284-290 2F NE: 7 stairs
 291	1F SE: piece of heart
 292	1F NE: chest with 100 rupees in the ALTTP room
+293	2F NE: stairs 1
+294	2F NE: stairs 2
+295	2F NE: stairs 3
+296	2F NE: stairs 4
+297	2F NE: stairs 5
+298	2F NE: stairs 6
+299	2F NE: stairs 7
+300	2F NE: stairs 8
+301	2F NE: door of the enemy fight
 

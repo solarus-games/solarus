@@ -2540,3 +2540,6 @@ line1 = "Sur votre droite : "
 line2 = "hommage à une épreuve"
 line3 = "vraiment stupide."
 
+[dungeon_1.2f_sw_water_removed]
+#       |-----------------------|
+line1 = "Au loin... un bruit..."

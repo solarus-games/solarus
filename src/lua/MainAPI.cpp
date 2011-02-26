@@ -120,7 +120,7 @@ int Script::main_api_timer_start(lua_State *l) {
 }
 
 /**
- * @brief Stops an existing timer in the script.
+ * @brief Stops a timer of this script if it exists.
  *
  * - Argument 1 (string): name of the Lua function that is supposed to be called
  * when the timer finishes

@@ -7,8 +7,6 @@ function event_appear()
   sol.enemy.create_sprite("enemies/globul")
   sol.enemy.set_size(16, 16)
   sol.enemy.set_origin(8, 13)
-
-  go_random()
 end
 
 function event_movement_changed()
@@ -20,6 +18,7 @@ function event_movement_changed()
 end
 
 function event_restart()
+  go_random()
   sol.main.timer_start(1000, "check_hero", false)
 end
 

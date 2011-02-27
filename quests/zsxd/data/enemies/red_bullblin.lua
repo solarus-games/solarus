@@ -23,12 +23,11 @@ function event_appear()
   sword_sprite = get_sword_sprite()
   sol.enemy.set_invincible_sprite(sword_sprite)
   sol.enemy.set_attack_consequence_sprite(sword_sprite, "sword", "custom")
-
-  go_random()
 end
 
 function event_restart()
   sol.main.timer_start(1000, "check_hero", false)
+  go_random()
 end
 
 function event_hurt()

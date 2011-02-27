@@ -2551,8 +2551,8 @@ line3 = "périls."
 
 [dungeon_1.small_key_danger_east]
 #       |-----------------------|
-line1 = "Cela dit, n'allez pas"
-line2 = "à l'est, c'est toujours"
+line1 = "Par contre, ne vas pas"
+line2 = "à l'est, c'est sûrement"
 line3 = "dangereux."
 
 [dungeon_1.stupid_run_sign]

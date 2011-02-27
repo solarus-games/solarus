@@ -15,6 +15,9 @@ function event_map_started(destination_point_name)
     sol.map.tile_set_enabled("c_water_exit", true)
     sol.map.switch_set_activated("remove_water_switch", true)
   end
+
+  -- WTF room
+  sol.map.door_set_open("wtf_door", true)
 end
 
 -- weak walls: play the secret sound
@@ -30,7 +33,7 @@ end
 function event_treasure_obtained(item_name, variant, savegame_variable)
 
   if savegame_variable == 248 then
-    sol.map.dialog_start("small_key_danger_east")
+    sol.map.dialog_start("dungeon_1.small_key_danger_east")
   end
 end
 
@@ -60,6 +63,10 @@ function event_hero_on_sensor(sensor_name)
     sol.map.hero_freeze()
     sol.main.timer_start(1000, "miniboss_timer", false)
     fighting_miniboss = true
+  elseif string.match(sensor_name, "^wtf_sensor")
+    and sol.map.door_is_open("wtf_door")
+    and not sol.map.enemy_is_group_dead("wtf_room_enemy") then
+    sol.map.door_close("wtf_door")
   end
 end
 
@@ -74,6 +81,11 @@ function event_enemy_dead(enemy_name)
   if enemy_name == "miniboss" then
     sol.main.play_music("dark_world_dungeon.spc")
     sol.map.door_open("miniboss_door")
+  elseif string.match(enemy_name, "wtf_room_enemy")
+      and sol.map.enemy_is_group_dead("wtf_room_enemy")
+      and not sol.map.door_is_open("wtf_door") then
+    sol.map.door_open("wtf_door")
+    sol.main.play_sound("secret")
   end
 end
 

@@ -209,7 +209,6 @@ void Enemy::set_map(Map &map) {
   MapEntity::set_map(map);
 
   if (is_enabled()) {
-    // let the subclass initialize the enemy
     initialize();
     enable_pixel_collisions();
     restart();

@@ -120,4 +120,6 @@ booleans:
 299	2F NE: stairs 7
 300	2F NE: stairs 8
 301	2F NE: door of the enemy fight
+302	1F NE: miniboss killed
+303	1F NE: water drained
 

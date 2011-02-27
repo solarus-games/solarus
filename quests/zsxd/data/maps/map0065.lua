@@ -1,5 +1,7 @@
 -- Temple of Stupidities 1F NE
 
+will_remove_water = false
+
 function event_map_started(destination_point_name)
 
   -- switches of stairs of the central room
@@ -115,9 +117,11 @@ end
 function event_hero_on_sensor(sensor_name)
 
   if sensor_name == "remove_water_sensor"
-     and not sol.game.savegame_get_boolean(283) then
+     and not sol.game.savegame_get_boolean(283)
+     and not will_remove_water then
 
     sol.main.timer_start(500, "remove_2f_sw_water", false)
+    will_remove_water = true
   end
 end
 

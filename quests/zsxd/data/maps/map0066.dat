@@ -410,7 +410,7 @@
 2	0	1536	0	16	912	teletransporter	0	2	67	_side
 2	0	0	-16	1536	16	teletransporter_2	0	2	64	_side
 19	0	1368	528	stairs	1	4
-5	0	1296	512	chest_2	0	_none	1	245
+5	0	1296	512	chest_2	0	small_key	1	245
 19	0	1424	760	stairs_3	1	4
 19	0	1440	808	stairs_4	3	4
 19	0	784	528	stairs_6	1	4
@@ -434,7 +434,10 @@
 19	0	496	224	stairs_26	2	4
 19	0	872	288	stairs_10	3	4
 19	0	80	128	stairs_2	3	4
-5	0	152	64	chest_6	0	_none	1	242
+5	0	152	64	chest_6	0	small_key	1	242
+15	0	120	64	16	32	0
+15	0	136	96	48	16	0
+15	0	184	64	16	32	0
 0	1	48	40	224	8	439
 0	1	1360	40	32	160	319
 0	1	1352	200	48	24	52
@@ -1150,7 +1153,7 @@
 12	1	648	352	32	8	custom_obstacle_50	1	1	1	1
 12	1	488	216	32	8	custom_obstacle_51	1	1	1	1
 12	1	488	240	32	8	custom_obstacle_52	1	1	1	1
-5	1	872	376	chest_3	0	_none	1	249
+5	1	872	376	chest_3	0	small_key	1	249
 12	1	864	280	8	32	custom_obstacle_19	1	1	1	1
 12	1	888	280	8	32	custom_obstacle_20	1	1	1	1
 6	1	680	160	120	8	jump_sensor_5	2	40
@@ -1160,8 +1163,8 @@
 6	1	896	304	24	8	jump_sensor_13	2	40
 6	1	840	376	16	8	jump_sensor_14	6	40
 6	1	904	376	16	8	jump_sensor_15	6	40
-5	1	688	816	chest_4	0	_none	1	244
-5	1	152	336	chest_5	0	_none	1	243
+5	1	688	816	fight_chest	0	small_key	1	244
+5	1	152	336	chest_5	0	small_key	1	243
 9	1	1360	109	block	-1	0	0
 9	1	1360	141	block_2	-1	0	0
 9	1	1392	109	block_3	-1	0	0
@@ -1169,22 +1172,19 @@
 9	1	1376	125	block_5	-1	0	1
 12	1	72	120	8	32	custom_obstacle_3	1	1	1	1
 12	1	96	120	8	32	custom_obstacle_4	1	1	1	1
-15	1	120	64	16	32	0
-15	1	136	96	48	16	0
-15	1	184	64	16	32	0
 15	1	104	304	16	80	0
 15	1	200	304	16	80	0
 15	1	120	304	80	16	0
 15	1	120	368	80	16	0
-13	1	768	725	16	16	sensor	0
-18	1	752	696	door_27	1	0	-1
-18	1	752	648	door_28	3	0	-1
+13	1	768	725	16	16	fight_sensor	0
+18	1	752	696	fight_door	1	0	-1
+18	1	752	648	fight_door_2	3	0	-1
 12	1	1016	696	16	16	custom_obstacle_9	0	1	1	1
 12	1	1368	696	16	16	custom_obstacle_10	0	1	1	1
-7	1	840	845	enemy_3	3	globul	0	-1	_random	1	-1
-7	1	752	845	enemy_5	3	globul	0	-1	_random	1	-1
-7	1	832	773	enemy_7	3	globul	0	-1	_random	1	-1
-7	1	688	765	enemy_9	3	globul	0	-1	_random	1	-1
+7	1	816	853	fight_4	3	globul	0	-1	_random	1	-1
+7	1	744	853	fight_3	3	globul	0	-1	_random	1	-1
+7	1	856	789	fight_2	3	globul	0	-1	_random	1	-1
+7	1	680	789	fight_1	3	globul	0	-1	_random	1	-1
 10	1	1352	296	8	16	tile_2	71	1
 10	1	1352	312	8	8	tile_3	69	1
 10	1	1392	296	8	16	tile_4	71	1
@@ -1211,6 +1211,7 @@
 10	1	496	48	176	256	water_15	446	1
 10	1	560	304	112	160	water_16	446	1
 10	1	352	368	144	96	water_17	446	1
+1	1	768	709	tmp	3	0
 0	2	1336	16	64	8	437
 0	2	1336	240	64	8	437
 0	2	0	0	1536	16	170

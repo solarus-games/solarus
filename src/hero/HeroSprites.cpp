@@ -1042,7 +1042,7 @@ void HeroSprites::set_animation_bow() {
 void HeroSprites::set_animation_brandish() {
 
   tunic_sprite->set_current_animation("brandish");
-  tunic_sprite->set_current_direction(0);
+  tunic_sprite->set_current_direction(1);
   stop_displaying_sword();
   stop_displaying_shield();
   stop_displaying_trail();

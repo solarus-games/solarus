@@ -37,6 +37,8 @@ function event_switch_activated(switch_name)
 end
 
 function remove_c_water()
+  sol.main.play_sound("water_drain_begin")
+  sol.main.play_sound("water_drain")
   sol.map.tile_set_enabled("c_water_exit", true)
   sol.map.tile_set_enabled("c_water_source", false)
   sol.main.timer_start(remove_water_delay, "remove_c_water_2", false)

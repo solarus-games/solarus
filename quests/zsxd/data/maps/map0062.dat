@@ -527,6 +527,8 @@
 0	1	1320	112	8	8	69
 0	1	1320	96	8	16	71
 0	1	1328	64	16	8	70
+0	1	1256	584	80	16	2
+0	1	1256	536	80	16	2
 2	1	1536	0	16	912	teletransporter_2	0	2	63	_side
 2	1	0	-16	1536	16	teletransporter_4	0	2	60	_side
 12	1	1384	552	32	8	custom_obstacle	1	1	1	1
@@ -566,6 +568,16 @@
 13	1	1456	285	16	16	close_door_c_sensor	0
 3	1	1336	61	piece_of_heart	1	291
 8	1	1112	333	sign	3	0	entities/sign	dialog#dungeon_1.stupid_run_sign
+4	1	1264	549	0	_random	1	-1
+4	1	1280	549	0	_random	1	-1
+4	1	1296	549	0	_random	1	-1
+4	1	1312	549	0	_random	1	-1
+4	1	1328	549	0	_random	1	-1
+4	1	1264	597	0	_random	1	-1
+4	1	1280	597	0	_random	1	-1
+4	1	1296	597	0	_random	1	-1
+4	1	1312	597	0	_random	1	-1
+4	1	1328	597	0	_random	1	-1
 0	2	1024	240	96	8	437
 0	2	1024	216	96	8	438
 0	2	1232	136	64	8	438

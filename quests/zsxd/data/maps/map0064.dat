@@ -912,6 +912,32 @@
 19	1	696	920	stairs_3	1	1
 19	1	1368	472	stairs_4	1	1
 19	1	456	472	stairs_5	1	1
+7	1	80	813	enemy_12	3	skeletor	0	-1	_random	1	-1
+7	1	224	813	enemy_13	3	skeletor	0	-1	_random	1	-1
+7	1	1368	1029	enemy_14	3	tentacle	0	-1	_random	1	-1
+7	1	1472	805	enemy_15	3	skeletor	0	-1	_random	1	-1
+7	1	1304	805	enemy_16	3	skeletor	0	-1	_random	1	-1
+7	1	232	637	enemy_17	3	tentacle	0	-1	_random	1	-1
+7	1	104	525	enemy_18	3	tentacle	0	-1	_random	1	-1
+12	1	280	504	16	16	custom_obstacle_5	0	1	1	1
+12	1	280	616	16	16	custom_obstacle_6	0	1	1	1
+12	1	208	648	16	16	custom_obstacle_7	0	1	1	1
+12	1	96	648	16	16	custom_obstacle_8	0	1	1	1
+12	1	96	696	16	16	custom_obstacle_9	0	1	1	1
+12	1	208	696	16	16	custom_obstacle_10	0	1	1	1
+12	1	72	872	16	16	custom_obstacle_11	0	1	1	1
+12	1	232	872	16	16	custom_obstacle_12	0	1	1	1
+12	1	152	872	16	16	custom_obstacle_13	0	1	1	1
+12	1	632	560	16	16	custom_obstacle_14	0	1	1	1
+12	1	632	784	16	16	custom_obstacle_15	0	1	1	1
+12	1	1192	784	16	16	custom_obstacle_16	0	1	1	1
+12	1	1192	560	16	16	custom_obstacle_17	0	1	1	1
+12	1	1368	920	16	16	custom_obstacle_18	0	1	1	1
+12	1	1240	1008	16	16	custom_obstacle_19	0	1	1	1
+12	1	1368	1096	16	16	custom_obstacle_20	0	1	1	1
+12	1	1368	872	16	16	custom_obstacle_21	0	1	1	1
+12	1	1240	784	16	16	custom_obstacle_22	0	1	1	1
+12	1	1368	696	16	16	custom_obstacle_23	0	1	1	1
 0	2	408	464	96	8	437
 0	2	24	912	256	8	437
 0	2	24	888	256	8	438

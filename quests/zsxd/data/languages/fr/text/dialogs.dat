@@ -2500,15 +2500,36 @@ line2 = " Temple des Stupidités "
 
 [dungeon_1.lizarmen_sign]
 #       |-----------------------|
-line1 = "En hommage au pire boss"
-line2 = "de l'histoire du jeu"
-line3 = "amateur."
+line1 = "En hommage au pire"
+line2 = "mini-boss de l'histoire"
+line3 = "du jeu amateur."
 
 [dungeon_1.big_code]
 #       |-----------------------|
 line1 = "3-1-4-2-3-2-1-1-4-3-2-2"
 line2 = "1-3-2-3-3-1-4-4-2-1-2-3"
 line3 = "3-2-1-1-3-4-2-2-1-3-4-1"
+
+[dungeon_1.big_code_ok]
+#       |-----------------------|
+line1 = "Début du code détecté."
+line2 = "Accès autorisé."
+next = dungeon_1.big_code_ok.2
+
+[dungeon_1.big_code_ok.2]
+#       |-----------------------|
+line1 = "Mais si tu veux mon"
+line2 = "avis, si tu entres le"
+line3 = "reste du code, il ne se"
+next = dungeon_1.big_code_ok.3
+
+[dungeon_1.big_code_ok.3]
+#       |-----------------------|
+line1 = "passera rien du tout."
+
+[dungeon_1.big_code_completed]
+#       |-----------------------|
+line1 = "Je te l'avais dit !"
 
 [dungeon_1.danger_north_sign]
 #       |-----------------------|

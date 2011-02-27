@@ -202,9 +202,6 @@
 0	1	552	304	8	8	69
 0	1	560	304	16	8	70
 0	1	448	312	32	8	287
-0	1	96	96	176	176	446
-0	1	48	272	224	144	446
-0	1	272	320	304	96	446
 0	1	-8	112	32	16	319
 0	1	0	104	16	8	70
 0	1	0	128	16	8	70
@@ -224,8 +221,6 @@
 0	1	40	432	8	48	237
 0	1	272	432	8	48	238
 0	1	584	352	24	32	406
-0	1	584	360	8	16	478
-0	1	576	352	8	32	477
 2	1	-16	0	16	912	teletransporter_3	0	2	66	_side
 2	1	0	-16	1536	16	teletransporter_4	0	2	65	_side
 12	1	168	88	8	32	custom_obstacle	1	1	1	1
@@ -240,7 +235,7 @@
 6	1	200	88	40	8	jump_sensor_2	6	40
 6	1	280	312	168	8	jump_sensor_3	6	40
 6	1	480	312	72	8	jump_sensor_4	6	40
-6	1	88	120	8	40	jump_sensor_5	0	40
+6	1	88	120	8	136	jump_sensor_5	0	40
 6	1	72	416	72	8	jump_sensor_6	2	40
 6	1	72	488	72	8	jump_sensor_7	6	40
 6	1	176	488	72	8	jump_sensor_8	6	40
@@ -249,6 +244,11 @@
 8	1	464	37	interactive_entity	3	0	entities/hint_stone	dialog#dungeon_1.big_code
 8	1	464	37	interactive_entity_2	3	0	entities/hint_stone	dialog#dungeon_1.big_code
 7	1	464	64	enemy	3	bubble	0	-1	_random	1	-1
+10	1	96	96	176	176	water	446	1
+10	1	48	272	224	144	water_2	446	1
+10	1	272	320	304	96	water_3	446	1
+10	1	576	352	8	32	water_5	477	1
+10	1	584	360	8	16	water_4	478	1
 0	2	408	216	96	8	438
 0	2	408	240	96	8	437
 0	2	0	672	1536	240	170

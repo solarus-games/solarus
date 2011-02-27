@@ -1037,7 +1037,7 @@ void MapEntity::set_movement(Movement *movement) {
     movement->set_entity(this);
 
     if (movement->is_suspended() != suspended) {
-      movement->set_suspended(suspended);
+      movement->set_suspended(suspended || !is_enabled());
     }
   }
 }
@@ -1148,6 +1148,9 @@ void MapEntity::set_enabled(bool enabled) {
   else {
     this->enabled = false;
     this->waiting_enabled = false;
+    if (get_movement() != NULL) {
+      get_movement()->set_suspended(suspended || !is_enabled());
+    }
     notify_enabled(false);
   }
 }
@@ -1644,7 +1647,7 @@ void MapEntity::set_suspended(bool suspended) {
 
   // suspend/unsuspend the movement
   if (movement != NULL) {
-    movement->set_suspended(suspended);
+    movement->set_suspended(suspended || !is_enabled());
   }
 }
 

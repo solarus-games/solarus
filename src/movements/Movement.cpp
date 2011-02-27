@@ -259,19 +259,21 @@ bool Movement::is_suspended() {
 /**
  * @brief Suspends or resumes the movement.
  *
- * This function is called by the entity when the game is suspended or resumed.
+ * This function is called by the entity to suspend or resume its movement.
  *
  * @param suspended true to suspend the movement, false to resume it
  */
 void Movement::set_suspended(bool suspended) {
 
-  this->suspended = suspended;
+  if (suspended != this->suspended) {
+    this->suspended = suspended;
 
-  uint32_t now = System::now();
+    uint32_t now = System::now();
 
-  if (suspended) {
-    // the movement is being suspended
-    when_suspended = now;
+    if (suspended) {
+      // the movement is being suspended
+      when_suspended = now;
+    }
   }
 }
 

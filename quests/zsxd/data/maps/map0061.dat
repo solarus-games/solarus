@@ -1148,8 +1148,7 @@
 6	1	984	808	8	16	jump_sensor_8	0	40
 4	1	1112	229	0	_random	1	-1
 7	1	408	365	enemy_2	3	blue_bullblin	0	-1	heart	1	-1
-7	1	408	365	wtf_room_enemy_8	3	blue_bullblin	0	-1	heart	1	-1
-7	1	384	285	wtf_room_enemy	3	blue_bullblin	0	-1	heart	1	-1
+7	1	392	285	wtf_room_enemy	3	blue_bullblin	0	-1	heart	1	-1
 7	1	360	397	wtf_room_enemy_12	3	blue_bullblin	0	-1	heart	1	-1
 7	1	440	333	wtf_room_enemy_4	3	blue_bullblin	0	-1	heart	1	-1
 7	1	384	365	wtf_room_enemy_7	3	blue_bullblin	0	-1	heart	1	-1
@@ -1161,14 +1160,14 @@
 7	1	544	293	wtf_room_enemy_2	3	blue_bullblin	0	-1	heart	1	-1
 7	1	552	413	wtf_room_enemy_13	3	blue_bullblin	0	-1	heart	1	-1
 7	1	536	373	wtf_room_enemy_11	3	blue_bullblin	0	-1	heart	1	-1
-18	1	448	248	door_8	1	0	-1
-18	1	448	200	door_9	3	0	-1
-18	1	448	472	door_10	1	0	-1
-18	1	448	424	door_11	3	0	-1
-18	1	280	328	door_12	0	0	-1
-18	1	584	328	door_13	0	0	-1
-18	1	328	328	door_14	2	0	-1
-18	1	632	328	door_15	2	0	-1
+18	1	448	248	wtf_door_5	1	0	-1
+18	1	448	200	wtf_door_6	3	0	-1
+18	1	448	472	wtf_door	1	0	-1
+18	1	448	424	wtf_door_2	3	0	-1
+18	1	280	328	wtf_door_8	0	0	-1
+18	1	584	328	wtf_door_3	0	0	-1
+18	1	328	328	wtf_door_7	2	0	-1
+18	1	632	328	wtf_door_4	2	0	-1
 4	1	360	285	0	fairy	1	-1
 4	1	360	413	0	fairy	1	-1
 4	1	568	285	0	fairy	1	-1
@@ -1199,13 +1198,13 @@
 6	1	760	776	24	8	jump_sensor_10	6	40
 15	1	688	712	96	16	0
 15	1	688	696	16	16	0
-13	1	464	277	16	16	sensor	0
-13	1	576	349	16	16	sensor_2	0
-13	1	464	421	16	16	sensor_3	0
-13	1	352	349	16	16	sensor_4	0
+13	1	464	277	16	16	wtf_sensor	0
+13	1	576	349	16	16	wtf_sensor_4	0
+13	1	464	421	16	16	wtf_sensor_3	0
+13	1	352	349	16	16	wtf_sensor_2	0
 8	1	464	557	sign_4	3	0	entities/sign	dialog#dungeon_1.danger_north_sign
 8	1	464	125	sign_2	3	0	entities/sign	dialog#dungeon_1.danger_south_sign
-8	1	744	349	sign_6	3	0	entities/sign	dialog#dungeon_1.danger_east_sign
+8	1	744	349	sign_6	3	0	entities/sign	dialog#dungeon_1.danger_west_sign
 4	1	984	229	0	_random	1	-1
 13	1	256	629	16	16	cannonballs_start_sensor	0
 13	1	8	765	16	16	cannonballs_start_sensor_2	0

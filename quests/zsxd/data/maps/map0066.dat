@@ -410,7 +410,6 @@
 2	0	1536	0	16	912	teletransporter	0	2	67	_side
 2	0	0	-16	1536	16	teletransporter_2	0	2	64	_side
 19	0	1368	528	stairs	1	4
-5	0	1296	512	chest_2	0	small_key	1	245
 19	0	1424	760	stairs_3	1	4
 19	0	1440	808	stairs_4	3	4
 19	0	784	528	stairs_6	1	4

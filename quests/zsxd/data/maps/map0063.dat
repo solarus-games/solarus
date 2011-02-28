@@ -912,7 +912,7 @@
 6	1	144	712	32	8	jump_sensor	6	40
 12	1	440	616	8	32	custom_obstacle_2	1	1	1	1
 12	1	464	616	8	32	custom_obstacle_3	1	1	1	1
-11	1	776	56	switch_2	2	0	0
+11	1	776	56	ne_door_switch	2	0	0
 12	1	992	128	24	8	custom_obstacle_4	1	1	1	1
 12	1	992	168	24	8	custom_obstacle_5	1	1	1	1
 12	1	888	128	24	8	custom_obstacle_6	1	1	1	1
@@ -993,6 +993,9 @@
 12	1	584	336	16	16	custom_obstacle_30	0	1	1	0
 7	1	432	397	enemy_13	3	globul	0	-1	_random	1	-1
 7	1	544	357	enemy_14	3	globul	0	-1	_random	1	-1
+5	1	224	928	chest_2	0	bomb_bag	1	-1
+5	1	240	928	chest_3	0	pegasus_shoes	1	-1
+5	1	208	928	chest_4	0	glove	1	-1
 0	2	624	288	8	96	441
 0	2	600	296	8	96	442
 0	2	1032	16	96	8	437

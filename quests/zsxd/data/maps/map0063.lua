@@ -1,6 +1,7 @@
 -- Dungeon 1 1F SE (Temple of Stupidities)
 
 remove_water_delay = 500 -- delay between each step when some water is disappearing
+camera_timer = ""
 
 function event_map_started(destionation_point_name)
 
@@ -33,7 +34,21 @@ function event_switch_activated(switch_name)
     and not sol.game.savegame_get_boolean(240) then
     sol.map.hero_freeze()
     remove_c_water()
+  elseif switch_name == "ne_door_switch"
+    and not sol.map.door_is_open("ne_door") then
+    camera_timer = "open_ne_door"
+    sol.map.camera_move(1072, 40, 250)
   end
+end
+
+function event_camera_reached_target()
+  sol.main.timer_start(1000, camera_timer, false)
+end
+
+function open_ne_door()
+  sol.main.play_sound("secret")
+  sol.main.timer_start(1000, "sol.map.camera_restore", false)
+  sol.map.door_open("ne_door")
 end
 
 function remove_c_water()

@@ -67,10 +67,10 @@
 2	0	0	1136	1536	16	teletransporter_2	0	2	67	_side
 19	0	424	728	stairs_1	1	4
 19	0	496	728	stairs_100	1	4
-19	0	424	832	stairs_2	3	4
-19	0	496	832	stairs_3	3	4
-19	0	384	760	stairs_4	2	4
-19	0	384	800	stairs_5	2	4
+19	0	384	760	stairs_2	2	4
+19	0	384	800	stairs_3	2	4
+19	0	424	832	stairs_4	3	4
+19	0	496	832	stairs_5	3	4
 19	0	576	800	stairs_6	0	4
 19	0	576	760	stairs_7	0	4
 1	0	560	741	from_1F_c	3	0
@@ -843,14 +843,12 @@
 7	1	184	744	enemy_2	3	bubble	0	-1	_random	1	-1
 7	1	248	656	enemy_3	3	bubble	0	-1	_random	1	-1
 7	1	264	749	fight_room_enemy_3	3	bee_guard	0	-1	heart	1	-1
-7	1	200	725	fight_room_enemy_2	3	globul	0	-1	heart	1	-1
 7	1	120	749	fight_room_enemy_4	3	mandible	0	-1	heart	1	-1
 7	1	136	693	fight_room_enemy_1	3	blue_bullblin	0	-1	heart	1	-1
-7	1	72	712	enemy_8	3	bubble	0	-1	_random	1	-1
 12	1	64	616	16	16	custom_obstacle	0	1	1	1
 12	1	64	760	16	16	custom_obstacle_2	0	1	1	1
 12	1	280	720	16	16	custom_obstacle_3	0	1	1	1
-18	1	328	712	fight_room_door_2	2	0	-1
+18	1	328	712	fight_room_door_2	2	0	301
 15	1	48	832	16	16	0
 14	1	72	893	crystal_switch
 15	1	80	832	16	16	0
@@ -859,7 +857,6 @@
 15	1	96	896	16	16	1
 15	1	64	912	16	16	0
 15	1	80	896	16	16	0
-15	1	96	912	16	16	0
 15	1	80	912	16	16	1
 15	1	64	896	16	16	1
 15	1	128	848	16	16	0
@@ -874,7 +871,6 @@
 15	1	144	896	16	16	0
 15	1	160	912	16	16	0
 15	1	128	896	16	16	1
-15	1	112	912	16	16	1
 15	1	176	832	16	16	0
 15	1	224	832	16	16	1
 15	1	192	848	16	16	0
@@ -1245,6 +1241,8 @@
 10	1	96	736	8	16	fight_room_door_closed	71	1
 10	1	96	752	8	8	fight_room_door_closed_2	69	1
 9	1	1120	589	fake_remove_water_block	-1	0	0
+14	1	104	925	crystal_switch_11
+15	1	112	912	16	16	1
 0	2	344	640	128	8	438
 0	2	504	640	128	8	438
 0	2	24	968	96	8	438

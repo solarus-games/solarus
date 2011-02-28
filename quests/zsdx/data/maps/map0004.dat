@@ -1043,7 +1043,7 @@
 12	0	416	72	16	8	custom_obstacle_2	1	1	1	1
 12	0	256	8	16	8	custom_obstacle_3	1	1	1	1
 12	0	656	24	16	8	custom_obstacle_4	1	1	1	1
-2	0	656	32	16	16	to_chest_game_cave	0	1	44	from_outside
+2	0	656	32	16	16	to_chest_game_cave	0	1	46	destination_point
 0	1	56	424	32	24	901
 0	2	608	368	16	32	1025
 0	2	624	368	40	40	1024

@@ -54,8 +54,8 @@ void PlayerMovement::update() {
   }
 
   // check whether the wanted direction has changed
-  GameControls &controls = get_entity()->get_game().get_controls();
-  int wanted_direction8 = controls.get_wanted_direction8(); 
+  GameControls& controls = get_entity()->get_game().get_controls();
+  int wanted_direction8 = controls.get_wanted_direction8();
   if (wanted_direction8 != direction8 && !is_suspended()) {
     direction8 = wanted_direction8;
     compute_movement();

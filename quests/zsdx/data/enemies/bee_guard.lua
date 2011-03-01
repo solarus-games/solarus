@@ -1,6 +1,6 @@
 -- Bee Guard
 
-hero_seen = false
+going_hero = false
 being_pushed = false
 
 function get_main_sprite()
@@ -27,8 +27,8 @@ function event_appear()
 end
 
 function event_restart()
-  sol.main.timer_start(1000, "check_hero", false)
   go_random()
+  check_hero()
 end
 
 function event_hurt()
@@ -38,12 +38,10 @@ end
 function check_hero()
 
   near_hero = sol.enemy.get_distance_to_hero() < 100
-  if near_hero and not hero_seen then
-    hero_seen = true
+  if near_hero and not going_hero then
     sol.main.play_sound("hero_seen")
     go_hero()
-  elseif not near_hero and hero_seen then
-    hero_seen = false
+  elseif not near_hero and going_hero then
     go_random()
   end
   sol.main.timer_start(1000, "check_hero", false)
@@ -81,15 +79,16 @@ function event_custom_attack_received(attack, sprite)
 end
 
 function go_random()
-  being_pushed = false
   m = sol.main.random_path_movement_create(32)
   sol.enemy.start_movement(m)
+  being_pushed = false
+  going_hero = false
 end
 
 function go_hero()
-  being_pushed = false
   m = sol.main.target_movement_create(48)
   sol.enemy.start_movement(m)
+  being_pushed = false
+  going_hero = true
 end
-
 

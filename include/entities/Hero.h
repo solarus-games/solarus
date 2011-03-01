@@ -215,6 +215,8 @@ class Hero: public MapEntity {
     Ground get_ground();
     void set_ground(Ground ground);
     bool is_ground_visible();
+    Ground get_tile_ground();
+    const Rectangle get_ground_point();
     void set_target_solid_ground_coords(const Rectangle &target_solid_ground_coords, Layer layer);
 
     /**

@@ -123,7 +123,7 @@ void DynamicTile::display_on_map() {
  */
 bool DynamicTile::test_collision_custom(MapEntity &entity) {
 
-  // must be the same coordinates as static tiles (see Hero::check_position())
+  // we must test the same coordinates as non-dynamic tiles (see Hero::get_ground_point())
   return overlaps(entity.get_x(), entity.get_y() - 2);
 }
 

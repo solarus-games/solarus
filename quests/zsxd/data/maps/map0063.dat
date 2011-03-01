@@ -962,7 +962,7 @@
 12	1	88	200	16	16	custom_obstacle_25	0	1	1	0
 12	1	24	120	16	16	custom_obstacle_26	0	1	1	0
 12	1	248	24	16	16	custom_obstacle_27	0	1	1	0
-18	1	1056	24	ne_door	1	0	240
+18	1	1056	24	ne_door	1	0	304
 10	1	200	256	16	8	c_water_source	467	1
 10	1	192	264	32	8	c_water_middle	468	1
 10	1	48	320	208	96	c_water_initial_2	446	1

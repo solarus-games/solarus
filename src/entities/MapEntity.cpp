@@ -1037,7 +1037,7 @@ void MapEntity::set_movement(Movement *movement) {
     movement->set_entity(this);
 
     if (movement->is_suspended() != suspended) {
-      movement->set_suspended(suspended);
+      movement->set_suspended(suspended || !is_enabled());
     }
   }
 }
@@ -1148,6 +1148,9 @@ void MapEntity::set_enabled(bool enabled) {
   else {
     this->enabled = false;
     this->waiting_enabled = false;
+    if (get_movement() != NULL) {
+      get_movement()->set_suspended(suspended || !is_enabled());
+    }
     notify_enabled(false);
   }
 }
@@ -1185,13 +1188,24 @@ bool MapEntity::has_layer_independent_collisions() {
 }
 
 /**
- * @brief Returns whether a water tile is currently considered as an obstacle by this entity.
+ * @brief Returns whether a shallow water tile is currently considered as an obstacle by this entity.
  *
- * This function returns true by default.
+ * This function returns is_deep_water_obstacle() by default.
  *
  * @return true if the water tiles are currently an obstacle for this entity
  */
-bool MapEntity::is_water_obstacle() {
+bool MapEntity::is_shallow_water_obstacle() {
+  return is_deep_water_obstacle();
+}
+
+/**
+ * @brief Returns whether a deep water tile is currently considered as an obstacle by this entity.
+ *
+ * This function returns true by default.
+ *
+ * @return true if the deep water tiles are currently an obstacle for this entity
+ */
+bool MapEntity::is_deep_water_obstacle() {
   return true;
 }
 
@@ -1633,7 +1647,7 @@ void MapEntity::set_suspended(bool suspended) {
 
   // suspend/unsuspend the movement
   if (movement != NULL) {
-    movement->set_suspended(suspended);
+    movement->set_suspended(suspended || !is_enabled());
   }
 }
 

@@ -1,8 +1,40 @@
 -- Temple of Stupidities 1F NE
 
+will_remove_water = false
+
+function event_map_started(destination_point_name)
+
+  -- switches of stairs of the central room
+  for i = 1,7 do
+    if not sol.game.savegame_get_boolean(292 + i) then
+      sol.map.stairs_set_enabled("stairs_"..i, false)
+      sol.map.switch_set_activated("stairs_"..i.."_switch", false)
+    else
+      sol.map.switch_set_activated("stairs_"..i.."_switch", true)
+    end
+  end
+
+  -- room with enemies to fight
+  if sol.game.savegame_get_boolean(301) then
+    sol.map.enemy_remove_group("fight_room")
+  end
+
+  -- block pushed to remove the water of 2F SW
+  if sol.game.savegame_get_boolean(283) then
+    sol.map.block_set_enabled("remove_water_block", false)
+  else
+    sol.map.block_set_enabled("fake_remove_water_block", false)
+  end
+end
+
 function event_switch_activated(switch_name)
 
-  if switch_name == "switch_torch_1_on" then
+  i = string.match(switch_name, "^stairs_\([1-7]\)_switch$")
+  if (i ~= nil) then
+    sol.map.stairs_set_enabled("stairs_"..i, true)
+    sol.main.play_sound("secret")
+    sol.game.savegame_set_boolean(292 + i, true)
+  elseif switch_name == "switch_torch_1_on" then
     sol.map.tile_set_enabled("torch_1", true)
     sol.map.switch_set_activated("switch_torch_1_off", false)
   elseif switch_name == "switch_torch_1_off" then
@@ -71,5 +103,36 @@ function event_switch_activated(switch_name)
     sol.map.switch_set_activated("switch_torch_11_on", false)
   end
 end
+
+function event_enemy_dead(enemy_name)
+
+  if string.match(enemy_name, '^fight_room')
+      and sol.map.enemy_is_group_dead("fight_room") then
+
+    sol.main.play_sound("secret")
+    sol.map.door_open("fight_room_door")
+  end
+end
+
+function event_hero_on_sensor(sensor_name)
+
+  if sensor_name == "remove_water_sensor"
+     and not sol.game.savegame_get_boolean(283)
+     and not will_remove_water then
+
+    sol.main.timer_start(500, "remove_2f_sw_water", false)
+    will_remove_water = true
+  end
+end
+
+function remove_2f_sw_water()
+
+  sol.main.play_sound("water_drain_begin")
+  sol.main.play_sound("water_drain")
+  sol.map.dialog_start("dungeon_1.2f_sw_water_removed")
+  sol.game.savegame_set_boolean(283, true)
+end
+
+
 
 

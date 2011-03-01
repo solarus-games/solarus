@@ -215,6 +215,8 @@ class Hero: public MapEntity {
     Ground get_ground();
     void set_ground(Ground ground);
     bool is_ground_visible();
+    Ground get_tile_ground();
+    const Rectangle get_ground_point();
     void set_target_solid_ground_coords(const Rectangle &target_solid_ground_coords, Layer layer);
 
     /**
@@ -223,7 +225,7 @@ class Hero: public MapEntity {
      * Information about what is considered as an obstacle for the hero.
      */
     bool is_obstacle_for(MapEntity &other);
-    bool is_water_obstacle();
+    bool is_deep_water_obstacle();
     bool is_hole_obstacle();
     bool is_ladder_obstacle();
     bool is_block_obstacle(Block &block);

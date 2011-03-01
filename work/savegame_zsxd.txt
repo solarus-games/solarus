@@ -101,7 +101,8 @@ booleans:
 236	1F NW: door that requires the code
 237	1F NW: door locked (big key required)
 238	1F NW: big chest with the feather
-
+239	1F NE: boss door
+240	1F SE: water removed
 241	small key 1
 242	small key 2
 243	small key 3
@@ -116,3 +117,18 @@ booleans:
 259-282 2F NE: 24 weak blocks
 283	water of 2F SW removed
 284-290 2F NE: 7 stairs
+291	1F SE: piece of heart
+292	1F NE: chest with 100 rupees in the ALTTP room
+293	2F NE: stairs 1
+294	2F NE: stairs 2
+295	2F NE: stairs 3
+296	2F NE: stairs 4
+297	2F NE: stairs 5
+298	2F NE: stairs 6
+299	2F NE: stairs 7
+300	2F NE: stairs 8
+301	2F NE: door of the enemy fight
+302	1F NE: miniboss killed
+303	1F NE: water drained
+304	1F SE: door before the boss
+

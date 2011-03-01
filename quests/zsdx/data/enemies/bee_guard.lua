@@ -1,7 +1,8 @@
 -- Bee Guard
 
-hero_seen = false
+going_hero = false
 being_pushed = false
+movement = nil
 
 function get_main_sprite()
   return sol.enemy.get_sprite("enemies/bee_guard")
@@ -24,12 +25,14 @@ function event_appear()
   sword_sprite = get_sword_sprite()
   sol.enemy.set_invincible_sprite(sword_sprite)
   sol.enemy.set_attack_consequence_sprite(sword_sprite, "sword", "custom")
-
-  go_random()
 end
 
 function event_restart()
-  sol.main.timer_start(1000, "check_hero", false)
+
+  if movement == nil then
+    go_random()
+    check_hero()
+  end
 end
 
 function event_hurt()
@@ -39,12 +42,10 @@ end
 function check_hero()
 
   near_hero = sol.enemy.get_distance_to_hero() < 100
-  if near_hero and not hero_seen then
-    hero_seen = true
+  if near_hero and not going_hero then
     sol.main.play_sound("hero_seen")
     go_hero()
-  elseif not near_hero and hero_seen then
-    hero_seen = false
+  elseif not near_hero and going_hero then
     go_random()
   end
   sol.main.timer_start(1000, "check_hero", false)
@@ -53,8 +54,8 @@ end
 function event_movement_changed()
 
   if not being_pushed then
-    m = sol.enemy.get_movement()
-    direction4 = sol.main.movement_get_property(m, "displayed_direction")
+    movement = sol.enemy.get_movement()
+    direction4 = sol.main.movement_get_property(movement, "displayed_direction")
     sol.main.sprite_set_direction(get_main_sprite(), direction4)
     sol.main.sprite_set_direction(get_sword_sprite(), direction4)
   end
@@ -76,21 +77,22 @@ function event_custom_attack_received(attack, sprite)
     x, y = sol.enemy.get_position()
     hero_x, hero_y = sol.map.hero_get_position()
     angle = sol.main.get_angle(hero_x, hero_y, x, y)
-    m = sol.main.temporal_movement_create(128, angle, 200)
-    sol.enemy.start_movement(m)
+    movement = sol.main.temporal_movement_create(128, angle, 200)
+    sol.enemy.start_movement(movement)
   end
 end
 
 function go_random()
+  movement = sol.main.random_path_movement_create(32)
+  sol.enemy.start_movement(movement)
   being_pushed = false
-  m = sol.main.random_path_movement_create(32)
-  sol.enemy.start_movement(m)
+  going_hero = false
 end
 
 function go_hero()
+  movement = sol.main.target_movement_create(48)
+  sol.enemy.start_movement(movement)
   being_pushed = false
-  m = sol.main.target_movement_create(48)
-  sol.enemy.start_movement(m)
+  going_hero = true
 end
-
 

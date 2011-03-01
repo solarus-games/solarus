@@ -526,7 +526,7 @@ bool Hero::State::are_collisions_ignored() {
  *
  * @return true if the deep water tiles are considered as obstacles in this state
  */
-bool Hero::State::is_water_obstacle() {
+bool Hero::State::is_deep_water_obstacle() {
   return false;
 }
 

@@ -9,8 +9,6 @@ function event_appear()
   sol.enemy.set_size(16, 16)
   sol.enemy.set_origin(8, 13)
   sol.enemy.set_hurt_sound_style("monster")
-
-  go_random()
 end
 
 function event_movement_changed()
@@ -23,6 +21,7 @@ end
 
 function event_restart()
   sol.main.timer_start(1000, "check_hero", false)
+  go_random()
 end
 
 function event_hurt()

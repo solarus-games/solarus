@@ -11,11 +11,11 @@ function event_appear()
   sol.enemy.set_size(16, 16)
   sol.enemy.set_origin(8, 13)
   sol.enemy.set_attack_consequence("explosion", "ignored")
-  go_random()
 end
 
 function event_restart()
-  sol.main.timer_start(100, "check_hero", false)
+  go_random()
+  check_hero()
 end
 
 function check_hero()
@@ -86,5 +86,4 @@ function go_hero()
   sol.enemy.start_movement(m)
   going_hero = true
 end
-
 

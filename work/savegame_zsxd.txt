@@ -122,4 +122,5 @@ booleans:
 301	2F NE: door of the enemy fight
 302	1F NE: miniboss killed
 303	1F NE: water drained
+304	1F SE: door before the boss
 

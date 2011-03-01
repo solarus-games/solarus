@@ -66,18 +66,26 @@ booleans:
 45 outside link's house chest
 
 100 to 199	reserved for crazy_house (dungeon 2)
-100	Hidden Piece of Heart
-101	Empty chest 1 switch
-102	Empty chest 1
-103 Empty chest 2
-104 Hidden 50 rupees
-105 Weak Wall A
-106 Small key chest A
-107 20 rupees chest A
-108	50 rupees chest A
+100	1FA: Hidden Piece of Heart [PH1]
+101	1FA: Empty chest Switch [CS3]
+102	1FA: Empty chest [CV3]
+103 1FA: Empty chest [CV1]
+104    : Hidden 50 rupees [HR1]
+105 1FA: Weak Wall [WW1]
+106 3F : Small key chest [CK1]
+107 1FB: 20 rupees chest [CR1]
+108	3F : 50 rupees chest [CR2]
+109 1FA: 1 rupee chest [CR3]
+110 1FB: Empty chest [CV3]
+111 3F : Big Key chest [CK5]
+112 1FB: Empty chest [CV4]
+113 1FB: Empty chest [CV2]
+114 2FA: Piece of Heart [PH2]
+115 1FB: Bombs chest [CB1]
 
-140	Key Door A
-141 Key Door B
+140	1FA: Key Door A [DK1]
+141 3F : Key Door B [DK2]
+142 1FB: Key Door C [DK3]
 
 200 to 399	reserved for the stupid temple (dungeon 1)
 201	1F SW: chest with the boss key

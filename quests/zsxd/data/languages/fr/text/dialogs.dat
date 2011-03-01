@@ -2234,6 +2234,13 @@ line2 = "Ouais c'est bon"
 line3 = "Tu plaisantes ?"
 question = true
 
+[crazy_house.infinite_greetings]
+#       |--------------------|
+line1 = "Cela vous va ?"
+line2 = "Ouais c'est bon"
+line3 = "Tu plaisantes ?"
+question = true
+
 [geek_house.sign_a]
 line1 = "Itération des politiques"
 line2 = "optimistes et"

@@ -165,18 +165,17 @@
 19	0	160	304	stairs	1	4
 4	0	512	421	0	_random	1	-1
 4	0	416	421	0	_random	1	-1
-11	0	392	408	empty_chest_1_switch	1	0	0
+11	0	392	408	CS3	1	0	0
 4	0	528	421	0	_random	1	-1
 19	0	544	360	stairs_3	0	4
 4	0	400	421	0	_none	1	-1
-5	0	1256	392	empty_chest_2	0	_none	1	103
+5	0	1256	392	CV1	0	_none	1	103
 15	0	1096	264	112	16	0
-15	0	1096	176	32	16	1
+15	0	1096	176	48	16	1
 3	0	808	45	piece_of_heart	1	-1
 19	0	1136	360	stairs_4	2	4
 19	0	1432	128	stairs_5	3	4
 10	0	1424	88	8	8	tile	206	1
-5	0	72	360	chest	0	small_key	1	-1
 13	0	1104	245	112	16	passage_sensor_A	0
 0	1	1648	304	224	144	2
 0	1	1424	304	144	144	2
@@ -711,6 +710,9 @@
 0	1	1656	176	16	8	90
 0	1	1608	200	16	8	93
 0	1	1608	176	16	8	91
+0	1	1240	200	8	8	69
+0	1	1248	200	64	8	70
+0	1	1312	200	8	8	69
 10	1	1648	176	24	32	weak_wall_A_closed	51	1
 10	1	1608	176	24	32	weak_wall_A_closed_2	50	1
 19	1	160	24	stairs_2	1	0
@@ -742,12 +744,12 @@
 3	1	696	149	heart_container	1	100
 3	1	696	149	heart_container	1	100
 8	1	624	325	mario_message_1	3	0	_none	map
-5	1	408	272	empty_chest_1	0	_none	1	102
-5	1	1256	248	useless_chest_1	0	_none	1	-1
-1	1	1264	229	useless_destination_point	-1	1
+5	1	408	272	CV3	0	_none	1	102
+5	1	1272	216	CR3	0	rupee	1	109
+1	1	1280	261	TB_destination	-1	1
 8	1	1200	189	npc_1	3	1	npc/static_villager8	map
 8	1	1200	189	npc_2	3	1	npc/static_villager8	map
-18	1	848	264	key_door_A	1	1	0
+18	1	848	264	DK1	1	1	140
 12	1	1128	352	8	8	custom_obstacle_17	1	1	1	1
 12	1	1128	376	8	8	custom_obstacle_18	1	1	1	1
 1	1	168	37	from2Fa_left	3	0
@@ -764,10 +766,12 @@
 19	1	1832	136	stairs_6	1	0
 1	1	1840	149	from2Fa_right	3	0
 2	1	1832	136	16	16	to2Fa_right	0	1	22	from1Fb
-18	1	1608	192	weak_wall_A	0	5	105
-18	1	1656	192	weak_wall_A_2	2	5	105
+18	1	1608	176	weak_wall_A	0	5	105
+18	1	1656	176	weak_wall_A_2	2	5	105
 14	1	1216	189	crystal_switch
 2	1	160	24	16	16	to2Fa_left	0	1	22	from1Fa
+6	1	1232	224	8	56	jump_sensor_3	4	40
+6	1	1240	280	56	8	jump_sensor_2	6	40
 0	2	1040	320	8	96	266
 0	2	1016	336	8	64	267
 0	2	0	0	16	496	170

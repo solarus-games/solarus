@@ -969,8 +969,7 @@ void Hero::check_position() {
                          // (e.g. transition between maps)
 
     this->ground = GROUND_EMPTY;
-    // we must test the same coordinates as dynamic tiles (see DynamicTile::test_collision_custom)
-    Ground tiles_ground = get_map().get_tile_ground(get_layer(), get_x(), get_y() - 2);
+    Ground tiles_ground = get_tile_ground();
     set_ground(tiles_ground);
   }
 
@@ -1154,6 +1153,30 @@ bool Hero::is_ground_visible() {
 }
 
 /**
+ * @brief Returns the type of ground of the tile below the hero.
+ *
+ * Only static tiles are considered by this function
+ * (dynamic tiles are ignored).
+ *
+ * @return the type of ground of the tile below the hero
+ */
+Ground Hero::get_tile_ground() {
+  return get_map().get_tile_ground(get_layer(), get_ground_point());
+}
+
+/**
+ * @brief Returns the coordinates of the point used to determine the ground
+ * below the hero.
+ * @return the coordinates of the point used to determine the ground
+ * (relative to the map)
+ */
+const Rectangle Hero::get_ground_point() {
+  // we must return here the same coordinates as dynamic tiles
+  // (see DynamicTile::test_collision_custom)
+  return Rectangle(get_x(), get_y() - 2, 1, 1);
+}
+
+/**
  * @brief Specifies a point of the map where the hero will go back if he falls
  * into a hole or some other bad ground.
  *
@@ -1322,7 +1345,7 @@ void Hero::notify_collision_with_teletransporter(Teletransporter &teletransporte
 
   if (teletransporter.is_on_map_side() || !state->can_avoid_teletransporter()) {
 
-    bool on_hole = get_map().get_tile_ground(get_layer(), get_x(), get_y()) == GROUND_HOLE;
+    bool on_hole = get_tile_ground() == GROUND_HOLE;
     if (on_hole || state->is_teletransporter_delayed()) {
       this->delayed_teletransporter = &teletransporter; // fall into the hole (or do something else) first, transport later
     }

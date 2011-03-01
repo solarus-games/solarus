@@ -1068,7 +1068,7 @@
 8	0	808	805	lady_b	3	1	npc/villager2	dialog#outside_fields_NO.lady_b
 8	0	640	869	lady_a	3	1	npc/villager1	dialog#outside_fields_NO.lady_a
 8	0	552	797	interactive_entity	3	1	npc/static_villager9	dialog#outside_fields_NO.drunk
-8	0	712	829	guy_a	3	1	npc/newlink7	dialog#
+8	0	712	829	guy_a	3	1	npc/newlink7	dialog#outside_fields_NO.guy_a
 0	2	792	968	96	40	511
 0	2	584	560	80	24	717
 0	2	696	880	8	40	514

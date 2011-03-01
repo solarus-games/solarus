@@ -248,24 +248,3 @@ y = 1328
 save = 250
 big = 0
 
-[dungeon_1.map_63.chest_1]
-floor = 0
-x = 1760
-y = 2064
-save = -1
-big = 0
-
-[dungeon_1.map_63.chest_2]
-floor = 0
-x = 1776
-y = 2064
-save = -1
-big = 0
-
-[dungeon_1.map_63.chest_3]
-floor = 0
-x = 1744
-y = 2064
-save = -1
-big = 0
-

@@ -2,6 +2,7 @@
 
 going_hero = false
 being_pushed = false
+movement = nil
 
 function get_main_sprite()
   return sol.enemy.get_sprite("enemies/red_bullblin")
@@ -26,8 +27,11 @@ function event_appear()
 end
 
 function event_restart()
-  go_random()
-  check_hero()
+
+  if movement == nil then
+    go_random()
+    check_hero()
+  end
 end
 
 function event_hurt()
@@ -49,8 +53,8 @@ end
 function event_movement_changed()
 
   if not being_pushed then
-    m = sol.enemy.get_movement()
-    direction4 = sol.main.movement_get_property(m, "displayed_direction")
+    movement = sol.enemy.get_movement()
+    direction4 = sol.main.movement_get_property(movement, "displayed_direction")
     sol.main.sprite_set_direction(get_main_sprite(), direction4)
     sol.main.sprite_set_direction(get_sword_sprite(), direction4)
   end
@@ -71,21 +75,21 @@ function event_custom_attack_received(attack, sprite)
     x, y = sol.enemy.get_position()
     hero_x, hero_y = sol.map.hero_get_position()
     angle = sol.main.get_angle(hero_x, hero_y, x, y)
-    m = sol.main.temporal_movement_create(128, angle, 200)
-    sol.enemy.start_movement(m)
+    movement = sol.main.temporal_movement_create(128, angle, 200)
+    sol.enemy.start_movement(movement)
   end
 end
 
 function go_random()
-  m = sol.main.random_path_movement_create(32)
-  sol.enemy.start_movement(m)
+  movement = sol.main.random_path_movement_create(32)
+  sol.enemy.start_movement(movement)
   being_pushed = false
   going_hero = false
 end
 
 function go_hero()
-  m = sol.main.target_movement_create(48)
-  sol.enemy.start_movement(m)
+  movement = sol.main.target_movement_create(48)
+  sol.enemy.start_movement(movement)
   being_pushed = false
   going_hero = true
 end

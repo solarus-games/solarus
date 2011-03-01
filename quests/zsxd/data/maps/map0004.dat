@@ -3,10 +3,19 @@
 0	0	416	-8	48	16	505
 0	0	424	8	32	8	523
 0	0	408	-16	8	16	503
-0	0	360	-40	16	16	37
-0	0	240	-40	16	16	42
 0	0	416	-56	48	40	502
+0	0	88	56	8	24	487
+0	0	96	56	16	24	67
+0	0	88	48	32	8	489
+0	0	112	56	8	24	488
 2	0	176	-16	208	16	teletransporter	0	2	2	_side
+5	0	120	64	chest	0	bomb_bag	1	-1
+5	0	136	64	chest_2	0	glove	1	-1
+5	0	152	64	chest_3	0	heart_container	1	-1
+5	0	168	64	chest_4	0	bottle_1	1	-1
+5	0	184	64	chest_5	0	pegasus_shoes	1	-1
+2	0	96	64	16	16	teletransporter_2	0	1	63	from_outside
+1	0	104	93	from_temple_of_stupidities	3	0
 0	2	192	-40	8	40	514
 0	2	416	-48	48	40	511
 0	2	0	-32	192	40	511

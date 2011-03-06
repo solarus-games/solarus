@@ -2,6 +2,7 @@
 *.swp
 *.luac
 *.class
+*.pyc
 .cproject
 .project
 .classpath

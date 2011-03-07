@@ -771,8 +771,7 @@
 4	0	968	677	5	_random	1	-1
 4	0	968	693	5	_random	1	-1
 4	0	968	709	5	_random	1	-1
-12	0	280	392	16	40	custom_obstacle	0	1	1	0
-12	0	552	584	88	16	custom_obstacle_2	0	1	1	0
+12	0	688	512	16	64	custom_obstacle_2	0	1	1	0
 7	0	360	565	enemy	3	tentacle	0	-1	_random	1	-1
 7	0	176	525	enemy_2	3	tentacle	0	-1	_random	1	-1
 7	0	600	645	enemy_4	3	tentacle	0	-1	_random	1	-1
@@ -785,6 +784,9 @@
 7	0	776	829	enemy_11	3	tentacle	0	-1	_random	1	-1
 7	0	976	901	enemy_12	3	tentacle	0	-1	_random	1	-1
 7	0	272	637	enemy_13	3	tentacle	0	-1	_random	1	-1
+12	0	88	568	40	16	custom_obstacle	0	0	1	0
+8	0	192	909	forest_monkey	3	1	npc/monkey	map
+12	0	560	616	72	16	custom_obstacle_3	0	0	1	0
 0	2	680	808	48	40	511
 0	2	672	800	8	40	513
 0	2	728	800	8	40	514

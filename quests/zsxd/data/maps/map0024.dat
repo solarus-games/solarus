@@ -862,7 +862,7 @@
 4	1	736	541	2	_random	1	-1
 8	1	832	525	cool_man	3	1	npc/static_villager1	map
 13	1	1248	797	16	16	infinite_corridor	0
-1	1	1080	797	destination_point	0	0
+1	1	1080	797	infinite_start	0	0
 18	1	632	776	door_7	2	0	-1
 18	1	584	776	door_8	0	0	-1
 13	1	576	797	16	16	sensor	0

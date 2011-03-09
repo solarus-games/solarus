@@ -2236,10 +2236,16 @@ question = true
 
 [crazy_house.infinite_greetings]
 #       |--------------------|
-line1 = "Cela vous va ?"
-line2 = "Ouais c'est bon"
-line3 = "Tu plaisantes ?"
-question = true
+line1 = "Vous devez appuyer"
+line2 = "sur le giga bouton"
+line3 = "pour traverser le"
+next = crazy_house.infinite_greetings_2
+
+[crazy_house.infinite_greetings_2]
+#       |--------------------|
+line1 = "couloir sans fin, ce"
+line2 = "que vous n'avez pas"
+line3 = "fait ! GWAH HA HA !"
 
 [geek_house.sign_a]
 line1 = "Itération des politiques"

@@ -348,6 +348,9 @@ makes the hero shoot an arrow
 - <tt>sol.map.hero_start_running()</tt>:
 makes the hero run
 
+- <tt>sol.map.hero_start_hurt(source_x, source_y, life_points, magic_points)</tt>:
+makes the hero be hurt
+
 - <tt>sol.map.npc_set_position(npc, x, y)</tt>:
 sets the position of an NPC
 

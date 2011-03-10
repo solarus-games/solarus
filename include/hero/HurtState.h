@@ -26,13 +26,13 @@ class Hero::HurtState: public Hero::State {
 
   private:
 
-    MapEntity &source;		/**< the entity that hurts the hero (usually an enemy) */
+    const Rectangle source_xy;	/**< coordinates of whatever is hurting the hero (usually an enemy) */
     int life_points;		/**< number of heart quarters to remove (this number may be reduced by the tunic) */
     int magic_points;		/**< number of magic points to remove */
 
   public:
 
-    HurtState(Hero &hero, MapEntity &source, int life_points, int magic_points);
+    HurtState(Hero &hero, const Rectangle& source_xy, int life_points, int magic_points);
     ~HurtState();
 
     void start(State *previous_state);

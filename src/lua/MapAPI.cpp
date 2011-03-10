@@ -519,6 +519,32 @@ int Script::map_api_hero_start_running(lua_State *l) {
 }
 
 /**
+ * @brief Makes the hero be hurt.
+ *
+ * - Argument 1 (integer): x coordinate of whatever is hurting the hero
+ * - Argument 2 (integer): y coordinate of whatever is hurting the hero
+ * - Argument 3 (integer): number of life points to remove (possibly zero)
+ * - Argument 4 (integer): number of magic points to remove (possibly zero)
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_hero_start_hurt(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 4, &script);
+
+  int source_x = luaL_checkinteger(l, 1);
+  int source_y = luaL_checkinteger(l, 2);
+  int life_points = luaL_checkinteger(l, 3);
+  int magic_points = luaL_checkinteger(l, 4);
+
+  script->get_game().get_hero().hurt(Rectangle(source_x, source_y),
+      life_points, magic_points);
+
+  return 0;
+}
+
+/**
  * @brief Returns the position of an NPC.
  *
  * - Argument 1 (string): name of the NPC

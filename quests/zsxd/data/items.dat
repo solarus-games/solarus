@@ -115,8 +115,8 @@ savegame_variable = 1032
 limit_for_counter = bombs_counter
 nb_variants = 3
 amount_1 = 10
-amount_2 = 30
-amount_3 = 99
+amount_2 = 11
+amount_3 = 12
 
 [bow]
 savegame_variable = 1102

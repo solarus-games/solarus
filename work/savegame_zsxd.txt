@@ -92,7 +92,7 @@ booleans:
 202	1F SW: chest with the map
 203	1F NE: chest with the compass
 204	1F NE: chest with the big key
-205	1F NE: big chest with the red tunic
+205	1F NE: big chest with the big bomb bag
 206	2F SW: big chest with the bow
 207-232	2F SW: weak blocks in the creepers room
 233	1F NE: weak wall to the compass
@@ -131,4 +131,4 @@ booleans:
 302	1F NE: miniboss killed
 303	1F NE: water drained
 304	1F SE: door before the boss
-
+305	1F SE: heart container in the first room

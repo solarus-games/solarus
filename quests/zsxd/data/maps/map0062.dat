@@ -570,14 +570,14 @@
 3	1	1336	61	piece_of_heart	1	291
 8	1	1112	333	sign	3	0	entities/sign	dialog#dungeon_1.stupid_run_sign
 4	1	1264	549	0	_random	1	-1
-4	1	1280	549	0	_random	1	-1
+4	1	1280	549	0	heart	1	-1
 4	1	1296	549	0	_random	1	-1
 4	1	1312	549	0	_random	1	-1
 4	1	1328	549	0	_random	1	-1
-4	1	1264	597	0	_random	1	-1
+4	1	1264	597	0	heart	1	-1
 4	1	1280	597	0	_random	1	-1
 4	1	1296	597	0	_random	1	-1
-4	1	1312	597	0	_random	1	-1
+4	1	1312	597	0	heart	1	-1
 4	1	1328	597	0	_random	1	-1
 0	2	1024	240	96	8	437
 0	2	1024	216	96	8	438

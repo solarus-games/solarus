@@ -956,15 +956,15 @@
 7	1	240	93	enemy_6	3	tentacle	0	-1	_random	1	-1
 4	1	56	669	0	heart	1	-1
 4	1	568	701	0	heart	1	-1
-4	1	568	685	0	_random	1	-1
-4	1	568	669	0	_random	1	-1
+4	1	568	685	0	heart	1	-1
+4	1	568	669	0	fairy	1	-1
 4	1	552	685	0	_random	1	-1
 4	1	552	669	0	_random	1	-1
 4	1	552	701	0	_random	1	-1
 4	1	72	701	0	_random	1	-1
 4	1	72	685	0	_random	1	-1
-4	1	56	701	0	_random	1	-1
-4	1	56	685	0	_random	1	-1
+4	1	56	701	0	fairy	1	-1
+4	1	56	685	0	heart	1	-1
 4	1	72	669	0	_random	1	-1
 12	1	88	200	16	16	custom_obstacle_25	0	1	1	0
 12	1	24	120	16	16	custom_obstacle_26	0	1	1	0
@@ -983,24 +983,25 @@
 10	1	192	304	112	16	c_water_less_c	446	0
 10	1	192	320	32	32	c_water_less_c_2	446	0
 10	1	80	352	144	32	c_water_less_c_3	446	0
-4	1	544	277	0	_random	1	-1
+4	1	544	277	0	heart	1	-1
 4	1	560	277	0	_random	1	-1
 4	1	560	293	0	_random	1	-1
 4	1	576	293	0	_random	1	-1
-4	1	576	309	0	_random	1	-1
+4	1	576	309	0	heart	1	-1
 4	1	576	277	0	_random	1	-1
 4	1	544	421	0	_random	1	-1
-4	1	560	421	0	_random	1	-1
+4	1	560	421	0	heart	1	-1
 4	1	576	421	0	_random	1	-1
 4	1	560	405	0	_random	1	-1
 4	1	576	405	0	_random	1	-1
-4	1	576	389	0	_random	1	-1
+4	1	576	389	0	heart	1	-1
 12	1	304	424	16	16	custom_obstacle_28	0	1	1	0
 12	1	456	248	16	16	custom_obstacle_29	0	1	1	0
 12	1	584	336	16	16	custom_obstacle_30	0	1	1	0
 7	1	432	397	enemy_13	3	globul	0	-1	_random	1	-1
 7	1	544	357	enemy_14	3	globul	0	-1	_random	1	-1
 2	1	304	896	16	16	teletransporter_6	0	1	4	from_temple_of_stupidities
+7	1	312	685	enemy_15	3	tentacle	0	-1	heart_container	1	305
 0	2	624	288	8	96	441
 0	2	600	296	8	96	442
 0	2	1032	16	96	8	437

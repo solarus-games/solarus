@@ -796,9 +796,9 @@
 2	0	72	768	16	16	to_outside	0	1	9	from_mountain_cave_1F
 2	0	120	696	16	16	to_2F_A	0	1	39	from_1F_A
 19	0	120	696	stairs_0	1	0
-8	0	104	709	hint	1	0	entities/hint_stone	dialog#mountain_cave.mountain_sign
-8	0	384	421	hint_2	1	0	entities/hint_stone	dialog#mountain_cave.not_much_done
-8	0	976	421	hint_3	1	0	entities/hint_stone	dialog#mountain_cave.patience
+8	0	104	709	hint	3	0	entities/hint_stone	dialog#mountain_cave.mountain_sign
+8	0	384	421	hint_2	3	0	entities/hint_stone	dialog#mountain_cave.not_much_done
+8	0	976	421	hint_3	3	0	entities/hint_stone	dialog#mountain_cave.patience
 3	0	776	253	piece_of_heart	1	105
 1	0	576	37	destination_point_1	3	0
 1	0	704	37	destination_point_2	3	0

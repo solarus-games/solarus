@@ -566,7 +566,7 @@
 2	0	120	696	16	16	to_1F_A	0	1	38	from_2F_A
 2	0	144	712	16	32	to_1F_hole	0	1	38	from_2F_hole
 19	0	120	696	stairs_1	1	1
-8	0	400	229	hint	1	0	entities/hint_stone	dialog#mountain_cave.almost_done
+8	0	400	229	hint	3	0	entities/hint_stone	dialog#mountain_cave.almost_done
 5	0	272	624	chest	0	fire_stone	1	106
 1	0	576	37	destination_point_1	3	0
 1	0	704	37	destination_point_2	3	0

@@ -55,21 +55,10 @@ InteractiveEntity::InteractiveEntity(Game &game, const std::string &name, Layer 
   message_to_show(""),
   script_to_call(NULL) {
 
-  switch (subtype) {
-
-  case CUSTOM:
-    initialize_sprite(sprite_name, 0);
-    set_size(16, 16);
-    set_origin(8, 13);
-    set_direction(direction);
-    break;
-
-  case NON_PLAYING_CHARACTER:
-    initialize_sprite(sprite_name, direction);
-    set_size(16, 16);
-    set_origin(8, 13);
-    break;
-  }
+  initialize_sprite(sprite_name, direction);
+  set_size(16, 16);
+  set_origin(8, 13);
+  set_direction(direction);
 
   // behavior
   if (behavior_string == "map") {

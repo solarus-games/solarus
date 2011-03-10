@@ -41,6 +41,7 @@ end
 function event_dialog_finished(first_message_id, answer)
 	if first_message_id == "crazy_house.infinite_greetings" then
 		sol.map.door_set_open("bowser_door", true)
+		sol.map.sensor_set_enabled("bowser_leave", true)
 		sol.main.play_sound("door_open")
 	end
 end

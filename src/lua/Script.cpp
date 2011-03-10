@@ -368,6 +368,7 @@ void Script::register_map_api() {
       { "hero_start_boomerang", map_api_hero_start_boomerang },
       { "hero_start_bow", map_api_hero_start_bow },
       { "hero_start_running", map_api_hero_start_running },
+      { "hero_start_hurt", map_api_hero_start_hurt },
       { "npc_start_movement", map_api_npc_start_movement },
       { "npc_get_sprite", map_api_npc_get_sprite },
       { "npc_remove", map_api_npc_remove },

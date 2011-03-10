@@ -1174,7 +1174,7 @@
 4	1	360	413	0	fairy	1	-1
 4	1	568	285	0	fairy	1	-1
 4	1	568	413	0	fairy	1	-1
-5	1	760	952	chest_4	1	tunic	3	205
+5	1	760	952	chest_4	1	bomb_bag	2	205
 5	1	672	960	chest_3	0	compass	1	203
 12	1	728	776	8	32	custom_obstacle_13	1	1	1	1
 12	1	752	776	8	32	custom_obstacle_14	1	1	1	1
@@ -1186,9 +1186,6 @@
 18	1	592	872	weak_wall_compass	3	5	233
 18	1	848	1096	weak_wall_red_tunic	3	5	234
 14	1	64	517	crystal_switch
-15	1	200	488	16	64	1
-15	1	104	568	16	48	1
-15	1	104	552	112	16	1
 5	1	152	336	small_key_danger_chest	0	small_key	1	248
 1	1	560	741	from_2F_c	3	0
 2	1	552	728	16	16	teletransporter_5	0	1	65	from_1F_c
@@ -1213,13 +1210,13 @@
 13	1	256	613	16	16	cannonballs_stop_sensor	0
 13	1	544	765	16	16	cannonballs_stop_sensor_2	0
 4	1	712	101	0	_random	1	-1
-4	1	728	101	0	_random	1	-1
-4	1	744	101	0	_random	1	-1
+4	1	728	101	0	heart	1	-1
+4	1	744	101	0	heart	1	-1
 4	1	760	101	0	_random	1	-1
 4	1	776	101	0	_random	1	-1
-4	1	128	101	0	_random	1	-1
+4	1	128	101	0	heart	1	-1
 4	1	144	101	0	_random	1	-1
-4	1	160	101	0	_random	1	-1
+4	1	160	101	0	heart	1	-1
 4	1	176	101	0	_random	1	-1
 4	1	192	101	0	_random	1	-1
 10	1	736	872	16	8	c_water_source	472	1
@@ -1228,6 +1225,10 @@
 10	1	696	792	96	64	c_water_less_a	446	0
 10	1	704	800	80	48	c_water_less_b	446	0
 10	1	712	808	64	32	c_water_less_c	446	0
+9	1	136	501	block	-1	0	0
+9	1	152	517	block_3	3	0	1
+9	1	168	517	block_4	-1	0	0
+9	1	184	501	block_6	-1	0	0
 0	2	16	72	8	96	441
 0	2	880	72	8	96	441
 0	2	856	72	8	96	442

@@ -144,38 +144,32 @@
 # Plume / Feather
 #       |--------------------|
 icon = 0
-line1 = "Utilise la Plume"
-line2 = "pour sauter et fran-"
-line3 = "chir des obstacles."
+line1 = "C'est une Plume,"
+line2 = "mais elle est plutôt"
+line3 = "pénible à utiliser."
 
 [_item_description.bombs_counter.1]
 # Bombes / Bombs
 #       |--------------------|
 icon = 1
-line1 = "Utilise les Bombes"
-line2 = "contre les ennemis"
-line3 = "ou pour faire"
-next = _item_description.bombs_counter.1.1
-
-[_item_description.bombs_counter.1.1]
-#       |--------------------|
-line1 = "exploser des"
-line2 = "obstacles."
+line1 = "Avec les Bombes,"
+line2 = "explose plein de"
+line3 = "trucs !"
 
 [_item_description.bow.1]
 # Arc / Bow
 #       |--------------------|
 icon = 2
-line1 = "Tu n'as plus de"
-line2 = "Flèches !"
+line1 = "Haha, tu n'as plus"
+line2 = "de Flèches !"
 
 [_item_description.bow.2]
 # Arc & Flèches / Bow & Arrows
 #       |--------------------|
 icon = 3
-line1 = "Tire des Flèches"
-line2 = "pour vaincre des"
-line3 = "ennemis coriaces."
+line1 = "Ça va, tu n'es pas"
+line2 = "encore à court de"
+line3 = "Flèches."
 
 [_item_description.boomerang.1]
 # Boomerang
@@ -224,8 +218,8 @@ line1 = "au Grappin."
 #       |--------------------|
 icon = 7
 line1 = "Le Flacon Magique"
-line2 = "peut contenir di-"
-line3 = "verses substances..."
+line2 = "peut contenir pas"
+line3 = "mal de trucs..."
 
 [_item_description.bottle_1.2]
 # Eau dans Flacon / Water in Bottle
@@ -268,30 +262,17 @@ line3 = "vie et magie !"
 # Fée dans Flacon / Fairy in Bottle
 #       |--------------------|
 icon = 12
-line1 = "Cette Fée te viendra"
-line2 = "en aide si tu es en"
-line3 = "difficulté."
-next = _item_description.bottle_1.6.1
-
-[_item_description.bottle_1.6.1]
-#       |--------------------|
-line1 = "Tu peux aussi"
-line2 = "l'utiliser à tout"
-line3 = "moment pour"
-next = _item_description.bottle_1.6.2
-
-[_item_description.bottle_1.6.2]
-#       |--------------------|
-line1 = "récupérer des"
-line2 = "Coeurs !"
+line1 = "Cette Fée viendra"
+line2 = "t'aider quand tu"
+line3 = "agoniseras."
 
 [_item_description.bottle_2.1]
 # Flacon Magique vide / Empty bottle
 #       |--------------------|
 icon = 7
 line1 = "Le Flacon Magique"
-line2 = "peut contenir di-"
-line3 = "verses substances..."
+line2 = "peut contenir pas"
+line3 = "mal de trucs..."
 
 [_item_description.bottle_2.2]
 # Eau dans Flacon / Water in Bottle
@@ -334,30 +315,17 @@ line3 = "vie et magie !"
 # Fée dans Flacon / Fairy in Bottle
 #       |--------------------|
 icon = 12
-line1 = "Cette Fée te viendra"
-line2 = "en aide si tu es en"
-line3 = "difficulté."
-next = _item_description.bottle_2.6.1
-
-[_item_description.bottle_2.6.1]
-#       |--------------------|
-line1 = "Tu peux aussi"
-line2 = "l'utiliser à tout"
-line3 = "moment pour"
-next = _item_description.bottle_2.6.2
-
-[_item_description.bottle_2.6.2]
-#       |--------------------|
-line1 = "récupérer des"
-line2 = "Coeurs !"
+line1 = "Cette Fée viendra"
+line2 = "t'aider quand tu"
+line3 = "agoniseras."
 
 [_item_description.bottle_3.1]
 # Flacon Magique vide / Empty bottle
 #       |--------------------|
 icon = 7
 line1 = "Le Flacon Magique"
-line2 = "peut contenir di-"
-line3 = "verses substances..."
+line2 = "peut contenir pas"
+line3 = "mal de trucs..."
 
 [_item_description.bottle_3.2]
 # Eau dans Flacon / Water in Bottle
@@ -400,30 +368,17 @@ line3 = "vie et magie !"
 # Fée dans Flacon / Fairy in Bottle
 #       |--------------------|
 icon = 12
-line1 = "Cette Fée te viendra"
-line2 = "en aide si tu es en"
-line3 = "difficulté."
-next = _item_description.bottle_3.6.1
-
-[_item_description.bottle_3.6.1]
-#       |--------------------|
-line1 = "Tu peux aussi"
-line2 = "l'utiliser à tout"
-line3 = "moment pour"
-next = _item_description.bottle_3.6.2
-
-[_item_description.bottle_3.6.2]
-#       |--------------------|
-line1 = "récupérer des"
-line2 = "Coeurs !"
+line1 = "Cette Fée viendra"
+line2 = "t'aider quand tu"
+line3 = "agoniseras."
 
 [_item_description.bottle_4.1]
 # Flacon Magique vide / Empty bottle
 #       |--------------------|
 icon = 7
 line1 = "Le Flacon Magique"
-line2 = "peut contenir di-"
-line3 = "verses substances..."
+line2 = "peut contenir pas"
+line3 = "mal de trucs..."
 
 [_item_description.bottle_4.2]
 # Eau dans Flacon / Water in Bottle
@@ -466,35 +421,16 @@ line3 = "vie et magie !"
 # Fée dans Flacon / Fairy in Bottle
 #       |--------------------|
 icon = 12
-line1 = "Cette Fée te viendra"
-line2 = "en aide si tu es en"
-line3 = "difficulté."
-next = _item_description.bottle_4.6.1
-
-[_item_description.bottle_4.6.1]
-#       |--------------------|
-line1 = "Tu peux aussi"
-line2 = "l'utiliser à tout"
-line3 = "moment pour"
-next = _item_description.bottle_4.6.2
-
-[_item_description.bottle_4.6.2]
-#       |--------------------|
-line1 = "récupérer des"
-line2 = "Coeurs !"
+line1 = "Cette Fée viendra"
+line2 = "t'aider quand tu"
+line3 = "agoniseras."
 
 [_item_description.pegasus_shoes.1]
 # Bottes de Pégase / Pegasus Shoes
 #       |--------------------|
 icon = 13
-line1 = "Cours très vite et"
-line2 = "fracasse des"
-line3 = "obstacles grâce aux"
-next = _item_description.pegasus_shoes.1.1
-
-[_item_description.pegasus_shoes.1.1]
-#       |--------------------|
-line1 = "Bottes de Pégase !"
+line1 = "Les Bottes de Pégase"
+line2 = "font vraiment n'imp."
 
 [_item_description.mystic_mirror.1]
 # Miroir Mystique / Mystic Mirror
@@ -646,9 +582,9 @@ line1 = "faire fonctionner !"
 # Poigne de Fer / Iron Glove
 #       |--------------------|
 icon = 32
-line1 = "La Poigne de Fer te"
-line2 = "permet de soulever"
-line3 = "les pierres."
+line1 = "Avec ça tu peux"
+line2 = "soulever plusieurs"
+line3 = "machins, je crois."
 
 [_item_description.glove.2]
 # Poigne d'Or / Golden Glove
@@ -669,6 +605,8 @@ next = _item_description.fire_stones_counter.1.1
 
 [_item_description.fire_stones_counter.1.1]
 #       |--------------------|
+line1 = "à Inferno."
+
 # ---------------------
 # Obtention d'un trésor
 # ---------------------
@@ -676,7 +614,6 @@ next = _item_description.fire_stones_counter.1.1
 # Les messages ci-dessous sont affichés lorsque le joueur obtient
 # un trésor, généralement en ouvrant un coffre ou en l'achetant
 # dans un magasin.
-line1 = "à Inferno."
 
 [_treasure.feather.1]
 # Plume
@@ -690,35 +627,24 @@ next = _treasure.feather.1.1
 [_treasure.feather.1.1]
 #       |--------------------|
 line1 = "franchir des"
-line2 = "obstacles !"
+line2 = "obstacles ! Ou au"
+line3 = "moins essayer !"
 
 [_treasure.bow.1]
 # Arc seul
 #       |--------------------|
 icon = 2
 line1 = "Tu as trouvé l'Arc !$0"
-line2 = "Trouve des Flèches"
-line3 = "et tu pourras"
-next = _treasure.bow.1.1
-
-[_treasure.bow.1.1]
-#       |--------------------|
-line1 = "vaincre à distance"
-line2 = "les ennemis"
-line3 = "coriaces !"
+line2 = "Tu peux jouer à"
+line3 = "Robin des Bois !"
 
 [_treasure.bow.2]
 # Arc & Flèches
 #       |--------------------|
 icon = 3
 line1 = "Tu as trouvé l'Arc !$0"
-line2 = "Tu peux combattre"
-line3 = "ennemis coriaces"
-next = _treasure.bow.2.1
-
-[_treasure.bow.2.1]
-#       |--------------------|
-line1 = "à distance !"
+line2 = "Tu peux jouer à"
+line3 = "Robin des Bois !"
 
 [_treasure.boomerang.1]
 # Boomerang
@@ -787,8 +713,8 @@ next = _treasure.bottle_1.1.1
 
 [_treasure.bottle_1.1.1]
 #       |--------------------|
-line1 = "Remplis-le avec"
-line2 = "diverses substances."
+line1 = "Ça a sûrement un"
+line2 = "intérêt quelconque !"
 
 [_treasure.bottle_1.2]
 # Eau
@@ -868,12 +794,7 @@ line3 = "Coeurs."
 icon = 7
 line1 = "Tu as trouvé un"
 line2 = "Flacon Magique !$0"
-next = _treasure.bottle_2.1.1
-
-[_treasure.bottle_2.1.1]
-#       |--------------------|
-line1 = "Remplis-le avec"
-line2 = "diverses substances."
+line3 = "Pas super utile, ok."
 
 [_treasure.bottle_2.2]
 # Eau
@@ -1122,14 +1043,15 @@ line3 = "Coeurs."
 #       |--------------------|
 icon = 13
 line1 = "Tu as trouvé les"
-line2 = "Bottes de Pégase !$0"
+line2 = "Bottes de Pégase"
+line3 = "pénibles !$0"
 next = _treasure.pegasus_shoes.1.1
 
 [_treasure.pegasus_shoes.1.1]
 #       |--------------------|
-line1 = "Cours, fonce et"
-line2 = "fracasse les"
-line3 = "obstacles !"
+line1 = "Elles sont pénibles,"
+line2 = "mais tu peux aller"
+line3 = "super vite !"
 
 [_treasure.mystic_mirror.1]
 # Miroir Mystique
@@ -1370,13 +1292,13 @@ line3 = "lieu glacial..."
 icon = 32
 line1 = "Tu as trouvé la"
 line2 = "Poigne de Fer !$0"
+line3 = "Tu peux sûrement"
 next = _treasure.glove.1.1
 
 [_treasure.glove.1.1]
 #       |--------------------|
-line1 = "Elle te permet de"
-line2 = "soulever les"
-line3 = "pierres."
+line1 = "soulever des trucs, "
+line2 = "maintenant !"
 
 [_treasure.glove.2]
 # Poigne d'Or
@@ -1464,9 +1386,9 @@ next = _treasure.bomb_bag.2.1
 
 [_treasure.bomb_bag.2.1]
 #       |--------------------|
-line1 = "Il peut contenir"
-line2 = "jusqu'à 30 Bombes"
-line3 = "au lieu de 10 !"
+line1 = "Trop bien !
+line2 = "Il peut contenir"
+line3 = "jusqu'à 11 Bombes !"
 
 [_treasure.bomb_bag.3]
 # Sac de bombes géant
@@ -1478,9 +1400,9 @@ next = _treasure.bomb_bag.3.1
 
 [_treasure.bomb_bag.3.1]
 #       |--------------------|
-line1 = "Il peut contenir"
-line2 = "jusqu'à 100 Bombes"
-line3 = "au lieu de 30 !"
+line1 = "C'est génial !"
+line2 = "Il peut contenir"
+line3 = "jusqu'à 12 Bombes !"
 
 [_treasure.quiver.2]
 # Grand carquois 
@@ -1550,8 +1472,9 @@ next = _treasure.shield.1.1
 
 [_treasure.shield.1.1]
 #       |--------------------|
-line1 = "Franchement tu as"
-line2 = "fait quoi hier soir?"
+line1 = "Mais pourquoi tu"
+line2 = "l'avais laissé"
+line3 = "traîner dehors ?"
 
 [_treasure.shield.2]
 # Bouclier de Feu
@@ -1585,30 +1508,41 @@ line2 = "contrer les lasers !"
 # Epée 1 (Epée du courage)
 #       |--------------------|
 icon = 66
-line1 = "Tu as trouvé ton"
+line1 = "Tu as retrouvé ton"
 line2 = "épée d’entraînement."
 next = _treasure.sword.1.1
 
 [_treasure.sword.1.1]
 #       |--------------------|
-line1 = "Mais pourquoi l'as"
-line2 = "tu laissé traîner"
-line3 = "dehors?"
+line1 = "Mais qu'est-ce"
+line2 = "qu'elle fait ici ?"
 
 [_treasure.sword.2]
-# Epée 2 (Glaive Hylien)
+# Epée 2 (Excalibur)
 #       |--------------------|
 icon = 67
 line1 = "Tu as trouvé"
-line2 = "le Glaive Hylien !$0"
-line3 = "Cette nouvelle épée"
+line2 = "l'Épée Excalibur !$0"
+line3 = "Elle est deux fois"
 next = _treasure.sword.2.1
 
 [_treasure.sword.2.1]
 #       |--------------------|
-line1 = "est deux fois plus"
-line2 = "puissante que"
-line3 = "l'ancienne !"
+line1 = "plus puissante que"
+line2 = "l'ancienne !"
+next = _treasure.sword.2.2
+
+[_treasure.sword.2.2]
+#       |--------------------|
+line1 = "Dommage que tu ne"
+line2 = "l'aies pas eue plus"
+line3 = "tôt, ça aurait pu"
+next = _treasure.sword.2.3
+
+[_treasure.sword.2.3]
+#       |--------------------|
+line1 = "être utile !"
+
 
 [_treasure.sword.3]
 # Epée 3 (Sabre du Héros)
@@ -1640,13 +1574,14 @@ line3 = "l'entendement..."
 icon = 70
 line1 = "Tu as trouvé"
 line2 = "la Carte !"
+line3 = "Utilise-la pour"
 next = _treasure.map.1.1
 
 [_treasure.map.1.1]
 #       |--------------------|
-line1 = "Utilise-la pour"
-line2 = "connaître le plan"
-line3 = "du donjon."
+line1 = "connaître le plan"
+line2 = "du donjon et pleurer"
+line3 = "en voyant sa taille."
 
 [_treasure.compass.1]
 # Boussole
@@ -1665,11 +1600,8 @@ line3 = "coffres et du Boss."
 next = _treasure.compass.1.2
 
 [_treasure.compass.1.2]
-# Remarque : clin d'oeil à Link's Awakening
-# quand on obtient la Boussole
 #       |--------------------|
-line1 = "C'est ça"
-line2 = "le progrès !"
+line1 = "C'est pas trop tôt !"
 
 [_treasure.small_key.1]
 # Petite clé
@@ -1697,8 +1629,14 @@ next = _treasure.big_key.1.1
 [_treasure.big_key.1.1]
 #       |--------------------|
 line1 = "portes spéciales et"
-line2 = "découvrir de"
-line3 = "nouveaux trésors !"
+line2 = "les grands coffres !"
+next = _treasure.big_key.1.2
+
+[_treasure.big_key.1.2]
+#       |--------------------|
+line1 = "Plus qu'à les
+line2 = "retrouver,"
+line3 = "maintenant !"
 
 [_treasure.boss_key.1]
 # Clé du Maître
@@ -1706,13 +1644,13 @@ line3 = "nouveaux trésors !"
 icon = 74
 line1 = "Tu as trouvé la"
 line2 = "Clé du Maître ! Tu"
-line3 = "peux maintenant"
+line3 = "peux enfin"
 next = _treasure.boss_key.1.1
 
 [_treasure.boss_key.1.1]
 #       |--------------------|
-line1 = "entrer dans le"
-line2 = "repaire du maître"
+line1 = "rendre visite à"
+line2 = "Ganon, le maître"
 line3 = "des lieux !"
 
 [_treasure.piece_of_heart.1]
@@ -1869,15 +1807,16 @@ line3 = "Fantastique !"
 # 200 rubis
 # Remarque : clin d'oeil à Link's Awakening
 #       |--------------------|
+icon = 90
+line1 = "Tu as trouvé 200"
+line2 = "Rubis !"
+line3 = "C'est l'extase !"
+
 # ---------------
 # Autres messages
 # ---------------
 # 
 # Autres messages divers affichés par le moteur de jeu
-icon = 90
-line1 = "Tu as trouvé 200"
-line2 = "Rubis !"
-line3 = "C'est l'extase !"
 
 [_warning_magic]
 # Affiché à la fin des dialogues expliquant
@@ -1891,7 +1830,8 @@ line2 = "compteur magique !"
 # Lorsqu'on ouvre un coffre vide
 #       |-----------------------|
 line1 = "Ce coffre est vide !"
-line2 = "Tant pis pour toi !"
+line2 = "C'est vraiment pas de"
+line3 = "chance !"
 
 [_small_key_required]
 # Lorsqu'on regarde une porte verrouillé ou un bloc verrouillé
@@ -1906,24 +1846,22 @@ line1 = "C'est fermé à clé !"
 #       |--------------------|
 icon = 73
 line1 = "Il te faut la Grande"
-line2 = "Clé pour ouvrir"
-line3 = "cette serrure !"
+line2 = "Clé pour passer !"
 
 [_boss_key_required]
 # Lorsqu'on regarde la porte du boss sans avoir la Clé du Maître
 #       |--------------------|
 icon = 74
-line1 = "C'est la porte du"
-line2 = "repère du maître du"
-line3 = "donjon !"
+line1 = "C'est la porte de"
+line2 = "Ganon !"
 next = _boss_key_required.2
 
 [_boss_key_required.2]
 #       |--------------------|
 icon = 74
-line1 = "Il te faut la"
-line2 = "Clé du Maître"
-line3 = "pour l'ouvrir."
+line1 = "N'espère pas"
+line2 = "l'ouvrir sans la"
+line3 = "Clé du Maître !"
 
 [_cannot_lift_should_cut]
 # Lorsqu'on tente de soulever un buisson
@@ -1938,15 +1876,9 @@ line3 = "couper ces buissons..."
 # sans avoir de bracelet de force
 # (Clin d'oeil à Link's Awekening)
 #       |-----------------------|
-line1 = "Oh là là, c'est"
-line2 = "bien trop lourd !"
+line1 = "C'est largement trop"
+line2 = "pour tes petits bras !"
 next = _cannot_lift_too_heavy.2
-
-[_cannot_lift_too_heavy.2]
-#       |-----------------------|
-line1 = "Tu n'y arriveras jamais"
-line2 = "rien que par la force"
-line3 = "de tes bras !"
 
 [_cannot_lift_still_too_heavy]
 # Lorsqu'on tente de soulever une pierre vraiment lourde
@@ -1961,15 +1893,15 @@ line2 = "trop lourd pour toi !"
 #       |-----------------------|
 line1 = "Prix : $v rubis."
 line2 = "Acheter"
-line3 = "Ne pas acheter"
+line3 = "Sûrement pas"
 question = true
 
 [_shop.not_enough_money]
 # Lorsqu'on veut acheter un objet dans un magasin
 # mais qu'on n'a pas assez de Rubis
 #       |-----------------------|
-line1 = "Désolé, mais tu n'as"
-line2 = "pas assez d'argent !"
+line1 = "Désolé, mais tu me"
+line2 = "sembles fauché !"
 
 [_shop.amount_full]
 # Lorsqu'on veut acheter un objet dans un magasin
@@ -1984,30 +1916,6 @@ line1 = "Tu es déjà au maximum !"
 line1 = "C'est un interrupteur"
 line2 = "de cristal. Frappe-le"
 line3 = "avec quelque chose..."
-
-[dungeon_1]
-# Lorsqu'on pénètre dans le donjon 1
-#       |-----------------------|
-line1 = "        Niveau 1       "
-line2 = "   Donjon de la Forêt  "
-
-[dungeon_2]
-# Lorsqu'on pénètre dans le donjon 2
-#       |-----------------------|
-line1 = "        Niveau 2       "
-line2 = "     Caverne de Roc    "
-
-[dungeon_3]
-# Lorsqu'on pénètre dans le donjon 3
-#       |-----------------------|
-line1 = "        Niveau 3       "
-line2 = " Antre de Maître Arbror"
-
-[dungeon_10]
-# Lorsqu'on pénètre dans le donjon 10
-#       |-----------------------|
-line1 = "     Niveau secret       "
-line2 = "     Tour du Roxor  "
 
 [found_piece_of_heart.first]
 #       |--------------------|
@@ -2047,13 +1955,14 @@ line2 = "supplémentaire !"
 #       |--------------------|
 icon = 81
 line1 = "Tu as trouvé une"
-line2 = "Fée, elle est"
-line3 = "merveilleuse !"
+line2 = "Fée, c'est trop"
+line3 = "cool !"
 next = found_fairy.1
 
 [found_fairy.1]
-#       |--------------------___|
-line1 = "Que vas-tu en faire ?"
+#       |--------------------|
+icon = -1
+line1 = "Que vas-tu faire ?"
 line2 = "Récupérer des Coeurs"
 line3 = "La conserver"
 question = true
@@ -2175,7 +2084,7 @@ line3 = "cette torche..."
 [caverne_fragments.sign]
 #       |--------------------|
 line1 = "Seul le vrai héros"
-line2 = "obtiendra le trésor"
+line2 = "obtiendra le trésor."
 
 [maison_boulet.boulet]
 #       |--------------------|
@@ -2367,7 +2276,7 @@ line2 = "programmeur !"
 
 [outside_fields_NO_indic]
 #       |-----------------------|
-line1 = "Ouest : Chateau"
+line1 = "Ouest : Château"
 line2 = "Est : Desert Bakasable"
 line3 = "Monts Tipiton"
 next = outside_fields_NO_indic_b
@@ -2376,7 +2285,7 @@ next = outside_fields_NO_indic_b
 #       |-----------------------|
 line1 = "Sud Est :"
 line2 = "Bureau des objets"
-line3 = "trouvés et affinitées"
+line3 = "trouvés et affinités"
 next = outside_fields_NO_indic_c
 
 [outside_fields_NO_indic_c]
@@ -2404,7 +2313,7 @@ line3 = "pelouse."
 [outside_fields_NO.drunk]
 #       |-----------------------|
 line1 = "Tu ne te souviens plus"
-line2 = "de ta soirée?"
+line2 = "de ta soirée ?"
 next = outside_fields_NO.drunk2
 
 [outside_fields_NO.drunk2]
@@ -2419,12 +2328,12 @@ line2 = "temps."
 
 [outside_fields_NO.lady_a]
 #       |-----------------------|
-line1 = "Zelda?"
+line1 = "Zelda ?"
 line2 = "Non je ne l'ai pas vue."
 
 [outside_fields_NO.lady_b]
 #       |-----------------------|
-line1 = "Tu as perdu où Zelda?"
+line1 = "Tu as perdu où Zelda ?"
 line2 = "..."
 next = outside_fields_NO.lady_b2
 
@@ -2435,20 +2344,20 @@ next = outside_fields_NO.lady_b3
 
 [outside_fields_NO.lady_b3]
 #       |-----------------------|
-line1 = "Non je ne sais pas"
+line1 = "Non, je ne sais pas"
 line2 = "où elle est."
 
 [outside_fields_NO.guy_a]
 #       |-----------------------|
 line1 = "Tu as perdu quelque"
-line2 = "chose?"
+line2 = "chose ?"
 next = outside_fields_NO.guy_a2
 
 [outside_fields_NO.guy_a2]
 #       |-----------------------|
 line1 = "As tu été voir au"
-line2 = "bureau des objets"
-line3 = "trouvés?"
+line2 = "Bureau des Objets"
+line3 = "Trouvés ?"
 
 [geek_house.geek]
 #       |-----------------------|

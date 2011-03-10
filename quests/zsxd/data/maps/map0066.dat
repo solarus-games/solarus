@@ -437,6 +437,7 @@
 15	0	120	64	16	32	0
 15	0	136	96	48	16	0
 15	0	184	64	16	32	0
+12	0	776	520	32	8	custom_obstacle_17	1	1	1	1
 0	1	48	40	224	8	439
 0	1	1360	40	32	160	319
 0	1	1352	200	48	24	52
@@ -1101,7 +1102,6 @@
 7	1	1256	805	enemy_12	3	creeper	0	-1	_random	1	-1
 7	1	1272	789	enemy_14	3	creeper	0	-1	_random	1	-1
 7	1	1352	821	enemy_18	3	creeper	0	-1	_random	1	-1
-1	1	720	189	destination_point	3	0
 7	1	1304	805	enemy_16	3	creeper	0	-1	_random	1	-1
 7	1	1080	805	enemy	3	creeper	0	-1	_random	1	-1
 18	1	1328	808	door_26	1	8	229
@@ -1178,7 +1178,7 @@
 13	1	768	725	16	16	fight_sensor	0
 18	1	752	696	fight_door	1	0	-1
 18	1	752	648	fight_door_2	3	0	-1
-12	1	1016	696	16	16	custom_obstacle_9	0	1	1	1
+12	1	1056	728	32	16	custom_obstacle_9	0	1	1	1
 12	1	1368	696	16	16	custom_obstacle_10	0	1	1	1
 7	1	816	853	fight_4	3	globul	0	-1	_random	1	-1
 7	1	744	853	fight_3	3	globul	0	-1	_random	1	-1

@@ -51,7 +51,17 @@ end
 function explode_if_near_hero()
 
   distance = sol.enemy.get_distance_to_hero()
-  if distance >= 70 then
+  near_hero = distance < 70
+
+  if not near_hero and distance_to_hero < 90 then
+    x, y = sol.enemy.get_position()
+    hero_x, hero_y = sol.map.hero_get_position()
+    if hero_y < y and y - hero_y >= 20 then
+      near_hero = true
+    end
+  end
+
+  if not near_hero then
     -- cancel the explosion
     explosion_soon = false
     sol.main.timer_start(400, "check_hero", false)

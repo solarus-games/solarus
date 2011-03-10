@@ -73,6 +73,7 @@ function event_switch_activated(switch_name)
   elseif switch_name == "switch_torch_7_on" then
     sol.map.tile_set_enabled("torch_7", true)
     sol.map.switch_set_activated("switch_torch_7_off", false)
+    sol.map.switch_set_activated("switch_torch_7_off_2", false)
   elseif switch_name == "switch_torch_7_off"
       or switch_name == "switch_torch_7_off_2" then
     sol.map.tile_set_enabled("torch_7", false)

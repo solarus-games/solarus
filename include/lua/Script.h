@@ -184,6 +184,7 @@ class Script {
       map_api_hero_start_boomerang,
       map_api_hero_start_bow,
       map_api_hero_start_running,
+      map_api_hero_start_hurt,
       map_api_npc_get_position,
       map_api_npc_set_position,
       map_api_npc_start_movement,

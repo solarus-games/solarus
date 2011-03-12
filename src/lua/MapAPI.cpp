@@ -393,6 +393,32 @@ int Script::map_api_hero_get_position(lua_State *l) {
 
   return 3;
 }
+
+/**
+ * @brief Sets the position of the hero.
+ *
+ * - Paramater 1 (integer): x coordinate
+ * - Parameter 2 (integer): y coordinate
+ * - Parameter 3 (integer): layer
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_hero_set_position(lua_State* l) {
+
+  Script *script;
+  called_by_script(l, 3, &script);
+
+  int x = luaL_checkinteger(l, 1);
+  int y = luaL_checkinteger(l, 2);
+  Layer layer = Layer(luaL_checkinteger(l, 3));
+
+  Hero& hero = script->get_game().get_hero();
+  hero.set_xy(x, y);
+  script->get_map().get_entities().set_entity_layer(&hero, layer);
+
+  return 3;
+}
+
 /**
  * @brief Places the hero on the exact position of a sensor's name.
  *

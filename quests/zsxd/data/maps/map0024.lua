@@ -45,3 +45,24 @@ function event_dialog_finished(first_message_id, answer)
 		sol.main.play_sound("door_open")
 	end
 end
+
+function event_switch_activated(switch_name)
+	if switch_name == "DS1" then
+		sol.map.camera_move(488, 656, 200)
+		sol.map.hero_freeze()
+	end
+end
+
+function LD1_return()
+	sol.map.camera_restore()
+end
+
+function event_camera_reached_target()
+	sol.map.door_set_open("LD1", true)
+	sol.main.play_sound("door_open")
+	sol.main.timer_start(1500, "LD1_return", false)
+end
+
+function event_camera_back()
+	sol.map.hero_unfreeze()
+end

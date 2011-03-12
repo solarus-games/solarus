@@ -36,8 +36,10 @@
  */
 Sensor::Sensor(const std::string &name, Layer layer, int x, int y,
 	       int width, int height, Subtype subtype):
-  Detector(COLLISION_CUSTOM, name, layer, x, y, width, height),
-  subtype(subtype), hero_already_overlaps(false) {
+  Detector(COLLISION_INSIDE, name, layer, x, y, width, height),
+  subtype(subtype),
+  hero_overlaps(false),
+  activated_by_hero(false) {
 
   if (subtype == RETURN_FROM_BAD_GROUND) {
     
@@ -118,29 +120,6 @@ bool Sensor::is_obstacle_for(MapEntity &other) {
 }
 
 /**
- * @brief Checks whether an entity's collides with this entity.
- * @param entity an entity
- * @return true if the entity's collides with this entity
- */
-bool Sensor::test_collision_custom(MapEntity &entity) {
-
-  const Rectangle &entity_rectangle = entity.get_bounding_box();
-  int x1 = entity_rectangle.get_x() + 4;
-  int x2 = x1 + entity_rectangle.get_width() - 9;
-  int y1 = entity_rectangle.get_y() + 4;
-  int y2 = y1 + entity_rectangle.get_height() - 9;
-
-  bool collision = overlaps(x1, y1) && overlaps(x2, y1) &&
-    overlaps(x1, y2) && overlaps(x2, y2);
-
-  if (entity.is_hero() && !collision) {
-    this->hero_already_overlaps = false;
-  }
-
-  return collision;
-}
-
-/**
  * @brief This function is called by the engine when an entity overlaps this sensor.
  *
  * This is a redefinition of Detector::collision().
@@ -162,9 +141,10 @@ void Sensor::notify_collision(MapEntity &entity_overlapping, CollisionMode colli
  */
 void Sensor::activate(Hero &hero) {
 
-  if (!hero_already_overlaps) {
- 
-    hero_already_overlaps = true;
+  hero_overlaps = true;
+  if (!activated_by_hero) {
+
+    activated_by_hero = true;
 
     switch (subtype) {
 
@@ -188,3 +168,13 @@ void Sensor::activate(Hero &hero) {
   }
 }
 
+/**
+ * @brief Updates this entity.
+ */
+void Sensor::update() {
+
+  if (activated_by_hero && !hero_overlaps) {
+    activated_by_hero = false;
+  }
+  hero_overlaps = false;
+}

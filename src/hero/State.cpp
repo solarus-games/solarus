@@ -483,6 +483,28 @@ bool Hero::State::can_avoid_hole() {
 }
 
 /**
+ * @brief Returns whether the hero ignores the effect of lava in this state.
+ *
+ * Returns false by default.
+ *
+ * @return true if the hero ignores the effect of lava in the current state
+ */
+bool Hero::State::can_avoid_lava() {
+  return false;
+}
+
+/**
+ * @brief Returns whether the hero ignores the effect of prickles in this state.
+ *
+ * Returns false by default.
+ *
+ * @return true if the hero ignores the effect of prickles in the current state
+ */
+bool Hero::State::can_avoid_prickle() {
+  return false;
+}
+
+/**
  * @brief Returns whether the hero is touching the ground in the current state.
  *
  * Returns true by default.
@@ -538,6 +560,28 @@ bool Hero::State::is_deep_water_obstacle() {
  * @return true if the holes are considered as obstacles in this state
  */
 bool Hero::State::is_hole_obstacle() {
+  return false;
+}
+
+/**
+ * @brief Returns whether lava is considered as an obstacle in this state.
+ *
+ * Returns false by default.
+ *
+ * @return true if lava is considered as obstacles in this state
+ */
+bool Hero::State::is_lava_obstacle() {
+  return false;
+}
+
+/**
+ * @brief Returns whether prickles are considered as an obstacle in this state.
+ *
+ * Returns false by default.
+ *
+ * @return true if prickles are considered as obstacles in this state
+ */
+bool Hero::State::is_prickle_obstacle() {
   return false;
 }
 

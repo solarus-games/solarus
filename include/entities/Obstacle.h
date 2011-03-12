@@ -22,6 +22,8 @@
  */
 enum Obstacle {
 
+  OBSTACLE_LAVA          = -6, /**< the entity is some lava */
+  OBSTACLE_PRICKLE       = -5, /**< the entity is some prickles */
   OBSTACLE_LADDER        = -4, /**< the entity is a ladder and the hero walks slower on it */
   OBSTACLE_HOLE          = -3, /**< the entity is a hole */ 
   OBSTACLE_SHALLOW_WATER = -2, /**< the entity is some shallow water */

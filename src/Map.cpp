@@ -637,6 +637,14 @@ bool Map::test_collision_with_tiles(Layer layer, int x, int y, MapEntity &entity
     on_obstacle = entity_to_check.is_hole_obstacle();
     break;
 
+  case OBSTACLE_LAVA:
+    on_obstacle = entity_to_check.is_lava_obstacle();
+    break;
+
+  case OBSTACLE_PRICKLE:
+    on_obstacle = entity_to_check.is_prickle_obstacle();
+    break;
+
   case OBSTACLE_LADDER:
     on_obstacle = entity_to_check.is_ladder_obstacle();
     break;
@@ -781,6 +789,14 @@ Ground Map::obstacle_to_ground(Obstacle obstacle) {
       ground = GROUND_HOLE;
       break;
 
+    case OBSTACLE_LAVA:
+      ground = GROUND_LAVA;
+      break;
+
+    case OBSTACLE_PRICKLE:
+      ground = GROUND_PRICKLE;
+      break;
+
     case OBSTACLE_LADDER:
       ground = GROUND_LADDER;
       break;
@@ -789,7 +805,12 @@ Ground Map::obstacle_to_ground(Obstacle obstacle) {
       ground = GROUND_EMPTY;
       break;
 
-    default:
+    case OBSTACLE:
+    case OBSTACLE_NONE:
+    case OBSTACLE_TOP_RIGHT:
+    case OBSTACLE_TOP_LEFT:
+    case OBSTACLE_BOTTOM_RIGHT:
+    case OBSTACLE_BOTTOM_LEFT:
       ground = GROUND_NORMAL;
       break;
   }

@@ -96,6 +96,22 @@ bool Hero::FallingState::can_avoid_hole() {
 }
 
 /**
+ * @brief Returns whether the hero ignores the effect of lava in this state.
+ * @return true if the hero ignores the effect of lava in the current state
+ */
+bool Hero::FallingState::can_avoid_lava() {
+  return true;
+}
+
+/**
+ * @brief Returns whether the hero ignores the effect of prickles in this state.
+ * @return true if the hero ignores the effect of prickles in the current state
+ */
+bool Hero::FallingState::can_avoid_prickle() {
+  return true;
+}
+
+/**
  * @brief Returns whether the game over sequence can start in the current state.
  * @return true if the game over sequence can start in the current state
  */

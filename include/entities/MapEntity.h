@@ -292,6 +292,8 @@ class MapEntity {
     virtual bool is_shallow_water_obstacle();
     virtual bool is_deep_water_obstacle();
     virtual bool is_hole_obstacle();
+    virtual bool is_lava_obstacle();
+    virtual bool is_prickle_obstacle();
     virtual bool is_ladder_obstacle();
     virtual bool is_hero_obstacle(Hero &hero);
     virtual bool is_block_obstacle(Block &block);

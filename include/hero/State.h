@@ -97,6 +97,8 @@ class Hero::State {
     // ground
     virtual bool can_avoid_deep_water();
     virtual bool can_avoid_hole();
+    virtual bool can_avoid_lava();
+    virtual bool can_avoid_prickle();
     virtual bool is_touching_ground();
     virtual bool can_come_from_bad_ground();
     virtual void notify_ground_changed();
@@ -105,6 +107,8 @@ class Hero::State {
     virtual bool are_collisions_ignored();
     virtual bool is_deep_water_obstacle();
     virtual bool is_hole_obstacle();
+    virtual bool is_lava_obstacle();
+    virtual bool is_prickle_obstacle();
     virtual bool is_ladder_obstacle();
     virtual bool is_teletransporter_obstacle(Teletransporter& teletransporter);
     virtual bool can_avoid_teletransporter();

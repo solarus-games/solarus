@@ -327,6 +327,9 @@ sets the direction of the hero's sprites
 - <tt>sol.map.hero_get_position()</tt>:
 returns the coordinates and the layer of the hero (3 return values)
 
+- <tt>sol.map.hero_set_position(x, y, layer)</tt>:
+sets the coordinates and the layer of the hero
+
 - <tt>sol.map.hero_align_on_sensor(sensor_name)</tt>:
 places the hero's bounding box exactly on the rectangle of a sensor
 

@@ -143,15 +143,13 @@ void Hero::JumpingState::update() {
 
   if (movement->is_finished()) {
 
-    if (hero.get_ground() == GROUND_DEEP_WATER) {
-      hero.start_deep_water();
-    }
-    else if (carried_item != NULL) {
+    if (carried_item != NULL) {
       hero.set_state(new CarryingState(hero, carried_item));
     }
     else {
       hero.set_state(new FreeState(hero));
     }
+    hero.notify_ground_changed();
   }
 }
 

@@ -196,7 +196,7 @@ bool Detector::test_collision_rectangle(MapEntity &entity) {
  */
 bool Detector::test_collision_inside(MapEntity &entity) {
 
-  return get_bounding_box().contains(entity.get_bounding_box());;
+  return get_bounding_box().contains(entity.get_bounding_box());
 }
 
 

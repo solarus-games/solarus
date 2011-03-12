@@ -46,34 +46,6 @@ y = 976
 save = 113
 big = 0
 
-[dungeon_2.map_20.chest_0]
-floor = 0
-x = 1256
-y = 392
-save = 103
-big = 0
-
-[dungeon_2.map_20.chest_1]
-floor = 0
-x = 408
-y = 272
-save = 102
-big = 0
-
-[dungeon_2.map_20.chest_2]
-floor = 0
-x = 1272
-y = 216
-save = 109
-big = 0
-
-[dungeon_2.map_20.chest_3]
-floor = 0
-x = 1256
-y = 248
-save = -1
-big = 0
-
 [dungeon_2.map_22.chest_0]
 floor = 1
 x = 432
@@ -226,6 +198,27 @@ floor = 1
 x = 1792
 y = 1568
 save = 245
+big = 0
+
+[dungeon_2.map_20.chest_0]
+floor = 0
+x = 1256
+y = 392
+save = 103
+big = 0
+
+[dungeon_2.map_20.chest_1]
+floor = 0
+x = 408
+y = 272
+save = 102
+big = 0
+
+[dungeon_2.map_20.chest_2]
+floor = 0
+x = 1272
+y = 216
+save = 109
 big = 0
 
 [dungeon_2.map_24.chest_0]

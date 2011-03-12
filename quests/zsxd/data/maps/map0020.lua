@@ -8,6 +8,12 @@ function event_map_started(destination_point_name)
 	end
 end
 
+function event_map_opening_transition_finished(destination_point_name)
+  if destination_point_name == "start_position" then
+    sol.map.dialog_start("crazy_house.title")
+  end
+end
+
 function event_switch_activated(switch_name)
 	if switch_name == "CS3" then
 		-- Faire apparaitre le coffre vide 1

@@ -1221,6 +1221,28 @@ bool MapEntity::is_hole_obstacle() {
 }
 
 /**
+ * @brief Returns whether lava is currently considered as an obstacle by this entity.
+ *
+ * This function returns true by default.
+ *
+ * @return true if lava is currently an obstacle for this entity
+ */
+bool MapEntity::is_lava_obstacle() {
+  return true;
+}
+
+/**
+ * @brief Returns whether prickles are currently considered as an obstacle by this entity.
+ *
+ * This function returns true by default.
+ *
+ * @return true if prickles are currently an obstacle for this entity
+ */
+bool MapEntity::is_prickle_obstacle() {
+  return true;
+}
+
+/**
  * @brief Returns whether a ladder is currently considered as an obstacle by this entity.
  *
  * This function returns true by default.

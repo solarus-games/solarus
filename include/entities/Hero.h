@@ -227,6 +227,8 @@ class Hero: public MapEntity {
     bool is_obstacle_for(MapEntity &other);
     bool is_deep_water_obstacle();
     bool is_hole_obstacle();
+    bool is_lava_obstacle();
+    bool is_prickle_obstacle();
     bool is_ladder_obstacle();
     bool is_block_obstacle(Block &block);
     bool is_teletransporter_obstacle(Teletransporter &teletransporter);
@@ -285,6 +287,8 @@ class Hero: public MapEntity {
 
     void start_deep_water();
     void start_hole();
+    void start_lava();
+    void start_prickle();
 
     void start_next_state();
     void start_free();

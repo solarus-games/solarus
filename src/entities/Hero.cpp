@@ -983,6 +983,8 @@ void Hero::check_position() {
   // save the hero's last valid position
   if (ground != GROUND_DEEP_WATER
       && ground != GROUND_HOLE
+      && ground != GROUND_LAVA
+      && ground != GROUND_PRICKLE
       && ground != GROUND_EMPTY
       && state->can_come_from_bad_ground()
       && (get_x() != last_solid_ground_coords.get_x() || get_y() != last_solid_ground_coords.get_y())) {
@@ -1088,6 +1090,20 @@ void Hero::notify_ground_changed() {
     // hole: attract the hero towards the hole
     if (!state->can_avoid_hole()) {
       start_hole();
+    }
+    break;
+
+  case GROUND_LAVA:
+    // lava: plunge into lava
+    if (!state->can_avoid_lava()) {
+      start_lava();
+    }
+    break;
+
+  case GROUND_PRICKLE:
+    // prickles
+    if (!state->can_avoid_prickle()) {
+      start_prickle();
     }
     break;
 
@@ -1215,6 +1231,22 @@ bool Hero::is_deep_water_obstacle() {
  */
 bool Hero::is_hole_obstacle() {
   return state->is_hole_obstacle();
+}
+
+/**
+ * @brief Returns whether lava is currently considered as an obstacle for the hero.
+ * @return true if lava is currently an obstacle for the hero
+ */
+bool Hero::is_lava_obstacle() {
+  return state->is_lava_obstacle();
+}
+
+/**
+ * @brief Returns whether prickles are currently considered as an obstacle for the hero.
+ * @return true if prickles are currently an obstacle for the hero
+ */
+bool Hero::is_prickle_obstacle() {
+  return state->is_prickle_obstacle();
 }
 
 /**
@@ -1793,6 +1825,24 @@ void Hero::start_hole() {
       set_walking_speed(normal_walking_speed / 3);
     }
   }
+}
+
+/**
+ * @brief Makes the hero drown into lava.
+ */
+void Hero::start_lava() {
+
+  // plunge into the lava
+  set_state(new PlungingState(*this));
+}
+
+/**
+ * @brief Makes the hero being hurt by prickles.
+ */
+void Hero::start_prickle() {
+
+  // TODO
+  set_state(new PlungingState(*this));
 }
 
 /**

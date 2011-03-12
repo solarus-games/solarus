@@ -122,6 +122,22 @@ bool Hero::BackToSolidGroundState::can_avoid_hole() {
 }
 
 /**
+ * @brief Returns whether the hero ignores the effect of lava in this state.
+ * @return true if the hero ignores the effect of lava in the current state
+ */
+bool Hero::BackToSolidGroundState::can_avoid_lava() {
+  return true;
+}
+
+/**
+ * @brief Returns whether the hero ignores the effect of prickles in this state.
+ * @return true if the hero ignores the effect of prickles in the current state
+ */
+bool Hero::BackToSolidGroundState::can_avoid_prickle() {
+  return true;
+}
+
+/**
  * @brief Returns whether the hero is touching the ground in the current state.
  * @return true if the hero is touching the ground in the current state
  */

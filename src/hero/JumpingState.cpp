@@ -224,6 +224,22 @@ bool Hero::JumpingState::can_avoid_hole() {
 }
 
 /**
+ * @brief Returns whether the hero ignores the effect of lava in this state.
+ * @return true if the hero ignores the effect of lava in the current state
+ */
+bool Hero::JumpingState::can_avoid_lava() {
+  return true;
+}
+
+/**
+ * @brief Returns whether the hero ignores the effect of prickles in this state.
+ * @return true if the hero ignores the effect of prickles in the current state
+ */
+bool Hero::JumpingState::can_avoid_prickle() {
+  return true;
+}
+
+/**
  * @brief Returns whether the hero ignores the effect of teletransporters in this state.
  * @return true if the hero ignores the effect of teletransporters in this state
  */

@@ -38,7 +38,6 @@ Sensor::Sensor(const std::string &name, Layer layer, int x, int y,
 	       int width, int height, Subtype subtype):
   Detector(COLLISION_INSIDE, name, layer, x, y, width, height),
   subtype(subtype),
-  hero_overlaps(false),
   activated_by_hero(false) {
 
   if (subtype == RETURN_FROM_BAD_GROUND) {
@@ -141,7 +140,6 @@ void Sensor::notify_collision(MapEntity &entity_overlapping, CollisionMode colli
  */
 void Sensor::activate(Hero &hero) {
 
-  hero_overlaps = true;
   if (!activated_by_hero) {
 
     activated_by_hero = true;
@@ -173,8 +171,12 @@ void Sensor::activate(Hero &hero) {
  */
 void Sensor::update() {
 
-  if (activated_by_hero && !hero_overlaps) {
-    activated_by_hero = false;
+  Detector::update();
+
+  if (activated_by_hero) {
+    // check whether the hero is still present
+    if (!test_collision_inside(get_hero())) {
+      activated_by_hero = false;
+    }
   }
-  hero_overlaps = false;
 }

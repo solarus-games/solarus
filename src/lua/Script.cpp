@@ -359,6 +359,7 @@ void Script::register_map_api() {
       { "hero_get_direction", map_api_hero_get_direction },
       { "hero_set_direction", map_api_hero_set_direction },
       { "hero_get_position", map_api_hero_get_position },
+      { "hero_set_position", map_api_hero_set_position },
       { "npc_get_position", map_api_npc_get_position },
       { "npc_set_position", map_api_npc_set_position },
       { "hero_align_on_sensor", map_api_hero_align_on_sensor },

@@ -45,7 +45,6 @@ class Sensor: public Detector {
   private:
 
     Subtype subtype;             /**< subtype of sensor */
-    bool hero_overlaps;          /**< true if the hero is currently on this sensor */
     bool activated_by_hero;      /**< true if the sensor is activated by the hero */
 
   public:

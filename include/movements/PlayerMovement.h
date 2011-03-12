@@ -33,7 +33,7 @@ class PlayerMovement: public SmoothMovement {
 
     int moving_speed;					/**< speed of the entity when it is moving */
     int direction8;					/**< current direction of the movement (0 to 7), as defined by the directional keys
-							 * currently pressed by the player (when the movement allows them) or -1*/
+							 * currently pressed by the player (when the movement allows them) or -1 */
 
     void set_wanted_direction();
 

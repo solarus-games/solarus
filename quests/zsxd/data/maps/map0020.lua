@@ -34,6 +34,14 @@ function event_hero_interaction(entity_name)
 	end
 end
 
+
+function event_hero_on_sensor(sensor_name)
+	-- Fonctionnaire qui refuse de laisser passer
+	if sensor_name == "passage_sensor_A" then
+		sol.map.dialog_start("crazy_house.public_agent")
+	end
+end
+
 function event_dialog_finished(first_message_id, answer)
 	if first_message_id == "crazy_house.receptionist_1" then
 		if answer == 0 then

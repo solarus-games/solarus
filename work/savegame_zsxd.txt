@@ -50,10 +50,35 @@ integers (above 1024):
 1129	sword
 1130	shield
 
+================================================================================
+
 1400 to 1499	reserved for crazy_house
 
 1400	Small key counter
 
+1471: poivron_counter
+1472: balai_counter
+1473: cuillere_counter
+1474: tapisserie_counter
+1475: roc_magma_counter
+1476: sac_riz_counter
+1477: sac_olive_counter
+1478: bocal_epice_counter
+1479: hache_counter
+1480: parfum_counter
+
+1481: poivron_variable
+1482: balai_variable
+1483: cuillere_variable
+1484: tapisserie_variable
+1485: roc_magma_variable
+1486: sac_riz_variable
+1487: sac_olive_variable
+1488: bocal_epice_variable
+1489: hache_variable
+1490: parfum_variable
+
+================================================================================
 
 booleans:
 
@@ -91,28 +116,6 @@ booleans:
 140	1FA: Key Door A [DK1]
 141 3F : Key Door B [DK2]
 142 1FB: Key Door C [DK3]
-
-171: poivron_counter
-172: balai_counter
-173: cuillere_counter
-174: tapisserie_counter
-175: roc_magma_counter
-176: sac_riz_counter
-177: sac_olive_counter
-178: bocal_epice_counter
-179: hache_counter
-180: parfum_counter
-
-181: poivron_variable
-182: balai_variable
-183: cuillere_variable
-184: tapisserie_variable
-185: roc_magma_variable
-186: sac_riz_variable
-187: sac_olive_variable
-188: bocal_epice_variable
-189: hache_variable
-190: parfum_variable
 
 000 3F : Door Switch A [DS1]
 000 3F : Locked Door A [LD1]

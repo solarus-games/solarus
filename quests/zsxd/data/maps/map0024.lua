@@ -34,7 +34,7 @@ function event_hero_on_sensor(sensor_name)
 	end
 	
 	if sensor_name == "infinite_corridor" then
-		sol.map.hero_set_map(24, "infinite_start", 0)
+		sol.map.hero_set_position(1136, 797, 1)
 	end
 end
 

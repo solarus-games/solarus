@@ -356,3 +356,82 @@ brandish_when_picked = false
 can_disappear = true
 shadow = none
 
+[poivron_counter]
+savegame_variable = 181
+counter = 171
+limit = 50
+
+[poivron]
+changes_counter = poivron_counter
+
+[balai_counter]
+savegame_variable = 182
+counter = 172
+limit = 50
+
+[balai]
+changes_counter = balai_counter
+
+[cuillere_counter]
+savegame_variable = 183
+counter = 173
+limit = 50
+
+[cuillere]
+changes_counter = cuillere_counter
+
+[tapisserie_counter]
+savegame_variable = 184
+counter = 174
+limit = 50
+
+[tapisserie]
+changes_counter = tapisserie_counter
+
+[roc_magma_counter]
+savegame_variable = 185
+counter = 175
+limit = 50
+
+[roc_magma]
+changes_counter = roc_magma_counter
+
+[sac_riz_counter]
+savegame_variable = 186
+counter = 176
+limit = 50
+
+[sac_riz]
+changes_counter = sac_riz_counter
+
+[sac_olive_counter]
+savegame_variable = 187
+counter = 177
+limit = 50
+
+[sac_olive]
+changes_counter = sac_olive_counter
+
+[bocal_epice_counter]
+savegame_variable = 188
+counter = 178
+limit = 50
+
+[bocal_epice]
+changes_counter = bocal_epice_counter
+
+[hache_counter]
+savegame_variable = 189
+counter = 179
+limit = 50
+
+[hache]
+changes_counter = hache_counter
+
+[parfum_counter]
+savegame_variable = 190
+counter = 180
+limit = 50
+
+[parfum]
+changes_counter = parfum_counter

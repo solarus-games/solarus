@@ -65,6 +65,8 @@ booleans:
 44 outside link's house heart
 45 outside link's house chest
 
+================================================================================
+
 100 to 199	reserved for crazy_house (dungeon 2)
 100	1FA: Hidden Piece of Heart [PH1]
 101	1FA: Empty chest Switch [CS3]
@@ -82,13 +84,40 @@ booleans:
 113 1FB: Empty chest [CV2]
 114 2FA: Piece of Heart [PH2]
 115 1FB: Bombs chest [CB1]
+116 2FA: Small key chest [CK2]
+117 1FB: Croissant chest [CC1]
+118 1FB: 100 rupees chest [CR3]
 
 140	1FA: Key Door A [DK1]
 141 3F : Key Door B [DK2]
 142 1FB: Key Door C [DK3]
 
+171: poivron_counter
+172: balai_counter
+173: cuillere_counter
+174: tapisserie_counter
+175: roc_magma_counter
+176: sac_riz_counter
+177: sac_olive_counter
+178: bocal_epice_counter
+179: hache_counter
+180: parfum_counter
+
+181: poivron_variable
+182: balai_variable
+183: cuillere_variable
+184: tapisserie_variable
+185: roc_magma_variable
+186: sac_riz_variable
+187: sac_olive_variable
+188: bocal_epice_variable
+189: hache_variable
+190: parfum_variable
+
 000 3F : Door Switch A [DS1]
 000 3F : Locked Door A [LD1]
+
+================================================================================
 
 200 to 399	reserved for the stupid temple (dungeon 1)
 201	1F SW: chest with the boss key

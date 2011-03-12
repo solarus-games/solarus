@@ -202,3 +202,63 @@ fairy entities/items.png 2 100 0
 apple entities/items.png 1 0 -1
 160	16	16	16	8	13	1	1
 
+poivron entities/items.png 1 0 -1
+720	0	16	16	8	13	1	1
+
+poivron_counter entities/items.png 1 0 -1
+720	0	16	16	8	13	1	1
+
+balai entities/items.png 1 0 -1
+736	0	16	16	8	13	1	1
+
+balai_counter entities/items.png 1 0 -1
+736	0	16	16	8	13	1	1
+
+cuillere entities/items.png 1 0 -1
+752	0	16	16	8	13	1	1
+
+cuillere_counter entities/items.png 1 0 -1
+752	0	16	16	8	13	1	1
+
+tapisserie entities/items.png 1 0 -1
+768	0	16	16	8	13	1	1
+
+tapisserie_counter entities/items.png 1 0 -1
+768	0	16	16	8	13	1	1
+
+roc_magma entities/items.png 1 0 -1
+784	0	16	16	8	13	1	1
+
+roc_magma_counter entities/items.png 1 0 -1
+784	0	16	16	8	13	1	1
+
+sac_riz entities/items.png 1 0 -1
+800	0	16	16	8	13	1	1
+
+sac_riz_counter entities/items.png 1 0 -1
+800	0	16	16	8	13	1	1
+
+sac_olive entities/items.png 1 0 -1
+816	0	16	16	8	13	1	1
+
+sac_olive_counter entities/items.png 1 0 -1
+816	0	16	16	8	13	1	1
+
+bocal_epice entities/items.png 1 0 -1
+832	0	16	16	8	13	1	1
+
+bocal_epice_counter entities/items.png 1 0 -1
+832	0	16	16	8	13	1	1
+
+hache entities/items.png 1 0 -1
+848	0	16	16	8	13	1	1
+
+hache_counter entities/items.png 1 0 -1
+848	0	16	16	8	13	1	1
+
+parfum entities/items.png 1 0 -1
+864	0	16	16	8	13	1	1
+
+parfum_counter entities/items.png 1 0 -1
+864	0	16	16	8	13	1	1
+

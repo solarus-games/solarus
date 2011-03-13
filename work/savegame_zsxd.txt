@@ -112,6 +112,7 @@ booleans:
 116 2FA: Small key chest [CK2]
 117 1FB: Croissant chest [CC1]
 118 1FB: 100 rupees chest [CR3]
+119 1FB: Empty chest [CV4]
 
 140	1FA: Key Door A [DK1]
 141 3F : Key Door B [DK2]

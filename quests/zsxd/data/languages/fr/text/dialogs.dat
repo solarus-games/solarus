@@ -2348,27 +2348,68 @@ line1 = "Ceci est une "
 line2 = "boite aux lettres"
 line3 = "très pénible..."
 
-[outside_fields_SO.chest_link_house]
+[outside_fields_SO_chest_link_house]
 #       |-----------------------|
 line1 = "C'est vide!"
 line2 = "Tu croyais vraiment"
 line3 = "qu'il y avait"
-next = outside_fields_SO.chest_link_house2
+next = outside_fields_SO_chest_link_house2
 
-[outside_fields_SO.chest_link_house2]
+[outside_fields_SO_chest_link_house2]
 #       |-----------------------|
 line1 = "un trésor juste"
 line2 = "derrière ta maison ?!?"
 
-[outside_fields_SO.guard_nok]
+[outside_fields_SO_guard_nok]
 #       |-----------------------|
 line1 = "Pas de resquilleur !"
 line2 = "Va faire la queue comme"
 line3 = "tout le monde."
 
-[outside_fields_SO.guard_ok]
+[outside_fields_SO_guard_ok]
 #       |-----------------------|
 line1 = "Bonne journée à vous."
+
+[outside_fields_SO_forest_monkey_start]
+#       |-----------------------|
+line1 = "Ook!"
+
+[outside_fields_SO_forest_monkey_give_boots]
+#       |-----------------------|
+line1 = "Ook! Super une tarte"
+line2 = "aux pommes !!!"
+line3 = "tient voila tes bottes."
+next = outside_fields_SO_forest_monkey_give_boots2
+
+[outside_fields_SO_forest_monkey_give_boots2]
+#       |-----------------------|
+line1 = "..."
+next = outside_fields_SO_forest_monkey_give_boots3
+
+[outside_fields_SO_forest_monkey_give_boots3]
+#       |-----------------------|
+line1 = "Il manque les lacets?"
+next = outside_fields_SO_forest_monkey_give_boots4
+
+[outside_fields_SO_forest_monkey_give_boots4]
+#       |-----------------------|
+line1 = "Bah..."
+next = outside_fields_SO_forest_monkey_give_boots5
+
+[outside_fields_SO_forest_monkey_give_boots5]
+#       |-----------------------|
+line1 = "J'avais faim !!!"
+next = outside_fields_SO_forest_monkey_give_boots6
+
+[outside_fields_SO_forest_monkey_give_boots6]
+#       |-----------------------|
+line1 = "Il fallait être plus"
+line2 = "rapide !"
+next = outside_fields_SO_forest_monkey_end
+
+[outside_fields_SO_forest_monkey_end]
+#       |-----------------------|
+line1 = "Ook! Ook! Ook!"
 
 [outside_fields_NO_linkhouse]
 line1 = "Sud : Maison de"

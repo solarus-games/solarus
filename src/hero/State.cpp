@@ -895,6 +895,29 @@ bool Hero::State::can_start_inventory_item() {
 }
 
 /**
+ * @brief Returns whether the hero is currently carrying an item in this state.
+ *
+ * This function returns true if get_carried_item() is not NULL.
+ * Redefine get_carried_item() if the hero is able to carry an item in this state.
+ *
+ * @return true if the hero is currently carrying an item in this state
+ */
+bool Hero::State::is_carrying_item() {
+  return get_carried_item() != NULL;
+}
+
+/**
+ * @brief Returns the item currently carried by the hero in this state, if any.
+ *
+ * Redefine this function to make the hero able to carry an item in this state.
+ *
+ * @return the item carried by the hero, or NULL
+ */
+CarriedItem* Hero::State::get_carried_item() {
+  return NULL;
+}
+
+/**
  * @brief Returns the action to do with an item previously carried by the hero when this state starts.
  * 
  * Returns CarriedItem::BEHAVIOR_THROW by default.

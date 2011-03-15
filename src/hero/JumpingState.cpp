@@ -142,14 +142,7 @@ void Hero::JumpingState::update() {
   }
 
   if (movement->is_finished()) {
-
-    if (carried_item != NULL) {
-      hero.set_state(new CarryingState(hero, carried_item));
-    }
-    else {
-      hero.set_state(new FreeState(hero));
-    }
-    hero.notify_ground_changed();
+    hero.start_state_from_ground();
   }
 }
 
@@ -297,6 +290,14 @@ bool Hero::JumpingState::can_avoid_switch() {
  */
 bool Hero::JumpingState::can_be_hurt() {
   return false;
+}
+
+/**
+ * @brief Returns the item currently carried by the hero in this state, if any.
+ * @return the item carried by the hero, or NULL
+ */
+CarriedItem* Hero::JumpingState::get_carried_item() {
+  return carried_item;
 }
 
 /**

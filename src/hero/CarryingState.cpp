@@ -198,6 +198,14 @@ void Hero::CarryingState::set_animation_walking() {
 }
 
 /**
+ * @brief Returns the item currently carried by the hero in this state, if any.
+ * @return the item carried by the hero, or NULL
+ */
+CarriedItem* Hero::CarryingState::get_carried_item() {
+  return carried_item;
+}
+
+/**
  * @brief Returns the action to do with an item previously carried by the hero when this state starts.
  * @param carried_item the item carried in the previous state
  * @return the action to do with a previous carried item when this state starts

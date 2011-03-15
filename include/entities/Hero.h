@@ -302,6 +302,7 @@ class Hero: public MapEntity {
     void start_grabbing();
     void start_boomerang();
     void start_bow();
+    void start_state_from_ground();
 };
 
 #endif

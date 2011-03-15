@@ -263,6 +263,14 @@ int Hero::StairsState::get_wanted_movement_direction8() {
 }
 
 /**
+ * @brief Returns the item currently carried by the hero in this state, if any.
+ * @return the item carried by the hero, or NULL
+ */
+CarriedItem* Hero::StairsState::get_carried_item() {
+  return carried_item;
+}
+
+/**
  * @brief Returns the action to do with an item previously carried by the hero when this state starts.
  * @param carried_item the item carried in the previous state
  * @return the action to do with a previous carried item when this state starts

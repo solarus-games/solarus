@@ -46,6 +46,7 @@ class Hero::CarryingState: public Hero::PlayerMovementState {
     bool can_take_stairs();
     void set_animation_stopped();
     void set_animation_walking();
+    CarriedItem* get_carried_item();
     CarriedItem::Behavior get_previous_carried_item_behavior(CarriedItem& carried_item);
 };
 

@@ -98,7 +98,7 @@ void Hero::HurtState::update() {
 
   if (hero.get_movement()->is_finished()) {
     hero.clear_movement();
-    hero.set_state(new FreeState(hero));
+    hero.start_state_from_ground();
   }
 }
 

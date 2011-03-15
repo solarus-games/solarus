@@ -893,9 +893,8 @@
 0	0	0	808	96	40	502
 0	0	40	984	48	40	502
 0	0	392	1008	96	40	502
-0	0	576	1000	144	40	502
-0	0	720	1000	336	40	502
-0	0	792	968	96	40	502
+0	0	576	1000	480	40	502
+0	0	792	952	96	40	502
 0	0	224	936	48	40	502
 0	0	-16	768	48	40	502
 0	0	-16	664	32	32	526
@@ -1046,13 +1045,13 @@
 4	0	40	805	2	_random	1	-1
 4	0	56	805	2	_random	1	-1
 8	0	1000	581	panel1_4	3	0	entities/sign	dialog#outside_fields_NO_goa
-2	0	1024	88	16	960	teletransporter	0	2	2	_side
+2	0	1024	0	16	1024	teletransporter	0	2	2	_side
 1	0	520	965	humid_house_out	3	0
 1	0	640	773	stupid_guy_house_out	3	0
 8	0	944	829	lawn_master	3	1	npc/static_villager13	dialog#outside_fields_NO.lawn_master
 1	0	856	589	pot_house_out	3	0
 1	0	952	117	stupid_cave_out	3	0
-2	0	72	1024	336	16	teletransporter_2	0	2	3	_side
+2	0	0	1024	1024	16	teletransporter_2	0	2	3	_side
 2	0	512	936	16	16	teletransporter_3	0	1	10	arrival_point
 2	0	848	560	16	16	teletransporter_4	0	1	6	start_position
 2	0	960	800	16	16	teletransporter_5	0	1	9	start_position
@@ -1069,7 +1068,7 @@
 8	0	640	869	lady_a	3	1	npc/villager1	dialog#outside_fields_NO.lady_a
 8	0	552	797	interactive_entity	3	1	npc/static_villager9	dialog#outside_fields_NO.drunk
 8	0	712	829	guy_a	3	1	npc/newlink7	dialog#outside_fields_NO.guy_a
-0	2	792	968	96	40	511
+0	2	792	952	96	40	511
 0	2	584	560	80	24	717
 0	2	696	880	8	40	514
 0	2	648	872	48	16	512
@@ -1124,15 +1123,12 @@
 0	2	912	648	144	16	512
 0	2	912	664	144	40	511
 0	2	904	656	8	40	513
-0	2	576	1008	144	40	511
-0	2	720	1008	48	40	511
-0	2	568	1000	8	40	513
-0	2	576	992	144	16	512
-0	2	768	1008	288	40	511
-0	2	792	952	96	16	512
-0	2	784	960	8	40	513
-0	2	888	960	8	40	514
-0	2	720	992	336	16	512
+0	2	576	1000	480	40	511
+0	2	568	992	8	40	513
+0	2	576	984	480	16	512
+0	2	792	936	96	16	512
+0	2	784	944	8	40	513
+0	2	888	944	8	40	514
 0	2	904	536	8	40	515
 0	2	760	440	288	40	511
 0	2	928	472	96	40	511

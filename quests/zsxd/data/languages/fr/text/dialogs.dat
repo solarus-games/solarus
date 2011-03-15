@@ -1907,8 +1907,8 @@ question = true
 # Lorsqu'on veut acheter un objet dans un magasin
 # mais qu'on n'a pas assez de Rubis
 #       |-----------------------|
-line1 = "Désolé, mais tu me"
-line2 = "sembles fauché !"
+line1 = "Mec, t'es complètement"
+line2 = "fauché !"
 
 [_shop.amount_full]
 # Lorsqu'on veut acheter un objet dans un magasin
@@ -2615,6 +2615,32 @@ line3 = "queue à l'intérieur."
 line1 = "Vous vous sentez"
 line2 = "harcelé ?"
 line3 = "Courez !"
+
+[shop.red_rupee]
+#       |-----------------------|
+line1 = "Un Rubis rouge."
+line2 = "Rarissime !"
+next = _unknown
+
+[shop.heart_container]
+#       |-----------------------|
+line1 = "Un Réceptacle de Coeur."
+line2 = "Plutôt banal."
+next = _unknown
+
+[shop.huge_rupee_bag]
+#       |-----------------------|
+line1 = "Un Sac de Rubis Géant."
+line2 = "Permet de transporter"
+line3 = "jusque 999 Rubis !"
+next = _unknown
+
+[shop.apple_pie]
+#       |-----------------------|
+line1 = "Une tarte aux pommes."
+line2 = "Pas très fraîche, mais"
+line3 = "osef, achète-la stp."
+next = _unknown
 
 [dungeon_1.welcome]
 #       |-----------------------|

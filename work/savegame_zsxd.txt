@@ -89,10 +89,9 @@ booleans:
 43 first shield
 44 outside link's house heart
 45 outside link's house chest
-46 boulet: empty chest
-47 apple pie
-48 boots
-
+46	sms guy house: empty chest
+47	shop: bought the apple pie
+48	shop: bought the huge rupee bag (impossible)
 
 ================================================================================
 
@@ -136,7 +135,7 @@ booleans:
 206	2F SW: big chest with the bow
 207-232	2F SW: weak blocks in the creepers room
 233	1F NE: weak wall to the compass
-234	1F NE/SE: weak wall to the red tunic
+234	1F NE/SE: weak wall to the big bomb bag
 235	1F SE: locked door
 236	1F NW: door that requires the code
 237	1F NW: door locked (big key required)

@@ -181,6 +181,7 @@ void Hero::set_state(State* new_state) {
 
   this->state = new_state;
   this->state->start(old_state);
+
   check_position();
 }
 
@@ -500,6 +501,7 @@ void Hero::place_on_destination_point(Map &map) {
       layer = LAYER_LOW;
     }
     set_map(map);
+    last_solid_ground_coords = get_xy();
     map.get_entities().set_entity_layer(this, layer);
 
     start_free();
@@ -538,6 +540,7 @@ void Hero::place_on_destination_point(Map &map) {
 	default:
 	  Debug::die(StringConcat() << "Invalid destination side: " << side);
       }
+      last_solid_ground_coords = get_xy();
       // note that we keep the state from the previous map
     }
     else {
@@ -549,6 +552,7 @@ void Hero::place_on_destination_point(Map &map) {
 
       set_map(map, destination_point->get_direction());
       set_xy(destination_point->get_x(), destination_point->get_y());
+      last_solid_ground_coords = get_xy();
       map.get_entities().set_entity_layer(this, destination_point->get_layer());
 
       map.get_entities().remove_boomerang(); // useful when the map remains the same
@@ -1730,7 +1734,7 @@ void Hero::hurt(const Rectangle& source_xy, int life_points, int magic_points) {
 void Hero::get_back_from_death() {
 
   sprites->blink();
-  start_free();
+  start_state_from_ground();
   when_suspended = System::now();
 }
 
@@ -1981,5 +1985,59 @@ void Hero::start_boomerang() {
  */
 void Hero::start_bow() {
   set_state(new BowState(*this));
+}
+
+/**
+ * @brief Activates immediately the state corresponding to the current ground.
+ *
+ * Only the state is changed here.
+ * Some other functions like start_deep_water() and start_hole()
+ * are triggered when the ground changes (for example,
+ * going from normal ground to deep water ground) and make more
+ * complex transitions.
+ * This function is supposed to called when the ground was ignored
+ * and you want to apply its effect now (no matter whether it has changed or not).
+ * This function is typically called at the end of a state that ignores
+ * the ground (like JumpingState) to choose the
+ * correct next state depending on the ground the hero lands on.
+ */
+void Hero::start_state_from_ground() {
+
+  switch (ground) {
+
+  case GROUND_DEEP_WATER:
+    if (get_equipment().has_ability("swim")) {
+      set_state(new SwimmingState(*this));
+    }
+    else {
+      set_state(new PlungingState(*this));
+    }
+    break;
+
+  case GROUND_HOLE:
+    set_state(new FallingState(*this));
+    break;
+
+  case GROUND_LAVA:
+    set_state(new PlungingState(*this));
+    break;
+
+  case GROUND_PRICKLE:
+    set_state(new PlungingState(*this)); // TODO
+    break;
+
+  case GROUND_NORMAL:
+  case GROUND_SHALLOW_WATER:
+  case GROUND_GRASS:
+  case GROUND_LADDER:
+  case GROUND_EMPTY:
+    if (state->is_carrying_item()) {
+      set_state(new CarryingState(*this, state->get_carried_item()));
+    }
+    else {
+      set_state(new FreeState(*this));
+    }
+    break;
+  }
 }
 

@@ -1,4 +1,4 @@
-352	336	-1	-100	0	0	-1	0	same
+352	336	-1	-100	0	0	-1	0	fortune_teller.spc
 0	1	80	208	192	80	3
 0	1	40	32	272	176	2
 0	1	136	48	8	16	20
@@ -142,7 +142,7 @@
 4	1	136	237	0	_random	1	-1
 4	1	216	221	0	_random	1	-1
 4	1	216	237	0	_random	1	-1
-2	1	168	320	16	16	teletransporter	0	1	1	geek_house_out
+2	1	168	320	16	16	teletransporter	0	1	4	from_geek_house
 1	1	176	309	start_position	1	0
 0	2	144	312	64	8	263
 0	2	0	112	16	128	170

@@ -26,9 +26,10 @@ function event_npc_dialog(npc_name)
       sol.map.dialog_start("outside_fields_SO.guard_nok")
     end
   elseif string.find(npc_name, "forest_monkey") then
-    if sol.game.savegame_get_boolean(48) then --has boots
+    sol.main.play_sound("monkey")
+    if sol.game.savegame_get_boolean(48) then -- has boots
       sol.map.dialog_start("outside_fields_SO.forest_monkey_end")
-    elseif sol.game.savegame_get_boolean(47) then --has apple pie
+    elseif sol.game.savegame_get_boolean(47) then -- has apple pie
       sol.map.dialog_start("outside_fields_SO.forest_monkey_give_boots")
     else
       sol.map.dialog_start("outside_fields_SO.forest_monkey_start")

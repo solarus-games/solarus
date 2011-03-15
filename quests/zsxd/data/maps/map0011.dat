@@ -26,7 +26,7 @@
 0	1	168	16	48	32	111
 0	1	216	16	16	32	110
 0	1	40	40	16	24	138
-0	1	40	56	32	24	138
+0	1	48	56	32	24	138
 0	1	40	72	32	24	138
 0	1	40	120	8	8	122
 0	1	40	112	8	8	114
@@ -86,7 +86,7 @@
 0	1	248	200	16	16	12
 0	1	312	232	16	16	12
 0	1	312	168	16	16	12
-0	1	288	16	32	32	129
+0	1	280	16	32	32	129
 0	1	16	144	24	32	132
 0	1	600	144	24	32	131
 0	1	232	152	8	8	4
@@ -110,9 +110,9 @@
 0	1	72	184	16	8	215
 0	1	88	184	8	8	214
 0	1	72	200	16	16	12
-0	1	488	16	16	24	134
-0	1	504	24	32	16	136
-0	1	536	16	16	24	135
+0	1	496	16	16	24	134
+0	1	512	24	32	16	136
+0	1	544	16	16	24	135
 0	1	392	40	8	8	4
 0	1	400	40	48	8	8
 0	1	448	40	8	8	5
@@ -125,6 +125,14 @@
 0	1	592	104	8	8	5
 0	1	592	112	8	40	9
 0	1	592	152	8	8	7
+0	1	480	72	16	16	270
+0	1	560	72	16	16	270
+0	1	568	248	16	16	270
+0	1	56	248	16	16	270
+0	1	576	40	16	16	13
+0	1	320	40	48	24	138
+0	1	344	56	32	24	138
+0	1	352	72	16	24	138
 2	1	120	304	16	16	teletransporter	0	1	1	from_shop
 2	1	504	304	16	16	teletransporter_2	0	1	2	from_shop
 8	1	64	-11	interactive_entity_2	3	1	npc/thief	map
@@ -133,23 +141,27 @@
 8	1	160	-11	interactive_entity_5	3	1	npc/newlink5	map
 8	1	32	-11	interactive_entity_6	3	1	npc/newlink6	map
 8	1	192	-11	interactive_entity_7	3	1	npc/newlink8	map
-8	1	264	109	interactive_entity_8	3	1	npc/static_villager1	map
+8	1	264	109	interactive_entity_8	1	1	npc/static_villager1	map
 8	1	224	-11	interactive_entity_9	3	1	npc/static_villager2	map
 8	1	264	69	interactive_entity_10	3	1	npc/wizard	map
 8	1	256	-11	interactive_entity_11	3	1	npc/static_villager3	map
 8	1	136	85	interactive_entity_12	3	1	npc/static_villager4	map
 8	1	288	-11	interactive_entity_13	3	1	npc/static_villager5	map
-8	1	488	85	interactive_entity_14	3	1	npc/static_villager6	map
+8	1	320	-11	interactive_entity_14	3	1	npc/static_villager6	map
 8	1	352	-11	interactive_entity_15	3	1	npc/static_villager7	map
 8	1	384	-11	interactive_entity_16	3	1	npc/static_villager8	map
 8	1	416	-11	interactive_entity_17	3	1	npc/static_villager10	map
-8	1	448	-11	interactive_entity_18	3	1	npc/static_villager11	map
+8	1	528	77	interactive_entity_18	3	1	npc/static_villager11	map
 1	1	128	293	from_outside_NO	1	0
 1	1	512	293	from_outside_NE	1	0
 16	1	552	120	shop_item	level_4_way	1	47	42	shop.apple_pie
-16	1	480	120	shop_item_2	rupee_bag	3	48	999	shop.huge_rupee_bag
-16	1	408	120	shop_item_3	heart_container	1	49	10	shop.heart_container
+16	1	480	120	shop_item_2	rupee_bag	3	49	999	shop.huge_rupee_bag
+16	1	408	120	shop_item_3	heart_container	1	50	10	shop.heart_container
 16	1	408	64	shop_item_4	rupee	3	-1	50	shop.red_rupee
+8	1	192	141	interactive_entity_19	3	1	npc/static_villager2	map
+8	1	464	229	interactive_entity_20	3	1	npc/newlink2	map
+12	1	376	160	224	8	custom_obstacle	0	0	1	0
+12	1	376	168	8	112	custom_obstacle_2	0	0	1	0
 0	2	0	0	16	320	170
 0	2	624	0	16	320	170
 0	2	16	304	608	16	170

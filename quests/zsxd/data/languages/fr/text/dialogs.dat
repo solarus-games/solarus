@@ -500,9 +500,9 @@ line3 = "grotte du village."
 # Tarte aux Pommes / Apple Pie
 #       |--------------------|
 icon = 22
-line1 = "Cette Tarte aux"
-line2 = "Pommes a un drôle"
-line3 = "d'aspect..."
+line1 = "Cette tarte aux"
+line2 = "pommes a vraiment"
+line3 = "l'air dégueux..."
 
 [_item_description.level_4_way.2]
 # Lingots d'or / Golden bars
@@ -1042,14 +1042,14 @@ line3 = "Coeurs."
 # Bottes de Pégase
 #       |--------------------|
 icon = 13
-line1 = "Tu as trouvé les"
+line1 = "Tu as retrouvé les"
 line2 = "Bottes de Pégase"
-line3 = "pénibles !$0"
+line3 = "sans lacets !$0C'est"
 next = _treasure.pegasus_shoes.1.1
 
 [_treasure.pegasus_shoes.1.1]
 #       |--------------------|
-line1 = "Elles sont pénibles,"
+line1 = "dur à contrôler,"
 line2 = "mais tu peux aller"
 line3 = "super vite !"
 
@@ -1165,15 +1165,14 @@ line3 = "village !"
 #       |--------------------|
 icon = 22
 line1 = "Tu as trouvé une"
-line2 = "Tarte aux Pommes !$0"
-line3 = "$1...$3 Hmmm, à ta"
+line2 = "tarte aux pommes !"
 next = _treasure.level_4_way.1.1
 
 [_treasure.level_4_way.1.1]
 #       |--------------------|
-line1 = "place, je n'y goûte-"
-line2 = "rais pas, elle a un"
-line3 = "drôle d'aspect..."
+line1 = "Elle est moisie,"
+line2 = "mais c'est pas"
+line3 = "grave !"
 
 [_treasure.level_4_way.2]
 # Lingots d'or
@@ -1679,6 +1678,7 @@ next = _treasure.heart_container.1.1
 #       |--------------------|
 line1 = "Tu obtiens un Coeur"
 line2 = "supplémentaire !"
+line3 = "Ca poutre !"
 
 [_treasure.bomb.1]
 # 1 Bombe
@@ -1927,23 +1927,29 @@ line3 = "avec quelque chose..."
 [found_piece_of_heart.first]
 #       |--------------------|
 icon = 75
-line1 = "Collecte-en quatre"
-line2 = "pour former un"
-line3 = "nouveau Coeur."
+line1 = "Mais je t'arrête"
+line2 = "tout de suite :"
+line3 = "il t'en faut quatre"
+next = found_piece_of_heart.first.2
+
+[found_piece_of_heart.first.2]
+#       |--------------------|
+icon = 75
+line1 = "pour avoir un"
+line2 = "nouveau Coeur."
 
 [found_piece_of_heart.second]
 #       |--------------------|
 icon = 76
 line1 = "Encore deux et"
-line2 = "tu obtiendras"
-line3 = "un nouveau Coeur."
+line2 = "ce sera cool."
 
 [found_piece_of_heart.third]
 #       |--------------------|
 icon = 77
-line1 = "Plus qu'un à trouver"
-line2 = "pour former un"
-line3 = "nouveau Coeur !"
+line1 = "Plus qu'un et ce"
+line2 = "sera vraiment"
+line3 = "la fête !"
 
 [found_piece_of_heart.fourth]
 #       |--------------------|
@@ -2373,8 +2379,8 @@ line1 = "Bonne journée à vous."
 
 [outside_fields_SO.forest_monkey_start]
 #       |-----------------------|
-line1 = "Ook!"
-line2 = "Tu veux mes bottes?"
+line1 = "Oo k!"
+line2 = "Tu veux mes bottes ?"
 next = outside_fields_SO.forest_monkey_start2
 
 [outside_fields_SO.forest_monkey_start2]
@@ -2384,14 +2390,14 @@ next = outside_fields_SO.forest_monkey_start3
 
 [outside_fields_SO.forest_monkey_start3]
 #       |-----------------------|
-line1 = "Ce sont les tiennes?"
+line1 = "Ce sont les tiennes ?"
 next = outside_fields_SO.forest_monkey_start4
 
 [outside_fields_SO.forest_monkey_start4]
 #       |-----------------------|
-line1 = "Tu rèves ! Je les ai"
-line2 = "trouvées elles sont"
-line3 = "à moi!"
+line1 = "Tu rêves ! Je les ai"
+line2 = "trouvées, elles sont"
+line3 = "à moi !"
 next = outside_fields_SO.forest_monkey_start5
 
 [outside_fields_SO.forest_monkey_start5]
@@ -2402,7 +2408,7 @@ next = outside_fields_SO.forest_monkey_start6
 [outside_fields_SO.forest_monkey_start6]
 #       |-----------------------|
 line1 = "Bon je veux bien te les"
-line2 = "donner, mais ..."
+line2 = "donner, mais..."
 next = outside_fields_SO.forest_monkey_start7
 
 [outside_fields_SO.forest_monkey_start7]
@@ -2412,15 +2418,15 @@ next = outside_fields_SO.forest_monkey_start8
 
 [outside_fields_SO.forest_monkey_start8]
 #       |-----------------------|
-line1 = "Amène moi une tarte aux"
+line1 = "Amène-moi une tarte aux"
 line2 = "pommes en échange."
 next = outside_fields_SO.forest_monkey_end
 
 [outside_fields_SO.forest_monkey_give_boots]
 #       |-----------------------|
-line1 = "Ook! Super une tarte"
+line1 = "Ook ! Super, une tarte"
 line2 = "aux pommes !!!"
-line3 = "tient voila tes bottes."
+line3 = "Tiens, voilà tes bottes."
 next = outside_fields_SO.forest_monkey_give_boots2
 
 [outside_fields_SO.forest_monkey_give_boots2]
@@ -2430,7 +2436,7 @@ next = outside_fields_SO.forest_monkey_give_boots3
 
 [outside_fields_SO.forest_monkey_give_boots3]
 #       |-----------------------|
-line1 = "Il manque les lacets?"
+line1 = "Il manque les lacets ?"
 next = outside_fields_SO.forest_monkey_give_boots4
 
 [outside_fields_SO.forest_monkey_give_boots4]
@@ -2451,7 +2457,7 @@ next = outside_fields_SO.forest_monkey_end
 
 [outside_fields_SO.forest_monkey_end]
 #       |-----------------------|
-line1 = "Ook! Ook! Ook!"
+line1 = "Ook ! Ook ! Ook !"
 
 [outside_fields_NO_linkhouse]
 line1 = "Sud : Maison de"

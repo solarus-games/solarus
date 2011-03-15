@@ -208,25 +208,25 @@ adds some money to the player
 - <tt>sol.game.remove_money(money)</tt>:
 removes some money from the player
 
-- <tt>sol.game.game_api_get_magic()</tt>:
+- <tt>sol.game.get_magic()</tt>:
 returns the current number of magic points
 
-- <tt>sol.game.game_api_add_magic(magic)</tt>:
+- <tt>sol.game.add_magic(magic)</tt>:
 adds some magic points
 
-- <tt>sol.game.game_api_remove_magic(magic)</tt>:
+- <tt>sol.game.remove_magic(magic)</tt>:
 removes some magic points
 
-- <tt>sol.game.game_api_start_decreasing_magic(delay)</tt>:
+- <tt>sol.game.start_decreasing_magic(delay)</tt>:
 starts removing magic points continuously
 
-- <tt>sol.game.game_api_stop_decreasing_magic()</tt>:
+- <tt>sol.game.stop_decreasing_magic()</tt>:
 stops removing magic points continuously
 
-- <tt>sol.game.game_api_get_max_magic()</tt>:
+- <tt>sol.game.get_max_magic()</tt>:
 returns the maximum number of magic points
 
-- <tt>sol.game.game_api_set_max_magic(magic)</tt>:
+- <tt>sol.game.set_max_magic(magic)</tt>:
 sets the maximum number of magic points
 
 - <tt>sol.game.has_ability(ability_name)</tt>:

@@ -49,6 +49,7 @@
 2	0	64	64	192	64	teletransporter	0	1	44	_same
 1	0	160	213	start_position	3	0
 8	0	176	141	sign	3	0	entities/sign	map
+2	0	136	200	16	16	teletransporter_2	0	1	59	destination_point
 0	1	168	16	32	24	345
 0	1	72	16	32	24	345
 0	1	120	16	32	24	345

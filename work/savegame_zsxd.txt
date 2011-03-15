@@ -91,6 +91,7 @@ booleans:
 45 outside link's house chest
 46 boulet: empty chest
 47 apple pie
+48 boots
 
 
 ================================================================================

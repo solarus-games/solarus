@@ -16,6 +16,7 @@
  */
 #include "lua/MapScript.h"
 #include "Map.h"
+#include "Game.h"
 #include "Treasure.h"
 #include <sstream>
 #include <iomanip>
@@ -81,7 +82,7 @@ void MapScript::update() {
 
   Script::update();
 
-  if (is_loaded()) {
+  if (is_loaded() && !get_game().is_suspended()) {
     event_update();
   }
 }

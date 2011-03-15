@@ -2348,14 +2348,18 @@ line3 = "très pénible..."
 [outside_fields_SO.chest_link_house]
 #       |-----------------------|
 line1 = "C'est vide!"
-line2 = "Tu croyais vraiment"
-line3 = "qu'il y avait"
 next = outside_fields_SO.chest_link_house2
 
 [outside_fields_SO.chest_link_house2]
 #       |-----------------------|
-line1 = "un trésor juste"
-line2 = "derrière ta maison ?!?"
+line1 = "Tu croyais vraiment"
+line2 = "qu'il y avait"
+line3 = "un trésor juste"
+next = outside_fields_SO.chest_link_house3
+
+[outside_fields_SO.chest_link_house3]
+#       |-----------------------|
+line1 = "derrière ta maison ?!?"
 
 [outside_fields_SO.guard_nok]
 #       |-----------------------|
@@ -2366,6 +2370,88 @@ line3 = "tout le monde."
 [outside_fields_SO.guard_ok]
 #       |-----------------------|
 line1 = "Bonne journée à vous."
+
+[outside_fields_SO.forest_monkey_start]
+#       |-----------------------|
+line1 = "Ook!"
+line2 = "Tu veux mes bottes?"
+next = outside_fields_SO.forest_monkey_start2
+
+[outside_fields_SO.forest_monkey_start2]
+#       |-----------------------|
+line1 = "..."
+next = outside_fields_SO.forest_monkey_start3
+
+[outside_fields_SO.forest_monkey_start3]
+#       |-----------------------|
+line1 = "Ce sont les tiennes?"
+next = outside_fields_SO.forest_monkey_start4
+
+[outside_fields_SO.forest_monkey_start4]
+#       |-----------------------|
+line1 = "Tu rèves ! Je les ai"
+line2 = "trouvées elles sont"
+line3 = "à moi!"
+next = outside_fields_SO.forest_monkey_start5
+
+[outside_fields_SO.forest_monkey_start5]
+#       |-----------------------|
+line1 = "..."
+next = outside_fields_SO.forest_monkey_start6
+
+[outside_fields_SO.forest_monkey_start6]
+#       |-----------------------|
+line1 = "Bon je veux bien te les"
+line2 = "donner, mais ..."
+next = outside_fields_SO.forest_monkey_start7
+
+[outside_fields_SO.forest_monkey_start7]
+#       |-----------------------|
+line1 = "J'ai faim !!!"
+next = outside_fields_SO.forest_monkey_start8
+
+[outside_fields_SO.forest_monkey_start8]
+#       |-----------------------|
+line1 = "Amène moi une tarte aux"
+line2 = "pommes en échange."
+next = outside_fields_SO.forest_monkey_end
+
+[outside_fields_SO.forest_monkey_give_boots]
+#       |-----------------------|
+line1 = "Ook! Super une tarte"
+line2 = "aux pommes !!!"
+line3 = "tient voila tes bottes."
+next = outside_fields_SO.forest_monkey_give_boots2
+
+[outside_fields_SO.forest_monkey_give_boots2]
+#       |-----------------------|
+line1 = "..."
+next = outside_fields_SO.forest_monkey_give_boots3
+
+[outside_fields_SO.forest_monkey_give_boots3]
+#       |-----------------------|
+line1 = "Il manque les lacets?"
+next = outside_fields_SO.forest_monkey_give_boots4
+
+[outside_fields_SO.forest_monkey_give_boots4]
+#       |-----------------------|
+line1 = "Bah..."
+next = outside_fields_SO.forest_monkey_give_boots5
+
+[outside_fields_SO.forest_monkey_give_boots5]
+#       |-----------------------|
+line1 = "J'avais faim !!!"
+next = outside_fields_SO.forest_monkey_give_boots6
+
+[outside_fields_SO.forest_monkey_give_boots6]
+#       |-----------------------|
+line1 = "Il fallait être plus"
+line2 = "rapide !"
+next = outside_fields_SO.forest_monkey_end
+
+[outside_fields_SO.forest_monkey_end]
+#       |-----------------------|
+line1 = "Ook! Ook! Ook!"
 
 [outside_fields_NO_linkhouse]
 line1 = "Sud : Maison de"

@@ -1514,6 +1514,13 @@ next = _treasure.sword.1.1
 
 [_treasure.sword.1.1]
 #       |--------------------|
+line1 = "C'est la tienne car"
+line2 = "il y a ton nom"
+line3 = "dessus !"
+next = _treasure.sword.1.2
+
+[_treasure.sword.1.2]
+#       |--------------------|
 line1 = "Mais qu'est-ce"
 line2 = "qu'elle fait ici ?"
 
@@ -2117,20 +2124,20 @@ line1 = "Libère ton esprit $v."
 [crazy_house.title]
 #       |-----------------------|
 line1 = "        Niveau 1       " 
-line2 = "   Bureau des objets   "
-line3 = "        trouvés        "
+line2 = "   Bureau des Objets   "
+line3 = "        Trouvés        "
 
 [crazy_house.welcome_message]
 #       |-----------------------|
-line1 = "Bienvenue au bureau des"
-line2 = "objets trouvés ! Aussi"
-line3 = "connu sous le nom de..."
+line1 = "Bienvenue au Bureau des"
+line2 = "Objets Trouvés."
 next = crazy_house.welcome_message_2
 
 [crazy_house.welcome_message_2]
 #       |-----------------------|
-line1 = "3T : Tu trouves de"
-line2 = "tout !"
+line1 = "Aussi connu sous le nom"
+line2 = "de... 3T :
+line3 = "Tu Trouves de Tout !"
 next = crazy_house.welcome_message_3
 
 [crazy_house.welcome_message_3]
@@ -2430,7 +2437,7 @@ line2 = "Non je ne l'ai pas vue."
 
 [outside_fields_NO.lady_b]
 #       |-----------------------|
-line1 = "Tu as perdu où Zelda ?"
+line1 = "Tu as perdu Zelda ?"
 line2 = "..."
 next = outside_fields_NO.lady_b2
 
@@ -2455,6 +2462,12 @@ next = outside_fields_NO.guy_a2
 line1 = "As tu été voir au"
 line2 = "Bureau des Objets"
 line3 = "Trouvés ?"
+
+[outside_fields_NO.castle_guard]
+#       |-----------------------|
+line1 = "Excuse-nous, on a perdu"
+line2 = "la clé. On ne peut pas"
+line3 = "t'ouvrir."
 
 [geek_house.geek]
 #       |-----------------------|

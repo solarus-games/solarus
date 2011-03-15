@@ -774,7 +774,7 @@ Ground Map::get_tile_ground(Layer layer, int x, int y) {
  */
 Ground Map::obstacle_to_ground(Obstacle obstacle) {
 
-  Ground ground;
+  Ground ground = GROUND_EMPTY;
   switch (obstacle) {
 
     case OBSTACLE_SHALLOW_WATER:

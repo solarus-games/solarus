@@ -57,6 +57,7 @@ class Hero::JumpingState: public Hero::State {
     bool can_avoid_sensor();
     bool can_avoid_switch();
     bool can_be_hurt();
+    CarriedItem* get_carried_item();
     CarriedItem::Behavior get_previous_carried_item_behavior(CarriedItem& carried_item);
 };
 

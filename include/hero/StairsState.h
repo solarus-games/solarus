@@ -52,6 +52,7 @@ class Hero::StairsState: public Hero::State {
     bool can_come_from_bad_ground();
     bool is_teletransporter_delayed();
     int get_wanted_movement_direction8();
+    CarriedItem* get_carried_item();
     CarriedItem::Behavior get_previous_carried_item_behavior(CarriedItem& carried_item);
     void notify_layer_changed();
 };

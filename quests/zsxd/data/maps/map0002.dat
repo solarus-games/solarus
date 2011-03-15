@@ -577,6 +577,8 @@
 4	0	144	501	3	_random	1	-1
 2	0	832	912	16	16	teletransporter_3	0	1	38	start_position
 1	0	840	941	freaking_cave_out	3	0
+1	0	64	829	from_shop	3	0
+2	0	56	800	16	16	teletransporter_4	0	1	11	from_outside_NE
 0	2	-16	1008	288	40	511
 0	2	-16	992	288	16	512
 0	2	-40	424	432	40	511

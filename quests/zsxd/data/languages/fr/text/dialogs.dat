@@ -2256,19 +2256,15 @@ line1 = "couloir sans fin, ce"
 line2 = "que vous n'avez pas"
 line3 = "fait ! GWAH HA HA !"
 
-
-
-
-
-
 [geek_house.sign_a]
-line1 = "Itération des politiques"
-line2 = "optimistes et"
-line3 = "apprentissage"
+#       |-----------------------|
+line1 = "Itération Optimiste sur"
+line2 = "les Politiques et"
+line3 = "Apprentissage du jeu"
 next = geek_house.sign_a2
 
 [geek_house.sign_a2]
-line1 = "du jeu de Zelda."
+line1 = "de Zelda."
 
 [geek_house.sign_b]
 line1 = "switch (panneau)"
@@ -2283,9 +2279,10 @@ line3 = "case 5: break;"
 next = geek_house.sign_b3
 
 [geek_house.sign_b3]
-line1 = "/*Il faut que je"
+#       |-----------------------|
+line1 = "/* Il faut que je"
 line2 = "définisse les cases"
-line3 = "pour ce panneau.*/"
+line3 = "pour ce panneau. */"
 
 [geek_house.sign_c]
 line1 = "FIXME"
@@ -2328,8 +2325,8 @@ line2 = "Zelda sans épée."
 
 [outside_fields_NE_girly_sign]
 line1 = "Nous aussi nous"
-line2 = "respectons le quota"
-line3 = "féminin."
+line2 = "respectons la parité"
+line3 = "féminin/masculin."
 
 [outside_fields_SO_endofgame1]
 line1 = "Téléporteur vers la "
@@ -2471,9 +2468,16 @@ line3 = "t'ouvrir."
 
 [geek_house.geek]
 #       |-----------------------|
-line1 = "Hey!"
-line2 = "Est-ce que tu savais que"
-line3 = "Pi% de 1337 donnait 42?"
+line1 = ""
+line2 = "           ..."
+line3 = ""
+next = geek_house.geek.2
+
+[geek_house.geek.2]
+#       |-----------------------|
+line1 = "J'interagis socialement"
+line2 = "via mes affiches"
+line3 = "collées sur les murs."
 
 [outside_fields_SO.attente_a]
 #       |-----------------------|
@@ -2516,7 +2520,7 @@ next = outside_fields_SO.attente_d2
 
 [outside_fields_SO.attente_d2]
 #       |-----------------------|
-line1 = "Vous y êtes presque!"
+line1 = "Vous y êtes presque !"
 line2 = "Plus qu'à faire la"
 line3 = "queue à l'intérieur."
 

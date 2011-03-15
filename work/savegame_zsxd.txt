@@ -89,6 +89,7 @@ booleans:
 43 first shield
 44 outside link's house heart
 45 outside link's house chest
+46	boulet: empty chest
 
 ================================================================================
 

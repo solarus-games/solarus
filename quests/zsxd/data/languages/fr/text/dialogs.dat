@@ -1885,7 +1885,6 @@ line3 = "couper ces buissons..."
 #       |-----------------------|
 line1 = "C'est largement trop"
 line2 = "pour tes petits bras !"
-next = _cannot_lift_too_heavy.2
 
 [_cannot_lift_still_too_heavy]
 # Lorsqu'on tente de soulever une pierre vraiment lourde
@@ -2380,7 +2379,7 @@ line1 = "Bonne journée à vous."
 
 [outside_fields_SO.forest_monkey_start]
 #       |-----------------------|
-line1 = "Oo k!"
+line1 = "Ook !"
 line2 = "Tu veux mes bottes ?"
 next = outside_fields_SO.forest_monkey_start2
 

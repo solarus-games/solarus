@@ -542,7 +542,7 @@
 4	0	440	621	5	_random	1	-1
 4	0	440	605	5	_random	1	-1
 4	0	424	637	5	_random	1	-1
-2	0	-48	8	16	1024	teletransporter	0	2	1	_side
+2	0	-16	8	16	1024	teletransporter	0	2	1	_side
 2	0	0	1024	1136	16	teletransporter_2	0	2	4	_side
 4	0	440	949	2	_random	1	-1
 4	0	456	949	2	_random	1	-1

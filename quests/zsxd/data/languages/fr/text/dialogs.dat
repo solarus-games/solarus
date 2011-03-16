@@ -2167,10 +2167,11 @@ line1 = "Quoi ? Tu veux"
 line2 = "passer ? Nan mais tu"
 line3 = "vois pas que je suis"
 next = crazy_house.public_agent_2
+skip = all
 
 [crazy_house.public_agent_2]
 #       |--------------------|
-line1 = "en grêve ? Je te"
+line1 = "en grève ? Je te"
 line2 = "jure ! Vous, les"
 line3 = "gens du privé, vous"
 next = crazy_house.public_agent_3

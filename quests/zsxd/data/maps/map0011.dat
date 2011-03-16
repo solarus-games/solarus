@@ -159,7 +159,7 @@
 16	1	408	120	shop_item_3	heart_container	1	50	10	shop.heart_container
 16	1	408	64	shop_item_4	rupee	3	-1	50	shop.red_rupee
 8	1	192	141	interactive_entity_19	3	1	npc/static_villager2	map
-8	1	464	229	interactive_entity_20	3	1	npc/newlink2	map
+8	1	464	229	moving_npc	3	1	npc/newlink2	map
 12	1	376	160	224	8	custom_obstacle	0	0	1	0
 12	1	376	168	8	112	custom_obstacle_2	0	0	1	0
 0	2	0	0	16	320	170

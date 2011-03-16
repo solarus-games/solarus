@@ -246,10 +246,14 @@ void ShopItem::display_on_map() {
 
   // display the treasure
   const Rectangle &camera_position = get_map().get_camera_position();
-  treasure.display(map_surface, x + 16 - camera_position.get_x(), y + 13 - camera_position.get_y());
+  treasure.display(map_surface,
+      x + 16 - camera_position.get_x(), y + 13 - camera_position.get_y());
 
   // also display the price
+  price_digits->set_x(x + 12 - camera_position.get_x());
+  price_digits->set_y(y + 21 - camera_position.get_y());
   price_digits->display(map_surface);
-  rupee_icon_sprite->display(map_surface, x, y + 22);
+  rupee_icon_sprite->display(map_surface,
+      x - camera_position.get_x(), y + 22 - camera_position.get_y());
 }
 

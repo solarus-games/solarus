@@ -847,7 +847,7 @@
 9	1	2032	357	block_15	-1	1	2
 9	1	2032	373	block_16	-1	1	2
 9	1	2032	389	block_17	-1	1	2
-8	1	2096	269	DT1	3	0	entities/hint_stone	map
+8	1	2096	269	DT1	3	0	entities/hint_stone	dialog#crazy_house.hint_part2
 0	2	0	0	608	16	170
 0	2	0	16	16	208	170
 0	2	304	16	16	208	170

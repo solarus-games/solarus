@@ -116,6 +116,10 @@ booleans:
 117 1FB: Croissant chest [CC1]
 118 1FB: 100 rupees chest [CR3]
 119 1FB: Empty chest [CV4]
+120 3F : Iron Gloves [IGC]
+121 3F : Giga button statue position [GBS]
+122 3F : Small key chest [CK3]
+
 
 140	1FA: Key Door A [DK1]
 141 3F : Key Door B [DK2]

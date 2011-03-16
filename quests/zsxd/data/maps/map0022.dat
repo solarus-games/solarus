@@ -1040,8 +1040,8 @@
 19	1	2280	576	stairs_4	1	1
 1	1	2288	589	from1Fb	3	0
 2	1	2280	576	16	16	to1Fb	0	1	20	from2Fa_right
-18	1	2488	472	weak_wall_B_2	1	5	0
-18	1	2488	424	weak_wall_B	3	5	0
+18	1	2496	472	weak_wall_B_2	1	5	0
+18	1	2496	424	weak_wall_B	3	5	0
 10	1	2480	424	48	24	weak_wall_B_closed_2	52	1
 10	1	2480	464	48	24	weak_wall_B_closed	49	1
 9	1	2680	637	block_4	-1	1	2
@@ -1052,10 +1052,9 @@
 8	1	2312	765	interactive_entity_3	3	1	npc/static_villager10	map
 6	1	1928	680	8	48	jump_sensor	0	40
 6	1	1760	680	8	48	jump_sensor_2	4	40
-8	1	2504	301	code_message_sign	3	0	entities/sign	dialog#crazy_house.long_code
 18	1	2880	248	key_door_b	1	1	141
 18	1	2880	200	key_door_b_2	3	1	141
-8	1	2624	325	monkey	3	1	npc/monkey	map
+8	1	2632	277	monkey	3	1	npc/monkey	map
 7	1	2648	573	globul_a	3	globul	0	-1	_random	1	-1
 9	1	2544	541	block_5	-1	0	0
 9	1	2544	597	block_6	-1	0	0

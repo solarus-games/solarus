@@ -713,7 +713,7 @@ next = _treasure.bottle_1.1.1
 
 [_treasure.bottle_1.1.1]
 #       |--------------------|
-line1 = "Ça a sûrement un"
+line1 = "Ca a sûrement un"
 line2 = "intérêt quelconque !"
 
 [_treasure.bottle_1.2]
@@ -2502,7 +2502,7 @@ line3 = "maison d'à côté..."
 [outside_fields_NO.lawn_master]
 #       |-----------------------|
 line1 = "Je t'offre 100 rubis"
-line2 = "si tu tonds toute ma"
+line2 = "si tu tonds toute la"
 line3 = "pelouse."
 
 [outside_fields_NO.drunk]
@@ -2520,11 +2520,6 @@ next = outside_fields_NO.drunk3
 #       |-----------------------|
 line1 = "Ca m'arrive tout le"
 line2 = "temps."
-
-[outside_fields_NO.lady_a]
-#       |-----------------------|
-line1 = "Zelda ?"
-line2 = "Non je ne l'ai pas vue."
 
 [outside_fields_NO.lady_b]
 #       |-----------------------|
@@ -2648,6 +2643,88 @@ line1 = "Une tarte aux pommes."
 line2 = "Pas très fraîche, mais"
 line3 = "osef, achète-la stp."
 next = _unknown
+
+[shop.wizard]
+#       |-----------------------|
+line1 = "Je ne comprends pas"
+line2 = "pourquoi tout le monde"
+line3 = "me regarde bizarrement."
+next = shop.wizard.2
+
+[shop.wizard.2]
+#       |-----------------------|
+line1 = "... Quoi ?"
+line2 = "Pourquoi tu me regardes"
+line3 = "comme ça ?"
+next = shop.wizard.3
+
+[shop.wizard.3]
+#       |-----------------------|
+line1 = "Qu'est-ce qu'il a mon"
+line2 = "look de sorcier ?"
+next = shop.wizard.4
+
+[shop.wizard.4]
+#       |-----------------------|
+line1 = "De nos jours, on ne"
+line2 = "peut même pas partager"
+line3 = "sa passion sans"
+next = shop.wizard.5
+
+[shop.wizard.5]
+#       |-----------------------|
+line1 = "passer pour un cinglé."
+line2 = "Je suis une personne"
+line3 = "comme tout le monde !"
+next = shop.wizard.6
+
+[shop.wizard.6]
+#       |-----------------------|
+line1 = "C'est incroyable"
+line2 = "d'avoir autant de"
+line3 = "préjugés !"
+
+[shop.near_wizard]
+#       |-----------------------|
+line1 = "Ce type m'insupporte !"
+line2 = "Ca fait deux heures que"
+line3 = "ce fan de sorcellerie"
+next = shop.near_wizard.2
+
+[shop.near_wizard.2]
+#       |-----------------------|
+line1 = "me saoûle avec ses"
+line2 = "histoires. En plus, il"
+line3 = "est hyper susceptible !"
+
+[shop.last_night_guy]
+#       |-----------------------|
+line1 = "Hé, salut gros !"
+line2 = "Ca farte depuis"
+line3 = "hier soir ?"
+next = shop.last_night_guy.2
+
+[shop.last_night_guy.2]
+#       |-----------------------|
+line1 = "Pas trop mal aux"
+line2 = "cheveux ?"
+
+[shop.pub_woman]
+#       |-----------------------|
+line1 = "Désolée, je n'ai rien"
+line2 = "d'alcoolisé à te"
+line3 = "servir !"
+
+[shop.lady_a]
+#       |-----------------------|
+line1 = "Zelda ?"
+line2 = "Non, je ne l'ai pas vue."
+
+[shop.salesman]
+#       |-----------------------|
+line1 = "Choisis ce que tu veux"
+line2 = "acheter... On ne va pas"
+line3 = "y passer la journée !"
 
 [dungeon_1.welcome]
 #       |-----------------------|

@@ -6,7 +6,6 @@
 -- The NPCs are initialized.
 function event_map_started(destination_point_name)
    -- make the NPCs walk
-   random_walk("lady_a")
    random_walk("lady_b")
    random_walk("guy_a")
 end

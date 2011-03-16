@@ -69,7 +69,7 @@
 0	1	240	80	8	16	124
 0	1	248	72	8	16	124
 0	1	72	144	16	16	12
-0	1	136	144	16	16	12
+0	1	128	144	16	16	12
 0	1	184	144	16	16	12
 0	1	272	192	8	8	207
 0	1	280	192	48	8	208
@@ -133,35 +133,37 @@
 0	1	320	40	48	24	138
 0	1	344	56	32	24	138
 0	1	352	72	16	24	138
+0	1	264	64	16	16	12
+0	1	264	96	16	16	12
+12	1	120	280	16	16	custom_obstacle_2	0	1	1	1
 2	1	120	304	16	16	teletransporter	0	1	1	from_shop
 2	1	504	304	16	16	teletransporter_2	0	1	2	from_shop
-8	1	64	-11	interactive_entity_2	3	1	npc/thief	map
+8	1	272	101	npc	1	1	npc/thief	dialog#shop.near_wizard
 8	1	96	-11	interactive_entity_3	3	1	npc/newlink2	map
 8	1	128	-11	interactive_entity_4	3	1	npc/newlink3	map
-8	1	160	-11	interactive_entity_5	3	1	npc/newlink5	map
+8	1	144	85	interactive_entity_5	3	1	npc/newlink5	map
 8	1	32	-11	interactive_entity_6	3	1	npc/newlink6	map
 8	1	192	-11	interactive_entity_7	3	1	npc/newlink8	map
-8	1	264	109	interactive_entity_8	1	1	npc/static_villager1	map
 8	1	224	-11	interactive_entity_9	3	1	npc/static_villager2	map
-8	1	264	69	interactive_entity_10	3	1	npc/wizard	map
+8	1	272	69	wizard	3	1	npc/wizard	dialog#shop.wizard
 8	1	256	-11	interactive_entity_11	3	1	npc/static_villager3	map
-8	1	136	85	interactive_entity_12	3	1	npc/static_villager4	map
+8	1	160	-11	interactive_entity_12	3	1	npc/static_villager4	map
 8	1	288	-11	interactive_entity_13	3	1	npc/static_villager5	map
 8	1	320	-11	interactive_entity_14	3	1	npc/static_villager6	map
 8	1	352	-11	interactive_entity_15	3	1	npc/static_villager7	map
 8	1	384	-11	interactive_entity_16	3	1	npc/static_villager8	map
 8	1	416	-11	interactive_entity_17	3	1	npc/static_villager10	map
-8	1	528	77	interactive_entity_18	3	1	npc/static_villager11	map
+8	1	528	77	interactive_entity_18	3	1	npc/static_villager11	dialog#shop.salesman
 1	1	128	293	from_outside_NO	1	0
 1	1	512	293	from_outside_NE	1	0
 16	1	552	120	shop_item	level_4_way	1	47	42	shop.apple_pie
 16	1	480	120	shop_item_2	rupee_bag	3	49	999	shop.huge_rupee_bag
 16	1	408	120	shop_item_3	heart_container	1	50	10	shop.heart_container
 16	1	408	64	shop_item_4	rupee	3	-1	50	shop.red_rupee
-8	1	192	141	interactive_entity_19	3	1	npc/static_villager2	map
-8	1	464	229	moving_npc	3	1	npc/newlink2	map
-12	1	376	160	224	8	custom_obstacle	0	0	1	0
-12	1	376	168	8	112	custom_obstacle_2	0	0	1	0
+8	1	192	149	last_night_guy	3	1	npc/static_villager2	dialog#shop.last_night_guy
+8	1	144	125	pub_woman	3	0	_none	dialog#shop.pub_woman
+8	1	184	213	lady_a	3	1	npc/villager1	dialog#shop.lady_a
+12	1	384	40	8	240	custom_obstacle	0	1	1	1
 0	2	0	0	16	320	170
 0	2	624	0	16	320	170
 0	2	16	304	608	16	170

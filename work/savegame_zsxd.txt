@@ -95,6 +95,9 @@ booleans:
 49 shop: bought the huge rupee bag (impossible)
 50 shop: bought the heart container
 51-55: weak blocks in outside NO
+56 Bomb bag in freaking cave.
+57 Third sword
+
 
 100 to 199	reserved for crazy_house (dungeon 2)
 100	1FA: Hidden Piece of Heart [PH1]

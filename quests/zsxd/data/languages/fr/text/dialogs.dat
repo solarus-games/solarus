@@ -1370,9 +1370,9 @@ next = _treasure.bomb_bag.1.1
 
 [_treasure.bomb_bag.1.1]
 #       |--------------------|
-line1 = "Assigne-les à une"
-line2 = "touche et fais tout"
-line3 = "sauter !"
+line1 = "Ca va faire $1"
+line2 = "pschhhhhhhhhhhhhhhht $0 $3"
+line3 = "BOUM !"
 
 [_treasure.bomb_bag.2]
 # Grand sac de bombes
@@ -3411,6 +3411,13 @@ line1 = "Vous vous sentez"
 line2 = "harcelé ?"
 line3 = "Courez !"
 
+[freaking_cave_indic2]
+#       |-----------------------|
+line1 = "Désolé, on avait plus "
+line2 = "assez de rubis pour"
+line3 = "acheter un coffre neuf."
+
+
 [shop.red_rupee]
 #       |-----------------------|
 line1 = "Un Rubis rouge."
@@ -3590,3 +3597,6 @@ line3 = "vraiment stupide."
 [dungeon_1.2f_sw_water_removed]
 #       |-----------------------|
 line1 = "Au loin... un bruit..."
+
+
+

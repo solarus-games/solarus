@@ -36,6 +36,14 @@ function event_hero_on_sensor(sensor_name)
 	elseif sensor_name == "make_appear_c3" then
 		sol.map.light_set(0) 	
 		sol.map.sensor_set_enabled("make_appear_c3",false)
+	-- Teleporter at the ending
+	elseif sensor_name == "sensor_teleporter" then
+		if sol.game.savegame_get_boolean(56) then
+			
+		else
+			sol.map.dialog_start("freaking_cave_teleporter")
+			sol.map.hero_start_jumping(6,64,true)
+		end
 	end	
 
 end

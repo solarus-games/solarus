@@ -98,6 +98,7 @@ booleans:
 56 Bomb bag in freaking cave.
 57 Third sword
 
+90-99: reserved for the freaking cave
 
 100 to 199	reserved for crazy_house (dungeon 2)
 100	1FA: Hidden Piece of Heart [PH1]

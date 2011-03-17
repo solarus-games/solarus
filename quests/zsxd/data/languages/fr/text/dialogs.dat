@@ -1372,7 +1372,7 @@ next = _treasure.bomb_bag.1.1
 #       |--------------------|
 line1 = "Assigne-les à une"
 line2 = "touche et fais tout"
-line3 = "sauter !"
+line3 = "péter !"
 
 [_treasure.bomb_bag.2]
 # Grand sac de bombes
@@ -3095,7 +3095,9 @@ line2 = "définisse les cases"
 line3 = "pour ce panneau. */"
 
 [geek_house.sign_c]
-line1 = "FIXME"
+line1 = "        WANTED !"
+line2 = "Chat de Schrödinger."
+line3 = "Mort et vif."
 
 [geek_house.sign_d]
 #       |-----------------------|
@@ -3347,6 +3349,13 @@ line3 = "Trouvés ?"
 line1 = "Excuse-nous, on a perdu"
 line2 = "la clé. On ne peut pas"
 line3 = "t'ouvrir."
+
+[outside_fields_NE.cursed_cave_sign]
+#       |-----------------------|
+line1 = "  - Caverne maudite -"
+line2 = "Entrée condamnée par"
+line3 = "mesure de sécurité"
+
 
 [geek_house.geek]
 #       |-----------------------|

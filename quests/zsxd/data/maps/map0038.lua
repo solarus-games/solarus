@@ -1,6 +1,6 @@
 ----------------------------------
 -- FREAKING CAVE 1 OMG	        --
--- USE BOOLEAN FROM 90 TO 100 	--
+-- USE BOOLEAN FROM 90 TO 99 	--
 ----------------------------------
 
 -- Global sprites reference

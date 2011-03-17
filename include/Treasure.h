@@ -35,7 +35,7 @@ class Treasure {
 
   private:
 
-    Game &game;				/**< the current game */
+    Game* game;				/**< the current game */
     std::string item_name;		/**< content of the treasure (can be "_none") */
     int variant;			/**< variant of this content */
     int savegame_variable;		/**< index of the savegame boolean variable corresponding to this treasure,
@@ -44,9 +44,10 @@ class Treasure {
 
   public:
 
-    Treasure(Game &game, const std::string &item_name, int variant, int savegame_variable);
+    Treasure(Game &game, const std::string& item_name, int variant, int savegame_variable);
     Treasure(const Treasure &other);
     ~Treasure();
+    Treasure& operator=(const Treasure& other);
 
     ItemProperties& get_item_properties() const;
     const std::string& get_item_name() const;

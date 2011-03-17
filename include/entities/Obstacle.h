@@ -19,12 +19,11 @@
 
 /**
  * @brief Obstacle property for the entities.
- *
- * Values lower than or equal to OBSTACLE_NONE correspond to entities the hero can walk on.
- * Values higher than OBSTACLE_NONE correspond to obstacles.
  */
 enum Obstacle {
 
+  OBSTACLE_LAVA          = -6, /**< the entity is some lava */
+  OBSTACLE_PRICKLE       = -5, /**< the entity is some prickles */
   OBSTACLE_LADDER        = -4, /**< the entity is a ladder and the hero walks slower on it */
   OBSTACLE_HOLE          = -3, /**< the entity is a hole */ 
   OBSTACLE_SHALLOW_WATER = -2, /**< the entity is some shallow water */

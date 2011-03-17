@@ -27,6 +27,9 @@
  * The entity tries to find a path and to avoid the obstacles on the way.
  * To this end, the PathFinding class (i.e. an implementation of the A* algorithm) is used.
  * If the target entity is too far or not reachable, the movement is a random walk.
+ *
+ * Properties:
+ * - speed
  */
 class PathFindingMovement: public PathMovement {
 
@@ -46,6 +49,10 @@ class PathFindingMovement: public PathMovement {
     ~PathFindingMovement();
 
     bool is_finished();
+
+    // properties
+    virtual const std::string get_property(const std::string &key);
+    virtual void set_property(const std::string &key, const std::string &value);
 };
 
 #endif

@@ -66,13 +66,12 @@ class Hero: public MapEntity {
 						 * including an instruction from the script */
 
     State *state;				/**< the current internal state */
-    State *old_state;                           /**< the previous state, to delete as soon as possible */
+    std::list<State*> old_states;               /**< previous state objects to delete as soon as possible */
 
     // sprites
     HeroSprites *sprites;			/**< the hero's sprites (note that we don't use the sprites structure from MapEntity) */
 
     // position
-    Detector *facing_entity;			/**< the entity just in front of the hero (or NULL) */
     static const int normal_walking_speed;	/**< default speed when walking */
     int walking_speed;				/**< current walking speed */
 
@@ -102,7 +101,6 @@ class Hero: public MapEntity {
 
     // position
     void update_movement();
-    void movement_just_changed();
     void try_snap_to_facing_entity();
     Teletransporter* get_delayed_teletransporter();
 
@@ -177,8 +175,7 @@ class Hero: public MapEntity {
      */
     const Rectangle get_facing_point();
     const Rectangle get_facing_point(int direction4);
-    Detector *get_facing_entity();
-    void set_facing_entity(Detector *detector);
+    void notify_facing_entity_changed(Detector* facing_entity);
     bool is_facing_obstacle();
     bool is_facing_point_on_obstacle();
     bool is_facing_direction4(int direction4);
@@ -218,6 +215,8 @@ class Hero: public MapEntity {
     Ground get_ground();
     void set_ground(Ground ground);
     bool is_ground_visible();
+    Ground get_tile_ground();
+    const Rectangle get_ground_point();
     void set_target_solid_ground_coords(const Rectangle &target_solid_ground_coords, Layer layer);
 
     /**
@@ -226,8 +225,10 @@ class Hero: public MapEntity {
      * Information about what is considered as an obstacle for the hero.
      */
     bool is_obstacle_for(MapEntity &other);
-    bool is_water_obstacle();
+    bool is_deep_water_obstacle();
     bool is_hole_obstacle();
+    bool is_lava_obstacle();
+    bool is_prickle_obstacle();
     bool is_ladder_obstacle();
     bool is_block_obstacle(Block &block);
     bool is_teletransporter_obstacle(Teletransporter &teletransporter);
@@ -240,8 +241,9 @@ class Hero: public MapEntity {
     /**
      * @name Collisions.
      *
-     * Functions called when a collision is detected with another entity.
+     * Handle collisions between the hero and other entities.
      */
+    void check_position();
     void notify_collision_with_destructible_item(DestructibleItem &destructible_item, CollisionMode collision_mode);
     void notify_collision_with_enemy(Enemy &enemy);
     void notify_collision_with_enemy(Enemy &enemy, Sprite &enemy_sprite, Sprite &this_sprite);
@@ -253,6 +255,7 @@ class Hero: public MapEntity {
     void notify_collision_with_switch(Switch &sw);
     void notify_collision_with_crystal_switch(CrystalSwitch &crystal_switch, CollisionMode collision_mode);
     void notify_collision_with_crystal_switch(CrystalSwitch &crystal_switch, Sprite &sprite_overlapping);
+    void notify_collision_with_bomb(Bomb& bomb, CollisionMode collision_mode);
     void notify_collision_with_explosion(Explosion &explosion, Sprite &sprite_overlapping);
     void avoid_collision(MapEntity &entity, int direction);
     bool is_striking_with_sword(Detector &detector);
@@ -262,9 +265,10 @@ class Hero: public MapEntity {
      *
      * Attacking enemies or getting hurt by them.
      */
-    void notify_attacked_enemy(EnemyAttack attack, Enemy &victim, int result, bool killed);
+    void notify_attacked_enemy(EnemyAttack attack, Enemy& victim, EnemyReaction::Reaction& result, bool killed);
     int get_sword_damage_factor();
-    void hurt(MapEntity &source, int life_points, int magic_points);
+    void hurt(MapEntity& source, int life_points, int magic_points);
+    void hurt(const Rectangle& source_xy, int life_points, int magic_points);
     void get_back_from_death();
 
     /**
@@ -283,19 +287,22 @@ class Hero: public MapEntity {
 
     void start_deep_water();
     void start_hole();
+    void start_lava();
+    void start_prickle();
 
     void start_next_state();
     void start_free();
     void start_treasure(const Treasure &treasure);
-    void start_jumping(int direction8, int length, bool ignore_obstacles, bool with_sound,
-	uint32_t movement_delay = 0, Layer layer_after_jump = LAYER_NB);
+    void start_jumping(int direction8, int length, bool ignore_obstacles,
+        bool with_sound, uint32_t movement_delay = 0);
     void start_freezed();
     void start_victory();
-    void start_lifting(DestructibleItem &destructible_item);
+    void start_lifting(CarriedItem* item_to_lift);
     void start_running();
     void start_grabbing();
     void start_boomerang();
     void start_bow();
+    void start_state_from_ground();
 };
 
 #endif

@@ -37,6 +37,10 @@ class Sprite {
 
   private:
 
+    // unique id
+    static int next_unique_id;                          /**< next unique id to attribute to a sprite instance */
+    int unique_id;                                      /**< a number identifying this instance */
+
     // animation set
     static std::map<SpriteAnimationSetId, SpriteAnimationSet*> all_animation_sets;
     const SpriteAnimationSetId animation_set_id;	/**< id of this sprite's animation set */
@@ -60,6 +64,8 @@ class Sprite {
     bool ignore_suspend;				/**< true to continue playing the animation even when the game is suspended */
     bool paused;					/**< true if the animation is paused */
     bool finished;					/**< true if the animation has been stopped because the last frame is finished */
+    Sprite* synchronize_to;				/**< another sprite to synchronize the frame to
+							 * when they have the same animation name (or NULL) */
 
     // effects
 
@@ -84,6 +90,7 @@ class Sprite {
     // creation and destruction
     Sprite(const SpriteAnimationSetId &id);
     ~Sprite();
+    int get_unique_id() const;
 
     void set_map(Map &map);
 
@@ -98,18 +105,18 @@ class Sprite {
     const Rectangle& get_size() const;
     const Rectangle& get_origin() const;
 
-    // current animation, direction and frame
+    // animation state
     const std::string& get_current_animation() const;
-    void set_current_animation(const std::string &animation_name);
+    void set_current_animation(const std::string& animation_name);
+    bool has_animation(const std::string& animation_name);
     int get_current_direction() const;
     void set_current_direction(int current_direction);
     int get_current_frame() const;
     void set_current_frame(int current_frame);
-
     uint32_t get_frame_delay() const;
     void set_frame_delay(uint32_t frame_delay);
+    void set_synchronized_to(Sprite* other);
 
-    // animation state
     bool is_animation_started() const;
     void start_animation();
     void restart_animation();

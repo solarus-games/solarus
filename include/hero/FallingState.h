@@ -32,6 +32,8 @@ class Hero::FallingState: public Hero::State {
     void stop(State *next_state);
     void update();
     bool can_avoid_hole();
+    bool can_avoid_lava();
+    bool can_avoid_prickle();
     bool can_start_gameover_sequence();
 };
 

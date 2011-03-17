@@ -29,6 +29,8 @@
 #include "entities/CustomObstacle.h"
 #include "entities/Block.h"
 #include "entities/Switch.h"
+#include "entities/CrystalSwitch.h"
+#include "entities/Teletransporter.h"
 #include "entities/Hero.h"
 #include "entities/PickableItem.h"
 #include "entities/Bomb.h"
@@ -238,6 +240,29 @@ int Script::map_api_treasure_give(lua_State *l) {
 }
 
 /**
+ * @brief Displays a sprite on the map surface.
+ *
+ * - Argument 1 (sprite): the sprite to display
+ * - Argument 2 (integer): x coordinate on the map
+ * - Argument 3 (integer): y coordinate on the map
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_sprite_display(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 3, &script);
+  int sprite_handle = luaL_checkinteger(l, 1);
+  int x = luaL_checkinteger(l, 2);
+  int y = luaL_checkinteger(l, 3);
+
+  Sprite& sprite = script->get_sprite(sprite_handle);
+  script->get_map().display_sprite(sprite, x, y);
+
+  return 0;
+}
+
+/**
  * @brief Prevents the player from moving until hero_unfreeze() is called.
  * @param l the Lua context that is calling this function
  */
@@ -368,6 +393,32 @@ int Script::map_api_hero_get_position(lua_State *l) {
 
   return 3;
 }
+
+/**
+ * @brief Sets the position of the hero.
+ *
+ * - Paramater 1 (integer): x coordinate
+ * - Parameter 2 (integer): y coordinate
+ * - Parameter 3 (integer): layer
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_hero_set_position(lua_State* l) {
+
+  Script *script;
+  called_by_script(l, 3, &script);
+
+  int x = luaL_checkinteger(l, 1);
+  int y = luaL_checkinteger(l, 2);
+  Layer layer = Layer(luaL_checkinteger(l, 3));
+
+  Hero& hero = script->get_game().get_hero();
+  hero.set_xy(x, y);
+  script->get_map().get_entities().set_entity_layer(&hero, layer);
+
+  return 3;
+}
+
 /**
  * @brief Places the hero on the exact position of a sensor's name.
  *
@@ -489,6 +540,32 @@ int Script::map_api_hero_start_running(lua_State *l) {
   called_by_script(l, 0, &script);
 
   script->get_game().get_hero().start_running();
+
+  return 0;
+}
+
+/**
+ * @brief Makes the hero be hurt.
+ *
+ * - Argument 1 (integer): x coordinate of whatever is hurting the hero
+ * - Argument 2 (integer): y coordinate of whatever is hurting the hero
+ * - Argument 3 (integer): number of life points to remove (possibly zero)
+ * - Argument 4 (integer): number of magic points to remove (possibly zero)
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_hero_start_hurt(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 4, &script);
+
+  int source_x = luaL_checkinteger(l, 1);
+  int source_y = luaL_checkinteger(l, 2);
+  int life_points = luaL_checkinteger(l, 3);
+  int magic_points = luaL_checkinteger(l, 4);
+
+  script->get_game().get_hero().hurt(Rectangle(source_x, source_y),
+      life_points, magic_points);
 
   return 0;
 }
@@ -706,38 +783,38 @@ int Script::map_api_chest_set_open(lua_State *l) {
 }
 
 /**
- * @brief Hides or unhides a chest.
+ * @brief Enables or disables a chest.
  *
- * If the chest is already open, hiding it has not effect.
+ * If the chest is already open, disabling it has not effect.
  * - Argument 1 (string): name of the chest
- * - Argument 2 (boolean): true to make the chest hidden, false to make it appear
+ * - Argument 2 (boolean): true to make the chest appear, false to make it disappear
  *
  * @param l the Lua context that is calling this function
  */
-int Script::map_api_chest_set_hidden(lua_State *l) {
+int Script::map_api_chest_set_enabled(lua_State *l) {
 
   Script *script;
   called_by_script(l, 2, &script);
 
   const std::string &name = luaL_checkstring(l, 1);
-  bool hidden = lua_toboolean(l, 2) != 0;
+  bool enabled = lua_toboolean(l, 2) != 0;
 
   MapEntities &entities = script->get_map().get_entities();
   Chest *chest = (Chest*) entities.get_entity(CHEST, name);
-  chest->set_visible(!hidden);
+  chest->set_visible(enabled);
 
   return 0;
 }
 
 /**
- * @brief Returns whether a chest is hidden.
+ * @brief Returns whether a chest is enabled.
  *
  * - Argument 1 (string): name of the chest
- * - Return value (boolean): true if this chest is hidden
+ * - Return value (boolean): true if this chest is enabled
  *
  * @param l the Lua context that is calling this function
  */
-int Script::map_api_chest_is_hidden(lua_State *l) {
+int Script::map_api_chest_is_enabled(lua_State *l) {
 
   Script *script;
   called_by_script(l, 1, &script);
@@ -746,7 +823,7 @@ int Script::map_api_chest_is_hidden(lua_State *l) {
 
   MapEntities &entities = script->get_map().get_entities();
   Chest *chest = (Chest*) entities.get_entity(CHEST, name);
-  lua_pushboolean(l, chest->is_visible() ? 0 : 1);
+  lua_pushboolean(l, chest->is_visible() ? 1 : 0);
 
   return 1;
 }
@@ -873,7 +950,7 @@ int Script::map_api_stairs_set_enabled(lua_State *l) {
 }
 
 /**
- * @brief Returns whether a custom obstacle enabled.
+ * @brief Returns whether a custom obstacle is enabled.
  *
  * - Argument 1 (string): name of the custom obstacle
  * - Return value (boolean): true if this custom obstacle is enabled
@@ -913,6 +990,238 @@ int Script::map_api_obstacle_set_enabled(lua_State *l) {
   MapEntities &entities = script->get_map().get_entities();
   CustomObstacle *obstacle = (CustomObstacle*) entities.get_entity(CUSTOM_OBSTACLE, name);
   obstacle->set_enabled(enable);
+
+  return 0;
+}
+
+/**
+ * @brief Returns whether a sensor is enabled.
+ *
+ * - Argument 1 (string): name of the sensor
+ * - Return value (boolean): true if this sensor is enabled
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_sensor_is_enabled(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 1, &script);
+
+  const std::string &name = luaL_checkstring(l, 1);
+
+  MapEntities &entities = script->get_map().get_entities();
+  Sensor *sensor = (Sensor*) entities.get_entity(SENSOR, name);
+  lua_pushboolean(l, sensor->is_enabled() ? 1 : 0);
+
+  return 1;
+}
+
+/**
+ * @brief Enables or disables a sensor.
+ *
+ * - Argument 1 (string): name of the sensor
+ * - Argument 2 (boolean): true to enable it, false to disable it
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_sensor_set_enabled(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 2, &script);
+
+  const std::string &name = luaL_checkstring(l, 1);
+  bool enable = lua_toboolean(l, 2) != 0;
+
+  MapEntities &entities = script->get_map().get_entities();
+  Sensor *sensor = (Sensor*) entities.get_entity(SENSOR, name);
+  sensor->set_enabled(enable);
+
+  return 0;
+}
+
+/**
+ * @brief Returns whether a crystal switch is enabled.
+ *
+ * - Argument 1 (string): name of the crystal switch
+ * - Return value (boolean): true if this crystal switch are enabled
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_crystal_switch_is_enabled(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 1, &script);
+
+  const std::string &name = luaL_checkstring(l, 1);
+
+  MapEntities &entities = script->get_map().get_entities();
+  CrystalSwitch *crystal_switch = (CrystalSwitch*) entities.get_entity(CRYSTAL_SWITCH, name);
+  lua_pushboolean(l, crystal_switch->is_enabled() ? 1 : 0);
+
+  return 1;
+}
+
+/**
+ * @brief Enables or disables a crystal switch.
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_crystal_switch_set_enabled(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 2, &script);
+
+  const std::string &name = luaL_checkstring(l, 1);
+  bool enable = lua_toboolean(l, 2) != 0;
+
+  MapEntities &entities = script->get_map().get_entities();
+  CrystalSwitch *crystal_switch = (CrystalSwitch*) entities.get_entity(CRYSTAL_SWITCH, name);
+  crystal_switch->set_enabled(enable);
+
+  return 0;
+}
+
+/**
+ * @brief Returns the current state of crystal switches in the map.
+ *
+ * - Return value (boolean): true if the state of crystal switches is modified,
+ * false if it is the normal (initial) state
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_crystal_switch_get_state(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 0, &script);
+
+  Game& game = script->get_game();
+  lua_pushboolean(l, game.get_crystal_switch_state());
+
+  return 1;
+}
+
+/**
+ * @brief Sets the current state of crystal switches in the map.
+ *
+ * - Parameter 1 (boolean): true to make the state modified,
+ * false to make it normal (initial)
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_crystal_switch_set_state(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 1, &script);
+  bool state = lua_toboolean(l, 1);
+
+  Game& game = script->get_game();
+  if (game.get_crystal_switch_state() != state) {
+    game.change_crystal_switch_state();
+  }
+
+  return 0;
+}
+
+/**
+ * @brief Inverts the current state of crystal switches in the map.
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_crystal_switch_change_state(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 0, &script);
+
+  Game& game = script->get_game();
+  game.change_crystal_switch_state();
+
+  return 0;
+}
+
+/**
+ * @brief Returns whether a teletransporter is enabled.
+ *
+ * - Argument 1 (string): name of the teletransporter
+ * - Return value (boolean): true if this teletransporter is enabled
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_teletransporter_is_enabled(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 1, &script);
+
+  const std::string &name = luaL_checkstring(l, 1);
+
+  MapEntities &entities = script->get_map().get_entities();
+  Teletransporter *teletransporter = (Teletransporter*) entities.get_entity(TELETRANSPORTER, name);
+  lua_pushboolean(l, teletransporter->is_enabled() ? 1 : 0);
+
+  return 1;
+}
+
+/**
+ * @brief Enables or disables a teletransporter.
+ *
+ * - Argument 1 (string): name of the teletransporter
+ * - Argument 2 (boolean): true to enable it, false to disable it
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_teletransporter_set_enabled(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 2, &script);
+
+  const std::string &name = luaL_checkstring(l, 1);
+  bool enable = lua_toboolean(l, 2) != 0;
+
+  MapEntities &entities = script->get_map().get_entities();
+  Teletransporter *teletransporter = (Teletransporter*) entities.get_entity(TELETRANSPORTER, name);
+  teletransporter->set_enabled(enable);
+
+  return 0;
+}
+
+/**
+ * @brief Returns whether a block is enabled.
+ *
+ * - Argument 1 (string): name of the block
+ * - Return value (boolean): true if this block is enabled
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_block_is_enabled(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 1, &script);
+
+  const std::string &name = luaL_checkstring(l, 1);
+
+  MapEntities &entities = script->get_map().get_entities();
+  Block *block = (Block*) entities.get_entity(BLOCK, name);
+  lua_pushboolean(l, block->is_enabled() ? 1 : 0);
+
+  return 1;
+}
+
+/**
+ * @brief Enables or disables a block.
+ *
+ * - Argument 1 (string): name of the block
+ * - Argument 2 (boolean): true to enable it, false to disable it
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_block_set_enabled(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 2, &script);
+
+  const std::string &name = luaL_checkstring(l, 1);
+  bool enable = lua_toboolean(l, 2) != 0;
+
+  MapEntities &entities = script->get_map().get_entities();
+  Block *block = (Block*) entities.get_entity(BLOCK, name);
+  block->set_enabled(enable);
 
   return 0;
 }
@@ -1047,15 +1356,14 @@ int Script::map_api_switch_set_locked(lua_State *l) {
 }
 
 /**
- * @brief Returns whether an enemy is dead.
+ * @brief Returns whether a switch is enabled (i.e. visible).
  *
- * An enemy is considered as dead if it is not present on the map.
- * - Argument 1 (string): name of the enemy
- * - Return value (boolean): true if the enemy is not on the map, false if it is alive
+ * - Argument 1 (string): name of the switch
+ * - Return value (boolean): true if this switch is enabled (i.e. visible)
  *
  * @param l the Lua context that is calling this function
  */
-int Script::map_api_enemy_is_dead(lua_State *l) {
+int Script::map_api_switch_is_enabled(lua_State *l) {
 
   Script *script;
   called_by_script(l, 1, &script);
@@ -1063,48 +1371,21 @@ int Script::map_api_enemy_is_dead(lua_State *l) {
   const std::string &name = luaL_checkstring(l, 1);
 
   MapEntities &entities = script->get_map().get_entities();
-  Enemy *enemy = (Enemy*) entities.find_entity(ENEMY, name);
-
-  lua_pushboolean(l, (enemy == NULL));
-
-  return 1;
-}
-
-/**
- * @brief Returns whether a set of enemies are dead.
- *
- * An enemy is considered as dead if it is not present on the map.
- * - Argument 1 (string): prefix of the name of the enemies to check
- * - Return value (boolean): true if there is no enemy left with this prefix on the map,
- * false if at least one of them is alive
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_enemy_is_group_dead(lua_State *l) {
-
-  Script *script;
-  called_by_script(l, 1, &script);
-
-  const std::string &prefix = luaL_checkstring(l, 1);
-
-  MapEntities &entities = script->get_map().get_entities();
-  std::list<MapEntity*> enemies = entities.get_entities_with_prefix(ENEMY, prefix);
-
-  lua_pushboolean(l, enemies.empty());
+  Switch *sw = (Switch*) entities.get_entity(SWITCH, name);
+  lua_pushboolean(l, sw->is_enabled() ? 1 : 0);
 
   return 1;
 }
 
 /**
- * @brief Enables or disables an enemy.
+ * @brief Enables or disables a switch.
  *
- * A normal enemy is enabled by default. A boss or a miniboss is disabled by default.
- * - Argument 1 (string): name of the enemy
- * - Argument 2 (boolean): true to enable the enemy, false to disable it
+ * - Argument 1 (string): name of the switch
+ * - Argument 2 (boolean): true to enable it, false to disable it
  *
  * @param l the Lua context that is calling this function
  */
-int Script::map_api_enemy_set_enabled(lua_State *l) {
+int Script::map_api_switch_set_enabled(lua_State *l) {
 
   Script *script;
   called_by_script(l, 2, &script);
@@ -1113,108 +1394,8 @@ int Script::map_api_enemy_set_enabled(lua_State *l) {
   bool enable = lua_toboolean(l, 2) != 0;
 
   MapEntities &entities = script->get_map().get_entities();
-  Enemy *enemy = (Enemy*) entities.get_entity(ENEMY, name);
-  enemy->set_enabled(enable);
-
-  return 0;
-}
-
-/**
- * @brief Starts the battle against a boss.
- *
- * Calling this function enables the boss if he is alive and plays the appropriate music.
- * If the boss was already killed, nothing happens.
- * - Argument 1 (string): name of the boss
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_enemy_start_boss(lua_State *l) {
-
-  Script *script;
-  called_by_script(l, 1, &script);
-
-  const std::string &name = luaL_checkstring(l, 1);
-
-  MapEntities &entities = script->get_map().get_entities();
-  Enemy *enemy = (Enemy*) entities.find_entity(ENEMY, name);
-  entities.start_boss_battle(enemy);
-
-  return 0;
-}
-
-/**
- * @brief Ends the battle against a boss.
- *
- * Calling this function plays the appropriate music and freezes the hero.
- * The next step is usually to start the dungeon end sequence.
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_enemy_end_boss(lua_State *l) {
-
-  Script *script;
-  called_by_script(l, 0, &script);
-
-  script->get_map().get_entities().end_boss_battle();
-
-  return 0;
-}
-
-/**
- * @brief Starts the battle against a miniboss.
- *
- * Calling this function enables the miniboss if he is alive and plays the appropriate music.
- * If the miniboss was already killed, nothing happens.
- * - Argument 1 (string): name of the miniboss
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_enemy_start_miniboss(lua_State *l) {
-
-  Script *script;
-  called_by_script(l, 1, &script);
-
-  const std::string &name = luaL_checkstring(l, 1);
-
-  MapEntities &entities = script->get_map().get_entities();
-  Enemy *enemy = (Enemy*) entities.find_entity(ENEMY, name);
-  entities.start_miniboss_battle(enemy);
-
-  return 0;
-}
-
-/**
- * @brief Ends the battle against a miniboss.
- *
- * Calling this function plays the appropriate music.
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_enemy_end_miniboss(lua_State *l) {
-
-  Script *script;
-  called_by_script(l, 0, &script);
-
-  script->get_map().get_entities().end_miniboss_battle();
-
-  return 0;
-}
-
-/**
- * @brief Removes a sensor from the map.
- *
- * - Argument 1 (string): name of the sensor
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_sensor_remove(lua_State *l) {
-
-  Script *script;
-  called_by_script(l, 1, &script);
-
-  const std::string &name = luaL_checkstring(l, 1);
-
-  script->get_map().get_entities().remove_entity(SENSOR, name);
+  Switch *sw = (Switch*) entities.get_entity(SWITCH, name);
+  sw->set_enabled(enable);
 
   return 0;
 }
@@ -1255,7 +1436,6 @@ int Script::map_api_door_open(lua_State *l) {
   return 0;
 }
 
-#include <iostream>
 /**
  * @brief Closes one or several doors.
  *
@@ -1398,3 +1578,385 @@ int Script::map_api_bomb_create(lua_State *l) {
 
   return 0;
 }
+
+/**
+ * @brief Creates an explosion on the map.
+ *
+ * - Argument 1 (integer): x
+ * - Argument 2 (integer): y
+ * - Argument 3 (integer): layer
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_explosion_create(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 3, &script);
+
+  int x = luaL_checkinteger(l, 1);
+  int y = luaL_checkinteger(l, 2);
+  Layer layer = Layer(luaL_checkinteger(l, 3));
+
+  MapEntities &entities = script->get_map().get_entities();
+  entities.add_entity(new Explosion(layer, Rectangle(x, y), true));
+
+  return 0;
+}
+
+/**
+ * @brief Creates an enemy on the map.
+ *
+ * - Argument 1 (string): name of the enemy to create
+ * - Argument 2 (string): breed of the enemy to create
+ * - Argument 3 (integer): layer on the map
+ * - Argument 4 (int): x x coordinate on the map
+ * - Argument 5 (int): y y coordinate on the map
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_enemy_create(lua_State *l) {
+
+  Script* script;
+  called_by_script(l, 5, &script);
+
+  const std::string& name = luaL_checkstring(l, 1);
+  const std::string& breed = luaL_checkstring(l, 2);
+  int layer = luaL_checkinteger(l, 3);
+  int x = luaL_checkinteger(l, 4);
+  int y = luaL_checkinteger(l, 5);
+
+  MapEntities& entities = script->get_map().get_entities();
+  Treasure treasure = Treasure(script->get_game(), "_none", 1, -1);
+  MapEntity* enemy = Enemy::create(script->get_game(), breed, Enemy::RANK_NORMAL, -1,
+      name, Layer(layer), x, y, 0, treasure);
+  entities.add_entity(enemy);
+
+  return 0;
+}
+
+/**
+ * @brief Removes an enemy from the map.
+ *
+ * - Argument 1 (string): name of the enemy to remove
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_enemy_remove(lua_State *l) {
+
+  Script* script;
+  called_by_script(l, 1, &script);
+
+  const std::string& name = luaL_checkstring(l, 1);
+
+  MapEntities& entities = script->get_map().get_entities();
+  entities.remove_entity(ENEMY, name);
+
+  return 0;
+}
+
+/**
+ * @brief Removes a set of enemies from the map.
+ *
+ * - Argument 1 (string): prefix of the name of the enemies to remove
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_enemy_remove_group(lua_State *l) {
+
+  Script* script;
+  called_by_script(l, 1, &script);
+
+  const std::string& prefix = luaL_checkstring(l, 1);
+
+  MapEntities& entities = script->get_map().get_entities();
+  entities.remove_entities_with_prefix(ENEMY, prefix);
+
+  return 0;
+}
+
+/**
+ * @brief Returns whether an enemy is enabled.
+ *
+ * - Argument 1 (string): name of the enemy
+ * - Return value (boolean): true if this enemy is enabled
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_enemy_is_enabled(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 1, &script);
+
+  const std::string &name = luaL_checkstring(l, 1);
+
+  MapEntities& entities = script->get_map().get_entities();
+  Enemy* enemy = (Enemy*) entities.get_entity(ENEMY, name);
+  lua_pushboolean(l, enemy->is_enabled());
+
+  return 1;
+}
+
+/**
+ * @brief Enables or disables an enemy.
+ *
+ * A normal enemy is enabled by default. A boss or a miniboss is disabled by default.
+ * - Argument 1 (string): name of the enemy
+ * - Argument 2 (boolean): true to enable it, false to disable it
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_enemy_set_enabled(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 2, &script);
+
+  const std::string &name = luaL_checkstring(l, 1);
+  bool enable = lua_toboolean(l, 2);
+
+  MapEntities& entities = script->get_map().get_entities();
+  Enemy* enemy = (Enemy*) entities.get_entity(ENEMY, name);
+  enemy->set_enabled(enable);
+
+  return 0;
+}
+
+/**
+ * @brief Returns whether an enemy is dead.
+ *
+ * An enemy is considered as dead if it is not present on the map.
+ * - Argument 1 (string): name of the enemy
+ * - Return value (boolean): true if the enemy is not on the map, false if it is alive
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_enemy_is_dead(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 1, &script);
+
+  const std::string &name = luaL_checkstring(l, 1);
+
+  MapEntities &entities = script->get_map().get_entities();
+  Enemy *enemy = (Enemy*) entities.find_entity(ENEMY, name);
+
+  lua_pushboolean(l, (enemy == NULL));
+
+  return 1;
+}
+
+/**
+ * @brief Returns whether a set of enemies are dead.
+ *
+ * An enemy is considered as dead if it is not present on the map.
+ * - Argument 1 (string): prefix of the name of the enemies to check
+ * - Return value (boolean): true if there is no enemy left with this prefix on the map,
+ * false if at least one of them is alive
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_enemy_is_group_dead(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 1, &script);
+
+  const std::string &prefix = luaL_checkstring(l, 1);
+
+  MapEntities &entities = script->get_map().get_entities();
+  std::list<MapEntity*> enemies = entities.get_entities_with_prefix(ENEMY, prefix);
+
+  lua_pushboolean(l, enemies.empty());
+
+  return 1;
+}
+
+/**
+ * @brief Returns the number of living enemies whose name starts with the specified prefix.
+ *
+ * - Argument 1 (string): prefix of the name of the enemies to count
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_enemy_get_group_count(lua_State *l) {
+
+  Script* script;
+  called_by_script(l, 1, &script);
+
+  const std::string& prefix = luaL_checkstring(l, 1);
+
+  MapEntities& entities = script->get_map().get_entities();
+  std::list<MapEntity*> enemies = entities.get_entities_with_prefix(ENEMY, prefix);
+
+  lua_pushinteger(l, enemies.size());
+
+  return 1;
+}
+
+/**
+ * @brief Returns the position of an enemy.
+ *
+ * - Argument 1 (string): name of the enemy
+ * - Return value 1 (integer): x position
+ * - Return value 2 (integer): y position
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_enemy_get_position(lua_State *l) {
+
+  Script* script;
+  called_by_script(l, 1, &script);
+
+  const std::string& name = luaL_checkstring(l, 1);
+
+  MapEntities& entities = script->get_map().get_entities();
+  Enemy* enemy = (Enemy*) entities.get_entity(ENEMY, name);
+  const Rectangle& coordinates = enemy->get_xy();
+
+  lua_pushinteger(l, coordinates.get_x());
+  lua_pushinteger(l, coordinates.get_y());
+
+  return 2;
+}
+
+/**
+ * @brief Sets the position of an enemy.
+ *
+ * - Argument 1 (string): name of the enemy
+ * - Argument 2 (integer): x position to set
+ * - Argument 3 (integer): y position to set
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_enemy_set_position(lua_State *l) {
+
+  Script* script;
+  called_by_script(l, 3, &script);
+
+  const std::string& name = luaL_checkstring(l, 1);
+  int x = luaL_checkinteger(l, 2);
+  int y = luaL_checkinteger(l, 3);
+
+  MapEntities& entities = script->get_map().get_entities();
+  Enemy* enemy = (Enemy*) entities.get_entity(ENEMY, name);
+  enemy->set_xy(x, y);
+
+  return 0;
+}
+
+/**
+ * @brief Returns the layer of an enemy.
+ *
+ * - Argument 1 (string): name of the enemy
+ * - Return value (integer): the layer
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_enemy_get_layer(lua_State *l) {
+
+  Script* script;
+  called_by_script(l, 1, &script);
+
+  const std::string& name = luaL_checkstring(l, 1);
+
+  MapEntities& entities = script->get_map().get_entities();
+  Enemy* enemy = (Enemy*) entities.get_entity(ENEMY, name);
+
+  lua_pushinteger(l, enemy->get_layer());
+
+  return 1;
+}
+
+/**
+ * @brief Sets the layer of an enemy.
+ *
+ * - Argument 1 (string): name of the enemy
+ * - Argument 2 (integer): layer to set
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_enemy_set_layer(lua_State *l) {
+
+  Script* script;
+  called_by_script(l, 2, &script);
+
+  const std::string& name = luaL_checkstring(l, 1);
+  int layer = luaL_checkinteger(l, 2);
+
+  MapEntities& entities = script->get_map().get_entities();
+  Enemy* enemy = (Enemy*) entities.get_entity(ENEMY, name);
+  entities.set_entity_layer(enemy, Layer(layer));
+
+  return 0;
+}
+
+/**
+ * @brief Sets the treasure dropped by an enemy.
+ *
+ * - Argument 1 (string): name of the enemy
+ * - Argument 2 (string): name of the item (possibly "_random" or "_none")
+ * - Argument 3 (integer): variant of the item
+ * - Argument 4 (integer): savegame variable of the treasure
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_enemy_set_treasure(lua_State *l) {
+
+  Script* script;
+  called_by_script(l, 4, &script);
+
+  const std::string& enemy_name = luaL_checkstring(l, 1);
+  const std::string& item_name = luaL_checkstring(l, 2);
+  int variant = luaL_checkinteger(l, 3);
+  int savegame_variable = luaL_checkinteger(l, 4);
+
+  MapEntities& entities = script->get_map().get_entities();
+  Enemy* enemy = (Enemy*) entities.get_entity(ENEMY, enemy_name);
+  Treasure treasure(enemy->get_game(), item_name, variant, savegame_variable);
+  enemy->set_treasure(treasure);
+
+  return 0;
+}
+
+/**
+ * @brief Sets the treasure dropped by an enemy as empty.
+ *
+ * - Argument 1 (string): name of the enemy
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_enemy_set_no_treasure(lua_State *l) {
+
+  Script* script;
+  called_by_script(l, 1, &script);
+
+  const std::string& enemy_name = luaL_checkstring(l, 1);
+
+  MapEntities& entities = script->get_map().get_entities();
+  Enemy* enemy = (Enemy*) entities.get_entity(ENEMY, enemy_name);
+  Treasure treasure(enemy->get_game(), "_none", 1, -1);
+  enemy->set_treasure(treasure);
+
+  return 0;
+}
+
+/**
+ * @brief Sets the treasure dropped by an enemy as random.
+ *
+ * - Argument 1 (string): name of the enemy
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_enemy_set_random_treasure(lua_State *l) {
+
+  Script* script;
+  called_by_script(l, 1, &script);
+
+  const std::string& enemy_name = luaL_checkstring(l, 1);
+
+  MapEntities& entities = script->get_map().get_entities();
+  Enemy* enemy = (Enemy*) entities.get_entity(ENEMY, enemy_name);
+  Treasure treasure(enemy->get_game(), "_random", 1, -1);
+  enemy->set_treasure(treasure);
+
+  return 0;
+}
+

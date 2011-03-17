@@ -52,9 +52,6 @@ void RandomMovement::set_entity(MapEntity *entity) {
   Movement::set_entity(entity);
 
   set_max_distance(max_distance);
-  if (entity != NULL) {
-    entity->notify_movement_changed();
-  }
 }
 
 /**
@@ -138,6 +135,7 @@ void RandomMovement::set_suspended(bool suspended) {
  * Accepted keys:
  * - speed
  * - max_distance
+ * - angle
  *
  * @param key key of the property to get
  * @return the corresponding value as a string
@@ -170,7 +168,7 @@ const std::string RandomMovement::get_property(const std::string &key) {
  * - max_distance
  *
  * @param key key of the property to set (the accepted keys depend on the movement type)
- * @param the value to set
+ * @param value the value to set
  */
 void RandomMovement::set_property(const std::string &key, const std::string &value) {
 

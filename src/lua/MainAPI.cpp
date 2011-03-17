@@ -15,19 +15,28 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lua/Script.h"
-#include "Timer.h"
-#include "Sprite.h"
 #include "movements/PixelMovement.h"
 #include "movements/PathMovement.h"
 #include "movements/RandomMovement.h"
 #include "movements/RandomPathMovement.h"
+#include "movements/PathFindingMovement.h"
+#include "movements/TargetMovement.h"
+#include "movements/TemporalMovement.h"
+#include "movements/CircleMovement.h"
 #include "movements/JumpMovement.h"
+#include "entities/Hero.h"
+#include "entities/MapEntities.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/Music.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/Geometry.h"
+#include "Timer.h"
+#include "Sprite.h"
+#include "Game.h"
+#include "Map.h"
 #include <lua.hpp>
 #include <sstream>
+#include <cmath>
 
 /**
  * @brief Includes a script into the current Lua context.
@@ -111,7 +120,7 @@ int Script::main_api_timer_start(lua_State *l) {
 }
 
 /**
- * @brief Stops an existing timer in the script.
+ * @brief Stops a timer of this script if it exists.
  *
  * - Argument 1 (string): name of the Lua function that is supposed to be called
  * when the timer finishes
@@ -141,6 +150,28 @@ int Script::main_api_timer_stop_all(lua_State *l) {
   script->remove_all_timers();
 
   return 0;
+}
+
+/**
+ * @brief Creates a sprite that will be stored by your script.
+ *
+ * - Argument 1 (string): the sprite name (i.e. the name of its animation set)
+ * - Return value (string): a handle to the sprite created
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::main_api_sprite_create(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 1, &script);
+  const std::string& animation_set_id = luaL_checkstring(l, 1);
+
+  Sprite* sprite = new Sprite(animation_set_id);
+  int sprite_handle = script->create_sprite_handle(*sprite);
+  script->unassigned_sprites[sprite_handle] = sprite;
+  lua_pushinteger(l, sprite_handle);
+
+  return 1;
 }
 
 /**
@@ -394,6 +425,38 @@ int Script::main_api_sprite_fade(lua_State *l) {
 }
 
 /**
+ * @brief Synchronizes the frames of a sprite with the frames on a reference sprite
+ * when the name of their current animation is the same.
+ * From now on, when both sprites have the same current animation,
+ * the first sprite will stop changing frames with time and it will take the same
+ * frames as the reference sprite instead.
+ *
+ * - Argument 1 (sprite): the sprite to synchronize
+ * - Argument 2 (sprite): the reference sprite, or nil to stop any previous synchronization
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::main_api_sprite_synchronize(lua_State *l) {
+
+
+  Script* script;
+  called_by_script(l, 2, &script);
+  int sprite_handle = luaL_checkinteger(l, 1);
+  Sprite& sprite = script->get_sprite(sprite_handle);
+
+  if (!lua_isnil(l, 2)) {
+    int reference_sprite_handle = luaL_checkinteger(l, 2);
+    Sprite& reference_sprite = script->get_sprite(reference_sprite_handle);
+    sprite.set_synchronized_to(&reference_sprite);
+  }
+  else {
+    sprite.set_synchronized_to(NULL);
+  }
+
+  return 0;
+}
+
+/**
  * @brief Creates a movement of type PixelMovement that will be accessible from the script.
  *
  * - Argument 1 (string): the pixel-by-pixel trajectory of the movement
@@ -482,6 +545,138 @@ int Script::main_api_random_path_movement_create(lua_State *l) {
 }
 
 /**
+ * @brief Creates a movement of type PathFindingMovement that will be accessible from the script.
+ *
+ * The movement will compute a path to the hero.
+ * - Argument 1 (int): the speed in pixels per second
+ * - Return value (movement): a handle to the movement created
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::main_api_path_finding_movement_create(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 1, &script);
+  int speed = luaL_checkinteger(l, 1);
+
+  PathFindingMovement *movement = new PathFindingMovement(&script->get_game().get_hero(), speed);
+  int movement_handle = script->create_movement_handle(*movement);
+  lua_pushinteger(l, movement_handle);
+
+  return 1;
+}
+
+/**
+ * @brief Creates a movement of type TargetMovement (targeting the hero)
+ * that will be accessible from the script.
+ *
+ * - Argument 1 (int): the speed in pixels per second
+ * - Return value (movement): a handle to the movement created
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::main_api_target_movement_create(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 1, &script);
+  int speed = luaL_checkinteger(l, 1);
+
+  Hero& hero = script->get_game().get_hero();
+  TargetMovement *movement = new TargetMovement(&hero, speed);
+  movement->set_ignore_obstacles(false);
+  movement->set_speed(speed);
+  int movement_handle = script->create_movement_handle(*movement);
+  lua_pushinteger(l, movement_handle);
+
+  return 1;
+}
+
+/**
+ * @brief Creates a movement of type RectilinearMovement that will be accessible from the script.
+ *
+ * - Argument 1 (int): the speed in pixels per second
+ * - Argument 2 (float): angle of the speed vector in radians
+ * - Return value (movement): a handle to the movement created
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::main_api_rectilinear_movement_create(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 2, &script);
+  int speed = luaL_checkinteger(l, 1);
+  double angle = luaL_checknumber(l, 2);
+
+  RectilinearMovement *movement = new RectilinearMovement(false);
+  movement->set_speed(speed);
+  movement->set_angle(angle);
+  int movement_handle = script->create_movement_handle(*movement);
+  lua_pushinteger(l, movement_handle);
+
+  return 1;
+}
+
+/**
+ * @brief Creates a movement of type TemporalMovement that will be accessible from the script.
+ *
+ * - Argument 1 (int): the speed in pixels per second
+ * - Argument 2 (float): angle of the speed vector in radians
+ * - Argument 3 (int): the duration of the movement in milliseconds
+ * - Return value (movement): a handle to the movement created
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::main_api_temporal_movement_create(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 3, &script);
+  int speed = luaL_checkinteger(l, 1);
+  double angle = luaL_checknumber(l, 2);
+  uint32_t duration = luaL_checkinteger(l, 3);
+
+  TemporalMovement *movement = new TemporalMovement(speed, angle, duration);
+  movement->set_speed(speed);
+  if (speed != 0) {
+    movement->set_angle(angle);
+  }
+  int movement_handle = script->create_movement_handle(*movement);
+  lua_pushinteger(l, movement_handle);
+
+  return 1;
+}
+
+/**
+ * @brief Creates a movement of type CircleMovement that will be accessible from the script.
+ *
+ * - Argument 1 (integer): type of the center entity
+ * (must match the enumeration EntityType)
+ * - Argument 2 (string): name of the center entity
+ * - Argument 3 (int): the radius of the circle in pixels
+ * - Return value (movement): a handle to the movement created
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::main_api_circle_movement_create(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 3, &script);
+  int center_type = luaL_checkinteger(l, 1);
+  const std::string& center_name = luaL_checkstring(l, 2);
+  int radius = luaL_checkinteger(l, 3);
+
+  MapEntity* center_entity = script->get_map().get_entities().
+      get_entity(EntityType(center_type), center_name);
+
+  CircleMovement *movement = new CircleMovement();
+  movement->set_center(center_entity);
+  movement->set_radius(radius);
+  int movement_handle = script->create_movement_handle(*movement);
+  lua_pushinteger(l, movement_handle);
+
+  return 1;
+}
+
+/**
  * @brief Creates a movement of type JumpMovement that will be accessible from the script.
  *
  * - Argument 1 (int): direction of the jump (0 to 7)
@@ -548,9 +743,14 @@ int Script::main_api_movement_set_property(lua_State *l) {
     value = lua_tostring(l, 3);
   }
   else if (lua_isnumber(l, 3)) {
-    int v = lua_tointeger(l, 3);
+    double v = lua_tointeger(l, 3);
     std::ostringstream oss;
-    oss << v;
+    if (std::fabs(v - (int) v) < 1e-6) {
+      oss << (int) v;
+    }
+    else {
+      oss << v;
+    }
     value = oss.str();
   }
   else if (lua_isboolean(l, 3)) {
@@ -564,5 +764,57 @@ int Script::main_api_movement_set_property(lua_State *l) {
   movement.set_property(key, value);
 
   return 0;
+}
+
+/**
+ * @brief Returns whether there would be a collision if the entity controlled by a movement
+ * object was translated with the given parameters.
+ *
+ * - Argument 1 (movement): a movement
+ * - Argument 2 (integer): x translation in pixels
+ * - Argument 3 (integer): y translation in pixels
+ * - Return value (boolean): true if this translation would make the entity overlap obstacles
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::main_api_movement_test_obstacles(lua_State *l) {
+
+  Script* script;
+  called_by_script(l, 3, &script);
+  int movement_handle = luaL_checkinteger(l, 1);
+  int dx = luaL_checkinteger(l, 2);
+  int dy = luaL_checkinteger(l, 3);
+
+  Movement& movement = script->get_movement(movement_handle);
+  bool result = movement.test_collision_with_obstacles(dx, dy);
+  lua_pushboolean(l, result);
+
+  return 1;
+}
+
+/**
+ * @brief Returns the angle between the specified vector and the x axis.
+ *
+ * - Argument 1 (integer): x coordinate of the first point of the vector
+ * - Argument 2 (integer): y coordinate of the first point of the vector
+ * - Argument 3 (integer): x coordinate of the second point of the vector
+ * - Argument 4 (integer): y coordinate of the second point of the vector
+ * - Return value (float): the angle between the vector and the x axis in radians
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::main_api_get_angle(lua_State *l) {
+
+  Script* script;
+  called_by_script(l, 4, &script);
+  int x1 = luaL_checkinteger(l, 1);
+  int y1 = luaL_checkinteger(l, 2);
+  int x2 = luaL_checkinteger(l, 3);
+  int y2 = luaL_checkinteger(l, 4);
+
+  double angle = Geometry::get_angle(x1, y1, x2, y2);
+  lua_pushnumber(l, angle);
+
+  return 1;
 }
 

@@ -17,9 +17,11 @@
 #include "movements/CircleMovement.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Geometry.h"
-#include "entities/MapEntity.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
+#include "entities/MapEntity.h"
+#include "entities/MapEntities.h"
+#include "Map.h"
 
 /**
  * @brief Creates a circle movement.
@@ -27,9 +29,23 @@
 CircleMovement::CircleMovement():
 
   Movement(true),
-  center_entity(NULL), current_angle(0), initial_angle(0), angle_increment(1), next_angle_change_date(0), angle_change_delay(5),
-  current_radius(0), wanted_radius(0), previous_radius(0), next_radius_change_date(0), radius_change_delay(0),
-  duration(0), end_movement_date(0), max_rotations(0), loop_delay(0), restart_date(0) {
+  center_entity(NULL),
+  center_type(ENEMY),
+  current_angle(0),
+  initial_angle(0),
+  angle_increment(1),
+  next_angle_change_date(0),
+  angle_change_delay(5),
+  current_radius(0),
+  wanted_radius(0),
+  previous_radius(0),
+  next_radius_change_date(0),
+  radius_change_delay(0),
+  duration(0),
+  end_movement_date(0),
+  max_rotations(0),
+  loop_delay(0),
+  restart_date(0) {
 
 }
 
@@ -73,6 +89,14 @@ void CircleMovement::set_center(MapEntity *center_entity, int x, int y) {
 }
 
 /**
+ * @brief Returns the radius of the circles.
+ * @return the radius in pixels
+ */
+int CircleMovement::get_radius() {
+  return wanted_radius;
+}
+
+/**
  * @brief Sets the radius of the circles.
  * @param radius the radius in pixels
  */
@@ -96,15 +120,25 @@ void CircleMovement::set_radius(int radius) {
 }
 
 /**
+ * @brief Returns the speed of the radius variations.
+ * @return the speed in pixels per second, or 0 if radius variations are immediate
+ */
+int CircleMovement::get_radius_speed() {
+
+  return radius_change_delay == 0 ? 0 : 1000 / radius_change_delay;
+}
+
+/**
  * @brief Sets the radius to be updated immediately or gradually towards its wanted value.
  *
  * Use set_radius() to specify the wanted value.
  *
- * @param radius_speed speed of the radius variation (number of pixels per second), or 0 to update it immediately
+ * @param radius_speed speed of the radius variation (number of pixels per second),
+ * or 0 to update it immediately
  */
 void CircleMovement::set_radius_speed(int radius_speed) {
 
-  Debug::check_assertion(radius_speed >= 0, StringConcat() << "Invalid speed: " << radius_speed);
+  Debug::check_assertion(radius_speed >= 0, StringConcat() << "Invalid radius speed: " << radius_speed);
 
   if (radius_speed == 0) {
     this->radius_change_delay = 0;
@@ -114,6 +148,14 @@ void CircleMovement::set_radius_speed(int radius_speed) {
   }
 
   set_radius(wanted_radius);
+}
+
+/**
+ * @brief Returns the speed of the angle variation.
+ * @return the number of degrees made per second
+ */
+int CircleMovement::get_angle_speed() {
+  return 1000 / angle_change_delay;
 }
 
 /**
@@ -130,14 +172,32 @@ void CircleMovement::set_angle_speed(int angle_speed) {
 }
 
 /**
- * @brief Sets the angle where the first circle starts from.
- * @param initial_angle angle in degrees (0 to 359)
+ * @brief Returns the angle from where the first circle starts.
+ * @return the angle in degrees
+ */
+int CircleMovement::get_initial_angle() {
+  return initial_angle;
+}
+
+/**
+ * @brief Sets the angle from where the first circle starts.
+ * @param initial_angle angle in degrees
  */
 void CircleMovement::set_initial_angle(int initial_angle) {
 
-  Debug::check_assertion(initial_angle >= 0 && initial_angle < 360, StringConcat() << "Invalid initial angle: " << initial_angle);
+  Debug::check_assertion(initial_angle >= 0 && initial_angle < Geometry::TWO_PI,
+      StringConcat() << "Invalid initial angle: " << initial_angle);
 
   this->initial_angle = initial_angle;
+}
+
+/**
+ * @brief Returns the direction of the circles;
+ * @return CLOCKWISE or COUNTER_CLOCKWISE
+ */
+CircleMovement::Direction CircleMovement::get_direction() {
+
+  return angle_increment > 0 ? COUNTER_CLOCKWISE : CLOCKWISE;
 }
 
 /**
@@ -150,10 +210,23 @@ void CircleMovement::set_direction(Direction direction) {
 }
 
 /**
+ * @brief Returns the maximum duration of the movement.
+ *
+ * When this delay is reached, the movement stops.
+ * Note that if the radius changes gradually, the movement will continue
+ * for a while until the radius reaches zero.
+ *
+ * @param duration duration of the movement in milliseconds, (0 means infinite)
+ */
+uint32_t CircleMovement::get_duration() {
+  return duration;
+}
+
+/**
  * @brief Sets the maximum duration of the movement.
  *
  * When this delay is reached, the movement stops.
- * Note that is the radius changes gradually, the movement will continue
+ * Note that if the radius changes gradually, the movement will continue
  * for a while until the radius reaches zero.
  *
  * @param duration duration of the movement in milliseconds, or 0 to make it infinite
@@ -164,6 +237,20 @@ void CircleMovement::set_duration(uint32_t duration) {
   if (duration != 0 && is_started()) {
     this->end_movement_date = System::now() + duration;
   }
+}
+
+/**
+ * @brief Returns the number of rotations of the movement.
+ *
+ * When this number of rotations is reached, the movement stops.
+ * Note that is the radius changes gradually, the movement will continue
+ * for a while until the radius reaches zero.
+ *
+ * @return the number of rotations to make (0 means infinite rotations)
+ */
+int CircleMovement::get_max_rotations() {
+
+  return max_rotations;
 }
 
 /**
@@ -181,6 +268,15 @@ void CircleMovement::set_max_rotations(int max_rotations) {
 
   this->max_rotations = max_rotations;
   this->nb_rotations = 0;
+}
+
+/**
+ * @return Returns the delay after which the movement restarts.
+ * @return the delay in milliseconds (0 means no restart)
+ */
+uint32_t CircleMovement::get_loop() {
+
+  return loop_delay;
 }
 
 /**
@@ -331,5 +427,163 @@ void CircleMovement::stop() {
     restart_date = System::now() + loop_delay;
   }
   recompute_position();
+}
+
+/**
+ * @brief Returns the value of a property of this movement.
+ *
+ * Accepted keys:
+ * - center_type
+ * - center_name
+ * - center_dx
+ * - center_dy
+ * - radius
+ * - radius_speed
+ * - direction
+ * - initial_angle
+ * - angle_speed
+ * - max_rotations
+ * - duration
+ * - loop
+ *
+ * @param key key of the property to get
+ * @return the corresponding value as a string
+ */
+const std::string CircleMovement::get_property(const std::string &key) {
+
+  std::ostringstream oss;
+
+  if (key == "center_type") {
+    oss << (center_entity != NULL) ? center_entity->get_type() : -1;
+  }
+  else if (key == "center_name") {
+    oss << (center_entity != NULL) ? center_entity->get_name() : "";
+  }
+  else if (key == "center_dx") {
+    oss << center_point.get_x();
+  }
+  else if (key == "center_dy") {
+    oss << center_point.get_y();
+  }
+  else if (key == "radius_speed") {
+    oss << get_radius_speed();
+  }
+  else if (key == "radius") {
+    oss << get_radius();
+  }
+  else if (key == "direction") {
+    oss << get_direction();
+  }
+  else if (key == "initial_angle") {
+    oss << get_initial_angle();
+  }
+  else if (key == "angle_speed") {
+    oss << get_angle_speed();
+  }
+  else if (key == "max_rotations") {
+    oss << get_max_rotations();
+  }
+  else if (key == "duration") {
+    oss << get_duration();
+  }
+  else if (key == "loop") {
+    oss << get_loop();
+  }
+  else {
+    Debug::die(StringConcat() << "Unknown property of CircleMovement: '" << key << "'");
+  }
+
+  return oss.str();
+}
+
+/**
+ * @brief Sets the value of a property of this movement.
+ *
+ * Accepted keys:
+ * - center_type
+ * - center_name
+ * - center_dx
+ * - center_dy
+ * - radius
+ * - radius_speed
+ * - direction
+ * - initial_angle
+ * - angle_speed
+ * - max_rotations
+ * - duration
+ * - loop
+ *
+ * @param key key of the property to set (the accepted keys depend on the movement type)
+ * @param value the value to set
+ */
+void CircleMovement::set_property(const std::string &key, const std::string &value) {
+
+  std::istringstream iss(value);
+
+  if (key == "center_type") {
+    int center_type;
+    iss >> center_type;
+    this->center_type = EntityType(center_type);
+  }
+  else if (key == "center_name") {
+    std::string center_name;
+    iss >> center_name;
+    MapEntities& entities = get_entity()->get_map().get_entities();
+    MapEntity* entity = entities.get_entity(center_type, center_name);
+    set_center(entity, 0, 0);
+  }
+  else if (key == "center_dx") {
+    int dx;
+    iss >> dx;
+    set_center(center_entity, dx, center_point.get_y());
+  }
+  else if (key == "center_dy") {
+    int dy;
+    iss >> dy;
+    set_center(center_entity, center_point.get_x(), dy);
+  }
+  else if (key == "radius") {
+    int radius;
+    iss >> radius;
+    set_radius(radius);
+  }
+  else if (key == "radius_speed") {
+    int radius_speed;
+    iss >> radius_speed;
+    set_radius_speed(radius_speed);
+  }
+  else if (key == "direction") {
+    int direction;
+    iss >> direction;
+    set_direction(Direction(direction));
+  }
+  else if (key == "initial_angle") {
+    int initial_angle;
+    iss >> initial_angle;
+    set_initial_angle(initial_angle);
+  }
+  else if (key == "angle_speed") {
+    int angle_speed;
+    iss >> angle_speed;
+    set_angle_speed(angle_speed);
+  }
+  else if (key == "max_rotations") {
+    int max_rotations;
+    iss >> max_rotations;
+    set_max_rotations(max_rotations);
+  }
+  else if (key == "duration") {
+    uint32_t duration;
+    iss >> duration;
+    set_duration(duration);
+  }
+  else if (key == "loop") {
+    uint32_t loop;
+    iss >> loop;
+    set_loop(loop);
+  }
+  else {
+    Debug::die(StringConcat() << "Unknown property of CircleMovement: '" << key << "'");
+  }
 }
 

@@ -22,8 +22,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -31,9 +35,11 @@ import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import org.solarus.editor.Dialogs;
 import org.solarus.editor.MapEditorHistory;
 import org.solarus.editor.Project;
 import org.solarus.editor.ProjectObserver;
+import org.solarus.editor.ResourceType;
 import org.solarus.editor.ZSDXException;
 
 /**
@@ -41,19 +47,27 @@ import org.solarus.editor.ZSDXException;
  */
 public class EditorWindow extends JFrame implements Observer, ProjectObserver, ChangeListener {
 
+    private static final String mapEditorClass = "org.solarus.editor.gui.MapEditorWindow";
+    private static final String tilesetEditorClass = "org.solarus.editor.gui.TilesetEditorWindow";
+    private static final String fileEditorClass = "org.solarus.editor.gui.FileEditorWindow";
     private EditorDesktop desktop;
-    private JMenu menuMap;
-    private JMenuItem menuItemCloseMap;
-    private JMenuItem menuItemSaveMap;
-    private JMenuItem menuItemUndoMap;
-    private JMenuItem menuItemRedoMap;
-    private JMenuItem menuItemCutMap;
-    private JMenuItem menuItemCopyMap;
-    private JMenuItem menuItemPasteMap;
+    private JMenu menuFile;
+    private JMenu menuNew;
+    private JMenuItem menuNewMap;
+    private JMenuItem menuNewTileset;
+    private JMenu menuOpen;
+    private JMenuItem menuOpenMap;
+    private JMenuItem menuOpenTileset;
+    private JMenuItem menuOpenIniFile;
+    private JMenuItem menuOpenTextFile;
+    private JMenuItem menuItemSave;
+    private JMenuItem menuItemClose;
+    private JMenuItem menuItemUndo;
+    private JMenuItem menuItemRedo;
+    private JMenuItem menuItemCut;
+    private JMenuItem menuItemCopy;
+    private JMenuItem menuItemPaste;
     // menus or menu items memorized to enable it later
-    private JMenu menuTileset;
-    private JMenuItem menuItemCloseTileset;
-    private JMenuItem menuItemSaveTileset;
     /**
      * The quest to load in the editor, for use in the sub-editors
      */
@@ -81,12 +95,14 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
 
             public void windowClosing(WindowEvent e) {
                 if (checkCurrentFilesSaved()) {
-                    if (GuiTools.yesNoDialog("Do you really want to quit the editor ?")) {
-                        System.exit(0);
-                    }
+                    //if (GuiTools.yesNoDialog("Do you really want to quit the editor ?")) {
+                    System.exit(0);
+                    //}
                 }
             }
         });
+
+//        getToolkit().addAWTEventListener(new ActionOnCurrentEditor(), AWTEvent.KEY_EVENT_MASK);
 
         // create the menu bar
         createMenuBar();
@@ -95,7 +111,7 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
             new ActionListenerLoadProject().actionPerformed(null);
         } else {
             try {
-                Project.createExisting("../quests/zsdx");
+                Project.createExisting("../quests/" + quest);
             } catch (ZSDXException ex) {
                 new ActionListenerLoadProject().actionPerformed(null);
             }
@@ -108,44 +124,36 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
      * @param obj additional parameter
      */
     public void update(Observable o, Object obj) {
-        if (desktop.getSelectedComponent() == null) {
-            menuMap.setEnabled(false);
-            menuTileset.setEnabled(false);
-        } else {
-            menuMap.setEnabled(true);
-            menuTileset.setEnabled(true);
-            try {
+
+        menuFile.setEnabled(Project.isLoaded());
+
+        if (desktop.getSelectedComponent() != null) {
+            String editorClass = desktop.getSelectedComponent().getClass().getName();
+            //System.out.println(c.getClass().getName());
+            boolean isMapEditor = mapEditorClass.equals(editorClass);
+            boolean isTilesetEditor = tilesetEditorClass.equals(editorClass);
+            boolean isFileEditor = fileEditorClass.equals(editorClass);
+
+            if (isMapEditor) {
 
                 MapEditorWindow mapEditor = (MapEditorWindow) desktop.getSelectedComponent();
                 MapEditorHistory history = mapEditor.getMap().getHistory();
-                menuItemCloseMap.setEnabled(true);
-                menuItemSaveMap.setEnabled(!history.isSaved());
-                menuItemUndoMap.setEnabled(history.canUndo());
-                menuItemRedoMap.setEnabled(history.canRedo());
+                menuItemUndo.setEnabled(history.canUndo());
+                menuItemRedo.setEnabled(history.canRedo());
 
                 boolean emptySelection = mapEditor.getMap().getEntitySelection().isEmpty();
-                menuItemCutMap.setEnabled(!emptySelection);
-                menuItemCopyMap.setEnabled(!emptySelection);
-                menuItemPasteMap.setEnabled(mapEditor.getMapView().canPaste());
-            } catch (ClassCastException cce) {
-                menuItemCloseMap.setEnabled(false);
-                menuItemSaveMap.setEnabled(false);
-                menuItemUndoMap.setEnabled(false);
-                menuItemRedoMap.setEnabled(false);
-                menuItemCutMap.setEnabled(false);
-                menuItemCopyMap.setEnabled(false);
-                menuItemPasteMap.setEnabled(false);
-            }
-            try {
+                menuItemCut.setEnabled(!emptySelection);
+                menuItemCopy.setEnabled(!emptySelection);
+                menuItemPaste.setEnabled(mapEditor.getMapView().canPaste());
+            } else {
+                // No resource opened interface the editor : only new/open actions are enabled
 
-                TilesetEditorWindow tiilesetEditor = (TilesetEditorWindow) desktop.getSelectedComponent();
-                menuItemCloseTileset.setEnabled(true);
-                menuItemSaveTileset.setEnabled(true);
-            } catch (ClassCastException cce) {
-                menuItemCloseTileset.setEnabled(false);
-                menuItemSaveTileset.setEnabled(false);
+                menuItemUndo.setEnabled(false);
+                menuItemRedo.setEnabled(false);
+                menuItemCut.setEnabled(false);
+                menuItemCopy.setEnabled(false);
+                menuItemPaste.setEnabled(false);
             }
-
         }
     }
 
@@ -156,18 +164,18 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
         JMenuItem item;
 
         // menu Project
-        menu = new JMenu("Project");
-        menu.setMnemonic(KeyEvent.VK_P);
+        menu = new JMenu("Quest");
+        menu.setMnemonic(KeyEvent.VK_Q);
 
-        item = new JMenuItem("New project...");
+        item = new JMenuItem("New quest...");
         item.setMnemonic(KeyEvent.VK_N);
-        item.getAccessibleContext().setAccessibleDescription("Create a new ZSDX project");
+        item.getAccessibleContext().setAccessibleDescription("Create a new ZSDX quest");
         item.addActionListener(new ActionListenerNewProject());
         menu.add(item);
 
-        item = new JMenuItem("Load project...");
+        item = new JMenuItem("Load quest...");
         item.setMnemonic(KeyEvent.VK_O);
-        item.getAccessibleContext().setAccessibleDescription("Open an existing ZSDX project");
+        item.getAccessibleContext().setAccessibleDescription("Open an existing ZSDX quest");
         item.addActionListener(new ActionListenerLoadProject());
         menu.add(item);
 
@@ -180,9 +188,9 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
 
             public void actionPerformed(ActionEvent ev) {
                 if (checkCurrentFilesSaved()) {
-                    if (GuiTools.yesNoDialog("Do you really want to quit the editor ?")) {
-                        System.exit(0);
-                    }
+                    //if (GuiTools.yesNoDialog("Do you really want to quit the editor ?")) {
+                    System.exit(0);
+                    //}
                 }
             }
         });
@@ -190,130 +198,126 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
 
         menuBar.add(menu);
 
+        //MenuFile
+        menuFile = new JMenu("File");
+        menuFile.setEnabled(false);
+        menuFile.setMnemonic(KeyEvent.VK_F);
+        //New
+        menuNew = new JMenu("New");
+        menuNew.setMnemonic(KeyEvent.VK_N);
         // menu Map
-        menuMap = new JMenu("Map");
-        menuMap.setMnemonic(KeyEvent.VK_T);
-        menuMap.setEnabled(false);
+        menuNewMap = new JMenuItem("Map");
+        menuNewMap.setMnemonic(KeyEvent.VK_M);
+        menuNewMap.getAccessibleContext().setAccessibleDescription("Create a new map");
+        menuNewMap.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
+        menuNewMap.addActionListener(new ActionListenerNewMap());
+        menuNew.add(menuNewMap);
+        // menu Tileset
+        menuNewTileset = new JMenuItem("Tileset");
+        menuNewTileset.setMnemonic(KeyEvent.VK_T);
+        menuNewTileset.getAccessibleContext().setAccessibleDescription("Create a new tileset");
+        menuNewTileset.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.ALT_MASK));
+        menuNewTileset.addActionListener(new ActionNewTileset());
+        menuNew.add(menuNewTileset);
+        // menu TextFile
+        // incoming
+        menuFile.add(menuNew);
 
-        item = new JMenuItem("New");
-        item.setMnemonic(KeyEvent.VK_N);
-        item.getAccessibleContext().setAccessibleDescription("Create a new map");
-        item.addActionListener(new ActionListenerNewMap());
-        menuMap.add(item);
+        // menu open
+        menuOpen = new JMenu("Open");
+        menuOpen.setMnemonic(KeyEvent.VK_O);
+        menuOpen.addActionListener(new ActionListenerOpenMap());
 
-        item = new JMenuItem("Open...");
-        item.setMnemonic(KeyEvent.VK_O);
-        item.getAccessibleContext().setAccessibleDescription("Open an existing map");
-        item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
-        item.addActionListener(new ActionListenerOpenMap());
-        menuMap.add(item);
+        menuOpenMap = new JMenuItem("Map");
+        menuOpenMap.setMnemonic(KeyEvent.VK_M);
+        menuOpenMap.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
+        menuOpenMap.addActionListener(new ActionListenerOpenMap());
+        menuOpen.add(menuOpenMap);
 
-        menuItemCloseMap = new JMenuItem("Close");
-        menuItemCloseMap.setMnemonic(KeyEvent.VK_C);
-        menuItemCloseMap.getAccessibleContext().setAccessibleDescription("Close the current map");
-        menuItemCloseMap.addActionListener(new ActionListenerCloseMap());
-        menuMap.add(menuItemCloseMap);
+        menuOpenTileset = new JMenuItem("Tileset");
+        menuOpenTileset.setMnemonic(KeyEvent.VK_T);
+        menuOpenTileset.getAccessibleContext().setAccessibleDescription("Open an existing tileset");
+        menuOpenTileset.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.ALT_MASK));
+        menuOpenTileset.addActionListener(new ActionOpenTileset());
+        menuOpen.add(menuOpenTileset);
 
-        menuItemSaveMap = new JMenuItem("Save");
-        menuItemSaveMap.setMnemonic(KeyEvent.VK_S);
-        menuItemSaveMap.getAccessibleContext().setAccessibleDescription("Save the current map");
-        menuItemSaveMap.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
-        menuItemSaveMap.addActionListener(new ActionListenerSaveMap());
-        menuMap.add(menuItemSaveMap);
+        menuOpenIniFile = new JMenuItem("Dialogs");
+        menuOpenIniFile.setMnemonic(KeyEvent.VK_D);
+        menuOpenIniFile.getAccessibleContext().setAccessibleDescription("Open an existing dialogs file");
+        //menuOpenIniFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.SHIFT_MASK));
+        menuOpenIniFile.addActionListener(new ActionOpenIniFile());
+        menuOpen.add(menuOpenIniFile);
 
-        menuItemCloseMap.setEnabled(false);
-        menuItemSaveMap.setEnabled(false);
+        menuOpenTextFile = new JMenuItem("Text File");
+        menuOpenTextFile.setMnemonic(KeyEvent.VK_F);
+        menuOpenTextFile.getAccessibleContext().setAccessibleDescription("Open an existing file");
+        //menuOpenTextFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.SHIFT_MASK));
+        menuOpenTextFile.addActionListener(new ActionOpenFile());
+        menuOpen.add(menuOpenTextFile);
 
-        menuMap.addSeparator();
+        menuFile.add(menuOpen);
 
-        // menu Edit
-//        menuEdit = new JMenu("Edit");
-//        menuEdit.setMnemonic(KeyEvent.VK_E);
+        menuItemClose = new JMenuItem("Close");
+        menuItemClose.setMnemonic(KeyEvent.VK_C);
+        menuItemClose.getAccessibleContext().setAccessibleDescription("Close the current editor");
+        menuItemClose.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK));
+        menuItemClose.addActionListener(new ActionCloseCurrentEditor());
+        menuFile.add(menuItemClose);
 
-        menuItemUndoMap = new JMenuItem("Undo");
-        menuItemUndoMap.setMnemonic(KeyEvent.VK_U);
-        menuItemUndoMap.getAccessibleContext().setAccessibleDescription("Undo the last action");
-        menuItemUndoMap.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, ActionEvent.CTRL_MASK));
-        menuItemUndoMap.addActionListener(new ActionListenerUndoMap());
-        menuItemUndoMap.setEnabled(false);
-        menuMap.add(menuItemUndoMap);
+        menuItemSave = new JMenuItem("Save");
+        menuItemSave.setMnemonic(KeyEvent.VK_S);
+        menuItemSave.getAccessibleContext().setAccessibleDescription("Save the current editor");
+        menuItemSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
+        menuItemSave.addActionListener(new ActionSaveCurrentEditor());
+        menuFile.add(menuItemSave);
 
-        menuItemRedoMap = new JMenuItem("Redo");
-        menuItemRedoMap.setMnemonic(KeyEvent.VK_R);
-        menuItemRedoMap.getAccessibleContext().setAccessibleDescription("Redo the last action undone");
-        menuItemRedoMap.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Y, ActionEvent.CTRL_MASK));
-        menuItemRedoMap.addActionListener(new ActionListenerRedoMap());
-        menuItemRedoMap.setEnabled(false);
-        menuMap.add(menuItemRedoMap);
+        menuFile.addSeparator();
+
+        menuItemUndo = new JMenuItem("Undo");
+        menuItemUndo.setMnemonic(KeyEvent.VK_U);
+        menuItemUndo.getAccessibleContext().setAccessibleDescription("Undo the last action");
+        menuItemUndo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, ActionEvent.CTRL_MASK));
+        menuItemUndo.addActionListener(new ActionListenerUndoMap());
+        menuItemUndo.setEnabled(false);
+        menuFile.add(menuItemUndo);
+
+        menuItemRedo = new JMenuItem("Redo");
+        menuItemRedo.setMnemonic(KeyEvent.VK_R);
+        menuItemRedo.getAccessibleContext().setAccessibleDescription("Redo the last action undone");
+        menuItemRedo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Y, ActionEvent.CTRL_MASK));
+        menuItemRedo.addActionListener(new ActionListenerRedoMap());
+        menuItemRedo.setEnabled(false);
+        menuFile.add(menuItemRedo);
 
         //menuBar.add(menuEdit);
 
-        menuMap.addSeparator();
+        menuFile.addSeparator();
 
-        menuItemCutMap = new JMenuItem("Cut");
-        menuItemCutMap.setMnemonic(KeyEvent.VK_U);
-        menuItemCutMap.getAccessibleContext().setAccessibleDescription("Cut the selected entities");
-        menuItemCutMap.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK));
-        menuItemCutMap.addActionListener(new ActionListenerCutMap());
-        menuItemCutMap.setEnabled(false);
-        menuMap.add(menuItemCutMap);
+        menuItemCut = new JMenuItem("Cut");
+        menuItemCut.setMnemonic(KeyEvent.VK_U);
+        menuItemCut.getAccessibleContext().setAccessibleDescription("Cut the selected entities");
+        menuItemCut.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK));
+        menuItemCut.addActionListener(new ActionListenerCutMap());
+        menuItemCut.setEnabled(false);
+        menuFile.add(menuItemCut);
 
-        menuItemCopyMap = new JMenuItem("Copy");
-        menuItemCopyMap.setMnemonic(KeyEvent.VK_C);
-        menuItemCopyMap.getAccessibleContext().setAccessibleDescription("Copy the selected entities");
-        menuItemCopyMap.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
-        menuItemCopyMap.addActionListener(new ActionListenerCopyMap());
-        menuItemCopyMap.setEnabled(false);
-        menuMap.add(menuItemCopyMap);
+        menuItemCopy = new JMenuItem("Copy");
+        menuItemCopy.setMnemonic(KeyEvent.VK_C);
+        menuItemCopy.getAccessibleContext().setAccessibleDescription("Copy the selected entities");
+        menuItemCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
+        menuItemCopy.addActionListener(new ActionListenerCopyMap());
+        menuItemCopy.setEnabled(false);
+        menuFile.add(menuItemCopy);
 
-        menuItemPasteMap = new JMenuItem("Paste");
-        menuItemPasteMap.setMnemonic(KeyEvent.VK_P);
-        menuItemPasteMap.getAccessibleContext().setAccessibleDescription("Paste the copied entities");
-        menuItemPasteMap.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, ActionEvent.CTRL_MASK));
-        menuItemPasteMap.addActionListener(new ActionListenerPasteMap());
-        menuItemPasteMap.setEnabled(false);
-        menuMap.add(menuItemPasteMap);
+        menuItemPaste = new JMenuItem("Paste");
+        menuItemPaste.setMnemonic(KeyEvent.VK_P);
+        menuItemPaste.getAccessibleContext().setAccessibleDescription("Paste the copied entities");
+        menuItemPaste.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, ActionEvent.CTRL_MASK));
+        menuItemPaste.addActionListener(new ActionListenerPasteMap());
+        menuItemPaste.setEnabled(false);
+        menuFile.add(menuItemPaste);
 
-        menuBar.add(menuMap);
-
-        // tileset menu
-        // menu Tileset
-        menuTileset = new JMenu("Tileset");
-        menuTileset.setEnabled(false);
-        menuTileset.setMnemonic(KeyEvent.VK_T);
-
-        item = new JMenuItem("New");
-        item.setMnemonic(KeyEvent.VK_N);
-        item.getAccessibleContext().setAccessibleDescription("Create a new tileset");
-        item.addActionListener(new ActionNewTileset());
-        menuTileset.add(item);
-
-        item = new JMenuItem("Open...");
-        item.setMnemonic(KeyEvent.VK_O);
-        item.getAccessibleContext().setAccessibleDescription("Open an existing tileset");
-        item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
-        item.addActionListener(new ActionOpenTileset());
-        menuTileset.add(item);
-
-        menuItemCloseTileset = new JMenuItem("Close");
-        menuItemCloseTileset.setMnemonic(KeyEvent.VK_C);
-        menuItemCloseTileset.getAccessibleContext().setAccessibleDescription("Close the current tileset");
-        menuItemCloseTileset.addActionListener(new ActionCloseTileset());
-        menuItemCloseTileset.setEnabled(false);
-        menuTileset.add(menuItemCloseTileset);
-
-        menuItemSaveTileset = new JMenuItem("Save");
-        menuItemSaveTileset.setMnemonic(KeyEvent.VK_S);
-        menuItemSaveTileset.getAccessibleContext().setAccessibleDescription("Save the current tileset");
-        menuItemSaveTileset.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
-        menuItemSaveTileset.addActionListener(new ActionSaveTileset());
-        menuItemSaveTileset.setEnabled(false);
-        menuTileset.add(menuItemSaveTileset);
-
-        menuBar.add(menuTileset);
-
-
-
+        menuBar.add(menuFile);
 
         setJMenuBar(menuBar);
 
@@ -338,8 +342,7 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
      * This method is called just after a project is loaded.
      */
     public void currentProjectChanged() {
-        menuMap.setEnabled(true);
-        menuTileset.setEnabled(true);
+        menuFile.setEnabled(true);
     }
 
     /**
@@ -444,38 +447,10 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
         public void actionPerformed(ActionEvent ev) {
             MapEditorWindow mapEditor = new MapEditorWindow(EditorWindow.this.quest, EditorWindow.this);
             mapEditor.openMap();
-            EditorWindow.this.desktop.addEditor(mapEditor);
-            mapEditor.getMap().addObserver(EditorWindow.this);
-        }
-    }
-
-    // Specific listeners for Map editor
-    /**
-     * Action performed when the user clicks on Map > Close.
-     * Closes the current map.
-     */
-    private class ActionListenerCloseMap implements ActionListener {
-
-        public void actionPerformed(ActionEvent ev) {
-
-            MapEditorWindow mapEditor = (MapEditorWindow) desktop.getSelectedComponent();
-
-            if (!mapEditor.checkCurrentFileSaved()) {
-                return;
+            if (mapEditor.getMap() != null) {
+                EditorWindow.this.desktop.addEditor(mapEditor);
+                mapEditor.getMap().addObserver(EditorWindow.this);
             }
-            desktop.remove(mapEditor);
-        }
-    }
-
-    /**
-     * Action performed when the user clicks on Map > Save.
-     * Saves the map into its file.
-     */
-    private class ActionListenerSaveMap implements ActionListener {
-
-        public void actionPerformed(ActionEvent ev) {
-            MapEditorWindow mapEditor = (MapEditorWindow) desktop.getSelectedComponent();
-            mapEditor.saveMap();
         }
     }
 
@@ -570,25 +545,57 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
         public void actionPerformed(ActionEvent ev) {
             TilesetEditorWindow tilesetEditor = new TilesetEditorWindow(EditorWindow.this.quest, EditorWindow.this);
             tilesetEditor.openTileset();
+            if (tilesetEditor.getTileset() == null) {
+                return;//user cancellation
+            }
             EditorWindow.this.desktop.addEditor(tilesetEditor);
         }
     }
 
     /**
-     * Action performed when the user clicks on Tileset > Close.
-     * Closes the current tileset.
+     * Action performed when the user clicks on File > Load.
+     * Opens an existing file
      */
-    private class ActionCloseTileset implements ActionListener {
+    private class ActionOpenIniFile implements ActionListener {
 
         public void actionPerformed(ActionEvent ev) {
-            TilesetEditorWindow tilesetEditor = (TilesetEditorWindow) desktop.getSelectedComponent();
-
-            if (!tilesetEditor.checkCurrentFileSaved()) {
-                return;
+            DialogsEditorWindow dialogsEditor = new DialogsEditorWindow(EditorWindow.this.quest, EditorWindow.this);
+            dialogsEditor.openDialogs();
+            if (dialogsEditor.getDialogs() == null) {
+                return;//user cancellation
             }
-            desktop.remove(tilesetEditor);
+            EditorWindow.this.desktop.addEditor(dialogsEditor);
 
+        }
+    }
 
+    /**
+     * Action performed when the user clicks on File > Load.
+     * Opens an existing file
+     */
+    private class ActionOpenFile implements ActionListener {
+
+        public void actionPerformed(ActionEvent ev) {
+            FileEditorWindow fileEditor = new FileEditorWindow(EditorWindow.this.quest, EditorWindow.this);
+            JFileChooser jfc = new JFileChooser(Project.getRootPath() + File.separator + "data");
+            jfc.showOpenDialog(EditorWindow.this);
+            File selectedFile = jfc.getSelectedFile();
+            if (selectedFile != null) {
+                fileEditor.setFile(selectedFile);
+                EditorWindow.this.desktop.addEditor(fileEditor);
+            }
+
+        }
+    }
+
+    /**
+     * Action performed when the user clicks on File > Close.
+     * Closes the current file.
+     */
+    private class ActionCloseCurrentEditor implements ActionListener {
+
+        public void actionPerformed(ActionEvent ev) {
+            desktop.removeCurrentEditor();
         }
     }
 
@@ -596,14 +603,34 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
      * Action performed when the user clicks on Tileset > Save.
      * Saves the tileset into its file.
      */
-    private class ActionSaveTileset implements ActionListener {
+    private class ActionSaveCurrentEditor implements ActionListener {
 
         public void actionPerformed(ActionEvent ev) {
-            TilesetEditorWindow tilesetEditor = (TilesetEditorWindow) desktop.getSelectedComponent();
-            tilesetEditor.saveTileset();
+            desktop.saveCurrentEditor();
         }
     }
 
+//    /**
+//     * Action performed when the user uses the Ctrl-W or Ctrl-S keys
+//     * Close or save the current editor
+//     */
+//    private class ActionOnCurrentEditor implements AWTEventListener {
+//
+//        public void eventDispatched(AWTEvent ev) {
+//            if (ev instanceof KeyEvent) {
+//                KeyEvent kev = (KeyEvent) ev;
+//                System.out.println("Touche appuyée depuis " + this.getClass().getName());
+//                int code = kev.getKeyCode();
+//                if (kev.isControlDown()) {
+//                    if (code == KeyEvent.VK_W) {
+//                        desktop.removeCurrentEditor();
+//                    } else if (code == KeyEvent.VK_S) {
+//                        desktop.saveCurrentEditor();
+//                    }
+//                }
+//            }
+//        }
+//    }
     public void stateChanged(ChangeEvent e) {
         update(null, null);
     }

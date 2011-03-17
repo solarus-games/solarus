@@ -71,16 +71,17 @@
 0	0	240	48	16	16	369
 1	0	160	213	from_outside	1	0
 2	0	152	224	16	16	to_outside	0	1	4	from_fairy_cave
-4	0	272	109	4	_none	0	-1
-4	0	256	125	4	_none	0	-1
-4	0	272	141	4	_none	0	-1
+4	0	272	109	4	_none	1	-1
+4	0	256	125	4	_none	1	-1
+4	0	272	141	4	_none	1	-1
 8	0	104	-11	great_fairy	3	1	npc/great_fairy	map
 8	0	72	61	torch_1	-1	0	entities/torch	item#lamp
 8	0	72	189	torch_2	-1	0	entities/torch	item#lamp
 8	0	248	61	torch_3	-1	0	entities/torch	item#lamp
 8	0	248	189	torch_4	-1	0	entities/torch	item#lamp
 13	0	152	125	32	16	fairy_sensor	0
-0	2	112	216	96	8	148
+0	2	296	80	8	96	416
+0	2	112	216	96	8	412
 0	2	16	16	16	16	170
 0	2	16	208	16	16	170
 0	2	288	208	16	16	170

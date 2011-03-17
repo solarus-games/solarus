@@ -36,7 +36,7 @@
  * @param treasure the treasure to give when the item is picked
  */
 PickableItem::PickableItem(Layer layer, int x, int y, const Treasure &treasure):
-  Detector(COLLISION_RECTANGLE, "", layer, x, y, 0, 0),
+  Detector(COLLISION_RECTANGLE | COLLISION_SPRITE, "", layer, x, y, 0, 0),
   treasure(treasure),
   layer_independent_collisions(false),
   shadow_xy(Rectangle(x, y)),
@@ -167,6 +167,7 @@ void PickableItem::initialize_sprites() {
   Sprite &item_sprite = get_sprite();
   item_sprite.set_current_animation(treasure.get_item_name());
   item_sprite.set_current_direction(treasure.get_variant() - 1);
+  item_sprite.enable_pixel_collisions();
 
   // set the origin point and the size of the entity
   set_bounding_box_from_sprite();
@@ -187,6 +188,21 @@ void PickableItem::initialize_sprites() {
     blink_date = now + 8000;      // the item blinks at 8s
     disappear_date = now + 10000; // the item disappears at 10s
   }
+}
+
+/**
+ * @brief Notifies this entity that it has just been added to a map.
+ * @param map the map
+ */
+void PickableItem::set_map(Map& map) {
+
+  MapEntity::set_map(map);
+
+  if (map.is_started()) {
+    // notify the item script
+    get_equipment().get_item_script(treasure.get_item_name()).event_appear(*this);
+  }
+  // otherwise, notify_map_started() will do the job
 }
 
 /**
@@ -239,7 +255,7 @@ bool PickableItem::has_layer_independent_collisions() {
 /**
  * @brief Sets whether this entity can have collisions with entities even if
  * they are not on the same layer.
- * @param true if this entity can collide with entities that are on another layer
+ * @param independent true if this entity can collide with entities that are on another layer
  */
 void PickableItem::set_layer_independent_collisions(bool independent) {
   this->layer_independent_collisions = independent;
@@ -258,8 +274,10 @@ const Treasure& PickableItem::get_treasure() {
  */
 void PickableItem::notify_movement_changed() {
 
-  // notify the item script
-  get_equipment().get_item_script(treasure.get_item_name()).event_movement_changed(*this);
+  if (is_on_map()) {
+    // notify the item script
+    get_equipment().get_item_script(treasure.get_item_name()).event_movement_changed(*this);
+  }
 }
 
 /**
@@ -289,6 +307,28 @@ void PickableItem::notify_collision(MapEntity &entity_overlapping, CollisionMode
     if (!boomerang.is_going_back()) {
       boomerang.go_back();
     }
+  }
+}
+
+/**
+ * @brief Notifies this entity that another sprite is overlapping it.
+ *
+ * This function is called by check_collision(MapEntity*, Sprite*) when another entity's
+ * sprite overlaps a sprite of this detector.
+ *
+ * @param other_entity the entity overlapping this detector
+ * @param other_sprite the sprite of other_entity that is overlapping this detector
+ * @param this_sprite the sprite of this detector that is overlapping the other entity's sprite
+ */
+void PickableItem::notify_collision(MapEntity &other_entity, Sprite &other_sprite, Sprite &this_sprite) {
+
+  // taking the item with the sword
+  if (other_entity.is_hero()
+      && other_sprite.contains("sword")
+      && can_be_picked) {
+
+    remove_from_map();
+    give_item_to_player();
   }
 }
 

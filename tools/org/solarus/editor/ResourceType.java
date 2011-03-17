@@ -5,12 +5,14 @@ package org.solarus.editor;
  */
 public enum ResourceType {
 
-    MAP(true),
-    TILESET(true),
-    MUSIC(false),
-    SPRITE(false),
-    SOUND(false),
-    ITEM(false);
+    MAP(true, "Map"),
+    TILESET(true, "Tileset"),
+    MUSIC(false, "Music"),
+    SPRITE(false, "Sprite"),
+    SOUND(false, "Sound"),
+    ITEM(false, "Item"),
+    ENEMY(false, "Enemy"),
+    DIALOGS(false, "Dialogs File");
 
     /**
      * Indicates that the id of elements from this resource type is an integer
@@ -19,12 +21,19 @@ public enum ResourceType {
     private boolean idAutoIncremented;
 
     /**
+     * The name of the resource type - added for the GUI
+     */
+    private String name;
+
+    /**
      * Creates a new resource type.
      * @param idAutoIncremented true if the id of elements from this
      * resource type have to be incremented automatically.
+     * @param name name of the resource type
      */
-    private ResourceType(boolean idAutoIncremented) {
+    private ResourceType(boolean idAutoIncremented, String name) {
 	this.idAutoIncremented = idAutoIncremented;
+        this.name = name;
     }
 
     /**
@@ -36,7 +45,7 @@ public enum ResourceType {
     public static ResourceType get(int id) throws ZSDXException {
 
 	try {
-	    return values()[id];
+            return values()[id];
 	}
 	catch (ArrayIndexOutOfBoundsException ex) {
 	    throw new ZSDXException("Unknown resource type '" + id + "'");
@@ -58,5 +67,14 @@ public enum ResourceType {
      */
     public boolean isIdAutoIncremented() {
 	return idAutoIncremented;
+    }
+
+    /**
+     * Returns the name of the resource type
+     * This name will be used in the GUI in the ResourceChooser
+     * @return the name of the resource type
+     */
+    public String getName() {
+        return name;
     }
 }

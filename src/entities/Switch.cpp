@@ -34,12 +34,12 @@
  * @param x x position of the entity's rectangle
  * @param y y position of the entity's rectangle
  * @param subtype the subtype of switch
- * @param needs_block true if a block is required to enabled this switch
+ * @param needs_block true if a block is required to activate this switch
  * @param inactivate_when_leaving true to inactivate the switch when the hero or
  * the block leaves it
  */
 Switch::Switch(const std::string &name, Layer layer, int x, int y,
-	       Subtype subtype, bool needs_block, bool disable_when_leaving):
+	       Subtype subtype, bool needs_block, bool inactivate_when_leaving):
   Detector(COLLISION_NONE, name, layer, x, y, 16, 16),
   subtype(subtype), activated(false), locked(false),
   needs_block(needs_block), inactivate_when_leaving(inactivate_when_leaving),
@@ -179,7 +179,7 @@ void Switch::set_locked(bool locked) {
  */
 void Switch::update() {
 
-  if (is_walkable() && entity_overlapping != NULL) {
+  if (is_enabled() && is_walkable() && entity_overlapping != NULL) {
 
     // if an entity was on the switch, see if it is still there
     entity_overlapping_still_present = false;
@@ -272,7 +272,7 @@ void Switch::try_activate(Block &block) {
  *
  * The switch is activated if its properties allow it.
  *
- * @param block the arrow overlapping this switch
+ * @param arrow the arrow overlapping this switch
  */
 void Switch::try_activate(Arrow &arrow) {
 

@@ -66,6 +66,7 @@ class PickableItem: public Detector {
 
     ~PickableItem();
     static CreationFunction parse;
+    void set_map(Map& map);
     void notify_map_started();
 
     EntityType get_type();
@@ -81,6 +82,7 @@ class PickableItem: public Detector {
     void set_suspended(bool suspended);
     void notify_movement_changed();
     void notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode);
+    void notify_collision(MapEntity &other_entity, Sprite &other_sprite, Sprite &this_sprite);
     void update();
     void display_on_map();
 };

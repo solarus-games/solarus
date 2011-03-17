@@ -153,7 +153,7 @@ bool Teletransporter::is_obstacle_for(MapEntity &other) {
  * @param entity an entity
  * @return true if the entity's collides with this entity
  */
-bool Teletransporter::test_collision_custom(MapEntity &entity) {
+bool Teletransporter::test_collision_custom(MapEntity& entity) {
 
   bool collision = false;
   bool normal_case = true;
@@ -161,7 +161,7 @@ bool Teletransporter::test_collision_custom(MapEntity &entity) {
   // specific collision tests for some situations
   if (entity.is_hero()) {
 
-    Hero &hero = (Hero&) entity;
+    Hero& hero = (Hero&) entity;
     if (is_on_map_side()) {
       // scrolling towards an adjacent map
       Rectangle facing_point = hero.get_facing_point(transition_direction);
@@ -171,16 +171,16 @@ bool Teletransporter::test_collision_custom(MapEntity &entity) {
     }
 
     else if (!get_map().test_collision_with_border(get_center_point()) &&
-	get_map().get_tile_ground(get_layer(), get_center_point()) == GROUND_HOLE) {
+	hero.get_tile_ground() == GROUND_HOLE) {
       // falling into a hole
-      collision = test_collision_origin_point(hero);
+      collision = overlaps(hero.get_ground_point());
       normal_case = false;
     }
   }
 
   // normal case
   if (normal_case) {
-    const Rectangle &entity_rectangle = entity.get_bounding_box();
+    const Rectangle& entity_rectangle = entity.get_bounding_box();
     int x1 = entity_rectangle.get_x() + 4;
     int x2 = x1 + entity_rectangle.get_width() - 9;
     int y1 = entity_rectangle.get_y() + 4;
@@ -193,7 +193,6 @@ bool Teletransporter::test_collision_custom(MapEntity &entity) {
   if (!collision && !is_on_map_side()) {
     transporting_hero = false;
   }
-
 
   return collision;
 }

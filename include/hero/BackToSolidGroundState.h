@@ -42,6 +42,8 @@ class Hero::BackToSolidGroundState: public Hero::State {
     bool are_collisions_ignored();
     bool can_avoid_deep_water();
     bool can_avoid_hole();
+    bool can_avoid_lava();
+    bool can_avoid_prickle();
     bool is_touching_ground();
     bool can_avoid_conveyor_belt();
     bool can_avoid_sensor();

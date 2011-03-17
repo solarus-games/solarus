@@ -81,7 +81,7 @@ void Hero::PushingState::update() {
 
     bool horizontal = pushing_direction4 % 2 == 0;
     bool has_reached_grid = movement->get_total_distance_covered() > 8
-      && ((horizontal && hero.is_x_aligned_to_grid()) || (!horizontal && hero.is_y_aligned_to_grid()));
+      && ((horizontal && hero.is_aligned_to_grid_x()) || (!horizontal && hero.is_aligned_to_grid_y()));
 
     if (movement->is_finished() || has_reached_grid) {
       stop_moving_pushed_entity();

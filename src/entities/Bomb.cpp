@@ -17,9 +17,15 @@
 #include "entities/Bomb.h"
 #include "entities/Explosion.h"
 #include "entities/MapEntities.h"
+#include "entities/Hero.h"
+#include "entities/CarriedItem.h"
+#include "entities/ConveyorBelt.h"
+#include "movements/PathMovement.h"
+#include "lowlevel/System.h"
+#include "lowlevel/Sound.h"
 #include "Sprite.h"
 #include "Map.h"
-#include "lowlevel/System.h"
+#include "KeysEffect.h"
 
 /**
  * @brief Constructor.
@@ -31,11 +37,13 @@
  * @param y y coordinate of the entity to create
  */
 Bomb::Bomb(Layer layer, int x, int y):
-  MapEntity(layer, x, y, 16, 16), explosion_date(System::now() + 6000) {
+  Detector(COLLISION_FACING_POINT, "", layer, x, y, 16, 16),
+  explosion_date(System::now() + 6000) {
 
   create_sprite("entities/bomb");
   get_sprite().enable_pixel_collisions();
-  set_bounding_box_from_sprite();
+  set_size(16, 16);
+  set_origin(8, 13);
 }
 
 /**
@@ -76,7 +84,7 @@ bool Bomb::can_be_obstacle() {
  * @return true if this type of entity can detect other entities
  */
 bool Bomb::can_detect_entities() {
-  return false;
+  return true;
 }
 
 /**
@@ -108,6 +116,25 @@ bool Bomb::is_displayed_in_y_order() {
 }
 
 /**
+ * @brief Returns whether a conveyor belt is currently considered as an obstacle by this entity.
+ * @param conveyor_belt a conveyor belt
+ * @return true if the conveyor belt is currently an obstacle for this entity
+ */
+bool Bomb::is_conveyor_belt_obstacle(ConveyorBelt &conveyor_belt) {
+  return false;
+}
+
+/**
+ * @brief This function is called by the engine when an entity overlaps this detector.
+ * @param entity_overlapping the entity overlapping the detector
+ * @param collision_mode the collision mode that detected the collision
+ */
+void Bomb::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
+
+  entity_overlapping.notify_collision_with_bomb(*this, collision_mode);
+}
+
+/**
  * @brief This function is called when an explosion's sprite
  * detects a pixel-perfect collision with a sprite of this entity.
  * @param explosion the explosion
@@ -121,12 +148,73 @@ void Bomb::notify_collision_with_explosion(Explosion &explosion, Sprite &sprite_
 }
 
 /**
+ * @brief This function is called when a conveyor belt detects a collision with this entity.
+ * @param conveyor_belt a conveyor belt
+ * @param dx direction of the x move in pixels (0, 1 or -1)
+ * @param dy direction of the y move in pixels (0, 1 or -1)
+ */
+void Bomb::notify_collision_with_conveyor_belt(ConveyorBelt &conveyor_belt, int dx, int dy) {
+
+  if (get_movement() == NULL) {
+
+    // check that a significant part of the bomb is on the conveyor belt
+    Rectangle center = get_center_point();
+    center.add_xy(-1, -1);
+    center.set_size(2, 2);
+
+    if (conveyor_belt.overlaps(center)) {
+      set_xy(conveyor_belt.get_xy());
+
+      std::string path = "  ";
+      path[0] = path[1] = '0' + conveyor_belt.get_direction();
+      clear_movement();
+      set_movement(new PathMovement(path, 64, false, false, false));
+    }
+  }
+}
+
+/**
+ * @brief This function is called when the entity has just moved.
+ */
+void Bomb::notify_position_changed() {
+
+  if (get_hero().get_facing_entity() == this
+      && get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_LIFT
+      && !get_hero().is_facing_point_in(get_bounding_box())) {
+
+    get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
+  }
+}
+
+/**
+ * @brief Notifies this entity that the player is interacting with it.
+ *
+ * This function is called when the player presses the action key
+ * when the hero is facing this detector, and the action icon lets him do this.
+ * The hero lifts the bomb if possible.
+ */
+void Bomb::action_key_pressed() {
+
+  KeysEffect::ActionKeyEffect effect = get_keys_effect().get_action_key_effect();
+
+  if (effect == KeysEffect::ACTION_KEY_LIFT
+      && get_hero().get_facing_entity() == this
+      && get_hero().is_facing_point_in(get_bounding_box())) {
+
+    get_hero().start_lifting(new CarriedItem(get_hero(), *this,
+	"entities/bomb", "", 0, explosion_date));
+    Sound::play("lift");
+    remove_from_map();
+  }
+}
+
+/**
  * @brief This function is called by the map when the game is suspended or resumed.
  * @param suspended true to suspend the entity, false to resume it
  */
 void Bomb::set_suspended(bool suspended) {
 
-  MapEntity::set_suspended(suspended); // suspend the animation and the movement
+  Detector::set_suspended(suspended); // suspend the animation and the movement
 
   if (!suspended && when_suspended != 0) {
     // recalculate the timer
@@ -140,23 +228,29 @@ void Bomb::set_suspended(bool suspended) {
  */
 void Bomb::update() {
 
-  // update the sprite and the position
-  MapEntity::update();
+  Detector::update();
 
   if (suspended) {
     return;
   }
 
+  // check the explosion date
   uint32_t now = System::now();
   if (now >= explosion_date) {
     explode();
   }
   else if (now >= explosion_date - 1500
-      && get_sprite().get_current_animation() != "explosion_soon") {
-    get_sprite().set_current_animation("explosion_soon");
+      && get_sprite().get_current_animation() != "stopped_explosion_soon") {
+    get_sprite().set_current_animation("stopped_explosion_soon");
   }
 
-  // check collision with explosions
+  // destroy the movement once finished
+  if (get_movement() != NULL && get_movement()->is_finished()) {
+    clear_movement();
+  }
+
+  // check collision with other explosions, conveyor belts, etc.
+  get_map().check_collision_with_detectors(*this);
   get_map().check_collision_with_detectors(*this, get_sprite());
 }
 
@@ -166,6 +260,7 @@ void Bomb::update() {
 void Bomb::explode() {
 
   get_entities().add_entity(new Explosion(get_layer(), get_center_point(), true));
+  Sound::play("explosion");
   remove_from_map();
 }
 

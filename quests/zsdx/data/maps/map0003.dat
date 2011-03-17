@@ -1264,7 +1264,6 @@
 0	0	368	304	16	16	10
 0	0	400	272	16	16	10
 0	0	1016	752	104	16	44
-0	0	824	752	192	16	524
 0	0	872	768	16	16	43
 0	0	896	680	16	16	43
 0	0	784	848	16	16	42
@@ -1808,113 +1807,116 @@
 0	0	384	600	8	8	52
 0	0	376	600	8	8	59
 0	0	384	608	8	24	57
+0	0	248	912	16	16	1039
+0	0	960	936	16	16	1039
+0	0	784	600	16	16	1039
+0	0	824	752	192	16	524
 12	0	992	624	32	24	custom_obstacle_3	0	1	1	0
 12	0	760	440	32	16	custom_obstacle_2	0	0	1	1
 1	0	1008	613	out_link_house	3	0
-4	0	544	277	2	_random	0	-1
-4	0	544	293	2	_random	0	-1
-4	0	568	293	2	_random	0	-1
-4	0	560	309	2	_random	0	-1
-4	0	528	349	5	_random	0	-1
-4	0	520	365	5	_random	0	-1
-4	0	544	341	5	_random	0	-1
-4	0	544	325	5	_random	0	-1
-4	0	544	309	5	_random	0	-1
-4	0	560	325	5	_random	0	-1
-4	0	576	325	5	_random	0	-1
+4	0	544	277	2	_random	1	-1
+4	0	544	293	2	_random	1	-1
+4	0	568	293	2	_random	1	-1
+4	0	560	309	2	_random	1	-1
+4	0	528	349	5	_random	1	-1
+4	0	520	365	5	_random	1	-1
+4	0	544	341	5	_random	1	-1
+4	0	544	325	5	_random	1	-1
+4	0	544	309	5	_random	1	-1
+4	0	560	325	5	_random	1	-1
+4	0	576	325	5	_random	1	-1
 2	0	1120	0	16	1008	to_C2	0	2	4	_side
 2	0	1000	584	16	16	to_link_house	0	1	28	from_outside
-4	0	904	293	2	_random	0	-1
-4	0	920	309	2	_random	0	-1
-4	0	936	309	2	_random	0	-1
-4	0	952	309	2	_random	0	-1
-4	0	968	293	2	_random	0	-1
-4	0	1008	269	2	_random	0	-1
-4	0	1024	269	2	_random	0	-1
-4	0	784	453	2	_random	0	-1
-4	0	768	453	2	_random	0	-1
-4	0	816	237	3	_random	0	-1
+4	0	904	293	2	_random	1	-1
+4	0	920	309	2	_random	1	-1
+4	0	936	309	2	_random	1	-1
+4	0	952	309	2	_random	1	-1
+4	0	968	293	2	_random	1	-1
+4	0	1008	269	2	_random	1	-1
+4	0	1024	269	2	_random	1	-1
+4	0	784	453	2	_random	1	-1
+4	0	768	453	2	_random	1	-1
+4	0	816	237	3	_random	1	-1
 4	0	904	221	3	rupee	1	-1
 4	0	968	221	3	rupee	2	-1
-4	0	120	877	5	_random	0	-1
-4	0	104	877	5	_random	0	-1
-4	0	88	893	5	_random	0	-1
-4	0	104	893	5	_random	0	-1
-4	0	120	893	5	_random	0	-1
-4	0	136	893	5	_random	0	-1
-4	0	72	893	2	_random	0	-1
-4	0	72	877	2	_random	0	-1
-4	0	72	861	2	_random	0	-1
-4	0	88	861	2	_random	0	-1
-4	0	104	861	2	_random	0	-1
-4	0	120	861	2	_random	0	-1
-4	0	136	861	2	_random	0	-1
-4	0	152	861	2	_random	0	-1
-4	0	152	877	2	_random	0	-1
-4	0	152	893	2	_random	0	-1
-4	0	136	877	2	_random	0	-1
-4	0	88	877	2	_random	0	-1
-4	0	992	765	2	_random	0	-1
-4	0	976	765	2	_random	0	-1
-4	0	960	765	2	_random	0	-1
-4	0	944	765	2	_random	0	-1
-4	0	928	765	2	_random	0	-1
-4	0	912	765	2	_random	0	-1
-4	0	896	765	2	_random	0	-1
-4	0	880	765	2	_random	0	-1
-4	0	864	765	2	_random	0	-1
-4	0	848	765	2	_random	0	-1
-4	0	832	765	2	_random	0	-1
-4	0	640	677	2	_random	0	-1
-4	0	640	693	2	_random	0	-1
-4	0	640	709	2	_random	0	-1
-4	0	640	725	2	_random	0	-1
-4	0	640	741	2	_random	0	-1
-4	0	640	757	2	_random	0	-1
-4	0	800	677	2	_random	0	-1
-4	0	800	693	2	_random	0	-1
-4	0	800	709	2	_random	0	-1
-4	0	800	725	2	_random	0	-1
-4	0	800	741	2	_random	0	-1
-4	0	800	757	2	_random	0	-1
-4	0	656	773	2	_random	0	-1
-4	0	688	773	2	_random	0	-1
-4	0	736	773	2	_random	0	-1
-4	0	728	789	5	_random	0	-1
-4	0	728	805	5	_random	0	-1
-4	0	744	789	5	_random	0	-1
-4	0	744	805	5	_random	0	-1
-4	0	760	805	5	_random	0	-1
-4	0	760	789	5	_random	0	-1
-4	0	712	789	5	_random	0	-1
-4	0	712	805	5	_random	0	-1
-4	0	680	805	5	_random	0	-1
-4	0	696	789	5	_random	0	-1
-4	0	776	789	5	_random	0	-1
-4	0	664	789	5	_random	0	-1
+4	0	120	877	5	_random	1	-1
+4	0	104	877	5	_random	1	-1
+4	0	88	893	5	_random	1	-1
+4	0	104	893	5	_random	1	-1
+4	0	120	893	5	_random	1	-1
+4	0	136	893	5	_random	1	-1
+4	0	72	893	2	_random	1	-1
+4	0	72	877	2	_random	1	-1
+4	0	72	861	2	_random	1	-1
+4	0	88	861	2	_random	1	-1
+4	0	104	861	2	_random	1	-1
+4	0	120	861	2	_random	1	-1
+4	0	136	861	2	_random	1	-1
+4	0	152	861	2	_random	1	-1
+4	0	152	877	2	_random	1	-1
+4	0	152	893	2	_random	1	-1
+4	0	136	877	2	_random	1	-1
+4	0	88	877	2	_random	1	-1
+4	0	976	765	2	_random	1	-1
+4	0	960	765	2	_random	1	-1
+4	0	944	765	2	_random	1	-1
+4	0	928	765	2	_random	1	-1
+4	0	912	765	2	_random	1	-1
+4	0	896	765	2	_random	1	-1
+4	0	880	765	2	_random	1	-1
+4	0	864	765	2	_random	1	-1
+4	0	848	765	2	_random	1	-1
+4	0	832	765	2	_random	1	-1
+4	0	640	677	2	_random	1	-1
+4	0	640	693	2	_random	1	-1
+4	0	640	709	2	_random	1	-1
+4	0	640	725	2	_random	1	-1
+4	0	640	741	2	_random	1	-1
+4	0	640	757	2	_random	1	-1
+4	0	800	677	2	_random	1	-1
+4	0	800	693	2	_random	1	-1
+4	0	800	709	2	_random	1	-1
+4	0	800	725	2	_random	1	-1
+4	0	800	741	2	_random	1	-1
+4	0	800	757	2	_random	1	-1
+4	0	656	773	2	_random	1	-1
+4	0	688	773	2	_random	1	-1
+4	0	736	773	2	_random	1	-1
+4	0	728	789	5	_random	1	-1
+4	0	728	805	5	_random	1	-1
+4	0	744	789	5	_random	1	-1
+4	0	744	805	5	_random	1	-1
+4	0	760	805	5	_random	1	-1
+4	0	760	789	5	_random	1	-1
+4	0	712	789	5	_random	1	-1
+4	0	712	805	5	_random	1	-1
+4	0	680	805	5	_random	1	-1
+4	0	696	789	5	_random	1	-1
+4	0	776	789	5	_random	1	-1
+4	0	664	789	5	_random	1	-1
 2	0	0	1008	1120	16	to_D1	0	2	6	_side
 6	0	912	416	16	8	Jump_sensor	6	56
 6	0	672	312	32	8	Jump_sensor_3	6	56
 6	0	1064	264	24	24	Jump_sensor_4	5	56
-4	0	824	269	2	_random	0	-1
-4	0	840	269	2	_random	0	-1
+4	0	824	269	2	_random	1	-1
+4	0	840	269	2	_random	1	-1
 5	0	928	312	Chest	0	rupee	4	13
-4	0	656	677	2	_random	0	-1
-4	0	672	677	2	_random	0	-1
-4	0	688	677	2	_random	0	-1
-4	0	704	677	2	_random	0	-1
-4	0	720	677	2	_random	0	-1
+4	0	656	677	2	_random	1	-1
+4	0	672	677	2	_random	1	-1
+4	0	688	677	2	_random	1	-1
+4	0	704	677	2	_random	1	-1
+4	0	720	677	2	_random	1	-1
 4	0	736	677	2	fairy	1	-1
-4	0	752	677	2	_random	0	-1
-4	0	784	677	2	_random	0	-1
-4	0	656	693	2	_random	0	-1
-4	0	656	709	2	_random	0	-1
-4	0	656	725	2	_random	0	-1
-4	0	656	741	2	_random	0	-1
-4	0	656	757	2	_random	0	-1
+4	0	752	677	2	_random	1	-1
+4	0	784	677	2	_random	1	-1
+4	0	656	693	2	_random	1	-1
+4	0	656	709	2	_random	1	-1
+4	0	656	725	2	_random	1	-1
+4	0	656	741	2	_random	1	-1
+4	0	656	757	2	_random	1	-1
 2	0	0	-16	1120	16	to_B1	0	2	9	_side
-4	0	672	773	2	_random	0	-1
-4	0	784	773	2	_random	0	-1
+4	0	672	773	2	_random	1	-1
+4	0	784	773	2	_random	1	-1
 8	0	256	925	telepathic_booth_sign	3	0	entities/sign	dialog#outside_world.telepathic_booth_sign
 8	0	968	949	pastry_shop_sign	3	0	entities/sign	dialog#outside_world.village.cake_shop_sign
 8	0	792	613	shop_sign	3	0	entities/sign	dialog#outside_world.village.shop_sign
@@ -1924,37 +1926,36 @@
 8	0	1048	957	water_for_bottle_2	-1	0	_none	item#bottle_1
 2	0	704	744	16	16	to_sahasrahla_house	0	1	12	main_entrance
 1	0	712	773	out_sahasrahla_house	3	0
-7	0	784	853	enemy	3	0	0	-1	_random	0	-1
-7	0	976	829	enemy_2	3	0	0	-1	_random	0	-1
+7	0	784	853	enemy	3	simple_green_soldier	0	-1	_random	0	-1
+7	0	976	829	enemy_2	3	simple_green_soldier	0	-1	_random	0	-1
 8	0	1008	645	monkey	3	1	npc/monkey	map
 12	0	912	456	16	16	custom_obstacle	0	0	1	1
 2	0	680	336	16	16	to_smith_cave	0	1	16	main_entrance
 1	0	688	365	out_smith_cave	3	0
 8	0	920	597	tree_woman	3	1	npc/villager1	dialog#outside_world.village.tree_woman
-4	0	1008	765	2	_random	0	-1
 1	0	824	613	out_shop	3	0
 2	0	816	584	16	16	to_shop	0	1	18	main_entrance
 1	0	1000	949	out_cake_shop	3	0
 2	0	992	920	16	16	to_cake_shop	0	1	19	main_entrance
 8	0	936	685	grand_son	3	1	npc/newlink1	dialog#outside_world.village.grand_son_npc
-4	0	656	877	3	_random	0	-1
+4	0	656	877	3	_random	1	-1
 8	0	1016	125	how_to_save_npc	3	1	npc/newlink6	dialog#outside_world.how_to_save_npc
 2	0	928	144	16	16	to_dungeon2	0	1	30	from_outside
 12	0	680	328	16	8	custom_obstacle_5	1	1	1	1
 1	0	936	173	from_dungeon2	3	0
-7	0	680	837	enemy_3	3	0	0	-1	_random	0	-1
-4	0	784	693	2	_random	0	-1
-4	0	784	709	2	_random	0	-1
-4	0	784	725	2	_random	0	-1
-4	0	784	741	2	_random	0	-1
-4	0	784	757	2	_random	0	-1
-4	0	768	677	2	_random	0	-1
-4	0	752	773	2	_random	0	-1
-4	0	696	805	5	_random	0	-1
-4	0	680	789	5	_random	0	-1
+7	0	680	837	enemy_3	3	simple_green_soldier	0	-1	_random	0	-1
+4	0	784	693	2	_random	1	-1
+4	0	784	709	2	_random	1	-1
+4	0	784	725	2	_random	1	-1
+4	0	784	741	2	_random	1	-1
+4	0	784	757	2	_random	1	-1
+4	0	768	677	2	_random	1	-1
+4	0	752	773	2	_random	1	-1
+4	0	696	805	5	_random	1	-1
+4	0	680	789	5	_random	1	-1
 8	0	936	157	dungeon_2_door	3	0	_none	map
 10	0	920	144	32	16	dungeon_2_door_tile	909	1
-4	0	768	773	2	_random	0	-1
+4	0	768	773	2	_random	1	-1
 1	0	224	925	out_telepathic_house	3	0
 2	0	216	896	16	16	to_telepathic_house	0	1	32	from_outside
 6	0	512	840	32	8	Jump_sensor_2	6	56
@@ -1968,9 +1969,11 @@
 2	0	520	864	16	16	to_bomb_cave	0	1	34	from_outside
 1	0	376	605	from_dungeon_3	3	0
 2	0	368	568	16	16	to_dungeon_3	0	1	40	from_outside
-18	0	352	624	door	1	8	110
-18	0	384	624	door_2	1	8	112
-18	0	368	624	door_3	1	8	111
+18	0	352	624	dungeon_3_entrance_weak_block_2	1	8	110
+18	0	384	624	dungeon_3_entrance_weak_block_3	1	8	112
+18	0	368	624	dungeon_3_entrance_weak_block	1	8	111
+4	0	992	765	2	_random	1	-1
+4	0	1008	765	2	_random	1	-1
 0	1	256	400	240	40	511
 0	1	232	448	288	40	511
 0	1	208	480	336	16	512

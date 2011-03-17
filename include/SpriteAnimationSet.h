@@ -43,6 +43,7 @@ class SpriteAnimationSet {
 
     void set_map(Map &map);
 
+    bool has_animation(const std::string& animation_name) const;
     const SpriteAnimation *get_animation(const std::string &animation_name) const;
     SpriteAnimation *get_animation(const std::string &animation_name);
     const std::string& get_default_animation() const;

@@ -53,6 +53,8 @@ class Hero::RunningState: public Hero::State {
     bool is_touching_ground();
     bool can_avoid_deep_water();
     bool can_avoid_hole();
+    bool can_avoid_lava();
+    bool can_avoid_prickle();
     bool can_avoid_teletransporter();
     bool can_avoid_conveyor_belt();
     bool is_sensor_obstacle(Sensor &sensor);

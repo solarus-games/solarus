@@ -17,6 +17,8 @@
 
 package org.solarus.editor.gui;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.Observer;
 import javax.swing.JPanel;
 import org.solarus.editor.ProjectObserver;
@@ -26,8 +28,26 @@ import org.solarus.editor.ProjectObserver;
  */
 public abstract class AbstractEditorWindow extends JPanel implements Observer, ProjectObserver {
 
+    /**
+     * The editor window
+     */
+    protected EditorWindow parentEditor;
+
+    /**
+     * Verifies if the current resource is saved
+     * @return true if the current resource is saved
+     */
     public abstract boolean checkCurrentFileSaved();
 
+    /**
+     * Gives the name of the resource used for the tab label in the editor desktop
+     * @return
+     */
     public abstract String getResourceName();
+
+    /**
+     * Saves the current resource
+     */
+    public abstract void save();
 
 }

@@ -263,7 +263,7 @@
 2	0	96	512	16	16	teletransporter_2	0	1	21	_same
 2	0	96	544	16	16	teletransporter_3	0	1	21	_same
 2	0	64	512	32	48	teletransporter_4	0	1	21	_same
-14	0	192	509
+14	0	192	509	crystal_switch
 1	0	80	381	from_B1_stairs_2	1	0
 10	0	136	296	8	16	barrier	71	1
 1	0	248	421	destination_point_4	-1	1
@@ -272,7 +272,7 @@
 2	0	264	320	16	16	teletransporter_7	1	1	20	destination_point_4
 2	0	200	432	16	16	teletransporter_8	1	1	20	destination_point_2
 11	0	88	328	open_barrier_switch	1	0	0
-4	0	96	341	0	_none	0	-1
+4	0	96	341	0	_none	1	-1
 1	0	112	269	destination_point_5	-1	1
 15	0	184	512	16	16	0
 12	0	120	80	32	8	custom_obstacle	1	1	1	1
@@ -280,7 +280,7 @@
 15	0	248	160	32	16	0
 15	0	248	176	32	16	1
 15	0	264	224	16	16	0
-14	0	256	237
+14	0	256	237	crystal_switch_2
 5	0	208	160	chest	0	_none	0	0
 15	0	136	160	16	32	0
 15	0	120	128	32	16	1
@@ -300,26 +300,26 @@
 15	0	248	192	32	16	0
 8	0	208	381	tom	3	1	npc/tom	map
 13	0	112	597	16	16	leave_cavern_sensor	0
-7	0	352	197	battle_1_enemy_5	3	2	0	-1	_random	0	-1
+7	0	352	197	battle_1_enemy_5	3	tentacle	0	-1	_random	0	-1
 10	0	344	288	16	8	battle_1_barrier	70	1
 10	0	344	488	16	8	battle_2_barrier	70	1
-7	0	160	357	enemy_3	3	2	0	-1	_random	0	-1
-7	0	336	160	enemy	3	1	0	-1	_random	0	-1
-7	0	352	88	enemy_4	3	1	0	-1	_random	0	-1
-7	0	392	253	battle_1_enemy_3	3	2	0	-1	_random	0	-1
-7	0	312	253	battle_1_enemy_4	3	2	0	-1	_random	0	-1
-7	0	392	117	battle_1_enemy_2	3	2	0	-1	_random	0	-1
-7	0	400	392	enemy_2	3	1	0	-1	_random	0	-1
-7	0	304	392	enemy_5	3	1	0	-1	_random	0	-1
-7	0	360	413	battle_2_enemy_2	3	2	0	-1	_random	0	-1
-7	0	304	341	battle_2_enemy_3	3	2	0	-1	_random	0	-1
-7	0	400	341	battle_2_enemy_4	3	2	0	-1	_random	0	-1
-7	0	400	453	battle_2_enemy_5	3	2	0	-1	_random	0	-1
+7	0	160	357	enemy_3	3	tentacle	0	-1	_random	0	-1
+7	0	336	160	enemy	3	bubble	0	-1	_random	0	-1
+7	0	352	88	enemy_4	3	bubble	0	-1	_random	0	-1
+7	0	392	253	battle_1_enemy_3	3	tentacle	0	-1	_random	0	-1
+7	0	312	253	battle_1_enemy_4	3	tentacle	0	-1	_random	0	-1
+7	0	392	117	battle_1_enemy_2	3	tentacle	0	-1	_random	0	-1
+7	0	400	392	enemy_2	3	bubble	0	-1	_random	0	-1
+7	0	304	392	enemy_5	3	bubble	0	-1	_random	0	-1
+7	0	360	413	battle_2_enemy_2	3	tentacle	0	-1	_random	0	-1
+7	0	304	341	battle_2_enemy_3	3	tentacle	0	-1	_random	0	-1
+7	0	400	341	battle_2_enemy_4	3	tentacle	0	-1	_random	0	-1
+7	0	400	453	battle_2_enemy_5	3	tentacle	0	-1	_random	0	-1
 4	0	408	77	0	heart	1	-1
 4	0	392	573	0	heart	1	-1
 4	0	408	573	0	heart	1	-1
 4	0	408	557	0	heart	1	-1
-7	0	80	301	enemy_6	3	2	0	-1	_random	0	-1
+7	0	80	301	enemy_6	3	tentacle	0	-1	_random	0	-1
 12	0	344	264	16	8	custom_obstacle_5	0	1	1	1
 12	0	288	312	128	8	custom_obstacle_4	0	1	1	1
 12	0	128	480	72	8	custom_obstacle_6	0	1	0	1
@@ -330,12 +330,12 @@
 19	0	72	368	stairs_3	3	1
 1	0	112	589	from_outside	1	0
 19	0	160	160	stairs_4	3	3
+0	1	48	384	32	8	414
 0	1	200	592	64	8	180
 0	1	200	560	64	32	2
 0	1	40	600	400	24	52
 0	1	40	16	400	24	49
 0	1	40	392	48	24	52
-0	1	64	592	96	32	151
 0	1	64	456	32	8	311
 0	1	96	592	32	8	312
 0	1	40	432	48	24	49
@@ -380,6 +380,7 @@
 0	1	80	392	24	24	54
 0	1	232	616	16	16	2
 0	1	232	624	16	8	70
+0	1	48	456	32	8	413
 12	1	144	80	8	32	custom_obstacle_3	1	1	1	1
 12	1	120	80	8	32	custom_obstacle_2	1	1	1	1
 1	1	144	37	from_B1_north_stairs	3	0
@@ -390,8 +391,8 @@
 3	1	232	573	heart_container	1	37
 19	1	232	600	stairs_5	3	1
 19	1	136	24	stairs_6	1	1
-0	2	192	616	96	8	148
-0	2	96	16	96	8	147
+0	2	192	616	96	8	412
+0	2	96	16	96	8	411
 0	2	0	0	480	16	170
 0	2	0	624	480	16	170
 0	2	0	16	16	608	170

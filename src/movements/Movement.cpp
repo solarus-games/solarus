@@ -33,6 +33,7 @@ Movement::Movement(bool ignore_obstacles):
   entity(NULL),
   xy(0, 0),
   last_move_date(0),
+  finished(false),
   suspended(false),
   when_suspended(0),
   last_collision_box_on_obstacle(-1, -1),
@@ -88,6 +89,7 @@ void Movement::set_entity(MapEntity *entity) {
   }
   else {
     this->xy.set_xy(entity->get_xy());
+    entity->notify_movement_changed();
   }
 }
 
@@ -257,19 +259,21 @@ bool Movement::is_suspended() {
 /**
  * @brief Suspends or resumes the movement.
  *
- * This function is called by the entity when the game is suspended or resumed.
+ * This function is called by the entity to suspend or resume its movement.
  *
  * @param suspended true to suspend the movement, false to resume it
  */
 void Movement::set_suspended(bool suspended) {
 
-  this->suspended = suspended;
+  if (suspended != this->suspended) {
+    this->suspended = suspended;
 
-  uint32_t now = System::now();
+    uint32_t now = System::now();
 
-  if (suspended) {
-    // the movement is being suspended
-    when_suspended = now;
+    if (suspended) {
+      // the movement is being suspended
+      when_suspended = now;
+    }
   }
 }
 
@@ -292,6 +296,15 @@ uint32_t Movement::get_when_suspended() {
  */
 void Movement::update() {
 
+  if (!finished && is_finished()) {
+    finished = true;
+    if (entity != NULL) {
+      entity->notify_movement_finished();
+    }
+  }
+  else if (finished && !is_finished()) {
+    finished = false;
+  }
 }
 
 /**
@@ -321,10 +334,23 @@ bool Movement::test_collision_with_obstacles(int dx, int dy) {
 
   if (collision) {
     last_collision_box_on_obstacle = collision_box;
-    entity->notify_movement_changed();
   }
 
   return collision;
+}
+
+/**
+ * @brief Returns whether the entity would collide with the map
+ * if it was moved a few pixels from its position.
+ *
+ * If the movement is not attached to an entity of a map,
+ * or if obstacles are ignored, false is always returned.
+ *
+ * @param dxy distance between the current position and the position to check
+ * @return true if the entity would overlap the map obstacles in this position
+ */
+bool Movement::test_collision_with_obstacles(const Rectangle& dxy) {
+  return test_collision_with_obstacles(dxy.get_x(), dxy.get_y());
 }
 
 /**
@@ -377,7 +403,7 @@ void Movement::restore_default_ignore_obstacles() {
 
 /**
  * @brief Returns the direction a sprite controlled by this movement should take.
- * @return the direction to use to display the object controlled by this movement (0 to 4)
+ * @return the direction to use to display the object controlled by this movement (0 to 3)
  */
 int Movement::get_displayed_direction4() {
   return 3; // by default, look down
@@ -419,7 +445,7 @@ const std::string Movement::get_property(const std::string &key) {
  * to allow scripts to interact with the movement.
  *
  * @param key key of the property to set (the accepted keys depend on the movement type)
- * @param the value to set
+ * @param value the value to set
  */
 void Movement::set_property(const std::string &key, const std::string &value) {
 

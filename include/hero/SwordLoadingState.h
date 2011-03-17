@@ -38,7 +38,7 @@ class Hero::SwordLoadingState: public Hero::PlayerMovementState {
     void update();
     void set_suspended(bool suspended);
     void notify_movement_tried(bool success);
-    void notify_attacked_enemy(EnemyAttack attack, Enemy &victim, int result, bool killed);
+    void notify_attacked_enemy(EnemyAttack attack, Enemy& victim, EnemyReaction::Reaction& result, bool killed);
 
     bool is_direction_locked();
     bool can_take_jump_sensor();

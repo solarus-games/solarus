@@ -18,14 +18,18 @@
 #define SOLARUS_TARGET_MOVEMENT_H
 
 #include "Common.h"
-#include "movements/RectilinearMovement.h"
+#include "movements/SmoothMovement.h"
 
 /**
  * @brief Movement of an object that goes to a target point.
  *
  * The target point may be a fixed point or a moving entity.
+ *
+ * Properties:
+ * - speed
+ * - displayed_direction (read-only)
  */
-class TargetMovement: public RectilinearMovement {
+class TargetMovement: public SmoothMovement {
 
   protected:
 
@@ -53,6 +57,10 @@ class TargetMovement: public RectilinearMovement {
 
     bool is_finished();
     void update();
+
+    // properties
+    virtual const std::string get_property(const std::string &key);
+    virtual void set_property(const std::string &key, const std::string &value);
 };
 
 #endif

@@ -48,14 +48,15 @@ function event_hero_on_sensor(sensor_name)
 end
 
 function miniboss_timer()
-  sol.map.enemy_start_miniboss("miniboss")
+  sol.main.play_music("boss.spc")
+  sol.map.enemy_set_enabled("miniboss", true)
   sol.map.hero_unfreeze()
 end
 
 function event_enemy_dead(enemy_name)
 
   if enemy_name == "miniboss" then
-    sol.map.enemy_end_miniboss()
+    sol.main.play_music("light_world_dungeon.spc")
     sol.map.door_open("miniboss_door")
   end
 end
@@ -100,7 +101,7 @@ end
 
 function check_eye_statues()
 
-  if sol.map.switch_is_activated("left_eye_switch") and sol.map.switch_is_enabled("right_eye_switch") then
+  if sol.map.switch_is_activated("left_eye_switch") and sol.map.switch_is_activated("right_eye_switch") then
 
     sol.map.switch_set_activated("left_eye_switch", false)
     sol.map.switch_set_activated("right_eye_switch", false)

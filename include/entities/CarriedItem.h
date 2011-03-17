@@ -55,11 +55,30 @@ class CarriedItem: public MapEntity {
 
     static const std::string lifting_trajectories[4];	/**< trajectory of the lifting movement for each direction */
 
+    void initialize(const Rectangle& xy, const Rectangle& size,
+	const Rectangle& origin,
+        const SpriteAnimationSetId& animation_set_id,
+        const SoundId& destruction_sound_id,
+        int damage_on_enemies, uint32_t explosion_date);
+
     bool will_explode_soon();
 
   public:
 
-    CarriedItem(Hero &hero, DestructibleItem &destructible_item);
+    /**
+     * Indicates what to do with a carried item.
+     */
+    enum Behavior {
+      BEHAVIOR_THROW,          /**< make the hero throw the item */
+      BEHAVIOR_DESTROY,        /**< destroy the item silently */
+      BEHAVIOR_KEEP            /**< let the hero continue to carry the item */
+    };
+
+    CarriedItem(Hero &hero, MapEntity &original_entity,
+	const SpriteAnimationSetId& animation_set_id,
+        const SoundId& destruction_sound_id,
+        int damage_on_enemies,
+        uint32_t explosion_date);
     ~CarriedItem();
 
     EntityType get_type();
@@ -87,7 +106,7 @@ class CarriedItem: public MapEntity {
     bool is_teletransporter_obstacle(Teletransporter &teletransporter);
     bool is_conveyor_belt_obstacle(ConveyorBelt &conveyor_belt);
     bool is_stairs_obstacle(Stairs &stairs);
-    bool is_water_obstacle();
+    bool is_deep_water_obstacle();
     bool is_hole_obstacle();
     bool is_ladder_obstacle();
     bool is_raised_block_obstacle(CrystalSwitchBlock &raised_block);
@@ -99,7 +118,7 @@ class CarriedItem: public MapEntity {
     void notify_collision_with_crystal_switch(CrystalSwitch &crystal_switch, CollisionMode collision_mode);
     void notify_collision_with_stairs(Stairs &stairs, CollisionMode collision_mode);
     void notify_collision_with_enemy(Enemy &enemy);
-    void notify_attacked_enemy(EnemyAttack attack, Enemy &victim, int result, bool killed);
+    void notify_attacked_enemy(EnemyAttack attack, Enemy& victim, EnemyReaction::Reaction& result, bool killed);
 };
 
 #endif

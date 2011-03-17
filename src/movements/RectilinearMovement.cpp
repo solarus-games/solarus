@@ -29,6 +29,7 @@
  */
 RectilinearMovement::RectilinearMovement(bool ignore_obstacles):
   Movement(ignore_obstacles),
+  angle(0),
   x_speed(0),
   y_speed(0),
   next_move_date_x(System::now()),
@@ -65,6 +66,8 @@ double RectilinearMovement::get_y_speed() {
  * @brief Returns the total speed of the object.
  *
  * The speed is calculated as sqrt(x_speed^2 + y_speed^2).
+ *
+ * @return the speed in pixels per second
  */
 double RectilinearMovement::get_speed() {
   return std::sqrt(x_speed * x_speed + y_speed * y_speed);
@@ -98,6 +101,11 @@ void RectilinearMovement::set_x_speed(double x_speed) {
     }
     set_next_move_date_x(now + x_delay);
   }
+  angle = Geometry::get_angle(0, 0, (int) (x_speed * 100), (int) (y_speed * 100));
+
+  if (get_entity() != NULL) {
+    get_entity()->notify_movement_changed();
+  }
 }
 
 /**
@@ -128,6 +136,11 @@ void RectilinearMovement::set_y_speed(double y_speed) {
     }
     set_next_move_date_y(now + y_delay);
   }
+  angle = Geometry::get_angle(0, 0, (int) (x_speed * 100), (int) (y_speed * 100));
+
+  if (get_entity() != NULL) {
+    get_entity()->notify_movement_changed();
+  }
 }
 
 /**
@@ -144,11 +157,14 @@ void RectilinearMovement::set_speed(double speed) {
   }
 
   // compute the new speed vector
-  double angle = Geometry::get_angle(0, 0,
-                                     (int) (x_speed * 100),
-                                     (int) (y_speed * 100)); // angle in radians
-  set_x_speed(speed * std::cos(angle));
-  set_y_speed(-speed * std::sin(angle));
+  double old_angle = this->angle;
+  set_x_speed(speed * std::cos(old_angle));
+  set_y_speed(-speed * std::sin(old_angle));
+  this->angle = old_angle;
+
+  if (get_entity() != NULL) {
+    get_entity()->notify_movement_changed();
+  }
 }
 
 /**
@@ -164,10 +180,16 @@ bool RectilinearMovement::is_started() {
  */
 void RectilinearMovement::stop() {
 
+  double old_angle = this->angle;
   set_x_speed(0);
   set_y_speed(0);
   set_x_move(0);
   set_y_move(0);
+  this->angle = old_angle;
+
+  if (get_entity() != NULL) {
+    get_entity()->notify_movement_changed();
+  }
 }
 
 /**
@@ -206,7 +228,7 @@ void RectilinearMovement::set_next_move_date_y(uint32_t next_move_date_y) {
  */
 double RectilinearMovement::get_angle() {
 
-  return Geometry::get_angle(0, 0, (int) (get_x_speed() * 1000), (int) (get_y_speed() * 1000));
+  return angle;
 }
 
 /**
@@ -220,12 +242,26 @@ double RectilinearMovement::get_angle() {
  */
 void RectilinearMovement::set_angle(double angle) {
 
-  Debug::check_assertion(x_speed != 0 || y_speed != 0,
-    StringConcat() << "Cannot set the angle when the speed is zero (entity: " << get_entity() << ")");
+  if (!is_stopped()) {
+    double speed = get_speed();
+    set_x_speed(speed * std::cos(angle));
+    set_y_speed(-speed * std::sin(angle));
+  }
+  this->angle = angle;
 
-  double speed = get_speed();
-  set_x_speed(speed * std::cos(angle));
-  set_y_speed(-speed * std::sin(angle));
+  if (get_entity() != NULL) {
+    get_entity()->notify_movement_changed();
+  }
+}
+
+/**
+ * @brief Returns the direction a sprite controlled by this movement should take.
+ * @return the direction to use to display the object controlled by this movement (0 to 3)
+ */
+int RectilinearMovement::get_displayed_direction4() {
+
+  int direction = (Geometry::radians_to_degrees(angle) + 45 + 360) / 90;
+  return direction % 4;
 }
 
 /**
@@ -359,11 +395,14 @@ void RectilinearMovement::update() {
 	update_y();
       }
 
-      // see if the movement was successful (i.e. if the hero's coordinates have changed)
-      bool success = (get_x() != old_xy.get_x() || get_y() != old_xy.get_y());
-
       if (!is_suspended() && get_entity() != NULL) {
-	// notify the entity
+
+        // the movement was successful if the entity's coordinates have changed
+        // and the movement was not stopped
+        bool success = (get_x() != old_xy.get_x() || get_y() != old_xy.get_y())
+            && (get_x_move() != 0 || get_y_move() != 0);
+
+        // notify the entity
 	get_entity()->notify_movement_tried(success);
       }
 
@@ -373,3 +412,70 @@ void RectilinearMovement::update() {
     }
   }
 }
+
+/**
+ * @brief Returns the value of a property of this movement.
+ *
+ * Accepted keys:
+ * - speed
+ * - angle
+ * - ignore_obstacles
+ *
+ * @param key key of the property to get
+ * @return the corresponding value as a string
+ */
+const std::string RectilinearMovement::get_property(const std::string &key) {
+
+  std::ostringstream oss;
+
+  if (key == "speed") {
+    oss << get_speed();
+  }
+  else if (key == "angle") {
+    oss << get_angle();
+  }
+  else if (key == "ignore_obstacles") {
+    oss << are_obstacles_ignored();
+  }
+  else {
+    Debug::die(StringConcat() << "Unknown property of RectilinearMovement: '" << key << "'");
+  }
+
+  return oss.str();
+}
+
+/**
+ * @brief Sets the value of a property of this movement.
+ *
+ * Accepted keys:
+ * - speed
+ * - angle
+ * - ignore_obstacles
+ *
+ * @param key key of the property to set (the accepted keys depend on the movement type)
+ * @param value the value to set
+ */
+void RectilinearMovement::set_property(const std::string &key, const std::string &value) {
+
+  std::istringstream iss(value);
+
+  if (key == "speed") {
+    int speed;
+    iss >> speed;
+    set_speed(speed);
+  }
+  else if (key == "angle") {
+    double angle;
+    iss >> angle;
+    set_angle(angle);
+  }
+  else if (key == "ignore_obstacles") {
+    bool ignore_obstacles;
+    iss >> ignore_obstacles;
+    set_default_ignore_obstacles(ignore_obstacles);
+  }
+  else {
+    Debug::die(StringConcat() << "Unknown property of RectilinearMovement: '" << key << "'");
+  }
+}
+

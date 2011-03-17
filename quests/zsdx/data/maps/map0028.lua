@@ -49,4 +49,11 @@ function jump_from_bed()
   sol.main.play_sound("hero_lands");
 end
 
+function event_door_open(door_name)
+
+  if door_name == "weak_wall" then
+    sol.main.play_sound("secret")
+  end
+end
+
 

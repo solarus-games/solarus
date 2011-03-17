@@ -16,6 +16,7 @@
  */
 #include "lua/MapScript.h"
 #include "Map.h"
+#include "Game.h"
 #include "Treasure.h"
 #include <sstream>
 #include <iomanip>
@@ -81,7 +82,7 @@ void MapScript::update() {
 
   Script::update();
 
-  if (is_loaded()) {
+  if (is_loaded() && !get_game().is_suspended()) {
     event_update();
   }
 }
@@ -141,10 +142,7 @@ void MapScript::event_camera_back() {
  * The treasure source does not matter: it can come from a chest,
  * a pickable item or a script.
  *
- * @param item_name name of the item obtained
- * @param variant variant of this item
- * @param savegame_variable the boolean variable where this treasure is saved
- * (or -1 if the treasure is not saved)
+ * @param treasure the treasure obtained
  */
 void MapScript::event_treasure_obtaining(const Treasure &treasure) {
 
@@ -160,10 +158,7 @@ void MapScript::event_treasure_obtaining(const Treasure &treasure) {
  * The treasure source does not matter: it can come from a chest,
  * a pickable item or a script.
  *
- * @param item_name name of the item obtained
- * @param variant variant of this item
- * @param savegame_variable the boolean variable where this treasure is saved
- * (or -1 if the treasure is not saved)
+ * @param treasure the treasure obtained
  */
 void MapScript::event_treasure_obtained(const Treasure &treasure) {
 
@@ -254,6 +249,8 @@ void MapScript::event_hero_interaction_finished(const std::string &entity_name) 
  * interactive entity (other than an NPC) by pressing an item's key,
  * for an interaction that was handled via a script (possibly this script or an item's script).
  * @param entity_name name of the entity in interaction
+ * @param item_name name of the item that was used
+ * @param variant variant of that item
  */
 void MapScript::event_hero_interaction_item_finished(const std::string &entity_name,
     const std::string &item_name, int variant) {
@@ -297,6 +294,24 @@ bool MapScript::event_chest_empty(const std::string &chest_name) {
 void MapScript::event_shop_item_bought(const std::string &shop_item_name) {
 
   notify_script("event_shop_item_bought", "s", shop_item_name.c_str());
+}
+
+/**
+ * @brief Notifies the script that a door has just been open.
+ * @param door_name name of the door
+ */
+void MapScript::event_door_open(const std::string& door_name) {
+
+  notify_script("event_door_open", "s", door_name.c_str());
+}
+
+/**
+ * @brief Notifies the script that a door has just been closed.
+ * @param door_name name of the door
+ */
+void MapScript::event_door_closed(const std::string& door_name) {
+
+  notify_script("event_door_closed", "s", door_name.c_str());
 }
 
 /**

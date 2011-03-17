@@ -14,16 +14,22 @@ sword hero/sword.shield1.png 2 30 -1
 0	0	24	32	12	23	12	12
 0	32	24	32	12	23	12	12
 
-sword_loading_stopped hero/loading.shield1.png 2 0 -1
+sword_loading_stopped hero/loading.shield1.png 4 0 -1
+0	0	1	1	0	0	1	1
 0	0	32	32	16	23	1	1
+0	0	1	1	0	0	1	1
 0	32	32	32	16	23	1	1
 
-sword_loading_walking hero/loading.shield1.png 2 100 0
+sword_loading_walking hero/loading.shield1.png 4 100 0
+0	0	1	1	0	0	6	6
 0	0	32	32	16	23	6	6
+0	0	1	1	0	0	6	6
 0	32	32	32	16	23	6	6
 
-sword_tapping hero/sword_tapping.shield.png 2 40 1
+sword_tapping hero/sword_tapping.shield.png 4 40 1
+0	0	1	1	0	0	7	7
 0	24	24	40	12	37	7	7
+0	0	1	1	0	0	7	7
 0	88	24	40	12	21	7	7	
 
 boomerang hero/boomerang.shield.png 4 100 -1

@@ -55,7 +55,7 @@ class Boomerang: public MapEntity {
     bool is_teletransporter_obstacle(Teletransporter &teletransporter);
     bool is_conveyor_belt_obstacle(ConveyorBelt &conveyor_belt);
     bool is_stairs_obstacle(Stairs &stairs);
-    bool is_water_obstacle();
+    bool is_deep_water_obstacle();
     bool is_hole_obstacle();
     bool is_ladder_obstacle();
     bool is_raised_block_obstacle(CrystalSwitchBlock &raised_block);
@@ -72,7 +72,7 @@ class Boomerang: public MapEntity {
     // collisions
     void notify_collision_with_crystal_switch(CrystalSwitch &crystal_switch, CollisionMode collision_mode);
     void notify_collision_with_enemy(Enemy &enemy);
-    void notify_attacked_enemy(EnemyAttack attack, Enemy &victim, int result, bool killed);
+    void notify_attacked_enemy(EnemyAttack attack, Enemy& victim, EnemyReaction::Reaction& result, bool killed);
 };
 
 

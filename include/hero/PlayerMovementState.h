@@ -39,7 +39,7 @@ class Hero::PlayerMovementState: public Hero::State {
     virtual void start(State *previous_state);
     virtual void stop(State *next_state);
     void set_map(Map &map);
-    PlayerMovement *get_player_movement();
+    PlayerMovement* get_player_movement();
 
     virtual void set_animation_stopped();
     virtual void set_animation_walking();
@@ -49,6 +49,7 @@ class Hero::PlayerMovementState: public Hero::State {
     int get_wanted_movement_direction8();
     void notify_walking_speed_changed();
     void notify_movement_changed();
+    void notify_layer_changed();
     bool can_be_hurt();
 };
 

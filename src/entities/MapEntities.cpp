@@ -98,26 +98,6 @@ Hero& MapEntities::get_hero() {
 }
 
 /**
- * @brief Returns the obstacle property of the tile located at a specified point.
- * @param layer of the tile to get
- * @param x x coordinate of the point
- * @param y y coordiate of the point
- * @return the obstacle property of this tile
- */
-Obstacle MapEntities::get_obstacle_tile(Layer layer, int x, int y) {
-
-  // warning: this function is called very often so it has been optimized and should remain so
-
-#if SOLARUS_DEBUG_LEVEL >= 2
-  static const std::string error_message = "get_obstacle_tile(): invalid coordinates";
-  Debug::check_assertion(!map.test_collision_with_border(x,y), error_message);
-#endif
-
-  // optimization of: return obstacle_tiles[layer][(y / 8) * map_width8 + (x / 8)];
-  return obstacle_tiles[layer][(y >> 3) * map_width8 + (x >> 3)];
-}
-
-/**
  * @brief Returns the entities (other that tiles) such that the hero cannot walk on them.
  * @param layer the layer
  * @return the obstacle entities on that layer
@@ -318,6 +298,8 @@ void MapEntities::add_tile(Tile *tile) {
   case OBSTACLE_SHALLOW_WATER:
   case OBSTACLE_DEEP_WATER:
   case OBSTACLE_HOLE:
+  case OBSTACLE_LAVA:
+  case OBSTACLE_PRICKLE:
   case OBSTACLE_LADDER:
   case OBSTACLE:
     for (i = 0; i < tile_height8; i++) {
@@ -494,6 +476,20 @@ void MapEntities::remove_entity(EntityType type, const std::string &name) {
 }
 
 /**
+ * @brief Removes all entities of a type whose name starts with the specified prefix.
+ * @param type a type of entities
+ * @param prefix prefix of the name of the entities to remove
+ */
+void MapEntities::remove_entities_with_prefix(EntityType type, const std::string& prefix) {
+
+  std::list<MapEntity*> entities = get_entities_with_prefix(type, prefix);
+  std::list<MapEntity*>::iterator it;
+  for (it = entities.begin(); it != entities.end(); it++) {
+    remove_entity(*it);
+  }
+}
+
+/**
  * @brief Removes and destroys the entities placed in the entities_to_remove list. 
  */
 void MapEntities::remove_marked_entities() {
@@ -626,7 +622,9 @@ void MapEntities::display() {
 	  StringConcat() << "Trying to display entity " << entity << " on layer "
 	  << layer << " but it is actually on layer " << entity->get_layer());
       */
-      entity->display_on_map();
+      if (entity->is_enabled()) {
+        entity->display_on_map();
+      }
     }
 
     // put the sprites displayed at the hero's level, in the order
@@ -636,7 +634,9 @@ void MapEntities::display() {
 	 i++) {
 
       MapEntity *entity = *i;
-      entity->display_on_map();
+      if (entity->is_enabled()) {
+        entity->display_on_map();
+      }
     }
   }
 }
@@ -724,63 +724,5 @@ void MapEntities::remove_boomerang() {
     remove_entity(boomerang);
     boomerang = NULL;
   }
-}
-
-/**
- * @brief Starts the battle against a boss.
- *
- * Calling this function enables the boss if he is alive and plays the appropriate music.
- * If the boss was already killed, nothing happens.
- *
- * @param boss the boss, or NULL if it is already dead.
- */
-void MapEntities::start_boss_battle(Enemy *boss) {
-
-  if (boss != NULL) {
-    boss->set_enabled(true);
-    Music::play("boss.spc");
-  }
-}
-
-/**
- * @brief Indicates that the battle corresponding to the last call to start_boss_battle() is finished.
- *
- * This function stops the previous music (usually, the boss music), plays the victory music
- * and freezes the hero.
- * This function is called typically when the player has just picked the heart container.
- */
-void MapEntities::end_boss_battle() {
-
-  Music::play("victory.spc");
-  game.set_pause_key_available(false);
-  hero.set_animation_direction(3);
-  hero.start_freezed();
-}
-
-/**
- * @brief Starts the battle against a miniboss.
- *
- * Calling this function enables the miniboss if he is alive and plays the appropriate music.
- * If the miniboss was already killed, nothing happens.
- *
- * @param miniboss the miniboss, or NULL if it is already dead.
- */
-void MapEntities::start_miniboss_battle(Enemy *miniboss) {
-
-  if (miniboss != NULL) {
-    miniboss->set_enabled(true);
-    music_before_miniboss = Music::get_current_music_id();
-    Music::play("boss.spc");
-  }
-}
-
-/**
- * @brief Indicates that the battle corresponding to the last call to start_miniboss_battle() is finished.
- *
- * This function stops the previous music (usually, the boss music) and restores the dungeon music.
- * This function is called typically when the player has just killed the miniboss.
- */
-void MapEntities::end_miniboss_battle() {
-  Music::play(music_before_miniboss);
 }
 

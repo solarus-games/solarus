@@ -16,12 +16,14 @@
  */
 #include "entities/InteractiveEntity.h"
 #include "entities/Hero.h"
+#include "entities/CarriedItem.h"
 #include "movements/Movement.h"
 #include "lua/MapScript.h"
 #include "lua/ItemScript.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
+#include "lowlevel/Sound.h"
 #include "Game.h"
 #include "DialogBox.h"
 #include "Map.h"
@@ -32,6 +34,7 @@
 
 /**
  * @brief Creates an interactive entity.
+ * @param game the game
  * @param name name identifying this interactive entity
  * @param layer layer of the entity to create
  * @param x x coordinate of the entity to create
@@ -52,21 +55,10 @@ InteractiveEntity::InteractiveEntity(Game &game, const std::string &name, Layer 
   message_to_show(""),
   script_to_call(NULL) {
 
-  switch (subtype) {
-
-  case CUSTOM:
-    initialize_sprite(sprite_name, 0);
-    set_size(16, 16);
-    set_origin(8, 13);
-    set_direction(direction);
-    break;
-
-  case NON_PLAYING_CHARACTER:
-    initialize_sprite(sprite_name, direction);
-    set_size(16, 16);
-    set_origin(8, 13);
-    break;
-  }
+  initialize_sprite(sprite_name, direction);
+  set_size(16, 16);
+  set_origin(8, 13);
+  set_direction(direction);
 
   // behavior
   if (behavior_string == "map") {
@@ -225,14 +217,19 @@ void InteractiveEntity::notify_collision(MapEntity &entity_overlapping, Collisio
     Hero &hero = (Hero&) entity_overlapping;
 
     if (get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
-	&& hero.is_free()
-	&& (subtype == NON_PLAYING_CHARACTER
-	    || direction == -1
-	    || hero.is_facing_direction4((get_direction() + 2) % 4))) {
+	&& hero.is_free()) {
 
-      // show the appropriate action icon
-      get_keys_effect().set_action_key_effect(subtype == NON_PLAYING_CHARACTER ?
-	  KeysEffect::ACTION_KEY_SPEAK : KeysEffect::ACTION_KEY_LOOK);
+      if (subtype == NON_PLAYING_CHARACTER
+	  || get_direction() == -1
+	  || hero.is_facing_direction4((get_direction() + 2) % 4)) {
+
+	// show the appropriate action icon
+	get_keys_effect().set_action_key_effect(subtype == NON_PLAYING_CHARACTER ?
+	    KeysEffect::ACTION_KEY_SPEAK : KeysEffect::ACTION_KEY_LOOK);
+      }
+      else if (can_be_lifted()) {
+	get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_LIFT);
+      }
     }
   }
 }
@@ -245,7 +242,10 @@ void InteractiveEntity::notify_collision(MapEntity &entity_overlapping, Collisio
  */
 void InteractiveEntity::action_key_pressed() {
 
-  if (get_hero().is_free()) {
+  Hero& hero = get_hero();
+  if (hero.is_free()) {
+
+    KeysEffect::ActionKeyEffect effect = get_keys_effect().get_action_key_effect();
     get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
 
     // if this is an NPC, look towards the hero
@@ -254,12 +254,24 @@ void InteractiveEntity::action_key_pressed() {
       get_sprite().set_current_direction(direction);
     }
 
-    // start the behavior
-    if (behavior == BEHAVIOR_DIALOG) {
-      get_dialog_box().start_dialog(message_to_show);
+    if (effect != KeysEffect::ACTION_KEY_LIFT) {
+      // start the normal behavior
+      if (behavior == BEHAVIOR_DIALOG) {
+	get_dialog_box().start_dialog(message_to_show);
+      }
+      else {
+	call_script();
+      }
     }
     else {
-      call_script();
+      // lift the entity
+      if (get_equipment().has_ability("lift")) {
+
+	hero.start_lifting(new CarriedItem(hero, *this,
+	    get_sprite().get_animation_set_id(), "stone", 2, 0));
+	Sound::play("lift");
+	remove_from_map();
+      }
     }
   }
 }
@@ -347,5 +359,16 @@ void InteractiveEntity::notify_position_changed() {
       get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
     }
   }
+}
+
+/**
+ * @brief Returns whether this interactive entity can be lifted.
+ */
+bool InteractiveEntity::can_be_lifted() {
+
+  // there is currently no way to specify from the data file of the map
+  // that an interactive entity can be lifted (nor its weight, damage, sound…) so this is hardcoded
+  // TODO: specify the possibility to lift and the weight from the map script?
+  return has_sprite() && get_sprite().get_animation_set_id() == "entities/sign";
 }
 

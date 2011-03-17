@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "entities/Enemy.h"
+#include "entities/CustomEnemy.h"
 #include "entities/Hero.h"
 #include "entities/MapEntities.h"
 #include "entities/CarriedItem.h"
@@ -37,14 +38,22 @@
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 #include "lowlevel/Sound.h"
-#include "enemies/SimpleGreenSoldier.h"
-#include "enemies/Bubble.h"
-#include "enemies/Tentacle.h"
-#include "enemies/Minillosaur.h"
-#include "enemies/ChainAndBall.h"
-#include "enemies/PapillosaurKing.h"
-#include "enemies/Khorneth.h"
-#include "enemies/Khotor.h"
+
+const std::string Enemy::attack_names[] = {
+  "sword",
+  "thrown_item",
+  "explosion",
+  "arrow",
+  "hookshot",
+  "boomerang",
+  "lamp"
+};
+
+const std::string Enemy::hurt_sound_style_names[] = {
+  "normal",
+  "monster",
+  "boss",
+};
 
 /**
  * @brief Creates an enemy.
@@ -56,6 +65,7 @@
 Enemy::Enemy(const ConstructionParameters &params):
 
   Detector(COLLISION_RECTANGLE | COLLISION_SPRITE, params.name, params.layer, params.x, params.y, 0, 0),
+  father_name(""),
   being_hurt(false),
   stop_hurt_date(0),
   normal_movement(NULL),
@@ -97,24 +107,24 @@ Enemy::~Enemy() {
  */
 MapEntity* Enemy::parse(Game &game, std::istream &is, Layer layer, int x, int y) {
 
-  int direction, subtype, rank, savegame_variable, treasure_variant, treasure_savegame_variable;
-  std::string name, treasure_name;
+  int direction, rank, savegame_variable, treasure_variant, treasure_savegame_variable;
+  std::string name, breed, treasure_name;
 
   FileTools::read(is, name);
   FileTools::read(is, direction);
-  FileTools::read(is, subtype);
+  FileTools::read(is, breed);
   FileTools::read(is, rank);
   FileTools::read(is, savegame_variable);
   FileTools::read(is, treasure_name);
   FileTools::read(is, treasure_variant);
   FileTools::read(is, treasure_savegame_variable);
 
-  return create(game, Subtype(subtype), Enemy::Rank(rank), savegame_variable, name, Layer(layer), x, y, direction, 
+  return create(game, breed, Enemy::Rank(rank), savegame_variable, name, Layer(layer), x, y, direction,
       Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable));
 }
 
 /**
- * @brief Creates an enemy with the specified type.
+ * @brief Creates an enemy.
  *
  * This method acts like a constructor, and usually returns an enemy.
  * However, if the enemy is already dead and cannot be killed again,
@@ -123,7 +133,7 @@ MapEntity* Enemy::parse(Game &game, std::istream &is, Layer layer, int x, int y)
  * - or a pickable treasure if the enemy has one
  *
  * @param game the current game
- * @param type type of enemy to create
+ * @param breed breed of the enemy to create
  * @param name a name identifying the enemy
  * @param rank rank of the enemy: normal, miniboss or boss
  * @param savegame_variable index of the boolean variable indicating that
@@ -133,8 +143,9 @@ MapEntity* Enemy::parse(Game &game, std::istream &is, Layer layer, int x, int y)
  * @param direction initial direction of the enemy on the map (0 to 3)
  * this enemy is killed, or -1 if this enemy is not saved
  * @param treasure the pickable item that the enemy drops (possibly NULL)
+ * @return the enemy created (may be NULL)
  */
-MapEntity* Enemy::create(Game &game, Subtype type, Rank rank, int savegame_variable,
+MapEntity* Enemy::create(Game &game, const std::string& breed, Rank rank, int savegame_variable,
     const std::string &name, Layer layer, int x, int y, int direction, const Treasure &treasure) {
 
   // see if the enemy is dead
@@ -149,28 +160,19 @@ MapEntity* Enemy::create(Game &game, Subtype type, Rank rank, int savegame_varia
   }
 
   // create the enemy
-  Enemy *enemy;
   const ConstructionParameters params = {game, treasure, name, layer, x, y};
-
-  switch (type) {
-    
-  case SIMPLE_GREEN_SOLDIER:		enemy = new SimpleGreenSoldier(params);		break;
-  case BUBBLE:				enemy = new Bubble(params);			break;
-  case TENTACLE:			enemy = new Tentacle(params);			break;
-  case MINILLOSAUR:			enemy = new Minillosaur(params);		break;
-  case CHAIN_AND_BALL:			enemy = new ChainAndBall(params);		break;
-  case PAPILLOSAUR_KING:		enemy = new PapillosaurKing(params);		break;
-  case KHORNETH:			enemy = new Khorneth(params);			break;
-  case KHOTOR:				enemy = new Khotor(params);			break;
-
-  default:				Debug::die(StringConcat() << "Unknown enemy type '" << type << "'");
-  }
+  Enemy *enemy = new CustomEnemy(params, breed);
 
   // initialize the fields
   enemy->set_direction(direction);
   enemy->rank = rank;
-  enemy->enabled = (rank == RANK_NORMAL);
   enemy->savegame_variable = savegame_variable;
+
+  if (rank != RANK_NORMAL) {
+    enemy->set_enabled(false);
+//    enemy->set_collision_modes(COLLISION_SPRITE);
+// COLLISION_RECTANGLE is necessary to detect collisions with thrown items
+  }
 
   // set the default enemy features
   enemy->damage_on_hero = 1;
@@ -180,7 +182,7 @@ MapEntity* Enemy::create(Game &game, Subtype type, Rank rank, int savegame_varia
   enemy->pushed_back_when_hurt = true;
   enemy->push_back_hero_on_sword = false;
   enemy->minimum_shield_needed = 0;
-
+  enemy->displayed_in_y_order = true;
   enemy->set_default_attack_consequences();
 
   return enemy;
@@ -207,7 +209,6 @@ void Enemy::set_map(Map &map) {
   MapEntity::set_map(map);
 
   if (is_enabled()) {
-    // let the subclass initialize the enemy
     initialize();
     enable_pixel_collisions();
     restart();
@@ -250,7 +251,34 @@ bool Enemy::is_destructible_item_obstacle(DestructibleItem &destructible_item) {
 
   // the destructible item is an obstacle unless the enemy is already overlapping it,
   // which is possible with bomb flowers
-  return !this->overlaps(destructible_item);
+  if (this->overlaps(destructible_item)) {
+    return false;
+  }
+  return obstacle_behavior != "flying";
+}
+
+/**
+ * @brief Returns whether a deep water tile is currently considered as an obstacle by this entity.
+ * @return true if the deep water tiles are currently an obstacle for this entity
+ */
+bool Enemy::is_deep_water_obstacle() {
+  return obstacle_behavior != "flying" && obstacle_behavior != "swimming";
+}
+
+/**
+ * @brief Returns whether a shallow water tile is currently considered as an obstacle by this entity.
+ * @return true if the shallow water tiles are currently an obstacle for this entity
+ */
+bool Enemy::is_shallow_water_obstacle() {
+  return false;
+}
+
+/**
+ * @brief Returns whether a hole is currently considered as an obstacle by this entity.
+ * @return true if the holes are currently an obstacle for this entity
+ */
+bool Enemy::is_hole_obstacle() {
+  return obstacle_behavior != "flying";
 }
 
 /**
@@ -277,6 +305,9 @@ void Enemy::set_damage(int damage_on_hero, int magic_damage_on_hero) {
  */
 void Enemy::set_life(int life) {
   this->life = life;
+  if (!being_hurt && this->life <= 0) {
+    kill();
+  }
 }
 
 /**
@@ -345,13 +376,32 @@ void Enemy::set_features(int damage_on_hero, int life, HurtSoundStyle hurt_sound
 }
 
 /**
- * @brief Sets whether the enemy is vulnerable to a specified attack.
+ * @brief Sets how the enemy reacts to an attack.
+ *
+ * This reaction will be used unless the attack is received by a sprite
+ * that has a specific reaction (see set_attack_consequence_sprite()).
+ *
  * @param attack an attack
- * @param consequence how the enemy will react
+ * @param reaction how the enemy will react
  */
-void Enemy::set_attack_consequence(EnemyAttack attack, int consequence) {
+void Enemy::set_attack_consequence(EnemyAttack attack,
+    EnemyReaction::ReactionType reaction, int life_lost) {
 
-  attack_consequences[attack] = consequence;
+  Debug::check_assertion(life_lost >= 0, StringConcat() << "Invalid amount of life: " << life_lost);
+  attack_reactions[attack].set_general_reaction(reaction, life_lost);
+}
+
+/**
+ * @brief Sets how the enemy reacts to an attack on a particular sprite.
+ * @param sprite a sprite of this enemy
+ * @param attack an attack
+ * @param reaction how the enemy will react
+ */
+void Enemy::set_attack_consequence_sprite(Sprite& sprite, EnemyAttack attack,
+    EnemyReaction::ReactionType reaction, int life_lost) {
+
+  Debug::check_assertion(life_lost >= 0, StringConcat() << "Invalid amount of life: " << life_lost);
+  attack_reactions[attack].set_sprite_reaction(&sprite, reaction, life_lost);
 }
 
 /**
@@ -360,7 +410,18 @@ void Enemy::set_attack_consequence(EnemyAttack attack, int consequence) {
 void Enemy::set_no_attack_consequences() {
 
   for (int i = 0; i < ATTACK_NUMBER; i++) {
-    set_attack_consequence(EnemyAttack(i), 0);
+    set_attack_consequence(EnemyAttack(i), EnemyReaction::IGNORED);
+  }
+}
+
+/**
+ * @brief Sets a particular sprite of the enemy insensible to all attacks.
+ * @param sprite a sprite of this enemy
+ */
+void Enemy::set_no_attack_consequences_sprite(Sprite& sprite) {
+
+  for (int i = 0; i < ATTACK_NUMBER; i++) {
+    set_attack_consequence_sprite(sprite, EnemyAttack(i), EnemyReaction::IGNORED);
   }
 }
 
@@ -370,11 +431,27 @@ void Enemy::set_no_attack_consequences() {
 void Enemy::set_default_attack_consequences() {
 
   for (int i = 0; i < ATTACK_NUMBER; i++) {
-    set_attack_consequence(EnemyAttack(i), 1);
+    attack_reactions[i].set_default_reaction();
+    set_attack_consequence(EnemyAttack(i), EnemyReaction::HURT, 1);
   }
-  set_attack_consequence(ATTACK_EXPLOSION, 2);
-  set_attack_consequence(ATTACK_HOOKSHOT, -2);
-  set_attack_consequence(ATTACK_BOOMERANG, -2);
+  set_attack_consequence(ATTACK_EXPLOSION, EnemyReaction::HURT, 2);
+  set_attack_consequence(ATTACK_HOOKSHOT, EnemyReaction::IMMOBILIZED);
+  set_attack_consequence(ATTACK_BOOMERANG, EnemyReaction::IMMOBILIZED);
+}
+
+/**
+ * @brief Set some default values for the reactions of the attacks
+ * on a particular sprite of this enemy.
+ * @param sprite a sprite of this enemy
+ */
+void Enemy::set_default_attack_consequences_sprite(Sprite& sprite) {
+
+  for (int i = 0; i < ATTACK_NUMBER; i++) {
+    set_attack_consequence_sprite(sprite, EnemyAttack(i), EnemyReaction::HURT, 1);
+  }
+  set_attack_consequence_sprite(sprite, ATTACK_EXPLOSION, EnemyReaction::HURT, 2);
+  set_attack_consequence_sprite(sprite, ATTACK_HOOKSHOT, EnemyReaction::IMMOBILIZED);
+  set_attack_consequence_sprite(sprite, ATTACK_BOOMERANG, EnemyReaction::IMMOBILIZED);
 }
 
 /**
@@ -398,10 +475,22 @@ const std::string& Enemy::get_animation() {
  */
 void Enemy::set_animation(const std::string &animation) {
   
-  std::map<std::string, Sprite*>::iterator it;
-  for (it = sprites.begin(); it != sprites.end(); it++) {
+  std::map<SpriteAnimationSetId, Sprite*>::iterator it;
+  for (it = get_sprites().begin(); it != get_sprites().end(); it++) {
     it->second->set_current_animation(animation);
   }
+}
+
+/**
+ * @brief Returns whether this entity has to be displayed in y order.
+ *
+ * This function returns whether the entity should be displayed above
+ * the hero and other entities having this property when it is in front of them.
+ *
+ * @return true if this type of entity is displayed at the same level as the hero
+ */
+bool Enemy::is_displayed_in_y_order() {
+  return displayed_in_y_order;
 }
 
 /**
@@ -464,9 +553,7 @@ void Enemy::update() {
       get_sprite().get_current_animation() != "shaking") {
 
     end_shaking_date = now + 2000;
-    for (int i = 0; i < get_nb_sprites(); i++) {
-      get_sprite().set_current_animation("shaking");
-    }
+    set_animation("shaking");
   }
 
   if (exploding) {
@@ -478,6 +565,7 @@ void Enemy::update() {
       xy.set_x(get_top_left_x() + Random::get_number(get_width()));
       xy.set_y(get_top_left_y() + Random::get_number(get_height()));
       get_entities().add_entity(new Explosion(LAYER_HIGH, xy, false));
+      Sound::play("explosion");
 
       next_explosion_date = now + 200;
       nb_explosions++;
@@ -506,13 +594,6 @@ void Enemy::update() {
 }
 
 /**
- * @brief This function is called when the enemy has just finished dying.
- */
-void Enemy::just_dead() {
-
-}
-
-/**
  * @brief Suspends or resumes the entity.
  * @param suspended true to suspend the entity, false to resume it
  */
@@ -532,35 +613,16 @@ void Enemy::set_suspended(bool suspended) {
 }
 
 /**
- * @brief Enables or disables the enemy.
- * @param enabled true to enable it, false to disable it
+ * @brief Notifies this entity that it was just enabled or disabled.
+ * @param enabled true if the entity is now enabled
  */
-void Enemy::set_enabled(bool enabled) {
+void Enemy::notify_enabled(bool enabled) {
 
-  if (enabled != this->enabled) {
-    this->enabled = enabled;
+  if (enabled) {
 
-    if (enabled) {
-      initialize();
-      restart();
-    }
+    initialize();
+    restart();
   }
-}
-
-/**
- * @brief Returns whether the enemy is enabled.
- * @return true if the enemy is enabled
- */
-bool Enemy::is_enabled() {
-  return enabled;
-}
-
-/**
- * @brief Returns whether this entity is currently visible.
- * @return true if this entity is currently visible
- */
-bool Enemy::is_visible() {
-  return MapEntity::is_visible() && is_enabled();
 }
 
 /**
@@ -570,6 +632,8 @@ bool Enemy::is_visible() {
  * it is not disabled, dying, being hurt or immobilized.
  * When this method returns false, the subclasses of Enemy
  * should not change the enemy properties.
+ *
+ * @return true if this enemy is in a normal state
  */
 bool Enemy::is_in_normal_state() {
   return is_enabled() && !is_being_hurt() && get_life() > 0 && !is_immobilized();
@@ -594,9 +658,7 @@ void Enemy::restart() {
  */
 void Enemy::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
 
-  if (is_enabled()) {
-    entity_overlapping.notify_collision_with_enemy(*this);
-  }
+  entity_overlapping.notify_collision_with_enemy(*this);
 }
 
 /**
@@ -611,9 +673,7 @@ void Enemy::notify_collision(MapEntity &entity_overlapping, CollisionMode collis
  */
 void Enemy::notify_collision(MapEntity &other_entity, Sprite &other_sprite, Sprite &this_sprite) {
 
-  if (is_enabled()) {
-    other_entity.notify_collision_with_enemy(*this, this_sprite, other_sprite);
-  }
+  other_entity.notify_collision_with_enemy(*this, this_sprite, other_sprite);
 }
 
 /**
@@ -659,7 +719,7 @@ void Enemy::restore_movement() {
  */
 void Enemy::attack_hero(Hero &hero, Sprite *this_sprite) {
 
-  if (is_enabled() && !is_immobilized() && can_attack) {
+  if (!is_immobilized() && can_attack) {
 
     bool hero_protected = false;
     if (minimum_shield_needed != 0 &&
@@ -698,30 +758,15 @@ void Enemy::attack_stopped_by_hero_shield() {
 }
 
 /**
- * @brief Returns the consequence corresponding to the specified attack.
- * @param attack an attack this enemy is subject to
- * @return the corresponding consequence
- */
-int Enemy::get_attack_consequence(EnemyAttack attack) {
-
-  return attack_consequences[attack];
-}
-
-/**
- * @brief Returns the consequence corresponding to the specified attack on the specified sprite of this enemy.
- *
- * By default, this function does not take the sprite into account and just calls 
- * get_attack_consequence(EnemyAttack). Redefine it in subclasses of enemies that have to react differently
- * depending on their sprite attacked.
- *
- * @param attack an attack this enemy is subject to
+ * @brief Returns the reaction corresponding to an attack on a sprite of this enemy.
+ * @param attack an attack this enemy receives
  * @param this_sprite the sprite attacked, or NULL if the attack does not come from
  * a pixel-precise collision test
- * @return the corresponding attack.
+ * @return the corresponding reaction
  */
-int Enemy::get_attack_consequence(EnemyAttack attack, Sprite *this_sprite) {
+const EnemyReaction::Reaction& Enemy::get_attack_consequence(EnemyAttack attack, Sprite *this_sprite) {
 
-  return get_attack_consequence(attack);
+  return attack_reactions[attack].get_reaction(this_sprite);
 }
 
 /**
@@ -743,6 +788,10 @@ void Enemy::play_hurt_sound() {
     case HURT_SOUND_BOSS:
       sound_id = (life > 0) ? "boss_hurt" : "boss_killed";
       break;
+
+    case HURT_SOUND_NUMBER:
+      Debug::die(StringConcat() << "Invalid hurt sound style" << hurt_sound_style);
+      break;
   }
 
   Sound::play(sound_id);
@@ -760,68 +809,65 @@ void Enemy::play_hurt_sound() {
  */
 void Enemy::try_hurt(EnemyAttack attack, MapEntity &source, Sprite *this_sprite) {
 
-  if (!is_enabled()) {
+  EnemyReaction::Reaction reaction = get_attack_consequence(attack, this_sprite);
+  if (invulnerable || reaction.type == EnemyReaction::IGNORED) {
+    // ignore the attack
     return;
   }
 
-  int result;
+  invulnerable = true;
+  vulnerable_again_date = System::now() + 500;
 
-  int consequence = get_attack_consequence(attack, this_sprite);
-  if (invulnerable || consequence == 0) {
-    // ignore the attack
-    result = 0;
-  }
+  switch (reaction.type) {
 
-  else {
-    invulnerable = true;
-    vulnerable_again_date = System::now() + 500;
-    
-    if (consequence == -1) {
+    case EnemyReaction::PROTECTED:
       // attack failure sound
       Sound::play("sword_tapping");
-      result = -1;
-    }
-    else if (consequence == -2) {
+      break;
+
+    case EnemyReaction::IMMOBILIZED:
       // get immobilized
       hurt(source);
       immobilize();
-      result = -2;
-    }
-    else if (consequence == -3) {
-      // custom attack (defined in the subclass)
-      result = custom_attack(attack, this_sprite);
-      result = -3;
-    }
-    else {
-      // hurt the enemy
+      just_hurt(source, attack, 0);
+      break;
+
+    case EnemyReaction::CUSTOM:
+      // custom attack (defined in the script)
+      custom_attack(attack, this_sprite);
+      break;
+
+    case EnemyReaction::HURT:
 
       if (is_immobilized() && get_sprite().get_current_animation() == "shaking") {
-	stop_immobilized();
+        stop_immobilized();
       }
 
       // compute the number of health points lost by the enemy
-      int life_lost = consequence;
 
       if (attack == ATTACK_SWORD) {
 
-	// for a sword attack, the damage depends on the sword and the variant of sword attack used
-	int damage_multiplicator = ((Hero&) source).get_sword_damage_factor();
-	life_lost *= damage_multiplicator;
+        // for a sword attack, the damage depends on the sword and the variant of sword attack used
+        int damage_multiplicator = ((Hero&) source).get_sword_damage_factor();
+        reaction.life_lost *= damage_multiplicator;
       }
       else if (attack == ATTACK_THROWN_ITEM) {
-	life_lost *= ((CarriedItem&) source).get_damage_on_enemies();
+        reaction.life_lost *= ((CarriedItem&) source).get_damage_on_enemies();
       }
-      life -= life_lost;
+      life -= reaction.life_lost;
 
       hurt(source);
-      just_hurt(source, attack, life_lost);
+      just_hurt(source, attack, reaction.life_lost);
+      break;
 
-      result = life_lost;
-    }
-
-    // notify the source
-    source.notify_attacked_enemy(attack, *this, result, get_life() <= 0);
+    case EnemyReaction::IGNORED:
+    case EnemyReaction::REACTION_NUMBER:
+      Debug::die(StringConcat() << "Invalid enemy reaction" << reaction.type);
+      break;
   }
+
+  // notify the source
+  source.notify_attacked_enemy(attack, *this, reaction, get_life() <= 0);
 }
 
 /**
@@ -832,10 +878,6 @@ void Enemy::try_hurt(EnemyAttack attack, MapEntity &source, Sprite *this_sprite)
  * @param source the entity attacking the enemy (often the hero)
  */
 void Enemy::hurt(MapEntity &source) {
-
-  if (!is_enabled()) {
-    return;
-  }
 
   uint32_t now = System::now();
 
@@ -873,15 +915,22 @@ void Enemy::just_hurt(MapEntity &source, EnemyAttack attack, int life_points) {
 }
 
 /**
+ * @brief This function is called when the enemy has just finished dying.
+ */
+void Enemy::just_dead() {
+
+}
+
+/**
  * @brief Kills the enemy.
  *
  * This function is called when the enemy has no more health points.
  */
 void Enemy::kill() {
 
-  // if the enemy is immobilized, give a rupee
+  // if the enemy is immobilized, give some money
   if (rank == RANK_NORMAL && is_immobilized() && !treasure.is_saved()) {
-    // TODO choose random money
+    // TODO choose random money (can we do this from scripts?)
   }
 
   // stop any movement and disable attacks
@@ -951,6 +1000,14 @@ bool Enemy::is_dying() {
 }
 
 /**
+ * @brief Sets the treasure dropped by this enemy.
+ * @param treasure the treasure to set
+ */
+void Enemy::set_treasure(const Treasure& treasure) {
+  this->treasure = treasure;
+}
+
+/**
  * @brief Returns true if the current sprite animation is finished or is looping.
  * @return true if the current sprite animation is finished or is looping 
  */
@@ -1003,5 +1060,65 @@ int Enemy::custom_attack(EnemyAttack attack, Sprite *this_sprite) {
 
   Debug::die(StringConcat() << "The custom attack for enemy '" << get_name() << "' is not defined");
   return 0;
+}
+
+/**
+ * @brief Converts an attack enumerated value into a string.
+ * @param attack an attack
+ * @return the corresponding string
+ */
+const std::string& Enemy::get_attack_name(EnemyAttack attack) {
+
+  Debug::check_assertion(attack >= 0 && attack < ATTACK_NUMBER,
+      StringConcat() << "Invalid attack number: " << attack);
+
+  return attack_names[attack];
+}
+
+/**
+ * @brief Converts a string into an attack enumerated value.
+ * @param attack_name name of an attack
+ * @return the corresponding attack
+ */
+EnemyAttack Enemy::get_attack_by_name(const std::string& attack_name) {
+
+  for (int i = 0; i < ATTACK_NUMBER; i++) {
+    if (attack_names[i] == attack_name) {
+      return EnemyAttack(i);
+    }
+  }
+
+  Debug::die(StringConcat() << "Invalid attack name: " << attack_name);
+  throw;
+}
+
+/**
+ * @brief Converts a value of the HurtSoundStyle enumeration into a string.
+ * @param style a hurt sound style
+ * @return the corresponding string
+ */
+const std::string& Enemy::get_hurt_sound_style_name(HurtSoundStyle style) {
+
+  Debug::check_assertion(style >= 0 && style < HURT_SOUND_NUMBER,
+      StringConcat() << "Invalid hurt sound style number: " << style);
+
+  return hurt_sound_style_names[style];
+}
+
+/**
+ * @brief Converts a string into a value of the HurtSoundStyle enumeration.
+ * @param name name of a hurt sound style
+ * @return the corresponding hurt sound style
+ */
+Enemy::HurtSoundStyle Enemy::get_hurt_sound_style_by_name(const std::string& name) {
+
+  for (int i = 0; i < HURT_SOUND_NUMBER; i++) {
+    if (hurt_sound_style_names[i] == name) {
+      return HurtSoundStyle(i);
+    }
+  }
+
+  Debug::die(StringConcat() << "Invalid hurt sound style name: " << name);
+  throw;
 }
 

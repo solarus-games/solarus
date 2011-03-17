@@ -153,10 +153,10 @@ bool Arrow::is_stairs_obstacle(Stairs &stairs) {
 }
 
 /**
- * @brief Returns whether a water tile is currently considered as an obstacle for this entity.
- * @return true if the water tiles are currently an obstacle for this entity
+ * @brief Returns whether a deep water tile is currently considered as an obstacle for this entity.
+ * @return true if the deep water tiles are currently an obstacle for this entity
  */
-bool Arrow::is_water_obstacle() {
+bool Arrow::is_deep_water_obstacle() {
   return false;
 }
 
@@ -244,7 +244,8 @@ const Rectangle Arrow::get_facing_point() {
       break;
 
     default:
-      Debug::die(StringConcat() << "Invalid direction for Arrow::get_facing_point(): " << direction);
+      Debug::die(StringConcat() << "Invalid direction for Arrow::get_facing_point(): "
+	  << get_sprite().get_current_direction());
   }
 
   return facing_point;
@@ -413,7 +414,14 @@ void Arrow::notify_collision_with_crystal_switch(CrystalSwitch &crystal_switch, 
 void Arrow::notify_collision_with_destructible_item(DestructibleItem &destructible_item, CollisionMode collision_mode) {
 
   if (destructible_item.is_obstacle_for(*this) && is_flying()) {
-    attach_to(destructible_item);
+
+    if (destructible_item.can_explode()) {
+      destructible_item.explode();
+      remove_from_map();
+    }
+    else {
+      attach_to(destructible_item);
+    }
   }
 }
 
@@ -426,7 +434,7 @@ void Arrow::notify_collision_with_destructible_item(DestructibleItem &destructib
 void Arrow::notify_collision_with_enemy(Enemy &enemy, Sprite &enemy_sprite, Sprite &this_sprite) {
 
   if (!overlaps(hero) && is_flying()) {
-    enemy.try_hurt(ATTACK_BOW, *this, NULL);
+    enemy.try_hurt(ATTACK_ARROW, *this, NULL);
   }
 }
 
@@ -437,19 +445,16 @@ void Arrow::notify_collision_with_enemy(Enemy &enemy, Sprite &enemy_sprite, Spri
  *
  * @param attack the attack
  * @param victim the enemy just hurt
- * @param result indicates how the enemy has reacted to the attack:
- * - a number greater than 0 represents the number of health points the enemy has just lost
- * - a value of 0 means that the attack was just ignored 
- * - a value of -1 means that the enemy was protected against the attack
- * - a value of -2 means that the attack immobilized the enemy
+ * @param result indicates how the enemy has reacted to the attack
  * @param killed indicates that the attack has just killed the enemy
  */
-void Arrow::notify_attacked_enemy(EnemyAttack attack, Enemy &victim, int result, bool killed) {
+void Arrow::notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
+    EnemyReaction::Reaction& result, bool killed) {
 
-  if (result == -1) {
+  if (result.type == EnemyReaction::PROTECTED) {
     stop();
   }
-  else if (result != 0) {
+  else if (result.type != EnemyReaction::IGNORED) {
     if (killed) {
       remove_from_map();
     }

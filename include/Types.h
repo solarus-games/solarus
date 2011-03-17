@@ -63,6 +63,7 @@ class Color;
 class Sound;
 class Music;
 class SpcDecoder;
+class ItDecoder;
 class Random;
 class Geometry;
 class Rectangle;
@@ -112,6 +113,7 @@ class Camera;
 class Script;
 class MapScript;
 class ItemScript;
+class EnemyScript;
 
 // HUD
 class HUD;
@@ -155,6 +157,8 @@ class DestructibleItem;
 class Chest;
 class JumpSensor;
 class Enemy;
+class CustomEnemy;
+class EnemyReaction;
 class InteractiveEntity;
 class Block;
 class Switch;
@@ -169,6 +173,7 @@ class ConveyorBelt;
 class Stairs;
 class Door;
 class Explosion;
+class Bomb;
 
 // tile patterns
 class Tileset;
@@ -195,16 +200,6 @@ class RandomMovement;
 class FollowMovement;
 class TargetMovement;
 class CircleMovement;
-
-// enemies
-class SimpleGreenSoldier;
-class Bubble;
-class Tentacle;
-class ChainAndBall;
-class Minillosaur;
-class PapillosaurKing;
-class Khorneth;
-class Khotor;
 
 #endif
 

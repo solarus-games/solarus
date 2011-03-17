@@ -28,7 +28,6 @@ import org.solarus.editor.entities.*;
  */
 public class TilesetEditorWindow extends AbstractEditorWindow implements ProjectObserver {
 
-    private EditorWindow parentEditor;
     /**
      * The current tileset.
      */
@@ -42,9 +41,9 @@ public class TilesetEditorWindow extends AbstractEditorWindow implements Project
      */
     private TilesetImageView tilesetImageView;
     // menus or menu items memorized to enable it later
-    private JMenu menuTileset;
-    private JMenuItem menuItemClose;
-    private JMenuItem menuItemSave;
+//    private JMenu menuTileset;
+//    private JMenuItem menuItemClose;
+//    private JMenuItem menuItemSave;
 
     /**
      * Creates a new window.
@@ -98,7 +97,7 @@ public class TilesetEditorWindow extends AbstractEditorWindow implements Project
      * The tileset menu is enabled.
      */
     public void currentProjectChanged() {
-        menuTileset.setEnabled(true);
+        //menuTileset.setEnabled(true);
 
         if (tileset != null) {
             closeTileset(); // close the tileset that was open with the previous project
@@ -126,8 +125,6 @@ public class TilesetEditorWindow extends AbstractEditorWindow implements Project
         // notify the views
         tilePatternsView.setTileset(tileset);
         tilesetImageView.setTileset(tileset);
-
-
     }
 
     /**
@@ -176,7 +173,7 @@ public class TilesetEditorWindow extends AbstractEditorWindow implements Project
      * @return the name of the map
      */
     public String getResourceName() {
-        return "Tileset "+getTileset().getName();
+        return "Tileset " + getTileset().getName();
     }
 
     /**
@@ -225,7 +222,7 @@ public class TilesetEditorWindow extends AbstractEditorWindow implements Project
                         if (project == null) {
                             GuiTools.warningDialog("A project already exists in this directory.");
                         } else {
-                            menuTileset.setEnabled(true);
+//                            menuTileset.setEnabled(true);
                         }
                     }
                 }
@@ -289,6 +286,10 @@ public class TilesetEditorWindow extends AbstractEditorWindow implements Project
         }
 
         setTileset(null);
+    }
+
+    public void save() {
+        saveTileset();
     }
 
     /**

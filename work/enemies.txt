@@ -1,0 +1,102 @@
+event_update()
+event_set_suspended(suspended)
+event_appear()
+event_enabled()
+event_disabled()
+event_restart()
+event_pre_display()
+event_post_display()
+event_position_changed(x, y)
+event_layer_changed(layer)
+event_obstacle_reached()
+event_movement_changed(movement)
+event_movement_finished(movement)
+event_sprite_frame_changed(sprite, animation, frame)
+event_sprite_animation_finished(sprite, animation)
+event_custom_attack_received(attack, sprite)
+event_hurt(attack, life_lost)
+event_dead()
+
+sol.main.sprite_create(sprite_name)
+sol.main.sprite_synchronize(sprite, reference_sprite)
+sol.main.movement_test_obstacles(movement, dx, dy)
+sol.main.get_angle(x1, y1, x2, y2)
+
+sol.map.sprite_display(sprite, x, y)
+sol.map.enemy_create(enemy_name, breed, layer, x, y)
+sol.map.enemy_remove(enemy_name)
+sol.map.enemy_remove_group(enemies_name_prefix)
+sol.map.enemy_is_enabled(enemy_name)
+sol.map.enemy_set_enabled(enemy_name, enabled)
+sol.map.enemy_get_group_count(enemies_name_prefix)
+sol.map.enemy_get_position(enemy_name)
+sol.map.enemy_set_position(enemy_name, x, y)
+sol.map.enemy_get_layer(enemy_name)
+sol.map.enemy_set_layer(enemy_name, layer)
+sol.map.enemy_set_treasure(enemy_name, item_name, variant, savegame_variable)
+sol.map.enemy_set_no_treasure(enemy_name)
+sol.map.enemy_set_random_treasure(enemy_name)
+
+sol.enemy.get_name()
+sol.enemy.get_life()
+sol.enemy.set_life(life)
+sol.enemy.add_life(life)
+sol.enemy.remove_life(life)
+sol.enemy.get_damage()
+sol.enemy.set_damage(damage)
+sol.enemy.get_magic_damage()
+sol.enemy.set_magic_damage(magic_damage)
+sol.enemy.is_pushed_back_when_hurt()
+sol.enemy.set_pushed_back_when_hurt(pushed_back_when_hurt)
+sol.enemy.get_hurt_sound_style()
+sol.enemy.set_hurt_sound_style(sound_style)
+sol.enemy.get_minimum_shield_needed()
+sol.enemy.set_minimum_shield_needed(shield_level)
+sol.enemy.set_attack_consequence(attack, consequence)
+sol.enemy.set_attack_consequence_sprite(sprite, attack, consequence)
+sol.enemy.set_default_attack_consequences()
+sol.enemy.set_invincible()
+sol.enemy.set_treasure(item_name, variant, savegame_variable)
+sol.enemy.set_no_treasure()
+sol.enemy.set_random_treasure()
+sol.enemy.get_obstacle_behavior()
+sol.enemy.set_obstacle_behavior(behavior)
+sol.enemy.get_size()
+sol.enemy.set_size(width, height)
+sol.enemy.get_origin()
+sol.enemy.set_origin(x, y)
+sol.enemy.get_position()
+sol.enemy.set_position(x, y)
+sol.enemy.get_layer()
+sol.enemy.set_layer(layer)
+sol.enemy.snap_to_grid()
+sol.enemy.get_movement()
+sol.enemy.start_movement(movement)
+sol.enemy.stop_movement()
+sol.enemy.restart()
+sol.enemy.get_sprite()
+sol.enemy.get_sprite(sprite_name)
+sol.enemy.has_sprite(sprite_name)
+sol.enemy.create_sprite(sprite_name)
+sol.enemy.remove_sprite(sprite_name)
+sol.enemy.is_displayed_in_y_order()
+sol.enemy.set_displayed_in_y_order(display_in_y_order)
+sol.enemy.create_son(enemy_name, breed, layer, x, y, relative_to_father)
+sol.enemy.get_father()
+
+global variables read when initializing the enemy:
+
+life
+damage
+magic_damage
+pushed_back_when_hurt
+hurt_sound_style
+minimum_shield_needed
+size
+origin
+sprite
+sprites
+displayed_in_y_order
+invincible
+attack_consequences (<integer>, "ignored", "protected", "immobilize", "custom"): sword, thrown_item, explosion, arrow, hookshot, boomerang, lamp, others
+obstacle_behavior: "normal", "flying", "swimming"

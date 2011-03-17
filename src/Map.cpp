@@ -601,37 +601,48 @@ bool Map::test_collision_with_tiles(Layer layer, int x, int y, MapEntity &entity
   case OBSTACLE_TOP_RIGHT:
     // the upper right half of the square is an obstacle
     // so we have to test the position of the point
-    x_in_tile = x % 8;
-    y_in_tile = y % 8;
+    x_in_tile = x & 7;
+    y_in_tile = y & 7;
     on_obstacle = y_in_tile <= x_in_tile;
     break;
 
   case OBSTACLE_TOP_LEFT:
     // same thing
-    x_in_tile = x % 8;
-    y_in_tile = y % 8;
+    x_in_tile = x & 7;
+    y_in_tile = y & 7;
     on_obstacle = y_in_tile <= 7 - x_in_tile;
     break;
 
   case OBSTACLE_BOTTOM_LEFT:
-    x_in_tile = x % 8;
-    y_in_tile = y % 8;
+    x_in_tile = x & 7;
+    y_in_tile = y & 7;
     on_obstacle = y_in_tile >= x_in_tile;
     break;
 
   case OBSTACLE_BOTTOM_RIGHT:
-    x_in_tile = x % 8;
-    y_in_tile = y % 8;
+    x_in_tile = x & 7;
+    y_in_tile = y & 7;
     on_obstacle = y_in_tile >= 7 - x_in_tile;
     break;
 
   case OBSTACLE_SHALLOW_WATER:
+    on_obstacle = entity_to_check.is_shallow_water_obstacle();
+    break;
+
   case OBSTACLE_DEEP_WATER:
-    on_obstacle = entity_to_check.is_water_obstacle();
+    on_obstacle = entity_to_check.is_deep_water_obstacle();
     break;
 
   case OBSTACLE_HOLE:
     on_obstacle = entity_to_check.is_hole_obstacle();
+    break;
+
+  case OBSTACLE_LAVA:
+    on_obstacle = entity_to_check.is_lava_obstacle();
+    break;
+
+  case OBSTACLE_PRICKLE:
+    on_obstacle = entity_to_check.is_prickle_obstacle();
     break;
 
   case OBSTACLE_LADDER:
@@ -661,8 +672,11 @@ bool Map::test_collision_with_entities(Layer layer, const Rectangle &collision_b
        i++) {
 
     MapEntity *entity = *i;
-    collision = entity != &entity_to_check &&
-      entity->is_obstacle_for(entity_to_check) && entity->overlaps(collision_box);
+    collision =
+	entity != &entity_to_check
+	&& entity->is_enabled()
+	&& entity->is_obstacle_for(entity_to_check)
+	&& entity->overlaps(collision_box);
   }
 
   return collision;
@@ -749,10 +763,20 @@ bool Map::test_collision_with_obstacles(Layer layer, int x, int y, MapEntity &en
  */
 Ground Map::get_tile_ground(Layer layer, int x, int y) {
 
-  Obstacle obstacle = entities->get_obstacle_tile(layer, x, y);
-  Ground ground;
+  return obstacle_to_ground(entities->get_obstacle_tile(layer, x, y));
+}
 
+/**
+ * @brief Returns the value of ground equivalent to a value of obstacle.
+ * TODO: remove Obstacle, only use Ground
+ * @param obstacle an obstacle property
+ * @return the corresponding ground
+ */
+Ground Map::obstacle_to_ground(Obstacle obstacle) {
+
+  Ground ground = GROUND_EMPTY;
   switch (obstacle) {
+
     case OBSTACLE_SHALLOW_WATER:
       ground = GROUND_SHALLOW_WATER;
       break;
@@ -765,11 +789,28 @@ Ground Map::get_tile_ground(Layer layer, int x, int y) {
       ground = GROUND_HOLE;
       break;
 
+    case OBSTACLE_LAVA:
+      ground = GROUND_LAVA;
+      break;
+
+    case OBSTACLE_PRICKLE:
+      ground = GROUND_PRICKLE;
+      break;
+
     case OBSTACLE_LADDER:
       ground = GROUND_LADDER;
       break;
 
-    default:
+    case OBSTACLE_EMPTY:
+      ground = GROUND_EMPTY;
+      break;
+
+    case OBSTACLE:
+    case OBSTACLE_NONE:
+    case OBSTACLE_TOP_RIGHT:
+    case OBSTACLE_TOP_LEFT:
+    case OBSTACLE_BOTTOM_RIGHT:
+    case OBSTACLE_BOTTOM_LEFT:
       ground = GROUND_NORMAL;
       break;
   }
@@ -817,7 +858,8 @@ void Map::check_collision_with_detectors(MapEntity &entity) {
        i != detectors.end();
        i++) {
 
-    if (!(*i)->is_being_removed()) {
+    if (!(*i)->is_being_removed()
+	&& (*i)->is_enabled()) {
       (*i)->check_collision(entity);
     }
   }
@@ -847,7 +889,8 @@ void Map::check_collision_with_detectors(MapEntity &entity, Sprite &sprite) {
        i != detectors.end();
        i++) {
 
-    if (!(*i)->is_being_removed()) {
+    if (!(*i)->is_being_removed()
+	&& (*i)->is_enabled()) {
       (*i)->check_collision(entity, sprite);
     }
   }

@@ -52,7 +52,7 @@ int main(int argc, char **argv) {
   game.update();
 
   Map &map = game.get_current_map();
-  MapEntity *e = Enemy::create(game, Enemy::TENTACLE, Enemy::RANK_NORMAL, -1, "e", LAYER_LOW, 160, 117, 0,
+  MapEntity *e = Enemy::create(game, "tentacle", Enemy::RANK_NORMAL, -1, "e", LAYER_LOW, 160, 117, 0,
       Treasure(game, "_none", 0, -1));
   map.get_entities().add_entity(e);
 

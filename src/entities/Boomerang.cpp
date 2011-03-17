@@ -170,10 +170,10 @@ bool Boomerang::is_stairs_obstacle(Stairs &stairs) {
 }
 
 /**
- * @brief Returns whether a water tile is currently considered as an obstacle for this entity.
- * @return true if the water tiles are currently an obstacle for this entity
+ * @brief Returns whether a deep water tile is currently considered as an obstacle for this entity.
+ * @return true if the deep water tiles are currently an obstacle for this entity
  */
-bool Boomerang::is_water_obstacle() {
+bool Boomerang::is_deep_water_obstacle() {
   return false;
 }
 
@@ -325,16 +325,13 @@ void Boomerang::notify_collision_with_enemy(Enemy &enemy) {
  *
  * @param attack the attack
  * @param victim the enemy just hurt
- * @param result indicates how the enemy has reacted to the attack:
- * - a number greater than 0 represents the number of health points the enemy has just lost
- * - a value of 0 means that the attack was just ignored 
- * - a value of -1 means that the enemy was protected against the attack
- * - a value of -2 means that the attack immobilized the enemy
+ * @param result indicates how the enemy has reacted to the attack
  * @param killed indicates that the attack has just killed the enemy
  */
-void Boomerang::notify_attacked_enemy(EnemyAttack attack, Enemy &victim, int result, bool killed) {
+void Boomerang::notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
+    EnemyReaction::Reaction& result, bool killed) {
 
-  if (result != 0 && !is_going_back()) {
+  if (result.type != EnemyReaction::IGNORED && !is_going_back()) {
     go_back();
   }
 }

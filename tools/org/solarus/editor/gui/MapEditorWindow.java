@@ -29,8 +29,6 @@ import org.solarus.editor.entities.*;
  */
 public class MapEditorWindow extends AbstractEditorWindow implements Observer, ProjectObserver {
 
-
-    private EditorWindow parentEditor;
     /**
      * The current map.
      */
@@ -96,9 +94,9 @@ public class MapEditorWindow extends AbstractEditorWindow implements Observer, P
         rootPanel.resetToPreferredSizes();
 
         add(rootPanel);
-
         setMap(null);
 
+     
     }
 
     /**
@@ -242,6 +240,10 @@ public class MapEditorWindow extends AbstractEditorWindow implements Observer, P
             return;
         }
         setMap(null);
+    }
+
+    public void save() {
+        saveMap();
     }
 
     /**

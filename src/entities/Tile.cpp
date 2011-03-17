@@ -89,7 +89,7 @@ void Tile::set_map(Map &map) {
  * @brief Displays the tile on the map.
  */
 void Tile::display_on_map() {
-  tile_pattern->display_on_map(&get_map(), bounding_box);
+  tile_pattern->display_on_map(&get_map(), get_bounding_box());
 }
 
 /**

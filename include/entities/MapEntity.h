@@ -22,6 +22,7 @@
 #include "entities/Layer.h"
 #include "entities/CollisionMode.h"
 #include "entities/EnemyAttack.h"
+#include "entities/EnemyReaction.h"
 #include "lowlevel/Rectangle.h"
 #include <map>
 #include <list>
@@ -74,16 +75,12 @@ class MapEntity {
 
     static const EntityTypeFeatures entity_types_features[];	/**< The features of each entity type stored in map files. */
 
-    Map *map;							/**< The map where this entity is, or NULL
+    Map* map;							/**< The map where this entity is, or NULL
 								 * (automatically set by class MapEntities after adding the entity to the map) */
-
-  private:
 
     Layer layer;						/**< Layer of the entity: LAYER_LOW, LAYER_INTERMEDIATE or LAYER_HIGH.
 								 * The layer is constant for the tiles and can change for the hero and the dynamic entities.
 								 * The layer is private to make sure the set_layer() function is always called. */
-
-  protected:
 
     Rectangle bounding_box;					/**< This rectangle represents the position of the entity of the map and is
 								 * used for the collision tests. It corresponds to the bounding box of the entity.
@@ -108,20 +105,26 @@ class MapEntity {
 
     int direction;						/**< direction of the entity, not used for all kinds of entities */
 
-    std::map<std::string, Sprite*> sprites;			/**< sprite(s) representing the entity, indexed by their animation set id;
+    std::map<SpriteAnimationSetId, Sprite*> sprites;		/**< sprite(s) representing the entity, indexed by their animation set id;
 								 * note that some entities manage their sprites themselves rather than using this field */
-    Sprite *first_sprite;					/**< the first sprite that was created into the sprites map,
+    Sprite* first_sprite;					/**< the first sprite that was created into the sprites map,
 								 * stored here because the map does not keep the order from which its elements are added */
     bool visible;						/**< indicates that this entity's sprites are currently displayed */
-    Movement *movement;						/**< movement of the entity, not used for all kinds of entities;
+    Movement* movement;						/**< movement of the entity, not used for all kinds of entities;
 								 * NULL indicates that the entity has no movement */
-    Movement *old_movement;					/**< an old movement to destroy as soon as possible */
+    Movement* old_movement;					/**< an old movement to destroy as soon as possible */
+    Detector* facing_entity;					/**< the detector in front of this entity (if any) */
 
     // entity state
+    bool being_removed;						/**< indicates that the entity is not valid anymore because it is about to be removed */
+    bool enabled;						/**< indicates that the entity is enabled
+    								 * (if not, it will not be displayed and collisions will not be notified) */
+    bool waiting_enabled;					/**< indicates that the entity will be enabled as soon as the hero stops overlapping it */
+
+  protected:
 
     bool suspended;						/**< indicates that the animation and movement of this entity are suspended */
     uint32_t when_suspended;					/**< indicates when this entity was suspended */
-    bool being_removed;						/**< indicates that the entity is not valid anymore because it is about to be removed */
 
     // creation
     MapEntity();
@@ -137,6 +140,11 @@ class MapEntity {
     void set_bounding_box_from_sprite();
     void set_bounding_box(const Rectangle &bounding_box);
     void create_sprite(const SpriteAnimationSetId &id, bool enable_pixel_collisions = false);
+    void remove_sprite(const SpriteAnimationSetId &id);
+    void remove_sprites();
+
+    // collisions
+    void check_collision_with_detectors();
 
     // easy access to various game objects
     MapEntities& get_entities();
@@ -191,6 +199,7 @@ class MapEntity {
 
     int get_width();
     int get_height();
+    const Rectangle& get_size();
     const Rectangle& get_bounding_box();
     const Rectangle& get_origin();
     int get_top_left_x();
@@ -204,9 +213,15 @@ class MapEntity {
     const Rectangle get_center_point();
 
     bool is_aligned_to_grid();
-    bool is_x_aligned_to_grid();
-    bool is_y_aligned_to_grid();
+    bool is_aligned_to_grid_x();
+    bool is_aligned_to_grid_y();
     void set_aligned_to_grid();
+    void set_aligned_to_grid_x();
+    void set_aligned_to_grid_y();
+
+    bool is_enabled();
+    void set_enabled(bool enable);
+    virtual void notify_enabled(bool enabled);
 
     // properties
     const std::string& get_name() const;
@@ -214,12 +229,14 @@ class MapEntity {
     int get_direction();
 
     // sprites
-    Sprite& get_sprite(const SpriteAnimationSetId &id);
     Sprite& get_sprite();
+    Sprite& get_sprite(const SpriteAnimationSetId &id);
+    std::map<SpriteAnimationSetId, Sprite*>& get_sprites();
     int get_nb_sprites();
     bool has_sprite();
-    void remove_sprite(const SpriteAnimationSetId &id);
-    void remove_sprites();
+    bool has_sprite(const SpriteAnimationSetId &id);
+    virtual void notify_sprite_frame_changed(Sprite& sprite, const std::string& animation, int frame);
+    virtual void notify_sprite_animation_finished(Sprite& sprite, const std::string& animation);
     virtual bool is_visible();
     virtual void set_visible(bool visible);
     void set_animation_ignore_suspend(bool ignore_suspend);
@@ -234,7 +251,10 @@ class MapEntity {
     virtual void notify_position_changed();
     virtual void notify_layer_changed();
     virtual void notify_movement_changed();
-    virtual void set_facing_entity(Detector *detector);
+    virtual void notify_movement_finished();
+    Detector* get_facing_entity();
+    void set_facing_entity(Detector* facing_entity);
+    virtual void notify_facing_entity_changed(Detector* facing_entity);
     static const Rectangle& direction_to_xy_move(int direction8);
 
     // geometry
@@ -243,6 +263,7 @@ class MapEntity {
     bool overlaps(MapEntity &other);
     bool is_origin_point_in(const Rectangle &rectangle);
     bool is_facing_point_in(const Rectangle &rectangle);
+    bool is_facing_point_in(const Rectangle &rectangle, int direction);
     bool is_center_in(const Rectangle &rectangle);
 
     double get_vector_angle(MapEntity &other);
@@ -262,12 +283,17 @@ class MapEntity {
     virtual void notify_collision_with_switch(Switch &sw);
     virtual void notify_collision_with_crystal_switch(CrystalSwitch &crystal_switch, CollisionMode collision_mode);
     virtual void notify_collision_with_crystal_switch(CrystalSwitch &crystal_switch, Sprite &sprite_overlapping);
+    virtual void notify_collision_with_bomb(Bomb& bomb, CollisionMode collision_mode);
     virtual void notify_collision_with_explosion(Explosion &explosion, Sprite &sprite_overlapping);
     virtual void notify_collision_with_enemy(Enemy &enemy, Sprite &enemy_sprite, Sprite &this_sprite);
-    virtual void notify_attacked_enemy(EnemyAttack attack, Enemy &victim, int result, bool killed);
+    virtual void notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
+        EnemyReaction::Reaction& result, bool killed);
 
-    virtual bool is_water_obstacle();
+    virtual bool is_shallow_water_obstacle();
+    virtual bool is_deep_water_obstacle();
     virtual bool is_hole_obstacle();
+    virtual bool is_lava_obstacle();
+    virtual bool is_prickle_obstacle();
     virtual bool is_ladder_obstacle();
     virtual bool is_hero_obstacle(Hero &hero);
     virtual bool is_block_obstacle(Block &block);

@@ -17,17 +17,19 @@
 #include "movements/TemporalMovement.h"
 #include "lowlevel/Geometry.h"
 #include "lowlevel/System.h"
+#include "lowlevel/Debug.h"
+#include "lowlevel/StringConcat.h"
 
 /**
  * @brief Constructor.
  * @param speed the speed
  * @param angle angle of the movement in radians
- * @param time duration of the movement in milliseconds
+ * @param duration duration of the movement in milliseconds
  * @param smooth true to make the movement smooth
  */
-TemporalMovement::TemporalMovement(int speed, double angle, uint32_t time, bool smooth):
+TemporalMovement::TemporalMovement(int speed, double angle, uint32_t duration, bool smooth):
   SmoothMovement(smooth) {
-  start(speed, angle, time);
+  start(speed, angle, duration);
 }
 
 /**
@@ -35,14 +37,14 @@ TemporalMovement::TemporalMovement(int speed, double angle, uint32_t time, bool 
  * @param speed the speed
  * @param source_xy the movement will start from this point
  * @param target_xy the movement will go into this point's direction
- * @param time duration of the movement in milliseconds
+ * @param duration duration of the movement in milliseconds
  * @param smooth true to make the movement smooth
  */
-TemporalMovement::TemporalMovement(int speed, const Rectangle &source_xy, const Rectangle &target_xy, uint32_t time, bool smooth):
+TemporalMovement::TemporalMovement(int speed, const Rectangle &source_xy, const Rectangle &target_xy, uint32_t duration, bool smooth):
   SmoothMovement(smooth) {
 
   double angle = Geometry::get_angle(source_xy.get_x(), source_xy.get_y(), target_xy.get_x(), target_xy.get_y());
-  start(speed, angle, time);
+  start(speed, angle, duration);
 }
 
 /**
@@ -55,17 +57,26 @@ TemporalMovement::~TemporalMovement() {
 /**
  * @brief Starts the straight movement into a direction.
  * @param speed the speed
- * @param direction angle of the movement in radians
- * @param time duration of the movement in milliseconds
+ * @param angle angle of the movement in radians
+ * @param duration duration of the movement in milliseconds
  */
-void TemporalMovement::start(int speed, double direction, uint32_t time) {
+void TemporalMovement::start(int speed, double angle, uint32_t duration) {
 
-  finished = false;
-  end_movement_date = System::now() + time;
+  this->finished = false;
+  this->duration = duration;
+  this->end_movement_date = System::now() + duration;
   set_speed(speed);
   if (speed != 0) {
-    set_angle(direction);
+    set_angle(angle);
   }
+}
+
+/**
+ * @brief Restarts this movement for the specified duration.
+ * @param duration duration of the movement in milliseconds
+ */
+void TemporalMovement::set_duration(uint32_t duration) {
+  start(get_speed(), get_angle(), duration);
 }
 
 /**
@@ -113,5 +124,94 @@ bool TemporalMovement::is_finished() {
 void TemporalMovement::set_finished() {
   stop();
   this->finished = true;
+}
+
+/**
+ * @brief Returns the value of a property of this movement.
+ *
+ * Accepted keys:
+ * - speed
+ * - angle
+ * - duration
+ * - ignore_obstacles
+ * - smooth
+ *
+ * @param key key of the property to get
+ * @return the corresponding value as a string
+ */
+const std::string TemporalMovement::get_property(const std::string &key) {
+
+  std::ostringstream oss;
+
+  if (key == "speed") {
+    oss << get_speed();
+  }
+  else if (key == "angle") {
+    oss << get_angle();
+  }
+  else if (key == "duration") {
+    oss << duration;
+  }
+  else if (key == "ignore_obstacles") {
+    oss << are_obstacles_ignored();
+  }
+  else if (key == "smooth") {
+    oss << is_smooth();
+  }
+  else {
+    Debug::die(StringConcat() << "Unknown property of TemporalMovement: '" << key << "'");
+  }
+
+  return oss.str();
+}
+
+/**
+ * @brief Sets the value of a property of this movement.
+ *
+ * Accepted keys:
+ * - speed
+ * - angle
+ * - duration
+ * - ignore_obstacles
+ * - smooth
+ *
+ * @param key key of the property to set (the accepted keys depend on the movement type)
+ * @param value the value to set
+ */
+void TemporalMovement::set_property(const std::string &key, const std::string &value) {
+
+  std::istringstream iss(value);
+
+  if (key == "speed") {
+    int speed;
+    iss >> speed;
+    set_speed(speed);
+  }
+  else if (key == "angle") {
+    double angle;
+    iss >> angle;
+    if (get_speed() == 0) {
+      set_speed(1);
+    }
+    set_angle(angle);
+  }
+  else if (key == "duration") {
+    uint32_t duration;
+    iss >> duration;
+    set_duration(duration);
+  }
+  else if (key == "ignore_obstacles") {
+    bool ignore_obstacles;
+    iss >> ignore_obstacles;
+    set_default_ignore_obstacles(ignore_obstacles);
+  }
+  else if (key == "smooth") {
+    bool smooth;
+    iss >> smooth;
+    set_smooth(smooth);
+  }
+  else {
+    Debug::die(StringConcat() << "Unknown property of TemporalMovement: '" << key << "'");
+  }
 }
 

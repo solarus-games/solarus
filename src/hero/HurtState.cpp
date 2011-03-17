@@ -19,18 +19,21 @@
 #include "hero/HeroSprites.h"
 #include "movements/TemporalMovement.h"
 #include "lowlevel/Sound.h"
+#include "lowlevel/Geometry.h"
 #include "Game.h"
 #include "Equipment.h"
 
 /**
  * @brief Constructor.
  * @param hero the hero controlled by this state
- * @param source the entity that hurts the hero (usually an enemy)
+ * @param coordinates of the thing (usually an enemy) that hurts the hero,
+ * used to compute the trajectory of the hero
  * @param life_points number of heart quarters to remove (this number may be reduced by the tunic)
  * @param magic_points number of magic points to remove
  */
-Hero::HurtState::HurtState(Hero &hero, MapEntity &source, int life_points, int magic_points):
-  State(hero), source(source), life_points(life_points), magic_points(magic_points) {
+Hero::HurtState::HurtState(Hero &hero, const Rectangle& source_xy,
+    int life_points, int magic_points):
+  State(hero), source_xy(source_xy), life_points(life_points), magic_points(magic_points) {
 
 }
 
@@ -52,10 +55,15 @@ void Hero::HurtState::start(State *previous_state) {
   Equipment &equipment = get_equipment();
 
   Sound::play("hero_hurt");
-  life_points = std::max(1, life_points / (equipment.get_ability("tunic") + 1));
-  equipment.remove_life(life_points);
-  if (equipment.has_ability("tunic")) {
-    equipment.notify_ability_used("tunic");
+
+  if (life_points != 0) {
+    // the level of the tunic reduces the damage, but we remove at least 1 life point
+    life_points = std::max(1, life_points / (equipment.get_ability("tunic")));
+
+    equipment.remove_life(life_points);
+    if (equipment.has_ability("tunic")) {
+      equipment.notify_ability_used("tunic");
+    }
   }
 
   if (magic_points > 0 && equipment.get_magic() > 0) {
@@ -65,7 +73,8 @@ void Hero::HurtState::start(State *previous_state) {
   get_sprites().set_animation_hurt();
   get_sprites().blink();
 
-  double angle = source.get_vector_angle(hero);
+  double angle = Geometry::get_angle(source_xy.get_x(), source_xy.get_y(),
+      hero.get_x(), hero.get_y());
   hero.set_movement(new TemporalMovement(120, angle, 200));
 }
 
@@ -89,7 +98,7 @@ void Hero::HurtState::update() {
 
   if (hero.get_movement()->is_finished()) {
     hero.clear_movement();
-    hero.set_state(new FreeState(hero));
+    hero.start_state_from_ground();
   }
 }
 

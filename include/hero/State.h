@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include "entities/Hero.h"
+#include "entities/CarriedItem.h"
 
 /**
  * @brief Abstract base class for a state of the hero.
@@ -96,26 +97,33 @@ class Hero::State {
     // ground
     virtual bool can_avoid_deep_water();
     virtual bool can_avoid_hole();
+    virtual bool can_avoid_lava();
+    virtual bool can_avoid_prickle();
     virtual bool is_touching_ground();
+    virtual bool can_come_from_bad_ground();
     virtual void notify_ground_changed();
 
     // obstacles and collisions
     virtual bool are_collisions_ignored();
-    virtual bool is_water_obstacle();
+    virtual bool is_deep_water_obstacle();
     virtual bool is_hole_obstacle();
+    virtual bool is_lava_obstacle();
+    virtual bool is_prickle_obstacle();
     virtual bool is_ladder_obstacle();
-    virtual bool is_teletransporter_obstacle(Teletransporter &teletransporter);
+    virtual bool is_teletransporter_obstacle(Teletransporter& teletransporter);
     virtual bool can_avoid_teletransporter();
     virtual bool is_teletransporter_delayed();
-    virtual bool is_conveyor_belt_obstacle(ConveyorBelt &conveyor_belt);
+    virtual bool is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt);
     virtual bool can_avoid_conveyor_belt();
-    virtual bool is_sensor_obstacle(Sensor &sensor);
+    virtual bool is_stairs_obstacle(Stairs& stairs);
+    virtual bool is_sensor_obstacle(Sensor& sensor);
     virtual bool can_avoid_sensor();
     virtual bool can_avoid_explosion();
     virtual bool can_avoid_switch();
 
     // enemies
-    virtual void notify_attacked_enemy(EnemyAttack attack, Enemy &victim, int result, bool killed);
+    virtual void notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
+        EnemyReaction::Reaction& result, bool killed);
     virtual int get_sword_damage_factor();
     virtual bool can_be_hurt();
 
@@ -132,7 +140,9 @@ class Hero::State {
     virtual bool can_take_stairs();
     virtual bool can_take_jump_sensor();
     virtual bool can_sword_hit_crystal_switch();
-    virtual bool can_throw_item();
+    bool is_carrying_item();
+    virtual CarriedItem* get_carried_item();
+    virtual CarriedItem::Behavior get_previous_carried_item_behavior(CarriedItem& carried_item);
 };
 
 #endif

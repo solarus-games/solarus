@@ -173,11 +173,12 @@ bool Hero::FreeState::can_take_jump_sensor() {
 }
 
 /**
- * @brief Returns whether an item previously carried by the hero should be thrown when this state starts.
- * @return true if an item previously carried by the hero should be thrown when this state starts
+ * @brief Returns the action to do with an item previously carried by the hero when this state starts.
+ * @param carried_item the item carried in the previous state
+ * @return the action to do with a previous carried item when this state starts
  */
-bool Hero::FreeState::can_throw_item() {
-  return false;
+CarriedItem::Behavior Hero::FreeState::get_previous_carried_item_behavior(CarriedItem& carried_item) {
+  return CarriedItem::BEHAVIOR_DESTROY;
 }
 
 /**

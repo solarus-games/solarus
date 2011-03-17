@@ -17,7 +17,9 @@
 package org.solarus.editor.entities;
 
 import java.awt.*;
+
 import org.solarus.editor.*;
+import org.solarus.editor.entities.Teletransporter.Subtype;
 
 /**
  * Represents an entity that triggers a message or an event when the player
@@ -61,6 +63,11 @@ public class InteractiveEntity extends MapEntity {
 	generalImageDescriptions[0],
 	new EntityImageDescription("interactive_entities.png", 32, 0, 16, 24)
     };
+
+    /**
+     * The sprite representing this entity (if any).
+     */
+    private Sprite sprite;
 
     /**
      * Origin point of each type of interactive entity.
@@ -190,6 +197,26 @@ public class InteractiveEntity extends MapEntity {
     }
 
     /**
+     * Sets a property specific to this kind of entity.
+     * @param name name of the property
+     * @param value value of the property
+     */
+    public void setProperty(String name, String value) throws MapException {
+
+        super.setProperty(name, value);
+
+        if (name.equals("sprite")) {
+
+            if (value.length() > 0 && !value.equals("_none")) {
+                sprite = new Sprite(value);
+            }
+            else {
+                sprite = null;
+            }
+        }
+    }
+
+    /**
      * Checks the specific properties.
      * @throws MapException if a property is not valid
      */
@@ -206,6 +233,29 @@ public class InteractiveEntity extends MapEntity {
 	if (getSubtype() == Subtype.NON_PLAYING_CHARACTER && getDirection() == -1) {
 	    throw new MapException("An NPC must have an initial direction");
 	}
+    }
+
+    /**
+     * Draws this entity on the map editor.
+     * @param g graphic context
+     * @param zoom zoom of the image (for example, 1: unchanged, 2: zoom of 200%)
+     * @param showTransparency true to make transparent pixels,
+     * false to replace them by a background color
+     */
+    public void paint(Graphics g, double zoom, boolean showTransparency) {
+
+        if (sprite == null) {
+            super.paint(g, zoom, showTransparency);
+        }
+        else {
+            // display the sprite
+            int direction = getDirection();
+            if (direction == -1) {
+                direction = 3;
+            }
+            sprite.paint(g, zoom, showTransparency,
+                    getX(), getY(), null, direction, 0);
+        }
     }
 }
 

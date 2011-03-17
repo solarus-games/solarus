@@ -204,6 +204,7 @@ void Block::action_key_pressed() {
 bool Block::moved_by_hero() {
 
   Hero &hero = get_hero();
+  int direction = get_direction();
 
   if (get_movement() != NULL							// the block is already moving
       || maximum_moves == 0							// the block cannot move anymore
@@ -231,13 +232,13 @@ void Block::update() {
 
   Hero &hero = get_hero();
 
-  if (movement != NULL) {
+  if (get_movement() != NULL) {
     // the block is being pushed or pulled by the hero
 
     // determine whether the movement is finished
     bool finished = false;
 
-    if (movement->is_finished()) {
+    if (get_movement()->is_finished()) {
       // the block was just stopped by an obstacle: notify the hero
       hero.notify_grabbed_entity_collision();
       finished = true;

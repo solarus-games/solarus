@@ -60,13 +60,24 @@ void Hero::PlungingState::update() {
 
   if (get_sprites().is_animation_finished()) {
 
-    if (hero.get_ground() != GROUND_DEEP_WATER) {
-      hero.set_state(new FreeState(hero));
+    bool drown = false;
+    if (hero.get_ground() == GROUND_DEEP_WATER) {
+
+      if (get_equipment().has_ability("swim")) {
+        hero.set_state(new SwimmingState(hero));
+      }
+      else {
+        drown = 1;
+      }
     }
-    else if (get_equipment().has_ability("swim")) {
-      hero.set_state(new SwimmingState(hero));
+    else if (hero.get_ground() == GROUND_LAVA) {
+      drown = true;
     }
     else {
+      hero.set_state(new FreeState(hero));
+    }
+
+    if (drown) {
       get_equipment().remove_life(1);
       Sound::play("message_end");
       hero.set_state(new BackToSolidGroundState(hero, false));
@@ -88,5 +99,15 @@ bool Hero::PlungingState::can_start_gameover_sequence() {
  */
 bool Hero::PlungingState::is_touching_ground() {
   return false;
+}
+
+/**
+ * @brief Returns the action to do with an item previously carried by the hero when this state starts.
+ * @param carried_item the item carried in the previous state
+ * @return the action to do with a previous carried item when this state starts
+ */
+CarriedItem::Behavior Hero::PlungingState::get_previous_carried_item_behavior(CarriedItem& carried_item) {
+
+  return CarriedItem::BEHAVIOR_DESTROY;
 }
 

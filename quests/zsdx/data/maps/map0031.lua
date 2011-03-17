@@ -17,7 +17,7 @@ switches_puzzle_correct = true
 
 function event_map_started(destination_point)
 
-  sol.map.chest_set_hidden("boss_key_chest", true)
+  sol.map.chest_set_enabled("boss_key_chest", false)
 
   if sol.game.savegame_get_boolean(81) then
     -- boss key chest already found
@@ -68,7 +68,7 @@ function event_camera_reached_target()
 end
 
 function boss_key_chest_timer()
-  sol.map.chest_set_hidden("boss_key_chest", false)
+  sol.map.chest_set_enabled("boss_key_chest", true)
   sol.main.play_sound("secret")
   sol.main.timer_start(1000, "sol.map.camera_restore", false)
 end

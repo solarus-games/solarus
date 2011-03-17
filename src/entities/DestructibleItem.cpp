@@ -18,6 +18,7 @@
 #include "entities/Hero.h"
 #include "entities/MapEntities.h"
 #include "entities/PickableItem.h"
+#include "entities/CarriedItem.h"
 #include "movements/FallingHeight.h"
 #include "Game.h"
 #include "DialogBox.h"
@@ -42,7 +43,7 @@ const DestructibleItem::Features DestructibleItem::features[] = {
   {"entities/stone_small_white", "stone", true,  false, false, false, 1, 2, GROUND_NORMAL},
   {"entities/stone_small_black", "stone", true,  false, false, false, 2, 4, GROUND_NORMAL},
   {"entities/grass",             "bush",  false, true,  false, false, 0, 0, GROUND_GRASS},
-  {"entities/bomb_flower",       "bush",  true,  false, true,  true,  1, 1, GROUND_NORMAL},
+  {"entities/bomb_flower",       "bush",  true,   true, true,  true,  1, 1, GROUND_NORMAL},
 };
 
 /**
@@ -272,8 +273,12 @@ void DestructibleItem::notify_collision(MapEntity &other_entity, Sprite &other_s
     if (hero.is_striking_with_sword(*this)) {
 
       play_destroy_animation();
-      hero.notify_position_changed(); // to update the ground under the hero
+      hero.check_position(); // to update the ground under the hero
       create_pickable_item();
+
+      if (can_explode()) {
+	explode();
+      }
     }
   }
 
@@ -285,7 +290,7 @@ void DestructibleItem::notify_collision(MapEntity &other_entity, Sprite &other_s
 
     play_destroy_animation();
     create_pickable_item();
-    get_entities().add_entity(new Explosion(get_layer(), get_xy(), true));
+    explode();
   }
 }
 
@@ -308,7 +313,10 @@ void DestructibleItem::action_key_pressed() {
     int weight = features[subtype].weight;
 
     if (get_equipment().has_ability("lift", weight)) {
-      get_hero().start_lifting(*this);
+
+      uint32_t explosion_date = can_explode() ? System::now() + 6000 : 0;
+      get_hero().start_lifting(new CarriedItem(get_hero(), *this,
+	  get_animation_set_id(), get_destruction_sound_id(), get_damage_on_enemies(), explosion_date));
 
       // play the sound
       Sound::play("lift");
@@ -356,6 +364,8 @@ void DestructibleItem::play_destroy_animation() {
  * @brief Returns whether the item is disabled.
  *
  * The item is disabled if it was lifted and is about to regenerate.
+ *
+ * @return true if the item is disabled
  */
 bool DestructibleItem::is_disabled() {
   return regeneration_date != 0 && !is_regenerating;
@@ -367,6 +377,14 @@ bool DestructibleItem::is_disabled() {
  */
 bool DestructibleItem::can_explode() {
   return features[subtype].can_explode;
+}
+
+/**
+ * @brief Creates an explosion on the item.
+ */
+void DestructibleItem::explode() {
+  get_entities().add_entity(new Explosion(get_layer(), get_xy(), true));
+  Sound::play("explosion");
 }
 
 /**

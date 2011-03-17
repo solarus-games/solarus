@@ -17,6 +17,7 @@
 package org.solarus.editor.entities;
 
 import java.awt.*;
+
 import org.solarus.editor.*;
 
 /**
@@ -29,106 +30,12 @@ public class Enemy extends MapEntity {
      */
     public static final EntityImageDescription[] generalImageDescriptions = {
 	new EntityImageDescription("enemies.png", 0, 4, 16, 16),
-	new EntityImageDescription("enemies.png", 16, 0, 16, 16),
-	new EntityImageDescription("enemies.png", 32, 0, 16, 16),
-	new EntityImageDescription("enemies.png", 56, 0, 16, 16),
-	new EntityImageDescription("enemies.png", 80, 0, 16, 16),
-
-	new EntityImageDescription("bosses.png", 0, 0, 176, 96),
-	new EntityImageDescription("bosses.png", 176, 0, 48, 72),
-	new EntityImageDescription("bosses.png", 224, 0, 48, 48),
     };
 
     /**
-     * Description of the image representing currently the entity.
+     * The sprite representing this entity (if any).
      */
-    public static final EntityImageDescription[] currentImageDescriptions = {
-	new EntityImageDescription("enemies.png", 0, 0, 16, 32),
-	new EntityImageDescription("enemies.png", 16, 0, 16, 16),
-	new EntityImageDescription("enemies.png", 32, 0, 16, 16),
-	new EntityImageDescription("enemies.png", 48, 0, 32, 24),
-	new EntityImageDescription("enemies.png", 80, 0, 16, 16),
-	
-	new EntityImageDescription("bosses.png", 0, 0, 176, 96),
-	new EntityImageDescription("bosses.png", 176, 0, 48, 72),
-	new EntityImageDescription("bosses.png", 224, 0, 48, 48),
-    };
-
-    /**
-     * Origin point of each type of enemy.
-     */
-    private static final Point[] origins = {
-	new Point(8, 29),
-	new Point(8, 8),
-	new Point(8, 13),
-	new Point(16, 12),
-	new Point(8, 8),
-	
-	new Point(88, 64),
-	new Point(24, 69),
-	new Point(24, 29),
-    };
-
-    /**
-     * Size of each type of enemy.
-     */
-    private static final Dimension[] sizes = {
-	new Dimension(16, 32),
-	new Dimension(16, 16),
-	new Dimension(16, 16),
-	new Dimension(32, 24),
-	new Dimension(16, 16),
-	
-	new Dimension(176, 96),
-	new Dimension(48, 72),
-	new Dimension(48, 48),
-    };
-
-    /**
-     * Subtypes of enemies.
-     */
-    public enum Subtype implements EntitySubtype {
-	SIMPLE_GREEN_SOLDIER,
-	BUBBLE,
-	TENTACLE,
-	MINILLOSAUR,
-	CHAIN_AND_BALL,
-	
-	PAPILLAUSOR_KING,
-	KHORNETH,
-	KHOTOR;
-
-	public static final String[] humanNames = {
-	    "Simple green soldier",
-	    "Bubble",
-	    "Tentacle",
-	    "Minillosaur",
-	    "Chain and Ball",
-	    
-	    "Papillausor King",
-	    "Khorneth",
-	    "Khotor",
-	};
-
-	public int getId() {
-	    // make the bosses have an id greater than 1000
-	    int index = ordinal();
-	    int firstBossIndex = PAPILLAUSOR_KING.ordinal();
-	    if (index < firstBossIndex) {
-		return index;
-	    }
-	    
-	    return index - firstBossIndex + 1000;
-	}
-
-	public static Subtype get(int id) {
-	  if (id >= PAPILLAUSOR_KING.getId()) {
-	    int firstBossIndex = PAPILLAUSOR_KING.ordinal();
-            id = id - 1000 + firstBossIndex;
-	  }
-	  return values()[id];
-	}
-    }
+    private Sprite sprite;
 
     /**
      * Enemy ranks.
@@ -151,15 +58,11 @@ public class Enemy extends MapEntity {
 
     /**
      * Creates a new enemy.
-     * By default, the subtype is a simple green soldier and the pickable item is random. 
      * @param map the map
      */
     public Enemy(Map map)throws MapException {
 	super(map, 16, 16);
-
-	setDirection(3);
-	Dimension size = sizes[getSubtype().ordinal()];
-	setSizeImpl(size.width, size.height);
+        setDirection(3);
     }
 
     /**
@@ -167,7 +70,11 @@ public class Enemy extends MapEntity {
      * @return the coordinates of the origin point of the entity
      */
     protected Point getOrigin() {
-	return origins[getSubtype().ordinal()];
+
+        if (sprite == null) {
+            return new Point(8, 29);
+        }
+        return sprite.getOrigin(null, getDirection());
     }
 
     /**
@@ -187,23 +94,10 @@ public class Enemy extends MapEntity {
     }
 
     /**
-     * Sets the subtype of this enemy.
-     * @param subtype the subtype of enemy
-     */
-    public void setSubtype(EntitySubtype subtype) throws MapException {
-	super.setSubtype(subtype);
-	
-	Dimension size = sizes[getSubtype().ordinal()];
-	setSizeImpl(size.width, size.height);
-	
-	setChanged();
-	notifyObservers();
-    }
-
-    /**
      * Sets the default values of all properties specific to the current entity type.
      */
     public void setPropertiesDefaultValues() throws MapException {
+	setProperty("breed", "");
 	setProperty("rank", Rank.NORMAL.ordinal());
 	setProperty("savegameVariable", -1);
 	setProperty("treasureName", Item.randomId);
@@ -212,10 +106,38 @@ public class Enemy extends MapEntity {
     }
 
     /**
+     * Sets a property specific to this kind of entity.
+     * @param name name of the property
+     * @param value value of the property
+     */
+    public void setProperty(String name, String value) throws MapException {
+
+        super.setProperty(name, value);
+
+        if (name.equals("breed")) {
+
+            if (value.length() > 0) {
+                sprite = new Sprite("enemies/" + value);
+                setSizeImpl(sprite.getSize(null, 0));
+            }
+            else {
+                sprite = null;
+            }
+        }
+    }
+
+    /**
      * Checks the specific properties.
      * @throws MapException if a property is not valid
      */
     public void checkProperties() throws MapException {
+
+	String breed = getProperty("breed");
+	if (breed.length() == 0
+	    || breed.indexOf(' ') != -1
+	    || breed.indexOf('\t') != -1) {
+	    throw new MapException("An enemy's breed cannot be empty or have whitespaces");
+	}
 
 	int savegameVariable = getIntegerProperty("savegameVariable");
 	if (savegameVariable < -1 || savegameVariable >= 32768) {
@@ -234,13 +156,23 @@ public class Enemy extends MapEntity {
     }
 
     /**
-     * Updates the description of the image currently representing the entity.
-     * By default, the image description is a copy of the general image description of this kind of entity.
-     * Redefine this method to display the entity with an image containing
-     * the entity's current properties, by modifying the currentImageDescription field.
+     * Draws this entity on the map editor.
+     * @param g graphic context
+     * @param zoom zoom of the image (for example, 1: unchanged, 2: zoom of 200%)
+     * @param showTransparency true to make transparent pixels,
+     * false to replace them by a background color
      */
-    public void updateImageDescription() {
-      currentImageDescription = currentImageDescriptions[getSubtype().ordinal()];
+    public void paint(Graphics g, double zoom, boolean showTransparency) {
+
+        if (sprite == null) {
+            // display a default enemy icon
+            super.paint(g, zoom, showTransparency);
+        }
+        else {
+            // display the sprite
+            sprite.paint(g, zoom, showTransparency,
+                    getX(), getY(), null, getDirection(), 0);
+        }
     }
 }
 

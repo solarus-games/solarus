@@ -29,13 +29,14 @@
 
 /**
  * @brief Creates a new crystal switch.
+ * @param name name of the entity to create
  * @param layer layer of the entity to create on the map
  * @param x x coordinate of the entity to create
  * @param y y coordinate of the entity to create
  */
-CrystalSwitch::CrystalSwitch(Layer layer, int x, int y):
+CrystalSwitch::CrystalSwitch(const std::string& name, Layer layer, int x, int y):
   Detector(COLLISION_SPRITE | COLLISION_RECTANGLE | COLLISION_FACING_POINT,
-	   "", layer, x, y, 16, 16),
+	   name, layer, x, y, 16, 16),
   state(false), next_possible_hit_date(System::now()) {
 
   set_origin(8, 13);
@@ -64,7 +65,11 @@ CrystalSwitch::~CrystalSwitch() {
  * @return the instance created
  */
 MapEntity* CrystalSwitch::parse(Game &game, std::istream &is, Layer layer, int x, int y) {
-  return new CrystalSwitch(layer, x, y);
+
+  std::string name;
+  FileTools::read(is, name);
+
+  return new CrystalSwitch(name, layer, x, y);
 }
 
 /**

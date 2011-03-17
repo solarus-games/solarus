@@ -48,7 +48,7 @@ class Arrow: public MapEntity {
     bool is_teletransporter_obstacle(Teletransporter &teletransporter);
     bool is_conveyor_belt_obstacle(ConveyorBelt &conveyor_belt);
     bool is_stairs_obstacle(Stairs &stairs);
-    bool is_water_obstacle();
+    bool is_deep_water_obstacle();
     bool is_hole_obstacle();
     bool is_ladder_obstacle();
     bool is_raised_block_obstacle(CrystalSwitchBlock &raised_block);
@@ -70,7 +70,7 @@ class Arrow: public MapEntity {
     void notify_collision_with_crystal_switch(CrystalSwitch &crystal_switch, CollisionMode collision_mode);
     void notify_collision_with_destructible_item(DestructibleItem &destructible_item, CollisionMode collision_mode);
     void notify_collision_with_enemy(Enemy &enemy, Sprite &enemy_sprite, Sprite &this_sprite);
-    void notify_attacked_enemy(EnemyAttack attack, Enemy &victim, int result, bool killed);
+    void notify_attacked_enemy(EnemyAttack attack, Enemy& victim, EnemyReaction::Reaction& result, bool killed);
     bool has_reached_map_border();
 };
 

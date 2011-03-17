@@ -16,10 +16,12 @@
  */
 #include "hero/JumpingState.h"
 #include "hero/FreeState.h"
+#include "hero/CarryingState.h"
 #include "hero/HeroSprites.h"
 #include "entities/MapEntities.h"
 #include "movements/JumpMovement.h"
 #include "lowlevel/Sound.h"
+#include "lowlevel/Debug.h"
 #include "Game.h"
 #include "Map.h"
 
@@ -31,30 +33,23 @@
  * @param ignore_obstacles true to make the movement ignore obstacles
  * @param with_sound true to play the "jump" sound
  * @param movement_delay delay between each one-pixel move in the jump movement (0: default)
- * @param layer_after_jump the layer to set when the jump is finished
- * (or LAYER_NB to keep the same layer)
  */
 Hero::JumpingState::JumpingState(Hero &hero, int direction8, int length,
-    bool ignore_obstacles, bool with_sound, uint32_t movement_delay, Layer layer_after_jump):
+    bool ignore_obstacles, bool with_sound, uint32_t movement_delay):
   
-  State(hero) {
+  State(hero),
+  carried_item(NULL) {
 
   this->movement = new JumpMovement(direction8, length, 0, ignore_obstacles);
   this->direction8 = direction8;
   this->with_sound = with_sound;
-
-  if (layer_after_jump == LAYER_NB) {
-    layer_after_jump = hero.get_layer();
-  }
-
-  this->layer_after_jump = layer_after_jump;
 }
 
 /**
  * @brief Destructor.
  */
 Hero::JumpingState::~JumpingState() {
-
+  delete carried_item;
 }
 
 /**
@@ -66,8 +61,16 @@ void Hero::JumpingState::start(State *previous_state) {
   State::start(previous_state);
 
   // update the sprites
-  get_sprites().set_animation_direction8(direction8);
-  get_sprites().set_animation_jumping();
+  HeroSprites& sprites = get_sprites();
+  sprites.set_animation_direction8(direction8);
+
+  if (carried_item == NULL) {
+    sprites.set_animation_jumping();
+  }
+  else {
+    sprites.set_animation_walking_carrying();
+    sprites.set_lifted_item(carried_item);
+  }
 
   // jump
   hero.set_movement(movement);
@@ -75,7 +78,6 @@ void Hero::JumpingState::start(State *previous_state) {
   if (with_sound) {
     Sound::play("jump");
   }
-  this->layer_after_jump = layer_after_jump;
 }
 
 /**
@@ -87,6 +89,45 @@ void Hero::JumpingState::stop(State *next_state) {
   State::stop(next_state);
 
   hero.clear_movement();
+
+  if (carried_item != NULL) {
+
+    switch (next_state->get_previous_carried_item_behavior(*carried_item)) {
+
+      case CarriedItem::BEHAVIOR_THROW:
+	carried_item->throw_item(get_sprites().get_animation_direction());
+	get_entities().add_entity(carried_item);
+	carried_item = NULL;
+        break;
+
+      case CarriedItem::BEHAVIOR_DESTROY:
+	delete carried_item;
+	carried_item = NULL;
+	get_sprites().set_lifted_item(NULL);
+	break;
+
+      case CarriedItem::BEHAVIOR_KEEP:
+	carried_item = NULL;
+	break;
+
+      default:
+	Debug::die("Invalid carried item behavior");
+    }
+  }
+}
+
+/**
+ * @brief Changes the map.
+ * @param map the new map
+ */
+void Hero::JumpingState::set_map(Map& map) {
+
+  State::set_map(map);
+
+  // the hero may go to another map while jumping and carrying an item
+  if (carried_item != NULL) {
+    carried_item->set_map(map);
+  }
 }
 
 /**
@@ -96,15 +137,35 @@ void Hero::JumpingState::update() {
 
   State::update();
 
-  if (movement->is_finished()) {
-    get_entities().set_entity_layer(&hero, layer_after_jump);
+  if (carried_item != NULL) {
+    carried_item->update();
+  }
 
-    if (hero.get_ground() == GROUND_DEEP_WATER) {
-      hero.start_deep_water();
-    }
-    else {
-      hero.set_state(new FreeState(hero));
-    }
+  if (movement->is_finished()) {
+    hero.start_state_from_ground();
+  }
+}
+
+/**
+ * @brief Notifies this state that the game was just suspended or resumed.
+ * @param suspended true if the game is suspended
+ */
+void Hero::JumpingState::set_suspended(bool suspended) {
+
+  State::set_suspended(suspended);
+
+  if (carried_item != NULL) {
+    carried_item->set_suspended(suspended);
+  }
+}
+
+/**
+ * @brief Notifies this state that the layer has changed.
+ */
+void Hero::JumpingState::notify_layer_changed() {
+
+  if (carried_item != NULL) {
+    carried_item->set_layer(hero.get_layer());
   }
 }
 
@@ -154,6 +215,22 @@ bool Hero::JumpingState::can_avoid_hole() {
 }
 
 /**
+ * @brief Returns whether the hero ignores the effect of lava in this state.
+ * @return true if the hero ignores the effect of lava in the current state
+ */
+bool Hero::JumpingState::can_avoid_lava() {
+  return true;
+}
+
+/**
+ * @brief Returns whether the hero ignores the effect of prickles in this state.
+ * @return true if the hero ignores the effect of prickles in the current state
+ */
+bool Hero::JumpingState::can_avoid_prickle() {
+  return true;
+}
+
+/**
  * @brief Returns whether the hero ignores the effect of teletransporters in this state.
  * @return true if the hero ignores the effect of teletransporters in this state
  */
@@ -170,11 +247,21 @@ bool Hero::JumpingState::can_avoid_conveyor_belt() {
 }
 
 /**
+ * @brief Returns whether some stairs are considered as obstacle in this state.
+ * @param stairs some stairs
+ * @return true if the stairs are obstacle in this state
+ */
+bool Hero::JumpingState::is_stairs_obstacle(Stairs& stairs) {
+  // allow to jump over stairs covered by water
+  return hero.get_ground() != GROUND_DEEP_WATER;
+}
+
+/**
  * @brief Returns whether a sensor is considered as an obstacle in this state.
  * @param sensor a sensor
  * @return true if the sensor is an obstacle in this state
  */
-bool Hero::JumpingState::is_sensor_obstacle(Sensor &sensor) {
+bool Hero::JumpingState::is_sensor_obstacle(Sensor& sensor) {
 
   // we allow small jumps (e.g. falling from a raised crystal switch block)
   // but not jumping with the feather
@@ -203,5 +290,24 @@ bool Hero::JumpingState::can_avoid_switch() {
  */
 bool Hero::JumpingState::can_be_hurt() {
   return false;
+}
+
+/**
+ * @brief Returns the item currently carried by the hero in this state, if any.
+ * @return the item carried by the hero, or NULL
+ */
+CarriedItem* Hero::JumpingState::get_carried_item() {
+  return carried_item;
+}
+
+/**
+ * @brief Returns the action to do with an item previously carried by the hero when this state starts.
+ * @param carried_item the item carried in the previous state
+ * @return the action to do with a previous carried item when this state starts
+ */
+CarriedItem::Behavior Hero::JumpingState::get_previous_carried_item_behavior(CarriedItem& carried_item) {
+
+  this->carried_item = &carried_item;
+  return CarriedItem::BEHAVIOR_KEEP;
 }
 

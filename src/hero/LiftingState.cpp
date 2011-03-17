@@ -26,10 +26,11 @@
 /**
  * @brief Constructor.
  * @param hero the hero controlled by this state
- * @param item_to_lift the item to lift
+ * @param lifted_item the item to lift (will be destroyed automatically)
  */
-Hero::LiftingState::LiftingState(Hero &hero, DestructibleItem &item_to_lift):
-  State(hero), item_to_lift(item_to_lift), lifted_item(NULL) {
+Hero::LiftingState::LiftingState(Hero& hero, CarriedItem* lifted_item):
+  State(hero),
+  lifted_item(lifted_item) {
 
 }
 
@@ -49,8 +50,7 @@ void Hero::LiftingState::start(State *previous_state) {
 
   State::start(previous_state);
 
-  // create the entity that will actually be lifted
-  lifted_item = new CarriedItem(hero, item_to_lift);
+  // initialize the entity that will be lifted
   lifted_item->set_map(get_map());
 
   get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_THROW);
@@ -74,12 +74,21 @@ void Hero::LiftingState::stop(State *next_state) {
   if (lifted_item != NULL) {
 
     // the lifted item is still managed by this state
-    if (next_state->can_throw_item()) {
-      throw_item();
-    }
-    else {
-      delete lifted_item;
-      lifted_item = NULL;
+    switch (next_state->get_previous_carried_item_behavior(*lifted_item)) {
+
+      case CarriedItem::BEHAVIOR_THROW:
+        throw_item();
+        break;
+
+      case CarriedItem::BEHAVIOR_DESTROY:
+        delete lifted_item;
+        lifted_item = NULL;
+	get_sprites().set_lifted_item(NULL);
+        break;
+
+      case CarriedItem::BEHAVIOR_KEEP:
+        lifted_item = NULL;
+	break;
     }
     get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
   }

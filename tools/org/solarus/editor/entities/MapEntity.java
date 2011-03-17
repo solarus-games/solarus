@@ -65,7 +65,7 @@ import org.solarus.editor.Map;
  *   - Redefine if necessary the non-static updateImageDescription() method:
  *       public void updateImageDescription()
  *       which updates the image representing the entity on the map in its current state.
- *   - If your entity is not drawn from an image file but in a more complex way,
+ *   - If your entity is not drawn from a fixed image file but in a more complex way,
  *       you cannot use updateImageDescription() and you have to redefine directly the paint() method:
  *       public abstract void paint(Graphics g, double zoom, boolean showTransparency).
  * - If your entity type has specific properties, create a subclass of EditEntityComponent.
@@ -379,6 +379,14 @@ public abstract class MapEntity extends Observable {
     }
 
     /**
+     * Changes the map of this entity.
+     * @param map the new map
+     */
+    public void setMap(Map map) {
+        this.map = map;
+    }
+
+    /**
      * Checks the entity validity. An entity must be valid before it is saved.
      * @return true if the entity is valid
      */
@@ -636,6 +644,19 @@ public abstract class MapEntity extends Observable {
     }
 
     /**
+     * Changes the size of the entity on the map.
+     * The location of the entity is not changed.
+     * @param size of the entity in pixels
+     * @throws MapException if the entity is not resizable,
+     * or the size specified is lower than or equal to zero,
+     * or the size specified is not divisible by 8
+     */
+    public void setSize(Dimension size) throws MapException {
+
+        setSize(size.width, size.height);
+    }
+
+    /**
      * Changes the size of the entity.
      * @param width width of the entity in pixels
      * @param height height of the entity in pixels
@@ -643,6 +664,16 @@ public abstract class MapEntity extends Observable {
     protected void setSizeImpl(int width, int height) {
 	positionInMap.width = width;
 	positionInMap.height = height;
+    }
+
+    /**
+     * Changes the size of the entity.
+     * @param width width of the entity in pixels
+     * @param height height of the entity in pixels
+     */
+    protected void setSizeImpl(Dimension size) {
+
+        setSizeImpl(size.width, size.height);
     }
 
     /**

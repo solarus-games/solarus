@@ -21,6 +21,7 @@
 #include "Transition.h"
 #include "entities/Layer.h"
 #include "entities/Ground.h"
+#include "entities/Obstacle.h"
 #include "lowlevel/Rectangle.h"
 
 /**
@@ -171,6 +172,7 @@ class Map {
     // collisions with detectors (checked after a move)
     void check_collision_with_detectors(MapEntity &entity);
     void check_collision_with_detectors(MapEntity &entity, Sprite &sprite);
+    static Ground obstacle_to_ground(Obstacle obstacle);
 
     // update and display
     void update();
@@ -190,7 +192,6 @@ inline bool Map::test_collision_with_border(int x, int y) {
 
   return (x < 0 || y < 0 || x >= location.get_width() || y >= location.get_height());
 }
-
 
 #endif
 

@@ -86,6 +86,7 @@ void PathMovement::set_path(const std::string &path) {
 int PathMovement::get_speed() {
   return speed;
 }
+
 /**
  * @brief Sets the speed of this movement.
  * @param speed the speed in pixels per second
@@ -326,7 +327,7 @@ int PathMovement::get_total_distance_covered() {
 
 /**
  * @brief Returns the direction a sprite controlled by this movement should take.
- * @return the direction to use to display the object controlled by this movement (0 to 4)
+ * @return the direction to use to display the object controlled by this movement (0 to 3)
  */
 int PathMovement::get_displayed_direction4() {
 
@@ -480,7 +481,7 @@ const std::string PathMovement::get_property(const std::string &key) {
  * - snap_to_grid
  *
  * @param key key of the property to set (the accepted keys depend on the movement type)
- * @param the value to set
+ * @param value the value to set
  */
 void PathMovement::set_property(const std::string &key, const std::string &value) {
 

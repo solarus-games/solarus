@@ -21,6 +21,7 @@
 #include "Treasure.h"
 #include "entities/Detector.h"
 #include "entities/EnemyAttack.h"
+#include "entities/EnemyReaction.h"
 #include "entities/Explosion.h"
 
 /**
@@ -45,21 +46,8 @@ class Enemy: public Detector {
 
   public:
 
-    /**
-     * @brief Subtypes of enemies.
-     */
-    enum Subtype {
-      // TODO CUSTOM = -1
-      SIMPLE_GREEN_SOLDIER = 0,
-      BUBBLE,
-      TENTACLE,
-      MINILLOSAUR,
-      CHAIN_AND_BALL,
-
-      PAPILLOSAUR_KING = 1000,
-      KHORNETH,
-      KHOTOR
-    };
+    friend class EnemyScript;     // allow enemy scripts to access private data
+    friend class Script;          // allow scripts with the enemy API to access private data
 
     /**
      * @brief Enemy ranks.
@@ -78,7 +66,8 @@ class Enemy: public Detector {
     enum HurtSoundStyle {
       HURT_SOUND_NORMAL,			/**< "enemy_hurt" (and if necessary "enemy_killed") is played */
       HURT_SOUND_MONSTER,			/**< "monster_hurt" (and if necessary "enemy_killed") is played */
-      HURT_SOUND_BOSS				/**< "boss_hurt" or "boss_killed" is played */
+      HURT_SOUND_BOSS,				/**< "boss_hurt" or "boss_killed" is played */
+      HURT_SOUND_NUMBER
     };
 
     /**
@@ -103,6 +92,7 @@ class Enemy: public Detector {
     int life;						/**< number of health points of the enemy (default: 1) */
     HurtSoundStyle hurt_sound_style;			/**< the sound played when this kind of enemy gets hurt by the hero
 							 * (default: HURT_SOUND_NORMAL) */
+    static const std::string hurt_sound_style_names[];  /**< name of each hurt sound style */
     bool pushed_back_when_hurt;				/**< indicates whether the enemy is pushed back when it gets hurt by the hero
 							 * (default: true) */
     bool push_back_hero_on_sword;			/**< indicates whether the hero is pushed back when he hurts the enemy with his
@@ -110,25 +100,18 @@ class Enemy: public Detector {
     int minimum_shield_needed;				/**< shield number needed by the hero to avoid the attack of this enemy,
 							 * or 0 to make the attack unavoidable (default: 0) */
 
-    int attack_consequences[ATTACK_NUMBER];		/**< indicates how the enemy reacts to each attack
-							 * (by default, it depends on the attacks):
-							 * - a number greater than 0 represents the number of health points lost when
-							 *   he is subject to this attack
-							 *     - for a sword attack, this number is multiplied depending on
-							 *       the sword strongness and the presence of a spin attack
-							 *     - for a thrown item, this number is multiplied by the weight
-							 * - a value of 0 means that the attack is just ignored (this is the case
-							 *   for some special enemies like Octorok's stones),
-							 * - a value of -1 means that the enemy is protected against this attack (a
-							 *   sound is played),
-							 * - a value of -2 means that this attack immobilizes the enemy
-							 * - a value of -3 means a custom effect for the attack
-							 *   (the custom_attack() fonction is called) */
+    EnemyReaction attack_reactions[ATTACK_NUMBER];      /**< indicates how the enemy reacts to each attack
+							 * (by default, it depends on the attacks) */
+    static const std::string attack_names[];            /**< name of each type of attack an enemy can receive */
+
 
     // enemy characteristics
     Rank rank;						/**< is this enemy a normal enemy, a miniboss or a boss? */
     int savegame_variable;				/**< index of the boolean variable indicating whether this enemy is killed,
 							 * or -1 if it is not saved */
+    std::string obstacle_behavior;                      /**< behavior with obstacles: "normal", "flying" or "swimming" */
+    bool displayed_in_y_order;                          /**< indicates that the enemy is displayed as the same level as the hero */
+    std::string father_name;                            /**< name of the enemy who created this enemy (or an empty string) */
 
     // enemy state
     bool enabled;					/**< indicates that the enemy is enabled */
@@ -177,9 +160,13 @@ class Enemy: public Detector {
     void set_features(int damage_on_hero, int life, HurtSoundStyle hurt_sound_style);
     void set_features(int damage_on_hero, int life, HurtSoundStyle hurt_sound_style,
 	bool pushed_back_when_hurt, bool push_back_hero_on_sword, int minimum_shield_needed);
-    void set_attack_consequence(EnemyAttack attack, int consequence);
+    void set_attack_consequence(EnemyAttack attack, EnemyReaction::ReactionType reaction, int life_lost = 0);
+    void set_attack_consequence_sprite(Sprite& sprite, EnemyAttack attack,
+        EnemyReaction::ReactionType reaction, int life_lost = 0);
     void set_no_attack_consequences();
+    void set_no_attack_consequences_sprite(Sprite& sprite);
     void set_default_attack_consequences();
+    void set_default_attack_consequences_sprite(Sprite& sprite);
 
     // hurt the enemy
     void play_hurt_sound();
@@ -206,25 +193,28 @@ class Enemy: public Detector {
     virtual ~Enemy();
 
     static CreationFunction parse;
-    static MapEntity* create(Game &game, Subtype type, Rank rank, int savegame_variable,
-	const std::string &name, Layer layer, int x, int y, int direction,
-	const Treasure &treasure);
+    static MapEntity* create(Game& game,
+	const std::string& breed, Rank rank, int savegame_variable,
+	const std::string& name, Layer layer, int x, int y, int direction,
+	const Treasure& treasure);
 
     EntityType get_type();
-    void set_map(Map &map);
+    virtual void set_map(Map &map);
     Rank get_rank();
 
     // obstacles
     bool is_obstacle_for(MapEntity &other);
     bool is_sensor_obstacle(Sensor &sensor);
     bool is_destructible_item_obstacle(DestructibleItem &destructible_item);
+    bool is_deep_water_obstacle();
+    bool is_shallow_water_obstacle();
+    bool is_hole_obstacle();
 
     // enemy state
+    bool is_displayed_in_y_order();
     virtual void update();
     virtual void set_suspended(bool suspended);
-    bool is_enabled();
-    void set_enabled(bool enabled);
-    bool is_visible();
+    void notify_enabled(bool enabled);
     void notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode);
     void notify_collision(MapEntity &other_entity, Sprite &other_sprite, Sprite &this_sprite);
     void notify_collision_with_explosion(Explosion &explosion, Sprite &sprite_overlapping);
@@ -233,12 +223,18 @@ class Enemy: public Detector {
     void attack_hero(Hero &hero, Sprite *this_sprite);
     void attack_stopped_by_hero_shield();
 
-    // be subject to an attack
-    int get_attack_consequence(EnemyAttack attack);
-    virtual int get_attack_consequence(EnemyAttack attack, Sprite *this_sprite);
+    // receive an attack
+    const EnemyReaction::Reaction& get_attack_consequence(EnemyAttack attack, Sprite *this_sprite);
     void try_hurt(EnemyAttack attack, MapEntity &source, Sprite *this_sprite);
     void kill();
     bool is_dying();
+    void set_treasure(const Treasure& treasure);
+
+    static const std::string& get_attack_name(EnemyAttack attack);
+    static EnemyAttack get_attack_by_name(const std::string& attack_name);
+
+    static const std::string& get_hurt_sound_style_name(HurtSoundStyle style);
+    static HurtSoundStyle get_hurt_sound_style_by_name(const std::string& name);
 };
 
 #endif

@@ -17,6 +17,7 @@
 #include "hero/PlayerMovementState.h"
 #include "hero/HeroSprites.h"
 #include "movements/PlayerMovement.h"
+#include "lowlevel/Debug.h"
 
 /**
  * @brief Constructor.
@@ -41,7 +42,7 @@ Hero::PlayerMovementState::~PlayerMovementState() {
  *
  * @return the movement
  */
-PlayerMovement * Hero::PlayerMovementState::get_player_movement() {
+PlayerMovement* Hero::PlayerMovementState::get_player_movement() {
   return (PlayerMovement*) hero.get_movement();
 }
 
@@ -55,9 +56,9 @@ PlayerMovement * Hero::PlayerMovementState::get_player_movement() {
 void Hero::PlayerMovementState::start(State *previous_state) {
 
   hero.set_movement(new PlayerMovement(hero.get_walking_speed()));
-  get_player_movement()->compute_movement();
 
   if (is_current_state()) { // yes, the state may have already changed
+    get_player_movement()->compute_movement();
     if (get_wanted_movement_direction8() != -1) {
       set_animation_walking();
     }
@@ -77,8 +78,7 @@ void Hero::PlayerMovementState::start(State *previous_state) {
  * @param next_state the next state (for information)
  */
 void Hero::PlayerMovementState::stop(State *next_state) {
- 
-  get_player_movement()->stop();
+
   hero.clear_movement();
   get_sprites().set_animation_stopped_normal();
 }
@@ -179,6 +179,13 @@ void Hero::PlayerMovementState::notify_movement_changed() {
   else if (!movement_walking && sprites_walking) {
     set_animation_stopped();
   }
+}
+
+/**
+ * @brief Notifies this state that the layer has changed.
+ */
+void Hero::PlayerMovementState::notify_layer_changed() {
+  hero.update_movement();
 }
 
 /**

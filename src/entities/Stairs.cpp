@@ -25,6 +25,7 @@
 
 /**
  * @brief Creates a new stairs entity.
+ * @param name name of the entity to create
  * @param layer layer of the entity to create on the map
  * @param x x coordinate of the entity to create
  * @param y y coordinate of the entity to create
@@ -33,7 +34,7 @@
  */
 Stairs::Stairs(const std::string &name, Layer layer, int x, int y,
                int direction, Subtype subtype):
-  Detector(COLLISION_FACING_POINT | COLLISION_RECTANGLE, name, layer, x, y, 16, 16),
+  Detector(COLLISION_FACING_POINT_ANY | COLLISION_RECTANGLE, name, layer, x, y, 16, 16),
   subtype(subtype), enabled(true) {
 
   Debug::check_assertion(!is_inside_floor() || layer != LAYER_HIGH, "Cannot put single floor stairs on the high layer");
@@ -88,16 +89,12 @@ EntityType Stairs::get_type() {
 }
 
 /**
- * @brief Sets the map.
- *
- * Warning: as this function is called when initializing the map,
- * the current map of the game is still the old one.
- *
+ * @brief Notifies this entity that its map has just become active.
  * @param map the map
  */
-void Stairs::set_map(Map &map) {
+void Stairs::notify_map_started() {
 
-  MapEntity::set_map(map);
+  MapEntity::notify_map_started();
   update_dynamic_tiles();
 }
 
@@ -130,13 +127,14 @@ bool Stairs::is_sword_ignored() {
 }
 
 /**
- * @brief Returns whether this entity is an obstacle for another one.
+ * @brief Returns whether this entity is an obstacle for another one
+ * when it is enabled.
  * @param other another entity
  * @return true if this entity is an obstacle for the other one
  */
 bool Stairs::is_obstacle_for(MapEntity &other) {
 
-  return is_enabled() && other.is_stairs_obstacle(*this);
+  return other.is_stairs_obstacle(*this);
 }
 
 /**
@@ -303,23 +301,14 @@ Rectangle Stairs::get_clipping_rectangle(Way way) {
 }
 
 /**
- * @brief Returns whether this stairs are enabled.
- * @return true if these stairs are enabled
- */
-bool Stairs::is_enabled() {
-  return enabled;
-}
-
-/**
- * @brief Enables or disables these stairs.
- * @param enabled true to enable the stairs, false to disable them
+ * @brief Notifies this entity that it was just enabled or disabled.
+ * @param enabled true if the entity is now enabled
  *
  * All dynamic tiles whose prefix is "<stairsname>_enabled"
  * and "<stairsame>_disabled" will be updated depending on the stairs state
  * (where <stairsname> is the name of the stairs).
  */
-void Stairs::set_enabled(bool enabled) {
-  this->enabled = enabled;
+void Stairs::notify_enabled(bool enabled) {
   update_dynamic_tiles();
 }
 

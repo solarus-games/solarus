@@ -79,8 +79,6 @@ const std::string& PixelMovement::get_trajectory() {
  */
 void PixelMovement::set_trajectory(const std::list<Rectangle> &trajectory) {
 
-  //std::cout << "PixelMovement::set_trajectory(list)\n";
-
   this->trajectory = trajectory;
   this->trajectory_string = ""; // will be computed only on demand
 
@@ -98,8 +96,6 @@ void PixelMovement::set_trajectory(const std::list<Rectangle> &trajectory) {
  * with the syntax "dx1 dy1  dx2 dy2  dx3 dy3 ..." (the number of spaces between values does not matter)
  */
 void PixelMovement::set_trajectory(const std::string &trajectory_string) {
-
-  //std::cout << "PixelMovement::set_trajectory(" << trajectory_string << ")\n";
 
   int dx = 0;
   int dy = 0;
@@ -173,7 +169,10 @@ void PixelMovement::restart() {
     finished = false;
     trajectory_iterator = trajectory.begin();
     next_move_date = System::now() + delay;
-    //std::cout << "starting new trajectory " << trajectory_string << ", current pos = " << get_xy() << "\n";
+
+    if (get_entity() != NULL) {
+      get_entity()->notify_movement_changed();
+    }
   }
 }
 
@@ -208,7 +207,7 @@ void PixelMovement::set_suspended(bool suspended) {
 
   Movement::set_suspended(suspended);
 
-  if (!suspended) {
+  if (!suspended && get_when_suspended() != 0) {
     next_move_date += System::now() - get_when_suspended();
   }
 }
@@ -225,7 +224,6 @@ void PixelMovement::make_next_step() {
 
   if (!test_collision_with_obstacles(dxy.get_x(), dxy.get_y())) {
     translate_xy(dxy);
-    //std::cout << "translated " << get_entity() << " of " << dxy << ", new pos = " << get_xy() << "\n";
     success = true;
   }
 
@@ -325,7 +323,7 @@ const std::string PixelMovement::get_property(const std::string &key) {
  * - ignore_obstacles
  *
  * @param key key of the property to set (the accepted keys depend on the movement type)
- * @param the value to set
+ * @param value the value to set
  */
 void PixelMovement::set_property(const std::string &key, const std::string &value) {
 

@@ -57,11 +57,17 @@ LanguageScreen::LanguageScreen(Solarus &solarus):
       language_texts[i]->set_font("fixed");
       language_texts[i]->set_text(it->second);
       if (language_codes[i] == FileTools::get_default_language()) {
-	cursor_position = i;
+        cursor_position = i;
       }
       i++;
     }
     set_cursor_position(cursor_position);
+  }
+
+  if (nb_languages == 1) {
+    // no choice: skip the language screen
+    FileTools::set_language(language_codes[0]);
+    finished = true;
   }
 }
 
@@ -72,11 +78,11 @@ LanguageScreen::~LanguageScreen() {
 
   delete transition;
   delete intermediate_surface;
+  delete[] language_codes;
   for (int i = 0; i < nb_languages; i++) {
     delete language_texts[i];
   }
   delete[] language_texts;
-  delete[] language_codes;
 }
 
 /**

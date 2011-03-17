@@ -44,18 +44,29 @@ const std::string CarriedItem::lifting_trajectories[4] = {
 };
 
 /**
- * @brief Constructor.
- *
- * Creates a carried item (i.e. an item carried by the hero)
- * based on a destructible item (i.e. the item placed on the map
- * before the hero lifts it).
- *
- * @param hero the hero
- * @param destructible_item a destructible item
+ * @brief Creates a carried item (i.e. an item carried by the hero).
+ * @param hero the hero who is lifting the item to be created
+ * @param original_entity the entity that will be replaced by this carried item
+ * (its coordinates, size and origin will be copied)
+ * @param animation_set_id name of the animation set for the sprite to create
+ * @param destruction_sound_id name of the sound to play when this item is destroyed
+ * (or an empty string)
+ * @param damage_on_enemies damage received by an enemy if the item is thrown on him
+ * (possibly 0)
+ * @param explosion_date date of the explosion if the item should explode,
+ * or 0 if the item does not explode
  */
-CarriedItem::CarriedItem(Hero &hero, DestructibleItem &destructible_item):
-  MapEntity(), hero(hero), is_lifting(true), is_throwing(false), is_breaking(false),
-  break_on_intermediate_layer(false), explosion_date(0) {
+CarriedItem::CarriedItem(Hero& hero, MapEntity& original_entity,
+    const SpriteAnimationSetId& animation_set_id,
+    const SoundId& destruction_sound_id,
+    int damage_on_enemies, uint32_t explosion_date):
+
+  MapEntity(),
+  hero(hero),
+  is_lifting(true),
+  is_throwing(false),
+  is_breaking(false),
+  break_on_intermediate_layer(false) {
 
   // put the item on the hero's layer
   set_layer(hero.get_layer());
@@ -63,34 +74,32 @@ CarriedItem::CarriedItem(Hero &hero, DestructibleItem &destructible_item):
   // align correctly the item with the hero
   int direction = hero.get_animation_direction();
   if (direction % 2 == 0) {
-    set_xy(destructible_item.get_x(), hero.get_y());
+    set_xy(original_entity.get_x(), hero.get_y());
   }
   else {
-    set_xy(hero.get_x(), destructible_item.get_y());
+    set_xy(hero.get_x(), original_entity.get_y());
   }
-  set_origin(destructible_item.get_origin());
-  set_size(destructible_item.get_width(), destructible_item.get_height());
+  set_origin(original_entity.get_origin());
+  set_size(original_entity.get_size());
 
   // create the lift movement and the sprite
   PixelMovement *movement = new PixelMovement(lifting_trajectories[direction], 100, false, true);
-  create_sprite(destructible_item.get_animation_set_id());
+  create_sprite(animation_set_id);
   get_sprite().set_current_animation("stopped");
   set_movement(movement);
 
   // create the breaking sound
-  destruction_sound_id = destructible_item.get_destruction_sound_id();
+  this->destruction_sound_id = destruction_sound_id;
 
   // create the shadow (not visible yet)
-  shadow_sprite = new Sprite("entities/shadow");
-  shadow_sprite->set_current_animation("big");
+  this->shadow_sprite = new Sprite("entities/shadow");
+  this->shadow_sprite->set_current_animation("big");
 
   // damage on enemies
-  damage_on_enemies = destructible_item.get_damage_on_enemies();
+  this->damage_on_enemies = damage_on_enemies;
 
   // explosion
-  if (destructible_item.can_explode()) {
-    explosion_date = System::now() + 6000;
-  }
+  this->explosion_date = explosion_date;
 }
 
 /**
@@ -262,14 +271,19 @@ void CarriedItem::break_item() {
     set_y(get_y() - item_height);
   }
 
-  movement->stop();
+  get_movement()->stop();
 
   if (!can_explode()) {
-    Sound::play(destruction_sound_id);
-    get_sprite().set_current_animation("destroy");
+    if (destruction_sound_id.size() > 0) {
+      Sound::play(destruction_sound_id);
+    }
+    if (get_sprite().has_animation("destroy")) {
+      get_sprite().set_current_animation("destroy");
+    }
   }
   else {
     get_entities().add_entity(new Explosion(get_layer(), get_xy(), true));
+    Sound::play("explosion");
     if (is_throwing) {
       remove_from_map(); // because if the item was still carried by the hero, then the hero class will destroy it
     }
@@ -374,7 +388,7 @@ void CarriedItem::update() {
       get_entities().set_entity_layer(this, LAYER_INTERMEDIATE);
       break_on_intermediate_layer = false;
     }
-    else if (movement->is_stopped() || y_increment >= 7) {
+    else if (get_movement()->is_stopped() || y_increment >= 7) {
       break_item();
     }
     else {
@@ -414,7 +428,9 @@ void CarriedItem::display_on_map() {
  */
 void CarriedItem::notify_collision_with_enemy(Enemy &enemy) {
 
-  if (is_throwing && !can_explode()) {
+  if (is_throwing
+      && !can_explode()
+      && get_damage_on_enemies() > 0) {
     enemy.try_hurt(ATTACK_THROWN_ITEM, *this, NULL);
   }
 }
@@ -426,16 +442,13 @@ void CarriedItem::notify_collision_with_enemy(Enemy &enemy) {
  *
  * @param attack the attack
  * @param victim the enemy just hurt
- * @param result indicates how the enemy has reacted to the attack:
- * - a number greater than 0 represents the number of health points the enemy has just lost
- * - a value of 0 means that the attack was just ignored 
- * - a value of -1 means that the enemy was protected against the attack
- * - a value of -2 means that the attack immobilized the enemy
+ * @param result indicates how the enemy has reacted to the attack
  * @param killed indicates that the attack has just killed the enemy
  */
-void CarriedItem::notify_attacked_enemy(EnemyAttack attack, Enemy &victim, int result, bool killed) {
+void CarriedItem::notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
+    EnemyReaction::Reaction& result, bool killed) {
 
-  if (result != 0) {
+  if (result.type != EnemyReaction::IGNORED) {
     break_item();
   }
 }
@@ -468,10 +481,10 @@ bool CarriedItem::is_stairs_obstacle(Stairs &stairs) {
 }
 
 /**
- * @brief Returns whether a water tile is currently considered as an obstacle for this entity.
- * @return true if the water tiles are currently an obstacle for this entity
+ * @brief Returns whether a deep water tile is currently considered as an obstacle for this entity.
+ * @return true if the deep water tiles are currently an obstacle for this entity
  */
-bool CarriedItem::is_water_obstacle() {
+bool CarriedItem::is_deep_water_obstacle() {
   return false;
 }
 

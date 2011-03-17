@@ -143,6 +143,7 @@ DialogBox& Hero::State::get_dialog_box() {
  */
 void Hero::State::start(State *previous_state) {
   set_suspended(hero.is_suspended());
+  hero.set_facing_entity(NULL);
 }
 
 /**
@@ -482,6 +483,28 @@ bool Hero::State::can_avoid_hole() {
 }
 
 /**
+ * @brief Returns whether the hero ignores the effect of lava in this state.
+ *
+ * Returns false by default.
+ *
+ * @return true if the hero ignores the effect of lava in the current state
+ */
+bool Hero::State::can_avoid_lava() {
+  return false;
+}
+
+/**
+ * @brief Returns whether the hero ignores the effect of prickles in this state.
+ *
+ * Returns false by default.
+ *
+ * @return true if the hero ignores the effect of prickles in the current state
+ */
+bool Hero::State::can_avoid_prickle() {
+  return false;
+}
+
+/**
  * @brief Returns whether the hero is touching the ground in the current state.
  *
  * Returns true by default.
@@ -490,6 +513,18 @@ bool Hero::State::can_avoid_hole() {
  */
 bool Hero::State::is_touching_ground() {
   return true;
+}
+
+/**
+ * @brief Returns whether the hero's current position can be considered
+ * as a place to come back after a bad ground (hole, deep water, etc).
+ *
+ * Returns is_touching_ground() by default.
+ *
+ * @return true if the hero can come back here
+ */
+bool Hero::State::can_come_from_bad_ground() {
+  return is_touching_ground();
 }
 
 /**
@@ -513,7 +548,7 @@ bool Hero::State::are_collisions_ignored() {
  *
  * @return true if the deep water tiles are considered as obstacles in this state
  */
-bool Hero::State::is_water_obstacle() {
+bool Hero::State::is_deep_water_obstacle() {
   return false;
 }
 
@@ -525,6 +560,28 @@ bool Hero::State::is_water_obstacle() {
  * @return true if the holes are considered as obstacles in this state
  */
 bool Hero::State::is_hole_obstacle() {
+  return false;
+}
+
+/**
+ * @brief Returns whether lava is considered as an obstacle in this state.
+ *
+ * Returns false by default.
+ *
+ * @return true if lava is considered as obstacles in this state
+ */
+bool Hero::State::is_lava_obstacle() {
+  return false;
+}
+
+/**
+ * @brief Returns whether prickles are considered as an obstacle in this state.
+ *
+ * Returns false by default.
+ *
+ * @return true if prickles are considered as obstacles in this state
+ */
+bool Hero::State::is_prickle_obstacle() {
   return false;
 }
 
@@ -547,7 +604,7 @@ bool Hero::State::is_ladder_obstacle() {
  * @param teletransporter a teletransporter
  * @return true if the teletransporter is an obstacle in this state
  */
-bool Hero::State::is_teletransporter_obstacle(Teletransporter &teletransporter) {
+bool Hero::State::is_teletransporter_obstacle(Teletransporter& teletransporter) {
   return false;
 }
 
@@ -568,6 +625,8 @@ bool Hero::State::can_avoid_teletransporter() {
  * When overlapping a teletransporter, if this function returns true, the teletransporter
  * will not be activated immediately. The state then has to activate it when it is ready.
  * Returns false by default.
+ *
+ * @return true if the effect of teletransporters is delayed in this state
  */
 bool Hero::State::is_teletransporter_delayed() {
   return false;
@@ -581,7 +640,7 @@ bool Hero::State::is_teletransporter_delayed() {
  * @param conveyor_belt a conveyor belt
  * @return true if the conveyor belt is an obstacle in this state
  */
-bool Hero::State::is_conveyor_belt_obstacle(ConveyorBelt &conveyor_belt) {
+bool Hero::State::is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt) {
   return false;
 }
 
@@ -621,6 +680,18 @@ bool Hero::State::can_take_jump_sensor() {
 }
 
 /**
+ * @brief Returns whether some stairs are considered as obstacle in this state.
+ *
+ * Returns true by default.
+ *
+ * @param stairs some stairs
+ * @return true if the stairs are obstacle in this state
+ */
+bool Hero::State::is_stairs_obstacle(Stairs& stairs) {
+  return true;
+}
+
+/**
  * @brief Returns whether a sensor is considered as an obstacle in this state.
  *
  * Returns false by default.
@@ -628,7 +699,7 @@ bool Hero::State::can_take_jump_sensor() {
  * @param sensor a sensor
  * @return true if the sensor is an obstacle in this state
  */
-bool Hero::State::is_sensor_obstacle(Sensor &sensor) {
+bool Hero::State::is_sensor_obstacle(Sensor& sensor) {
   return false;
 }
 
@@ -683,10 +754,11 @@ bool Hero::State::can_avoid_explosion() {
  *
  * @param attack the attack
  * @param victim the enemy just hurt
- * @param result indicates how the enemy has reacted to the attack (see Enemy.h)
+ * @param result indicates how the enemy has reacted to the attack
  * @param killed indicates that the attack has just killed the enemy
  */
-void Hero::State::notify_attacked_enemy(EnemyAttack attack, Enemy &victim, int result, bool killed) {
+void Hero::State::notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
+    EnemyReaction::Reaction& result, bool killed) {
 }
 
 /**
@@ -823,15 +895,37 @@ bool Hero::State::can_start_inventory_item() {
 }
 
 /**
- * @brief Returns whether an item previously carried by the hero should be thrown when this state starts.
- * 
- * If false is returned, the item will be directly removed.
- * If true is returned, the item will be thrown in the direction the hero is looking towards.
- * Returns true by default.
+ * @brief Returns whether the hero is currently carrying an item in this state.
  *
- * @return true if an item previously carried by the hero should be thrown when this state starts
+ * This function returns true if get_carried_item() is not NULL.
+ * Redefine get_carried_item() if the hero is able to carry an item in this state.
+ *
+ * @return true if the hero is currently carrying an item in this state
  */
-bool Hero::State::can_throw_item() {
-  return true;
+bool Hero::State::is_carrying_item() {
+  return get_carried_item() != NULL;
+}
+
+/**
+ * @brief Returns the item currently carried by the hero in this state, if any.
+ *
+ * Redefine this function to make the hero able to carry an item in this state.
+ *
+ * @return the item carried by the hero, or NULL
+ */
+CarriedItem* Hero::State::get_carried_item() {
+  return NULL;
+}
+
+/**
+ * @brief Returns the action to do with an item previously carried by the hero when this state starts.
+ * 
+ * Returns CarriedItem::BEHAVIOR_THROW by default.
+ *
+ * @param carried_item the item carried in the previous state
+ * @return the action to do with a previous carried item when this state starts
+ */
+CarriedItem::Behavior Hero::State::get_previous_carried_item_behavior(CarriedItem& carried_item) {
+  return CarriedItem::BEHAVIOR_THROW;
 }
 

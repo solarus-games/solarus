@@ -27,6 +27,7 @@
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 
+int Sprite::next_unique_id = 0;
 std::map<SpriteAnimationSetId, SpriteAnimationSet*> Sprite::all_animation_sets;
 Surface *Sprite::alpha_surface = NULL;
 
@@ -80,6 +81,7 @@ SpriteAnimationSet& Sprite::get_animation_set(const SpriteAnimationSetId &id) {
  */
 Sprite::Sprite(const SpriteAnimationSetId &id):
 
+  unique_id(next_unique_id++),
   animation_set_id(id),
   animation_set(get_animation_set(id)),
   current_direction(0),
@@ -88,6 +90,7 @@ Sprite::Sprite(const SpriteAnimationSetId &id):
   ignore_suspend(false),
   paused(false),
   finished(false),
+  synchronize_to(NULL),
   blink_delay(0),
   alpha(255),
   alpha_next_change_date(0) {
@@ -100,6 +103,18 @@ Sprite::Sprite(const SpriteAnimationSetId &id):
  */
 Sprite::~Sprite() {
 
+}
+
+/**
+ * @brief Returns the unique id of this sprite.
+ *
+ * It is guaranteed that no other sprite instance will have the same id as this one
+ * during the execution of the program, even after this sprite is deleted.
+ *
+ * @return the unique id of this movement
+ */
+int Sprite::get_unique_id() const {
+  return unique_id;
 }
 
 /**
@@ -237,13 +252,20 @@ void Sprite::set_current_animation(const std::string &animation_name) {
 
     SpriteAnimation *animation = animation_set.get_animation(animation_name);
 
-    Debug::check_assertion(animation != NULL, StringConcat() << "Unknown animation '" << animation_name << "' for animation set '" << animation_set_id << "'");
-
     this->current_animation_name = animation_name;
     this->current_animation = animation;
     set_frame_delay(animation->get_frame_delay());
     set_current_frame(0);
   }
+}
+
+/**
+ * @brief Returns whether this sprite has an animation with the specified name.
+ * @param animation_name an animation name
+ * @return true if this animation exists
+ */
+bool Sprite::has_animation(const std::string& animation_name) {
+  return animation_set.has_animation(animation_name);
 }
 
 /**
@@ -265,7 +287,10 @@ void Sprite::set_current_direction(int current_direction) {
 
   if (current_direction != this->current_direction) {
 
-    Debug::check_assertion(current_direction >= 0, StringConcat() << "Invalid sprite direction: " << current_direction);
+    Debug::check_assertion(current_direction >= 0
+        && current_direction < current_animation->get_nb_directions(),
+        StringConcat() << "Invalid direction of sprite '" << get_animation_set_id()
+        << "': " << current_direction);
 
     this->current_direction = current_direction;
     set_current_frame(0);
@@ -305,6 +330,15 @@ void Sprite::set_current_frame(int current_frame) {
  */
 bool Sprite::has_frame_changed() const {
   return frame_changed;
+}
+
+/**
+ * @brief Makes this sprite always synchronized with another one as soon as
+ * they have the same animation name.
+ * @param other the sprite to synchronize to, or NULL to stop any previous synchronization
+ */
+void Sprite::set_synchronized_to(Sprite* other) {
+  this->synchronize_to = other;
 }
 
 /**
@@ -544,20 +578,33 @@ void Sprite::update() {
   uint32_t now = System::now();
 
   // update the current frame
-  int next_frame;
-  while (!finished && !suspended && !paused && get_frame_delay() > 0
-	 && now >= next_frame_date) {
+  if (synchronize_to == NULL
+      || current_animation_name != synchronize_to->get_current_animation()) {
+    // update the frames normally (with the time)
+    int next_frame;
+    while (!finished && !suspended && !paused && get_frame_delay() > 0
+	&& now >= next_frame_date) {
 
-    // we get the next frame
-    next_frame = get_next_frame();
+      // we get the next frame
+      next_frame = get_next_frame();
 
-    // test whether the animation is finished
-    if (next_frame == -1) {
-      finished = true;
+      // test whether the animation is finished
+      if (next_frame == -1) {
+	finished = true;
+      }
+      else {
+	current_frame = next_frame;
+	next_frame_date += get_frame_delay();
+      }
+      frame_changed = true;
     }
-    else {
-      current_frame = next_frame;
-      next_frame_date += get_frame_delay();
+  }
+  else {
+    // take the same frame as the other sprite
+    int other_frame = synchronize_to->get_current_frame();
+    if (other_frame != current_frame) {
+      current_frame = other_frame;
+      next_frame_date = now + get_frame_delay();
       frame_changed = true;
     }
   }

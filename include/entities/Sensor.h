@@ -44,8 +44,8 @@ class Sensor: public Detector {
 
   private:
 
-    Subtype subtype;            /**< subtype of sensor */
-    bool hero_already_overlaps; /**< true if the hero is currently on this sensor */
+    Subtype subtype;             /**< subtype of sensor */
+    bool activated_by_hero;      /**< true if the sensor is activated by the hero */
 
   public:
 
@@ -58,9 +58,9 @@ class Sensor: public Detector {
     Subtype get_subtype();
     bool has_layer_independent_collisions();
     bool is_obstacle_for(MapEntity &other);
-    bool test_collision_custom(MapEntity &entity);
     void notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode);
     void activate(Hero &hero);
+    void update();
 };
 
 #endif

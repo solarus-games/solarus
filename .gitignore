@@ -2,12 +2,15 @@
 *.swp
 *.luac
 *.class
+*.pyc
 .cproject
 .project
+.classpath
 .settings
 tags
 doc/html/
 tools/javadoc/
+tools/solaruskeystore
 work/unversioned/
 CMakeCache.txt
 install_manifest.txt

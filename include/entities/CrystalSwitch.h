@@ -40,7 +40,7 @@ class CrystalSwitch: public Detector {
 
   public:
 
-    CrystalSwitch(Layer layer, int x, int y);
+    CrystalSwitch(const std::string& name, Layer layer, int x, int y);
     ~CrystalSwitch();
     static CreationFunction parse;
 

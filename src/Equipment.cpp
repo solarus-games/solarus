@@ -449,6 +449,7 @@ void Equipment::stop_removing_magic() {
 /**
  * @brief Returns the static properties of the specified item.
  * @param item_name name of the item to get
+ * @return the static properties of this item
  */
 ItemProperties& Equipment::get_item_properties(const std::string &item_name) {
 
@@ -759,6 +760,9 @@ bool Equipment::are_small_keys_enabled() {
  * is stored for the current map.
  *
  * Stops with an error message if the small keys are not enabled in the current map.
+ *
+ * @return the index of the savegame variable that stores the number of small keys
+ * for the current map
  */
 int Equipment::get_small_keys_variable() {
 

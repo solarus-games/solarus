@@ -1,6 +1,10 @@
-svn export . export
+mkdir export
+git archive -o export/tools.tar HEAD .
 cd export
+tar xvf tools.tar
+rm tools.tar
 ./compile
 jar cvmf manifest.mf solarus-editor.jar org
-keytool -genkey -keystore solaruskeystore -alias solaruskey
-jarsigner -keystore solaruskeystore solarus-editor.jar solaruskey
+# keytool -genkey -keystore ../solaruskeystore -alias solaruskey
+# jarsigner -keystore ../solaruskeystore ini4j.jar solaruskey
+jarsigner -keystore ../solaruskeystore solarus-editor.jar solaruskey

@@ -108,6 +108,7 @@ class MapEntities {
     void add_entity(MapEntity *entity);
     void remove_entity(MapEntity *entity);
     void remove_entity(EntityType type, const std::string &name);
+    void remove_entities_with_prefix(EntityType type, const std::string& prefix);
     void bring_to_front(MapEntity *entity);
     void destroy_all_entities();
     static bool compare_y(MapEntity *first, MapEntity *second);
@@ -117,10 +118,6 @@ class MapEntities {
     bool overlaps_raised_blocks(Layer layer, const Rectangle &rectangle);
     bool is_boomerang_present();
     void remove_boomerang();
-    void start_boss_battle(Enemy *boss);
-    void end_boss_battle();
-    void start_miniboss_battle(Enemy *miniboss);
-    void end_miniboss_battle();
 
     // game loop
     void notify_map_started();
@@ -128,6 +125,26 @@ class MapEntities {
     void update();
     void display();
 };
+
+/**
+ * @brief Returns the obstacle property of the tile located at a specified point.
+ *
+ * This function assumes that the parameters are correct: for performance reasons,
+ * no check is done here.
+ * Dynamic tiles are not considered here.
+ *
+ * @param layer of the tile to get
+ * @param x x coordinate of the point
+ * @param y y coordinate of the point
+ * @return the obstacle property of this tile
+ */
+inline Obstacle MapEntities::get_obstacle_tile(Layer layer, int x, int y) {
+
+  // warning: this function is called very often so it has been optimized and should remain so
+
+  // optimization of: return obstacle_tiles[layer][(y / 8) * map_width8 + (x / 8)];
+  return obstacle_tiles[layer][(y >> 3) * map_width8 + (x >> 3)];
+}
 
 #endif
 

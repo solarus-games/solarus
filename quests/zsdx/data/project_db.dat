@@ -42,14 +42,17 @@
 0	37	Billy's cave
 0	39	True hero cave 2F
 0	38	True hero cave 1F
+0	44	Enemies testing area
+0	45	Dungeon 3 4F
+0	46	Test map
 1	0	House
 1	1	Light World
 1	2	Ice dungeon
 1	3	Cave
-1	4	Blue dungeon
-1	5	Green dungeon
-1	7	Brown dungeon
-1	8	Blue dungeon (dark world style)
+1	4	Blue dungeon (LW)
+1	5	Green dungeon (LW)
+1	7	Brown dungeon (LW)
+1	8	Blue dungeon (DW)
 1	6	Intro
 2	agahnim.spc	Agahnim theme
 2	beginning.spc	Beginning
@@ -246,3 +249,21 @@
 5	heart_container	Heart container
 5	piece_of_heart	Piece of heart
 5	fairy	Fairy
+6	simple_green_soldier	Simple green soldier
+6	bubble	Bubble
+6	tentacle	Tentacle
+6	skeletor	Skeletor
+6	globul	Globul
+6	mandible	Mandible
+6	bee_guard	Bee Guard
+6	blue_bullblin	Blue Bullblin
+6	red_bullblin	Red Bullblin
+6	minillosaur_egg	Minillosaur Egg
+6	chain_and_ball	Chain and ball
+6	papillosaur_king	Papillosaur King
+6	khorneth	Khorneth
+6	khotor	Khotor
+7	fr/text/dialogs.dat	French dialogs
+7	en/text/dialogs.dat	English dialogs
+7	de/text/dialogs.dat	Deutsch dialogs
+7	nl/text/dialogs.dat	Nederlands dialogs

@@ -1137,19 +1137,21 @@
 0	0	688	584	16	200	971
 0	0	640	584	48	208	723
 0	0	616	816	16	8	36
+0	0	752	392	16	16	1039
+0	0	872	96	16	16	1039
 5	0	840	616	Chest	0	piece_of_heart	1	20
 5	0	512	424	Chest_2	0	rupee	3	19
 5	0	392	848	Chest_3	0	piece_of_heart	1	0
 2	0	0	-16	960	16	to_C2	0	2	4	_side
 2	0	-16	0	16	976	to_D1	0	2	6	_side
 6	0	424	632	8	32	Jump_sensor_2	0	56
-4	0	848	645	3	_random	0	-1
-4	0	904	285	3	_random	0	-1
-4	0	632	397	3	_random	0	-1
-4	0	832	109	3	_random	0	-1
-4	0	848	125	3	_random	0	-1
-4	0	864	109	3	_random	0	-1
-4	0	896	645	3	_random	0	-1
+4	0	848	645	3	_random	1	-1
+4	0	904	285	3	_random	1	-1
+4	0	632	397	3	_random	1	-1
+4	0	832	109	3	_random	1	-1
+4	0	848	125	3	_random	1	-1
+4	0	864	109	3	_random	1	-1
+4	0	896	645	3	_random	1	-1
 8	0	760	405	surprise_wall_sign	3	0	entities/sign	dialog#outside_world.surprise_wall_sign
 3	0	376	61	piece_of_heart	1	21
 8	0	880	109	billy_cavern_sign	3	0	entities/sign	dialog#outside_world.billy_cavern_sign

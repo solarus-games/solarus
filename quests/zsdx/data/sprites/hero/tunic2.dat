@@ -58,7 +58,10 @@ spin_attack hero/spin_attack.tunic2.png 4 30 -1
 0	48	24	24	12	21	22	22
 0	72	24	24	12	21	22	22
 
-victory hero/victory.tunic.png 1 50 17
+victory hero/victory.tunic.png 4 50 17
+0	24	24	24	12	21	18	18
+0	24	24	24	12	21	18	18
+0	24	24	24	12	21	18	18
 0	24	24	24	12	21	18	18
 
 grabbing hero/grabbing.png 4 0 -1
@@ -97,7 +100,10 @@ carrying_walking hero/carrying.png 4 100 0
 72	72	24	24	12	21	3	3
 0	120	24	24	12	21	6	6
 
-brandish hero/miscellaneous.png 1 0 -1
+brandish hero/miscellaneous.png 4 0 -1
+16	0	16	24	8	21	1	1
+16	0	16	24	8	21	1	1
+16	0	16	24	8	21	1	1
 16	0	16	24	8	21	1	1
 
 jumping hero/jumping.png 4 0 -1

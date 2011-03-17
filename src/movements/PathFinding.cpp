@@ -140,7 +140,7 @@ std::string PathFinding::compute_path() {
       for (int i = 0; i < 8; i++) {
 
 	Node new_node;
-	int immediate_cost = (i % 2 == 0) ? 8 : 11;
+	int immediate_cost = (i & 1) ? 11 : 8;
 	new_node.previous_cost = current_node->previous_cost + immediate_cost;
 	new_node.location = current_node->location;
 	new_node.location.add_xy(neighbours_locations[i]);

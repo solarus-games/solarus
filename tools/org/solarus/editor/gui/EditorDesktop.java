@@ -16,45 +16,80 @@
  */
 package org.solarus.editor.gui;
 
-import javax.swing.ButtonGroup;
+import java.awt.Point;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import javax.swing.JTabbedPane;
-import javax.swing.JToolBar;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 /**
  *
  */
-public class EditorDesktop extends JTabbedPane {
+public class EditorDesktop extends JTabbedPane implements MouseListener, ChangeListener {
 
     public static final long serialVersionUID = 1L;
-    /**
-     * The JDesktopPane use to contained the editors
-     */
-    private JTabbedPane desktopPane;
-    /**
-     * The tool bar which allow access to the editors
-     */
-    private JToolBar toolBar;
-    /**
-     * Button group of the tool bar
-     */
-    private ButtonGroup buttonGroup;
 
     public EditorDesktop() {
         setTabLayoutPolicy(SCROLL_TAB_LAYOUT);
-//        addChangeListener(this);
+        addMouseListener(this);
+        addChangeListener(this);
     }
 
+    /**
+     * Add an editor in the tabbedpane
+     * @param editor the editor to add
+     */
     public void addEditor(AbstractEditorWindow editor) {
-        add(editor.getResourceName(), editor);
-        setSelectedIndex(getTabCount()-1);
+        String title = editor.getResourceName();
+        AbstractEditorWindow[] editors = getEditors();
+        if (editors != null) {
+            for (AbstractEditorWindow e : editors) {
+                if (e.getResourceName().equals(title)) {
+                    setSelectedComponent(e);
+                    return;
+                }
+            }
+        }
+        add(title, editor);
+
+        setSelectedIndex(getTabCount() - 1);
         repaint();
     }
 
+    /**
+     * Remove an editor of the tabbedpane
+     * @param editor the editor to remove
+     */
     public void removeEditor(AbstractEditorWindow editor) {
-        remove(editor);
+        if (editor.checkCurrentFileSaved()) {
+            remove(editor);
+        }
         repaint();
     }
 
+    /**
+     * Remove the current editor
+     */
+    public void removeCurrentEditor() {
+        if (getSelectedComponent() != null) {
+            removeEditor((AbstractEditorWindow) getSelectedComponent());
+        }
+    }
+
+    /**
+     * Save the resource of the current editor
+     */
+    public void saveCurrentEditor() {
+        if (getSelectedComponent() != null) {
+           ((AbstractEditorWindow) getSelectedComponent()).save();
+        }
+    }
+
+    /**
+     * Returns the editors currently opened
+     * @return A table containing the editors currently opened
+     */
     public AbstractEditorWindow[] getEditors() {
         int nb = getTabCount();
         if (nb > 0) {
@@ -67,10 +102,49 @@ public class EditorDesktop extends JTabbedPane {
         return null;
     }
 
+    /**
+     * Count the editors currently opened
+     * @return the number of editos currently opened
+     */
     public int countEditors() {
-        //System.out.println("Comptage editeurs : "+desktopPane.getComponentCount());
         return getTabCount();
     }
 
-//    }
+    /**
+     * Allow to close the editor with a click on his tab
+     * @param e
+     */
+    public void mouseClicked(MouseEvent e) {        
+        if(e.getButton() == MouseEvent.BUTTON2) {
+            Point clic = e.getPoint();
+            int idx = indexAtLocation(clic.x, clic.y);
+           AbstractEditorWindow editor = (AbstractEditorWindow) getComponentAt(idx);
+           removeEditor(editor);
+        }
+    }
+
+    public void mousePressed(MouseEvent e) {
+        
+    }
+
+    public void mouseReleased(MouseEvent e) {
+       
+    }
+
+    public void mouseEntered(MouseEvent e) {
+      
+    }
+
+    public void mouseExited(MouseEvent e) {
+       
+    }
+
+    public void stateChanged(ChangeEvent e) {
+        try {
+            ((MapEditorWindow) getSelectedComponent()).getMapView().requestFocus();
+        }
+        catch(ClassCastException cce) {
+            System.out.println("Dans le cul le cast !");
+        }
+    }
 }

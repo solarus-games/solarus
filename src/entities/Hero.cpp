@@ -26,6 +26,7 @@
 #include "entities/Block.h"
 #include "entities/JumpSensor.h"
 #include "entities/Sensor.h"
+#include "entities/Bomb.h"
 #include "hero/HeroSprites.h"
 #include "hero/CarryingState.h"
 #include "hero/ConveyorBeltState.h"
@@ -63,8 +64,6 @@ const int Hero::normal_walking_speed = 88; // pixels per second
 Hero::Hero(Equipment &equipment):
 
   state(NULL),
-  old_state(NULL),
-  facing_entity(NULL),
   walking_speed(normal_walking_speed),
   on_conveyor_belt(false),
   on_raised_blocks(false),
@@ -92,7 +91,11 @@ Hero::~Hero() {
 
   delete sprites;
   delete state;
-  delete old_state;
+
+  std::list<State*>::iterator it;
+  for (it = old_states.begin(); it != old_states.end(); it++) {
+    delete *it;
+  }
 }
 
 /**
@@ -165,20 +168,21 @@ bool Hero::is_displayed_in_y_order() {
  *
  * @param state the new state of the hero
  */
-void Hero::set_state(State *new_state) {
+void Hero::set_state(State* new_state) {
 
   // stop the previous state
-  if (this->state != NULL) {
-    this->state->stop(new_state);
+  State* old_state = this->state;
+  if (old_state != NULL) {
+    old_state->stop(new_state);
   }
 
-  if (this->old_state != NULL) {
-    delete this->old_state;
-  }
-  this->old_state = this->state;
+  // don't delete the previous state immediately since it may be the caller of this function
+  this->old_states.push_back(old_state);
 
   this->state = new_state;
   this->state->start(old_state);
+
+  check_position();
 }
 
 /**
@@ -211,10 +215,8 @@ void Hero::update() {
 
   update_movement();
   update_state();
-
+  sprites->update();
   if (!is_suspended()) {
-    
-    sprites->update();
     update_ground();
     get_map().check_collision_with_detectors(*this);
     check_gameover();
@@ -231,11 +233,12 @@ void Hero::update_state() {
   // update the current state
   state->update();
 
-  // see if there is an old state to destroy
-  if (old_state != NULL) {
-    delete old_state;
-    old_state = NULL;
+  // see if there is old states to cleanup
+  std::list<State*>::iterator it;
+  for (it = old_states.begin(); it != old_states.end(); it++) {
+    delete *it;
   }
+  old_states.clear();
 }
 
 /**
@@ -247,10 +250,10 @@ void Hero::update_movement() {
 
   on_raised_blocks = get_entities().overlaps_raised_blocks(get_layer(), get_bounding_box());
 
-  if (movement == NULL) {
+  if (get_movement() == NULL) {
     return;
   }
-  movement->update();
+  get_movement()->update();
 }
 
 /**
@@ -276,7 +279,7 @@ void Hero::update_ground() {
 
     else if (ground == GROUND_HOLE && !state->can_avoid_hole()) {
       // the hero is being attracted by a hole and it's time to move one more pixel into the hole
-      
+
       next_ground_date = now + 60;
 
       if (get_distance(last_solid_ground_coords.get_x(), last_solid_ground_coords.get_y()) >= 8) {
@@ -498,6 +501,7 @@ void Hero::place_on_destination_point(Map &map) {
       layer = LAYER_LOW;
     }
     set_map(map);
+    last_solid_ground_coords = get_xy();
     map.get_entities().set_entity_layer(this, layer);
 
     start_free();
@@ -507,30 +511,36 @@ void Hero::place_on_destination_point(Map &map) {
 
     if (side != -1) {
 
-      // only one coordinate is changed
+      // go to a side of the other map
+      Map& old_map = get_map(); // FIXME the old map is already destroyed
       set_map(map);
 
       switch (side) {
 
 	case 0: // right side
 	  set_x(map.get_width());
+	  set_y(get_y() - map.get_location().get_y() + old_map.get_location().get_y());
 	  break;
 
 	case 1: // top side
 	  set_y(5);
+          set_x(get_x() - map.get_location().get_x() + old_map.get_location().get_x());
 	  break;
 
 	case 2: // left side
 	  set_x(0);
+          set_y(get_y() - map.get_location().get_y() + old_map.get_location().get_y());
 	  break;
 
 	case 3: // bottom side
 	  set_y(map.get_height() + 5);
+          set_x(get_x() - map.get_location().get_x() + old_map.get_location().get_x());
 	  break;
 
 	default:
 	  Debug::die(StringConcat() << "Invalid destination side: " << side);
       }
+      last_solid_ground_coords = get_xy();
       // note that we keep the state from the previous map
     }
     else {
@@ -542,6 +552,7 @@ void Hero::place_on_destination_point(Map &map) {
 
       set_map(map, destination_point->get_direction());
       set_xy(destination_point->get_x(), destination_point->get_y());
+      last_solid_ground_coords = get_xy();
       map.get_entities().set_entity_layer(this, destination_point->get_layer());
 
       map.get_entities().remove_boomerang(); // useful when the map remains the same
@@ -593,7 +604,7 @@ void Hero::notify_opening_transition_finished() {
 	Debug::die(StringConcat() << "Invalid destination side: " << side);
     }
   }
-  notify_position_changed();
+  check_position();
 }
 
 /**
@@ -623,6 +634,7 @@ const Rectangle Hero::get_facing_point() {
 const Rectangle Hero::get_facing_point(int direction) {
 
   Rectangle facing_point;
+  const Rectangle& bounding_box = get_bounding_box();
 
   switch (direction) {
 
@@ -656,29 +668,15 @@ const Rectangle Hero::get_facing_point(int direction) {
 }
 
 /**
- * @brief Returns the entity in front of the hero.
- * @return the detector the hero is touching, or NULL if he is not touching a detector in front of him
+ * @brief Notifies this entity that its facing entity has just changed.
+ * @param facing_entity the detector this entity is now facing (possibly NULL)
  */
-Detector * Hero::get_facing_entity() {
-  return facing_entity;
-}
-
-/**
- * @brief Sets the entity the hero is currently facing.
- *
- * This function may be called by an entity that has just detected
- * that the player was facing it.
- *
- * @param detector the detector the hero is facing (may be NULL)
- */
-void Hero::set_facing_entity(Detector *detector) {
-
-  this->facing_entity = detector;
+void Hero::notify_facing_entity_changed(Detector* facing_entity) {
 
   if (facing_entity == NULL &&
       get_keys_effect().is_action_key_acting_on_facing_entity()) {
 
-    // the hero stopped facing an entity that was showing an action icon
+    // the hero just stopped facing an entity that was showing an action icon
     get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
   }
 }
@@ -939,10 +937,25 @@ void Hero::notify_movement_tried(bool success) {
 }
 
 /**
- * @brief This function is called when the hero's position is changed,
- * or when his direction changes.
+ * @brief This function is called when the hero's position is changed.
  */
 void Hero::notify_position_changed() {
+
+  check_position();
+}
+
+/**
+ * @brief Checks collisions with detectors, determines the facing entity
+ * and the ground below the hero in its current position.
+ *
+ * This function is called when these checks have to be done again,
+ * e.g. when the position, the direction or the state of the hero changes.
+ */
+void Hero::check_position() {
+
+  if (!is_on_map()) {
+    return;
+  }
 
   if (state->are_collisions_ignored()) {
     // do not take care of the ground or detectors
@@ -955,26 +968,51 @@ void Hero::notify_position_changed() {
   // save the current ground
   Ground previous_ground = this->ground;
 
-  // see the ground indicated by the tiles
-  if (!is_suspended()) { // when the game is suspended, the hero may have invalid coordinates (e.g. transition between maps)
-    Ground tiles_ground = get_map().get_tile_ground(get_layer(), get_x(), get_y() - 2);
+  // see the ground indicated by the non-dynamic tiles
+  if (!is_suspended()) { // when suspended, the hero may have invalid coordinates
+                         // (e.g. transition between maps)
+
+    this->ground = GROUND_EMPTY;
+    Ground tiles_ground = get_tile_ground();
     set_ground(tiles_ground);
   }
 
   // see the ground indicated by the dynamic entities, also find the facing entity
-  MapEntity::notify_position_changed();
+  check_collision_with_detectors();
 
   if (this->ground != previous_ground) {
     notify_ground_changed();
   }
 
-  if (ground < GROUND_DEEP_WATER
-      && state->is_touching_ground()
+  // save the hero's last valid position
+  if (ground != GROUND_DEEP_WATER
+      && ground != GROUND_HOLE
+      && ground != GROUND_LAVA
+      && ground != GROUND_PRICKLE
+      && ground != GROUND_EMPTY
+      && state->can_come_from_bad_ground()
       && (get_x() != last_solid_ground_coords.get_x() || get_y() != last_solid_ground_coords.get_y())) {
 
-    // save the hero's last valid position
     last_solid_ground_coords.set_xy(get_xy());
     last_solid_ground_layer = get_layer();
+  }
+
+  // with empty ground, possibly go to the lower layer
+  if (ground == GROUND_EMPTY && state->is_touching_ground()) {
+
+    int x = get_top_left_x();
+    int y = get_top_left_y();
+    Layer layer = get_layer();
+    MapEntities& entities = get_entities();
+
+    if (layer > LAYER_LOW
+        && entities.get_obstacle_tile(layer, x, y) == OBSTACLE_EMPTY
+        && entities.get_obstacle_tile(layer, x + 15, y) == OBSTACLE_EMPTY
+        && entities.get_obstacle_tile(layer, x, y + 15) == OBSTACLE_EMPTY
+        && entities.get_obstacle_tile(layer, x + 15, y + 15) == OBSTACLE_EMPTY) {
+
+      get_entities().set_entity_layer(this, Layer(layer - 1));
+    }
   }
 }
 
@@ -1013,11 +1051,7 @@ void Hero::notify_movement_changed() {
 
   // let the state pick the animation corresponding to the movement tried by the player
   state->notify_movement_changed();
-
-  // check collisions
-  if (is_on_map()) {
-    notify_position_changed();
-  }
+  check_position();
 }
 
 /**
@@ -1063,6 +1097,20 @@ void Hero::notify_ground_changed() {
     }
     break;
 
+  case GROUND_LAVA:
+    // lava: plunge into lava
+    if (!state->can_avoid_lava()) {
+      start_lava();
+    }
+    break;
+
+  case GROUND_PRICKLE:
+    // prickles
+    if (!state->can_avoid_prickle()) {
+      start_prickle();
+    }
+    break;
+
   case GROUND_SHALLOW_WATER:
   case GROUND_GRASS:
     {
@@ -1078,6 +1126,9 @@ void Hero::notify_ground_changed() {
 
   case GROUND_LADDER:
     set_walking_speed(normal_walking_speed * 3 / 5);
+    break;
+
+  case GROUND_EMPTY:
     break;
   }
 
@@ -1103,7 +1154,7 @@ Ground Hero::get_ground() {
  */
 void Hero::set_ground(Ground ground) {
 
-  if (ground != this->ground) {
+  if (ground != this->ground && ground != GROUND_EMPTY) {
     this->ground = ground;
   }
   // we don't call notify_ground_changed() from here because set_ground()
@@ -1119,6 +1170,30 @@ bool Hero::is_ground_visible() {
 
   return (ground == GROUND_GRASS || ground == GROUND_SHALLOW_WATER)
     && state->is_touching_ground();
+}
+
+/**
+ * @brief Returns the type of ground of the tile below the hero.
+ *
+ * Only static tiles are considered by this function
+ * (dynamic tiles are ignored).
+ *
+ * @return the type of ground of the tile below the hero
+ */
+Ground Hero::get_tile_ground() {
+  return get_map().get_tile_ground(get_layer(), get_ground_point());
+}
+
+/**
+ * @brief Returns the coordinates of the point used to determine the ground
+ * below the hero.
+ * @return the coordinates of the point used to determine the ground
+ * (relative to the map)
+ */
+const Rectangle Hero::get_ground_point() {
+  // we must return here the same coordinates as dynamic tiles
+  // (see DynamicTile::test_collision_custom)
+  return Rectangle(get_x(), get_y() - 2, 1, 1);
 }
 
 /**
@@ -1150,8 +1225,8 @@ bool Hero::is_obstacle_for(MapEntity &other) {
  * @brief Returns whether a deep water tile is currently considered as an obstacle for the hero.
  * @return true if the deep water tiles are currently an obstacle for the hero
  */
-bool Hero::is_water_obstacle() {
-  return state->is_water_obstacle();
+bool Hero::is_deep_water_obstacle() {
+  return state->is_deep_water_obstacle();
 }
 
 /**
@@ -1160,6 +1235,22 @@ bool Hero::is_water_obstacle() {
  */
 bool Hero::is_hole_obstacle() {
   return state->is_hole_obstacle();
+}
+
+/**
+ * @brief Returns whether lava is currently considered as an obstacle for the hero.
+ * @return true if lava is currently an obstacle for the hero
+ */
+bool Hero::is_lava_obstacle() {
+  return state->is_lava_obstacle();
+}
+
+/**
+ * @brief Returns whether prickles are currently considered as an obstacle for the hero.
+ * @return true if prickles are currently an obstacle for the hero
+ */
+bool Hero::is_prickle_obstacle() {
+  return state->is_prickle_obstacle();
 }
 
 /**
@@ -1208,8 +1299,8 @@ bool Hero::is_conveyor_belt_obstacle(ConveyorBelt &conveyor_belt) {
  * @param stairs an stairs entity
  * @return true if the stairs are currently an obstacle for this entity
  */
-bool Hero::is_stairs_obstacle(Stairs &stairs) {
-  return true;
+bool Hero::is_stairs_obstacle(Stairs& stairs) {
+  return state->is_stairs_obstacle(stairs);
 }
 
 /**
@@ -1290,7 +1381,7 @@ void Hero::notify_collision_with_teletransporter(Teletransporter &teletransporte
 
   if (teletransporter.is_on_map_side() || !state->can_avoid_teletransporter()) {
 
-    bool on_hole = get_map().get_tile_ground(get_layer(), get_x(), get_y()) == GROUND_HOLE;
+    bool on_hole = get_tile_ground() == GROUND_HOLE;
     if (on_hole || state->is_teletransporter_delayed()) {
       this->delayed_teletransporter = &teletransporter; // fall into the hole (or do something else) first, transport later
     }
@@ -1348,6 +1439,10 @@ void Hero::notify_collision_with_conveyor_belt(ConveyorBelt &conveyor_belt, int 
  */
 void Hero::notify_collision_with_stairs(Stairs &stairs, CollisionMode collision_mode) {
 
+  if (get_ground() == GROUND_EMPTY) {
+    set_ground(GROUND_NORMAL); // allow the hero to stay on the intermediate layer
+  }
+
   if (state->can_take_stairs()) {
 
     Stairs::Way stairs_way;
@@ -1355,7 +1450,7 @@ void Hero::notify_collision_with_stairs(Stairs &stairs, CollisionMode collision_
       stairs_way = (get_layer() == LAYER_LOW) ? Stairs::NORMAL_WAY : Stairs::REVERSE_WAY;
     }
     else {
-      stairs_way = (collision_mode == COLLISION_FACING_POINT) ? Stairs::NORMAL_WAY : Stairs::REVERSE_WAY;
+      stairs_way = (collision_mode == COLLISION_FACING_POINT_ANY) ? Stairs::NORMAL_WAY : Stairs::REVERSE_WAY;
     }
 
     // check whether the hero is trying to move in the direction of the stairs
@@ -1371,18 +1466,24 @@ void Hero::notify_collision_with_stairs(Stairs &stairs, CollisionMode collision_
  * @param jump_sensor the jump sensor
  */
 void Hero::notify_collision_with_jump_sensor(JumpSensor &jump_sensor) {
-  
+
   if (state->can_take_jump_sensor()) {
 
-    if (jump_sensor.get_direction() % 2 == 0) {
+    int jump_direction = jump_sensor.get_direction();
+    if (jump_direction % 2 == 0) {
       // this non-diagonal jump sensor is not currently an obstacle for the hero
       // (in order to allow his smooth collision movement),
-      // so the hero may have one pixel inside the sensor before jumping
-      set_aligned_to_grid();
+      // so the hero may be one pixel inside the sensor before jumping
+      if (jump_direction % 4 == 0) {
+        set_aligned_to_grid_x();
+      }
+      else {
+        set_aligned_to_grid_y();
+      }
     }
 
     // jump
-    start_jumping(jump_sensor.get_direction(), jump_sensor.get_jump_length(), true, true, 0, LAYER_LOW);
+    start_jumping(jump_direction, jump_sensor.get_jump_length(), true, true, 0);
   }
 }
 
@@ -1439,6 +1540,26 @@ void Hero::notify_collision_with_crystal_switch(CrystalSwitch &crystal_switch, S
       && state->can_sword_hit_crystal_switch()) {
     
     crystal_switch.activate(*this);
+  }
+}
+
+/**
+ * @brief This function is called when a bomb detects a collision with this entity.
+ * @param bomb the bomb
+ * @param collision_mode the collision mode that detected the event
+ */
+void Hero::notify_collision_with_bomb(Bomb& bomb, CollisionMode collision_mode) {
+
+  if (collision_mode == COLLISION_FACING_POINT) {
+    // the hero is touching the bomb and is looking in its direction
+
+    if (get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
+        && get_facing_entity() == &bomb
+	&& is_free()) {
+
+      // we show the action icon
+      get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_LIFT);
+    }
   }
 }
 
@@ -1536,6 +1657,7 @@ bool Hero::is_striking_with_sword(Detector &detector) {
 void Hero::try_snap_to_facing_entity() {
 
   Rectangle collision_box = get_bounding_box();
+  Detector* facing_entity = get_facing_entity();
 
   if (get_animation_direction() % 2 == 0) {
     if (abs(collision_box.get_y() - facing_entity->get_top_left_y()) <= 5) {
@@ -1564,7 +1686,8 @@ void Hero::try_snap_to_facing_entity() {
  * @param result indicates how the enemy has reacted to the attack (see Enemy.h)
  * @param killed indicates that the attack has just killed the enemy
  */
-void Hero::notify_attacked_enemy(EnemyAttack attack, Enemy &victim, int result, bool killed) {
+void Hero::notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
+    EnemyReaction::Reaction& result, bool killed) {
 
   state->notify_attacked_enemy(attack, victim, result, killed);
 }
@@ -1584,14 +1707,24 @@ int Hero::get_sword_damage_factor() {
 
 /**
  * @brief Hurts the hero if possible.
- * @param source the entity that hurts the hero (usually an enemy)
+ * @param source an entity that hurts the hero (usually an enemy)
  * @param life_points number of heart quarters to remove (this number may be reduced by the tunic)
  * @param magic_points number of magic points to remove
  */
-void Hero::hurt(MapEntity &source, int life_points, int magic_points) {
+void Hero::hurt(MapEntity& source, int life_points, int magic_points) {
+  hurt(source.get_xy(), life_points, magic_points);
+}
+
+/**
+ * @brief Hurts the hero if possible.
+ * @param source_xy coordinates of whatever hurts the hero (usually an enemy)
+ * @param life_points number of heart quarters to remove (this number may be reduced by the tunic)
+ * @param magic_points number of magic points to remove
+ */
+void Hero::hurt(const Rectangle& source_xy, int life_points, int magic_points) {
 
   if (!sprites->is_blinking() && state->can_be_hurt()) {
-    set_state(new HurtState(*this, source, life_points, magic_points));
+    set_state(new HurtState(*this, source_xy, life_points, magic_points));
   }
 }
 
@@ -1601,7 +1734,7 @@ void Hero::hurt(MapEntity &source, int life_points, int magic_points) {
 void Hero::get_back_from_death() {
 
   sprites->blink();
-  start_free();
+  start_state_from_ground();
   when_suspended = System::now();
 }
 
@@ -1699,6 +1832,24 @@ void Hero::start_hole() {
 }
 
 /**
+ * @brief Makes the hero drown into lava.
+ */
+void Hero::start_lava() {
+
+  // plunge into the lava
+  set_state(new PlungingState(*this));
+}
+
+/**
+ * @brief Makes the hero being hurt by prickles.
+ */
+void Hero::start_prickle() {
+
+  // TODO
+  set_state(new PlungingState(*this));
+}
+
+/**
  * @brief Returns whether the hero can walk normally and interact with entities.
  * @return true if the hero can walk normally
  */
@@ -1774,12 +1925,11 @@ void Hero::start_treasure(const Treasure &treasure) {
  * @param ignore_obstacles true make the movement ignore obstacles
  * @param with_sound true to play the "jump" sound
  * @param movement_delay delay between each one-pixel move in the jump movement in milliseconds (0: default)
- * @param layer_after_jump the layer to set when the jump is finished
- * (or LAYER_NB to keep the same layer)
  */
-void Hero::start_jumping(int direction8, int length, bool ignore_obstacles, bool with_sound, uint32_t movement_delay, Layer layer_after_jump) {
+void Hero::start_jumping(int direction8, int length, bool ignore_obstacles,
+    bool with_sound, uint32_t movement_delay) {
 
-  JumpingState *state = new JumpingState(*this, direction8, length, ignore_obstacles, with_sound, movement_delay, layer_after_jump);
+  JumpingState *state = new JumpingState(*this, direction8, length, ignore_obstacles, with_sound, movement_delay);
   set_state(state);
 }
 
@@ -1803,9 +1953,9 @@ void Hero::start_freezed() {
 
 /**
  * @brief Makes the hero lift a destructible item.
- * @param item_to_lift the destructible item to lift
+ * @param item_to_lift the item to lift (will be destroyed automatically)
  */
-void Hero::start_lifting(DestructibleItem &item_to_lift) {
+void Hero::start_lifting(CarriedItem *item_to_lift) {
   set_state(new LiftingState(*this, item_to_lift));
 }
 
@@ -1835,5 +1985,59 @@ void Hero::start_boomerang() {
  */
 void Hero::start_bow() {
   set_state(new BowState(*this));
+}
+
+/**
+ * @brief Activates immediately the state corresponding to the current ground.
+ *
+ * Only the state is changed here.
+ * Some other functions like start_deep_water() and start_hole()
+ * are triggered when the ground changes (for example,
+ * going from normal ground to deep water ground) and make more
+ * complex transitions.
+ * This function is supposed to called when the ground was ignored
+ * and you want to apply its effect now (no matter whether it has changed or not).
+ * This function is typically called at the end of a state that ignores
+ * the ground (like JumpingState) to choose the
+ * correct next state depending on the ground the hero lands on.
+ */
+void Hero::start_state_from_ground() {
+
+  switch (ground) {
+
+  case GROUND_DEEP_WATER:
+    if (get_equipment().has_ability("swim")) {
+      set_state(new SwimmingState(*this));
+    }
+    else {
+      set_state(new PlungingState(*this));
+    }
+    break;
+
+  case GROUND_HOLE:
+    set_state(new FallingState(*this));
+    break;
+
+  case GROUND_LAVA:
+    set_state(new PlungingState(*this));
+    break;
+
+  case GROUND_PRICKLE:
+    set_state(new PlungingState(*this)); // TODO
+    break;
+
+  case GROUND_NORMAL:
+  case GROUND_SHALLOW_WATER:
+  case GROUND_GRASS:
+  case GROUND_LADDER:
+  case GROUND_EMPTY:
+    if (state->is_carrying_item()) {
+      set_state(new CarryingState(*this, state->get_carried_item()));
+    }
+    else {
+      set_state(new FreeState(*this));
+    }
+    break;
+  }
 }
 

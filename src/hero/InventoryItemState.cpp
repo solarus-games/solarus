@@ -47,7 +47,7 @@ void Hero::InventoryItemState::start(State *previous_state) {
 
   bool interaction = false;
   Detector *facing_entity = hero.get_facing_entity();
-  if (facing_entity != NULL) {
+  if (facing_entity != NULL && !facing_entity->is_being_removed()) {
     // maybe the facing entity (e.g. an NPC) accepts an interaction with this particular item
     interaction = facing_entity->interaction_with_inventory_item(item);
   }

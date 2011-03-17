@@ -73,6 +73,7 @@ void Detector::add_collision_mode(CollisionMode collision_mode) {
  * @brief Returns whether the detector's collision modes includes
  * the specified collision mode.
  * @param collision_mode a collision mode
+ * @return true if this collision mode is detected by this detector
  */
 bool Detector::has_collision_mode(CollisionMode collision_mode) {
   return (this->collision_modes & collision_mode) != 0;
@@ -84,8 +85,8 @@ bool Detector::has_collision_mode(CollisionMode collision_mode) {
  */
 void Detector::enable_pixel_collisions() {
 
-  std::map<std::string, Sprite*>::iterator it;
-  for (it = sprites.begin(); it != sprites.end(); it++) {
+  std::map<SpriteAnimationSetId, Sprite*>::iterator it;
+  for (it = get_sprites().begin(); it != get_sprites().end(); it++) {
     it->second->enable_pixel_collisions();
   }
 }
@@ -121,8 +122,15 @@ void Detector::check_collision(MapEntity &entity) {
     }
 
     if (has_collision_mode(COLLISION_FACING_POINT) && test_collision_facing_point(entity)) {
-      entity.set_facing_entity(this);
+
+      if (entity.get_facing_entity() == NULL) { // make sure only one entity can think "I am the facing entity"
+        entity.set_facing_entity(this);
+      }
       notify_collision(entity, COLLISION_FACING_POINT);
+    }
+
+    if (has_collision_mode(COLLISION_FACING_POINT_ANY) && test_collision_facing_point_any(entity)) {
+      notify_collision(entity, COLLISION_FACING_POINT_ANY);
     }
 
     if (has_collision_mode(COLLISION_CENTER) && test_collision_center(entity)) {
@@ -151,8 +159,8 @@ void Detector::check_collision(MapEntity &entity, Sprite &sprite) {
       && sprite.are_pixel_collisions_enabled()) {
 
     // we check the collision between the specified entity's sprite and all sprites of the current entity
-    std::map<std::string, Sprite*>::iterator it;
-    for (it = sprites.begin(); it != sprites.end(); it++) {
+    std::map<SpriteAnimationSetId, Sprite*>::iterator it;
+    for (it = get_sprites().begin(); it != get_sprites().end(); it++) {
       Sprite &this_sprite = *(it->second);
 
       if (this_sprite.are_pixel_collisions_enabled()
@@ -188,7 +196,7 @@ bool Detector::test_collision_rectangle(MapEntity &entity) {
  */
 bool Detector::test_collision_inside(MapEntity &entity) {
 
-  return get_bounding_box().contains(entity.get_bounding_box());;
+  return get_bounding_box().contains(entity.get_bounding_box());
 }
 
 
@@ -218,6 +226,25 @@ bool Detector::test_collision_origin_point(MapEntity &entity) {
 bool Detector::test_collision_facing_point(MapEntity &entity) {
 
   return entity.is_facing_point_in(get_bounding_box());
+}
+
+/**
+ * @brief Returns whether the facing point of an entity (in any of the four main directions)
+ * is overlapping the detector's rectangle.
+ *
+ * This method is called by check_collision(MapEntity*) when the detector's collision
+ * mode is COLLISION_FACING_POINT_ANY.
+ *
+ * @param entity the entity
+ * @return true if a facing point of the entity is overlapping the detector's rectangle
+ */
+bool Detector::test_collision_facing_point_any(MapEntity& entity) {
+
+  const Rectangle& bounding_box = get_bounding_box();
+  return entity.is_facing_point_in(bounding_box, 0)
+      || entity.is_facing_point_in(bounding_box, 1)
+      || entity.is_facing_point_in(bounding_box, 2)
+      || entity.is_facing_point_in(bounding_box, 3);
 }
 
 /**

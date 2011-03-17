@@ -19,6 +19,7 @@
 #include "hero/HeroSprites.h"
 #include "entities/CarriedItem.h"
 #include "entities/MapEntities.h"
+#include "lowlevel/Debug.h"
 #include "Game.h"
 #include "KeysEffect.h"
 #include "Map.h"
@@ -68,12 +69,27 @@ void Hero::CarryingState::stop(State *next_state) {
   get_sprites().set_lifted_item(NULL);
   get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
 
-  if (carried_item != NULL && next_state->can_throw_item()) {
-    throw_item();
-  }
-  else {
-    delete carried_item;
-    carried_item = NULL;
+  if (carried_item != NULL) {
+
+    switch (next_state->get_previous_carried_item_behavior(*carried_item)) {
+
+      case CarriedItem::BEHAVIOR_THROW:
+        throw_item();
+        break;
+
+      case CarriedItem::BEHAVIOR_DESTROY:
+	delete carried_item;
+	carried_item = NULL;
+	get_sprites().set_lifted_item(NULL);
+	break;
+
+      case CarriedItem::BEHAVIOR_KEEP:
+	carried_item = NULL;
+	break;
+
+      default:
+	Debug::die("Invalid carried item behavior");
+    }
   }
 }
 
@@ -168,16 +184,34 @@ bool Hero::CarryingState::can_take_stairs() {
 }
 
 /**
- * Gives the sprites the animation stopped corresponding to this state.
+ * @brief Gives the sprites the animation stopped corresponding to this state.
  */
 void Hero::CarryingState::set_animation_stopped() {
   get_sprites().set_animation_stopped_carrying();
 }
 
 /**
- * Gives the sprites the animation walking corresponding to this state.
+ * @brief Gives the sprites the animation walking corresponding to this state.
  */
 void Hero::CarryingState::set_animation_walking() {
   get_sprites().set_animation_walking_carrying();
+}
+
+/**
+ * @brief Returns the item currently carried by the hero in this state, if any.
+ * @return the item carried by the hero, or NULL
+ */
+CarriedItem* Hero::CarryingState::get_carried_item() {
+  return carried_item;
+}
+
+/**
+ * @brief Returns the action to do with an item previously carried by the hero when this state starts.
+ * @param carried_item the item carried in the previous state
+ * @return the action to do with a previous carried item when this state starts
+ */
+CarriedItem::Behavior Hero::CarryingState::get_previous_carried_item_behavior(CarriedItem& carried_item) {
+
+  return CarriedItem::BEHAVIOR_KEEP;
 }
 

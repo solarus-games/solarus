@@ -3418,6 +3418,12 @@ line1 = "Désolé, on avait plus "
 line2 = "assez de rubis pour"
 line3 = "acheter un coffre neuf."
 
+[freaking_cave_teleporter]
+#       |-----------------------|
+line1 = "Une force mysterieuse "
+line2 = "vous empêche d'emprunter"
+line3 = "le téléporteur."
+
 
 [shop.red_rupee]
 #       |-----------------------|

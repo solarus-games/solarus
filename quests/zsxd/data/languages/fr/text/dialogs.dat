@@ -3263,15 +3263,6 @@ next = outside_fields_SO.forest_monkey_end
 #       |-----------------------|
 line1 = "Ook ! Ook ! Ook !"
 
-[outside_fields_NO_linkhouse]
-line1 = "Sud : Maison de"
-line2 = "<insérer script ici>"
-next = outside_fields_NO_linkhouse_b
-
-[outside_fields_NO_linkhouse_b]
-line1 = "Feignasse de"
-line2 = "programmeur !"
-
 [outside_fields_NO_indic]
 #       |-----------------------|
 line1 = "Ouest : Château"

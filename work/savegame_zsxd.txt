@@ -89,11 +89,12 @@ booleans:
 43 first shield
 44 outside link's house heart
 45 outside link's house chest
-46	sms guy house: empty chest
-47	shop: bought the apple pie
-48	shop: bought the huge rupee bag (impossible)
-
-================================================================================
+46 sms guy house: empty chest
+47 shop: bought the apple pie
+48 the monkey gave the boots
+49 shop: bought the huge rupee bag (impossible)
+50 shop: bought the heart container
+51-55: weak blocks in outside NO
 
 100 to 199	reserved for crazy_house (dungeon 2)
 100	1FA: Hidden Piece of Heart [PH1]

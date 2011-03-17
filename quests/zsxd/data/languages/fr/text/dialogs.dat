@@ -3106,7 +3106,7 @@ line2 = "n'existe pas."
 line1 = "42"
 
 [geek_house.sign_f]
-line1 = "The cake is lie."
+line1 = "The cake is a lie."
 
 [geek_house.sign_g]
 #       |-----------------------|

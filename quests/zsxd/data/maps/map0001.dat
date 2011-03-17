@@ -616,7 +616,6 @@
 0	0	752	184	8	8	63
 0	0	728	96	8	8	63
 0	0	856	88	8	8	63
-0	0	336	936	16	16	1039
 0	0	552	480	16	16	1039
 0	0	544	448	32	32	630
 0	0	768	280	16	16	524
@@ -961,13 +960,14 @@
 0	0	280	280	16	8	921
 0	0	344	288	16	48	922
 0	0	344	280	16	8	920
-0	0	120	976	48	16	525
 0	0	112	936	16	8	36
 0	0	112	880	16	8	36
-0	0	104	992	16	16	525
-0	0	168	992	16	16	525
 0	0	40	1008	48	16	505
 0	0	-8	1008	48	16	505
+0	0	160	800	16	8	36
+0	0	128	1016	16	8	36
+0	0	144	1016	16	8	36
+0	0	88	1000	8	16	504
 4	0	920	845	5	_random	1	-1
 4	0	936	845	5	_random	1	-1
 4	0	952	845	5	_random	1	-1
@@ -1056,7 +1056,6 @@
 4	0	904	293	3	_random	1	-1
 4	0	808	189	4	_random	1	-1
 8	0	560	493	sign	3	0	entities/sign	dialog#outside_fields_NO_indic
-8	0	344	949	sign2	3	0	entities/sign	dialog#outside_fields_NO_linkhouse
 4	0	96	389	5	_random	1	-1
 4	0	112	389	5	_random	1	-1
 4	0	152	405	5	_random	1	-1
@@ -1111,7 +1110,7 @@
 8	0	944	829	lawn_master	3	1	npc/static_villager13	dialog#outside_fields_NO.lawn_master
 1	0	856	589	pot_house_out	3	0
 1	0	952	117	stupid_cave_out	3	0
-2	0	0	1032	1024	16	teletransporter_2	0	2	3	_side
+2	0	0	1024	1024	16	teletransporter_2	0	2	3	_side
 2	0	512	936	16	16	teletransporter_3	0	1	10	arrival_point
 2	0	848	560	16	16	teletransporter_4	0	1	6	start_position
 2	0	632	744	16	16	teletransporter_6	0	1	5	start_position
@@ -1185,11 +1184,11 @@
 1	0	968	829	from_shop	3	0
 2	0	960	800	16	16	teletransporter_5	0	1	11	from_outside_NO
 12	0	488	1008	88	16	custom_obstacle_5	0	0	1	0
-4	0	112	1005	3	_random	1	-1
-4	0	144	989	3	_random	1	-1
-4	0	160	989	3	_random	1	-1
-4	0	176	1005	3	_random	1	-1
-4	0	128	989	3	_random	1	-1
+18	0	104	992	door	1	8	51
+18	0	120	976	door_2	1	8	52
+18	0	136	976	door_3	1	8	53
+18	0	152	976	door_4	1	8	54
+18	0	168	992	door_5	1	8	55
 0	2	64	912	8	40	514
 0	2	792	960	96	40	511
 0	2	584	560	80	24	717

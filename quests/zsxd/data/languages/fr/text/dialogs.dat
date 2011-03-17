@@ -1370,9 +1370,9 @@ next = _treasure.bomb_bag.1.1
 
 [_treasure.bomb_bag.1.1]
 #       |--------------------|
-line1 = "Ca va faire $1"
-line2 = "pschhhhhhhhhhhhhhhht $0 $3"
-line3 = "BOUM !"
+line1 = "Assigne-les à une"
+line2 = "touche et fais tout"
+line3 = "péter !"
 
 [_treasure.bomb_bag.2]
 # Grand sac de bombes
@@ -3095,7 +3095,9 @@ line2 = "définisse les cases"
 line3 = "pour ce panneau. */"
 
 [geek_house.sign_c]
-line1 = "FIXME"
+line1 = "        WANTED !"
+line2 = "Chat de Schrödinger."
+line3 = "Mort et vif."
 
 [geek_house.sign_d]
 #       |-----------------------|
@@ -3106,7 +3108,7 @@ line2 = "n'existe pas."
 line1 = "42"
 
 [geek_house.sign_f]
-line1 = "The cake is a lie."
+line1 = "The cake is lie."
 
 [geek_house.sign_g]
 #       |-----------------------|
@@ -3289,9 +3291,8 @@ line3 = "que vous pouvez voir"
 
 [outside_fields_NO_goa]
 #       |-----------------------|
-line1 = "Gardez le fessier serré"
-line2 = "si vous entrez dans la "
-line3 = "maison d'à côté..."
+line1 = "Trouvez le secret du "
+line2 = "lol doré"
 
 [outside_fields_NO.lawn_master]
 #       |-----------------------|
@@ -3348,6 +3349,13 @@ line3 = "Trouvés ?"
 line1 = "Excuse-nous, on a perdu"
 line2 = "la clé. On ne peut pas"
 line3 = "t'ouvrir."
+
+[outside_fields_NE.cursed_cave_sign]
+#       |-----------------------|
+line1 = "  - Caverne maudite -"
+line2 = "Entrée condamnée par"
+line3 = "mesure de sécurité"
+
 
 [geek_house.geek]
 #       |-----------------------|
@@ -3411,19 +3419,6 @@ line3 = "queue à l'intérieur."
 line1 = "Vous vous sentez"
 line2 = "harcelé ?"
 line3 = "Courez !"
-
-[freaking_cave_indic2]
-#       |-----------------------|
-line1 = "Désolé, on avait plus "
-line2 = "assez de rubis pour"
-line3 = "acheter un coffre neuf."
-
-[freaking_cave_teleporter]
-#       |-----------------------|
-line1 = "Une force mysterieuse "
-line2 = "vous empêche d'emprunter"
-line3 = "le téléporteur."
-
 
 [shop.red_rupee]
 #       |-----------------------|
@@ -3604,6 +3599,3 @@ line3 = "vraiment stupide."
 [dungeon_1.2f_sw_water_removed]
 #       |-----------------------|
 line1 = "Au loin... un bruit..."
-
-
-

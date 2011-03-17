@@ -110,11 +110,11 @@
 19	0	304	504	stairs	1	4
 19	0	512	392	stairs_2	1	4
 8	0	424	845	panel	3	0	entities/sign	dialog#freaking_cave_indic1
-13	0	456	733	16	16	make_appear_c1	0
+13	0	440	717	48	48	make_appear_c1	0
 7	0	576	733	ennemy_1	3	red_bullblin	0	-1	_random	1	-1
-13	0	344	733	16	16	make_appear_c2	0
+13	0	360	717	16	48	make_appear_c2	0
 7	0	192	733	ennemy_2	3	red_bullblin	0	-1	_random	1	-1
-13	0	328	733	16	16	make_appear_c3	0
+13	0	312	717	48	48	make_appear_c3	0
 0	1	384	928	144	24	52
 0	1	360	928	24	24	47
 0	1	528	928	24	24	48

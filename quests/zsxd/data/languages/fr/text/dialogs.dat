@@ -1504,7 +1504,7 @@ line1 = "Tu peux désormais"
 line2 = "contrer les lasers !"
 
 [_treasure.sword.1]
-# Epée 1 (Epée du courage)
+# Epée 1 (Epée d'entraînement)
 #       |--------------------|
 icon = 66
 line1 = "Tu as retrouvé ton"
@@ -1524,40 +1524,33 @@ line1 = "Mais qu'est-ce"
 line2 = "qu'elle fait ici ?"
 
 [_treasure.sword.2]
-# Epée 2 (Excalibur)
+# Epée 2 (Sabre laser)
 #       |--------------------|
 icon = 67
-line1 = "Tu as trouvé"
-line2 = "l'Épée Excalibur !$0"
-line3 = "Elle est deux fois"
+line1 = "Tu as trouvé le"
+line2 = "Sabre Laser !$0"
 next = _treasure.sword.2.1
 
 [_treasure.sword.2.1]
 #       |--------------------|
-line1 = "plus puissante que"
-line2 = "l'ancienne !"
+line1 = "Tu peux faire appel"
+line2 = "à la Triforce !"
 next = _treasure.sword.2.2
-
-[_treasure.sword.2.2]
-#       |--------------------|
-line1 = "Dommage que tu ne"
-line2 = "l'aies pas eue plus"
-line3 = "tôt, ça aurait pu"
-next = _treasure.sword.2.3
-
-[_treasure.sword.2.3]
-#       |--------------------|
-line1 = "être utile !"
-
 
 [_treasure.sword.3]
 # Epée 3 (Sabre du Héros)
 #       |--------------------|
 icon = 68
 line1 = "Tu as trouvé"
-line2 = "le Sabre du Héros !"
-line3 = "Cette nouvelle lame$0"
-next = _treasure.sword.2.1
+line2 = "l'Épée Excalibur !$0"
+next = _treasure.sword.3.1
+
+[_treasure.sword.3.1]
+#       |--------------------|
+icon = 68
+line1 = "Dommage que le jeu"
+line2 = "soit fini, ça aurait"
+line3 = "pu être utile !"
 
 [_treasure.sword.4]
 # Epée 4 (Lame Purificatrice)
@@ -3268,8 +3261,8 @@ line1 = "Ook ! Ook ! Ook !"
 [outside_fields_NO_indic]
 #       |-----------------------|
 line1 = "Ouest : Château"
-line2 = "Est : Desert Bakasable"
-line3 = "Monts Tipiton"
+line2 = "Est : Désert Bakasable"
+line3 = "Mont Tipiton"
 next = outside_fields_NO_indic_b
 
 [outside_fields_NO_indic_b]
@@ -3356,6 +3349,37 @@ line1 = "  - Caverne maudite -"
 line2 = "Entrée condamnée par"
 line3 = "mesure de sécurité"
 
+[outside_fields_NE.tipiton_sign]
+#       |-----------------------|
+line2 = "Sommet du Mont Tipiton"
+next = outside_fields_NE.tipiton_sign.2
+
+[outside_fields_NE.tipiton_sign.2]
+#       |-----------------------|
+line1 = "Altitude :"
+line2 = "pas super haut, en fait"
+
+[outside_fields_NE.indic]
+#       |-----------------------|
+line1 = "Est : Château"
+next = outside_fields_NE.indic.2
+
+[outside_fields_NE.indic.2]
+#       |-----------------------|
+line1 = "Nord : Désert Bakasable"
+line2 = "Mont Tipiton"
+next = outside_fields_NE.indic.3
+
+[outside_fields_NE.indic.3]
+#       |-----------------------|
+line1 = "Sud : Restaurant"
+next = outside_fields_NE.indic.4
+
+[outside_fields_NE.indic.4]
+#       |-----------------------|
+line1 = "Est : un peu difficile"
+line2 = "à expliquer. Tu n'as"
+line3 = "qu'à aller voir."
 
 [geek_house.geek]
 #       |-----------------------|

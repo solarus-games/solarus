@@ -6,11 +6,6 @@ function event_map_started(destination_point_name)
   sol.map.hero_freeze()
   sol.game.save()
   sol.main.timer_start(10000, "sol.game.reset", false)
-  sol.main.timer_start(1000, "play_gameover_sound", false)
-end
-
-function play_gameover_sound()
   sol.main.play_sound("hero_dying")
 end
-
 

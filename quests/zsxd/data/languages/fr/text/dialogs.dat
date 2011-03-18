@@ -1538,7 +1538,7 @@ line2 = "à la Triforce !"
 next = _treasure.sword.2.2
 
 [_treasure.sword.3]
-# Epée 3 (Sabre du Héros)
+# Epée 3 (Excalibur)
 #       |--------------------|
 icon = 68
 line1 = "Tu as trouvé"
@@ -1553,19 +1553,18 @@ line2 = "soit fini, ça aurait"
 line3 = "pu être utile !"
 
 [_treasure.sword.4]
-# Epée 4 (Lame Purificatrice)
+# Epée 4 (Excalibur)
 #       |--------------------|
 icon = 69
-line1 = "Tu as trouvé la Lame"
-line2 = "Purificatrice !$0"
-line3 = "La puissance de"
+line1 = "Tu as trouvé"
+line2 = "l'Épée Excalibur !$0"
 next = _treasure.sword.4.1
 
 [_treasure.sword.4.1]
 #       |--------------------|
-line1 = "cette épée ultime"
-line2 = "dépasse"
-line3 = "l'entendement..."
+line1 = "Dommage que le jeu"
+line2 = "soit fini, ça aurait"
+line3 = "pu être utile !"
 
 [_treasure.map.1]
 # Carte

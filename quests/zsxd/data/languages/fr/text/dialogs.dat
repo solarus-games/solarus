@@ -1143,8 +1143,8 @@ next = _treasure.bone_key.1.1
 
 [_treasure.bone_key.1.1]
 #       |--------------------|
-line1 = "Mais à quoi peut-"
-line2 = "elle bien servir ?"
+line1 = "Tu peux entrer dans"
+line2 = "le répère de Ganon !"
 
 [_treasure.clay_key.1]
 # Clé de Terre
@@ -3346,12 +3346,12 @@ line3 = "t'ouvrir."
 [outside_fields_NE.cursed_cave_sign]
 #       |-----------------------|
 line1 = "  - Caverne maudite -"
-line2 = "Entrée condamnée par"
-line3 = "mesure de sécurité"
+line2 = "   Entrée condamnée"
+line3 = "  pour votre sécurité"
 
 [outside_fields_NE.tipiton_sign]
 #       |-----------------------|
-line2 = "Sommet du Mont Tipiton"
+line1 = "Sommet du Mont Tipiton"
 next = outside_fields_NE.tipiton_sign.2
 
 [outside_fields_NE.tipiton_sign.2]
@@ -3564,6 +3564,107 @@ line2 = "Non, je ne l'ai pas vue."
 line1 = "Choisis ce que tu veux"
 line2 = "acheter... On ne va pas"
 line3 = "y passer la journée !"
+
+[desert.east_house.first_time]
+#       |-----------------------|
+line1 = "Au nord d'ici se trouve"
+line2 = "la Caverne Maudite."
+next = desert.east_house.first_time.2
+
+[desert.east_house.first_time.2]
+#       |-----------------------|
+line1 = "Personne n'en est"
+line2 = "jamais revenu."
+line3 = "N'y va surtout pas !"
+
+[desert.east_house.back_from_dead]
+#       |-----------------------|
+line1 = "Quoi ? Tu es allé à la"
+line2 = "Caverne Maudite ?"
+next = desert.east_house.back_from_dead.2
+
+[desert.east_house.back_from_dead.2]
+#       |-----------------------|
+line1 = "Les jeunes de nos jours"
+line2 = "sont vraiment des"
+line3 = "inconscients !
+next = desert.east_house.back_from_dead.3
+
+[desert.east_house.back_from_dead.3]
+#       |-----------------------|
+line1 = "Nous aurions dû"
+line2 = "insister plus sur les"
+line3 = "dangers de ce lieu."
+next = desert.east_house.back_from_dead.4
+
+[desert.east_house.back_from_dead.4]
+#       |-----------------------|
+line1 = "Je t'avais pourtant mis"
+line2 = "en garde : ce n'est pas"
+line3 = "là que tu dois aller."
+next = desert.east_house.back_from_dead.5
+
+[desert.east_house.back_from_dead.5]
+#       |-----------------------|
+line1 = "La suite du jeu, c'est"
+line2 = "pas du tout ça !"
+line3 = "Si tu veux voir Ganon,"
+next = desert.east_house.back_from_dead.6
+
+[desert.east_house.back_from_dead.6]
+#       |-----------------------|
+line1 = "rien de plus simple,"
+line2 = "prends juste la clé"
+line3 = "dans ma chambre à côté."
+next = desert.east_house.back_from_dead.7
+
+[desert.east_house.back_from_dead.7]
+#       |-----------------------|
+line1 = "Tu pouvais le dire tout"
+line2 = "de suite au lieu de"
+line3 = "jouer les aventuriers."
+
+[desert.east_house.bone_key]
+#       |-----------------------|
+line1 = "Cette clé est la clé"
+line2 = "du repère de Ganon."
+
+[desert.west_house]
+#       |-----------------------|
+line1 = "Plusieurs aventuriers"
+line2 = "ont osé pénétrer dans"
+line3 = "la Caverne Maudite."
+next = desert.west_house.2
+
+[desert.west_house.2]
+#       |-----------------------|
+line1 = "On n'a plus jamais"
+line2 = "entendu parler d'eux..."
+next = desert.west_house.3
+
+[desert.west_house.3]
+#       |-----------------------|
+line1 = "De nos jours, l'accès"
+line2 = "est condamné pour"
+line3 = "protéger les curieux."
+
+[desert.small_house]
+#       |-----------------------|
+line1 = "Si tu cherches à te"
+line2 = "suicider, un bon moyen"
+line3 = "d'y parvenir est de te"
+next = desert.small_house.2
+
+[desert.small_house.2]
+#       |-----------------------|
+line1 = "rendre à la Caverne"
+line2 = "Maudite au nord."
+next = desert.small_house.3
+
+[desert.small_house.3]
+#       |-----------------------|
+line1 = "La douleur et le"
+line2 = "résultat sont garantis."
 
 [dungeon_1.welcome]
 #       |-----------------------|

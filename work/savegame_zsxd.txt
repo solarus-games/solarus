@@ -97,6 +97,9 @@ booleans:
 51-55: weak blocks in outside NO
 56 Bomb bag in freaking cave.
 57 Third sword
+58	Desert east house: bone key in the chest
+59	Desert east house: door open
+60	Cursed cave: Link died
 
 90-99: reserved for the freaking cave
 

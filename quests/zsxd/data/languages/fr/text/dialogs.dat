@@ -3826,6 +3826,111 @@ line1 = ""
 line2 = ""
 line3 = " www.zelda-solarus.com"
 
+[link_house.intro]
+#       |-----------------------|
+line1 = "$1D'anciennes légendes"
+line2 = "racontent qu'il y a"
+line3 = "bien longtemps,"
+next = link_house.intro.2
+
+[link_house.intro.2]
+#       |-----------------------|
+line1 = "existait une magnifique"
+line2 = "contrée du nom d'Hyrule.$0$0"
+line3 = "Ce royaume prospérait"
+next = link_house.intro.3
+
+[link_house.intro.3]
+#       |-----------------------|
+line1 = "sous la bénédiction de"
+line2 = "trois déesses."
+next = link_house.intro.4
+
+[link_house.intro.4]
+#       |-----------------------|
+line1 = "Après la création du"
+line2 = "monde, les trois"
+line3 = "déesses laissèrent un"
+next = link_house.intro.5
+
+[link_house.intro.5]
+#       |-----------------------|
+line1 = "symbole de leur passage"
+line2 = "sous la forme de la"
+line3 = "Triforce.$0$0"
+next = link_house.intro.6
+
+[link_house.intro.6]
+#       |-----------------------|
+line1 = "Sept Sages scellèrent"
+line2 = "la Triforce dans la"
+line3 = "Terre d'Or."
+next = link_house.intro.7
+
+[link_house.intro.7]
+#       |-----------------------|
+line1 = "Ce texte s'écrit très"
+line2 = "lentement et ne peut"
+line3 = "pas être passé.$0$0"
+next = link_house.intro.8
+
+[link_house.intro.8]
+#       |-----------------------|
+line1 = "Il est également"
+line2 = "ponctué de plusieurs"
+line3 = "arrêts ennuyeux.$0$0"
+next = link_house.intro.9
+
+[link_house.intro.9]
+#       |-----------------------|
+line1 = "Tu as très envie de"
+line2 = "commencer à jouer, mais"
+line3 = "ce texte inintéressant"
+next = link_house.intro.10
+
+[link_house.intro.10]
+#       |-----------------------|
+line1 = "défile sur un ton"
+line2 = "solennel et dans une"
+line3 = "ambiance de légende,"
+next = link_house.intro.11
+
+[link_house.intro.11]
+#       |-----------------------|
+line1 = "donc tu es prié de"
+line2 = "l'accepter."
+next = link_house.intro.12
+
+[link_house.intro.12]
+#       |-----------------------|
+line1 = "$3Bon, ok, j'abrège."
+next = link_house.intro.13
+
+[link_house.intro.13]
+#       |-----------------------|
+line1 = "C'est le matin. Tu te"
+line2 = "réveilles à côté de ton"
+line3 = "lit et tu es amnésique."
+next = link_house.intro.14
+
+[link_house.intro.14]
+#       |-----------------------|
+line1 = "Tu ne te souviens plus"
+line2 = "d'hier et tu n'as plus"
+line3 = "ton équipement !"
+next = link_house.intro.15
+
+[link_house.intro.15]
+#       |-----------------------|
+line1 = "J'oubliais : la"
+line2 = "princesse Zelda a"
+line3 = "disparu."
+next = link_house.intro.16
+
+[link_house.intro.16]
+#       |-----------------------|
+line1 = "A toi de jouer !"
+
 [dungeon_1.welcome]
 #       |-----------------------|
 line1 = "        Niveau 2       " 

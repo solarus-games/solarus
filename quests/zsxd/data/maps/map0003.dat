@@ -66,7 +66,6 @@
 0	0	488	136	16	16	664
 0	0	496	136	24	16	662
 0	0	488	80	16	24	679
-0	0	376	184	32	16	805
 0	0	376	160	16	24	712
 0	0	528	144	8	8	669
 0	0	528	88	8	56	668
@@ -763,8 +762,7 @@
 0	0	232	400	8	8	545
 0	0	352	464	16	8	36
 0	0	536	136	32	8	523
-0	0	392	152	16	32	805
-0	0	408	152	48	16	805
+0	0	392	152	64	16	805
 0	0	376	136	8	8	54
 0	0	368	136	8	8	56
 0	0	360	128	8	8	56
@@ -817,7 +815,7 @@
 8	0	416	237	interactive_entity	3	0	entities/sign	dialog#outside_fields_SO_endofgame1
 1	0	808	525	crazy_house.out	3	0
 2	0	800	496	16	16	crazy_house.in	0	1	20	start_position
-2	0	440	136	16	16	teletransporter_2	0	1	0	start_position
+2	0	440	136	16	16	teletransporter_2	0	1	0	from_outside
 8	0	384	181	interactive_entity_3	3	0	_none	dialog#outside_fields_SO_mailbox
 4	0	504	381	3	_random	1	-1
 4	0	520	397	3	_random	1	-1

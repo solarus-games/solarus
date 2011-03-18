@@ -764,10 +764,10 @@
 6	1	1232	224	8	56	jump_sensor_3	4	40
 6	1	1240	280	56	8	jump_sensor_2	6	40
 18	1	848	216	DK1_2	3	1	140
-8	1	136	93	GC11	3	1	npc/newlink3	map
-8	1	136	93	GC11	3	1	npc/newlink3	map
-8	1	184	205	Accueil	3	1	npc/static_villager10	map
-8	1	184	205	Accueil	3	1	npc/static_villager10	map
+8	1	248	101	GC11	3	1	npc/newlink3	map
+8	1	248	101	GC11	3	1	npc/newlink3	map
+8	1	96	189	Accueil	3	1	npc/static_villager10	map
+8	1	96	189	Accueil	3	1	npc/static_villager10	map
 0	2	1040	320	8	96	266
 0	2	1016	336	8	64	267
 0	2	0	0	16	496	170

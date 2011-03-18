@@ -720,9 +720,8 @@ line2 = "intérêt quelconque !"
 # Eau
 #       |--------------------|
 icon = 8
-line1 = "Tu as rempli ton"
-line2 = "Flacon Magique avec"
-line3 = "de l'eau !"
+line1 = "Tu as trouvé de"
+line2 = "l'eau !"
 
 [_treasure.bottle_1.3]
 # Potion rouge
@@ -800,9 +799,8 @@ line3 = "Pas super utile, ok."
 # Eau
 #       |--------------------|
 icon = 8
-line1 = "Tu as rempli ton"
-line2 = "Flacon Magique avec"
-line3 = "de l'eau !"
+line1 = "Tu as trouvé de"
+line2 = "l'eau !"
 
 [_treasure.bottle_2.3]
 # Potion rouge
@@ -885,9 +883,8 @@ line2 = "diverses substances."
 # Eau
 #       |--------------------|
 icon = 8
-line1 = "Tu as rempli ton"
-line2 = "Flacon Magique avec"
-line3 = "de l'eau !"
+line1 = "Tu as trouvé de"
+line2 = "l'eau !"
 
 [_treasure.bottle_3.3]
 # Potion rouge
@@ -970,9 +967,8 @@ line2 = "diverses substances."
 # Eau
 #       |--------------------|
 icon = 8
-line1 = "Tu as rempli ton"
-line2 = "Flacon Magique avec"
-line3 = "de l'eau !"
+line1 = "Tu as trouvé de"
+line2 = "l'eau !"
 
 [_treasure.bottle_4.3]
 # Potion rouge
@@ -3345,7 +3341,7 @@ next = outside_fields_NO.guy_a2
 
 [outside_fields_NO.guy_a2]
 #       |-----------------------|
-line1 = "As tu été voir au"
+line1 = "As-tu été voir au"
 line2 = "Bureau des Objets"
 line3 = "Trouvés ?"
 
@@ -3930,6 +3926,23 @@ next = link_house.intro.16
 [link_house.intro.16]
 #       |-----------------------|
 line1 = "A toi de jouer !"
+
+[water_house.give_bottle]
+#       |-----------------------|
+line1 = "Tu n'as pas l'air"
+line2 = "d'aimer beaucoup l'eau."
+line3 = "Moi, j'adore ça."
+next = water_house.give_bottle.2
+
+[water_house.give_bottle.2]
+#       |-----------------------|
+line1 = "Alors tiens, voici une"
+line2 = "bouteille d'eau, ça ne"
+line3 = "te fera pas de mal !"
+
+[water_house.after]
+#       |-----------------------|
+line1 = "Vive l'eau !"
 
 [dungeon_1.welcome]
 #       |-----------------------|

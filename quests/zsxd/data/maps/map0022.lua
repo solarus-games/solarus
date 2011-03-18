@@ -1,5 +1,5 @@
 ----------------------------------
--- Crazy House 2F (south)       --
+-- Crazy House 2FA (south)      --
 ----------------------------------
 
 locked_door_A_value = 0
@@ -7,6 +7,19 @@ locked_door_A_value = 0
 function event_map_started(destination_point_name)
 	sol.map.chest_set_enabled("prankster_chest_bottom", false)
 	sol.map.chest_set_enabled("prankster_chest_middle", false)
+end
+
+function event_hero_interaction(entity_name)
+-- Vieillard --------------------------------------------------
+	if entity_name == "Vieillard" then
+
+-- Guichet 21 -------------------------------------------------
+	elseif entity_name == "GC21" then
+
+-- Guichet 22 -------------------------------------------------
+	elseif entity_name == "GC22" then
+
+	end
 end
 
 function event_hero_on_sensor(sensor_name)

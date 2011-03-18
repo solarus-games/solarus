@@ -10,6 +10,7 @@ end
 
 function event_map_opening_transition_finished(destination_point_name)
 	-- Affichage du nom du donjon quand on vient de l'escalier de dehors
+  -- TODO: à tester
   if destination_point_name == "fromOutsideSO" then
     sol.map.dialog_start("crazy_house.title")
   end
@@ -18,24 +19,39 @@ end
 function event_hero_interaction(entity_name)
 	if entity_name == "GC31" then
 -- Guichet 31 -------------------------------------------------
-
+-- TODO: dialogues et script à faire
 
 	elseif entity_name == "GC32" then
 -- Guichet 32 -------------------------------------------------
-
+-- TODO: dialogues à vérifier, script à finir
+		if sol.main.savegame_get_integer(1410) <= 6 then
+			sol.map.dialog_start("crazy_house.guichet_32_ech_le_6")
+		end
 
 	elseif entity_name == "GC33" then
 -- Guichet 33 -------------------------------------------------
-
+-- TODO: dialogues à finir, script à finir
+		if sol.main.savegame_get_integer(1410) == 3 then	
+			-- Concernant le guichet 41	
+			-- TODO: dialogue ok, script à finir
+			sol.map.dialog_start("crazy_house.guichet_33_ech_eq_3")
+		elseif sol.main.savegame_get_integer(1410) >= 4 then
+			-- Clé du dépôt (guichet 56)
+			-- TODO: dialogue ok, script à finir
+			sol.map.dialog_start("crazy_house.guichet_33_ech_ge_4")
+		else
+			-- De quoi il s'agit ? TODO: Dialogue à faire
+			sol.map.dialog_start("crazy_house.guichet_33_ech_le_2")
+		end
 
 	elseif entity_name == "GC36" then
 -- Guichet 36 -------------------------------------------------
-
+-- TODO: dialogues et script à faire
 
 	elseif entity_name == "Apothicaire" then
 -- Apothicaire ------------------------------------------------
-
-
+-- TODO: dialogues presque finis, script à finir (options)
+		sol.map.dialog_start("crazy_house.apothicaire")
 	end
 end
 

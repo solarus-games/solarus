@@ -31,6 +31,7 @@ function event_hero_interaction(entity_name)
 		sol.map.dialog_start("crazy_house.mario_message_1")
 
 -- Hôtesse d'accueil ------------------------------------------
+-- TODO: dialogues à finir, script à finir
 	elseif entity_name == "Accueil" then
 		if sol.game.savegame_get_integer(1410) == 0 then
 			sol.map.dialog_start("crazy_house.accueil_ech_eq_0")
@@ -60,16 +61,22 @@ function event_hero_interaction(entity_name)
 		end
 
 -- Guichet 11 -------------------------------------------------
+-- TODO: dialogues à finir, script à finir
 	elseif entity_name == "GC11" then
-		if sol.game.savegame_get_integer(1410) < 5 then
+		if sol.game.savegame_get_integer(1410) == 9 then
+			-- Chercher des haches
+			sol.map.dialog_start("crazy_house.guichet_11_ech_eq_9")
+		elseif then
 			-- S'adresser à l'accueil
-			sol.map.dialog_start("crazy_house.guichet_11_ech_lt_5")
+			sol.map.dialog_start("crazy_house.guichet_11_ech_ne_9")
 		end
 
 -- Guichet 12a ------------------------------------------------
+-- TODO: dialogues presque finis, script à faire
 	elseif entity_name == "GC12A" then
 
 -- Guichet 12b -----------------------------------------------
+-- TODO: dialogues presque finis, script à faire
 	elseif entity_name == "GC12B" then
 
 

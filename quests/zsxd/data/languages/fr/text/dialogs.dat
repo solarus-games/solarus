@@ -2813,48 +2813,48 @@ line3 = "gauche."
 # PHASE 4 : chercher la clé du dépôt au guichet 33
 #==============================================
 
-[crazy_house.guichet_33_ech_gt_4]
+[crazy_house.guichet_33_ech_ge_4]
 #       |--------------------|
 line1 = "Oui ? La clé du"
 line2 = "dépôt ? Ah mais"
 line3 = "non ! Je ne donne"
-next = crazy_house.guichet_33_ech_gt_4_2
+next = crazy_house.guichet_33_ech_ge_4_2
 
-[crazy_house.guichet_33_ech_gt_4_2]
+[crazy_house.guichet_33_ech_ge_4_2]
 #       |--------------------|
 line1 = "pas les clés à"
 line2 = "n'importe qui ! Si"
 line3 = "vous me rapportez"
-next = crazy_house.guichet_33_ech_gt_4_3
+next = crazy_house.guichet_33_ech_ge_4_3
 
-[crazy_house.guichet_33_ech_gt_4_3]
+[crazy_house.guichet_33_ech_ge_4_3]
 #       |--------------------|
 line1 = "un beau parfum,"
 line2 = "je serai peut être"
 line3 = "plus enclin à vous"
-next = crazy_house.guichet_33_ech_gt_4_4
+next = crazy_house.guichet_33_ech_ge_4_4
 
-[crazy_house.guichet_33_ech_gt_4_4]
+[crazy_house.guichet_33_ech_ge_4_4]
 #       |--------------------|
 line1 = "confier les clés."
 line2 = "Je crois que"
 line3 = "quelqu'un a dû en"
-next = crazy_house.guichet_33_ech_gt_4_5
+next = crazy_house.guichet_33_ech_ge_4_5
 
-[crazy_house.guichet_33_ech_gt_4_5]
+[crazy_house.guichet_33_ech_ge_4_5]
 #       |--------------------|
 line1 = "retrouver un,"
 line2 = "essayez le guichet"
 line3 = "12, ils pourraient"
-next = crazy_house.guichet_33_ech_gt_4_6
+next = crazy_house.guichet_33_ech_ge_4_6
 
-[crazy_house.guichet_33_ech_gt_4_6]
+[crazy_house.guichet_33_ech_ge_4_6]
 #       |--------------------|
 line1 = "vous renseigner"
 line2 = "là-dessus."
-next = crazy_house.guichet_33_ech_gt_4_7
+next = crazy_house.guichet_33_ech_ge_4_7
 
-[crazy_house.guichet_33_ech_gt_4_7]
+[crazy_house.guichet_33_ech_ge_4_7]
 #       |--------------------|
 line1 = "Où est ce guichet ?"
 line2 = "Aucune idée, deman-"
@@ -2990,21 +2990,21 @@ question = true
 # PHASE 8 : chercher le bocal d'épices
 #==============================================
 
-[crazy_house.guichet_84_ech_le_8]
+[crazy_house.guichet_84_ech_ge_8]
 #       |--------------------|	
 line1 = "En effet nous avons"
 line2 = "des poivrons. En"
 line3 = "échange de 5 haches,"
-next = crazy_house.guichet_84_ech_le_8_2
+next = crazy_house.guichet_84_ech_ge_8_2
 
-[crazy_house.guichet_84_ech_le_8_2]
+[crazy_house.guichet_84_ech_ge_8_2]
 #       |--------------------|	
 line1 = "on vous offre 3"
 line2 = "poivrons. J'ai"
 line3 = "entendu dire qu'ils"
-next = crazy_house.guichet_84_ech_le_8_3
+next = crazy_house.guichet_84_ech_ge_8_3
 
-[crazy_house.guichet_84_ech_le_8_3]
+[crazy_house.guichet_84_ech_ge_8_3]
 #       |--------------------|	
 line1 = "avaient des haches"
 line2 = "au guichet 11."

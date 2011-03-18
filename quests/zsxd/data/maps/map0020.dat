@@ -757,13 +757,17 @@
 19	1	1832	136	stairs_6	1	0
 1	1	1840	149	from2Fa_right	3	0
 2	1	1832	136	16	16	to2Fa_right	0	1	22	from1Fb
-18	1	1608	176	weak_wall_A	0	5	105
-18	1	1656	176	weak_wall_A_2	2	5	105
+18	1	1608	184	weak_wall_A	0	5	105
+18	1	1656	184	weak_wall_A_2	2	5	105
 14	1	1216	189	crystal_switch
 2	1	160	24	16	16	to2Fa_left	0	1	22	from1Fa
 6	1	1232	224	8	56	jump_sensor_3	4	40
 6	1	1240	280	56	8	jump_sensor_2	6	40
 18	1	848	216	DK1_2	3	1	140
+8	1	248	101	GC11	3	1	npc/newlink3	map
+8	1	248	101	GC11	3	1	npc/newlink3	map
+8	1	96	189	Accueil	3	1	npc/static_villager10	map
+8	1	96	189	Accueil	3	1	npc/static_villager10	map
 0	2	1040	320	8	96	266
 0	2	1016	336	8	64	267
 0	2	0	0	16	496	170

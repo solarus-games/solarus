@@ -1,4 +1,4 @@
-0	0	Maison de Link
+0	0	Link's house
 0	1	Outside fields NO
 0	2	Outside fields NE
 0	3	Outside fields SO
@@ -10,12 +10,12 @@
 0	9	Geek House
 0	10	Humid house
 0	11	Shop
-0	12	New map
-0	13	New map
-0	14	New map
-0	15	New map
-0	16	New map
-0	17	New map
+0	12	Link's cave
+0	13	Before the cursed cave
+0	14	Desert small house
+0	15	Desert west house
+0	16	Desert east house
+0	17	The end
 0	18	New map
 0	19	New map
 0	20	Crazy House 1FA
@@ -146,6 +146,7 @@
 3	npc/thief	Thief
 3	npc/wizard	Wizard
 3	npc/zelda	Zelda
+3	enemies/zelda	Angry Zelda
 3	npc/tom	Tom
 3	npc/newlink1	Newlink NPC 1
 3	npc/newlink2	Newlink NPC 2
@@ -181,6 +182,7 @@
 3	entities/snores	Snoring (zzz)
 3	entities/hint_stone	Hint stone
 3	entities/torch	Torch
+3	entities/the_end	The End
 4	bomb	bomb
 4	boss_charge	boss_charge
 4	boss_dead	boss_dead
@@ -287,6 +289,26 @@
 5	glove	Iron glove / Golden glove
 5	fire_stones_counter	Fire stones counter
 5	fire_stone	Fire stone (x1)
+5	poivron_counter	Poivron counter
+5	poivron	Poivron
+5	balai_counter	Balai counter
+5	balai	Balai
+5	cuillere_counter	Cuillère counter
+5	cuillere	Cuillère
+5	tapisserie_counter	Tapisserie counter
+5	tapisserie	Tapisserie
+5	roc_magma_counter	Roc Magma counter
+5	roc_magma	Roc Magma
+5	sac_riz_counter	Sac de riz counter
+5	sac_riz	Sac de riz
+5	sac_olive_counter	Sac d'olives counter
+5	sac_olive	Sac d'olives
+5	bocal_epice_counter	Bocal d'épices counter
+5	bocal_epice	Bocal d'épices
+5	hache_counter	Hache counter
+5	hache	Hache
+5	parfum_counter	Parfum counter
+5	parfum	Parfum
 5	tunic	Tunic (green / blue / red)
 5	sword	Sword
 5	shield	Shield
@@ -304,6 +326,7 @@
 5	heart_container	Heart container
 5	piece_of_heart	Piece of heart
 5	fairy	Fairy
+5	zelda	Zelda
 6	simple_green_soldier	Simple green soldier
 6	bubble	Bubble
 6	tentacle	Tentacle
@@ -321,4 +344,5 @@
 6	khorneth	Khorneth
 6	khotor	Khotor
 6	lizarmen	Lizarmen
+6	zelda	Zelda
 7	fr/text/dialogs.dat	French dialogs

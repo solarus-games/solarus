@@ -1143,8 +1143,8 @@ next = _treasure.bone_key.1.1
 
 [_treasure.bone_key.1.1]
 #       |--------------------|
-line1 = "Mais à quoi peut-"
-line2 = "elle bien servir ?"
+line1 = "Tu peux entrer dans"
+line2 = "le répère de Ganon !"
 
 [_treasure.clay_key.1]
 # Clé de Terre
@@ -1504,7 +1504,7 @@ line1 = "Tu peux désormais"
 line2 = "contrer les lasers !"
 
 [_treasure.sword.1]
-# Epée 1 (Epée du courage)
+# Epée 1 (Epée d'entraînement)
 #       |--------------------|
 icon = 66
 line1 = "Tu as retrouvé ton"
@@ -1524,55 +1524,47 @@ line1 = "Mais qu'est-ce"
 line2 = "qu'elle fait ici ?"
 
 [_treasure.sword.2]
-# Epée 2 (Excalibur)
+# Epée 2 (Sabre laser)
 #       |--------------------|
 icon = 67
-line1 = "Tu as trouvé"
-line2 = "l'Épée Excalibur !$0"
-line3 = "Elle est deux fois"
+line1 = "Tu as trouvé le"
+line2 = "Sabre Laser !$0"
 next = _treasure.sword.2.1
 
 [_treasure.sword.2.1]
 #       |--------------------|
-line1 = "plus puissante que"
-line2 = "l'ancienne !"
+line1 = "Tu peux faire appel"
+line2 = "à la Triforce !"
 next = _treasure.sword.2.2
 
-[_treasure.sword.2.2]
-#       |--------------------|
-line1 = "Dommage que tu ne"
-line2 = "l'aies pas eue plus"
-line3 = "tôt, ça aurait pu"
-next = _treasure.sword.2.3
-
-[_treasure.sword.2.3]
-#       |--------------------|
-line1 = "être utile !"
-
-
 [_treasure.sword.3]
-# Epée 3 (Sabre du Héros)
+# Epée 3 (Excalibur)
 #       |--------------------|
 icon = 68
 line1 = "Tu as trouvé"
-line2 = "le Sabre du Héros !"
-line3 = "Cette nouvelle lame$0"
-next = _treasure.sword.2.1
+line2 = "l'Épée Excalibur !$0"
+next = _treasure.sword.3.1
+
+[_treasure.sword.3.1]
+#       |--------------------|
+icon = 68
+line1 = "Dommage que le jeu"
+line2 = "soit fini, ça aurait"
+line3 = "pu être utile !"
 
 [_treasure.sword.4]
-# Epée 4 (Lame Purificatrice)
+# Epée 4 (Excalibur)
 #       |--------------------|
 icon = 69
-line1 = "Tu as trouvé la Lame"
-line2 = "Purificatrice !$0"
-line3 = "La puissance de"
+line1 = "Tu as trouvé"
+line2 = "l'Épée Excalibur !$0"
 next = _treasure.sword.4.1
 
 [_treasure.sword.4.1]
 #       |--------------------|
-line1 = "cette épée ultime"
-line2 = "dépasse"
-line3 = "l'entendement..."
+line1 = "Dommage que le jeu"
+line2 = "soit fini, ça aurait"
+line3 = "pu être utile !"
 
 [_treasure.map.1]
 # Carte
@@ -1818,6 +1810,19 @@ icon = 90
 line1 = "Tu as trouvé 200"
 line2 = "Rubis !"
 line3 = "C'est l'extase !"
+
+[_treasure.zelda.1]
+# Zelda
+#       |-----------------------|
+line1 = "Tu as retrouvé la"
+line2 = "Princesse Zelda !"
+next = _treasure.zelda.1.1
+
+[_treasure.zelda.1.1]
+#       |-----------------------|
+line1 = "Apparemment, tu l'avais"
+line2 = "juste enfermée dans ton"
+line3 = "coffre !"
 
 # ---------------
 # Autres messages
@@ -2820,48 +2825,48 @@ line3 = "gauche."
 # PHASE 4 : chercher la clé du dépôt au guichet 33
 #==============================================
 
-[crazy_house.guichet_33_ech_gt_4]
+[crazy_house.guichet_33_ech_ge_4]
 #       |--------------------|
 line1 = "Oui ? La clé du"
 line2 = "dépôt ? Ah mais"
 line3 = "non ! Je ne donne"
-next = crazy_house.guichet_33_ech_gt_4_2
+next = crazy_house.guichet_33_ech_ge_4_2
 
-[crazy_house.guichet_33_ech_gt_4_2]
+[crazy_house.guichet_33_ech_ge_4_2]
 #       |--------------------|
 line1 = "pas les clés à"
 line2 = "n'importe qui ! Si"
 line3 = "vous me rapportez"
-next = crazy_house.guichet_33_ech_gt_4_3
+next = crazy_house.guichet_33_ech_ge_4_3
 
-[crazy_house.guichet_33_ech_gt_4_3]
+[crazy_house.guichet_33_ech_ge_4_3]
 #       |--------------------|
 line1 = "un beau parfum,"
 line2 = "je serai peut être"
 line3 = "plus enclin à vous"
-next = crazy_house.guichet_33_ech_gt_4_4
+next = crazy_house.guichet_33_ech_ge_4_4
 
-[crazy_house.guichet_33_ech_gt_4_4]
+[crazy_house.guichet_33_ech_ge_4_4]
 #       |--------------------|
 line1 = "confier les clés."
 line2 = "Je crois que"
 line3 = "quelqu'un a dû en"
-next = crazy_house.guichet_33_ech_gt_4_5
+next = crazy_house.guichet_33_ech_ge_4_5
 
-[crazy_house.guichet_33_ech_gt_4_5]
+[crazy_house.guichet_33_ech_ge_4_5]
 #       |--------------------|
 line1 = "retrouver un,"
 line2 = "essayez le guichet"
 line3 = "12, ils pourraient"
-next = crazy_house.guichet_33_ech_gt_4_6
+next = crazy_house.guichet_33_ech_ge_4_6
 
-[crazy_house.guichet_33_ech_gt_4_6]
+[crazy_house.guichet_33_ech_ge_4_6]
 #       |--------------------|
 line1 = "vous renseigner"
 line2 = "là-dessus."
-next = crazy_house.guichet_33_ech_gt_4_7
+next = crazy_house.guichet_33_ech_ge_4_7
 
-[crazy_house.guichet_33_ech_gt_4_7]
+[crazy_house.guichet_33_ech_ge_4_7]
 #       |--------------------|
 line1 = "Où est ce guichet ?"
 line2 = "Aucune idée, deman-"
@@ -2997,21 +3002,21 @@ question = true
 # PHASE 8 : chercher le bocal d'épices
 #==============================================
 
-[crazy_house.guichet_84_ech_le_8]
+[crazy_house.guichet_84_ech_ge_8]
 #       |--------------------|	
 line1 = "En effet nous avons"
 line2 = "des poivrons. En"
 line3 = "échange de 5 haches,"
-next = crazy_house.guichet_84_ech_le_8_2
+next = crazy_house.guichet_84_ech_ge_8_2
 
-[crazy_house.guichet_84_ech_le_8_2]
+[crazy_house.guichet_84_ech_ge_8_2]
 #       |--------------------|	
 line1 = "on vous offre 3"
 line2 = "poivrons. J'ai"
 line3 = "entendu dire qu'ils"
-next = crazy_house.guichet_84_ech_le_8_3
+next = crazy_house.guichet_84_ech_ge_8_3
 
-[crazy_house.guichet_84_ech_le_8_3]
+[crazy_house.guichet_84_ech_ge_8_3]
 #       |--------------------|	
 line1 = "avaient des haches"
 line2 = "au guichet 11."
@@ -3095,7 +3100,9 @@ line2 = "définisse les cases"
 line3 = "pour ce panneau. */"
 
 [geek_house.sign_c]
-line1 = "FIXME"
+line1 = "        WANTED !"
+line2 = "Chat de Schrödinger."
+line3 = "Mort et vif."
 
 [geek_house.sign_d]
 #       |-----------------------|
@@ -3266,8 +3273,8 @@ line1 = "Ook ! Ook ! Ook !"
 [outside_fields_NO_indic]
 #       |-----------------------|
 line1 = "Ouest : Château"
-line2 = "Est : Desert Bakasable"
-line3 = "Monts Tipiton"
+line2 = "Est : Désert Bakasable"
+line3 = "Mont Tipiton"
 next = outside_fields_NO_indic_b
 
 [outside_fields_NO_indic_b]
@@ -3348,6 +3355,44 @@ line1 = "Excuse-nous, on a perdu"
 line2 = "la clé. On ne peut pas"
 line3 = "t'ouvrir."
 
+[outside_fields_NE.cursed_cave_sign]
+#       |-----------------------|
+line1 = "  - Caverne maudite -"
+line2 = "   Entrée condamnée"
+line3 = "  pour votre sécurité"
+
+[outside_fields_NE.tipiton_sign]
+#       |-----------------------|
+line1 = "Sommet du Mont Tipiton"
+next = outside_fields_NE.tipiton_sign.2
+
+[outside_fields_NE.tipiton_sign.2]
+#       |-----------------------|
+line1 = "Altitude :"
+line2 = "pas super haut, en fait"
+
+[outside_fields_NE.indic]
+#       |-----------------------|
+line1 = "Est : Château"
+next = outside_fields_NE.indic.2
+
+[outside_fields_NE.indic.2]
+#       |-----------------------|
+line1 = "Nord : Désert Bakasable"
+line2 = "Mont Tipiton"
+next = outside_fields_NE.indic.3
+
+[outside_fields_NE.indic.3]
+#       |-----------------------|
+line1 = "Sud : Restaurant"
+next = outside_fields_NE.indic.4
+
+[outside_fields_NE.indic.4]
+#       |-----------------------|
+line1 = "Est : un peu difficile"
+line2 = "à expliquer. Tu n'as"
+line3 = "qu'à aller voir."
+
 [geek_house.geek]
 #       |-----------------------|
 line1 = ""
@@ -3416,6 +3461,12 @@ line3 = "Courez !"
 line1 = "Désolé, on avait plus "
 line2 = "assez de rubis pour"
 line3 = "acheter un coffre neuf."
+
+[freaking_cave_teleporter]
+#       |-----------------------|
+line1 = "Une force mysterieuse "
+line2 = "vous empêche d'emprunter"
+line3 = "le téléporteur."
 
 
 [shop.red_rupee]
@@ -3525,6 +3576,373 @@ line2 = "Non, je ne l'ai pas vue."
 line1 = "Choisis ce que tu veux"
 line2 = "acheter... On ne va pas"
 line3 = "y passer la journée !"
+
+[desert.east_house.first_time]
+#       |-----------------------|
+line1 = "Au nord d'ici se trouve"
+line2 = "la Caverne Maudite."
+next = desert.east_house.first_time.2
+
+[desert.east_house.first_time.2]
+#       |-----------------------|
+line1 = "Personne n'en est"
+line2 = "jamais revenu."
+line3 = "N'y va surtout pas !"
+
+[desert.east_house.back_from_dead]
+#       |-----------------------|
+line1 = "Quoi ? Tu es allé à la"
+line2 = "Caverne Maudite ?"
+next = desert.east_house.back_from_dead.2
+
+[desert.east_house.back_from_dead.2]
+#       |-----------------------|
+line1 = "Les jeunes de nos jours"
+line2 = "sont vraiment des"
+line3 = "inconscients !
+next = desert.east_house.back_from_dead.3
+
+[desert.east_house.back_from_dead.3]
+#       |-----------------------|
+line1 = "Nous aurions dû"
+line2 = "insister plus sur les"
+line3 = "dangers de ce lieu."
+next = desert.east_house.back_from_dead.4
+
+[desert.east_house.back_from_dead.4]
+#       |-----------------------|
+line1 = "Je t'avais pourtant mis"
+line2 = "en garde : ce n'est pas"
+line3 = "là que tu dois aller."
+next = desert.east_house.back_from_dead.5
+
+[desert.east_house.back_from_dead.5]
+#       |-----------------------|
+line1 = "La suite du jeu, c'est"
+line2 = "pas du tout ça !"
+line3 = "Si tu veux voir Ganon,"
+next = desert.east_house.back_from_dead.6
+
+[desert.east_house.back_from_dead.6]
+#       |-----------------------|
+line1 = "rien de plus simple,"
+line2 = "prends juste la clé"
+line3 = "dans ma chambre à côté."
+next = desert.east_house.back_from_dead.7
+
+[desert.east_house.back_from_dead.7]
+#       |-----------------------|
+line1 = "Tu pouvais le dire tout"
+line2 = "de suite au lieu de"
+line3 = "jouer les aventuriers."
+
+[desert.east_house.bone_key]
+#       |-----------------------|
+line1 = "Cette clé est la clé"
+line2 = "du repère de Ganon."
+
+[desert.west_house]
+#       |-----------------------|
+line1 = "Plusieurs aventuriers"
+line2 = "ont osé pénétrer dans"
+line3 = "la Caverne Maudite."
+next = desert.west_house.2
+
+[desert.west_house.2]
+#       |-----------------------|
+line1 = "On n'a plus jamais"
+line2 = "entendu parler d'eux..."
+next = desert.west_house.3
+
+[desert.west_house.3]
+#       |-----------------------|
+line1 = "De nos jours, l'accès"
+line2 = "est condamné pour"
+line3 = "protéger les curieux."
+
+[desert.small_house]
+#       |-----------------------|
+line1 = "Si tu cherches à te"
+line2 = "suicider, un bon moyen"
+line3 = "d'y parvenir est de te"
+next = desert.small_house.2
+
+[desert.small_house.2]
+#       |-----------------------|
+line1 = "rendre à la Caverne"
+line2 = "Maudite au nord."
+next = desert.small_house.3
+
+[desert.small_house.3]
+#       |-----------------------|
+line1 = "La douleur et le"
+line2 = "résultat sont garantis."
+
+[link_cave.angry_zelda]
+#       |-----------------------|
+line1 = "Toi !!! Tu m'as"
+line2 = "enfermée ici et tu"
+line3 = "m'as oubliée !"
+next = link_cave.angry_zelda.1
+
+[link_cave.angry_zelda.1]
+#       |-----------------------|
+line1 = "Tu m'as laissée moisir"
+line2 = "dans ta cave !"
+next = link_cave.angry_zelda.2
+
+[link_cave.angry_zelda.2]
+#       |-----------------------|
+line1 = "Toi et tes potes, vous"
+line2 = "n'êtes que des"
+line3 = "alcooliques !"
+next = link_cave.angry_zelda.3
+
+[link_cave.angry_zelda.3]
+#       |-----------------------|
+line1 = "Je ne trouve pas ça"
+line2 = "drôle du tout !!!"
+next = link_cave.angry_zelda.4
+
+[link_cave.angry_zelda.4]
+#       |-----------------------|
+line1 = "Cette fois-ci, j'en ai"
+line2 = "marre de tes bêtises !"
+line3 = "Ca va chauffer !!!"
+next = link_cave.angry_zelda.5
+
+[link_cave.angry_zelda.5]
+#       |-----------------------|
+line1 = "HAAAAAAAAAAAAAAAAAA !!!"
+
+[the_end.credits]
+#       |-----------------------|
+line1 = "$2Ce jeu parodique a été"
+line2 = "réalisé en cinq"
+line3 = "semaines par l'équipe"
+next = the_end.credits.1
+
+[the_end.credits.1]
+#       |-----------------------|
+line1 = "de Zelda : Mystery of"
+line2 = "Solarus DX à l'occasion"
+line3 = "du 1er avril 2011,"
+next = the_end.credits.2
+
+[the_end.credits.2]
+#       |-----------------------|
+line1 = "avec l'aide de quelques"
+line2 = "pizzas et de fortes"
+line3 = "doses de café."
+next = the_end.credits.2bis
+
+[the_end.credits.2bis]
+#       |-----------------------|
+line1 = "         Crédits"
+next = the_end.credits.3
+
+[the_end.credits.3]
+#       |-----------------------|
+line1 = "     Programmation :"
+line2 = "Christopho"
+next = the_end.credits.4
+
+[the_end.credits.4]
+#       |-----------------------|
+line1 = "      Réalisation" 
+line2 = "       des maps :"
+next = the_end.credits.5
+
+[the_end.credits.5]
+#       |-----------------------|
+line1 = "Christopho"
+line2 = "Metallizer"
+line3 = "Yoshi04"
+next = the_end.credits.6
+
+[the_end.credits.6]
+#       |-----------------------|
+line1 = "BenObiWan"
+line2 = "Sam101"
+line3 = "Mymy"
+next = the_end.credits.7
+
+[the_end.credits.7]
+#       |-----------------------|
+line1 = "       Conception"
+line2 = "      des donjons :"
+next = the_end.credits.8
+
+[the_end.credits.8]
+#       |-----------------------|
+line1 = "      Bureau des"
+line2 = "    Objets Trouvés :"
+line3 = "Metallizer"
+next = the_end.credits.9
+
+[the_end.credits.9]
+#       |-----------------------|
+line1 = "       Temple des"
+line2 = "       Stupidités :"
+line3 = "Christopho"
+next = the_end.credits.9bis
+
+[the_end.credits.9bis]
+#       |-----------------------|
+line1 = "Ces gens sont des"
+line2 = "sadiques !"
+next = the_end.credits.10
+
+[the_end.credits.10]
+#       |-----------------------|
+line1 = "       Graphismes"
+line2 = "     supplémentaires :"
+line3 = "Newlink"
+next = the_end.credits.11
+
+[the_end.credits.11]
+#       |-----------------------|
+line1 = "     Remerciements"
+line2 = "       spéciaux :"
+next = the_end.credits.12
+
+[the_end.credits.12]
+#       |-----------------------|
+line1 = "19oj19"
+line2 = "Neovyze"
+line3 = "Thyb"
+next = the_end.credits.13
+
+[the_end.credits.13]
+#       |-----------------------|
+line1 = "Binbin"
+line2 = "Couet"
+line3 = "Noxneo"
+next = the_end.credits.14
+
+[the_end.credits.14]
+#       |-----------------------|
+line1 = "Geomaster"
+line2 = "HelpTheWretched"
+line3 = "Nintendo"
+next = the_end.credits.15
+
+[the_end.credits.15]
+#       |-----------------------|
+line1 = "Et bravo à vous d'être"
+line2 = "arrivé jusqu'à la fin !"
+next = the_end.credits.16
+
+[the_end.credits.16]
+#       |-----------------------|
+line1 = ""
+line2 = ""
+line3 = " www.zelda-solarus.com"
+
+[link_house.intro]
+#       |-----------------------|
+line1 = "$1D'anciennes légendes"
+line2 = "racontent qu'il y a"
+line3 = "bien longtemps,"
+next = link_house.intro.2
+
+[link_house.intro.2]
+#       |-----------------------|
+line1 = "existait une magnifique"
+line2 = "contrée du nom d'Hyrule.$0$0"
+line3 = "Ce royaume prospérait"
+next = link_house.intro.3
+
+[link_house.intro.3]
+#       |-----------------------|
+line1 = "sous la bénédiction de"
+line2 = "trois déesses."
+next = link_house.intro.4
+
+[link_house.intro.4]
+#       |-----------------------|
+line1 = "Après la création du"
+line2 = "monde, les trois"
+line3 = "déesses laissèrent un"
+next = link_house.intro.5
+
+[link_house.intro.5]
+#       |-----------------------|
+line1 = "symbole de leur passage"
+line2 = "sous la forme de la"
+line3 = "Triforce.$0$0"
+next = link_house.intro.6
+
+[link_house.intro.6]
+#       |-----------------------|
+line1 = "Sept Sages scellèrent"
+line2 = "la Triforce dans la"
+line3 = "Terre d'Or."
+next = link_house.intro.7
+
+[link_house.intro.7]
+#       |-----------------------|
+line1 = "Ce texte s'écrit très"
+line2 = "lentement et ne peut"
+line3 = "pas être passé.$0$0"
+next = link_house.intro.8
+
+[link_house.intro.8]
+#       |-----------------------|
+line1 = "Il est également"
+line2 = "ponctué de plusieurs"
+line3 = "arrêts ennuyeux.$0$0"
+next = link_house.intro.9
+
+[link_house.intro.9]
+#       |-----------------------|
+line1 = "Tu as très envie de"
+line2 = "commencer à jouer, mais"
+line3 = "ce texte inintéressant"
+next = link_house.intro.10
+
+[link_house.intro.10]
+#       |-----------------------|
+line1 = "défile sur un ton"
+line2 = "solennel et dans une"
+line3 = "ambiance de légende,"
+next = link_house.intro.11
+
+[link_house.intro.11]
+#       |-----------------------|
+line1 = "donc tu es prié de"
+line2 = "l'accepter."
+next = link_house.intro.12
+
+[link_house.intro.12]
+#       |-----------------------|
+line1 = "$3Bon, ok, j'abrège."
+next = link_house.intro.13
+
+[link_house.intro.13]
+#       |-----------------------|
+line1 = "C'est le matin. Tu te"
+line2 = "réveilles à côté de ton"
+line3 = "lit et tu es amnésique."
+next = link_house.intro.14
+
+[link_house.intro.14]
+#       |-----------------------|
+line1 = "Tu ne te souviens plus"
+line2 = "d'hier et tu n'as plus"
+line3 = "ton équipement !"
+next = link_house.intro.15
+
+[link_house.intro.15]
+#       |-----------------------|
+line1 = "J'oubliais : la"
+line2 = "princesse Zelda a"
+line3 = "disparu."
+next = link_house.intro.16
+
+[link_house.intro.16]
+#       |-----------------------|
+line1 = "A toi de jouer !"
 
 [dungeon_1.welcome]
 #       |-----------------------|

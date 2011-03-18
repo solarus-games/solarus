@@ -23,6 +23,48 @@
 #include <lua.hpp>
 
 /**
+ * @brief Saves the game.
+ */
+int Script::game_api_save(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 0, &script);
+
+  script->get_game().get_savegame().save();
+
+  return 0;
+}
+
+/**
+ * @brief Resets the game (comes back to the title screen).
+ */
+int Script::game_api_reset(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 0, &script);
+
+  script->get_game().reset();
+
+  return 0;
+}
+
+/**
+ * @brief Restarts the game with the current savegame.
+ *
+ * The game is restarted with the current savegame state,
+ * even if it is not saved.
+ */
+int Script::game_api_restart(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 0, &script);
+
+  script->get_game().restart();
+
+  return 0;
+}
+
+/**
  * @brief Returns a string value saved.
  *
  * - Argument 1 (integer): index of the string value to get (0 to 63)

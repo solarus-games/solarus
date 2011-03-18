@@ -147,8 +147,6 @@
 8	1	224	-11	interactive_entity_9	3	1	npc/static_villager2	map
 8	1	272	69	wizard	3	1	npc/wizard	dialog#shop.wizard
 8	1	256	-11	interactive_entity_11	3	1	npc/static_villager3	map
-8	1	160	-11	interactive_entity_12	3	1	npc/static_villager4	map
-8	1	288	-11	interactive_entity_13	3	1	npc/static_villager5	map
 8	1	320	-11	interactive_entity_14	3	1	npc/static_villager6	map
 8	1	352	-11	interactive_entity_15	3	1	npc/static_villager7	map
 8	1	384	-11	interactive_entity_16	3	1	npc/static_villager8	map

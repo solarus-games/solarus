@@ -47,22 +47,22 @@ Your script can create a sprite or get a handle to an existing sprite
 In both cases, you can then call all sprite-related functions
 and give the sprite handle as first paramater.
 
-- <tt>sol.main.include(script_name)</tt>: 	
+- <tt>sol.main.include(script_name)</tt>:	
 includes another script into this one
 
-- <tt>sol.main.play_sound(sound_id)</tt>: 	
+- <tt>sol.main.play_sound(sound_id)</tt>:
 plays a sound
 
-- <tt>sol.main.play_music(music_id)</tt>: 
+- <tt>sol.main.play_music(music_id)</tt>:
 plays a music
 
-- <tt>sol.main.timer_start(duration, callback, with_sound)</tt>: 
+- <tt>sol.main.timer_start(duration, callback, with_sound)</tt>:
 starts a timer which will call a function of your script once finished
 
-- <tt>sol.main.timer_stop(callback)</tt>: 
+- <tt>sol.main.timer_stop(callback)</tt>:
 stops a timer that of the script if it exists
 
-- <tt>sol.main.timer_stop_all()</tt>: 
+- <tt>sol.main.timer_stop_all()</tt>:
 stops all timers started by your script
 
 - <tt>sol.main.sprite_create(sprite_name)</tt>:
@@ -162,6 +162,15 @@ Returns the angle in radians between the specified vector and the x axis.
 The <tt>sol.game</tt> module is available to scripts running into a game.
 <tt>sol.game</tt> can be seen as an object that represents the current game.
 It provides functions to manage the game data.
+
+- <tt>sol.game.save()</tt>/
+saves the game
+
+- <tt>sol.game.reset()</tt>:
+resets the game (comes back to the title screen)
+
+- <tt>sol.game.restart()</tt>:
+restarts the game, continuing on the same savegame even if it is not saved
 
 - <tt>sol.game.savegame_get_string(index)</tt>:
 returns a string saved

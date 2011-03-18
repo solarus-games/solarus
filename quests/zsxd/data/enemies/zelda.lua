@@ -11,7 +11,7 @@ function event_appear()
 end
 
 function event_restart()
-  m = sol.main.path_finding_movement_create(32)
+  m = sol.main.path_finding_movement_create(64)
   sol.enemy.start_movement(m)
 end
 

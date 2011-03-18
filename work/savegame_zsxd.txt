@@ -99,8 +99,8 @@ booleans:
 58	Desert east house: bone key in the chest
 59	Desert east house: door open
 60	Cursed cave: Link died
-61	Link's cave: Zelda is found
-62	Link's cave: door open
+61	(unused)
+62	Link's house: door of the cave open
 
 90-99: reserved for the freaking cave
 

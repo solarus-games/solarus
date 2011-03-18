@@ -3715,6 +3715,130 @@ next = link_cave.angry_zelda.5
 #       |-----------------------|
 line1 = "HAAAAAAAAAAAAAAAAAA !!!"
 
+[the_end.credits]
+#       |-----------------------|
+line1 = "$2Ce jeu parodique a été"
+line2 = "réalisé en cinq"
+line3 = "semaines par l'équipe"
+next = the_end.credits.1
+
+[the_end.credits.1]
+#       |-----------------------|
+line1 = "de Zelda : Mystery of"
+line2 = "Solarus DX à l'occasion"
+line3 = "du 1er avril 2011,"
+next = the_end.credits.2
+
+[the_end.credits.2]
+#       |-----------------------|
+line1 = "avec l'aide de quelques"
+line2 = "pizzas et de fortes"
+line3 = "doses de café."
+next = the_end.credits.2bis
+
+[the_end.credits.2bis]
+#       |-----------------------|
+line1 = "         Crédits"
+next = the_end.credits.3
+
+[the_end.credits.3]
+#       |-----------------------|
+line1 = "     Programmation :"
+line2 = "Christopho"
+next = the_end.credits.4
+
+[the_end.credits.4]
+#       |-----------------------|
+line1 = "      Réalisation" 
+line2 = "       des maps :"
+next = the_end.credits.5
+
+[the_end.credits.5]
+#       |-----------------------|
+line1 = "Christopho"
+line2 = "Metallizer"
+line3 = "Yoshi04"
+next = the_end.credits.6
+
+[the_end.credits.6]
+#       |-----------------------|
+line1 = "BenObiWan"
+line2 = "Sam101"
+line3 = "Mymy"
+next = the_end.credits.7
+
+[the_end.credits.7]
+#       |-----------------------|
+line1 = "       Conception"
+line2 = "      des donjons :"
+next = the_end.credits.8
+
+[the_end.credits.8]
+#       |-----------------------|
+line1 = "      Bureau des"
+line2 = "    Objets Trouvés :"
+line3 = "Metallizer"
+next = the_end.credits.9
+
+[the_end.credits.9]
+#       |-----------------------|
+line1 = "       Temple des"
+line2 = "       Stupidités :"
+line3 = "Christopho"
+next = the_end.credits.9bis
+
+[the_end.credits.9bis]
+#       |-----------------------|
+line1 = "Ces gens sont des"
+line2 = "sadiques !"
+next = the_end.credits.10
+
+[the_end.credits.10]
+#       |-----------------------|
+line1 = "       Graphismes"
+line2 = "     supplémentaires :"
+line3 = "Newlink"
+next = the_end.credits.11
+
+[the_end.credits.11]
+#       |-----------------------|
+line1 = "     Remerciements"
+line2 = "       spéciaux :"
+next = the_end.credits.12
+
+[the_end.credits.12]
+#       |-----------------------|
+line1 = "19oj19"
+line2 = "Neovyze"
+line3 = "Thyb"
+next = the_end.credits.13
+
+[the_end.credits.13]
+#       |-----------------------|
+line1 = "Binbin"
+line2 = "Couet"
+line3 = "Noxneo"
+next = the_end.credits.14
+
+[the_end.credits.14]
+#       |-----------------------|
+line1 = "Geomaster"
+line2 = "HelpTheWretched"
+line3 = "Nintendo"
+next = the_end.credits.15
+
+[the_end.credits.15]
+#       |-----------------------|
+line1 = "Et bravo à vous d'être"
+line2 = "arrivé jusqu'à la fin !"
+next = the_end.credits.16
+
+[the_end.credits.16]
+#       |-----------------------|
+line1 = ""
+line2 = ""
+line3 = " www.zelda-solarus.com"
+
 [dungeon_1.welcome]
 #       |-----------------------|
 line1 = "        Niveau 2       " 

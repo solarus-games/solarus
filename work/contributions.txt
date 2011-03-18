@@ -2,19 +2,12 @@ Ce fichier donne la liste de toutes les personnes qui ont contribué au projet,
 même pour des petites contributions.
 Il servira pour le générique de fin.
 
-Equipe officielle :
+Equipe :
 
 Christopho
 Metallizer
 Geomaster
 George
-Linkdu83
-Vaatiking01
-Archangel
-Noxneo
-
-Contributions annexes :
-
 Newlink + Yoshi04 (boss brute initialement prévu pour Spherdon's Crystals)
 @PyroNet (Khorneth et autres boss, items des bourses, carquois et sacs de bombes)
 SaniOkh (testera et donnerait des idées, cf MP)
@@ -30,6 +23,7 @@ Sam101 (paquets ArchLinux)
 BenObiWan (autres paquets Linux)
 SkyJedi + Deather (version Mac)
 krytzz (aide pour cmake, datapath)
+19oj19 (éditeur de maps)
 
 
 Traduction :

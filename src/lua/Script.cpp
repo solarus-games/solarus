@@ -295,6 +295,9 @@ void Script::register_main_api() {
 void Script::register_game_api() {
 
   static luaL_Reg game_api[] = {
+      { "save", game_api_save },
+      { "reset", game_api_reset },
+      { "restart", game_api_restart },
       { "savegame_get_string", game_api_savegame_get_string },
       { "savegame_get_integer", game_api_savegame_get_integer },
       { "savegame_get_boolean", game_api_savegame_get_boolean },

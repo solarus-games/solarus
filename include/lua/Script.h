@@ -122,6 +122,9 @@ class Script {
       main_api_get_angle,
 
       // game API
+      game_api_save,
+      game_api_reset,
+      game_api_restart,
       game_api_savegame_get_string,
       game_api_savegame_get_integer,
       game_api_savegame_get_boolean,

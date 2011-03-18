@@ -49,23 +49,64 @@ integers (above 1024):
 1128	tunic
 1129	sword
 1130	shield
+1131	zelda
 
 ================================================================================
 
 1400 to 1499	reserved for crazy_house
 
-1400	Small key counter
+1410: chaine_echange_phase
+	- 0: aller à l'accueil pour savoir où est la poigne de fer
+	- 1: trouver le guichet 21
+	- 2: retourner à l'accueil car au guichet 21, on comprend rien !
+	- 3: trouver le guichet 41
+	- 4: trouver le guichet 33 pour les clés du dépôt, (nécessite 1 parfum)
+	- 5: se renseigner sur le parfum au guichet 12
+	- 6: guichet 12 absent, trouver le guichet 32
+	- 7: guichet 12 revenu, y retourner pour le parfum (nécessite 1 bocal d'épices + 1 balai)
+	- 8: chercher le bocal d'épices auprès du vieillard (nécessite 3 poivrons)
+			 ou chercher balai au guichet 22 (nécessite 3 rocs magma)
 
-1471: poivron_counter
-1472: balai_counter
-1473: cuillere_counter
-1474: tapisserie_counter
-1475: roc_magma_counter
-1476: sac_riz_counter
-1477: sac_olive_counter
-1478: bocal_epice_counter
-1479: hache_counter
-1480: parfum_counter
+	- 9: apporter 1 bocal épice et 1 balai au guichet 12, obtenu: parfum
+	-10: apporter 1 parfum au guichet 33, obtenu: 1 petite clé
+	-11: ouvrir porte au 3F, obtenu : grande clé
+
+1411: chaine_epice_phase (1410 = 8)
+
+	- 1: vieillard veut 3 poivrons, les chercher au guichet 84 (nécessite 5 haches)
+  - 2: chercher des 5 haches au guichet 11 (nécessite 1 tapisserie pour 1 hache)
+  - 3: chercher des 6 tapisseries au guichet 22 (nécessite 1 sac de riz pour 2 tapisseries)
+  - 4: acheter 3 sacs de riz à l'apothicaire ou à panoda fichage
+	- 5: apporter 3 sac de riz au guichet 22, obtenu : 6 tapisseries
+  - 6: apporter 6 tapisseries au guichet 11, obtenu : 6 haches
+	- 7: apporter 5 haches au guichet 84, obtenu : 3 poivrons
+	- 8: apporter 3 poivrons au vieillard, il n'en veut pas, il veut 5 sacs de riz
+  - 9: acheter 5 sacs de riz à l'épothicaire ou à panoda fichage
+	-10: apporter 5 sacs de riz au vieillard, obtenu : 1 bocal épice
+
+1412: chaine_balai_phase (1410 = 8)
+
+	- 1: chercher balai au guichet 22 (nécessite 3 rocs magma)
+	- 2: chercher 3 rocs magma au guichet 82 (nécessite 2 sac olives par roc magma)
+	- 3: chercher 6 sac olives au guichet 45 (nécessite 2 cuillères pour 3 sacs olive)
+	- 4: chercher 4 cuillères au guichet 32 (nécessite 2 haches, 1 pour 2 cuillères)
+	- 5: chercher 2 haches au guichet 11 (nécessite 1 tapisserie pour 1 hache)
+	- 6: chercher 2 tapisseries au guichet 22 (nécessite 1 sac de riz pour 2 tapisseries)
+	- 7: chercher 1 sac de riz chez apothicaire ou panoda fichage
+	- 8: apporter 1 sac de riz au guichet 22, obtenu : 2 tapisseries
+	- 9: apporter 2 tapisseries au guichet 11, s'est trompé, donne un 6 rocs magma
+	-10: apporter 3 roc magma au guichet 22, obtenu: 1 balai
+
+1471: poivron_counter - g84 (n: haches)
+1472: balai_counter - g22 (n: rocs magma)
+1473: cuillere_counter - g32 (n: hache)
+1474: tapisserie_counter - g22 (n: sac riz)
+1475: roc_magma_counter - g82 (n: sac olive)
+1476: sac_riz_counter - apot (n: 20ru) - 36 (n: 10ru)
+1477: sac_olive_counter - g45 (n: cuillere)
+1478: bocal_epice_counter - vieil (n: poivrons)
+1479: hache_counter - g11 (n: tapisserie)
+1480: parfum_counter - g12 (n: bocal épices + balai)
 
 1481: poivron_variable
 1482: balai_variable
@@ -100,6 +141,8 @@ booleans:
 58	Desert east house: bone key in the chest
 59	Desert east house: door open
 60	Cursed cave: Link died
+61	(unused)
+62	Link's house: door of the cave open
 
 90-99: reserved for the freaking cave
 

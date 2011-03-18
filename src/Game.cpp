@@ -242,7 +242,9 @@ void Game::update() {
   // update the equipment and HUD
   get_equipment().update();
   update_keys_effect();
-  hud->update();
+  if (hud_enabled) {
+    hud->update();
+  }
   dialog_box->update();
 
   // update the pause menu (if the game is paused)

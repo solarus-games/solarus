@@ -30,6 +30,7 @@
  *
  * Properties:
  * - speed
+ * - displayed_direction (read-only)
  */
 class PathFindingMovement: public PathMovement {
 

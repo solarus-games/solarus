@@ -435,3 +435,6 @@ limit = 50
 
 [parfum]
 changes_counter = parfum_counter
+
+[zelda]
+savegame_variable = 1131

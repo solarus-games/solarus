@@ -15,7 +15,7 @@
 0	14	Desert small house
 0	15	Desert west house
 0	16	Desert east house
-0	17	New map
+0	17	The end
 0	18	New map
 0	19	New map
 0	20	Crazy House 1FA
@@ -181,6 +181,7 @@
 3	entities/snores	Snoring (zzz)
 3	entities/hint_stone	Hint stone
 3	entities/torch	Torch
+3	entities/the_end	The End
 4	bomb	bomb
 4	boss_charge	boss_charge
 4	boss_dead	boss_dead

@@ -236,6 +236,8 @@
 7	0	512	1037	enemy_4	3	tentacle	0	-1	_random	1	-1
 12	0	2880	192	8	80	custom_obstacle_27	1	1	1	1
 12	0	2904	192	8	80	custom_obstacle_28	1	1	1	1
+0	1	2480	720	368	144	2
+0	1	2672	720	80	144	303
 0	1	144	688	448	24	49
 0	1	144	872	448	24	52
 0	1	1416	496	224	144	2
@@ -534,8 +536,6 @@
 0	1	2456	776	16	8	78
 0	1	2408	776	16	8	79
 0	1	2408	800	16	8	81
-0	1	2480	720	368	144	2
-0	1	2672	720	80	144	228
 0	1	2672	728	8	128	234
 0	1	2744	728	8	128	235
 0	1	2480	712	368	8	18
@@ -968,7 +968,6 @@
 12	1	2992	104	24	8	custom_obstacle_26	1	1	1	1
 13	1	552	717	16	112	bowser_leave	0
 8	1	2304	797	directions_3F	3	0	entities/sign	dialog#crazy_house.directions_3F
-8	1	2304	797	directions_3F_2	3	0	entities/sign	dialog#crazy_house.directions_3F
 8	1	344	773	directions_3FB	3	0	entities/sign	dialog#crazy_house.directions_3FB
 8	1	344	773	directions_3FB_2	3	0	entities/sign	dialog#crazy_house.directions_3FB
 15	1	40	336	64	16	0
@@ -1004,7 +1003,6 @@
 8	1	2656	965	interactive_entity	3	0	entities/sign	map
 8	1	2656	965	interactive_entity_2	3	0	entities/sign	map
 8	1	1976	797	directions_3F_3	3	0	entities/sign	dialog#crazy_house.directions_3F_3
-8	1	1976	797	directions_3F_4	3	0	entities/sign	dialog#crazy_house.directions_3F_3
 5	1	2792	752	CK3	0	small_key	1	122
 0	2	1480	688	96	8	262
 0	2	1480	664	96	8	263

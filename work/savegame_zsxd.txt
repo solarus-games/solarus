@@ -54,7 +54,9 @@ integers (above 1024):
 
 1400 to 1499	reserved for crazy_house
 
-1400	Small key counter
+1400: Small key counter
+
+1410: chaine_echange_phase
 
 1471: poivron_counter
 1472: balai_counter

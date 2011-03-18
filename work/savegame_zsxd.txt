@@ -49,12 +49,11 @@ integers (above 1024):
 1128	tunic
 1129	sword
 1130	shield
+1131	zelda
 
 ================================================================================
 
 1400 to 1499	reserved for crazy_house
-
-1400	Small key counter
 
 1471: poivron_counter
 1472: balai_counter
@@ -100,6 +99,8 @@ booleans:
 58	Desert east house: bone key in the chest
 59	Desert east house: door open
 60	Cursed cave: Link died
+61	Link's cave: Zelda is found
+62	Link's cave: door open
 
 90-99: reserved for the freaking cave
 

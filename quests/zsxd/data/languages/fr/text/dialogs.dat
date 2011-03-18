@@ -1811,6 +1811,19 @@ line1 = "Tu as trouvé 200"
 line2 = "Rubis !"
 line3 = "C'est l'extase !"
 
+[_treasure.zelda.1]
+# Zelda
+#       |-----------------------|
+line1 = "Tu as retrouvé la"
+line2 = "Princesse Zelda !"
+next = _treasure.zelda.1.1
+
+[_treasure.zelda.1.1]
+#       |-----------------------|
+line1 = "Apparemment, tu l'avais"
+line2 = "juste enfermée dans ton"
+line3 = "coffre !"
+
 # ---------------
 # Autres messages
 # ---------------
@@ -3651,6 +3664,43 @@ next = desert.small_house.3
 #       |-----------------------|
 line1 = "La douleur et le"
 line2 = "résultat sont garantis."
+
+[link_cave.angry_zelda]
+#       |-----------------------|
+line1 = "Toi !!! Tu m'as"
+line2 = "enfermée ici et tu"
+line3 = "m'as oubliée !"
+next = link_cave.angry_zelda.1
+
+[link_cave.angry_zelda.1]
+#       |-----------------------|
+line1 = "Tu m'as laissée moisir"
+line2 = "dans ta cave !"
+next = link_cave.angry_zelda.2
+
+[link_cave.angry_zelda.2]
+#       |-----------------------|
+line1 = "Toi et tes potes, vous"
+line2 = "n'êtes que des"
+line3 = "alcooliques !"
+next = link_cave.angry_zelda.3
+
+[link_cave.angry_zelda.3]
+#       |-----------------------|
+line1 = "Je ne trouve pas ça"
+line2 = "drôle du tout !!!"
+next = link_cave.angry_zelda.4
+
+[link_cave.angry_zelda.4]
+#       |-----------------------|
+line1 = "Cette fois-ci, j'en ai"
+line2 = "marre de tes bêtises !"
+line3 = "Ca va chauffer !!!"
+next = link_cave.angry_zelda.5
+
+[link_cave.angry_zelda.5]
+#       |-----------------------|
+line1 = "HAAAAAAAAAAAAAAAAAA !!!"
 
 [dungeon_1.welcome]
 #       |-----------------------|

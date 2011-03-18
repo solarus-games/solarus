@@ -287,6 +287,26 @@
 5	glove	Iron glove / Golden glove
 5	fire_stones_counter	Fire stones counter
 5	fire_stone	Fire stone (x1)
+5	poivron_counter	Poivron counter
+5	poivron	Poivron
+5	balai_counter	Balai counter
+5	balai	Balai
+5	cuillere_counter	Cuillère counter
+5	cuillere	Cuillère
+5	tapisserie_counter	Tapisserie counter
+5	tapisserie	Tapisserie
+5	roc_magma_counter	Roc Magma counter
+5	roc_magma	Roc Magma
+5	sac_riz_counter	Sac de riz counter
+5	sac_riz	Sac de riz
+5	sac_olive_counter	Sac d'olives counter
+5	sac_olive	Sac d'olives
+5	bocal_epice_counter	Bocal d'épices counter
+5	bocal_epice	Bocal d'épices
+5	hache_counter	Hache counter
+5	hache	Hache
+5	parfum_counter	Parfum counter
+5	parfum	Parfum
 5	tunic	Tunic (green / blue / red)
 5	sword	Sword
 5	shield	Shield
@@ -304,6 +324,7 @@
 5	heart_container	Heart container
 5	piece_of_heart	Piece of heart
 5	fairy	Fairy
+5	zelda	Zelda
 6	simple_green_soldier	Simple green soldier
 6	bubble	Bubble
 6	tentacle	Tentacle
@@ -321,4 +342,5 @@
 6	khorneth	Khorneth
 6	khotor	Khotor
 6	lizarmen	Lizarmen
+6	zelda	Zelda
 7	fr/text/dialogs.dat	French dialogs

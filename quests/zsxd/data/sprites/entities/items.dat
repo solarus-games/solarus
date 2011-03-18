@@ -262,3 +262,6 @@ parfum entities/items.png 1 0 -1
 parfum_counter entities/items.png 1 0 -1
 864	0	16	16	8	13	1	1
 
+zelda entities/items.png 1 0 -1
+224	48	16	24	8	21	1	1
+

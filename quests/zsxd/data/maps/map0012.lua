@@ -4,16 +4,17 @@ function event_map_started(destination_point_name)
 
   sol.map.enemy_set_enabled("zelda_enemy", false)
   sol.map.door_set_open("door", true)
-  sol.map.teletransporter_set_enabled("teletransporter", false)
 end
 
 function event_treasure_obtained(item_name, variant, savegame_variable)
 
-  sol.main.play_music("boss.spc")
-  sol.map.npc_set_position("zelda", 224, 85)
-  sol.map.hero_freeze()
-  sol.main.timer_start(1000, "angry_zelda", false)
-  sol.game.add_life(80)
+  if item_name == "zelda" then
+    sol.main.play_music("boss.spc")
+    sol.map.npc_set_position("zelda", 224, 85)
+    sol.map.hero_freeze()
+    sol.main.timer_start(1000, "angry_zelda", false)
+    sol.game.add_life(80)
+  end
 end
 
 function angry_zelda()
@@ -50,7 +51,7 @@ end
 function event_update()
 
   if not sol.map.door_is_open("door") and sol.game.get_life() <= 4 then
-    -- trigger the teleporter to the end screen
-    sol.map.teletransporter_set_enabled("teletransporter", true)
+    -- go to the end screen
+    sol.map.hero_set_map(17, "start_position", 1)
   end
 end

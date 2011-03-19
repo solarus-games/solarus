@@ -1,0 +1,26 @@
+-- Outside SE
+
+function event_map_started(destination_point_name)
+
+  if sol.game.savegame_get_boolean(65) then
+    sol.map.tile_set_enabled("temple_door_tile", false)
+    sol.map.interactive_entity_remove("temple_door")
+  end
+end
+
+function event_hero_interaction(entity_name)
+
+  if entity_name == "temple_door" then
+    if sol.game.has_item("bone_key") then
+      sol.main.play_sound("door_open")
+      sol.main.play_sound("secret")
+      sol.map.tile_set_enabled("temple_door_tile", false)
+      sol.map.interactive_entity_remove("temple_door")
+      sol.game.savegame_set_boolean(65, true)
+    else
+      sol.main.play_sound("wrong")
+      sol.map.dialog_start("outside_fields_SE.temple_door_closed")
+    end
+  end
+end
+

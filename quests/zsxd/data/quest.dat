@@ -9,5 +9,5 @@ outside_world_height = 1024
 [initial]
 starting_map = 0
 starting_point = start_position
-max_life = 12
+max_life = 20
 

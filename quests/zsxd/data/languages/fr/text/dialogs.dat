@@ -2455,45 +2455,50 @@ line3 = "avoir... *soupir*..."
 line1 = "Bonjour monsieur,"
 line2 = "vous avez perdu"
 line3 = "quelque chose ? Quel"
+next = crazy_house.accueil_ech_eq_0_2
 
-[crazy_house.accueil_ech_eq_0_1]
+[crazy_house.accueil_ech_eq_0_2]
 #       |--------------------|
 line1 = "est l'objet que vous"
 line2 = "recherchez ? Des"
 line3 = "gants ?"
+next = crazy_house.accueil_ech_eq_0_3
 
-[crazy_house.accueil_ech_eq_0_2]
+[crazy_house.accueil_ech_eq_0_3]
 #       |--------------------|
 line1 = "Attendez je"
 line2 = "regarde..."
+next = crazy_house.accueil_ech_eq_0_4
 
-[crazy_house.accueil_ech_eq_0_3]
+[crazy_house.accueil_ech_eq_0_4]
 #       |--------------------|
 line1 = "Hmmm je ne suis pas"
 line2 = "sûre, peut-être que"
 line3 = "vous pouvez vous"
+next = crazy_house.accueil_ech_eq_0_5
 
-[crazy_house.accueil_ech_eq_0_4]
+[crazy_house.accueil_ech_eq_0_5]
 #       |--------------------|
 line1 = "rendre au guichet"
 line2 = "21. Prenez"
 line3 = "l'escalier et vous"
+next = crazy_house.accueil_ech_eq_0_6
 
-[crazy_house.accueil_ech_eq_0_5]
+[crazy_house.accueil_ech_eq_0_6]
 #       |--------------------|
 line1 = "le trouverez au"
 line2 = "premier étage."
 
 #----------------------------------------------
 
-[crazy_house.guichet_11_ech_lt_5]
+[crazy_house.guichet_11_ech_ne_9]
 #       |--------------------|
 line1 = "C'est à quel sujet ?"
 line2 = "Vous avez perdu"
 line3 = "quoi ? Mais monsieur"
-next = crazy_house.guichet_11_ech_lt_5_2
+next = crazy_house.guichet_11_ech_ne_9_2
 
-[crazy_house.guichet_11_ech_lt_5_2]
+[crazy_house.guichet_11_ech_ne_9_2]
 #       |--------------------|
 line1 = "il faut vous"
 line2 = "adresser à"
@@ -2502,6 +2507,12 @@ line3 = "l'accueil."
 #==============================================
 # PHASE 1 : trouver le guichet 21
 #==============================================
+
+[crazy_house.accueil_ech_eq_1]
+#       |--------------------|
+line1 = "Prenez l'escalier"
+line2 = "de cette salle pour"
+line3 = "le guichet 21."
 
 [crazy_house.guichet_21_ech_eq_1]
 #       |--------------------|

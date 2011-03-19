@@ -18,6 +18,48 @@ height = 1600
 width = 3056
 height = 1136
 
+[dungeon_1.map_61.boss_0]
+floor = 0
+x = 2584
+y = 557
+save = 302
+big = 0
+
+[dungeon_1.map_61.chest_0]
+floor = 0
+x = 2576
+y = 104
+save = 204
+big = 0
+
+[dungeon_1.map_61.chest_1]
+floor = 0
+x = 1936
+y = 912
+save = 292
+big = 0
+
+[dungeon_1.map_61.chest_2]
+floor = 0
+x = 2296
+y = 952
+save = 205
+big = 1
+
+[dungeon_1.map_61.chest_3]
+floor = 0
+x = 2208
+y = 960
+save = 203
+big = 0
+
+[dungeon_1.map_61.chest_4]
+floor = 0
+x = 1688
+y = 336
+save = 248
+big = 0
+
 [dungeon_1.map_62.chest_0]
 floor = 0
 x = 1304
@@ -44,6 +86,13 @@ floor = 1
 x = 456
 y = 928
 save = 247
+big = 0
+
+[dungeon_1.map_63.chest_0]
+floor = 0
+x = 2216
+y = 1328
+save = 250
 big = 0
 
 [dungeon_1.map_60.chest_0]
@@ -170,27 +219,6 @@ floor = 1
 x = 1840
 y = 688
 save = 116
-big = 0
-
-[dungeon_2.map_20.chest_0]
-floor = 0
-x = 1256
-y = 392
-save = 103
-big = 0
-
-[dungeon_2.map_20.chest_1]
-floor = 0
-x = 408
-y = 272
-save = 102
-big = 0
-
-[dungeon_2.map_20.chest_2]
-floor = 0
-x = 1272
-y = 216
-save = 109
 big = 0
 
 [dungeon_2.map_24.chest_0]
@@ -323,62 +351,27 @@ big = 0
 floor = 2
 x = 2792
 y = 752
+save = 102
+big = 0
+
+[dungeon_2.map_20.chest_0]
+floor = 0
+x = 1256
+y = 392
+save = 103
+big = 0
+
+[dungeon_2.map_20.chest_1]
+floor = 0
+x = 408
+y = 272
 save = 122
 big = 0
 
-[dungeon_1.map_61.boss_0]
+[dungeon_2.map_20.chest_2]
 floor = 0
-x = 2584
-y = 557
-save = 302
+x = 1272
+y = 216
+save = 109
 big = 0
-
-[dungeon_1.map_61.chest_0]
-floor = 0
-x = 2576
-y = 104
-save = 204
-big = 0
-
-[dungeon_1.map_61.chest_1]
-floor = 0
-x = 1936
-y = 912
-save = 292
-big = 0
-
-[dungeon_1.map_61.chest_2]
-floor = 0
-x = 2296
-y = 952
-save = 205
-big = 1
-
-[dungeon_1.map_61.chest_3]
-floor = 0
-x = 2208
-y = 960
-save = 203
-big = 0
-
-[dungeon_1.map_61.chest_4]
-floor = 0
-x = 1688
-y = 336
-save = 248
-big = 0
-
-[dungeon_1.map_63.chest_0]
-floor = 0
-x = 2216
-y = 1328
-save = 250
-big = 0
-
-[dungeon_1.map_65.boss_0]
-floor = 1
-x = 2624
-y = 845
-save = 306
-big = 1
 

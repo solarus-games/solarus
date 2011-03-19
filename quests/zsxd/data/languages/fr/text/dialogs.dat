@@ -720,9 +720,8 @@ line2 = "intérêt quelconque !"
 # Eau
 #       |--------------------|
 icon = 8
-line1 = "Tu as rempli ton"
-line2 = "Flacon Magique avec"
-line3 = "de l'eau !"
+line1 = "Tu as trouvé de"
+line2 = "l'eau !"
 
 [_treasure.bottle_1.3]
 # Potion rouge
@@ -800,9 +799,8 @@ line3 = "Pas super utile, ok."
 # Eau
 #       |--------------------|
 icon = 8
-line1 = "Tu as rempli ton"
-line2 = "Flacon Magique avec"
-line3 = "de l'eau !"
+line1 = "Tu as trouvé de"
+line2 = "l'eau !"
 
 [_treasure.bottle_2.3]
 # Potion rouge
@@ -885,9 +883,8 @@ line2 = "diverses substances."
 # Eau
 #       |--------------------|
 icon = 8
-line1 = "Tu as rempli ton"
-line2 = "Flacon Magique avec"
-line3 = "de l'eau !"
+line1 = "Tu as trouvé de"
+line2 = "l'eau !"
 
 [_treasure.bottle_3.3]
 # Potion rouge
@@ -970,9 +967,8 @@ line2 = "diverses substances."
 # Eau
 #       |--------------------|
 icon = 8
-line1 = "Tu as rempli ton"
-line2 = "Flacon Magique avec"
-line3 = "de l'eau !"
+line1 = "Tu as trouvé de"
+line2 = "l'eau !"
 
 [_treasure.bottle_4.3]
 # Potion rouge
@@ -3356,7 +3352,7 @@ next = outside_fields_NO.guy_a2
 
 [outside_fields_NO.guy_a2]
 #       |-----------------------|
-line1 = "As tu été voir au"
+line1 = "As-tu été voir au"
 line2 = "Bureau des Objets"
 line3 = "Trouvés ?"
 
@@ -3728,7 +3724,7 @@ line1 = "HAAAAAAAAAAAAAAAAAA !!!"
 
 [the_end.credits]
 #       |-----------------------|
-line1 = "$2Ce jeu parodique a été"
+line1 = "$1Ce jeu parodique a été"
 line2 = "réalisé en cinq"
 line3 = "semaines par l'équipe"
 next = the_end.credits.1
@@ -3955,6 +3951,23 @@ next = link_house.intro.16
 #       |-----------------------|
 line1 = "A toi de jouer !"
 
+[water_house.give_bottle]
+#       |-----------------------|
+line1 = "Tu n'as pas l'air"
+line2 = "d'aimer beaucoup l'eau."
+line3 = "Moi, j'adore ça."
+next = water_house.give_bottle.2
+
+[water_house.give_bottle.2]
+#       |-----------------------|
+line1 = "Alors tiens, voici une"
+line2 = "bouteille d'eau, ça ne"
+line3 = "te fera pas de mal !"
+
+[water_house.after]
+#       |-----------------------|
+line1 = "Vive l'eau !"
+
 [dungeon_1.welcome]
 #       |-----------------------|
 line1 = "        Niveau 2       " 
@@ -4027,5 +4040,80 @@ line3 = "vraiment stupide."
 #       |-----------------------|
 line1 = "Au loin... un bruit..."
 
+[dungeon_1.boss_hint_stone]
+#       |-----------------------|
+line1 = "Bravo $v. Mais"
+line2 = "notre princesse est"
+line3 = "dans un autre château."
 
+[dungeon_1.ganon]
+#       |-----------------------|
+line1 = "La princesse Zelda ?"
+line2 = "Non, elle n'est pas du"
+line3 = "tout ici."
+next = dungeon_1.ganon.2
+
+[dungeon_1.ganon.2]
+#       |-----------------------|
+line1 = "A vrai dire, tu es le"
+line2 = "dernier à l'avoir vue,"
+line3 = "non ?"
+next = dungeon_1.ganon.3
+
+[dungeon_1.ganon.3]
+#       |-----------------------|
+line1 = "D'ailleurs, personne"
+line2 = "ne s'attendait à ce"
+line3 = "qu'elle soit d'accord"
+next = dungeon_1.ganon.4
+
+[dungeon_1.ganon.4]
+#       |-----------------------|
+line1 = "pour finir la soirée"
+line2 = "chez toi en tête à"
+line3 = "tête hier soir !"
+next = dungeon_1.ganon.4bis
+
+[dungeon_1.ganon.4bis]
+#       |-----------------------|
+line1 = "Mais elle a accepté !"
+next = dungeon_1.ganon.5
+
+[dungeon_1.ganon.5]
+#       |-----------------------|
+line1 = "Il faut croire qu'elle"
+line2 = "te trouve du charme..."
+next = dungeon_1.ganon.6
+
+[dungeon_1.ganon.6]
+#       |-----------------------|
+line1 = "Tu croyais que je"
+line2 = "l'avais enlevée ?"
+line3 = "Ha ha ha ha ha !"
+next = dungeon_1.ganon.7
+
+[dungeon_1.ganon.7]
+#       |-----------------------|
+line1 = "Bref, elle n'est pas"
+line2 = "ici. Tu as bien regardé"
+line3 = "partout chez toi ?"
+next = dungeon_1.ganon.7bis
+
+[dungeon_1.ganon.7bis]
+#       |-----------------------|
+line1 = "Pense peut-être à jeter"
+line2 = "un coup d'oeil dans ta"
+line3 = "maison, à l'occasion."
+next = dungeon_1.ganon.8
+
+[dungeon_1.ganon.8]
+#       |-----------------------|
+line1 = "En attendant, je ne"
+line2 = "suis pas contre un"
+line3 = "petit combat à mort."
+next = dungeon_1.ganon.9
+
+[dungeon_1.ganon.9]
+#       |-----------------------|
+line1 = "En garde !"
 

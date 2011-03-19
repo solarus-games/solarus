@@ -128,7 +128,7 @@ booleans:
 
 42 first sword
 43 first shield
-44 outside link's house heart
+44 outside link's house piece of heart
 45 outside link's house chest
 46 sms guy house: empty chest
 47 shop: bought the apple pie
@@ -141,8 +141,10 @@ booleans:
 58	Desert east house: bone key in the chest
 59	Desert east house: door open
 60	Cursed cave: Link died
-61	(unused)
+61	Water house: found the bottle 2
 62	Link's house: door of the cave open
+63	Outside SO: found the bottle 3 (under some grass)
+64	Outside SO: heart container
 
 90-99: reserved for the freaking cave
 
@@ -226,3 +228,4 @@ booleans:
 303	1F NE: water drained
 304	1F SE: door before the boss
 305	1F SE: heart container in the first room
+306	2F NE: boss killed

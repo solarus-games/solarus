@@ -2292,7 +2292,7 @@ line2 = "un tunnel crr..."
 line3 = "crr... crr... clic !"
 
 #==============================================
-# TOUTES PHASES
+# AGENT EN GREVE
 #==============================================
 
 [crazy_house.public_agent]
@@ -2328,7 +2328,436 @@ next = crazy_house.public_agent_5
 #       |--------------------|
 line1 = "suppôt du MEDEF !!"
 
-#----------------------------------------------
+#==============================================
+# ACCUEIL
+#==============================================
+
+[crazy_house.accueil_ech_eq_0]
+#       |--------------------|
+line1 = "Bonjour monsieur,"
+line2 = "vous avez perdu"
+line3 = "quelque chose ? Quel"
+next = crazy_house.accueil_ech_eq_0_2
+
+[crazy_house.accueil_ech_eq_0_2]
+#       |--------------------|
+line1 = "est l'objet que vous"
+line2 = "recherchez ? Des"
+line3 = "gants ?"
+next = crazy_house.accueil_ech_eq_0_3
+
+[crazy_house.accueil_ech_eq_0_3]
+#       |--------------------|
+line1 = "Attendez je"
+line2 = "regarde..."
+next = crazy_house.accueil_ech_eq_0_4
+
+[crazy_house.accueil_ech_eq_0_4]
+#       |--------------------|
+line1 = "Hmmm je ne suis pas"
+line2 = "sûre, peut-être que"
+line3 = "vous pouvez vous"
+next = crazy_house.accueil_ech_eq_0_5
+
+[crazy_house.accueil_ech_eq_0_5]
+#       |--------------------|
+line1 = "rendre au guichet"
+line2 = "21. Prenez"
+line3 = "l'escalier et vous"
+next = crazy_house.accueil_ech_eq_0_6
+
+[crazy_house.accueil_ech_eq_0_6]
+#       |--------------------|
+line1 = "le trouverez au"
+line2 = "premier étage."
+
+[crazy_house.accueil_ech_eq_1]
+#       |--------------------|
+line1 = "Prenez l'escalier"
+line2 = "de cette salle pour"
+line3 = "le guichet 21."
+
+[crazy_house.accueil_ech_eq_2]
+#       |--------------------|
+line1 = "Oui ? Ah le"
+line2 = "guichetier ne"
+line3 = "comprend rien ? Hmmm"
+next = crazy_house.accueil_ech_eq_2_2
+
+[crazy_house.accueil_ech_eq_2_2]
+#       |--------------------|
+line1 = "essayez peut-être le"
+line2 = "guichet 41, il est"
+line3 = "au rez-de-chaussée"
+next = crazy_house.accueil_ech_eq_2_3
+
+[crazy_house.accueil_ech_eq_2_3]
+#       |--------------------|
+line1 = "mais vous devez"
+line2 = "faire le tour par"
+line3 = "le premier étage."
+next = crazy_house.accueil_ech_eq_2_4
+
+[crazy_house.accueil_ech_eq_2_4]
+#       |--------------------|	
+line1 = "Passez par cet"
+line2 = "escalier."
+
+[crazy_house.accueil_ech_eq_3]
+#       |--------------------|
+line1 = "Le guichet 41 est au"
+line2 = "rez-de-chaussée,"
+line3 = "passez d'abord par"
+next = crazy_house.accueil_ech_eq_3_2
+
+[crazy_house.accueil_ech_eq_3_2]
+#       |--------------------|	
+line1 = "l'escalier de cette"
+line2 = "salle et suivez les"
+line3 = "panneaux"
+
+[crazy_house.accueil_ech_eq_4]
+#       |--------------------|
+line1 = "Le guichet 33 ? Il"
+line2 = "est au deuxième"
+line3 = "étage,"
+next = crazy_house.accueil_ech_eq_4_2
+
+[crazy_house.accueil_ech_eq_4_2]
+#       |--------------------|	
+line1 = "dans l'aile gauche."
+
+[crazy_house.accueil_ech_eo_5-7]
+#       |--------------------|
+line1 = "Le guichet 12... Il"
+line2 = "est à cet étage mais"
+line3 = "dans l'aile droite,"
+next = crazy_house.accueil_ech_eo_5-7_2
+
+[crazy_house.accueil_ech_eo_5-7_2]
+#       |--------------------|
+line1 = "il va falloir passer"
+line2 = "par le premier étage"
+line3 = "encore une fois."
+
+[crazy_house.accueil_ech_eq_6]
+#       |--------------------|
+line1 = "Le guichet 32 se"
+line2 = "situe au 2ème étage"
+line3 = "dans l'aile droite,"
+next = crazy_house.accueil_ech_eq_6_2
+
+[crazy_house.accueil_ech_eq_6_2]
+#       |--------------------|
+line1 = "vous devez prendre"
+line2 = "l'escalier au"
+line3 = "premier étage, près"
+next = crazy_house.accueil_ech_eq_6_3
+
+[crazy_house.accueil_ech_eq_6_3]
+#       |--------------------|
+line1 = "du guichet 22."
+
+[crazy_house.accueil_ech_eq_8]
+#       |--------------------|
+line1 = "Guichet 22 ? Il est"
+line2 = "situé au premier"
+line3 = "étage dans"
+next = crazy_house.accueil_ech_eq_8_2
+
+[crazy_house.accueil_ech_eq_8_2]
+#       |--------------------|	
+line1 = "l'aile droite."
+
+[crazy_house.accueil_ech_eq_9]
+#       |--------------------|
+line1 = "Le guichet 12 est à"
+line2 = "cet étage, mais dans"
+line3 = "l'aile droite,"
+next = crazy_house.accueil_ech_eq_9_2
+
+[crazy_house.accueil_ech_eq_9_2]
+#       |--------------------|	
+line1 = "passez par le"
+line2 = "premier étage pour"
+line3 = "faire le tour."
+
+[crazy_house.accueil_ech_eq_10]
+#       |--------------------|
+line1 = "Pour vous rendre au"
+line2 = "guichet 33, vous"
+line3 = "devez monter"
+next = crazy_house.accueil_ech_eq_10_2
+
+[crazy_house.accueil_ech_eq_10_2]
+#       |--------------------|	
+line1 = "jusqu'au 2ème étage,"
+line2 = "dans l'aile gauche."
+
+[crazy_house.accueil_ech_eq_11]
+#       |--------------------|
+line1 = "Vous ne savez pas"
+line2 = "quoi faire de cette"
+line3 = "clé ? C'est la clé"
+next = crazy_house.accueil_ech_eq_11_2
+
+[crazy_house.accueil_ech_eq_11_2]
+#       |--------------------|	
+line1 = "d'un local au 2ème"
+line2 = "étage je crois,"
+line3 = "dans l'aile gauche"
+next = crazy_house.accueil_ech_eq_11_3
+	
+[crazy_house.accueil_ech_eq_11_3]
+#       |--------------------|
+line1 = "si mes souvenirs"
+line2 = "sont bons."
+
+[crazy_house.accueil_epi_eo_1-7]
+#       |--------------------|
+line1 = "Le guichet 84 ? Il"
+line2 = "est au premier étage"
+line3 = "aile gauche."
+
+[crazy_house.accueil_epi_eo_2-6]
+#       |--------------------|
+line1 = "Guichet 11, juste"
+line2 = "derrière moi"
+line3 = "monsieur"
+next = crazy_house.accueil_epi_eo_2-6_2
+
+[crazy_house.accueil_epi_eo_2-6_2]
+#       |--------------------|	
+line1 = "(mon dieu mais il"
+line2 = "n'a aucune"
+line3 = "mémoire !)"
+
+[crazy_house.accueil_epi_eo_3-5]
+#       |--------------------|
+line1 = "Pour trouver le"
+line2 = "guichet 22,"
+line3 = "rendez vous au"
+next = crazy_house.accueil_epi_eo_3-5_2
+
+[crazy_house.accueil_epi_eo_3-5_2]
+#       |--------------------|	
+line1 = "premier étage aile"
+line2 = "droite par cet"
+line3 = "escalier."
+
+[crazy_house.accueil_epi_eo_4-9]
+#       |--------------------|
+line1 = "Des sacs de riz ?"
+line2 = "Voyons... guichet"
+line3 = "36, c'est au"
+next = crazy_house.accueil_epi_eo_4-9_2
+
+[crazy_house.accueil_epi_eo_4-9_2]
+#       |--------------------|	
+line1 = "deuxième étage aile"
+line2 = "droite. Il faut"
+line3 = "prendre l'escalier"
+next = crazy_house.accueil_epi_eo_4-9_3
+
+[crazy_house.accueil_epi_eo_4-9_3]
+#       |--------------------|	
+line1 = "du premier aile"
+line2 = "droite."
+
+[crazy_house.accueil_epi_eo_8-10]
+#       |--------------------|
+line1 = "Un vieillard ? je ne"
+line2 = "sais pas monsieur,"
+line3 = "désolé."
+
+[crazy_house.accueil_bal_eo_1-6-8-10]
+#       |--------------------|
+line1 = "Pour trouver le"
+line2 = "guichet 22,"
+line3 = "rendez vous au"
+next = crazy_house.accueil_bal_eo_1-6-8-10_2
+
+[crazy_house.accueil_bal_eo_1-6-8-10_2]
+#       |--------------------|
+line1 = "premier étage aile"
+line2 = "droite par cet"
+line3 = "escalier."
+
+[crazy_house.accueil_bal_eq_2]
+#       |--------------------|
+line1 = "Le guichet 82 est au"
+line2 = "premier étage aile"
+line3 = "droite"
+
+[crazy_house.accueil_bal_eq_3]
+#       |--------------------|
+line1 = "Guichet 45, humm, il"
+line2 = "doit être au"
+line3 = "rez-de-chaussée aile"
+next = crazy_house.accueil_bal_eq_3_2
+
+[crazy_house.accueil_bal_eq_3_2]
+#       |--------------------|	
+line1 = "gauche si il n'a pas"
+line2 = "été déplacé..."
+
+[crazy_house.accueil_bal_eq_4]
+#       |--------------------|
+line1 = "Le guichet 32 est au"
+line2 = "deuxième étage aile"
+line3 = "droite"
+
+[crazy_house.accueil_bal_eo_5-9]
+#       |--------------------|
+line1 = "Mais je ne vous ai"
+line2 = "pas déjà dit que le"
+line3 = "guichet 11 était"
+next = crazy_house.accueil_bal_eo_5-9_2
+
+[crazy_house.accueil_bal_eo_5-9_2]
+#       |--------------------|	
+line1 = "juste ici ?"
+
+[crazy_house.accueil_bal_eq_7]
+#       |--------------------|
+line1 = "Des sacs de riz ?"
+line2 = "Essayez le guichet"
+line3 = "36 au deuxième étage"
+
+#==============================================
+# GUICHET 11
+#==============================================
+
+[crazy_house.guichet_11_ech_ne_9]
+#       |--------------------|
+line1 = "C'est à quel sujet ?"
+line2 = "Vous avez perdu"
+line3 = "quoi ? Mais monsieur"
+next = crazy_house.guichet_11_ech_ne_9_2
+
+[crazy_house.guichet_11_ech_ne_9_2]
+#       |--------------------|
+line1 = "il faut vous"
+line2 = "adresser à"
+line3 = "l'accueil."
+
+[crazy_house.guichet_11_ech_eq_9]
+#       |--------------------|	
+line1 = "Oui nous avons des"
+line2 = "haches, mais chaque"
+line3 = "hache ne pourra"
+next = crazy_house.guichet_11_ech_eq_9_2
+
+[crazy_house.guichet_11_ech_eq_9_2]
+#       |--------------------|	
+line1 = "être échangée que"
+line2 = "contre 2"
+line3 = "tapisseries."
+next = crazy_house.guichet_11_ech_eq_9_3
+
+[crazy_house.guichet_11_ech_eq_9_3]
+#       |--------------------|	
+line1 = "Où trouver des"
+line2 = "tapisseries ? Je"
+line3 = "crois au"
+next = crazy_house.guichet_11_ech_eq_9_4
+
+[crazy_house.guichet_11_ech_eq_9_4]
+#       |--------------------|	
+line1 = "guichet 22, ils sont"
+line2 = "un peu fous là-bas"
+line3 = "mais bon..."
+
+#==============================================
+# GUICHET 12A
+#==============================================
+
+[crazy_house.guichet_12A_ech_lt_5]
+#       |--------------------|
+line1 = "Ce guichet est fermé"
+line2 = "monsieur."
+
+[crazy_house.guichet_12A_ech_eq_5]
+#       |--------------------|
+line1 = "Ma collègue est en"
+line2 = "pause déjeuner, si"
+line3 = "vous cherchez"
+next = crazy_house.guichet_12B_ech_eq_5_2
+
+[crazy_house.guichet_12A_ech_eq_5_2]
+#       |--------------------|
+line1 = "quelque chose de"
+line2 = "particulier, peut-"
+line3 = "être qu'ils auront"
+next = crazy_house.guichet_12B_ech_eq_5_3
+
+[crazy_house.guichet_12A_ech_eq_5_3]
+#       |--------------------|
+line1 = "ce que vous cherchez"
+line2 = "au guichet 32. Où"
+line3 = "c'est ?"
+next = crazy_house.guichet_12B_ech_eq_5_4
+
+[crazy_house.guichet_12A_ech_eq_5_4]
+#       |--------------------|
+line1 = "Faut voir"
+line2 = "ça à l'accueil !"
+
+#==============================================
+# GUICHET 12B
+#==============================================
+
+[crazy_house.guichet_12B_ech_eq_3]
+#       |--------------------|
+line1 = "Que puis-je pour"
+line2 = "vous ? Le guichet"
+line3 = "41 ? Logiquement il"
+next = crazy_house.guichet_12B_ech_eq_3_2
+
+[crazy_house.guichet_12B_ech_eq_3_2]
+#       |--------------------|
+line1 = "y a un escalier qui"
+line2 = "permet d'accéder au"
+line3 = "premier étage pour"
+next = crazy_house.guichet_12B_ech_eq_3_3
+
+[crazy_house.guichet_12B_ech_eq_3_3]
+#       |--------------------|
+line1 = "trouver le 41 mais"
+line2 = "il a été condamné,"
+line3 = "désolé monsieur."
+
+[crazy_house.guichet_12B_ech_eq_7]
+#       |--------------------|
+line1 = "Un parfum ? Nous"
+line2 = "avons cela oui, mais"
+line3 = "je peux vous"
+next = crazy_house.guichet_12B_ech_eq_7_2
+
+[crazy_house.guichet_12B_ech_eq_7_2]
+#       |--------------------|
+line1 = "demander un"
+line2 = "service ? Il me"
+line3 = "faudrait un bocal"
+next = crazy_house.guichet_12B_ech_eq_7_3
+
+[crazy_house.guichet_12B_ech_eq_7_3]
+#       |--------------------|
+line1 = "d'épices, je vous"
+line2 = "l'échange contre le"
+line3 = "parfum."
+next = crazy_house.guichet_12B_ech_eq_7_4
+
+[crazy_house.guichet_12B_ech_eq_7_4]
+#       |--------------------|	
+line1 = "Marché conclu ?"
+line2 = "Bon ok"
+line3 = "Nan t'es relou !"
+question = true
+
+#==============================================
+# GUICHET 21
+#==============================================
 
 [crazy_house.guichet_21_ech_ne_1]
 #       |--------------------|
@@ -2341,7 +2770,42 @@ next = crazy_house.guichet_21_ech_ne_1_2
 #       |--------------------|
 line1 = "mon premier amour..."
 
-#----------------------------------------------
+[crazy_house.guichet_21_ech_eq_1]
+#       |--------------------|
+line1 = "Comment ? Vous avez"
+line2 = "mal aux dents ? Ah !"
+line3 = "Ne m'en parlez pas,"
+next = crazy_house.guichet_21_ech_eq_1_2
+
+[crazy_house.guichet_21_ech_eq_1_2]
+#       |--------------------|
+line1 = "dans ma jeunesse, on"
+line2 = "s'achetait des"
+line3 = "sucreries avec"
+next = crazy_house.guichet_21_ech_eq_1_3
+
+[crazy_house.guichet_21_ech_eq_1_3]
+#       |--------------------|
+line1 = "l'argent de poche"
+line2 = "que nos parents nous"
+line3 = "donnaient, du coup"
+next = crazy_house.guichet_21_ech_eq_1_4
+
+[crazy_house.guichet_21_ech_eq_1_4]
+#       |--------------------|
+line1 = "les caries"
+line2 = "s'installaient en"
+line3 = "moins de deux,"
+next = crazy_house.guichet_21_ech_eq_1_5
+
+[crazy_house.guichet_21_ech_eq_1_5]
+#       |--------------------|
+line1 = "j'en ai mal rien"
+line2 = "que d'y penser..."
+
+#==============================================
+# GUICHET 22
+#==============================================
 
 [crazy_house.guichet_22_ech_aw]
 #       |--------------------|
@@ -2404,229 +2868,210 @@ line1 = "Et voilà la"
 line2 = "magnifique"
 line3 = "tapisserie !"
 
-#----------------------------------------------
-
-[crazy_house.vieillard]
-#       |--------------------|
-line1 = "Ronfl... ZZZ...."
-line2 = "Hein ? Quoi ? Tu"
-line3 = "veux voudrais pas un"
-next = crazy_house.vieillard_2
-
-[crazy_house.vieillard_2]
-#       |--------------------|
-line1 = "bocal d'épices par"
-line2 = "hasard ? Héhé, je"
-line3 = "lis dans les"
-next = crazy_house.vieillard_3
-
-[crazy_house.vieillard_3]
-#       |--------------------|
-line1 = "pensées, si tu"
-line2 = "m'apporte 3"
-line3 = "poivrons,"
-next = crazy_house.vieillard_4
-
-[crazy_house.vieillard_4]
-#       |--------------------|	
-line1 = "je serais peut-être"
-line2 = "conciliant..."
-line3 = "ronfl... ZZZ..."
-
-#----------------------------------------------
-
-[crazy_house.guichet_82]
-#       |--------------------|	
-line1 = "Hmmmm... je déprime,"
-line2 = "j'ai besoin d'un sac"
-line3 = "d'olive pour mon"
-next = crazy_house.guichet_82_2
-
-[crazy_house.guichet_82_2]
-#       |--------------------|	
-line1 = "chat mais personne"
-line2 = "ne semble en"
-line3 = "avoir... *soupir*..."
-
-#----------------------------------------------
-
-[crazy_house.accueil_ech_eq_0]
-#       |--------------------|
-line1 = "Bonjour monsieur,"
-line2 = "vous avez perdu"
-line3 = "quelque chose ? Quel"
-next = crazy_house.accueil_ech_eq_0_2
-
-[crazy_house.accueil_ech_eq_0_2]
-#       |--------------------|
-line1 = "est l'objet que vous"
-line2 = "recherchez ? Des"
-line3 = "gants ?"
-next = crazy_house.accueil_ech_eq_0_3
-
-[crazy_house.accueil_ech_eq_0_3]
-#       |--------------------|
-line1 = "Attendez je"
-line2 = "regarde..."
-next = crazy_house.accueil_ech_eq_0_4
-
-[crazy_house.accueil_ech_eq_0_4]
-#       |--------------------|
-line1 = "Hmmm je ne suis pas"
-line2 = "sûre, peut-être que"
-line3 = "vous pouvez vous"
-next = crazy_house.accueil_ech_eq_0_5
-
-[crazy_house.accueil_ech_eq_0_5]
-#       |--------------------|
-line1 = "rendre au guichet"
-line2 = "21. Prenez"
-line3 = "l'escalier et vous"
-next = crazy_house.accueil_ech_eq_0_6
-
-[crazy_house.accueil_ech_eq_0_6]
-#       |--------------------|
-line1 = "le trouverez au"
-line2 = "premier étage."
-
-#----------------------------------------------
-
-[crazy_house.guichet_11_ech_ne_9]
-#       |--------------------|
-line1 = "C'est à quel sujet ?"
-line2 = "Vous avez perdu"
-line3 = "quoi ? Mais monsieur"
-next = crazy_house.guichet_11_ech_ne_9_2
-
-[crazy_house.guichet_11_ech_ne_9_2]
-#       |--------------------|
-line1 = "il faut vous"
-line2 = "adresser à"
-line3 = "l'accueil."
-
 #==============================================
-# PHASE 1 : trouver le guichet 21
+# GUICHET 31
 #==============================================
 
-[crazy_house.accueil_ech_eq_1]
+[crazy_house.guichet_31]
 #       |--------------------|
-line1 = "Prenez l'escalier"
-line2 = "de cette salle pour"
-line3 = "le guichet 21."
-
-[crazy_house.guichet_21_ech_eq_1]
-#       |--------------------|
-line1 = "Comment ? Vous avez"
-line2 = "mal aux dents ? Ah !"
-line3 = "Ne m'en parlez pas,"
-next = crazy_house.guichet_21_ech_eq_1_2
-
-[crazy_house.guichet_21_ech_eq_1_2]
-#       |--------------------|
-line1 = "dans ma jeunesse, on"
-line2 = "s'achetait des"
-line3 = "sucreries avec"
-next = crazy_house.guichet_21_ech_eq_1_3
-
-[crazy_house.guichet_21_ech_eq_1_3]
-#       |--------------------|
-line1 = "l'argent de poche"
-line2 = "que nos parents nous"
-line3 = "donnaient, du coup"
-next = crazy_house.guichet_21_ech_eq_1_4
-
-[crazy_house.guichet_21_ech_eq_1_4]
-#       |--------------------|
-line1 = "les caries"
-line2 = "s'installaient en"
-line3 = "moins de deux,"
-next = crazy_house.guichet_21_ech_eq_1_5
-
-[crazy_house.guichet_21_ech_eq_1_5]
-#       |--------------------|
-line1 = "j'en ai mal rien"
-line2 = "que d'y penser..."
+line1 = ""
 
 #==============================================
-# PHASE 2 : revenir à l'accueil
+# GUICHET 32
 #==============================================
 
-[crazy_house.accueil_ech_eq_2]
+[crazy_house.guichet_32_ech_le_6]
 #       |--------------------|
-line1 = "Oui ? Ah le"
-line2 = "guichetier ne"
-line3 = "comprend rien ? Hmmm"
-next = crazy_house.accueil_ech_eq_2_2
+line1 = "Un parfum ? Non"
+line2 = "désolé nous on a des"
+line3 = "cuillères."
+next = crazy_house.guichet_32_ech_le_6_2
 
-[crazy_house.accueil_ech_eq_2_2]
+[crazy_house.guichet_32_ech_le_6_2]
 #       |--------------------|
-line1 = "essayez peut-être le"
-line2 = "guichet 41, il est"
-line3 = "au rez-de-chaussée"
-next = crazy_house.accueil_ech_eq_2_3
+line1 = "Le guichet 12 ? Si"
+line2 = "l'employée est en"
+line3 = "pause, elle est"
+next = crazy_house.guichet_32_ech_le_6_3
 
-[crazy_house.accueil_ech_eq_2_3]
+[crazy_house.guichet_32_ech_le_6_3]
 #       |--------------------|
-line1 = "mais vous devez"
-line2 = "faire le tour par"
-line3 = "le premier étage."
-next = crazy_house.accueil_ech_eq_2_4
+line1 = "sûrement revenue à"
+line2 = "l'heure qu'il est,"
+line3 = "vous devriez"
+next = crazy_house.guichet_32_ech_le_6_4
 
-[crazy_house.accueil_ech_eq_2_4]
-#       |--------------------|	
-line1 = "Passez par cet"
-line2 = "escalier."
+[crazy_house.guichet_32_ech_le_6_4]
+#       |--------------------|
+line1 = "retourner voir."
 
 #==============================================
-# PHASE 3 : trouver le guichet 41
+# GUICHET 33
 #==============================================
 
-[crazy_house.guichet_84_ech_eq_3]
+[crazy_house.guichet_33_ech_eq_3]
 #       |--------------------|
-line1 = "Pardon ? Le guichet"
-line2 = "41 ? Vous n'y êtes"
-line3 = "pas monsieur, ici"
-next = crazy_house.guichet_84_ech_eq_3_2
+line1 = "Non désolé ce n'est"
+line2 = "pas le guichet 41,"
+line3 = "vous êtes au 33. Le"
+next = crazy_house.guichet_33_ech_eq_3_2
 
-[crazy_house.guichet_84_ech_eq_3_2]
-#       |--------------------|	
-line1 = "c'est le guichet 84,"
-line2 = "pour le 41 vous"
-line3 = "devez descendre"
-next = crazy_house.guichet_84_ech_eq_3_3
-
-[crazy_house.guichet_84_ech_eq_3_3]
+[crazy_house.guichet_33_ech_eq_3_2]
 #       |--------------------|
-line1 = "au rez-de-chaussée."
+line1 = "téléporteur sur"
+line2 = "votre gauche va vers"
+line3 = "le guichet 22."
 
-#----------------------------------------------
-
-[crazy_house.guichet_49_ech_lt_12]
+[crazy_house.guichet_33_ech_ge_4]
 #       |--------------------|
-line1 = "On m'a reléguée dans"
-line2 = "ce sous-sol isolée"
-line3 = "de tous..."
-next = crazy_house.guichet_49_ech_lt_12_2
+line1 = "Oui ? La clé du"
+line2 = "dépôt ? Ah mais"
+line3 = "non ! Je ne donne"
+next = crazy_house.guichet_33_ech_ge_4_2
 
-[crazy_house.guichet_49_ech_lt_12_2]
+[crazy_house.guichet_33_ech_ge_4_2]
 #       |--------------------|
-line1 = "Bouh ouh ouh !"
+line1 = "pas les clés à"
+line2 = "n'importe qui ! Si"
+line3 = "vous me rapportez"
+next = crazy_house.guichet_33_ech_ge_4_3
 
-#----------------------------------------------
+[crazy_house.guichet_33_ech_ge_4_3]
+#       |--------------------|
+line1 = "un beau parfum,"
+line2 = "je serai peut être"
+line3 = "plus enclin à vous"
+next = crazy_house.guichet_33_ech_ge_4_4
 
-[crazy_house.guichet_47_ech_eq_3]
+[crazy_house.guichet_33_ech_ge_4_4]
+#       |--------------------|
+line1 = "confier les clés."
+line2 = "Je crois que"
+line3 = "quelqu'un a dû en"
+next = crazy_house.guichet_33_ech_ge_4_5
+
+[crazy_house.guichet_33_ech_ge_4_5]
+#       |--------------------|
+line1 = "retrouver un,"
+line2 = "essayez le guichet"
+line3 = "12, ils pourraient"
+next = crazy_house.guichet_33_ech_ge_4_6
+
+[crazy_house.guichet_33_ech_ge_4_6]
+#       |--------------------|
+line1 = "vous renseigner"
+line2 = "là-dessus."
+next = crazy_house.guichet_33_ech_ge_4_7
+
+[crazy_house.guichet_33_ech_ge_4_7]
+#       |--------------------|
+line1 = "Où est ce guichet ?"
+line2 = "Aucune idée, deman-"
+line3 = "dez à l'accueil"
+
+#==============================================
+# GUICHET 36
+#==============================================
+
+[crazy_house.guichet_36]
+#       |--------------------|
+line1 = ""
+
+#==============================================
+# GUICHET 41
+#==============================================
+
+[crazy_house.guichet_41_ech_ne_3]
+#       |--------------------|
+line1 = "[TODO]"
+
+[crazy_house.guichet_41_ech_eq_3]
 #       |--------------------|
 line1 = "Bonjour, vous"
-line2 = "cherchez le guichet"
-line3 = "41 ?"
-next = crazy_house.guichet_47_ech_eq_3_2
+line2 = "cherchez des gants ?"
+line3 = "Un instant..."
+next = crazy_house.guichet_41_ech_eq_3_2
 
-[crazy_house.guichet_47_ech_eq_3_2]
+[crazy_house.guichet_41_ech_eq_3_2]
+#       |--------------------|	
+line1 = "Hmm oui nous avons"
+line2 = "ça, ils ont été"
+line3 = "stockés au dépôt."
+next = crazy_house.guichet_41_ech_eq_3_3
+
+[crazy_house.guichet_41_ech_eq_3_3]
 #       |--------------------|
-line1 = "Ah non ici c'est"
-line2 = "le 47."
+line1 = "Mais je n'ai pas la"
+line2 = "clé, il va falloir"
+line3 = "demander au"
+next = crazy_house.guichet_41_ech_eq_3_4
 
-#----------------------------------------------
+[crazy_house.guichet_41_ech_eq_3_4]
+#       |--------------------|
+line1 = "guichet 33, c'est"
+line2 = "lui qui a toutes"
+line3 = "les clés."
+next = crazy_house.guichet_41_ech_eq_3_5
+
+[crazy_house.guichet_41_ech_eq_3_5]
+#       |--------------------|
+line1 = "Il est situé au"
+line2 = "2ème étage aile"
+line3 = "gauche."
+
+#==============================================
+# GUICHET 43
+#==============================================
+
+[crazy_house.guichet_43]
+#       |--------------------|
+line1 = "Et tu sais quoi ? Et"
+line2 = "bah sa mère, et bah"
+line3 = "elle a fricoté avec"
+next = crazy_house.guichet_43_2
+
+[crazy_house.guichet_43_2]
+#       |--------------------|
+line1 = "le facteur ! Si je"
+line2 = "te jure ! Le choc"
+line3 = "que ça a dû être"
+next = crazy_house.guichet_43_3
+
+[crazy_house.guichet_43_3]
+#       |--------------------|
+line1 = "pour le môme, nan"
+line2 = "mais c'est"
+line3 = "incroyable le"
+next = crazy_house.guichet_43_4
+
+[crazy_house.guichet_43_4]
+#       |--------------------|
+line1 = "toupet de cette"
+line2 = "dame..."
+next = crazy_house.guichet_43_5
+
+[crazy_house.guichet_43_5]
+#       |--------------------|
+line1 = "QUOI ?!! Vous ne"
+line2 = "voyez pas que je"
+line3 = "suis occupée ?"
+next = crazy_house.guichet_43_6
+
+[crazy_house.guichet_43_6]
+#       |--------------------|
+line1 = "Ce que les"
+line2 = "gens peuvent être"
+line3 = "mal élevés !"
+next = crazy_house.guichet_43_7
+
+[crazy_house.guichet_43_7]
+#       |--------------------|
+line1 = "Roh... où j'en"
+line2 = "étais moi...?"
+
+#==============================================
+# GUICHET 45
+#==============================================
 
 [crazy_house.guichet_45_ech_eq_3]
 #       |--------------------|
@@ -2694,318 +3139,76 @@ line1 = "l'immeuble."
 line2 = "Voilà, bonne"
 line3 = "journée."
 
-#----------------------------------------------
+#==============================================
+# GUICHET 47
+#==============================================
 
-[crazy_house.guichet_12A_ech_lt_5]
-#       |--------------------|
-line1 = "Ce guichet est fermé"
-line2 = "monsieur."
-
-#----------------------------------------------
-
-[crazy_house.guichet_12B_ech_eq_3]
-#       |--------------------|
-line1 = "Que puis-je pour"
-line2 = "vous ? Le guichet"
-line3 = "41 ? Logiquement il"
-next = crazy_house.guichet_12B_ech_eq_3_2
-
-[crazy_house.guichet_12B_ech_eq_3_2]
-#       |--------------------|
-line1 = "y a un escalier qui"
-line2 = "permet d'accéder au"
-line3 = "premier étage pour"
-next = crazy_house.guichet_12B_ech_eq_3_3
-
-[crazy_house.guichet_12B_ech_eq_3_3]
-#       |--------------------|
-line1 = "trouver le 41 mais"
-line2 = "il a été condamné,"
-line3 = "désolé monsieur."
-
-#----------------------------------------------
-
-[crazy_house.guichet_33_ech_eq_3]
-#       |--------------------|
-line1 = "Non désolé ce n'est"
-line2 = "pas le guichet 41,"
-line3 = "vous êtes au 33. Le"
-next = crazy_house.guichet_33_ech_eq_3_2
-
-[crazy_house.guichet_33_ech_eq_3_2]
-#       |--------------------|
-line1 = "téléporteur sur"
-line2 = "votre gauche va vers"
-line3 = "le guichet 22."
-
-#----------------------------------------------
-
-[crazy_house.guichet_43]
-#       |--------------------|
-line1 = "Et tu sais quoi ? Et"
-line2 = "bah sa mère, et bah"
-line3 = "elle a fricoté avec"
-next = crazy_house.guichet_43_2
-
-[crazy_house.guichet_43_2]
-#       |--------------------|
-line1 = "le facteur ! Si je"
-line2 = "te jure ! Le choc"
-line3 = "que ça a dû être"
-next = crazy_house.guichet_43_3
-
-[crazy_house.guichet_43_3]
-#       |--------------------|
-line1 = "pour le môme, nan"
-line2 = "mais c'est"
-line3 = "incroyable le"
-next = crazy_house.guichet_43_4
-
-[crazy_house.guichet_43_4]
-#       |--------------------|
-line1 = "toupet de cette"
-line2 = "dame..."
-next = crazy_house.guichet_43_5
-
-[crazy_house.guichet_43_5]
-#       |--------------------|
-line1 = "QUOI ?!! Vous ne"
-line2 = "voyez pas que je"
-line3 = "suis occupée ?"
-next = crazy_house.guichet_43_6
-
-[crazy_house.guichet_43_6]
-#       |--------------------|
-line1 = "Ce que les"
-line2 = "gens peuvent être"
-line3 = "mal élevés !"
-next = crazy_house.guichet_43_7
-
-[crazy_house.guichet_43_7]
-#       |--------------------|
-line1 = "Roh... où j'en"
-line2 = "étais moi...?"
-
-#----------------------------------------------
-
-[crazy_house.guichet_41_ech_ne_3]
-#       |--------------------|
-line1 = "[TODO]"
-
-[crazy_house.guichet_41_ech_eq_3]
+[crazy_house.guichet_47_ech_eq_3]
 #       |--------------------|
 line1 = "Bonjour, vous"
-line2 = "cherchez des gants ?"
-line3 = "Un instant..."
-next = crazy_house.guichet_41_ech_eq_3_2
+line2 = "cherchez le guichet"
+line3 = "41 ?"
+next = crazy_house.guichet_47_ech_eq_3_2
 
-[crazy_house.guichet_41_ech_eq_3_2]
+[crazy_house.guichet_47_ech_eq_3_2]
+#       |--------------------|
+line1 = "Ah non ici c'est"
+line2 = "le 47."
+
+#==============================================
+# GUICHET 49
+#==============================================
+
+[crazy_house.guichet_49_ech_lt_12]
+#       |--------------------|
+line1 = "On m'a reléguée dans"
+line2 = "ce sous-sol isolée"
+line3 = "de tous..."
+next = crazy_house.guichet_49_ech_lt_12_2
+
+[crazy_house.guichet_49_ech_lt_12_2]
+#       |--------------------|
+line1 = "Bouh ouh ouh !"
+
+#==============================================
+# GUICHET 82
+#==============================================
+
+[crazy_house.guichet_82]
 #       |--------------------|	
-line1 = "Hmm oui nous avons"
-line2 = "ça, ils ont été"
-line3 = "stockés au dépôt."
-next = crazy_house.guichet_41_ech_eq_3_3
+line1 = "Hmmmm... je déprime,"
+line2 = "j'ai besoin d'un sac"
+line3 = "d'olive pour mon"
+next = crazy_house.guichet_82_2
 
-[crazy_house.guichet_41_ech_eq_3_3]
-#       |--------------------|
-line1 = "Mais je n'ai pas la"
-line2 = "clé, il va falloir"
-line3 = "demander au"
-next = crazy_house.guichet_41_ech_eq_3_4
-
-[crazy_house.guichet_41_ech_eq_3_4]
-#       |--------------------|
-line1 = "guichet 33, c'est"
-line2 = "lui qui a toutes"
-line3 = "les clés."
-next = crazy_house.guichet_41_ech_eq_3_5
-
-[crazy_house.guichet_41_ech_eq_3_5]
-#       |--------------------|
-line1 = "Il est situé au"
-line2 = "2ème étage aile"
-line3 = "gauche."
-
-#==============================================
-# PHASE 4 : chercher la clé du dépôt au guichet 33
-#==============================================
-
-[crazy_house.guichet_33_ech_ge_4]
-#       |--------------------|
-line1 = "Oui ? La clé du"
-line2 = "dépôt ? Ah mais"
-line3 = "non ! Je ne donne"
-next = crazy_house.guichet_33_ech_ge_4_2
-
-[crazy_house.guichet_33_ech_ge_4_2]
-#       |--------------------|
-line1 = "pas les clés à"
-line2 = "n'importe qui ! Si"
-line3 = "vous me rapportez"
-next = crazy_house.guichet_33_ech_ge_4_3
-
-[crazy_house.guichet_33_ech_ge_4_3]
-#       |--------------------|
-line1 = "un beau parfum,"
-line2 = "je serai peut être"
-line3 = "plus enclin à vous"
-next = crazy_house.guichet_33_ech_ge_4_4
-
-[crazy_house.guichet_33_ech_ge_4_4]
-#       |--------------------|
-line1 = "confier les clés."
-line2 = "Je crois que"
-line3 = "quelqu'un a dû en"
-next = crazy_house.guichet_33_ech_ge_4_5
-
-[crazy_house.guichet_33_ech_ge_4_5]
-#       |--------------------|
-line1 = "retrouver un,"
-line2 = "essayez le guichet"
-line3 = "12, ils pourraient"
-next = crazy_house.guichet_33_ech_ge_4_6
-
-[crazy_house.guichet_33_ech_ge_4_6]
-#       |--------------------|
-line1 = "vous renseigner"
-line2 = "là-dessus."
-next = crazy_house.guichet_33_ech_ge_4_7
-
-[crazy_house.guichet_33_ech_ge_4_7]
-#       |--------------------|
-line1 = "Où est ce guichet ?"
-line2 = "Aucune idée, deman-"
-line3 = "dez à l'accueil"
-
-#==============================================
-# PHASE 5 : se renseigner sur le parfum au guichet 12
-#==============================================
-
-[crazy_house.accueil_ech_eo_5-7]
-#       |--------------------|
-line1 = "Le guichet 12... Il"
-line2 = "est à cet étage mais"
-line3 = "dans l'aile droite,"
-next = crazy_house.accueil_ech_eo_5-7_2
-
-[crazy_house.accueil_ech_eo_5-7_2]
-#       |--------------------|
-line1 = "il va falloir passer"
-line2 = "par le premier étage"
-line3 = "encore une fois."
-
-#----------------------------------------------
-
-[crazy_house.guichet_12B_ech_eq_5]
-#       |--------------------|
-line1 = "Ma collègue est en"
-line2 = "pause déjeuner, si"
-line3 = "vous cherchez"
-next = crazy_house.guichet_12B_ech_eq_5_2
-
-[crazy_house.guichet_12B_ech_eq_5_2]
-#       |--------------------|
-line1 = "quelque chose de"
-line2 = "particulier, peut-"
-line3 = "être qu'ils auront"
-next = crazy_house.guichet_12B_ech_eq_5_3
-
-[crazy_house.guichet_12B_ech_eq_5_3]
-#       |--------------------|
-line1 = "ce que vous cherchez"
-line2 = "au guichet 32. Où"
-line3 = "c'est ?"
-next = crazy_house.guichet_12B_ech_eq_5_4
-
-[crazy_house.guichet_12B_ech_eq_5_4]
-#       |--------------------|
-line1 = "Faut voir"
-line2 = "ça à l'accueil !"
-
-#==============================================
-# PHASE 6 : trouver le guichet 32
-#==============================================
-
-[crazy_house.accueil_ech_eq_6]
-#       |--------------------|
-line1 = "Le guichet 32 se"
-line2 = "situe au 2ème étage"
-line3 = "dans l'aile droite,"
-next = crazy_house.accueil_ech_eq_6_2
-
-[crazy_house.accueil_ech_eq_6_2]
-#       |--------------------|
-line1 = "vous devez prendre"
-line2 = "l'escalier au"
-line3 = "premier étage, près"
-next = crazy_house.accueil_ech_eq_6_3
-
-[crazy_house.accueil_ech_eq_6_3]
-#       |--------------------|
-line1 = "du guichet 22."
-
-#----------------------------------------------
-
-[crazy_house.guichet_32_ech_le_6]
-#       |--------------------|
-line1 = "Un parfum ? Non"
-line2 = "désolé nous on a des"
-line3 = "cuillères."
-next = crazy_house.guichet_32_ech_le_6_2
-
-[crazy_house.guichet_32_ech_le_6_2]
-#       |--------------------|
-line1 = "Le guichet 12 ? Si"
-line2 = "l'employée est en"
-line3 = "pause, elle est"
-next = crazy_house.guichet_32_ech_le_6_3
-
-[crazy_house.guichet_32_ech_le_6_3]
-#       |--------------------|
-line1 = "sûrement revenue à"
-line2 = "l'heure qu'il est,"
-line3 = "vous devriez"
-next = crazy_house.guichet_32_ech_le_6_4
-
-[crazy_house.guichet_32_ech_le_6_4]
-#       |--------------------|
-line1 = "retourner voir."
-
-#==============================================
-# PHASE 7 : retourner au guichet 12
-#==============================================
-
-[crazy_house.guichet_12_ech_eq_7]
-#       |--------------------|
-line1 = "Un parfum ? Nous"
-line2 = "avons cela oui, mais"
-line3 = "je peux vous"
-next = crazy_house.guichet_12_ech_eq_7_2
-
-[crazy_house.guichet_12_ech_eq_7_2]
-#       |--------------------|
-line1 = "demander un"
-line2 = "service ? Il me"
-line3 = "faudrait un bocal"
-next = crazy_house.guichet_12_ech_eq_7_3
-
-[crazy_house.guichet_12_ech_eq_7_3]
-#       |--------------------|
-line1 = "d'épices, je vous"
-line2 = "l'échange contre le"
-line3 = "parfum."
-next = crazy_house.guichet_12_ech_eq_7_4
-
-[crazy_house.guichet_12_ech_eq_7_4]
+[crazy_house.guichet_82_2]
 #       |--------------------|	
-line1 = "Marché conclu ?"
-line2 = "Bon ok"
-line3 = "Nan t'es relou !"
-question = true
+line1 = "chat mais personne"
+line2 = "ne semble en"
+line3 = "avoir... *soupir*..."
+
 
 #==============================================
-# PHASE 8 : chercher le bocal d'épices
+# GUICHET 84
 #==============================================
+
+[crazy_house.guichet_84_ech_eq_3]
+#       |--------------------|
+line1 = "Pardon ? Le guichet"
+line2 = "41 ? Vous n'y êtes"
+line3 = "pas monsieur, ici"
+next = crazy_house.guichet_84_ech_eq_3_2
+
+[crazy_house.guichet_84_ech_eq_3_2]
+#       |--------------------|	
+line1 = "c'est le guichet 84,"
+line2 = "pour le 41 vous"
+line3 = "devez descendre"
+next = crazy_house.guichet_84_ech_eq_3_3
+
+[crazy_house.guichet_84_ech_eq_3_3]
+#       |--------------------|
+line1 = "au rez-de-chaussée."
 
 [crazy_house.guichet_84_ech_ge_8]
 #       |--------------------|	
@@ -3027,38 +3230,38 @@ line1 = "avaient des haches"
 line2 = "au guichet 11."
 
 #==============================================
-# PHASE 9 : chercher des haches au guichet 11
+# VIEILLARD
 #==============================================
 
-[crazy_house.guichet_11_ech_eq_9]
-#       |--------------------|	
-line1 = "Oui nous avons des"
-line2 = "haches, mais chaque"
-line3 = "hache ne pourra"
-next = crazy_house.guichet_11_ech_eq_9_2
+[crazy_house.vieillard]
+#       |--------------------|
+line1 = "Ronfl... ZZZ...."
+line2 = "Hein ? Quoi ? Tu"
+line3 = "veux voudrais pas un"
+next = crazy_house.vieillard_2
 
-[crazy_house.guichet_11_ech_eq_9_2]
-#       |--------------------|	
-line1 = "être échangée que"
-line2 = "contre 2"
-line3 = "tapisseries."
-next = crazy_house.guichet_11_ech_eq_9_3
+[crazy_house.vieillard_2]
+#       |--------------------|
+line1 = "bocal d'épices par"
+line2 = "hasard ? Héhé, je"
+line3 = "lis dans les"
+next = crazy_house.vieillard_3
 
-[crazy_house.guichet_11_ech_eq_9_3]
-#       |--------------------|	
-line1 = "Où trouver des"
-line2 = "tapisseries ? Je"
-line3 = "crois au"
-next = crazy_house.guichet_11_ech_eq_9_4
+[crazy_house.vieillard_3]
+#       |--------------------|
+line1 = "pensées, si tu"
+line2 = "m'apporte 3"
+line3 = "poivrons,"
+next = crazy_house.vieillard_4
 
-[crazy_house.guichet_11_ech_eq_9_4]
+[crazy_house.vieillard_4]
 #       |--------------------|	
-line1 = "guichet 22, ils sont"
-line2 = "un peu fous là-bas"
-line3 = "mais bon..."
+line1 = "je serais peut-être"
+line2 = "conciliant..."
+line3 = "ronfl... ZZZ..."
 
 #==============================================
-# PHASE 10: chercher des tapisseries donc des sacs de riz
+# APOTHICAIRE
 #==============================================
 
 [crazy_house.apothicaire]

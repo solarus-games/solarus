@@ -113,7 +113,7 @@
 2	1	120	200	16	16	teletransporter_6	0	0	12	tmp
 8	1	88	93	snores	3	0	entities/snores	map
 8	1	72	101	bed	3	0	entities/bed	map
-1	1	80	101	from_intro	0	0
+1	1	80	101	start_position	0	0
 0	2	0	0	16	240	170
 0	2	16	0	416	16	170
 0	2	16	224	416	16	170

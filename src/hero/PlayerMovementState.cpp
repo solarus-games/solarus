@@ -59,11 +59,13 @@ void Hero::PlayerMovementState::start(State *previous_state) {
 
   if (is_current_state()) { // yes, the state may have already changed
     get_player_movement()->compute_movement();
-    if (get_wanted_movement_direction8() != -1) {
-      set_animation_walking();
-    }
-    else {
-      set_animation_stopped();
+    if (is_current_state()) {
+      if (get_wanted_movement_direction8() != -1) {
+        set_animation_walking();
+      }
+      else {
+        set_animation_stopped();
+      }
     }
   }
 }

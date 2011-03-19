@@ -145,6 +145,7 @@ booleans:
 62	Link's house: door of the cave open
 63	Outside SO: found the bottle 3 (under some grass)
 64	Outside SO: heart container
+65	Outside SE: door of the temple
 
 90-99: reserved for the freaking cave
 

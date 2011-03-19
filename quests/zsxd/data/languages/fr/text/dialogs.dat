@@ -3275,6 +3275,10 @@ next = outside_fields_SO.forest_monkey_end
 #       |-----------------------|
 line1 = "Ook ! Ook ! Ook !"
 
+[outside_fields_SE.temple_door_closed]
+#       |-----------------------|
+line1 = "C'est fermé à clé..."
+
 [outside_fields_NO_indic]
 #       |-----------------------|
 line1 = "Ouest : Château"

@@ -1470,7 +1470,7 @@
 4	0	904	877	5	_random	1	-1
 4	0	904	845	5	_random	1	-1
 4	0	936	909	2	_random	1	-1
-4	0	952	909	2	_random	1	-1
+4	0	952	909	2	heart	1	-1
 4	0	968	909	2	_random	1	-1
 4	0	776	293	2	_random	1	-1
 4	0	760	293	2	_random	1	-1
@@ -1498,7 +1498,7 @@
 4	0	816	677	2	_random	1	-1
 4	0	816	693	2	_random	1	-1
 4	0	816	709	2	_random	1	-1
-4	0	800	693	2	_random	1	-1
+4	0	800	693	2	hache	1	-1
 4	0	896	709	2	_random	1	-1
 4	0	896	693	2	_random	1	-1
 4	0	896	677	2	_random	1	-1
@@ -1593,10 +1593,10 @@
 8	0	832	805	lady_b	3	1	npc/villager2	dialog#outside_fields_NO.lady_b
 8	0	552	797	interactive_entity	3	1	npc/static_villager9	dialog#outside_fields_NO.drunk
 8	0	776	893	guy_a	3	1	npc/newlink7	dialog#outside_fields_NO.guy_a
-8	0	440	213	castle_guard	3	1	npc/tom	dialog#outside_fields_NO.castle_guard
+8	0	304	157	castle_guard	3	1	npc/tom	dialog#outside_fields_NO.castle_guard
 4	0	240	189	2	_random	1	-1
 4	0	240	205	2	_random	1	-1
-4	0	240	221	2	_random	1	-1
+4	0	240	221	2	hache	1	-1
 4	0	240	237	2	_random	1	-1
 4	0	256	221	2	_random	1	-1
 4	0	256	205	2	_random	1	-1
@@ -1658,6 +1658,7 @@
 18	0	136	976	door_3	1	8	53
 18	0	152	976	door_4	1	8	54
 18	0	168	992	door_5	1	8	55
+12	0	944	80	16	8	custom_obstacle_7	1	1	1	1
 0	2	64	912	8	40	514
 0	2	792	960	96	40	511
 0	2	584	560	80	24	717

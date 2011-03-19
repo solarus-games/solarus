@@ -708,6 +708,40 @@
 0	1	1296	272	8	8	69
 0	1	1312	272	8	8	69
 0	1	1304	272	8	8	70
+0	1	80	200	8	8	122
+0	1	88	200	160	8	120
+0	1	248	200	8	8	123
+0	1	80	192	8	8	114
+0	1	80	176	8	16	118
+0	1	80	168	8	8	112
+0	1	88	192	160	8	119
+0	1	248	192	8	8	115
+0	1	88	168	160	8	116
+0	1	248	168	8	8	113
+0	1	248	176	8	16	117
+0	1	88	176	160	16	121
+0	1	80	160	8	8	69
+0	1	80	136	8	8	69
+0	1	248	136	8	8	69
+0	1	248	160	8	8	69
+0	1	88	136	160	8	70
+0	1	80	144	8	16	71
+0	1	248	144	8	16	71
+0	1	208	96	8	8	122
+0	1	216	96	64	8	120
+0	1	280	96	8	8	123
+0	1	208	88	8	8	114
+0	1	216	88	64	8	119
+0	1	280	88	8	8	115
+0	1	208	80	8	8	118
+0	1	208	72	8	8	112
+0	1	216	72	64	8	116
+0	1	280	72	8	8	113
+0	1	280	80	8	8	117
+0	1	216	80	64	8	121
+0	1	208	40	8	8	69
+0	1	208	64	8	8	69
+0	1	208	48	8	16	71
 10	1	1648	176	24	32	weak_wall_A_closed	51	1
 10	1	1608	176	24	32	weak_wall_A_closed_2	50	1
 19	1	160	24	stairs_2	1	0
@@ -717,11 +751,6 @@
 12	1	560	352	8	8	custom_obstacle_3	1	1	1	1
 12	1	560	376	8	8	custom_obstacle_4	1	1	1	1
 8	1	864	365	welcome_sign	3	0	entities/sign	dialog#crazy_house.welcome_message
-11	1	624	144	switch_2	1	0	0
-11	1	544	64	switch_3	1	0	0
-11	1	544	144	switch_4	1	0	0
-11	1	384	64	switch_5	1	0	0
-11	1	384	144	switch_6	1	0	0
 12	1	408	56	8	32	custom_obstacle_15	1	1	1	1
 12	1	376	128	32	8	custom_obstacle_16	1	1	1	1
 12	1	448	136	8	32	custom_obstacle_13	1	1	1	1
@@ -739,7 +768,7 @@
 3	1	696	149	heart_container	1	100
 3	1	696	149	heart_container	1	100
 8	1	624	325	mario_message_1	3	0	_none	map
-5	1	408	272	CV3	0	_none	1	102
+5	1	408	272	CK3	0	small_key	1	122
 5	1	1272	216	CR3	0	rupee	1	109
 1	1	1280	261	TB_destination	-1	1
 8	1	1200	189	npc_1	3	1	npc/static_villager8	map
@@ -757,17 +786,20 @@
 19	1	1832	136	stairs_6	1	0
 1	1	1840	149	from2Fa_right	3	0
 2	1	1832	136	16	16	to2Fa_right	0	1	22	from1Fb
-18	1	1608	184	weak_wall_A	0	5	105
-18	1	1656	184	weak_wall_A_2	2	5	105
+18	1	1608	176	weak_wall_A	0	5	105
+18	1	1656	176	weak_wall_A_2	2	5	105
 14	1	1216	189	crystal_switch
 2	1	160	24	16	16	to2Fa_left	0	1	22	from1Fa
 6	1	1232	224	8	56	jump_sensor_3	4	40
 6	1	1240	280	56	8	jump_sensor_2	6	40
 18	1	848	216	DK1_2	3	1	140
-8	1	248	101	GC11	3	1	npc/newlink3	map
-8	1	248	101	GC11	3	1	npc/newlink3	map
-8	1	96	189	Accueil	3	1	npc/static_villager10	map
-8	1	96	189	Accueil	3	1	npc/static_villager10	map
+8	1	248	69	GC11	3	1	npc/newlink3	map
+8	1	168	165	Accueil_2	3	1	npc/static_villager10	map
+8	1	136	221	directionsAccueil	3	1	entities/sign	map
+8	1	168	205	AccueilFront	3	0	_none	map
+8	1	248	101	GC11Front	3	0	_none	map
+8	1	1688	389	GC12A	3	0	_none	map
+8	1	1760	389	GC12B	3	0	_none	map
 0	2	1040	320	8	96	266
 0	2	1016	336	8	64	267
 0	2	0	0	16	496	170

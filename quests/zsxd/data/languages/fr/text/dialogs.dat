@@ -2455,45 +2455,50 @@ line3 = "avoir... *soupir*..."
 line1 = "Bonjour monsieur,"
 line2 = "vous avez perdu"
 line3 = "quelque chose ? Quel"
+next = crazy_house.accueil_ech_eq_0_2
 
-[crazy_house.accueil_ech_eq_0_1]
+[crazy_house.accueil_ech_eq_0_2]
 #       |--------------------|
 line1 = "est l'objet que vous"
 line2 = "recherchez ? Des"
 line3 = "gants ?"
+next = crazy_house.accueil_ech_eq_0_3
 
-[crazy_house.accueil_ech_eq_0_2]
+[crazy_house.accueil_ech_eq_0_3]
 #       |--------------------|
 line1 = "Attendez je"
 line2 = "regarde..."
+next = crazy_house.accueil_ech_eq_0_4
 
-[crazy_house.accueil_ech_eq_0_3]
+[crazy_house.accueil_ech_eq_0_4]
 #       |--------------------|
 line1 = "Hmmm je ne suis pas"
 line2 = "sûre, peut-être que"
 line3 = "vous pouvez vous"
+next = crazy_house.accueil_ech_eq_0_5
 
-[crazy_house.accueil_ech_eq_0_4]
+[crazy_house.accueil_ech_eq_0_5]
 #       |--------------------|
 line1 = "rendre au guichet"
 line2 = "21. Prenez"
 line3 = "l'escalier et vous"
+next = crazy_house.accueil_ech_eq_0_6
 
-[crazy_house.accueil_ech_eq_0_5]
+[crazy_house.accueil_ech_eq_0_6]
 #       |--------------------|
 line1 = "le trouverez au"
 line2 = "premier étage."
 
 #----------------------------------------------
 
-[crazy_house.guichet_11_ech_lt_5]
+[crazy_house.guichet_11_ech_ne_9]
 #       |--------------------|
 line1 = "C'est à quel sujet ?"
 line2 = "Vous avez perdu"
 line3 = "quoi ? Mais monsieur"
-next = crazy_house.guichet_11_ech_lt_5_2
+next = crazy_house.guichet_11_ech_ne_9_2
 
-[crazy_house.guichet_11_ech_lt_5_2]
+[crazy_house.guichet_11_ech_ne_9_2]
 #       |--------------------|
 line1 = "il faut vous"
 line2 = "adresser à"
@@ -2502,6 +2507,12 @@ line3 = "l'accueil."
 #==============================================
 # PHASE 1 : trouver le guichet 21
 #==============================================
+
+[crazy_house.accueil_ech_eq_1]
+#       |--------------------|
+line1 = "Prenez l'escalier"
+line2 = "de cette salle pour"
+line3 = "le guichet 21."
 
 [crazy_house.guichet_21_ech_eq_1]
 #       |--------------------|
@@ -2729,53 +2740,51 @@ line3 = "le guichet 22."
 
 #----------------------------------------------
 
-[crazy_house.guichet_43_ech_eq_3]
+[crazy_house.guichet_43]
 #       |--------------------|
 line1 = "Et tu sais quoi ? Et"
 line2 = "bah sa mère, et bah"
 line3 = "elle a fricoté avec"
-next = crazy_house.guichet_43_ech_eq_3_2
+next = crazy_house.guichet_43_2
 
-[crazy_house.guichet_43_ech_eq_3_2]
+[crazy_house.guichet_43_2]
 #       |--------------------|
 line1 = "le facteur ! Si je"
 line2 = "te jure ! Le choc"
 line3 = "que ça a dû être"
-next = crazy_house.guichet_43_ech_eq_3_3
+next = crazy_house.guichet_43_3
 
-[crazy_house.guichet_43_ech_eq_3_3]
+[crazy_house.guichet_43_3]
 #       |--------------------|
 line1 = "pour le môme, nan"
 line2 = "mais c'est"
 line3 = "incroyable le"
-next = crazy_house.guichet_43_ech_eq_3_4
+next = crazy_house.guichet_43_4
 
-[crazy_house.guichet_43_ech_eq_3_4]
+[crazy_house.guichet_43_4]
 #       |--------------------|
 line1 = "toupet de cette"
 line2 = "dame..."
-next = crazy_house.guichet_43_ech_eq_3_5
+next = crazy_house.guichet_43_5
 
-[crazy_house.guichet_43_ech_eq_3_5]
+[crazy_house.guichet_43_5]
 #       |--------------------|
-line1 = "QUOI ?!! Ce que les"
+line1 = "QUOI ?!! Vous ne"
+line2 = "voyez pas que je"
+line3 = "suis occupée ?"
+next = crazy_house.guichet_43_6
+
+[crazy_house.guichet_43_6]
+#       |--------------------|
+line1 = "Ce que les"
 line2 = "gens peuvent être"
 line3 = "mal élevés !"
-next = crazy_house.guichet_43_ech_eq_3_6
+next = crazy_house.guichet_43_7
 
-[crazy_house.guichet_43_ech_eq_3_6]
+[crazy_house.guichet_43_7]
 #       |--------------------|
-line1 = "Le guichet 41 ?"
-line2 = "Mais il est juste"
-line3 = "à côté monsieur,"
-next = crazy_house.guichet_43_ech_eq_3_7
-
-[crazy_house.guichet_43_ech_eq_3_7]
-#       |--------------------|
-line1 = "faut se réveiller !"
-line2 = "Roh... où j'en"
-line3 = "étais moi...?"
-next = crazy_house.guichet_43_ech_eq_3_8
+line1 = "Roh... où j'en"
+line2 = "étais moi...?"
 
 #----------------------------------------------
 

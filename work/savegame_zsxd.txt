@@ -151,7 +151,7 @@ booleans:
 100 to 199	reserved for crazy_house (dungeon 2)
 100	1FA: Hidden Piece of Heart [PH1]
 101	1FA: Empty chest Switch [CS3]
-102	1FA: Empty chest [CV3]
+102	3F : Map chest [CM3]
 103 1FA: Empty chest [CV1]
 104    : Hidden 50 rupees [HR1]
 105 1FA: Weak Wall [WW1]
@@ -171,7 +171,7 @@ booleans:
 119 1FB: Empty chest [CV4]
 120 3F : Iron Gloves [IGC]
 121 3F : Giga button statue position [GBS]
-122 3F : Small key chest [CK3]
+122 1FA : Small key chest [CK3]
 
 
 140	1FA: Key Door A [DK1]

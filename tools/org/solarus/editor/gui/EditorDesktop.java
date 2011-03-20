@@ -82,7 +82,7 @@ public class EditorDesktop extends JTabbedPane implements MouseListener, ChangeL
      */
     public void saveCurrentEditor() {
         if (getSelectedComponent() != null) {
-           ((AbstractEditorWindow) getSelectedComponent()).save();
+            ((AbstractEditorWindow) getSelectedComponent()).save();
         }
     }
 
@@ -114,37 +114,34 @@ public class EditorDesktop extends JTabbedPane implements MouseListener, ChangeL
      * Allow to close the editor with a click on his tab
      * @param e
      */
-    public void mouseClicked(MouseEvent e) {        
-        if(e.getButton() == MouseEvent.BUTTON2) {
+    public void mouseClicked(MouseEvent e) {
+        if (e.getButton() == MouseEvent.BUTTON2 && countEditors() > 0) {
             Point clic = e.getPoint();
             int idx = indexAtLocation(clic.x, clic.y);
-           AbstractEditorWindow editor = (AbstractEditorWindow) getComponentAt(idx);
-           removeEditor(editor);
+            AbstractEditorWindow editor = (AbstractEditorWindow) getComponentAt(idx);
+            removeEditor(editor);
         }
     }
 
     public void mousePressed(MouseEvent e) {
-        
     }
 
     public void mouseReleased(MouseEvent e) {
-       
     }
 
     public void mouseEntered(MouseEvent e) {
-      
     }
 
     public void mouseExited(MouseEvent e) {
-       
     }
 
     public void stateChanged(ChangeEvent e) {
         try {
-            ((MapEditorWindow) getSelectedComponent()).getMapView().requestFocus();
-        }
-        catch(ClassCastException cce) {
-            System.out.println("Dans le cul le cast !");
+            if (countEditors() > 0) {
+                ((MapEditorWindow) getSelectedComponent()).getMapView().requestFocus();
+            }
+        } catch (ClassCastException cce) {
+            //System.out.println("Dans le cul le cast !");
         }
     }
 }

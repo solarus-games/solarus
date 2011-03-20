@@ -164,7 +164,7 @@ public class Dialogs extends Observable {
             //System.out.println("We have " + getSections().size() + " sections interface this file");
 
         } catch (IOException ioe) {
-            System.out.println(line);
+            //System.out.println(line);
             throw new ZSDXException(ioe.getMessage());
         }
 
@@ -249,7 +249,7 @@ public class Dialogs extends Observable {
     }
 
     public void filterList(String filter) {
-        System.out.println("On filtre sur " + filter);
+        //System.out.println("On filtre sur " + filter);
         filteredSections.clear();
         if (filter.length() == 0) {
             filteredSections.addAll(sections);

@@ -203,6 +203,11 @@ public class Map extends Observable {
 	return name;
     }
 
+    @Override
+    public String toString() {
+        return name;
+    }
+
     /**
      * Changes the name of the map
      * @param name new name of the map

@@ -398,9 +398,6 @@ public class Project {
      * @return the file corresponding to this id
      */
     public static File getDialogsFile(String fileName) {
-
-
-
 	return new File(getDialogsPath() + File.separator + fileName);
     }
     
@@ -418,5 +415,19 @@ public class Project {
      */
     public static void removeProjectObserver(ProjectObserver observer) {
 	observers.remove(observer);
+    }
+
+
+
+ 
+    public static String getEnemyScriptFile(String name) {
+        String formatedName = name.replace(" ", "_").toLowerCase();
+	return getDataPath() + "/enemies/" + formatedName + ".lua";
+    }
+
+
+    public static String getItemScriptFile(String name) {
+        String formatedName = name.replace(" ", "_").toLowerCase();
+	return getDataPath() + "/items/" + formatedName + ".lua";
     }
 }

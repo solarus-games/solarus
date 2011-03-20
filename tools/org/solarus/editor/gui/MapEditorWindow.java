@@ -100,6 +100,15 @@ public class MapEditorWindow extends AbstractEditorWindow implements Observer, P
     }
 
     /**
+     * Creates a new window.
+     * @param quest name of a quest to load, or null to show a dialog to select the quest
+     */
+    public MapEditorWindow(String quest, EditorWindow parentEditor, Map map) {
+        this(quest, parentEditor);
+        setMap(map);
+    }
+
+    /**
      * This method is called just after a project is loaded.
      */
     public void currentProjectChanged() {

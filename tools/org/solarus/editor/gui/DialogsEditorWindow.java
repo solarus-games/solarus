@@ -212,6 +212,11 @@ public class DialogsEditorWindow extends AbstractEditorWindow implements Project
 
     }
 
+    public DialogsEditorWindow(String quest, EditorWindow editorWindow, Dialogs d) {
+        this(quest, editorWindow);
+        setDialogs(d);
+    }
+
     /**
      * This method is called when a project has just been loaded.
      * The dialogs menu is enabled.

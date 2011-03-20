@@ -3482,6 +3482,51 @@ line1 = "Ook ! Ook ! Ook !"
 #       |-----------------------|
 line1 = "C'est fermé à clé..."
 
+[outside_fields_SE.yoda_quote_1]
+#       |-----------------------|
+line1 = "Non, n'essaie pas."
+line2 = "Saute, ou ne saute pas."
+line3 = "Il n'y a pas d'essai."
+
+[outside_fields_SE.yoda_quote_2]
+#       |-----------------------|
+line1 = "Link, fais appel à"
+line2 = "la Triforce."
+
+[outside_fields_SE.yoda_quote_3]
+#       |-----------------------|
+line1 = "Toujours en mouvement"
+line2 = "est l'avenir."
+
+[outside_fields_SE.yoda_quote_4]
+#       |-----------------------|
+line1 = "Te conduire jusqu'à"
+line2 = "Zelda je puis."
+next = outside_fields_SE.yoda_quote_4.1
+
+[outside_fields_SE.yoda_quote_4.1]
+#       |-----------------------|
+line1 = "Mais maintenant, nous"
+line2 = "allons manger."
+
+[outside_fields_SE.yoda_quote_5]
+#       |-----------------------|
+line1 = "Quand 900 ans comme moi"
+line2 = "tu auras, moins en"
+line3 = "forme tu seras."
+
+[outside_fields_SE.yoda_quote_6]
+#       |-----------------------|
+line1 = "Le côté obscur de la"
+line2 = "Triforce, redouter"
+line3 = "tu dois."
+
+[outside_fields_SE.yoda_quote_7]
+#       |-----------------------|
+line1 = "Toujours pas deux ils"
+line2 = "vont. Ni plus, ni"
+line3 = "moins."
+
 [outside_fields_NO_indic]
 #       |-----------------------|
 line1 = "Ouest : Château"
@@ -3679,7 +3724,6 @@ line3 = "acheter un coffre neuf."
 line1 = "Une force mysterieuse "
 line2 = "vous empêche d'emprunter"
 line3 = "le téléporteur."
-
 
 [shop.red_rupee]
 #       |-----------------------|

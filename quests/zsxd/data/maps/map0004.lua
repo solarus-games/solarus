@@ -31,15 +31,32 @@ end
 
 function event_hero_on_sensor(sensor_name)
 
-  if string.match(sensor_name, "^yoda_sensor")
-      and not sol.game.savegame_get_boolean(66) then
+  if string.match(sensor_name, "^yoda_sensor") then
 
     -- choose a random quote
     repeat -- make sure the same quote is not picked again
-      index = math.random(7)
+      index = math.random(9)
     until index ~= last_yoda_quote
     sol.map.dialog_start("outside_fields_SE.yoda_quote_"..index)
     last_yoda_quote = index
+  end
+end
+
+function event_npc_dialog(npc_name)
+
+  if npc_name == "yoda" then
+    if not sol.game.savegame_get_boolean(66) then
+      sol.map.dialog_start("outside_fields_SE.yoda_give_sword")
+    else
+      sol.map.dialog_start("outside_fields_SE.yoda_finished")
+    end
+  end
+end
+
+function event_dialog_finished(first_message_id)
+
+  if first_message_id == "outside_fields_SE.yoda_give_sword" then
+    sol.map.treasure_give("sword", 2, 66)
   end
 end
 

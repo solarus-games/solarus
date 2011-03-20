@@ -1530,8 +1530,7 @@ next = _treasure.sword.2.1
 [_treasure.sword.2.1]
 #       |--------------------|
 line1 = "Tu peux faire appel"
-line2 = "à la Triforce !"
-next = _treasure.sword.2.2
+line2 = "à la Forcetri !"
 
 [_treasure.sword.3]
 # Epée 3 (Excalibur)
@@ -3491,7 +3490,7 @@ line3 = "Il n'y a pas d'essai."
 [outside_fields_SE.yoda_quote_2]
 #       |-----------------------|
 line1 = "Link, fais appel à"
-line2 = "la Triforce."
+line2 = "la Forcetri."
 
 [outside_fields_SE.yoda_quote_3]
 #       |-----------------------|
@@ -3500,32 +3499,81 @@ line2 = "est l'avenir."
 
 [outside_fields_SE.yoda_quote_4]
 #       |-----------------------|
-line1 = "Te conduire jusqu'à"
-line2 = "Zelda je puis."
-next = outside_fields_SE.yoda_quote_4.1
-
-[outside_fields_SE.yoda_quote_4.1]
-#       |-----------------------|
-line1 = "Mais maintenant, nous"
-line2 = "allons manger."
-
-[outside_fields_SE.yoda_quote_5]
-#       |-----------------------|
 line1 = "Quand 900 ans comme moi"
 line2 = "tu auras, moins en"
 line3 = "forme tu seras."
 
-[outside_fields_SE.yoda_quote_6]
+[outside_fields_SE.yoda_quote_5]
 #       |-----------------------|
 line1 = "Le côté obscur de la"
-line2 = "Triforce, redouter"
+line2 = "Forcetri, redouter"
 line3 = "tu dois."
 
-[outside_fields_SE.yoda_quote_7]
+[outside_fields_SE.yoda_quote_6]
 #       |-----------------------|
 line1 = "Toujours pas deux ils"
 line2 = "vont. Ni plus, ni"
 line3 = "moins."
+
+[outside_fields_SE.yoda_quote_7]
+#       |-----------------------|
+line1 = "Te conduire jusqu'à"
+line2 = "Zelda je puis."
+next = outside_fields_SE.yoda_quote_7.2
+
+[outside_fields_SE.yoda_quote_7.2]
+#       |-----------------------|
+line1 = "Mais maintenant, nous"
+line2 = "allons manger."
+
+[outside_fields_SE.yoda_quote_8]
+#       |-----------------------|
+line1 = "Prêt tu crois être."
+line2 = "Comment peux-tu"
+line3 = "savoir ?"
+
+[outside_fields_SE.yoda_quote_9]
+#       |-----------------------|
+line1 = "Que la Forcetri soit"
+line2 = "avec toi."
+
+[outside_fields_SE.yoda_give_sword]
+#       |-----------------------|
+line1 = "Robuste je suis grâce à"
+line2 = "la Forcetri, mais pas à"
+line3 = "ce point là."
+next = outside_fields_SE.yoda_give_sword.2
+
+[outside_fields_SE.yoda_give_sword.2]
+#       |-----------------------|
+line1 = "Le crépuscule m’envahit"
+line2 = "et bientôt, la nuit va"
+line3 = "tomber."
+next = outside_fields_SE.yoda_give_sword.3
+
+[outside_fields_SE.yoda_give_sword.3]
+#       |-----------------------|
+line1 = "Terminée, ta formation"
+line2 = "est."
+next = outside_fields_SE.yoda_give_sword.4
+
+[outside_fields_SE.yoda_give_sword.4]
+#       |-----------------------|
+line1 = "Ainsi vont les choses."
+line2 = "Ainsi va la Forcetri."
+
+[outside_fields_SE.yoda_finished]
+#       |-----------------------|
+line1 = "A travers la Forcetri,"
+line2 = "d'autres choses tu"
+line3 = "verras, d'autres"
+next = outside_fields_SE.yoda_finished.1
+
+[outside_fields_SE.yoda_finished.1]
+#       |-----------------------|
+line1 = "lieux : l'avenir, le"
+line2 = "passé, de vieux amis"
+line3 = "disparus.
 
 [outside_fields_NO_indic]
 #       |-----------------------|

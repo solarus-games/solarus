@@ -146,6 +146,7 @@ booleans:
 63	Outside SO: found the bottle 3 (under some grass)
 64	Outside SO: heart container
 65	Outside SE: door of the temple
+66	Outside SE: got Yoda's sword
 
 90-99: reserved for the freaking cave
 

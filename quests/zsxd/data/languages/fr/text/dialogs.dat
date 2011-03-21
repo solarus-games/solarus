@@ -2806,37 +2806,52 @@ line2 = "que d'y penser..."
 # GUICHET 22
 #==============================================
 
-[crazy_house.guichet_22_ech_aw]
+[crazy_house.guichet_22A]
 #       |--------------------|
 line1 = "Bienvenue au guichet"
 line2 = "22, le meilleur
 line3 = "guichet au monde !"
-next = crazy_house.guichet_22_ech_aw_2
+next = crazy_house.guichet_22A_2
 
-[crazy_house.guichet_22_ech_aw_2]
+[crazy_house.guichet_22A_2]
 #       |--------------------|
 line1 = "Ici on vous approvi-"
 line2 = "sionne en tout :"
 line3 = "on peut vous"
-next = crazy_house.guichet_22_ech_aw_3
+next = crazy_house.guichet_22A_3
 
-[crazy_house.guichet_22_ech_aw_3]
+[crazy_house.guichet_22A_3]
 #       |--------------------|
 line1 = "échanger un balai"
 line2 = "contre 3 rocs magma"
-line3 = "ou une tapisserie"
-next = crazy_house.guichet_22_ech_aw_4
+next = crazy_house.guichet_22_question
 
-[crazy_house.guichet_22_ech_aw_4]
-#       |--------------------|        
-line1 = "pour 2 sacs de riz."
-next = crazy_house.guichet_22_ech_aw_5
-
-[crazy_house.guichet_22_ech_aw_5]
+[crazy_house.guichet_22B]
 #       |--------------------|
-line1 = "Que souhaitez-vous ?"
-line2 = "Balai"
-line3 = "Tapisserie"
+line1 = "Bienvenue au guichet"
+line2 = "22, le meilleur
+line3 = "guichet au monde !"
+next = crazy_house.guichet_22B_2
+
+[crazy_house.guichet_22B_2]
+#       |--------------------|
+line1 = "Ici on vous approvi-"
+line2 = "sionne en tout :"
+line3 = "on peut vous"
+next = crazy_house.guichet_22B_3
+
+[crazy_house.guichet_22B_3]
+#       |--------------------|        
+line1 = "échanger une"
+line2 = "tapisserie pour 2"
+line3 = "sacs de riz."
+next = crazy_house.guichet_22_question
+
+[crazy_house.guichet_22_question]
+#       |--------------------|
+line1 = "Marché conclu ?"
+line2 = "Bien sûr"
+line3 = "Euuuhh.........Non !"
 question = true
 
 [crazy_house.guichet_22_rm_un]
@@ -2987,7 +3002,9 @@ line1 = ""
 
 [crazy_house.guichet_41_ech_ne_3]
 #       |--------------------|
-line1 = "[TODO]"
+line1 = "Désolé, je suis en"
+line2 = "pause là, et j'en ai"
+line3 = "bien besoin."
 
 [crazy_house.guichet_41_ech_eq_3]
 #       |--------------------|
@@ -3143,9 +3160,54 @@ line1 = "l'immeuble."
 line2 = "Voilà, bonne"
 line3 = "journée."
 
+[crazy_house.guichet_45_ech_ne_3]
+#       |--------------------|
+line1 = "Monsieur, vous ne"
+line2 = "chercheriez pas des"
+line3 = "sacs d'olive par"
+next = crazy_house.guichet_45_ech_ne_3_2
+
+[crazy_house.guichet_45_ech_ne_3_2]
+#       |--------------------|
+line1 = "hasard ? Je pourrais"
+line2 = "éventuellement vous"
+line3 = "les échanger contre"
+next = crazy_house.guichet_45_ech_ne_3_3
+
+[crazy_house.guichet_45_ech_ne_3_3]
+#       |--------------------|
+line1 = "des cuillères. 2"
+line2 = "cuillères pour 3"
+line3 = "sacs d'olive."
+next = crazy_house.guichet_45_ech_ne_3_4
+
+[crazy_house.guichet_45_ech_ne_3_4]
+#       |--------------------|
+line1 = "Qu'en dites-vous ?"
+line2 = "Mouais"
+line3 = "Mouais"
+question = true
+
+[crazy_house.guichet_45_ech_un]
+#       |--------------------|
+line1 = "Quel dommage, vous"
+line2 = "n'avez pas assez de"
+line3 = "cullières."
+
+[crazy_house.guichet_45_ech_ok]
+#       |--------------------|
+line1 = "Parfait, voici vos"
+line2 = "sacs d'olive."
+
 #==============================================
 # GUICHET 47
 #==============================================
+
+[crazy_house.guichet_47_ech_ne_3]
+#       |--------------------|
+line1 = "Que cherchez-vous ?"
+line2 = "Non désolé je n'en"
+line3 = "ai aucune idée."
 
 [crazy_house.guichet_47_ech_eq_3]
 #       |--------------------|
@@ -3163,14 +3225,14 @@ line2 = "le 47."
 # GUICHET 49
 #==============================================
 
-[crazy_house.guichet_49_ech_lt_12]
+[crazy_house.guichet_49]
 #       |--------------------|
 line1 = "On m'a reléguée dans"
 line2 = "ce sous-sol isolée"
 line3 = "de tous..."
-next = crazy_house.guichet_49_ech_lt_12_2
+next = crazy_house.guichet_49_2
 
-[crazy_house.guichet_49_ech_lt_12_2]
+[crazy_house.guichet_49_2]
 #       |--------------------|
 line1 = "Bouh ouh ouh !"
 

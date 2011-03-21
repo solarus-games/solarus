@@ -1,9 +1,9 @@
 ----------------------------------
--- Crazy House 1FB (north)       --
+-- Crazy House 1FB (north)      --
+-- TODO: MAP TERMINEE, A TESTER --
 ----------------------------------
 
 -- Guichet 41 -------------------------------------------------
--- TODO: dialogues à finir
 function guichet_41()
 	if sol.game.savegame_get_integer(1410) == 3 then
 		sol.map.dialog_start("crazy_house.guichet_41_ech_eq_3")
@@ -18,25 +18,26 @@ function guichet_43()
 end
 
 -- Guichet 45 -------------------------------------------------
--- TODO: dialogues à faire, script à faire
 function guichet_45()
 	if sol.game.savegame_get_integer(1410) == 3 then
 		sol.map.dialog_start("crazy_house.guichet_45_ech_eq_3")
 	else
-		
+		sol.map.dialog_start("crazy_house.guichet_45_ech_ne_3")
 	end
 end
 
 -- Guichet 47 -------------------------------------------------
--- TODO: dialogues à faire, script à faire
 function guichet_47()
-
+	if sol.game.savegame_get_integer(1410) == 3 then
+		sol.map.dialog_start("crazy_house.guichet_47_ech_eq_3")
+	else
+		sol.map.dialog_start("crazy_house.guichet_47_ech_ne_3")
+	end
 end
 
 -- Guichet 49 -------------------------------------------------
--- TODO: dialogues à finir, script à faire
 function guichet_49()
-
+	sol.map.dialog_start("crazy_house.guichet_49")
 end
 
 function event_hero_interaction(entity_name)
@@ -53,6 +54,19 @@ function event_hero_interaction(entity_name)
 		guichet_47()
 	elseif entity_name == "GC49" then
 		guichet_49()
+	end
+end
+
+function event_dialog_finished(first_message_id, answer)
+	if first_message_id == "crazy_house.guichet_45_ech_ne_3" then
+		if sol.game.has_item_amount("cuillere", 2) then
+			sol.map.dialog_start("crazy_house.guichet_45_ech_ok")
+		else
+			sol.map.dialog_start("crazy_house.guichet_45_ech_un")
+		end
+	elseif first_message_id == "crazy_house.guichet_45_ech_ok" then
+		sol.map.treasure_give("sac_olive", 3, 1487)
+		sol.game.remove_item_amount("cuillere", 2)
 	end
 end
 

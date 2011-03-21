@@ -119,7 +119,7 @@ function guichet_12A()
 end
 
 -- Guichet 12b -----------------------------------------------
--- TODO: dialogues presque finis, script à faire
+-- TODO: dialogues presque finis, script à finir
 function guichet_12B()
 	if sol.game.savegame_get_integer(1410) == 3 then	
 		sol.map.dialog_start("crazy_house.guichet_12B_ech_eq_3")

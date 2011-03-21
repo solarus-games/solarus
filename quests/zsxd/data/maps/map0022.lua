@@ -1,5 +1,6 @@
 ----------------------------------
 -- Crazy House 2FA (south)      --
+-- TODO: MAP TERMINEE, A TESTER --
 ----------------------------------
 
 locked_door_A_value = 0
@@ -33,7 +34,7 @@ function vieillard()
 			if sol.game.get_item_amount("sac_riz") < 5 then
 				sol.map.dialog_start("crazy_house.vieillard_riz_quantite")
 			else
-				-- A les 5 sacs de riz				
+				-- A les 5 sacs de riz
 				sol.map.dialog_start("crazy_house.vieillard_riz_ok")
 			end			
 		end
@@ -51,9 +52,13 @@ function guichet_21()
 end
 
 -- Guichet 22A -------------------------------------------------
--- TODO: dialogues presque finis, script à faire
 function guichet_22A()
+	sol.map.dialog_start("crazy_house.guichet_22A")
+end
 
+-- Guichet 22B -------------------------------------------------
+function guichet_22A()
+	sol.map.dialog_start("crazy_house.guichet_22B")
 end
 
 -- Interactions avec capteur pour guichet (devanture)
@@ -81,6 +86,29 @@ end
 function event_dialog_finished(first_message_id, answer)
 	if first_message_id == "crazy_house.vieillard_riz_ok" then
 		sol.map.treasure_give("bocal_epice", 1, 1488)
+		sol.game.remove_item_amount("sac_riz", 5)
+	elseif first_message_id = "crazy_house.guichet_22A" then
+		if answer == 0 then
+			if sol.game.item_get_amount("roc_magma") < 3 then
+				sol.map.dialog_start("crazy_house.guichet_22_rm_un")
+			else
+				sol.map.dialog_start("crazy_house.guichet_22_rm_ok")
+			end
+		end
+	elseif first_message_id = "crazy_house.guichet_22B" then
+		if answer == 0 then
+			if sol.game.item_get_amount("sac_riz") < 2 then
+				sol.map.dialog_start("crazy_house.guichet_22_sr_un")
+			else
+				sol.map.dialog_start("crazy_house.guichet_22_sr_ok")
+			end
+		end
+	elseif first_message_id = "crazy_house.guichet_22_rm_ok" then
+		sol.map.treasure_give("balai", 1, 1482)
+		sol.game.remove_item_amount("roc_magma", 3)
+	elseif first_message_id = "crazy_house.guichet_22_sr_ok" then
+		sol.map.treasure_give("tapisserie", 1, 1484)
+		sol.game.remove_item_amount("sac_riz", 2)
 	end
 end
 

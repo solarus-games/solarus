@@ -11,9 +11,33 @@ function event_map_started(destination_point_name)
 end
 
 -- Vieillard --------------------------------------------------
--- TODO: dialogues à finir, script à finir
 function vieillard()
-	sol.map.dialog_start("crazy_house.vieillard")
+	if sol.game.savegame_get_boolean(124) == false then
+		-- Première rencontre		
+		sol.map.dialog_start("crazy_house.vieillard")
+		sol.game.savegame_set_boolean(124, true)
+	else
+		if sol.game.savegame_get_boolean(125) == false then
+			-- Vieillard n'a pas encore changé d'avis
+			if sol.game.get_item_amount("poivron") < 3 then
+				-- N'a pas encore 3 poivrons
+				sol.map.dialog_start("crazy_house.vieillard")
+			else
+				-- A les 3 poivrons
+				sol.map.dialog_start("crazy_house.vieillard_poivron")
+				-- Changement d'avis				
+				sol.game.savegame_set_boolean(125, true)
+			end
+		else
+			-- Vieillard veut du riz maintenant !
+			if sol.game.get_item_amount("sac_riz") < 5 then
+				sol.map.dialog_start("crazy_house.vieillard_riz_quantite")
+			else
+				-- A les 5 sacs de riz				
+				sol.map.dialog_start("crazy_house.vieillard_riz_ok")
+			end			
+		end
+	end
 end
 
 -- Guichet 21 -------------------------------------------------
@@ -26,20 +50,24 @@ function guichet_21()
 	end
 end
 
--- Guichet 22 -------------------------------------------------
+-- Guichet 22A -------------------------------------------------
 -- TODO: dialogues presque finis, script à faire
-function guichet_22()
+function guichet_22A()
 
 end
 
+-- Interactions avec capteur pour guichet (devanture)
 function event_hero_interaction(entity_name)
 	if entity_name == "GC21front" then
 		guichet_21()
-	elseif entity_name == "GC22front" then
-		guichet_22()
+	elseif entity_name == "GC22Afront" then
+		guichet_22A()
+	elseif entity_name == "GC22Bfront" then
+		guichet_22B()
 	end
 end
 
+-- Interactions avec un NPC pour guichet
 function event_npc_dialog(entity_name)
 	if entity_name == "Vieillard" then
 		vieillard()
@@ -47,6 +75,12 @@ function event_npc_dialog(entity_name)
 		guichet_21()
 	elseif entity_name == "GC22" then
 		guichet_22()
+	end
+end
+
+function event_dialog_finished(first_message_id, answer)
+	if first_message_id == "crazy_house.vieillard_riz_ok" then
+		sol.map.treasure_give("bocal_epice", 1, 1488)
 	end
 end
 

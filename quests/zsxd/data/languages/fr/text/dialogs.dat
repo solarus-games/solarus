@@ -2151,14 +2151,14 @@ next = crazy_house.welcome_message_3
 
 [crazy_house.welcome_message_3]
 #       |-----------------------|
-line1 = "A gauche : guichets 11,"
-line2 = "21"
+line1 = "A gauche : Accueil,
+line2 = "guichets 11, 21."
 next = crazy_house.welcome_message_4
 
 [crazy_house.welcome_message_4]
 #       |-----------------------|
-line1 = "A droite : Accueil,
-line2 = "guichets 12, 22"
+line1 = "A droite : guichets 12,"
+line2 = "22."
 
 [crazy_house.mario_message_1]
 #       |-----------------------|
@@ -2192,6 +2192,7 @@ next = crazy_house.directions_3F_2
 #       |-----------------------|
 line1 = "A gauche : giga bouton"
 line2 = "En haut : guichet 82"
+next = crazy_house.directions_3F_2_2
 
 [crazy_house.directions_3F_2_2]
 #       |-----------------------|
@@ -2671,7 +2672,7 @@ line3 = "mais bon..."
 # GUICHET 12A
 #==============================================
 
-[crazy_house.guichet_12A_ech_lt_5]
+[crazy_house.guichet_12A_ech_ne_5]
 #       |--------------------|
 line1 = "Ce guichet est fermé"
 line2 = "monsieur."
@@ -2968,6 +2969,11 @@ line1 = "Où est ce guichet ?"
 line2 = "Aucune idée, deman-"
 line3 = "dez à l'accueil"
 
+[crazy_house.guichet_33_parfum]
+#       |--------------------|
+line1 = "Jor ! Tu as trouvé le parfum ?! J'aurais jamais cru ça possible ! Mais je suis un homme de parole, je te confie la clé qui te permettra d'accéder au dépôt, n'y fous pas le bordel hein ?"
+
+
 #==============================================
 # GUICHET 36
 #==============================================
@@ -3254,10 +3260,81 @@ line3 = "poivrons,"
 next = crazy_house.vieillard_4
 
 [crazy_house.vieillard_4]
-#       |--------------------|	
+#       |--------------------|
 line1 = "je serais peut-être"
 line2 = "conciliant..."
-line3 = "ronfl... ZZZ..."
+next = crazy_house.vieillard_ronfl
+
+[crazy_house.vieillard_poivron]
+#       |--------------------|
+line1 = "Ah mais qu'est-ce"
+line2 = "que c'est que ça ?"
+line3 = "Je ne t'ai jamais"
+next = crazy_house.vieillard_poivron_2
+
+[crazy_house.vieillard_poivron_2]
+#       |--------------------|
+line1 = "demandé des"
+line2 = "poivrons ! Ce que"
+line3 = "je cherche ce sont"
+next = crazy_house.vieillard_poivron_3
+
+[crazy_house.vieillard_poivron_3]
+#       |--------------------|
+line1 = "des sacs de riz !"
+line2 = "Ah les jeunes ils"
+line3 = "n'écoutent rien !"
+next = crazy_house.vieillard_ronfl
+
+[crazy_house.vieillard_riz_quantite]
+#       |--------------------|
+line1 = "ZZZ... Hein ?..."
+line2 = "Mais tu n'en a pas"
+line3 = "assez !"
+next = crazy_house.vieillard_riz_quantite_2
+
+[crazy_house.vieillard_riz_quantite_2]
+#       |--------------------|
+line1 = "Allez zou ! Va en"
+line2 = "chercher d'autres."
+next = crazy_house.vieillard_riz_quantite_3
+
+[crazy_house.vieillard_riz_quantite_3]
+#       |--------------------|	
+line1 = "J'en veux au moins"
+line2 = "5..."
+next = crazy_house.vieillard_ronfl
+
+[crazy_house.vieillard_riz_ok]
+#       |--------------------|
+line1 = "ZZZ...."
+line2 = "Oh oui Jacqueline..."
+line3 = "Ronfl... AH !!"
+next = crazy_house.vieillard_riz_ok_2
+
+[crazy_house.vieillard_riz_ok_2]
+#       |--------------------|
+line1 = "Pourquoi m'as-tu"
+line1 = "réveillé ? J'étais"
+line1 = "au beau milieu d'un"
+next = crazy_house.vieillard_riz_ok_3
+
+[crazy_house.vieillard_riz_ok_3]
+#       |--------------------|
+line1 = "merveilleux rêve."
+line1 = "Tu as le riz ? Et"
+line1 = "bah voila quand tu"
+next = crazy_house.vieillard_riz_ok_4
+
+[crazy_house.vieillard_riz_ok_4]
+#       |--------------------|	
+line1 = "veux ! Voici mon"
+line1 = "précieux bocal"
+line1 = "d'épice."
+
+[crazy_house.vieillard_ronfl]
+#       |--------------------|	
+line1 = "Ronfl... ZZZ..."
 
 #==============================================
 # APOTHICAIRE
@@ -3275,6 +3352,36 @@ next = crazy_house.apothicaire_2
 line1 = "la modique somme de"
 line2 = "20 rubis. Pour ce"
 line3 = "prix, tu en auras 5."
+next = crazy_house.apothicaire_3
+
+[crazy_house.apothicaire_3]
+#       |--------------------|	
+line1 = "Ça vous dit ?"
+line2 = "Et comment !"
+line3 = "Nan, escroc !"
+question = true
+
+[crazy_house.apothicaire_non]
+#       |--------------------|	
+line1 = "C'est pas très"
+line2 = "gentil ça..."
+
+[crazy_house.apothicaire_rubis]
+#       |--------------------|
+line1 = "Ah mais non tu n'as"
+line2 = "pas assez de rubis,"
+line3 = "c'est 20 pour"
+next = crazy_house.apothicaire_rubis_2
+
+[crazy_house.apothicaire_rubis_2]
+#       |--------------------|	
+line1 = "obtenir les 5 sacs"
+line2 = "de riz."
+
+[crazy_house.apothicaire_oui]
+#       |--------------------|	
+line1 = "Huhu, tu as fait une"
+line2 = "bonne affaire."
 
 #==============================================
 

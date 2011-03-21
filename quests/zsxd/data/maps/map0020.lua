@@ -110,15 +110,24 @@ function guichet_11()
 end
 
 -- Guichet 12a ------------------------------------------------
--- TODO: dialogues presque finis, script à faire
 function guichet_12A()
-
+	if sol.game.savegame_get_integer(1410) == 5 then
+		sol.map.dialog_start("crazy_house.guichet_12A_ech_eq_5")
+	else
+		sol.map.dialog_start("crazy_house.guichet_12A_ech_ne_5")
+	end
 end
 
 -- Guichet 12b -----------------------------------------------
 -- TODO: dialogues presque finis, script à faire
 function guichet_12B()
+	if sol.game.savegame_get_integer(1410) == 3 then	
+		sol.map.dialog_start("crazy_house.guichet_12B_ech_eq_3")
+	elseif sol.game.savegame_get_integer(1410) == 7 then
+		sol.map.dialog_start("crazy_house.guichet_12B_ech_eq_7")
+	else
 
+	end
 end
 
 function event_hero_interaction(entity_name)

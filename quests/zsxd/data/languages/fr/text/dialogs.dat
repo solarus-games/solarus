@@ -3244,14 +3244,56 @@ line1 = "Bouh ouh ouh !"
 #       |--------------------|	
 line1 = "Hmmmm... je déprime,"
 line2 = "j'ai besoin d'un sac"
-line3 = "d'olive pour mon"
+line3 = "d'olives pour mon"
 next = crazy_house.guichet_82_2
 
 [crazy_house.guichet_82_2]
-#       |--------------------|	
+#       |--------------------|
 line1 = "chat mais personne"
 line2 = "ne semble en"
 line3 = "avoir... *soupir*..."
+
+[crazy_house.guichet_82_3]
+#       |--------------------|
+line1 = "Tu n'aurais pas des"
+line2 = "sacs d'olives par"
+line3 = "hasard ?"
+
+[crazy_house.guichet_82_4]
+#       |--------------------|
+line1 = "Je t'échange 2 sacs"
+line2 = "d'olives contre un"
+line3 = "roc magma"
+
+[crazy_house.guichet_82_5]
+#       |--------------------|
+line1 = "C'est d'accord ?"
+line2 = "Tu m'étonnes !"
+line3 = "VTFCUO"
+question = true
+
+[crazy_house.guichet_82_un]
+#       |--------------------|
+line1 = "Désolé, il te faut"
+line2 = "au moins deux sacs"
+line3 = "d'olive pour obtenir"
+next = crazy_house.guichet_82_un_2
+
+[crazy_house.guichet_82_un_2]
+#       |--------------------|
+line1 = "un roc magma."
+
+[crazy_house.guichet_82_ok]
+#       |--------------------|
+line1 = "Oh my god ! Tu as"
+line2 = "les sacs d'olives,"
+line3 = "c'est trop bien !"
+next = crazy_house.guichet_82_ok_2
+
+[crazy_house.guichet_82_ok_2]
+#       |--------------------|
+line1 = "Voici ton roc magma"
+line2 = "bien mérité"
 
 
 #==============================================
@@ -3276,24 +3318,51 @@ next = crazy_house.guichet_84_ech_eq_3_3
 #       |--------------------|
 line1 = "au rez-de-chaussée."
 
-[crazy_house.guichet_84_ech_ge_8]
+[crazy_house.guichet_84_ech_ne_3_nh]
 #       |--------------------|	
 line1 = "En effet nous avons"
 line2 = "des poivrons. En"
 line3 = "échange de 5 haches,"
-next = crazy_house.guichet_84_ech_ge_8_2
+next = crazy_house.guichet_84_ech_ne_3_nh_2
 
-[crazy_house.guichet_84_ech_ge_8_2]
+[crazy_house.guichet_84_ech_ne_3_nh_2]
 #       |--------------------|	
 line1 = "on vous offre 3"
 line2 = "poivrons. J'ai"
 line3 = "entendu dire qu'ils"
-next = crazy_house.guichet_84_ech_ge_8_3
+next = crazy_house.guichet_84_ech_ne_3_nh_3
 
-[crazy_house.guichet_84_ech_ge_8_3]
-#       |--------------------|	
+[crazy_house.guichet_84_ech_ne_3_nh_3]
+#       |--------------------|
 line1 = "avaient des haches"
 line2 = "au guichet 11."
+
+[crazy_house.guichet_84_ech_ne_3_hh]
+#       |--------------------|
+line1 = "Echange standard, 5"
+line2 = "haches contre 3"
+line3 = "poivrons."
+next = crazy_house.guichet_84_ech_ne_3_hh_2
+
+[crazy_house.guichet_84_ech_ne_3_hh_2]
+#       |--------------------|
+line1 = "C'est bon ?"
+line2 = "Yay !"
+line3 = "Oh no !!"
+question = true
+
+[crazy_house.guichet_84_ech_ne_3_un]
+#       |--------------------|
+line1 = "Hé ho le gnome"
+line2 = "vert ! N'essaye pas"
+line3 = "de m'arnarquer !"
+next = crazy_house.guichet_84_ech_ne_3_un_2
+
+[crazy_house.guichet_84_ech_ne_3_un_2]
+#       |--------------------|
+line1 = "Tu amènes les 5"
+line2 = "haches ou t'auras"
+line3 = "rien !"
 
 #==============================================
 # VIEILLARD

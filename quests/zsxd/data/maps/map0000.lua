@@ -5,8 +5,8 @@ bed_sprite = nil
 function event_map_started(destination_point_name)
 
   bed_sprite = sol.map.interactive_entity_get_sprite("bed")
-  if destination_point_name == "from_intro" then
-    -- the intro scene was playing
+  if destination_point_name == "start_position" then
+    -- intro
     snores_sprite = sol.map.interactive_entity_get_sprite("snores")
     sol.main.sprite_set_animation_ignore_suspend(snores_sprite, true)
     sol.main.sprite_set_animation(bed_sprite, "hero_sleeping")

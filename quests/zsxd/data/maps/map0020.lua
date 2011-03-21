@@ -25,7 +25,7 @@ function event_switch_activated(switch_name)
 end
 
 -- Hôtesse d'accueil ------------------------------------------
--- TODO: dialogues à finir, script à finir
+-- TODO: variables à finir
 function accueil()
 	if sol.game.savegame_get_integer(1410) == 0 then
 		sol.map.dialog_start("crazy_house.accueil_ech_eq_0")
@@ -46,7 +46,48 @@ function accueil()
 	elseif sol.game.savegame_get_integer(1410) == 7 then
 		sol.map.dialog_start("crazy_house.accueil_ech_eq_7")
 	elseif sol.game.savegame_get_integer(1410) == 8 then
-		sol.map.dialog_start("crazy_house.accueil_ech_eq_8")
+		if sol.game.savegame_get_integer(1411) == 1 then
+      sol.map.dialog_start("crazy_house.accueil_epi_eo_1-7")
+    elseif sol.game.savegame_get_integer(1411) == 2 then
+      sol.map.dialog_start("crazy_house.accueil_epi_eo_2-6")
+    elseif sol.game.savegame_get_integer(1411) == 3 then
+      sol.map.dialog_start("crazy_house.accueil_epi_eo_3-5")
+    elseif sol.game.savegame_get_integer(1411) == 4 then
+      sol.map.dialog_start("crazy_house.accueil_epi_eo_4-9")
+    elseif sol.game.savegame_get_integer(1411) == 5 then
+      sol.map.dialog_start("crazy_house.accueil_epi_eo_3-5")
+    elseif sol.game.savegame_get_integer(1411) == 6 then
+      sol.map.dialog_start("crazy_house.accueil_epi_eo_2-6")
+    elseif sol.game.savegame_get_integer(1411) == 7 then
+      sol.map.dialog_start("crazy_house.accueil_epi_eo_1-7")
+    elseif sol.game.savegame_get_integer(1411) == 8 then
+      sol.map.dialog_start("crazy_house.accueil_epi_eo_8-10")
+    elseif sol.game.savegame_get_integer(1411) == 9 then
+      sol.map.dialog_start("crazy_house.accueil_epi_eo_4-9")
+    elseif sol.game.savegame_get_integer(1411) == 10 then
+      sol.map.dialog_start("crazy_house.accueil_epi_eo_8-10")
+    end
+    if sol.game.savegame_get_integer(1412) == 1 then
+      sol.map.dialog_start("crazy_house.accueil_bal_eo_1-6-8-10")
+    elseif sol.game.savegame_get_integer(1412) == 2 then
+      sol.map.dialog_start("crazy_house.accueil_bal_eq_2")
+    elseif sol.game.savegame_get_integer(1412) == 3 then
+      sol.map.dialog_start("crazy_house.accueil_bal_eq_3")
+    elseif sol.game.savegame_get_integer(1412) == 4 then
+      sol.map.dialog_start("crazy_house.accueil_bal_eq_4")
+    elseif sol.game.savegame_get_integer(1412) == 5 then
+      sol.map.dialog_start("crazy_house.accueil_bal_eo_5-9")
+    elseif sol.game.savegame_get_integer(1412) == 6 then
+      sol.map.dialog_start("crazy_house.accueil_bal_eo_1-6-8-10")
+    elseif sol.game.savegame_get_integer(1412) == 7 then
+      sol.map.dialog_start("crazy_house.accueil_bal_eq_7")
+    elseif sol.game.savegame_get_integer(1412) == 8 then
+      sol.map.dialog_start("crazy_house.accueil_bal_eo_1-6-8-10")
+    elseif sol.game.savegame_get_integer(1412) == 9 then
+      sol.map.dialog_start("crazy_house.accueil_bal_eo_5-9")
+    elseif sol.game.savegame_get_integer(1412) == 10 then
+      sol.map.dialog_start("crazy_house.accueil_bal_eo_1-6-8-10")
+    end
 	elseif sol.game.savegame_get_integer(1410) == 9 then
 		sol.map.dialog_start("crazy_house.accueil_ech_eq_9")
 	elseif sol.game.savegame_get_integer(1410) == 10 then
@@ -69,15 +110,24 @@ function guichet_11()
 end
 
 -- Guichet 12a ------------------------------------------------
--- TODO: dialogues presque finis, script à faire
 function guichet_12A()
-
+	if sol.game.savegame_get_integer(1410) == 5 then
+		sol.map.dialog_start("crazy_house.guichet_12A_ech_eq_5")
+	else
+		sol.map.dialog_start("crazy_house.guichet_12A_ech_ne_5")
+	end
 end
 
 -- Guichet 12b -----------------------------------------------
--- TODO: dialogues presque finis, script à faire
+-- TODO: dialogues presque finis, script à finir
 function guichet_12B()
+	if sol.game.savegame_get_integer(1410) == 3 then	
+		sol.map.dialog_start("crazy_house.guichet_12B_ech_eq_3")
+	elseif sol.game.savegame_get_integer(1410) == 7 then
+		sol.map.dialog_start("crazy_house.guichet_12B_ech_eq_7")
+	else
 
+	end
 end
 
 function event_hero_interaction(entity_name)

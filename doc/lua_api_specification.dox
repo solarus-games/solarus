@@ -795,7 +795,10 @@ even if the dialog was started by another script
 
 - <tt>event_dialog_finished(first_message_id, answer)</tt>:
 called when a dialog finishes (i.e. once its last message is finished),
-even if the dialog was started by another script
+even if the dialog was started by another script.
+If there was a question, answer is 0 if the first answer was chosen,
+or 1 if the second one was chosen.
+If there was no question, answer is -1.
 
 - <tt>event_camera_reached_target()</tt>: 
 called when the camera (previously started by <tt>camera_move()</tt>) reaches its target

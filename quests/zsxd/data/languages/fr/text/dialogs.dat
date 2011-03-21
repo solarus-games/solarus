@@ -1881,7 +1881,6 @@ line3 = "couper ces buissons..."
 [_cannot_lift_too_heavy]
 # Lorsqu'on tente de soulever une pierre
 # sans avoir de bracelet de force
-# (Clin d'oeil à Link's Awekening)
 #       |-----------------------|
 line1 = "C'est largement trop"
 line2 = "pour tes petits bras !"
@@ -1890,8 +1889,8 @@ line2 = "pour tes petits bras !"
 # Lorsqu'on tente de soulever une pierre vraiment lourde
 # en ayant seulement la poigne de fer
 #       |-----------------------|
-line1 = "Oh là là, c'est encore"
-line2 = "trop lourd pour toi !"
+line1 = "C'est largement trop"
+line2 = "pour tes petits bras !"
 
 [_shop.question]
 # Lorsqu'on regarde un objet vendu dans un magasin
@@ -3813,6 +3812,31 @@ line1 = "lieux : l'avenir, le"
 line2 = "passé, de vieux amis"
 line3 = "disparus.
 
+[outside_fields_SE.west_sign]
+#       |-----------------------|
+line1 = "Sud-est :"
+line2 = "Marais de la Forcetri"
+next = outside_fields_SE.west_sign.2
+
+[outside_fields_SE.west_sign.2]
+#       |-----------------------|
+line1 = "Ouest :"
+line2 = "Bureau des Objets"
+line3 = "Trouvés"
+next = outside_fields_SE.west_sign.3
+
+[outside_fields_SE.west_sign.3]
+#       |-----------------------|
+line1 = "Nord : "
+line2 = "Village"
+next = outside_fields_SE.west_sign.4
+
+[outside_fields_SE.west_sign.4]
+#       |-----------------------|
+line1 = "Nord-est : "
+line2 = "Désert Bakasable"
+line3 = "Mont Tipiton"
+
 [outside_fields_NO_indic]
 #       |-----------------------|
 line1 = "Ouest : Château"
@@ -3935,6 +3959,26 @@ next = outside_fields_NE.indic.4
 line1 = "Est : un peu difficile"
 line2 = "à expliquer. Tu n'as"
 line3 = "qu'à aller voir."
+
+[outside_fields_NE.south_sign]
+#       |-----------------------|
+line1 = "Sud :"
+line2 = "Marais de la Forcetri"
+line3 = ""
+next = outside_fields_NE.south_sign.2
+
+[outside_fields_NE.south_sign.2]
+#       |-----------------------|
+line1 = "Ouest :"
+line2 = "Village"
+line3 = ""
+next = outside_fields_NE.south_sign.3
+
+[outside_fields_NE.south_sign.3]
+#       |-----------------------|
+line1 = "Nord :"
+line2 = "Désert Bakasable"
+line3 = "Mont Tipiton"
 
 [geek_house.geek]
 #       |-----------------------|

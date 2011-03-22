@@ -1342,6 +1342,7 @@
 12	0	936	656	32	8	custom_obstacle_4	1	1	1	1
 12	0	936	576	32	8	custom_obstacle_5	1	1	1	1
 8	0	32	485	sign	3	0	entities/sign	dialog#outside_fields_SE.west_sign
+3	0	384	381	piece_of_heart	1	75
 0	2	176	-24	8	40	514
 0	2	-16	-16	192	40	511
 0	2	-40	16	48	16	512

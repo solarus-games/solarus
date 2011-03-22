@@ -12,10 +12,10 @@ end
 
 function event_map_opening_transition_finished(destination_point_name)
 	-- Affichage du nom du donjon quand on vient de l'escalier de dehors
-  -- TODO: à tester
-  if destination_point_name == "fromOutsideSO" then
-    sol.map.dialog_start("crazy_house.title")
-  end
+	-- TODO: à tester
+	if destination_point_name == "fromOutsideSO" then
+		sol.map.dialog_start("crazy_house.title")
+	end
 end
 
 -- Guichet 31 -------------------------------------------------
@@ -27,18 +27,24 @@ end
 -- Guichet 32 -------------------------------------------------
 -- TODO: dialogues à vérifier, script à finir
 function guichet_32()
-	if sol.main.savegame_get_integer(1410) <= 6 then
+	if sol.game.savegame_get_integer(1410) <= 6 then
 		sol.map.dialog_start("crazy_house.guichet_32_ech_le_6")
+		if sol.game.savegame_get_integer(1410) == 6 then
+			sol.game.savegame_set_integer(1410, 7)
+		end
 	end
 end
 
 -- Guichet 33 -------------------------------------------------
 -- TODO: dialogues à finir, script à finir
 function guichet_33()
-	if sol.main.savegame_get_integer(1410) == 3 then	
+	if sol.game.savegame_get_integer(1410) == 3 then	
 		sol.map.dialog_start("crazy_house.guichet_33_ech_eq_3")
-	elseif sol.main.savegame_get_integer(1410) >= 4 then
+	elseif sol.game.savegame_get_integer(1410) >= 4 then
 		sol.map.dialog_start("crazy_house.guichet_33_ech_ge_4")
+		if sol.game.savegame_get_integer(1410) == 4 then
+			sol.game.savegame_set_integer(1410, 5)
+		end
 	else
 		sol.map.dialog_start("crazy_house.guichet_33_ech_le_2")
 	end
@@ -55,12 +61,20 @@ function guichet_36()
 
 end
 
+function event_npc_dialog(entity_name)
+	if entity_name == "GC33" then
+		guichet_33()
+	elseif entity_name == "Apothicaire" then
+		apothicaire()
+	end
+end
+
 function event_hero_interaction(entity_name)
 	if entity_name == "GC31" then
 		guichet_31()
 	elseif entity_name == "GC32" then
 		guichet_32()
-	elseif entity_name == "GC33" then
+	elseif entity_name == "GC33Front" then
 		guichet_33()
 	elseif entity_name == "GC36" then
 		guichet_36()
@@ -114,7 +128,7 @@ function event_dialog_finished(first_message_id, answer)
 		-- Obtention clé du guichet 33 suite à l'apport du parfum
 		if sol.game.has_item("parfum") then
 			sol.map.treasure_give("small_key", 1, 123)
-			sol.game.remove_item_amount("parfum", 1)
+			sol.game.remove_item_amount("parfum_counter", 1)
 		end
 	elseif first_message_id == "crazy_house.apothicaire" then
 		-- Achat de sacs de riz à l'apothicaire		
@@ -123,14 +137,15 @@ function event_dialog_finished(first_message_id, answer)
 				sol.map.dialog_start("crazy_house.apothicaire_oui")
 				sol.game.remove_money(20)
 			else
+				sol.main.play_sound("wrong")
 				sol.map.dialog_start("crazy_house.apothicaire_rubis")
 			end
 		else
 			sol.map.dialog_start("crazy_house.apothicaire_non")
 		end
-	elseif first_message_id = "crazy_house.apothicaire_oui" then
+	elseif first_message_id == "crazy_house.apothicaire_oui" then
 		-- Remise des sacs de riz achetés
-		sol.map.treasure_give("sac_riz", 5, 1486)
+		sol.map.treasure_give("sac_riz_counter", 5, 1486)
 	end
 end
 

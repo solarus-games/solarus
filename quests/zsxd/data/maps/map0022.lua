@@ -20,7 +20,7 @@ function vieillard()
 	else
 		if sol.game.savegame_get_boolean(125) == false then
 			-- Vieillard n'a pas encore changé d'avis
-			if sol.game.get_item_amount("poivron") < 3 then
+			if sol.game.get_item_amount("poivron_counter") < 3 then
 				-- N'a pas encore 3 poivrons
 				sol.map.dialog_start("crazy_house.vieillard")
 			else
@@ -31,7 +31,7 @@ function vieillard()
 			end
 		else
 			-- Vieillard veut du riz maintenant !
-			if sol.game.get_item_amount("sac_riz") < 5 then
+			if sol.game.get_item_amount("sac_riz_counter") < 5 then
 				sol.map.dialog_start("crazy_house.vieillard_riz_quantite")
 			else
 				-- A les 5 sacs de riz
@@ -57,7 +57,7 @@ function guichet_22A()
 end
 
 -- Guichet 22B -------------------------------------------------
-function guichet_22A()
+function guichet_22B()
 	sol.map.dialog_start("crazy_house.guichet_22B")
 end
 
@@ -65,9 +65,9 @@ end
 function event_hero_interaction(entity_name)
 	if entity_name == "GC21front" then
 		guichet_21()
-	elseif entity_name == "GC22Afront" then
+	elseif entity_name == "GC22A" then
 		guichet_22A()
-	elseif entity_name == "GC22Bfront" then
+	elseif entity_name == "GC22B" then
 		guichet_22B()
 	end
 end
@@ -78,37 +78,37 @@ function event_npc_dialog(entity_name)
 		vieillard()
 	elseif entity_name == "GC21" then
 		guichet_21()
-	elseif entity_name == "GC22" then
-		guichet_22()
 	end
 end
 
 function event_dialog_finished(first_message_id, answer)
 	if first_message_id == "crazy_house.vieillard_riz_ok" then
 		sol.map.treasure_give("bocal_epice", 1, 1488)
-		sol.game.remove_item_amount("sac_riz", 5)
-	elseif first_message_id = "crazy_house.guichet_22A" then
+		sol.game.remove_item_amount("sac_riz_counter", 5)
+	elseif first_message_id == "crazy_house.guichet_22A" then
 		if answer == 0 then
-			if sol.game.item_get_amount("roc_magma") < 3 then
+			if sol.game.get_item_amount("roc_magma_counter") < 3 then
+				sol.main.play_sound("wrong")
 				sol.map.dialog_start("crazy_house.guichet_22_rm_un")
 			else
 				sol.map.dialog_start("crazy_house.guichet_22_rm_ok")
 			end
 		end
-	elseif first_message_id = "crazy_house.guichet_22B" then
+	elseif first_message_id == "crazy_house.guichet_22B" then
 		if answer == 0 then
-			if sol.game.item_get_amount("sac_riz") < 2 then
+			if sol.game.get_item_amount("sac_riz_counter") < 2 then
+				sol.main.play_sound("wrong")
 				sol.map.dialog_start("crazy_house.guichet_22_sr_un")
 			else
 				sol.map.dialog_start("crazy_house.guichet_22_sr_ok")
 			end
 		end
-	elseif first_message_id = "crazy_house.guichet_22_rm_ok" then
+	elseif first_message_id == "crazy_house.guichet_22_rm_ok" then
 		sol.map.treasure_give("balai", 1, 1482)
-		sol.game.remove_item_amount("roc_magma", 3)
-	elseif first_message_id = "crazy_house.guichet_22_sr_ok" then
+		sol.game.remove_item_amount("roc_magma_counter", 3)
+	elseif first_message_id == "crazy_house.guichet_22_sr_ok" then
 		sol.map.treasure_give("tapisserie", 1, 1484)
-		sol.game.remove_item_amount("sac_riz", 2)
+		sol.game.remove_item_amount("sac_riz_counter", 2)
 	end
 end
 

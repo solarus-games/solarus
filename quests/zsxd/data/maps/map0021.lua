@@ -7,6 +7,7 @@
 function guichet_41()
 	if sol.game.savegame_get_integer(1410) == 3 then
 		sol.map.dialog_start("crazy_house.guichet_41_ech_eq_3")
+		sol.game.savegame_set_integer(1410, 4)
 	else
 		sol.map.dialog_start("crazy_house.guichet_41_ech_ne_3")
 	end
@@ -59,14 +60,17 @@ end
 
 function event_dialog_finished(first_message_id, answer)
 	if first_message_id == "crazy_house.guichet_45_ech_ne_3" then
-		if sol.game.has_item_amount("cuillere", 2) then
-			sol.map.dialog_start("crazy_house.guichet_45_ech_ok")
-		else
-			sol.map.dialog_start("crazy_house.guichet_45_ech_un")
+		if answer == 0 then
+			if sol.game.get_item_amount("cuillere_counter") >= 2 then
+				sol.map.dialog_start("crazy_house.guichet_45_ech_ok")
+			else
+				sol.main.play_sound("wrong")
+				sol.map.dialog_start("crazy_house.guichet_45_ech_un")
+			end		
 		end
 	elseif first_message_id == "crazy_house.guichet_45_ech_ok" then
 		sol.map.treasure_give("sac_olive", 3, 1487)
-		sol.game.remove_item_amount("cuillere", 2)
+		sol.game.remove_item_amount("cuillere_counter", 2)
 	end
 end
 

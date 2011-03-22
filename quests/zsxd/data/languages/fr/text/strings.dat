@@ -13,8 +13,8 @@
 
 # Map submenu
 map.caption.world_map			Carte du Monde
-map.caption.dungeon_name_1		Temple des Stupidités
-map.caption.dungeon_name_2		Bureau des Objets Perdus
+map.caption.dungeon_name_1		Temple des$Stupidités
+map.caption.dungeon_name_2		Bureau des$Objets Perdus
 
 # Quest status submenu
 quest_status.caption.rupee_bag_1	Sac de Rubis
@@ -31,10 +31,10 @@ quest_status.caption.pieces_of_heart	Fragments de Coeur
 quest_status.caption.tunic_1		Cotte de Mailles$verte
 quest_status.caption.tunic_2		Cotte de Mailles$bleue
 quest_status.caption.tunic_3		Cotte de Mailles$rouge
-quest_status.caption.sword_1		Epée en bois
+quest_status.caption.sword_1		Epée d'entraînement
 quest_status.caption.sword_2		Sabre laser
-quest_status.caption.sword_3		Excalibur
-quest_status.caption.sword_4		Lame Purificatrice
+quest_status.caption.sword_3		Épée inexistante
+quest_status.caption.sword_4		Excalibur
 quest_status.caption.shield_1		Bouclier
 quest_status.caption.shield_2		Bouclier de Feu
 quest_status.caption.shield_3		Miroir Magique

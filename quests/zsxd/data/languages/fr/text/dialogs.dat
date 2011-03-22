@@ -1663,14 +1663,19 @@ line3 = "pu être utile !"
 icon = 70
 line1 = "Tu as trouvé"
 line2 = "la Carte !"
-line3 = "Utilise-la pour"
 next = _treasure.map.1.1
 
 [_treasure.map.1.1]
 #       |--------------------|
-line1 = "connaître le plan"
-line2 = "du donjon et pleurer"
-line3 = "en voyant sa taille."
+line1 = "Utilise-la pour"
+line2 = "connaître le plan"
+line3 = "des environs."
+
+[dungeon_1.after_map_treasure]
+#       |--------------------|
+line1 = "Et pour pleurer"
+line2 = "devant la taille du"
+line3 = "donjon !"
 
 [_treasure.compass.1]
 # Boussole

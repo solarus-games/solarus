@@ -1,10 +1,16 @@
 ----------------------------------
--- Crazy House 1FA (south)       --
+-- Crazy House 1FA (south)      --
+-- TODO: MAP TERMINEE, A TESTER --
 ----------------------------------
 
 function event_map_started(destination_point_name)
 	if not sol.game.savegame_get_boolean(101) then
 		sol.map.chest_set_enabled("CK3", false)
+	end
+	-- Guichetière 12B partie en pause
+	if sol.game.savegame_get_integer(1410) == 5
+	or sol.game.savegame_get_integer(1410) == 6 then
+		sol.map.npc_remove("GC12BPerson")
 	end
 end
 
@@ -25,7 +31,7 @@ function event_switch_activated(switch_name)
 end
 
 -- Hôtesse d'accueil ------------------------------------------
--- TODO: variables à finir
+-- TODO: variables à vérifier
 function accueil()
 	if sol.game.savegame_get_integer(1410) == 0 then
 		sol.map.dialog_start("crazy_house.accueil_ech_eq_0")
@@ -98,11 +104,14 @@ function accueil()
 end
 
 -- Guichet 11 -------------------------------------------------
--- TODO: dialogues à finir, script à finir
 function guichet_11()
 	if sol.game.savegame_get_integer(1410) == 9 then
 		-- Chercher des haches
-		sol.map.dialog_start("crazy_house.guichet_11_ech_eq_9")
+		if sol.main.get_item_amount("tapisserie_counter") >= 1 then
+			sol.map.dialog_start("crazy_house.guichet_11_ech_eq_9_ht")
+		else		
+			sol.map.dialog_start("crazy_house.guichet_11_ech_eq_9")
+		end
 	else
 		-- S'adresser à l'accueil
 		sol.map.dialog_start("crazy_house.guichet_11_ech_ne_9")
@@ -120,7 +129,6 @@ function guichet_12A()
 end
 
 -- Guichet 12b -----------------------------------------------
--- TODO: dialogues presque finis, script à finir
 function guichet_12B()
 	if sol.game.savegame_get_integer(1410) == 3 then	
 		sol.map.dialog_start("crazy_house.guichet_12B_ech_eq_3")
@@ -159,7 +167,6 @@ function event_npc_dialog(entity_name)
 	end
 end
 
-
 function event_hero_on_sensor(sensor_name)
 	-- Fonctionnaire en grève
 	if sensor_name == "passage_sensor_A" then
@@ -171,5 +178,27 @@ function event_dialog_finished(first_message_id, answer)
 	if first_message_id == "crazy_house.guichet_12B_ech_eq_7"
 	and answer == 0 then
 		sol.game.savegame_set_integer(1410, 8)
+	elseif first_message_id == "crazy_house.guichet_12B_ech_eq_7" then
+		-- Echange pour parfum
+		if answer == 0 then
+			-- Contrôle de quantité bocal d'épices
+			if sol.main.get_item_amount("bocal_epice_counter") >= 1 then
+				sol.map.dialog_start("crazy_house.guichet_12B_ech_eq_7_ok")
+			else
+				sol.map.dialog_start("crazy_house.guichet_12B_ech_eq_7_un")
+			end
+		else
+			sol.map.dialog_start("crazy_house.guichet_12B_ech_eq_7_no")
+		end
+	elseif first_message_id == "crazy_house.guichet_12B_ech_eq_7_ok" then
+		-- Obtention du parfum (guichet 12B)
+		sol.map.treasure_give("parfum", 1, 1490)
+		sol.main.remove_item_amount("bocal_epice_counter", 1)
+	elseif first_message_id == "crazy_house.guichet_11_ech_eq_9_ht" then
+		if answer == 0 then
+			-- Obtention de la hache (guichet 11)			
+			sol.map.treasure_give("hache", 1, 1489)
+			sol.main.remove_item_amount("tapisserie_counter", 1)
+		end
 	end
 end

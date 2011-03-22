@@ -29,7 +29,7 @@
 0	0	112	112	8	8	210
 19	0	128	152	stairs_3	0	4
 8	0	96	101	G49	3	1	npc/newlink5	map
-8	0	96	133	GC49	3	0	_none	map
+8	0	96	125	GC49	3	0	_none	map
 0	1	2752	1296	16	24	52
 0	1	2736	1312	24	16	50
 0	1	2520	1320	224	24	52
@@ -843,8 +843,6 @@
 2	1	2632	24	16	16	to2Fb_right	0	1	23	from1Fb_right
 15	1	528	1056	16	32	1
 2	1	456	1232	16	16	TB_departure	1	1	20	TB_destination
-18	1	2200	328	DK3	2	1	142
-18	1	2152	328	DK3_2	0	1	142
 8	1	464	1053	directions_1F	3	0	entities/sign	dialog#crazy_house.directions_1F
 8	1	464	1053	directions_1F_2	3	0	entities/sign	dialog#crazy_house.directions_1F
 15	1	1616	752	48	16	1
@@ -894,8 +892,8 @@
 8	1	912	805	GC45	3	0	_none	map
 8	1	1888	613	interactive_entity_3	2	1	npc/villager1	map
 8	1	1856	613	interactive_entity_4	0	1	npc/villager2	map
-8	1	1872	661	GC43	3	0	_none	map
-8	1	1872	821	GC41	3	0	_none	map
+8	1	1888	653	GC43	3	0	_none	map
+8	1	1872	813	GC41	3	0	_none	map
 8	1	1872	773	interactive_entity_5	2	1	npc/static_villager7	map
 0	2	0	0	608	16	170
 0	2	0	16	16	208	170
@@ -990,8 +988,6 @@
 0	2	2632	16	16	8	156
 0	2	2496	1192	8	96	266
 0	2	2472	1192	8	96	267
-0	2	2496	1224	8	32	164
-0	2	2472	1224	8	32	165
 0	2	2192	968	8	96	266
 0	2	2168	968	8	96	267
 0	2	2168	1000	8	32	165
@@ -1008,3 +1004,5 @@
 0	2	2288	216	96	8	263
 0	2	2320	216	32	8	153
 0	2	2320	240	32	8	152
+0	2	2496	1224	8	32	162
+0	2	2472	1224	8	32	163

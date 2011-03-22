@@ -169,7 +169,7 @@ booleans:
 113 1FB: Empty chest [CV2]
 114 2FA: Piece of Heart [PH2]
 115 1FB: Bombs chest [CB1]
-116 2FA: Small key chest [CK2]
+116 2FA: 1 Arrow chest [CK2]
 117 1FB: Croissant chest [CC1]
 118 1FB: 100 rupees chest [CR3]
 119 1FB: Empty chest [CV4]
@@ -183,7 +183,7 @@ booleans:
 
 140	1FA: Key Door A [DK1]
 141 3F : Key Door B [DK2]
-142 1FB: Key Door C [DK3]
+142 3F : Key Door C [DK3]
 
 000 3F : Door Switch A [DS1]
 000 3F : Locked Door A [LD1]

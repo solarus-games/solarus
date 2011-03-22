@@ -193,12 +193,12 @@ function event_dialog_finished(first_message_id, answer)
 		end
 	elseif first_message_id == "crazy_house.guichet_12B_ech_eq_7_ok" then
 		-- Obtention du parfum (guichet 12B)
-		sol.map.treasure_give("parfum", 1, 1490)
+		sol.map.treasure_give("parfum", 1, -1)
 		sol.main.remove_item_amount("bocal_epice_counter", 1)
 	elseif first_message_id == "crazy_house.guichet_11_ech_eq_9_ht" then
 		if answer == 0 then
 			-- Obtention de la hache (guichet 11)			
-			sol.map.treasure_give("hache", 1, 1489)
+			sol.map.treasure_give("hache", 1, -1)
 			sol.main.remove_item_amount("tapisserie_counter", 1)
 		end
 	end

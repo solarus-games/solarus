@@ -895,6 +895,10 @@
 8	1	1888	653	GC43	3	0	_none	map
 8	1	1872	813	GC41	3	0	_none	map
 8	1	1872	773	interactive_entity_5	2	1	npc/static_villager7	map
+12	1	2152	336	16	16	custom_obstacle_3	0	1	1	1
+12	1	2024	424	16	16	custom_obstacle_4	0	1	1	1
+12	1	2024	920	16	16	custom_obstacle_5	0	1	1	1
+12	1	2152	1008	16	16	custom_obstacle_6	0	1	1	1
 0	2	0	0	608	16	170
 0	2	0	16	16	208	170
 0	2	304	16	16	208	170

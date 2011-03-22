@@ -83,7 +83,7 @@ end
 
 function event_dialog_finished(first_message_id, answer)
 	if first_message_id == "crazy_house.vieillard_riz_ok" then
-		sol.map.treasure_give("bocal_epice", 1, 1488)
+		sol.map.treasure_give("bocal_epice", 1, -1)
 		sol.game.remove_item_amount("sac_riz_counter", 5)
 	elseif first_message_id == "crazy_house.guichet_22A" then
 		if answer == 0 then
@@ -104,10 +104,10 @@ function event_dialog_finished(first_message_id, answer)
 			end
 		end
 	elseif first_message_id == "crazy_house.guichet_22_rm_ok" then
-		sol.map.treasure_give("balai", 1, 1482)
+		sol.map.treasure_give("balai", 1, -1)
 		sol.game.remove_item_amount("roc_magma_counter", 3)
 	elseif first_message_id == "crazy_house.guichet_22_sr_ok" then
-		sol.map.treasure_give("tapisserie", 1, 1484)
+		sol.map.treasure_give("tapisserie", 1, -1)
 		sol.game.remove_item_amount("sac_riz_counter", 2)
 	end
 end

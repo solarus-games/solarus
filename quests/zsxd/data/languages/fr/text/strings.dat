@@ -96,6 +96,17 @@ inventory.caption.item.bottle_4.4			Flacon Magique$(Potion verte)
 inventory.caption.item.bottle_4.5			Flacon Magique$(Potion blue)
 inventory.caption.item.bottle_4.6			Flacon Magique$(Fée)
 
+inventory.caption.item.poivron_counter.1		Poivrons
+inventory.caption.item.balai_counter.1			Balais
+inventory.caption.item.cuillere_counter.1		Cuillères
+inventory.caption.item.tapisserie_counter.1		Tapisseries
+inventory.caption.item.roc_magma_counter.1		Rocs magma
+inventory.caption.item.sac_riz_counter.1		Sacs de riz
+inventory.caption.item.sac_olive_counter.1		Sacs d'olives
+inventory.caption.item.bocal_epice_counter.1	Bocal d'épices
+inventory.caption.item.hache_counter.1			Haches
+inventory.caption.item.parfum_counter.1			Parfums
+
 # Options submenu
 options.caption.press_action_change_mode	Appuyez sur Action$pour changer de mode
 options.caption.press_action_customize_key	Appuyez sur Action pour$configurer cette touche

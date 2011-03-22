@@ -2539,14 +2539,14 @@ line1 = "suppôt du MEDEF !!"
 #       |--------------------|
 line1 = "Bonjour monsieur,"
 line2 = "vous avez perdu"
-line3 = "quelque chose ? Quel"
+line3 = "quelque chose ?"
 next = crazy_house.accueil_ech_eq_0_2
 
 [crazy_house.accueil_ech_eq_0_2]
 #       |--------------------|
-line1 = "est l'objet que vous"
-line2 = "recherchez ? Des"
-line3 = "gants ?"
+line1 = "Quel est l'objet que"
+line2 = "vous recherchez ?"
+line3 = "$0Des gants ?"
 next = crazy_house.accueil_ech_eq_0_3
 
 [crazy_house.accueil_ech_eq_0_3]
@@ -2563,16 +2563,15 @@ line3 = "vous pouvez vous"
 next = crazy_house.accueil_ech_eq_0_5
 
 [crazy_house.accueil_ech_eq_0_5]
-#       |--------------------|
-line1 = "rendre au guichet"
-line2 = "21. Prenez"
-line3 = "l'escalier et vous"
+#       |-----------------------|
+line1 = "rendre au guichet 21."
+line2 = "Prenez l'escalier et"
+line3 = "vous le trouverez"
 next = crazy_house.accueil_ech_eq_0_6
 
 [crazy_house.accueil_ech_eq_0_6]
-#       |--------------------|
-line1 = "le trouverez au"
-line2 = "premier étage."
+#       |-----------------------|
+line1 = "au premier étage."
 
 [crazy_house.accueil_ech_eq_1]
 #       |--------------------|

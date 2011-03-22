@@ -149,6 +149,7 @@ booleans:
 66	Outside SE: got Yoda's sword
 67-72	Outside SE: 6 weak blocks
 73-74	Outside NE: 2 weak blocks
+75	Outside SE: piece of heart
 
 90-99: reserved for the freaking cave
 

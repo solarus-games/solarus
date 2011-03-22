@@ -18,20 +18,6 @@ height = 1600
 width = 3056
 height = 1136
 
-[dungeon_1.map_62.chest_0]
-floor = 0
-x = 1304
-y = 1872
-save = 201
-big = 0
-
-[dungeon_1.map_62.chest_1]
-floor = 0
-x = 984
-y = 1280
-save = 202
-big = 0
-
 [dungeon_1.map_64.chest_0]
 floor = 1
 x = 1400
@@ -380,5 +366,19 @@ floor = 2
 x = 2792
 y = 752
 save = 102
+big = 0
+
+[dungeon_1.map_62.chest_0]
+floor = 0
+x = 1304
+y = 1872
+save = 201
+big = 0
+
+[dungeon_1.map_62.chest_1]
+floor = 0
+x = 984
+y = 1280
+save = 202
 big = 0
 

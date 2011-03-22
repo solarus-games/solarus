@@ -218,6 +218,7 @@ class Script {
       map_api_block_set_enabled,
       map_api_block_reset,
       map_api_block_reset_all,
+      map_api_block_get_position,
       map_api_shop_item_remove,
       map_api_switch_is_activated,
       map_api_switch_set_activated,

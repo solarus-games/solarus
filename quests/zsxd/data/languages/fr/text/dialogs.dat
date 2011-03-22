@@ -2051,6 +2051,7 @@ line3 = "couper ces buissons..."
 #       |-----------------------|
 line1 = "C'est largement trop"
 line2 = "pour tes petits bras !"
+skip = all
 
 [_cannot_lift_still_too_heavy]
 # Lorsqu'on tente de soulever une pierre vraiment lourde
@@ -2262,7 +2263,8 @@ line3 = "cette torche..."
 [caverne_fragments.sign]
 #       |--------------------|
 line1 = "Seul le vrai héros"
-line2 = "obtiendra le trésor."
+line2 = "obtiendra le trésor.$0$0"
+line3 = "Ou pas."
 
 [maison_boulet.boulet]
 #       |--------------------|
@@ -3980,7 +3982,7 @@ line2 = "Zelda sans épée."
 [outside_fields_NE_girly_sign]
 line1 = "Nous aussi nous"
 line2 = "respectons la parité"
-line3 = "féminin/masculin."
+line3 = "féminin / masculin."
 
 [outside_fields_SO_endofgame1]
 line1 = "Téléporteur vers la "
@@ -4344,7 +4346,7 @@ next = outside_fields_NE.indic.3
 
 [outside_fields_NE.indic.3]
 #       |-----------------------|
-line1 = "Sud : Restaurant"
+line1 = "Sud : Bar"
 next = outside_fields_NE.indic.4
 
 [outside_fields_NE.indic.4]
@@ -4479,6 +4481,7 @@ next = _unknown
 line1 = "Je ne comprends pas"
 line2 = "pourquoi tout le monde"
 line3 = "me regarde bizarrement."
+skip = all
 next = shop.wizard.2
 
 [shop.wizard.2]
@@ -4519,6 +4522,7 @@ line3 = "préjugés !"
 line1 = "Ce type m'insupporte !"
 line2 = "Ca fait deux heures que"
 line3 = "ce fan de sorcellerie"
+skip = all
 next = shop.near_wizard.2
 
 [shop.near_wizard.2]

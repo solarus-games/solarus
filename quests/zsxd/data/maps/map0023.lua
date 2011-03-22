@@ -49,7 +49,7 @@ function event_dialog_finished(first_message_id, answer)
 		end
 	elseif first_message_id == "crazy_house.guichet_82_ok" then
 		-- Obtention du roc magma au guichet 82		
-		sol.map.treasure_give("roc_magma", 1, 1485)
+		sol.map.treasure_give("roc_magma", 1, -1)
 		sol.main.remove_item_amount("sac_olive_counter", 2)
 	elseif first_message_id == "crazy_house.guichet_84_ech_ne_3_hh" then
 		-- Choix de réponse au guichet 84		
@@ -59,7 +59,7 @@ function event_dialog_finished(first_message_id, answer)
 				sol.main.play_sound("wrong")
 				sol.map.dialog_start("crazy_house.guichet_84_ech_ne_3_un")
 			else
-				sol.map.treasure_give("poivron", 1, 1481)
+				sol.map.treasure_give("poivron", 1, -1)
 				sol.game.add_item_amount("poivron_counter", 2)
 				sol.game.remove_item_amount("hache_counter", 5)
 			end

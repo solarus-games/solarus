@@ -22,10 +22,10 @@
 #include <map>
 #include <AL/al.h>
 #include <AL/alc.h>
-#include <sndfile.h>
+#include <vorbis/vorbisfile.h>
 
 /**
- * @brief Represents a sound effet that can be played in the program.
+ * @brief Represents a sound effect that can be played in the program.
  *
  * This class also handles the initialization of the whole audio system.
  * To create a sound, prefer the Sound::play() method

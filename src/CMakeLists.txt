@@ -10,7 +10,7 @@ find_package(SDL_ttf)
 find_package(OpenAL)
 find_package(Lua51)
 find_package(PhysFS)
-find_package(Sndfile)
+find_package(VorbisFile)
 find_package(ModPlug)
 
 include_directories(
@@ -54,7 +54,7 @@ target_link_libraries(solarus
   ${OPENAL_LIBRARY}
   ${LUA_LIBRARY}
   ${PHYSFS_LIBRARY}
-  ${SNDFILE_LIBRARY}
+  ${VORBISFILE_LIBRARY}
   ${MODPLUG_LIBRARY}
 )
 

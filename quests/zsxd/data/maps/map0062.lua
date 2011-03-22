@@ -56,6 +56,13 @@ function event_hero_on_sensor(sensor_name)
   end
 end
 
+function event_treasure_obtained(item_name, variant, savegame_variable)
+
+  if item_name == "map" then
+    sol.map.dialog_start("dungeon_1.after_map_treasure")
+  end
+end
+
 function open_door_a()
   sol.map.door_open("stupid_run_door_a")
   sol.main.timer_start(1000, "sol.map.camera_restore", false)

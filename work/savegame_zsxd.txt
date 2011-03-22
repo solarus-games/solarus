@@ -110,6 +110,8 @@ booleans:
 
 90-99: reserved for the freaking cave
 
+================================================================================
+
 100 to 199	reserved for crazy_house (dungeon 2)
 100	1FA: Hidden Piece of Heart [PH1]
 101	1FA: Empty chest Switch [CS3]
@@ -137,7 +139,6 @@ booleans:
 123 3F : Small key (guichet 33) [CK4]
 124 2FA: Old man first talk
 125 2FA: Old man rice
-
 
 140	1FA: Key Door A [DK1]
 141 3F : Key Door B [DK2]

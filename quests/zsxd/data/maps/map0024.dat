@@ -288,8 +288,8 @@
 7	0	512	1037	enemy_4	3	tentacle	0	-1	_random	1	-1
 12	0	2880	192	8	80	custom_obstacle_27	1	1	1	1
 12	0	2904	192	8	80	custom_obstacle_28	1	1	1	1
-8	0	2576	373	int	3	1	npc/newlink2	map
-8	0	2784	501	int_2	3	1	npc/newlink7	map
+8	0	2576	373	int	3	1	npc/newlink7	map
+8	0	2784	501	int_2	3	1	npc/newlink2	map
 8	0	2784	533	GC32	3	0	_none	map
 8	0	2576	405	GC31	3	0	_none	map
 0	1	2480	720	368	144	2

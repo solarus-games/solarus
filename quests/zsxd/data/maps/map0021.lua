@@ -69,7 +69,8 @@ function event_dialog_finished(first_message_id, answer)
 			end		
 		end
 	elseif first_message_id == "crazy_house.guichet_45_ech_ok" then
-		sol.map.treasure_give("sac_olive", 3, 1487)
+		sol.map.treasure_give("sac_olive", 1, 1487)
+		sol.game.add_item_amount("sac_olive_counter, 2)
 		sol.game.remove_item_amount("cuillere_counter", 2)
 	end
 end

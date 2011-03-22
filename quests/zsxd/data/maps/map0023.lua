@@ -59,8 +59,9 @@ function event_dialog_finished(first_message_id, answer)
 				sol.main.play_sound("wrong")
 				sol.map.dialog_start("crazy_house.guichet_84_ech_ne_3_un")
 			else
-				sol.map.treasure_give("poivron", 3, 1481)
-				sol.main.remove_item_amount("hache_counter", 5)
+				sol.map.treasure_give("poivron", 1, 1481)
+				sol.game.add_item_amount("poivron_counter", 2)
+				sol.game.remove_item_amount("hache_counter", 5)
 			end
 		end
 	end

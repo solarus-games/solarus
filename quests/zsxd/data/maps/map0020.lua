@@ -11,6 +11,7 @@ function event_map_started(destination_point_name)
 	if sol.game.savegame_get_integer(1410) == 5
 	or sol.game.savegame_get_integer(1410) == 6 then
 		sol.map.npc_remove("GC12BPerson")
+		sol.map.interactive_entity_remove("GC12B")
 	end
 end
 

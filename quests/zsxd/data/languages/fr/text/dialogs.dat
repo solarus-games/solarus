@@ -2190,10 +2190,17 @@ next = crazy_house.directions_3F_2
 [crazy_house.directions_3F_2]
 #       |-----------------------|
 line1 = "A gauche : giga bouton"
-line2 = "En haut : guichet 82"
+line2 = "d'extra collision à 
+line3 = "charge supérieure de
 next = crazy_house.directions_3F_2_2
 
 [crazy_house.directions_3F_2_2]
+#       |-----------------------|
+line1 = "15.000 gigawatts."
+line2 = "En haut : guichet 82"
+next = crazy_house.directions_3F_2_3
+
+[crazy_house.directions_3F_2_3]
 #       |-----------------------|
 line1 = "Cet écriteau est"
 line2 = "également là pour vous"
@@ -2214,15 +2221,27 @@ line3 = "56"
 [crazy_house.infinite_greetings]
 #       |--------------------|
 line1 = "Vous devez appuyer"
-line2 = "sur le giga bouton"
-line3 = "pour traverser le"
+line2 = "sur le giga bouton
+line3 = "d'extra collision à
 next = crazy_house.infinite_greetings_2
 
 [crazy_house.infinite_greetings_2]
 #       |--------------------|
-line1 = "couloir sans fin, ce"
-line2 = "que vous n'avez pas"
-line3 = "fait ! GWAH HA HA !"
+line1 = "charge supérieure de
+line2 = "15.000 Gigawatts
+line3 = "pour traverser le
+next = crazy_house.infinite_greetings_3
+
+[crazy_house.infinite_greetings_3]
+#       |--------------------|
+line1 = "couloir sans fin,
+line2 = "ce que vous n'avez
+line3 = "pas fait !
+next = crazy_house.infinite_greetings_4
+
+[crazy_house.infinite_greetings_4]
+#       |--------------------|
+line1 = "GWAH HA HA HA HA !"
 
 [crazy_house.hint_part2]
 #       |--------------------|
@@ -2948,7 +2967,30 @@ line3 = "tapisserie !"
 
 [crazy_house.guichet_31]
 #       |--------------------|
-line1 = ""
+line1 = "Je suis sûr que la"
+line2 = "direction veut me"
+line3 = "virer, je le sens,"
+next = crazy_house.guichet_31_2
+
+[crazy_house.guichet_31_2]
+#       |--------------------|
+line1 = "ils en ont après"
+line2 = "moi ! Ils trouveront"
+line3 = "quelque chose à"
+next = crazy_house.guichet_31_3
+
+[crazy_house.guichet_31_3]
+#       |--------------------|
+line1 = "redire à mon"
+line2 = "travail, alors que"
+line3 = "je me démène comme"
+next = crazy_house.guichet_31_4
+
+[crazy_house.guichet_31_4]
+#       |--------------------|				
+line1 = "un fou ! Tout le"
+line2 = "monde est contre"
+line3 = "moi !..."
 
 #==============================================
 # GUICHET 32
@@ -2978,6 +3020,44 @@ next = crazy_house.guichet_32_ech_le_6_4
 [crazy_house.guichet_32_ech_le_6_4]
 #       |--------------------|
 line1 = "retourner voir."
+
+[crazy_house.guichet_32_ech_ne_6]
+#       |--------------------|
+line1 = "Ici au guichet 32,"
+line2 = "on peut vous"
+line3 = "échanger 1 hache"
+next = crazy_house.guichet_32_ech_ne_6_2
+
+[crazy_house.guichet_32_ech_ne_6_2]
+#       |--------------------|
+line1 = "contre 2 cuillères,"
+line2 = "le marché est très"
+line3 = "prometteur."
+next = crazy_house.guichet_32_ech_ne_6_3
+
+[crazy_house.guichet_32_ech_ne_6_3]
+#       |--------------------|
+line1 = "Qu'en dites-vous ?"
+line2 = "Pourquoi pas"
+line3 = "Noooooooooooooon !!"
+question = true
+
+[crazy_house.guichet_32_ech_ne_6_un]
+#       |--------------------|
+line1 = "Désolé mais vous"
+line2 = "n'avez pas de hache"
+line3 = "pour honorer"
+next = crazy_house.guichet_32_ech_ne_6_un_2
+
+[crazy_house.guichet_32_ech_ne_6_un_2]
+#       |--------------------|				
+line1 = "cet échange."
+
+[crazy_house.guichet_32_ech_ne_6_no]
+#       |--------------------|
+line1 = "Non ? Quel dommage,"
+line2 = "vous manquez quelque"
+line3 = "chose."
 
 #==============================================
 # GUICHET 33
@@ -3103,7 +3183,28 @@ line3 = "bordel hein ?"
 
 [crazy_house.guichet_36]
 #       |--------------------|
-line1 = ""
+line1 = "Bienvenue au guichet"
+line2 = "36, je suis Panoda"
+line3 = "Fichage, je vends"
+next = crazy_house.guichet_36_2
+
+[crazy_house.guichet_36_2]
+#       |--------------------|				
+line1 = "des sacs de riz 10"
+line2 = "rubis pour 3."
+next = crazy_house.guichet_36_3
+
+[crazy_house.guichet_36_3]
+#       |--------------------|
+line1 = "Ça vous intéresse ?"
+line2 = "Oh oui !"
+line3 = "En fait non"
+question = true
+
+[crazy_house.guichet_36_un]
+#       |--------------------|
+line1 = "Désolé, il vous faut"
+line2 = "au moins 10 rubis"
 
 #==============================================
 # GUICHET 41

@@ -1065,7 +1065,7 @@
 1	1	1568	669	arrival_D	-1	1
 6	1	1584	640	32	8	jump_sensor_4	2	40
 3	1	1656	653	piece_of_heart	1	114
-5	1	1840	688	chest	0	arrow	1	116
+5	1	1840	688	chest	0	bomb	3	116
 15	1	1776	744	144	16	1
 6	1	1624	552	80	8	jump_sensor_5	6	40
 6	1	1736	552	48	8	jump_sensor_6	6	40

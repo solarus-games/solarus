@@ -145,6 +145,7 @@ booleans:
 140	1FA: Key Door A [DK1]
 141 3F : Key Door B [DK2]
 142 3F : Key Door C [DK3]
+149 3F : Big Key Door [DK9]
 
 000 3F : Door Switch A [DS1]
 000 3F : Locked Door A [LD1]

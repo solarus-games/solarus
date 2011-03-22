@@ -2150,14 +2150,14 @@ next = crazy_house.welcome_message_3
 
 [crazy_house.welcome_message_3]
 #       |-----------------------|
-line1 = "A gauche : guichets 11,"
-line2 = "21"
+line1 = "A gauche : Accueil,
+line2 = "guichets 11, 21."
 next = crazy_house.welcome_message_4
 
 [crazy_house.welcome_message_4]
 #       |-----------------------|
-line1 = "A droite : Accueil,
-line2 = "guichets 12, 22"
+line1 = "A droite : guichets 12,"
+line2 = "22."
 
 [crazy_house.mario_message_1]
 #       |-----------------------|
@@ -2191,6 +2191,7 @@ next = crazy_house.directions_3F_2
 #       |-----------------------|
 line1 = "A gauche : giga bouton"
 line2 = "En haut : guichet 82"
+next = crazy_house.directions_3F_2_2
 
 [crazy_house.directions_3F_2_2]
 #       |-----------------------|
@@ -2661,16 +2662,34 @@ line3 = "crois au"
 next = crazy_house.guichet_11_ech_eq_9_4
 
 [crazy_house.guichet_11_ech_eq_9_4]
-#       |--------------------|	
+#       |--------------------|
 line1 = "guichet 22, ils sont"
 line2 = "un peu fous là-bas"
 line3 = "mais bon..."
+
+[crazy_house.guichet_11_ech_eq_9_ht]
+#       |--------------------|
+line1 = "Ah vous avez des"
+line2 = "tapisseries ? Je"
+line3 = "vous échange chaque"
+
+[crazy_house.guichet_11_ech_eq_9_ht_2]
+#       |--------------------|
+line1 = "tapisserie contre"
+line2 = "une hache."
+
+[crazy_house.guichet_11_ech_eq_9_ht_3]
+#       |--------------------|
+line1 = "Alors ?"
+line2 = "OK ok !"
+line3 = "Plutôt mourir !"
+
 
 #==============================================
 # GUICHET 12A
 #==============================================
 
-[crazy_house.guichet_12A_ech_lt_5]
+[crazy_house.guichet_12A_ech_ne_5]
 #       |--------------------|
 line1 = "Ce guichet est fermé"
 line2 = "monsieur."
@@ -2680,21 +2699,21 @@ line2 = "monsieur."
 line1 = "Ma collègue est en"
 line2 = "pause déjeuner, si"
 line3 = "vous cherchez"
-next = crazy_house.guichet_12B_ech_eq_5_2
+next = crazy_house.guichet_12A_ech_eq_5_2
 
 [crazy_house.guichet_12A_ech_eq_5_2]
 #       |--------------------|
 line1 = "quelque chose de"
 line2 = "particulier, peut-"
 line3 = "être qu'ils auront"
-next = crazy_house.guichet_12B_ech_eq_5_3
+next = crazy_house.guichet_12A_ech_eq_5_3
 
 [crazy_house.guichet_12A_ech_eq_5_3]
 #       |--------------------|
 line1 = "ce que vous cherchez"
 line2 = "au guichet 32. Où"
 line3 = "c'est ?"
-next = crazy_house.guichet_12B_ech_eq_5_4
+next = crazy_house.guichet_12A_ech_eq_5_4
 
 [crazy_house.guichet_12A_ech_eq_5_4]
 #       |--------------------|
@@ -2747,11 +2766,53 @@ line3 = "parfum."
 next = crazy_house.guichet_12B_ech_eq_7_4
 
 [crazy_house.guichet_12B_ech_eq_7_4]
-#       |--------------------|	
+#       |--------------------|
 line1 = "Marché conclu ?"
 line2 = "Bon ok"
 line3 = "Nan t'es relou !"
 question = true
+
+[crazy_house.guichet_12B_ech_eq_7_un]
+#       |--------------------|
+line1 = "Mais vous n'avez pas"
+line2 = "le bocal d'épice !"
+line3 = "Mais je suis sûre"
+next = crazy_house.guichet_12B_ech_eq_7_un_2
+
+[crazy_house.guichet_12B_ech_eq_7_un_2]
+#       |--------------------|
+line1 = "que vous trouverez."
+line2 = "Gardez espoir."
+
+[crazy_house.guichet_12B_ech_eq_7_ok]
+#       |--------------------|
+line1 = "Merci beaucoup,"
+line2 = "voici un parfum"
+line3 = "Cacaco Charnel."
+
+[crazy_house.guichet_12B_ech_eq_7_no]
+#       |--------------------|
+line1 = "Relou ? C'est quoi"
+line2 = "relou ?"
+
+[crazy_house.guichet_12B_aw]
+#       |--------------------|
+line1 = "Vous connaissez la"
+line2 = "rumeur ? Il y aurait"
+line3 = "une statue qui cache"
+next = crazy_house.guichet_12B_aw_2
+
+[crazy_house.guichet_12B_aw_2]
+#       |--------------------|		
+line1 = "un mur fragile, mais"
+line2 = "bon, de là à ce"
+line3 = "qu'on trouve un"
+next = crazy_house.guichet_12B_aw_3
+
+[crazy_house.guichet_12B_aw_3]
+#       |--------------------|		
+line1 = "trésor dans ce"
+line2 = "bâtiment public..."
 
 #==============================================
 # GUICHET 21
@@ -2805,37 +2866,52 @@ line2 = "que d'y penser..."
 # GUICHET 22
 #==============================================
 
-[crazy_house.guichet_22_ech_aw]
+[crazy_house.guichet_22A]
 #       |--------------------|
 line1 = "Bienvenue au guichet"
 line2 = "22, le meilleur
 line3 = "guichet au monde !"
-next = crazy_house.guichet_22_ech_aw_2
+next = crazy_house.guichet_22A_2
 
-[crazy_house.guichet_22_ech_aw_2]
+[crazy_house.guichet_22A_2]
 #       |--------------------|
 line1 = "Ici on vous approvi-"
 line2 = "sionne en tout :"
 line3 = "on peut vous"
-next = crazy_house.guichet_22_ech_aw_3
+next = crazy_house.guichet_22A_3
 
-[crazy_house.guichet_22_ech_aw_3]
+[crazy_house.guichet_22A_3]
 #       |--------------------|
 line1 = "échanger un balai"
 line2 = "contre 3 rocs magma"
-line3 = "ou une tapisserie"
-next = crazy_house.guichet_22_ech_aw_4
+next = crazy_house.guichet_22_question
 
-[crazy_house.guichet_22_ech_aw_4]
-#       |--------------------|        
-line1 = "pour 2 sacs de riz."
-next = crazy_house.guichet_22_ech_aw_5
-
-[crazy_house.guichet_22_ech_aw_5]
+[crazy_house.guichet_22B]
 #       |--------------------|
-line1 = "Que souhaitez-vous ?"
-line2 = "Balai"
-line3 = "Tapisserie"
+line1 = "Bienvenue au guichet"
+line2 = "22, le meilleur
+line3 = "guichet au monde !"
+next = crazy_house.guichet_22B_2
+
+[crazy_house.guichet_22B_2]
+#       |--------------------|
+line1 = "Ici on vous approvi-"
+line2 = "sionne en tout :"
+line3 = "on peut vous"
+next = crazy_house.guichet_22B_3
+
+[crazy_house.guichet_22B_3]
+#       |--------------------|        
+line1 = "échanger une"
+line2 = "tapisserie pour 2"
+line3 = "sacs de riz."
+next = crazy_house.guichet_22_question
+
+[crazy_house.guichet_22_question]
+#       |--------------------|
+line1 = "Marché conclu ?"
+line2 = "Bien sûr"
+line3 = "Euuuhh.........Non !"
 question = true
 
 [crazy_house.guichet_22_rm_un]
@@ -2907,6 +2983,33 @@ line1 = "retourner voir."
 # GUICHET 33
 #==============================================
 
+[crazy_house.guichet_33_ech_le_2]
+#       |--------------------|
+line1 = "Bienvenu au guichet"
+line2 = "33, c'est moi qui"
+line3 = "détient les clés"
+next = crazy_house.guichet_33_ech_le_2_2
+
+[crazy_house.guichet_33_ech_le_2_2]
+#       |--------------------|		
+line1 = "des différents"
+line2 = "dépôts. Mais les"
+line3 = "clients ne sont pas"
+next = crazy_house.guichet_33_ech_le_2_3
+
+[crazy_house.guichet_33_ech_le_2_3]
+#       |--------------------|		
+line1 = "autorisés à y"
+line2 = "pénétrer."
+line3 = "D'ailleurs, vous"
+next = crazy_house.guichet_33_ech_le_2_4
+
+[crazy_house.guichet_33_ech_le_2_4]
+#       |--------------------|		
+line1 = "n'êtes pas censé"
+line2 = "savoir ça, pourquoi"
+line3 = "j'en parle moi ?"
+
 [crazy_house.guichet_33_ech_eq_3]
 #       |--------------------|
 line1 = "Non désolé ce n'est"
@@ -2967,6 +3070,33 @@ line1 = "Où est ce guichet ?"
 line2 = "Aucune idée, deman-"
 line3 = "dez à l'accueil"
 
+[crazy_house.guichet_33_parfum]
+#       |--------------------|
+line1 = "Jor ! Tu as trouvé"
+line2 = "le parfum ?!"
+next = crazy_house.guichet_33_parfum_2
+
+[crazy_house.guichet_33_parfum_2]
+#       |--------------------|		
+line1 = "Je n'aurais jamais"
+line2 = "cru ça possible !"
+line3 = "Mais je suis un"
+next = crazy_house.guichet_33_parfum_3
+
+[crazy_house.guichet_33_parfum_3]
+#       |--------------------|		
+line1 = "homme de parole,"
+line2 = "je te confie la clé"
+line3 = "qui te permettra"
+next = crazy_house.guichet_33_parfum_4
+
+[crazy_house.guichet_33_parfum_4]
+#       |--------------------|		
+line1 = "d'accéder au dépôt,"
+line2 = "n'y fous pas le"
+line3 = "bordel hein ?"
+
+
 #==============================================
 # GUICHET 36
 #==============================================
@@ -2981,7 +3111,9 @@ line1 = ""
 
 [crazy_house.guichet_41_ech_ne_3]
 #       |--------------------|
-line1 = "[TODO]"
+line1 = "Désolé, je suis en"
+line2 = "pause là, et j'en ai"
+line3 = "bien besoin."
 
 [crazy_house.guichet_41_ech_eq_3]
 #       |--------------------|
@@ -3137,9 +3269,54 @@ line1 = "l'immeuble."
 line2 = "Voilà, bonne"
 line3 = "journée."
 
+[crazy_house.guichet_45_ech_ne_3]
+#       |--------------------|
+line1 = "Monsieur, vous ne"
+line2 = "chercheriez pas des"
+line3 = "sacs d'olive par"
+next = crazy_house.guichet_45_ech_ne_3_2
+
+[crazy_house.guichet_45_ech_ne_3_2]
+#       |--------------------|
+line1 = "hasard ? Je pourrais"
+line2 = "éventuellement vous"
+line3 = "les échanger contre"
+next = crazy_house.guichet_45_ech_ne_3_3
+
+[crazy_house.guichet_45_ech_ne_3_3]
+#       |--------------------|
+line1 = "des cuillères. 2"
+line2 = "cuillères pour 3"
+line3 = "sacs d'olive."
+next = crazy_house.guichet_45_ech_ne_3_4
+
+[crazy_house.guichet_45_ech_ne_3_4]
+#       |--------------------|
+line1 = "Qu'en dites-vous ?"
+line2 = "Mouais"
+line3 = "Mouais"
+question = true
+
+[crazy_house.guichet_45_ech_un]
+#       |--------------------|
+line1 = "Quel dommage, vous"
+line2 = "n'avez pas assez de"
+line3 = "cullières."
+
+[crazy_house.guichet_45_ech_ok]
+#       |--------------------|
+line1 = "Parfait, voici vos"
+line2 = "sacs d'olive."
+
 #==============================================
 # GUICHET 47
 #==============================================
+
+[crazy_house.guichet_47_ech_ne_3]
+#       |--------------------|
+line1 = "Que cherchez-vous ?"
+line2 = "Non désolé je n'en"
+line3 = "ai aucune idée."
 
 [crazy_house.guichet_47_ech_eq_3]
 #       |--------------------|
@@ -3157,14 +3334,14 @@ line2 = "le 47."
 # GUICHET 49
 #==============================================
 
-[crazy_house.guichet_49_ech_lt_12]
+[crazy_house.guichet_49]
 #       |--------------------|
 line1 = "On m'a reléguée dans"
 line2 = "ce sous-sol isolée"
 line3 = "de tous..."
-next = crazy_house.guichet_49_ech_lt_12_2
+next = crazy_house.guichet_49_2
 
-[crazy_house.guichet_49_ech_lt_12_2]
+[crazy_house.guichet_49_2]
 #       |--------------------|
 line1 = "Bouh ouh ouh !"
 
@@ -3176,14 +3353,56 @@ line1 = "Bouh ouh ouh !"
 #       |--------------------|	
 line1 = "Hmmmm... je déprime,"
 line2 = "j'ai besoin d'un sac"
-line3 = "d'olive pour mon"
+line3 = "d'olives pour mon"
 next = crazy_house.guichet_82_2
 
 [crazy_house.guichet_82_2]
-#       |--------------------|	
+#       |--------------------|
 line1 = "chat mais personne"
 line2 = "ne semble en"
 line3 = "avoir... *soupir*..."
+
+[crazy_house.guichet_82_3]
+#       |--------------------|
+line1 = "Tu n'aurais pas des"
+line2 = "sacs d'olives par"
+line3 = "hasard ?"
+
+[crazy_house.guichet_82_4]
+#       |--------------------|
+line1 = "Je t'échange 2 sacs"
+line2 = "d'olives contre un"
+line3 = "roc magma"
+
+[crazy_house.guichet_82_5]
+#       |--------------------|
+line1 = "C'est d'accord ?"
+line2 = "Tu m'étonnes !"
+line3 = "VTFCUO"
+question = true
+
+[crazy_house.guichet_82_un]
+#       |--------------------|
+line1 = "Désolé, il te faut"
+line2 = "au moins deux sacs"
+line3 = "d'olive pour obtenir"
+next = crazy_house.guichet_82_un_2
+
+[crazy_house.guichet_82_un_2]
+#       |--------------------|
+line1 = "un roc magma."
+
+[crazy_house.guichet_82_ok]
+#       |--------------------|
+line1 = "Oh my god ! Tu as"
+line2 = "les sacs d'olives,"
+line3 = "c'est trop bien !"
+next = crazy_house.guichet_82_ok_2
+
+[crazy_house.guichet_82_ok_2]
+#       |--------------------|
+line1 = "Voici ton roc magma"
+line2 = "bien mérité"
 
 
 #==============================================
@@ -3208,24 +3427,51 @@ next = crazy_house.guichet_84_ech_eq_3_3
 #       |--------------------|
 line1 = "au rez-de-chaussée."
 
-[crazy_house.guichet_84_ech_ge_8]
+[crazy_house.guichet_84_ech_ne_3_nh]
 #       |--------------------|	
 line1 = "En effet nous avons"
 line2 = "des poivrons. En"
 line3 = "échange de 5 haches,"
-next = crazy_house.guichet_84_ech_ge_8_2
+next = crazy_house.guichet_84_ech_ne_3_nh_2
 
-[crazy_house.guichet_84_ech_ge_8_2]
+[crazy_house.guichet_84_ech_ne_3_nh_2]
 #       |--------------------|	
 line1 = "on vous offre 3"
 line2 = "poivrons. J'ai"
 line3 = "entendu dire qu'ils"
-next = crazy_house.guichet_84_ech_ge_8_3
+next = crazy_house.guichet_84_ech_ne_3_nh_3
 
-[crazy_house.guichet_84_ech_ge_8_3]
-#       |--------------------|	
+[crazy_house.guichet_84_ech_ne_3_nh_3]
+#       |--------------------|
 line1 = "avaient des haches"
 line2 = "au guichet 11."
+
+[crazy_house.guichet_84_ech_ne_3_hh]
+#       |--------------------|
+line1 = "Echange standard, 5"
+line2 = "haches contre 3"
+line3 = "poivrons."
+next = crazy_house.guichet_84_ech_ne_3_hh_2
+
+[crazy_house.guichet_84_ech_ne_3_hh_2]
+#       |--------------------|
+line1 = "C'est bon ?"
+line2 = "Yay !"
+line3 = "Oh no !!"
+question = true
+
+[crazy_house.guichet_84_ech_ne_3_un]
+#       |--------------------|
+line1 = "Hé ho le gnome"
+line2 = "vert ! N'essaye pas"
+line3 = "de m'arnarquer !"
+next = crazy_house.guichet_84_ech_ne_3_un_2
+
+[crazy_house.guichet_84_ech_ne_3_un_2]
+#       |--------------------|
+line1 = "Tu amènes les 5"
+line2 = "haches ou t'auras"
+line3 = "rien !"
 
 #==============================================
 # VIEILLARD
@@ -3253,10 +3499,81 @@ line3 = "poivrons,"
 next = crazy_house.vieillard_4
 
 [crazy_house.vieillard_4]
-#       |--------------------|	
+#       |--------------------|
 line1 = "je serais peut-être"
 line2 = "conciliant..."
-line3 = "ronfl... ZZZ..."
+next = crazy_house.vieillard_ronfl
+
+[crazy_house.vieillard_poivron]
+#       |--------------------|
+line1 = "Ah mais qu'est-ce"
+line2 = "que c'est que ça ?"
+line3 = "Je ne t'ai jamais"
+next = crazy_house.vieillard_poivron_2
+
+[crazy_house.vieillard_poivron_2]
+#       |--------------------|
+line1 = "demandé des"
+line2 = "poivrons ! Ce que"
+line3 = "je cherche ce sont"
+next = crazy_house.vieillard_poivron_3
+
+[crazy_house.vieillard_poivron_3]
+#       |--------------------|
+line1 = "des sacs de riz !"
+line2 = "Ah les jeunes ils"
+line3 = "n'écoutent rien !"
+next = crazy_house.vieillard_ronfl
+
+[crazy_house.vieillard_riz_quantite]
+#       |--------------------|
+line1 = "ZZZ... Hein ?..."
+line2 = "Mais tu n'en a pas"
+line3 = "assez !"
+next = crazy_house.vieillard_riz_quantite_2
+
+[crazy_house.vieillard_riz_quantite_2]
+#       |--------------------|
+line1 = "Allez zou ! Va en"
+line2 = "chercher d'autres."
+next = crazy_house.vieillard_riz_quantite_3
+
+[crazy_house.vieillard_riz_quantite_3]
+#       |--------------------|	
+line1 = "J'en veux au moins"
+line2 = "5..."
+next = crazy_house.vieillard_ronfl
+
+[crazy_house.vieillard_riz_ok]
+#       |--------------------|
+line1 = "ZZZ...."
+line2 = "Oh oui Jacqueline..."
+line3 = "Ronfl... AH !!"
+next = crazy_house.vieillard_riz_ok_2
+
+[crazy_house.vieillard_riz_ok_2]
+#       |--------------------|
+line1 = "Pourquoi m'as-tu"
+line1 = "réveillé ? J'étais"
+line1 = "au beau milieu d'un"
+next = crazy_house.vieillard_riz_ok_3
+
+[crazy_house.vieillard_riz_ok_3]
+#       |--------------------|
+line1 = "merveilleux rêve."
+line1 = "Tu as le riz ? Et"
+line1 = "bah voila quand tu"
+next = crazy_house.vieillard_riz_ok_4
+
+[crazy_house.vieillard_riz_ok_4]
+#       |--------------------|	
+line1 = "veux ! Voici mon"
+line1 = "précieux bocal"
+line1 = "d'épice."
+
+[crazy_house.vieillard_ronfl]
+#       |--------------------|	
+line1 = "Ronfl... ZZZ..."
 
 #==============================================
 # APOTHICAIRE
@@ -3274,6 +3591,36 @@ next = crazy_house.apothicaire_2
 line1 = "la modique somme de"
 line2 = "20 rubis. Pour ce"
 line3 = "prix, tu en auras 5."
+next = crazy_house.apothicaire_3
+
+[crazy_house.apothicaire_3]
+#       |--------------------|	
+line1 = "Ça vous dit ?"
+line2 = "Et comment !"
+line3 = "Nan, escroc !"
+question = true
+
+[crazy_house.apothicaire_non]
+#       |--------------------|	
+line1 = "C'est pas très"
+line2 = "gentil ça..."
+
+[crazy_house.apothicaire_rubis]
+#       |--------------------|
+line1 = "Ah mais non tu n'as"
+line2 = "pas assez de rubis,"
+line3 = "c'est 20 pour"
+next = crazy_house.apothicaire_rubis_2
+
+[crazy_house.apothicaire_rubis_2]
+#       |--------------------|	
+line1 = "obtenir les 5 sacs"
+line2 = "de riz."
+
+[crazy_house.apothicaire_oui]
+#       |--------------------|	
+line1 = "Huhu, tu as fait une"
+line2 = "bonne affaire."
 
 #==============================================
 

@@ -18,6 +18,7 @@
 #include "entities/Hero.h"
 #include "entities/Switch.h"
 #include "movements/FollowMovement.h"
+#include "lua/MapScript.h"
 #include "Game.h"
 #include "Map.h"
 #include "KeysEffect.h"
@@ -264,6 +265,9 @@ void Block::update() {
 	  maximum_moves = 0;      // then it cannot move anymore
 	}
       }
+
+      // notify the script
+      get_map_script().event_block_moved(get_name());
     }
   }
 }

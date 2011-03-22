@@ -315,6 +315,16 @@ void MapScript::event_door_closed(const std::string& door_name) {
 }
 
 /**
+ * @brief Notifies the script that a block has just been pushed
+ * or pulled by the hero.
+ * @param block_name name of the block
+ */
+void MapScript::event_block_moved(const std::string& block_name) {
+
+  notify_script("event_block_moved", "s", block_name.c_str());
+}
+
+/**
  * @brief Notifies the script that an enemy has just been killed.
  * @param enemy_name name of the enemy
  */

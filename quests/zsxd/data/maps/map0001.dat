@@ -1485,7 +1485,7 @@
 4	0	904	845	5	_random	1	-1
 4	0	936	909	2	_random	1	-1
 4	0	952	909	2	heart	1	-1
-4	0	968	909	2	_random	1	-1
+4	0	968	909	2	bomb	2	-1
 4	0	776	293	2	_random	1	-1
 4	0	760	293	2	_random	1	-1
 4	0	744	293	2	_random	1	-1
@@ -1512,7 +1512,7 @@
 4	0	816	677	2	_random	1	-1
 4	0	816	693	2	_random	1	-1
 4	0	816	709	2	_random	1	-1
-4	0	800	693	2	hache	1	-1
+4	0	800	693	2	heart	1	-1
 4	0	896	709	2	_random	1	-1
 4	0	896	693	2	_random	1	-1
 4	0	896	677	2	_random	1	-1
@@ -1575,7 +1575,7 @@
 4	0	392	405	5	_random	1	-1
 4	0	272	349	2	_random	1	-1
 4	0	272	365	2	_random	1	-1
-4	0	288	349	2	_random	1	-1
+4	0	288	349	2	bomb	2	-1
 4	0	352	349	2	_random	1	-1
 4	0	368	349	2	_random	1	-1
 4	0	368	365	2	_random	1	-1
@@ -1610,7 +1610,7 @@
 8	0	304	157	castle_guard	3	1	npc/tom	dialog#outside_fields_NO.castle_guard
 4	0	240	189	2	_random	1	-1
 4	0	240	205	2	_random	1	-1
-4	0	240	221	2	hache	1	-1
+4	0	240	221	2	heart	1	-1
 4	0	240	237	2	_random	1	-1
 4	0	256	221	2	_random	1	-1
 4	0	256	205	2	_random	1	-1

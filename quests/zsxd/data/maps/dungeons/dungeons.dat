@@ -137,13 +137,6 @@ y = 1328
 save = 250
 big = 0
 
-[dungeon_1.map_65.boss_0]
-floor = 1
-x = 2624
-y = 845
-save = 306
-big = 1
-
 [dungeon_2.map_21.chest_0]
 floor = 0
 x = 560
@@ -381,4 +374,11 @@ x = 1272
 y = 216
 save = 109
 big = 0
+
+[dungeon_1.map_65.boss_0]
+floor = 1
+x = 2624
+y = 845
+save = 306
+big = 1
 

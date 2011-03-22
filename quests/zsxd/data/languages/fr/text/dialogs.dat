@@ -607,6 +607,102 @@ next = _item_description.fire_stones_counter.1.1
 #       |--------------------|
 line1 = "à Inferno."
 
+[_item_description.poivron_counter.1]
+#       |--------------------|
+line1 = "Ces poivrons sont"
+line2 = "très demandés par"
+line3 = "ceux qui aiment"
+next = _item_description.poivron_counter.1_2
+		
+[_item_description.poivron_counter.1_2]
+#       |--------------------|
+line1 = "manger épicé."
+
+[_item_description.balai_counter.1]
+#       |--------------------|
+line1 = "Un balai vieux et"
+line2 = "usagé, personne ne"
+line3 = "voudra te le"
+next = _item_description.balai_counter.1_2
+
+[_item_description.balai_counter.1_2]
+#       |--------------------|
+line1 = "reprendre !"
+
+[_item_description.cuillere_counter.1]
+#       |--------------------|
+line1 = "De belles cuilleres"
+line2 = "en argent, ne"
+line3 = "t'enfuies pas avec"
+next = _item_description.cuillere_counter.1_2
+
+[_item_description.cuillere_counter.1_2]
+#       |--------------------|		
+line1 = "vilain !"
+
+[_item_description.tapisserie_counter.1]
+#       |--------------------|
+line1 = "Une tapisserie du"
+line2 = "XVIIIème siècles, un"
+line3 = "travail comme on"
+next = _item_description.tapisserie_counter.1_2
+
+[_item_description.tapisserie_counter.1_2]
+#       |--------------------|		
+line1 = "n'en fait plus."
+
+[_item_description.roc_magma_counter.1]
+#       |--------------------|
+line1 = "Roc magma des mines"
+line2 = "Goron."
+
+[_item_description.sac_riz_counter.1]
+#       |--------------------|
+line1 = "Sacs de riz basmati"
+line2 = "premier prix de"
+line3 = "marque distributeur."
+
+[_item_description.sac_olive_counter.1]
+#       |--------------------|
+line1 = "Sacs d'olives, les"
+line2 = "chats en rafollent."
+
+[_item_description.bocal_epice_counter.1]
+#       |--------------------|
+line1 = "Des bocals d'épices"
+line2 = "contenant du thym,"
+line3 = "romarin, coriandre,"
+next = _item_description.bocal_epice_counter.1_2
+		
+[_item_description.bocal_epice_counter.1_2]
+#       |--------------------|
+line1 = "touteuh la"
+line2 = "chaleureuh du"
+line3 = "sudeuh !"
+
+[_item_description.hache_counter.1]
+#       |--------------------|
+line1 = "Merveilleusement"
+line2 = "aiguisée, cette"
+line3 = "hache est garantie"
+next = _item_description.hache_counter.1_2
+
+[_item_description.hache_counter.1_2]
+#       |--------------------|
+line1 = "20 ans."
+
+[_item_description.parfum_counter.1]
+#       |--------------------|
+line1 = "Parfum de marque"
+line2 = "renommée, ce Kipu"
+line3 = "les fera toutes"
+next = _item_description.parfum_counter.1_2
+
+[_item_description.parfum_counter.1_2]
+#       |--------------------|
+line1 = "tomber comme des"
+line2 = "mouches !"
+
 # ---------------------
 # Obtention d'un trésor
 # ---------------------
@@ -1882,6 +1978,8 @@ next = _treasure.parfum.1_2
 #       |-----------------------|
 line1 = "à quelqu'un avant de"
 line2 = "mourir asphyxié !"
+
+
 
 # ---------------
 # Autres messages

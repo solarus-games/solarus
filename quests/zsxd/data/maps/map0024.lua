@@ -162,7 +162,7 @@ function event_dialog_finished(first_message_id, answer)
 		-- Echange de hache contre cuilleres		
 		if answer == 0 then
 			if sol.game.get_item_amount("hache_counter") >= 1 then
-				sol.map.treasure_give("cuillere", 1, -1
+				sol.map.treasure_give("cuillere", 1, -1)
 				sol.game.add_item_amount("cuillere_counter", 1)
 				sol.game.remove_item_amount("hache_counter", 1)
 			else

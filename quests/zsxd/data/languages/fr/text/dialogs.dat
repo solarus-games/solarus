@@ -1824,6 +1824,70 @@ line1 = "Apparemment, tu l'avais"
 line2 = "juste enfermée dans ton"
 line3 = "coffre !"
 
+[_treasure.poivron.1]
+#       |-----------------------|
+line1 = "Tu obtiens des"
+line2 = "poivrons ! Tu nous"
+line3 = "prépares une pizza ?"
+
+[_treasure.balai.1]
+#       |-----------------------|
+line1 = "Tu as le balai ! C'est"
+line2 = "la mère Denis qui va"
+line3 = "être contente !"
+
+[_treasure.cuillere.1]
+#       |-----------------------|
+line1 = "Des cuillères ! Mange"
+line2 = "ta soupe si tu veux"
+line3 = "grandir !"
+
+[_treasure.tapisserie.1]
+#       |-----------------------|
+line1 = "Quelles belles"
+line2 = "tapisseries !"
+
+[_treasure.roc_magma.1]
+#       |-----------------------|
+line1 = "Un roc magma !"
+line2 = "Attention c'est chaud !"
+
+[_treasure.sac_riz.1]
+#       |-----------------------|
+line1 = "Tu obtiens des sacs de"
+line2 = "riz, mais c'est du"
+line3 = "basmati, dommage :("
+
+[_treasure.sac_olive.1]
+#       |-----------------------|
+line1 = "On te donne des sacs"
+line2 = "d'olives, t'aimes pas ?"
+line3 = "Tant pis pour toi !"
+
+[_treasure.bocal_epice.1]
+#       |-----------------------|
+line1 = "Tu obtiens un bocal"
+line2 = "d'épices, mais qu'y"
+line3 = "a-t-il à l'intérieur ?"
+
+[_treasure.hache.1]
+#       |-----------------------|
+line1 = "La hache, quel"
+line2 = "magnifique outil, qui"
+line3 = "coupe tout... ou pas."
+
+[_treasure.parfum.1]
+#       |-----------------------|
+line1 = "On te donne le parfum"
+line2 = "Kipu de Cacao Charnel,"
+line3 = "va vite le refourguer"
+next = _treasure.parfum.1_2
+
+[_treasure.parfum.1_2]
+#       |-----------------------|
+line1 = "à quelqu'un avant de"
+line2 = "mourir asphyxié !"
+
 # ---------------
 # Autres messages
 # ---------------
@@ -2168,6 +2232,11 @@ line2 = "22."
 #       |-----------------------|
 line1 = "It's me, Mario !"
 
+[crazy_house.directionsAccueil]
+#       |-----------------------|
+line1 = "Accueil, veuillez faire"
+line2 = "la queue"
+
 [crazy_house.directions_1F]
 #       |-----------------------|
 line1 = "En bas : guichet 21"
@@ -2222,6 +2291,17 @@ line3 = "gêner."
 line1 = "A gauche : guichet 33"
 line2 = "A droite : guichets 84,
 line3 = "56"
+
+[crazy_house.alcoholic_man]
+#       |-----------------------|
+line1 = "Hip ! Je ne sais
+line2 = "même... hip ! plus...
+line3 = "comment je suis hip !
+next = crazy_house.alcoholic_man_2
+		
+[crazy_house.alcoholic_man_2]
+#       |-----------------------|		
+line1 = "...arrivé ici ! Hip !"
 
 [crazy_house.infinite_greetings]
 #       |--------------------|

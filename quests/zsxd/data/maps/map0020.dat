@@ -177,6 +177,7 @@
 19	0	1432	128	stairs_5	3	4
 10	0	1424	88	8	8	tile	206	1
 13	0	1104	245	112	16	passage_sensor_A	0
+0	1	512	208	304	16	2
 0	1	1648	304	224	144	2
 0	1	1424	304	144	144	2
 0	1	1576	296	24	80	50
@@ -740,6 +741,13 @@
 0	1	208	40	8	8	69
 0	1	208	64	8	8	69
 0	1	208	48	8	16	71
+0	1	688	128	16	80	2
+0	1	704	160	112	48	2
+0	1	592	224	112	80	2
+0	1	688	304	16	48	2
+0	1	696	216	32	64	2
+0	1	720	208	96	48	2
+0	1	816	240	32	16	2
 10	1	1648	176	24	32	weak_wall_A_closed	51	1
 10	1	1608	176	24	32	weak_wall_A_closed_2	50	1
 19	1	160	24	stairs_2	1	0
@@ -780,7 +788,7 @@
 12	1	1448	144	8	8	custom_obstacle_20	1	1	1	1
 8	1	1760	349	GC12BPerson	3	1	npc/villager1	map
 8	1	1688	349	interactive_entity_2	3	1	npc/static_villager4	map
-8	1	1432	341	interactive_entity_4	3	1	npc/static_villager9	map
+8	1	1432	341	interactive_entity_4	3	1	npc/static_villager9	dialog#crazy_house.alcoholic_man
 19	1	1832	136	stairs_6	1	0
 1	1	1840	149	from2Fa_right	3	0
 2	1	1832	136	16	16	to2Fa_right	0	1	22	from1Fb
@@ -793,7 +801,7 @@
 18	1	848	216	DK1_2	3	1	140
 8	1	248	69	GC11	3	1	npc/newlink3	map
 8	1	168	165	Accueil_2	3	1	npc/static_villager10	map
-8	1	136	221	directionsAccueil	3	1	entities/sign	map
+8	1	136	221	directionsAccueil	3	0	entities/sign	dialog#crazy_house.directionsAccueil
 8	1	168	205	AccueilFront	3	0	_none	map
 8	1	248	101	GC11Front	3	0	_none	map
 8	1	1688	381	GC12A	3	0	_none	map

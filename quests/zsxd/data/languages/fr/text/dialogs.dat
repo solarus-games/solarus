@@ -4514,7 +4514,7 @@ line1 = "HAAAAAAAAAAAAAAAAAA !!!"
 [the_end.credits]
 #       |-----------------------|
 line1 = "$1Ce jeu parodique a été"
-line2 = "réalisé en cinq"
+line2 = "réalisé en sept"
 line3 = "semaines par l'équipe"
 next = the_end.credits.1
 

@@ -140,6 +140,7 @@ booleans:
 123 3F : Small key (guichet 33) [CK4]
 124 2FA: Old man first talk
 125 2FA: Old man rice
+126 3F : Giga bouton state
 
 140	1FA: Key Door A [DK1]
 141 3F : Key Door B [DK2]

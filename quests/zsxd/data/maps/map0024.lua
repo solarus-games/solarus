@@ -10,6 +10,9 @@ function event_map_started(destination_point_name)
 	-- Desactivation des sensors pour la porte du couloir sans fin	
 	sol.map.sensor_set_enabled("bowser_leave", false)
 	sol.map.sensor_set_enabled("bowser_exit", false)
+	if sol.game.savegame_get_boolean(126) == true then
+		sol.map.interactive_entity_remove("infinite_corridor")
+	end
 end
 
 function event_map_opening_transition_finished(destination_point_name)
@@ -26,11 +29,9 @@ end
 
 -- Guichet 32 -------------------------------------------------
 function guichet_32()
-	if sol.game.savegame_get_integer(1410) <= 6 then
+	if sol.game.savegame_get_integer(1410) == 6 then
 		sol.map.dialog_start("crazy_house.guichet_32_ech_le_6")
-		if sol.game.savegame_get_integer(1410) == 6 then
-			sol.game.savegame_set_integer(1410, 7)
-		end
+		sol.game.savegame_set_integer(1410, 7)
 	else
 		sol.map.dialog_start("crazy_house.guichet_32_ech_ne_6")
 	end
@@ -180,11 +181,13 @@ function event_dialog_finished(first_message_id, answer)
 end
 
 function event_block_moved(block_name)
-	if block_name == "GBS" then	
-		x, y = sol.map.block_get_position(block_name)
-		if giga_bouton_pushed == false and x == 1664 and y == 797 then
-			giga_bouton_pushed = true
-			giga_bouton_activated()
+	if giga_bouton_pushed == false then
+		if block_name == "GBS" then	
+			x, y = sol.map.block_get_position(block_name)
+			if x == 1664 and y == 797 then
+				giga_bouton_pushed = true
+				giga_bouton_activated()
+			end
 		end
 	end
 end
@@ -193,7 +196,6 @@ end
 -- le giga bouton
 function giga_bouton_camera_move()
 	sol.map.camera_move(680, 792, 250)
-	sol.main.timer_stop("giga_bouton_camera_move")
 	sol.map.sensor_set_enabled("infinite_corridor", false)
 end
 
@@ -208,6 +210,7 @@ function giga_bouton_activated()
 	sol.map.hero_freeze()
 	sol.map.sensor_set_enabled("infinite_corridor", false)	
 	sol.main.timer_start(500, "giga_bouton_camera_move", false)
+	sol.game.savegame_set_boolean(126, true)
 	giga_bouton_camera = true
 end
 

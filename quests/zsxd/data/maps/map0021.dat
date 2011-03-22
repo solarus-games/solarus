@@ -816,6 +816,7 @@
 0	1	776	440	8	32	71
 0	1	752	888	8	32	71
 0	1	776	888	8	32	71
+0	1	376	152	16	16	1
 5	1	560	48	CV4	0	_none	1	-1
 7	1	448	301	enemy	3	tentacle	0	-1	_random	1	-1
 1	1	216	37	from2Fb_left	3	0
@@ -824,7 +825,6 @@
 1	1	72	1157	from2Fa_left	3	0
 19	1	64	1144	stairs_2	1	0
 2	1	64	1144	16	16	to2Fa_left	0	1	22	from1Fb_left
-11	1	376	152	rupee_chest_switch	1	0	0
 4	1	384	165	0	_random	1	-1
 5	1	424	280	CR1	0	rupee	3	107
 8	1	376	933	mario_message_2	3	0	_none	map

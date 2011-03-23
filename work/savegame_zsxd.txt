@@ -114,7 +114,7 @@ booleans:
 ================================================================================
 
 100 to 199	reserved for crazy_house (dungeon 2)
-100	1FA: Hidden Piece of Heart [PH1]
+100	1FA: Hidden 50 rupees [HR2]
 101	1FA: Empty chest Switch [CS3]
 102	3F : Map chest [CM3]
 103 1FA: Empty chest [CV1]

@@ -52,7 +52,7 @@ function accueil()
 		sol.map.dialog_start("crazy_house.accueil_ech_eq_6")
 	elseif sol.game.savegame_get_integer(1410) == 7 then
 		sol.map.dialog_start("crazy_house.accueil_ech_eo_5-7")
-	elseif sol.game.savegame_get_integer(1410) == 8 then		
+	elseif sol.game.savegame_get_integer(1410) == 8 then
 		if sol.game.savegame_get_integer(1411) == 1 then
 		  sol.map.dialog_start("crazy_house.accueil_epi_eo_1-7")
 		elseif sol.game.savegame_get_integer(1411) == 2 then
@@ -106,16 +106,31 @@ end
 
 -- Guichet 11 -------------------------------------------------
 function guichet_11()
-	if sol.game.savegame_get_integer(1410) == 9 then
-		-- Chercher des haches
-		if sol.main.get_item_amount("tapisserie_counter") >= 1 then
-			sol.map.dialog_start("crazy_house.guichet_11_ech_eq_9_ht")
-		else		
-			sol.map.dialog_start("crazy_house.guichet_11_ech_eq_9")
+	if sol.game.savegame_get_integer(1410) >= 8 then
+		if sol.game.savegame_get_integer(1412) == 9 then
+			-- Chercher des haches (mais future erreur : donné : roc magma)
+			if sol.main.get_item_amount("tapisserie_counter") >= 1 then
+				sol.map.dialog_start("crazy_house.guichet_11_bal_eq_9")
+			else		
+				sol.map.dialog_start("crazy_house.guichet_11_ech_eq_9")
+			end
+		else
+			-- Chercher des haches
+			if sol.main.get_item_amount("tapisserie_counter") >= 1 then
+				sol.map.dialog_start("crazy_house.guichet_11_ech_eq_9_ht")
+			else		
+				sol.map.dialog_start("crazy_house.guichet_11_ech_eq_9")
+			end
+			if sol.game.savegame_get_integer(1411) == 2 then
+				sol.game.savegame_set_integer(1411, 3)
+			end
 		end
 	else
 		-- S'adresser à l'accueil
 		sol.map.dialog_start("crazy_house.guichet_11_ech_ne_9")
+	end
+	if sol.game.savegame_get_integer(1412) == 5 then
+		sol.game.savegame_set_integer(1412, 6)
 	end
 end
 
@@ -135,6 +150,11 @@ function guichet_12B()
 		sol.map.dialog_start("crazy_house.guichet_12B_ech_eq_3")
 	elseif sol.game.savegame_get_integer(1410) >= 7 then
 		sol.map.dialog_start("crazy_house.guichet_12B_ech_eq_7")
+		if sol.game.savegame_get_integer(1410) == 7 then		
+			sol.game.savegame_set_integer(1410, 8)
+			sol.game.savegame_set_integer(1411, 1)
+			sol.game.savegame_set_integer(1412, 1)
+		end
 	else
 		sol.map.dialog_start("crazy_house.guichet_12B_aw")
 	end
@@ -197,9 +217,30 @@ function event_dialog_finished(first_message_id, answer)
 		sol.main.remove_item_amount("bocal_epice_counter", 1)
 	elseif first_message_id == "crazy_house.guichet_11_ech_eq_9_ht" then
 		if answer == 0 then
-			-- Obtention de la hache (guichet 11)			
-			sol.map.treasure_give("hache", 1, -1)
-			sol.main.remove_item_amount("tapisserie_counter", 1)
+			if sol.main.get_item_amount("tapisserie_counter") >= 1 then
+				-- Obtention de la hache (guichet 11)			
+				sol.map.treasure_give("hache", 1, -1)
+				sol.main.remove_item_amount("tapisserie_counter", 1)
+				if sol.game.savegame_get_integer(1411) == 6 then
+					sol.game.savegame_set_integer(1411, 7)
+				end
+			end
+		end
+	elseif first_message_id == "crazy_house.guichet_11_ech_eq_9_ht" then
+		if answer == 0 then
+			if sol.main.get_item_amount("tapisserie_counter") >= 2 then
+				-- Obtention des rocs magma (guichet 11)
+				sol.map.treasure_give("roc_magma", 1, -1)
+				sol.main.add_item_amount("roc_magma_counter", 5)
+				sol.main.remove_item_amount("tapisserie_counter", 2)
+				if sol.game.savegame_get_integer(1412) == 9 then
+					sol.game.savegame_set_integer(1412, 10)
+				end	
+			end
+		end
+	elseif first_message_id == "_treasure.roc_magma.1" then
+		if guichet_11_error == true then
+			sol.map.dialog_start("crazy_house.guichet_11_bal_err")
 		end
 	end
 end

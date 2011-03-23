@@ -2875,18 +2875,53 @@ line3 = "mais bon..."
 line1 = "Ah vous avez des"
 line2 = "tapisseries ? Je"
 line3 = "vous échange chaque"
+next = crazy_house.guichet_11_ech_eq_9_ht_2
 
 [crazy_house.guichet_11_ech_eq_9_ht_2]
 #       |--------------------|
 line1 = "tapisserie contre"
 line2 = "une hache."
+next = crazy_house.guichet_11_ech_eq_9_ht_3
 
 [crazy_house.guichet_11_ech_eq_9_ht_3]
 #       |--------------------|
 line1 = "Alors ?"
 line2 = "OK ok !"
 line3 = "Plutôt mourir !"
+question = true
 
+[crazy_house.guichet_11_bal_eq_9]
+#       |--------------------|
+line1 = "Ah vous avez des"
+line2 = "tapisseries ? Je"
+line3 = "vous échange 2"
+next = crazy_house.guichet_11_bal_eq_9_2
+
+[crazy_house.guichet_11_bal_eq_9_2]
+#       |--------------------|
+line1 = "tapisseries contre"
+line2 = "2 haches."
+next = crazy_house.guichet_11_bal_eq_9_3
+
+[crazy_house.guichet_11_bal_eq_9_3]
+#       |--------------------|
+line1 = "Alors ?"
+line2 = "OK ok !"
+line3 = "Plutôt mourir !"
+question = true
+r
+[crazy_house.guichet_11_bal_err]
+#       |--------------------|
+line1 = "Comment ? C'est des"
+line2 = "haches que vous"
+line3 = "vouliez ?"
+next = crazy_house.guichet_11_bal_err_2
+
+[crazy_house.guichet_11_bal_err_2]
+#       |--------------------|
+line1 = "Mais je n'en ai"
+line2 = "jamais eu. C'est ça"
+line3 = "ou rien monsieur !"
 
 #==============================================
 # GUICHET 12A

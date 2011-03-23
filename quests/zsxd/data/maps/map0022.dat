@@ -943,7 +943,7 @@
 13	1	632	517	16	16	prankster_sensor_top	0
 13	1	632	573	16	16	prankster_sensor_middle	0
 13	1	632	629	16	16	prankster_sensor_bottom	0
-18	1	328	328	locked_door_A	2	0	-1
+18	1	328	328	LD1	2	0	127
 11	1	384	384	locked_door_switch_A	1	0	0
 11	1	456	384	locked_door_switch_B	1	0	0
 15	1	488	320	16	48	1
@@ -1038,7 +1038,6 @@
 17	1	1160	605	2
 8	1	1376	741	GC21	3	1	npc/sahasrahla	map
 14	1	1376	621	crystal_switch
-18	1	280	328	locked_door_A_2	0	0	-1
 15	1	1264	536	32	16	0
 15	1	1280	552	16	32	0
 15	1	1264	584	32	16	0
@@ -1105,6 +1104,7 @@
 4	1	1640	509	0	bomb	1	-1
 4	1	1656	509	0	bomb	1	-1
 4	1	1672	509	0	bomb	1	-1
+18	1	280	328	LD1_2	0	0	127
 0	2	720	464	96	8	262
 0	2	112	240	96	8	262
 0	2	112	216	96	8	263

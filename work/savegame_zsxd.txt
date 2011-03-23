@@ -160,7 +160,7 @@ booleans:
 101	1FA: Empty chest Switch [CS3]
 102	3F : Map chest [CM3]
 103 1FA: Empty chest [CV1]
-104    : Hidden 50 rupees [HR1]
+104 2FA: Hidden 50 rupees [HR1]
 105 1FA: Weak Wall [WW1]
 106 3F : Small key chest [CK1]
 107 1FB: 20 rupees chest [CR1]
@@ -183,6 +183,7 @@ booleans:
 124 2FA: Old man first talk
 125 2FA: Old man rice
 126 3F : Giga bouton state
+127 2FA: Dual button locked door [LD1]
 
 140	1FA: Key Door A [DK1]
 141 3F : Key Door B [DK2]

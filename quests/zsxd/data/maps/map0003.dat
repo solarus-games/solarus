@@ -924,6 +924,7 @@
 8	0	568	869	forest_monkey	3	1	npc/monkey	map
 12	0	552	616	88	16	custom_obstacle_3	0	0	1	0
 2	0	1024	0	16	1024	teletransporter_3	0	2	4	_side
+12	0	992	920	16	32	custom_obstacle_4	0	0	1	0
 0	2	976	768	48	40	511
 0	2	976	960	48	40	511
 0	2	680	808	48	40	511

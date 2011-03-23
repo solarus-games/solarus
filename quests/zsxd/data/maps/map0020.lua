@@ -202,12 +202,19 @@ function event_dialog_finished(first_message_id, answer)
 	elseif first_message_id == "crazy_house.guichet_12B_ech_eq_7" then
 		-- Echange pour parfum
 		if answer == 0 then
-			-- Contrôle de quantité bocal d'épices
-			if sol.main.get_item_amount("bocal_epice_counter") >= 1 then
+			-- Contrôle de quantité bocal d'épices et balai
+			if sol.main.get_item_amount("bocal_epice_counter") >= 1
+			and sol.main.get_item_amount("balai_counter") >= 1 then
 				sol.map.dialog_start("crazy_house.guichet_12B_ech_eq_7_ok")
 			else
-				sol.map.dialog_start("crazy_house.guichet_12B_ech_eq_7_un")
-			end
+				if sol.main.get_item_amount("bocal_epice_counter") >= 1 then
+					sol.map.dialog_start("crazy_house.guichet_12B_ech_eq_7_un_balai")
+				elseif sol.main.get_item_amount("balai_counter") >= 1 then
+					sol.map.dialog_start("crazy_house.guichet_12B_ech_eq_7_un_bocal")
+				else
+					sol.map.dialog_start("crazy_house.guichet_12B_ech_eq_7_un")
+				end
+			end			
 		else
 			sol.map.dialog_start("crazy_house.guichet_12B_ech_eq_7_no")
 		end
@@ -215,6 +222,7 @@ function event_dialog_finished(first_message_id, answer)
 		-- Obtention du parfum (guichet 12B)
 		sol.map.treasure_give("parfum", 1, -1)
 		sol.main.remove_item_amount("bocal_epice_counter", 1)
+		sol.main.remove_item_amount("balai_counter", 1)
 	elseif first_message_id == "crazy_house.guichet_11_ech_eq_9_ht" then
 		if answer == 0 then
 			if sol.main.get_item_amount("tapisserie_counter") >= 1 then

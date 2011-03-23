@@ -2998,9 +2998,9 @@ next = crazy_house.guichet_12B_ech_eq_7_3
 
 [crazy_house.guichet_12B_ech_eq_7_3]
 #       |--------------------|
-line1 = "d'épices, je vous"
-line2 = "l'échange contre le"
-line3 = "parfum."
+line1 = "d'épices et un balai."
+line2 = "Je vous les échange"
+line3 = "contre un parfum."
 next = crazy_house.guichet_12B_ech_eq_7_4
 
 [crazy_house.guichet_12B_ech_eq_7_4]
@@ -3011,10 +3011,23 @@ line3 = "Nan t'es relou !"
 question = true
 
 [crazy_house.guichet_12B_ech_eq_7_un]
+#       |-----------------------|
+line1 = "Mais vous n'avez rien !"
+line2 = "Mais je suis sûre..."
+next = crazy_house.guichet_12B_ech_eq_7_un_2
+
+[crazy_house.guichet_12B_ech_eq_7_un_balai]
+#       |--------------------|
+line1 = "Mais vous n'avez pas"
+line2 = "le balai !"
+line3 = "Mais je suis sûre..."
+next = crazy_house.guichet_12B_ech_eq_7_un_2
+
+[crazy_house.guichet_12B_ech_eq_7_un_bocal]
 #       |--------------------|
 line1 = "Mais vous n'avez pas"
 line2 = "le bocal d'épice !"
-line3 = "Mais je suis sûre"
+line3 = "Mais je suis sûre..."
 next = crazy_house.guichet_12B_ech_eq_7_un_2
 
 [crazy_house.guichet_12B_ech_eq_7_un_2]

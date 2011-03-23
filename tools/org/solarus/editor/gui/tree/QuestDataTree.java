@@ -19,6 +19,8 @@ package org.solarus.editor.gui.tree;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.util.Observable;
+import java.util.Observer;
 import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
@@ -40,7 +42,7 @@ import org.solarus.editor.gui.TilesetEditorWindow;
 /**
  *
  */
-public class QuestDataTree extends JTree implements TreeSelectionListener {
+public class QuestDataTree extends JTree implements TreeSelectionListener , Observer {
 
     private String quest;
     private EditorWindow editorWindow;
@@ -59,6 +61,23 @@ public class QuestDataTree extends JTree implements TreeSelectionListener {
 
     public void valueChanged(TreeSelectionEvent e) {
         //System.out.println(e.getNewLeadSelectionPath());
+    }
+
+    public void addMap(Map map) {        
+        DefaultMutableTreeNode mapNode = (DefaultMutableTreeNode) treeModel.getChild(treeModel.getRoot(), ResourceType.MAP.ordinal());
+        ((EditorTreeModel) treeModel).insertNodeInto(new DefaultMutableTreeNode(map) ,mapNode, mapNode.getChildCount());
+        map.addObserver(this);
+        repaint();
+    }
+
+    public void addTileset(Tileset tileset) {
+        DefaultMutableTreeNode tilesetNode = (DefaultMutableTreeNode) treeModel.getChild(treeModel.getRoot(), ResourceType.TILESET.ordinal());
+        tilesetNode.add(new DefaultMutableTreeNode(tileset));
+        repaint();
+    }
+
+    public void update(Observable o, Object arg) {
+        repaint();
     }
 
     class EditorTreeModel extends DefaultTreeModel {
@@ -101,7 +120,7 @@ public class QuestDataTree extends JTree implements TreeSelectionListener {
                         case ITEM:
                             parentNode.add(new DefaultMutableTreeNode(new CustomFile(Project.getItemScriptFile(ids[i]), resource.getElementName(ids[i]))));
                             break;
-                            case SPRITE:
+                        case SPRITE:
                             parentNode.add(new DefaultMutableTreeNode(new CustomFile(Project.getSpriteFile(ids[i]).getAbsolutePath(), resource.getElementName(ids[i]))));
                             break;
                         default:
@@ -120,9 +139,13 @@ public class QuestDataTree extends JTree implements TreeSelectionListener {
         @Override
         public void mousePressed(MouseEvent e) {
             if (e.getClickCount() == 2) {
+                DefaultMutableTreeNode clickedNode = null;
                 try {
-                    DefaultMutableTreeNode clickedNode = (DefaultMutableTreeNode) QuestDataTree.this.getSelectionPath().getLastPathComponent();
-                    if (clickedNode.getUserObject() instanceof Map) {
+                    clickedNode = (DefaultMutableTreeNode) QuestDataTree.this.getSelectionPath().getLastPathComponent();
+                    ;
+                    if (clickedNode.getUserObject() instanceof String) {
+                        //
+                    } else if (clickedNode.getUserObject() instanceof Map) {
                         Map m = ((Map) clickedNode.getUserObject());
                         MapEditorWindow mapEditor = new MapEditorWindow(quest, editorWindow, m);
                         editorWindow.addEditor(mapEditor);
@@ -142,7 +165,9 @@ public class QuestDataTree extends JTree implements TreeSelectionListener {
                         editorWindow.addEditor(fileEditor);
                     }
                 } catch (ClassCastException cce) {
+                    System.out.println("LE noeud sur lequel on a cliqué est : " + clickedNode);
                     cce.printStackTrace();
+                } catch (NullPointerException npe) {
                 }
             }
         }

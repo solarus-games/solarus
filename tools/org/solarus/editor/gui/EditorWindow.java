@@ -148,6 +148,7 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
         } else {
             try {
                 Project.createExisting("../quests/" + quest);
+                  qdt.setRoot(Project.getDataPath());
             } catch (ZSDXException ex) {
                 new ActionListenerLoadProject().actionPerformed(null);
             }

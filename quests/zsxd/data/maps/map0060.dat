@@ -753,6 +753,9 @@
 4	1	688	1093	0	_random	1	-1
 7	1	688	997	enemy_9	3	simple_green_soldier	0	-1	_random	1	-1
 7	1	720	1053	enemy_10	3	simple_green_soldier	0	-1	_random	1	-1
+12	1	1064	648	16	16	custom_obstacle_16	0	1	1	1
+12	1	1064	696	16	16	custom_obstacle_17	0	1	1	1
+12	1	1064	496	16	16	custom_obstacle_18	0	1	1	1
 0	2	696	912	32	8	437
 0	2	408	464	96	8	437
 0	2	1512	712	8	96	442

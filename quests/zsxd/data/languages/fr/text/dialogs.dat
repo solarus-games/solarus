@@ -1651,7 +1651,8 @@ next = _treasure.compass.1.2
 
 [_treasure.compass.1.2]
 #       |--------------------|
-line1 = "C'est pas trop tôt !"
+line1 = "C'est ça le"
+line2 = "progrès !"
 
 [_treasure.small_key.1]
 # Petite clé
@@ -4958,7 +4959,12 @@ next = the_end.credits.14
 #       |-----------------------|
 line1 = "Geomaster"
 line2 = "HelpTheWretched"
-line3 = "Nintendo"
+line3 = "Vincent Jouillat"
+next = the_end.credits.14bis
+
+[the_end.credits.14bis]
+#       |-----------------------|
+line1 = "Nintendo"
 next = the_end.credits.15
 
 [the_end.credits.15]

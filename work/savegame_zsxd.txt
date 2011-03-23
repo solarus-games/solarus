@@ -242,3 +242,5 @@ booleans:
 304	1F SE: door before the boss
 305	1F SE: heart container in the first room
 306	2F NE: boss killed
+307	1F NE: small key door in the ALTTP room
+

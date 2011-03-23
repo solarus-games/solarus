@@ -45,3 +45,5 @@ function event_enemy_dead(enemy_name)
     sol.map.door_open("fight_door")
   end
 end
+
+

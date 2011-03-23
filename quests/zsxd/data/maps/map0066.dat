@@ -1039,7 +1039,7 @@
 10	1	1264	304	96	80	water	446	1
 2	1	0	-16	1536	16	teletransporter_4	0	2	64	_side
 2	1	1536	0	16	912	teletransporter_3	0	2	67	_side
-5	1	864	328	chest	1	bow	1	206
+5	1	864	328	chest	1	bow	2	206
 12	1	1360	520	8	32	custom_obstacle	1	1	1	1
 12	1	1384	520	8	32	custom_obstacle_2	1	1	1	1
 6	1	1392	320	8	48	jump_sensor_2	0	16

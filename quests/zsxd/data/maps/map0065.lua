@@ -118,6 +118,10 @@ function event_enemy_dead(enemy_name)
 
     sol.main.play_sound("secret")
     sol.map.door_open("fight_room_door")
+  elseif enemy_name == "boss" then
+    sol.map.tile_set_enabled("boss_gate", true) 
+    sol.game.savegame_set_boolean(62, true) -- open the door of Link's cave
+    sol.main.play_sound("secret")
   end
 end
 
@@ -156,15 +160,6 @@ end
 
 function ganon_dialog()
   sol.map.dialog_start("dungeon_1.ganon")
-end
-
-function event_enemy_dead(enemy_name)
-
-  if enemy_name == "boss" then
-    sol.map.tile_set_enabled("boss_gate", true) 
-    sol.game.savegame_set_boolean(62, true) -- open the door of Link's cave
-    sol.main.play_sound("secret")
-  end
 end
 
 function event_hero_interaction(entity_name)

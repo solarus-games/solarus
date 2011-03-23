@@ -150,7 +150,7 @@ function guichet_12B()
 		sol.map.dialog_start("crazy_house.guichet_12B_ech_eq_3")
 	elseif sol.game.savegame_get_integer(1410) >= 7 then
 		sol.map.dialog_start("crazy_house.guichet_12B_ech_eq_7")
-		if sol.game.savegame_get_integer(1410) == 7 then		
+		if sol.game.savegame_get_integer(1410) == 7 then
 			sol.game.savegame_set_integer(1410, 8)
 			sol.game.savegame_set_integer(1411, 1)
 			sol.game.savegame_set_integer(1412, 1)

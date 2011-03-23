@@ -74,8 +74,8 @@ integers (above 1024):
 1411: chaine_epice_phase (1410 = 8)
 
 	- 1: vieillard veut 3 poivrons, les chercher au guichet 84 (nécessite 5 haches)
-  - 2: chercher des 5 haches au guichet 11 (nécessite 1 tapisserie pour 1 hache)
-  - 3: chercher des 6 tapisseries au guichet 22 (nécessite 1 sac de riz pour 2 tapisseries)
+  - 2: chercher 5 haches au guichet 11 (nécessite 1 tapisserie pour 1 hache)
+  - 3: chercher 6 tapisseries au guichet 22 (nécessite 1 sac de riz pour 2 tapisseries)
   - 4: acheter 3 sacs de riz à l'apothicaire ou à panoda fichage
 	- 5: apporter 3 sac de riz au guichet 22, obtenu : 6 tapisseries
   - 6: apporter 6 tapisseries au guichet 11, obtenu : 6 haches

@@ -1945,7 +1945,7 @@ line2 = "tapisseries !"
 
 [_treasure.roc_magma.1]
 #       |-----------------------|
-line1 = "Un roc magma !"
+line1 = "Des rocs magma !"
 line2 = "Attention c'est chaud !"
 
 [_treasure.sac_riz.1]
@@ -2831,6 +2831,26 @@ line1 = "juste ici ?"
 line1 = "Des sacs de riz ?"
 line2 = "Essayez le guichet"
 line3 = "36 au deuxième étage"
+
+[crazy_house.accueil_fini]
+#       |-----------------------|
+line1 = "Vous avez retrouvé"
+line2 = "vos gants monsieur ?"
+line3 = "Parfait."
+next = crazy_house.accueil_fini.2
+
+[crazy_house.accueil_fini.2]
+#       |-----------------------|
+line1 = "Le Bureau des Objets"
+line2 = "Trouvés a été heureux"
+line3 = "de vous accueillir"
+next = crazy_house.accueil_fini.3
+
+[crazy_house.accueil_fini.3]
+#       |-----------------------|
+line1 = "et espère vous revoir"
+line2 = "prochainement."
+line3 = "A bientôt !"
 
 #==============================================
 # GUICHET 11

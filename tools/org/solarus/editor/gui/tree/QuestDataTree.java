@@ -16,11 +16,16 @@
  */
 package org.solarus.editor.gui.tree;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.Observable;
 import java.util.Observer;
+import javax.swing.JComponent;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
@@ -40,18 +45,22 @@ import org.solarus.editor.gui.MapEditorWindow;
 import org.solarus.editor.gui.TilesetEditorWindow;
 
 /**
- *
+ * The Quest data tree
  */
-public class QuestDataTree extends JTree implements TreeSelectionListener , Observer {
+public class QuestDataTree extends JTree implements TreeSelectionListener, Observer {
 
     private String quest;
     private EditorWindow editorWindow;
+    private QuestDataTreePopupMenu popupMenu;
 
     public QuestDataTree(String quest, EditorWindow parent) {
         this.quest = quest;
         this.editorWindow = parent;
         addTreeSelectionListener(this);
         addMouseListener(new QuestDataTreeMouseAdapter());
+        popupMenu = new QuestDataTreePopupMenu();
+        //
+
     }
 
     public void setRoot(String projectPath) {
@@ -63,9 +72,9 @@ public class QuestDataTree extends JTree implements TreeSelectionListener , Obse
         //System.out.println(e.getNewLeadSelectionPath());
     }
 
-    public void addMap(Map map) {        
+    public void addMap(Map map) {
         DefaultMutableTreeNode mapNode = (DefaultMutableTreeNode) treeModel.getChild(treeModel.getRoot(), ResourceType.MAP.ordinal());
-        ((EditorTreeModel) treeModel).insertNodeInto(new DefaultMutableTreeNode(map) ,mapNode, mapNode.getChildCount());
+        ((EditorTreeModel) treeModel).insertNodeInto(new DefaultMutableTreeNode(map), mapNode, mapNode.getChildCount());
         map.addObserver(this);
         repaint();
     }
@@ -138,11 +147,26 @@ public class QuestDataTree extends JTree implements TreeSelectionListener , Obse
 
         @Override
         public void mousePressed(MouseEvent e) {
-            if (e.getClickCount() == 2) {
-                DefaultMutableTreeNode clickedNode = null;
-                try {
+            DefaultMutableTreeNode clickedNode = null;
+            try {
+                if (e.getButton() == MouseEvent.BUTTON3) {
+                    int row = QuestDataTree.this.getRowForLocation(e.getX(), e.getY());
+                    if (row == -1) {
+                        return;
+                    }
+                    QuestDataTree.this.setSelectionRow(row);
                     clickedNode = (DefaultMutableTreeNode) QuestDataTree.this.getSelectionPath().getLastPathComponent();
-                    ;
+                    if (clickedNode.getUserObject() instanceof Map) {
+                        popupMenu.setMap((Map) clickedNode.getUserObject());
+                        popupMenu.show((JComponent) e.getSource(),
+                                e.getX(), e.getY());
+                    }
+
+                } else if (e.getClickCount() == 2) {
+
+
+                    clickedNode = (DefaultMutableTreeNode) QuestDataTree.this.getSelectionPath().getLastPathComponent();
+
                     if (clickedNode.getUserObject() instanceof String) {
                         //
                     } else if (clickedNode.getUserObject() instanceof Map) {
@@ -164,12 +188,46 @@ public class QuestDataTree extends JTree implements TreeSelectionListener , Obse
                         FileEditorWindow fileEditor = new FileEditorWindow(quest, editorWindow, new File(cf.getAbsolutePath()));
                         editorWindow.addEditor(fileEditor);
                     }
-                } catch (ClassCastException cce) {
-                    System.out.println("LE noeud sur lequel on a cliqué est : " + clickedNode);
-                    cce.printStackTrace();
-                } catch (NullPointerException npe) {
+
                 }
+            } catch (ClassCastException cce) {
+                System.out.println("Le noeud sur lequel on a cliqué est : " + clickedNode);
+                cce.printStackTrace();
+            } catch (NullPointerException npe) {
             }
+        }
+    }
+
+    class QuestDataTreePopupMenu extends JPopupMenu implements ActionListener {
+
+        private Map map;
+        private JMenuItem mapMenu, scriptMenu;
+
+        public QuestDataTreePopupMenu() {
+            mapMenu = new JMenuItem("Open Map");
+            add(mapMenu);
+            mapMenu.addActionListener(this);
+            scriptMenu = new JMenuItem("Open Map Script");
+            add(scriptMenu);
+            scriptMenu.addActionListener(this);
+
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            if (e.getSource() == mapMenu) {
+                MapEditorWindow mapEditor = new MapEditorWindow(quest, editorWindow, map);
+                editorWindow.addEditor(mapEditor);
+                map.addObserver(editorWindow);
+            } else {
+                String mapId = map.getId();
+                File mapScritFile = Project.getMapScriptFile(mapId);
+                FileEditorWindow fileEditor = new FileEditorWindow(quest, editorWindow, mapScritFile);
+                editorWindow.addEditor(fileEditor);
+            }
+        }
+
+        public void setMap(Map map) {
+            this.map = map;
         }
     }
 

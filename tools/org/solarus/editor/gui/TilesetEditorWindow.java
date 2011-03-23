@@ -92,6 +92,11 @@ public class TilesetEditorWindow extends AbstractEditorWindow implements Project
 //	loadProject();
     }
 
+    public TilesetEditorWindow(String quest, EditorWindow editorWindow, Tileset t) {
+        this(quest, editorWindow);
+        setTileset(t);
+    }
+
     /**
      * This method is called when a project has just been loaded.
      * The tileset menu is enabled.

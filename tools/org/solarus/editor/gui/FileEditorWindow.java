@@ -70,6 +70,12 @@ public class FileEditorWindow extends AbstractEditorWindow implements ProjectObs
         add(jsp, BorderLayout.CENTER);
     }
 
+    public FileEditorWindow(String quest, EditorWindow parentEditor, File f) {
+        this(quest, parentEditor);
+        setFile(f);
+    }
+
+
     /**
      * Sets the file edited as text in the ediotr
      * @param f the file wich will be edited in the textarea

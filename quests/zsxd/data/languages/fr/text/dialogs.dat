@@ -3647,9 +3647,14 @@ line2 = "sacs d'olive."
 
 [crazy_house.guichet_47_ech_ne_3]
 #       |--------------------|
-line1 = "Que cherchez-vous ?"
-line2 = "Non désolé je n'en"
-line3 = "ai aucune idée."
+line1 = "Si vous voulez"
+line2 = "immatriculer une"
+line3 = "galère, il faut"
+next = crazy_house.guichet_47_ech_ne_3_2
+
+[crazy_house.guichet_47_ech_ne_3_2]
+#       |--------------------|
+line1 = "aller au port."
 
 [crazy_house.guichet_47_ech_eq_3]
 #       |--------------------|

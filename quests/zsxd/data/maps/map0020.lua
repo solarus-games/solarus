@@ -139,7 +139,9 @@ function guichet_11()
 			else		
 				sol.map.dialog_start("crazy_house.guichet_11_ech_eq_9")
 			end
-			if sol.game.savegame_get_integer(1411) == 2 then
+			-- Incrémentation branche 1411
+			branche1411 = sol.game.savegame_get_integer(1411)
+			if branche1411 > 0 and branche1411 <= 2 then
 				sol.game.savegame_set_integer(1411, 3)
 			end
 		end
@@ -147,7 +149,9 @@ function guichet_11()
 		-- S'adresser à l'accueil
 		sol.map.dialog_start("crazy_house.guichet_11_ech_ne_9")
 	end
-	if sol.game.savegame_get_integer(1412) == 5 then
+	-- Incrémentation branche 1412
+	branche1412 = sol.game.savegame_get_integer(1412)
+	if branche1412 > 0 and branche1412 <= 5 then
 		sol.game.savegame_set_integer(1412, 6)
 	end
 end
@@ -245,7 +249,9 @@ function event_dialog_finished(first_message_id, answer)
 				-- Obtention de la hache (guichet 11)			
 				sol.map.treasure_give("hache", 1, -1)
 				sol.game.remove_item_amount("tapisserie_counter", 1)
-				if sol.game.savegame_get_integer(1411) == 6 then
+				-- Incrémentation branche 1411
+				branche1411 = sol.game.savegame_get_integer(1411)
+				if branche1411 > 0 and branche1411 <= 6 then
 					sol.game.savegame_set_integer(1411, 7)
 				end
 			end
@@ -254,12 +260,15 @@ function event_dialog_finished(first_message_id, answer)
 		if answer == 0 then
 			if sol.game.get_item_amount("tapisserie_counter") >= 2 then
 				-- Obtention des rocs magma (guichet 11)
+				guichet_11_error = true
 				sol.map.treasure_give("roc_magma", 1, -1)
 				sol.game.add_item_amount("roc_magma_counter", 5)
 				sol.game.remove_item_amount("tapisserie_counter", 2)
-				if sol.game.savegame_get_integer(1412) == 9 then
+				-- Incrémentation branche 1412
+				branche1412 = sol.game.savegame_get_integer(1412)
+				if branche1412 > 0 and branche1412 <= 9 then
 					sol.game.savegame_set_integer(1412, 10)
-				end	
+				end
 			end
 		end
 	elseif first_message_id == "_treasure.roc_magma.1" then

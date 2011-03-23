@@ -13,37 +13,45 @@ end
 
 -- Vieillard --------------------------------------------------
 function vieillard()
-	if sol.game.savegame_get_boolean(124) == false then
-		-- Première rencontre		
-		sol.map.dialog_start("crazy_house.vieillard")
-		sol.game.savegame_set_boolean(124, true)
-	else
-		if sol.game.savegame_get_boolean(125) == false then
-			-- Vieillard n'a pas encore changé d'avis
-			if sol.game.get_item_amount("poivron_counter") < 3 then
-				-- N'a pas encore 3 poivrons
-				sol.map.dialog_start("crazy_house.vieillard")
-			else
-				-- A les 3 poivrons
-				sol.map.dialog_start("crazy_house.vieillard_poivron")
-				-- Changement d'avis				
-				sol.game.savegame_set_boolean(125, true)
-			end
-			if sol.game.savegame_get_integer(1411) == 1 then
-				sol.game.savegame_set_integer(1411, 2)
-			end
+	if sol.game.savegame_get_integer(1411) >= 1 then
+		if sol.game.savegame_get_boolean(124) == false then
+			-- Première rencontre		
+			sol.map.dialog_start("crazy_house.vieillard")
+			sol.game.savegame_set_boolean(124, true)
 		else
-			-- Vieillard veut du riz maintenant !
-			if sol.game.get_item_amount("sac_riz_counter") < 5 then
-				sol.map.dialog_start("crazy_house.vieillard_riz_quantite")
+			if sol.game.savegame_get_boolean(125) == false then
+				-- Vieillard n'a pas encore changé d'avis
+				if sol.game.get_item_amount("poivron_counter") < 3 then
+					-- N'a pas encore 3 poivrons
+					sol.map.dialog_start("crazy_house.vieillard")
+				else
+					-- A les 3 poivrons
+					sol.map.dialog_start("crazy_house.vieillard_poivron")
+					-- Changement d'avis				
+					sol.game.savegame_set_boolean(125, true)
+				end
+				-- Incrémentation branche 1411
+				branche1411 = sol.game.savegame_get_integer(1411)
+				if branche1411 > 0 and branche1411 <= 1 then
+					sol.game.savegame_set_integer(1411, 2)
+				end
 			else
-				-- A les 5 sacs de riz
-				sol.map.dialog_start("crazy_house.vieillard_riz_ok")
-			end
-			if sol.game.savegame_get_integer(1411) == 8 then
-				sol.game.savegame_set_integer(1411, 9)
+				-- Vieillard veut du riz maintenant !
+				if sol.game.get_item_amount("sac_riz_counter") < 5 then
+					sol.map.dialog_start("crazy_house.vieillard_riz_quantite")
+				else
+					-- A les 5 sacs de riz
+					sol.map.dialog_start("crazy_house.vieillard_riz_ok")
+				end
+				-- Incrémentation branche 1411
+				branche1411 = sol.game.savegame_get_integer(1411)
+				if branche1411 > 0 and branche1411 <= 8 then
+					sol.game.savegame_set_integer(1411, 9)
+				end
 			end
 		end
+	else
+		sol.map.dialog_start("crazy_house.vieillard_ronfl")
 	end
 end
 
@@ -60,7 +68,9 @@ end
 -- Guichet 22A -------------------------------------------------
 function guichet_22A()
 	sol.map.dialog_start("crazy_house.guichet_22A")
-	if sol.game.savegame_get_integer(1412) == 1 then
+	-- Incrémentation branche 1412
+	branche1412 = sol.game.savegame_get_integer(1412)
+	if branche1412 > 0 and branche1412 <= 1 then
 		sol.game.savegame_set_integer(1412, 2)
 	end
 end
@@ -68,10 +78,14 @@ end
 -- Guichet 22B -------------------------------------------------
 function guichet_22B()
 	sol.map.dialog_start("crazy_house.guichet_22B")
-	if sol.game.savegame_get_integer(1411) == 3 then
+	-- Incrémentation branche 1411
+	branche1411 = sol.game.savegame_get_integer(1411)
+	if branche1411 > 0 and branche1411 <= 3 then
 		sol.game.savegame_set_integer(1411, 4)
 	end
-	if sol.game.savegame_get_integer(1412) == 6 then
+	-- Incrémentation branche 1412
+	branche1412 = sol.game.savegame_get_integer(1412)
+	if branche1412 > 0 and branche1412 <= 6 then
 		sol.game.savegame_set_integer(1412, 7)
 	end
 end
@@ -125,10 +139,14 @@ function event_dialog_finished(first_message_id, answer)
 		sol.map.treasure_give("tapisserie", 1, -1)
 		sol.game.add_item_amount("tapisserie_counter", 2)
 		sol.game.remove_item_amount("sac_riz_counter", 6)
-		if sol.game.savegame_get_integer(1411) == 5 then
+		-- Incrémentation branche 1411
+		branche1411 = sol.game.savegame_get_integer(1411)
+		if branche1411 > 0 and branche1411 <= 5 then
 			sol.game.savegame_set_integer(1411, 6)
 		end
-		if sol.game.savegame_get_integer(1412) == 8 then
+		-- Incrémentation branche 1412
+		branche1412 = sol.game.savegame_get_integer(1412)
+		if branche1412 > 0 and branche1412 <= 8 then
 			sol.game.savegame_set_integer(1412, 9)
 		end
 	end

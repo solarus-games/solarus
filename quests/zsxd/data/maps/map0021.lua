@@ -25,7 +25,9 @@ function guichet_45()
 	else
 		sol.map.dialog_start("crazy_house.guichet_45_ech_ne_3")
 	end
-	if sol.game.savegame_get_integer(1412) == 3 then
+	-- Incrémentation branche 1412
+	branche1412 = sol.game.savegame_get_integer(1412)
+	if branche1412 > 0 and branche1412 <= 3 then
 		sol.game.savegame_set_integer(1412, 4)
 	end
 end

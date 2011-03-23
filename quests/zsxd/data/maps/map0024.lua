@@ -43,10 +43,13 @@ function guichet_32()
 end
 
 -- Guichet 33 -------------------------------------------------
-function guichet_33()	
-	if sol.game.savegame_get_integer(1410) == 3 then	
+function guichet_33()
+	small_key_obtained = sol.game.savegame_get_boolean(123)
+	if sol.game.savegame_get_integer(1410) == 3 and
+	not small_key_obtained then	
 		sol.map.dialog_start("crazy_house.guichet_33_ech_eq_3")
-	elseif sol.game.savegame_get_integer(1410) >= 4 then
+	elseif sol.game.savegame_get_integer(1410) >= 4 and
+	not small_key_obtained  then
 		if sol.game.get_item_amount("parfum_counter") >= 1 then
 			-- A le parfum
 			sol.map.dialog_start("crazy_house.guichet_33_parfum")
@@ -97,9 +100,17 @@ end
 function event_hero_on_sensor(sensor_name)
 	-- Link approche de la porte qui annonce le couloir sans fin	
 	if sensor_name == "bowser_message" then
-		sol.main.play_sound("sm64_bowser_message")
-		sol.map.dialog_start("crazy_house.infinite_greetings")
-		sol.map.sensor_set_enabled("bowser_close", true)
+		if not sol.game.savegame_get_boolean(126) then
+			-- Bouton pas appuyé
+			sol.main.play_sound("sm64_bowser_message")
+			sol.map.dialog_start("crazy_house.infinite_greetings")
+			sol.map.sensor_set_enabled("bowser_close", true)
+		else
+			-- Bonton déjà appuyé
+			sol.map.door_set_open("bowser_door", true)
+			sol.map.sensor_set_enabled("bowser_leave", true)
+			sol.main.play_sound("door_open")
+		end
 	end
 	-- Fermeture de la porte derrière Link après être entré
 	if sensor_name == "bowser_close" then
@@ -137,7 +148,7 @@ function event_dialog_finished(first_message_id, answer)
 		sol.main.play_sound("door_open")
 	elseif first_message_id == "crazy_house.guichet_33_parfum" then
 		-- Obtention clé du guichet 33 suite à l'apport du parfum
-		if sol.game.has_item("parfum") then
+		if sol.game.get_item_amount("parfum_counter") > 0 then
 			sol.map.treasure_give("small_key", 1, 123)
 			sol.game.remove_item_amount("parfum_counter", 1)
 		end

@@ -914,6 +914,8 @@
 0	1	200	264	8	8	69
 0	1	200	288	8	8	69
 0	1	200	272	8	16	71
+0	1	1536	696	8	16	73
+0	1	1512	696	8	16	72
 18	1	136	472	DK2	1	1	141
 14	1	240	461	crystal_switch
 18	1	1512	696	DK9	1	3	149
@@ -939,7 +941,7 @@
 6	1	2976	104	16	8	jump_sensor_14	6	40
 1	1	2960	37	fromOutsideSO	3	0
 19	1	2952	24	stairs_4	1	0
-2	1	2952	24	16	16	toOutsideSO	0	1	3	fromCrazyHouse
+2	1	2952	24	16	16	toOutsideSO	0	1	3	from_crazy_house_secret
 12	1	536	520	8	8	custom_obstacle_5	1	1	1	1
 12	1	536	544	8	8	custom_obstacle_6	1	1	1	1
 6	1	536	504	8	16	jump_sensor_18	4	40

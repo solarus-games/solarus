@@ -3,6 +3,8 @@
 -- TODO: MAP TERMINEE, A TESTER --
 ----------------------------------
 
+guichet_11_error = false
+
 function event_map_started(destination_point_name)
 	if not sol.game.savegame_get_boolean(101) then
 		sol.map.chest_set_enabled("CK3", false)
@@ -81,7 +83,11 @@ end
 
 -- Hôtesse d'accueil ------------------------------------------
 function accueil()
-	if sol.game.savegame_get_integer(1410) == 0 then
+
+	if sol.game.savegame_get_boolean(120) then
+		-- Le joueur a retrouvé ses gants
+		sol.map.dialog_start("crazy_house.accueil_fini")
+	elseif sol.game.savegame_get_integer(1410) == 0 then
 		sol.map.dialog_start("crazy_house.accueil_ech_eq_0")
 		sol.game.savegame_set_integer(1410, 1)
 	elseif sol.game.savegame_get_integer(1410) == 1 then
@@ -212,7 +218,7 @@ end
 
 function event_hero_on_sensor(sensor_name)
 	-- Fonctionnaire en grève
-	if sensor_name == "passage_sensor_A" then
+	if sensor_name == "passage_sensor_A" and not sol.map.crystal_switch_get_state() then
 		sol.map.dialog_start("crazy_house.public_agent")
 	end
 end
@@ -256,7 +262,7 @@ function event_dialog_finished(first_message_id, answer)
 				end
 			end
 		end
-	elseif first_message_id == "crazy_house.guichet_11_ech_eq_9_ht" then
+	elseif first_message_id == "crazy_house.guichet_11_bal_eq_9" then
 		if answer == 0 then
 			if sol.game.get_item_amount("tapisserie_counter") >= 2 then
 				-- Obtention des rocs magma (guichet 11)
@@ -275,5 +281,14 @@ function event_dialog_finished(first_message_id, answer)
 		if guichet_11_error == true then
 			sol.map.dialog_start("crazy_house.guichet_11_bal_err")
 		end
+	elseif first_message_id == "crazy_house.accueil_fini" then
+		sol.map.hero_start_victory_sequence()
+		sol.main.timer_start(2000, "leave_dungeon", false)
 	end
 end
+
+function leave_dungeon()
+	sol.main.play_sound("warp")
+	sol.map.hero_set_map(3, "from_crazy_house", 1)
+end
+

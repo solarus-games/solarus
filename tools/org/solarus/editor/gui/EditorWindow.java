@@ -54,7 +54,7 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
     private static final String tilesetEditorClass = "org.solarus.editor.gui.TilesetEditorWindow";
     private static final String fileEditorClass = "org.solarus.editor.gui.FileEditorWindow";
     private EditorDesktop desktop;
-    private QuestDataTree qtd;
+    private QuestDataTree qdt;
     private JMenu menuFile;
     private JMenu menuNew;
     private JMenuItem menuNewMap;
@@ -92,9 +92,9 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
         desktop = new EditorDesktop();
         desktop.addChangeListener(this);
 
-        qtd = new QuestDataTree(quest, this);
-        qtd.setVisible(true);
-        final JScrollPane jsp = new JScrollPane(qtd);
+        qdt = new QuestDataTree(quest, this);
+        qdt.setVisible(true);
+        final JScrollPane jsp = new JScrollPane(qdt);
         jsp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         jsp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         final JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, jsp, desktop);
@@ -399,7 +399,7 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
             if (project == null) {
                 GuiTools.warningDialog("A project already exists in this directory.");
             } else {
-                qtd.setRoot(projectPath);
+                qdt.setRoot(projectPath);
                 setTitle("Solarus Editor - " + projectPath.substring(projectPath.lastIndexOf(File.separator) + 1));
             }
         }
@@ -435,12 +435,12 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
                         if (project == null) {
                             GuiTools.warningDialog("A project already exists in this directory.");
                         } else {
-                            qtd.setRoot(projectPath);
+                            qdt.setRoot(projectPath);
                             setTitle("Solarus Editor - " + projectPath.substring(projectPath.lastIndexOf(File.separator) + 1));
                         }
                     }
                 } else {
-                    qtd.setRoot(projectPath);
+                    qdt.setRoot(projectPath);
                     setTitle("Solarus Editor - " + projectPath.substring(projectPath.lastIndexOf(File.separator) + 1));
                 }
             } catch (ZSDXException ex) {
@@ -486,7 +486,9 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
             mapEditor.newMap();
             EditorWindow.this.desktop.addEditor(mapEditor);
             mapEditor.getMap().addObserver(EditorWindow.this);
-
+           qdt.addMap( mapEditor.getMap());
+            qdt.repaint();
+          //   mapEditor.getMap().addObserver(EditorWindow.this.desktop);
         }
     }
 
@@ -585,6 +587,7 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
             TilesetEditorWindow tilesetEditor = new TilesetEditorWindow(EditorWindow.this.quest, EditorWindow.this);
             tilesetEditor.newTileset();
             EditorWindow.this.desktop.addEditor(tilesetEditor);
+            qdt.addTileset( tilesetEditor.getTileset());
         }
     }
 
@@ -671,7 +674,7 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
 //        public void eventDispatched(AWTEvent ev) {
 //            if (ev instanceof KeyEvent) {
 //                KeyEvent kev = (KeyEvent) ev;
-//                System.out.println("Touche appuyée depuis " + this.getClass().getName());
+//                System.out.println("Touche appuyÃ©e depuis " + this.getClass().getName());
 //                int code = kev.getKeyCode();
 //                if (kev.isControlDown()) {
 //                    if (code == KeyEvent.VK_W) {

@@ -52,7 +52,6 @@ public class EditorDesktop extends JTabbedPane implements MouseListener, ChangeL
             }
         }
         add(title, editor);
-
         setSelectedIndex(getTabCount() - 1);
         repaint();
     }
@@ -120,6 +119,14 @@ public class EditorDesktop extends JTabbedPane implements MouseListener, ChangeL
             int idx = indexAtLocation(clic.x, clic.y);
             AbstractEditorWindow editor = (AbstractEditorWindow) getComponentAt(idx);
             removeEditor(editor);
+        }
+    }
+
+    @Override
+    public void repaint() {
+        super.repaint();
+        for (int i = 0; i < getTabCount(); i++) {
+            setTitleAt(i, ((AbstractEditorWindow) getComponentAt(i)).getResourceName());
         }
     }
 

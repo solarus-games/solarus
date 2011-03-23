@@ -100,7 +100,7 @@ function accueil()
 	elseif sol.game.savegame_get_integer(1410) == 7 then
 		sol.map.dialog_start("crazy_house.accueil_ech_eo_5-7")
 	elseif sol.game.savegame_get_integer(1410) == 8 then
-		if sol.game.savegame_get_integer(1411) < 10 and sol.game.savegame_get_integer(1412 < 10 then		
+		if sol.game.savegame_get_integer(1411) < 10 and sol.game.savegame_get_integer(1412) < 10 then		
 			if sol.game.savegame_get_integer(1411) >= sol.game.savegame_get_integer(1412) then
 				accueil_branche1()
 			else

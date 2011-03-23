@@ -2319,11 +2319,17 @@ next = crazy_house.welcome_message_3
 
 [crazy_house.welcome_message_3]
 #       |-----------------------|
-line1 = "A gauche : Accueil,
-line2 = "guichets 11, 21."
+line1 = "Papier et crayon sont"
+line2 = "de rigueur..."
 next = crazy_house.welcome_message_4
 
 [crazy_house.welcome_message_4]
+#       |-----------------------|
+line1 = "A gauche : Accueil,
+line2 = "guichets 11, 21."
+next = crazy_house.welcome_message_5
+
+[crazy_house.welcome_message_5]
 #       |-----------------------|
 line1 = "A droite : guichets 12,"
 line2 = "22."
@@ -3972,8 +3978,8 @@ next = crazy_house.vieillard_ronfl
 [crazy_house.vieillard_riz_quantite]
 #       |--------------------|
 line1 = "ZZZ... Hein ?..."
-line2 = "Mais tu n'en a pas"
-line3 = "assez !"
+line2 = "Mais tu n'a pas"
+line3 = "assez de sacs de riz !"
 skip = current
 next = crazy_house.vieillard_riz_quantite_2
 

@@ -214,10 +214,7 @@ function event_hero_on_sensor(sensor_name)
 end
 
 function event_dialog_finished(first_message_id, answer)
-	if first_message_id == "crazy_house.guichet_12B_ech_eq_7"
-	and answer == 0 then
-		sol.game.savegame_set_integer(1410, 8)
-	elseif first_message_id == "crazy_house.guichet_12B_ech_eq_7" then
+	if first_message_id == "crazy_house.guichet_12B_ech_eq_7" then
 		-- Echange pour parfum
 		if answer == 0 then
 			-- Contrôle de quantité bocal d'épices et balai
@@ -241,6 +238,7 @@ function event_dialog_finished(first_message_id, answer)
 		sol.map.treasure_give("parfum", 1, -1)
 		sol.game.remove_item_amount("bocal_epice_counter", 1)
 		sol.game.remove_item_amount("balai_counter", 1)
+		sol.game.savegame_set_integer(1410, 10)
 	elseif first_message_id == "crazy_house.guichet_11_ech_eq_9_ht" then
 		if answer == 0 then
 			if sol.game.get_item_amount("tapisserie_counter") >= 1 then

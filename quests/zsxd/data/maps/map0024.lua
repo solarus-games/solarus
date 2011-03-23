@@ -41,13 +41,19 @@ function guichet_32()
 end
 
 -- Guichet 33 -------------------------------------------------
-function guichet_33()
+function guichet_33()	
 	if sol.game.savegame_get_integer(1410) == 3 then	
 		sol.map.dialog_start("crazy_house.guichet_33_ech_eq_3")
 	elseif sol.game.savegame_get_integer(1410) >= 4 then
-		sol.map.dialog_start("crazy_house.guichet_33_ech_ge_4")
-		if sol.game.savegame_get_integer(1410) == 4 then
-			sol.game.savegame_set_integer(1410, 5)
+		if sol.game.get_item_amount("parfum_counter") >= 1 then
+			-- A le parfum
+			sol.map.dialog_start("crazy_house.guichet_33_parfum")
+		else
+			-- N'a pas encore le parfum			
+			sol.map.dialog_start("crazy_house.guichet_33_ech_ge_4")
+			if sol.game.savegame_get_integer(1410) == 4 then
+				sol.game.savegame_set_integer(1410, 5)
+			end
 		end
 	else
 		sol.map.dialog_start("crazy_house.guichet_33_ech_le_2")
@@ -212,18 +218,19 @@ function event_block_moved(block_name)
 end
 
 -- Déplacement de la camera le long du couloir après appui sur
--- le giga bouton
+-- le giga bouton d'extra collision à charge supérieure de 15.000 megawatts
 function giga_bouton_camera_move()
 	sol.map.camera_move(680, 792, 250)
 	sol.map.sensor_set_enabled("infinite_corridor", false)
 end
 
--- Retour de la camera suite à l'appui sur le giga bouton
+-- Retour de la camera suite à l'appui sur le giga bouton d'extra
+-- collision à charge supérieure de 15.000 megawatts
 function giga_bouton_camera_back()
 	sol.map.camera_restore()
 end
 
--- Appui sur le giga bouton
+-- Appui sur le giga bouton d'extra collision à charge supérieure de 15.000 megawatts
 function giga_bouton_activated()
 	sol.main.play_sound("switch")	
 	sol.map.hero_freeze()

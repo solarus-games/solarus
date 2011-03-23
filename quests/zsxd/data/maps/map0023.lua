@@ -6,6 +6,9 @@
 -- Guichet 82 -------------------------------------------------
 function guichet_82()
 	sol.map.dialog_start("crazy_house.guichet_82")
+	if sol.game.savegame_get_integer(1412) == 2 then
+		sol.game.savegame_set_integer(1412, 3)
+	end
 end
 
 -- Guichet 84 -------------------------------------------------
@@ -62,6 +65,9 @@ function event_dialog_finished(first_message_id, answer)
 				sol.map.treasure_give("poivron", 1, -1)
 				sol.game.add_item_amount("poivron_counter", 2)
 				sol.game.remove_item_amount("hache_counter", 5)
+				if sol.game.savegame_get_integer(1411) == 7 then
+					sol.game.savegame_set_integer(1411, 8)
+				end
 			end
 		end
 	end

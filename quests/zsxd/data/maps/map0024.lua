@@ -35,6 +35,9 @@ function guichet_32()
 	else
 		sol.map.dialog_start("crazy_house.guichet_32_ech_ne_6")
 	end
+	if sol.game.savegame_get_integer(1412) == 4 then
+		sol.game.savegame_set_integer(1412, 5)
+	end
 end
 
 -- Guichet 33 -------------------------------------------------
@@ -136,6 +139,14 @@ function event_dialog_finished(first_message_id, answer)
 			if sol.game.get_money() >= 20 then
 				sol.map.dialog_start("crazy_house.apothicaire_oui")
 				sol.game.remove_money(20)
+				if sol.game.savegame_get_integer(1411) == 4 then
+					sol.game.savegame_set_integer(1411, 5)
+				elseif sol.game.savegame_get_integer(1411) == 9 then
+					sol.game.savegame_set_integer(1411, 10)
+				end
+				if sol.game.savegame_get_integer(1412) == 7 then
+					sol.game.savegame_set_integer(1412, 8)
+				end
 			else
 				sol.main.play_sound("wrong")
 				sol.map.dialog_start("crazy_house.apothicaire_rubis")
@@ -154,6 +165,14 @@ function event_dialog_finished(first_message_id, answer)
 				sol.game.remove_money(10)
 				sol.map.treasure_give("sac_riz", 1, -1)
 				sol.game.add_item_amount("sac_riz_counter", 2)
+				if sol.game.savegame_get_integer(1411) == 4 then
+					sol.game.savegame_set_integer(1411, 5)
+				elseif sol.game.savegame_get_integer(1411) == 9 then
+					sol.game.savegame_set_integer(1411, 10)
+				end
+				if sol.game.savegame_get_integer(1412) == 7 then
+					sol.game.savegame_set_integer(1412, 8)
+				end
 			else
 				sol.main.play_sound("wrong")
 				sol.map.dialog_start("crazy_house.guichet_36_un")

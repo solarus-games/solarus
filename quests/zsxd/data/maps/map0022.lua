@@ -29,6 +29,9 @@ function vieillard()
 				-- Changement d'avis				
 				sol.game.savegame_set_boolean(125, true)
 			end
+			if sol.game.savegame_get_integer(1411) == 1 then
+				sol.game.savegame_set_integer(1411, 2)
+			end
 		else
 			-- Vieillard veut du riz maintenant !
 			if sol.game.get_item_amount("sac_riz_counter") < 5 then
@@ -36,7 +39,10 @@ function vieillard()
 			else
 				-- A les 5 sacs de riz
 				sol.map.dialog_start("crazy_house.vieillard_riz_ok")
-			end			
+			end
+			if sol.game.savegame_get_integer(1411) == 8 then
+				sol.game.savegame_set_integer(1411, 9)
+			end
 		end
 	end
 end
@@ -54,11 +60,20 @@ end
 -- Guichet 22A -------------------------------------------------
 function guichet_22A()
 	sol.map.dialog_start("crazy_house.guichet_22A")
+	if sol.game.savegame_get_integer(1412) == 1 then
+		sol.game.savegame_set_integer(1412, 2)
+	end
 end
 
 -- Guichet 22B -------------------------------------------------
 function guichet_22B()
 	sol.map.dialog_start("crazy_house.guichet_22B")
+	if sol.game.savegame_get_integer(1411) == 3 then
+		sol.game.savegame_set_integer(1411, 4)
+	end
+	if sol.game.savegame_get_integer(1412) == 6 then
+		sol.game.savegame_set_integer(1412, 7)
+	end
 end
 
 -- Interactions avec capteur pour guichet (devanture)
@@ -109,6 +124,12 @@ function event_dialog_finished(first_message_id, answer)
 	elseif first_message_id == "crazy_house.guichet_22_sr_ok" then
 		sol.map.treasure_give("tapisserie", 1, -1)
 		sol.game.remove_item_amount("sac_riz_counter", 2)
+		if sol.game.savegame_get_integer(1411) == 5 then
+			sol.game.savegame_set_integer(1411, 6)
+		end
+		if sol.game.savegame_get_integer(1412) == 8 then
+			sol.game.savegame_set_integer(1412, 9)
+		end
 	end
 end
 

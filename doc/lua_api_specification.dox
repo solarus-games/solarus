@@ -453,6 +453,9 @@ places a block where it was when the map started
 - <tt>sol.map.block_reset_all()</tt>:
 resets all blocks of the map
 
+- <tt>sol.map.block_get_position(block_name)</tt>:
+returns the position of a block (2 return values: x, y)
+
 - <tt>sol.map.shop_item_remove(shop_item_name)</tt>:
 removes a shop item from the map
 
@@ -795,7 +798,10 @@ even if the dialog was started by another script
 
 - <tt>event_dialog_finished(first_message_id, answer)</tt>:
 called when a dialog finishes (i.e. once its last message is finished),
-even if the dialog was started by another script
+even if the dialog was started by another script.
+If there was a question, answer is 0 if the first answer was chosen,
+or 1 if the second one was chosen.
+If there was no question, answer is -1.
 
 - <tt>event_camera_reached_target()</tt>: 
 called when the camera (previously started by <tt>camera_move()</tt>) reaches its target
@@ -874,6 +880,10 @@ called when a door has just been open
 
 - <tt>event_door_closed(door_name)</tt>:
 called when a door has just been closed
+
+- <tt>event_block_moved(block_name)</tt>:
+called when a block has just been pushed or pulled
+by the hero on a section of 8 pixels
 
 - <tt>event_enemy_dead(enemy_name)</tt>:
 called when an enemy of this map is dead (and its kill animation is finished)

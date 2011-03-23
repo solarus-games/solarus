@@ -1268,6 +1268,32 @@ int Script::map_api_block_reset_all(lua_State *l) {
 }
 
 /**
+ * @brief Returns the position of a block.
+ *
+ * - Argument 1 (string): name of the block
+ * - Return value 1 (integer): x position
+ * - Return value 2 (integer): y position
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_block_get_position(lua_State *l) {
+
+  Script* script;
+  called_by_script(l, 1, &script);
+
+  const std::string &name = luaL_checkstring(l, 1);
+
+  MapEntities& entities = script->get_map().get_entities();
+  Block* block = (Block*) entities.get_entity(BLOCK, name);
+  const Rectangle& coordinates = block->get_xy();
+
+  lua_pushinteger(l, coordinates.get_x());
+  lua_pushinteger(l, coordinates.get_y());
+
+  return 2;
+}
+
+/**
  * @brief Removes a shop item from the map.
  *
  * - Argument 1 (string): name of the shop item

@@ -216,9 +216,13 @@ savegame_variable = 1115
 [clay_key]
 savegame_variable = 1116
 
-[level_4_way]
+[apple_pie_counter]
 savegame_variable = 1117
-nb_variants = 3
+counter = 1132
+limit = 50
+
+[apple_pie]
+changes_counter = apple_pie_counter
 
 [flippers]
 savegame_variable = 1118

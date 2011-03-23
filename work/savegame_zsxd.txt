@@ -50,6 +50,7 @@ integers (above 1024):
 1129	sword
 1130	shield
 1131	zelda
+1132	number of apple pies
 
 ================================================================================
 
@@ -131,7 +132,7 @@ booleans:
 44 outside link's house piece of heart
 45 outside link's house chest
 46 sms guy house: empty chest
-47 shop: bought the apple pie
+47 unused
 48 the monkey gave the boots
 49 shop: bought the huge rupee bag (impossible)
 50 shop: bought the heart container

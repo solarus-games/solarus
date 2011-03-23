@@ -231,7 +231,8 @@
 5	rock_key	Rock key
 5	bone_key	Bone key
 5	clay_key	Clay key
-5	level_4_way	Apple pie / Gold bars / Edelweiss
+5	apple_pie_counter	Apple pie counter
+5	apple_pie	Apple pie (x1)
 5	flippers	Flippers
 5	magic_cape	Magic cape
 5	iron_key	Iron key

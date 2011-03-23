@@ -29,7 +29,7 @@ function event_npc_dialog(npc_name)
     sol.main.play_sound("monkey")
     if sol.game.savegame_get_boolean(48) then -- has boots
       sol.map.dialog_start("outside_fields_SO.forest_monkey_end")
-    elseif sol.game.savegame_get_boolean(47) then -- has apple pie
+    elseif sol.game.get_item_amount("apple_pie_counter") > 0 then -- has apple pie
       sol.map.dialog_start("outside_fields_SO.forest_monkey_give_boots")
     else
       sol.map.dialog_start("outside_fields_SO.forest_monkey_start")
@@ -51,7 +51,7 @@ function event_dialog_finished(first_message_id, answer)
       end
    elseif first_message_id == "outside_fields_SO.forest_monkey_give_boots" then
       sol.map.treasure_give("pegasus_shoes", 1, 48)
-      sol.game.set_item("level_4_way", 0)
+      sol.game.remove_item_amount("apple_pie_counter", 1)
   end
 end
 

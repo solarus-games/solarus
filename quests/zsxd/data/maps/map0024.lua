@@ -11,7 +11,7 @@ function event_map_started(destination_point_name)
 	sol.map.sensor_set_enabled("bowser_leave", false)
 	sol.map.sensor_set_enabled("bowser_exit", false)
 	if sol.game.savegame_get_boolean(126) == true then
-		sol.map.interactive_entity_remove("infinite_corridor")
+		sol.map.sensor_set_enabled("infinite_corridor", false)
 	end
 end
 

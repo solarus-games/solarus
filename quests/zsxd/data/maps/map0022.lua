@@ -156,7 +156,7 @@ function event_switch_activated(switch_name)
 		if locked_door_A_value < 2 then
 			locked_door_A_value = locked_door_A_value + 1
 			if locked_door_A_value == 2 then
-				sol.map.door_set_open("locked_door_A", true)
+				sol.map.door_set_open("LD1", true)
 				sol.main.play_sound("door_open")
 			end
 		end

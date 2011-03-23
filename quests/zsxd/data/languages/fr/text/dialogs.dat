@@ -496,29 +496,13 @@ line1 = "La Clé de Terre, qui"
 line2 = "permet d'ouvrir la"
 line3 = "grotte du village."
 
-[_item_description.level_4_way.1]
+[_item_description.apple_pie_counter.1]
 # Tarte aux Pommes / Apple Pie
 #       |--------------------|
 icon = 22
 line1 = "Cette tarte aux"
 line2 = "pommes a vraiment"
 line3 = "l'air dégueux..."
-
-[_item_description.level_4_way.2]
-# Lingots d'or / Golden bars
-#       |--------------------|
-icon = 23
-line1 = "Ce sont trois"
-line2 = "authentiques"
-line3 = "lingots d'or !"
-
-[_item_description.level_4_way.3]
-# Edelweiss / Edelweiss
-#       |--------------------|
-icon = 24
-line1 = "L'Edelweiss est une"
-line2 = "fleur très rare dans"
-line3 = "le royaume d'Hyrule."
 
 [_item_description.flippers.1]
 # Palmes / Flippers
@@ -1136,12 +1120,12 @@ line3 = "Coeurs."
 icon = 13
 line1 = "Tu as retrouvé les"
 line2 = "Bottes de Pégase"
-line3 = "sans lacets !$0C'est"
+line3 = "sans lacets !"
 next = _treasure.pegasus_shoes.1.1
 
 [_treasure.pegasus_shoes.1.1]
 #       |--------------------|
-line1 = "dur à contrôler,"
+line1 = "C'est dur à manier,"
 line2 = "mais tu peux aller"
 line3 = "super vite !"
 
@@ -1252,47 +1236,19 @@ line1 = "Tu peux maintenant"
 line2 = "ouvrir la grotte du"
 line3 = "village !"
 
-[_treasure.level_4_way.1]
+[_treasure.apple_pie.1]
 # Tarte aux Pommes
 #       |--------------------|
 icon = 22
 line1 = "Tu as trouvé une"
 line2 = "tarte aux pommes !"
-next = _treasure.level_4_way.1.1
+next = _treasure.apple_pie.1.1
 
-[_treasure.level_4_way.1.1]
+[_treasure.apple_pie.1.1]
 #       |--------------------|
 line1 = "Elle est moisie,"
 line2 = "mais c'est pas"
 line3 = "grave !"
-
-[_treasure.level_4_way.2]
-# Lingots d'or
-#       |--------------------|
-icon = 23
-line1 = "Tu as trouvé des"
-line2 = "Lingots d'or !!!$0"
-next = _treasure.level_4_way.2.1
-
-[_treasure.level_4_way_bone_key.2.1]
-#       |--------------------|
-line1 = "Ils brillent et ont"
-line2 = "une valeur"
-line3 = "inestimable !"
-
-[_treasure.level_4_way.3]
-# Edelweiss
-#       |--------------------|
-icon = 24
-line1 = "Tu as trouvé un"
-line2 = "Edelweiss !$0"
-next = _treasure.level_4_way.3.1
-
-[_treasure.level_4_way.3.1]
-#       |--------------------|
-line1 = "Cette jolie fleur"
-line2 = "des montagnes est"
-line3 = "rarissime !"
 
 [_treasure.flippers.1]
 # Palmes
@@ -2020,7 +1976,8 @@ line1 = "C'est fermé à clé !"
 #       |--------------------|
 icon = 73
 line1 = "Il te faut la Grande"
-line2 = "Clé pour passer !"
+line2 = "Clé pour cette
+line3 = "serrure !"
 
 [_boss_key_required]
 # Lorsqu'on regarde la porte du boss sans avoir la Clé du Maître

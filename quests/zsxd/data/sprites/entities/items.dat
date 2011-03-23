@@ -66,10 +66,11 @@ bone_key entities/items.png 1 0 -1
 clay_key entities/items.png 1 0 -1
 256	0	16	16	8	13	1	1
 
-level_4_way entities/items.png 3 0 -1
+apple_pie_counter entities/items.png 1 0 -1
 272	0	16	16	8	13	1	1
-272	16	16	16	8	13	1	1
-272	32	16	16	8	13	1	1
+
+apple_pie entities/items.png 1 0 -1
+272	0	16	16	8	13	1	1
 
 flippers entities/items.png 1 0 -1
 288	0	16	16	8	13	1	1

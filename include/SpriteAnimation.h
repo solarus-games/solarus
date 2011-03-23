@@ -42,6 +42,7 @@ class SpriteAnimation {
                                            * enabled as soon as the image becomes available */
 
     void do_enable_pixel_collisions();
+    void disable_pixel_collisions();
 
   public:
 

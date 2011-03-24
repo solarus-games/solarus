@@ -83,7 +83,7 @@ void SmoothMovement::update_x() {
       if (!test_collision_with_obstacles(x_move, 0)) {
 
 	translate_x(x_move); // make the move
-	
+
 	if (y_move != 0 && test_collision_with_obstacles(0, y_move)) {
 	  // if there is also a y move, and if this y move is illegal,
 	  // we still allow the x move and we give it all the speed

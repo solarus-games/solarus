@@ -292,3 +292,10 @@ function leave_dungeon()
 	sol.map.hero_set_map(3, "from_crazy_house", 1)
 end
 
+function event_door_open(door_name)
+
+	if door_name == "weak_wall_A" then
+		sol.main.play_sound("secret")
+	end
+end
+

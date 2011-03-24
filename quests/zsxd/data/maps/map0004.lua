@@ -35,7 +35,7 @@ function event_hero_on_sensor(sensor_name)
 
     -- choose a random quote
     repeat -- make sure the same quote is not picked again
-      index = math.random(9)
+      index = math.random(10)
     until index ~= last_yoda_quote
     sol.map.dialog_start("outside_fields_SE.yoda_quote_"..index)
     last_yoda_quote = index

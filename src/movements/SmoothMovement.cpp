@@ -93,7 +93,7 @@ void SmoothMovement::update_x() {
       else {
         if (y_move != 0 && !test_collision_with_obstacles(0, y_move)) {
           translate_y(y_move);
-          set_next_move_date_y(get_next_move_date_y() + get_y_delay() / Geometry::SQRT_2);
+          set_next_move_date_y((int) (get_next_move_date_y() + get_y_delay() / Geometry::SQRT_2));
           // FIXME SQRT_2 is really correct only for diagonal angles
         }
         else if (y_move == 0) {
@@ -177,7 +177,7 @@ void SmoothMovement::update_y() {
 
         if (x_move != 0 && !test_collision_with_obstacles(x_move, 0)) {
           translate_x(x_move);
-          set_next_move_date_x(get_next_move_date_x() + get_x_delay() / Geometry::SQRT_2);
+          set_next_move_date_x((int) (get_next_move_date_x() + get_x_delay() / Geometry::SQRT_2));
         }
         else if (x_move == 0) {
           // The move on y is not possible: let's try

@@ -12,6 +12,7 @@ function event_map_started(destination_point_name)
 	sol.map.sensor_set_enabled("bowser_exit", false)
 	if sol.game.savegame_get_boolean(126) == true then
 		sol.map.sensor_set_enabled("infinite_corridor", false)
+		sol.map.switch_set_activated("giga_bouton", true)
 	end
 end
 
@@ -239,7 +240,7 @@ end
 -- Déplacement de la camera le long du couloir après appui sur
 -- le giga bouton d'extra collision à charge supérieure de 15.000 megawatts
 function giga_bouton_camera_move()
-	sol.map.camera_move(680, 792, 250)
+	sol.map.camera_move(888, 792, 250)
 	sol.map.sensor_set_enabled("infinite_corridor", false)
 end
 
@@ -252,6 +253,7 @@ end
 -- Appui sur le giga bouton d'extra collision à charge supérieure de 15.000 megawatts
 function giga_bouton_activated()
 	sol.main.play_sound("switch")	
+	sol.map.switch_set_activated("giga_bouton", true)
 	sol.map.hero_freeze()
 	sol.map.sensor_set_enabled("infinite_corridor", false)	
 	sol.main.timer_start(500, "giga_bouton_camera_move", false)

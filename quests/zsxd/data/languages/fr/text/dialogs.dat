@@ -4321,6 +4321,12 @@ line3 = "savoir ?"
 line1 = "Que la Forcetri soit"
 line2 = "avec toi."
 
+[outside_fields_SE.yoda_quote_10]
+#       |-----------------------|
+line1 = "De bonnes relations"
+line2 = "avec les Cookies,"
+line3 = "j'entretiens."
+
 [outside_fields_SE.yoda_give_sword]
 #       |-----------------------|
 line1 = "Robuste je suis grâce à"

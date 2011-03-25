@@ -1398,13 +1398,13 @@ line3 = "lieu glacial..."
 icon = 32
 line1 = "Tu as trouvé la"
 line2 = "Poigne de Fer !$0"
-line3 = "Tu peux sûrement"
 next = _treasure.glove.1.1
 
 [_treasure.glove.1.1]
 #       |--------------------|
-line1 = "soulever des trucs, "
-line2 = "maintenant !"
+line1 = "Tu peux sûrement"
+line2 = "soulever des trucs,"
+line3 = "maintenant !"
 
 [_treasure.glove.2]
 # Poigne d'Or

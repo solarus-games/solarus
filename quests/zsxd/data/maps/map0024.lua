@@ -227,10 +227,6 @@ function event_dialog_finished(first_message_id, answer)
 		else
 			sol.map.dialog_start("crazy_house.guichet_32_ech_ne_6_no")
 		end
-	elseif first_message_id == "_treasure.glove.1" then
-		-- Fin du donjon
-		sol.main.play_sound("world_warp")
-		sol.map.hero_set_map(3, "crazy_house.out", 1)
 	end
 end
 
@@ -280,3 +276,19 @@ end
 function event_camera_back()
 	sol.map.hero_unfreeze()
 end
+
+function event_treasure_obtained(item_name, variant, savegame_variable)
+
+	if item_name == "glove" then
+		-- Fin du donjon
+		sol.map.hero_start_victory_sequence()
+		sol.main.timer_start(2000, "leave_dungeon", false)
+	end
+end
+
+function leave_dungeon()
+	sol.main.play_sound("warp")
+	sol.map.hero_set_map(3, "from_crazy_house", 1)
+end
+
+

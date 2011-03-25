@@ -178,7 +178,9 @@ end
 
 -- Guichet 12b -----------------------------------------------
 function guichet_12B()
-	if sol.game.savegame_get_integer(1410) == 3 then	
+	if not sol.map.door_is_open("weak_wall_A") then
+		sol.map.dialog_start("crazy_house.guichet_12B_aw")
+	elseif sol.game.savegame_get_integer(1410) == 3 then	
 		sol.map.dialog_start("crazy_house.guichet_12B_ech_eq_3")
 	elseif sol.game.savegame_get_integer(1410) >= 7 then
 		sol.map.dialog_start("crazy_house.guichet_12B_ech_eq_7")

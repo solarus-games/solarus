@@ -308,6 +308,7 @@ function event_chest_empty(chest_name)
 		-- Coffre vide classique
 		sol.main.play_sound("wrong")
 		sol.map.dialog_start("_empty_chest")
+		sol.map.hero_unfreeze()
 	end
 end
 

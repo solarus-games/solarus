@@ -6,9 +6,13 @@
 guichet_11_error = false
 
 function event_map_started(destination_point_name)
-	if not sol.game.savegame_get_boolean(101) then
+
+	if sol.game.savegame_get_boolean(101) then
+		sol.map.switch_set_activated("CS3", true)
+	else
 		sol.map.chest_set_enabled("CK3", false)
 	end
+
 	-- Guichetière 12B partie en pause
 	if sol.game.savegame_get_integer(1410) == 5
 	or sol.game.savegame_get_integer(1410) == 6 then

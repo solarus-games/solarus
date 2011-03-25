@@ -9,6 +9,12 @@ function event_map_started(destination_point_name)
 	-- Coffre farceur	
 	sol.map.chest_set_enabled("prankster_chest_bottom", false)
 	sol.map.chest_set_enabled("prankster_chest_middle", false)
+
+	-- Interrupteurs
+	if sol.game.savegame_get_boolean(127) then
+		sol.map.switch_set_activated("locked_door_switch_A", true)
+		sol.map.switch_set_activated("locked_door_switch_B", true)
+	end
 end
 
 -- Vieillard --------------------------------------------------

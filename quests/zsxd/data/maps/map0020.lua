@@ -281,15 +281,7 @@ function event_dialog_finished(first_message_id, answer)
 				end
 			end
 		end
-	elseif first_message_id == "crazy_house.accueil_fini" then
-		sol.map.hero_start_victory_sequence()
-		sol.main.timer_start(2000, "leave_dungeon", false)
 	end
-end
-
-function leave_dungeon()
-	sol.main.play_sound("warp")
-	sol.map.hero_set_map(3, "from_crazy_house", 1)
 end
 
 function event_door_open(door_name)

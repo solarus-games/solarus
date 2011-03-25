@@ -60,7 +60,6 @@ void DebugKeys::key_pressed(InputEvent::KeyboardKey key) {
 
       case InputEvent::KEY_p:
 	equipment.add_life(2);
-	game->get_savegame().set_string(Savegame::PLAYER_NAME, "VOYOU");
 	break;
 
       case InputEvent::KEY_m:
@@ -69,7 +68,6 @@ void DebugKeys::key_pressed(InputEvent::KeyboardKey key) {
 
       case InputEvent::KEY_o:
 	equipment.add_money(23);
-	game->get_savegame().set_string(Savegame::PLAYER_NAME, "VOYOU");
 	break;
 
       case InputEvent::KEY_l:
@@ -78,7 +76,6 @@ void DebugKeys::key_pressed(InputEvent::KeyboardKey key) {
 
       case InputEvent::KEY_i:
 	equipment.add_magic(10);
-	game->get_savegame().set_string(Savegame::PLAYER_NAME, "VOYOU");
 	break;
 
       case InputEvent::KEY_k:
@@ -113,13 +110,11 @@ void DebugKeys::key_pressed(InputEvent::KeyboardKey key) {
 	  equipment.add_item("feather", 1);
 	  equipment.set_item_assigned(0, "bow");
 	  equipment.set_item_assigned(1, "feather");
-	  game->get_savegame().set_string(Savegame::PLAYER_NAME, "VOYOU");
 	}
 	break;
 
       case InputEvent::KEY_g:
 	equipment.add_item("arrow", 2);
-	game->get_savegame().set_string(Savegame::PLAYER_NAME, "VOYOU");
 	break;
 
 	/*
@@ -134,17 +129,14 @@ void DebugKeys::key_pressed(InputEvent::KeyboardKey key) {
 
       case InputEvent::KEY_KP7:
 	equipment.set_max_magic(0);
-	game->get_savegame().set_string(Savegame::PLAYER_NAME, "VOYOU");
 	break;
 
       case InputEvent::KEY_KP8:
 	equipment.set_max_magic(42);
-	game->get_savegame().set_string(Savegame::PLAYER_NAME, "VOYOU");
 	break;
 
       case InputEvent::KEY_KP9:
 	equipment.set_max_magic(84);
-	game->get_savegame().set_string(Savegame::PLAYER_NAME, "VOYOU");
 	break;
 
       case InputEvent::KEY_KP1:
@@ -155,31 +147,26 @@ void DebugKeys::key_pressed(InputEvent::KeyboardKey key) {
       case InputEvent::KEY_KP4:
 	equipment.set_ability("tunic", std::min(equipment.get_ability("tunic") + 1, 3));
 	game->get_hero().rebuild_equipment();
-	game->get_savegame().set_string(Savegame::PLAYER_NAME, "VOYOU");
 	break;
 
       case InputEvent::KEY_KP2:
 	equipment.set_ability("sword", std::max(equipment.get_ability("sword") - 1, 0));
 	game->get_hero().rebuild_equipment();
-	game->get_savegame().set_string(Savegame::PLAYER_NAME, "VOYOU");
 	break;
 
       case InputEvent::KEY_KP5:
 	equipment.set_ability("sword", std::min(equipment.get_ability("sword") + 1, 4));
 	game->get_hero().rebuild_equipment();
-	game->get_savegame().set_string(Savegame::PLAYER_NAME, "VOYOU");
 	break;
 
       case InputEvent::KEY_KP3:
 	equipment.set_ability("shield", std::max(equipment.get_ability("shield") - 1, 0));
 	game->get_hero().rebuild_equipment();
-	game->get_savegame().set_string(Savegame::PLAYER_NAME, "VOYOU");
 	break;
 
       case InputEvent::KEY_KP6:
 	equipment.set_ability("shield", std::min(equipment.get_ability("shield") + 1, 3));
 	game->get_hero().rebuild_equipment();
-	game->get_savegame().set_string(Savegame::PLAYER_NAME, "VOYOU");
 	break;
 
       default:
@@ -205,14 +192,13 @@ void DebugKeys::key_released(InputEvent::KeyboardKey key) {
  */
 void DebugKeys::update() {
 
+#if SOLARUS_DEBUG_LEVEL >= 2
   if (InputEvent::is_shift_down()) {
     if (game != NULL && game->is_showing_message()) {
       game->get_dialog_box().show_all_now();
-      game->get_savegame().set_string(Savegame::PLAYER_NAME, "VOYOU");
     }
   }
 
-#if SOLARUS_DEBUG_LEVEL >= 2
   // traverse walls when control is pressed
   if (game != NULL) {
 
@@ -221,7 +207,6 @@ void DebugKeys::update() {
 
       if (InputEvent::is_control_down()) {
 	movement->set_ignore_obstacles(true);
-	game->get_savegame().set_string(Savegame::PLAYER_NAME, "VOYOU");
       }
       else {
 	movement->restore_default_ignore_obstacles();

@@ -20,6 +20,7 @@
 #include "Common.h"
 #include <stdexcept>
 #include <iostream>
+#include <fstream>
 
 /**
  * @brief Provides functionalities for printing debug messages
@@ -58,10 +59,10 @@ inline void Debug::print(const std::string &message, std::ostream &os) {
  * @brief Throws an exception if the specified assertion fails.
  *
  * If the assertion fails, an std::logic_error with the specified error message is thrown.
- * If SOLARUS_DEBUG_LEVEL is greater than 0, the error message is
- * printed on stderr first.
+ * The error message is saved in error.txt.
  * This function should be used to detect fatal errors only, that is,
  * errors in your code or in the quest (the data files) that require to stop the program.
+ * This function does nothing if SOLARUS_DEBUG_LEVEL is 0.
  *
  * @param assertion the boolean condition to check
  * @param error_message the error message to attach to the exception when the assertion fails
@@ -70,7 +71,6 @@ inline void Debug::check_assertion(bool assertion, const std::string &error_mess
 
 #if SOLARUS_DEBUG_LEVEL > 0
   if (!assertion) {
-    print(error_message, std::cerr);
     die(error_message);
   }
 #endif
@@ -80,11 +80,14 @@ inline void Debug::check_assertion(bool assertion, const std::string &error_mess
  * @brief Throws an exception to stop the program.
  *
  * This function is equivalent to assert(false, error_message).
+ * The error message is saved in error.txt.
  *
  * @param error_message the error message to attach to the exception
  */
 inline void Debug::die(const std::string &error_message) {
 
+  std::ofstream out("error.txt");
+  out << error_message << std::endl << std::flush;
   throw std::logic_error(error_message);
 }
 

@@ -2451,9 +2451,9 @@ skip = current
 
 [crazy_house.alcoholic_man]
 #       |-----------------------|
-line1 = "Hip ! Je ne sais
-line2 = "même... hip ! plus...
-line3 = "comment je suis hip !
+line1 = "Hip ! Je ne sais"
+line2 = "même... hip ! plus..."
+line3 = "comment je suis hip !"
 skip = current
 next = crazy_house.alcoholic_man_2
 		
@@ -2466,6 +2466,7 @@ line1 = "...arrivé ici ! Hip !"
 line1 = "Vous devez appuyer sur"
 line2 = "le giga bouton d'extra"
 line3 = "collision à charge"
+skip = current
 next = crazy_house.infinite_greetings_2
 
 [crazy_house.infinite_greetings_2]

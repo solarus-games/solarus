@@ -281,10 +281,6 @@ function event_dialog_finished(first_message_id, answer)
 				end
 			end
 		end
-	elseif first_message_id == "_treasure.roc_magma.1" then
-		if guichet_11_error == true then
-			sol.map.dialog_start("crazy_house.guichet_11_bal_err")
-		end
 	elseif first_message_id == "crazy_house.accueil_fini" then
 		sol.map.hero_start_victory_sequence()
 		sol.main.timer_start(2000, "leave_dungeon", false)
@@ -320,6 +316,13 @@ function event_chest_empty(chest_name)
 		-- Coffre vide classique
 		sol.main.play_sound("wrong")
 		sol.map.dialog_start("_empty_chest")
+	end
+end
+
+function event_treasure_obtained(item_name, variant, savegame_variable)
+
+	if item_name == "roc_magma" and guichet_11_error then
+		sol.map.dialog_start("crazy_house.guichet_11_bal_err")
 	end
 end
 

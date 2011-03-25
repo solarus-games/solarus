@@ -103,35 +103,43 @@ function event_hero_on_sensor(sensor_name)
 	if sensor_name == "bowser_message" then
 		if not sol.game.savegame_get_boolean(126) then
 			-- Bouton pas appuyé
-			sol.main.play_sound("sm64_bowser_message")
-			sol.map.dialog_start("crazy_house.infinite_greetings")
 			sol.map.sensor_set_enabled("bowser_close", true)
+			if not sol.map.door_is_open("bowser_door") then
+				sol.map.dialog_start("crazy_house.infinite_greetings")
+				sol.main.play_sound("sm64_bowser_message")
+			else
+				sol.map.sensor_set_enabled("bowser_leave", true)		
+			end
 		else
 			-- Bonton déjà appuyé
-			sol.map.door_set_open("bowser_door", true)
+			if not sol.map.door_is_open("bowser_door") then
+				sol.map.door_open("bowser_door")
+			end
 			sol.map.sensor_set_enabled("bowser_leave", true)
-			sol.main.play_sound("door_open")
 		end
 	end
 	-- Fermeture de la porte derrière Link après être entré
 	if sensor_name == "bowser_close" then
-		sol.map.door_set_open("bowser_door", false)
-		sol.main.play_sound("door_closed")
+		if sol.map.door_is_open("bowser_door") then
+			sol.map.door_close("bowser_door")
+		end
 		sol.map.sensor_set_enabled("bowser_exit", true)
 		sol.map.sensor_set_enabled("bowser_close", false)
 	end
 	-- Ouverture de la porte si Link souhaite sortir
 	if sensor_name == "bowser_exit" then
-		sol.map.door_set_open("bowser_door", true)
-		sol.main.play_sound("door_open")
+		if not sol.map.door_is_open("bowser_door") then
+			sol.map.door_open("bowser_door")
+		end
 		sol.map.sensor_set_enabled("bowser_message", false)
 		sol.map.sensor_set_enabled("bowser_close", true)
 		sol.map.sensor_set_enabled("bowser_exit", false)
 	end
 	-- Fermeture de la porte derrière Link après être sorti
 	if sensor_name == "bowser_leave" then
-		sol.map.door_set_open("bowser_door", false)
-		sol.main.play_sound("door_closed")
+		if sol.map.door_is_open("bowser_door") then
+			sol.map.door_close("bowser_door")
+		end
 		sol.map.sensor_set_enabled("bowser_message", true)
 		sol.map.sensor_set_enabled("bowser_leave", false)
 	end
@@ -144,9 +152,10 @@ end
 function event_dialog_finished(first_message_id, answer)
 	if first_message_id == "crazy_house.infinite_greetings" then
 		-- Ouverture de la porte vers le couloir sans fin
-		sol.map.door_set_open("bowser_door", true)
+		if not sol.map.door_is_open("bowser_door") then
+			sol.map.door_open("bowser_door")
+		end
 		sol.map.sensor_set_enabled("bowser_leave", true)
-		sol.main.play_sound("door_open")
 	elseif first_message_id == "crazy_house.guichet_33_parfum" then
 		-- Obtention clé du guichet 33 suite à l'apport du parfum
 		if sol.game.get_item_amount("parfum_counter") > 0 then

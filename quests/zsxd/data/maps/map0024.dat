@@ -917,6 +917,7 @@
 0	1	1536	696	8	16	73
 0	1	1512	696	8	16	72
 0	1	568	712	16	48	1
+13	1	528	717	16	112	bowser_message	0
 18	1	136	472	DK2	1	1	141
 14	1	240	461	crystal_switch
 18	1	1512	696	DK9	1	3	149
@@ -1005,7 +1006,6 @@
 8	1	832	525	Apothicaire	3	1	npc/static_villager1	map
 13	1	1248	797	16	16	infinite_corridor	0
 18	1	584	776	bowser_door	0	0	-1
-13	1	528	717	16	112	bowser_message	0
 11	1	1656	784	giga_bouton	1	1	0
 4	1	1664	797	0	_none	1	-1
 18	1	632	776	bowser_door_2	2	0	-1

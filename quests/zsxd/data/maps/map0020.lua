@@ -316,6 +316,10 @@ function event_chest_empty(chest_name)
 			-- Normal case: give a small key
 			sol.map.treasure_give("small_key", 1, -1)
 		end
+	else
+		-- Coffre vide classique
+		sol.main.play_sound("wrong")
+		sol.map.dialog_start("_empty_chest")
 	end
 end
 

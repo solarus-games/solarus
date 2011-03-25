@@ -3422,9 +3422,8 @@ next = crazy_house.guichet_33_ech_ge_4_4
 
 [crazy_house.guichet_33_ech_ge_4_4]
 #       |-----------------------|
-line1 = "confier les clés. Je"
-line2 = "crois que quelqu'un a"
-line3 = "dû en retrouver un."
+line1 = "Je crois que quelqu'un"
+line2 = "a dû en retrouver un."
 next = crazy_house.guichet_33_ech_ge_4_5
 
 [crazy_house.guichet_33_ech_ge_4_5]

@@ -296,6 +296,22 @@ function event_door_open(door_name)
 
 	if door_name == "weak_wall_A" then
 		sol.main.play_sound("secret")
+	elseif door_name == "DK1" then
+		-- Opening the locked door: never give the final small key
+		sol.game.savegame_set_boolean(128, true)
+	end
+end
+
+function event_chest_empty(chest_name)
+
+	if chest_name == "CK3" then
+		if sol.game.savegame_get_boolean(141) then
+			-- The locked door in 3F is already open
+			sol.map.treasure_give("rupee", 4, -1)
+		else
+			-- Normal case: give a small key
+			sol.map.treasure_give("small_key", 1, -1)
+		end
 	end
 end
 

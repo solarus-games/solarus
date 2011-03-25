@@ -1048,20 +1048,20 @@
 9	1	2648	749	block_14	-1	0	0
 15	1	1768	760	16	64	0
 9	1	2512	1069	GBS	-1	1	2
-5	1	1456	528	chest_5	0	_none	1	-1
-5	1	1456	560	chest_6	0	_none	1	-1
-5	1	1488	560	chest_2	0	_none	1	-1
-5	1	1520	528	chest_7	0	_none	1	-1
-5	1	1520	560	chest_8	0	_none	1	-1
-5	1	1552	560	chest_9	0	_none	1	-1
-5	1	1552	528	chest_10	0	_none	1	-1
-5	1	1584	528	chest_11	0	_none	1	-1
-5	1	1584	560	chest_12	0	_none	1	-1
-5	1	1520	592	chest_13	0	_none	1	-1
-5	1	1552	592	chest_14	0	_none	1	-1
-5	1	1584	592	chest_15	0	_none	1	-1
-5	1	1456	592	chest_16	0	_none	1	-1
-5	1	1488	592	chest_17	0	_none	1	-1
+5	1	1456	528	chest_5	0	_none	1	150
+5	1	1456	560	CK4	0	small_key	1	128
+5	1	1488	560	chest_2	0	_none	1	154
+5	1	1520	528	chest_7	0	_none	1	151
+5	1	1520	560	chest_8	0	_none	1	155
+5	1	1552	560	chest_9	0	_none	1	156
+5	1	1552	528	chest_10	0	_none	1	152
+5	1	1584	528	chest_11	0	_none	1	153
+5	1	1584	560	chest_12	0	_none	1	157
+5	1	1520	592	chest_13	0	_none	1	160
+5	1	1552	592	chest_14	0	_none	1	161
+5	1	1584	592	chest_15	0	_none	1	162
+5	1	1456	592	chest_16	0	_none	1	158
+5	1	1488	592	chest_17	0	_none	1	159
 18	1	136	424	DK2_2	3	1	141
 8	1	2656	965	interactive_entity	3	0	entities/sign	map
 8	1	2656	965	interactive_entity_2	3	0	entities/sign	map

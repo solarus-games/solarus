@@ -37,7 +37,7 @@
 19	0	88	112	stairs	3	4
 19	0	152	112	stairs_2	3	4
 19	0	232	112	stairs_3	3	4
-5	0	64	72	fakechest	0	_none	1	-1
+5	0	64	72	fakechest	0	_none	1	11
 0	1	80	128	32	8	254
 0	1	144	128	32	8	254
 0	1	224	128	32	8	254
@@ -86,7 +86,6 @@
 6	1	112	128	24	8	jump_sensor	2	40
 6	1	64	128	16	8	jump_sensor_2	2	40
 2	1	72	224	16	16	teletransporter_2	0	1	1	stupid_guy_house_out
-1	1	200	181	teleporter_freak	3	0
 0	2	32	216	96	8	263
 0	2	0	0	16	240	170
 0	2	304	0	16	224	170

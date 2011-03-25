@@ -783,7 +783,7 @@
 3	1	696	149	heart_container	1	100
 3	1	696	149	heart_container	1	100
 8	1	624	325	mario_message_1	3	0	_none	map
-5	1	408	272	CK3	0	small_key	1	122
+5	1	408	272	CK3	0	_none	1	122
 5	1	1272	216	CR3	0	rupee	1	109
 1	1	1280	261	TB_destination	-1	1
 8	1	1200	189	npc_1	3	1	npc/static_villager8	map

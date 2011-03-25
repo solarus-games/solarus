@@ -1089,6 +1089,7 @@
 4	1	576	725	0	_random	1	-1
 4	1	576	741	0	_random	1	-1
 4	1	576	757	0	_random	1	-1
+8	1	2656	709	hint	3	0	entities/hint_stone	dialog#crazy_house.chemin_de_dieu
 0	2	440	888	96	8	263
 0	2	440	912	96	8	262
 0	2	2240	464	96	8	262

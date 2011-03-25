@@ -17,6 +17,8 @@
 #ifndef SOLARUS_NOMAIN
 
 #include "Solarus.h"
+#include <iostream>
+#include <fstream>
 
 /**
  * @brief Usual entry point of the program.
@@ -25,6 +27,7 @@
  *   -datapath=/some/path/to/datadir            loads the data files from the specified directory
  *   -no-audio                                  disables sounds and musics
  *   -no-video                                  disables displaying (used for unitary tests)
+ *   -language=l                                sets the language l
  *
  * @param argc number of command-line arguments
  * @param argv command-line arguments

@@ -146,7 +146,7 @@ function event_dialog_finished(first_message_id, answer)
 		sol.map.treasure_give("balai", 1, -1)
 		sol.game.remove_item_amount("roc_magma_counter", 3)
 		-- branche 1412 finie
-		if sol.game.get_item_amount("bocal_epice") > 0 then
+		if sol.game.get_item_amount("bocal_epice_counter") > 0 then
 			sol.game.savegame_set_integer(1410, 9)
 		end
 	elseif first_message_id == "crazy_house.guichet_22_sr_ok" then
@@ -182,14 +182,14 @@ end
 
 function event_switch_activated(switch_name)
 	-- Mécanisme de la porte qui s'ouvre grâce à deux boutons
-  -- dans la salle aux trois portes	
+	-- dans la salle aux trois portes
 	if switch_name == "locked_door_switch_A"
 	or switch_name == "locked_door_switch_B" then
 		if locked_door_A_value < 2 then
 			locked_door_A_value = locked_door_A_value + 1
-			if locked_door_A_value == 2 then
-				sol.map.door_set_open("LD1", true)
-				sol.main.play_sound("door_open")
+			if locked_door_A_value == 2 and not sol.map.door_is_open("LD1") then
+				sol.map.door_open("LD1")
+				sol.main.play_sound("secret")
 			end
 		end
 	end

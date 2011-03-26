@@ -2371,14 +2371,14 @@ next = crazy_house.welcome_message_4
 
 [crazy_house.welcome_message_4]
 #       |-----------------------|
-line1 = "A gauche : Accueil,
+line1 = "A gauche : Accueil,"
 line2 = "guichets 11, 21."
 next = crazy_house.welcome_message_5
 
 [crazy_house.welcome_message_5]
 #       |-----------------------|
-line1 = "A droite : guichets 12,"
-line2 = "22."
+line1 = "A droite :"
+line2 = "guichets 12, 22"
 
 [crazy_house.mario_message_1]
 #       |-----------------------|
@@ -2387,42 +2387,73 @@ skip = current
 
 [crazy_house.directionsAccueil]
 #       |-----------------------|
-line1 = "Accueil, veuillez faire"
-line2 = "la queue"
+line1 = "      - Accueil -"
+line2 = "Veuillez faire la queue"
 skip = current
 
 [crazy_house.directions_1F]
 #       |-----------------------|
 line1 = "En bas : guichet 21"
-line2 = "A droite : guichets 45,"
-line3 = "47, 49"
+line2 = "A droite :"
+line3 = "guichets 45, 47, 49"
 skip = current
+
+[crazy_house.directions_1F_se]
+#       |-----------------------|
+line1 = "En haut :"
+line2 = "guichets 22, 12"
+skip = current
+next = crazy_house.directions_1F_se.2
+
+[crazy_house.directions_1F_se.2]
+#       |-----------------------|
+line1 = "A gauche :"
+line2 = "guichets 41, 43, 82,"
+line3 = "deuxième étage"
 
 [crazy_house.directions_2F]
 #       |-----------------------|
-line1 = "A gauche : guichets 45,"
-line2 = "47, 49"
+line1 = "A gauche :"
+line2 = "guichets 45, 47, 49"
+line3 = "En bas : guichet 21"
 skip = current
 next = crazy_house.directions_2F_2
 
 [crazy_house.directions_2F_2]
 #       |-----------------------|
-line1 = "En bas : guichet 21"
-line2 = "A droite : guichets 33,"
-line3 = "56"
+line1 = "A droite : guichet 33"
+
+[crazy_house.directions_2F_no]
+#       |-----------------------|
+line1 = "En haut :"
+line2 = "guichets 49, 47, 45"
+skip = current
+next = crazy_house.directions_2F_no.2
+
+[crazy_house.directions_2F_no.2]
+#       |-----------------------|
+line1 = "A droite :"
+line2 = "guichets 84, 33"
+
+[crazy_house.directions_2F_ne]
+#       |-----------------------|
+line1 = "Téléporteur vers les"
+line2 = "guichets 21, 11 et"
+line3 = "vers l'accueil"
+skip = current
 
 [crazy_house.directions_3F]
 #       |-----------------------|
-line1 = "A droite : guichets 31,"
-line2 = "32, 36"
+line1 = "A droite :"
+line2 = "guichets 31, 32, 36"
 skip = current
 next = crazy_house.directions_3F_2
 
 [crazy_house.directions_3F_2]
 #       |-----------------------|
 line1 = "A gauche : giga bouton"
-line2 = "d'extra collision à 
-line3 = "charge supérieure de
+line2 = "d'extra collision à"
+line3 = "charge supérieure de"
 next = crazy_house.directions_3F_2_2
 
 [crazy_house.directions_3F_2_2]
@@ -2446,9 +2477,13 @@ skip = current
 
 [crazy_house.directions_3FB]
 #       |-----------------------|
-line1 = "A gauche : guichet 33"
-line2 = "A droite : guichets 84,
-line3 = "56"
+line1 = "En haut : guichet 33"
+skip = current
+
+[crazy_house.directions_3FC]
+#       |-----------------------|
+line1 = "Escaliers vers les"
+line2 = "guichets 84, 49, 47, 45"
 skip = current
 
 [crazy_house.giga_bouton_trop_leger]
@@ -2475,7 +2510,7 @@ next = crazy_house.alcoholic_man_2
 		
 [crazy_house.alcoholic_man_2]
 #       |-----------------------|		
-line1 = "...arrivé ici ! Hip !"
+line1 = "... arrivé ici ! Hip !"
 
 [crazy_house.infinite_greetings]
 #       |-----------------------|
@@ -2628,8 +2663,7 @@ next = crazy_house.accueil_ech_eq_0_3
 
 [crazy_house.accueil_ech_eq_0_3]
 #       |-----------------------|
-line1 = "Attendez je"
-line2 = "regarde..."
+line1 = "Attendez, je regarde..."
 next = crazy_house.accueil_ech_eq_0_4
 
 [crazy_house.accueil_ech_eq_0_4]
@@ -2691,7 +2725,7 @@ next = crazy_house.accueil_ech_eq_3_2
 [crazy_house.accueil_ech_eq_3_2]
 #       |-----------------------|
 line1 = "de cette cette salle"
-line2 = "et suivez les panneaux."
+line2 = "et demandez aux gens."
 
 [crazy_house.accueil_ech_eq_4]
 #       |-----------------------|
@@ -2728,7 +2762,7 @@ next = crazy_house.accueil_ech_eq_6_3
 
 [crazy_house.accueil_ech_eq_6_3]
 #       |-----------------------|
-line1 = "du guichet 22."
+line1 = "guichet 22."
 
 [crazy_house.accueil_ech_eq_8]
 #       |-----------------------|
@@ -2740,7 +2774,7 @@ line3 = "dans l'aide droite."
 #       |-----------------------|
 line1 = "Le guichet 12 est à cet"
 line2 = "étage, mais dans l'aile"
-line3 = "l'droite."
+line3 = "droite."
 next = crazy_house.accueil_ech_eq_9_2
 
 [crazy_house.accueil_ech_eq_9_2]
@@ -2848,15 +2882,16 @@ line3 = "droite."
 
 [crazy_house.accueil_bal_eq_3]
 #       |-----------------------|
-line1 = "Guichet 45, humm, il"
-line2 = "doit être au"
-line3 = "rez-de-chaussée aile"
+line1 = "Le guichet 45 ?"
+line2 = "Hummm, où l'ont-il mis"
+line3 = "celui-là... ? Il doit"
 next = crazy_house.accueil_bal_eq_3_2
 
 [crazy_house.accueil_bal_eq_3_2]
 #       |-----------------------|
-line1 = "gauche si il n'a pas"
-line2 = "été déplacé..."
+line1 = "être au rez-de-chaussée"
+line2 = "aile gauche s'il n'a"
+line3 = "pas été déplacé..."
 
 [crazy_house.accueil_bal_eq_4]
 #       |-----------------------|
@@ -2901,9 +2936,18 @@ line1 = "et espère vous revoir"
 line2 = "prochainement."
 line3 = "Bonne continuation !"
 
+[crazy_house.depot_ici]
+#       |-----------------------|
+line1 = "       - Dépôt -       "
+
 #==============================================
 # GUICHET 11
 #==============================================
+
+[crazy_house.guichet_11]
+#       |-----------------------|
+line1 = "     - Guichet 11 -"
+skip = current
 
 [crazy_house.guichet_11_ech_ne_9]
 #       |-----------------------|
@@ -3004,6 +3048,18 @@ line3 = "monsieur !"
 #==============================================
 # GUICHET 12A
 #==============================================
+[crazy_house.guichet_12_sign]
+#       |-----------------------|
+line1 = "A droite : guichet 12"
+line2 = "A gauche : accueil"
+skip = current
+next = crazy_house.guichet_12_sign.2
+
+[crazy_house.guichet_12_sign.2]
+#       |-----------------------|
+line1 = "En haut à droite :"
+line2 = "vers le guichet 22"
+line3 = "(porte condamnée)"
 
 [crazy_house.guichet_12A_ech_ne_5]
 #       |-----------------------|
@@ -3279,6 +3335,11 @@ skip = current
 # GUICHET 31
 #==============================================
 
+[crazy_house.guichet_31_ici]
+#       |-----------------------|
+line1 = "     - Guichet 31 -"
+skip = current
+
 [crazy_house.guichet_31]
 #       |-----------------------|
 line1 = "Je suis sûr que la"
@@ -3312,6 +3373,11 @@ skip = all
 #==============================================
 # GUICHET 32
 #==============================================
+
+[crazy_house.guichet_32_ici]
+#       |-----------------------|
+line1 = "     - Guichet 32 -"
+skip = current
 
 [crazy_house.guichet_32_ech_le_6]
 #       |-----------------------|
@@ -3517,6 +3583,11 @@ skip = current
 # GUICHET 41
 #==============================================
 
+[crazy_house.guichet_41_ici]
+#       |-----------------------|
+line1 = "     - Guichet 41 -"
+skip = current
+
 [crazy_house.guichet_41_ech_ne_3]
 #       |-----------------------|
 line1 = "Désolé, je suis en"
@@ -3561,6 +3632,11 @@ line3 = "gauche."
 #==============================================
 # GUICHET 43
 #==============================================
+
+[crazy_house.guichet_43_ici]
+#       |-----------------------|
+line1 = "     - Guichet 43 -"
+skip = current
 
 [crazy_house.guichet_43]
 #       |-----------------------|
@@ -3610,6 +3686,11 @@ skip = all
 #==============================================
 # GUICHET 45
 #==============================================
+
+[crazy_house.guichet_45]
+#       |-----------------------|
+line1 = "     - Guichet 45 -"
+skip = current
 
 [crazy_house.guichet_45_ech_eq_3]
 #       |-----------------------|
@@ -3715,6 +3796,11 @@ skip = current
 # GUICHET 47
 #==============================================
 
+[crazy_house.guichet_47]
+#       |-----------------------|
+line1 = "     - Guichet 47 -"
+skip = current
+
 [crazy_house.guichet_47_ech_ne_3]
 #       |-----------------------|
 line1 = "Si vous voulez"
@@ -3738,6 +3824,11 @@ skip = current
 # GUICHET 49
 #==============================================
 
+[crazy_house.guichet_49_ici]
+#       |-----------------------|
+line1 = "     - Guichet 49 -"
+skip = current
+
 [crazy_house.guichet_49]
 #       |-----------------------|
 line1 = "On m'a reléguée dans ce"
@@ -3753,6 +3844,11 @@ line1 = "Bouh ouh ouh !"
 #==============================================
 # GUICHET 82
 #==============================================
+
+[crazy_house.guichet_82_ici]
+#       |-----------------------|
+line1 = "     - Guichet 82 -"
+skip = current
 
 [crazy_house.guichet_82]
 #       |-----------------------|
@@ -3820,6 +3916,11 @@ line2 = "bien mérité."
 #==============================================
 # GUICHET 84
 #==============================================
+
+[crazy_house.guichet_84_ici]
+#       |-----------------------|
+line1 = "     - Guichet 84 -"
+skip = current
 
 [crazy_house.guichet_84_ech_eq_3]
 #       |-----------------------|

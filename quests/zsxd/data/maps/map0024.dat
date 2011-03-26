@@ -292,6 +292,8 @@
 8	0	2784	501	int_2	3	1	npc/newlink2	map
 8	0	2784	533	GC32	3	0	_none	map
 8	0	2576	405	GC31	3	0	_none	map
+8	0	2832	541	guichet_31_ici_2	3	0	entities/sign	dialog#crazy_house.guichet_32_ici
+8	0	2520	413	guichet_31_ici	3	0	entities/sign	dialog#crazy_house.guichet_31_ici
 0	1	2480	864	368	8	21
 0	1	2480	712	368	8	18
 0	1	2480	720	368	144	2
@@ -1032,8 +1034,8 @@
 12	1	2992	104	24	8	custom_obstacle_26	1	1	1	1
 13	1	504	717	16	112	bowser_leave	0
 8	1	2304	797	directions_3F	3	0	entities/sign	dialog#crazy_house.directions_3F
-8	1	344	773	directions_3FB	3	0	entities/sign	dialog#crazy_house.directions_3FB
-8	1	344	773	directions_3FB_2	3	0	entities/sign	dialog#crazy_house.directions_3FB
+8	1	744	501	directions_3FB	3	0	entities/sign	dialog#crazy_house.directions_3FC
+8	1	56	501	directions_3FB_2	3	0	entities/sign	dialog#crazy_house.directions_3FB
 15	1	40	336	64	16	0
 2	1	72	152	16	16	departure_D	1	1	22	arrival_D
 2	1	72	152	16	16	departure_D_2	1	1	22	arrival_D
@@ -1099,6 +1101,8 @@
 10	1	1632	760	8	8	barrier	69	1
 10	1	1632	768	8	48	barrier_2	71	1
 10	1	1632	816	8	8	barrier_3	69	1
+8	1	1552	725	interactive_entity_3	3	0	entities/sign	dialog#crazy_house.depot_ici
+0	2	1472	968	96	8	262
 0	2	440	888	96	8	263
 0	2	440	912	96	8	262
 0	2	2240	464	96	8	262

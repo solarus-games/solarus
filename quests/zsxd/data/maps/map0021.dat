@@ -30,6 +30,7 @@
 19	0	128	152	stairs_3	0	4
 8	0	96	101	G49	3	1	npc/newlink5	map
 8	0	96	125	GC49	3	0	_none	map
+8	0	72	133	interactive_entity_8	3	0	entities/sign	dialog#crazy_house.guichet_49_ici
 0	1	2752	1296	16	24	52
 0	1	2736	1312	24	16	50
 0	1	2520	1320	224	24	52
@@ -761,30 +762,30 @@
 0	1	2728	1296	8	16	19
 0	1	2728	1288	8	8	22
 0	1	1168	600	16	16	1
-0	1	1808	776	8	8	112
-0	1	1808	800	8	8	114
-0	1	1808	784	8	16	118
-0	1	1816	800	128	8	119
-0	1	1944	800	8	8	115
-0	1	1808	808	8	8	122
-0	1	1816	808	128	8	120
-0	1	1944	808	8	8	123
-0	1	1816	784	128	16	121
-0	1	1816	776	128	8	116
-0	1	1944	784	8	16	117
-0	1	1944	776	8	8	113
-0	1	1808	616	8	8	112
-0	1	1808	640	8	8	114
-0	1	1808	624	8	16	118
-0	1	1816	640	128	8	119
-0	1	1944	640	8	8	115
-0	1	1808	648	8	8	122
-0	1	1816	648	128	8	120
-0	1	1944	648	8	8	123
-0	1	1816	624	128	16	121
-0	1	1816	616	128	8	116
-0	1	1944	624	8	16	117
-0	1	1944	616	8	8	113
+0	1	1808	768	8	8	112
+0	1	1808	792	8	8	114
+0	1	1808	776	8	16	118
+0	1	1816	792	128	8	119
+0	1	1944	792	8	8	115
+0	1	1808	800	8	8	122
+0	1	1816	800	128	8	120
+0	1	1944	800	8	8	123
+0	1	1816	776	128	16	121
+0	1	1816	768	128	8	116
+0	1	1944	776	8	16	117
+0	1	1944	768	8	8	113
+0	1	1808	608	8	8	112
+0	1	1808	632	8	8	114
+0	1	1808	616	8	16	118
+0	1	1816	632	128	8	119
+0	1	1944	632	8	8	115
+0	1	1808	640	8	8	122
+0	1	1816	640	128	8	120
+0	1	1944	640	8	8	123
+0	1	1816	616	128	16	121
+0	1	1816	608	128	8	116
+0	1	1944	616	8	16	117
+0	1	1944	608	8	8	113
 0	1	2016	888	8	32	71
 0	1	2040	888	8	32	71
 0	1	2168	1000	32	8	70
@@ -820,7 +821,7 @@
 19	1	64	1144	stairs_2	1	0
 2	1	64	1144	16	16	to2Fa_left	0	1	22	from1Fb_left
 4	1	384	165	0	heart	1	-1
-5	1	440	280	CR1	0	heart	3	107
+5	1	440	280	CR1	0	heart	1	107
 8	1	376	933	mario_message_2	3	0	_none	map
 8	1	376	933	mario_message_3	3	0	_none	map
 5	1	480	976	CV2	0	_none	1	113
@@ -838,7 +839,6 @@
 15	1	528	1056	16	32	1
 2	1	456	1232	16	16	TB_departure	1	1	20	TB_destination
 8	1	464	1053	directions_1F	3	0	entities/sign	dialog#crazy_house.directions_1F
-8	1	464	1053	directions_1F_2	3	0	entities/sign	dialog#crazy_house.directions_1F
 15	1	1616	752	48	16	1
 15	1	1616	584	48	16	0
 4	1	1624	613	0	_random	1	-1
@@ -884,16 +884,21 @@
 8	1	920	637	GC47	3	0	_none	map
 8	1	920	765	interactive_entity_2	3	1	npc/static_villager6	map
 8	1	920	805	GC45	3	0	_none	map
-8	1	1888	613	interactive_entity_3	2	1	npc/villager1	map
-8	1	1856	613	interactive_entity_4	0	1	npc/villager2	map
-8	1	1888	653	GC43	3	0	_none	map
-8	1	1880	813	GC41	3	0	_none	map
-8	1	1880	773	interactive_entity_5	2	1	npc/static_villager7	map
+8	1	1888	605	interactive_entity_3	2	1	npc/villager1	map
+8	1	1856	605	interactive_entity_4	0	1	npc/villager2	map
+8	1	1888	645	GC43	3	0	_none	map
+8	1	1880	805	GC41	3	0	_none	map
+8	1	1880	765	interactive_entity_5	2	1	npc/static_villager7	map
 12	1	2152	336	16	16	custom_obstacle_3	0	1	1	1
 12	1	2024	424	16	16	custom_obstacle_4	0	1	1	1
 12	1	2024	920	16	16	custom_obstacle_5	0	1	1	1
 12	1	2152	1008	16	16	custom_obstacle_6	0	1	1	1
 15	1	2096	760	48	16	1
+8	1	864	805	interactive_entity_6	3	0	entities/hint_stone	dialog#crazy_house.guichet_45
+8	1	864	637	interactive_entity_7	3	0	entities/hint_stone	dialog#crazy_house.guichet_47
+8	1	1936	805	interactive_entity_9	3	0	entities/hint_stone	dialog#crazy_house.guichet_41_ici
+8	1	1936	645	interactive_entity_10	3	0	entities/hint_stone	dialog#crazy_house.guichet_43_ici
+8	1	2672	1205	directions_1F_4	3	0	entities/sign	dialog#crazy_house.directions_1F_se
 0	2	2664	1136	96	8	262
 0	2	0	0	608	16	170
 0	2	0	16	16	208	170

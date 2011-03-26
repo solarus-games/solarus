@@ -308,7 +308,6 @@
 0	1	504	312	64	8	120
 0	1	504	296	64	8	121
 0	1	568	304	8	8	115
-0	1	480	304	16	16	270
 0	1	480	296	8	8	69
 0	1	480	264	8	8	69
 0	1	480	272	8	24	71
@@ -430,6 +429,9 @@
 8	1	1776	357	GC82Front	3	0	_none	map
 15	1	1408	400	16	16	1
 15	1	1360	384	64	16	1
+8	1	488	317	interactive_entity_2	3	0	entities/sign	dialog#crazy_house.guichet_84_ici
+8	1	184	85	interactive_entity_3	3	0	entities/sign	dialog#crazy_house.directions_2F_no
+8	1	1720	349	interactive_entity_4	3	0	entities/sign	dialog#crazy_house.guichet_82_ici
 0	2	2032	16	96	8	262
 0	2	1936	80	8	96	266
 0	2	1912	80	8	96	267

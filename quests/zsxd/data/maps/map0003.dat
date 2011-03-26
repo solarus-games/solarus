@@ -830,6 +830,7 @@
 0	0	968	960	8	8	55
 0	0	960	952	8	8	56
 0	0	960	960	8	8	51
+0	0	800	520	16	8	36
 1	0	448	165	link_house_out	3	0
 2	0	0	-16	1024	16	teletransporter	0	2	1	_side
 1	0	384	237	destination_point	-1	1

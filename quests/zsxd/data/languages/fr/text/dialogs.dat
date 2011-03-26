@@ -2178,6 +2178,7 @@ icon = 81
 line1 = "Tu as trouvé une"
 line2 = "Fée, c'est trop"
 line3 = "cool !"
+skip = current
 next = found_fairy.1
 
 [found_fairy.1]
@@ -2186,6 +2187,7 @@ icon = -1
 line1 = "Que vas-tu faire ?"
 line2 = "Récupérer des Coeurs"
 line3 = "La conserver"
+skip = none
 question = true
 
 [found_fairy.no_empty_bottle]
@@ -4233,39 +4235,46 @@ line1 = "C'est fermé à clé..."
 line1 = "Non, n'essaie pas."
 line2 = "Saute, ou ne saute pas."
 line3 = "Il n'y a pas d'essai."
+skip = all
 
 [outside_fields_SE.yoda_quote_2]
 #       |-----------------------|
 line1 = "Link, fais appel à"
 line2 = "la Forcetri."
+skip = all
 
 [outside_fields_SE.yoda_quote_3]
 #       |-----------------------|
 line1 = "Toujours en mouvement"
 line2 = "est l'avenir."
+skip = all
 
 [outside_fields_SE.yoda_quote_4]
 #       |-----------------------|
 line1 = "Quand 900 ans comme moi"
 line2 = "tu auras, moins en"
 line3 = "forme tu seras."
+skip = all
 
 [outside_fields_SE.yoda_quote_5]
 #       |-----------------------|
 line1 = "Le côté obscur de la"
 line2 = "Forcetri, redouter"
 line3 = "tu dois."
+skip = all
 
 [outside_fields_SE.yoda_quote_6]
 #       |-----------------------|
 line1 = "Toujours pas deux ils"
 line2 = "vont. Ni plus, ni"
 line3 = "moins."
+skip = all
 
 [outside_fields_SE.yoda_quote_7]
 #       |-----------------------|
 line1 = "Te conduire jusqu'à"
 line2 = "Zelda je puis."
+skip = all
 next = outside_fields_SE.yoda_quote_7.2
 
 [outside_fields_SE.yoda_quote_7.2]
@@ -4278,17 +4287,26 @@ line2 = "allons manger."
 line1 = "Prêt tu crois être."
 line2 = "Comment peux-tu"
 line3 = "savoir ?"
+skip = all
 
 [outside_fields_SE.yoda_quote_9]
 #       |-----------------------|
 line1 = "Que la Forcetri soit"
 line2 = "avec toi."
+skip = all
 
 [outside_fields_SE.yoda_quote_10]
 #       |-----------------------|
 line1 = "De bonnes relations"
 line2 = "avec les Cookies,"
 line3 = "j'entretiens."
+skip = all
+
+[outside_fields_SE.yoda_quote_11]
+#       |-----------------------|
+line1 = "De voir le côté obscur"
+line2 = "difficile il est."
+skip = all
 
 [outside_fields_SE.yoda_give_sword]
 #       |-----------------------|
@@ -4320,6 +4338,7 @@ line2 = "Ainsi va la Forcetri."
 line1 = "A travers la Forcetri,"
 line2 = "d'autres choses tu"
 line3 = "verras, d'autres"
+skip = all
 next = outside_fields_SE.yoda_finished.1
 
 [outside_fields_SE.yoda_finished.1]

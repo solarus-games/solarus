@@ -91,7 +91,7 @@ function guichet_22B()
 	end
 	-- Incrémentation branche 1412
 	branche1412 = sol.game.savegame_get_integer(1412)
-	if branche1412 > 0 and branche1412 <= 6 then
+	if branche1412 == 6 then
 		sol.game.savegame_set_integer(1412, 7)
 	end
 end
@@ -160,7 +160,7 @@ function event_dialog_finished(first_message_id, answer)
 		end
 		-- Incrémentation branche 1412
 		branche1412 = sol.game.savegame_get_integer(1412)
-		if branche1412 > 0 and branche1412 <= 8 then
+		if branche1412 >= 6 and branche1412 <= 8 then
 			sol.game.savegame_set_integer(1412, 9)
 		end
 	end

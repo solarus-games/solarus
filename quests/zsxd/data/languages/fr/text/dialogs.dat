@@ -2084,7 +2084,7 @@ line3 = "Clé du Maître !"
 # au lieu de le couper avec l'épée
 #       |-----------------------|
 line1 = "Il te faudrait quelque"
-line2 = "de tranchant pour"
+line2 = "chose de tranchant pour"
 line3 = "couper ces buissons..."
 
 [_cannot_lift_too_heavy]
@@ -2178,7 +2178,7 @@ icon = 81
 line1 = "Tu as trouvé une"
 line2 = "Fée, c'est trop"
 line3 = "cool !"
-skip = current
+skip = all
 next = found_fairy.1
 
 [found_fairy.1]
@@ -2546,7 +2546,7 @@ next = crazy_house.hint_part2_7
 #       |-----------------------|
 line1 = "conseil : le cristal"
 line2 = "caché doit être activé"
-line3 = "activé à distance."
+line3 = "à distance."
 next = crazy_house.hint_part2_8
 
 [crazy_house.hint_part2_8]
@@ -2658,23 +2658,22 @@ line3 = "guichet 21."
 
 [crazy_house.accueil_ech_eq_2]
 #       |-----------------------|
-line1 = "Oui ? Ah le guichetier"
+line1 = "Oui ? Ah, le guichetier"
 line2 = "ne comprend rien ?"
-line3 = "Hmmm, essayez "
+line3 = "Hmmm, essayez peut-être"
 next = crazy_house.accueil_ech_eq_2_2
 
 [crazy_house.accueil_ech_eq_2_2]
 #       |-----------------------|
-line1 = "peut-être le guichet"
-line2 = "guichet 41, il est"
-line3 = "au rez-de-chaussée"
+line1 = "le guichet 41, il est"
+line2 = "au rez-de-chaussée mais"
+line3 = "vous devez faire le"
 next = crazy_house.accueil_ech_eq_2_3
 
 [crazy_house.accueil_ech_eq_2_3]
 #       |-----------------------|
-line1 = "mais vous devez faire"
-line2 = "le tour par le premier"
-line3 = "étage."
+line1 = "tour par le premier"
+line2 = "étage."
 next = crazy_house.accueil_ech_eq_2_4
 
 [crazy_house.accueil_ech_eq_2_4]
@@ -2971,14 +2970,14 @@ skip = none
 #       |-----------------------|
 line1 = "Ah, vous avez des"
 line2 = "tapisseries ? Je vous"
-line3 = "vous échange deux"
+line3 = "échange chaque"
 skip = current
 next = crazy_house.guichet_11_bal_eq_9_2
 
 [crazy_house.guichet_11_bal_eq_9_2]
 #       |-----------------------|
-line1 = "tapisseries contre"
-line2 = "deux haches."
+line1 = "tapisserie contre"
+line2 = "une hache."
 next = crazy_house.guichet_11_bal_eq_9_3
 
 [crazy_house.guichet_11_bal_eq_9_3]

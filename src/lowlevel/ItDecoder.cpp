@@ -65,6 +65,11 @@ void ItDecoder::unload() {
 void ItDecoder::decode(void* decoded_data, int nb_samples) {
 
   // decode from the IT data the specified number of PCM samples
-  ModPlug_Read(modplug_file, decoded_data, nb_samples);
+  int bytes_read = ModPlug_Read(modplug_file, decoded_data, nb_samples);
+
+  if (bytes_read == 0) {
+    // on some systems, we have to make the music loop manually
+    ModPlug_Seek(modplug_file, 0);
+  }
 }
 

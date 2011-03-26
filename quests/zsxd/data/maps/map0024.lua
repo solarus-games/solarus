@@ -186,7 +186,7 @@ function event_dialog_finished(first_message_id, answer)
 
 				-- Incrémentation branche 1412
 				branche1412 = sol.game.savegame_get_integer(1412)
-				if branche1412 > 0 and branche1412 <= 7 then
+				if branche1412 >= 6 and branche1412 <= 7 then
 					sol.game.savegame_set_integer(1412, 8)
 				end
 			else
@@ -214,7 +214,7 @@ function event_dialog_finished(first_message_id, answer)
 				end
 				-- Incrémentation branche 1412
 				branche1412 = sol.game.savegame_get_integer(1412)
-				if branche1412 > 0 and branche1412 <= 7 then
+				if branche1412 >= 6 and branche1412 <= 7 then
 					sol.game.savegame_set_integer(1412, 8)
 				end
 			else

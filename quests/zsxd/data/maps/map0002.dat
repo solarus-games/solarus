@@ -1232,7 +1232,7 @@
 6	0	256	904	48	8	jump_sensor	6	56
 8	0	720	165	interactive_entity	3	0	entities/sign	dialog#outside_fields_NE.cursed_cave_sign
 4	0	736	149	3	_random	1	-1
-4	0	752	149	3	_random	1	-1
+4	0	752	149	3	fairy	1	-1
 8	0	184	261	interactive_entity_2	3	0	entities/sign	dialog#outside_fields_NE.indic
 8	0	1000	29	interactive_entity_3	3	0	entities/sign	dialog#outside_fields_NE.tipiton_sign
 6	0	968	64	16	8	jump_sensor_2	6	88

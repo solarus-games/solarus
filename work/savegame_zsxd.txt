@@ -95,7 +95,7 @@ integers (above 1024):
 	- 6: chercher 2 tapisseries au guichet 22 (nécessite 1 sac de riz pour 2 tapisseries)
 	- 7: chercher 1 sac de riz chez apothicaire ou panoda fichage
 	- 8: apporter 1 sac de riz au guichet 22, obtenu : 2 tapisseries
-	- 9: apporter 2 tapisseries au guichet 11, s'est trompé, donne un 6 rocs magma
+	- 9: apporter 2 tapisseries au guichet 11, s'est trompé, donne 5 rocs magma
 	-10: apporter 3 roc magma au guichet 22, obtenu: 1 balai
 
 1471: poivron_counter - g84 (n: haches)

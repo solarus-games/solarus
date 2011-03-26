@@ -2427,7 +2427,7 @@ next = crazy_house.directions_3F_2_2
 
 [crazy_house.directions_3F_2_2]
 #       |-----------------------|
-line1 = "15.000 Megawatts."
+line1 = "15 000 Mégawatts."
 line2 = "En haut : guichet 82"
 next = crazy_house.directions_3F_2_3
 
@@ -2451,6 +2451,20 @@ line2 = "A droite : guichets 84,
 line3 = "56"
 skip = current
 
+[crazy_house.giga_bouton_trop_leger]
+#       |-----------------------|
+line1 = "Tu es beaucoup trop"
+line2 = "léger pour activer le"
+line3 = "giga bouton d'extra"
+skip = current
+next = crazy_house.giga_bouton_trop_leger.2
+
+[crazy_house.giga_bouton_trop_leger.2]
+#       |-----------------------|
+line1 = "collision à charge" 
+line2 = "supérieure de 15 000"
+line3 = "Mégawatts."
+
 [crazy_house.alcoholic_man]
 #       |-----------------------|
 line1 = "Hip ! Je ne sais"
@@ -2465,7 +2479,7 @@ line1 = "...arrivé ici ! Hip !"
 
 [crazy_house.infinite_greetings]
 #       |-----------------------|
-line1 = "Vous devez appuyer sur"
+line1 = "Tu dois appuyer sur"
 line2 = "le giga bouton d'extra"
 line3 = "collision à charge"
 skip = current
@@ -2480,8 +2494,8 @@ next = crazy_house.infinite_greetings_3
 
 [crazy_house.infinite_greetings_3]
 #       |-----------------------|
-line1 = "sans fin, ce que vous"
-line2 = "n'avez pas fait !"
+line1 = "sans fin, ce que tu"
+line2 = "n'as pas fait !"
 next = crazy_house.infinite_greetings_4
 
 [crazy_house.infinite_greetings_4]

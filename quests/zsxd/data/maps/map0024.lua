@@ -5,14 +5,22 @@
 
 giga_bouton_pushed = false
 giga_bouton_camera = false
+dialogue_trop_leger_fait = false
 
 function event_map_started(destination_point_name)
 	-- Desactivation des sensors pour la porte du couloir sans fin	
 	sol.map.sensor_set_enabled("bowser_leave", false)
 	sol.map.sensor_set_enabled("bowser_exit", false)
-	if sol.game.savegame_get_boolean(126) == true then
+
+	-- Boutons sauvegardés
+	if sol.game.savegame_get_boolean(126) then
 		sol.map.sensor_set_enabled("infinite_corridor", false)
 		sol.map.switch_set_activated("giga_bouton", true)
+	end
+
+	if sol.game.savegame_get_boolean(129) then
+		sol.map.tile_set_group_enabled("barrier", false)
+		sol.map.switch_set_activated("barrier_switch", true)
 	end
 end
 
@@ -116,36 +124,37 @@ function event_hero_on_sensor(sensor_name)
 				sol.map.door_open("bowser_door")
 			end
 			sol.map.sensor_set_enabled("bowser_leave", true)
-		end
-	end
+		end	
 	-- Fermeture de la porte derrière Link après être entré
-	if sensor_name == "bowser_close" then
+	elseif sensor_name == "bowser_close" then
 		if sol.map.door_is_open("bowser_door") then
 			sol.map.door_close("bowser_door")
 		end
 		sol.map.sensor_set_enabled("bowser_exit", true)
 		sol.map.sensor_set_enabled("bowser_close", false)
-	end
 	-- Ouverture de la porte si Link souhaite sortir
-	if sensor_name == "bowser_exit" then
+	elseif sensor_name == "bowser_exit" then
 		if not sol.map.door_is_open("bowser_door") then
 			sol.map.door_open("bowser_door")
 		end
 		sol.map.sensor_set_enabled("bowser_message", false)
 		sol.map.sensor_set_enabled("bowser_close", true)
 		sol.map.sensor_set_enabled("bowser_exit", false)
-	end
 	-- Fermeture de la porte derrière Link après être sorti
-	if sensor_name == "bowser_leave" then
+	elseif sensor_name == "bowser_leave" then
 		if sol.map.door_is_open("bowser_door") then
 			sol.map.door_close("bowser_door")
 		end
 		sol.map.sensor_set_enabled("bowser_message", true)
 		sol.map.sensor_set_enabled("bowser_leave", false)
-	end
 	-- Mécanisme du couloir sans fin
-	if sensor_name == "infinite_corridor" then
+	elseif sensor_name == "infinite_corridor" then
 		sol.map.hero_set_position(1136, 797, 1)
+	-- Giga bouton : Link trop léger
+	elseif sensor_name == "giga_bouton_sensor"
+	and not dialogue_trop_leger_fait then
+		sol.map.dialog_start("crazy_house.giga_bouton_trop_leger")
+		dialogue_trop_leger_fait = true
 	end
 end
 
@@ -290,5 +299,16 @@ function leave_dungeon()
 	sol.main.play_sound("warp")
 	sol.map.hero_set_map(3, "from_crazy_house", 1)
 end
+
+function event_switch_activated(switch_name)
+
+	-- Ouverture de la barrière près du giga bouton
+	if switch_name == "barrier_switch" then
+		sol.main.play_sound("secret")
+		sol.map.tile_set_group_enabled("barrier", false)
+		sol.game.savegame_set_boolean(129, true)
+	end
+end
+
 
 

@@ -187,6 +187,7 @@ booleans:
 126 3F : Giga bouton state
 127 2FA: Dual button locked door [LD1]
 128 3F: Small key chest [CK4]
+129 3F: Barrier near the giga button
 
 140	1FA: Key Door A [DK1]
 141 3F : Key Door B [DK2]

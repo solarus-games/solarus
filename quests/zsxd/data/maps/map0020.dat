@@ -816,6 +816,8 @@
 8	1	1688	381	GC12A	3	0	_none	map
 8	1	1760	381	GC12B	3	0	_none	map
 6	1	1312	384	8	32	jump_sensor_4	4	40
+8	1	288	109	guichet_11_stone	3	0	entities/sign	dialog#crazy_house.guichet_11
+8	1	1496	421	interactive_entity	3	0	entities/sign	dialog#crazy_house.guichet_12_sign
 0	2	704	56	8	96	266
 0	2	680	64	8	96	267
 0	2	1040	320	8	96	266

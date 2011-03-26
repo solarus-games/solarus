@@ -1095,8 +1095,8 @@
 12	1	1760	808	8	8	custom_obstacle_7	1	1	1	1
 12	1	1760	832	8	8	custom_obstacle_8	1	1	1	1
 1	1	1104	797	arrival_C	-1	1
-2	1	2888	112	16	16	departure_C	1	1	22	arrival_C
-6	1	2016	784	56	8	jump_sensor_3	2	24
+2	1	2904	112	16	16	departure_C	1	1	22	arrival_C
+6	1	2016	784	64	8	jump_sensor_3	2	24
 8	1	1376	781	GC21front	3	0	_none	map
 8	1	1376	781	GC21front_2	3	0	_none	map
 8	1	2248	805	GC22A	3	0	_none	map
@@ -1113,6 +1113,7 @@
 4	1	1376	589	0	bomb	3	-1
 4	1	1480	509	0	_random	3	-1
 4	1	1464	509	0	_random	3	-1
+8	1	2880	125	interactive_entity	3	0	entities/sign	dialog#crazy_house.directions_2F_ne
 0	2	720	464	96	8	262
 0	2	112	240	96	8	262
 0	2	112	216	96	8	263

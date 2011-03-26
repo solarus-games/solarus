@@ -1994,7 +1994,7 @@ line3 = "pour l'ouvrir."
 # au lieu de le couper avec l'épée
 #       |-----------------------|
 line1 = "Il te faudrait quelque"
-line2 = "de tranchant pour"
+line2 = "chose de tranchant pour"
 line3 = "couper ces buissons..."
 skip = all
 

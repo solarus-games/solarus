@@ -4379,7 +4379,7 @@ skip = all
 
 [outside_fields_SE.yoda_quote_6]
 #       |-----------------------|
-line1 = "Toujours pas deux ils"
+line1 = "Toujours par deux ils"
 line2 = "vont. Ni plus, ni"
 line3 = "moins."
 skip = all

@@ -4004,15 +4004,15 @@ next = crazy_house.vieillard_2
 
 [crazy_house.vieillard_2]
 #       |-----------------------|
-line1 = "par hasard ? Héhé, je"
-line2 = "lis dans les pensées."
-line3 = "Si tu m'apportes trois"
+line1 = "hasard ? Héhé, je lis"
+line2 = "dans les pensées."
 next = crazy_house.vieillard_3
 
 [crazy_house.vieillard_3]
 #       |-----------------------|
-line1 = "poivrons, je serai"
-line2 = "peut-être conciliant..."
+line1 = "Si tu m'apportes trois"
+line2 = "poivrons, je serai"
+line3 = "peut-être conciliant..."
 next = crazy_house.vieillard_ronfl
 
 [crazy_house.vieillard_poivron]

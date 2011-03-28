@@ -124,6 +124,7 @@ function event_dialog_finished(first_message_id, answer)
 		if sol.game.get_item_amount("balai_counter") > 0 then
 			sol.game.savegame_set_integer(1410, 9)
 		end
+		sol.game.savegame_set_integer(1411, 10)
 	elseif first_message_id == "crazy_house.guichet_22A" then
 		if answer == 0 then
 			if sol.game.get_item_amount("roc_magma_counter") < 3 then
@@ -135,7 +136,7 @@ function event_dialog_finished(first_message_id, answer)
 		end
 	elseif first_message_id == "crazy_house.guichet_22B" then
 		if answer == 0 then
-			if sol.game.get_item_amount("sac_riz_counter") < 6 then
+			if sol.game.get_item_amount("sac_riz_counter") < 2 then
 				sol.main.play_sound("wrong")
 				sol.map.dialog_start("crazy_house.guichet_22_sr_un")
 			else
@@ -152,7 +153,7 @@ function event_dialog_finished(first_message_id, answer)
 	elseif first_message_id == "crazy_house.guichet_22_sr_ok" then
 		sol.map.treasure_give("tapisserie", 1, -1)
 		sol.game.add_item_amount("tapisserie_counter", 2)
-		sol.game.remove_item_amount("sac_riz_counter", 6)
+		sol.game.remove_item_amount("sac_riz_counter", 2)
 		-- Incrémentation branche 1411
 		branche1411 = sol.game.savegame_get_integer(1411)
 		if branche1411 > 0 and branche1411 <= 5 then

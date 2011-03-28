@@ -76,25 +76,25 @@ integers (above 1024):
 
 	- 1: vieillard veut 3 poivrons, les chercher au guichet 84 (nécessite 5 haches)
   - 2: chercher 5 haches au guichet 11 (nécessite 1 tapisserie pour 1 hache)
-  - 3: chercher 6 tapisseries au guichet 22 (nécessite 1 sac de riz pour 2 tapisseries)
+  - 3: chercher 6 tapisseries au guichet 22 (nécessite 2 sacs de riz pour 3 tapisseries)
   - 4: acheter 3 sacs de riz à l'apothicaire ou à panoda fichage
-	- 5: apporter 3 sac de riz au guichet 22, obtenu : 6 tapisseries
+	- 5: apporter 4 sacs de riz au guichet 22, obtenu : 6 tapisseries
   - 6: apporter 6 tapisseries au guichet 11, obtenu : 6 haches
 	- 7: apporter 5 haches au guichet 84, obtenu : 3 poivrons
 	- 8: apporter 3 poivrons au vieillard, il n'en veut pas, il veut 5 sacs de riz
-  - 9: acheter 5 sacs de riz à l'épothicaire ou à panoda fichage
+  - 9: acheter 5 sacs de riz à l'apothicaire ou à panoda fichage
 	-10: apporter 5 sacs de riz au vieillard, obtenu : 1 bocal épice
 
 1412: chaine_balai_phase (1410 = 8)
 
 	- 1: chercher balai au guichet 22 (nécessite 3 rocs magma)
 	- 2: chercher 3 rocs magma au guichet 82 (nécessite 2 sac olives par roc magma)
-	- 3: chercher 6 sac olives au guichet 45 (nécessite 2 cuillères pour 3 sacs olive)
+	- 3: chercher 6 sac d'olives au guichet 45 (nécessite 2 cuillères pour 3 sacs d'olives)
 	- 4: chercher 4 cuillères au guichet 32 (nécessite 2 haches, 1 pour 2 cuillères)
 	- 5: chercher 2 haches au guichet 11 (nécessite 1 tapisserie pour 1 hache)
-	- 6: chercher 2 tapisseries au guichet 22 (nécessite 1 sac de riz pour 2 tapisseries)
+	- 6: chercher 2 tapisseries au guichet 22 (nécessite 2 sacs de riz pour 3 tapisseries)
 	- 7: chercher 1 sac de riz chez apothicaire ou panoda fichage
-	- 8: apporter 1 sac de riz au guichet 22, obtenu : 2 tapisseries
+	- 8: apporter 1 sac de riz au guichet 22, obtenu : 3 tapisseries
 	- 9: apporter 2 tapisseries au guichet 11, s'est trompé, donne 5 rocs magma
 	-10: apporter 3 roc magma au guichet 22, obtenu: 1 balai
 

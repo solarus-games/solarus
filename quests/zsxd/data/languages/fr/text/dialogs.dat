@@ -3403,14 +3403,14 @@ line3 = "devriez retourner voir."
 [crazy_house.guichet_32_ech_ne_6]
 #       |-----------------------|
 line1 = "Ici au guichet 32, on"
-line2 = "peut vous proposer une"
-line3 = "hache contre deux"
+line2 = "peut vous proposer deux"
+line3 = "cuillères contre une"
 skip = current
 next = crazy_house.guichet_32_ech_ne_6_2
 
 [crazy_house.guichet_32_ech_ne_6_2]
 #       |-----------------------|
-line1 = "cuillères, le marché"
+line1 = "hache, le marché"
 line2 = "est très prometteur."
 next = crazy_house.guichet_32_ech_ne_6_3
 

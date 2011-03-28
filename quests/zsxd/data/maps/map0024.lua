@@ -180,7 +180,7 @@ function event_dialog_finished(first_message_id, answer)
 
 				-- Incrémentation branche 1411
 				branche1411 = sol.game.savegame_get_integer(1411)
-				if branche1411 > 0 and branche1411 <= 4 then
+				if branche1411 == 4 then
 					sol.game.savegame_set_integer(1411, 5)
 				end
 
@@ -209,7 +209,7 @@ function event_dialog_finished(first_message_id, answer)
 				sol.game.add_item_amount("sac_riz_counter", 2)
 				-- Incrémentation branche 1411
 				branche1411 = sol.game.savegame_get_integer(1411)
-				if branche1411 > 0 and branche1411 <= 4 then
+				if branche1411 == 4 then
 					sol.game.savegame_set_integer(1411, 5)
 				end
 				-- Incrémentation branche 1412

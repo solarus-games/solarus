@@ -170,7 +170,7 @@ booleans:
 109 1FA: 1 rupee chest [CR3]
 110 1FB: Empty chest [CV3]
 111 3F : Big Key chest [CK5]
-112 1FB: Empty chest [CV4]
+112 1FB: Compass chest [CV4]
 113 1FB: Empty chest [CV2]
 114 2FA: Piece of Heart [PH2]
 115 1FB: Bombs chest [CB1]

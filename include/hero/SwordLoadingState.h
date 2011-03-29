@@ -29,6 +29,8 @@ class Hero::SwordLoadingState: public Hero::PlayerMovementState {
     uint32_t sword_loaded_date;            /**< date when the sword is loaded */
     bool sword_loaded;                     /**< becomes true when the spin attack is possible */
 
+    void play_load_sound();
+
   public:
 
     SwordLoadingState(Hero &hero);

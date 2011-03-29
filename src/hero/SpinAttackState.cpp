@@ -18,7 +18,9 @@
 #include "hero/FreeState.h"
 #include "hero/HeroSprites.h"
 #include "lowlevel/Sound.h"
+#include "lowlevel/FileTools.h"
 #include "Game.h"
+#include <sstream>
 
 /**
  * @brief Constructor.
@@ -45,7 +47,7 @@ void Hero::SpinAttackState::start(State *previous_state) {
   State::start(previous_state);
 
   // play the sound
-  Sound::play("sword_spin_attack_release");
+  play_spin_attack_sound();
 
   // start the animation
   get_sprites().set_animation_spin_attack();
@@ -97,5 +99,21 @@ int Hero::SpinAttackState::get_sword_damage_factor() {
 
   // the damage are multiplied by 2
   return State::get_sword_damage_factor() * 2;
+}
+
+/**
+ * @brief Plays the sword loading sound.
+ */
+void Hero::SpinAttackState::play_spin_attack_sound() {
+
+  std::ostringstream oss;
+  oss << "sword_spin_attack_release_" << get_equipment().get_ability("sword");
+  std::string custom_sound_name = oss.str();
+  if (Sound::exists(custom_sound_name)) {
+    Sound::play(custom_sound_name); // this particular sword has a spin attack sound effect
+  }
+  else {
+    Sound::play("sword_spin_attack_release");
+  }
 }
 

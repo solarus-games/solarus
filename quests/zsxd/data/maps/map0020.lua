@@ -111,7 +111,7 @@ function accueil()
 		sol.map.dialog_start("crazy_house.accueil_ech_eo_5-7")
 	elseif sol.game.savegame_get_integer(1410) == 8 then
 		if sol.game.savegame_get_integer(1411) < 10 and sol.game.savegame_get_integer(1412) < 10 then		
-			if sol.game.savegame_get_integer(1411) >= sol.game.savegame_get_integer(1412) then
+			if sol.game.savegame_get_integer(1411) > sol.game.savegame_get_integer(1412) then
 				accueil_branche1()
 			else
 				accueil_branche2()
@@ -179,7 +179,7 @@ end
 -- Guichet 12b -----------------------------------------------
 function guichet_12B()
 	if not sol.map.door_is_open("weak_wall_A") then -- hint for the first weak wall
-		sol.map.dialog_start("crazy_house.guichet_ech_eq_3")
+		sol.map.dialog_start("crazy_house.guichet_12B_ech_eq_3")
 	elseif not sol.game.savegame_get_boolean(130) then -- hint for the second weak wall
 		sol.map.dialog_start("crazy_house.guichet_12B_aw")
 	elseif sol.game.savegame_get_integer(1410) == 3 then

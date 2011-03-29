@@ -1939,8 +1939,8 @@ line3 = "coffre !"
 [_treasure.poivron.1]
 #       |--------------------|
 icon = 40
-line1 = "Tu obtiens des"
-line2 = "poivrons ! Tu nous"
+line1 = "Tu obtiens un"
+line2 = "poivron ! Tu nous"
 line3 = "prépares une pizza ?"
 
 [_treasure.balai.1]
@@ -1958,20 +1958,20 @@ line3 = "contente !"
 [_treasure.cuillere.1]
 #       |--------------------|
 icon = 42
-line1 = "Des cuillères !"
+line1 = "Une cuillère !"
 line2 = "Mange ta soupe si tu"
 line3 = "veux grandir !"
 
 [_treasure.tapisserie.1]
 #       |--------------------|
 icon = 43
-line1 = "Quelles belles"
-line2 = "tapisseries !"
+line1 = "Quelle belle"
+line2 = "tapisserie !"
 
 [_treasure.roc_magma.1]
 #       |--------------------|
 icon = 44
-line1 = "Des rocs magma !"
+line1 = "Un roc magma !"
 line2 = "Attention c'est"
 line3 = "chaud !"
 
@@ -1990,7 +1990,7 @@ line2 = "basmati, dommage :("
 [_treasure.sac_olive.1]
 #       |--------------------|
 icon = 46
-line1 = "On te donne des sacs"
+line1 = "On te donne un sac"
 line2 = "d'olives, t'aimes"
 line3 = "pas ?"
 next = _treasure.sac_olive.1.1
@@ -2395,7 +2395,7 @@ skip = current
 #       |-----------------------|
 line1 = "En bas : guichet 21"
 line2 = "A droite :"
-line3 = "guichets 45, 47, 49"
+line3 = "guichets 45, 47, 49, 84"
 skip = current
 
 [crazy_house.directions_1F_se]
@@ -2411,10 +2411,16 @@ line1 = "A gauche :"
 line2 = "guichets 41, 43, 82,"
 line3 = "deuxième étage"
 
+[crazy_house.directions_1F_sw]
+#       |-----------------------|
+line1 = "Téléporteur vers l'aile"
+line2 = "droite"
+skip = current
+
 [crazy_house.directions_2F]
 #       |-----------------------|
 line1 = "A gauche :"
-line2 = "guichets 45, 47, 49"
+line2 = "guichets 45, 47, 49, 84"
 line3 = "En bas : guichet 21"
 skip = current
 next = crazy_house.directions_2F_2
@@ -2422,6 +2428,8 @@ next = crazy_house.directions_2F_2
 [crazy_house.directions_2F_2]
 #       |-----------------------|
 line1 = "A droite : guichet 33"
+line2 = "Escalier :"
+line3 = "guichet 11, accueil"
 
 [crazy_house.directions_2F_no]
 #       |-----------------------|
@@ -2438,9 +2446,22 @@ line2 = "guichets 84, 33"
 [crazy_house.directions_2F_ne]
 #       |-----------------------|
 line1 = "Téléporteur vers les"
-line2 = "guichets 21, 11 et"
+line2 = "guichets 11, 21 et"
 line3 = "vers l'accueil"
 skip = current
+
+[crazy_house.directions_2F_e]
+#       |-----------------------|
+line1 = "Gauche : guichet 22"
+line2 = "Escaliers : accueil,"
+line3 = "guichets 11 et 12"
+skip = current
+next = crazy_house.directions_2F_e.2
+
+[crazy_house.directions_2F_e.2]
+#       |-----------------------|
+line1 = "Droite :"
+line2 = "guichets 41, 43, 82"
 
 [crazy_house.directions_3F]
 #       |-----------------------|
@@ -2817,9 +2838,15 @@ line2 = "sont bons."
 
 [crazy_house.accueil_epi_eo_1-7]
 #       |-----------------------|
-line1 = "Le guichet 84 ? Il est"
-line2 = "au premier étage, aile"
-line3 = "gauche."
+line1 = "Si vous cherchez des"
+line2 = "poivrons, allez au"
+line3 = "guichet 84."
+next = crazy_house.accueil_epi_eo_1-7_2
+
+[crazy_house.accueil_epi_eo_1-7_2]
+#       |-----------------------|
+line1 = "Il est au premier"
+line2 = "étage, aile gauche."
 
 [crazy_house.accueil_epi_eo_2-6]
 #       |-----------------------|
@@ -2866,15 +2893,22 @@ line3 = "désolé."
 
 [crazy_house.accueil_bal_eo_1-6-8-10]
 #       |-----------------------|
-line1 = "Pour trouver le guichet"
-line2 = "22, rendez-vous au"
-line3 = "premier étage aile"
+line1 = "Le guichet 22 doit"
+line2 = "avoir des tapisseries"
+line3 = "et des balais."
+next = crazy_house.accueil_bal_eo_1-6-8-10_2bis
+
+[crazy_house.accueil_bal_eo_1-6-8-10_2bis]
+#       |-----------------------|
+line1 = "Pour le trouver,"
+line2 = "rendez-vous au premier"
+line3 = "étage aile droite par"
 next = crazy_house.accueil_bal_eo_1-6-8-10_2
 
 [crazy_house.accueil_bal_eo_1-6-8-10_2]
 #       |-----------------------|
-line1 = "droite par l'escalier"
-line2 = "derrière moi."
+line1 = "l'escalier derrière"
+line2 = "moi."
 
 [crazy_house.accueil_bal_eq_2]
 #       |-----------------------|
@@ -3050,6 +3084,7 @@ line3 = "monsieur !"
 #==============================================
 # GUICHET 12A
 #==============================================
+#
 [crazy_house.guichet_12_sign]
 #       |-----------------------|
 line1 = "A droite : guichet 12"
@@ -3213,6 +3248,11 @@ line1 = "bâtiment public..."
 #==============================================
 # GUICHET 21
 #==============================================
+
+[crazy_house.guichet_21_ici]
+#       |-----------------------|
+line1 = "     - Guichet 21 -"
+skip = current
 
 [crazy_house.guichet_21_ech_ne_1]
 #       |-----------------------|
@@ -5030,7 +5070,7 @@ next = the_end.credits.12
 [the_end.credits.12]
 #       |-----------------------|
 line1 = "19oj19"
-line2 = "Neovyze"
+line2 = "Neovyse"
 line3 = "Thyb"
 next = the_end.credits.13
 

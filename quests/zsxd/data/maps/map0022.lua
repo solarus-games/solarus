@@ -197,7 +197,7 @@ end
 
 function event_door_open(door_name)
 
-	if door_name == "weak_wall_B" then
+	if door_name == "WW2" then
 		sol.main.play_sound("secret")
 	end
 end

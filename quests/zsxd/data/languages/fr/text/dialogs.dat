@@ -239,8 +239,8 @@ skip = all
 
 [_item_description.bottle_1.2.1]
 #       |--------------------|
-line1 = "Verse-la à un"
-line2 = "endroit approprié..."
+line1 = "Tu ferais mieux de"
+line2 = "la vider."
 
 [_item_description.bottle_1.3]
 # Potion rouge / Red potion
@@ -298,8 +298,8 @@ skip = all
 
 [_item_description.bottle_2.2.1]
 #       |--------------------|
-line1 = "Verse-la à un"
-line2 = "endroit approprié..."
+line1 = "Tu ferais mieux de"
+line2 = "la vider."
 
 [_item_description.bottle_2.3]
 # Potion rouge / Red potion
@@ -357,8 +357,8 @@ skip = all
 
 [_item_description.bottle_3.2.1]
 #       |--------------------|
-line1 = "Verse-la à un"
-line2 = "endroit approprié..."
+line1 = "Tu ferais mieux de"
+line2 = "la vider."
 
 [_item_description.bottle_3.3]
 # Potion rouge / Red potion
@@ -416,8 +416,8 @@ skip = all
 
 [_item_description.bottle_4.2.1]
 #       |--------------------|
-line1 = "Verse-la à un"
-line2 = "endroit approprié..."
+line1 = "Tu ferais mieux de"
+line2 = "la vider."
 
 [_item_description.bottle_4.3]
 # Potion rouge / Red potion
@@ -2400,7 +2400,7 @@ skip = current
 
 [crazy_house.directions_1F_se]
 #       |-----------------------|
-line1 = "En haut :"
+line1 = "Escalier :"
 line2 = "guichets 22, 12"
 skip = current
 next = crazy_house.directions_1F_se.2
@@ -2425,7 +2425,7 @@ line1 = "A droite : guichet 33"
 
 [crazy_house.directions_2F_no]
 #       |-----------------------|
-line1 = "En haut :"
+line1 = "Escalier :"
 line2 = "guichets 49, 47, 45"
 skip = current
 next = crazy_house.directions_2F_no.2
@@ -2686,8 +2686,8 @@ line1 = "au premier étage."
 
 [crazy_house.accueil_ech_eq_1]
 #       |-----------------------|
-line1 = "Prenez l'escalier de"
-line2 = "cette salle pour le"
+line1 = "Prenez l'escalier"
+line2 = "derrière moi pour le"
 line3 = "guichet 21."
 
 [crazy_house.accueil_ech_eq_2]
@@ -2712,8 +2712,9 @@ next = crazy_house.accueil_ech_eq_2_4
 
 [crazy_house.accueil_ech_eq_2_4]
 #       |-----------------------|
-line1 = "Passez par cet escalier"
-line2 = "puis demandez aux gens."
+line1 = "Passez par l'escalier"
+line2 = "derrière moi puis"
+line3 = "demandez aux gens."
 
 [crazy_house.accueil_ech_eq_3]
 #       |-----------------------|
@@ -2724,7 +2725,7 @@ next = crazy_house.accueil_ech_eq_3_2
 
 [crazy_house.accueil_ech_eq_3_2]
 #       |-----------------------|
-line1 = "de cette salle et"
+line1 = "derrière moi et"
 line2 = "demandez aux gens."
 
 [crazy_house.accueil_ech_eq_4]
@@ -2811,7 +2812,7 @@ next = crazy_house.accueil_ech_eq_11_3
 	
 [crazy_house.accueil_ech_eq_11_3]
 #       |-----------------------|
-line1 = "...si mes souvenirs"
+line1 = "... si mes souvenirs"
 line2 = "sont bons."
 
 [crazy_house.accueil_epi_eo_1-7]
@@ -2840,8 +2841,9 @@ next = crazy_house.accueil_epi_eo_3-5_2
 
 [crazy_house.accueil_epi_eo_3-5_2]
 #       |-----------------------|
-line1 = "aile droite, par cet"
-line2 = "escalier."
+line1 = "aile droite, par"
+line2 = "l'escalier derrière"
+line3 = "moi."
 
 [crazy_house.accueil_epi_eo_4-9]
 #       |-----------------------|
@@ -2871,8 +2873,8 @@ next = crazy_house.accueil_bal_eo_1-6-8-10_2
 
 [crazy_house.accueil_bal_eo_1-6-8-10_2]
 #       |-----------------------|
-line1 = "droite par cet"
-line2 = "escalier."
+line1 = "droite par l'escalier"
+line2 = "derrière moi."
 
 [crazy_house.accueil_bal_eq_2]
 #       |-----------------------|
@@ -5066,6 +5068,11 @@ next = the_end.credits.14bis
 
 [the_end.credits.14bis]
 #       |-----------------------|
+line1 = "JB"
+next = the_end.credits.14ter
+
+[the_end.credits.14ter]
+#       |-----------------------|
 line1 = "Nintendo"
 next = the_end.credits.15
 
@@ -5261,7 +5268,7 @@ line3 = "périls."
 
 [dungeon_1.small_key_danger_east]
 #       |-----------------------|
-line1 = "Par contre, ne vas pas"
+line1 = "Par contre, ne va pas"
 line2 = "à l'est, c'est sûrement"
 line3 = "dangereux."
 

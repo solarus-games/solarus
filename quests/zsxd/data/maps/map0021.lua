@@ -3,6 +3,8 @@
 -- TODO: MAP TERMINEE, A TESTER --
 ----------------------------------
 
+guichet43_sprite = sol.map.npc_get_sprite("GC43S")
+
 -- Guichet 41 -------------------------------------------------
 function guichet_41()
 	if sol.game.savegame_get_integer(1410) == 3 then
@@ -64,7 +66,15 @@ function event_hero_interaction(entity_name)
 end
 
 function event_dialog_finished(first_message_id, answer)
-	if first_message_id == "crazy_house.guichet_45_ech_ne_3" then
+	if first_message_id == "crazy_house.guichet_43" then
+		-- Piplette (guichet 43) qui se tourne vers Link, énervée
+		sol.main.sprite_set_direction(guichet43_sprite, 3)
+		sol.map.dialog_start("crazy_house.guichet_43n")
+	elseif first_message_id == "crazy_house.guichet_43n" then
+		-- Piplette reprend sa conversation
+		sol.main.sprite_set_direction(guichet43_sprite, 2)
+		sol.map.dialog_start("crazy_house.guichet_43f")
+	elseif first_message_id == "crazy_house.guichet_45_ech_ne_3" then
 		if answer == 0 then
 			if sol.game.get_item_amount("cuillere_counter") >= 1 then
 				sol.map.dialog_start("crazy_house.guichet_45_ech_ok")

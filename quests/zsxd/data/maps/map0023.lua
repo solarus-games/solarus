@@ -3,6 +3,8 @@
 -- TODO: MAP TERMINEE, A TESTER --
 ----------------------------------
 
+guichet82_sprite = sol.map.npc_get_sprite("GC82")
+
 -- Guichet 82 -------------------------------------------------
 function guichet_82()
 	sol.map.dialog_start("crazy_house.guichet_82")
@@ -34,6 +36,7 @@ end
 
 function event_hero_interaction(entity_name)
 	if entity_name == "GC82Front" then
+		sol.main.sprite_set_direction(guichet82_sprite, 3)		
 		guichet_82()
 	elseif entity_name == "GC84" then
 		guichet_84()

@@ -1058,10 +1058,7 @@
 18	1	2496	424	WW2_2	3	5	130
 10	1	2472	424	48	24	weak_wall_B_closed_2	52	1
 10	1	2472	464	48	24	weak_wall_B_closed	49	1
-9	1	2680	637	block_4	-1	1	2
-9	1	2680	509	block_2	-1	1	2
-9	1	2504	637	block_3	-1	1	2
-9	1	2504	509	block	-1	1	2
+9	1	2504	501	block	-1	1	2
 8	1	2248	765	interactive_entity_2	3	1	npc/static_villager12	map
 8	1	2312	765	interactive_entity_3	3	1	npc/static_villager10	map
 6	1	1928	680	8	48	jump_sensor	0	40

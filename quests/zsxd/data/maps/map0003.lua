@@ -5,14 +5,19 @@
 -- Function called when the map starts.
 -- The NPCs are initialized.
 function event_map_started(destination_point_name)
-   -- make the NPCs walk
-   random_run("forest_monkey")
+  -- make the NPCs walk
+  if sol.game.savegame_get_boolean(48) then
+    random_monkey_run(48) -- the monkey has not the boots anymore
+  else
+    random_monkey_run(128)
+  end
 end
 
-function random_run(npc_name)
-   m = sol.main.random_path_movement_create(128)
-   sol.map.npc_start_movement(npc_name, m)
-   sol.main.sprite_set_animation(sol.map.npc_get_sprite(npc_name), "walking")
+function random_monkey_run(speed)
+
+  m = sol.main.random_path_movement_create(speed)
+  sol.map.npc_start_movement("forest_monkey", m)
+  sol.main.sprite_set_animation(sol.map.npc_get_sprite("forest_monkey"), "walking")
 end
 
 
@@ -40,18 +45,18 @@ end
 -- Function called when the dialog box is being closed.
 -- If the player was talking to the guard, we do the appropriate action
 function event_dialog_finished(first_message_id, answer)
-   if first_message_id == "outside_fields_SO.guard_ok" then
+  if first_message_id == "outside_fields_SO.guard_ok" then
 
-      s = sol.map.npc_get_sprite("guard")
-      if sol.main.sprite_get_animation(s) ~= "walking" then
-        -- make the guard move
-        m = sol.main.path_movement_create("000000000066", 24)
-        sol.main.sprite_set_animation(s, "walking")
-        sol.map.npc_start_movement("guard", m)
-      end
-   elseif first_message_id == "outside_fields_SO.forest_monkey_give_boots" then
-      sol.map.treasure_give("pegasus_shoes", 1, 48)
-      sol.game.remove_item_amount("apple_pie_counter", 1)
+    s = sol.map.npc_get_sprite("guard")
+    if sol.main.sprite_get_animation(s) ~= "walking" then
+      -- make the guard move
+      m = sol.main.path_movement_create("000000000066", 24)
+      sol.main.sprite_set_animation(s, "walking")
+      sol.map.npc_start_movement("guard", m)
+    end
+  elseif first_message_id == "outside_fields_SO.forest_monkey_give_boots" then
+    sol.map.treasure_give("pegasus_shoes", 1, 48)
+    sol.game.remove_item_amount("apple_pie_counter", 1)
   end
 end
 
@@ -61,3 +66,11 @@ function event_chest_empty(chest_name)
     sol.map.hero_unfreeze()
   end
 end
+
+function event_treasure_obtained(item_name, variant, savegame_variable)
+
+  if item_name == "pegasus_shoes" then
+    random_monkey_run(48) -- reduce the speed
+  end
+end
+

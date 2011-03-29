@@ -936,8 +936,8 @@
 0	1	1648	496	16	16	1
 0	1	1664	496	16	16	1
 0	1	112	16	16	32	42
-0	1	1456	496	32	16	1
-0	1	1368	576	16	16	1
+0	1	1336	624	16	16	1
+0	1	1400	624	16	16	1
 1	1	1376	485	from3F_center	3	0
 12	1	2200	800	176	8	custom_obstacle_11	1	1	1	1
 1	1	768	485	from1Fa	3	0
@@ -1054,8 +1054,8 @@
 19	1	2280	576	stairs_4	1	1
 1	1	2288	589	from1Fb	3	0
 2	1	2280	576	16	16	to1Fb	0	1	20	from2Fa_right
-18	1	2496	472	weak_wall_B_2	1	5	0
-18	1	2496	424	weak_wall_B	3	5	0
+18	1	2496	472	WW2	1	5	130
+18	1	2496	424	WW2_2	3	5	130
 10	1	2472	424	48	24	weak_wall_B_closed_2	52	1
 10	1	2472	464	48	24	weak_wall_B_closed	49	1
 9	1	2680	637	block_4	-1	1	2
@@ -1077,7 +1077,6 @@
 2	1	2960	24	16	16	to1Fb_right	0	1	21	from2Fa_right
 1	1	1568	669	arrival_D	-1	1
 6	1	1584	640	32	8	jump_sensor_4	2	40
-3	1	1656	653	piece_of_heart	1	114
 5	1	1840	688	chest	0	bomb	3	116
 15	1	1776	744	144	16	1
 6	1	1624	552	80	8	jump_sensor_5	6	40
@@ -1110,10 +1109,11 @@
 4	1	1672	509	0	bomb	1	-1
 18	1	280	328	LD1_2	0	0	127
 12	1	1784	488	8	24	custom_obstacle_12	1	1	1	1
-4	1	1376	589	0	bomb	3	-1
-4	1	1480	509	0	_random	3	-1
-4	1	1464	509	0	_random	3	-1
+4	1	1344	637	0	bomb	3	-1
+4	1	1408	637	0	_random	3	-1
 8	1	2880	125	interactive_entity	3	0	entities/sign	dialog#crazy_house.directions_2F_ne
+8	1	1336	781	interactive_entity_4	3	0	entities/sign	dialog#crazy_house.guichet_21_ici
+5	1	1648	640	chest_2	0	map	1	102
 0	2	720	464	96	8	262
 0	2	112	240	96	8	262
 0	2	112	216	96	8	263

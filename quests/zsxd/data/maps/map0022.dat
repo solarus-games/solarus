@@ -938,6 +938,8 @@
 0	1	112	16	16	32	42
 0	1	1336	624	16	16	1
 0	1	1400	624	16	16	1
+0	1	2696	632	16	16	1
+0	1	2696	488	16	16	1
 1	1	1376	485	from3F_center	3	0
 12	1	2200	800	176	8	custom_obstacle_11	1	1	1	1
 1	1	768	485	from1Fa	3	0
@@ -1066,9 +1068,9 @@
 8	1	2632	277	monkey	3	1	npc/monkey	map
 7	1	2648	573	globul_a	3	globul	0	-1	_random	1	-1
 9	1	2544	541	block_5	-1	0	0
-9	1	2544	597	block_6	-1	0	0
-9	1	2632	597	block_7	-1	0	0
-9	1	2632	541	block_8	-1	0	0
+9	1	2544	605	block_6	-1	0	0
+9	1	2640	605	block_7	-1	0	0
+9	1	2640	541	block_8	-1	0	0
 19	1	2960	24	stairs_5	1	1
 1	1	2968	37	from1Fb_right	3	0
 2	1	2960	24	16	16	to1Fb_right	0	1	21	from2Fa_right
@@ -1110,7 +1112,11 @@
 4	1	1408	637	0	_random	3	-1
 8	1	2880	125	interactive_entity	3	0	entities/sign	dialog#crazy_house.directions_2F_ne
 8	1	1336	781	interactive_entity_4	3	0	entities/sign	dialog#crazy_house.guichet_21_ici
-5	1	1648	640	chest_2	0	map	1	102
+5	1	1648	640	chest_2	0	compass	1	102
+4	1	2704	501	0	bomb	2	-1
+4	1	2704	645	0	_random	1	-1
+14	1	376	301	crystal_switch_2
+8	1	2376	541	interactive_entity_5	3	0	entities/sign	dialog#crazy_house.directions_2F_e
 0	2	720	464	96	8	262
 0	2	112	240	96	8	262
 0	2	112	216	96	8	263

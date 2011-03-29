@@ -160,7 +160,7 @@ booleans:
 100 to 199	reserved for crazy_house (dungeon 2)
 100	1FA: Hidden 50 rupees [HR2]
 101	1FA: Empty chest Switch [CS3]
-102	3F : Map chest [CM3]
+102	3F : Compass chest [CM3]
 103 1FA: Empty chest [CV1]
 104 2FA: Hidden 50 rupees [HR1]
 105 1FA: Weak Wall [WW1]
@@ -170,7 +170,7 @@ booleans:
 109 1FA: 1 rupee chest [CR3]
 110 1FB: Empty chest [CV3]
 111 3F : Big Key chest [CK5]
-112 1FB: Compass chest [CV4]
+112 1FB: Map chest [CV4]
 113 1FB: Empty chest [CV2]
 114 2FA: Piece of Heart [PH2]
 115 1FB: Bombs chest [CB1]

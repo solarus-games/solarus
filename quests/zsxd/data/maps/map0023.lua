@@ -45,7 +45,7 @@ function event_dialog_finished(first_message_id, answer)
 		-- Choix de réponse au guichet 82		
 		if answer == 0 then
 			-- Contrôle de la quantité
-			if sol.game.get_item_amount("sac_olive_counter") < 2 then
+			if sol.game.get_item_amount("sac_olive_counter") < 1 then
 				sol.main.play_sound("wrong")
 				sol.map.dialog_start("crazy_house.guichet_82_un")
 			else
@@ -55,18 +55,17 @@ function event_dialog_finished(first_message_id, answer)
 	elseif first_message_id == "crazy_house.guichet_82_ok" then
 		-- Obtention du roc magma au guichet 82		
 		sol.map.treasure_give("roc_magma", 1, -1)
-		sol.main.remove_item_amount("sac_olive_counter", 2)
+		sol.main.remove_item_amount("sac_olive_counter", 1)
 	elseif first_message_id == "crazy_house.guichet_84_ech_ne_3_hh" then
 		-- Choix de réponse au guichet 84		
 		if answer == 0 then
 			-- Contrôle de la quantité
-			if sol.game.get_item_amount("hache_counter") < 5 then
+			if sol.game.get_item_amount("hache_counter") < 1 then
 				sol.main.play_sound("wrong")
 				sol.map.dialog_start("crazy_house.guichet_84_ech_ne_3_un")
 			else
 				sol.map.treasure_give("poivron", 1, -1)
-				sol.game.add_item_amount("poivron_counter", 2)
-				sol.game.remove_item_amount("hache_counter", 5)
+				sol.game.remove_item_amount("hache_counter", 1)
 				-- Incrémentation branche 1411
 				branche1411 = sol.game.savegame_get_integer(1411)
 				if branche1411 > 0 and branche1411 <= 7 then

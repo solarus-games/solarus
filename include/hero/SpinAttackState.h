@@ -24,6 +24,10 @@
  */
 class Hero::SpinAttackState: public Hero::State {
 
+  private:
+
+    void play_spin_attack_sound();
+
   public:
 
     SpinAttackState(Hero &hero);

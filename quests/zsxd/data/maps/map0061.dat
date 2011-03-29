@@ -1169,9 +1169,9 @@
 18	1	584	328	wtf_door_3	0	0	-1
 18	1	328	328	wtf_door_7	2	0	-1
 18	1	632	328	wtf_door_4	2	0	-1
-4	1	360	285	0	fairy	1	-1
-4	1	360	413	0	fairy	1	-1
-4	1	568	285	0	fairy	1	-1
+4	1	360	285	0	_random	1	-1
+4	1	360	413	0	_random	1	-1
+4	1	568	285	0	_random	1	-1
 4	1	568	413	0	fairy	1	-1
 5	1	664	952	chest_4	1	bomb_bag	2	205
 5	1	768	960	chest_3	0	compass	1	203
@@ -1209,11 +1209,11 @@
 13	1	256	613	16	16	cannonballs_stop_sensor	0
 13	1	544	765	16	16	cannonballs_stop_sensor_2	0
 4	1	712	101	0	_random	1	-1
-4	1	728	101	0	heart	1	-1
+4	1	728	101	0	_random	1	-1
 4	1	744	101	0	heart	1	-1
 4	1	760	101	0	_random	1	-1
 4	1	776	101	0	_random	1	-1
-4	1	128	101	0	heart	1	-1
+4	1	128	101	0	_random	1	-1
 4	1	144	101	0	_random	1	-1
 4	1	160	101	0	heart	1	-1
 4	1	176	101	0	_random	1	-1

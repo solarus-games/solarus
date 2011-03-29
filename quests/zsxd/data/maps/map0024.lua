@@ -6,6 +6,7 @@
 giga_bouton_pushed = false
 giga_bouton_camera = false
 dialogue_trop_leger_fait = false
+guichet33_sprite = sol.map.npc_get_sprite("GC33")
 
 function event_map_started(destination_point_name)
 	-- Desactivation des sensors pour la porte du couloir sans fin	
@@ -98,6 +99,7 @@ function event_hero_interaction(entity_name)
 	elseif entity_name == "GC32" then
 		guichet_32()
 	elseif entity_name == "GC33Front" then
+		sol.main.sprite_set_direction(guichet33_sprite, 3)
 		guichet_33()
 	elseif entity_name == "GC36" then
 		guichet_36()

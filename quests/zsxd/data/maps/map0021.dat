@@ -884,7 +884,7 @@
 8	1	920	637	GC47	3	0	_none	map
 8	1	920	765	interactive_entity_2	3	1	npc/static_villager6	map
 8	1	920	805	GC45	3	0	_none	map
-8	1	2144	605	interactive_entity_3	2	1	npc/villager1	map
+8	1	2144	605	GC43S	2	1	npc/villager1	map
 8	1	2112	605	interactive_entity_4	0	1	npc/villager2	map
 8	1	2144	645	GC43	3	0	_none	map
 8	1	2136	805	GC41	3	0	_none	map

@@ -27,11 +27,11 @@ function vieillard()
 		else
 			if sol.game.savegame_get_boolean(125) == false then
 				-- Vieillard n'a pas encore changé d'avis
-				if sol.game.get_item_amount("poivron_counter") < 3 then
-					-- N'a pas encore 3 poivrons
+				if sol.game.get_item_amount("poivron_counter") < 1 then
+					-- N'a pas encore de poivron
 					sol.map.dialog_start("crazy_house.vieillard")
 				else
-					-- A les 3 poivrons
+					-- A le poivron
 					sol.map.dialog_start("crazy_house.vieillard_poivron")
 					-- Changement d'avis				
 					sol.game.savegame_set_boolean(125, true)
@@ -43,10 +43,10 @@ function vieillard()
 				end
 			else
 				-- Vieillard veut du riz maintenant !
-				if sol.game.get_item_amount("sac_riz_counter") < 5 then
+				if sol.game.get_item_amount("sac_riz_counter") < 1 then
 					sol.map.dialog_start("crazy_house.vieillard_riz_quantite")
 				else
-					-- A les 5 sacs de riz
+					-- A le sac de riz
 					sol.map.dialog_start("crazy_house.vieillard_riz_ok")
 				end
 				-- Incrémentation branche 1411
@@ -119,7 +119,7 @@ end
 function event_dialog_finished(first_message_id, answer)
 	if first_message_id == "crazy_house.vieillard_riz_ok" then
 		sol.map.treasure_give("bocal_epice", 1, -1)
-		sol.game.remove_item_amount("sac_riz_counter", 5)
+		sol.game.remove_item_amount("sac_riz_counter", 1)
 		-- branche 1411 finie
 		if sol.game.get_item_amount("balai_counter") > 0 then
 			sol.game.savegame_set_integer(1410, 9)
@@ -127,7 +127,7 @@ function event_dialog_finished(first_message_id, answer)
 		sol.game.savegame_set_integer(1411, 10)
 	elseif first_message_id == "crazy_house.guichet_22A" then
 		if answer == 0 then
-			if sol.game.get_item_amount("roc_magma_counter") < 3 then
+			if sol.game.get_item_amount("roc_magma_counter") < 1 then
 				sol.main.play_sound("wrong")
 				sol.map.dialog_start("crazy_house.guichet_22_rm_un")
 			else
@@ -136,7 +136,7 @@ function event_dialog_finished(first_message_id, answer)
 		end
 	elseif first_message_id == "crazy_house.guichet_22B" then
 		if answer == 0 then
-			if sol.game.get_item_amount("sac_riz_counter") < 2 then
+			if sol.game.get_item_amount("sac_riz_counter") < 1 then
 				sol.main.play_sound("wrong")
 				sol.map.dialog_start("crazy_house.guichet_22_sr_un")
 			else
@@ -145,15 +145,14 @@ function event_dialog_finished(first_message_id, answer)
 		end
 	elseif first_message_id == "crazy_house.guichet_22_rm_ok" then
 		sol.map.treasure_give("balai", 1, -1)
-		sol.game.remove_item_amount("roc_magma_counter", 3)
+		sol.game.remove_item_amount("roc_magma_counter", 1)
 		-- branche 1412 finie
 		if sol.game.get_item_amount("bocal_epice_counter") > 0 then
 			sol.game.savegame_set_integer(1410, 9)
 		end
 	elseif first_message_id == "crazy_house.guichet_22_sr_ok" then
 		sol.map.treasure_give("tapisserie", 1, -1)
-		sol.game.add_item_amount("tapisserie_counter", 2)
-		sol.game.remove_item_amount("sac_riz_counter", 2)
+		sol.game.remove_item_amount("sac_riz_counter", 1)
 		-- Incrémentation branche 1411
 		branche1411 = sol.game.savegame_get_integer(1411)
 		if branche1411 > 0 and branche1411 <= 5 then

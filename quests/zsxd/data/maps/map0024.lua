@@ -197,14 +197,13 @@ function event_dialog_finished(first_message_id, answer)
 			sol.map.dialog_start("crazy_house.apothicaire_non")
 		end
 	elseif first_message_id == "crazy_house.apothicaire_oui" then
-		-- Remise des sacs de riz achetés à l'apothicaire
+		-- Remise du sac de riz achetés à l'apothicaire
 		sol.map.treasure_give("sac_riz", 1, -1)
-		sol.game.add_item_amount("sac_riz_counter", 4)
 	elseif first_message_id == "crazy_house.guichet_36" then
-		-- Achat de sacs de riz à Panoda Fichage
+		-- Achat de 3 sacs de riz à Panoda Fichage
 		if answer == 0 then
-			if sol.game.get_money() >= 10 then
-				sol.game.remove_money(10)
+			if sol.game.get_money() >= 50 then
+				sol.game.remove_money(50)
 				sol.map.treasure_give("sac_riz", 1, -1)
 				sol.game.add_item_amount("sac_riz_counter", 2)
 				-- Incrémentation branche 1411
@@ -223,11 +222,10 @@ function event_dialog_finished(first_message_id, answer)
 			end
 		end
 	elseif first_message_id == "crazy_house.guichet_32_ech_ne_6" then
-		-- Echange de hache contre cuilleres		
+		-- Echange de hache contre cuillere
 		if answer == 0 then
 			if sol.game.get_item_amount("hache_counter") >= 1 then
 				sol.map.treasure_give("cuillere", 1, -1)
-				sol.game.add_item_amount("cuillere_counter", 1)
 				sol.game.remove_item_amount("hache_counter", 1)
 			else
 				sol.main.play_sound("wrong")
@@ -302,7 +300,7 @@ end
 
 function event_switch_activated(switch_name)
 
-	-- Ouverture de la barrière près du giga bouton
+	-- Ouverture de la barrière près du giga bouton d'extra collision à charge supérieure de 15.000 megawatts
 	if switch_name == "barrier_switch" then
 		sol.main.play_sound("secret")
 		sol.map.tile_set_group_enabled("barrier", false)

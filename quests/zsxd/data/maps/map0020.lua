@@ -273,10 +273,9 @@ function event_dialog_finished(first_message_id, answer)
 	elseif first_message_id == "crazy_house.guichet_11_bal_eq_9" then
 		if answer == 0 then
 			if sol.game.get_item_amount("tapisserie_counter") >= 1 then
-				-- Obtention des rocs magma (guichet 11)
+				-- Obtention du roc magma (guichet 11)
 				guichet_11_error = true
 				sol.map.treasure_give("roc_magma", 1, -1)
-				sol.game.add_item_amount("roc_magma_counter", 4)
 				sol.game.remove_item_amount("tapisserie_counter", 1)
 				-- Incrémentation branche 1412
 				branche1412 = sol.game.savegame_get_integer(1412)

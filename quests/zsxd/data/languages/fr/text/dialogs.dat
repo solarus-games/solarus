@@ -2966,8 +2966,8 @@ line2 = "l'accueil."
 
 [crazy_house.guichet_11_ech_eq_9]
 #       |-----------------------|
-line1 = "Oui nous avons des"
-line2 = "haches, mais chaque"
+line1 = "Oui nous avons trouvé"
+line2 = "des haches, mais chaque"
 line3 = "hache ne pourra"
 skip = current
 next = crazy_house.guichet_11_ech_eq_9_2
@@ -3269,7 +3269,7 @@ next = crazy_house.guichet_22A_3
 
 [crazy_house.guichet_22A_3]
 #       |-----------------------|
-line1 = "balai contre trois rocs"
+line1 = "balai contre un roc"
 line2 = "magma."
 next = crazy_house.guichet_22_question
 
@@ -3290,8 +3290,8 @@ next = crazy_house.guichet_22B_3
 
 [crazy_house.guichet_22B_3]
 #       |-----------------------|   
-line1 = "trois tapisseries pour"
-line2 = "deux sacs de riz."
+line1 = "une tapisserie contre"
+line2 = "un sac de riz."
 next = crazy_house.guichet_22_question
 
 [crazy_house.guichet_22_question]
@@ -3305,8 +3305,7 @@ skip = none
 [crazy_house.guichet_22_rm_un]
 #       |-----------------------|
 line1 = "Ah, mais vous n'avez"
-line2 = "pas assez de rocs"
-line3 = "magma..."
+line2 = "pas de roc magma..."
 skip = current
 next = crazy_house.guichet_22_rm_un_2
 
@@ -3324,13 +3323,13 @@ skip = current
 [crazy_house.guichet_22_sr_un]
 #       |-----------------------|
 line1 = "Désolé, il vous faut"
-line2 = "deux sacs de riz."
+line2 = "un sac de riz."
 skip = current
 
 [crazy_house.guichet_22_sr_ok]
 #       |-----------------------|
-line1 = "Et voilà les superbes"
-line2 = "tapisseries !"
+line1 = "Et voilà la superbe"
+line2 = "tapisserie !"
 skip = current
 
 #==============================================
@@ -3405,8 +3404,8 @@ line3 = "devriez retourner voir."
 [crazy_house.guichet_32_ech_ne_6]
 #       |-----------------------|
 line1 = "Ici au guichet 32, on"
-line2 = "peut vous proposer deux"
-line3 = "cuillères contre une"
+line2 = "peut vous proposer une"
+line3 = "cuillère contre une"
 skip = current
 next = crazy_house.guichet_32_ech_ne_6_2
 
@@ -3563,7 +3562,7 @@ next = crazy_house.guichet_36_2
 
 [crazy_house.guichet_36_2]
 #       |-----------------------|
-line1 = "sacs de riz : 10 rubis"
+line1 = "sacs de riz : 50 rubis"
 line2 = "pour trois."
 next = crazy_house.guichet_36_3
 
@@ -3578,7 +3577,7 @@ skip = none
 [crazy_house.guichet_36_un]
 #       |-----------------------|
 line1 = "Désolé, il vous faut"
-line2 = "au moins 10 rubis."
+line2 = "au moins 50 rubis."
 skip = current
 
 #==============================================
@@ -3662,24 +3661,22 @@ line1 = "nan mais c'est"
 line2 = "incroyable le toupet de"
 line3 = "cette dame..."
 skip = all
-next = crazy_house.guichet_43_4
 
-[crazy_house.guichet_43_4]
+[crazy_house.guichet_43n]
 #       |-----------------------|
 line1 = "QUOI ?!! Vous ne voyez"
 line2 = "pas que je suis"
 line3 = "occupée ?"
 skip = all
-next = crazy_house.guichet_43_5
+next = crazy_house.guichet_43n_2
 
-[crazy_house.guichet_43_5]
+[crazy_house.guichet_43n_2]
 #       |-----------------------|
 line1 = "Ce que les gens peuvent"
 line2 = "être mal élevés !"
 skip = all
-next = crazy_house.guichet_43_6
 
-[crazy_house.guichet_43_6]
+[crazy_house.guichet_43f]
 #       |-----------------------|
 line1 = "Roh... où j'en étais"
 line2 = "moi ?..."
@@ -3762,15 +3759,13 @@ next = crazy_house.guichet_45_ech_ne_3_2
 [crazy_house.guichet_45_ech_ne_3_2]
 #       |-----------------------|
 line1 = "hasard ? Je pourrais"
-line2 = "éventuellement vous les"
-line3 = "échanger contre des"
+line2 = "éventuellement vous en"
+line3 = "échanger un contre une"
 next = crazy_house.guichet_45_ech_ne_3_3
 
 [crazy_house.guichet_45_ech_ne_3_3]
 #       |-----------------------|
-line1 = "cuillères."
-line2 = "Deux cuillères pour"
-line3 = "trois sacs d'olive."
+line1 = "cuillère."
 next = crazy_house.guichet_45_ech_ne_3_4
 
 [crazy_house.guichet_45_ech_ne_3_4]
@@ -3784,14 +3779,14 @@ skip = none
 [crazy_house.guichet_45_ech_un]
 #       |-----------------------|
 line1 = "Quel dommage, vous"
-line2 = "n'avez pas assez de"
-line3 = "cullières."
+line2 = "n'avez pas de"
+line3 = "cullière."
 skip = current
 
 [crazy_house.guichet_45_ech_ok]
 #       |-----------------------|
-line1 = "Parfait, voici vos"
-line2 = "sacs d'olive."
+line1 = "Parfait, voici votre"
+line2 = "sac d'olive."
 skip = current
 
 #==============================================
@@ -3869,15 +3864,15 @@ next = crazy_house.guichet_82_3
 
 [crazy_house.guichet_82_3]
 #       |-----------------------|
-line1 = "Tu n'aurais pas des"
-line2 = "sacs d'olives par"
+line1 = "Tu n'aurais pas un"
+line2 = "sac d'olives par"
 line3 = "hasard ?"
 skip = current
 next = crazy_house.guichet_82_4
 
 [crazy_house.guichet_82_4]
 #       |-----------------------|
-line1 = "Je t'échange deux sacs"
+line1 = "Je t'échange ton sac"
 line2 = "d'olives contre un roc"
 line3 = "magma."
 next = crazy_house.guichet_82_5
@@ -3893,19 +3888,14 @@ skip = none
 [crazy_house.guichet_82_un]
 #       |-----------------------|
 line1 = "Désolé, il te faut"
-line2 = "au moins deux sacs"
-line3 = "d'olive pour obtenir"
+line2 = "au un sac d'olive pour
+line3 = "obtenir ce roc magma."
 skip = current
-next = crazy_house.guichet_82_un_2
-
-[crazy_house.guichet_82_un_2]
-#       |-----------------------|
-line1 = "un roc magma."
 
 [crazy_house.guichet_82_ok]
 #       |-----------------------|
-line1 = "Oh my god ! Tu as les"
-line2 = "sacs d'olives, c'est"
+line1 = "Oh my god ! Tu as le"
+line2 = "sac d'olives, c'est"
 line3 = "trop bien !"
 skip = current
 next = crazy_house.guichet_82_ok_2
@@ -3947,14 +3937,14 @@ skip = current
 [crazy_house.guichet_84_ech_ne_3_nh]
 #       |-----------------------|
 line1 = "Ici, nous avons des"
-line2 = "poivrons. En échange de"
-line3 = "cinq haches, on vous "
+line2 = "poivrons. En échange"
+line3 = "d'une hache, on vous "
 skip = current
 next = crazy_house.guichet_84_ech_ne_3_nh_2
 
 [crazy_house.guichet_84_ech_ne_3_nh_2]
 #       |-----------------------|
-line1 = "offre trois poivrons."
+line1 = "offre un poivron."
 line2 = "J'ai entendu dire"
 line3 = "qu'ils avaient des"
 next = crazy_house.guichet_84_ech_ne_3_nh_3
@@ -3965,9 +3955,9 @@ line1 = "haches au guichet 11."
 
 [crazy_house.guichet_84_ech_ne_3_hh]
 #       |-----------------------|
-line1 = "Echange standard : cinq"
-line2 = "haches contre trois"
-line3 = "poivrons."
+line1 = "Echange standard : une"
+line2 = "hache contre un"
+line3 = "poivron."
 skip = current
 next = crazy_house.guichet_84_ech_ne_3_hh_2
 
@@ -3989,7 +3979,7 @@ next = crazy_house.guichet_84_ech_ne_3_un_2
 
 [crazy_house.guichet_84_ech_ne_3_un_2]
 #       |-----------------------|
-line1 = "Tu amènes les 5 haches"
+line1 = "Tu amènes la hache"
 line2 = "ou t'auras rien !"
 
 #==============================================
@@ -4012,8 +4002,8 @@ next = crazy_house.vieillard_3
 
 [crazy_house.vieillard_3]
 #       |-----------------------|
-line1 = "Si tu m'apportes trois"
-line2 = "poivrons, je serai"
+line1 = "Si tu m'apportes un"
+line2 = "poivron, je serai"
 line3 = "peut-être conciliant..."
 next = crazy_house.vieillard_ronfl
 
@@ -4027,9 +4017,9 @@ next = crazy_house.vieillard_poivron_2
 
 [crazy_house.vieillard_poivron_2]
 #       |-----------------------|
-line1 = "demandé des poivrons !"
-line2 = "Ce que je cherche ce"
-line3 = "sont des sacs de riz !"
+line1 = "demandé de poivron !"
+line2 = "Ce que je cherche c'est"
+line3 = "un sac de riz !"
 next = crazy_house.vieillard_poivron_3
 
 [crazy_house.vieillard_poivron_3]
@@ -4042,20 +4032,14 @@ next = crazy_house.vieillard_ronfl
 #       |-----------------------|
 line1 = "ZZZ... Hein ?..."
 line2 = "Mais tu n'a pas"
-line3 = "assez de sacs de riz !"
+line3 = "de sac de riz !"
 skip = current
 next = crazy_house.vieillard_riz_quantite_2
 
 [crazy_house.vieillard_riz_quantite_2]
 #       |-----------------------|
 line1 = "Allez zou ! Va en"
-line2 = "chercher d'autres."
-next = crazy_house.vieillard_riz_quantite_3
-
-[crazy_house.vieillard_riz_quantite_3]
-#       |-----------------------|
-line1 = "J'en veux au moins"
-line2 = "cinq..."
+line2 = "chercher."
 next = crazy_house.vieillard_ronfl
 
 [crazy_house.vieillard_riz_ok]
@@ -4104,8 +4088,7 @@ next = crazy_house.apothicaire_2
 [crazy_house.apothicaire_2]
 #       |-----------------------|
 line1 = "la modique somme de"
-line2 = "20 rubis. Pour ce prix,"
-line3 = "vous en aurez cinq."
+line2 = "20 rubis l'unité."
 next = crazy_house.apothicaire_3
 
 [crazy_house.apothicaire_3]
@@ -4132,8 +4115,7 @@ next = crazy_house.apothicaire_rubis_2
 
 [crazy_house.apothicaire_rubis_2]
 #       |-----------------------|
-line1 = "obtenir les cinq sacs"
-line2 = "de riz."
+line1 = "obtenir un sac de riz."
 
 [crazy_house.apothicaire_oui]
 #       |-----------------------|

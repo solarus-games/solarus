@@ -23,6 +23,7 @@
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 #include "Configuration.h"
+#include <sstream>
 
 ALCdevice * Sound::device = NULL;
 ALCcontext * Sound::context = NULL;
@@ -184,10 +185,21 @@ bool Sound::is_initialized() {
 }
 
 /**
+ * @brief Returns whether a sound exists.
+ * @param sound_id id of the sound to test
+ */
+bool Sound::exists(const SoundId& sound_id) {
+
+  std::ostringstream oss;
+  oss << "sounds/" << sound_id << ".ogg";
+  return FileTools::data_file_exists(oss.str());
+}
+
+/**
  * @brief Starts playing the specified sound.
  * @param sound_id id of the sound to play
  */
-void Sound::play(const SoundId &sound_id) {
+void Sound::play(const SoundId& sound_id) {
 
   if (all_sounds.count(sound_id) == 0) {
     all_sounds[sound_id] = Sound(sound_id);

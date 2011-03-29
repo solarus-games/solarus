@@ -79,7 +79,8 @@ class Sound {
     ~Sound();
     bool start();
 
-    static void play(const SoundId &sound_id);
+    static bool exists(const SoundId& sound_id);
+    static void play(const SoundId& sound_id);
 
     static void initialize(int argc, char **argv);
     static void quit();

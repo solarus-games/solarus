@@ -3840,15 +3840,16 @@ skip = current
 
 [crazy_house.guichet_47_ech_ne_3]
 #       |-----------------------|
-line1 = "Si vous voulez"
-line2 = "immatriculer une"
-line3 = "galère, il faut"
+line1 = "Immatriculer une"
+line2 = "galère ? Non, on vous a"
+line3 = "mal dirigé. Vous devez"
 skip = current
 next = crazy_house.guichet_47_ech_ne_3_2
 
 [crazy_house.guichet_47_ech_ne_3_2]
 #       |-----------------------|
-line1 = "aller au port."
+line1 = "vous adresser à la"
+line2 = "capitainerie au port !"
 
 [crazy_house.guichet_47_ech_eq_3]
 #       |-----------------------|
@@ -4169,9 +4170,9 @@ skip = current
 
 [crazy_house.pnja]
 #       |-----------------------|
-line1 = "Oh la la ! J'en peu"
+line1 = "Oh là là ! J'en peux"
 line2 = "plus moi de cet"
-line3 = "endroit ! On me ballade"
+line3 = "endroit ! On me balade"
 next = crazy_house.pnja_2
 skip = current
 
@@ -4181,7 +4182,6 @@ line1 = "de guichet en guichet,"
 line2 = "si tu veux mon avis,"
 line3 = "ils le font exprès pour"
 next = crazy_house.pnja_3
-skip = current
 
 [crazy_house.pnja_3]
 #       |-----------------------|
@@ -4189,35 +4189,31 @@ line1 = "justifier leur"
 line2 = "salaire... que dis-je,"
 line3 = "leur rente !"
 next = crazy_house.pnja_4
-skip = current
 
 [crazy_house.pnja_4]
 #       |-----------------------|
 line1 = "C'est un scandale !"
-skip = current
 
 [crazy_house.pnjb]
 #       |-----------------------|
 line1 = "Ah ! J'étais venu dans"
 line2 = "cette bâtisse pour"
-line3 = "retrouver une bouteille"
+line3 = "proposer de leur"
 next = crazy_house.pnjb_2
 skip = current
 
 [crazy_house.pnjb_2]
 #       |-----------------------|
-line1 = "d'eau que j'avais"
-line2 = "perdue, mais"
-line3 = "visiblement, ils n'en"
+line1 = "fournir des bouteilles"
+line2 = "d'eau, mais visiblement"
+line3 = "ils n'en veulent pas."
 next = crazy_house.pnjb_3
-skip = current
 
 [crazy_house.pnjb_3]
 #       |-----------------------|
-line1 = "ont pas, quel dommage !"
+line1 = "Quel dommage !"
 line2 = "Ils ne savent pas ce"
 line3 = "qu'ils ratent."
-skip = current
 
 [crazy_house.pnjc]
 #       |-----------------------|
@@ -4233,13 +4229,11 @@ line1 = "immeuble, près de"
 line2 = "14 000 mètres carrés à"
 line3 = "couvrir,"
 next = crazy_house.pnjc_3
-skip = current
 
 [crazy_house.pnjc_3]
 #       |-----------------------|
 line1 = "si ce n'est pas de"
 line2 = "l'escalavage ça..."
-skip = current
 
 [crazy_house.pnjd]
 #       |-----------------------|
@@ -4253,33 +4247,29 @@ skip = current
 #       |-----------------------|
 line1 = "formulaire bleu pour"
 line2 = "l'établissement du"
-line3 = "constat de mon dégât"
+line3 = "laisser-passer A38,"
 next = crazy_house.pnjd_3
-skip = current
 
 [crazy_house.pnjd_3]
 #       |-----------------------|
-line1 = "des eaux, on m'a parlé"
-line2 = "d'un giga bouton"
-line3 = "trucmuche à méga"
+line1 = "on m'a parlé d'un giga"
+line2 = "bouton trucmuche à méga"
+line3 = "tension de je ne sais"
 next = crazy_house.pnjd_4
-skip = current
 
 [crazy_house.pnjd_4]
 #       |-----------------------|	
-line1 = "tension de je sais pas"
-line2 = "quoi. A mon avis vu le"
-line3 = "nom du bouzin, ça doit"
+line1 = "pas quoi. A mon avis vu"
+line2 = "le nom du bouzin, ça"
+line3 = "ça doit être un"
 next = crazy_house.pnjd_5
-skip = current
 
 [crazy_house.pnjd_5]
 #       |-----------------------|
-line1 = "être un mécanisme très"
+line1 = "mécanisme très"
 line2 = "compliqué, pas sûr que"
 line3 = "t'arrives à l'actionner"
 next = crazy_house.pnjd_6
-skip = current
 
 [crazy_house.pnjd_6]
 #       |-----------------------|
@@ -4287,12 +4277,10 @@ line1 = "tout seul, mais j'ai vu"
 line2 = "une statue bien lourde"
 line3 = "qui traînait dans"
 next = crazy_house.pnjd_7
-skip = current
 
 [crazy_house.pnjd_7]
 #       |-----------------------|
 line1 = "le coin aussi..."
-skip = current
 
 [crazy_house.pnje]
 #       |-----------------------|
@@ -4308,7 +4296,6 @@ line1 = "l'air, elle m'a déjà"
 line2 = "perdu un roc magma que"
 line3 = "j'avais confié le temps"
 next = crazy_house.pnje_3
-skip = current
 
 [crazy_house.pnje_3]
 #       |-----------------------|	
@@ -4316,13 +4303,11 @@ line1 = "que je trouve une"
 line2 = "cuillère dans cette"
 line3 = "maison qui rend fou..."
 next = crazy_house.pnje_4
-skip = current
 
 [crazy_house.pnje_4]
 #       |-----------------------|
 line1 = "Quel tissu"
 line2 = "d'incompétents ici !"
-skip = current
 
 #==============================================
 

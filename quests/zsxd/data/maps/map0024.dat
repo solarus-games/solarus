@@ -1118,6 +1118,7 @@
 12	1	1416	784	16	16	custom_obstacle_38	0	0	0	1
 12	1	1520	696	16	16	custom_obstacle_39	0	0	0	1
 3	1	2800	765	piece_of_heart	1	114
+8	1	288	741	PNJA	3	1	npc/villager3	dialog#crazy_house.pnja
 0	2	1320	1584	96	8	262
 0	2	440	888	96	8	263
 0	2	440	912	96	8	262

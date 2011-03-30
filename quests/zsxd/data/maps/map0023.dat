@@ -432,6 +432,8 @@
 8	1	488	317	interactive_entity_2	3	0	entities/sign	dialog#crazy_house.guichet_84_ici
 8	1	184	85	interactive_entity_3	3	0	entities/sign	dialog#crazy_house.directions_2F_no
 8	1	2536	349	interactive_entity_4	3	0	entities/sign	dialog#crazy_house.guichet_82_ici
+8	1	784	501	PNJD	3	1	npc/static_villager11	dialog#crazy_house.pnjd
+8	1	2560	93	PNJB	3	1	npc/static_villager14	dialog#crazy_house.pnjb
 0	2	2848	16	96	8	262
 0	2	2752	80	8	96	266
 0	2	2728	80	8	96	267

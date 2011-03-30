@@ -4273,14 +4273,9 @@ next = crazy_house.pnjd_6
 
 [crazy_house.pnjd_6]
 #       |-----------------------|
-line1 = "tout seul, mais j'ai vu"
-line2 = "une statue bien lourde"
-line3 = "qui traînait dans"
-next = crazy_house.pnjd_7
-
-[crazy_house.pnjd_7]
-#       |-----------------------|
-line1 = "le coin aussi..."
+line1 = "tout seul.. Il faudrait"
+line2 = "le forcer avec un truc"
+line3 = "lourd."
 
 [crazy_house.pnje]
 #       |-----------------------|

@@ -954,8 +954,6 @@
 11	1	384	384	locked_door_switch_A	1	0	0
 11	1	456	384	locked_door_switch_B	1	0	0
 15	1	488	320	16	48	1
-5	1	432	496	prankster_chest_middle	0	_none	1	-1
-5	1	352	496	prankster_chest_bottom	0	_none	1	-1
 8	1	216	157	Vieillard	3	1	npc/static_villager3	map
 8	1	768	573	directions_2F	3	0	entities/sign	dialog#crazy_house.directions_2F
 17	1	968	557	2
@@ -1117,6 +1115,8 @@
 4	1	2704	645	0	_random	1	-1
 14	1	376	301	crystal_switch_2
 8	1	2376	541	interactive_entity_5	3	0	entities/sign	dialog#crazy_house.directions_2F_e
+8	1	360	509	prankster_chest_bottom	3	0	entities/chest	map
+8	1	440	509	prankster_chest_middle	3	0	entities/chest	map
 0	2	720	464	96	8	262
 0	2	112	240	96	8	262
 0	2	112	216	96	8	263

@@ -135,6 +135,7 @@
 3	entities/hint_stone	Hint stone
 3	entities/torch	Torch
 3	entities/the_end	The End
+3	entities/chest	Chest
 4	bomb	bomb
 4	boss_charge	boss_charge
 4	boss_dead	boss_dead

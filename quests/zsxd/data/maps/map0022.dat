@@ -1117,6 +1117,7 @@
 4	1	2704	645	0	_random	1	-1
 14	1	376	301	crystal_switch_2
 8	1	2376	541	interactive_entity_5	3	0	entities/sign	dialog#crazy_house.directions_2F_e
+8	1	1056	821	PNJE	3	1	npc/static_villager13	dialog#crazy_house.pnje
 0	2	720	464	96	8	262
 0	2	112	240	96	8	262
 0	2	112	216	96	8	263

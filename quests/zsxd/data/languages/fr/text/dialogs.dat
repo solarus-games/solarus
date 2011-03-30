@@ -4759,7 +4759,7 @@ line2 = "pas super haut, en fait"
 
 [outside_fields_NE.indic]
 #       |-----------------------|
-line1 = "Est : Château"
+line1 = "Ouest : Château"
 next = outside_fields_NE.indic.2
 
 [outside_fields_NE.indic.2]

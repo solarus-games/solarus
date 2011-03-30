@@ -6,9 +6,6 @@
 locked_door_A_value = 0
 
 function event_map_started(destination_point_name)
-	-- Coffre farceur	
-	sol.map.interactive_entity_set_enabled("prankster_chest_bottom", false)
-	sol.map.interactive_entity_set_enabled("prankster_chest_middle", false)
 
 	-- Interrupteurs
 	if sol.game.savegame_get_boolean(127) then
@@ -168,15 +165,10 @@ end
 
 function event_hero_on_sensor(sensor_name)
 	-- Mécanisme du coffre farceur dans la salle aux trois portes	
-	if sensor_name == "prankster_sensor_top" then
-		sol.map.interactive_entity_set_enabled("prankster_chest_bottom", false)
-		sol.map.interactive_entity_set_enabled("prankster_chest_middle", true)
+	if sensor_name == "prankster_sensor_top" or sensor_name == "prankster_sensor_bottom" then
+		sol.map.npc_set_position("prankster_chest", 440, 509)
 	elseif sensor_name == "prankster_sensor_middle" then
-		sol.map.interactive_entity_set_enabled("prankster_chest_bottom", true)
-		sol.map.interactive_entity_set_enabled("prankster_chest_middle", false)	
-	elseif sensor_name == "prankster_sensor_bottom" then
-		sol.map.interactive_entity_set_enabled("prankster_chest_bottom", false)
-		sol.map.interactive_entity_set_enabled("prankster_chest_middle", true)
+		sol.map.npc_set_position("prankster_chest", 360, 509)
 	end
 end
 

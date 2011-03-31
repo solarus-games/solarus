@@ -91,9 +91,6 @@ void Script::initialize_lua_context() {
 
   // register the C++ functions accessible to the script
   register_apis();
-
-  // initialize the script
-  luaL_dostring(context, "math.randomseed(os.time())");
 }
 
 /**

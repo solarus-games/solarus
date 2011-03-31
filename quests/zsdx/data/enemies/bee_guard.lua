@@ -29,7 +29,7 @@ end
 
 function event_restart()
 
-  if movement == nil then
+  if not being_pushed then
     go_random()
     check_hero()
   end

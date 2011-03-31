@@ -146,7 +146,7 @@ void TargetMovement::recompute_movement() {
     sign_x = (dx >= 0) ? 1 : -1;
     sign_y = (dy >= 0) ? 1 : -1;
 
-    if (std::fabs(angle - get_angle()) > 1E-6) {
+    if (std::fabs(angle - get_angle()) > 1E-6 || get_speed() < 1E-6) {
       set_speed(speed); // FIXME is this useful?
       set_angle(angle);
     }

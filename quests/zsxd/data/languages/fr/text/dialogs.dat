@@ -1978,14 +1978,9 @@ line3 = "chaud !"
 [_treasure.sac_riz.1]
 #       |--------------------|
 icon = 45
-line1 = "Tu obtiens des sacs"
-line2 = "de riz."
-next = _treasure.sac_riz.1.1
-
-[_treasure.sac_riz.1.1]
-#       |--------------------|
-line1 = "Mais c'est du"
-line2 = "basmati, dommage :("
+line1 = "Tu obtiens du riz."
+line2 = "Mais c'est du"
+line3 = "basmati, dommage :("
 
 [_treasure.sac_olive.1]
 #       |--------------------|
@@ -3826,7 +3821,7 @@ skip = current
 [crazy_house.guichet_45_ech_ok]
 #       |-----------------------|
 line1 = "Parfait, voici votre"
-line2 = "sac d'olive."
+line2 = "sac d'olives."
 skip = current
 
 #==============================================

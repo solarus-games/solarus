@@ -154,7 +154,8 @@ function event_hero_on_sensor(sensor_name)
 		sol.map.hero_set_position(1136, 797, 1)
 	-- Giga bouton : Link trop léger
 	elseif sensor_name == "giga_bouton_sensor"
-	and not dialogue_trop_leger_fait then
+	and not dialogue_trop_leger_fait
+	and not sol.map.switch_is_activated("giga_bouton") then
 		sol.map.dialog_start("crazy_house.giga_bouton_trop_leger")
 		dialogue_trop_leger_fait = true
 	end

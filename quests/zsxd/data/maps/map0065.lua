@@ -153,7 +153,7 @@ end
 function start_boss()
 
   sol.map.enemy_set_enabled("boss", true)
-  sol.main.play_music("boss.spc")
+  sol.main.play_music("ganon_theme.spc")
   sol.main.timer_start(1000, "ganon_dialog", false)
   sol.map.hero_unfreeze()
 end
@@ -182,6 +182,8 @@ function event_dialog_finished(first_message_id)
 
   if first_message_id == "dungeon_1.boss_hint_stone" then
     sol.main.timer_start(1000, "victory", false)
+  elseif first_message_id == "dungeon_1.ganon" then
+    sol.main.play_music("ganon_battle.spc")
   end
 end
 

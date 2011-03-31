@@ -37,8 +37,8 @@ add_executable(solarus
   ${main_source_file}
 )
 
-set_target_properties(solarus_static PROPERTIES COMPILE_FLAGS "-Wall -Werror")
-set_target_properties(solarus PROPERTIES COMPILE_FLAGS "-Wall -Werror")
+set_target_properties(solarus_static PROPERTIES COMPILE_FLAGS "-g -Wall -Werror")
+set_target_properties(solarus PROPERTIES COMPILE_FLAGS "-g -Wall -Werror")
 
 if (DEFINED DATAPATH)
   add_definitions(-DDATAPATH=\"${DATAPATH}\")

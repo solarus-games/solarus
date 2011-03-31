@@ -106,6 +106,15 @@ void Hero::CarryingState::set_map(Map &map) {
 }
 
 /**
+ * @brief Notifies this state that the layer has changed.
+ */
+void Hero::CarryingState::notify_layer_changed() {
+
+  PlayerMovementState::notify_layer_changed();
+  carried_item->set_layer(hero.get_layer());
+}
+
+/**
  * @brief Notifies this state that the game was just suspended or resumed.
  * @param suspended true if the game is suspended
  */

@@ -113,6 +113,7 @@ void Music::initialize() {
 void Music::quit() {
   if (is_initialized()) {
     delete spc_decoder;
+    delete it_decoder;
     all_musics.clear();
   }
 }

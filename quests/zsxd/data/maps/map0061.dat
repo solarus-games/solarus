@@ -1206,7 +1206,7 @@
 13	1	8	765	16	16	cannonballs_start_sensor_2	0
 13	1	528	765	16	16	cannonballs_start_sensor_3	0
 13	1	256	1133	16	16	cannonballs_start_sensor_4	0
-13	1	256	613	16	16	cannonballs_stop_sensor	0
+13	1	248	613	32	16	cannonballs_stop_sensor	0
 13	1	544	765	16	16	cannonballs_stop_sensor_2	0
 4	1	712	101	0	_random	1	-1
 4	1	728	101	0	_random	1	-1
@@ -1232,6 +1232,7 @@
 2	1	1064	968	16	16	teletransporter_6	0	1	65	from_1f_boss
 19	1	1064	968	stairs_11	1	2
 18	1	1056	968	boss_door	1	4	239
+1	1	256	629	tmp	3	0
 0	2	16	72	8	96	441
 0	2	880	72	8	96	441
 0	2	856	72	8	96	442

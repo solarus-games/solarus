@@ -2,8 +2,6 @@
 -- FREAKING CAVE 2 OMFG	        --
 ----------------------------------
 
-	
-
 function event_map_started(destination_point_name)
 	
 	-- No light inside the cave at start

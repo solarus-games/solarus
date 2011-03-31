@@ -6,10 +6,9 @@
 -- Global sprites reference
 torch1 = sol.map.interactive_entity_get_sprite("fc_torch_1")
 torch2 = sol.map.interactive_entity_get_sprite("fc_torch_2")
-	
 
 function event_map_started(destination_point_name)
-	
+
 	-- Few light inside the cave at start
 	if sol.game.savegame_get_boolean(90) == false then
 		sol.map.light_set(1) 	

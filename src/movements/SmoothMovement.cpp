@@ -69,7 +69,7 @@ void SmoothMovement::update_x() {
   int x_move = get_x_move();
   int y_move = get_y_move();
   uint32_t x_delay = get_x_delay();
- 
+
   if (x_move != 0) { // the entity wants to move on x
 
     // by default, next_move_date_x will be incremented by x_delay,
@@ -87,16 +87,11 @@ void SmoothMovement::update_x() {
 	if (y_move != 0 && test_collision_with_obstacles(0, y_move)) {
 	  // if there is also a y move, and if this y move is illegal,
 	  // we still allow the x move and we give it all the speed
-	  next_move_date_x_increment = (int) (x_delay / Geometry::SQRT_2);
+	  next_move_date_x_increment = (int) (1000.0 / get_speed());
 	}
       }
       else {
-        if (y_move != 0 && !test_collision_with_obstacles(0, y_move)) {
-          translate_y(y_move);
-          set_next_move_date_y((int) (get_next_move_date_y() + get_y_delay() / Geometry::SQRT_2));
-          // FIXME SQRT_2 is really correct only for diagonal angles
-        }
-        else if (y_move == 0) {
+        if (y_move == 0) {
           // the move on x is not possible: let's try
           // to add a move on y to make a diagonal move
 
@@ -148,7 +143,6 @@ void SmoothMovement::update_y() {
     RectilinearMovement::update_y();
     return;
   }
-
   int x_move = get_x_move();
   int y_move = get_y_move();
   uint32_t y_delay = get_y_delay();
@@ -170,16 +164,11 @@ void SmoothMovement::update_y() {
 	if (x_move != 0 && test_collision_with_obstacles(x_move, 0)) {
 	  // if there is also an x move, and if this x move is illegal,
 	  // we still allow the y move and we give it all the speed
-	  next_move_date_y_increment = (int) (y_delay / Geometry::SQRT_2);
+	  next_move_date_y_increment = (int) (1000.0 / get_speed());
 	}
       }
       else {
-
-        if (x_move != 0 && !test_collision_with_obstacles(x_move, 0)) {
-          translate_x(x_move);
-          set_next_move_date_x((int) (get_next_move_date_x() + get_x_delay() / Geometry::SQRT_2));
-        }
-        else if (x_move == 0) {
+        if (x_move == 0) {
           // The move on y is not possible: let's try
           // to add a move on x to make a diagonal move.
 

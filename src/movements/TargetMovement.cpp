@@ -21,6 +21,7 @@
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 #include <sstream>
+#include <cmath>
 
 /**
  * @brief Creates a new target movement towards a fixed point.
@@ -145,8 +146,10 @@ void TargetMovement::recompute_movement() {
     sign_x = (dx >= 0) ? 1 : -1;
     sign_y = (dy >= 0) ? 1 : -1;
 
-    set_speed(speed);
-    set_angle(angle);
+    if (std::fabs(angle - get_angle()) > 1E-6) {
+      set_speed(speed); // FIXME is this useful?
+      set_angle(angle);
+    }
   }
 }
 

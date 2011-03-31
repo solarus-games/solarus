@@ -4394,7 +4394,7 @@ line3 = "très pénible..."
 
 [outside_fields_SO.chest_link_house]
 #       |-----------------------|
-line1 = "C'est vide!"
+line1 = "C'est vide !"
 next = outside_fields_SO.chest_link_house2
 
 [outside_fields_SO.chest_link_house2]

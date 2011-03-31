@@ -5455,9 +5455,9 @@ next = dungeon_1.ganon.2
 
 [dungeon_1.ganon.2]
 #       |-----------------------|
-line1 = "A vrai dire, tu es le"
-line2 = "dernier à l'avoir vue,"
-line3 = "non ?"
+line1 = "C'est toi qui es parti"
+line2 = "avec elle, on t'a tous"
+line3 = "vu la raccompagner !"
 next = dungeon_1.ganon.3
 
 [dungeon_1.ganon.3]

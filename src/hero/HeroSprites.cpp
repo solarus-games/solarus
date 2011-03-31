@@ -1085,7 +1085,8 @@ void HeroSprites::set_animation_running() {
  * @param ground a ground
  */
 void HeroSprites::create_ground(Ground ground) {
- 
+
+  delete ground_sprite;
   ground_sprite = new Sprite(ground_sprite_ids[ground - 1]);
   if (hero.get_ground() != GROUND_SHALLOW_WATER) {
     ground_sprite->set_current_animation(walking ? "walking" : "stopped");

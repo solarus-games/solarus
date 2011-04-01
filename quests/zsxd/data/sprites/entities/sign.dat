@@ -1,0 +1,11 @@
+stopped entities/destructible_items.png 4 0 -1
+208	0	16	24	8	13	1	1
+208	0	16	24	8	13	1	1
+208	0	16	24	8	13	1	1
+208	0	16	24	8	13	1	1
+
+walking entities/destructible_items.png 1 100 0
+208	0	16	24	8	13	3	3
+
+destroy entities/destructible_items.png 1 100 -1
+0	24	32	32	16	29	8	8

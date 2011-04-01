@@ -23,8 +23,8 @@ Contents
 
 When it is installed, the project is divided in two parts:
 - Solarus (the engine), which is an executable file written in C++ and called solarus.
-- One (or several) quests, each quest corresponding to a zip archive called data.solarus and
-  containing all the data.
+- One (or several) quests, each quest corresponding to a game, represented as a zip
+  archive called data.solarus and containing all the data of the quest.
 
 When you execute the solarus binary, you have to specify the path of the quest to launch.
 This can be done at runtime by using the -datapath option of solarus (more details below).
@@ -40,7 +40,7 @@ When building the quest, a zip archive called data.solarus is created with all d
 
 Note that the engine itself relies on some of these resources (for instance a sprite for the hero).
 
-For now, only one quest is available (zsdx), and this quest is not under GPL since it uses
+For now, two quests are available (zsdx and zsxd), and these quests are not under GPL since they use
 copyrighted elements from Nintendo.
 To compile and install the engine without any quest, remove the quests directory and
 follow the instructions normally.
@@ -71,7 +71,8 @@ SDL_ttf
 lua5.1
 physfs
 openal
-libsndfile
+sndfile
+modplug
 
 
 Note that two other libraries are directly embedded in the source code: SimpleIni,
@@ -83,7 +84,7 @@ Linux developers:
 
 Just install the corresponding packages. For example, with Ubuntu or Debian:
 
-libsdl1.2-dev libsdl-image1.2-dev libsdl-ttf2.0-dev liblua5.1-0-dev libphysfs-dev libopenal-dev libsndfile-dev lua5.1 zip
+libsdl1.2-dev libsdl-image1.2-dev libsdl-ttf2.0-dev liblua5.1-0-dev libphysfs-dev libopenal-dev libsndfile-dev libmodplug-dev lua5.1 zip
 
 
 Windows developers:
@@ -116,7 +117,7 @@ To build a Solarus quest, you will need zip and luac (the Lua compiler).
 3.1  Default settings
 ----------------------
 
-To compile solarus and the quests provided (only zsdx for now) with cmake, go to the solarus directory and just type:
+To compile solarus and the quests provided (zsdx and zsxd for now) with cmake, go to the solarus directory and just type:
 
 cmake .
 
@@ -129,12 +130,13 @@ and install both of them with (as root):
 
 # make install
 
-This installs the following three files (assuming that the install directory is /usr/local):
+This installs the following files (assuming that the install directory is /usr/local):
 - the solarus binary (the engine) in /usr/local/bin/
-- the quest data archive in /usr/local/share/solarus/zsdx/
-- a script called zsdx in /usr/local/bin/
+- for each quest my_quest:
+  - the quest data archive in /usr/local/share/solarus/my_quest/
+  - a script called my_quest in /usr/local/bin/
 
-The zsdx script launches the engine with the appropriate -datapath flag.
+The my_quest script launches the engine with the appropriate -datapath flag.
 This means that you can launch the zsdx game with the command:
 
 $ zsdx
@@ -168,7 +170,7 @@ The script generated launches the engine with the appropriate datapath flag.
 
 There are several ways to make the engine find the quest archive data.solarus.
 If the -datapath flag is set (see above), then the engine looks into the directory specified.
-Otherwise, if the DATAPATH preprocessor constant is set, then this directory is used.
+Otherwise, if the DATAPATH preprocessor constant was set at compile time, then this directory is used.
 The DATAPATH constant can be set from your cmake command, by using:
 
 $ cmake -D DATAPATH=/path/to/your/quest .
@@ -207,5 +209,5 @@ Edit the OpenAL configuration file (normally /etc/openal/alsoft.conf) and try th
 - If the sound plays scratched in the first few seconds or longer, try forcing the driver to OSS,
   by setting the "driver" list value to "oss" (without the quotes).
 
-Newer versions of OpenAL and PulseAudio may work better.
+Newer versions of OpenAL and PulseAudio seem to work better.
 

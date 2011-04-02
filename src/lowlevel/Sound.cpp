@@ -14,16 +14,17 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include <iostream> // std::cerr
+#include <iostream> // std::cout
 #include <cstring>  // memcpy
 #include <cmath>
+#include <sstream>
+#include <vector>
 #include "lowlevel/Sound.h"
 #include "lowlevel/Music.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 #include "Configuration.h"
-#include <sstream>
 
 ALCdevice * Sound::device = NULL;
 ALCcontext * Sound::context = NULL;
@@ -33,9 +34,9 @@ std::list<Sound*> Sound::current_sounds;
 std::map<SoundId,Sound> Sound::all_sounds;
 ov_callbacks Sound::ogg_callbacks = {
     cb_read,
-    cb_seek,
     NULL,
-    cb_tell
+    NULL,
+    NULL
 };
 
 /**
@@ -354,7 +355,6 @@ ALuint Sound::decode_file(const std::string &file_name) {
   else {
 
     // read the encoded sound properties
-    ALsizei nb_samples = (ALsizei) ov_pcm_total(&file, -1);
     vorbis_info* info = ov_info(&file, -1);
     ALsizei sample_rate = info->rate;
 
@@ -372,31 +372,30 @@ ALuint Sound::decode_file(const std::string &file_name) {
     else {
 
       // decode the sound with vorbisfile
-      ALshort *samples = new ALshort[nb_samples * info->channels];
+      std::vector<char> samples;
       int bitstream;
-      long remaining_bytes = nb_samples * info->channels * sizeof(ALshort);
       long bytes_read;
       long total_bytes_read = 0;
+      char samples_buffer[4096];
       do {
-        bytes_read = ov_read(&file, ((char*) samples) + total_bytes_read, remaining_bytes, 0, 2, 1, &bitstream);
+        bytes_read = ov_read(&file, samples_buffer, 4096, 0, 2, 1, &bitstream);
         if (bytes_read < 0) {
           std::cout << "Error while decoding ogg chunk: " << bytes_read << std::endl;
         }
         else {
           total_bytes_read += bytes_read;
-          remaining_bytes -= bytes_read;
+          samples.insert(samples.end(), samples_buffer, samples_buffer + bytes_read);
         }
       }
-      while (remaining_bytes > 0 && bytes_read > 0);
+      while (bytes_read > 0);
 
       // copy the samples into an OpenAL buffer
       alGenBuffers(1, &buffer);
-      alBufferData(buffer, format, samples, total_bytes_read, sample_rate);
+      alBufferData(buffer, format, (ALshort*) &samples[0], total_bytes_read, sample_rate);
       if (alGetError() != AL_NO_ERROR) {
         std::cout << "Cannot copy the sound samples into buffer " << buffer << "\n";
         buffer = AL_NONE;
       }
-      delete[] samples;
     }
     ov_clear(&file);
   }
@@ -421,33 +420,4 @@ size_t Sound::cb_read(void* ptr, size_t size, size_t nmemb, void* datasource) {
 
   return nb_bytes;
 }
-
-int Sound::cb_seek(void* datasource, ogg_int64_t offset, int whence) {
-
-  SoundFromMemory* mem = (SoundFromMemory*) datasource;
-
-  switch (whence) {
-
-    case SEEK_SET:
-      mem->position = offset;
-      break;
-
-    case SEEK_CUR:
-      mem->position += offset;
-      break;
-
-    case SEEK_END:
-      mem->position = mem->size - offset;
-      break;
-  }
-
-  return 0;
-}
-
-long Sound::cb_tell(void* datasource) {
-
-  SoundFromMemory* mem = (SoundFromMemory*) datasource;
-  return mem->position;
-}
-
 

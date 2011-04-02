@@ -114,7 +114,7 @@
 0	0	272	112	16	24	138
 1	0	320	413	start_position	1	0
 2	0	312	464	16	16	teletransporter_5	0	2	0	_side
-3	0	208	381	sword	4	57
+3	0	208	381	rupee_bag	2	57
 5	0	216	80	chest	0	zelda	1	-1
 8	0	216	-11	zelda	3	1	enemies/zelda	map
 1	0	224	109	tmp	1	0

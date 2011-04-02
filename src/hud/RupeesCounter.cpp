@@ -68,7 +68,7 @@ void RupeesCounter::update() {
   // max rupees
   int rupee_bag = equipment->get_item_variant("rupee_bag");
   if (rupee_bag_displayed != rupee_bag) {
-    rupee_bag = rupee_bag_displayed;
+    rupee_bag_displayed = rupee_bag;
     need_rebuild = true;
   }
 

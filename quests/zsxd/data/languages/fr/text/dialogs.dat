@@ -932,7 +932,12 @@ line3 = "Coeurs."
 icon = 7
 line1 = "Tu as trouvé un"
 line2 = "Flacon Magique !$0"
-line3 = "Pas super utile, ok."
+next = _treasure.bottle_2.1.1
+
+[_treasure.bottle_2.1.1]
+#       |--------------------|
+line1 = "Ca a sûrement un"
+line2 = "intérêt quelconque !"
 
 [_treasure.bottle_2.2]
 # Eau
@@ -1015,8 +1020,8 @@ next = _treasure.bottle_3.1.1
 
 [_treasure.bottle_3.1.1]
 #       |--------------------|
-line1 = "Remplis-le avec"
-line2 = "diverses substances."
+line1 = "Ca a sûrement un"
+line2 = "intérêt quelconque !"
 
 [_treasure.bottle_3.2]
 # Eau
@@ -1099,8 +1104,8 @@ next = _treasure.bottle_4.1.1
 
 [_treasure.bottle_4.1.1]
 #       |--------------------|
-line1 = "Remplis-le avec"
-line2 = "diverses substances."
+line1 = "Ca a sûrement un"
+line2 = "intérêt quelconque !"
 
 [_treasure.bottle_4.2]
 # Eau

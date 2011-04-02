@@ -68,8 +68,11 @@ class Sound {
     // functions to load the encoded sound from memory
     static ov_callbacks ogg_callbacks;           /**< vorbisfile object used to load the encoded sound from memory */
     static size_t cb_read(void* ptr, size_t size, size_t nmemb, void* datasource);
+
+    /*
     static int cb_seek(void* datasource, ogg_int64_t offset, int whence);
     static long cb_tell(void* datasource);
+*/
 
     Sound();
     Sound(const SoundId &sound_id);

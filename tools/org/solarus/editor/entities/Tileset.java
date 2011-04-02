@@ -153,6 +153,10 @@ public class Tileset extends Observable {
 	return name;
     }
 
+    public String toString() {
+        return name;
+    }
+
     /**
      * Changes the name of the tileset.
      * @param name the name of the tileset, for example "Light World"

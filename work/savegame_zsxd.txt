@@ -1,0 +1,252 @@
+This file describes the usage of all savegame variables except the engine ones (see Savegame.h for them).
+
+integers (above 1024):
+
+1024	current number of bombs
+1025	current number of arrows
+1026	current number of pains au chocolat
+1027	current number of croissants
+1028	current number of apples
+1029	current number of fire stones
+1030	current number of pieces of heart (0 to 3)
+1031	world map (0 or 1)
+1032	bomb bag
+1033	quiver
+1034	rupee bag
+
+1100	feather
+	bombs
+	bow
+	boomerang
+	lamp
+	hookshot
+	bottle 1
+
+	speed shoes
+	mystic mirror
+	cane of somaria
+	apples
+	pains au chocolat
+	croissant
+	bottle 2
+
+	rock key
+	bone key
+	clay key
+	apple pie, gold bar, edelweiss
+	flippers
+	magic cape
+	bottle 3
+
+	iron key
+	wooden key
+	stone key
+	ice key
+	glove
+	fire stones
+1127	bottle 4
+
+1128	tunic
+1129	sword
+1130	shield
+1131	zelda
+1132	number of apple pies
+
+================================================================================
+
+1400 to 1499	reserved for crazy_house
+
+1410: chaine_echange_phase
+	- 0: aller à l'accueil pour savoir où est la poigne de fer
+	- 1: trouver le guichet 21
+	- 2: retourner à l'accueil car au guichet 21, on comprend rien !
+	- 3: trouver le guichet 41
+	- 4: trouver le guichet 33 pour les clés du dépôt, (nécessite 1 parfum)
+	- 5: se renseigner sur le parfum au guichet 12
+	- 6: guichet 12 absent, trouver le guichet 32
+	- 7: guichet 12 revenu, y retourner pour le parfum (nécessite 1 bocal d'épices + 1 balai)
+	- 8: chercher le bocal d'épices auprès du vieillard (nécessite 3 poivrons)
+			 ou chercher balai au guichet 22 (nécessite 3 rocs magma)
+
+	- 9: apporter 1 bocal épice et 1 balai au guichet 12, obtenu: parfum
+	-10: apporter 1 parfum au guichet 33, obtenu: 1 petite clé
+	-11: ouvrir porte au 3F, obtenu : grande clé
+
+1411: chaine_epice_phase (1410 = 8)
+
+	- 1: vieillard veut 3 poivrons, les chercher au guichet 84 (nécessite 5 haches)
+  - 2: chercher 5 haches au guichet 11 (nécessite 1 tapisserie pour 1 hache)
+  - 3: chercher 6 tapisseries au guichet 22 (nécessite 2 sacs de riz pour 3 tapisseries)
+  - 4: acheter 3 sacs de riz à l'apothicaire ou à panoda fichage
+	- 5: apporter 4 sacs de riz au guichet 22, obtenu : 6 tapisseries
+  - 6: apporter 6 tapisseries au guichet 11, obtenu : 6 haches
+	- 7: apporter 5 haches au guichet 84, obtenu : 3 poivrons
+	- 8: apporter 3 poivrons au vieillard, il n'en veut pas, il veut 5 sacs de riz
+  - 9: acheter 5 sacs de riz à l'apothicaire ou à panoda fichage
+	-10: apporter 5 sacs de riz au vieillard, obtenu : 1 bocal épice
+
+1412: chaine_balai_phase (1410 = 8)
+
+	- 1: chercher balai au guichet 22 (nécessite 3 rocs magma)
+	- 2: chercher 3 rocs magma au guichet 82 (nécessite 2 sac olives par roc magma)
+	- 3: chercher 6 sac d'olives au guichet 45 (nécessite 2 cuillères pour 3 sacs d'olives)
+	- 4: chercher 4 cuillères au guichet 32 (nécessite 2 haches, 1 pour 2 cuillères)
+	- 5: chercher 2 haches au guichet 11 (nécessite 1 tapisserie pour 1 hache)
+	- 6: chercher 2 tapisseries au guichet 22 (nécessite 2 sacs de riz pour 3 tapisseries)
+	- 7: chercher 1 sac de riz chez apothicaire ou panoda fichage
+	- 8: apporter 1 sac de riz au guichet 22, obtenu : 3 tapisseries
+	- 9: apporter 2 tapisseries au guichet 11, s'est trompé, donne 5 rocs magma
+	-10: apporter 3 roc magma au guichet 22, obtenu: 1 balai
+
+1471: poivron_counter - g84 (n: haches)
+1472: balai_counter - g22 (n: rocs magma)
+1473: cuillere_counter - g32 (n: hache)
+1474: tapisserie_counter - g22 (n: sac riz)
+1475: roc_magma_counter - g82 (n: sac olive)
+1476: sac_riz_counter - apot (n: 20ru) - 36 (n: 10ru)
+1477: sac_olive_counter - g45 (n: cuillere)
+1478: bocal_epice_counter - vieil (n: poivrons)
+1479: hache_counter - g11 (n: tapisserie)
+1480: parfum_counter - g12 (n: bocal épices + balai)
+
+1481: poivron_variable
+1482: balai_variable
+1483: cuillere_variable
+1484: tapisserie_variable
+1485: roc_magma_variable
+1486: sac_riz_variable
+1487: sac_olive_variable
+1488: bocal_epice_variable
+1489: hache_variable
+1490: parfum_variable
+
+================================================================================
+
+booleans:
+
+0 to 9  reserved for tests
+10	Bottle 1 pot (map "Maison des pots")
+11	Maison du boulet: empty chest
+
+42 first sword
+43 first shield
+44 outside link's house piece of heart
+45 outside link's house chest
+46 sms guy house: empty chest
+47 unused
+48 the monkey gave the boots
+49 shop: bought the huge rupee bag (impossible)
+50 shop: bought the heart container
+51-55: weak blocks in outside NO
+56 Bomb bag in freaking cave.
+57	Link's cave: Excalibur is found
+58	Desert east house: bone key in the chest
+59	Desert east house: door open
+60	Cursed cave: Link died
+61	Water house: found the bottle 2
+62	Link's house: door of the cave open
+63	Outside SO: found the bottle 3 (under some grass)
+64	Outside SO: heart container
+65	Outside SE: door of the temple
+66	Outside SE: got Yoda's sword
+67-72	Outside SE: 6 weak blocks
+73-74	Outside NE: 2 weak blocks
+75	Outside SE: piece of heart
+
+90-99: reserved for the freaking cave
+
+================================================================================
+
+100 to 199	reserved for crazy_house (dungeon 2)
+100	1FA: Hidden 50 rupees [HR2]
+101	1FA: Empty chest Switch [CS3]
+102	3F : Compass chest [CM3]
+103 1FA: Empty chest [CV1]
+104 2FA: Hidden 50 rupees [HR1]
+105 1FA: Weak Wall [WW1]
+106 3F : Small key chest [CK1]
+107 1FB: 20 rupees chest [CR1]
+108	3F : 50 rupees chest [CR2]
+109 1FA: 1 rupee chest [CR3]
+110 1FB: Empty chest [CV3]
+111 3F : Big Key chest [CK5]
+112 1FB: Map chest [CV4]
+113 1FB: Empty chest [CV2]
+114 2FA: Piece of Heart [PH2]
+115 1FB: Bombs chest [CB1]
+116 2FA: 1 Arrow chest [CK2]
+117 1FB: Croissant chest [CC1]
+118 1FB: 100 rupees chest [CR3]
+119 1FB: Empty chest [CV5]
+120 3F : Iron Gloves [IGC]
+121 3F : Giga button statue position [GBS]
+122 1FA: Small key chest [CK3]
+123 3F : Small key (guichet 33) [CK4]
+124 2FA: Old man first talk
+125 2FA: Old man rice
+126 3F : Giga bouton state
+127 2FA: Dual button locked door [LD1]
+128 3F: Small key chest [CK4]
+129 3F: Barrier near the giga button
+130 2F1: Hidden weak wall [WW2]
+
+140	1FA: Key Door A [DK1]
+141 3F : Key Door B [DK2]
+142 3F : Key Door C [DK3]
+149 3F : Big Key Door [DK9]
+
+150-162 3F: 13 empty chests (storage room)
+
+000 3F : Door Switch A [DS1]
+000 3F : Locked Door A [LD1]
+
+================================================================================
+
+200 to 399	reserved for the stupid temple (dungeon 1)
+201	1F SW: chest with the boss key
+202	1F SW: chest with the map
+203	1F NE: chest with the compass
+204	1F NE: chest with the big key
+205	1F NE: big chest with the big bomb bag
+206	2F SW: big chest with the bow
+207-232	2F SW: weak blocks in the creepers room
+233	1F NE: weak wall to the compass
+234	1F NE/SE: weak wall to the big bomb bag
+235	1F SE: locked door
+236	1F NW: door that requires the code
+237	1F NW: door locked (big key required)
+238	1F NW: big chest with the feather
+239	1F NE: boss door
+240	1F SE: water removed
+241	small key 1
+242	small key 2
+243	small key 3
+244	small key 4
+245	small key 5
+246	small key 6
+247	small key 7
+248	small key 8
+249	small key 9
+250	small key 10
+251-258	2F NE: 8 locked doors
+259-282 2F NE: 24 weak blocks
+283	water of 2F SW removed
+284-290 2F NE: 7 stairs
+291	1F SE: piece of heart
+292	1F NE: chest with 100 rupees in the ALTTP room
+293	2F NE: stairs 1
+294	2F NE: stairs 2
+295	2F NE: stairs 3
+296	2F NE: stairs 4
+297	2F NE: stairs 5
+298	2F NE: stairs 6
+299	2F NE: stairs 7
+300	2F NE: stairs 8
+301	2F NE: door of the enemy fight
+302	1F NE: miniboss killed
+303	1F NE: water drained
+304	1F SE: door before the boss
+305	1F SE: heart container in the first room
+306	2F NE: boss killed
+307	1F NE: small key door in the ALTTP room
+

@@ -76,7 +76,7 @@ void TemporalMovement::start(int speed, double angle, uint32_t duration) {
  * @param duration duration of the movement in milliseconds
  */
 void TemporalMovement::set_duration(uint32_t duration) {
-  start(get_speed(), get_angle(), duration);
+  start((int) get_speed(), get_angle(), duration);
 }
 
 /**

@@ -50,6 +50,8 @@ class Arrow: public MapEntity {
     bool is_stairs_obstacle(Stairs &stairs);
     bool is_deep_water_obstacle();
     bool is_hole_obstacle();
+    bool is_lava_obstacle();
+    bool is_prickle_obstacle();
     bool is_ladder_obstacle();
     bool is_raised_block_obstacle(CrystalSwitchBlock &raised_block);
     bool is_crystal_switch_obstacle(CrystalSwitch &crystal_switch);

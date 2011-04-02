@@ -349,7 +349,7 @@ void DialogBox::close() {
   keys_effect.set_sword_key_effect(sword_key_effect_saved);
 
   // notify the script if necessary
-  if (!skipped && first_message_id[0] != '_') {
+  if (!skipped && first_message_id[0] != '_') { // FIXME: remove the '_' restriction
     // a dialog of the quest was just finished: notify the scripts
     Script &map_script = game.get_map_script();
     map_script.event_dialog_finished(first_message_id, last_answer);

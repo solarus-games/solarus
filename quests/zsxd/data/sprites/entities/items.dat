@@ -1,0 +1,268 @@
+feather entities/items.png 1 0 -1
+0	0	16	16	8	13	1	1
+
+bombs_counter entities/items.png 1 0 -1
+16	0	16	16	8	13	1	1
+
+bow entities/items.png 2 0 -1
+32	0	16	16	8	13	1	1
+32	16	16	16	8	13	1	1
+
+boomerang entities/items.png 1 0 -1
+48	0	16	16	8	13	1	1
+
+lamp entities/items.png 1 0 -1
+64	0	16	16	8	13	1	1
+
+hookshot entities/items.png 1 0 -1
+80	0	16	16	8	13	1	1
+
+bottle_1 entities/items.png 6 0 -1
+96	0	16	16	8	13	1	1
+96	16	16	16	8	13	1	1
+96	32	16	16	8	13	1	1
+96	48	16	16	8	13	1	1
+96	64	16	16	8	13	1	1
+96	80	16	16	8	13	1	1
+
+pegasus_shoes entities/items.png 1 0 -1
+112	0	16	16	8	13	1	1
+
+mystic_mirror entities/items.png 1 0 -1
+128	0	16	16	8	13	1	1
+
+cane_of_somaria entities/items.png 1 0 -1
+144	0	16	16	8	13	1	1
+
+apples_counter entities/items.png 1 0 -1
+160	0	16	16	8	13	1	1
+
+pains_au_chocolat_counter entities/items.png 1 0 -1
+176	0	16	16	8	13	1	1
+
+pain_au_chocolat entities/items.png 1 0 -1
+176	0	16	16	8	13	1	1
+
+croissants_counter entities/items.png 1 0 -1
+192	0	16	16	8	13	1	1
+
+croissant entities/items.png 1 0 -1
+192	0	16	16	8	13	1	1
+
+bottle_2 entities/items.png 6 0 -1
+96	0	16	16	8	13	1	1
+96	16	16	16	8	13	1	1
+96	32	16	16	8	13	1	1
+96	48	16	16	8	13	1	1
+96	64	16	16	8	13	1	1
+96	80	16	16	8	13	1	1
+
+rock_key entities/items.png 1 0 -1
+224	0	16	16	8	13	1	1
+
+bone_key entities/items.png 1 0 -1
+240	0	16	16	8	13	1	1
+
+clay_key entities/items.png 1 0 -1
+256	0	16	16	8	13	1	1
+
+apple_pie_counter entities/items.png 1 0 -1
+272	0	16	16	8	13	1	1
+
+apple_pie entities/items.png 1 0 -1
+272	0	16	16	8	13	1	1
+
+flippers entities/items.png 1 0 -1
+288	0	16	16	8	13	1	1
+
+magic_cape entities/items.png 1 0 -1
+304	0	16	16	8	13	1	1
+
+bottle_3 entities/items.png 6 0 -1
+96	0	16	16	8	13	1	1
+96	16	16	16	8	13	1	1
+96	32	16	16	8	13	1	1
+96	48	16	16	8	13	1	1
+96	64	16	16	8	13	1	1
+96	80	16	16	8	13	1	1
+
+iron_key entities/items.png 1 0 -1
+336	0	16	16	8	13	1	1
+
+stone_key entities/items.png 1 0 -1
+352	0	16	16	8	13	1	1
+
+wooden_key entities/items.png 1 0 -1
+368	0	16	16	8	13	1	1
+
+ice_key entities/items.png 1 0 -1
+384	0	16	16	8	13	1	1
+
+glove entities/items.png 2 0 -1
+400	0	16	16	8	13	1	1
+400	16	16	16	8	13	1	1
+
+fire_stones_counter entities/items.png 1 0 -1
+416	0	16	16	8	13	1	1
+
+fire_stone entities/items.png 1 0 -1
+416	0	16	16	8	13	1	1
+
+bottle_4 entities/items.png 6 0 -1
+96	0	16	16	8	13	1	1
+96	16	16	16	8	13	1	1
+96	32	16	16	8	13	1	1
+96	48	16	16	8	13	1	1
+96	64	16	16	8	13	1	1
+96	80	16	16	8	13	1	1
+
+world_map entities/items.png 1 0 -1
+448	0	16	16	8	13	1	1
+
+rupee_bag entities/items.png 3 0 -1
+464	0	16	16	8	13	1	1
+464	16	16	16	8	13	1	1
+464	32	16	16	8	13	1	1
+
+bomb_bag entities/items.png 3 0 -1
+480	0	16	16	8	13	1	1
+480	16	16	16	8	13	1	1
+480	32	16	16	8	13	1	1
+
+quiver entities/items.png 3 0 -1
+496	0	16	16	8	13	1	1
+496	16	16	16	8	13	1	1
+496	32	16	16	8	13	1	1
+
+tunic entities/items.png 3 0 -1
+512	0	16	16	8	13	1	1
+512	16	16	16	8	13	1	1
+512	32	16	16	8	13	1	1
+
+sword entities/items.png 4 0 -1
+528	0	16	16	8	13	1	1
+528	16	16	16	8	13	1	1
+528	32	16	16	8	13	1	1
+528	48	16	16	8	13	1	1
+
+shield entities/items.png 3 0 -1
+544	0	16	16	8	13	1	1
+544	16	16	16	8	13	1	1
+544	32	16	16	8	13	1	1
+
+map entities/items.png 1 0 -1
+560	0	16	16	8	13	1	1
+
+compass entities/items.png 1 0 -1
+576	0	16	16	8	13	1	1
+
+small_key entities/items.png 1 0 -1
+592	0	16	16	8	13	1	1
+
+big_key entities/items.png 1 0 -1
+608	0	16	16	8	13	1	1
+
+boss_key entities/items.png 1 0 -1
+624	0	16	16	8	13	1	1
+
+piece_of_heart entities/items.png 1 0 -1
+640	0	16	16	8	13	1	1
+
+heart_container entities/items.png 1 0 -1
+656	0	16	16	8	13	1	1
+
+bomb entities/items.png 3 0 -1
+672	0	16	16	8	13	1	1
+672	16	16	16	8	13	1	1
+672	32	16	16	8	13	1	1
+
+arrow entities/items.png 3 0 -1
+688	0	16	16	8	13	1	1
+688	16	16	16	8	13	1	1
+688	32	16	16	8	13	1	1
+
+magic_flask entities/items.png 2 0 -1
+704	0	16	16	8	13	1	1
+704	16	16	16	8	13	1	1
+
+rupee entities/items.png 6 100 0
+0	48	8	16	4	16	10	10
+0	64	8	16	4	16	10	10
+0	80	8	16	4	16	10	10
+560	48	16	16	8	16	10	10
+560	64	16	16	8	16	10	10
+560	80	16	16	8	16	10	10
+
+heart entities/items.png 1 100 24
+112	48	8	8	4	8	25	10
+
+fairy entities/items.png 2 100 0
+192	48	16	16	8	25	2	2
+192	64	16	16	8	25	2	2
+
+apple entities/items.png 1 0 -1
+160	16	16	16	8	13	1	1
+
+poivron entities/items.png 1 0 -1
+720	0	16	16	8	13	1	1
+
+poivron_counter entities/items.png 1 0 -1
+720	0	16	16	8	13	1	1
+
+balai entities/items.png 1 0 -1
+736	0	16	16	8	13	1	1
+
+balai_counter entities/items.png 1 0 -1
+736	0	16	16	8	13	1	1
+
+cuillere entities/items.png 1 0 -1
+752	0	16	16	8	13	1	1
+
+cuillere_counter entities/items.png 1 0 -1
+752	0	16	16	8	13	1	1
+
+tapisserie entities/items.png 1 0 -1
+768	0	16	16	8	13	1	1
+
+tapisserie_counter entities/items.png 1 0 -1
+768	0	16	16	8	13	1	1
+
+roc_magma entities/items.png 1 0 -1
+784	0	16	16	8	13	1	1
+
+roc_magma_counter entities/items.png 1 0 -1
+784	0	16	16	8	13	1	1
+
+sac_riz entities/items.png 1 0 -1
+800	0	16	16	8	13	1	1
+
+sac_riz_counter entities/items.png 1 0 -1
+800	0	16	16	8	13	1	1
+
+sac_olive entities/items.png 1 0 -1
+816	0	16	16	8	13	1	1
+
+sac_olive_counter entities/items.png 1 0 -1
+816	0	16	16	8	13	1	1
+
+bocal_epice entities/items.png 1 0 -1
+832	0	16	16	8	13	1	1
+
+bocal_epice_counter entities/items.png 1 0 -1
+832	0	16	16	8	13	1	1
+
+hache entities/items.png 1 0 -1
+848	0	16	16	8	13	1	1
+
+hache_counter entities/items.png 1 0 -1
+848	0	16	16	8	13	1	1
+
+parfum entities/items.png 1 0 -1
+864	0	16	16	8	13	1	1
+
+parfum_counter entities/items.png 1 0 -1
+864	0	16	16	8	13	1	1
+
+zelda entities/items.png 1 0 -1
+224	48	16	24	8	21	1	1
+

@@ -71,6 +71,7 @@ void SpriteAnimation::set_map(Map &map) {
   if (!src_image_loaded) {
     this->src_image = map.get_tileset().get_entities_image();
     if (should_enable_pixel_collisions) {
+      disable_pixel_collisions(); // to force creating the images again
       do_enable_pixel_collisions();
     }
   }
@@ -171,6 +172,16 @@ void SpriteAnimation::do_enable_pixel_collisions() {
 
   for (int i = 0; i < nb_directions; i++) {
     directions[i]->enable_pixel_collisions(src_image);
+  }
+}
+
+/**
+ * @brief Disables the pixel-perfect collision detection for this animation.
+ */
+void SpriteAnimation::disable_pixel_collisions() {
+
+  for (int i = 0; i < nb_directions; i++) {
+    directions[i]->disable_pixel_collisions();
   }
 }
 

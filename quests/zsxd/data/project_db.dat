@@ -1,0 +1,302 @@
+0	0	Link's house
+0	1	Outside fields NO
+0	2	Outside fields NE
+0	3	Outside fields SO
+0	4	Outside fields SE
+0	5	Maison du boulet
+0	6	Maison des pots
+0	7	Magasin débile
+0	8	Caverne du coffre débile
+0	9	Geek House
+0	10	Humid house
+0	11	Shop
+0	12	Link's cave
+0	13	Before the cursed cave
+0	14	Desert small house
+0	15	Desert west house
+0	16	Desert east house
+0	17	The end
+0	20	Crazy House 1FA
+0	21	Crazy House 1FB
+0	22	Crazy House 2FA
+0	23	Crazy House 2FB
+0	24	Crazy House 3F
+0	38	Freaking_cave_1
+0	39	Freaking_cave_2
+0	42	Caverne des fragments de coeur
+0	43	Caverne Maudite 0
+0	44	Caverne Maudite -1
+0	45	Caverne Maudite -2
+0	46	Caverne Maudite -3
+0	47	Caverne Maudite -4
+0	48	Caverne Maudite -5
+0	49	Caverne Maudite -6
+0	50	Caverne Maudite -7
+0	51	Caverne Maudite -8
+0	52	Caverne Maudite -9
+0	53	Caverne Maudite -10
+0	54	Caverne Maudite -11
+0	55	Caverne Maudite -12
+0	56	Caverne Maudite -13
+0	57	Caverne Maudite -14
+0	58	Caverne Maudite -15
+0	59	Caverne Maudite -16
+0	60	Dungeon 1F NW
+0	61	Dungeon 1F NE
+0	62	Dungeon 1F SW
+0	63	Dungeon 1F SE
+0	64	Dungeon 2F NW
+0	65	Dungeon 2F NE
+0	66	Dungeon 2F SW
+0	67	Dungeon 2F SE
+1	0	House
+1	1	Light World
+1	2	Ice dungeon
+1	3	Cave
+1	4	Blue dungeon (LW)
+1	5	Green dungeon (LW)
+1	7	Brown dungeon (LW)
+1	8	Blue dungeon (DW)
+1	6	Intro
+2	agahnim.spc	Agahnim theme
+2	beginning.spc	Beginning
+2	boss.spc	Boss
+2	castle.spc	Castle
+2	cave.spc	Cave
+2	credits.spc	Credits
+2	dark_mountain.spc	Dark Mountain
+2	dark_world.spc	Dark World
+2	light_world_dungeon.spc	Dungeon (light world)
+2	dark_world_dungeon.spc	Dungeon (dark world)
+2	dungeon_finished.spc	Dungeon finished
+2	excalibur.spc	Excalibur
+2	fanfare.spc	Fanfare
+2	fortune_teller.spc	Fortune Teller
+2	found_items.it	Found Items House
+2	ganon_appears.spc	Ganon appears
+2	ganon_battle.spc	Ganon battle
+2	ganon_theme.spc	Ganon theme
+2	great_fairy.spc	Great Fairy
+2	village.spc	Kakariko Village
+2	legend.spc	Legend
+2	lost_woords.spc	Lost Woods
+2	mini_game.spc	Mini game
+2	overworld.spc	Overworld
+2	sanctuary.spc	Sanctuary
+2	game_over.spc	Selection menu & Game Over
+2	soldiers.spc	Soldiers
+2	rabbit.spc	Turned into a rabbit
+2	title_screen.spc	Title screen 
+2	triforce.spc	Triforce
+2	victory.spc	Victory
+2	zelda.spc	Zelda theme
+3	entities/sign	Sign
+3	npc/great_fairy	Great Fairy
+3	npc/monkey	Monkey
+3	npc/sahasrahla	Sahasrahla
+3	npc/thief	Thief
+3	npc/wizard	Wizard
+3	npc/zelda	Zelda
+3	enemies/zelda	Angry Zelda
+3	npc/tom	Tom
+3	npc/newlink1	Newlink NPC 1
+3	npc/newlink2	Newlink NPC 2
+3	npc/newlink3	Newlink NPC 3
+3	npc/newlink4	Newlink NPC 4
+3	npc/newlink5	Newlink NPC 5
+3	npc/newlink6	Newlink NPC 6
+3	npc/newlink7	Newlink NPC 7
+3	npc/newlink8	Newlink NPC 8
+3	npc/villager1	ALTTP villager 1
+3	npc/villager2	ALTTP villager 2 
+3	npc/villager3	ALTTP villager 3
+3	npc/static_villager1	ALTTP static villager 1
+3	npc/static_villager2	ALTTP static villager 2
+3	npc/static_villager3	ALTTP static villager 3
+3	npc/static_villager4	ALTTP static villager 4
+3	npc/static_villager5	ALTTP static villager 5
+3	npc/static_villager6	ALTTP static villager 6
+3	npc/static_villager7	ALTTP static villager 7
+3	npc/static_villager8	ALTTP static villager 8
+3	npc/static_villager9	ALTTP static villager 9
+3	npc/static_villager10	ALTTP static villager 10
+3	npc/static_villager11	ALTTP static villager 11
+3	npc/static_villager12	ALTTP static villager 12
+3	npc/static_villager13	ALTTP static villager 13
+3	npc/static_villager14	ALTTP static villager 14
+3	npc/solarus_child1	Solarus Child 1
+3	npc/yoda	Yoda
+3	entities/slot_machine	Casino slot machine
+3	entities/frozen_door	Frozen door
+3	entities/outside_door	Outside closed door
+3	entities/fresco	Intro fresco
+3	entities/bed	Hero's bed
+3	entities/snores	Snoring (zzz)
+3	entities/hint_stone	Hint stone
+3	entities/torch	Torch
+3	entities/the_end	The End
+3	entities/chest	Chest
+4	bomb	bomb
+4	boss_charge	boss_charge
+4	boss_dead	boss_dead
+4	boss_fireball	boss_fireball
+4	boss_hurt	boss_hurt
+4	bounce	bounce
+4	bow	bow
+4	bush	bush
+4	chest_appears	chest_appears
+4	chest_open	chest_open
+4	cursor	cursor
+4	danger	danger
+4	door_closed	door_closed
+4	door_open	door_open
+4	enemy_awake	enemy_awake
+4	enemy_hurt	enemy_hurt
+4	enemy_killed	enemy_killed
+4	explosion	explosion
+4	heart	heart
+4	hookshot	hookshot
+4	ice	ice
+4	intro	intro
+4	item_in_water	item_in_water
+4	jump	jump
+4	lamp	lamp
+4	lens_of_truth_end	lens_of_truth_end
+4	lens_of_truth_start	lens_of_truth_start
+4	lift	lift
+4	link_dying	link_dying
+4	link_falls	link_falls
+4	link_hurt	link_hurt
+4	link_pushes	link_pushes
+4	link_seen	link_seen
+4	magic_bar	magic_bar
+4	message_end	message_end
+4	monster_hurt	monster_hurt
+4	octorok	octorok
+4	ok	ok
+4	pause_closed	pause_closed
+4	pause_open	pause_open
+4	picked_item	picked_item
+4	picked_rupee	picked_rupee
+4	picked_small_key	picked_small_key
+4	piece_of_heart	piece_of_heart
+4	rupee_counter	rupee_counter
+4	rupee_counter_end	rupee_counter_end
+4	running	running
+4	secret	secret
+4	shield	shield
+4	sm64_memario	sm64_memario
+4	sm64_heehee	sm64_heehee
+4	splash	splash
+4	stone	stone
+4	switch	switch
+4	sword1	sword1
+4	sword2	sword2
+4	sword3	sword3
+4	sword4	sword4
+4	sword_hit	sword_hit
+4	sword_spin_attack_load	sword_spin_attack_load
+4	sword_spin_attack_release	sword_spin_attack_release
+4	throw	throw
+4	timer	timer
+4	timer_hurry	timer_hurry
+4	treasure	treasure
+4	victory	victory
+4	walk_on_grass	walk_on_grass
+4	walk_on_water	walk_on_water
+4	wrong	wrong
+4	zora	zora
+5	feather	Feather
+5	bombs_counter	Bombs counter
+5	bomb	Bombs (x1 / x3 / x8)
+5	bomb_bag	Bomb bag (small / large / huge)
+5	bow	Bow
+5	arrow	Arrows (x1 / x5 / x10)
+5	quiver	Quiver (small / large / huge)
+5	boomerang	Boomerang
+5	lamp	Lamp
+5	hookshot	Hookshot
+5	bottle_1	Bottle 1
+5	bottle_2	Bottle 2
+5	bottle_3	Bottle 3
+5	bottle_4	Bottle 4
+5	pegasus_shoes	Pegasus shoes
+5	mystic_mirror	Mystic mirror
+5	cane_of_somaria	Cane of Somaria
+5	apples_counter	Apples counter
+5	apple	Apples (x3)
+5	pains_au_chocolat_counter	Pains au chocolat counter
+5	pain_au_chocolat	Pain au chocolat (x1)
+5	croissants_counter	Croissants counter
+5	croissant	Croissant (x1)
+5	rock_key	Rock key
+5	bone_key	Bone key
+5	clay_key	Clay key
+5	apple_pie_counter	Apple pie counter
+5	apple_pie	Apple pie (x1)
+5	flippers	Flippers
+5	magic_cape	Magic cape
+5	iron_key	Iron key
+5	stone_key	Stone key
+5	wooden_key	Wooden key
+5	ice_key	Ice key
+5	glove	Iron glove / Golden glove
+5	fire_stones_counter	Fire stones counter
+5	fire_stone	Fire stone (x1)
+5	poivron_counter	Poivron counter
+5	poivron	Poivron
+5	balai_counter	Balai counter
+5	balai	Balai
+5	cuillere_counter	Cuillère counter
+5	cuillere	Cuillère
+5	tapisserie_counter	Tapisserie counter
+5	tapisserie	Tapisserie
+5	roc_magma_counter	Roc Magma counter
+5	roc_magma	Roc Magma
+5	sac_riz_counter	Sac de riz counter
+5	sac_riz	Sac de riz
+5	sac_olive_counter	Sac d'olives counter
+5	sac_olive	Sac d'olives
+5	bocal_epice_counter	Bocal d'épices counter
+5	bocal_epice	Bocal d'épices
+5	hache_counter	Hache counter
+5	hache	Hache
+5	parfum_counter	Parfum counter
+5	parfum	Parfum
+5	tunic	Tunic (green / blue / red)
+5	sword	Sword
+5	shield	Shield
+5	world_map	World map
+5	rupee_bag	Rupee bag (small / large / huge)
+5	magic_bar	Maximum of magic (none / half / full)
+5	map	Dungeon map
+5	compass	Dungeon compass
+5	big_key	Dungeon big key
+5	boss_key	Dungeon boss key
+5	small_key	Small key
+5	rupee	Rupees (x1 / x5 / x20 / x50 / x100 / x300)
+5	magic_flask	Magic flask (small / big)
+5	heart	Heart (x1)
+5	heart_container	Heart container
+5	piece_of_heart	Piece of heart
+5	fairy	Fairy
+5	zelda	Zelda
+6	simple_green_soldier	Simple green soldier
+6	bubble	Bubble
+6	tentacle	Tentacle
+6	skeletor	Skeletor
+6	globul	Globul
+6	mandible	Mandible
+6	bee_guard	Bee Guard
+6	blue_bullblin	Blue Bullblin
+6	red_bullblin	Red Bullblin
+6	creeper	Creeper
+6	cannonball	Random Cannonball
+6	minillosaur_egg	Minillosaur Egg
+6	chain_and_ball	Chain and ball
+6	papillosaur_king	Papillosaur King
+6	khorneth	Khorneth
+6	khotor	Khotor
+6	lizarmen	Lizarmen
+6	zelda	Zelda
+7	fr/text/dialogs.dat	French dialogs

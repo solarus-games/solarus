@@ -122,8 +122,6 @@ class Game: public Screen {
     bool is_playing_transition();
     bool is_showing_gameover();
     bool is_suspended(); // true if at least one of the three functions above returns true
-    void reset();
-    void restart();
 
     // HUD
     void set_hud_enabled(bool hud_enabled);
@@ -140,6 +138,8 @@ class Game: public Screen {
     // game over
     void start_gameover_sequence();
     void get_back_from_death();
+    void reset();
+    void restart();
 };
 
 #endif

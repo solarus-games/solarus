@@ -290,7 +290,9 @@ void PickableItem::notify_movement_changed() {
  */
 void PickableItem::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
 
-  if (entity_overlapping.is_hero() && can_be_picked) {
+  if (entity_overlapping.is_hero()
+      && can_be_picked
+      && !get_game().is_showing_message()) {
     remove_from_map();
     give_item_to_player();
   }

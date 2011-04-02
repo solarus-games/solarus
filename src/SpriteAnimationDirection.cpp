@@ -125,6 +125,19 @@ void SpriteAnimationDirection::enable_pixel_collisions(Surface *src_image) {
 }
 
 /**
+ * @brief Disables the pixel-perfect collision ability of this sprite animation direction.
+ */
+void SpriteAnimationDirection::disable_pixel_collisions() {
+
+  if (pixel_bits != NULL) {
+    for (int i = 0; i < nb_frames; i++) {
+      delete pixel_bits[i];
+    }
+    delete[] pixel_bits;
+  }
+  pixel_bits = NULL;
+}
+/**
  * @brief Returns whether the pixel-perfect collisions are enabled for this direction.
  * @return true if the pixel-perfect collisions are enabled
  */

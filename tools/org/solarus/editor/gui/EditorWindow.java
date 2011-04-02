@@ -25,22 +25,25 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.JToggleButton;
+import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import org.solarus.editor.Dialogs;
+import org.jdesktop.swinghelper.transformer.JXTransformer;
 import org.solarus.editor.MapEditorHistory;
 import org.solarus.editor.Project;
 import org.solarus.editor.ProjectObserver;
-import org.solarus.editor.ResourceType;
 import org.solarus.editor.ZSDXException;
+import org.solarus.editor.gui.tree.QuestDataTree;
 
 /**
  * Main window of the editor.
@@ -51,6 +54,7 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
     private static final String tilesetEditorClass = "org.solarus.editor.gui.TilesetEditorWindow";
     private static final String fileEditorClass = "org.solarus.editor.gui.FileEditorWindow";
     private EditorDesktop desktop;
+    private QuestDataTree qdt;
     private JMenu menuFile;
     private JMenu menuNew;
     private JMenuItem menuNewMap;
@@ -78,7 +82,7 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
      * @param quest name of a quest to load, or null to show a dialog to select the quest
      */
     public EditorWindow(String quest) {
-        super("Solarus - Editor");
+        super("Solarus Editor");
         this.quest = quest;
 
         Project.addProjectObserver(this);
@@ -87,12 +91,44 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
 
         desktop = new EditorDesktop();
         desktop.addChangeListener(this);
-        getContentPane().add(desktop, BorderLayout.CENTER);
+
+        qdt = new QuestDataTree(quest, this);
+        qdt.setVisible(true);
+        final JScrollPane jsp = new JScrollPane(qdt);
+        jsp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        jsp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        final JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, jsp, desktop);
+        splitPane.setDividerLocation(0);
+        jsp.setVisible(false);
+        JToolBar toolBar = new JToolBar(JToolBar.HORIZONTAL);
+        toolBar.setFloatable(false);
+        JToggleButton treeButton = new JToggleButton("Quest Data");
+        treeButton.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+                jsp.setVisible(!jsp.isVisible());
+                if (jsp.isVisible()) {
+                    splitPane.setDividerLocation(300);
+                } else {
+                    splitPane.setDividerLocation(0);
+                }
+            }
+        });
+         
+       //  for(int i = 0; i < 10; i++) toolBar.add(new JLabel());
+        JXTransformer t = new JXTransformer(treeButton);
+        t.rotate(- Math.PI / 2);
+       toolBar.add(t);
+       JPanel pToolBar = new JPanel(new BorderLayout());
+       pToolBar.add(toolBar, BorderLayout.NORTH);
+        getContentPane().add(pToolBar, BorderLayout.WEST);
+        getContentPane().add(splitPane, BorderLayout.CENTER);
 
         // add a window listener to confirm when the user closes the window
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
 
+            @Override
             public void windowClosing(WindowEvent e) {
                 if (checkCurrentFilesSaved()) {
                     //if (GuiTools.yesNoDialog("Do you really want to quit the editor ?")) {
@@ -112,6 +148,7 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
         } else {
             try {
                 Project.createExisting("../quests/" + quest);
+                  qdt.setRoot(Project.getDataPath());
             } catch (ZSDXException ex) {
                 new ActionListenerLoadProject().actionPerformed(null);
             }
@@ -362,8 +399,14 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
 
             if (project == null) {
                 GuiTools.warningDialog("A project already exists in this directory.");
+            } else {
+                qdt.setRoot(projectPath);
+                setTitle("Solarus Editor - " + projectPath.substring(projectPath.lastIndexOf(File.separator) + 1));
             }
         }
+
+
+
     }
 
     /**
@@ -392,13 +435,23 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
 
                         if (project == null) {
                             GuiTools.warningDialog("A project already exists in this directory.");
+                        } else {
+                            qdt.setRoot(projectPath);
+                            setTitle("Solarus Editor - " + projectPath.substring(projectPath.lastIndexOf(File.separator) + 1));
                         }
                     }
+                } else {
+                    qdt.setRoot(projectPath);
+                    setTitle("Solarus Editor - " + projectPath.substring(projectPath.lastIndexOf(File.separator) + 1));
                 }
             } catch (ZSDXException ex) {
                 GuiTools.errorDialog("Cannot load the project: " + ex.getMessage());
             }
         }
+    }
+
+    public void addEditor(AbstractEditorWindow editor) {
+        desktop.addEditor(editor);
     }
 
     /**
@@ -434,7 +487,9 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
             mapEditor.newMap();
             EditorWindow.this.desktop.addEditor(mapEditor);
             mapEditor.getMap().addObserver(EditorWindow.this);
-
+           qdt.addMap( mapEditor.getMap());
+            qdt.repaint();
+          //   mapEditor.getMap().addObserver(EditorWindow.this.desktop);
         }
     }
 
@@ -533,6 +588,7 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
             TilesetEditorWindow tilesetEditor = new TilesetEditorWindow(EditorWindow.this.quest, EditorWindow.this);
             tilesetEditor.newTileset();
             EditorWindow.this.desktop.addEditor(tilesetEditor);
+            qdt.addTileset( tilesetEditor.getTileset());
         }
     }
 
@@ -619,7 +675,7 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
 //        public void eventDispatched(AWTEvent ev) {
 //            if (ev instanceof KeyEvent) {
 //                KeyEvent kev = (KeyEvent) ev;
-//                System.out.println("Touche appuyée depuis " + this.getClass().getName());
+//                System.out.println("Touche appuyÃ©e depuis " + this.getClass().getName());
 //                int code = kev.getKeyCode();
 //                if (kev.isControlDown()) {
 //                    if (code == KeyEvent.VK_W) {

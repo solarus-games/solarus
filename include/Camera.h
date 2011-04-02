@@ -49,7 +49,7 @@ class Camera {
     bool is_fixed_on_hero();
     void set_speed(int speed);
     void move(int target_x, int target_y);
-    void move(MapEntity *entity);
+    void move(MapEntity& entity);
     void restore();
 };
 

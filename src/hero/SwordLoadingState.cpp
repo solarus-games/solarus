@@ -22,8 +22,10 @@
 #include "entities/Detector.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Sound.h"
+#include "lowlevel/FileTools.h"
 #include "Game.h"
 #include "GameControls.h"
+#include <sstream>
 
 /**
  * @brief Constructor.
@@ -68,7 +70,7 @@ void Hero::SwordLoadingState::update() {
 
   // detect when the sword is loaded (i.e. ready for a spin attack)
   if (!sword_loaded && now >= sword_loaded_date) {
-    Sound::play("sword_spin_attack_load");
+    play_load_sound();
     sword_loaded = true;
   }
 
@@ -161,16 +163,31 @@ bool Hero::SwordLoadingState::can_take_stairs() {
 }
 
 /**
- * Gives the sprites the animation stopped corresponding to this state.
+ * @brief Gives the sprites the animation stopped corresponding to this state.
  */
 void Hero::SwordLoadingState::set_animation_stopped() {
   get_sprites().set_animation_stopped_sword_loading();
 }
 
 /**
- * Gives the sprites the animation walking corresponding to this state.
+ * @brief Gives the sprites the animation walking corresponding to this state.
  */
 void Hero::SwordLoadingState::set_animation_walking() {
   get_sprites().set_animation_walking_sword_loading();
 }
 
+/**
+ * @brief Plays the sword loading sound.
+ */
+void Hero::SwordLoadingState::play_load_sound() {
+
+  std::ostringstream oss;
+  oss << "sword_spin_attack_load_" << get_equipment().get_ability("sword");
+  std::string custom_sound_name = oss.str();
+  if (Sound::exists(custom_sound_name)) {
+    Sound::play(custom_sound_name); // this particular sword has a custom loading sound effect
+  }
+  else {
+    Sound::play("sword_spin_attack_load");
+  }
+}

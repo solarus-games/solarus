@@ -29,8 +29,12 @@ end
 function event_restart()
 
   if not being_pushed then
-    go_random()
-    check_hero()
+    if going_hero then
+      go_hero()
+    else
+      go_random()
+      check_hero()
+    end
   end
 end
 

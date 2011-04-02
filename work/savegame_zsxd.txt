@@ -139,7 +139,7 @@ booleans:
 50 shop: bought the heart container
 51-55: weak blocks in outside NO
 56 Bomb bag in freaking cave.
-57	Link's cave: Excalibur is found
+57	Link's cave: found the big rupee bag
 58	Desert east house: bone key in the chest
 59	Desert east house: door open
 60	Cursed cave: Link died

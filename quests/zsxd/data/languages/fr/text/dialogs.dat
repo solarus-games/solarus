@@ -1452,6 +1452,13 @@ next = _treasure.rupee_bag.2.1
 #       |--------------------|
 line1 = "Il peut contenir"
 line2 = "jusqu'à 300 rubis !"
+next = _treasure.rupee_bag.2.2
+
+[_treasure.rupee_bag.2.2]
+#       |--------------------|
+line1 = "Dommage que le jeu"
+line2 = "soit fini, ça aurait"
+line3 = "pu être utile !"
 
 [_treasure.rupee_bag.3]
 # Sac de rubis géant

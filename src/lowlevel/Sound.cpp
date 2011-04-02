@@ -27,11 +27,16 @@
 
 ALCdevice * Sound::device = NULL;
 ALCcontext * Sound::context = NULL;
-SF_VIRTUAL_IO Sound::sf_virtual;
 bool Sound::initialized = false;
 float Sound::volume = 1.0;
 std::list<Sound*> Sound::current_sounds;
 std::map<SoundId,Sound> Sound::all_sounds;
+ov_callbacks Sound::ogg_callbacks = {
+    cb_read,
+    cb_seek,
+    NULL,
+    cb_tell
+};
 
 /**
  * @brief Empty constructor.
@@ -124,13 +129,6 @@ void Sound::initialize(int argc, char **argv) {
   }
 
   initialized = true;
-
-  // initialize libsndfile
-  sf_virtual.get_filelen = sf_get_filelen;
-  sf_virtual.seek = sf_seek;
-  sf_virtual.read = sf_read;
-  sf_virtual.write = sf_write;
-  sf_virtual.tell = sf_tell;
 
   // get the sound effects volume from the configuration file
   set_volume(Configuration::get_value("sound_volume", 100));
@@ -346,49 +344,61 @@ ALuint Sound::decode_file(const std::string &file_name) {
   SoundFromMemory mem;
   mem.position = 0;
   FileTools::data_file_open_buffer(file_name, &mem.data, &mem.size);
-  SF_INFO file_info = {0, 0, 0, 0, 0, 0};
-  SNDFILE *file = sf_open_virtual(&sf_virtual, SFM_READ, &file_info, &mem);
 
-  if (file == NULL) {
-    std::cout << "Cannot load sound file from memory\n";
+  OggVorbis_File file;
+  int error = ov_open_callbacks(&mem, &file, NULL, 0, ogg_callbacks);
+
+  if (error) {
+    std::cout << "Cannot load sound file from memory: error " << error << std::endl;
   }
   else {
 
     // read the encoded sound properties
-    ALsizei nb_samples  = (ALsizei) (file_info.channels * file_info.frames);
-    ALsizei sample_rate = (ALsizei) file_info.samplerate;
+    ALsizei nb_samples = (ALsizei) ov_pcm_total(&file, -1);
+    vorbis_info* info = ov_info(&file, -1);
+    ALsizei sample_rate = info->rate;
 
-    // decode the sound with libsndfile
-    ALshort *samples = new ALshort[nb_samples];
-    if (sf_read_short(file, samples, nb_samples) < nb_samples) {
-      std::cout << "Unable to decode sound data\n";
+    ALenum format = AL_NONE;
+    if (info->channels == 1) {
+      format = AL_FORMAT_MONO16;
+    }
+    else if (info->channels == 2) {
+      format = AL_FORMAT_STEREO16;
+    }
+
+    if (format == AL_NONE) {
+      std::cout << "Invalid audio format" << std::endl;
     }
     else {
 
-      ALenum format = AL_NONE;
-      if (file_info.channels == 1) {
-	format = AL_FORMAT_MONO16;
-      }
-      else if (file_info.channels == 2) {
-	format = AL_FORMAT_STEREO16;
-      }
-
-      if (format == AL_NONE) {
-	std::cout << "Invalid audio format\n";
-      }
-      else {
-
-	// copy the samples into an OpenAL buffer
-	alGenBuffers(1, &buffer);
-        alBufferData(buffer, format, samples, nb_samples * sizeof(ALushort), sample_rate);
-	if (alGetError() != AL_NO_ERROR) {
-	  std::cout << "Cannot copy the sound sample into buffer " << buffer << "\n";
-          buffer = AL_NONE;
+      // decode the sound with vorbisfile
+      ALshort *samples = new ALshort[nb_samples * info->channels];
+      int bitstream;
+      long remaining_bytes = nb_samples * info->channels * sizeof(ALshort);
+      long bytes_read;
+      long total_bytes_read = 0;
+      do {
+        bytes_read = ov_read(&file, ((char*) samples) + total_bytes_read, remaining_bytes, 0, 2, 1, &bitstream);
+        if (bytes_read < 0) {
+          std::cout << "Error while decoding ogg chunk: " << bytes_read << std::endl;
+        }
+        else {
+          total_bytes_read += bytes_read;
+          remaining_bytes -= bytes_read;
         }
       }
+      while (remaining_bytes > 0 && bytes_read > 0);
+
+      // copy the samples into an OpenAL buffer
+      alGenBuffers(1, &buffer);
+      alBufferData(buffer, format, samples, total_bytes_read, sample_rate);
+      if (alGetError() != AL_NO_ERROR) {
+        std::cout << "Cannot copy the sound samples into buffer " << buffer << "\n";
+        buffer = AL_NONE;
+      }
+      delete[] samples;
     }
-    delete[] samples;
-    sf_close(file);
+    ov_clear(&file);
   }
 
   FileTools::data_file_close_buffer(mem.data);
@@ -399,15 +409,22 @@ ALuint Sound::decode_file(const std::string &file_name) {
 
 // io functions to load the encoded sound from memory
 
-sf_count_t Sound::sf_get_filelen(void *user_data) {
+size_t Sound::cb_read(void* ptr, size_t size, size_t nmemb, void* datasource) {
 
-  SoundFromMemory *mem = (SoundFromMemory*) user_data;
-  return mem->size;
+  SoundFromMemory* mem = (SoundFromMemory*) datasource;
+  size_t nb_bytes = nmemb;
+  if (mem->position + nb_bytes >= mem->size) {
+    nb_bytes = mem->size - mem->position;
+  }
+  memcpy(ptr, mem->data + mem->position, nb_bytes);
+  mem->position += nb_bytes;
+
+  return nb_bytes;
 }
 
-sf_count_t Sound::sf_seek(sf_count_t offset, int whence, void *user_data) {
+int Sound::cb_seek(void* datasource, ogg_int64_t offset, int whence) {
 
-  SoundFromMemory *mem = (SoundFromMemory*) user_data;
+  SoundFromMemory* mem = (SoundFromMemory*) datasource;
 
   switch (whence) {
 
@@ -427,26 +444,10 @@ sf_count_t Sound::sf_seek(sf_count_t offset, int whence, void *user_data) {
   return 0;
 }
 
-sf_count_t Sound::sf_read(void *ptr, sf_count_t count, void *user_data) {
+long Sound::cb_tell(void* datasource) {
 
-  SoundFromMemory *mem = (SoundFromMemory*) user_data;
-  if (mem->position + count >= mem->size) {
-    count = mem->size - mem->position;
-  }
-  memcpy(ptr, mem->data + mem->position, count);
-  mem->position += count;
-
-  return count;
-}
-
-sf_count_t Sound::sf_write(const void *ptr, sf_count_t count, void *user_data) {
-  // not implemented
-  return 0;
-}
-
-sf_count_t Sound::sf_tell(void *user_data) {
-
-  SoundFromMemory *mem = (SoundFromMemory*) user_data;
+  SoundFromMemory* mem = (SoundFromMemory*) datasource;
   return mem->position;
 }
+
 

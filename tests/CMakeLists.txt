@@ -29,10 +29,10 @@ foreach(test_main_file ${tests_main_files})
     ${SDLIMAGE_LIBRARY}
     ${SDLTTF_LIBRARY}
     ${OPENAL_LIBRARY}
+    ${VORBISFILE_LIBRARY}
+    ${MODPLUG_LIBRARY}
     ${LUA_LIBRARY}
     ${PHYSFS_LIBRARY}
-    ${SNDFILE_LIBRARY}
-    ${MODPLUG_LIBRARY}
   )
 
   add_test(${test_main_file} ${EXECUTABLE_OUTPUT_PATH}/${test_bin_file} -no-audio -no-video -datapath=${SOLARUS_SOURCE_DIR}/quests/debug_quest)

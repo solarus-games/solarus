@@ -54,7 +54,7 @@ class Sound {
 
   public:
 
-    // libsndfile
+    // libvorbisfile
 
     /**
      * @brief Buffer containing an encoded sound file.
@@ -65,14 +65,11 @@ class Sound {
       size_t position;          /**< current position in the buffer */
     };
 
-    static SF_VIRTUAL_IO sf_virtual;				/**< libsndfile object used to load the encoded sound from memory */
-
     // functions to load the encoded sound from memory
-    static sf_count_t sf_get_filelen(void *user_data);
-    static sf_count_t sf_seek(sf_count_t offset, int whence, void *user_data);
-    static sf_count_t sf_read(void *ptr, sf_count_t count, void *user_data);
-    static sf_count_t sf_write(const void *ptr, sf_count_t count, void *user_data);
-    static sf_count_t sf_tell(void *user_data);
+    static ov_callbacks ogg_callbacks;           /**< vorbisfile object used to load the encoded sound from memory */
+    static size_t cb_read(void* ptr, size_t size, size_t nmemb, void* datasource);
+    static int cb_seek(void* datasource, ogg_int64_t offset, int whence);
+    static long cb_tell(void* datasource);
 
     Sound();
     Sound(const SoundId &sound_id);

@@ -8,10 +8,10 @@ find_package(SDL)
 find_package(SDL_image)
 find_package(SDL_ttf)
 find_package(OpenAL)
-find_package(Lua51)
-find_package(PhysFS)
 find_package(VorbisFile)
 find_package(ModPlug)
+find_package(Lua51)
+find_package(PhysFS)
 
 include_directories(
   ${SOLARUS_SOURCE_DIR}/include

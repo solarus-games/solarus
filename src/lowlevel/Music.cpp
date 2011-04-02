@@ -317,20 +317,38 @@ void Music::decode_it(ALuint destination_buffer, ALsizei nb_samples) {
  */
 void Music::decode_ogg(ALuint destination_buffer, ALsizei nb_samples) {
 
-  // decode the OGG data
-  ALshort *raw_data = new ALshort[nb_samples];
-  sf_read_short(sf_file, raw_data, nb_samples); // TODO check errors
+  // read the encoded music properties
+  vorbis_info* info = ov_info(&ogg_file, -1);
+  ALsizei sample_rate = info->rate;
 
-  // put this decoded data into the buffer
-  ALsizei sample_rate = (ALsizei) sf_file_info.samplerate;
   ALenum al_format = AL_NONE;
-  if (sf_file_info.channels == 1) {
+  if (info->channels == 1) {
     al_format = AL_FORMAT_MONO16;
   }
-  else if (sf_file_info.channels == 2) {
+  else if (info->channels == 2) {
     al_format = AL_FORMAT_STEREO16;
   }
-  alBufferData(destination_buffer, al_format, raw_data, nb_samples * sizeof(ALushort), sample_rate);
+
+  // decode the OGG data
+  ALshort* raw_data = new ALshort[nb_samples * info->channels];
+  int bitstream;
+  long bytes_read;
+  long total_bytes_read = 0;
+  long remaining_bytes = nb_samples * info->channels * sizeof(ALshort);
+  do {
+    bytes_read = ov_read(&ogg_file, ((char*) raw_data) + total_bytes_read, remaining_bytes, 0, 2, 1, &bitstream);
+    if (bytes_read < 0) {
+      std::cout << "Error while decoding ogg chunk: " << bytes_read << std::endl;
+    }
+    else {
+      total_bytes_read += bytes_read;
+      remaining_bytes -= bytes_read;
+    }
+  }
+  while (remaining_bytes > 0 && bytes_read > 0);
+
+  // put this decoded data into the buffer
+  alBufferData(destination_buffer, al_format, raw_data, total_bytes_read, sample_rate);
 
   delete[] raw_data;
 
@@ -394,20 +412,18 @@ bool Music::start() {
 
     case OGG:
 
-      sf_mem.position = 0;
-      FileTools::data_file_open_buffer(file_name, &sf_mem.data, &sf_mem.size);
-      // now, mem contains the encoded data
+      ogg_mem.position = 0;
+      FileTools::data_file_open_buffer(file_name, &ogg_mem.data, &ogg_mem.size);
+      // now, ogg_mem contains the encoded data
 
-      sf_file_info.channels = 0;
-      sf_file_info.format = 0;
-      sf_file_info.frames = 0;
-      sf_file_info.samplerate = 0;
-      sf_file_info.sections = 0;
-      sf_file_info.seekable = 0;
-      sf_file = sf_open_virtual(&Sound::sf_virtual, SFM_READ, &sf_file_info, &sf_mem); // TODO check errors
-
-      for (int i = 0; i < nb_buffers; i++) {
-        decode_ogg(buffers[i], 4096);
+      int error = ov_open_callbacks(&ogg_mem, &ogg_file, NULL, 0, Sound::ogg_callbacks);
+      if (error) {
+        std::cout << "Cannot load music file from memory: error " << error << std::endl;
+      }
+      else {
+        for (int i = 0; i < nb_buffers; i++) {
+          decode_ogg(buffers[i], 4096);
+        }
       }
       break;
   }
@@ -474,8 +490,8 @@ void Music::stop() {
       break;
 
     case OGG:
-      sf_close(sf_file);
-      FileTools::data_file_close_buffer(sf_mem.data);
+      ov_clear(&ogg_file);
+      FileTools::data_file_close_buffer(ogg_mem.data);
       break;
   }
 }

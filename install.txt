@@ -68,11 +68,11 @@ SDL
 SDLmain
 SDL_image
 SDL_ttf
+openal
+vorbisfile
+modplug
 lua5.1
 physfs
-openal
-sndfile
-modplug
 
 
 Note that two other libraries are directly embedded in the source code: SimpleIni,
@@ -84,7 +84,7 @@ Linux developers:
 
 Just install the corresponding packages. For example, with Ubuntu or Debian:
 
-libsdl1.2-dev libsdl-image1.2-dev libsdl-ttf2.0-dev liblua5.1-0-dev libphysfs-dev libopenal-dev libsndfile-dev libmodplug-dev lua5.1 zip
+libsdl1.2-dev libsdl-image1.2-dev libsdl-ttf2.0-dev liblua5.1-0-dev libphysfs-dev libopenal-dev libvorbis-dev libmodplug-dev lua5.1 zip
 
 
 Windows developers:
@@ -137,13 +137,13 @@ This installs the following files (assuming that the install directory is /usr/l
   - a script called my_quest in /usr/local/bin/
 
 The my_quest script launches the engine with the appropriate -datapath flag.
-This means that you can launch the zsdx game with the command:
+This means that you can launch the my_quest game with the command:
 
-$ zsdx
+$ my_quest
 
 which is equivalent to:
 
-$ solarus -datapath=/usr/local/share/solarus/zsdx
+$ solarus -datapath=/usr/local/share/solarus/my_quest
 
 If you want to compile the engine without quests (i.e. you have no quests directory),
 cmake detects it and only builds and installs the solarus binary.

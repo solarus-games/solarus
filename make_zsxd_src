@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# This script creates an archive with the sources files for zsxd.
+# Usage: ./make_zsxd_src version_number
+
+if [ $# != 1 ];
+then
+  echo "Usage: ./make_zsxd_src version_number"
+  exit 1
+fi
+
+version=$1
+
+rm -rf zsxd-$version
+mkdir zsxd-$version
+git archive -o zsxd-$version/tmp.tar HEAD CMakeLists.txt doc cmake include quests/zsxd src license.txt  install.txt readme.txt tests
+cd zsxd-$version
+tar xf tmp.tar
+rm tmp.tar
+cd ..
+rm -r zsxd-$version-src.tar.gz
+tar czf zsxd-$version-src.tar.gz zsxd-$version
+

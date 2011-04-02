@@ -1,3 +1,5 @@
+#!/bin/bash
+
 mkdir export
 git archive -o export/tools.tar HEAD .
 cd export

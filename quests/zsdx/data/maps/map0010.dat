@@ -555,6 +555,8 @@
 0	0	616	544	8	16	44
 2	0	-16	0	16	624	teletransporter	0	2	8	_side
 2	0	0	624	960	16	to_B2	0	2	7	_side
+2	0	800	384	16	16	to_dungeon_8	0	1	47	from_outside
+2	0	800	384	16	16	to_dungeon_8	0	1	47	from_outside
 0	2	408	240	144	40	511
 0	2	408	224	144	16	512
 0	2	400	232	8	40	513

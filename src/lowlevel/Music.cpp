@@ -21,7 +21,6 @@
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 #include "Configuration.h"
-#include <sndfile.h>
 
 const int Music::nb_buffers;
 SpcDecoder *Music::spc_decoder = NULL;

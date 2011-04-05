@@ -38,6 +38,26 @@ height = 1024
 width = 1024
 height = 1024
 
+[dungeon_8.floor_0]
+width = 1024
+height = 1024
+
+[dungeon_8.floor_-1]
+width = 1024
+height = 1024
+
+[dungeon_8.floor_-2]
+width = 1024
+height = 1024
+
+[dungeon_8.floor_-3]
+width = 1024
+height = 1024
+
+[dungeon_8.floor_-4]
+width = 1024
+height = 1024
+
 [dungeon_10.map_17.chest_0]
 floor = 0
 x = 920
@@ -197,5 +217,19 @@ floor = 0
 x = 936
 y = 432
 save = 118
+big = 0
+
+[dungeon_8.map_48.chest_0]
+floor = -1
+x = 2168
+y = 952
+save = -1
+big = 0
+
+[dungeon_8.map_47.chest_0]
+floor = 0
+x = 1872
+y = 1328
+save = -1
 big = 0
 

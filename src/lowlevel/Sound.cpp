@@ -426,14 +426,26 @@ ALuint Sound::decode_file(const std::string &file_name) {
         }
         else {
           total_bytes_read += bytes_read;
-          samples.insert(samples.end(), samples_buffer, samples_buffer + bytes_read);
+          if (format == AL_FORMAT_STEREO16) {
+            samples.insert(samples.end(), samples_buffer, samples_buffer + bytes_read);
+          }
+          else {
+            // mono sound files make no sound on some machines
+            // workaround: convert them on-the-fly into stereo sounds
+            // TODO find a better solution
+            for (int i = 0; i < bytes_read; i += 2) {
+              samples.insert(samples.end(), samples_buffer + i, samples_buffer + i + 2);
+              samples.insert(samples.end(), samples_buffer + i, samples_buffer + i + 2);
+            }
+            total_bytes_read += bytes_read;
+          }
         }
       }
       while (bytes_read > 0);
 
       // copy the samples into an OpenAL buffer
       alGenBuffers(1, &buffer);
-      alBufferData(buffer, format, (ALshort*) &samples[0], total_bytes_read, sample_rate);
+      alBufferData(buffer, AL_FORMAT_STEREO16, (ALshort*) &samples[0], total_bytes_read, sample_rate);
       if (alGetError() != AL_NO_ERROR) {
         std::cout << "Cannot copy the sound samples into buffer " << buffer << "\n";
         buffer = AL_NONE;

@@ -77,8 +77,10 @@ class Sound {
     Sound();
     Sound(const SoundId &sound_id);
     ~Sound();
+    void load();
     bool start();
 
+    static void load_all();
     static bool exists(const SoundId& sound_id);
     static void play(const SoundId& sound_id);
 

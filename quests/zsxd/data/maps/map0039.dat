@@ -164,7 +164,6 @@
 18	0	440	784	trap_door	3	0	-1
 2	0	520	64	16	16	teletransporter_2	1	1	38	back
 13	0	520	109	32	16	sensor_teleporter	0
-13	0	456	781	16	16	sensor	2
 12	0	296	368	8	32	custom_obstacle_5	1	1	1	1
 12	0	320	368	8	32	custom_obstacle_6	1	1	1	1
 12	0	504	256	8	32	custom_obstacle_7	1	1	1	1
@@ -188,7 +187,6 @@
 0	1	528	744	24	64	50
 0	1	528	728	24	24	53
 0	1	360	728	24	24	54
-0	1	440	800	32	8	312
 6	1	320	136	8	232	jump_sensor	0	16
 6	1	528	136	8	120	jump_sensor_2	0	16
 6	1	296	136	8	232	jump_sensor_3	4	16
@@ -199,6 +197,7 @@
 12	1	528	256	8	32	custom_obstacle_2	1	1	1	1
 12	1	296	368	8	32	custom_obstacle_3	1	1	1	1
 12	1	320	368	8	32	custom_obstacle_4	1	1	1	1
+10	1	440	800	32	8	trap_door_open	312	1
 0	2	0	0	800	16	170
 0	2	0	752	360	80	170
 0	2	552	752	248	80	170

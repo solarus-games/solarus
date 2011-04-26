@@ -138,13 +138,16 @@ bool InteractiveEntity::is_displayed_in_y_order() {
 /**
  * @brief Creates the sprite specified.
  * @param sprite_name sprite animation set of the entity, or "_none" to create no sprite
- * @param initial_direction direction of the entity's sprite (ignored if there is no sprite)
+ * @param initial_direction direction of the entity's sprite (ignored if there is no sprite
+ * of if the direction specified is -1)
  */
 void InteractiveEntity::initialize_sprite(SpriteAnimationSetId &sprite_name, int initial_direction) {
 
   if (sprite_name != "_none") {
     create_sprite(sprite_name);
-    get_sprite().set_current_direction(initial_direction);
+    if (initial_direction != -1) {
+      get_sprite().set_current_direction(initial_direction);
+    }
   }
 }
 

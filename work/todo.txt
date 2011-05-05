@@ -83,6 +83,22 @@ Ennemis à faire (reprendre graphismes de MC + graphismes rippés) :
 - garde bleu avec lance (monde des ténèbres)
 
 
+Musiques du vieux ZS :
+
+- Boss OOT (plusieurs musiques)
+- Abîme du Poisson (ou Caverne) LA
+- Sorcière LA
+- Donjon TLOZ
+- Village des Animaux LA ? (Maison Animaux.mid)
+- Diverses musiques de donjons au choix (LA notamment)
+- Moblins LA
+- Cabine téléphonique LA
+- Gîte des Rêves LA
+- Mont Tamaranch LA (déjà fait)
+- ... toutes musiques acceptées, idées bienvenues
+
+
+
 --------------
 Mode release :
 --------------

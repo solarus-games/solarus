@@ -283,12 +283,6 @@ void MapEntities::add_tile(Tile *tile) {
 
   int i, j;
  
-  for (i = 0; i < tile_height8; i++) {
-    for (j = 0; j < tile_width8; j++) {
-      set_obstacle(layer, tile_x8 + j, tile_y8 + i, OBSTACLE_NONE);
-    }
-  }
-
   switch (obstacle) {
 
     /* If the obstacle property is the same for all points inside the base tile,
@@ -321,6 +315,11 @@ void MapEntities::add_tile(Tile *tile) {
       // 8*8 square on the diagonal
       set_obstacle(layer, tile_x8 + i, tile_y8 + i, OBSTACLE_TOP_RIGHT);
 
+      // left part of the row: we are in the bottom-left corner
+      for (j = 0; j < i; j++) {
+        set_obstacle(layer, tile_x8 + j, tile_y8 + i, OBSTACLE_NONE);
+      }
+
       // right part of the row: we are in the top-right corner
       for (j = i + 1; j < tile_width8; j++) {
 	set_obstacle(layer, tile_x8 + j, tile_y8 + i, OBSTACLE);
@@ -331,6 +330,11 @@ void MapEntities::add_tile(Tile *tile) {
   case OBSTACLE_TOP_LEFT:
     // we traverse each row of 8*8 squares on the tile
     for (i = 0; i < tile_height8; i++) {
+
+      // right part of the row: we are in the bottom-right corner
+      for (j = tile_width8 - i; j < tile_width8; j++) {
+        set_obstacle(layer, tile_x8 + j, tile_y8 + i, OBSTACLE_NONE);
+      }
 
       // left part of the row: we are in the top-left corner
       for (j = 0; j < tile_width8 - i - 1; j++) {
@@ -346,6 +350,10 @@ void MapEntities::add_tile(Tile *tile) {
     // we traverse each row of 8*8 squares on the tile
     for (i = 0; i < tile_height8; i++) {
 
+      // right part of the row: we are in the top-right corner
+      for (j = i + 1; j < tile_width8; j++) {
+        set_obstacle(layer, tile_x8 + j, tile_y8 + i, OBSTACLE_NONE);
+      }
       // left part of the row: we are in the bottom-left corner
       for (j = 0; j < i; j++) {
 	set_obstacle(layer, tile_x8 + j, tile_y8 + i, OBSTACLE);
@@ -363,6 +371,11 @@ void MapEntities::add_tile(Tile *tile) {
       // 8*8 square on the diagonal
       set_obstacle(layer, tile_x8 + tile_width8 - i - 1, tile_y8 + i, OBSTACLE_BOTTOM_RIGHT);
 
+      // left part of the row: we are in the top-left corner
+      for (j = 0; j < tile_width8 - i - 1; j++) {
+        set_obstacle(layer, tile_x8 + j, tile_y8 + i, OBSTACLE_NONE);
+      }
+
       // right part of the row: we are in the bottom-right corner
       for (j = tile_width8 - i; j < tile_width8; j++) {
 	set_obstacle(layer, tile_x8 + j, tile_y8 + i, OBSTACLE);
@@ -371,7 +384,7 @@ void MapEntities::add_tile(Tile *tile) {
     break;
 
   case OBSTACLE_EMPTY:
-    Debug::die("Illegal obstacle property for this tile");
+    // keep the obstacle property from any tile already here
     break;
   }
 }

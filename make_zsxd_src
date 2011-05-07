@@ -18,6 +18,6 @@ cd zsxd-$version
 tar xf tmp.tar
 rm tmp.tar
 cd ..
-rm -r zsxd-$version-src.tar.gz
+rm -f zsxd-$version-src.tar.gz
 tar czf zsxd-$version-src.tar.gz zsxd-$version
 

@@ -36,11 +36,13 @@ function event_map_started(destination_point_name)
   if sol.game.savegame_get_boolean(121) then
     -- the water at the center is removed
     sol.map.tile_set_group_enabled("c_water", false)
+    sol.map.tile_set_group_enabled("c_water_out", true)
   end
 
   if sol.game.savegame_get_boolean(122) then
     -- the east water is removed
     sol.map.tile_set_group_enabled("e_water", false)
+    sol.map.tile_set_group_enabled("e_water_out", true)
   end
 
 end
@@ -99,6 +101,7 @@ function open_ce_door()
 end
 
 function remove_c_water()
+  sol.map.tile_set_enabled("c_water_out", true)
   sol.map.tile_set_enabled("c_water_source", false)
   sol.main.timer_start(remove_water_delay, "remove_c_water_2", false)
 end

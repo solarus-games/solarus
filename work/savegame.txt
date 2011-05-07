@@ -152,6 +152,12 @@ booleans:
 120	dungeon 3 2F: weak block
 121	dungeon 3 1F: water (center)
 122	dungeon 3 2F: water (east)
+123 dungeon 3 3F: big chest with the hookshot
+124 dungeon 3 3F: chest with the boss key
+125 dungeon 3 3F: locked door
+126 dungeon 3 2F: chest with the compass
+127 dungeon 3 2F: barrier of the compass chest
+128 dungeon 3 2F: south-east water drained
 
 200-299: binbin dungeon
 200	1F: small key 1 door

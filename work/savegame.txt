@@ -158,6 +158,7 @@ booleans:
 126 dungeon 3 2F: chest with the compass
 127 dungeon 3 2F: barrier of the compass chest
 128 dungeon 3 2F: south-east water drained
+129 dungeon 3 2F: chest with the big key
 
 200-299: binbin dungeon
 200	1F: small key 1 door

@@ -1,6 +1,7 @@
 -- Dungeon 3 2F
 
 camera_timer = nil
+remove_water_delay = 500 -- delay between each step when some water is disappearing
 
 function event_map_started(destination_point_name)
 
@@ -87,7 +88,7 @@ function remove_se_water_5()
 end
 
 function remove_se_water_6()
-  sol.map.tile_set_enabled("se_water_less_3", false)
+  sol.map.tile_set_enabled("se_water_less_c", false)
   sol.game.savegame_set_boolean(128, true)
   sol.main.play_sound("secret")
   sol.main.timer_start(1000, "sol.map.camera_restore", false)

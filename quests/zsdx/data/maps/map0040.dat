@@ -679,7 +679,6 @@
 10	1	936	400	16	8	e_water_2	467	1
 10	1	280	720	8	32	c_water_middle	474	1
 10	1	272	728	8	16	c_water_source	473	1
-8	1	416	981	torch_6	-1	0	entities/torch	item#lamp
 0	2	88	528	96	8	437
 0	2	88	504	96	8	438
 0	2	440	288	128	8	437

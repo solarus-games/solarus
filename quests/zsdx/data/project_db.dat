@@ -24,7 +24,6 @@
 0	22	Mymette grotte
 0	26	Fairy Cave
 0	29	Twin caves
-0	54	Dungeon 3 5F
 0	43	Dungeon 3 4F
 0	42	Dungeon 3 3F
 0	41	Dungeon 3 2F
@@ -86,6 +85,7 @@
 2	legend.spc	Legend
 2	lost_woords.spc	Lost Woods
 2	mini_game.spc	Mini game
+2	la_mountains.ogg	Mountains (LA)
 2	overworld.spc	Overworld
 2	sanctuary.spc	Sanctuary
 2	game_over.spc	Selection menu & Game Over

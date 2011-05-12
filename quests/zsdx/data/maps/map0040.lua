@@ -56,13 +56,10 @@ function event_map_opening_transition_finished(destination_point_name)
   end
 end
 
--- Called after the hero uses an item on an interactive entity on this map
-function event_hero_interaction_item_finished(entity_name, item_name, variant)
+function event_update()
 
-  if item_name == "lamp"
-      and string.match(entity_name, "^torch")
-      and not sol.map.door_is_open("torches_door")
-      and are_all_torches_on() then
+  if not sol.game.savegame_get_boolean(113)
+    and are_all_torches_on() then
 
     sol.main.play_sound("secret")
     sol.map.door_open("torches_door")

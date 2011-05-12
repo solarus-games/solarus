@@ -1606,6 +1606,16 @@ void MapEntity::notify_collision_with_explosion(Explosion &explosion, Sprite &sp
 }
 
 /**
+ * @brief Notifies this entity that a sprite of fire
+ * detects a pixel-perfect collision with a sprite of this entity.
+ * @param fire the fire
+ * @param sprite_overlapping the sprite of the current entity that collides with the fire
+ */
+void MapEntity::notify_collision_with_fire(Fire& fire, Sprite& sprite_overlapping) {
+
+}
+
+/**
  * @brief This function is called when an enemy's rectangle detects a collision with this entity's rectangle.
  * @param enemy the enemy
  */

@@ -504,6 +504,9 @@ creates a bomb and places it on the map
 - <tt>sol.map.explosion_create(x, y, layer)</tt>:
 creates an explosion on the map
 
+- <tt>sol.map.fire_create(x, y, layer)</tt>:
+creates some fire on the map
+
 - <tt>sol.map.enemy_create(enemy_name, breed, layer, x, y)</tt>:
 Creates an enemy on the map.
 
@@ -877,6 +880,10 @@ returns true if an interaction actually happened
 - <tt>event_npc_movement_finished(npc_name)</tt>:
 called when an NPC has finished its movement started by the script
 
+- <tt>event_npc_collision_with_fire(npc_name)</tt>
+(triggered only if the NPC has the property to call the map script):
+called when some fire touches an NPC
+
 - <tt>event_chest_empty(chest_name)</tt>:
 called when the hero opens an empty chest: the hero is freezed, your script has
 to define its behavior and then call hero_unfreeze()
@@ -944,6 +951,10 @@ called when the player talks to an NPC
 (triggered only if the NPC has the property to notify the item controlled by this script):
 called when the player uses an inventory item in front of NPC;
 returns true if an interaction actually happened
+
+- <tt>event_npc_collision_with_fire(npc_name)</tt>
+(triggered only if the NPC has the property to notify the item controlled by this script):
+called when some fire touches an NPC
 
 - <tt>event_appear(variant, savegame_variable, falling_height)</tt>:
 called when a pickable item whose type is controlled by this script just appeared on the map

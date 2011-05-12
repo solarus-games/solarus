@@ -414,6 +414,7 @@ void Script::register_map_api() {
       { "pickable_item_create", map_api_pickable_item_create },
       { "bomb_create", map_api_bomb_create },
       { "explosion_create", map_api_explosion_create },
+      { "fire_create", map_api_fire_create },
       { "enemy_create", map_api_enemy_create },
       { "enemy_remove", map_api_enemy_remove },
       { "enemy_remove_group", map_api_enemy_remove_group },
@@ -1040,3 +1041,11 @@ bool Script::event_npc_dialog_item(const std::string &npc_name, const std::strin
   return interaction != 0;
 }
 
+/**
+ * @brief Notifies the script that there was just a collision between an NPC and fire.
+ * @param npc_name name of the NPC
+ */
+void Script::event_npc_collision_with_fire(const std::string &npc_name) {
+
+  notify_script("event_npc_collision_with_fire", "s", npc_name.c_str());
+}

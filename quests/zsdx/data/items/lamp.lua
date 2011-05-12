@@ -69,7 +69,7 @@ function event_hero_interaction(entity_name)
 end
 
 -- Called when fire touches an interactive entity linked to the Lamp
-function event_npc_collision_with_fire(npc_name)
+function event_npc_collision_fire(npc_name)
 
   if string.match(npc_name, "^torch") then
     

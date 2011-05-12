@@ -880,9 +880,12 @@ returns true if an interaction actually happened
 - <tt>event_npc_movement_finished(npc_name)</tt>:
 called when an NPC has finished its movement started by the script
 
-- <tt>event_npc_collision_with_fire(npc_name)</tt>
+- <tt>event_npc_collision_fire(npc_name)</tt>
 (triggered only if the NPC has the property to call the map script):
 called when some fire touches an NPC
+
+- <tt>event_sensor_collision_explosion(sensor_name)</tt>:
+called when an explosion overlaps a sensor
 
 - <tt>event_chest_empty(chest_name)</tt>:
 called when the hero opens an empty chest: the hero is freezed, your script has

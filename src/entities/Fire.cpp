@@ -111,8 +111,9 @@ void Fire::update() {
   if (get_sprite().is_animation_finished()) {
     remove_from_map();
   }
-
-  check_collision_with_detectors();
+  else {
+    check_collision_with_detectors();
+  }
 }
 
 /**

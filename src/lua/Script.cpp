@@ -1045,7 +1045,7 @@ bool Script::event_npc_dialog_item(const std::string &npc_name, const std::strin
  * @brief Notifies the script that there was just a collision between an NPC and fire.
  * @param npc_name name of the NPC
  */
-void Script::event_npc_collision_with_fire(const std::string &npc_name) {
+void Script::event_npc_collision_fire(const std::string &npc_name) {
 
-  notify_script("event_npc_collision_with_fire", "s", npc_name.c_str());
+  notify_script("event_npc_collision_fire", "s", npc_name.c_str());
 }

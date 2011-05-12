@@ -59,6 +59,7 @@ class Sensor: public Detector {
     bool has_layer_independent_collisions();
     bool is_obstacle_for(MapEntity &other);
     void notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode);
+    void notify_collision_with_explosion(Explosion& explosion);
     void activate(Hero &hero);
     void update();
 };

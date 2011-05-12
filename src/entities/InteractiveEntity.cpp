@@ -238,7 +238,7 @@ void InteractiveEntity::notify_collision(MapEntity &entity_overlapping, Collisio
   else if (collision_mode == COLLISION_RECTANGLE && entity_overlapping.get_type() == FIRE) {
 
     Script *script = behavior == BEHAVIOR_ITEM_SCRIPT ? script_to_call : &get_map_script();
-    script->event_npc_collision_with_fire(get_name());
+    script->event_npc_collision_fire(get_name());
   }
 }
 

@@ -171,7 +171,7 @@ bool Teletransporter::test_collision_custom(MapEntity& entity) {
     }
 
     else if (!get_map().test_collision_with_border(get_center_point()) &&
-	hero.get_tile_ground() == GROUND_HOLE) {
+	hero.get_ground() == GROUND_HOLE) {
       // falling into a hole
       collision = overlaps(hero.get_ground_point());
       normal_case = false;

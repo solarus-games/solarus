@@ -1381,7 +1381,7 @@ void Hero::notify_collision_with_teletransporter(Teletransporter &teletransporte
 
   if (teletransporter.is_on_map_side() || !state->can_avoid_teletransporter()) {
 
-    bool on_hole = get_tile_ground() == GROUND_HOLE;
+    bool on_hole = get_ground() == GROUND_HOLE;
     if (on_hole || state->is_teletransporter_delayed()) {
       this->delayed_teletransporter = &teletransporter; // fall into the hole (or do something else) first, transport later
     }

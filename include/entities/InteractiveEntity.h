@@ -60,7 +60,7 @@ class InteractiveEntity: public Detector {
     Script *script_to_call;             /**< map script or item script to call when an interarction occurs, or NULL */
 
     void initialize_sprite(SpriteAnimationSetId &sprite_name, int initial_direction);
-    void call_script();
+    void call_script_hero_interaction();
 
   public:
 

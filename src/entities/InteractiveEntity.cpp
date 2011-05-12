@@ -50,7 +50,7 @@
 InteractiveEntity::InteractiveEntity(Game &game, const std::string &name, Layer layer, int x, int y,
 				     Subtype subtype, SpriteAnimationSetId sprite_name,
 				     int direction, const std::string &behavior_string):
-  Detector(COLLISION_FACING_POINT, name, layer, x, y, 0, 0),
+  Detector(COLLISION_FACING_POINT | COLLISION_RECTANGLE, name, layer, x, y, 0, 0),
   subtype(subtype),
   message_to_show(""),
   script_to_call(NULL) {
@@ -215,7 +215,7 @@ bool InteractiveEntity::is_sword_ignored() {
  */
 void InteractiveEntity::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
 
-  if (entity_overlapping.is_hero()) {
+  if (collision_mode == COLLISION_FACING_POINT && entity_overlapping.is_hero()) {
 
     Hero &hero = (Hero&) entity_overlapping;
 
@@ -234,6 +234,11 @@ void InteractiveEntity::notify_collision(MapEntity &entity_overlapping, Collisio
 	get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_LIFT);
       }
     }
+  }
+  else if (collision_mode == COLLISION_RECTANGLE && entity_overlapping.get_type() == FIRE) {
+
+    Script *script = behavior == BEHAVIOR_ITEM_SCRIPT ? script_to_call : &get_map_script();
+    script->event_npc_collision_with_fire(get_name());
   }
 }
 
@@ -260,29 +265,29 @@ void InteractiveEntity::action_key_pressed() {
     if (effect != KeysEffect::ACTION_KEY_LIFT) {
       // start the normal behavior
       if (behavior == BEHAVIOR_DIALOG) {
-	get_dialog_box().start_dialog(message_to_show);
+        get_dialog_box().start_dialog(message_to_show);
       }
       else {
-	call_script();
+        call_script_hero_interaction();
       }
     }
     else {
       // lift the entity
       if (get_equipment().has_ability("lift")) {
 
-	hero.start_lifting(new CarriedItem(hero, *this,
-	    get_sprite().get_animation_set_id(), "stone", 2, 0));
-	Sound::play("lift");
-	remove_from_map();
+        hero.start_lifting(new CarriedItem(hero, *this,
+            get_sprite().get_animation_set_id(), "stone", 2, 0));
+        Sound::play("lift");
+        remove_from_map();
       }
     }
   }
 }
 
 /**
- * @brief Notifies the appropriate script that the player is interacting with this entity.
+ * @brief Notifies the appropriate script that the hero is interacting with this entity.
  */
-void InteractiveEntity::call_script() {
+void InteractiveEntity::call_script_hero_interaction() {
 
   if (behavior == BEHAVIOR_MAP_SCRIPT && script_to_call == NULL) { // first time
     script_to_call = &get_map_script();

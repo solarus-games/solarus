@@ -235,6 +235,7 @@ class Script {
       map_api_pickable_item_create,
       map_api_bomb_create,
       map_api_explosion_create,
+      map_api_fire_create,
       map_api_enemy_create,
       map_api_enemy_remove,
       map_api_enemy_remove_group,
@@ -360,6 +361,7 @@ class Script {
     bool event_hero_interaction_item(const std::string &entity_name, const std::string &item_name, int variant);
     void event_npc_dialog(const std::string &npc_name);
     bool event_npc_dialog_item(const std::string &npc_name, const std::string &item_name, int variant);
+    void event_npc_collision_with_fire(const std::string &npc_name);
 };
 
 #endif

@@ -269,6 +269,15 @@ void MapScript::event_npc_movement_finished(const std::string &npc_name) {
 }
 
 /**
+ * @brief Notifies the script that an explosion just occured on a sensor.
+ * @param sensor_name name of the sensor
+ */
+void MapScript::event_sensor_collision_explosion(const std::string& sensor_name) {
+
+  notify_script("event_sensor_collision_explosion", "s", sensor_name.c_str());
+}
+
+/**
  * @brief Notifies the script that the player has just open an empty chest.
  *
  * What happens next is controlled by your script if it handles this event.

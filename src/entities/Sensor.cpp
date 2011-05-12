@@ -36,7 +36,7 @@
  */
 Sensor::Sensor(const std::string &name, Layer layer, int x, int y,
 	       int width, int height, Subtype subtype):
-  Detector(COLLISION_INSIDE, name, layer, x, y, width, height),
+  Detector(COLLISION_INSIDE | COLLISION_RECTANGLE, name, layer, x, y, width, height),
   subtype(subtype),
   activated_by_hero(false) {
 
@@ -120,15 +120,23 @@ bool Sensor::is_obstacle_for(MapEntity &other) {
 
 /**
  * @brief This function is called by the engine when an entity overlaps this sensor.
- *
- * This is a redefinition of Detector::collision().
- *
  * @param entity_overlapping the entity overlapping the detector
  * @param collision_mode the collision mode that detected the collision
  */
 void Sensor::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
 
-  entity_overlapping.notify_collision_with_sensor(*this);
+  entity_overlapping.notify_collision_with_sensor(*this, collision_mode);
+}
+
+/**
+ * @brief This function is called when an explosion detects a collision with this entity.
+ * @param explosion an explosion
+ */
+void Sensor::notify_collision_with_explosion(Explosion& explosion) {
+
+  if (subtype == CUSTOM) {
+    get_map_script().event_sensor_collision_explosion(get_name());
+  }
 }
 
 /**

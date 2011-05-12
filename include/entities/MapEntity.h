@@ -279,7 +279,7 @@ class MapEntity {
     virtual void notify_collision_with_conveyor_belt(ConveyorBelt &conveyor_belt, int dx, int dy);
     virtual void notify_collision_with_stairs(Stairs &stairs, CollisionMode collision_mode);
     virtual void notify_collision_with_jump_sensor(JumpSensor &jump_sensor);
-    virtual void notify_collision_with_sensor(Sensor &sensor);
+    virtual void notify_collision_with_sensor(Sensor &sensor, CollisionMode collision_mode);
     virtual void notify_collision_with_switch(Switch &sw);
     virtual void notify_collision_with_crystal_switch(CrystalSwitch &crystal_switch, CollisionMode collision_mode);
     virtual void notify_collision_with_crystal_switch(CrystalSwitch &crystal_switch, Sprite &sprite_overlapping);

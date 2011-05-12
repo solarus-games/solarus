@@ -16,6 +16,7 @@
  */
 #include "entities/Explosion.h"
 #include "entities/CrystalSwitch.h"
+#include "entities/Sensor.h"
 #include "entities/Enemy.h"
 #include "Game.h"
 #include "Sprite.h"
@@ -28,7 +29,7 @@
  * @param with_damages true to hurt the hero and the enemies
  */
 Explosion::Explosion(Layer layer, const Rectangle &xy, bool with_damages):
-  Detector(COLLISION_SPRITE, "", layer, xy.get_x(), xy.get_y(), 48, 48) { 
+  Detector(COLLISION_SPRITE | COLLISION_RECTANGLE, "", layer, xy.get_x(), xy.get_y(), 48, 48) {
 
   // initialize the entity
   create_sprite("entities/explosion");
@@ -112,9 +113,25 @@ bool Explosion::is_displayed_in_y_order() {
  * @brief Updates this entity.
  */
 void Explosion::update() {
+
   Detector::update();
+
   if (get_sprite().is_animation_finished()) {
     remove_from_map();
+  }
+}
+
+/**
+ * @brief Notifies this entity that the frame of one of its sprites has just changed.
+ * @param sprite the sprite
+ * @param animation the current animation
+ * @param frame the new frame
+ */
+void Explosion::notify_sprite_frame_changed(Sprite& sprite, const std::string& animation, int frame) {
+
+  if (frame == 1) {
+    // also detect non-pixel precise collisions
+    check_collision_with_detectors();
   }
 }
 
@@ -142,6 +159,18 @@ void Explosion::notify_collision(MapEntity &other_entity, Sprite &other_sprite, 
 void Explosion::notify_collision_with_crystal_switch(CrystalSwitch &crystal_switch, Sprite &sprite_overlapping) {
 
   crystal_switch.activate(*this);
+}
+
+/**
+ * @brief This function is called when a sensor detects a collision with this entity.
+ * @param sensor a sensor
+ * @param collision_mode the collision mode that detected the collision
+ */
+void Explosion::notify_collision_with_sensor(Sensor& sensor, CollisionMode collision_mode) {
+
+  if (collision_mode == COLLISION_RECTANGLE) {
+    sensor.notify_collision_with_explosion(*this);
+  }
 }
 
 /**

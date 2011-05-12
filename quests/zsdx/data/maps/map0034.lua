@@ -2,6 +2,7 @@
 -- Bomb cave 1F --
 ------------------
 
+door_open = false
 keep_door_open = false
 
 function are_all_torches_on()
@@ -19,15 +20,18 @@ function event_map_started(destination_point_name)
   end
 end
 
-function event_hero_interaction_item_finished(entity_name, item_name, variant)
+function event_update()
 
-  if item_name == "lamp"
-      and string.match(entity_name, "^torch")
-      and not sol.map.door_is_open("door")
-      and are_all_torches_on() then
+  if not door_open and are_all_torches_on() then
 
     sol.main.play_sound("secret")
     sol.map.door_open("door")
+    door_open = true
+  elseif door_open and not keep_door_open
+      and not are_all_torches_on() then
+
+    sol.map.door_close("door")
+    door_open = false
   end
 end
 
@@ -36,16 +40,5 @@ function event_hero_on_sensor(sensor_name)
   if sensor_name == "close_door_sensor" then
     keep_door_open = false
   end
-end
-
-function event_update()
-
-  if sol.map.door_is_open("door")
-      and not keep_door_open
-      and not are_all_torches_on() then
-
-    sol.map.door_close("door")
-  end
-
 end
 

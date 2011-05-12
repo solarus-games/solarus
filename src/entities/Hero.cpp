@@ -1490,10 +1490,12 @@ void Hero::notify_collision_with_jump_sensor(JumpSensor &jump_sensor) {
 /**
  * @brief This function is called when a sensor detects a collision with this entity.
  * @param sensor a sensor
+ * @param collision_mode the collision mode that detected the collision
  */
-void Hero::notify_collision_with_sensor(Sensor &sensor) {
+void Hero::notify_collision_with_sensor(Sensor &sensor, CollisionMode collision_mode) {
 
-  if (!state->can_avoid_sensor()) {
+  if (collision_mode == COLLISION_INSIDE    // the hero is entirely inside the sensor
+      && !state->can_avoid_sensor()) {
     sensor.activate(*this);
   }
 }

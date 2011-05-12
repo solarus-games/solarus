@@ -1560,8 +1560,9 @@ void MapEntity::notify_collision_with_jump_sensor(JumpSensor &jump_sensor) {
 /**
  * @brief This function is called when a sensor detects a collision with this entity.
  * @param sensor a sensor
+ * @param collision_mode the collision mode that detected the collision
  */
-void MapEntity::notify_collision_with_sensor(Sensor &sensor) {
+void MapEntity::notify_collision_with_sensor(Sensor &sensor, CollisionMode collision_mode) {
 }
 
 /**

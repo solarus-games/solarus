@@ -133,6 +133,7 @@ class HeroSprites {
     void set_animation_plunging();
     void set_animation_falling();
     void set_animation_boomerang();
+    void set_animation_hookshot();
     void set_animation_bow();
     void set_animation_brandish();
     void set_animation_victory();

@@ -35,65 +35,66 @@ class Hero: public MapEntity {
   private:
 
     // state
-    class State;				/**< base class for all states */
-    class PlayerMovementState;			/**< abstract class for states whose movement is controlled by the player */
-    class FreeState;				/**< the hero is free to move (stopped or walking) and can interact with entities */
-    class CarryingState;			/**< the hero can walk but he is carrying a pot or a bush */
-    class SwordLoadingState;			/**< the hero can walk but his sword is loading for a spin attack */
-    class SwimmingState;			/**< the hero is swimming in deep water */
-    class PushingState;				/**< the hero is trying to push an obstacle */
-    class SwordTappingState;			/**< the hero is tapping his sword on a wall */
-    class PullingState;				/**< the hero is pulling an object */
-    class GrabbingState;			/**< the hero is grabbing an object and can pull it */
-    class ConveyorBeltState;			/**< the hero is being moved by a conveyor belt */
-    class SwordSwingingState;			/**< the hero is swinging his sword */
-    class SpinAttackState;			/**< the hero is releasing a spin attack */
-    class LiftingState;				/**< the hero is lifting an destroyable item (a pot, a bush, etc.) */
-    class TreasureState;			/**< the hero is brandishing a treasure */
-    class RunningState;				/**< the hero is running */
-    class JumpingState;				/**< the hero is jumping */
-    class HurtState;				/**< the hero is hurt */
-    class PlungingState;			/**< the hero is plunging into water */
-    class FallingState;				/**< the hero is falling into a hole */
-    class BackToSolidGroundState;		/**< the hero is getting back to solid ground (e.g. after he drowned
-						 * in deep water or falled into a hole) */
-    class StairsState;				/**< the hero is being moved by stairs */
-    class VictoryState;				/**< the hero is make a victory sequence with his sword */
-    class InventoryItemState;			/**< the hero is currently using an item from the inventory */
-    class BoomerangState;			/**< the hero is shooting a boomerang */
-    class BowState;				/**< the hero is shooting an arrow with a bow */
-    class FreezedState;				/**< the hero cannot move for various possible reasons,
-						 * including an instruction from the script */
+    class State;                    /**< base class for all states */
+    class PlayerMovementState;      /**< abstract class for states whose movement is controlled by the player */
+    class FreeState;                /**< the hero is free to move (stopped or walking) and can interact with entities */
+    class CarryingState;            /**< the hero can walk but he is carrying a pot or a bush */
+    class SwordLoadingState;        /**< the hero can walk but his sword is loading for a spin attack */
+    class SwimmingState;            /**< the hero is swimming in deep water */
+    class PushingState;             /**< the hero is trying to push an obstacle */
+    class SwordTappingState;        /**< the hero is tapping his sword on a wall */
+    class PullingState;             /**< the hero is pulling an object */
+    class GrabbingState;            /**< the hero is grabbing an object and can pull it */
+    class ConveyorBeltState;        /**< the hero is being moved by a conveyor belt */
+    class SwordSwingingState;       /**< the hero is swinging his sword */
+    class SpinAttackState;          /**< the hero is releasing a spin attack */
+    class LiftingState;             /**< the hero is lifting an destroyable item (a pot, a bush, etc.) */
+    class TreasureState;            /**< the hero is brandishing a treasure */
+    class RunningState;             /**< the hero is running */
+    class JumpingState;             /**< the hero is jumping */
+    class HurtState;                /**< the hero is hurt */
+    class PlungingState;            /**< the hero is plunging into water */
+    class FallingState;             /**< the hero is falling into a hole */
+    class BackToSolidGroundState;   /**< the hero is getting back to solid ground (e.g. after he drowned
+                                     * in deep water or falled into a hole) */
+    class StairsState;              /**< the hero is being moved by stairs */
+    class VictoryState;             /**< the hero is make a victory sequence with his sword */
+    class InventoryItemState;       /**< the hero is currently using an item from the inventory */
+    class BoomerangState;           /**< the hero is shooting a boomerang */
+    class HookshotState;            /**< the hero is throwing his hookshot */
+    class BowState;                 /**< the hero is shooting an arrow with a bow */
+    class FreezedState;             /**< the hero cannot move for various possible reasons,
+                                     * including an instruction from the script */
 
-    State *state;				/**< the current internal state */
-    std::list<State*> old_states;               /**< previous state objects to delete as soon as possible */
+    State *state;                   /**< the current internal state */
+    std::list<State*> old_states;   /**< previous state objects to delete as soon as possible */
 
     // sprites
-    HeroSprites *sprites;			/**< the hero's sprites (note that we don't use the sprites structure from MapEntity) */
+    HeroSprites *sprites;           /**< the hero's sprites (note that we don't use the sprites structure from MapEntity) */
 
     // position
-    static const int normal_walking_speed;	/**< default speed when walking */
-    int walking_speed;				/**< current walking speed */
+    static const int normal_walking_speed;   /**< default speed when walking */
+    int walking_speed;                       /**< current walking speed */
 
     // state specific
-    Teletransporter *delayed_teletransporter;	/**< a teletransporter that will be activated when the hero finishes 
-						 * a special behavior, such as falling into a hole or walking on stairs */
-    bool on_conveyor_belt;			/**< indicates that the hero's rectangle is currently overlapping a conveyor belt 
-						 * (even if the collision is not enough to take the conveyor belt and move the hero) */
-    bool on_raised_blocks;			/**< indicates that the hero is currently on
-						 * raised crystal switch blocks */
+    Teletransporter *delayed_teletransporter;   /**< a teletransporter that will be activated when the hero finishes
+                                                  * a special behavior, such as falling into a hole or walking on stairs */
+    bool on_conveyor_belt;          /**< indicates that the hero's rectangle is currently overlapping a conveyor belt
+                                     * (even if the collision is not enough to take the conveyor belt and move the hero) */
+    bool on_raised_blocks;          /**< indicates that the hero is currently on
+                                     * raised crystal switch blocks */
 
     // ground
-    Ground ground;				/**< kind of ground under the hero: grass, shallow water, etc. */
-    Rectangle last_solid_ground_coords;		/**< coordinates of the last hero position on a ground
-						 * where he can walk (e.g. before jumping or falling into a hole) */
-    Layer last_solid_ground_layer;		/**< layer of the last hero position on a solid ground */
-    Rectangle target_solid_ground_coords;	/**< coordinates of the position where the hero will go if he falls
-						 * into a hole (or some other bad ground), or (-1,-1) to indicate
-						 * that the hero will just return to the last solid ground coordinates */
-    Layer target_solid_ground_layer;		/**< layer of the place to go back when falling in some bad ground */
-    uint32_t next_ground_date;			/**< when something will happend with the ground next time (a sound or a movement) */
-    Rectangle hole_dxy;				/**< direction of the movement when the hero is being attracted by a hole */
+    Ground ground;                         /**< kind of ground under the hero: grass, shallow water, etc. */
+    Rectangle last_solid_ground_coords;    /**< coordinates of the last hero position on a ground
+                                            * where he can walk (e.g. before jumping or falling into a hole) */
+    Layer last_solid_ground_layer;         /**< layer of the last hero position on a solid ground */
+    Rectangle target_solid_ground_coords;  /**< coordinates of the position where the hero will go if he falls
+                                            * into a hole (or some other bad ground), or (-1,-1) to indicate
+                                            * that the hero will just return to the last solid ground coordinates */
+    Layer target_solid_ground_layer;       /**< layer of the place to go back when falling in some bad ground */
+    uint32_t next_ground_date;             /**< when something will happend with the ground next time (a sound or a movement) */
+    Rectangle hole_dxy;                    /**< direction of the movement when the hero is being attracted by a hole */
 
     // state
     void set_state(State *state);
@@ -302,6 +303,7 @@ class Hero: public MapEntity {
     void start_grabbing();
     void start_boomerang();
     void start_bow();
+    void start_hookshot();
     void start_state_from_ground();
 };
 

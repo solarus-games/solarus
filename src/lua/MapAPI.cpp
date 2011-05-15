@@ -532,6 +532,20 @@ int Script::map_api_hero_start_bow(lua_State *l) {
 }
 
 /**
+ * @brief Makes the hero thow his hookshot.
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_hero_start_hookshot(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 0, &script);
+
+  script->get_game().get_hero().start_hookshot();
+
+  return 0;
+}
+
+/**
  * @brief Makes the hero run.
  * @param l the Lua context that is calling this function
  */

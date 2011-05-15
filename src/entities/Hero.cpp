@@ -44,6 +44,7 @@
 #include "hero/TreasureState.h"
 #include "hero/VictoryState.h"
 #include "hero/BoomerangState.h"
+#include "hero/HookshotState.h"
 #include "hero/BowState.h"
 #include "movements/RectilinearMovement.h"
 #include "lowlevel/System.h"
@@ -1987,6 +1988,13 @@ void Hero::start_boomerang() {
  */
 void Hero::start_bow() {
   set_state(new BowState(*this));
+}
+
+/**
+ * @brief Starts shooting the hookshot.
+ */
+void Hero::start_hookshot() {
+  set_state(new HookshotState(*this));
 }
 
 /**

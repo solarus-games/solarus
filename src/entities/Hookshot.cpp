@@ -22,7 +22,6 @@
 #include "movements/PathMovement.h"
 #include "entities/Hero.h"
 #include "entities/Stairs.h"
-#include "Sprite.h"
 #include "Map.h"
 
 /**
@@ -32,16 +31,20 @@
 Hookshot::Hookshot(Hero &hero):
   next_sound_date(System::now()),
   has_to_go_back(false),
-  going_back(false)  {
+  going_back(false),
+  link_sprite("entities/hookshot") {
 
   // initialize the entity
   int direction = hero.get_animation_direction();
   set_layer(hero.get_layer());
   create_sprite("entities/hookshot", true);
   get_sprite().set_current_direction(direction);
-  set_bounding_box_from_sprite();
+  link_sprite.set_current_animation("link");
+
+  set_size(8, 8);
+  set_origin(4, 5);
   set_xy(hero.get_xy());
-  initial_coords.set_xy(get_xy());
+  initial_xy.set_xy(get_xy());
 
   std::string path = " ";
   path[0] = '0' + (direction * 2);
@@ -225,6 +228,7 @@ bool Hookshot::is_jump_sensor_obstacle(JumpSensor &jump_sensor) {
 /**
  * @brief Returns the point located just outside the hookshot's collision box,
  * in its current direction.
+ * TODO: is this function useful?
  */
 const Rectangle Hookshot::get_facing_point() {
 
@@ -288,16 +292,48 @@ void Hookshot::update() {
       clear_movement();
       set_movement(movement);
     }
-    else if (get_distance(initial_coords.get_x(), initial_coords.get_y()) >= 144) {
+    else if (get_distance(initial_xy.get_x(), initial_xy.get_y()) >= 120) {
       go_back();
     }
   }
-  else if (get_distance(initial_coords.get_x(), initial_coords.get_y()) <= 4 ) {
+  else if (get_distance(initial_xy.get_x(), initial_xy.get_y()) <= 4) {
     remove_from_map();
     get_hero().start_free();
   }
 }
 
+/**
+ * @brief Displays the entity on the map.
+ */
+void Hookshot::display_on_map() {
+
+  static const int nb_links = 7;
+  static const Rectangle dxy[] = {
+    Rectangle(16, -5),
+    Rectangle(0, -13),
+    Rectangle(-16, -5),
+    Rectangle(0, 7)
+  };
+
+  MapEntity::display_on_map();
+
+  if (is_visible()) {
+
+    // also display the links
+    int direction = get_sprite().get_current_direction();
+    int x1 = initial_xy.get_x() + dxy[direction].get_x();
+    int y1 = initial_xy.get_y() + dxy[direction].get_y();
+    int x2 = get_x();
+    int y2 = get_y() - 5;
+
+    Rectangle link_xy;
+    for (int i = 0; i < nb_links; i++) {
+      link_xy.set_x(x1 + (x2 - x1) * i / nb_links);
+      link_xy.set_y(y1 + (y2 - y1) * i / nb_links);
+      get_map().display_sprite(link_sprite, link_xy);
+    }
+  }
+}
 /**
  * @brief Returns whether the hookshot is going back towards the hero, i.e. if go_back() has been called.
  * @return true if the hookshot is going back

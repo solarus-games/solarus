@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include "entities/MapEntity.h"
+#include "Sprite.h"
 
 /**
  * @brief The hookshot thrown by the hero.
@@ -32,7 +33,8 @@ class Hookshot: public MapEntity {
     bool has_to_go_back;         /**< true if the hookshot is about to go back */
     bool going_back;             /**< indicates that the hookshot is going back towards the hero */
 
-    Rectangle initial_coords;    /**< coordinates of the hookshot's initial position */
+    Rectangle initial_xy;        /**< coordinates of the hookshot's initial position */
+    Sprite link_sprite;          /**< sprite of the links */
 
   public:
 
@@ -62,6 +64,7 @@ class Hookshot: public MapEntity {
 
     // state
     void update();
+    virtual void display_on_map();
     const Rectangle get_facing_point();
     bool is_going_back();
     void go_back();

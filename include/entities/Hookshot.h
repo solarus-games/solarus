@@ -14,35 +14,30 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_BOOMERANG_H
-#define SOLARUS_BOOMERANG_H
+#ifndef SOLARUS_HOOKSHOT_H
+#define SOLARUS_HOOKSHOT_H
 
 #include "Common.h"
 #include "entities/MapEntity.h"
 
 /**
- * @brief A boomerang thrown on the map.
- *
- * In the current implementation, only the hero is supposed to be able to
- * throw a boomerang.
+ * @brief The hookshot thrown by the hero.
  */
-class Boomerang: public MapEntity {
+class Hookshot: public MapEntity {
 
   private:
 
-    Hero &hero;                     /**< the hero */
+    uint32_t next_sound_date;    /**< date when the hookshot sound is be played next time */
 
-    uint32_t next_sound_date;       /**< date when the boomerang sound is played next time */
+    bool has_to_go_back;         /**< true if the hookshot is about to go back */
+    bool going_back;             /**< indicates that the hookshot is going back towards the hero */
 
-    bool has_to_go_back;            /**< true if the boomerang is about to go back */
-    bool going_back;                /**< indicates that the boomerang is going back towards the hero */
-
-    Rectangle initial_coords;       /**< coordinates of the boomerang's initial position */
+    Rectangle initial_coords;    /**< coordinates of the hookshot's initial position */
 
   public:
 
-    Boomerang(Hero &hero, double boomerang_angle);
-    ~Boomerang();
+    Hookshot(Hero &hero);
+    ~Hookshot();
 
     EntityType get_type();
 
@@ -57,6 +52,8 @@ class Boomerang: public MapEntity {
     bool is_stairs_obstacle(Stairs &stairs);
     bool is_deep_water_obstacle();
     bool is_hole_obstacle();
+    bool is_lava_obstacle();
+    bool is_prickle_obstacle();
     bool is_ladder_obstacle();
     bool is_raised_block_obstacle(CrystalSwitchBlock &raised_block);
     bool is_crystal_switch_obstacle(CrystalSwitch &crystal_switch);
@@ -64,17 +61,13 @@ class Boomerang: public MapEntity {
     bool is_jump_sensor_obstacle(JumpSensor &jump_sensor);
 
     // state
+    void update();
+    const Rectangle get_facing_point();
     bool is_going_back();
     void go_back();
 
-    void update();
-
-    // collisions
-    void notify_collision_with_crystal_switch(CrystalSwitch &crystal_switch, CollisionMode collision_mode);
-    void notify_collision_with_enemy(Enemy &enemy);
-    void notify_attacked_enemy(EnemyAttack attack, Enemy& victim, EnemyReaction::Reaction& result, bool killed);
+    void notify_movement_tried(bool success);
 };
-
 
 #endif
 

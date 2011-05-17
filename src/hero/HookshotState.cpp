@@ -16,6 +16,8 @@
  */
 #include "hero/HookshotState.h"
 #include "hero/HeroSprites.h"
+#include "entities/MapEntities.h"
+#include "entities/Hookshot.h"
 
 /**
  * @brief Constructor.
@@ -41,5 +43,6 @@ void Hero::HookshotState::start(State *previous_state) {
   State::start(previous_state);
 
   get_sprites().set_animation_hookshot();
+  get_entities().add_entity(new Hookshot(hero));
 }
 

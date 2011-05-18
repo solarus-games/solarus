@@ -32,9 +32,11 @@ class Hookshot: public MapEntity {
 
     bool has_to_go_back;         /**< true if the hookshot is about to go back */
     bool going_back;             /**< indicates that the hookshot is going back towards the hero */
+    MapEntity* entity_reached;   /**< the entity the hookshot is attached to (or NULL) */
 
-    Rectangle initial_xy;        /**< coordinates of the hookshot's initial position */
     Sprite link_sprite;          /**< sprite of the links */
+
+    static const int stop_hero_distances[4];
 
   public:
 
@@ -66,13 +68,18 @@ class Hookshot: public MapEntity {
     void update();
     virtual void display_on_map();
     const Rectangle get_facing_point();
+    bool is_flying();
     bool is_going_back();
     void go_back();
+    void attach_to(MapEntity& entity_reached);
 
     // collisions
     void notify_movement_tried(bool success);
     void notify_collision_with_enemy(Enemy &enemy);
     void notify_attacked_enemy(EnemyAttack attack, Enemy& victim, EnemyReaction::Reaction& result, bool killed);
+    void notify_collision_with_chest(Chest& chest);
+    void notify_collision_with_destructible_item(DestructibleItem& destructible_item, CollisionMode collision_mode);
+    void notify_collision_with_crystal_switch(CrystalSwitch& crystal_switch, CollisionMode collision_mode);
 };
 
 #endif

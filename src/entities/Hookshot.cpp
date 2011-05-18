@@ -204,15 +204,6 @@ bool Hookshot::is_crystal_switch_obstacle(CrystalSwitch &crystal_switch) {
 }
 
 /**
- * @brief Returns whether a non-playing character is currently considered as an obstacle for this entity.
- * @param npc a non-playing character
- * @return true if the NPC is currently an obstacle for this entity
- */
-bool Hookshot::is_npc_obstacle(InteractiveEntity &npc) {
-  return false;
-}
-
-/**
  * @brief Returns whether a non-diagonal jump sensor is currently considered as an obstacle for this entity.
  * @param jump_sensor a non-diagonal jump sensor
  * @return true if the jump sensor is currently an obstacle for this entity

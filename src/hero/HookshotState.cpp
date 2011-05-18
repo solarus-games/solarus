@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "hero/HookshotState.h"
+#include "hero/FreeState.h"
 #include "hero/HeroSprites.h"
 #include "entities/MapEntities.h"
 #include "entities/Hookshot.h"
@@ -161,5 +162,17 @@ bool Hero::HookshotState::can_avoid_switch() {
  */
 bool Hero::HookshotState::can_be_hurt() {
   return true;
+}
+
+/**
+ * @brief Notifies this state that the hero has just tried to change his position.
+ * @param success true if the position has actually just changed
+ */
+void Hero::HookshotState::notify_movement_tried(bool success) {
+
+  if (!success) {
+    // an unexpected obstacle was reached (e.g. a moving NPC)
+    hero.set_state(new FreeState(hero));
+  }
 }
 

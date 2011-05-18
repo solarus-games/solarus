@@ -1564,6 +1564,20 @@ void Hero::notify_collision_with_chest(Chest& chest) {
 }
 
 /**
+ * @brief This function is called when a block detects a collision with this entity.
+ * @param block the block
+ */
+void Hero::notify_collision_with_block(Block& block) {
+
+  if (get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
+      && is_free()) {
+
+    // we show the action icon
+    get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_GRAB);
+  }
+}
+
+/**
  * @brief This function is called when a bomb detects a collision with this entity.
  * @param bomb the bomb
  * @param collision_mode the collision mode that detected the event

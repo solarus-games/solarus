@@ -79,6 +79,7 @@ class Hookshot: public MapEntity {
     void notify_attacked_enemy(EnemyAttack attack, Enemy& victim, EnemyReaction::Reaction& result, bool killed);
     void notify_collision_with_chest(Chest& chest);
     void notify_collision_with_destructible_item(DestructibleItem& destructible_item, CollisionMode collision_mode);
+    void notify_collision_with_block(Block& block);
     void notify_collision_with_crystal_switch(CrystalSwitch& crystal_switch, CollisionMode collision_mode);
 };
 

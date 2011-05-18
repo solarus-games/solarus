@@ -18,6 +18,7 @@
 #include "entities/Enemy.h"
 #include "entities/Chest.h"
 #include "entities/DestructibleItem.h"
+#include "entities/Block.h"
 #include "entities/CrystalSwitch.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
@@ -465,6 +466,17 @@ void Hookshot::notify_collision_with_destructible_item(DestructibleItem& destruc
     else {
       attach_to(destructible_item);
     }
+  }
+}
+
+/**
+ * @brief This function is called when a block detects a collision with this entity.
+ * @param block the block
+ */
+void Hookshot::notify_collision_with_block(Block& block) {
+
+  if (is_flying()) {
+    attach_to(block);
   }
 }
 

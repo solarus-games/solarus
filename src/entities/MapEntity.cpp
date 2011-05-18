@@ -1597,6 +1597,13 @@ void MapEntity::notify_collision_with_chest(Chest& chest) {
 }
 
 /**
+ * @brief This function is called when a block detects a collision with this entity.
+ * @param block the block
+ */
+void MapEntity::notify_collision_with_block(Block& block) {
+}
+
+/**
  * @brief This function is called when bomb detects a collision with a this entity.
  * @param bomb the bomb
  * @param collision_mode the collision mode that detected the event

@@ -24,7 +24,8 @@
  * @param hero the hero controlled by this state
  */
 Hero::HookshotState::HookshotState(Hero &hero):
-  State(hero) {
+  State(hero),
+  hookshot(NULL) {
 
 }
 
@@ -43,6 +44,113 @@ void Hero::HookshotState::start(State *previous_state) {
   State::start(previous_state);
 
   get_sprites().set_animation_hookshot();
-  get_entities().add_entity(new Hookshot(hero));
+  hookshot = new Hookshot(hero);
+  get_entities().add_entity(hookshot);
+}
+
+/**
+ * @brief Ends this state.
+ * @param next_state the next state (for information)
+ */
+void Hero::HookshotState::stop(State *next_state) {
+
+  State::stop(next_state);
+
+  if (!hookshot->is_being_removed()) {
+    // the hookshot state was stopped by something other than the hookshot (e.g. an enemy)
+    hookshot->remove_from_map();
+    hero.clear_movement();
+  }
+}
+
+/**
+ * @brief Returns whether the hero is touching the ground in the current state.
+ * @return true if the hero is touching the ground in the current state
+ */
+bool Hero::HookshotState::is_touching_ground() {
+  return false;
+}
+
+/**
+ * @brief Returns whether the hero ignores the effect of deep water in this state.
+ * @return true if the hero ignores the effect of deep water in the current state
+ */
+bool Hero::HookshotState::can_avoid_deep_water() {
+  return true;
+}
+
+/**
+ * @brief Returns whether the hero ignores the effect of holes in this state.
+ * @return true if the hero ignores the effect of holes in the current state
+ */
+bool Hero::HookshotState::can_avoid_hole() {
+  return true;
+}
+
+/**
+ * @brief Returns whether the hero ignores the effect of lava in this state.
+ * @return true if the hero ignores the effect of lava in the current state
+ */
+bool Hero::HookshotState::can_avoid_lava() {
+  return true;
+}
+
+/**
+ * @brief Returns whether the hero ignores the effect of prickles in this state.
+ * @return true if the hero ignores the effect of prickles in the current state
+ */
+bool Hero::HookshotState::can_avoid_prickle() {
+  return true;
+}
+
+/**
+ * @brief Returns whether the hero ignores the effect of teletransporters in this state.
+ * @return true if the hero ignores the effect of teletransporters in this state
+ */
+bool Hero::HookshotState::can_avoid_teletransporter() {
+  return true;
+}
+
+/**
+ * @brief Returns whether the hero ignores the effect of conveyor belts in this state.
+ * @return true if the hero ignores the effect of conveyor belts in this state
+ */
+bool Hero::HookshotState::can_avoid_conveyor_belt() {
+  return true;
+}
+
+/**
+ * @brief Returns whether some stairs are considered as obstacle in this state.
+ * @param stairs some stairs
+ * @return true if the stairs are obstacle in this state
+ */
+bool Hero::HookshotState::is_stairs_obstacle(Stairs& stairs) {
+  // allow to fly over stairs covered by water
+  return hero.get_ground() != GROUND_DEEP_WATER;
+}
+
+/**
+ * @brief Returns whether a sensor is considered as an obstacle in this state.
+ * @param sensor a sensor
+ * @return true if the sensor is an obstacle in this state
+ */
+bool Hero::HookshotState::is_sensor_obstacle(Sensor& sensor) {
+  return true;
+}
+
+/**
+ * @brief Returns whether the hero ignores the effect of switches in this state.
+ * @return true if the hero ignores the effect of switches in this state
+ */
+bool Hero::HookshotState::can_avoid_switch() {
+  return true;
+}
+
+/**
+ * @brief Returns whether the hero can be hurt in this state.
+ * @return true if the hero can be hurt in this state
+ */
+bool Hero::HookshotState::can_be_hurt() {
+  return true;
 }
 

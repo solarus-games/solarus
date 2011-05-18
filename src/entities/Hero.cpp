@@ -23,6 +23,7 @@
 #include "entities/ConveyorBelt.h"
 #include "entities/Switch.h"
 #include "entities/CrystalSwitch.h"
+#include "entities/Chest.h"
 #include "entities/Block.h"
 #include "entities/JumpSensor.h"
 #include "entities/Sensor.h"
@@ -1543,6 +1544,22 @@ void Hero::notify_collision_with_crystal_switch(CrystalSwitch &crystal_switch, S
       && state->can_sword_hit_crystal_switch()) {
     
     crystal_switch.activate(*this);
+  }
+}
+
+/**
+ * @brief This function is called when a chest detects a collision with this entity.
+ * @param chest the chest
+ */
+void Hero::notify_collision_with_chest(Chest& chest) {
+
+  if (get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
+      && is_free()
+      && is_facing_direction4(1)
+      && !chest.is_open()) {
+
+    // we show the 'open' icon, even if this is a big chest and the player does not have the big key
+    get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_OPEN);
   }
 }
 

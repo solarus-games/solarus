@@ -256,6 +256,7 @@ class Hero: public MapEntity {
     void notify_collision_with_switch(Switch &sw);
     void notify_collision_with_crystal_switch(CrystalSwitch &crystal_switch, CollisionMode collision_mode);
     void notify_collision_with_crystal_switch(CrystalSwitch &crystal_switch, Sprite &sprite_overlapping);
+    void notify_collision_with_chest(Chest& chest);
     void notify_collision_with_bomb(Bomb& bomb, CollisionMode collision_mode);
     void notify_collision_with_explosion(Explosion &explosion, Sprite &sprite_overlapping);
     void avoid_collision(MapEntity &entity, int direction);

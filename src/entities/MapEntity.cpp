@@ -1590,6 +1590,13 @@ void MapEntity::notify_collision_with_crystal_switch(CrystalSwitch &crystal_swit
 }
 
 /**
+ * @brief This function is called when a chest detects a collision with this entity.
+ * @param chest the chest
+ */
+void MapEntity::notify_collision_with_chest(Chest& chest) {
+}
+
+/**
  * @brief This function is called when bomb detects a collision with a this entity.
  * @param bomb the bomb
  * @param collision_mode the collision mode that detected the event

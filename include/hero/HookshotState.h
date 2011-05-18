@@ -24,12 +24,29 @@
  */
 class Hero::HookshotState: public Hero::State {
 
+  private:
+
+    Hookshot *hookshot;    /**< the hookshot thrown by the hero */
+
   public:
 
     HookshotState(Hero &hero);
     ~HookshotState();
 
     void start(State *previous_state);
+    void stop(State *next_state);
+
+    bool is_touching_ground();
+    bool can_avoid_deep_water();
+    bool can_avoid_hole();
+    bool can_avoid_lava();
+    bool can_avoid_prickle();
+    bool can_avoid_teletransporter();
+    bool can_avoid_conveyor_belt();
+    bool is_stairs_obstacle(Stairs& stairs);
+    bool is_sensor_obstacle(Sensor& sensor);
+    bool can_avoid_switch();
+    bool can_be_hurt();
 };
 
 #endif

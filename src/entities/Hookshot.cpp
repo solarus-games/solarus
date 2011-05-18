@@ -195,16 +195,6 @@ bool Hookshot::is_ladder_obstacle() {
 }
 
 /**
- * @brief Returns whether a raised crystal switch block is currently considered as an obstacle for this entity.
- * @param raised_block a crystal switch block raised
- * @return false 
- */
-bool Hookshot::is_raised_block_obstacle(CrystalSwitchBlock &raised_block) {
-  // the hookshot can traverse the crystal switch blocks
-  return false;
-}
-
-/**
  * @brief Returns whether a crystal switch is currently considered as an obstacle for this entity.
  * @param crystal_switch a crystal switch
  * @return true if the crystal switch is currently an obstacle for this entity

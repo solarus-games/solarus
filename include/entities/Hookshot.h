@@ -36,8 +36,6 @@ class Hookshot: public MapEntity {
 
     Sprite link_sprite;          /**< sprite of the links */
 
-    static const int stop_hero_distances[4];
-
   public:
 
     Hookshot(Hero &hero);

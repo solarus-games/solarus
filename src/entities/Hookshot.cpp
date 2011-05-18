@@ -30,8 +30,6 @@
 #include "entities/Stairs.h"
 #include "Map.h"
 
-const int Hookshot::stop_hero_distances[4] = { 4, 4, 4, 4 };
-
 /**
  * @brief Creates a hookshot.
  * @param hero the hero
@@ -50,8 +48,8 @@ Hookshot::Hookshot(Hero &hero):
   get_sprite().set_current_direction(direction);
   link_sprite.set_current_animation("link");
 
-  set_size(8, 8);
-  set_origin(4, 9);
+  set_size(16, 16);
+  set_origin(8, 13);
   set_xy(hero.get_xy());
 
   std::string path = " ";
@@ -110,7 +108,7 @@ bool Hookshot::can_detect_entities() {
  * @return true if this type of entity can be displayed
  */
 bool Hookshot::can_be_displayed() {
-  return true; 
+  return true;
 }
 
 /**
@@ -245,22 +243,22 @@ const Rectangle Hookshot::get_facing_point() {
 
     // right
     case 0:
-      facing_point.add_x(4);
+      facing_point.add_x(8);
       break;
 
       // up
     case 1:
-      facing_point.add_y(-5);
+      facing_point.add_y(-9);
       break;
 
       // left
     case 2:
-      facing_point.add_x(-5);
+      facing_point.add_x(-9);
       break;
 
       // down
     case 3:
-      facing_point.add_y(4);
+      facing_point.add_y(8);
       break;
 
     default:
@@ -288,7 +286,6 @@ void Hookshot::update() {
     next_sound_date = now + 150;
   }
 
-  int direction = get_hero().get_animation_direction();
   if (!going_back && entity_reached == NULL) {
 
     if (has_to_go_back) {
@@ -301,7 +298,7 @@ void Hookshot::update() {
       go_back();
     }
   }
-  else if (get_distance(get_hero()) <= stop_hero_distances[direction] ||
+  else if (get_distance(get_hero()) == 0 ||
       (get_movement() != NULL && get_movement()->is_finished())) {
     remove_from_map();
     get_hero().start_free();
@@ -375,21 +372,10 @@ void Hookshot::attach_to(MapEntity& entity_reached) {
 
   Debug::check_assertion(this->entity_reached == NULL,
       "The hookshot is already attached to an entity");
-  Debug::check_assertion(entity_reached.get_width() == 16 && entity_reached.get_height() == 16,
-      "Invalid entity size: the hookshot expects an entity of size 16*16");
-
-  int direction = get_sprite().get_current_direction();
-  if (direction % 2 == 0) {
-    set_top_left_y(entity_reached.get_top_left_y() + 4);
-    get_hero().set_y(get_y());
-  }
-  else {
-    set_top_left_x(entity_reached.get_top_left_x() + 4);
-    get_hero().set_x(get_x());
-  }
 
   this->entity_reached = &entity_reached;
   clear_movement();
+  int direction = get_sprite().get_current_direction();
   std::string path = " ";
   path[0] = '0' + (direction * 2);
   get_hero().set_movement(new PathMovement(path, 192, true, false, false));

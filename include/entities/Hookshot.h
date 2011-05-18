@@ -69,7 +69,10 @@ class Hookshot: public MapEntity {
     bool is_going_back();
     void go_back();
 
+    // collisions
     void notify_movement_tried(bool success);
+    void notify_collision_with_enemy(Enemy &enemy);
+    void notify_attacked_enemy(EnemyAttack attack, Enemy& victim, EnemyReaction::Reaction& result, bool killed);
 };
 
 #endif

@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "entities/Hookshot.h"
+#include "entities/Enemy.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 #include "lowlevel/System.h"
@@ -358,11 +359,40 @@ void Hookshot::go_back() {
  */
 void Hookshot::notify_movement_tried(bool success) {
 
-  if (!success) {
+  if (!success && !is_going_back()) {
     if (!get_map().test_collision_with_border(get_movement()->get_last_collision_box_on_obstacle())) {
       // play a sound unless we are on the map border
       Sound::play("sword_tapping");
     }
+    go_back();
+  }
+}
+
+/**
+ * @brief This function is called when an enemy collides with this entity.
+ * @param enemy the enemy
+ */
+void Hookshot::notify_collision_with_enemy(Enemy &enemy) {
+
+  if (!overlaps(get_hero())) {
+    enemy.try_hurt(ATTACK_HOOKSHOT, *this, NULL);
+  }
+}
+
+/**
+ * @brief Notifies this entity that it has just attacked an enemy.
+ *
+ * This function is called even if this attack was not successful.
+ *
+ * @param attack the attack
+ * @param victim the enemy just hurt
+ * @param result indicates how the enemy has reacted to the attack
+ * @param killed indicates that the attack has just killed the enemy
+ */
+void Hookshot::notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
+    EnemyReaction::Reaction& result, bool killed) {
+
+  if (result.type != EnemyReaction::IGNORED && !is_going_back()) {
     go_back();
   }
 }

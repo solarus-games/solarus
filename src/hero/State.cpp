@@ -703,6 +703,19 @@ bool Hero::State::is_sensor_obstacle(Sensor& sensor) {
 }
 
 /**
+ * @brief Returns whether a jump sensor is considered as an obstacle in this state.
+ *
+ * Returns !can_take_jump_sensor() by default.
+ *
+ * @param jump_sensor a jump sensor
+ * @return true if the sensor is an obstacle in this state
+ */
+bool Hero::State::is_jump_sensor_obstacle(JumpSensor& jump_sensor) {
+  // if the jump sensors cannot be used in this state, consider them as obstacles
+  return !can_take_jump_sensor();
+}
+
+/**
  * @brief Returns whether the hero ignores the effect of sensors in this state.
  *
  * Returns false by default.

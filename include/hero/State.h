@@ -117,6 +117,7 @@ class Hero::State {
     virtual bool can_avoid_conveyor_belt();
     virtual bool is_stairs_obstacle(Stairs& stairs);
     virtual bool is_sensor_obstacle(Sensor& sensor);
+    virtual bool is_jump_sensor_obstacle(JumpSensor& jump_sensor);
     virtual bool can_avoid_sensor();
     virtual bool can_avoid_explosion();
     virtual bool can_avoid_switch();

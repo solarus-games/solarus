@@ -1328,8 +1328,8 @@ bool Hero::is_raised_block_obstacle(CrystalSwitchBlock &raised_block) {
  * @param jump_sensor a non-diagonal jump sensor
  * @return true if the jump sensor is currently an obstacle for this entity
  */
-bool Hero::is_jump_sensor_obstacle(JumpSensor &jump_sensor) {
-  return !state->can_take_jump_sensor(); // if the jump sensors cannot be used in this state, consider them as obstacles
+bool Hero::is_jump_sensor_obstacle(JumpSensor& jump_sensor) {
+  return state->is_jump_sensor_obstacle(jump_sensor);
 }
 
 /**

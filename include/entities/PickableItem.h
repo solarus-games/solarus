@@ -39,14 +39,14 @@ class PickableItem: public Detector {
     bool layer_independent_collisions;          /**< indicates that the item detects collisions on every layer */
 
     // current state
-    Rectangle shadow_xy;			/**< coordinates of the shadow (which does not move while the item does) */
+    Rectangle shadow_xy;                        /**< coordinates of the shadow (which does not move while the item does) */
 
-    uint32_t appear_date;			/**< date when the item is created */
-    uint32_t allow_pick_date;			/**< date when the item can be picked */
-    bool can_be_picked;				/**< indicates that the item can be picked now (i.e. allow_picked_date is past) */
-    uint32_t blink_date;			/**< date when the item starts blinking */
-    uint32_t disappear_date;			/**< date when the item disappears */
-    bool is_following_boomerang;		/**< true if this item is currently attached to the boomerang */
+    uint32_t appear_date;                       /**< date when the item is created */
+    uint32_t allow_pick_date;                   /**< date when the item can be picked */
+    bool can_be_picked;                         /**< indicates that the item can be picked now (i.e. allow_picked_date is past) */
+    uint32_t blink_date;                        /**< date when the item starts blinking */
+    uint32_t disappear_date;                    /**< date when the item disappears */
+    MapEntity* entity_followed;                 /**< an entity this item is attached to (e.g. a boomerang or a hookshot) */
 
     // creation and initialization
     PickableItem(Layer layer, int x, int y, const Treasure &treasure);

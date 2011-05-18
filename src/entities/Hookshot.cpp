@@ -16,14 +16,20 @@
  */
 #include "entities/Hookshot.h"
 #include "entities/Enemy.h"
+#include "entities/Chest.h"
+#include "entities/DestructibleItem.h"
+#include "entities/CrystalSwitch.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Sound.h"
 #include "movements/PathMovement.h"
+#include "movements/TargetMovement.h"
 #include "entities/Hero.h"
 #include "entities/Stairs.h"
 #include "Map.h"
+
+const int Hookshot::stop_hero_distances[4] = { 4, 4, 4, 4 };
 
 /**
  * @brief Creates a hookshot.
@@ -33,6 +39,7 @@ Hookshot::Hookshot(Hero &hero):
   next_sound_date(System::now()),
   has_to_go_back(false),
   going_back(false),
+  entity_reached(NULL),
   link_sprite("entities/hookshot") {
 
   // initialize the entity
@@ -43,9 +50,8 @@ Hookshot::Hookshot(Hero &hero):
   link_sprite.set_current_animation("link");
 
   set_size(8, 8);
-  set_origin(4, 5);
+  set_origin(4, 9);
   set_xy(hero.get_xy());
-  initial_xy.set_xy(get_xy());
 
   std::string path = " ";
   path[0] = '0' + (direction * 2);
@@ -229,7 +235,6 @@ bool Hookshot::is_jump_sensor_obstacle(JumpSensor &jump_sensor) {
 /**
  * @brief Returns the point located just outside the hookshot's collision box,
  * in its current direction.
- * TODO: is this function useful?
  */
 const Rectangle Hookshot::get_facing_point() {
 
@@ -239,22 +244,22 @@ const Rectangle Hookshot::get_facing_point() {
 
     // right
     case 0:
-      facing_point.add_x(8);
+      facing_point.add_x(4);
       break;
 
       // up
     case 1:
-      facing_point.add_y(-9);
+      facing_point.add_y(-5);
       break;
 
       // left
     case 2:
-      facing_point.add_x(-9);
+      facing_point.add_x(-5);
       break;
 
       // down
     case 3:
-      facing_point.add_y(8);
+      facing_point.add_y(4);
       break;
 
     default:
@@ -282,22 +287,21 @@ void Hookshot::update() {
     next_sound_date = now + 150;
   }
 
-  if (!going_back) {
+  int direction = get_hero().get_animation_direction();
+  if (!going_back && entity_reached == NULL) {
 
     if (has_to_go_back) {
       going_back = true;
-      int direction = (get_hero().get_animation_direction() + 2) % 4;
-      std::string path = " ";
-      path[0] = '0' + (direction * 2);
-      Movement *movement = new PathMovement(path, 192, true, true, false);
+      Movement *movement = new TargetMovement(&get_hero(), 192);
       clear_movement();
       set_movement(movement);
     }
-    else if (get_distance(initial_xy.get_x(), initial_xy.get_y()) >= 120) {
+    else if (get_distance(get_hero()) >= 120) {
       go_back();
     }
   }
-  else if (get_distance(initial_xy.get_x(), initial_xy.get_y()) <= 4) {
+  else if (get_distance(get_hero()) <= stop_hero_distances[direction] ||
+      (get_movement() != NULL && get_movement()->is_finished())) {
     remove_from_map();
     get_hero().start_free();
   }
@@ -322,8 +326,8 @@ void Hookshot::display_on_map() {
 
     // also display the links
     int direction = get_sprite().get_current_direction();
-    int x1 = initial_xy.get_x() + dxy[direction].get_x();
-    int y1 = initial_xy.get_y() + dxy[direction].get_y();
+    int x1 = get_hero().get_x() + dxy[direction].get_x();
+    int y1 = get_hero().get_y() + dxy[direction].get_y();
     int x2 = get_x();
     int y2 = get_y() - 5;
 
@@ -335,6 +339,15 @@ void Hookshot::display_on_map() {
     }
   }
 }
+
+/**
+ * @brief Returns whether the hookshot is currently flying.
+ * @return true if the hookshot was shot, is not going back and has not reached any target yet
+ */
+bool Hookshot::is_flying() {
+  return !is_going_back() && entity_reached == NULL;
+}
+
 /**
  * @brief Returns whether the hookshot is going back towards the hero, i.e. if go_back() has been called.
  * @return true if the hookshot is going back
@@ -354,12 +367,40 @@ void Hookshot::go_back() {
 }
 
 /**
+ * @brief Attachs the hookshot to an entity and makes the hero move towards this entity.
+ * @param entity_reached the entity to attach the hookshot to
+ */
+void Hookshot::attach_to(MapEntity& entity_reached) {
+
+  Debug::check_assertion(this->entity_reached == NULL,
+      "The hookshot is already attached to an entity");
+  Debug::check_assertion(entity_reached.get_width() == 16 && entity_reached.get_height() == 16,
+      "Invalid entity size: the hookshot expects an entity of size 16*16");
+
+  int direction = get_sprite().get_current_direction();
+  if (direction % 2 == 0) {
+    set_top_left_y(entity_reached.get_top_left_y() + 4);
+    get_hero().set_y(get_y());
+  }
+  else {
+    set_top_left_x(entity_reached.get_top_left_x() + 4);
+    get_hero().set_x(get_x());
+  }
+
+  this->entity_reached = &entity_reached;
+  clear_movement();
+  std::string path = " ";
+  path[0] = '0' + (direction * 2);
+  get_hero().set_movement(new PathMovement(path, 192, true, false, false));
+}
+
+/**
  * @brief Notifies this entity that it has just tried to change its position.
  * @param success true if the position has actually just changed
  */
 void Hookshot::notify_movement_tried(bool success) {
 
-  if (!success && !is_going_back()) {
+  if (!success && is_flying()) {
     if (!get_map().test_collision_with_border(get_movement()->get_last_collision_box_on_obstacle())) {
       // play a sound unless we are on the map border
       Sound::play("sword_tapping");
@@ -397,3 +438,48 @@ void Hookshot::notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
   }
 }
 
+/**
+ * @brief This function is called when a chest detects a collision with this entity.
+ * @param chest the chest
+ */
+void Hookshot::notify_collision_with_chest(Chest& chest) {
+
+  if (is_flying()) {
+    attach_to(chest);
+  }
+}
+
+/**
+ * @brief This function is called when a destructible item detects a non-pixel precise collision with this entity.
+ * @param destructible_item the destructible item
+ * @param collision_mode the collision mode that detected the event
+ */
+void Hookshot::notify_collision_with_destructible_item(DestructibleItem& destructible_item, CollisionMode collision_mode) {
+
+  if (destructible_item.is_obstacle_for(*this) && is_flying()) {
+
+    if (destructible_item.can_explode()) {
+      destructible_item.explode();
+      remove_from_map();
+    }
+    else {
+      attach_to(destructible_item);
+    }
+  }
+}
+
+/**
+ * @brief This function is called when a crystal switch detects a collision with this entity.
+ * @param crystal_switch the crystal switch
+ * @param collision_mode the collision mode that detected the event
+ */
+void Hookshot::notify_collision_with_crystal_switch(CrystalSwitch& crystal_switch, CollisionMode collision_mode) {
+
+  if (is_flying()) {
+
+    crystal_switch.activate(*this);
+    if (!is_going_back()) {
+      go_back();
+    }
+  }
+}

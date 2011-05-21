@@ -24,6 +24,11 @@
 0	22	Mymette grotte
 0	26	Fairy Cave
 0	29	Twin caves
+0	58	Dungeon 6 1F
+0	55	Dungeon 6 2F
+0	56	Dungeon 6 3F
+0	57	Dungeon 6 4F
+0	54	Dungeon 3 5F
 0	43	Dungeon 3 4F
 0	42	Dungeon 3 3F
 0	41	Dungeon 3 2F
@@ -43,7 +48,7 @@
 0	39	True hero cave 2F
 0	38	True hero cave 1F
 0	44	Enemies testing area
-0	45	Dungeon 3 4F
+0	45	unused
 0	46	Test map
 0	47	Dungeon 8 1F
 0	48	Dungeon 8 B1
@@ -61,6 +66,7 @@
 1	7	Brown dungeon (LW)
 1	8	Blue dungeon (DW)
 1	9	Green dungeon (DW)
+1	10	Orange dungeon (DW)
 1	6	Intro
 2	agahnim.spc	Agahnim theme
 2	beginning.spc	Beginning

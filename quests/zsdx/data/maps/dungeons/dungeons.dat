@@ -43,20 +43,20 @@ width = 1024
 height = 1024
 
 [dungeon_6.floor_0]
-width = 1280
-height = 880
+width = 1152
+height = 768
 
 [dungeon_6.floor_1]
-width = 1280
-height = 880
+width = 1152
+height = 768
 
 [dungeon_6.floor_2]
-width = 1280
-height = 880
+width = 1152
+height = 768
 
 [dungeon_6.floor_3]
-width = 1280
-height = 880
+width = 1152
+height = 768
 
 [dungeon_8.floor_0]
 width = 1024

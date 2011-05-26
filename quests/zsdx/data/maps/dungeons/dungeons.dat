@@ -335,3 +335,10 @@ y = 432
 save = 118
 big = 0
 
+[dungeon_6.map_58.chest_0]
+floor = 0
+x = 440
+y = 272
+save = -1
+big = 0
+

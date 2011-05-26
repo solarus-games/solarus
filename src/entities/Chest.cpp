@@ -201,23 +201,11 @@ void Chest::set_open(bool open) {
  */
 void Chest::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
 
-  if (is_suspended()) {
+  if (is_suspended() || !is_visible()) {
     return;
   }
 
-  if (entity_overlapping.is_hero() && is_visible()) {
-
-    Hero &hero = (Hero&) entity_overlapping;
-
-    if (get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
-	&& hero.is_free()
-	&& hero.is_facing_direction4(1)
-	&& !is_open()) {
-
-      // we show the 'open' icon, even if this is a big chest and the player does not have the big key
-      get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_OPEN);
-    }
-  }
+  entity_overlapping.notify_collision_with_chest(*this);
 }
 
 /**

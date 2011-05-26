@@ -23,6 +23,7 @@
 #include "entities/ConveyorBelt.h"
 #include "entities/Switch.h"
 #include "entities/CrystalSwitch.h"
+#include "entities/Chest.h"
 #include "entities/Block.h"
 #include "entities/JumpSensor.h"
 #include "entities/Sensor.h"
@@ -44,6 +45,7 @@
 #include "hero/TreasureState.h"
 #include "hero/VictoryState.h"
 #include "hero/BoomerangState.h"
+#include "hero/HookshotState.h"
 #include "hero/BowState.h"
 #include "movements/RectilinearMovement.h"
 #include "lowlevel/System.h"
@@ -1326,8 +1328,8 @@ bool Hero::is_raised_block_obstacle(CrystalSwitchBlock &raised_block) {
  * @param jump_sensor a non-diagonal jump sensor
  * @return true if the jump sensor is currently an obstacle for this entity
  */
-bool Hero::is_jump_sensor_obstacle(JumpSensor &jump_sensor) {
-  return !state->can_take_jump_sensor(); // if the jump sensors cannot be used in this state, consider them as obstacles
+bool Hero::is_jump_sensor_obstacle(JumpSensor& jump_sensor) {
+  return state->is_jump_sensor_obstacle(jump_sensor);
 }
 
 /**
@@ -1381,7 +1383,7 @@ void Hero::notify_collision_with_teletransporter(Teletransporter &teletransporte
 
   if (teletransporter.is_on_map_side() || !state->can_avoid_teletransporter()) {
 
-    bool on_hole = get_tile_ground() == GROUND_HOLE;
+    bool on_hole = get_ground() == GROUND_HOLE;
     if (on_hole || state->is_teletransporter_delayed()) {
       this->delayed_teletransporter = &teletransporter; // fall into the hole (or do something else) first, transport later
     }
@@ -1490,10 +1492,12 @@ void Hero::notify_collision_with_jump_sensor(JumpSensor &jump_sensor) {
 /**
  * @brief This function is called when a sensor detects a collision with this entity.
  * @param sensor a sensor
+ * @param collision_mode the collision mode that detected the collision
  */
-void Hero::notify_collision_with_sensor(Sensor &sensor) {
+void Hero::notify_collision_with_sensor(Sensor &sensor, CollisionMode collision_mode) {
 
-  if (!state->can_avoid_sensor()) {
+  if (collision_mode == COLLISION_INSIDE    // the hero is entirely inside the sensor
+      && !state->can_avoid_sensor()) {
     sensor.activate(*this);
   }
 }
@@ -1540,6 +1544,36 @@ void Hero::notify_collision_with_crystal_switch(CrystalSwitch &crystal_switch, S
       && state->can_sword_hit_crystal_switch()) {
     
     crystal_switch.activate(*this);
+  }
+}
+
+/**
+ * @brief This function is called when a chest detects a collision with this entity.
+ * @param chest the chest
+ */
+void Hero::notify_collision_with_chest(Chest& chest) {
+
+  if (get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
+      && is_free()
+      && is_facing_direction4(1)
+      && !chest.is_open()) {
+
+    // we show the 'open' icon, even if this is a big chest and the player does not have the big key
+    get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_OPEN);
+  }
+}
+
+/**
+ * @brief This function is called when a block detects a collision with this entity.
+ * @param block the block
+ */
+void Hero::notify_collision_with_block(Block& block) {
+
+  if (get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
+      && is_free()) {
+
+    // we show the action icon
+    get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_GRAB);
   }
 }
 
@@ -1985,6 +2019,13 @@ void Hero::start_boomerang() {
  */
 void Hero::start_bow() {
   set_state(new BowState(*this));
+}
+
+/**
+ * @brief Starts shooting the hookshot.
+ */
+void Hero::start_hookshot() {
+  set_state(new HookshotState(*this));
 }
 
 /**

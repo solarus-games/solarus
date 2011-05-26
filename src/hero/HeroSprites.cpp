@@ -1016,10 +1016,24 @@ void HeroSprites::set_animation_falling() {
  * @brief Starts the "boomerang" animation of the hero's sprites.
  */
 void HeroSprites::set_animation_boomerang() {
+
   tunic_sprite->set_current_animation("boomerang");
 
   if (equipment.has_ability("shield")) {
     shield_sprite->set_current_animation("boomerang");
+  }
+  stop_displaying_trail();
+}
+
+/**
+ * @brief Starts the "hookshot" animation of the hero's sprites.
+ */
+void HeroSprites::set_animation_hookshot() {
+
+  tunic_sprite->set_current_animation("hookshot");
+
+  if (equipment.has_ability("shield")) {
+    shield_sprite->set_current_animation("hookshot");
   }
   stop_displaying_trail();
 }

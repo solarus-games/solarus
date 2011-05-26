@@ -154,26 +154,12 @@ bool Block::is_destructible_item_obstacle(DestructibleItem &destructible_item) {
 
 /**
  * @brief This function is called by the engine when there is a collision with another entity.
- *
- * This is a redefinition of Detector::notify_collision().
- * If the entity is the hero and this block can be pulled, we show the grab icon.
- *
  * @param entity_overlapping the entity overlapping the detector
  * @param collision_mode the collision mode that detected the collision
  */
 void Block::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
 
-  if (entity_overlapping.is_hero()) {
-
-    Hero &hero = (Hero&) entity_overlapping;
-
-    if (get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
-	&& hero.is_free()) {
-
-      // we show the action icon
-      get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_GRAB);
-    }
-  }
+  entity_overlapping.notify_collision_with_block(*this);
 }
 
 /**

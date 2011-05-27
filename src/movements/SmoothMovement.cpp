@@ -82,24 +82,26 @@ void SmoothMovement::update_x() {
 
       if (!test_collision_with_obstacles(x_move, 0)) {
 
-	translate_x(x_move); // make the move
+        translate_x(x_move); // make the move
 
-	if (y_move != 0 && test_collision_with_obstacles(0, y_move)) {
-	  // if there is also a y move, and if this y move is illegal,
-	  // we still allow the x move and we give it all the speed
-	  next_move_date_x_increment = (int) (1000.0 / get_speed());
-	}
+        if (y_move != 0 && test_collision_with_obstacles(0, y_move)) {
+          // if there is also a y move, and if this y move is illegal,
+          // we still allow the x move and we give it all the speed
+          next_move_date_x_increment = (int) (1000.0 / get_speed());
+        }
       }
       else {
         if (y_move == 0) {
           // the move on x is not possible: let's try
           // to add a move on y to make a diagonal move
 
-          if (!test_collision_with_obstacles(x_move, 1)) {
+          if (!test_collision_with_obstacles(x_move, 1)
+              && test_collision_with_obstacles(0, -1)) {
             translate_xy(x_move, 1);
             next_move_date_x_increment = (int) (x_delay * Geometry::SQRT_2); // fix the speed
           }
-          else if (!test_collision_with_obstacles(x_move, -1)) {
+          else if (!test_collision_with_obstacles(x_move, -1)
+              && test_collision_with_obstacles(0, 1)) {
             translate_xy(x_move, -1);
             next_move_date_x_increment = (int) (x_delay * Geometry::SQRT_2);
           }
@@ -159,24 +161,26 @@ void SmoothMovement::update_y() {
 
       if (!test_collision_with_obstacles(0, y_move)) {
 
-	translate_y(y_move); // make the move
+        translate_y(y_move); // make the move
 
-	if (x_move != 0 && test_collision_with_obstacles(x_move, 0)) {
-	  // if there is also an x move, and if this x move is illegal,
-	  // we still allow the y move and we give it all the speed
-	  next_move_date_y_increment = (int) (1000.0 / get_speed());
-	}
+        if (x_move != 0 && test_collision_with_obstacles(x_move, 0)) {
+          // if there is also an x move, and if this x move is illegal,
+          // we still allow the y move and we give it all the speed
+          next_move_date_y_increment = (int) (1000.0 / get_speed());
+        }
       }
       else {
         if (x_move == 0) {
           // The move on y is not possible: let's try
           // to add a move on x to make a diagonal move.
 
-          if (!test_collision_with_obstacles(1, y_move)) {
+          if (!test_collision_with_obstacles(1, y_move)
+              && test_collision_with_obstacles(-1, 0)) {
             translate_xy(1, y_move);
             next_move_date_y_increment = (int) (y_delay * Geometry::SQRT_2); // fix the speed
           }
-          else if (!test_collision_with_obstacles(-1, y_move)) {
+          else if (!test_collision_with_obstacles(-1, y_move)
+              && test_collision_with_obstacles(1, 0)) {
             translate_xy(-1, y_move);
             next_move_date_y_increment = (int) (y_delay * Geometry::SQRT_2);
           }

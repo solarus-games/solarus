@@ -184,6 +184,41 @@ bool Sound::is_initialized() {
 }
 
 /**
+ * @brief Loads and decodes all sounds listed in the game database.
+ */
+void Sound::load_all() {
+
+  // open the resource database file
+  const std::string file_name = "project_db.dat";
+  std::istream& database_file = FileTools::data_file_open(file_name);
+  std::string line;
+
+  // read each animation
+  while (std::getline(database_file, line)) {
+
+    if (line.size() == 0) {
+      continue;
+    }
+
+    int resource_type;
+    std::string resource_id, resource_name;
+    std::istringstream iss(line);
+    FileTools::read(iss, resource_type);
+    FileTools::read(iss, resource_id);
+    FileTools::read(iss, resource_name);
+
+    if (resource_type == 4) { // it's a sound
+
+      if (all_sounds.count(resource_id) == 0) {
+        all_sounds[resource_id] = Sound(resource_id);
+        all_sounds[resource_id].load();
+      }
+    }
+  }
+  FileTools::data_file_close(database_file);
+}
+
+/**
  * @brief Returns whether a sound exists.
  * @param sound_id id of the sound to test
  */
@@ -276,6 +311,24 @@ bool Sound::update_playing() {
 }
 
 /**
+ * @brief Loads and decodes the sound into memory.
+ */
+void Sound::load() {
+
+  std::string file_name = (std::string) "sounds/" + id;
+  if (id.find(".") == std::string::npos) {
+    file_name += ".ogg";
+  }
+
+  // create an OpenAL buffer with the sound decoded by the library
+  buffer = decode_file(file_name);
+
+  if (buffer == AL_NONE) {
+    std::cerr << "Sound '" << file_name << "' will not be played" << std::endl;
+  }
+}
+
+/**
  * @brief Plays the sound.
  * @return true if the sound was loaded successfully, false otherwise
  */
@@ -286,18 +339,7 @@ bool Sound::start() {
   if (is_initialized()) {
 
     if (buffer == AL_NONE) { // first time: load and decode the file
-
-      std::string file_name = (std::string) "sounds/" + id;
-      if (id.find(".") == std::string::npos) {
-	file_name += ".ogg";
-      }
-
-      // create an OpenAL buffer with the sound decoded by the library
-      buffer = decode_file(file_name);
-
-      if (buffer == AL_NONE) {
-	std::cerr << "Sound '" << file_name << "' will not be played" << std::endl;
-      }
+      load();
     }
 
     if (buffer != AL_NONE) {
@@ -384,14 +426,26 @@ ALuint Sound::decode_file(const std::string &file_name) {
         }
         else {
           total_bytes_read += bytes_read;
-          samples.insert(samples.end(), samples_buffer, samples_buffer + bytes_read);
+          if (format == AL_FORMAT_STEREO16) {
+            samples.insert(samples.end(), samples_buffer, samples_buffer + bytes_read);
+          }
+          else {
+            // mono sound files make no sound on some machines
+            // workaround: convert them on-the-fly into stereo sounds
+            // TODO find a better solution
+            for (int i = 0; i < bytes_read; i += 2) {
+              samples.insert(samples.end(), samples_buffer + i, samples_buffer + i + 2);
+              samples.insert(samples.end(), samples_buffer + i, samples_buffer + i + 2);
+            }
+            total_bytes_read += bytes_read;
+          }
         }
       }
       while (bytes_read > 0);
 
       // copy the samples into an OpenAL buffer
       alGenBuffers(1, &buffer);
-      alBufferData(buffer, format, (ALshort*) &samples[0], total_bytes_read, sample_rate);
+      alBufferData(buffer, AL_FORMAT_STEREO16, (ALshort*) &samples[0], total_bytes_read, sample_rate);
       if (alGetError() != AL_NO_ERROR) {
         std::cout << "Cannot copy the sound samples into buffer " << buffer << "\n";
         buffer = AL_NONE;

@@ -24,6 +24,11 @@
 0	22	Mymette grotte
 0	26	Fairy Cave
 0	29	Twin caves
+0	58	Dungeon 6 1F
+0	55	Dungeon 6 2F
+0	56	Dungeon 6 3F
+0	57	Dungeon 6 4F
+0	54	Dungeon 3 5F
 0	43	Dungeon 3 4F
 0	42	Dungeon 3 3F
 0	41	Dungeon 3 2F
@@ -43,7 +48,7 @@
 0	39	True hero cave 2F
 0	38	True hero cave 1F
 0	44	Enemies testing area
-0	45	Dungeon 3 4F
+0	45	unused
 0	46	Test map
 0	47	Dungeon 8 1F
 0	48	Dungeon 8 B1
@@ -61,6 +66,7 @@
 1	7	Brown dungeon (LW)
 1	8	Blue dungeon (DW)
 1	9	Green dungeon (DW)
+1	10	Orange dungeon (DW)
 1	6	Intro
 2	agahnim.spc	Agahnim theme
 2	beginning.spc	Beginning
@@ -85,6 +91,7 @@
 2	legend.spc	Legend
 2	lost_woords.spc	Lost Woods
 2	mini_game.spc	Mini game
+2	la_mountains.ogg	Mountains (LA)
 2	overworld.spc	Overworld
 2	sanctuary.spc	Sanctuary
 2	game_over.spc	Selection menu & Game Over
@@ -136,11 +143,13 @@
 3	entities/snores	Snoring (zzz)
 3	entities/hint_stone	Hint stone
 3	entities/torch	Torch
+4	arrow_hit	arrow_hit
 4	bomb	bomb
+4	boomerang	boomerang
 4	boss_charge	boss_charge
-4	boss_dead	boss_dead
 4	boss_fireball	boss_fireball
 4	boss_hurt	boss_hurt
+4	boss_killed	boss_killed
 4	bounce	bounce
 4	bow	bow
 4	bush	bush
@@ -150,27 +159,34 @@
 4	danger	danger
 4	door_closed	door_closed
 4	door_open	door_open
+4	door_unlocked	door_unlocked
 4	enemy_awake	enemy_awake
 4	enemy_hurt	enemy_hurt
 4	enemy_killed	enemy_killed
 4	explosion	explosion
+4	external_stairs_down	external_stairs_down
+4	external_stairs_up	external_stairs_up
+4	heart_container	heart_container
 4	heart	heart
+4	hero_dying	hero_dying
+4	hero_falls	hero_falls
+4	hero_hurt	hero_hurt
+4	hero_lands	hero_lands
+4	hero_pushes	hero_pushes
+4	hero_seen	hero_seen
 4	hookshot	hookshot
 4	ice	ice
+4	internal_stairs_down	internal_stairs_down
+4	internal_stairs_up	internal_stairs_up
 4	intro	intro
 4	item_in_water	item_in_water
 4	jump	jump
 4	lamp	lamp
-4	lens_of_truth_end	lens_of_truth_end
-4	lens_of_truth_start	lens_of_truth_start
 4	lift	lift
-4	link_dying	link_dying
-4	link_falls	link_falls
-4	link_hurt	link_hurt
-4	link_pushes	link_pushes
-4	link_seen	link_seen
 4	magic_bar	magic_bar
 4	message_end	message_end
+4	message_letter	message_letter
+4	monkey	monkey
 4	monster_hurt	monster_hurt
 4	octorok	octorok
 4	ok	ok
@@ -180,28 +196,35 @@
 4	picked_rupee	picked_rupee
 4	picked_small_key	picked_small_key
 4	piece_of_heart	piece_of_heart
-4	rupee_counter	rupee_counter
-4	rupee_counter_end	rupee_counter_end
 4	running	running
+4	rupee_counter_end	rupee_counter_end
+4	rupee_counter	rupee_counter
 4	secret	secret
 4	shield	shield
 4	splash	splash
+4	stairs_down_end	stairs_down_end
+4	stairs_down_start	stairs_down_start
+4	stairs_up_end	stairs_up_end
+4	stairs_up_start	stairs_up_start
 4	stone	stone
 4	switch	switch
 4	sword1	sword1
 4	sword2	sword2
 4	sword3	sword3
 4	sword4	sword4
-4	sword_hit	sword_hit
 4	sword_spin_attack_load	sword_spin_attack_load
 4	sword_spin_attack_release	sword_spin_attack_release
+4	sword_tapping	sword_tapping
+4	sword_tapping_weak_wall	sword_tapping_weak_wall
 4	throw	throw
-4	timer	timer
 4	timer_hurry	timer_hurry
+4	timer	timer
 4	treasure	treasure
 4	victory	victory
 4	walk_on_grass	walk_on_grass
 4	walk_on_water	walk_on_water
+4	warp	warp
+4	world_warp	world_warp
 4	wrong	wrong
 4	zora	zora
 5	feather	Feather

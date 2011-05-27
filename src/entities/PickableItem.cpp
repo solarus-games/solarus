@@ -17,6 +17,7 @@
 #include "entities/PickableItem.h"
 #include "entities/Hero.h"
 #include "entities/Boomerang.h"
+#include "entities/Hookshot.h"
 #include "movements/FallingOnFloorMovement.h"
 #include "movements/FollowMovement.h"
 #include "Game.h"
@@ -41,7 +42,7 @@ PickableItem::PickableItem(Layer layer, int x, int y, const Treasure &treasure):
   layer_independent_collisions(false),
   shadow_xy(Rectangle(x, y)),
   appear_date(System::now()),
-  is_following_boomerang(false) {
+  entity_followed(NULL) {
 
 }
 
@@ -296,18 +297,28 @@ void PickableItem::notify_collision(MapEntity &entity_overlapping, CollisionMode
     remove_from_map();
     give_item_to_player();
   }
-  else if (entity_overlapping.get_type() == BOOMERANG && !is_following_boomerang) {
-
-    Boomerang &boomerang = (Boomerang&) entity_overlapping;
+  else if (entity_followed == NULL) {
     
-    clear_movement();
-    set_movement(new FollowMovement(&boomerang, 0, 0, true));
-    is_following_boomerang = true;
-    falling_height = FALLING_NONE;
-    set_blinking(false);
+    if (entity_overlapping.get_type() == BOOMERANG) {
+      Boomerang &boomerang = (Boomerang&) entity_overlapping;
+      if (!boomerang.is_going_back()) {
+        boomerang.go_back();
+      }
+      entity_followed = &boomerang;
+    }
+    else if (entity_overlapping.get_type() == HOOKSHOT) {
+      Hookshot &hookshot = (Hookshot&) entity_overlapping;
+      if (!hookshot.is_going_back()) {
+        hookshot.go_back();
+      }
+      entity_followed = &hookshot;
+    }
 
-    if (!boomerang.is_going_back()) {
-      boomerang.go_back();
+    if (entity_followed != NULL) {
+      clear_movement();
+      set_movement(new FollowMovement(entity_followed, 0, 0, true));
+      falling_height = FALLING_NONE;
+      set_blinking(false);
     }
   }
 }
@@ -441,13 +452,13 @@ void PickableItem::update() {
       // make the item blink and then disappear
       if (will_disappear) {
 
-	if (now >= blink_date && !get_sprite().is_blinking() && !is_following_boomerang) {
-	  set_blinking(true);
-	}
-    
-	if (now >= disappear_date) {
-	  remove_from_map();
-	}
+        if (now >= blink_date && !get_sprite().is_blinking() && entity_followed == NULL) {
+          set_blinking(true);
+        }
+
+        if (now >= disappear_date) {
+          remove_from_map();
+        }
       }
     }
   }

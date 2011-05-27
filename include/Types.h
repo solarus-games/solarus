@@ -174,6 +174,8 @@ class Stairs;
 class Door;
 class Explosion;
 class Bomb;
+class Fire;
+class Hookshot;
 
 // tile patterns
 class Tileset;

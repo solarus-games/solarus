@@ -1560,8 +1560,9 @@ void MapEntity::notify_collision_with_jump_sensor(JumpSensor &jump_sensor) {
 /**
  * @brief This function is called when a sensor detects a collision with this entity.
  * @param sensor a sensor
+ * @param collision_mode the collision mode that detected the collision
  */
-void MapEntity::notify_collision_with_sensor(Sensor &sensor) {
+void MapEntity::notify_collision_with_sensor(Sensor &sensor, CollisionMode collision_mode) {
 }
 
 /**
@@ -1589,6 +1590,20 @@ void MapEntity::notify_collision_with_crystal_switch(CrystalSwitch &crystal_swit
 }
 
 /**
+ * @brief This function is called when a chest detects a collision with this entity.
+ * @param chest the chest
+ */
+void MapEntity::notify_collision_with_chest(Chest& chest) {
+}
+
+/**
+ * @brief This function is called when a block detects a collision with this entity.
+ * @param block the block
+ */
+void MapEntity::notify_collision_with_block(Block& block) {
+}
+
+/**
  * @brief This function is called when bomb detects a collision with a this entity.
  * @param bomb the bomb
  * @param collision_mode the collision mode that detected the event
@@ -1603,6 +1618,16 @@ void MapEntity::notify_collision_with_bomb(Bomb& bomb, CollisionMode collision_m
  * @param sprite_overlapping the sprite of the current entity that collides with the explosion
  */
 void MapEntity::notify_collision_with_explosion(Explosion &explosion, Sprite &sprite_overlapping) {
+}
+
+/**
+ * @brief Notifies this entity that a sprite of fire
+ * detects a pixel-perfect collision with a sprite of this entity.
+ * @param fire the fire
+ * @param sprite_overlapping the sprite of the current entity that collides with the fire
+ */
+void MapEntity::notify_collision_with_fire(Fire& fire, Sprite& sprite_overlapping) {
+
 }
 
 /**

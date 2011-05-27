@@ -39,6 +39,7 @@ public enum Obstacle {
     TOP_LEFT(3, "obstacle_top_left.png"),
     BOTTOM_LEFT(4, "obstacle_bottom_left.png"),
     BOTTOM_RIGHT(5, "obstacle_bottom_right.png"),
+    EMPTY(6, "obstacle_empty.png"),
     ;
 
     private int id;
@@ -59,6 +60,7 @@ public enum Obstacle {
 	"Top left",
 	"Bottom left",
 	"Bottom right",
+	"Empty",
     };
 
     /**

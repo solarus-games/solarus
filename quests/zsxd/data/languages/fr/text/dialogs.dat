@@ -2093,6 +2093,7 @@ line3 = "Clé du Maître !"
 line1 = "Il te faudrait quelque"
 line2 = "chose de tranchant pour"
 line3 = "couper ces buissons..."
+skip = all
 
 [_cannot_lift_too_heavy]
 # Lorsqu'on tente de soulever une pierre

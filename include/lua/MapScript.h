@@ -62,6 +62,7 @@ class MapScript: public Script {
     void event_npc_movement_finished(const std::string &npc_name);
     void event_hero_interaction_finished(const std::string &entity_name);
     void event_hero_interaction_item_finished(const std::string &entity_name, const std::string &item_name, int variant);
+    void event_sensor_collision_explosion(const std::string& sensor_name);
     bool event_chest_empty(const std::string &chest_name);
     void event_shop_item_bought(const std::string &shop_item_name);
     void event_door_open(const std::string& door_name);

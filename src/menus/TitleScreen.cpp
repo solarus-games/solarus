@@ -162,6 +162,9 @@ void TitleScreen::init_phase_black_screen() {
   // black screen during 0.3 second
   current_phase = PHASE_BLACK_SCREEN;
   next_phase_date = System::now() + 300;
+
+  // preload all sounds
+  Sound::load_all();
 }
 
 /**

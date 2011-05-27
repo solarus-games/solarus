@@ -32,7 +32,7 @@
  * - >= 1: enable the error messages; pick the data also from the physical data directory; use clear text (.lua) scripts
  * - >= 2: enable the debug keys
  */
-#define SOLARUS_DEBUG_LEVEL 1
+#define SOLARUS_DEBUG_LEVEL 2
 
 #endif
 

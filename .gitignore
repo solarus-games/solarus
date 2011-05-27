@@ -22,6 +22,7 @@ src/Makefile
 src/cmake_install.cmake
 src/libsolarus_static.a
 src/solarus
+error.txt
 quests/*/data/CMakeFiles/
 quests/*/data/Makefile
 quests/*/data/cmake_install.cmake

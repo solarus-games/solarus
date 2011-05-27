@@ -143,7 +143,6 @@ DialogBox& Hero::State::get_dialog_box() {
  */
 void Hero::State::start(State *previous_state) {
   set_suspended(hero.is_suspended());
-  hero.set_facing_entity(NULL);
 }
 
 /**
@@ -701,6 +700,19 @@ bool Hero::State::is_stairs_obstacle(Stairs& stairs) {
  */
 bool Hero::State::is_sensor_obstacle(Sensor& sensor) {
   return false;
+}
+
+/**
+ * @brief Returns whether a jump sensor is considered as an obstacle in this state.
+ *
+ * Returns !can_take_jump_sensor() by default.
+ *
+ * @param jump_sensor a jump sensor
+ * @return true if the sensor is an obstacle in this state
+ */
+bool Hero::State::is_jump_sensor_obstacle(JumpSensor& jump_sensor) {
+  // if the jump sensors cannot be used in this state, consider them as obstacles
+  return !can_take_jump_sensor();
 }
 
 /**

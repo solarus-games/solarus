@@ -38,3 +38,9 @@ boomerang hero/boomerang.shield.png 4 100 -1
 0	320	32	32	16	21	2	2
 0	352	32	32	16	21	2	2
 
+hookshot hero/hookshot.shield.png 4 0 -1
+0	0	1	1	0	0	1	1
+0	128	32	32	16	21	1	1
+0	0	1	1	0	0	1	1
+0	160	32	32	16	21	1	1
+

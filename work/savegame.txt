@@ -165,6 +165,6 @@ booleans:
 200	1F: small key 1 door
 201     1F: small key chest 1 
 
-
+300: dungeon 6 1F: chest with 20 rupees
 
 

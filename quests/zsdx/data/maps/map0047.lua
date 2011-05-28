@@ -15,25 +15,59 @@
 
 function event_map_started(destination_point_name)
 	sol.map.door_set_open("LD1", true)
+	sol.map.door_set_open("LD4", true)
 end
 
 function event_map_opening_transition_finished(destination_point_name)
 	sol.map.dialog_start("dunegon_8.welcome")
 end
 
-function event_switch_enabled(switch_name)
+function event_switch_activated(switch_name)
+	if switch_name == "BB1" then
+	-- LB1 room
+		sol.map.hero_freeze()
+		sol.main.timer_start(1000, "BB1_camera_move", false)
+	elseif switch_name == "BB2" then
 	-- LB2 room
-	if switch_name == "BB2" then
-		sol.map.interactive_entity_remove("LB2")
+		sol.map.tile_set_enabled("LB2", false)
+		sol.main.play_sound("secret")
+	elseif switch_name == "DB4" then
+		sol.map.door_open("LD4")
 		sol.main.play_sound("secret")
 	end
 end
 
+function BB1_camera_move()
+	sol.map.camera_move(896, 1712, 150)
+end
+
+function BB1_camera_restore()
+	sol.map.camera_restore()
+end
+
+function BB1_remove_barrier()
+	sol.map.tile_set_enabled("LB1", false)
+	sol.main.play_sound("secret")
+	sol.main.timer_start(1000, "BB1_camera_restore", false)
+end
+
+function event_camera_reached_target()
+	sol.main.timer_start(1000, "BB1_remove_barrier", false)
+end
+
+function event_camera_back()
+	sol.map.hero_unfreeze()
+end
+
+
 function event_hero_on_sensor(sensor_name)
-	-- LD1 room: when Link enters this room, door LD1 closes and enemies appear, sensor DS1 is disabled
 	if sensor_name == "DS1" then
+		-- LD1 room: when Link enters this room, door LD1 closes and enemies appear, sensor DS1 is disabled
 		sol.map.door_close("LD1")
 		sol.map.sensor_set_enabled("DS1", false)
+	elseif sensor_name == "DS4" then
+		sol.map.door_close("LD4")
+		sol.map.sensor_set_enabled("DS4", false)
 	end
 end
 

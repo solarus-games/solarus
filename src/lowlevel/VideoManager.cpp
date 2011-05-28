@@ -359,28 +359,22 @@ void VideoManager::blit_scale2x(Surface *src_surface, Surface *dst_surface) {
   uint32_t *src = (uint32_t*) src_internal_surface->pixels;
   uint32_t *dst = (uint32_t*) dst_internal_surface->pixels;
 
-  int a, b, c, d, e = 0, f, g, h, i;
+  int b, d, e = 0, f,  h;
   int e1 = offset, e2, e3, e4;
   for (int row = 0; row < 240; row++) {
     for (int col = 0; col < 320; col++) {
 
       // compute a to i
 
-      a = e - 321;
       b = e - 320;
-      c = e - 319;
-
       d = e - 1;
       f = e + 1;
-
-      g = e + 319;
       h = e + 320;
-      i = e + 321;
 
-      if (row == 0)   { a = d; b = e; c = f; }
-      if (row == 239) { g = d; h = e; i = f; }
-      if (col == 0)   { a = b; d = e; g = h; }
-      if (col == 319) { c = b; f = e; i = h; }
+      if (row == 0)   { b = e; }
+      if (row == 239) { h = e; }
+      if (col == 0)   { d = e; }
+      if (col == 319) { f = e; }
 
       // compute e1 to e4
       e2 = e1 + 1;
@@ -390,13 +384,13 @@ void VideoManager::blit_scale2x(Surface *src_surface, Surface *dst_surface) {
       // compute the color
 
       if (src[b] != src[h] && src[d] != src[f]) {
-	dst[e1] = (src[d] == src[b]) ? src[d] : src[e];
-	dst[e2] = (src[b] == src[f]) ? src[f] : src[e];
-	dst[e3] = (src[d] == src[h]) ? src[d] : src[e];
-	dst[e4] = (src[h] == src[f]) ? src[f] : src[e];
+        dst[e1] = (src[d] == src[b]) ? src[d] : src[e];
+        dst[e2] = (src[b] == src[f]) ? src[f] : src[e];
+        dst[e3] = (src[d] == src[h]) ? src[d] : src[e];
+        dst[e4] = (src[h] == src[f]) ? src[f] : src[e];
       }
       else {
-	dst[e1] = dst[e2] = dst[e3] = dst[e4] = src[e];
+        dst[e1] = dst[e2] = dst[e3] = dst[e4] = src[e];
       }
       e1 += 2;
       e++;

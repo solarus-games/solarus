@@ -165,6 +165,12 @@ booleans:
 200	1F: small key 1 door
 201     1F: small key chest 1 
 
-300: dungeon 6 1F: chest with 20 rupees
+300	dungeon 6 2F: chest with 20 rupees
+301	dungeon 6 2F: chest with boss key
+302	dungeon 6 2F: chest with small key (south-east)
+303	dungeon 6 2F: chest with compass (underwater)
+304	dungeon 6 2F: locked door
+305	dungeon 6 3F: chest with small key (south-east)
+306	dungeon 6 3F: big key door
 
 

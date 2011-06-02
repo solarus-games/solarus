@@ -162,7 +162,7 @@
 19	0	1088	304	stairs	1	4
 1	0	1192	317	from_B4_B	3	0
 19	0	1184	304	stairs_3	1	1
-2	0	1184	304	16	16	to_B4_B	0	1	51	from_B3_A
+2	0	1184	304	16	16	to_B4_B	0	1	51	from_B4_B
 19	0	72	48	stairs_4	1	0
 19	0	800	688	stairs_6	3	4
 1	0	80	61	from_B2_A	3	0
@@ -596,9 +596,6 @@
 9	1	904	845	block_62	-1	1	2
 12	1	520	552	8	24	custom_obstacle_5	1	1	1	1
 12	1	520	720	8	24	custom_obstacle_6	1	1	1	1
-7	1	336	312	enemy_3	3	bubble	0	-1	_random	1	-1
-7	1	512	320	enemy_4	3	bubble	0	-1	_random	1	-1
-7	1	744	312	enemy_5	3	bubble	0	-1	_random	1	-1
 2	1	1040	1120	16	16	teletransporter	0	0	50	AL1
 2	1	1024	1136	16	16	teletransporter_2	0	0	50	AL2
 2	1	1072	1104	16	16	teletransporter_3	0	0	50	AL3

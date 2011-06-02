@@ -204,55 +204,6 @@ y = 320
 save = 77
 big = 0
 
-[dungeon_6.map_56.chest_0]
-floor = 2
-x = 704
-y = 400
-save = 305
-big = 0
-
-[dungeon_6.map_57.chest_0]
-floor = 3
-x = 968
-y = 288
-save = 308
-big = 1
-
-[dungeon_6.map_58.chest_0]
-floor = 0
-x = 440
-y = 272
-save = -1
-big = 0
-
-[dungeon_6.map_55.chest_0]
-floor = 1
-x = 128
-y = 344
-save = 301
-big = 0
-
-[dungeon_6.map_55.chest_1]
-floor = 1
-x = 968
-y = 464
-save = 302
-big = 0
-
-[dungeon_6.map_55.chest_2]
-floor = 1
-x = 608
-y = 160
-save = 303
-big = 0
-
-[dungeon_6.map_55.chest_3]
-floor = 1
-x = 768
-y = 136
-save = 300
-big = 0
-
 [dungeon_8.map_47.chest_0]
 floor = 0
 x = 1872
@@ -294,6 +245,27 @@ x = 1120
 y = 896
 save = -1
 big = 0
+
+[dungeon_8.map_50.chest_0]
+floor = -3
+x = 424
+y = 408
+save = -1
+big = 0
+
+[dungeon_8.map_50.chest_1]
+floor = -3
+x = 864
+y = 408
+save = -1
+big = 0
+
+[dungeon_8.map_50.chest_2]
+floor = -3
+x = 792
+y = 888
+save = -1
+big = 1
 
 [dungeon_8.map_48.chest_0]
 floor = -1
@@ -357,24 +329,52 @@ y = 152
 save = 124
 big = 0
 
-[dungeon_8.map_50.chest_0]
-floor = -3
-x = 424
-y = 408
-save = -1
+[dungeon_6.map_56.chest_0]
+floor = 2
+x = 704
+y = 400
+save = 305
 big = 0
 
-[dungeon_8.map_50.chest_1]
-floor = -3
-x = 864
-y = 408
-save = -1
-big = 0
-
-[dungeon_8.map_50.chest_2]
-floor = -3
-x = 792
-y = 888
-save = -1
+[dungeon_6.map_57.chest_0]
+floor = 3
+x = 968
+y = 288
+save = 308
 big = 1
+
+[dungeon_6.map_58.chest_0]
+floor = 0
+x = 440
+y = 272
+save = -1
+big = 0
+
+[dungeon_6.map_55.chest_0]
+floor = 1
+x = 128
+y = 344
+save = 301
+big = 0
+
+[dungeon_6.map_55.chest_1]
+floor = 1
+x = 968
+y = 464
+save = 302
+big = 0
+
+[dungeon_6.map_55.chest_2]
+floor = 1
+x = 608
+y = 160
+save = 303
+big = 0
+
+[dungeon_6.map_55.chest_3]
+floor = 1
+x = 768
+y = 136
+save = 300
+big = 0
 

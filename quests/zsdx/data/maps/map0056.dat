@@ -749,6 +749,30 @@
 18	1	872	248	miniboss_door_3	0	0	-1
 18	1	920	248	miniboss_door_4	2	0	-1
 18	1	1048	24	miniboss_door_5	1	0	-1
+1	1	232	621	from_2f_sw	3	0
+1	1	960	637	from_2f_se_1	3	0
+1	1	1016	637	from_2f_se_2	3	0
+1	1	1072	637	from_2f_se_3	3	0
+1	1	688	37	from_4f_nc_1	3	0
+1	1	832	37	from_4f_nc_2	3	0
+1	1	760	165	from_4f_c	3	0
+2	1	224	608	16	16	teletransporter	0	1	55	from_3f_sw
+2	1	952	624	16	16	teletransporter_2	0	1	55	from_3f_se_1
+2	1	1008	624	16	16	teletransporter_3	0	1	55	from_3f_se_2
+2	1	1064	624	16	16	teletransporter_4	0	1	55	from_3f_se_3
+2	1	752	152	16	16	teletransporter_5	0	1	57	from_3f_c
+1	1	1064	37	from_4f_ne	3	0
+2	1	680	24	16	16	teletransporter_6	0	1	57	from_3f_nc_1
+2	1	824	24	16	16	teletransporter_7	0	1	57	from_3f_nc_2
+2	1	1056	24	16	16	teletransporter_8	0	1	57	from_3f_ne
+19	1	1056	24	stairs_2	1	0
+19	1	824	24	stairs_3	1	0
+19	1	680	24	stairs_4	1	0
+19	1	752	152	stairs_5	1	0
+19	1	224	608	stairs_6	1	1
+19	1	952	624	stairs_7	3	3
+19	1	1008	624	stairs_8	3	3
+19	1	1064	624	stairs_9	3	3
 0	2	1000	528	32	8	154
 0	2	840	568	8	32	353
 0	2	864	568	8	32	352

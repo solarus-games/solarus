@@ -327,6 +327,7 @@
 5	0	968	464	chest_3	0	small_key	1	302
 2	0	992	488	16	16	teletransporter_7	1	1	55	destination_point_nw
 5	0	608	160	chest_4	0	compass	1	303
+1	0	976	1021	destination_point_65	-1	1
 0	1	920	656	16	48	3
 0	1	936	608	8	88	71
 0	1	792	392	80	112	397

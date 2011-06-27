@@ -38,6 +38,16 @@ function event_switch_activated(switch_name)
   elseif switch_name == "se_water_switch" and not sol.game.savegame_get_boolean(128) then
     sol.map.camera_move(912, 896, 150)
     camera_timer = "remove_se_water"
+  elseif switch_name == "1f_n_water_switch" and not sol.game.savegame_get_boolean(131) then
+    remove_1f_n_water()
+  elseif switch_name == "1f_e_water_switch_1"
+      and sol.map.switch_is_activated("1f_e_water_switch_2")
+      and not sol.game.savegame_get_boolean(122) then
+    remove_1f_e_water()
+  elseif switch_name == "1f_e_water_switch_2"
+      and sol.map.switch_is_activated("1f_e_water_switch_1")
+      and not sol.game.savegame_get_boolean(122) then
+    remove_1f_e_water()
   end
 end
 
@@ -59,6 +69,8 @@ function open_barrier()
 end
 
 function remove_se_water()
+  sol.main.play_sound("water_drain_begin")
+  sol.main.play_sound("water_drain")
   sol.map.tile_set_enabled("se_water_out", true)
   sol.map.tile_set_enabled("se_water_source", false)
   sol.main.timer_start(remove_water_delay, "remove_se_water_2", false)
@@ -93,3 +105,20 @@ function remove_se_water_6()
   sol.main.play_sound("secret")
   sol.main.timer_start(1000, "sol.map.camera_restore", false)
 end
+
+function remove_1f_n_water()
+
+  sol.main.play_sound("water_drain_begin")
+  sol.main.play_sound("water_drain")
+  sol.map.dialog_start("dungeon_3.water_drained_somewhere")
+  sol.game.savegame_set_boolean(131, true)
+end
+
+function remove_1f_e_water()
+
+  sol.main.play_sound("water_drain_begin")
+  sol.main.play_sound("water_drain")
+  sol.map.dialog_start("dungeon_3.water_drained_somewhere")
+  sol.game.savegame_set_boolean(122, true)
+end
+

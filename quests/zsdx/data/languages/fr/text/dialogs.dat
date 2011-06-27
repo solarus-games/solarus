@@ -4260,3 +4260,15 @@ line1 = ""
 line2 = "  Nord : Maître Arbror "
 line3 = ""
 
+[dungeon_3.water_drained_somewhere]
+#       |-----------------------|
+line1 = "Au loin... un bruit..."
+
+#================================
+
+[dunegon_8.welcome]
+#       |-----------------------|
+line1 = "        Niveau 8"
+line2 = "    Donjon des Pics "
+line3 = "        Rocheux"
+

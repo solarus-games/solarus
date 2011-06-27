@@ -45,6 +45,12 @@ function event_map_started(destination_point_name)
     sol.map.tile_set_group_enabled("e_water_out", true)
   end
 
+  if sol.game.savegame_get_boolean(131) then
+    -- the north water is removed
+    sol.map.tile_set_group_enabled("n_water", false)
+    sol.map.tile_set_group_enabled("n_water_out", true)
+  end
+
 end
 
 -- Called when the opening transition of the map finished
@@ -75,6 +81,10 @@ function event_switch_activated(switch_name)
   elseif switch_name == "ce_door_switch" and not sol.map.door_is_open("ce_door") then
     sol.map.camera_move(736, 552, 250)
     camera_timer = "open_ce_door"
+  elseif switch_name == "ce_door_switch_2" and not sol.map.door_is_open("ce_door") then
+    sol.map.door_open("ce_door")
+    sol.main.play_sound("secret")
+    sol.map.switch_set_activated("ce_door_switch", true)
   elseif switch_name == "c_water_switch" and not sol.game.savegame_get_boolean(121) then
     sol.map.camera_move(344, 736, 250)
     camera_timer = "remove_c_water"
@@ -94,10 +104,13 @@ end
 function open_ce_door()
   sol.main.play_sound("secret")
   sol.map.door_open("ce_door")
+  sol.map.switch_set_activated("ce_door_switch_2", true)
   sol.main.timer_start(1000, "sol.map.camera_restore", false)
 end
 
 function remove_c_water()
+  sol.main.play_sound("water_drain_begin")
+  sol.main.play_sound("water_drain")
   sol.map.tile_set_enabled("c_water_out", true)
   sol.map.tile_set_enabled("c_water_source", false)
   sol.main.timer_start(remove_water_delay, "remove_c_water_2", false)
@@ -132,5 +145,4 @@ function remove_c_water_6()
   sol.main.play_sound("secret")
   sol.main.timer_start(1000, "sol.map.camera_restore", false)
 end
-
 

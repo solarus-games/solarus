@@ -386,3 +386,10 @@ y = 888
 save = -1
 big = 1
 
+[dungeon_4.map_60.chest_0]
+floor = 0
+x = 480
+y = 576
+save = -1
+big = 0
+

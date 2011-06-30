@@ -181,4 +181,5 @@ booleans:
 310	dungeon 6 4F: locked door
 311	dungeon 6 4F: boss key door
 
+400	dungeon 4 B1: small key in the sensors room
 

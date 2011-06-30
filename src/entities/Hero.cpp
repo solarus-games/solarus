@@ -51,6 +51,7 @@
 #include "lowlevel/System.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
+#include "lowlevel/Sound.h"
 #include "Game.h"
 #include "Map.h"
 #include "Equipment.h"
@@ -1014,6 +1015,9 @@ void Hero::check_position() {
         && entities.get_obstacle_tile(layer, x + 15, y + 15) == OBSTACLE_EMPTY) {
 
       get_entities().set_entity_layer(this, Layer(layer - 1));
+      if (state->is_free() && get_tile_ground() == GROUND_NORMAL) {
+	Sound::play("hero_lands");
+      }
     }
   }
 }

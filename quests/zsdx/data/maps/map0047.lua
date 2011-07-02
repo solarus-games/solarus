@@ -19,7 +19,7 @@ function event_map_started(destination_point_name)
 end
 
 function event_map_opening_transition_finished(destination_point_name)
-	sol.map.dialog_start("dunegon_8.welcome")
+	sol.map.dialog_start("dungeon_8.welcome")
 end
 
 function event_switch_activated(switch_name)

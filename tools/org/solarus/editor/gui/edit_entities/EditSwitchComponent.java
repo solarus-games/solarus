@@ -48,11 +48,11 @@ public class EditSwitchComponent extends EditEntityComponent {
     protected void createSpecificFields() {
 
 	// needs block
-	needsBlockField = new JCheckBox("Requires a block or a statue to be enabled");
+	needsBlockField = new JCheckBox("Requires a block or a statue to be activated");
 	addField("Activation", needsBlockField);
 
 	// disable when leaving
-	disableWhenLeavingField = new JCheckBox("Disable the switch when leaving");
+	disableWhenLeavingField = new JCheckBox("Inactivate the switch when leaving");
 	addField("Stay on switch", disableWhenLeavingField);
 
 	// disable the 'needs block' field when the subtype is invisible

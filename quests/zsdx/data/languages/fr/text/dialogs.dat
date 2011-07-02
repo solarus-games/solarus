@@ -4273,7 +4273,7 @@ line2 = "   Palais de Beaumont  "
 #       |-----------------------|
 line1 = "Lorsque les issues"
 line2 = "ne se dévoilent pas,"
-line3 = "sers-toi de ta Carte."
+line3 = "sers-toi de ton plan."
 
 [dungeon_6.welcome]
 #       |-----------------------|

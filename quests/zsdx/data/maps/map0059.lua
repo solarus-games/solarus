@@ -32,6 +32,20 @@ function event_hero_on_sensor(sensor_name)
     sol.map.door_close("door_a")
     sol.map.switch_set_activated("door_a_switch", false)
     sol.map.tile_set_group_enabled("special_torch", true)
+  elseif sensor_name == "sensor_1" and sol.map.tile_is_enabled("sensor_1_off") then
+    sol.main.play_sound("switch")
+    sol.map.tile_set_group_enabled("sensor_1_on", true)
+    sol.map.tile_set_group_enabled("sensor_1_off", false)
+  elseif sensor_name == "sensor_2" and sol.map.tile_is_enabled("sensor_2_off") then
+    sol.main.play_sound("switch")
+    sol.map.tile_set_group_enabled("sensor_2_on", true)
+    sol.map.tile_set_group_enabled("sensor_2_off", false)
+  elseif sensor_name == "sensor_3" and sol.map.tile_is_enabled("sensor_3_off") then
+    sol.main.play_sound("switch")
+    sol.map.tile_set_group_enabled("sensor_3_off", false)
+  elseif sensor_name == "sensor_4" then
+    sol.main.play_sound("switch")
+    sol.map.tile_set_group_enabled("sensor_4_on", not sol.map.tile_is_enabled("sensor_4_on"))
   end
 end
 

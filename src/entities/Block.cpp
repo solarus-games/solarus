@@ -48,7 +48,6 @@ Block::Block(const std::string &name, Layer layer, int x, int y,
 
   set_origin(8, 13);
   if (subtype == STATUE) {
-
     Debug::check_assertion(direction == -1, "Cannot set a direction for a statue");
     create_sprite("entities/statue");
   }
@@ -120,7 +119,7 @@ bool Block::is_displayed_in_y_order() {
  * @param other another entity
  * @return true
  */
-bool Block::is_obstacle_for(MapEntity &other) {
+bool Block::is_obstacle_for(MapEntity& other) {
 
   return other.is_block_obstacle(*this);
 }
@@ -130,7 +129,7 @@ bool Block::is_obstacle_for(MapEntity &other) {
  * @param hero the hero
  * @return true if the hero is an obstacle for this entity.
  */
-bool Block::is_hero_obstacle(Hero &hero) {
+bool Block::is_hero_obstacle(Hero& hero) {
   return get_movement() == NULL;
 }
 
@@ -139,7 +138,7 @@ bool Block::is_hero_obstacle(Hero &hero) {
  * @param enemy an enemy
  * @return true if this enemy is currently considered as an obstacle by this entity.
  */
-bool Block::is_enemy_obstacle(Enemy &enemy) {
+bool Block::is_enemy_obstacle(Enemy& enemy) {
   return true;
 }
 
@@ -148,7 +147,7 @@ bool Block::is_enemy_obstacle(Enemy &enemy) {
  * @param destructible_item a destructible item
  * @return true if the destructible item is currently an obstacle by this entity
  */
-bool Block::is_destructible_item_obstacle(DestructibleItem &destructible_item) {
+bool Block::is_destructible_item_obstacle(DestructibleItem& destructible_item) {
   return true;
 }
 
@@ -157,7 +156,7 @@ bool Block::is_destructible_item_obstacle(DestructibleItem &destructible_item) {
  * @param entity_overlapping the entity overlapping the detector
  * @param collision_mode the collision mode that detected the collision
  */
-void Block::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
+void Block::notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) {
 
   entity_overlapping.notify_collision_with_block(*this);
 }
@@ -166,7 +165,7 @@ void Block::notify_collision(MapEntity &entity_overlapping, CollisionMode collis
  * @brief This function is called when a switch detects a collision with this entity.
  * @param sw the switch
  */
-void Block::notify_collision_with_switch(Switch &sw) {
+void Block::notify_collision_with_switch(Switch& sw) {
 
   sw.try_activate(*this);
 }
@@ -190,7 +189,7 @@ void Block::action_key_pressed() {
  */
 bool Block::moved_by_hero() {
 
-  Hero &hero = get_hero();
+  Hero& hero = get_hero();
   int direction = get_direction();
 
   if (get_movement() != NULL							// the block is already moving
@@ -217,7 +216,7 @@ void Block::update() {
 
   Detector::update();
 
-  Hero &hero = get_hero();
+  Hero& hero = get_hero();
 
   if (get_movement() != NULL) {
     // the block is being pushed or pulled by the hero
@@ -244,18 +243,19 @@ void Block::update() {
       // see if the block has moved
       if (get_x() != last_position.get_x() || get_y() != last_position.get_y()) {
 
-	// the block has moved
-	last_position.set_xy(get_x(), get_y()); // save the new position for next time
+        // the block has moved
+        last_position.set_xy(get_x(), get_y()); // save the new position for next time
 
-	if (maximum_moves == 1) { // if the block could be moved only once,
-	  maximum_moves = 0;      // then it cannot move anymore
-	}
+        if (maximum_moves == 1) { // if the block could be moved only once,
+          maximum_moves = 0;      // then it cannot move anymore
+        }
       }
 
       // notify the script
       get_map_script().event_block_moved(get_name());
     }
   }
+  get_map().check_collision_with_detectors(*this);
 }
 
 /**

@@ -186,12 +186,13 @@ void Switch::update() {
     check_collision(*entity_overlapping);
 
     if (!entity_overlapping_still_present) {
-      // the entity just left the switch or disappeared from the map (it may even have been freed)
+      // the entity just left the switch or disappeared from the map
+      // (it may even have been freed)
 
       entity_overlapping = NULL;
       if (is_activated() && inactivate_when_leaving && !locked) {
         set_activated(false);
-	get_map_script().event_switch_inactivated(get_name());
+        get_map_script().event_switch_inactivated(get_name());
       }
       get_map_script().event_switch_left(get_name());
     }

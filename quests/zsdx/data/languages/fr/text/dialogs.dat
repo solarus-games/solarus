@@ -4264,9 +4264,25 @@ line3 = ""
 #       |-----------------------|
 line1 = "Au loin... un bruit..."
 
+[dungeon_4.welcome]
+#       |-----------------------|
+line1 = "        Niveau 4"
+line2 = "   Palais de Beaumont  "
+
+[dungeon_4.hint_use_map]
+#       |-----------------------|
+line1 = "Lorsque les issues"
+line2 = "ne se dévoilent pas,"
+line3 = "sers-toi de ta Carte."
+
+[dungeon_6.welcome]
+#       |-----------------------|
+line1 = "        Niveau 6"
+line2 = "    Dédale d'Inferno   "
+
 #================================
 
-[dunegon_8.welcome]
+[dungeon_8.welcome]
 #       |-----------------------|
 line1 = "        Niveau 8"
 line2 = "    Donjon des Pics "

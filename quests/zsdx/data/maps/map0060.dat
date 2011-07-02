@@ -207,7 +207,6 @@
 0	0	288	1048	8	8	69
 0	0	464	744	8	8	69
 0	0	448	744	16	8	70
-5	0	480	576	chest	0	_none	1	-1
 1	0	632	845	destination_point	-1	1
 1	0	152	789	from_B1_1	3	0
 1	0	280	741	from_B1_2	3	0
@@ -240,6 +239,8 @@
 2	0	360	952	32	32	teletransporter_15	0	1	59	from_1F_hole_right
 2	0	424	840	32	32	teletransporter_17	0	1	59	from_1F_hole_down
 2	0	424	824	32	32	teletransporter_16	0	1	59	from_1F_hole_up
+14	0	488	589	crystal_switch
+8	0	632	813	interactive_entity	3	0	entities/hint_stone	dialog#dungeon_4.hint_use_map
 0	1	360	1024	16	32	421
 0	1	184	1024	16	32	421
 0	1	184	1056	192	16	421
@@ -318,6 +319,7 @@
 12	1	288	984	8	32	custom_obstacle_2	1	1	1	1
 1	1	280	1093	from_outside	1	0
 2	1	272	1104	16	16	teletransporter	0	1	6	from_dungeon_4
+2	1	256	1080	16	16	teletransporter_18	0	0	59	tmp
 0	2	264	1096	32	8	560
 0	2	544	768	16	192	170
 0	2	16	544	80	112	170

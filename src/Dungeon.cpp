@@ -131,7 +131,9 @@ void Dungeon::load() {
 	chest.savegame_variable = ini.get_integer_value("save", 0);
 	chest.big = ini.get_integer_value("big", 0) != 0;
 
-	chests[chest.floor - lowest_floor].push_back(chest);
+	if (chest.floor != -99) { // -99 means a special floor not marked on the map
+	  chests[chest.floor - lowest_floor].push_back(chest);
+	}
       }
 
       // is it a boss or a miniboss?
@@ -147,7 +149,9 @@ void Dungeon::load() {
 	  boss_floor = boss.floor;
 	}
 
-	bosses[boss.floor - lowest_floor].push_back(boss);
+	if (boss.floor != -99) { // -99 means a special floor not marked on the map
+	  bosses[boss.floor - lowest_floor].push_back(boss);
+	}
       }
     }
   }

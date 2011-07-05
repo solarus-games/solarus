@@ -4275,6 +4275,13 @@ line1 = "Lorsque les issues"
 line2 = "ne se dévoilent pas,"
 line3 = "sers-toi de ton plan."
 
+[dungeon_4.hint_chests]
+#       |-----------------------|
+line1 = "Le croisement des"
+line2 = "coffres indique le"
+line3 = "chemin."
+
+
 [dungeon_6.welcome]
 #       |-----------------------|
 line1 = "        Niveau 6"

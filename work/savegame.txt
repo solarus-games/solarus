@@ -192,4 +192,5 @@ booleans:
 408	dungeon 4 1F: chest with 5 bombs
 409	dungeon 4 1F: chest with the big key
 410	dungeon 4 1F: weak block
+411	dungeon 4 1F: chest with the boss key
 

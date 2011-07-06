@@ -794,12 +794,15 @@
 0	1	832	512	8	16	71
 0	1	856	512	8	16	71
 0	1	96	40	16	8	556
+0	1	640	168	16	32	421
+0	1	632	176	8	16	71
+0	1	656	176	8	16	71
 18	1	632	200	hidden_weak_wall_2	1	6	403
 12	1	264	984	8	32	custom_obstacle	1	1	1	1
 12	1	288	984	8	32	custom_obstacle_2	1	1	1	1
 1	1	280	1093	from_outside	1	0
 2	1	272	1104	16	16	teletransporter	0	1	6	from_dungeon_4
-2	1	256	1080	16	16	teletransporter_18	0	0	59	destination_point_2
+2	1	256	1080	16	16	teletransporter_18	0	0	62	destination_point
 18	1	88	232	door	1	4	401
 18	1	88	184	door_2	3	4	401
 12	1	88	104	8	32	custom_obstacle_3	1	1	1	1
@@ -819,15 +822,15 @@
 1	1	720	141	destination_point_11	-1	1
 2	1	872	184	16	16	teletransporter_19	1	1	60	destination_point_1
 10	1	632	152	32	24	hidden_weak_wall_closed	52	1
-2	1	776	56	16	16	teletransporter_20	0	1	60	destination_point_6
-2	1	840	152	16	16	teletransporter_21	0	1	60	destination_point_3
-2	1	776	96	16	16	teletransporter_22	0	1	60	destination_point_10
-2	1	592	128	16	16	teletransporter_23	0	1	60	destination_point_4
-2	1	840	56	16	16	teletransporter_24	0	1	60	destination_point_9
-2	1	896	104	16	16	teletransporter_25	0	1	60	destination_point_5
-2	1	840	96	16	16	teletransporter_26	0	1	60	destination_point_8
-2	1	896	56	16	16	teletransporter_27	0	1	60	destination_point_11
-2	1	776	184	16	16	teletransporter_28	0	1	60	destination_point_7
+2	1	776	56	16	16	teletransporter_20	0	0	60	destination_point_6
+2	1	840	152	16	16	teletransporter_21	0	0	60	destination_point_3
+2	1	776	96	16	16	teletransporter_22	0	0	60	destination_point_10
+2	1	592	128	16	16	teletransporter_23	0	0	60	destination_point_4
+2	1	840	56	16	16	teletransporter_24	0	0	60	destination_point_9
+2	1	896	104	16	16	teletransporter_25	0	0	60	destination_point_5
+2	1	840	96	16	16	teletransporter_26	0	0	60	destination_point_8
+2	1	896	56	16	16	teletransporter_27	0	0	60	destination_point_11
+2	1	776	184	16	16	teletransporter_28	0	0	60	destination_point_7
 5	1	832	296	chest	1	tunic	2	404
 18	1	832	536	door_5	1	0	-1
 18	1	832	488	door_6	3	0	-1
@@ -837,9 +840,9 @@
 5	1	640	600	chest_3	0	map	1	407
 10	1	632	192	32	24	hidden_weak_wall_closed_2	49	1
 5	1	640	280	chest_4	0	big_key	1	409
-18	1	640	240	door_9	1	8	410
-5	1	472	376	chest_5	0	map	1	408
-2	1	632	368	32	32	teletransporter_30	0	1	59	from_hole
+18	1	640	240	weak_block	1	8	410
+5	1	472	376	chest_5	0	bomb	2	408
+2	1	632	368	32	32	weak_floor_teletransporter	0	1	59	from_hole
 17	1	432	53	0
 17	1	416	53	0
 17	1	400	53	0
@@ -914,6 +917,8 @@
 19	1	280	24	stairs_11	1	1
 19	1	440	24	stairs_12	1	1
 19	1	624	24	stairs_13	1	1
+10	1	632	360	32	48	weak_floor	421	1
+13	1	640	381	32	32	weak_floor_sensor	0
 0	2	584	16	96	8	559
 0	2	400	16	96	8	559
 0	2	240	16	96	8	559

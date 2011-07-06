@@ -4281,6 +4281,11 @@ line1 = "Le croisement des"
 line2 = "coffres indique le"
 line3 = "chemin."
 
+[dungeon_4.too_cold]
+#       |-----------------------|
+line1 = "Il fait beaucoup trop"
+line2 = "froid ici..."
+line3 = "$0Il faut repartir !"
 
 [dungeon_6.welcome]
 #       |-----------------------|

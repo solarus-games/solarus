@@ -189,8 +189,10 @@ booleans:
 405	dungeon 4 1F: chest with the compass
 406	dungeon 4 1F: big key door to miniboss
 407	dungeon 4 1F: chest with the map
-408	dungeon 4 1F: chest with 5 bombs
+408	dungeon 4 1F: chest with 3 bombs
 409	dungeon 4 1F: chest with the big key
 410	dungeon 4 1F: weak block
 411	dungeon 4 1F: chest with the boss key
+412	dungeon 4 1F: weak floor
+
 

@@ -591,12 +591,12 @@ int Script::game_api_set_item(lua_State *l) {
 int Script::game_api_has_item_amount(lua_State *l) {
 
   Script *script;
-  called_by_script(l, 1, &script);
+  called_by_script(l, 2, &script);
 
   const std::string &item_name = luaL_checkstring(l, 1);
   int amount = luaL_checkinteger(l, 2);
 
-  bool has_amount = script->get_game().get_equipment().get_item_amount(item_name) > amount;
+  bool has_amount = script->get_game().get_equipment().get_item_amount(item_name) >= amount;
   lua_pushboolean(l, has_amount);
 
   return 1;

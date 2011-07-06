@@ -163,6 +163,8 @@ booleans:
 131	dungeon 3 1F: water drained (north)
 132	dungeon 3 3F: piece of heart
 133	dungeon 3 3F: weak floor
+134	billy's cave: got the edelweiss
+135	billy's cave: talked the first time
 
 200-299: binbin dungeon
 200	1F: small key 1 door

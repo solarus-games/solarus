@@ -1319,7 +1319,7 @@ line1 = "Tu as trouvé des"
 line2 = "Lingots d'or !!!$0"
 next = _treasure.level_4_way.2.1
 
-[_treasure.level_4_way_bone_key.2.1]
+[_treasure.level_4_way.2.1]
 #       |--------------------|
 line1 = "Ils brillent et ont"
 line2 = "une valeur"
@@ -4253,6 +4253,164 @@ line1 = "Ancien Château d'Hyrule"
 line2 = "         <---"
 line3 = ""
 skip = all
+
+[billy_cave.hello]
+#       |-----------------------|
+line1 = "J'espère que tu as"
+line2 = "quelque chose"
+line3 = "d'intéressant à faire"
+next = billy_cave.hello.2
+skip = current
+
+[billy_cave.hello.2]
+#       |-----------------------|
+line1 = "si tu oses ainsi"
+line2 = "pénétrer dans ma"
+line3 = "caverne."
+next = billy_cave.hello.3
+
+[billy_cave.hello.3]
+#       |-----------------------|
+line1 = "Je suis Billy le"
+line2 = "Téméraire, le plus"
+line3 = "grand aventurier de"
+next = billy_cave.hello.4
+
+[billy_cave.hello.4]
+#       |-----------------------|
+line1 = "tous les temps."
+next = billy_cave.hello.5
+
+[billy_cave.hello.5]
+#       |-----------------------|
+line1 = "Lors de mon expédition"
+line2 = "à la Montagne des"
+line3 = "Terreurs, j'ai rapporté"
+next = billy_cave.hello.6
+
+[billy_cave.hello.6]
+#       |-----------------------|
+line1 = "un trésor inestimable."
+line2 = "Même la Princesse Zelda"
+line3 = "ne saurait le trouver."
+next = billy_cave.hello.7
+
+[billy_cave.hello.7]
+#       |-----------------------|
+line1 = "C'est une plante"
+line2 = "extrêmement rare."
+line3 = ""
+next = billy_cave.hello.8
+
+[billy_cave.hello.8]
+#       |-----------------------|
+line1 = "Et je suis le seul à en"
+line2 = "avoir. J'ai franchi"
+line3 = "tous les obstacles"
+next = billy_cave.hello.9
+
+[billy_cave.hello.9]
+#       |-----------------------|
+line1 = "de la Montagne des"
+line2 = "Terreurs, affronté tous"
+line3 = "les périls, et je me"
+next = billy_cave.hello.10
+
+[billy_cave.hello.10]
+#       |-----------------------|
+line1 = "suis sorti de toutes"
+line2 = "les situations."
+next = billy_cave.hello.11
+
+[billy_cave.hello.11]
+#       |-----------------------|
+line1 = "C'est donc héroïquement"
+line2 = "que j'ai trouvé cette"
+line3 = "fleur d'une valeur"
+next = billy_cave.hello.12
+
+[billy_cave.hello.12]
+#       |-----------------------|
+line1 = "incomparable :"
+line2 = "un edelweiss !"
+
+[billy_cave.what_do_you_have]
+#       |-----------------------|
+line1 = "Ne compte pas sur moi"
+line2 = "pour te donner mon"
+line3 = "edelweiss gratuitement."
+next = billy_cave.what_do_you_have.2
+skip = current
+
+[billy_cave.what_do_you_have.2]
+#       |-----------------------|
+line1 = "J'ai été confronté à"
+line2 = "tous les dangers de la"
+line3 = "Montagne des Terreurs"
+next = billy_cave.what_do_you_have.3
+
+[billy_cave.what_do_you_have.3]
+#       |-----------------------|
+line1 = "pour le trouver. Si tu"
+line2 = "n'as rien d'intéressant"
+line3 = "à me proposer, alors"
+next = billy_cave.what_do_you_have.4
+
+[billy_cave.what_do_you_have.4]
+#       |-----------------------|
+line1 = "tu pourras toujours"
+line2 = "courir."
+line3 = ""
+next = _unknown
+
+[billy_cave.without_golden_bars]
+#       |-----------------------|
+line1 = "Que me proposes-tu ?"
+line2 = "Un croissant"
+line3 = "Une tarte aux pommes"
+question = true
+
+[billy_cave.with_golden_bars]
+#       |-----------------------|
+line1 = "Que me proposes-tu ?"
+line2 = "Des lingots d'or"
+line3 = "Une tarte aux pommes"
+question = true
+
+[billy_cave.give_croissant_without]
+#       |-----------------------|
+line1 = "Tu n'as même pas de"
+line2 = "croissant ! Voleur !"
+
+[billy_cave.give_croissant]
+#       |-----------------------|
+line1 = "Un croissant ?"
+line2 = "Tu te moques de moi ?"
+line3 = ""
+
+[billy_cave.give_apple_pie_without]
+#       |-----------------------|
+line1 = "Pfff ! Tu n'as même pas"
+line2 = "de tarte aux pommes !"
+
+[billy_cave.give_apple_pie]
+#       |-----------------------|
+line1 = "Non merci, le marché"
+line2 = "est loin d'être"
+line3 = "équitable..."
+
+[billy_cave.give_golden_bars]
+#       |-----------------------|
+line1 = "Quoi ? Tu as des"
+line2 = "lingots d'or ?$1..."
+line3 = "$0...$0...................."
+next = billy_cave.give_golden_bars.2
+
+[billy_cave.give_golden_bars.2]
+#       |-----------------------|
+line1 = "$3Marché conclu !"
+line2 = "Tiens, voilà ta stupide"
+line3 = "fleur..."
 
 [dungeon_3.arbror_direction_hint]
 #       |-----------------------|

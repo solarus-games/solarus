@@ -3497,6 +3497,13 @@ line2 = "croustillant pour"
 line3 = "retrouver sept Coeurs."
 next = _unknown
 
+[cake_shop.apple_pie]
+# Pâtisserie : quand on regarde la tarte aux pommes
+#       |-----------------------|
+line1 = "Une Tarte aux Pommes."
+line2 = "Faite grâce à toi !"
+next = _unknown
+
 [cake_shop.dont_leave]
 # Pâtisserie : quand on est sur le point de partir
 #       |-----------------------|
@@ -4411,6 +4418,43 @@ next = billy_cave.give_golden_bars.2
 line1 = "$3Marché conclu !"
 line2 = "Tiens, voilà ta stupide"
 line3 = "fleur..."
+
+[outside_world.surprise_wall_guy.closed]
+#       |-----------------------|
+line1 = "Si tu me donnes quelque"
+line2 = "chose à manger, je te"
+line3 = "laisserai passer de"
+next = outside_world.suprise_wall_guy.closed.2
+
+[outside_world.surprise_wall_guy.closed.2]
+#       |-----------------------|
+line1 = "l'autre côté de ce mur."
+
+[outside_world.surprise_wall_guy.give_me_apple_pie]
+#       |-----------------------|
+line1 = "Donne-moi cette tarte"
+line2 = "aux pommes !"
+
+[outside_world.surprise_wall_guy.open]
+#       |-----------------------|
+line1 = "Des gens croient qu'il"
+line2 = "y a un trésor derrière"
+line3 = "ce mur, mais je n'en ai"
+next = outside_world.suprise_wall_guy.open.2
+
+[outside_world.surprise_wall_guy.open.2]
+#       |-----------------------|
+line1 = "jamais trouvé !"
+
+[outside_world.surprise_wall_guy.thanks]
+#       |-----------------------|
+line1 = "Super ! En remerciement,"
+line2 = "je mange la tarte."
+next = outside_world.suprise_wall_guy.open
+
+[outside_world.surprise_wall_closed]
+#       |-----------------------|
+line1 = "C'est fermé !"
 
 [dungeon_3.arbror_direction_hint]
 #       |-----------------------|

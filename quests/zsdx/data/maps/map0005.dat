@@ -1168,6 +1168,8 @@
 8	0	792	413	surprise_wall_guy	3	1	npc/static_villager9	map
 10	0	760	376	32	16	surprise_wall_door_tile	909	1
 8	0	776	389	surprise_wall_door	3	0	_none	map
+1	0	776	405	from_surprise_wall	3	0
+2	0	768	376	16	16	teletransporter	0	1	45	from_outside
 0	2	824	688	40	40	1023
 0	2	880	688	40	40	1024
 0	2	568	320	48	40	511

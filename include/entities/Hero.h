@@ -36,7 +36,7 @@ class Hero: public MapEntity {
 
     // state
     class State;                    /**< base class for all states */
-    class PlayerMovementState;      /**< abstract class for states whose movement is controlled by the player */
+    class PlayerMovementState;      /**< base class for states whose movement is controlled by the player */
     class FreeState;                /**< the hero is free to move (stopped or walking) and can interact with entities */
     class CarryingState;            /**< the hero can walk but he is carrying a pot or a bush */
     class SwordLoadingState;        /**< the hero can walk but his sword is loading for a spin attack */
@@ -51,6 +51,7 @@ class Hero: public MapEntity {
     class LiftingState;             /**< the hero is lifting an destroyable item (a pot, a bush, etc.) */
     class TreasureState;            /**< the hero is brandishing a treasure */
     class RunningState;             /**< the hero is running */
+    class ForcedWalkingState;       /**< the hero is walking with a predetermined path */
     class JumpingState;             /**< the hero is jumping */
     class HurtState;                /**< the hero is hurt */
     class PlungingState;            /**< the hero is plunging into water */
@@ -296,6 +297,7 @@ class Hero: public MapEntity {
     void start_next_state();
     void start_free();
     void start_treasure(const Treasure &treasure);
+    void start_forced_walking(const std::string &path, bool loop, bool ignore_obstacles);
     void start_jumping(int direction8, int length, bool ignore_obstacles,
         bool with_sound, uint32_t movement_delay = 0);
     void start_freezed();

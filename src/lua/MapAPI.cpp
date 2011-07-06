@@ -452,15 +452,14 @@ int Script::map_api_hero_align_on_sensor(lua_State *l) {
  */
 int Script::map_api_hero_walk(lua_State *l) {
 
-  called_by_script(l, 3, NULL);
+  Script *script;
+  called_by_script(l, 3, &script);
 
-  /* TODO
   const std::string &path = luaL_checkstring(l, 1);
   bool loop = lua_toboolean(l, 2) != 0;
   bool ignore_obstacles = lua_toboolean(l, 3) != 0;
 
-  script->get_game().get_hero()->walk(path, loop, ignore_obstacles);
-  */
+  script->get_game().get_hero().start_forced_walking(path, loop, ignore_obstacles);
 
   return 0;
 }
@@ -1288,24 +1287,54 @@ int Script::map_api_block_reset_all(lua_State *l) {
  * - Argument 1 (string): name of the block
  * - Return value 1 (integer): x position
  * - Return value 2 (integer): y position
+ * - Return value 3 (integer): layer
  *
  * @param l the Lua context that is calling this function
  */
 int Script::map_api_block_get_position(lua_State *l) {
 
-  Script* script;
+  Script *script;
   called_by_script(l, 1, &script);
 
   const std::string &name = luaL_checkstring(l, 1);
 
-  MapEntities& entities = script->get_map().get_entities();
-  Block* block = (Block*) entities.get_entity(BLOCK, name);
-  const Rectangle& coordinates = block->get_xy();
+  MapEntities &entities = script->get_map().get_entities();
+  Block *block = (Block*) entities.get_entity(BLOCK, name);
+  const Rectangle &coordinates = block->get_xy();
 
   lua_pushinteger(l, coordinates.get_x());
   lua_pushinteger(l, coordinates.get_y());
+  lua_pushinteger(l, block->get_layer());
 
-  return 2;
+  return 3;
+}
+
+/**
+ * @brief Sets the position of a block.
+ *
+ * - Argument 1 (string): name of the block
+ * - Argument 2 (integer): x position
+ * - Argument 3 (integer): y position
+ * - Argument 4 (integer): layer
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_block_set_position(lua_State *l) {
+
+  Script *script;
+  called_by_script(l, 4, &script);
+
+  const std::string &name = luaL_checkstring(l, 1);
+  int x = luaL_checkinteger(l, 2);
+  int y = luaL_checkinteger(l, 3);
+  int layer = luaL_checkinteger(l, 4);
+
+  MapEntities &entities = script->get_map().get_entities();
+  Block *block = (Block*) entities.get_entity(BLOCK, name);
+  block->set_xy(x, y);
+  entities.set_entity_layer(block, Layer(layer));
+
+  return 0;
 }
 
 /**

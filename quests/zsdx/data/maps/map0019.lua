@@ -2,6 +2,13 @@
 -- Cake shop script --
 ----------------------
 
+function event_map_started(destination_point_name)
+
+  if not has_obtained_bottle() or not sol.game.is_dungeon_finished(1) then
+    sol.map.shop_item_remove("apple_pie")
+  end
+end
+
 function has_talked_about_apples()
   return sol.game.savegame_get_boolean(46)
 end

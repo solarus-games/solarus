@@ -36,11 +36,11 @@ class Script {
      * @brief The APIs available depending on the type of scripts.
      */
     enum API {
-      MAIN_API			= 0x0001,
-      GAME_API			= 0x0002,
-      MAP_API			= 0x0004,
-      ITEM_API			= 0x0008,
-      ENEMY_API                 = 0x0010
+      MAIN_API          = 0x0001,
+      GAME_API          = 0x0002,
+      MAP_API           = 0x0004,
+      ITEM_API          = 0x0008,
+      ENEMY_API         = 0x0010
     };
 
   private:
@@ -223,6 +223,7 @@ class Script {
       map_api_block_reset,
       map_api_block_reset_all,
       map_api_block_get_position,
+      map_api_block_set_position,
       map_api_shop_item_remove,
       map_api_switch_is_activated,
       map_api_switch_set_activated,

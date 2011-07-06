@@ -463,7 +463,10 @@ places a block where it was when the map started
 resets all blocks of the map
 
 - <tt>sol.map.block_get_position(block_name)</tt>:
-returns the position of a block (2 return values: x, y)
+returns the position of a block (3 return values: x, y, layer)
+
+- <tt>sol.map.block_set_position(block_name, x, y, layer)</tt>:
+sets the position of a block
 
 - <tt>sol.map.shop_item_remove(shop_item_name)</tt>:
 removes a shop item from the map

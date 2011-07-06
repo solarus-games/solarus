@@ -37,6 +37,7 @@
 #include "hero/GrabbingState.h"
 #include "hero/HurtState.h"
 #include "hero/JumpingState.h"
+#include "hero/ForcedWalkingState.h"
 #include "hero/LiftingState.h"
 #include "hero/PlungingState.h"
 #include "hero/RunningState.h"
@@ -300,7 +301,7 @@ void Hero::update_ground() {
         if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, *this)) {
           set_bounding_box(collision_box);
           notify_position_changed();
-	  moved = true;
+          moved = true;
         }
 
 	if (!moved && hole_dxy.get_x() != 0) { // try x only
@@ -1016,7 +1017,7 @@ void Hero::check_position() {
 
       get_entities().set_entity_layer(this, Layer(layer - 1));
       if (state->is_free() && get_tile_ground() == GROUND_NORMAL) {
-	Sound::play("hero_lands");
+        Sound::play("hero_lands");
       }
     }
   }
@@ -1951,6 +1952,22 @@ void Hero::start_free() {
  */
 void Hero::start_treasure(const Treasure &treasure) {
   set_state(new TreasureState(*this, treasure));
+}
+
+/**
+ * @brief Makes the hero walk with a predetermined path.
+ *
+ * The player does not control him anymore.
+ *
+ * @param path the succession of basic moves
+ * composing this movement (each character represents
+ * a direction between '0' and '7'), as in PathMovement
+ * @param loop true to make the movement return to the beginning
+ * once finished
+ * @param ignore_obstacles true to make the movement ignore obstacles
+ */
+void Hero::start_forced_walking(const std::string &path, bool loop, bool ignore_obstacles) {
+  set_state(new ForcedWalkingState(*this, path, loop, ignore_obstacles));
 }
 
 /**

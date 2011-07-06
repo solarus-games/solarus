@@ -231,7 +231,7 @@ void Switch::notify_collision(MapEntity &entity_overlapping, CollisionMode colli
     return;
   }
 
-  if (!activated && !locked) {
+  if (!locked) {
     entity_overlapping.notify_collision_with_switch(*this);
   }
 }
@@ -245,7 +245,7 @@ void Switch::notify_collision(MapEntity &entity_overlapping, CollisionMode colli
  */
 void Switch::try_activate(Hero &hero) {
 
-  if (is_walkable() && !needs_block) {
+  if (is_walkable() && !needs_block && !is_activated()) {
     // this switch allows the hero to activate it
     activate();
   }
@@ -261,7 +261,7 @@ void Switch::try_activate(Hero &hero) {
  */
 void Switch::try_activate(Block &block) {
 
-  if (subtype == WALKABLE_VISIBLE) {
+  if (subtype == WALKABLE_VISIBLE && !is_activated()) {
     // blocks can only activate walkable, visible switches
     activate();
   }
@@ -277,7 +277,7 @@ void Switch::try_activate(Block &block) {
  */
 void Switch::try_activate(Arrow &arrow) {
 
-  if (subtype == ARROW_TARGET) {
+  if (subtype == ARROW_TARGET && !is_activated()) {
     // arrows can only activate arrow targets
     activate();
   }

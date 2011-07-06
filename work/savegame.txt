@@ -167,6 +167,7 @@ booleans:
 135	billy's cave: talked the first time
 136	surprise wall open
 137	cake shop: bought the apple pie
+138	surprise wall: got the golden bars
 
 200-299: binbin dungeon
 200	1F: small key 1 door

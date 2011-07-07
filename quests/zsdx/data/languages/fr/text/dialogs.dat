@@ -4456,6 +4456,22 @@ next = outside_world.suprise_wall_guy.open
 #       |-----------------------|
 line1 = "C'est fermé !"
 
+[surprise_wall.direction_0]
+#       |-----------------------|
+line2 = "        À droite      "
+
+[surprise_wall.direction_1]
+#       |-----------------------|
+line2 = "        En haut        "
+
+[surprise_wall.direction_2]
+#       |-----------------------|
+line2 = "        À gauche       "
+
+[surprise_wall.direction_3]
+#       |-----------------------|
+line2 = "         En bas        "
+
 [dungeon_3.arbror_direction_hint]
 #       |-----------------------|
 line1 = ""

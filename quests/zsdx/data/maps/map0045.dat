@@ -284,7 +284,6 @@
 0	0	240	120	80	8	7
 0	0	224	88	8	16	791
 0	0	264	96	8	16	792
-0	0	192	88	32	32	526
 0	0	224	120	8	8	795
 0	0	232	120	8	8	797
 0	0	224	128	8	8	798
@@ -337,38 +336,39 @@
 0	0	328	72	8	16	799
 0	0	320	48	16	16	37
 0	0	160	280	16	16	44
-8	0	24	37	interactive_entity	3	0	entities/sign	map
-8	0	88	37	interactive_entity_2	3	0	entities/sign	map
-8	0	56	53	interactive_entity_3	3	0	entities/sign	map
-8	0	24	85	interactive_entity_4	3	0	entities/sign	map
-8	0	24	133	interactive_entity_5	3	0	entities/sign	map
-8	0	40	133	interactive_entity_6	3	0	entities/sign	map
-8	0	88	69	interactive_entity_7	3	0	entities/sign	map
-8	0	104	85	interactive_entity_8	3	0	entities/sign	map
-8	0	72	117	interactive_entity_9	3	0	entities/sign	map
-8	0	136	53	interactive_entity_10	3	0	entities/sign	map
-8	0	168	69	interactive_entity_11	3	0	entities/sign	map
-8	0	168	37	interactive_entity_12	3	0	entities/sign	map
-8	0	216	37	interactive_entity_13	3	0	entities/sign	map
-8	0	152	101	interactive_entity_14	3	0	entities/sign	map
-8	0	184	101	interactive_entity_15	3	0	entities/sign	map
-8	0	136	117	interactive_entity_16	3	0	entities/sign	map
-8	0	104	149	interactive_entity_17	3	0	entities/sign	map
-8	0	120	165	interactive_entity_18	3	0	entities/sign	map
-8	0	72	181	interactive_entity_19	3	0	entities/sign	map
-8	0	40	197	interactive_entity_20	3	0	entities/sign	map
-8	0	24	245	interactive_entity_21	3	0	entities/sign	map
-8	0	56	245	interactive_entity_22	3	0	entities/sign	map
-8	0	120	245	interactive_entity_23	3	0	entities/sign	map
-8	0	152	197	interactive_entity_24	3	0	entities/sign	map
-8	0	168	197	interactive_entity_25	3	0	entities/sign	map
-8	0	216	213	interactive_entity_26	3	0	entities/sign	map
-8	0	232	245	interactive_entity_27	3	0	entities/sign	map
-8	0	264	213	interactive_entity_28	3	0	entities/sign	map
-8	0	232	181	interactive_entity_29	3	0	entities/sign	map
-8	0	264	165	interactive_entity_30	3	0	entities/sign	map
-8	0	344	197	interactive_entity_31	3	0	entities/sign	map
-8	0	344	149	interactive_entity_32	3	0	entities/sign	map
+0	0	192	88	32	32	7
+8	0	24	37	sign_7	3	0	entities/sign	map
+8	0	88	37	sign_8	3	0	entities/sign	map
+8	0	56	53	sign_24	3	0	entities/sign	map
+8	0	24	85	sign_6	3	0	entities/sign	map
+8	0	24	133	sign_27	3	0	entities/sign	map
+8	0	40	133	sign_28	3	0	entities/sign	map
+8	0	88	69	sign_9	3	0	entities/sign	map
+8	0	104	85	sign_5	3	0	entities/sign	map
+8	0	72	117	sign_21	3	0	entities/sign	map
+8	0	136	53	sign_23	3	0	entities/sign	map
+8	0	168	69	sign_10	3	0	entities/sign	map
+8	0	168	37	sign_11	3	0	entities/sign	map
+8	0	216	37	sign_12	3	0	entities/sign	map
+8	0	152	101	sign_31	3	0	entities/sign	map
+8	0	184	101	sign_32	3	0	entities/sign	map
+8	0	136	117	sign_22	3	0	entities/sign	map
+8	0	104	149	sign_4	3	0	entities/sign	map
+8	0	120	165	sign_16	3	0	entities/sign	map
+8	0	72	181	sign_20	3	0	entities/sign	map
+8	0	40	197	sign_29	3	0	entities/sign	map
+8	0	24	245	sign_26	3	0	entities/sign	map
+8	0	56	245	sign_25	3	0	entities/sign	map
+8	0	120	245	sign_17	3	0	entities/sign	map
+8	0	152	197	sign_30	3	0	entities/sign	map
+8	0	168	197	sign_1	3	0	entities/sign	map
+8	0	216	213	sign_13	3	0	entities/sign	map
+8	0	232	245	sign_18	3	0	entities/sign	map
+8	0	264	213	sign_14	3	0	entities/sign	map
+8	0	232	181	sign_19	3	0	entities/sign	map
+8	0	264	165	sign_15	3	0	entities/sign	map
+8	0	344	197	sign_2	3	0	entities/sign	map
+8	0	344	149	sign_3	3	0	entities/sign	map
 4	0	24	261	5	_random	1	-1
 4	0	40	261	5	_random	1	-1
 4	0	56	261	5	_random	1	-1
@@ -501,3 +501,4 @@
 5	0	336	16	chest	0	level_4_way	2	138
 1	0	168	261	from_outside	1	0
 2	0	160	264	16	16	teletransporter	0	1	5	from_surprise_wall
+10	0	192	88	32	32	secret_way	630	1

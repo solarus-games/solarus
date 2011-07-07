@@ -168,6 +168,7 @@ booleans:
 136	surprise wall open
 137	cake shop: bought the apple pie
 138	surprise wall: got the golden bars
+139	surprise wall: secret way open
 
 200-299: binbin dungeon
 200	1F: small key 1 door

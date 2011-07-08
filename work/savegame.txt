@@ -201,4 +201,8 @@ booleans:
 411	dungeon 4 1F: chest with the boss key
 412	dungeon 4 1F: weak floor
 
+500	dungeon 5 1F: chest with 50 rupees
+501	dungeon 5 1F: chest with the compass
+502	dungeon 5 1F: small key (SE)
+503	dungeon 5 1F: chest with the big key
 

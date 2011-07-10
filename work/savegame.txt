@@ -205,4 +205,5 @@ booleans:
 501	dungeon 5 1F: chest with the compass
 502	dungeon 5 1F: small key (SE)
 503	dungeon 5 1F: chest with the big key
+504	dungeon 5 1F: big chest with the feather
 

@@ -28,7 +28,9 @@
  * @param y y coordinate of the top-left corner of the element on the destination surface
  */
 FloorView::FloorView(Game &game, int x, int y):
-  HudElement(game, x, y, 32, 85), current_map(NULL), current_floor(-100),
+  HudElement(game, x, y, 32, 85),
+  current_map(NULL),
+  current_floor(-100),
   is_floor_displayed(false) {
 
   img_floors = new Surface("floors.png", Surface::DIR_LANGUAGE);
@@ -57,8 +59,9 @@ void FloorView::update() {
 
     int old_floor = (current_map != NULL) ? current_floor : -100;
     current_map = &game->get_current_map();
+    current_floor = current_map->get_floor();
 
-    if (current_map->has_floor() && old_floor != current_map->get_floor()) {
+    if (current_map->has_floor() && current_floor != old_floor) {
       is_floor_displayed = true;
       hide_floor_date = System::now() + 3000;
     }

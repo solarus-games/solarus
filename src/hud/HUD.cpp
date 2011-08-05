@@ -70,26 +70,26 @@ void HUD::update_blinking() {
 
       case GameControls::ACTION:
         index = 7;
-	break;
+        break;
 
       case GameControls::SWORD:
-	index = 5;
-	break;
+        index = 5;
+        break;
 
       case GameControls::PAUSE:
-	index = 6;
-	break;
+        index = 6;
+        break;
 
       case GameControls::ITEM_1:
-	index = 3;
-	break;
+        index = 3;
+        break;
 
       case GameControls::ITEM_2:
-	index = 4;
-	break;
+        index = 4;
+        break;
 
       default:
-	break;
+        break;
     }
   }
 
@@ -112,14 +112,14 @@ void HUD::update() {
 
   // detect when the game is showing a message
   if (game.is_showing_message() && !showing_message) {
-      showing_message = true;
+    showing_message = true;
 
-      // a message is shown: hide or move the top-left icons
-      elements[3]->set_visible(false); // item 0
-      elements[4]->set_visible(false); // item 1
-      elements[6]->set_visible(false); // pause icon
-      elements[5]->set_position(-11, 17); // sword icon
-      elements[7]->set_position(-11, 43); // action icon
+    // a message is shown: hide or move the top-left icons
+    elements[3]->set_visible(false); // item 0
+    elements[4]->set_visible(false); // item 1
+    elements[6]->set_visible(false); // pause icon
+    elements[5]->set_position(-11, 17); // sword icon
+    elements[7]->set_position(-11, 43); // action icon
   }
   else if (!game.is_showing_message()) {
 
@@ -138,20 +138,20 @@ void HUD::update() {
       // if the hero is below the top-left icons, make them semi-transparent
       const Rectangle &hero_xy = game.get_hero_xy();
       if (elements[6]->get_opacity() == 255 && !game.is_suspended()
-	  && hero_xy.get_x() < 88 && hero_xy.get_y() < 80) {
-	elements[3]->set_opacity(96); // item 0
-	elements[4]->set_opacity(96); // item 1
-	elements[6]->set_opacity(96); // pause icon
-	elements[5]->set_opacity(96); // sword icon
-	elements[7]->set_opacity(96); // action icon
+          && hero_xy.get_x() < 88 && hero_xy.get_y() < 80) {
+        elements[3]->set_opacity(96); // item 0
+        elements[4]->set_opacity(96); // item 1
+        elements[6]->set_opacity(96); // pause icon
+        elements[5]->set_opacity(96); // sword icon
+        elements[7]->set_opacity(96); // action icon
       }
       else if (elements[6]->get_opacity() == 96
-	       && (hero_xy.get_x() >= 88 || hero_xy.get_y() >= 80 || game.is_suspended())) {
-	elements[3]->set_opacity(255); // item 0
-	elements[4]->set_opacity(255); // item 1
-	elements[6]->set_opacity(255); // pause icon
-	elements[5]->set_opacity(255); // sword icon
-	elements[7]->set_opacity(255); // action icon
+          && (hero_xy.get_x() >= 88 || hero_xy.get_y() >= 80 || game.is_suspended())) {
+        elements[3]->set_opacity(255); // item 0
+        elements[4]->set_opacity(255); // item 1
+        elements[6]->set_opacity(255); // pause icon
+        elements[5]->set_opacity(255); // sword icon
+        elements[7]->set_opacity(255); // action icon
       }
     }
   }

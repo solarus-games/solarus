@@ -4505,6 +4505,18 @@ line1 = "Il fait beaucoup trop"
 line2 = "froid ici..."
 line3 = "$0Il faut repartir !"
 
+[dungeon_5.welcome]
+#       |-----------------------|
+line1 = "        Niveau 5"
+line2 = "     Ancien Château"
+
+[dungeon_5.pots_hint]
+#       |-----------------------|
+line1 = "La clé de l'énigme est"
+line2 = "de tourner autour des"
+line3 = "pots dans le bon sens."
+skip = all
+
 [dungeon_6.welcome]
 #       |-----------------------|
 line1 = "        Niveau 6"

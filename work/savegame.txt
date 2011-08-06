@@ -208,4 +208,6 @@ booleans:
 504	dungeon 5 2F: big chest with the feather
 505	dungeon 5 2F: chest with a small key
 506	dungeon 5 2F: piece of heart
+507	dungeon 5 1F: boss key door
+508	dungeon 5 1F: big key door
 

@@ -3800,7 +3800,7 @@ line1 = "Voilà, bonne journée."
 #       |-----------------------|
 line1 = "Monsieur, vous ne"
 line2 = "chercheriez pas des"
-line3 = "sacs d'olive par"
+line3 = "sacs d'olives par"
 skip = current
 next = crazy_house.guichet_45_ech_ne_3_2
 

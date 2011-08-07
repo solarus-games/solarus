@@ -1513,7 +1513,7 @@ next = _treasure.shield.1.1
 #       |--------------------|
 line1 = "Next time, don't"
 line2 = "leave it outside,"
-line3 = "will you ?"
+line3 = "will you?"
 
 [_treasure.shield.2]
 # Bouclier de Feu
@@ -1528,7 +1528,7 @@ next = _treasure.shield.2.1
 #       |--------------------|
 line1 = "protected against"
 line2 = "fire attacks"
-line3 = "and fireballs !"
+line3 = "and fireballs!"
 
 [_treasure.shield.3]
 # Bouclier Miroir
@@ -2247,8 +2247,8 @@ next = crazy_house.welcome_message_2
 
 [crazy_house.welcome_message_2]
 #       |-----------------------|
-line1 = "Find what you seek and"
-line2 = "even more..."
+line1 = "Also known as... 3T:"
+line2 = "Things To Trade!"
 skip = current
 next = crazy_house.welcome_message_3
 
@@ -4040,12 +4040,8 @@ line2 = "incompetents !"
 [geek_house.sign_a]
 #       |-----------------------|
 line1 = "Optimistic Policy"
-line2 = "Iteration and"
-line3 = "Learning the Game"
-next = geek_house.sign_a2
-
-[geek_house.sign_a2]
-line1 = "of Tetris."
+line2 = "Iteration and Learning"
+line3 = "the Game of Tetris."
 
 [geek_house.sign_b]
 line1 = "switch (sign)"
@@ -4442,7 +4438,7 @@ next = outside_fields_NO.guy_a2
 #       |-----------------------|
 line1 = "Did you take a look at"
 line2 = "the Lost and Found"
-line3 = "Office ?"
+line3 = "Office?"
 
 [outside_fields_NO.castle_guard]
 #       |-----------------------|
@@ -4452,7 +4448,7 @@ line2 = "We can't open to you."
 [outside_fields_NE.cursed_cave_sign]
 #       |-----------------------|
 line1 = "    - Cursed Cave -    "
-line2 = "   Entrance condemned  "
+line2 = "   Entrance sealed up  "
 line3 = "   for your security   "
 
 [outside_fields_NE.tipiton_sign]
@@ -4639,7 +4635,7 @@ next = shop.wizard.5
 [shop.wizard.5]
 #       |-----------------------|
 line1 = "a fool. I'm a person"
-line2 = "like everybody!"
+line2 = "like everyone else!"
 next = shop.wizard.6
 
 [shop.wizard.6]
@@ -4651,7 +4647,7 @@ line2 = "so many prejudices!"
 #       |-----------------------|
 line1 = "This guy irritates me !"
 line2 = "This fan of witchcaft"
-line3 = "bores me with his"
+line3 = "is boring me with his"
 skip = all
 next = shop.near_wizard.2
 

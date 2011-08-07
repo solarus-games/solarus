@@ -18,11 +18,11 @@ map.caption.dungeon_name_2		Lost and$Found Office
 
 # Quest status submenu
 quest_status.caption.rupee_bag_1	Rupee Bag
-quest_status.caption.rupee_bag_2	Bigger$Rupee Bag
-quest_status.caption.rupee_bag_3	Biggest$Rupee Bag
+quest_status.caption.rupee_bag_2	Big$Rupee Bag
+quest_status.caption.rupee_bag_3	Huge$Rupee Bag
 quest_status.caption.bomb_bag_1		Bomb Bag
-quest_status.caption.bomb_bag_2		Bigger$Bomb Bag
-quest_status.caption.bomb_bag_3		Biggest$Bomb Bag
+quest_status.caption.bomb_bag_2		Big$Bomb Bag
+quest_status.caption.bomb_bag_3		Huge$Bomb Bag
 quest_status.caption.quiver_1		Quiver
 quest_status.caption.quiver_2		Bigger Quiver
 quest_status.caption.quiver_3		Biggest Quiver
@@ -37,7 +37,7 @@ quest_status.caption.sword_3		Sword not found
 quest_status.caption.sword_4		Excalibur
 quest_status.caption.shield_1		Shield
 quest_status.caption.shield_2		Fire Shield
-quest_status.caption.shield_3		Magic Mirror
+quest_status.caption.shield_3		Mirror Shield
 
 # Inventory submenu
 inventory.caption.item.feather.1			Roc Feather
@@ -97,11 +97,11 @@ inventory.caption.item.bottle_4.6			Magic Bottle$(Fairy)
 inventory.caption.item.poivron_counter.1		Peppers
 inventory.caption.item.balai_counter.1			Brooms
 inventory.caption.item.cuillere_counter.1		Spoons
-inventory.caption.item.tapisserie_counter.1		Tapisteries
+inventory.caption.item.tapisserie_counter.1		Tapestries
 inventory.caption.item.roc_magma_counter.1		Magma rocks
-inventory.caption.item.sac_riz_counter.1		Bag of Rice
+inventory.caption.item.sac_riz_counter.1		Bags of rice
 inventory.caption.item.sac_olive_counter.1		Sacks of olives
-inventory.caption.item.bocal_epice_counter.1	Spice Jars
+inventory.caption.item.bocal_epice_counter.1	Spice jars
 inventory.caption.item.hache_counter.1			Axe
 inventory.caption.item.parfum_counter.1			Perfume
 

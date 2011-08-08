@@ -1336,7 +1336,6 @@
 4	0	488	261	2	_random	1	-1
 4	0	488	245	2	_random	1	-1
 4	0	488	229	2	_random	1	-1
-4	0	488	213	2	_random	1	-1
 3	0	216	845	piece_of_heart	1	107
 1	0	296	573	from_dungeon_5_1F	3	0
 2	0	288	544	16	16	teletransporter	0	1	64	from_outside
@@ -1347,6 +1346,9 @@
 1	0	392	285	from_dungeon_5_2F_ne	3	0
 2	0	384	272	16	16	teletransporter_4	0	1	63	from_roof
 19	0	384	272	stairs	1	3
+1	0	488	277	from_dungeon_5_hole	3	0
+2	0	480	200	16	16	teletransporter_5	0	1	65	from_outside_hole
+4	0	488	213	2	_random	1	-1
 0	2	1000	328	8	40	514
 0	2	800	328	8	40	513
 0	2	808	320	192	16	512

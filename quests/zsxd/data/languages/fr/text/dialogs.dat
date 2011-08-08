@@ -5207,6 +5207,18 @@ next = the_end.credits.10
 line1 = "       Graphismes"
 line2 = "     supplémentaires :"
 line3 = "Newlink"
+next = the_end.credits.10bis
+
+[the_end.credits.10bis]
+#       |-----------------------|
+line1 = "         English"
+line2 = "       translation:"
+next = the_end.credits.10ter
+
+[the_end.credits.10ter]
+#       |-----------------------|
+line1 = "BAFelton"
+line2 = "KageNoSensei"
 next = the_end.credits.11
 
 [the_end.credits.11]

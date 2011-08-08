@@ -4912,7 +4912,7 @@ next = the_end.credits.10ter
 [the_end.credits.10ter]
 #       |-----------------------|
 line1 = "BAFelton"
-line2 = "sebt3"
+line2 = "KageNoSensei"
 next = the_end.credits.11
 
 [the_end.credits.11]

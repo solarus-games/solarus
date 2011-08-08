@@ -630,10 +630,11 @@ next = _item_description.fire_stones_counter.1.1
 
 [_item_description.fire_stones_counter.1.1]
 #       |--------------------|
-line1 = to Inferno."
+line1 = "to Inferno."
 
 [_item_description.poivron_counter.1]
 #       |--------------------|
+icon = 40
 line1 = "These peppers are a"
 line2 = "a real treasure"
 line3 = "for people who like"
@@ -646,6 +647,7 @@ line1 = "spicy food."
 
 [_item_description.balai_counter.1]
 #       |--------------------|
+icon = 41
 line1 = "An old broom, nobody"
 line2 = "will agree to buy"
 line3 = "it!"
@@ -653,6 +655,7 @@ skip = all
 
 [_item_description.cuillere_counter.1]
 #       |--------------------|
+icon = 42
 line1 = "Nice silver spoons,"
 line2 = "don't take them with"
 line3 = "you, you thief!"
@@ -660,6 +663,7 @@ skip = all
 
 [_item_description.tapisserie_counter.1]
 #       |--------------------|
+icon = 43
 line1 = "An old tapestry of"
 line2 = "the XVIIIth century."
 line3 = "Nobody makes them"
@@ -672,12 +676,14 @@ line1 = "like this now."
 
 [_item_description.roc_magma_counter.1]
 #       |--------------------|
+icon = 44
 line1 = "Magma rock of the"
 line2 = "Goron mines."
 skip = all
 
 [_item_description.sac_riz_counter.1]
 #       |--------------------|
+icon = 45
 line1 = "Bags of basmati rice"
 line2 = "first price private"
 line3 = "label."
@@ -685,18 +691,21 @@ skip = all
 
 [_item_description.sac_olive_counter.1]
 #       |--------------------|
+icon = 46
 line1 = "Sacks of olives,"
 line2 = "cats love them."
 skip = all
 
 [_item_description.bocal_epice_counter.1]
 #       |--------------------|
-line1 = "Spice Jars: thyme,"
+icon = 47
+line1 = "Spice jars: thyme,"
 line2 = "rosemary, coriander."
 skip = all
 
 [_item_description.hache_counter.1]
 #       |--------------------|
+icon = 48
 line1 = "Wonderfully sharp,"
 line2 = "this axe is"
 line3 = "guaranteed 20 years."
@@ -704,6 +713,7 @@ skip = all
 
 [_item_description.parfum_counter.1]
 #       |--------------------|
+icon = 49
 line1 = "Internationally"
 line2 = "acclaimed fragrance,"
 line3 = "this Kipu will make"
@@ -1630,7 +1640,7 @@ next = _treasure.compass.1.1
 
 [_treasure.compass.1.1]
 #       |--------------------|
-line1 = "of many things,"
+line1 = "of many things:"
 line2 = "chests, treasures"
 line3 = "and the Boss."
 next = _treasure.compass.1.2
@@ -1903,7 +1913,7 @@ line2 = "but what is in it?"
 [_treasure.hache.1]
 #       |--------------------|
 icon = 48
-line1 = "The Axe, a wonderful"
+line1 = "The axe, a wonderful"
 line2 = "tool, which cuts"
 line3 = "everything..."
 next = _treasure.hache.1.1
@@ -2078,7 +2088,7 @@ next = found_fairy.1
 icon = -1
 line1 = "What's your action?"
 line2 = "Recover Hearts"
-line3 = "Keep her"
+line3 = "Keep her in a Bottle"
 skip = none
 question = true
 
@@ -2298,11 +2308,11 @@ next = crazy_house.directions_1F_se.2
 #       |-----------------------|
 line1 = "Left:"
 line2 = "counters 41, 43, 82,"
-line3 = "second floor"
+line3 = "third floor"
 
 [crazy_house.directions_1F_sw]
 #       |-----------------------|
-line1 = "Warp to Right Wing"
+line1 = "Warp to the right wing"
 skip = current
 
 [crazy_house.directions_2F]
@@ -2335,7 +2345,7 @@ line2 = "counters 84, 33"
 #       |-----------------------|
 line1 = "Warp to"
 line2 = "counters 11, 21 and"
-line3 = "reception."
+line3 = "the reception."
 skip = current
 
 [crazy_house.directions_2F_e]
@@ -2507,13 +2517,7 @@ line3 = "crr... crr... beeep!"
 #       |-----------------------|	
 line1 = "The Path of God."
 line2 = "It's a leap of faith!"
-skip = current
-next = crazy_house.chemin_de_dieu_2
-
-[crazy_house.chemin_de_dieu_2]
-#       |-----------------------|	
-line1 = "You must believe,"
-line2 = "boy!"
+line3 = "You must believe, boy!"
 skip = current
 
 #==============================================
@@ -2621,7 +2625,7 @@ line2 = "around."
 [crazy_house.accueil_ech_eq_4]
 #       |-----------------------|
 line1 = "Counter 33? It's on the"
-line2 = "third floor, second"
+line2 = "third floor, left"
 line3 = "wing."
 
 [crazy_house.accueil_ech_eo_5-7]
@@ -2907,8 +2911,8 @@ skip = none
 
 [crazy_house.guichet_11_bal_err]
 #       |-----------------------|
-line1 = "What? You wanted some"
-line2 = "axe ?"
+line1 = "What? You wanted an"
+line2 = "axe?"
 next = crazy_house.guichet_11_bal_err_2
 
 [crazy_house.guichet_11_bal_err_2]
@@ -2923,8 +2927,8 @@ line3 = "Sir!"
 #
 [crazy_house.guichet_12_sign]
 #       |-----------------------|
-line1 = "Right: Counter 12"
-line2 = "Left: Reception"
+line1 = "Right: counter 12"
+line2 = "Left: reception"
 skip = current
 next = crazy_house.guichet_12_sign.2
 
@@ -3011,7 +3015,7 @@ skip = none
 #       |-----------------------|
 line1 = "You have nothing!"
 line2 = "I'm sure that you'll"
-line3 = "find it..."
+line3 = "find them..."
 skip = current
 next = crazy_house.guichet_12B_ech_eq_7_un_fin
 
@@ -3213,7 +3217,7 @@ next = crazy_house.guichet_31_3
 [crazy_house.guichet_31_3]
 #       |-----------------------|		
 line1 = "The world is against"
-line2 = "me !..."
+line2 = "me!..."
 skip = all
 
 #==============================================
@@ -3327,7 +3331,7 @@ next = crazy_house.guichet_33_ech_ge_4_2
 #       |-----------------------|
 line1 = "If you give me a nice"
 line2 = "perfume, I would MAYBE"
-line1 = "let you borrow them."
+line3 = "let you borrow them."
 next = crazy_house.guichet_33_ech_ge_4_3
 
 [crazy_house.guichet_33_ech_ge_4_3]
@@ -3685,14 +3689,14 @@ next = crazy_house.guichet_82_3
 #       |-----------------------|
 line1 = "By chance, you don't"
 line2 = "have a sack of olives?"
-line1 = "I trade your sack of"
+line3 = "I trade your sack of"
 skip = current
 next = crazy_house.guichet_82_4
 
 [crazy_house.guichet_82_4]
 #       |-----------------------|
-line2 = "olives for a magma"
-line3 = "rock."
+line1 = "olives for a magma"
+line2 = "rock."
 next = crazy_house.guichet_82_5
 
 [crazy_house.guichet_82_5]
@@ -3944,9 +3948,8 @@ skip = current
 
 [crazy_house.pnjb_2]
 #       |-----------------------|
-line1 = "water, but it seems"
-line2 = "they don't care."
-line3 = "What a shame !"
+line1 = "but it seems they don't"
+line2 = "care. What a shame!"
 next = crazy_house.pnjb_3
 
 [crazy_house.pnjb_3]
@@ -3957,16 +3960,15 @@ line2 = "they're missing."
 [crazy_house.pnjc]
 #       |-----------------------|
 line1 = "I'm the only employee"
-line2 = "in charge of the"
-line3 = "cleaning of the"
+line2 = "in charge of cleaning"
+line3 = "the building, about"
 next = crazy_house.pnjc_2
 skip = current
 
 [crazy_house.pnjc_2]
 #       |-----------------------|
-line1 = "about 14,000 square"
-line2 = "meters, this is really"
-line3 = "slavery."
+line1 = "14,000 square meters,"
+line2 = "this is really slavery."
 
 [crazy_house.pnjd]
 #       |-----------------------|
@@ -4712,7 +4714,7 @@ next = desert.east_house.back_from_dead.3
 [desert.east_house.back_from_dead.3]
 #       |-----------------------|
 line1 = "We should have more"
-line2 = "emphasis on the hazards"
+line2 = "insisted on the hazards"
 line3 = "of this place."
 next = desert.east_house.back_from_dead.4
 
@@ -5084,7 +5086,7 @@ line1 = "Long live the water!"
 
 [dungeon_1.welcome]
 #       |-----------------------|
-line1 = "        Niveau 2       " 
+line1 = "        Level 2       " 
 line2 = " Temple of Stupidities "
 
 [dungeon_1.lizarmen_sign]

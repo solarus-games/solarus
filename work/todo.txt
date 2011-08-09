@@ -111,7 +111,6 @@ Mode release :
 - Compiler les scripts et enlever les versions en texte clair
 - Vérifier les TODO du code et de data
 - Windows : installeur avec InnoSetup
-- Enlever project_db.zsd
 
 
 ----------------------

@@ -28,11 +28,14 @@
 /**
  * @brief Debug level.
  *
- * - 0: no debug (release mode): no error messages; pick the data only from the archive file; no debug keys; use only compiled (.luac) scripts
+ * - 0 (no debug): no error messages; pick the data only from the archive file; no debug keys; use only compiled (.luac) scripts
  * - >= 1: enable the error messages; pick the data also from the physical data directory; use clear text (.lua) scripts
  * - >= 2: enable the debug keys
+ *
+ * 0 or 1 are ok for a release.
+ * TODO: allow to change this value at configure time with a cmake option
  */
-#define SOLARUS_DEBUG_LEVEL 0
+#define SOLARUS_DEBUG_LEVEL 1
 
 #endif
 

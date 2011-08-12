@@ -67,6 +67,7 @@ Bugs :
 - event_camera_reached_target() et event_camera_back() : notifier le script qui a effectué la requête, pas forcément le script de la map
 - Message incorrect quand on regarde un chou-péteur sans la poigne de fer
 - Bottes de pégase vers trou avec fond vers le nord : le téléporteur ne se déclenche pas
+- SOLARUS_DEBUG_LEVEL = 0 : segfault
 
 
 Ennemis à faire (reprendre graphismes de MC + graphismes rippés) :

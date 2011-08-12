@@ -1,0 +1,16 @@
+1.3 (12 août 2011)
+
+- Ajout de la version anglaise
+- Correction d'un bug de précision avec les capteurs
+
+1.2 (23 avril 2011)
+
+- Correction d'un problème avec les effets sonores sous certaines versions de Windows
+
+1.1 (2 avril 2001) 
+
+- Amélioration de la gestion des effets sonores (Utilisation de libvorbis au lieu de libsndfile pour jouer les effets sonores)
+- Modification du dernier objet qu'on obtient à la fin du jeu, afin de permettre de garder un autre objet
+- Version binaire Linux 32 bits plus portable
+- Diverses corrections mineures
+

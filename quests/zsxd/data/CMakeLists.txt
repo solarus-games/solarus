@@ -60,12 +60,12 @@ add_custom_target(${quest_name}_command
 )
 
 # install the data archive
-install(FILES data.solarus
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/data.solarus
   DESTINATION share/solarus/${quest_name}
 )
 
 # install the script
-install(PROGRAMS ${quest_name}
+install(PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/${quest_name}
   DESTINATION bin
 )
 

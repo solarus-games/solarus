@@ -4,12 +4,14 @@ set(quest_name "debug_quest")
 file(GLOB lua_source_files 
   RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
   maps/*.lua
-  items/*.lua)
+  items/*.lua
+  enemies/*.lua)
 
 set(lua_bin_files "")
 
 MAKE_DIRECTORY("${CMAKE_CURRENT_BINARY_DIR}/maps")
 MAKE_DIRECTORY("${CMAKE_CURRENT_BINARY_DIR}/items")
+MAKE_DIRECTORY("${CMAKE_CURRENT_BINARY_DIR}/enemies")
 
 # convert to Lua bytecode
 foreach(lua_source_file ${lua_source_files})
@@ -58,12 +60,12 @@ add_custom_target(${quest_name}_command
 )
 
 # install the data archive
-install(FILES data.solarus
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/data.solarus
   DESTINATION share/solarus/${quest_name}
 )
 
 # install the script
-install(PROGRAMS ${quest_name}
+install(PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/${quest_name}
   DESTINATION bin
 )
 

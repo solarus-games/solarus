@@ -35,7 +35,7 @@
  * 0 or 1 are ok for a release.
  * TODO: allow to change this value at configure time with a cmake option
  */
-#define SOLARUS_DEBUG_LEVEL 1
+#define SOLARUS_DEBUG_LEVEL 2
 
 #endif
 

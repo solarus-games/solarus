@@ -95,13 +95,12 @@ void TilePattern::update() {
  * @param map the map
  * @param position_in_map location and size of the tile on the map
  */
-void TilePattern::display_on_map(Map *map, const Rectangle &position_in_map) {
+void TilePattern::display_on_map(Map &map, const Rectangle &position_in_map) {
 
-  Surface *map_surface = map->get_visible_surface();
-  Surface *tileset_image = map->get_tileset().get_tiles_image();
+  Surface *map_surface = map.get_visible_surface();
 
   Rectangle dst;
-  const Rectangle &camera_position = map->get_camera_position();
+  const Rectangle &camera_position = map.get_camera_position();
 
   dst.set_size(get_width(), get_height());
 
@@ -115,12 +114,26 @@ void TilePattern::display_on_map(Map *map, const Rectangle &position_in_map) {
 
       for (int x = position_in_map.get_x() - camera_position.get_x(); x < limit_x; x += dst.get_width()) {
 
-	if (x <= 320 && x + dst.get_width() > 0) {
-	  dst.set_x(x);
-	  display(map_surface, dst, tileset_image);
-	}
+        if (x <= 320 && x + dst.get_width() > 0) {
+          dst.set_x(x);
+          display(map_surface, dst, map.get_tileset());
+        }
       }
     }
   }
+}
+
+/**
+ * @brief Returns whether this tile pattern is static, i.e. not animated.
+ *
+ * Static tiles may be rendered faster by using intermediate surfaces
+ * that are drawn only once.
+ * This function should return true if the tile pattern is always displayed the same way.
+ * Returns false by default.
+ *
+ * @return true if this tile pattern is static
+ */
+bool TilePattern::is_static() {
+  return false;
 }
 

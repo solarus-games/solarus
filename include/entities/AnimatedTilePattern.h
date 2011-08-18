@@ -59,8 +59,7 @@ class AnimatedTilePattern: public TilePattern {
     ~AnimatedTilePattern();
 
     static void update();
-    void display(Surface *destination, const Rectangle &dst_position, Surface *tileset_image);
-
+    void display(Surface *destination, const Rectangle &dst_position, Tileset &tileset);
 };
 
 #endif

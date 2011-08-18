@@ -52,46 +52,46 @@ class Map {
     int height8;                  /**< map height in 8*8 squares (height8 = get_height() / 8) */
 
     Tileset *tileset;             /**< tileset of the map: every tile of this map
-				   * is extracted from this tileset. */
+                                   * is extracted from this tileset. */
 
     MusicId music_id;             /**< id of the background music of the map: 
-				   * can be a valid music, Music::none or Music::unchanged */
+                                   * can be a valid music, Music::none or Music::unchanged */
 
     int world;                    /**< the world where this map is:
-				   * - 0 if the map is in the outside world
-				   * - -1 if the map is in the inside world
-				   * - 1 to 20 if the map is in a dungeon */
+                                   * - 0 if the map is in the outside world
+                                   * - -1 if the map is in the inside world
+                                   * - 1 to 20 if the map is in a dungeon */
 
     int floor;                    /**< The floor where this map is:
-				   * - -16 to 15 for a normal floor
-				   * - -100 to indicate that there is no floor
-				   * - -99 for the unknown floor '?' */
+                                   * - -16 to 15 for a normal floor
+                                   * - -100 to indicate that there is no floor
+                                   * - -99 for the unknown floor '?' */
 
     Rectangle location;           /**< location of the map in its context: the width and height fields
-				   * indicate the map size in pixel, and the x and y field indicate the position:
-				   * - in the outside world: location of the map's top-left corner
-				   *   relative to the whole world map
-				   * - in the inside world: location of the map relative to the whole world map
-				   * - in a dungeon: location of the map's top-left corner relative to the whole floor */
+                                   * indicate the map size in pixel, and the x and y field indicate the position:
+                                   * - in the outside world: location of the map's top-left corner
+                                   *   relative to the whole world map
+                                   * - in the inside world: location of the map relative to the whole world map
+                                   * - in a dungeon: location of the map's top-left corner relative to the whole floor */
 
     int small_keys_variable;      /**< index of the variable of the savegame where the number of small keys
-				   * of this map is saved (-1 means that the small keys are not enabled on this map) */
+                                   * of this map is saved (-1 means that the small keys are not enabled on this map) */
 
     // screen
 
     Camera *camera;               /**< determines the visible area of the map */
     Surface *visible_surface;     /**< surface where the map is displayed - this surface is only the visible part
-				   * of the map, so the coordinates on this surface are relative to the screen,
-				   * not to the map */
+                                   * of the map, so the coordinates on this surface are relative to the screen,
+                                   * not to the map */
     Rectangle clipping_rectangle; /**< when displaying the map, indicates an area of the surface to be restricted to
-				    * (usually, the whole map is considered and this rectangle's values are all 0) */
+                                   * (usually, the whole map is considered and this rectangle's values are all 0) */
 
     // map state
     bool started;                         /**< true if this map is the current map */
     std::string destination_point_name;   /**< current destination point on the map,
-					   * or "_same" to keep the hero's coordinates,
-					   * or "_side0", "_side1", "_side2" or "_side3"
-					   * to place the hero on a side of the map */
+                                           * or "_same" to keep the hero's coordinates,
+                                           * or "_side0", "_side1", "_side2" or "_side3"
+                                           * to place the hero on a side of the map */
 
     MapEntities *entities;        /**< the entities on the map */
     bool suspended;               /**< indicates whether the game is suspended */

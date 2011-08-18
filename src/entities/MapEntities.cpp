@@ -25,6 +25,7 @@
 #include "entities/Boomerang.h"
 #include "Map.h"
 #include "Game.h"
+#include "lowlevel/Surface.h"
 #include "lowlevel/Music.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
@@ -45,13 +46,23 @@ MapEntities::MapEntities(Game &game, Map &map):
   this->obstacle_entities[layer].push_back(&hero);
   this->entities_displayed_y_order[layer].push_back(&hero);
   // TODO update that when the layer changes, same thing for enemies
+
+  // surfaces to pre-render static tiles
+  for (int layer = 0; layer < LAYER_NB; layer++) {
+    static_tiles_surfaces[layer] = new Surface(map.get_width(), map.get_height());
+  }
 }
 
 /**
  * @brief Destructor.
  */
 MapEntities::~MapEntities() {
+
   destroy_all_entities();
+
+  for (int layer = 0; layer < LAYER_NB; layer++) {
+    delete static_tiles_surfaces[layer];
+  }
 }
 
 /**
@@ -254,6 +265,17 @@ void MapEntities::notify_map_started() {
   for (i = all_entities.begin(); i != all_entities.end(); i++) {
     MapEntity *entity = *i;
     entity->notify_map_started();
+  }
+
+  // pre-render static tiles
+  for (int layer = 0; layer < LAYER_NB; layer++) {
+
+    for (unsigned int i = 0; i < tiles[layer].size(); i++) {
+      Tile *tile = tiles[layer][i];
+      if (tile->is_static()) {
+        tile->display(static_tiles_surfaces[layer], tile->get_bounding_box());
+      }
+    }
   }
 }
 
@@ -618,23 +640,24 @@ void MapEntities::display() {
 
   for (int layer = 0; layer < LAYER_NB; layer++) {
 
-    // put the tiles
+    // draw the non-animated tiles
+    static_tiles_surfaces[layer]->blit(map.get_camera_position(), map.get_visible_surface());
+/*
+    // draw the animated tiles
     for (unsigned int i = 0; i < tiles[layer].size(); i++) {
-      tiles[layer][i]->display_on_map();
+      Tile *tile = tiles[layer][i];
+      if (!tile->is_static()) {
+        tile->display_on_map();
+      }
     }
 
-    // put the first sprites
+    // draw the first sprites
     list<MapEntity*>::iterator i;
     for (i = entities_displayed_first[layer].begin();
 	 i != entities_displayed_first[layer].end();
 	 i++) {
 
       MapEntity *entity = *i;
-      /*
-      Debug::check_assertion(entity->get_layer() == layer,
-	  StringConcat() << "Trying to display entity " << entity << " on layer "
-	  << layer << " but it is actually on layer " << entity->get_layer());
-      */
       if (entity->is_enabled()) {
         entity->display_on_map();
       }
@@ -650,7 +673,7 @@ void MapEntities::display() {
       if (entity->is_enabled()) {
         entity->display_on_map();
       }
-    }
+    }*/
   }
 }
 

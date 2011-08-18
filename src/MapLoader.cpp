@@ -19,6 +19,7 @@
 #include "Game.h"
 #include "Camera.h"
 #include "lowlevel/FileTools.h"
+#include "lowlevel/Surface.h"
 #include "lua/MapScript.h"
 #include "entities/Obstacle.h"
 #include "entities/Layer.h"

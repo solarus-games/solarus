@@ -47,15 +47,17 @@ class TilePattern {
     Obstacle get_obstacle() const;
 
     static void update();
-    void display_on_map(Map *map, const Rectangle &position_in_map);
+    void display_on_map(Map &map, const Rectangle &position_in_map);
 
     /**
      * Displays the tile image on a surface.
      * @param destination the destination surface
      * @param dst_position position of the tile pattern on the destination surface
-     * @param tileset_image the tileset image of this tile
+     * @param tileset tileset of this tile
      */
-    virtual void display(Surface *destination, const Rectangle &dst_position, Surface *tileset_image) = 0;
+    virtual void display(Surface *destination, const Rectangle &dst_position, Tileset &tileset) = 0;
+
+    virtual bool is_static();
 };
 
 #endif

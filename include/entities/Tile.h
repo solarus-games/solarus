@@ -21,17 +21,20 @@
 #include "entities/MapEntity.h"
 
 /**
- * @brief A small fixed piece of the map background.
+ * @brief A small fixed piece of the map.
  *
  * It is composed of a tile pattern that can be repeated.
- * It can be traversable or obstacle.
+ * It can be an obstacle or not.
+ * A tile cannot be removed from the map. Its pattern may be animated.
+ * Tiles are optimized to allow fast detection of obstacles and
+ * fast rendering of the non-animated ones.
  */
 class Tile: public MapEntity {
 
   private:
 
-    int tile_pattern_id;		/**< id of the tile pattern */
-    TilePattern *tile_pattern;		/**< pattern of the tile: instance of SimpleTile or AnimatedTile */
+    int tile_pattern_id;            /**< id of the tile pattern */
+    TilePattern *tile_pattern;      /**< pattern of the tile: instance of SimpleTile or AnimatedTile */
 
   public:
 
@@ -42,7 +45,9 @@ class Tile: public MapEntity {
     EntityType get_type();
     void set_map(Map &map);
     void display_on_map();
+    void display(Surface *dst_surface, const Rectangle &dst_position);
     TilePattern& get_tile_pattern();
+    bool is_static();
 };
 
 #endif

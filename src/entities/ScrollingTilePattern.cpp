@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "entities/ScrollingTilePattern.h"
+#include "entities/Tileset.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Surface.h"
 
@@ -61,9 +62,9 @@ void ScrollingTilePattern::update() {
  * @brief Displays the tile image on a surface.
  * @param destination the destination surface
  * @param dst_position position of the tile pattern on the destination surface
- * @param tileset_image the tileset image of this tile
+ * @param tileset the tileset of this tile
  */
-void ScrollingTilePattern::display(Surface *destination, const Rectangle &dst_position, Surface *tileset_image) {
+void ScrollingTilePattern::display(Surface *destination, const Rectangle &dst_position, Tileset &tileset) {
 
   Rectangle src = position_in_tileset;
   Rectangle dst = dst_position;
@@ -77,7 +78,7 @@ void ScrollingTilePattern::display(Surface *destination, const Rectangle &dst_po
   src.add_width(-offset_x);
   src.add_y(offset_y);
   src.add_height(-offset_y);
-  tileset_image->blit(src, destination, dst);
+  tileset.get_tiles_image()->blit(src, destination, dst);
 
   src = position_in_tileset;
   dst = dst_position;
@@ -85,7 +86,7 @@ void ScrollingTilePattern::display(Surface *destination, const Rectangle &dst_po
   src.add_height(-offset_y);
   dst.add_x(src.get_width() - offset_x);
   src.set_width(offset_x);
-  tileset_image->blit(src, destination, dst);
+  tileset.get_tiles_image()->blit(src, destination, dst);
 
   src = position_in_tileset;
   dst = dst_position;
@@ -93,7 +94,7 @@ void ScrollingTilePattern::display(Surface *destination, const Rectangle &dst_po
   src.add_width(-offset_x);
   dst.add_y(src.get_height() - offset_y);
   src.set_height(offset_y);
-  tileset_image->blit(src, destination, dst);
+  tileset.get_tiles_image()->blit(src, destination, dst);
 
   src = position_in_tileset;
   dst = dst_position;
@@ -101,6 +102,18 @@ void ScrollingTilePattern::display(Surface *destination, const Rectangle &dst_po
   src.set_width(offset_x);
   dst.add_y(src.get_height() - offset_y);
   src.set_height(offset_y);
-  tileset_image->blit(src, destination, dst);
+  tileset.get_tiles_image()->blit(src, destination, dst);
+}
+
+/**
+ * @brief Returns whether this tile pattern is static, i.e. not animated.
+ *
+ * Static tiles may be rendered faster by using intermediate surfaces
+ * that are drawn only once.
+ *
+ * @return true if this tile pattern is static
+ */
+bool ScrollingTilePattern::is_static() {
+  return false;
 }
 

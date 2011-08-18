@@ -89,7 +89,16 @@ void Tile::set_map(Map &map) {
  * @brief Displays the tile on the map.
  */
 void Tile::display_on_map() {
-  tile_pattern->display_on_map(&get_map(), get_bounding_box());
+  tile_pattern->display_on_map(get_map(), get_bounding_box());
+}
+
+/**
+ * @brief Displays the tile on the specified surface.
+ * @param dst_surface the destination surface
+ * @param dst_position where to display the tile on this surface
+ */
+void Tile::display(Surface *dst_surface, const Rectangle &dst_position) {
+  tile_pattern->display(dst_surface, dst_position, get_map().get_tileset());
 }
 
 /**
@@ -98,5 +107,18 @@ void Tile::display_on_map() {
  */
 TilePattern& Tile::get_tile_pattern() {
   return *tile_pattern;
+}
+
+/**
+ * @brief Returns whether the pattern is static, i.e. not animated.
+ *
+ * Static tiles may be rendered faster by using intermediate surfaces
+ * that are drawn only once.
+ * This function should return true if the tile pattern is always displayed the same way.
+ *
+ * @return true if the pattern of this tile
+ */
+bool Tile::is_static() {
+  return tile_pattern->is_static();
 }
 

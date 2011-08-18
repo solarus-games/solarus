@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "entities/AnimatedTilePattern.h"
+#include "entities/Tileset.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Surface.h"
 
@@ -100,9 +101,11 @@ void AnimatedTilePattern::update() {
  * @brief Displays the tile on a surface.
  * @param destination the destination surface
  * @param dst_position position of the tile pattern on the destination surface
- * @param tileset_image the tileset image of this tile pattern
+ * @param tileset the tileset of this tile pattern
  */
-void AnimatedTilePattern::display(Surface *destination, const Rectangle &dst_position, Surface *tileset_image) {
+void AnimatedTilePattern::display(Surface *destination, const Rectangle &dst_position, Tileset &tileset) {
+
+  Surface *tileset_image = tileset.get_tiles_image();
   tileset_image->blit(position_in_tileset[current_frames[sequence]], destination, dst_position);
 }
 

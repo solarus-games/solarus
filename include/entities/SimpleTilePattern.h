@@ -38,7 +38,9 @@ class SimpleTilePattern: public TilePattern {
     SimpleTilePattern(Obstacle obstacle, int x, int y, int width, int height);
     ~SimpleTilePattern();
 
-    virtual void display(Surface *destination, const Rectangle &destination_position, Surface *tileset_image);
+    virtual void display(Surface *destination, const Rectangle &destination_position, Tileset &tileset);
+
+    virtual bool is_static();
 };
 
 #endif

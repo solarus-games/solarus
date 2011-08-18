@@ -38,47 +38,50 @@ class MapEntities {
 
   private:
 
-    friend class MapLoader;					/**< the map loader initializes the private fields of MapEntities */
+    friend class MapLoader;                         /**< the map loader initializes the private fields of MapEntities */
 
     // map
-    Game &game;							/**< the game running this map */
-    Map &map;							/**< the map */
-    int map_width8;						/**< number of 8*8 squares on a row of the map grid */
-    int map_height8;						/**< number of 8*8 squares on a column of the map grid */
+    Game &game;                                     /**< the game running this map */
+    Map &map;                                       /**< the map */
+    int map_width8;                                 /**< number of 8*8 squares on a row of the map grid */
+    int map_height8;                                /**< number of 8*8 squares on a column of the map grid */
 
     // tiles
-    std::vector<Tile*> tiles[LAYER_NB];				/**< all tiles of the map (a vector for each layer) */
-    int obstacle_tiles_size;					/**< number of elements in the array obstacle_tiles
-								 * (obstacle_tiles_size = map_width8 * map_height8) */
+    std::vector<Tile*> tiles[LAYER_NB];             /**< all tiles of the map (a vector for each layer) */
+    int obstacle_tiles_size;                        /**< number of elements in the array obstacle_tiles
+                                                     * (obstacle_tiles_size = map_width8 * map_height8) */
     Obstacle *obstacle_tiles[LAYER_NB];				/**< array of Obstacle representing which
-								 * tiles are obstacles and how */
+                                                     * tiles are obstacles and how */
+    Surface *static_tiles_surfaces[LAYER_NB];       /**< all static tiles are rendered once for all on these surfaces
+                                                     * for performance */
+
     // dynamic entities
-    Hero &hero;							/**< the hero (also stored in Game because it is kept when changing maps) */
+    Hero &hero;                                     /**< the hero (also stored in Game because it is kept when changing maps) */
 
-    std::list<MapEntity*> all_entities;				/**< all map entities execept the tiles and the hero;
-								 * this vector is used to delete the entities 
-								 * when the map is unloaded */
-    std::list<MapEntity*> entities_to_remove;			/**< list of entities that need to be removed right now */
-
-    std::list<MapEntity*>
-      entities_displayed_first[LAYER_NB];			/**< all map entities that are displayed in the normal order */
+    std::list<MapEntity*> all_entities;             /**< all map entities except the tiles and the hero;
+                                                     * this vector is used to delete the entities
+                                                     * when the map is unloaded */
+    std::list<MapEntity*> entities_to_remove;       /**< list of entities that need to be removed right now */
 
     std::list<MapEntity*>
-      entities_displayed_y_order[LAYER_NB]; 			/**< all map entities that are displayed in the order
-								 * defined by their y position, including the hero */
-
-    std::list<Detector*> detectors;				/**< all entities able to detect other entities
-								 * on this map */
+      entities_displayed_first[LAYER_NB];           /**< all map entities that are displayed in the normal order */
 
     std::list<MapEntity*>
-      obstacle_entities[LAYER_NB];				/**< all entities that might be obstacle for other
-								 * entities on this map, including the hero */
+      entities_displayed_y_order[LAYER_NB];         /**< all map entities that are displayed in the order
+                                                     * defined by their y position, including the hero */
 
-    std::list<Stairs*> stairs[LAYER_NB];			/**< all stairs of the map */
+    std::list<Detector*> detectors;                 /**< all entities able to detect other entities
+                                                     * on this map */
+
+    std::list<MapEntity*>
+      obstacle_entities[LAYER_NB];                  /**< all entities that might be obstacle for other
+                                                     * entities on this map, including the hero */
+
+    std::list<Stairs*> stairs[LAYER_NB];            /**< all stairs of the map */
     std::list<CrystalSwitchBlock*>
       crystal_switch_blocks[LAYER_NB];				/**< all crystal switch blocks of the map */
-    Boomerang *boomerang;					/**< the boomerang if present on the map, NULL otherwise */
-    MusicId music_before_miniboss;				/**< the music that was played before starting a miniboss fight */
+    Boomerang *boomerang;                           /**< the boomerang if present on the map, NULL otherwise */
+    MusicId music_before_miniboss;                  /**< the music that was played before starting a miniboss fight */
 
     void set_obstacle(int layer, int x8, int y8, Obstacle obstacle);
     void remove_marked_entities();

@@ -15,8 +15,9 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "entities/SimpleTilePattern.h"
-#include "Map.h"
+#include "entities/Tileset.h"
 #include "lowlevel/Surface.h"
+#include "Map.h"
 
 /**
  * @brief Creates a simple tile pattern.
@@ -42,9 +43,23 @@ SimpleTilePattern::~SimpleTilePattern() {
  * @brief Displays the tile image on a surface.
  * @param destination the destination surface
  * @param dst_position position of the tile pattern on the destination surface
- * @param tileset_image the tileset image of this tile
+ * @param tileset the tileset of this tile
  */
-void SimpleTilePattern::display(Surface *destination, const Rectangle &dst_position, Surface *tileset_image) {
+void SimpleTilePattern::display(Surface *destination, const Rectangle &dst_position, Tileset &tileset) {
+
+  Surface *tileset_image = tileset.get_tiles_image();
   tileset_image->blit(position_in_tileset, destination, dst_position);
+}
+
+/**
+ * @brief Returns whether this tile pattern is static, i.e. not animated.
+ *
+ * Static tiles may be rendered faster by using intermediate surfaces
+ * that are drawn only once.
+ *
+ * @return true if this tile pattern is static
+ */
+bool SimpleTilePattern::is_static() {
+  return true;
 }
 

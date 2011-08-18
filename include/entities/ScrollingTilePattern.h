@@ -39,7 +39,9 @@ class ScrollingTilePattern: public SimpleTilePattern {
     ~ScrollingTilePattern();
 
     static void update();
-    void display(Surface *destination, const Rectangle &destination_position, Surface *tileset_image);
+    void display(Surface *destination, const Rectangle &destination_position, Tileset &tileset);
+
+    virtual bool is_static();
 };
 
 #endif

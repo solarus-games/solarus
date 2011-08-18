@@ -188,34 +188,37 @@ bool Sound::is_initialized() {
  */
 void Sound::load_all() {
 
-  // open the resource database file
-  const std::string file_name = "project_db.dat";
-  std::istream& database_file = FileTools::data_file_open(file_name);
-  std::string line;
+  if (is_initialized()) {
 
-  // read each animation
-  while (std::getline(database_file, line)) {
+    // open the resource database file
+    const std::string file_name = "project_db.dat";
+    std::istream& database_file = FileTools::data_file_open(file_name);
+    std::string line;
 
-    if (line.size() == 0) {
-      continue;
-    }
+    // read each animation
+    while (std::getline(database_file, line)) {
 
-    int resource_type;
-    std::string resource_id, resource_name;
-    std::istringstream iss(line);
-    FileTools::read(iss, resource_type);
-    FileTools::read(iss, resource_id);
-    FileTools::read(iss, resource_name);
+      if (line.size() == 0) {
+        continue;
+      }
 
-    if (resource_type == 4) { // it's a sound
+      int resource_type;
+      std::string resource_id, resource_name;
+      std::istringstream iss(line);
+      FileTools::read(iss, resource_type);
+      FileTools::read(iss, resource_id);
+      FileTools::read(iss, resource_name);
 
-      if (all_sounds.count(resource_id) == 0) {
-        all_sounds[resource_id] = Sound(resource_id);
-        all_sounds[resource_id].load();
+      if (resource_type == 4) { // it's a sound
+
+        if (all_sounds.count(resource_id) == 0) {
+          all_sounds[resource_id] = Sound(resource_id);
+          all_sounds[resource_id].load();
+        }
       }
     }
+    FileTools::data_file_close(database_file);
   }
-  FileTools::data_file_close(database_file);
 }
 
 /**

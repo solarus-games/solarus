@@ -27,9 +27,13 @@
  * @param map the map
  */
 Camera::Camera(Map& map):
-  map(map), fixed_on_hero(true), restoring(false), speed(120), movement(NULL) {
+  map(map),
+  fixed_on_hero(true),
+  restoring(false),
+  position(0, 0, 320, 240),
+  speed(120),
+  movement(NULL) {
 
-  position.set_xy(0, 0);
 }
 
 /**
@@ -68,12 +72,12 @@ void Camera::update() {
       movement = NULL;
 
       if (restoring) {
-	restoring = false;
-	fixed_on_hero = true;
-	map.get_script().event_camera_back();
+        restoring = false;
+        fixed_on_hero = true;
+        map.get_script().event_camera_back();
       }
       else {
-	map.get_script().event_camera_reached_target();
+        map.get_script().event_camera_reached_target();
       }
     }
   }
@@ -84,8 +88,7 @@ void Camera::update() {
 /**
  * @brief Returns the current position of the camera.
  *
- * This function returns the top-left corner of the visible area of the current map.
- * Only x and y are used (the size is always 320*240).
+ * This function returns the rectangle of the visible area of this camera.
  *
  * @return the visible area
  */

@@ -34,7 +34,7 @@ class Tile: public MapEntity {
   private:
 
     int tile_pattern_id;            /**< id of the tile pattern */
-    TilePattern *tile_pattern;      /**< pattern of the tile: instance of SimpleTile or AnimatedTile */
+    TilePattern* tile_pattern;      /**< pattern of the tile */
 
   public:
 
@@ -43,11 +43,11 @@ class Tile: public MapEntity {
     static CreationFunction parse;
 
     EntityType get_type();
-    void set_map(Map &map);
+    void set_map(Map& map);
     void display_on_map();
-    void display(Surface *dst_surface, const Rectangle &dst_position);
+    void display(Surface* dst_surface, const Rectangle& viewport);
     TilePattern& get_tile_pattern();
-    bool is_static();
+    bool is_animated();
 };
 
 #endif

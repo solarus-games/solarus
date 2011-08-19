@@ -17,8 +17,6 @@
 #include "entities/TilePattern.h"
 #include "entities/AnimatedTilePattern.h"
 #include "entities/ScrollingTilePattern.h"
-#include "entities/Tileset.h"
-#include "Map.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 
@@ -91,49 +89,17 @@ void TilePattern::update() {
 }
 
 /**
- * @brief Displays the tile pattern on the map, repeating it to fit the specified size.
- * @param map the map
- * @param position_in_map location and size of the tile on the map
- */
-void TilePattern::display_on_map(Map &map, const Rectangle &position_in_map) {
-
-  Surface *map_surface = map.get_visible_surface();
-
-  Rectangle dst;
-  const Rectangle &camera_position = map.get_camera_position();
-
-  dst.set_size(get_width(), get_height());
-
-  int limit_x = position_in_map.get_x() - camera_position.get_x() + position_in_map.get_width();
-  int limit_y = position_in_map.get_y() - camera_position.get_y() + position_in_map.get_height();
-
-  for (int y = position_in_map.get_y() - camera_position.get_y(); y < limit_y; y += dst.get_height()) {
-
-    if (y <= 240 && y + dst.get_height() > 0) {
-      dst.set_y(y);
-
-      for (int x = position_in_map.get_x() - camera_position.get_x(); x < limit_x; x += dst.get_width()) {
-
-        if (x <= 320 && x + dst.get_width() > 0) {
-          dst.set_x(x);
-          display(map_surface, dst, map.get_tileset());
-        }
-      }
-    }
-  }
-}
-
-/**
- * @brief Returns whether this tile pattern is static, i.e. not animated.
+ * @brief Returns whether this tile pattern is animated, i.e. not always displayed
+ * the same way.
  *
- * Static tiles may be rendered faster by using intermediate surfaces
+ * Non-animated tiles may be rendered faster by using intermediate surfaces
  * that are drawn only once.
- * This function should return true if the tile pattern is always displayed the same way.
- * Returns false by default.
+ * This function should return false if the tile pattern is always displayed the same way.
+ * Returns true by default.
  *
- * @return true if this tile pattern is static
+ * @return true if this tile pattern is animated
  */
-bool TilePattern::is_static() {
-  return false;
+bool TilePattern::is_animated() {
+  return true;
 }
 

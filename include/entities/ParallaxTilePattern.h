@@ -35,7 +35,7 @@ class ParallaxTilePattern: public SimpleTilePattern {
 
     void display(Surface *destination, const Rectangle &destination_position, Tileset &tileset);
 
-    virtual bool is_static();
+    virtual bool is_animated();
 };
 
 #endif

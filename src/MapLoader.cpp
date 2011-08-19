@@ -95,16 +95,18 @@ void MapLoader::load_map(Game &game, Map &map) {
   map.tileset = new Tileset(tileset_id);
   map.tileset->load();
 
-  // create the lists of entities and initialize obstacle_tiles
+  // initialize data
   MapEntities &entities = map.get_entities();
   entities.map_width8 = map.width8;
   entities.map_height8 = map.height8;
-  entities.obstacle_tiles_size = map.width8 * map.height8;
+  entities.tiles_grid_size = map.width8 * map.height8;
   for (int layer = 0; layer < LAYER_NB; layer++) {
 
-    entities.obstacle_tiles[layer] = new Obstacle[entities.obstacle_tiles_size];
+    entities.animated_tiles[layer] = new bool[entities.tiles_grid_size];
+    entities.obstacle_tiles[layer] = new Obstacle[entities.tiles_grid_size];
     Obstacle initial_obstacle = (layer == LAYER_LOW) ? OBSTACLE_NONE : OBSTACLE_EMPTY;
-    for (int i = 0; i < entities.obstacle_tiles_size; i++) {
+    for (int i = 0; i < entities.tiles_grid_size; i++) {
+      entities.animated_tiles[layer][i] = false;
       entities.obstacle_tiles[layer][i] = initial_obstacle;
     }
   }

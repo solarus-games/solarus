@@ -667,6 +667,19 @@ void MapEntities::draw_non_animated_tiles() {
         }
       }
     }
+
+    // erase the rectangles that contain animated tiles
+    int index = 0;
+    for (int y = 0; y < map.get_height(); y += 8) {
+      for (int x = 0; x < map.get_width(); x += 8) {
+
+        if (animated_tiles[layer][index]) {
+          Rectangle animated_square(x, y, 8, 8);
+          non_animated_tiles_surfaces[layer]->fill_with_color(Color::get_black(), animated_square);
+        }
+        index++;
+      }
+    }
   }
 }
 
@@ -687,9 +700,11 @@ bool MapEntities::overlaps_animated_tile(Tile& tile) {
   for (int i = 0; i < tile_height8; i++) {
     for (int j = 0; j < tile_width8; j++) {
 
-      if (tile_x8 >= 0 && tile_x8 < map_width8 && tile_y8 >= 0 && tile_y8 < map_height8) {
+      int x8 = tile_x8 + j;
+      int y8 = tile_y8 + i;
+      if (x8 >= 0 && x8 < map_width8 && y8 >= 0 && y8 < map_height8) {
 
-        int index = tile_y8 * map_width8 + tile_x8;
+        int index = y8 * map_width8 + x8;
         if (animated_tiles_layer[index]) {
           return true;
         }
@@ -706,16 +721,19 @@ void MapEntities::display() {
 
   for (int layer = 0; layer < LAYER_NB; layer++) {
 
-    // draw the non-animated tiles
-    non_animated_tiles_surfaces[layer]->blit(map.get_camera_position(), map.get_visible_surface());
-
-    // draw the animated tiles
+    // draw the animated tiles and the tiles that overlap them:
+    // in other words, draw all regions containing animated tiles
+    // (and maybe more, but we don't care because non-animated tiles
+    // will be displayed later)
     for (unsigned int i = 0; i < tiles[layer].size(); i++) {
       Tile& tile = *tiles[layer][i];
       if (tile.is_animated() || overlaps_animated_tile(tile)) {
         tile.display_on_map();
       }
     }
+
+    // draw the non-animated tiles (with transparent rectangles on the regions of animated tiles)
+    non_animated_tiles_surfaces[layer]->blit(map.get_camera_position(), map.get_visible_surface());
 
     // draw the first sprites
     list<MapEntity*>::iterator i;
@@ -729,7 +747,7 @@ void MapEntities::display() {
       }
     }
 
-    // put the sprites displayed at the hero's level, in the order
+    // draw the sprites displayed at the hero's level, in the order
     // defined by their y position (including the hero)
     for (i = entities_displayed_y_order[layer].begin();
 	  i != entities_displayed_y_order[layer].end();

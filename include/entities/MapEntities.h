@@ -56,6 +56,8 @@ class MapEntities {
                                                      * have animated tiles */
     Surface* non_animated_tiles_surfaces[LAYER_NB]; /**< all non-animated tiles are rendered once for all on these surfaces
                                                      * for performance */
+    std::vector<Tile*>
+        tiles_in_animated_regions[LAYER_NB];        /**< animated tiles and tiles overlapping them */
 
     // dynamic entities
     Hero &hero;                                     /**< the hero (also stored in Game because it is kept when changing maps) */
@@ -86,6 +88,8 @@ class MapEntities {
     MusicId music_before_miniboss;                  /**< the music that was played before starting a miniboss fight */
 
     void set_obstacle(int layer, int x8, int y8, Obstacle obstacle);
+    void build_non_animated_tiles();
+    bool overlaps_animated_tile(Tile& tile);
     void remove_marked_entities();
     void update_crystal_switch_blocks();
 
@@ -122,9 +126,6 @@ class MapEntities {
     bool overlaps_raised_blocks(Layer layer, const Rectangle& rectangle);
     bool is_boomerang_present();
     void remove_boomerang();
-
-    void draw_non_animated_tiles();
-    bool overlaps_animated_tile(Tile& tile);
 
     // game loop
     void notify_map_started();

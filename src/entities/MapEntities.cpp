@@ -269,7 +269,7 @@ void MapEntities::notify_map_started() {
   }
 
   // pre-render non-animated tiles
-  draw_non_animated_tiles();
+  build_non_animated_tiles();
 }
 
 /**
@@ -631,7 +631,7 @@ void MapEntities::update() {
  *
  * They are drawn only once and then these surfaces are displayed on the screen.
  */
-void MapEntities::draw_non_animated_tiles() {
+void MapEntities::build_non_animated_tiles() {
 
   const Rectangle map_size(0, 0, map.get_width(), map.get_height());
   for (int layer = 0; layer < LAYER_NB; layer++) {
@@ -646,7 +646,7 @@ void MapEntities::draw_non_animated_tiles() {
         tile.display(non_animated_tiles_surfaces[layer], map_size);
       }
       else {
-        // animated tile: mark its location as non-optimizable
+        // animated tile: mark its region as non-optimizable
         // (otherwise, a non-animated tile above an animated one would screw us)
 
         int tile_x8 = tile.get_x() / 8;
@@ -678,6 +678,14 @@ void MapEntities::draw_non_animated_tiles() {
           non_animated_tiles_surfaces[layer]->fill_with_color(Color::get_black(), animated_square);
         }
         index++;
+      }
+    }
+
+    // build the list of animated tiles and tiles overlapping them
+    for (unsigned int i = 0; i < tiles[layer].size(); i++) {
+      Tile& tile = *tiles[layer][i];
+      if (tile.is_animated() || overlaps_animated_tile(tile)) {
+        tiles_in_animated_regions[layer].push_back(&tile);
       }
     }
   }
@@ -725,14 +733,12 @@ void MapEntities::display() {
     // in other words, draw all regions containing animated tiles
     // (and maybe more, but we don't care because non-animated tiles
     // will be displayed later)
-    for (unsigned int i = 0; i < tiles[layer].size(); i++) {
-      Tile& tile = *tiles[layer][i];
-      if (tile.is_animated() || overlaps_animated_tile(tile)) {
-        tile.display_on_map();
-      }
+    for (unsigned int i = 0; i < tiles_in_animated_regions[layer].size(); i++) {
+      tiles_in_animated_regions[layer][i]->display_on_map();
     }
 
-    // draw the non-animated tiles (with transparent rectangles on the regions of animated tiles)
+    // draw the non-animated tiles (with transparent rectangles on the regions of animated tiles
+    // since they are already drawn)
     non_animated_tiles_surfaces[layer]->blit(map.get_camera_position(), map.get_visible_surface());
 
     // draw the first sprites

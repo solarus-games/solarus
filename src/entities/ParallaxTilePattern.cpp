@@ -101,14 +101,15 @@ void ParallaxTilePattern::display(Surface *destination, const Rectangle &dst_pos
 }
 
 /**
- * @brief Returns whether this tile pattern is static, i.e. not animated.
+ * @brief Returns whether this tile pattern is animated, i.e. not always displayed
+ * the same way.
  *
- * Static tiles may be rendered faster by using intermediate surfaces
+ * Non-animated tiles may be rendered faster by using intermediate surfaces
  * that are drawn only once.
  *
- * @return true if this tile pattern is static
+ * @return true if this tile pattern is animated
  */
-bool ParallaxTilePattern::is_static() {
-  return false;
+bool ParallaxTilePattern::is_animated() {
+  return true;
 }
 

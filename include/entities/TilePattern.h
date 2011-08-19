@@ -47,7 +47,6 @@ class TilePattern {
     Obstacle get_obstacle() const;
 
     static void update();
-    void display_on_map(Map &map, const Rectangle &position_in_map);
 
     /**
      * Displays the tile image on a surface.
@@ -57,7 +56,7 @@ class TilePattern {
      */
     virtual void display(Surface *destination, const Rectangle &dst_position, Tileset &tileset) = 0;
 
-    virtual bool is_static();
+    virtual bool is_animated();
 };
 
 #endif

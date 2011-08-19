@@ -17,6 +17,7 @@
 #include "entities/Tile.h"
 #include "entities/Tileset.h"
 #include "entities/TilePattern.h"
+#include "lowlevel/Surface.h"
 #include "lowlevel/FileTools.h"
 #include "Map.h"
 
@@ -46,7 +47,7 @@ Tile::Tile(Layer layer, int x, int y, int width, int height, int tile_pattern_id
  * @param y y coordinate of the entity
  * @return the instance created
  */
-MapEntity* Tile::parse(Game &game, std::istream &is, Layer layer, int x, int y) {
+MapEntity* Tile::parse(Game& game, std::istream& is, Layer layer, int x, int y) {
 
   int width, height, tile_pattern_id;
 
@@ -80,7 +81,7 @@ EntityType Tile::get_type() {
  *
  * @param map the map
  */
-void Tile::set_map(Map &map) {
+void Tile::set_map(Map& map) {
   MapEntity::set_map(map);
   this->tile_pattern = &map.get_tileset().get_tile_pattern(tile_pattern_id);
 }
@@ -89,16 +90,41 @@ void Tile::set_map(Map &map) {
  * @brief Displays the tile on the map.
  */
 void Tile::display_on_map() {
-  tile_pattern->display_on_map(get_map(), get_bounding_box());
+
+  display(get_map().get_visible_surface(), get_map().get_camera_position());
 }
 
 /**
  * @brief Displays the tile on the specified surface.
  * @param dst_surface the destination surface
- * @param dst_position where to display the tile on this surface
+ * @param viewport coordinates of the top-left corner of dst_surface
+ * relative to the map
  */
-void Tile::display(Surface *dst_surface, const Rectangle &dst_position) {
-  tile_pattern->display(dst_surface, dst_position, get_map().get_tileset());
+void Tile::display(Surface* dst_surface, const Rectangle& viewport) {
+
+  Rectangle dst(0, 0);
+
+  int limit_x = get_top_left_x() - viewport.get_x() + get_width();
+  int limit_y = get_top_left_y() - viewport.get_y() + get_height();
+
+  for (int y = get_top_left_y() - viewport.get_y();
+      y < limit_y;
+      y += tile_pattern->get_height()) {
+
+    if (y <= dst_surface->get_height() && y + tile_pattern->get_height() > 0) {
+      dst.set_y(y);
+
+      for (int x = get_top_left_x() - viewport.get_x();
+          x < limit_x;
+          x += tile_pattern->get_width()) {
+
+        if (x <= dst_surface->get_width() && x + tile_pattern->get_width() > 0) {
+          dst.set_x(x);
+          tile_pattern->display(dst_surface, dst, get_map().get_tileset());
+        }
+      }
+    }
+  }
 }
 
 /**
@@ -110,15 +136,15 @@ TilePattern& Tile::get_tile_pattern() {
 }
 
 /**
- * @brief Returns whether the pattern is static, i.e. not animated.
+ * @brief Returns whether the pattern is animated.
  *
- * Static tiles may be rendered faster by using intermediate surfaces
+ * Non-animated tiles may be rendered faster by using intermediate surfaces
  * that are drawn only once.
- * This function should return true if the tile pattern is always displayed the same way.
+ * This function should return false if the tile pattern is always displayed the same way.
  *
- * @return true if the pattern of this tile
+ * @return true if the pattern of this tile is animated
  */
-bool Tile::is_static() {
-  return tile_pattern->is_static();
+bool Tile::is_animated() {
+  return tile_pattern->is_animated();
 }
 

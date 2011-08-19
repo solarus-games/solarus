@@ -113,7 +113,33 @@ bool DynamicTile::is_obstacle_for(MapEntity &other) {
  */
 void DynamicTile::display_on_map() {
 
-  tile_pattern->display_on_map(get_map(), get_bounding_box());
+  // FIXME this code is duplicated from Tile
+  Surface* map_surface = get_map().get_visible_surface();
+
+  const Rectangle& camera_position = get_map().get_camera_position();
+  Rectangle dst(0, 0);
+
+  int limit_x = get_top_left_x() - camera_position.get_x() + get_width();
+  int limit_y = get_top_left_y() - camera_position.get_y() + get_height();
+
+  for (int y = get_top_left_y() - camera_position.get_y();
+      y < limit_y;
+      y += tile_pattern->get_height()) {
+
+    if (y <= 240 && y + tile_pattern->get_height() > 0) {
+      dst.set_y(y);
+
+      for (int x = get_top_left_x() - camera_position.get_x();
+          x < limit_x;
+          x += tile_pattern->get_width()) {
+
+        if (x <= 320 && x + tile_pattern->get_width() > 0) {
+          dst.set_x(x);
+          tile_pattern->display(map_surface, dst, get_map().get_tileset());
+        }
+      }
+    }
+  }
 }
 
 /**

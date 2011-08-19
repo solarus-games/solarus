@@ -48,11 +48,13 @@ class MapEntities {
 
     // tiles
     std::vector<Tile*> tiles[LAYER_NB];             /**< all tiles of the map (a vector for each layer) */
-    int obstacle_tiles_size;                        /**< number of elements in the array obstacle_tiles
-                                                     * (obstacle_tiles_size = map_width8 * map_height8) */
-    Obstacle *obstacle_tiles[LAYER_NB];				/**< array of Obstacle representing which
-                                                     * tiles are obstacles and how */
-    Surface *static_tiles_surfaces[LAYER_NB];       /**< all static tiles are rendered once for all on these surfaces
+    int tiles_grid_size;                            /**< number of 8*8 squares in the map
+                                                     * (tiles_grid_size = map_width8 * map_height8) */
+    Obstacle* obstacle_tiles[LAYER_NB];				/**< array of size tiles_grid_size representing which squares
+                                                     * are obstacles and how */
+    bool* animated_tiles[LAYER_NB];                 /**< array of size tiles_grid_size that remembers which squares
+                                                     * have animated tiles */
+    Surface* non_animated_tiles_surfaces[LAYER_NB]; /**< all non-animated tiles are rendered once for all on these surfaces
                                                      * for performance */
 
     // dynamic entities
@@ -93,7 +95,7 @@ class MapEntities {
     MapEntities(Game &game, Map &map);
     ~MapEntities();
 
-    // information about the entities
+    // entities
     Hero& get_hero();
     Obstacle get_obstacle_tile(Layer layer, int x, int y);
     std::list<MapEntity*>& get_obstacle_entities(Layer layer);
@@ -117,10 +119,12 @@ class MapEntities {
     static bool compare_y(MapEntity *first, MapEntity *second);
     void set_entity_layer(MapEntity *entity, Layer layer);
 
-    // hero
-    bool overlaps_raised_blocks(Layer layer, const Rectangle &rectangle);
+    bool overlaps_raised_blocks(Layer layer, const Rectangle& rectangle);
     bool is_boomerang_present();
     void remove_boomerang();
+
+    void draw_non_animated_tiles();
+    bool overlaps_animated_tile(Tile& tile);
 
     // game loop
     void notify_map_started();

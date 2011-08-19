@@ -26,6 +26,7 @@
 #include "Map.h"
 #include "Game.h"
 #include "lowlevel/Surface.h"
+#include "lowlevel/Color.h"
 #include "lowlevel/Music.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
@@ -34,7 +35,7 @@ using std::list;
 /**
  * @brief Constructor.
  * @param game the game
- * @param map the map
+ * @param map the map (not loaded yet)
  */
 MapEntities::MapEntities(Game &game, Map &map):
   game(game),
@@ -49,7 +50,7 @@ MapEntities::MapEntities(Game &game, Map &map):
 
   // surfaces to pre-render static tiles
   for (int layer = 0; layer < LAYER_NB; layer++) {
-    static_tiles_surfaces[layer] = new Surface(map.get_width(), map.get_height());
+    non_animated_tiles_surfaces[layer] = NULL;
   }
 }
 
@@ -61,7 +62,7 @@ MapEntities::~MapEntities() {
   destroy_all_entities();
 
   for (int layer = 0; layer < LAYER_NB; layer++) {
-    delete static_tiles_surfaces[layer];
+    delete non_animated_tiles_surfaces[layer];
   }
 }
 
@@ -267,16 +268,8 @@ void MapEntities::notify_map_started() {
     entity->notify_map_started();
   }
 
-  // pre-render static tiles
-  for (int layer = 0; layer < LAYER_NB; layer++) {
-
-    for (unsigned int i = 0; i < tiles[layer].size(); i++) {
-      Tile *tile = tiles[layer][i];
-      if (tile->is_static()) {
-        tile->display(static_tiles_surfaces[layer], tile->get_bounding_box());
-      }
-    }
-  }
+  // pre-render non-animated tiles
+  draw_non_animated_tiles();
 }
 
 /**
@@ -320,7 +313,7 @@ void MapEntities::add_tile(Tile *tile) {
   case OBSTACLE:
     for (i = 0; i < tile_height8; i++) {
       for (j = 0; j < tile_width8; j++) {
-	set_obstacle(layer, tile_x8 + j, tile_y8 + i, obstacle);
+        set_obstacle(layer, tile_x8 + j, tile_y8 + i, obstacle);
       }
     }
     break;
@@ -344,7 +337,7 @@ void MapEntities::add_tile(Tile *tile) {
 
       // right part of the row: we are in the top-right corner
       for (j = i + 1; j < tile_width8; j++) {
-	set_obstacle(layer, tile_x8 + j, tile_y8 + i, OBSTACLE);
+        set_obstacle(layer, tile_x8 + j, tile_y8 + i, OBSTACLE);
       }
     }
     break;
@@ -360,7 +353,7 @@ void MapEntities::add_tile(Tile *tile) {
 
       // left part of the row: we are in the top-left corner
       for (j = 0; j < tile_width8 - i - 1; j++) {
-	set_obstacle(layer, tile_x8 + j, tile_y8 + i, OBSTACLE);
+        set_obstacle(layer, tile_x8 + j, tile_y8 + i, OBSTACLE);
       }
 
       // 8*8 square on the diagonal
@@ -378,7 +371,7 @@ void MapEntities::add_tile(Tile *tile) {
       }
       // left part of the row: we are in the bottom-left corner
       for (j = 0; j < i; j++) {
-	set_obstacle(layer, tile_x8 + j, tile_y8 + i, OBSTACLE);
+        set_obstacle(layer, tile_x8 + j, tile_y8 + i, OBSTACLE);
       }
 
       // 8*8 square on the diagonal
@@ -400,7 +393,7 @@ void MapEntities::add_tile(Tile *tile) {
 
       // right part of the row: we are in the bottom-right corner
       for (j = tile_width8 - i; j < tile_width8; j++) {
-	set_obstacle(layer, tile_x8 + j, tile_y8 + i, OBSTACLE);
+        set_obstacle(layer, tile_x8 + j, tile_y8 + i, OBSTACLE);
       }
     }
     break;
@@ -634,6 +627,79 @@ void MapEntities::update() {
 }
 
 /**
+ * @brief Draws all non-animated tiles on intermediate surfaces.
+ *
+ * They are drawn only once and then these surfaces are displayed on the screen.
+ */
+void MapEntities::draw_non_animated_tiles() {
+
+  const Rectangle map_size(0, 0, map.get_width(), map.get_height());
+  for (int layer = 0; layer < LAYER_NB; layer++) {
+
+    non_animated_tiles_surfaces[layer] = new Surface(map_size.get_width(), map_size.get_height());
+    non_animated_tiles_surfaces[layer]->set_transparency_color(Color::get_black());
+
+    for (unsigned int i = 0; i < tiles[layer].size(); i++) {
+      Tile& tile = *tiles[layer][i];
+      if (!tile.is_animated()) {
+        // non-animated tile: optimize its displaying
+        tile.display(non_animated_tiles_surfaces[layer], map_size);
+      }
+      else {
+        // animated tile: mark its location as non-optimizable
+        // (otherwise, a non-animated tile above an animated one would screw us)
+
+        int tile_x8 = tile.get_x() / 8;
+        int tile_y8 = tile.get_y() / 8;
+        int tile_width8 = tile.get_width() / 8;
+        int tile_height8 = tile.get_height() / 8;
+
+        for (int i = 0; i < tile_height8; i++) {
+          for (int j = 0; j < tile_width8; j++) {
+
+            int x8 = tile_x8 + j;
+            int y8 = tile_y8 + i;
+            if (x8 >= 0 && x8 < map_width8 && y8 >= 0 && y8 < map_height8) {
+              int index = y8 * map_width8 + x8;
+              animated_tiles[layer][index] = true;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+/**
+ * @brief Returns whether a tile is overlapping an animated other tile.
+ * @param tile the tile to check
+ * @return true if this tile is overlapping an animated tile
+ */
+bool MapEntities::overlaps_animated_tile(Tile& tile) {
+
+  bool* animated_tiles_layer = animated_tiles[tile.get_layer()];
+
+  int tile_x8 = tile.get_x() / 8;
+  int tile_y8 = tile.get_y() / 8;
+  int tile_width8 = tile.get_width() / 8;
+  int tile_height8 = tile.get_height() / 8;
+
+  for (int i = 0; i < tile_height8; i++) {
+    for (int j = 0; j < tile_width8; j++) {
+
+      if (tile_x8 >= 0 && tile_x8 < map_width8 && tile_y8 >= 0 && tile_y8 < map_height8) {
+
+        int index = tile_y8 * map_width8 + tile_x8;
+        if (animated_tiles_layer[index]) {
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}
+
+/**
  * @brief Displays the entities on the map surface.
  */
 void MapEntities::display() {
@@ -641,13 +707,13 @@ void MapEntities::display() {
   for (int layer = 0; layer < LAYER_NB; layer++) {
 
     // draw the non-animated tiles
-    static_tiles_surfaces[layer]->blit(map.get_camera_position(), map.get_visible_surface());
-/*
+    non_animated_tiles_surfaces[layer]->blit(map.get_camera_position(), map.get_visible_surface());
+
     // draw the animated tiles
     for (unsigned int i = 0; i < tiles[layer].size(); i++) {
-      Tile *tile = tiles[layer][i];
-      if (!tile->is_static()) {
-        tile->display_on_map();
+      Tile& tile = *tiles[layer][i];
+      if (tile.is_animated() || overlaps_animated_tile(tile)) {
+        tile.display_on_map();
       }
     }
 
@@ -666,14 +732,14 @@ void MapEntities::display() {
     // put the sprites displayed at the hero's level, in the order
     // defined by their y position (including the hero)
     for (i = entities_displayed_y_order[layer].begin();
-	 i != entities_displayed_y_order[layer].end();
-	 i++) {
+	  i != entities_displayed_y_order[layer].end();
+	  i++) {
 
       MapEntity *entity = *i;
       if (entity->is_enabled()) {
         entity->display_on_map();
       }
-    }*/
+    }
   }
 }
 
@@ -730,7 +796,7 @@ void MapEntities::set_entity_layer(MapEntity *entity, Layer layer) {
  * @param rectangle a rectangle
  * @return true if this rectangle overlaps a raised crystal switch block
  */
-bool MapEntities::overlaps_raised_blocks(Layer layer, const Rectangle &rectangle) {
+bool MapEntities::overlaps_raised_blocks(Layer layer, const Rectangle& rectangle) {
 
   bool overlaps = false;
   std::list<CrystalSwitchBlock*> blocks = get_crystal_switch_blocks(layer);

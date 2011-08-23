@@ -637,7 +637,8 @@ void MapEntities::build_non_animated_tiles() {
   for (int layer = 0; layer < LAYER_NB; layer++) {
 
     non_animated_tiles_surfaces[layer] = new Surface(map_size.get_width(), map_size.get_height());
-    non_animated_tiles_surfaces[layer]->set_transparency_color(Color::get_black());
+    non_animated_tiles_surfaces[layer]->set_transparency_color(Color::get_magenta());
+    non_animated_tiles_surfaces[layer]->fill_with_color(Color::get_magenta());
 
     for (unsigned int i = 0; i < tiles[layer].size(); i++) {
       Tile& tile = *tiles[layer][i];
@@ -675,7 +676,7 @@ void MapEntities::build_non_animated_tiles() {
 
         if (animated_tiles[layer][index]) {
           Rectangle animated_square(x, y, 8, 8);
-          non_animated_tiles_surfaces[layer]->fill_with_color(Color::get_black(), animated_square);
+          non_animated_tiles_surfaces[layer]->fill_with_color(Color::get_magenta(), animated_square);
         }
         index++;
       }

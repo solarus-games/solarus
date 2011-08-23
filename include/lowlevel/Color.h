@@ -45,6 +45,8 @@ class Color {
     static Color green;
     static Color blue;
     static Color yellow;
+    static Color magenta;
+    static Color cyan;
 
     uint32_t get_internal_value();
     SDL_Color* get_internal_color();
@@ -60,6 +62,8 @@ class Color {
     static Color& get_green();
     static Color& get_blue();
     static Color& get_yellow();
+    static Color& get_magenta();
+    static Color& get_cyan();
 
     Color();
     Color(const Color &other);
@@ -112,6 +116,22 @@ inline Color& Color::get_blue() {
  */
 inline Color& Color::get_yellow() {
   return yellow;
+}
+
+/**
+ * @brief Returns the magenta color.
+ * @return the magenta color
+ */
+inline Color& Color::get_magenta() {
+  return magenta;
+}
+
+/**
+ * @brief Returns the cyan color.
+ * @return the cyan color
+ */
+inline Color& Color::get_cyan() {
+  return cyan;
 }
 
 #endif

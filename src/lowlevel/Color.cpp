@@ -28,6 +28,8 @@ Color Color::red;
 Color Color::green;
 Color Color::blue;
 Color Color::yellow;
+Color Color::magenta;
+Color Color::cyan;
 
 /**
  * @brief Initializes the color static fields.
@@ -42,6 +44,8 @@ void Color::initialize() {
   green =    Color(  0, 255,   0);
   blue =     Color(  0,   0, 255);
   yellow =   Color(255, 255,   0);
+  magenta =  Color(255,   0, 255);
+  cyan =     Color(  0, 255, 255);
 }
 
 /**

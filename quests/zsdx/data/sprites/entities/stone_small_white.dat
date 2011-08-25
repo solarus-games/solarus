@@ -1,11 +1,11 @@
-on_ground entities/destructible_items.png 1 0 -1
-48	0	16	24	8	13	1	1
+on_ground tileset 1 0 -1
+48	80	16	24	8	13	1	1
 
-stopped entities/destructible_items.png 1 0 -1
-48	0	16	24	8	13	1	1
+stopped tileset 1 0 -1
+48	80	16	24	8	13	1	1
 
-walking entities/destructible_items.png 1 100 0
-48	0	16	24	8	13	3	3
+walking tileset 1 100 0
+48	80	16	24	8	13	3	3
 
-destroy entities/destructible_items.png 1 100 -1
-0	24	32	32	16	29	8	8
+destroy tileset 1 100 -1
+0	136	32	32	16	29	8	8

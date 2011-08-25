@@ -614,6 +614,10 @@ void HeroSprites::set_suspended(bool suspended) {
 
   trail_sprite->set_suspended(suspended);
 
+  if (hero.is_ground_visible()) {
+    ground_sprite->set_suspended(suspended);
+  }
+
   // timer
   uint32_t now = System::now();
   if (suspended) {

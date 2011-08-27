@@ -117,7 +117,7 @@ public class Enemy extends MapEntity {
         if (name.equals("breed")) {
 
             if (value.length() > 0) {
-                sprite = new Sprite("enemies/" + value);
+                sprite = new Sprite("enemies/" + value, map);
                 setSizeImpl(sprite.getSize(null, 0));
             }
             else {

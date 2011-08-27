@@ -242,7 +242,7 @@ public class Project {
 
     /**
      * Loads an image of the project from a specified file name.
-     * If the image have been already loaded, it is not loaded again.
+     * If the image has been already loaded, it is not loaded again.
      * @param imageFileName the name of the image file to read, relative to the
      * data path of the project
      * @return the image

@@ -208,7 +208,7 @@ public class InteractiveEntity extends MapEntity {
         if (name.equals("sprite")) {
 
             if (value.length() > 0 && !value.equals("_none")) {
-                sprite = new Sprite(value);
+                sprite = new Sprite(value, map);
             }
             else {
                 sprite = null;

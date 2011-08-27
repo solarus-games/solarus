@@ -147,7 +147,7 @@ int Script::map_api_hud_set_pause_enabled(lua_State *l) {
 int Script::map_api_light_get(lua_State *l) {
 
   Script *script;
-  called_by_script(l, 1, &script);
+  called_by_script(l, 0, &script);
 
   int light = script->get_map().get_light();
 

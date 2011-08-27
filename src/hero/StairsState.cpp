@@ -34,8 +34,13 @@
  * @param stairs the stairs to take
  * @param way the way you are taking the stairs
  */
-Hero::StairsState::StairsState(Hero &hero, Stairs &stairs, Stairs::Way way):
-  State(hero), stairs(stairs), way(way), phase(0), next_phase_date(0), carried_item(NULL) {
+Hero::StairsState::StairsState(Hero& hero, Stairs& stairs, Stairs::Way way):
+  State(hero),
+  stairs(stairs),
+  way(way),
+  phase(0),
+  next_phase_date(0),
+  carried_item(NULL) {
 
 }
 
@@ -64,17 +69,17 @@ void Hero::StairsState::set_map(Map& map) {
  * @brief Starts this state.
  * @param previous_state the previous state
  */
-void Hero::StairsState::start(State *previous_state) {
+void Hero::StairsState::start(State* previous_state) {
 
   State::start(previous_state);
 
   // movement
   int speed = stairs.is_inside_floor() ? 40 : 24;
   std::string path = stairs.get_path(way);
-  PathMovement *movement = new PathMovement(path, speed, false, true, false);
+  PathMovement* movement = new PathMovement(path, speed, false, true, false);
 
   // sprites and sound
-  HeroSprites &sprites = get_sprites();
+  HeroSprites& sprites = get_sprites();
   if (carried_item == NULL) {
     sprites.set_animation_walking_normal();
   }
@@ -106,6 +111,17 @@ void Hero::StairsState::start(State *previous_state) {
 }
 
 /**
+ * @brief Stop this state.
+ * @param next_state the next state
+ */
+void Hero::StairsState::stop(State* next_state) {
+
+  State::stop(next_state);
+
+  get_sprites().set_clipping_rectangle();
+}
+
+/**
  * @brief Updates this state.
  */
 void Hero::StairsState::update() {
@@ -134,14 +150,14 @@ void Hero::StairsState::update() {
     if (hero.get_movement()->is_finished()) {
 
       if (way == Stairs::REVERSE_WAY) {
-	get_entities().set_entity_layer(&hero, LAYER_LOW);
+        get_entities().set_entity_layer(&hero, LAYER_LOW);
       }
       hero.clear_movement();
       if (carried_item == NULL) {
         hero.set_state(new FreeState(hero));
       }
       else {
-	hero.set_state(new CarryingState(hero, carried_item));
+        hero.set_state(new CarryingState(hero, carried_item));
       }
     }
   }
@@ -156,56 +172,56 @@ void Hero::StairsState::update() {
         hero.set_state(new FreeState(hero));
       }
       else {
-	hero.set_state(new CarryingState(hero, carried_item));
+        hero.set_state(new CarryingState(hero, carried_item));
       }
 
       if (way == Stairs::NORMAL_WAY) {
-	// we are on the old floor:
-	// there must be a teletransporter associated with these stairs,
-	// otherwise the hero would get stuck into the walls
-	Teletransporter *teletransporter = hero.get_delayed_teletransporter();
-	Debug::check_assertion(teletransporter != NULL, "Teletransporter expected with the stairs");
-	teletransporter->transport_hero(hero);
+        // we are on the old floor:
+        // there must be a teletransporter associated with these stairs,
+        // otherwise the hero would get stuck into the walls
+        Teletransporter *teletransporter = hero.get_delayed_teletransporter();
+        Debug::check_assertion(teletransporter != NULL, "Teletransporter expected with the stairs");
+        teletransporter->transport_hero(hero);
       }
       else {
-	// we are on the new floor: everything is finished
-	sprites.set_clipping_rectangle();
+        // we are on the new floor: everything is finished
+        sprites.set_clipping_rectangle();
       }
     }
     else { // movement not finished yet
 
       uint32_t now = System::now();
       if (now >= next_phase_date) {
-	phase++;
-	next_phase_date += 350;
+        phase++;
+        next_phase_date += 350;
 
-	// main movement direction corresponding to each animation direction while taking stairs
-	static const int movement_directions[] = { 0, 0, 2, 4, 4, 4, 6, 0 };
+        // main movement direction corresponding to each animation direction while taking stairs
+        static const int movement_directions[] = { 0, 0, 2, 4, 4, 4, 6, 0 };
 
-	int animation_direction = stairs.get_animation_direction(way);
-	if (phase == 2) { // the first phase of the movement is finished
-	  if (animation_direction % 2 != 0) {
-	    // if the stairs are spiral, take a diagonal direction of animation
-	    sprites.set_animation_walking_diagonal(animation_direction);
-	  }
-	  else {
-	    // otherwise, take a usual direction
-	    sprites.set_animation_direction(animation_direction / 2);
-	    sprites.set_animation_walking_normal();
-	  }
-	}
-	else if (phase == 3) { // the second phase of the movement (possibly diagonal) is finished
-	  sprites.set_animation_walking_normal();
+        int animation_direction = stairs.get_animation_direction(way);
+        if (phase == 2) { // the first phase of the movement is finished
+          if (animation_direction % 2 != 0) {
+            // if the stairs are spiral, take a diagonal direction of animation
+            sprites.set_animation_walking_diagonal(animation_direction);
+          }
+          else {
+            // otherwise, take a usual direction
+            sprites.set_animation_direction(animation_direction / 2);
+            sprites.set_animation_walking_normal();
+          }
+        }
+        else if (phase == 3) { // the second phase of the movement (possibly diagonal) is finished
+          sprites.set_animation_walking_normal();
 
-	  if (way == Stairs::NORMAL_WAY) {
-	    // on the old floor, take a direction towards the next floor
-	    sprites.set_animation_direction(movement_directions[animation_direction] / 2);
-	  }
-	  else {
-	    // on the new floor, take the opposite direction from the stairs
-	    sprites.set_animation_direction((stairs.get_direction() + 2) % 4);
-	  }
-	}
+          if (way == Stairs::NORMAL_WAY) {
+            // on the old floor, take a direction towards the next floor
+            sprites.set_animation_direction(movement_directions[animation_direction] / 2);
+          }
+          else {
+            // on the new floor, take the opposite direction from the stairs
+            sprites.set_animation_direction((stairs.get_direction() + 2) % 4);
+          }
+        }
       }
     }
   }

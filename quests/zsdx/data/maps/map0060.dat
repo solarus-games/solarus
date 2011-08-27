@@ -270,6 +270,7 @@
 1	0	104	61	from_B1_n_1	3	0
 2	0	96	48	16	16	teletransporter_31	0	1	59	from_1F_n_1
 19	0	96	48	stairs_10	1	1
+3	0	304	1045	piece_of_heart	1	413
 0	1	56	40	96	8	563
 0	1	88	40	32	8	551
 0	1	584	488	128	240	421
@@ -801,7 +802,7 @@
 12	1	264	984	8	32	custom_obstacle	1	1	1	1
 12	1	288	984	8	32	custom_obstacle_2	1	1	1	1
 1	1	280	1093	from_outside	1	0
-2	1	272	1104	16	16	teletransporter	0	1	6	from_dungeon_4
+2	1	272	1104	16	16	teletransporter	0	1	66	from_dungeon_4
 2	1	256	1080	16	16	teletransporter_18	0	0	62	destination_point
 18	1	88	232	door	1	4	401
 18	1	88	184	door_2	3	4	401

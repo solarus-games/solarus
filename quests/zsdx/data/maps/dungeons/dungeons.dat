@@ -356,41 +356,6 @@ y = 40
 save = 411
 big = 0
 
-[dungeon_4.map_60.chest_0]
-floor = 0
-x = 832
-y = 296
-save = 404
-big = 1
-
-[dungeon_4.map_60.chest_1]
-floor = 0
-x = 888
-y = 376
-save = 405
-big = 0
-
-[dungeon_4.map_60.chest_2]
-floor = 0
-x = 640
-y = 600
-save = 407
-big = 0
-
-[dungeon_4.map_60.chest_3]
-floor = 0
-x = 640
-y = 280
-save = 409
-big = 0
-
-[dungeon_4.map_60.chest_4]
-floor = 0
-x = 472
-y = 376
-save = 408
-big = 0
-
 [dungeon_10.map_17.chest_0]
 floor = 0
 x = 784
@@ -473,5 +438,40 @@ floor = 0
 x = 936
 y = 432
 save = 118
+big = 0
+
+[dungeon_4.map_60.chest_0]
+floor = 0
+x = 832
+y = 296
+save = 404
+big = 1
+
+[dungeon_4.map_60.chest_1]
+floor = 0
+x = 888
+y = 376
+save = 405
+big = 0
+
+[dungeon_4.map_60.chest_2]
+floor = 0
+x = 640
+y = 600
+save = 407
+big = 0
+
+[dungeon_4.map_60.chest_3]
+floor = 0
+x = 640
+y = 280
+save = 409
+big = 0
+
+[dungeon_4.map_60.chest_4]
+floor = 0
+x = 472
+y = 376
+save = 408
 big = 0
 

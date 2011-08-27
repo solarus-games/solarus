@@ -1,6 +1,7 @@
 -- Script of the Lamp
 
 temporary_lit_torches = {} -- list of torches that will be unlit by timers soon (FIFO)
+was_dark_room = false
 
 -- Called when the hero uses the Lamp
 function event_use()
@@ -41,6 +42,11 @@ function unlight_oldest_torch()
     torch_sprite = sol.map.interactive_entity_get_sprite(entity)    -- get its sprite
     sol.main.sprite_set_animation(torch_sprite, "unlit")            -- change the animation
   end
+
+  if #temporary_lit_torches == 0 and was_dark_room then
+    -- make the room dark again
+    sol.map.light_set(0)
+  end
 end
 
 -- Called when the player obtains the Lamp
@@ -79,6 +85,12 @@ function event_npc_collision_fire(npc_name)
       sol.main.sprite_set_animation(torch_sprite, "lit")
       sol.main.timer_start(10000, "unlight_oldest_torch", false)
       table.insert(temporary_lit_torches, npc_name)
+
+      if sol.map.light_get() == 0 then
+        -- light the room
+        was_dark_room = true
+        sol.map.light_set(1)
+      end
     end
   end
 end

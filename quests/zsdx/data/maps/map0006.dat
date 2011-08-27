@@ -1445,9 +1445,9 @@
 7	0	816	429	enemy_4	3	simple_green_soldier	0	-1	_random	0	-1
 5	0	728	24	chest	0	rupee	3	23
 8	0	136	125	beaumont_hill_sign	3	0	entities/sign	dialog#outside_world.beaumont_hill_sign
-6	0	152	48	16	8	jump_sensor	2	32
-6	0	176	64	8	16	jump_sensor_2	0	40
-6	0	136	64	8	16	jump_sensor_3	4	40
+6	0	144	48	32	8	jump_sensor	2	32
+6	0	176	56	8	32	jump_sensor_2	0	40
+6	0	136	56	8	32	jump_sensor_3	4	40
 4	0	760	485	3	_random	1	-1
 4	0	312	245	3	_random	1	-1
 6	0	376	152	80	8	jump_sensor_4	6	56

@@ -50,6 +50,8 @@ integers (above 1024):
 1129	sword
 1130	shield
 
+1200	beaumont cave (inferno maze): small keys counter
+
 booleans:
 
 0 to 9  reserved for tests
@@ -169,6 +171,9 @@ booleans:
 137	cake shop: bought the apple pie
 138	surprise wall: got the golden bars
 139	surprise wall: secret way open
+140	beaumont cave (inferno maze): chest with a fire stone
+141-146	beaumont cave (inferno maze): chests with small keys
+147-152 beaumont cave (inferno maze): small key blocks
 
 200-299: binbin dungeon
 200	1F: small key 1 door

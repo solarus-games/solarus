@@ -20,9 +20,9 @@ import java.awt.*;
 import java.awt.image.*;
 import java.io.*;
 import java.util.*;
-import java.util.Map;
 
 import org.solarus.editor.entities.MapEntity;
+import org.solarus.editor.Map;
 
 /**
  * Represents a sprite.
@@ -42,7 +42,12 @@ public class Sprite {
     /**
      * The animation set of this sprite.
      */
-    private Map<String, SpriteAnimation> animations;
+    private TreeMap<String, SpriteAnimation> animations;
+
+    /**
+     * The map where this sprite is supposed to be displayed.
+     */
+    private Map map;
 
     /**
      * Analyzes the description file of the animation set used by this sprite
@@ -74,7 +79,15 @@ public class Sprite {
                 int frameDelay = Integer.parseInt(tokenizer.nextToken());
                 int loopOnFrame = Integer.parseInt(tokenizer.nextToken());
 
-                BufferedImage srcImage = Project.getProjectImage("sprites/" + imageFileName);
+                BufferedImage srcImage;
+
+                if (!imageFileName.equals("tileset")) {
+                  srcImage = Project.getProjectImage("sprites/" + imageFileName);
+                }
+                else {
+                  srcImage = Project.getProjectImage("tilesets/" + Project.getTilesetEntitiesImageFile(map.getTilesetId()).getName());
+                }
+
                 SpriteAnimationDirection[] directions = new SpriteAnimationDirection[nbDirections];
 
                 // read each direction
@@ -124,10 +137,12 @@ public class Sprite {
     /**
      * Creates a sprite from the specified animation set id
      * @param animationSetId id of the animation set to use 
+     * @param map the map where this sprite will be displayed (if any)
      */
-    public Sprite(String animationSetId) throws MapException {
+    public Sprite(String animationSetId, Map map) throws MapException {
 
         this.animationSetId = animationSetId;
+        this.map = map;
         parse();
     }
 

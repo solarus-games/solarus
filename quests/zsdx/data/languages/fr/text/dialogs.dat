@@ -2905,6 +2905,12 @@ next = outside_world.beaumont_hill_sign.2
 line1 = "passera une bonne"
 line2 = "journée."
 
+[outside_world.beaumont_hill_put_edelweiss]
+# Le joueur plante l'edelweiss au sommet de la Colline de Beaumont
+#       |-----------------------|
+line1 = "Tu plantes ton"
+line2 = "edelweiss..."
+
 [link_house.dream]
 # Link qui entend Sahasrahla en rêve en dormant dans son lit après l'intro
 #       |-----------------------|

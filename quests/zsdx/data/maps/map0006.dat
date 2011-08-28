@@ -1370,7 +1370,7 @@
 0	0	328	200	16	8	900
 0	0	128	112	16	16	1039
 0	0	152	296	8	16	44
-0	0	152	64	16	16	825
+10	0	152	64	16	16	beaumont_cave_hole	825	1
 10	0	344	168	16	8	no_ladder_step1_4	194	1
 10	0	328	176	16	16	no_ladder_2	192	1
 3	0	544	109	heart	1	48
@@ -1495,8 +1495,9 @@
 1	0	280	349	from_twin_caves_west	3	0
 1	0	376	349	from_twin_caves_east	3	0
 2	0	272	320	16	16	to_twin_caves_west	0	1	29	from_outside_west
-2	0	152	64	16	16	teletransporter	0	1	66	from_outside
+2	0	152	64	16	16	to_beaumont_cave	0	1	66	from_outside
 1	0	160	93	from_beaumont_cave	3	0
+13	0	160	93	16	16	edelweiss_sensor	0
 0	2	0	400	48	16	512
 0	2	0	416	48	40	511
 0	2	48	408	8	40	514

@@ -111,17 +111,6 @@ void Hero::StairsState::start(State* previous_state) {
 }
 
 /**
- * @brief Stop this state.
- * @param next_state the next state
- */
-void Hero::StairsState::stop(State* next_state) {
-
-  State::stop(next_state);
-
-  get_sprites().set_clipping_rectangle();
-}
-
-/**
  * @brief Updates this state.
  */
 void Hero::StairsState::update() {

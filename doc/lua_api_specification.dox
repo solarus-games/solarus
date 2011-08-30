@@ -836,10 +836,10 @@ called when the map starts, before the opening transition
 - <tt>event_map_opening_transition_finished(destination_point_name)</tt>:
 called after the opening transition of the map
 
-- <tt>event_switch_enabled(switch_name)</tt>:
+- <tt>event_switch_activated(switch_name)</tt>:
 called when a switch has just been activated
 
-- <tt>event_switch_disabled(switch_name)</tt>:
+- <tt>event_switch_inactivated(switch_name)</tt>:
 called when a switch has just been disabled
 
 - <tt>event_switch_left(switch_name)</tt>:

@@ -464,6 +464,7 @@ void Hero::set_map(Map &map) {
   last_solid_ground_coords.set_xy(-1, -1);
   target_solid_ground_coords.set_xy(-1, -1);
   ground = GROUND_NORMAL;
+  get_sprites().set_clipping_rectangle();
 
   state->set_map(map);
 }
@@ -868,20 +869,20 @@ int Hero::get_real_movement_direction8() {
       xy_move = direction_to_xy_move(alternative_direction8);
       collision_box.add_xy(xy_move.get_x(), xy_move.get_y());
       if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, *this)) {
-	result = alternative_direction8;
+        result = alternative_direction8;
       }
       else {
         alternative_direction8 = (wanted_direction8 - 1) % 8;
         collision_box = get_bounding_box();
-	xy_move = direction_to_xy_move(alternative_direction8);
-	collision_box.add_xy(xy_move.get_x(), xy_move.get_y());
+        xy_move = direction_to_xy_move(alternative_direction8);
+        collision_box.add_xy(xy_move.get_x(), xy_move.get_y());
         if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, *this)) {
-	  result = alternative_direction8;
+          result = alternative_direction8;
         }
-	else {
-	  // he is not sliding, he wants to move but can't
+        else {
+          // he is not sliding, he wants to move but can't
           result = wanted_direction8;
-	}
+        }
       }
     }
   }

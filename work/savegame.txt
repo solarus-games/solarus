@@ -175,6 +175,7 @@ booleans:
 141-146	beaumont cave (inferno maze): chests with small keys
 147-152 beaumont cave (inferno maze): small key blocks
 153	beaumont cave opened with the edelweiss
+154	inferno river maze: chest with a fire stone
 
 200-299: binbin dungeon
 200	1F: small key 1 door

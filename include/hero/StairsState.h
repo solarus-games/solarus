@@ -45,6 +45,7 @@ class Hero::StairsState: public Hero::State {
     ~StairsState();
 
     void start(State* previous_state);
+    void stop(State* next_state);
     void set_map(Map& map);
     void update();
     void set_suspended(bool suspended);

@@ -286,6 +286,8 @@ void Game::update_transitions() {
     }
   }
 
+  Rectangle previous_map_location = current_map->get_location();
+
   // if a transition was playing and has just been finished
   if (transition != NULL && transition->is_finished()) {
 
@@ -305,51 +307,51 @@ void Game::update_transitions() {
     else if (transition_direction == Transition::OUT) {
 
       if (next_map == current_map) {
-	// same map
-	hero->place_on_destination_point(*current_map);
-	transition = Transition::create(transition_style, Transition::IN, this);
-	transition->start();
-	next_map = NULL;
+        // same map
+        hero->place_on_destination_point(*current_map, previous_map_location);
+        transition = Transition::create(transition_style, Transition::IN, this);
+        transition->start();
+        next_map = NULL;
       }
       else {
 
-	// change the map
-	current_map->leave();
+        // change the map
+        current_map->leave();
 
-	// special treatments for an inside/outside transition
-	if ((current_map->is_in_outside_world() && !next_map->is_in_outside_world())
-	    || (!current_map->is_in_outside_world() && next_map->is_in_outside_world())) {
+        // special treatments for an inside/outside transition
+        if ((current_map->is_in_outside_world() && !next_map->is_in_outside_world())
+            || (!current_map->is_in_outside_world() && next_map->is_in_outside_world())) {
 
-	  // reset the crystal switch blocks
-	  crystal_switch_state = false;
+          // reset the crystal switch blocks
+          crystal_switch_state = false;
 
-	  // save the location
-	  savegame.set_integer(Savegame::STARTING_MAP, next_map->get_id());
-	  savegame.set_string(Savegame::STARTING_POINT, next_map->get_destination_point_name());
-	}
+          // save the location
+          savegame.set_integer(Savegame::STARTING_MAP, next_map->get_id());
+          savegame.set_string(Savegame::STARTING_POINT, next_map->get_destination_point_name());
+        }
 
-	// before closing the map, draw it on a backup surface for transition effects
-	// that want to display both maps at the same time
-	if (needs_previous_surface) {
-	  previous_map_surface = new Surface(320, 240);
-	  current_map->display();
-	  current_map->get_visible_surface()->blit(previous_map_surface);
-	}
+        // before closing the map, draw it on a backup surface for transition effects
+        // that want to display both maps at the same time
+        if (needs_previous_surface) {
+          previous_map_surface = new Surface(320, 240);
+          current_map->display();
+          current_map->get_visible_surface()->blit(previous_map_surface);
+        }
 
-	// set the next map
-	load_dungeon();
-	current_map->unload();
-	delete current_map;
-	current_map = next_map;
-	next_map = NULL;
+        // set the next map
+        load_dungeon();
+        current_map->unload();
+        delete current_map;
+        current_map = next_map;
+        next_map = NULL;
       }
     }
     else {
       current_map->notify_opening_transition_finished();
 
       if (previous_map_surface != NULL) {
-	delete previous_map_surface;
-	previous_map_surface = NULL;
+        delete previous_map_surface;
+        previous_map_surface = NULL;
       }
     }
   }
@@ -363,7 +365,7 @@ void Game::update_transitions() {
       transition->set_previous_surface(previous_map_surface);
     }
 
-    hero->place_on_destination_point(*current_map);
+    hero->place_on_destination_point(*current_map, previous_map_location);
     transition->start();
     current_map->start();
   }

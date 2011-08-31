@@ -69,7 +69,6 @@ Bugs :
 - Bottes de pégase vers trou avec fond vers le nord : le téléporteur ne se déclenche pas
 - SOLARUS_DEBUG_LEVEL = 0 : segfault
 - quand on porte un objet, l'affichage de cet objet devient aléatoire si on change de map et que la nouvelle map n'a pas le même tileset (outside world A2 vers B2)
-- si link porte un objet, descend des marches et tombe dans l'eau, l'objet reste affiché au-dessus de l'eau
 
 
 Ennemis à faire (reprendre graphismes de MC + graphismes rippés) :

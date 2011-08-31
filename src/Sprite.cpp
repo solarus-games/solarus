@@ -155,7 +155,6 @@ SpriteAnimationSet& Sprite::get_animation_set() {
  * @param map the map
  */
 void Sprite::set_map(Map &map) {
-
   animation_set.set_map(map);
 }
 

@@ -470,6 +470,15 @@ void Hero::set_map(Map &map) {
 }
 
 /**
+ * @brief Notifies this entity that its map has just become active.
+ */
+void Hero::notify_map_started() {
+
+  MapEntity::notify_map_started();
+  get_sprites().notify_map_started();
+}
+
+/**
  * @brief Sets the hero's current map.
  *
  * This function is called when the map is changed.

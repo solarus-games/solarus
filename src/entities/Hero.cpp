@@ -491,8 +491,10 @@ void Hero::set_map(Map &map, int initial_direction) {
 /**
  * @brief Places the hero on the map specified and at its destination point selected.
  * @param map the new map
+ * @param previous_map_location position of the previous map in its world
+ * (may be needed for scrolling transitions, but the previous map is already destroyed)
  */
-void Hero::place_on_destination_point(Map &map) {
+void Hero::place_on_destination_point(Map& map, const Rectangle& previous_map_location) {
 
   const std::string &destination_point_name = map.get_destination_point_name();
 
@@ -517,43 +519,42 @@ void Hero::place_on_destination_point(Map &map) {
     if (side != -1) {
 
       // go to a side of the other map
-      Map& old_map = get_map(); // FIXME the old map is already destroyed
       set_map(map);
 
       switch (side) {
 
-	case 0: // right side
-	  set_x(map.get_width());
-	  set_y(get_y() - map.get_location().get_y() + old_map.get_location().get_y());
-	  break;
+      case 0: // right side
+        set_x(map.get_width());
+        set_y(get_y() - map.get_location().get_y() + previous_map_location.get_y());
+        break;
 
-	case 1: // top side
-	  set_y(5);
-          set_x(get_x() - map.get_location().get_x() + old_map.get_location().get_x());
-	  break;
+      case 1: // top side
+        set_y(5);
+        set_x(get_x() - map.get_location().get_x() + previous_map_location.get_x());
+        break;
 
-	case 2: // left side
-	  set_x(0);
-          set_y(get_y() - map.get_location().get_y() + old_map.get_location().get_y());
-	  break;
+      case 2: // left side
+        set_x(0);
+        set_y(get_y() - map.get_location().get_y() + previous_map_location.get_y());
+        break;
 
-	case 3: // bottom side
-	  set_y(map.get_height() + 5);
-          set_x(get_x() - map.get_location().get_x() + old_map.get_location().get_x());
-	  break;
+      case 3: // bottom side
+        set_y(map.get_height() + 5);
+        set_x(get_x() - map.get_location().get_x() + previous_map_location.get_x());
+        break;
 
-	default:
-	  Debug::die(StringConcat() << "Invalid destination side: " << side);
+      default:
+        Debug::die(StringConcat() << "Invalid destination side: " << side);
       }
       last_solid_ground_coords = get_xy();
-      // note that we keep the state from the previous map
+      // note that we keep the hero's state from the previous map
     }
     else {
 
       // normal case: the location is specified by a destination point object
 
       DestinationPoint *destination_point = (DestinationPoint*)
-	map.get_entities().get_entity(DESTINATION_POINT, destination_point_name);
+	    map.get_entities().get_entity(DESTINATION_POINT, destination_point_name);
 
       set_map(map, destination_point->get_direction());
       set_xy(destination_point->get_x(), destination_point->get_y());
@@ -565,11 +566,11 @@ void Hero::place_on_destination_point(Map &map) {
       Stairs *stairs = get_stairs_overlapping();
       if (stairs != NULL) {
         // the hero arrived on the map by stairs
-	set_state(new StairsState(*this, *stairs, Stairs::REVERSE_WAY));
+        set_state(new StairsState(*this, *stairs, Stairs::REVERSE_WAY));
       }
       else {
-	// the hero arrived on the map by a usual destination point
-	start_free();
+        // the hero arrived on the map by a usual destination point
+        start_free();
       }
     }
   }

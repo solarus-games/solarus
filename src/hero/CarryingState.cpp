@@ -73,22 +73,22 @@ void Hero::CarryingState::stop(State *next_state) {
 
     switch (next_state->get_previous_carried_item_behavior(*carried_item)) {
 
-      case CarriedItem::BEHAVIOR_THROW:
-        throw_item();
-        break;
+    case CarriedItem::BEHAVIOR_THROW:
+      throw_item();
+      break;
 
-      case CarriedItem::BEHAVIOR_DESTROY:
-	delete carried_item;
-	carried_item = NULL;
-	get_sprites().set_lifted_item(NULL);
-	break;
+    case CarriedItem::BEHAVIOR_DESTROY:
+      delete carried_item;
+      carried_item = NULL;
+      get_sprites().set_lifted_item(NULL);
+      break;
 
-      case CarriedItem::BEHAVIOR_KEEP:
-	carried_item = NULL;
-	break;
+    case CarriedItem::BEHAVIOR_KEEP:
+      carried_item = NULL;
+      break;
 
-      default:
-	Debug::die("Invalid carried item behavior");
+    default:
+      Debug::die("Invalid carried item behavior");
     }
   }
 }

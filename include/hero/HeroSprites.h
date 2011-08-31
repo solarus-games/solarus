@@ -92,6 +92,7 @@ class HeroSprites {
     void display_on_map();
     void set_suspended(bool suspended);
     void rebuild_equipment();
+    void notify_map_started();
 
     void blink();
     void stop_blinking();

@@ -285,7 +285,6 @@ void HeroSprites::stop_displaying_trail() {
   trail_sprite->stop_animation();
 }
 
-
 /**
  * @brief Makes the hero blink for a while.
  */
@@ -629,12 +628,24 @@ void HeroSprites::set_suspended(bool suspended) {
 }
 
 /**
+ * @brief Notifies this entity that its map has just become active.
+ */
+void HeroSprites::notify_map_started() {
+
+  // the lifted item may be tileset dependent
+  if (lifted_item != NULL) {
+    lifted_item->notify_map_started();
+  }
+}
+
+/**
  * @brief Restarts the animation of the hero's sprites.
  *
  * This function is called when the sprites have to
  * get back to their first frame.
  */
 void HeroSprites::restart_animation() {
+
   tunic_sprite->restart_animation();
 
   if (is_sword_visible()) {

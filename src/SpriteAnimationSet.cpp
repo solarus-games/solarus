@@ -71,9 +71,9 @@ SpriteAnimationSet::SpriteAnimationSet(const SpriteAnimationSetId &id) {
     for (int i = 0; i < nb_directions; i++) {
 
       do {
-	if (!std::getline(sprite_file, line)) {
-	  Debug::die(StringConcat() << "Unexpected end of input in file '" << file_name << "'");
-	}
+        if (!std::getline(sprite_file, line)) {
+          Debug::die(StringConcat() << "Unexpected end of input in file '" << file_name << "'");
+        }
       }
       while (line.size() == 0);
 
@@ -88,21 +88,21 @@ SpriteAnimationSet::SpriteAnimationSet(const SpriteAnimationSetId &id) {
       FileTools::read(iss, columns);
 
       if (nb_frames % columns == 0) {
-	rows = nb_frames / columns;
+        rows = nb_frames / columns;
       }
       else {
-	rows = (nb_frames / columns) + 1;
+        rows = (nb_frames / columns) + 1;
       }
 
       positions_in_src = new Rectangle[nb_frames];
       int j = 0; // frame number
       for (int r = 0; r < rows && j < nb_frames; r++) {	
-	for (int c = 0; c < columns && j < nb_frames; c++) {
+        for (int c = 0; c < columns && j < nb_frames; c++) {
 
-	  positions_in_src[j].set_xy(x + c * width, y + r * height);
-	  positions_in_src[j].set_size(width, height);
-	  j++;
-	}
+          positions_in_src[j].set_xy(x + c * width, y + r * height);
+          positions_in_src[j].set_size(width, height);
+          j++;
+        }
       }
 
       directions[i] = new SpriteAnimationDirection(nb_frames, positions_in_src, x_origin, y_origin);

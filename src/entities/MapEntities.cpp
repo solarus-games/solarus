@@ -267,6 +267,7 @@ void MapEntities::notify_map_started() {
     MapEntity *entity = *i;
     entity->notify_map_started();
   }
+  hero.notify_map_started();
 
   // pre-render non-animated tiles
   build_non_animated_tiles();

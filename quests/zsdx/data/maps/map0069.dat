@@ -139,6 +139,13 @@
 0	0	440	88	24	16	273
 0	0	440	80	24	8	271
 0	0	440	104	24	8	272
+0	0	80	136	32	16	443
+0	0	360	80	16	32	444
+0	0	80	408	32	16	443
+0	0	376	528	16	32	445
+0	0	744	256	16	32	444
+0	0	504	320	16	32	444
+0	0	712	80	16	32	445
 19	0	128	88	stairs_2	0	4
 19	0	288	536	stairs_3	2	4
 19	0	88	320	stairs_4	1	4
@@ -150,18 +157,17 @@
 4	0	800	277	0	_none	1	-1
 11	0	88	88	water_5_on_switch	1	0	0
 4	0	96	101	0	_none	1	-1
+0	1	40	16	816	24	49
 0	1	392	488	256	112	2
 0	1	640	488	8	112	182
 0	1	528	24	8	16	304
 0	1	552	24	8	16	301
 0	1	536	24	16	16	250
 0	1	16	16	24	24	45
-0	1	40	16	816	24	49
 0	1	856	16	24	24	46
 0	1	16	600	24	24	47
 0	1	16	40	24	560	51
 0	1	144	80	8	32	354
-0	1	80	136	32	16	443
 0	1	472	40	144	176	2
 0	1	152	40	208	112	2
 0	1	40	152	96	160	2
@@ -300,16 +306,10 @@
 0	1	472	208	8	8	16
 0	1	472	144	8	8	184
 0	1	280	528	8	32	267
-0	1	376	528	16	32	445
-0	1	80	408	32	16	443
 0	1	80	312	32	8	363
-0	1	504	320	16	32	444
 0	1	608	320	8	32	354
-0	1	744	256	16	32	444
 0	1	784	216	32	8	363
 0	1	616	80	8	32	267
-0	1	712	80	16	32	445
-0	1	360	80	16	32	444
 0	1	464	80	8	32	354
 0	1	40	152	8	8	69
 0	1	72	152	8	8	69
@@ -412,23 +412,30 @@
 0	1	584	488	64	8	179
 0	1	576	488	8	8	186
 0	1	640	488	8	8	15
+6	1	80	312	32	8	water_6_on_jump_sensor	6	40
+6	1	784	216	32	8	water_2_on_jump_sensor	6	40
+6	1	616	80	8	32	water_1_on_jump_sensor	0	40
+6	1	280	528	8	32	water_5_on_jump_sensor	0	40
+6	1	608	320	8	32	water_3_on_jump_sensor	4	40
+6	1	464	80	8	32	water_7_on_jump_sensor	4	40
+6	1	144	80	8	32	water_4_on_jump_sensor	4	40
 1	1	544	37	from_1f	3	0
 2	1	536	24	16	16	teletransporter	0	1	68	from_b1
 19	1	536	24	stairs	1	0
-12	1	120	80	32	8	custom_obstacle	1	1	1	1
-12	1	120	104	32	8	custom_obstacle_2	1	1	1	1
-12	1	280	528	32	8	custom_obstacle_3	1	1	1	1
-12	1	280	552	32	8	custom_obstacle_4	1	1	1	1
-12	1	80	312	8	32	custom_obstacle_5	1	1	1	1
-12	1	104	312	8	32	custom_obstacle_6	1	1	1	1
-12	1	584	320	32	8	custom_obstacle_7	1	1	1	1
-12	1	584	344	32	8	custom_obstacle_9	1	1	1	1
-12	1	784	216	8	32	custom_obstacle_10	1	1	1	1
-12	1	808	216	8	32	custom_obstacle_11	1	1	1	1
-12	1	616	80	32	8	custom_obstacle_12	1	1	1	1
-12	1	616	104	32	8	custom_obstacle_13	1	1	1	1
-12	1	440	80	32	8	custom_obstacle_14	1	1	1	1
-12	1	440	104	32	8	custom_obstacle_15	1	1	1	1
+12	1	144	80	8	8	water_4_off_obstacle_1	1	1	1	1
+12	1	144	104	8	8	water_4_off_obstacle_2	1	1	1	1
+12	1	280	528	8	8	water_5_off_obstacle_1	1	1	1	1
+12	1	280	552	8	8	water_5_off_obstacle_2	1	1	1	1
+12	1	80	312	8	8	water_6_off_obstacle_1	1	1	1	1
+12	1	104	312	8	8	water_6_off_obstacle_2	1	1	1	1
+12	1	608	320	8	8	water_3_off_obstacle_2	1	1	1	1
+12	1	608	344	8	8	water_3_off_obstacle_1	1	1	1	1
+12	1	784	216	8	8	water_2_off_obstacle_2	1	1	1	1
+12	1	808	216	8	8	water_2_off_obstacle_1	1	1	1	1
+12	1	616	80	8	8	water_1_off_obstacle_1	1	1	1	1
+12	1	616	104	8	8	water_1_off_obstacle_2	1	1	1	1
+12	1	464	80	8	8	water_7_off_obstacle_2	1	1	1	1
+12	1	464	104	8	8	water_7_off_obstacle_1	1	1	1	1
 5	1	520	464	chest_2	0	fire_stone	1	154
 6	1	384	528	8	32	jump_sensor	4	40
 6	1	504	320	8	32	jump_sensor_2	0	40
@@ -445,36 +452,78 @@
 9	1	552	205	water_2_off_block	2	0	2
 11	1	264	232	water_6_on_switch	1	0	0
 4	1	272	245	0	_none	1	-1
-9	1	232	373	water_4_on_block	0	0	2
-9	1	232	389	water_4_off_block	2	0	2
-10	1	296	504	80	80	water_5_full	424	0
-10	1	304	512	64	64	water_5_less_1	424	0
-10	1	312	520	48	48	water_5_less_2	424	0
-10	1	320	528	32	32	water_5_less_3	424	0
-10	1	56	328	80	80	water_6_full	424	0
-10	1	64	336	64	64	water_6_less_1	424	0
-10	1	72	344	48	48	water_6_less_2	424	0
-10	1	80	352	32	32	water_6_less_3	424	0
-10	1	56	56	80	80	water_4_full	424	0
-10	1	64	64	64	64	water_4_less_1	424	0
-10	1	72	72	48	48	water_4_less_2	424	0
-10	1	80	80	32	32	water_4_less_3	424	0
-10	1	376	56	80	80	water_7_full	424	0
-10	1	384	64	64	64	water_7_less_1	424	0
-10	1	392	72	48	48	water_7_less_2	424	0
-10	1	400	80	32	32	water_7_less_3	424	0
-10	1	632	56	80	80	water_1_full	424	0
-10	1	640	64	64	64	water_1_less_1	424	0
-10	1	648	72	48	48	water_1_less_2	424	0
-10	1	656	80	32	32	water_1_less_3	424	0
-10	1	760	232	80	80	water_2_full	424	0
-10	1	768	240	64	64	water_2_less_1	424	0
-10	1	776	248	48	48	water_2_less_2	424	0
-10	1	784	256	32	32	water_2_less_3	424	0
-10	1	520	296	80	80	water_3_full	424	0
-10	1	528	304	64	64	water_3_less_1	424	0
-10	1	536	312	48	48	water_3_less_2	424	0
-10	1	544	320	32	32	water_3_less_3	424	0
+9	1	232	373	water_4_on_block	3	0	2
+9	1	232	389	water_4_off_block	1	0	2
+10	1	288	496	96	96	water_5_full	424	0
+10	1	296	504	80	80	water_5_less_1	424	0
+10	1	304	512	64	64	water_5_less_2	424	0
+10	1	312	520	48	48	water_5_less_3	424	0
+10	1	48	320	96	96	water_6_full	424	0
+10	1	56	328	80	80	water_6_less_1	424	0
+10	1	64	336	64	64	water_6_less_2	424	0
+10	1	72	344	48	48	water_6_less_3	424	0
+10	1	48	48	96	96	water_4_full	424	0
+10	1	56	56	80	80	water_4_less_1	424	0
+10	1	64	64	64	64	water_4_less_2	424	0
+10	1	72	72	48	48	water_4_less_3	424	0
+10	1	368	48	96	96	water_7_full	424	0
+10	1	376	56	80	80	water_7_less_1	424	0
+10	1	384	64	64	64	water_7_less_2	424	0
+10	1	392	72	48	48	water_7_less_3	424	0
+10	1	624	48	96	96	water_1_full	424	0
+10	1	632	56	80	80	water_1_less_1	424	0
+10	1	640	64	64	64	water_1_less_2	424	0
+10	1	648	72	48	48	water_1_less_3	424	0
+10	1	752	224	96	96	water_2_full	424	0
+10	1	760	232	80	80	water_2_less_1	424	0
+10	1	768	240	64	64	water_2_less_2	424	0
+10	1	776	248	48	48	water_2_less_3	424	0
+10	1	512	288	96	96	water_3_full	424	0
+10	1	520	296	80	80	water_3_less_1	424	0
+10	1	528	304	64	64	water_3_less_2	424	0
+10	1	536	312	48	48	water_3_less_3	424	0
+12	1	360	40	112	8	custom_obstacle	1	1	1	1
+12	1	360	144	112	8	custom_obstacle_2	1	1	1	1
+12	1	360	48	8	32	custom_obstacle_3	1	1	1	1
+12	1	360	112	8	32	custom_obstacle_4	1	1	1	1
+12	1	464	48	8	32	custom_obstacle_5	1	1	1	1
+12	1	464	112	8	32	custom_obstacle_6	1	1	1	1
+12	1	616	40	112	8	custom_obstacle_7	1	1	1	1
+12	1	616	144	112	8	custom_obstacle_8	1	1	1	1
+12	1	616	48	8	32	custom_obstacle_9	1	1	1	1
+12	1	616	112	8	32	custom_obstacle_10	1	1	1	1
+12	1	720	48	8	32	custom_obstacle_11	1	1	1	1
+12	1	720	112	8	32	custom_obstacle_12	1	1	1	1
+12	1	504	280	112	8	custom_obstacle_13	1	1	1	1
+12	1	504	384	112	8	custom_obstacle_14	1	1	1	1
+12	1	504	288	8	32	custom_obstacle_15	1	1	1	1
+12	1	504	352	8	32	custom_obstacle_16	1	1	1	1
+12	1	608	288	8	32	custom_obstacle_17	1	1	1	1
+12	1	608	352	8	32	custom_obstacle_18	1	1	1	1
+12	1	280	488	112	8	custom_obstacle_19	1	1	1	1
+12	1	280	592	112	8	custom_obstacle_20	1	1	1	1
+12	1	280	496	8	32	custom_obstacle_21	1	1	1	1
+12	1	280	560	8	32	custom_obstacle_22	1	1	1	1
+12	1	384	496	8	32	custom_obstacle_23	1	1	1	1
+12	1	384	560	8	32	custom_obstacle_24	1	1	1	1
+12	1	40	320	8	96	custom_obstacle_25	1	1	1	1
+12	1	144	320	8	96	custom_obstacle_26	1	1	1	1
+12	1	40	312	40	8	custom_obstacle_27	1	1	1	1
+12	1	112	312	40	8	custom_obstacle_28	1	1	1	1
+12	1	40	416	40	8	custom_obstacle_29	1	1	1	1
+12	1	112	416	40	8	custom_obstacle_30	1	1	1	1
+12	1	40	48	8	96	custom_obstacle_31	1	1	1	1
+12	1	40	40	112	8	custom_obstacle_32	1	1	1	1
+12	1	40	144	40	8	custom_obstacle_33	1	1	1	1
+12	1	112	144	40	8	custom_obstacle_34	1	1	1	1
+12	1	144	48	8	32	custom_obstacle_35	1	1	1	1
+12	1	144	112	8	32	custom_obstacle_36	1	1	1	1
+12	1	744	224	8	32	custom_obstacle_37	1	1	1	1
+12	1	744	288	8	32	custom_obstacle_38	1	1	1	1
+12	1	744	216	40	8	custom_obstacle_39	1	1	1	1
+12	1	816	216	40	8	custom_obstacle_40	1	1	1	1
+12	1	744	320	112	8	custom_obstacle_41	1	1	1	1
+12	1	848	224	8	96	custom_obstacle_42	1	1	1	1
 0	2	528	16	32	8	309
 0	2	536	16	16	8	346
 0	2	0	0	896	16	170

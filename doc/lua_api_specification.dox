@@ -423,11 +423,23 @@ returns whether a custom obstacle is enabled
 - <tt>sol.map.obstacle_set_enabled(custom_obstacle_name, enable)</tt>:
 enables or disables a custom obstacle
 
+- <tt>sol.map.obstacle_set_group_enabled(custom_obstacles_prefix, enable)</tt>:
+enables or disables all custom obstacles having a common prefix
+
 - <tt>sol.map.sensor_is_enabled(sensor_name)</tt>:
 returns whether a sensor is enabled
 
 - <tt>sol.map.sensor_set_enabled(sensor_name, enable)</tt>:
 enables or disables a sensor
+
+- <tt>sol.map.jump_sensor_is_enabled(jump_sensor_name)</tt>:
+returns whether a jump sensor is enabled
+
+- <tt>sol.map.jump_sensor_set_enabled(jump_sensor_name, enable)</tt>:
+enables or disables a jump sensor
+
+- <tt>sol.map.jump_sensor_set_group_enabled(jump_sensors_prefix, enable)</tt>:
+enables or disables all jump sensors having a common prefix
 
 - <tt>sol.map.crystal_switch_is_enabled(crystal_switch_name)</tt>:
 returns whether a crystal switch is enabled (i.e. whether it is visible)  

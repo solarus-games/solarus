@@ -26,14 +26,13 @@ class Hero::PlungingState: public Hero::State {
 
   public:
 
-    PlungingState(Hero &hero);
+    PlungingState(Hero& hero);
     ~PlungingState();
 
-    void start(State *previous_state);
+    void start(State* previous_state);
     void update();
     bool can_start_gameover_sequence();
     bool is_touching_ground();
-    CarriedItem::Behavior get_previous_carried_item_behavior(CarriedItem& carried_item);
 };
 
 #endif

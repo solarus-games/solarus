@@ -168,3 +168,4 @@ bool Hero::SwimmingState::is_stairs_obstacle(Stairs& stairs) {
 bool Hero::SwimmingState::can_take_jump_sensor() {
   return true;
 }
+

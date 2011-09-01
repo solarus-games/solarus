@@ -27,7 +27,7 @@
  * @brief Constructor.
  * @param hero the hero controlled by this state
  */
-Hero::PlungingState::PlungingState(Hero &hero):
+Hero::PlungingState::PlungingState(Hero& hero):
   State(hero) {
 
 }
@@ -43,7 +43,7 @@ Hero::PlungingState::~PlungingState() {
  * @brief Starts this state.
  * @param previous_state the previous state
  */
-void Hero::PlungingState::start(State *previous_state) {
+void Hero::PlungingState::start(State* previous_state) {
 
   State::start(previous_state);
 
@@ -99,15 +99,5 @@ bool Hero::PlungingState::can_start_gameover_sequence() {
  */
 bool Hero::PlungingState::is_touching_ground() {
   return false;
-}
-
-/**
- * @brief Returns the action to do with an item previously carried by the hero when this state starts.
- * @param carried_item the item carried in the previous state
- * @return the action to do with a previous carried item when this state starts
- */
-CarriedItem::Behavior Hero::PlungingState::get_previous_carried_item_behavior(CarriedItem& carried_item) {
-
-  return CarriedItem::BEHAVIOR_DESTROY;
 }
 

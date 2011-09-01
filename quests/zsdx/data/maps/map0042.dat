@@ -944,14 +944,15 @@
 18	1	704	280	door	1	1	125
 18	1	704	232	door_2	3	1	125
 4	1	664	61	0	_random	1	-1
-12	1	744	616	8	8	custom_obstacle_3	1	1	1	1
-12	1	976	616	8	8	custom_obstacle_4	1	1	1	1
+12	1	744	616	8	72	custom_obstacle_3	1	1	1	1
+12	1	976	616	8	72	custom_obstacle_4	1	1	1	1
 6	1	752	616	224	8	jump_sensor_4	6	40
 11	1	48	864	barrier_switch	1	0	0
 4	1	56	877	0	_none	1	-1
 10	1	240	440	8	24	barrier	71	1
 3	1	296	461	piece_of_heart	1	132
 10	1	704	112	32	32	weak_floor	557	1
+12	1	744	688	240	8	custom_obstacle_5	1	1	1	1
 0	2	872	480	128	8	437
 0	2	872	456	128	8	438
 0	2	736	808	8	96	441

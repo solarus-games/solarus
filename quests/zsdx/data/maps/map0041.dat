@@ -522,6 +522,7 @@
 0	1	984	880	24	32	406
 0	1	928	672	32	32	323
 0	1	848	456	16	32	541
+6	1	840	880	8	32	se_water_on_jump_sensor	0	40
 1	1	312	733	destination_point_a	-1	1
 1	1	360	733	destination_point_b	-1	1
 1	1	392	733	destination_point_c	-1	1
@@ -558,8 +559,8 @@
 19	1	152	24	stairs_6	1	1
 19	1	440	24	stairs_7	1	1
 19	1	944	200	stairs_10	1	1
-12	1	840	880	32	8	custom_obstacle	1	1	1	1
-12	1	840	904	32	8	custom_obstacle_2	1	1	1	1
+12	1	840	880	8	8	se_water_off_obstacle_1	1	1	1	1
+12	1	840	904	8	8	se_water_off_obstacle_2	1	1	1	1
 6	1	792	72	8	48	jump_sensor	0	40
 2	1	40	40	32	32	teletransporter_11	0	1	40	_same
 11	1	432	504	1f_n_water_switch	2	0	0
@@ -595,9 +596,9 @@
 2	1	496	720	16	16	teletransporter_18	1	1	41	destination_point_f
 12	1	720	920	8	8	custom_obstacle_3	1	1	1	1
 6	1	720	928	8	48	jump_sensor_2	4	40
-12	1	720	976	8	8	custom_obstacle_4	1	1	1	1
+12	1	40	976	688	8	custom_obstacle_4	1	1	1	1
 6	1	48	920	672	8	jump_sensor_3	6	40
-12	1	40	920	8	8	custom_obstacle_5	1	1	1	1
+12	1	40	920	8	56	custom_obstacle_5	1	1	1	1
 10	1	984	888	8	16	se_water_source	478	1
 10	1	976	880	8	32	se_water_middle	477	1
 10	1	848	864	128	64	se_water_initial	446	1
@@ -605,6 +606,11 @@
 10	1	864	880	96	32	se_water_less_b	446	0
 10	1	880	888	64	16	se_water_less_c	446	0
 11	1	936	688	se_water_switch	2	0	0
+12	1	840	856	144	8	custom_obstacle_6	1	1	1	1
+12	1	840	928	144	8	custom_obstacle_7	1	1	1	1
+12	1	840	864	8	16	custom_obstacle_8	1	1	1	1
+12	1	840	912	8	16	custom_obstacle_9	1	1	1	1
+12	1	976	864	8	64	custom_obstacle_10	1	1	1	1
 0	2	536	112	64	8	437
 0	2	264	352	96	8	437
 0	2	40	832	128	8	437

@@ -15,8 +15,10 @@ function event_map_started(destination_point_name)
     -- the south-east water is drained
     sol.map.tile_set_group_enabled("se_water", false)
     sol.map.tile_set_group_enabled("se_water_out", true)
+    sol.map.jump_sensor_set_group_enabled("se_water_on_jump_sensor", false)
+  else
+    sol.map.obstacle_set_group_enabled("se_water_off_obstacle", false)
   end
-
 end
 
 function event_enemy_dead(enemy_name)
@@ -101,6 +103,8 @@ end
 
 function remove_se_water_6()
   sol.map.tile_set_enabled("se_water_less_c", false)
+  sol.map.jump_sensor_set_group_enabled("se_water_on_jump_sensor", false)
+  sol.map.obstacle_set_group_enabled("se_water_off_obstacle", true)
   sol.game.savegame_set_boolean(128, true)
   sol.main.play_sound("secret")
   sol.main.timer_start(1000, "sol.map.camera_restore", false)

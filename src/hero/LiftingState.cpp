@@ -69,9 +69,9 @@ void Hero::LiftingState::stop(State *next_state) {
 
   State::stop(next_state);
 
-  get_sprites().set_lifted_item(NULL);
-
   if (lifted_item != NULL) {
+
+    get_sprites().set_lifted_item(NULL);
 
     // the lifted item is still managed by this state
     switch (next_state->get_previous_carried_item_behavior(*lifted_item)) {
@@ -83,7 +83,6 @@ void Hero::LiftingState::stop(State *next_state) {
     case CarriedItem::BEHAVIOR_DESTROY:
       delete lifted_item;
       lifted_item = NULL;
-      get_sprites().set_lifted_item(NULL);
       break;
 
     case CarriedItem::BEHAVIOR_KEEP:

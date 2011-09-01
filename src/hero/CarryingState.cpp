@@ -80,7 +80,6 @@ void Hero::CarryingState::stop(State *next_state) {
     case CarriedItem::BEHAVIOR_DESTROY:
       delete carried_item;
       carried_item = NULL;
-      get_sprites().set_lifted_item(NULL);
       break;
 
     case CarriedItem::BEHAVIOR_KEEP:

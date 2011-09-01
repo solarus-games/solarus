@@ -831,8 +831,11 @@ int Hero::get_walking_speed() {
  * @param walking_speed the new walking speed
  */
 void Hero::set_walking_speed(int walking_speed) {
-  this->walking_speed = walking_speed;
-  state->notify_walking_speed_changed();
+
+  if (walking_speed != this->walking_speed) {
+    this->walking_speed = walking_speed;
+    state->notify_walking_speed_changed();
+  }
 }
 
 /**

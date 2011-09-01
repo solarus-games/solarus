@@ -43,8 +43,6 @@ class Hero::PlayerMovementState: public Hero::State {
 
     virtual void set_animation_stopped();
     virtual void set_animation_walking();
-    void directional_key_pressed(int direction4);
-    void directional_key_released(int direction4);
     bool can_control_movement();
     int get_wanted_movement_direction8();
     void notify_walking_speed_changed();

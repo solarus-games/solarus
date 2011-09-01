@@ -127,19 +127,19 @@ plunging hero/plunging.png 4 50 -1
 0	48	56	24	28	21	6	6
 0	72	56	24	28	21	6	6
 
-swimming_stopped hero/swimming.png 4 100 -1
+swimming_stopped hero/swimming.png 4 300 0
 0	0	40	40	20	29	2	2
 0	40	40	40	20	29	2	2
 0	80	40	40	20	29	2	2
 0	120	40	40	20	29	2	2
 
-swimming_slow hero/swimming.png 4 100 -1
+swimming_slow hero/swimming.png 4 200 0
 80	0	40	40	20	29	4	4
 80	40	40	40	20	29	4	4
 80	80	40	40	20	29	4	4
 80	120	40	40	20	29	4	4
 
-swimming_fast hero/swimming.png 4 100 -1
+swimming_fast hero/swimming.png 4 200 -1
 240	0	40	40	20	29	3	3
 240	40	40	40	20	29	3	3
 240	80	40	40	20	29	3	3

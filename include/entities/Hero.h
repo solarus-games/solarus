@@ -196,6 +196,7 @@ class Hero: public MapEntity {
      */
     bool can_control_movement();
     bool can_control_direction();
+    int get_normal_walking_speed();
     int get_walking_speed();
     void set_walking_speed(int walking_speed);
     int get_wanted_movement_direction8();

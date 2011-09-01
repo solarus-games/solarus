@@ -24,10 +24,28 @@
  */
 class Hero::SwimmingState: public Hero::PlayerMovementState {
 
+  private:
+
+    bool fast_swimming;       /**< indicates that the hero is currently swimming faster */
+
+    int get_slow_swimming_speed();
+    int get_fast_swimming_speed();
+    void try_swim_faster();
+
   public:
 
-    SwimmingState(Hero &hero);
+    SwimmingState(Hero& hero);
     ~SwimmingState();
+
+    void start(State* previous_state);
+    void stop(State* next_state);
+    void update();
+
+    void set_animation_stopped();
+    void set_animation_walking();
+
+    void action_key_pressed();
+    void sword_key_pressed();
 };
 
 #endif

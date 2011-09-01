@@ -116,10 +116,13 @@ class HeroSprites {
     void set_animation_stopped_normal();
     void set_animation_stopped_sword_loading();
     void set_animation_stopped_carrying();
+    void set_animation_stopped_swimming();
     void set_animation_walking_common();
     void set_animation_walking_normal();
     void set_animation_walking_sword_loading();
     void set_animation_walking_carrying();
+    void set_animation_swimming_slow();
+    void set_animation_swimming_fast();
     void set_animation_walking_diagonal(int direction8);
     void set_animation_sword();
     void play_sword_sound();

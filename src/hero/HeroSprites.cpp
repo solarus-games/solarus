@@ -775,6 +775,19 @@ void HeroSprites::set_animation_stopped_carrying() {
 }
 
 /**
+ * @brief Starts the "stopped" animation with sprites that represent
+ * the hero swimming.
+ */
+void HeroSprites::set_animation_stopped_swimming() {
+
+  set_animation_stopped_common();
+  tunic_sprite->set_current_animation("swimming_stopped");
+  stop_displaying_sword();
+  stop_displaying_shield();
+  stop_displaying_trail();
+}
+
+/**
  * @brief This function is called when the sprites take a "walking" animation.
  *
  * It makes instructions common to all states having a "walking" animation.
@@ -849,6 +862,32 @@ void HeroSprites::set_animation_walking_carrying() {
   if (lifted_item != NULL) {
     lifted_item->set_animation_walking();
   }
+  stop_displaying_shield();
+  stop_displaying_trail();
+}
+
+/**
+ * @brief Starts the "swimming_slow" animation of the sprites.
+ */
+void HeroSprites::set_animation_swimming_slow() {
+
+  set_animation_walking_common();
+
+  tunic_sprite->set_current_animation("swimming_slow");
+  stop_displaying_sword();
+  stop_displaying_shield();
+  stop_displaying_trail();
+}
+
+/**
+ * @brief Starts the "swimming_fast" animation of the sprites.
+ */
+void HeroSprites::set_animation_swimming_fast() {
+
+  set_animation_walking_common();
+
+  tunic_sprite->set_current_animation("swimming_fast");
+  stop_displaying_sword();
   stop_displaying_shield();
   stop_displaying_trail();
 }

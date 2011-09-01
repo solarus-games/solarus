@@ -287,14 +287,14 @@ void Hero::update_ground() {
       next_ground_date = now + 60;
 
       if (get_distance(last_solid_ground_coords.get_x(), last_solid_ground_coords.get_y()) >= 8) {
-	// too far from the solid ground: make the hero fall
-	set_walking_speed(normal_walking_speed);
+        // too far from the solid ground: make the hero fall
+        set_walking_speed(normal_walking_speed);
         set_state(new FallingState(*this));
       }
       else {
 
         // not too far yet
-	bool moved = false;
+        bool moved = false;
         Rectangle collision_box = get_bounding_box();
         collision_box.add_xy(hole_dxy);
 
@@ -304,31 +304,31 @@ void Hero::update_ground() {
           moved = true;
         }
 
-	if (!moved && hole_dxy.get_x() != 0) { // try x only
-	  collision_box = get_bounding_box();
-	  collision_box.add_xy(hole_dxy.get_x(), 0);
-	  if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, *this)) {
-	    set_bounding_box(collision_box);
-	    notify_position_changed();
-	    moved = true;
-	  }
-	}
+        if (!moved && hole_dxy.get_x() != 0) { // try x only
+          collision_box = get_bounding_box();
+          collision_box.add_xy(hole_dxy.get_x(), 0);
+          if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, *this)) {
+            set_bounding_box(collision_box);
+            notify_position_changed();
+            moved = true;
+          }
+        }
 
-	if (!moved && hole_dxy.get_y() != 0) { // try y only
-	  collision_box = get_bounding_box();
-	  collision_box.add_xy(0, hole_dxy.get_y());
-	  if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, *this)) {
-	    set_bounding_box(collision_box);
-	    notify_position_changed();
-	    moved = true;
-	  }
-	}
+        if (!moved && hole_dxy.get_y() != 0) { // try y only
+          collision_box = get_bounding_box();
+          collision_box.add_xy(0, hole_dxy.get_y());
+          if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, *this)) {
+            set_bounding_box(collision_box);
+            notify_position_changed();
+            moved = true;
+          }
+        }
 
-	if (!moved) {
-	  // the hero cannot be moved towards the direction previously calculated
-	  set_walking_speed(normal_walking_speed);
-	  set_state(new FallingState(*this));
-	}
+        if (!moved) {
+          // the hero cannot be moved towards the direction previously calculated
+          set_walking_speed(normal_walking_speed);
+          set_state(new FallingState(*this));
+        }
       }
     }
   }
@@ -808,6 +808,14 @@ Stairs* Hero::get_stairs_overlapping() {
  */
 bool Hero::can_control_movement() {
   return state->can_control_movement();
+}
+
+/**
+ * @brief Returns the default walking speed applied to the hero's movements when he is walking.
+ * @return the default walking speed
+ */
+int Hero::get_normal_walking_speed() {
+  return normal_walking_speed;
 }
 
 /**
@@ -2079,12 +2087,7 @@ void Hero::start_state_from_ground() {
   switch (ground) {
 
   case GROUND_DEEP_WATER:
-    if (get_equipment().has_ability("swim")) {
-      set_state(new SwimmingState(*this));
-    }
-    else {
-      set_state(new PlungingState(*this));
-    }
+    set_state(new PlungingState(*this));
     break;
 
   case GROUND_HOLE:

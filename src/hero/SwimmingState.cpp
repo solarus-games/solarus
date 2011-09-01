@@ -150,3 +150,21 @@ int Hero::SwimmingState::get_slow_swimming_speed() {
 int Hero::SwimmingState::get_fast_swimming_speed() {
   return hero.get_normal_walking_speed();
 }
+
+/**
+ * @brief Returns whether some stairs are considered as obstacle in this state.
+ * @param stairs some stairs
+ * @return true if the stairs are obstacle in this state
+ */
+bool Hero::SwimmingState::is_stairs_obstacle(Stairs& stairs) {
+  return false;
+}
+
+/**
+ * @brief Returns whether can trigger a jump sensor in this state.
+ * If false is returned, jump sensors have no effect (but they are obstacle for the hero).
+ * @return true if the hero can use jump sensors in this state
+ */
+bool Hero::SwimmingState::can_take_jump_sensor() {
+  return true;
+}

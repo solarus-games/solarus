@@ -928,9 +928,11 @@ bool Hero::is_moving_towards(int direction4) {
 
   int direction8 = direction4 * 2;
   int movement_direction8 = get_wanted_movement_direction8();
-  return movement_direction8 == direction8
-    || (movement_direction8 + 1) % 8 == direction8
-    || (movement_direction8 + 7) % 8 == direction8;
+
+  return movement_direction8 != -1
+      && (movement_direction8 == direction8
+          || (movement_direction8 + 1) % 8 == direction8
+          || (movement_direction8 + 7) % 8 == direction8);
 }
 
 /**
@@ -1491,12 +1493,19 @@ void Hero::notify_collision_with_stairs(Stairs &stairs, CollisionMode collision_
  * @brief This function is called when a jump sensor detects a collision with this entity.
  * @param jump_sensor the jump sensor
  */
-void Hero::notify_collision_with_jump_sensor(JumpSensor &jump_sensor) {
+void Hero::notify_collision_with_jump_sensor(JumpSensor& jump_sensor) {
 
   if (state->can_take_jump_sensor()) {
 
     int jump_direction = jump_sensor.get_direction();
+    int jump_length = jump_sensor.get_jump_length();
     if (jump_direction % 2 == 0) {
+
+      if (get_ground() == GROUND_DEEP_WATER) {
+        jump_direction = (jump_direction + 4) % 8; // make a reverse jump to get out of water
+        jump_length = 24;
+      }
+
       // this non-diagonal jump sensor is not currently an obstacle for the hero
       // (in order to allow his smooth collision movement),
       // so the hero may be one pixel inside the sensor before jumping
@@ -1509,7 +1518,7 @@ void Hero::notify_collision_with_jump_sensor(JumpSensor &jump_sensor) {
     }
 
     // jump
-    start_jumping(jump_direction, jump_sensor.get_jump_length(), true, true, 0);
+    start_jumping(jump_direction, jump_length, true, true, 0);
   }
 }
 

@@ -582,18 +582,18 @@ void Sprite::update() {
     // update the frames normally (with the time)
     int next_frame;
     while (!finished && !suspended && !paused && get_frame_delay() > 0
-	&& now >= next_frame_date) {
+        && now >= next_frame_date) {
 
       // we get the next frame
       next_frame = get_next_frame();
 
       // test whether the animation is finished
       if (next_frame == -1) {
-	finished = true;
+        finished = true;
       }
       else {
-	current_frame = next_frame;
-	next_frame_date += get_frame_delay();
+        current_frame = next_frame;
+        next_frame_date += get_frame_delay();
       }
       frame_changed = true;
     }

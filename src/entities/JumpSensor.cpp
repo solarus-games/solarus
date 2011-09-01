@@ -124,18 +124,24 @@ bool JumpSensor::test_collision_custom(MapEntity &entity) {
   }
 
   Hero &hero = (Hero&) entity;
-  int direction = get_direction();
+  int direction8 = get_direction();
 
   // if the sensor's has one of the four main directions, then
   // its shape is exactly its rectangle
-  if (direction % 2 == 0) {
+  if (direction8 % 2 == 0) {
 
-    if (!hero.is_moving_towards(direction / 2)) {
+    int expected_hero_direction4 = direction8 / 2;
+    if (hero.get_ground() == GROUND_DEEP_WATER) {
+      // if the hero is swimming, the jump sensor can be used the opposite way
+      expected_hero_direction4 = (expected_hero_direction4 + 2) % 4;
+    }
+
+    if (!hero.is_moving_towards(expected_hero_direction4)) {
       return false;
     }
 
-    bool horizontal = (direction % 4 == 0);
-    const Rectangle &facing_point = hero.get_facing_point(direction / 2);
+    bool horizontal = (direction8 % 4 == 0); // horizontal or vertical jump sensor
+    const Rectangle &facing_point = hero.get_facing_point(expected_hero_direction4);
     return overlaps(facing_point.get_x() + (horizontal ? 0 : -8),
 		    facing_point.get_y() + (horizontal ? -8 : 0))
       && overlaps(facing_point.get_x() + (horizontal ? 0 : 7),
@@ -144,8 +150,8 @@ bool JumpSensor::test_collision_custom(MapEntity &entity) {
 
   // otherwise, the sensor's shape is a diagonal bar
 
-  return is_point_in_diagonal(hero.get_facing_point((direction - 1) / 2))
-    || is_point_in_diagonal(hero.get_facing_point((direction + 1) % 8 / 2));
+  return is_point_in_diagonal(hero.get_facing_point((direction8 - 1) / 2))
+    || is_point_in_diagonal(hero.get_facing_point((direction8 + 1) % 8 / 2));
 }
 
 /**

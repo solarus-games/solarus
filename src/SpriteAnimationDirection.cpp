@@ -18,6 +18,7 @@
 #include "lowlevel/PixelBits.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/Debug.h"
+#include "lowlevel/StringConcat.h"
 
 /**
  * @brief Constructor.
@@ -91,12 +92,12 @@ const Rectangle & SpriteAnimationDirection::get_frame(int frame) const {
  * @param current_frame the frame to show
  * @param src_image the image from wich the frame is extracted
  */
-void SpriteAnimationDirection::display(Surface *destination, int x, int y,
-				       int current_frame, Surface *src_image) {
+void SpriteAnimationDirection::display(Surface* destination, int x, int y,
+                                       int current_frame, Surface* src_image) {
 
   Rectangle position_top_left; // position of the sprite's upper left corner
 
-  const Rectangle &current_frame_rect = frames[current_frame];
+  const Rectangle& current_frame_rect = frames[current_frame];
 
   position_top_left.set_xy(x - origin.get_x(), y - origin.get_y());
   position_top_left.set_size(current_frame_rect.get_width(), current_frame_rect.get_height());

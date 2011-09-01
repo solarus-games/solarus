@@ -33,10 +33,10 @@ class SpriteAnimationDirection {
     const int nb_frames;    /**< number of frames in this sequence */
     Rectangle *frames;      /**< position of each frame of the sequence on the image */
     Rectangle origin;       /**< coordinate of the sprite's origin from the
-			     * upper-left corner of its image. */
+                             * upper-left corner of its image. */
 
     PixelBits **pixel_bits; /**< bit masks representing the non-transparent pixels of each frame,
-			     * computed only if enable_pixel_collisions() is called */
+                             * computed only if enable_pixel_collisions() is called */
 
   public:
 

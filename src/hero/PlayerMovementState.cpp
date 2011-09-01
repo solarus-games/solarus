@@ -111,26 +111,6 @@ void Hero::PlayerMovementState::set_animation_walking() {
 }
 
 /**
- * @brief Notifies this state that a directional key was just pressed.
- * @param direction4 direction of the key (0 to 3)
- */
-void Hero::PlayerMovementState::directional_key_pressed(int direction4) {
-
-  // notify the movement
-  get_player_movement()->compute_movement();
-}
-
-/**
- * @brief Notifies this state that a directional key was just released.
- * @param direction4 direction of the key (0 to 3)
- */
-void Hero::PlayerMovementState::directional_key_released(int direction4) {
-
-  // notify the movement
-  get_player_movement()->compute_movement();
-}
-
-/**
  * @brief Returns whether the player can control his movements in the current state.
  * @return true if the player can control his movements
  */

@@ -3211,6 +3211,51 @@ line2 = "d'argent !"
 line1 = "Hé ! Ici il faut payer"
 line2 = "avant de jouer !"
 
+[rupee_house_broken.help_us_left]
+# Maison des rubis dévalisée (PNJ de gauche)
+#       |-----------------------|
+line1 = "Au secours !"
+line2 = "Au secours !"
+line3 = ""
+next = rupee_house_broken.help_us_left.2
+
+[rupee_house_broken.help_us_left.2]
+#       |-----------------------|
+line1 = "La maison a été"
+line2 = "dévalisée !"
+
+[rupee_house_broken.help_us_middle]
+# Maison des rubis dévalisée (PNJ du milieu)
+#       |-----------------------|
+line1 = "Les bandits ont emporté"
+line2 = "l'argent réservé aux"
+line3 = "gains !"
+
+[rupee_house_broken.help_us_right]
+# Maison des rubis dévalisée (PNJ de droite)
+#       |-----------------------|
+line1 = "Les voleurs sont partis"
+line2 = "en direction de la"
+line3 = "caverne du forgeron !"
+
+[rupee_house_broken.thanks]
+# Maison des rubis dévalisée (voleurs battus)
+#       |-----------------------|
+line1 = "Tu as retrouvé notre"
+line2 = "argent ! Grâce à toi"
+line3 = "nous allons pouvoir"
+next = rupee_house_broken.thanks.2
+
+[rupee_house_broken.thanks.2]
+#       |-----------------------|
+line1 = "reprendre le travail."
+line2 = "Je ne sais comment te"
+line3 = "remercier..."
+
+[rupee_house_broken.thanks_again]
+#       |-----------------------|
+line1 = "Encore merci !"
+
 [grandma_house.sword]
 # Dialogue chez la grand-mère (au début du jeu)
 #       |-----------------------|

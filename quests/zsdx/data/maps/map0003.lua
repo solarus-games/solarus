@@ -1,6 +1,4 @@
------------------------------
--- Outside world C1 script --
------------------------------
+-- Outside world A3
 
 monkey_sprite = nil
 monkey_jumps = 0
@@ -26,6 +24,13 @@ function event_map_started(destination_point_name)
    random_walk("hat_man")
    random_walk("how_to_save_npc")
    random_walk("grand_son")
+
+   -- smith cave with thiefs
+   if sol.game.savegame_get_boolean(155) and not sol.game.savegame_get_boolean(156) then
+     sol.map.teletransporter_set_enabled("to_smith_cave", false)
+   else
+     sol.map.teletransporter_set_enabled("to_smith_cave_thiefs", false)
+   end
 end
 
 function random_walk(npc_name)

@@ -176,6 +176,7 @@ booleans:
 147-152 beaumont cave (inferno maze): small key blocks
 153	beaumont cave opened with the edelweiss
 154	inferno river maze: chest with a fire stone
+155	rupee house broken
 
 161-169 inferno river maze 1F: changed the state of each water pool
 171-179 inferno river maze B1: changed the state of each water pool

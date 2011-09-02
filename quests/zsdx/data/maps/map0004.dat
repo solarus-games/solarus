@@ -935,7 +935,7 @@
 2	0	64	448	16	16	to_lyriann_cave	0	1	20	from_outside
 6	0	296	168	24	24	Jump_sensor_3	7	56
 2	0	-16	0	16	1008	to_C1	0	2	3	_side
-2	0	112	600	16	16	to_rupee_house	0	1	2	main_entrance
+2	0	112	600	16	16	to_broken_rupee_house	0	1	70	main_entrance
 1	0	120	629	out_rupee_house	3	0
 4	0	88	253	2	_random	1	-1
 4	0	104	253	2	_random	1	-1
@@ -1072,6 +1072,7 @@
 10	0	160	576	8	8	broken_rupee_house_29	1069	1
 10	0	192	568	8	8	tile_36	636	1
 10	0	184	600	8	16	broken_rupee_house_28	1053	1
+2	0	112	600	16	16	to_rupee_house	0	1	2	main_entrance
 0	1	56	424	32	24	901
 0	2	608	368	16	32	1025
 0	2	624	368	40	40	1024

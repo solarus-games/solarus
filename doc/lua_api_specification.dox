@@ -322,7 +322,7 @@ prevents the hero from moving until you call <tt>sol.map.hero_unfreeze()</tt>
 restores the control to the hero, typically after a call to <tt>sol.map.hero_freeze()</tt>
 
 - <tt>sol.map.hero_set_map(map_id, destination_point, transition)</tt>:
-sents the hero on a map (possibly the same one)
+sents the hero on a map (possibly the same one), see Transition::Style for the values of transition
 
 - <tt>sol.map.hero_set_visible(visible)</tt>:
 hides or unhides the hero
@@ -884,11 +884,11 @@ called when the hero has just interacted with an interactive entity (other than 
 by using ANY inventory item
 
 - <tt>event_npc_dialog(npc_name)</tt>
-(triggered only if the interactive entity has the property to call the map script):
+(triggered only if the NPC has the property to call the map script):
 called when the player talks to an NPC
 
 - <tt>event_npc_dialog_item(npc_name)</tt>
-(triggered only if the interactive entity has the property to call the map script):
+(triggered only if the NPC has the property to call the map script):
 called when the player uses an inventory item in front of NPC;
 returns true if an interaction actually happened
 

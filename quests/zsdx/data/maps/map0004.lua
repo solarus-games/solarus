@@ -9,10 +9,12 @@ function event_map_started(destination_point_name)
    sol.map.npc_start_movement("chignon_woman", m)
    sol.main.sprite_set_animation(sol.map.npc_get_sprite("chignon_woman"), "walking")
 
-   -- remove the door if open
+   -- remove Tom's cave door if open
    if sol.game.savegame_get_boolean(36) then
       remove_village_cave_door()
    end
+
+   sol.map.tile_set_group_enabled("broken_rupee_house", false)
 end
 
 -- Function called when the player presses the action key

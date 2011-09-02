@@ -1,4 +1,4 @@
-960	1008	0	-100	1120	1600	-1	1	dark_world.spc
+960	1008	0	-100	1120	1600	-1	13	dark_world.spc
 0	0	640	0	64	32	444
 0	0	608	424	16	32	49
 0	0	240	-16	64	128	444
@@ -562,12 +562,10 @@
 0	0	104	616	32	8	685
 0	0	104	600	8	16	683
 0	0	128	600	8	16	684
-0	0	104	584	32	16	682
 0	0	80	600	24	16	662
 0	0	136	600	24	16	662
 0	0	192	592	8	24	665
-0	0	136	592	56	8	661
-0	0	80	592	24	8	661
+0	0	80	592	112	8	661
 0	0	72	592	8	24	660
 0	0	80	568	8	24	653
 0	0	184	568	8	24	654
@@ -927,6 +925,13 @@
 0	0	720	80	16	16	1039
 0	0	72	576	8	16	1042
 0	0	192	576	8	16	1043
+0	0	104	600	8	16	683
+0	0	128	600	8	16	684
+0	0	104	600	8	16	683
+0	0	128	600	8	16	684
+0	0	104	584	32	16	682
+10	0	104	536	88	32	broken_rupee_house_8	1058	1
+10	0	160	600	32	16	broken_rupee_house_27	664	1
 2	0	64	448	16	16	to_lyriann_cave	0	1	20	from_outside
 6	0	296	168	24	24	Jump_sensor_3	7	56
 2	0	-16	0	16	1008	to_C1	0	2	3	_side
@@ -1034,6 +1039,39 @@
 12	0	664	24	16	8	custom_obstacle_4	1	1	1	1
 2	0	664	32	16	16	to_chest_game_cave	0	1	46	destination_point
 4	0	496	109	2	_random	1	-1
+10	0	88	528	8	8	broken_rupee_house_2	558	1
+10	0	96	528	8	16	broken_rupee_house_3	1049	1
+10	0	112	528	8	16	broken_rupee_house_5	1051	1
+10	0	104	528	8	16	broken_rupee_house_4	1050	1
+10	0	120	528	8	16	broken_rupee_house_6	1052	1
+10	0	128	528	16	8	broken_rupee_house_7	7	1
+10	0	136	528	8	16	broken_rupee_house_9	1053	1
+10	0	144	528	40	16	broken_rupee_house_11	1051	1
+10	0	152	528	8	16	broken_rupee_house_10	1050	1
+10	0	168	528	8	16	broken_rupee_house_12	1050	1
+10	0	184	528	8	16	broken_rupee_house_13	1050	1
+10	0	192	528	8	8	broken_rupee_house_14	1046	1
+10	0	192	536	8	16	broken_rupee_house_15	1047	1
+10	0	192	552	8	16	broken_rupee_house_16	1048	1
+10	0	184	544	8	8	broken_rupee_house_17	1056	1
+10	0	176	544	8	8	broken_rupee_house_18	1055	1
+10	0	120	552	8	8	broken_rupee_house_21	1056	1
+10	0	112	552	8	8	broken_rupee_house_22	1055	1
+10	0	160	560	8	8	broken_rupee_house_20	1055	1
+10	0	168	560	8	8	broken_rupee_house_19	1056	1
+10	0	96	544	8	24	broken_rupee_house_23	1068	1
+10	0	80	536	8	32	broken_rupee_house_24	1066	1
+10	0	88	544	8	24	broken_rupee_house	1071	1
+10	0	88	536	8	8	broken_rupee_house_25	1070	1
+10	0	88	568	96	8	broken_rupee_house_26	661	1
+10	0	144	576	8	8	broken_rupee_house_34	1059	1
+10	0	144	584	8	8	broken_rupee_house_33	1063	1
+10	0	152	576	8	8	broken_rupee_house_30	1068	1
+10	0	152	584	8	8	broken_rupee_house_32	1064	1
+10	0	160	584	8	8	broken_rupee_house_31	1065	1
+10	0	160	576	8	8	broken_rupee_house_29	1069	1
+10	0	192	568	8	8	tile_36	636	1
+10	0	184	600	8	16	broken_rupee_house_28	1053	1
 0	1	56	424	32	24	901
 0	2	608	368	16	32	1025
 0	2	624	368	40	40	1024

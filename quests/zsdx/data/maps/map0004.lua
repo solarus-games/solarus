@@ -1,6 +1,5 @@
------------------------------
--- Outside world C2 script --
------------------------------
+-- Outside world B3
+
 
 -- Function called when the map starts
 function event_map_started(destination_point_name)

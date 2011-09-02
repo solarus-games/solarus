@@ -1,4 +1,4 @@
--- Bee Guard
+-- Red Bullblin
 
 going_hero = false
 being_pushed = false
@@ -46,7 +46,6 @@ function check_hero()
 
   near_hero = sol.enemy.get_distance_to_hero() < 100
   if near_hero and not going_hero then
-    sol.main.play_sound("hero_seen")
     go_hero()
   elseif not near_hero and going_hero then
     go_random()

@@ -242,6 +242,7 @@
 19	0	96	48	stairs_6	1	0
 19	0	664	400	stairs_7	1	0
 9	0	728	589	block_4	-1	0	1
+19	0	368	80	stairs_19	0	4
 0	1	40	728	800	24	52
 0	1	480	744	16	32	397
 0	1	912	48	192	672	397
@@ -628,19 +629,25 @@
 0	1	944	664	32	8	287
 0	1	1000	664	32	8	287
 0	1	1056	664	32	8	287
-12	1	88	160	8	32	custom_obstacle_2	1	1	1	1
-12	1	112	160	8	32	custom_obstacle_3	1	1	1	1
-12	1	88	520	8	32	custom_obstacle_4	1	1	1	1
-12	1	112	520	8	32	custom_obstacle_5	1	1	1	1
+0	1	392	64	8	8	69
+0	1	392	40	8	8	69
+0	1	392	104	8	8	69
+0	1	392	128	8	8	69
+0	1	392	48	8	16	71
+0	1	392	112	8	16	71
+12	1	88	184	8	8	custom_obstacle_2	1	1	1	1
+12	1	112	184	8	8	custom_obstacle_3	1	1	1	1
+12	1	88	544	8	8	custom_obstacle_4	1	1	1	1
+12	1	112	544	8	8	custom_obstacle_5	1	1	1	1
 9	1	264	653	block	-1	0	1
 9	1	264	669	block_2	-1	0	1
 9	1	264	685	block_3	-1	0	1
-12	1	296	648	32	8	custom_obstacle_6	1	1	1	1
-12	1	296	672	32	8	custom_obstacle_7	1	1	1	1
-12	1	552	648	32	8	custom_obstacle_8	1	1	1	1
-12	1	552	672	32	8	custom_obstacle_9	1	1	1	1
-12	1	392	648	32	8	custom_obstacle_10	1	1	1	1
-12	1	392	672	32	8	custom_obstacle_11	1	1	1	1
+12	1	296	648	8	8	custom_obstacle_6	1	1	1	1
+12	1	296	672	8	8	custom_obstacle_7	1	1	1	1
+12	1	552	648	8	8	custom_obstacle_8	1	1	1	1
+12	1	552	672	8	8	custom_obstacle_9	1	1	1	1
+12	1	416	648	8	8	custom_obstacle_10	1	1	1	1
+12	1	416	672	8	8	custom_obstacle_11	1	1	1	1
 6	1	784	640	8	48	jump_sensor	4	40
 4	1	744	133	4	_random	1	-1
 4	1	760	117	4	_random	1	-1
@@ -690,6 +697,8 @@
 12	1	1000	664	32	8	custom_obstacle_13	1	1	1	1
 12	1	1056	664	32	8	custom_obstacle_14	1	1	1	1
 12	1	1032	536	32	8	custom_obstacle_15	1	1	1	1
+12	1	384	96	8	8	custom_obstacle_16	1	1	1	1
+12	1	384	72	8	8	custom_obstacle_17	1	1	1	1
 0	2	920	16	96	8	437
 0	2	424	16	384	8	437
 0	2	960	392	64	8	437

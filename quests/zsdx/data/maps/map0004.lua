@@ -14,7 +14,13 @@ function event_map_started(destination_point_name)
       remove_village_cave_door()
    end
 
-   sol.map.tile_set_group_enabled("broken_rupee_house", false)
+   -- broken rupee house
+   if sol.game.savegame_get_boolean(155) then
+     sol.map.teletransporter_set_enabled("to_rupee_house", false)
+   else
+     sol.map.teletransporter_set_enabled("to_broken_rupee_house", false)
+     sol.map.tile_set_group_enabled("broken_rupee_house", false)
+   end
 end
 
 -- Function called when the player presses the action key

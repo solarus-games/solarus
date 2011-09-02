@@ -4523,6 +4523,40 @@ line2 = "        À gauche       "
 #       |-----------------------|
 line2 = "         En bas        "
 
+[lake_shop.seller]
+#       |-----------------------|
+line1 = "Bienvenue à la Boutique"
+line2 = "du Lac ! Nos articles"
+line3 = "sont les moins chers"
+next = lake_shop.seller.2
+
+[lake_shop.seller.2]
+#       |-----------------------|
+line1 = "de la région."
+line2 = "Que puis-je pour toi ?"
+
+[lake_shop.apples]
+#       |-----------------------|
+line1 = "Trois pommes de marque"
+line2 = "premier prix."
+
+[lake_shop.bombs]
+#       |-----------------------|
+line1 = "Huit bombes. Je te les"
+line2 = "fais à prix coûtant !"
+
+[lake_shop.arrows]
+#       |-----------------------|
+line1 = "Dix flèches, un"
+line2 = "excellent rapport"
+line3 = "qualité-prix."
+
+[lake_shop.big_magic_flask]
+#       |-----------------------|
+line1 = "Promotion du moment :"
+line2 = "une bouteille d'énergie"
+line3 = "magique."
+
 [dungeon_3.arbror_direction_hint]
 #       |-----------------------|
 line1 = ""

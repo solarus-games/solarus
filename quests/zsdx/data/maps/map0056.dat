@@ -61,8 +61,8 @@
 0	0	424	584	8	16	71
 0	0	408	600	16	8	70
 0	0	400	600	8	8	69
-0	0	448	624	8	8	69
-0	0	448	608	8	16	71
+0	0	448	632	8	8	69
+0	0	448	608	8	24	71
 0	0	448	600	8	8	69
 0	0	400	552	8	8	69
 0	0	424	552	8	8	69
@@ -791,8 +791,8 @@
 15	1	848	336	16	16	0
 18	1	832	336	door_5	1	2	307
 15	1	48	48	16	144	0
-8	1	88	93	interactive_entity	-1	0	entities/torch	item#lamp
-8	1	216	93	interactive_entity_2	-1	0	entities/torch	item#lamp
+8	1	88	93	torch	-1	0	entities/torch	item#lamp
+8	1	216	93	torch_2	-1	0	entities/torch	item#lamp
 15	1	64	64	16	48	1
 15	1	80	96	32	16	1
 15	1	80	64	160	16	1

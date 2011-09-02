@@ -296,7 +296,7 @@ int Script::map_api_hero_unfreeze(lua_State *l) {
  *
  * - Argument 1 (int): id of the destination map (can be the same one)
  * - Argument 2 (string): name of the destination point on that map
- * - Argument 3 (int): type of transition to play
+ * - Argument 3 (int): type of transition to play (must match Transition::Style)
  *
  * @param l the Lua context that is calling this function
  */

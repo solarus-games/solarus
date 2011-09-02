@@ -211,6 +211,17 @@ void Enemy::set_map(Map &map) {
   if (is_enabled()) {
     initialize();
     enable_pixel_collisions();
+  }
+}
+
+/**
+ * @brief Notifies this entity that its map has just become active.
+ */
+void Enemy::notify_map_started() {
+
+  MapEntity::notify_map_started();
+
+  if (is_enabled()) {
     restart();
   }
 }
@@ -507,7 +518,7 @@ void Enemy::update() {
   uint32_t now = System::now();
 
   if (being_hurt) {
-    
+
     // see if we should stop the animation "hurt"
     bool stop_hurt = false;
     if (pushed_back_when_hurt) {
@@ -521,16 +532,16 @@ void Enemy::update() {
       being_hurt = false;
 
       if (life <= 0) {
-	kill();
+        kill();
       }
       else if (is_immobilized()) {
-	clear_movement();
-	set_animation("immobilized");
+        clear_movement();
+        set_animation("immobilized");
       }
       else {
-	clear_movement();
-	restore_movement(); // restore the previous movement
-	restart();
+        clear_movement();
+        restore_movement(); // restore the previous movement
+        restart();
       }
     }
   }
@@ -580,7 +591,7 @@ void Enemy::update() {
 
     // create the pickable treasure if any
     get_entities().add_entity(PickableItem::create(get_game(), get_layer(), get_x(), get_y(),
-	treasure, FALLING_HIGH, false));
+        treasure, FALLING_HIGH, false));
 
     // notify the enemy
     just_dead();

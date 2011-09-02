@@ -2878,7 +2878,7 @@ line1 = "Cabine télépathique"
 #       |-----------------------|
 line1 = " - Mur aux surprises -"
 line2 = "Venez tenter votre"
-line3 = "chance et remportez"
+line3 = "chance et remporter"
 next = outside_world.surprise_wall_sign.2
 
 [outside_world.surprise_wall_sign.2]

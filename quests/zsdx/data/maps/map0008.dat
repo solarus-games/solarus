@@ -837,6 +837,13 @@
 6	0	584	104	32	8	jump_sensor_5	6	56
 6	0	584	40	32	8	jump_sensor_6	6	56
 6	0	568	232	32	8	jump_sensor_7	6	56
+12	0	504	136	16	8	custom_obstacle	1	1	1	1
+12	0	408	296	16	8	custom_obstacle_2	1	1	1	1
+12	0	576	248	16	8	custom_obstacle_3	1	1	1	1
+12	0	592	56	16	8	custom_obstacle_4	1	1	1	1
+12	0	864	184	16	8	custom_obstacle_5	1	1	1	1
+12	0	776	232	16	8	custom_obstacle_6	1	1	1	1
+12	0	888	312	16	8	custom_obstacle_7	1	1	1	1
 0	2	224	424	8	40	514
 0	2	8	384	48	40	511
 0	2	56	376	8	40	514

@@ -190,6 +190,9 @@ booleans:
 182	lost woods cave: got the iron key
 183-186	lost woods cave: small key blocks
 187-190	lost woods cave: small keys
+191	fairy cave: piece of heart
+192	fairy cave: chest with the stone key
+193	outside world B2: iron lock
 
 200-299: binbin dungeon
 200	1F: small key 1 door

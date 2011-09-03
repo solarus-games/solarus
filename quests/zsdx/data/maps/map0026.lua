@@ -25,15 +25,20 @@ function event_map_started(destination_point_name)
   end
 end
 
-function event_hero_interaction_item_finished(entity_name, item_name, variant)
+-- Returns whether all four torches are on
+function are_all_torches_on()
 
-  if item_name == "lamp"
-      and string.match(entity_name, "^torch")
-      and not has_fairy_appeared()
-      and sol.main.sprite_get_animation(sol.map.interactive_entity_get_sprite("torch_1")) == "lit"
+  return sol.main.sprite_get_animation(sol.map.interactive_entity_get_sprite("torch_1")) == "lit"
       and sol.main.sprite_get_animation(sol.map.interactive_entity_get_sprite("torch_2")) == "lit"
       and sol.main.sprite_get_animation(sol.map.interactive_entity_get_sprite("torch_3")) == "lit"
-      and sol.main.sprite_get_animation(sol.map.interactive_entity_get_sprite("torch_4")) == "lit" then
+      and sol.main.sprite_get_animation(sol.map.interactive_entity_get_sprite("torch_4")) == "lit" 
+end
+
+
+function event_update()
+
+  if not has_fairy_appeared()
+      and are_all_torches_on() then
 
     sol.main.play_sound("secret")
     sol.game.savegame_set_boolean(99, true)

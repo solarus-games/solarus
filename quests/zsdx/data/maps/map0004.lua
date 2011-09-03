@@ -57,6 +57,14 @@ function event_hero_interaction(entity_name)
   end
 end
 
+function event_hero_on_sensor(sensor_name)
+
+  if sensor_name == "waterfall_sensor" then
+    sol.map.hero_start_jumping(6, 288, true)
+    sol.main.play_sound("jump")
+  end
+end
+
 function remove_village_cave_door()
    sol.map.interactive_entity_remove("tom_cave_door")
    sol.map.tile_set_enabled("tom_cave_door_tile", false)

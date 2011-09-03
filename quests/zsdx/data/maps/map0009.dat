@@ -1347,6 +1347,7 @@
 1	0	488	277	from_dungeon_5_hole	3	0
 2	0	480	200	16	16	teletransporter_5	0	1	65	from_outside_hole
 4	0	488	213	2	_random	1	-1
+12	0	256	72	80	8	custom_obstacle_5	1	1	1	1
 0	2	1000	328	8	40	514
 0	2	800	328	8	40	513
 0	2	808	320	192	16	512

@@ -2917,6 +2917,12 @@ line2 = "edelweiss..."
 line1 = "   - Serrure Pierre -"
 line2 = "C'est fermé à clé !"
 
+[outside_world.iron_key_required]
+# Tenter d'ouvrir la fin de la grotte de la fée sans avoir la Clé de Fer
+#       |-----------------------|
+line1 = "    - Serrure Fer -"
+line2 = "C'est fermé à clé !"
+
 [link_house.dream]
 # Link qui entend Sahasrahla en rêve en dormant dans son lit après l'intro
 #       |-----------------------|

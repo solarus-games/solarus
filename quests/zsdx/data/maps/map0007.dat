@@ -1154,6 +1154,7 @@
 0	0	328	480	32	32	527
 0	0	416	768	16	16	525
 0	0	400	760	32	8	55
+10	0	544	880	32	16	iron_lock_tile	387	1
 2	0	0	976	960	16	to_C2	0	2	4	_side
 2	0	-16	0	16	976	to_B1	0	2	9	_side
 6	0	408	792	32	8	jump_sensor	6	120
@@ -1177,6 +1178,22 @@
 19	0	48	528	stairs_2	1	3
 19	0	296	528	stairs_3	1	3
 4	0	424	781	4	_random	1	-1
+1	0	528	909	from_fairy_cave_w	3	0
+2	0	520	880	16	16	teletransporter_5	0	1	78	from_outside_w
+1	0	560	909	from_fairy_cave_e	3	0
+12	0	552	872	16	8	custom_obstacle	1	1	1	1
+12	0	520	872	16	8	custom_obstacle_2	1	1	1	1
+12	0	408	872	16	8	custom_obstacle_3	1	1	1	1
+12	0	376	88	16	8	custom_obstacle_4	1	1	1	1
+12	0	344	248	16	8	custom_obstacle_5	1	1	1	1
+12	0	368	376	16	8	custom_obstacle_6	1	1	1	1
+12	0	504	216	16	8	custom_obstacle_7	1	1	1	1
+12	0	616	344	16	8	custom_obstacle_8	1	1	1	1
+12	0	808	328	16	8	custom_obstacle_9	1	1	1	1
+2	0	552	880	16	16	teletransporter_6	0	1	78	from_outside_e
+10	0	544	864	32	16	iron_lock_tile_2	192	1
+10	0	544	880	32	16	iron_lock_tile_3	909	1
+8	0	560	893	iron_lock	3	0	_none	map
 0	2	800	688	8	40	513
 0	2	632	336	8	40	513
 0	2	840	304	8	40	513

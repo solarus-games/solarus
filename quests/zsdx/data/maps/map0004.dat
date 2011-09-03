@@ -930,6 +930,8 @@
 0	0	104	600	8	16	683
 0	0	128	600	8	16	684
 0	0	104	584	32	16	682
+10	0	656	32	32	16	stone_lock_tile_2	177	1
+10	0	656	16	32	16	stone_lock_tile_3	192	1
 10	0	104	536	88	32	broken_rupee_house_8	1058	1
 10	0	160	600	32	16	broken_rupee_house_27	664	1
 2	0	64	448	16	16	to_lyriann_cave	0	1	20	from_outside
@@ -1037,7 +1039,7 @@
 12	0	424	72	16	8	custom_obstacle_2	1	1	1	1
 12	0	256	8	16	8	custom_obstacle_3	1	1	1	1
 12	0	664	24	16	8	custom_obstacle_4	1	1	1	1
-2	0	664	32	16	16	to_chest_game_cave	0	1	46	destination_point
+2	0	664	32	16	16	to_chest_game_cave	0	1	75	from_outside
 4	0	496	109	2	_random	1	-1
 10	0	88	528	8	8	broken_rupee_house_2	558	1
 10	0	96	528	8	16	broken_rupee_house_3	1049	1
@@ -1073,6 +1075,8 @@
 10	0	192	568	8	8	tile_36	636	1
 10	0	184	600	8	16	broken_rupee_house_28	1053	1
 2	0	112	600	16	16	to_rupee_house	0	1	2	main_entrance
+10	0	656	32	32	16	stone_lock_tile	909	1
+8	0	672	45	stone_lock	3	0	_none	map
 0	1	56	424	32	24	901
 0	2	608	368	16	32	1025
 0	2	624	368	40	40	1024

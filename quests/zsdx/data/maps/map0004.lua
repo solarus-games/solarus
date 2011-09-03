@@ -1,16 +1,20 @@
 -- Outside world B3
 
-
 -- Function called when the map starts
 function event_map_started(destination_point_name)
 
-   m = sol.main.random_path_movement_create(32)
-   sol.map.npc_start_movement("chignon_woman", m)
-   sol.main.sprite_set_animation(sol.map.npc_get_sprite("chignon_woman"), "walking")
+  m = sol.main.random_path_movement_create(32)
+  sol.map.npc_start_movement("chignon_woman", m)
+  sol.main.sprite_set_animation(sol.map.npc_get_sprite("chignon_woman"), "walking")
 
    -- remove Tom's cave door if open
    if sol.game.savegame_get_boolean(36) then
-      remove_village_cave_door()
+     remove_village_cave_door()
+   end
+
+   -- remove the stone lock if open
+   if sol.game.savegame_get_boolean(159) then
+     remove_stone_lock()
    end
 
    -- broken rupee house
@@ -26,22 +30,40 @@ end
 -- while facing an interactive entity
 function event_hero_interaction(entity_name)
 
-   if entity_name == "tom_cave_door" then
+  if entity_name == "tom_cave_door" then
 
-      -- open the door if the player has the Clay Key
-      if sol.game.has_item("clay_key") then
-	 sol.main.play_sound("door_open")
-	 sol.main.play_sound("secret")
-	 sol.game.savegame_set_boolean(36, true)
-	 remove_village_cave_door()
-      else
-	 sol.map.dialog_start("outside_world.village.clay_key_required")
-      end
-   end
+    -- open the door if the player has the clay key
+    if sol.game.has_item("clay_key") then
+      sol.main.play_sound("door_open")
+      sol.main.play_sound("secret")
+      sol.game.savegame_set_boolean(36, true)
+      remove_village_cave_door()
+    else
+      sol.map.dialog_start("outside_world.village.clay_key_required")
+    end
+
+  elseif entity_name == "stone_lock" then
+
+    -- open the door if the player has the stone key
+    if sol.game.has_item("stone_key") then
+      sol.main.play_sound("door_open")
+      sol.main.play_sound("secret")
+      sol.game.savegame_set_boolean(159, true)
+      remove_stone_lock()
+    else
+      sol.map.dialog_start("outside_world.stone_key_required")
+    end
+
+  end
 end
 
 function remove_village_cave_door()
    sol.map.interactive_entity_remove("tom_cave_door")
    sol.map.tile_set_enabled("tom_cave_door_tile", false)
+end
+
+function remove_stone_lock()
+   sol.map.interactive_entity_remove("stone_lock")
+   sol.map.tile_set_group_enabled("stone_lock_tile", false)
 end
 

@@ -305,6 +305,7 @@ sets the light level of the map (0: no light, positive values: full light)
 
 - <tt>sol.map.camera_move(x, y, speed)</tt>: 
 suspends the game and moves the camera towards a target point
+(a usual speed value is 150)
 
 - <tt>sol.map.camera_restore()</tt>: 
 sents the camera back to the hero after a call to camera_move()

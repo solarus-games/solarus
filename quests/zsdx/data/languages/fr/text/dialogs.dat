@@ -2911,6 +2911,12 @@ line2 = "journée."
 line1 = "Tu plantes ton"
 line2 = "edelweiss..."
 
+[outside_world.stone_key_required]
+# Tenter d'ouvrir la grotte du jeu des coffres sans avoir la Clé de Pierre
+#       |-----------------------|
+line1 = "   - Serrure Pierre -"
+line2 = "C'est fermé à clé !"
+
 [link_house.dream]
 # Link qui entend Sahasrahla en rêve en dormant dans son lit après l'intro
 #       |-----------------------|
@@ -4556,6 +4562,86 @@ line3 = "qualité-prix."
 line1 = "Promotion du moment :"
 line2 = "une bouteille d'énergie"
 line3 = "magique."
+
+[chests_game_cave.first_time]
+#       |-----------------------|
+line1 = "Comment es-tu arrivé"
+line2 = "ici ??"
+next = chests_game_cave.first_time.2
+skip = current
+
+[chests_game_cave.first_time.2]
+#       |-----------------------|
+line1 = "... Maintenant que tu"
+line2 = "es là, je te propose de"
+line3 = "participer en"
+next = chests_game_cave.first_time.3
+
+[chests_game_cave.first_time.3]
+#       |-----------------------|
+line1 = "exclusivité à mon"
+line2 = "nouveau jeu. La partie"
+line3 = "coûte 30 Rubis."
+next = chests_game_cave.play_question
+
+[chests_game_cave.not_first_time]
+#       |-----------------------|
+line1 = "Salut ! Une partie"
+line2 = "coûte 30 Rubis."
+next = chests_game_cave.play_question
+
+[chests_game_cave.play_question]
+#       |-----------------------|
+line1 = "Tu veux jouer ?"
+line2 = "Oui"
+line3 = "Non"
+question = true
+
+[chests_game_cave.not_enough_money]
+#       |-----------------------|
+line1 = "Tu n'as pas assez de"
+line2 = "Rubis !"
+skip = all
+
+[chests_game_cave.start_game_wooden_key]
+#       |-----------------------|
+line1 = "Merci ! Le jeu consiste"
+line2 = "à ouvrir un coffre au"
+line3 = "choix. Son contenu est"
+next = chests_game_cave.start_game_wooden_key.2
+skip = all
+
+[chests_game_cave.start_game_wooden_key.2]
+#       |-----------------------|
+line1 = "à toi. Le gros lot du"
+line2 = "du jour est une"
+line3 = "magnifique clé en bois."
+
+[chests_game_cave.start_game_piece_of_heart]
+#       |-----------------------|
+line1 = "Merci ! Le jeu consiste"
+line2 = "à ouvrir un coffre au"
+line3 = "choix. Son contenu est"
+next = chests_game_cave.start_game_piece_of_heart.2
+skip = all
+
+[chests_game_cave.start_game_piece_of_heart.2]
+#       |-----------------------|
+line1 = "à toi. Le gros lot du"
+line2 = "du jour est un Fragment"
+line3 = "de Coeur."
+
+[chests_game_cave.start_game]
+#       |-----------------------|
+line1 = "Merci ! Tu peux ouvrir"
+line2 = "l'un des coffres. Son"
+line3 = "Son contenu est à toi."
+skip = all
+
+[chests_game_cave.already_playing]
+#       |-----------------------|
+line1 = "Choisis un coffre !"
+skip = all
 
 [dungeon_3.arbror_direction_hint]
 #       |-----------------------|

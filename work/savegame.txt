@@ -180,9 +180,12 @@ booleans:
 156	smith cave: won the battle agains the thiefs
 157	broken rupee house: got the flippers
 158	lake shop: weak wall
-
+159	outside world B3: stone lock
+160	chests game cave: first dialog
 161-169 inferno river maze 1F: changed the state of each water pool
 171-179 inferno river maze B1: changed the state of each water pool
+180	chests game cave: got the wooden key
+181	chests game cave: got the piece of heart
 
 200-299: binbin dungeon
 200	1F: small key 1 door

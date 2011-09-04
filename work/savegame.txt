@@ -193,6 +193,7 @@ booleans:
 191	fairy cave: piece of heart
 192	fairy cave: chest with the stone key
 193	outside world B2: iron lock
+194	outside world B2: wooden lock
 
 200-299: binbin dungeon
 200	1F: small key 1 door

@@ -1081,6 +1081,8 @@
 12	0	264	8	16	8	custom_obstacle_3	1	1	1	1
 6	0	264	56	16	8	jump_sensor_2	6	88
 2	0	264	16	16	16	teletransporter_2	0	1	80	from_outside
+2	0	176	456	48	16	teletransporter_3	0	1	82	from_outside_n
+12	0	176	432	48	8	custom_obstacle_6	1	1	1	1
 0	1	56	424	32	24	901
 0	2	608	368	16	32	1025
 0	2	624	368	40	40	1024

@@ -1176,6 +1176,10 @@
 1	0	872	749	from_lake_shop_s	3	0
 2	0	864	712	16	16	teletransporter_2	0	1	73	from_outside_s
 2	0	864	688	16	16	teletransporter_3	0	1	73	from_outside_n
+1	0	368	61	from_cave_under_waterfall_c	3	0
+2	0	360	32	16	16	teletransporter_4	0	1	82	from_outside_c
+12	0	48	344	16	8	custom_obstacle_4	1	1	1	1
+1	0	56	365	from_cave_under_waterfall_s	3	0
 0	2	824	688	40	40	1023
 0	2	880	688	40	40	1024
 0	2	568	320	48	40	511

@@ -24,7 +24,10 @@
 0	20	Lyriann Cave 1F
 0	21	Lyriann Cave B1
 0	22	Mymette grotte
-0	26	Fairy Cave 1F W
+0	26	Fairy Cave 1F SW
+0	77	Fairy Cave 1F SE
+0	81	Fairy Cave 1F NE
+0	78	Fairy Cave 2F
 0	29	Twin caves
 0	47	Dungeon 8 1F
 0	48	Dungeon 8 B1
@@ -73,8 +76,6 @@
 0	74	Cave under river
 0	75	Chests game cave
 0	76	Lost woods cave
-0	77	Fairy Cave 1F E
-0	78	Fairy Cave 2F
 0	79	Waterfall cave 1F
 0	80	Waterfall cave B1
 1	1	Light World

@@ -45,7 +45,8 @@ Chest::Chest(const std::string &name, Layer layer, int x, int y,
   treasure(treasure),
   big_chest(big_chest),
   open(treasure.is_found()),
-  treasure_given(open) {
+  treasure_given(open),
+  treasure_date(0) {
 
   initialize_sprite();
 }
@@ -219,32 +220,34 @@ void Chest::update() {
 
   if (is_open() && !suspended) {
 
-    if (!treasure_given && System::now() >= treasure_date) {
+    if (!treasure_given && treasure_date != 0 && System::now() >= treasure_date) {
+
+      treasure_date = 0;
 
       if (treasure.get_item_name() != "_none") {
-	// give a treasure to the player
+        // give a treasure to the player
 
-	get_hero().start_treasure(treasure);
-	treasure_given = true;
+        get_hero().start_treasure(treasure);
+        treasure_given = true;
       }
       else { // the chest is empty
 
-	// mark the chest as found in the savegame
-	int savegame_variable = treasure.get_savegame_variable();
-	if (savegame_variable != -1) {
-	  get_savegame().set_boolean(savegame_variable, true);
-	}
+        // mark the chest as found in the savegame
+        int savegame_variable = treasure.get_savegame_variable();
+        if (savegame_variable != -1) {
+          get_savegame().set_boolean(savegame_variable, true);
+        }
 
-	treasure_given = true;
+        treasure_given = true;
 
-	if (!get_map_script().event_chest_empty(get_name())) {
+        if (!get_map_script().event_chest_empty(get_name())) {
 
-	  // the script does not define any behavior:
-	  // by default, we tell the player the chest is empty
-	  Sound::play("wrong");
-	  get_dialog_box().start_dialog("_empty_chest");
-	  get_hero().start_free();
-	}
+          // the script does not define any behavior:
+          // by default, we tell the player the chest is empty
+          Sound::play("wrong");
+          get_dialog_box().start_dialog("_empty_chest");
+          get_hero().start_free();
+        }
       }
     }
   }
@@ -290,7 +293,7 @@ void Chest::set_suspended(bool suspended) {
 
   MapEntity::set_suspended(suspended);
 
-  if (!suspended) {
+  if (!suspended && treasure_date != 0) {
     // restore the timer
     treasure_date = System::now() + (treasure_date - when_suspended);
   }

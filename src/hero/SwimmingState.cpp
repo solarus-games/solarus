@@ -18,6 +18,7 @@
 #include "hero/FreeState.h"
 #include "hero/HeroSprites.h"
 #include "lowlevel/Sound.h"
+#include "lowlevel/System.h"
 #include "Equipment.h"
 #include "KeysEffect.h"
 
@@ -27,7 +28,8 @@
  */
 Hero::SwimmingState::SwimmingState(Hero& hero):
   PlayerMovementState(hero),
-  fast_swimming(false) {
+  fast_swimming(false),
+  end_fast_swim_date(0) {
 
 }
 
@@ -76,7 +78,7 @@ void Hero::SwimmingState::update() {
   if (hero.get_ground() != GROUND_DEEP_WATER) {
     hero.set_state(new FreeState(hero));
   }
-  else if (fast_swimming && get_sprites().is_animation_finished()) {
+  else if (fast_swimming && System::now() >= end_fast_swim_date) {
     fast_swimming = false;
     hero.set_walking_speed(get_slow_swimming_speed());
 
@@ -86,6 +88,19 @@ void Hero::SwimmingState::update() {
     else {
       set_animation_stopped();
     }
+  }
+}
+
+/**
+ * @brief Notifies this state that the game was just suspended or resumed.
+ * @param suspended true if the game is suspended
+ */
+void Hero::SwimmingState::set_suspended(bool suspended) {
+
+  PlayerMovementState::set_suspended(suspended);
+
+  if (!suspended && fast_swimming) {
+    end_fast_swim_date += System::now() - when_suspended;
   }
 }
 
@@ -132,6 +147,7 @@ void Hero::SwimmingState::try_swim_faster() {
     hero.set_walking_speed(get_fast_swimming_speed());
     get_sprites().set_animation_swimming_fast();
     Sound::play("swim");
+    end_fast_swim_date = System::now() + 600;
   }
 }
 

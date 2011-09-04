@@ -26,7 +26,8 @@ class Hero::SwimmingState: public Hero::PlayerMovementState {
 
   private:
 
-    bool fast_swimming;       /**< indicates that the hero is currently swimming faster */
+    bool fast_swimming;            /**< indicates that the hero is currently swimming faster */
+    uint32_t end_fast_swim_date;   /**< date when the fast swimming stops */
 
     int get_slow_swimming_speed();
     int get_fast_swimming_speed();
@@ -40,6 +41,7 @@ class Hero::SwimmingState: public Hero::PlayerMovementState {
     void start(State* previous_state);
     void stop(State* next_state);
     void update();
+    void set_suspended(bool suspended);
 
     void set_animation_stopped();
     void set_animation_walking();

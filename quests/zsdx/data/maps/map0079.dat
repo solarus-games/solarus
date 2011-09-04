@@ -369,6 +369,15 @@
 0	0	392	552	8	8	330
 0	0	360	552	8	8	336
 0	0	448	552	8	8	337
+0	0	64	64	8	48	218
+0	0	64	336	8	32	218
+0	0	64	416	8	48	218
+0	0	128	632	48	8	217
+0	0	472	240	8	64	219
+0	0	472	64	8	128	219
+0	0	64	64	416	8	216
+0	0	64	64	8	8	212
+0	0	472	64	8	8	213
 19	0	400	592	stairs	3	4
 2	0	80	80	64	48	teletransporter_2	0	1	80	from_1f_holes
 2	0	64	112	64	32	teletransporter_3	0	1	80	from_1f_holes
@@ -428,6 +437,22 @@
 2	0	272	528	96	64	teletransporter_57	0	1	80	from_1f_holes
 2	0	240	608	48	32	teletransporter_58	0	1	80	from_1f_holes
 2	0	288	592	48	48	teletransporter_59	0	1	80	from_1f_holes
+1	0	456	301	destination_point	-1	1
+2	0	144	608	16	16	teletransporter_60	1	1	79	destination_point
+4	0	136	301	3	_random	1	-1
+4	0	152	301	3	_random	1	-1
+4	0	136	317	3	_random	1	-1
+4	0	152	317	3	_random	1	-1
+4	0	136	333	3	_random	1	-1
+4	0	152	333	3	_random	1	-1
+4	0	136	349	3	_random	1	-1
+5	0	128	176	chest_1	0	_none	1	-1
+5	0	432	256	chest_2	0	_none	1	-1
+5	0	464	256	chest_3	0	_none	1	-1
+5	0	272	288	chest_4	0	_none	1	-1
+5	0	400	368	chest_5	0	_none	1	-1
+5	0	64	432	chest_6	0	_none	1	-1
+5	0	256	448	chest_7	0	_none	1	-1
 0	1	360	616	144	48	2
 0	1	360	656	144	8	180
 0	1	504	664	24	24	48

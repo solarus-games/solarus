@@ -197,6 +197,8 @@ booleans:
 195	waterfall cave: piece of heart
 196	cave under the waterfall: chest with 50 rupees
 197	lake cave: chest with the ice key
+198	junk shop: bought the red rupee
+200	junk shop: bought the mirror
 
 200-299: binbin dungeon
 200	1F: small key 1 door
@@ -240,3 +242,8 @@ booleans:
 507	dungeon 5 1F: boss key door
 508	dungeon 5 1F: big key door
 
+600-699	dungeon 7
+700-799	dungeon 8
+800-899	dungeon 9
+
+900	junk shop: bought the piece of heart

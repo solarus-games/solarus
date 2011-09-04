@@ -1200,6 +1200,9 @@
 1	0	416	909	from_waterfall_cave	3	0
 8	0	416	893	wooden_lock	3	0	_none	map
 2	0	408	880	16	16	teletransporter_7	0	1	79	from_outside
+1	0	816	365	from_junk_shop	3	0
+2	0	808	336	16	16	teletransporter_8	0	1	84	from_outside
+8	0	832	365	junk_shop_sign	3	0	entities/sign	dialog#outside_world.junk_shop_sign
 0	2	800	688	8	40	513
 0	2	632	336	8	40	513
 0	2	840	304	8	40	513

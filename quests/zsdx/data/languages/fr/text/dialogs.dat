@@ -4656,6 +4656,75 @@ skip = all
 line1 = "Choisis un coffre !"
 skip = all
 
+[outside_world.junk_shop_sign]
+#       |-----------------------|
+line2 = "     Bazar du Coin"
+skip = all
+next = outside_world.junk_shop_sign.2
+
+[outside_world.junk_shop_sign.2]
+#       |-----------------------|
+line1 = "Le plus grand choix"
+line2 = "d'articles à un prix"
+line3 = "vraiment exceptionnel !"
+
+[junk_shop.seller]
+#       |-----------------------|
+line1 = "Bienvenue au Bazar du"
+line2 = "Coin ! Des articles de"
+line3 = "premier choix à des"
+skip = all
+next = junk_shop.seller.2
+
+[junk_shop.seller.2]
+#       |-----------------------|
+line1 = "prix tout-à-fait"
+line2 = "exceptionnels !"
+line3 = "Sers-toi !"
+
+[junk_shop.croissant]
+#       |-----------------------|
+line1 = "Un Croissant. Pour"
+line2 = "récupérer des Coeurs."
+
+[junk_shop.arrows]
+#       |-----------------------|
+line1 = "Des Flèches de modèle"
+line2 = "standard."
+
+[junk_shop.red_rupee]
+#       |-----------------------|
+line1 = "Un Rubis Rouge en"
+line2 = "promotion. Mais c'est"
+line3 = "le modèle d'expo."
+
+[junk_shop.mystic_mirror]
+#       |-----------------------|
+line1 = "Le Miroir Mystique. On"
+line2 = "dit qu'il peut inverser"
+line3 = "le cours de l'eau !"
+
+[junk_shop.heart]
+#       |-----------------------|
+line1 = "Un Coeur. Pratique si"
+line2 = "tu manques de vitalité."
+
+[junk_shop.bombs]
+#       |-----------------------|
+line1 = "Huit Bombes à prix"
+line2 = "spécial."
+
+[junk_shop.piece_of_heart]
+#       |-----------------------|
+line1 = "Un authentique Fragment"
+line2 = "de Coeur."
+
+[junk_shop.pain_au_chocolat]
+#       |-----------------------|
+line1 = "Un Pain au Chocolat"
+line2 = "pour récupérer des"
+line3 = "Coeurs."
+
 [dungeon_3.arbror_direction_hint]
 #       |-----------------------|
 line1 = ""

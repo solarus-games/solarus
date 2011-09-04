@@ -196,6 +196,7 @@ booleans:
 194	outside world B2: wooden lock
 195	waterfall cave: piece of heart
 196	cave under the waterfall: chest with 50 rupees
+197	lake cave: chest with the ice key
 
 200-299: binbin dungeon
 200	1F: small key 1 door

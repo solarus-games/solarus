@@ -5708,7 +5708,9 @@
 7	1	464	1021	enemy_15	3	green_duck_soldier	0	-1	_random	1	-1
 7	1	464	1245	enemy_16	3	blue_duck_soldier	0	-1	_random	1	-1
 7	1	464	1469	enemy_17	3	red_duck_soldier	0	-1	_random	1	-1
-7	1	160	2085	enemy_18	3	lizalfos	0	-1	_random	1	-1
+7	1	160	2141	enemy_18	3	red_dogman	0	-1	_random	1	-1
+7	1	160	1917	enemy_19	3	blue_dogman	0	-1	_random	1	-1
+7	1	160	1693	enemy_20	3	lizalfos	0	-1	_random	1	-1
 0	2	112	2032	96	8	411
 0	2	296	1856	8	96	416
 0	2	112	1808	96	8	411

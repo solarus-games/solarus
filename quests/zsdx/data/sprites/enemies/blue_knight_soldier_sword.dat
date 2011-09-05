@@ -1,22 +1,22 @@
-walking enemies/green_knight_soldier.png 4 200 0
+walking enemies/blue_knight_soldier.png 4 200 0
 0	192	48	48	24	29	2	2
 0	240	48	48	24	29	2	2
 0	288	48	48	24	29	2	2
 0	336	48	48	24	29	2	2
 
-immobilized enemies/green_knight_soldier.png 4 0 -1
+immobilized enemies/blue_knight_soldier.png 4 0 -1
 288	192	48	48	24	29	1	1
 288	240	48	48	24	29	1	1
 288	288	48	48	24	29	1	1
 288	336	48	48	24	29	1	1
 
-shaking enemies/green_knight_soldier.png 4 50 0
+shaking enemies/blue_knight_soldier.png 4 50 0
 288	192	48	48	24	29	2	2
 288	240	48	48	24	29	2	2
 288	288	48	48	24	29	2	2
 288	336	48	48	24	29	2	2
 
-hurt enemies/green_knight_soldier.png 4 50 0
+hurt enemies/blue_knight_soldier.png 4 50 0
 192	192	48	48	24	29	3	3
 192	240	48	48	24	29	3	3
 192	288	48	48	24	29	3	3

@@ -1,4 +1,4 @@
--- Generic script for a soldier with a sword
+-- Generic script for an enemy with a sword
 
 -- Example of use from an enemy script:
 -- sol.main.include("enemies/generic_soldier")
@@ -10,6 +10,7 @@
 --   play_hero_seen_sound = true
 --   normal_speed = 32
 --   faster_speed = 48
+--   hurt_sound_style = "normal"
 -- })
 
 properties = {}
@@ -36,6 +37,9 @@ function set_properties(prop)
   if properties.faster_speed == nil then
     properties.faster_speed = 48
   end
+  if properties.hurt_sound_style == nil then
+    properties.hurt_sound_style = "normal"
+  end
 end
 
 function get_main_sprite()
@@ -50,6 +54,7 @@ function event_appear()
 
   sol.enemy.set_life(properties.life)
   sol.enemy.set_damage(properties.damage)
+  sol.enemy.set_hurt_sound_style(properties.hurt_sound_style)
   sol.enemy.create_sprite(properties.sword_sprite)
   sol.enemy.create_sprite(properties.main_sprite)
   sol.enemy.set_size(16, 16)

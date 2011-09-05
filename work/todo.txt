@@ -82,6 +82,12 @@ Ennemis à faire (reprendre graphismes de MC + graphismes rippés) :
 - fantôme
 - garde bleu avec lance (monde des ténèbres)
 
+- Dogman
+- Lizalfos
+- Knight soldier
+- Duck soldier
+- Pig soldier
+
 
 Musiques du vieux ZS :
 

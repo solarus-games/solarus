@@ -5690,7 +5690,7 @@
 12	1	2888	248	16	16	custom_obstacle_377	0	1	0	0
 12	1	2760	112	16	16	custom_obstacle_378	0	1	0	0
 12	1	2888	200	16	16	custom_obstacle_379	0	1	0	0
-2	1	152	2240	16	16	teletransporter	0	1	4	from_chest_game_cave
+2	1	152	2240	16	16	teletransporter	0	1	8	from_west_mountain_cave_1f
 7	1	464	1912	enemy_2	3	bubble	0	-1	_random	1	-1
 7	1	160	1021	enemy_4	3	globul	0	-1	_random	1	-1
 7	1	464	1693	enemy_3	3	tentacle	0	-1	_random	1	-1
@@ -5698,8 +5698,9 @@
 7	1	160	1469	enemy_5	3	mandible	0	-1	_random	1	-1
 7	1	160	1701	enemy_6	3	skeletor	0	-1	_random	1	-1
 7	1	160	1245	enemy_7	3	bee_guard	0	-1	_random	1	-1
-7	1	160	1917	enemy_8	3	blue_bullblin	0	-1	_random	1	-1
-7	1	160	2141	enemy_9	3	red_bullblin	0	-1	_random	1	-1
+7	1	160	573	enemy_8	3	blue_bullblin	0	-1	_random	1	-1
+7	1	160	797	enemy_9	3	red_bullblin	0	-1	_random	1	-1
+7	1	160	2141	enemy_10	3	green_knight_soldier	0	-1	_random	1	-1
 0	2	112	2032	96	8	411
 0	2	296	1856	8	96	416
 0	2	112	1808	96	8	411

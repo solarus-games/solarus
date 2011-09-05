@@ -1,4 +1,4 @@
--- Blue pig soldier
+-- Red duck soldier
 
 sol.main.include("enemies/generic_soldier")
 set_properties({

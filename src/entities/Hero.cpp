@@ -590,7 +590,9 @@ void Hero::place_on_destination_point(Map& map, const Rectangle& previous_map_lo
  *
  * The position of the hero is changed if necessary.
  */
-void Hero::notify_opening_transition_finished() {
+void Hero::notify_map_opening_transition_finished() {
+
+  MapEntity::notify_map_opening_transition_finished();
 
   int side = get_map().get_destination_side();  
   if (side != -1) {
@@ -599,24 +601,24 @@ void Hero::notify_opening_transition_finished() {
 
     switch (side) {
 
-      case 0: // right side
-	set_x(get_map().get_width() - 8);
-	break;
+    case 0: // right side
+      set_x(get_map().get_width() - 8);
+      break;
 
-      case 1: // top side
-	set_y(13);
-	break;
+    case 1: // top side
+      set_y(13);
+      break;
 
-      case 2: // left side
-	set_x(8);
-	break;
+    case 2: // left side
+      set_x(8);
+      break;
 
-      case 3: // bottom side
-	set_y(get_map().get_height() - 3);
-	break;
+    case 3: // bottom side
+      set_y(get_map().get_height() - 3);
+      break;
 
-      default:
-	Debug::die(StringConcat() << "Invalid destination side: " << side);
+    default:
+      Debug::die(StringConcat() << "Invalid destination side: " << side);
     }
   }
   check_position();

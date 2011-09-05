@@ -201,6 +201,7 @@ class Enemy: public Detector {
     EntityType get_type();
     virtual void set_map(Map &map);
     virtual void notify_map_started();
+    virtual void notify_map_opening_transition_finished();
     Rank get_rank();
 
     // obstacles

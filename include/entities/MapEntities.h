@@ -129,6 +129,7 @@ class MapEntities {
 
     // game loop
     void notify_map_started();
+    void notify_map_opening_transition_finished();
     void set_suspended(bool suspended);
     void update();
     void display();

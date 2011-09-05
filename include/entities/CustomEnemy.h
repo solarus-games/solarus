@@ -43,7 +43,6 @@ class CustomEnemy: public Enemy {
     const std::string& get_breed();
 
     void set_map(Map& map);
-    void notify_map_started();
     void update();
     void set_suspended(bool suspended);
     void display_on_map();

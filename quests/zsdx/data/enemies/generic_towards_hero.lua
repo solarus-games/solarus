@@ -82,13 +82,13 @@ function check_hero()
 end
 
 function go_random()
-  m = sol.main.random_path_movement_create(32)
+  m = sol.main.random_path_movement_create(properties.normal_speed)
   sol.enemy.start_movement(m)
   going_hero = false
 end
 
 function go_hero()
-  m = sol.main.target_movement_create(48)
+  m = sol.main.target_movement_create(properties.faster_speed)
   sol.enemy.start_movement(m)
   going_hero = true
 end

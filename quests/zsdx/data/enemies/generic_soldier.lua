@@ -1,6 +1,9 @@
 -- Generic script for an enemy with a sword
+-- that goes towards the hero if he sees him
+-- and walks randomly otherwise.
 
 -- Example of use from an enemy script:
+
 -- sol.main.include("enemies/generic_soldier")
 -- set_properties({
 --   main_sprite = "enemies/green_knight_soldier",
@@ -12,6 +15,10 @@
 --   faster_speed = 48
 --   hurt_sound_style = "normal"
 -- })
+
+-- The parameter of set_properties() is an array.
+-- Its values are all optional except main_sprite
+-- and sword_sprite.
 
 properties = {}
 going_hero = false

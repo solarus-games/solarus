@@ -182,6 +182,7 @@ class MapEntity {
     virtual void set_map(Map &map);
     Map& get_map();
     virtual void notify_map_started();
+    virtual void notify_map_opening_transition_finished();
     Game& get_game();
 
     // position in the map

@@ -221,6 +221,19 @@ void Enemy::notify_map_started() {
 
   MapEntity::notify_map_started();
 
+  std::map<SpriteAnimationSetId, Sprite*>::iterator it;
+  for (it = get_sprites().begin(); it != get_sprites().end(); it++) {
+    it->second->set_current_direction(3);
+  }
+}
+
+/**
+ * @brief Notifies this entity that its map has just become active.
+ */
+void Enemy::notify_map_opening_transition_finished() {
+
+  MapEntity::notify_map_started();
+
   if (is_enabled()) {
     restart();
   }
@@ -485,7 +498,7 @@ const std::string& Enemy::get_animation() {
  * @param animation name of the animation to set
  */
 void Enemy::set_animation(const std::string &animation) {
-  
+
   std::map<SpriteAnimationSetId, Sprite*>::iterator it;
   for (it = get_sprites().begin(); it != get_sprites().end(); it++) {
     it->second->set_current_animation(animation);

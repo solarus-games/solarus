@@ -274,6 +274,20 @@ void MapEntities::notify_map_started() {
 }
 
 /**
+ * @brief Notifies all entities that the opening transition
+ * of the map is finished.
+ */
+void MapEntities::notify_map_opening_transition_finished() {
+
+  list<MapEntity*>::iterator i;
+  for (i = all_entities.begin(); i != all_entities.end(); i++) {
+    MapEntity* entity = *i;
+    entity->notify_map_opening_transition_finished();
+  }
+  hero.notify_map_opening_transition_finished();
+}
+
+/**
  * @brief Adds a tile on the map.
  *
  * This function is called for each tile when loading the map.

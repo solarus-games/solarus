@@ -68,14 +68,6 @@ void CustomEnemy::set_map(Map& map) {
 }
 
 /**
- * @brief Notifies this entity that its map has just become active.
- */
-void CustomEnemy::notify_map_started() {
-
-  Enemy::notify_map_started();
-}
-
-/**
  * @brief Updates the enemy.
  */
 void CustomEnemy::update() {

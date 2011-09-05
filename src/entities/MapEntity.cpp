@@ -310,6 +310,13 @@ void MapEntity::notify_map_started() {
 }
 
 /**
+ * @brief Notifies this entity that the opening transition
+ * of the map is finished.
+ */
+void MapEntity::notify_map_opening_transition_finished() {
+}
+
+/**
  * @brief Returns the map where this entity is.
  * @return the map
  */

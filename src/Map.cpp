@@ -544,7 +544,7 @@ void Map::notify_opening_transition_finished() {
 
   visible_surface->set_opacity(255); // because the transition effect may have changed the opacity
   check_suspended();
-  game->get_hero().notify_opening_transition_finished();
+  entities->notify_map_opening_transition_finished();
   get_script().event_map_opening_transition_finished(destination_point_name);
 }
 

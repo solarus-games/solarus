@@ -433,18 +433,11 @@ y = 400
 save = 305
 big = 0
 
-[dungeon_3.map_42.chest_0]
-floor = 2
-x = 824
-y = 808
-save = 123
-big = 1
-
-[dungeon_3.map_42.chest_1]
-floor = 2
-x = 424
-y = 152
-save = 124
+[dungeon_3.map_40.chest_0]
+floor = 0
+x = 936
+y = 432
+save = 118
 big = 0
 
 [dungeon_3.map_41.chest_0]
@@ -468,11 +461,18 @@ y = 176
 save = 126
 big = 0
 
-[dungeon_3.map_40.chest_0]
-floor = 0
-x = 936
-y = 432
-save = 118
+[dungeon_3.map_42.chest_0]
+floor = 2
+x = 824
+y = 808
+save = 123
+big = 1
+
+[dungeon_3.map_42.chest_1]
+floor = 2
+x = 424
+y = 152
+save = 124
 big = 0
 
 [dungeon_3.map_43.boss_0]

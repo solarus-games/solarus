@@ -31,7 +31,7 @@
 0	1	40	264	176	80	539
 0	1	40	344	432	336	539
 0	1	544	352	432	320	539
-0	1	312	776	336	176	539
+0	1	288	752	384	224	539
 0	1	744	808	48	176	539
 0	1	936	808	48	176	539
 0	1	936	976	48	8	236
@@ -295,8 +295,8 @@
 6	1	928	832	8	80	jump_sensor_4	4	40
 6	1	792	880	8	80	jump_sensor_2	0	40
 6	1	792	832	8	16	jump_sensor	0	40
-10	1	584	744	96	32	miniboss_prinkles	519	0
-10	1	648	776	32	96	miniboss_prinkles_2	519	0
+10	1	584	744	96	32	miniboss_prickles	519	0
+10	1	648	776	32	96	miniboss_prickles_2	519	0
 18	1	608	728	miniboss_door	1	0	-1
 18	1	608	680	miniboss_door_2	3	0	-1
 18	1	680	832	miniboss_door_3	0	0	-1
@@ -307,7 +307,7 @@
 1	1	448	37	from_3F_nc	3	0
 1	1	384	37	from_5F	3	0
 1	1	160	37	from_3F_nw	3	0
-10	1	632	776	16	16	miniboss_prinkles_3	519	0
+10	1	632	776	16	16	miniboss_prickles_3	519	0
 2	1	320	152	80	48	teletransporter_2	0	1	42	_same
 2	1	152	24	16	16	teletransporter_3	0	1	42	from_4F_nw
 2	1	440	24	16	16	teletransporter_4	0	1	42	from_4F_n
@@ -320,6 +320,7 @@
 1	1	360	181	from_5F_hole	-1	0
 2	1	376	24	16	16	teletransporter_6	0	1	54	from_4F
 19	1	376	24	stairs_6	1	0
+1	1	624	669	tmp	3	0
 0	2	344	16	160	8	437
 0	2	72	216	96	8	438
 0	2	72	240	96	8	437

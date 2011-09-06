@@ -688,8 +688,7 @@
 10	1	936	400	16	8	e_water_2	467	1
 10	1	280	720	8	32	c_water_middle	474	1
 10	1	272	728	8	16	c_water_source	473	1
-1	1	776	421	tmp	0	0
-2	1	392	984	16	16	teletransporter_7	0	0	40	tmp
+2	1	392	984	16	16	teletransporter_7	0	0	43	tmp
 9	1	432	485	block	-1	0	0
 9	1	448	485	block_2	-1	0	0
 9	1	464	485	block_3	-1	0	0

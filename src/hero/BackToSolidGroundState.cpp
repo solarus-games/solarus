@@ -20,6 +20,7 @@
 #include "entities/MapEntities.h"
 #include "movements/TargetMovement.h"
 #include "lowlevel/Rectangle.h"
+#include "lowlevel/System.h"
 #include "Map.h"
 
 /**
@@ -27,9 +28,12 @@
  * @param hero the hero controlled by this state
  * @param use_memorized_xy true to get back to the place previously memorized (if any),
  * false to get back to the last coordinates with solid ground
+ * @param end_delay a delay to add at the end before returning control to the hero (default 0)
  */
-Hero::BackToSolidGroundState::BackToSolidGroundState(Hero &hero, bool use_memorized_xy):
-  State(hero) {
+Hero::BackToSolidGroundState::BackToSolidGroundState(Hero &hero, bool use_memorized_xy, uint32_t end_delay):
+  State(hero),
+  end_delay(end_delay),
+  end_date(0) {
 
   if (use_memorized_xy && hero.target_solid_ground_coords.get_x() != -1) {
     // go back to a target point specified earlier
@@ -84,8 +88,25 @@ void Hero::BackToSolidGroundState::update() {
 
   // the current movement is an instance of TargetMovement
   if (hero.get_movement()->is_finished()) {
-    get_sprites().blink();
-    hero.set_state(new FreeState(hero));
+
+    uint32_t now = System::now();
+    if (end_date == 0) {
+      end_date = now + end_delay;
+    }
+
+    if (now >= end_date) {
+      get_sprites().blink();
+      hero.set_state(new FreeState(hero));
+    }
+  }
+}
+
+void Hero::BackToSolidGroundState::set_suspended(bool suspended) {
+
+  State::set_suspended(suspended);
+
+  if (!suspended && end_date != 0) {
+    end_date += System::now() - when_suspended;
   }
 }
 

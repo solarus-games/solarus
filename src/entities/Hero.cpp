@@ -40,6 +40,7 @@
 #include "hero/ForcedWalkingState.h"
 #include "hero/LiftingState.h"
 #include "hero/PlungingState.h"
+#include "hero/BackToSolidGroundState.h"
 #include "hero/RunningState.h"
 #include "hero/StairsState.h"
 #include "hero/SwimmingState.h"
@@ -1140,7 +1141,7 @@ void Hero::notify_ground_changed() {
   case GROUND_PRICKLE:
     // prickles
     if (!state->can_avoid_prickle()) {
-      start_prickle();
+      start_prickle(500);
     }
     break;
 
@@ -1914,11 +1915,13 @@ void Hero::start_lava() {
 
 /**
  * @brief Makes the hero being hurt by prickles.
+ * @param delay delay before returning control to the player
  */
-void Hero::start_prickle() {
+void Hero::start_prickle(uint32_t delay) {
 
-  // TODO
-  set_state(new PlungingState(*this));
+  Sound::play("hero_hurt");
+  get_equipment().remove_life(2);
+  set_state(new BackToSolidGroundState(*this, false, delay));
 }
 
 /**
@@ -2113,7 +2116,9 @@ void Hero::start_state_from_ground() {
     break;
 
   case GROUND_PRICKLE:
-    set_state(new PlungingState(*this)); // TODO
+    // there is no specific state for prickles (yet?)
+    set_state(new FreeState(*this));
+    start_prickle(0);
     break;
 
   case GROUND_NORMAL:

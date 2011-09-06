@@ -294,7 +294,7 @@ class Hero: public MapEntity {
     void start_deep_water();
     void start_hole();
     void start_lava();
-    void start_prickle();
+    void start_prickle(uint32_t delay);
 
     void start_next_state();
     void start_free();

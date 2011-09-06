@@ -26,17 +26,20 @@ class Hero::BackToSolidGroundState: public Hero::State {
 
   private:
 
-    Rectangle target_xy;			/**< coordinates of the solid ground location to go to*/
-    Layer target_layer;				/**< layer of the target location */
+    Rectangle target_xy;            /**< coordinates of the solid ground location to go to*/
+    Layer target_layer;             /**< layer of the target location */
+    uint32_t end_delay;             /**< delay before returning control to the player */
+    uint32_t end_date;              /**< date when the state ends */
 
   public:
 
-    BackToSolidGroundState(Hero &hero, bool use_memorized_xy);
+    BackToSolidGroundState(Hero &hero, bool use_memorized_xy, uint32_t end_delay = 0);
     ~BackToSolidGroundState();
 
     void start(State *previous_state);
     void stop(State *next_state);
     void update();
+    void set_suspended(bool suspended);
     bool can_start_gameover_sequence();
     bool is_hero_visible();
     bool are_collisions_ignored();

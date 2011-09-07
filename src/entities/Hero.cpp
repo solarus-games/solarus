@@ -1919,8 +1919,10 @@ void Hero::start_lava() {
  */
 void Hero::start_prickle(uint32_t delay) {
 
-  Sound::play("hero_hurt");
-  get_equipment().remove_life(2);
+  if (!get_sprites().is_blinking()) {
+    Sound::play("hero_hurt");
+    get_equipment().remove_life(2);
+  }
   set_state(new BackToSolidGroundState(*this, false, delay));
 }
 

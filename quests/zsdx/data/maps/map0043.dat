@@ -286,6 +286,8 @@
 0	1	120	216	16	32	541
 0	1	616	696	16	32	541
 0	1	696	840	32	16	541
+0	1	544	640	16	32	2
+0	1	688	640	16	32	2
 12	1	792	848	32	8	custom_obstacle	1	1	1	1
 12	1	792	872	32	8	custom_obstacle_2	1	1	1	1
 12	1	904	912	32	8	custom_obstacle_3	1	1	1	1
@@ -321,9 +323,13 @@
 2	1	376	24	16	16	teletransporter_6	0	1	54	from_4F
 19	1	376	24	stairs_6	1	0
 1	1	624	669	tmp	3	0
-7	1	488	853	miniboss	3	simple_green_soldier	1	901	fairy	1	-1
+7	1	480	872	miniboss	3	mowatulla	1	901	fairy	1	-1
 13	1	624	757	16	16	start_miniboss_sensor	0
 13	1	616	797	32	32	start_miniboss_sensor_2	0
+4	1	696	653	0	_random	1	-1
+4	1	696	669	0	_random	1	-1
+4	1	552	669	0	heart	1	-1
+4	1	552	653	0	_random	1	-1
 0	2	344	16	160	8	437
 0	2	72	216	96	8	438
 0	2	72	240	96	8	437

@@ -781,7 +781,6 @@
 1	1	864	469	start_position	1	0
 2	1	856	480	16	16	exit	0	1	3	from_crazy_house
 3	1	696	149	heart_container	1	100
-3	1	696	149	heart_container	1	100
 8	1	624	325	mario_message_1	3	0	_none	map
 5	1	408	272	CK3	0	_none	1	122
 5	1	1272	216	CR3	0	rupee	1	109

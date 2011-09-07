@@ -306,6 +306,14 @@ bool Enemy::is_hole_obstacle() {
 }
 
 /**
+ * @brief Returns whether prickles are currently considered as obstacle by this entity.
+ * @return true if prickles are currently obstacle for this entity
+ */
+bool Enemy::is_prickle_obstacle() {
+  return false;
+}
+
+/**
  * @brief Sets the amount of damage this kind of enemy can make to the hero.
  * @param damage_on_hero number of heart quarters the player loses
  */

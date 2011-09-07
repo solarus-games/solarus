@@ -101,7 +101,7 @@ end
 
 function jump_or_son_phase()
 
-  if math.random(2) % 2 == 1 then
+  if math.random(2) == 1 then
  
     sons_prefix = sol.enemy.get_name().."_son" 
     nb_sons = sol.map.enemy_get_group_count(sons_prefix)

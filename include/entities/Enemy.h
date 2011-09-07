@@ -211,6 +211,7 @@ class Enemy: public Detector {
     bool is_deep_water_obstacle();
     bool is_shallow_water_obstacle();
     bool is_hole_obstacle();
+    bool is_prickle_obstacle();
 
     // enemy state
     bool is_displayed_in_y_order();

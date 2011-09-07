@@ -4735,6 +4735,26 @@ line3 = ""
 #       |-----------------------|
 line1 = "Au loin... un bruit..."
 
+[dungeon_3.solarus_child]
+#       |-----------------------|
+line1 = "$2$v... Merci."
+line2 = "Tu m'as sauvé la vie."
+line3 = "Je suis l'un des huit"
+next = dungeon_3.solarus_child.2
+
+[dungeon_3.solarus_child.2]
+#       |-----------------------|
+line1 = "protecteurs appelés par"
+line2 = "la Princesse Zelda."
+line3 = ""
+next = dungeon_3.solarus_child.3
+
+[dungeon_1.solarus_child.3]
+#       |-----------------------|
+line1 = "Puisse le héros mener"
+line2 = "le Royaume à la paix et"
+line3 = "à la prospérité !"
+
 [dungeon_4.welcome]
 #       |-----------------------|
 line1 = "        Niveau 4"

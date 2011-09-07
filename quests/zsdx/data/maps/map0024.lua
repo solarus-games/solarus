@@ -30,7 +30,7 @@ end
 function event_treasure_obtained(item_name, variant, savegame_variable)
 
   if item_name == "heart_container" then
-    sol.main.timer_start(9000, "open_final_room", false);
+    sol.main.timer_start(9000, "open_final_room", false)
     sol.main.play_music("victory.spc")
     sol.map.hero_freeze()
     sol.map.hero_set_direction(3)
@@ -63,9 +63,5 @@ function open_final_room()
   sol.map.door_open("final_room_door")
   sol.main.play_sound("secret")
   sol.map.hero_unfreeze()
-end
-
-function start_final_room()
-  sol.map.hero_set_map(27, "from_boss", 1);
 end
 

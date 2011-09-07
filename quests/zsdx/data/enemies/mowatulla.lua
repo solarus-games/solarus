@@ -81,7 +81,7 @@ function throw_son()
   -- create the son
   nb_sons_created = nb_sons_created + 1
   son_name = sol.enemy.get_name().."_minillosaur_"..nb_sons_created
-  sol.enemy.create_son(son_name, "mini_mowatulla", 0, 16)
+  sol.enemy.create_son(son_name, "mini_mowatulla", 0, 40)
   sol.main.play_sound("boss_fireball")
 
   -- see what to do next
@@ -95,7 +95,7 @@ function throw_son()
     sol.main.sprite_set_animation(sprite, "walking")
     duration = 3500 + (math.random(3) * 1000)
     sol.main.timer_start(duration, "jump_or_son_phase", false)
-    go()
+    sol.main.timer_start(500, "go", false)
   end
 end
 

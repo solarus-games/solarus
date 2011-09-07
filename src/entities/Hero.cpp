@@ -1374,11 +1374,11 @@ void Hero::notify_collision_with_destructible_item(DestructibleItem &destructibl
 }
 
 /**
- * @brief This function is called when a non-pixel perfect enemy collides with the hero.
+ * @brief This function is called when the rectangle of an enemy collides with the hero.
  * @param enemy the enemy
  */
 void Hero::notify_collision_with_enemy(Enemy &enemy) {
-  enemy.attack_hero(*this, NULL);
+  // hurt the hero only on pixel-precise collisions
 }
 
 /**

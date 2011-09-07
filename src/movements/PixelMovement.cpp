@@ -181,6 +181,8 @@ void PixelMovement::restart() {
  */
 void PixelMovement::update() {
 
+  Movement::update();
+
   if (is_suspended()) {
     return;
   }
@@ -250,7 +252,6 @@ void PixelMovement::make_next_step() {
  * @param success true if the move was made, false if the movement was stopped by an obstacle
  */
 void PixelMovement::notify_step_done(int step_index, bool success) {
-
 }
 
 /**

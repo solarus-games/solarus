@@ -248,3 +248,6 @@ booleans:
 
 900	junk shop: bought the piece of heart
 901	dungeon 3: miniboss
+902	dungeon 3: boss
+903	dungeon 3: boss heart container
+

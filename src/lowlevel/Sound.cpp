@@ -251,7 +251,7 @@ void Sound::play(const SoundId& sound_id) {
  */
 int Sound::get_volume() {
 
-  return (int) (volume * 100.0);
+  return (int) (volume * 100.0 + 0.5);
 }
 
 /**

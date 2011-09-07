@@ -106,7 +106,7 @@ void SelectionMenuOptions::set_cursor_position(int cursor_position) {
   if (cursor_position == nb_options) {
     menu->set_cursor_position(4);
   }
-  
+
   if (cursor_position < nb_options) {
     // a option line is now selected
     label_texts[cursor_position]->set_text_color(Color::get_yellow());
@@ -195,22 +195,22 @@ void SelectionMenuOptions::set_option_value(int option, int index) {
 
     switch (option) {
 
-      case 0: // language
-	FileTools::set_language(language_codes[index]);
-	reload_strings();
-	break;
+    case 0: // language
+      FileTools::set_language(language_codes[index]);
+      reload_strings();
+      break;
 
-      case 1: // video mode
-	VideoManager::get_instance()->set_video_mode(VideoManager::VideoMode(index));
-	break;
+    case 1: // video mode
+      VideoManager::get_instance()->set_video_mode(VideoManager::VideoMode(index));
+      break;
 
-      case 2: // music volume
-	Music::set_volume(index * 10);
-	break;
+    case 2: // music volume
+      Music::set_volume(index * 10);
+      break;
 
-      case 3: // sound volume
-	Sound::set_volume(index * 10);
-	break;
+    case 3: // sound volume
+      Sound::set_volume(index * 10);
+      break;
     }
   }
 }
@@ -280,10 +280,16 @@ void SelectionMenuOptions::load_configuration() {
   }
 
   // music volume
+  int volume = Music::get_volume();
+  if (volume % 10 != 0) {
+    // make sure the volume is a multiple of 10
+    volume = (volume + 5) / 10 * 10;
+    Music::set_volume(volume);
+  }
   nb_values[2] = 11;
   all_values[2] = new std::string[nb_values[2]];
   for (int i = 0; i < nb_values[2]; i++) {
-    int volume = i * 10;
+    volume = i * 10;
     std::ostringstream oss;
     oss << volume << " %";
     all_values[2][i] = oss.str();
@@ -295,10 +301,16 @@ void SelectionMenuOptions::load_configuration() {
   }
 
   // sound volume
+  volume = Sound::get_volume();
+  if (volume % 10 != 0) {
+    // make sure the volume is a multiple of 10
+    volume = (volume + 5) / 10 * 10;
+    Sound::set_volume(volume);
+  }
   nb_values[3] = 11;
   all_values[3] = new std::string[nb_values[3]];
   for (int i = 0; i < nb_values[3]; i++) {
-    int volume = i * 10;
+    volume = i * 10;
     std::ostringstream oss;
     oss << volume << " %";
     all_values[3][i] = oss.str();
@@ -331,10 +343,10 @@ void SelectionMenuOptions::notify_event(InputEvent &event) {
     if (!modifying) {
 
       if (direction == 2) { // up
-	move_cursor_up();
+        move_cursor_up();
       }
       else if (direction == 6) { // down
-	move_cursor_down();
+        move_cursor_down();
       }
     }
     else {
@@ -351,22 +363,22 @@ void SelectionMenuOptions::notify_event(InputEvent &event) {
   else if (event.is_keyboard_key_pressed(validation_keys) || event.is_joypad_button_pressed()) {
 
     if (cursor_position < nb_options) { // set an option
-      
+
       if (!modifying) {
-	menu->play_ok_sound();
-	left_arrow_sprite->restart_animation();
-	right_arrow_sprite->restart_animation();
+        menu->play_ok_sound();
+        left_arrow_sprite->restart_animation();
+        right_arrow_sprite->restart_animation();
         label_texts[cursor_position]->set_text_color(Color::get_white());
         value_texts[cursor_position]->set_text_color(Color::get_yellow());
-	menu->set_title_text("selection_menu.phase.options.changing");
+        menu->set_title_text("selection_menu.phase.options.changing");
         modifying = true;
       }
       else {
-	menu->play_letter_sound();
+        menu->play_letter_sound();
         label_texts[cursor_position]->set_text_color(Color::get_yellow());
         value_texts[cursor_position]->set_text_color(Color::get_white());
-	menu->set_title_text("selection_menu.phase.options");
-	modifying = false;
+        menu->set_title_text("selection_menu.phase.options");
+        modifying = false;
       }
     }
     else if (cursor_position == nb_options) { // back

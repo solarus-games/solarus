@@ -126,12 +126,12 @@ bool Music::is_initialized() {
 }
 
 /**
- * @brief Returns the current volume of musis.
+ * @brief Returns the current volume of music.
  * @return the volume (0 to 100)
  */
 int Music::get_volume() {
 
-  return (int) (volume * 100.0);
+  return (int) (volume * 100.0 + 0.5);
 }
 
 /**

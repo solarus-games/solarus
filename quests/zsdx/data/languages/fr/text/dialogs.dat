@@ -4494,7 +4494,7 @@ line3 = "fleur..."
 line1 = "Si tu me donnes quelque"
 line2 = "chose à manger, je te"
 line3 = "laisserai passer de"
-next = outside_world.suprise_wall_guy.closed.2
+next = outside_world.surprise_wall_guy.closed.2
 
 [outside_world.surprise_wall_guy.closed.2]
 #       |-----------------------|
@@ -4725,6 +4725,68 @@ line1 = "Un Pain au Chocolat"
 line2 = "pour récupérer des"
 line3 = "Coeurs."
 
+[dungeon_2.solarus_child]
+#       |-----------------------|
+line1 = "$2$v... Merci."
+line2 = "Tu m'as sauvé la vie."
+line3 = "Je suis l'un des huit"
+next = dungeon_2.solarus_child.2
+
+[dungeon_2.solarus_child.2]
+#       |-----------------------|
+line1 = "protecteurs appelés par"
+line2 = "la Princesse Zelda pour"
+line3 = "veiller sur la"
+next = dungeon_2.solarus_child.3
+
+[dungeon_2.solarus_child.3]
+#       |-----------------------|
+line1 = "Triforce. L'amulette du"
+line2 = "Solarus, le pendentif"
+line3 = "porté par la Princesse"
+next = dungeon_2.solarus_child.4
+
+[dungeon_2.solarus_child.4]
+#       |-----------------------|
+line1 = "Zelda, est le seul"
+line2 = "moyen de reconstituer "
+line3 = "la Triforce, dont nous"
+next = dungeon_2.solarus_child.5
+
+[dungeon_2.solarus_child.5]
+#       |-----------------------|
+line1 = "avons dissimulé les"
+line2 = "huit fragments dans"
+line3 = "tout le royaume."
+next = dungeon_2.solarus_child.6
+
+[dungeon_2.solarus_child.6]
+#       |-----------------------|
+line1 = "Nous sommes ici pour"
+line2 = "veiller sur les huit"
+line3 = "fragments, alors que"
+next = dungeon_2.solarus_child.7
+
+[dungeon_2.solarus_child.7]
+#       |-----------------------|
+line1 = "Zelda veille sur"
+line2 = "l'Amulette du Solarus."
+line3 = "Deux de mes congénaires"
+next = dungeon_2.solarus_child.8
+
+[dungeon_2.solarus_child.8]
+#       |-----------------------|
+line1 = "sont encore en danger."
+line2 = "Mais nous vons foi en"
+line3 = "ton courage."
+next = dungeon_2.solarus_child.9
+
+[dungeon_2.solarus_child.9]
+#       |-----------------------|
+line1 = "Puisse le héros mener"
+line2 = "le Royaume à la paix et"
+line3 = "à la prospérité !"
+
 [dungeon_3.arbror_direction_hint]
 #       |-----------------------|
 line1 = ""
@@ -4739,17 +4801,38 @@ line1 = "Au loin... un bruit..."
 #       |-----------------------|
 line1 = "$2$v... Merci."
 line2 = "Tu m'as sauvé la vie."
-line3 = "Je suis l'un des huit"
+line3 = "Grâce à toi, cette"
 next = dungeon_3.solarus_child.2
 
 [dungeon_3.solarus_child.2]
 #       |-----------------------|
-line1 = "protecteurs appelés par"
-line2 = "la Princesse Zelda."
-line3 = ""
+line1 = "horrible créature ne"
+line2 = "sévira plus jamais."
+line3 = "Je suis l'un des huit"
 next = dungeon_3.solarus_child.3
 
-[dungeon_1.solarus_child.3]
+[dungeon_3.solarus_child.3]
+#       |-----------------------|
+line1 = "protecteurs appelés par"
+line2 = "la Princesse Zelda."
+line3 = "La Triforce est"
+next = dungeon_3.solarus_child.4
+
+[dungeon_3.solarus_child.4]
+#       |-----------------------|
+line1 = "toujours en danger tant"
+line2 = "que l'un de mes frères"
+line3 = "est encore prisonnier."
+next = dungeon_3.solarus_child.5
+
+[dungeon_3.solarus_child.5]
+#       |-----------------------|
+line1 = "Tu es proche du but."
+line2 = "Sauve-le et restaure la"
+line3 = "la paix sur le royaume."
+next = dungeon_3.solarus_child.6
+
+[dungeon_3.solarus_child.6]
 #       |-----------------------|
 line1 = "Puisse le héros mener"
 line2 = "le Royaume à la paix et"

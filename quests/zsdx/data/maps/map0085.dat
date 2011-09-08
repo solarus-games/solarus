@@ -109,7 +109,7 @@
 1	1	160	293	from_4f	1	0
 2	1	152	280	16	16	teletransporter	0	1	43	from_5f_c
 19	1	152	280	stairs	3	1
-8	1	160	-11	solarus_child	3	1	npc/solarus_child1	map
+8	1	160	-11	solarus_child	3	1	npc/solarus_child3	map
 0	2	96	32	128	112	578
 0	2	104	296	96	8	438
 0	2	0	0	320	16	170

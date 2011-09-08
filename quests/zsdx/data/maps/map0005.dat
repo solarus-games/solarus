@@ -1,4 +1,4 @@
-960	976	0	-100	1120	2608	-1	13	dark_world.spc
+960	976	0	-100	1120	2608	-1	1	overworld.spc
 0	0	384	568	32	8	523
 0	0	944	32	16	672	444
 0	0	824	688	144	40	502
@@ -1183,6 +1183,9 @@
 1	0	56	365	from_cave_under_waterfall_s	3	0
 1	0	328	669	from_lake_cave	3	0
 2	0	320	640	16	16	teletransporter_5	0	1	83	from_outside
+7	0	184	277	enemy	3	blue_knight_soldier	0	-1	_random	1	-1
+7	0	632	189	enemy_2	3	green_knight_soldier	0	-1	_random	1	-1
+7	0	664	685	enemy_3	3	red_knight_soldier	0	-1	_random	1	-1
 0	2	824	688	40	40	1023
 0	2	880	688	40	40	1024
 0	2	568	320	48	40	511

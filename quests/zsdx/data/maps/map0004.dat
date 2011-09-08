@@ -1,4 +1,4 @@
-960	1008	0	-100	1120	1600	-1	1	dark_world.spc
+960	1008	0	-100	1120	1600	-1	1	overworld.spc
 0	0	240	-16	64	128	444
 0	0	288	48	16	16	187
 0	0	240	48	16	16	185
@@ -1015,7 +1015,7 @@
 4	0	216	765	2	_random	1	-1
 4	0	248	765	2	_random	1	-1
 7	0	176	813	enemy_2	3	simple_green_soldier	0	-1	_random	0	-1
-7	0	424	573	enemy	3	simple_green_soldier	0	-1	_random	0	-1
+7	0	432	573	enemy	3	green_knight_soldier	0	-1	_random	0	-1
 7	0	560	957	enemy_3	3	simple_green_soldier	0	-1	_random	0	-1
 8	0	152	685	chignon_woman	3	1	npc/newlink5	dialog#outside_world.village.chignon_woman_npc
 8	0	128	469	cliff_man	3	1	npc/static_villager14	dialog#outside_world.village.cliff_man_npc
@@ -1083,6 +1083,9 @@
 2	0	264	16	16	16	teletransporter_2	0	1	80	from_outside
 2	0	176	456	48	16	teletransporter_3	0	1	82	from_outside_n
 12	0	176	432	48	8	custom_obstacle_6	1	1	1	1
+7	0	696	261	enemy_4	3	red_knight_soldier	0	-1	_random	0	-1
+7	0	528	101	enemy_5	3	green_knight_soldier	0	-1	_random	0	-1
+7	0	136	101	enemy_6	3	blue_knight_soldier	0	-1	_random	0	-1
 0	1	56	424	32	24	901
 0	2	608	368	16	32	1025
 0	2	624	368	40	40	1024

@@ -462,5 +462,5 @@
 0	2	208	240	8	32	160
 0	2	248	224	16	16	278
 10	2	840	248	32	8	miniboss_door_open_2	152	1
-10	2	848	248	16	8	miniboss_door_open	272	1
+10	2	848	248	16	8	miniboss_door_open	273	1
 10	2	840	248	32	8	miniboss_door_closed	154	1

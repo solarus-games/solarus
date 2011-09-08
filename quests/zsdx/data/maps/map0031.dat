@@ -124,6 +124,8 @@
 0	0	704	288	16	24	363
 0	0	584	432	16	88	326
 0	0	584	480	16	16	325
+0	0	136	688	16	16	101
+0	0	200	688	16	16	101
 15	0	568	312	16	48	0
 5	0	200	656	chest_2	0	arrow	2	72
 8	0	144	653	interactive_entity	3	0	entities/hint_stone	dialog#dungeon_2.eye_hint
@@ -156,6 +158,18 @@
 19	0	448	224	stairs_2	1	0
 19	0	168	640	stairs_3	1	0
 14	0	544	533	crystal_switch_2
+7	0	128	496	enemy_2	3	bubble	0	-1	_random	1	-1
+7	0	720	109	enemy	3	skeletor	0	-1	_random	1	-1
+7	0	520	341	enemy_4	3	skeletor	0	-1	_random	1	-1
+12	0	680	224	16	16	custom_obstacle_3	0	1	1	1
+12	0	680	128	16	16	custom_obstacle_4	0	1	1	1
+12	0	384	472	16	16	custom_obstacle_5	0	1	1	1
+12	0	288	472	16	16	custom_obstacle_6	0	1	1	1
+7	0	560	445	enemy_5	3	skeletor	0	-1	_random	1	-1
+7	0	432	541	enemy_6	3	skeletor	0	-1	_random	1	-1
+7	0	576	277	enemy_7	3	skeletor	0	-1	_random	1	-1
+4	0	144	701	0	heart	1	-1
+4	0	208	701	0	_random	1	-1
 0	1	824	40	288	112	2
 0	1	376	432	8	96	354
 0	1	640	144	96	8	359
@@ -382,6 +396,10 @@
 0	1	952	584	16	16	194
 0	1	944	584	8	16	74
 0	1	968	584	8	16	75
+0	1	472	40	32	16	101
+0	1	472	136	32	16	101
+0	1	472	120	16	16	101
+0	1	472	56	16	16	101
 12	1	160	392	8	32	custom_obstacle	1	1	1	1
 12	1	184	392	8	32	custom_obstacle_2	1	1	1	1
 6	1	816	72	8	48	jump_sensor_4	4	40
@@ -425,6 +443,14 @@
 2	1	952	584	16	16	teletransporter	0	1	86	from_b1
 19	1	952	584	stairs	3	1
 18	1	944	584	final_room_door	3	0	-1
+7	1	176	373	enemy_3	3	skeletor	0	-1	_random	1	-1
+12	1	168	304	16	16	custom_obstacle_7	0	1	1	1
+4	1	480	53	0	_random	1	-1
+4	1	496	53	0	heart	1	-1
+4	1	480	69	0	_random	1	-1
+4	1	480	133	0	_random	1	-1
+4	1	480	149	0	_random	1	-1
+4	1	496	149	0	_random	1	-1
 0	2	912	168	96	8	357
 0	2	912	192	96	8	356
 0	2	32	296	96	8	356

@@ -885,7 +885,7 @@
 0	1	744	640	8	32	474
 0	1	976	640	8	32	477
 0	1	984	648	8	16	478
-0	1	280	168	16	64	2
+0	1	288	176	16	48	2
 0	1	712	112	16	8	247
 0	1	704	120	8	16	248
 0	1	712	136	16	8	249
@@ -1132,6 +1132,11 @@
 0	1	504	112	16	24	571
 0	1	584	112	16	24	570
 0	1	168	680	24	16	573
+0	1	880	352	16	80	2
+0	1	960	352	16	80	2
+0	1	768	768	16	16	2
+0	1	960	768	16	16	2
+12	1	704	112	32	32	custom_obstacle_6	0	1	1	1
 13	1	712	125	32	32	weak_floor_sensor	0
 2	1	704	112	32	32	weak_floor_teletransporter	0	1	41	_same
 1	1	96	37	from_2F_nw	3	0
@@ -1159,19 +1164,18 @@
 1	1	552	133	from_2F_c	3	0
 19	1	544	120	stairs_3	1	1
 1	1	968	973	from_4F_hole_se	-1	0
-11	1	760	968	se_door_switch	1	0	0
-4	1	768	981	0	_none	1	-1
+11	1	768	960	se_door_switch	1	0	0
+4	1	776	973	0	_none	1	-1
 18	1	696	840	se_door_2	0	0	-1
 18	1	744	840	se_door	2	0	-1
-5	1	424	152	chest_2	0	boss_key	1	124
-11	1	280	152	nc_door_switch	1	0	0
-4	1	288	165	0	_none	1	-1
+5	1	416	152	chest_2	0	boss_key	1	124
+11	1	288	160	nc_door_switch	1	0	0
+4	1	296	173	0	_none	1	-1
 18	1	344	88	nc_door_2	3	0	-1
 18	1	344	136	nc_door	1	0	-1
-4	1	288	181	0	_random	1	-1
-4	1	288	197	0	_random	1	-1
-4	1	288	213	0	_random	1	-1
-4	1	288	229	0	_random	1	-1
+4	1	296	189	0	_random	1	-1
+4	1	296	205	0	_random	1	-1
+4	1	296	221	0	_random	1	-1
 2	1	440	24	16	16	teletransporter_6	0	1	43	from_3F_nc
 2	1	152	24	16	16	teletransporter_7	0	1	43	from_3F_nw
 2	1	840	488	16	16	teletransporter_8	0	1	43	from_3F_e
@@ -1190,6 +1194,41 @@
 3	1	296	461	piece_of_heart	1	132
 12	1	744	688	240	8	custom_obstacle_5	1	1	1	1
 10	1	704	112	32	32	weak_floor	555	1
+4	1	888	365	0	_random	1	-1
+4	1	888	381	0	_random	1	-1
+4	1	888	397	0	_random	1	-1
+4	1	888	413	0	_random	1	-1
+4	1	888	429	0	_random	1	-1
+4	1	968	365	0	_random	1	-1
+4	1	968	381	0	_random	1	-1
+4	1	968	397	0	_random	1	-1
+4	1	968	413	0	heart	1	-1
+4	1	968	429	0	_random	1	-1
+7	1	872	597	enemy	3	mandible	0	-1	_random	1	-1
+7	1	816	85	enemy_2	3	mandible	0	-1	_random	1	-1
+7	1	936	213	enemy_3	3	bee_guard	0	-1	_random	1	-1
+7	1	704	189	enemy_4	3	bee_guard	0	-1	_random	1	-1
+12	1	712	232	16	16	custom_obstacle_7	0	1	1	1
+12	1	920	280	16	16	custom_obstacle_8	0	1	1	1
+12	1	920	488	16	16	custom_obstacle_9	0	1	1	1
+12	1	712	280	16	16	custom_obstacle_10	0	1	1	1
+12	1	120	328	16	16	custom_obstacle_11	0	1	1	1
+7	1	376	349	enemy_5	3	tentacle	0	-1	_random	1	-1
+7	1	608	453	enemy_6	3	tentacle	0	-1	_random	1	-1
+7	1	416	509	enemy_7	3	tentacle	0	-1	_random	1	-1
+7	1	192	485	enemy_8	3	tentacle	0	-1	_random	1	-1
+7	1	296	677	enemy_9	3	tentacle	0	-1	_random	1	-1
+7	1	328	765	enemy_10	3	tentacle	0	-1	_random	1	-1
+7	1	632	877	enemy_11	3	tentacle	0	-1	_random	1	-1
+7	1	656	773	enemy_12	3	tentacle	0	-1	_random	1	-1
+7	1	192	941	enemy_13	3	tentacle	0	-1	_random	1	-1
+7	1	232	853	enemy_14	3	tentacle	0	-1	_random	1	-1
+7	1	552	277	enemy_15	3	tentacle	0	-1	_random	1	-1
+7	1	720	421	enemy_16	3	tentacle	0	-1	_random	1	-1
+7	1	224	565	enemy_17	3	tentacle	0	-1	_random	1	-1
+7	1	800	877	enemy_18	3	bee_guard	0	-1	_random	1	-1
+4	1	968	781	0	_random	1	-1
+4	1	776	781	0	heart	1	-1
 0	2	872	480	128	8	437
 0	2	872	456	128	8	438
 0	2	736	808	8	96	441

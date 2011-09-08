@@ -3448,6 +3448,44 @@ line1 = "On dit que Maître"
 line2 = "Arbror hante ces lieux"
 line3 = "inondés par la rivière."
 
+[telepathic_booth.go_billy]
+#       |-----------------------|
+line1 = "$v, tu m'entends ?"
+line2 = "C'est Mamie Lyly ! La"
+line3 = "télépathie, ça marche !"
+next = telepathic_booth.go_billy.2
+
+[telepathic_booth.go_billy.2]
+#       |-----------------------|
+line1 = "Connais-tu Billy le"
+line2 = "Téméraire ? Il paraît"
+line3 = "qu'il est revenu sain"
+next = telepathic_booth.go_billy.3
+
+[telepathic_booth.go_billy.3]
+#       |-----------------------|
+line1 = "et sauf de son"
+line2 = "expédition à la"
+line3 = "Montagne des Terreurs !"
+
+[telepathic_booth.hahaha]
+#       |-----------------------|
+line1 = "Ah ah ah ! Tu cherches" 
+line2 = "le vieux peut-être ?"
+line3 = "Sache que désormais"
+next = telepathic_booth.hahaha.2
+
+[telepathic_booth.hahaha.2]
+#       |-----------------------|
+line1 = "il est en mon pouvoir"
+line2 = "qu'il va me dire où se"
+line3 = "trouve Zelda !"
+next = telepathic_booth.hahaha.3
+
+[telepathic_booth.hahaha.3]
+#       |-----------------------|
+line1 = "Ah ah ah ah ah ah !!!"
+
 [smith_cave.without_sword]
 # Dialogue avec le forgeron
 #       |-----------------------|

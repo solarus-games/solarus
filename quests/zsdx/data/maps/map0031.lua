@@ -1,8 +1,6 @@
--------------------------
--- Dungeon 2 B1 script --
--------------------------
+-- Dungeon 2 B1
 
--- the order the switches have to be activated
+-- correct order of the switches
 switches_puzzle_order = {
   switch_a = 1,
   switch_b = 2,
@@ -14,6 +12,7 @@ switches_puzzle_order = {
 
 switches_puzzle_nb_enabled = 0
 switches_puzzle_correct = true
+fighting_boss = false
 
 function event_map_started(destination_point)
 
@@ -24,6 +23,12 @@ function event_map_started(destination_point)
     for k,v in pairs(switches_puzzle_order) do
       sol.map.switch_set_activated(k, true)
     end
+  end
+
+  sol.map.door_set_open("boss_door", true)
+  if destination_point_name == "from_final_room"
+      or sol.game.savegame_get_boolean(103) then
+    sol.map.door_set_open("final_room_door", true)
   end
 end
 
@@ -71,5 +76,40 @@ function boss_key_chest_timer()
   sol.map.chest_set_enabled("boss_key_chest", true)
   sol.main.play_sound("secret")
   sol.main.timer_start(1000, "sol.map.camera_restore", false)
+end
+
+function event_hero_on_sensor(sensor_name)
+
+  if sensor_name == "start_boss_sensor"
+      and not sol.game.savegame_get_boolean(93)
+      and not fighting_boss then
+    start_boss()
+  end
+end
+
+function start_boss()
+
+  fighting_boss = true
+  sol.map.enemy_set_enabled("boss", true)
+  sol.map.door_close("boss_door")
+  sol.main.play_music("boss.spc")
+  sol.main.play_sound("door_closed")
+end
+
+function event_treasure_obtained(item_name, variant, savegame_variable)
+
+  if item_name == "heart_container" then
+    sol.main.timer_start(9000, "open_final_room", false)
+    sol.main.play_music("victory.spc")
+    sol.map.hero_freeze()
+    sol.map.hero_set_direction(3)
+  end
+end
+
+function open_final_room()
+
+  sol.map.door_open("final_room_door")
+  sol.main.play_sound("secret")
+  sol.map.hero_unfreeze()
 end
 

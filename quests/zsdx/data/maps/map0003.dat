@@ -1942,7 +1942,7 @@
 8	0	1016	125	how_to_save_npc	3	1	npc/newlink6	dialog#outside_world.how_to_save_npc
 2	0	928	144	16	16	to_dungeon2	0	1	30	from_outside
 12	0	680	328	16	8	custom_obstacle_5	1	1	1	1
-1	0	936	173	from_dungeon2	3	0
+1	0	936	173	from_dungeon_2	3	0
 7	0	680	837	enemy_3	3	simple_green_soldier	0	-1	_random	0	-1
 4	0	784	693	2	_random	1	-1
 4	0	784	709	2	_random	1	-1

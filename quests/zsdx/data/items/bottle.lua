@@ -123,6 +123,7 @@ function event_update()
 
   if bottle_to_make_empty ~= "" then
     sol.game.set_item(bottle_to_make_empty, 1)
+    bottle_to_make_empty = ""
   end
 end
 

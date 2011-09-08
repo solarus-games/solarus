@@ -10,9 +10,9 @@
 --   sword_sprite = "enemies/green_knight_soldier_sword",
 --   life = 4,
 --   damage = 2,
---   play_hero_seen_sound = true
---   normal_speed = 32
---   faster_speed = 48
+--   play_hero_seen_sound = true,
+--   normal_speed = 32,
+--   faster_speed = 64,
 --   hurt_sound_style = "normal"
 -- })
 
@@ -42,7 +42,7 @@ function set_properties(prop)
     properties.normal_speed = 32
   end
   if properties.faster_speed == nil then
-    properties.faster_speed = 48
+    properties.faster_speed = 64
   end
   if properties.hurt_sound_style == nil then
     properties.hurt_sound_style = "normal"

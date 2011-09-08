@@ -2119,7 +2119,7 @@ line1 = "Tu as trouvé une"
 line2 = "Fée, elle est"
 line3 = "merveilleuse !"
 next = found_fairy.1
-skip = all
+skip = current
 
 [found_fairy.1]
 #       |--------------------___|
@@ -2134,6 +2134,7 @@ question = true
 #       |-----------------------|
 line1 = "Tu n'as pas de Flacon"
 line2 = "vide !"
+skip = current
 
 [found_water]
 # Lorsqu'on trouve de l'eau et qu'on a un Flacon vide

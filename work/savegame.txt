@@ -250,4 +250,5 @@ booleans:
 901	dungeon 3: miniboss
 902	dungeon 3: boss
 903	dungeon 3: boss heart container
+904	dungeon 3 1F: door before the torches room
 

@@ -566,6 +566,7 @@
 7	0	464	493	enemy_17	3	tentacle	0	-1	_random	1	-1
 7	0	488	477	enemy_18	3	tentacle	0	-1	_random	1	-1
 7	0	504	493	enemy_19	3	tentacle	0	-1	_random	1	-1
+7	0	272	693	enemy_7	3	globul	0	-1	_random	1	-1
 0	1	408	216	96	8	358
 0	1	776	616	160	112	2
 0	1	784	720	144	8	236
@@ -836,7 +837,6 @@
 2	1	832	728	16	16	teletransporter_2	0	1	30	from_B1_north
 10	1	168	40	16	8	miniboss_door_open	273	1
 1	1	856	741	from_outside	1	0
-7	1	272	693	enemy_7	3	globul	0	-1	small_key	1	74
 0	2	808	744	96	8	357
 0	2	160	592	32	16	170
 0	2	0	0	1152	16	170

@@ -3,8 +3,8 @@
 sol.main.include("enemies/generic_towards_hero")
 set_properties({
   sprite = "enemies/mandible",
-  life = 5,
-  damage = 4,
+  life = 3,
+  damage = 2,
   hurt_sound_style = "monster"
 })
 

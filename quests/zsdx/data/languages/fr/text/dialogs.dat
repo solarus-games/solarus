@@ -4543,13 +4543,21 @@ line1 = "l'autre côté de ce mur."
 #       |-----------------------|
 line1 = "Donne-moi cette tarte"
 line2 = "aux pommes !"
+next = outside_world.surprise_wall_guy.give_me_apple_pie.2
+
+[outside_world.surprise_wall_guy.give_me_apple_pie.2]
+#       |-----------------------|
+line1 = "Alors ?"
+line2 = "OK"
+line3 = "Pas question"
+question = true
 
 [outside_world.surprise_wall_guy.open]
 #       |-----------------------|
 line1 = "Des gens croient qu'il"
 line2 = "y a un trésor derrière"
 line3 = "ce mur, mais je n'en ai"
-next = outside_world.suprise_wall_guy.open.2
+next = outside_world.surprise_wall_guy.open.2
 
 [outside_world.surprise_wall_guy.open.2]
 #       |-----------------------|
@@ -4559,7 +4567,7 @@ line1 = "jamais trouvé !"
 #       |-----------------------|
 line1 = "Super ! En remerciement,"
 line2 = "je mange la tarte."
-next = outside_world.suprise_wall_guy.open
+next = outside_world.surprise_wall_guy.open
 
 [outside_world.surprise_wall_closed]
 #       |-----------------------|
@@ -4781,7 +4789,7 @@ next = dungeon_2.solarus_child.3
 [dungeon_2.solarus_child.3]
 #       |-----------------------|
 line1 = "Triforce. L'amulette du"
-line2 = "Solarus, le pendentif"
+line2 = "Solarus, un pendentif"
 line3 = "porté par la Princesse"
 next = dungeon_2.solarus_child.4
 
@@ -4810,14 +4818,14 @@ next = dungeon_2.solarus_child.7
 #       |-----------------------|
 line1 = "Zelda veille sur"
 line2 = "l'Amulette du Solarus."
-line3 = "Deux de mes congénaires"
+line3 = "Il ne faut pas qu'elle"
 next = dungeon_2.solarus_child.8
 
 [dungeon_2.solarus_child.8]
 #       |-----------------------|
-line1 = "sont encore en danger."
-line2 = "Mais nous vons foi en"
-line3 = "ton courage."
+line1 = "tombe en de mauvaises"
+line2 = "mains. Mais nous avons"
+line3 = "foi en ton courage."
 next = dungeon_2.solarus_child.9
 
 [dungeon_2.solarus_child.9]

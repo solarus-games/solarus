@@ -28,8 +28,13 @@ end
 -- Called when the map starts 
 function event_map_started(destination_point_name)
 
+  if sol.game.savegame_get_boolean(904) then
+    -- the door before the five torches is open
+    sol.map.switch_set_activated("ce_door_switch", true)
+  end
+
   if sol.game.savegame_get_boolean(113) then
-    -- the door of the five torches is open
+    -- the door after the five torches is open
     lock_torches()
   end
 
@@ -90,10 +95,6 @@ function event_switch_activated(switch_name)
   elseif switch_name == "ce_door_switch" and not sol.map.door_is_open("ce_door") then
     sol.map.camera_move(736, 552, 250)
     camera_timer = "open_ce_door"
-  elseif switch_name == "ce_door_switch_2" and not sol.map.door_is_open("ce_door") then
-    sol.map.door_open("ce_door")
-    sol.main.play_sound("secret")
-    sol.map.switch_set_activated("ce_door_switch", true)
   elseif switch_name == "c_water_switch" and not sol.game.savegame_get_boolean(121) then
     sol.map.camera_move(344, 736, 250)
     camera_timer = "remove_c_water"
@@ -113,7 +114,6 @@ end
 function open_ce_door()
   sol.main.play_sound("secret")
   sol.map.door_open("ce_door")
-  sol.map.switch_set_activated("ce_door_switch_2", true)
   sol.main.timer_start(1000, "sol.map.camera_restore", false)
 end
 

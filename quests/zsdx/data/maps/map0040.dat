@@ -79,6 +79,8 @@
 0	0	520	160	8	8	308
 0	0	64	720	128	32	547
 0	0	312	168	208	48	547
+0	0	848	960	32	24	471
+0	0	848	952	32	8	470
 11	0	304	728	ce_door_switch	1	0	0
 4	0	936	941	0	arrow	2	-1
 4	0	952	941	0	_random	1	-1
@@ -586,7 +588,6 @@
 0	1	192	16	16	32	341
 0	1	384	72	16	16	277
 0	1	496	72	16	16	277
-0	1	712	504	16	16	2
 0	1	232	896	32	16	541
 0	1	792	712	16	32	541
 0	1	728	536	16	32	541
@@ -742,8 +743,6 @@
 0	1	712	736	16	24	571
 0	1	848	984	32	24	405
 0	1	856	984	16	8	472
-0	1	848	960	32	24	471
-0	1	848	952	32	8	470
 0	1	552	856	24	16	572
 0	1	552	936	24	16	572
 0	1	552	888	24	16	572
@@ -919,6 +918,7 @@
 0	1	808	304	16	24	570
 0	1	912	304	64	32	2
 0	1	288	384	16	48	2
+0	1	568	352	32	16	539
 6	1	472	136	32	8	n_water_on_jump_sensor_2	6	40
 6	1	328	240	48	8	n_water_on_jump_sensor	2	40
 6	1	928	544	32	8	e_water_on_jump_sensor	2	40
@@ -966,8 +966,8 @@
 18	1	648	104	door	0	2	109
 18	1	552	344	torches_door_2	0	0	113
 18	1	600	344	torches_door	2	0	113
-18	1	720	568	ce_door_2	1	0	-1
-18	1	720	520	ce_door	3	0	-1
+18	1	720	568	ce_door_2	1	0	904
+18	1	720	520	ce_door	3	0	904
 18	1	784	744	se_door_2	1	0	-1
 18	1	784	696	se_door	3	0	-1
 6	1	320	696	56	8	jump_sensor_2	6	40
@@ -977,7 +977,7 @@
 12	1	928	544	8	8	e_water_off_obstacle_1	1	1	1	1
 12	1	952	544	8	8	e_water_off_obstacle_2	1	1	1	1
 4	1	624	261	0	_random	1	-1
-4	1	624	277	0	_random	1	-1
+4	1	624	277	0	magic_flask	1	-1
 4	1	640	277	0	_random	1	-1
 4	1	640	261	0	_random	1	-1
 4	1	656	261	0	_random	1	-1
@@ -985,7 +985,7 @@
 4	1	720	261	0	_random	1	-1
 4	1	720	277	0	_random	1	-1
 4	1	736	277	0	_random	1	-1
-4	1	736	261	0	_random	1	-1
+4	1	736	261	0	magic_flask	1	-1
 4	1	752	261	0	_random	1	-1
 4	1	752	277	0	_random	1	-1
 1	1	160	37	from_2F_nw	3	0
@@ -1057,9 +1057,6 @@
 6	1	328	136	72	8	jump_sensor_6	6	40
 10	1	288	144	256	96	n_water	446	1
 10	1	272	184	8	16	n_water_source	473	1
-4	1	720	517	0	heart	1	-1
-11	1	744	504	ce_door_switch_2	1	0	0
-4	1	752	517	0	_none	1	-1
 12	1	40	696	40	8	custom_obstacle_16	1	1	1	1
 12	1	176	696	40	8	custom_obstacle_17	1	1	1	1
 12	1	40	768	40	8	custom_obstacle_18	1	1	1	1
@@ -1094,7 +1091,6 @@
 4	1	968	317	0	_random	1	-1
 4	1	952	333	0	_random	1	-1
 4	1	968	333	0	_random	1	-1
-7	1	496	389	enemy_2	3	bee_guard	0	-1	_random	1	-1
 12	1	728	520	16	16	custom_obstacle_2	0	1	1	1
 12	1	600	352	16	16	custom_obstacle_3	0	1	1	1
 12	1	552	352	16	16	custom_obstacle_4	0	1	1	1
@@ -1105,8 +1101,8 @@
 12	1	216	896	16	16	custom_obstacle_13	0	1	1	1
 12	1	264	896	16	16	custom_obstacle_14	0	1	1	1
 7	1	480	645	enemy_4	3	bee_guard	0	-1	_random	1	-1
-7	1	928	653	enemy_5	3	mandible	0	-1	_random	1	-1
-7	1	744	885	enemy_6	3	mandible	0	-1	_random	1	-1
+7	1	864	653	enemy_5	3	mandible	0	-1	_random	1	-1
+7	1	728	909	enemy_6	3	mandible	0	-1	_random	1	-1
 7	1	128	605	enemy_7	3	mandible	0	-1	_random	1	-1
 7	1	176	229	enemy_8	3	bee_guard	0	-1	_random	1	-1
 7	1	352	101	enemy_9	3	mandible	0	-1	_random	1	-1
@@ -1115,6 +1111,7 @@
 4	1	296	429	0	_random	1	-1
 7	1	728	389	enemy_10	3	bee_guard	0	-1	_random	1	-1
 7	1	856	189	enemy_11	3	mandible	0	-1	_random	1	-1
+12	1	904	576	80	8	custom_obstacle_41	0	1	1	1
 0	2	88	504	96	8	438
 0	2	152	16	32	8	437
 0	2	88	528	96	8	437

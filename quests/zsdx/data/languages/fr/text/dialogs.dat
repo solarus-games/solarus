@@ -4908,6 +4908,32 @@ line1 = "Il fait beaucoup trop"
 line2 = "froid ici..."
 line3 = "$0Il faut repartir !"
 
+[dungeon_4.solarus_child]
+#       |-----------------------|
+line1 = "$2$v... Merci."
+line2 = "Tu m'as sauvé la vie."
+line3 = "Je suis l'un des huit"
+next = dungeon_4.solarus_child.2
+
+[dungeon_4.solarus_child.2]
+#       |-----------------------|
+line1 = "protecteurs appelés par"
+line2 = "la Princesse Zelda."
+line3 = "Tu as fait preuve d'un"
+next = dungeon_4.solarus_child.3
+
+[dungeon_4.solarus_child.3]
+#       |-----------------------|
+line1 = "courage remarquable."
+line2 = "Grâce à toi, nous"
+line3 = "sommes désormais au"
+next = dungeon_4.solarus_child.4
+
+[dungeon_4.solarus_child.4]
+#       |-----------------------|
+line1 = "complet et la Triforce"
+line2 = "n'est plus en danger."
+
 [dungeon_5.welcome]
 #       |-----------------------|
 line1 = "        Niveau 5"

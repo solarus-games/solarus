@@ -94,7 +94,8 @@ end
 
 function open_final_room()
 
-  -- TODO
+  sol.map.door_open("final_room_door")
+  sol.main.play_sound("secret")
   sol.map.hero_unfreeze()
 end
 

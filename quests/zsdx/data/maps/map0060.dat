@@ -806,6 +806,9 @@
 0	1	672	704	16	16	2
 0	1	48	144	16	32	2
 0	1	144	144	16	32	2
+0	1	184	232	8	16	72
+0	1	208	232	8	16	73
+0	1	192	232	16	16	191
 18	1	632	200	hidden_weak_wall_2	1	6	403
 12	1	264	984	8	32	custom_obstacle	1	1	1	1
 12	1	288	984	8	32	custom_obstacle_2	1	1	1	1
@@ -952,6 +955,10 @@
 13	1	48	301	320	16	start_boss_sensor	0
 7	1	200	397	boss	3	simple_green_soldier	2	415	heart_container	1	416
 12	1	712	632	16	16	custom_obstacle_7	0	1	1	1
+18	1	184	232	final_room_door	1	0	-1
+1	1	200	245	from_final_room	3	0
+2	1	192	232	16	16	teletransporter_30	0	1	87	from_boss_room
+19	1	192	232	stairs_14	1	2
 0	2	584	16	96	8	559
 0	2	400	16	96	8	559
 0	2	240	16	96	8	559
@@ -1023,7 +1030,11 @@
 0	2	472	408	16	16	278
 0	2	680	408	16	16	278
 0	2	680	328	16	16	278
+0	2	152	224	96	8	559
 10	2	592	168	96	8	hidden_weak_wall_open_2	560	0
 10	2	592	192	96	8	hidden_weak_wall_open_3	559	0
 10	2	632	168	32	8	hidden_weak_wall_open	582	0
 10	2	632	192	32	8	hidden_weak_wall_open_4	581	0
+10	2	184	224	32	8	final_room_door_open_2	551	1
+10	2	192	224	16	8	final_room_door_open	555	1
+10	2	184	224	32	8	final_room_door_closed	553	1

@@ -2,9 +2,7 @@
 
 function event_map_started(destination_point_name)
 
-  x,y = sol.map.hero_get_position()
-  if y < 520 then
-    -- the player is coming from the north part of the map:
+  if sol.game.savegame_get_boolean(417) then
     -- place the block so that the special torch is already disabled
     sol.map.tile_set_group_enabled("special_torch", false)
     sol.map.switch_set_activated("special_torch_switch", true)
@@ -24,6 +22,7 @@ function event_switch_activated(switch_name)
     if sol.map.tile_is_enabled("special_torch") then
       sol.map.tile_set_group_enabled("special_torch", false)
       sol.main.play_sound("secret")
+      sol.game.savegame_set_boolean(417, true)
     end
   end
 end

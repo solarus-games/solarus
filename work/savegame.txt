@@ -231,6 +231,10 @@ booleans:
 411	dungeon 4 1F: chest with the boss key
 412	dungeon 4 1F: weak floor
 413	dungeon 4 1F: piece of heart
+414	dungeon 4 miniboss
+415	dungeon 4 boss
+416	dungeon 4 heart container
+417	dungeon 4 B1: special torch removed
 
 500	dungeon 5 1F: chest with 50 rupees
 501	dungeon 5 1F: chest with the compass

@@ -14,7 +14,7 @@ end
 
 function event_appear()
 
-  sol.enemy.set_life(4)
+  sol.enemy.set_life(3)
   sol.enemy.set_damage(2)
   sol.enemy.create_sprite("enemies/blue_bullblin_sword")
   sol.enemy.create_sprite("enemies/blue_bullblin")

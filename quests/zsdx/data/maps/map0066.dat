@@ -287,6 +287,7 @@
 19	1	280	632	stairs_7	3	2
 1	1	208	37	from_dungeon_4	3	0
 2	1	200	0	16	16	teletransporter	0	1	60	from_outside
+2	1	248	632	32	16	teletransporter_4	0	0	87	from_boss_room
 0	2	240	648	96	8	412
 0	2	160	16	96	8	411
 0	2	16	80	16	16	170

@@ -87,6 +87,7 @@
 1	1	160	293	from_boss_room	3	0
 2	1	152	280	16	16	teletransporter	0	1	60	from_final_room
 19	1	152	280	stairs	3	3
+8	1	88	-11	agahnim	3	1	npc/agahnim	map
 0	2	112	16	96	8	559
 0	2	0	0	320	16	170
 0	2	304	16	16	288	170

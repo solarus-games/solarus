@@ -4932,7 +4932,128 @@ next = dungeon_4.solarus_child.4
 [dungeon_4.solarus_child.4]
 #       |-----------------------|
 line1 = "complet et la Triforce"
-line2 = "n'est plus en danger."
+line2 = "est en sécurité."
+next = dungeon_4.solarus_child.5
+
+[dungeon_4.solarus_child.5]
+#       |-----------------------|
+line1 = "Puisse le héros mener"
+line2 = "le Royaume à la paix et"
+line3 = "à la prospérité !"
+
+[dungeon_4.agahnim]
+#       |-----------------------|
+line1 = "$1A G A H N I M !"
+line2 = "$3Et oui, lui-même !"
+line3 = "Le sorcier revenu de"
+next = dungeon_4.agahnim.2
+
+[dungeon_4.agahnim.2]
+#       |-----------------------|
+line1 = "l'empire des morts !"
+line2 = "Ah ah ah ah ah ah !!!"
+next = dungeon_4.agahnim.3
+
+[dungeon_4.agahnim.3]
+#       |-----------------------|
+line1 = "Ainsi donc vous avez"
+line2 = "réussi à retrouver les"
+line3 = "quatre gamins."
+next = dungeon_4.agahnim.4
+
+[dungeon_4.agahnim.4]
+#       |-----------------------|
+line1 = "Mais cet enfant ne se"
+line2 = "doute pas de ce qui"
+line3 = "l'attend dehors en"
+next = dungeon_4.agahnim.5
+
+[dungeon_4.agahnim.5]
+#       |-----------------------|
+line1 = "disant que la Triforce"
+line2 = "est en sécurité..."
+line3 = "Ah ah ah ah ah ah !!!"
+next = dungeon_4.agahnim.6
+
+[dungeon_4.agahnim.6]
+#       |-----------------------|
+line1 = "Sachez, jeune homme,"
+line2 = "que je ne suis pas"
+line3 = "revenu ici pour libérer"
+next = dungeon_4.agahnim.7
+
+[dungeon_4.agahnim.7]
+#       |-----------------------|
+line1 = "cet infâme Ganon, lui"
+line2 = "qui a un jour osé"
+line3 = "affirmer que je nétais"
+next = dungeon_4.agahnim.8
+
+[dungeon_4.agahnim.8]
+#       |-----------------------|
+line1 = "que son alter-ego..."
+line2 = "Je préfère laisser ce"
+line3 = "sombre bandit enfermé"
+next = dungeon_4.agahnim.9
+
+[dungeon_4.agahnim.9]
+#       |-----------------------|
+line1 = "dans son Monde des"
+line2 = "Ténèbres ! Ainsi je"
+line3 = "garderai la Triforce"
+next = dungeon_4.agahnim.10
+
+[dungeon_4.agahnim.10]
+#       |-----------------------|
+line1 = "pour moi et je règnerai"
+line2 = "en seul maître..."
+line3 = "Ah ah ah ah ah !"
+next = dungeon_4.agahnim.11
+
+[dungeon_4.agahnim.11]
+#       |-----------------------|
+line1 = "En sortant d'ici, vous"
+line2 = "constaterez très vite"
+line3 = "que le royaume est déjà"
+next = dungeon_4.agahnim.12
+
+[dungeon_4.agahnim.12]
+#       |-----------------------|
+line1 = "sous mon contrôle..."
+line2 = "Ah ah ah ah ah ah ah !"
+next = dungeon_4.agahnim.13
+
+[dungeon_4.agahnim.13]
+#       |-----------------------|
+line1 = "Quant à vous, jeune"
+line2 = "aventurier"
+line3 = "présomptueux, l'heure"
+next = dungeon_4.agahnim.14
+
+[dungeon_4.agahnim.14]
+#       |-----------------------|
+line1 = "de notre affrontement"
+line2 = "n'est pas encore venue."
+line3 = "Pour l'instant, je"
+next = dungeon_4.agahnim.15
+
+[dungeon_4.agahnim.15]
+#       |-----------------------|
+line1 = "rentre au château !"
+line2 = "Ah ah ah ah ah ! Mais"
+line3 = "nous nous reverrons, et"
+next = dungeon_4.agahnim.16
+
+[dungeon_4.agahnim.16]
+#       |-----------------------|
+line1 = "mes pouvoirs n'auront"
+line2 = "aucune difficulté à"
+line3 = "vous supprimer !"
+next = dungeon_4.agahnim.17
+
+[dungeon_4.agahnim.17]
+#       |-----------------------|
+line1 = "Ah ah ah ah ah ah !!!"
 
 [dungeon_5.welcome]
 #       |-----------------------|

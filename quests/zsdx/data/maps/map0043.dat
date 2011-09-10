@@ -555,8 +555,8 @@
 18	1	608	680	miniboss_door_2	3	0	-1
 18	1	680	832	miniboss_door_3	0	0	-1
 18	1	728	832	miniboss_door_4	2	0	-1
-18	1	112	248	door	1	4	0
-18	1	112	200	door_2	3	4	0
+18	1	112	248	door	1	4	906
+18	1	112	200	door_2	3	4	906
 1	1	848	501	from_3F_e	3	0
 1	1	448	37	from_3F_nc	3	0
 1	1	384	37	from_5F	3	0

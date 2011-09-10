@@ -256,4 +256,5 @@ booleans:
 903	dungeon 3: boss heart container
 904	dungeon 3 1F: door before the torches room
 905	outside maps: dark world enabled
+906	dungeon 3 3F: boss key door
 

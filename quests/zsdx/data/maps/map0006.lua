@@ -21,6 +21,11 @@ function event_map_started(destination_point_name)
     sol.map.tile_set_enabled("beaumont_cave_hole", false)
     sol.map.teletransporter_set_enabled("to_beaumont_cave", false)
   end
+
+  -- enable dark world
+  if sol.game.savegame_get_boolean(905) then
+    sol.main.play_music("dark_world.spc")
+  end
 end
 
 function is_ladder_activated()

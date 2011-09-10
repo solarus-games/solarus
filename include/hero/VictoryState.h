@@ -20,21 +20,22 @@
 #include "hero/State.h"
 
 /**
- * @brief The state "Victory" of the hero.
+ * @brief The victory state of the hero.
  */
 class Hero::VictoryState: public Hero::State {
 
   private:
     
-    uint32_t end_victory_date;		/**< date when the victory animation stops */
+    uint32_t end_victory_date;         /**< date when the victory animation stops */
+    bool finished;                     /**< indicates that the victory sequence is finished */
 
   public:
 
-    VictoryState(Hero &hero);
+    VictoryState(Hero& hero);
     ~VictoryState();
 
-    void start(State *previous_state);
-    void stop(State *next_state);
+    void start(State* previous_state);
+    void stop(State* next_state);
     void update();
     void set_suspended(bool suspended);
 };

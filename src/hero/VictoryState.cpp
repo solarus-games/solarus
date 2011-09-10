@@ -26,8 +26,10 @@
  * @brief Constructor.
  * @param hero the hero controlled by this state
  */
-Hero::VictoryState::VictoryState(Hero &hero):
-  State(hero), end_victory_date(0) {
+Hero::VictoryState::VictoryState(Hero& hero):
+  State(hero),
+  end_victory_date(0),
+  finished(false) {
 
 }
 
@@ -42,7 +44,7 @@ Hero::VictoryState::~VictoryState() {
  * @brief Starts this state.
  * @param previous_state the previous state
  */
-void Hero::VictoryState::start(State *previous_state) {
+void Hero::VictoryState::start(State* previous_state) {
 
   State::start(previous_state);
 
@@ -60,7 +62,7 @@ void Hero::VictoryState::start(State *previous_state) {
  * @brief Stops this state.
  * @param next_state the next state
  */
-void Hero::VictoryState::stop(State *next_state) {
+void Hero::VictoryState::stop(State* next_state) {
 
   State::stop(next_state);
   get_sprites().set_ignore_suspend(false);
@@ -73,7 +75,8 @@ void Hero::VictoryState::update() {
 
   State::update();
 
-  if (System::now() >= end_victory_date) {
+  if (!finished && System::now() >= end_victory_date) {
+    finished = true;
     get_map_script().event_hero_victory_sequence_finished();
   }
 }

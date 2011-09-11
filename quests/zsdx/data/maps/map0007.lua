@@ -2,26 +2,31 @@
 
 function event_map_started(destination_point_name)
 
-   -- remove the iron lock if open
-   if sol.game.savegame_get_boolean(193) then
-     remove_iron_lock()
-   end
+  -- enable dark world
+  if sol.game.savegame_get_boolean(905) then
+    sol.main.play_music("dark_world.spc")
+    sol.map.tileset_set(13)
+  end
 
-   -- remove the wooden lock if open
-   if sol.game.savegame_get_boolean(194) then
-     remove_wooden_lock()
-   end
+  -- remove the iron lock if open
+  if sol.game.savegame_get_boolean(193) then
+    remove_iron_lock()
+  end
 
+  -- remove the wooden lock if open
+  if sol.game.savegame_get_boolean(194) then
+    remove_wooden_lock()
+  end
 end
 
 function remove_iron_lock()
-   sol.map.interactive_entity_remove("iron_lock")
-   sol.map.tile_set_group_enabled("iron_lock_tile", false)
+  sol.map.interactive_entity_remove("iron_lock")
+  sol.map.tile_set_group_enabled("iron_lock_tile", false)
 end
 
 function remove_wooden_lock()
-   sol.map.interactive_entity_remove("wooden_lock")
-   sol.map.tile_set_group_enabled("wooden_lock_tile", false)
+  sol.map.interactive_entity_remove("wooden_lock")
+  sol.map.tile_set_group_enabled("wooden_lock_tile", false)
 end
 
 

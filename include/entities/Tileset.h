@@ -36,10 +36,10 @@ class Tileset {
     std::map<int, TilePattern*> tile_patterns;        /**< tile patterns in this tileset */
     int max_tile_id;                                  /**< current maximum id of a tile pattern in this tileset */
     Color background_color;                           /**< background color of the tileset */
-    Surface *tiles_image;                             /**< image from which the tile patterns are extracted */
-    Surface *entities_image;                          /**< image from which the skin-dependent entities are extracted */
+    Surface* tiles_image;                             /**< image from which the tile patterns are extracted */
+    Surface* entities_image;                          /**< image from which the skin-dependent entities are extracted */
 
-    void add_tile_pattern(int id, TilePattern *tile_pattern);
+    void add_tile_pattern(int id, TilePattern* tile_pattern);
 
   public:
 
@@ -49,11 +49,13 @@ class Tileset {
     void load();
     void unload();
 
+    TilesetId get_id();
     Color& get_background_color();
     bool is_loaded();
     Surface* get_tiles_image();
     Surface* get_entities_image();
     TilePattern& get_tile_pattern(int id);
+    void set_images(Tileset& other);
 };
 
 #endif

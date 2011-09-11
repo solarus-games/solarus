@@ -651,6 +651,7 @@ void MapEntities::build_non_animated_tiles() {
   const Rectangle map_size(0, 0, map.get_width(), map.get_height());
   for (int layer = 0; layer < LAYER_NB; layer++) {
 
+    delete non_animated_tiles_surfaces[layer];
     non_animated_tiles_surfaces[layer] = new Surface(map_size.get_width(), map_size.get_height());
     non_animated_tiles_surfaces[layer]->set_transparency_color(Color::get_magenta());
     non_animated_tiles_surfaces[layer]->fill_with_color(Color::get_magenta());

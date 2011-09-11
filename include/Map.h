@@ -45,14 +45,15 @@ class Map {
 
     // map properties
 
-    Game *game;                   /**< the game this map was started in */
+    Game* game;                   /**< the game this map was started in */
     MapId id;                     /**< id of the map */
 
     int width8;                   /**< map width in 8*8 squares (width8 = get_width() / 8) */
     int height8;                  /**< map height in 8*8 squares (height8 = get_height() / 8) */
 
-    Tileset *tileset;             /**< tileset of the map: every tile of this map
-                                   * is extracted from this tileset. */
+    TilesetId tileset_id;         /**< id of the current tileset */
+    Tileset* tileset;             /**< tileset of the map: every tile of this map
+                                   * is extracted from this tileset */
 
     MusicId music_id;             /**< id of the background music of the map: 
                                    * can be a valid music, Music::none or Music::unchanged */
@@ -79,8 +80,8 @@ class Map {
 
     // screen
 
-    Camera *camera;               /**< determines the visible area of the map */
-    Surface *visible_surface;     /**< surface where the map is displayed - this surface is only the visible part
+    Camera* camera;               /**< determines the visible area of the map */
+    Surface* visible_surface;     /**< surface where the map is displayed - this surface is only the visible part
                                    * of the map, so the coordinates on this surface are relative to the screen,
                                    * not to the map */
     Rectangle clipping_rectangle; /**< when displaying the map, indicates an area of the surface to be restricted to
@@ -93,14 +94,14 @@ class Map {
                                            * or "_side0", "_side1", "_side2" or "_side3"
                                            * to place the hero on a side of the map */
 
-    MapEntities *entities;        /**< the entities on the map */
+    MapEntities* entities;        /**< the entities on the map */
     bool suspended;               /**< indicates whether the game is suspended */
 
     // light
     int light;                    /**< light level (0: dark, 1: full light) */
     Surface* dark_surfaces[4];    /**< dark foreground shown when there is no light */
 
-    MapScript *script;            /**< Lua script of this map */
+    MapScript* script;            /**< Lua script of this map */
 
     void set_suspended(bool suspended);
     void display_foreground();
@@ -114,6 +115,8 @@ class Map {
     // map properties
     MapId get_id();
     Tileset& get_tileset();
+    TilesetId get_tileset_id();
+    void set_tileset(TilesetId tileset_id);
     int get_world_number();
     bool is_in_dungeon();
     bool is_in_outside_world();

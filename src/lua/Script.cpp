@@ -352,6 +352,8 @@ void Script::register_map_api() {
       { "camera_move", map_api_camera_move },
       { "camera_restore", map_api_camera_restore },
       { "sprite_display", map_api_sprite_display },
+      { "tileset_get", map_api_tileset_get },
+      { "tileset_set", map_api_tileset_set },
       { "hero_freeze", map_api_hero_freeze },
       { "hero_unfreeze", map_api_hero_unfreeze },
       { "hero_set_map", map_api_hero_set_map },

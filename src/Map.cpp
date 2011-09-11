@@ -40,8 +40,14 @@ MapLoader Map::map_loader;
  * and the script file of the map
  */
 Map::Map(MapId id):
-  game(NULL), id(id), started(false), destination_point_name(""),
-  entities(NULL), suspended(false), light(1) {
+  game(NULL),
+  id(id),
+  tileset(NULL),
+  started(false),
+  destination_point_name(""),
+  entities(NULL),
+  suspended(false),
+  light(1) {
 
 }
 
@@ -69,6 +75,33 @@ MapId Map::get_id() {
  */
 Tileset& Map::get_tileset() {
   return *tileset;
+}
+
+/**
+ * @brief Returns the id of the tileset associated to this map.
+ * @return the id of the tileset
+ */
+TilesetId Map::get_tileset_id() {
+  // note that if set_tileset() has been called, tileset_id != tileset->get_id()
+  return tileset_id;
+}
+
+/**
+ * @brief Changes the tileset used to draw this map.
+ *
+ * The new tileset must be compatible with the previous one,
+ * i.e. every tile of the previous tileset must exist in the new one
+ * and have the same properties.
+ * This function keeps the tiles of the previous tileset and loads the
+ * image of the new tileset.
+ *
+ * @return id of the new tileset
+ */
+void Map::set_tileset(TilesetId tileset_id) {
+
+  Tileset new_tileset(tileset_id);
+  new_tileset.load();
+  tileset->set_images(new_tileset);
 }
 
 /**

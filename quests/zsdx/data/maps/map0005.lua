@@ -44,6 +44,7 @@ function event_dialog_finished(first_message_id, answer)
   elseif first_message_id == "outside_world.surprise_wall_guy.thanks" then
     sol.map.tile_set_enabled("surprise_wall_door_tile", false)
     sol.map.interactive_entity_remove("surprise_wall_door")
+    sol.game.savegame_set_boolean(136, true)
     sol.main.play_sound("secret")
   end
 end

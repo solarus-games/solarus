@@ -70,13 +70,13 @@ void FollowMovement::update() {
 
       if (!finished && (dx != 0 || dy != 0)) {
 
-	if (!test_collision_with_obstacles(dx, dy)) {
-	  set_x(next_x);
-	  set_y(next_y);
-	}
-	else {
-	  finished = true;
-	}
+        if (!test_collision_with_obstacles(dx, dy)) {
+          set_x(next_x);
+          set_y(next_y);
+        }
+        else {
+          finished = true;
+        }
       }
     }
     else {
@@ -92,6 +92,10 @@ void FollowMovement::update() {
  * @return the coordinates to use to display the object controlled by this movement
  */
 const Rectangle FollowMovement::get_displayed_xy() {
+
+  if (entity_followed == NULL) {
+    return get_xy();
+  }
 
   // if the followed entity is displayed at a different position than its real position,
   // we apply the same difference when displaying this entity

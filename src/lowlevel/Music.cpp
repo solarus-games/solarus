@@ -190,19 +190,19 @@ void Music::play(const MusicId &music_id) {
 
       // play another music
       if (current_music != NULL) {
-	current_music->stop();
+        current_music->stop();
       }
 
       if (all_musics.count(music_id) == 0) {
-	all_musics[music_id] = Music(music_id);
+        all_musics[music_id] = Music(music_id);
       }
 
       Music &music = all_musics[music_id];
       if (music.start()) {
-	current_music = &music;
+        current_music = &music;
       }
       else {
-	current_music = NULL;
+        current_music = NULL;
       }
     }
   }

@@ -45,20 +45,21 @@ class Script {
 
   private:
 
-    typedef int (FunctionAvailableToScript) (lua_State *l);		/**< type of the functions that can be called by a Lua script */
+    typedef int (FunctionAvailableToScript) (lua_State *l);  /**< type of the functions that can be called by a Lua script */
 
     // script data
-    std::list<Timer*> timers;						/**< the timers currently running for this script */
+    std::list<Timer*> timers;                            /**< the timers currently running for this script */
 
-    std::map<int, Sprite*> sprites;					/**< the sprites accessible from this script */
-    std::map<int, Sprite*> unassigned_sprites;                          /**< the sprites accessible from this script and that
-                                                                         * are not assigned to an object yet (the script has to delete them) */
-    std::map<int, Movement*> movements;					/**< the movements accessible from this script */
-    std::map<int, Movement*> unassigned_movements;			/**< the movements accessible from this script and that
-    									 * are not assigned to an object yet (the script has to delete them) */
+    std::map<int, Sprite*> sprites;                      /**< the sprites accessible from this script */
+    std::map<int, Sprite*> unassigned_sprites;           /**< the sprites accessible from this script and that
+                                                          * are not assigned to an object yet (the script has to delete them) */
+    std::map<int, Movement*> movements;                  /**< the movements accessible from this script */
+    std::map<int, Movement*> unassigned_movements;       /**< the movements accessible from this script and that
+                                                          * are not assigned to an object yet (the script has to delete them) */
+    bool music_played;
 
     // APIs
-    uint32_t apis_enabled;						/**< an OR combination of APIs enabled */
+    uint32_t apis_enabled;                               /**< an OR combination of APIs enabled */
 
     // calling a Lua function from C++
     bool find_lua_function(const std::string &function_name);
@@ -369,6 +370,7 @@ class Script {
 
     virtual void update();
     virtual void set_suspended(bool suspended);
+    bool has_played_music();
 
     void event_map_changed(Map &map);
     void event_dialog_started(const MessageId &message_id);

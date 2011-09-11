@@ -32,6 +32,7 @@
  * @param apis_enabled an OR-combination of APIs to enable
  */
 Script::Script(uint32_t apis_enabled):
+  music_played(false),
   apis_enabled(apis_enabled),
   context(NULL) {
 
@@ -816,6 +817,16 @@ void Script::set_suspended(bool suspended) {
     }
   }
 }
+
+/**
+ * @brief Returns whether this script has played a music,
+ * i.e. called the sol.main.play_music(music_id).
+ * @return true if this script has played a music
+ */
+bool Script::has_played_music() {
+  return music_played;
+}
+
 
 /**
  * @brief Adds a timer to the script.

@@ -543,13 +543,12 @@ void Map::start() {
 
   this->started = true;
   this->visible_surface->set_opacity(255);
-  Music::play(Music::none);
   this->script->start(destination_point_name);
   this->entities->notify_map_started();
   get_game().get_equipment().set_map(*this);
 
-  if (Music::get_current_music_id() == Music::none) {
-    // play the music of the map, unless the script already played another music
+  if (!script->has_played_music()) {
+    // play the default music of the map, unless the script decided to play another music
     Music::play(music_id);
   }
 }

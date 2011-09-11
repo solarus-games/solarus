@@ -466,6 +466,7 @@ void Script::register_item_api() {
       { "remove_amount", item_api_remove_amount },
       { "get_sprite", item_api_get_sprite },
       { "get_movement", item_api_get_movement },
+      { "is_following_entity", item_api_is_following_entity },
       { "start_movement", item_api_start_movement },
       { "get_position", item_api_get_position },
       { "set_position", item_api_set_position },

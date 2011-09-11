@@ -157,8 +157,8 @@ int Script::item_api_remove_amount(lua_State *l) {
 /**
  * @brief Makes the sprite of the current pickable item accessible from the script.
  *
- * This function should be called only when there a current pickable item,
- * i.e. from event_appear() or event_movement_changed().
+ * This function should be called only when there is current pickable item,
+ * e.g. from event_appear() or event_movement_changed().
  * - Return value (sprite): the sprite of the current pickable item
  * (your script can then pass it as a parameter
  * to all sol.main.sprite_* functions)
@@ -188,8 +188,8 @@ int Script::item_api_get_sprite(lua_State *l) {
 /**
  * @brief Makes the movement of the current pickable item accessible from the script.
  *
- * This function should be called only when there a current pickable item,
- * i.e. from event_appear() or event_movement_changed().
+ * This function should be called only when there is a current pickable item,
+ * e.g. from event_appear() or event_movement_changed().
  * - Return value (movement): the movement of the current pickable item
  * (your script can then pass it as a parameter
  * to all sol.main.movement_* functions)
@@ -220,8 +220,8 @@ int Script::item_api_get_movement(lua_State *l) {
 /**
  * @brief Sets a movement to the pickable item that just appeared.
  *
- * This function should be called only when there a current pickable item,
- * i.e. from the event_appear() function.
+ * This function should be called only when there is a current pickable item,
+ * e.g. from the event_appear() function.
  * The default movement of the pickable item (FallingOnFloorMovement)
  * will be replaced to the one you specify.
  *
@@ -254,10 +254,44 @@ int Script::item_api_start_movement(lua_State *l) {
 }
 
 /**
+ * @brief Returns whether the pickable item is following an entity
+ * such as the boomerang or the hookshot.
+ *
+ * When this function returns true, the movement of the pickable item
+ * is an instance of FollowMovement.
+ *
+ * This function should be called only when there is a current pickable item,
+ * e.g. from the event_appear() function.
+ *
+ * - Return value (boolean): true if the pickable item is currently following an entity
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::item_api_is_following_entity(lua_State* l) {
+
+  Script *script;
+  called_by_script(l, 0, &script);
+
+  // retrieve the pickable item
+  const std::string& item_name = script->get_item_properties().get_name();
+  Equipment& equipment = script->get_game().get_equipment();
+  ItemScript& item_script = equipment.get_item_script(item_name);
+  PickableItem* pickable_item = item_script.get_pickable_item();
+
+  Debug::check_assertion(pickable_item != NULL,
+                "Cannot call sol.item.is_following_entity(): there is no current pickable item");
+
+  bool result = pickable_item->get_entity_followed() != NULL;
+  lua_pushinteger(l, result);
+
+  return 1;
+}
+
+/**
  * @brief Returns the position of the pickable item that just appeared.
  *
- * This function should be called only when there a current pickable item,
- * i.e. from the event_appear() function.
+ * This function should be called only when there is a current pickable item,
+ * e.g. from the event_appear() function.
  *
  * - Return value 1 (integer): x coordinate of the pickable item
  * - Return value 2 (integer): y coordinate of the pickable item
@@ -288,8 +322,8 @@ int Script::item_api_get_position(lua_State *l) {
 /**
  * @brief Sets the position of the pickable item that just appeared.
  *
- * This function should be called only when there a current pickable item,
- * i.e. from the event_appear() function.
+ * This function should be called only when there is a current pickable item,
+ * e.g. from the event_appear() function.
  *
  * - Argument 1 (integer): x coordinate of the pickable item
  * - Argument 2 (integer): y coordinate of the pickable item
@@ -321,8 +355,8 @@ int Script::item_api_set_position(lua_State *l) {
 /**
  * @brief Returns the layer of the pickable item that just appeared.
  *
- * This function should be called only when there a current pickable item,
- * i.e. from the event_appear() function.
+ * This function should be called only when there is a current pickable item,
+ * e.g. from the event_appear() function.
  *
  * - Return value (integer): layer of the pickable item (0 to 2)
  *
@@ -350,8 +384,8 @@ int Script::item_api_get_layer(lua_State *l) {
 /**
  * @brief Sets the layer of the pickable item that just appeared.
  *
- * This function should be called only when there a current pickable item,
- * i.e. from the event_appear() function.
+ * This function should be called only when there is a current pickable item,
+ * e.g. from the event_appear() function.
  *
  * - Argument 1 (integer): layer of the pickable item
  *
@@ -382,8 +416,8 @@ int Script::item_api_set_layer(lua_State *l) {
 /**
  * @brief Sets whether the pickable item detects collisions on every layer.
  *
- * This function should be called only when there a current pickable item,
- * i.e. from the event_appear() function.
+ * This function should be called only when there is a current pickable item,
+ * e.g. from the event_appear() function.
  *
  * - Argument 1 (boolean): true to detect collisions from every layer (default: false)
  *
@@ -413,7 +447,7 @@ int Script::item_api_set_layer_independent_collisions(lua_State *l) {
 /**
  * @brief Indicates that the player has finished using the current inventory item.
  *
- * This function should be called only when there a current inventory item that is being used,
+ * This function should be called only when there is a current inventory item that is being used,
  * i.e. after the event_use() function.
  *
  * @param l the Lua context that is calling this function

@@ -271,6 +271,14 @@ const Treasure& PickableItem::get_treasure() {
 }
 
 /**
+ * @brief Returns the entity (if any) followed by this pickable item.
+ * @return the entity followed or NULL
+ */
+MapEntity* PickableItem::get_entity_followed() {
+  return entity_followed;
+}
+
+/**
  * @brief Notifies this pickable item that its movement has just changed.
  */
 void PickableItem::notify_movement_changed() {

@@ -88,6 +88,7 @@ int Script::main_api_play_music(lua_State *l) {
   called_by_script(l, 1, &script);
   const MusicId &music_id = luaL_checkstring(l, 1);
   Music::play(music_id);
+  script->music_played = true;
 
   return 0;
 }

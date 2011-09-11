@@ -264,6 +264,46 @@ int Script::map_api_sprite_display(lua_State *l) {
 }
 
 /**
+ * @brief Returns the id of the tileset used to draw the map.
+ *
+ * - Return value (integer): id of the tileset
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_tileset_get(lua_State *l) {
+
+  Script* script;
+  called_by_script(l, 0, &script);
+
+  TilesetId id = script->get_map().get_tileset_id();
+
+  lua_pushinteger(l, id);
+
+  return 1;
+}
+
+/**
+ * @brief Changes the tileset used to draw this map.
+ *
+ * Every tile of this old tileset must exist in the new one.
+ *
+ * - Argument 1 (integer): id of the new tileset
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_tileset_set(lua_State *l) {
+
+  Script* script;
+  called_by_script(l, 1, &script);
+
+  TilesetId id = luaL_checkinteger(l, 1);
+
+  script->get_map().set_tileset(id);
+
+  return 0;
+}
+
+/**
  * @brief Prevents the player from moving until hero_unfreeze() is called.
  * @param l the Lua context that is calling this function
  */

@@ -174,6 +174,8 @@ class Script {
       map_api_camera_move,
       map_api_camera_restore,
       map_api_sprite_display,
+      map_api_tileset_get,
+      map_api_tileset_set,
       map_api_treasure_give,
       map_api_hero_set_map,
       map_api_hero_set_visible,

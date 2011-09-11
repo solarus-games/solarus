@@ -44,6 +44,14 @@ Tileset::~Tileset() {
 }
 
 /**
+ * @brief Returns the id of this tileset.
+ * @return the tileset id
+ */
+TilesetId Tileset::get_id() {
+  return id;
+}
+
+/**
  * @brief Adds a tile pattern to this tileset.
  *
  * This function is called by load().
@@ -111,16 +119,16 @@ void Tileset::load() {
 
       TilePattern *pattern = NULL;
       if (animation == 0) {
-	pattern = new SimpleTilePattern(Obstacle(obstacle), x, y, width, height);
+        pattern = new SimpleTilePattern(Obstacle(obstacle), x, y, width, height);
       }
       else if (animation == 2) {
-	pattern = new ParallaxTilePattern(Obstacle(obstacle), x, y, width, height);
+        pattern = new ParallaxTilePattern(Obstacle(obstacle), x, y, width, height);
       }
       else if (animation == 3) {
         pattern = new ScrollingTilePattern(Obstacle(obstacle), x, y, width, height);
       }
       else {
-	Debug::die(StringConcat() << "Unknown tile pattern animation: " << animation);
+        Debug::die(StringConcat() << "Unknown tile pattern animation: " << animation);
       }
       add_tile_pattern(tile_pattern_id, pattern);
     }
@@ -176,7 +184,7 @@ void Tileset::unload() {
  * @brief Returns the background color of this tileset.
  * @return the background color
  */
-Color & Tileset::get_background_color() {
+Color& Tileset::get_background_color() {
   return background_color;
 }
 
@@ -192,7 +200,7 @@ bool Tileset::is_loaded() {
  * @brief Returns the image containing the tiles of this tileset.
  * @return the tiles image
  */
-Surface * Tileset::get_tiles_image() {
+Surface* Tileset::get_tiles_image() {
   return tiles_image;
 }
 
@@ -200,7 +208,7 @@ Surface * Tileset::get_tiles_image() {
  * @brief Returns the image containing the skin-dependent dynamic entities for this tileset.
  * @return the image containing the skin-dependent dynamic entities for this tileset
  */
-Surface * Tileset::get_entities_image() {
+Surface* Tileset::get_entities_image() {
   return entities_image;
 }
 
@@ -211,8 +219,22 @@ Surface * Tileset::get_entities_image() {
  */
 TilePattern& Tileset::get_tile_pattern(int id) {
 
-  TilePattern *tile_pattern =  tile_patterns[id];
+  TilePattern* tile_pattern =  tile_patterns[id];
   Debug::check_assertion(tile_pattern != NULL, StringConcat() << "There is not tile pattern with id '" << id << "' in this tileset'");
   return *tile_pattern;
 }
 
+/**
+ * @brief Changes the tiles images, the entities images and the background color of
+ * this tileset.
+ * @param other another tileset whose images and background color will be copied
+ * into this tileset
+ */
+void Tileset::set_images(Tileset& other) {
+
+  delete tiles_image;
+  tiles_image = new Surface(*other.get_tiles_image());
+  delete entities_image;
+  entities_image = new Surface(*other.get_entities_image());
+  background_color = other.get_background_color();
+}

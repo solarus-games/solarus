@@ -310,6 +310,12 @@ suspends the game and moves the camera towards a target point
 - <tt>sol.map.camera_restore()</tt>: 
 sents the camera back to the hero after a call to camera_move()
 
+- <tt>sol.map.tileset_get()</tt>:
+returns the id of the tileset of this map
+
+- <tt>sol.map.tileset_set(tileset_id)</tt>:
+changes the tileset used to draw the map
+
 - <tt>sol.map.sprite_display(sprite, x, y)</tt>:
 displays a sprite at the given position (relative to the the map)
 

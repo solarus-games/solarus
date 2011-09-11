@@ -37,7 +37,7 @@ Surface::Surface(int width, int height):
  * @param file_name name of the image file to load, relative to the base directory specified
  * @param base_directory the base directory to use
  */
-Surface::Surface(const std::string &file_name, ImageDirectory base_directory):
+Surface::Surface(const std::string& file_name, ImageDirectory base_directory):
   internal_surface_created(true) {
 
   std::string prefix = "";
@@ -53,9 +53,9 @@ Surface::Surface(const std::string &file_name, ImageDirectory base_directory):
   std::string prefixed_file_name = prefix + file_name;
 
   size_t size;
-  char *buffer;
+  char* buffer;
   FileTools::data_file_open_buffer(prefixed_file_name, &buffer, &size, language_specific);
-  SDL_RWops *rw = SDL_RWFromMem(buffer, size);
+  SDL_RWops* rw = SDL_RWFromMem(buffer, size);
   this->internal_surface = IMG_Load_RW(rw, 0);
   FileTools::data_file_close_buffer(buffer);
   SDL_RWclose(rw);
@@ -71,8 +71,20 @@ Surface::Surface(const std::string &file_name, ImageDirectory base_directory):
  *
  * @param internal_surface the internal surface data (the destructor will not free it)
  */
-Surface::Surface(SDL_Surface *internal_surface):
-  internal_surface(internal_surface), internal_surface_created(false) {
+Surface::Surface(SDL_Surface* internal_surface):
+  internal_surface(internal_surface),
+  internal_surface_created(false) {
+
+}
+
+/**
+ * @brief Copy constructor.
+ * @param other a surface to copy
+ */
+Surface::Surface(const Surface& other):
+  internal_surface(SDL_ConvertSurface(other.internal_surface,
+      other.internal_surface->format, other.internal_surface->flags)),
+  internal_surface_created(true) {
 
 }
 
@@ -118,7 +130,7 @@ const Rectangle Surface::get_size() {
  *
  * @param color the transparency color to set
  */
-void Surface::set_transparency_color(Color &color) {
+void Surface::set_transparency_color(Color& color) {
   SDL_SetColorKey(internal_surface, SDL_SRCCOLORKEY, color.get_internal_value());
 }
 
@@ -148,7 +160,7 @@ void Surface::set_opacity(int opacity) {
  *
  * @param clipping_rectangle a subarea of the rectangle to restrict the display to
  */
-void Surface::set_clipping_rectangle(const Rectangle &clipping_rectangle) {
+void Surface::set_clipping_rectangle(const Rectangle& clipping_rectangle) {
 
   if (clipping_rectangle.get_width() == 0) {
     SDL_SetClipRect(internal_surface, NULL);
@@ -163,7 +175,7 @@ void Surface::set_clipping_rectangle(const Rectangle &clipping_rectangle) {
  * @brief Fills the entire surface with the specified color.
  * @param color a color
  */
-void Surface::fill_with_color(Color &color) {
+void Surface::fill_with_color(Color& color) {
   SDL_FillRect(internal_surface, NULL, color.get_internal_value());
 }
 
@@ -172,7 +184,7 @@ void Surface::fill_with_color(Color &color) {
  * @param color a color
  * @param where the rectangle to fill
  */
-void Surface::fill_with_color(Color &color, const Rectangle &where) {
+void Surface::fill_with_color(Color& color, const Rectangle& where) {
   Rectangle where2 = where;
   SDL_FillRect(internal_surface, where2.get_internal_rect(), color.get_internal_value());
 }
@@ -184,7 +196,7 @@ void Surface::fill_with_color(Color &color, const Rectangle &where) {
  *
  * @param destination the destination surface
  */
-void Surface::blit(Surface *destination) {
+void Surface::blit(Surface* destination) {
   SDL_BlitSurface(internal_surface, NULL, destination->internal_surface, NULL);
 }
 
@@ -193,7 +205,7 @@ void Surface::blit(Surface *destination) {
  * @param dst the destination surface
  * @param dst_position the destination position where the current surface will be blitted on dst
  */
-void Surface::blit(Surface *dst, const Rectangle &dst_position) {
+void Surface::blit(Surface* dst, const Rectangle& dst_position) {
 
   Rectangle dst_position2(dst_position);
   SDL_BlitSurface(internal_surface, NULL, dst->internal_surface, dst_position2.get_internal_rect());
@@ -207,7 +219,7 @@ void Surface::blit(Surface *dst, const Rectangle &dst_position) {
  * @param src_position the subrectangle of this surface to pick
  * @param dst the destination surface
  */
-void Surface::blit(const Rectangle &src_position, Surface *dst) {
+void Surface::blit(const Rectangle& src_position, Surface* dst) {
 
   Rectangle src_position2(src_position);
   SDL_BlitSurface(internal_surface, src_position2.get_internal_rect(), dst->internal_surface, NULL);

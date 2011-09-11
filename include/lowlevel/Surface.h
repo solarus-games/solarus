@@ -48,31 +48,32 @@ class Surface {
 
   private:
 
-    SDL_Surface *internal_surface;               /**< the SDL_Surface encapsulated */
+    SDL_Surface* internal_surface;               /**< the SDL_Surface encapsulated */
     bool internal_surface_created;               /**< indicates that internal_surface was allocated from this class */
 
-    SDL_Surface * get_internal_surface();
+    SDL_Surface* get_internal_surface();
 
   public:
 
     Surface(int width, int height);
-    Surface(const std::string &file_name, ImageDirectory base_directory = DIR_SPRITES);
-    Surface(SDL_Surface *internal_surface);
+    Surface(const std::string& file_name, ImageDirectory base_directory = DIR_SPRITES);
+    Surface(SDL_Surface* internal_surface);
+    Surface(const Surface& other);
     ~Surface();
 
     int get_width();
     int get_height();
     const Rectangle get_size();
 
-    void set_transparency_color(Color &color);
+    void set_transparency_color(Color& color);
     void set_opacity(int opacity);
-    void set_clipping_rectangle(const Rectangle &clipping_rectangle = Rectangle());
-    void fill_with_color(Color &color);
-    void fill_with_color(Color &color, const Rectangle &where);
-    void blit(Surface *destination);
-    void blit(Surface *destination, const Rectangle &dst_position);
-    void blit(const Rectangle &src_position, Surface *destination);
-    void blit(const Rectangle &src_position, Surface *destination, const Rectangle &dst_position);
+    void set_clipping_rectangle(const Rectangle& clipping_rectangle = Rectangle());
+    void fill_with_color(Color& color);
+    void fill_with_color(Color& color, const Rectangle& where);
+    void blit(Surface* destination);
+    void blit(Surface* destination, const Rectangle& dst_position);
+    void blit(const Rectangle& src_position, Surface* destination);
+    void blit(const Rectangle& src_position, Surface* destination, const Rectangle& dst_position);
 };
 
 #endif

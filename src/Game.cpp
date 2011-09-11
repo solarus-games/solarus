@@ -318,9 +318,9 @@ void Game::update_transitions() {
         // change the map
         current_map->leave();
 
-        // special treatments for an inside/outside transition
-        if ((current_map->is_in_outside_world() && !next_map->is_in_outside_world())
-            || (!current_map->is_in_outside_world() && next_map->is_in_outside_world())) {
+        // special treatments for a transition between two different worlds
+        // (e.g. outside world to a dungeon)
+        if (next_map->get_world_number() != current_map->get_world_number()) {
 
           // reset the crystal switch blocks
           crystal_switch_state = false;

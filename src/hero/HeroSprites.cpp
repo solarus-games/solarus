@@ -1145,6 +1145,7 @@ void HeroSprites::set_animation_prepare_running() {
 void HeroSprites::set_animation_running() {
 
   set_animation_walking_sword_loading();
+  stop_displaying_sword_stars();
   trail_sprite->set_current_animation("running");
 }
 

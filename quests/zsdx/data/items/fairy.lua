@@ -17,13 +17,16 @@ end
 -- update the direction of the fairy's sprite
 function event_movement_changed()
 
-  movement = sol.item.get_movement()
-  sprite = sol.item.get_sprite()
-  angle = tonumber(sol.main.movement_get_property(movement, "angle")) -- retrieve the current movement's direction
-  if angle >= 90 and angle < 270 then
-    sol.main.sprite_set_direction(sprite, 1) -- look to the left
-  else
-    sol.main.sprite_set_direction(sprite, 0) -- look to the right
+  if not sol.item.is_following_entity() then
+
+    movement = sol.item.get_movement()
+    sprite = sol.item.get_sprite()
+    angle = tonumber(sol.main.movement_get_property(movement, "angle")) -- retrieve the current movement's direction
+    if angle >= 90 and angle < 270 then
+      sol.main.sprite_set_direction(sprite, 1) -- look to the left
+    else
+      sol.main.sprite_set_direction(sprite, 0) -- look to the right
+    end
   end
 end
 

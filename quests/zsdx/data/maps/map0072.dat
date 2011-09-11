@@ -190,9 +190,9 @@
 15	0	384	128	16	16	1
 1	0	128	349	main_entrance	1	0
 19	0	640	296	stairs_1	3	4
-7	0	88	269	enemy	3	red_bullblin	0	-1	_random	1	-1
-7	0	72	269	enemy_2	3	red_bullblin	0	-1	_random	1	-1
-7	0	184	269	enemy_3	3	red_bullblin	0	-1	_random	1	-1
+7	0	88	269	enemy	3	blue_bullblin	0	-1	_random	1	-1
+7	0	72	269	enemy_2	3	blue_bullblin	0	-1	_random	1	-1
+7	0	184	269	enemy_3	3	blue_bullblin	0	-1	_random	1	-1
 12	0	120	240	16	16	custom_obstacle	0	1	0	0
 12	0	120	144	16	16	custom_obstacle_3	0	1	0	0
 12	0	192	96	16	16	custom_obstacle_4	0	1	0	0
@@ -203,29 +203,29 @@
 12	0	528	272	16	16	custom_obstacle_11	0	1	0	0
 12	0	600	240	16	16	custom_obstacle_12	0	1	0	0
 12	0	600	144	16	16	custom_obstacle_13	0	1	0	0
-7	0	104	101	enemy_4	3	red_bullblin	0	-1	_random	1	-1
-7	0	72	117	enemy_5	3	red_bullblin	0	-1	_random	1	-1
-7	0	184	101	enemy_6	3	red_bullblin	0	-1	_random	1	-1
-7	0	152	125	enemy_7	3	red_bullblin	0	-1	_random	1	-1
-7	0	328	93	enemy_9	3	red_bullblin	0	-1	_random	1	-1
-7	0	400	101	enemy_10	3	red_bullblin	0	-1	_random	1	-1
-7	0	424	133	enemy_11	3	red_bullblin	0	-1	_random	1	-1
-7	0	368	141	enemy_12	3	red_bullblin	0	-1	_random	1	-1
-7	0	424	93	enemy_13	3	red_bullblin	0	-1	_random	1	-1
-7	0	312	277	enemy_14	3	red_bullblin	0	-1	_random	1	-1
-7	0	312	325	enemy_15	3	red_bullblin	0	-1	_random	1	-1
-7	0	392	285	enemy_16	3	red_bullblin	0	-1	_random	1	-1
-7	0	368	317	enemy_17	3	red_bullblin	0	-1	_random	1	-1
-7	0	408	333	enemy_18	3	red_bullblin	0	-1	_random	1	-1
-7	0	424	277	enemy_19	3	red_bullblin	0	-1	_random	1	-1
-7	0	560	85	enemy_20	3	red_bullblin	0	-1	_random	1	-1
-7	0	576	133	enemy_22	3	red_bullblin	0	-1	_random	1	-1
-7	0	616	85	enemy_23	3	red_bullblin	0	-1	_random	1	-1
-7	0	624	125	enemy_24	3	red_bullblin	0	-1	_random	1	-1
-7	0	592	101	enemy_25	3	red_bullblin	0	-1	_random	1	-1
-7	0	568	325	enemy_26	3	red_bullblin	0	-1	_random	1	-1
-7	0	568	277	enemy_27	3	red_bullblin	0	-1	_random	1	-1
-7	0	600	301	enemy_28	3	red_bullblin	0	-1	_random	1	-1
+7	0	104	101	enemy_4	3	blue_bullblin	0	-1	_random	1	-1
+7	0	72	117	enemy_5	3	blue_bullblin	0	-1	_random	1	-1
+7	0	184	101	enemy_6	3	blue_bullblin	0	-1	_random	1	-1
+7	0	152	125	enemy_7	3	blue_bullblin	0	-1	_random	1	-1
+7	0	328	93	enemy_9	3	blue_bullblin	0	-1	_random	1	-1
+7	0	400	101	enemy_10	3	blue_bullblin	0	-1	_random	1	-1
+7	0	424	133	enemy_11	3	blue_bullblin	0	-1	_random	1	-1
+7	0	368	141	enemy_12	3	blue_bullblin	0	-1	_random	1	-1
+7	0	424	93	enemy_13	3	blue_bullblin	0	-1	_random	1	-1
+7	0	312	277	enemy_14	3	blue_bullblin	0	-1	_random	1	-1
+7	0	312	325	enemy_15	3	blue_bullblin	0	-1	_random	1	-1
+7	0	392	285	enemy_16	3	blue_bullblin	0	-1	_random	1	-1
+7	0	368	317	enemy_17	3	blue_bullblin	0	-1	_random	1	-1
+7	0	408	333	enemy_18	3	blue_bullblin	0	-1	_random	1	-1
+7	0	424	277	enemy_19	3	blue_bullblin	0	-1	_random	1	-1
+7	0	560	85	enemy_20	3	blue_bullblin	0	-1	_random	1	-1
+7	0	576	133	enemy_22	3	blue_bullblin	0	-1	_random	1	-1
+7	0	616	85	enemy_23	3	blue_bullblin	0	-1	_random	1	-1
+7	0	624	125	enemy_24	3	blue_bullblin	0	-1	_random	1	-1
+7	0	592	101	enemy_25	3	blue_bullblin	0	-1	_random	1	-1
+7	0	568	325	enemy_26	3	blue_bullblin	0	-1	_random	1	-1
+7	0	568	277	enemy_27	3	blue_bullblin	0	-1	_random	1	-1
+7	0	600	301	enemy_28	3	blue_bullblin	0	-1	_random	1	-1
 18	0	112	336	door	3	0	-1
 13	0	128	333	16	16	close_door_sensor	0
 0	1	208	56	8	96	418
@@ -364,13 +364,13 @@
 12	1	632	312	8	8	custom_obstacle_2	1	1	1	1
 12	1	656	312	8	8	custom_obstacle_5	1	1	1	1
 6	1	584	312	16	8	jump_sensor_2	2	16
-7	1	552	349	enemy_29	3	red_bullblin	0	-1	_random	1	-1
-7	1	408	349	enemy_30	3	red_bullblin	0	-1	_random	1	-1
-7	1	592	349	enemy_31	3	red_bullblin	0	-1	_random	1	-1
-7	1	352	349	enemy_32	3	red_bullblin	0	-1	_random	1	-1
-7	1	304	341	enemy_33	3	red_bullblin	0	-1	_random	1	-1
-7	1	192	349	enemy_34	3	red_bullblin	0	-1	_random	1	-1
-7	1	192	301	enemy_35	3	red_bullblin	0	-1	_random	1	-1
+7	1	552	349	enemy_29	3	blue_bullblin	0	-1	_random	1	-1
+7	1	408	349	enemy_30	3	blue_bullblin	0	-1	_random	1	-1
+7	1	592	349	enemy_31	3	blue_bullblin	0	-1	_random	1	-1
+7	1	352	349	enemy_32	3	blue_bullblin	0	-1	_random	1	-1
+7	1	304	341	enemy_33	3	blue_bullblin	0	-1	_random	1	-1
+7	1	192	349	enemy_34	3	blue_bullblin	0	-1	_random	1	-1
+7	1	192	301	enemy_35	3	blue_bullblin	0	-1	_random	1	-1
 12	1	216	328	16	16	custom_obstacle_14	0	1	0	0
 12	1	264	328	16	16	custom_obstacle_15	0	1	0	0
 12	1	456	328	16	16	custom_obstacle_16	0	1	0	0

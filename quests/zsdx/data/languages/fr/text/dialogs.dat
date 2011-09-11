@@ -3424,6 +3424,34 @@ next = grandma_house.go_telepathic_booth.3
 line1 = "communication moderne"
 line2 = "comme la télépathie ?"
 
+[grandma_house.dark_world_enabled]
+#       |-----------------------|
+line1 = "Agahnim a pris le"
+line2 = "contrôle du royaume..."
+line3 = "Il sème la terreur"
+skip = all
+next = grandma_house.dark_world_enabled.2
+
+[grandma_house.dark_world_enabled.2]
+#       |-----------------------|
+line1 = "partout sur son"
+line2 = "passage. Tom, un des"
+line3 = "soldats du château,"
+next = grandma_house.dark_world_enabled.3
+
+[grandma_house.dark_world_enabled.3]
+#       |-----------------------|
+line1 = "est accusé d'avoir"
+line2 = "enlevé Sahasrahla mais"
+line3 = "je n'en crois rien !"
+next = grandma_house.dark_world_enabled.4
+
+[grandma_house.dark_world_enabled.4]
+#       |-----------------------|
+line1 = "De plus, des bandits"
+line2 = "ont pillé la Maison des"
+line3 = "Rubis !"
+
 [telepathic_booth.not_working]
 #       |-----------------------|
 line1 = "Allo ? ... Allo ? ..."
@@ -3479,8 +3507,8 @@ next = telepathic_booth.hahaha.2
 [telepathic_booth.hahaha.2]
 #       |-----------------------|
 line1 = "il est en mon pouvoir"
-line2 = "qu'il va me dire où se"
-line3 = "trouve Zelda !"
+line2 = "et qu'il va me dire où"
+line3 = "se trouve Zelda !"
 next = telepathic_booth.hahaha.3
 
 [telepathic_booth.hahaha.3]
@@ -4365,9 +4393,8 @@ skip = all
 
 [outside_world.old_castle_sign]
 #       |-----------------------|
-line1 = "Ancien Château d'Hyrule"
-line2 = "         <---"
-line3 = ""
+line2 = "     Ancien Château"
+line3 = "         <---"
 skip = all
 
 [billy_cave.hello]

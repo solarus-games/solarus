@@ -7,6 +7,12 @@ function event_map_started(destination_point)
   if sol.game.savegame_get_boolean(37) then -- if the Lyriann cave is finished
     sol.map.door_set_open("door", sol.game.is_dungeon_finished(1)) -- don't allow the player to obtain the bow until the first dungeon is finished
   end
+
+  if sol.game.is_dungeon_finished(4)
+      and not sol.game.is_dungeon_finished(7) then
+    -- Sahasrahla has been kidnapped
+    sol.map.npc_remove("sahasrahla")
+  end
 end
 
 -- The player talks to Sahasrahla

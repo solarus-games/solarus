@@ -32,9 +32,11 @@ function event_npc_dialog(npc_name)
   elseif not sol.game.is_dungeon_finished(2) then
     -- with the rock key: go to the second dungeon
     sol.map.dialog_start("grandma_house.go_dungeon_2")
-  else
-    -- then use the telepathic booth
+  elseif not sol.game.is_dungeon_finished(4) then
+    -- use the telepathic booth
     sol.map.dialog_start("grandma_house.go_telepathic_booth")
+  else
+    sol.map.dialog_start("grandma_house.dark_world_enabled")
   end
 
 end

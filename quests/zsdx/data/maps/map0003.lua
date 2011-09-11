@@ -102,7 +102,7 @@ function event_npc_movement_finished(npc_name)
   elseif monkey_jumps == 2 then
     -- second jump finished: start the last jump
     sol.main.play_sound("monkey")
-    m = sol.main.jump_movement_create(1, 32)
+    m = sol.main.jump_movement_create(1, 64)
     sol.main.movement_set_property(m, "ignore_obstacles", true)
     sol.main.movement_set_property(m, "speed", monkey_jump_speed)
     sol.map.npc_start_movement("monkey", m)

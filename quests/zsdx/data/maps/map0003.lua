@@ -8,6 +8,12 @@ monkey_jump_speed = 48
 -- The NPCs are initialized.
 function event_map_started(destination_point_name)
 
+  -- enable dark world
+  if sol.game.savegame_get_boolean(905) then
+    sol.main.play_music("dark_world.spc")
+    sol.map.tileset_set(13)
+  end
+
   if sol.game.savegame_get_boolean(24) then
     -- remove the monkey from Link's house entrance
     sol.map.npc_remove("monkey")

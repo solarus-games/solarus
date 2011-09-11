@@ -2,6 +2,12 @@
 
 function event_map_started(destination_point_name)
 
+  -- enable dark world
+  if sol.game.savegame_get_boolean(905) then
+    sol.main.play_music("dark_world.spc")
+    sol.map.tileset_set(13)
+  end
+
   -- don't allow to go to the surprise wall before dungeon 3 is finished
   if not sol.game.is_dungeon_finished(3) then
     sol.map.npc_remove("surprise_wall_guy")

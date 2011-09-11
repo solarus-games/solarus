@@ -3,27 +3,33 @@
 -- Function called when the map starts
 function event_map_started(destination_point_name)
 
+  -- enable dark world
+  if sol.game.savegame_get_boolean(905) then
+    sol.main.play_music("dark_world.spc")
+    sol.map.tileset_set(13)
+  end
+
   m = sol.main.random_path_movement_create(32)
   sol.map.npc_start_movement("chignon_woman", m)
   sol.main.sprite_set_animation(sol.map.npc_get_sprite("chignon_woman"), "walking")
 
-   -- remove Tom's cave door if open
-   if sol.game.savegame_get_boolean(36) then
-     remove_village_cave_door()
-   end
+  -- remove Tom's cave door if open
+  if sol.game.savegame_get_boolean(36) then
+    remove_village_cave_door()
+  end
 
-   -- remove the stone lock if open
-   if sol.game.savegame_get_boolean(159) then
-     remove_stone_lock()
-   end
+  -- remove the stone lock if open
+  if sol.game.savegame_get_boolean(159) then
+    remove_stone_lock()
+  end
 
-   -- broken rupee house
-   if sol.game.savegame_get_boolean(155) then
-     sol.map.teletransporter_set_enabled("to_rupee_house", false)
-   else
-     sol.map.teletransporter_set_enabled("to_broken_rupee_house", false)
-     sol.map.tile_set_group_enabled("broken_rupee_house", false)
-   end
+  -- broken rupee house
+  if sol.game.savegame_get_boolean(155) then
+    sol.map.teletransporter_set_enabled("to_rupee_house", false)
+  else
+    sol.map.teletransporter_set_enabled("to_broken_rupee_house", false)
+    sol.map.tile_set_group_enabled("broken_rupee_house", false)
+  end
 end
 
 -- Function called when the player presses the action key

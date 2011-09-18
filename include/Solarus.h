@@ -28,21 +28,21 @@ class Solarus {
 
   private:
 
-    Screen *current_screen;		/**< the screen currently displayed (may be the title screen,
+    Screen* current_screen;		/**< the screen currently displayed (may be the title screen,
 					 * the selection menu, the game, etc.) */
-    Surface *root_surface;		/**< the surface where everything is drawn (always 320*240) */
-    DebugKeys *debug_keys;		/**< special keys to debug the game, e.g. to traverse walls (disabled in release mode) */
+    Surface* root_surface;		/**< the surface where everything is drawn (always 320*240) */
+    DebugKeys* debug_keys;		/**< special keys to debug the game, e.g. to traverse walls (disabled in release mode) */
     bool exiting;			/**< indicates that the program is about to stop */
 
-    void launch_adventure_mode(Savegame *savegame);
+    void launch_adventure_mode(Savegame* savegame);
 
-    void notify_event(InputEvent &event);
+    void notify_event(InputEvent& event);
     void display();
     void update();
 
   public:
 
-    Solarus(int argc, char **argv);
+    Solarus(int argc, char** argv);
     ~Solarus();
 
     void main_loop();

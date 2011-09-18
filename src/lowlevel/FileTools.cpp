@@ -72,7 +72,9 @@ void FileTools::initialize(int argc, char **argv) {
 
   // check the existence of the quest path
   if (!FileTools::data_file_exists("quest.dat")) {
-    Debug::die(StringConcat() << "No quest was found in the directory '" << quest_path << "'");
+    Debug::die(StringConcat() << "No quest was found in the directory '" << quest_path
+        << "'. To specify your quest's path, run: "
+        << argv[0] << " path/to/quest");
   }
 
   // then set the write directory to a ".solarus/quest_dir" subdirectory of the user home

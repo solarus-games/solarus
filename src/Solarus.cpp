@@ -37,7 +37,7 @@
  * @param argc number of arguments of the command line
  * @param argv command-line arguments
  */
-Solarus::Solarus(int argc, char **argv) {
+Solarus::Solarus(int argc, char** argv) {
 
   // initialize the lowlevel features (audio, video, files...)
   System::initialize(argc, argv);
@@ -80,7 +80,7 @@ void Solarus::skip_menus() {
   if (FileTools::data_file_exists("save1.dat")) {
 
     Savegame savegame("save1.dat");
-    Game *game = new Game(*this, savegame);
+    Game* game = new Game(*this, savegame);
     delete current_screen;
     current_screen = game;
   }
@@ -140,10 +140,10 @@ void Solarus::main_loop() {
       delete current_screen;
 
       if (next_screen != NULL) {
-	current_screen = next_screen;
+        current_screen = next_screen;
       }
       else {
-	current_screen = new LanguageScreen(*this);
+        current_screen = new LanguageScreen(*this);
       }
     }
     else {
@@ -165,16 +165,16 @@ void Solarus::main_loop() {
 	display();
       }
       else {
-	just_displayed = false;
+        just_displayed = false;
 
-	// if we have time, let's sleep to avoid using all the processor
-	System::sleep(1);
+        // if we have time, let's sleep to avoid using all the processor
+        System::sleep(1);
 
-	if (delay >= 15) {
-	  // if we have much time, increase the FPS number
-	  frame_interval--;
-	  //std::cout << "\rFPS: " << (1000 / frame_interval) << std::flush;
-	}
+        if (delay >= 15) {
+          // if we have much time, increase the FPS number
+          frame_interval--;
+          //std::cout << "\rFPS: " << (1000 / frame_interval) << std::flush;
+        }
       }
     }
   }
@@ -188,7 +188,7 @@ void Solarus::main_loop() {
  * The notify_event() method of the current screen
  * is then called.
  */
-void Solarus::notify_event(InputEvent &event) {
+void Solarus::notify_event(InputEvent& event) {
 
   // handle the common events
   InputEvent::KeyboardKey key = event.get_keyboard_key();

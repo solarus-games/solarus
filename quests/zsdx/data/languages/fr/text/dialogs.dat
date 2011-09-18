@@ -4871,6 +4871,24 @@ line3 = ""
 #       |-----------------------|
 line1 = "Au loin... un bruit..."
 
+[dungeon_3.arbror_hello]
+#       |-----------------------|
+line1 = "Ahh !!! Jamais tu ne me"
+line2 = "vaincras, moi, Maître"
+line3 = "Arbror !"
+
+[dungeon_3.arbror_killed]
+#       |-----------------------|
+line1 = "KARGHHH !!! Je suis"
+line2 = "vaincu mais tu ne t'en"
+line3 = "tireras pas..."
+next = dungeon_3.arbror_killed.2
+
+[dungeon_3.arbror_killed.2]
+#       |-----------------------|
+line1 = "Tu ne réussiras"
+line2 = "jamais..."
+
 [dungeon_3.solarus_child]
 #       |-----------------------|
 line1 = "$2$v... Merci."

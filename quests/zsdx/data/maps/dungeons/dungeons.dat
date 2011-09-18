@@ -447,20 +447,6 @@ y = 152
 save = 124
 big = 0
 
-[dungeon_3.map_43.boss_0]
-floor = 3
-x = 480
-y = 872
-save = 901
-big = 0
-
-[dungeon_3.map_43.boss_1]
-floor = 3
-x = 240
-y = 485
-save = 902
-big = 1
-
 [dungeon_4.map_60.chest_0]
 floor = 0
 x = 832
@@ -508,5 +494,19 @@ floor = 0
 x = 200
 y = 397
 save = 415
+big = 1
+
+[dungeon_3.map_43.boss_0]
+floor = 3
+x = 480
+y = 872
+save = 901
+big = 0
+
+[dungeon_3.map_43.boss_1]
+floor = 3
+x = 252
+y = 557
+save = 902
 big = 1
 

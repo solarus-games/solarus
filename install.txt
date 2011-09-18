@@ -27,7 +27,7 @@ When it is installed, the project is divided in two parts:
   archive called data.solarus and containing all the data of the quest.
 
 When you execute the solarus binary, you have to specify the path of the quest to launch.
-This can be done at runtime by using the -datapath option of solarus (more details below).
+This can be done at runtime as a command-line argument of solarus (more details below).
 
 The engine source files are located in the src and include directories. The C++ code is under GPL.
 
@@ -136,14 +136,15 @@ This installs the following files (assuming that the install directory is /usr/l
   - the quest data archive in /usr/local/share/solarus/my_quest/
   - a script called my_quest in /usr/local/bin/
 
-The my_quest script launches the engine with the appropriate -datapath flag.
+The my_quest script launches the engine with the appropriate command-line argument
+to set the quest path.
 This means that you can launch the my_quest game with the command:
 
 $ my_quest
 
 which is equivalent to:
 
-$ solarus -datapath=/usr/local/share/solarus/my_quest
+$ solarus /usr/local/share/solarus/my_quest
 
 If you want to compile the engine without quests (i.e. you have no quests directory),
 cmake detects it and only builds and installs the solarus binary.
@@ -165,22 +166,22 @@ This installs the three files as described above except that the
 The script generated launches the engine with the appropriate datapath flag.
 
 
-3.3  More about the datapath
------------------------------
+3.3  More about the quest path
+------------------------------
 
 There are several ways to make the engine find the quest archive data.solarus.
-If the -datapath flag is set (see above), then the engine looks into the directory specified.
-Otherwise, if the DATAPATH preprocessor constant was set at compile time, then this directory is used.
-The DATAPATH constant can be set from your cmake command, by using:
+If the command-line argument is set (see above), then the engine looks into the directory specified.
+Otherwise, if the DEFAULT_QUEST preprocessor constant was set at compile time, then this directory is used.
+The DEFAULT_QUEST constant can be set from your cmake command, by using:
 
-$ cmake -D DATAPATH=/path/to/your/quest .
+$ cmake -DEFAULT_QUEST=/path/to/your/quest .
 
-Finally, if the DATAPATH constant is not set either, then the engine looks into the current directory.
+Finally, if the DEFAULT_QUEST constant is not set either, then the engine looks into the current directory.
 
-This DATAPATH constant may be used if you want the engine to launch a default quest 
-when it is called without the -datapath flag.
-You can still launch another quest by using the -datapath flag, which overwrites
-the DATAPATH constant.
+This DEFAULT_QUEST constant may be used if you want the engine to launch a default quest 
+when it is called without command-line arguments.
+You can still launch another quest by using the command-line argument, which overwrites
+the DEFAULT_QUEST constant.
 
 
 3.4  Windows developers

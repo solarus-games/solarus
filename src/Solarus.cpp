@@ -28,18 +28,12 @@
 
 /**
  * @brief Initializes the game engine.
- *
- * The following optional command-line arguments are supported:
- *   -datapath=/some/path/to/datadir            loads the data files from the specified directory
- *   -no-audio                                  disables sounds and musics
- *   -no-video                                  disables displaying (used for unitary tests)
- *
  * @param argc number of arguments of the command line
  * @param argv command-line arguments
  */
 Solarus::Solarus(int argc, char** argv) {
 
-  // initialize the lowlevel features (audio, video, files...)
+  // initialize lowlevel features (audio, video, files...)
   System::initialize(argc, argv);
   root_surface = new Surface(320, 240);
   debug_keys = new DebugKeys(*this);

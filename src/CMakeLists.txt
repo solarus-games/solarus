@@ -40,9 +40,9 @@ add_executable(solarus
 set_target_properties(solarus_static PROPERTIES COMPILE_FLAGS "-g -O3 -Wall -Werror")
 set_target_properties(solarus PROPERTIES COMPILE_FLAGS "-g -O3 -Wall -Werror")
 
-if (DEFINED DATAPATH)
-  add_definitions(-DDATAPATH=\"${DATAPATH}\")
-endif (DEFINED DATAPATH)
+if (DEFINED DEFAULT_QUEST)
+  add_definitions(-DDEFAULT_QUEST=\"${DEFAULT_QUEST}\")
+endif (DEFINED DEFAULT_QUEST)
 
 target_link_libraries(solarus
   solarus_static

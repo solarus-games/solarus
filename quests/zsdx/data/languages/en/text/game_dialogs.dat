@@ -2,6 +2,12 @@
 # The dialogs for the game engine are in text/engine_dialogs.zsd,
 # with the syntax specs for these 2 files.
 
+[dungeon_10]
+# Lorsqu'on pénètre dans le donjon 10
+#       |-----------------------|
+line1 = "     Secret Level       "
+line2 = "     Roxor's Tower  "
+
 [demo_finished]
 # Dungeon 1 finished
 #       |-----------------------|

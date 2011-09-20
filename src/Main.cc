@@ -17,17 +17,20 @@
 #ifndef SOLARUS_NOMAIN
 
 #include "Solarus.h"
-#include <iostream>
-#include <fstream>
 
 /**
  * @brief Usual entry point of the program.
  *
- * The following optional command-line arguments are supported:
- *   -datapath=/some/path/to/datadir            loads the data files from the specified directory
- *   -no-audio                                  disables sounds and musics
- *   -no-video                                  disables displaying (used for unitary tests)
- *   -language=l                                sets the language l
+ * Usage: solarus [options] [quest_path]
+ *
+ * The quest path is the name of directory that contains either the data
+ * directory or the data archive (data.solarus).
+ * If the quest path is not set, the current directory is used.
+ *
+ * The following options are supported:
+ *   -no-audio           disables sounds and musics
+ *   -no-video           disables displaying (used for unitary tests)
+ *   -language=l         sets the language l (overrides the one saved in the options file)
  *
  * @param argc number of command-line arguments
  * @param argv command-line arguments

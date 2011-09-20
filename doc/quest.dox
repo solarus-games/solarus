@@ -10,10 +10,11 @@ When it is installed, the project is divided in two parts:
 - One or several quests, each quest corresponding to a zip archive called <tt>data.solarus</tt> and containing all the data.
 
 When you run the <tt>solarus</tt> binary, it needs the path of the quest to launch.
-This can be done at runtime by using the <tt>-datapath=/path/to/your/quest</tt>
-flag of the executable. If the datapath is not specified, the current directory is considered by default.
-The release versions require the quest files to be in a zip archive called <tt>data.solarus</tt> and located in this datapath.
-The debug versions first look in a subdirectory of the datapath called <tt>data</tt> (if existing) and directly pick
+This can be done at runtime by specifying the path as an command-line argument:
+<tt>solarus path/to/your/quest</tt>
+flag of the executable. If the quest path is not specified, the current directory is considered by default.
+The release versions require the quest files to be in a zip archive called <tt>data.solarus</tt> and located in this quest path.
+The debug versions first look in a subdirectory of the quest path called <tt>data</tt> (if existing) and directly pick
 the data files in this subdirectory.
 Thus, when developping your quest, you should use the development version (see
 the documentation to <a href="http://www.solarus-engine.org/source-code">get the source</a>
@@ -108,9 +109,10 @@ The current types of resources are:
 - 1: a tileset (the id is an integer),
 - 2: a music (the id is the music file name with its extension),
 - 3: a sprite (the id is the sprite file name without extension),
-- 4: a sound (the id is the music file name without its extension),
+- 4: a sound (the id is the music file name with its extension),
 - 5: an item (the id is the name of item's Lua script without its extension),
 - 6: an enemy (the id is the name of enemy's Lua script without its extension),
+- 7: a dialogs file (the id is the dialogs file)
 
 @section sounds Sounds
 

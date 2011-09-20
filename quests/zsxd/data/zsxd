@@ -1,2 +1,2 @@
 #!/bin/bash
-/usr/local/bin/solarus -datapath=/usr/local/share/solarus/zsxd 
+/home/christophe/bin/solarus /home/christophe/share/solarus/zsxd 

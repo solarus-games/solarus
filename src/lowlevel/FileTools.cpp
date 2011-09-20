@@ -28,53 +28,54 @@ std::map<std::string, std::string> FileTools::languages;
 
 /**
  * @brief Initializes the file tools.
- *
- * The command-line flags recognized are:
- * -datapath=some/path/to/data specifies the data path to use (overides the one given at compilation time if any)
- * -language=lg sets the language to use, where lg is the code of a language supported by the game
- *
  * @param argc number of command-line arguments
  * @param argv command line arguments
  */
 void FileTools::initialize(int argc, char **argv) {
+
   PHYSFS_init(argv[0]);
 
-  // parse the flags
-  const std::string datapath_flag = "-datapath=";
-  std::string datapath_arg = "";
+  // look for the language options
   const std::string language_flag = "-language=";
   std::string language_arg = "";
-  for (argv++; argc > 1; argv++, argc--) {
-    std::string arg = *argv;
-    if (arg.find(datapath_flag) == 0) {
-      datapath_arg = arg.substr(datapath_flag.size());
-    }
+  for (int i = 1; i < argc; i++) {
+    std::string arg = argv[i];
     if (arg.find(language_flag) == 0) {
       language_arg = arg.substr(language_flag.size());
     }
   }
 
-  // set the search path for reading data files
-  std::string datapath = ".";
-#ifdef DATAPATH
-  // by default, use the datapath defined during the build process
-  datapath = std::string(DATAPATH);
+  // set the quest path
+  std::string quest_path = ".";
+#ifdef DEFAULT_QUEST
+  // by default, use the path defined during the build process
+  quest_path = std::string(DEFAULT_QUEST);
 #endif
-  // if a command-line argument was specified, use it instead
-  if (datapath_arg != "") {
-    datapath = datapath_arg;
-  }
-  // now, datapath may be the path defined as command-line argument,
-  // the path defined during the build process, or the current directory
-  // if nothing was defined
 
-  std::string debug_datapath = datapath + "/data"; // in debug mode, read directly from the data directory
-  std::string release_datapath = datapath + "/data.solarus"; // in release mode, only read from the data.solarus archive
+  // if a command-line argument was specified, use it instead
+  if (argc > 1 && argv[argc - 1][0] != '-') {
+    // the last parameter is not an option: it is the quest path
+    quest_path = argv[argc - 1];
+  }
+
+  // now, quest_path may be the path defined as command-line argument,
+  // the path defined during the build process, or the current directory
+  // if nothing was specified
+
+  std::string debug_quest_path = quest_path + "/data"; // in debug mode, read directly from the data directory
+  std::string release_quest_path = quest_path + "/data.solarus"; // in release mode, only read from the data.solarus archive
 
 #if SOLARUS_DEBUG_LEVEL >= 1
-  PHYSFS_addToSearchPath(debug_datapath.c_str(), 1);   // data directory
+  PHYSFS_addToSearchPath(debug_quest_path.c_str(), 1);   // data directory
 #endif
-  PHYSFS_addToSearchPath(release_datapath.c_str(), 1); // data.solarus archive
+  PHYSFS_addToSearchPath(release_quest_path.c_str(), 1); // data.solarus archive
+
+  // check the existence of the quest path
+  if (!FileTools::data_file_exists("quest.dat")) {
+    Debug::die(StringConcat() << "No quest was found in the directory '" << quest_path
+        << "'. To specify your quest's path, run: "
+        << argv[0] << " path/to/quest");
+  }
 
   // then set the write directory to a ".solarus/quest_dir" subdirectory of the user home
 

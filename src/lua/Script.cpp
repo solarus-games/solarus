@@ -714,7 +714,7 @@ bool Script::find_lua_function(const std::string &function_name) {
  * would require that you pop the results yourself, after having read them.
  * Another solution would be to return a copy of the string,
  * but because the variable number of parameters mechanism cannot use std::string,
- * the copy would be a const char* that you would have to free yourselft.
+ * the copy would be a const char* that you would have to free yourself.
  * As this function wants to simplify your code by doing the job for you,
  * both solutions are bad ideas.
  * However, in Solarus, calling Lua from C++ is used only to notify a script that something

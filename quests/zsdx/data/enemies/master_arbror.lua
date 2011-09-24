@@ -18,11 +18,12 @@ function event_restart()
 end
 
 function go()
+
   local m = sol.main.pixel_movement_create("434343373737707070010101151515545454", 20)
   sol.main.movement_set_property(m, "loop", true)
   sol.main.movement_set_property(m, "ignore_obstacles", true)
   sol.enemy.start_movement(m)
-  sol.main.timer_start(2000, "create_son", false)
+  sol.main.timer_start(5000, "prepare_son", false)
 end
 
 function event_hurt(attack, life_lost)
@@ -34,18 +35,29 @@ function event_hurt(attack, life_lost)
   end
 end
 
-function create_son()
+function prepare_son()
 
-  -- create the son
-  nb_sons_created = nb_sons_created + 1
-  son_name = sol.enemy.get_name().."_son_"..nb_sons_created
-  sol.enemy.create_son(son_name, "arbror_root", 0, 40)
+  local sprite = sol.enemy.get_sprite()
+  sol.main.sprite_set_animation(sprite, "preparing_son")
   sol.main.play_sound("hero_pushes")
-  sol.main.timer_start(1000, "son_out", false)
+  sol.main.timer_start(1000, "create_son", false)
+  sol.enemy.stop_movement()
 end
 
-function son_out()
+function create_son()
 
+  nb_sons_created = nb_sons_created + 1
+  son_name = sol.enemy.get_name().."_son_"..nb_sons_created
+  sol.enemy.create_son(son_name, "arbror_root", 0, 96)
   sol.main.play_sound("stone")
+end
+
+function event_sprite_animation_finished(sprite, animation)
+
+  if animation == "preparing_son" then
+    local sprite = sol.enemy.get_sprite()
+    sol.main.sprite_set_animation(sprite, "walking")
+    sol.enemy.restart()
+  end
 end
 

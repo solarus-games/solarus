@@ -64,8 +64,8 @@ class Script {
     // calling a Lua function from C++
     bool find_lua_function(const std::string &function_name);
 
-    // calling a C++ function from Lua (and also retreive the instance of Script)
-    static void called_by_script(lua_State *context, int nb_arguments, Script **script);
+    // calling a C++ function from Lua (and retrieve the instance of Script)
+    static Script& get_script(lua_State* context, int min_arguments, int max_arguments = -1);
 
     // initialization
     void register_apis();

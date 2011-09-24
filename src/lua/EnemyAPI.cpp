@@ -33,9 +33,8 @@
  */
 int Script::enemy_api_get_name(lua_State *l) {
 
-  Script* script;
-  called_by_script(l, 0, &script);
-  Enemy& enemy = script->get_enemy();
+  Script& script = get_script(l, 0);
+  Enemy& enemy = script.get_enemy();
 
   lua_pushstring(l, enemy.get_name().c_str());
 
@@ -51,9 +50,8 @@ int Script::enemy_api_get_name(lua_State *l) {
  */
 int Script::enemy_api_get_life(lua_State *l) {
 
-  Script* script;
-  called_by_script(l, 0, &script);
-  Enemy& enemy = script->get_enemy();
+  Script& script = get_script(l, 0);
+  Enemy& enemy = script.get_enemy();
 
   lua_pushinteger(l, enemy.get_life());
 
@@ -69,9 +67,8 @@ int Script::enemy_api_get_life(lua_State *l) {
  */
 int Script::enemy_api_set_life(lua_State *l) {
 
-  Script* script;
-  called_by_script(l, 1, &script);
-  Enemy& enemy = script->get_enemy();
+  Script& script = get_script(l, 1);
+  Enemy& enemy = script.get_enemy();
 
   int life = luaL_checkinteger(l, 1);
   enemy.set_life(life);
@@ -88,9 +85,8 @@ int Script::enemy_api_set_life(lua_State *l) {
  */
 int Script::enemy_api_add_life(lua_State *l) {
 
-  Script* script;
-  called_by_script(l, 1, &script);
-  Enemy& enemy = script->get_enemy();
+  Script& script = get_script(l, 1);
+  Enemy& enemy = script.get_enemy();
 
   int points = luaL_checkinteger(l, 1);
   enemy.set_life(enemy.get_life() + points);
@@ -107,9 +103,8 @@ int Script::enemy_api_add_life(lua_State *l) {
  */
 int Script::enemy_api_remove_life(lua_State *l) {
 
-  Script* script;
-  called_by_script(l, 1, &script);
-  Enemy& enemy = script->get_enemy();
+  Script& script = get_script(l, 1);
+  Enemy& enemy = script.get_enemy();
 
   int points = luaL_checkinteger(l, 1);
   enemy.set_life(enemy.get_life() - points);
@@ -128,9 +123,8 @@ int Script::enemy_api_remove_life(lua_State *l) {
  */
 int Script::enemy_api_get_damage(lua_State *l) {
 
-  Script* script;
-  called_by_script(l, 0, &script);
-  Enemy& enemy = script->get_enemy();
+  Script& script = get_script(l, 0);
+  Enemy& enemy = script.get_enemy();
 
   lua_pushinteger(l, enemy.damage_on_hero);
 
@@ -148,9 +142,8 @@ int Script::enemy_api_get_damage(lua_State *l) {
  */
 int Script::enemy_api_set_damage(lua_State *l) {
 
-  Script* script;
-  called_by_script(l, 1, &script);
-  Enemy& enemy = script->get_enemy();
+  Script& script = get_script(l, 1);
+  Enemy& enemy = script.get_enemy();
 
   int damage = luaL_checkinteger(l, 1);
   enemy.damage_on_hero = damage;
@@ -169,9 +162,8 @@ int Script::enemy_api_set_damage(lua_State *l) {
  */
 int Script::enemy_api_get_magic_damage(lua_State *l) {
 
-  Script* script;
-  called_by_script(l, 0, &script);
-  Enemy& enemy = script->get_enemy();
+  Script& script = get_script(l, 0);
+  Enemy& enemy = script.get_enemy();
 
   lua_pushinteger(l, enemy.magic_damage_on_hero);
 
@@ -189,9 +181,8 @@ int Script::enemy_api_get_magic_damage(lua_State *l) {
  */
 int Script::enemy_api_set_magic_damage(lua_State *l) {
 
-  Script* script;
-  called_by_script(l, 1, &script);
-  Enemy& enemy = script->get_enemy();
+  Script& script = get_script(l, 1);
+  Enemy& enemy = script.get_enemy();
 
   int magic_damage = luaL_checkinteger(l, 1);
   enemy.magic_damage_on_hero = magic_damage;
@@ -208,9 +199,8 @@ int Script::enemy_api_set_magic_damage(lua_State *l) {
  */
 int Script::enemy_api_is_pushed_back_when_hurt(lua_State *l) {
 
-  Script* script;
-  called_by_script(l, 0, &script);
-  Enemy& enemy = script->get_enemy();
+  Script& script = get_script(l, 0);
+  Enemy& enemy = script.get_enemy();
 
   lua_pushboolean(l, enemy.pushed_back_when_hurt);
 
@@ -226,9 +216,8 @@ int Script::enemy_api_is_pushed_back_when_hurt(lua_State *l) {
  */
 int Script::enemy_api_set_pushed_back_when_hurt(lua_State *l) {
 
-  Script* script;
-  called_by_script(l, 1, &script);
-  Enemy& enemy = script->get_enemy();
+  Script& script = get_script(l, 1);
+  Enemy& enemy = script.get_enemy();
 
   bool push_back = lua_toboolean(l, 1);
   enemy.pushed_back_when_hurt = push_back;
@@ -245,9 +234,8 @@ int Script::enemy_api_set_pushed_back_when_hurt(lua_State *l) {
  */
 int Script::enemy_api_get_hurt_sound_style(lua_State *l) {
 
-  Script* script;
-  called_by_script(l, 0, &script);
-  Enemy& enemy = script->get_enemy();
+  Script& script = get_script(l, 0);
+  Enemy& enemy = script.get_enemy();
 
   const std::string& style_name = Enemy::get_hurt_sound_style_name(enemy.hurt_sound_style);
   lua_pushstring(l, style_name.c_str());
@@ -264,9 +252,8 @@ int Script::enemy_api_get_hurt_sound_style(lua_State *l) {
  */
 int Script::enemy_api_set_hurt_sound_style(lua_State *l) {
 
-  Script* script;
-  called_by_script(l, 1, &script);
-  Enemy& enemy = script->get_enemy();
+  Script& script = get_script(l, 1);
+  Enemy& enemy = script.get_enemy();
 
   const std::string& style_name = luaL_checkstring(l, 1);
   enemy.hurt_sound_style = Enemy::get_hurt_sound_style_by_name(style_name);
@@ -285,9 +272,8 @@ int Script::enemy_api_set_hurt_sound_style(lua_State *l) {
  */
 int Script::enemy_api_get_minimum_shield_needed(lua_State *l) {
 
-  Script* script;
-  called_by_script(l, 0, &script);
-  Enemy& enemy = script->get_enemy();
+  Script& script = get_script(l, 0);
+  Enemy& enemy = script.get_enemy();
 
   int shield_level = enemy.minimum_shield_needed;
   lua_pushinteger(l, shield_level);
@@ -306,9 +292,8 @@ int Script::enemy_api_get_minimum_shield_needed(lua_State *l) {
  */
 int Script::enemy_api_set_minimum_shield_needed(lua_State *l) {
 
-  Script* script;
-  called_by_script(l, 1, &script);
-  Enemy& enemy = script->get_enemy();
+  Script& script = get_script(l, 1);
+  Enemy& enemy = script.get_enemy();
 
   int shield_level = luaL_checkinteger(l, 1);
   enemy.minimum_shield_needed = shield_level;
@@ -329,9 +314,8 @@ int Script::enemy_api_set_minimum_shield_needed(lua_State *l) {
  */
 int Script::enemy_api_set_attack_consequence(lua_State *l) {
 
-  Script* script;
-  called_by_script(l, 2, &script);
-  Enemy& enemy = script->get_enemy();
+  Script& script = get_script(l, 2);
+  Enemy& enemy = script.get_enemy();
 
   const std::string& attack_name = luaL_checkstring(l, 1);
   EnemyAttack attack = Enemy::get_attack_by_name(attack_name);
@@ -367,13 +351,12 @@ int Script::enemy_api_set_attack_consequence(lua_State *l) {
  */
 int Script::enemy_api_set_attack_consequence_sprite(lua_State *l) {
 
-  Script* script;
-  called_by_script(l, 3, &script);
-  Enemy& enemy = script->get_enemy();
+  Script& script = get_script(l, 3);
+  Enemy& enemy = script.get_enemy();
 
   int sprite_handle = luaL_checkinteger(l, 1);
   const std::string& attack_name = luaL_checkstring(l, 2);
-  Sprite& sprite = script->get_sprite(sprite_handle);
+  Sprite& sprite = script.get_sprite(sprite_handle);
   EnemyAttack attack = Enemy::get_attack_by_name(attack_name);
 
   if (lua_isnumber(l, 3)) {
@@ -396,9 +379,8 @@ int Script::enemy_api_set_attack_consequence_sprite(lua_State *l) {
  */
 int Script::enemy_api_set_default_attack_consequences(lua_State *l) {
 
-  Script* script;
-  called_by_script(l, 0, &script);
-  Enemy& enemy = script->get_enemy();
+  Script& script = get_script(l, 0);
+  Enemy& enemy = script.get_enemy();
 
   enemy.set_default_attack_consequences();
 
@@ -414,11 +396,10 @@ int Script::enemy_api_set_default_attack_consequences(lua_State *l) {
  */
 int Script::enemy_api_set_default_attack_consequences_sprite(lua_State *l) {
 
-  Script* script;
-  called_by_script(l, 1, &script);
-  Enemy& enemy = script->get_enemy();
+  Script& script = get_script(l, 1);
+  Enemy& enemy = script.get_enemy();
   int sprite_handle = luaL_checkinteger(l, 1);
-  Sprite& sprite = script->get_sprite(sprite_handle);
+  Sprite& sprite = script.get_sprite(sprite_handle);
 
   enemy.set_default_attack_consequences_sprite(sprite);
 
@@ -434,9 +415,8 @@ int Script::enemy_api_set_default_attack_consequences_sprite(lua_State *l) {
  */
 int Script::enemy_api_set_invincible(lua_State *l) {
 
-  Script* script;
-  called_by_script(l, 0, &script);
-  Enemy& enemy = script->get_enemy();
+  Script& script = get_script(l, 0);
+  Enemy& enemy = script.get_enemy();
 
   enemy.set_no_attack_consequences();
 
@@ -454,11 +434,10 @@ int Script::enemy_api_set_invincible(lua_State *l) {
  */
 int Script::enemy_api_set_invincible_sprite(lua_State *l) {
 
-  Script* script;
-  called_by_script(l, 1, &script);
-  Enemy& enemy = script->get_enemy();
+  Script& script = get_script(l, 1);
+  Enemy& enemy = script.get_enemy();
   int sprite_handle = luaL_checkinteger(l, 1);
-  Sprite& sprite = script->get_sprite(sprite_handle);
+  Sprite& sprite = script.get_sprite(sprite_handle);
 
   enemy.set_no_attack_consequences_sprite(sprite);
 
@@ -476,15 +455,14 @@ int Script::enemy_api_set_invincible_sprite(lua_State *l) {
  */
 int Script::enemy_api_set_treasure(lua_State *l) {
 
-  Script* script;
-  called_by_script(l, 3, &script);
-  Enemy& enemy = script->get_enemy();
+  Script& script = get_script(l, 3);
+  Enemy& enemy = script.get_enemy();
 
   const std::string& item_name = luaL_checkstring(l, 1);
   int variant = luaL_checkinteger(l, 2);
   int savegame_variable = luaL_checkinteger(l, 3);
 
-  Treasure treasure(script->get_game(), item_name, variant, savegame_variable);
+  Treasure treasure(script.get_game(), item_name, variant, savegame_variable);
   enemy.set_treasure(treasure);
 
   return 0;
@@ -496,11 +474,10 @@ int Script::enemy_api_set_treasure(lua_State *l) {
  */
 int Script::enemy_api_set_no_treasure(lua_State *l) {
 
-  Script* script;
-  called_by_script(l, 1, &script);
-  Enemy& enemy = script->get_enemy();
+  Script& script = get_script(l, 1);
+  Enemy& enemy = script.get_enemy();
 
-  Treasure treasure(script->get_game(), "_none", 1, -1);
+  Treasure treasure(script.get_game(), "_none", 1, -1);
   enemy.set_treasure(treasure);
 
   return 0;
@@ -512,11 +489,10 @@ int Script::enemy_api_set_no_treasure(lua_State *l) {
  */
 int Script::enemy_api_set_random_treasure(lua_State *l) {
 
-  Script* script;
-  called_by_script(l, 1, &script);
-  Enemy& enemy = script->get_enemy();
+  Script& script = get_script(l, 1);
+  Enemy& enemy = script.get_enemy();
 
-  Treasure treasure(script->get_game(), "_random", 1, -1);
+  Treasure treasure(script.get_game(), "_random", 1, -1);
   enemy.set_treasure(treasure);
 
   return 0;
@@ -531,9 +507,8 @@ int Script::enemy_api_set_random_treasure(lua_State *l) {
  */
 int Script::enemy_api_get_obstacle_behavior(lua_State *l) {
 
-  Script* script;
-  called_by_script(l, 1, &script);
-  Enemy& enemy = script->get_enemy();
+  Script& script = get_script(l, 1);
+  Enemy& enemy = script.get_enemy();
 
   lua_pushstring(l, enemy.obstacle_behavior.c_str());
 
@@ -549,9 +524,8 @@ int Script::enemy_api_get_obstacle_behavior(lua_State *l) {
  */
 int Script::enemy_api_set_obstacle_behavior(lua_State *l) {
 
-  Script* script;
-  called_by_script(l, 1, &script);
-  Enemy& enemy = script->get_enemy();
+  Script& script = get_script(l, 1);
+  Enemy& enemy = script.get_enemy();
 
   const std::string& behavior = luaL_checkstring(l, 1);
   enemy.obstacle_behavior = behavior;
@@ -569,9 +543,8 @@ int Script::enemy_api_set_obstacle_behavior(lua_State *l) {
  */
 int Script::enemy_api_get_size(lua_State *l) {
 
-  Script* script;
-  called_by_script(l, 0, &script);
-  Enemy& enemy = script->get_enemy();
+  Script& script = get_script(l, 0);
+  Enemy& enemy = script.get_enemy();
 
   lua_pushinteger(l, enemy.get_width());
   lua_pushinteger(l, enemy.get_height());
@@ -589,9 +562,8 @@ int Script::enemy_api_get_size(lua_State *l) {
  */
 int Script::enemy_api_set_size(lua_State *l) {
 
-  Script* script;
-  called_by_script(l, 2, &script);
-  Enemy& enemy = script->get_enemy();
+  Script& script = get_script(l, 2);
+  Enemy& enemy = script.get_enemy();
 
   int width = luaL_checkinteger(l, 1);
   int height = luaL_checkinteger(l, 2);
@@ -611,9 +583,8 @@ int Script::enemy_api_set_size(lua_State *l) {
  */
 int Script::enemy_api_get_origin(lua_State *l) {
 
-  Script* script;
-  called_by_script(l, 0, &script);
-  Enemy& enemy = script->get_enemy();
+  Script& script = get_script(l, 0);
+  Enemy& enemy = script.get_enemy();
 
   const Rectangle& origin = enemy.get_origin();
   lua_pushinteger(l, origin.get_x());
@@ -633,9 +604,8 @@ int Script::enemy_api_get_origin(lua_State *l) {
  */
 int Script::enemy_api_set_origin(lua_State *l) {
 
-  Script* script;
-  called_by_script(l, 2, &script);
-  Enemy& enemy = script->get_enemy();
+  Script& script = get_script(l, 2);
+  Enemy& enemy = script.get_enemy();
 
   int x = luaL_checkinteger(l, 1);
   int y = luaL_checkinteger(l, 2);
@@ -654,9 +624,8 @@ int Script::enemy_api_set_origin(lua_State *l) {
  */
 int Script::enemy_api_get_position(lua_State *l) {
 
-  Script* script;
-  called_by_script(l, 0, &script);
-  Enemy& enemy = script->get_enemy();
+  Script& script = get_script(l, 0);
+  Enemy& enemy = script.get_enemy();
 
   lua_pushinteger(l, enemy.get_x());
   lua_pushinteger(l, enemy.get_y());
@@ -674,9 +643,8 @@ int Script::enemy_api_get_position(lua_State *l) {
  */
 int Script::enemy_api_set_position(lua_State *l) {
 
-  Script* script;
-  called_by_script(l, 2, &script);
-  Enemy& enemy = script->get_enemy();
+  Script& script = get_script(l, 2);
+  Enemy& enemy = script.get_enemy();
 
   int x = luaL_checkinteger(l, 1);
   int y = luaL_checkinteger(l, 2);
@@ -694,9 +662,8 @@ int Script::enemy_api_set_position(lua_State *l) {
  */
 int Script::enemy_api_get_layer(lua_State *l) {
 
-  Script* script;
-  called_by_script(l, 0, &script);
-  Enemy& enemy = script->get_enemy();
+  Script& script = get_script(l, 0);
+  Enemy& enemy = script.get_enemy();
 
   lua_pushinteger(l, enemy.get_layer());
 
@@ -712,13 +679,12 @@ int Script::enemy_api_get_layer(lua_State *l) {
  */
 int Script::enemy_api_set_layer(lua_State *l) {
 
-  Script* script;
-  called_by_script(l, 1, &script);
-  Enemy& enemy = script->get_enemy();
+  Script& script = get_script(l, 1);
+  Enemy& enemy = script.get_enemy();
 
   int layer = luaL_checkinteger(l, 1);
 
-  MapEntities& entities = script->get_map().get_entities();
+  MapEntities& entities = script.get_map().get_entities();
   entities.set_entity_layer(&enemy, Layer(layer));
 
   return 0;
@@ -733,10 +699,9 @@ int Script::enemy_api_set_layer(lua_State *l) {
  */
 int Script::enemy_api_get_distance_to_hero(lua_State *l) {
 
-  Script* script;
-  called_by_script(l, 0, &script);
-  Enemy& enemy = script->get_enemy();
-  Hero& hero = script->get_game().get_hero();
+  Script& script = get_script(l, 0);
+  Enemy& enemy = script.get_enemy();
+  Hero& hero = script.get_game().get_hero();
 
   lua_pushinteger(l, enemy.get_distance(hero));
 
@@ -753,9 +718,8 @@ int Script::enemy_api_get_distance_to_hero(lua_State *l) {
  */
 int Script::enemy_api_snap_to_grid(lua_State *l) {
 
-  Script* script;
-  called_by_script(l, 0, &script);
-  Enemy& enemy = script->get_enemy();
+  Script& script = get_script(l, 0);
+  Enemy& enemy = script.get_enemy();
 
   enemy.set_aligned_to_grid();
 
@@ -775,17 +739,16 @@ int Script::enemy_api_snap_to_grid(lua_State *l) {
  */
 int Script::enemy_api_get_movement(lua_State *l) {
 
-  Script* script;
-  called_by_script(l, 0, &script);
-  Enemy& enemy = script->get_enemy();
+  Script& script = get_script(l, 0);
+  Enemy& enemy = script.get_enemy();
 
   Movement* movement = enemy.get_movement();
   if (movement == NULL) {
     lua_pushnil(l);
   }
   else {
-    int handle = script->create_movement_handle(*movement);
-    script->start_movement(handle);
+    int handle = script.create_movement_handle(*movement);
+    script.start_movement(handle);
     lua_pushinteger(l, handle);
   }
 
@@ -803,13 +766,12 @@ int Script::enemy_api_get_movement(lua_State *l) {
  */
 int Script::enemy_api_start_movement(lua_State *l) {
 
-  Script* script;
-  called_by_script(l, 1, &script);
-  Enemy& enemy = script->get_enemy();
+  Script& script = get_script(l, 1);
+  Enemy& enemy = script.get_enemy();
 
   // retrieve the movement
   int movement_handle = luaL_checkinteger(l, 1);
-  Movement& movement = script->start_movement(movement_handle);
+  Movement& movement = script.start_movement(movement_handle);
 
   enemy.clear_movement();
   enemy.set_movement(&movement);
@@ -823,9 +785,8 @@ int Script::enemy_api_start_movement(lua_State *l) {
  */
 int Script::enemy_api_stop_movement(lua_State *l) {
 
-  Script* script;
-  called_by_script(l, 0, &script);
-  Enemy& enemy = script->get_enemy();
+  Script& script = get_script(l, 0);
+  Enemy& enemy = script.get_enemy();
 
   enemy.clear_movement();
 
@@ -839,9 +800,8 @@ int Script::enemy_api_stop_movement(lua_State *l) {
  */
 int Script::enemy_api_restart(lua_State *l) {
 
-  Script* script;
-  called_by_script(l, 0, &script);
-  Enemy& enemy = script->get_enemy();
+  Script& script = get_script(l, 0);
+  Enemy& enemy = script.get_enemy();
 
   enemy.restart();
 
@@ -861,12 +821,8 @@ int Script::enemy_api_restart(lua_State *l) {
  */
 int Script::enemy_api_get_sprite(lua_State *l) {
 
-  // retrieve the script manually since the number of arguments is variable
-  lua_pushstring(l, "sol.cpp_object");
-  lua_gettable(l, LUA_REGISTRYINDEX);
-  Script* script = (Script*) lua_touserdata(l, -1);
-  lua_pop(l, 1);
-  Enemy& enemy = script->get_enemy();
+  Script& script = get_script(l, 0, 1);
+  Enemy& enemy = script.get_enemy();
 
   Sprite* sprite;
   int nb_arguments = lua_gettop(l);
@@ -874,15 +830,11 @@ int Script::enemy_api_get_sprite(lua_State *l) {
     const std::string& sprite_name = luaL_checkstring(l, 1);
     sprite = &enemy.get_sprite(sprite_name);
   }
-  else if (nb_arguments == 0){
+  else {
     sprite = &enemy.get_sprite();
   }
-  else {
-    Debug::die(StringConcat() << "Invalid number of arguments for sol.enemy.get_sprite(): "
-        << nb_arguments);
-  }
 
-  int handle = script->create_sprite_handle(*sprite);
+  int handle = script.create_sprite_handle(*sprite);
   lua_pushinteger(l, handle);
 
   return 1;
@@ -898,9 +850,8 @@ int Script::enemy_api_get_sprite(lua_State *l) {
  */
 int Script::enemy_api_has_sprite(lua_State *l) {
 
-  Script* script;
-  called_by_script(l, 1, &script);
-  Enemy& enemy = script->get_enemy();
+  Script& script = get_script(l, 1);
+  Enemy& enemy = script.get_enemy();
 
   const std::string& sprite_name = luaL_checkstring(l, 1);
   lua_pushboolean(l, enemy.has_sprite(sprite_name));
@@ -917,9 +868,8 @@ int Script::enemy_api_has_sprite(lua_State *l) {
  */
 int Script::enemy_api_create_sprite(lua_State *l) {
 
-  Script* script;
-  called_by_script(l, 1, &script);
-  Enemy& enemy = script->get_enemy();
+  Script& script = get_script(l, 1);
+  Enemy& enemy = script.get_enemy();
 
   const std::string& animation_set_id = luaL_checkstring(l, 1);
   enemy.create_sprite(animation_set_id, true);
@@ -936,9 +886,8 @@ int Script::enemy_api_create_sprite(lua_State *l) {
  */
 int Script::enemy_api_remove_sprite(lua_State *l) {
 
-  Script* script;
-  called_by_script(l, 1, &script);
-  Enemy& enemy = script->get_enemy();
+  Script& script = get_script(l, 1);
+  Enemy& enemy = script.get_enemy();
 
   const std::string& animation_set_id = luaL_checkstring(l, 1);
   enemy.remove_sprite(animation_set_id);
@@ -956,9 +905,8 @@ int Script::enemy_api_remove_sprite(lua_State *l) {
  */
 int Script::enemy_api_is_displayed_in_y_order(lua_State *l) {
 
-  Script* script;
-  called_by_script(l, 0, &script);
-  Enemy& enemy = script->get_enemy();
+  Script& script = get_script(l, 0);
+  Enemy& enemy = script.get_enemy();
 
   lua_pushboolean(l, enemy.displayed_in_y_order);
 
@@ -975,9 +923,8 @@ int Script::enemy_api_is_displayed_in_y_order(lua_State *l) {
  */
 int Script::enemy_api_set_displayed_in_y_order(lua_State *l) {
 
-  Script* script;
-  called_by_script(l, 1, &script);
-  Enemy& enemy = script->get_enemy();
+  Script& script = get_script(l, 1);
+  Enemy& enemy = script.get_enemy();
 
   bool y_order = lua_toboolean(l, 1);
   enemy.displayed_in_y_order = y_order;
@@ -999,9 +946,8 @@ int Script::enemy_api_set_displayed_in_y_order(lua_State *l) {
  */
 int Script::enemy_api_create_son(lua_State *l) {
 
-  Script* script;
-  called_by_script(l, 4, &script);
-  Enemy& enemy = script->get_enemy();
+  Script& script = get_script(l, 4);
+  Enemy& enemy = script.get_enemy();
 
   const std::string& name = luaL_checkstring(l, 1);
   const std::string& breed = luaL_checkstring(l, 2);
@@ -1011,9 +957,9 @@ int Script::enemy_api_create_son(lua_State *l) {
   x += enemy.get_x();
   y += enemy.get_y();
 
-  MapEntities& entities = script->get_map().get_entities();
-  Treasure treasure = Treasure(script->get_game(), "_none", 1, -1);
-  Enemy* son = (Enemy*) Enemy::create(script->get_game(), breed, Enemy::RANK_NORMAL, -1,
+  MapEntities& entities = script.get_map().get_entities();
+  Treasure treasure = Treasure(script.get_game(), "_none", 1, -1);
+  Enemy* son = (Enemy*) Enemy::create(script.get_game(), breed, Enemy::RANK_NORMAL, -1,
       name, enemy.get_layer(), x, y, 0, treasure);
   son->father_name = enemy.get_name();
   entities.add_entity(son);
@@ -1032,9 +978,8 @@ int Script::enemy_api_create_son(lua_State *l) {
  */
 int Script::enemy_api_get_father(lua_State *l) {
 
-  Script* script;
-  called_by_script(l, 0, &script);
-  Enemy& enemy = script->get_enemy();
+  Script& script = get_script(l, 0);
+  Enemy& enemy = script.get_enemy();
 
   lua_pushstring(l, enemy.father_name.c_str());
 

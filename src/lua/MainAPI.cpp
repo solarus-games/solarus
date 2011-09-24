@@ -95,17 +95,16 @@ int Script::main_api_play_music(lua_State *l) {
  *
  * - Argument 1 (integer): the timer duration in milliseconds
  * - Argument 2 (string): name of the Lua function to call when the timer is finished
- * (no argument, no return value)
- * - Argument 3 (boolean): plays a sound until the timer expires
+ * - Optional argument 3 (boolean): plays a clock sound until the timer expires (default is false)
  *
  * @param l the Lua context that is calling this function
  */
 int Script::main_api_timer_start(lua_State *l) {
 
-  Script& script = get_script(l, 3);
+  Script& script = get_script(l, 2, 3);
   uint32_t duration = luaL_checkinteger(l, 1);
-  const std::string &callback_name = luaL_checkstring(l, 2);
-  bool with_sound = lua_toboolean(l, 3) != 0;
+  const std::string& callback_name = luaL_checkstring(l, 2);
+  bool with_sound = lua_gettop(l) >= 3 && lua_toboolean(l, 3);
 
   Timer *timer = new Timer(duration, callback_name, with_sound);
   if (script.is_new_timer_suspended()) {

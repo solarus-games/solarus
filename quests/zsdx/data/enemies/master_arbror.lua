@@ -40,7 +40,7 @@ function prepare_son()
   local sprite = sol.enemy.get_sprite()
   sol.main.sprite_set_animation(sprite, "preparing_son")
   sol.main.play_sound("hero_pushes")
-  sol.main.timer_start(1000, "create_son", false)
+  sol.main.timer_start(1000, "create_son")
   sol.enemy.stop_movement()
 end
 

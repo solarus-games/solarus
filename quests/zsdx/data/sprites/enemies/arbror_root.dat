@@ -1,14 +1,14 @@
-walking enemies/arbror_root.png 4 100 5
-0	0	64	96	29	86	5	5
-0	0	64	96	29	86	5	5
-0	0	64	96	29	86	5	5
-0	0	64	96	29	86	5	5
+walking enemies/arbror_root.png 4 150 5
+0	0	64	96	29	86	6	6
+0	0	64	96	29	86	6	6
+0	0	64	96	29	86	6	6
+0	0	64	96	29	86	6	6
 
-disappearing enemies/arbror_root.png 4 100 -1
-0	96	64	96	29	86	5	5
-0	96	64	96	29	86	5	5
-0	96	64	96	29	86	5	5
-0	96	64	96	29	86	5	5
+disappearing enemies/arbror_root.png 4 150 -1
+0	96	64	96	29	86	6	6
+0	96	64	96	29	86	6	6
+0	96	64	96	29	86	6	6
+0	96	64	96	29	86	6	6
 
 immobilized enemies/arbror_root.png 4 0 -1
 192	192	64	96	29	86	1	1

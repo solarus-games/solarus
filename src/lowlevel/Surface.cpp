@@ -20,7 +20,7 @@
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
-#include <SDL/SDL_image.h>
+#include <SDL_image.h>
 
 /**
  * @brief Creates a empty surface with the specified size.

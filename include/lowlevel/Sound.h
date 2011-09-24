@@ -20,8 +20,8 @@
 #include "Common.h"
 #include <list>
 #include <map>
-#include <AL/al.h>
-#include <AL/alc.h>
+#include <al.h>
+#include <alc.h>
 #include <vorbis/vorbisfile.h>
 
 /**

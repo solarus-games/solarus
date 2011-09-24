@@ -23,7 +23,7 @@
 #include "lowlevel/Random.h"
 #include "lowlevel/InputEvent.h"
 #include "Sprite.h"
-#include <SDL/SDL.h>
+#include <SDL.h>
 
 uint32_t System::ticks = 0;
 

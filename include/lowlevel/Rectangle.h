@@ -18,7 +18,7 @@
 #define SOLARUS_RECTANGLE_H
 
 #include "Common.h"
-#include <SDL/SDL.h>
+#include <SDL.h>
 
 /**
  * @brief Represents a rectangle.

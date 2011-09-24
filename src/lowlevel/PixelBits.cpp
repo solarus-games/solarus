@@ -18,7 +18,7 @@
 #include "lowlevel/Surface.h"
 #include "lowlevel/Rectangle.h"
 #include "lowlevel/Debug.h"
-#include <SDL/SDL.h>
+#include <SDL.h>
 #include <iostream> // print functions
 
 /**

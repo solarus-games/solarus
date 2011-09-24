@@ -165,7 +165,7 @@ void Detector::check_collision(MapEntity &entity, Sprite &sprite) {
 
       if (this_sprite.are_pixel_collisions_enabled()
 	  && this_sprite.test_collision(sprite, get_x(), get_y(), entity.get_x(), entity.get_y())) {
-	notify_collision(entity, sprite, this_sprite);
+        notify_collision(entity, sprite, this_sprite);
       }
     }
   }

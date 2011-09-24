@@ -26,9 +26,9 @@
  * @param surface the surface where the image is
  * @param image_position position of the image on this surface
  */
-PixelBits::PixelBits(Surface *surface, const Rectangle &image_position) {
+PixelBits::PixelBits(Surface& surface, const Rectangle& image_position) {
 
-  SDL_PixelFormat *format = surface->get_internal_surface()->format;
+  SDL_PixelFormat* format = surface.get_internal_surface()->format;
   Debug::check_assertion(format->BitsPerPixel == 8, "This surface should have an 8-bit pixel format");
 
   uint8_t colorkey = (uint8_t) format->colorkey;
@@ -41,8 +41,8 @@ PixelBits::PixelBits(Surface *surface, const Rectangle &image_position) {
     nb_integers_per_row++;
   }
 
-  uint8_t *pixels = (uint8_t*) surface->get_internal_surface()->pixels;
-  int pixel_index = image_position.get_y() * surface->get_width() + image_position.get_x();
+  uint8_t* pixels = (uint8_t*) surface.get_internal_surface()->pixels;
+  int pixel_index = image_position.get_y() * surface.get_width() + image_position.get_x();
 
   bits = new uint32_t*[height];
   for (int i = 0; i < height; i++) {
@@ -54,20 +54,19 @@ PixelBits::PixelBits(Surface *surface, const Rectangle &image_position) {
     for (int j = 0; j < width; j++) {
 
       if (mask == 0x00000000) {
-	k++;
-	mask = 0x80000000;
-	bits[i][k] = 0x00000000;
+        k++;
+        mask = 0x80000000;
+        bits[i][k] = 0x00000000;
       }
 
       if (pixels[pixel_index] != colorkey) {
-	bits[i][k] |= mask;
+        bits[i][k] |= mask;
       }
       mask >>= 1;
       pixel_index++;
     }
-    pixel_index += surface->get_width() - width;
+    pixel_index += surface.get_width() - width;
   }
-
 }
 
 /**
@@ -88,14 +87,14 @@ PixelBits::~PixelBits() {
  * @param location2 position of the top-left corner of the other image on the map (only x and y must be specified)
  * @return true if there is a collision
  */
-bool PixelBits::test_collision(PixelBits *other, const Rectangle &location1, const Rectangle &location2) {
+bool PixelBits::test_collision(const PixelBits& other, const Rectangle& location1, const Rectangle& location2) const {
 
   // compute the two bounding boxes
   Rectangle bounding_box1 = location1;
   bounding_box1.set_size(width, height);
 
   Rectangle bounding_box2 = location2;
-  bounding_box2.set_size(other->width, other->height);
+  bounding_box2.set_size(other.width, other.height);
 
   // check the collision between the two bounding boxes
   if (!bounding_box1.overlaps(bounding_box2)) {
@@ -140,11 +139,11 @@ bool PixelBits::test_collision(PixelBits *other, const Rectangle &location1, con
    * and row 'b' the one coming from the left bounding box.
    */
 
-  uint32_t **rows_a;           // for each row: array of masks of the right bounding box
-  uint32_t **rows_b;           // for each row: array of masks of the left bounding box
+  uint32_t** rows_a;           // for each row: array of masks of the right bounding box
+  uint32_t** rows_b;           // for each row: array of masks of the left bounding box
 
-  uint32_t *bits_a;            // array of masks of the right bounding box for the current row
-  uint32_t *bits_b;            // array of masks of the left bounding box for the current row
+  uint32_t* bits_a;            // array of masks of the right bounding box for the current row
+  uint32_t* bits_b;            // array of masks of the left bounding box for the current row
 
   int nb_masks_per_row_a;    // number of masks on row a that are in the intersection (row b may have one more mask)
   bool has_row_b_additional_mask;
@@ -161,17 +160,19 @@ bool PixelBits::test_collision(PixelBits *other, const Rectangle &location1, con
   // make sure row a starts after row b
   if (bounding_box1.get_x() > bounding_box2.get_x()) {
     rows_a = &this->bits[offset_y1];
-    rows_b = &other->bits[offset_y2];
+    rows_b = &other.bits[offset_y2];
     nb_unused_masks_row_b = offset_x2 >> 5;
     nb_unused_bits_row_b = offset_x2 & 31;
-    has_row_b_additional_mask = (nb_masks_per_row_a + nb_unused_masks_row_b < other->nb_integers_per_row);
+    has_row_b_additional_mask = nb_unused_bits_row_b != 0
+        && nb_masks_per_row_a + nb_unused_masks_row_b < other.nb_integers_per_row;
   }
   else {
-    rows_a = &other->bits[offset_y2];
+    rows_a = &other.bits[offset_y2];
     rows_b = &this->bits[offset_y1]; 
     nb_unused_masks_row_b = offset_x1 >> 5;
     nb_unused_bits_row_b = offset_x1 & 31;
-    has_row_b_additional_mask = (nb_masks_per_row_a + nb_unused_masks_row_b < this->nb_integers_per_row);
+    has_row_b_additional_mask = nb_unused_bits_row_b != 0
+        && nb_masks_per_row_a + nb_unused_masks_row_b < this->nb_integers_per_row;
   }
   nb_used_bits_row_b = 32 - nb_unused_bits_row_b;
 
@@ -208,10 +209,10 @@ bool PixelBits::test_collision(PixelBits *other, const Rectangle &location1, con
       */
 
       if (has_row_b_additional_mask) {
-	next_mask_b_left = bits_b[j + nb_unused_masks_row_b + 1] >> nb_used_bits_row_b;
+        next_mask_b_left = bits_b[j + nb_unused_masks_row_b + 1] >> nb_used_bits_row_b;
       }
       else { // special case where the next mask b does not exist because a and b are aligned
-	next_mask_b_left = 0x00000000;
+        next_mask_b_left = 0x00000000;
       }
 
       uint32_t mask_a_left = mask_a >> nb_unused_bits_row_b;
@@ -223,9 +224,9 @@ bool PixelBits::test_collision(PixelBits *other, const Rectangle &location1, con
 }
 
 /**
- * @brief Prints an ascii representation of the pixels (for debugging purposes only).
+ * @brief Prints an ASCII representation of the pixels (for debugging purposes only).
  */
-void PixelBits::print() {
+void PixelBits::print() const {
 
   std::cout << "frame size is " << width << " x " << height << std::endl;
   for (int i = 0; i < height; i++) {
@@ -234,17 +235,17 @@ void PixelBits::print() {
     for (int j = 0; j < width; j++) {
 
       if (mask == 0x00000000) {
-	k++;
-	mask = 0x80000000;
+        k++;
+        mask = 0x80000000;
       }
 
       //      std::cout << "bit " << i << "," << j << " is " << (bits[i][k] & mask) << endl;
-      
+
       if (bits[i][k] & mask) {
-	std::cout << "X";
+        std::cout << "X";
       }
       else {
-	std::cout << ".";
+        std::cout << ".";
       }
 
       mask >>= 1;      
@@ -254,9 +255,10 @@ void PixelBits::print() {
 }
 
 /**
- * @brief Prints an ascii representation of a 32-bit mask (for debugging purposes only).
+ * @brief Prints an ASCII representation of a 32-bit mask (for debugging purposes only).
  */
-void PixelBits::print_mask(uint32_t mask) {
+void PixelBits::print_mask(uint32_t mask) const {
+
   for (int i = 0; i < 32; i++) {
     std::cout << (((mask & 0x8000) != 0x0000) ? "X" : ".");
     mask >>= 1;

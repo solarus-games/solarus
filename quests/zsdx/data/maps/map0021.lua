@@ -1,6 +1,4 @@
-------------------------------
--- Lyriann's cave B1 script --
-------------------------------
+-- Lyriann's cave B1
 
 function event_switch_activated(switch_name)
 
@@ -21,7 +19,5 @@ function event_switch_activated(switch_name)
     sol.main.play_sound("door_closed")
     sol.map.switch_set_activated("open_barrier_2_switch", false)
   end
-
-
 end
 

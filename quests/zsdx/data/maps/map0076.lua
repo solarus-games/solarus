@@ -4,10 +4,10 @@ camera_timer = ""
 
 function event_switch_activated(switch_name)
 
-  if string.match(switch_name, "^torch_a_switch") then
+  if string.find(switch_name, "^torch_a_switch") then
     camera_timer = "remove_torch_a"
     sol.map.camera_move(176, 264, 250)
-  elseif string.match(switch_name, "^torch_b_switch") then
+  elseif string.find(switch_name, "^torch_b_switch") then
     camera_timer = "remove_torch_b"
     sol.map.camera_move(224, 264, 250)
   elseif switch_name == "torch_c_switch" then

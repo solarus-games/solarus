@@ -55,9 +55,9 @@ end
 
 function event_movement_changed()
 
-  m = sol.enemy.get_movement()
-  direction4 = sol.main.movement_get_property(m, "displayed_direction")
-  sprite = sol.enemy.get_sprite()
+  local m = sol.enemy.get_movement()
+  local direction4 = sol.main.movement_get_property(m, "displayed_direction")
+  local sprite = sol.enemy.get_sprite()
   sol.main.sprite_set_direction(sprite, direction4)
 end
 
@@ -72,7 +72,7 @@ end
 
 function check_hero()
 
-  near_hero = sol.enemy.get_distance_to_hero() < 100
+  local near_hero = sol.enemy.get_distance_to_hero() < 100
   if near_hero and not going_hero then
     go_hero()
   elseif not near_hero and going_hero then
@@ -82,13 +82,13 @@ function check_hero()
 end
 
 function go_random()
-  m = sol.main.random_path_movement_create(properties.normal_speed)
+  local m = sol.main.random_path_movement_create(properties.normal_speed)
   sol.enemy.start_movement(m)
   going_hero = false
 end
 
 function go_hero()
-  m = sol.main.target_movement_create(properties.faster_speed)
+  local m = sol.main.target_movement_create(properties.faster_speed)
   sol.enemy.start_movement(m)
   going_hero = true
 end

@@ -40,7 +40,7 @@ end
 
 function event_hero_on_sensor(sensor_name)
 
-  has_finished_tom_cave = sol.game.savegame_get_boolean(37)
+  local has_finished_tom_cave = sol.game.savegame_get_boolean(37)
 
   if sensor_name == "tom_appears_sensor"
       and has_finished_tom_cave
@@ -59,7 +59,7 @@ function event_dialog_finished(first_message_id, answer)
     sol.map.hero_freeze()
     sol.map.hero_set_direction(0)
     sol.map.npc_set_position("tom", 528, 245)
-    m = sol.main.path_movement_create("44444444444444444444222", 48)
+    local m = sol.main.path_movement_create("44444444444444444444222", 48)
     sol.main.movement_set_property(m, "ignore_obstacles", true)
     sol.map.npc_start_movement("tom", m)
     sol.main.sprite_set_animation(tom_sprite, "walking")
@@ -68,7 +68,7 @@ function event_dialog_finished(first_message_id, answer)
     sol.main.timer_start(1500, "tom_timer_1", false)
   elseif first_message_id == "outside_world.tom_dungeon_1_entrance.let_me_see" then
     sol.main.play_sound("jump")
-    m = sol.main.jump_movement_create(4, 16)
+    local m = sol.main.jump_movement_create(4, 16)
     sol.main.movement_set_property(m, "ignore_obstacles", true)
     sol.map.npc_start_movement("tom", m)
   elseif first_message_id == "outside_world.tom_dungeon_1_entrance.open" then
@@ -83,7 +83,7 @@ end
 
 function event_npc_movement_finished(npc_name)
 
-  x,y = sol.map.npc_get_position("tom")
+  local x, y = sol.map.npc_get_position("tom")
   if x ~= 352 then
     sol.main.sprite_set_direction(tom_sprite, 2)
     sol.map.dialog_start("outside_world.tom_dungeon_1_entrance.need_help")

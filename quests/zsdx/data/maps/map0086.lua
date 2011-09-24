@@ -1,7 +1,7 @@
 -- Dungeon 2 final room
 
 function event_map_opening_transition_finished(destination_point_name)
-  solarus_child_sprite = sol.map.npc_get_sprite("solarus_child")
+  local solarus_child_sprite = sol.map.npc_get_sprite("solarus_child")
   sol.map.npc_set_position("solarus_child", 160, 165)
   sol.main.sprite_set_animation(solarus_child_sprite, "stopped")
   sol.main.sprite_set_animation_ignore_suspend(solarus_child_sprite, true)
@@ -31,7 +31,6 @@ function event_dialog_finished(first_message_id, answer)
   if first_message_id == "dungeon_2.solarus_child" then
     sol.map.hero_start_victory_sequence()
   end
-
 end
 
 function event_hero_victory_sequence_finished()

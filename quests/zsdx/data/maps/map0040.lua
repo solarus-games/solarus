@@ -1,6 +1,4 @@
-------------------
--- Dungeon 3 1F --
-------------------
+-- Dungeon 3 1F
 
 camera_timer = nil
 remove_water_delay = 500 -- delay between each step when some water is disappearing

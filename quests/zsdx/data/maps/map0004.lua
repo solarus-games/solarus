@@ -9,7 +9,7 @@ function event_map_started(destination_point_name)
     sol.map.tileset_set(13)
   end
 
-  m = sol.main.random_path_movement_create(32)
+  local m = sol.main.random_path_movement_create(32)
   sol.map.npc_start_movement("chignon_woman", m)
   sol.main.sprite_set_animation(sol.map.npc_get_sprite("chignon_woman"), "walking")
 
@@ -72,12 +72,12 @@ function event_hero_on_sensor(sensor_name)
 end
 
 function remove_village_cave_door()
-   sol.map.interactive_entity_remove("tom_cave_door")
-   sol.map.tile_set_enabled("tom_cave_door_tile", false)
+  sol.map.interactive_entity_remove("tom_cave_door")
+  sol.map.tile_set_enabled("tom_cave_door_tile", false)
 end
 
 function remove_stone_lock()
-   sol.map.interactive_entity_remove("stone_lock")
-   sol.map.tile_set_group_enabled("stone_lock_tile", false)
+  sol.map.interactive_entity_remove("stone_lock")
+  sol.map.tile_set_group_enabled("stone_lock_tile", false)
 end
 

@@ -90,11 +90,11 @@ end
 function billy_leave()
 
   billy_leave_step = billy_leave_step + 1
-  sprite = sol.map.npc_get_sprite("billy")
+  local sprite = sol.map.npc_get_sprite("billy")
 
   if billy_leave_step == 1 then
     sol.map.hero_freeze()
-    m = sol.main.path_movement_create("4444444", 48)
+    local m = sol.main.path_movement_create("4444444", 48)
     sol.main.movement_set_property(m, "ignore_obstacles", true)
     sol.map.npc_start_movement("billy", m)
     sol.main.sprite_set_animation(sprite, "walking")
@@ -105,7 +105,7 @@ function billy_leave()
     sol.map.door_open("door")
     sol.main.timer_start(500, "billy_leave", false)
   elseif billy_leave_step == 4 then 
-    m = sol.main.path_movement_create("22222222", 48)
+    local m = sol.main.path_movement_create("22222222", 48)
     sol.map.npc_start_movement("billy", m)
     sol.main.sprite_set_animation(sprite, "walking")
   else

@@ -4,9 +4,8 @@ bottle_to_make_empty = "" -- name of a bottle to make empty at the next cycle
 
 function event_use()
 
-  variant = sol.item.get_variant()
+  local variant = sol.item.get_variant()
 
-  -- TODO switch
   -- empty bottle
   if variant == 1 then
     sol.main.play_sound("wrong")
@@ -36,11 +35,11 @@ function event_use()
     -- fairy
   elseif variant == 6 then
 
-      -- release the fairy
-      x, y, layer = sol.map.hero_get_position();
-      sol.map.pickable_item_create("fairy", 1, -1, x, y, layer);
-      sol.item.set_variant(1) -- make the bottle empty
-      sol.item.set_finished()
+    -- release the fairy
+    local x, y, layer = sol.map.hero_get_position();
+    sol.map.pickable_item_create("fairy", 1, -1, x, y, layer);
+    sol.item.set_variant(1) -- make the bottle empty
+    sol.item.set_finished()
   end
 end
 
@@ -68,7 +67,7 @@ end
 
 function event_hero_interaction(entity_name)
 
-  if string.match(entity_name, "^water_for_bottle") then
+  if string.find(entity_name, "^water_for_bottle") then
     -- the hero interacts with a place where he can get some water
     if has_bottle() then
       if has_empty_bottle() then
@@ -84,7 +83,7 @@ end
 
 function event_hero_interaction_item(entity_name, item_name, variant)
 
-  if string.match(item_name, "^bottle") and string.match(entity_name, "^water_for_bottle") then
+  if string.find(item_name, "^bottle") and string.find(entity_name, "^water_for_bottle") then
     -- the hero interacts with a place where he can get some water:
     -- no matter whether he pressed the action key or the item key of a bottle, we do the same thing
     event_hero_interaction(entity_name)
@@ -152,7 +151,7 @@ end
 
 function get_first_bottle_with(variant)
 
-  result = ""
+  local result = ""
 
   if sol.game.get_item("bottle_1") == variant then
     result = "bottle_1"
@@ -166,3 +165,4 @@ function get_first_bottle_with(variant)
 
   return result
 end
+

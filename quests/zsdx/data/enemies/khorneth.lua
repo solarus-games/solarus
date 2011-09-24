@@ -8,7 +8,7 @@ right_blade_sprite_name = "enemies/khorneth_right_blade"
 -- State
 left_blade_life = 4
 right_blade_life = 4
-blade_attack = false;
+blade_attack = false
 
 function event_appear()
 
@@ -33,14 +33,14 @@ end
 function event_restart()
 
   -- set the movement
-  m = sol.main.random_path_movement_create(48)
+  local m = sol.main.random_path_movement_create(48)
   sol.enemy.start_movement(m)
 
   -- schedule a blade attack
   if has_blade() then
-    duration = 1000 * (1 + math.random(4))
+    local duration = 1000 * (1 + math.random(4))
     sol.main.timer_start(duration, "start_blade_attack", false)
-    blade_attack = false;
+    blade_attack = false
   end
 end
 
@@ -108,6 +108,7 @@ function start_blade_attack()
   if has_blade() and not blade_attack then
 
     blade_attack = true
+    local side
     if not has_right_blade() then
       side = 0
     elseif not has_left_blade() then
@@ -145,7 +146,7 @@ end
 
 function stop_hurting_left_blade()
 
-  sol.enemy.restart();
+  sol.enemy.restart()
   if left_blade_life <= 0 then
     sol.main.play_sound("stone")
     sol.enemy.remove_sprite(left_blade_sprite_name)
@@ -158,7 +159,7 @@ end
 
 function stop_hurting_right_blade()
 
-  sol.enemy.restart();
+  sol.enemy.restart()
   if right_blade_life <= 0 then
     sol.main.play_sound("stone")
     sol.enemy.remove_sprite(right_blade_sprite_name)

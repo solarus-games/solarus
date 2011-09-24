@@ -9,7 +9,7 @@ function event_map_started(destination_point_name)
 
   if sol.game.savegame_get_boolean(197) then
     -- piece of heart found
-    for i = 1,7 do
+    for i = 1, 7 do
       sol.map.chest_set_open("chest_"..i, true)
     end
   end

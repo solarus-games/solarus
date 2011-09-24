@@ -1,6 +1,4 @@
-------------------
--- Bomb cave 2F --
-------------------
+-- Bomb cave 2F
 
 function event_map_started(destination_point_name)
 

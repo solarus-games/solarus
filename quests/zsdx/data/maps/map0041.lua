@@ -23,7 +23,7 @@ end
 
 function event_enemy_dead(enemy_name)
 
-  if string.match(enemy_name, "^e_room_enemy_")
+  if string.find(enemy_name, "^e_room_enemy_")
     and sol.map.enemy_is_group_dead("e_room_enemy")
     and not sol.map.door_is_open("e_door") then
 

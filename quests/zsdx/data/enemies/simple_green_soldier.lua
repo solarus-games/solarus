@@ -11,13 +11,13 @@ function event_appear()
   sol.enemy.set_size(16, 16)
   sol.enemy.set_origin(8, 13)
 
-  m = sol.main.temporal_movement_create(0, 0, 0)
+  local m = sol.main.temporal_movement_create(0, 0, 0)
   sol.enemy.start_movement(m)
 end
 
 -- The enemy was stopped for some reason and should restart
 function event_restart()
-  direction4 = math.random(4) - 1
+  local direction4 = math.random(4) - 1
   go(direction4)
 end
 
@@ -25,8 +25,8 @@ end
 function event_obstacle_reached()
 
   -- look to the left or to the right
-  sprite = sol.enemy.get_sprite()
-  animation = sol.main.sprite_get_animation(sprite)
+  local sprite = sol.enemy.get_sprite()
+  local animation = sol.main.sprite_get_animation(sprite)
   if animation == "walking" then
     look_left_or_right()
   end
@@ -42,7 +42,7 @@ end
 function event_sprite_animation_finished(sprite, animation)
 
   -- if the enemy was stopped and looking to a direction, go to that direction
-  direction = sol.main.sprite_get_direction(sprite)
+  local direction = sol.main.sprite_get_direction(sprite)
   if animation == "stopped_watching_left" then
     go((direction + 1) % 4)
   elseif animation == "stopped_watching_right" then
@@ -54,13 +54,13 @@ end
 function go(direction4)
 
   -- set the sprite
-  sprite = sol.enemy.get_sprite()
+  local sprite = sol.enemy.get_sprite()
   sol.main.sprite_set_animation(sprite, "walking")
   sol.main.sprite_set_direction(sprite, direction4)
 
   -- set the movement
-  m = sol.enemy.get_movement()
-  seconds = 1 + math.random(3)
+  local m = sol.enemy.get_movement()
+  local seconds = 1 + math.random(3)
   sol.main.movement_set_property(m, "duration", seconds * 1000)
   sol.main.movement_set_property(m, "speed", 40)
   sol.main.movement_set_property(m, "angle", direction4 * math.pi / 2)

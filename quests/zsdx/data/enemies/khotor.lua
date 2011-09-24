@@ -17,7 +17,7 @@ function event_appear(creator_name)
   sol.enemy.set_attack_consequence("arrow", 1)
 
   -- set the movement
-  m = sol.main.random_path_movement_create(40)
+  local m = sol.main.random_path_movement_create(40)
   sol.enemy.start_movement(m)
 
   -- create the chain and ball

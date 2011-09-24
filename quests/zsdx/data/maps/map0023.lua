@@ -1,6 +1,4 @@
--------------------------
--- Dungeon 1 1F script --
--------------------------
+-- Dungeon 1 1F
 
 current_room = ""
 sw_sensor_enabled = false
@@ -55,8 +53,8 @@ end
 function event_hero_on_sensor(sensor_name)
 
   if sensor_name == "close_sw_door_sensor"
-    and sol.map.door_is_open("sw_door")
-    and sw_sensor_enabled then
+      and sol.map.door_is_open("sw_door")
+      and sw_sensor_enabled then
 
     close_sw_door()
     sw_sensor_enabled = false

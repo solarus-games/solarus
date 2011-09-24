@@ -6,7 +6,7 @@ was_dark_room = false
 -- Called when the hero uses the Lamp
 function event_use()
 
-  magic_needed = 1 -- number of magic points required
+  local magic_needed = 1 -- number of magic points required
   if sol.game.get_magic() >= magic_needed then
     sol.main.play_sound("lamp")
     sol.game.remove_magic(magic_needed)
@@ -20,7 +20,7 @@ end
 -- Creates some fire on the map
 function create_fire()
 
-  direction = sol.map.hero_get_direction()
+  local direction = sol.map.hero_get_direction()
   if direction == 0 then
     dx, dy = 18, -4
   elseif direction == 1 then
@@ -31,16 +31,17 @@ function create_fire()
     dx, dy = 0, 16
   end
 
-  x, y, layer = sol.map.hero_get_position()
+  local x, y, layer = sol.map.hero_get_position()
   sol.map.fire_create(x + dx, y + dy, layer)
 end
 
 -- Unlights the oldest torch still lit
 function unlight_oldest_torch()
-  entity = table.remove(temporary_lit_torches, 1)                   -- remove the torch from the FIFO
-  if sol.map.interactive_entity_exists(entity) then                 -- see if it still exists
-    torch_sprite = sol.map.interactive_entity_get_sprite(entity)    -- get its sprite
-    sol.main.sprite_set_animation(torch_sprite, "unlit")            -- change the animation
+
+  local entity = table.remove(temporary_lit_torches, 1)                   -- remove the torch from the FIFO
+  if sol.map.interactive_entity_exists(entity) then                       -- see if it still exists
+    local torch_sprite = sol.map.interactive_entity_get_sprite(entity)    -- get its sprite
+    sol.main.sprite_set_animation(torch_sprite, "unlit")                  -- change the animation
   end
 
   if #temporary_lit_torches == 0 and was_dark_room then
@@ -69,7 +70,7 @@ end
 -- that wants to notify the lamp
 function event_hero_interaction(entity_name)
 
-  if string.match(entity_name, "^torch") then
+  if string.find(entity_name, "^torch") then
     sol.map.dialog_start("torch.need_lamp")
   end
 end
@@ -77,9 +78,9 @@ end
 -- Called when fire touches an interactive entity linked to the Lamp
 function event_npc_collision_fire(npc_name)
 
-  if string.match(npc_name, "^torch") then
+  if string.find(npc_name, "^torch") then
     
-    torch_sprite = sol.map.interactive_entity_get_sprite(npc_name)
+    local torch_sprite = sol.map.interactive_entity_get_sprite(npc_name)
     if sol.main.sprite_get_animation(torch_sprite) == "unlit" then
       -- temporarily light the torch up
       sol.main.sprite_set_animation(torch_sprite, "lit")

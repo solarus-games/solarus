@@ -15,7 +15,7 @@ end
 
 function event_hero_interaction(entity_name)
 
-  if string.match(entity_name, "^sign_") then
+  if string.find(entity_name, "^sign_") then
     if entity_name == "sign_"..next_sign then
 
       if next_sign < 32 then

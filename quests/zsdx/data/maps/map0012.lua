@@ -1,6 +1,4 @@
------------------------------
--- Sahasrahla house script --
------------------------------
+-- Sahasrahla house
 
 function event_map_started(destination_point)
 
@@ -47,7 +45,7 @@ function event_npc_dialog(npc_name)
 end
 
 function has_obtained_world_map()
-  return sol.game.savegame_get_boolean(33);
+  return sol.game.savegame_get_boolean(33)
 end
 
 function has_seen_frozen_door()
@@ -59,11 +57,11 @@ function has_open_frozen_door()
 end
 
 function has_obtained_clay_key()
-  return sol.game.savegame_get_boolean(28);
+  return sol.game.savegame_get_boolean(28)
 end
 
 function has_obtained_bow()
-  return sol.game.savegame_get_boolean(26);
+  return sol.game.savegame_get_boolean(26)
 end
 
 -- Function called when the dialog box is being closed

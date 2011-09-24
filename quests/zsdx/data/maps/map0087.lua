@@ -2,7 +2,7 @@
 
 function event_map_opening_transition_finished(destination_point_name)
 
-  solarus_child_sprite = sol.map.npc_get_sprite("solarus_child")
+  local solarus_child_sprite = sol.map.npc_get_sprite("solarus_child")
   sol.map.npc_set_position("solarus_child", 160, 165)
   sol.main.sprite_set_animation(solarus_child_sprite, "stopped")
   sol.main.sprite_set_animation_ignore_suspend(solarus_child_sprite, true)
@@ -50,7 +50,7 @@ end
 
 function agahnim_sequence_2()
 
-  sprite = sol.map.npc_get_sprite("solarus_child")
+  local sprite = sol.map.npc_get_sprite("solarus_child")
   sol.main.sprite_fade(sprite, 1)
   sol.main.play_music("none")
   sol.main.play_sound("warp")

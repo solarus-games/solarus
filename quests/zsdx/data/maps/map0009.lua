@@ -43,7 +43,3 @@ function open_castle_door()
   sol.main.timer_start(1000, "sol.map.camera_restore", false)
 end
 
-
-
-
-  

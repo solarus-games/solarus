@@ -1,6 +1,4 @@
-----------------------
--- Telepathic booth --
-----------------------
+-- Telepathic booth
 
 function event_hero_interaction(entity_name)
 

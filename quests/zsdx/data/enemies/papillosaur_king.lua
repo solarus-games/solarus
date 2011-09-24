@@ -27,21 +27,21 @@ function event_hurt(attack, life_lost)
   sol.main.timer_stop_all()
   if sol.enemy.get_life() <= 0 then
     -- I am dying: remove the minillosaur eggs
-    sons_prefix = sol.enemy.get_name().."_minillosaur"
+    local sons_prefix = sol.enemy.get_name().."_minillosaur"
     sol.map.enemy_remove_group(sons_prefix)
     -- TODO sol.map.enemy_remove_sons or even sol.map.enemy_kill_sons
   end
 end
 
 function go()
-  m = sol.main.random_path_movement_create(48)
+  local m = sol.main.random_path_movement_create(48)
   sol.enemy.start_movement(m)
 end
 
 function egg_phase_soon()
 
-  sons_prefix = sol.enemy.get_name().."_minillosaur" 
-  nb_sons = sol.map.enemy_get_group_count(sons_prefix)
+  local sons_prefix = sol.enemy.get_name().."_minillosaur" 
+  local nb_sons = sol.map.enemy_get_group_count(sons_prefix)
   if nb_sons >= 5 then
     -- delay the egg phase if there are already too much sons
     sol.main.timer_start(5000, "egg_phase_soon", false)
@@ -53,7 +53,7 @@ end
 
 function egg_phase()
 
-  sprite = sol.enemy.get_sprite()
+  local sprite = sol.enemy.get_sprite()
   sol.main.sprite_set_animation(sprite, "preparing_egg")
   sol.main.play_sound("boss_charge")
   sol.main.timer_start(1500, "throw_egg", false)
@@ -70,7 +70,7 @@ function throw_egg()
 
   -- create the egg
   nb_eggs_created = nb_eggs_created + 1
-  egg_name = sol.enemy.get_name().."_minillosaur_"..nb_eggs_created
+  local egg_name = sol.enemy.get_name().."_minillosaur_"..nb_eggs_created
   sol.enemy.create_son(egg_name, "minillosaur_egg", 0, 16)
   sol.map.enemy_set_treasure(egg_name, "_none", 1, -1)
   sol.main.play_sound("boss_fireball")
@@ -82,9 +82,9 @@ function throw_egg()
     sol.main.timer_start(500, "throw_egg", false)
   else
     -- finish the egg phase and schedule the next one in a few seconds
-    sprite = sol.enemy.get_sprite()
+    local sprite = sol.enemy.get_sprite()
     sol.main.sprite_set_animation(sprite, "walking")
-    duration = 3500 + (math.random(3) * 1000)
+    local duration = 3500 + (math.random(3) * 1000)
     sol.main.timer_start(duration, "egg_phase_soon", false)
     go()
   end

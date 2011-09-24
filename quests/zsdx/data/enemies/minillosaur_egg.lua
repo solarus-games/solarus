@@ -14,13 +14,13 @@ function event_appear()
   sol.enemy.set_invincible()
   sol.enemy.set_attack_consequence("sword", "custom")
 
-  sprite = sol.enemy.get_sprite()
+  local sprite = sol.enemy.get_sprite()
   sol.main.sprite_set_animation(sprite, "egg")
   in_egg = true
-  x, y = sol.enemy.get_position()
-  hero_x, hero_y = sol.map.hero_get_position()
-  angle = sol.main.get_angle(x, y, hero_x, hero_y)
-  m = sol.main.temporal_movement_create(120, angle, 1500)
+  local x, y = sol.enemy.get_position()
+  local hero_x, hero_y = sol.map.hero_get_position()
+  local angle = sol.main.get_angle(x, y, hero_x, hero_y)
+  local m = sol.main.temporal_movement_create(120, angle, 1500)
   sol.main.movement_set_property(m, "smooth", false)
   sol.enemy.start_movement(m)
 end
@@ -29,7 +29,7 @@ end
 function event_restart()
 
   if in_egg then
-    sprite = sol.enemy.get_sprite()
+    local sprite = sol.enemy.get_sprite()
     sol.main.sprite_set_animation(sprite, "egg")
   end
 end
@@ -37,7 +37,7 @@ end
 -- An obstacle is reached: in the egg state, break the egg
 function event_obstacle_reached()
 
-  sprite = sol.enemy.get_sprite()
+  local sprite = sol.enemy.get_sprite()
   if sol.main.sprite_get_animation(sprite) == "egg" then
     break_egg()
   end
@@ -63,7 +63,7 @@ end
 -- Starts breaking the egg
 function break_egg()
 
-  sprite = sol.enemy.get_sprite()
+  local sprite = sol.enemy.get_sprite()
   sol.enemy.stop_movement()
   sol.main.sprite_set_animation(sprite, "egg_breaking")
 end
@@ -77,7 +77,7 @@ function event_sprite_animation_finished(sprite, animation)
     sol.enemy.set_size(16, 16)
     sol.enemy.set_origin(8, 12)
     sol.enemy.snap_to_grid()
-    m = sol.main.path_finding_movement_create(40)
+    local m = sol.main.path_finding_movement_create(40)
     sol.enemy.start_movement(m)
     sol.enemy.set_default_attack_consequences()
     in_egg = false

@@ -16,7 +16,7 @@ function event_restart()
 end
 
 function go()
-  m = sol.main.pixel_movement_create("434343373737707070010101151515545454", 20)
+  local m = sol.main.pixel_movement_create("434343373737707070010101151515545454", 20)
   sol.main.movement_set_property(m, "loop", true)
   sol.main.movement_set_property(m, "ignore_obstacles", true)
   sol.enemy.start_movement(m)

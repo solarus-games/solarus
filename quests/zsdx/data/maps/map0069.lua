@@ -2,7 +2,7 @@
 
 water_delay = 500 -- delay between each water step
 current_pool_index = 0
-camera_timer = ""
+camera_timer = nil
 
 pools = {
   { initially_filled = false, trigger = "switch", x = 672, y = 96  },
@@ -18,8 +18,8 @@ savegame_variable = 170
 function event_map_started(destination_point_name)
 
   -- initialize all pools
-  for i = 1,#pools do
-    if pools[i].initially_filled ~= sol.game.savegame_get_boolean(savegame_variable + i) then
+  for i, pool in ipairs(pools) do
+    if pool.initially_filled ~= sol.game.savegame_get_boolean(savegame_variable + i) then
       -- this pool is filled
       set_water_filled(i)
     else
@@ -31,23 +31,27 @@ end
 
 function event_switch_activated(switch_name)
 
-  if string.match(switch_name, "^water_[1-9]_on_switch$") then
-    index = tonumber(string.sub(switch_name, 7, 7))
+  local matched = string.match(switch_name, "^water_([1-9])_on_switch$")
+  if matched then
+    local index = tonumber(matched)
     fill_water(index)
   end
 end
 
 function event_block_moved(block_name)
 
-  if string.match(block_name, "^water_[1-9]_on_block$") then
-    index = tonumber(string.sub(block_name, 7, 7))
+  local matched = string.match(block_name, "^water_([1-9])_on_block$")
+  if matched then
+    local index = tonumber(matched)
     fill_water(index)
-  elseif string.match(block_name, "^water_[1-9]_off_block$") then
-    index = tonumber(string.sub(block_name, 7, 7))
-    drain_water(index)
+  else
+    matched = string.match(block_name, "^water_([1-9])_off_block$")
+    if matched then
+      local index = tonumber(matched)
+      drain_water(index)
+    end
   end
 end
-
 
 function fill_water(index)
   current_pool_index = index

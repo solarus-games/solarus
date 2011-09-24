@@ -6,7 +6,7 @@ function event_appear()
   sol.enemy.set_damage(2)
   sol.enemy.create_sprite("enemies/master_arbror")
   sol.enemy.set_size(264, 312)
-  sol.enemy.set_origin(132, 309)
+  sol.enemy.set_origin(132, 269)
   --sol.enemy.set_invincible()
 end
 
@@ -26,7 +26,7 @@ function event_hurt(attack, life_lost)
 
   if sol.enemy.get_life() <= 0 then
     sol.map.dialog_start("dungeon_3.arbror_killed")
-    sprite = sol.enemy.get_sprite()
+    local sprite = sol.enemy.get_sprite()
     sol.main.sprite_set_animation_ignore_suspend(sprite, true)
   end
 end

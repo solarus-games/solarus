@@ -38,11 +38,10 @@
  */
 int Script::item_api_get_variant(lua_State *l) {
 
-  Script *script;
-  called_by_script(l, 0, &script);
+  Script& script = get_script(l, 0);
 
-  ItemProperties &properties = script->get_item_properties();
-  Equipment &equipment = script->get_game().get_equipment();
+  ItemProperties &properties = script.get_item_properties();
+  Equipment &equipment = script.get_game().get_equipment();
   int variant = equipment.get_item_variant(properties.get_name());
   lua_pushinteger(l, variant);
 
@@ -59,12 +58,11 @@ int Script::item_api_get_variant(lua_State *l) {
  */
 int Script::item_api_set_variant(lua_State *l) {
 
-  Script *script;
-  called_by_script(l, 1, &script);
+  Script& script = get_script(l, 1);
 
   int variant = luaL_checkinteger(l, 1);
-  ItemProperties &properties = script->get_item_properties();
-  Equipment &equipment = script->get_game().get_equipment();
+  ItemProperties &properties = script.get_item_properties();
+  Equipment &equipment = script.get_game().get_equipment();
   equipment.set_item_variant(properties.get_name(), variant);
 
   return 0;
@@ -80,11 +78,10 @@ int Script::item_api_set_variant(lua_State *l) {
  */
 int Script::item_api_get_amount(lua_State *l) {
 
-  Script *script;
-  called_by_script(l, 0, &script);
+  Script& script = get_script(l, 0);
 
-  ItemProperties &properties = script->get_item_properties();
-  Equipment &equipment = script->get_game().get_equipment();
+  ItemProperties &properties = script.get_item_properties();
+  Equipment &equipment = script.get_game().get_equipment();
   int amount = equipment.get_item_amount(properties.get_name());
   lua_pushinteger(l, amount);
 
@@ -101,12 +98,11 @@ int Script::item_api_get_amount(lua_State *l) {
  */
 int Script::item_api_set_amount(lua_State *l) {
 
-  Script *script;
-  called_by_script(l, 1, &script);
+  Script& script = get_script(l, 1);
 
   int amount = luaL_checkinteger(l, 1);
-  ItemProperties &properties = script->get_item_properties();
-  Equipment &equipment = script->get_game().get_equipment();
+  ItemProperties &properties = script.get_item_properties();
+  Equipment &equipment = script.get_game().get_equipment();
   equipment.set_item_amount(properties.get_name(), amount);
 
   return 0;
@@ -122,12 +118,11 @@ int Script::item_api_set_amount(lua_State *l) {
  */
 int Script::item_api_add_amount(lua_State *l) {
 
-  Script *script;
-  called_by_script(l, 1, &script);
+  Script& script = get_script(l, 1);
 
   int amount = luaL_checkinteger(l, 1);
-  ItemProperties &properties = script->get_item_properties();
-  Equipment &equipment = script->get_game().get_equipment();
+  ItemProperties &properties = script.get_item_properties();
+  Equipment &equipment = script.get_game().get_equipment();
   equipment.add_item_amount(properties.get_name(), amount);
 
   return 0;
@@ -143,12 +138,11 @@ int Script::item_api_add_amount(lua_State *l) {
  */
 int Script::item_api_remove_amount(lua_State *l) {
 
-  Script *script;
-  called_by_script(l, 1, &script);
+  Script& script = get_script(l, 1);
 
   int amount = luaL_checkinteger(l, 1);
-  ItemProperties &properties = script->get_item_properties();
-  Equipment &equipment = script->get_game().get_equipment();
+  ItemProperties &properties = script.get_item_properties();
+  Equipment &equipment = script.get_game().get_equipment();
   equipment.remove_item_amount(properties.get_name(), amount);
 
   return 0;
@@ -167,19 +161,18 @@ int Script::item_api_remove_amount(lua_State *l) {
  */
 int Script::item_api_get_sprite(lua_State *l) {
 
-  Script *script;
-  called_by_script(l, 0, &script);
+  Script& script = get_script(l, 0);
 
   // retrieve the pickable item
-  const std::string &item_name = script->get_item_properties().get_name();
-  Equipment &equipment = script->get_game().get_equipment();
+  const std::string &item_name = script.get_item_properties().get_name();
+  Equipment &equipment = script.get_game().get_equipment();
   ItemScript &item_script = equipment.get_item_script(item_name);
   PickableItem *pickable_item = item_script.get_pickable_item();
 
   Debug::check_assertion(pickable_item != NULL,
                 "Cannot call sol.item.get_sprite(): there is no current pickable item");
 
-  int handle = script->create_sprite_handle(pickable_item->get_sprite());
+  int handle = script.create_sprite_handle(pickable_item->get_sprite());
   lua_pushinteger(l, handle);
 
   return 1;
@@ -198,12 +191,11 @@ int Script::item_api_get_sprite(lua_State *l) {
  */
 int Script::item_api_get_movement(lua_State *l) {
 
-  Script *script;
-  called_by_script(l, 0, &script);
+  Script& script = get_script(l, 0);
 
   // retrieve the pickable item
-  const std::string &item_name = script->get_item_properties().get_name();
-  Equipment &equipment = script->get_game().get_equipment();
+  const std::string &item_name = script.get_item_properties().get_name();
+  Equipment &equipment = script.get_game().get_equipment();
   ItemScript &item_script = equipment.get_item_script(item_name);
   PickableItem *pickable_item = item_script.get_pickable_item();
 
@@ -211,7 +203,7 @@ int Script::item_api_get_movement(lua_State *l) {
                 "Cannot call sol.item.get_movement(): there is no current pickable item");
 
   Movement *movement = pickable_item->get_movement();
-  int handle = script->create_movement_handle(*movement);
+  int handle = script.create_movement_handle(*movement);
   lua_pushinteger(l, handle);
 
   return 1;
@@ -231,16 +223,15 @@ int Script::item_api_get_movement(lua_State *l) {
  */
 int Script::item_api_start_movement(lua_State *l) {
 
-  Script *script;
-  called_by_script(l, 1, &script);
+  Script& script = get_script(l, 1);
 
   // retrieve the movement
   int movement_handle = luaL_checkinteger(l, 1);
-  Movement &movement = script->start_movement(movement_handle);
+  Movement &movement = script.start_movement(movement_handle);
 
   // retrieve the pickable item
-  const std::string &item_name = script->get_item_properties().get_name();
-  Equipment &equipment = script->get_game().get_equipment();
+  const std::string &item_name = script.get_item_properties().get_name();
+  Equipment &equipment = script.get_game().get_equipment();
   ItemScript &item_script = equipment.get_item_script(item_name);
   PickableItem *pickable_item = item_script.get_pickable_item();
 
@@ -269,12 +260,11 @@ int Script::item_api_start_movement(lua_State *l) {
  */
 int Script::item_api_is_following_entity(lua_State* l) {
 
-  Script *script;
-  called_by_script(l, 0, &script);
+  Script& script = get_script(l, 0);
 
   // retrieve the pickable item
-  const std::string& item_name = script->get_item_properties().get_name();
-  Equipment& equipment = script->get_game().get_equipment();
+  const std::string& item_name = script.get_item_properties().get_name();
+  Equipment& equipment = script.get_game().get_equipment();
   ItemScript& item_script = equipment.get_item_script(item_name);
   PickableItem* pickable_item = item_script.get_pickable_item();
 
@@ -300,12 +290,11 @@ int Script::item_api_is_following_entity(lua_State* l) {
  */
 int Script::item_api_get_position(lua_State *l) {
 
-  Script *script;
-  called_by_script(l, 0, &script);
+  Script& script = get_script(l, 0);
 
   // retrieve the pickable item
-  const std::string &item_name = script->get_item_properties().get_name();
-  Equipment &equipment = script->get_game().get_equipment();
+  const std::string &item_name = script.get_item_properties().get_name();
+  Equipment &equipment = script.get_game().get_equipment();
   ItemScript &item_script = equipment.get_item_script(item_name);
   PickableItem *pickable_item = item_script.get_pickable_item();
 
@@ -332,15 +321,14 @@ int Script::item_api_get_position(lua_State *l) {
  */
 int Script::item_api_set_position(lua_State *l) {
 
-  Script *script;
-  called_by_script(l, 2, &script);
+  Script& script = get_script(l, 2);
 
   int x = luaL_checkinteger(l, 1);
   int y = luaL_checkinteger(l, 2);
 
   // retrieve the pickable item
-  const std::string &item_name = script->get_item_properties().get_name();
-  Equipment &equipment = script->get_game().get_equipment();
+  const std::string &item_name = script.get_item_properties().get_name();
+  Equipment &equipment = script.get_game().get_equipment();
   ItemScript &item_script = equipment.get_item_script(item_name);
   PickableItem *pickable_item = item_script.get_pickable_item();
 
@@ -364,12 +352,11 @@ int Script::item_api_set_position(lua_State *l) {
  */
 int Script::item_api_get_layer(lua_State *l) {
 
-  Script *script;
-  called_by_script(l, 0, &script);
+  Script& script = get_script(l, 0);
 
   // retrieve the pickable item
-  const std::string &item_name = script->get_item_properties().get_name();
-  Equipment &equipment = script->get_game().get_equipment();
+  const std::string &item_name = script.get_item_properties().get_name();
+  Equipment &equipment = script.get_game().get_equipment();
   ItemScript &item_script = equipment.get_item_script(item_name);
   PickableItem *pickable_item = item_script.get_pickable_item();
 
@@ -393,21 +380,20 @@ int Script::item_api_get_layer(lua_State *l) {
  */
 int Script::item_api_set_layer(lua_State *l) {
 
-  Script *script;
-  called_by_script(l, 1, &script);
+  Script& script = get_script(l, 1);
 
   int layer = luaL_checkinteger(l, 1);
 
   // retrieve the pickable item
-  const std::string &item_name = script->get_item_properties().get_name();
-  Equipment &equipment = script->get_game().get_equipment();
+  const std::string &item_name = script.get_item_properties().get_name();
+  Equipment &equipment = script.get_game().get_equipment();
   ItemScript &item_script = equipment.get_item_script(item_name);
   PickableItem *pickable_item = item_script.get_pickable_item();
 
   Debug::check_assertion(pickable_item != NULL,
                 "Cannot call sol.item.set_layer(): there is no current pickable item");
 
-  MapEntities &entities = script->get_map().get_entities();
+  MapEntities &entities = script.get_map().get_entities();
   entities.set_entity_layer(pickable_item, Layer(layer));
 
   return 0;
@@ -425,14 +411,13 @@ int Script::item_api_set_layer(lua_State *l) {
  */
 int Script::item_api_set_layer_independent_collisions(lua_State *l) {
 
-  Script *script;
-  called_by_script(l, 1, &script);
+  Script& script = get_script(l, 1);
 
   bool independent = lua_toboolean(l, 1) != 0;
 
   // retrieve the pickable item
-  const std::string &item_name = script->get_item_properties().get_name();
-  Equipment &equipment = script->get_game().get_equipment();
+  const std::string &item_name = script.get_item_properties().get_name();
+  Equipment &equipment = script.get_game().get_equipment();
   ItemScript &item_script = equipment.get_item_script(item_name);
   PickableItem *pickable_item = item_script.get_pickable_item();
 
@@ -454,12 +439,11 @@ int Script::item_api_set_layer_independent_collisions(lua_State *l) {
  */
 int Script::item_api_set_finished(lua_State *l) {
 
-  Script *script;
-  called_by_script(l, 0, &script);
+  Script& script = get_script(l, 0);
 
   // retrieve the inventory item from the hero
-  Hero &hero = script->get_game().get_hero();
-  const std::string &item_name = script->get_item_properties().get_name();
+  Hero &hero = script.get_game().get_hero();
+  const std::string &item_name = script.get_item_properties().get_name();
 
   if (hero.is_using_inventory_item()) { // we do nothing if the script has already changed the hero's state
 

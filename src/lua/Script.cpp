@@ -539,31 +539,29 @@ void Script::register_enemy_api() {
 }
 
 /**
- * @brief Checks the number of arguments provided to a C++ function
- * called by the Lua script.
+ * @brief When Lua calls a C++ static method, this function retrieves the corresponding Script object.
  *
- * In any C++ function called by the Lua script (i.e. a function prefixed by "l_"),
- * the first instruction calls this function.
- * It checks the number of arguments provided to the C++ function called by the Lua script
- * and retrieves the current Script object.
+ * It can also check the number of parameters of the call.
  *
  * @param context the Lua context
- * @param nb_arguments the number of arguments to check (if it is incorrect, the program stops)
- * @param script if not NULL, a pointer to the Script object will be copied there so that the static C++ function
- * called by the Lua script can access it
+ * @param min_arguments the minimum number of arguments expected
+ * @param max_arguments the maximum number of arguments expected (default is min_arguments)
+ * @return the Script object that initiated the call
  */
-void Script::called_by_script(lua_State *context, int nb_arguments, Script **script) {
+Script& Script::get_script(lua_State* l, int min_arguments, int max_arguments) {
 
   // check the number of arguments
-  Debug::check_assertion(lua_gettop(context) == nb_arguments, "Invalid number of arguments when calling C++ from Lua");
+  if (max_arguments == -1) {
+    max_arguments = min_arguments;
+  }
+  Debug::check_assertion(lua_gettop(l) >= min_arguments && lua_gettop(l) <= max_arguments,
+      "Invalid number of arguments when calling C++ from Lua");
 
   // retrieve the Script object
-  if (script != NULL) {
-    lua_pushstring(context, "sol.cpp_object");
-    lua_gettable(context, LUA_REGISTRYINDEX);
-    *script = (Script*) lua_touserdata(context, -1);
-    lua_pop(context, 1);
-  }
+  lua_getfield(l, LUA_REGISTRYINDEX, "sol.cpp_object");
+  Script* script = (Script*) lua_touserdata(l, -1);
+  lua_pop(l, 1);
+  return *script;
 }
 
 /**

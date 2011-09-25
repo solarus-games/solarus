@@ -999,7 +999,7 @@ int Script::enemy_api_get_father(lua_State *l) {
  */
 int Script::enemy_api_send_message(lua_State *l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l, 2);
   Enemy& enemy = script.get_enemy();
 
   const std::string& dst_enemy_name = luaL_checkstring(l, 1);

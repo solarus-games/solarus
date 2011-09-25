@@ -60,13 +60,14 @@ end
 function event_position_changed(x, y)
 
   -- recalculate the chain position
+  local x1, y1
   if father_name ~= "" then
     -- the center is relative to the father
     local x, y = sol.map.enemy_get_position(father_name)
-    local x1, y1 = x + center_xy.x, y + center_xy.y;
+    x1, y1 = x + center_xy.x, y + center_xy.y;
   else
     -- the center is absolute
-    local x1, y1 = center_xy
+    x1, y1 = center_xy
   end
   local x2, y2 = sol.enemy.get_position();
 

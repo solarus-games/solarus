@@ -45,6 +45,10 @@ class Hero::PushingState: public Hero::State {
     void notify_grabbed_entity_collision();
 
     bool can_be_hurt();
+    bool is_deep_water_obstacle();
+    bool is_hole_obstacle();
+    bool is_lava_obstacle();
+    bool is_prickle_obstacle();
 };
 
 #endif

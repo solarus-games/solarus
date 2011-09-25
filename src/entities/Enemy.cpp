@@ -541,7 +541,8 @@ void Enemy::update() {
     // see if we should stop the animation "hurt"
     bool stop_hurt = false;
     if (pushed_back_when_hurt) {
-      stop_hurt = get_movement()->is_finished() && is_sprite_finished_or_looping();
+      stop_hurt = (get_movement() == NULL || get_movement()->is_finished())
+          && is_sprite_finished_or_looping();
     }
     else {
       stop_hurt = now >= stop_hurt_date;

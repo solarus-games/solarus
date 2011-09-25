@@ -20,7 +20,7 @@ function event_restart()
     local sprite = sol.enemy.get_sprite()
     sol.main.sprite_set_animation(sprite, "hurt_long")
     sol.main.timer_stop_all()
-    sol.main.timer_start(12000, "disappear")
+    sol.main.timer_start(10000, "disappear")
     sol.enemy.stop_movement()
   else
     sol.main.timer_start(1000, "go")
@@ -58,17 +58,26 @@ function disappear()
 
   local sprite = sol.enemy.get_sprite()
   sol.main.sprite_set_animation(sprite, "disappearing")
+  sol.enemy.set_invincible()
 
   father_name = sol.enemy.get_father()
   if father_name ~= "" then
     sol.enemy.send_message(father_name, "end immobilized")
   end
+  sol.main.timer_stop_all()
 end
 
 function event_sprite_animation_finished(sprite, animation)
 
   if animation == "disappearing" then
     sol.map.enemy_remove(sol.enemy.get_name())
+  end
+end
+
+function event_message_received(src_enemy, message)
+
+  if message == "disappear" then
+    disappear()
   end
 end
 

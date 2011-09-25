@@ -498,15 +498,15 @@ big = 1
 
 [dungeon_3.map_43.boss_0]
 floor = 3
-x = 480
-y = 872
-save = 901
-big = 0
-
-[dungeon_3.map_43.boss_1]
-floor = 3
 x = 252
 y = 533
 save = 902
 big = 1
+
+[dungeon_3.map_43.boss_1]
+floor = 3
+x = 480
+y = 872
+save = 901
+big = 0
 

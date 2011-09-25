@@ -6,6 +6,9 @@ function event_hero_interaction(entity_name)
 
     if not sol.game.is_dungeon_finished(2) then
       sol.map.dialog_start("telepathic_booth.not_working")
+    elseif sol.game.get_item("rupee_bag") < 2 then
+      sol.map.dialog_start("telepathic_booth.dungeon_2_not_really_finished")
+      sol.map.dialog_set_variable("telepathic_booth.dungeon_2_not_really_finished", sol.game.savegame_get_name())
     elseif not sol.game.is_dungeon_finished(3) then
       sol.map.dialog_start("telepathic_booth.go_master_arbror")
       sol.map.dialog_set_variable("telepathic_booth.go_master_arbror", sol.game.savegame_get_name())

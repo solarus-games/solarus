@@ -3457,6 +3457,19 @@ line3 = "Rubis !"
 line1 = "Allo ? ... Allo ? ..."
 line2 = "Y'a quelqu'un ? ..."
 
+[telepathic_booth.dungeon_2_not_really_finished]
+#       |-----------------------|
+line1 = "$v, tu m'entends ?"
+line2 = "C'est Mamie Lyly ! La"
+line3 = "télépathie, ça marche !"
+next = telepathic_booth.dungeon_2_not_really_finished.2
+
+[telepathic_booth.dungeon_2_not_really_finished.2]
+#       |-----------------------|
+line1 = "Mais tu es sûr que tu"
+line2 = "as tout trouvé dans la"
+line3 = "Caverne de Roc ?"
+
 [telepathic_booth.go_master_arbror]
 #       |-----------------------|
 line1 = "$v, tu m'entends ?"

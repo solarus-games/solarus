@@ -98,20 +98,6 @@ height = 1296
 width = 1304
 height = 1040
 
-[dungeon_1.map_24.chest_0]
-floor = -1
-x = 808
-y = 440
-save = 56
-big = 0
-
-[dungeon_1.map_24.boss_0]
-floor = -1
-x = 648
-y = 144
-save = 63
-big = 1
-
 [dungeon_8.map_47.chest_0]
 floor = 0
 x = 1872
@@ -230,13 +216,6 @@ y = 896
 save = 501
 big = 0
 
-[dungeon_6.map_57.chest_0]
-floor = 3
-x = 968
-y = 288
-save = 308
-big = 1
-
 [dungeon_6.map_58.chest_0]
 floor = 0
 x = 440
@@ -314,48 +293,6 @@ y = 141
 save = 62
 big = 0
 
-[dungeon_2.map_31.chest_0]
-floor = -1
-x = 200
-y = 656
-save = 72
-big = 0
-
-[dungeon_2.map_31.chest_1]
-floor = -1
-x = 488
-y = 384
-save = 85
-big = 0
-
-[dungeon_2.map_31.chest_2]
-floor = -1
-x = 608
-y = 448
-save = 88
-big = 1
-
-[dungeon_2.map_31.chest_3]
-floor = -1
-x = 232
-y = 320
-save = 81
-big = 0
-
-[dungeon_2.map_31.chest_4]
-floor = -1
-x = 104
-y = 320
-save = 77
-big = 0
-
-[dungeon_2.map_31.boss_0]
-floor = -1
-x = 960
-y = 445
-save = 93
-big = 1
-
 [dungeon_3.map_40.chest_0]
 floor = 0
 x = 936
@@ -426,20 +363,6 @@ y = 397
 save = 415
 big = 1
 
-[dungeon_3.map_43.boss_0]
-floor = 3
-x = 252
-y = 533
-save = 902
-big = 1
-
-[dungeon_3.map_43.boss_1]
-floor = 3
-x = 480
-y = 872
-save = 901
-big = 0
-
 [dungeon_3.map_41.chest_0]
 floor = 1
 x = 944
@@ -509,4 +432,81 @@ x = 880
 y = 872
 save = 505
 big = 0
+
+[dungeon_2.map_31.chest_0]
+floor = -1
+x = 200
+y = 656
+save = 72
+big = 0
+
+[dungeon_2.map_31.chest_1]
+floor = -1
+x = 488
+y = 384
+save = 85
+big = 0
+
+[dungeon_2.map_31.chest_2]
+floor = -1
+x = 608
+y = 448
+save = 88
+big = 1
+
+[dungeon_2.map_31.chest_3]
+floor = -1
+x = 232
+y = 320
+save = 81
+big = 0
+
+[dungeon_2.map_31.chest_4]
+floor = -1
+x = 104
+y = 320
+save = 77
+big = 0
+
+[dungeon_2.map_31.boss_0]
+floor = -1
+x = 960
+y = 445
+save = 93
+big = 1
+
+[dungeon_1.map_24.chest_0]
+floor = -1
+x = 808
+y = 440
+save = 56
+big = 0
+
+[dungeon_1.map_24.boss_0]
+floor = -1
+x = 648
+y = 144
+save = 63
+big = 1
+
+[dungeon_3.map_43.boss_0]
+floor = 3
+x = 252
+y = 533
+save = 902
+big = 1
+
+[dungeon_3.map_43.boss_1]
+floor = 3
+x = 480
+y = 872
+save = 901
+big = 0
+
+[dungeon_6.map_57.chest_0]
+floor = 3
+x = 968
+y = 288
+save = 308
+big = 1
 

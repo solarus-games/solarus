@@ -69,6 +69,7 @@ end
 -- Makes the soldier look to its left or to its right (random choice)
 function look_left_or_right()
 
+  local sprite = sol.enemy.get_sprite()
   if math.random(2) == 1 then
     sol.main.sprite_set_animation(sprite, "stopped_watching_left")
   else

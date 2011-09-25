@@ -6,12 +6,12 @@ vulnerable = false
 
 function event_appear()
 
-  sol.enemy.set_life(8)
+  sol.enemy.set_life(12)
   sol.enemy.set_damage(2)
   sol.enemy.create_sprite("enemies/master_arbror")
   sol.enemy.set_size(264, 312)
   sol.enemy.set_origin(132, 269)
-  sol.enemy.set_pushed_back_when_hurt(true)
+  sol.enemy.set_pushed_back_when_hurt(false)
   sol.enemy.set_invincible()
   sol.enemy.set_attack_consequence("sword", "protected")
   sol.enemy.set_attack_consequence("arrow", "protected")
@@ -36,7 +36,6 @@ function go()
   sol.enemy.start_movement(m)
   sol.main.timer_stop_all()
   sol.main.timer_start(4000, "prepare_son")
-  print("prepare son in 4s")
 end
 
 function event_hurt(attack, life_lost)
@@ -45,14 +44,14 @@ function event_hurt(attack, life_lost)
     local sprite = sol.enemy.get_sprite()
     sol.main.sprite_set_animation_ignore_suspend(sprite, true)
     sol.map.dialog_start("dungeon_3.arbror_killed")
+    sol.main.timer_stop_all()
   end
 end
 
 function prepare_son()
 
-  print("prepare son")
   son_prefix = sol.enemy.get_name().."_son"
-  if sol.map.enemy_get_group_count(son_prefix) < 4 then
+  if sol.map.enemy_get_group_count(son_prefix) < 3 then
     local sprite = sol.enemy.get_sprite()
     sol.main.sprite_set_animation(sprite, "preparing_son")
     sol.main.play_sound("hero_pushes")
@@ -67,19 +66,18 @@ function create_son()
 
   nb_sons_created = nb_sons_created + 1
   son_name = sol.enemy.get_name().."_son_"..nb_sons_created
-  sol.enemy.create_son(son_name, "arbror_root", x, 96)
+  sol.enemy.create_son(son_name, "arbror_root", x, 80)
   sol.main.play_sound("stone")
 end
 
 function event_sprite_animation_finished(sprite, animation)
 
-  local sprite = sol.enemy.get_sprite()
   if animation == "preparing_son" then
     sol.main.sprite_set_animation(sprite, "walking")
     sol.enemy.restart()
   elseif animation == "son_immobilized" then
 
-    if nb_sons_immobilized >= 4
+    if nb_sons_immobilized >= 3
         and not vulnerable then
 
       vulnerable = true
@@ -90,7 +88,8 @@ function event_sprite_animation_finished(sprite, animation)
       sol.main.sprite_set_animation(sprite, "vulnerable")
       sol.main.play_sound("boss_hurt")
       sol.main.timer_stop_all()
-      sol.main.timer_start(3000, "stop_vulnerable")
+      sol.main.timer_start(4000, "stop_vulnerable")
+      remove_sons()
     else
       sol.main.sprite_set_animation(sprite, "walking")
     end
@@ -113,19 +112,30 @@ function event_message_received(src_enemy, message)
   elseif message == "end immobilized" then
     nb_sons_immobilized = nb_sons_immobilized - 1
   end
-  print("sons immobilized: "..nb_sons_immobilized)
 end
 
 function stop_vulnerable()
 
   vulnerable = false
-  nb_sons_immobilized = 0
-  son_prefix = sol.enemy.get_name().."_son"
-  sol.map.enemy_remove_group(son_prefix)
+  remove_sons()
   sol.enemy.set_invincible()
   sol.enemy.set_attack_consequence("sword", "protected")
   sol.enemy.set_attack_consequence("arrow", "protected")
   sol.enemy.set_attack_consequence("hookshot", "protected")
   sol.enemy.restart()
+end
+
+function remove_sons()
+ 
+  local son_prefix = sol.enemy.get_name().."_son"
+  --sol.map.enemy_remove_group(son_prefix) 
+  nb_sons_immobilized = 0
+
+  for i = 1, nb_sons_created do
+    son = son_prefix.."_"..i
+    if not sol.map.enemy_is_dead(son) then
+      sol.enemy.send_message(son, "disappear")
+    end
+  end
 end
 

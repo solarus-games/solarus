@@ -1168,3 +1168,11 @@ Enemy::HurtSoundStyle Enemy::get_hurt_sound_style_by_name(const std::string& nam
   throw;
 }
 
+/**
+ * @brief Sends a message from another enemy to this enemy.
+ * @param sender the sender
+ * @param message the message
+ */
+void Enemy::notify_message_received(Enemy& sender, const std::string& message) {
+
+}

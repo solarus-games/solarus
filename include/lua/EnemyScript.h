@@ -68,6 +68,7 @@ class EnemyScript: public Script {
     void event_hurt(EnemyAttack attack, int life_lost);
     void event_dead();
     void event_immobilized();
+    void event_message_received(const std::string& src_enemy_name, const std::string& message);
 };
 
 #endif

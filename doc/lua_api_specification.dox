@@ -809,6 +809,10 @@ Creates another enemy, specifying its coordinates as relative to the current ene
 Returns the name of the father of the enemy (i.e. the enemy that created the current one),
 or an empty string.
 
+- <tt>sol.enemy.send_message(dst_enemy, message)</tt>:
+Sends a string message to another enemy
+(calls his function event_message_received())
+
 @section cpp_to_lua Calling Lua from C++
 
 The C++ engine sometimes notifies a script that an event just happened.
@@ -1071,8 +1075,11 @@ called when the enemy is hurt
 - <tt>event_dead()</tt>:
 called when the enemy is killed and has finished to die
 
-- <tt>event_immobilized(attack)</tt>:
+- <tt>event_immobilized()</tt>:
 called when the enemy is immobilized
+
+- <tt>event_message_received(src_enemy, message)</tt>:
+called when the enemy receives a messages from another enemy
 
 */
 

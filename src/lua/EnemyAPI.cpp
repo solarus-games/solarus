@@ -986,3 +986,28 @@ int Script::enemy_api_get_father(lua_State *l) {
 
   return 1;
 }
+
+/**
+ * @brief Sends a message to another enemy.
+ *
+ * The other enemy will receive the event event_message_received().
+ *
+ * - Argument 1 (string): name of the destination enemy
+ * - Argument 2 (string): the message to send
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::enemy_api_send_message(lua_State *l) {
+
+  Script& script = get_script(l, 1);
+  Enemy& enemy = script.get_enemy();
+
+  const std::string& dst_enemy_name = luaL_checkstring(l, 1);
+  const std::string& message = luaL_checkstring(l, 2);
+
+  MapEntities& entities = script.get_map().get_entities();
+  Enemy* dst_enemy = (Enemy*) entities.find_entity(ENEMY, dst_enemy_name);
+  dst_enemy->notify_message_received(enemy, message);
+
+  return 1;
+}

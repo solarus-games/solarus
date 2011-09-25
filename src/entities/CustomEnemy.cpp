@@ -277,3 +277,13 @@ void CustomEnemy::notify_immobilized() {
   script->event_immobilized();
 }
 
+/**
+ * @brief Sends a message from another enemy to this enemy.
+ * @param sender the sender
+ * @param message the message
+ */
+void CustomEnemy::notify_message_received(Enemy& sender, const std::string& message) {
+
+  Enemy::notify_message_received(sender, message);
+  script->event_message_received(sender.get_name(), message);
+}

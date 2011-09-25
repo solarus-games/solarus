@@ -161,7 +161,7 @@ bool Hero::HookshotState::can_avoid_switch() {
  * @return true if the hero can be hurt in this state
  */
 bool Hero::HookshotState::can_be_hurt() {
-  return true;
+  return false;
 }
 
 /**

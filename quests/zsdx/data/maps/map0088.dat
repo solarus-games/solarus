@@ -491,7 +491,6 @@
 12	1	344	632	32	8	custom_obstacle_4	1	1	1	1
 4	1	304	245	0	_random	1	-1
 10	1	320	312	16	16	bone_key_lock_2	458	1
-10	1	640	312	16	16	weak_lock_2	458	1
 4	1	320	245	0	_random	1	-1
 4	1	336	245	0	_random	1	-1
 4	1	352	245	0	_random	1	-1
@@ -510,6 +509,9 @@
 18	1	256	448	door_3	3	0	-1
 18	1	688	784	door_4	1	0	-1
 18	1	688	736	door_5	3	0	-1
+8	1	648	221	interactive_entity	3	0	entities/hint_stone	dialog#castle.prison
+4	1	624	245	0	_random	1	-1
+4	1	672	245	0	_random	1	-1
 0	2	656	752	96	8	324
 0	2	656	776	96	8	323
 0	2	1000	464	96	8	324

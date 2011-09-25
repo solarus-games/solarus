@@ -26,9 +26,9 @@ class Hero::RunningState: public Hero::State {
 
   private:
 
-    int phase;				/**< current phase of the run */
-    uint32_t next_phase_date;		/**< date of the next phase */
-    uint32_t next_sound_date;		/**< date of the next time a sound is played during the run */
+    int phase;                      /**< current phase of the run */
+    uint32_t next_phase_date;       /**< date of the next phase */
+    uint32_t next_sound_date;       /**< date of the next time a sound is played during the run */
 
     bool is_bouncing();
 

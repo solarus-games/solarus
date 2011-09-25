@@ -1071,5 +1071,8 @@ called when the enemy is hurt
 - <tt>event_dead()</tt>:
 called when the enemy is killed and has finished to die
 
+- <tt>event_immobilized(attack)</tt>:
+called when the enemy is immobilized
+
 */
 

@@ -19,6 +19,18 @@ function event_map_started(destination_point_name)
   else
     sol.map.obstacle_set_group_enabled("se_water_off_obstacle", false)
   end
+
+  if sol.game.savegame_get_boolean(908) then
+    -- shortcut A
+    sol.map.tile_set_group_enabled("shortcut_a", false)
+    sol.map.switch_set_activated("shortcut_a_switch", true)
+  end
+
+  if sol.game.savegame_get_boolean(909) then
+    -- shortcut B
+    sol.map.tile_set_group_enabled("shortcut_b", false)
+    sol.map.switch_set_activated("shortcut_b_switch", true)
+  end
 end
 
 function event_enemy_dead(enemy_name)
@@ -50,6 +62,14 @@ function event_switch_activated(switch_name)
       and sol.map.switch_is_activated("1f_e_water_switch_1")
       and not sol.game.savegame_get_boolean(122) then
     remove_1f_e_water()
+  elseif switch_name == "shortcut_a_switch" then
+    sol.map.tile_set_group_enabled("shortcut_a", false)
+    sol.game.savegame_set_boolean(908, true)
+    sol.main.play_sound("secret")
+  elseif switch_name == "shortcut_b_switch" then
+    sol.map.tile_set_group_enabled("shortcut_b", false)
+    sol.game.savegame_set_boolean(909, true)
+    sol.main.play_sound("secret")
   end
 end
 

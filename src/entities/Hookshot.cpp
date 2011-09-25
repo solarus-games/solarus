@@ -378,10 +378,12 @@ void Hookshot::notify_movement_tried(bool success) {
 }
 
 /**
- * @brief This function is called when an enemy collides with this entity.
+ * @brief This function is called when an enemy's sprite collides with a sprite of this entity.
  * @param enemy the enemy
+ * @param enemy_sprite the enemy's sprite that overlaps the hero
+ * @param this_sprite the arrow sprite
  */
-void Hookshot::notify_collision_with_enemy(Enemy &enemy) {
+void Hookshot::notify_collision_with_enemy(Enemy& enemy, Sprite& enemy_sprite, Sprite& this_sprite) {
 
   if (!overlaps(get_hero())) {
     enemy.try_hurt(ATTACK_HOOKSHOT, *this, NULL);

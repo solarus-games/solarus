@@ -18,7 +18,13 @@ function event_map_started(destination_point_name)
     remove_wooden_lock()
   end
 
-  -- dungeon 6 entrance
+  -- Inferno
+  if not sol.game.is_dungeon_finished(5) then
+    sol.map.npc_remove("inferno")
+  else
+    local sprite = sol.map.npc_get_sprite("inferno")
+    sol.main.sprite_set_animation_ignore_suspend(sprite, true)
+  end
   if sol.game.savegame_get_boolean(914) then
     inferno_set_open()
   else
@@ -68,7 +74,19 @@ end
 function event_npc_dialog(npc_name)
 
   if npc_name == "inferno" then
-    inferno_open()
+
+    if not sol.game.savegame_get_boolean(915) then
+      -- first time
+      sol.map.dialog_start("inferno.first_time")
+      sol.game.savegame_set_boolean(915, true)
+    elseif not sol.game.savegame_get_boolean(914) then
+      -- not open yet
+      if sol.game.get_item_amount("fire_stones_counter") < 3 then
+        sol.map.dialog_start("inferno.find_fire_stones")
+      else
+        sol.map.dialog_start("inferno.found_fire_stones")
+      end
+    end
   end
 end
 
@@ -83,7 +101,7 @@ function event_hero_on_sensor(sensor_name)
   if sensor_name == "inferno_sensor" then
     local sprite = sol.map.npc_get_sprite("inferno")
     sol.main.sprite_set_animation(sprite, "opening")
-    sol.main.timer_start(1200, "inferno_open_finish")
+    sol.main.timer_start(1050, "inferno_open_finish")
     sol.map.hero_freeze()
     sol.map.hero_set_direction(1)
     sol.map.sensor_set_enabled("inferno_sensor", false)
@@ -103,5 +121,27 @@ function inferno_set_open()
   local sprite = sol.map.npc_get_sprite("inferno")
   sol.main.sprite_set_animation(sprite, "open")
   sol.map.teletransporter_set_enabled("to_dungeon_6", true)
+end
+
+function event_dialog_finished(first_message_id, answer)
+
+  if first_message_id == "inferno.found_fire_stones" then
+
+    if answer == 0 then
+      -- black stones
+      sol.map.dialog_start("inferno.want_black_stones")
+    else
+      -- 100 rupees
+      if not sol.game.savegame_get_boolean(916) then
+        sol.map.dialog_start("inferno.want_rupees")
+      else
+        sol.map.dialog_start("inferno.want_rupees_again")
+      end
+    end 
+  elseif first_message_id == "inferno.want_rupees" then
+    sol.map.treasure_give("rupee", 5, 916)
+  elseif first_message_id == "inferno.want_black_stones" then
+    inferno_open()
+  end
 end
 

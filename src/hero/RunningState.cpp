@@ -125,7 +125,7 @@ void Hero::RunningState::set_suspended(bool suspended) {
 }
 
 /**
- * @brief Returns whether the hero is boucing after he reached an obstacle during the run.
+ * @brief Returns whether the hero is bouncing after he reached an obstacle during the run.
  * @return true if the hero is bouncing
  */
 bool Hero::RunningState::is_bouncing() {
@@ -211,7 +211,7 @@ bool Hero::RunningState::can_take_jump_sensor() {
  * @return true if the hero can be hurt in this state
  */
 bool Hero::RunningState::can_be_hurt() {
-  return !is_bouncing();
+  return phase == 0;
 }
 
 /**

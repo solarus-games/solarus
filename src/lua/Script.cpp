@@ -558,8 +558,9 @@ Script& Script::get_script(lua_State* l, int min_arguments, int max_arguments) {
   if (max_arguments == -1) {
     max_arguments = min_arguments;
   }
-  Debug::check_assertion(lua_gettop(l) >= min_arguments && lua_gettop(l) <= max_arguments,
-      "Invalid number of arguments when calling C++ from Lua");
+  if (lua_gettop(l) < min_arguments || lua_gettop(l) > max_arguments) {
+    luaL_error(l, "Invalid number of arguments when calling C++ from Lua");
+  }
 
   // retrieve the Script object
   lua_getfield(l, LUA_REGISTRYINDEX, "sol.cpp_object");
@@ -759,7 +760,7 @@ bool Script::notify_script(const std::string &function_name, const std::string &
     // call the function
     int nb_results = format.size() - i;
     if (lua_pcall(context, nb_arguments, nb_results, 0) != 0) {
-      Debug::print(StringConcat() << "Error: the Lua function '" << function_name << "' failed: "
+      Debug::print(StringConcat() << "Error in " << function_name << "(): "
           << lua_tostring(context, -1));
     }
 

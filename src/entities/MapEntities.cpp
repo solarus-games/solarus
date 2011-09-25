@@ -60,10 +60,6 @@ MapEntities::MapEntities(Game &game, Map &map):
 MapEntities::~MapEntities() {
 
   destroy_all_entities();
-
-  for (int layer = 0; layer < LAYER_NB; layer++) {
-    delete non_animated_tiles_surfaces[layer];
-  }
 }
 
 /**
@@ -82,6 +78,8 @@ void MapEntities::destroy_all_entities() {
 
     tiles[layer].clear();
     delete[] obstacle_tiles[layer];
+    delete[] animated_tiles[layer];
+    delete non_animated_tiles_surfaces[layer];
 
     entities_displayed_first[layer].clear();
     entities_displayed_y_order[layer].clear();

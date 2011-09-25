@@ -1,10 +1,10 @@
-walking enemies/arbror_root.png 4 150 5
+walking enemies/arbror_root.png 4 200 5
 0	0	64	96	29	86	6	6
 0	0	64	96	29	86	6	6
 0	0	64	96	29	86	6	6
 0	0	64	96	29	86	6	6
 
-disappearing enemies/arbror_root.png 4 150 -1
+disappearing enemies/arbror_root.png 4 200 -1
 0	96	64	96	29	86	6	6
 0	96	64	96	29	86	6	6
 0	96	64	96	29	86	6	6
@@ -23,6 +23,12 @@ shaking enemies/arbror_root.png 4 50 0
 192	192	64	96	29	86	2	2
 
 hurt enemies/arbror_root.png 4 50 0
+0	192	64	96	29	86	3	3
+0	192	64	96	29	86	3	3
+0	192	64	96	29	86	3	3
+0	192	64	96	29	86	3	3
+
+hurt_long enemies/arbror_root.png 4 100 0
 0	192	64	96	29	86	3	3
 0	192	64	96	29	86	3	3
 0	192	64	96	29	86	3	3

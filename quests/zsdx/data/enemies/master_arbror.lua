@@ -10,6 +10,7 @@ function event_appear()
   sol.enemy.set_size(264, 312)
   sol.enemy.set_origin(132, 269)
   sol.enemy.set_invincible()
+  sol.enemy.set_attack_consequence("sword", "protected")
 end
 
 function event_restart()
@@ -19,8 +20,10 @@ end
 
 function go()
 
-  local m = sol.main.pixel_movement_create("434343373737707070010101151515545454", 20)
-  sol.main.movement_set_property(m, "loop", true)
+  --local m = sol.main.pixel_movement_create("434343373737707070010101151515545454", 20)
+  --sol.main.movement_set_property(m, "loop", true)
+  local m = sol.main.random_movement_create(16)
+  sol.main.movement_set_property(m, "max_distance", 16)
   sol.main.movement_set_property(m, "ignore_obstacles", true)
   sol.enemy.start_movement(m)
   sol.main.timer_start(5000, "prepare_son", false)
@@ -37,18 +40,23 @@ end
 
 function prepare_son()
 
-  local sprite = sol.enemy.get_sprite()
-  sol.main.sprite_set_animation(sprite, "preparing_son")
-  sol.main.play_sound("hero_pushes")
-  sol.main.timer_start(1000, "create_son")
-  sol.enemy.stop_movement()
+  son_prefix = sol.enemy.get_name().."_son_"
+  if sol.map.enemy_get_group_count(son_prefix) < 4 then
+    local sprite = sol.enemy.get_sprite()
+    sol.main.sprite_set_animation(sprite, "preparing_son")
+    sol.main.play_sound("hero_pushes")
+    sol.main.timer_start(1000, "create_son")
+    sol.enemy.stop_movement()
+  end
 end
 
 function create_son()
 
+  x = math.random(-10, 10) * 16
+
   nb_sons_created = nb_sons_created + 1
   son_name = sol.enemy.get_name().."_son_"..nb_sons_created
-  sol.enemy.create_son(son_name, "arbror_root", 0, 96)
+  sol.enemy.create_son(son_name, "arbror_root", x, 96)
   sol.main.play_sound("stone")
 end
 

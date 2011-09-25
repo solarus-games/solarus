@@ -180,8 +180,9 @@ class Enemy: public Detector {
     void immobilize();
     void stop_immobilized();
     virtual int custom_attack(EnemyAttack attack, Sprite *this_sprite);
-    virtual void just_hurt(MapEntity &source, EnemyAttack attack, int life_points);
-    virtual void just_dead();
+    virtual void notify_hurt(MapEntity &source, EnemyAttack attack, int life_points);
+    virtual void notify_dead();
+    virtual void notify_immobilized();
 
     // animation
     const std::string& get_animation();

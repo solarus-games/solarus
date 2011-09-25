@@ -329,3 +329,14 @@ void EnemyScript::event_dead() {
 
   notify_script("event_dead");
 }
+
+/**
+ * @brief Notifies the script that the enemy has just been immobilized.
+ *
+ * This function is called after the hurt animation is finished,
+ * when the immobilized animation has just started.
+ */
+void EnemyScript::event_immobilized() {
+
+  notify_script("event_immobilized");
+}

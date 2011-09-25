@@ -20,7 +20,7 @@ function event_restart()
     local sprite = sol.enemy.get_sprite()
     sol.main.sprite_set_animation(sprite, "hurt_long")
     sol.main.timer_stop_all()
-    sol.main.timer_start(10000, "disappear")
+    sol.main.timer_start(12000, "disappear")
     sol.enemy.stop_movement()
   else
     sol.main.timer_start(1000, "go")
@@ -28,8 +28,23 @@ function event_restart()
 end
 
 function go()
-  local m = sol.main.random_path_movement_create(32)
-  sol.enemy.start_movement(m)
+
+  if not immobilized then
+    local m = sol.main.random_path_movement_create(32)
+    sol.enemy.start_movement(m)
+  end
+end
+
+function event_hurt(attack, life_points)
+
+  if not immobilized then
+    -- tell my father that I will be immobilized
+    father_name = sol.enemy.get_father()
+    if father_name ~= "" then
+      sol.enemy.send_message(father_name, "begin immobilized")
+    end
+    sol.main.timer_stop_all()
+  end
 end
 
 function event_immobilized()
@@ -43,6 +58,11 @@ function disappear()
 
   local sprite = sol.enemy.get_sprite()
   sol.main.sprite_set_animation(sprite, "disappearing")
+
+  father_name = sol.enemy.get_father()
+  if father_name ~= "" then
+    sol.enemy.send_message(father_name, "end immobilized")
+  end
 end
 
 function event_sprite_animation_finished(sprite, animation)

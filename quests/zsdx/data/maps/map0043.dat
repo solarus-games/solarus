@@ -511,6 +511,12 @@
 0	1	544	352	16	32	2
 0	1	560	352	16	16	2
 0	1	944	352	16	16	2
+0	1	360	240	16	24	570
+0	1	392	240	16	24	570
+0	1	440	240	16	24	570
+0	1	424	240	16	24	571
+0	1	296	240	16	24	570
+0	1	264	240	16	24	571
 12	1	792	848	32	8	custom_obstacle	1	1	1	1
 12	1	792	872	32	8	custom_obstacle_2	1	1	1	1
 12	1	904	912	32	8	custom_obstacle_3	1	1	1	1
@@ -556,7 +562,7 @@
 1	1	256	693	from_5f_c	1	0
 2	1	248	680	16	16	teletransporter_7	0	1	85	from_4f
 19	1	248	680	stairs_7	3	0
-7	1	252	525	boss	3	master_arbror	2	902	heart_container	1	903
+7	1	252	533	boss	3	master_arbror	2	902	heart_container	1	903
 18	1	240	680	final_room_door	3	0	-1
 18	1	112	248	boss_door_2	1	0	-1
 18	1	112	200	boss_door_3	3	0	-1

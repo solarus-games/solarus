@@ -2610,7 +2610,7 @@ line1 = "ton environnement !"
 #line2 = "donjon du monde cache"
 #line3 = "un Fragment de Coeur..."
 #next = outside_world.village.chignon_woman_npc.2
-#cancel = all
+#skip = all
 
 #[outside_world.village.chignon_woman_npc.2]
 #       |-----------------------|
@@ -4799,6 +4799,110 @@ line1 = "Un Pain au Chocolat"
 line2 = "pour récupérer des"
 line3 = "Coeurs."
 
+[castle.welcome]
+#       |-----------------------|
+line1 = "Bienvenue dans l'ancien"
+line2 = "château royal, classé"
+line3 = "monument historique."
+skip = all
+next = castle.welcome.2
+
+[castle.welcome.2]
+#       |-----------------------|
+line1 = "Merci de respecter les"
+line2 = "lieux."
+
+[castle.forbidden_stairs]
+#       |-----------------------|
+line1 = "Ces escaliers mènent à"
+line2 = "l'étage supérieur et à"
+line3 = "la terrasse."
+skip = all
+next = castle.forbidden_stairs.2
+
+[castle.forbidden_stairs.2]
+#       |-----------------------|
+line1 = "Cependant, l'accès est"
+line2 = "interdit au public."
+
+[castle.forbidden_door]
+#       |-----------------------|
+line1 = "Je regrette Monsieur,"
+line2 = "mais le passage vers"
+line3 = "les cachots n'est pas"
+skip = all
+next = castle.forbidden_door.2
+
+[castle.forbidden_door.2]
+#       |-----------------------|
+line1 = "autorisé au public."
+
+[castle.forbidden_door_wtf]
+#       |-----------------------|
+line1 = "........$0....?!$#!@&=!??"
+line2 = ".....$0.................."
+next = castle.forbidden_door_wtf.2
+
+[castle.forbidden_door_wtf.2]
+#       |-----------------------|
+line1 = "Comment es-tu arrivé"
+line2 = "ici ? L'accès aux"
+line3 = "cachots est interdit !"
+
+[castle.npc_1]
+#       |-----------------------|
+line1 = "Jadis, ce château"
+line2 = "appartenait à la"
+line3 = "famille royale."
+skip = all
+next = castle.npc_1.2
+
+[castle.npc_1.2]
+#       |-----------------------|
+line1 = "Aujourd'hui, c'est un"
+line2 = "lieu très prisé par"
+line3 = "les touristes !"
+
+[castle.npc_2]
+#       |-----------------------|
+line1 = "Quand on pense aux gens"
+line2 = "qui ont construit ce"
+line3 = "château..."
+skip = all
+next = castle.npc_2.2
+
+[castle.npc_2.2]
+#       |-----------------------|
+line1 = "C'est une prouesse"
+line2 = "architecturale pour"
+line3 = "l'époque. Il faut dire"
+next = castle.npc_2.3
+
+[castle.npc_2.3]
+#       |-----------------------|
+line1 = "qu'ils n'avaient pas"
+line2 = "les moyens modernes"
+line3 = "d'aujourd'hui !"
+
+[castle.where_is_tom]
+#       |-----------------------|
+line1 = "Tom, un de nos"
+line2 = "meilleurs soldats, a"
+line3 = "mystérieusement disparu"
+skip = all
+next = castle.where_is_tom.2
+
+[castle.where_is_tom.2]
+#       |-----------------------|
+line1 = "alors qu'il était parti"
+line2 = "explorer une caverne."
+
+[castle.npc_3]
+#       |-----------------------|
+line1 = "Quel luxe ! Ce manoir"
+line2 = "est magnifique !"
+skip = all
+
 [dungeon_2.solarus_child]
 #       |-----------------------|
 line1 = "$2$v... Merci."
@@ -4990,13 +5094,13 @@ line3 = "à la prospérité !"
 #       |-----------------------|
 line1 = "$1A G A H N I M !"
 line2 = "$3Et oui, lui-même !"
-line3 = "Le sorcier revenu de"
 next = dungeon_4.agahnim.2
 
 [dungeon_4.agahnim.2]
 #       |-----------------------|
-line1 = "l'empire des morts !"
-line2 = "Ah ah ah ah ah ah !!!"
+line1 = "Le sorcier revenu de"
+line2 = "l'empire des morts !"
+line3 = "Ah ah ah ah ah ah !!!"
 next = dungeon_4.agahnim.3
 
 [dungeon_4.agahnim.3]

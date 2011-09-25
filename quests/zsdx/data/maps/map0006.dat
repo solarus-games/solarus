@@ -1502,6 +1502,7 @@
 7	0	128	221	enemy_5	3	green_knight_soldier	0	-1	_random	0	-1
 7	0	1056	501	enemy_6	3	blue_knight_soldier	0	-1	_random	0	-1
 4	0	1016	317	3	_random	1	-1
+2	0	128	176	16	16	to_beaumont_cave_2	0	0	60	from_outside
 0	2	0	400	48	16	512
 0	2	0	416	48	40	511
 0	2	48	408	8	40	514

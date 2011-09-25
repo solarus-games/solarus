@@ -209,20 +209,6 @@ y = 512
 save = -1
 big = 0
 
-[dungeon_5.map_63.chest_0]
-floor = 1
-x = 816
-y = 296
-save = 504
-big = 1
-
-[dungeon_5.map_63.chest_1]
-floor = 1
-x = 880
-y = 872
-save = 505
-big = 0
-
 [dungeon_5.map_64.chest_0]
 floor = 0
 x = 600
@@ -508,5 +494,19 @@ floor = 0
 x = 56
 y = 536
 save = 87
+big = 0
+
+[dungeon_5.map_63.chest_0]
+floor = 1
+x = 816
+y = 296
+save = 504
+big = 1
+
+[dungeon_5.map_63.chest_1]
+floor = 1
+x = 880
+y = 872
+save = 505
 big = 0
 

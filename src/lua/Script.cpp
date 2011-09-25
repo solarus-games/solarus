@@ -582,20 +582,20 @@ void Script::print_stack() {
     switch (type) {
 
       case LUA_TSTRING:
-	std::cout << lua_tostring(context, i);
-	break;
+        std::cout << lua_tostring(context, i);
+        break;
 
       case LUA_TBOOLEAN:
-	std::cout << (lua_toboolean(context, i) ? "true" : "false");
-	break;
+        std::cout << (lua_toboolean(context, i) ? "true" : "false");
+        break;
 
       case LUA_TNUMBER:
-	std::cout << lua_tonumber(context, i);
-	break;
+        std::cout << lua_tonumber(context, i);
+        break;
 
       default:
-	std::cout << lua_typename(context, type);
-	break;
+        std::cout << lua_typename(context, type);
+        break;
 
     }
     std::cout << " ";
@@ -795,10 +795,10 @@ void Script::update() {
 
     timer->update();
     if (timer->is_finished()) {
-      
+
       bool invoked = notify_script(timer->get_name()); 
       if (!invoked) {
-	Debug::die(StringConcat() << "No such timer callback function: '" << timer->get_name() << "'");
+        Debug::die(StringConcat() << "No such timer callback function: '" << timer->get_name() << "'");
       }
 
       delete timer;

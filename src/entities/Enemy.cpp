@@ -681,6 +681,10 @@ bool Enemy::is_in_normal_state() {
  * By default, the "walking" animation is set on the enemy's sprites.
  */
 void Enemy::restart() {
+
+  if (is_immobilized()) {
+    stop_immobilized();
+  }
   set_animation("walking");
 }
 

@@ -340,3 +340,13 @@ void EnemyScript::event_immobilized() {
 
   notify_script("event_immobilized");
 }
+
+/**
+ * @brief Notifies the script the enemy has received a message from another enemy.
+ * @param src_enemy_name name of the sender
+ * @param message the message received
+ */
+void EnemyScript::event_message_received(const std::string& src_enemy_name, const std::string& message) {
+
+  notify_script("event_message_received", "ss", src_enemy_name.c_str(), message.c_str());
+}

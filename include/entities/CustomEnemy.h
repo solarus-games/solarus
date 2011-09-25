@@ -60,6 +60,8 @@ class CustomEnemy: public Enemy {
     void notify_hurt(MapEntity& source, EnemyAttack attack, int life_points);
     void notify_dead();
     void notify_immobilized();
+
+    void notify_message_received(Enemy& sender, const std::string& message);
 };
 
 #endif

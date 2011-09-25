@@ -533,6 +533,7 @@ void Script::register_enemy_api() {
       { "set_displayed_in_y_order", enemy_api_set_displayed_in_y_order },
       { "create_son", enemy_api_create_son },
       { "get_father", enemy_api_get_father },
+      { "send_message", enemy_api_send_message },
       { NULL, NULL }
   };
   luaL_register(context, "sol.enemy", enemy_api);

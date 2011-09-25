@@ -46,3 +46,28 @@ function open_castle_door()
   sol.main.timer_start(1000, "sol.map.camera_restore", false)
 end
 
+function event_hero_interaction(entity_name)
+
+  if entity_name == "cannon" then
+
+    if not sol.game.savegame_get_boolean(905) then
+      sol.map.dialog_start("castle.cannon")
+    else
+      sol.map.hero_freeze()
+      local x, y = sol.map.npc_get_position(entity_name)
+      sol.map.hero_set_position(x, y, 0)
+      sol.map.hero_set_visible(false)
+      sol.main.play_sound("bomb")
+      sol.main.timer_start(2000, "cannon_jump")
+    end
+  end
+end
+
+function cannon_jump()
+
+  sol.main.play_sound("explosion")
+  sol.map.explosion_create(296, 384, 0)
+  sol.map.hero_start_jumping(6, 432, true)
+  sol.map.hero_set_visible(true)
+end
+

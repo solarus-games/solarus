@@ -4903,6 +4903,31 @@ line1 = "Quel luxe ! Ce manoir"
 line2 = "est magnifique !"
 skip = all
 
+[castle.prison]
+#       |-----------------------|
+line1 = "C'est dans ces sombres"
+line2 = "cachots qu'étaient"
+line3 = "autrefois enfermés les"
+skip = all
+next = castle.prison.2
+
+[castle.prison.2]
+#       |-----------------------|
+line1 = "prisonniers du Roi."
+
+[castle.cannon]
+#       |-----------------------|
+line1 = "Quel splendide canon !"
+line2 = "A l'époque où le Roi"
+line3 = "l'utilisait, il valait"
+skip = all
+next = castle.cannon.2
+
+[castle.cannon.2]
+#       |-----------------------|
+line1 = "mieux ne pas faire"
+line2 = "partie de ses ennemis !"
+
 [dungeon_2.solarus_child]
 #       |-----------------------|
 line1 = "$2$v... Merci."

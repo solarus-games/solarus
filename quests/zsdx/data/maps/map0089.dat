@@ -379,7 +379,6 @@
 8	0	184	797	walking_npc_1	3	1	npc/newlink3	dialog#castle.npc_3
 18	0	800	416	door_5	1	0	-1
 18	0	800	320	door_6	3	0	-1
-1	0	848	877	tmp	2	0
 13	0	808	877	16	16	forbidden_door_sensor	0
 0	1	440	984	336	192	613
 0	1	952	40	160	208	613
@@ -713,7 +712,6 @@
 19	1	1064	24	stairs_9	1	1
 8	1	400	61	interactive_entity_2	3	1	npc/tom	dialog#castle.forbidden_stairs
 8	1	400	213	walking_npc_3	3	1	npc/villager1	dialog#castle.npc_2
-2	1	584	1176	16	16	teletransporter	0	0	89	tmp
 0	2	1048	16	64	8	559
 0	2	952	16	64	8	559
 0	2	576	1192	128	8	560

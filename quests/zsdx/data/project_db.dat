@@ -182,6 +182,7 @@
 3	entities/snores	Snoring (zzz)
 3	entities/hint_stone	Hint stone
 3	entities/torch	Torch
+3	entities/cannon	Cannon
 4	arrow_hit	arrow_hit
 4	bomb	bomb
 4	boomerang	boomerang

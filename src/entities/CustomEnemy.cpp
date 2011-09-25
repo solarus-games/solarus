@@ -252,18 +252,28 @@ int CustomEnemy::custom_attack(EnemyAttack attack, Sprite* this_sprite) {
  * @param attack the attack that was just successful
  * @param life_points the number of life points lost by this enemy (possibly 0)
  */
-void CustomEnemy::just_hurt(MapEntity& source, EnemyAttack attack, int life_points) {
+void CustomEnemy::notify_hurt(MapEntity& source, EnemyAttack attack, int life_points) {
 
-  Enemy::just_hurt(source, attack, life_points);
+  Enemy::notify_hurt(source, attack, life_points);
   script->event_hurt(attack, life_points);
 }
 
 /**
  * @brief This function is called when the enemy has just finished dying.
  */
-void CustomEnemy::just_dead() {
+void CustomEnemy::notify_dead() {
 
-  Enemy::just_dead();
+  Enemy::notify_dead();
   script->event_dead();
+}
+
+/**
+ * @brief This function is called when the enemy is immobilized,
+ * after the hurt animation.
+ */
+void CustomEnemy::notify_immobilized() {
+
+  Enemy::notify_dead();
+  script->event_immobilized();
 }
 

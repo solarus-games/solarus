@@ -170,8 +170,6 @@ MapEntity* Enemy::create(Game &game, const std::string& breed, Rank rank, int sa
 
   if (rank != RANK_NORMAL) {
     enemy->set_enabled(false);
-//    enemy->set_collision_modes(COLLISION_SPRITE);
-// COLLISION_RECTANGLE is necessary to detect collisions with thrown items
   }
 
   // set the default enemy features

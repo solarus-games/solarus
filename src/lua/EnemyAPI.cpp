@@ -963,6 +963,7 @@ int Script::enemy_api_create_son(lua_State *l) {
       name, enemy.get_layer(), x, y, 0, treasure);
   son->father_name = enemy.get_name();
   entities.add_entity(son);
+  son->restart();
 
   return 0;
 }

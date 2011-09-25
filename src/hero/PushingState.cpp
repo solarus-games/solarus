@@ -208,3 +208,35 @@ bool Hero::PushingState::can_be_hurt() {
   return !is_moving_grabbed_entity();
 }
 
+/**
+ * @brief Returns whether a deep water tile is considered as an obstacle in this state.
+ * @return true if the deep water tiles are considered as obstacles in this state
+ */
+bool Hero::PushingState::is_deep_water_obstacle() {
+  return true;
+}
+
+/**
+ * @brief Returns whether a hole is considered as an obstacle in this state.
+ * @return true if the holes are considered as obstacles in this state
+ */
+bool Hero::PushingState::is_hole_obstacle() {
+  return true;
+}
+
+/**
+ * @brief Returns whether lava is considered as an obstacle in this state.
+ * @return true if lava is considered as obstacles in this state
+ */
+bool Hero::PushingState::is_lava_obstacle() {
+  return true;
+}
+
+/**
+ * @brief Returns whether prickles are considered as an obstacle in this state.
+ * @return true if prickles are considered as obstacles in this state
+ */
+bool Hero::PushingState::is_prickle_obstacle() {
+  return true;
+}
+

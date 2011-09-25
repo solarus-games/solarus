@@ -115,7 +115,7 @@ void Script::load(const std::string &script_name) {
  *
  * @param script_name name of a Lua script file (without extension)
  */
-void Script::load_if_exists(const std::string &script_name) {
+void Script::load_if_exists(const std::string& script_name) {
 
   if (context == NULL) {
     initialize_lua_context();
@@ -143,11 +143,14 @@ void Script::load_if_exists(const std::string &script_name) {
   if (FileTools::data_file_exists(file_name)) {
     // load the file
     size_t size;
-    char *buffer;
+    char* buffer;
     FileTools::data_file_open_buffer(file_name, &buffer, &size);
     luaL_loadbuffer(context, buffer, size, file_name.c_str());
     FileTools::data_file_close_buffer(buffer);
-    lua_call(context, 0, 0);
+    if (lua_pcall(context, 0, 0, 0) != 0) {
+      Debug::die(StringConcat() << "Error: failed to load script '" << script_name
+          << "': " << lua_tostring(context, -1));
+    }
   }
   else {
     // uninitialize Lua
@@ -741,31 +744,34 @@ bool Script::notify_script(const std::string &function_name, const std::string &
     bool end_arguments = false;
     for (i = 0; i < format.size() && !end_arguments; i++) {
       switch (format[i]) {
-	case 'i':	lua_pushinteger(context, va_arg(args, int));	break;
-	case 'b':	lua_pushboolean(context, va_arg(args, int));	break; 		// cstdarg refuses bool
-	case 's':	lua_pushstring(context, va_arg(args, const char*));	break;	// and std::string
-	case ' ':	end_arguments = true;	break;
-	default:	Debug::die(StringConcat() << "Invalid character '" << format[i] << "' in format string '" << format);
+        case 'i':	lua_pushinteger(context, va_arg(args, int));	break;
+        case 'b':	lua_pushboolean(context, va_arg(args, int));	break; 		// cstdarg refuses bool
+        case 's':	lua_pushstring(context, va_arg(args, const char*));	break;	// and std::string
+        case ' ':	end_arguments = true;	break;
+        default:	Debug::die(StringConcat() << "Invalid character '" << format[i] << "' in format string '" << format);
       }
 
       if (format[i] != ' ') {
-	nb_arguments++;
+        nb_arguments++;
       }
     }
 
     // call the function
     int nb_results = format.size() - i;
-    lua_call(context, nb_arguments, nb_results);
+    if (lua_pcall(context, nb_arguments, nb_results, 0) != 0) {
+      Debug::print(StringConcat() << "Error: the Lua function '" << function_name << "' failed: "
+          << lua_tostring(context, -1));
+    }
 
     // get the results
     for (int i = 0; i < nb_results; i++) {
       char type = format[nb_arguments + i + 1];
       int stack_index = -nb_results + i;
       switch (type) {
-	case 'i':	*va_arg(args, int*) = lua_tointeger(context, stack_index);	break;
-	case 'b':	*va_arg(args, int*) = lua_toboolean(context, stack_index);	break;
-	case 's':	Debug::die("String results are not supported by Script::notify_script(), please make the call yourself");
-	default:	Debug::die(StringConcat() << "Invalid character '" << type << "' in format string '" << format);
+        case 'i':	*va_arg(args, int*) = lua_tointeger(context, stack_index);	break;
+        case 'b':	*va_arg(args, int*) = lua_toboolean(context, stack_index);	break;
+        case 's':	Debug::die("String results are not supported by Script::notify_script(), please make the call yourself");
+        default:	Debug::die(StringConcat() << "Invalid character '" << type << "' in format string '" << format);
       }
     }
     lua_pop(context, nb_results);

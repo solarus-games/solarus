@@ -796,13 +796,15 @@ void Script::update() {
     timer->update();
     if (timer->is_finished()) {
 
-      bool invoked = notify_script(timer->get_name()); 
+      const std::string function_name = timer->get_name();
+      timers.erase(it);
+      delete timer;
+
+      bool invoked = notify_script(function_name);
       if (!invoked) {
-        Debug::die(StringConcat() << "No such timer callback function: '" << timer->get_name() << "'");
+        Debug::die(StringConcat() << "No such timer callback function: '" << function_name << "'");
       }
 
-      delete timer;
-      timers.erase(it);
       it = timers.begin();
     }
   }
@@ -839,6 +841,7 @@ bool Script::has_played_music() {
  * @param timer the timer
  */
 void Script::add_timer(Timer *timer) {
+
   timers.push_back(timer);
 }
 

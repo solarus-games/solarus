@@ -4941,6 +4941,122 @@ next = castle.cannon.2
 line1 = "mieux ne pas faire"
 line2 = "partie de ses ennemis !"
 
+[inferno.first_time]
+#       |-----------------------|
+line1 = "Qui ose pénétrer sur"
+line2 = "mes terres ? Petit !"
+line3 = "Sache qu'il est très"
+next = inferno.first_time.2
+
+[inferno.first_time.2]
+#       |-----------------------|
+line1 = "grave de déranger le"
+line2 = "grand Inferno, Seigneur"
+line3 = "des Flammes !"
+next = inferno.first_time.3
+
+[inferno.first_time.3]
+#       |-----------------------|
+line1 = "Ton sacrilège ne"
+line2 = "restera pas impuni !"
+line3 = "Pour te racheter, je te"
+next = inferno.first_time.4
+
+[inferno.first_time.4]
+#       |-----------------------|
+line1 = "mets au défi de partir"
+line2 = "à la recherche des"
+line3 = "trois Pierres de Feu"
+next = inferno.first_time.5
+
+[inferno.first_time.5]
+#       |-----------------------|
+line1 = "que j'ai cachées dans"
+line2 = "mes labyrinthes"
+line3 = "lugubres."
+next = inferno.find_fire_stones
+
+[inferno.find_fire_stones]
+#       |-----------------------|
+line1 = "Tu subiras trois"
+line2 = "épreuves de courage."
+skip = current
+next = inferno.find_fire_stones.2
+
+[inferno.find_fire_stones.2]
+#       |-----------------------|
+line1 = "Rivière."
+line2 = "$0Montagne."
+line3 = "$0Beaumont."
+next = inferno.find_fire_stones.3
+
+[inferno.find_fire_stones.3]
+#       |-----------------------|
+line1 = "Si tu parviens à sortir"
+line2 = "des trois labyrinthes,"
+line3 = "apporte-moi les trois"
+next = inferno.find_fire_stones.4
+
+[inferno.find_fire_stones.4]
+#       |-----------------------|
+line1 = "Pierres de Feu."
+line2 = "Ainsi, la rancoeur"
+line3 = "d'Inferno s'apaisera."
+
+[inferno.found_fire_stones]
+#       |-----------------------|
+line1 = "Tu as franchi les trois"
+line2 = "épreuves avec succès !"
+line3 = "Je m'incline devant ta"
+next = inferno.found_fire_stones.2
+
+[inferno.found_fire_stones.2]
+#       |-----------------------|
+line1 = "bravoure. Demande-moi"
+line2 = "ce que tu tu veux et"
+line3 = "j'accompirai ton désir."
+next = inferno.found_fire_stones.3
+
+[inferno.found_fire_stones.3]
+#       |-----------------------|
+line1 = "Que puis-je faire ?"
+line2 = "Les pierres noires..."
+line3 = "100 Rubis ?"
+question = true
+
+[inferno.want_rupees]
+#       |-----------------------|
+line1 = "Soit."
+
+[inferno.want_rupees_again]
+#       |-----------------------|
+line1 = "Tu as déjà bénéficié de"
+line2 = "cette faveur."
+
+[inferno.want_rupees]
+#       |-----------------------|
+line1 = "Soit."
+
+[inferno.want_black_stones]
+#       |-----------------------|
+line1 = "Avant de soulever ces"
+line2 = "pierres noires, tu"
+line3 = "devras affronter les"
+next = inferno.want_black_stones.2
+
+[inferno.want_black_stones.2]
+#       |-----------------------|
+line1 = "périls d'un lieu"
+line2 = "infernal et vaincre de"
+line3 = "nombreux dangers."
+next = inferno.want_black_stones.3
+
+[inferno.want_black_stones.3]
+#       |-----------------------|
+line1 = "Laisse-moi te"
+line2 = "transporter vers"
+line3 = "l'enfer des flammes..."
+
 [dungeon_2.solarus_child]
 #       |-----------------------|
 line1 = "$2$v... Merci."

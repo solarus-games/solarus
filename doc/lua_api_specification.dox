@@ -258,10 +258,10 @@ returns the possession state of an item
 sets the possession state of an item
 
 - <tt>sol.game.has_item_amount(item_name, amount)</tt>:
-returns the amount the player has for an item
+returns whether the player has at least the specified amount of an item
 
 - <tt>sol.game.get_item_amount(item_name)</tt>:
-returns whether the player has at least the specified amount of an item
+returns the amount the player has for an item
 
 - <tt>sol.game.add_item_amount(item_name, amount)</tt>:
 adds an amount of the specified item

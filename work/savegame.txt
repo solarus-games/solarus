@@ -265,4 +265,6 @@ booleans:
 912	outside world A3: chest with the bottle 3
 913	bottle 4 (TODO)
 914	outside world B2: dungeon 6 open
+915	outside world B2: talked to Inferno
+916	outside wolrd B2: got 100 rupees from Inferno
 

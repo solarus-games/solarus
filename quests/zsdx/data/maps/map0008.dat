@@ -844,8 +844,9 @@
 12	0	864	184	16	8	custom_obstacle_5	1	1	1	1
 12	0	776	232	16	8	custom_obstacle_6	1	1	1	1
 12	0	888	312	16	8	custom_obstacle_7	1	1	1	1
-2	0	408	304	16	16	teletransporter	0	1	44	from_outside
-1	0	416	333	from_west_mountain_cave_1f	3	0
+2	0	392	304	16	16	teletransporter	0	1	44	from_outside
+1	0	416	333	from_west_mountain_cave_1f_w	3	0
+2	0	408	304	16	16	teletransporter_2	0	1	91	from_outside_w
 0	2	224	424	8	40	514
 0	2	8	384	48	40	511
 0	2	56	376	8	40	514

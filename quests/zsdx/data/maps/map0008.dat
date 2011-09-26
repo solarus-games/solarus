@@ -828,6 +828,15 @@
 0	0	1032	152	16	16	28
 0	0	176	120	8	8	483
 0	0	168	120	8	8	481
+0	0	1064	16	8	16	962
+0	0	920	32	144	32	964
+0	0	1064	32	8	32	965
+0	0	920	64	144	16	968
+0	0	1064	64	8	16	969
+0	0	920	16	144	16	961
+0	0	912	16	8	16	959
+0	0	912	32	8	32	963
+0	0	912	64	8	16	966
 2	0	0	624	1120	16	to_B1	0	2	9	_side
 2	0	1120	0	16	624	to_A2	0	2	10	_side
 6	0	856	360	32	8	jump_sensor	6	56
@@ -847,6 +856,18 @@
 2	0	392	304	16	16	teletransporter	0	1	44	from_outside
 1	0	416	333	from_west_mountain_cave_1f_w	3	0
 2	0	408	304	16	16	teletransporter_2	0	1	91	from_outside_w
+1	0	584	285	from_west_mountain_cave_1f_e	3	0
+2	0	576	256	16	16	teletransporter_3	0	1	91	from_outside_e
+1	0	512	173	from_west_mountain_cave_2f_w	3	0
+1	0	784	269	from_west_mountain_cave_2f_e	3	0
+2	0	504	144	16	16	teletransporter_4	0	1	92	from_outside_w
+2	0	776	240	16	16	teletransporter_5	0	1	92	from_outside_e
+1	0	896	349	from_fairy_fountain	3	0
+2	0	888	320	16	16	teletransporter_6	0	1	93	from_outside
+1	0	600	93	from_west_mountain_cave_3f_w	3	0
+2	0	592	64	16	16	teletransporter_7	0	1	94	from_outside_w
+1	0	872	221	from_west_mountain_cave_3f_e	3	0
+2	0	864	192	16	16	teletransporter_8	0	1	94	from_outside_e
 0	2	224	424	8	40	514
 0	2	8	384	48	40	511
 0	2	56	376	8	40	514

@@ -2,6 +2,13 @@ enable_testing()
 
 include_directories(
   ${SOLARUS_SOURCE_DIR}/include
+  ${SOLARUS_SOURCE_DIR}/include/snes_spc
+  ${SDL_INCLUDE_DIR}
+  ${OPENAL_INCLUDE_DIR}
+  ${VORBISFILE_INCLUDE_DIR}
+  ${MODPLUG_INCLUDE_DIR}
+  ${LUA_INCLUDE_DIR}
+  ${PHYSFS_INCLUDE_DIR}
 )
 
 # each .cpp file of the 'tests' directory is a test with a main() function

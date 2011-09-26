@@ -53,12 +53,12 @@
 0	43	Dungeon 3 4F
 0	54	Dungeon 3 5F
 0	85	Dungeon 3 final room
-0	30	Dungeon 2 1F
 0	31	Dungeon 2 B1
+0	30	Dungeon 2 1F
 0	86	Dungeon 2 final room
-0	25	Dungeon 1 2F
-0	23	Dungeon 1 1F
 0	24	Dungeon 1 B1
+0	23	Dungeon 1 1F
+0	25	Dungeon 1 2F
 0	27	Dungeon 1 final room
 0	32	Telepathic booth
 0	33	Hole and Flower Cave
@@ -89,8 +89,8 @@
 0	90	Castle 2F
 0	91	West mountains cave 1F
 0	92	West mountains cave 2F
-0	93	North fairy fountain
 0	94	West mountains cave 3F
+0	93	North fairy fountain
 1	1	Light World
 1	13	Dark World
 1	3	Cave

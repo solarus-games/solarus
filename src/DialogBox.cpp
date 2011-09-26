@@ -313,10 +313,12 @@ void DialogBox::show_message(const MessageId &message_id) {
 
   if (get_skip_mode() != SKIP_NONE) {
     keys_effect.set_sword_key_effect(KeysEffect::SWORD_KEY_SKIP);
+    keys_effect.set_action_key_effect(KeysEffect::ACTION_KEY_NEXT);
   }
   else {
     keys_effect.set_sword_key_effect(KeysEffect::SWORD_KEY_HIDDEN);
   }
+  end_message_sprite->stop_animation();
 }
 
 /** 
@@ -396,6 +398,9 @@ void DialogBox::action_key_pressed() {
 
   if (current_message->is_finished()) { // the current message is over
     show_next_message();
+  }
+  else if (skip_mode != SKIP_NONE) {
+    show_all_now();
   }
 }
 
@@ -496,22 +501,16 @@ void DialogBox::update() {
 
     // show the appropriate action icon
     KeysEffect &keys_effect = game.get_keys_effect();
-    KeysEffect::ActionKeyEffect action_key_effect = keys_effect.get_action_key_effect();
-    if (action_key_effect != KeysEffect::ACTION_KEY_NEXT
-	&& action_key_effect != KeysEffect::ACTION_KEY_RETURN) {
+    if (!end_message_sprite->is_animation_started()) {
 
       MessageId next_message_id = current_message->get_next_message_id();
       if (next_message_id != "" || current_message->is_question()) {
-	if (end_message_sprite->get_current_animation() != "next") {
-	  end_message_sprite->set_current_animation("next");
-	}
-	keys_effect.set_action_key_effect(KeysEffect::ACTION_KEY_NEXT);
+        end_message_sprite->set_current_animation("next");
+        keys_effect.set_action_key_effect(KeysEffect::ACTION_KEY_NEXT);
       }
       else {
-	keys_effect.set_action_key_effect(KeysEffect::ACTION_KEY_RETURN);
-	if (end_message_sprite->get_current_animation() != "last") {
-	  end_message_sprite->set_current_animation("last");
-	}
+        keys_effect.set_action_key_effect(KeysEffect::ACTION_KEY_RETURN);
+        end_message_sprite->set_current_animation("last");
       }
 
       keys_effect.set_sword_key_effect(KeysEffect::SWORD_KEY_HIDDEN);

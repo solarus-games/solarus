@@ -20,7 +20,7 @@
 #include "Common.h"
 #include "lowlevel/Color.h"
 #include "lowlevel/Rectangle.h"
-#include <SDL/SDL_ttf.h>
+#include <SDL_ttf.h>
 #include <map>
 
 /**

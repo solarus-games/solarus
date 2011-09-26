@@ -1,6 +1,4 @@
-------------------------
--- Fairy cave script --
-------------------------
+-- Fairy cave
 
 function has_fairy_appeared()
   return sol.game.savegame_get_boolean(99)

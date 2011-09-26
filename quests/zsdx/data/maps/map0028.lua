@@ -1,6 +1,4 @@
--------------------------
--- Link's house script --
--------------------------
+-- Link's house
 
 bed_sprite = nil
 
@@ -12,7 +10,7 @@ function event_map_started(destination_point_name)
     sol.map.hud_set_enabled(true)
     sol.map.hud_set_pause_enabled(false)
     sol.map.dialog_set_style(0)
-    snores_sprite = sol.map.interactive_entity_get_sprite("snores")
+    local snores_sprite = sol.map.interactive_entity_get_sprite("snores")
     sol.main.sprite_set_animation_ignore_suspend(snores_sprite, true)
     sol.main.sprite_set_animation(bed_sprite, "hero_sleeping")
     sol.map.hero_freeze()

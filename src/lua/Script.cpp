@@ -115,7 +115,7 @@ void Script::load(const std::string &script_name) {
  *
  * @param script_name name of a Lua script file (without extension)
  */
-void Script::load_if_exists(const std::string &script_name) {
+void Script::load_if_exists(const std::string& script_name) {
 
   if (context == NULL) {
     initialize_lua_context();
@@ -143,11 +143,14 @@ void Script::load_if_exists(const std::string &script_name) {
   if (FileTools::data_file_exists(file_name)) {
     // load the file
     size_t size;
-    char *buffer;
+    char* buffer;
     FileTools::data_file_open_buffer(file_name, &buffer, &size);
     luaL_loadbuffer(context, buffer, size, file_name.c_str());
     FileTools::data_file_close_buffer(buffer);
-    lua_call(context, 0, 0);
+    if (lua_pcall(context, 0, 0, 0) != 0) {
+      Debug::die(StringConcat() << "Error: failed to load script '" << script_name
+          << "': " << lua_tostring(context, -1));
+    }
   }
   else {
     // uninitialize Lua
@@ -533,37 +536,37 @@ void Script::register_enemy_api() {
       { "set_displayed_in_y_order", enemy_api_set_displayed_in_y_order },
       { "create_son", enemy_api_create_son },
       { "get_father", enemy_api_get_father },
+      { "send_message", enemy_api_send_message },
       { NULL, NULL }
   };
   luaL_register(context, "sol.enemy", enemy_api);
 }
 
 /**
- * @brief Checks the number of arguments provided to a C++ function
- * called by the Lua script.
+ * @brief When Lua calls a C++ static method, this function retrieves the corresponding Script object.
  *
- * In any C++ function called by the Lua script (i.e. a function prefixed by "l_"),
- * the first instruction calls this function.
- * It checks the number of arguments provided to the C++ function called by the Lua script
- * and retrieves the current Script object.
+ * It can also check the number of parameters of the call.
  *
  * @param context the Lua context
- * @param nb_arguments the number of arguments to check (if it is incorrect, the program stops)
- * @param script if not NULL, a pointer to the Script object will be copied there so that the static C++ function
- * called by the Lua script can access it
+ * @param min_arguments the minimum number of arguments expected
+ * @param max_arguments the maximum number of arguments expected (default is min_arguments)
+ * @return the Script object that initiated the call
  */
-void Script::called_by_script(lua_State *context, int nb_arguments, Script **script) {
+Script& Script::get_script(lua_State* l, int min_arguments, int max_arguments) {
 
   // check the number of arguments
-  Debug::check_assertion(lua_gettop(context) == nb_arguments, "Invalid number of arguments when calling C++ from Lua");
+  if (max_arguments == -1) {
+    max_arguments = min_arguments;
+  }
+  if (lua_gettop(l) < min_arguments || lua_gettop(l) > max_arguments) {
+    luaL_error(l, "Invalid number of arguments when calling C++ from Lua");
+  }
 
   // retrieve the Script object
-  if (script != NULL) {
-    lua_pushstring(context, "sol.cpp_object");
-    lua_gettable(context, LUA_REGISTRYINDEX);
-    *script = (Script*) lua_touserdata(context, -1);
-    lua_pop(context, 1);
-  }
+  lua_getfield(l, LUA_REGISTRYINDEX, "sol.cpp_object");
+  Script* script = (Script*) lua_touserdata(l, -1);
+  lua_pop(l, 1);
+  return *script;
 }
 
 /**
@@ -580,20 +583,20 @@ void Script::print_stack() {
     switch (type) {
 
       case LUA_TSTRING:
-	std::cout << lua_tostring(context, i);
-	break;
+        std::cout << lua_tostring(context, i);
+        break;
 
       case LUA_TBOOLEAN:
-	std::cout << (lua_toboolean(context, i) ? "true" : "false");
-	break;
+        std::cout << (lua_toboolean(context, i) ? "true" : "false");
+        break;
 
       case LUA_TNUMBER:
-	std::cout << lua_tonumber(context, i);
-	break;
+        std::cout << lua_tonumber(context, i);
+        break;
 
       default:
-	std::cout << lua_typename(context, type);
-	break;
+        std::cout << lua_typename(context, type);
+        break;
 
     }
     std::cout << " ";
@@ -742,31 +745,34 @@ bool Script::notify_script(const std::string &function_name, const std::string &
     bool end_arguments = false;
     for (i = 0; i < format.size() && !end_arguments; i++) {
       switch (format[i]) {
-	case 'i':	lua_pushinteger(context, va_arg(args, int));	break;
-	case 'b':	lua_pushboolean(context, va_arg(args, int));	break; 		// cstdarg refuses bool
-	case 's':	lua_pushstring(context, va_arg(args, const char*));	break;	// and std::string
-	case ' ':	end_arguments = true;	break;
-	default:	Debug::die(StringConcat() << "Invalid character '" << format[i] << "' in format string '" << format);
+        case 'i':	lua_pushinteger(context, va_arg(args, int));	break;
+        case 'b':	lua_pushboolean(context, va_arg(args, int));	break; 		// cstdarg refuses bool
+        case 's':	lua_pushstring(context, va_arg(args, const char*));	break;	// and std::string
+        case ' ':	end_arguments = true;	break;
+        default:	Debug::die(StringConcat() << "Invalid character '" << format[i] << "' in format string '" << format);
       }
 
       if (format[i] != ' ') {
-	nb_arguments++;
+        nb_arguments++;
       }
     }
 
     // call the function
     int nb_results = format.size() - i;
-    lua_call(context, nb_arguments, nb_results);
+    if (lua_pcall(context, nb_arguments, nb_results, 0) != 0) {
+      Debug::print(StringConcat() << "Error in " << function_name << "(): "
+          << lua_tostring(context, -1));
+    }
 
     // get the results
     for (int i = 0; i < nb_results; i++) {
       char type = format[nb_arguments + i + 1];
       int stack_index = -nb_results + i;
       switch (type) {
-	case 'i':	*va_arg(args, int*) = lua_tointeger(context, stack_index);	break;
-	case 'b':	*va_arg(args, int*) = lua_toboolean(context, stack_index);	break;
-	case 's':	Debug::die("String results are not supported by Script::notify_script(), please make the call yourself");
-	default:	Debug::die(StringConcat() << "Invalid character '" << type << "' in format string '" << format);
+        case 'i':	*va_arg(args, int*) = lua_tointeger(context, stack_index);	break;
+        case 'b':	*va_arg(args, int*) = lua_toboolean(context, stack_index);	break;
+        case 's':	Debug::die("String results are not supported by Script::notify_script(), please make the call yourself");
+        default:	Debug::die(StringConcat() << "Invalid character '" << type << "' in format string '" << format);
       }
     }
     lua_pop(context, nb_results);
@@ -790,14 +796,16 @@ void Script::update() {
 
     timer->update();
     if (timer->is_finished()) {
-      
-      bool invoked = notify_script(timer->get_name()); 
+
+      const std::string function_name = timer->get_name();
+      timers.erase(it);
+      delete timer;
+
+      bool invoked = notify_script(function_name);
       if (!invoked) {
-	Debug::die(StringConcat() << "No such timer callback function: '" << timer->get_name() << "'");
+        Debug::die(StringConcat() << "No such timer callback function: '" << function_name << "'");
       }
 
-      delete timer;
-      timers.erase(it);
       it = timers.begin();
     }
   }
@@ -834,6 +842,7 @@ bool Script::has_played_music() {
  * @param timer the timer
  */
 void Script::add_timer(Timer *timer) {
+
   timers.push_back(timer);
 }
 

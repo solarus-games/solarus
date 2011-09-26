@@ -1,6 +1,4 @@
--------------------------
--- Lyriann cave script --
--------------------------
+-- Lyriann cave 1F
 
 tom_initial_x = 0
 tom_initial_y = 0
@@ -96,9 +94,9 @@ function event_dialog_finished(message_id, answer)
     or message_id == "lyriann_cave.tom.leaving.cavern_finished" then
 
     give_boomerang_back()
-    x,y = sol.map.npc_get_position("tom")
+    local x, y = sol.map.npc_get_position("tom")
     if y ~= tom_initial_y then
-      m = sol.main.path_movement_create("2222220000002222222222222222", 48)
+      local m = sol.main.path_movement_create("2222220000002222222222222222", 48)
       sol.map.npc_start_movement("tom", m)
       sol.main.sprite_set_animation(tom_sprite, "walking")
     end
@@ -112,7 +110,7 @@ function give_boomerang_back()
 end
 
 function start_moving_tom()
-  m = sol.main.path_movement_create("0000666666", 48)
+  local m = sol.main.path_movement_create("0000666666", 48)
   sol.map.npc_set_position("tom", 88, 509)
   sol.map.npc_start_movement("tom", m)
   sol.main.sprite_set_animation(tom_sprite, "walking")
@@ -136,8 +134,8 @@ end
 function event_hero_on_sensor(sensor_name)
 
   if sensor_name == "leave_cavern_sensor" and has_boomerang_of_tom() then
-      sol.map.hero_freeze()
-      sol.map.dialog_start("lyriann_cave.tom.leaving")
+    sol.map.hero_freeze()
+    sol.map.dialog_start("lyriann_cave.tom.leaving")
   end
 end
 

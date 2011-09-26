@@ -2610,7 +2610,7 @@ line1 = "ton environnement !"
 #line2 = "donjon du monde cache"
 #line3 = "un Fragment de Coeur..."
 #next = outside_world.village.chignon_woman_npc.2
-#cancel = all
+#skip = all
 
 #[outside_world.village.chignon_woman_npc.2]
 #       |-----------------------|
@@ -3456,6 +3456,19 @@ line3 = "Rubis !"
 #       |-----------------------|
 line1 = "Allo ? ... Allo ? ..."
 line2 = "Y'a quelqu'un ? ..."
+
+[telepathic_booth.dungeon_2_not_really_finished]
+#       |-----------------------|
+line1 = "$v, tu m'entends ?"
+line2 = "C'est Mamie Lyly ! La"
+line3 = "télépathie, ça marche !"
+next = telepathic_booth.dungeon_2_not_really_finished.2
+
+[telepathic_booth.dungeon_2_not_really_finished.2]
+#       |-----------------------|
+line1 = "Mais tu es sûr que tu"
+line2 = "as tout trouvé dans la"
+line3 = "Caverne de Roc ?"
 
 [telepathic_booth.go_master_arbror]
 #       |-----------------------|
@@ -4799,6 +4812,251 @@ line1 = "Un Pain au Chocolat"
 line2 = "pour récupérer des"
 line3 = "Coeurs."
 
+[castle.welcome]
+#       |-----------------------|
+line1 = "Bienvenue dans l'ancien"
+line2 = "château royal, classé"
+line3 = "monument historique."
+skip = all
+next = castle.welcome.2
+
+[castle.welcome.2]
+#       |-----------------------|
+line1 = "Merci de respecter les"
+line2 = "lieux."
+
+[castle.forbidden_stairs]
+#       |-----------------------|
+line1 = "Ces escaliers mènent à"
+line2 = "l'étage supérieur et à"
+line3 = "la terrasse."
+skip = all
+next = castle.forbidden_stairs.2
+
+[castle.forbidden_stairs.2]
+#       |-----------------------|
+line1 = "Cependant, l'accès est"
+line2 = "interdit au public."
+
+[castle.forbidden_door]
+#       |-----------------------|
+line1 = "Je regrette Monsieur,"
+line2 = "mais le passage vers"
+line3 = "les cachots n'est pas"
+skip = all
+next = castle.forbidden_door.2
+
+[castle.forbidden_door.2]
+#       |-----------------------|
+line1 = "autorisé au public."
+
+[castle.forbidden_door_wtf]
+#       |-----------------------|
+line1 = "........$0....?!$#!@&=!??"
+line2 = ".....$0.................."
+next = castle.forbidden_door_wtf.2
+
+[castle.forbidden_door_wtf.2]
+#       |-----------------------|
+line1 = "Comment es-tu arrivé"
+line2 = "ici ? L'accès aux"
+line3 = "cachots est interdit !"
+
+[castle.npc_1]
+#       |-----------------------|
+line1 = "Jadis, ce château"
+line2 = "appartenait à la"
+line3 = "famille royale."
+skip = all
+next = castle.npc_1.2
+
+[castle.npc_1.2]
+#       |-----------------------|
+line1 = "Aujourd'hui, c'est un"
+line2 = "lieu très prisé par"
+line3 = "les touristes !"
+
+[castle.npc_2]
+#       |-----------------------|
+line1 = "Quand on pense aux gens"
+line2 = "qui ont construit ce"
+line3 = "château..."
+skip = all
+next = castle.npc_2.2
+
+[castle.npc_2.2]
+#       |-----------------------|
+line1 = "C'est une prouesse"
+line2 = "architecturale pour"
+line3 = "l'époque. Il faut dire"
+next = castle.npc_2.3
+
+[castle.npc_2.3]
+#       |-----------------------|
+line1 = "qu'ils n'avaient pas"
+line2 = "les moyens modernes"
+line3 = "d'aujourd'hui !"
+
+[castle.where_is_tom]
+#       |-----------------------|
+line1 = "Tom, un de nos"
+line2 = "meilleurs soldats, a"
+line3 = "mystérieusement disparu"
+skip = all
+next = castle.where_is_tom.2
+
+[castle.where_is_tom.2]
+#       |-----------------------|
+line1 = "alors qu'il était parti"
+line2 = "explorer une caverne."
+
+[castle.npc_3]
+#       |-----------------------|
+line1 = "Quel luxe ! Ce manoir"
+line2 = "est magnifique !"
+skip = all
+
+[castle.prison]
+#       |-----------------------|
+line1 = "C'est dans ces sombres"
+line2 = "cachots qu'étaient"
+line3 = "autrefois enfermés les"
+skip = all
+next = castle.prison.2
+
+[castle.prison.2]
+#       |-----------------------|
+line1 = "prisonniers du Roi."
+
+[castle.cannon]
+#       |-----------------------|
+line1 = "Quel splendide canon !"
+line2 = "A l'époque où le Roi"
+line3 = "l'utilisait, il valait"
+skip = all
+next = castle.cannon.2
+
+[castle.cannon.2]
+#       |-----------------------|
+line1 = "mieux ne pas faire"
+line2 = "partie de ses ennemis !"
+
+[inferno.first_time]
+#       |-----------------------|
+line1 = "Qui ose pénétrer sur"
+line2 = "mes terres ? Petit !"
+line3 = "Sache qu'il est très"
+next = inferno.first_time.2
+
+[inferno.first_time.2]
+#       |-----------------------|
+line1 = "grave de déranger le"
+line2 = "grand Inferno, Seigneur"
+line3 = "des Flammes !"
+next = inferno.first_time.3
+
+[inferno.first_time.3]
+#       |-----------------------|
+line1 = "Ton sacrilège ne"
+line2 = "restera pas impuni !"
+line3 = "Pour te racheter, je te"
+next = inferno.first_time.4
+
+[inferno.first_time.4]
+#       |-----------------------|
+line1 = "mets au défi de partir"
+line2 = "à la recherche des"
+line3 = "trois Pierres de Feu"
+next = inferno.first_time.5
+
+[inferno.first_time.5]
+#       |-----------------------|
+line1 = "que j'ai cachées dans"
+line2 = "mes labyrinthes"
+line3 = "lugubres."
+next = inferno.find_fire_stones
+
+[inferno.find_fire_stones]
+#       |-----------------------|
+line1 = "Tu subiras trois"
+line2 = "épreuves de courage."
+skip = current
+next = inferno.find_fire_stones.2
+
+[inferno.find_fire_stones.2]
+#       |-----------------------|
+line1 = "Rivière."
+line2 = "$0Montagne."
+line3 = "$0Beaumont."
+next = inferno.find_fire_stones.3
+
+[inferno.find_fire_stones.3]
+#       |-----------------------|
+line1 = "Si tu parviens à sortir"
+line2 = "des trois labyrinthes,"
+line3 = "apporte-moi les trois"
+next = inferno.find_fire_stones.4
+
+[inferno.find_fire_stones.4]
+#       |-----------------------|
+line1 = "Pierres de Feu."
+line2 = "Ainsi, la rancoeur"
+line3 = "d'Inferno s'apaisera."
+
+[inferno.found_fire_stones]
+#       |-----------------------|
+line1 = "Tu as franchi les trois"
+line2 = "épreuves avec succès !"
+line3 = "Je m'incline devant ta"
+next = inferno.found_fire_stones.2
+
+[inferno.found_fire_stones.2]
+#       |-----------------------|
+line1 = "bravoure. Demande-moi"
+line2 = "ce que tu tu veux et"
+line3 = "j'accompirai ton désir."
+next = inferno.found_fire_stones.3
+
+[inferno.found_fire_stones.3]
+#       |-----------------------|
+line1 = "Que puis-je faire ?"
+line2 = "Les pierres noires..."
+line3 = "100 Rubis ?"
+question = true
+
+[inferno.want_rupees]
+#       |-----------------------|
+line1 = "Soit."
+
+[inferno.want_rupees_again]
+#       |-----------------------|
+line1 = "Tu as déjà bénéficié de"
+line2 = "cette faveur."
+
+[inferno.want_rupees]
+#       |-----------------------|
+line1 = "Soit."
+
+[inferno.want_black_stones]
+#       |-----------------------|
+line1 = "Avant de soulever ces"
+line2 = "pierres noires, tu"
+line3 = "devras affronter les"
+next = inferno.want_black_stones.2
+
+[inferno.want_black_stones.2]
+#       |-----------------------|
+line1 = "périls d'un lieu"
+line2 = "infernal et vaincre de"
+line3 = "nombreux dangers."
+next = inferno.want_black_stones.3
+
+[inferno.want_black_stones.3]
+#       |-----------------------|
+line1 = "Laisse-moi te"
+line2 = "transporter vers"
+line3 = "l'enfer des flammes..."
+
 [dungeon_2.solarus_child]
 #       |-----------------------|
 line1 = "$2$v... Merci."
@@ -4990,13 +5248,13 @@ line3 = "à la prospérité !"
 #       |-----------------------|
 line1 = "$1A G A H N I M !"
 line2 = "$3Et oui, lui-même !"
-line3 = "Le sorcier revenu de"
 next = dungeon_4.agahnim.2
 
 [dungeon_4.agahnim.2]
 #       |-----------------------|
-line1 = "l'empire des morts !"
-line2 = "Ah ah ah ah ah ah !!!"
+line1 = "Le sorcier revenu de"
+line2 = "l'empire des morts !"
+line3 = "Ah ah ah ah ah ah !!!"
 next = dungeon_4.agahnim.3
 
 [dungeon_4.agahnim.3]

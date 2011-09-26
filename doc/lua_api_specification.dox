@@ -56,8 +56,9 @@ plays a sound
 - <tt>sol.main.play_music(music_id)</tt>:
 plays a music
 
-- <tt>sol.main.timer_start(duration, callback, with_sound)</tt>:
-starts a timer which will call a function of your script once finished
+- <tt>sol.main.timer_start(duration, callback_name, with_sound)</tt>:
+starts a timer which will calls a function of your script once finished
+(with_sound is optional, default is false)
 
 - <tt>sol.main.timer_stop(callback)</tt>:
 stops a timer that of the script if it exists
@@ -257,10 +258,10 @@ returns the possession state of an item
 sets the possession state of an item
 
 - <tt>sol.game.has_item_amount(item_name, amount)</tt>:
-returns the amount the player has for an item
+returns whether the player has at least the specified amount of an item
 
 - <tt>sol.game.get_item_amount(item_name)</tt>:
-returns whether the player has at least the specified amount of an item
+returns the amount the player has for an item
 
 - <tt>sol.game.add_item_amount(item_name, amount)</tt>:
 adds an amount of the specified item
@@ -370,6 +371,9 @@ makes the hero run
 - <tt>sol.map.hero_start_hurt(source_x, source_y, life_points, magic_points)</tt>:
 makes the hero be hurt
 
+- <tt>sol.map.npc_get_position(npc)</tt>:
+returns the position of an NPC (x and y)
+
 - <tt>sol.map.npc_set_position(npc, x, y)</tt>:
 sets the position of an NPC
 
@@ -403,11 +407,14 @@ checks the existence of an interactive entity
 - <tt>sol.map.chest_set_open(chest_name, open)</tt>:
 sets the state of a chest (without giving or reseting its content)
 
+- <tt>sol.map.chest_is_enabled(chest_name)</tt>:
+returns whether a chest is enabled
+
 - <tt>sol.map.chest_set_enabled(chest_name, enable)</tt>:
 enables or disables a chest
 
-- <tt>sol.map.chest_is_enabled(chest_name)</tt>:
-returns whether a chest is enabled
+- <tt>sol.map.chest_set_group_enabled(chests_prefix, enable)</tt>:
+enables or disables all chests having a common prefix
 
 - <tt>sol.map.tile_is_enabled(tile_name)</tt>:
 returns whether a dynamic tile is enabled
@@ -424,6 +431,9 @@ returns whether some stairs are enabled
 - <tt>sol.map.stairs_set_enabled(stairs_name, enable)</tt>:
 enables or disables some stairs
 
+- <tt>sol.map.stairs_set_group_enabled(stairs_prefix, enable)</tt>:
+enables or disables all stairs having a common prefix
+
 - <tt>sol.map.obstacle_is_enabled(custom_obstacle_name)</tt>:
 returns whether a custom obstacle is enabled
 
@@ -438,6 +448,9 @@ returns whether a sensor is enabled
 
 - <tt>sol.map.sensor_set_enabled(sensor_name, enable)</tt>:
 enables or disables a sensor
+
+- <tt>sol.map.sensor_set_group_enabled(sensors_prefix, enable)</tt>:
+enables or disables all sensors having a common prefix
 
 - <tt>sol.map.jump_sensor_is_enabled(jump_sensor_name)</tt>:
 returns whether a jump sensor is enabled
@@ -454,6 +467,9 @@ returns whether a crystal switch is enabled (i.e. whether it is visible)
 - <tt>sol.map.crystal_switch_set_enabled(crystal_switch_name, enable)</tt>:
 enables or disables a crystal switch
 
+- <tt>sol.map.crystal_switch_set_group_enabled(crystal_switches_prefix, enable)</tt>:
+enables or disables all crystal switches having a common prefix
+
 - <tt>sol.map.crystal_switch_get_state()</tt>
 returns the state of crystal switches (false: initial, true: modified)
 
@@ -469,11 +485,17 @@ returns whether a teletransporter is enabled
 - <tt>sol.map.teletransporter_set_enabled(teletransporter_name, enable)</tt>:
 enables or disables a teletransporter
 
+- <tt>sol.map.teletransporter_set_group_enabled(teletransporters_prefix, enable)</tt>:
+enables or disables all teletransporters having a common prefix
+
 - <tt>sol.map.block_is_enabled(block_name)</tt>:
 returns whether a block is enabled
 
 - <tt>sol.map.block_set_enabled(block_name, enable)</tt>:
 enables or disables a block
+
+- <tt>sol.map.block_set_group_enabled(blocks_prefix, enable)</tt>:
+enables or disables all blocks having a common prefix
 
 - <tt>sol.map.block_reset(block_name)</tt>:
 places a block where it was when the map started
@@ -504,6 +526,9 @@ returns whether a switch is enabled (i.e. visible)
 
 - <tt>sol.map.switch_set_enabled(switch_name, enable)</tt>:
 enables or disables a switch
+
+- <tt>sol.map.switch_set_group_enabled(switches_prefix, enable)</tt>:
+enables or disables all switches having a common prefix
 
 - <tt>sol.map.door_open(door_prefix)</tt>:
 opens one or several doors, playing their animation and sound
@@ -541,8 +566,11 @@ Removes a group of enemies from the map.
 - <tt>sol.map.enemy_is_enabled(enemy_name)</tt>:
 returns whether an enemy is enabled
 
-- <tt>sol.map.enemy_set_enabled(enemy_name)</tt>:
+- <tt>sol.map.enemy_set_enabled(enemy_name, enable)</tt>:
 enables or disables an enemy
+
+- <tt>sol.map.enemy_set_enabled(enemies_prefix, enable)</tt>:
+enables or disables all enemies having a common prefix
 
 - <tt>sol.map.enemy_is_dead(enemy_name)</tt>:
 returns whether an enemy is dead
@@ -808,6 +836,10 @@ Creates another enemy, specifying its coordinates as relative to the current ene
 Returns the name of the father of the enemy (i.e. the enemy that created the current one),
 or an empty string.
 
+- <tt>sol.enemy.send_message(dst_enemy, message)</tt>:
+Sends a string message to another enemy
+(calls his function event_message_received())
+
 @section cpp_to_lua Calling Lua from C++
 
 The C++ engine sometimes notifies a script that an event just happened.
@@ -1069,6 +1101,12 @@ called when the enemy is hurt
 
 - <tt>event_dead()</tt>:
 called when the enemy is killed and has finished to die
+
+- <tt>event_immobilized()</tt>:
+called when the enemy is immobilized
+
+- <tt>event_message_received(src_enemy, message)</tt>:
+called when the enemy receives a messages from another enemy
 
 */
 

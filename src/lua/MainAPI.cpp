@@ -48,11 +48,10 @@
  */
 int Script::main_api_include(lua_State *l) {
 
-  Script *script;
-  called_by_script(l, 1, &script);
+  Script& script = get_script(l, 1);
   const std::string &file_name = luaL_checkstring(l, 1);
 
-  script->load(file_name);
+  script.load(file_name);
 
   return 0;
 }
@@ -66,8 +65,7 @@ int Script::main_api_include(lua_State *l) {
  */
 int Script::main_api_play_sound(lua_State *l) {
 
-  Script *script;
-  called_by_script(l, 1, &script);
+  get_script(l, 1);
   const SoundId &sound_id = luaL_checkstring(l, 1);
 
   Sound::play(sound_id);
@@ -84,11 +82,10 @@ int Script::main_api_play_sound(lua_State *l) {
  */
 int Script::main_api_play_music(lua_State *l) {
 
-  Script *script;
-  called_by_script(l, 1, &script);
+  Script& script = get_script(l, 1);
   const MusicId &music_id = luaL_checkstring(l, 1);
   Music::play(music_id);
-  script->music_played = true;
+  script.music_played = true;
 
   return 0;
 }
@@ -98,24 +95,22 @@ int Script::main_api_play_music(lua_State *l) {
  *
  * - Argument 1 (integer): the timer duration in milliseconds
  * - Argument 2 (string): name of the Lua function to call when the timer is finished
- * (no argument, no return value)
- * - Argument 3 (boolean): plays a sound until the timer expires
+ * - Optional argument 3 (boolean): plays a clock sound until the timer expires (default is false)
  *
  * @param l the Lua context that is calling this function
  */
 int Script::main_api_timer_start(lua_State *l) {
 
-  Script *script;
-  called_by_script(l, 3, &script);
+  Script& script = get_script(l, 2, 3);
   uint32_t duration = luaL_checkinteger(l, 1);
-  const std::string &callback_name = luaL_checkstring(l, 2);
-  bool with_sound = lua_toboolean(l, 3) != 0;
+  const std::string& callback_name = luaL_checkstring(l, 2);
+  bool with_sound = lua_gettop(l) >= 3 && lua_toboolean(l, 3);
 
   Timer *timer = new Timer(duration, callback_name, with_sound);
-  if (script->is_new_timer_suspended()) {
+  if (script.is_new_timer_suspended()) {
     timer->set_suspended(true);
   }
-  script->add_timer(timer);
+  script.add_timer(timer);
 
   return 0;
 }
@@ -130,11 +125,10 @@ int Script::main_api_timer_start(lua_State *l) {
  */
 int Script::main_api_timer_stop(lua_State *l) {
 
-  Script *script;
-  called_by_script(l, 1, &script);
+  Script& script = get_script(l, 1);
   const std::string &callback_name = luaL_checkstring(l, 1);
 
-  script->remove_timer(callback_name);
+  script.remove_timer(callback_name);
 
   return 0;
 }
@@ -145,10 +139,9 @@ int Script::main_api_timer_stop(lua_State *l) {
  */
 int Script::main_api_timer_stop_all(lua_State *l) {
 
-  Script *script;
-  called_by_script(l, 0, &script);
+  Script& script = get_script(l, 0);
 
-  script->remove_all_timers();
+  script.remove_all_timers();
 
   return 0;
 }
@@ -163,13 +156,12 @@ int Script::main_api_timer_stop_all(lua_State *l) {
  */
 int Script::main_api_sprite_create(lua_State *l) {
 
-  Script *script;
-  called_by_script(l, 1, &script);
+  Script& script = get_script(l, 1);
   const std::string& animation_set_id = luaL_checkstring(l, 1);
 
   Sprite* sprite = new Sprite(animation_set_id);
-  int sprite_handle = script->create_sprite_handle(*sprite);
-  script->unassigned_sprites[sprite_handle] = sprite;
+  int sprite_handle = script.create_sprite_handle(*sprite);
+  script.unassigned_sprites[sprite_handle] = sprite;
   lua_pushinteger(l, sprite_handle);
 
   return 1;
@@ -185,11 +177,10 @@ int Script::main_api_sprite_create(lua_State *l) {
  */
 int Script::main_api_sprite_get_animation(lua_State *l) {
 
-  Script *script;
-  called_by_script(l, 1, &script);
+  Script& script = get_script(l, 1);
   int sprite_handle = luaL_checkinteger(l, 1);
 
-  const Sprite &sprite = script->get_sprite(sprite_handle);
+  const Sprite &sprite = script.get_sprite(sprite_handle);
   const std::string animation_name = sprite.get_current_animation();
   lua_pushstring(l, animation_name.c_str());
 
@@ -206,12 +197,11 @@ int Script::main_api_sprite_get_animation(lua_State *l) {
  */
 int Script::main_api_sprite_set_animation(lua_State *l) {
 
-  Script *script;
-  called_by_script(l, 2, &script);
+  Script& script = get_script(l, 2);
   int sprite_handle = luaL_checkinteger(l, 1);
   const std::string &animation_name = luaL_checkstring(l, 2);
 
-  Sprite &sprite = script->get_sprite(sprite_handle);
+  Sprite &sprite = script.get_sprite(sprite_handle);
   sprite.set_current_animation(animation_name);
   sprite.restart_animation();
 
@@ -228,11 +218,10 @@ int Script::main_api_sprite_set_animation(lua_State *l) {
  */
 int Script::main_api_sprite_get_direction(lua_State *l) {
 
-  Script *script;
-  called_by_script(l, 1, &script);
+  Script& script = get_script(l, 1);
   int sprite_handle = luaL_checkinteger(l, 1);
 
-  const Sprite &sprite = script->get_sprite(sprite_handle);
+  const Sprite &sprite = script.get_sprite(sprite_handle);
   lua_pushinteger(l, sprite.get_current_direction());
 
   return 1;
@@ -248,12 +237,11 @@ int Script::main_api_sprite_get_direction(lua_State *l) {
  */
 int Script::main_api_sprite_set_direction(lua_State *l) {
 
-  Script *script;
-  called_by_script(l, 2, &script);
+  Script& script = get_script(l, 2);
   int sprite_handle = luaL_checkinteger(l, 1);
   int direction = luaL_checkinteger(l, 2);
 
-  Sprite &sprite = script->get_sprite(sprite_handle);
+  Sprite &sprite = script.get_sprite(sprite_handle);
   sprite.set_current_direction(direction);
 
   return 0;
@@ -269,11 +257,10 @@ int Script::main_api_sprite_set_direction(lua_State *l) {
  */
 int Script::main_api_sprite_get_frame(lua_State *l) {
 
-  Script *script;
-  called_by_script(l, 1, &script);
+  Script& script = get_script(l, 1);
   int sprite_handle = luaL_checkinteger(l, 1);
 
-  const Sprite &sprite = script->get_sprite(sprite_handle);
+  const Sprite &sprite = script.get_sprite(sprite_handle);
   lua_pushinteger(l, sprite.get_current_frame());
 
   return 1;
@@ -289,12 +276,11 @@ int Script::main_api_sprite_get_frame(lua_State *l) {
  */
 int Script::main_api_sprite_set_frame(lua_State *l) {
 
-  Script *script;
-  called_by_script(l, 2, &script);
+  Script& script = get_script(l, 2);
   int sprite_handle = luaL_checkinteger(l, 1);
   int frame = luaL_checkinteger(l, 2);
 
-  Sprite &sprite = script->get_sprite(sprite_handle);
+  Sprite &sprite = script.get_sprite(sprite_handle);
   sprite.set_current_frame(frame);
 
   return 0;
@@ -310,11 +296,10 @@ int Script::main_api_sprite_set_frame(lua_State *l) {
  */
 int Script::main_api_sprite_get_frame_delay(lua_State *l) {
 
-  Script *script;
-  called_by_script(l, 1, &script);
+  Script& script = get_script(l, 1);
   int sprite_handle = luaL_checkinteger(l, 1);
 
-  const Sprite &sprite = script->get_sprite(sprite_handle);
+  const Sprite &sprite = script.get_sprite(sprite_handle);
   lua_pushinteger(l, sprite.get_frame_delay());
 
   return 1;
@@ -330,12 +315,11 @@ int Script::main_api_sprite_get_frame_delay(lua_State *l) {
  */
 int Script::main_api_sprite_set_frame_delay(lua_State *l) {
 
-  Script *script;
-  called_by_script(l, 2, &script);
+  Script& script = get_script(l, 2);
   int sprite_handle = luaL_checkinteger(l, 1);
   uint32_t delay = luaL_checkinteger(l, 2);
 
-  Sprite &sprite = script->get_sprite(sprite_handle);
+  Sprite &sprite = script.get_sprite(sprite_handle);
   sprite.set_frame_delay(delay);
 
   return 0;
@@ -351,11 +335,10 @@ int Script::main_api_sprite_set_frame_delay(lua_State *l) {
  */
 int Script::main_api_sprite_is_paused(lua_State *l) {
 
-  Script *script;
-  called_by_script(l, 1, &script);
+  Script& script = get_script(l, 1);
   int sprite_handle = luaL_checkinteger(l, 1);
 
-  const Sprite &sprite = script->get_sprite(sprite_handle);
+  const Sprite &sprite = script.get_sprite(sprite_handle);
   lua_pushboolean(l, sprite.is_paused() ? 1 : 0);
 
   return 1;
@@ -371,12 +354,11 @@ int Script::main_api_sprite_is_paused(lua_State *l) {
  */
 int Script::main_api_sprite_set_paused(lua_State *l) {
 
-  Script *script;
-  called_by_script(l, 2, &script);
+  Script& script = get_script(l, 2);
   int sprite_handle = luaL_checkinteger(l, 1);
   bool paused = lua_toboolean(l, 2) != 0;
 
-  Sprite &sprite = script->get_sprite(sprite_handle);
+  Sprite &sprite = script.get_sprite(sprite_handle);
   sprite.set_paused(paused);
 
   return 0;
@@ -393,12 +375,11 @@ int Script::main_api_sprite_set_paused(lua_State *l) {
  */
 int Script::main_api_sprite_set_animation_ignore_suspend(lua_State *l) {
 
-  Script *script;
-  called_by_script(l, 2, &script);
+  Script& script = get_script(l, 2);
   int sprite_handle = luaL_checkinteger(l, 1);
   bool ignore_suspend = lua_toboolean(l, 2) != 0;
 
-  Sprite &sprite = script->get_sprite(sprite_handle);
+  Sprite &sprite = script.get_sprite(sprite_handle);
   sprite.set_ignore_suspend(ignore_suspend);
 
   return 0;
@@ -414,12 +395,11 @@ int Script::main_api_sprite_set_animation_ignore_suspend(lua_State *l) {
  */
 int Script::main_api_sprite_fade(lua_State *l) {
 
-  Script *script;
-  called_by_script(l, 2, &script);
+  Script& script = get_script(l, 2);
   int sprite_handle = luaL_checkinteger(l, 1);
   int direction = luaL_checkinteger(l, 2);
 
-  Sprite &sprite = script->get_sprite(sprite_handle);
+  Sprite &sprite = script.get_sprite(sprite_handle);
   sprite.start_fading(direction);
 
   return 0;
@@ -440,14 +420,13 @@ int Script::main_api_sprite_fade(lua_State *l) {
 int Script::main_api_sprite_synchronize(lua_State *l) {
 
 
-  Script* script;
-  called_by_script(l, 2, &script);
+  Script& script = get_script(l, 2);
   int sprite_handle = luaL_checkinteger(l, 1);
-  Sprite& sprite = script->get_sprite(sprite_handle);
+  Sprite& sprite = script.get_sprite(sprite_handle);
 
   if (!lua_isnil(l, 2)) {
     int reference_sprite_handle = luaL_checkinteger(l, 2);
-    Sprite& reference_sprite = script->get_sprite(reference_sprite_handle);
+    Sprite& reference_sprite = script.get_sprite(reference_sprite_handle);
     sprite.set_synchronized_to(&reference_sprite);
   }
   else {
@@ -468,13 +447,12 @@ int Script::main_api_sprite_synchronize(lua_State *l) {
  */
 int Script::main_api_pixel_movement_create(lua_State *l) {
 
-  Script *script;
-  called_by_script(l, 2, &script);
+  Script& script = get_script(l, 2);
   const std::string &trajectory = luaL_checkstring(l, 1);
   uint32_t delay = luaL_checkinteger(l, 2);
 
   Movement *movement = new PixelMovement(trajectory, delay, false, false);
-  int movement_handle = script->create_movement_handle(*movement);
+  int movement_handle = script.create_movement_handle(*movement);
   lua_pushinteger(l, movement_handle);
 
   return 1;
@@ -490,12 +468,11 @@ int Script::main_api_pixel_movement_create(lua_State *l) {
  */
 int Script::main_api_random_movement_create(lua_State *l) {
 
-  Script *script;
-  called_by_script(l, 1, &script);
+  Script& script = get_script(l, 1);
   int speed = luaL_checkinteger(l, 1);
 
   Movement *movement = new RandomMovement(speed, 0);
-  int movement_handle = script->create_movement_handle(*movement);
+  int movement_handle = script.create_movement_handle(*movement);
   lua_pushinteger(l, movement_handle);
 
   return 1;
@@ -512,13 +489,12 @@ int Script::main_api_random_movement_create(lua_State *l) {
  */
 int Script::main_api_path_movement_create(lua_State *l) {
 
-  Script *script;
-  called_by_script(l, 2, &script);
+  Script& script = get_script(l, 2);
   const std::string &path = luaL_checkstring(l, 1);
   int speed = luaL_checkinteger(l, 2);
 
   Movement *movement = new PathMovement(path, speed, false, false, false);
-  int movement_handle = script->create_movement_handle(*movement);
+  int movement_handle = script.create_movement_handle(*movement);
   lua_pushinteger(l, movement_handle);
 
   return 1;
@@ -534,12 +510,11 @@ int Script::main_api_path_movement_create(lua_State *l) {
  */
 int Script::main_api_random_path_movement_create(lua_State *l) {
 
-  Script *script;
-  called_by_script(l, 1, &script);
+  Script& script = get_script(l, 1);
   int speed = luaL_checkinteger(l, 1);
 
   Movement *movement = new RandomPathMovement(speed);
-  int movement_handle = script->create_movement_handle(*movement);
+  int movement_handle = script.create_movement_handle(*movement);
   lua_pushinteger(l, movement_handle);
 
   return 1;
@@ -556,12 +531,11 @@ int Script::main_api_random_path_movement_create(lua_State *l) {
  */
 int Script::main_api_path_finding_movement_create(lua_State *l) {
 
-  Script *script;
-  called_by_script(l, 1, &script);
+  Script& script = get_script(l, 1);
   int speed = luaL_checkinteger(l, 1);
 
-  PathFindingMovement *movement = new PathFindingMovement(&script->get_game().get_hero(), speed);
-  int movement_handle = script->create_movement_handle(*movement);
+  PathFindingMovement *movement = new PathFindingMovement(&script.get_game().get_hero(), speed);
+  int movement_handle = script.create_movement_handle(*movement);
   lua_pushinteger(l, movement_handle);
 
   return 1;
@@ -578,15 +552,14 @@ int Script::main_api_path_finding_movement_create(lua_State *l) {
  */
 int Script::main_api_target_movement_create(lua_State *l) {
 
-  Script *script;
-  called_by_script(l, 1, &script);
+  Script& script = get_script(l, 1);
   int speed = luaL_checkinteger(l, 1);
 
-  Hero& hero = script->get_game().get_hero();
+  Hero& hero = script.get_game().get_hero();
   TargetMovement *movement = new TargetMovement(&hero, speed);
   movement->set_ignore_obstacles(false);
   movement->set_speed(speed);
-  int movement_handle = script->create_movement_handle(*movement);
+  int movement_handle = script.create_movement_handle(*movement);
   lua_pushinteger(l, movement_handle);
 
   return 1;
@@ -603,15 +576,14 @@ int Script::main_api_target_movement_create(lua_State *l) {
  */
 int Script::main_api_rectilinear_movement_create(lua_State *l) {
 
-  Script *script;
-  called_by_script(l, 2, &script);
+  Script& script = get_script(l, 2);
   int speed = luaL_checkinteger(l, 1);
   double angle = luaL_checknumber(l, 2);
 
   RectilinearMovement *movement = new RectilinearMovement(false);
   movement->set_speed(speed);
   movement->set_angle(angle);
-  int movement_handle = script->create_movement_handle(*movement);
+  int movement_handle = script.create_movement_handle(*movement);
   lua_pushinteger(l, movement_handle);
 
   return 1;
@@ -629,8 +601,7 @@ int Script::main_api_rectilinear_movement_create(lua_State *l) {
  */
 int Script::main_api_temporal_movement_create(lua_State *l) {
 
-  Script *script;
-  called_by_script(l, 3, &script);
+  Script& script = get_script(l, 3);
   int speed = luaL_checkinteger(l, 1);
   double angle = luaL_checknumber(l, 2);
   uint32_t duration = luaL_checkinteger(l, 3);
@@ -640,7 +611,7 @@ int Script::main_api_temporal_movement_create(lua_State *l) {
   if (speed != 0) {
     movement->set_angle(angle);
   }
-  int movement_handle = script->create_movement_handle(*movement);
+  int movement_handle = script.create_movement_handle(*movement);
   lua_pushinteger(l, movement_handle);
 
   return 1;
@@ -659,19 +630,18 @@ int Script::main_api_temporal_movement_create(lua_State *l) {
  */
 int Script::main_api_circle_movement_create(lua_State *l) {
 
-  Script *script;
-  called_by_script(l, 3, &script);
+  Script& script = get_script(l, 3);
   int center_type = luaL_checkinteger(l, 1);
   const std::string& center_name = luaL_checkstring(l, 2);
   int radius = luaL_checkinteger(l, 3);
 
-  MapEntity* center_entity = script->get_map().get_entities().
+  MapEntity* center_entity = script.get_map().get_entities().
       get_entity(EntityType(center_type), center_name);
 
   CircleMovement *movement = new CircleMovement();
   movement->set_center(center_entity);
   movement->set_radius(radius);
-  int movement_handle = script->create_movement_handle(*movement);
+  int movement_handle = script.create_movement_handle(*movement);
   lua_pushinteger(l, movement_handle);
 
   return 1;
@@ -688,13 +658,12 @@ int Script::main_api_circle_movement_create(lua_State *l) {
  */
 int Script::main_api_jump_movement_create(lua_State *l) {
 
-  Script *script;
-  called_by_script(l, 2, &script);
+  Script& script = get_script(l, 2);
   int direction8 = luaL_checkinteger(l, 1);
   int length = luaL_checkinteger(l, 2);
 
   Movement *movement = new JumpMovement(direction8, length, 0, false);
-  int movement_handle = script->create_movement_handle(*movement);
+  int movement_handle = script.create_movement_handle(*movement);
   lua_pushinteger(l, movement_handle);
 
   return 1;
@@ -711,12 +680,11 @@ int Script::main_api_jump_movement_create(lua_State *l) {
  */
 int Script::main_api_movement_get_property(lua_State *l) {
 
-  Script *script;
-  called_by_script(l, 2, &script);
+  Script& script = get_script(l, 2);
   int movement_handle = luaL_checkinteger(l, 1);
   const std::string &key = luaL_checkstring(l, 2);
 
-  Movement &movement = script->get_movement(movement_handle);
+  Movement &movement = script.get_movement(movement_handle);
   const std::string &value = movement.get_property(key);
   lua_pushstring(l, value.c_str());
 
@@ -734,8 +702,7 @@ int Script::main_api_movement_get_property(lua_State *l) {
  */
 int Script::main_api_movement_set_property(lua_State *l) {
 
-  Script *script;
-  called_by_script(l, 3, &script);
+  Script& script = get_script(l, 3);
   int movement_handle = luaL_checkinteger(l, 1);
   const std::string &key = luaL_checkstring(l, 2);
 
@@ -761,7 +728,7 @@ int Script::main_api_movement_set_property(lua_State *l) {
     Debug::die("Invalid type of value in movement_set_property");
   }
 
-  Movement &movement = script->get_movement(movement_handle);
+  Movement &movement = script.get_movement(movement_handle);
   movement.set_property(key, value);
 
   return 0;
@@ -780,13 +747,12 @@ int Script::main_api_movement_set_property(lua_State *l) {
  */
 int Script::main_api_movement_test_obstacles(lua_State *l) {
 
-  Script* script;
-  called_by_script(l, 3, &script);
+  Script& script = get_script(l, 3);
   int movement_handle = luaL_checkinteger(l, 1);
   int dx = luaL_checkinteger(l, 2);
   int dy = luaL_checkinteger(l, 3);
 
-  Movement& movement = script->get_movement(movement_handle);
+  Movement& movement = script.get_movement(movement_handle);
   bool result = movement.test_collision_with_obstacles(dx, dy);
   lua_pushboolean(l, result);
 
@@ -806,8 +772,7 @@ int Script::main_api_movement_test_obstacles(lua_State *l) {
  */
 int Script::main_api_get_angle(lua_State *l) {
 
-  Script* script;
-  called_by_script(l, 4, &script);
+  get_script(l, 4);
   int x1 = luaL_checkinteger(l, 1);
   int y1 = luaL_checkinteger(l, 2);
   int x2 = luaL_checkinteger(l, 3);

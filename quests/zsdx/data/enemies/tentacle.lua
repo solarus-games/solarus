@@ -8,6 +8,6 @@ function event_appear()
   sol.enemy.create_sprite("enemies/tentacle")
   sol.enemy.set_size(16, 16)
   sol.enemy.set_origin(8, 13)
-  m = sol.main.path_finding_movement_create(32)
+  local m = sol.main.path_finding_movement_create(32)
   sol.enemy.start_movement(m)
 end

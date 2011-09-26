@@ -1,8 +1,7 @@
--------------------------
--- Dungeon 2 1F script --
--------------------------
+-- Dungeon 2 1F
 
 current_switch = ""
+fighting_miniboss = false
 
 function event_map_started(destination_point_name)
 
@@ -35,7 +34,6 @@ function event_map_opening_transition_finished(destination_point_name)
   end
 end
 
-fighting_miniboss = false
 function event_hero_on_sensor(sensor_name)
 
   if sensor_name == "start_miniboss_sensor" and not sol.game.savegame_get_boolean(92) and not fighting_miniboss then

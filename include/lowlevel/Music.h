@@ -19,8 +19,6 @@
 
 #include "Common.h"
 #include "lowlevel/Sound.h"
-#include <map>
-#include <AL/al.h>
 
 /**
  * @brief Represents a music that can be played.

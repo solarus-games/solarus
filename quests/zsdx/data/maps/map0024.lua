@@ -1,6 +1,4 @@
--------------------------
--- Dungeon 1 B1 script --
--------------------------
+-- Dungeon 1 B1
 
 function event_map_started(destination_point_name)
 

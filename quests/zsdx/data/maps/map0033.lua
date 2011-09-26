@@ -1,6 +1,4 @@
---------------------------------------
--- Cave of the hole near the flower --
---------------------------------------
+-- Cave of the hole near the flower
 
 function event_map_started(destination_point_name)
 

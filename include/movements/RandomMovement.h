@@ -28,6 +28,7 @@
  * Properties:
  * - speed
  * - max_distance
+ * - ignore_obstacles
  * - angle (read-only)
  */
 class RandomMovement: public RectilinearMovement {

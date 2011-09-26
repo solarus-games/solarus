@@ -1,15 +1,13 @@
---------------------------
--- Grandma house script --
---------------------------
+-- Grandma house
 
 -- The player talks to grandma
 function event_npc_dialog(npc_name)
 
-  has_smith_sword = sol.game.savegame_get_boolean(30)
-  has_clay_key = sol.game.savegame_get_boolean(28)
-  has_finished_lyriann_cave = sol.game.savegame_get_boolean(37)
-  has_bow = sol.game.savegame_get_boolean(26)
-  has_rock_key = sol.game.savegame_get_boolean(68)
+  local has_smith_sword = sol.game.savegame_get_boolean(30)
+  local has_clay_key = sol.game.savegame_get_boolean(28)
+  local has_finished_lyriann_cave = sol.game.savegame_get_boolean(37)
+  local has_bow = sol.game.savegame_get_boolean(26)
+  local has_rock_key = sol.game.savegame_get_boolean(68)
 
   if not has_smith_sword then
     -- beginning: go get a sword

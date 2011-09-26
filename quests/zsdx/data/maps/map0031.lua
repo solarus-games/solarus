@@ -34,7 +34,7 @@ end
 
 function event_switch_activated(switch_name)
 
-  order = switches_puzzle_order[switch_name]
+  local order = switches_puzzle_order[switch_name]
   if order ~= nil then 
 
     switches_puzzle_nb_enabled = switches_puzzle_nb_enabled + 1

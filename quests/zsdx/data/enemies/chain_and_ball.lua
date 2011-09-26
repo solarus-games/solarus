@@ -44,8 +44,8 @@ function event_appear()
   -- get the difference of coordinates between me and my father
   father_name = sol.enemy.get_father()
   if father_name ~= "" then
-    x, y = sol.enemy.get_position()
-    father_x, father_y = sol.map.enemy_get_position(father_name)
+    local x, y = sol.enemy.get_position()
+    local father_x, father_y = sol.map.enemy_get_position(father_name)
     center_xy.x, center_xy.y = x - father_x, y - father_y
   end
 end
@@ -60,15 +60,16 @@ end
 function event_position_changed(x, y)
 
   -- recalculate the chain position
+  local x1, y1
   if father_name ~= "" then
     -- the center is relative to the father
-    x, y = sol.map.enemy_get_position(father_name)
+    local x, y = sol.map.enemy_get_position(father_name)
     x1, y1 = x + center_xy.x, y + center_xy.y;
   else
     -- the center is absolute
     x1, y1 = center_xy
   end
-  x2, y2 = sol.enemy.get_position();
+  local x2, y2 = sol.enemy.get_position();
 
   for i = 1, nb_links do
     link_xy[i].x = x1 + (x2 - x1) * (i - 1) / nb_links;
@@ -78,7 +79,7 @@ end
 
 function event_enabled()
 
-  m = sol.main.circle_movement_create(7, father_name, 56)
+  local m = sol.main.circle_movement_create(7, father_name, 56)
   sol.main.movement_set_property(m, "center_dx", center_xy.x)
   sol.main.movement_set_property(m, "center_dy", center_xy.y)
   sol.main.movement_set_property(m, "radius_speed", 50)

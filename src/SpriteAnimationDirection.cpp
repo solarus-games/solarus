@@ -120,7 +120,7 @@ void SpriteAnimationDirection::enable_pixel_collisions(Surface *src_image) {
   if (pixel_bits == NULL) {
     pixel_bits = new PixelBits*[nb_frames];
     for (int i = 0; i < nb_frames; i++) {
-      pixel_bits[i] = new PixelBits(src_image, frames[i]);
+      pixel_bits[i] = new PixelBits(*src_image, frames[i]);
     }
   }
 }
@@ -155,10 +155,12 @@ bool SpriteAnimationDirection::are_pixel_collisions_enabled() const {
  * @param frame a frame of the animation
  * @return the pixel bits object of a frame
  */
-PixelBits* SpriteAnimationDirection::get_pixel_bits(int frame) const {
+PixelBits& SpriteAnimationDirection::get_pixel_bits(int frame) const {
 
   Debug::check_assertion(pixel_bits != NULL);
+  Debug::check_assertion(frame >= 0 && frame < nb_frames,
+      StringConcat() << "Invalid frame number: " << frame);
 
-  return pixel_bits[frame];
+  return *pixel_bits[frame];
 }
 

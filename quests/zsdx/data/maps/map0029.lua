@@ -1,4 +1,4 @@
--- Twin caves script
+-- Twin caves
 
 current_switch_name = ""
 

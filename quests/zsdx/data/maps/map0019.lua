@@ -1,6 +1,4 @@
-----------------------
--- Cake shop script --
-----------------------
+-- Cake shop
 
 function event_map_started(destination_point_name)
 
@@ -19,9 +17,9 @@ end
 
 function event_hero_on_sensor(sensor_name)
 
-   if not has_obtained_bottle() and not has_talked_about_apples() then
-      sol.map.dialog_start("cake_shop.dont_leave")
-   end
+  if not has_obtained_bottle() and not has_talked_about_apples() then
+    sol.map.dialog_start("cake_shop.dont_leave")
+  end
 end
 
 function event_dialog_finished(first_message_id, answer)

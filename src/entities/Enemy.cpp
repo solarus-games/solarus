@@ -170,8 +170,6 @@ MapEntity* Enemy::create(Game &game, const std::string& breed, Rank rank, int sa
 
   if (rank != RANK_NORMAL) {
     enemy->set_enabled(false);
-//    enemy->set_collision_modes(COLLISION_SPRITE);
-// COLLISION_RECTANGLE is necessary to detect collisions with thrown items
   }
 
   // set the default enemy features
@@ -543,7 +541,8 @@ void Enemy::update() {
     // see if we should stop the animation "hurt"
     bool stop_hurt = false;
     if (pushed_back_when_hurt) {
-      stop_hurt = get_movement()->is_finished() && is_sprite_finished_or_looping();
+      stop_hurt = (get_movement() == NULL || get_movement()->is_finished())
+          && is_sprite_finished_or_looping();
     }
     else {
       stop_hurt = now >= stop_hurt_date;
@@ -558,6 +557,7 @@ void Enemy::update() {
       else if (is_immobilized()) {
         clear_movement();
         set_animation("immobilized");
+        notify_immobilized();
       }
       else {
         clear_movement();
@@ -615,7 +615,7 @@ void Enemy::update() {
         treasure, FALLING_HIGH, false));
 
     // notify the enemy
-    just_dead();
+    notify_dead();
 
     // remove the enemy
     remove_from_map();
@@ -683,6 +683,10 @@ bool Enemy::is_in_normal_state() {
  * By default, the "walking" animation is set on the enemy's sprites.
  */
 void Enemy::restart() {
+
+  if (is_immobilized()) {
+    stop_immobilized();
+  }
   set_animation("walking");
 }
 
@@ -864,7 +868,7 @@ void Enemy::try_hurt(EnemyAttack attack, MapEntity &source, Sprite *this_sprite)
       // get immobilized
       hurt(source);
       immobilize();
-      just_hurt(source, attack, 0);
+      notify_hurt(source, attack, 0);
       break;
 
     case EnemyReaction::CUSTOM:
@@ -892,7 +896,7 @@ void Enemy::try_hurt(EnemyAttack attack, MapEntity &source, Sprite *this_sprite)
       life -= reaction.life_lost;
 
       hurt(source);
-      just_hurt(source, attack, reaction.life_lost);
+      notify_hurt(source, attack, reaction.life_lost);
       break;
 
     case EnemyReaction::IGNORED:
@@ -945,14 +949,22 @@ void Enemy::hurt(MapEntity &source) {
  * @param attack the attack that was just successful
  * @param life_points the number of life points lost by this enemy
  */
-void Enemy::just_hurt(MapEntity &source, EnemyAttack attack, int life_points) {
+void Enemy::notify_hurt(MapEntity &source, EnemyAttack attack, int life_points) {
 
 }
 
 /**
  * @brief This function is called when the enemy has just finished dying.
  */
-void Enemy::just_dead() {
+void Enemy::notify_dead() {
+
+}
+
+/**
+ * @brief This function is called when the enemy is immobilized,
+ * after the hurt animation.
+ */
+void Enemy::notify_immobilized() {
 
 }
 
@@ -1157,3 +1169,11 @@ Enemy::HurtSoundStyle Enemy::get_hurt_sound_style_by_name(const std::string& nam
   throw;
 }
 
+/**
+ * @brief Sends a message from another enemy to this enemy.
+ * @param sender the sender
+ * @param message the message
+ */
+void Enemy::notify_message_received(Enemy& sender, const std::string& message) {
+
+}

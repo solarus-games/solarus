@@ -64,8 +64,8 @@ class Script {
     // calling a Lua function from C++
     bool find_lua_function(const std::string &function_name);
 
-    // calling a C++ function from Lua (and also retreive the instance of Script)
-    static void called_by_script(lua_State *context, int nb_arguments, Script **script);
+    // calling a C++ function from Lua (and retrieve the instance of Script)
+    static Script& get_script(lua_State* context, int min_arguments, int max_arguments = -1);
 
     // initialization
     void register_apis();
@@ -335,7 +335,8 @@ class Script {
       enemy_api_is_displayed_in_y_order,
       enemy_api_set_displayed_in_y_order,
       enemy_api_create_son,
-      enemy_api_get_father;
+      enemy_api_get_father,
+      enemy_api_send_message;
 
   protected:
 

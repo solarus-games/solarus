@@ -80,10 +80,10 @@ void Timer::update() {
     else {
       Sound::play("timer_hurry");
       if (remaining_time > 2000) {
-	next_sound_date += 1000;
+        next_sound_date += 1000;
       }
       else {
-	next_sound_date += 250;
+        next_sound_date += 250;
       }
     }
   }
@@ -108,7 +108,7 @@ void Timer::set_suspended(bool suspended) {
     if (when_suspended != 0) {
       expiration_date += now - when_suspended;
       if (next_sound_date != 0) {
-	next_sound_date += now - when_suspended;
+        next_sound_date += now - when_suspended;
       }
     }
   }

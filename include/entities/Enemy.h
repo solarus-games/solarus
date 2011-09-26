@@ -180,8 +180,9 @@ class Enemy: public Detector {
     void immobilize();
     void stop_immobilized();
     virtual int custom_attack(EnemyAttack attack, Sprite *this_sprite);
-    virtual void just_hurt(MapEntity &source, EnemyAttack attack, int life_points);
-    virtual void just_dead();
+    virtual void notify_hurt(MapEntity &source, EnemyAttack attack, int life_points);
+    virtual void notify_dead();
+    virtual void notify_immobilized();
 
     // animation
     const std::string& get_animation();
@@ -238,6 +239,9 @@ class Enemy: public Detector {
 
     static const std::string& get_hurt_sound_style_name(HurtSoundStyle style);
     static HurtSoundStyle get_hurt_sound_style_by_name(const std::string& name);
+
+    // communication with others
+    virtual void notify_message_received(Enemy& sender, const std::string& message);
 };
 
 #endif

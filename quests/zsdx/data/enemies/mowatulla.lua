@@ -27,8 +27,8 @@ end
 
 function event_update()
 
-  x, y = sol.enemy.get_position()
-  hero_x, hero_y = sol.map.hero_get_position()
+  local x, y = sol.enemy.get_position()
+  local hero_x, hero_y = sol.map.hero_get_position()
   if hero_y > y + 8 then
     sol.enemy.set_attack_consequence("sword", 1)
     sol.enemy.set_attack_consequence("arrow", 2)
@@ -43,15 +43,15 @@ function event_hurt(attack, life_lost)
   sol.main.timer_stop_all()
   if sol.enemy.get_life() <= 0 then
     -- I am dying: remove the sons
-    sons_prefix = sol.enemy.get_name().."_son"
+    local sons_prefix = sol.enemy.get_name().."_son"
     sol.map.enemy_remove_group(sons_prefix)
   end
 end
 
 function go()
-  m = sol.main.random_path_movement_create(64)
+  local m = sol.main.random_path_movement_create(64)
   sol.enemy.start_movement(m)
-  sprite = sol.enemy.get_sprite()
+  local sprite = sol.enemy.get_sprite()
   sol.main.sprite_set_animation(sprite, "walking")
 end
 
@@ -63,7 +63,7 @@ end
 
 function son_phase()
 
-  sprite = sol.enemy.get_sprite()
+  local sprite = sol.enemy.get_sprite()
   sol.main.sprite_set_animation(sprite, "preparing_son")
   sol.main.play_sound("boss_charge")
   sol.main.timer_start(1500, "throw_son", false)
@@ -80,7 +80,7 @@ function throw_son()
 
   -- create the son
   nb_sons_created = nb_sons_created + 1
-  son_name = sol.enemy.get_name().."_minillosaur_"..nb_sons_created
+  local son_name = sol.enemy.get_name().."_minillosaur_"..nb_sons_created
   sol.enemy.create_son(son_name, "mini_mowatulla", 0, 40)
   sol.main.play_sound("boss_fireball")
 
@@ -91,9 +91,9 @@ function throw_son()
     sol.main.timer_start(500, "throw_son", false)
   else
     -- finish the son phase
-    sprite = sol.enemy.get_sprite()
+    local sprite = sol.enemy.get_sprite()
     sol.main.sprite_set_animation(sprite, "walking")
-    duration = 3500 + (math.random(3) * 1000)
+    local duration = 3500 + (math.random(3) * 1000)
     sol.main.timer_start(duration, "jump_or_son_phase", false)
     sol.main.timer_start(500, "go", false)
   end
@@ -103,8 +103,8 @@ function jump_or_son_phase()
 
   if math.random(2) == 1 then
  
-    sons_prefix = sol.enemy.get_name().."_son" 
-    nb_sons = sol.map.enemy_get_group_count(sons_prefix)
+    local sons_prefix = sol.enemy.get_name().."_son" 
+    local nb_sons = sol.map.enemy_get_group_count(sons_prefix)
     if nb_sons < 5 then
       son_phase_soon()
     else
@@ -118,9 +118,9 @@ end
 
 function jump_phase()
 
-  x, y = sol.enemy.get_position()
+  local x, y = sol.enemy.get_position()
   y = y - 16
-  hero_x, hero_y = sol.map.hero_get_position()
+  local hero_x, hero_y = sol.map.hero_get_position()
   if hero_x > x then
     if y > 856 then 
       direction8 = 1
@@ -135,10 +135,10 @@ function jump_phase()
     end
   end
 
-  m = sol.main.jump_movement_create(direction8, 112)
+  local m = sol.main.jump_movement_create(direction8, 112)
   sol.main.movement_set_property(m, "speed", 96)
   sol.enemy.start_movement(m)
-  sprite = sol.enemy.get_sprite()
+  local sprite = sol.enemy.get_sprite()
   sol.main.sprite_set_animation(sprite, "jumping")
   sol.main.play_sound("jump")
 end

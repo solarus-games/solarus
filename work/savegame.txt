@@ -78,7 +78,7 @@ booleans:
 29	empty chest in the smith cave
 30	the smith gave the sword to the player
 31	lamp in the shop
-32	the player obtained the bottle from the cake shop seller
+32	the player obtained the bottle 1 from the cake shop seller 
 33	the player obtained the world map from Sahasrahla
 34	Sahasrahla's cave: the player has seen the frozen door
 35	Sahasrahla's cave: the player has open the frozen door
@@ -258,4 +258,13 @@ booleans:
 905	outside maps: dark world enabled
 906	dungeon 3 3F: boss key door
 907	outside world A2: entrance door of the castle open
+908	dungeon 3 2F: shortcut A
+909	dungeon 3 2F: shortcut B
+910	castle B1: chest with 50 rupees
+911	potion shop: got the bottle 2 (TODO)
+912	outside world A3: chest with the bottle 3
+913	bottle 4 (TODO)
+914	outside world B2: dungeon 6 open
+915	outside world B2: talked to Inferno
+916	outside wolrd B2: got 100 rupees from Inferno
 

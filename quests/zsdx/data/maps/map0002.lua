@@ -1,6 +1,4 @@
-------------------------
--- Rupee house script --
-------------------------
+-- Rupee house
 
 -- Initializations made when the map has just been loaded
 playing_game_1 = false
@@ -41,7 +39,7 @@ function event_npc_dialog(npc_name)
     else
 
       -- see if the player can still play
-      unauthorized = sol.game.savegame_get_boolean(16)
+      local unauthorized = sol.game.savegame_get_boolean(16)
 
       if unauthorized then
 	-- the player already won much money
@@ -162,7 +160,7 @@ function event_dialog_finished(first_message_id, answer)
 	sol.main.sprite_set_paused(v.sprite, false)
       end
     end
-  elseif string.match(first_message_id, "^rupee_house.game_2.reward.") then
+  elseif string.find(first_message_id, "^rupee_house.game_2.reward.") then
     -- reward in game 2
     sol.game.add_money(game_2_reward)
 
@@ -202,7 +200,7 @@ function event_dialog_finished(first_message_id, answer)
     sol.map.switch_set_activated("switch", false);
 
   -- stop game 3 when the player founds the piece of heart
-  elseif string.match(first_message_id, "^found_piece_of_heart") then
+  elseif string.find(first_message_id, "^found_piece_of_heart") then
     sol.map.tile_set_enabled("game_3_final_barrier", false)
     sol.main.play_sound("secret")
     playing_game_3 = false
@@ -222,8 +220,8 @@ function event_chest_empty(chest_name)
     sol.map.hero_unfreeze() -- restore the control
   else
     -- give a random reward
-    index = math.random(#game_1_rewards)
-    amount = game_1_rewards[index]
+    local index = math.random(#game_1_rewards)
+    local amount = game_1_rewards[index]
     if amount == 50 and not already_played_game_1 then
       -- don't give 50 rupees at the first attempt
       amount = 5
@@ -272,8 +270,8 @@ function event_hero_interaction(entity_name)
     if game_2_slots[entity_name].symbol == -1 then
       -- stop this reel
 
-      sprite = game_2_slots[entity_name].sprite
-      current_symbol = math.floor(sol.main.sprite_get_frame(sprite) / 3)
+      local sprite = game_2_slots[entity_name].sprite
+      local current_symbol = math.floor(sol.main.sprite_get_frame(sprite) / 3)
       game_2_slots[entity_name].symbol = (current_symbol + math.random(2)) % 7
       game_2_slots[entity_name].current_delay = game_2_slots[entity_name].current_delay + 100
       sol.main.sprite_set_frame_delay(sprite, game_2_slots[entity_name].current_delay)
@@ -301,7 +299,7 @@ function event_update()
   if playing_game_2 then
 
     -- stop the reels when necessary
-    nb_finished = 0
+    local nb_finished = 0
     for k, v in pairs(game_2_slots) do
       if sol.main.sprite_is_paused(v.sprite) then
 	nb_finished = nb_finished + 1
@@ -309,7 +307,7 @@ function event_update()
     end
 
     for k, v in pairs(game_2_slots) do
-      frame = sol.main.sprite_get_frame(v.sprite)
+      local frame = sol.main.sprite_get_frame(v.sprite)
 
       if not sol.main.sprite_is_paused(v.sprite) and frame == v.symbol * 3 then
 	sol.main.sprite_set_paused(v.sprite, true)
@@ -331,11 +329,11 @@ end
 function game_2_timer()
 
   -- see if the player has won
-  i = 1
-  green_found = false
-  blue_found = false
-  red_found = false
-  symbols = {-1, -1, -1};
+  local i = 1
+  local green_found = false
+  local blue_found = false
+  local red_found = false
+  local symbols = {-1, -1, -1};
   for k, v in pairs(game_2_slots) do
     symbols[i] = v.symbol
 

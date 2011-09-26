@@ -19,7 +19,7 @@
 
 #include "Common.h"
 #include "lowlevel/Rectangle.h"
-#include <SDL/SDL.h>
+#include <SDL.h>
 
 /**
  * @brief Represents a graphic surface.

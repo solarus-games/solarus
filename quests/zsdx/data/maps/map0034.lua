@@ -1,6 +1,4 @@
-------------------
--- Bomb cave 1F --
-------------------
+-- Bomb cave 1F
 
 door_open = false
 keep_door_open = false

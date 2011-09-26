@@ -22,7 +22,7 @@
 /**
  * @brief Provides pixel-perfect collision checks for a surface.
  *
- * This class stores efficently the location of the non-transparent pixels of a surface.
+ * This class stores efficiently the location of the non-transparent pixels of a surface.
  * For each pixel of the image, a bit indicates whether this pixel is transparent.
  * This class perform fast pixel-perfect collision checks.
  * Note that only 8-bit images are supported.
@@ -34,20 +34,20 @@ class PixelBits {
     int width;               /**< width of the image in pixels */
     int height;              /**< height of the image in pixels */
     int nb_integers_per_row; /**< number of uint32_t necessary to store
-			      * the bits of a row of the image */
+                              * the bits of a row of the image */
 
-    uint32_t **bits;         /**< a two-dimensional array representing the
-			      * transparency bit of each pixel in the image */
+    uint32_t** bits;         /**< a two-dimensional array representing the
+                              * transparency bit of each pixel in the image */
 
-    void print();
-    void print_mask(uint32_t mask);
+    void print() const;
+    void print_mask(uint32_t mask) const;
 
   public:
 
-    PixelBits(Surface *surface, const Rectangle &image_position);
+    PixelBits(Surface& surface, const Rectangle& image_position);
     ~PixelBits();
 
-    bool test_collision(PixelBits *other, const Rectangle &location1, const Rectangle &location2);
+    bool test_collision(const PixelBits& other, const Rectangle& location1, const Rectangle& location2) const;
 };
 
 #endif

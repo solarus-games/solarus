@@ -267,4 +267,7 @@ booleans:
 914	outside world B2: dungeon 6 open
 915	outside world B2: talked to Inferno
 916	outside wolrd B2: got 100 rupees from Inferno
+917	west moutain cave 1F: piece of heart 1
+918	west moutain cave 1F: piece of heart 2
+
 

@@ -1,3 +1,50 @@
+Ce fichier contient quelques bugs, feature requests et notes en vrac.
+
+Feature requests :
+
+- Mettre de la couleur dans les messages
+- Ajouter des infos de statut quête dans l'écran de sélection des sauvegardes, en particulier quand une sauvegarde est choisie
+- Permettre aux ennemis de tomber dans les trous
+- Permettre aux objets portés de tomber dans les trous et dans l'eau
+- transition intérieur / extérieur : ovale
+- transition des téléporteurs ?
+- scrolling tiles : permettre de choisir la direction du décalage
+- Ce serait pas mal de faire une animation lorsque Link vide le contenu de sa bouteille.
+- Ajouter un "map marker" pour indiquer où il faut se rendre ensuite
+- Voir si la police supporte des caractères unicode comme U+2192 (→) et U+2190 (←)
+- Boomerang 2 : ajouter dans l'api Lua les paramètres sprite, speed et length
+
+
+Bugs :
+
+- plein écran se déclenche parfois avec des combinaisons de espace, gauche, haut (il croit que F5 a été appuyé)
+- quand ça rame (exemple Wink ou valgrind), les vases et le boomerang sont lancés moins loin
+- la palette de couleurs des sprites de newlink n'est pas la même que celle du jeu original, il faudrait corriger quelques couleurs.
+- path finding : ne pas explorer les noeuds trop loin de la cible (on perd du temps à s'éloigner sans grand espoir)
+- PathFinding : si pas de chemin mais pas trop loin, essayer de s'approcher quand même
+- mur fissuré qui explose : animation ?
+- curseur visible sur eeepc linux en plein écran
+- le 8 n'est pas très lisible (ex : 80 rubis chez le forgeron)
+- empêcher de lancer le jeu en root, sinon le config.ini est créé avec root comme propriétaire
+- pousser un buisson empêche de le soulever
+- Link semble disparaître un peu lors des phases à l'épée.
+- Lorsqu'on fait des appuis courts et répétés sur une des flèches, Link avance sans marcher.
+- Quand Link rentre dans une maison, le cadre de la porte est sous sa tête et pas au-dessus.
+- Au moment où on frappe les gardes verts qui rôdent près du village, il se peut que ceux-ci ne reculent pas malgré l'impact s'ils changent de direction au même moment.
+- On ne peut pas lancer un pot au-dessus d'une falaise
+- Quand on lance un pot dans un donjon depuis la couche intermédiaire vers la couche basse, le changer de couche (détecter l'absence de tiles sur la couche intermédiaire)
+- vérifier ce qui se passe si on arrive sur un tapis roulant pendant qu'on tire une statue (peut-être modifier le is_conveyor_belt_obstacle)
+- Morwenn : Quand on reste l'épée brandie vers le bas, et qu'on tue un monstre, on peut continuer à avancer. Cependant, on se blesse même si on le touche alors qu'il en est à son animation de destruction.
+- achat d'un croissant : dialogue avant et après l'achat redondant
+- eau froide pour faire fondre la glace : trouver autre chose
+- Remplacer les cast
+- BackToSolidGroundState : il faut attendre le mouvement alors que la caméra ne bouge même pas (voir Caverne de Billy)
+- Ajouter set_enabled()/is_enabled() à InteractiveEntity/NPC
+- event_camera_reached_target() et event_camera_back() : notifier le script qui a effectué la requête, pas forcément le script de la map
+- Message incorrect quand on regarde un chou-péteur sans la poigne de fer
+- SOLARUS_DEBUG_LEVEL = 0 : segfault
+
+
 Prochaines mises à jour :
 
 - fausse boîte
@@ -17,62 +64,12 @@ Version gentoo svn :
 games-rpg/solarus from  gamerlay overlay
 
 
-Feature requests :
+-----------------
+Ennemis à faire :
+-----------------
 
-- Mettre de la couleur dans les messages
-- Ajouter des infos de statut quête dans l'écran de sélection des sauvegardes, en particulier quand une sauvegarde est choisie
-- Permettre aux ennemis de tomber dans les trous
-- Permettre aux objets portés de tomber dans les trous et dans l'eau
-- Mettre des constantes dans les scripts
-- transition intérieur / extérieur : ovale
-- transition des téléporteurs ?
-- rendre les pierres et les buissons dépendants du tileset
-- scrolling tiles : permettre de choisir la direction du décalage
-- Ce serait pas mal de faire une animation lorsque Link vide le contenu de sa bouteille.
-- Ajouter un "map marker" pour indiquer où il faut se rendre ensuite
-- Voir si la police supporte des caractères unicode comme U+2192 (→) et U+2190 (←)
-- faire un type d'ennemi "CustomEnemy" qui est en fait scripté
-- Boomerang 2 : ajouter dans l'api Lua les paramètres sprite, speed et length
+Déjà faits dans Mercuris' Chest :
 
-
-Bugs :
-
-- plein écran se déclenche parfois avec des combinaisons de espace, gauche, haut (il croit que F5 a été appuyé)
-- quand ça rame (exemple Wink ou valgrind), les vases et le boomerang sont lancés moins loin
-- quand ça rame (exemple Wink), possible de sortir de la pâtisserie pendant le dialogue "hé, attends" : corrigé depuis le freeze() de event_hero_on_sensor ?
-- la palette de couleurs des sprites de newlink n'est pas la même que celle du jeu original, il faudrait corriger quelques couleurs.
-- trous et plates-formes dans la grotte de mymy
-- path finding : ne pas explorer les noeuds trop loin de la cible (on perd du temps à s'éloigner sans grand espoir)
-- PathFinding : si pas de chemin mais pas trop loin, essayer de s'approcher quand même
-- mur fissuré qui explose : animation ?
-- curseur visible sur eeepc linux en plein écran
-- le 8 n'est pas très lisible (ex : 80 rubis chez le forgeron)
-- engine_dialogs.zsd : deux fois _treasure_88_2 (le signaler aux traducteurs)
-- empêcher de lancer le jeu en root, sinon le config.ini est créé avec root comme propriétaire
-- pousser un buisson empêche de le soulever
-- Link semble disparaître un peu lors des phases à l'épée.
-- Lorsqu'on fait des appuis courts et répétés sur une des flèches, Link avance sans marcher.
-- Quand Link rentre dans une maison, le cadre de la porte est sous sa tête et pas au-dessus.
-- Au moment où on frappe les gardes verts qui rôdent près du village, il se peut que ceux-ci ne reculent pas malgré l'impact s'ils changent de direction au même moment.
-- On ne peut pas lancer un pot au-dessus d'une falaise
-- Quand on lance un pot dans un donjon depuis la couche intermédiaire vers la couche basse, le changer de couche (détecter l'absence de tiles sur la couche intermédiaire)
-- vérifier ce qui se passe si on arrive sur un tapis roulant pendant qu'on tire une statue (peut-être modifier le is_conveyor_belt_obstacle)
-- Morwenn : Quand on reste l'épée brandie vers le bas, et qu'on tue un monstre, on peut continuer à avancer. -> Empêcher surtout le monstre d'attaquer le héros pendant un certain délai, cela éviterait aussi que les ennemis interrompent les bottes de pégase.
-  Cependant, on se blesse même si on le touche alors qu'il en est à son animation de destruction.
-- achat d'un croissant : dialogue avant et après l'achat redondant
-- eau froide pour faire fondre la glace : trouver autre chose
-- Remplacer les cast
-- BackToSolidGroundState : il faut attendre le mouvement alors que la caméra ne bouge même pas (voir Caverne de Billy)
-- Ajouter set_enabled()/is_enabled() à InteractiveEntity/NPC
-- event_camera_reached_target() et event_camera_back() : notifier le script qui a effectué la requête, pas forcément le script de la map
-- Message incorrect quand on regarde un chou-péteur sans la poigne de fer
-- Bottes de pégase vers trou avec fond vers le nord : le téléporteur ne se déclenche pas
-- SOLARUS_DEBUG_LEVEL = 0 : segfault
-
-
-Ennemis à faire (reprendre graphismes de MC + graphismes rippés) :
-
-- GreenSoldier : garde vert normal (intelligent avec longue épée)
 - Octorok
 - serpent
 - stalfos
@@ -82,11 +79,27 @@ Ennemis à faire (reprendre graphismes de MC + graphismes rippés) :
 - fantôme
 - garde bleu avec lance (monde des ténèbres)
 
-- Dogman
-- Lizalfos
-- Knight soldier
-- Duck soldier
-- Pig soldier
+Présents dans le vieux ZS :
+
+- garde noir qui enferme Link dans le cachot
+- garde avec chain and ball
+- cyclope vert (nécessite arc)
+- canard
+- Daira (ennemi bleu qui projette des sortes de flammes)
+- lézard vert
+- momie
+- Nuranuru (ver jaune)
+- Helmasaur (bestiole avec masque de protection à l'avant)
+- Babasu (ver noir qui sort des murs et traverse la salle)
+- Stalfos rouge
+- Hardhat Beetle (méduse qui repousse Link)
+- Goriya (monstre vert ou rouge qui marche symétriquement à Link)
+- tortue rouge avec carapace
+- Moblin (cochon avec lance)
+- Ropa (petit monstre vert avec tentacules oranges)
+- Pickitt Plant (vole les objets de Link avec sa langue)
+- Stal (faux crâne)
+- Slarok (similaire à Octorok, dans le monde des ténèbres)
 
 
 Musiques du vieux ZS :
@@ -102,7 +115,6 @@ Musiques du vieux ZS :
 - Gîte des Rêves LA
 - Mont Tamaranch LA (déjà fait)
 - ... toutes musiques acceptées, idées bienvenues
-
 
 
 --------------
@@ -141,8 +153,6 @@ Feature requests de l'éditeur :
 	- Interface pour éditer les étages des donjons
 	- dungeons.dat : l'emplacement des coffres et des boss est censé être relatif à l'étage, pas à la map
 
-
-Recruter un programmeur ?
 
 Objectifs :
 - Outils utilisables en ligne de commande et dans l'éditeur (mais pas destinés au moteur de jeu) :

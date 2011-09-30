@@ -5,7 +5,6 @@ function event_map_started(destination_point_name)
   -- make the NPCs walk
   random_walk("walking_npc_1")
   random_walk("walking_npc_2")
-  random_walk("walking_npc_3")
 end
 
 function random_walk(npc_name)

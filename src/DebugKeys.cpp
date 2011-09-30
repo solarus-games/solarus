@@ -95,19 +95,19 @@ void DebugKeys::key_pressed(InputEvent::KeyboardKey key) {
 	// quest-specific temporary code
 	if (!game->is_paused()) {
 	  equipment.add_item("bow", 1);
-	  equipment.add_item("bottle_2", 6);
 	  equipment.add_item("bombs_counter", 1);
 	  equipment.add_item("boomerang", 1);
 	  equipment.add_item("lamp", 1);
 	  equipment.add_item("hookshot", 1);
 	  equipment.add_item("pegasus_shoes", 1);
 	  equipment.add_item("bottle_1", 1);
-	  equipment.add_item("glove", 1);
+	  equipment.add_item("glove", 2);
 	  equipment.add_item("pain_au_chocolat", 1);
 	  equipment.add_item("croissant", 1);
 	  equipment.add_item("clay_key", 1);
 	  equipment.add_item("world_map", 1);
-	  equipment.add_item("feather", 1);
+          equipment.add_item("feather", 1);
+          equipment.add_item("flippers", 1);
 	  equipment.set_item_assigned(0, "bow");
 	  equipment.set_item_assigned(1, "feather");
 	}

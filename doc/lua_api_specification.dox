@@ -945,6 +945,10 @@ called when an explosion overlaps a sensor
 called when the hero opens an empty chest: the hero is freezed, your script has
 to define its behavior and then call hero_unfreeze()
 
+- <tt>event_shop_item_buying(shop_item_name)</tt>:
+called when the player wants to buy an item in a shop
+and has enough money: if you return false, the player cannot buy it
+
 - <tt>event_shop_item_bought(shop_item_name)</tt>:
 called when the player has just bought an item in a shop
 

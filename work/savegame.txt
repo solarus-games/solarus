@@ -261,7 +261,7 @@ booleans:
 908	dungeon 3 2F: shortcut A
 909	dungeon 3 2F: shortcut B
 910	castle B1: chest with 50 rupees
-911	potion shop: got the bottle 2 (TODO)
+911	potion shop: got the bottle 2
 912	outside world A3: chest with the bottle 3
 913	bottle 4 (TODO)
 914	outside world B2: dungeon 6 open
@@ -269,5 +269,6 @@ booleans:
 916	outside wolrd B2: got 100 rupees from Inferno
 917	west moutain cave 1F: piece of heart 1
 918	west moutain cave 1F: piece of heart 2
+
 
 

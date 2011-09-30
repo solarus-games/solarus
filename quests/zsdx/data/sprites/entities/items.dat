@@ -202,3 +202,12 @@ fairy entities/items.png 2 100 0
 apple entities/items.png 1 0 -1
 160	16	16	16	8	13	1	1
 
+red_potion entities/items.png 1 0 -1
+112	80	16	16	8	13	1	1
+
+green_potion entities/items.png 1 0 -1
+128	80	16	16	8	13	1	1
+
+blue_potion entities/items.png 1 0 -1
+144	80	16	16	8	13	1	1
+

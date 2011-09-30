@@ -1238,6 +1238,8 @@
 4	0	240	613	4	_random	1	-1
 4	0	216	757	4	_random	1	-1
 4	0	536	757	4	_random	1	-1
+1	0	624	381	from_potion_shop	3	0
+2	0	616	352	16	16	teletransporter_9	0	1	95	from_outside
 0	2	800	688	8	40	513
 0	2	632	336	8	40	513
 0	2	840	304	8	40	513

@@ -17,6 +17,7 @@
 #include "entities/ShopItem.h"
 #include "entities/Hero.h"
 #include "lua/MapScript.h"
+#include "lua/ItemScript.h"
 #include "Game.h"
 #include "Map.h"
 #include "KeysEffect.h"
@@ -220,16 +221,21 @@ void ShopItem::update() {
 	get_dialog_box().start_dialog("_shop.amount_full");
       }
       else {
-	// give the treasure
-	equipment.remove_money(price);
 
-	int savegame_variable = treasure.get_savegame_variable();
-	get_hero().start_treasure(treasure);
-	if (savegame_variable != -1) {
-	  remove_from_map();
-	  get_savegame().set_boolean(savegame_variable, true);
-	}
-	get_map_script().event_shop_item_bought(get_name());
+        bool can_buy = get_map_script().event_shop_item_buying(get_name());
+        if (can_buy) {
+
+          // give the treasure
+          equipment.remove_money(price);
+
+          int savegame_variable = treasure.get_savegame_variable();
+          get_hero().start_treasure(treasure);
+          if (savegame_variable != -1) {
+            remove_from_map();
+            get_savegame().set_boolean(savegame_variable, true);
+          }
+          get_map_script().event_shop_item_bought(get_name());
+        }
       }
     }
   }

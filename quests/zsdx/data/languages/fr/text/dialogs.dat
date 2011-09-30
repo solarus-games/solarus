@@ -1933,6 +1933,47 @@ line1 = "Tu as trouvé 200"
 line2 = "Rubis !"
 line3 = "C'est l'extase !"
 
+[_treasure.red_potion.1]
+# Potion rouge
+#       |--------------------|
+icon = 96
+line1 = "Tu as trouvé de la"
+line2 = "Potion Rouge !$0"
+next = _treasure.red_potion.1.2
+
+[_treasure.red_potion.1.2]
+#       |--------------------|
+line1 = "Bois-la pour"
+line2 = "retrouver toute ton"
+line3 = "énergie vitale."
+
+[_treasure.green_potion.1]
+# Potion verte
+#       |--------------------|
+icon = 97
+line1 = "Tu as trouvé de la"
+line2 = "Potion Verte !$0"
+next = _treasure.green_potion.1.2
+
+[_treasure.green_potion.1.2]
+#       |--------------------|
+line1 = "Bois-la pour"
+line2 = "retrouver toute ton"
+line3 = "énergie magique."
+
+[_treasure.blue_potion.1]
+# Potion bleue
+#       |--------------------|
+icon = 98
+line1 = "Tu as trouvé de la"
+line2 = "Potion Bleue !$0"
+next = _treasure.blue_potion.1.2
+
+[_treasure.blue_potion.1.2]
+#       |--------------------|
+line1 = "Bois-la pour"
+line2 = "retrouver toute ta"
+line3 = "vie et ta magie !"
 
 # ---------------
 # Autres messages
@@ -5056,6 +5097,74 @@ next = inferno.want_black_stones.3
 line1 = "Laisse-moi te"
 line2 = "transporter vers"
 line3 = "l'enfer des flammes..."
+
+[potion_shop.witch]
+#       |-----------------------|
+line1 = "Bienvenue à la Boutique"
+line2 = "de Potions !"
+line3 = "Héhéhé..."
+next = potion_shop.witch.2
+
+[potion_shop.witch.2]
+#       |-----------------------|
+line1 = "Rouge donne vie, vert"
+line2 = "donne magie, bleu donne"
+line3 = "vie et magie !"
+
+[potion_shop.witch_bottle_offered]
+#       |-----------------------|
+line1 = "Bienvenue à la Boutique"
+line2 = "de Potions !"
+line3 = "Héhéhé..."
+next = potion_shop.witch_bottle_offered.2
+
+[potion_shop.witch_bottle_offered.2]
+#       |-----------------------|
+line1 = "Un Flacon Magique est"
+line2 = "offert à chaque nouveau"
+line3 = "client ! Héhéhé..."
+next = potion_shop.witch_bottle_offered.3
+
+[potion_shop.witch_bottle_offered.3]
+#       |-----------------------|
+line1 = "Rouge donne vie, vert"
+line2 = "donne magie, bleu donne"
+line3 = "vie et magie !"
+
+[potion_shop.no_empty_bottle]
+#       |-----------------------|
+line1 = "Sans Flacon vide, tu ne"
+line2 = "peux pas acheter cette"
+line3 = "potion ! Héhéhé..."
+
+[potion_shop.red_potion]
+#       |-----------------------|
+line1 = "La potion rouge :"
+line2 = "restaure la vie !"
+line3 = "Héhéhé..."
+
+[potion_shop.green_potion]
+#       |-----------------------|
+line1 = "La potion verte :"
+line2 = "restaure ta barre de"
+line3 = "magie ! Héhéhé..."
+
+[potion_shop.blue_potion]
+#       |-----------------------|
+line1 = "La potion bleue :"
+line2 = "restaure vie et magie !"
+line3 = "Héhéhé..."
+
+[potion_shop.give_bottle]
+#       |-----------------------|
+line1 = "Et en tant que nouveau"
+line2 = "client, tu as droit à"
+line3 = "ce Flacon Magique"
+next = potion_shop.give_bottle.2
+
+[potion_shop.give_bottle.2]
+#       |-----------------------|
+line1 = "gratuit. Héhéhé..."
 
 [dungeon_2.solarus_child]
 #       |-----------------------|

@@ -356,3 +356,9 @@ brandish_when_picked = false
 can_disappear = true
 shadow = none
 
+[red_potion]
+
+[green_potion]
+
+[blue_potion]
+

@@ -91,6 +91,7 @@
 0	92	West mountains cave 2F
 0	94	West mountains cave 3F
 0	93	North fairy fountain
+0	95	Potion shop
 1	1	Light World
 1	13	Dark World
 1	3	Cave
@@ -326,6 +327,9 @@
 5	heart_container	Heart container
 5	piece_of_heart	Piece of heart
 5	fairy	Fairy
+5	red_potion	Red potion
+5	green_potion	Green potion
+5	blue_potion	Blue potion
 6	simple_green_soldier	Simple green soldier
 6	bubble	Bubble
 6	tentacle	Tentacle

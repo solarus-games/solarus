@@ -297,10 +297,22 @@ bool MapScript::event_chest_empty(const std::string &chest_name) {
 }
 
 /**
+ * @brief Notifies the script that the player wants to buy an item in a shop.
+ * @param shop_item_name name of the item bought
+ * @return true if the player is allowed to buy the item, false otherwise
+ */
+bool MapScript::event_shop_item_buying(const std::string& shop_item_name) {
+
+  bool can_buy = true; // if the function does not exist, allow buying the item
+  notify_script("event_shop_item_buying", "s b", shop_item_name.c_str(), &can_buy);
+  return can_buy;
+}
+
+/**
  * @brief Notifies the script that the player has just bought an item in a shop.
  * @param shop_item_name name of the item bought
  */
-void MapScript::event_shop_item_bought(const std::string &shop_item_name) {
+void MapScript::event_shop_item_bought(const std::string& shop_item_name) {
 
   notify_script("event_shop_item_bought", "s", shop_item_name.c_str());
 }

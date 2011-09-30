@@ -19,17 +19,21 @@ function event_use()
 
     -- red potion
   elseif variant == 3 then
-    -- TODO
+    sol.game.add_life(sol.game.get_max_life())
+    sol.item.set_variant(1)
     sol.item.set_finished()
 
     -- green potion
   elseif variant == 4 then
-    -- TODO
+    sol.game.add_magic(sol.game.get_max_magic())
+    sol.item.set_variant(1)
     sol.item.set_finished()
 
     -- blue potion
   elseif variant == 5 then
-    -- TODO
+    sol.game.add_life(sol.game.get_max_life())
+    sol.item.set_variant(1)
+    sol.game.add_magic(sol.game.get_max_magic())
     sol.item.set_finished()
 
     -- fairy

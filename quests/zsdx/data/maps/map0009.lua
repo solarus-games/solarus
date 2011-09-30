@@ -67,7 +67,7 @@ function cannon_jump()
 
   sol.main.play_sound("explosion")
   sol.map.explosion_create(296, 384, 0)
-  sol.map.hero_start_jumping(6, 432, true)
+  sol.map.hero_start_jumping(6, 424, true)
   sol.map.hero_set_visible(true)
 end
 

@@ -1092,6 +1092,15 @@
 0	1	808	616	8	8	69
 0	1	536	616	32	8	70
 0	1	768	616	40	8	70
+0	1	256	88	16	16	277
+0	1	192	192	16	16	277
+0	1	296	144	16	16	277
+0	1	176	424	16	48	2
+13	1	240	133	80	48	guard_2_sensor_0	0
+13	1	296	101	48	144	guard_3_sensor_3	0
+13	1	200	197	144	48	guard_3_sensor_2	0
+13	1	280	69	192	48	guard_1_sensor_2	0
+8	1	448	101	guard_1	2	1	npc/black_knight_soldier	map
 1	1	1032	941	destination_point	-1	1
 1	1	1048	941	destination_point_2	-1	1
 1	1	1064	941	destination_point_3	-1	1
@@ -1252,6 +1261,13 @@
 12	1	600	584	8	32	custom_obstacle_14	1	1	1	1
 12	1	728	584	8	32	custom_obstacle_15	1	1	1	1
 12	1	752	584	8	32	custom_obstacle_16	1	1	1	1
+8	1	248	149	guard_2	0	1	npc/black_knight_soldier	map
+8	1	320	213	guard_3	2	1	npc/black_knight_soldier	map
+13	1	264	109	80	48	guard_3_sensor_0	0
+13	1	264	53	48	192	guard_3_sensor_1	0
+4	1	184	437	0	_random	1	-1
+4	1	184	453	0	_random	1	-1
+4	1	184	469	0	bomb	2	-1
 0	2	88	960	32	8	560
 0	2	664	688	96	8	560
 0	2	664	712	96	8	559
@@ -1324,3 +1340,6 @@
 0	2	504	416	336	16	170
 0	2	696	712	32	8	152
 0	2	696	688	32	8	153
+0	2	256	72	16	16	278
+0	2	192	176	16	16	278
+0	2	296	128	16	16	278

@@ -52,6 +52,7 @@ function init_guard(guard_name, x, y, direction, path)
   if path ~= nil then
     local m = sol.main.path_movement_create(path, 72)
     sol.main.movement_set_property(m, "loop", true)
+    sol.main.movement_set_property(m, "ignore_obstacles", true)
     sol.map.npc_start_movement(guard_name, m)
     sol.main.sprite_set_animation(sprite, "walking")
   else

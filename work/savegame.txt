@@ -245,6 +245,10 @@ booleans:
 506	dungeon 5 2F: piece of heart
 507	dungeon 5 1F: boss key door
 508	dungeon 5 1F: big key door
+509	dungeon 5 B1: chest with the map
+510	dungeon 5 B1: huge quiver
+511	dungeon 5 B1: prison 1 open
+512	dungeon 5 B1: prison 2 unlocked once
 
 600-699	dungeon 7
 700-799	dungeon 8

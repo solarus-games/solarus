@@ -52,6 +52,7 @@
 19	0	352	616	stairs_2	2	4
 18	0	432	608	door_3	0	0	-1
 18	0	528	608	door_4	2	0	-1
+5	0	392	552	chest	0	map	1	509
 0	1	448	576	8	96	322
 0	1	520	576	8	96	321
 0	1	632	512	144	8	179
@@ -483,6 +484,8 @@
 0	1	1032	248	16	8	70
 0	1	1032	272	16	8	70
 0	1	1048	256	8	16	71
+13	1	648	269	16	16	prison_sensor	0
+13	1	208	549	144	64	guard_1_sensor_2	0
 1	1	1072	37	from_1f_ne	3	0
 1	1	1056	797	from_1f_se	3	0
 18	1	776	376	door	0	0	-1
@@ -493,12 +496,10 @@
 12	1	344	632	32	8	custom_obstacle_4	1	1	1	1
 18	1	688	496	door_5	1	0	-1
 18	1	688	448	door_6	3	0	-1
-4	1	304	245	0	_random	1	-1
-10	1	320	312	16	16	bone_key_lock	458	1
-10	1	640	312	16	16	weak_lock	458	1
-4	1	320	245	0	_random	1	-1
-4	1	336	245	0	_random	1	-1
-4	1	352	245	0	_random	1	-1
+4	1	304	245	0	_none	1	-1
+4	1	320	245	0	quiver	3	510
+4	1	336	245	0	_none	1	-1
+4	1	352	245	0	_none	1	-1
 2	1	1064	24	16	16	teletransporter	0	1	64	from_b1_ne
 2	1	1048	784	16	16	teletransporter_2	0	1	64	from_b1_se
 19	1	1064	24	stairs_3	1	0
@@ -507,8 +508,15 @@
 2	1	1032	256	16	16	teletransporter_3	0	1	9	from_dungeon_5_hole
 18	1	952	208	n_door	1	0	-1
 18	1	952	160	n_door_2	3	0	-1
-1	1	272	525	tmp	3	0
+1	1	272	797	tmp	3	0
 2	1	1008	272	16	16	teletransporter_4	0	0	65	tmp
+8	1	296	573	guard_1	2	1	npc/black_knight_soldier	map
+13	1	208	661	144	64	guard_2_sensor_2	0
+8	1	296	685	guard_2	2	1	npc/black_knight_soldier	map
+1	1	648	269	prison	3	0
+8	1	328	325	prison_1_lock	3	0	entities/castle_lock	map
+8	1	648	325	prison_2_lock	1	0	entities/castle_lock	map
+8	1	288	821	guard_3	2	1	npc/black_knight_soldier	map
 0	2	656	752	96	8	324
 0	2	656	776	96	8	323
 0	2	1000	464	96	8	324

@@ -380,6 +380,9 @@ sets the position of an NPC
 - <tt>sol.map.npc_start_movement(npc, movement)</tt>:
 starts a movement on an NPC
 
+- <tt>sol.map.npc_stop_movement(npc, movement)</tt>:
+stops the movement of an NPC
+
 - <tt>sol.map.npc_get_sprite(npc)</tt>:
 makes the sprite of an NPC accessible from the script
 through <tt>sol.main.sprite_*</tt> functions
@@ -900,7 +903,10 @@ has just left the switch, no matter the switch was enabled or disabled
 called when the victory animation of the hero is finished
 
 - <tt>event_hero_on_sensor(sensor_name)</tt>:
-called when the hero walks on a sensor
+called when the hero arrives on a sensor
+
+- <tt>event_hero_still_on_sensor(sensor_name)</tt>:
+called continuously while the hero is on a sensor
 
 - <tt>event_hero_interaction(entity_name)</tt>
 (triggered only if the interactive entity has the property to call the map script):

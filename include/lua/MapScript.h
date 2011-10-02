@@ -58,7 +58,8 @@ class MapScript: public Script {
     void event_switch_inactivated(const std::string &switch_name);
     void event_switch_left(const std::string &switch_name);
     void event_hero_victory_sequence_finished();
-    void event_hero_on_sensor(const std::string &sensor_name);
+    void event_hero_on_sensor(const std::string& sensor_name);
+    void event_hero_still_on_sensor(const std::string& sensor_name);
     void event_npc_movement_finished(const std::string &npc_name);
     void event_hero_interaction_finished(const std::string &entity_name);
     void event_hero_interaction_item_finished(const std::string &entity_name, const std::string &item_name, int variant);

@@ -228,9 +228,18 @@ void MapScript::event_hero_victory_sequence_finished() {
  * @brief Notifies the script that the hero is overlapping a sensor.
  * @param sensor_name name of the sensor
  */
-void MapScript::event_hero_on_sensor(const std::string &sensor_name) {
+void MapScript::event_hero_on_sensor(const std::string& sensor_name) {
 
   notify_script("event_hero_on_sensor", "s", sensor_name.c_str());
+}
+
+/**
+ * @brief Notifies the script that the hero is still overlapping a sensor.
+ * @param sensor_name name of the sensor
+ */
+void MapScript::event_hero_still_on_sensor(const std::string& sensor_name) {
+
+  notify_script("event_hero_still_on_sensor", "s", sensor_name.c_str());
 }
 
 /**

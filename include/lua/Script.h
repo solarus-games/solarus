@@ -196,6 +196,7 @@ class Script {
       map_api_npc_get_position,
       map_api_npc_set_position,
       map_api_npc_start_movement,
+      map_api_npc_stop_movement,
       map_api_npc_get_sprite,
       map_api_npc_remove,
       map_api_npc_exists,

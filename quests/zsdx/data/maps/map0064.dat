@@ -823,6 +823,7 @@
 6	1	944	160	8	56	jump_sensor_8	4	40
 2	1	1064	24	16	16	teletransporter_6	0	1	65	from_1f_ne
 19	1	1064	24	stairs_8	1	1
+2	1	584	1176	16	16	teletransporter_2	0	0	63	from_1f_c
 0	2	1048	16	64	8	559
 0	2	952	16	64	8	559
 0	2	576	1192	128	8	560

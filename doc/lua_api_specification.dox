@@ -603,6 +603,9 @@ Sets no treasure for an enemy.
 - <tt>sol.map.enemy_set_random_treasure(enemy_name)</tt>:
 Sets a random treasure for an enemy.
 
+- <tt>sol.map.enemy_get_sprite(enemy_name, sprite_name)</tt>:
+Returns a sprite of the enemy given its name (i.e. the name of its animation set). sprite_name is optional: by default, the first sprite created is returned.
+
 @subsection sol.item Module <tt>sol.item</tt>
 
 The <tt>sol.item</tt> module is available to scripts attached to an item defined in the items.dat file.
@@ -805,12 +808,8 @@ Stops and destroys the current movement of the enemy (if any).
 Restarts the enemy. This plays animation "walking" on its sprites
 and triggers event_restart().
 
-- <tt>sol.enemy.get_sprite()</tt>:
-Returns the sprite of the enemy. If the enemy has several sprites,
-the first one created is returned.
-
 - <tt>sol.enemy.get_sprite(sprite_name)</tt>:
-Returns a sprite of the enemy given its name (i.e. the name of its animation set).
+Returns a sprite of the enemy given its name (i.e. the name of its animation set). sprite_name is optional: by default, the first sprite created is returned.
 
 - <tt>sol.enemy.has_sprite(sprite_name)</tt>:
 Returns whether the enemy has a sprite with the specified name

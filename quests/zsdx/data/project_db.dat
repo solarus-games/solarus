@@ -153,6 +153,7 @@
 3	npc/agahnim	Agahnim
 3	npc/inferno	Inferno
 3	npc/witch	Witch
+3	npc/black_knight_soldier	Black Knight Soldier
 3	npc/newlink1	Newlink NPC 1
 3	npc/newlink2	Newlink NPC 2
 3	npc/newlink3	Newlink NPC 3
@@ -185,6 +186,7 @@
 3	entities/slot_machine	Casino slot machine
 3	entities/frozen_door	Frozen door
 3	entities/outside_door	Outside closed door
+3	entities/castle_lock	Castle prison lock
 3	entities/fresco	Intro fresco
 3	entities/bed	Hero's bed
 3	entities/snores	Snoring (zzz)
@@ -343,7 +345,6 @@
 6	green_knight_soldier	Green Knight Soldier
 6	blue_knight_soldier	Blue Knight Soldier
 6	red_knight_soldier	Red Knight Soldier
-6	black_knight_soldier	Black Knight Soldier
 6	blue_pig_soldier	Blue Pig Soldier
 6	red_pig_soldier	Red Pig Soldier
 6	green_duck_soldier	Green Duck Soldier

@@ -510,3 +510,10 @@ y = 288
 save = 308
 big = 1
 
+[dungeon_5.map_65.chest_0]
+floor = -1
+x = 392
+y = 552
+save = 509
+big = 0
+

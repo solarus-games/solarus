@@ -1537,7 +1537,7 @@ next = _treasure.bomb_bag.3.1
 [_treasure.bomb_bag.3.1]
 #       |--------------------|
 line1 = "Il peut contenir"
-line2 = "jusqu'à 100 Bombes"
+line2 = "jusqu'à 99 Bombes"
 line3 = "au lieu de 30 !"
 
 [_treasure.quiver.2]
@@ -1565,7 +1565,7 @@ next = _treasure.quiver.3.1
 [_treasure.quiver.3.1]
 #       |--------------------|
 line1 = "Il peut contenir"
-line2 = "jusqu'à 100 Flèches"
+line2 = "jusqu'à 99 Flèches"
 line3 = "au lieu de 30 !"
 
 [_treasure.tunic.2]
@@ -5478,6 +5478,39 @@ line1 = "La clé de l'énigme est"
 line2 = "de tourner autour des"
 line3 = "pots dans le bon sens."
 skip = all
+
+[dungeon_5.hero_seen_by_guard]
+#       |-----------------------|
+line1 = "HALTE !"
+line2 = "On ne bouge plus !"
+
+[dungeon_5.prison_1_locked]
+#       |-----------------------|
+line1 = "Aucune de tes clés ne"
+line2 = "semble rentrer dans"
+line3 = "cette serrure..."
+
+[dungeon_5.prison_1_use_bone_key]
+#       |-----------------------|
+line1 = "Tu utilises la Clé"
+line2 = "d'Os..."
+
+[dungeon_5.prison_2_locked_1]
+#       |-----------------------|
+line1 = "Cette serrure est"
+line2 = "fermée !"
+
+[dungeon_5.prison_2_locked_2]
+#       |-----------------------|
+line1 = "C'est tellement rouillé"
+line2 = "que même la Grande Clé"
+line3 = "n'y ferait rien."
+
+[dungeon_5.prison_2_locked_3]
+#       |-----------------------|
+line1 = "Il y a peut-être moyen"
+line2 = "de forcer cette vieille"
+line3 = "serrure..."
 
 [dungeon_6.welcome]
 #       |-----------------------|

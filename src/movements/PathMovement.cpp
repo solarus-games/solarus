@@ -47,7 +47,7 @@ const std::string PathMovement::elementary_moves[] = {
 PathMovement::PathMovement(const std::string &path, int speed,
     bool loop, bool ignore_obstacles, bool must_be_aligned):
 
-  PixelMovement("", false, 0, ignore_obstacles),
+  PixelMovement("", 0, false, ignore_obstacles),
   current_direction(6),
   total_distance_covered(0),
   stopped_by_obstacle(false),
@@ -96,9 +96,18 @@ void PathMovement::set_speed(int speed) {
 }
 
 /**
- * @brief Sets whether this movement restarts when the path is finished
+ * @brief Returns whether this movement loops when the end of the path is reached.
+ * @return true if the movement loops
+ */
+bool PathMovement::get_loop() {
+
+  return loop;
+}
+
+/**
+ * @brief Sets whether this movement restarts when the path is finished.
  *
- * Is the movement was finished and loop is set to true, the movement restarts.
+ * If the movement was finished and loop is set to true, the movement restarts.
  *
  * @param loop true to make the movement loop
  */
@@ -248,12 +257,12 @@ void PathMovement::start_next_elementary_move() {
     if (remaining_path.size() == 0) {
       // the path is finished
       if (loop) {
-	// if the property 'loop' is true, repeat the same path again
-	remaining_path = initial_path;
+        // if the property 'loop' is true, repeat the same path again
+        remaining_path = initial_path;
       }
       else if (!is_stopped()) {
-	// the movement is finished: stop the entity
-	stop();
+        // the movement is finished: stop the entity
+        stop();
       }
     }
 
@@ -266,7 +275,6 @@ void PathMovement::start_next_elementary_move() {
 
       PixelMovement::set_delay(speed_to_delay(speed, current_direction));
       PixelMovement::set_trajectory(elementary_moves[current_direction]);
-      PixelMovement::set_loop(loop); // may have been changed while snapping
       remaining_path = remaining_path.substr(1);
     }
   }

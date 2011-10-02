@@ -268,6 +268,7 @@ class Script {
       map_api_enemy_set_treasure,
       map_api_enemy_set_no_treasure,
       map_api_enemy_set_random_treasure,
+      map_api_enemy_get_sprite,
 
       // item API
       item_api_get_variant,

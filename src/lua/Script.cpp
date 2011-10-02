@@ -450,6 +450,7 @@ void Script::register_map_api() {
       { "enemy_set_treasure", map_api_enemy_set_treasure },
       { "enemy_set_no_treasure", map_api_enemy_set_no_treasure },
       { "enemy_set_random_treasure", map_api_enemy_set_random_treasure },
+      { "enemy_get_sprite", map_api_enemy_get_sprite },
       { NULL, NULL }
   };
   luaL_register(context, "sol.map", map_api);

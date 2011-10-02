@@ -249,6 +249,9 @@ booleans:
 510	dungeon 5 B1: huge quiver
 511	dungeon 5 B1: prison 1 open
 512	dungeon 5 B1: prison 2 unlocked once
+513	dungeon 5 1F: locked door (south-west)
+514	dungeon 5 1F: east door
+515	dungeon 5: block in the big key room
 
 600-699	dungeon 7
 700-799	dungeon 8

@@ -33,6 +33,11 @@ function init_guards()
   init_guard("guard_2", 296, 685, 2)
   init_guard("guard_3", 288, 821, 2,
       "44444444466666666666666666666666600000000000000000000000000002222222222222222222222224444444444444444444")
+  init_guard("guard_4", 776, 917, 2)
+  init_guard("guard_5", 920, 725, 2,
+      "44444444222222222222222222222222000000000000000000000000000066666666666666666666666644444444444444444444")
+  init_guard("guard_6", 1080, 597, 2,
+      "22222222444444444444444444444444444466666666666666666666666600000000000000000000000000002222222222222222")
 end
 
 function init_prison()
@@ -45,7 +50,7 @@ function init_guard(guard_name, x, y, direction, path)
   sol.map.npc_set_position(guard_name, x, y)
   local sprite = sol.map.npc_get_sprite(guard_name)
   if path ~= nil then
-    local m = sol.main.path_movement_create(path, 64)
+    local m = sol.main.path_movement_create(path, 72)
     sol.main.movement_set_property(m, "loop", true)
     sol.map.npc_start_movement(guard_name, m)
     sol.main.sprite_set_animation(sprite, "walking")

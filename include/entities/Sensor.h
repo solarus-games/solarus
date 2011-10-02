@@ -46,6 +46,7 @@ class Sensor: public Detector {
 
     Subtype subtype;             /**< subtype of sensor */
     bool activated_by_hero;      /**< true if the sensor is activated by the hero */
+    bool notifying_script;       /**< true if the map script is currently being notified */
 
   public:
 
@@ -60,7 +61,7 @@ class Sensor: public Detector {
     bool is_obstacle_for(MapEntity &other);
     void notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode);
     void notify_collision_with_explosion(Explosion& explosion);
-    void activate(Hero &hero);
+    void activate(Hero& hero);
     void update();
 };
 

@@ -38,7 +38,8 @@ Sensor::Sensor(const std::string &name, Layer layer, int x, int y,
 	       int width, int height, Subtype subtype):
   Detector(COLLISION_INSIDE | COLLISION_RECTANGLE, name, layer, x, y, width, height),
   subtype(subtype),
-  activated_by_hero(false) {
+  activated_by_hero(false),
+  notifying_script(false) {
 
   if (subtype == RETURN_FROM_BAD_GROUND) {
     
@@ -146,7 +147,7 @@ void Sensor::notify_collision_with_explosion(Explosion& explosion) {
  *
  * @param hero the hero
  */
-void Sensor::activate(Hero &hero) {
+void Sensor::activate(Hero& hero) {
 
   if (!activated_by_hero) {
 
@@ -155,21 +156,30 @@ void Sensor::activate(Hero &hero) {
     switch (subtype) {
 
       case CUSTOM:
-	// we notify the scripts
-	get_map_script().event_hero_on_sensor(get_name());
-	get_hero().reset_movement();
-	break;
+        // we notify the scripts
+        notifying_script = true;
+        get_map_script().event_hero_on_sensor(get_name());
+        notifying_script = false;
+        get_hero().reset_movement();
+        break;
 
       case CHANGE_LAYER:
-	// we change the hero's layer
-	get_entities().set_entity_layer(&hero, get_layer());
-	break;
+        // we change the hero's layer
+        get_entities().set_entity_layer(&hero, get_layer());
+        break;
 
       case RETURN_FROM_BAD_GROUND:
-	// we indicate to the hero a location to return
-	// after falling into a hole or some other ground
-	get_hero().set_target_solid_ground_coords(get_xy(), get_layer());
-	break;
+        // we indicate to the hero a location to return
+        // after falling into a hole or some other ground
+        get_hero().set_target_solid_ground_coords(get_xy(), get_layer());
+        break;
+    }
+  }
+  else {
+    if (subtype == CUSTOM && !notifying_script && !get_game().is_suspended()) {
+      notifying_script = true;
+      get_map_script().event_hero_still_on_sensor(get_name());
+      notifying_script = false;
     }
   }
 }

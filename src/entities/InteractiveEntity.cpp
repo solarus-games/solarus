@@ -182,7 +182,7 @@ bool InteractiveEntity::is_hero_obstacle(Hero &hero) {
  * @return true if this NPC is currently considered as an obstacle by this entity.
  */
 bool InteractiveEntity::is_npc_obstacle(InteractiveEntity &npc) {
-  return true;
+  return subtype != NON_PLAYING_CHARACTER;
 }
 
 /**

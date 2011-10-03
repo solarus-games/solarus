@@ -120,7 +120,56 @@ bool Bomb::is_displayed_in_y_order() {
  * @param conveyor_belt a conveyor belt
  * @return true if the conveyor belt is currently an obstacle for this entity
  */
-bool Bomb::is_conveyor_belt_obstacle(ConveyorBelt &conveyor_belt) {
+bool Bomb::is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt) {
+  return false;
+}
+
+/**
+ * @brief Returns whether a teletransporter is currently considered as an obstacle for this entity.
+ * @param teletransporter a teletransporter
+ * @return true if the teletransporter is currently an obstacle for this entity
+ */
+bool Bomb::is_teletransporter_obstacle(Teletransporter& teletransporter) {
+  return false;
+}
+
+/**
+ * @brief Returns whether a deep water tile is currently considered as an obstacle for this entity.
+ * @return true if the deep water tiles are currently an obstacle for this entity
+ */
+bool Bomb::is_deep_water_obstacle() {
+  return false;
+}
+
+/**
+ * @brief Returns whether a hole is currently considered as an obstacle for this entity.
+ * @return true if the holes are currently an obstacle for this entity
+ */
+bool Bomb::is_hole_obstacle() {
+  return false;
+}
+
+/**
+ * @brief Returns whether lava is currently considered as an obstacle for this entity.
+ * @return true if lava is currently an obstacle for this entity
+ */
+bool Bomb::is_lava_obstacle() {
+  return false;
+}
+
+/**
+ * @brief Returns whether prickles are currently considered as an obstacle for this entity.
+ * @return true if prickles are currently an obstacle for this entity
+ */
+bool Bomb::is_prickle_obstacle() {
+  return false;
+}
+
+/**
+ * @brief Returns whether a ladder is currently considered as an obstacle for this entity.
+ * @return true if the ladders are currently an obstacle for this entity
+ */
+bool Bomb::is_ladder_obstacle() {
   return false;
 }
 
@@ -129,7 +178,7 @@ bool Bomb::is_conveyor_belt_obstacle(ConveyorBelt &conveyor_belt) {
  * @param entity_overlapping the entity overlapping the detector
  * @param collision_mode the collision mode that detected the collision
  */
-void Bomb::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
+void Bomb::notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) {
 
   entity_overlapping.notify_collision_with_bomb(*this, collision_mode);
 }
@@ -140,7 +189,7 @@ void Bomb::notify_collision(MapEntity &entity_overlapping, CollisionMode collisi
  * @param explosion the explosion
  * @param sprite_overlapping the sprite of the current entity that collides with the explosion
  */
-void Bomb::notify_collision_with_explosion(Explosion &explosion, Sprite &sprite_overlapping) {
+void Bomb::notify_collision_with_explosion(Explosion& explosion, Sprite& sprite_overlapping) {
 
   if (!is_being_removed()) {
     explode();
@@ -153,7 +202,7 @@ void Bomb::notify_collision_with_explosion(Explosion &explosion, Sprite &sprite_
  * @param dx direction of the x move in pixels (0, 1 or -1)
  * @param dy direction of the y move in pixels (0, 1 or -1)
  */
-void Bomb::notify_collision_with_conveyor_belt(ConveyorBelt &conveyor_belt, int dx, int dy) {
+void Bomb::notify_collision_with_conveyor_belt(ConveyorBelt& conveyor_belt, int dx, int dy) {
 
   if (get_movement() == NULL) {
 

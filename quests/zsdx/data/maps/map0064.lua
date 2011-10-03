@@ -23,7 +23,7 @@ function are_all_torches_on()
       and sol.main.sprite_get_animation(sol.map.interactive_entity_get_sprite("torch_4")) == "lit" 
 end
 
--- Makes all five torches on forever
+-- Makes all torches on forever
 function lock_torches()
   sol.map.interactive_entity_remove("torch_1")
   sol.map.interactive_entity_remove("torch_2")

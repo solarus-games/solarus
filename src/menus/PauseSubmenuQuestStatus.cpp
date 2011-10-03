@@ -19,10 +19,8 @@
 #include "Game.h"
 #include "Savegame.h"
 #include "Equipment.h"
-#include "Sprite.h"
 #include "StringResource.h"
 #include "lowlevel/Color.h"
-#include "lowlevel/Surface.h"
 #include "lowlevel/Sound.h"
 #include <sstream>
 
@@ -31,16 +29,20 @@
  * @param pause_menu the pause menu object
  * @param game the game
  */
-PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu &pause_menu, Game &game):
-  PauseSubmenu(pause_menu, game) {
+PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu& pause_menu, Game& game):
+  PauseSubmenu(pause_menu, game),
+  quest_items_surface(320, 240),
+  cursor_sprite("menus/pause_cursor") {
+
+  // TODO all of this is quest-specific and should be scripted
 
   // draw the items on a surface
-  quest_items_surface = new Surface(320, 240);
-  quest_items_surface->set_transparency_color(Color::get_black());
-  quest_items_surface->fill_with_color(Color::get_black());
+  quest_items_surface.set_transparency_color(Color::get_black());
+  quest_items_surface.fill_with_color(Color::get_black());
 
-  Surface *treasures_img = new Surface("hud/dialog_icons.png"); // TODO use sprite entities/items
-  Surface *pieces_of_heart_img = new Surface("menus/quest_status_pieces_of_heart.png");
+  Surface treasures_img("hud/dialog_icons.png"); // TODO use sprite entities/items
+  Surface pieces_of_heart_img("menus/quest_status_pieces_of_heart.png");
+  Surface dungeons_img("menus/quest_status_dungeons.png");
 
   std::ostringstream oss;
 
@@ -49,7 +51,7 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu &pause_menu, Game &ga
     int tunic = equipment.get_ability("tunic");
     Rectangle src_position((tunic - 1) * 16, 96, 16, 16);
     Rectangle dst_position(177, 164);
-    treasures_img->blit(src_position, quest_items_surface, dst_position);
+    treasures_img.blit(src_position, &quest_items_surface, dst_position);
 
     oss << "quest_status.caption.tunic_" << tunic;
     caption_texts[5] = StringResource::get_string(oss.str());
@@ -61,7 +63,7 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu &pause_menu, Game &ga
     int sword = equipment.get_ability("sword");
     Rectangle src_position(80 + sword * 16, 96, 16, 16);
     Rectangle dst_position(211, 164);
-    treasures_img->blit(src_position, quest_items_surface, dst_position);
+    treasures_img.blit(src_position, &quest_items_surface, dst_position);
 
     oss << "quest_status.caption.sword_" << sword;
     caption_texts[6] = StringResource::get_string(oss.str());
@@ -73,7 +75,7 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu &pause_menu, Game &ga
     int shield = equipment.get_ability("shield");
     Rectangle src_position(32 + shield * 16, 96, 16, 16);
     Rectangle dst_position(245, 164);
-    treasures_img->blit(src_position, quest_items_surface, dst_position);
+    treasures_img.blit(src_position, &quest_items_surface, dst_position);
 
     oss << "quest_status.caption.shield_" << shield;
     caption_texts[7] = StringResource::get_string(oss.str());
@@ -86,7 +88,7 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu &pause_menu, Game &ga
     
     Rectangle src_position(rupee_bag * 16, 80, 16, 16);
     Rectangle dst_position(60, 71);
-    treasures_img->blit(src_position, quest_items_surface, dst_position);
+    treasures_img.blit(src_position, &quest_items_surface, dst_position);
 
     oss << "quest_status.caption.rupee_bag_" << rupee_bag;
     caption_texts[0] = StringResource::get_string(oss.str());
@@ -98,7 +100,7 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu &pause_menu, Game &ga
   if (bomb_bag != 0) {
     Rectangle src_position(48 + bomb_bag * 16, 80, 16, 16);
     Rectangle dst_position(60, 100);
-    treasures_img->blit(src_position, quest_items_surface, dst_position);
+    treasures_img.blit(src_position, &quest_items_surface, dst_position);
 
     oss << "quest_status.caption.bomb_bag_" << bomb_bag;
     caption_texts[1] = StringResource::get_string(oss.str());
@@ -111,7 +113,7 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu &pause_menu, Game &ga
     
     Rectangle src_position(96 + quiver * 16, 80, 16, 16);
     Rectangle dst_position(60, 130);
-    treasures_img->blit(src_position, quest_items_surface, dst_position);
+    treasures_img.blit(src_position, &quest_items_surface, dst_position);
 
     oss << "quest_status.caption.quiver_" << quiver;
     caption_texts[2] = StringResource::get_string(oss.str());
@@ -122,31 +124,44 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu &pause_menu, Game &ga
   if (equipment.has_item("world_map")) {
     Rectangle src_position(0, 80, 16, 16);
     Rectangle dst_position(60, 164);
-    treasures_img->blit(src_position, quest_items_surface, dst_position);
+    treasures_img.blit(src_position, &quest_items_surface, dst_position);
 
     caption_texts[3] = StringResource::get_string("quest_status.caption.world_map");
   }
 
   // heart pieces
   {
-    int x = 51 * savegame.get_integer(1030); // TODO script
+    int x = 51 * savegame.get_integer(1030);
     Rectangle src_position(x, 0, 51, 50);
     Rectangle dst_position(101, 82);
-    pieces_of_heart_img->blit(src_position, quest_items_surface, dst_position);
+    pieces_of_heart_img.blit(src_position, &quest_items_surface, dst_position);
 
     caption_texts[4] = StringResource::get_string("quest_status.caption.pieces_of_heart");
   }
 
   // dungeons finished
-  // TODO
+  {
+    static const Rectangle dst_positions[] = {
+        Rectangle(209, 69),
+        Rectangle(232, 74),
+        Rectangle(243, 97),
+        Rectangle(232, 120),
+        Rectangle(209, 127),
+        Rectangle(186, 120),
+        Rectangle(175, 97),
+        Rectangle(186, 74)
+    };
+    for (int i = 0; i < 8; i++) {
+      if (equipment.is_dungeon_finished(i)) {
+        Rectangle src_position(i * 20, 0, 20, 20);
+        dungeons_img.blit(src_position, &quest_items_surface, dst_positions[i]);
+      }
+    }
+  }
 
   // cursor
-  cursor_sprite = new Sprite("menus/pause_cursor");
   cursor_position = -1;
   set_cursor_position(0);
-
-  delete treasures_img;
-  delete pieces_of_heart_img;
 }
 
 /**
@@ -154,8 +169,6 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu &pause_menu, Game &ga
  */
 PauseSubmenuQuestStatus::~PauseSubmenuQuestStatus() {
 
-  delete cursor_sprite;
-  delete quest_items_surface;
 }
 
 /**
@@ -179,25 +192,25 @@ void PauseSubmenuQuestStatus::set_cursor_position(int position) {
 
     switch (position) {
 
-    case 0:
-      cursor_sprite_position.set_y(79);
-      break;
+      case 0:
+        cursor_sprite_position.set_y(79);
+        break;
 
-    case 1:
-      cursor_sprite_position.set_y(108);
-      break;
+      case 1:
+        cursor_sprite_position.set_y(108);
+        break;
 
-    case 2:
-      cursor_sprite_position.set_y(138);
-      break;
+      case 2:
+        cursor_sprite_position.set_y(138);
+        break;
 
-    case 4:
-      cursor_sprite_position.set_y(107);
-      break;
+      case 4:
+        cursor_sprite_position.set_y(107);
+        break;
 
-    default:
-      cursor_sprite_position.set_y(172);
-      break;
+      default:
+        cursor_sprite_position.set_y(172);
+        break;
     }
 
     set_caption_text(caption_texts[position]);
@@ -212,58 +225,58 @@ void PauseSubmenuQuestStatus::key_pressed(GameControls::GameKey key) {
 
   switch (key) {
 
-  case GameControls::LEFT:
+    case GameControls::LEFT:
 
-    if (cursor_position <= 3) {
-      pause_menu.show_left_submenu();
-    }
-    else {
-      Sound::play("cursor");
-
-      if (cursor_position == 4) {
-	set_cursor_position(0);
-      }
-      else if (cursor_position == 5) {
-	set_cursor_position(3);
+      if (cursor_position <= 3) {
+        pause_menu.show_left_submenu();
       }
       else {
-	set_cursor_position(cursor_position - 1);
+        Sound::play("cursor");
+
+        if (cursor_position == 4) {
+          set_cursor_position(0);
+        }
+        else if (cursor_position == 5) {
+          set_cursor_position(3);
+        }
+        else {
+          set_cursor_position(cursor_position - 1);
+        }
       }
-    }
-    break;
+      break;
 
-  case GameControls::RIGHT:
+    case GameControls::RIGHT:
 
-    if (cursor_position == 4 || cursor_position == 7) {
-      pause_menu.show_right_submenu();
-    }
-    else {
-      Sound::play("cursor");
-
-      if (cursor_position <= 2) {
-	set_cursor_position(4);
-      }
-      else if (cursor_position == 3) {
-	set_cursor_position(5);
+      if (cursor_position == 4 || cursor_position == 7) {
+        pause_menu.show_right_submenu();
       }
       else {
-	set_cursor_position(cursor_position + 1);
+        Sound::play("cursor");
+
+        if (cursor_position <= 2) {
+          set_cursor_position(4);
+        }
+        else if (cursor_position == 3) {
+          set_cursor_position(5);
+        }
+        else {
+          set_cursor_position(cursor_position + 1);
+        }
       }
-    }
-    break;
+      break;
 
-  case GameControls::DOWN:
-    Sound::play("cursor");
-    set_cursor_position((cursor_position + 1) % 8);
-    break;
+    case GameControls::DOWN:
+      Sound::play("cursor");
+      set_cursor_position((cursor_position + 1) % 8);
+      break;
 
-  case GameControls::UP:
-    Sound::play("cursor");
-    set_cursor_position((cursor_position + 7) % 8);
-    break;
+    case GameControls::UP:
+      Sound::play("cursor");
+      set_cursor_position((cursor_position + 7) % 8);
+      break;
 
-  default:
-    break;
+    default:
+      break;
   }
 }
 
@@ -271,20 +284,20 @@ void PauseSubmenuQuestStatus::key_pressed(GameControls::GameKey key) {
  * @brief Updates this submenu.
  */
 void PauseSubmenuQuestStatus::update() {
-  cursor_sprite->update();
+  cursor_sprite.update();
 }
 
 /**
  * @brief Displays this submenu.
  * @param destination the destination surface
  */
-void PauseSubmenuQuestStatus::display(Surface *destination) {
+void PauseSubmenuQuestStatus::display(Surface* destination) {
   PauseSubmenu::display(destination);
 
   // quest items
-  quest_items_surface->blit(destination);
+  quest_items_surface.blit(destination);
 
   // cursor
-  cursor_sprite->display(destination, cursor_sprite_position.get_x(), cursor_sprite_position.get_y());
+  cursor_sprite.display(destination, cursor_sprite_position.get_x(), cursor_sprite_position.get_y());
 }
 

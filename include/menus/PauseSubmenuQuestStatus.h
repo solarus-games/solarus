@@ -18,8 +18,10 @@
 #define PAUSE_SUBMENU_QUEST_STATUS_H
 
 #include "Common.h"
+#include "Sprite.h"
 #include "menus/PauseSubmenu.h"
 #include "lowlevel/Rectangle.h"
+#include "lowlevel/Surface.h"
 
 /**
  * @brief The Quest Status submenu of the pause menu.
@@ -31,10 +33,9 @@ class PauseSubmenuQuestStatus: public PauseSubmenu {
 
   private:
 
-    Surface *quest_items_surface;
-
-    Sprite *cursor_sprite;
-    int cursor_position; /**< 0 to 7 */
+    Surface quest_items_surface;
+    Sprite cursor_sprite;
+    int cursor_position;                  /**< 0 to 7 */
     Rectangle cursor_sprite_position;
 
     std::string caption_texts[8];
@@ -43,12 +44,12 @@ class PauseSubmenuQuestStatus: public PauseSubmenu {
 
   public:
 
-    PauseSubmenuQuestStatus(PauseMenu &pause_menu, Game &game);
+    PauseSubmenuQuestStatus(PauseMenu& pause_menu, Game& game);
     ~PauseSubmenuQuestStatus();
 
     void key_pressed(GameControls::GameKey key);
     void update();
-    void display(Surface *destination);
+    void display(Surface* destination);
 };
 
 #endif

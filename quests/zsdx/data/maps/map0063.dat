@@ -1270,15 +1270,33 @@
 8	1	248	149	guard_2	0	1	npc/black_knight_soldier	map
 13	1	264	53	208	48	guard_3_sensor_0	0
 13	1	264	53	48	192	guard_3_sensor_1	0
-4	1	184	437	0	_random	1	-1
+4	1	184	437	0	heart	1	-1
 4	1	184	453	0	_random	1	-1
 4	1	184	469	0	bomb	2	-1
 7	1	184	773	enemy	3	green_knight_soldier	0	-1	_random	1	-1
-12	1	264	760	8	16	custom_obstacle_17	0	1	0	0
+12	1	256	760	8	16	custom_obstacle_17	0	1	0	0
 12	1	48	736	48	8	custom_obstacle_18	0	1	0	0
 12	1	280	320	32	8	custom_obstacle_10	1	1	1	1
 12	1	280	344	32	8	custom_obstacle_11	1	1	1	1
 8	1	320	69	guard_3	3	1	npc/black_knight_soldier	map
+7	1	712	869	enemy_2	3	red_knight_soldier	0	-1	_random	1	-1
+7	1	712	981	enemy_3	3	red_knight_soldier	0	-1	_random	1	-1
+12	1	704	672	16	16	custom_obstacle_19	0	1	0	0
+12	1	704	720	16	16	custom_obstacle_20	0	1	0	0
+12	1	424	504	16	16	custom_obstacle_21	0	1	0	0
+12	1	424	552	16	16	custom_obstacle_22	0	1	0	0
+12	1	376	376	16	16	custom_obstacle_23	0	1	0	0
+12	1	376	424	16	16	custom_obstacle_24	0	1	0	0
+12	1	424	232	16	16	custom_obstacle_25	0	1	0	0
+12	1	424	280	16	16	custom_obstacle_26	0	1	0	0
+12	1	464	192	16	16	custom_obstacle_27	0	1	0	0
+12	1	512	192	16	16	custom_obstacle_28	0	1	0	0
+12	1	720	192	16	16	custom_obstacle_29	0	1	0	0
+12	1	768	192	16	16	custom_obstacle_30	0	1	0	0
+7	1	656	309	enemy_4	3	green_knight_soldier	0	-1	_random	1	-1
+7	1	320	653	enemy_5	3	blue_knight_soldier	0	-1	_random	1	-1
+7	1	952	205	enemy_6	3	red_knight_soldier	0	-1	_random	1	-1
+12	1	440	760	8	16	custom_obstacle_31	0	1	0	0
 0	2	88	960	32	8	560
 0	2	664	688	96	8	560
 0	2	664	712	96	8	559

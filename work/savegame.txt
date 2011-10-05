@@ -252,6 +252,12 @@ booleans:
 513	dungeon 5 1F: locked door (south-west)
 514	dungeon 5 1F: east door
 515	dungeon 5: block in the big key room
+516	dungeon 5 2F: locked door to the miniboss
+517	dungeon 5 2F: miniboss
+518	dungeon 5 B1: chest with the boss key open
+519	dungeon 5 B1: chest with the boss key enabled
+520	dungeon 5: boss killed
+521	dungeon 5: boss heart container
 
 600-699	dungeon 7
 700-799	dungeon 8

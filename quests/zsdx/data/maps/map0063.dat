@@ -137,6 +137,14 @@
 19	0	584	592	stairs_11	3	4
 19	0	736	592	stairs_12	3	4
 19	0	288	328	stairs_10	0	4
+18	0	520	1096	door	0	1	516
+18	0	616	1096	door_2	2	1	516
+18	0	520	1096	miniboss_door	0	0	-1
+18	0	616	1096	miniboss_door_2	2	0	-1
+12	0	520	1104	16	16	custom_obstacle_32	0	1	0	0
+13	0	512	1117	16	16	start_miniboss_sensor	0
+7	0	448	1029	miniboss	3	simple_green_soldier	1	517	fairy	1	-1
+7	0	712	1117	enemy_3	3	red_knight_soldier	0	-1	_random	1	-1
 0	1	808	616	8	48	238
 0	1	504	456	24	224	51
 0	1	528	616	8	48	237
@@ -1102,6 +1110,7 @@
 0	1	360	464	16	16	276
 0	1	408	480	16	16	276
 0	1	424	448	16	16	276
+13	1	704	853	32	96	puzzle_wrong_sensor_1	0
 13	1	1040	333	32	32	weak_floor_sensor	0
 10	1	1032	320	32	32	weak_floor	628	1
 13	1	280	69	192	48	guard_1_sensor_2	0
@@ -1273,14 +1282,12 @@
 4	1	184	437	0	heart	1	-1
 4	1	184	453	0	_random	1	-1
 4	1	184	469	0	bomb	2	-1
-7	1	184	773	enemy	3	green_knight_soldier	0	-1	_random	1	-1
 12	1	256	760	8	16	custom_obstacle_17	0	1	0	0
 12	1	48	736	48	8	custom_obstacle_18	0	1	0	0
 12	1	280	320	32	8	custom_obstacle_10	1	1	1	1
 12	1	280	344	32	8	custom_obstacle_11	1	1	1	1
 8	1	320	69	guard_3	3	1	npc/black_knight_soldier	map
-7	1	712	869	enemy_2	3	red_knight_soldier	0	-1	_random	1	-1
-7	1	712	981	enemy_3	3	red_knight_soldier	0	-1	_random	1	-1
+7	1	168	773	enemy_2	3	red_knight_soldier	0	-1	_random	1	-1
 12	1	704	672	16	16	custom_obstacle_19	0	1	0	0
 12	1	704	720	16	16	custom_obstacle_20	0	1	0	0
 12	1	424	504	16	16	custom_obstacle_21	0	1	0	0
@@ -1297,6 +1304,13 @@
 7	1	320	653	enemy_5	3	blue_knight_soldier	0	-1	_random	1	-1
 7	1	952	205	enemy_6	3	red_knight_soldier	0	-1	_random	1	-1
 12	1	440	760	8	16	custom_obstacle_31	0	1	0	0
+18	1	216	888	miniboss_door_3	2	0	-1
+18	1	168	888	miniboss_door_4	0	0	-1
+1	1	632	861	tmp	2	0
+13	1	616	957	64	16	puzzle_sensor_2	0
+13	1	760	957	64	16	puzzle_sensor_3	0
+13	1	616	829	64	16	puzzle_sensor_1	0
+13	1	760	829	64	16	puzzle_sensor_4	0
 0	2	88	960	32	8	560
 0	2	664	688	96	8	560
 0	2	664	712	96	8	559
@@ -1330,8 +1344,6 @@
 0	2	64	960	24	8	332
 0	2	120	960	24	8	333
 0	2	16	968	296	232	170
-0	2	184	888	8	32	161
-0	2	208	888	8	32	160
 0	2	568	840	16	360	170
 0	2	192	840	16	128	170
 0	2	16	824	568	16	170
@@ -1372,3 +1384,5 @@
 0	2	256	72	16	16	278
 0	2	192	176	16	16	278
 0	2	296	128	16	16	278
+0	2	208	888	8	32	162
+0	2	184	888	8	32	163

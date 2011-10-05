@@ -435,7 +435,7 @@
 5	0	1040	896	chest_2	0	compass	1	501
 7	0	488	869	s_room_enemy_1	3	green_knight_soldier	0	-1	_random	1	-1
 7	0	728	869	s_room_enemy_2	3	green_knight_soldier	0	-1	_random	1	-1
-7	0	968	853	se_room_enemy	3	blue_knight_soldier	0	-1	_random	1	-1
+7	0	968	885	se_room_enemy	3	blue_knight_soldier	0	-1	_random	1	-1
 18	0	832	856	se_door	0	0	-1
 18	0	928	856	se_door_2	2	0	-1
 4	0	960	821	0	_random	1	-1
@@ -823,7 +823,7 @@
 6	1	944	160	8	56	jump_sensor_8	4	40
 2	1	1064	24	16	16	teletransporter_6	0	1	65	from_1f_ne
 19	1	1064	24	stairs_8	1	1
-2	1	584	1176	16	16	teletransporter_2	0	0	63	from_1f_c
+2	1	584	1176	16	16	teletransporter_2	0	0	63	tmp
 0	2	1048	16	64	8	559
 0	2	952	16	64	8	559
 0	2	576	1192	128	8	560

@@ -642,12 +642,8 @@ void Enemy::set_suspended(bool suspended) {
 void Enemy::notify_enabled(bool enabled) {
 
   if (enabled) {
-
     initialize();
-
-    if (!is_suspended()) {
-      restart();
-    }
+    restart();
   }
 }
 

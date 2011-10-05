@@ -256,15 +256,6 @@ bool Enemy::is_obstacle_for(MapEntity &other) {
 }
 
 /**
- * @brief Returns whether a sensor is currently considered as an obstacle for this entity.
- * @param sensor a sensor
- * @return true if the sensor is currently an obstacle this entity
- */
-bool Enemy::is_sensor_obstacle(Sensor &sensor) {
-  return true;
-}
-
-/**
  * @brief Returns whether a destructible item is currently considered as an obstacle for this entity.
  * @param destructible_item a destructible item
  * @return true if the destructible item is currently an obstacle this entity

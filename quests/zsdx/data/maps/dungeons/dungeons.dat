@@ -503,6 +503,20 @@ y = 552
 save = 509
 big = 0
 
+[dungeon_5.map_65.chest_1]
+floor = -1
+x = 960
+y = 688
+save = 518
+big = 0
+
+[dungeon_5.map_63.boss_0]
+floor = 1
+x = 448
+y = 1029
+save = 517
+big = 0
+
 [dungeon_5.map_63.chest_0]
 floor = 1
 x = 816

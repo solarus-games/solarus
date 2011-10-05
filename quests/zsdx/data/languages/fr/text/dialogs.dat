@@ -5512,6 +5512,25 @@ line1 = "Il y a peut-être moyen"
 line2 = "de forcer cette vieille"
 line3 = "serrure..."
 
+[dungeon_5.puzzle_solved]
+#       |-----------------------|
+line1 = "Dans les profondeurs du"
+line2 = "château, un mécanisme"
+line3 = "se déclenche..."
+
+[dungeon_5.agahnim_beginning]
+#       |-----------------------|
+line1 = "Ainsi donc vous avez"
+line2 = "réussi à échapper à mes"
+line3 = "gardes et à déjouer les"
+next = dungeon_5.agahnim_beginning.2
+
+[dungeon_5.agahnim_beginning.2]
+#       |-----------------------|
+line1 = "pièges de mon château."
+line2 = "Mais votre escapade"
+line3 = "s'arrête là !"
+
 [dungeon_6.welcome]
 #       |-----------------------|
 line1 = "        Niveau 6"

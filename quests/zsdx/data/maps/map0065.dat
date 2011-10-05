@@ -523,7 +523,7 @@
 12	1	1040	448	16	16	custom_obstacle_7	0	1	0	0
 12	1	1040	496	16	16	custom_obstacle_8	0	1	0	0
 13	1	208	797	272	48	guard_3_sensor_2	0
-13	1	832	701	288	48	guard_5_sensor_4	0
+13	1	832	701	288	48	guard_5_sensor_2	0
 13	1	832	509	288	48	guard_5_sensor_0	0
 13	1	832	509	48	240	guard_5_sensor_1	0
 13	1	1072	509	48	240	guard_5_sensor_3	0
@@ -588,6 +588,7 @@
 4	1	960	245	0	heart	1	-1
 4	1	976	245	0	heart	1	-1
 4	1	992	245	0	heart	1	-1
+5	1	960	688	boss_key_chest	0	boss_key	1	518
 0	2	1000	776	96	8	323
 0	2	656	752	96	8	324
 0	2	656	776	96	8	323

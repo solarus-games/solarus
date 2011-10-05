@@ -10,13 +10,13 @@ function event_appear()
   sol.enemy.create_sprite("enemies/simple_green_soldier")
   sol.enemy.set_size(16, 16)
   sol.enemy.set_origin(8, 13)
-
-  local m = sol.main.temporal_movement_create(0, 0, 0)
-  sol.enemy.start_movement(m)
 end
 
 -- The enemy was stopped for some reason and should restart
 function event_restart()
+
+  local m = sol.main.temporal_movement_create(0, 0, 0)
+  sol.enemy.start_movement(m)
   local direction4 = math.random(4) - 1
   go(direction4)
 end

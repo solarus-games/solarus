@@ -1155,11 +1155,20 @@ void MapEntity::set_enabled(bool enabled) {
   else {
     this->enabled = false;
     this->waiting_enabled = false;
-    if (get_movement() != NULL) {
-      get_movement()->set_suspended(suspended || !is_enabled());
-    }
-    notify_enabled(false);
   }
+
+  if (get_movement() != NULL) {
+    get_movement()->set_suspended(suspended || !enabled);
+  }
+
+  std::map<std::string, Sprite*>::iterator it;
+  for (it = sprites.begin(); it != sprites.end(); it++) {
+
+    Sprite& sprite = *(it->second);
+    sprite.set_suspended(suspended || !enabled);
+  }
+
+  notify_enabled(enabled);
 }
 
 /**
@@ -1696,7 +1705,7 @@ void MapEntity::set_suspended(bool suspended) {
   for (it = sprites.begin(); it != sprites.end(); it++) {
     
     Sprite &sprite = *(it->second);
-    sprite.set_suspended(suspended);
+    sprite.set_suspended(suspended || !is_enabled());
   }
 
   // suspend/unsuspend the movement

@@ -51,16 +51,16 @@ width = 960
 height = 1120
 
 [dungeon_5.floor_-1]
-width = 1280
-height = 1280
+width = 1152
+height = 1216
 
 [dungeon_5.floor_0]
-width = 1280
-height = 1280
+width = 1152
+height = 1216
 
 [dungeon_5.floor_1]
-width = 1280
-height = 1280
+width = 1152
+height = 1216
 
 [dungeon_6.floor_0]
 width = 1152
@@ -475,13 +475,6 @@ y = 288
 save = 308
 big = 1
 
-[dungeon_5.map_65.chest_0]
-floor = -1
-x = 392
-y = 552
-save = 509
-big = 0
-
 [dungeon_5.map_64.chest_0]
 floor = 0
 x = 600
@@ -501,6 +494,13 @@ floor = 0
 x = 1040
 y = 896
 save = 501
+big = 0
+
+[dungeon_5.map_65.chest_0]
+floor = -1
+x = 392
+y = 552
+save = 509
 big = 0
 
 [dungeon_5.map_63.chest_0]

@@ -38,39 +38,38 @@ class Music { // TODO make a subclass for each format, or at least make a better
      * The music file formats recognized.
      */
     enum Format {
-      SPC,	/**< original Snes music */
-      IT,	/**< Impulse Tracker module */
+      SPC,      /**< original Snes music */
+      IT,       /**< Impulse Tracker module */
       OGG       /**< Ogg Vorbis */
     };
 
-    MusicId id;							/**< id of this music */
-    std::string file_name;					/**< name of the file to play */
-    Format format;						/**< format of the music, detected from the file name */
+    MusicId id;                                  /**< id of this music */
+    std::string file_name;                       /**< name of the file to play */
+    Format format;                               /**< format of the music, detected from the file name */
 
     // OGG specific
-    OggVorbis_File ogg_file;					/**< the file used by the vorbisfile lib */
-    Sound::SoundFromMemory ogg_mem;				/**< the encoded music loaded in memory, passed to the vorbisfile lib as user data */
+    OggVorbis_File ogg_file;                     /**< the file used by the vorbisfile lib */
+    Sound::SoundFromMemory ogg_mem;              /**< the encoded music loaded in memory, passed to the vorbisfile lib as user data */
 
     static const int nb_buffers = 8;
-    ALuint buffers[nb_buffers];					/**< multiple buffers used to stream the music */
-    ALuint source;						/**< the OpenAL source streaming the buffers */
+    ALuint buffers[nb_buffers];                  /**< multiple buffers used to stream the music */
+    ALuint source;                               /**< the OpenAL source streaming the buffers */
 
-    static SpcDecoder *spc_decoder;				/**< the SPC decoder */
-    static ItDecoder *it_decoder;                               /**< the IT decoder */
-    static float volume;					/**< volume of musics (0.0 to 1.0) */
+    static SpcDecoder *spc_decoder;              /**< the SPC decoder */
+    static ItDecoder *it_decoder;                /**< the IT decoder */
+    static float volume;                         /**< volume of musics (0.0 to 1.0) */
 
-    static Music *current_music;				/**< the music currently played (if any) */
-    static std::map<MusicId,Music> all_musics;			/**< all musics created before */
+    static Music *current_music;                 /**< the music currently played (if any) */
+    static std::map<MusicId,Music> all_musics;   /**< all musics created before */
 
     void update_playing();
 
   public:
 
-    static const MusicId none;					/**< special id indicating that there is no music */
-    static const MusicId unchanged;				/**< special id indicating that the music is the same as before */
+    static const MusicId none;                   /**< special id indicating that there is no music */
+    static const MusicId unchanged;              /**< special id indicating that the music is the same as before */
 
-    Music();
-    Music(const MusicId &music_id);
+    Music(const MusicId& music_id = none);
     ~Music();
 
     static void initialize();
@@ -81,7 +80,7 @@ class Music { // TODO make a subclass for each format, or at least make a better
     static int get_volume();
     static void set_volume(int volume);
 
-    static void play(const MusicId &music_id);
+    static void play(const MusicId& music_id);
     static Music* get_current_music();
     static const MusicId& get_current_music_id();
 

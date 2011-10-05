@@ -23,9 +23,9 @@ function event_map_started(destination_point_name)
 
     -- Agahnim fight
     if destination_point_name == "from_dungeon_5_2F_ne"
-        and sol.game.savegame_get_boolean(907) then
+        and sol.game.savegame_get_boolean(907)
+        and not sol.game.savegame_get_boolean(520) then
 
-      -- TODO change/stop the music?
       sol.main.play_music("none")
     end
 
@@ -86,6 +86,7 @@ function event_hero_on_sensor(sensor_name)
 
   if sensor_name == "start_boss_sensor"
       and sol.game.savegame_get_boolean(907)
+      and not sol.game.savegame_get_boolean(520)
       and not fighting_boss then
 
     -- Agahnim fight
@@ -110,6 +111,7 @@ end
 function event_treasure_obtained(item_name, variant, savegame_variable)
 
   if item_name == "heart_container" then
+    sol.game.set_dungeon_finished(5)
     sol.main.timer_start(9000, "leave_boss", false)
     sol.main.play_music("victory.spc")
     sol.map.hero_freeze()
@@ -120,5 +122,10 @@ end
 function leave_boss()
 
   sol.map.hero_set_map(9, "from_dungeon_5_1F", 1)
+  sol.main.timer_start(500, "restore_music")
+end
+
+function restore_music()
+  sol.main.play_music("dark_world.spc")
 end
 

@@ -122,7 +122,7 @@ end
 function leave_boss()
 
   sol.map.hero_set_map(9, "from_dungeon_5_1F", 1)
-  sol.main.timer_start(500, "restore_music")
+  sol.main.timer_start(700, "restore_music")
 end
 
 function restore_music()

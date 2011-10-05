@@ -23,31 +23,23 @@
 #include "Configuration.h"
 
 const int Music::nb_buffers;
-SpcDecoder *Music::spc_decoder = NULL;
-ItDecoder *Music::it_decoder = NULL;
+SpcDecoder* Music::spc_decoder = NULL;
+ItDecoder* Music::it_decoder = NULL;
 float Music::volume = 1.0;
-Music *Music::current_music = NULL;
+Music* Music::current_music = NULL;
 std::map<MusicId,Music> Music::all_musics;
 
 const MusicId Music::none = "none";
 const MusicId Music::unchanged = "same";
 
 /**
- * @brief Empty constructor.
- */
-Music::Music():
-  id(none) {
-
-}
-
-/**
  * @brief Creates a new music.
  * @param music_id id of the music (a file name)
  */
-Music::Music(const MusicId &music_id):
+Music::Music(const MusicId& music_id):
   id(music_id) {
 
-  if (!is_initialized()) {
+  if (!is_initialized() || music_id == none) {
     return;
   }
 
@@ -140,7 +132,8 @@ int Music::get_volume() {
  */
 void Music::set_volume(int volume) {
 
-  Debug::check_assertion(volume >= 0 && volume <= 100, StringConcat() << "Illegal volume for music:" << volume);
+  Debug::check_assertion(volume >= 0 && volume <= 100,
+      StringConcat() << "Illegal volume for music:" << volume);
 
   Configuration::set_value("music_volume", volume);
   Music::volume = volume / 100.0;
@@ -176,7 +169,7 @@ const MusicId& Music::get_current_music_id() {
  *
  * @param music_id id of the music to play
  */
-void Music::play(const MusicId &music_id) {
+void Music::play(const MusicId& music_id) {
 
   if (music_id != unchanged && music_id != get_current_music_id()) {
     // the music is changed
@@ -197,7 +190,7 @@ void Music::play(const MusicId &music_id) {
         all_musics[music_id] = Music(music_id);
       }
 
-      Music &music = all_musics[music_id];
+      Music& music = all_musics[music_id];
       if (music.start()) {
         current_music = &music;
       }
@@ -244,17 +237,16 @@ void Music::update_playing() {
     switch (format) {
 
       case SPC:
-	decode_spc(buffer, 4096);
-	break;
+        decode_spc(buffer, 4096);
+        break;
 
       case IT:
         decode_it(buffer, 4096);
         break;
 
       case OGG:
-	decode_ogg(buffer, 4096);
-	break;
-
+        decode_ogg(buffer, 4096);
+        break;
     }
     alSourceQueueBuffers(source, 1, &buffer);   // queue it again
   }
@@ -275,7 +267,7 @@ void Music::update_playing() {
 void Music::decode_spc(ALuint destination_buffer, ALsizei nb_samples) {
 
   // decode the SPC data
-  ALushort *raw_data = new ALushort[nb_samples];
+  ALushort* raw_data = new ALushort[nb_samples];
   spc_decoder->decode((int16_t*) raw_data, nb_samples);
 
   // put this decoded data into the buffer
@@ -296,7 +288,7 @@ void Music::decode_spc(ALuint destination_buffer, ALsizei nb_samples) {
 void Music::decode_it(ALuint destination_buffer, ALsizei nb_samples) {
 
   // decode the IT data
-  ALushort *raw_data = new ALushort[nb_samples];
+  ALushort* raw_data = new ALushort[nb_samples];
   it_decoder->decode(raw_data, nb_samples);
 
   // put this decoded data into the buffer
@@ -369,18 +361,19 @@ bool Music::start() {
     return false;
   }
 
-  Debug::check_assertion(current_music == NULL, StringConcat() << "Cannot play music file '" << file_name << "': a music is already playing");
+  Debug::check_assertion(current_music == NULL,
+      StringConcat() << "Cannot play music file '" << file_name << "': a music is already playing");
 
   bool success = true;
 
-  // create the two buffers and the source
+  // create the buffers and the source
   alGenBuffers(nb_buffers, buffers);
   alGenSources(1, &source);
   alSourcef(source, AL_GAIN, volume);
 
   // load the music into memory
   size_t sound_size;
-  char *sound_data;
+  char* sound_data;
   switch (format) {
 
     case SPC:
@@ -443,8 +436,11 @@ bool Music::start() {
     }
   }*/
 
+  alSourcePlay(source);
+
   // now the update() function will take care of filling the buffers
   current_music = this;
+
   return success;
 }
 
@@ -463,6 +459,7 @@ void Music::stop() {
 
   // empty the source
   alSourceStop(source);
+
   ALint nb_queued;
   ALuint buffer;
   alGetSourcei(source, AL_BUFFERS_QUEUED, &nb_queued);

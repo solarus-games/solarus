@@ -40,14 +40,14 @@ class Sound {
     static ALCdevice* device;
     static ALCcontext* context;
 
-    SoundId id;							/**< id of this sound */
-    ALuint buffer;						/**< the OpenAL buffer containing the PCM decoded data of this sound */
-    std::list<ALuint> sources;					/**< the sources currently playing this sound */
-    static std::list<Sound*> current_sounds;			/**< the sounds currently playing */
-    static std::map<SoundId,Sound> all_sounds;			/**< all sounds created before */
+    SoundId id;                                  /**< id of this sound */
+    ALuint buffer;                               /**< the OpenAL buffer containing the PCM decoded data of this sound */
+    std::list<ALuint> sources;                   /**< the sources currently playing this sound */
+    static std::list<Sound*> current_sounds;     /**< the sounds currently playing */
+    static std::map<SoundId,Sound> all_sounds;   /**< all sounds created before */
 
-    static bool initialized;					/**< indicates that the audio system is initialized */
-    static float volume;					/**< the volume of sound effects (0.0 to 1.0) */
+    static bool initialized;                     /**< indicates that the audio system is initialized */
+    static float volume;                         /**< the volume of sound effects (0.0 to 1.0) */
 
     ALuint decode_file(const std::string &file_name);
     bool update_playing();
@@ -60,7 +60,7 @@ class Sound {
      * @brief Buffer containing an encoded sound file.
      */
     struct SoundFromMemory {
-      char *data;               /**< the buffer */
+      char* data;               /**< the buffer */
       size_t size;              /**< size of the buffer in bytes */
       size_t position;          /**< current position in the buffer */
     };
@@ -74,8 +74,7 @@ class Sound {
     static long cb_tell(void* datasource);
 */
 
-    Sound();
-    Sound(const SoundId &sound_id);
+    Sound(const SoundId& sound_id = "");
     ~Sound();
     void load();
     bool start();
@@ -84,7 +83,7 @@ class Sound {
     static bool exists(const SoundId& sound_id);
     static void play(const SoundId& sound_id);
 
-    static void initialize(int argc, char **argv);
+    static void initialize(int argc, char** argv);
     static void quit();
     static bool is_initialized();
     static void update();

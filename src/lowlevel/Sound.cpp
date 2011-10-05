@@ -26,8 +26,8 @@
 #include "lowlevel/StringConcat.h"
 #include "Configuration.h"
 
-ALCdevice * Sound::device = NULL;
-ALCcontext * Sound::context = NULL;
+ALCdevice* Sound::device = NULL;
+ALCcontext* Sound::context = NULL;
 bool Sound::initialized = false;
 float Sound::volume = 1.0;
 std::list<Sound*> Sound::current_sounds;
@@ -40,20 +40,14 @@ ov_callbacks Sound::ogg_callbacks = {
 };
 
 /**
- * @brief Empty constructor.
- */
-Sound::Sound():
-  id(""), buffer(AL_NONE) {
-
-}
-
-/**
  * @brief Creates a new Ogg Vorbis sound.
  * @param sound_id id of the sound: name of a .ogg file in the sounds subdirectory,
  * without the extension (.ogg is added automatically)
  */
-Sound::Sound(const SoundId &sound_id):
-  id(sound_id), buffer(AL_NONE) {
+Sound::Sound(const SoundId& sound_id):
+  id(sound_id),
+  buffer(AL_NONE) {
+
 }
 
 /**
@@ -86,7 +80,7 @@ Sound::~Sound() {
  * @param argc command-line arguments number
  * @param argv command-line arguments
  */
-void Sound::initialize(int argc, char **argv) {
+void Sound::initialize(int argc, char** argv) {
  
   // check the -no-audio option
   bool disable = false;
@@ -260,7 +254,8 @@ int Sound::get_volume() {
  */
 void Sound::set_volume(int volume) {
 
-  Debug::check_assertion(volume >= 0 && volume <= 100, StringConcat() << "Illegal volume for sound effects:" << volume);
+  Debug::check_assertion(volume >= 0 && volume <= 100,
+      StringConcat() << "Illegal volume for sound effects:" << volume);
 
   Configuration::set_value("sound_volume", volume);
   Sound::volume = volume / 100.0;
@@ -274,7 +269,7 @@ void Sound::set_volume(int volume) {
 void Sound::update() {
 
   // update the playing sounds
-  Sound *sound;
+  Sound* sound;
   std::list<Sound*> sounds_to_remove;
   std::list<Sound*>::iterator it;
   for (it = current_sounds.begin(); it != current_sounds.end(); it++) {
@@ -356,21 +351,21 @@ bool Sound::start() {
       // play the sound
       int error = alGetError();
       if (error != AL_NO_ERROR) {
-	std::cerr << "Cannot attach buffer " << buffer << " to the source to play sound: error " << error << std::endl;
-	alDeleteSources(1, &source);
+        std::cerr << "Cannot attach buffer " << buffer << " to the source to play sound: error " << error << std::endl;
+        alDeleteSources(1, &source);
       }
       else {
-	sources.push_back(source);
-	current_sounds.remove(this); // to avoid duplicates
-	current_sounds.push_back(this);
-	alSourcePlay(source);
-	error = alGetError();
-	if (error != AL_NO_ERROR) {
-	  std::cerr << "Cannot play sound: error " << error << std::endl;
-	}
-	else {
-	  success = true;
-	}
+        sources.push_back(source);
+        current_sounds.remove(this); // to avoid duplicates
+        current_sounds.push_back(this);
+        alSourcePlay(source);
+        error = alGetError();
+        if (error != AL_NO_ERROR) {
+          std::cerr << "Cannot play sound: error " << error << std::endl;
+        }
+        else {
+          success = true;
+        }
       }
     }
   }
@@ -382,7 +377,7 @@ bool Sound::start() {
  * @param file_name name of the file to open
  * @return the buffer created, or AL_NONE if the sound could not be loaded
  */
-ALuint Sound::decode_file(const std::string &file_name) {
+ALuint Sound::decode_file(const std::string& file_name) {
 
   ALuint buffer = AL_NONE;
 

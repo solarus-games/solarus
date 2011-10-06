@@ -46,7 +46,8 @@ const std::string Enemy::attack_names[] = {
   "arrow",
   "hookshot",
   "boomerang",
-  "lamp"
+  "lamp",
+  "script"
 };
 
 const std::string Enemy::hurt_sound_style_names[] = {

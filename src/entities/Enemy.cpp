@@ -658,7 +658,7 @@ void Enemy::notify_enabled(bool enabled) {
  * @return true if this enemy is in a normal state
  */
 bool Enemy::is_in_normal_state() {
-  return is_enabled() && !is_being_hurt() && get_life() > 0 && !is_immobilized();
+  return is_enabled() && !is_being_hurt() && get_life() > 0 && !is_immobilized() && !is_being_removed();
 }
 
 /**

@@ -287,6 +287,18 @@ void EnemyScript::event_sprite_frame_changed(Sprite& sprite, const std::string& 
 }
 
 /**
+ * @brief Notifies the script that this enemy has detected a collision with another enemy.
+ * @param other_name name of the other enemy
+ * @param other_sprite the other enemy's sprite that overlaps a sprite of this enemy
+ * @param this_sprite this enemy's sprite that overlaps the other
+ */
+void EnemyScript::event_collision_enemy(const std::string& other_name, Sprite& other_sprite, Sprite& this_sprite) {
+
+  notify_script("event_collision_enemy", "sii", other_name.c_str(),
+      create_sprite_handle(other_sprite), create_sprite_handle(this_sprite));
+}
+
+/**
  * @brief Notifies the script that the enemy is receiving an attack
  * with a custom effect, which means that your script decides what happens.
  * and returns the number of life points to remove.

@@ -5,9 +5,11 @@ fighting_boss = false -- Agahnim
 
 function event_map_started(destination_point_name)
 
+  local new_music = nil
+
   if sol.game.savegame_get_boolean(905) then
     -- enable dark world
-    sol.main.play_music("dark_world.spc")
+    new_music = "dark_world.spc"
     sol.map.tileset_set(13)
     sol.map.tile_set_group_enabled("castle_east_bridge", false)
     sol.map.tile_set_group_enabled("castle_east_bridge_off", true)
@@ -26,12 +28,16 @@ function event_map_started(destination_point_name)
         and sol.game.savegame_get_boolean(907)
         and not sol.game.savegame_get_boolean(520) then
 
-      sol.main.play_music("none")
+      new_music = "none"
     end
 
   else
     sol.map.tile_set_group_enabled("castle_east_bridge_off", false)
     sol.map.teletransporter_set_group_enabled("teletransporter_dw", false)
+  end
+
+  if new_music ~= nil then
+    sol.main.play_music(new_music)
   end
 end
 
@@ -101,11 +107,18 @@ end
 
 function start_boss()
 
-  sol.main.play_music("boss.spc")
+  sol.main.play_music("ganon_appears.spc")
   sol.map.enemy_set_enabled("boss", true)
   sol.map.dialog_start("dungeon_5.agahnim_beginning")
   sol.map.hero_unfreeze()
   fighting_boss = true
+end
+
+function event_dialog_finished(first_message_id, answer)
+
+  if first_message_id == "dungeon_5.agahnim_beginning" then
+    sol.main.play_music("ganon_battle.spc")
+  end
 end
 
 function event_treasure_obtained(item_name, variant, savegame_variable)

@@ -811,6 +811,9 @@ Stops and destroys the current movement of the enemy (if any).
 Restarts the enemy. This plays animation "walking" on its sprites
 and triggers event_restart().
 
+- <tt>sol.enemy.hurt(life_points)</tt>:
+Hurts the enemy.
+
 - <tt>sol.enemy.get_sprite(sprite_name)</tt>:
 Returns a sprite of the enemy given its name (i.e. the name of its animation set). sprite_name is optional: by default, the first sprite created is returned.
 

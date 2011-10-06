@@ -64,6 +64,7 @@ class EnemyScript: public Script {
     void event_movement_finished(Movement& movement);
     void event_sprite_frame_changed(Sprite& sprite, const std::string& animation, int frame);
     void event_sprite_animation_finished(Sprite& sprite, const std::string& animation);
+    void event_collision_enemy(const std::string& other_name, Sprite& other_sprite, Sprite& this_sprite);
     int event_custom_attack_received(EnemyAttack attack, Sprite* sprite);
     void event_hurt(EnemyAttack attack, int life_lost);
     void event_dead();

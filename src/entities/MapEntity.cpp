@@ -1654,7 +1654,7 @@ void MapEntity::notify_collision_with_enemy(Enemy &enemy) {
 }
 
 /**
- * @brief This function is called when an enemy's sprite collides with a sprite of this entity
+ * @brief This function is called when an enemy's sprite collides with a sprite of this entity.
  * @param enemy the enemy
  * @param enemy_sprite the enemy's sprite that overlaps a sprite of this entity
  * @param this_sprite this entity's sprite that overlaps the enemy's sprite

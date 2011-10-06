@@ -1100,6 +1100,9 @@ called when the current frame of a sprite of the enemy has changed
 - <tt>event_sprite_animation_finished(sprite, animation)</tt>:
 called when the animation of a sprite of the enemy has just finished
 
+- <tt>event_collision_enemy(other_name, other_sprite, my_sprite)</tt>:
+called when the enemy detects a collision with another enemy
+
 - <tt>event_custom_attack_received(attack, sprite)</tt>:
 called when an attack with a custom effect is received by the enemy:
 you have to define what happens and return the number of life points to remove

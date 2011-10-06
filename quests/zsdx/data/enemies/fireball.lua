@@ -14,6 +14,7 @@ function event_appear()
   sol.enemy.create_sprite("enemies/fireball")
   sol.enemy.set_size(16, 16)
   sol.enemy.set_origin(8, 8)
+  sol.enemy.set_invincible()
   sol.enemy.set_attack_consequence("sword", "custom")
 
   -- two smaller fireballs just for the displaying

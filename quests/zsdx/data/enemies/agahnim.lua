@@ -9,8 +9,8 @@ positions = {
 
 nb_sons_created = 0
 initial_life = 8
+finished = false
 
--- The enemy appears: set its properties
 function event_appear()
 
   sol.enemy.set_life(initial_life)
@@ -31,8 +31,17 @@ function event_restart()
   vulnerable = false
   sol.main.timer_stop_all()
   local sprite = sol.enemy.get_sprite()
-  sol.main.sprite_fade(sprite, 1)
-  sol.main.timer_start(500, "hide")
+
+  if not finished then
+    sol.main.sprite_fade(sprite, 1)
+    sol.main.timer_start(500, "hide")
+  else
+    sol.main.sprite_set_animation(sprite, "hurt")
+    sol.map.hero_freeze()
+    sol.main.timer_start(500, "end_dialog")
+    sol.main.timer_start(1000, "fade_out")
+    sol.main.timer_start(1500, "escape")
+  end
 end
 
 function hide()
@@ -75,12 +84,11 @@ function fire_step_3()
 
   throw_fire()
   if sol.enemy.get_life() <= initial_life / 2 then
-    sol.main.timer_start(150, "throw_fire")
-    sol.main.timer_start(300, "throw_fire")
+    sol.main.timer_start(200, "throw_fire")
+    sol.main.timer_start(400, "throw_fire")
   end
 
-  vulnerable = false
-  sol.main.timer_start(400, "set_vulnerable")
+  vulnerable = true
   sol.main.timer_start(700, "sol.enemy.restart")
 end
 
@@ -88,10 +96,6 @@ function throw_fire()
 
   nb_sons_created = nb_sons_created + 1
   sol.enemy.create_son("agahnim_fireball_"..nb_sons_created, "fireball", 0, -21)
-end
-
-function set_vulnerable()
-  vulnerable = true
 end
 
 function event_message_received(src_enemy, message)
@@ -103,5 +107,43 @@ function event_message_received(src_enemy, message)
     sol.enemy.hurt(1)
     sol.map.enemy_remove(src_enemy)
   end
+end
+
+function event_hurt(attack, life_lost)
+
+  if sol.enemy.get_life() <= 0 then
+
+    sol.enemy.set_life(1)
+    finished = true
+  end
+end
+
+function end_dialog()
+
+  for i = 1, nb_sons_created do
+    son = "agahnim_fire_ball_"..i
+    if not sol.map.enemy_is_dead(son) then
+      sol.map.enemy_remove(son)
+    end
+  end
+
+  local sprite = sol.enemy.get_sprite()
+  sol.main.sprite_set_animation_ignore_suspend(sprite, true)
+  sol.map.dialog_start("dungeon_5.agahnim_end")
+end
+
+function fade_out()
+
+  local sprite = sol.enemy.get_sprite()
+  sol.main.sprite_fade(sprite, 1)
+end
+
+function escape()
+
+  local x, y = sol.enemy.get_position()
+  sol.map.pickable_item_create("heart_container", 1, 521, x, y, 0)
+  sol.map.hero_unfreeze()
+  sol.map.enemy_remove(sol.enemy.get_name())
+  sol.game.savegame_set_boolean(520, true)
 end
 

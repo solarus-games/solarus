@@ -125,7 +125,7 @@ function event_treasure_obtained(item_name, variant, savegame_variable)
 
   if item_name == "heart_container" then
     sol.game.set_dungeon_finished(5)
-    sol.main.timer_start(9000, "leave_boss", false)
+    sol.main.timer_start(9000, "leave_boss")
     sol.main.play_music("victory.spc")
     sol.map.hero_freeze()
     sol.map.hero_set_direction(3)

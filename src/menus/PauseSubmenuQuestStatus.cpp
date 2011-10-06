@@ -152,7 +152,7 @@ PauseSubmenuQuestStatus::PauseSubmenuQuestStatus(PauseMenu& pause_menu, Game& ga
         Rectangle(186, 74)
     };
     for (int i = 0; i < 8; i++) {
-      if (equipment.is_dungeon_finished(i)) {
+      if (equipment.is_dungeon_finished(i + 1)) {
         Rectangle src_position(i * 20, 0, 20, 20);
         dungeons_img.blit(src_position, &quest_items_surface, dst_positions[i]);
       }

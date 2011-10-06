@@ -5531,6 +5531,45 @@ line1 = "pièges de mon château."
 line2 = "Mais votre escapade"
 line3 = "s'arrête là !"
 
+[dungeon_5.agahnim_end]
+#       |-----------------------|
+line1 = "...$0...........$0"
+line2 = "Vous m'avez vaincu"
+line3 = "cette fois..."
+next = dungeon_5.agahnim_end.2
+
+[dungeon_5.agahnim_end.2]
+#       |-----------------------|
+line1 = "Mais nous nous"
+line2 = "reverrons !"
+next = dungeon_5.agahnim_end.3
+
+[dungeon_5.agahnim_end.3]
+#       |-----------------------|
+line1 = "Votre petite aventure"
+line2 = "ne change rien..."
+line3 = "Sahasrahla est en mon"
+next = dungeon_5.agahnim_end.4
+
+[dungeon_5.agahnim_end.4]
+#       |-----------------------|
+line1 = "pouvoir et il va me"
+line2 = "révéler où se trouve"
+line3 = "la Princesse et les"
+next = dungeon_5.agahnim_end.5
+
+[dungeon_5.agahnim_end.5]
+#       |-----------------------|
+line1 = "huit enfants..."
+line2 = "Ah ah ah ah ah !"
+next = dungeon_5.agahnim_end.6
+
+[dungeon_5.agahnim_end.6]
+#       |-----------------------|
+line1 = "Sur ce, je dois vous"
+line2 = "laisser. A une"
+line3 = "prochaine fois !"
+
 [dungeon_6.welcome]
 #       |-----------------------|
 line1 = "        Niveau 6"

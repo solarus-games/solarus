@@ -330,6 +330,7 @@ class Script {
       enemy_api_start_movement,
       enemy_api_stop_movement,
       enemy_api_restart,
+      enemy_api_hurt,
       enemy_api_get_sprite,
       enemy_api_has_sprite,
       enemy_api_create_sprite,

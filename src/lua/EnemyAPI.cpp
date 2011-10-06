@@ -809,6 +809,30 @@ int Script::enemy_api_restart(lua_State *l) {
 }
 
 /**
+ * @brief Hurts the enemy
+ *
+ * - Argument 1 (integer): number of life points to remove
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::enemy_api_hurt(lua_State *l) {
+
+  Script& script = get_script(l, 1);
+  Enemy& enemy = script.get_enemy();
+
+  int life_points = luaL_checkinteger(l, 1);
+
+  if (enemy.is_in_normal_state() && !enemy.invulnerable) {
+    Hero& hero = script.get_game().get_hero();
+    enemy.life -= life_points;
+    enemy.hurt(hero);
+    enemy.notify_hurt(hero, ATTACK_SCRIPT, life_points);
+  }
+
+  return 0;
+}
+
+/**
  * @brief Returns a sprite of this enemy.
  *
  * Your script can then call all sol.main.sprite_* functions.

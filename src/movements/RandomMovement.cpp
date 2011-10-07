@@ -29,10 +29,10 @@
  * @param max_distance if the object goes further than this distance, it will come back
  */
 RandomMovement::RandomMovement(int speed, int max_distance):
-  RectilinearMovement(true),
+  RectilinearMovement(false),
+  normal_speed(speed),
   max_distance(max_distance) {
 
-  set_speed(speed);
   set_next_direction();
 }
 
@@ -73,6 +73,8 @@ void RandomMovement::set_max_distance(int max_distance) {
  * @brief Chooses a new direction for the movement.
  */
 void RandomMovement::set_next_direction() {
+
+  set_speed(normal_speed);
 
   double angle;
   if (get_entity() == NULL
@@ -130,17 +132,28 @@ void RandomMovement::set_suspended(bool suspended) {
 }
 
 /**
+ * @brief Notifies this movement that it just failed to apply
+ * because of obstacles.
+ */
+void RandomMovement::notify_obstacle_reached() {
+
+  set_next_direction();
+}
+
+/**
  * @brief Returns the value of a property of this movement.
  *
  * Accepted keys:
  * - speed
  * - max_distance
+ * - ignore_obstacles
  * - angle
+ * - displayed_direction
  *
  * @param key key of the property to get
  * @return the corresponding value as a string
  */
-const std::string RandomMovement::get_property(const std::string &key) {
+const std::string RandomMovement::get_property(const std::string& key) {
 
   std::ostringstream oss;
 
@@ -150,11 +163,14 @@ const std::string RandomMovement::get_property(const std::string &key) {
   else if (key == "max_distance") {
     oss << max_distance;
   }
+  else if (key == "ignore_obstacles") {
+    oss << are_obstacles_ignored();
+  }
   else if (key == "angle") {
     oss << Geometry::radians_to_degrees(get_angle());
   }
-  else if (key == "ignore_obstacles") {
-    oss << are_obstacles_ignored();
+  else if (key == "displayed_direction") {
+    oss << get_displayed_direction4();
   }
   else {
     Debug::die(StringConcat() << "Unknown property of RandomMovement: '" << key << "'");
@@ -169,11 +185,12 @@ const std::string RandomMovement::get_property(const std::string &key) {
  * Accepted keys:
  * - speed
  * - max_distance
+ * - ignore_obstacles
  *
  * @param key key of the property to set (the accepted keys depend on the movement type)
  * @param value the value to set
  */
-void RandomMovement::set_property(const std::string &key, const std::string &value) {
+void RandomMovement::set_property(const std::string& key, const std::string& value) {
 
   std::istringstream iss(value);
 
@@ -194,6 +211,9 @@ void RandomMovement::set_property(const std::string &key, const std::string &val
   }
   else if (key == "angle") {
     Debug::die("The property 'angle' of RandomMovement is read-only");
+  }
+  else if (key == "displayed_direction") {
+    Debug::die("The property 'displayed_direction' of RandomMovement is read-only");
   }
   else {
     Debug::die(StringConcat() << "Unknown property of RandomMovement: '" << key << "'");

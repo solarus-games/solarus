@@ -92,6 +92,7 @@ class Movement {
     void translate_xy(int dx, int dy);
     void translate_xy(const Rectangle &dxy);
     virtual void notify_position_changed(); // called whenever x or y is changed
+    virtual void notify_obstacle_reached();
 
     // movement
     bool is_stopped();

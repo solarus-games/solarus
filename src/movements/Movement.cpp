@@ -209,6 +209,13 @@ void Movement::notify_position_changed() {
 }
 
 /**
+ * @brief Notifies this movement that it just failed to apply
+ * because of obstacles.
+ */
+void Movement::notify_obstacle_reached() {
+}
+
+/**
  * @brief Returns whether the movement is stopped.
  * @return true if the object is stopped, false otherwise
  */

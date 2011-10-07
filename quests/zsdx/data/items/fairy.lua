@@ -5,6 +5,7 @@ function event_appear(variant)
 
    -- create a movement that goes into random directions, with a speed of 28 pixels per second
   local movement = sol.main.random_movement_create(28)
+  sol.main.movement_set_property(movement, "ignore_obstacles", true)
   sol.main.movement_set_property(movement, "max_distance", 40) -- don't go too far
   sol.item.start_movement(movement) -- associate this movement to the fairy
 

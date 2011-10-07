@@ -402,6 +402,10 @@ void RectilinearMovement::update() {
         bool success = (get_x() != old_xy.get_x() || get_y() != old_xy.get_y())
             && (get_x_move() != 0 || get_y_move() != 0);
 
+        if (!success) {
+          notify_obstacle_reached();
+        }
+
         // notify the entity
 	get_entity()->notify_movement_tried(success);
       }

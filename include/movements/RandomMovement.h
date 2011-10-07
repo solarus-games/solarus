@@ -30,17 +30,23 @@
  * - max_distance
  * - ignore_obstacles
  * - angle (read-only)
+ * - displayed_direction (read-only)
  */
 class RandomMovement: public RectilinearMovement {
 
   private:
 
-    int max_distance;					/**< if the object goes further than this distance in x or y, it will come back
-							 * (this is not a hard limit, there is no guarantee) */
-    Rectangle bounds;					/**< a rectangle the object should not escape from */
-    uint32_t next_direction_change_date;		/**< date of the next direction change */
+    int normal_speed;                                   /**< speed of this movement */
+    int max_distance;                                   /**< if the object goes further than this distance in x or y, it will come back
+                                                         * (this is not a hard limit, there is no guarantee) */
+    Rectangle bounds;                                   /**< a rectangle the object should not escape from */
+    uint32_t next_direction_change_date;                /**< date of the next direction change */
 
     void set_next_direction();
+
+  protected:
+
+    virtual void notify_obstacle_reached();
 
   public:
 
@@ -54,8 +60,8 @@ class RandomMovement: public RectilinearMovement {
     void set_max_distance(int max_distance);
 
     // properties
-    const std::string get_property(const std::string &key);
-    void set_property(const std::string &key, const std::string &value);
+    const std::string get_property(const std::string& key);
+    void set_property(const std::string& key, const std::string& value);
 };
 
 #endif

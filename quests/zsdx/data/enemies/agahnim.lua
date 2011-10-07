@@ -2,8 +2,8 @@
 
 -- possible positions where he appears
 positions = {
-  {x = 192, y = 277, direction4 = 0},
-  {x = 400, y = 277, direction4 = 2},
+  {x = 192, y = 277, direction4 = 3},
+  {x = 400, y = 277, direction4 = 3},
   {x = 296, y = 373, direction4 = 1}
 }
 
@@ -53,7 +53,7 @@ end
 
 function unhide()
 
-  local position = (positions[math.random(3)])
+  local position = (positions[math.random(#positions)])
   sol.enemy.set_position(position.x, position.y)
   local sprite = sol.enemy.get_sprite()
   sol.main.sprite_set_direction(sprite, position.direction4)

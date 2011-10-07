@@ -49,16 +49,17 @@ class Hookshot: public MapEntity {
     bool can_be_displayed();
     bool is_displayed_in_y_order();
 
-    bool is_teletransporter_obstacle(Teletransporter &teletransporter);
-    bool is_conveyor_belt_obstacle(ConveyorBelt &conveyor_belt);
-    bool is_stairs_obstacle(Stairs &stairs);
+    bool is_teletransporter_obstacle(Teletransporter& teletransporter);
+    bool is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt);
+    bool is_stairs_obstacle(Stairs& stairs);
     bool is_deep_water_obstacle();
     bool is_hole_obstacle();
     bool is_lava_obstacle();
     bool is_prickle_obstacle();
     bool is_ladder_obstacle();
-    bool is_crystal_switch_obstacle(CrystalSwitch &crystal_switch);
-    bool is_jump_sensor_obstacle(JumpSensor &jump_sensor);
+    bool is_switch_obstacle(Switch& sw);
+    bool is_crystal_switch_obstacle(CrystalSwitch& crystal_switch);
+    bool is_jump_sensor_obstacle(JumpSensor& jump_sensor);
 
     // state
     void update();
@@ -76,6 +77,7 @@ class Hookshot: public MapEntity {
     void notify_collision_with_chest(Chest& chest);
     void notify_collision_with_destructible_item(DestructibleItem& destructible_item, CollisionMode collision_mode);
     void notify_collision_with_block(Block& block);
+    void notify_collision_with_switch(Switch& sw, CollisionMode collision_mode);
     void notify_collision_with_crystal_switch(CrystalSwitch& crystal_switch, CollisionMode collision_mode);
 };
 

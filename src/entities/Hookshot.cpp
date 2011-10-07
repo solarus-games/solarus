@@ -19,6 +19,7 @@
 #include "entities/Chest.h"
 #include "entities/DestructibleItem.h"
 #include "entities/Block.h"
+#include "entities/Switch.h"
 #include "entities/CrystalSwitch.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
@@ -132,7 +133,7 @@ bool Hookshot::is_displayed_in_y_order() {
  * @param teletransporter a teletransporter
  * @return true if the teletransporter is currently an obstacle for this entity
  */
-bool Hookshot::is_teletransporter_obstacle(Teletransporter &teletransporter) {
+bool Hookshot::is_teletransporter_obstacle(Teletransporter& teletransporter) {
   return false;
 }
 
@@ -141,7 +142,7 @@ bool Hookshot::is_teletransporter_obstacle(Teletransporter &teletransporter) {
  * @param conveyor_belt a conveyor belt
  * @return true if the conveyor belt is currently an obstacle for this entity
  */
-bool Hookshot::is_conveyor_belt_obstacle(ConveyorBelt &conveyor_belt) {
+bool Hookshot::is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt) {
   return false;
 }
 
@@ -150,7 +151,7 @@ bool Hookshot::is_conveyor_belt_obstacle(ConveyorBelt &conveyor_belt) {
  * @param stairs an stairs entity
  * @return true if the stairs are currently an obstacle for this entity
  */
-bool Hookshot::is_stairs_obstacle(Stairs &stairs) {
+bool Hookshot::is_stairs_obstacle(Stairs& stairs) {
   return stairs.is_inside_floor() && get_layer() == LAYER_LOW;
 }
 
@@ -195,11 +196,20 @@ bool Hookshot::is_ladder_obstacle() {
 }
 
 /**
+ * @brief Returns whether a switch is currently considered as an obstacle by this entity.
+ * @param sw a switch
+ * @return true if the switch is currently an obstacle for this entity
+ */
+bool Hookshot::is_switch_obstacle(Switch& sw) {
+  return false;
+}
+
+/**
  * @brief Returns whether a crystal switch is currently considered as an obstacle for this entity.
  * @param crystal_switch a crystal switch
  * @return true if the crystal switch is currently an obstacle for this entity
  */
-bool Hookshot::is_crystal_switch_obstacle(CrystalSwitch &crystal_switch) {
+bool Hookshot::is_crystal_switch_obstacle(CrystalSwitch& crystal_switch) {
   return false;
 }
 
@@ -208,7 +218,7 @@ bool Hookshot::is_crystal_switch_obstacle(CrystalSwitch &crystal_switch) {
  * @param jump_sensor a non-diagonal jump sensor
  * @return true if the jump sensor is currently an obstacle for this entity
  */
-bool Hookshot::is_jump_sensor_obstacle(JumpSensor &jump_sensor) {
+bool Hookshot::is_jump_sensor_obstacle(JumpSensor& jump_sensor) {
   return false;
 }
 
@@ -446,6 +456,23 @@ void Hookshot::notify_collision_with_block(Block& block) {
 
   if (is_flying()) {
     attach_to(block);
+  }
+}
+
+/**
+ * @brief This function is called when a switch detects a collision with this entity.
+ * @param sw the switch
+ * @param collision_mode the collision mode that detected the event
+ */
+void Hookshot::notify_collision_with_switch(Switch& sw, CollisionMode collision_mode) {
+
+  if (is_flying() && collision_mode == COLLISION_RECTANGLE) {
+
+    sw.try_activate();
+    if (!is_going_back()) {
+      go_back();
+      Sound::play("sword_tapping");
+    }
   }
 }
 

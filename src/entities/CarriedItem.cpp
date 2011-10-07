@@ -21,6 +21,7 @@
 #include "entities/Explosion.h"
 #include "entities/Sensor.h"
 #include "entities/Stairs.h"
+#include "entities/Switch.h"
 #include "entities/CrystalSwitch.h"
 #include "entities/MapEntities.h"
 #include "movements/PixelMovement.h"
@@ -458,7 +459,7 @@ void CarriedItem::notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
  * @param teletransporter a teletransporter
  * @return true if the teletransporter is currently an obstacle for this entity
  */
-bool CarriedItem::is_teletransporter_obstacle(Teletransporter &teletransporter) {
+bool CarriedItem::is_teletransporter_obstacle(Teletransporter& teletransporter) {
   return false;
 }
 
@@ -467,7 +468,7 @@ bool CarriedItem::is_teletransporter_obstacle(Teletransporter &teletransporter) 
  * @param conveyor_belt a conveyor belt
  * @return true if the conveyor belt is currently an obstacle for this entity
  */
-bool CarriedItem::is_conveyor_belt_obstacle(ConveyorBelt &conveyor_belt) {
+bool CarriedItem::is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt) {
   return false;
 }
 
@@ -476,7 +477,7 @@ bool CarriedItem::is_conveyor_belt_obstacle(ConveyorBelt &conveyor_belt) {
  * @param stairs an stairs entity
  * @return true if the stairs are currently an obstacle for this entity
  */
-bool CarriedItem::is_stairs_obstacle(Stairs &stairs) {
+bool CarriedItem::is_stairs_obstacle(Stairs& stairs) {
   return false;
 }
 
@@ -505,11 +506,20 @@ bool CarriedItem::is_ladder_obstacle() {
 }
 
 /**
+ * @brief Returns whether a switch is currently considered as an obstacle by this entity.
+ * @param sw a switch
+ * @return true if the switch is currently an obstacle for this entity
+ */
+bool CarriedItem::is_switch_obstacle(Switch& sw) {
+  return !is_being_thrown();
+}
+
+/**
  * @brief Returns whether a raised crystal switch block is currently considered as an obstacle for this entity.
  * @param raised_block a crystal switch block raised
  * @return false 
  */
-bool CarriedItem::is_raised_block_obstacle(CrystalSwitchBlock &raised_block) {
+bool CarriedItem::is_raised_block_obstacle(CrystalSwitchBlock& raised_block) {
   // the thrown items can traverse the crystal switch blocks
   return false;
 }
@@ -519,7 +529,7 @@ bool CarriedItem::is_raised_block_obstacle(CrystalSwitchBlock &raised_block) {
  * @param crystal_switch a crystal switch
  * @return true if the crystal switch is currently an obstacle for this entity
  */
-bool CarriedItem::is_crystal_switch_obstacle(CrystalSwitch &crystal_switch) {
+bool CarriedItem::is_crystal_switch_obstacle(CrystalSwitch& crystal_switch) {
   return !is_being_thrown();
 }
 
@@ -528,7 +538,7 @@ bool CarriedItem::is_crystal_switch_obstacle(CrystalSwitch &crystal_switch) {
  * @param npc a non-playing character
  * @return true if the NPC is currently an obstacle for this entity
  */
-bool CarriedItem::is_npc_obstacle(InteractiveEntity &npc) {
+bool CarriedItem::is_npc_obstacle(InteractiveEntity& npc) {
   return false;
 }
 
@@ -537,7 +547,7 @@ bool CarriedItem::is_npc_obstacle(InteractiveEntity &npc) {
  * @param jump_sensor a non-diagonal jump sensor
  * @return true if the jump sensor is currently an obstacle for this entity
  */
-bool CarriedItem::is_jump_sensor_obstacle(JumpSensor &jump_sensor) {
+bool CarriedItem::is_jump_sensor_obstacle(JumpSensor& jump_sensor) {
   return false;
 }
 
@@ -546,7 +556,7 @@ bool CarriedItem::is_jump_sensor_obstacle(JumpSensor &jump_sensor) {
  * @param sensor a sensor
  * @return true if this sensor is currently an obstacle for this entity.
  */
-bool CarriedItem::is_sensor_obstacle(Sensor &sensor) {
+bool CarriedItem::is_sensor_obstacle(Sensor& sensor) {
   return false;
 }
 
@@ -555,9 +565,25 @@ bool CarriedItem::is_sensor_obstacle(Sensor &sensor) {
  * @param enemy an enemy
  * @return true if this enemy is considered as an obstacle for this entity.
  */
-bool CarriedItem::is_enemy_obstacle(Enemy &enemy) {
+bool CarriedItem::is_enemy_obstacle(Enemy& enemy) {
   // if this item explodes when reaching an obstacle, then we consider enemies as obstacles
   return can_explode();
+}
+
+/**
+ * @brief This function is called when a switch detects a collision with this entity.
+ * @param sw the switch
+ * @param collision_mode the collision mode that detected the event
+ */
+void CarriedItem::notify_collision_with_switch(Switch& sw, CollisionMode collision_mode) {
+
+  if (collision_mode == COLLISION_RECTANGLE
+      && is_being_thrown()
+      && !can_explode()) {
+
+    sw.try_activate();
+    break_item();
+  }
 }
 
 /**

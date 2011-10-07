@@ -1374,7 +1374,7 @@
 10	0	528	472	96	16	castle_east_bridge_8	968	1
 10	0	624	472	8	16	castle_east_bridge_9	969	1
 10	0	552	488	48	8	castle_east_bridge_10	1030	1
-11	0	288	824	castle_door_switch	1	0	0
+11	0	360	824	castle_door_switch	3	0	0
 2	0	288	544	16	16	teletransporter_lw_2	0	1	89	from_outside
 8	0	296	389	cannon	-1	0	entities/cannon	map
 13	0	392	301	16	16	start_boss_sensor	0

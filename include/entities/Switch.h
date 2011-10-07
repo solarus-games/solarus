@@ -24,8 +24,7 @@
  * @brief A button that the hero can trigger.
  *
  * A switch can be triggered by walking onto it
- * (then we call it a walkable switch) or by shooting an arrow towards it
- * (then we call it an arrow target).
+ * or by using weapons on it, depending on its subtype
  * Some walkable switches require a block to be activated.
  * Some walkable switches become disabled when the hero or the block leave it.
  * A walkable switch can be visible or invisible.
@@ -39,9 +38,11 @@ class Switch: public Detector {
      * Subtypes of switches.
      */
     enum Subtype {
-      WALKABLE_INVISIBLE = 0, /**< an invisible switch, typically used to detect the hero position */
+      WALKABLE_INVISIBLE = 0, /**< an invisible switch, typically used to detect the hero position
+                               * (deprecated: you should probably use a sensor instead) */
       WALKABLE_VISIBLE   = 1, /**< a classical visible switch the hero can walk on */
-      ARROW_TARGET       = 2  /**< an invisible switch that can be trigger by shooting an arrow on it */
+      ARROW_TARGET       = 2, /**< an invisible switch that can be triggered by shooting an arrow on it */
+      SOLID              = 3  /**< a crystal-like switch that can be triggered with the sword */
     };
 
   private:
@@ -53,31 +54,36 @@ class Switch: public Detector {
     // the following fields are used only for walkable switches
     bool needs_block;                          /**< indicates that a block or a statue is required to enable this walkable switch */
     bool inactivate_when_leaving;              /**< indicates that this walkable switch becomes disabled when the hero or the block leaves it */
-    MapEntity *entity_overlapping;             /**< the entity currently on this walkable switch (as arrows may be destroyed at any moment) */
+    MapEntity* entity_overlapping;             /**< the entity currently on this walkable switch (as arrows may be destroyed at any moment) */
     bool entity_overlapping_still_present;     /**< to detect when the entity overlapping leaves the switch */
 
   public:
 
-    Switch(const std::string &name, Layer layer, int x, int y,
+    Switch(const std::string& name, Layer layer, int x, int y,
 	Subtype subtype, bool needs_block, bool inactivate_when_leaving);
     ~Switch();
     static CreationFunction parse;
 
     EntityType get_type();
+    bool is_obstacle_for(MapEntity& other);
 
     bool is_walkable();
+    bool is_arrow_target();
+    bool is_solid();
     bool is_activated();
     void activate();
     void set_activated(bool enabled);
     void set_locked(bool locked);
 
-    void try_activate(Hero &hero);
-    void try_activate(Block &block);
-    void try_activate(Arrow &arrow);
+    void try_activate(Hero& hero);
+    void try_activate(Block& block);
+    void try_activate(Arrow& arrow);
+    void try_activate();
 
     void update();
-    bool test_collision_custom(MapEntity &entity);
-    void notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode);
+    bool test_collision_custom(MapEntity& entity);
+    void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
+    void notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite);
 };
 
 #endif

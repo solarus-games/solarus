@@ -405,6 +405,7 @@ Subtypes of switches:
 - 0: walkable, invisible
 - 1: walkable, visible
 - 2: target for an arrow
+- 3: solid switch to activate with the sword or other weapons
 
 <tt>needs_block</tt> is a boolean value indicating that the walkable switch needs a block to
 be activated (nothing happens when the hero walks on it).

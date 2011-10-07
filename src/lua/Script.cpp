@@ -501,6 +501,8 @@ void Script::register_enemy_api() {
       { "set_magic_damage", enemy_api_set_magic_damage },
       { "is_pushed_back_when_hurt", enemy_api_is_pushed_back_when_hurt },
       { "set_pushed_back_when_hurt", enemy_api_set_pushed_back_when_hurt },
+      { "get_push_hero_on_sword", enemy_api_get_push_hero_on_sword },
+      { "set_push_hero_on_sword", enemy_api_set_push_hero_on_sword },
       { "get_hurt_sound_style", enemy_api_get_hurt_sound_style },
       { "set_hurt_sound_style", enemy_api_set_hurt_sound_style },
       { "get_minimum_shield_needed", enemy_api_get_minimum_shield_needed },

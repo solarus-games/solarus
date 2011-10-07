@@ -708,12 +708,19 @@ returns the number of magic points that the enemy removes from the hero when tou
 sets the number of magic points that the enemy removes from the hero when touching him
 (default is 0)
 
-- <tt>sol.enemy.get_pushed_back_when_hurt()</tt>:
+- <tt>sol.enemy.is_pushed_back_when_hurt()</tt>:
 returns whether the enemy is pushed away when it is hurt
 
 - <tt>sol.enemy.set_pushed_back_when_hurt(pushed_back_when_hurt)</tt>:
 sets whether the enemy is pushed away when it is hurt
 (default is true)
+
+- <tt>sol.enemy.get_push_hero_on_sword()</tt>:
+returns whether the hero is pushed away when he strikes the enemy with the sword
+
+- <tt>sol.enemy.set_push_hero_on_sword(push_hero_on_sword)</tt>:
+sets whether the hero is pushed away when he strikes the enemy with the sword
+(default is false)
 
 - <tt>sol.enemy.get_hurt_sound_style()</tt>:
 returns the style of sound to play when the enemy is hurt:

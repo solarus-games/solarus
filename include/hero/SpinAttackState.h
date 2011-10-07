@@ -30,15 +30,19 @@ class Hero::SpinAttackState: public Hero::State {
 
   public:
 
-    SpinAttackState(Hero &hero);
+    SpinAttackState(Hero& hero);
     ~SpinAttackState();
 
-    void start(State *previous_state);
+    void start(State* previous_state);
+    void stop(State* next_state);
     void update();
     bool can_sword_hit_crystal_switch();
     bool can_be_hurt();
-    bool is_cutting_with_sword(Detector &detector);
+    bool is_cutting_with_sword(Detector& detector);
     int get_sword_damage_factor();
+    bool is_teletransporter_obstacle(Teletransporter& teletransporter);
+    void notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
+        EnemyReaction::Reaction& result, bool killed);
 };
 
 #endif

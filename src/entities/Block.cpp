@@ -164,8 +164,9 @@ void Block::notify_collision(MapEntity& entity_overlapping, CollisionMode collis
 /**
  * @brief This function is called when a switch detects a collision with this entity.
  * @param sw the switch
+ * @param collision_mode the collision mode that detected the event
  */
-void Block::notify_collision_with_switch(Switch& sw) {
+void Block::notify_collision_with_switch(Switch& sw, CollisionMode collision_mode) {
 
   sw.try_activate(*this);
 }

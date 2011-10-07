@@ -130,7 +130,7 @@ bool Arrow::is_displayed_in_y_order() {
  * @param teletransporter a teletransporter
  * @return true if the teletransporter is currently an obstacle for this entity
  */
-bool Arrow::is_teletransporter_obstacle(Teletransporter &teletransporter) {
+bool Arrow::is_teletransporter_obstacle(Teletransporter& teletransporter) {
   return false;
 }
 
@@ -139,7 +139,7 @@ bool Arrow::is_teletransporter_obstacle(Teletransporter &teletransporter) {
  * @param conveyor_belt a conveyor belt
  * @return true if the conveyor belt is currently an obstacle for this entity
  */
-bool Arrow::is_conveyor_belt_obstacle(ConveyorBelt &conveyor_belt) {
+bool Arrow::is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt) {
   return false;
 }
 
@@ -148,7 +148,7 @@ bool Arrow::is_conveyor_belt_obstacle(ConveyorBelt &conveyor_belt) {
  * @param stairs an stairs entity
  * @return true if the stairs are currently an obstacle for this entity
  */
-bool Arrow::is_stairs_obstacle(Stairs &stairs) {
+bool Arrow::is_stairs_obstacle(Stairs& stairs) {
   return stairs.is_inside_floor() && get_layer() == LAYER_LOW;
 }
 
@@ -193,11 +193,20 @@ bool Arrow::is_ladder_obstacle() {
 }
 
 /**
+ * @brief Returns whether a switch is currently considered as an obstacle by this entity.
+ * @param sw a switch
+ * @return true if the switch is currently an obstacle for this entity
+ */
+bool Arrow::is_switch_obstacle(Switch& sw) {
+  return false;
+}
+
+/**
  * @brief Returns whether a raised crystal switch block is currently considered as an obstacle for this entity.
  * @param raised_block a crystal switch block raised
  * @return false 
  */
-bool Arrow::is_raised_block_obstacle(CrystalSwitchBlock &raised_block) {
+bool Arrow::is_raised_block_obstacle(CrystalSwitchBlock& raised_block) {
   // arrows can traverse the crystal switch blocks
   return false;
 }
@@ -207,7 +216,7 @@ bool Arrow::is_raised_block_obstacle(CrystalSwitchBlock &raised_block) {
  * @param crystal_switch a crystal switch
  * @return true if the crystal switch is currently an obstacle for this entity
  */
-bool Arrow::is_crystal_switch_obstacle(CrystalSwitch &crystal_switch) {
+bool Arrow::is_crystal_switch_obstacle(CrystalSwitch& crystal_switch) {
   return false;
 }
 
@@ -216,7 +225,7 @@ bool Arrow::is_crystal_switch_obstacle(CrystalSwitch &crystal_switch) {
  * @param npc a non-playing character
  * @return true if the NPC is currently an obstacle for this entity
  */
-bool Arrow::is_npc_obstacle(InteractiveEntity &npc) {
+bool Arrow::is_npc_obstacle(InteractiveEntity& npc) {
   return false;
 }
 
@@ -225,7 +234,7 @@ bool Arrow::is_npc_obstacle(InteractiveEntity &npc) {
  * @param jump_sensor a non-diagonal jump sensor
  * @return true if the jump sensor is currently an obstacle for this entity
  */
-bool Arrow::is_jump_sensor_obstacle(JumpSensor &jump_sensor) {
+bool Arrow::is_jump_sensor_obstacle(JumpSensor& jump_sensor) {
   return false;
 }
 
@@ -400,11 +409,16 @@ void Arrow::attach_to(MapEntity &entity_reached) {
 /**
  * @brief This function is called when a switch detects a collision with this entity.
  * @param sw the switch
+ * @param collision_mode the collision mode that detected the event
  */
-void Arrow::notify_collision_with_switch(Switch &sw) {
+void Arrow::notify_collision_with_switch(Switch& sw, CollisionMode collision_mode) {
 
-  if (is_stopped()) {
+  if (sw.is_arrow_target() && is_stopped()) {
     sw.try_activate(*this);
+  }
+  else if (sw.is_solid() && is_flying()) {
+    sw.try_activate();
+    attach_to(sw);
   }
 }
 

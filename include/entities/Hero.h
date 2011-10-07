@@ -256,7 +256,8 @@ class Hero: public MapEntity {
     void notify_collision_with_stairs(Stairs &stairs, CollisionMode collision_mode);
     void notify_collision_with_jump_sensor(JumpSensor &jump_sensor);
     void notify_collision_with_sensor(Sensor &sensor, CollisionMode collision_mode);
-    void notify_collision_with_switch(Switch &sw);
+    void notify_collision_with_switch(Switch &sw, CollisionMode collision_mode);
+    void notify_collision_with_switch(Switch &sw, Sprite &sprite_overlapping);
     void notify_collision_with_crystal_switch(CrystalSwitch &crystal_switch, CollisionMode collision_mode);
     void notify_collision_with_crystal_switch(CrystalSwitch &crystal_switch, Sprite &sprite_overlapping);
     void notify_collision_with_chest(Chest& chest);

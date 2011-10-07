@@ -30,10 +30,10 @@ class CrystalSwitch: public Detector {
   private:
 
     bool state;                                    /**< false if the orange blocks are lowered,
-						    * true if the blue blocks are lowered */
+                                                    * true if the blue blocks are lowered */
     uint32_t next_possible_hit_date;               /**< date when the crystal switch can be hit again */
     std::list<MapEntity*> entities_activating;     /**< list of entities that recently activated this crystal switch */
-    Sprite *star_sprite;                           /**< sprite of the star twinkling on the crystal switch */
+    Sprite* star_sprite;                           /**< sprite of the star twinkling on the crystal switch */
     Rectangle star_xy;                             /**< position of the star */
 
     void twinkle();
@@ -46,11 +46,11 @@ class CrystalSwitch: public Detector {
 
     EntityType get_type();
 
-    bool is_obstacle_for(MapEntity &other);
-    void notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode);
-    void notify_collision(MapEntity &other_entity, Sprite &other_sprite, Sprite &this_sprite);
+    bool is_obstacle_for(MapEntity& other);
+    void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
+    void notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite);
     void action_key_pressed();
-    void activate(MapEntity &entity_activating);
+    void activate(MapEntity& entity_activating);
 
     void update();
     void display_on_map();

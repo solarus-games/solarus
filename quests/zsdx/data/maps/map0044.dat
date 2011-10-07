@@ -5711,8 +5711,9 @@
 7	1	768	2141	enemy_18	3	red_dogman	0	-1	_random	1	-1
 7	1	768	1917	enemy_19	3	blue_dogman	0	-1	_random	1	-1
 7	1	768	1693	enemy_20	3	lizalfos	0	-1	_random	1	-1
-7	1	160	2125	enemy_21	3	blue_hardhat_beetle	0	-1	_random	1	-1
+7	1	160	1693	enemy_21	3	blue_hardhat_beetle	0	-1	_random	1	-1
 7	1	160	1917	enemy_22	3	red_hardhat_beetle	0	-1	_random	1	-1
+7	1	160	2141	enemy_23	3	ropa	0	-1	_random	1	-1
 0	2	112	2032	96	8	411
 0	2	296	1856	8	96	416
 0	2	112	1808	96	8	411

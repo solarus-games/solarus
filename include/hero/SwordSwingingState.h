@@ -24,17 +24,25 @@
  */
 class Hero::SwordSwingingState: public Hero::State {
 
+  private:
+
+    bool sword_finished;         /* indicates that the sword animation is finished */
+
   public:
 
-    SwordSwingingState(Hero &hero);
+    SwordSwingingState(Hero& hero);
     ~SwordSwingingState();
 
-    void start(State *previous_state);
+    void start(State* previous_state);
+    void stop(State* next_state);
     void update();
     bool can_start_sword();
     bool can_be_hurt();
     bool can_sword_hit_crystal_switch();
-    bool is_cutting_with_sword(Detector &detector);
+    bool is_cutting_with_sword(Detector& detector);
+    bool is_teletransporter_obstacle(Teletransporter& teletransporter);
+    void notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
+        EnemyReaction::Reaction& result, bool killed);
 };
 
 #endif

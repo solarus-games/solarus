@@ -95,7 +95,7 @@ class Enemy: public Detector {
     static const std::string hurt_sound_style_names[];  /**< name of each hurt sound style */
     bool pushed_back_when_hurt;				/**< indicates whether the enemy is pushed back when it gets hurt by the hero
 							 * (default: true) */
-    bool push_back_hero_on_sword;			/**< indicates whether the hero is pushed back when he hurts the enemy with his
+    bool push_hero_on_sword;		          	/**< indicates whether the hero is pushed back when he hurts the enemy with his
 							 * sword (default: false) */
     int minimum_shield_needed;				/**< shield number needed by the hero to avoid the attack of this enemy,
 							 * or 0 to make the attack unavoidable (default: 0) */
@@ -155,11 +155,7 @@ class Enemy: public Detector {
     void set_life(int life);
     int get_life();
     void set_pushed_back_when_hurt(bool pushed_back_when_hurt);
-    void set_push_back_hero_on_sword(bool push_back_hero_on_sword);
-    void set_features(int damage_on_hero, int life);
-    void set_features(int damage_on_hero, int life, HurtSoundStyle hurt_sound_style);
-    void set_features(int damage_on_hero, int life, HurtSoundStyle hurt_sound_style,
-	bool pushed_back_when_hurt, bool push_back_hero_on_sword, int minimum_shield_needed);
+    void set_push_hero_on_sword(bool push_hero_on_sword);
     void set_attack_consequence(EnemyAttack attack, EnemyReaction::ReactionType reaction, int life_lost = 0);
     void set_attack_consequence_sprite(Sprite& sprite, EnemyAttack attack,
         EnemyReaction::ReactionType reaction, int life_lost = 0);
@@ -227,6 +223,7 @@ class Enemy: public Detector {
     void attack_stopped_by_hero_shield();
 
     // receive an attack
+    bool get_push_hero_on_sword();
     const EnemyReaction::Reaction& get_attack_consequence(EnemyAttack attack, Sprite *this_sprite);
     void try_hurt(EnemyAttack attack, MapEntity &source, Sprite *this_sprite);
     void kill();

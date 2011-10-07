@@ -17,8 +17,11 @@
 #include "hero/SpinAttackState.h"
 #include "hero/FreeState.h"
 #include "hero/HeroSprites.h"
+#include "entities/Enemy.h"
+#include "movements/TemporalMovement.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/FileTools.h"
+#include "lowlevel/Geometry.h"
 #include "Game.h"
 #include <sstream>
 
@@ -26,7 +29,7 @@
  * @brief Constructor.
  * @param hero the hero controlled by this state
  */
-Hero::SpinAttackState::SpinAttackState(Hero &hero):
+Hero::SpinAttackState::SpinAttackState(Hero& hero):
   State(hero) {
 
 }
@@ -42,7 +45,7 @@ Hero::SpinAttackState::~SpinAttackState() {
  * @brief Starts this state.
  * @param previous_state the previous state
  */
-void Hero::SpinAttackState::start(State *previous_state) {
+void Hero::SpinAttackState::start(State* previous_state) {
 
   State::start(previous_state);
 
@@ -54,12 +57,32 @@ void Hero::SpinAttackState::start(State *previous_state) {
 }
 
 /**
+ * @brief Ends this state.
+ * @param next_state the next state
+ */
+void Hero::SpinAttackState::stop(State* next_state) {
+
+  State::stop(next_state);
+
+  if (hero.get_movement() != NULL) {
+    // stop the movement of being pushed by an enemy after hitting him
+    hero.clear_movement();
+  }
+}
+
+/**
  * @brief Updates this state.
  */
 void Hero::SpinAttackState::update() {
 
+  // check the animation
   if (get_sprites().is_animation_finished()) {
     hero.set_state(new FreeState(hero));
+  }
+
+  // check the movement if any
+  if (hero.get_movement() != NULL && hero.get_movement()->is_finished()) {
+    hero.clear_movement();
   }
 }
 
@@ -85,7 +108,7 @@ bool Hero::SpinAttackState::can_be_hurt() {
  * @param detector the detector to check
  * @return true if the sword is cutting this detector
  */
-bool Hero::SpinAttackState::is_cutting_with_sword(Detector &detector) {
+bool Hero::SpinAttackState::is_cutting_with_sword(Detector& detector) {
 
   // during a spin attack, any sprite collision can cut things
   return true;
@@ -114,6 +137,38 @@ void Hero::SpinAttackState::play_spin_attack_sound() {
   }
   else {
     Sound::play("sword_spin_attack_release");
+  }
+}
+
+/**
+ * @brief Returns whether a teletransporter is considered as an obstacle in this state.
+ * @param teletransporter a teletransporter
+ * @return true if the teletransporter is an obstacle in this state
+ */
+bool Hero::SpinAttackState::is_teletransporter_obstacle(Teletransporter& teletransporter) {
+
+  // if the hero was pushed by an enemy, don't go on a teletransporter
+  return hero.get_movement() != NULL;
+}
+
+/**
+ * @brief Notifies this state that the hero has just attacked an enemy.
+ * @param attack the attack
+ * @param victim the enemy just hurt
+ * @param result indicates how the enemy has reacted to the attack (see Enemy.h)
+ * @param killed indicates that the attack has just killed the enemy
+ */
+void Hero::SpinAttackState::notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
+    EnemyReaction::Reaction& result, bool killed) {
+
+  if (result.type != EnemyReaction::IGNORED && attack == ATTACK_SWORD) {
+
+    if (victim.get_push_hero_on_sword()) {
+
+      double angle = Geometry::get_angle(victim.get_x(), victim.get_y(),
+          hero.get_x(), hero.get_y());
+      hero.set_movement(new TemporalMovement(120, angle, 200));
+    }
   }
 }
 

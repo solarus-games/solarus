@@ -179,7 +179,7 @@ MapEntity* Enemy::create(Game &game, const std::string& breed, Rank rank, int sa
   enemy->life = 1;
   enemy->hurt_sound_style = (rank == RANK_NORMAL) ? HURT_SOUND_NORMAL : HURT_SOUND_BOSS;
   enemy->pushed_back_when_hurt = true;
-  enemy->push_back_hero_on_sword = false;
+  enemy->push_hero_on_sword = false;
   enemy->minimum_shield_needed = 0;
   enemy->displayed_in_y_order = true;
   enemy->set_default_attack_consequences();
@@ -349,52 +349,19 @@ void Enemy::set_pushed_back_when_hurt(bool pushed_back_when_hurt) {
 }
 
 /**
+ * @brief Returns whether the hero is pushed when he strikes the enemy with his sword.
+ * @return true if the hero is pushed away when he strkes the enemy with his sword
+ */
+bool Enemy::get_push_hero_on_sword() {
+  return push_hero_on_sword;
+}
+
+/**
  * @brief Sets whether the hero is pushed when he hurts the enemy with his sword.
- * @param push_back_hero_on_sword true to make the hero pushed back when he hurts the enemy with his sword
+ * @param push_hero_on_sword true to make the hero pushed back when he hurts the enemy with his sword
  */
-void Enemy::set_push_back_hero_on_sword(bool push_back_hero_on_sword) {
-  this->push_back_hero_on_sword = push_back_hero_on_sword;
-}
-
-/**
- * @brief Sets some features of this type of enemy.
- * @param damage_on_hero number of heart quarters the player loses
- * @param life number of health points of the enemy
- */
-void Enemy::set_features(int damage_on_hero, int life) {
-  set_damage(damage_on_hero);
-  set_life(life);
-}
-
-/**
- * @brief Sets some features of this type of enemy.
- * @param damage_on_hero number of heart quarters the player loses
- * @param life number of health points of the enemy
- * @param hurt_sound_style the sound played when this kind of enemy gets hurt by the hero
- */
-void Enemy::set_features(int damage_on_hero, int life, HurtSoundStyle hurt_sound_style) {
-
-  set_features(damage_on_hero, life);
-  this->hurt_sound_style = hurt_sound_style;
-}
-
-/**
- * @brief Sets all features of this type of enemy.
- * @param damage_on_hero number of heart quarters the player loses
- * @param life number of health points of the enemy
- * @param hurt_sound_style the sound played when this kind of enemy gets hurt by the hero
- * @param pushed_back_when_hurt indicates whether the enemy is pushed back when it gets hurt by the hero
- * @param push_back_hero_on_sword indicates whether the hero is pushed back when he hurts the enemy with his sword
- * @param minimum_shield_needed shield number needed by the hero to avoid the attack of this enemy,
- * or 0 to make the attack unavoidable
- */
-void Enemy::set_features(int damage_on_hero, int life, HurtSoundStyle hurt_sound_style,
-			 bool pushed_back_when_hurt, bool push_back_hero_on_sword, int minimum_shield_needed) {
-
-  set_features(damage_on_hero, life, hurt_sound_style);
-  this->pushed_back_when_hurt = pushed_back_when_hurt;
-  this->push_back_hero_on_sword = push_back_hero_on_sword;
-  this->minimum_shield_needed = minimum_shield_needed;
+void Enemy::set_push_hero_on_sword(bool push_hero_on_sword) {
+  this->push_hero_on_sword = push_hero_on_sword;
 }
 
 /**

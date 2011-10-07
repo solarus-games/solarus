@@ -18,7 +18,9 @@
 #include "hero/SwordLoadingState.h"
 #include "hero/FreeState.h"
 #include "hero/HeroSprites.h"
-#include "entities/Detector.h"
+#include "entities/Enemy.h"
+#include "movements/TemporalMovement.h"
+#include "lowlevel/Geometry.h"
 #include "Game.h"
 #include "GameControls.h"
 
@@ -26,8 +28,9 @@
  * @brief Constructor.
  * @param hero the hero controlled by this state
  */
-Hero::SwordSwingingState::SwordSwingingState(Hero &hero):
-  State(hero) {
+Hero::SwordSwingingState::SwordSwingingState(Hero& hero):
+  State(hero),
+  sword_finished(false) {
 
 }
 
@@ -42,7 +45,7 @@ Hero::SwordSwingingState::~SwordSwingingState() {
  * @brief Starts this state.
  * @param previous_state the previous state
  */
-void Hero::SwordSwingingState::start(State *previous_state) {
+void Hero::SwordSwingingState::start(State* previous_state) {
 
   State::start(previous_state);
 
@@ -52,20 +55,58 @@ void Hero::SwordSwingingState::start(State *previous_state) {
 }
 
 /**
+ * @brief Ends this state.
+ * @param next_state the next state
+ */
+void Hero::SwordSwingingState::stop(State* next_state) {
+
+  State::stop(next_state);
+
+  if (hero.get_movement() != NULL) {
+    // stop the movement of being pushed by an enemy after hitting him
+    hero.clear_movement();
+  }
+}
+
+/**
  * @brief Updates this state.
  */
 void Hero::SwordSwingingState::update() {
 
   State::update();
 
+  // check the animation
   if (get_sprites().is_animation_finished()) {
 
-    // if the player is still pressing the sword key, start loading the sword
-    if (get_controls().is_key_pressed(GameControls::SWORD)) {
-      hero.set_state(new SwordLoadingState(hero));
+    sword_finished = true;
+    if (hero.get_movement() == NULL) {
+
+      // if the player is still pressing the sword key, start loading the sword
+      if (get_controls().is_key_pressed(GameControls::SWORD)) {
+        hero.set_state(new SwordLoadingState(hero));
+      }
+      else {
+        hero.set_state(new FreeState(hero));
+      }
     }
     else {
-      hero.set_state(new FreeState(hero));
+      // the sword animation is finished, but the movement continues
+      hero.get_sprites().set_animation_stopped_normal();
+    }
+  }
+
+  // check the movement if any
+  if (hero.get_movement() != NULL && hero.get_movement()->is_finished()) {
+    hero.clear_movement();
+    if (sword_finished) {
+
+      // if the player is still pressing the sword key, start loading the sword
+      if (get_controls().is_key_pressed(GameControls::SWORD)) {
+        hero.set_state(new SwordLoadingState(hero));
+      }
+      else {
+        hero.set_state(new FreeState(hero));
+      }
     }
   }
 }
@@ -102,6 +143,10 @@ bool Hero::SwordSwingingState::can_sword_hit_crystal_switch() {
  */
 bool Hero::SwordSwingingState::is_cutting_with_sword(Detector &detector) {
 
+  if (hero.get_movement() != NULL) {
+    return false;
+  }
+
   // check the distance to the detector
   int distance = detector.is_obstacle_for(hero) ? 14 : 4;
   Rectangle tested_point = hero.get_facing_point();
@@ -126,5 +171,37 @@ bool Hero::SwordSwingingState::is_cutting_with_sword(Detector &detector) {
   }
 
   return detector.overlaps(tested_point.get_x(), tested_point.get_y());
+}
+
+/**
+ * @brief Returns whether a teletransporter is considered as an obstacle in this state.
+ * @param teletransporter a teletransporter
+ * @return true if the teletransporter is an obstacle in this state
+ */
+bool Hero::SwordSwingingState::is_teletransporter_obstacle(Teletransporter& teletransporter) {
+
+  // if the hero was pushed by an enemy, don't go on a teletransporter
+  return hero.get_movement() != NULL;
+}
+
+/**
+ * @brief Notifies this state that the hero has just attacked an enemy.
+ * @param attack the attack
+ * @param victim the enemy just hurt
+ * @param result indicates how the enemy has reacted to the attack (see Enemy.h)
+ * @param killed indicates that the attack has just killed the enemy
+ */
+void Hero::SwordSwingingState::notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
+    EnemyReaction::Reaction& result, bool killed) {
+
+  if (result.type != EnemyReaction::IGNORED && attack == ATTACK_SWORD) {
+
+    if (victim.get_push_hero_on_sword()) {
+
+      double angle = Geometry::get_angle(victim.get_x(), victim.get_y(),
+          hero.get_x(), hero.get_y());
+      hero.set_movement(new TemporalMovement(120, angle, 200));
+    }
+  }
 }
 

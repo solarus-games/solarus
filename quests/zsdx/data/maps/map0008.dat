@@ -868,6 +868,11 @@
 2	0	592	64	16	16	teletransporter_7	0	1	94	from_outside_w
 1	0	872	221	from_west_mountain_cave_3f_e	3	0
 2	0	864	192	16	16	teletransporter_8	0	1	94	from_outside_e
+7	0	632	549	enemy	3	blue_dogman	0	-1	_random	1	-1
+7	0	672	389	enemy_2	3	red_dogman	0	-1	_random	1	-1
+7	0	1008	253	enemy_3	3	red_dogman	0	-1	_random	1	-1
+7	0	424	157	enemy_4	3	blue_dogman	0	-1	_random	1	-1
+7	0	888	125	enemy_6	3	blue_dogman	0	-1	_random	1	-1
 0	2	224	424	8	40	514
 0	2	8	384	48	40	511
 0	2	56	376	8	40	514

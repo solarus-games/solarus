@@ -216,6 +216,9 @@ booleans:
 309	dungeon 6 4F: heart container
 310	dungeon 6 4F: locked door
 311	dungeon 6 4F: boss key door
+312	dungeon 6 1F: chest with the map
+313	dungeon 6 1F: torches lit
+314	dungeon 6 2F: weak floor
 
 400	dungeon 4 B1: small key in the sensors room
 401	dungeon 4 1F: boss door

@@ -187,6 +187,22 @@ bool Boomerang::is_hole_obstacle() {
 }
 
 /**
+ * @brief Returns whether lava is currently considered as an obstacle for this entity.
+ * @return true if lava is currently an obstacle for this entity
+ */
+bool Boomerang::is_lava_obstacle() {
+  return false;
+}
+
+/**
+ * @brief Returns whether prickles are currently considered as an obstacle for this entity.
+ * @return true if prickles are currently an obstacle for this entity
+ */
+bool Boomerang::is_prickle_obstacle() {
+  return false;
+}
+
+/**
  * @brief Returns whether a ladder is currently considered as an obstacle for this entity.
  * @return true if the ladders are currently an obstacle for this entity
  */

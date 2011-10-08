@@ -16,7 +16,6 @@ function event_map_started(destination_point_name)
 
     if sol.game.savegame_get_boolean(907) then
       sol.map.switch_set_activated("castle_door_switch", true)
-      sol.map.interactive_entity_remove("cannon")
     else
       sol.map.tile_set_enabled("castle_door", true)
     end
@@ -25,10 +24,11 @@ function event_map_started(destination_point_name)
 
     -- Agahnim fight
     if destination_point_name == "from_dungeon_5_2F_ne"
-        and sol.game.savegame_get_boolean(907)
+        and sol.game.savegame_get_boolean(523)
         and not sol.game.savegame_get_boolean(520) then
 
       new_music = "none"
+      sol.map.interactive_entity_remove("cannon")
     end
 
   else
@@ -91,7 +91,7 @@ end
 function event_hero_on_sensor(sensor_name)
 
   if sensor_name == "start_boss_sensor"
-      and sol.game.savegame_get_boolean(907)
+      and sol.game.savegame_get_boolean(523)
       and not sol.game.savegame_get_boolean(520)
       and not fighting_boss then
 

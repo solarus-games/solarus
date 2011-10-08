@@ -121,8 +121,8 @@ end
 function event_update()
 
   if not sol.map.door_is_open("torches_door")
-    sol.map.sensor_set_enabled("weak_floor_sensor", false)
       and are_all_torches_on() then
+
     sol.main.play_sound("secret")
     sol.map.door_open("torches_door")
     lock_torches()

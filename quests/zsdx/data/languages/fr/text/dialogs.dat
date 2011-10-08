@@ -5575,6 +5575,12 @@ line3 = "prochaine fois !"
 line1 = "        Niveau 6"
 line2 = "    Dédale d'Inferno   "
 
+[dungeon_6.torches_hint]
+#       |-----------------------|
+line1 = "Les trois lumières"
+line2 = "indiquent l'endroit de"
+line3 = "la chute."
+
 #================================
 
 [dungeon_8.welcome]

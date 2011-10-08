@@ -5581,6 +5581,17 @@ line1 = "Les trois lumières"
 line2 = "indiquent l'endroit de"
 line3 = "la chute."
 
+[dungeon_6.dont_fall_hint]
+#       |-----------------------|
+line1 = "Ne tombe pas, mais"
+line2 = "saute."
+
+[dungeon_6.close_way_hint]
+#       |-----------------------|
+line1 = "Puis referme le chemin"
+line2 = "derrière toi."
+
+
 #================================
 
 [dungeon_8.welcome]

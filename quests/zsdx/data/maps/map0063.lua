@@ -11,6 +11,7 @@ function event_map_started(destination_point_name)
 
   if sol.game.savegame_get_boolean(515) then
     sol.map.tile_set_enabled("weak_floor", false)
+    sol.map.sensor_set_enabled("weak_floor_sensor", false)
   end
 
   sol.map.door_set_open("miniboss_door", true)
@@ -120,6 +121,7 @@ end
 function event_update()
 
   if not sol.map.door_is_open("torches_door")
+    sol.map.sensor_set_enabled("weak_floor_sensor", false)
       and are_all_torches_on() then
     sol.main.play_sound("secret")
     sol.map.door_open("torches_door")
@@ -133,6 +135,7 @@ function event_sensor_collision_explosion(sensor_name)
       and sol.map.tile_is_enabled("weak_floor") then
 
     sol.map.tile_set_enabled("weak_floor", false)
+    sol.map.sensor_set_enabled("weak_floor_sensor", false)
     sol.main.play_sound("secret")
     sol.game.savegame_set_boolean(515, true)
     sol.main.timer_start(1500, "weak_floor_block_fall")

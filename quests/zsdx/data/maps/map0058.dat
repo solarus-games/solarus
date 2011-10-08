@@ -718,7 +718,7 @@
 4	1	760	117	4	_random	1	-1
 4	1	792	133	4	_random	1	-1
 4	1	776	117	4	_random	1	-1
-4	1	472	77	0	small_key	1	-1
+4	1	472	77	0	small_key	1	317
 1	1	488	741	from_outside	1	0
 2	1	480	752	16	16	teletransporter	0	1	7	from_dungeon_6
 1	1	976	37	from_2f_ne	3	0

@@ -116,7 +116,7 @@ void Hero::SwordSwingingState::update() {
  * @return true if the hero can swing his sword in this state
  */
 bool Hero::SwordSwingingState::can_start_sword() {
-  return true;
+  return hero.get_movement() == NULL;
 }
 
 /**

@@ -160,7 +160,7 @@ function drain_water_step_3()
 end
 
 function drain_water_step_4()
-  sol.map.tile_set_enabled("water_"..index.."_less_3", false)
+  sol.map.tile_set_enabled("water_"..current_pool_index.."_less_3", false)
   sol.main.timer_start(500, "sol.map.camera_restore", false)
   sol.game.savegame_set_boolean(savegame_variable + current_pool_index,
     pools[current_pool_index].initially_filled)

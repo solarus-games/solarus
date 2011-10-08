@@ -213,7 +213,7 @@ booleans:
 306	dungeon 6 3F: big key door
 307	dungeon 6 3F: small key block (east)
 308	dungeon 6 4F: big chest (golden glove)
-309	dungeon 6 4F: heart container
+309	dungeon 6 4F: piece of heart
 310	dungeon 6 4F: locked door
 311	dungeon 6 4F: boss key door
 312	dungeon 6 1F: chest with the map

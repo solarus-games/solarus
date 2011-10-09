@@ -203,6 +203,13 @@ booleans:
 200-299: binbin dungeon
 200	1F: Small key 1 
 201	1F: Small key 2
+202
+203
+204     2F: Small key 1
+205     2F: Torch group 1
+206     2F: Torch group 2
+207     1F: Door 1
+208     1F: Door weak 1
 
 
 300	dungeon 6 2F: chest with 20 rupees

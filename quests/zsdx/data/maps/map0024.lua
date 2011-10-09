@@ -28,7 +28,7 @@ end
 function event_treasure_obtained(item_name, variant, savegame_variable)
 
   if item_name == "heart_container" then
-    sol.main.timer_start(9000, "open_final_room", false)
+    sol.main.timer_start(open_final_room, 9000)
     sol.main.play_music("victory.spc")
     sol.map.hero_freeze()
     sol.map.hero_set_direction(3)
@@ -42,12 +42,12 @@ function event_switch_activated(switch_name)
 end
 
 function event_camera_reached_target()
-  sol.main.timer_start(1000, "se_room_timer", false)
+  sol.main.timer_start(se_room_timer, 1000)
 end
 
 function se_room_timer()
   open_se_door()
-  sol.main.timer_start(1000, "sol.map.camera_restore", false)
+  sol.main.timer_start(sol.map.camera_restore, 1000)
 end
 
 function open_se_door()

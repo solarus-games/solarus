@@ -102,7 +102,7 @@ function event_hero_on_sensor(sensor_name)
   if sensor_name == "inferno_sensor" then
     local sprite = sol.map.npc_get_sprite("inferno")
     sol.main.sprite_set_animation(sprite, "opening")
-    sol.main.timer_start(1050, "inferno_open_finish")
+    sol.main.timer_start(inferno_open_finish, 1050)
     sol.map.hero_freeze()
     sol.map.hero_set_direction(1)
     sol.map.sensor_set_enabled("inferno_sensor", false)

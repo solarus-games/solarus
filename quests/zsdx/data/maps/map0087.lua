@@ -38,14 +38,14 @@ end
 
 function event_hero_victory_sequence_finished()
 
-  sol.main.timer_start(2000, "agahnim_sequence_1", false)
+  sol.main.timer_start(agahnim_sequence_1, 2000)
 end
 
 function agahnim_sequence_1()
 
   sol.map.hero_unfreeze()
   sol.map.hero_set_direction(1)
-  sol.main.timer_start(1000, "agahnim_sequence_2", false)
+  sol.main.timer_start(agahnim_sequence_2, 1000)
 end
 
 function agahnim_sequence_2()
@@ -54,14 +54,14 @@ function agahnim_sequence_2()
   sol.main.sprite_fade(sprite, 1)
   sol.main.play_music("none")
   sol.main.play_sound("warp")
-  sol.main.timer_start(3000, "agahnim_sequence_3", false)
+  sol.main.timer_start(agahnim_sequence_3, 3000)
 end
 
 function agahnim_sequence_3()
 
   sol.map.npc_set_position("agahnim", 160, 141)
   sol.main.play_music("agahnim.spc")
-  sol.main.timer_start(1000, "agahnim_sequence_4", false)
+  sol.main.timer_start(agahnim_sequence_4, 1000)
 end
 
 function agahnim_sequence_4()
@@ -75,7 +75,7 @@ function agahnim_sequence_5()
 --  s = sol.map.npc_get_sprite("agahnim")
 --  sol.main.sprite_fade(s, 1)
 --  sol.main.play_sound("warp")
-  sol.main.timer_start(2000, "agahnim_sequence_6", false)
+  sol.main.timer_start(agahnim_sequence_6, 2000)
 end
 
 function agahnim_sequence_6()

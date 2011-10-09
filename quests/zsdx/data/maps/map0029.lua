@@ -25,9 +25,9 @@ end
 
 function event_camera_reached_target()
   if current_switch_name == "door_switch" then
-    sol.main.timer_start(1000, "door_timer", false)
+    sol.main.timer_start(door_timer, 1000)
   elseif current_switch_name == "barrier_switch" then
-    sol.main.timer_start(1000, "barrier_timer", false)
+    sol.main.timer_start(barrier_timer, 1000)
   end
 end
 
@@ -35,12 +35,12 @@ function barrier_timer()
   sol.map.tile_set_enabled("barrier", false)
   sol.main.play_sound("secret")
   sol.game.savegame_set_boolean(69, true)
-  sol.main.timer_start(1000, "sol.map.camera_restore", false)
+  sol.main.timer_start(sol.map.camera_restore, 1000)
 end
 
 function door_timer()
   sol.map.door_open("door")
   sol.main.play_sound("secret")
-  sol.main.timer_start(1000, "sol.map.camera_restore", false)
+  sol.main.timer_start(sol.map.camera_restore, 1000)
 end
 

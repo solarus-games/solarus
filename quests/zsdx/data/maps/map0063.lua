@@ -46,7 +46,7 @@ function event_hero_on_sensor(sensor_name)
       and not fighting_miniboss then
     sol.map.door_close("miniboss_door")
     sol.map.hero_freeze()
-    sol.main.timer_start(1000, "miniboss_timer", false)
+    sol.main.timer_start(miniboss_timer, 1000)
     fighting_miniboss = true
   elseif sensor_name == "puzzle_wrong_sensor" then
     puzzle_next_sensor = 1
@@ -84,14 +84,14 @@ function event_switch_activated(switch_name)
 
   if switch_name == "statue_switch"
       and not sol.map.door_is_open("statue_door") then
-    camera_timer = "open_statue_door"
+    camera_timer = open_statue_door
     sol.map.camera_move(432, 536, 250)
   end
 end
 
 function event_camera_reached_target()
 
-  sol.main.timer_start(1000, camera_timer)
+  sol.main.timer_start(camera_timer, 1000)
 end
 
 function open_statue_door()
@@ -99,7 +99,7 @@ function open_statue_door()
   sol.main.play_sound("secret")
   sol.main.play_sound("door_open")
   sol.map.door_open("statue_door")
-  sol.main.timer_start(1000, "sol.map.camera_restore")
+  sol.main.timer_start(sol.map.camera_restore, 1000)
 end
 
 -- Returns whether all torches are on
@@ -138,7 +138,7 @@ function event_sensor_collision_explosion(sensor_name)
     sol.map.sensor_set_enabled("weak_floor_sensor", false)
     sol.main.play_sound("secret")
     sol.game.savegame_set_boolean(515, true)
-    sol.main.timer_start(1500, "weak_floor_block_fall")
+    sol.main.timer_start(weak_floor_block_fall, 1500)
   end
 end
 
@@ -146,7 +146,7 @@ function weak_floor_block_fall()
 
   sol.map.block_set_enabled("weak_floor_block", false)
   sol.main.play_sound("jump")
-  sol.main.timer_start(200, "weak_floor_block_fall_end")
+  sol.main.timer_start(weak_floor_block_fall_end, 200)
 end
 
 function weak_floor_block_fall_end()
@@ -172,12 +172,12 @@ function puzzle_solved()
 
   sol.map.hero_freeze()
   sol.main.play_sound("enemy_awake")
-  sol.main.timer_start(1000, "puzzle_solved_2")
+  sol.main.timer_start(puzzle_solved_2, 1000)
 end
 
 function puzzle_solved_2()
 
-  sol.main.timer_start(1000, "puzzle_solved_3")
+  sol.main.timer_start(puzzle_solved_3, 1000)
 end
 
 function puzzle_solved_3()

@@ -65,7 +65,7 @@ function event_dialog_finished(first_message_id, answer)
     sol.main.sprite_set_animation(tom_sprite, "walking")
   elseif first_message_id == "outside_world.tom_dungeon_1_entrance.need_help" then
     sol.main.sprite_set_direction(tom_sprite, 1)
-    sol.main.timer_start(1500, "tom_timer_1", false)
+    sol.main.timer_start(tom_timer_1, 1500)
   elseif first_message_id == "outside_world.tom_dungeon_1_entrance.let_me_see" then
     sol.main.play_sound("jump")
     local m = sol.main.jump_movement_create(4, 16)
@@ -73,10 +73,10 @@ function event_dialog_finished(first_message_id, answer)
     sol.map.npc_start_movement("tom", m)
   elseif first_message_id == "outside_world.tom_dungeon_1_entrance.open" then
     sol.main.sprite_set_animation(tom_sprite, "walking")
-    sol.main.timer_start(300, "tom_timer_3", false)
+    sol.main.timer_start(tom_timer_3, 300)
   elseif first_message_id == "outside_world.beaumont_hill_put_edelweiss" then
     sol.map.hero_freeze()
-    sol.main.timer_start(1000, "edelweiss_explode", false)
+    sol.main.timer_start(edelweiss_explode, 1000)
   end
 
 end
@@ -89,7 +89,7 @@ function event_npc_movement_finished(npc_name)
     sol.map.dialog_start("outside_world.tom_dungeon_1_entrance.need_help")
   else
     sol.main.sprite_set_direction(tom_sprite, 1)
-    sol.main.timer_start(1000, "tom_timer_2", false)
+    sol.main.timer_start(tom_timer_2, 1000)
   end
 end
 
@@ -111,19 +111,19 @@ function ladder_step1()
   sol.main.play_sound("door_open")
   sol.map.tile_set_group_enabled("ladder_step1", true)
   sol.map.tile_set_group_enabled("no_ladder_step1", false)
-  sol.main.timer_start(1000, "ladder_step2", false)
+  sol.main.timer_start(ladder_step2, 1000)
 end
 
 function ladder_step2()
   sol.main.play_sound("door_open")
   sol.map.tile_set_group_enabled("ladder_step2", true)
-  sol.main.timer_start(1000, "ladder_step3", false)
+  sol.main.timer_start(ladder_step3, 1000)
 end
 
 function ladder_step3()
   sol.main.play_sound("door_open")
   sol.map.tile_set_group_enabled("ladder_step3", true)
-  sol.main.timer_start(1000, "ladder_step4", false)
+  sol.main.timer_start(ladder_step4, 1000)
 end
 
 function ladder_step4()
@@ -150,7 +150,7 @@ function edelweiss_explode()
   sol.map.teletransporter_set_enabled("to_beaumont_cave", true)
   sol.game.savegame_set_boolean(153, true)
   sol.game.set_item("level_4_way", 0)
-  sol.main.timer_start(1000, "edelweiss_end", false)
+  sol.main.timer_start(edelweiss_end, 1000)
 end
 
 function edelweiss_end()

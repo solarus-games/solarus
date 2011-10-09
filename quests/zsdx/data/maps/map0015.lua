@@ -39,7 +39,7 @@ function event_hero_interaction_item(entity_name, item_name, variant)
     sol.main.play_sound("item_in_water")
     sol.main.sprite_set_animation(frozen_door_sprite, "disappearing")
     sol.main.sprite_set_animation(frozen_door_opposite_sprite, "disappearing")
-    sol.main.timer_start(800, "timer_frozen_door", false)
+    sol.main.timer_start(timer_frozen_door, 800)
     sol.game.set_item(item_name, 1) -- make the bottle empty
     return true
   end

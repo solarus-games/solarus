@@ -33,21 +33,21 @@ end
 
 function event_camera_reached_target()
   if current_room == "sw" then
-    sol.main.timer_start(1000, "sw_camera_timer", false)
+    sol.main.timer_start(sw_camera_timer, 1000)
   elseif current_room == "compass_room" then
-    sol.main.timer_start(1000, "compass_room_timer", false)
+    sol.main.timer_start(compass_room_timer, 1000)
   end
 end
 
 function sw_camera_timer()
   open_sw_door()
-  sol.main.timer_start(1000, "sol.map.camera_restore", false)
+  sol.main.timer_start(sol.map.camera_restore, 1000)
 end
 
 function compass_room_timer()
   sol.main.play_sound("chest_appears")
   sol.map.chest_set_enabled("compass_chest", true)
-  sol.main.timer_start(1000, "sol.map.camera_restore", false)
+  sol.main.timer_start(sol.map.camera_restore, 1000)
 end
 
 function event_hero_on_sensor(sensor_name)

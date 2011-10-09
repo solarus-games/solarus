@@ -14,14 +14,14 @@ function event_hero_on_sensor(sensor_name)
     sol.main.play_sound("door_closed")
     sol.map.door_close("door")
     sol.map.hero_freeze()
-    sol.main.timer_start(1000, "start_music", false)
+    sol.main.timer_start(start_music, 1000)
   end
 end
 
 function start_music()
 
   sol.main.play_music("soldiers.spc")
-  sol.main.timer_start(1500, "start_fight", false)
+  sol.main.timer_start(start_fight, 1500)
 end
 
 function start_fight()

@@ -20,10 +20,10 @@ function event_restart()
     local sprite = sol.enemy.get_sprite()
     sol.main.sprite_set_animation(sprite, "hurt_long")
     sol.main.timer_stop_all()
-    sol.main.timer_start(10000, "disappear")
+    sol.main.timer_start(disappear, 10000)
     sol.enemy.stop_movement()
   else
-    sol.main.timer_start(1000, "go")
+    sol.main.timer_start(go, 1000)
   end
 end
 

@@ -98,7 +98,7 @@ function event_switch_activated(switch_name)
 		sol.map.switch_set_activated("BRoom9", false)
 	elseif switch_name == "DB16" then
 		sol.map.hero_freeze()
-		sol.main.timer_start(750, "DB16_camera_move", false)
+		sol.main.timer_start(DB16_camera_move, 750)
 	end
 end
 
@@ -112,7 +112,7 @@ end
 
 function DB16_open_door()
 	sol.map.door_open("LD16")
-	sol.main.timer_start(500, "DB16_camera_restore", false)
+	sol.main.timer_start(DB16_camera_restore, 500)
 end
 
 function DB16_time_out()
@@ -121,12 +121,12 @@ function DB16_time_out()
 end
 
 function event_camera_reached_target()
-	sol.main.timer_start(500, "DB16_open_door", false)
+	sol.main.timer_start(DB16_open_door, 500)
 end
 
 function event_camera_back()
 	sol.map.hero_unfreeze()
-	sol.main.timer_start(10000, "DB16_time_out", true)
+	sol.main.timer_start(DB16_time_out, 10000, true)
 end
 
 function event_hero_on_sensor(sensor_name)

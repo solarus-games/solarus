@@ -19,8 +19,32 @@ width = 1152
 height = 768
 
 [dungeon_10.floor_0]
-width = 512
-height = 512
+width = 1032
+height = 1032
+
+[dungeon_10.floor_1]
+width = 1032
+height = 1032
+
+[dungeon_10.floor_2]
+width = 1032
+height = 1032
+
+[dungeon_10.floor_3]
+width = 1032
+height = 1032
+
+[dungeon_10.floor_4]
+width = 1032
+height = 1032
+
+[dungeon_10.floor_5]
+width = 1032
+height = 1032
+
+[dungeon_10.floor_-1]
+width = 1032
+height = 1032
 
 [dungeon_3.floor_0]
 width = 1024
@@ -546,14 +570,14 @@ save = -1
 big = 0
 
 [dungeon_10.map_97.chest_0]
-floor = 0
+floor = 1
 x = 960
 y = 112
 save = -1
 big = 0
 
 [dungeon_10.map_97.chest_1]
-floor = 0
+floor = 1
 x = 240
 y = 720
 save = -1

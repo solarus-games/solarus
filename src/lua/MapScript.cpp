@@ -15,17 +15,20 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lua/MapScript.h"
+#include "lowlevel/Debug.h"
+#include "lowlevel/StringConcat.h"
 #include "Map.h"
 #include "Game.h"
 #include "Treasure.h"
 #include <sstream>
 #include <iomanip>
+#include <lua.hpp>
 
 /**
  * @brief Creates a map script.
  * @param map the map
  */
-MapScript::MapScript(Map &map):
+MapScript::MapScript(Map& map):
   Script(MAIN_API | GAME_API | MAP_API),
   map(map) {
 
@@ -61,7 +64,7 @@ Map& MapScript::get_map() {
  *
  * @param destination_point_name name of the destination point where the hero is
  */
-void MapScript::start(const std::string &destination_point_name) {
+void MapScript::start(const std::string& destination_point_name) {
 
   // compute the file name, depending on the id of the map
   int id = (int) map.get_id();
@@ -121,17 +124,47 @@ void MapScript::event_set_suspended(bool suspended) {
 }
 
 /**
- * @brief Notifies the script that the camera moved by a call to camera_move() has reached its target.
+ * @brief Moves the camera back to the hero.
+ * @param l the Lua context that is calling this function
  */
-void MapScript::event_camera_reached_target() {
+int MapScript::camera_restore(lua_State* l) {
 
-  notify_script("event_camera_reached_target");
+  lua_getfield(l, LUA_REGISTRYINDEX, "sol.cpp_object");
+  Script* script = (Script*) lua_touserdata(l, -1);
+
+  script->get_game().get_current_map().restore_camera();
+
+  return 0;
 }
 
 /**
- * @brief Notifies the script that the camera moved by a call to camera_restore() has reached the hero.
+ * @brief Notifies the script that the sequence started by a call to camera_move()
+ * has reached the target.
  */
-void MapScript::event_camera_back() {
+void MapScript::notify_camera_reached_target() {
+
+  lua_settop(context, 0);
+
+  lua_getfield(context, LUA_REGISTRYINDEX, "camera.delay_before");
+  int delay_before = lua_tointeger(context, -1);
+  lua_getfield(context, LUA_REGISTRYINDEX, "camera.delay_after");
+  int delay_after = lua_tointeger(context, -1);
+  lua_pop(context, 1);
+  lua_getfield(context, LUA_REGISTRYINDEX, "camera.function");
+
+  // set a timer to execute the function
+  add_timer(delay_before, false);
+
+  // set a second timer to restore the camera
+  lua_pushcfunction(context, camera_restore);
+  add_timer(delay_before + delay_after, false);
+}
+
+/**
+ * @brief Notifies the script that the sequence started by a call to camera_move()
+ * has reached the hero.
+ */
+void MapScript::notify_camera_back() {
 
   notify_script("event_camera_back");
 }

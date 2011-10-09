@@ -169,7 +169,6 @@ class Script {
       map_api_light_get,
       map_api_light_set,
       map_api_camera_move,
-      map_api_camera_restore,
       map_api_sprite_display,
       map_api_tileset_get,
       map_api_tileset_set,
@@ -348,6 +347,9 @@ class Script {
 
     Script(uint32_t apis_enabled);
 
+    // timers
+    void add_timer(uint32_t duration, bool with_sound);
+
     // sprites
     int create_sprite_handle(Sprite &sprite);
     Sprite& get_sprite(int sprite_handle);
@@ -364,13 +366,13 @@ class Script {
     void load_if_exists(const std::string &script_name);
     bool is_loaded();
 
+  public:
+
     // game objects
     virtual Game& get_game();
     virtual Map& get_map();
     virtual ItemProperties& get_item_properties();
     virtual Enemy& get_enemy();
-
-  public:
 
     virtual ~Script();
 

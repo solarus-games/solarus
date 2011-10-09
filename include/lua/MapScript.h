@@ -29,27 +29,29 @@ class MapScript: public Script {
 
   private:
 
-    Map &map;			/**< the map controlled by this script */
+    Map& map;                              /**< the map controlled by this script */
+
+    static int camera_restore(lua_State* l);
 
   protected:
 
-    Game &get_game();
-    Map &get_map();
+    Game& get_game();
+    Map& get_map();
 
   public:
 
     // loading and closing a script
-    MapScript(Map &map);
+    MapScript(Map& map);
     virtual ~MapScript();
-    void start(const std::string &destination_point_name);
+    void start(const std::string& destination_point_name);
     void update();
     void set_suspended(bool suspended);
+    void notify_camera_reached_target();
+    void notify_camera_back();
 
     // calling Lua from C++
     void event_update();
     void event_set_suspended(bool suspended);
-    void event_camera_reached_target();
-    void event_camera_back();
     void event_treasure_obtaining(const Treasure &treasure);
     void event_treasure_obtained(const Treasure &treasure);
     void event_map_started(const std::string &destination_point_name);

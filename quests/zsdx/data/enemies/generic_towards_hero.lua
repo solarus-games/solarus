@@ -14,6 +14,7 @@
 --   faster_speed = 48,
 --   hurt_sound_style = "normal",
 --   push_hero_on_sword = false,
+--   pushed_when_hurt = true,
 --   movement_create = sol.main.random_path_movement_create
 -- })
 
@@ -42,6 +43,9 @@ function set_properties(prop)
   if properties.hurt_sound_style == nil then
     properties.hurt_sound_style = "normal"
   end
+  if properties.pushed_when_hurt == nil then
+    properties.pushed_when_hurt = false
+  end
   if properties.push_hero_on_sword == nil then
     properties.push_hero_on_sword = false
   end
@@ -56,6 +60,7 @@ function event_appear()
   sol.enemy.set_damage(properties.damage)
   sol.enemy.create_sprite(properties.sprite)
   sol.enemy.set_hurt_sound_style(properties.hurt_sound_style)
+  sol.enemy.set_pushed_back_when_hurt(properties.pushed_when_hurt)
   sol.enemy.set_push_hero_on_sword(properties.push_hero_on_sword)
   sol.enemy.set_size(16, 16)
   sol.enemy.set_origin(8, 13)

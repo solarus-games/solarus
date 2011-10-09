@@ -51,7 +51,7 @@ function event_switch_activated(switch_name)
 
   if switch_name == "water_switch"
       and not sol.game.savegame_get_boolean(319) then
-    sol.map.camera_move(616, 192, 250, remove_water)
+    sol.map.camera_move(616, 192, 250, remove_water, 1000, 2500)
   end
 end
 

@@ -112,7 +112,7 @@ class MapEntity {
     bool visible;						/**< indicates that this entity's sprites are currently displayed */
     Movement* movement;						/**< movement of the entity, not used for all kinds of entities;
 								 * NULL indicates that the entity has no movement */
-    Movement* old_movement;					/**< an old movement to destroy as soon as possible */
+    std::list<Movement*> old_movements;		/**< old movements to destroy as soon as possible */
     Detector* facing_entity;					/**< the detector in front of this entity (if any) */
 
     // entity state
@@ -131,7 +131,7 @@ class MapEntity {
     MapEntity(Layer layer, int x, int y, int width, int height);
     MapEntity(const std::string &name, int direction, Layer layer, int x, int y, int width, int height);
 
-    // method called by the subclasses to set their properties
+    // methods called by the subclasses to set their properties
     void set_direction(int direction);
     void set_size(int width, int height);
     void set_size(const Rectangle &size);
@@ -142,6 +142,7 @@ class MapEntity {
     void create_sprite(const SpriteAnimationSetId &id, bool enable_pixel_collisions = false);
     void remove_sprite(const SpriteAnimationSetId &id);
     void remove_sprites();
+    void clear_old_movements();
 
     // collisions
     void check_collision_with_detectors();

@@ -1,4 +1,4 @@
-3056	2256	-1	-100	0	0	-1	3	castle.spc
+3056	2256	-1	-100	0	0	-1	3	eagle_tower.it
 0	1	48	2064	224	144	2
 0	1	40	2216	240	24	52
 0	1	152	2224	16	32	2
@@ -5691,29 +5691,36 @@
 12	1	2760	112	16	16	custom_obstacle_378	0	1	0	0
 12	1	2888	200	16	16	custom_obstacle_379	0	1	0	0
 2	1	152	2240	16	16	teletransporter	0	1	8	from_west_mountain_cave_1f_w
-7	1	464	1912	enemy_2	3	bubble	0	-1	_random	1	-1
-7	1	160	1021	enemy_4	3	globul	0	-1	_random	1	-1
-7	1	464	1693	enemy_3	3	tentacle	0	-1	_random	1	-1
-7	1	464	2149	enemy	3	simple_green_soldier	0	-1	_random	1	-1
-7	1	160	1469	enemy_5	3	mandible	0	-1	_random	1	-1
-7	1	160	357	enemy_6	3	skeletor	0	-1	_random	1	-1
-7	1	160	1245	enemy_7	3	bee_guard	0	-1	_random	1	-1
-7	1	160	573	enemy_8	3	blue_bullblin	0	-1	_random	1	-1
-7	1	160	797	enemy_9	3	red_bullblin	0	-1	_random	1	-1
-7	1	464	797	enemy_10	3	green_knight_soldier	0	-1	_random	1	-1
-7	1	464	573	enemy_11	3	blue_knight_soldier	0	-1	_random	1	-1
-7	1	464	349	enemy_12	3	red_knight_soldier	0	-1	_random	1	-1
-7	1	160	117	enemy_13	3	blue_pig_soldier	0	-1	_random	1	-1
-7	1	464	125	enemy_14	3	red_pig_soldier	0	-1	_random	1	-1
-7	1	464	1021	enemy_15	3	green_duck_soldier	0	-1	_random	1	-1
-7	1	464	1245	enemy_16	3	blue_duck_soldier	0	-1	_random	1	-1
-7	1	464	1469	enemy_17	3	red_duck_soldier	0	-1	_random	1	-1
-7	1	768	2141	enemy_18	3	red_dogman	0	-1	_random	1	-1
+7	1	1680	2128	enemy_2	3	bubble	0	-1	_random	1	-1
+7	1	1376	1917	enemy_4	3	globul	0	-1	_random	1	-1
+7	1	1984	2141	enemy_3	3	tentacle	0	-1	_random	1	-1
+7	1	1376	2141	enemy	3	simple_green_soldier	0	-1	_random	1	-1
+7	1	1376	1693	enemy_5	3	mandible	0	-1	_random	1	-1
+7	1	1680	1917	enemy_6	3	skeletor	0	-1	_random	1	-1
+7	1	1680	1693	enemy_7	3	bee_guard	0	-1	_random	1	-1
+7	1	1680	1469	enemy_8	3	blue_bullblin	0	-1	_random	1	-1
+7	1	1376	1469	enemy_9	3	red_bullblin	0	-1	_random	1	-1
+7	1	1376	1245	enemy_10	3	green_knight_soldier	0	-1	_random	1	-1
+7	1	1680	1245	enemy_11	3	blue_knight_soldier	0	-1	_random	1	-1
+7	1	1984	1245	enemy_12	3	red_knight_soldier	0	-1	_random	1	-1
+7	1	1376	349	enemy_13	3	blue_pig_soldier	0	-1	_random	1	-1
+7	1	1680	349	enemy_14	3	red_pig_soldier	0	-1	_random	1	-1
+7	1	1376	797	enemy_15	3	green_duck_soldier	0	-1	_random	1	-1
+7	1	1680	797	enemy_16	3	blue_duck_soldier	0	-1	_random	1	-1
+7	1	1984	797	enemy_17	3	red_duck_soldier	0	-1	_random	1	-1
 7	1	768	1917	enemy_19	3	blue_dogman	0	-1	_random	1	-1
 7	1	768	1693	enemy_20	3	lizalfos	0	-1	_random	1	-1
-7	1	160	1693	enemy_21	3	blue_hardhat_beetle	0	-1	_random	1	-1
-7	1	160	1917	enemy_22	3	red_hardhat_beetle	0	-1	_random	1	-1
-7	1	160	2141	enemy_23	3	ropa	0	-1	_random	1	-1
+7	1	1376	1021	enemy_21	3	blue_hardhat_beetle	0	-1	_random	1	-1
+7	1	1680	1021	enemy_22	3	red_hardhat_beetle	0	-1	_random	1	-1
+7	1	164	573	enemy_23	3	ropa	0	-1	_random	1	-1
+9	1	176	1941	block	-1	1	2
+7	1	48	2213	pike	0	pike_detect	0	-1	_random	1	-1
+7	1	272	2213	pike_2	0	pike_detect	0	-1	_random	1	-1
+7	1	48	2069	pike_3	0	pike_detect	0	-1	_random	1	-1
+7	1	272	2069	pike_4	0	pike_detect	0	-1	_random	1	-1
+7	1	112	1941	pike_5	1	pike_auto	0	-1	_random	1	-1
+7	1	208	1885	pike_6	3	pike_auto	0	-1	_random	1	-1
+7	1	160	1909	pike_7	3	pike_auto	0	-1	_random	1	-1
 0	2	112	2032	96	8	411
 0	2	296	1856	8	96	416
 0	2	112	1808	96	8	411

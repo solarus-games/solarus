@@ -542,21 +542,39 @@ int Script::main_api_path_finding_movement_create(lua_State *l) {
 }
 
 /**
- * @brief Creates a movement of type TargetMovement (targeting the hero)
- * that will be accessible from the script.
+ * @brief Creates a movement of type TargetMovement that will be accessible
+ * from the script.
+ *
+ * By default, the target is the hero. Alternatively, you can target
+ * arbitrary coordinates.
  *
  * - Argument 1 (int): the speed in pixels per second
+ * - Optional argument 2 (int): x coordinate of the point to target
+ * (if unspecified, the target will be the hero)
+ * - Optional argument 3 (int): y coordinate of the point to target
+ * (if unspecified, the target will be the hero)
  * - Return value (movement): a handle to the movement created
  *
  * @param l the Lua context that is calling this function
  */
 int Script::main_api_target_movement_create(lua_State *l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l, 1, 3);
   int speed = luaL_checkinteger(l, 1);
 
-  Hero& hero = script.get_game().get_hero();
-  TargetMovement *movement = new TargetMovement(&hero, speed);
+  TargetMovement* movement;
+  if (lua_gettop(l) == 3) {
+    // target a fixed point
+    int x = luaL_checkinteger(l, 2);
+    int y = luaL_checkinteger(l, 3);
+    movement = new TargetMovement(x, y, speed);
+  }
+  else {
+    // by default, target the hero
+    Hero& hero = script.get_game().get_hero();
+    movement = new TargetMovement(&hero, speed);
+  }
+
   movement->set_ignore_obstacles(false);
   movement->set_speed(speed);
   int movement_handle = script.create_movement_handle(*movement);

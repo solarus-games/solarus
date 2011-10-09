@@ -16,7 +16,7 @@ function event_appear()
   local sprite = sol.enemy.get_sprite()
   sol.main.sprite_set_animation(sprite, "shell")
   in_shell = true
-  sol.main.timer_start(1000, "break_shell", false)
+  sol.main.timer_start(break_shell, 1000)
 
   local m = sol.main.target_movement_create(64)
   sol.enemy.start_movement(m)

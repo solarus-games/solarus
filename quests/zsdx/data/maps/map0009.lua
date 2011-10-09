@@ -1,6 +1,5 @@
 -- Outside world A2
 
-camera_timer = ""
 fighting_boss = false -- Agahnim
 
 function event_map_started(destination_point_name)
@@ -44,14 +43,8 @@ end
 function event_switch_activated(switch_name)
 
   if switch_name == "castle_door_switch" then
-    sol.map.camera_move(296, 552, 250)
-    camera_timer = "open_castle_door"
+    sol.map.camera_move(296, 552, 250, open_castle_door)
   end
-end
-
-function event_camera_reached_target()
-
-  sol.main.timer_start(1000, camera_timer, false)
 end
 
 function open_castle_door()
@@ -60,7 +53,6 @@ function open_castle_door()
   sol.game.savegame_set_boolean(907, true)
   sol.main.play_sound("secret")
   sol.main.play_sound("door_open")
-  sol.main.timer_start(1000, "sol.map.camera_restore", false)
 end
 
 function event_hero_interaction(entity_name)
@@ -75,7 +67,7 @@ function event_hero_interaction(entity_name)
       sol.map.hero_set_position(x, y, 0)
       sol.map.hero_set_visible(false)
       sol.main.play_sound("bomb")
-      sol.main.timer_start(2000, "cannon_jump")
+      sol.main.timer_start(cannon_jump, 2000)
     end
   end
 end
@@ -101,7 +93,7 @@ function event_hero_on_sensor(sensor_name)
     sol.map.stairs_set_enabled("castle_roof_stairs", false)
     sol.map.teletransporter_set_enabled("teletransporter_dw_roof", false)
     sol.main.play_sound("door_closed")
-    sol.main.timer_start(1000, "start_boss")
+    sol.main.timer_start(start_boss, 1000)
   end
 end
 
@@ -125,7 +117,7 @@ function event_treasure_obtained(item_name, variant, savegame_variable)
 
   if item_name == "heart_container" then
     sol.game.set_dungeon_finished(5)
-    sol.main.timer_start(9000, "leave_boss")
+    sol.main.timer_start(leave_boss, 9000)
     sol.main.play_music("victory.spc")
     sol.map.hero_freeze()
     sol.map.hero_set_direction(3)
@@ -135,7 +127,7 @@ end
 function leave_boss()
 
   sol.map.hero_set_map(9, "from_dungeon_5_1F", 1)
-  sol.main.timer_start(700, "restore_music")
+  sol.main.timer_start(restore_music, 700)
 end
 
 function restore_music()

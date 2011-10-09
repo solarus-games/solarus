@@ -29,8 +29,6 @@ class Timer {
   private:
 
     // timer
-    const std::string name;          /**< name of the timer (permits to identify it) */
-
     uint32_t expiration_date;        /**< date when the timer is finished */
     bool finished;                   /**< indicates that the timer is finished */
 
@@ -42,7 +40,7 @@ class Timer {
 
   public:
 
-    Timer(uint32_t duration, const std::string &name, bool with_sound);
+    Timer(uint32_t duration, bool with_sound);
     ~Timer();
 
     const std::string& get_name();

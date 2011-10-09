@@ -1,6 +1,6 @@
 -- Dungeon 2 1F
 
-current_switch = ""
+current_switch
 fighting_miniboss = false
 
 function event_map_started(destination_point_name)
@@ -40,7 +40,7 @@ function event_hero_on_sensor(sensor_name)
     -- the miniboss is alive
     sol.map.door_close("miniboss_door")
     sol.map.hero_freeze()
-    sol.main.timer_start(1000, "miniboss_timer", false)
+    sol.main.timer_start(miniboss_timer, 1000)
     fighting_miniboss = true
   end
 end
@@ -62,11 +62,12 @@ end
 function event_switch_activated(switch_name)
 
   current_switch = switch_name
+
   if switch_name == "barrier_switch" then
-    sol.map.camera_move(120, 536, 150)
+    sol.map.camera_move(120, 536, 250, barrier_camera_timer)
   elseif switch_name == "pegasus_run_switch" then
     sol.map.switch_set_activated("pegasus_run_switch_2", true)
-    sol.map.camera_move(904, 88, 300)
+    sol.map.camera_move(904, 88, 250, pegasus_run_camera_timer)
   elseif switch_name == "pegasus_run_switch_2" then
     sol.main.play_sound("door_open")
     sol.map.tile_set_enabled("pegasus_run_barrier", false)
@@ -78,22 +79,10 @@ function event_switch_activated(switch_name)
   end
 end
 
-function event_camera_reached_target()
-
-  if current_switch == "barrier_switch" then
-    sol.main.timer_start(1000, "barrier_camera_timer", false)
-  elseif current_switch == "pegasus_run_switch" then
-    sol.main.timer_start(1000, "pegasus_run_camera_timer", false)
-  elseif not sol.game.savegame_get_boolean(90) then
-    sol.main.timer_start(1000, "hidden_stairs_timer", false)
-  else
-    sol.main.timer_start(1000, "hidden_door_timer", false)
-  end
-end
-
 function event_camera_back()
+
   if current_switch == "pegasus_run_switch" then
-    sol.main.timer_start(7000, "pegasus_run_timer", true)
+    sol.main.timer_start(pegasus_run_timer, 7000, true)
   end
 end
 
@@ -106,10 +95,10 @@ function check_eye_statues()
 
     if not sol.game.savegame_get_boolean(90) then
       sol.main.play_sound("switch")
-      sol.map.camera_move(456, 232, 150)
+      sol.map.camera_move(456, 232, 250, hidden_stairs_timer)
     elseif not sol.game.savegame_get_boolean(91) then
       sol.main.play_sound("switch")
-      sol.map.camera_move(520, 320, 150)
+      sol.map.camera_move(520, 320, 250, hidden_door_timer)
     end
   end
 end
@@ -118,13 +107,11 @@ function barrier_camera_timer()
   sol.main.play_sound("secret")
   sol.map.tile_set_enabled("barrier", false)
   sol.game.savegame_set_boolean(78, true)
-  sol.main.timer_start(1000, "sol.map.camera_restore", false)
 end
 
 function pegasus_run_camera_timer()
   sol.main.play_sound("secret")
   sol.map.tile_set_enabled("pegasus_run_barrier", false)
-  sol.main.timer_start(1000, "sol.map.camera_restore", false)
 end
 
 function pegasus_run_timer()
@@ -138,14 +125,12 @@ function hidden_stairs_timer()
   sol.main.play_sound("secret")
   open_hidden_stairs()
   sol.game.savegame_set_boolean(90, true)
-  sol.main.timer_start(1000, "sol.map.camera_restore", false)
 end
 
 function hidden_door_timer()
   sol.main.play_sound("secret")
   open_hidden_door()
   sol.game.savegame_set_boolean(91, true)
-  sol.main.timer_start(1000, "sol.map.camera_restore", false)
 end
 
 function open_hidden_stairs()

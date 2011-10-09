@@ -26,7 +26,7 @@ function event_switch_activated(switch_name)
 	if switch_name == "BB1" then
 	-- LB1 room
 		sol.map.hero_freeze()
-		sol.main.timer_start(1000, "BB1_camera_move", false)
+		sol.main.timer_start(BB1_camera_move, 1000)
 	elseif switch_name == "BB2" then
 	-- LB2 room
 		sol.map.tile_set_enabled("LB2", false)
@@ -38,21 +38,12 @@ function event_switch_activated(switch_name)
 end
 
 function BB1_camera_move()
-	sol.map.camera_move(896, 1712, 150)
-end
-
-function BB1_camera_restore()
-	sol.map.camera_restore()
+	sol.map.camera_move(896, 1712, 150, BB1_remove_barrier)
 end
 
 function BB1_remove_barrier()
 	sol.map.tile_set_enabled("LB1", false)
 	sol.main.play_sound("secret")
-	sol.main.timer_start(1000, "BB1_camera_restore", false)
-end
-
-function event_camera_reached_target()
-	sol.main.timer_start(1000, "BB1_remove_barrier", false)
 end
 
 function event_camera_back()

@@ -50,9 +50,9 @@ Script::~Script() {
 
   // delete the timers
   {
-    std::list<Timer*>::iterator it;
+    std::map<int, Timer*>::iterator it;
     for (it = timers.begin(); it != timers.end(); it++) {
-      delete *it;
+      delete it->second;
     }
   }
 
@@ -150,6 +150,7 @@ void Script::load_if_exists(const std::string& script_name) {
     if (lua_pcall(context, 0, 0, 0) != 0) {
       Debug::die(StringConcat() << "Error: failed to load script '" << script_name
           << "': " << lua_tostring(context, -1));
+      lua_pop(context, 1);
     }
   }
   else {
@@ -255,7 +256,6 @@ void Script::register_main_api() {
       { "play_sound", main_api_play_sound },
       { "play_music", main_api_play_music },
       { "timer_start", main_api_timer_start },
-      { "timer_stop", main_api_timer_stop },
       { "timer_stop_all", main_api_timer_stop_all },
       { "sprite_create", main_api_sprite_create },
       { "sprite_get_animation", main_api_sprite_get_animation },
@@ -354,7 +354,6 @@ void Script::register_map_api() {
       { "light_set", map_api_light_set },
       { "treasure_give", map_api_treasure_give },
       { "camera_move", map_api_camera_move },
-      { "camera_restore", map_api_camera_restore },
       { "sprite_display", map_api_sprite_display },
       { "tileset_get", map_api_tileset_get },
       { "tileset_set", map_api_tileset_set },
@@ -613,54 +612,20 @@ void Script::print_stack() {
 }
 
 /**
- * @brief Looks up the specified Lua function and places it onto the stack if it exists.
+ * @brief Looks up the specified global Lua function and places it onto the stack if it exists.
  *
  * If the function is not found, the stack is left unchanged.
  *
  * @param function_name of the function to find
- * (may be prefixed by the name of several Lua tables, typically sol.main.some_function)
  * @return true if the function was found
  */
-bool Script::find_lua_function(const std::string &function_name) {
+bool Script::find_lua_function(const std::string& function_name) {
 
   if (context == NULL) {
     return false;
   }
 
-  // we want to allow to set sol.main.some_function as a timer callback, even if it is not a global function
-
-  size_t index = function_name.find(".");
-  if (index == std::string::npos) {
-
-    // usual Lua function
-    lua_getglobal(context, function_name.c_str());
-  }
-  else {
-
-    // function in a table (e.g. sol.main.some_function)
-    std::string table_name = function_name.substr(0, index);
-    std::string tail = function_name.substr(index + 1);
-
-    lua_getglobal(context, table_name.c_str());
-
-    index = tail.find(".");
-    while (index != std::string::npos) { // there may even be several intermediary tables
-
-      table_name = tail.substr(0, index);
-      tail = tail.substr(index + 1);
-
-      lua_pushstring(context, table_name.c_str());
-      lua_gettable(context, -2);
-      lua_remove(context, -2);
-
-      index = tail.find(".");
-    }
-
-    // now tail is the function name without prefix, and the table that contains it is on the top of the stack
-    lua_pushstring(context, tail.c_str());
-    lua_gettable(context, -2);
-    lua_remove(context, -2);
-  }
+  lua_getglobal(context, function_name.c_str());
 
   bool exists = lua_isfunction(context, -1);
   if (!exists) { // restore the stack
@@ -770,6 +735,8 @@ bool Script::notify_script(const std::string &function_name, const std::string &
     if (lua_pcall(context, nb_arguments, nb_results, 0) != 0) {
       Debug::print(StringConcat() << "Error in " << function_name << "(): "
           << lua_tostring(context, -1));
+      lua_pop(context, 1);
+      nb_results = 0;
     }
 
     // get the results
@@ -796,25 +763,32 @@ bool Script::notify_script(const std::string &function_name, const std::string &
 void Script::update() {
 
   // update the timers
-  std::list<Timer*>::iterator it;
+  std::map<int, Timer*>::iterator it;
 
   for (it = timers.begin(); it != timers.end(); it++) {
 
-    Timer *timer = *it;
+    int ref = it->first;
+    Timer* timer = it->second;
 
     timer->update();
     if (timer->is_finished()) {
 
-      const std::string function_name = timer->get_name();
+      // delete the C++ timer
       timers.erase(it);
       delete timer;
 
-      bool invoked = notify_script(function_name);
-      if (!invoked) {
-        Debug::die(StringConcat() << "No such timer callback function: '" << function_name << "'");
+      // retrieve the Lua function and call it
+      lua_rawgeti(context, LUA_REGISTRYINDEX, ref);
+      if (lua_pcall(context, 0, 0, 0) != 0) {
+        Debug::print(StringConcat() << "Error in the function of the timer: "
+            << lua_tostring(context, -1));
+        lua_pop(context, 1);
       }
 
-      it = timers.begin();
+      // delete the Lua function
+      luaL_unref(context, LUA_REGISTRYINDEX, ref);
+
+      break;
     }
   }
 }
@@ -828,9 +802,9 @@ void Script::set_suspended(bool suspended) {
   if (context != NULL) {
 
     // notify the timers
-    std::list<Timer*>::iterator it;
+    std::map<int, Timer*>::iterator it;
     for (it = timers.begin(); it != timers.end(); it++) {
-      (*it)->set_suspended(suspended);
+      it->second->set_suspended(suspended);
     }
   }
 }
@@ -844,49 +818,17 @@ bool Script::has_played_music() {
   return music_played;
 }
 
-
-/**
- * @brief Adds a timer to the script.
- * @param timer the timer
- */
-void Script::add_timer(Timer *timer) {
-
-  timers.push_back(timer);
-}
-
-/**
- * @brief Removes a timer if it exists in this script.
- * @param callback_name name of the timer callback
- */
-void Script::remove_timer(const std::string &callback_name) {
-
-  bool found = false;
-  std::list<Timer*>::iterator it;
-
-  Timer *timer = NULL;
-  for (it = timers.begin(); it != timers.end() && !found; it++) {
-
-    timer = *it;
-    if (timer->get_name() == callback_name) {
-      delete timer;
-      found = true;
-    }
-  }
-
-  if (found) {
-    timers.remove(timer);
-  }
-}
-
 /**
  * @brief Removes all timers started by this script.
  */
 void Script::remove_all_timers() {
 
-  std::list<Timer*>::iterator it;
+  std::map<int, Timer*>::iterator it;
 
   for (it = timers.begin(); it != timers.end(); it++) {
-    delete *it;
+    int ref = it->first;
+    luaL_unref(context, LUA_REGISTRYINDEX, ref);
+    delete it->second;
   }
 
   timers.clear();

@@ -187,7 +187,7 @@ function event_dialog_finished(first_message_id, answer)
 	sol.map.tile_set_enabled("game_3_barrier_2", false);
 	sol.map.tile_set_enabled("game_3_barrier_3", false);
 	sol.map.tile_set_enabled("game_3_middle_barrier", false);
-	sol.main.timer_stop("game_3_timer")
+	sol.main.timer_stop_all()
 
 	sol.game.remove_money(10)
 	sol.map.dialog_start("rupee_house.game_3.go")
@@ -196,8 +196,8 @@ function event_dialog_finished(first_message_id, answer)
     end
 
   elseif first_message_id == "rupee_house.game_3.go" then 
-    sol.main.timer_start(8000, "game_3_timer", true);
-    sol.map.switch_set_activated("switch", false);
+    sol.main.timer_start(game_3_timer, 8000, true);
+    sol.map.sensor_set_enabled("game_3_sensor", true);
 
   -- stop game 3 when the player founds the piece of heart
   elseif string.find(first_message_id, "^found_piece_of_heart") then
@@ -252,12 +252,15 @@ function game_3_timer()
   sol.map.tile_set_enabled("game_3_middle_barrier", true)
 end
 
--- Function called when the switch is enabled in game 3
-function event_switch_activated(switch_name)
+-- Function called when a sensor is activated
+function event_hero_on_sensor(sensor_name)
 
-  -- stop the timer when the player reaches the invisible switch
-  sol.main.timer_stop("game_3_timer")
-  sol.main.play_sound("secret")
+  if sensor_name == "game_3_sensor" then
+    -- stop the timer when the player reaches this point
+    sol.main.timer_stop_all()
+    sol.main.play_sound("secret")
+    sol.map.sensor_set_enabled("game_3_sensor", false)
+  end
 end
 
 -- Function called when the player interacts with the slot machine
@@ -318,7 +321,7 @@ function event_update()
 	  sol.map.hero_unfreeze()
 	else
 	  playing_game_2 = false
-	  sol.main.timer_start(500, "game_2_timer", false)
+	  sol.main.timer_start(game_2_timer, 500)
 	end
       end
     end

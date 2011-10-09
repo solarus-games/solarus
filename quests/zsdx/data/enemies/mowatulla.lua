@@ -16,7 +16,7 @@ end
 
 function event_restart()
 
-  sol.main.timer_start(500, "jump_or_son_phase", false)
+  sol.main.timer_start(jump_or_son_phase, 500)
   go()
 end
 
@@ -58,7 +58,7 @@ end
 function son_phase_soon()
 
   sol.enemy.stop_movement()
-  sol.main.timer_start(500, "son_phase", false)
+  sol.main.timer_start(son_phase, 500)
 end
 
 function son_phase()
@@ -66,7 +66,7 @@ function son_phase()
   local sprite = sol.enemy.get_sprite()
   sol.main.sprite_set_animation(sprite, "preparing_son")
   sol.main.play_sound("boss_charge")
-  sol.main.timer_start(1500, "throw_son", false)
+  sol.main.timer_start(throw_son, 1500)
 
   if sol.enemy.get_life() < 3 then
     nb_sons_to_create = 3
@@ -88,14 +88,14 @@ function throw_son()
   nb_sons_to_create = nb_sons_to_create - 1
   if nb_sons_to_create > 0 then
     -- throw another son in 0.5 second
-    sol.main.timer_start(500, "throw_son", false)
+    sol.main.timer_start(throw_son, 500)
   else
     -- finish the son phase
     local sprite = sol.enemy.get_sprite()
     sol.main.sprite_set_animation(sprite, "walking")
     local duration = 3500 + (math.random(3) * 1000)
-    sol.main.timer_start(duration, "jump_or_son_phase", false)
-    sol.main.timer_start(500, "go", false)
+    sol.main.timer_start(jump_or_son_phase, duration)
+    sol.main.timer_start(go, 500)
   end
 end
 

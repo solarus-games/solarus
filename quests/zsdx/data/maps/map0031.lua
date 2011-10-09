@@ -45,7 +45,7 @@ function event_switch_activated(switch_name)
     if switches_puzzle_nb_enabled == 6 then
 
       if switches_puzzle_correct then
-	sol.map.camera_move(240, 328, 150)
+	sol.map.camera_move(240, 328, 250, boss_key_chest_timer)
       else
 	sol.main.play_sound("wrong")
 	switches_puzzle_nb_enabled = 0
@@ -68,14 +68,9 @@ function event_switch_left(switch_name)
   end
 end
 
-function event_camera_reached_target()
-  sol.main.timer_start(1000, "boss_key_chest_timer", false)
-end
-
 function boss_key_chest_timer()
   sol.map.chest_set_enabled("boss_key_chest", true)
   sol.main.play_sound("secret")
-  sol.main.timer_start(1000, "sol.map.camera_restore", false)
 end
 
 function event_hero_on_sensor(sensor_name)
@@ -99,7 +94,7 @@ end
 function event_treasure_obtained(item_name, variant, savegame_variable)
 
   if item_name == "heart_container" then
-    sol.main.timer_start(9000, "open_final_room", false)
+    sol.main.timer_start(open_final_room, 9000)
     sol.main.play_music("victory.spc")
     sol.map.hero_freeze()
     sol.map.hero_set_direction(3)

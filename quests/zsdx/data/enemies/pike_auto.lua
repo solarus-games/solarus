@@ -40,7 +40,7 @@ function event_obstacle_reached()
       sol.main.play_sound("sword_tapping")
     end
 
-    sol.main.timer_start(150, "restore_obstacle_reached")
+    sol.main.timer_start(restore_obstacle_reached, 150)
     sol.enemy.restart()
   end
 end

@@ -40,7 +40,7 @@ function event_restart()
 end
 
 function event_hurt()
-  sol.main.timer_stop("check_hero")
+  sol.main.timer_stop_all()
 end
 
 function check_hero()
@@ -52,7 +52,7 @@ function check_hero()
   elseif not near_hero and going_hero then
     go_random()
   end
-  sol.main.timer_start(1000, "check_hero", false)
+  sol.main.timer_start(check_hero, 1000)
 end
 
 function event_movement_changed()

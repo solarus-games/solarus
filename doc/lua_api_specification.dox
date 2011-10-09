@@ -56,12 +56,9 @@ plays a sound
 - <tt>sol.main.play_music(music_id)</tt>:
 plays a music
 
-- <tt>sol.main.timer_start(duration, callback_name, with_sound)</tt>:
-starts a timer which will calls a function of your script once finished
+- <tt>sol.main.timer_start(function, duration, with_sound)</tt>:
+starts a timer which will calls a function once finished
 (with_sound is optional, default is false)
-
-- <tt>sol.main.timer_stop(callback)</tt>:
-stops a timer that of the script if it exists
 
 - <tt>sol.main.timer_stop_all()</tt>:
 stops all timers started by your script
@@ -304,12 +301,11 @@ returns the current light level of the map
 - <tt>sol.map.light_set(light_level)</tt>:
 sets the light level of the map (0: no light, positive values: full light)
 
-- <tt>sol.map.camera_move(x, y, speed)</tt>: 
-suspends the game and moves the camera towards a target point
-(a usual speed value is 150)
-
-- <tt>sol.map.camera_restore()</tt>: 
-sents the camera back to the hero after a call to camera_move()
+- <tt>sol.map.camera_move(x, y, speed, function, delay_before, delay_after)</tt>: 
+moves the camera to a target point (a usual speed value is 250),
+waits a delay (default is 1 second), calls a function,
+waits another delay (default is 1 second) and restores the camera;
+the game is suspended during the whole sequence
 
 - <tt>sol.map.tileset_get()</tt>:
 returns the id of the tileset of this map
@@ -892,11 +888,8 @@ If there was a question, answer is 0 if the first answer was chosen,
 or 1 if the second one was chosen.
 If there was no question, answer is -1.
 
-- <tt>event_camera_reached_target()</tt>: 
-called when the camera (previously started by <tt>camera_move()</tt>) reaches its target
-
 - <tt>event_camera_back()</tt>: 
-called when the camera (previously sent back by <tt>camera_restore()</tt>) reaches the hero
+called when the camera (previously sent back by <tt>camera_move()</tt>) reaches the hero
 
 - <tt>event_treasure_obtaining(item_name, variant, savegame_variable)</tt>: 
 called when the player is obtaining a treasure (coming from a chest or not)

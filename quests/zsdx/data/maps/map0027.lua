@@ -16,12 +16,12 @@ function event_npc_dialog(npc_name)
       sol.map.hero_set_map(6, "from_dungeon_1_1F", 1)
     else
       -- start the final sequence
-      sol.map.camera_move(160, 120, 100)
+      sol.map.camera_move(160, 120, 100, start_final_sequence)
     end
   end
 end
 
-function event_camera_reached_target()
+function start_final_sequence()
   sol.map.dialog_start("dungeon_1.solarus_child")
   sol.map.dialog_set_variable("dungeon_1.solarus_child", sol.game.savegame_get_name());
 end

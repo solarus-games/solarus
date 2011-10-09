@@ -18,7 +18,6 @@
 #define SOLARUS_SCRIPT_H
 
 #include "Common.h"
-#include <list>
 #include <map>
 
 struct lua_State;
@@ -48,7 +47,7 @@ class Script {
     typedef int (FunctionAvailableToScript) (lua_State *l);  /**< type of the functions that can be called by a Lua script */
 
     // script data
-    std::list<Timer*> timers;                            /**< the timers currently running for this script */
+    std::map<int, Timer*> timers;                        /**< the timers currently running for this script */
 
     std::map<int, Sprite*> sprites;                      /**< the sprites accessible from this script */
     std::map<int, Sprite*> unassigned_sprites;           /**< the sprites accessible from this script and that
@@ -62,7 +61,7 @@ class Script {
     uint32_t apis_enabled;                               /**< an OR combination of APIs enabled */
 
     // calling a Lua function from C++
-    bool find_lua_function(const std::string &function_name);
+    bool find_lua_function(const std::string& function_name);
 
     // calling a C++ function from Lua (and retrieve the instance of Script)
     static Script& get_script(lua_State* context, int min_arguments, int max_arguments = -1);
@@ -76,8 +75,6 @@ class Script {
     void register_enemy_api();
 
     // timers
-    void add_timer(Timer *timer);
-    void remove_timer(const std::string &callback_name);
     void remove_all_timers();
     bool is_new_timer_suspended(void);
 
@@ -91,7 +88,6 @@ class Script {
       main_api_play_sound,
       main_api_play_music,
       main_api_timer_start,
-      main_api_timer_stop,
       main_api_timer_stop_all,
       main_api_sprite_create,
       main_api_sprite_get_animation,
@@ -173,7 +169,6 @@ class Script {
       map_api_light_get,
       map_api_light_set,
       map_api_camera_move,
-      map_api_camera_restore,
       map_api_sprite_display,
       map_api_tileset_get,
       map_api_tileset_set,
@@ -352,6 +347,9 @@ class Script {
 
     Script(uint32_t apis_enabled);
 
+    // timers
+    void add_timer(uint32_t duration, bool with_sound);
+
     // sprites
     int create_sprite_handle(Sprite &sprite);
     Sprite& get_sprite(int sprite_handle);
@@ -368,13 +366,13 @@ class Script {
     void load_if_exists(const std::string &script_name);
     bool is_loaded();
 
+  public:
+
     // game objects
     virtual Game& get_game();
     virtual Map& get_map();
     virtual ItemProperties& get_item_properties();
     virtual Enemy& get_enemy();
-
-  public:
 
     virtual ~Script();
 

@@ -170,35 +170,46 @@ int Script::map_api_light_set(lua_State *l) {
 }
 
 /**
- * @brief Moves the camera towards a target point.
+ * @brief Moves the camera towards a target point, calls a function and restores the camera.
+ *
+ * This function returns immediately but the game is suspended during the whole sequence.
  *
  * - Argument 1 (integer): x coordinate of the target point
  * - Argument 2 (integer): y coordinate of the target point
- * - Argument 3 (integer): speed of the camera movement in pixels per second (150 is a normal speed)
+ * - Argument 3 (integer): speed of the camera movement in pixels per second (250 is a usual speed)
+ * - Argument 4 (function): a Lua function to call when the camera reaches its target
+ * - Optional argument 5 (integer): delay in milliseconds before calling the function (default 1000)
+ * - Optional argument 6 (integer): delay in milliseconds after calling the function (default 1000)
  *
  * @param l the Lua context that is calling this function
  */
-int Script::map_api_camera_move(lua_State *l) {
+int Script::map_api_camera_move(lua_State* l) {
 
-  Script& script = get_script(l, 3);
+  Script& script = get_script(l, 4, 6);
   int x = luaL_checkinteger(l, 1);
   int y = luaL_checkinteger(l, 2);
   int speed = luaL_checkinteger(l, 3);
+  luaL_checktype(l, 4, LUA_TFUNCTION);
 
+  uint32_t delay_before = 1000;
+  uint32_t delay_after = 1000;
+  if (lua_gettop(l) >= 5) {
+    delay_before = luaL_checkinteger(l, 5);
+    if (lua_gettop(l) >= 6) {
+      delay_after = luaL_checkinteger(l, 6);
+    }
+  }
+  lua_settop(l, 4); // let the function on top of the stack
+
+  // store the function and the delays
+  lua_setfield(l, LUA_REGISTRYINDEX, "sol.camera_function");
+  lua_pushinteger(l, delay_before);
+  lua_setfield(l, LUA_REGISTRYINDEX, "sol.camera_delay_before");
+  lua_pushinteger(l, delay_after);
+  lua_setfield(l, LUA_REGISTRYINDEX, "sol.camera_delay_after");
+
+  // start the camera
   script.get_game().get_current_map().move_camera(x, y, speed);
-
-  return 0;
-}
-
-/**
- * @brief Moves the camera back to the hero.
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_camera_restore(lua_State *l) {
-
-  Script& script = get_script(l, 0);
-
-  script.get_game().get_current_map().restore_camera();
 
   return 0;
 }

@@ -48,7 +48,7 @@ class Hero::RunningState: public Hero::State {
 
     bool can_take_stairs();
     bool can_take_jump_sensor();
-    bool can_be_hurt();
+    bool can_be_hurt(Enemy* attacker);
     bool can_start_gameover_sequence();
     bool is_touching_ground();
     bool can_avoid_deep_water();

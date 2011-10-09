@@ -303,6 +303,8 @@ class Script {
       enemy_api_set_pushed_back_when_hurt,
       enemy_api_get_push_hero_on_sword,
       enemy_api_set_push_hero_on_sword,
+      enemy_api_get_can_hurt_hero_running,
+      enemy_api_set_can_hurt_hero_running,
       enemy_api_get_hurt_sound_style,
       enemy_api_set_hurt_sound_style,
       enemy_api_get_minimum_shield_needed,

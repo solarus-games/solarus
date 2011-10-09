@@ -48,7 +48,7 @@ class Hero::PlayerMovementState: public Hero::State {
     void notify_walking_speed_changed();
     void notify_movement_changed();
     void notify_layer_changed();
-    bool can_be_hurt();
+    bool can_be_hurt(Enemy* attacker);
 };
 
 #endif

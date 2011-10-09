@@ -44,7 +44,7 @@ class Hero::PushingState: public Hero::State {
     bool is_moving_grabbed_entity();
     void notify_grabbed_entity_collision();
 
-    bool can_be_hurt();
+    bool can_be_hurt(Enemy* attacker);
     bool is_deep_water_obstacle();
     bool is_hole_obstacle();
     bool is_lava_obstacle();

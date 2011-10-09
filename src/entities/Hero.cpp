@@ -1806,18 +1806,27 @@ int Hero::get_sword_damage_factor() {
  * @param magic_points number of magic points to remove
  */
 void Hero::hurt(MapEntity& source, int life_points, int magic_points) {
-  hurt(source.get_xy(), life_points, magic_points);
+
+  Enemy* enemy = NULL;
+  if (source.get_type() == ENEMY) {
+    // TODO make state->can_be_hurt(MapEntity*)
+    enemy = (Enemy*) &source;
+  }
+
+  if (!sprites->is_blinking() && state->can_be_hurt(enemy)) {
+    set_state(new HurtState(*this, source.get_xy(), life_points, magic_points));
+  }
 }
 
 /**
  * @brief Hurts the hero if possible.
- * @param source_xy coordinates of whatever hurts the hero (usually an enemy)
+ * @param source_xy coordinates of whatever hurts the hero
  * @param life_points number of heart quarters to remove (this number may be reduced by the tunic)
  * @param magic_points number of magic points to remove
  */
 void Hero::hurt(const Rectangle& source_xy, int life_points, int magic_points) {
 
-  if (!sprites->is_blinking() && state->can_be_hurt()) {
+  if (!sprites->is_blinking() && state->can_be_hurt(NULL)) {
     set_state(new HurtState(*this, source_xy, life_points, magic_points));
   }
 }

@@ -22,11 +22,12 @@
 /**
  * @brief Creates and starts a timer.
  * @param duration duration of the timer in milliseconds
- * @param name a name to identify this timer
  * @param with_sound plays a sound until the timer expires
  */
-Timer::Timer(uint32_t duration, const std::string &name, bool with_sound):
-  name(name), finished(false), suspended(false), when_suspended(0) {
+Timer::Timer(uint32_t duration, bool with_sound):
+  finished(false),
+  suspended(false),
+  when_suspended(0) {
 
   uint32_t now = System::now();
   expiration_date = now + duration;
@@ -38,14 +39,6 @@ Timer::Timer(uint32_t duration, const std::string &name, bool with_sound):
  */
 Timer::~Timer() {
 
-}
-
-/**
- * @brief Returns the name identifying this timer.
- * @return the name of this timer
- */
-const std::string& Timer::get_name() {
-  return name;
 }
 
 /**

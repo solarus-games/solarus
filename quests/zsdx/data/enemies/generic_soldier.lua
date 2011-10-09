@@ -85,7 +85,7 @@ function event_restart()
 end
 
 function event_hurt()
-  sol.main.timer_stop("check_hero")
+  sol.main.timer_stop_all()
 end
 
 function check_hero()

@@ -27,8 +27,7 @@
 0	1	256	152	24	8	70
 1	1	160	213	destination_point	1	0
 2	1	152	224	16	16	teletransporter	0	1	8	from_west_mountain_cave_1f_w
-7	1	48	197	pike	3	pike_detect	0	-1	_random	1	-1
-7	1	272	197	pike_2	3	pike_detect	0	-1	_random	1	-1
+7	1	156	125	pike	3	gibdo	0	-1	_random	1	-1
 0	2	112	216	96	8	357
 0	2	144	216	32	8	188
 0	2	0	0	320	16	170

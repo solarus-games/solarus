@@ -26,11 +26,11 @@ end
 
 function event_camera_reached_target()
   if sol.map.enemy_is_group_dead("battle_1") and sol.map.tile_is_enabled("battle_1_barrier") then
-    sol.main.timer_start(1000, "battle_1_camera_timer", false)
+    sol.main.timer_start(battle_1_camera_timer, 1000)
   elseif sol.map.enemy_is_group_dead("battle_2") and sol.map.tile_is_enabled("battle_2_barrier") then
-    sol.main.timer_start(1000, "battle_2_camera_timer", false)
+    sol.main.timer_start(battle_2_camera_timer, 1000)
   elseif sol.map.tile_is_enabled("barrier") then
-    sol.main.timer_start(1000, "camera_1_timer", false)
+    sol.main.timer_start(camera_1_timer, 1000)
   end
 end
 
@@ -38,20 +38,20 @@ function camera_1_timer()
   sol.main.play_sound("secret")
   sol.map.tile_set_enabled("barrier", false)
   sol.game.savegame_set_boolean(38, true)
-  sol.main.timer_start(1000, "sol.map.camera_restore", false)
+  sol.main.timer_start(sol.map.camera_restore, 1000)
 end
 
 function battle_1_camera_timer()
   sol.main.play_sound("secret")
   sol.map.tile_set_enabled("battle_1_barrier", false)
-  sol.main.timer_start(1000, "sol.map.camera_restore", false)
+  sol.main.timer_start(sol.map.camera_restore, 1000)
 end
 
 
 function battle_2_camera_timer()
   sol.main.play_sound("secret")
   sol.map.tile_set_enabled("battle_2_barrier", false)
-  sol.main.timer_start(1000, "sol.map.camera_restore", false)
+  sol.main.timer_start(sol.map.camera_restore, 1000)
 end
 
 function event_npc_dialog(npc)
@@ -85,7 +85,7 @@ function event_dialog_finished(message_id, answer)
   elseif message_id == "lyriann_cave.tom.leaving" then
     sol.main.play_sound("warp")
     sol.map.hero_set_direction(1)
-    sol.main.timer_start(1700, "start_moving_tom", false)
+    sol.main.timer_start(start_moving_tom, 1700)
   elseif message_id == "lyriann_cave.tom.not_finished" and answer == 1 then
     give_boomerang_back()
     sol.map.dialog_start("lyriann_cave.tom.gave_boomerang_back")

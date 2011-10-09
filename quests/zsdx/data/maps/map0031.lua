@@ -69,13 +69,13 @@ function event_switch_left(switch_name)
 end
 
 function event_camera_reached_target()
-  sol.main.timer_start(1000, "boss_key_chest_timer", false)
+  sol.main.timer_start(boss_key_chest_timer, 1000)
 end
 
 function boss_key_chest_timer()
   sol.map.chest_set_enabled("boss_key_chest", true)
   sol.main.play_sound("secret")
-  sol.main.timer_start(1000, "sol.map.camera_restore", false)
+  sol.main.timer_start(sol.map.camera_restore, 1000)
 end
 
 function event_hero_on_sensor(sensor_name)
@@ -99,7 +99,7 @@ end
 function event_treasure_obtained(item_name, variant, savegame_variable)
 
   if item_name == "heart_container" then
-    sol.main.timer_start(9000, "open_final_room", false)
+    sol.main.timer_start(open_final_room, 9000)
     sol.main.play_music("victory.spc")
     sol.map.hero_freeze()
     sol.map.hero_set_direction(3)

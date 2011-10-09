@@ -40,7 +40,7 @@ function event_hero_on_sensor(sensor_name)
     -- the miniboss is alive
     sol.map.door_close("miniboss_door")
     sol.map.hero_freeze()
-    sol.main.timer_start(1000, "miniboss_timer", false)
+    sol.main.timer_start(miniboss_timer, 1000)
     fighting_miniboss = true
   end
 end
@@ -81,19 +81,19 @@ end
 function event_camera_reached_target()
 
   if current_switch == "barrier_switch" then
-    sol.main.timer_start(1000, "barrier_camera_timer", false)
+    sol.main.timer_start(barrier_camera_timer, 1000)
   elseif current_switch == "pegasus_run_switch" then
-    sol.main.timer_start(1000, "pegasus_run_camera_timer", false)
+    sol.main.timer_start(pegasus_run_camera_timer, 1000)
   elseif not sol.game.savegame_get_boolean(90) then
-    sol.main.timer_start(1000, "hidden_stairs_timer", false)
+    sol.main.timer_start(hidden_stairs_timer, 1000)
   else
-    sol.main.timer_start(1000, "hidden_door_timer", false)
+    sol.main.timer_start(hidden_door_timer, 1000)
   end
 end
 
 function event_camera_back()
   if current_switch == "pegasus_run_switch" then
-    sol.main.timer_start(7000, "pegasus_run_timer", true)
+    sol.main.timer_start(pegasus_run_timer, 7000, true)
   end
 end
 
@@ -118,13 +118,13 @@ function barrier_camera_timer()
   sol.main.play_sound("secret")
   sol.map.tile_set_enabled("barrier", false)
   sol.game.savegame_set_boolean(78, true)
-  sol.main.timer_start(1000, "sol.map.camera_restore", false)
+  sol.main.timer_start(sol.map.camera_restore, 1000)
 end
 
 function pegasus_run_camera_timer()
   sol.main.play_sound("secret")
   sol.map.tile_set_enabled("pegasus_run_barrier", false)
-  sol.main.timer_start(1000, "sol.map.camera_restore", false)
+  sol.main.timer_start(sol.map.camera_restore, 1000)
 end
 
 function pegasus_run_timer()
@@ -138,14 +138,14 @@ function hidden_stairs_timer()
   sol.main.play_sound("secret")
   open_hidden_stairs()
   sol.game.savegame_set_boolean(90, true)
-  sol.main.timer_start(1000, "sol.map.camera_restore", false)
+  sol.main.timer_start(sol.map.camera_restore, 1000)
 end
 
 function hidden_door_timer()
   sol.main.play_sound("secret")
   open_hidden_door()
   sol.game.savegame_set_boolean(91, true)
-  sol.main.timer_start(1000, "sol.map.camera_restore", false)
+  sol.main.timer_start(sol.map.camera_restore, 1000)
 end
 
 function open_hidden_stairs()

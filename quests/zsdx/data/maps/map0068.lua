@@ -57,13 +57,13 @@ end
 
 function fill_water(index)
   current_pool_index = index
-  camera_timer = "fill_water_step_1"
+  camera_timer = fill_water_step_1
   sol.map.camera_move(pools[index].x, pools[index].y, 250)
 end
 
 function drain_water(index)
   current_pool_index = index
-  camera_timer = "drain_water_step_1"
+  camera_timer = drain_water_step_1
   sol.map.camera_move(pools[index].x, pools[index].y, 250)
 end
 
@@ -108,32 +108,32 @@ function set_water_drained(i)
 end
 
 function event_camera_reached_target()
-  sol.main.timer_start(1000, camera_timer, false)
+  sol.main.timer_start(camera_timer, 1000)
 end
 
 function fill_water_step_1()
   sol.main.play_sound("water_fill_begin")
   sol.main.play_sound("water_fill")
   sol.map.tile_set_enabled("water_"..current_pool_index.."_less_3", true)
-  sol.main.timer_start(water_delay, "fill_water_step_2", false)
+  sol.main.timer_start(fill_water_step_2, water_delay)
 end
 
 function fill_water_step_2()
   sol.map.tile_set_enabled("water_"..current_pool_index.."_less_3", false)
   sol.map.tile_set_enabled("water_"..current_pool_index.."_less_2", true)
-  sol.main.timer_start(water_delay, "fill_water_step_3", false)
+  sol.main.timer_start(fill_water_step_3, water_delay)
 end
 
 function fill_water_step_3()
   sol.map.tile_set_enabled("water_"..current_pool_index.."_less_2", false)
   sol.map.tile_set_enabled("water_"..current_pool_index.."_less_1", true)
-  sol.main.timer_start(water_delay, "fill_water_step_4", false)
+  sol.main.timer_start(fill_water_step_4, water_delay)
 end
 
 function fill_water_step_4()
   sol.map.tile_set_enabled("water_"..current_pool_index.."_less_1", false)
   sol.map.tile_set_enabled("water_"..current_pool_index.."_full", true)
-  sol.main.timer_start(500, "sol.map.camera_restore", false)
+  sol.main.timer_start(sol.map.camera_restore, 500)
   sol.game.savegame_set_boolean(savegame_variable + current_pool_index,
     not pools[current_pool_index].initially_filled)
   set_water_filled(current_pool_index)
@@ -144,24 +144,24 @@ function drain_water_step_1()
   sol.main.play_sound("water_drain")
   sol.map.tile_set_enabled("water_"..current_pool_index.."_full", false)
   sol.map.tile_set_enabled("water_"..current_pool_index.."_less_1", true)
-  sol.main.timer_start(water_delay, "drain_water_step_2", false)
+  sol.main.timer_start(drain_water_step_2, water_delay)
 end
 
 function drain_water_step_2()
   sol.map.tile_set_enabled("water_"..current_pool_index.."_less_1", false)
   sol.map.tile_set_enabled("water_"..current_pool_index.."_less_2", true)
-  sol.main.timer_start(water_delay, "drain_water_step_3", false)
+  sol.main.timer_start(drain_water_step_3, water_delay)
 end
 
 function drain_water_step_3()
   sol.map.tile_set_enabled("water_"..current_pool_index.."_less_2", false)
   sol.map.tile_set_enabled("water_"..current_pool_index.."_less_3", true)
-  sol.main.timer_start(water_delay, "drain_water_step_4", false)
+  sol.main.timer_start(drain_water_step_4, water_delay)
 end
 
 function drain_water_step_4()
   sol.map.tile_set_enabled("water_"..current_pool_index.."_less_3", false)
-  sol.main.timer_start(500, "sol.map.camera_restore", false)
+  sol.main.timer_start(sol.map.camera_restore, 500)
   sol.game.savegame_set_boolean(savegame_variable + current_pool_index,
     pools[current_pool_index].initially_filled)
   set_water_drained(current_pool_index)

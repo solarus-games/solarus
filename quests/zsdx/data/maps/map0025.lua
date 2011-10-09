@@ -23,7 +23,7 @@ function event_hero_on_sensor(sensor_name)
     -- the miniboss is alive
     sol.map.door_close("miniboss_door")
     sol.map.hero_freeze()
-    sol.main.timer_start(1000, "miniboss_timer", false)
+    sol.main.timer_start(miniboss_timer, 1000)
     fighting_miniboss = true
   end
 end
@@ -48,12 +48,12 @@ function event_enemy_dead(enemy_name)
 end
 
 function event_camera_reached_target()
-  sol.main.timer_start(1000, "boss_key_timer", false)
+  sol.main.timer_start(boss_key_timer, 1000)
 end
 
 function boss_key_timer()
   sol.main.play_sound("chest_appears")
   sol.map.chest_set_enabled("boss_key_chest", true)
-  sol.main.timer_start(1000, "sol.map.camera_restore", false)
+  sol.main.timer_start(sol.map.camera_restore, 1000)
 end
 

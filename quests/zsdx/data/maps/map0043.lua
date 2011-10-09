@@ -25,7 +25,7 @@ function event_hero_on_sensor(sensor_name)
       and not sol.game.savegame_get_boolean(901)
       and not fighting_miniboss then
     sol.map.hero_freeze()
-    sol.main.timer_start(1000, "miniboss_timer", false)
+    sol.main.timer_start(miniboss_timer, 1000)
     fighting_miniboss = true
   elseif sensor_name == "start_boss_sensor"
       and not sol.game.savegame_get_boolean(902)
@@ -70,7 +70,7 @@ end
 function event_treasure_obtained(item_name, variant, savegame_variable)
 
   if item_name == "heart_container" then
-    sol.main.timer_start(9000, "open_final_room", false)
+    sol.main.timer_start(open_final_room, 9000)
     sol.main.play_music("victory.spc")
     sol.map.hero_freeze()
     sol.map.hero_set_direction(3)

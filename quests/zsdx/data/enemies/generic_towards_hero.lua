@@ -91,7 +91,7 @@ function check_hero()
   elseif not near_hero and going_hero then
     go_random()
   end
-  sol.main.timer_start(1000, "check_hero", false)
+  sol.main.timer_start(check_hero, 1000)
 end
 
 function go_random()

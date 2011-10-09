@@ -27,6 +27,8 @@
  *
  * Properties:
  * - speed
+ * - ignore_obstacles
+ * - smooth
  * - displayed_direction (read-only)
  */
 class TargetMovement: public SmoothMovement {

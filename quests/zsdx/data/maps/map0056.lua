@@ -1,7 +1,5 @@
 -- Dungeon 6 3F
 
-camera_timer = nil
-
 function are_all_torches_on()
 
   return sol.map.interactive_entity_exists("torch_1")
@@ -20,14 +18,8 @@ function event_update()
   if not sol.map.door_is_open("torches_door")
       and are_all_torches_on() then
 
-    camera_timer = open_torches_door
-    sol.map.camera_move(360, 104, 250)
+    sol.map.camera_move(360, 104, 250, open_torches_door)
   end
-end
-
-function event_camera_reached_target()
-
-  sol.main.timer_start(camera_timer, 1000)
 end
 
 function open_torches_door()
@@ -35,6 +27,5 @@ function open_torches_door()
   sol.main.play_sound("secret")
   sol.map.door_open("torches_door")
   lock_torches()
-  sol.main.timer_start(sol.map.camera_restore, 1000)
 end
 

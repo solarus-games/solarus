@@ -84,14 +84,8 @@ function event_switch_activated(switch_name)
 
   if switch_name == "statue_switch"
       and not sol.map.door_is_open("statue_door") then
-    camera_timer = open_statue_door
-    sol.map.camera_move(432, 536, 250)
+    sol.map.camera_move(432, 536, 250, open_statue_door)
   end
-end
-
-function event_camera_reached_target()
-
-  sol.main.timer_start(camera_timer, 1000)
 end
 
 function open_statue_door()
@@ -99,7 +93,6 @@ function open_statue_door()
   sol.main.play_sound("secret")
   sol.main.play_sound("door_open")
   sol.map.door_open("statue_door")
-  sol.main.timer_start(sol.map.camera_restore, 1000)
 end
 
 -- Returns whether all torches are on

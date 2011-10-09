@@ -70,18 +70,11 @@ function event_switch_activated(switch_name)
 
   if switch_name == "c_door_switch"
       and not sol.map.door_is_open("c_door") then
-    camera_timer = open_c_door
-    sol.map.camera_move(504, 504, 250)
+    sol.map.camera_move(504, 504, 250, open_c_door)
   elseif switch_name == "e_door_switch"
       and not sol.map.door_is_open("e_door") then
-    camera_timer = open_e_door
-    sol.map.camera_move(1048, 488, 250)
+    sol.map.camera_move(1048, 488, 250, open_e_door)
   end
-end
-
-function event_camera_reached_target()
-
-  sol.main.timer_start(camera_timer, 1000)
 end
 
 function open_c_door()
@@ -89,7 +82,6 @@ function open_c_door()
   sol.main.play_sound("secret")
   sol.main.play_sound("door_open")
   sol.map.door_open("c_door")
-  sol.main.timer_start(sol.map.camera_restore, 1000)
 end
 
 function open_e_door()
@@ -97,7 +89,6 @@ function open_e_door()
   sol.main.play_sound("secret")
   sol.main.play_sound("door_open")
   sol.map.door_open("e_door")
-  sol.main.timer_start(sol.map.camera_restore, 1000)
 end
 
 function event_hero_on_sensor(sensor_name)

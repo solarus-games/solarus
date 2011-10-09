@@ -1,6 +1,5 @@
 -- Dungeon 6 2F
 
-camera_timer = nil
 remove_water_delay = 500
 
 function event_map_started(destination_point_name)
@@ -52,13 +51,8 @@ function event_switch_activated(switch_name)
 
   if switch_name == "water_switch"
       and not sol.game.savegame_get_boolean(319) then
-    sol.map.camera_move(616, 192, 250)
-    camera_timer = remove_water
+    sol.map.camera_move(616, 192, 250, remove_water)
   end
-end
-
-function event_camera_reached_target()
-  sol.main.timer_start(camera_timer, 1000)
 end
 
 function remove_water()
@@ -87,6 +81,5 @@ function remove_water_4()
   sol.map.obstacle_set_group_enabled("water_off_obstacle", true)
   sol.game.savegame_set_boolean(319, true)
   sol.main.play_sound("secret")
-  sol.main.timer_start(sol.map.camera_restore, 1000)
 end
 

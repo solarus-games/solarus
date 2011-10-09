@@ -2,7 +2,6 @@
 
 water_delay = 500 -- delay between each water step
 current_pool_index = 0
-camera_timer = nil
 
 pools = {
   { initially_filled = false, trigger = "switch", x = 672, y = 96  },
@@ -55,14 +54,12 @@ end
 
 function fill_water(index)
   current_pool_index = index
-  camera_timer = fill_water_step_1
-  sol.map.camera_move(pools[index].x, pools[index].y, 250)
+  sol.map.camera_move(pools[index].x, pools[index].y, 250, fill_water_step_1, 1000, 2500)
 end
 
 function drain_water(index)
   current_pool_index = index
-  camera_timer = drain_water_step_1
-  sol.map.camera_move(pools[index].x, pools[index].y, 250)
+  sol.map.camera_move(pools[index].x, pools[index].y, 250, drain_water_step_1, 1000, 2500)
 end
 
 function set_water_filled(i)
@@ -105,10 +102,6 @@ function set_water_drained(i)
   end
 end
 
-function event_camera_reached_target()
-  sol.main.timer_start(camera_timer, 1000)
-end
-
 function fill_water_step_1()
   sol.main.play_sound("water_fill_begin")
   sol.main.play_sound("water_fill")
@@ -131,7 +124,6 @@ end
 function fill_water_step_4()
   sol.map.tile_set_enabled("water_"..current_pool_index.."_less_1", false)
   sol.map.tile_set_enabled("water_"..current_pool_index.."_full", true)
-  sol.main.timer_start(sol.map.camera_restore, 500)
   sol.game.savegame_set_boolean(savegame_variable + current_pool_index,
     not pools[current_pool_index].initially_filled)
   set_water_filled(current_pool_index)
@@ -159,7 +151,6 @@ end
 
 function drain_water_step_4()
   sol.map.tile_set_enabled("water_"..current_pool_index.."_less_3", false)
-  sol.main.timer_start(sol.map.camera_restore, 500)
   sol.game.savegame_set_boolean(savegame_variable + current_pool_index,
     pools[current_pool_index].initially_filled)
   set_water_drained(current_pool_index)

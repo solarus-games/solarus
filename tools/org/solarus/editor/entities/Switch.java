@@ -29,12 +29,14 @@ public class Switch extends MapEntity {
     public enum Subtype implements EntitySubtype {
 	WALKABLE_INVISIBLE,
 	WALKABLE_VISIBLE,
-	ARROW_TARGET;
+	ARROW_TARGET,
+	SOLID;
 
 	public static final String[] humanNames = {
 	  "Walkable invisible",
 	  "Walkable visible",
-	  "Arrow target"
+	  "Arrow target",
+	  "Solid"
 	};
 
 	public int getId() {
@@ -54,9 +56,10 @@ public class Switch extends MapEntity {
      * Description of the default image representing this kind of entity.
      */
     public static final EntityImageDescription[] generalImageDescriptions = {
-	new EntityImageDescription("miscellaneous_entities.png", 56, 16, 16, 16), // walkable invisible
-	new EntityImageDescription("miscellaneous_entities.png", 72, 16, 16, 16), // walkable visible
-	new EntityImageDescription("miscellaneous_entities.png", 88, 16, 16, 16), // arrow target
+	new EntityImageDescription("miscellaneous_entities.png", 56, 16, 16, 16),  // walkable invisible
+	new EntityImageDescription("miscellaneous_entities.png", 72, 16, 16, 16),  // walkable visible
+	new EntityImageDescription("miscellaneous_entities.png", 88, 16, 16, 16),  // arrow target
+	new EntityImageDescription("miscellaneous_entities.png", 104, 16, 16, 16), // solid
     };
 
     /**

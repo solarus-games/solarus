@@ -5512,10 +5512,85 @@ line1 = "Il y a peut-être moyen"
 line2 = "de forcer cette vieille"
 line3 = "serrure..."
 
+[dungeon_5.puzzle_solved]
+#       |-----------------------|
+line1 = "Dans les profondeurs du"
+line2 = "château, un mécanisme"
+line3 = "se déclenche..."
+
+[dungeon_5.agahnim_beginning]
+#       |-----------------------|
+line1 = "Ainsi donc vous avez"
+line2 = "réussi à échapper à mes"
+line3 = "gardes et à déjouer les"
+next = dungeon_5.agahnim_beginning.2
+
+[dungeon_5.agahnim_beginning.2]
+#       |-----------------------|
+line1 = "pièges de mon château."
+line2 = "Mais votre escapade"
+line3 = "s'arrête là !"
+
+[dungeon_5.agahnim_end]
+#       |-----------------------|
+line1 = "...$0...........$0"
+line2 = "Vous m'avez vaincu"
+line3 = "cette fois..."
+next = dungeon_5.agahnim_end.2
+
+[dungeon_5.agahnim_end.2]
+#       |-----------------------|
+line1 = "Mais nous nous"
+line2 = "reverrons !"
+next = dungeon_5.agahnim_end.3
+
+[dungeon_5.agahnim_end.3]
+#       |-----------------------|
+line1 = "Votre petite aventure"
+line2 = "ne change rien..."
+line3 = "Sahasrahla est en mon"
+next = dungeon_5.agahnim_end.4
+
+[dungeon_5.agahnim_end.4]
+#       |-----------------------|
+line1 = "pouvoir et il va me"
+line2 = "révéler où se trouve"
+line3 = "la Princesse et les"
+next = dungeon_5.agahnim_end.5
+
+[dungeon_5.agahnim_end.5]
+#       |-----------------------|
+line1 = "huit enfants..."
+line2 = "Ah ah ah ah ah !"
+next = dungeon_5.agahnim_end.6
+
+[dungeon_5.agahnim_end.6]
+#       |-----------------------|
+line1 = "Sur ce, je dois vous"
+line2 = "laisser. A une"
+line3 = "prochaine fois !"
+
 [dungeon_6.welcome]
 #       |-----------------------|
 line1 = "        Niveau 6"
 line2 = "    Dédale d'Inferno   "
+
+[dungeon_6.torches_hint]
+#       |-----------------------|
+line1 = "Les trois lumières"
+line2 = "indiquent l'endroit de"
+line3 = "la chute."
+
+[dungeon_6.dont_fall_hint]
+#       |-----------------------|
+line1 = "Ne tombe pas, mais"
+line2 = "saute."
+
+[dungeon_6.close_way_hint]
+#       |-----------------------|
+line1 = "Puis referme le chemin"
+line2 = "derrière toi."
+
 
 #================================
 

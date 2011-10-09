@@ -211,11 +211,19 @@ booleans:
 304	dungeon 6 2F: locked door
 305	dungeon 6 3F: chest with small key (south-east)
 306	dungeon 6 3F: big key door
-307	dungeon 6 3F: small key block
+307	dungeon 6 3F: small key block (east)
 308	dungeon 6 4F: big chest (golden glove)
-309	dungeon 6 4F: heart container
+309	dungeon 6 4F: piece of heart
 310	dungeon 6 4F: locked door
 311	dungeon 6 4F: boss key door
+312	dungeon 6 1F: chest with the map
+313	dungeon 6 1F: torches lit
+314	dungeon 6 2F: weak floor
+315	dungeon 6 3F: chest with the big key
+316	dungeon 6 3F: chest with small key (north-west)
+317	dungeon 6 1F: chest with small key (north)
+318	dungeon 6 3F: small key block (north-west)
+319	dungeon 6 2F: water drained
 
 400	dungeon 4 B1: small key in the sensors room
 401	dungeon 4 1F: boss door
@@ -252,6 +260,13 @@ booleans:
 513	dungeon 5 1F: locked door (south-west)
 514	dungeon 5 1F: east door
 515	dungeon 5: block in the big key room
+516	dungeon 5 2F: locked door to the miniboss
+517	dungeon 5 2F: miniboss
+518	dungeon 5 B1: chest with the boss key open
+519	dungeon 5 B1: chest with the boss key enabled
+520	dungeon 5: boss killed
+521	dungeon 5: boss heart container
+523	dungeon 5 B1: boss key door
 
 600-699	dungeon 7
 700-799	dungeon 8

@@ -24,6 +24,10 @@ function event_map_started(destination_point_name)
     prison_2_nb_messages = 2
   end
 
+  if not sol.game.savegame_get_boolean(519) then
+    sol.map.chest_set_enabled("boss_key_chest", false)
+  end
+
   init_guards()
 end
 

@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "entities/Explosion.h"
+#include "entities/Switch.h"
 #include "entities/CrystalSwitch.h"
 #include "entities/Sensor.h"
 #include "entities/Enemy.h"
@@ -151,8 +152,19 @@ void Explosion::notify_collision(MapEntity &other_entity, Sprite &other_sprite, 
 }
 
 /**
+ * @brief This function is called when a the sprite of a switch
+ * detects a pixel-precise collision with a sprite of this entity.
+ * @param sw the switch
+ * @param sprite_overlapping the sprite of the current entity that collides with the switch
+ */
+void Explosion::notify_collision_with_switch(Switch& sw, Sprite& sprite_overlapping) {
+
+  sw.try_activate();
+}
+
+/**
  * @brief This function is called when a the sprite of a crystal switch 
- * detects a pixel-perfect collision with a sprite of this entity.
+ * detects a pixel-precise collision with a sprite of this entity.
  * @param crystal_switch the crystal switch
  * @param sprite_overlapping the sprite of the current entity that collides with the crystal switch
  */

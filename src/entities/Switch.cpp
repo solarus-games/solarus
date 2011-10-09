@@ -38,28 +38,31 @@
  * @param inactivate_when_leaving true to inactivate the switch when the hero or
  * the block leaves it
  */
-Switch::Switch(const std::string &name, Layer layer, int x, int y,
+Switch::Switch(const std::string& name, Layer layer, int x, int y,
 	       Subtype subtype, bool needs_block, bool inactivate_when_leaving):
   Detector(COLLISION_NONE, name, layer, x, y, 16, 16),
-  subtype(subtype), activated(false), locked(false),
-  needs_block(needs_block), inactivate_when_leaving(inactivate_when_leaving),
+  subtype(subtype),
+  activated(false),
+  locked(false),
+  needs_block(needs_block),
+  inactivate_when_leaving(inactivate_when_leaving),
   entity_overlapping(NULL) {
 
-  Debug::check_assertion(subtype != WALKABLE_INVISIBLE || !needs_block,
-      StringConcat() << "The switch '" << name << "' is invisible but needs a block");
-
   // sprite
-  if (subtype == WALKABLE_VISIBLE) {
-    create_sprite("entities/switch");
-    get_sprite().set_current_animation("inactivated");
-  }
-
-  // collisions
   if (is_walkable()) {
     set_collision_modes(COLLISION_CUSTOM);
+    if (subtype == WALKABLE_VISIBLE) {
+      create_sprite("entities/switch");
+      get_sprite().set_current_animation("inactivated");
+    }
   }
-  else {
+  else if (subtype == ARROW_TARGET) {
     set_collision_modes(COLLISION_FACING_POINT);
+  }
+  else if (subtype == SOLID) {
+    create_sprite("entities/solid_switch");
+    get_sprite().set_current_animation("inactivated");
+    set_collision_modes(COLLISION_SPRITE | COLLISION_RECTANGLE);
   }
 }
 
@@ -82,7 +85,7 @@ Switch::~Switch() {
  * @param y y coordinate of the entity
  * @return the instance created
  */
-MapEntity* Switch::parse(Game &game, std::istream &is, Layer layer, int x, int y) {
+MapEntity* Switch::parse(Game& game, std::istream& is, Layer layer, int x, int y) {
 
   std::string name;
   int subtype, needs_block, inactivate_when_leaving;
@@ -104,11 +107,37 @@ EntityType Switch::get_type() {
 }
 
 /**
- * @brief Returns wether this switch is a walkable switch.
- * @return true if the subtype of switch is WALKABLE_INVISIBLE or WALKABLE_VISIBLE
+ * @brief Returns whether this entity is an obstacle for another one when
+ * it is enabled.
+ * @param other another entity
+ * @return true if this entity is an obstacle for the other one
+ */
+bool Switch::is_obstacle_for(MapEntity& other) {
+  return other.is_switch_obstacle(*this);
+}
+
+/**
+ * @brief Returns whether this switch is a walkable switch.
+ * @return true if the subtype of this switch is WALKABLE_INVISIBLE or WALKABLE_VISIBLE
  */
 bool Switch::is_walkable() {
   return subtype == WALKABLE_INVISIBLE || subtype == WALKABLE_VISIBLE;
+}
+
+/**
+ * @brief Returns whether this switch is an arrow target.
+ * @return true if the subtype of this switch is ARROW_TARGET
+ */
+bool Switch::is_arrow_target() {
+  return subtype == ARROW_TARGET;
+}
+
+/**
+ * @brief Returns whether this switch is a solid switch.
+ * @return true if the subtype of this switch is SOLID
+ */
+bool Switch::is_solid() {
+  return subtype == SOLID;
 }
 
 /**
@@ -131,7 +160,7 @@ void Switch::activate() {
 
     set_activated(true);
 
-    if (subtype == WALKABLE_VISIBLE) {
+    if (subtype == WALKABLE_VISIBLE || subtype == SOLID) {
       Sound::play("switch");
     }
 
@@ -151,7 +180,7 @@ void Switch::set_activated(bool activated) {
   if (activated != this->activated) {
     this->activated = activated;
 
-    if (subtype == WALKABLE_VISIBLE) {
+    if (subtype == WALKABLE_VISIBLE || subtype == SOLID) {
       if (activated) {
         get_sprite().set_current_animation("activated");
       }
@@ -204,11 +233,11 @@ void Switch::update() {
  * @param entity an entity
  * @return true if the entity's collides with this entity
  */
-bool Switch::test_collision_custom(MapEntity &entity) {
+bool Switch::test_collision_custom(MapEntity& entity) {
 
   // this collision test is performed for walkable switches only
 
-  const Rectangle &entity_rectangle = entity.get_bounding_box();
+  const Rectangle& entity_rectangle = entity.get_bounding_box();
   int x1 = entity_rectangle.get_x() + 4;
   int x2 = x1 + entity_rectangle.get_width() - 9;
   int y1 = entity_rectangle.get_y() + 4;
@@ -223,7 +252,7 @@ bool Switch::test_collision_custom(MapEntity &entity) {
  * @param entity_overlapping the entity overlapping the detector
  * @param collision_mode the collision mode that detected the collision
  */
-void Switch::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
+void Switch::notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) {
 
   if (&entity_overlapping == this->entity_overlapping) {
     // already overlapping
@@ -232,7 +261,24 @@ void Switch::notify_collision(MapEntity &entity_overlapping, CollisionMode colli
   }
 
   if (!locked) {
-    entity_overlapping.notify_collision_with_switch(*this);
+    entity_overlapping.notify_collision_with_switch(*this, collision_mode);
+  }
+}
+
+/**
+ * @brief Notifies this entity that another sprite is overlapping it.
+ *
+ * This function is called by check_collision(MapEntity*, Sprite*) when another entity's
+ * sprite overlaps a sprite of this detector.
+ *
+ * @param other_entity the entity overlapping this detector
+ * @param other_sprite the sprite of other_entity that is overlapping this detector
+ * @param this_sprite the sprite of this detector that is overlapping the other entity's sprite
+ */
+void Switch::notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite) {
+
+  if (!locked) {
+    other_entity.notify_collision_with_switch(*this, other_sprite);
   }
 }
 
@@ -243,7 +289,7 @@ void Switch::notify_collision(MapEntity &entity_overlapping, CollisionMode colli
  *
  * @param hero the hero
  */
-void Switch::try_activate(Hero &hero) {
+void Switch::try_activate(Hero& hero) {
 
   if (is_walkable() && !needs_block && !is_activated()) {
     // this switch allows the hero to activate it
@@ -259,7 +305,7 @@ void Switch::try_activate(Hero &hero) {
  *
  * @param block the block overlapping this switch
  */
-void Switch::try_activate(Block &block) {
+void Switch::try_activate(Block& block) {
 
   if (subtype == WALKABLE_VISIBLE && !is_activated()) {
     // blocks can only activate walkable, visible switches
@@ -275,10 +321,25 @@ void Switch::try_activate(Block &block) {
  *
  * @param arrow the arrow overlapping this switch
  */
-void Switch::try_activate(Arrow &arrow) {
+void Switch::try_activate(Arrow& arrow) {
 
-  if (subtype == ARROW_TARGET && !is_activated()) {
-    // arrows can only activate arrow targets
+  if ((subtype == ARROW_TARGET || subtype == SOLID)
+      && !is_activated()) {
+    // arrows can only activate arrow targets and solid switches
+    activate();
+  }
+}
+
+/**
+ * @brief This function is called when any entity overlaps this switch.
+ *
+ * Only solid switches can be activated this way.
+ * The switch is activated if its properties allow it.
+ */
+void Switch::try_activate() {
+
+  // arbitrary entities can activate solid switches
+  if (subtype == SOLID && !is_activated()) {
     activate();
   }
 }

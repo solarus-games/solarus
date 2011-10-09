@@ -226,6 +226,41 @@ int Script::enemy_api_set_pushed_back_when_hurt(lua_State *l) {
 }
 
 /**
+ * @brief Returns whether the hero is pushed away when he strikes the enemy with the sword.
+ *
+ * - Return value (boolean): true if the hero is pushed away when using the sword
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::enemy_api_get_push_hero_on_sword(lua_State* l) {
+
+  Script& script = get_script(l, 0);
+  Enemy& enemy = script.get_enemy();
+
+  lua_pushboolean(l, enemy.get_push_hero_on_sword());
+
+  return 1;
+}
+
+/**
+ * @brief Sets whether the hero is pushed away when he strikes the enemy with the sword.
+ *
+ * - Argument 1 (boolean): true to push the hero away when using the sword
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::enemy_api_set_push_hero_on_sword(lua_State* l) {
+
+  Script& script = get_script(l, 1);
+  Enemy& enemy = script.get_enemy();
+
+  bool push = lua_toboolean(l, 1);
+  enemy.set_push_hero_on_sword(push);
+
+  return 0;
+}
+
+/**
  * @brief Returns the style of sounds to play when the enemy is hurt or killed.
  *
  * - Return value (string): "normal", "monster" or "boss"
@@ -804,6 +839,30 @@ int Script::enemy_api_restart(lua_State *l) {
   Enemy& enemy = script.get_enemy();
 
   enemy.restart();
+
+  return 0;
+}
+
+/**
+ * @brief Hurts the enemy
+ *
+ * - Argument 1 (integer): number of life points to remove
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::enemy_api_hurt(lua_State *l) {
+
+  Script& script = get_script(l, 1);
+  Enemy& enemy = script.get_enemy();
+
+  int life_points = luaL_checkinteger(l, 1);
+
+  if (enemy.is_in_normal_state() && !enemy.invulnerable) {
+    Hero& hero = script.get_game().get_hero();
+    enemy.life -= life_points;
+    enemy.hurt(hero);
+    enemy.notify_hurt(hero, ATTACK_SCRIPT, life_points);
+  }
 
   return 0;
 }

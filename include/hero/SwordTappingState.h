@@ -30,14 +30,18 @@ class Hero::SwordTappingState: public Hero::State {
 
   public:
 
-    SwordTappingState(Hero &hero);
+    SwordTappingState(Hero& hero);
     ~SwordTappingState();
 
-    void start(State *previous_state);
+    void start(State* previous_state);
+    void stop(State* next_state);
     void update();
     void set_suspended(bool suspended);
     bool can_sword_hit_crystal_switch();
-    bool is_cutting_with_sword(Detector &detector);
+    bool is_cutting_with_sword(Detector& detector);
+    bool is_teletransporter_obstacle(Teletransporter& teletransporter);
+    void notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
+        EnemyReaction::Reaction& result, bool killed);
 };
 
 #endif

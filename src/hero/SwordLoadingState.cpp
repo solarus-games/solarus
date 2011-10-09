@@ -19,10 +19,12 @@
 #include "hero/SwordTappingState.h"
 #include "hero/FreeState.h"
 #include "hero/HeroSprites.h"
-#include "entities/Detector.h"
+#include "entities/Enemy.h"
+#include "movements/TemporalMovement.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/FileTools.h"
+#include "lowlevel/Geometry.h"
 #include "Game.h"
 #include "GameControls.h"
 #include <sstream>
@@ -31,7 +33,7 @@
  * @brief Constructor.
  * @param hero the hero controlled by this state
  */
-Hero::SwordLoadingState::SwordLoadingState(Hero &hero):
+Hero::SwordLoadingState::SwordLoadingState(Hero& hero):
   PlayerMovementState(hero) {
 
 }
@@ -47,7 +49,7 @@ Hero::SwordLoadingState::~SwordLoadingState() {
  * @brief Starts this state.
  * @param previous_state the previous state
  */
-void Hero::SwordLoadingState::start(State *previous_state) {
+void Hero::SwordLoadingState::start(State* previous_state) {
 
   PlayerMovementState::start(previous_state);
 
@@ -110,12 +112,12 @@ void Hero::SwordLoadingState::notify_movement_tried(bool success) {
 
   PlayerMovementState::notify_movement_tried(success);
 
-  Detector *facing_entity = hero.get_facing_entity();
+  Detector* facing_entity = hero.get_facing_entity();
 
-  if (!success					// the hero has just tried to move unsuccessfuly
-      && hero.is_facing_point_on_obstacle()	// he is really facing an obstacle
-      && get_wanted_movement_direction8() == get_sprites().get_animation_direction8()	// he is trying to move towards the obstacle
-      && (facing_entity == NULL || !facing_entity->is_sword_ignored())) {		// the obstacle allows him to tap with his sword
+  if (!success                                  // the hero has just tried to move unsuccessfuly
+      && hero.is_facing_point_on_obstacle()     // he is really facing an obstacle
+      && get_wanted_movement_direction8() == get_sprites().get_animation_direction8()   // he is trying to move towards the obstacle
+      && (facing_entity == NULL || !facing_entity->is_sword_ignored())) {               // the obstacle allows him to tap with his sword
 
     hero.set_state(new SwordTappingState(hero));
   }
@@ -132,7 +134,17 @@ void Hero::SwordLoadingState::notify_attacked_enemy(EnemyAttack attack, Enemy& v
     EnemyReaction::Reaction& result, bool killed) {
 
   if (result.type != EnemyReaction::IGNORED && attack == ATTACK_SWORD) {
-    hero.set_state(new FreeState(hero));
+
+    if (victim.get_push_hero_on_sword()) {
+      // let SwordTappingState do the job so that no player movement interferes
+      State* state = new SwordTappingState(hero);
+      hero.set_state(state);
+      state->notify_attacked_enemy(attack, victim, result, killed);
+    }
+    else {
+      // after an attack, stop loading the sword
+      hero.set_state(new FreeState(hero));
+    }
   }
 }
 
@@ -191,3 +203,4 @@ void Hero::SwordLoadingState::play_load_sound() {
     Sound::play("sword_spin_attack_load");
   }
 }
+

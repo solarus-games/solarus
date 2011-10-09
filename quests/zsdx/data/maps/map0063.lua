@@ -2,13 +2,19 @@
 
 sol.main.include("maps/prison_guard")
 
+fighting_miniboss = false
+puzzle_next_sensor = 1
+
 function event_map_started(destination_point_name)
 
   init_guard("guard_3", "666666666666666666644444222222222222222222200000")
 
   if sol.game.savegame_get_boolean(515) then
     sol.map.tile_set_enabled("weak_floor", false)
+    sol.map.sensor_set_enabled("weak_floor_sensor", false)
   end
+
+  sol.map.door_set_open("miniboss_door", true)
 end
 
 function event_map_opening_transition_finished(destination_point_name)
@@ -34,6 +40,30 @@ end
 function event_hero_on_sensor(sensor_name)
 
   sensor_check_guard(sensor_name)
+
+  if sensor_name == "start_miniboss_sensor"
+      and not sol.game.savegame_get_boolean(517)
+      and not fighting_miniboss then
+    sol.map.door_close("miniboss_door")
+    sol.map.hero_freeze()
+    sol.main.timer_start(1000, "miniboss_timer", false)
+    fighting_miniboss = true
+  elseif sensor_name == "puzzle_wrong_sensor" then
+    puzzle_next_sensor = 1
+  else
+    local i = string.match(sensor_name, "puzzle_sensor_([1-4])")
+    if i ~= nil
+        and not sol.game.savegame_get_boolean(519) then
+      i = tonumber(i)
+      if puzzle_next_sensor == 5 and i == 1 then
+        puzzle_solved()
+      elseif i == puzzle_next_sensor then
+	puzzle_next_sensor = puzzle_next_sensor + 1
+      else
+	puzzle_next_sensor = 1
+      end
+    end
+  end
 end
 
 function event_hero_still_on_sensor(sensor_name)
@@ -44,6 +74,10 @@ end
 function event_dialog_finished(first_message_id, answer)
 
   dialog_check_guard(first_message_id)
+
+  if first_message_id == "dungeon_5.puzzle_solved" then
+    sol.map.hero_unfreeze()
+  end
 end
 
 function event_switch_activated(switch_name)
@@ -88,6 +122,7 @@ function event_update()
 
   if not sol.map.door_is_open("torches_door")
       and are_all_torches_on() then
+
     sol.main.play_sound("secret")
     sol.map.door_open("torches_door")
     lock_torches()
@@ -100,6 +135,7 @@ function event_sensor_collision_explosion(sensor_name)
       and sol.map.tile_is_enabled("weak_floor") then
 
     sol.map.tile_set_enabled("weak_floor", false)
+    sol.map.sensor_set_enabled("weak_floor_sensor", false)
     sol.main.play_sound("secret")
     sol.game.savegame_set_boolean(515, true)
     sol.main.timer_start(1500, "weak_floor_block_fall")
@@ -116,5 +152,38 @@ end
 function weak_floor_block_fall_end()
 
   sol.main.play_sound("bomb")
+end
+
+function miniboss_timer()
+  sol.main.play_music("boss.spc")
+  sol.map.enemy_set_enabled("miniboss", true)
+  sol.map.hero_unfreeze()
+end
+
+function event_enemy_dead(enemy_name)
+
+  if enemy_name == "miniboss" then
+    sol.main.play_music("castle.spc")
+    sol.map.door_open("miniboss_door")
+  end
+end
+
+function puzzle_solved()
+
+  sol.map.hero_freeze()
+  sol.main.play_sound("enemy_awake")
+  sol.main.timer_start(1000, "puzzle_solved_2")
+end
+
+function puzzle_solved_2()
+
+  sol.main.timer_start(1000, "puzzle_solved_3")
+end
+
+function puzzle_solved_3()
+
+  sol.main.play_sound("secret")
+  sol.game.savegame_set_boolean(519, true)
+  sol.map.dialog_start("dungeon_5.puzzle_solved")
 end
 

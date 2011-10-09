@@ -618,6 +618,10 @@
 12	0	392	520	16	8	custom_obstacle_4	1	1	1	1
 12	0	488	328	16	8	custom_obstacle_5	1	1	1	1
 12	0	184	344	16	8	custom_obstacle_6	1	1	1	1
+7	0	184	93	enemy	3	blue_dogman	0	-1	_random	1	-1
+7	0	328	293	enemy_2	3	red_dogman	0	-1	_random	1	-1
+7	0	664	109	enemy_3	3	red_dogman	0	-1	_random	1	-1
+7	0	160	573	enemy_4	3	blue_dogman	0	-1	_random	1	-1
 0	2	408	232	144	40	511
 0	2	408	216	144	16	512
 0	2	400	224	8	40	513

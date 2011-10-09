@@ -28,6 +28,7 @@ enum EnemyAttack {
   ATTACK_HOOKSHOT,    /**< hit by the hookshot */
   ATTACK_BOOMERANG,   /**< hit by the boomerang */
   ATTACK_LAMP,        /**< burned by the lamp */
+  ATTACK_SCRIPT,      /**< a script decided to hurt the enemy */
   ATTACK_NUMBER
 };
 

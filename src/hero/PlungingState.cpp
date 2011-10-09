@@ -60,7 +60,7 @@ void Hero::PlungingState::update() {
 
   if (get_sprites().is_animation_finished()) {
 
-    bool drown = false;
+    int drown = 0;
     if (hero.get_ground() == GROUND_DEEP_WATER) {
 
       if (get_equipment().has_ability("swim")) {
@@ -71,14 +71,14 @@ void Hero::PlungingState::update() {
       }
     }
     else if (hero.get_ground() == GROUND_LAVA) {
-      drown = true;
+      drown = 4;
     }
     else {
       hero.set_state(new FreeState(hero));
     }
 
-    if (drown) {
-      get_equipment().remove_life(1);
+    if (drown > 0) {
+      get_equipment().remove_life(drown);
       Sound::play("message_end");
       hero.set_state(new BackToSolidGroundState(hero, false));
     }

@@ -231,6 +231,19 @@ void CustomEnemy::notify_sprite_animation_finished(Sprite& sprite, const std::st
 }
 
 /**
+ * @brief This function is called when this enemy detects a collision with another enemy.
+ * @param other the other enemy
+ * @param other_sprite the other enemy's sprite that overlaps a sprite of this enemy
+ * @param this_sprite this enemy's sprite that overlaps the other
+ */
+void CustomEnemy::notify_collision_with_enemy(Enemy& other, Sprite& other_sprite, Sprite& this_sprite) {
+
+  if (is_in_normal_state()) {
+    script->event_collision_enemy(other.get_name(), other_sprite, this_sprite);
+  }
+}
+
+/**
  * @brief This function is called when the enemy is attacked by a custom effect attack.
  * @param attack the attack
  * @param this_sprite the sprite of this enemy subject to the attack, or NULL

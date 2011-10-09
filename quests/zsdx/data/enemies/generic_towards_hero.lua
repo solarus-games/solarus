@@ -12,12 +12,13 @@
 --   damage = 2,
 --   normal_speed = 32,
 --   faster_speed = 48,
---   hurt_sound_style = "normal"
+--   hurt_sound_style = "normal",
+--   push_hero_on_sword = false,
+--   movement_create = sol.main.random_path_movement_create
 -- })
 
 -- The parameter of set_properties() is an array.
--- Its values are all optional except main_sprite
--- and sword_sprite.
+-- Its values are all optional except the sprite.
 
 properties = {}
 going_hero = false
@@ -41,6 +42,12 @@ function set_properties(prop)
   if properties.hurt_sound_style == nil then
     properties.hurt_sound_style = "normal"
   end
+  if properties.push_hero_on_sword == nil then
+    properties.push_hero_on_sword = false
+  end
+  if properties.movement_create == nil then 
+    properties.movement_create = sol.main.random_path_movement_create
+  end
 end
 
 function event_appear()
@@ -49,6 +56,7 @@ function event_appear()
   sol.enemy.set_damage(properties.damage)
   sol.enemy.create_sprite(properties.sprite)
   sol.enemy.set_hurt_sound_style(properties.hurt_sound_style)
+  sol.enemy.set_push_hero_on_sword(properties.push_hero_on_sword)
   sol.enemy.set_size(16, 16)
   sol.enemy.set_origin(8, 13)
 end
@@ -82,7 +90,7 @@ function check_hero()
 end
 
 function go_random()
-  local m = sol.main.random_path_movement_create(properties.normal_speed)
+  local m = properties.movement_create(properties.normal_speed)
   sol.enemy.start_movement(m)
   going_hero = false
 end

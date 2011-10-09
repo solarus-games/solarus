@@ -87,7 +87,7 @@ const MapEntity::EntityTypeFeatures MapEntity::entity_types_features[] = {
   { true,  true,  true,  true}, // interactive entity
   { true,  true,  true,  true}, // block
   { true,  true,  true, false}, // dynamic tile
-  {false,  true,  true, false}, // switch
+  { true,  true,  true, false}, // switch
   { true, false, false, false}, // custom obstacle
   { true,  true, false, false}, // sensor
   { true,  true,  true, false}, // crystal switch
@@ -1155,11 +1155,20 @@ void MapEntity::set_enabled(bool enabled) {
   else {
     this->enabled = false;
     this->waiting_enabled = false;
-    if (get_movement() != NULL) {
-      get_movement()->set_suspended(suspended || !is_enabled());
-    }
-    notify_enabled(false);
   }
+
+  if (get_movement() != NULL) {
+    get_movement()->set_suspended(suspended || !enabled);
+  }
+
+  std::map<std::string, Sprite*>::iterator it;
+  for (it = sprites.begin(); it != sprites.end(); it++) {
+
+    Sprite& sprite = *(it->second);
+    sprite.set_suspended(suspended || !enabled);
+  }
+
+  notify_enabled(enabled);
 }
 
 /**
@@ -1268,7 +1277,7 @@ bool MapEntity::is_ladder_obstacle() {
  * @param hero the hero
  * @return true if the hero is currently an obstacle for this entity
  */
-bool MapEntity::is_hero_obstacle(Hero &hero) {
+bool MapEntity::is_hero_obstacle(Hero& hero) {
   return false;
 }
 
@@ -1280,7 +1289,7 @@ bool MapEntity::is_hero_obstacle(Hero &hero) {
  * @param block a block
  * @return true if the teletransporter is currently an obstacle for this entity
  */
-bool MapEntity::is_block_obstacle(Block &block) {
+bool MapEntity::is_block_obstacle(Block& block) {
   return true;
 }
 
@@ -1292,7 +1301,7 @@ bool MapEntity::is_block_obstacle(Block &block) {
  * @param teletransporter a teletransporter
  * @return true if the teletransporter is currently an obstacle for this entity
  */
-bool MapEntity::is_teletransporter_obstacle(Teletransporter &teletransporter) {
+bool MapEntity::is_teletransporter_obstacle(Teletransporter& teletransporter) {
   return true;
 }
 
@@ -1304,7 +1313,7 @@ bool MapEntity::is_teletransporter_obstacle(Teletransporter &teletransporter) {
  * @param conveyor_belt a conveyor belt
  * @return true if the conveyor belt is currently an obstacle for this entity
  */
-bool MapEntity::is_conveyor_belt_obstacle(ConveyorBelt &conveyor_belt) {
+bool MapEntity::is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt) {
   return true;
 }
 
@@ -1316,7 +1325,7 @@ bool MapEntity::is_conveyor_belt_obstacle(ConveyorBelt &conveyor_belt) {
  * @param stairs an stairs entity
  * @return true if the stairs are currently an obstacle for this entity
  */
-bool MapEntity::is_stairs_obstacle(Stairs &stairs) {
+bool MapEntity::is_stairs_obstacle(Stairs& stairs) {
   return true;
 }
 
@@ -1326,10 +1335,22 @@ bool MapEntity::is_stairs_obstacle(Stairs &stairs) {
  * This function returns false by default.
  *
  * @param sensor a sensor
- * @return true if the sensor are currently an obstacle for this entity
+ * @return true if the sensor is currently an obstacle for this entity
  */
-bool MapEntity::is_sensor_obstacle(Sensor &sensor) {
+bool MapEntity::is_sensor_obstacle(Sensor& sensor) {
   return false;
+}
+
+/**
+ * @brief Returns whether a switch is currently considered as an obstacle by this entity.
+ *
+ * By default, this function returns true for solid switches and false for other ones.
+ *
+ * @param sw a switch
+ * @return true if the switch is currently an obstacle for this entity
+ */
+bool MapEntity::is_switch_obstacle(Switch& sw) {
+  return sw.is_solid();
 }
 
 /**
@@ -1340,7 +1361,7 @@ bool MapEntity::is_sensor_obstacle(Sensor &sensor) {
  * @param raised_block a crystal switch block raised
  * @return true if the raised block is currently an obstacle for this entity
  */
-bool MapEntity::is_raised_block_obstacle(CrystalSwitchBlock &raised_block) {
+bool MapEntity::is_raised_block_obstacle(CrystalSwitchBlock& raised_block) {
   return true;
 }
 
@@ -1353,7 +1374,7 @@ bool MapEntity::is_raised_block_obstacle(CrystalSwitchBlock &raised_block) {
  * @param crystal_switch a crystal switch
  * @return true if the crystal switch is currently an obstacle for this entity
  */
-bool MapEntity::is_crystal_switch_obstacle(CrystalSwitch &crystal_switch) {
+bool MapEntity::is_crystal_switch_obstacle(CrystalSwitch& crystal_switch) {
   return true;
 }
 
@@ -1365,7 +1386,7 @@ bool MapEntity::is_crystal_switch_obstacle(CrystalSwitch &crystal_switch) {
  * @param npc a non-playing character
  * @return true if the NPC is currently an obstacle for this entity
  */
-bool MapEntity::is_npc_obstacle(InteractiveEntity &npc) {
+bool MapEntity::is_npc_obstacle(InteractiveEntity& npc) {
   return true;
 }
 
@@ -1377,7 +1398,7 @@ bool MapEntity::is_npc_obstacle(InteractiveEntity &npc) {
  * @param enemy an enemy
  * @return true if the enemy is currently an obstacle for this entity
  */
-bool MapEntity::is_enemy_obstacle(Enemy &enemy) {
+bool MapEntity::is_enemy_obstacle(Enemy& enemy) {
   return false;
 }
 
@@ -1389,7 +1410,7 @@ bool MapEntity::is_enemy_obstacle(Enemy &enemy) {
  * @param jump_sensor a non-diagonal jump sensor
  * @return true if the jump sensor is currently an obstacle for this entity
  */
-bool MapEntity::is_jump_sensor_obstacle(JumpSensor &jump_sensor) {
+bool MapEntity::is_jump_sensor_obstacle(JumpSensor& jump_sensor) {
   return true;
 }
 
@@ -1402,7 +1423,7 @@ bool MapEntity::is_jump_sensor_obstacle(JumpSensor &jump_sensor) {
  * @param destructible_item a destructible item
  * @return true if the destructible item is currently an obstacle for this entity
  */
-bool MapEntity::is_destructible_item_obstacle(DestructibleItem &destructible_item) {
+bool MapEntity::is_destructible_item_obstacle(DestructibleItem& destructible_item) {
 
   return !destructible_item.is_disabled();
 }
@@ -1575,8 +1596,19 @@ void MapEntity::notify_collision_with_sensor(Sensor &sensor, CollisionMode colli
 /**
  * @brief This function is called when a switch detects a collision with this entity.
  * @param sw a switch
+ * @param collision_mode the collision mode that detected the event
  */
-void MapEntity::notify_collision_with_switch(Switch &sw) {
+void MapEntity::notify_collision_with_switch(Switch& sw,
+    CollisionMode collision_mode) {
+}
+
+/**
+ * @brief This function is called when the sprite of a switch
+ * detects a pixel-precise collision with a sprite of this entity.
+ * @param switch the switch
+ * @param sprite_overlapping the sprite of the current entity that collides with the switch
+ */
+void MapEntity::notify_collision_with_switch(Switch& sw, Sprite& sprite_overlapping) {
 }
 
 /**
@@ -1584,12 +1616,13 @@ void MapEntity::notify_collision_with_switch(Switch &sw) {
  * @param crystal_switch the crystal switch
  * @param collision_mode the collision mode that detected the event
  */
-void MapEntity::notify_collision_with_crystal_switch(CrystalSwitch &crystal_switch, CollisionMode collision_mode) {
+void MapEntity::notify_collision_with_crystal_switch(CrystalSwitch &crystal_switch,
+    CollisionMode collision_mode) {
 }
 
 /**
- * @brief This function is called when a the sprite of a crystal switch 
- * detects a pixel-perfect collision with a sprite of this entity.
+ * @brief This function is called when the sprite of a crystal switch
+ * detects a pixel-precise collision with a sprite of this entity.
  * @param crystal_switch the crystal switch
  * @param sprite_overlapping the sprite of the current entity that collides with the crystal switch
  */
@@ -1645,7 +1678,7 @@ void MapEntity::notify_collision_with_enemy(Enemy &enemy) {
 }
 
 /**
- * @brief This function is called when an enemy's sprite collides with a sprite of this entity
+ * @brief This function is called when an enemy's sprite collides with a sprite of this entity.
  * @param enemy the enemy
  * @param enemy_sprite the enemy's sprite that overlaps a sprite of this entity
  * @param this_sprite this entity's sprite that overlaps the enemy's sprite
@@ -1696,7 +1729,7 @@ void MapEntity::set_suspended(bool suspended) {
   for (it = sprites.begin(); it != sprites.end(); it++) {
     
     Sprite &sprite = *(it->second);
-    sprite.set_suspended(suspended);
+    sprite.set_suspended(suspended || !is_enabled());
   }
 
   // suspend/unsuspend the movement

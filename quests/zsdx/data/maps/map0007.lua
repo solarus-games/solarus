@@ -24,10 +24,11 @@ function event_map_started(destination_point_name)
   else
     local sprite = sol.map.npc_get_sprite("inferno")
     sol.main.sprite_set_animation_ignore_suspend(sprite, true)
+    if sol.game.savegame_get_boolean(914) then
+      inferno_set_open()
+    end
   end
-  if sol.game.savegame_get_boolean(914) then
-    inferno_set_open()
-  else
+  if not sol.game.savegame_get_boolean(914) then
     sol.map.teletransporter_set_enabled("to_dungeon_6", false)
   end
   sol.map.sensor_set_enabled("inferno_sensor", false)

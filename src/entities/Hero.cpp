@@ -1544,11 +1544,32 @@ void Hero::notify_collision_with_sensor(Sensor &sensor, CollisionMode collision_
 /**
  * @brief This function is called when a switch detects a collision with this entity.
  * @param sw the switch
+ * @param collision_mode the collision mode that detected the event
  */
-void Hero::notify_collision_with_switch(Switch &sw) {
+void Hero::notify_collision_with_switch(Switch& sw, CollisionMode collision_mode) {
 
-  if (!state->can_avoid_switch()) {
+  // it's normally a walkable switch
+  if (sw.is_walkable()
+      && !state->can_avoid_switch()) {
     sw.try_activate(*this);
+  }
+}
+
+/**
+ * @brief This function is called when a the sprite of a switch
+ * detects a pixel-precise collision with a sprite of this entity.
+ * @param sw the switch
+ * @param sprite_overlapping the sprite of the current entity that collides with the crystal switch
+ */
+void Hero::notify_collision_with_switch(Switch& sw, Sprite& sprite_overlapping) {
+
+  // it's normally a solid switch
+  if (sprite_overlapping.contains("sword") // the hero's sword is overlapping the switch
+      && sw.is_solid()
+      && state->can_sword_hit_crystal_switch()) {
+    // note that solid switches and crystal switches have the same rules for the sword
+
+    sw.try_activate();
   }
 }
 
@@ -1573,7 +1594,7 @@ void Hero::notify_collision_with_crystal_switch(CrystalSwitch &crystal_switch, C
 
 /**
  * @brief This function is called when a the sprite of a crystal switch 
- * detects a pixel-perfect collision with a sprite of this entity.
+ * detects a pixel-precise collision with a sprite of this entity.
  * @param crystal_switch the crystal switch
  * @param sprite_overlapping the sprite of the current entity that collides with the crystal switch
  */

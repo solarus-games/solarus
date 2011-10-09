@@ -398,6 +398,9 @@ void Sprite::set_suspended(bool suspended) {
       uint32_t now = System::now();
       next_frame_date = now + get_frame_delay();
       blink_next_change_date = now;
+      if (alpha_next_change_date != 0) {
+        alpha_next_change_date = now;
+      }
     }
     else {
       blink_is_sprite_visible = true;

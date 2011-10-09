@@ -327,6 +327,7 @@ class Script {
       enemy_api_get_layer,
       enemy_api_set_layer,
       enemy_api_get_distance_to_hero,
+      enemy_api_test_obstacles,
       enemy_api_snap_to_grid,
       enemy_api_get_movement,
       enemy_api_start_movement,

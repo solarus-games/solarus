@@ -800,10 +800,14 @@ Returns the layer where the enemy is placed on the map.
 Sets the layer of the enemy.
 
 - <tt>sol.enemy.get_distance_to_hero()</tt>:
-Returns the distance in pixels between the enemy and the hero
+Returns the distance in pixels between the enemy and the hero.
+
+- <tt>sol.enemy.test_obstacles(dx, dy)</tt>:
+Returns whether there would be a collision if the enemy was translated
+with the given parameters.
 
 - <tt>sol.enemy.snap_to_grid()</tt>:
-Makes sure the enemy's top-left corner is aligned with the 8*8 grid of the map
+Makes sure the enemy's top-left corner is aligned with the 8*8 grid of the map.
 
 - <tt>sol.enemy.get_movement()</tt>:
 Returns the current movement of the enemy.

@@ -2,8 +2,6 @@
 0	1	40	200	240	24	52
 0	1	152	216	16	32	320
 0	1	40	40	240	160	320
-0	1	184	120	48	48	408
-0	1	88	120	48	48	407
 0	1	280	16	24	24	46
 0	1	16	16	24	24	45
 0	1	40	16	240	24	49
@@ -28,9 +26,9 @@
 0	1	256	128	24	8	70
 0	1	256	152	24	8	70
 1	1	160	213	destination_point	1	0
-2	1	152	224	16	16	teletransporter	0	1	4	from_chest_game_cave
-7	1	264	149	enemy	3	simple_green_soldier	0	-1	_random	1	-1
-12	1	240	136	16	16	custom_obstacle	0	1	0	0
+2	1	152	224	16	16	teletransporter	0	1	8	from_west_mountain_cave_1f_w
+7	1	48	197	pike	3	pike_detect	0	-1	_random	1	-1
+7	1	272	197	pike_2	3	pike_detect	0	-1	_random	1	-1
 0	2	112	216	96	8	357
 0	2	144	216	32	8	188
 0	2	0	0	320	16	170

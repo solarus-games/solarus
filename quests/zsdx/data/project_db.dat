@@ -335,12 +335,6 @@
 5	red_potion	Red potion
 5	green_potion	Green potion
 5	blue_potion	Blue potion
-6	bubble	Bubble
-6	blue_hardhat_beetle	Blue Hardhat Beetle
-6	red_hardhat_beetle	Red Hardhat Beetle
-6	green_knight_soldier	Green Knight Soldier
-6	ropa	Ropa
-6	tentacle	Tentacle
 6	bee_guard	Bee Guard
 6	blue_bullblin	Blue Bullblin
 6	red_bullblin	Red Bullblin
@@ -350,13 +344,21 @@
 6	blue_duck_soldier	Blue Duck Soldier
 6	red_duck_soldier	Red Duck Soldier
 6	globul	Globul
+6	green_knight_soldier	Green Knight Soldier
 6	blue_knight_soldier	Blue Knight Soldier
 6	red_knight_soldier	Red Knight Soldier
 6	lizalfos	Lizalfos
 6	mandible	Mandible
 6	blue_pig_soldier	Blue Pig Soldier
 6	red_pig_soldier	Red Pig Soldier
+6	bubble	Bubble
+6	blue_hardhat_beetle	Blue Hardhat Beetle
+6	red_hardhat_beetle	Red Hardhat Beetle
+6	pike_auto	Pike (always moving)
+6	pike_detect	Pike (moves near hero)
+6	ropa	Ropa
 6	simple_green_soldier	Green Simple Soldier
+6	tentacle	Tentacle
 6	skeletor	Skeletor
 6	khorneth	Khorneth
 6	papillosaur_king	Papillosaur King

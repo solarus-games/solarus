@@ -93,8 +93,8 @@ int Script::main_api_play_music(lua_State *l) {
 /**
  * @brief Starts a timer to run a Lua function after a delay.
  *
- * - Argument 1 (integer): the timer duration in milliseconds
- * - Argument 2 (string): name of the Lua function to call when the timer is finished
+ * - Argument 1 (function): a Lua function to call without arguments when the timer is finished
+ * - Argument 2 (integer): the timer duration in milliseconds
  * - Optional argument 3 (boolean): plays a clock sound until the timer expires (default is false)
  *
  * @param l the Lua context that is calling this function
@@ -102,15 +102,21 @@ int Script::main_api_play_music(lua_State *l) {
 int Script::main_api_timer_start(lua_State *l) {
 
   Script& script = get_script(l, 2, 3);
-  uint32_t duration = luaL_checkinteger(l, 1);
-  const std::string& callback_name = luaL_checkstring(l, 2);
-  bool with_sound = lua_gettop(l) >= 3 && lua_toboolean(l, 3);
+  luaL_checktype(l, 1, LUA_TFUNCTION);
+  uint32_t duration = luaL_checkinteger(l, 2);
 
-  Timer *timer = new Timer(duration, callback_name, with_sound);
+  bool with_sound = (lua_gettop(l) >= 3 && lua_toboolean(l, 3));
+  lua_settop(l, 1); // now the function is on top of the stack
+
+  // store the function into the Lua registry
+  int ref = luaL_ref(l, LUA_REGISTRYINDEX);
+
+  // create the timer
+  Timer* timer = new Timer(duration, with_sound);
   if (script.is_new_timer_suspended()) {
     timer->set_suspended(true);
   }
-  script.add_timer(timer);
+  script.timers[ref] = timer;
 
   return 0;
 }

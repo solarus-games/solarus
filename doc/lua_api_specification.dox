@@ -56,8 +56,8 @@ plays a sound
 - <tt>sol.main.play_music(music_id)</tt>:
 plays a music
 
-- <tt>sol.main.timer_start(duration, callback_name, with_sound)</tt>:
-starts a timer which will calls a function of your script once finished
+- <tt>sol.main.timer_start(function, duration, with_sound)</tt>:
+starts a timer which will calls a function once finished
 (with_sound is optional, default is false)
 
 - <tt>sol.main.timer_stop_all()</tt>:

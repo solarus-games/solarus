@@ -18,7 +18,6 @@
 #define SOLARUS_SCRIPT_H
 
 #include "Common.h"
-#include <list>
 #include <map>
 
 struct lua_State;
@@ -48,7 +47,7 @@ class Script {
     typedef int (FunctionAvailableToScript) (lua_State *l);  /**< type of the functions that can be called by a Lua script */
 
     // script data
-    std::list<Timer*> timers;                            /**< the timers currently running for this script */
+    std::map<int, Timer*> timers;                        /**< the timers currently running for this script */
 
     std::map<int, Sprite*> sprites;                      /**< the sprites accessible from this script */
     std::map<int, Sprite*> unassigned_sprites;           /**< the sprites accessible from this script and that
@@ -62,7 +61,7 @@ class Script {
     uint32_t apis_enabled;                               /**< an OR combination of APIs enabled */
 
     // calling a Lua function from C++
-    bool find_lua_function(const std::string &function_name);
+    bool find_lua_function(const std::string& function_name);
 
     // calling a C++ function from Lua (and retrieve the instance of Script)
     static Script& get_script(lua_State* context, int min_arguments, int max_arguments = -1);
@@ -76,8 +75,6 @@ class Script {
     void register_enemy_api();
 
     // timers
-    void add_timer(Timer *timer);
-    void remove_timer(const std::string &callback_name);
     void remove_all_timers();
     bool is_new_timer_suspended(void);
 

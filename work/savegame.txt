@@ -198,11 +198,12 @@ booleans:
 196	cave under the waterfall: chest with 50 rupees
 197	lake cave: chest with the ice key
 198	junk shop: bought the red rupee
-200	junk shop: bought the mirror
+199	junk shop: bought the mirror
 
 200-299: binbin dungeon
-200	1F: small key 1 door
-201     1F: small key chest 1 
+200	1F: Small key 1 
+201	1F: Small key 2
+
 
 300	dungeon 6 2F: chest with 20 rupees
 301	dungeon 6 2F: chest with boss key

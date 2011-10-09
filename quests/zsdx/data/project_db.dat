@@ -18,7 +18,6 @@
 0	15	Sahasrahla house icy room
 0	16	Smith cave
 0	72	Smith cave (thiefs place)
-0	17	Binbin dungeon 1F
 0	18	Shop
 0	19	Cake shop
 0	20	Lyriann Cave 1F
@@ -92,8 +91,9 @@
 0	94	West mountains cave 3F
 0	93	North fairy fountain
 0	95	Potion shop
-0	96	Binbin dungeon 3F
+0	17	Binbin dungeon 1F
 0	97	Binbin dungeon 2F
+0	96	Binbin dungeon 3F
 1	1	Light World
 1	13	Dark World
 1	3	Cave

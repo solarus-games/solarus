@@ -210,7 +210,16 @@ booleans:
 206     2F: Torch group 2
 207     1F: Door 1
 208     1F: Door weak 1
-
+210	1F: Weak block 1
+211	1F: Weak block 2
+212	1F: Weak block 3
+213	1F: Weak block 4
+214	1F: Weak block 5
+215	1F: Weak block 6
+217	2F: Key block 1
+218	2F: Key block 2
+219	2F: Key block 3
+220	2F: Key block 4
 
 300	dungeon 6 2F: chest with 20 rupees
 301	dungeon 6 2F: chest with boss key

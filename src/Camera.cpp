@@ -74,10 +74,10 @@ void Camera::update() {
       if (restoring) {
         restoring = false;
         fixed_on_hero = true;
-        map.get_script().event_camera_back();
+        map.get_script().notify_camera_back();
       }
       else {
-        map.get_script().event_camera_reached_target();
+        map.get_script().notify_camera_reached_target();
       }
     }
   }

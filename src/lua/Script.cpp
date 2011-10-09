@@ -354,7 +354,6 @@ void Script::register_map_api() {
       { "light_set", map_api_light_set },
       { "treasure_give", map_api_treasure_give },
       { "camera_move", map_api_camera_move },
-      { "camera_restore", map_api_camera_restore },
       { "sprite_display", map_api_sprite_display },
       { "tileset_get", map_api_tileset_get },
       { "tileset_set", map_api_tileset_set },

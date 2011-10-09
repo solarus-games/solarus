@@ -108,17 +108,30 @@ int Script::main_api_timer_start(lua_State *l) {
   bool with_sound = (lua_gettop(l) >= 3 && lua_toboolean(l, 3));
   lua_settop(l, 1); // now the function is on top of the stack
 
+  script.add_timer(duration, with_sound);
+
+  return 0;
+}
+
+/**
+ * @briefs Starts a timer to run a Lua function after the delay.
+ *
+ * The Lua function must be on the top of the stack and will be popped.
+ *
+ * @param duration: the timer duration in milliseconds
+ * @param with_sound true to play a clock sound until the timer expires
+ */
+void Script::add_timer(uint32_t duration, bool with_sound) {
+
   // store the function into the Lua registry
-  int ref = luaL_ref(l, LUA_REGISTRYINDEX);
+  int ref = luaL_ref(context, LUA_REGISTRYINDEX);
 
   // create the timer
   Timer* timer = new Timer(duration, with_sound);
-  if (script.is_new_timer_suspended()) {
+  if (is_new_timer_suspended()) {
     timer->set_suspended(true);
   }
-  script.timers[ref] = timer;
-
-  return 0;
+  timers[ref] = timer;
 }
 
 /**

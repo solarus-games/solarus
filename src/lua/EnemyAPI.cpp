@@ -261,6 +261,41 @@ int Script::enemy_api_set_push_hero_on_sword(lua_State* l) {
 }
 
 /**
+ * @brief Returns whether the enemy can hurt the hero even when the hero is running.
+ *
+ * - Return value (boolean): true if the hero can be hurt by this enemy when running
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::enemy_api_get_can_hurt_hero_running(lua_State* l) {
+
+  Script& script = get_script(l, 0);
+  Enemy& enemy = script.get_enemy();
+
+  lua_pushboolean(l, enemy.get_can_hurt_hero_running());
+
+  return 1;
+}
+
+/**
+ * @brief Sets whether the enemy can hurt the hero even when the hero is running.
+ *
+ * - Argument 1 (boolean): true to allow the enemy to attack the hero while he is running
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::enemy_api_set_can_hurt_hero_running(lua_State* l) {
+
+  Script& script = get_script(l, 1);
+  Enemy& enemy = script.get_enemy();
+
+  bool can_hurt_hero_running = lua_toboolean(l, 1);
+  enemy.set_can_hurt_hero_running(can_hurt_hero_running);
+
+  return 0;
+}
+
+/**
  * @brief Returns the style of sounds to play when the enemy is hurt or killed.
  *
  * - Return value (string): "normal", "monster" or "boss"

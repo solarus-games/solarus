@@ -17,7 +17,7 @@
 #include "hero/RunningState.h"
 #include "hero/FreeState.h"
 #include "hero/HeroSprites.h"
-#include "entities/Detector.h"
+#include "entities/Enemy.h"
 #include "movements/TemporalMovement.h"
 #include "movements/JumpMovement.h"
 #include "lowlevel/System.h"
@@ -207,11 +207,14 @@ bool Hero::RunningState::can_take_jump_sensor() {
 }
 
 /**
- * @brief Returns whether the hero can be hurt in this state.
+ * @brief Returns whether the hero can be hurt by an attacker in this state.
+ * @param enemy an attacker that is trying to hurt the hero
+ * (or NULL if the source of the attack is not an enemy)
  * @return true if the hero can be hurt in this state
  */
-bool Hero::RunningState::can_be_hurt() {
-  return phase == 0;
+bool Hero::RunningState::can_be_hurt(Enemy* attacker) {
+  return phase == 0 ||
+      (attacker != NULL && attacker->get_can_hurt_hero_running());
 }
 
 /**

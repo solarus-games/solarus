@@ -181,8 +181,10 @@ void Hero::PullingState::stop_moving_pulled_entity() {
 /**
  * @brief Returns whether the hero can be hurt in this state.
  * @return true if the hero can be hurt in this state
+ * @param enemy an attacker that is trying to hurt the hero
+ * (or NULL if the source of the attack is not an enemy)
  */
-bool Hero::PullingState::can_be_hurt() {
+bool Hero::PullingState::can_be_hurt(Enemy* attacker) {
   return !is_moving_grabbed_entity();
 }
 

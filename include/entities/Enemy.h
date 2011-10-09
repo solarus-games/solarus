@@ -97,6 +97,7 @@ class Enemy: public Detector {
 							 * (default: true) */
     bool push_hero_on_sword;		          	/**< indicates whether the hero is pushed back when he hurts the enemy with his
 							 * sword (default: false) */
+    bool can_hurt_hero_running;             /**< indicates that the enemy can attack the hero even when the hero is running */
     int minimum_shield_needed;				/**< shield number needed by the hero to avoid the attack of this enemy,
 							 * or 0 to make the attack unavoidable (default: 0) */
 
@@ -156,6 +157,7 @@ class Enemy: public Detector {
     int get_life();
     void set_pushed_back_when_hurt(bool pushed_back_when_hurt);
     void set_push_hero_on_sword(bool push_hero_on_sword);
+    void set_can_hurt_hero_running(bool can_hurt_hero_running);
     void set_attack_consequence(EnemyAttack attack, EnemyReaction::ReactionType reaction, int life_lost = 0);
     void set_attack_consequence_sprite(Sprite& sprite, EnemyAttack attack,
         EnemyReaction::ReactionType reaction, int life_lost = 0);
@@ -224,6 +226,7 @@ class Enemy: public Detector {
 
     // receive an attack
     bool get_push_hero_on_sword();
+    bool get_can_hurt_hero_running();
     const EnemyReaction::Reaction& get_attack_consequence(EnemyAttack attack, Sprite *this_sprite);
     void try_hurt(EnemyAttack attack, MapEntity &source, Sprite *this_sprite);
     void kill();

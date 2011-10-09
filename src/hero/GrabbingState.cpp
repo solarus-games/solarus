@@ -85,9 +85,11 @@ bool Hero::GrabbingState::is_grabbing_or_pulling() {
 
 /**
  * @brief Returns whether the hero can be hurt in this state.
+ * @param enemy an attacker that is trying to hurt the hero
+ * (or NULL if the source of the attack is not an enemy)
  * @return true if the hero can be hurt in this state
  */
-bool Hero::GrabbingState::can_be_hurt() {
+bool Hero::GrabbingState::can_be_hurt(Enemy* attacker) {
   return true;
 }
 

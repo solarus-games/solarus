@@ -367,6 +367,22 @@ void Enemy::set_push_hero_on_sword(bool push_hero_on_sword) {
 }
 
 /**
+ * @brief Returns whether this enemy can hurt the hero even if the hero is running.
+ * @return true if this enemy can attack the hero while he is running
+ */
+bool Enemy::get_can_hurt_hero_running() {
+  return can_hurt_hero_running;
+}
+
+/**
+ * @brief Sets whether this enemy can hurt the hero even if the hero is running.
+ * @return can_hurt_hero_running true to allow this enemy to attack the hero while he is running
+ */
+void Enemy::set_can_hurt_hero_running(bool can_hurt_hero_running) {
+  this->can_hurt_hero_running = can_hurt_hero_running;
+}
+
+/**
  * @brief Sets how the enemy reacts to an attack.
  *
  * This reaction will be used unless the attack is received by a sprite

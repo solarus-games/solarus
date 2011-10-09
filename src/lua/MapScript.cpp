@@ -131,12 +131,11 @@ void MapScript::notify_camera_reached_target() {
 
   lua_settop(l, 0);
 
-  lua_getfield(l, LUA_REGISTRYINDEX, "camera.delay_before");
+  lua_getfield(l, LUA_REGISTRYINDEX, "sol.camera_delay_before");
   int delay_before = lua_tointeger(l, -1);
   lua_pop(l, 1);
 
   // set a timer to execute the function
-  lua_getfield(l, LUA_REGISTRYINDEX, "camera.function");
   lua_pushcfunction(l, camera_execute_function);
   add_timer(l, delay_before, false);
 }

@@ -459,12 +459,12 @@
 5	1	960	112	chest	0	_none	1	-1
 12	1	440	864	8	32	custom_obstacle_11	1	1	1	1
 12	1	416	864	8	32	custom_obstacle_2	1	1	1	1
-18	1	424	792	door	1	2	0
-18	1	424	616	door_3	1	2	0
+18	1	424	792	door	1	2	217
+18	1	424	616	door_3	1	2	219
 12	1	664	864	8	32	custom_obstacle_3	1	1	1	1
 12	1	640	864	8	32	custom_obstacle_4	1	1	1	1
-18	1	648	792	door_2	1	2	0
-18	1	648	616	door_4	1	2	0
+18	1	648	792	door_2	1	2	218
+18	1	648	616	door_4	1	2	220
 12	1	552	352	8	32	custom_obstacle_5	1	1	1	1
 12	1	528	352	8	32	custom_obstacle_6	1	1	1	1
 5	1	240	720	chest_2	0	big_key	1	-1

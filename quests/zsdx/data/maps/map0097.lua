@@ -58,7 +58,7 @@ function explode_block1()
 	sol.map.explosion_create(536,256,1)
 	sol.main.play_sound("explosion")
 	sol.map.block_set_enabled("block1_1",false)
-	sol.main.timer_start(1000,"sol.map.camera_restore")
+	sol.main.timer_start(sol.map.camera_restore,1000)
 	
 end
 
@@ -67,7 +67,7 @@ function explode_block2()
 	sol.map.explosion_create(552,256,1)
 	sol.main.play_sound("explosion")
 	sol.map.block_set_enabled("block2_1",false)
-	sol.main.timer_start(1000,"sol.map.camera_restore")
+	sol.main.timer_start(sol.map.camera_restore,1000)
 end
 
 function event_update()

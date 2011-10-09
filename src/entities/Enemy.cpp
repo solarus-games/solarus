@@ -220,9 +220,11 @@ void Enemy::notify_map_started() {
 
   MapEntity::notify_map_started();
 
+  // give the sprite their initial direction
+  int initial_direction = get_direction();
   std::map<SpriteAnimationSetId, Sprite*>::iterator it;
   for (it = get_sprites().begin(); it != get_sprites().end(); it++) {
-    it->second->set_current_direction(3);
+    it->second->set_current_direction(initial_direction);
   }
 }
 

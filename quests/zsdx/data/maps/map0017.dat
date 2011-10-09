@@ -325,6 +325,9 @@
 1	0	152	501	destination_hole1	3	0
 19	0	176	672	so_stair_2	3	4
 17	0	152	565	0
+12	0	712	880	16	16	custom_obstacle_20	0	1	0	0
+12	0	920	712	16	16	custom_obstacle_19	0	1	0	0
+12	0	440	544	16	16	custom_obstacle_17	0	1	0	0
 0	1	184	776	128	24	49
 0	1	24	40	192	240	383
 0	1	64	416	176	32	383
@@ -333,12 +336,12 @@
 0	1	528	992	128	24	52
 0	1	368	992	128	24	52
 0	1	712	48	8	272	237
-0	1	288	432	16	256	383
+0	1	288	432	16	272	383
 0	1	232	424	80	16	383
 0	1	40	424	32	272	383
 0	1	528	504	272	112	383
 0	1	520	616	176	112	383
-0	1	384	576	320	48	383
+0	1	384	576	144	48	383
 0	1	472	808	80	176	385
 0	1	120	800	112	112	385
 0	1	376	392	624	24	49
@@ -639,6 +642,10 @@
 0	1	208	400	32	16	343
 0	1	120	240	24	112	50
 0	1	120	224	24	24	53
+0	1	144	536	16	16	276
+0	1	192	536	16	16	276
+0	1	144	600	16	16	276
+0	1	192	600	16	16	276
 1	1	512	1005	main_entrance	1	0
 2	1	504	1016	16	16	to_outside_world	0	1	4	from_binbin_dungeon
 12	1	552	840	32	8	custom_obstacle_7	1	1	1	1
@@ -658,7 +665,7 @@
 12	1	72	672	24	24	custom_obstacle_10	1	1	1	1
 12	1	256	672	24	24	custom_obstacle_12	1	1	1	1
 6	1	96	688	72	8	jump_sensor_7	2	40
-6	1	64	480	8	200	jump_sensor_10	0	40
+6	1	72	472	8	200	jump_sensor_10	0	40
 9	1	640	493	block_12	-1	0	0
 9	1	656	509	block_13	3	0	1
 5	1	784	512	chest	0	_none	1	-1
@@ -701,11 +708,18 @@
 12	1	664	888	8	32	custom_obstacle_11	1	1	1	1
 12	1	168	664	8	32	custom_obstacle_14	1	1	1	1
 12	1	192	664	8	32	custom_obstacle_15	1	1	1	1
-8	1	200	549	interactive_entity_3	3	0	entities/torch	item#lamp
-8	1	200	613	interactive_entity_5	3	0	entities/torch	item#lamp
-8	1	152	613	interactive_entity_2	3	0	entities/torch	item#lamp
-8	1	152	549	interactive_entity	3	0	entities/torch	item#lamp
+8	1	200	549	torch2	3	0	entities/torch	item#lamp
+8	1	200	613	torch4	3	0	entities/torch	item#lamp
+8	1	152	613	torch3	3	0	entities/torch	item#lamp
+8	1	152	549	torch1	3	0	entities/torch	item#lamp
 9	1	176	581	block_10	-1	0	0
+6	1	160	528	32	8	jump_sensor_6	2	40
+6	1	160	616	32	8	jump_sensor_9	6	40
+6	1	136	552	8	48	jump_sensor_12	4	40
+6	1	208	552	8	48	jump_sensor_11	0	40
+12	1	176	224	16	16	custom_obstacle_16	0	1	0	0
+12	1	360	592	16	16	custom_obstacle_18	0	1	0	0
+15	1	144	896	64	16	0
 0	2	256	376	104	16	170
 0	2	160	768	32	8	323
 0	2	680	848	8	96	319

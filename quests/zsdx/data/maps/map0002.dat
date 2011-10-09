@@ -185,7 +185,6 @@
 3	0	256	157	rupee	2	115
 3	0	240	205	rupee	2	116
 3	0	408	285	rupee	3	117
-11	0	264	160	switch	0	0	0
 9	0	240	221	block_13	-1	0	0
 9	0	272	221	block_14	-1	0	0
 9	0	240	157	block_15	-1	0	0
@@ -194,6 +193,7 @@
 8	0	240	93	slot_machine_left	3	0	entities/slot_machine	map
 8	0	264	93	slot_machine_middle	3	0	entities/slot_machine	map
 8	0	288	93	slot_machine_right	3	0	entities/slot_machine	map
+13	0	272	173	16	16	game_3_sensor	0
 0	2	64	312	96	8	263
 0	2	104	312	32	8	153
 0	2	0	32	16	304	170

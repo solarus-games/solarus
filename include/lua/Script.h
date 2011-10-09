@@ -343,12 +343,12 @@ class Script {
 
   protected:
 
-    lua_State* context;                                                 /**< the execution context of the Lua script */
+    lua_State* l;                        /**< the execution context of the Lua script */
 
     Script(uint32_t apis_enabled);
 
     // timers
-    void add_timer(uint32_t duration, bool with_sound);
+    static void add_timer(lua_State* l, uint32_t duration, bool with_sound);
 
     // sprites
     int create_sprite_handle(Sprite &sprite);

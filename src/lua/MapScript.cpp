@@ -124,6 +124,48 @@ void MapScript::event_set_suspended(bool suspended) {
 }
 
 /**
+ * @brief Notifies the script that the sequence started by a call to camera_move()
+ * has reached the target.
+ */
+void MapScript::notify_camera_reached_target() {
+
+  lua_settop(l, 0);
+
+  lua_getfield(l, LUA_REGISTRYINDEX, "camera.delay_before");
+  int delay_before = lua_tointeger(l, -1);
+  lua_pop(l, 1);
+
+  // set a timer to execute the function
+  lua_getfield(l, LUA_REGISTRYINDEX, "camera.function");
+  lua_pushcfunction(l, camera_execute_function);
+  add_timer(l, delay_before, false);
+}
+
+/**
+ * @brief Executes the function of a camera movement.
+ * @param l the Lua context that is calling this function
+ */
+int MapScript::camera_execute_function(lua_State* l) {
+
+  // execute the function
+  lua_getfield(l, LUA_REGISTRYINDEX, "sol.camera_function");
+  if (lua_pcall(l, 0, 0, 0) != 0) {
+    Debug::print(StringConcat() << "Error in the function of the camera: "
+        << lua_tostring(l, -1));
+    lua_pop(l, 1);
+  }
+
+  // set a second timer to restore the camera
+  lua_getfield(l, LUA_REGISTRYINDEX, "sol.camera_delay_after");
+  int delay_after = lua_tointeger(l, -1);
+  lua_pop(l, 1);
+  lua_pushcfunction(l, camera_restore);
+  add_timer(l, delay_after, false);
+
+  return 0;
+}
+
+/**
  * @brief Moves the camera back to the hero.
  * @param l the Lua context that is calling this function
  */
@@ -135,29 +177,6 @@ int MapScript::camera_restore(lua_State* l) {
   script->get_game().get_current_map().restore_camera();
 
   return 0;
-}
-
-/**
- * @brief Notifies the script that the sequence started by a call to camera_move()
- * has reached the target.
- */
-void MapScript::notify_camera_reached_target() {
-
-  lua_settop(context, 0);
-
-  lua_getfield(context, LUA_REGISTRYINDEX, "camera.delay_before");
-  int delay_before = lua_tointeger(context, -1);
-  lua_getfield(context, LUA_REGISTRYINDEX, "camera.delay_after");
-  int delay_after = lua_tointeger(context, -1);
-  lua_pop(context, 1);
-  lua_getfield(context, LUA_REGISTRYINDEX, "camera.function");
-
-  // set a timer to execute the function
-  add_timer(delay_before, false);
-
-  // set a second timer to restore the camera
-  lua_pushcfunction(context, camera_restore);
-  add_timer(delay_before + delay_after, false);
 }
 
 /**

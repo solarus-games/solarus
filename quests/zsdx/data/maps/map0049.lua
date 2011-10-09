@@ -103,25 +103,16 @@ function event_switch_activated(switch_name)
 end
 
 function DB16_camera_move()
-	sol.map.camera_move(808, 1056, 250)
-end
-
-function DB16_camera_restore()
-	sol.map.camera_restore()
+	sol.map.camera_move(808, 1056, 250, BB16_open_door)
 end
 
 function DB16_open_door()
 	sol.map.door_open("LD16")
-	sol.main.timer_start(DB16_camera_restore, 500)
 end
 
 function DB16_time_out()
 	sol.map.door_close("LD16")
 	sol.map.switch_set_activated("DB16", false)
-end
-
-function event_camera_reached_target()
-	sol.main.timer_start(DB16_open_door, 500)
 end
 
 function event_camera_back()

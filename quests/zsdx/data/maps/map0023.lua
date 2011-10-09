@@ -1,6 +1,5 @@
 -- Dungeon 1 1F
 
-current_room = ""
 sw_sensor_enabled = false
 
 function event_map_started(destination_point_name)
@@ -23,7 +22,7 @@ end
 function event_switch_activated(switch_name)
 
   if switch_name == "sw_switch" or switch_name == "nw_switch" then
-    sol.map.camera_move(176, 392, 150)
+    sol.map.camera_move(176, 392, 150, sw_camera_timer)
     current_room = "sw"
   elseif switch_name == "map_room_switch" then
     sol.main.play_sound("chest_appears")
@@ -31,23 +30,13 @@ function event_switch_activated(switch_name)
   end
 end
 
-function event_camera_reached_target()
-  if current_room == "sw" then
-    sol.main.timer_start(sw_camera_timer, 1000)
-  elseif current_room == "compass_room" then
-    sol.main.timer_start(compass_room_timer, 1000)
-  end
-end
-
 function sw_camera_timer()
   open_sw_door()
-  sol.main.timer_start(sol.map.camera_restore, 1000)
 end
 
 function compass_room_timer()
   sol.main.play_sound("chest_appears")
   sol.map.chest_set_enabled("compass_chest", true)
-  sol.main.timer_start(sol.map.camera_restore, 1000)
 end
 
 function event_hero_on_sensor(sensor_name)
@@ -81,9 +70,8 @@ end
 function event_enemy_dead(enemy_name)
 
   if sol.map.enemy_is_group_dead("compass_room_battle")
-    and not sol.map.chest_is_enabled("compass_chest") then
-    sol.map.camera_move(408, 456, 150)
-    current_room = "compass_room"
+      and not sol.map.chest_is_enabled("compass_chest") then
+    sol.map.camera_move(408, 456, 150, compass_room_timer)
   end
 end
 

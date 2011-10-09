@@ -36,21 +36,14 @@ function event_treasure_obtained(item_name, variant, savegame_variable)
 end
 
 function event_switch_activated(switch_name)
+
   if switch_name == "se_switch" or switch_name == "ne_switch" then
-    sol.map.camera_move(960, 496, 150)
+    sol.map.camera_move(960, 496, 150, open_se_door)
   end
 end
 
-function event_camera_reached_target()
-  sol.main.timer_start(se_room_timer, 1000)
-end
-
-function se_room_timer()
-  open_se_door()
-  sol.main.timer_start(sol.map.camera_restore, 1000)
-end
-
 function open_se_door()
+
   sol.main.play_sound("secret")
   sol.map.door_open("se_door")
   sol.map.switch_set_activated("se_switch", true)
@@ -58,6 +51,7 @@ function open_se_door()
 end
 
 function open_final_room()
+
   sol.map.door_open("final_room_door")
   sol.main.play_sound("secret")
   sol.map.hero_unfreeze()

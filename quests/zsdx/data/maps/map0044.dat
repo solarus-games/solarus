@@ -5713,14 +5713,15 @@
 7	1	1376	1021	enemy_21	3	blue_hardhat_beetle	0	-1	_random	1	-1
 7	1	1680	1021	enemy_22	3	red_hardhat_beetle	0	-1	_random	1	-1
 7	1	164	573	enemy_23	3	ropa	0	-1	_random	1	-1
-9	1	176	1941	block	-1	1	2
-7	1	48	2213	pike	0	pike_detect	0	-1	_random	1	-1
-7	1	272	2213	pike_2	0	pike_detect	0	-1	_random	1	-1
-7	1	48	2069	pike_3	0	pike_detect	0	-1	_random	1	-1
-7	1	272	2069	pike_4	0	pike_detect	0	-1	_random	1	-1
-7	1	112	1941	pike_5	1	pike_auto	0	-1	_random	1	-1
-7	1	208	1885	pike_6	3	pike_auto	0	-1	_random	1	-1
-7	1	160	1909	pike_7	3	pike_auto	0	-1	_random	1	-1
+9	1	176	149	block	-1	1	2
+7	1	48	421	pike	0	pike_detect	0	-1	_random	1	-1
+7	1	272	421	pike_2	0	pike_detect	0	-1	_random	1	-1
+7	1	48	277	pike_3	0	pike_detect	0	-1	_random	1	-1
+7	1	272	277	pike_4	0	pike_detect	0	-1	_random	1	-1
+7	1	112	149	pike_5	1	pike_auto	0	-1	_random	1	-1
+7	1	208	93	pike_6	3	pike_auto	0	-1	_random	1	-1
+7	1	160	117	pike_7	3	pike_auto	0	-1	_random	1	-1
+7	1	156	2125	enemy_18	3	gibdo	0	-1	_random	1	-1
 0	2	112	2032	96	8	411
 0	2	296	1856	8	96	416
 0	2	112	1808	96	8	411

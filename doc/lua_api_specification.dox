@@ -722,6 +722,13 @@ returns whether the hero is pushed away when he strikes the enemy with the sword
 sets whether the hero is pushed away when he strikes the enemy with the sword
 (default is false)
 
+- <tt>sol.enemy.get_can_hurt_hero_running(can_hurt_hero_running)</tt>:
+returns whether the enemy can hurt the hero even when the hero is running
+
+- <tt>sol.enemy.set_can_hurt_hero_running(can_hurt_hero_running)</tt>:
+sets whether the enemy can hurt the hero even when the hero is running
+(default is false)
+
 - <tt>sol.enemy.get_hurt_sound_style()</tt>:
 returns the style of sound to play when the enemy is hurt:
 "normal", "monster" or "boss"

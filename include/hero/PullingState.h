@@ -46,7 +46,7 @@ class Hero::PullingState: public Hero::State {
     bool is_lava_obstacle();
     bool is_prickle_obstacle();
 
-    bool can_be_hurt();
+    bool can_be_hurt(Enemy* attacker);
 };
 
 #endif

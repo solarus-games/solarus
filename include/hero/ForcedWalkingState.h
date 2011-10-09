@@ -48,7 +48,7 @@ class Hero::ForcedWalkingState: public Hero::State {
     bool can_avoid_conveyor_belt();
     bool can_avoid_sensor();
     bool can_avoid_switch();
-    bool can_be_hurt();
+    bool can_be_hurt(Enemy* attacker);
 };
 
 #endif

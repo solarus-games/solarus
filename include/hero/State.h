@@ -126,7 +126,7 @@ class Hero::State {
     virtual void notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
         EnemyReaction::Reaction& result, bool killed);
     virtual int get_sword_damage_factor();
-    virtual bool can_be_hurt();
+    virtual bool can_be_hurt(Enemy* attacker);
 
     // state specific
     virtual bool is_free();

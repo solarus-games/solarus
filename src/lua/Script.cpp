@@ -34,7 +34,7 @@
 Script::Script(uint32_t apis_enabled):
   music_played(false),
   apis_enabled(apis_enabled),
-  context(NULL) {
+  l(NULL) {
 
 }
 
@@ -44,8 +44,8 @@ Script::Script(uint32_t apis_enabled):
 Script::~Script() {
 
   // close the Lua execution context
-  if (context != NULL) {
-    lua_close(context);
+  if (l != NULL) {
+    lua_close(l);
   }
 
   // delete the timers
@@ -78,17 +78,17 @@ Script::~Script() {
 void Script::initialize_lua_context() {
 
   // create an execution context
-  context = lua_open();
-  luaL_openlibs(context);
+  l = lua_open();
+  luaL_openlibs(l);
 
   // put a pointer to this Script object in the Lua context
-  lua_pushstring(context, "sol.cpp_object");
-  lua_pushlightuserdata(context, this);
-  lua_settable(context, LUA_REGISTRYINDEX); // registry["sol.cpp_object"] = this
+  lua_pushstring(l, "sol.cpp_object");
+  lua_pushlightuserdata(l, this);
+  lua_settable(l, LUA_REGISTRYINDEX); // registry["sol.cpp_object"] = this
 
   // create the Solarus table that will be available to the script
-  lua_newtable(context);
-  lua_setglobal(context, "sol");
+  lua_newtable(l);
+  lua_setglobal(l, "sol");
 
   // register the C++ functions accessible to the script
   register_apis();
@@ -117,7 +117,7 @@ void Script::load(const std::string &script_name) {
  */
 void Script::load_if_exists(const std::string& script_name) {
 
-  if (context == NULL) {
+  if (l == NULL) {
     initialize_lua_context();
   }
 
@@ -145,18 +145,18 @@ void Script::load_if_exists(const std::string& script_name) {
     size_t size;
     char* buffer;
     FileTools::data_file_open_buffer(file_name, &buffer, &size);
-    luaL_loadbuffer(context, buffer, size, file_name.c_str());
+    luaL_loadbuffer(l, buffer, size, file_name.c_str());
     FileTools::data_file_close_buffer(buffer);
-    if (lua_pcall(context, 0, 0, 0) != 0) {
+    if (lua_pcall(l, 0, 0, 0) != 0) {
       Debug::die(StringConcat() << "Error: failed to load script '" << script_name
-          << "': " << lua_tostring(context, -1));
-      lua_pop(context, 1);
+          << "': " << lua_tostring(l, -1));
+      lua_pop(l, 1);
     }
   }
   else {
     // uninitialize Lua
-    lua_close(context);
-    context = NULL;
+    lua_close(l);
+    l = NULL;
   }
 }
 
@@ -165,7 +165,7 @@ void Script::load_if_exists(const std::string& script_name) {
  * @return true if the script is loaded
  */
 bool Script::is_loaded() {
-  return context != NULL;
+  return l != NULL;
 }
 
 /**
@@ -287,7 +287,7 @@ void Script::register_main_api() {
       { "get_angle", main_api_get_angle },
       { NULL, NULL }
   };
-  luaL_register(context, "sol.main", main_api);
+  luaL_register(l, "sol.main", main_api);
 }
 
 /**
@@ -336,7 +336,7 @@ void Script::register_game_api() {
       { "set_dungeon_finished", game_api_set_dungeon_finished },
       { NULL, NULL }
   };
-  luaL_register(context, "sol.game", game_api);
+  luaL_register(l, "sol.game", game_api);
 }
 
 /**
@@ -453,7 +453,7 @@ void Script::register_map_api() {
       { "enemy_get_sprite", map_api_enemy_get_sprite },
       { NULL, NULL }
   };
-  luaL_register(context, "sol.map", map_api);
+  luaL_register(l, "sol.map", map_api);
 }
 
 /**
@@ -480,7 +480,7 @@ void Script::register_item_api() {
       { "set_finished", item_api_set_finished },
       { NULL, NULL }
   };
-  luaL_register(context, "sol.item", item_api);
+  luaL_register(l, "sol.item", item_api);
 }
 
 /**
@@ -546,7 +546,7 @@ void Script::register_enemy_api() {
       { "send_message", enemy_api_send_message },
       { NULL, NULL }
   };
-  luaL_register(context, "sol.enemy", enemy_api);
+  luaL_register(l, "sol.enemy", enemy_api);
 }
 
 /**
@@ -582,27 +582,27 @@ Script& Script::get_script(lua_State* l, int min_arguments, int max_arguments) {
 void Script::print_stack() {
 
   int i;
-  int top = lua_gettop(context);
+  int top = lua_gettop(l);
 
   for (i = 1; i <= top; i++) {
 
-    int type = lua_type(context, i);
+    int type = lua_type(l, i);
     switch (type) {
 
       case LUA_TSTRING:
-        std::cout << lua_tostring(context, i);
+        std::cout << lua_tostring(l, i);
         break;
 
       case LUA_TBOOLEAN:
-        std::cout << (lua_toboolean(context, i) ? "true" : "false");
+        std::cout << (lua_toboolean(l, i) ? "true" : "false");
         break;
 
       case LUA_TNUMBER:
-        std::cout << lua_tonumber(context, i);
+        std::cout << lua_tonumber(l, i);
         break;
 
       default:
-        std::cout << lua_typename(context, type);
+        std::cout << lua_typename(l, type);
         break;
 
     }
@@ -621,15 +621,15 @@ void Script::print_stack() {
  */
 bool Script::find_lua_function(const std::string& function_name) {
 
-  if (context == NULL) {
+  if (l == NULL) {
     return false;
   }
 
-  lua_getglobal(context, function_name.c_str());
+  lua_getglobal(l, function_name.c_str());
 
-  bool exists = lua_isfunction(context, -1);
+  bool exists = lua_isfunction(l, -1);
   if (!exists) { // restore the stack
-    lua_pop(context, 1);
+    lua_pop(l, 1);
   }
 
   return exists;
@@ -718,9 +718,9 @@ bool Script::notify_script(const std::string &function_name, const std::string &
     bool end_arguments = false;
     for (i = 0; i < format.size() && !end_arguments; i++) {
       switch (format[i]) {
-        case 'i':	lua_pushinteger(context, va_arg(args, int));	break;
-        case 'b':	lua_pushboolean(context, va_arg(args, int));	break; 		// cstdarg refuses bool
-        case 's':	lua_pushstring(context, va_arg(args, const char*));	break;	// and std::string
+        case 'i':	lua_pushinteger(l, va_arg(args, int));	break;
+        case 'b':	lua_pushboolean(l, va_arg(args, int));	break; 		// cstdarg refuses bool
+        case 's':	lua_pushstring(l, va_arg(args, const char*));	break;	// and std::string
         case ' ':	end_arguments = true;	break;
         default:	Debug::die(StringConcat() << "Invalid character '" << format[i] << "' in format string '" << format);
       }
@@ -732,10 +732,10 @@ bool Script::notify_script(const std::string &function_name, const std::string &
 
     // call the function
     int nb_results = format.size() - i;
-    if (lua_pcall(context, nb_arguments, nb_results, 0) != 0) {
+    if (lua_pcall(l, nb_arguments, nb_results, 0) != 0) {
       Debug::print(StringConcat() << "Error in " << function_name << "(): "
-          << lua_tostring(context, -1));
-      lua_pop(context, 1);
+          << lua_tostring(l, -1));
+      lua_pop(l, 1);
       nb_results = 0;
     }
 
@@ -744,13 +744,13 @@ bool Script::notify_script(const std::string &function_name, const std::string &
       char type = format[nb_arguments + i + 1];
       int stack_index = -nb_results + i;
       switch (type) {
-        case 'i':	*va_arg(args, int*) = lua_tointeger(context, stack_index);	break;
-        case 'b':	*va_arg(args, int*) = lua_toboolean(context, stack_index);	break;
+        case 'i':	*va_arg(args, int*) = lua_tointeger(l, stack_index);	break;
+        case 'b':	*va_arg(args, int*) = lua_toboolean(l, stack_index);	break;
         case 's':	Debug::die("String results are not supported by Script::notify_script(), please make the call yourself");
         default:	Debug::die(StringConcat() << "Invalid character '" << type << "' in format string '" << format);
       }
     }
-    lua_pop(context, nb_results);
+    lua_pop(l, nb_results);
     va_end(args);
   }
 
@@ -778,15 +778,15 @@ void Script::update() {
       delete timer;
 
       // retrieve the Lua function and call it
-      lua_rawgeti(context, LUA_REGISTRYINDEX, ref);
-      if (lua_pcall(context, 0, 0, 0) != 0) {
+      lua_rawgeti(l, LUA_REGISTRYINDEX, ref);
+      if (lua_pcall(l, 0, 0, 0) != 0) {
         Debug::print(StringConcat() << "Error in the function of the timer: "
-            << lua_tostring(context, -1));
-        lua_pop(context, 1);
+            << lua_tostring(l, -1));
+        lua_pop(l, 1);
       }
 
       // delete the Lua function
-      luaL_unref(context, LUA_REGISTRYINDEX, ref);
+      luaL_unref(l, LUA_REGISTRYINDEX, ref);
 
       break;
     }
@@ -799,7 +799,7 @@ void Script::update() {
  */
 void Script::set_suspended(bool suspended) {
 
-  if (context != NULL) {
+  if (l != NULL) {
 
     // notify the timers
     std::map<int, Timer*>::iterator it;
@@ -819,6 +819,43 @@ bool Script::has_played_music() {
 }
 
 /**
+ * @briefs Starts a timer to run a Lua function after the delay.
+ *
+ * The Lua function must be on the top of the stack and will be popped.
+ * If the duration is set to zero, the function is executed immediately.
+ *
+ * @param duration the timer duration in milliseconds
+ * @param with_sound true to play a clock sound until the timer expires
+ */
+void Script::add_timer(lua_State* l, uint32_t duration, bool with_sound) {
+
+  if (duration == 0) {
+    // directly call the function
+    if (lua_pcall(l, 0, 0, 0) != 0) {
+      Debug::print(StringConcat() << "Error in the function of the timer: "
+          << lua_tostring(l, -1));
+      lua_pop(l, 1);
+    }
+  }
+  else {
+    // store the function into the Lua registry
+    int ref = luaL_ref(l, LUA_REGISTRYINDEX);
+
+    // retrieve the script
+    lua_getfield(l, LUA_REGISTRYINDEX, "sol.cpp_object");
+    Script* script = (Script*) lua_touserdata(l, -1);
+    lua_pop(l, 1);
+
+    // create the timer
+    Timer* timer = new Timer(duration, with_sound);
+    if (script->is_new_timer_suspended()) {
+      timer->set_suspended(true);
+    }
+    script->timers[ref] = timer;
+  }
+}
+
+/**
  * @brief Removes all timers started by this script.
  */
 void Script::remove_all_timers() {
@@ -827,7 +864,7 @@ void Script::remove_all_timers() {
 
   for (it = timers.begin(); it != timers.end(); it++) {
     int ref = it->first;
-    luaL_unref(context, LUA_REGISTRYINDEX, ref);
+    luaL_unref(l, LUA_REGISTRYINDEX, ref);
     delete it->second;
   }
 

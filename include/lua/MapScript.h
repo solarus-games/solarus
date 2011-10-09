@@ -31,6 +31,7 @@ class MapScript: public Script {
 
     Map& map;                              /**< the map controlled by this script */
 
+    static int camera_execute_function(lua_State* l);
     static int camera_restore(lua_State* l);
 
   protected:

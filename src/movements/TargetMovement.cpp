@@ -167,6 +167,8 @@ bool TargetMovement::is_finished() {
  *
  * Accepted keys:
  * - speed
+ * - ignore_obstacles
+ * - smooth
  * - displayed_direction
  *
  * @param key key of the property to get
@@ -178,6 +180,12 @@ const std::string TargetMovement::get_property(const std::string &key) {
 
   if (key == "speed") {
     oss << get_speed();
+  }
+  else if (key == "ignore_obstacles") {
+    oss << are_obstacles_ignored();
+  }
+  else if (key == "smooth") {
+    oss << is_smooth();
   }
   else if (key == "displayed_direction") {
     oss << get_displayed_direction4();
@@ -194,6 +202,8 @@ const std::string TargetMovement::get_property(const std::string &key) {
  *
  * Accepted keys:
  * - speed
+ * - ignore_obstacles
+ * - smooth
  *
  * @param key key of the property to set (the accepted keys depend on the movement type)
  * @param value the value to set
@@ -206,6 +216,16 @@ void TargetMovement::set_property(const std::string &key, const std::string &val
     int speed;
     iss >> speed;
     set_speed(speed);
+  }
+  else if (key == "ignore_obstacles") {
+    bool ignore_obstacles;
+    iss >> ignore_obstacles;
+    set_default_ignore_obstacles(ignore_obstacles);
+  }
+  else if (key == "smooth") {
+    bool smooth;
+    iss >> smooth;
+    set_smooth(smooth);
   }
   else if (key == "displayed_direction") {
     Debug::die("The property 'displayed_direction' of TargetMovement is read-only");

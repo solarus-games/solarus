@@ -20,7 +20,8 @@ end
 
 function are_all_torches_on()
 
-  return sol.main.sprite_get_animation(sol.map.interactive_entity_get_sprite("torch_1")) == "lit"
+  return sol.map.interactive_entity_exists("torch_1")
+      and sol.main.sprite_get_animation(sol.map.interactive_entity_get_sprite("torch_1")) == "lit"
       and sol.main.sprite_get_animation(sol.map.interactive_entity_get_sprite("torch_2")) == "lit"
 end
 

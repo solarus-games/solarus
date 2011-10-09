@@ -121,7 +121,6 @@ MapEntity::MapEntity():
   first_sprite(NULL),
   visible(true),
   movement(NULL),
-  old_movement(NULL),
   facing_entity(NULL),
   being_removed(false),
   enabled(true),
@@ -154,7 +153,6 @@ MapEntity::MapEntity(Layer layer, int x, int y, int width, int height):
   first_sprite(NULL),
   visible(true),
   movement(NULL),
-  old_movement(NULL),
   facing_entity(NULL),
   being_removed(false),
   enabled(true),
@@ -185,7 +183,6 @@ MapEntity::MapEntity(const std::string &name, int direction, Layer layer,
   direction(direction),
   visible(true),
   movement(NULL),
-  old_movement(NULL),
   facing_entity(NULL),
   being_removed(false),
   enabled(true),
@@ -206,9 +203,7 @@ MapEntity::~MapEntity() {
 
   remove_sprites();
   clear_movement();
-  if (old_movement != NULL) {
-    delete old_movement;
-  }
+  clear_old_movements();
 }
 
 /**
@@ -1058,12 +1053,22 @@ void MapEntity::set_movement(Movement *movement) {
  */
 void MapEntity::clear_movement() {
 
-  if (old_movement != NULL) {
-    delete old_movement;
+  if (movement != NULL) {
+    old_movements.push_back(movement); // destroy it later
+    movement = NULL;
   }
+}
 
-  old_movement = movement; // destroy it later
-  movement = NULL;
+/**
+ * @brief Destroys the old movements of this entity.
+ */
+void MapEntity::clear_old_movements() {
+
+  std::list<Movement*>::iterator it;
+  for (it = old_movements.begin(); it != old_movements.end(); it++) {
+    delete *it;
+  }
+  old_movements.clear();
 }
 
 /**
@@ -1817,11 +1822,7 @@ void MapEntity::update() {
   if (movement != NULL) {
     movement->update();
   }
-
-  if (old_movement != NULL) {
-    delete old_movement;
-    old_movement = NULL;
-  }
+  clear_old_movements();
 }
 
 /**

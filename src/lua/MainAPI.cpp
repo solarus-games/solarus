@@ -116,24 +116,6 @@ int Script::main_api_timer_start(lua_State *l) {
 }
 
 /**
- * @brief Stops a timer of this script if it exists.
- *
- * - Argument 1 (string): name of the Lua function that is supposed to be called
- * when the timer finishes
- *
- * @param l the Lua context that is calling this function
- */
-int Script::main_api_timer_stop(lua_State *l) {
-
-  Script& script = get_script(l, 1);
-  const std::string &callback_name = luaL_checkstring(l, 1);
-
-  script.remove_timer(callback_name);
-
-  return 0;
-}
-
-/**
  * @brief Stops all timers of the script.
  * @param l the Lua context that is calling this function
  */

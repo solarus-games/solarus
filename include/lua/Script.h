@@ -91,7 +91,6 @@ class Script {
       main_api_play_sound,
       main_api_play_music,
       main_api_timer_start,
-      main_api_timer_stop,
       main_api_timer_stop_all,
       main_api_sprite_create,
       main_api_sprite_get_animation,

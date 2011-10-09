@@ -255,7 +255,6 @@ void Script::register_main_api() {
       { "play_sound", main_api_play_sound },
       { "play_music", main_api_play_music },
       { "timer_start", main_api_timer_start },
-      { "timer_stop", main_api_timer_stop },
       { "timer_stop_all", main_api_timer_stop_all },
       { "sprite_create", main_api_sprite_create },
       { "sprite_get_animation", main_api_sprite_get_animation },

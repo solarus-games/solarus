@@ -744,6 +744,33 @@ int Script::enemy_api_get_distance_to_hero(lua_State *l) {
 }
 
 /**
+ * @brief Returns whether there would be a collision if the enemy
+ * was translated with the given parameters.
+ *
+ * - Argument 1 (integer): x translation in pixels
+ * - Argument 2 (integer): y translation in pixels
+ * - Return value (boolean): true if this translation would make the enemy overlap obstacles
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::enemy_api_test_obstacles(lua_State *l) {
+
+  Script& script = get_script(l, 2);
+  Enemy& enemy = script.get_enemy();
+
+  int dx = luaL_checkinteger(l, 1);
+  int dy = luaL_checkinteger(l, 2);
+
+  Rectangle bounding_box = enemy.get_bounding_box();
+  bounding_box.add_xy(dx, dy);
+
+  lua_pushboolean(l, script.get_map().test_collision_with_obstacles(
+      enemy.get_layer(), bounding_box, enemy));
+
+  return 1;
+}
+
+/**
  * @brief Makes sure the enemy's top-left corner is aligned
  * with the 8*8 grid of the map.
  *

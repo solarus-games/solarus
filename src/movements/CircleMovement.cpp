@@ -216,7 +216,7 @@ void CircleMovement::set_direction(Direction direction) {
  * Note that if the radius changes gradually, the movement will continue
  * for a while until the radius reaches zero.
  *
- * @param duration duration of the movement in milliseconds, (0 means infinite)
+ * @return duration of the movement in milliseconds, (0 means infinite)
  */
 uint32_t CircleMovement::get_duration() {
   return duration;

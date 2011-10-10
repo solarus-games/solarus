@@ -218,6 +218,7 @@ void Sound::load_all() {
 /**
  * @brief Returns whether a sound exists.
  * @param sound_id id of the sound to test
+ * @return true if the sound exists
  */
 bool Sound::exists(const SoundId& sound_id) {
 
@@ -458,8 +459,17 @@ ALuint Sound::decode_file(const std::string& file_name) {
 }
 
 
-// io functions to load the encoded sound from memory
-
+/**
+ * @brief Loads an encoded sound from memory.
+ *
+ * This function respects the prototype specified by libvorbisfile.
+ *
+ * @param ptr pointer to a buffer to load
+ * @param size size of the buffer
+ * @param nmemb number of bytes to load
+ * @param datasource source of the data to read
+ * @return number of bytes loaded
+ */
 size_t Sound::cb_read(void* ptr, size_t size, size_t nmemb, void* datasource) {
 
   SoundFromMemory* mem = (SoundFromMemory*) datasource;

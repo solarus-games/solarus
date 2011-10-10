@@ -793,7 +793,7 @@ int Hero::State::get_sword_damage_factor() {
  *
  * Returns false by default.
  *
- * @param enemy an attacker that is trying to hurt the hero
+ * @param attacker an attacker that is trying to hurt the hero
  * (or NULL if the source of the attack is not an enemy)
  * @return true if the hero can be hurt in this state
  */

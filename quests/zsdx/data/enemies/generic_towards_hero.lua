@@ -44,7 +44,7 @@ function set_properties(prop)
     properties.hurt_sound_style = "normal"
   end
   if properties.pushed_when_hurt == nil then
-    properties.pushed_when_hurt = false
+    properties.pushed_when_hurt = true
   end
   if properties.push_hero_on_sword == nil then
     properties.push_hero_on_sword = false

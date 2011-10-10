@@ -41,9 +41,12 @@ class EnemyReaction {
       REACTION_NUMBER
     };
 
+    /**
+     * @brief Represents a reaction to an attack.
+     */
     struct Reaction {
-      ReactionType type;
-      int life_lost;
+      ReactionType type; /**< type of reaction */
+      int life_lost;     /**< number of life points lost (possibly zero) */
     };
 
   private:

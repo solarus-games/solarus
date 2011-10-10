@@ -303,8 +303,8 @@ sets the light level of the map (0: no light, positive values: full light)
 
 - <tt>sol.map.camera_move(x, y, speed, function, delay_before, delay_after)</tt>: 
 moves the camera to a target point (a usual speed value is 250),
-waits a delay (default is 1 second), calls a function,
-waits another delay (default is 1 second) and restores the camera;
+waits a delay in millisecond (default is 1000), calls a function,
+waits another delay (default is 1000) and restores the camera;
 the game is suspended during the whole sequence
 
 - <tt>sol.map.tileset_get()</tt>:

@@ -43,7 +43,6 @@ class Timer {
     Timer(uint32_t duration, bool with_sound);
     ~Timer();
 
-    const std::string& get_name();
     bool is_finished();
 
     void update();

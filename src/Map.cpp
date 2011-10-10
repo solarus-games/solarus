@@ -95,7 +95,7 @@ TilesetId Map::get_tileset_id() {
  * This function keeps the tiles of the previous tileset and loads the
  * image of the new tileset.
  *
- * @return id of the new tileset
+ * @param tileset_id of the new tileset
  */
 void Map::set_tileset(TilesetId tileset_id) {
 

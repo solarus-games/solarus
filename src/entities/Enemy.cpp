@@ -376,7 +376,7 @@ bool Enemy::get_can_hurt_hero_running() {
 
 /**
  * @brief Sets whether this enemy can hurt the hero even if the hero is running.
- * @return can_hurt_hero_running true to allow this enemy to attack the hero while he is running
+ * @param can_hurt_hero_running true to allow this enemy to attack the hero while he is running
  */
 void Enemy::set_can_hurt_hero_running(bool can_hurt_hero_running) {
   this->can_hurt_hero_running = can_hurt_hero_running;
@@ -390,6 +390,7 @@ void Enemy::set_can_hurt_hero_running(bool can_hurt_hero_running) {
  *
  * @param attack an attack
  * @param reaction how the enemy will react
+ * @param life_lost number of life points lost with this attack (possibly zero)
  */
 void Enemy::set_attack_consequence(EnemyAttack attack,
     EnemyReaction::ReactionType reaction, int life_lost) {
@@ -403,6 +404,7 @@ void Enemy::set_attack_consequence(EnemyAttack attack,
  * @param sprite a sprite of this enemy
  * @param attack an attack
  * @param reaction how the enemy will react
+ * @param life_lost number of life points lost with this attack (possibly zero)
  */
 void Enemy::set_attack_consequence_sprite(Sprite& sprite, EnemyAttack attack,
     EnemyReaction::ReactionType reaction, int life_lost) {

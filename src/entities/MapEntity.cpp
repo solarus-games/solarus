@@ -1610,7 +1610,7 @@ void MapEntity::notify_collision_with_switch(Switch& sw,
 /**
  * @brief This function is called when the sprite of a switch
  * detects a pixel-precise collision with a sprite of this entity.
- * @param switch the switch
+ * @param sw the switch
  * @param sprite_overlapping the sprite of the current entity that collides with the switch
  */
 void MapEntity::notify_collision_with_switch(Switch& sw, Sprite& sprite_overlapping) {

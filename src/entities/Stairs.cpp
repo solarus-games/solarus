@@ -90,7 +90,6 @@ EntityType Stairs::get_type() {
 
 /**
  * @brief Notifies this entity that its map has just become active.
- * @param map the map
  */
 void Stairs::notify_map_started() {
 
@@ -304,9 +303,9 @@ Rectangle Stairs::get_clipping_rectangle(Way way) {
  * @brief Notifies this entity that it was just enabled or disabled.
  * @param enabled true if the entity is now enabled
  *
- * All dynamic tiles whose prefix is "<stairsname>_enabled"
- * and "<stairsame>_disabled" will be updated depending on the stairs state
- * (where <stairsname> is the name of the stairs).
+ * All dynamic tiles whose prefix is "stairsname_enabled"
+ * and "stairsame_disabled" will be updated depending on the stairs state
+ * (where stairsname is the name of the stairs).
  */
 void Stairs::notify_enabled(bool enabled) {
   update_dynamic_tiles();

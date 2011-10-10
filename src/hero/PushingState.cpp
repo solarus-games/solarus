@@ -202,7 +202,7 @@ void Hero::PushingState::stop_moving_pushed_entity() {
 
 /**
  * @brief Returns whether the hero can be hurt in this state.
- * @param enemy an attacker that is trying to hurt the hero
+ * @param attacker an attacker that is trying to hurt the hero
  * (or NULL if the source of the attack is not an enemy)
  * @return true if the hero can be hurt in this state
  */

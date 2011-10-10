@@ -126,7 +126,7 @@ void Hero::LiftingState::set_suspended(bool suspended) {
 /**
  * @brief Returns whether the hero can be hurt in this state.
  * @return true if the hero can be hurt in this state
- * @param enemy an attacker that is trying to hurt the hero
+ * @param attacker an attacker that is trying to hurt the hero
  * (or NULL if the source of the attack is not an enemy)
  */
 bool Hero::LiftingState::can_be_hurt(Enemy* attacker) {

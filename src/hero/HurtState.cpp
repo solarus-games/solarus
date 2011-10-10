@@ -26,7 +26,7 @@
 /**
  * @brief Constructor.
  * @param hero the hero controlled by this state
- * @param coordinates of the thing (usually an enemy) that hurts the hero,
+ * @param source_xy coordinates of the thing (usually an enemy) that hurts the hero,
  * used to compute the trajectory of the hero
  * @param life_points number of heart quarters to remove (this number may be reduced by the tunic)
  * @param magic_points number of magic points to remove
@@ -147,7 +147,7 @@ bool Hero::HurtState::is_sensor_obstacle(Sensor &sensor) {
 
 /**
  * @brief Returns whether the hero can be hurt in this state.
- * @param enemy an attacker that is trying to hurt the hero
+ * @param attacker an attacker that is trying to hurt the hero
  * (or NULL if the source of the attack is not an enemy)
  * @return true if the hero can be hurt in this state
  */

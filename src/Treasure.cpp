@@ -76,6 +76,7 @@ Treasure::~Treasure() {
 /**
  * @brief Assignment operator.
  * @param other the treasure to copy
+ * @return this treasure
  */
 Treasure& Treasure::operator=(const Treasure& other) {
 

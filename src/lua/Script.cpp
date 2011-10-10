@@ -819,11 +819,12 @@ bool Script::has_played_music() {
 }
 
 /**
- * @briefs Starts a timer to run a Lua function after the delay.
+ * @brief Starts a timer to run a Lua function after the delay.
  *
  * The Lua function must be on the top of the stack and will be popped.
  * If the duration is set to zero, the function is executed immediately.
  *
+ * @param l a Lua state
  * @param duration the timer duration in milliseconds
  * @param with_sound true to play a clock sound until the timer expires
  */

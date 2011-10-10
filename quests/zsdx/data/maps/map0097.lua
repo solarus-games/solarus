@@ -1,13 +1,11 @@
---GLOBAL VARS
-camera = nil
-
-
 function event_map_started(destination_point_name)
 
   	if sol.game.savegame_get_boolean(205) then
+		sol.map.block_set_enabled("block1_1",false)
    		lock_torches_group1()
 	end
   	if sol.game.savegame_get_boolean(206) then
+		sol.map.block_set_enabled("block2_1",false)
    		lock_torches_group2()
 	end
 
@@ -47,11 +45,7 @@ function lock_torches_group2()
 
 end
 
-function event_camera_reached_target()
 
-	camera()
-
-end
 
 function event_enemy_dead(enemy_name)
 
@@ -67,7 +61,6 @@ function explode_block1()
 	sol.map.explosion_create(536,256,1)
 	sol.main.play_sound("explosion")
 	sol.map.block_set_enabled("block1_1",false)
-	sol.main.timer_start(sol.map.camera_restore,1000)
 	
 end
 
@@ -76,7 +69,6 @@ function explode_block2()
 	sol.map.explosion_create(552,256,1)
 	sol.main.play_sound("explosion")
 	sol.map.block_set_enabled("block2_1",false)
-	sol.main.timer_start(sol.map.camera_restore,1000)
 end
 
 function event_update()
@@ -86,7 +78,7 @@ function event_update()
 		sol.game.savegame_set_boolean(205, true)
    		lock_torches_group1()
 		camera = explode_block1
-		sol.map.camera_move(536,256,250)
+		sol.map.camera_move(536,256,250,explode_block1)
 	end
 
 
@@ -95,6 +87,6 @@ function event_update()
 		sol.game.savegame_set_boolean(206, true)
    		lock_torches_group2()
 		camera = explode_block2
-		sol.map.camera_move(552,256,250)
+		sol.map.camera_move(552,256,250,explode_block2)
 	end
 end

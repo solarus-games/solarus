@@ -53,6 +53,15 @@ function event_camera_reached_target()
 
 end
 
+function event_enemy_dead(enemy_name)
+
+	if sol.map.enemy_is_group_dead("enemy_group2") and not sol.game.savegame_get_boolean(221) then
+		sol.map.pickable_item_create("small_key", 1, "221", 328,320, 1)
+		sol.main.play_sound("chest_appears")
+	end
+
+end
+
 function explode_block1() 
 
 	sol.map.explosion_create(536,256,1)

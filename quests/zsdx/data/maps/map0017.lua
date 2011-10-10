@@ -28,7 +28,7 @@ end
 
 function event_enemy_dead(enemy_name)
 
-	if sol.map.enemy_is_group_dead("enemy_group1") and not sol.game.savegame_get_boolean(200) then
+	if sol.map.enemy_is_group_dead("enemy_group2") and not sol.game.savegame_get_boolean(200) then
 		sol.map.pickable_item_create("small_key", 1, "200", 608,544, 1)
 		sol.main.play_sound("chest_appears")
 	end

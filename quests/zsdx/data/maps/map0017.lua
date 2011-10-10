@@ -2,9 +2,9 @@
 
 function event_map_started(destination_point_name)
 	
-	-- Init blocks
-	-- Init chest
-	-- Init stairs	
+
+	sol.map.light_set(1)
+
   	if sol.game.savegame_get_boolean(201) then
    		lock_torches()
 	end

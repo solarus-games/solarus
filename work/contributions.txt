@@ -15,7 +15,7 @@ Mooglwy (version Mac)
 Mymy (edelweiss, maps)
 Neovyse (artworks : Link, amulette ; fonds d'écran, notice, fresques de l'intro)
 Newlink (sprites)
-Binbin (version Mac)
+Binbin (version Mac, donjon secret)
 HunoPPC (version AmigaOS)
 Djipi (amélioration du logo)
 Daru13 (idées de boss (voir MP), graphismes non pixel-art sauf décors)
@@ -48,7 +48,7 @@ Testeurs :
 
 Thyb
 Yoshi04
-Stella : soldenb@web.de
+Stella
 BenObiWan
 Sam101
 Noxneo

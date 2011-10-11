@@ -42,7 +42,10 @@ function event_obstacle_reached()
 end
 
 function event_custom_attack_received(attack, sprite)
-  destroy()
+
+  if state == "attacking" then
+    destroy()
+  end
 end
 
 function destroy()

@@ -332,6 +332,41 @@ int Script::enemy_api_set_hurt_sound_style(lua_State *l) {
 }
 
 /**
+ * @brief Returns whether the enemy can currently attack the hero.
+ *
+ * - Return value (boolean): true if the enemy can currently attack the hero
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::enemy_api_get_can_attack(lua_State* l) {
+
+  Script& script = get_script(l, 0);
+  Enemy& enemy = script.get_enemy();
+
+  lua_pushboolean(l, enemy.get_can_attack());
+
+  return 1;
+}
+
+/**
+ * @brief Sets whether the enemy can currently attack the hero.
+ *
+ * - Argument 1 (boolean): true to allow the enemy to attack the hero
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::enemy_api_set_can_attack(lua_State* l) {
+
+  Script& script = get_script(l, 1);
+  Enemy& enemy = script.get_enemy();
+
+  bool can_attack = lua_toboolean(l, 1);
+  enemy.set_can_attack(can_attack);
+
+  return 0;
+}
+
+/**
  * @brief Returns the minimum level of shield that allows the hero
  * to stop attacks from this enemy
  *

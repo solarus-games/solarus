@@ -734,6 +734,12 @@ sets the style of sound to play when the enemy is hurt:
 "normal", "monster" or "boss" (default is "normal" for usual enemies
 and "boss" for bosses and minibosses)
 
+- <tt>sol.enemy.get_can_attack()</tt>:
+returns whether the enemy can currently attack the hero
+
+- <tt>sol.enemy.set_can_attack(can_attack)</tt>:
+sets whether the enemy can currently attack the hero
+
 - <tt>sol.enemy.get_minimum_shield_needed()</tt>:
 returns the minimum hero's level of shield that allows him to stop attacks from this enemy
 (0 means that he cannot stop the attacks)

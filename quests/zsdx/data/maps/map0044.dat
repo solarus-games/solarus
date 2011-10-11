@@ -20,8 +20,6 @@
 0	1	152	2208	16	24	379
 0	1	168	2216	8	16	378
 0	1	144	2216	8	16	377
-0	1	144	2208	8	8	184
-0	1	168	2208	8	8	183
 0	1	144	2240	8	16	71
 0	1	168	2240	8	16	71
 0	1	152	2256	16	8	70
@@ -3328,26 +3326,6 @@
 0	1	2880	224	8	16	71
 0	1	2888	216	16	32	2
 0	1	2904	224	8	16	71
-0	1	104	2168	32	8	70
-0	1	96	2168	8	8	69
-0	1	136	2168	8	8	69
-0	1	96	2160	8	8	71
-0	1	96	2152	8	8	69
-0	1	96	2112	8	8	69
-0	1	96	2096	8	16	71
-0	1	96	2088	8	8	69
-0	1	104	2088	32	8	70
-0	1	136	2088	8	8	69
-0	1	184	2168	32	8	70
-0	1	176	2168	8	8	69
-0	1	216	2168	8	8	69
-0	1	176	2088	8	8	69
-0	1	184	2088	32	8	70
-0	1	216	2088	8	8	69
-0	1	216	2160	8	8	71
-0	1	216	2152	8	8	69
-0	1	216	2112	8	8	69
-0	1	216	2096	8	16	71
 0	1	104	1944	32	8	70
 0	1	96	1944	8	8	69
 0	1	136	1944	8	8	69
@@ -5328,6 +5306,28 @@
 0	1	2952	136	8	8	69
 0	1	2952	96	8	8	69
 0	1	2952	80	8	16	71
+0	1	144	2208	8	8	184
+0	1	168	2208	8	8	183
+10	1	144	2120	16	16	evil_tile_after_1	3	1
+10	1	160	2120	16	16	evil_tile_after_10	3	1
+10	1	128	2136	16	16	evil_tile_after_15	3	1
+10	1	144	2136	16	16	evil_tile_after_20	3	1
+10	1	160	2136	16	16	evil_tile_after_12	3	1
+10	1	176	2136	16	16	evil_tile_after_18	3	1
+10	1	128	2152	16	16	evil_tile_after_6	3	1
+10	1	144	2152	16	16	evil_tile_after_19	3	1
+10	1	160	2152	16	16	evil_tile_after_14	3	1
+10	1	176	2152	16	16	evil_tile_after_2	3	1
+10	1	128	2168	16	16	evil_tile_after_17	3	1
+10	1	176	2168	16	16	evil_tile_after_11	3	1
+10	1	112	2104	16	16	evil_tile_after_7	3	1
+10	1	128	2104	16	16	evil_tile_after_4	3	1
+10	1	176	2104	16	16	evil_tile_after_3	3	1
+10	1	192	2104	16	16	evil_tile_after_8	3	1
+10	1	192	2088	16	16	evil_tile_after_16	3	1
+10	1	176	2088	16	16	evil_tile_after_5	3	1
+10	1	128	2088	16	16	evil_tile_after_13	3	1
+10	1	112	2088	16	16	evil_tile_after_9	3	1
 12	1	152	2216	16	16	custom_obstacle_74	0	1	0	0
 1	1	160	2229	from_outside	1	0
 12	1	328	2128	16	16	custom_obstacle	0	1	0	0
@@ -5722,7 +5722,26 @@
 7	1	208	93	pike_6	3	pike_auto	0	-1	_random	1	-1
 7	1	160	117	pike_7	3	pike_auto	0	-1	_random	1	-1
 7	1	764	2141	enemy_18	3	gibdo	0	-1	_random	1	-1
-7	1	160	2133	enemy_24	3	evil_tile	0	-1	_random	1	-1
+7	1	152	2133	evil_tile_1	3	evil_tile	0	-1	_random	1	-1
+7	1	184	2165	evil_tile_2	3	evil_tile	0	-1	_random	1	-1
+7	1	184	2117	evil_tile_3	3	evil_tile	0	-1	_random	1	-1
+7	1	136	2117	evil_tile_4	3	evil_tile	0	-1	_random	1	-1
+7	1	184	2101	evil_tile_5	3	evil_tile	0	-1	_random	1	-1
+7	1	136	2165	evil_tile_6	3	evil_tile	0	-1	_random	1	-1
+7	1	120	2117	evil_tile_7	3	evil_tile	0	-1	_random	1	-1
+7	1	200	2117	evil_tile_8	3	evil_tile	0	-1	_random	1	-1
+7	1	120	2101	evil_tile_9	3	evil_tile	0	-1	_random	1	-1
+7	1	168	2133	evil_tile_10	3	evil_tile	0	-1	_random	1	-1
+7	1	184	2181	evil_tile_11	3	evil_tile	0	-1	_random	1	-1
+7	1	168	2149	evil_tile_12	3	evil_tile	0	-1	_random	1	-1
+7	1	136	2101	evil_tile_13	3	evil_tile	0	-1	_random	1	-1
+7	1	168	2165	evil_tile_14	3	evil_tile	0	-1	_random	1	-1
+7	1	136	2149	evil_tile_15	3	evil_tile	0	-1	_random	1	-1
+7	1	200	2101	evil_tile_16	3	evil_tile	0	-1	_random	1	-1
+7	1	136	2181	evil_tile_17	3	evil_tile	0	-1	_random	1	-1
+7	1	184	2149	evil_tile_18	3	evil_tile	0	-1	_random	1	-1
+7	1	152	2165	evil_tile_19	3	evil_tile	0	-1	_random	1	-1
+7	1	152	2149	evil_tile_20	3	evil_tile	0	-1	_random	1	-1
 0	2	112	2032	96	8	411
 0	2	296	1856	8	96	416
 0	2	112	1808	96	8	411

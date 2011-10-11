@@ -376,10 +376,10 @@
 17	0	376	621	0
 2	0	240	432	32	32	weak_floor_teletransporter	0	1	58	from_2f_w_hole
 10	0	240	432	32	32	weak_floor	398	1
-5	0	128	344	chest_2	0	boss_key	1	301
-4	0	120	373	4	_none	1	-1
-4	0	136	389	4	_none	1	-1
-4	0	152	373	4	_none	1	-1
+5	0	104	344	chest_2	0	boss_key	1	301
+4	0	96	373	4	_none	1	-1
+4	0	112	389	4	_none	1	-1
+4	0	128	373	4	_none	1	-1
 5	0	968	464	chest_3	0	small_key	1	302
 2	0	992	488	16	16	teletransporter_7	1	1	55	destination_point_nw
 5	0	608	160	chest_4	0	compass	1	303
@@ -430,6 +430,8 @@
 12	0	944	608	32	8	custom_obstacle_11	1	1	1	1
 12	0	1000	608	32	8	custom_obstacle_12	1	1	1	1
 4	0	232	205	0	_random	1	-1
+7	0	168	333	enemy_3	2	pike_auto	0	-1	_random	1	-1
+7	0	200	365	enemy_4	2	pike_auto	0	-1	_random	1	-1
 0	1	424	136	144	112	397
 0	1	912	392	160	8	439
 0	1	184	568	96	8	439
@@ -910,6 +912,10 @@
 10	1	592	160	48	64	water_less_2	446	0
 10	1	600	168	32	48	water_less_3	446	0
 1	1	848	613	tmp_2	1	0
+7	1	596	301	enemy	3	ropa	0	-1	_random	1	-1
+7	1	736	293	enemy_2	3	blue_hardhat_beetle	0	-1	_random	1	-1
+12	1	824	328	16	16	custom_obstacle_6	0	1	0	0
+12	1	480	616	32	16	custom_obstacle_17	0	1	0	0
 0	2	912	136	8	96	441
 0	2	888	136	8	96	442
 0	2	768	600	8	96	441

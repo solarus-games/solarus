@@ -94,7 +94,7 @@ function go_random()
 end
 
 function go_hero()
-  movement = sol.main.target_movement_create(48)
+  movement = sol.main.target_movement_create(64)
   sol.enemy.start_movement(movement)
   being_pushed = false
   going_hero = true

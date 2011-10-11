@@ -270,7 +270,8 @@
 7	0	392	317	enemy	3	blue_hardhat_beetle	0	-1	_random	1	-1
 7	0	504	317	enemy_2	3	blue_hardhat_beetle	0	-1	_random	1	-1
 7	0	480	461	enemy_3	3	blue_hardhat_beetle	0	-1	_random	1	-1
-7	0	712	525	enemy_4	3	blue_hardhat_beetle	0	-1	_random	1	-1
+7	0	712	525	enemy_4	3	red_hardhat_beetle	0	-1	_random	1	-1
+7	0	740	677	enemy_5	3	ropa	0	-1	_random	1	-1
 0	1	40	728	800	24	52
 0	1	480	744	16	32	397
 0	1	912	48	192	672	397
@@ -613,9 +614,7 @@
 0	1	984	80	8	72	71
 0	1	1024	80	8	72	71
 0	1	1064	80	8	360	71
-0	1	1032	272	32	8	70
 0	1	984	232	8	8	69
-0	1	1024	272	8	8	69
 0	1	952	232	32	8	70
 0	1	984	280	8	48	71
 0	1	984	328	8	8	69
@@ -674,7 +673,6 @@
 0	1	992	248	8	16	248
 0	1	992	240	8	8	243
 0	1	1016	248	8	16	250
-0	1	1064	272	8	8	69
 0	1	952	544	32	32	520
 0	1	960	544	16	8	247
 0	1	960	568	16	8	249
@@ -684,7 +682,7 @@
 0	1	952	552	8	16	248
 0	1	952	544	8	8	243
 0	1	976	552	8	16	250
-0	1	1024	200	8	72	71
+0	1	1024	200	8	32	71
 0	1	984	192	8	8	69
 0	1	1024	192	8	8	69
 0	1	992	192	32	8	70
@@ -700,6 +698,7 @@
 0	1	936	456	8	16	250
 0	1	904	440	8	8	69
 0	1	904	448	8	32	71
+0	1	1024	232	8	8	69
 12	1	88	184	8	8	custom_obstacle_2	1	1	1	1
 12	1	112	184	8	8	custom_obstacle_3	1	1	1	1
 12	1	88	544	8	8	custom_obstacle_4	1	1	1	1
@@ -754,7 +753,7 @@
 19	1	952	680	stairs_16	1	2
 19	1	1008	680	stairs_17	1	2
 19	1	1064	680	stairs_18	1	2
-2	1	464	728	16	16	teletransporter_15	0	0	55	tmp_2
+2	1	464	728	16	16	teletransporter_15	0	0	56	from_4f_ne
 1	1	936	661	from_2f_se_hole_1	-1	0
 1	1	936	685	from_2f_se_hole_2	-1	0
 1	1	936	709	from_2f_se_hole_3	-1	0
@@ -766,6 +765,10 @@
 12	1	384	72	8	8	custom_obstacle_17	1	1	1	1
 1	1	256	453	from_2f_w_hole	-1	0
 8	1	616	37	interactive_entity	3	0	entities/hint_stone	dialog#dungeon_6.torches_hint
+7	1	608	117	enemy_6	3	blue_hardhat_beetle	0	-1	_random	1	-1
+7	1	924	237	enemy_7	3	ropa	0	-1	_random	1	-1
+7	1	1040	317	enemy_8	3	blue_hardhat_beetle	0	-1	_random	1	-1
+7	1	1092	469	enemy_9	3	ropa	0	-1	_random	1	-1
 0	2	920	16	96	8	437
 0	2	424	16	384	8	437
 0	2	960	392	64	8	437

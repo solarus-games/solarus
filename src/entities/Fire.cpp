@@ -24,7 +24,7 @@
  * @param xy coordinates of the fire
  */
 Fire::Fire(Layer layer, const Rectangle& xy):
-  Detector(COLLISION_RECTANGLE, "", layer, xy.get_x(), xy.get_y(), 16, 16) {
+  Detector(COLLISION_RECTANGLE | COLLISION_SPRITE, "", layer, xy.get_x(), xy.get_y(), 16, 16) {
 
   // initialize the entity
   create_sprite("entities/fire");
@@ -117,7 +117,7 @@ void Fire::update() {
 }
 
 /**
- * @brief Notifies this entity that a pixel-perfect collision was just detected with another sprite.
+ * @brief Notifies this entity that a pixel-precise collision was just detected with another sprite.
  *
  * This function is called by check_collision(MapEntity*, Sprite*) when another entity's
  * sprite overlaps a sprite of this detector.

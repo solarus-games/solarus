@@ -11,7 +11,6 @@ function event_hero_on_sensor(sensor_name)
   if sensor_name == "close_door_sensor"
       and sol.map.door_is_open("door")
       and not sol.game.savegame_get_boolean(156) then
-    sol.main.play_sound("door_closed")
     sol.map.door_close("door")
     sol.map.hero_freeze()
     sol.main.timer_start(start_music, 1000)

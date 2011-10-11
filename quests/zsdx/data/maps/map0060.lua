@@ -81,7 +81,6 @@ function start_boss()
   sol.map.enemy_set_enabled("boss", true)
   sol.map.door_close("boss_door")
   sol.main.play_music("boss.spc")
-  sol.main.play_sound("door_closed")
 end
 
 function event_treasure_obtained(item_name, variant, savegame_variable)

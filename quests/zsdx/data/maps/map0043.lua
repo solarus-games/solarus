@@ -54,7 +54,6 @@ end
 function start_boss()
 
   sol.map.door_close("boss_door")
-  sol.main.play_sound("door_closed")
   sol.map.dialog_start("dungeon_3.arbror_hello")
 end
 

@@ -1,6 +1,6 @@
 -- Dungeon 2 1F
 
-current_switch
+current_switch = nil
 fighting_miniboss = false
 
 function event_map_started(destination_point_name)

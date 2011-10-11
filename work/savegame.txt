@@ -202,14 +202,15 @@ booleans:
 
 200-299: binbin dungeon
 200	1F: Small key 1 
-201	1F: Small key 2
-202 	1F: Small key 3
+201	1F: Torches
+202 	1F: Small key 2
 203
 204     2F: Small key 1
 205     2F: Torch group 1
 206     2F: Torch group 2
 207     1F: Door 1
 208     1F: Door weak 1
+209	1F: Door key 1
 210	1F: Weak block 1
 211	1F: Weak block 2
 212	1F: Weak block 3
@@ -221,8 +222,10 @@ booleans:
 219	2F: Key block 3
 220	2F: Key block 4
 221	2F: Small key 2
+222	1F: Small key 3
+223	1F: Door key 2
+224	1F: Chest 1
 
-300	dungeon 6 2F: chest with 20 rupees
 301	dungeon 6 2F: chest with boss key
 302	dungeon 6 2F: chest with small key (south-east)
 303	dungeon 6 2F: chest with compass (underwater)

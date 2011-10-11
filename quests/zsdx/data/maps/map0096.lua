@@ -1,7 +1,7 @@
 function event_map_started(destination_point_name)
-
-  init_evil_tiles()
-  sol.main.timer_start(start_evil_tiles, 2000)
+	sol.map.door_open("door1")
+ 	sol.map.door_open("door2")	
+	init_evil_tiles()
 end
 
 -- Initializes evil tiles (this function should be called
@@ -50,6 +50,8 @@ function start_evil_tiles()
 
     if again then
       sol.main.timer_start(repeat_sound, 150)
+    else 
+     finish_evil_tiles()
     end
   end
 
@@ -57,3 +59,27 @@ function start_evil_tiles()
   repeat_sound()
 end
 
+function event_hero_on_sensor(sensor_name)
+
+	if sensor_name=="sensor1" then
+		sol.map.door_close("door1")
+		sol.map.door_close("door2")
+		sol.main.play_sound("door_closed")
+		sol.map.sensor_set_enabled("sensor1",false)
+		sol.main.timer_start(start_evil_tiles, 2000)
+	end
+end
+
+function finish_evil_tiles()
+
+	sol.map.door_open("door1")
+	sol.map.door_open("door2")
+	sol.main.play_sound("door_open")
+
+end
+
+function event_switch_activated(switch_name)
+ 	sol.main.timer_start(function()
+		sol.map.switch_set_activated("switch1_1",false) end,5000)
+
+end

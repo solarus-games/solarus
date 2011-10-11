@@ -1,6 +1,7 @@
+door3 = false
 function event_map_started(destination_point_name)
 	sol.map.door_open("door1")
- 	sol.map.door_open("door2")	
+ 	sol.map.door_open("door2")
 	init_evil_tiles()
 end
 
@@ -68,6 +69,11 @@ function event_hero_on_sensor(sensor_name)
 		sol.map.sensor_set_enabled("sensor1",false)
 		sol.main.timer_start(start_evil_tiles, 2000)
 	end
+
+
+	if sensor_name=="sensor2" then
+		door3 = true
+	end
 end
 
 function finish_evil_tiles()
@@ -79,7 +85,27 @@ function finish_evil_tiles()
 end
 
 function event_switch_activated(switch_name)
- 	sol.main.timer_start(function()
-		sol.map.switch_set_activated("switch1_1",false) end,5000)
+
+	if switch_name=="switch1_1" then
+		if door3==false then
+			sol.map.switch_set_activated("switch2_1",true)
+			sol.map.door_open("door3")
+			sol.main.play_sound("door_open")
+ 			sol.main.timer_start(function()
+				if door3==false then
+					sol.map.switch_set_activated("switch1_1",false)
+					sol.map.door_close("door3")
+					sol.main.play_sound("door_closed")
+					sol.map.switch_set_activated("switch2_1",false)
+				end	
+			end,5000)
+		end
+	end
+
+	if switch_name=="switch2_1" then
+		sol.map.door_open("door3")
+		sol.main.play_sound("door_open")
+		sol.map.switch_set_activated("switch1_1",true)
+	end
 
 end

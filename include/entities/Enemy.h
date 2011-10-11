@@ -123,7 +123,7 @@ class Enemy: public Detector {
     bool invulnerable;					/**< indicates that the enemy cannot be hurt for now */
     uint32_t vulnerable_again_date;			/**< date when the enemy can be hurt again */
     bool can_attack;					/**< indicates that the enemy can currently attack the hero */
-    uint32_t can_attack_again_date;			/**< date when the enemy can attack again */
+    uint32_t can_attack_again_date;			/**< date when the enemy can attack again (0 means never) */
     bool immobilized;					/**< indicates that the enemy is currently immobilized */
     uint32_t start_shaking_date;			/**< date when the enemy shakes */ 
     uint32_t end_shaking_date;				/**< date when the enemy stops shaking and walks again */ 
@@ -223,6 +223,8 @@ class Enemy: public Detector {
     // attack the hero
     void attack_hero(Hero &hero, Sprite *this_sprite);
     void attack_stopped_by_hero_shield();
+    bool get_can_attack();
+    void set_can_attack(bool can_attack);
 
     // receive an attack
     bool get_push_hero_on_sword();

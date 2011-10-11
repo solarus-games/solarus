@@ -550,7 +550,8 @@ void Enemy::update() {
     invulnerable = false;
   }
 
-  if (life > 0 && !can_attack && !is_immobilized() && now >= can_attack_again_date) {
+  if (life > 0 && !can_attack && !is_immobilized()
+      && can_attack_again_date != 0 && now >= can_attack_again_date) {
     can_attack = true;
   }
 
@@ -772,6 +773,27 @@ void Enemy::attack_stopped_by_hero_shield() {
 }
 
 /**
+ * @brief Returns whether this enemy can currently attack the hero.
+ * @return true if this enemy can currently attack the hero
+ */
+bool Enemy::get_can_attack() {
+
+  return can_attack;
+}
+
+/**
+ * @brief Sets whether this enemy can attack the hero.
+ * @return true to allow this enemy to attack the hero
+ */
+void Enemy::set_can_attack(bool can_attack) {
+
+  this->can_attack = can_attack;
+  if (!can_attack) {
+    can_attack_again_date = 0;
+  }
+}
+
+/**
  * @brief Returns the reaction corresponding to an attack on a sprite of this enemy.
  * @param attack an attack this enemy receives
  * @param this_sprite the sprite attacked, or NULL if the attack does not come from
@@ -963,6 +985,7 @@ void Enemy::kill() {
   clear_movement();
   invulnerable = true;
   can_attack = false;
+  can_attack_again_date = 0;
 
   if (rank == RANK_NORMAL) {
     // replace the enemy sprite

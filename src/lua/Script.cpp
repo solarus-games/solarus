@@ -506,6 +506,8 @@ void Script::register_enemy_api() {
       { "set_can_hurt_hero_running", enemy_api_set_can_hurt_hero_running },
       { "get_hurt_sound_style", enemy_api_get_hurt_sound_style },
       { "set_hurt_sound_style", enemy_api_set_hurt_sound_style },
+      { "get_can_attack", enemy_api_get_can_attack },
+      { "set_can_attack", enemy_api_set_can_attack },
       { "get_minimum_shield_needed", enemy_api_get_minimum_shield_needed },
       { "set_minimum_shield_needed", enemy_api_set_minimum_shield_needed },
       { "set_attack_consequence", enemy_api_set_attack_consequence },

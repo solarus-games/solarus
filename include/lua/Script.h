@@ -304,6 +304,8 @@ class Script {
       enemy_api_set_hurt_sound_style,
       enemy_api_get_minimum_shield_needed,
       enemy_api_set_minimum_shield_needed,
+      enemy_api_get_can_attack,
+      enemy_api_set_can_attack,
       enemy_api_set_attack_consequence,
       enemy_api_set_attack_consequence_sprite,
       enemy_api_set_default_attack_consequences,

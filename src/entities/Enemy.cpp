@@ -21,6 +21,7 @@
 #include "entities/CarriedItem.h"
 #include "entities/PickableItem.h"
 #include "entities/DestructibleItem.h"
+#include "entities/Fire.h"
 #include "Game.h"
 #include "Savegame.h"
 #include "Equipment.h"
@@ -441,11 +442,14 @@ void Enemy::set_default_attack_consequences() {
 
   for (int i = 0; i < ATTACK_NUMBER; i++) {
     attack_reactions[i].set_default_reaction();
-    set_attack_consequence(EnemyAttack(i), EnemyReaction::HURT, 1);
   }
+  set_attack_consequence(ATTACK_SWORD, EnemyReaction::HURT, 1); // multiplied by the sword damage factor
+  set_attack_consequence(ATTACK_THROWN_ITEM, EnemyReaction::HURT, 1); // multiplied depending on the item
   set_attack_consequence(ATTACK_EXPLOSION, EnemyReaction::HURT, 2);
+  set_attack_consequence(ATTACK_ARROW, EnemyReaction::HURT, 2);
   set_attack_consequence(ATTACK_HOOKSHOT, EnemyReaction::IMMOBILIZED);
   set_attack_consequence(ATTACK_BOOMERANG, EnemyReaction::IMMOBILIZED);
+  set_attack_consequence(ATTACK_FIRE, EnemyReaction::HURT, 3);
 }
 
 /**
@@ -692,13 +696,25 @@ void Enemy::notify_collision(MapEntity &other_entity, Sprite &other_sprite, Spri
 }
 
 /**
- * @brief This function is called when an explosion's sprite detects a collision with a sprite of this enemy.
+ * @brief This function is called when an explosion's sprite detects a collision
+ * with a sprite of this enemy.
  * @param explosion the explosion
  * @param sprite_overlapping the sprite of this enemy that collides with the explosion
  */
 void Enemy::notify_collision_with_explosion(Explosion &explosion, Sprite &sprite_overlapping) {
 
   explosion.try_attack_enemy(*this, sprite_overlapping);
+}
+
+/**
+ * @brief Notifies this entity that a sprite of fire
+ * detects a pixel-precise collision with a sprite of this entity.
+ * @param fire the fire
+ * @param sprite_overlapping the sprite of the current entity that collides with the fire
+ */
+void Enemy::notify_collision_with_fire(Fire& fire, Sprite& sprite_overlapping) {
+
+  try_hurt(ATTACK_FIRE, fire, &sprite_overlapping);
 }
 
 /**

@@ -64,7 +64,6 @@ function event_hero_on_sensor(sensor_name)
 	if sensor_name=="sensor1" then
 		sol.map.door_close("door1")
 		sol.map.door_close("door2")
-		sol.main.play_sound("door_closed")
 		sol.map.sensor_set_enabled("sensor1",false)
 		sol.main.timer_start(start_evil_tiles, 2000)
 	end
@@ -74,7 +73,6 @@ function finish_evil_tiles()
 
 	sol.map.door_open("door1")
 	sol.map.door_open("door2")
-	sol.main.play_sound("door_open")
 
 end
 

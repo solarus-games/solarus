@@ -837,6 +837,8 @@
 9	1	88	109	block_52	0	0	1
 9	1	72	109	block_53	1	0	1
 9	1	56	109	block_54	2	0	0
+2	1	496	912	16	16	teletransporter_2	1	1	98	entrance_C_2
+2	1	496	912	16	16	teletransporter_2	1	1	98	entrance_C_2
 0	2	776	136	8	32	320
 0	2	720	16	32	8	323
 0	2	256	376	104	16	170

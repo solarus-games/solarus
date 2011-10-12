@@ -405,6 +405,7 @@ bool Music::start() {
     case OGG:
 
       ogg_mem.position = 0;
+      ogg_mem.loop = true;
       FileTools::data_file_open_buffer(file_name, &ogg_mem.data, &ogg_mem.size);
       // now, ogg_mem contains the encoded data
 

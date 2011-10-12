@@ -384,6 +384,7 @@ ALuint Sound::decode_file(const std::string& file_name) {
 
   // load the sound file
   SoundFromMemory mem;
+  mem.loop = false;
   mem.position = 0;
   FileTools::data_file_open_buffer(file_name, &mem.data, &mem.size);
 
@@ -465,18 +466,27 @@ ALuint Sound::decode_file(const std::string& file_name) {
  * This function respects the prototype specified by libvorbisfile.
  *
  * @param ptr pointer to a buffer to load
- * @param size size of the buffer
- * @param nmemb number of bytes to load
+ * @param size size
+ * @param nb_bytes number of bytes to load
  * @param datasource source of the data to read
  * @return number of bytes loaded
  */
-size_t Sound::cb_read(void* ptr, size_t size, size_t nmemb, void* datasource) {
+size_t Sound::cb_read(void* ptr, size_t size, size_t nb_bytes, void* datasource) {
 
   SoundFromMemory* mem = (SoundFromMemory*) datasource;
-  size_t nb_bytes = nmemb;
-  if (mem->position + nb_bytes >= mem->size) {
+
+  if (mem->position >= mem->size) {
+    if (mem->loop) {
+      mem->position = 0;
+    }
+    else {
+      return 0;
+    }
+  }
+  else if (mem->position + nb_bytes >= mem->size) {
     nb_bytes = mem->size - mem->position;
   }
+
   memcpy(ptr, mem->data + mem->position, nb_bytes);
   mem->position += nb_bytes;
 

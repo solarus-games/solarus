@@ -17,7 +17,7 @@ function event_hero_on_sensor(sensor_name)
     else
       sol.map.door_open("ne_door")
     end
-  elseif sensor_name == "start_boss_sensor"
+  elseif string.find(sensor_name, "start_boss_sensor")
       and not sol.game.savegame_get_boolean(321)
       and not fighting_boss then
 

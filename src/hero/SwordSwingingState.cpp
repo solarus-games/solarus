@@ -30,6 +30,7 @@
  */
 Hero::SwordSwingingState::SwordSwingingState(Hero& hero):
   State(hero),
+  attacked(false),
   sword_finished(false) {
 
 }
@@ -82,7 +83,8 @@ void Hero::SwordSwingingState::update() {
     if (hero.get_movement() == NULL) {
 
       // if the player is still pressing the sword key, start loading the sword
-      if (get_controls().is_key_pressed(GameControls::SWORD)) {
+      if (get_controls().is_key_pressed(GameControls::SWORD)
+          && !attacked) {
         hero.set_state(new SwordLoadingState(hero));
       }
       else {
@@ -197,6 +199,8 @@ void Hero::SwordSwingingState::notify_attacked_enemy(EnemyAttack attack, Enemy& 
     EnemyReaction::Reaction& result, bool killed) {
 
   if (result.type != EnemyReaction::IGNORED && attack == ATTACK_SWORD) {
+
+    attacked = true;
 
     if (victim.get_push_hero_on_sword()) {
 

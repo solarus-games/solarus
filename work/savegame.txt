@@ -246,6 +246,8 @@ booleans:
 318	dungeon 6 3F: small key block (north-west)
 319	dungeon 6 2F: water drained
 320	dungeon 6 3F: miniboss killed
+321	dungeon 6 4F: boss killed
+322	dungeon 6 4F: heart container
 
 400	dungeon 4 B1: small key in the sensors room
 401	dungeon 4 1F: boss door

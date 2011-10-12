@@ -26,6 +26,7 @@ class Hero::SwordSwingingState: public Hero::State {
 
   private:
 
+    bool attacked;               /* indicates that at least one enemy was attacked */
     bool sword_finished;         /* indicates that the sword animation is finished */
 
   public:

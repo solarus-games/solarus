@@ -1983,6 +1983,7 @@ line3 = "couper ces buissons..."
 #       |-----------------------|
 line1 = "Oh là là, c'est"
 line2 = "bien trop lourd !"
+skip = all
 next = _cannot_lift_too_heavy.2
 
 [_cannot_lift_too_heavy.2]
@@ -1995,8 +1996,9 @@ line3 = "de tes bras !"
 # Lorsqu'on tente de soulever une pierre vraiment lourde
 # en ayant seulement la poigne de fer
 #       |-----------------------|
-line1 = "Oh là là, c'est encore"
-line2 = "trop lourd pour toi !"
+line1 = "C'est beaucoup trop"
+line2 = "lourd pour toi !"
+skip = all
 
 [_shop.question]
 # Lorsqu'on regarde un objet vendu dans un magasin

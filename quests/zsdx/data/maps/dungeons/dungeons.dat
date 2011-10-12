@@ -590,6 +590,13 @@ y = 304
 save = 316
 big = 0
 
+[dungeon_6.map_58.chest_0]
+floor = 0
+x = 440
+y = 272
+save = 312
+big = 0
+
 [dungeon_6.map_57.chest_0]
 floor = 3
 x = 968
@@ -597,3 +604,9 @@ y = 288
 save = 308
 big = 1
 
+[dungeon_6.map_57.boss_0]
+floor = 3
+x = 272
+y = 224
+save = 321
+big = 1

@@ -36,7 +36,7 @@ function event_obstacle_reached()
     local direction4 = sol.main.sprite_get_direction(sprite)
     sol.main.sprite_set_direction(sprite, (direction4 + 2) % 4)
 
-    if sol.enemy.get_distance_to_hero() < 320 then
+    if sol.enemy.get_distance_to_hero() < 256 then
       sol.main.play_sound("sword_tapping")
     end
 

@@ -45,13 +45,11 @@ function event_enemy_dead(enemy_name)
   if enemy_name == "se_room_enemy"
       and not sol.map.door_is_open("se_door") then
     sol.main.play_sound("secret")
-    sol.main.play_sound("door_open")
     sol.map.door_open("se_door")
   elseif string.find(enemy_name, "^s_room_enemy")
       and sol.map.enemy_is_group_dead("s_room_enemy")
       and not sol.map.door_is_open("se_door") then
     sol.main.play_sound("secret")
-    sol.main.play_sound("door_open")
     sol.map.door_open("se_door")
   end
 end
@@ -80,14 +78,12 @@ end
 function open_c_door()
   
   sol.main.play_sound("secret")
-  sol.main.play_sound("door_open")
   sol.map.door_open("c_door")
 end
 
 function open_e_door()
   
   sol.main.play_sound("secret")
-  sol.main.play_sound("door_open")
   sol.map.door_open("e_door")
 end
 

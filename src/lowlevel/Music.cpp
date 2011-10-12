@@ -329,7 +329,9 @@ void Music::decode_ogg(ALuint destination_buffer, ALsizei nb_samples) {
   do {
     bytes_read = ov_read(&ogg_file, ((char*) raw_data) + total_bytes_read, remaining_bytes, 0, 2, 1, &bitstream);
     if (bytes_read < 0) {
-      std::cout << "Error while decoding ogg chunk: " << bytes_read << std::endl;
+      if (bytes_read != OV_HOLE) { // OV_HOLE is normal when the music loops
+        std::cout << "Error while decoding ogg chunk: " << bytes_read << std::endl;
+      }
     }
     else {
       total_bytes_read += bytes_read;

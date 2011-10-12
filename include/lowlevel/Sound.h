@@ -63,6 +63,7 @@ class Sound {
       char* data;               /**< the buffer */
       size_t size;              /**< size of the buffer in bytes */
       size_t position;          /**< current position in the buffer */
+      bool loop;                /**< true to restart the sound when finished */
     };
 
     // functions to load the encoded sound from memory

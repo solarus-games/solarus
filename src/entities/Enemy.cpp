@@ -307,6 +307,14 @@ bool Enemy::is_prickle_obstacle() {
 }
 
 /**
+ * @brief Returns whether lava is currently considered as obstacle by this entity.
+ * @return true if lava is currently obstacle for this entity
+ */
+bool Enemy::is_lava_obstacle() {
+  return obstacle_behavior != "flying";
+}
+
+/**
  * @brief Sets the amount of damage this kind of enemy can make to the hero.
  * @param damage_on_hero number of heart quarters the player loses
  */

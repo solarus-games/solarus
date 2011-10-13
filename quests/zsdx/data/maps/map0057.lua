@@ -21,6 +21,7 @@ function event_hero_on_sensor(sensor_name)
       and not sol.game.savegame_get_boolean(321)
       and not fighting_boss then
 
+    sol.map.sensor_set_group_enabled("start_boss_sensor", false)
     start_boos()
   end
 end

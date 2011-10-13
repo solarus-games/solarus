@@ -1,4 +1,4 @@
--- A fireball, usually thrown by another enemy
+-- A triple bouncing fireball, usually thrown by another enemy
 
 speed = 192
 bounces = 0
@@ -11,16 +11,16 @@ function event_appear()
 
   sol.enemy.set_life(1)
   sol.enemy.set_damage(4)
-  sol.enemy.create_sprite("enemies/fireball")
+  sol.enemy.create_sprite("enemies/fireball_triple")
   sol.enemy.set_size(16, 16)
   sol.enemy.set_origin(8, 8)
   sol.enemy.set_invincible()
   sol.enemy.set_attack_consequence("sword", "custom")
 
   -- two smaller fireballs just for the displaying
-  sprite2 = sol.main.sprite_create("enemies/fireball")
+  sprite2 = sol.main.sprite_create("enemies/fireball_triple")
   sol.main.sprite_set_animation(sprite2, "small")
-  sprite3 = sol.main.sprite_create("enemies/fireball")
+  sprite3 = sol.main.sprite_create("enemies/fireball_triple")
   sol.main.sprite_set_animation(sprite3, "tiny")
 end
 

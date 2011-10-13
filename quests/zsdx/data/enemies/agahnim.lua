@@ -95,7 +95,7 @@ end
 function throw_fire()
 
   nb_sons_created = nb_sons_created + 1
-  sol.enemy.create_son("agahnim_fireball_"..nb_sons_created, "fireball", 0, -21)
+  sol.enemy.create_son("agahnim_fireball_"..nb_sons_created, "fireball_triple", 0, -21)
 end
 
 function event_message_received(src_enemy, message)

@@ -2,10 +2,11 @@
 
 nb_fire_created = 0
 max_fire_created = 10
+initial_xy = {}
 
 function event_appear()
 
-  sol.enemy.set_life(24)
+  sol.enemy.set_life(16)
   sol.enemy.set_damage(2)
   sol.enemy.create_sprite("enemies/drakomos_head")
   sol.enemy.set_size(56, 56)
@@ -19,12 +20,13 @@ function event_appear()
   sol.enemy.set_attack_consequence("boomerang", "protected")
   sol.enemy.set_attack_consequence("arrow", "protected")
   sol.enemy.set_attack_consequence("thrown_item", 1)
+
+  initial_xy.x, initial_xy.y = sol.enemy.get_position()
 end
 
 function event_restart()
 
-  local m = sol.main.random_movement_create(48)
-  sol.main.movement_set_property(m, "max_distance", 24)
+  local m = sol.main.target_movement_create(48, initial_xy.x, initial_xy.y)
   sol.enemy.start_movement(m)
   sol.main.timer_stop_all()
 
@@ -37,6 +39,13 @@ function event_restart()
       sol.main.timer_start(repeat_fire, 500)
     end,
     2000 + math.random(8000))
+end
+
+function event_movement_finished(movement)
+
+  local m = sol.main.random_movement_create(48)
+  sol.main.movement_set_property(m, "max_distance", 24)
+  sol.enemy.start_movement(m)
 end
 
 function repeat_fire()

@@ -452,12 +452,10 @@
 7	1	568	421	enemy_4	3	red_hardhat_beetle	0	-1	_random	1	-1
 12	1	984	336	32	48	custom_obstacle_5	0	1	0	0
 7	1	272	224	boss	3	drakomos	2	321	heart_container	1	322
-13	1	128	333	48	16	start_boss_sensor	0
+13	1	136	333	288	16	start_boss_sensor	0
 18	1	256	424	boss_door	1	0	-1
 18	1	256	376	boss_door_2	3	0	-1
 1	1	272	373	tmp	1	0
-13	1	384	333	48	16	start_boss_sensor_2	0
-13	1	208	333	144	16	start_boss_sensor_3	0
 0	2	792	16	96	8	437
 0	2	696	456	96	8	438
 0	2	696	480	96	8	437

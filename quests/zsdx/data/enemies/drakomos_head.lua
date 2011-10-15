@@ -6,7 +6,7 @@ initial_xy = {}
 
 function event_appear()
 
-  sol.enemy.set_life(1)
+  sol.enemy.set_life(16)
   sol.enemy.set_damage(2)
   sol.enemy.create_sprite("enemies/drakomos_head")
   sol.enemy.set_size(56, 56)

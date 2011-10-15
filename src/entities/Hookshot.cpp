@@ -292,7 +292,7 @@ void Hookshot::update() {
   else if (get_distance(get_hero()) == 0 ||
       (get_movement() != NULL && get_movement()->is_finished())) {
     remove_from_map();
-    get_hero().start_free();
+    get_hero().start_state_from_ground();
   }
 }
 

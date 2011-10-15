@@ -338,8 +338,6 @@ class Script {
       enemy_api_has_sprite,
       enemy_api_create_sprite,
       enemy_api_remove_sprite,
-      enemy_api_is_displayed_in_y_order,
-      enemy_api_set_displayed_in_y_order,
       enemy_api_create_son,
       enemy_api_get_father,
       enemy_api_send_message;

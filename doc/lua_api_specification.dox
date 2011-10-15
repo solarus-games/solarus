@@ -849,14 +849,6 @@ Creates a sprite attached to the enemy.
 - <tt>sol.enemy.remove_sprite(sprite_name)</tt>:
 Removes a sprite from the enemy.
 
-- <tt>sol.enemy.is_displayed_in_y_order()</tt>:
-returns whether the enemy is displayed at the same level as the hero
-(i.e. the one closest to north is displayed first)
-
-- <tt>sol.enemy.set_displayed_in_y_order(display_in_y_order)</tt>:
-sets whether the enemy is displayed at the same level as the hero
-(default is true, false will always display the enemy below the hero)
-
 - <tt>sol.enemy.create_son(enemy_name, breed, x, y)</tt>:
 Creates another enemy, specifying its coordinates as relative to the current enemy.
 

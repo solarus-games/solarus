@@ -542,8 +542,6 @@ void Script::register_enemy_api() {
       { "has_sprite", enemy_api_has_sprite },
       { "create_sprite", enemy_api_create_sprite },
       { "remove_sprite", enemy_api_remove_sprite },
-      { "is_displayed_in_y_order", enemy_api_is_displayed_in_y_order },
-      { "set_displayed_in_y_order", enemy_api_set_displayed_in_y_order },
       { "create_son", enemy_api_create_son },
       { "get_father", enemy_api_get_father },
       { "send_message", enemy_api_send_message },

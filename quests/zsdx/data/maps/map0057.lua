@@ -61,10 +61,12 @@ end
 
 function repeat_lava_spawner()
 
-  nb_spawners_created = nb_spawners_created + 1
-  local index = math.random(#spawner_xy)
-  sol.map.enemy_create("spawner_"..nb_spawners_created,
+  if not sol.game.savegame_get_boolean(321) then
+    nb_spawners_created = nb_spawners_created + 1
+    local index = math.random(#spawner_xy)
+    sol.map.enemy_create("spawner_"..nb_spawners_created,
     "drakomos_lava_spawner", 1, spawner_xy[index].x, spawner_xy[index].y)
-  sol.main.timer_start(repeat_lava_spawner, 5000 + math.random(10000))
+    sol.main.timer_start(repeat_lava_spawner, 5000 + math.random(10000))
+  end
 end
 

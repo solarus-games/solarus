@@ -6,13 +6,14 @@ initial_xy = {}
 
 function event_appear()
 
-  sol.enemy.set_life(16)
+  sol.enemy.set_life(1)
   sol.enemy.set_damage(2)
   sol.enemy.create_sprite("enemies/drakomos_head")
   sol.enemy.set_size(56, 56)
   sol.enemy.set_origin(28, 40)
   sol.enemy.set_hurt_sound_style("boss")
   sol.enemy.set_obstacle_behavior("flying")
+  sol.enemy.set_no_treasure()
 
   sol.enemy.set_invincible()
   sol.enemy.set_attack_consequence("sword", "protected")
@@ -41,6 +42,13 @@ function event_restart()
     2000 + math.random(8000))
 end
 
+function event_hurt(attack, life_lost)
+
+  if life_lost > 0 then
+    sol.main.timer_stop_all()
+  end
+end
+
 function event_movement_finished(movement)
 
   local m = sol.main.random_movement_create(48)
@@ -53,7 +61,7 @@ function repeat_fire()
   if nb_fire_created < max_fire_created then
     nb_fire_created = nb_fire_created + 1
     local son_name = sol.enemy.get_name().."_son_"..nb_fire_created
-    local angle_start = 3 * math.pi / 4
+    local angle_start = 2 * math.pi / 4
     local angle_end = 9 * math.pi / 4
     local angle = angle_start + nb_fire_created * (angle_end - angle_start) / max_fire_created
     sol.enemy.create_son(son_name, "fireball_simple", 0, 16)

@@ -29,7 +29,6 @@ function event_appear()
   sol.enemy.set_size(16, 16)
   sol.enemy.set_origin(8, 8)
   sol.enemy.set_invincible()
-  sol.enemy.set_displayed_in_y_order(true)
 
   -- create a second sprite that stays in the script
   link_sprite = sol.main.sprite_create("enemies/chain_and_ball")

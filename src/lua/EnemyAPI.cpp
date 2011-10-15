@@ -1052,43 +1052,6 @@ int Script::enemy_api_remove_sprite(lua_State *l) {
 }
 
 /**
- * @brief Returns whether the enemy is displayed at the same level as the hero
- * (i.e. the one closest to north is displayed first).
- *
- * - Return value (boolean): true if the enemy is displayed in y order
- *
- * @param l the Lua context that is calling this function
- */
-int Script::enemy_api_is_displayed_in_y_order(lua_State *l) {
-
-  Script& script = get_script(l, 0);
-  Enemy& enemy = script.get_enemy();
-
-  lua_pushboolean(l, enemy.displayed_in_y_order);
-
-  return 1;
-}
-
-/**
- * @brief Sets whether the enemy is displayed at the same level as the hero
- * (i.e. the one closest to north is displayed first).
- *
- * - Argument 1 (boolean): true if the enemy is displayed in y order
- *
- * @param l the Lua context that is calling this function
- */
-int Script::enemy_api_set_displayed_in_y_order(lua_State *l) {
-
-  Script& script = get_script(l, 1);
-  Enemy& enemy = script.get_enemy();
-
-  bool y_order = lua_toboolean(l, 1);
-  enemy.displayed_in_y_order = y_order;
-
-  return 0;
-}
-
-/**
  * @brief Creates another enemy on the map.
  *
  * The current enemy will be considered as the father of the enemy created.

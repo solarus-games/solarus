@@ -431,6 +431,7 @@ void Script::register_map_api() {
       { "door_is_open", map_api_door_is_open },
       { "door_set_open", map_api_door_set_open },
       { "pickable_item_create", map_api_pickable_item_create },
+      { "destructible_item_create", map_api_destructible_item_create },
       { "bomb_create", map_api_bomb_create },
       { "explosion_create", map_api_explosion_create },
       { "fire_create", map_api_fire_create },

@@ -2021,7 +2021,7 @@ int Script::map_api_enemy_create(lua_State *l) {
   int y = luaL_checkinteger(l, 5);
 
   MapEntities& entities = script.get_map().get_entities();
-  Treasure treasure = Treasure(script.get_game(), "_none", 1, -1);
+  Treasure treasure = Treasure(script.get_game(), "_random", 1, -1);
   Enemy* enemy = (Enemy*) Enemy::create(script.get_game(), breed, Enemy::RANK_NORMAL, -1,
       name, Layer(layer), x, y, 0, treasure);
   entities.add_entity(enemy);

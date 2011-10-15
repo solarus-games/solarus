@@ -579,7 +579,7 @@ int Script::enemy_api_set_treasure(lua_State *l) {
  */
 int Script::enemy_api_set_no_treasure(lua_State *l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l, 0);
   Enemy& enemy = script.get_enemy();
 
   Treasure treasure(script.get_game(), "_none", 1, -1);
@@ -594,7 +594,7 @@ int Script::enemy_api_set_no_treasure(lua_State *l) {
  */
 int Script::enemy_api_set_random_treasure(lua_State *l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l, 0);
   Enemy& enemy = script.get_enemy();
 
   Treasure treasure(script.get_game(), "_random", 1, -1);
@@ -1114,7 +1114,7 @@ int Script::enemy_api_create_son(lua_State *l) {
   y += enemy.get_y();
 
   MapEntities& entities = script.get_map().get_entities();
-  Treasure treasure = Treasure(script.get_game(), "_none", 1, -1);
+  Treasure treasure = Treasure(script.get_game(), "_random", 1, -1);
   Enemy* son = (Enemy*) Enemy::create(script.get_game(), breed, Enemy::RANK_NORMAL, -1,
       name, enemy.get_layer(), x, y, 0, treasure);
   son->father_name = enemy.get_name();

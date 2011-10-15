@@ -33,6 +33,7 @@
 #include "entities/Teletransporter.h"
 #include "entities/Hero.h"
 #include "entities/PickableItem.h"
+#include "entities/DestructibleItem.h"
 #include "entities/Bomb.h"
 #include "entities/Fire.h"
 #include "lowlevel/Sound.h"
@@ -1898,6 +1899,33 @@ int Script::map_api_pickable_item_create(lua_State *l) {
       Treasure(game, item_name, variant, savegame_variable),
       FALLING_MEDIUM, false
       ));
+
+  return 0;
+}
+
+/**
+ * @brief Places a new destructible item on the map.
+ *
+ * - Argument 1 (integer): subtype of destructible item
+ * - Argument 2 (integer): x
+ * - Argument 3 (integer): y
+ * - Argument 4 (integer): layer
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_destructible_item_create(lua_State *l) {
+
+  Script& script = get_script(l, 4);
+
+  int subtype = luaL_checkinteger(l, 1);
+  int x = luaL_checkinteger(l, 2);
+  int y = luaL_checkinteger(l, 3);
+  Layer layer = Layer(luaL_checkinteger(l, 4));
+
+  Game& game = script.get_game();
+  MapEntities& entities = script.get_map().get_entities();
+  entities.add_entity(new DestructibleItem(layer, x, y, DestructibleItem::Subtype(subtype),
+      Treasure(game, "_none", 1, -1)));
 
   return 0;
 }

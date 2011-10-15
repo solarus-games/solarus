@@ -174,7 +174,7 @@ void Hero::HookshotState::notify_movement_tried(bool success) {
 
   if (!success) {
     // an unexpected obstacle was reached (e.g. a moving NPC)
-    hero.set_state(new FreeState(hero));
+    hero.start_state_from_ground();
   }
 }
 

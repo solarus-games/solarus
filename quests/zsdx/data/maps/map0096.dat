@@ -91,8 +91,8 @@
 7	0	280	461	evil_19	3	evil_tile	0	-1	_random	1	-1
 10	0	256	448	16	16	evil_after_20	472	1
 7	0	264	461	evil_20	3	evil_tile	0	-1	_random	1	-1
-2	0	208	352	16	16	teletransporter_4	0	1	97	entrance_B_1
-1	0	216	365	entrance_B_2	3	0
+2	0	208	352	16	16	teletransporter_4	0	1	97	entrance_D_1
+1	0	216	365	entrance_D_1	3	0
 18	0	200	352	door1_1	1	0	-1
 13	0	216	381	16	16	sensor1	0
 19	0	496	400	stairs	0	4

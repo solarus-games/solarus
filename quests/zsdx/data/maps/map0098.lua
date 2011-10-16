@@ -1,4 +1,8 @@
 function event_map_started(destination_point_name)
+if sol.game.savegame_get_boolean(235) then
+	sol.map.sensor_set_enabled("sensor1_1",false)
+end
+ sol.map.enemy_set_group_enabled("enemy2",false)
  -- initialize all pools
   for i, pool in ipairs(pools) do
     if pool.initially_filled ~= sol.game.savegame_get_boolean(savegame_variable + i) then
@@ -9,11 +13,34 @@ function event_map_started(destination_point_name)
       set_water_drained(i)
     end
   end
+end
 
+
+function event_enemy_dead(enemy_name)
+
+	if sol.map.enemy_is_group_dead("enemy2") and not sol.game.savegame_get_boolean(235) then
+		sol.map.pickable_item_create("big_key", 1, "234", 672,80, 1)
+		sol.main.play_sound("secret")
+		sol.main.play_sound("door_open")
+		sol.map.door_open("door1")
+		sol.game.savegame_set_boolean(235, true)
+		sol.main.play_music("eagle_tower.it")
+	end
 
 end
 
+function event_hero_on_sensor(sensor_name)
+
+	if sensor_name=="sensor1_1" then
+		sol.main.play_music("boss.spc")
+		sol.main.play_sound("door_closed")
+		sol.map.door_close("door1")
+		sol.map.enemy_set_group_enabled("enemy2",true)
+		sol.map.sensor_set_enabled("sensor1_1",false)
+	end
+end
 function event_switch_activated(switch_name)
+
 
   local matched = string.match(switch_name, "^water_([1-9])_on_switch$")
   if matched then
@@ -22,29 +49,22 @@ function event_switch_activated(switch_name)
   end
 
 	if switch_name=="switch1_1" then
-		sol.main.play_sound("chest_appears")
-		sol.map.door_open(door1)
+		sol.main.play_sound("door_open")
+		sol.map.door_open("door1")
 	end
-
 
 end
 
 function event_switch_inactivated(switch_name)
 
 	if switch_name=="switch1_1" then
-		sol.main.play_sound("chest_appears")
-		sol.map.door_close(door1)
+		sol.main.play_sound("door_closed")
+		sol.map.door_close("door1")
 	end
-
 
 end
 
 
-
-
-
-
--- Inferno river maze B1
 
 water_delay = 500 -- delay between each water step
 current_pool_index = 0
@@ -60,16 +80,11 @@ savegame_variable = 270
 function event_block_moved(block_name)
 
   local matched = string.match(block_name, "^water_([1-9])_on_block$")
-  if matched then
-    local index = tonumber(matched)
-    fill_water(index)
-  else
-    matched = string.match(block_name, "^water_([1-9])_off_block$")
+
     if matched then
       local index = tonumber(matched)
       drain_water(index)
-    end
-  end
+end
 end
 
 function fill_water(index)
@@ -96,12 +111,6 @@ function set_water_filled(i)
   if pools[i].trigger == "switch" then
     -- make activated the switch that fills this pool
     sol.map.switch_set_activated("water_"..i.."_on_switch", true)
-  else
-    -- hide the block that fills this pool
-    sol.map.block_set_enabled("water_"..i.."_on_block", false)
-    -- reset and show the block that drains this pool
-    sol.map.block_reset("water_"..i.."_off_block")
-    sol.map.block_set_enabled("water_"..i.."_off_block", true)
   end
 end
 
@@ -113,13 +122,6 @@ function set_water_drained(i)
   -- disable the jump sensors placed over stairs (there is no water to jump into)
   sol.map.jump_sensor_set_group_enabled("water_"..i.."_on_jump_sensor", false)
 
-  if pools[i].trigger == "block" then
-    -- hide the block that drains this pool
-    sol.map.block_set_enabled("water_"..i.."_off_block", false)
-    -- reset and show the block that fills this pool
-    sol.map.block_reset("water_"..i.."_on_block")
-    sol.map.block_set_enabled("water_"..i.."_on_block", true)
-  end
 end
 
 function fill_water_step_1()

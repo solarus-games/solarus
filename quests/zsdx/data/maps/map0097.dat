@@ -274,7 +274,6 @@
 7	0	232	157	enemy_group2_11	3	blue_dogman	0	-1	_random	1	-1
 7	0	344	157	enemy_group2_12	3	blue_dogman	0	-1	_random	1	-1
 7	0	288	205	enemy_group2_13	3	red_dogman	0	-1	_random	1	-1
-2	0	176	480	32	32	teletransporter	0	1	17	destination_hole1
 15	0	336	896	16	32	0
 15	0	352	896	16	32	1
 7	0	784	213	enemy	3	pike_auto	0	-1	_random	1	-1

@@ -286,6 +286,7 @@ amount_2 = 300
 amount_3 = 999
 
 [magic_bar]
+savegame_variable = 1035
 limit_for_counter = magic
 nb_variants = 2
 initial_variant = 0

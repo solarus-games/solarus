@@ -849,8 +849,7 @@
 1	1	736	37	entrance_B_1	3	0
 1	1	944	101	entrance_C_1	3	0
 1	1	872	101	entrance_E_1	3	0
-2	1	504	928	16	16	teletransporter_3	1	1	98	entrance_E_1
-2	1	504	928	16	16	teletransporter_3	1	1	98	entrance_E_1
+2	1	504	928	16	16	teletransporter_2	1	1	99	entrance_F_1
 0	2	776	136	8	32	320
 0	2	720	16	32	8	323
 0	2	256	376	104	16	170

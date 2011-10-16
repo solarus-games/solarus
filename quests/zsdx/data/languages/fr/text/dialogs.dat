@@ -5028,6 +5028,13 @@ next = potion_shop.give_bottle.2
 #       |-----------------------|
 line1 = "gratuit. Héhéhé..."
 
+[outside_world.vine_start]
+#       |-----------------------|
+line1 = "La terre semble très"
+line2 = "fertile ici, mais elle"
+line3 = "manque d'humidité..."
+skip = all
+
 [dungeon_2.solarus_child]
 #       |-----------------------|
 line1 = "$2$v... Merci."

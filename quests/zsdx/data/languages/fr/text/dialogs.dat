@@ -669,6 +669,8 @@ next = _item_description.fire_stones_counter.1.1
 
 [_item_description.fire_stones_counter.1.1]
 #       |--------------------|
+line1 = "à Inferno."
+
 # ---------------------
 # Obtention d'un trésor
 # ---------------------
@@ -676,7 +678,6 @@ next = _item_description.fire_stones_counter.1.1
 # Les messages ci-dessous sont affichés lorsque le joueur obtient
 # un trésor, généralement en ouvrant un coffre ou en l'achetant
 # dans un magasin.
-line1 = "à Inferno."
 
 [_treasure.feather.1]
 # Plume
@@ -1634,6 +1635,14 @@ next = _treasure.sword.4.1
 line1 = "cette épée ultime"
 line2 = "dépasse"
 line3 = "l'entendement..."
+
+[_treasure.magic_bar.2]
+# Demi de magie
+#       |--------------------|
+icon = 99
+line1 = "Tu as trouvé le Demi"
+line2 = "de Magie ! Ta barre"
+line3 = "magique a doublé !"
 
 [_treasure.map.1]
 # Carte
@@ -2875,6 +2884,12 @@ line2 = "C'est fermé à clé !"
 # Tenter d'ouvrir la grotte de la cascade sans avoir la Clé de Bois
 #       |-----------------------|
 line1 = "    - Serrure Bois -"
+line2 = "C'est fermé à clé !"
+
+[outside_world.ice_key_required]
+# Tenter d'ouvrir le donjon 7 sans avoir la Clé de Glace
+#       |-----------------------|
+line1 = "   - Serrure Glace -"
 line2 = "C'est fermé à clé !"
 
 [link_house.dream]
@@ -5022,6 +5037,13 @@ next = potion_shop.give_bottle.2
 #       |-----------------------|
 line1 = "gratuit. Héhéhé..."
 
+[outside_world.vine_start]
+#       |-----------------------|
+line1 = "La terre semble très"
+line2 = "fertile ici, mais elle"
+line3 = "manque d'humidité..."
+skip = all
+
 [dungeon_2.solarus_child]
 #       |-----------------------|
 line1 = "$2$v... Merci."
@@ -5441,9 +5463,116 @@ line2 = "saute."
 
 [dungeon_6.close_way_hint]
 #       |-----------------------|
-#================================
 line1 = "Puis referme le chemin"
 line2 = "derrière toi."
+
+[dungeon_6.tom]
+#       |-----------------------|
+line1 = "$2$v... Merci."
+line2 = "Tu m'as sauvé la vie."
+line3 = "Tu as fait beaucoup de"
+next = dungeon_6.tom.2
+
+[dungeon_6.tom.2]
+#       |-----------------------|
+line1 = "chemin et traversé de"
+line2 = "nombreuses épreuves"
+line3 = "depuis que nous nous"
+next = dungeon_6.tom.3
+
+[dungeon_6.tom.3]
+#       |-----------------------|
+line1 = "sommes rencontrés"
+line2 = "jadis."
+
+[dungeon_6.tom_revelation]
+#       |-----------------------|
+line1 = "$2J'ai des choses très"
+line2 = "graves à t'avouer..."
+line3 = "La mort de notre roi"
+next = dungeon_6.tom_revelation.2
+
+[dungeon_6.tom_revelation.2]
+#       |-----------------------|
+line1 = "n'était pas"
+line2 = "accidentelle. C'est moi"
+line3 = "qui l'ai empoisonné."
+next = dungeon_6.tom_revelation.3
+
+[dungeon_6.tom_revelation.3]
+#       |-----------------------|
+line1 = "J'étais sous le"
+line2 = "contrôle d'Agahnim..."
+line3 = "Il m'avait envoûté et"
+next = dungeon_6.tom_revelation.4
+
+[dungeon_6.tom_revelation.4]
+#       |-----------------------|
+line1 = "j'avais perdu toute"
+line2 = "volonté... Je ne"
+line3 = "pouvais rien faire..."
+next = dungeon_6.tom_revelation.5
+
+[dungeon_6.tom_revelation.5]
+#       |-----------------------|
+line1 = "Ce n'est que lorsque le"
+line2 = "sort a été brisé que"
+line3 = "j'ai réalisé ce qui"
+next = dungeon_6.tom_revelation.6
+
+[dungeon_6.tom_revelation.6]
+#       |-----------------------|
+line1 = "s'était passé... J'ai"
+line2 = "alors décidé de"
+line3 = "m'exiler dans la"
+next = dungeon_6.tom_revelation.7
+
+[dungeon_6.tom_revelation.7]
+#       |-----------------------|
+line1 = "caverne où tu m'as"
+line2 = "rencontré. Puis j'ai"
+line3 = "été fait prisonnier en"
+next = dungeon_6.tom_revelation.8
+
+[dungeon_6.tom_revelation.8]
+#       |-----------------------|
+line1 = "tentant de résister"
+line2 = "lorsque Agahnim a"
+line3 = "envahi le château."
+next = dungeon_6.tom_revelation.9
+
+[dungeon_6.tom_revelation.9]
+#       |-----------------------|
+line1 = "$v... Tu dois"
+line2 = "maintenant te rendre à"
+line3 = "la Montagne des"
+next = dungeon_6.tom_revelation.10
+
+[dungeon_6.tom_revelation.10]
+#       |-----------------------|
+line1 = "Terreurs. C'est là"
+line2 = "qu'Agahnim est parti à"
+line3 = "la recherche de Zelda."
+next = dungeon_6.tom_revelation.11
+
+[dungeon_6.tom_revelation.11]
+#       |-----------------------|
+line1 = "Tu dois d'abord libérer"
+line2 = "Sahasrahla avant que le"
+line3 = "sorcier parvienne à"
+next = dungeon_6.tom_revelation.12
+
+[dungeon_6.tom_revelation.12]
+#       |-----------------------|
+line1 = "lui faire avouer où se"
+line2 = "trouvent Zelda et les"
+line3 = "huit enfants..."
+next = dungeon_6.tom_revelation.13
+
+[dungeon_6.tom_revelation.13]
+#       |-----------------------|
+line1 = "$v, tu es mon"
+line2 = "dernier espoir..."
 
 [dungeon_8.welcome]
 #       |-----------------------|

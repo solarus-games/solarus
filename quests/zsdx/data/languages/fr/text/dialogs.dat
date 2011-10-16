@@ -669,6 +669,8 @@ next = _item_description.fire_stones_counter.1.1
 
 [_item_description.fire_stones_counter.1.1]
 #       |--------------------|
+line1 = "à Inferno."
+
 # ---------------------
 # Obtention d'un trésor
 # ---------------------
@@ -676,7 +678,6 @@ next = _item_description.fire_stones_counter.1.1
 # Les messages ci-dessous sont affichés lorsque le joueur obtient
 # un trésor, généralement en ouvrant un coffre ou en l'achetant
 # dans un magasin.
-line1 = "à Inferno."
 
 [_treasure.feather.1]
 # Plume
@@ -1634,6 +1635,14 @@ next = _treasure.sword.4.1
 line1 = "cette épée ultime"
 line2 = "dépasse"
 line3 = "l'entendement..."
+
+[_treasure.magic_bar.2]
+# Demi de magie
+#       |--------------------|
+icon = 99
+line1 = "Tu as trouvé le Demi"
+line2 = "de Magie ! Ta barre"
+line3 = "magique a doublé !"
 
 [_treasure.map.1]
 # Carte

@@ -13,6 +13,7 @@ integers (above 1024):
 1032	bomb bag
 1033	quiver
 1034	rupee bag
+1035	maximum of magic bar (0, 1 or 2)
 
 1100	feather
 	bombs

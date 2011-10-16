@@ -541,7 +541,7 @@
 7	0	856	509	enemy_2	3	skeletor	0	-1	_random	1	-1
 7	0	1056	621	enemy_3	3	globul	0	-1	_random	1	-1
 7	0	672	661	enemy_4	3	skeletor	0	-1	_random	1	-1
-7	0	456	333	enemy_6	3	skeletor	0	-1	_random	1	-1
+7	0	432	349	enemy_6	3	skeletor	0	-1	_random	1	-1
 7	0	648	517	enemy_5	3	tentacle	0	-1	_random	1	-1
 7	0	672	493	enemy_8	3	tentacle	0	-1	_random	1	-1
 7	0	680	541	enemy_9	3	tentacle	0	-1	_random	1	-1

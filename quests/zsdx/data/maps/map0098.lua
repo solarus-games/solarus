@@ -1,6 +1,4 @@
 function event_map_started(destination_point_name)
-
-	sol.map.light_set(1)
  -- initialize all pools
   for i, pool in ipairs(pools) do
     if pool.initially_filled ~= sol.game.savegame_get_boolean(savegame_variable + i) then

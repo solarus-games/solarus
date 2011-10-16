@@ -225,6 +225,9 @@ booleans:
 222	1F: Small key 3
 223	1F: Door key 2
 224	1F: Chest 1
+225  	2F: Chest 1
+226	SS1: Chest 1
+
 
 301	dungeon 6 2F: chest with boss key
 302	dungeon 6 2F: chest with small key (south-east)

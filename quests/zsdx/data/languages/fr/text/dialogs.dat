@@ -739,7 +739,7 @@ next = _treasure.boomerang.1.2
 
 [_treasure.boomerang.1.2]
 #       |--------------------|
-line1 = "Il y a plusieurs""
+line1 = "Il y a plusieurs"
 line2 = "techniques pour le"
 line3 = "manipuler, à toi"
 next = _treasure.boomerang.1.3
@@ -2107,6 +2107,7 @@ next = found_fairy.1
 
 [found_fairy.1]
 #       |--------------------___|
+icon = -1
 line1 = "Que vas-tu en faire ?"
 line2 = "Récupérer des Coeurs"
 line3 = "La conserver"
@@ -2232,6 +2233,7 @@ line3 = "cette torche..."
 line1 = "$2D'anciennes légendes"
 line2 = "racontent qu'il y a"
 line3 = "bien longtemps,"
+skip = current
 next = intro0.1
 
 [intro0.1]
@@ -2267,6 +2269,7 @@ line3 = "les siècles passèrent..."
 line1 = "$2Bien des générations"
 line2 = "plus tard, un maléfice"
 line3 = "sembla menacer Hyrule."
+skip = current
 next = intro1.2
 
 [intro1.2]
@@ -2302,6 +2305,7 @@ line3 = "temps oublié."
 line1 = "$2On raconte qu'un jeune"
 line2 = "homme vêtu de vert se"
 line3 = "lança dans une quête,"
+skip = current
 next = intro2.2
 
 [intro2.2]
@@ -2316,6 +2320,7 @@ line3 = "plaines et les vallées."
 line1 = "$2Finalement, celui que"
 line2 = "l'on nomma le Héros sut"
 line3 = "repousser le maléfice."
+skip = current
 next = intro3.2
 
 [intro3.2]
@@ -2337,6 +2342,7 @@ line3 = "sein de la Terre d'Or."
 line1 = "$2Le jeune Héros formula"
 line2 = "alors le voeu"
 line3 = "d'emprisonner Ganondorf"
+skip = current
 next = intro4.2
 
 [intro4.2]
@@ -2370,6 +2376,7 @@ line3 = "la magie du sceau."
 line1 = "$2Mais quelques années"
 line2 = "plus tard, le Roi"
 line3 = "d'Hyrule fut victime"
+skip = current
 next = intro5.2
 
 [intro5.2]
@@ -2398,6 +2405,7 @@ line3 = "nouveau fragilisé."
 line1 = "$2Le Héros, suivant les"
 line2 = "conseils de son maître"
 line3 = "Sahasrahla, confia la"
+skip = current
 next = intro6.2
 
 [intro6.2]
@@ -3725,7 +3733,7 @@ line2 = "est possible que Ganon"
 line3 = "soit parvenu à fuir de"
 next = sahasrahla_house.beginning.9
 
-[sahasrahla_house.beginning.8]
+[sahasrahla_house.beginning.9]
 #       |-----------------------|
 line1 = "son Monde des Ténèbres."
 line2 = "Il ne faut pas le"
@@ -4828,8 +4836,8 @@ line2 = "explorer une caverne."
 
 [castle.npc_3]
 #       |-----------------------|
-line1 = "Quel luxe ! Ce manoir"
-line2 = "est magnifique !"
+line1 = "Quel luxe ! C'est une"
+line2 = "magnifique demeure !"
 
 [castle.prison]
 #       |-----------------------|

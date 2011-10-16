@@ -70,7 +70,7 @@ end
 
 function boss_key_chest_timer()
   sol.map.chest_set_enabled("boss_key_chest", true)
-  sol.main.play_sound("secret")
+  sol.main.play_sound("chest_appears")
 end
 
 function event_hero_on_sensor(sensor_name)

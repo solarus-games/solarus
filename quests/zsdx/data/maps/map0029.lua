@@ -12,7 +12,7 @@ function event_switch_activated(switch_name)
   
   current_switch_name = switch_name
   if switch_name == "barrier_switch" then
-    sol.map.camera_move(616, 672, 250, barried_timer)
+    sol.map.camera_move(616, 672, 250, barrier_timer)
   elseif switch_name == "door_switch" then
     sol.map.camera_move(376, 384, 150, door_timer)
   elseif switch_name == "final_barrier_switch" then

@@ -2877,6 +2877,12 @@ line2 = "C'est fermé à clé !"
 line1 = "    - Serrure Bois -"
 line2 = "C'est fermé à clé !"
 
+[outside_world.ice_key_required]
+# Tenter d'ouvrir le donjon 7 sans avoir la Clé de Glace
+#       |-----------------------|
+line1 = "   - Serrure Glace -"
+line2 = "C'est fermé à clé !"
+
 [link_house.dream]
 # Link qui entend Sahasrahla en rêve en dormant dans son lit après l'intro
 #       |-----------------------|

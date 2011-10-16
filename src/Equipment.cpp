@@ -1045,12 +1045,12 @@ void Equipment::add_item(const std::string &item_name, int variant) {
       const std::string &item_limiting = properties.get_item_limiting();
       if (item_limiting.size() > 0) {
 
-	// make sure we have at least the first variant of that item
-	if (!has_item(item_limiting)) {
+        // make sure we have at least the first variant of that item
+        if (!has_item(item_limiting)) {
 
-	  // for example, we give the bomb counter: also give the bomb bag
-	  set_item_variant(item_limiting, 1);
-	}
+          // for example, we give the bomb counter: also give the bomb bag
+          set_item_variant(item_limiting, 1);
+        }
       }
 
       // set the counter at its maximum value
@@ -1065,27 +1065,27 @@ void Equipment::add_item(const std::string &item_name, int variant) {
 
       // consider built-in counters
       if (item_limited == "life") {
-	set_max_life(maximum);
-	restore_all_life();
+        set_max_life(maximum);
+        restore_all_life();
       }
       else if (item_limited == "money") {
-	set_max_money(maximum);
+        set_max_money(maximum);
       }
       else if (item_limited == "magic") {
-	set_max_magic(maximum);
-	restore_all_magic();
+        set_max_magic(maximum);
+        restore_all_magic();
       }
       else { // general case
 
-	// make sure we have the other item
-	if (!has_item(item_limited)) {
+        // make sure we have the other item
+        if (!has_item(item_limited)) {
 
-	  // for example, we give the bomb bag: also give the bomb counter
-	  set_item_variant(item_limited, 1);
-	}
+          // for example, we give the bomb bag: also give the bomb counter
+          set_item_variant(item_limited, 1);
+        }
 
-	// make sure the other item has its new maximum value
-	set_item_amount(item_limited, maximum);
+        // make sure the other item has its new maximum value
+        set_item_amount(item_limited, maximum);
       }
     }
   }
@@ -1099,26 +1099,26 @@ void Equipment::add_item(const std::string &item_name, int variant) {
 
       // consider built-in counters
       if (item_counter_changed == "life") {
-	add_life(amount);
+        add_life(amount);
       }
       else if (item_counter_changed == "money") {
-	add_money(amount);
+        add_money(amount);
       }
       else if (item_counter_changed == "magic") {
-	add_magic(amount);
+        add_magic(amount);
       }
       else if (item_counter_changed == "small_keys") {
-	add_small_keys(amount);
+        add_small_keys(amount);
       }
       else { // general case
 
-	// make sure the player has the item to increase
-	if (!has_item(item_counter_changed)) {
-	  set_item_variant(item_counter_changed, 1);
-	}
+        // make sure the player has the item to increase
+        if (!has_item(item_counter_changed)) {
+          set_item_variant(item_counter_changed, 1);
+        }
 
-	// for example, we give some bombs: increase the bomb counter
-	add_item_amount(item_counter_changed, amount);
+        // for example, we give some bombs: increase the bomb counter
+        add_item_amount(item_counter_changed, amount);
       }
     }
   }

@@ -571,7 +571,7 @@ returns whether an enemy is enabled
 - <tt>sol.map.enemy_set_enabled(enemy_name, enable)</tt>:
 enables or disables an enemy
 
-- <tt>sol.map.enemy_set_enabled(enemies_prefix, enable)</tt>:
+- <tt>sol.map.enemy_set_group_enabled(enemies_prefix, enable)</tt>:
 enables or disables all enemies having a common prefix
 
 - <tt>sol.map.enemy_is_dead(enemy_name)</tt>:

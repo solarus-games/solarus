@@ -319,6 +319,6 @@ booleans:
 917	west moutain cave 1F: piece of heart 1
 918	west moutain cave 1F: piece of heart 2
 919	outside world A1: entrance of dungeon 7
-
-
+920	outside world B1: piece of heart
+921	outside world B1: vine
 

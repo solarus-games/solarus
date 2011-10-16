@@ -3,7 +3,7 @@
 frozen_door_sprite = nil
 frozen_door_opposite_sprite = nil
 
--- Function call when the map starts
+-- Function called when the map starts
 function event_map_started(destination_point_name)
 
   if sol.game.savegame_get_boolean(35) then

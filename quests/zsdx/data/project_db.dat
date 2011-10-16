@@ -165,6 +165,7 @@
 3	npc/thief	Thief
 3	npc/tom	Tom
 3	entities/torch	Torch
+3	entities/vine	Vine
 3	npc/witch	Witch
 3	npc/wizard	Wizard
 3	npc/zelda	Zelda

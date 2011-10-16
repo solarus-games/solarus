@@ -33,6 +33,7 @@
 #include "entities/Teletransporter.h"
 #include "entities/Hero.h"
 #include "entities/PickableItem.h"
+#include "entities/DestructibleItem.h"
 #include "entities/Bomb.h"
 #include "entities/Fire.h"
 #include "lowlevel/Sound.h"
@@ -1903,6 +1904,33 @@ int Script::map_api_pickable_item_create(lua_State *l) {
 }
 
 /**
+ * @brief Places a new destructible item on the map.
+ *
+ * - Argument 1 (integer): subtype of destructible item
+ * - Argument 2 (integer): x
+ * - Argument 3 (integer): y
+ * - Argument 4 (integer): layer
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_destructible_item_create(lua_State *l) {
+
+  Script& script = get_script(l, 4);
+
+  int subtype = luaL_checkinteger(l, 1);
+  int x = luaL_checkinteger(l, 2);
+  int y = luaL_checkinteger(l, 3);
+  Layer layer = Layer(luaL_checkinteger(l, 4));
+
+  Game& game = script.get_game();
+  MapEntities& entities = script.get_map().get_entities();
+  entities.add_entity(new DestructibleItem(layer, x, y, DestructibleItem::Subtype(subtype),
+      Treasure(game, "_none", 1, -1)));
+
+  return 0;
+}
+
+/**
  * @brief Places a bomb on the map.
  *
  * - Argument 1 (integer): x
@@ -1993,10 +2021,11 @@ int Script::map_api_enemy_create(lua_State *l) {
   int y = luaL_checkinteger(l, 5);
 
   MapEntities& entities = script.get_map().get_entities();
-  Treasure treasure = Treasure(script.get_game(), "_none", 1, -1);
-  MapEntity* enemy = Enemy::create(script.get_game(), breed, Enemy::RANK_NORMAL, -1,
+  Treasure treasure = Treasure(script.get_game(), "_random", 1, -1);
+  Enemy* enemy = (Enemy*) Enemy::create(script.get_game(), breed, Enemy::RANK_NORMAL, -1,
       name, Layer(layer), x, y, 0, treasure);
   entities.add_entity(enemy);
+  enemy->restart();
 
   return 0;
 }

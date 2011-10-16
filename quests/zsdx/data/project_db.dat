@@ -360,12 +360,15 @@
 6	gibdo	Gibdo
 6	blue_hardhat_beetle	Blue Hardhat Beetle
 6	red_hardhat_beetle	Red Hardhat Beetle
+6	red_helmasaur	Red Helmasaur
 6	pike_auto	Pike (always moving)
 6	pike_detect	Pike (moves near hero)
 6	ropa	Ropa
 6	simple_green_soldier	Green Simple Soldier
 6	tentacle	Tentacle
 6	skeletor	Skeletor
+6	fireball_simple	Fireball (simple)
+6	fireball_triple	Fireball (triple)
 6	khorneth	Khorneth
 6	papillosaur_king	Papillosaur King
 6	minillosaur_egg	Minillosaur Egg
@@ -377,6 +380,7 @@
 6	agahnim	Agahnim
 6	drakomos	Drakomos
 6	drakomos_head	Drakomos head
+6	drakomos_lava_spawner	Drakomos lava spawner
 7	fr/text/dialogs.dat	French dialogs
 7	en/text/dialogs.dat	English dialogs
 7	de/text/dialogs.dat	Deutsch dialogs

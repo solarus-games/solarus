@@ -37,7 +37,7 @@
  *
  * @param game the current game (cannot be NULL)
  * @param item_name name of the item to give, according to items.dat
- * ("_random" and "_none" are also accepted 
+ * ("_random" and "_none" are also accepted)
  * @param variant variant of this item
  * @param savegame_variable index of the savegame boolean indicating that the hero has found this treasure
  * or -1 if this treasure is not saved

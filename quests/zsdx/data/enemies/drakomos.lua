@@ -1,6 +1,7 @@
 head_1 = nil
 head_2 = nil
 ball_sprite = nil
+killing = false
 
 function event_appear()
 
@@ -10,7 +11,6 @@ function event_appear()
   sol.enemy.set_size(128, 80)
   sol.enemy.set_origin(64, 64)
   sol.enemy.set_invincible()
-  sol.enemy.set_displayed_in_y_order(false)
 
   -- create the heads
   local my_name = sol.enemy.get_name()
@@ -22,13 +22,34 @@ function event_appear()
   sol.main.sprite_set_animation(ball_sprite, "ball")
 end
 
+function event_update()
+
+  if sol.map.enemy_is_dead(head_1)
+    and sol.map.enemy_is_dead(head_2)
+    and sol.enemy.get_life() > 0
+    and not killing then
+
+    killing = true
+    sol.enemy.hurt(1)
+    sol.map.enemy_remove_group(head_1)
+    sol.map.enemy_remove_group(head_2)
+    sol.map.enemy_remove_group("spawner")
+  end
+end
+
 function event_post_display()
 
   local x, y = sol.enemy.get_position()
-  local x2, y2 = sol.map.enemy_get_position(head_1)
-  display_balls(x - 22, y - 15, x2, y2 - 12)
-  x2, y2 = sol.map.enemy_get_position(head_2)
-  display_balls(x + 22, y - 15, x2, y2 - 12)
+
+  if not sol.map.enemy_is_dead(head_1) then
+    local x2, y2 = sol.map.enemy_get_position(head_1)
+    display_balls(x - 22, y - 15, x2, y2 - 12)
+  end
+
+  if not sol.map.enemy_is_dead(head_2) then
+    local x2, y2 = sol.map.enemy_get_position(head_2)
+    display_balls(x + 22, y - 15, x2, y2 - 12)
+  end
 end
 
 function display_balls(x1, y1, x2, y2)

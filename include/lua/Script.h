@@ -245,6 +245,7 @@ class Script {
       map_api_door_is_open,
       map_api_door_set_open,
       map_api_pickable_item_create,
+      map_api_destructible_item_create,
       map_api_bomb_create,
       map_api_explosion_create,
       map_api_fire_create,
@@ -337,8 +338,6 @@ class Script {
       enemy_api_has_sprite,
       enemy_api_create_sprite,
       enemy_api_remove_sprite,
-      enemy_api_is_displayed_in_y_order,
-      enemy_api_set_displayed_in_y_order,
       enemy_api_create_son,
       enemy_api_get_father,
       enemy_api_send_message;

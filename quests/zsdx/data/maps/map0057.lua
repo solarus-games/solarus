@@ -70,3 +70,45 @@ function repeat_lava_spawner()
   end
 end
 
+function event_treasure_obtained(item_name, variant, savegame_variable)
+
+  if item_name == "heart_container" then
+    sol.main.play_music("victory.spc")
+    sol.map.hero_freeze()
+    sol.map.hero_set_direction(3)
+    sol.main.timer_start(start_final_sequence, 9000)
+  end
+end
+
+function start_final_sequence()
+
+  sol.main.play_music("dungeon_finished.spc")
+  sol.map.hero_set_direction(1)
+  sol.map.npc_set_position("tom", 272, 237)
+  sol.map.camera_move(272, 232, 100, function()
+    sol.map.dialog_start("dungeon_6.tom")
+    sol.map.dialog_set_variable("dungeon_6.tom", sol.game.savegame_get_name());
+  end)
+end
+
+function event_dialog_finished(first_message_id)
+
+  if first_message_id == "dungeon_6.tom" then
+
+    sol.main.play_music("none")
+    sol.main.timer_start(function()
+      sol.main.play_music("legend.spc")
+      sol.map.dialog_start("dungeon_6.tom_revelation")
+      sol.map.dialog_set_variable("dungeon_6.tom_revelation", sol.game.savegame_get_name());
+    end,
+    1000)
+  elseif first_message_id == "dungeon_6.tom_revelation" then
+    sol.map.hero_start_victory_sequence()
+  end
+end
+
+function event_hero_victory_sequence_finished()
+  sol.game.set_dungeon_finished(6)
+  sol.map.hero_set_map(7, "from_dungeon_6", 1)
+end
+

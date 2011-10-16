@@ -44,7 +44,6 @@ function remove_wooden_lock()
   sol.map.tile_set_group_enabled("wooden_lock_tile", false)
 end
 
-
 function event_hero_interaction(entity_name)
 
   if entity_name == "iron_lock" then

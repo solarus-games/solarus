@@ -204,8 +204,9 @@ class Enemy: public Detector {
     Rank get_rank();
 
     // obstacles
-    bool is_obstacle_for(MapEntity &other);
-    bool is_destructible_item_obstacle(DestructibleItem &destructible_item);
+    bool is_obstacle_for(MapEntity& other);
+    bool is_destructible_item_obstacle(DestructibleItem& destructible_item);
+    bool is_teletransporter_obstacle(Teletransporter& teletransporter);
     bool is_deep_water_obstacle();
     bool is_shallow_water_obstacle();
     bool is_hole_obstacle();

@@ -254,7 +254,7 @@ Enemy::Rank Enemy::get_rank() {
  * @param other another entity
  * @return true if this entity is an obstacle for the other one
  */
-bool Enemy::is_obstacle_for(MapEntity &other) {
+bool Enemy::is_obstacle_for(MapEntity& other) {
 
   return is_enabled() && other.is_enemy_obstacle(*this);
 }
@@ -264,7 +264,7 @@ bool Enemy::is_obstacle_for(MapEntity &other) {
  * @param destructible_item a destructible item
  * @return true if the destructible item is currently an obstacle this entity
  */
-bool Enemy::is_destructible_item_obstacle(DestructibleItem &destructible_item) {
+bool Enemy::is_destructible_item_obstacle(DestructibleItem& destructible_item) {
 
   // the destructible item is an obstacle unless the enemy is already overlapping it,
   // which is possible with bomb flowers
@@ -272,6 +272,15 @@ bool Enemy::is_destructible_item_obstacle(DestructibleItem &destructible_item) {
     return false;
   }
   return obstacle_behavior != "flying";
+}
+
+/**
+ * @brief Returns whether a teletransporter is currently considered as an obstacle.
+ * @param teletransporter a teletransporter
+ * @return true if the teletransporter is currently an obstacle for this entity
+ */
+bool Enemy::is_teletransporter_obstacle(Teletransporter& teletransporter) {
+  return false;
 }
 
 /**

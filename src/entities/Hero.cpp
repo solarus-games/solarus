@@ -1454,13 +1454,14 @@ void Hero::notify_collision_with_conveyor_belt(ConveyorBelt &conveyor_belt, int 
 
     if (conveyor_belt.overlaps(center)) {
 
-      // check that the movement is possible for at least one pixel
-      Rectangle collision_box = get_bounding_box();
+      // check that the player will be able to get out
+      Rectangle collision_box = conveyor_belt.get_bounding_box();
       collision_box.add_xy(dx, dy);
- 
+
       if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, *this)) {
-	// move the hero
-	set_state(new ConveyorBeltState(*this, conveyor_belt));
+
+        // move the hero
+        set_state(new ConveyorBeltState(*this, conveyor_belt));
       }
     }
   }

@@ -45,6 +45,7 @@ void CustomEnemy::initialize() {
 
   if (script == NULL) {   // TODO when CustomEnemy is merged with Enemy, make this test in notify_enabled() instead
     script = new EnemyScript(*this);
+    script->set_suspended(is_suspended());
     script->event_appear();
   }
 }

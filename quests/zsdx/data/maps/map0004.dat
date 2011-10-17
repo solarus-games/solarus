@@ -1084,7 +1084,7 @@
 2	0	176	456	48	16	teletransporter_3	0	1	82	from_outside_n
 12	0	176	432	48	8	custom_obstacle_6	1	1	1	1
 7	0	696	261	enemy_4	3	red_knight_soldier	0	-1	_random	0	-1
-7	0	528	101	enemy_5	3	green_knight_soldier	0	-1	_random	0	-1
+7	0	448	205	enemy_5	3	green_knight_soldier	0	-1	_random	0	-1
 7	0	136	101	enemy_6	3	blue_knight_soldier	0	-1	_random	0	-1
 0	1	56	424	32	24	901
 0	2	608	368	16	32	1025

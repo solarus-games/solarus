@@ -195,9 +195,9 @@ booleans:
 192	fairy cave: chest with the stone key
 193	outside world B2: iron lock
 194	outside world B2: wooden lock
-195	waterfall cave: piece of heart
+195	lake cave: chest with the ice key
 196	cave under the waterfall: chest with 50 rupees
-197	lake cave: chest with the ice key
+197	waterfall cave: piece of heart
 198	junk shop: bought the red rupee
 199	junk shop: bought the mirror
 

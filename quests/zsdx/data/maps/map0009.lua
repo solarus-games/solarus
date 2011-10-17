@@ -23,7 +23,7 @@ function event_map_started(destination_point_name)
 
     -- Agahnim fight
     if destination_point_name == "from_dungeon_5_2F_ne"
-        and sol.game.savegame_get_boolean(523)
+        and sol.game.savegame_get_boolean(507)
         and not sol.game.savegame_get_boolean(520) then
 
       new_music = "none"
@@ -83,7 +83,7 @@ end
 function event_hero_on_sensor(sensor_name)
 
   if sensor_name == "start_boss_sensor"
-      and sol.game.savegame_get_boolean(523)
+      and sol.game.savegame_get_boolean(507)
       and not sol.game.savegame_get_boolean(520)
       and not fighting_boss then
 

@@ -9,7 +9,10 @@ function has_boomerang_from_fairy()
 end
 
 function show_fairy()
+
   sol.map.npc_set_position("great_fairy", 160, 77)
+  local sprite = sol.map.npc_get_sprite("great_fairy")
+  sol.main.sprite_set_animation_ignore_suspend(sprite, true)
   sol.map.interactive_entity_remove("torch_1")
   sol.map.interactive_entity_remove("torch_2")
   sol.map.interactive_entity_remove("torch_3")
@@ -48,12 +51,14 @@ function event_hero_on_sensor(sensor_name)
 
   if sensor_name == "fairy_sensor" and has_fairy_appeared() then
 
+    sol.map.sensor_set_enabled(sensor_name, false)
+    sol.map.hero_freeze()
+    sol.map.hero_set_direction(1)
     if not has_boomerang_from_fairy() then
       sol.map.dialog_start("fairy_cave.first_time")
     else
       sol.map.dialog_start("fairy_cave.restore_health")
     end
-    sol.map.sensor_set_enabled(sensor_name, false)
   end
 end
 
@@ -61,8 +66,10 @@ function event_dialog_finished(first_message_id, answer)
 
   if first_message_id == "fairy_cave.first_time" then
     sol.map.treasure_give("boomerang", 1, 100)
+    sol.map.hero_unfreeze()
   elseif first_message_id == "fairy_cave.restore_health" then
     sol.game.add_life(sol.game.get_max_life())
+    sol.map.hero_unfreeze()
   end
 end
 

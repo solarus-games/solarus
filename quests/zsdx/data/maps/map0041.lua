@@ -47,7 +47,7 @@ function event_switch_activated(switch_name)
   if switch_name == "barrier_switch" and sol.map.tile_is_enabled("barrier") then
     sol.map.camera_move(120, 240, 250, open_barrier)
   elseif switch_name == "se_water_switch" and not sol.game.savegame_get_boolean(128) then
-    sol.map.camera_move(912, 896, 250, remove_se_water)
+    sol.map.camera_move(912, 896, 250, remove_se_water, 1000, 3500)
   elseif switch_name == "1f_n_water_switch" and not sol.game.savegame_get_boolean(131) then
     remove_1f_n_water()
   elseif switch_name == "1f_e_water_switch_1"

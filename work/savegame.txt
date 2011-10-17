@@ -296,7 +296,7 @@ booleans:
 519	dungeon 5 B1: chest with the boss key enabled
 520	dungeon 5: boss killed
 521	dungeon 5: boss heart container
-523	dungeon 5 B1: boss key door
+522	dungeon 5 1F: middle door
 
 600-699	dungeon 7
 700-799	dungeon 8

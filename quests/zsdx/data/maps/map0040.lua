@@ -92,7 +92,7 @@ function event_switch_activated(switch_name)
   elseif switch_name == "ce_door_switch" and not sol.map.door_is_open("ce_door") then
     sol.map.camera_move(736, 552, 250, open_ce_door)
   elseif switch_name == "c_water_switch" and not sol.game.savegame_get_boolean(121) then
-    sol.map.camera_move(344, 736, 250, remove_c_water)
+    sol.map.camera_move(344, 736, 250, remove_c_water, 1000, 3500)
   end
 end
 

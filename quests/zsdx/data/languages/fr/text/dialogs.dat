@@ -1517,13 +1517,20 @@ line3 = "au lieu de 30 !"
 icon = 61
 line1 = "Tu as trouvé la"
 line2 = "Cotte de Mailles"
-line3 = "bleue !$0 Elle te"
+line3 = "bleue !"
 next = _treasure.tunic.2.1
 
 [_treasure.tunic.2.1]
 #       |--------------------|
-line1 = "permet de résister"
-line2 = "aux températures les"
+line1 = "Elle te protège"
+line2 = "mieux contre les"
+line3 = "ennemis et te permet"
+next = _treasure.tunic.2.2
+
+[_treasure.tunic.2.2]
+#       |--------------------|
+line1 = "de résister aux"
+line2 = "températures les"
 line3 = "plus glaciales..."
 
 [_treasure.tunic.3]
@@ -2103,6 +2110,7 @@ icon = 81
 line1 = "Tu as trouvé une"
 line2 = "Fée, elle est"
 line3 = "merveilleuse !"
+skip = current
 next = found_fairy.1
 
 [found_fairy.1]
@@ -2118,6 +2126,7 @@ question = true
 #       |-----------------------|
 line1 = "Tu n'as pas de Flacon"
 line2 = "vide !"
+skip = current
 
 [found_water]
 # Lorsqu'on trouve de l'eau et qu'on a un Flacon vide

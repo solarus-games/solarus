@@ -46,6 +46,7 @@ function event_dialog_finished(first_message_id, answer)
     sol.map.interactive_entity_remove("surprise_wall_door")
     sol.game.savegame_set_boolean(136, true)
     sol.main.play_sound("secret")
+    sol.main.play_sound("door_open")
   end
 end
 

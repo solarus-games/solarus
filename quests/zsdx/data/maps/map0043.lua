@@ -30,7 +30,9 @@ function event_hero_on_sensor(sensor_name)
   elseif sensor_name == "start_boss_sensor"
       and not sol.game.savegame_get_boolean(902)
       and not fighting_boss then
-    start_boss()
+    sol.map.hero_freeze()
+    sol.map.door_close("boss_door")
+    sol.main.timer_start(start_boss, 1000)
   end
 end
 
@@ -53,16 +55,16 @@ end
 
 function start_boss()
 
-  sol.map.door_close("boss_door")
+  sol.map.enemy_set_enabled("boss", true)
   sol.map.dialog_start("dungeon_3.arbror_hello")
 end
 
 function event_dialog_finished(first_message_id)
 
   if first_message_id == "dungeon_3.arbror_hello" then
+    sol.map.hero_unfreeze()
     sol.main.play_music("boss.spc")
     fighting_boss = true
-    sol.map.enemy_set_enabled("boss", true)
   end
 end
 

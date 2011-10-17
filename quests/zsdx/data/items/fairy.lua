@@ -28,6 +28,8 @@ function event_movement_changed()
     else
       sol.main.sprite_set_direction(sprite, 0) -- look to the right
     end
+  else
+    print("suit une entité")
   end
 end
 

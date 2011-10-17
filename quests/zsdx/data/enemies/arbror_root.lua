@@ -22,8 +22,10 @@ function event_restart()
     sol.main.timer_stop_all()
     sol.main.timer_start(disappear, 10000)
     sol.enemy.stop_movement()
+    sol.enemy.set_can_attack(false)
   else
     sol.main.timer_start(go, 1000)
+    sol.enemy.set_can_attack(true)
   end
 end
 

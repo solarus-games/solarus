@@ -9,6 +9,12 @@ function event_map_started(destination_point_name)
     lock_torches()
   end
 
+  -- middle door
+  if sol.game.savegame_get_boolean(522) then
+    sol.map.switch_set_activated("c_door_switch", true)
+  end
+
+  -- block falled from 2F
   if not sol.game.savegame_get_boolean(515) then
     sol.map.block_set_enabled("block_from_2f", false)
   end

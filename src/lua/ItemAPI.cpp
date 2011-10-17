@@ -272,7 +272,7 @@ int Script::item_api_is_following_entity(lua_State* l) {
                 "Cannot call sol.item.is_following_entity(): there is no current pickable item");
 
   bool result = pickable_item->get_entity_followed() != NULL;
-  lua_pushinteger(l, result);
+  lua_pushboolean(l, result);
 
   return 1;
 }

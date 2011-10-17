@@ -86,10 +86,12 @@ void TemporalMovement::update() {
 
   SmoothMovement::update();
 
-  uint32_t now = System::now();
-  if (now >= end_movement_date) {
-    stop();
-    finished = true;
+  if (!is_suspended()) {
+    uint32_t now = System::now();
+    if (now >= end_movement_date && !finished) {
+      stop();
+      finished = true;
+    }
   }
 }
 

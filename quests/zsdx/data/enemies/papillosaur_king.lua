@@ -18,6 +18,7 @@ end
 
 function event_restart()
 
+  sol.main.timer_stop_all()
   sol.main.timer_start(egg_phase_soon, 2000)
   go()
 end

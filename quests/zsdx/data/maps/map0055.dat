@@ -271,6 +271,9 @@
 0	0	200	128	8	8	244
 0	0	128	88	8	8	246
 0	0	136	88	104	8	249
+0	0	152	320	64	160	399
+0	0	144	320	8	160	400
+0	0	216	320	8	160	400
 13	0	248	445	32	32	weak_floor_sensor	0
 12	0	1056	608	32	8	custom_obstacle_13	1	1	1	1
 2	0	920	672	16	16	teletransporter_26	0	1	58	from_2f_se_hole_2
@@ -371,10 +374,10 @@
 17	0	376	621	0
 2	0	240	432	32	32	weak_floor_teletransporter	0	1	58	from_2f_w_hole
 10	0	240	432	32	32	weak_floor	398	1
-5	0	104	344	chest_2	0	boss_key	1	301
-4	0	96	373	4	_none	1	-1
-4	0	112	389	4	_none	1	-1
-4	0	128	373	4	_none	1	-1
+5	0	96	344	chest_2	0	boss_key	1	301
+4	0	88	373	4	_none	1	-1
+4	0	104	389	4	_none	1	-1
+4	0	120	373	4	_none	1	-1
 5	0	968	464	chest_3	0	small_key	1	302
 2	0	992	488	16	16	teletransporter_7	1	1	55	destination_point_nw
 5	0	608	160	chest_4	0	compass	1	303
@@ -875,9 +878,9 @@
 1	1	664	37	from_1f_nc_3	3	0
 1	1	760	37	from_1f_nc_4	3	0
 2	1	464	24	16	16	teletransporter_10	0	1	58	from_2f_nc_1
-2	1	560	24	16	16	teletransporter_11	0	1	58	from_2f_nc_1
-2	1	656	24	16	16	teletransporter_12	0	1	58	from_2f_nc_1
-2	1	752	24	16	16	teletransporter_13	0	1	58	from_2f_nc_1
+2	1	560	24	16	16	teletransporter_11	0	1	58	from_2f_nc_2
+2	1	656	24	16	16	teletransporter_12	0	1	58	from_2f_nc_3
+2	1	752	24	16	16	teletransporter_13	0	1	58	from_2f_nc_4
 19	1	464	24	stairs_4	1	1
 19	1	560	24	stairs_5	1	1
 19	1	656	24	stairs_6	1	1

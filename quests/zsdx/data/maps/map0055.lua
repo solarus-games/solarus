@@ -16,6 +16,7 @@ function event_map_started(destination_point_name)
   if sol.game.savegame_get_boolean(319) then
     sol.map.tile_set_group_enabled("water", false)
     sol.map.jump_sensor_set_group_enabled("water_on_jump_sensor", false)
+    sol.map.switch_set_activated("water_switch", true)
   else
     sol.map.obstacle_set_group_enabled("water_off_obstacle", false)
   end

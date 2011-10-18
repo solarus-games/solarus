@@ -516,7 +516,8 @@ Subtypes of doors:
 - 4 (boss key): the boss key is required to open the door (only in a dungeon)
 - 5 (weak): a weak wall, to blow with an explosion
 - 6 (very weak): same as weak but more visible
-- 7 (weak but invisible): same as weak but no visible sign of weakness
+- 7: obsolete, illegal subtype
+- 8 (weak block): a block to blast with an explosion
 
 The sprite of a door depends on its subtype and the tileset of the map.
 If the door is called <tt>doorname</tt>, hen the door is closed, all dynamic tiles with the prefix

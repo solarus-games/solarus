@@ -35,7 +35,7 @@ const std::string Door::animations[] = {
   "closed", "small_key", "small_key_block", "big_key", "boss_key", "weak", "very_weak", "", "weak_block"
 };
 
-const MessageId key_required_message_ids[] = { // TODO static in Door
+const MessageId Door::key_required_message_ids[] = {
   "", "_small_key_required", "_small_key_required", "_big_key_required", "_boss_key_required", "", "", "", ""
 };
 
@@ -66,10 +66,7 @@ Door::Door(const std::string &name, Layer layer, int x, int y,
     set_size(32, 16);
   }
 
-  if (subtype != WEAK_INVISIBLE) {
-    create_sprite("entities/door", true);
-    // FIXME: if WEAK_INVISIBLE has no sprite, we cannot detect collisions, this is sad.
-  }
+  create_sprite("entities/door", true);
   set_direction(direction);
 }
 
@@ -273,7 +270,7 @@ bool Door::requires_small_key() {
  * @return true if this door must be open with a bomb explosion
  */
 bool Door::requires_bomb() {
-  return subtype == WEAK || subtype == VERY_WEAK || subtype == WEAK_INVISIBLE || subtype == WEAK_BLOCK;
+  return subtype == WEAK || subtype == VERY_WEAK || subtype == WEAK_BLOCK;
 }
 
 /**
@@ -419,7 +416,7 @@ void Door::set_opening() {
   else if (!requires_bomb()) {
     animation = "opening";
   }
-  // FIXME add the animation of a weak wall destroyed by an explosion
+  // TODO add the animation of a weak wall destroyed by an explosion
 
   if (animation.size() > 0) {
     get_sprite().set_current_animation(animation);

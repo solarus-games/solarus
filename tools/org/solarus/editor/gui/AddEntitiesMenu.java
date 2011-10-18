@@ -82,7 +82,7 @@ public class AddEntitiesMenu extends JMenu {
 		Door.Subtype.BOSS_KEY,
 		Door.Subtype.WEAK,
 		Door.Subtype.VERY_WEAK,
-		Door.Subtype.WEAK_INVISIBLE
+		Door.Subtype.WEAK_BLOCK
 	),
 	new ItemDefinition(EntityType.STAIRS, KeyEvent.VK_S,
 		CrystalSwitchBlock.Subtype.ORANGE,

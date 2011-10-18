@@ -325,4 +325,6 @@ booleans:
 920	outside world B1: piece of heart
 921	outside world B1: vine
 922	outside world A3: piece of heart above dungeon 3
+923	dungeon 1 1F: weak wall
+924	dungeon 1 1F: piece of heart
 

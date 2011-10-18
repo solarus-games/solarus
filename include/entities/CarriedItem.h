@@ -116,7 +116,7 @@ class CarriedItem: public MapEntity {
     bool is_crystal_switch_obstacle(CrystalSwitch& crystal_switch);
     bool is_sensor_obstacle(Sensor& sensor);
     bool is_npc_obstacle(InteractiveEntity& npc);
-    bool is_jump_sensor_obstacle(JumpSensor& jump_sensor);
+    bool is_jumper_obstacle(Jumper& jumper);
     bool is_enemy_obstacle(Enemy& enemy);
     void notify_collision_with_switch(Switch& sw, CollisionMode collision_mode);
     void notify_collision_with_crystal_switch(CrystalSwitch &crystal_switch, CollisionMode collision_mode);

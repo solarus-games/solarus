@@ -43,7 +43,7 @@ class Hero::CarryingState: public Hero::PlayerMovementState {
     void update();
     void action_key_pressed();
     bool can_start_sword();
-    bool can_take_jump_sensor();
+    bool can_take_jumper();
     bool can_take_stairs();
     void set_animation_stopped();
     void set_animation_walking();

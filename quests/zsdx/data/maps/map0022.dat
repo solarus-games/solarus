@@ -58,9 +58,9 @@
 0	1	144	128	8	8	337
 1	1	32	165	destination_point	0	0
 2	1	8	152	16	16	teletransporter	0	1	4	from_binbin_dungeon
-6	1	144	136	8	48	jump_sensor	0	16
-6	1	128	128	24	8	jump_sensor_2	2	16
-6	1	128	184	24	8	jump_sensor_3	6	16
+6	1	144	136	8	48	jumper	0	16
+6	1	128	128	24	8	jumper_2	2	16
+6	1	128	184	24	8	jumper_3	6	16
 0	2	0	0	640	16	170
 0	2	0	16	16	464	170
 0	2	16	144	8	32	305

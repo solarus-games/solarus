@@ -105,8 +105,8 @@ function set_water_filled(i)
   -- disable the custom obstacles near stairs (stairs are useless)
   sol.map.obstacle_set_group_enabled("water_"..i.."_off_obstacle", false)
 
-  -- enable the jump sensors placed over stairs (they are used to jump into water)
-  sol.map.jump_sensor_set_group_enabled("water_"..i.."_on_jump_sensor", true)
+  -- enable the jumpers placed over stairs (they are used to jump into water)
+  sol.map.jumper_set_group_enabled("water_"..i.."_on_jumper", true)
 
   if pools[i].trigger == "switch" then
     -- make activated the switch that fills this pool
@@ -119,8 +119,8 @@ function set_water_drained(i)
   -- enable the custom obstacles near stairs (stairs can be used)
   sol.map.obstacle_set_group_enabled("water_"..i.."_off_obstacle", true)
 
-  -- disable the jump sensors placed over stairs (there is no water to jump into)
-  sol.map.jump_sensor_set_group_enabled("water_"..i.."_on_jump_sensor", false)
+  -- disable the jumpers placed over stairs (there is no water to jump into)
+  sol.map.jumper_set_group_enabled("water_"..i.."_on_jumper", false)
 
 end
 

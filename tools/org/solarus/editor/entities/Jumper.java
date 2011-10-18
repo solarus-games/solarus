@@ -22,7 +22,7 @@ import org.solarus.editor.*;
 /**
  * Represents a sensor that makes the hero jump towards a direction.
  */
-public class JumpSensor extends MapEntity {
+public class Jumper extends MapEntity {
 
     /**
      * Description of the default image representing this kind of entity.
@@ -37,10 +37,10 @@ public class JumpSensor extends MapEntity {
     public static final int MINIMUM_JUMP_LENGTH = 16;
 
     /**
-     * Creates a new jump sensor.
+     * Creates a new jumper.
      * @param map the map
      */
-    public JumpSensor(Map map) throws MapException {
+    public Jumper(Map map) throws MapException {
 	super(map, 32, 8);
 	setDirection(6);
     }

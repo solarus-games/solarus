@@ -279,11 +279,11 @@
 12	1	152	592	32	8	custom_obstacle_9	1	1	1	1
 12	1	96	504	8	32	custom_obstacle_10	1	1	1	1
 12	1	120	504	8	32	custom_obstacle_12	1	1	1	1
-6	1	104	336	32	8	jump_sensor	2	40
-6	1	304	480	32	8	jump_sensor_2	2	40
-6	1	72	200	40	8	jump_sensor_3	6	40
-6	1	144	200	40	8	jump_sensor_4	6	40
-6	1	176	552	8	16	jump_sensor_5	4	40
+6	1	104	336	32	8	jumper	2	40
+6	1	304	480	32	8	jumper_2	2	40
+6	1	72	200	40	8	jumper_3	6	40
+6	1	144	200	40	8	jumper_4	6	40
+6	1	176	552	8	16	jumper_5	4	40
 19	1	280	632	stairs_7	3	2
 1	1	208	37	from_dungeon_4	3	0
 2	1	200	0	16	16	teletransporter	0	1	60	from_outside

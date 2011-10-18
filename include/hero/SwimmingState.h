@@ -50,7 +50,7 @@ class Hero::SwimmingState: public Hero::PlayerMovementState {
     void sword_key_pressed();
 
     bool is_stairs_obstacle(Stairs& stairs);
-    bool can_take_jump_sensor();
+    bool can_take_jumper();
 };
 
 #endif

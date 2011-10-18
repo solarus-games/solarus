@@ -710,7 +710,7 @@
 12	1	552	672	8	8	custom_obstacle_9	1	1	1	1
 12	1	416	648	8	8	custom_obstacle_10	1	1	1	1
 12	1	416	672	8	8	custom_obstacle_11	1	1	1	1
-6	1	784	640	8	48	jump_sensor	4	40
+6	1	784	640	8	48	jumper	4	40
 4	1	744	133	4	_random	1	-1
 4	1	760	117	4	_random	1	-1
 4	1	792	133	4	_random	1	-1

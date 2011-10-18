@@ -500,8 +500,8 @@
 4	1	976	309	0	heart	1	-1
 12	1	208	480	16	8	custom_obstacle_5	0	1	1	0
 12	1	256	424	16	8	custom_obstacle_6	0	1	1	0
-6	1	248	208	24	8	jump_sensor_2	2	40
-6	1	192	208	24	8	jump_sensor_3	2	40
+6	1	248	208	24	8	jumper_2	2	40
+6	1	192	208	24	8	jumper_3	2	40
 4	1	544	237	6	_random	1	-1
 4	1	752	77	6	_random	1	-1
 4	1	752	237	6	_random	1	-1

@@ -15,7 +15,7 @@ function event_map_started(destination_point_name)
   -- water
   if sol.game.savegame_get_boolean(319) then
     sol.map.tile_set_group_enabled("water", false)
-    sol.map.jump_sensor_set_group_enabled("water_on_jump_sensor", false)
+    sol.map.jumper_set_group_enabled("water_on_jumper", false)
     sol.map.switch_set_activated("water_switch", true)
   else
     sol.map.obstacle_set_group_enabled("water_off_obstacle", false)
@@ -78,7 +78,7 @@ end
 
 function remove_water_4()
   sol.map.tile_set_enabled("water_less_3", false)
-  sol.map.jump_sensor_set_group_enabled("water_on_jump_sensor", false)
+  sol.map.jumper_set_group_enabled("water_on_jumper", false)
   sol.map.obstacle_set_group_enabled("water_off_obstacle", true)
   sol.game.savegame_set_boolean(319, true)
   sol.main.play_sound("secret")

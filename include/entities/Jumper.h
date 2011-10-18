@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_JUMP_SENSOR_H
-#define SOLARUS_JUMP_SENSOR_H
+#ifndef SOLARUS_JUMPER_H
+#define SOLARUS_JUMPER_H
 
 #include "Common.h"
 #include "entities/Detector.h"
@@ -23,10 +23,10 @@
 /**
  * @brief A sensor that makes the hero jump.
  *
- * A jump sensor is a detector placed on a map.
+ * A jumper is a detector placed on a map.
  * When the hero touches this detetor, he makes a jump with a specified length.
  */
-class JumpSensor: public Detector {
+class Jumper: public Detector {
 
   private:
 
@@ -34,9 +34,9 @@ class JumpSensor: public Detector {
 
   public:
 
-    JumpSensor(const std::string &name, Layer layer, int x, int y, int width, int height,
+    Jumper(const std::string &name, Layer layer, int x, int y, int width, int height,
 	int direction, int jump_length);
-    ~JumpSensor();
+    ~Jumper();
     static CreationFunction parse;
 
     EntityType get_type();

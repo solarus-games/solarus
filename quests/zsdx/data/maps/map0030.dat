@@ -807,7 +807,7 @@
 12	1	184	408	32	8	custom_obstacle_4	1	1	1	1
 12	1	200	464	8	32	custom_obstacle_6	1	1	1	1
 12	1	224	464	8	32	custom_obstacle_5	1	1	1	1
-6	1	112	528	16	8	jump_sensor	2	40
+6	1	112	528	16	8	jumper	2	40
 12	1	72	584	8	32	custom_obstacle_7	1	1	1	1
 12	1	96	584	8	32	custom_obstacle_8	1	1	1	1
 12	1	648	264	8	32	custom_obstacle_9	1	1	1	1
@@ -819,12 +819,12 @@
 12	1	936	664	32	8	custom_obstacle_14	1	1	1	1
 12	1	840	584	8	32	custom_obstacle_15	1	1	1	1
 12	1	864	584	8	32	custom_obstacle_16	1	1	1	1
-6	1	776	608	64	8	jump_sensor_2	2	40
-6	1	872	608	64	8	jump_sensor_3	2	40
-6	1	768	616	8	24	jump_sensor_7	4	40
-6	1	768	672	8	24	jump_sensor_6	4	40
-6	1	936	672	8	24	jump_sensor_5	0	40
-6	1	936	616	8	24	jump_sensor_4	0	40
+6	1	776	608	64	8	jumper_2	2	40
+6	1	872	608	64	8	jumper_3	2	40
+6	1	768	616	8	24	jumper_7	4	40
+6	1	768	672	8	24	jumper_6	4	40
+6	1	936	672	8	24	jumper_5	0	40
+6	1	936	616	8	24	jumper_4	0	40
 10	1	104	536	32	8	barrier	70	1
 7	1	272	405	enemy	3	skeletor	0	-1	small_key	1	74
 12	1	216	384	8	32	custom_obstacle_17	0	1	1	1

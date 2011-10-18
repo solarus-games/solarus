@@ -688,16 +688,16 @@
 0	1	1016	624	16	16	278
 12	1	112	120	8	32	custom_obstacle_9	1	1	1	1
 12	1	136	120	8	32	custom_obstacle_2	1	1	1	1
-6	1	72	120	40	8	jump_sensor_9	6	40
-6	1	144	120	40	8	jump_sensor_2	6	40
+6	1	72	120	40	8	jumper_9	6	40
+6	1	144	120	40	8	jumper_2	6	40
 12	1	360	264	8	32	custom_obstacle_3	1	1	1	1
 12	1	384	264	8	32	custom_obstacle_4	1	1	1	1
-6	1	312	264	48	8	jump_sensor_3	6	40
-6	1	392	264	48	8	jump_sensor_4	6	40
+6	1	312	264	48	8	jumper_3	6	40
+6	1	392	264	48	8	jumper_4	6	40
 12	1	616	952	8	32	custom_obstacle_5	1	1	1	1
 12	1	592	952	8	32	custom_obstacle_6	1	1	1	1
-6	1	488	976	104	8	jump_sensor_5	2	40
-6	1	624	976	104	8	jump_sensor_6	2	40
+6	1	488	976	104	8	jumper_5	2	40
+6	1	624	976	104	8	jumper_6	2	40
 12	1	920	128	32	8	custom_obstacle_7	1	1	1	1
 12	1	920	152	32	8	custom_obstacle_8	1	1	1	1
 1	1	608	1189	from_outside	1	0
@@ -706,8 +706,8 @@
 1	1	1072	37	from_b1_ne	3	0
 2	1	984	24	16	16	teletransporter_6	0	1	90	from_1f_e
 19	1	984	24	stairs_6	1	0
-6	1	944	72	8	56	jump_sensor_7	4	40
-6	1	944	160	8	56	jump_sensor_8	4	40
+6	1	944	72	8	56	jumper_7	4	40
+6	1	944	160	8	56	jumper_8	4	40
 2	1	1064	24	16	16	teletransporter_7	0	1	88	from_1f_ne
 19	1	1064	24	stairs_9	1	1
 8	1	400	61	interactive_entity_2	3	1	npc/castle_guard	dialog#castle.forbidden_stairs

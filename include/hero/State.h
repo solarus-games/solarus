@@ -117,7 +117,7 @@ class Hero::State {
     virtual bool can_avoid_conveyor_belt();
     virtual bool is_stairs_obstacle(Stairs& stairs);
     virtual bool is_sensor_obstacle(Sensor& sensor);
-    virtual bool is_jump_sensor_obstacle(JumpSensor& jump_sensor);
+    virtual bool is_jumper_obstacle(Jumper& jumper);
     virtual bool can_avoid_sensor();
     virtual bool can_avoid_explosion();
     virtual bool can_avoid_switch();
@@ -139,7 +139,7 @@ class Hero::State {
     virtual bool can_start_sword();
     virtual bool can_start_inventory_item();
     virtual bool can_take_stairs();
-    virtual bool can_take_jump_sensor();
+    virtual bool can_take_jumper();
     virtual bool can_sword_hit_crystal_switch();
     bool is_carrying_item();
     virtual CarriedItem* get_carried_item();

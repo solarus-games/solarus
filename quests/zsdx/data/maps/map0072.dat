@@ -360,10 +360,10 @@
 0	1	16	168	24	24	47
 0	1	320	272	16	16	284
 0	1	400	272	16	16	284
-6	1	168	296	8	16	jump_sensor	4	16
+6	1	168	296	8	16	jumper	4	16
 12	1	632	312	8	8	custom_obstacle_2	1	1	1	1
 12	1	656	312	8	8	custom_obstacle_5	1	1	1	1
-6	1	584	312	16	8	jump_sensor_2	2	16
+6	1	584	312	16	8	jumper_2	2	16
 7	1	552	349	enemy_29	3	blue_bullblin	0	-1	_random	1	-1
 7	1	408	349	enemy_30	3	blue_bullblin	0	-1	_random	1	-1
 7	1	592	349	enemy_31	3	blue_bullblin	0	-1	_random	1	-1

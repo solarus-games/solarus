@@ -1052,10 +1052,10 @@
 18	1	920	56	miniboss_door_2	2	0	-1
 18	1	584	56	door	0	3	306
 18	1	632	56	door_2	2	3	306
-6	1	408	656	32	8	jump_sensor	2	40
-6	1	448	456	72	8	jump_sensor_2	6	40
-6	1	472	656	32	8	jump_sensor_3	2	40
-6	1	376	560	8	32	jump_sensor_4	0	40
+6	1	408	656	32	8	jumper	2	40
+6	1	448	456	72	8	jumper_2	6	40
+6	1	472	656	32	8	jumper_3	2	40
+6	1	376	560	8	32	jumper_4	0	40
 12	1	376	496	8	8	custom_obstacle	1	1	1	1
 12	1	376	520	8	8	custom_obstacle_2	1	1	1	1
 15	1	224	304	16	128	1

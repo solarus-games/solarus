@@ -1185,13 +1185,13 @@
 10	0	544	880	32	16	iron_lock_tile	387	1
 2	0	0	976	960	16	to_C2	0	2	4	_side
 2	0	-16	0	16	976	to_B1	0	2	9	_side
-6	0	408	792	32	8	jump_sensor	6	120
-6	0	392	920	48	8	jump_sensor_2	6	152
-6	0	520	920	48	8	jump_sensor_3	6	152
-6	0	648	760	48	8	jump_sensor_4	6	264
-6	0	600	264	32	8	jump_sensor_5	6	120
-6	0	376	296	16	8	jump_sensor_6	6	120
-6	0	344	136	16	8	jump_sensor_7	6	152
+6	0	408	792	32	8	jumper	6	120
+6	0	392	920	48	8	jumper_2	6	152
+6	0	520	920	48	8	jumper_3	6	152
+6	0	648	760	48	8	jumper_4	6	264
+6	0	600	264	32	8	jumper_5	6	120
+6	0	376	296	16	8	jumper_6	6	120
+6	0	344	136	16	8	jumper_7	6	152
 4	0	888	797	4	_random	1	-1
 2	0	0	-16	960	16	to_A2	0	2	10	_side
 1	0	600	677	from_dungeon_6	3	0

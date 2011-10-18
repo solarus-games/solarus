@@ -479,8 +479,8 @@
 2	1	552	600	16	16	teletransporter_3	0	1	7	from_fairy_cave_e
 12	1	544	456	8	8	custom_obstacle	1	1	1	1
 12	1	568	456	8	8	custom_obstacle_2	1	1	1	1
-6	1	504	456	40	8	jump_sensor	2	40
-6	1	576	456	40	8	jump_sensor_2	2	40
+6	1	504	456	40	8	jumper	2	40
+6	1	576	456	40	8	jumper_2	2	40
 2	1	240	72	48	48	teletransporter_2	0	1	81	from_2f_hole
 1	1	152	381	from_1f	1	0
 2	1	144	368	16	16	teletransporter_4	0	1	77	from_2f

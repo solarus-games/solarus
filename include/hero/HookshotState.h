@@ -45,7 +45,7 @@ class Hero::HookshotState: public Hero::State {
     bool can_avoid_conveyor_belt();
     bool is_stairs_obstacle(Stairs& stairs);
     bool is_sensor_obstacle(Sensor& sensor);
-    bool is_jump_sensor_obstacle(JumpSensor& jump_sensor);
+    bool is_jumper_obstacle(Jumper& jumper);
     bool can_avoid_switch();
     bool can_be_hurt(Enemy* attacker);
     void notify_movement_tried(bool success);

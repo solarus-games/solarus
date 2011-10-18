@@ -406,7 +406,7 @@
 12	1	272	328	8	32	custom_obstacle_8	1	1	1	1
 12	1	464	312	8	32	custom_obstacle_9	1	1	1	1
 12	1	440	312	8	32	custom_obstacle_10	1	1	1	1
-6	1	296	128	16	8	jump_sensor	2	40
+6	1	296	128	16	8	jumper	2	40
 12	1	248	128	16	8	custom_obstacle	1	1	1	1
 18	1	536	232	boss_door	0	4	61
 18	1	584	232	boss_door_2	2	4	61
@@ -415,9 +415,9 @@
 1	1	456	437	from_outside	1	0
 12	1	168	248	8	16	custom_obstacle_12	0	1	1	1
 7	1	152	253	boss_key_battle_5	3	tentacle	0	-1	_random	0	-1
-6	1	128	248	8	16	jump_sensor_2	4	40
+6	1	128	248	8	16	jumper_2	4	40
 4	1	416	381	0	heart	1	-1
-6	1	232	328	40	8	jump_sensor_3	6	40
+6	1	232	328	40	8	jumper_3	6	40
 7	1	784	141	khorneth	3	khorneth	1	62	fairy	1	-1
 19	1	848	256	stairs_5	1	1
 18	1	840	256	miniboss_door_3	1	0	-1

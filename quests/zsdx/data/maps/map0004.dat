@@ -963,7 +963,7 @@
 4	0	696	469	4	_random	1	-1
 4	0	712	469	4	_random	1	-1
 4	0	728	469	4	_random	1	-1
-6	0	736	928	40	40	jump_sensor	5	32
+6	0	736	928	40	40	jumper	5	32
 4	0	600	93	2	_random	1	-1
 4	0	600	109	2	_random	1	-1
 4	0	456	109	2	_random	1	-1
@@ -1079,7 +1079,7 @@
 2	0	608	392	16	16	teletransporter	0	1	76	from_outside
 1	0	272	45	from_waterfall_cave	3	0
 12	0	264	8	16	8	custom_obstacle_3	1	1	1	1
-6	0	264	56	16	8	jump_sensor_2	6	88
+6	0	264	56	16	8	jumper_2	6	88
 2	0	264	16	16	16	teletransporter_2	0	1	80	from_outside
 2	0	176	456	48	16	teletransporter_3	0	1	82	from_outside_n
 12	0	176	432	48	8	custom_obstacle_6	1	1	1	1

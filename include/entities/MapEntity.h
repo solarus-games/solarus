@@ -280,7 +280,7 @@ class MapEntity {
     virtual void notify_collision_with_teletransporter(Teletransporter &teletransporter, CollisionMode collision_mode);
     virtual void notify_collision_with_conveyor_belt(ConveyorBelt &conveyor_belt, int dx, int dy);
     virtual void notify_collision_with_stairs(Stairs &stairs, CollisionMode collision_mode);
-    virtual void notify_collision_with_jump_sensor(JumpSensor &jump_sensor);
+    virtual void notify_collision_with_jumper(Jumper &jumper);
     virtual void notify_collision_with_sensor(Sensor &sensor, CollisionMode collision_mode);
     virtual void notify_collision_with_switch(Switch& sw, CollisionMode collision_mode);
     virtual void notify_collision_with_switch(Switch& sw, Sprite& sprite_overlapping);
@@ -312,7 +312,7 @@ class MapEntity {
     virtual bool is_crystal_switch_obstacle(CrystalSwitch& crystal_switch);
     virtual bool is_npc_obstacle(InteractiveEntity& npc);
     virtual bool is_enemy_obstacle(Enemy& enemy);
-    virtual bool is_jump_sensor_obstacle(JumpSensor& jump_sensor);
+    virtual bool is_jumper_obstacle(Jumper& jumper);
     virtual bool is_destructible_item_obstacle(DestructibleItem& destructible_item);
     virtual bool is_sword_ignored();
 

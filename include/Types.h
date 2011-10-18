@@ -175,7 +175,7 @@ class PickableItem;
 class CarriedItem;
 class DestructibleItem;
 class Chest;
-class JumpSensor;
+class Jumper;
 class Enemy;
 class CustomEnemy;
 class EnemyReaction;

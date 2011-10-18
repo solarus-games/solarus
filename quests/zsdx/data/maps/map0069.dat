@@ -412,13 +412,13 @@
 0	1	584	488	64	8	179
 0	1	576	488	8	8	186
 0	1	640	488	8	8	15
-6	1	80	312	32	8	water_6_on_jump_sensor	6	40
-6	1	784	216	32	8	water_2_on_jump_sensor	6	40
-6	1	616	80	8	32	water_1_on_jump_sensor	0	40
-6	1	280	528	8	32	water_5_on_jump_sensor	0	40
-6	1	608	320	8	32	water_3_on_jump_sensor	4	40
-6	1	464	80	8	32	water_7_on_jump_sensor	4	40
-6	1	144	80	8	32	water_4_on_jump_sensor	4	40
+6	1	80	312	32	8	water_6_on_jumper	6	40
+6	1	784	216	32	8	water_2_on_jumper	6	40
+6	1	616	80	8	32	water_1_on_jumper	0	40
+6	1	280	528	8	32	water_5_on_jumper	0	40
+6	1	608	320	8	32	water_3_on_jumper	4	40
+6	1	464	80	8	32	water_7_on_jumper	4	40
+6	1	144	80	8	32	water_4_on_jumper	4	40
 1	1	544	37	from_1f	3	0
 2	1	536	24	16	16	teletransporter	0	1	68	from_b1
 19	1	536	24	stairs	1	0
@@ -437,13 +437,13 @@
 12	1	464	80	8	8	water_7_off_obstacle_2	1	1	1	1
 12	1	464	104	8	8	water_7_off_obstacle_1	1	1	1	1
 5	1	520	464	chest_2	0	fire_stone	1	154
-6	1	384	528	8	32	jump_sensor	4	40
-6	1	504	320	8	32	jump_sensor_2	0	40
-6	1	80	416	32	8	jump_sensor_3	2	40
-6	1	80	144	32	8	jump_sensor_4	2	40
-6	1	360	80	8	32	jump_sensor_5	0	40
-6	1	744	256	8	32	jump_sensor_6	0	40
-6	1	720	80	8	32	jump_sensor_7	4	40
+6	1	384	528	8	32	jumper	4	40
+6	1	504	320	8	32	jumper_2	0	40
+6	1	80	416	32	8	jumper_3	2	40
+6	1	80	144	32	8	jumper_4	2	40
+6	1	360	80	8	32	jumper_5	0	40
+6	1	744	256	8	32	jumper_6	0	40
+6	1	720	80	8	32	jumper_7	4	40
 11	1	480	48	water_1_on_switch	1	0	0
 11	1	592	48	water_7_on_switch	1	0	0
 4	1	488	61	0	_none	1	-1

@@ -14,14 +14,14 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "entities/JumpSensor.h"
+#include "entities/Jumper.h"
 #include "entities/Hero.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 
 /**
- * @brief Creates a jump sensor.
- * @param name a name identifying this jump sensor
+ * @brief Creates a jumper.
+ * @param name a name identifying this jumper
  * @param layer layer of the sensor on the map
  * @param x x coordinate of the top-left corner of the sensor's rectangle
  * @param y y coordinate of the top-left corner of the sensor's rectangle
@@ -30,7 +30,7 @@
  * @param direction direction of the jump (0 to 7 as the jump may be diagonal)
  * @param jump_length length of the jump in pixels (usually a multiple of 8)
  */
-JumpSensor::JumpSensor(const std::string &name, Layer layer, int x, int y, int width, int height,
+Jumper::Jumper(const std::string &name, Layer layer, int x, int y, int width, int height,
 		       int direction, int jump_length):
   Detector(COLLISION_CUSTOM, name, layer, x, y, width, height),
   jump_length(jump_length) {
@@ -39,24 +39,24 @@ JumpSensor::JumpSensor(const std::string &name, Layer layer, int x, int y, int w
 
   // check the size
   if (direction % 2 != 0) {
-    Debug::check_assertion(width == height, "This jump sensor has a diagonal direction but is not square");
+    Debug::check_assertion(width == height, "This jumper has a diagonal direction but is not square");
   }
   else {
     if (direction % 4 == 0) {
-      Debug::check_assertion(width == 8, "This jump sensor is horizontal but its height is not 8");
+      Debug::check_assertion(width == 8, "This jumper is horizontal but its height is not 8");
     }
     else {
-      Debug::check_assertion(height == 8, "This jump sensor is vertical but its width is not 8");
+      Debug::check_assertion(height == 8, "This jumper is vertical but its width is not 8");
     }
   }
   // check the jump length
-  Debug::check_assertion(jump_length >= 16, "The jump length of this jump sensor is lower than 16");
+  Debug::check_assertion(jump_length >= 16, "The jump length of this jumper is lower than 16");
 }
 
 /**
  * @brief Destructor.
  */
-JumpSensor::~JumpSensor() {
+Jumper::~Jumper() {
 
 }
 
@@ -72,7 +72,7 @@ JumpSensor::~JumpSensor() {
  * @param y y coordinate of the entity
  * @return the instance created
  */
-MapEntity* JumpSensor::parse(Game &game, std::istream &is, Layer layer, int x, int y) {
+MapEntity* Jumper::parse(Game &game, std::istream &is, Layer layer, int x, int y) {
 
   int jump_length, width, height, direction;
   std::string name;
@@ -83,14 +83,14 @@ MapEntity* JumpSensor::parse(Game &game, std::istream &is, Layer layer, int x, i
   FileTools::read(is, direction);
   FileTools::read(is, jump_length);
  
-  return new JumpSensor(name, Layer(layer), x, y, width, height, direction, jump_length);
+  return new Jumper(name, Layer(layer), x, y, width, height, direction, jump_length);
 }
 
 /**
  * @brief Returns the type of entity.
  * @return the type of entity
  */
-EntityType JumpSensor::get_type() {
+EntityType Jumper::get_type() {
   return JUMP_SENSOR;
 }
 
@@ -99,25 +99,25 @@ EntityType JumpSensor::get_type() {
  * @param other another entity
  * @return true if this entity is an obstacle for the other one
  */
-bool JumpSensor::is_obstacle_for(MapEntity &other) {
+bool Jumper::is_obstacle_for(MapEntity &other) {
 
   if (get_direction() % 2 != 0) {
-    return false; // diagonal jump sensor: never obstacle (the tiles below the jump sensor should block entities)
+    return false; // diagonal jumper: never obstacle (the tiles below the jumper should block entities)
   }
 
-  // non-diagonal jump sensor: it depends on the entities (the tiles below the jump sensor should NOT block entities)
-  return other.is_jump_sensor_obstacle(*this);
+  // non-diagonal jumper: it depends on the entities (the tiles below the jumper should NOT block entities)
+  return other.is_jumper_obstacle(*this);
 }
 
 /**
- * @brief Returns whether an entity's collides with this jump sensor.
+ * @brief Returns whether an entity's collides with this jumper.
  *
  * The result depends on the sensor's shape.
  *
  * @param entity the entity
- * @return true if the entity's collides with this jump sensor
+ * @return true if the entity's collides with this jumper
  */
-bool JumpSensor::test_collision_custom(MapEntity &entity) {
+bool Jumper::test_collision_custom(MapEntity &entity) {
 
   if (!entity.is_hero()) {
     return false;
@@ -132,7 +132,7 @@ bool JumpSensor::test_collision_custom(MapEntity &entity) {
 
     int expected_hero_direction4 = direction8 / 2;
     if (hero.get_ground() == GROUND_DEEP_WATER) {
-      // if the hero is swimming, the jump sensor can be used the opposite way
+      // if the hero is swimming, the jumper can be used the opposite way
       expected_hero_direction4 = (expected_hero_direction4 + 2) % 4;
     }
 
@@ -140,7 +140,7 @@ bool JumpSensor::test_collision_custom(MapEntity &entity) {
       return false;
     }
 
-    bool horizontal = (direction8 % 4 == 0); // horizontal or vertical jump sensor
+    bool horizontal = (direction8 % 4 == 0); // horizontal or vertical jumper
     const Rectangle &facing_point = hero.get_facing_point(expected_hero_direction4);
     return overlaps(facing_point.get_x() + (horizontal ? 0 : -8),
 		    facing_point.get_y() + (horizontal ? -8 : 0))
@@ -155,14 +155,14 @@ bool JumpSensor::test_collision_custom(MapEntity &entity) {
 }
 
 /**
- * @brief Returns whether the specified point is in the jump sensor's shape.
+ * @brief Returns whether the specified point is in the jumper's shape.
  *
- * This function is used only for a jump sensor with diagonal direction.
+ * This function is used only for a jumper with diagonal direction.
  *
  * @param point the point to check
- * @return true if this point is overlapping the jump sensor
+ * @return true if this point is overlapping the jumper
  */
-bool JumpSensor::is_point_in_diagonal(const Rectangle &point) {
+bool Jumper::is_point_in_diagonal(const Rectangle &point) {
 
   if (!overlaps(point.get_x(), point.get_y())) {
     return false;
@@ -192,7 +192,7 @@ bool JumpSensor::is_point_in_diagonal(const Rectangle &point) {
     break;
 
   default:
-    Debug::die("Invalid direction of jump sensor");
+    Debug::die("Invalid direction of jumper");
   }
 
   return collision;
@@ -202,18 +202,18 @@ bool JumpSensor::is_point_in_diagonal(const Rectangle &point) {
  * @brief This function is called when an entity overlaps the sensor.
  * @param entity_overlapping the entity that overalps the sensor
  * @param collision_mode the collision mode that triggered the event
- * (not used here since a jump sensor has only one collision mode)
+ * (not used here since a jumper has only one collision mode)
  */
-void JumpSensor::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
+void Jumper::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
 
-  entity_overlapping.notify_collision_with_jump_sensor(*this);
+  entity_overlapping.notify_collision_with_jumper(*this);
 }
 
 /**
- * @brief Returns the length of the jump to make with this jump sensor.
+ * @brief Returns the length of the jump to make with this jumper.
  * @return length of the jump in pixels (usually a multiple of 8)
  */
-int JumpSensor::get_jump_length() {
+int Jumper::get_jump_length() {
   return jump_length;
 }
 

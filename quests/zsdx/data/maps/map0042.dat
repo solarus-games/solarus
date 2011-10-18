@@ -1164,9 +1164,9 @@
 19	1	88	840	stairs_5	1	1
 12	1	112	184	8	32	custom_obstacle	1	1	1	1
 12	1	136	184	8	32	custom_obstacle_2	1	1	1	1
-6	1	88	104	80	8	jump_sensor	6	40
-6	1	88	208	24	8	jump_sensor_2	2	40
-6	1	144	208	24	8	jump_sensor_3	2	40
+6	1	88	104	80	8	jumper	6	40
+6	1	88	208	24	8	jumper_2	2	40
+6	1	144	208	24	8	jumper_3	2	40
 2	1	544	120	16	16	teletransporter_5	0	1	41	from_3F_c
 1	1	552	133	from_2F_c	3	0
 19	1	544	120	stairs_3	1	1
@@ -1194,7 +1194,7 @@
 4	1	664	61	0	_random	1	-1
 12	1	744	616	8	72	custom_obstacle_3	1	1	1	1
 12	1	976	616	8	72	custom_obstacle_4	1	1	1	1
-6	1	752	616	224	8	jump_sensor_4	6	40
+6	1	752	616	224	8	jumper_4	6	40
 11	1	48	864	barrier_switch	1	0	0
 4	1	56	877	0	_none	1	-1
 10	1	240	440	8	24	barrier	71	1

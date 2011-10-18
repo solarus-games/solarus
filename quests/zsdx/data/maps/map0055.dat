@@ -839,11 +839,11 @@
 0	1	616	720	8	8	69
 0	1	616	704	8	16	71
 0	1	616	576	8	16	71
-6	1	656	176	8	32	water_on_jump_sensor_2	4	40
-6	1	568	176	8	32	water_on_jump_sensor	0	40
+6	1	656	176	8	32	water_on_jumper_2	4	40
+6	1	568	176	8	32	water_on_jumper	0	40
 15	1	312	136	16	96	1
 15	1	328	136	32	16	1
-6	1	256	152	8	48	jump_sensor_2	4	40
+6	1	256	152	8	48	jumper_2	4	40
 5	1	768	136	chest	0	rupee	3	300
 18	1	872	176	door	0	1	304
 18	1	920	176	door_2	2	1	304
@@ -856,13 +856,13 @@
 2	1	984	48	16	16	teletransporter_3	1	1	55	destination_point_b
 2	1	968	64	16	16	teletransporter_4	1	1	55	destination_point_c
 2	1	480	224	32	16	teletransporter_5	0	1	58	_same
-6	1	872	600	8	32	jump_sensor_3	0	40
-6	1	872	664	8	32	jump_sensor_4	0	40
+6	1	872	600	8	32	jumper_3	0	40
+6	1	872	664	8	32	jumper_4	0	40
 15	1	816	640	48	16	0
 15	1	816	656	16	64	0
 15	1	816	576	16	64	1
-6	1	608	600	8	32	jump_sensor_5	4	40
-6	1	608	664	8	32	jump_sensor_6	4	40
+6	1	608	600	8	32	jumper_5	4	40
+6	1	608	664	8	32	jumper_6	4	40
 4	1	808	493	0	heart	1	-1
 4	1	808	477	0	arrow	1	-1
 4	1	808	461	0	bomb	1	-1
@@ -899,7 +899,7 @@
 12	1	608	656	8	8	custom_obstacle_10	1	1	1	1
 1	1	496	237	from_3f_w_hole	-1	0
 1	1	760	245	from_3f_c_hole	-1	0
-6	1	256	72	8	48	jump_sensor_7	4	40
+6	1	256	72	8	48	jumper_7	4	40
 8	1	1056	37	interactive_entity	3	0	entities/hint_stone	dialog#dungeon_6.dont_fall_hint
 8	1	1080	37	interactive_entity_2	3	0	entities/hint_stone	dialog#dungeon_6.close_way_hint
 11	1	840	576	water_switch	3	0	0

@@ -1183,35 +1183,35 @@ int Script::map_api_sensor_set_group_enabled(lua_State* l) {
 }
 
 /**
- * @brief Returns whether a jump sensor is enabled.
+ * @brief Returns whether a jumper is enabled.
  *
- * - Argument 1 (string): name of the jump sensor
- * - Return value (boolean): true if this jump sensor is enabled
+ * - Argument 1 (string): name of the jumper
+ * - Return value (boolean): true if this jumper is enabled
  *
  * @param l the Lua context that is calling this function
  */
-int Script::map_api_jump_sensor_is_enabled(lua_State* l) {
+int Script::map_api_jumper_is_enabled(lua_State* l) {
 
   Script& script = get_script(l, 1);
 
   const std::string& name = luaL_checkstring(l, 1);
 
   MapEntities& entities = script.get_map().get_entities();
-  MapEntity* jump_sensor = entities.get_entity(JUMP_SENSOR, name);
-  lua_pushboolean(l, jump_sensor->is_enabled() ? 1 : 0);
+  MapEntity* jumper = entities.get_entity(JUMP_SENSOR, name);
+  lua_pushboolean(l, jumper->is_enabled() ? 1 : 0);
 
   return 1;
 }
 
 /**
- * @brief Enables or disables a jump sensor.
+ * @brief Enables or disables a jumper.
  *
- * - Argument 1 (string): name of the jump sensor
+ * - Argument 1 (string): name of the jumper
  * - Argument 2 (boolean): true to enable it, false to disable it
  *
  * @param l the Lua context that is calling this function
  */
-int Script::map_api_jump_sensor_set_enabled(lua_State* l) {
+int Script::map_api_jumper_set_enabled(lua_State* l) {
 
   Script& script = get_script(l, 2);
 
@@ -1219,21 +1219,21 @@ int Script::map_api_jump_sensor_set_enabled(lua_State* l) {
   bool enable = lua_toboolean(l, 2) != 0;
 
   MapEntities& entities = script.get_map().get_entities();
-  MapEntity* jump_sensor = entities.get_entity(JUMP_SENSOR, name);
-  jump_sensor->set_enabled(enable);
+  MapEntity* jumper = entities.get_entity(JUMP_SENSOR, name);
+  jumper->set_enabled(enable);
 
   return 0;
 }
 
 /**
- * @brief Enables or disables a set of jump sensors.
+ * @brief Enables or disables a set of jumpers.
  *
- * - Argument 1 (string): prefix of the name of the jump sensors
+ * - Argument 1 (string): prefix of the name of the jumpers
  * - Argument 2 (boolean): true to enable them, false to disable them
  *
  * @param l the Lua context that is calling this function
  */
-int Script::map_api_jump_sensor_set_group_enabled(lua_State* l) {
+int Script::map_api_jumper_set_group_enabled(lua_State* l) {
 
   Script& script = get_script(l, 2);
 

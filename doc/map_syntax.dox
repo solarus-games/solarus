@@ -284,33 +284,19 @@ Make sure the length cannot send the hero into a wall.
 
 Syntax of an enemy:
 @verbatim
-7	layer	x	y	entity_name	direction	subtype	breed	rank	savegame_variable	treasure_name	treasure_variant	treasure_savegame_variable
+7	layer	x	y	entity_name	direction	breed	rank	savegame_variable	treasure_name	treasure_variant	treasure_savegame_variable
 @endverbatim
 
-Subtypes of enemies:
-- 0: Simple green soldier
-- 1: Bubble
-- 2: Tentacle
-- 3: Minillosaur egg
-- 4: Chain and ball
-- 1000: Papillosaur King
-- 1001: Khorneth
-- 1002: Khotor
-- 1003: Custom
-
 There are various kind of enemies. A kind of enemy is called its breed.
-Each breed can be implemented as a subtype
-(i.e. hardcoded in the C++ code) or as a Lua script (the subtype is then Custom).
-The preferred way to implement new enemies is now to make Lua scripts.
-The subtype is the deprecated way and will probably be removed one day
-(as soon as all hardcoded enemies are reimplemented as Lua scripts).
+Each breed is implemented as a Lua script.
 
-<tt>breed</tt> is the name of the breed of the enemy when the subtype is Custom.
+<tt>breed</tt> is the name of the breed of the enemy.
 It must correspond to a Lua script located in the <tt>enemies</tt> directory.
-If the subtype is not custom, <tt>breed</tt> is ignored.
 
 <tt>rank</tt> indicates whether the enemy is considered as a normal enemy (0),
-a miniboss (1) or a boss (2).
+a miniboss (1) or a boss (2). It has an influence on the minimap of dungeons
+(the boss of a dungeon is represented on the minimap) and on the dying animation
+of the enemy.
 
 <tt>savegame_variable</tt> is used for enemies that can be killed only once in the game.
 It indicates the index of the boolean variable that stores the state of the enemy

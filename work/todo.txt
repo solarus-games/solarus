@@ -125,7 +125,7 @@ Musiques du vieux ZS :
 Quêtes annexes à ajouter :
 
 - Flacon 4
-- Bouclier 2
+- Bouclier 2 ?
 - Carquois 2
 - Carquois 3
 - Sac de bombes 2
@@ -140,6 +140,7 @@ Quêtes annexes à ajouter :
 - Donjon 2 1F (SE)
 - Boutiques
 - Passage secret dans la forêt à l'est
+- Cachot 1 du château (actuellement : carquois 3)
 
 --------------
 Mode release :

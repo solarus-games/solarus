@@ -911,7 +911,7 @@
 4	1	1880	1501	0	_random	1	-1
 4	1	1864	1501	0	_random	1	-1
 4	1	1848	1501	0	_random	1	-1
-14	1	1656	1341	crystal_switch
+14	1	1656	1341	crystal
 7	1	1696	1461	enemy	3	mandible	0	-1	_random	1	-1
 7	1	1720	1485	enemy_2	3	mandible	0	-1	_random	1	-1
 7	1	1840	1453	enemy_3	3	mandible	0	-1	_random	1	-1
@@ -925,7 +925,7 @@
 12	1	872	1728	24	8	custom_obstacle_4	1	1	1	1
 12	1	400	1688	24	8	custom_obstacle_5	1	1	1	1
 12	1	400	1728	24	8	custom_obstacle_6	1	1	1	1
-14	1	376	1597	crystal_switch_2
+14	1	376	1597	crystal_2
 6	1	744	1688	120	8	jumper_3	2	16
 6	1	744	1728	128	8	jumper_4	6	16
 12	1	728	1688	16	8	custom_obstacle_7	1	1	1	1

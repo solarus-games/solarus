@@ -112,14 +112,14 @@ class CarriedItem: public MapEntity {
     bool is_prickle_obstacle();
     bool is_ladder_obstacle();
     bool is_switch_obstacle(Switch& sw);
-    bool is_raised_block_obstacle(CrystalSwitchBlock& raised_block);
-    bool is_crystal_switch_obstacle(CrystalSwitch& crystal_switch);
+    bool is_raised_block_obstacle(CrystalBlock& raised_block);
+    bool is_crystal_obstacle(Crystal& crystal);
     bool is_sensor_obstacle(Sensor& sensor);
     bool is_npc_obstacle(InteractiveEntity& npc);
     bool is_jumper_obstacle(Jumper& jumper);
     bool is_enemy_obstacle(Enemy& enemy);
     void notify_collision_with_switch(Switch& sw, CollisionMode collision_mode);
-    void notify_collision_with_crystal_switch(CrystalSwitch &crystal_switch, CollisionMode collision_mode);
+    void notify_collision_with_crystal(Crystal &crystal, CollisionMode collision_mode);
     void notify_collision_with_stairs(Stairs &stairs, CollisionMode collision_mode);
     void notify_collision_with_enemy(Enemy &enemy);
     void notify_attacked_enemy(EnemyAttack attack, Enemy& victim, EnemyReaction::Reaction& result, bool killed);

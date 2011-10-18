@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_CRYSTAL_SWITCH_H
-#define SOLARUS_CRYSTAL_SWITCH_H
+#ifndef SOLARUS_CRYSTAL_H
+#define SOLARUS_CRYSTAL_H
 
 #include "Common.h"
 #include "entities/Detector.h"
@@ -23,25 +23,25 @@
 
 /**
  * @brief A switch that can be activated to change the state of the
- * crystal switch blocks.
+ * crystal blocks.
  */
-class CrystalSwitch: public Detector {
+class Crystal: public Detector {
 
   private:
 
     bool state;                                    /**< false if the orange blocks are lowered,
                                                     * true if the blue blocks are lowered */
-    uint32_t next_possible_hit_date;               /**< date when the crystal switch can be hit again */
-    std::list<MapEntity*> entities_activating;     /**< list of entities that recently activated this crystal switch */
-    Sprite* star_sprite;                           /**< sprite of the star twinkling on the crystal switch */
+    uint32_t next_possible_hit_date;               /**< date when the crystal can be hit again */
+    std::list<MapEntity*> entities_activating;     /**< list of entities that recently activated this crystal */
+    Sprite* star_sprite;                           /**< sprite of the star twinkling on the crystal */
     Rectangle star_xy;                             /**< position of the star */
 
     void twinkle();
 
   public:
 
-    CrystalSwitch(const std::string& name, Layer layer, int x, int y);
-    ~CrystalSwitch();
+    Crystal(const std::string& name, Layer layer, int x, int y);
+    ~Crystal();
     static CreationFunction parse;
 
     EntityType get_type();

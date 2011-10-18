@@ -284,8 +284,8 @@ class MapEntity {
     virtual void notify_collision_with_sensor(Sensor &sensor, CollisionMode collision_mode);
     virtual void notify_collision_with_switch(Switch& sw, CollisionMode collision_mode);
     virtual void notify_collision_with_switch(Switch& sw, Sprite& sprite_overlapping);
-    virtual void notify_collision_with_crystal_switch(CrystalSwitch &crystal_switch, CollisionMode collision_mode);
-    virtual void notify_collision_with_crystal_switch(CrystalSwitch &crystal_switch, Sprite &sprite_overlapping);
+    virtual void notify_collision_with_crystal(Crystal &crystal, CollisionMode collision_mode);
+    virtual void notify_collision_with_crystal(Crystal &crystal, Sprite &sprite_overlapping);
     virtual void notify_collision_with_chest(Chest& chest);
     virtual void notify_collision_with_block(Block& block);
     virtual void notify_collision_with_bomb(Bomb& bomb, CollisionMode collision_mode);
@@ -308,8 +308,8 @@ class MapEntity {
     virtual bool is_stairs_obstacle(Stairs& stairs);
     virtual bool is_sensor_obstacle(Sensor& sensor);
     virtual bool is_switch_obstacle(Switch& sw);
-    virtual bool is_raised_block_obstacle(CrystalSwitchBlock& raised_block);
-    virtual bool is_crystal_switch_obstacle(CrystalSwitch& crystal_switch);
+    virtual bool is_raised_block_obstacle(CrystalBlock& raised_block);
+    virtual bool is_crystal_obstacle(Crystal& crystal);
     virtual bool is_npc_obstacle(InteractiveEntity& npc);
     virtual bool is_enemy_obstacle(Enemy& enemy);
     virtual bool is_jumper_obstacle(Jumper& jumper);

@@ -82,8 +82,8 @@ class MapEntities {
                                                      * entities on this map, including the hero */
 
     std::list<Stairs*> stairs[LAYER_NB];            /**< all stairs of the map */
-    std::list<CrystalSwitchBlock*>
-      crystal_switch_blocks[LAYER_NB];				/**< all crystal switch blocks of the map */
+    std::list<CrystalBlock*>
+      crystal_blocks[LAYER_NB];				/**< all crystal blocks of the map */
     Boomerang *boomerang;                           /**< the boomerang if present on the map, NULL otherwise */
     MusicId music_before_miniboss;                  /**< the music that was played before starting a miniboss fight */
 
@@ -91,7 +91,7 @@ class MapEntities {
     void build_non_animated_tiles();
     bool overlaps_animated_tile(Tile& tile);
     void remove_marked_entities();
-    void update_crystal_switch_blocks();
+    void update_crystal_blocks();
 
   public:
 
@@ -105,7 +105,7 @@ class MapEntities {
     std::list<MapEntity*>& get_obstacle_entities(Layer layer);
     std::list<Detector*>& get_detectors();
     std::list<Stairs*>& get_stairs(Layer layer);
-    std::list<CrystalSwitchBlock*>& get_crystal_switch_blocks(Layer layer);
+    std::list<CrystalBlock*>& get_crystal_blocks(Layer layer);
 
     MapEntity* get_entity(EntityType type, const std::string &name);
     MapEntity* find_entity(EntityType type, const std::string &name);

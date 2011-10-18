@@ -121,8 +121,8 @@ item in front of it (typically an NPC)
 - switch (11): a switch that the hero may enable
 - custom obstacle (12): an invisible obstacle to stop make sure some kinds or entities cannot pass
 - sensor (13): an invisible sensor that triggers something when the hero walks on it
-- crystal switch (14): a switch that lowers or raises some blocks in the ground
-- crystal switch block (15): the blocks controlled by crystal switches
+- crystal (14): a switch that lowers or raises some blocks in the ground
+- crystal block (15): the blocks controlled by crystals
 - shop item (16): a treasure that the hero can buy in a shop
 - conveyor belt (17): when walking there, the hero is moved into a direction
 - door (18): a door to open with a key or another action
@@ -441,28 +441,28 @@ Subtypes of sensors:
 - 1: change the layer (the hero takes the layer of the sensor) 
 - 2: place to get back when the hero falls into a hole or some other bad ground 
 
-@section crystal_switch Crystal switch (14)
+@section crystal Crystal (14)
 
-When a crystal switch is activated, some colored blocks in the ground are lowered or raised.
+When a crystal is activated, some colored blocks in the ground are lowered or raised.
 
-Syntax of a crystal switch:
+Syntax of a crystal:
 @verbatim
 14	layer	x	y
 @endverbatim
 
-@section crystal_switch_block Crystal switch block (15)
+@section crystal_block Crystal block (15)
 
-These are the blocks controlled by a crystal switch.
+These are the blocks controlled by a crystal.
 Such blocks can have two colors.
 When they are lowered in the ground, they can be traversed.
 When they are raised, they are obstacle.
-Activating a crystal switch inverts their configuration.
+Activating a crystal inverts their configuration.
 
 @verbatim
 15	layer	x	y	width	height	subtype
 @endverbatim
 
-Subtypes of crystal switches:
+Subtypes of crystal blocks:
 - 0: orange blocks (initially lowered)
 - 1: blue blocks (initially raised)
 

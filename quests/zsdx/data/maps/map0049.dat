@@ -667,9 +667,9 @@
 18	1	984	632	LD15	2	0	-1
 5	1	1344	624	chest	0	rupee	4	-1
 15	1	1536	672	32	32	1
-14	1	1448	701	crystal_switch_2
+14	1	1448	701	crystal_2
 15	1	1536	592	32	32	0
-14	1	1448	605	crystal_switch_3
+14	1	1448	605	crystal_3
 8	1	1432	301	interactive_entity_11	3	0	entities/hint_stone	map
 8	1	1112	301	interactive_entity_12	3	0	entities/hint_stone	map
 5	1	1440	1152	chest_2	0	map	1	-1

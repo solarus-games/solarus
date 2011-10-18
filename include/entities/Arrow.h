@@ -30,7 +30,7 @@ class Arrow: public MapEntity {
     Hero &hero;                /**< the hero */
     uint32_t disappear_date;   /**< date when the arrow disappears */
     bool stop_now;             /**< true to make the arrow stop now */
-    MapEntity *entity_reached; /**< a dynamic entity reached by the arrow (i.e. an enemy or a crystal switch, not a usual wall) */
+    MapEntity *entity_reached; /**< a dynamic entity reached by the arrow (i.e. an enemy or a crystal, not a usual wall) */
 
   public:
 
@@ -54,8 +54,8 @@ class Arrow: public MapEntity {
     bool is_prickle_obstacle();
     bool is_ladder_obstacle();
     bool is_switch_obstacle(Switch& sw);
-    bool is_raised_block_obstacle(CrystalSwitchBlock& raised_block);
-    bool is_crystal_switch_obstacle(CrystalSwitch& crystal_switch);
+    bool is_raised_block_obstacle(CrystalBlock& raised_block);
+    bool is_crystal_obstacle(Crystal& crystal);
     bool is_npc_obstacle(InteractiveEntity& npc);
     bool is_jumper_obstacle(Jumper& jumper);
 
@@ -70,7 +70,7 @@ class Arrow: public MapEntity {
 
     // collisions
     void notify_collision_with_switch(Switch &sw, CollisionMode collision_mode);
-    void notify_collision_with_crystal_switch(CrystalSwitch &crystal_switch, CollisionMode collision_mode);
+    void notify_collision_with_crystal(Crystal &crystal, CollisionMode collision_mode);
     void notify_collision_with_destructible_item(DestructibleItem &destructible_item, CollisionMode collision_mode);
     void notify_collision_with_enemy(Enemy &enemy, Sprite &enemy_sprite, Sprite &this_sprite);
     void notify_attacked_enemy(EnemyAttack attack, Enemy& victim, EnemyReaction::Reaction& result, bool killed);

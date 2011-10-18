@@ -14,19 +14,19 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_CRYSTAL_SWITCH_BLOCK_H
-#define SOLARUS_CRYSTAL_SWITCH_BLOCK_H
+#ifndef SOLARUS_CRYSTAL_BLOCK_H
+#define SOLARUS_CRYSTAL_BLOCK_H
 
 #include "Common.h"
 #include "entities/Detector.h"
 
 /**
- * @brief A block in the ground that can be raised or lowered with the help of a crystal switch.
+ * @brief A block in the ground that can be raised or lowered with the help of a crystal.
  *
  * When the block is raised, the hero cannot traverse it. However, if the hero is
  * on raised blocks, he can walk on them until he jumps back to the normal ground.
  */
-class CrystalSwitchBlock: public Detector {
+class CrystalBlock: public Detector {
 
   public:
 
@@ -49,8 +49,8 @@ class CrystalSwitchBlock: public Detector {
 
   public:
 
-    CrystalSwitchBlock(Game &game, Layer layer, int x, int y, int width, int height, Subtype subtype);
-    ~CrystalSwitchBlock();
+    CrystalBlock(Game &game, Layer layer, int x, int y, int width, int height, Subtype subtype);
+    ~CrystalBlock();
     static CreationFunction parse;
 
     EntityType get_type();

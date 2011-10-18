@@ -20,7 +20,7 @@
 #include "entities/DestructibleItem.h"
 #include "entities/Block.h"
 #include "entities/Switch.h"
-#include "entities/CrystalSwitch.h"
+#include "entities/Crystal.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 #include "lowlevel/System.h"
@@ -205,11 +205,11 @@ bool Hookshot::is_switch_obstacle(Switch& sw) {
 }
 
 /**
- * @brief Returns whether a crystal switch is currently considered as an obstacle for this entity.
- * @param crystal_switch a crystal switch
- * @return true if the crystal switch is currently an obstacle for this entity
+ * @brief Returns whether a crystal is currently considered as an obstacle for this entity.
+ * @param crystal a crystal
+ * @return true if the crystal is currently an obstacle for this entity
  */
-bool Hookshot::is_crystal_switch_obstacle(CrystalSwitch& crystal_switch) {
+bool Hookshot::is_crystal_obstacle(Crystal& crystal) {
   return false;
 }
 
@@ -477,15 +477,15 @@ void Hookshot::notify_collision_with_switch(Switch& sw, CollisionMode collision_
 }
 
 /**
- * @brief This function is called when a crystal switch detects a collision with this entity.
- * @param crystal_switch the crystal switch
+ * @brief This function is called when a crystal detects a collision with this entity.
+ * @param crystal the crystal
  * @param collision_mode the collision mode that detected the event
  */
-void Hookshot::notify_collision_with_crystal_switch(CrystalSwitch& crystal_switch, CollisionMode collision_mode) {
+void Hookshot::notify_collision_with_crystal(Crystal& crystal, CollisionMode collision_mode) {
 
   if (is_flying()) {
 
-    crystal_switch.activate(*this);
+    crystal.activate(*this);
     if (!is_going_back()) {
       go_back();
     }

@@ -39,7 +39,7 @@ class Hero::SwordSwingingState: public Hero::State {
     void update();
     bool can_start_sword();
     bool can_be_hurt(Enemy* attacker);
-    bool can_sword_hit_crystal_switch();
+    bool can_sword_hit_crystal();
     bool is_cutting_with_sword(Detector& detector);
     bool is_teletransporter_obstacle(Teletransporter& teletransporter);
     void notify_attacked_enemy(EnemyAttack attack, Enemy& victim,

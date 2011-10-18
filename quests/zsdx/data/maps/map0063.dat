@@ -145,7 +145,7 @@
 13	0	512	1117	16	16	start_miniboss_sensor	0
 7	0	448	1029	miniboss	3	simple_green_soldier	1	517	fairy	1	-1
 7	0	712	1117	enemy_3	3	red_knight_soldier	0	-1	_random	1	-1
-14	0	224	341	crystal_switch
+14	0	224	341	crystal
 0	1	808	616	8	48	238
 0	1	504	456	24	224	51
 0	1	528	616	8	48	237

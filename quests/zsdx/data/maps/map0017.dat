@@ -319,9 +319,9 @@
 15	0	880	832	16	96	0
 15	0	896	912	64	16	0
 9	0	936	957	seroom_block_3	-1	0	0
-14	0	952	957	crystal_switch
-14	0	240	437	crystal_switch_2
-14	0	240	437	crystal_switch_3
+14	0	952	957	crystal
+14	0	240	437	crystal_2
+14	0	240	437	crystal_3
 18	0	616	872	door_eye1_1	0	0	-1
 18	0	712	872	door_eye1_2	2	0	-1
 7	0	952	576	enemy_6	3	bubble	0	-1	_random	1	-1
@@ -747,7 +747,7 @@
 7	1	888	197	neroom_enemy_18	2	tentacle	0	-1	_random	1	-1
 7	1	848	197	neroom_enemy_19	2	tentacle	0	-1	_random	1	-1
 7	1	968	197	neroom_enemy_20	2	tentacle	0	-1	_random	1	-1
-14	1	104	341	crystal_switch_5
+14	1	104	341	crystal_5
 6	1	200	688	56	8	jumper_8	2	40
 7	1	192	168	enemy	3	bubble	0	-1	_random	1	-1
 7	1	56	168	enemy_2	3	bubble	0	-1	_random	1	-1
@@ -783,7 +783,7 @@
 7	1	560	53	enemy_9	3	pike_detect	0	-1	_random	1	-1
 15	1	336	40	16	80	1
 5	1	288	48	chest_2	0	small_key	1	222
-14	1	296	341	crystal_switch_4
+14	1	296	341	crystal_4
 9	1	448	53	block	-1	0	0
 9	1	448	117	block_2	-1	0	0
 9	1	480	53	block_4	-1	0	0
@@ -815,7 +815,7 @@
 9	1	464	117	block_28	-1	0	0
 9	1	368	117	block_29	-1	0	0
 9	1	576	117	block_30	-1	0	0
-14	1	328	61	crystal_switch_6
+14	1	328	61	crystal_6
 5	1	48	48	chest_3	0	map	1	225
 9	1	200	141	block_31	-1	0	0
 9	1	200	125	block_32	-1	0	0

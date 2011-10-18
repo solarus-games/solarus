@@ -63,7 +63,7 @@ class Game: public Screen {
 
     // world (i.e. the current set of maps)
     Dungeon *dungeon;          /**< the dungeon of the current map, of NULL if we are not in a dungeon */
-    bool crystal_switch_state; /**< indicates that a crystal switch has been enabled (i.e. the orange blocks are raised) */
+    bool crystal_state; /**< indicates that a crystal has been enabled (i.e. the orange blocks are raised) */
     static Rectangle outside_world_size; /**< size of the outside world in pixels */
 
     // graphics
@@ -113,8 +113,8 @@ class Game: public Screen {
     const Rectangle& get_outside_world_size();
     bool is_in_dungeon();
     Dungeon& get_current_dungeon();
-    bool get_crystal_switch_state();
-    void change_crystal_switch_state();
+    bool get_crystal_state();
+    void change_crystal_state();
 
     // current game state
     bool is_paused();

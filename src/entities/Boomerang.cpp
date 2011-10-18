@@ -19,7 +19,7 @@
 #include "entities/Enemy.h"
 #include "entities/Stairs.h"
 #include "entities/Switch.h"
-#include "entities/CrystalSwitch.h"
+#include "entities/Crystal.h"
 #include "entities/MapEntities.h"
 #include "movements/TargetMovement.h"
 #include "movements/RectilinearMovement.h"
@@ -220,21 +220,21 @@ bool Boomerang::is_switch_obstacle(Switch& sw) {
 }
 
 /**
- * @brief Returns whether a raised crystal switch block is currently considered as an obstacle for this entity.
- * @param raised_block a crystal switch block raised
+ * @brief Returns whether a raised crystal block is currently considered as an obstacle for this entity.
+ * @param raised_block a crystal block raised
  * @return false 
  */
-bool Boomerang::is_raised_block_obstacle(CrystalSwitchBlock& raised_block) {
-  // the boomerang can traverse the crystal switch blocks
+bool Boomerang::is_raised_block_obstacle(CrystalBlock& raised_block) {
+  // the boomerang can traverse the crystal blocks
   return false;
 }
 
 /**
- * @brief Returns whether a crystal switch is currently considered as an obstacle for this entity.
- * @param crystal_switch a crystal switch
- * @return true if the crystal switch is currently an obstacle for this entity
+ * @brief Returns whether a crystal is currently considered as an obstacle for this entity.
+ * @param crystal a crystal
+ * @return true if the crystal is currently an obstacle for this entity
  */
-bool Boomerang::is_crystal_switch_obstacle(CrystalSwitch& crystal_switch) {
+bool Boomerang::is_crystal_obstacle(Crystal& crystal) {
   return false;
 }
 
@@ -335,15 +335,15 @@ void Boomerang::notify_collision_with_switch(Switch& sw, CollisionMode collision
 }
 
 /**
- * @brief This function is called when a crystal switch detects a collision with this entity.
- * @param crystal_switch the crystal switch
+ * @brief This function is called when a crystal detects a collision with this entity.
+ * @param crystal the crystal
  * @param collision_mode the collision mode that detected the event
  */
-void Boomerang::notify_collision_with_crystal_switch(CrystalSwitch &crystal_switch, CollisionMode collision_mode) {
+void Boomerang::notify_collision_with_crystal(Crystal &crystal, CollisionMode collision_mode) {
 
   if (collision_mode == COLLISION_RECTANGLE) {
 
-    crystal_switch.activate(*this);
+    crystal.activate(*this);
     if (!is_going_back()) {
       go_back();
     }

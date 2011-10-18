@@ -58,7 +58,7 @@ class Hookshot: public MapEntity {
     bool is_prickle_obstacle();
     bool is_ladder_obstacle();
     bool is_switch_obstacle(Switch& sw);
-    bool is_crystal_switch_obstacle(CrystalSwitch& crystal_switch);
+    bool is_crystal_obstacle(Crystal& crystal);
     bool is_jumper_obstacle(Jumper& jumper);
 
     // state
@@ -78,7 +78,7 @@ class Hookshot: public MapEntity {
     void notify_collision_with_destructible_item(DestructibleItem& destructible_item, CollisionMode collision_mode);
     void notify_collision_with_block(Block& block);
     void notify_collision_with_switch(Switch& sw, CollisionMode collision_mode);
-    void notify_collision_with_crystal_switch(CrystalSwitch& crystal_switch, CollisionMode collision_mode);
+    void notify_collision_with_crystal(Crystal& crystal, CollisionMode collision_mode);
 };
 
 #endif

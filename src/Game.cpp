@@ -60,7 +60,7 @@ Game::Game(Solarus &solarus, Savegame &savegame):
   transition_style(Transition::IMMEDIATE),
   transition(NULL),
   dungeon(NULL),
-  crystal_switch_state(false),
+  crystal_state(false),
   hud(NULL),
   hud_enabled(true),
   dialog_box(NULL) {
@@ -322,8 +322,8 @@ void Game::update_transitions() {
         // (e.g. outside world to a dungeon)
         if (next_map->get_world_number() != current_map->get_world_number()) {
 
-          // reset the crystal switch blocks
-          crystal_switch_state = false;
+          // reset the crystal blocks
+          crystal_state = false;
 
           // save the location
           savegame.set_integer(Savegame::STARTING_MAP, next_map->get_id());
@@ -553,21 +553,21 @@ Dungeon& Game::get_current_dungeon() {
 }
 
 /**
- * @brief Returns the state of the crystal switch blocks.
+ * @brief Returns the state of the crystal blocks.
  *
  * Returns false if the orange blocks are lowered or true if the blue blocks are lowered.
  *
- * @return the state of the crystal switchs or this world
+ * @return the state of the crystals or this world
  */
-bool Game::get_crystal_switch_state() {
-  return crystal_switch_state;
+bool Game::get_crystal_state() {
+  return crystal_state;
 }
 
 /**
- * @brief Changes the state of the crystal switch blocks.
+ * @brief Changes the state of the crystal blocks.
  */
-void Game::change_crystal_switch_state() {
-  crystal_switch_state = !crystal_switch_state;
+void Game::change_crystal_state() {
+  crystal_state = !crystal_state;
 }
 
 /**

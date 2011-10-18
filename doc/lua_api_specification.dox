@@ -460,23 +460,23 @@ enables or disables a jumper
 - <tt>sol.map.jumper_set_group_enabled(jumpers_prefix, enable)</tt>:
 enables or disables all jumpers having a common prefix
 
-- <tt>sol.map.crystal_switch_is_enabled(crystal_switch_name)</tt>:
-returns whether a crystal switch is enabled (i.e. whether it is visible)  
+- <tt>sol.map.crystal_is_enabled(crystal_name)</tt>:
+returns whether a crystal is enabled (i.e. whether it is visible)  
 
-- <tt>sol.map.crystal_switch_set_enabled(crystal_switch_name, enable)</tt>:
-enables or disables a crystal switch
+- <tt>sol.map.crystal_set_enabled(crystal_name, enable)</tt>:
+enables or disables a crystal
 
-- <tt>sol.map.crystal_switch_set_group_enabled(crystal_switches_prefix, enable)</tt>:
-enables or disables all crystal switches having a common prefix
+- <tt>sol.map.crystal_set_group_enabled(crystals_prefix, enable)</tt>:
+enables or disables all crystals having a common prefix
 
-- <tt>sol.map.crystal_switch_get_state()</tt>
-returns the state of crystal switches (false: initial, true: modified)
+- <tt>sol.map.crystal_get_state()</tt>
+returns the state of crystals (false: initial, true: modified)
 
-- <tt>sol.map.crystal_switch_set_state(state)</tt>
-sets the state of crystal switches (false: initial, true: modified)
+- <tt>sol.map.crystal_set_state(state)</tt>
+sets the state of crystals (false: initial, true: modified)
 
-- <tt>sol.map.crystal_switch_change_state()</tt>
-inverts the state of crystal switches
+- <tt>sol.map.crystal_change_state()</tt>
+inverts the state of crystals
 
 - <tt>sol.map.teletransporter_is_enabled(teletransporter_name)</tt>:
 returns whether a teletransporter is enabled

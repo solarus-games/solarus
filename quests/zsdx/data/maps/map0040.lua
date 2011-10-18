@@ -5,22 +5,22 @@ remove_water_delay = 500 -- delay between each step when some water is disappear
 -- Returns whether all fives torches are on
 function are_all_torches_on()
 
-  return sol.map.interactive_entity_exists("torch_1")
-      and sol.main.sprite_get_animation(sol.map.interactive_entity_get_sprite("torch_1")) == "lit"
-      and sol.main.sprite_get_animation(sol.map.interactive_entity_get_sprite("torch_2")) == "lit"
-      and sol.main.sprite_get_animation(sol.map.interactive_entity_get_sprite("torch_3")) == "lit"
-      and sol.main.sprite_get_animation(sol.map.interactive_entity_get_sprite("torch_4")) == "lit" 
-      and sol.main.sprite_get_animation(sol.map.interactive_entity_get_sprite("torch_5")) == "lit" 
+  return sol.map.npc_exists("torch_1")
+      and sol.main.sprite_get_animation(sol.map.npc_get_sprite("torch_1")) == "lit"
+      and sol.main.sprite_get_animation(sol.map.npc_get_sprite("torch_2")) == "lit"
+      and sol.main.sprite_get_animation(sol.map.npc_get_sprite("torch_3")) == "lit"
+      and sol.main.sprite_get_animation(sol.map.npc_get_sprite("torch_4")) == "lit" 
+      and sol.main.sprite_get_animation(sol.map.npc_get_sprite("torch_5")) == "lit" 
 end
 
 -- Makes all five torches on forever
 function lock_torches()
   -- the trick: just remove the interactive torches because there are static ones below
-  sol.map.interactive_entity_remove("torch_1")
-  sol.map.interactive_entity_remove("torch_2")
-  sol.map.interactive_entity_remove("torch_3")
-  sol.map.interactive_entity_remove("torch_4")
-  sol.map.interactive_entity_remove("torch_5")
+  sol.map.npc_remove("torch_1")
+  sol.map.npc_remove("torch_2")
+  sol.map.npc_remove("torch_3")
+  sol.map.npc_remove("torch_4")
+  sol.map.npc_remove("torch_5")
 end
 
 -- Called when the map starts 

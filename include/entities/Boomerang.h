@@ -63,7 +63,7 @@ class Boomerang: public MapEntity {
     bool is_switch_obstacle(Switch& sw);
     bool is_raised_block_obstacle(CrystalBlock& raised_block);
     bool is_crystal_obstacle(Crystal& crystal);
-    bool is_npc_obstacle(InteractiveEntity& npc);
+    bool is_npc_obstacle(NPC& npc);
     bool is_jumper_obstacle(Jumper& jumper);
 
     // state

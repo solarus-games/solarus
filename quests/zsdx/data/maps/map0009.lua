@@ -27,7 +27,7 @@ function event_map_started(destination_point_name)
         and not sol.game.savegame_get_boolean(520) then
 
       new_music = "none"
-      sol.map.interactive_entity_remove("cannon")
+      sol.map.npc_remove("cannon")
     end
 
   else
@@ -55,15 +55,15 @@ function open_castle_door()
   sol.main.play_sound("door_open")
 end
 
-function event_hero_interaction(entity_name)
+function event_npc_interaction(npc_name)
 
-  if entity_name == "cannon" then
+  if npc_name == "cannon" then
 
     if not sol.game.savegame_get_boolean(905) then
       sol.map.dialog_start("castle.cannon")
     else
       sol.map.hero_freeze()
-      local x, y = sol.map.npc_get_position(entity_name)
+      local x, y = sol.map.npc_get_position(npc_name)
       sol.map.hero_set_position(x, y, 0)
       sol.map.hero_set_visible(false)
       sol.main.play_sound("bomb")

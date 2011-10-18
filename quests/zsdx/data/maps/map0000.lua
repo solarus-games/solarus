@@ -10,7 +10,7 @@ function event_map_started(destination_point_name)
   sol.map.hud_set_enabled(false)
   sol.map.hud_set_pause_enabled(false)
   sol.map.dialog_set_style(1)
-  fresco_sprite = sol.map.interactive_entity_get_sprite("fresco")
+  fresco_sprite = sol.map.npc_get_sprite("fresco")
   sol.main.sprite_set_animation_ignore_suspend(fresco_sprite, true)
   sol.map.dialog_start("intro0")
 end

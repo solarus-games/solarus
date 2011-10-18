@@ -381,9 +381,6 @@ void Script::register_map_api() {
       { "npc_get_sprite", map_api_npc_get_sprite },
       { "npc_remove", map_api_npc_remove },
       { "npc_exists", map_api_npc_exists },
-      { "interactive_entity_get_sprite", map_api_interactive_entity_get_sprite },
-      { "interactive_entity_remove", map_api_interactive_entity_remove },
-      { "interactive_entity_exists", map_api_interactive_entity_exists },
       { "chest_set_open", map_api_chest_set_open },
       { "chest_is_enabled", map_api_chest_is_enabled },
       { "chest_set_enabled", map_api_chest_set_enabled },
@@ -1013,56 +1010,30 @@ void Script::event_dialog_finished(const MessageId &first_message_id, int answer
 
 /**
  * @brief Notifies the script that the player has just pressed the action
- * key in front of an interactive entity.
- * @param entity_name name of the interactive entity
- */
-void Script::event_hero_interaction(const std::string &entity_name) {
-
-  notify_script("event_hero_interaction", "s", entity_name.c_str());
-}
-
-/**
- * @brief Notifies the script that the hero is using an inventory item
- * in front of an interactive entity.
- *
- * @param entity_name name of the interactive entity the hero is facing
- * @param item_name name of the inventory item that is being used
- * @param variant variant of this inventory item
- * @return true if the script has handled the event,
- * i.e. if the function event_hero_interaction_item exists in the script and returned true
- */
-bool Script::event_hero_interaction_item(const std::string &entity_name, const std::string &item_name, int variant) {
-
-  int interaction = 0;
-  notify_script("event_hero_interaction_item", "ssi b", entity_name.c_str(), item_name.c_str(), variant, &interaction);
-
-  return interaction != 0;
-}
-
-/**
- * @brief Notifies the script that the player has just pressed the action
- * key in front an NPC.
+ * key in front of an NPC.
  * @param npc_name name of the NPC
  */
-void Script::event_npc_dialog(const std::string &npc_name) {
+void Script::event_npc_interaction(const std::string& npc_name) {
 
-  notify_script("event_npc_dialog", "s", npc_name.c_str());
+  notify_script("event_npc_interaction", "s", npc_name.c_str());
 }
 
 /**
  * @brief Notifies the script that the hero is using an inventory item
  * in front of an NPC.
  *
- * @param npc_name name of the NPC the hero is facing
+ * @param npc_name name of the npc the hero is facing
  * @param item_name name of the inventory item that is being used
  * @param variant variant of this inventory item
  * @return true if the script has handled the event,
- * i.e. if the function event_npc_dialog_item exists in the script and returned true
+ * i.e. if the function event_npc_interaction_item exists in the script and returned true
  */
-bool Script::event_npc_dialog_item(const std::string &npc_name, const std::string &item_name, int variant) {
+bool Script::event_npc_interaction_item(const std::string& npc_name,
+    const std::string& item_name, int variant) {
 
   int interaction = 0;
-  notify_script("event_npc_dialog_item", "ssi b", npc_name.c_str(), item_name.c_str(), variant, &interaction);
+  notify_script("event_npc_interaction_item", "ssi b", npc_name.c_str(),
+      item_name.c_str(), variant, &interaction);
 
   return interaction != 0;
 }

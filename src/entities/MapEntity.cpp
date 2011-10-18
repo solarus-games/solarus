@@ -25,7 +25,7 @@
 #include "entities/Chest.h"
 #include "entities/Jumper.h"
 #include "entities/Enemy.h"
-#include "entities/InteractiveEntity.h"
+#include "entities/NPC.h"
 #include "entities/Block.h"
 #include "entities/DynamicTile.h"
 #include "entities/Switch.h"
@@ -58,7 +58,7 @@ MapEntity::CreationFunction* MapEntity::creation_functions[] = {
   Chest::parse,
   Jumper::parse,
   Enemy::parse,
-  InteractiveEntity::parse,
+  NPC::parse,
   Block::parse,
   DynamicTile::parse,
   Switch::parse,
@@ -84,7 +84,7 @@ const MapEntity::EntityTypeFeatures MapEntity::entity_types_features[] = {
   { true,  true,  true,  true}, // chest
   { true,  true, false, false}, // jumper
   { true,  true,  true,  true}, // enemy
-  { true,  true,  true,  true}, // interactive entity
+  { true,  true,  true,  true}, // NPC
   { true,  true,  true,  true}, // block
   { true,  true,  true, false}, // dynamic tile
   { true,  true,  true, false}, // switch
@@ -97,6 +97,7 @@ const MapEntity::EntityTypeFeatures MapEntity::entity_types_features[] = {
   { true,  true,  true, false}, // door
   { true,  true, false, false}, // stairs
   // other entity types (the ones not stored in map files) does not use this array and must redefine the 4 functions
+  // TODO remove this array and just let all entities redefine the function
 };
 
 const Rectangle MapEntity::directions_to_xy_moves[] = {
@@ -1391,7 +1392,7 @@ bool MapEntity::is_crystal_obstacle(Crystal& crystal) {
  * @param npc a non-playing character
  * @return true if the NPC is currently an obstacle for this entity
  */
-bool MapEntity::is_npc_obstacle(InteractiveEntity& npc) {
+bool MapEntity::is_npc_obstacle(NPC& npc) {
   return true;
 }
 

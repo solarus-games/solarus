@@ -21,14 +21,14 @@ game_2_slots = {
 function event_map_started(destination_point_name)
 
   for k, v in pairs(game_2_slots) do
-    v.sprite = sol.map.interactive_entity_get_sprite(k)
+    v.sprite = sol.map.npc_get_sprite(k)
     sol.main.sprite_set_frame(v.sprite, v.initial_frame)
   end
   game_2_man_sprite = sol.map.npc_get_sprite("game_2_man")
 end
 
 -- Function called when the player wants to talk to a non-playing character
-function event_npc_dialog(npc_name)
+function event_npc_interaction(npc_name)
 
   if npc_name == "game_1_man" then
     -- game 1 dialog
@@ -83,6 +83,37 @@ function event_npc_dialog(npc_name)
 	-- game rules
 	sol.map.dialog_start("rupee_house.game_3.intro")
       end
+    end
+
+  elseif string.find(npc_name, "^slot_machine_") then
+    
+    if playing_game_2 then
+
+      sol.main.sprite_set_direction(game_2_man_sprite, 0)
+
+      if game_2_slots[npc_name].symbol == -1 then
+	-- stop this reel
+
+	local sprite = game_2_slots[npc_name].sprite
+	local current_symbol = math.floor(sol.main.sprite_get_frame(sprite) / 3)
+	game_2_slots[npc_name].symbol = (current_symbol + math.random(2)) % 7
+	game_2_slots[npc_name].current_delay = game_2_slots[npc_name].current_delay + 100
+	sol.main.sprite_set_frame_delay(sprite, game_2_slots[npc_name].current_delay)
+
+	-- test code (temporary code to win every game)
+	--	 for k, v in pairs(game_2_slots) do
+	--	    v.symbol = game_2_slots[npc_name].symbol
+	--	    v.current_delay = game_2_slots[npc_name].current_delay + 100
+	--	    sol.main.sprite_set_frame_delay(v.sprite, v.current_delay)
+	--	 end
+	-----------
+
+	sol.main.play_sound("switch")
+	sol.map.hero_freeze()
+      end
+    else
+      sol.main.play_sound("wrong")
+      sol.map.dialog_start("rupee_house.pay_first")
     end
   end
 end
@@ -260,39 +291,6 @@ function event_hero_on_sensor(sensor_name)
     sol.main.timer_stop_all()
     sol.main.play_sound("secret")
     sol.map.sensor_set_enabled("game_3_sensor", false)
-  end
-end
-
--- Function called when the player interacts with the slot machine
-function event_hero_interaction(entity_name)
-
-  if playing_game_2 then
-
-    sol.main.sprite_set_direction(game_2_man_sprite, 0)
-
-    if game_2_slots[entity_name].symbol == -1 then
-      -- stop this reel
-
-      local sprite = game_2_slots[entity_name].sprite
-      local current_symbol = math.floor(sol.main.sprite_get_frame(sprite) / 3)
-      game_2_slots[entity_name].symbol = (current_symbol + math.random(2)) % 7
-      game_2_slots[entity_name].current_delay = game_2_slots[entity_name].current_delay + 100
-      sol.main.sprite_set_frame_delay(sprite, game_2_slots[entity_name].current_delay)
-
-      -- test code (temporary code to win every game)
-      --	 for k, v in pairs(game_2_slots) do
-      --	    v.symbol = game_2_slots[entity_name].symbol
-      --	    v.current_delay = game_2_slots[entity_name].current_delay + 100
-      --	    sol.main.sprite_set_frame_delay(v.sprite, v.current_delay)
-      --	 end
-      -----------
-
-      sol.main.play_sound("switch")
-      sol.map.hero_freeze()
-    end
-  else
-    sol.main.play_sound("wrong")
-    sol.map.dialog_start("rupee_house.pay_first")
   end
 end
 

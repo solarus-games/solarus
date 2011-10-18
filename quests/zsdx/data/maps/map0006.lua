@@ -134,7 +134,7 @@ function ladder_step4()
   sol.map.hero_unfreeze()
 end
 
-function event_npc_dialog(npc_name)
+function event_npc_interaction(npc_name)
   sol.map.dialog_start("outside_world.tom_dungeon_1_entrance.finished")
 end
 

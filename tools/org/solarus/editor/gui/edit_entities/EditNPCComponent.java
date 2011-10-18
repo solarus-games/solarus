@@ -23,12 +23,12 @@ import org.solarus.editor.*;
 import org.solarus.editor.entities.*;
 import org.solarus.editor.gui.*;
 import org.solarus.editor.map_editor_actions.*;
-import org.solarus.editor.entities.InteractiveEntity.Subtype;
+import org.solarus.editor.entities.NPC.Subtype;
 
 /**
- * A component to edit an interactive entity.
+ * A component to edit an NPC.
  */
-public class EditInteractiveEntityComponent extends EditEntityComponent {
+public class EditNPCComponent extends EditEntityComponent {
 
     // specific fields of this entity
     private JCheckBox withSpriteField;
@@ -42,7 +42,7 @@ public class EditInteractiveEntityComponent extends EditEntityComponent {
      * @param map the map
      * @param entity the entity to edit
      */
-    public EditInteractiveEntityComponent(Map map, MapEntity entity) {
+    public EditNPCComponent(Map map, MapEntity entity) {
 	super(map, entity);
     }
 
@@ -89,7 +89,7 @@ public class EditInteractiveEntityComponent extends EditEntityComponent {
 	    public void actionPerformed(ActionEvent ev) {
 
 		Subtype subtype = (Subtype) subtypeField.getValue();
-		withSpriteField.setEnabled(subtype != Subtype.NON_PLAYING_CHARACTER);
+		withSpriteField.setEnabled(subtype != Subtype.USUAL_NPC);
 	    }
 	});
     }
@@ -100,10 +100,10 @@ public class EditInteractiveEntityComponent extends EditEntityComponent {
     public void update() {
 	super.update(); // update the common fields
 
-	InteractiveEntity interactiveEntity = (InteractiveEntity) entity;
-	String sprite = interactiveEntity.getProperty("sprite");
-	String behavior = interactiveEntity.getProperty("behavior");
-	EntitySubtype subtype = interactiveEntity.getSubtype();
+	NPC npc = (NPC) entity;
+	String sprite = npc.getProperty("sprite");
+	String behavior = npc.getProperty("behavior");
+	EntitySubtype subtype = npc.getSubtype();
 
 	boolean hasSprite = (!sprite.equals("_none"));
 

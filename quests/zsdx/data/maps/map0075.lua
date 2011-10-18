@@ -28,7 +28,7 @@ function event_map_started(destination_point_name)
   end
 end
 
-function event_npc_dialog(npc_name)
+function event_npc_interaction(npc_name)
 
   if playing then
     sol.map.dialog_start("chests_game_cave.already_playing")

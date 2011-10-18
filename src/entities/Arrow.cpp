@@ -21,6 +21,7 @@
 #include "entities/Switch.h"
 #include "entities/Crystal.h"
 #include "entities/DestructibleItem.h"
+#include "entities/NPC.h"
 #include "movements/PathMovement.h"
 #include "movements/FollowMovement.h"
 #include "Sprite.h"
@@ -225,8 +226,8 @@ bool Arrow::is_crystal_obstacle(Crystal& crystal) {
  * @param npc a non-playing character
  * @return true if the NPC is currently an obstacle for this entity
  */
-bool Arrow::is_npc_obstacle(InteractiveEntity& npc) {
-  return false;
+bool Arrow::is_npc_obstacle(NPC& npc) {
+  return npc.is_solid();
 }
 
 /**

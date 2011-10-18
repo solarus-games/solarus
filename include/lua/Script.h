@@ -195,9 +195,6 @@ class Script {
       map_api_npc_get_sprite,
       map_api_npc_remove,
       map_api_npc_exists,
-      map_api_interactive_entity_get_sprite,
-      map_api_interactive_entity_remove,
-      map_api_interactive_entity_exists,
       map_api_chest_set_open,
       map_api_chest_is_enabled,
       map_api_chest_set_enabled,
@@ -384,10 +381,8 @@ class Script {
     void event_map_changed(Map &map);
     void event_dialog_started(const MessageId &message_id);
     void event_dialog_finished(const MessageId &first_message_id, int answer);
-    void event_hero_interaction(const std::string &entity_name);
-    bool event_hero_interaction_item(const std::string &entity_name, const std::string &item_name, int variant);
-    void event_npc_dialog(const std::string &npc_name);
-    bool event_npc_dialog_item(const std::string &npc_name, const std::string &item_name, int variant);
+    void event_npc_interaction(const std::string& npc_name);
+    bool event_npc_interaction_item(const std::string& npc_name, const std::string& item_name, int variant);
     void event_npc_collision_fire(const std::string &npc_name);
 };
 

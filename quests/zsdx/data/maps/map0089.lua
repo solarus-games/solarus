@@ -14,7 +14,7 @@ function random_walk(npc_name)
   sol.main.sprite_set_animation(sol.map.npc_get_sprite(npc_name), "walking")
 end
 
-function event_npc_dialog(npc_name)
+function event_npc_interaction(npc_name)
   
   if npc_name == "forbidden_door_npc" then
 

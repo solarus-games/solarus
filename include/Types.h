@@ -179,7 +179,7 @@ class Jumper;
 class Enemy;
 class CustomEnemy;
 class EnemyReaction;
-class InteractiveEntity;
+class NPC;
 class Block;
 class Switch;
 class CustomObstacle;

@@ -1238,7 +1238,7 @@
 1	1	888	581	destination_point_8	-1	1
 1	1	1104	581	destination_point_9	-1	1
 1	1	888	797	destination_point_10	-1	1
-8	1	1008	421	interactive_entity	3	0	entities/hint_stone	dialog#dungeon_5.pots_hint
+8	1	1008	421	npc	3	0	entities/hint_stone	dialog#dungeon_5.pots_hint
 2	1	928	784	16	16	teletransporter_7	1	1	63	destination_point_4
 2	1	928	736	16	16	teletransporter_8	1	1	63	destination_point_10
 3	1	1104	749	piece_of_heart	1	506

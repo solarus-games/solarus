@@ -106,7 +106,7 @@
 0	1	248	136	32	32	385
 1	1	184	405	from_outside	1	0
 2	1	176	416	16	16	teletransporter	0	1	7	from_junk_shop
-8	1	184	229	interactive_entity	3	1	npc/static_villager11	dialog#junk_shop.seller
+8	1	184	229	npc	3	1	npc/static_villager11	dialog#junk_shop.seller
 16	1	80	224	shop_item	croissant	1	-1	59	junk_shop.croissant
 16	1	96	136	shop_item_2	arrow	2	-1	79	junk_shop.arrows
 16	1	144	88	shop_item_3	rupee	3	198	19	junk_shop.red_rupee

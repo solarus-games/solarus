@@ -13,10 +13,10 @@ function event_map_started(destination_point_name)
   end
 end
 
-function event_hero_interaction(entity_name)
+function event_npc_interaction(npc_name)
 
-  if string.find(entity_name, "^sign_") then
-    if entity_name == "sign_"..next_sign then
+  if string.find(npc_name, "^sign_") then
+    if npc_name == "sign_"..next_sign then
 
       if next_sign < 32 then
         sol.map.dialog_start("surprise_wall.direction_"..directions[next_sign])

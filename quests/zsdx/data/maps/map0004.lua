@@ -34,9 +34,9 @@ end
 
 -- Function called when the player presses the action key
 -- while facing an interactive entity
-function event_hero_interaction(entity_name)
+function event_npc_interaction(npc_name)
 
-  if entity_name == "tom_cave_door" then
+  if npc_name == "tom_cave_door" then
 
     -- open the door if the player has the clay key
     if sol.game.has_item("clay_key") then
@@ -48,7 +48,7 @@ function event_hero_interaction(entity_name)
       sol.map.dialog_start("outside_world.village.clay_key_required")
     end
 
-  elseif entity_name == "stone_lock" then
+  elseif npc_name == "stone_lock" then
 
     -- open the door if the player has the stone key
     if sol.game.has_item("stone_key") then
@@ -72,12 +72,12 @@ function event_hero_on_sensor(sensor_name)
 end
 
 function remove_village_cave_door()
-  sol.map.interactive_entity_remove("tom_cave_door")
+  sol.map.npc_remove("tom_cave_door")
   sol.map.tile_set_enabled("tom_cave_door_tile", false)
 end
 
 function remove_stone_lock()
-  sol.map.interactive_entity_remove("stone_lock")
+  sol.map.npc_remove("stone_lock")
   sol.map.tile_set_group_enabled("stone_lock_tile", false)
 end
 

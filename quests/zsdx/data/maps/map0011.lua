@@ -1,7 +1,7 @@
 -- Grandma house
 
 -- The player talks to grandma
-function event_npc_dialog(npc_name)
+function event_npc_interaction(npc_name)
 
   local has_smith_sword = sol.game.savegame_get_boolean(30)
   local has_clay_key = sol.game.savegame_get_boolean(28)

@@ -39,7 +39,7 @@ CustomObstacle::CustomObstacle(const std::string &name, Layer layer, int x, int 
 
   entity_types_stopped[HERO] = stops_hero;
   entity_types_stopped[ENEMY] = stops_enemies;
-  entity_types_stopped[INTERACTIVE_ENTITY] = stops_npcs;
+  entity_types_stopped[NON_PLAYING_CHARACTER] = stops_npcs;
   entity_types_stopped[BLOCK] = stops_blocks;
 }
 

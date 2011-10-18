@@ -48,7 +48,7 @@ end
 
 -- Function called when the player wants to talk to a non-playing character.
 -- If the NPC is the monkey, then the monkey sound is played and the dialog starts.
-function event_npc_dialog(npc_name)
+function event_npc_interaction(npc_name)
 
   if string.find(npc_name, "monkey") then
 
@@ -59,6 +59,18 @@ function event_npc_dialog(npc_name)
     else
       sol.main.play_sound("monkey")
       sol.map.dialog_start("outside_world.dungeon_2_entrance.monkey")
+    end
+  
+  elseif npc_name == "dungeon_2_door" then
+
+    -- open the door if the player has the Rock Key
+    if sol.game.has_item("rock_key") then
+      sol.main.play_sound("door_open")
+      sol.main.play_sound("secret")
+      sol.game.savegame_set_boolean(89, true)
+      remove_dungeon_2_door()
+    else
+      sol.map.dialog_start("outside_world.rock_key_required")
     end
   end
 end
@@ -127,24 +139,6 @@ function monkey_timer()
   monkey_jumps = 2
 end
 
--- Function called when the player presses the action key
--- while facing an interactive entity
-function event_hero_interaction(entity_name)
-
-  if entity_name == "dungeon_2_door" then
-
-    -- open the door if the player has the Rock Key
-    if sol.game.has_item("rock_key") then
-      sol.main.play_sound("door_open")
-      sol.main.play_sound("secret")
-      sol.game.savegame_set_boolean(89, true)
-      remove_dungeon_2_door()
-    else
-      sol.map.dialog_start("outside_world.rock_key_required")
-    end
-  end
-end
-
 function event_door_open(door_name)
 
   if door_name == "dungeon_3_entrance_weak_block" then
@@ -153,7 +147,7 @@ function event_door_open(door_name)
 end
 
 function remove_dungeon_2_door()
-  sol.map.interactive_entity_remove("dungeon_2_door")
+  sol.map.npc_remove("dungeon_2_door")
   sol.map.tile_set_enabled("dungeon_2_door_tile", false)
 end
 

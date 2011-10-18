@@ -48,9 +48,9 @@ public class AddEntitiesMenu extends JMenu {
 	),
 	new ItemDefinition(EntityType.CHEST, KeyEvent.VK_C),
 	new ItemDefinition(EntityType.ENEMY, KeyEvent.VK_E),
-	new ItemDefinition(EntityType.INTERACTIVE, KeyEvent.VK_I,
-		InteractiveEntity.Subtype.CUSTOM,
-		InteractiveEntity.Subtype.NON_PLAYING_CHARACTER
+	new ItemDefinition(EntityType.NPC, KeyEvent.VK_I,
+		NPC.Subtype.GENERALIZED_NPC,
+		NPC.Subtype.USUAL_NPC
 	),	
 	new ItemDefinition(EntityType.BLOCK, KeyEvent.VK_B,
 		Block.Subtype.NORMAL_BLOCK,

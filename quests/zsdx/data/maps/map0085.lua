@@ -7,7 +7,7 @@ function event_map_opening_transition_finished(destination_point_name)
   sol.main.sprite_set_animation_ignore_suspend(solarus_child_sprite, true)
 end
 
-function event_npc_dialog(npc_name)
+function event_npc_interaction(npc_name)
 
   if npc_name == "solarus_child" then
     if sol.game.is_dungeon_finished(3) then

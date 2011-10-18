@@ -12,36 +12,36 @@ function event_map_started(destination_point_name)
 end
 function are_group1_torches_on()
 
-  return sol.map.interactive_entity_exists("torch1_1")
-      and sol.main.sprite_get_animation(sol.map.interactive_entity_get_sprite("torch1_1")) == "lit"
-      and sol.main.sprite_get_animation(sol.map.interactive_entity_get_sprite("torch1_2")) == "lit"
-      and sol.main.sprite_get_animation(sol.map.interactive_entity_get_sprite("torch1_3")) == "lit"
+  return sol.map.npc_exists("torch1_1")
+      and sol.main.sprite_get_animation(sol.map.npc_get_sprite("torch1_1")) == "lit"
+      and sol.main.sprite_get_animation(sol.map.npc_get_sprite("torch1_2")) == "lit"
+      and sol.main.sprite_get_animation(sol.map.npc_get_sprite("torch1_3")) == "lit"
 
 end
 
 function are_group2_torches_on()
 
-  return sol.map.interactive_entity_exists("torch2_1")
-      and sol.main.sprite_get_animation(sol.map.interactive_entity_get_sprite("torch2_1")) == "lit"
-      and sol.main.sprite_get_animation(sol.map.interactive_entity_get_sprite("torch2_2")) == "lit"
-      and sol.main.sprite_get_animation(sol.map.interactive_entity_get_sprite("torch2_3")) == "lit"
+  return sol.map.npc_exists("torch2_1")
+      and sol.main.sprite_get_animation(sol.map.npc_get_sprite("torch2_1")) == "lit"
+      and sol.main.sprite_get_animation(sol.map.npc_get_sprite("torch2_2")) == "lit"
+      and sol.main.sprite_get_animation(sol.map.npc_get_sprite("torch2_3")) == "lit"
 
 end
 
 
 function lock_torches_group1()
 
-  sol.map.interactive_entity_remove("torch1_1")
-  sol.map.interactive_entity_remove("torch1_2")
-  sol.map.interactive_entity_remove("torch1_3")
+  sol.map.npc_remove("torch1_1")
+  sol.map.npc_remove("torch1_2")
+  sol.map.npc_remove("torch1_3")
 
 end
 
 function lock_torches_group2()
 
-  sol.map.interactive_entity_remove("torch2_1")
-  sol.map.interactive_entity_remove("torch2_2")
-  sol.map.interactive_entity_remove("torch2_3")
+  sol.map.npc_remove("torch2_1")
+  sol.map.npc_remove("torch2_2")
+  sol.map.npc_remove("torch2_3")
 
 end
 

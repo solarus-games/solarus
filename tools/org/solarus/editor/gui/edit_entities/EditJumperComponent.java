@@ -55,9 +55,9 @@ public class EditJumperComponent extends EditEntityComponent {
     public void update() {
 	super.update(); // update the common fields
 
-	Jumper jumpSensor = (Jumper) entity;
+	Jumper jumper = (Jumper) entity;
 
-	jumpLengthField.setNumber(jumpSensor.getIntegerProperty("jumpLength"));
+	jumpLengthField.setNumber(jumper.getIntegerProperty("jumpLength"));
     }
 
     /**

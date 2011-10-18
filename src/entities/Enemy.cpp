@@ -816,7 +816,7 @@ bool Enemy::get_can_attack() {
 
 /**
  * @brief Sets whether this enemy can attack the hero.
- * @return true to allow this enemy to attack the hero
+ * @param can_attack true to allow this enemy to attack the hero
  */
 void Enemy::set_can_attack(bool can_attack) {
 

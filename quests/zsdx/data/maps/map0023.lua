@@ -75,3 +75,10 @@ function event_enemy_dead(enemy_name)
   end
 end
 
+function event_door_open(door_name)
+
+  if door_name == "weak_wall" then
+    sol.main.play_sound("secret")
+  end
+end
+

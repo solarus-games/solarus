@@ -34,20 +34,21 @@ class Door: public Detector {
      * @brief The different kinds of doors.
      */
     enum Subtype {
-      CLOSED,                         /**< usual closed door */
-      SMALL_KEY,                      /**< a small key is required to open the door */
-      SMALL_KEY_BLOCK,                /**< a block to open with a small key (this does not look like a door) */
-      BIG_KEY,                        /**< the big key is required to open the door (only in a dungeon) */
-      BOSS_KEY,                       /**< the boss key is required to open the door (only in a dungeon) */
-      WEAK,                           /**< a weak wall to blast with an explosion */
-      VERY_WEAK,                      /**< same as WEAK but more visible */
-      WEAK_INVISIBLE,                 /**< same as WEAK but no visible sign of weakness */
-      WEAK_BLOCK                      /**< a block to blast with an explosion */
+      CLOSED             = 0,         /**< usual closed door */
+      SMALL_KEY          = 1,         /**< a small key is required to open the door */
+      SMALL_KEY_BLOCK    = 2,         /**< a block to open with a small key (this does not look like a door) */
+      BIG_KEY            = 3,         /**< the big key is required to open the door (only in a dungeon) */
+      BOSS_KEY           = 4,         /**< the boss key is required to open the door (only in a dungeon) */
+      WEAK               = 5,         /**< a weak wall to blast with an explosion */
+      VERY_WEAK          = 6,         /**< same as WEAK but more visible */
+      // 7 is obsolete
+      WEAK_BLOCK         = 8          /**< a block to blast with an explosion */
     };
 
   private:
 
-    static const std::string animations[]; /**< sprite animation name of each subtype */
+    static const std::string animations[];             /**< sprite animation name of each subtype */
+    static const MessageId key_required_message_ids[]; /**< id of the message shown for each subtype */
 
     // properties
     Subtype subtype;           /**< subtype of door */

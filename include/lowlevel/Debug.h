@@ -30,13 +30,13 @@ class Debug {
 
   private:
 
-    Debug();	// don't instanciate this class
+    Debug();    // don't instantiate this class
 
   public:
 
-    static void print(const std::string &message, std::ostream &os = std::cout);
-    static void check_assertion(bool assertion, const std::string &error_message = "");
-    static void die(const std::string &error_message = "");
+    static void print(const std::string& message, std::ostream& os = std::cout);
+    static void check_assertion(bool assertion, const std::string& error_message = "");
+    static void die(const std::string& error_message = "");
 };
 
 
@@ -48,7 +48,7 @@ class Debug {
  * @param message the message to print.
  * @param os the output stream to write (default is std::cout)
  */
-inline void Debug::print(const std::string &message, std::ostream &os) {
+inline void Debug::print(const std::string& message, std::ostream& os) {
 
 #if SOLARUS_DEBUG_LEVEL > 0
   os << message << std::endl;
@@ -67,7 +67,7 @@ inline void Debug::print(const std::string &message, std::ostream &os) {
  * @param assertion the boolean condition to check
  * @param error_message the error message to attach to the exception when the assertion fails
  */
-inline void Debug::check_assertion(bool assertion, const std::string &error_message) {
+inline void Debug::check_assertion(bool assertion, const std::string& error_message) {
 
 #if SOLARUS_DEBUG_LEVEL > 0
   if (!assertion) {
@@ -84,7 +84,7 @@ inline void Debug::check_assertion(bool assertion, const std::string &error_mess
  *
  * @param error_message the error message to attach to the exception
  */
-inline void Debug::die(const std::string &error_message) {
+inline void Debug::die(const std::string& error_message) {
 
   std::ofstream out("error.txt");
   out << error_message << std::endl << std::flush;

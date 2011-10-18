@@ -35,7 +35,7 @@ public class Door extends MapEntity {
 	BOSS_KEY,
 	WEAK,
 	VERY_WEAK,
-	WEAK_INVISIBLE,
+	OBSOLETE, // this subtype does not exist anymore, its id may be reused in the future
 	WEAK_BLOCK
 	;
 
@@ -47,7 +47,7 @@ public class Door extends MapEntity {
 	    "Use boss key",
 	    "Weak",
 	    "Very weak",
-	    "Weak (invisible)",
+	    "",
 	    "Weak (block)"
 	};
 
@@ -226,6 +226,10 @@ public class Door extends MapEntity {
 
 	if (savegameVariable == -1 && mustBeSaved()) {
 	  throw new MapException("This kind of door must be saved");
+	}
+
+	if (getSubtype() == Subtype.OBSOLETE) {
+	  throw new MapException("Illegal subtype of door");
 	}
     }
 

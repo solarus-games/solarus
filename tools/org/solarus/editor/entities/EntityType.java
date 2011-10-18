@@ -30,7 +30,7 @@ public enum EntityType {
     PICKABLE_ITEM        (3, "Pickable item", PickableItem.class, null),
     DESTRUCTIBLE_ITEM    (4, "Destructible item", DestructibleItem.class, DestructibleItem.Subtype.class),
     CHEST                (5, "Chest", Chest.class, null),
-    JUMP_SENSOR          (6, "Jumper", Jumper.class, null),
+    JUMPER          (6, "Jumper", Jumper.class, null),
     ENEMY                (7, "Enemy", Enemy.class, null),
     INTERACTIVE          (8, "Interactive entity", InteractiveEntity.class, InteractiveEntity.Subtype.class),
     BLOCK                (9, "Block", Block.class, Block.Subtype.class),

@@ -91,7 +91,7 @@ MapEntity* Jumper::parse(Game &game, std::istream &is, Layer layer, int x, int y
  * @return the type of entity
  */
 EntityType Jumper::get_type() {
-  return JUMP_SENSOR;
+  return JUMPER;
 }
 
 /**

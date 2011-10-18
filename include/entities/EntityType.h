@@ -39,7 +39,7 @@ enum EntityType {
   PICKABLE_ITEM             = 3,    /**< an item that the hero can pick: a rupee, a heart, a fairy... */
   DESTRUCTIBLE_ITEM         = 4,    /**< an item that the hero can cut or lift: a pot, a bush, a stone... */
   CHEST                     = 5,    /**< a chest (small or big) with a treasure */
-  JUMP_SENSOR               = 6,    /**< a sensor that makes the hero jump in a direction */
+  JUMPER               = 6,    /**< a sensor that makes the hero jump in a direction */
   ENEMY                     = 7,    /**< an enemy */
   INTERACTIVE_ENTITY        = 8,    /**< an entity the hero can interact with by pressing the action key
 				     * in front of it (typically an NPC) */

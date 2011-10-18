@@ -670,8 +670,8 @@
 14	1	1448	701	crystal_2
 15	1	1536	592	32	32	0
 14	1	1448	605	crystal_3
-8	1	1432	301	interactive_entity_11	3	0	entities/hint_stone	map
-8	1	1112	301	interactive_entity_12	3	0	entities/hint_stone	map
+8	1	1432	301	npc_11	3	0	entities/hint_stone	map
+8	1	1112	301	npc_12	3	0	entities/hint_stone	map
 5	1	1440	1152	chest_2	0	map	1	-1
 13	1	1568	901	16	32	DS11	0
 2	1	736	424	144	32	hole_to_B3_C	0	1	50	_same
@@ -684,16 +684,16 @@
 18	1	1304	888	door_3	2	3	0
 18	1	1256	888	door_4	0	3	0
 15	1	880	624	16	48	0
-8	1	1080	349	interactive_entity_6	3	0	_none	map
-8	1	1064	413	interactive_entity_7	3	0	_none	map
-8	1	1128	445	interactive_entity_8	3	0	_none	map
-8	1	1192	413	interactive_entity_9	3	0	_none	map
-8	1	1176	349	interactive_entity_10	3	0	_none	map
-8	1	1384	413	interactive_entity_13	3	0	_none	map
-8	1	1400	349	interactive_entity_14	3	0	_none	map
-8	1	1448	445	interactive_entity_15	3	0	_none	map
-8	1	1512	413	interactive_entity_16	3	0	_none	map
-8	1	1496	349	interactive_entity_17	3	0	_none	map
+8	1	1080	349	npc_6	3	0	_none	map
+8	1	1064	413	npc_7	3	0	_none	map
+8	1	1128	445	npc_8	3	0	_none	map
+8	1	1192	413	npc_9	3	0	_none	map
+8	1	1176	349	npc_10	3	0	_none	map
+8	1	1384	413	npc_13	3	0	_none	map
+8	1	1400	349	npc_14	3	0	_none	map
+8	1	1448	445	npc_15	3	0	_none	map
+8	1	1512	413	npc_16	3	0	_none	map
+8	1	1496	349	npc_17	3	0	_none	map
 18	1	1576	888	LD11	0	0	-1
 18	1	1624	888	LD11_2	2	0	-1
 15	1	720	1120	16	80	0

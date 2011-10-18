@@ -14,7 +14,7 @@ function event_map_started(destination_point)
 end
 
 -- The player talks to Sahasrahla
-function event_npc_dialog(npc_name)
+function event_npc_interaction(npc_name)
 
   if not has_obtained_clay_key() then
 

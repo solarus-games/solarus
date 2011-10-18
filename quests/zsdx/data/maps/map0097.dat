@@ -251,11 +251,11 @@
 11	0	112	544	switch1_4	1	0	0
 11	0	304	904	switch1_2	1	0	0
 11	0	904	552	switch1_3	1	0	0
-8	0	776	389	interactive_entity	3	1	entities/hint_stone	dialog#Mon deuxième se trouve à l'Ouest
-8	0	728	389	interactive_entity_2	3	1	entities/hint_stone	dialog#dungeon_10.message1
-8	0	824	389	interactive_entity_3	3	1	entities/hint_stone	dialog#Mon troisième se trouve à l'Est
-8	0	872	389	interactive_entity_4	3	1	entities/hint_stone	dialog#Mon quatrièe se trouve au Sud
-8	0	912	389	interactive_entity_5	3	1	entities/hint_stone	dialog#Mon tout se trouve au centre
+8	0	776	389	npc	3	1	entities/hint_stone	dialog#Mon deuxième se trouve à l'Ouest
+8	0	728	389	npc_2	3	1	entities/hint_stone	dialog#dungeon_10.message1
+8	0	824	389	npc_3	3	1	entities/hint_stone	dialog#Mon troisième se trouve à l'Est
+8	0	872	389	npc_4	3	1	entities/hint_stone	dialog#Mon quatrièe se trouve au Sud
+8	0	912	389	npc_5	3	1	entities/hint_stone	dialog#Mon tout se trouve au centre
 1	0	544	533	destination_point	-1	1
 15	0	296	792	48	16	0
 15	0	296	776	48	16	1

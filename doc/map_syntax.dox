@@ -114,8 +114,7 @@ For now, the following types of entities are available when creating a map:
 - chest (5): a chest (small or big) with a treasure inside
 - jump sensor (6): a sensor that makes the hero jump into a direction
 - enemy (7): an enemy (that may carry a treasure)
-- interactive entity (8): an entity that the hero can interact with by pressing the action key or using an inventory
-item in front of it (typically an NPC)
+- NPC (8): an entity that the hero can interact with by pressing the action key or using an inventory item in front of it (not necessarily a person)
 - block (9): a block or a statue that the hero can push or pull
 - dynamic tile (10): a special tile with the ability to be enabled or disabled (usual tiles cannot be disabled)
 - switch (11): a switch that the hero may enable
@@ -322,10 +321,12 @@ define the pickable item dropped by this enemy when it is killed,
 (see the section about pickable items above).
 <tt>treasure_name</tt> can be "_random" or "_none".
 
-@section interactive_entity Interactive entity (8)
+@section npc NPC (8)
 
-An interactive entity is an entity (visible or not) the hero can interact with
+An NPC is an entity that the hero can interact with
 by pressing the action key or using an inventory item just in front of it.
+The NPC is not necessarily a person, it can be a more general,
+solid interactive entity.
 The hero may talk to it, read what it shows or do another action.
 Most of the time, the action consists in starting a dialog,
 but you can define a custom action with a script.
@@ -334,13 +335,13 @@ but you can define a custom action with a script.
 8	layer	x	y	entity_name	direction	subtype	sprite_name	behavior
 @endverbatim
 
-Subtypes of interactive entities:
-- 0: custom interaction (displays a dialog or calls a script),
-- 1: an NPC (same thing but a sprite is required, with four directions and the animations "stopped" and possibly "walking")
+Subtypes of NPCs:
+- 0: generalized NPC (a solid interactive entity)
+- 1: a usual NPC (a sprite is required, with four directions and the animations "stopped" and possibly "walking")
 
-<tt>direction</tt> has a different meaning depending on the subtype of interactive entity.
-For an NPC, it indicates the initial direction of its sprite (0 to 4)
-For a custom interaction, it indicates the direction for which the interaction is possible (0 to 4,
+<tt>direction</tt> has a different meaning depending on the subtype of NPC.
+For a usual NPC, it indicates the initial direction of its sprite (0 to 4)
+For a generalized NPC, it indicates the direction where the interaction is possible (0 to 4,
 or -1 to allow the interaction in any direction). For example, if the direction is 3,
 the interaction will be started only if the hero touches the south face of the entity.
 

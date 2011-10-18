@@ -234,7 +234,7 @@
 19	0	1440	1704	stairs_5	3	4
 19	0	1816	1392	stairs_6	3	4
 2	0	1440	1664	16	16	to_teleporter_A	1	1	48	from_teleporter_A
-8	0	1056	1261	interactive_entity	3	0	entities/hint_stone	map
+8	0	1056	1261	npc	3	0	entities/hint_stone	map
 5	0	1184	1368	chest_3	0	_none	1	-1
 11	0	1184	1448	switch	1	0	0
 4	0	1192	1461	0	_random	1	-1

@@ -39,17 +39,17 @@ enum EntityType {
   PICKABLE_ITEM             = 3,    /**< an item that the hero can pick: a rupee, a heart, a fairy... */
   DESTRUCTIBLE_ITEM         = 4,    /**< an item that the hero can cut or lift: a pot, a bush, a stone... */
   CHEST                     = 5,    /**< a chest (small or big) with a treasure */
-  JUMPER               = 6,    /**< a sensor that makes the hero jump in a direction */
+  JUMPER                    = 6,    /**< a sensor that makes the hero jump in a direction */
   ENEMY                     = 7,    /**< an enemy */
-  INTERACTIVE_ENTITY        = 8,    /**< an entity the hero can interact with by pressing the action key
-				     * in front of it (typically an NPC) */
+  NON_PLAYING_CHARACTER     = 8,    /**< an entity the hero can interact with by pressing the action key
+				     * in front of it (not necessarily a person) */
   BLOCK                     = 9,    /**< a block or a statue that the hero can push */
   DYNAMIC_TILE              = 10,   /**< a dynamic tile (that can be enabled or disabled) */
   SWITCH                    = 11,   /**< a switch */
   CUSTOM_OBSTACLE           = 12,   /**< an obstacle for some other type of entities */
   SENSOR                    = 13,   /**< a sensor that triggers something when the hero overlaps it */
-  CRYSTAL            = 14,   /**< a switch that lowers or raises the blue and orange blocks */
-  CRYSTAL_BLOCK      = 15,   /**< the blue or orange blocks that are changed by the crystals */
+  CRYSTAL                   = 14,   /**< a switch that lowers or raises the blue and orange blocks */
+  CRYSTAL_BLOCK             = 15,   /**< the blue or orange blocks that are changed by the crystals */
   SHOP_ITEM                 = 16,   /**< an item the hero can buy in a shop */
   CONVEYOR_BELT             = 17,   /**< a special terrain that moves the hero */
   DOOR                      = 18,   /**< a door to open with a key or another action */

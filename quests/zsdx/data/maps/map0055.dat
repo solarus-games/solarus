@@ -900,8 +900,8 @@
 1	1	496	237	from_3f_w_hole	-1	0
 1	1	760	245	from_3f_c_hole	-1	0
 6	1	256	72	8	48	jumper_7	4	40
-8	1	1056	37	interactive_entity	3	0	entities/hint_stone	dialog#dungeon_6.dont_fall_hint
-8	1	1080	37	interactive_entity_2	3	0	entities/hint_stone	dialog#dungeon_6.close_way_hint
+8	1	1056	37	npc	3	0	entities/hint_stone	dialog#dungeon_6.dont_fall_hint
+8	1	1080	37	npc_2	3	0	entities/hint_stone	dialog#dungeon_6.close_way_hint
 11	1	840	576	water_switch	3	0	0
 12	1	568	136	96	8	custom_obstacle_14	1	1	1	1
 12	1	568	240	96	8	custom_obstacle_15	1	1	1	1

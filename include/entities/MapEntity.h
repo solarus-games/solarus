@@ -310,7 +310,7 @@ class MapEntity {
     virtual bool is_switch_obstacle(Switch& sw);
     virtual bool is_raised_block_obstacle(CrystalBlock& raised_block);
     virtual bool is_crystal_obstacle(Crystal& crystal);
-    virtual bool is_npc_obstacle(InteractiveEntity& npc);
+    virtual bool is_npc_obstacle(NPC& npc);
     virtual bool is_enemy_obstacle(Enemy& enemy);
     virtual bool is_jumper_obstacle(Jumper& jumper);
     virtual bool is_destructible_item_obstacle(DestructibleItem& destructible_item);

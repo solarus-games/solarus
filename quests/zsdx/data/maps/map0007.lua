@@ -35,18 +35,18 @@ function event_map_started(destination_point_name)
 end
 
 function remove_iron_lock()
-  sol.map.interactive_entity_remove("iron_lock")
+  sol.map.npc_remove("iron_lock")
   sol.map.tile_set_group_enabled("iron_lock_tile", false)
 end
 
 function remove_wooden_lock()
-  sol.map.interactive_entity_remove("wooden_lock")
+  sol.map.npc_remove("wooden_lock")
   sol.map.tile_set_group_enabled("wooden_lock_tile", false)
 end
 
-function event_hero_interaction(entity_name)
+function event_npc_interaction(npc_name)
 
-  if entity_name == "iron_lock" then
+  if npc_name == "iron_lock" then
 
     -- open the door if the player has the iron key
     if sol.game.has_item("iron_key") then
@@ -57,7 +57,8 @@ function event_hero_interaction(entity_name)
     else
       sol.map.dialog_start("outside_world.iron_key_required")
     end
-  elseif entity_name == "wooden_lock" then
+
+  elseif npc_name == "wooden_lock" then
 
     -- open the door if the player has the wooden key
     if sol.game.has_item("wooden_key") then
@@ -68,12 +69,8 @@ function event_hero_interaction(entity_name)
     else
       sol.map.dialog_start("outside_world.wooden_key_required")
     end
-  end
-end
 
-function event_npc_dialog(npc_name)
-
-  if npc_name == "inferno" then
+  elseif npc_name == "inferno" then
 
     if not sol.game.savegame_get_boolean(915) then
       -- first time

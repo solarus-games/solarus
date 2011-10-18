@@ -295,27 +295,27 @@ void MapScript::event_hero_still_on_sensor(const std::string& sensor_name) {
 
 /**
  * @brief Notifies the script that the hero has just finished interacting with an
- * interactive entity (other than an NPC) by pressing the action key,
- * for an interaction that was handled via a script (possibly this script or an item's script).
- * @param entity_name name of the entity in interaction
+ * NPC by pressing the action key, for an interaction that was handled via a script
+ * (possibly this script or an item's script).
+ * @param npc_name name of the NPC in interaction
  */
-void MapScript::event_hero_interaction_finished(const std::string &entity_name) {
+void MapScript::event_npc_interaction_finished(const std::string& npc_name) {
 
-  notify_script("event_hero_interaction_finished", "s", entity_name.c_str());
+  notify_script("event_npc_interaction_finished", "s", npc_name.c_str());
 }
 
 /**
  * @brief Notifies the script that the hero has just finished interacting with an
- * interactive entity (other than an NPC) by pressing an item's key,
- * for an interaction that was handled via a script (possibly this script or an item's script).
- * @param entity_name name of the entity in interaction
+ * NPC by pressing an item's key, for an interaction that was handled via a script
+ * (possibly this script or an item's script).
+ * @param npc_name name of the NPC in interaction
  * @param item_name name of the item that was used
  * @param variant variant of that item
  */
-void MapScript::event_hero_interaction_item_finished(const std::string &entity_name,
-    const std::string &item_name, int variant) {
+void MapScript::event_npc_interaction_item_finished(const std::string& npc_name,
+    const std::string& item_name, int variant) {
 
-  notify_script("event_hero_interaction_item_finished", "ssi", entity_name.c_str(),
+  notify_script("event_npc_interaction_item_finished", "ssi", npc_name.c_str(),
       item_name.c_str(), variant);
 }
 
@@ -323,7 +323,7 @@ void MapScript::event_hero_interaction_item_finished(const std::string &entity_n
  * @brief Notifies the script that an NPC has just finished its movement.
  * @param npc_name name of the NPC
  */
-void MapScript::event_npc_movement_finished(const std::string &npc_name) {
+void MapScript::event_npc_movement_finished(const std::string& npc_name) {
 
   notify_script("event_npc_movement_finished", "s", npc_name.c_str());
 }
@@ -341,7 +341,7 @@ void MapScript::event_sensor_collision_explosion(const std::string& sensor_name)
  * @brief Notifies the script that the player has just open an empty chest.
  *
  * What happens next is controlled by your script if it handles this event.
- * The hero is in state FREEZE,
+ * The hero is in state "freezed",
  * so if you do something else than giving the player a treasure,
  * don't forget to call hero_unfreeze() once you have finished.
  * The script function does not have to return any value.

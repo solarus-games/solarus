@@ -13,15 +13,15 @@ end
 
 function are_all_torches_on()
 
-  return sol.map.interactive_entity_exists("torch_1")
-      and sol.main.sprite_get_animation(sol.map.interactive_entity_get_sprite("torch_1")) == "lit"
-      and sol.main.sprite_get_animation(sol.map.interactive_entity_get_sprite("torch_2")) == "lit"
+  return sol.map.npc_exists("torch_1")
+      and sol.main.sprite_get_animation(sol.map.npc_get_sprite("torch_1")) == "lit"
+      and sol.main.sprite_get_animation(sol.map.npc_get_sprite("torch_2")) == "lit"
 end
 
 -- Makes all torches on forever
 function lock_torches()
-  sol.map.interactive_entity_remove("torch_1")
-  sol.map.interactive_entity_remove("torch_2")
+  sol.map.npc_remove("torch_1")
+  sol.map.npc_remove("torch_2")
 end
 
 function event_update()

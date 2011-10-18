@@ -41,7 +41,7 @@ function battle_2_camera_timer()
   sol.map.tile_set_enabled("battle_2_barrier", false)
 end
 
-function event_npc_dialog(npc)
+function event_npc_interaction(npc)
 
   if npc == "tom" then
     if not has_seen_tom() then

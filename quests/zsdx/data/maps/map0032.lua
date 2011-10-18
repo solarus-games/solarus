@@ -1,8 +1,8 @@
 -- Telepathic booth
 
-function event_hero_interaction(entity_name)
+function event_npc_interaction(npc_name)
 
-  if entity_name == "hint_stone" then
+  if npc_name == "hint_stone" then
 
     if not sol.game.is_dungeon_finished(2) then
       sol.map.dialog_start("telepathic_booth.not_working")

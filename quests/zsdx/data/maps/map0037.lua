@@ -10,7 +10,7 @@ function event_map_started(destination_point_name)
   end
 end
 
-function event_npc_dialog(npc_name)
+function event_npc_interaction(npc_name)
 
   if npc_name == "billy" then
     if not sol.game.savegame_get_boolean(135) then

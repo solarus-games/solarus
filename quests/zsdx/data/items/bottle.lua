@@ -69,9 +69,9 @@ function event_dialog_finished(first_message_id, answer)
   end
 end
 
-function event_hero_interaction(entity_name)
+function event_npc_interaction(npc_name)
 
-  if string.find(entity_name, "^water_for_bottle") then
+  if string.find(npc_name, "^water_for_bottle") then
     -- the hero interacts with a place where he can get some water
     if has_bottle() then
       if has_empty_bottle() then
@@ -85,12 +85,12 @@ function event_hero_interaction(entity_name)
   end
 end
 
-function event_hero_interaction_item(entity_name, item_name, variant)
+function event_npc_interaction_item(npc_name, item_name, variant)
 
-  if string.find(item_name, "^bottle") and string.find(entity_name, "^water_for_bottle") then
+  if string.find(item_name, "^bottle") and string.find(npc_name, "^water_for_bottle") then
     -- the hero interacts with a place where he can get some water:
     -- no matter whether he pressed the action key or the item key of a bottle, we do the same thing
-    event_hero_interaction(entity_name)
+    event_npc_interaction(npc_name)
     return true
   end
 

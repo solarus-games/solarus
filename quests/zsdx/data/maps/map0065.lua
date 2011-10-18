@@ -17,7 +17,7 @@ function event_map_started(destination_point_name)
   end
 
   if sol.game.savegame_get_boolean(511) then
-    sol.map.interactive_entity_remove("prison_1_lock")
+    sol.map.npc_remove("prison_1_lock")
   end
 
   if sol.game.savegame_get_boolean(512) then
@@ -94,21 +94,21 @@ function event_dialog_finished(first_message_id, answer)
   if first_message_id == "dungeon_5.prison_1_use_bone_key" then
     sol.main.play_sound("secret")
     sol.main.play_sound("door_open")
-    sol.map.interactive_entity_remove("prison_1_lock")
+    sol.map.npc_remove("prison_1_lock")
     sol.game.savegame_set_boolean(511, true)
   end
 end
 
-function event_hero_interaction(entity_name)
+function event_npc_interaction(npc_name)
 
-  if entity_name == "prison_1_lock" then
+  if npc_name == "prison_1_lock" then
 
     if not sol.game.has_item("bone_key") then
       sol.map.dialog_start("dungeon_5.prison_1_locked")
     else
       sol.map.dialog_start("dungeon_5.prison_1_use_bone_key")
     end
-  elseif entity_name == "prison_2_lock" then
+  elseif npc_name == "prison_2_lock" then
     
     prison_2_nb_messages = prison_2_nb_messages + 1
     if prison_2_nb_messages <= 3 then

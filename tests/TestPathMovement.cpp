@@ -20,7 +20,7 @@
 #include "Savegame.h"
 #include "Map.h"
 #include "entities/MapEntities.h"
-#include "entities/InteractiveEntity.h"
+#include "entities/NPC.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
@@ -199,8 +199,8 @@ int main(int argc, char **argv) {
   game.update();
 
   Map &map = game.get_current_map();
-  MapEntity *e = new InteractiveEntity(game, "e", LAYER_LOW, 160, 117,
-      InteractiveEntity::CUSTOM, "npc/sahasrahla", 0, "_none");
+  MapEntity *e = new NPC(game, "e", LAYER_LOW, 160, 117,
+      NPC::GENERALIZED_NPC, "npc/sahasrahla", 0, "_none");
   map.get_entities().add_entity(e);
 
   syntax_test(*e);

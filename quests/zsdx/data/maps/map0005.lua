@@ -15,11 +15,11 @@ function event_map_started(destination_point_name)
 
   if sol.game.savegame_get_boolean(136) then
     sol.map.tile_set_enabled("surprise_wall_door_tile", false)
-    sol.map.interactive_entity_remove("surprise_wall_door")
+    sol.map.npc_remove("surprise_wall_door")
   end
 end
 
-function event_npc_dialog(npc_name)
+function event_npc_interaction(npc_name)
 
   if npc_name == "surprise_wall_guy" then
     if sol.map.tile_is_enabled("surprise_wall_door_tile") then
@@ -27,6 +27,9 @@ function event_npc_dialog(npc_name)
     else
       sol.map.dialog_start("outside_world.surprise_wall_guy.open")
     end
+
+  elseif npc_name == "surprise_wall_door" then
+    sol.map.dialog_start("outside_world.surprise_wall_closed")
   end
 end
 
@@ -43,17 +46,10 @@ function event_dialog_finished(first_message_id, answer)
     sol.map.dialog_start("outside_world.surprise_wall_guy.thanks")
   elseif first_message_id == "outside_world.surprise_wall_guy.thanks" then
     sol.map.tile_set_enabled("surprise_wall_door_tile", false)
-    sol.map.interactive_entity_remove("surprise_wall_door")
+    sol.map.npc_remove("surprise_wall_door")
     sol.game.savegame_set_boolean(136, true)
     sol.main.play_sound("secret")
     sol.main.play_sound("door_open")
-  end
-end
-
-function event_hero_interaction(entity_name)
-
-  if entity_name == "surprise_wall_door" then
-    sol.map.dialog_start("outside_world.surprise_wall_closed")
   end
 end
 

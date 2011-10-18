@@ -46,14 +46,9 @@ function event_dialog_finished(first_message_id, answer)
   end
 end
 
-function event_npc_dialog(npc)
-  if npc == "seller" then
-    talk_to_seller()
-  end
-end
-
-function event_hero_interaction(entity_name)
-  if entity_name == "seller_talking_place" then
+function event_npc_interaction(npc_name)
+  if npc_name == "seller_talking_place"
+      or npc_name == "seller" then
     talk_to_seller()
   end
 end

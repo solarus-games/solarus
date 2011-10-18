@@ -263,7 +263,7 @@
 2	0	424	840	32	32	teletransporter_17	0	1	59	from_1F_hole_down
 2	0	424	824	32	32	teletransporter_16	0	1	59	from_1F_hole_up
 14	0	488	589	crystal
-8	0	632	813	interactive_entity	3	0	entities/hint_stone	dialog#dungeon_4.hint_use_map
+8	0	632	813	npc	3	0	entities/hint_stone	dialog#dungeon_4.hint_use_map
 19	0	96	112	stairs_9	3	4
 2	0	88	1016	16	16	teletransporter_29	1	1	60	destination_point_2
 1	0	104	61	from_B1_n_1	3	0
@@ -920,7 +920,7 @@
 17	1	496	277	6
 17	1	512	277	2
 15	1	520	248	16	16	1
-8	1	320	141	interactive_entity_2	3	0	entities/hint_stone	dialog#dungeon_4.hint_chests
+8	1	320	141	npc_2	3	0	entities/hint_stone	dialog#dungeon_4.hint_chests
 1	1	288	37	from_B1_n_2	3	0
 1	1	448	37	from_B1_n_3	3	0
 1	1	632	37	from_B1_n_4	3	0

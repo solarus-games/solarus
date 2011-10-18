@@ -14,13 +14,13 @@ function event_map_started(destination_point_name)
 end
 
 function remove_dungeon_7_lock()
-  sol.map.interactive_entity_remove("dungeon_7_lock")
+  sol.map.npc_remove("dungeon_7_lock")
   sol.map.tile_set_group_enabled("dungeon_7_lock_tile", false)
 end
 
-function event_hero_interaction(entity_name)
+function event_npc_interaction(npc_name)
 
-  if entity_name == "dungeon_7_lock" then
+  if npc_name == "dungeon_7_lock" then
 
     -- open the door if the player has the ice key
     if sol.game.has_item("ice_key") then

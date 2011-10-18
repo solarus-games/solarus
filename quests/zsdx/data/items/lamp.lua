@@ -39,8 +39,8 @@ end
 function unlight_oldest_torch()
 
   local entity = table.remove(temporary_lit_torches, 1)                   -- remove the torch from the FIFO
-  if sol.map.interactive_entity_exists(entity) then                       -- see if it still exists
-    local torch_sprite = sol.map.interactive_entity_get_sprite(entity)    -- get its sprite
+  if sol.map.npc_exists(entity) then                       -- see if it still exists
+    local torch_sprite = sol.map.npc_get_sprite(entity)    -- get its sprite
     sol.main.sprite_set_animation(torch_sprite, "unlit")                  -- change the animation
   end
 
@@ -66,21 +66,21 @@ function event_map_changed()
   temporary_lit_torches = {}
 end
 
--- Called when the hero presses the action key in front of any interactive entity
+-- Called when the hero presses the action key in front of any NPC
 -- that wants to notify the lamp
-function event_hero_interaction(entity_name)
+function event_npc_interaction(npc_name)
 
-  if string.find(entity_name, "^torch") then
+  if string.find(npc_name, "^torch") then
     sol.map.dialog_start("torch.need_lamp")
   end
 end
 
--- Called when fire touches an interactive entity linked to the Lamp
+-- Called when fire touches an NPC linked to the Lamp
 function event_npc_collision_fire(npc_name)
 
   if string.find(npc_name, "^torch") then
     
-    local torch_sprite = sol.map.interactive_entity_get_sprite(npc_name)
+    local torch_sprite = sol.map.npc_get_sprite(npc_name)
     if sol.main.sprite_get_animation(torch_sprite) == "unlit" then
       -- temporarily light the torch up
       sol.main.sprite_set_animation(torch_sprite, "lit")

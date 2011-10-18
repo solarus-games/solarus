@@ -26,7 +26,7 @@ function event_treasure_obtained(item_name, variant, savegame_variable)
   end
 end
 
-function event_npc_dialog(npc_name)
+function event_npc_interaction(npc_name)
 
   if npc_name == "witch" then
 

@@ -1,7 +1,7 @@
 -- Smith cave
 
 -- Function called when the player wants to talk to a non-playing character.
-function event_npc_dialog(npc_name)
+function event_npc_interaction(npc_name)
 
   -- smith dialog
   if not sol.game.savegame_get_boolean(30) then

@@ -990,7 +990,7 @@
 4	1	80	1757	0	_random	1	-1
 4	1	80	1597	0	_random	1	-1
 5	1	160	1664	chest_3	0	rupee	5	-1
-8	1	1456	1445	interactive_entity	3	0	entities/hint_stone	map
+8	1	1456	1445	npc	3	0	entities/hint_stone	map
 4	1	1768	1485	0	_random	1	-1
 18	1	1624	1656	LD1_2	2	0	-1
 12	1	1624	1664	16	16	custom_obstacle_9	0	1	1	1

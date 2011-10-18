@@ -21,7 +21,7 @@
 #include "Treasure.h"
 #include "entities/MapEntities.h"
 #include "entities/Door.h"
-#include "entities/InteractiveEntity.h"
+#include "entities/NPC.h"
 #include "entities/Sensor.h"
 #include "entities/Chest.h"
 #include "entities/DynamicTile.h"
@@ -616,15 +616,15 @@ int Script::map_api_hero_start_hurt(lua_State *l) {
  *
  * @param l the Lua context that is calling this function
  */
-int Script::map_api_npc_get_position(lua_State *l) {
+int Script::map_api_npc_get_position(lua_State* l) {
 
   Script& script = get_script(l, 1);
 
-  const std::string &name = luaL_checkstring(l, 1);
+  const std::string& name = luaL_checkstring(l, 1);
 
   MapEntities &entities = script.get_map().get_entities();
-  InteractiveEntity *npc = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, name);
-  const Rectangle &coordinates = npc->get_xy();
+  NPC* npc = (NPC*) entities.get_entity(NON_PLAYING_CHARACTER, name);
+  const Rectangle& coordinates = npc->get_xy();
 
   lua_pushinteger(l, coordinates.get_x());
   lua_pushinteger(l, coordinates.get_y());
@@ -641,16 +641,16 @@ int Script::map_api_npc_get_position(lua_State *l) {
  *
  * @param l the Lua context that is calling this function
  */
-int Script::map_api_npc_set_position(lua_State *l) {
+int Script::map_api_npc_set_position(lua_State* l) {
 
   Script& script = get_script(l, 3);
 
-  const std::string &name = luaL_checkstring(l, 1);
+  const std::string& name = luaL_checkstring(l, 1);
   int x = luaL_checkinteger(l, 2);
   int y = luaL_checkinteger(l, 3);
 
-  MapEntities &entities = script.get_map().get_entities();
-  InteractiveEntity *npc = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, name);
+  MapEntities& entities = script.get_map().get_entities();
+  NPC* npc = (NPC*) entities.get_entity(NON_PLAYING_CHARACTER, name);
   npc->set_xy(x, y);
 
   return 0;
@@ -668,12 +668,12 @@ int Script::map_api_npc_start_movement(lua_State *l) {
 
   Script& script = get_script(l, 2);
 
-  const std::string &name = luaL_checkstring(l, 1);
+  const std::string& name = luaL_checkstring(l, 1);
   int movement_handle = luaL_checkinteger(l, 2);
 
-  MapEntities &entities = script.get_map().get_entities();
-  InteractiveEntity *npc = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, name);
-  Movement &movement = script.start_movement(movement_handle);
+  MapEntities& entities = script.get_map().get_entities();
+  NPC* npc = (NPC*) entities.get_entity(NON_PLAYING_CHARACTER, name);
+  Movement& movement = script.start_movement(movement_handle);
 
   npc->clear_movement();
   npc->set_movement(&movement);
@@ -694,8 +694,8 @@ int Script::map_api_npc_stop_movement(lua_State* l) {
 
   const std::string& name = luaL_checkstring(l, 1);
 
-  MapEntities &entities = script.get_map().get_entities();
-  InteractiveEntity* npc = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, name);
+  MapEntities& entities = script.get_map().get_entities();
+  NPC* npc = (NPC*) entities.get_entity(NON_PLAYING_CHARACTER, name);
 
   npc->clear_movement();
 
@@ -711,10 +711,19 @@ int Script::map_api_npc_stop_movement(lua_State* l) {
  *
  * @param l the Lua context that is calling this function
  */
-int Script::map_api_npc_get_sprite(lua_State *l) {
+int Script::map_api_npc_get_sprite(lua_State* l) {
 
-  // an NPC is actually a subtype of interactive entity
-  return map_api_interactive_entity_get_sprite(l);
+  Script& script = get_script(l, 1);
+
+  const std::string& entity_name = luaL_checkstring(l, 1);
+
+  MapEntities& entities = script.get_map().get_entities();
+  NPC* npc = (NPC*) entities.get_entity(NON_PLAYING_CHARACTER, entity_name);
+
+  int handle = script.create_sprite_handle(npc->get_sprite());
+  lua_pushinteger(l, handle);
+
+  return 1;
 }
 
 /**
@@ -724,10 +733,16 @@ int Script::map_api_npc_get_sprite(lua_State *l) {
  *
  * @param l the Lua context that is calling this function
  */
-int Script::map_api_npc_remove(lua_State *l) {
+int Script::map_api_npc_remove(lua_State* l) {
 
-  // an NPC is actually a subtype of interactive entity
-  return map_api_interactive_entity_remove(l);
+  Script& script = get_script(l, 1);
+
+  const std::string& name = luaL_checkstring(l, 1);
+
+  MapEntities& entities = script.get_map().get_entities();
+  entities.remove_entity(NON_PLAYING_CHARACTER, name);
+
+  return 0;
 }
 
 /**
@@ -738,79 +753,22 @@ int Script::map_api_npc_remove(lua_State *l) {
  *
  * @param l the Lua context that is calling this function
  */
-int Script::map_api_npc_exists(lua_State *l) {
-
-  // an NPC is actually a subtype of interactive entity
-  return map_api_interactive_entity_exists(l);
-}
-
-/**
- * @brief Makes the sprite of an interactive entity accessible from the script.
- *
- * - Argument 1 (string): name of the interactive entity
- * - Return value (sprite): the sprite of this interactive entity (your script can then pass it as a parameter
- * to all sol.main.sprite_* functions)
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_interactive_entity_get_sprite(lua_State *l) {
+int Script::map_api_npc_exists(lua_State* l) {
 
   Script& script = get_script(l, 1);
 
-  const std::string &entity_name = luaL_checkstring(l, 1);
+  const std::string& name = luaL_checkstring(l, 1);
 
-  MapEntities &entities = script.get_map().get_entities();
-  InteractiveEntity *entity = (InteractiveEntity*) entities.get_entity(INTERACTIVE_ENTITY, entity_name);
+  MapEntities& entities = script.get_map().get_entities();
+  NPC* npc = (NPC*) entities.find_entity(NON_PLAYING_CHARACTER, name);
 
-  int handle = script.create_sprite_handle(entity->get_sprite());
-  lua_pushinteger(l, handle);
+  lua_pushboolean(l, npc != NULL);
 
   return 1;
 }
 
 /**
- * @brief Removes an interactive entity from the map.
- *
- * - Argument 1 (string): name of the interactive entity
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_interactive_entity_remove(lua_State *l) {
-
-  Script& script = get_script(l, 1);
-
-  const std::string &name = luaL_checkstring(l, 1);
-
-  MapEntities &entities = script.get_map().get_entities();
-  entities.remove_entity(INTERACTIVE_ENTITY, name);
-
-  return 0;
-}
-
-/**
- * @brief Returns whether an interactive entity exists on the map.
- *
- * - Argument 1 (string): name of the interactive entity to check
- * - Return value (boolean): true if an interactive entity with this name exists on the map
- *
- * @param l the Lua context that is calling this function
- */
-int Script::map_api_interactive_entity_exists(lua_State *l) {
-
-  Script& script = get_script(l, 1);
-
-  const std::string &name = luaL_checkstring(l, 1);
-
-  MapEntities &entities = script.get_map().get_entities();
-  InteractiveEntity *entity = (InteractiveEntity*) entities.find_entity(INTERACTIVE_ENTITY, name);
-
-  lua_pushboolean(l, entity != NULL);
-
-  return 1;
-}
-
-/**
- * @brief Sets the chest open or closed.
+ * @brief Sets a chest open or closed.
  *
  * Only the chest sprite is affected (use give_treasure to give a treasure to the player).
  * This function is useful for chests whose content is managed by the script.

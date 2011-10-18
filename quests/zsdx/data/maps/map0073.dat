@@ -94,12 +94,12 @@
 1	1	160	37	from_outside_n	3	0
 10	1	136	16	48	24	door_closed	49	1
 18	1	152	24	door	1	5	158
-8	1	160	205	interactive_entity	3	1	npc/static_villager6	dialog#lake_shop.seller
+8	1	160	205	npc	3	1	npc/static_villager6	dialog#lake_shop.seller
 16	1	112	216	shop_item	apple	1	-1	15	lake_shop.apples
 16	1	176	216	shop_item_2	bomb	3	-1	15	lake_shop.bombs
 16	1	240	216	shop_item_3	arrow	3	-1	15	lake_shop.arrows
 16	1	240	168	shop_item_4	magic_flask	2	-1	25	lake_shop.big_magic_flask
-8	1	160	245	interactive_entity_2	3	0	_none	dialog#lake_shop.seller
+8	1	160	245	npc_2	3	0	_none	dialog#lake_shop.seller
 0	2	160	128	96	8	262
 0	2	160	104	96	8	263
 0	2	112	296	96	8	263

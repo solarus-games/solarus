@@ -25,18 +25,18 @@ import org.solarus.editor.entities.Teletransporter.Subtype;
  * Represents an entity that triggers a message or an event when the player
  * presses the action key in front of it.
  */
-public class InteractiveEntity extends MapEntity {
+public class NPC extends MapEntity {
 
     /**
-     * Subtypes of interactive entities.
+     * Subtypes of NPC.
      */
     public enum Subtype implements EntitySubtype {
-	CUSTOM,
-	NON_PLAYING_CHARACTER;
+	GENERALIZED_NPC,
+	USUAL_NPC;
 
 	public static final String[] humanNames = {
-	    "Custom",
-	    "Non-playing character"
+	    "Generalized NPC (some solid object)",
+	    "Usual NPC (a person)"
 	};
 
 	public static Subtype get(int id) {
@@ -52,8 +52,8 @@ public class InteractiveEntity extends MapEntity {
      * Description of the default image representing this kind of entity.
      */
     public static final EntityImageDescription[] generalImageDescriptions = {
-	new EntityImageDescription("interactive_entities.png", 0, 0, 32, 32),
-	new EntityImageDescription("interactive_entities.png", 32, 0, 16, 16)
+	new EntityImageDescription("npc.png", 0, 0, 32, 32),
+	new EntityImageDescription("npc.png", 32, 0, 16, 16)
     };
 
     /**
@@ -61,7 +61,7 @@ public class InteractiveEntity extends MapEntity {
      */
     public static final EntityImageDescription[] currentImageDescriptions = {
 	generalImageDescriptions[0],
-	new EntityImageDescription("interactive_entities.png", 32, 0, 16, 24)
+	new EntityImageDescription("npc.png", 32, 0, 16, 24)
     };
 
     /**
@@ -70,7 +70,7 @@ public class InteractiveEntity extends MapEntity {
     private Sprite sprite;
 
     /**
-     * Origin point of each type of interactive entity.
+     * Origin point of each type of NPC.
      */
     private static final Point[] origins = {
 	new Point(8, 13),
@@ -78,7 +78,7 @@ public class InteractiveEntity extends MapEntity {
     };
 
     /**
-     * Size of each type of interactive entity.
+     * Size of each type of NPC.
      */
     private static final Dimension[] sizes = {
 	new Dimension(16, 16),
@@ -86,10 +86,10 @@ public class InteractiveEntity extends MapEntity {
     };
 
     /**
-     * Creates a new interactive entity.
+     * Creates a new NPC.
      * @param map the map
      */
-    public InteractiveEntity(Map map) throws MapException {
+    public NPC(Map map) throws MapException {
 	super(map, 16, 16);
 	setDirection(3);
     }
@@ -230,8 +230,8 @@ public class InteractiveEntity extends MapEntity {
 	    throw new MapException("Invalid behavior string: '" + getProperty("behavior") + "'");
 	}
 
-	if (getSubtype() == Subtype.NON_PLAYING_CHARACTER && getDirection() == -1) {
-	    throw new MapException("An NPC must have an initial direction");
+	if (getSubtype() == Subtype.USUAL_NPC && getDirection() == -1) {
+	    throw new MapException("A usual NPC must have an initial direction");
 	}
     }
 

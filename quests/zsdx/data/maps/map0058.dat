@@ -762,7 +762,7 @@
 12	1	384	96	8	8	custom_obstacle_16	1	1	1	1
 12	1	384	72	8	8	custom_obstacle_17	1	1	1	1
 1	1	256	453	from_2f_w_hole	-1	0
-8	1	616	37	interactive_entity	3	0	entities/hint_stone	dialog#dungeon_6.torches_hint
+8	1	616	37	npc	3	0	entities/hint_stone	dialog#dungeon_6.torches_hint
 7	1	608	117	enemy_6	3	blue_hardhat_beetle	0	-1	_random	1	-1
 7	1	924	237	enemy_7	3	ropa	0	-1	_random	1	-1
 7	1	1040	317	enemy_8	3	blue_hardhat_beetle	0	-1	_random	1	-1

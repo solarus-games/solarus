@@ -1321,7 +1321,7 @@
 2	0	760	208	16	16	to_mountain_cave_2F	0	1	39	from_outside
 2	0	760	336	16	16	to_mountain_cave_2F_2	0	1	38	from_outside
 12	0	760	328	16	8	custom_obstacle	1	1	1	1
-8	0	648	389	interactive_entity	3	0	entities/sign	dialog#outside_world.old_castle_sign
+8	0	648	389	npc	3	0	entities/sign	dialog#outside_world.old_castle_sign
 12	0	192	336	16	8	custom_obstacle_2	1	1	1	1
 12	0	384	336	16	8	custom_obstacle_3	1	1	1	1
 12	0	288	536	16	8	custom_obstacle_4	1	1	1	1

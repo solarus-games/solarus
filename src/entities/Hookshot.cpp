@@ -214,11 +214,11 @@ bool Hookshot::is_crystal_switch_obstacle(CrystalSwitch& crystal_switch) {
 }
 
 /**
- * @brief Returns whether a non-diagonal jump sensor is currently considered as an obstacle for this entity.
- * @param jump_sensor a non-diagonal jump sensor
- * @return true if the jump sensor is currently an obstacle for this entity
+ * @brief Returns whether a non-diagonal jumper is currently considered as an obstacle for this entity.
+ * @param jumper a non-diagonal jumper
+ * @return true if the jumper is currently an obstacle for this entity
  */
-bool Hookshot::is_jump_sensor_obstacle(JumpSensor& jump_sensor) {
+bool Hookshot::is_jumper_obstacle(Jumper& jumper) {
   return false;
 }
 

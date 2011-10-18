@@ -140,11 +140,11 @@ bool Hero::HookshotState::is_sensor_obstacle(Sensor& sensor) {
 }
 
 /**
- * @brief Returns whether a jump sensor is considered as an obstacle in this state.
- * @param jump_sensor a jump sensor
+ * @brief Returns whether a jumper is considered as an obstacle in this state.
+ * @param jumper a jumper
  * @return true if the sensor is an obstacle in this state
  */
-bool Hero::HookshotState::is_jump_sensor_obstacle(JumpSensor& jump_sensor) {
+bool Hero::HookshotState::is_jumper_obstacle(Jumper& jumper) {
   return false;
 }
 

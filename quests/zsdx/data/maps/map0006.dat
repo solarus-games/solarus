@@ -1446,12 +1446,12 @@
 7	0	816	429	enemy_4	3	simple_green_soldier	0	-1	_random	0	-1
 5	0	728	24	chest	0	rupee	3	23
 8	0	136	125	beaumont_hill_sign	3	0	entities/sign	dialog#outside_world.beaumont_hill_sign
-6	0	144	48	32	8	jump_sensor	2	32
-6	0	176	56	8	32	jump_sensor_2	0	40
-6	0	136	56	8	32	jump_sensor_3	4	40
+6	0	144	48	32	8	jumper	2	32
+6	0	176	56	8	32	jumper_2	0	40
+6	0	136	56	8	32	jumper_3	4	40
 4	0	760	485	3	_random	1	-1
 4	0	312	245	3	_random	1	-1
-6	0	376	152	80	8	jump_sensor_4	6	56
+6	0	376	152	80	8	jumper_4	6	56
 8	0	-24	109	tom	3	1	npc/tom	map
 13	0	328	221	32	48	tom_appears_sensor	0
 12	0	400	192	8	96	custom_obstacle	0	1	0	0
@@ -1486,7 +1486,7 @@
 10	0	344	184	8	8	ladder_step3_8	895	1
 1	0	400	85	from_dungeon_1_2F	3	0
 2	0	392	56	16	16	to_dungeon_1_2F	0	1	25	from_outside
-6	0	368	152	24	8	jump_sensor_5	6	64
+6	0	368	152	24	8	jumper_5	6	64
 12	0	272	312	16	8	custom_obstacle_2	1	1	1	1
 12	0	368	312	16	8	custom_obstacle_3	1	1	1	1
 2	0	368	320	16	16	to_twin_caves_east	0	1	29	from_outside_east

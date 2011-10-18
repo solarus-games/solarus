@@ -667,14 +667,14 @@ bool Hero::State::can_take_stairs() {
 }
 
 /**
- * @brief Returns whether can trigger a jump sensor in this state.
- * If false is returned, jump sensors have no effect (but they are obstacle for the hero).
+ * @brief Returns whether can trigger a jumper in this state.
+ * If false is returned, jumpers have no effect (but they are obstacle for the hero).
  *
  * Returns false by default.
  *
- * @return true if the hero can use jump sensors in this state
+ * @return true if the hero can use jumpers in this state
  */
-bool Hero::State::can_take_jump_sensor() {
+bool Hero::State::can_take_jumper() {
   return false;
 }
 
@@ -703,16 +703,16 @@ bool Hero::State::is_sensor_obstacle(Sensor& sensor) {
 }
 
 /**
- * @brief Returns whether a jump sensor is considered as an obstacle in this state.
+ * @brief Returns whether a jumper is considered as an obstacle in this state.
  *
- * Returns !can_take_jump_sensor() by default.
+ * Returns !can_take_jumper() by default.
  *
- * @param jump_sensor a jump sensor
+ * @param jumper a jumper
  * @return true if the sensor is an obstacle in this state
  */
-bool Hero::State::is_jump_sensor_obstacle(JumpSensor& jump_sensor) {
-  // if the jump sensors cannot be used in this state, consider them as obstacles
-  return !can_take_jump_sensor();
+bool Hero::State::is_jumper_obstacle(Jumper& jumper) {
+  // if the jumpers cannot be used in this state, consider them as obstacles
+  return !can_take_jumper();
 }
 
 /**

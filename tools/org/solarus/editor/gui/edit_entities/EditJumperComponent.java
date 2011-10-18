@@ -22,11 +22,11 @@ import org.solarus.editor.gui.*;
 import org.solarus.editor.map_editor_actions.*;
 
 /**
- * A component to edit a jump sensor.
+ * A component to edit a jumper.
  */
-public class EditJumpSensorComponent extends EditEntityComponent {
+public class EditJumperComponent extends EditEntityComponent {
 
-    // specific fields of a jump sensor
+    // specific fields of a jumper
     private NumberChooser jumpLengthField;
     
     /**
@@ -34,7 +34,7 @@ public class EditJumpSensorComponent extends EditEntityComponent {
      * @param map the map
      * @param entity the entity to edit
      */
-    public EditJumpSensorComponent(Map map, MapEntity entity) {
+    public EditJumperComponent(Map map, MapEntity entity) {
 	super(map, entity);
     }
 
@@ -44,7 +44,7 @@ public class EditJumpSensorComponent extends EditEntityComponent {
     protected void createSpecificFields() {
 
 	// jump length
-	jumpLengthField = new NumberChooser(56, JumpSensor.MINIMUM_JUMP_LENGTH, 800);
+	jumpLengthField = new NumberChooser(56, Jumper.MINIMUM_JUMP_LENGTH, 800);
 	jumpLengthField.setStepSize(8);
 	addField("Jump length", jumpLengthField);
     }
@@ -55,7 +55,7 @@ public class EditJumpSensorComponent extends EditEntityComponent {
     public void update() {
 	super.update(); // update the common fields
 
-	JumpSensor jumpSensor = (JumpSensor) entity;
+	Jumper jumpSensor = (Jumper) entity;
 
 	jumpLengthField.setNumber(jumpSensor.getIntegerProperty("jumpLength"));
     }

@@ -157,11 +157,11 @@ bool Hero::SwordLoadingState::is_direction_locked() {
 }
 
 /**
- * @brief Returns whether can trigger a jump sensor in this state.
- * If false is returned, jump sensors have no effect (but they are obstacle for the hero).
- * @return true if the hero can use jump sensors in this state
+ * @brief Returns whether can trigger a jumper in this state.
+ * If false is returned, jumpers have no effect (but they are obstacle for the hero).
+ * @return true if the hero can use jumpers in this state
  */
-bool Hero::SwordLoadingState::can_take_jump_sensor() {
+bool Hero::SwordLoadingState::can_take_jumper() {
   return true;
 }
 

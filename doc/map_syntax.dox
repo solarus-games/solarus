@@ -261,22 +261,22 @@ state of the item. Most items have only one variant and for them, this value is 
 that stores the state of this chest.
 A value of -1 means that the chest is not saved.
 
-@section jump_sensor Jump sensor (6)
+@section jumper Jumper (6)
 
-A jump sensor is an invisible sensor that makes the hero jump a number of pixels into a direction,
+A jumper is an invisible sensor that makes the hero jump a number of pixels into a direction,
 with a direction that depends on the shape of the sensor.
 During the jump, the hero cannot be controlled by the player and he can traverse obstacles.
 
-Syntax of a jump sensor:
+Syntax of a jumper:
 @verbatim
 6	layer	x	y	width	height	entity_name	direction	jump_length
 @endverbatim
 
-The <tt>direction</tt> property of the jump sensor (0 to 7) determines both
+The <tt>direction</tt> property of the jumper (0 to 7) determines both
 the shape of the sensor and the direction of the jump.
 
 The size is cutomizable in order to allow jumps from different places along the cliff.
-For diagonal jump sensors, the size of the bounding box is always square.
+For diagonal jumpers, the size of the bounding box is always square.
 
 <tt>jump_length</tt> is the length of the jump in pixels.
 Make sure the length cannot send the hero into a wall.

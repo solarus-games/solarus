@@ -919,10 +919,10 @@
 0	1	912	304	64	32	2
 0	1	288	384	16	48	2
 0	1	568	352	32	16	539
-6	1	472	136	32	8	n_water_on_jump_sensor_2	6	40
-6	1	328	240	48	8	n_water_on_jump_sensor	2	40
-6	1	928	544	32	8	e_water_on_jump_sensor	2	40
-6	1	400	720	8	32	c_water_on_jump_sensor	4	40
+6	1	472	136	32	8	n_water_on_jumper_2	6	40
+6	1	328	240	48	8	n_water_on_jumper	2	40
+6	1	928	544	32	8	e_water_on_jumper	2	40
+6	1	400	720	8	32	c_water_on_jumper	4	40
 10	1	320	728	48	16	c_water_less_3	446	0
 10	1	304	720	80	32	c_water_less_2	446	0
 10	1	296	712	96	48	c_water_less_1	446	0
@@ -951,7 +951,7 @@
 8	1	64	933	interactive_entity	3	0	entities/hint_stone	dialog#dungeon_3.arbror_direction_hint
 1	1	416	997	from_outside	1	0
 2	1	408	1008	16	16	teletransporter	0	1	3	from_dungeon_3
-6	1	360	240	48	8	jump_sensor	2	40
+6	1	360	240	48	8	jumper	2	40
 12	1	328	240	8	8	n_water_off_obstacle_1	1	1	1	1
 12	1	352	240	8	8	n_water_off_obstacle_2	1	1	1	1
 12	1	472	136	8	8	n_water_off_obstacle_3	1	1	1	1
@@ -970,8 +970,8 @@
 18	1	720	520	ce_door	3	0	904
 18	1	784	744	se_door_2	1	0	-1
 18	1	784	696	se_door	3	0	-1
-6	1	320	696	56	8	jump_sensor_2	6	40
-6	1	320	768	56	8	jump_sensor_3	2	40
+6	1	320	696	56	8	jumper_2	6	40
+6	1	320	768	56	8	jumper_3	2	40
 12	1	400	744	8	8	c_water_off_obstacle_2	1	1	1	1
 12	1	400	720	8	8	c_water_off_obstacle_1	1	1	1	1
 12	1	928	544	8	8	e_water_off_obstacle_1	1	1	1	1
@@ -1007,8 +1007,8 @@
 4	1	632	781	0	_none	1	-1
 11	1	648	896	c_water_switch	2	0	0
 10	1	912	416	64	128	e_water	446	1
-6	1	80	768	96	8	jump_sensor_4	2	40
-6	1	80	696	96	8	jump_sensor_5	6	40
+6	1	80	768	96	8	jumper_4	2	40
+6	1	80	696	96	8	jumper_5	6	40
 10	1	928	408	32	8	e_water_3	468	1
 10	1	936	400	16	8	e_water_2	467	1
 10	1	280	720	8	32	c_water_middle	474	1
@@ -1054,7 +1054,7 @@
 9	1	192	93	block_38	-1	0	0
 9	1	176	93	block_39	-1	0	0
 9	1	208	93	block_40	-1	0	0
-6	1	328	136	72	8	jump_sensor_6	6	40
+6	1	328	136	72	8	jumper_6	6	40
 10	1	288	144	256	96	n_water	446	1
 10	1	272	184	8	16	n_water_source	473	1
 12	1	40	696	40	8	custom_obstacle_16	1	1	1	1

@@ -919,15 +919,15 @@
 12	1	888	1656	8	8	custom_obstacle	1	1	1	1
 12	1	888	1680	8	8	custom_obstacle_2	1	1	1	1
 10	1	896	1696	8	32	LB1	71	1
-6	1	424	1688	304	8	jump_sensor	2	16
-6	1	424	1728	304	8	jump_sensor_2	6	16
+6	1	424	1688	304	8	jumper	2	16
+6	1	424	1728	304	8	jumper_2	6	16
 12	1	864	1688	32	8	custom_obstacle_3	1	1	1	1
 12	1	872	1728	24	8	custom_obstacle_4	1	1	1	1
 12	1	400	1688	24	8	custom_obstacle_5	1	1	1	1
 12	1	400	1728	24	8	custom_obstacle_6	1	1	1	1
 14	1	376	1597	crystal_switch_2
-6	1	744	1688	120	8	jump_sensor_3	2	16
-6	1	744	1728	128	8	jump_sensor_4	6	16
+6	1	744	1688	120	8	jumper_3	2	16
+6	1	744	1728	128	8	jumper_4	6	16
 12	1	728	1688	16	8	custom_obstacle_7	1	1	1	1
 12	1	728	1728	16	8	custom_obstacle_8	1	1	1	1
 7	1	1704	1653	room_LD1_enemy_1	3	skeletor	0	-1	_random	1	-1

@@ -59,7 +59,7 @@ class Hookshot: public MapEntity {
     bool is_ladder_obstacle();
     bool is_switch_obstacle(Switch& sw);
     bool is_crystal_switch_obstacle(CrystalSwitch& crystal_switch);
-    bool is_jump_sensor_obstacle(JumpSensor& jump_sensor);
+    bool is_jumper_obstacle(Jumper& jumper);
 
     // state
     void update();

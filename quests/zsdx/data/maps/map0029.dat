@@ -664,11 +664,11 @@
 12	1	208	640	8	32	custom_obstacle_4	1	1	1	1
 12	1	248	608	8	32	custom_obstacle_5	1	1	1	1
 12	1	272	608	8	32	custom_obstacle_6	1	1	1	1
-6	1	208	560	56	8	jump_sensor	2	16
-6	1	176	592	8	24	jump_sensor_2	4	16
-6	1	176	344	8	24	jump_sensor_3	4	40
-6	1	176	400	8	24	jump_sensor_4	4	40
-6	1	232	400	8	24	jump_sensor_5	0	40
+6	1	208	560	56	8	jumper	2	16
+6	1	176	592	8	24	jumper_2	4	16
+6	1	176	344	8	24	jumper_3	4	40
+6	1	176	400	8	24	jumper_4	4	40
+6	1	232	400	8	24	jumper_5	0	40
 12	1	152	392	32	8	custom_obstacle_8	1	1	1	1
 12	1	152	368	32	8	custom_obstacle_7	1	1	1	1
 10	1	336	368	8	32	door_open	308	1

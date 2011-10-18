@@ -487,15 +487,15 @@
 0	1	384	48	16	80	364
 0	1	208	560	16	16	364
 0	1	592	496	16	32	364
-6	1	704	72	8	32	water_9_on_jump_sensor	4	40
-6	1	400	536	8	32	water_5_on_jump_sensor	4	40
-6	1	680	536	8	32	water_6_on_jump_sensor	0	40
-6	1	784	216	32	8	water_7_on_jump_sensor	6	40
-6	1	616	400	32	8	water_8_on_jump_sensor	2	40
-6	1	168	288	8	32	water_4_on_jump_sensor	0	40
-6	1	88	224	32	8	water_3_on_jump_sensor	2	40
-6	1	168	72	8	32	water_2_on_jump_sensor	0	40
-6	1	88	496	32	8	water_1_on_jump_sensor	2	40
+6	1	704	72	8	32	water_9_on_jumper	4	40
+6	1	400	536	8	32	water_5_on_jumper	4	40
+6	1	680	536	8	32	water_6_on_jumper	0	40
+6	1	784	216	32	8	water_7_on_jumper	6	40
+6	1	616	400	32	8	water_8_on_jumper	2	40
+6	1	168	288	8	32	water_4_on_jumper	0	40
+6	1	88	224	32	8	water_3_on_jumper	2	40
+6	1	168	72	8	32	water_2_on_jumper	0	40
+6	1	88	496	32	8	water_1_on_jumper	2	40
 10	1	48	432	112	64	water_1_full	424	0
 1	1	208	421	from_outside	3	0
 2	1	200	408	16	16	teletransporter	0	1	7	from_inferno_river_maze
@@ -521,14 +521,14 @@
 1	1	544	37	from_b1	3	0
 2	1	536	24	16	16	teletransporter_2	0	1	69	from_1f
 19	1	536	24	stairs_12	1	1
-6	1	240	72	8	32	jump_sensor	4	40
-6	1	88	152	32	8	jump_sensor_2	6	40
-6	1	240	288	8	32	jump_sensor_3	4	40
-6	1	64	424	32	8	jump_sensor_4	6	40
-6	1	344	504	32	8	jump_sensor_5	6	40
-6	1	616	328	32	8	jump_sensor_6	6	40
-6	1	768	536	8	32	jump_sensor_7	4	40
-6	1	632	72	8	32	jump_sensor_8	0	40
+6	1	240	72	8	32	jumper	4	40
+6	1	88	152	32	8	jumper_2	6	40
+6	1	240	288	8	32	jumper_3	4	40
+6	1	64	424	32	8	jumper_4	6	40
+6	1	344	504	32	8	jumper_5	6	40
+6	1	616	328	32	8	jumper_6	6	40
+6	1	768	536	8	32	jumper_7	4	40
+6	1	632	72	8	32	jumper_8	0	40
 11	1	64	560	water_1_on_switch	1	0	0
 4	1	72	573	0	_none	1	-1
 9	1	72	269	water_3_on_block	0	0	2
@@ -637,7 +637,7 @@
 4	1	392	109	0	_random	1	-1
 4	1	392	93	0	_random	1	-1
 4	1	392	61	0	_random	1	-1
-6	1	784	336	32	8	jump_sensor_9	2	40
+6	1	784	336	32	8	jumper_9	2	40
 0	2	496	16	96	8	411
 0	2	176	400	64	8	411
 0	2	192	400	32	8	309

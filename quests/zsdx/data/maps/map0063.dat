@@ -1227,10 +1227,10 @@
 19	1	392	24	stairs_7	1	1
 19	1	120	24	stairs_8	1	1
 19	1	1064	104	stairs_9	3	2
-6	1	192	256	16	8	jump_sensor_2	6	40
-6	1	240	256	24	8	jump_sensor_3	6	40
-6	1	192	408	16	8	jump_sensor_4	2	40
-6	1	240	408	24	8	jump_sensor_5	2	40
+6	1	192	256	16	8	jumper_2	6	40
+6	1	240	256	24	8	jumper_3	6	40
+6	1	192	408	16	8	jumper_4	2	40
+6	1	240	408	24	8	jumper_5	2	40
 1	1	912	437	destination_point_4	-1	1
 1	1	888	461	destination_point_5	-1	1
 1	1	1032	485	destination_point_6	-1	1
@@ -1269,7 +1269,7 @@
 17	1	352	757	6
 17	1	368	757	6
 17	1	384	757	6
-6	1	608	608	120	8	jump_sensor	2	40
+6	1	608	608	120	8	jumper	2	40
 12	1	232	384	8	32	custom_obstacle_12	1	1	1	1
 12	1	576	584	8	32	custom_obstacle_13	1	1	1	1
 12	1	600	584	8	32	custom_obstacle_14	1	1	1	1

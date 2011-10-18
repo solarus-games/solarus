@@ -386,7 +386,7 @@
 1	1	144	37	from_B1_north_stairs	3	0
 2	1	136	24	16	16	to_B1_north_stairs	0	1	21	from_1F_north_stairs
 1	1	240	613	from_B1_final_stairs	1	0
-6	1	192	560	8	16	jump_sensor	4	40
+6	1	192	560	8	16	jumper	4	40
 2	1	232	600	16	16	teletransporter	0	1	21	from_1F_final_stairs
 3	1	232	573	heart_container	1	37
 19	1	232	600	stairs_5	3	1

@@ -451,14 +451,14 @@ enables or disables a sensor
 - <tt>sol.map.sensor_set_group_enabled(sensors_prefix, enable)</tt>:
 enables or disables all sensors having a common prefix
 
-- <tt>sol.map.jump_sensor_is_enabled(jump_sensor_name)</tt>:
-returns whether a jump sensor is enabled
+- <tt>sol.map.jumper_is_enabled(jumper_name)</tt>:
+returns whether a jumper is enabled
 
-- <tt>sol.map.jump_sensor_set_enabled(jump_sensor_name, enable)</tt>:
-enables or disables a jump sensor
+- <tt>sol.map.jumper_set_enabled(jumper_name, enable)</tt>:
+enables or disables a jumper
 
-- <tt>sol.map.jump_sensor_set_group_enabled(jump_sensors_prefix, enable)</tt>:
-enables or disables all jump sensors having a common prefix
+- <tt>sol.map.jumper_set_group_enabled(jumpers_prefix, enable)</tt>:
+enables or disables all jumpers having a common prefix
 
 - <tt>sol.map.crystal_switch_is_enabled(crystal_switch_name)</tt>:
 returns whether a crystal switch is enabled (i.e. whether it is visible)  

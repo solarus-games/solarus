@@ -274,7 +274,7 @@
 1	1	888	405	from_outside_e	1	0
 2	1	880	416	16	16	teletransporter_2	0	1	8	from_west_mountain_cave_3f_e
 2	1	576	328	32	32	teletransporter_3	0	1	92	from_3f_hole
-6	1	544	288	8	64	jump_sensor	4	40
+6	1	544	288	8	64	jumper	4	40
 12	1	216	96	8	8	custom_obstacle	1	1	1	1
 12	1	216	120	8	8	custom_obstacle_2	1	1	1	1
 12	1	216	304	8	8	custom_obstacle_3	1	1	1	1

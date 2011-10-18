@@ -483,7 +483,7 @@
 0	1	608	72	16	8	70
 2	1	168	608	16	16	to_outside	0	1	6	from_dungeon_1_1F
 5	1	160	488	chest_6	1	glove	1	5
-6	1	240	528	8	24	jump_sensor	0	16
+6	1	240	528	8	24	jumper	0	16
 12	1	80	80	32	8	custom_obstacle_3	1	1	1	1
 12	1	80	104	32	8	custom_obstacle_4	1	1	1	1
 12	1	88	248	8	32	custom_obstacle_5	1	1	1	1

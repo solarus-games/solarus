@@ -40,7 +40,7 @@ function event_map_started(destination_point_name)
     -- the water at the center is removed
     sol.map.tile_set_group_enabled("c_water", false)
     sol.map.tile_set_group_enabled("c_water_out", true)
-    sol.map.jump_sensor_set_group_enabled("c_water_on_jump_sensor", false)
+    sol.map.jumper_set_group_enabled("c_water_on_jumper", false)
   else
     sol.map.obstacle_set_group_enabled("c_water_off_obstacle", false)
   end
@@ -49,7 +49,7 @@ function event_map_started(destination_point_name)
     -- the east water is removed
     sol.map.tile_set_group_enabled("e_water", false)
     sol.map.tile_set_group_enabled("e_water_out", true)
-    sol.map.jump_sensor_set_group_enabled("e_water_on_jump_sensor", false)
+    sol.map.jumper_set_group_enabled("e_water_on_jumper", false)
   else
     sol.map.obstacle_set_group_enabled("e_water_off_obstacle", false)
   end
@@ -58,7 +58,7 @@ function event_map_started(destination_point_name)
     -- the north water is removed
     sol.map.tile_set_group_enabled("n_water", false)
     sol.map.tile_set_group_enabled("n_water_out", true)
-    sol.map.jump_sensor_set_group_enabled("n_water_on_jump_sensor", false)
+    sol.map.jumper_set_group_enabled("n_water_on_jumper", false)
   else
     sol.map.obstacle_set_group_enabled("n_water_off_obstacle", false)
   end
@@ -139,7 +139,7 @@ end
 
 function remove_c_water_6()
   sol.map.tile_set_enabled("c_water_less_3", false)
-  sol.map.jump_sensor_set_group_enabled("c_water_on_jump_sensor", false)
+  sol.map.jumper_set_group_enabled("c_water_on_jumper", false)
   sol.map.obstacle_set_group_enabled("c_water_off_obstacle", true)
   sol.game.savegame_set_boolean(121, true)
   sol.main.play_sound("secret")

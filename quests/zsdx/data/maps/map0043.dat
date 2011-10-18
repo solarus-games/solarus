@@ -538,10 +538,10 @@
 12	1	904	912	32	8	custom_obstacle_3	1	1	1	1
 12	1	904	936	32	8	custom_obstacle_4	1	1	1	1
 2	1	952	952	32	32	teletransporter	0	1	42	from_4F_hole_se
-6	1	928	944	8	16	jump_sensor_3	4	40
-6	1	928	832	8	80	jump_sensor_4	4	40
-6	1	792	880	8	80	jump_sensor_2	0	40
-6	1	792	832	8	16	jump_sensor	0	40
+6	1	928	944	8	16	jumper_3	4	40
+6	1	928	832	8	80	jumper_4	4	40
+6	1	792	880	8	80	jumper_2	0	40
+6	1	792	832	8	16	jumper	0	40
 10	1	584	744	96	32	miniboss_prickles	519	0
 10	1	648	776	32	96	miniboss_prickles_3	519	0
 18	1	608	728	miniboss_door	1	0	-1

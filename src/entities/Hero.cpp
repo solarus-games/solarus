@@ -25,7 +25,7 @@
 #include "entities/CrystalSwitch.h"
 #include "entities/Chest.h"
 #include "entities/Block.h"
-#include "entities/JumpSensor.h"
+#include "entities/Jumper.h"
 #include "entities/Sensor.h"
 #include "entities/Bomb.h"
 #include "hero/HeroSprites.h"
@@ -1356,12 +1356,12 @@ bool Hero::is_raised_block_obstacle(CrystalSwitchBlock &raised_block) {
 }
 
 /**
- * @brief Returns whether a non-diagonal jump sensor is currently considered as an obstacle for this entity.
- * @param jump_sensor a non-diagonal jump sensor
- * @return true if the jump sensor is currently an obstacle for this entity
+ * @brief Returns whether a non-diagonal jumper is currently considered as an obstacle for this entity.
+ * @param jumper a non-diagonal jumper
+ * @return true if the jumper is currently an obstacle for this entity
  */
-bool Hero::is_jump_sensor_obstacle(JumpSensor& jump_sensor) {
-  return state->is_jump_sensor_obstacle(jump_sensor);
+bool Hero::is_jumper_obstacle(Jumper& jumper) {
+  return state->is_jumper_obstacle(jumper);
 }
 
 /**
@@ -1497,15 +1497,15 @@ void Hero::notify_collision_with_stairs(Stairs &stairs, CollisionMode collision_
 }
 
 /**
- * @brief This function is called when a jump sensor detects a collision with this entity.
- * @param jump_sensor the jump sensor
+ * @brief This function is called when a jumper detects a collision with this entity.
+ * @param jumper the jumper
  */
-void Hero::notify_collision_with_jump_sensor(JumpSensor& jump_sensor) {
+void Hero::notify_collision_with_jumper(Jumper& jumper) {
 
-  if (state->can_take_jump_sensor()) {
+  if (state->can_take_jumper()) {
 
-    int jump_direction = jump_sensor.get_direction();
-    int jump_length = jump_sensor.get_jump_length();
+    int jump_direction = jumper.get_direction();
+    int jump_length = jumper.get_jump_length();
     if (jump_direction % 2 == 0) {
 
       if (get_ground() == GROUND_DEEP_WATER) {
@@ -1513,7 +1513,7 @@ void Hero::notify_collision_with_jump_sensor(JumpSensor& jump_sensor) {
         jump_length = 24;
       }
 
-      // this non-diagonal jump sensor is not currently an obstacle for the hero
+      // this non-diagonal jumper is not currently an obstacle for the hero
       // (in order to allow his smooth collision movement),
       // so the hero may be one pixel inside the sensor before jumping
       if (jump_direction % 4 == 0) {

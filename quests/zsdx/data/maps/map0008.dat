@@ -856,13 +856,13 @@
 0	0	800	0	16	16	608
 2	0	0	624	1120	16	to_B1	0	2	9	_side
 2	0	1120	0	16	624	to_A2	0	2	10	_side
-6	0	856	360	32	8	jump_sensor	6	56
-6	0	856	232	32	8	jump_sensor_2	6	56
-6	0	872	296	48	8	jump_sensor_3	6	56
-6	0	568	296	32	8	jump_sensor_4	6	88
-6	0	584	104	32	8	jump_sensor_5	6	56
-6	0	584	40	32	8	jump_sensor_6	6	56
-6	0	568	232	32	8	jump_sensor_7	6	56
+6	0	856	360	32	8	jumper	6	56
+6	0	856	232	32	8	jumper_2	6	56
+6	0	872	296	48	8	jumper_3	6	56
+6	0	568	296	32	8	jumper_4	6	88
+6	0	584	104	32	8	jumper_5	6	56
+6	0	584	40	32	8	jumper_6	6	56
+6	0	568	232	32	8	jumper_7	6	56
 12	0	504	136	16	8	custom_obstacle	1	1	1	1
 12	0	408	296	16	8	custom_obstacle_2	1	1	1	1
 12	0	576	248	16	8	custom_obstacle_3	1	1	1	1

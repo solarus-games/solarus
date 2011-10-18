@@ -704,20 +704,20 @@
 12	1	552	864	32	8	custom_obstacle_8	1	1	1	1
 12	1	736	608	8	32	custom_obstacle_2	1	1	1	1
 12	1	760	608	8	32	custom_obstacle_3	1	1	1	1
-6	1	696	632	8	80	jump_sensor	0	40
+6	1	696	632	8	80	jumper	0	40
 10	1	160	912	32	8	so_stair_1_enabled_2	287	1
-6	1	120	912	40	8	jump_sensor_3	6	40
-6	1	192	912	40	8	jump_sensor_2	6	40
-6	1	232	824	8	88	jump_sensor_5	0	40
-6	1	112	824	8	88	jump_sensor_4	4	40
+6	1	120	912	40	8	jumper_3	6	40
+6	1	192	912	40	8	jumper_2	6	40
+6	1	232	824	8	88	jumper_5	0	40
+6	1	112	824	8	88	jumper_4	4	40
 12	1	184	912	8	32	custom_obstacle	1	1	1	1
 12	1	160	912	8	32	custom_obstacle_4	1	1	1	1
 11	1	504	832	switch_eye1_1	2	0	0
 12	1	72	448	24	24	custom_obstacle_9	1	1	1	1
 12	1	72	672	24	24	custom_obstacle_10	1	1	1	1
 12	1	256	672	24	24	custom_obstacle_12	1	1	1	1
-6	1	96	688	72	8	jump_sensor_7	2	40
-6	1	72	472	8	200	jump_sensor_10	0	40
+6	1	96	688	72	8	jumper_7	2	40
+6	1	72	472	8	200	jumper_10	0	40
 9	1	640	493	block_12	-1	0	0
 9	1	656	509	block_13	3	0	2
 5	1	784	512	chest	0	_none	1	224
@@ -748,7 +748,7 @@
 7	1	848	197	neroom_enemy_19	2	tentacle	0	-1	_random	1	-1
 7	1	968	197	neroom_enemy_20	2	tentacle	0	-1	_random	1	-1
 14	1	104	341	crystal_switch_5
-6	1	200	688	56	8	jump_sensor_8	2	40
+6	1	200	688	56	8	jumper_8	2	40
 7	1	192	168	enemy	3	bubble	0	-1	_random	1	-1
 7	1	56	168	enemy_2	3	bubble	0	-1	_random	1	-1
 18	1	168	400	weak_door	1	6	208
@@ -763,10 +763,10 @@
 8	1	152	613	torch3	3	0	entities/torch	item#lamp
 8	1	152	549	torch1	3	0	entities/torch	item#lamp
 9	1	176	581	block_10	-1	0	0
-6	1	160	528	32	8	jump_sensor_6	2	40
-6	1	160	616	32	8	jump_sensor_9	6	40
-6	1	136	552	8	48	jump_sensor_12	4	40
-6	1	208	552	8	48	jump_sensor_11	0	40
+6	1	160	528	32	8	jumper_6	2	40
+6	1	160	616	32	8	jumper_9	6	40
+6	1	136	552	8	48	jumper_12	4	40
+6	1	208	552	8	48	jumper_11	0	40
 12	1	176	224	16	16	custom_obstacle_16	0	1	0	0
 12	1	360	592	16	16	custom_obstacle_18	0	1	0	0
 15	1	144	880	64	16	0
@@ -804,9 +804,9 @@
 9	1	440	205	block_24	-1	1	0
 12	1	464	288	8	32	custom_obstacle_21	1	1	1	1
 12	1	488	288	8	32	custom_obstacle_22	1	1	1	1
-6	1	416	224	128	8	jump_sensor_14	6	40
-6	1	416	304	48	8	jump_sensor_13	2	40
-6	1	496	304	48	8	jump_sensor_15	2	40
+6	1	416	224	128	8	jumper_14	6	40
+6	1	416	304	48	8	jumper_13	2	40
+6	1	496	304	48	8	jumper_15	2	40
 18	1	760	136	door_3	0	1	223
 18	1	808	136	door_4	2	1	223
 9	1	576	53	block_25	-1	0	0

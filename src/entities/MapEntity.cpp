@@ -23,7 +23,7 @@
 #include "entities/PickableItem.h"
 #include "entities/DestructibleItem.h"
 #include "entities/Chest.h"
-#include "entities/JumpSensor.h"
+#include "entities/Jumper.h"
 #include "entities/Enemy.h"
 #include "entities/InteractiveEntity.h"
 #include "entities/Block.h"
@@ -56,7 +56,7 @@ MapEntity::CreationFunction* MapEntity::creation_functions[] = {
   PickableItem::parse,
   DestructibleItem::parse,
   Chest::parse,
-  JumpSensor::parse,
+  Jumper::parse,
   Enemy::parse,
   InteractiveEntity::parse,
   Block::parse,
@@ -82,7 +82,7 @@ const MapEntity::EntityTypeFeatures MapEntity::entity_types_features[] = {
   {false,  true,  true, false}, // pickable item
   { true,  true,  true, false}, // destructible item
   { true,  true,  true,  true}, // chest
-  { true,  true, false, false}, // jump sensor
+  { true,  true, false, false}, // jumper
   { true,  true,  true,  true}, // enemy
   { true,  true,  true,  true}, // interactive entity
   { true,  true,  true,  true}, // block
@@ -1408,14 +1408,14 @@ bool MapEntity::is_enemy_obstacle(Enemy& enemy) {
 }
 
 /**
- * @brief Returns whether a non-diagonal jump sensor is currently considered as an obstacle by this entity.
+ * @brief Returns whether a non-diagonal jumper is currently considered as an obstacle by this entity.
  *
  * This function returns true by default.
  *
- * @param jump_sensor a non-diagonal jump sensor
- * @return true if the jump sensor is currently an obstacle for this entity
+ * @param jumper a non-diagonal jumper
+ * @return true if the jumper is currently an obstacle for this entity
  */
-bool MapEntity::is_jump_sensor_obstacle(JumpSensor& jump_sensor) {
+bool MapEntity::is_jumper_obstacle(Jumper& jumper) {
   return true;
 }
 
@@ -1584,10 +1584,10 @@ void MapEntity::notify_collision_with_stairs(Stairs &stairs, CollisionMode colli
 }
 
 /**
- * @brief This function is called when a jump sensor detects a collision with this entity.
- * @param jump_sensor the jump sensor
+ * @brief This function is called when a jumper detects a collision with this entity.
+ * @param jumper the jumper
  */
-void MapEntity::notify_collision_with_jump_sensor(JumpSensor &jump_sensor) {
+void MapEntity::notify_collision_with_jumper(Jumper &jumper) {
 }
 
 /**

@@ -240,7 +240,7 @@ class Hero: public MapEntity {
     bool is_stairs_obstacle(Stairs &stairs);
     bool is_sensor_obstacle(Sensor &sensor);
     bool is_raised_block_obstacle(CrystalSwitchBlock &raised_block);
-    bool is_jump_sensor_obstacle(JumpSensor& jump_sensor);
+    bool is_jumper_obstacle(Jumper& jumper);
 
     /**
      * @name Collisions.
@@ -254,7 +254,7 @@ class Hero: public MapEntity {
     void notify_collision_with_teletransporter(Teletransporter &teletransporter, CollisionMode collision_mode);
     void notify_collision_with_conveyor_belt(ConveyorBelt &conveyor_belt, int dx, int dy);
     void notify_collision_with_stairs(Stairs &stairs, CollisionMode collision_mode);
-    void notify_collision_with_jump_sensor(JumpSensor &jump_sensor);
+    void notify_collision_with_jumper(Jumper &jumper);
     void notify_collision_with_sensor(Sensor &sensor, CollisionMode collision_mode);
     void notify_collision_with_switch(Switch &sw, CollisionMode collision_mode);
     void notify_collision_with_switch(Switch &sw, Sprite &sprite_overlapping);

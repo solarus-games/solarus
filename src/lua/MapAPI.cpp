@@ -29,7 +29,7 @@
 #include "entities/CustomObstacle.h"
 #include "entities/Block.h"
 #include "entities/Switch.h"
-#include "entities/CrystalSwitch.h"
+#include "entities/Crystal.h"
 #include "entities/Teletransporter.h"
 #include "entities/Hero.h"
 #include "entities/PickableItem.h"
@@ -1252,31 +1252,31 @@ int Script::map_api_jumper_set_group_enabled(lua_State* l) {
 }
 
 /**
- * @brief Returns whether a crystal switch is enabled.
+ * @brief Returns whether a crystal is enabled.
  *
- * - Argument 1 (string): name of the crystal switch
- * - Return value (boolean): true if this crystal switch are enabled
+ * - Argument 1 (string): name of the crystal
+ * - Return value (boolean): true if this crystal are enabled
  *
  * @param l the Lua context that is calling this function
  */
-int Script::map_api_crystal_switch_is_enabled(lua_State* l) {
+int Script::map_api_crystal_is_enabled(lua_State* l) {
 
   Script& script = get_script(l, 1);
 
   const std::string& name = luaL_checkstring(l, 1);
 
   MapEntities& entities = script.get_map().get_entities();
-  MapEntity* crystal_switch = entities.get_entity(CRYSTAL_SWITCH, name);
-  lua_pushboolean(l, crystal_switch->is_enabled() ? 1 : 0);
+  MapEntity* crystal = entities.get_entity(CRYSTAL, name);
+  lua_pushboolean(l, crystal->is_enabled() ? 1 : 0);
 
   return 1;
 }
 
 /**
- * @brief Enables or disables a crystal switch.
+ * @brief Enables or disables a crystal.
  * @param l the Lua context that is calling this function
  */
-int Script::map_api_crystal_switch_set_enabled(lua_State* l) {
+int Script::map_api_crystal_set_enabled(lua_State* l) {
 
   Script& script = get_script(l, 2);
 
@@ -1284,21 +1284,21 @@ int Script::map_api_crystal_switch_set_enabled(lua_State* l) {
   bool enable = lua_toboolean(l, 2) != 0;
 
   MapEntities& entities = script.get_map().get_entities();
-  MapEntity* crystal_switch = entities.get_entity(CRYSTAL_SWITCH, name);
-  crystal_switch->set_enabled(enable);
+  MapEntity* crystal = entities.get_entity(CRYSTAL, name);
+  crystal->set_enabled(enable);
 
   return 0;
 }
 
 /**
- * @brief Enables or disables a set of crystal switches.
+ * @brief Enables or disables a set of crystals.
  *
- * - Argument 1 (string): prefix of the name of the crystal switches
+ * - Argument 1 (string): prefix of the name of the crystals
  * - Argument 2 (boolean): true to enable them, false to disable them
  *
  * @param l the Lua context that is calling this function
  */
-int Script::map_api_crystal_switch_set_group_enabled(lua_State* l) {
+int Script::map_api_crystal_set_group_enabled(lua_State* l) {
 
   Script& script = get_script(l, 2);
 
@@ -1306,7 +1306,7 @@ int Script::map_api_crystal_switch_set_group_enabled(lua_State* l) {
   bool enable = lua_toboolean(l, 2) != 0;
 
   std::list<MapEntity*> entities =
-      script.get_map().get_entities().get_entities_with_prefix(CRYSTAL_SWITCH, prefix);
+      script.get_map().get_entities().get_entities_with_prefix(CRYSTAL, prefix);
 
   std::list<MapEntity*>::iterator it;
   for (it = entities.begin(); it != entities.end(); it++) {
@@ -1317,54 +1317,54 @@ int Script::map_api_crystal_switch_set_group_enabled(lua_State* l) {
 }
 
 /**
- * @brief Returns the current state of crystal switches in the map.
+ * @brief Returns the current state of crystals in the map.
  *
- * - Return value (boolean): true if the state of crystal switches is modified,
+ * - Return value (boolean): true if the state of crystals is modified,
  * false if it is the normal (initial) state
  *
  * @param l the Lua context that is calling this function
  */
-int Script::map_api_crystal_switch_get_state(lua_State *l) {
+int Script::map_api_crystal_get_state(lua_State *l) {
 
   Script& script = get_script(l, 0);
 
   Game& game = script.get_game();
-  lua_pushboolean(l, game.get_crystal_switch_state());
+  lua_pushboolean(l, game.get_crystal_state());
 
   return 1;
 }
 
 /**
- * @brief Sets the current state of crystal switches in the map.
+ * @brief Sets the current state of crystals in the map.
  *
  * - Parameter 1 (boolean): true to make the state modified,
  * false to make it normal (initial)
  *
  * @param l the Lua context that is calling this function
  */
-int Script::map_api_crystal_switch_set_state(lua_State *l) {
+int Script::map_api_crystal_set_state(lua_State *l) {
 
   Script& script = get_script(l, 1);
   bool state = lua_toboolean(l, 1);
 
   Game& game = script.get_game();
-  if (game.get_crystal_switch_state() != state) {
-    game.change_crystal_switch_state();
+  if (game.get_crystal_state() != state) {
+    game.change_crystal_state();
   }
 
   return 0;
 }
 
 /**
- * @brief Inverts the current state of crystal switches in the map.
+ * @brief Inverts the current state of crystals in the map.
  * @param l the Lua context that is calling this function
  */
-int Script::map_api_crystal_switch_change_state(lua_State *l) {
+int Script::map_api_crystal_change_state(lua_State *l) {
 
   Script& script = get_script(l, 0);
 
   Game& game = script.get_game();
-  game.change_crystal_switch_state();
+  game.change_crystal_state();
 
   return 0;
 }

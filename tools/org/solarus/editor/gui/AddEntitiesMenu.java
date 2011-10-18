@@ -67,10 +67,10 @@ public class AddEntitiesMenu extends JMenu {
 		Sensor.Subtype.CHANGE_LAYER,
 		Sensor.Subtype.RETURN_FROM_BAD_GROUND
 	),
-	new ItemDefinition(EntityType.CRYSTAL_SWITCH, KeyEvent.VK_Y),
-	new ItemDefinition(EntityType.CRYSTAL_SWITCH_BLOCK, KeyEvent.VK_N,
-		CrystalSwitchBlock.Subtype.ORANGE,
-		CrystalSwitchBlock.Subtype.BLUE
+	new ItemDefinition(EntityType.CRYSTAL, KeyEvent.VK_Y),
+	new ItemDefinition(EntityType.CRYSTAL_BLOCK, KeyEvent.VK_N,
+		CrystalBlock.Subtype.ORANGE,
+		CrystalBlock.Subtype.BLUE
 	),
 	new ItemDefinition(EntityType.SHOP_ITEM, KeyEvent.VK_H),
 	new ItemDefinition(EntityType.CONVEYOR_BELT, KeyEvent.VK_V),
@@ -85,8 +85,8 @@ public class AddEntitiesMenu extends JMenu {
 		Door.Subtype.WEAK_BLOCK
 	),
 	new ItemDefinition(EntityType.STAIRS, KeyEvent.VK_S,
-		CrystalSwitchBlock.Subtype.ORANGE,
-		CrystalSwitchBlock.Subtype.BLUE
+		CrystalBlock.Subtype.ORANGE,
+		CrystalBlock.Subtype.BLUE
 	),
     };
 

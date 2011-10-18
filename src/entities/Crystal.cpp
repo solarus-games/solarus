@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "entities/CrystalSwitch.h"
+#include "entities/Crystal.h"
 #include "entities/Hero.h"
 #include "Game.h"
 #include "DialogBox.h"
@@ -28,19 +28,19 @@
 #include "lowlevel/Sound.h"
 
 /**
- * @brief Creates a new crystal switch.
+ * @brief Creates a new crystal.
  * @param name name of the entity to create
  * @param layer layer of the entity to create on the map
  * @param x x coordinate of the entity to create
  * @param y y coordinate of the entity to create
  */
-CrystalSwitch::CrystalSwitch(const std::string& name, Layer layer, int x, int y):
+Crystal::Crystal(const std::string& name, Layer layer, int x, int y):
   Detector(COLLISION_SPRITE | COLLISION_RECTANGLE | COLLISION_FACING_POINT,
 	   name, layer, x, y, 16, 16),
   state(false), next_possible_hit_date(System::now()) {
 
   set_origin(8, 13);
-  create_sprite("entities/crystal_switch", true);
+  create_sprite("entities/crystal", true);
   star_sprite = new Sprite("entities/star");
   twinkle();
 }
@@ -48,7 +48,7 @@ CrystalSwitch::CrystalSwitch(const std::string& name, Layer layer, int x, int y)
 /**
  * @brief Destructor.
  */
-CrystalSwitch::~CrystalSwitch() {
+Crystal::~Crystal() {
   delete star_sprite;
 }
 
@@ -64,20 +64,20 @@ CrystalSwitch::~CrystalSwitch() {
  * @param y y coordinate of the entity
  * @return the instance created
  */
-MapEntity* CrystalSwitch::parse(Game& game, std::istream& is, Layer layer, int x, int y) {
+MapEntity* Crystal::parse(Game& game, std::istream& is, Layer layer, int x, int y) {
 
   std::string name;
   FileTools::read(is, name);
 
-  return new CrystalSwitch(name, layer, x, y);
+  return new Crystal(name, layer, x, y);
 }
 
 /**
  * @brief Returns the type of entity.
  * @return the type of entity
  */
-EntityType CrystalSwitch::get_type() {
-  return CRYSTAL_SWITCH;
+EntityType Crystal::get_type() {
+  return CRYSTAL;
 }
 
 /**
@@ -85,17 +85,17 @@ EntityType CrystalSwitch::get_type() {
  * @param other another entity
  * @return true if this entity is an obstacle for the other one 
  */
-bool CrystalSwitch::is_obstacle_for(MapEntity& other) {
-  return other.is_crystal_switch_obstacle(*this);
+bool Crystal::is_obstacle_for(MapEntity& other) {
+  return other.is_crystal_obstacle(*this);
 }
 
 /**
- * @brief This function is called when another entity collides with this crystal switch.
+ * @brief This function is called when another entity collides with this crystal.
  * @param entity_overlapping the other entity
  * @param collision_mode the collision mode that detected the collision
  */
-void CrystalSwitch::notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) {
-  entity_overlapping.notify_collision_with_crystal_switch(*this, collision_mode);
+void Crystal::notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode) {
+  entity_overlapping.notify_collision_with_crystal(*this, collision_mode);
 }
 
 /**
@@ -108,8 +108,8 @@ void CrystalSwitch::notify_collision(MapEntity& entity_overlapping, CollisionMod
  * @param other_sprite the sprite of other_entity that is overlapping this detector
  * @param this_sprite the sprite of this detector that is overlapping the other entity's sprite
  */
-void CrystalSwitch::notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite) {
-  other_entity.notify_collision_with_crystal_switch(*this, other_sprite);
+void Crystal::notify_collision(MapEntity& other_entity, Sprite& other_sprite, Sprite& this_sprite) {
+  other_entity.notify_collision_with_crystal(*this, other_sprite);
 }
 
 /**
@@ -118,21 +118,21 @@ void CrystalSwitch::notify_collision(MapEntity& other_entity, Sprite& other_spri
  * This function is called when the player presses the action key
  * while the hero is facing this detector, and the action icon lets him do this.
  */
-void CrystalSwitch::action_key_pressed() {
+void Crystal::action_key_pressed() {
 
   if (get_hero().is_free()) {
     get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
 
     // start a dialog
-    get_dialog_box().start_dialog("_crystal_switch");
+    get_dialog_box().start_dialog("_crystal");
   }
 }
 
 /**
- * @brief Activates the crystal switch if the delay since the last activation allows it.
- * @param entity_activating the entity that activates this crystal switch
+ * @brief Activates the crystal if the delay since the last activation allows it.
+ * @param entity_activating the entity that activates this crystal
  */
-void CrystalSwitch::activate(MapEntity& entity_activating) {
+void Crystal::activate(MapEntity& entity_activating) {
 
   bool recently_activated = false;
   std::list<MapEntity*>::iterator it;
@@ -143,16 +143,16 @@ void CrystalSwitch::activate(MapEntity& entity_activating) {
   uint32_t now = System::now();
   if (!recently_activated || now >= next_possible_hit_date) {
     Sound::play("switch");
-    get_game().change_crystal_switch_state();
+    get_game().change_crystal_state();
     next_possible_hit_date = now + 1000;
     entities_activating.push_back(&entity_activating);
   }
 }
 
 /**
- * @brief Makes a star twinkle on the crystal switch at a random position.
+ * @brief Makes a star twinkle on the crystal at a random position.
  */
-void CrystalSwitch::twinkle() {
+void Crystal::twinkle() {
 
   star_xy.set_xy(Random::get_number(3, 13), Random::get_number(3, 13));
   star_sprite->restart_animation();
@@ -161,9 +161,9 @@ void CrystalSwitch::twinkle() {
 /**
  * @brief Updates the entity.
  */
-void CrystalSwitch::update() {
+void Crystal::update() {
 
-  bool state = get_game().get_crystal_switch_state();
+  bool state = get_game().get_crystal_state();
   if (state != this->state) {
 
     this->state = state;
@@ -189,9 +189,9 @@ void CrystalSwitch::update() {
  * This is a redefinition of MapEntity::display_on_map() to also display the twinkling star
  * which has a special position.
  */
-void CrystalSwitch::display_on_map() {
+void Crystal::display_on_map() {
 
-  // display the crystal switch
+  // display the crystal
   MapEntity::display_on_map();
 
   // display the star
@@ -202,7 +202,7 @@ void CrystalSwitch::display_on_map() {
  * @brief Suspends or resumes the entity.
  * @param suspended true to suspend the entity, false to resume it
  */
-void CrystalSwitch::set_suspended(bool suspended) {
+void Crystal::set_suspended(bool suspended) {
 
   MapEntity::set_suspended(suspended);
 

@@ -403,7 +403,7 @@
 19	0	368	272	stairs_2	1	4
 19	0	600	960	stairs_3	3	4
 5	0	600	816	chest	0	rupee	4	500
-14	0	968	925	crystal_switch
+14	0	968	925	crystal
 4	0	1072	821	0	small_key	1	502
 19	0	928	136	stairs_4	0	4
 17	0	1016	381	0
@@ -429,9 +429,9 @@
 5	0	1072	336	chest_3	0	big_key	1	503
 15	0	1016	656	16	32	1
 15	0	464	640	32	48	0
-14	0	760	501	crystal_switch_2
+14	0	760	501	crystal_2
 11	0	600	344	e_door_switch	1	0	0
-14	0	576	357	crystal_switch_3
+14	0	576	357	crystal_3
 18	0	800	416	door	1	4	507
 18	0	800	320	door_2	3	4	507
 18	0	112	288	door_3	1	3	508

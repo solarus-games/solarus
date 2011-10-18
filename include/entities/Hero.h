@@ -83,7 +83,7 @@ class Hero: public MapEntity {
     bool on_conveyor_belt;          /**< indicates that the hero's rectangle is currently overlapping a conveyor belt
                                      * (even if the collision is not enough to take the conveyor belt and move the hero) */
     bool on_raised_blocks;          /**< indicates that the hero is currently on
-                                     * raised crystal switch blocks */
+                                     * raised crystal blocks */
 
     // ground
     Ground ground;                         /**< kind of ground under the hero: grass, shallow water, etc. */
@@ -239,7 +239,7 @@ class Hero: public MapEntity {
     bool is_conveyor_belt_obstacle(ConveyorBelt &conveyor_belt);
     bool is_stairs_obstacle(Stairs &stairs);
     bool is_sensor_obstacle(Sensor &sensor);
-    bool is_raised_block_obstacle(CrystalSwitchBlock &raised_block);
+    bool is_raised_block_obstacle(CrystalBlock &raised_block);
     bool is_jumper_obstacle(Jumper& jumper);
 
     /**
@@ -258,8 +258,8 @@ class Hero: public MapEntity {
     void notify_collision_with_sensor(Sensor &sensor, CollisionMode collision_mode);
     void notify_collision_with_switch(Switch &sw, CollisionMode collision_mode);
     void notify_collision_with_switch(Switch &sw, Sprite &sprite_overlapping);
-    void notify_collision_with_crystal_switch(CrystalSwitch &crystal_switch, CollisionMode collision_mode);
-    void notify_collision_with_crystal_switch(CrystalSwitch &crystal_switch, Sprite &sprite_overlapping);
+    void notify_collision_with_crystal(Crystal &crystal, CollisionMode collision_mode);
+    void notify_collision_with_crystal(Crystal &crystal, Sprite &sprite_overlapping);
     void notify_collision_with_chest(Chest& chest);
     void notify_collision_with_block(Block& block);
     void notify_collision_with_bomb(Bomb& bomb, CollisionMode collision_mode);

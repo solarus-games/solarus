@@ -21,7 +21,7 @@
 #include "entities/TilePattern.h"
 #include "entities/Layer.h"
 #include "entities/Obstacle.h"
-#include "entities/CrystalSwitchBlock.h"
+#include "entities/CrystalBlock.h"
 #include "entities/Boomerang.h"
 #include "Map.h"
 #include "Game.h"
@@ -134,12 +134,12 @@ list<Stairs*>& MapEntities::get_stairs(Layer layer) {
 }
 
 /**
- * @brief Returns all crystal switch blocks on the specified layer.
+ * @brief Returns all crystal blocks on the specified layer.
  * @param layer the layer
- * @return the crystal switch blocks on this layer
+ * @return the crystal blocks on this layer
  */
-list<CrystalSwitchBlock*>& MapEntities::get_crystal_switch_blocks(Layer layer) {
-  return crystal_switch_blocks[layer];
+list<CrystalBlock*>& MapEntities::get_crystal_blocks(Layer layer) {
+  return crystal_blocks[layer];
 }
 
 /**
@@ -473,8 +473,8 @@ void MapEntities::add_entity(MapEntity *entity) {
 	stairs[layer].push_back((Stairs*) entity);
 	break;
 
-      case CRYSTAL_SWITCH_BLOCK:
-	crystal_switch_blocks[layer].push_back((CrystalSwitchBlock*) entity);
+      case CRYSTAL_BLOCK:
+	crystal_blocks[layer].push_back((CrystalBlock*) entity);
 	break;
 
       case BOOMERANG:
@@ -830,17 +830,17 @@ void MapEntities::set_entity_layer(MapEntity *entity, Layer layer) {
 }
 
 /**
- * @brief Returns whether a rectangle overlaps with a raised crystal switch block.
+ * @brief Returns whether a rectangle overlaps with a raised crystal block.
  * @param layer the layer to check
  * @param rectangle a rectangle
- * @return true if this rectangle overlaps a raised crystal switch block
+ * @return true if this rectangle overlaps a raised crystal block
  */
 bool MapEntities::overlaps_raised_blocks(Layer layer, const Rectangle& rectangle) {
 
   bool overlaps = false;
-  std::list<CrystalSwitchBlock*> blocks = get_crystal_switch_blocks(layer);
+  std::list<CrystalBlock*> blocks = get_crystal_blocks(layer);
 
-  std::list<CrystalSwitchBlock*>::iterator it;
+  std::list<CrystalBlock*>::iterator it;
   for (it = blocks.begin(); it != blocks.end() && !overlaps; it++) {
     overlaps = (*it)->overlaps(rectangle) && (*it)->is_raised();
   }

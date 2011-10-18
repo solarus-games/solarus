@@ -264,7 +264,7 @@ bool Hero::JumpingState::is_stairs_obstacle(Stairs& stairs) {
  */
 bool Hero::JumpingState::is_sensor_obstacle(Sensor& sensor) {
 
-  // we allow small jumps (e.g. falling from a raised crystal switch block)
+  // we allow small jumps (e.g. falling from a raised crystal block)
   // but not jumping with the feather
   return movement->get_length() > 8;
 }

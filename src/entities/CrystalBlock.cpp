@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "entities/CrystalSwitchBlock.h"
+#include "entities/CrystalBlock.h"
 #include "entities/Hero.h"
 #include "entities/MapEntities.h"
 #include "movements/PlayerMovement.h"
@@ -26,7 +26,7 @@
 #include <list>
 
 /**
- * @brief Creates a new crystal switch block.
+ * @brief Creates a new crystal block.
  * @param game the current game
  * @param layer layer of the entity to create on the map
  * @param x x coordinate of the entity to create
@@ -35,13 +35,13 @@
  * @param height height of the block (the pattern can be repeated)
  * @param subtype subtype of raised block
  */
-CrystalSwitchBlock::CrystalSwitchBlock(Game &game, Layer layer, int x, int y, int width, int height, Subtype subtype):
+CrystalBlock::CrystalBlock(Game &game, Layer layer, int x, int y, int width, int height, Subtype subtype):
   Detector(COLLISION_RECTANGLE, "", layer, x, y, width, height),
   subtype(subtype) {
 
-  create_sprite("entities/crystal_switch_block");
+  create_sprite("entities/crystal_block");
 
-  this->orange_raised = game.get_crystal_switch_state();
+  this->orange_raised = game.get_crystal_state();
 
   if (subtype == ORANGE) {
     get_sprite().set_current_animation(orange_raised ? "orange_raised" : "orange_lowered");
@@ -55,7 +55,7 @@ CrystalSwitchBlock::CrystalSwitchBlock(Game &game, Layer layer, int x, int y, in
 /**
  * @brief Destructor.
  */
-CrystalSwitchBlock::~CrystalSwitchBlock() {
+CrystalBlock::~CrystalBlock() {
 
 }
 
@@ -71,7 +71,7 @@ CrystalSwitchBlock::~CrystalSwitchBlock() {
  * @param y y coordinate of the entity
  * @return the instance created
  */
-MapEntity* CrystalSwitchBlock::parse(Game &game, std::istream &is, Layer layer, int x, int y) {
+MapEntity* CrystalBlock::parse(Game &game, std::istream &is, Layer layer, int x, int y) {
 
   int width, height, subtype;
 
@@ -79,22 +79,22 @@ MapEntity* CrystalSwitchBlock::parse(Game &game, std::istream &is, Layer layer, 
   FileTools::read(is, height);
   FileTools::read(is, subtype);
 
-  return new CrystalSwitchBlock(game, Layer(layer), x, y, width, height, Subtype(subtype));
+  return new CrystalBlock(game, Layer(layer), x, y, width, height, Subtype(subtype));
 }
 
 /**
  * @brief Returns the type of entity.
  * @return the type of entity
  */
-EntityType CrystalSwitchBlock::get_type() {
-  return CRYSTAL_SWITCH_BLOCK;
+EntityType CrystalBlock::get_type() {
+  return CRYSTAL_BLOCK;
 }
 
 /**
  * @brief Returns whether this block is raised.
  * @return true if this block is raised
  */
-bool CrystalSwitchBlock::is_raised() {
+bool CrystalBlock::is_raised() {
 
   return (subtype == ORANGE && orange_raised) ||
     (subtype == BLUE && !orange_raised);
@@ -105,7 +105,7 @@ bool CrystalSwitchBlock::is_raised() {
  * @param other another entity
  * @return true if this entity is an obstacle for the other one
  */
-bool CrystalSwitchBlock::is_obstacle_for(MapEntity &other) {
+bool CrystalBlock::is_obstacle_for(MapEntity &other) {
 
   // if this block is lowered, it is obviously not an obstacle
   if (!is_raised()) {
@@ -117,11 +117,11 @@ bool CrystalSwitchBlock::is_obstacle_for(MapEntity &other) {
 }
 
 /**
- * @brief This function is called when another entity overlaps this crystal switch block.
+ * @brief This function is called when another entity overlaps this crystal block.
  * @param entity_overlapping the other entity
  * @param collision_mode the collision mode that detected the collision
  */
-void CrystalSwitchBlock::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
+void CrystalBlock::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
 
   if (entity_overlapping.is_hero() && is_raised()) {
 
@@ -177,18 +177,18 @@ void CrystalSwitchBlock::notify_collision(MapEntity &entity_overlapping, Collisi
 }
 
 /**
- * @brief Makes the hero leave this raised crystal switch block if possible.
+ * @brief Makes the hero leave this raised crystal block if possible.
  * @param hero the hero
  * @param collision_box destination wanted for the jump
  * @param jump_direction direction of the jump
  * @param jump_length length of the jump
  * @return true if the jump was done, i.e. if the collision box was overlapping
- * no obstacle and no raised crystal switch block.
+ * no obstacle and no raised crystal block.
  */
-bool CrystalSwitchBlock::try_jump(Hero &hero, const Rectangle &collision_box,
+bool CrystalBlock::try_jump(Hero &hero, const Rectangle &collision_box,
 				  int jump_direction, int jump_length) {
 
-  // jump if there is no collision and no other raised crystal switch blocks
+  // jump if there is no collision and no other raised crystal blocks
   if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, hero)
       && !get_entities().overlaps_raised_blocks(get_layer(), collision_box)) {
 
@@ -203,10 +203,10 @@ bool CrystalSwitchBlock::try_jump(Hero &hero, const Rectangle &collision_box,
 /**
  * @brief Updates the entity.
  */
-void CrystalSwitchBlock::update() {
+void CrystalBlock::update() {
 
   // see if the state has to be changed
-  bool orange_raised = get_game().get_crystal_switch_state();
+  bool orange_raised = get_game().get_crystal_state();
   if (orange_raised != this->orange_raised) {
 
     this->orange_raised = orange_raised;
@@ -227,7 +227,7 @@ void CrystalSwitchBlock::update() {
  * @brief Displays the entity on the map.
  * This is a redefinition of MapEntity::display_on_map to repeat the block pattern.
  */
-void CrystalSwitchBlock::display_on_map() {
+void CrystalBlock::display_on_map() {
 
   Sprite &sprite = get_sprite();
 

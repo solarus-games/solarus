@@ -140,7 +140,7 @@ class Hero::State {
     virtual bool can_start_inventory_item();
     virtual bool can_take_stairs();
     virtual bool can_take_jumper();
-    virtual bool can_sword_hit_crystal_switch();
+    virtual bool can_sword_hit_crystal();
     bool is_carrying_item();
     virtual CarriedItem* get_carried_item();
     virtual CarriedItem::Behavior get_previous_carried_item_behavior(CarriedItem& carried_item);

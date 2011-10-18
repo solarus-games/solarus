@@ -23,7 +23,7 @@ import java.awt.*;
  * A switch that the hero can activate to change the configuration of the
  * blue and orange blocks on the map.
  */
-public class CrystalSwitch extends MapEntity {
+public class Crystal extends MapEntity {
 
     /**
      * Description of the default image representing this kind of entity.
@@ -38,10 +38,10 @@ public class CrystalSwitch extends MapEntity {
     private static final Point origin = new Point(8, 13);
 
     /**
-     * Creates a new crystal switch.
+     * Creates a new crystal.
      * @param map the map
      */
-    public CrystalSwitch(Map map) throws MapException {
+    public Crystal(Map map) throws MapException {
 	super(map, 16, 16);
     }
 

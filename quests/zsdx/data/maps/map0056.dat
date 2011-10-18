@@ -1063,8 +1063,8 @@
 15	1	192	304	32	32	0
 15	1	96	336	128	32	0
 15	1	208	368	16	64	0
-14	1	48	429	crystal_switch
-14	1	48	285	crystal_switch_2
+14	1	48	429	crystal
+14	1	48	285	crystal_2
 15	1	192	400	16	32	1
 15	1	128	400	16	32	1
 15	1	144	400	48	16	1
@@ -1111,7 +1111,7 @@
 15	1	224	192	16	16	0
 15	1	488	208	16	16	0
 15	1	488	240	16	16	0
-14	1	624	213	crystal_switch_3
+14	1	624	213	crystal_3
 15	1	536	200	64	16	1
 18	1	872	248	miniboss_door_3	0	0	-1
 18	1	920	248	miniboss_door_4	2	0	-1
@@ -1148,7 +1148,7 @@
 2	1	896	648	16	16	teletransporter_15	0	1	55	from_3f_hole_se_2
 2	1	600	200	16	16	teletransporter_16	0	1	55	_same
 1	1	688	309	from_4f_hole	-1	0
-14	1	360	477	crystal_switch_4
+14	1	360	477	crystal_4
 5	1	520	400	chest_2	0	big_key	1	315
 5	1	240	304	chest_3	0	small_key	1	316
 18	1	416	48	door_6	1	2	318

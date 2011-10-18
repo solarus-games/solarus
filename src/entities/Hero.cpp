@@ -22,7 +22,7 @@
 #include "entities/DestructibleItem.h"
 #include "entities/ConveyorBelt.h"
 #include "entities/Switch.h"
-#include "entities/CrystalSwitch.h"
+#include "entities/Crystal.h"
 #include "entities/Chest.h"
 #include "entities/Block.h"
 #include "entities/Jumper.h"
@@ -774,8 +774,8 @@ bool Hero::is_facing_direction8(int direction8) {
 }
 
 /**
- * @brief Returns whether the hero is currently on raised crystal switch blocks.
- * @return true if the hero is currently on raised crystal switch blocks
+ * @brief Returns whether the hero is currently on raised crystal blocks.
+ * @return true if the hero is currently on raised crystal blocks
  */
 bool Hero::is_on_raised_blocks() {
   return on_raised_blocks;
@@ -1347,11 +1347,11 @@ bool Hero::is_sensor_obstacle(Sensor &sensor) {
 }
 
 /**
- * @brief Returns whether a raised crystal switch block is currently considered as an obstacle for this entity.
- * @param raised_block a crystal switch block raised
+ * @brief Returns whether a raised crystal block is currently considered as an obstacle for this entity.
+ * @param raised_block a crystal block raised
  * @return true if the raised block is currently an obstacle for this entity
  */
-bool Hero::is_raised_block_obstacle(CrystalSwitchBlock &raised_block) {
+bool Hero::is_raised_block_obstacle(CrystalBlock &raised_block) {
   return !is_on_raised_blocks();
 }
 
@@ -1560,29 +1560,29 @@ void Hero::notify_collision_with_switch(Switch& sw, CollisionMode collision_mode
  * @brief This function is called when a the sprite of a switch
  * detects a pixel-precise collision with a sprite of this entity.
  * @param sw the switch
- * @param sprite_overlapping the sprite of the current entity that collides with the crystal switch
+ * @param sprite_overlapping the sprite of the current entity that collides with the crystal
  */
 void Hero::notify_collision_with_switch(Switch& sw, Sprite& sprite_overlapping) {
 
   // it's normally a solid switch
   if (sprite_overlapping.contains("sword") // the hero's sword is overlapping the switch
       && sw.is_solid()
-      && state->can_sword_hit_crystal_switch()) {
-    // note that solid switches and crystal switches have the same rules for the sword
+      && state->can_sword_hit_crystal()) {
+    // note that solid switches and crystals have the same rules for the sword
 
     sw.try_activate();
   }
 }
 
 /**
- * @brief This function is called when a crystal switch detects a collision with this entity.
- * @param crystal_switch the crystal switch
+ * @brief This function is called when a crystal detects a collision with this entity.
+ * @param crystal the crystal
  * @param collision_mode the collision mode that detected the event
  */
-void Hero::notify_collision_with_crystal_switch(CrystalSwitch &crystal_switch, CollisionMode collision_mode) {
+void Hero::notify_collision_with_crystal(Crystal &crystal, CollisionMode collision_mode) {
 
   if (collision_mode == COLLISION_FACING_POINT) {
-    // the hero is touching the crystal switch and is looking in its direction
+    // the hero is touching the crystal and is looking in its direction
 
     if (get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
 	&& is_free()) {
@@ -1594,17 +1594,17 @@ void Hero::notify_collision_with_crystal_switch(CrystalSwitch &crystal_switch, C
 }
 
 /**
- * @brief This function is called when a the sprite of a crystal switch 
+ * @brief This function is called when a the sprite of a crystal 
  * detects a pixel-precise collision with a sprite of this entity.
- * @param crystal_switch the crystal switch
- * @param sprite_overlapping the sprite of the current entity that collides with the crystal switch
+ * @param crystal the crystal
+ * @param sprite_overlapping the sprite of the current entity that collides with the crystal
  */
-void Hero::notify_collision_with_crystal_switch(CrystalSwitch &crystal_switch, Sprite &sprite_overlapping) {
+void Hero::notify_collision_with_crystal(Crystal &crystal, Sprite &sprite_overlapping) {
 
-  if (sprite_overlapping.contains("sword") // the hero's sword is overlapping the crystal switch
-      && state->can_sword_hit_crystal_switch()) {
+  if (sprite_overlapping.contains("sword") // the hero's sword is overlapping the crystal
+      && state->can_sword_hit_crystal()) {
     
-    crystal_switch.activate(*this);
+    crystal.activate(*this);
   }
 }
 

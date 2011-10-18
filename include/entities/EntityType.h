@@ -48,8 +48,8 @@ enum EntityType {
   SWITCH                    = 11,   /**< a switch */
   CUSTOM_OBSTACLE           = 12,   /**< an obstacle for some other type of entities */
   SENSOR                    = 13,   /**< a sensor that triggers something when the hero overlaps it */
-  CRYSTAL_SWITCH            = 14,   /**< a switch that lowers or raises the blue and orange blocks */
-  CRYSTAL_SWITCH_BLOCK      = 15,   /**< the blue or orange blocks that are changed by the crystal switches */
+  CRYSTAL            = 14,   /**< a switch that lowers or raises the blue and orange blocks */
+  CRYSTAL_BLOCK      = 15,   /**< the blue or orange blocks that are changed by the crystals */
   SHOP_ITEM                 = 16,   /**< an item the hero can buy in a shop */
   CONVEYOR_BELT             = 17,   /**< a special terrain that moves the hero */
   DOOR                      = 18,   /**< a door to open with a key or another action */

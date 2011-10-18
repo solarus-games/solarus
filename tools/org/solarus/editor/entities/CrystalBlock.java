@@ -20,9 +20,9 @@ import org.solarus.editor.*;
 import java.awt.*;
 
 /**
- * An orange or blue block that can be raised or lowered with the help of a crystal switch.
+ * An orange or blue block that can be raised or lowered with the help of a crystal.
  */
-public class CrystalSwitchBlock extends MapEntity {
+public class CrystalBlock extends MapEntity {
 
     /**
      * Subtypes of raised blocks.
@@ -58,10 +58,10 @@ public class CrystalSwitchBlock extends MapEntity {
     private static final Dimension unitarySize = new Dimension(16, 16);
 
     /**
-     * Creates a new crystal switch block.
+     * Creates a new crystal block.
      * @param map the map
      */
-    public CrystalSwitchBlock(Map map) throws MapException {
+    public CrystalBlock(Map map) throws MapException {
 	super(map, 16, 16);
 	subtype = Subtype.ORANGE;
     }

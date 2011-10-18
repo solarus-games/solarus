@@ -132,10 +132,10 @@ bool Hero::SwordSwingingState::can_be_hurt(Enemy* attacker) {
 }
 
 /**
- * @brief Returns whether crystal switches can be activated by the sword in this state.
- * @return true if crystal switches can be activated by the sword in this state
+ * @brief Returns whether crystals can be activated by the sword in this state.
+ * @return true if crystals can be activated by the sword in this state
  */
-bool Hero::SwordSwingingState::can_sword_hit_crystal_switch() {
+bool Hero::SwordSwingingState::can_sword_hit_crystal() {
   return true;
 }
 

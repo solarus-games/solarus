@@ -31,8 +31,8 @@
 #include "entities/Switch.h"
 #include "entities/CustomObstacle.h"
 #include "entities/Sensor.h"
-#include "entities/CrystalSwitch.h"
-#include "entities/CrystalSwitchBlock.h"
+#include "entities/Crystal.h"
+#include "entities/CrystalBlock.h"
 #include "entities/ShopItem.h"
 #include "entities/ConveyorBelt.h"
 #include "entities/Door.h"
@@ -64,8 +64,8 @@ MapEntity::CreationFunction* MapEntity::creation_functions[] = {
   Switch::parse,
   CustomObstacle::parse,
   Sensor::parse,
-  CrystalSwitch::parse,
-  CrystalSwitchBlock::parse,
+  Crystal::parse,
+  CrystalBlock::parse,
   ShopItem::parse,
   ConveyorBelt::parse,
   Door::parse,
@@ -90,8 +90,8 @@ const MapEntity::EntityTypeFeatures MapEntity::entity_types_features[] = {
   { true,  true,  true, false}, // switch
   { true, false, false, false}, // custom obstacle
   { true,  true, false, false}, // sensor
-  { true,  true,  true, false}, // crystal switch
-  { true,  true,  true, false}, // crystal switch block
+  { true,  true,  true, false}, // crystal
+  { true,  true,  true, false}, // crystal block
   { true,  true,  true, false}, // shop item
   { true,  true,  true, false}, // conveyor belt
   { true,  true,  true, false}, // door
@@ -1359,27 +1359,27 @@ bool MapEntity::is_switch_obstacle(Switch& sw) {
 }
 
 /**
- * @brief Returns whether a raised crystal switch block is currently considered as an obstacle by this entity.
+ * @brief Returns whether a raised crystal block is currently considered as an obstacle by this entity.
  *
  * This function returns true by default.
  *
- * @param raised_block a crystal switch block raised
+ * @param raised_block a crystal block raised
  * @return true if the raised block is currently an obstacle for this entity
  */
-bool MapEntity::is_raised_block_obstacle(CrystalSwitchBlock& raised_block) {
+bool MapEntity::is_raised_block_obstacle(CrystalBlock& raised_block) {
   return true;
 }
 
 /**
- * @brief Returns whether a crystal switch is currently considered as an obstacle by this entity.
+ * @brief Returns whether a crystal is currently considered as an obstacle by this entity.
  *
  * This function returns true by default.
- * It should be redefined only for entities that can activate a crystal switch: a pot, the boomerang, etc.
+ * It should be redefined only for entities that can activate a crystal: a pot, the boomerang, etc.
  *
- * @param crystal_switch a crystal switch
- * @return true if the crystal switch is currently an obstacle for this entity
+ * @param crystal a crystal
+ * @return true if the crystal is currently an obstacle for this entity
  */
-bool MapEntity::is_crystal_switch_obstacle(CrystalSwitch& crystal_switch) {
+bool MapEntity::is_crystal_obstacle(Crystal& crystal) {
   return true;
 }
 
@@ -1617,21 +1617,21 @@ void MapEntity::notify_collision_with_switch(Switch& sw, Sprite& sprite_overlapp
 }
 
 /**
- * @brief This function is called when a crystal switch detects a collision with this entity.
- * @param crystal_switch the crystal switch
+ * @brief This function is called when a crystal detects a collision with this entity.
+ * @param crystal the crystal
  * @param collision_mode the collision mode that detected the event
  */
-void MapEntity::notify_collision_with_crystal_switch(CrystalSwitch &crystal_switch,
+void MapEntity::notify_collision_with_crystal(Crystal &crystal,
     CollisionMode collision_mode) {
 }
 
 /**
- * @brief This function is called when the sprite of a crystal switch
+ * @brief This function is called when the sprite of a crystal
  * detects a pixel-precise collision with a sprite of this entity.
- * @param crystal_switch the crystal switch
- * @param sprite_overlapping the sprite of the current entity that collides with the crystal switch
+ * @param crystal the crystal
+ * @param sprite_overlapping the sprite of the current entity that collides with the crystal
  */
-void MapEntity::notify_collision_with_crystal_switch(CrystalSwitch &crystal_switch, Sprite &sprite_overlapping) {
+void MapEntity::notify_collision_with_crystal(Crystal &crystal, Sprite &sprite_overlapping) {
 }
 
 /**

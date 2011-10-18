@@ -262,7 +262,7 @@
 2	0	360	952	32	32	teletransporter_15	0	1	59	from_1F_hole_right
 2	0	424	840	32	32	teletransporter_17	0	1	59	from_1F_hole_down
 2	0	424	824	32	32	teletransporter_16	0	1	59	from_1F_hole_up
-14	0	488	589	crystal_switch
+14	0	488	589	crystal
 8	0	632	813	interactive_entity	3	0	entities/hint_stone	dialog#dungeon_4.hint_use_map
 19	0	96	112	stairs_9	3	4
 2	0	88	1016	16	16	teletransporter_29	1	1	60	destination_point_2

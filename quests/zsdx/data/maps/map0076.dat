@@ -515,7 +515,7 @@
 0	1	88	168	8	16	71
 0	1	120	184	16	8	70
 0	1	112	184	8	8	69
-14	1	56	61	crystal_switch
+14	1	56	61	crystal
 1	1	368	493	from_outside	1	0
 2	1	360	504	16	16	teletransporter	0	1	4	from_lost_woods_cave
 15	1	336	96	64	16	1

@@ -16,7 +16,7 @@
  */
 #include "entities/Explosion.h"
 #include "entities/Switch.h"
-#include "entities/CrystalSwitch.h"
+#include "entities/Crystal.h"
 #include "entities/Sensor.h"
 #include "entities/Enemy.h"
 #include "Game.h"
@@ -163,14 +163,14 @@ void Explosion::notify_collision_with_switch(Switch& sw, Sprite& sprite_overlapp
 }
 
 /**
- * @brief This function is called when a the sprite of a crystal switch 
+ * @brief This function is called when a the sprite of a crystal 
  * detects a pixel-precise collision with a sprite of this entity.
- * @param crystal_switch the crystal switch
- * @param sprite_overlapping the sprite of the current entity that collides with the crystal switch
+ * @param crystal the crystal
+ * @param sprite_overlapping the sprite of the current entity that collides with the crystal
  */
-void Explosion::notify_collision_with_crystal_switch(CrystalSwitch &crystal_switch, Sprite &sprite_overlapping) {
+void Explosion::notify_collision_with_crystal(Crystal &crystal, Sprite &sprite_overlapping) {
 
-  crystal_switch.activate(*this);
+  crystal.activate(*this);
 }
 
 /**

@@ -1197,7 +1197,7 @@ int Script::map_api_jumper_is_enabled(lua_State* l) {
   const std::string& name = luaL_checkstring(l, 1);
 
   MapEntities& entities = script.get_map().get_entities();
-  MapEntity* jumper = entities.get_entity(JUMP_SENSOR, name);
+  MapEntity* jumper = entities.get_entity(JUMPER, name);
   lua_pushboolean(l, jumper->is_enabled() ? 1 : 0);
 
   return 1;
@@ -1219,7 +1219,7 @@ int Script::map_api_jumper_set_enabled(lua_State* l) {
   bool enable = lua_toboolean(l, 2) != 0;
 
   MapEntities& entities = script.get_map().get_entities();
-  MapEntity* jumper = entities.get_entity(JUMP_SENSOR, name);
+  MapEntity* jumper = entities.get_entity(JUMPER, name);
   jumper->set_enabled(enable);
 
   return 0;
@@ -1241,7 +1241,7 @@ int Script::map_api_jumper_set_group_enabled(lua_State* l) {
   bool enable = lua_toboolean(l, 2) != 0;
 
   std::list<MapEntity*> entities =
-      script.get_map().get_entities().get_entities_with_prefix(JUMP_SENSOR, prefix);
+      script.get_map().get_entities().get_entities_with_prefix(JUMPER, prefix);
 
   std::list<MapEntity*>::iterator it;
   for (it = entities.begin(); it != entities.end(); it++) {

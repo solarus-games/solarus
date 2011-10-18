@@ -42,7 +42,7 @@ public class AddEntitiesToolbar extends JComponent {
 	new Cell(EntityType.DESTRUCTIBLE_ITEM, DestructibleItem.Subtype.POT),
 	new Cell(EntityType.DESTRUCTIBLE_ITEM, DestructibleItem.Subtype.STONE_SMALL_WHITE),
 	new Cell(EntityType.CHEST),
-	new Cell(EntityType.JUMP_SENSOR),
+	new Cell(EntityType.JUMPER),
 	new Cell(EntityType.ENEMY),
 	new Cell(EntityType.INTERACTIVE, InteractiveEntity.Subtype.CUSTOM),
 	new Cell(EntityType.INTERACTIVE, InteractiveEntity.Subtype.NON_PLAYING_CHARACTER),

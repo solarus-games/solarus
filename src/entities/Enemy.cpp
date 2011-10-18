@@ -67,6 +67,18 @@ const std::string Enemy::hurt_sound_style_names[] = {
 Enemy::Enemy(const ConstructionParameters &params):
 
   Detector(COLLISION_RECTANGLE | COLLISION_SPRITE, params.name, params.layer, params.x, params.y, 0, 0),
+  damage_on_hero(1),
+  magic_damage_on_hero(0),
+  life(1),
+  hurt_sound_style(HURT_SOUND_NORMAL),
+  pushed_back_when_hurt(true),
+  push_hero_on_sword(false),
+  can_hurt_hero_running(false),
+  minimum_shield_needed(0),
+  rank(RANK_NORMAL),
+  savegame_variable(-1),
+  obstacle_behavior("normal"),
+  displayed_in_y_order(true),
   father_name(""),
   being_hurt(false),
   stop_hurt_date(0),
@@ -172,17 +184,9 @@ MapEntity* Enemy::create(Game &game, const std::string& breed, Rank rank, int sa
 
   if (rank != RANK_NORMAL) {
     enemy->set_enabled(false);
+    enemy->hurt_sound_style = HURT_SOUND_BOSS;
   }
 
-  // set the default enemy features
-  enemy->damage_on_hero = 1;
-  enemy->magic_damage_on_hero = 0;
-  enemy->life = 1;
-  enemy->hurt_sound_style = (rank == RANK_NORMAL) ? HURT_SOUND_NORMAL : HURT_SOUND_BOSS;
-  enemy->pushed_back_when_hurt = true;
-  enemy->push_hero_on_sword = false;
-  enemy->minimum_shield_needed = 0;
-  enemy->displayed_in_y_order = true;
   enemy->set_default_attack_consequences();
 
   return enemy;

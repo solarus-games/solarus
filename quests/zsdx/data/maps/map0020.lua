@@ -141,10 +141,10 @@ end
 
 function event_enemy_dead(enemy_name)
   if sol.map.enemy_is_group_dead("battle_1") and sol.map.tile_is_enabled("battle_1_barrier") then
-    sol.map.camera_move(352, 288, 150, battle_1_camera_timer)
+    sol.map.camera_move(352, 288, 250, battle_1_camera_timer)
   end
   if sol.map.enemy_is_group_dead("battle_2") and sol.map.tile_is_enabled("battle_2_barrier") then
-    sol.map.camera_move(344, 488, 150, battle_2_camera_timer)
+    sol.map.camera_move(344, 488, 250, battle_2_camera_timer)
   end
 end
 

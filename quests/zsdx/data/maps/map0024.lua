@@ -16,6 +16,9 @@ function event_map_started(destination_point_name)
       -- normal case
       start_boss()
     end
+  elseif destination_point_name == "from_1F_east" then
+    sol.map.door_set_open("se_door", true)
+    sol.map.switch_set_activated("se_switch", true)
   end
 end
 
@@ -37,8 +40,8 @@ end
 
 function event_switch_activated(switch_name)
 
-  if switch_name == "se_switch" or switch_name == "ne_switch" then
-    sol.map.camera_move(960, 496, 150, open_se_door)
+  if switch_name == "se_switch" then
+    sol.map.camera_move(960, 496, 250, open_se_door)
   end
 end
 
@@ -47,7 +50,6 @@ function open_se_door()
   sol.main.play_sound("secret")
   sol.map.door_open("se_door")
   sol.map.switch_set_activated("se_switch", true)
-  sol.map.switch_set_activated("ne_switch", true)
 end
 
 function open_final_room()

@@ -43,7 +43,7 @@ function event_enemy_dead(enemy_name)
 
   if sol.map.enemy_is_group_dead("boss_key_battle")
       and not sol.map.chest_is_enabled("boss_key_chest") then
-    sol.map.camera_move(104, 72, 150, boss_key_timer)
+    sol.map.camera_move(104, 72, 250, boss_key_timer)
   end
 end
 

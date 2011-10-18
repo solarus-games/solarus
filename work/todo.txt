@@ -122,6 +122,24 @@ Musiques du vieux ZS :
 - Donjon TLOZ (fait)
 - ... toutes musiques acceptées, idées bienvenues
 
+Quêtes annexes à ajouter :
+
+- Flacon 4
+- Bouclier 2
+- Carquois 2
+- Carquois 3
+- Sac de bombes 2
+- Sac de bombes 3
+- Sac de rubis 3
+
+-> Lieux potentiels pour ces quêtes annexes :
+
+- Grotte de la fée des montagnes
+- Lac du sud
+- Revenir dans une caverne ou un lieu du début avec grappin / palmes / plume / poigne d'or
+- Donjon 2 1F (SE)
+- Boutiques
+- Passage secret dans la forêt à l'est
 
 --------------
 Mode release :

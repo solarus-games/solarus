@@ -489,7 +489,6 @@
 18	1	912	536	door_2	2	3	60
 18	1	944	512	se_door	1	0	-1
 18	1	944	464	se_door_2	3	0	-1
-11	1	888	312	ne_switch	1	0	0
 7	1	648	144	boss	3	papillosaur_king	2	63	heart_container	1	64
 12	1	216	184	8	32	custom_obstacle	1	1	1	1
 12	1	240	184	8	32	custom_obstacle_2	1	1	1	1

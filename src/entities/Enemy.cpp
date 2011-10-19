@@ -907,7 +907,13 @@ void Enemy::try_hurt(EnemyAttack attack, MapEntity &source, Sprite *this_sprite)
 
     case EnemyReaction::CUSTOM:
       // custom attack (defined in the script)
-      custom_attack(attack, this_sprite);
+      if (is_in_normal_state()) {
+        custom_attack(attack, this_sprite);
+      }
+      else {
+        // no attack was made: notify the source correctly
+        reaction.type = EnemyReaction::IGNORED;
+      }
       break;
 
     case EnemyReaction::HURT:

@@ -26,6 +26,14 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Observable;
 
+/*
+ * FIXME Dialogs are not working.
+ * - All values of "skip" disappear from the dialog file when saving from the editor.
+ *   (This makes all dialog of the quest become uninterruptible).
+ * - Existing comments do not always stay at their original place in the file.
+ * - There is no way to see if a line reaches the limit of characters.
+ */
+
 /**
  * This class describes game and editor dialogs.
  * Dialogs are observable.
@@ -73,6 +81,9 @@ public class Dialogs extends Observable {
 
         setChanged();
         notifyObservers();
+
+	// disable the support of dialogs for now since it's not working
+	throw new ZSDXException("Creating dialogs with the GUI is not working yet, please use a text editor");
     }
 
     /**
@@ -86,6 +97,9 @@ public class Dialogs extends Observable {
         this.filteredSections = new ArrayList<DialogSection>();
         this.description = "";
         load();
+
+	// disable the support of dialogs for now since it's not working
+	throw new ZSDXException("Editing dialogs with the GUI is not working yet, please use a text editor");
     }
 
     /**

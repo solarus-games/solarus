@@ -147,6 +147,7 @@ icon = 0
 line1 = "Utilise la Plume"
 line2 = "pour sauter et fran-"
 line3 = "chir des obstacles."
+skip = all
 
 [_item_description.bombs_counter.1]
 # Bombes / Bombs
@@ -155,6 +156,7 @@ icon = 1
 line1 = "Utilise les Bombes"
 line2 = "contre les ennemis"
 line3 = "ou pour faire"
+skip = all
 next = _item_description.bombs_counter.1.1
 
 [_item_description.bombs_counter.1.1]
@@ -168,6 +170,7 @@ line2 = "obstacles."
 icon = 2
 line1 = "Tu n'as plus de"
 line2 = "Flèches !"
+skip = all
 
 [_item_description.bow.2]
 # Arc & Flèches / Bow & Arrows
@@ -176,6 +179,7 @@ icon = 3
 line1 = "Tire des Flèches"
 line2 = "pour vaincre des"
 line3 = "ennemis coriaces."
+skip = all
 
 [_item_description.boomerang.1]
 # Boomerang
@@ -184,6 +188,7 @@ icon = 4
 line1 = "Utilise le Boomerang"
 line2 = "pour immobiliser les"
 line3 = "ennemis ou attraper"
+skip = all
 next = _item_description.boomerang.1.1
 
 [_item_description.boomerang.1.1]
@@ -213,6 +218,7 @@ icon = 5
 line1 = "Eclaire-toi dans le"
 line2 = "noir ou allume des"
 line3 = "braseros à l'aide"
+skip = all
 next = _item_description.lamp.1.1
 
 [_item_description.lamp.1.1]
@@ -228,6 +234,7 @@ icon = 6
 line1 = "Hisse-toi à des"
 line2 = "endroits"
 line3 = "inaccessibles grâce"
+skip = all
 next = _item_description.hookshot.1.1
 
 [_item_description.hookshot.1.1]
@@ -241,6 +248,7 @@ icon = 7
 line1 = "Le Flacon Magique"
 line2 = "peut contenir di-"
 line3 = "verses substances..."
+skip = all
 
 [_item_description.bottle_1.2]
 # Eau dans Flacon / Water in Bottle
@@ -248,6 +256,7 @@ line3 = "verses substances..."
 icon = 8
 line1 = "Ton Flacon Magique"
 line2 = "contient de l'eau."
+skip = all
 next = _item_description.bottle_1.2.1
 
 [_item_description.bottle_1.2.1]
@@ -262,6 +271,7 @@ icon = 9
 line1 = "Bois de la Potion"
 line2 = "rouge pour retrouver"
 line3 = "tous tes Coeurs."
+skip = all
 
 [_item_description.bottle_1.4]
 # Potion verte / Red potion
@@ -270,6 +280,7 @@ icon = 10
 line1 = "Bois de la Potion"
 line2 = "verte pour retrouver"
 line3 = "toute ta magie."
+skip = all
 
 [_item_description.bottle_1.5]
 # Potion bleue / Red potion
@@ -278,6 +289,7 @@ icon = 11
 line1 = "Bois de la Potion"
 line2 = "bleue pour retrouver"
 line3 = "vie et magie !"
+skip = all
 
 [_item_description.bottle_1.6]
 # Fée dans Flacon / Fairy in Bottle
@@ -287,6 +299,7 @@ line1 = "Cette Fée te viendra"
 line2 = "en aide si tu es en"
 line3 = "difficulté."
 next = _item_description.bottle_1.6.1
+skip = all
 
 [_item_description.bottle_1.6.1]
 #       |--------------------|
@@ -307,6 +320,7 @@ icon = 7
 line1 = "Le Flacon Magique"
 line2 = "peut contenir di-"
 line3 = "verses substances..."
+skip = all
 
 [_item_description.bottle_2.2]
 # Eau dans Flacon / Water in Bottle
@@ -314,6 +328,7 @@ line3 = "verses substances..."
 icon = 8
 line1 = "Ton Flacon Magique"
 line2 = "contient de l'eau."
+skip = all
 next = _item_description.bottle_2.2.1
 
 [_item_description.bottle_2.2.1]
@@ -328,6 +343,7 @@ icon = 9
 line1 = "Bois de la Potion"
 line2 = "rouge pour retrouver"
 line3 = "tous tes Coeurs."
+skip = all
 
 [_item_description.bottle_2.4]
 # Potion verte / Red potion
@@ -336,6 +352,7 @@ icon = 10
 line1 = "Bois de la Potion"
 line2 = "verte pour retrouver"
 line3 = "toute ta magie."
+skip = all
 
 [_item_description.bottle_2.5]
 # Potion bleue / Red potion
@@ -344,6 +361,7 @@ icon = 11
 line1 = "Bois de la Potion"
 line2 = "bleue pour retrouver"
 line3 = "vie et magie !"
+skip = all
 
 [_item_description.bottle_2.6]
 # Fée dans Flacon / Fairy in Bottle
@@ -353,6 +371,7 @@ line1 = "Cette Fée te viendra"
 line2 = "en aide si tu es en"
 line3 = "difficulté."
 next = _item_description.bottle_2.6.1
+skip = all
 
 [_item_description.bottle_2.6.1]
 #       |--------------------|
@@ -373,6 +392,7 @@ icon = 7
 line1 = "Le Flacon Magique"
 line2 = "peut contenir di-"
 line3 = "verses substances..."
+skip = all
 
 [_item_description.bottle_3.2]
 # Eau dans Flacon / Water in Bottle
@@ -380,6 +400,7 @@ line3 = "verses substances..."
 icon = 8
 line1 = "Ton Flacon Magique"
 line2 = "contient de l'eau."
+skip = all
 next = _item_description.bottle_3.2.1
 
 [_item_description.bottle_3.2.1]
@@ -394,6 +415,7 @@ icon = 9
 line1 = "Bois de la Potion"
 line2 = "rouge pour retrouver"
 line3 = "tous tes Coeurs."
+skip = all
 
 [_item_description.bottle_3.4]
 # Potion verte / Red potion
@@ -402,6 +424,7 @@ icon = 10
 line1 = "Bois de la Potion"
 line2 = "verte pour retrouver"
 line3 = "toute ta magie."
+skip = all
 
 [_item_description.bottle_3.5]
 # Potion bleue / Red potion
@@ -410,6 +433,7 @@ icon = 11
 line1 = "Bois de la Potion"
 line2 = "bleue pour retrouver"
 line3 = "vie et magie !"
+skip = all
 
 [_item_description.bottle_3.6]
 # Fée dans Flacon / Fairy in Bottle
@@ -419,6 +443,7 @@ line1 = "Cette Fée te viendra"
 line2 = "en aide si tu es en"
 line3 = "difficulté."
 next = _item_description.bottle_3.6.1
+skip = all
 
 [_item_description.bottle_3.6.1]
 #       |--------------------|
@@ -439,6 +464,7 @@ icon = 7
 line1 = "Le Flacon Magique"
 line2 = "peut contenir di-"
 line3 = "verses substances..."
+skip = all
 
 [_item_description.bottle_4.2]
 # Eau dans Flacon / Water in Bottle
@@ -446,6 +472,7 @@ line3 = "verses substances..."
 icon = 8
 line1 = "Ton Flacon Magique"
 line2 = "contient de l'eau."
+skip = all
 next = _item_description.bottle_4.2.1
 
 [_item_description.bottle_4.2.1]
@@ -460,6 +487,7 @@ icon = 9
 line1 = "Bois de la Potion"
 line2 = "rouge pour retrouver"
 line3 = "tous tes Coeurs."
+skip = all
 
 [_item_description.bottle_4.4]
 # Potion verte / Red potion
@@ -468,6 +496,7 @@ icon = 10
 line1 = "Bois de la Potion"
 line2 = "verte pour retrouver"
 line3 = "toute ta magie."
+skip = all
 
 [_item_description.bottle_4.5]
 # Potion bleue / Red potion
@@ -476,6 +505,7 @@ icon = 11
 line1 = "Bois de la Potion"
 line2 = "bleue pour retrouver"
 line3 = "vie et magie !"
+skip = all
 
 [_item_description.bottle_4.6]
 # Fée dans Flacon / Fairy in Bottle
@@ -485,6 +515,7 @@ line1 = "Cette Fée te viendra"
 line2 = "en aide si tu es en"
 line3 = "difficulté."
 next = _item_description.bottle_4.6.1
+skip = all
 
 [_item_description.bottle_4.6.1]
 #       |--------------------|
@@ -505,6 +536,7 @@ icon = 13
 line1 = "Cours très vite et"
 line2 = "fracasse des"
 line3 = "obstacles grâce aux"
+skip = all
 next = _item_description.pegasus_shoes.1.1
 
 [_item_description.pegasus_shoes.1.1]
@@ -518,6 +550,7 @@ icon = 14
 line1 = "Le Miroir Mystique"
 line2 = "aurait de mystérieux"
 line3 = "pouvoirs..."
+skip = all
 
 [_item_description.cane_of_somaria.1]
 # Canne de Somaria / Cane of Somaria
@@ -526,6 +559,7 @@ icon = 15
 line1 = "Crée des blocs et"
 line2 = "accroche-toi à"
 line3 = "l'aide du Grappin."
+skip = all
 next = _warning_magic
 
 [_item_description.apples_counter.1]
@@ -535,6 +569,7 @@ icon = 16
 line1 = "Mange des Pommes"
 line2 = "pour récupérer des"
 line3 = "Coeurs."
+skip = all
 
 [_item_description.pains_au_chocolat_counter.1]
 # Pains au Chocolat / Pains au Chocolat
@@ -543,6 +578,7 @@ icon = 17
 line1 = "Mange un Pain au"
 line2 = "Chocolat pour"
 line3 = "récupéer 3 Coeurs."
+skip = all
 
 [_item_description.croissants_counter.1]
 # Croissant / Croissant
@@ -551,6 +587,7 @@ icon = 18
 line1 = "Mange un Croissant"
 line2 = "pour récupérer"
 line3 = "7 Coeurs."
+skip = all
 
 [_item_description.rock_key.1]
 # Clé de Roc / Rock Key
@@ -559,6 +596,7 @@ icon = 19
 line1 = "La Clé de Roc. Mais"
 line2 = "où est donc la bonne"
 line3 = "serrure ?"
+skip = all
 
 [_item_description.bone_key.1]
 # Clé d'Os / Bone Key
@@ -566,6 +604,7 @@ line3 = "serrure ?"
 icon = 20
 line1 = "A quoi peut servir"
 line2 = "la Clé d'Os ?"
+skip = all
 
 [_item_description.clay_key.1]
 # Clé de Terre / Clay Key
@@ -574,6 +613,7 @@ icon = 21
 line1 = "La Clé de Terre, qui"
 line2 = "permet d'ouvrir la"
 line3 = "grotte du village."
+skip = all
 
 [_item_description.level_4_way.1]
 # Tarte aux Pommes / Apple Pie
@@ -582,6 +622,7 @@ icon = 22
 line1 = "Cette Tarte aux"
 line2 = "Pommes a un drôle"
 line3 = "d'aspect..."
+skip = all
 
 [_item_description.level_4_way.2]
 # Lingots d'or / Golden bars
@@ -590,6 +631,7 @@ icon = 23
 line1 = "Ce sont trois"
 line2 = "authentiques"
 line3 = "lingots d'or !"
+skip = all
 
 [_item_description.level_4_way.3]
 # Edelweiss / Edelweiss
@@ -598,6 +640,7 @@ icon = 24
 line1 = "L'Edelweiss est une"
 line2 = "fleur très rare dans"
 line3 = "le royaume d'Hyrule."
+skip = all
 
 [_item_description.flippers.1]
 # Palmes / Flippers
@@ -606,6 +649,7 @@ icon = 26
 line1 = "Les Palmes te"
 line2 = "permettent de nager"
 line3 = "dans l'eau profonde."
+skip = all
 
 [_item_description.magic_cape.1]
 # Cape magique / Magic Cape
@@ -614,6 +658,7 @@ icon = 27
 line1 = "La Cape Magique"
 line2 = "t'avertit si tu"
 line3 = "t'approches d'un"
+skip = all
 next = _item_description.magic_cape.1.1
 
 [_item_description.magic_cape.1.1]
@@ -627,6 +672,7 @@ icon = 28
 line1 = "La Clé de Fer."
 line2 = "Mais ne te trompe"
 line3 = "pas de serrure !"
+skip = all
 
 [_item_description.stone_key.1]
 # Clé de Pierre / Stone Key
@@ -635,6 +681,7 @@ icon = 29
 line1 = "La Clé de Pierre."
 line2 = "Reste à trouver la"
 line3 = "bonne serrure !"
+skip = all
 
 [_item_description.wooden_key.1]
 # Clé de Bois / Wooden Key
@@ -643,6 +690,7 @@ icon = 30
 line1 = "La Clé de Bois. Mais"
 line2 = "une seule serrure"
 line3 = "est la bonne..."
+skip = all
 
 [_item_description.ice_key.1]
 # Clé de Glace / Ice Key
@@ -651,11 +699,13 @@ icon = 31
 line1 = "La Clé de Glace."
 line2 = "A toi de trouver un"
 line3 = "lieu gelé pour la"
+skip = all
 next = _item_description.ice_key.1.1
 
 [_item_description.ice_key.1.1]
 #       |--------------------|
 line1 = "faire fonctionner !"
+skip = all
 
 [_item_description.glove.1]
 # Poigne de Fer / Iron Glove
@@ -664,6 +714,7 @@ icon = 32
 line1 = "La Poigne de Fer te"
 line2 = "permet de soulever"
 line3 = "les pierres."
+skip = all
 
 [_item_description.glove.2]
 # Poigne d'Or / Golden Glove
@@ -672,6 +723,7 @@ icon = 33
 line1 = "Soulève les pierres"
 line2 = "noires grâce à la"
 line3 = "Poigne d'Or."
+skip = all
 
 [_item_description.fire_stones_counter.1]
 # Pierres de Feu / Fire Stones
@@ -680,6 +732,7 @@ icon = 34
 line1 = "Trouve les trois"
 line2 = "Pierres de Feu et"
 line3 = "apporte-les"
+skip = all
 next = _item_description.fire_stones_counter.1.1
 
 [_item_description.fire_stones_counter.1.1]
@@ -701,6 +754,7 @@ icon = 0
 line1 = "Tu as trouvé la"
 line2 = "Plume !$0 Utilise-la"
 line3 = "pour sauter et"
+skip = all
 next = _treasure.feather.1.1
 
 [_treasure.feather.1.1]
@@ -879,6 +933,7 @@ line1 = "Tu as capturé une"
 line2 = "Fée ! Elle te"
 line3 = "viendra en aide si"
 next = _treasure.bottle_1.6.1
+skip = all
 
 [_treasure.bottle_1.6.1]
 #       |--------------------|
@@ -964,6 +1019,7 @@ line1 = "Tu as capturé une"
 line2 = "Fée ! Elle te"
 line3 = "viendra en aide si"
 next = _treasure.bottle_2.6.1
+skip = all
 
 [_treasure.bottle_2.6.1]
 #       |--------------------|
@@ -1049,6 +1105,7 @@ line1 = "Tu as capturé une"
 line2 = "Fée ! Elle te"
 line3 = "viendra en aide si"
 next = _treasure.bottle_3.6.1
+skip = all
 
 [_treasure.bottle_3.6.1]
 #       |--------------------|
@@ -1134,6 +1191,7 @@ line1 = "Tu as capturé une"
 line2 = "Fée ! Elle te"
 line3 = "viendra en aide si"
 next = _treasure.bottle_4.6.1
+skip = all
 
 [_treasure.bottle_4.6.1]
 #       |--------------------|
@@ -1959,14 +2017,15 @@ next = _treasure.blue_potion.1.2
 
 [_treasure.blue_potion.1.2]
 #       |--------------------|
+line1 = "Bois-la pour"
+line2 = "retrouver toute ta"
+line3 = "vie et ta magie !"
+
 # ---------------
 # Autres messages
 # ---------------
 # 
 # Autres messages divers affichés par le moteur de jeu
-line1 = "Bois-la pour"
-line2 = "retrouver toute ta"
-line3 = "vie et ta magie !"
 
 [_warning_magic]
 # Affiché à la fin des dialogues expliquant
@@ -1988,6 +2047,7 @@ line2 = "Tant pis pour toi !"
 #       |--------------------|
 icon = 72
 line1 = "C'est fermé à clé !"
+skip = all
 
 [_big_key_required]
 # Lorsqu'on regarde le grand coffre ou une porte verrouillée nécessitant la Grande Clé
@@ -1997,6 +2057,7 @@ icon = 73
 line1 = "Il te faut la Grande"
 line2 = "Clé pour ouvrir"
 line3 = "cette serrure !"
+skip = all
 
 [_boss_key_required]
 # Lorsqu'on regarde la porte du boss sans avoir la Clé du Maître
@@ -2005,6 +2066,7 @@ icon = 74
 line1 = "C'est la porte du"
 line2 = "repère du maître du"
 line3 = "donjon !"
+skip = all
 next = _boss_key_required.2
 
 [_boss_key_required.2]
@@ -2062,6 +2124,7 @@ question = true
 #       |-----------------------|
 line1 = "Désolé, mais tu n'as"
 line2 = "pas assez d'argent !"
+skip = all
 
 [_shop.amount_full]
 # Lorsqu'on veut acheter un objet dans un magasin
@@ -2076,6 +2139,7 @@ line1 = "Tu es déjà au maximum !"
 line1 = "C'est un interrupteur"
 line2 = "de cristal. Frappe-le"
 line3 = "avec quelque chose..."
+skip = all
 
 [dungeon_1]
 # Lorsqu'on pénètre dans le donjon 1
@@ -2266,6 +2330,7 @@ question = true
 line1 = "Il y a sûrement un"
 line2 = "moyen d'allumer"
 line3 = "cette torche..."
+skip = all
 
 [intro0]
 # Intro : écran noir
@@ -2275,6 +2340,7 @@ line2 = "racontent qu'il y a"
 line3 = "bien longtemps,"
 skip = current
 next = intro0.1
+skip = current
 
 [intro0.1]
 #       |-----------------------|
@@ -2311,6 +2377,7 @@ line2 = "plus tard, un maléfice"
 line3 = "sembla menacer Hyrule."
 skip = current
 next = intro1.2
+skip = current
 
 [intro1.2]
 #       |-----------------------|
@@ -2347,6 +2414,7 @@ line2 = "homme vêtu de vert se"
 line3 = "lança dans une quête,"
 skip = current
 next = intro2.2
+skip = current
 
 [intro2.2]
 #       |-----------------------|
@@ -2362,6 +2430,7 @@ line2 = "l'on nomma le Héros sut"
 line3 = "repousser le maléfice."
 skip = current
 next = intro3.2
+skip = current
 
 [intro3.2]
 #       |-----------------------|
@@ -2384,6 +2453,7 @@ line2 = "alors le voeu"
 line3 = "d'emprisonner Ganondorf"
 skip = current
 next = intro4.2
+skip = current
 
 [intro4.2]
 #       |-----------------------|
@@ -2394,21 +2464,23 @@ next = intro4.3
 
 [intro4.3]
 #       |-----------------------|
+line1 = "lignée des Sept Sages,"
+line2 = "l'enferma en invoquant"
+line3 = "la magie du sceau."
 #next = intro4.4
+
 #[intro4.4]
 ##       |-----------------------|
 #line1 = "Il en était fini du vil"
 #line2 = "Ganondorf. Il devint"
 #line3 = "ainsi prisonnier de"
 #next = intro4.5
+
 #[intro4.5]
 ##       |-----------------------|
 #line1 = "la vision maléfique du"
 #line2 = "monde qu'il avait lui-"
 #line3 = "même créée."
-line1 = "lignée des Sept Sages,"
-line2 = "l'enferma en invoquant"
-line3 = "la magie du sceau."
 
 [intro5]
 # Intro : fresque 5
@@ -2418,6 +2490,7 @@ line2 = "plus tard, le Roi"
 line3 = "d'Hyrule fut victime"
 skip = current
 next = intro5.2
+skip = current
 
 [intro5.2]
 #       |-----------------------|
@@ -2447,6 +2520,7 @@ line2 = "conseils de son maître"
 line3 = "Sahasrahla, confia la"
 skip = current
 next = intro6.2
+skip = current
 
 [intro6.2]
 #       |-----------------------|
@@ -2464,28 +2538,31 @@ next = intro6.4
 
 [intro6.4]
 #       |-----------------------|
+line1 = "huit fragments et les"
+line2 = "dissimuler aux quatre"
+line3 = "coins du royaume."
+next = intro6.5
+
 #[intro6.8]
 ##       |-----------------------|
 #line1 = "Mais avant cela, ils"
 #line2 = "prirent soin de créer"
 #line3 = "une ultime protection :"
 #next = intro6.9
+
 #[intro6.9]
 ##       |-----------------------|
 #line1 = "l'Amulette du Solarus."
 #line2 = "C'était un pendentif"
 #line3 = "qui permettait à son"
 #next = intro6.10
+
 #[intro6.10]
 ##       |-----------------------|
 #line1 = "possesseur d'assembler"
 #line2 = "la Triforce. Après ces"
 #line3 = "événements, le Héros et"
 #next = intro6.11
-line1 = "huit fragments et les"
-line2 = "dissimuler aux quatre"
-line3 = "coins du royaume."
-next = intro6.5
 
 [intro6.5]
 #       |-----------------------|
@@ -2515,11 +2592,11 @@ next = outside_world.village.monkey.2
 
 [outside_world.village.monkey.2]
 #       |-----------------------|
-# _unknown car on sait qu'il va y avoir une suite, mais on ne sait pas encore laquelle
-# cela permet d'indiquer au moteur d'afficher une flèche en bas de la boîte de dialogue et non un carré
 line1 = "Le village a été"
 line2 = "encerclé par des"
 line3 = "monstres !"
+# _unknown car on sait qu'il va y avoir une suite, mais on ne sait pas encore laquelle
+# cela permet d'indiquer au moteur d'afficher une flèche en bas de la boîte de dialogue et non un carré
 next = _unknown
 
 [outside_world.village.monkey.without_shield]
@@ -2586,6 +2663,7 @@ line3 = "môme !"
 line1 = "Quand l'icône bleue"
 line2 = "apparaît, elle indique"
 line3 = "ce que tu peux faire en"
+skip = all
 next = outside_world.village.chignon_woman.2
 
 [outside_world.village.chignon_woman.2]
@@ -2625,8 +2703,8 @@ line1 = "ton environnement !"
 line1 = "Il paraît que chaque"
 line2 = "donjon du monde cache"
 line3 = "un Fragment de Coeur..."
-next = outside_world.village.chignon_woman_dungeons.2
 skip = all
+next = outside_world.village.chignon_woman_dungeons.2
 
 [outside_world.village.chignon_woman_dungeons.2]
 #       |-----------------------|
@@ -2639,6 +2717,7 @@ line1 = "Sais-tu que tu peux"
 line2 = "sauter de certaines"
 line3 = "falaises ? Ca pourrait"
 next = outside_world.village.cliff_man_npc.2
+skip = all
 
 [outside_world.village.cliff_man_npc.2]
 #       |-----------------------|
@@ -2653,6 +2732,7 @@ line1 = "Si tu manques d'argent,"
 line2 = "je ne te conseille pas"
 line3 = "d'aller à la Maison des"
 next = outside_world.village.hat_man_npc.2
+skip = all
 
 [outside_world.village.hat_man_npc.2]
 #       |-----------------------|
@@ -2698,19 +2778,24 @@ line2 = "      de Lyriann"
 [outside_world.village.cake_shop_sign]
 # Pancarte à l'entrée de la pâtisserie
 #       |-----------------------|
+line1 = ""
 line2 = "       Pâtisserie"
+line3 = ""
 
 [outside_world.village.shop_sign]
 # Pancarte à l'entrée de la boutique
 #       |-----------------------|
+line1 = ""
 line2 = "        Boutique"
+line3 = ""
 
 [outside_world.village.letter_box]
 # Message affiché quand on regarde une boîte aux lettres
 #       |-----------------------|
 line1 = "Ca ne se fait pas de"
 line2 = "fouiller dans la boîte"
-line3 = "aux lettres des gens !""
+line3 = "aux lettres des gens !"
+skip = all
 
 [outside_world.village.tree_woman]
 # Long message de la femme près de l'arbre dans le village
@@ -2858,6 +2943,7 @@ line1 = "Pour sauvegarder ta"
 line2 = "partie, appuie sur D"
 line3 = "pour mettre le jeu en"
 next = outside_world.how_to_save_npc.2
+skip = all
 
 [outside_world.how_to_save_npc.2]
 #       |-----------------------|
@@ -2943,6 +3029,7 @@ line2 = "C'est fermé à clé !"
 #       |-----------------------|
 line1 = "   - Serrure Glace -"
 line2 = "C'est fermé à clé !"
+
 
 [link_house.dream]
 # Link qui entend Sahasrahla en rêve en dormant dans son lit après l'intro
@@ -3045,6 +3132,7 @@ next = rupee_house.game_2.intro.3
 #       |-----------------------|
 line1 = "pour gagner plusieurs"
 line2 = "fois ta mise !"
+line3 = ""
 next = rupee_house.game_2.intro.4
 
 [rupee_house.game_2.intro.4]
@@ -3248,6 +3336,7 @@ line2 = "avant de jouer !"
 #       |-----------------------|
 line1 = "Au secours !"
 line2 = "Au secours !"
+line3 = ""
 next = rupee_house_broken.help_us_left.2
 
 [rupee_house_broken.help_us_left.2]
@@ -3294,6 +3383,7 @@ line1 = "Les monstres envahis-"
 line2 = "sent la plaine. C'est"
 line3 = "mauvais signe : je suis"
 next = grandma_house.sword.2
+skip = all
 
 [grandma_house.sword.2]
 #       |-----------------------|
@@ -3328,6 +3418,7 @@ line1 = "Avec cette épée, tu"
 line2 = "peux franchir les"
 line3 = "buissons qui protègent"
 next = grandma_house.find_sahasrahla.2
+skip = all
 
 [grandma_house.find_sahasrahla.2]
 #       |-----------------------|
@@ -3348,6 +3439,7 @@ line3 = "souvenais plus ?"
 line1 = "Avec cette clé, tu peux"
 line2 = "entrer dans la grotte"
 line3 = "au nord du village."
+skip = all
 
 [grandma_house.go_dungeon_1]
 # Dialogue chez la grand-mère (après avoir fini la grotte de Tom)
@@ -3355,6 +3447,7 @@ line3 = "au nord du village."
 line1 = "Il paraît que l'un des"
 line2 = "quatre enfants enlevés"
 line3 = "est retenu dans un"
+skip = all
 next = grandma_house.go_dungeon_1.2
 
 [grandma_house.go_dungeon_1.2]
@@ -3374,6 +3467,7 @@ line1 = "pour y aller ?"
 line1 = "Quelque chose me dit"
 line2 = "que cette fois-ci,"
 line3 = "Sahasrahla est mieux"
+skip = all
 next = grandma_house.go_back_sahasrahla.2
 
 [grandma_house.go_back_sahasrahla.2]
@@ -3387,6 +3481,7 @@ line2 = "t'aider."
 line1 = "Tu as trouvé un Arc ?"
 line2 = "A mon avis, les secrets"
 line3 = "que renferment les"
+skip = all
 next = grandma_house.go_twin_caves.2
 
 [grandma_house.go_twin_caves.2]
@@ -3401,6 +3496,7 @@ line3 = "portée désormais !"
 line1 = "C'est une belle clé que"
 line2 = "tu as là ! N'est-il"
 line3 = "pas temps de partir"
+skip = all
 next = grandma_house.go_dungeon_2.2
 
 [grandma_house.go_dungeon_2.2]
@@ -3413,6 +3509,7 @@ line2 = "deuxième enfant ?"
 line1 = "Que dis-tu ? Je ne"
 line2 = "t'entends pas bien !"
 line3 = "Je suis un peu dure"
+skip = all
 next = grandma_house.go_telepathic_booth.2
 
 [grandma_house.go_telepathic_booth.2]
@@ -3432,6 +3529,7 @@ line2 = "comme la télépathie ?"
 line1 = "Agahnim a pris le"
 line2 = "contrôle du royaume..."
 line3 = "Il sème la terreur"
+skip = all
 next = grandma_house.dark_world_enabled.2
 
 [grandma_house.dark_world_enabled.2]
@@ -3514,7 +3612,7 @@ line3 = "Montagne des Terreurs !"
 
 [telepathic_booth.hahaha]
 #       |-----------------------|
-line1 = "Ah ah ah ! Tu cherches""
+line1 = "Ah ah ah ! Tu cherches"
 line2 = "le vieux peut-être ?"
 line3 = "Sache que désormais"
 next = telepathic_booth.hahaha.2
@@ -3604,11 +3702,11 @@ line3 = "souhaites acheter."
 [lyriann_shop.apples]
 # Boutique : quand on regarde les pommes
 #       |-----------------------|
-# _unknown car c'est le moteur qui se chargera de la suite pour gérer la vente
-# cela permet d'afficher une flèche en bas de la boîte de dialogue au lieu du carré
 line1 = "3 Pommes fraîches de ce"
 line2 = "matin ! Chaque pomme"
 line3 = "rapporte un Coeur."
+# _unknown car c'est le moteur qui se chargera de la suite pour gérer la vente
+# cela permet d'afficher une flèche en bas de la boîte de dialogue au lieu du carré
 next = _unknown
 
 [lyriann_shop.lamp]
@@ -3685,6 +3783,7 @@ line1 = "Je cherche toujours six"
 line2 = "pommes pour faire une"
 line3 = "bonne tarte."
 next = cake_shop.seller.ask_apples_again.2
+skip = all
 
 [cake_shop.seller.ask_apples_again.2]
 #       |-----------------------|
@@ -3804,6 +3903,7 @@ line1 = "protéger la Triforce ?"
 line2 = "C'est d'accord"
 line3 = "Pas question"
 question = true
+skip = none
 next = sahasrahla_house.beginning.thanks
 next2 = sahasrahla_house.beginning.insisting
 
@@ -3906,6 +4006,7 @@ line2 = "trop long !"
 line1 = "La porte est gelée ?"
 line2 = "Essaie de faire fondre"
 line3 = "la glace avec de l'eau."
+skip = all
 
 [sahasrahla_house.default]
 # Chez Sahasrahla : dialogue par défaut quand il n'a rien de spécial à dire pour guider le joueur
@@ -3913,6 +4014,7 @@ line3 = "la glace avec de l'eau."
 line1 = "J'ai foi en toi."
 line2 = "Le courage et la"
 line3 = "sagesse te guideront."
+skip = all
 next = sahasrahla_house.go_grandma
 
 [sahasrahla_house.go_grandma]
@@ -3940,6 +4042,7 @@ line2 = "les environs."
 line1 = "Cette porte est gelée."
 line2 = "Il faudrait un moyen de"
 line3 = "faire fondre la glace !"
+skip = all
 
 [lyriann_cave.tom.first_time]
 # Grotte de Tom : premier dialogue avec Tom
@@ -4319,18 +4422,21 @@ line1 = "C'est fermé à clé !"
 #       |-----------------------|
 line1 = "Les deux yeux doivent"
 line2 = "être transpercés."
+skip = all
 
 [dungeon_2.eye_2_hint]
 #       |-----------------------|
 line1 = "Les yeux doivent être"
 line2 = "transpercés avec"
 line3 = "persévérance."
+skip = all
 
 [dungeon_2.code_hint]
 #       |-----------------------|
 line1 = "       F | B | E "
 line2 = "      ---|---|---"
 line3 = "       C | D | A "
+skip = all
 
 [fairy_cave.first_time]
 #       |-----------------------|
@@ -4374,28 +4480,34 @@ line3 = "les yeux et relaxe-toi."
 #       |-----------------------|
 line1 = "Montagne des Terreurs"
 line2 = "        --->"
+line3 = ""
+skip = all
 
 [mountain_cave.not_much_done]
 #       |-----------------------|
 line1 = "Si tu lis ce message,"
 line2 = "c'est que tu n'as pas"
 line3 = "beaucoup avancé."
+skip = all
 
 [mountain_cave.patience]
 #       |-----------------------|
 line1 = "La patience est la"
 line2 = "vertu du vrai héros."
 line3 = " - Auteur inconnu (?) -"
+skip = all
 
 [mountain_cave.almost_done]
 #       |-----------------------|
 line1 = "Le pire n'est pas"
 line2 = "à venir."
+skip = all
 
 [outside_world.old_castle_sign]
 #       |-----------------------|
 line2 = "     Ancien Château"
 line3 = "         <---"
+skip = all
 
 [billy_cave.hello]
 #       |-----------------------|
@@ -4403,6 +4515,7 @@ line1 = "J'espère que tu as"
 line2 = "quelque chose"
 line3 = "d'intéressant à faire"
 next = billy_cave.hello.2
+skip = current
 
 [billy_cave.hello.2]
 #       |-----------------------|
@@ -4441,6 +4554,7 @@ next = billy_cave.hello.7
 #       |-----------------------|
 line1 = "C'est une plante"
 line2 = "extrêmement rare."
+line3 = ""
 next = billy_cave.hello.8
 
 [billy_cave.hello.8]
@@ -4481,6 +4595,7 @@ line1 = "Ne compte pas sur moi"
 line2 = "pour te donner mon"
 line3 = "edelweiss gratuitement."
 next = billy_cave.what_do_you_have.2
+skip = current
 
 [billy_cave.what_do_you_have.2]
 #       |-----------------------|
@@ -4500,6 +4615,7 @@ next = billy_cave.what_do_you_have.4
 #       |-----------------------|
 line1 = "tu pourras toujours"
 line2 = "courir."
+line3 = ""
 next = _unknown
 
 [billy_cave.without_golden_bars]
@@ -4525,6 +4641,7 @@ line2 = "croissant ! Voleur !"
 #       |-----------------------|
 line1 = "Un croissant ?"
 line2 = "Tu te moques de moi ?"
+line3 = ""
 
 [billy_cave.give_apple_pie_without]
 #       |-----------------------|
@@ -4650,6 +4767,7 @@ line3 = "magique."
 line1 = "Comment es-tu arrivé"
 line2 = "ici ??"
 next = chests_game_cave.first_time.2
+skip = current
 
 [chests_game_cave.first_time.2]
 #       |-----------------------|
@@ -4682,6 +4800,7 @@ question = true
 #       |-----------------------|
 line1 = "Tu n'as pas assez de"
 line2 = "Rubis !"
+skip = all
 
 [chests_game_cave.start_game_wooden_key]
 #       |-----------------------|
@@ -4689,6 +4808,7 @@ line1 = "Merci ! Le jeu consiste"
 line2 = "à ouvrir un coffre au"
 line3 = "choix. Son contenu est"
 next = chests_game_cave.start_game_wooden_key.2
+skip = all
 
 [chests_game_cave.start_game_wooden_key.2]
 #       |-----------------------|
@@ -4702,6 +4822,7 @@ line1 = "Merci ! Le jeu consiste"
 line2 = "à ouvrir un coffre au"
 line3 = "choix. Son contenu est"
 next = chests_game_cave.start_game_piece_of_heart.2
+skip = all
 
 [chests_game_cave.start_game_piece_of_heart.2]
 #       |-----------------------|
@@ -4714,14 +4835,17 @@ line3 = "de Coeur."
 line1 = "Merci ! Tu peux ouvrir"
 line2 = "l'un des coffres. Son"
 line3 = "Son contenu est à toi."
+skip = all
 
 [chests_game_cave.already_playing]
 #       |-----------------------|
 line1 = "Choisis un coffre !"
+skip = all
 
 [outside_world.junk_shop_sign]
 #       |-----------------------|
 line2 = "     Bazar du Coin"
+skip = all
 next = outside_world.junk_shop_sign.2
 
 [outside_world.junk_shop_sign.2]
@@ -4735,6 +4859,7 @@ line3 = "vraiment exceptionnel !"
 line1 = "Bienvenue au Bazar du"
 line2 = "Coin ! Des articles de"
 line3 = "premier choix à des"
+skip = all
 next = junk_shop.seller.2
 
 [junk_shop.seller.2]
@@ -4791,6 +4916,7 @@ line3 = "Coeurs."
 line1 = "Bienvenue dans l'ancien"
 line2 = "château royal, classé"
 line3 = "monument historique."
+skip = all
 next = castle.welcome.2
 
 [castle.welcome.2]
@@ -4803,6 +4929,7 @@ line2 = "lieux."
 line1 = "Ces escaliers mènent à"
 line2 = "l'étage supérieur et à"
 line3 = "la terrasse."
+skip = all
 next = castle.forbidden_stairs.2
 
 [castle.forbidden_stairs.2]
@@ -4815,6 +4942,7 @@ line2 = "interdit au public."
 line1 = "Je regrette Monsieur,"
 line2 = "mais le passage vers"
 line3 = "les cachots n'est pas"
+skip = all
 next = castle.forbidden_door.2
 
 [castle.forbidden_door.2]
@@ -4838,6 +4966,7 @@ line3 = "cachots est interdit !"
 line1 = "Jadis, ce château"
 line2 = "appartenait à la"
 line3 = "famille royale."
+skip = all
 next = castle.npc_1.2
 
 [castle.npc_1.2]
@@ -4851,6 +4980,7 @@ line3 = "les touristes !"
 line1 = "Quand on pense aux gens"
 line2 = "qui ont construit ce"
 line3 = "château..."
+skip = all
 next = castle.npc_2.2
 
 [castle.npc_2.2]
@@ -4871,6 +5001,7 @@ line3 = "d'aujourd'hui !"
 line1 = "Tom, un de nos"
 line2 = "meilleurs soldats, a"
 line3 = "mystérieusement disparu"
+skip = all
 next = castle.where_is_tom.2
 
 [castle.where_is_tom.2]
@@ -4882,12 +5013,14 @@ line2 = "explorer une caverne."
 #       |-----------------------|
 line1 = "Quel luxe ! C'est une"
 line2 = "magnifique demeure !"
+skip = all
 
 [castle.prison]
 #       |-----------------------|
 line1 = "C'est dans ces sombres"
 line2 = "cachots qu'étaient"
 line3 = "autrefois enfermés les"
+skip = all
 next = castle.prison.2
 
 [castle.prison.2]
@@ -4899,6 +5032,7 @@ line1 = "prisonniers du Roi."
 line1 = "Quel splendide canon !"
 line2 = "A l'époque où le Roi"
 line3 = "l'utilisait, il valait"
+skip = all
 next = castle.cannon.2
 
 [castle.cannon.2]
@@ -4945,6 +5079,7 @@ next = inferno.find_fire_stones
 #       |-----------------------|
 line1 = "Tu subiras trois"
 line2 = "épreuves de courage."
+skip = current
 next = inferno.find_fire_stones.2
 
 [inferno.find_fire_stones.2]
@@ -5160,7 +5295,9 @@ line3 = "à la prospérité !"
 
 [dungeon_3.arbror_direction_hint]
 #       |-----------------------|
+line1 = ""
 line2 = "  Nord : Maître Arbror "
+line3 = ""
 
 [dungeon_3.water_drained_somewhere]
 #       |-----------------------|
@@ -5405,6 +5542,7 @@ line2 = "     Ancien Château"
 line1 = "La clé de l'énigme est"
 line2 = "de tourner autour des"
 line3 = "pots dans le bon sens."
+skip = all
 
 [dungeon_5.hero_seen_by_guard]
 #       |-----------------------|

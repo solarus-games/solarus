@@ -253,10 +253,6 @@ void CustomEnemy::notify_collision_with_enemy(Enemy& other, Sprite& other_sprite
  */
 int CustomEnemy::custom_attack(EnemyAttack attack, Sprite* this_sprite) {
 
-  if (!is_in_normal_state()) {
-    return 0;
-  }
-
   return script->event_custom_attack_received(attack, this_sprite);
 }
 

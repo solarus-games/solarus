@@ -26,14 +26,18 @@ class Hero::BoomerangState: public Hero::State {
 
   private:
 
-    int direction_pressed8;			/**< direction pressed by the player */
+    int direction_pressed8;                    /**< direction pressed by the player */
+    int max_distance;                          /**< maximum distance to traverse in pixel */
+    int speed;                                 /**< speed of the movement in pixels per second */
+    const SpriteAnimationSetId sprite_name;    /**< animation set id to represent the boomerang */
 
   public:
 
-    BoomerangState(Hero &hero);
+    BoomerangState(Hero& hero, int max_distance, int speed,
+        const SpriteAnimationSetId& sprite_name);
     ~BoomerangState();
 
-    void start(State *previous_state);
+    void start(State* previous_state);
     void update();
 };
 

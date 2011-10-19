@@ -27,9 +27,16 @@
 /**
  * @brief Constructor.
  * @param hero the hero controlled by this state
+ * @param max_distance maximum distance of the movement in pixels
+ * @param speed speed of the movement in pixels per second
+ * @param sprite_name animation set id to represent the boomerang
  */
-Hero::BoomerangState::BoomerangState(Hero &hero):
-  State(hero) {
+Hero::BoomerangState::BoomerangState(Hero& hero, int max_distance, int speed,
+    const SpriteAnimationSetId& sprite_name):
+  State(hero),
+  max_distance(max_distance),
+  speed(speed),
+  sprite_name(sprite_name) {
 
 }
 
@@ -43,7 +50,7 @@ Hero::BoomerangState::~BoomerangState() {
  * @brief Starts this state.
  * @param previous_state the previous state
  */
-void Hero::BoomerangState::start(State *previous_state) {
+void Hero::BoomerangState::start(State* previous_state) {
 
   State::start(previous_state);
 
@@ -78,7 +85,7 @@ void Hero::BoomerangState::update() {
       boomerang_direction8 = direction_pressed8;
     }
     double angle = Geometry::degrees_to_radians(boomerang_direction8 * 45);
-    get_entities().add_entity(new Boomerang(hero, angle));
+    get_entities().add_entity(new Boomerang(hero, max_distance, speed, angle, sprite_name));
 
     hero.set_state(new FreeState(hero));
   }

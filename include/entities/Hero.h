@@ -308,7 +308,8 @@ class Hero: public MapEntity {
     void start_lifting(CarriedItem* item_to_lift);
     void start_running();
     void start_grabbing();
-    void start_boomerang();
+    void start_boomerang(int max_distance, int speed,
+        const SpriteAnimationSetId& sprite_name);
     void start_bow();
     void start_hookshot();
     void start_state_from_ground();

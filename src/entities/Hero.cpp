@@ -2099,9 +2099,13 @@ void Hero::start_grabbing() {
 
 /**
  * @brief Starts shooting a boomerang.
+ * @param max_distance maximum distance of the movement in pixels
+ * @param speed speed of the movement in pixels per second
+ * @param sprite_name animation set id to represent the boomerang
  */
-void Hero::start_boomerang() {
-  set_state(new BoomerangState(*this));
+void Hero::start_boomerang(int max_distance, int speed,
+    const SpriteAnimationSetId& sprite_name) {
+  set_state(new BoomerangState(*this, max_distance, speed, sprite_name));
 }
 
 /**

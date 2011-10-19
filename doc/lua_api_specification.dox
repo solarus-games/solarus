@@ -356,7 +356,7 @@ makes the hero jump towards the specified direction (0 to 7)
 - <tt>sol.map.hero_start_victory_sequence()</tt>:
 makes the hero brandish his sword for a victory
 
-- <tt>sol.map.hero_start_boomerang()</tt>:
+- <tt>sol.map.hero_start_boomerang(max_distance, speed, sprite_name)</tt>:
 makes the hero throw a boomerang
 
 - <tt>sol.map.hero_start_bow()</tt>:

@@ -334,7 +334,7 @@ void DestructibleItem::action_key_pressed() {
       }
     }
     else {
-      if (features[subtype].can_be_cut) {
+      if (features[subtype].can_be_cut && !get_equipment().has_ability("sword", 1)) {
         get_dialog_box().start_dialog("_cannot_lift_should_cut");
       }
       else if (!get_equipment().has_ability("lift", 1)) {

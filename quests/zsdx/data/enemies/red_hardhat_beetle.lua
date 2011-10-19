@@ -4,7 +4,7 @@ sol.main.include("enemies/generic_towards_hero")
 set_properties({
   sprite = "enemies/red_hardhat_beetle",
   life = 8,
-  damage = 3,
+  damage = 6,
   normal_speed = 32,
   faster_speed = 48,
   hurt_sound_style = "monster",

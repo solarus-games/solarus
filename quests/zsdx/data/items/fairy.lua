@@ -10,7 +10,8 @@ function event_appear(variant)
   sol.item.start_movement(movement) -- associate this movement to the fairy
 
   -- put the fairy on the highest layer to show it above all walls
-  sol.item.set_layer(2)
+  local x, y = sol.item.get_position()
+  sol.item.set_position(x, y, 2)
   sol.item.set_layer_independent_collisions(true) -- but detect collisions with lower layers anyway
 end
 

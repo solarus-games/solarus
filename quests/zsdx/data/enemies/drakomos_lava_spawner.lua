@@ -26,8 +26,7 @@ function event_restart()
         sol.map.enemy_set_treasure(son_name, "heart", 1, -1)
       end
     else
-      local x, y = sol.enemy.get_position()
-      local layer = sol.enemy.get_layer()
+      local x, y, layer = sol.enemy.get_position()
       sol.map.destructible_item_create(4, x, y, layer)
     end
   end, 1000)

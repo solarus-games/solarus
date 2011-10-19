@@ -60,6 +60,13 @@ function event_npc_interaction(npc_name)
       sol.map.dialog_start("outside_world.stone_key_required")
     end
 
+  elseif npc_name == "chignon_woman" then
+
+    if sol.game.is_dungeon_finished(2) then
+      sol.map.dialog_start("outside_world.village.chignon_woman_dungeons")
+    else
+      sol.map.dialog_start("outside_world.village.chignon_woman")
+    end
   end
 end
 

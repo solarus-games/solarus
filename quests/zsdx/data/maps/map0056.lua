@@ -9,6 +9,10 @@ function event_map_started(destination_point_name)
   if sol.game.savegame_get_boolean(320) then
     sol.map.tile_set_group_enabled("miniboss_fake_floor", false)
   end
+
+  if sol.game.savegame_get_boolean(323) then
+    lock_torches()
+  end
 end
 
 function are_all_torches_on()

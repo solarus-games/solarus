@@ -104,8 +104,8 @@ function event_message_received(src_enemy, message)
       and vulnerable then
 
     sol.main.timer_stop_all()
-    sol.enemy.hurt(1)
     sol.map.enemy_remove(src_enemy)
+    sol.enemy.hurt(1)
   end
 end
 
@@ -113,6 +113,7 @@ function event_hurt(attack, life_lost)
 
   if sol.enemy.get_life() <= 0 then
 
+    sol.map.enemy_remove_group("agahnim_fireball")
     sol.enemy.set_life(1)
     finished = true
   end

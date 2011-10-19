@@ -1991,6 +1991,7 @@ line3 = "pour l'ouvrir."
 line1 = "Il te faudrait quelque"
 line2 = "chose de tranchant pour"
 line3 = "couper ces buissons..."
+skip = all
 
 [_cannot_lift_too_heavy]
 # Lorsqu'on tente de soulever une pierre
@@ -2523,6 +2524,7 @@ line2 = "trop... Sois prudent !"
 line1 = "Si tu ne sais plus quoi"
 line2 = "faire à un moment de"
 line3 = "ton aventure, tu"
+skip = current
 next = outside_world.village.grand_son_npc.2
 
 [outside_world.village.grand_son_npc.2]
@@ -2548,55 +2550,57 @@ line1 = "Mais je n'en sais pas"
 line2 = "plus, je ne suis qu'un"
 line3 = "môme !"
 
-[outside_world.village.chignon_woman_npc]
+[outside_world.village.chignon_woman]
 # Dialogue avec la femme au chignon
 #       |-----------------------|
 line1 = "Quand l'icône bleue"
 line2 = "apparaît, elle indique"
 line3 = "ce que tu peux faire en"
-next = outside_world.village.chignon_woman_npc.2
+next = outside_world.village.chignon_woman.2
 
-[outside_world.village.chignon_woman_npc.2]
+[outside_world.village.chignon_woman.2]
 #       |-----------------------|
 line1 = "appuyant sur la touche"
 line2 = "Action (espace)."
 line3 = "Selon ce que tu es en"
-next = outside_world.village.chignon_woman_npc.3
+next = outside_world.village.chignon_woman.3
 
-[outside_world.village.chignon_woman_npc.3]
+[outside_world.village.chignon_woman.3]
 #       |-----------------------|
 line1 = "train d'examiner, tu"
 line2 = "peux faire différentes"
 line3 = "actions comme regarder,"
-next = outside_world.village.chignon_woman_npc.4
+next = outside_world.village.chignon_woman.4
 
-[outside_world.village.chignon_woman_npc.4]
+[outside_world.village.chignon_woman.4]
 #       |-----------------------|
 line1 = "parler avec quelqu'un,"
 line2 = "lire une pancarte,"
 line3 = "soulever un vase..."
-next = outside_world.village.chignon_woman_npc.5
+next = outside_world.village.chignon_woman.5
 
-[outside_world.village.chignon_woman_npc.5]
+[outside_world.village.chignon_woman.5]
 #       |-----------------------|
 line1 = "Observe bien l'icône"
 line2 = "bleue pour savoir quand"
 line3 = "tu peux interagir avec"
-next = outside_world.village.chignon_woman_npc.6
+next = outside_world.village.chignon_woman.6
 
-[outside_world.village.chignon_woman_npc.6]
+[outside_world.village.chignon_woman.6]
 #       |-----------------------|
-# TODO
-#       |-----------------------|
-#line1 = "Il paraît que chaque"
-#line2 = "donjon du monde cache"
-#line3 = "un Fragment de Coeur..."
-#next = outside_world.village.chignon_woman_npc.2
-#skip = all
-#[outside_world.village.chignon_woman_npc.2]
-#       |-----------------------|
-#line1 = "Intriguant, non ?"
 line1 = "ton environnement !"
+
+[outside_world.village.chignon_woman_dungeons]
+#       |-----------------------|
+line1 = "Il paraît que chaque"
+line2 = "donjon du monde cache"
+line3 = "un Fragment de Coeur..."
+next = outside_world.village.chignon_woman_dungeons.2
+skip = all
+
+[outside_world.village.chignon_woman_dungeons.2]
+#       |-----------------------|
+line1 = "Intriguant, non ?"
 
 [outside_world.village.cliff_man_npc]
 # Dialogue avec le vieux près de la grotte de Tom dans le village
@@ -2684,6 +2688,7 @@ line3 = "aux lettres des gens !""
 line1 = "Tu es perdu dans les"
 line2 = "commandes ? Laisse-moi"
 line3 = "t'expliquer. Les icônes"
+skip = all
 next = outside_world.village.tree_woman.2
 
 [outside_world.village.tree_woman.2]

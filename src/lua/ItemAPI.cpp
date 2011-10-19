@@ -285,6 +285,7 @@ int Script::item_api_is_following_entity(lua_State* l) {
  *
  * - Return value 1 (integer): x coordinate of the pickable item
  * - Return value 2 (integer): y coordinate of the pickable item
+ * - Return value 3 (integer): layer of the pickable item (0 to 2)
  *
  * @param l the Lua context that is calling this function
  */
@@ -304,8 +305,9 @@ int Script::item_api_get_position(lua_State *l) {
   const Rectangle& xy = pickable_item->get_xy();
   lua_pushinteger(l, xy.get_x());
   lua_pushinteger(l, xy.get_y());
+  lua_pushinteger(l, pickable_item->get_layer());
 
-  return 2;
+  return 3;
 }
 
 /**
@@ -316,85 +318,36 @@ int Script::item_api_get_position(lua_State *l) {
  *
  * - Argument 1 (integer): x coordinate of the pickable item
  * - Argument 2 (integer): y coordinate of the pickable item
+ * - Optional argument 3 (integer): layer of the pickable item (if unspecified, the
+ * layer will not be changed)
  *
  * @param l the Lua context that is calling this function
  */
-int Script::item_api_set_position(lua_State *l) {
+int Script::item_api_set_position(lua_State* l) {
 
-  Script& script = get_script(l, 2);
+  Script& script = get_script(l, 2, 3);
 
   int x = luaL_checkinteger(l, 1);
   int y = luaL_checkinteger(l, 2);
+  int layer = -1;
+  if (lua_gettop(l) >= 3) {
+    layer = luaL_checkinteger(l, 3);
+  }
 
   // retrieve the pickable item
-  const std::string &item_name = script.get_item_properties().get_name();
-  Equipment &equipment = script.get_game().get_equipment();
-  ItemScript &item_script = equipment.get_item_script(item_name);
-  PickableItem *pickable_item = item_script.get_pickable_item();
+  const std::string& item_name = script.get_item_properties().get_name();
+  Equipment& equipment = script.get_game().get_equipment();
+  ItemScript& item_script = equipment.get_item_script(item_name);
+  PickableItem* pickable_item = item_script.get_pickable_item();
 
   Debug::check_assertion(pickable_item != NULL,
                 "Cannot call sol.item.set_position(): there is no current pickable item");
 
   pickable_item->set_xy(x, y);
-
-  return 0;
-}
-
-/**
- * @brief Returns the layer of the pickable item that just appeared.
- *
- * This function should be called only when there is a current pickable item,
- * e.g. from the event_appear() function.
- *
- * - Return value (integer): layer of the pickable item (0 to 2)
- *
- * @param l the Lua context that is calling this function
- */
-int Script::item_api_get_layer(lua_State *l) {
-
-  Script& script = get_script(l, 0);
-
-  // retrieve the pickable item
-  const std::string &item_name = script.get_item_properties().get_name();
-  Equipment &equipment = script.get_game().get_equipment();
-  ItemScript &item_script = equipment.get_item_script(item_name);
-  PickableItem *pickable_item = item_script.get_pickable_item();
-
-  Debug::check_assertion(pickable_item != NULL,
-                "Cannot call sol.item.get_layer(): there is no current pickable item");
-
-  lua_pushinteger(l, pickable_item->get_layer());
-
-  return 1;
-}
-
-/**
- * @brief Sets the layer of the pickable item that just appeared.
- *
- * This function should be called only when there is a current pickable item,
- * e.g. from the event_appear() function.
- *
- * - Argument 1 (integer): layer of the pickable item
- *
- * @param l the Lua context that is calling this function
- */
-int Script::item_api_set_layer(lua_State *l) {
-
-  Script& script = get_script(l, 1);
-
-  int layer = luaL_checkinteger(l, 1);
-
-  // retrieve the pickable item
-  const std::string &item_name = script.get_item_properties().get_name();
-  Equipment &equipment = script.get_game().get_equipment();
-  ItemScript &item_script = equipment.get_item_script(item_name);
-  PickableItem *pickable_item = item_script.get_pickable_item();
-
-  Debug::check_assertion(pickable_item != NULL,
-                "Cannot call sol.item.set_layer(): there is no current pickable item");
-
-  MapEntities &entities = script.get_map().get_entities();
-  entities.set_entity_layer(pickable_item, Layer(layer));
+  if (layer != -1) {
+    MapEntities& entities = script.get_map().get_entities();
+    entities.set_entity_layer(pickable_item, Layer(layer));
+  }
 
   return 0;
 }

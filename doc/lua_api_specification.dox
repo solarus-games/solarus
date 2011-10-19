@@ -338,10 +338,11 @@ returns the direction of the hero's sprites
 sets the direction of the hero's sprites
 
 - <tt>sol.map.hero_get_position()</tt>:
-returns the coordinates and the layer of the hero (3 return values)
+Returns the coordinates and the layer of the hero (3 return values)
 
 - <tt>sol.map.hero_set_position(x, y, layer)</tt>:
-sets the coordinates and the layer of the hero
+Sets the coordinates and the layer of the hero.
+The layer is optional: by default, it is unchanged.
 
 - <tt>sol.map.hero_align_on_sensor(sensor_name)</tt>:
 places the hero's bounding box exactly on the rectangle of a sensor
@@ -368,10 +369,11 @@ makes the hero run
 makes the hero be hurt
 
 - <tt>sol.map.npc_get_position(npc)</tt>:
-returns the position of an NPC (x and y)
+Returns the position of an NPC (x, y and layer).
 
-- <tt>sol.map.npc_set_position(npc, x, y)</tt>:
-sets the position of an NPC
+- <tt>sol.map.npc_set_position(npc, x, y, layer)</tt>:
+Sets the position of an NPC. The layer is optional
+(by default, it is unchanged)
 
 - <tt>sol.map.npc_start_movement(npc, movement)</tt>:
 starts a movement on an NPC
@@ -493,10 +495,11 @@ places a block where it was when the map started
 resets all blocks of the map
 
 - <tt>sol.map.block_get_position(block_name)</tt>:
-returns the position of a block (3 return values: x, y, layer)
+Returns the position of a block (3 return values: x, y, layer).
 
 - <tt>sol.map.block_set_position(block_name, x, y, layer)</tt>:
-sets the position of a block
+Sets the position of a block.
+The layer is optional (by default, it is unchanged).
 
 - <tt>sol.map.shop_item_remove(shop_item_name)</tt>:
 removes a shop item from the map
@@ -575,16 +578,11 @@ Returns the number of living enemies of the map whose name starts with the speci
 
 - <tt>sol.map.enemy_get_position(enemy_name)</tt>:
 Returns the current position of an enemy on the map.
-Two values are returned (x and y).
+Three values are returned: x, y and the layer (0 to 2).
 
-- <tt>sol.map.enemy_set_position(enemy_name, x, y)</tt>:
-Sets the positions of an enemy on the map.
-
-- <tt>sol.map.enemy_get_layer(enemy_name)</tt>:
-Returns the layer of an enemy on the map.
-
-- <tt>sol.map.enemy_set_layer(enemy_name, layer)</tt>:
-Sets the layer of an enemy.
+- <tt>sol.map.enemy_set_position(enemy_name, x, y, layer)</tt>:
+Sets the positions of an enemy on the map. The layer is optional:
+by default, it is unchanged.
 
 - <tt>sol.map.enemy_set_treasure(enemy_name, item_name, variant, savegame_variable)</tt>:
 Sets the treasure of an enemy.
@@ -635,23 +633,16 @@ returns the movement of the current pickable item
 gives another movement to the current pickable item instead of the default one
 (can be called only when there is a current pickable item in the context)
 
-- <tt>sol.item.get_position(x, y)</tt>
-returns the position of the current pickable item
+- <tt>sol.item.get_position(x, y, layer)</tt>:
+Returns the position of the current pickable item.
+Can be called only when there is a current pickable item in the context.
+
+- <tt>sol.item.set_position(x, y, layer)</tt>:
+Sets the position of the current pickable item.
+The layer is optional: by default, it is unchanged.
 (can be called only when there is a current pickable item in the context)
 
-- <tt>sol.item.set_position(x, y)</tt>
-sets the position of the current pickable item
-(can be called only when there is a current pickable item in the context)
-
-- <tt>sol.item.get_layer(layer)</tt>
-returns the layer (0 to 2) of the current pickable item
-(can be called only when there is a current pickable item in the context)
-
-- <tt>sol.item.set_layer(layer)</tt>
-sets the layer (0 to 2) of the current pickable item
-(can be called only when there is a current pickable item in the context)
-
-- <tt>sol.item.set_layer_independent_collisions(independent)</tt>
+- <tt>sol.item.set_layer_independent_collisions(independent)</tt>:
 sets whether the collisions with the current pickable item should be detected
 from every layer
 (can be called only when there is a current pickable item in the context)
@@ -790,16 +781,11 @@ bounding box top-left corner (default: 0, 0)
 
 - <tt>sol.enemy.get_position()</tt>:
 Returns the current position of the enemy on the map (i.e. the position of its origin point).
-Two values are returned (x and y).
+Three values are returned: x, y and the layer.
 
-- <tt>sol.enemy.set_position(x, y)</tt>:
+- <tt>sol.enemy.set_position(x, y, layer)</tt>:
 Sets the position of the enemy on the map.
-
-- <tt>sol.enemy.get_layer()</tt>:
-Returns the layer where the enemy is placed on the map.
-
-- <tt>sol.enemy.set_layer(layer)</tt>:
-Sets the layer of the enemy.
+The layer is optional: by default, is is unchanged.
 
 - <tt>sol.enemy.get_distance_to_hero()</tt>:
 Returns the distance in pixels between the enemy and the hero.

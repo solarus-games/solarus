@@ -203,6 +203,7 @@ icon = 35
 line1 = "Utilise le Super"
 line2 = "Boomerang pour"
 line3 = "immobiliser les"
+skip = all
 next = _item_description.boomerang.2.1
 
 [_item_description.boomerang.2.1]

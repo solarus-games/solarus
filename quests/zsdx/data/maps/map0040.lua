@@ -79,9 +79,11 @@ function event_update()
   if not sol.game.savegame_get_boolean(113)
     and are_all_torches_on() then
 
-    sol.main.play_sound("secret")
-    sol.map.door_open("torches_door")
     lock_torches()
+    sol.map.camera_move(584, 360, 250, function()
+      sol.main.play_sound("secret")
+      sol.map.door_open("torches_door")
+    end)
   end
 end
 

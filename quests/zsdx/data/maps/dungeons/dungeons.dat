@@ -212,20 +212,6 @@ y = 432
 save = 118
 big = 0
 
-[dungeon_3.map_42.chest_0]
-floor = 2
-x = 824
-y = 808
-save = 123
-big = 1
-
-[dungeon_3.map_42.chest_1]
-floor = 2
-x = 416
-y = 152
-save = 124
-big = 0
-
 [dungeon_4.map_60.chest_0]
 floor = 0
 x = 832
@@ -275,27 +261,6 @@ y = 397
 save = 415
 big = 1
 
-[dungeon_3.map_41.chest_0]
-floor = 1
-x = 944
-y = 880
-save = 119
-big = 0
-
-[dungeon_3.map_41.chest_1]
-floor = 1
-x = 712
-y = 48
-save = 129
-big = 0
-
-[dungeon_3.map_41.chest_2]
-floor = 1
-x = 112
-y = 176
-save = 126
-big = 0
-
 [dungeon_2.map_31.chest_0]
 floor = -1
 x = 200
@@ -337,20 +302,6 @@ x = 960
 y = 445
 save = 93
 big = 1
-
-[dungeon_3.map_43.boss_0]
-floor = 3
-x = 252
-y = 533
-save = 902
-big = 1
-
-[dungeon_3.map_43.boss_1]
-floor = 3
-x = 480
-y = 872
-save = 901
-big = 0
 
 [dungeon_8.map_50.chest_0]
 floor = -3
@@ -513,27 +464,6 @@ y = 896
 save = 501
 big = 0
 
-[dungeon_6.map_56.chest_0]
-floor = 2
-x = 704
-y = 400
-save = 305
-big = 0
-
-[dungeon_6.map_56.chest_1]
-floor = 2
-x = 520
-y = 400
-save = 315
-big = 0
-
-[dungeon_6.map_56.chest_2]
-floor = 2
-x = 240
-y = 304
-save = 316
-big = 0
-
 [dungeon_6.map_55.chest_0]
 floor = 1
 x = 96
@@ -610,4 +540,74 @@ x = 288
 y = 488
 save = 5
 big = 1
+
+[dungeon_3.map_42.chest_0]
+floor = 2
+x = 824
+y = 808
+save = 123
+big = 1
+
+[dungeon_3.map_42.chest_1]
+floor = 2
+x = 416
+y = 152
+save = 124
+big = 0
+
+[dungeon_3.map_41.chest_0]
+floor = 1
+x = 944
+y = 880
+save = 119
+big = 0
+
+[dungeon_3.map_41.chest_1]
+floor = 1
+x = 712
+y = 48
+save = 129
+big = 0
+
+[dungeon_3.map_41.chest_2]
+floor = 1
+x = 112
+y = 176
+save = 126
+big = 0
+
+[dungeon_3.map_43.boss_0]
+floor = 3
+x = 252
+y = 533
+save = 902
+big = 1
+
+[dungeon_3.map_43.boss_1]
+floor = 3
+x = 480
+y = 872
+save = 901
+big = 0
+
+[dungeon_6.map_56.chest_0]
+floor = 2
+x = 704
+y = 400
+save = 305
+big = 0
+
+[dungeon_6.map_56.chest_1]
+floor = 2
+x = 520
+y = 400
+save = 315
+big = 0
+
+[dungeon_6.map_56.chest_2]
+floor = 2
+x = 240
+y = 304
+save = 316
+big = 0
 

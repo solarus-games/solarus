@@ -254,6 +254,7 @@ booleans:
 320	dungeon 6 3F: miniboss killed
 321	dungeon 6 4F: boss killed
 322	dungeon 6 4F: heart container
+323	dungeon 6 3F: torches lit
 
 400	dungeon 4 B1: small key in the sensors room
 401	dungeon 4 1F: boss door
@@ -327,4 +328,5 @@ booleans:
 922	outside world A3: piece of heart above dungeon 3
 923	dungeon 1 1F: weak wall
 924	dungeon 1 1F: piece of heart
+925	dungeon 3 4F: big key door
 

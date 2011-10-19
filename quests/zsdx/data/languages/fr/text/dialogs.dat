@@ -191,6 +191,21 @@ next = _item_description.boomerang.1.1
 line1 = "des objets à"
 line2 = "distance."
 
+[_item_description.boomerang.2]
+# Super Boomerang
+#       |--------------------|
+icon = 35
+line1 = "Utilise le Super"
+line2 = "Boomerang pour"
+line3 = "immobiliser les"
+next = _item_description.boomerang.2.1
+
+[_item_description.boomerang.2.1]
+#       |--------------------|
+line1 = "ennemis ou attraper"
+line2 = "des objets à"
+line3 = "distance."
+
 [_item_description.lamp.1]
 # Lanterne / Lamp
 #       |--------------------|
@@ -747,6 +762,21 @@ next = _treasure.boomerang.1.3
 [_treasure.boomerang.1.3]
 #       |--------------------|
 line1 = "de les découvrir !"
+
+[_treasure.boomerang.2]
+# Super Boomerang
+#       |--------------------|
+icon = 35
+line1 = "Tu as trouvé le"
+line2 = "Super Boomerang !$0"
+next = _treasure.boomerang.2.1
+
+[_treasure.boomerang.2.1]
+# Super Boomerang
+#       |--------------------|
+line1 = "Il est plus rapide"
+line2 = "et plus puissant que"
+line3 = "l'ancien !"
 
 [_treasure.lamp.1]
 # Lanterne
@@ -1996,7 +2026,7 @@ skip = all
 [_cannot_lift_too_heavy]
 # Lorsqu'on tente de soulever une pierre
 # sans avoir de bracelet de force
-# (Clin d'oeil à Link's Awekening)
+# (Clin d'oeil à Link's Awakening)
 #       |-----------------------|
 line1 = "Oh là là, c'est"
 line2 = "bien trop lourd !"

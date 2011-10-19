@@ -148,6 +148,7 @@ amount_3 = 99
 [boomerang]
 savegame_variable = 1103
 can_be_assigned = true
+nb_variants = 2
 
 [lamp]
 savegame_variable = 1104

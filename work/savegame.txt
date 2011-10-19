@@ -138,7 +138,7 @@ booleans:
 93	dungeon 2: boss
 94-98	outside world: green, blue or red rupees under 5 stones in the maze near the twin caves
 99	fairy cave: the fairy has appeared
-100	fairy cave: the fairy gave the boomerang
+100	fairy cave: the fairy gave the boomerang 2
 101	cave of the hole near the flower: piece of heart
 102	bomb cave 3F: chest with the bomb bag
 103	dungeon 2: boss heart container

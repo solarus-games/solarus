@@ -541,11 +541,15 @@ int Script::map_api_hero_start_victory_sequence(lua_State *l) {
  * @brief Makes the hero shoot a boomerang.
  * @param l the Lua context that is calling this function
  */
-int Script::map_api_hero_start_boomerang(lua_State *l) {
+int Script::map_api_hero_start_boomerang(lua_State* l) {
 
-  Script& script = get_script(l, 0);
+  Script& script = get_script(l, 3);
 
-  script.get_game().get_hero().start_boomerang();
+  int max_distance = luaL_checkinteger(l, 1);
+  int speed = luaL_checkinteger(l, 2);
+  const std::string& sprite_name = luaL_checkstring(l, 3);
+
+  script.get_game().get_hero().start_boomerang(max_distance, speed, sprite_name);
 
   return 0;
 }

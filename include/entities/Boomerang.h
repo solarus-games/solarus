@@ -30,7 +30,7 @@ class Boomerang: public MapEntity {
 
   private:
 
-    Hero &hero;                     /**< the hero */
+    Hero& hero;                     /**< the hero */
 
     uint32_t next_sound_date;       /**< date when the boomerang sound is played next time */
 
@@ -38,10 +38,13 @@ class Boomerang: public MapEntity {
     bool going_back;                /**< indicates that the boomerang is going back towards the hero */
 
     Rectangle initial_coords;       /**< coordinates of the boomerang's initial position */
+    int max_distance;               /**< maximum distance to traverse in pixel */
+    int speed;                      /**< speed of the movement in pixels per second */
 
   public:
 
-    Boomerang(Hero &hero, double boomerang_angle);
+    Boomerang(Hero& hero, int max_distance, int speed, double angle,
+        const SpriteAnimationSetId& sprite_name);
     ~Boomerang();
 
     EntityType get_type();
@@ -73,12 +76,11 @@ class Boomerang: public MapEntity {
     void update();
 
     // collisions
-    void notify_collision_with_switch(Switch &sw, CollisionMode collision_mode);
-    void notify_collision_with_crystal(Crystal &crystal, CollisionMode collision_mode);
-    void notify_collision_with_enemy(Enemy &enemy);
+    void notify_collision_with_switch(Switch& sw, CollisionMode collision_mode);
+    void notify_collision_with_crystal(Crystal& crystal, CollisionMode collision_mode);
+    void notify_collision_with_enemy(Enemy& enemy);
     void notify_attacked_enemy(EnemyAttack attack, Enemy& victim, EnemyReaction::Reaction& result, bool killed);
 };
-
 
 #endif
 

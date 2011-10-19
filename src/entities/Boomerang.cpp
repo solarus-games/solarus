@@ -33,14 +33,23 @@
 /**
  * @brief Creates a boomerang.
  * @param hero the hero
- * @param boomerang_angle the angle of the boomerang trajectory in radians
+ * @param max_distance maximum distance of the movement in pixels
+ * @param speed speed of the movement in pixels per second
+ * @param angle the angle of the boomerang trajectory in radians
+ * @param sprite_name animation set id representing the boomerang
  */
-Boomerang::Boomerang(Hero &hero, double boomerang_angle):
-  MapEntity(), hero(hero), has_to_go_back(false), going_back(false) {
+Boomerang::Boomerang(Hero& hero, int max_distance, int speed, double angle,
+    const SpriteAnimationSetId& sprite_name):
+  MapEntity(),
+  hero(hero),
+  has_to_go_back(false),
+  going_back(false),
+  max_distance(max_distance),
+  speed(speed) {
 
   // initialize the entity
   set_layer(hero.get_layer());
-  create_sprite("entities/boomerang");
+  create_sprite(sprite_name);
   set_bounding_box_from_sprite();
 
   int hero_x = hero.get_top_left_x();
@@ -67,9 +76,9 @@ Boomerang::Boomerang(Hero &hero, double boomerang_angle):
 
   initial_coords.set_xy(get_xy());
 
-  RectilinearMovement *movement = new RectilinearMovement();
-  movement->set_speed(160);
-  movement->set_angle(boomerang_angle);
+  RectilinearMovement* movement = new RectilinearMovement();
+  movement->set_speed(speed);
+  movement->set_angle(angle);
   set_movement(movement);
 
   next_sound_date = System::now();
@@ -297,7 +306,7 @@ void Boomerang::update() {
     if (has_to_go_back) {
       going_back = true;
       clear_movement();
-      set_movement(new TargetMovement(&hero, 160));
+      set_movement(new TargetMovement(&hero, speed));
       get_entities().set_entity_layer(this, hero.get_layer()); // because the hero's layer may have changed
     }
     else if (get_movement()->is_stopped()) {
@@ -309,7 +318,7 @@ void Boomerang::update() {
       }
       go_back();
     }
-    else if (get_distance(initial_coords.get_x(), initial_coords.get_y()) >= 144) {
+    else if (get_distance(initial_coords.get_x(), initial_coords.get_y()) >= max_distance) {
       go_back();
     }
   }

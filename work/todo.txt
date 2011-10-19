@@ -12,7 +12,6 @@ Feature requests :
 - Ce serait pas mal de faire une animation lorsque Link vide le contenu de sa bouteille.
 - Ajouter un "map marker" pour indiquer où il faut se rendre ensuite
 - Voir si la police supporte des caractères unicode comme U+2192 (→) et U+2190 (←)
-- Boomerang 2 : ajouter dans l'api Lua les paramètres sprite, speed et length
 
 
 Bugs :
@@ -43,6 +42,7 @@ Bugs :
 - event_camera_reached_target() et event_camera_back() : notifier le script qui a effectué la requête, pas forcément le script de la map
 - Message incorrect quand on regarde un chou-péteur sans la poigne de fer
 - SOLARUS_DEBUG_LEVEL = 0 : segfault
+- Boomerang 2 : le sprite du héros au départ affiche le boomerang bleu
 
 
 Prochaines mises à jour :

@@ -65,11 +65,11 @@ end
 function event_dialog_finished(first_message_id, answer)
 
   if first_message_id == "fairy_cave.first_time" then
-    sol.map.treasure_give("boomerang", 1, 100)
     sol.map.hero_unfreeze()
+    sol.map.treasure_give("boomerang", 2, 100)
   elseif first_message_id == "fairy_cave.restore_health" then
-    sol.game.add_life(sol.game.get_max_life())
     sol.map.hero_unfreeze()
+    sol.game.add_life(sol.game.get_max_life())
   end
 end
 

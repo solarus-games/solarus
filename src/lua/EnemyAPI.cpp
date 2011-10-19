@@ -724,18 +724,20 @@ int Script::enemy_api_set_origin(lua_State *l) {
  *
  * - Return value 1 (integer): x coordinate in pixels
  * - Return value 2 (integer): y coordinate in pixels
+ * - Return value 3 (integer): layer (0 to 2)
  *
  * @param l the Lua context that is calling this function
  */
-int Script::enemy_api_get_position(lua_State *l) {
+int Script::enemy_api_get_position(lua_State* l) {
 
   Script& script = get_script(l, 0);
   Enemy& enemy = script.get_enemy();
 
   lua_pushinteger(l, enemy.get_x());
   lua_pushinteger(l, enemy.get_y());
+  lua_pushinteger(l, enemy.get_layer());
 
-  return 2;
+  return 3;
 }
 
 /**
@@ -743,54 +745,29 @@ int Script::enemy_api_get_position(lua_State *l) {
  *
  * - Argument 1 (integer): x coordinate in pixels
  * - Argument 2 (integer): y coordinate in pixels
+ * - Optional argument 3 (integer): layer to set (if unspecified,
+ * it will be unchanged)
  *
  * @param l the Lua context that is calling this function
  */
-int Script::enemy_api_set_position(lua_State *l) {
+int Script::enemy_api_set_position(lua_State* l) {
 
-  Script& script = get_script(l, 2);
+  Script& script = get_script(l, 2, 3);
   Enemy& enemy = script.get_enemy();
 
   int x = luaL_checkinteger(l, 1);
   int y = luaL_checkinteger(l, 2);
+  int layer = -1;
+  if (lua_gettop(l) >= 3) {
+    layer = luaL_checkinteger(l, 3);
+  }
+
   enemy.set_xy(x, y);
 
-  return 0;
-}
-
-/**
- * @brief Returns the layer of the enemy.
- *
- * - Return value (integer): the layer
- *
- * @param l the Lua context that is calling this function
- */
-int Script::enemy_api_get_layer(lua_State *l) {
-
-  Script& script = get_script(l, 0);
-  Enemy& enemy = script.get_enemy();
-
-  lua_pushinteger(l, enemy.get_layer());
-
-  return 1;
-}
-
-/**
- * @brief Sets the layer of the enemy.
- *
- * - Argument 1 (integer): layer to set
- *
- * @param l the Lua context that is calling this function
- */
-int Script::enemy_api_set_layer(lua_State *l) {
-
-  Script& script = get_script(l, 1);
-  Enemy& enemy = script.get_enemy();
-
-  int layer = luaL_checkinteger(l, 1);
-
-  MapEntities& entities = script.get_map().get_entities();
-  entities.set_entity_layer(&enemy, Layer(layer));
+  if (layer != -1) {
+    MapEntities& entities = script.get_map().get_entities();
+    entities.set_entity_layer(&enemy, Layer(layer));
+  }
 
   return 0;
 }

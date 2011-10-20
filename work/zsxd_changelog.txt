@@ -1,3 +1,12 @@
+1.4 (future)
+
+- Correction d'un double réceptacle de coeur caché
+- Version Mac OS X
+- Optimisation de l'affichage des décors
+- Correction de bugs de précision avec les collisions au pixel près
+- Diverses améliorations du moteur
+- Diverses améliorations de l'API Lua
+
 1.3 (12 août 2011)
 
 - Ajout de la version anglaise

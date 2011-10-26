@@ -62,10 +62,10 @@
 2	0	152	16	16	16	to_B2	0	1	14	from_icy_room
 8	0	160	109	frozen_door	1	0	entities/frozen_door	map
 8	0	160	205	frozen_door_opposite	3	0	entities/frozen_door	map
-9	0	248	221	block	-1	1	2
-9	0	72	221	block_2	-1	1	2
-9	0	72	269	block_3	-1	1	2
-9	0	248	269	block_4	-1	1	2
+9	0	248	221	block	-1	entities/statue	1	1	2
+9	0	72	221	block_2	-1	entities/statue	1	1	2
+9	0	72	269	block_3	-1	entities/statue	1	1	2
+9	0	248	269	block_4	-1	entities/statue	1	1	2
 0	1	112	40	96	8	306
 0	1	112	184	96	8	306
 0	1	112	112	96	8	307

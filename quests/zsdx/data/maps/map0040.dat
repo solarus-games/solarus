@@ -1014,46 +1014,46 @@
 10	1	280	720	8	32	c_water_middle	474	1
 10	1	272	728	8	16	c_water_source	473	1
 2	1	392	984	16	16	teletransporter_7	0	0	43	tmp
-9	1	432	485	block	-1	0	0
-9	1	448	485	block_2	-1	0	0
-9	1	464	485	block_3	-1	0	0
-9	1	480	485	block_4	-1	0	0
-9	1	496	485	block_5	-1	0	0
-9	1	336	613	block_6	-1	0	0
-9	1	352	613	block_7	-1	0	0
-9	1	368	613	block_8	-1	0	0
-9	1	384	613	block_9	-1	0	0
-9	1	400	613	block_10	-1	0	0
-9	1	96	381	block_11	-1	0	0
-9	1	112	381	block_12	-1	0	0
-9	1	128	381	block_13	-1	0	0
-9	1	144	381	block_14	-1	0	0
-9	1	208	349	block_15	-1	0	0
-9	1	192	349	block_16	-1	0	0
-9	1	176	349	block_17	-1	0	0
-9	1	160	349	block_18	-1	0	0
-9	1	160	365	block_19	-1	0	0
-9	1	160	381	block_20	-1	0	0
-9	1	208	173	block_21	-1	0	0
-9	1	208	189	block_22	-1	0	0
-9	1	208	205	block_23	-1	0	0
-9	1	208	221	block_24	-1	0	0
-9	1	208	237	block_25	-1	0	0
-9	1	208	253	block_26	-1	0	0
-9	1	208	269	block_27	-1	0	0
-9	1	64	221	block_28	-1	0	0
-9	1	48	221	block_29	-1	0	0
-9	1	96	221	block_30	-1	0	0
-9	1	80	221	block_31	-1	0	0
-9	1	112	669	block_32	-1	0	0
-9	1	128	669	block_33	-1	0	0
-9	1	144	669	block_34	-1	0	0
-9	1	112	813	block_35	-1	0	0
-9	1	128	813	block_36	-1	0	0
-9	1	144	813	block_37	-1	0	0
-9	1	192	93	block_38	-1	0	0
-9	1	176	93	block_39	-1	0	0
-9	1	208	93	block_40	-1	0	0
+9	1	432	485	block	-1	entities/block	1	0	0
+9	1	448	485	block_2	-1	entities/block	1	0	0
+9	1	464	485	block_3	-1	entities/block	1	0	0
+9	1	480	485	block_4	-1	entities/block	1	0	0
+9	1	496	485	block_5	-1	entities/block	1	0	0
+9	1	336	613	block_6	-1	entities/block	1	0	0
+9	1	352	613	block_7	-1	entities/block	1	0	0
+9	1	368	613	block_8	-1	entities/block	1	0	0
+9	1	384	613	block_9	-1	entities/block	1	0	0
+9	1	400	613	block_10	-1	entities/block	1	0	0
+9	1	96	381	block_11	-1	entities/block	1	0	0
+9	1	112	381	block_12	-1	entities/block	1	0	0
+9	1	128	381	block_13	-1	entities/block	1	0	0
+9	1	144	381	block_14	-1	entities/block	1	0	0
+9	1	208	349	block_15	-1	entities/block	1	0	0
+9	1	192	349	block_16	-1	entities/block	1	0	0
+9	1	176	349	block_17	-1	entities/block	1	0	0
+9	1	160	349	block_18	-1	entities/block	1	0	0
+9	1	160	365	block_19	-1	entities/block	1	0	0
+9	1	160	381	block_20	-1	entities/block	1	0	0
+9	1	208	173	block_21	-1	entities/block	1	0	0
+9	1	208	189	block_22	-1	entities/block	1	0	0
+9	1	208	205	block_23	-1	entities/block	1	0	0
+9	1	208	221	block_24	-1	entities/block	1	0	0
+9	1	208	237	block_25	-1	entities/block	1	0	0
+9	1	208	253	block_26	-1	entities/block	1	0	0
+9	1	208	269	block_27	-1	entities/block	1	0	0
+9	1	64	221	block_28	-1	entities/block	1	0	0
+9	1	48	221	block_29	-1	entities/block	1	0	0
+9	1	96	221	block_30	-1	entities/block	1	0	0
+9	1	80	221	block_31	-1	entities/block	1	0	0
+9	1	112	669	block_32	-1	entities/block	1	0	0
+9	1	128	669	block_33	-1	entities/block	1	0	0
+9	1	144	669	block_34	-1	entities/block	1	0	0
+9	1	112	813	block_35	-1	entities/block	1	0	0
+9	1	128	813	block_36	-1	entities/block	1	0	0
+9	1	144	813	block_37	-1	entities/block	1	0	0
+9	1	192	93	block_38	-1	entities/block	1	0	0
+9	1	176	93	block_39	-1	entities/block	1	0	0
+9	1	208	93	block_40	-1	entities/block	1	0	0
 6	1	328	136	72	8	jumper_6	6	40
 10	1	288	144	256	96	n_water	446	1
 10	1	272	184	8	16	n_water_source	473	1

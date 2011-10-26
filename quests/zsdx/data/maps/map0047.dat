@@ -49,14 +49,14 @@
 15	0	728	1640	16	32	1
 11	0	712	1712	BB1	1	0	0
 4	0	720	1725	0	_random	1	-1
-9	0	544	1669	block_11	-1	0	0
-9	0	448	1685	block_13	-1	0	0
-9	0	704	1653	block_12	-1	0	0
-9	0	784	1581	block_14	-1	0	0
-9	0	784	1693	block_15	-1	0	0
-9	0	864	1629	block_16	-1	0	0
-9	0	752	1445	block_17	-1	0	0
-9	0	832	1517	block_18	-1	0	0
+9	0	544	1669	block_11	-1	entities/block	1	0	0
+9	0	448	1685	block_13	-1	entities/block	1	0	0
+9	0	704	1653	block_12	-1	entities/block	1	0	0
+9	0	784	1581	block_14	-1	entities/block	1	0	0
+9	0	784	1693	block_15	-1	entities/block	1	0	0
+9	0	864	1629	block_16	-1	entities/block	1	0	0
+9	0	752	1445	block_17	-1	entities/block	1	0	0
+9	0	832	1517	block_18	-1	entities/block	1	0	0
 0	1	1000	40	256	192	303
 0	1	1016	216	224	16	262
 0	1	1016	40	224	16	259
@@ -889,16 +889,16 @@
 0	1	1112	24	8	16	72
 1	1	1128	1773	from_outside	1	0
 18	1	984	1656	door	2	1	0
-9	1	1096	1757	block_6	-1	0	0
+9	1	1096	1757	block_6	-1	entities/block	1	0	0
 18	1	1752	1560	LD2	1	0	-1
-9	1	1160	1757	block_2	-1	0	0
-9	1	1128	1677	block_3	-1	0	0
-9	1	1016	1661	block_4	-1	0	0
-9	1	1016	1693	block_5	-1	0	0
-9	1	1112	1597	block_7	-1	0	0
-9	1	1144	1597	block_8	-1	0	0
-9	1	1240	1661	block_9	-1	0	0
-9	1	1240	1693	block_10	-1	0	0
+9	1	1160	1757	block_2	-1	entities/block	1	0	0
+9	1	1128	1677	block_3	-1	entities/block	1	0	0
+9	1	1016	1661	block_4	-1	entities/block	1	0	0
+9	1	1016	1693	block_5	-1	entities/block	1	0	0
+9	1	1112	1597	block_7	-1	entities/block	1	0	0
+9	1	1144	1597	block_8	-1	entities/block	1	0	0
+9	1	1240	1661	block_9	-1	entities/block	1	0	0
+9	1	1240	1693	block_10	-1	entities/block	1	0	0
 15	1	1536	1128	32	16	1
 15	1	1536	1176	32	16	1
 15	1	1536	1144	16	32	1

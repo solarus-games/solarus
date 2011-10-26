@@ -870,14 +870,14 @@
 11	1	792	520	1f_e_water_switch_1	2	0	0
 11	1	904	520	1f_e_water_switch_2	2	0	0
 18	1	320	512	door_2	1	8	120
-9	1	344	509	block	-1	0	1
-9	1	312	525	block_2	3	0	1
-9	1	328	541	block_3	-1	0	0
-9	1	328	509	block_4	-1	0	0
-9	1	360	509	block_5	-1	0	0
-9	1	344	541	block_6	-1	0	0
-9	1	312	493	block_7	0	0	1
-9	1	296	509	block_8	-1	0	0
+9	1	344	509	block	-1	entities/block	1	0	1
+9	1	312	525	block_2	3	entities/block	1	0	1
+9	1	328	541	block_3	-1	entities/block	1	0	0
+9	1	328	509	block_4	-1	entities/block	1	0	0
+9	1	360	509	block_5	-1	entities/block	1	0	0
+9	1	344	541	block_6	-1	entities/block	1	0	0
+9	1	312	493	block_7	0	entities/block	1	0	1
+9	1	296	509	block_8	-1	entities/block	1	0	0
 7	1	776	269	e_room_enemy	3	blue_bullblin	0	-1	_random	1	-1
 7	1	776	269	e_room_enemy_2	3	blue_bullblin	0	-1	_random	1	-1
 7	1	912	333	e_room_enemy_4	3	blue_bullblin	0	-1	_random	1	-1

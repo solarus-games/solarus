@@ -77,24 +77,24 @@
 0	1	280	120	16	16	261
 0	1	232	128	64	8	249
 0	1	216	64	80	8	247
-9	1	32	37	block	-1	0	1
-9	1	48	37	block_2	-1	0	1
-9	1	64	37	block_3	-1	0	1
-9	1	288	37	block_4	-1	0	1
-9	1	32	213	block_5	-1	0	1
-9	1	48	213	block_6	-1	0	1
-9	1	64	213	block_7	-1	0	1
-9	1	80	213	block_8	-1	0	1
-9	1	240	213	block_9	-1	0	1
-9	1	256	213	block_10	-1	0	1
-9	1	272	213	block_11	-1	0	1
-9	1	288	213	block_12	-1	0	1
+9	1	32	37	block	-1	entities/block	1	0	1
+9	1	48	37	block_2	-1	entities/block	1	0	1
+9	1	64	37	block_3	-1	entities/block	1	0	1
+9	1	288	37	block_4	-1	entities/block	1	0	1
+9	1	32	213	block_5	-1	entities/block	1	0	1
+9	1	48	213	block_6	-1	entities/block	1	0	1
+9	1	64	213	block_7	-1	entities/block	1	0	1
+9	1	80	213	block_8	-1	entities/block	1	0	1
+9	1	240	213	block_9	-1	entities/block	1	0	1
+9	1	256	213	block_10	-1	entities/block	1	0	1
+9	1	272	213	block_11	-1	entities/block	1	0	1
+9	1	288	213	block_12	-1	entities/block	1	0	1
 1	1	160	205	destination_point	-1	1
 2	1	152	160	16	16	teletransporter	1	1	59	destination_point_2
-9	1	80	37	block_13	-1	0	1
+9	1	80	37	block_13	-1	entities/block	1	0	1
 5	1	152	40	chest	0	boss_key	1	411
-9	1	32	197	block_14	-1	0	1
-9	1	32	181	block_15	-1	0	1
+9	1	32	197	block_14	-1	entities/block	1	0	1
+9	1	32	181	block_15	-1	entities/block	1	0	1
 0	2	112	112	96	16	170
 0	2	112	128	8	16	170
 0	2	200	128	8	16	170

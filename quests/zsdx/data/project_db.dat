@@ -149,6 +149,7 @@
 3	npc/agahnim	Agahnim
 3	npc/billy	Billy
 3	npc/black_knight_soldier	Black Knight Soldier
+3	entities/block	Block
 3	entities/cannon	Cannon
 3	entities/slot_machine	Casino slot machine
 3	npc/castle_guard	Castle guard
@@ -164,6 +165,7 @@
 3	entities/outside_door	Outside closed door
 3	npc/sahasrahla	Sahasrahla
 3	entities/snores	Snoring (zzz)
+3	entities/statue	Statue
 3	npc/thief	Thief
 3	npc/tom	Tom
 3	entities/torch	Torch

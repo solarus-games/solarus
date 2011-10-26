@@ -1189,7 +1189,7 @@
 11	1	792	856	door_b_switch	1	0	1
 13	1	800	981	16	16	close_door_a_sensor	0
 11	1	744	440	special_torch_switch	1	0	1
-9	1	832	965	block	-1	0	2
+9	1	832	965	block	-1	entities/block	1	0	2
 1	1	656	397	from_hole	-1	0
 2	1	624	408	16	16	teletransporter_9	1	1	62	destination_point
 1	1	656	445	destination_point_2	-1	1

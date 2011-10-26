@@ -447,7 +447,7 @@
 15	1	80	296	16	16	0
 15	1	48	296	16	16	1
 14	1	72	309	crystal
-9	1	88	237	block	-1	0	2
+9	1	88	237	block	-1	entities/block	1	0	2
 4	1	200	357	0	rupee	1	-1
 4	1	248	373	0	rupee	1	-1
 4	1	200	389	0	rupee	1	-1
@@ -461,8 +461,8 @@
 4	1	248	389	0	_none	1	-1
 7	1	224	445	enemy	3	simple_green_soldier	0	-1	_random	0	-1
 7	1	64	221	enemy_2	3	tentacle	0	-1	_random	0	-1
-9	1	408	605	block_2	-1	0	2
-9	1	216	533	block_3	-1	0	2
+9	1	408	605	block_2	-1	entities/block	1	0	2
+9	1	216	533	block_3	-1	entities/block	1	0	2
 7	1	672	549	enemy_3	3	simple_green_soldier	0	-1	_random	0	-1
 7	1	776	589	enemy_4	3	simple_green_soldier	0	-1	_random	0	-1
 7	1	320	605	enemy_5	3	tentacle	0	-1	_random	0	-1

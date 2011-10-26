@@ -480,6 +480,7 @@ enables or disables a teletransporter
 enables or disables all teletransporters having a common prefix
 
 - <tt>sol.map.block_is_enabled(block_name)</tt>:
+3	entities/sign	Sign
 returns whether a block is enabled
 
 - <tt>sol.map.block_set_enabled(block_name, enable)</tt>:
@@ -539,6 +540,17 @@ creates a pickable item and places it on the map
 
 - <tt>sol.map.destructible_item_create(subtype, x, y, layer)</tt>:
 creates a destructible item and places it on the mbap
+
+- <tt>sol.map.block_create(x, y, layer, name, properties)</tt>:
+Creates a block and places it on the map.
+<tt>properties</tt> is optional. If provided, it is a table
+whose key-value pairs can be:
+  - <tt>direction</tt> (integer, 0 to 3 or -1 to allow the block to move in any direction (default)),
+  - <tt>sprite_name</tt> (string, default "entities/block"),
+  - <tt>can_be_pushed</tt> (boolean, default true),
+  - <tt>can_be_pulled</tt> (boolean, default false),
+  - <tt>maximum_moves</tt> (integer: 0 for no
+move, 1 for one move only (default), 2 for infinite moves)
 
 - <tt>sol.map.bomb_create(x, y, layer)</tt>:
 creates a bomb and places it on the map

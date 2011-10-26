@@ -155,7 +155,6 @@
 3	npc/castle_guard	Castle guard
 3	entities/castle_lock	Castle prison lock
 3	entities/frozen_door	Frozen door
-3	entities/sign	Sign
 3	npc/great_fairy	Great Fairy
 3	entities/bed	Hero's bed
 3	entities/hint_stone	Hint stone
@@ -164,7 +163,9 @@
 3	npc/monkey	Monkey
 3	entities/outside_door	Outside closed door
 3	npc/sahasrahla	Sahasrahla
+3	entities/sign	Sign
 3	entities/snores	Snoring (zzz)
+3	entities/somaria_block	Somaria block
 3	entities/statue	Statue
 3	npc/thief	Thief
 3	npc/tom	Tom

@@ -1919,6 +1919,68 @@ int Script::map_api_destructible_item_create(lua_State *l) {
 }
 
 /**
+ * @brief Places a new block on the map.
+ *
+ * - Argument 1 (integer): x
+ * - Argument 2 (integer): y
+ * - Argument 3 (integer): layer
+ * - Argument 4 (integer): name
+ * - Optional argument 5 (table): properties (possible keys are direction,
+ * sprite_name, can_be_pushed, can_be_pulled, maximum_moves)
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_block_create(lua_State* l) {
+
+  Script& script = get_script(l, 4, 5);
+
+  int x = luaL_checkinteger(l, 1);
+  int y = luaL_checkinteger(l, 2);
+  Layer layer = Layer(luaL_checkinteger(l, 3));
+  const std::string& name = luaL_checkstring(l, 4);
+
+  // default properties
+  int direction = -1;
+  SpriteAnimationSetId sprite_name = "entities/block";
+  bool can_be_pushed = true;
+  bool can_be_pulled = false;
+  int maximum_moves = 1;
+
+  if (lua_gettop(l) >= 5) {
+    luaL_checktype(l, 5, LUA_TTABLE);
+
+    // traverse the table, looking for properties
+    lua_pushnil(l); // first key
+    while (lua_next(l, 5) != 0) {
+
+      const std::string& key = luaL_checkstring(l, -2);
+      if (key == "direction") {
+        direction = luaL_checkinteger(l, -1);
+      }
+      else if (key == "sprite_name") {
+        sprite_name = luaL_checkstring(l, -1);
+      }
+      else if (key == "can_be_pushed") {
+        can_be_pushed = lua_toboolean(l, -1) != 0;
+      }
+      else if (key == "can_be_pulled") {
+        can_be_pulled = lua_toboolean(l, -1) != 0;
+      }
+      else if (key == "maximum_moves") {
+        maximum_moves = luaL_checkinteger(l, -1);
+      }
+      lua_pop(l, 1); // pop the value, let the key for the iteration
+    }
+  }
+
+  MapEntities& entities = script.get_map().get_entities();
+  entities.add_entity(new Block(name, layer, x, y, direction, sprite_name,
+      can_be_pushed, can_be_pulled, maximum_moves));
+
+  return 0;
+}
+
+/**
  * @brief Places a bomb on the map.
  *
  * - Argument 1 (integer): x

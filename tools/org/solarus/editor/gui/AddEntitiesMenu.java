@@ -52,10 +52,7 @@ public class AddEntitiesMenu extends JMenu {
 		NPC.Subtype.GENERALIZED_NPC,
 		NPC.Subtype.USUAL_NPC
 	),	
-	new ItemDefinition(EntityType.BLOCK, KeyEvent.VK_B,
-		Block.Subtype.NORMAL_BLOCK,
-		Block.Subtype.STATUE
-	),
+	new ItemDefinition(EntityType.BLOCK, KeyEvent.VK_B),
 	new ItemDefinition(EntityType.SWITCH, KeyEvent.VK_W,
 		Switch.Subtype.WALKABLE_INVISIBLE,
 		Switch.Subtype.WALKABLE_VISIBLE,

@@ -33,7 +33,7 @@ public enum EntityType {
     JUMPER               (6, "Jumper", Jumper.class, null),
     ENEMY                (7, "Enemy", Enemy.class, null),
     NPC                  (8, "NPC", NPC.class, NPC.Subtype.class),
-    BLOCK                (9, "Block", Block.class, Block.Subtype.class),
+    BLOCK                (9, "Block", Block.class, null),
     DYNAMIC_TILE         (10, "Dynamic tile", DynamicTile.class, null),
     SWITCH               (11, "Switch", Switch.class, Switch.Subtype.class),
     CUSTOM_OBSTACLE      (12, "Custom obstacle", CustomObstacle.class, null),

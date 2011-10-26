@@ -21,39 +21,30 @@
 #include "entities/Detector.h"
 
 /**
- * @brief A block or a statue that the hero can push.
+ * @brief A entity that the hero can push or pull.
  *
  * Some blocks can be moved only once or in only one direction.
- * If this a statue, it can also be pulled.
  */
 class Block: public Detector {
 
-  public:
-
-    /**
-     * @brief The different kinds of blocks.
-     */
-    enum Subtype {
-      NORMAL, /**< a usual block */
-      STATUE  /**< a statue */
-    };
-
   private:
 
-    Rectangle last_position;    /**< last position of the block before moving */
-    Subtype subtype;            /**< normal block or statue */
     int maximum_moves;          /**< indicates whether the block can be pushed
-				 * (0: none, 1: once: 2: infinite) */
+                                 * (0: none, 1: once: 2: infinite) */
     bool sound_played;          /**< true if the block sound was played while pulling it */
     uint32_t when_can_move;     /**< date when the hero can move the block again */
 
+    Rectangle last_position;    /**< last position of the block before moving */
     Rectangle initial_position; /**< position of the block when created */
     int initial_maximum_moves;  /**< value of maximum_moves when the block was created */
+    bool can_be_pushed;         /**< indicates that the hero can push this block */
+    bool can_be_pulled;         /**< indicates that the hero can pull this block */
 
   public:
 
-    Block(const std::string& name, Layer layer, int x, int y,
-	int direction, Subtype subtype, int maximum_push);
+    Block(const std::string& name, Layer layer, int x, int y, int direction,
+        const SpriteAnimationSetId& sprite_name,
+        bool can_be_pushed, bool can_be_pulled, int maximum_moves);
     ~Block();
     static CreationFunction parse;
 

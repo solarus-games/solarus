@@ -35,31 +35,29 @@
  * @param x x coordinate of the entity to create
  * @param y y coordinate of the entity to create
  * @param direction the only direction where the block can be pushed
- * (only for a normal block) or -1 to allow it to be pushed in any direction
- * @param subtype the subtype of block
+ * or -1 to allow it to be pushed in any direction
+ * @param sprite_name animation set id of the sprite for this block
+ * @param can_be_pushed true to allow the hero to push this block
+ * @param can_be_pulled true to allow the hero to pull this block
  * @param maximum_moves indicates how many times the block can
  * be moved (0: none, 1: once: 2: infinite)
  */
-Block::Block(const std::string &name, Layer layer, int x, int y,
-	     int direction, Subtype subtype, int maximum_moves):
+Block::Block(const std::string& name, Layer layer, int x, int y, int direction,
+    const SpriteAnimationSetId& sprite_name,
+    bool can_be_pushed, bool can_be_pulled, int maximum_moves):
   Detector(COLLISION_FACING_POINT, name, layer, x, y, 16, 16),
-  subtype(subtype), maximum_moves(maximum_moves), sound_played(false),
-  when_can_move(System::now()) {
+  maximum_moves(maximum_moves),
+  sound_played(false),
+  when_can_move(System::now()),
+  last_position(x, y),
+  initial_position(x, y),
+  initial_maximum_moves(maximum_moves),
+  can_be_pushed(can_be_pushed),
+  can_be_pulled(can_be_pulled) {
 
   set_origin(8, 13);
-  if (subtype == STATUE) {
-    Debug::check_assertion(direction == -1, "Cannot set a direction for a statue");
-    create_sprite("entities/statue");
-  }
-  else {
-    create_sprite("entities/block");
-  }
-
   set_direction(direction);
-
-  last_position.set_xy(x, y);
-  initial_position.set_xy(x, y);
-  initial_maximum_moves = maximum_moves;
+  create_sprite(sprite_name);
 }
 
 /**
@@ -83,15 +81,18 @@ Block::~Block() {
  */
 MapEntity* Block::parse(Game &game, std::istream &is, Layer layer, int x, int y) {
 
-  int direction, subtype, maximum_moves;
-  std::string name;
+  int direction, maximum_moves, can_be_pushed, can_be_pulled;
+  std::string name, sprite_name;
 
   FileTools::read(is, name);
   FileTools::read(is, direction);
-  FileTools::read(is, subtype);
+  FileTools::read(is, sprite_name);
+  FileTools::read(is, can_be_pushed);
+  FileTools::read(is, can_be_pulled);
   FileTools::read(is, maximum_moves);
 
-  return new Block(name, Layer(layer), x, y, direction, Subtype(subtype), maximum_moves);
+  return new Block(name, Layer(layer), x, y, direction, sprite_name,
+      bool(can_be_pushed), bool(can_be_pulled), maximum_moves);
 }
 
 /**
@@ -111,7 +112,7 @@ EntityType Block::get_type() {
  * @return true if this entity is displayed at the same level as the hero
  */
 bool Block::is_displayed_in_y_order() {
-  return subtype == STATUE;
+  return get_sprite().get_size().get_height() > 16;
 }
 
 /**
@@ -191,13 +192,20 @@ void Block::action_key_pressed() {
 bool Block::moved_by_hero() {
 
   Hero& hero = get_hero();
-  int direction = get_direction();
+  bool pulling = hero.is_grabbing_or_pulling();
+  int allowed_direction = get_direction();
+  int hero_direction = hero.get_animation_direction();
+  if (pulling) {
+    // the movement direction is backwards
+    hero_direction = (hero_direction + 2) % 4;
+  }
 
-  if (get_movement() != NULL							// the block is already moving
-      || maximum_moves == 0							// the block cannot move anymore
-      || System::now() < when_can_move						// the block cannot move for a while
-      || (direction != -1 && hero.get_animation_direction() != direction)	// the block cannot move in this direction
-      || (hero.is_grabbing_or_pulling() && subtype != STATUE)) {		// only statues can be pulled
+  if (get_movement() != NULL                // the block is already moving
+      || maximum_moves == 0                 // the block cannot move anymore
+      || System::now() < when_can_move      // the block cannot move for a while
+      || (pulling && !can_be_pulled)        // the hero tries to pull a block that cannot be pulled
+      || (!pulling && !can_be_pushed)       // the hero tries to push a block that cannot be pushed
+      || (allowed_direction != -1 && hero_direction != allowed_direction)) { // incorrect direction
     return false;
   }
 
@@ -276,6 +284,7 @@ void Block::notify_position_changed() {
  * @brief Resets the block at its initial position.
  */
 void Block::reset() {
+
   set_xy(initial_position);
   this->maximum_moves = initial_maximum_moves;
 }

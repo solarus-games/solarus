@@ -22,61 +22,83 @@ import org.solarus.editor.gui.*;
 import org.solarus.editor.map_editor_actions.*;
 import org.solarus.editor.entities.Block.*;
 import java.awt.event.*;
+import javax.swing.*;
 
 /**
  * A component to edit a block.
  */
 public class EditBlockComponent extends EditEntityComponent {
 
-    // specific fields of this entity
-    private EnumerationChooser<MaximumMoves> maximumMovesField;
+  // specific fields of this entity
+  private ResourceChooser spriteField;
+  private JCheckBox canBePushedField;
+  private JCheckBox canBePulledField;
+  private EnumerationChooser<MaximumMoves> maximumMovesField;
 
-    /**
-     * Constructor.
-     * @param map the map
-     * @param entity the entity to edit
-     */
-    public EditBlockComponent(Map map, MapEntity entity) {
-	super(map, entity);
-    }
+  /**
+   * Constructor.
+   * @param map the map
+   * @param entity the entity to edit
+   */
+  public EditBlockComponent(Map map, MapEntity entity) {
+    super(map, entity);
+  }
 
-    /**
-     * Creates the specific fields for this kind of entity.
-     */
-    protected void createSpecificFields() {
+  /**
+   * Creates the specific fields for this kind of entity.
+   */
+  protected void createSpecificFields() {
 
-	// maximum moves
-	maximumMovesField = new EnumerationChooser<MaximumMoves>(MaximumMoves.class);
-	addField("Maximum moves", maximumMovesField);
+    // sprite name
+    spriteField = new ResourceChooser(ResourceType.SPRITE, true);
+    addField("Sprite", spriteField);
 
-	subtypeField.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent ev) {
-		    if (subtypeField.getValue() == Subtype.STATUE) {
-			maximumMovesField.setValue(MaximumMoves.INFINITE);
-			directionField.setDirection(-1);
-		    }
-		}
-	    });
-    }
+    // can be pushed?
+    canBePushedField = new JCheckBox("Can be pushed");
+    addField("Interactions", canBePushedField);
 
-    /**
-     * Updates the information displayed in the fields.
-     */
-    public void update() {
-	super.update(); // update the common fields
+    // can be pushed?
+    canBePulledField = new JCheckBox("Can be pulled");
+    addField("", canBePulledField);
 
-	Block block = (Block) entity;
-	MaximumMoves maximumMoves = MaximumMoves.get(block.getIntegerProperty("maximumMoves"));
-	maximumMovesField.setValue(maximumMoves);
-    }
+    // maximum moves
+    maximumMovesField = new EnumerationChooser<MaximumMoves>(MaximumMoves.class);
+    addField("Maximum moves", maximumMovesField);
+  }
 
-    /**
-     * Returns the specific part of the action made on the entity.
-     * @return the specific part of the action made on the entity
-     */
-    protected ActionEditEntitySpecific getSpecificAction() {
+  /**
+   * Updates the information displayed in the fields.
+   */
+  public void update() {
+    super.update(); // update the common fields
 
-	MaximumMoves maximumMoves = maximumMovesField.getValue();
-	return new ActionEditEntitySpecific(entity, Integer.toString(maximumMoves.getId()));
-    }
+    Block block = (Block) entity;
+    String sprite = block.getProperty("sprite");
+    boolean canBePushed = block.getBooleanProperty("canBePushed");
+    boolean canBePulled = block.getBooleanProperty("canBePulled");
+    MaximumMoves maximumMoves = MaximumMoves.get(block.getIntegerProperty("maximumMoves"));
+
+    spriteField.setSelectedId(sprite);
+    canBePushedField.setSelected(canBePushed);
+    canBePulledField.setSelected(canBePulled);
+    maximumMovesField.setValue(maximumMoves);
+  }
+
+  /**
+   * Returns the specific part of the action made on the entity.
+   * @return the specific part of the action made on the entity
+   */
+  protected ActionEditEntitySpecific getSpecificAction() {
+
+    String sprite = spriteField.getSelectedId();
+    boolean canBePushed = canBePushedField.isSelected();
+    boolean canBePulled = canBePulledField.isSelected();
+    MaximumMoves maximumMoves = maximumMovesField.getValue();
+
+    return new ActionEditEntitySpecific(entity,
+	sprite,
+	canBePushed ? "1" : "0",
+	canBePulled ? "1" : "0",
+	Integer.toString(maximumMoves.getId()));
+  }
 }

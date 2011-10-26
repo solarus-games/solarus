@@ -480,7 +480,6 @@ enables or disables a teletransporter
 enables or disables all teletransporters having a common prefix
 
 - <tt>sol.map.block_is_enabled(block_name)</tt>:
-3	entities/sign	Sign
 returns whether a block is enabled
 
 - <tt>sol.map.block_set_enabled(block_name, enable)</tt>:

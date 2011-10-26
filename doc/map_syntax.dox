@@ -344,20 +344,22 @@ There are three possible options:
 
 Syntax of a block:
 @verbatim
-9	layer	x	y	entity_name	direction	subtype	maximum_moves
+9	layer	x	y	entity_name	direction	sprite_name	pushable	pullable	maximum_moves
 @endverbatim
 
-Subtypes of blocks:
-- 0: a normal block (can only be pushed)
-- 1: a statue (can be pushed or pulled)
+<tt>sprite_name</tt> is the animation set id of the sprite to display for this block.
 
-<tt>maximum_moves</tt> indicates what happens when the hero tries to push the block:
-- 0: cannot be pushed
-- 1: can be pushed only once
-- 2: can be pushed without limit
+<tt>pushable</tt> (0 or 1) indicates whether the block can be pushed.
 
-The direction of the block indicates in which direction (0 to 3) it can be pushed.
-A value of -1 means that it can be pushed in any direction.
+<tt>pullable</tt> (0 or 1) indicates whether the block can be pulled.
+
+<tt>maximum_moves</tt> indicates what happens when the hero tries to push or pull the block:
+- 0: cannot be moved
+- 1: can be moved only once
+- 2: can be moved without limit
+
+The direction of the block indicates in which direction (0 to 3) it can be pushed or pulled.
+A value of -1 means that it can be pushed or pulled in any direction.
 
 
 @section dynamic_tile Dynamic tile (10)

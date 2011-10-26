@@ -5743,12 +5743,10 @@
 7	1	152	1941	evil_tile_19	3	evil_tile	0	-1	_random	1	-1
 7	1	152	1925	evil_tile_20	3	evil_tile	0	-1	_random	1	-1
 7	1	1680	565	enemy_24	3	lizalfos	0	-1	_random	1	-1
-9	1	160	2141	block_2	-1	entities/block	1	0	1
-9	1	192	2141	block_3	2	entities/block	1	0	1
-9	1	128	2141	block_4	2	entities/block	0	1	2
-9	1	240	2141	block_5	-1	entities/sign	1	1	2
-9	1	72	2117	block_6	-1	npc/agahnim	1	1	2
-9	1	72	2189	block_7	-1	entities/torch	1	1	2
+9	1	112	2069	block_2	-1	entities/block	1	0	1
+9	1	80	2085	block_3	2	entities/block	1	0	1
+9	1	80	2069	block_4	2	entities/block	0	1	2
+9	1	48	2125	block_7	-1	entities/torch	1	1	2
 0	2	112	2032	96	8	411
 0	2	296	1856	8	96	416
 0	2	112	1808	96	8	411

@@ -399,7 +399,7 @@
 1	0	288	589	from_1F_hole_2_west	-1	0
 1	0	304	589	from_1F_hole_2_east	-1	0
 4	0	88	117	0	heart	1	-1
-9	0	376	197	block	-1	1	2
+9	0	376	197	block	-1	entities/statue	1	1	2
 1	0	64	469	from_1F_first_stairs	3	0
 15	0	296	64	16	16	1
 15	0	376	80	32	16	1

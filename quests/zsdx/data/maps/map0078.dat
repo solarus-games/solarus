@@ -465,16 +465,16 @@
 17	1	88	125	6
 17	1	168	125	6
 17	1	184	125	6
-9	1	296	285	block	-1	0	2
+9	1	296	285	block	-1	entities/block	1	0	2
 17	1	280	285	2
 1	1	368	589	from_outside_w	1	0
 2	1	360	600	16	16	teletransporter	0	1	7	from_fairy_cave_w
 17	1	152	125	6
-9	1	136	253	block_2	-1	0	2
-9	1	88	285	block_3	-1	0	2
-9	1	72	317	block_4	-1	0	2
+9	1	136	253	block_2	-1	entities/block	1	0	2
+9	1	88	285	block_3	-1	entities/block	1	0	2
+9	1	72	317	block_4	-1	entities/block	1	0	2
 17	1	136	341	0
-9	1	200	469	block_5	-1	0	2
+9	1	200	469	block_5	-1	entities/block	1	0	2
 1	1	560	589	from_outside_e	1	0
 2	1	552	600	16	16	teletransporter_3	0	1	7	from_fairy_cave_e
 12	1	544	456	8	8	custom_obstacle	1	1	1	1

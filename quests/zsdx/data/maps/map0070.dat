@@ -210,26 +210,26 @@
 1	0	120	309	main_entrance	1	0
 2	0	112	320	16	16	to_outside	0	1	4	out_rupee_house
 8	0	80	213	game_1_man	3	1	npc/static_villager11	map
-9	0	240	141	block_3	-1	0	0
-9	0	128	149	block_2	-1	0	0
-9	0	256	109	block_4	-1	0	0
-9	0	272	157	block_5	-1	0	0
-9	0	272	189	block_6	-1	0	0
-9	0	48	141	block_7	-1	0	0
-9	0	264	205	block_8	-1	0	0
-9	0	208	189	block_9	-1	0	0
-9	0	344	149	block_10	-1	0	0
-9	0	216	205	block_11	-1	0	0
-9	0	208	221	block_12	-1	0	0
+9	0	240	141	block_3	-1	entities/block	1	0	0
+9	0	128	149	block_2	-1	entities/block	1	0	0
+9	0	256	109	block_4	-1	entities/block	1	0	0
+9	0	272	157	block_5	-1	entities/block	1	0	0
+9	0	272	189	block_6	-1	entities/block	1	0	0
+9	0	48	141	block_7	-1	entities/block	1	0	0
+9	0	264	205	block_8	-1	entities/block	1	0	0
+9	0	208	189	block_9	-1	entities/block	1	0	0
+9	0	344	149	block_10	-1	entities/block	1	0	0
+9	0	216	205	block_11	-1	entities/block	1	0	0
+9	0	208	221	block_12	-1	entities/block	1	0	0
 8	0	144	213	game_3_man	3	1	npc/static_villager8	map
 10	0	232	184	16	8	game_3_barrier_1	70	1
 10	0	280	88	16	8	game_3_barrier_3	70	1
 10	0	384	96	16	8	game_3_final_barrier	70	1
 10	0	352	200	8	16	game_3_middle_barrier	71	1
-9	0	240	213	block_13	-1	0	0
-9	0	248	77	block_14	-1	0	0
-9	0	232	157	block_15	-1	0	0
-9	0	256	181	block_16	-1	0	0
+9	0	240	213	block_13	-1	entities/block	1	0	0
+9	0	248	77	block_14	-1	entities/block	1	0	0
+9	0	232	157	block_15	-1	entities/block	1	0	0
+9	0	256	181	block_16	-1	entities/block	1	0	0
 8	0	112	213	game_2_man	3	1	npc/static_villager2	map
 10	0	208	152	16	8	game_3_barrier_2	70	1
 0	2	64	312	96	8	263

@@ -1123,7 +1123,7 @@
 1	1	1048	941	destination_point_2	-1	1
 1	1	1064	941	destination_point_3	-1	1
 5	1	816	296	chest	1	feather	1	504
-9	1	1048	349	weak_floor_block	-1	0	0
+9	1	1048	349	weak_floor_block	-1	entities/block	1	0	0
 17	1	1072	237	2
 17	1	1088	221	4
 17	1	1096	309	6
@@ -1133,9 +1133,9 @@
 17	1	1072	205	6
 17	1	840	909	2
 5	1	880	872	chest_2	0	small_key	1	505
-9	1	824	909	block	-1	0	2
-9	1	824	893	block_3	-1	0	2
-9	1	840	925	block_4	-1	0	0
+9	1	824	909	block	-1	entities/block	1	0	2
+9	1	824	893	block_3	-1	entities/block	1	0	2
+9	1	840	925	block_4	-1	entities/block	1	0	0
 12	1	288	888	32	8	custom_obstacle	1	1	1	1
 12	1	288	912	32	8	custom_obstacle_2	1	1	1	1
 12	1	648	1048	8	32	custom_obstacle_3	1	1	1	1
@@ -1206,7 +1206,7 @@
 17	1	88	629	2
 17	1	88	645	2
 17	1	88	661	2
-9	1	416	221	block_5	-1	0	0
+9	1	416	221	block_5	-1	entities/block	1	0	0
 15	1	424	192	16	16	0
 12	1	208	256	8	32	custom_obstacle_6	1	1	1	1
 12	1	232	256	8	32	custom_obstacle_8	1	1	1	1
@@ -1262,7 +1262,7 @@
 18	1	368	424	torches_door_2	1	0	-1
 18	1	368	376	torches_door	3	0	-1
 17	1	592	237	4
-9	1	608	253	block_7	-1	0	2
+9	1	608	253	block_7	-1	entities/block	1	0	2
 4	1	704	189	0	heart	1	-1
 17	1	320	757	6
 17	1	336	757	6
@@ -1310,7 +1310,7 @@
 13	1	760	957	64	16	puzzle_sensor_3	0
 13	1	616	829	64	16	puzzle_sensor_1	0
 13	1	760	829	64	16	puzzle_sensor_4	0
-9	1	240	509	block_6	-1	0	2
+9	1	240	509	block_6	-1	entities/block	1	0	2
 0	2	88	960	32	8	560
 0	2	664	688	96	8	560
 0	2	664	712	96	8	559

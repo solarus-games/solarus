@@ -641,16 +641,16 @@
 0	1	1056	1200	16	48	521
 0	1	1152	1072	16	48	521
 0	1	800	536	16	16	76
-9	1	808	653	block	-1	0	1
-9	1	792	637	block_2	-1	0	0
-9	1	824	669	block_3	-1	0	0
-9	1	824	637	block_4	-1	0	0
-9	1	792	669	block_5	-1	0	0
-9	1	1448	909	block_6	-1	0	1
-9	1	1432	893	block_7	-1	0	0
-9	1	1464	925	block_8	-1	0	0
-9	1	1464	893	block_9	-1	0	0
-9	1	1432	925	block_10	-1	0	0
+9	1	808	653	block	-1	entities/block	1	0	1
+9	1	792	637	block_2	-1	entities/block	1	0	0
+9	1	824	669	block_3	-1	entities/block	1	0	0
+9	1	824	637	block_4	-1	entities/block	1	0	0
+9	1	792	669	block_5	-1	entities/block	1	0	0
+9	1	1448	909	block_6	-1	entities/block	1	0	1
+9	1	1432	893	block_7	-1	entities/block	1	0	0
+9	1	1464	925	block_8	-1	entities/block	1	0	0
+9	1	1464	893	block_9	-1	entities/block	1	0	0
+9	1	1432	925	block_10	-1	entities/block	1	0	0
 2	1	744	864	128	80	hole_to_B3_A	0	1	50	_same
 4	1	104	197	0	_random	1	-1
 4	1	232	197	0	_random	1	-1

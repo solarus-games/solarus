@@ -448,12 +448,12 @@
 11	1	592	48	water_7_on_switch	1	0	0
 4	1	488	61	0	_none	1	-1
 4	1	600	61	0	_none	1	-1
-9	1	536	205	water_2_on_block	0	0	2
-9	1	552	205	water_2_off_block	2	0	2
+9	1	536	205	water_2_on_block	0	entities/block	1	0	2
+9	1	552	205	water_2_off_block	2	entities/block	1	0	2
 11	1	264	232	water_6_on_switch	1	0	0
 4	1	272	245	0	_none	1	-1
-9	1	232	373	water_4_on_block	3	0	2
-9	1	232	389	water_4_off_block	1	0	2
+9	1	232	373	water_4_on_block	3	entities/block	1	0	2
+9	1	232	389	water_4_off_block	1	entities/block	1	0	2
 10	1	288	496	96	96	water_5_full	424	0
 10	1	296	504	80	80	water_5_less_1	424	0
 10	1	304	512	64	64	water_5_less_2	424	0

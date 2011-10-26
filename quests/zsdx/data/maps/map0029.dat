@@ -447,7 +447,7 @@
 2	0	200	168	16	16	teletransporter_2	1	1	29	no_left_destination_point
 2	0	264	200	16	16	teletransporter_3	1	1	29	no_right_destination_point
 2	0	192	752	16	16	to_outside_west	0	1	6	from_twin_caves_west
-9	0	312	389	block	-1	0	2
+9	0	312	389	block	-1	entities/block	1	0	2
 11	0	304	704	door_switch	1	0	0
 4	0	312	717	0	_none	1	-1
 4	0	88	717	0	_random	1	-1
@@ -459,7 +459,7 @@
 12	0	248	608	32	8	custom_obstacle_2	1	1	1	1
 1	0	200	733	from_outside_west	1	0
 2	0	608	752	16	16	to_outside_east	0	1	6	from_twin_caves_east
-9	0	312	373	block_2	-1	0	0
+9	0	312	373	block_2	-1	entities/block	1	0	0
 5	0	464	336	chest	0	rupee	3	70
 1	0	440	557	destination_point_F	-1	1
 1	0	440	589	destination_point_G	-1	1

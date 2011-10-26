@@ -701,9 +701,9 @@
 12	1	112	184	8	8	custom_obstacle_3	1	1	1	1
 12	1	88	544	8	8	custom_obstacle_4	1	1	1	1
 12	1	112	544	8	8	custom_obstacle_5	1	1	1	1
-9	1	264	653	block	-1	0	1
-9	1	264	669	block_2	-1	0	1
-9	1	264	685	block_3	-1	0	1
+9	1	264	653	block	-1	entities/block	1	0	1
+9	1	264	669	block_2	-1	entities/block	1	0	1
+9	1	264	685	block_3	-1	entities/block	1	0	1
 12	1	296	648	8	8	custom_obstacle_6	1	1	1	1
 12	1	296	672	8	8	custom_obstacle_7	1	1	1	1
 12	1	552	648	8	8	custom_obstacle_8	1	1	1	1

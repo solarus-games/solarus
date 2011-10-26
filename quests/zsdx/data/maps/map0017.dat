@@ -306,7 +306,7 @@
 10	0	160	920	8	24	so_stair_1_enabled_1	288	1
 12	0	104	800	16	24	custom_obstacle_5	1	1	1	1
 12	0	232	808	16	16	custom_obstacle_6	1	1	1	1
-9	0	800	893	seroom_block_2	-1	0	0
+9	0	800	893	seroom_block_2	-1	entities/block	1	0	0
 7	0	752	917	seroom_enemy_2	2	tentacle	0	-1	_random	1	-1
 7	0	824	869	seroom_enemy_1	2	tentacle	0	-1	_random	1	-1
 7	0	784	941	seroom_enemy_3	2	tentacle	0	-1	_random	1	-1
@@ -318,7 +318,7 @@
 7	0	792	861	seroom_enemy_6	2	tentacle	0	-1	_random	1	-1
 15	0	880	832	16	96	0
 15	0	896	912	64	16	0
-9	0	936	957	seroom_block_3	-1	0	0
+9	0	936	957	seroom_block_3	-1	entities/block	1	0	0
 14	0	952	957	crystal
 14	0	240	437	crystal_2
 14	0	240	437	crystal_3
@@ -718,14 +718,14 @@
 12	1	256	672	24	24	custom_obstacle_12	1	1	1	1
 6	1	96	688	72	8	jumper_7	2	40
 6	1	72	472	8	200	jumper_10	0	40
-9	1	640	493	block_12	-1	0	0
-9	1	656	509	block_13	3	0	2
+9	1	640	493	block_12	-1	entities/block	1	0	0
+9	1	656	509	block_13	3	entities/block	1	0	2
 5	1	784	512	chest	0	_none	1	224
 7	1	656	677	enemy_group1_1	2	skeletor	0	-1	_random	1	-1
 7	1	432	613	enemy_group1_3	2	skeletor	0	-1	_random	1	-1
 7	1	584	717	enemy_group1_2	2	skeletor	0	-1	_random	1	-1
-9	1	288	693	block_14	-1	0	0
-9	1	304	693	block_15	1	0	2
+9	1	288	693	block_14	-1	entities/block	1	0	0
+9	1	304	693	block_15	1	entities/block	1	0	2
 7	1	952	317	neroom_enemy_1	2	tentacle	0	-1	_random	1	-1
 7	1	912	317	neroom_enemy_2	2	tentacle	0	-1	_random	1	-1
 7	1	872	317	neroom_enemy_3	2	tentacle	0	-1	_random	1	-1
@@ -762,7 +762,7 @@
 8	1	200	613	torch4	3	0	entities/torch	item#lamp
 8	1	152	613	torch3	3	0	entities/torch	item#lamp
 8	1	152	549	torch1	3	0	entities/torch	item#lamp
-9	1	176	581	block_10	-1	0	0
+9	1	176	581	block_10	-1	entities/block	1	0	0
 6	1	160	528	32	8	jumper_6	2	40
 6	1	160	616	32	8	jumper_9	6	40
 6	1	136	552	8	48	jumper_12	4	40
@@ -784,24 +784,24 @@
 15	1	336	40	16	80	1
 5	1	288	48	chest_2	0	small_key	1	222
 14	1	296	341	crystal_4
-9	1	448	53	block	-1	0	0
-9	1	448	117	block_2	-1	0	0
-9	1	480	53	block_4	-1	0	0
-9	1	480	117	block_5	-1	0	0
-9	1	496	117	block_6	-1	0	0
-9	1	496	53	block_7	-1	0	0
-9	1	528	53	block_8	-1	0	0
-9	1	528	117	block_9	-1	0	0
-9	1	544	117	block_11	-1	0	0
-9	1	544	53	block_16	-1	0	0
-9	1	432	53	block_17	-1	0	0
-9	1	432	117	block_18	-1	0	0
-9	1	400	53	block_19	-1	0	0
-9	1	400	117	block_20	-1	0	0
-9	1	384	53	block_21	-1	0	0
-9	1	384	117	block_22	-1	0	0
-9	1	416	53	block_23	-1	0	0
-9	1	440	205	block_24	-1	1	0
+9	1	448	53	block	-1	entities/block	1	0	0
+9	1	448	117	block_2	-1	entities/block	1	0	0
+9	1	480	53	block_4	-1	entities/block	1	0	0
+9	1	480	117	block_5	-1	entities/block	1	0	0
+9	1	496	117	block_6	-1	entities/block	1	0	0
+9	1	496	53	block_7	-1	entities/block	1	0	0
+9	1	528	53	block_8	-1	entities/block	1	0	0
+9	1	528	117	block_9	-1	entities/block	1	0	0
+9	1	544	117	block_11	-1	entities/block	1	0	0
+9	1	544	53	block_16	-1	entities/block	1	0	0
+9	1	432	53	block_17	-1	entities/block	1	0	0
+9	1	432	117	block_18	-1	entities/block	1	0	0
+9	1	400	53	block_19	-1	entities/block	1	0	0
+9	1	400	117	block_20	-1	entities/block	1	0	0
+9	1	384	53	block_21	-1	entities/block	1	0	0
+9	1	384	117	block_22	-1	entities/block	1	0	0
+9	1	416	53	block_23	-1	entities/block	1	0	0
+9	1	440	205	block_24	-1	entities/statue	1	1	0
 12	1	464	288	8	32	custom_obstacle_21	1	1	1	1
 12	1	488	288	8	32	custom_obstacle_22	1	1	1	1
 6	1	416	224	128	8	jumper_14	6	40
@@ -809,38 +809,38 @@
 6	1	496	304	48	8	jumper_15	2	40
 18	1	760	136	door_3	0	1	223
 18	1	808	136	door_4	2	1	223
-9	1	576	53	block_25	-1	0	0
-9	1	512	53	block_26	-1	0	0
-9	1	560	117	block_27	-1	0	0
-9	1	464	117	block_28	-1	0	0
-9	1	368	117	block_29	-1	0	0
-9	1	576	117	block_30	-1	0	0
+9	1	576	53	block_25	-1	entities/block	1	0	0
+9	1	512	53	block_26	-1	entities/block	1	0	0
+9	1	560	117	block_27	-1	entities/block	1	0	0
+9	1	464	117	block_28	-1	entities/block	1	0	0
+9	1	368	117	block_29	-1	entities/block	1	0	0
+9	1	576	117	block_30	-1	entities/block	1	0	0
 14	1	328	61	crystal_6
 5	1	48	48	chest_3	0	map	1	225
-9	1	200	141	block_31	-1	0	0
-9	1	200	125	block_32	-1	0	0
-9	1	184	125	block_33	1	0	1
-9	1	168	125	block_34	2	0	1
-9	1	152	109	block_35	2	0	1
-9	1	152	141	block_36	2	0	0
-9	1	184	93	block_37	2	0	0
-9	1	200	109	block_38	-1	0	1
-9	1	184	77	block_39	2	0	0
-9	1	168	77	block_40	2	0	0
-9	1	136	93	block_41	2	0	1
-9	1	152	77	block_42	2	0	0
-9	1	104	61	block_43	2	0	0
-9	1	104	77	block_44	2	0	0
-9	1	104	93	block_45	2	0	0
-9	1	104	141	block_46	2	0	0
-9	1	120	141	block_47	2	0	0
-9	1	136	141	block_48	2	0	0
-9	1	56	141	block_49	2	0	0
-9	1	72	141	block_50	2	0	0
-9	1	88	141	block_51	2	0	0
-9	1	88	109	block_52	0	0	1
-9	1	72	109	block_53	1	0	1
-9	1	56	109	block_54	2	0	0
+9	1	200	141	block_31	-1	entities/block	1	0	0
+9	1	200	125	block_32	-1	entities/block	1	0	0
+9	1	184	125	block_33	1	entities/block	1	0	1
+9	1	168	125	block_34	2	entities/block	1	0	1
+9	1	152	109	block_35	2	entities/block	1	0	1
+9	1	152	141	block_36	2	entities/block	1	0	0
+9	1	184	93	block_37	2	entities/block	1	0	0
+9	1	200	109	block_38	-1	entities/block	1	0	1
+9	1	184	77	block_39	2	entities/block	1	0	0
+9	1	168	77	block_40	2	entities/block	1	0	0
+9	1	136	93	block_41	2	entities/block	1	0	1
+9	1	152	77	block_42	2	entities/block	1	0	0
+9	1	104	61	block_43	2	entities/block	1	0	0
+9	1	104	77	block_44	2	entities/block	1	0	0
+9	1	104	93	block_45	2	entities/block	1	0	0
+9	1	104	141	block_46	2	entities/block	1	0	0
+9	1	120	141	block_47	2	entities/block	1	0	0
+9	1	136	141	block_48	2	entities/block	1	0	0
+9	1	56	141	block_49	2	entities/block	1	0	0
+9	1	72	141	block_50	2	entities/block	1	0	0
+9	1	88	141	block_51	2	entities/block	1	0	0
+9	1	88	109	block_52	0	entities/block	1	0	1
+9	1	72	109	block_53	1	entities/block	1	0	1
+9	1	56	109	block_54	2	entities/block	1	0	0
 19	1	168	792	stairs	1	0
 19	1	864	88	stairs_4	1	1
 19	1	936	88	stairs_5	1	0

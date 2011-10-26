@@ -281,7 +281,7 @@
 7	1	64	293	enemy	0	pike_auto	0	-1	_random	1	-1
 7	1	64	293	enemy	0	pike_auto	0	-1	_random	1	-1
 5	1	168	656	chest	0	piece_of_heart	1	-1
-9	1	176	797	block	-1	0	1
+9	1	176	797	block	-1	entities/block	1	0	1
 7	1	96	469	enemy_3	0	pike_detect	0	-1	_random	1	-1
 7	1	96	405	enemy_11	0	pike_detect	0	-1	_random	1	-1
 7	1	96	373	enemy_15	0	pike_detect	0	-1	_random	1	-1

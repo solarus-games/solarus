@@ -590,10 +590,10 @@
 11	1	392	584	switch	1	0	0
 11	1	392	696	switch_2	1	0	0
 5	1	792	888	chest	1	_none	1	-1
-9	1	712	845	block_59	-1	1	0
-9	1	712	973	block_60	-1	1	0
-9	1	904	973	block_61	-1	1	0
-9	1	904	845	block_62	-1	1	2
+9	1	712	845	block_59	-1	entities/statue	1	1	0
+9	1	712	973	block_60	-1	entities/statue	1	1	0
+9	1	904	973	block_61	-1	entities/statue	1	1	0
+9	1	904	845	block_62	-1	entities/statue	1	1	2
 12	1	520	552	8	24	custom_obstacle_5	1	1	1	1
 12	1	520	720	8	24	custom_obstacle_6	1	1	1	1
 2	1	1040	1120	16	16	teletransporter	0	0	50	AL1

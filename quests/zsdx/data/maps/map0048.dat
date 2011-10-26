@@ -238,10 +238,10 @@
 5	0	1184	1368	chest_3	0	_none	1	-1
 11	0	1184	1448	switch	1	0	0
 4	0	1192	1461	0	_random	1	-1
-9	0	1152	1285	block_21	-1	0	1
-9	0	1168	1285	block_46	-1	0	1
-9	0	1216	1285	block_47	-1	0	1
-9	0	1232	1285	block_48	-1	0	1
+9	0	1152	1285	block_21	-1	entities/block	1	0	1
+9	0	1168	1285	block_46	-1	entities/block	1	0	1
+9	0	1216	1285	block_47	-1	entities/block	1	0	1
+9	0	1232	1285	block_48	-1	entities/block	1	0	1
 0	1	1000	808	576	192	303
 0	1	1560	824	16	80	261
 0	1	1016	808	544	16	259
@@ -953,54 +953,54 @@
 18	1	792	792	door	1	0	-1
 18	1	792	744	door_2	3	0	-1
 2	1	1680	864	176	80	hole_to_B2_A	0	1	49	_same
-9	1	168	77	block	-1	0	0
-9	1	152	93	block_2	-1	0	0
-9	1	136	109	block_3	-1	0	0
-9	1	120	125	block_4	-1	0	0
-9	1	104	141	block_5	-1	0	0
-9	1	120	157	block_6	-1	0	0
-9	1	136	173	block_7	-1	0	0
-9	1	152	189	block_8	-1	0	0
-9	1	168	205	block_9	-1	0	0
-9	1	184	189	block_10	-1	0	0
-9	1	200	173	block_11	-1	0	0
-9	1	232	141	block_12	-1	0	0
-9	1	216	125	block_13	-1	0	0
-9	1	200	109	block_14	-1	0	0
-9	1	184	93	block_15	-1	0	0
-9	1	168	141	block_16	-1	0	0
-9	1	152	141	block_17	-1	0	0
-9	1	168	125	block_18	-1	0	0
-9	1	184	141	block_19	-1	0	0
-9	1	168	157	block_20	-1	0	0
-9	1	216	157	LD12_block	-1	0	1
+9	1	168	77	block	-1	entities/block	1	0	0
+9	1	152	93	block_2	-1	entities/block	1	0	0
+9	1	136	109	block_3	-1	entities/block	1	0	0
+9	1	120	125	block_4	-1	entities/block	1	0	0
+9	1	104	141	block_5	-1	entities/block	1	0	0
+9	1	120	157	block_6	-1	entities/block	1	0	0
+9	1	136	173	block_7	-1	entities/block	1	0	0
+9	1	152	189	block_8	-1	entities/block	1	0	0
+9	1	168	205	block_9	-1	entities/block	1	0	0
+9	1	184	189	block_10	-1	entities/block	1	0	0
+9	1	200	173	block_11	-1	entities/block	1	0	0
+9	1	232	141	block_12	-1	entities/block	1	0	0
+9	1	216	125	block_13	-1	entities/block	1	0	0
+9	1	200	109	block_14	-1	entities/block	1	0	0
+9	1	184	93	block_15	-1	entities/block	1	0	0
+9	1	168	141	block_16	-1	entities/block	1	0	0
+9	1	152	141	block_17	-1	entities/block	1	0	0
+9	1	168	125	block_18	-1	entities/block	1	0	0
+9	1	184	141	block_19	-1	entities/block	1	0	0
+9	1	168	157	block_20	-1	entities/block	1	0	0
+9	1	216	157	LD12_block	-1	entities/block	1	0	1
 1	1	248	37	from_B2_C	3	0
 19	1	240	24	stairs_2	1	1
-9	1	872	1405	block_22	-1	0	0
-9	1	888	1405	block_23	-1	0	0
-9	1	904	1405	block_24	-1	0	0
-9	1	920	1405	block_25	-1	0	0
-9	1	728	1437	block_26	-1	0	0
-9	1	744	1437	block_27	-1	0	0
-9	1	760	1437	block_28	-1	0	0
-9	1	776	1437	block_29	-1	0	0
-9	1	792	1437	block_30	-1	0	0
-9	1	504	1437	block_31	-1	0	0
-9	1	520	1437	block_32	-1	0	0
-9	1	536	1437	block_33	-1	0	0
-9	1	552	1437	block_34	-1	0	0
-9	1	568	1437	block_35	-1	0	0
-9	1	376	1437	block_36	-1	0	0
-9	1	392	1437	block_37	-1	0	0
-9	1	408	1437	block_38	-1	0	0
-9	1	424	1437	block_39	-1	0	0
+9	1	872	1405	block_22	-1	entities/block	1	0	0
+9	1	888	1405	block_23	-1	entities/block	1	0	0
+9	1	904	1405	block_24	-1	entities/block	1	0	0
+9	1	920	1405	block_25	-1	entities/block	1	0	0
+9	1	728	1437	block_26	-1	entities/block	1	0	0
+9	1	744	1437	block_27	-1	entities/block	1	0	0
+9	1	760	1437	block_28	-1	entities/block	1	0	0
+9	1	776	1437	block_29	-1	entities/block	1	0	0
+9	1	792	1437	block_30	-1	entities/block	1	0	0
+9	1	504	1437	block_31	-1	entities/block	1	0	0
+9	1	520	1437	block_32	-1	entities/block	1	0	0
+9	1	536	1437	block_33	-1	entities/block	1	0	0
+9	1	552	1437	block_34	-1	entities/block	1	0	0
+9	1	568	1437	block_35	-1	entities/block	1	0	0
+9	1	376	1437	block_36	-1	entities/block	1	0	0
+9	1	392	1437	block_37	-1	entities/block	1	0	0
+9	1	408	1437	block_38	-1	entities/block	1	0	0
+9	1	424	1437	block_39	-1	entities/block	1	0	0
 5	1	368	1472	chest_2	0	_none	1	-1
-9	1	728	1341	block_40	-1	0	0
-9	1	792	1341	block_41	-1	0	0
-9	1	568	1341	block_42	-1	0	0
-9	1	504	1341	block_43	-1	0	0
-9	1	536	1421	block_44	-1	0	0
-9	1	760	1421	block_45	-1	0	0
+9	1	728	1341	block_40	-1	entities/block	1	0	0
+9	1	792	1341	block_41	-1	entities/block	1	0	0
+9	1	568	1341	block_42	-1	entities/block	1	0	0
+9	1	504	1341	block_43	-1	entities/block	1	0	0
+9	1	536	1421	block_44	-1	entities/block	1	0	0
+9	1	760	1421	block_45	-1	entities/block	1	0	0
 12	1	176	1576	8	8	custom_obstacle	1	1	1	1
 12	1	200	1576	8	8	custom_obstacle_2	1	1	1	1
 12	1	528	1640	8	8	custom_obstacle_3	1	1	1	1

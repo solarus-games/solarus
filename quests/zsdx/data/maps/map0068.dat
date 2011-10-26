@@ -203,8 +203,8 @@
 4	0	352	565	0	_none	1	-1
 11	0	72	184	water_2_on_switch	1	0	0
 4	0	80	197	0	_none	1	-1
-9	0	776	277	water_8_on_block	3	0	2
-9	0	776	293	water_8_off_block	1	0	2
+9	0	776	277	water_8_on_block	3	entities/block	1	0	2
+9	0	776	293	water_8_off_block	1	entities/block	1	0	2
 4	0	128	197	0	_random	1	-1
 0	1	40	360	80	64	2
 0	1	712	40	32	96	2
@@ -531,16 +531,16 @@
 6	1	632	72	8	32	jumper_8	0	40
 11	1	64	560	water_1_on_switch	1	0	0
 4	1	72	573	0	_none	1	-1
-9	1	72	269	water_3_on_block	0	0	2
-9	1	88	269	water_3_off_block	2	0	2
+9	1	72	269	water_3_on_block	0	entities/block	1	0	2
+9	1	88	269	water_3_off_block	2	entities/block	1	0	2
 11	1	384	64	water_4_on_switch	1	0	0
 4	1	392	77	0	_none	1	-1
 11	1	576	512	water_6_on_switch	1	0	0
 4	1	584	525	0	_none	1	-1
-9	1	496	405	water_5_on_block	3	0	2
-9	1	496	421	water_5_off_block	1	0	2
-9	1	760	61	water_7_on_block	0	0	2
-9	1	776	61	water_7_off_block	2	0	2
+9	1	496	405	water_5_on_block	3	entities/block	1	0	2
+9	1	496	421	water_5_off_block	1	entities/block	1	0	2
+9	1	760	61	water_7_on_block	0	entities/block	1	0	2
+9	1	776	61	water_7_off_block	2	entities/block	1	0	2
 10	1	56	440	96	48	water_1_less_1	424	0
 10	1	64	448	80	32	water_1_less_2	424	0
 10	1	72	456	64	16	water_1_less_3	424	0

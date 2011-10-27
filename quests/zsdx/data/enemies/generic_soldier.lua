@@ -16,7 +16,7 @@
 --   hurt_sound_style = "normal"
 -- })
 
--- The parameter of set_properties() is an array.
+-- The parameter of set_properties() is a table.
 -- Its values are all optional except main_sprite
 -- and sword_sprite.
 
@@ -129,6 +129,7 @@ function event_custom_attack_received(attack, sprite)
     local angle = sol.main.get_angle(hero_x, hero_y, x, y)
     movement = sol.main.rectilinear_movement_create(128, angle)
     sol.main.movement_set_property(movement, "max_distance", 26)
+    sol.main.movement_set_property(movement, "smooth", true)
     sol.enemy.start_movement(movement)
   end
 end

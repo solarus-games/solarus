@@ -127,7 +127,8 @@ function event_custom_attack_received(attack, sprite)
     local x, y = sol.enemy.get_position()
     local hero_x, hero_y = sol.map.hero_get_position()
     local angle = sol.main.get_angle(hero_x, hero_y, x, y)
-    movement = sol.main.temporal_movement_create(128, angle, 200)
+    movement = sol.main.rectilinear_movement_create(128, angle)
+    sol.main.movement_set_property(movement, "max_distance", 26)
     sol.enemy.start_movement(movement)
   end
 end

@@ -113,20 +113,21 @@ void MagicBar::update() {
 
   // current magic
   int current_magic = equipment->get_magic();
-  if (current_magic < current_magic_displayed) {
-    current_magic_displayed = current_magic;
-    need_rebuild = true;
-  }
-  else if (current_magic > current_magic_displayed
-	   && System::now() > next_magic_update_date) {
+  if (current_magic != current_magic_displayed
+      && System::now() > next_magic_update_date) {
 
     next_magic_update_date = System::now() + 20;
-    current_magic_displayed++;
     need_rebuild = true;
 
-    // play the magic bar sound
-    if ((current_magic - current_magic_displayed) % 10 == 1) {
-      Sound::play("magic_bar");
+    if (current_magic < current_magic_displayed) {
+      current_magic_displayed--;
+    }
+    else {
+      current_magic_displayed++;
+      // play the magic bar sound
+      if ((current_magic - current_magic_displayed) % 10 == 1) {
+        Sound::play("magic_bar");
+      }
     }
   }
 

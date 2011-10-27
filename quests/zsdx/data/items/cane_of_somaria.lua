@@ -5,13 +5,13 @@ function event_use()
   local magic_needed = 7
   if sol.game.get_magic() >= magic_needed then
 
-    sol.main.play_sound("cane")
-    sol.main.play_sound("magic_bar")
-    sol.game.remove_magic(magic_needed)
-
     local x, y, layer = get_block_position_from_hero()
 
     if not created then
+
+      sol.main.play_sound("cane")
+      sol.main.play_sound("magic_bar")
+      sol.game.remove_magic(magic_needed)
 
       -- create the Somaria block
       sol.map.block_create(x, y, layer, "somaria_block",
@@ -24,10 +24,25 @@ function event_use()
       created = true
     else
       -- reuse the old one
-      sol.map.block_set_position("somaria_block", x, y, layer)
+      local old_x, old_y, old_layer = sol.map.block_get_position("somaria_block")
+      if x ~= old_x or y ~= old_y or layer ~= old_layer then
+
+	sol.main.play_sound("cane")
+	sol.main.play_sound("magic_bar")
+	sol.game.remove_magic(magic_needed)
+
+	sol.map.block_set_position("somaria_block", x, y, layer)
+      end
     end
   else
-    sol.main.play_sound("wrong")
+
+    if created and sol.map.block_get_position("somaria_block") ~= -100 then
+      -- remove the previous block
+      sol.main.play_sound("cane")
+      sol.map.block_set_position("somaria_block", -100, 0)
+    else
+      sol.main.play_sound("wrong")
+    end
   end
   sol.item.set_finished()
 end

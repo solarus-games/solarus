@@ -359,12 +359,173 @@ void RectilinearMovement::set_suspended(bool suspended) {
 }
 
 /**
- * @brief Updates the x position of the entity if it wants to move.
- *
- * If the movement is attached to a map entity and obstacles are not ignored,
- * the move is done only only if there is no collision with the map.
+ * @brief Returns whether the movement adjusts its trajectory when
+ * an obstacle is reached.
+ * @return true if the movement is smooth
  */
-void RectilinearMovement::update_x() {
+bool RectilinearMovement::is_smooth() {
+  return this->smooth;
+}
+
+/**
+ * @brief Sets whether the movement adjusts its trajectory when
+ * an obstacle is reached.
+ * @param smooth true if the movement is smooth
+ */
+void RectilinearMovement::set_smooth(bool smooth) {
+  this->smooth = smooth;
+}
+
+/**
+ * @brief Updates the x position of the entity if it wants to move
+ * (smooth version).
+ */
+void RectilinearMovement::update_smooth_x() {
+
+  int x_move = get_x_move();
+  int y_move = get_y_move();
+  uint32_t x_delay = get_x_delay();
+
+  if (x_move != 0) { // the entity wants to move on x
+
+    // by default, next_move_date_x will be incremented by x_delay,
+    // unless we modify the movement in such a way that the
+    // x speed needs to be fixed
+    uint32_t next_move_date_x_increment = x_delay;
+
+    uint32_t now = System::now();
+    if (now >= get_next_move_date_x()) { // it's time to try a move
+
+      if (!test_collision_with_obstacles(x_move, 0)) {
+
+        translate_x(x_move); // make the move
+
+        if (y_move != 0 && test_collision_with_obstacles(0, y_move)) {
+          // if there is also a y move, and if this y move is illegal,
+          // we still allow the x move and we give it all the speed
+          next_move_date_x_increment = (int) (1000.0 / get_speed());
+        }
+      }
+      else {
+        if (y_move == 0) {
+          // the move on x is not possible: let's try
+          // to add a move on y to make a diagonal move
+
+          if (!test_collision_with_obstacles(x_move, 1)
+              && test_collision_with_obstacles(0, -1)) {
+            translate_xy(x_move, 1);
+            next_move_date_x_increment = (int) (x_delay * Geometry::SQRT_2); // fix the speed
+          }
+          else if (!test_collision_with_obstacles(x_move, -1)
+              && test_collision_with_obstacles(0, 1)) {
+            translate_xy(x_move, -1);
+            next_move_date_x_increment = (int) (x_delay * Geometry::SQRT_2);
+          }
+          else {
+
+            /* The diagonal moves didn't work either.
+             * So we look for a place (up to 8 pixels up and down)
+             * where the required move would be allowed.
+             * If we find a such place, then we move towards this place.
+             */
+
+            bool moved = false;
+            for (int i = 1; i <= 8 && !moved; i++) {
+
+              if (!test_collision_with_obstacles(x_move, i) && !test_collision_with_obstacles(0, 1)) {
+                translate_y(1);
+                moved = true;
+              }
+              else if (!test_collision_with_obstacles(x_move, -i) && !test_collision_with_obstacles(0, -1)) {
+                translate_y(-1);
+                moved = true;
+              }
+            }
+          }
+        }
+      }
+      set_next_move_date_x(get_next_move_date_x() + next_move_date_x_increment);
+    }
+  }
+}
+
+/**
+ * @brief Updates the y position of the entity if it wants to move
+ * (smooth version).
+ */
+void RectilinearMovement::update_smooth_y() {
+
+  int x_move = get_x_move();
+  int y_move = get_y_move();
+  uint32_t y_delay = get_y_delay();
+
+  if (y_move != 0) { // the entity wants to move on y
+
+    // by default, next_move_date_y will be incremented by y_delay,
+    // unless we modify the movement in such a way that the
+    // y speed needs to be fixed
+    uint32_t next_move_date_y_increment = y_delay;
+
+    uint32_t now = System::now();
+    if (now >= get_next_move_date_y()) { // it's time to try a move
+
+      if (!test_collision_with_obstacles(0, y_move)) {
+
+        translate_y(y_move); // make the move
+
+        if (x_move != 0 && test_collision_with_obstacles(x_move, 0)) {
+          // if there is also an x move, and if this x move is illegal,
+          // we still allow the y move and we give it all the speed
+          next_move_date_y_increment = (int) (1000.0 / get_speed());
+        }
+      }
+      else {
+        if (x_move == 0) {
+          // The move on y is not possible: let's try
+          // to add a move on x to make a diagonal move.
+
+          if (!test_collision_with_obstacles(1, y_move)
+              && test_collision_with_obstacles(-1, 0)) {
+            translate_xy(1, y_move);
+            next_move_date_y_increment = (int) (y_delay * Geometry::SQRT_2); // fix the speed
+          }
+          else if (!test_collision_with_obstacles(-1, y_move)
+              && test_collision_with_obstacles(1, 0)) {
+            translate_xy(-1, y_move);
+            next_move_date_y_increment = (int) (y_delay * Geometry::SQRT_2);
+          }
+          else {
+            /* The diagonal moves didn't work either.
+             * So we look for a place (up to 8 pixels on the left and on the right)
+             * where the required move would be allowed.
+             * If we find a such place, then we move towards this place.
+             */
+
+            bool moved = false;
+            for (int i = 1; i <= 8 && !moved; i++) {
+
+              if (!test_collision_with_obstacles(i, y_move) && !test_collision_with_obstacles(1, 0)) {
+                translate_x(1);
+                moved = true;
+              }
+              else if (!test_collision_with_obstacles(-i, y_move) && !test_collision_with_obstacles(-1, 0)) {
+                translate_x(-1);
+                moved = true;
+              }
+            }
+          }
+        }
+      }
+      set_next_move_date_y(get_next_move_date_y() + next_move_date_y_increment);
+    }
+  }
+}
+
+/**
+ * @brief Updates the x position of the entity if it wants to move
+ * (non-smooth version).
+ */
+void RectilinearMovement::update_non_smooth_x() {
 
   uint32_t now = System::now();
   int x_move = get_x_move();
@@ -383,11 +544,9 @@ void RectilinearMovement::update_x() {
 
 /**
  * @brief Updates the y position of the entity if it wants to move
- *
- * If the movement is attached to a map entity and obstacles are not ignored,
- * the move is done only only if there is no collision with the map.
+ * (non-smooth version).
  */
-void RectilinearMovement::update_y() {
+void RectilinearMovement::update_non_smooth_y() {
 
   uint32_t now = System::now();
   int y_move = get_y_move();
@@ -401,6 +560,32 @@ void RectilinearMovement::update_y() {
       stop(); // also stop on x
     }
     set_next_move_date_y(get_next_move_date_y() + get_y_delay());
+  }
+}
+
+/**
+ * @brief Updates the x position of the entity if it wants to move.
+ */
+void RectilinearMovement::update_x() {
+
+  if (is_smooth()) {
+    update_smooth_x();
+  }
+  else {
+    update_non_smooth_x();
+  }
+}
+
+/**
+ * @brief Updates the y position of the entity if it wants to move.
+ */
+void RectilinearMovement::update_y() {
+
+  if (is_smooth()) {
+    update_smooth_y();
+  }
+  else {
+    update_non_smooth_y();
   }
 }
 
@@ -425,28 +610,28 @@ void RectilinearMovement::update() {
       Rectangle old_xy(get_x(), get_y());
 
       if (x_move_now) {
-	// it's time to make an x move
+        // it's time to make an x move
 
-	if (y_move_now) {
-	  // but it's also time to make a y move
+        if (y_move_now) {
+          // but it's also time to make a y move
 
-	  if (get_next_move_date_x() <= get_next_move_date_y()) {
-	    // x move first
-	    update_x();
-	    update_y();
-	  }
-	  else {
-	    // y move first
-	    update_y();
-	    update_x();
-	  }
-	}
-	else {
-	  update_x();
-	}
+          if (get_next_move_date_x() <= get_next_move_date_y()) {
+            // x move first
+            update_x();
+            update_y();
+          }
+          else {
+            // y move first
+            update_y();
+            update_x();
+          }
+        }
+        else {
+          update_x();
+        }
       }
       else {
-	update_y();
+        update_y();
       }
 
       if (!is_suspended() && get_entity() != NULL) {
@@ -486,8 +671,9 @@ void RectilinearMovement::update() {
  * Accepted keys:
  * - speed
  * - angle
- * - ignore_obstacles
  * - max_distance
+ * - ignore_obstacles
+ * - smooth
  *
  * @param key key of the property to get
  * @return the corresponding value as a string
@@ -502,11 +688,14 @@ const std::string RectilinearMovement::get_property(const std::string &key) {
   else if (key == "angle") {
     oss << get_angle();
   }
+  else if (key == "max_distance") {
+    oss << get_max_distance();
+  }
   else if (key == "ignore_obstacles") {
     oss << are_obstacles_ignored();
   }
-  else if (key == "max_distance") {
-    oss << get_max_distance();
+  else if (key == "smooth") {
+    oss << is_smooth();
   }
   else {
     Debug::die(StringConcat() << "Unknown property of RectilinearMovement: '" << key << "'");
@@ -541,15 +730,20 @@ void RectilinearMovement::set_property(const std::string &key, const std::string
     iss >> angle;
     set_angle(angle);
   }
+  else if (key == "max_distance") {
+    int max_distance;
+    iss >> max_distance;
+    set_max_distance(max_distance);
+  }
   else if (key == "ignore_obstacles") {
     bool ignore_obstacles;
     iss >> ignore_obstacles;
     set_default_ignore_obstacles(ignore_obstacles);
   }
-  else if (key == "max_distance") {
-    int max_distance;
-    iss >> max_distance;
-    set_max_distance(max_distance);
+  else if (key == "smooth") {
+    bool smooth;
+    iss >> smooth;
+    set_smooth(smooth);
   }
   else {
     Debug::die(StringConcat() << "Unknown property of RectilinearMovement: '" << key << "'");

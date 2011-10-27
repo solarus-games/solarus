@@ -27,8 +27,9 @@
  * Properties:
  * - speed
  * - angle
+ * - max_distance
  * - ignore_obstacles
- * - distance
+ * - smooth
  */
 class RectilinearMovement: public Movement {
 
@@ -61,6 +62,8 @@ class RectilinearMovement: public Movement {
     int max_distance;            /**< After this distance in pixels from the initial position,
                                   * the movement will stop (0 means no limit) */
     bool finished;               /**< Indicates that max_distance is reached */
+    bool smooth;                 /**< Makes the movement adjust its trajectory
+                                  * when an obstacle is reached */
 
   protected:
 
@@ -79,8 +82,12 @@ class RectilinearMovement: public Movement {
     void set_x_delay(uint32_t x_delay);
     void set_y_delay(uint32_t y_delay);
 
-    virtual void update_x();
-    virtual void update_y();
+    void update_x();
+    void update_smooth_x();
+    void update_non_smooth_x();
+    void update_y();
+    void update_smooth_y();
+    void update_non_smooth_y();
 
   public:
 
@@ -103,6 +110,8 @@ class RectilinearMovement: public Movement {
     void set_angle(double angle);
     int get_max_distance();
     void set_max_distance(int max_distance);
+    bool is_smooth();
+    void set_smooth(bool smooth);
     int get_displayed_direction4();
 
     // movement

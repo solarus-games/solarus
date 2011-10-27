@@ -101,14 +101,7 @@ void Hero::SwordSwingingState::update() {
   if (hero.get_movement() != NULL && hero.get_movement()->is_finished()) {
     hero.clear_movement();
     if (sword_finished) {
-
-      // if the player is still pressing the sword key, start loading the sword
-      if (get_controls().is_key_pressed(GameControls::SWORD)) {
-        hero.set_state(new SwordLoadingState(hero));
-      }
-      else {
-        hero.set_state(new FreeState(hero));
-      }
+      hero.set_state(new FreeState(hero));
     }
   }
 }
@@ -198,6 +191,10 @@ void Hero::SwordSwingingState::notify_obstacle_reached() {
 
   // the hero reached an obstacle while being pushed after hitting an enemy
   hero.clear_movement();
+
+  if (sword_finished) {
+    hero.set_state(new FreeState(hero));
+  }
 }
 
 /**

@@ -208,9 +208,7 @@ class ScrollingTilePattern;
 // movements
 class Movement;
 class RectilinearMovement;
-class SmoothMovement;
 class PlayerMovement;
-class TemporalMovement;
 class PixelMovement;
 class FallingOnFloorMovement;
 class JumpMovement;

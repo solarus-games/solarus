@@ -21,7 +21,6 @@
 #include "movements/RandomPathMovement.h"
 #include "movements/PathFindingMovement.h"
 #include "movements/TargetMovement.h"
-#include "movements/TemporalMovement.h"
 #include "movements/CircleMovement.h"
 #include "movements/JumpMovement.h"
 #include "entities/Hero.h"
@@ -580,34 +579,6 @@ int Script::main_api_rectilinear_movement_create(lua_State *l) {
   RectilinearMovement *movement = new RectilinearMovement(false, false);
   movement->set_speed(speed);
   movement->set_angle(angle);
-  int movement_handle = script.create_movement_handle(*movement);
-  lua_pushinteger(l, movement_handle);
-
-  return 1;
-}
-
-/**
- * @brief Creates a movement of type TemporalMovement that will be accessible from the script.
- *
- * - Argument 1 (int): the speed in pixels per second
- * - Argument 2 (float): angle of the speed vector in radians
- * - Argument 3 (int): the duration of the movement in milliseconds
- * - Return value (movement): a handle to the movement created
- *
- * @param l the Lua context that is calling this function
- */
-int Script::main_api_temporal_movement_create(lua_State *l) {
-
-  Script& script = get_script(l, 3);
-  int speed = luaL_checkinteger(l, 1);
-  double angle = luaL_checknumber(l, 2);
-  uint32_t duration = luaL_checkinteger(l, 3);
-
-  TemporalMovement *movement = new TemporalMovement(speed, angle, duration);
-  movement->set_speed(speed);
-  if (speed != 0) {
-    movement->set_angle(angle);
-  }
   int movement_handle = script.create_movement_handle(*movement);
   lua_pushinteger(l, movement_handle);
 

@@ -37,7 +37,8 @@
 Crystal::Crystal(const std::string& name, Layer layer, int x, int y):
   Detector(COLLISION_SPRITE | COLLISION_RECTANGLE | COLLISION_FACING_POINT,
 	   name, layer, x, y, 16, 16),
-  state(false), next_possible_hit_date(System::now()) {
+  state(false),
+  next_possible_hit_date(System::now()) {
 
   set_origin(8, 13);
   create_sprite("entities/crystal", true);
@@ -163,21 +164,23 @@ void Crystal::twinkle() {
  */
 void Crystal::update() {
 
-  bool state = get_game().get_crystal_state();
-  if (state != this->state) {
+  if (!is_suspended()) {
+    bool state = get_game().get_crystal_state();
+    if (state != this->state) {
 
-    this->state = state;
-    get_sprite().set_current_animation(state ? "blue_lowered" : "orange_lowered");
-  }
+      this->state = state;
+      get_sprite().set_current_animation(state ? "blue_lowered" : "orange_lowered");
+    }
 
-  star_sprite->update();
-  if (star_sprite->is_animation_finished()) {
-    twinkle();
-  }
+    star_sprite->update();
+    if (star_sprite->is_animation_finished()) {
+      twinkle();
+    }
 
-  uint32_t now = System::now();
-  if (now >= next_possible_hit_date) {
-    entities_activating.clear();
+    uint32_t now = System::now();
+    if (now >= next_possible_hit_date) {
+      entities_activating.clear();
+    }
   }
  
   MapEntity::update();

@@ -166,14 +166,14 @@ void Hero::RunningState::directional_key_pressed(int direction4) {
 }
 
 /**
- * @brief Notifies this state that the hero has just tried to change his position.
- * @param success true if the position has actually just changed
+ * @brief Notifies this state that the hero has just failed to change its
+ * position because of obstacles.
  */
-void Hero::RunningState::notify_movement_tried(bool success) {
+void Hero::RunningState::notify_obstacle_reached() {
 
-  State::notify_movement_tried(success);
+  State::notify_obstacle_reached();
 
-  if (!success && phase == 1) {
+  if (phase == 1) {
     int opposite_direction = (get_sprites().get_animation_direction8() + 4) % 8;
     hero.set_movement(new JumpMovement(opposite_direction, 32, 64, false));
     get_sprites().set_animation_hurt();

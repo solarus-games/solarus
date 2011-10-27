@@ -43,7 +43,7 @@ class Hero::RunningState: public Hero::State {
     void set_suspended(bool suspended);
     bool is_pressing_running_key();
     void directional_key_pressed(int direction4);
-    void notify_movement_tried(bool success);
+    void notify_obstacle_reached();
     int get_wanted_movement_direction8();
 
     bool can_take_stairs();

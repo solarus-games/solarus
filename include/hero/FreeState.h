@@ -27,8 +27,9 @@ class Hero::FreeState: public Hero::PlayerMovementState {
 
   private:
 
-    int pushing_direction4;			/**< direction where the hero is trying to push an obstacle (0 to 3) or -1*/ 
-    uint32_t start_pushing_date;		/**< date when the state pushing starts */
+    int pushing_direction4;         /**< direction where the hero is trying to
+                                     * push an obstacle (0 to 3) or -1 */
+    uint32_t start_pushing_date;    /**< date when the state pushing starts */
 
   public:
 
@@ -40,7 +41,7 @@ class Hero::FreeState: public Hero::PlayerMovementState {
     void update();
     void set_suspended(bool suspended);
     void action_key_pressed();
-    void notify_movement_tried(bool success);
+    void notify_obstacle_reached();
 
     bool is_free();
     bool can_start_sword();

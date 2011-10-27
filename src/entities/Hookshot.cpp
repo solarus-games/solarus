@@ -373,14 +373,15 @@ void Hookshot::attach_to(MapEntity& entity_reached) {
 }
 
 /**
- * @brief Notifies this entity that it has just tried to change its position.
- * @param success true if the position has actually just changed
+ * @brief Notifies this entity that it has just failed to change its position
+ * because of obstacles.
  */
-void Hookshot::notify_movement_tried(bool success) {
+void Hookshot::notify_obstacle_reached() {
 
-  if (!success && is_flying()) {
-    if (!get_map().test_collision_with_border(get_movement()->get_last_collision_box_on_obstacle())) {
-      // play a sound unless we are on the map border
+  if (is_flying()) {
+    if (!get_map().test_collision_with_border(
+        get_movement()->get_last_collision_box_on_obstacle())) {
+      // play a sound unless the obstacle is the map border
       Sound::play("sword_tapping");
     }
     go_back();

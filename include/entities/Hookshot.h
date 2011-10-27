@@ -71,7 +71,7 @@ class Hookshot: public MapEntity {
     void attach_to(MapEntity& entity_reached);
 
     // collisions
-    void notify_movement_tried(bool success);
+    void notify_obstacle_reached();
     void notify_collision_with_enemy(Enemy &enemy, Sprite &enemy_sprite, Sprite &this_sprite);
     void notify_attacked_enemy(EnemyAttack attack, Enemy& victim, EnemyReaction::Reaction& result, bool killed);
     void notify_collision_with_chest(Chest& chest);

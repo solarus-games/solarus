@@ -1073,17 +1073,6 @@ void MapEntity::clear_old_movements() {
 }
 
 /**
- * @brief Notifies this entity that it has just tried to change its position.
- *
- * This function is called only when the movement is not suspended.
- * By default, nothing is done.
- *
- * @param success true if the position has actually just changed
- */
-void MapEntity::notify_movement_tried(bool success) {
-}
-
-/**
  * @brief Notifies this entity that it has just failed to change its position
  * because of obstacles.
  *

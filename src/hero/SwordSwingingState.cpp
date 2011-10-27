@@ -184,8 +184,6 @@ bool Hero::SwordSwingingState::is_teletransporter_obstacle(Teletransporter& tele
 /**
  * @brief Notifies this state that the hero has just failed to change its
  * position because of obstacles.
- *
- * This function is called only when the game is not suspended.
  */
 void Hero::SwordSwingingState::notify_obstacle_reached() {
 

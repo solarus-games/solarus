@@ -195,8 +195,8 @@ void PixelMovement::update() {
     make_next_step();
 
     bool success = (get_x() != old_xy.get_x() || get_y() != old_xy.get_y());
-    if (!is_suspended() && get_entity() != NULL) {
-      get_entity()->notify_movement_tried(success);
+    if (!is_suspended() && !success) {
+      notify_obstacle_reached();
     }
   }
 }

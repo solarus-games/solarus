@@ -104,17 +104,16 @@ void Hero::SwordLoadingState::set_suspended(bool suspended) {
 }
 
 /**
- * @brief Notifies this state that the hero has just tried to change his position.
- * @param success true if the position has actually just changed
+ * @brief Notifies this state that the hero has just failed to change its
+ * position because of obstacles.
  */
-void Hero::SwordLoadingState::notify_movement_tried(bool success) {
+void Hero::SwordLoadingState::notify_obstacle_reached() {
 
-  PlayerMovementState::notify_movement_tried(success);
+  PlayerMovementState::notify_obstacle_reached();
 
   Detector* facing_entity = hero.get_facing_entity();
 
-  if (!success                                  // the hero has just tried to move unsuccessfuly
-      && hero.is_facing_point_on_obstacle()     // he is really facing an obstacle
+  if (hero.is_facing_point_on_obstacle()     // he is really facing an obstacle
       && get_wanted_movement_direction8() == get_sprites().get_animation_direction8()   // he is trying to move towards the obstacle
       && (facing_entity == NULL || !facing_entity->is_sword_ignored())) {               // the obstacle allows him to tap with his sword
 

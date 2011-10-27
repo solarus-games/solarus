@@ -49,7 +49,7 @@ class CustomEnemy: public Enemy {
 
     void restart();
     void notify_enabled(bool enabled);
-    void notify_movement_tried(bool success);
+    void notify_obstacle_reached();
     void notify_position_changed();
     void notify_layer_changed();
     void notify_movement_changed();

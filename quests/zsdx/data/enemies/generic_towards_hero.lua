@@ -18,7 +18,7 @@
 --   movement_create = sol.main.random_path_movement_create
 -- })
 
--- The parameter of set_properties() is an array.
+-- The parameter of set_properties() is a table.
 -- Its values are all optional except the sprite.
 
 properties = {}

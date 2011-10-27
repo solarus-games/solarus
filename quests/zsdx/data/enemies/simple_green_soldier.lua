@@ -11,7 +11,7 @@ function event_appear()
   sol.enemy.set_size(16, 16)
   sol.enemy.set_origin(8, 13)
 
-  local m = sol.main.temporal_movement_create(0, 0, 0)
+  local m = sol.main.rectilinear_movement_create(0, 0)
   sol.enemy.start_movement(m)
 end
 
@@ -60,8 +60,9 @@ function go(direction4)
 
   -- set the movement
   local m = sol.enemy.get_movement()
-  local seconds = 1 + math.random(3)
-  sol.main.movement_set_property(m, "duration", seconds * 1000)
+  local max_distance = 40 + math.random(120)
+  sol.main.movement_set_property(m, "max_distance", max_distance)
+  sol.main.movement_set_property(m, "smooth", true)
   sol.main.movement_set_property(m, "speed", 40)
   sol.main.movement_set_property(m, "angle", direction4 * math.pi / 2)
 end

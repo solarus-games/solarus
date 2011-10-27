@@ -140,17 +140,14 @@ void CustomEnemy::restart() {
 }
 
 /**
- * @brief Notifies this entity that it has just tried to change its position.
- *
- * This function is called only when the movement is not suspended.
- *
- * @param success true if the position has actually just changed
+ * @brief Notifies this entity that it has just failed to change its position
+ * because of obstacles.
  */
-void CustomEnemy::notify_movement_tried(bool success) {
+void CustomEnemy::notify_obstacle_reached() {
 
-  Enemy::notify_movement_tried(success);
+  Enemy::notify_obstacle_reached();
 
-  if (!is_being_hurt() && !success) {
+  if (!is_being_hurt()) {
     script->event_obstacle_reached();
   }
 }

@@ -92,7 +92,6 @@ class Hero::State {
     virtual void notify_walking_speed_changed();
     virtual void notify_layer_changed();
     virtual void notify_movement_changed();
-    virtual void notify_movement_tried(bool success);
     virtual void notify_obstacle_reached();
 
     // ground

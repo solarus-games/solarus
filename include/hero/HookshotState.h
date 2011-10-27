@@ -48,7 +48,7 @@ class Hero::HookshotState: public Hero::State {
     bool is_jumper_obstacle(Jumper& jumper);
     bool can_avoid_switch();
     bool can_be_hurt(Enemy* attacker);
-    void notify_movement_tried(bool success);
+    void notify_obstacle_reached();
 };
 
 #endif

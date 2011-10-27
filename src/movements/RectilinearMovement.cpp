@@ -651,11 +651,6 @@ void RectilinearMovement::update() {
         if (!success) {
           notify_obstacle_reached();
         }
-
-        // notify the entity
-        if (get_entity() != NULL) {
-          get_entity()->notify_movement_tried(success);
-        }
       }
 
       now = System::now();

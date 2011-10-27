@@ -957,17 +957,6 @@ bool Hero::is_direction_locked() {
 }
 
 /**
- * @brief Notifies this entity that it has just tried to change his position.
- * @param success true if the position has actually just changed
- */
-void Hero::notify_movement_tried(bool success) {
-
-  MapEntity::notify_movement_tried(success);
-
-  state->notify_movement_tried(success);
-}
-
-/**
  * @brief Notifies this entity that it has just failed to change its position
  * because of obstacles.
  */

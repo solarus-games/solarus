@@ -108,18 +108,17 @@ void Hero::FreeState::action_key_pressed() {
 }
 
 /**
- * @brief Notifies this state that the hero has just tried to change his position.
- * @param success true if the position has actually just changed
+ * @brief Notifies this state that the hero has just failed to change its
+ * position because of obstacles.
  */
-void Hero::FreeState::notify_movement_tried(bool success) {
+void Hero::FreeState::notify_obstacle_reached() {
 
-  PlayerMovementState::notify_movement_tried(success);
+  PlayerMovementState::notify_obstacle_reached();
 
-  if (!success // the hero has just tried to move unsuccessfuly
-      &&  hero.is_facing_point_on_obstacle()) { // he is really facing an obstacle
+  if (hero.is_facing_point_on_obstacle()) { // he is really facing an obstacle
 
     uint32_t now = System::now();
-    if (pushing_direction4 == -1) { // we start counting to trigger animation "pushing"
+    if (pushing_direction4 == -1) {
       start_pushing_date = now + 800; // start animation "pushing" after 800 ms
       pushing_direction4 = hero.get_animation_direction();
     }

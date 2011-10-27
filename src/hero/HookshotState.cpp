@@ -167,14 +167,12 @@ bool Hero::HookshotState::can_be_hurt(Enemy* attacker) {
 }
 
 /**
- * @brief Notifies this state that the hero has just tried to change his position.
- * @param success true if the position has actually just changed
+ * @brief Notifies this state that the hero has just failed to change its
+ * position because of obstacles.
  */
-void Hero::HookshotState::notify_movement_tried(bool success) {
+void Hero::HookshotState::notify_obstacle_reached() {
 
-  if (!success) {
-    // an unexpected obstacle was reached (e.g. a moving NPC)
-    hero.start_state_from_ground();
-  }
+  // an unexpected obstacle was reached (e.g. an NPC who moved after the hookshot passed)
+  hero.start_state_from_ground();
 }
 

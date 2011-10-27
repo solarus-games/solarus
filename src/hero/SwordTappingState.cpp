@@ -165,8 +165,6 @@ bool Hero::SwordTappingState::is_teletransporter_obstacle(Teletransporter& telet
 /**
  * @brief Notifies this state that the hero has just failed to change its
  * position because of obstacles.
- *
- * This function is called only when the game is not suspended.
  */
 void Hero::SwordTappingState::notify_obstacle_reached() {
 

@@ -249,7 +249,6 @@ class MapEntity {
     void set_movement(Movement *movement);
     void clear_movement();
 
-    virtual void notify_movement_tried(bool success);
     virtual void notify_obstacle_reached();
     virtual void notify_position_changed();
     virtual void notify_layer_changed();

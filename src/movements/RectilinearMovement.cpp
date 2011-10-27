@@ -104,16 +104,16 @@ void RectilinearMovement::set_x_speed(double x_speed) {
 
   // compute x_delay, x_move and next_move_date_x
   if (x_speed == 0) {
-    set_x_move(0);
+    x_move = 0;
   }
   else {
     if (x_speed > 0) {
-      set_x_delay((uint32_t) (1000 / x_speed));
-      set_x_move(1);
+      x_delay = (uint32_t) (1000 / x_speed);
+      x_move = 1;
     }
     else {
-      set_x_delay((uint32_t) (1000 / (-x_speed)));
-      set_x_move(-1);
+      x_delay = (uint32_t) (1000 / (-x_speed));
+      x_move = -1;
     }
     set_next_move_date_x(now + x_delay);
   }
@@ -141,16 +141,16 @@ void RectilinearMovement::set_y_speed(double y_speed) {
 
   // compute y_delay, y_move and next_move_date_y
   if (y_speed == 0) {
-    set_y_move(0);
+    y_move = 0;
   }
   else {
     if (y_speed > 0) {
-      set_y_delay((uint32_t) (1000 / y_speed));
-      set_y_move(1);
+      y_delay = (uint32_t) (1000 / y_speed);
+      y_move = 1;
     }
     else {
-      set_y_delay((uint32_t) (1000 / (-y_speed)));
-      set_y_move(-1);
+      y_delay = (uint32_t) (1000 / (-y_speed));
+      y_move = -1;
     }
     set_next_move_date_y(now + y_delay);
   }
@@ -203,8 +203,8 @@ void RectilinearMovement::stop() {
   double old_angle = this->angle;
   set_x_speed(0);
   set_y_speed(0);
-  set_x_move(0);
-  set_y_move(0);
+  x_move = 0;
+  y_move = 0;
   this->angle = old_angle;
 
   if (get_entity() != NULL) {
@@ -335,8 +335,8 @@ bool RectilinearMovement::has_to_move_now() {
 
   uint32_t now = System::now();
 
-  return (get_x_move() != 0 && now >= get_next_move_date_x())
-    || (get_y_move() != 0 && now >= get_next_move_date_y());
+  return (x_move != 0 && now >= next_move_date_x)
+    || (y_move != 0 && now >= next_move_date_y);
 }
 
 /**
@@ -385,10 +385,6 @@ void RectilinearMovement::set_smooth(bool smooth) {
  */
 void RectilinearMovement::update_smooth_x() {
 
-  int x_move = get_x_move();
-  int y_move = get_y_move();
-  uint32_t x_delay = get_x_delay();
-
   if (x_move != 0) { // the entity wants to move on x
 
     // by default, next_move_date_x will be incremented by x_delay,
@@ -397,7 +393,7 @@ void RectilinearMovement::update_smooth_x() {
     uint32_t next_move_date_x_increment = x_delay;
 
     uint32_t now = System::now();
-    if (now >= get_next_move_date_x()) { // it's time to try a move
+    if (now >= next_move_date_x) { // it's time to try a move
 
       if (!test_collision_with_obstacles(x_move, 0)) {
 
@@ -446,8 +442,15 @@ void RectilinearMovement::update_smooth_x() {
             }
           }
         }
+        else {
+          // no attractive place was found, but there is a vertical move
+          if (!test_collision_with_obstacles(0, y_move)) {
+            translate_y(y_move);
+            next_move_date_y += (int) (y_delay / Geometry::SQRT_2);
+          }
+        }
       }
-      set_next_move_date_x(get_next_move_date_x() + next_move_date_x_increment);
+     next_move_date_x += next_move_date_x_increment;
     }
   }
 }
@@ -458,10 +461,6 @@ void RectilinearMovement::update_smooth_x() {
  */
 void RectilinearMovement::update_smooth_y() {
 
-  int x_move = get_x_move();
-  int y_move = get_y_move();
-  uint32_t y_delay = get_y_delay();
-
   if (y_move != 0) { // the entity wants to move on y
 
     // by default, next_move_date_y will be incremented by y_delay,
@@ -470,7 +469,7 @@ void RectilinearMovement::update_smooth_y() {
     uint32_t next_move_date_y_increment = y_delay;
 
     uint32_t now = System::now();
-    if (now >= get_next_move_date_y()) { // it's time to try a move
+    if (now >= next_move_date_y) { // it's time to try a move
 
       if (!test_collision_with_obstacles(0, y_move)) {
 
@@ -518,8 +517,15 @@ void RectilinearMovement::update_smooth_y() {
             }
           }
         }
+        else {
+          // no attractive place was found, but there is a horizontal move
+          if (!test_collision_with_obstacles(x_move, 0)) {
+            translate_x(x_move);
+            next_move_date_x += (int) (x_delay / Geometry::SQRT_2);
+          }
+        }
       }
-      set_next_move_date_y(get_next_move_date_y() + next_move_date_y_increment);
+      next_move_date_y += next_move_date_y_increment;
     }
   }
 }
@@ -531,17 +537,16 @@ void RectilinearMovement::update_smooth_y() {
 void RectilinearMovement::update_non_smooth_x() {
 
   uint32_t now = System::now();
-  int x_move = get_x_move();
-  if (x_move != 0 && now >= get_next_move_date_x()) { // if it's time to try a move
+  if (x_move != 0 && now >= next_move_date_x) { // if it's time to try a move
 
     // make the move only if there is no collision
-    if (!test_collision_with_obstacles(x_move, get_y_move())) {
+    if (!test_collision_with_obstacles(x_move, y_move)) {
       translate_x(x_move);
     }
     else {
       stop(); // also stop on y
     }
-    set_next_move_date_x(get_next_move_date_x() + get_x_delay());
+    next_move_date_x += x_delay;
   }
 }
 
@@ -552,17 +557,16 @@ void RectilinearMovement::update_non_smooth_x() {
 void RectilinearMovement::update_non_smooth_y() {
 
   uint32_t now = System::now();
-  int y_move = get_y_move();
-  if (y_move != 0 && now >= get_next_move_date_y()) { // if it's time to try a move
+  if (y_move != 0 && now >= next_move_date_y) { // if it's time to try a move
 
     // make the move only if there is no collision
-    if (!test_collision_with_obstacles(get_x_move(), y_move)) {
+    if (!test_collision_with_obstacles(x_move, y_move)) {
       translate_y(y_move);
     }
     else {
       stop(); // also stop on x
     }
-    set_next_move_date_y(get_next_move_date_y() + get_y_delay());
+    next_move_date_y += y_delay;
   }
 }
 
@@ -604,8 +608,8 @@ void RectilinearMovement::update() {
   if (!is_suspended()) {
     uint32_t now = System::now();
 
-    bool x_move_now = get_x_move() != 0 && now >= get_next_move_date_x();
-    bool y_move_now = get_y_move() != 0 && now >= get_next_move_date_y();
+    bool x_move_now = x_move != 0 && now >= next_move_date_x;
+    bool y_move_now = y_move != 0 && now >= next_move_date_y;
 
     while (x_move_now || y_move_now) { // while it's time to move
 
@@ -618,7 +622,7 @@ void RectilinearMovement::update() {
         if (y_move_now) {
           // but it's also time to make a y move
 
-          if (get_next_move_date_x() <= get_next_move_date_y()) {
+          if (next_move_date_x <= next_move_date_y) {
             // x move first
             update_x();
             update_y();
@@ -642,7 +646,7 @@ void RectilinearMovement::update() {
         // the movement was successful if the entity's coordinates have changed
         // and the movement was not stopped
         bool success = (get_x() != old_xy.get_x() || get_y() != old_xy.get_y())
-            && (get_x_move() != 0 || get_y_move() != 0);
+            && (x_move != 0 || y_move != 0);
 
         if (!success) {
           notify_obstacle_reached();
@@ -661,8 +665,8 @@ void RectilinearMovement::update() {
         set_finished();
       }
       else {
-        x_move_now = get_x_move() != 0 && now >= get_next_move_date_x();
-        y_move_now = get_y_move() != 0 && now >= get_next_move_date_y();
+        x_move_now = x_move != 0 && now >= next_move_date_x;
+        y_move_now = y_move != 0 && now >= next_move_date_y;
       }
     }
   }

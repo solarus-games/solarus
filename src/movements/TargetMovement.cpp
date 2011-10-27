@@ -82,7 +82,7 @@ void TargetMovement::set_target(int target_x, int target_y) {
   this->target_x = target_x;
   this->target_y = target_y;
   recompute_movement();
-  next_recomputation_date = System::now() + 100;
+  next_recomputation_date = System::now() + 200;
 }
 
 /**
@@ -95,7 +95,7 @@ void TargetMovement::set_target(MapEntity* target_entity) {
   this->target_x = target_x;
   this->target_y = target_y;
   recompute_movement();
-  next_recomputation_date = System::now() + 100;
+  next_recomputation_date = System::now() + 200;
 }
 
 /**
@@ -108,7 +108,7 @@ void TargetMovement::update() {
 
   if (System::now() >= next_recomputation_date) {
     recompute_movement();
-    next_recomputation_date += 100;
+    next_recomputation_date += 200;
   }
 
   // see if the target is reached

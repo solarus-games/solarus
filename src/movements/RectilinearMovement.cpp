@@ -23,9 +23,9 @@
 #include <cmath>
 
 /**
- * Constructor.
- * @param ignore_obstacles when there is a map and the movement is attached to an entity of this map,
- * indicates whether the movement should ignore obstacles
+ * @brief Constructor.
+ * @param ignore_obstacles true to ignore obstacles of the map
+ * (used only when there is a map and the movement is attached to an entity of this map)
  */
 RectilinearMovement::RectilinearMovement(bool ignore_obstacles):
   Movement(ignore_obstacles),
@@ -35,15 +35,28 @@ RectilinearMovement::RectilinearMovement(bool ignore_obstacles):
   next_move_date_x(System::now()),
   next_move_date_y(System::now()),
   x_move(0),
-  y_move(0) {
+  y_move(0),
+  max_distance(0),
+  finished(false) {
 
 }
 
 /**
- * Destructor.
+ * @brief Destructor.
  */
 RectilinearMovement::~RectilinearMovement() {
 
+}
+
+/**
+ * @brief Sets the entity to be controlled by this movement object.
+ * @param entity the entity to control, or NULL if the movement is not
+ * attached to a map entity
+ */
+void RectilinearMovement::set_entity(MapEntity* entity) {
+
+  Movement::set_entity(entity);
+  initial_xy.set_xy(get_xy());
 }
 
 /**
@@ -102,6 +115,8 @@ void RectilinearMovement::set_x_speed(double x_speed) {
     set_next_move_date_x(now + x_delay);
   }
   angle = Geometry::get_angle(0, 0, (int) (x_speed * 100), (int) (y_speed * 100));
+  initial_xy.set_xy(get_xy());
+  finished = false;
 
   if (get_entity() != NULL) {
     get_entity()->notify_movement_changed();
@@ -137,6 +152,8 @@ void RectilinearMovement::set_y_speed(double y_speed) {
     set_next_move_date_y(now + y_delay);
   }
   angle = Geometry::get_angle(0, 0, (int) (x_speed * 100), (int) (y_speed * 100));
+  initial_xy.set_xy(get_xy());
+  finished = false;
 
   if (get_entity() != NULL) {
     get_entity()->notify_movement_changed();
@@ -255,6 +272,45 @@ void RectilinearMovement::set_angle(double angle) {
 }
 
 /**
+ * @brief Returns the distance after which the movement stops.
+ * @return the maximum distance in pixels (0 means no limit)
+ */
+int RectilinearMovement::get_max_distance() {
+
+  return max_distance;
+}
+
+/**
+ * @brief Sets the distance after which the movement stops.
+ * @param max_distance the maximum distance in pixels (0 means no limit)
+ */
+void RectilinearMovement::set_max_distance(int max_distance) {
+
+  this->max_distance = max_distance;
+}
+
+/**
+ * @brief Returns whether the movement is finished.
+ *
+ * This functions returns true when max_distance is reached.
+ *
+ * @return true if the movement is finished
+ */
+bool RectilinearMovement::is_finished() {
+
+  return finished;
+}
+
+/**
+ * @brief Stops the movement and marks it finished.
+ */
+void RectilinearMovement::set_finished() {
+
+  stop();
+  this->finished = true;
+}
+
+/**
  * @brief Returns the direction a sprite controlled by this movement should take.
  * @return the direction to use to display the object controlled by this movement (0 to 3)
  */
@@ -348,12 +404,10 @@ void RectilinearMovement::update_y() {
   }
 }
 
-
 /**
  * @brief Updates the position of the object controlled by this movement.
  *
- * This function is called repeteadly.
- * You can redefine this function.
+ * This function is called repeatedly.
  */
 void RectilinearMovement::update() {
 
@@ -407,12 +461,21 @@ void RectilinearMovement::update() {
         }
 
         // notify the entity
-	get_entity()->notify_movement_tried(success);
+        if (get_entity() != NULL) {
+          get_entity()->notify_movement_tried(success);
+        }
       }
 
       now = System::now();
-      x_move_now = get_x_move() != 0 && now >= get_next_move_date_x();
-      y_move_now = get_y_move() != 0 && now >= get_next_move_date_y();
+
+      if (max_distance != 0 && Geometry::get_distance(initial_xy.get_x(),
+          initial_xy.get_y(), get_x(), get_y()) >= max_distance) {
+        set_finished();
+      }
+      else {
+        x_move_now = get_x_move() != 0 && now >= get_next_move_date_x();
+        y_move_now = get_y_move() != 0 && now >= get_next_move_date_y();
+      }
     }
   }
 }
@@ -424,6 +487,7 @@ void RectilinearMovement::update() {
  * - speed
  * - angle
  * - ignore_obstacles
+ * - max_distance
  *
  * @param key key of the property to get
  * @return the corresponding value as a string
@@ -441,6 +505,9 @@ const std::string RectilinearMovement::get_property(const std::string &key) {
   else if (key == "ignore_obstacles") {
     oss << are_obstacles_ignored();
   }
+  else if (key == "max_distance") {
+    oss << get_max_distance();
+  }
   else {
     Debug::die(StringConcat() << "Unknown property of RectilinearMovement: '" << key << "'");
   }
@@ -455,6 +522,7 @@ const std::string RectilinearMovement::get_property(const std::string &key) {
  * - speed
  * - angle
  * - ignore_obstacles
+ * - max_distance
  *
  * @param key key of the property to set (the accepted keys depend on the movement type)
  * @param value the value to set
@@ -477,6 +545,11 @@ void RectilinearMovement::set_property(const std::string &key, const std::string
     bool ignore_obstacles;
     iss >> ignore_obstacles;
     set_default_ignore_obstacles(ignore_obstacles);
+  }
+  else if (key == "max_distance") {
+    int max_distance;
+    iss >> max_distance;
+    set_max_distance(max_distance);
   }
   else {
     Debug::die(StringConcat() << "Unknown property of RectilinearMovement: '" << key << "'");

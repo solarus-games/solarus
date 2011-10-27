@@ -298,7 +298,7 @@ uint32_t Movement::get_when_suspended() {
 /**
  * @brief Updates the position of the object controlled by this movement.
  *
- * This function is called repeteadly.
+ * This function is called repeatedly.
  * You can redefine this function.
  */
 void Movement::update() {

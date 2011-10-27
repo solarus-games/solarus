@@ -133,9 +133,6 @@ creates a movement of type TargetMovement that will be accessible from this scri
 - <tt>sol.main.rectilinear_movement_create(speed, angle)</tt>:
 creates a movement of type RectilinearMovement that will be accessible from this script
 
-- <tt>sol.main.temporal_movement_create(speed, angle, duration)</tt>:
-creates a movement of type TemporalMovement that will be accessible from this script
-
 - <tt>sol.main.circle_movement_create(center_type, center_name, radius)</tt>:
 creates a movement of type CircleMovement that will be accessible from this script
 

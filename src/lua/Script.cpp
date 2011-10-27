@@ -278,7 +278,6 @@ void Script::register_main_api() {
       { "path_finding_movement_create", main_api_path_finding_movement_create },
       { "target_movement_create", main_api_target_movement_create },
       { "rectilinear_movement_create", main_api_rectilinear_movement_create },
-      { "temporal_movement_create", main_api_temporal_movement_create },
       { "circle_movement_create", main_api_circle_movement_create },
       { "jump_movement_create", main_api_jump_movement_create },
       { "movement_get_property", main_api_movement_get_property },

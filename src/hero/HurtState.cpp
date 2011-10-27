@@ -17,9 +17,10 @@
 #include "hero/HurtState.h"
 #include "hero/FreeState.h"
 #include "hero/HeroSprites.h"
-#include "movements/TemporalMovement.h"
+#include "movements/RectilinearMovement.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/Geometry.h"
+#include "lowlevel/System.h"
 #include "Game.h"
 #include "Equipment.h"
 
@@ -33,7 +34,11 @@
  */
 Hero::HurtState::HurtState(Hero &hero, const Rectangle& source_xy,
     int life_points, int magic_points):
-  State(hero), source_xy(source_xy), life_points(life_points), magic_points(magic_points) {
+  State(hero),
+  source_xy(source_xy),
+  life_points(life_points),
+  magic_points(magic_points),
+  end_hurt_date(0) {
 
 }
 
@@ -75,7 +80,12 @@ void Hero::HurtState::start(State *previous_state) {
 
   double angle = Geometry::get_angle(source_xy.get_x(), source_xy.get_y(),
       hero.get_x(), hero.get_y());
-  hero.set_movement(new TemporalMovement(120, angle, 200));
+  RectilinearMovement* movement = new RectilinearMovement(false, true);
+  movement->set_max_distance(24);
+  movement->set_speed(120);
+  movement->set_angle(angle);
+  hero.set_movement(movement);
+  end_hurt_date = System::now() + 200;
 }
 
 /**
@@ -96,9 +106,26 @@ void Hero::HurtState::update() {
 
   State::update();
 
-  if (hero.get_movement()->is_finished()) {
+  if (hero.get_movement()->is_finished()
+      || System::now() >= end_hurt_date) {
+    // we have end_hurt_date because the movement may never finish if there is an obstacle
+
     hero.clear_movement();
     hero.start_state_from_ground();
+  }
+}
+
+/**
+ * @brief Notifies this state that the game was just suspended or resumed.
+ * @param suspended true if the game is suspended
+ */
+void Hero::HurtState::set_suspended(bool suspended) {
+
+  State::set_suspended(suspended);
+
+  if (!suspended) {
+    uint32_t diff = System::now() - when_suspended;
+    end_hurt_date += diff;
   }
 }
 

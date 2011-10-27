@@ -460,6 +460,15 @@ void Hero::State::notify_movement_tried(bool success) {
 }
 
 /**
+ * @brief Notifies this state that the hero has just failed to change its
+ * position because of obstacles.
+ *
+ * This function is called only when the game is not suspended.
+ */
+void Hero::State::notify_obstacle_reached() {
+}
+
+/**
  * @brief Returns whether the hero ignores the effect of deep water in this state.
  *
  * Returns false by default.

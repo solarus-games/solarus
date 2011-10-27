@@ -24,6 +24,7 @@
  * (false makes the movement identical to RectilinearMovement)
  */
 SmoothMovement::SmoothMovement(bool smooth):
+  RectilinearMovement(false, smooth),
   smooth(smooth) {
 
 }

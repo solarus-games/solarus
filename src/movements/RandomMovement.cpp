@@ -29,7 +29,7 @@
  * @param max_distance if the object goes further than this distance, it will come back
  */
 RandomMovement::RandomMovement(int speed, int max_distance):
-  RectilinearMovement(false),
+  RectilinearMovement(false, false),
   normal_speed(speed),
   max_distance(max_distance) {
 

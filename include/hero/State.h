@@ -93,6 +93,7 @@ class Hero::State {
     virtual void notify_layer_changed();
     virtual void notify_movement_changed();
     virtual void notify_movement_tried(bool success);
+    virtual void notify_obstacle_reached();
 
     // ground
     virtual bool can_avoid_deep_water();

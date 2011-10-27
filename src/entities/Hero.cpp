@@ -968,6 +968,17 @@ void Hero::notify_movement_tried(bool success) {
 }
 
 /**
+ * @brief Notifies this entity that it has just failed to change its position
+ * because of obstacles.
+ */
+void Hero::notify_obstacle_reached() {
+
+  MapEntity::notify_obstacle_reached();
+
+  state->notify_obstacle_reached();
+}
+
+/**
  * @brief This function is called when the hero's position is changed.
  */
 void Hero::notify_position_changed() {

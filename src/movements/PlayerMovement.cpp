@@ -16,16 +16,18 @@
  */
 #include "movements/PlayerMovement.h"
 #include "entities/MapEntity.h"
+#include "lowlevel/Geometry.h"
 #include "Game.h"
 #include "GameControls.h"
-#include "lowlevel/Geometry.h"
 
 /**
  * @brief Constructor.
  * @param moving_speed movement speed
  */
 PlayerMovement::PlayerMovement(int moving_speed):
-  moving_speed(moving_speed), direction8(-1) {
+  RectilinearMovement(false, true),
+  moving_speed(moving_speed),
+  direction8(-1) {
 
 }
 
@@ -41,7 +43,7 @@ PlayerMovement::~PlayerMovement() {
  */
 void PlayerMovement::update() {
 
-  SmoothMovement::update();
+  RectilinearMovement::update();
 
   if (!get_entity()->is_on_map()) {
     return; // the entity is not ready yet
@@ -99,7 +101,7 @@ void PlayerMovement::set_moving_speed(int moving_speed) {
 void PlayerMovement::set_wanted_direction() {
 
   if (get_entity()->is_on_map()) {
-    GameControls &controls = get_entity()->get_game().get_controls();
+    GameControls& controls = get_entity()->get_game().get_controls();
     direction8 = controls.get_wanted_direction8();
   }
   else {

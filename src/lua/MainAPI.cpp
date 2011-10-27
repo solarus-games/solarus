@@ -577,7 +577,7 @@ int Script::main_api_rectilinear_movement_create(lua_State *l) {
   int speed = luaL_checkinteger(l, 1);
   double angle = luaL_checknumber(l, 2);
 
-  RectilinearMovement *movement = new RectilinearMovement(false);
+  RectilinearMovement *movement = new RectilinearMovement(false, false);
   movement->set_speed(speed);
   movement->set_angle(angle);
   int movement_handle = script.create_movement_handle(*movement);

@@ -26,9 +26,10 @@ class Hero::HurtState: public Hero::State {
 
   private:
 
-    const Rectangle source_xy;	/**< coordinates of whatever is hurting the hero (usually an enemy) */
-    int life_points;		/**< number of heart quarters to remove (this number may be reduced by the tunic) */
-    int magic_points;		/**< number of magic points to remove */
+    const Rectangle source_xy; /**< coordinates of whatever is hurting the hero (usually an enemy) */
+    int life_points;           /**< number of life points to remove (this number may be reduced by the tunic) */
+    int magic_points;          /**< number of magic points to remove */
+    uint32_t end_hurt_date;    /**< date when the state ends */
 
   public:
 
@@ -38,6 +39,7 @@ class Hero::HurtState: public Hero::State {
     void start(State *previous_state);
     void stop(State *next_state);
     void update();
+    void set_suspended(bool suspended);
     bool can_start_gameover_sequence();
     bool is_touching_ground();
     bool is_teletransporter_obstacle(Teletransporter &teletransporter);

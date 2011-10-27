@@ -18,7 +18,7 @@
 #define SOLARUS_PLAYER_MOVEMENT_H
 
 #include "Common.h"
-#include "movements/SmoothMovement.h"
+#include "movements/RectilinearMovement.h"
 
 /**
  * @brief Movement of an entity controlled by the player.
@@ -27,13 +27,13 @@
  * This class basically converts the combination of directional keys pressed
  * (from the class GameControls) into a movement.
  */
-class PlayerMovement: public SmoothMovement {
+class PlayerMovement: public RectilinearMovement {
 
   protected:
 
-    int moving_speed;					/**< speed of the entity when it is moving */
-    int direction8;					/**< current direction of the movement (0 to 7), as defined by the directional keys
-							 * currently pressed by the player (when the movement allows them) or -1 */
+    int moving_speed;        /**< speed of the entity when it is moving */
+    int direction8;          /**< current direction of the movement (0 to 7), as defined by the directional keys
+							  * currently pressed by the player (when the movement allows them) or -1 */
 
     void set_wanted_direction();
 

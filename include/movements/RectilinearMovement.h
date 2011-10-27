@@ -60,10 +60,12 @@ class RectilinearMovement: public Movement {
     Rectangle initial_xy;        /**< Initial position when the movement started
                                   * (reset whenever the speed of the angle changes) */
     int max_distance;            /**< After this distance in pixels from the initial position,
-                                  * the movement will stop (0 means no limit) */
-    bool finished;               /**< Indicates that max_distance is reached */
+                                  * or when an obstacle is reached, the movement will stop
+                                  * (0 means no limit) */
+    bool finished;               /**< When max_distance is not zero, indicates
+                                  * that max_distance or an obstacle is reached */
     bool smooth;                 /**< Makes the movement adjust its trajectory
-                                  * when an obstacle is reached */
+                                  * when an obstacle is close */
 
   protected:
 
@@ -91,7 +93,7 @@ class RectilinearMovement: public Movement {
 
   public:
 
-    RectilinearMovement(bool ignore_obstacles = false);
+    RectilinearMovement(bool ignore_obstacles, bool smooth);
     virtual ~RectilinearMovement();
 
     virtual void set_entity(MapEntity* entity);

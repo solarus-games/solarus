@@ -1084,6 +1084,16 @@ void MapEntity::notify_movement_tried(bool success) {
 }
 
 /**
+ * @brief Notifies this entity that it has just failed to change its position
+ * because of obstacles.
+ *
+ * This function is called only when the movement is not suspended.
+ * By default, nothing is done.
+ */
+void MapEntity::notify_obstacle_reached() {
+}
+
+/**
  * @brief This function is called when the entity has just moved.
  *
  * It checks collisions with the detectors on the map.

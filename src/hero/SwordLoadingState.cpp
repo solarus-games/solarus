@@ -20,7 +20,6 @@
 #include "hero/FreeState.h"
 #include "hero/HeroSprites.h"
 #include "entities/Enemy.h"
-#include "movements/TemporalMovement.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/FileTools.h"

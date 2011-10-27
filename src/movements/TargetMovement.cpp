@@ -31,7 +31,7 @@
  */
 TargetMovement::TargetMovement(int target_x, int target_y, int speed):
 
-  SmoothMovement(true),
+  RectilinearMovement(true, true),
   target_x(target_x),
   target_y(target_y),
   target_entity(NULL),
@@ -41,7 +41,6 @@ TargetMovement::TargetMovement(int target_x, int target_y, int speed):
   next_recomputation_date(System::now()),
   finished(false) {
 
-  set_default_ignore_obstacles(true);
 }
 
 /**
@@ -52,9 +51,9 @@ TargetMovement::TargetMovement(int target_x, int target_y, int speed):
  * @param target_entity the target entity
  * @param speed speed of the movement
  */
-TargetMovement::TargetMovement(MapEntity *target_entity, int speed):
+TargetMovement::TargetMovement(MapEntity* target_entity, int speed):
 
-  SmoothMovement(true),
+  RectilinearMovement(true, true),
   target_x(target_entity->get_x()),
   target_y(target_entity->get_y()),
   target_entity(target_entity),
@@ -64,7 +63,6 @@ TargetMovement::TargetMovement(MapEntity *target_entity, int speed):
   next_recomputation_date(System::now()),
   finished(false) {
 
-  set_ignore_obstacles(true);
 }
 
 /**
@@ -91,7 +89,7 @@ void TargetMovement::set_target(int target_x, int target_y) {
  * @brief Changes the target of this movement.
  * @param target_entity the target entity
  */
-void TargetMovement::set_target(MapEntity *target_entity) {
+void TargetMovement::set_target(MapEntity* target_entity) {
 
   this->target_entity = target_entity;
   this->target_x = target_x;
@@ -120,7 +118,7 @@ void TargetMovement::update() {
     finished = true;
   }
 
-  SmoothMovement::update();
+  RectilinearMovement::update();
 }
 
 /**

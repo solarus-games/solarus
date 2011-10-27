@@ -21,7 +21,7 @@
 #include "entities/Enemy.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Sound.h"
-#include "movements/TemporalMovement.h"
+#include "movements/RectilinearMovement.h"
 #include "lowlevel/Geometry.h"
 #include "Game.h"
 #include "GameControls.h"
@@ -163,6 +163,19 @@ bool Hero::SwordTappingState::is_teletransporter_obstacle(Teletransporter& telet
 }
 
 /**
+ * @brief Notifies this state that the hero has just failed to change its
+ * position because of obstacles.
+ *
+ * This function is called only when the game is not suspended.
+ */
+void Hero::SwordTappingState::notify_obstacle_reached() {
+
+  // the hero reached an obstacle while being pushed after hitting an enemy
+  hero.clear_movement();
+  hero.set_state(new FreeState(hero));
+}
+
+/**
  * @brief Notifies this state that the hero has just attacked an enemy.
  * @param attack the attack
  * @param victim the enemy just hurt
@@ -178,7 +191,11 @@ void Hero::SwordTappingState::notify_attacked_enemy(EnemyAttack attack, Enemy& v
 
       double angle = Geometry::get_angle(victim.get_x(), victim.get_y(),
           hero.get_x(), hero.get_y());
-      hero.set_movement(new TemporalMovement(120, angle, 200));
+      RectilinearMovement* movement = new RectilinearMovement(false, true);
+      movement->set_max_distance(24);
+      movement->set_speed(120);
+      movement->set_angle(angle);
+      hero.set_movement(movement);
       get_sprites().set_animation_walking_normal();
     }
   }

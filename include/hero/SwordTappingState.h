@@ -40,6 +40,7 @@ class Hero::SwordTappingState: public Hero::State {
     bool can_sword_hit_crystal();
     bool is_cutting_with_sword(Detector& detector);
     bool is_teletransporter_obstacle(Teletransporter& teletransporter);
+    void notify_obstacle_reached();
     void notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
         EnemyReaction::Reaction& result, bool killed);
 };

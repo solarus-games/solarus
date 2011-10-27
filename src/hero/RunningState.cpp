@@ -18,7 +18,7 @@
 #include "hero/FreeState.h"
 #include "hero/HeroSprites.h"
 #include "entities/Enemy.h"
-#include "movements/TemporalMovement.h"
+#include "movements/RectilinearMovement.h"
 #include "movements/JumpMovement.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Sound.h"
@@ -94,9 +94,15 @@ void Hero::RunningState::update() {
   if (phase == 0) {
     
     if (now >= next_phase_date) {
+
       double angle = Geometry::degrees_to_radians(get_sprites().get_animation_direction() * 90);
+      RectilinearMovement* movement = new RectilinearMovement(false, true);
+      movement->set_max_distance(3000);
+      movement->set_speed(300);
+      movement->set_angle(angle);
       hero.clear_movement();
-      hero.set_movement(new TemporalMovement(300, angle , 10000));
+      hero.set_movement(movement);
+
       get_sprites().set_animation_running();
       phase++;
     }

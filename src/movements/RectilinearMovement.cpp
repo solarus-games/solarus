@@ -26,8 +26,10 @@
  * @brief Constructor.
  * @param ignore_obstacles true to ignore obstacles of the map
  * (used only when there is a map and the movement is attached to an entity of this map)
+ * @param smooth true to adjust the trajectory if an obstacle is reached
+ * (only when ignore_obstacles is false)
  */
-RectilinearMovement::RectilinearMovement(bool ignore_obstacles):
+RectilinearMovement::RectilinearMovement(bool ignore_obstacles, bool smooth):
   Movement(ignore_obstacles),
   angle(0),
   x_speed(0),
@@ -37,7 +39,8 @@ RectilinearMovement::RectilinearMovement(bool ignore_obstacles):
   x_move(0),
   y_move(0),
   max_distance(0),
-  finished(false) {
+  finished(false),
+  smooth(smooth) {
 
 }
 

@@ -41,6 +41,7 @@ class Hero::SpinAttackState: public Hero::State {
     bool is_cutting_with_sword(Detector& detector);
     int get_sword_damage_factor();
     bool is_teletransporter_obstacle(Teletransporter& teletransporter);
+    void notify_obstacle_reached();
     void notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
         EnemyReaction::Reaction& result, bool killed);
 };

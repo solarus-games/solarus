@@ -213,6 +213,10 @@ void Movement::notify_position_changed() {
  * because of obstacles.
  */
 void Movement::notify_obstacle_reached() {
+
+  if (entity != NULL) {
+    entity->notify_obstacle_reached();
+  }
 }
 
 /**

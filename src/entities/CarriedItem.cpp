@@ -371,10 +371,10 @@ void CarriedItem::update() {
 
       std::string animation = get_sprite().get_current_animation();
       if (animation == "stopped") {
-	get_sprite().set_current_animation("stopped_explosion_soon");
+        get_sprite().set_current_animation("stopped_explosion_soon");
       }
       else if (animation == "walking") {
-	get_sprite().set_current_animation("walking_explosion_soon");
+        get_sprite().set_current_animation("walking_explosion_soon");
       }
     }
   }
@@ -396,9 +396,9 @@ void CarriedItem::update() {
     else {
       uint32_t now = System::now();
       while (now >= next_down_date) {
-	next_down_date += 40;
-	item_height -= y_increment;
-	y_increment++;
+        next_down_date += 40;
+        item_height -= y_increment;
+        y_increment++;
       }
     }
   }

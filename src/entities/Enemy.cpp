@@ -30,7 +30,7 @@
 #include "SpriteAnimationSet.h"
 #include "Map.h"
 #include "lua/MapScript.h"
-#include "movements/RectilinearMovement.h"
+#include "movements/StraightMovement.h"
 #include "movements/FallingHeight.h"
 #include "lowlevel/Geometry.h"
 #include "lowlevel/FileTools.h"
@@ -967,7 +967,7 @@ void Enemy::hurt(MapEntity &source) {
   // push the enemy back
   if (pushed_back_when_hurt) {
     double angle = source.get_vector_angle(*this);
-    RectilinearMovement* movement = new RectilinearMovement(false, true);
+    StraightMovement* movement = new StraightMovement(false, true);
     movement->set_max_distance(24);
     movement->set_speed(120);
     movement->set_angle(angle);

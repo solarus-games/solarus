@@ -17,7 +17,7 @@
 #include "hero/HurtState.h"
 #include "hero/FreeState.h"
 #include "hero/HeroSprites.h"
-#include "movements/RectilinearMovement.h"
+#include "movements/StraightMovement.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/Geometry.h"
 #include "lowlevel/System.h"
@@ -80,7 +80,7 @@ void Hero::HurtState::start(State *previous_state) {
 
   double angle = Geometry::get_angle(source_xy.get_x(), source_xy.get_y(),
       hero.get_x(), hero.get_y());
-  RectilinearMovement* movement = new RectilinearMovement(false, true);
+  StraightMovement* movement = new StraightMovement(false, true);
   movement->set_max_distance(24);
   movement->set_speed(120);
   movement->set_angle(angle);

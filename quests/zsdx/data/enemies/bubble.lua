@@ -14,7 +14,7 @@ function event_appear()
   sol.enemy.set_origin(6, 6)
   sol.enemy.set_can_hurt_hero_running(true)
   sol.enemy.set_invincible()
-  local m = sol.main.rectilinear_movement_create(80, 0)
+  local m = sol.main.straight_movement_create(80, 0)
   sol.enemy.start_movement(m)
 end
 

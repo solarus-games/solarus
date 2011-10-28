@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_RECTILINEAR_MOVEMENT_H
-#define SOLARUS_RECTILINEAR_MOVEMENT_H
+#ifndef SOLARUS_STRAIGHT_MOVEMENT_H
+#define SOLARUS_STRAIGHT_MOVEMENT_H
 
 #include "Common.h"
 #include "movements/Movement.h"
@@ -31,7 +31,7 @@
  * - ignore_obstacles
  * - smooth
  */
-class RectilinearMovement: public Movement {
+class StraightMovement: public Movement {
 
   private:
 
@@ -93,8 +93,8 @@ class RectilinearMovement: public Movement {
 
   public:
 
-    RectilinearMovement(bool ignore_obstacles, bool smooth);
-    virtual ~RectilinearMovement();
+    StraightMovement(bool ignore_obstacles, bool smooth);
+    virtual ~StraightMovement();
 
     virtual void set_entity(MapEntity* entity);
     virtual void update();

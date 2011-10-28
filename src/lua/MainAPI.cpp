@@ -562,7 +562,7 @@ int Script::main_api_target_movement_create(lua_State *l) {
 }
 
 /**
- * @brief Creates a movement of type RectilinearMovement that will be accessible from the script.
+ * @brief Creates a movement of type StraightMovement that will be accessible from the script.
  *
  * - Argument 1 (int): the speed in pixels per second
  * - Argument 2 (float): angle of the speed vector in radians
@@ -570,13 +570,13 @@ int Script::main_api_target_movement_create(lua_State *l) {
  *
  * @param l the Lua context that is calling this function
  */
-int Script::main_api_rectilinear_movement_create(lua_State *l) {
+int Script::main_api_straight_movement_create(lua_State *l) {
 
   Script& script = get_script(l, 2);
   int speed = luaL_checkinteger(l, 1);
   double angle = luaL_checknumber(l, 2);
 
-  RectilinearMovement *movement = new RectilinearMovement(false, false);
+  StraightMovement *movement = new StraightMovement(false, false);
   movement->set_speed(speed);
   movement->set_angle(angle);
   int movement_handle = script.create_movement_handle(*movement);

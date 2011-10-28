@@ -29,7 +29,7 @@
  * @param max_distance if the object goes further than this distance, it will come back
  */
 RandomMovement::RandomMovement(int speed, int max_distance):
-  RectilinearMovement(false, false),
+  StraightMovement(false, false),
   normal_speed(speed),
   max_distance(max_distance) {
 
@@ -107,7 +107,7 @@ void RandomMovement::set_next_direction() {
  */
 void RandomMovement::update() {
 
-  RectilinearMovement::update();
+  StraightMovement::update();
 
   if (!is_suspended()) {
 
@@ -124,7 +124,7 @@ void RandomMovement::update() {
  */
 void RandomMovement::set_suspended(bool suspended) {
 
-  RectilinearMovement::set_suspended(suspended);
+  StraightMovement::set_suspended(suspended);
 
   if (!suspended) {
     next_direction_change_date += System::now() - get_when_suspended();

@@ -25,7 +25,7 @@
  * @param moving_speed movement speed
  */
 PlayerMovement::PlayerMovement(int moving_speed):
-  RectilinearMovement(false, true),
+  StraightMovement(false, true),
   moving_speed(moving_speed),
   direction8(-1) {
 
@@ -43,7 +43,7 @@ PlayerMovement::~PlayerMovement() {
  */
 void PlayerMovement::update() {
 
-  RectilinearMovement::update();
+  StraightMovement::update();
 
   if (!get_entity()->is_on_map()) {
     return; // the entity is not ready yet

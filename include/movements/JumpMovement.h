@@ -29,7 +29,7 @@
  * - speed
  * - ignore_obstacles
  *
- * TODO: inherit RectilinearMovement instead?
+ * TODO: inherit StraightMovement instead?
  */
 class JumpMovement: public PixelMovement {
 

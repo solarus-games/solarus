@@ -21,7 +21,7 @@
 #include "entities/Enemy.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Sound.h"
-#include "movements/RectilinearMovement.h"
+#include "movements/StraightMovement.h"
 #include "lowlevel/Geometry.h"
 #include "Game.h"
 #include "GameControls.h"
@@ -189,7 +189,7 @@ void Hero::SwordTappingState::notify_attacked_enemy(EnemyAttack attack, Enemy& v
 
       double angle = Geometry::get_angle(victim.get_x(), victim.get_y(),
           hero.get_x(), hero.get_y());
-      RectilinearMovement* movement = new RectilinearMovement(false, true);
+      StraightMovement* movement = new StraightMovement(false, true);
       movement->set_max_distance(24);
       movement->set_speed(120);
       movement->set_angle(angle);

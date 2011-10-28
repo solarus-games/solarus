@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "movements/RectilinearMovement.h"
+#include "movements/StraightMovement.h"
 #include "entities/MapEntity.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Geometry.h"
@@ -29,7 +29,7 @@
  * @param smooth true to adjust the trajectory if an obstacle is reached
  * (only when ignore_obstacles is false)
  */
-RectilinearMovement::RectilinearMovement(bool ignore_obstacles, bool smooth):
+StraightMovement::StraightMovement(bool ignore_obstacles, bool smooth):
   Movement(ignore_obstacles),
   angle(0),
   x_speed(0),
@@ -47,7 +47,7 @@ RectilinearMovement::RectilinearMovement(bool ignore_obstacles, bool smooth):
 /**
  * @brief Destructor.
  */
-RectilinearMovement::~RectilinearMovement() {
+StraightMovement::~StraightMovement() {
 
 }
 
@@ -56,7 +56,7 @@ RectilinearMovement::~RectilinearMovement() {
  * @param entity the entity to control, or NULL if the movement is not
  * attached to a map entity
  */
-void RectilinearMovement::set_entity(MapEntity* entity) {
+void StraightMovement::set_entity(MapEntity* entity) {
 
   Movement::set_entity(entity);
   initial_xy.set_xy(get_xy());
@@ -66,7 +66,7 @@ void RectilinearMovement::set_entity(MapEntity* entity) {
  * @brief Returns the x speed of the object.
  * @return the x speed of the entity, between -100 and 100
  */
-double RectilinearMovement::get_x_speed() {
+double StraightMovement::get_x_speed() {
   return x_speed;
 }
 
@@ -74,7 +74,7 @@ double RectilinearMovement::get_x_speed() {
  * @brief Returns the y speed of the object.
  * @return the y speed of the entity, between -100 and 100
  */
-double RectilinearMovement::get_y_speed() {
+double StraightMovement::get_y_speed() {
   return y_speed;
 }
 
@@ -85,7 +85,7 @@ double RectilinearMovement::get_y_speed() {
  *
  * @return the speed in pixels per second
  */
-double RectilinearMovement::get_speed() {
+double StraightMovement::get_speed() {
   return std::sqrt(x_speed * x_speed + y_speed * y_speed);
 }
 
@@ -93,7 +93,7 @@ double RectilinearMovement::get_speed() {
  * @brief Sets the x speed.
  * @param x_speed the x speed of the object in pixels per second
  */
-void RectilinearMovement::set_x_speed(double x_speed) {
+void StraightMovement::set_x_speed(double x_speed) {
 
   if (std::fabs(x_speed) <= 1E-6) {
     x_speed = 0;
@@ -130,7 +130,7 @@ void RectilinearMovement::set_x_speed(double x_speed) {
  * @brief Sets the y speed.
  * @param y_speed the y speed of the object in pixels per second
  */
-void RectilinearMovement::set_y_speed(double y_speed) {
+void StraightMovement::set_y_speed(double y_speed) {
 
   if (std::fabs(y_speed) <= 1E-6) {
     y_speed = 0;
@@ -170,7 +170,7 @@ void RectilinearMovement::set_y_speed(double y_speed) {
  *
  * @param speed the new speed
  */
-void RectilinearMovement::set_speed(double speed) {
+void StraightMovement::set_speed(double speed) {
 
   if (x_speed == 0 && y_speed == 0) {
     x_speed = 1;
@@ -191,14 +191,14 @@ void RectilinearMovement::set_speed(double speed) {
  * @brief Returns whether the speed is not zero.
  * @return true if the object is moving, false otherwise
  */
-bool RectilinearMovement::is_started() {
+bool StraightMovement::is_started() {
   return x_speed != 0 || y_speed != 0;
 }
 
 /**
  * @brief Sets the speed to zero.
  */
-void RectilinearMovement::stop() {
+void StraightMovement::stop() {
 
   double old_angle = this->angle;
   set_x_speed(0);
@@ -216,7 +216,7 @@ void RectilinearMovement::stop() {
  * @brief Sets the date of the next change of the x coordinate.
  * @param next_move_date_x the date in milliseconds
  */
-void RectilinearMovement::set_next_move_date_x(uint32_t next_move_date_x) {
+void StraightMovement::set_next_move_date_x(uint32_t next_move_date_x) {
 
   if (is_suspended()) {
     uint32_t delay = next_move_date_x - System::now();
@@ -231,7 +231,7 @@ void RectilinearMovement::set_next_move_date_x(uint32_t next_move_date_x) {
  * @brief Sets the date of the next change of the y coordinate.
  * @param next_move_date_y the date in milliseconds
  */
-void RectilinearMovement::set_next_move_date_y(uint32_t next_move_date_y) {
+void StraightMovement::set_next_move_date_y(uint32_t next_move_date_y) {
 
   if (is_suspended()) {
     uint32_t delay = next_move_date_y - System::now();
@@ -246,7 +246,7 @@ void RectilinearMovement::set_next_move_date_y(uint32_t next_move_date_y) {
  * @brief Computes and returns the direction of the speed vector.
  * @return the current angle of the speed vector in degrees
  */
-double RectilinearMovement::get_angle() {
+double StraightMovement::get_angle() {
 
   return angle;
 }
@@ -260,7 +260,7 @@ double RectilinearMovement::get_angle() {
  *
  * @param angle the new movement direction in radians
  */
-void RectilinearMovement::set_angle(double angle) {
+void StraightMovement::set_angle(double angle) {
 
   if (!is_stopped()) {
     double speed = get_speed();
@@ -278,7 +278,7 @@ void RectilinearMovement::set_angle(double angle) {
  * @brief Returns the distance after which the movement stops.
  * @return the maximum distance in pixels (0 means no limit)
  */
-int RectilinearMovement::get_max_distance() {
+int StraightMovement::get_max_distance() {
 
   return max_distance;
 }
@@ -287,7 +287,7 @@ int RectilinearMovement::get_max_distance() {
  * @brief Sets the distance after which the movement stops.
  * @param max_distance the maximum distance in pixels (0 means no limit)
  */
-void RectilinearMovement::set_max_distance(int max_distance) {
+void StraightMovement::set_max_distance(int max_distance) {
 
   this->max_distance = max_distance;
 }
@@ -299,7 +299,7 @@ void RectilinearMovement::set_max_distance(int max_distance) {
  *
  * @return true if the movement is finished
  */
-bool RectilinearMovement::is_finished() {
+bool StraightMovement::is_finished() {
 
   return finished;
 }
@@ -307,7 +307,7 @@ bool RectilinearMovement::is_finished() {
 /**
  * @brief Stops the movement and marks it finished.
  */
-void RectilinearMovement::set_finished() {
+void StraightMovement::set_finished() {
 
   stop();
   this->finished = true;
@@ -317,7 +317,7 @@ void RectilinearMovement::set_finished() {
  * @brief Returns the direction a sprite controlled by this movement should take.
  * @return the direction to use to display the object controlled by this movement (0 to 3)
  */
-int RectilinearMovement::get_displayed_direction4() {
+int StraightMovement::get_displayed_direction4() {
 
   int direction = (Geometry::radians_to_degrees(angle) + 45 + 360) / 90;
   return direction % 4;
@@ -331,7 +331,7 @@ int RectilinearMovement::get_displayed_direction4() {
  *
  * @return true if the entity is about to try to move
  */
-bool RectilinearMovement::has_to_move_now() {
+bool StraightMovement::has_to_move_now() {
 
   uint32_t now = System::now();
 
@@ -346,7 +346,7 @@ bool RectilinearMovement::has_to_move_now() {
  *
  * @param suspended true to suspend the movement, false to resume it
  */
-void RectilinearMovement::set_suspended(bool suspended) {
+void StraightMovement::set_suspended(bool suspended) {
 
   Movement::set_suspended(suspended);
 
@@ -366,7 +366,7 @@ void RectilinearMovement::set_suspended(bool suspended) {
  * an obstacle is reached.
  * @return true if the movement is smooth
  */
-bool RectilinearMovement::is_smooth() {
+bool StraightMovement::is_smooth() {
   return this->smooth;
 }
 
@@ -375,7 +375,7 @@ bool RectilinearMovement::is_smooth() {
  * an obstacle is reached.
  * @param smooth true if the movement is smooth
  */
-void RectilinearMovement::set_smooth(bool smooth) {
+void StraightMovement::set_smooth(bool smooth) {
   this->smooth = smooth;
 }
 
@@ -383,7 +383,7 @@ void RectilinearMovement::set_smooth(bool smooth) {
  * @brief Updates the x position of the entity if it wants to move
  * (smooth version).
  */
-void RectilinearMovement::update_smooth_x() {
+void StraightMovement::update_smooth_x() {
 
   if (x_move != 0) { // the entity wants to move on x
 
@@ -459,7 +459,7 @@ void RectilinearMovement::update_smooth_x() {
  * @brief Updates the y position of the entity if it wants to move
  * (smooth version).
  */
-void RectilinearMovement::update_smooth_y() {
+void StraightMovement::update_smooth_y() {
 
   if (y_move != 0) { // the entity wants to move on y
 
@@ -534,7 +534,7 @@ void RectilinearMovement::update_smooth_y() {
  * @brief Updates the x position of the entity if it wants to move
  * (non-smooth version).
  */
-void RectilinearMovement::update_non_smooth_x() {
+void StraightMovement::update_non_smooth_x() {
 
   uint32_t now = System::now();
   if (x_move != 0 && now >= next_move_date_x) { // if it's time to try a move
@@ -554,7 +554,7 @@ void RectilinearMovement::update_non_smooth_x() {
  * @brief Updates the y position of the entity if it wants to move
  * (non-smooth version).
  */
-void RectilinearMovement::update_non_smooth_y() {
+void StraightMovement::update_non_smooth_y() {
 
   uint32_t now = System::now();
   if (y_move != 0 && now >= next_move_date_y) { // if it's time to try a move
@@ -573,7 +573,7 @@ void RectilinearMovement::update_non_smooth_y() {
 /**
  * @brief Updates the x position of the entity if it wants to move.
  */
-void RectilinearMovement::update_x() {
+void StraightMovement::update_x() {
 
   if (is_smooth()) {
     update_smooth_x();
@@ -586,7 +586,7 @@ void RectilinearMovement::update_x() {
 /**
  * @brief Updates the y position of the entity if it wants to move.
  */
-void RectilinearMovement::update_y() {
+void StraightMovement::update_y() {
 
   if (is_smooth()) {
     update_smooth_y();
@@ -601,7 +601,7 @@ void RectilinearMovement::update_y() {
  *
  * This function is called repeatedly.
  */
-void RectilinearMovement::update() {
+void StraightMovement::update() {
 
   Movement::update();
 
@@ -680,7 +680,7 @@ void RectilinearMovement::update() {
  * @param key key of the property to get
  * @return the corresponding value as a string
  */
-const std::string RectilinearMovement::get_property(const std::string &key) {
+const std::string StraightMovement::get_property(const std::string &key) {
 
   std::ostringstream oss;
 
@@ -700,7 +700,7 @@ const std::string RectilinearMovement::get_property(const std::string &key) {
     oss << is_smooth();
   }
   else {
-    Debug::die(StringConcat() << "Unknown property of RectilinearMovement: '" << key << "'");
+    Debug::die(StringConcat() << "Unknown property of StraightMovement: '" << key << "'");
   }
 
   return oss.str();
@@ -718,7 +718,7 @@ const std::string RectilinearMovement::get_property(const std::string &key) {
  * @param key key of the property to set (the accepted keys depend on the movement type)
  * @param value the value to set
  */
-void RectilinearMovement::set_property(const std::string &key, const std::string &value) {
+void StraightMovement::set_property(const std::string &key, const std::string &value) {
 
   std::istringstream iss(value);
 
@@ -748,7 +748,7 @@ void RectilinearMovement::set_property(const std::string &key, const std::string
     set_smooth(smooth);
   }
   else {
-    Debug::die(StringConcat() << "Unknown property of RectilinearMovement: '" << key << "'");
+    Debug::die(StringConcat() << "Unknown property of StraightMovement: '" << key << "'");
   }
 }
 

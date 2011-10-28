@@ -130,8 +130,8 @@ creates a movement of type PathFindingMovement (targeting the hero) and that wil
 - <tt>sol.main.target_movement_create(speed, target_x, target_y)</tt>:
 creates a movement of type TargetMovement that will be accessible from this script; target_x and target_y are optional, the default behavior is to track the hero
 
-- <tt>sol.main.rectilinear_movement_create(speed, angle)</tt>:
-creates a movement of type RectilinearMovement that will be accessible from this script
+- <tt>sol.main.straight_movement_create(speed, angle)</tt>:
+creates a movement of type StraightMovement that will be accessible from this script
 
 - <tt>sol.main.circle_movement_create(center_type, center_name, radius)</tt>:
 creates a movement of type CircleMovement that will be accessible from this script

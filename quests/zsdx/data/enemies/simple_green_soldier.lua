@@ -11,7 +11,7 @@ function event_appear()
   sol.enemy.set_size(16, 16)
   sol.enemy.set_origin(8, 13)
 
-  local m = sol.main.rectilinear_movement_create(0, 0)
+  local m = sol.main.straight_movement_create(0, 0)
   sol.enemy.start_movement(m)
 end
 

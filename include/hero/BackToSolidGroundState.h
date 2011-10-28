@@ -30,10 +30,12 @@ class Hero::BackToSolidGroundState: public Hero::State {
     Layer target_layer;             /**< layer of the target location */
     uint32_t end_delay;             /**< delay before returning control to the player */
     uint32_t end_date;              /**< date when the state ends */
+    bool with_sound;                /**< true to play a sound when reaching the solid ground */
 
   public:
 
-    BackToSolidGroundState(Hero &hero, bool use_memorized_xy, uint32_t end_delay = 0);
+    BackToSolidGroundState(Hero &hero, bool use_memorized_xy,
+        uint32_t end_delay = 0, bool with_sound = true);
     ~BackToSolidGroundState();
 
     void start(State *previous_state);

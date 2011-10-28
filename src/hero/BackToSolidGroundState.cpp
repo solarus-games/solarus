@@ -21,6 +21,7 @@
 #include "movements/TargetMovement.h"
 #include "lowlevel/Rectangle.h"
 #include "lowlevel/System.h"
+#include "lowlevel/Sound.h"
 #include "Map.h"
 
 /**
@@ -29,11 +30,14 @@
  * @param use_memorized_xy true to get back to the place previously memorized (if any),
  * false to get back to the last coordinates with solid ground
  * @param end_delay a delay to add at the end before returning control to the hero (default 0)
+ * @param with_sound true to play a sound when returning to solid ground
  */
-Hero::BackToSolidGroundState::BackToSolidGroundState(Hero &hero, bool use_memorized_xy, uint32_t end_delay):
+Hero::BackToSolidGroundState::BackToSolidGroundState(Hero& hero,
+    bool use_memorized_xy, uint32_t end_delay, bool with_sound):
   State(hero),
   end_delay(end_delay),
-  end_date(0) {
+  end_date(0),
+  with_sound(with_sound) {
 
   if (use_memorized_xy && hero.target_solid_ground_coords.get_x() != -1) {
     // go back to a target point specified earlier
@@ -45,7 +49,6 @@ Hero::BackToSolidGroundState::BackToSolidGroundState(Hero &hero, bool use_memori
     this->target_xy.set_xy(hero.last_solid_ground_coords);
     this->target_layer = hero.last_solid_ground_layer;
   }
-
 }
 
 /**
@@ -59,11 +62,12 @@ Hero::BackToSolidGroundState::~BackToSolidGroundState() {
  * @brief Starts this state.
  * @param previous_state the previous state
  */
-void Hero::BackToSolidGroundState::start(State *previous_state) {
+void Hero::BackToSolidGroundState::start(State* previous_state) {
 
   State::start(previous_state);
 
-  hero.set_movement(new TargetMovement(target_xy.get_x(), target_xy.get_y(), hero.get_walking_speed()));
+  hero.set_movement(new TargetMovement(target_xy.get_x(), target_xy.get_y(),
+      hero.get_walking_speed()));
   get_entities().set_entity_layer(&hero, target_layer);
   get_entities().remove_boomerang();
 }
@@ -72,7 +76,7 @@ void Hero::BackToSolidGroundState::start(State *previous_state) {
  * @brief Stops this state.
  * @param next_state the next state
  */
-void Hero::BackToSolidGroundState::stop(State *next_state) {
+void Hero::BackToSolidGroundState::stop(State* next_state) {
 
   State::stop(next_state);
 
@@ -92,10 +96,15 @@ void Hero::BackToSolidGroundState::update() {
     uint32_t now = System::now();
     if (end_date == 0) {
       end_date = now + end_delay;
+      get_sprites().set_animation_stopped_normal();
+      get_sprites().blink();
+
+      if (with_sound) {
+        Sound::play("message_end");
+      }
     }
 
     if (now >= end_date) {
-      get_sprites().blink();
       hero.set_state(new FreeState(hero));
     }
   }
@@ -123,7 +132,7 @@ bool Hero::BackToSolidGroundState::can_start_gameover_sequence() {
  * @return true if the hero is displayed in the current state
  */
 bool Hero::BackToSolidGroundState::is_hero_visible() {
-  return false;
+  return end_date != 0;
 }
 
 /**

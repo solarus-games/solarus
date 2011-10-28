@@ -44,7 +44,6 @@ Boomerang::Boomerang(Hero& hero, int max_distance, int speed, double angle,
   hero(hero),
   has_to_go_back(false),
   going_back(false),
-  max_distance(max_distance),
   speed(speed) {
 
   // initialize the entity
@@ -79,6 +78,7 @@ Boomerang::Boomerang(Hero& hero, int max_distance, int speed, double angle,
   RectilinearMovement* movement = new RectilinearMovement(false, false);
   movement->set_speed(speed);
   movement->set_angle(angle);
+  movement->set_max_distance(max_distance);
   set_movement(movement);
 
   next_sound_date = System::now();
@@ -301,28 +301,42 @@ void Boomerang::update() {
     next_sound_date = now + 150;
   }
 
-  if (!going_back) {
-
-    if (has_to_go_back) {
-      going_back = true;
-      clear_movement();
-      set_movement(new TargetMovement(&hero, speed));
-      get_entities().set_entity_layer(this, hero.get_layer()); // because the hero's layer may have changed
-    }
-    else if (get_movement()->is_stopped()) {
-      // collision with an obstacle
-      
-      if (!get_map().test_collision_with_border(get_movement()->get_last_collision_box_on_obstacle())) {
-        // play a sound unless we are on the map border
-        Sound::play("sword_tapping");
-      }
-      go_back();
-    }
-    else if (get_distance(initial_coords.get_x(), initial_coords.get_y()) >= max_distance) {
-      go_back();
-    }
+  if (!going_back && has_to_go_back) {
+    going_back = true;
+    clear_movement();
+    set_movement(new TargetMovement(&hero, speed));
+    get_entities().set_entity_layer(this, hero.get_layer()); // because the hero's layer may have changed
   }
-  else if (get_movement()->is_finished()) {
+}
+
+/**
+ * @brief Notifies this entity that it has just failed to change its position
+ * because of obstacles.
+ */
+void Boomerang::notify_obstacle_reached() {
+
+  if (!is_going_back()) {
+
+    if (!get_map().test_collision_with_border(
+        get_movement()->get_last_collision_box_on_obstacle())) {
+      // play a sound unless the obstacle is the map border
+      Sound::play("sword_tapping");
+    }
+    go_back();
+  }
+}
+
+/**
+ * @brief This function is called when the movement of the entity is finished.
+ */
+void Boomerang::notify_movement_finished() {
+
+  if (!is_going_back()) {
+    // the maximum distance is reached
+    go_back();
+  }
+  else {
+    // the boomerang is back
     remove_from_map();
   }
 }

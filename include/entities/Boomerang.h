@@ -38,7 +38,6 @@ class Boomerang: public MapEntity {
     bool going_back;                /**< indicates that the boomerang is going back towards the hero */
 
     Rectangle initial_coords;       /**< coordinates of the boomerang's initial position */
-    int max_distance;               /**< maximum distance to traverse in pixel */
     int speed;                      /**< speed of the movement in pixels per second */
 
   public:
@@ -55,6 +54,7 @@ class Boomerang: public MapEntity {
     bool can_be_displayed();
     bool is_displayed_in_y_order();
 
+    // obstacles
     bool is_teletransporter_obstacle(Teletransporter& teletransporter);
     bool is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt);
     bool is_stairs_obstacle(Stairs& stairs);
@@ -72,8 +72,11 @@ class Boomerang: public MapEntity {
     // state
     bool is_going_back();
     void go_back();
-
     void update();
+
+    // movement
+    void notify_obstacle_reached();
+    void notify_movement_finished();
 
     // collisions
     void notify_collision_with_switch(Switch& sw, CollisionMode collision_mode);

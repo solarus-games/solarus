@@ -79,8 +79,7 @@ void Hero::PlungingState::update() {
 
     if (drown > 0) {
       get_equipment().remove_life(drown);
-      Sound::play("message_end");
-      hero.set_state(new BackToSolidGroundState(hero, false));
+      hero.set_state(new BackToSolidGroundState(hero, false, 300));
     }
   }
 }

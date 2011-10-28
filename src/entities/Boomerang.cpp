@@ -23,7 +23,7 @@
 #include "entities/NPC.h"
 #include "entities/MapEntities.h"
 #include "movements/TargetMovement.h"
-#include "movements/RectilinearMovement.h"
+#include "movements/StraightMovement.h"
 #include "Game.h"
 #include "Map.h"
 #include "lowlevel/System.h"
@@ -75,7 +75,7 @@ Boomerang::Boomerang(Hero& hero, int max_distance, int speed, double angle,
 
   initial_coords.set_xy(get_xy());
 
-  RectilinearMovement* movement = new RectilinearMovement(false, false);
+  StraightMovement* movement = new StraightMovement(false, false);
   movement->set_speed(speed);
   movement->set_angle(angle);
   movement->set_max_distance(max_distance);

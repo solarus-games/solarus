@@ -31,7 +31,7 @@
  */
 TargetMovement::TargetMovement(int target_x, int target_y, int speed):
 
-  RectilinearMovement(true, true),
+  StraightMovement(true, true),
   target_x(target_x),
   target_y(target_y),
   target_entity(NULL),
@@ -53,7 +53,7 @@ TargetMovement::TargetMovement(int target_x, int target_y, int speed):
  */
 TargetMovement::TargetMovement(MapEntity* target_entity, int speed):
 
-  RectilinearMovement(true, true),
+  StraightMovement(true, true),
   target_x(target_entity->get_x()),
   target_y(target_entity->get_y()),
   target_entity(target_entity),
@@ -118,7 +118,7 @@ void TargetMovement::update() {
     finished = true;
   }
 
-  RectilinearMovement::update();
+  StraightMovement::update();
 }
 
 /**

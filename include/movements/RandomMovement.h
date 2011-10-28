@@ -18,7 +18,7 @@
 #define SOLARUS_RANDOM_MOVEMENT_H
 
 #include "Common.h"
-#include "movements/RectilinearMovement.h"
+#include "movements/StraightMovement.h"
 #include "lowlevel/Rectangle.h"
 
 /**
@@ -32,7 +32,7 @@
  * - angle (read-only)
  * - displayed_direction (read-only)
  */
-class RandomMovement: public RectilinearMovement {
+class RandomMovement: public StraightMovement {
 
   private:
 

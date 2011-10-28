@@ -32,7 +32,7 @@ function go_hero()
   local x, y = sol.enemy.get_position()
   local hero_x, hero_y = sol.map.hero_get_position()
   local angle = sol.main.get_angle(x, y, hero_x, hero_y)
-  local m = sol.main.rectilinear_movement_create(192, angle)
+  local m = sol.main.straight_movement_create(192, angle)
   sol.enemy.start_movement(m)
   state = "attacking"
 end

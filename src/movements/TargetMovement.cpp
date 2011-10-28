@@ -145,8 +145,9 @@ void TargetMovement::recompute_movement() {
     sign_y = (dy >= 0) ? 1 : -1;
 
     if (std::fabs(angle - get_angle()) > 1E-6 || get_speed() < 1E-6) {
-      set_speed(speed); // FIXME is this useful?
+      set_speed(speed);
       set_angle(angle);
+      set_max_distance(Geometry::get_distance(get_x(), get_y(), target_x, target_y));
     }
   }
 }

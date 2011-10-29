@@ -151,11 +151,17 @@ falling hero/falling.png 4 125 -1
 0	24	24	24	12	12	6	6
 0	24	24	24	12	12	6	6
 
-boomerang hero/boomerang.tunic.png 4 100 -1
+boomerang1 hero/boomerang.tunic.png 4 100 -1
 0	96	32	24	16	21	2	2
 0	120	32	24	16	21	2	2
 0	144	32	24	16	21	2	2
 0	168	32	24	16	21	2	2
+
+boomerang2 hero/boomerang.tunic.png 4 100 -1
+32	96	32	24	16	21	2	2
+32	120	32	24	16	21	2	2
+32	144	32	24	16	21	2	2
+32	168	32	24	16	21	2	2
 
 bow hero/bow.tunic.png 4 100 -1
 0	96	32	24	16	21	3	3

@@ -29,13 +29,17 @@
  * @param hero the hero controlled by this state
  * @param max_distance maximum distance of the movement in pixels
  * @param speed speed of the movement in pixels per second
- * @param sprite_name animation set id to represent the boomerang
+ * @param tunic_preparing_animation animation name of the hero's tunic sprite
+ * when preparing the boomerang
+ * @param sprite_name animation set id that represents the boomerang
  */
 Hero::BoomerangState::BoomerangState(Hero& hero, int max_distance, int speed,
+    const std::string& tunic_preparing_animation,
     const SpriteAnimationSetId& sprite_name):
   State(hero),
   max_distance(max_distance),
   speed(speed),
+  tunic_preparing_animation(tunic_preparing_animation),
   sprite_name(sprite_name) {
 
 }
@@ -58,7 +62,7 @@ void Hero::BoomerangState::start(State* previous_state) {
     hero.set_state(new FreeState(hero));
   }
   else {
-    get_sprites().set_animation("boomerang", "");
+    get_sprites().set_animation(tunic_preparing_animation, "boomerang");
     this->direction_pressed8 = get_controls().get_wanted_direction8();
   }
 }

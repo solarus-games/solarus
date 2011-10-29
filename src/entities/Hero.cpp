@@ -2099,11 +2099,16 @@ void Hero::start_grabbing() {
  * @brief Starts shooting a boomerang.
  * @param max_distance maximum distance of the movement in pixels
  * @param speed speed of the movement in pixels per second
- * @param sprite_name animation set id to represent the boomerang
+ * @param tunic_preparing_animation animation name of the hero's tunic sprite
+ * when preparing the boomerang
+ * @param sprite_name animation set id that represents the boomerang
  */
 void Hero::start_boomerang(int max_distance, int speed,
+    const std::string& tunic_preparing_animation,
     const SpriteAnimationSetId& sprite_name) {
-  set_state(new BoomerangState(*this, max_distance, speed, sprite_name));
+
+  set_state(new BoomerangState(*this, max_distance, speed,
+      tunic_preparing_animation, sprite_name));
 }
 
 /**

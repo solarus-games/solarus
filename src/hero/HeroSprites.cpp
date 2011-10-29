@@ -1129,7 +1129,7 @@ void HeroSprites::set_animation(const std::string& tunic_animation,
 
   if (shield_animation.size() > 0
       && equipment.has_ability("shield")) {
-    shield_sprite->set_current_animation(tunic_animation);
+    shield_sprite->set_current_animation(shield_animation);
   }
   else {
     stop_displaying_shield();

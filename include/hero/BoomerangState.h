@@ -26,14 +26,17 @@ class Hero::BoomerangState: public Hero::State {
 
   private:
 
-    int direction_pressed8;                    /**< direction pressed by the player */
-    int max_distance;                          /**< maximum distance to traverse in pixel */
-    int speed;                                 /**< speed of the movement in pixels per second */
-    const SpriteAnimationSetId sprite_name;    /**< animation set id to represent the boomerang */
+    int direction_pressed8;                      /**< direction pressed by the player */
+    int max_distance;                            /**< maximum distance to traverse in pixel */
+    int speed;                                   /**< speed of the movement in pixels per second */
+    const std::string tunic_preparing_animation; /**< animation name of the hero's tunic
+                                                  * when preparing the boomerang */
+    const SpriteAnimationSetId sprite_name;      /**< animation set id that represents the boomerang */
 
   public:
 
     BoomerangState(Hero& hero, int max_distance, int speed,
+        const std::string& hero_preparing_animation,
         const SpriteAnimationSetId& sprite_name);
     ~BoomerangState();
 

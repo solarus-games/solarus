@@ -539,17 +539,26 @@ int Script::map_api_hero_start_victory_sequence(lua_State *l) {
 
 /**
  * @brief Makes the hero shoot a boomerang.
+ *
+ * - Argument 1 (integer): maximum distance of the movement in pixels
+ * - Argument 2 (integer): speed of the movement in pixels per second
+ * - Argument 3 (string): animation name of the hero's tunic sprite
+ * when preparing the boomerang
+ * - Argument 3 (string): animation set id that represents the boomerang
+ *
  * @param l the Lua context that is calling this function
  */
 int Script::map_api_hero_start_boomerang(lua_State* l) {
 
-  Script& script = get_script(l, 3);
+  Script& script = get_script(l, 4);
 
   int max_distance = luaL_checkinteger(l, 1);
   int speed = luaL_checkinteger(l, 2);
-  const std::string& sprite_name = luaL_checkstring(l, 3);
+  const std::string& tunic_preparing_animation = luaL_checkstring(l, 3);
+  const SpriteAnimationSetId& sprite_name = luaL_checkstring(l, 4);
 
-  script.get_game().get_hero().start_boomerang(max_distance, speed, sprite_name);
+  script.get_game().get_hero().start_boomerang(max_distance, speed,
+      tunic_preparing_animation, sprite_name);
 
   return 0;
 }

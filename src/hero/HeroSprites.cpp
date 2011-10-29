@@ -1067,44 +1067,6 @@ void HeroSprites::set_animation_falling() {
 }
 
 /**
- * @brief Starts the "boomerang" animation of the hero's sprites.
- */
-void HeroSprites::set_animation_boomerang() {
-
-  tunic_sprite->set_current_animation("boomerang");
-
-  if (equipment.has_ability("shield")) {
-    shield_sprite->set_current_animation("boomerang");
-  }
-  stop_displaying_trail();
-}
-
-/**
- * @brief Starts the "hookshot" animation of the hero's sprites.
- */
-void HeroSprites::set_animation_hookshot() {
-
-  tunic_sprite->set_current_animation("hookshot");
-
-  if (equipment.has_ability("shield")) {
-    shield_sprite->set_current_animation("hookshot");
-  }
-  stop_displaying_trail();
-}
-
-/**
- * @brief Starts the "bow" animation of the hero's sprites.
- */
-void HeroSprites::set_animation_bow() {
-
-  tunic_sprite->set_current_animation("bow");
-  stop_displaying_sword();
-  stop_displaying_shield();
-  stop_displaying_trail();
-}
-
-
-/**
  * @brief Starts the "brandish" animation of the hero's sprites.
  */
 void HeroSprites::set_animation_brandish() {
@@ -1147,6 +1109,33 @@ void HeroSprites::set_animation_running() {
   set_animation_walking_sword_loading();
   stop_displaying_sword_stars();
   trail_sprite->set_current_animation("running");
+}
+
+/**
+ * @brief Starts a custom animation of the hero's sprites.
+ *
+ * The animation of the tunic and the shield (if any) can be specified here.
+ * Other sprites are hidden. Many simple animations can be started with
+ * this function. More complex one have dedicated functions.
+ *
+ * @param tunic_animation name of the animation to give to the tunic sprite
+ * @param shield_animation name of the animation to give to the shield sprite,
+ * or an empty string to hide the shield.
+ */
+void HeroSprites::set_animation(const std::string& tunic_animation,
+    const std::string& shield_animation) {
+
+  tunic_sprite->set_current_animation(tunic_animation);
+
+  if (shield_animation.size() > 0
+      && equipment.has_ability("shield")) {
+    shield_sprite->set_current_animation(tunic_animation);
+  }
+  else {
+    stop_displaying_shield();
+  }
+  stop_displaying_sword();
+  stop_displaying_trail();
 }
 
 /**

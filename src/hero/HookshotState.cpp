@@ -44,7 +44,7 @@ void Hero::HookshotState::start(State *previous_state) {
 
   State::start(previous_state);
 
-  get_sprites().set_animation_hookshot();
+  get_sprites().set_animation("hookshot", "");
   hookshot = new Hookshot(hero);
   get_entities().add_entity(hookshot);
 }

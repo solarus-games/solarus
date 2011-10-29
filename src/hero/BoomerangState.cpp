@@ -58,7 +58,7 @@ void Hero::BoomerangState::start(State* previous_state) {
     hero.set_state(new FreeState(hero));
   }
   else {
-    get_sprites().set_animation_boomerang();
+    get_sprites().set_animation("boomerang", "");
     this->direction_pressed8 = get_controls().get_wanted_direction8();
   }
 }

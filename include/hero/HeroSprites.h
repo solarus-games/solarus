@@ -136,13 +136,12 @@ class HeroSprites {
     void set_animation_hurt();
     void set_animation_plunging();
     void set_animation_falling();
-    void set_animation_boomerang();
-    void set_animation_hookshot();
-    void set_animation_bow();
     void set_animation_brandish();
     void set_animation_victory();
     void set_animation_prepare_running();
     void set_animation_running();
+    void set_animation(const std::string& tunic_animation,
+        const std::string& shield_animation);
 
     void create_ground(Ground grond);
     void destroy_ground();

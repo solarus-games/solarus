@@ -42,7 +42,7 @@ Hero::BowState::~BowState() {
 void Hero::BowState::start(State *previous_state) {
 
   State::start(previous_state);
-  get_sprites().set_animation_bow();
+  get_sprites().set_animation("bow", "");
 }
 
 /**

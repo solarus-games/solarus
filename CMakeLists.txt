@@ -14,5 +14,5 @@ foreach(quest_name ${quests})
 endforeach(quest_name ${quests})
 
 # tests
-add_subdirectory(tests)
+# add_subdirectory(tests)
 

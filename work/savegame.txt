@@ -301,6 +301,8 @@ booleans:
 
 600	dungeon 7 1F: chest with a small key (NW)
 601	dungeon 7 1F: piece of heart (NW)
+602	dungeon 7 1F: chest with the map
+603	dungeon 7 1F: chest with a small key (SW)
 
 700-799	dungeon 8
 800-899	dungeon 9

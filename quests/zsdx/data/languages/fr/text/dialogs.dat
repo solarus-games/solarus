@@ -5765,6 +5765,13 @@ next = dungeon_6.tom_revelation.13
 line1 = "$v, tu es mon"
 line2 = "dernier espoir..."
 
+[dungeon_7.code]
+#       |-----------------------|
+line1 = "        4  7  2        "
+line2 = "        6  1  8        "
+line3 = "           3  5        "
+skip = all
+
 [dungeon_8.welcome]
 #       |-----------------------|
 line1 = "        Niveau 8"

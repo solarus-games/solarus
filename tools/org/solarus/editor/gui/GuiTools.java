@@ -16,7 +16,6 @@
  */
 package org.solarus.editor.gui;
 
-import com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel;
 import javax.swing.*;
 
 /**

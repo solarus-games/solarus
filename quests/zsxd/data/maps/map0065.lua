@@ -35,7 +35,7 @@ end
 
 function event_switch_activated(switch_name)
 
-  i = string.match(switch_name, "^stairs_\([1-7]\)_switch$")
+  i = string.match(switch_name, "^stairs_([1-7])_switch$")
   if (i ~= nil) then
     sol.map.stairs_set_enabled("stairs_"..i, true)
     sol.main.play_sound("secret")

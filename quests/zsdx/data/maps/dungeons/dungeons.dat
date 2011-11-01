@@ -632,7 +632,7 @@ big = 0
 
 [dungeon_7.map_101.chest_1]
 floor = 0
-x = 560
+x = 688
 y = 56
 save = 602
 big = 0
@@ -642,5 +642,12 @@ floor = 0
 x = 88
 y = 680
 save = 603
+big = 0
+
+[dungeon_7.map_101.chest_3]
+floor = 0
+x = 736
+y = 832
+save = 607
 big = 0
 

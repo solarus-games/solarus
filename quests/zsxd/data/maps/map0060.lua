@@ -10,7 +10,7 @@ camera_timer = ""
 
 function event_switch_activated(switch_name)
 
-  switch_index = string.match(switch_name, "^switch_\([1-4]\)$")
+  switch_index = string.match(switch_name, "^switch_([1-4])$")
   if switch_index ~= nil and next_switch_index <= #switches_good_order then
  
     switch_index = tonumber(switch_index)

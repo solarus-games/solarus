@@ -9,7 +9,7 @@ end
 
 function event_hero_on_sensor(sensor_name)
 
-  pipe = string.match(sensor_name, "^pipe_in_\([a-z]\)_sensor")
+  pipe = string.match(sensor_name, "^pipe_in_([a-z])_sensor")
   if pipe ~= nil then
     -- entering a pipe
     sol.map.tile_set_group_enabled("pipe_under_"..pipe, false)
@@ -17,7 +17,7 @@ function event_hero_on_sensor(sensor_name)
     sol.map.obstacle_set_group_enabled("pipe_border_"..pipe, true)
     sol.map.hero_set_visible(true)
   else
-    pipe = string.match(sensor_name, "^pipe_out_\([a-z]\)_sensor")
+    pipe = string.match(sensor_name, "^pipe_out_([a-z])_sensor")
     if pipe ~= nil then
       -- leaving a pipe
       sol.map.tile_set_group_enabled("pipe_under_"..pipe, true)

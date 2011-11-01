@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lowlevel/InputEvent.h"
+#include "Configuration.h"
 
 const int InputEvent::KEYBOARD_ENUM_VERSION = 1;
 const InputEvent::KeyboardKey InputEvent::directional_keys[] = { KEY_RIGHT, KEY_UP, KEY_LEFT, KEY_DOWN, KEY_NONE };
@@ -30,11 +31,13 @@ void InputEvent::initialize() {
   SDL_EnableKeyRepeat(0, 0);
 
   // initialize the joypad
-  if (SDL_NumJoysticks() > 0) {
+  if (SDL_NumJoysticks() > 0 && Configuration::get_value("enable_joystick", 1) == 1) {
     joystick = SDL_JoystickOpen(0);
   }
   else {
     joystick = NULL;
+    SDL_JoystickEventState(SDL_IGNORE);
+    SDL_QuitSubSystem(SDL_INIT_JOYSTICK);
   }
 }
 
@@ -43,7 +46,7 @@ void InputEvent::initialize() {
  */
 void InputEvent::quit() {
 
-  if (SDL_JoystickOpened(0)) {
+  if (joystick != NULL) {
     SDL_JoystickClose(joystick);
   }
 }

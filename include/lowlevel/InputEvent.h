@@ -32,7 +32,7 @@ class InputEvent {
 
     /**
      * Enumeration of keyboard keys.
-     * However, this is a Solarus dedicated enumeration.
+     * This is a Solarus dedicated enumeration.
      * To make the SDL encapsulation easier, this enumeration is compatible with the SDLKey enumeration from SDL.
      * If you intend to replace SDL by another library one day, the API of the Input class will not have to change
      * (only its implementation will) but you may want to
@@ -176,7 +176,7 @@ class InputEvent {
     };
 
     static const int KEYBOARD_ENUM_VERSION;      /**< version of the Key enumeration above (this prevents from
-					          * breaking savegames when the enumeration values are changed) */
+                                                  * breaking savegames when the enumeration values are changed) */
 
   private:
 

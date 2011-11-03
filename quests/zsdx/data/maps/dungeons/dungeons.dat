@@ -107,16 +107,16 @@ width = 1936
 height = 1808
 
 [dungeon_7.floor_0]
-width = 1120
-height = 1120
+width = 1104
+height = 1056
 
 [dungeon_7.floor_1]
-width = 1120
-height = 1120
+width = 1104
+height = 1056
 
 [dungeon_7.floor_2]
-width = 1120
-height = 1120
+width = 1104
+height = 1056
 
 [dungeon_8.floor_-1]
 width = 2256

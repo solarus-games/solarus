@@ -1241,6 +1241,9 @@
 4	0	536	757	4	_random	1	-1
 1	0	624	381	from_potion_shop	3	0
 2	0	616	352	16	16	teletransporter_9	0	1	95	from_outside
+7	0	512	421	enemy	3	blue_knight_soldier	0	-1	_random	1	-1
+7	0	776	621	enemy_2	3	red_knight_soldier	0	-1	_random	1	-1
+7	0	224	701	enemy_3	3	blue_knight_soldier	0	-1	_random	1	-1
 0	2	800	688	8	40	513
 0	2	632	336	8	40	513
 0	2	840	304	8	40	513

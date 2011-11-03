@@ -1388,6 +1388,9 @@
 2	0	384	272	16	16	teletransporter_dw_roof	0	1	63	from_roof
 19	0	384	272	castle_roof_stairs	1	3
 7	0	296	277	boss	3	agahnim	2	520	heart_container	1	521
+7	0	136	517	enemy	3	blue_knight_soldier	0	-1	_random	1	-1
+7	0	656	549	enemy_2	3	blue_knight_soldier	0	-1	_random	1	-1
+7	0	912	453	enemy_3	3	red_knight_soldier	0	-1	_random	1	-1
 0	2	1000	328	8	40	514
 0	2	800	328	8	40	513
 0	2	808	320	192	16	512

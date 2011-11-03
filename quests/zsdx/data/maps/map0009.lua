@@ -28,6 +28,7 @@ function event_map_started(destination_point_name)
 
       new_music = "none"
       sol.map.npc_remove("cannon")
+      sol.map.enemy_set_group_enabled("", false) -- disable all simple enemies
     end
 
   else

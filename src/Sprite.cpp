@@ -126,7 +126,7 @@ const SpriteAnimationSetId& Sprite::get_animation_set_id() const {
 }
 
 /**
- * @brief Returns wether the id of the animation set of this sprite
+ * @brief Returns whether the id of the animation set of this sprite
  * contains the specified string.
  * @param s the string to check
  * @return true if the animation set id contains this string

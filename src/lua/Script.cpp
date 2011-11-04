@@ -530,6 +530,7 @@ void Script::register_enemy_api() {
       { "restart", enemy_api_restart },
       { "hurt", enemy_api_hurt },
       { "create_sprite", enemy_api_create_sprite },
+      { "remove_sprite", enemy_api_remove_sprite },
       { "get_sprite", enemy_api_get_sprite },
       { "create_son", enemy_api_create_son },
       { "get_father", enemy_api_get_father },

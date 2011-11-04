@@ -964,6 +964,32 @@ int Script::enemy_api_create_sprite(lua_State *l) {
 }
 
 /**
+ * @brief Removes and destroys a sprite of the enemy.
+ *
+ * - Optional argument 1 (sprite): the sprite to remove (by default, the first
+ * one created is removed)
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::enemy_api_remove_sprite(lua_State *l) {
+
+  Script& script = get_script(l, 0, 1);
+  Enemy& enemy = script.get_enemy();
+
+  Sprite* sprite;
+  if (lua_gettop(l) >= 1) {
+    sprite = &script.get_sprite(luaL_checkinteger(l, 1));
+  }
+  else {
+    sprite = &enemy.get_sprite();
+  }
+
+  enemy.remove_sprite(sprite);
+
+  return 0;
+}
+
+/**
  * @brief Returns the sprite of this enemy.
  *
  * Your script can then call all sol.main.sprite_* functions.

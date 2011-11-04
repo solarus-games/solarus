@@ -908,6 +908,24 @@ Sprite& MapEntity::create_sprite(const SpriteAnimationSetId& id, bool enable_pix
 }
 
 /**
+ * @brief Removes the specified sprite from this entity and destroys it.
+ */
+void MapEntity::remove_sprite(Sprite* sprite) {
+
+  bool found = false;
+  std::list<Sprite*>::iterator it;
+  for (it = sprites.begin(); it != sprites.end() && !found; it++) {
+    if (*it == sprite) {
+      sprites.erase(it);
+      delete sprite;
+      found = true;
+    }
+  }
+
+  Debug::check_assertion(found, "This sprite does not belong to this entity");
+}
+
+/**
  * @brief Removes and destroys all sprites of this entity.
  */
 void MapEntity::clear_sprites() {

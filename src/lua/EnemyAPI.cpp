@@ -410,7 +410,7 @@ int Script::enemy_api_set_minimum_shield_needed(lua_State *l) {
  * @brief Sets how the enemy reacts when it receives the specified attack.
  *
  * - Argument 1 (string): name of the attack to set
- * ("sword", "thrown_item", "explosion", "arrow", "hookshot", "boomerang", or "lamp")
+ * ("sword", "thrown_item", "explosion", "arrow", "hookshot", "boomerang", or "fire")
  * - Argument 2 (integer or string): an integer means a number of life points lost by the enemy
  * (must be greater than 0),
  * a string can specify "ignored", "protected", "immobilize" or "custom"
@@ -447,7 +447,7 @@ int Script::enemy_api_set_attack_consequence(lua_State *l) {
  *
  * - Argument 1 (sprite): the sprite to consider
  * - Argument 2 (string): name of the attack to set
- * ("sword", "thrown_item", "explosion", "arrow", "hookshot", "boomerang", or "lamp")
+ * ("sword", "thrown_item", "explosion", "arrow", "hookshot", "boomerang", or "fire")
  * - Argument 3 (integer or string): an integer means a number of life points lost by the enemy
  * (must be greater than 0),
  * a string can specify "ignored", "protected", "immobilized" or "custom"

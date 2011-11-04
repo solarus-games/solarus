@@ -78,9 +78,9 @@ void EnemyReaction::set_sprite_reaction(const Sprite* sprite, ReactionType react
     set_general_reaction(reaction, life_lost);
   }
   else {
-    const std::string& name = sprite->get_animation_set_id();
-    sprite_reactions[name].type = reaction;
-    sprite_reactions[name].life_lost = life_lost;
+    int sprite_id = sprite->get_unique_id();
+    sprite_reactions[sprite_id].type = reaction;
+    sprite_reactions[sprite_id].life_lost = life_lost;
   }
 }
 
@@ -92,9 +92,9 @@ void EnemyReaction::set_sprite_reaction(const Sprite* sprite, ReactionType react
 const EnemyReaction::Reaction& EnemyReaction::get_reaction(const Sprite* sprite) {
 
   if (sprite != NULL) {
-    const std::string& name = sprite->get_animation_set_id();
-    if (sprite_reactions.count(name) > 0) {
-      return sprite_reactions[name];
+    int sprite_id = sprite->get_unique_id();
+    if (sprite_reactions.count(sprite_id) > 0) {
+      return sprite_reactions[sprite_id];
     }
   }
   return general_reaction;

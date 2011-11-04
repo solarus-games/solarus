@@ -869,7 +869,7 @@ void Enemy::play_hurt_sound() {
  * @param attack type of attack
  * @param source the entity attacking the enemy (often the hero)
  * @param this_sprite the sprite of this enemy that received the attack, or NULL
- * if the attack comes from a non pixel-precise collision test.
+ * if the attack comes from a non pixel-precise collision test
  */
 void Enemy::try_hurt(EnemyAttack attack, MapEntity &source, Sprite *this_sprite) {
 

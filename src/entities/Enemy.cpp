@@ -227,9 +227,9 @@ void Enemy::notify_map_started() {
 
   // give the sprite their initial direction
   int initial_direction = get_direction();
-  std::map<SpriteAnimationSetId, Sprite*>::iterator it;
+  std::list<Sprite*>::iterator it;
   for (it = get_sprites().begin(); it != get_sprites().end(); it++) {
-    it->second->set_current_direction(initial_direction);
+    (*it)->set_current_direction(initial_direction);
   }
 }
 
@@ -509,9 +509,9 @@ const std::string& Enemy::get_animation() {
  */
 void Enemy::set_animation(const std::string &animation) {
 
-  std::map<SpriteAnimationSetId, Sprite*>::iterator it;
+  std::list<Sprite*>::iterator it;
   for (it = get_sprites().begin(); it != get_sprites().end(); it++) {
-    it->second->set_current_animation(animation);
+    (*it)->set_current_animation(animation);
   }
 }
 
@@ -1025,8 +1025,8 @@ void Enemy::kill() {
   can_attack_again_date = 0;
 
   if (rank == RANK_NORMAL) {
-    // replace the enemy sprite
-    remove_sprites();
+    // replace the enemy sprites
+    clear_sprites();
     create_sprite("enemies/enemy_killed");
     Sound::play("enemy_killed");
   }

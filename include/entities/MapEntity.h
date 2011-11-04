@@ -24,7 +24,6 @@
 #include "entities/EnemyAttack.h"
 #include "entities/EnemyReaction.h"
 #include "lowlevel/Rectangle.h"
-#include <map>
 #include <list>
 
 /**
@@ -106,7 +105,7 @@ class MapEntity {
 
     int direction;                              /**< direction of the entity, not used for all kinds of entities */
 
-    std::map<SpriteAnimationSetId, Sprite*> sprites; /**< sprite(s) representing the entity, indexed by their animation set id;
+    std::list<Sprite*> sprites;                 /**< sprite(s) representing the entity;
                                                  * note that some entities manage their sprites themselves rather than using this field */
     Sprite* first_sprite;                       /**< the first sprite that was created into the sprites map,
                                                  * stored here because the map does not keep the order from which its elements are added */
@@ -140,9 +139,8 @@ class MapEntity {
     void set_origin(const Rectangle &origin);
     void set_bounding_box_from_sprite();
     void set_bounding_box(const Rectangle &bounding_box);
-    Sprite& create_sprite(const SpriteAnimationSetId &id, bool enable_pixel_collisions = false);
-    void remove_sprite(const SpriteAnimationSetId &id);
-    void remove_sprites();
+    Sprite& create_sprite(const SpriteAnimationSetId& id, bool enable_pixel_collisions = false);
+    void clear_sprites();
     void clear_old_movements();
 
     // collisions
@@ -232,12 +230,9 @@ class MapEntity {
     int get_direction();
 
     // sprites
-    Sprite& get_sprite();
-    Sprite& get_sprite(const SpriteAnimationSetId &id);
-    std::map<SpriteAnimationSetId, Sprite*>& get_sprites();
-    int get_nb_sprites();
     bool has_sprite();
-    bool has_sprite(const SpriteAnimationSetId &id);
+    Sprite& get_sprite();
+    std::list<Sprite*>& get_sprites();
     virtual void notify_sprite_frame_changed(Sprite& sprite, const std::string& animation, int frame);
     virtual void notify_sprite_animation_finished(Sprite& sprite, const std::string& animation);
     virtual bool is_visible();

@@ -325,9 +325,8 @@ class Script {
       enemy_api_stop_movement,
       enemy_api_restart,
       enemy_api_hurt,
-      enemy_api_get_sprite,
       enemy_api_create_sprite,
-      enemy_api_remove_sprite,
+      enemy_api_get_sprite,
       enemy_api_create_son,
       enemy_api_get_father,
       enemy_api_send_message;

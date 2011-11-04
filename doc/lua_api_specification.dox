@@ -601,8 +601,9 @@ Sets no treasure for an enemy.
 - <tt>sol.map.enemy_set_random_treasure(enemy_name)</tt>:
 Sets a random treasure for an enemy.
 
-- <tt>sol.map.enemy_get_sprite(enemy_name, sprite_name)</tt>:
-Returns a sprite of the enemy given its name (i.e. the name of its animation set). sprite_name is optional: by default, the first sprite created is returned.
+- <tt>sol.map.enemy_get_sprite(enemy_name)</tt>:
+Returns the sprite of an enemy (if the enemy has several sprites, the first
+one created is returned)
 
 @subsection sol.item Module <tt>sol.item</tt>
 
@@ -821,14 +822,12 @@ and triggers event_restart().
 - <tt>sol.enemy.hurt(life_points)</tt>:
 Hurts the enemy.
 
-- <tt>sol.enemy.get_sprite(sprite_name)</tt>:
-Returns a sprite of the enemy given its name (i.e. the name of its animation set). sprite_name is optional: by default, the first sprite created is returned.
-
-- <tt>sol.enemy.create_sprite(sprite_name)</tt>:
+- <tt>sol.enemy.create_sprite(animation_set)</tt>:
 Creates a sprite attached to the enemy and returns it.
 
-- <tt>sol.enemy.remove_sprite(sprite_name)</tt>:
-Removes a sprite from the enemy.
+- <tt>sol.enemy.get_sprite()</tt>:
+Returns the sprite of the enemy. If the enemy has several sprites, the first
+one is returned.
 
 - <tt>sol.enemy.create_son(enemy_name, breed, x, y)</tt>:
 Creates another enemy, specifying its coordinates as relative to the current enemy.

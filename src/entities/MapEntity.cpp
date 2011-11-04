@@ -119,7 +119,6 @@ MapEntity::MapEntity():
   layer(LAYER_LOW),
   name(""),
   direction(0),
-  first_sprite(NULL),
   visible(true),
   movement(NULL),
   facing_entity(NULL),
@@ -151,7 +150,6 @@ MapEntity::MapEntity(Layer layer, int x, int y, int width, int height):
   bounding_box(x, y),
   name(""),
   direction(0),
-  first_sprite(NULL),
   visible(true),
   movement(NULL),
   facing_entity(NULL),
@@ -202,7 +200,7 @@ MapEntity::MapEntity(const std::string &name, int direction, Layer layer,
  */
 MapEntity::~MapEntity() {
 
-  remove_sprites();
+  clear_sprites();
   clear_movement();
   clear_old_movements();
 }
@@ -297,10 +295,10 @@ void MapEntity::set_map(Map &map) {
 void MapEntity::notify_map_started() {
 
   // notify the sprites (useful for tileset-dependent sprites such as doors and blocks)
-  std::map<std::string, Sprite*>::iterator it;
+  std::list<Sprite*>::iterator it;
   for (it = sprites.begin(); it != sprites.end(); it++) {
 
-    Sprite &sprite = *(it->second);
+    Sprite& sprite = *(*it);
     sprite.set_map(*map);
   }
 }
@@ -868,14 +866,6 @@ void MapEntity::set_origin(const Rectangle &origin) {
 }
 
 /**
- * @brief Returns the number of sprites of this entity.
- * @return the number of sprites created
- */
-int MapEntity::get_nb_sprites() {
-  return sprites.size();
-}
-
-/**
  * @brief Returns whether the entity has at least one sprite.
  * @return true if the entity has at least one sprite.
  */
@@ -888,37 +878,24 @@ bool MapEntity::has_sprite() {
  * @return the first sprite created
  */
 Sprite& MapEntity::get_sprite() {
-  return *first_sprite;
-}
-
-/**
- * @brief Returns a sprite of the entity, previously created with a call to create_sprite().
- * @param id name of the animation set of the sprite to get
- * @return the sprite with the specified animation set
- */
-Sprite& MapEntity::get_sprite(const SpriteAnimationSetId &id) {
-
-  Debug::check_assertion(sprites.count(id) > 0,
-    StringConcat() << "Cannot find sprite '" << id << "' for entity '" << get_name() << "'");
-
-  return *sprites[id];
+  return *sprites.front();
 }
 
 /**
  * @brief Returns all sprites of this entity.
- * @return the sprites indexed by their animation set id
+ * @return the sprites
  */
-std::map<SpriteAnimationSetId, Sprite*>& MapEntity::get_sprites() {
+std::list<Sprite*>& MapEntity::get_sprites() {
   return sprites;
 }
 
 /**
  * @brief Adds a sprite to this entity.
- * @param id id of the sprite's animations to add
+ * @param id id of the sprite's animation set to use
  * @param enable_pixel_collisions true to enable the pixel-perfect collision tests for this sprite
  * @return the sprite created
  */
-Sprite& MapEntity::create_sprite(const SpriteAnimationSetId &id, bool enable_pixel_collisions) {
+Sprite& MapEntity::create_sprite(const SpriteAnimationSetId& id, bool enable_pixel_collisions) {
 
   Sprite* sprite = new Sprite(id);
 
@@ -926,41 +903,18 @@ Sprite& MapEntity::create_sprite(const SpriteAnimationSetId &id, bool enable_pix
     sprite->enable_pixel_collisions();
   }
 
-  if (!has_sprite()) {
-    // first sprite created
-    first_sprite = sprite;
-  }
-
-  sprites[id] = sprite;
+  sprites.push_back(sprite);
   return *sprite;
-}
-
-/**
- * @brief Removes the specified sprite from this entity.
- *
- * The sprite is destroyed.
- *
- * @param id id of the sprite's animation set
- */
-void MapEntity::remove_sprite(const SpriteAnimationSetId &id) {
-
-  Sprite *sprite = &get_sprite(id);
-
-  if (sprite == first_sprite) {
-    first_sprite = NULL;
-  }
-  delete sprite;
-  sprites.erase(id);
 }
 
 /**
  * @brief Removes and destroys all sprites of this entity.
  */
-void MapEntity::remove_sprites() {
-  
-  std::map<std::string, Sprite*>::iterator it;
+void MapEntity::clear_sprites() {
+
+  std::list<Sprite*>::iterator it;
   for (it = sprites.begin(); it != sprites.end(); it++) {
-    delete it->second;
+    delete *it;
   }
   sprites.clear();
 }
@@ -1094,10 +1048,10 @@ void MapEntity::check_collision_with_detectors() {
   get_map().check_collision_with_detectors(*this);
 
   // detect pixel-precise collisions
-  std::map<std::string, Sprite*>::iterator it;
+  std::list<Sprite*>::iterator it;
   for (it = sprites.begin(); it != sprites.end(); it++) {
 
-    Sprite &sprite = *(it->second);
+    Sprite& sprite = *(*it);
     if (sprite.are_pixel_collisions_enabled()) {
       get_map().check_collision_with_detectors(*this, sprite);
     }
@@ -1159,10 +1113,10 @@ void MapEntity::set_enabled(bool enabled) {
     get_movement()->set_suspended(suspended || !enabled);
   }
 
-  std::map<std::string, Sprite*>::iterator it;
+  std::list<Sprite*>::iterator it;
   for (it = sprites.begin(); it != sprites.end(); it++) {
 
-    Sprite& sprite = *(it->second);
+    Sprite& sprite = *(*it);
     sprite.set_suspended(suspended || !enabled);
   }
 
@@ -1723,10 +1677,10 @@ void MapEntity::set_suspended(bool suspended) {
   }
 
   // suspend/unsuspend the sprites animations
-  std::map<std::string, Sprite*>::iterator it;
+  std::list<Sprite*>::iterator it;
   for (it = sprites.begin(); it != sprites.end(); it++) {
     
-    Sprite &sprite = *(it->second);
+    Sprite& sprite = *(*it);
     sprite.set_suspended(suspended || !is_enabled());
   }
 
@@ -1741,11 +1695,11 @@ void MapEntity::set_suspended(bool suspended) {
  * @param ignore_suspend true to keep playing the sprites when the game is suspended
  */
 void MapEntity::set_animation_ignore_suspend(bool ignore_suspend) {
-  
-  std::map<std::string, Sprite*>::iterator it;
+
+  std::list<Sprite*>::iterator it;
   for (it = sprites.begin(); it != sprites.end(); it++) {
     
-    Sprite &sprite = *(it->second);
+    Sprite& sprite = *(*it);
     sprite.set_ignore_suspend(ignore_suspend);
   }
 }
@@ -1757,10 +1711,10 @@ void MapEntity::set_animation_ignore_suspend(bool ignore_suspend) {
 void MapEntity::start_fading(int direction) {
 
   // update the sprites
-  std::map<std::string, Sprite*>::iterator it;
+  std::list<Sprite*>::iterator it;
   for (it = sprites.begin(); it != sprites.end(); it++) {
     
-    Sprite &sprite = *(it->second);
+    Sprite& sprite = *(*it);
     sprite.start_fading(direction);
   }
 }
@@ -1793,10 +1747,10 @@ void MapEntity::update() {
   }
 
   // update the sprites
-  std::map<std::string, Sprite*>::iterator it;
+  std::list<Sprite*>::iterator it;
   for (it = sprites.begin(); it != sprites.end(); it++) {
 
-    Sprite &sprite = *(it->second);
+    Sprite& sprite = *(*it);
     sprite.update();
     if (sprite.has_frame_changed()) {
 
@@ -1827,10 +1781,10 @@ void MapEntity::display_on_map() {
 
   if (is_visible()) {
     // display the sprites
-    std::map<std::string, Sprite*>::iterator it;
+    std::list<Sprite*>::iterator it;
     for (it = sprites.begin(); it != sprites.end(); it++) {
 
-      Sprite &sprite = *(it->second);
+      Sprite& sprite = *(*it);
       get_map().display_sprite(sprite, get_displayed_xy());
     }
   }

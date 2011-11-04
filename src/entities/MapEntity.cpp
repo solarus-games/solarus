@@ -600,9 +600,11 @@ void MapEntity::set_top_left_xy(int x, int y) {
 }
 
 /**
- * @brief Returns the coordinates of the origin point of the entity, relative to the map.
+ * @brief Returns the coordinates where this entity should be displayed.
  *
- * These are the coordinates of the point as returned by get_x() and get_y().
+ * Most of the time, this function just returns get_xy().
+ * But when the entity is moving, the movement may decide to display the
+ * entity at a different position.
  *
  * @return the coordinates of the entity on the map
  */

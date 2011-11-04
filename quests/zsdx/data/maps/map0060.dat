@@ -815,7 +815,7 @@
 12	1	288	984	8	32	custom_obstacle_2	1	1	1	1
 1	1	280	1093	from_outside	1	0
 2	1	272	1104	16	16	teletransporter	0	1	66	from_dungeon_4
-2	1	256	1080	16	16	teletransporter_18	0	0	62	destination_point
+2	1	256	1080	16	16	teletransporter_18	0	0	60	tmp
 18	1	88	232	door	1	4	401
 18	1	88	184	door_2	3	4	401
 12	1	88	104	8	32	custom_obstacle_3	1	1	1	1
@@ -954,12 +954,13 @@
 4	1	152	173	0	heart	1	-1
 13	1	784	645	16	16	start_miniboss_sensor	0
 13	1	48	301	320	16	start_boss_sensor	0
-7	1	200	397	boss	3	simple_green_soldier	2	415	heart_container	1	416
+7	1	200	440	boss	3	flora_gohma	2	415	heart_container	1	416
 12	1	712	632	16	16	custom_obstacle_7	0	1	1	1
 18	1	184	232	final_room_door	1	0	-1
 1	1	200	245	from_final_room	3	0
 2	1	192	232	16	16	teletransporter_30	0	1	87	from_boss_room
 19	1	192	232	stairs_14	1	2
+1	1	104	261	tmp	3	0
 0	2	584	16	96	8	559
 0	2	400	16	96	8	559
 0	2	240	16	96	8	559

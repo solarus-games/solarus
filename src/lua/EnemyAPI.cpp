@@ -974,28 +974,10 @@ int Script::enemy_api_get_sprite(lua_State *l) {
 }
 
 /**
- * @brief Returns whether the enemy has a given sprite.
- *
- * - Argument 1 (string): name of a sprite (i.e. an animation set)
- * - Return value (boolean): true if the enemy has a sprite with this animation set
- *
- * @param l the Lua context that is calling this function
- */
-int Script::enemy_api_has_sprite(lua_State *l) {
-
-  Script& script = get_script(l, 1);
-  Enemy& enemy = script.get_enemy();
-
-  const std::string& sprite_name = luaL_checkstring(l, 1);
-  lua_pushboolean(l, enemy.has_sprite(sprite_name));
-
-  return 1;
-}
-
-/**
  * @brief Creates a sprite and adds it to the enemy.
  *
  * - Argument 1 (string): name of the animation set of the sprite to create
+ * - Return value: the sprite created
  *
  * @param l the Lua context that is calling this function
  */
@@ -1005,9 +987,12 @@ int Script::enemy_api_create_sprite(lua_State *l) {
   Enemy& enemy = script.get_enemy();
 
   const std::string& animation_set_id = luaL_checkstring(l, 1);
-  enemy.create_sprite(animation_set_id, true);
+  Sprite& sprite = enemy.create_sprite(animation_set_id, true);
 
-  return 0;
+  int handle = script.create_sprite_handle(sprite);
+  lua_pushinteger(l, handle);
+
+  return 1;
 }
 
 /**

@@ -884,15 +884,6 @@ bool MapEntity::has_sprite() {
 }
 
 /**
- * @brief Returns whether the entity has a sprite with the specified animation set name.
- * @param id name of an animation set
- * @return true if the entity has a sprite with this animation set.
- */
-bool MapEntity::has_sprite(const SpriteAnimationSetId &id) {
-  return sprites.count(id) > 0;
-}
-
-/**
  * @brief Returns the sprite created with the first call to create_sprite() for this entity.
  * @return the first sprite created
  */
@@ -907,7 +898,7 @@ Sprite& MapEntity::get_sprite() {
  */
 Sprite& MapEntity::get_sprite(const SpriteAnimationSetId &id) {
 
-  Debug::check_assertion(has_sprite(id),
+  Debug::check_assertion(sprites.count(id) > 0,
     StringConcat() << "Cannot find sprite '" << id << "' for entity '" << get_name() << "'");
 
   return *sprites[id];
@@ -925,8 +916,9 @@ std::map<SpriteAnimationSetId, Sprite*>& MapEntity::get_sprites() {
  * @brief Adds a sprite to this entity.
  * @param id id of the sprite's animations to add
  * @param enable_pixel_collisions true to enable the pixel-perfect collision tests for this sprite
+ * @return the sprite created
  */
-void MapEntity::create_sprite(const SpriteAnimationSetId &id, bool enable_pixel_collisions) {
+Sprite& MapEntity::create_sprite(const SpriteAnimationSetId &id, bool enable_pixel_collisions) {
 
   Sprite* sprite = new Sprite(id);
 
@@ -940,6 +932,7 @@ void MapEntity::create_sprite(const SpriteAnimationSetId &id, bool enable_pixel_
   }
 
   sprites[id] = sprite;
+  return *sprite;
 }
 
 /**

@@ -24,6 +24,8 @@ properties = {}
 going_hero = false
 being_pushed = false
 movement = nil
+main_sprite = nil
+sword_sprite = nil
 
 function set_properties(prop)
 
@@ -49,25 +51,16 @@ function set_properties(prop)
   end
 end
 
-function get_main_sprite()
-  return sol.enemy.get_sprite(properties.main_sprite)
-end
-
-function get_sword_sprite()
-  return sol.enemy.get_sprite(properties.sword_sprite)
-end
-
 function event_appear()
 
   sol.enemy.set_life(properties.life)
   sol.enemy.set_damage(properties.damage)
   sol.enemy.set_hurt_sound_style(properties.hurt_sound_style)
-  sol.enemy.create_sprite(properties.sword_sprite)
-  sol.enemy.create_sprite(properties.main_sprite)
+  sword_sprite = sol.enemy.create_sprite(properties.sword_sprite)
+  main_sprite = sol.enemy.create_sprite(properties.main_sprite)
   sol.enemy.set_size(16, 16)
   sol.enemy.set_origin(8, 13)
 
-  local sword_sprite = get_sword_sprite()
   sol.enemy.set_invincible_sprite(sword_sprite)
   sol.enemy.set_attack_consequence_sprite(sword_sprite, "sword", "custom")
 end
@@ -107,8 +100,8 @@ function event_movement_changed()
   if not being_pushed then
     movement = sol.enemy.get_movement()
     local direction4 = sol.main.movement_get_property(movement, "displayed_direction")
-    sol.main.sprite_set_direction(get_main_sprite(), direction4)
-    sol.main.sprite_set_direction(get_sword_sprite(), direction4)
+    sol.main.sprite_set_direction(main_sprite, direction4)
+    sol.main.sprite_set_direction(sword_sprite, direction4)
   end
 end
 
@@ -121,7 +114,7 @@ end
 
 function event_custom_attack_received(attack, sprite)
 
-  if attack == "sword" and sprite == get_sword_sprite() then
+  if attack == "sword" and sprite == sword_sprite then
     sol.main.play_sound("sword_tapping")
     being_pushed = true
     local x, y = sol.enemy.get_position()

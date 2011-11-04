@@ -140,6 +140,7 @@ class MapEntity {
     void set_bounding_box_from_sprite();
     void set_bounding_box(const Rectangle &bounding_box);
     Sprite& create_sprite(const SpriteAnimationSetId& id, bool enable_pixel_collisions = false);
+    void remove_sprite(Sprite* sprite);
     void clear_sprites();
     void clear_old_movements();
 

@@ -825,6 +825,10 @@ Hurts the enemy.
 - <tt>sol.enemy.create_sprite(animation_set)</tt>:
 Creates a sprite attached to the enemy and returns it.
 
+- <tt>sol.enemy.remove_sprite(sprite)</tt>:
+Removes and destroys a sprite of this enemy. If sprite is not specified,
+the first sprite created is removed.
+
 - <tt>sol.enemy.get_sprite()</tt>:
 Returns the sprite of the enemy. If the enemy has several sprites, the first
 one is returned.

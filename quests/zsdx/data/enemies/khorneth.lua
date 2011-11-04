@@ -1,9 +1,9 @@
 -- The boss Khorneth from @PyroNet.
 -- Khorneth has two blades that must be destroyed first.
 
-main_sprite_name = "enemies/khorneth"
-left_blade_sprite_name = "enemies/khorneth_left_blade"
-right_blade_sprite_name = "enemies/khorneth_right_blade"
+main_sprite = nil
+left_blade_sprite = nil
+right_blade_sprite = nil
 
 -- State
 left_blade_life = 4
@@ -16,18 +16,18 @@ function event_appear()
   sol.enemy.set_life(5)
   sol.enemy.set_damage(2)
   sol.enemy.set_pushed_back_when_hurt(false)
-  sol.enemy.create_sprite(main_sprite_name)
-  sol.enemy.create_sprite(left_blade_sprite_name)
-  sol.enemy.create_sprite(right_blade_sprite_name)
+  main_sprite = sol.enemy.create_sprite("enemies/khorneth")
+  left_blade_sprite = sol.enemy.create_sprite("enemies/khorneth_left_blade")
+  right_blade_sprite = sol.enemy.create_sprite("enemies/khorneth_right_blade")
   sol.enemy.set_size(40, 48)
   sol.enemy.set_origin(20, 25)
   sol.enemy.set_invincible()
-  sol.enemy.set_attack_consequence_sprite(get_left_blade_sprite(), "sword", "custom")
-  sol.enemy.set_attack_consequence_sprite(get_right_blade_sprite(), "sword", "custom")
+  sol.enemy.set_attack_consequence_sprite(left_blade_sprite, "sword", "custom")
+  sol.enemy.set_attack_consequence_sprite(right_blade_sprite, "sword", "custom")
 
   -- when a blade sprite has the same animation than the main sprite, synchronize their frames
-  sol.main.sprite_synchronize(get_left_blade_sprite(), get_main_sprite())
-  sol.main.sprite_synchronize(get_right_blade_sprite(), get_main_sprite())
+  sol.main.sprite_synchronize(left_blade_sprite, main_sprite)
+  sol.main.sprite_synchronize(right_blade_sprite, main_sprite)
 end
 
 function event_restart()
@@ -56,29 +56,17 @@ function has_blade()
   return has_left_blade() or has_right_blade()
 end
 
-function get_main_sprite()
-  return sol.enemy.get_sprite(main_sprite_name)
-end
-
-function get_left_blade_sprite()
-  return sol.enemy.get_sprite(left_blade_sprite_name)
-end
-
-function get_right_blade_sprite()
-  return sol.enemy.get_sprite(right_blade_sprite_name)
-end
-
 -- The enemy receives an attack whose consequence is "custom"
 function event_custom_attack_received(attack, sprite)
 
   if has_left_blade()
-    and sprite == get_left_blade_sprite()
+    and sprite == left_blade_sprite
     and sol.main.sprite_get_animation(sprite) ~= "stopped" then  
 
     sol.main.sprite_set_animation(sprite, "hurt")
-    sol.main.sprite_set_animation(get_main_sprite(), "stopped")
+    sol.main.sprite_set_animation(main_sprite, "stopped")
     if has_right_blade() then
-      sol.main.sprite_set_animation(get_right_blade_sprite(), "stopped")
+      sol.main.sprite_set_animation(right_blade_sprite, "stopped")
     end
     sol.enemy.stop_movement()
     sol.main.play_sound("boss_hurt")
@@ -86,13 +74,13 @@ function event_custom_attack_received(attack, sprite)
     sol.main.timer_start(stop_hurting_left_blade, 400)
 
   elseif has_right_blade()
-    and sprite == get_right_blade_sprite()
+    and sprite == right_blade_sprite
     and sol.main.sprite_get_animation(sprite) ~= "stopped" then  
 
     sol.main.sprite_set_animation(sprite, "hurt")
-    sol.main.sprite_set_animation(get_main_sprite(), "stopped")
+    sol.main.sprite_set_animation(main_sprite, "stopped")
     if has_left_blade() then
-      sol.main.sprite_set_animation(get_left_blade_sprite(), "stopped")
+      sol.main.sprite_set_animation(left_blade_sprite, "stopped")
     end
     sol.enemy.stop_movement()
     sol.main.play_sound("boss_hurt")
@@ -123,12 +111,12 @@ function start_blade_attack()
       animation = "right_blade_attack"
     end
 
-    sol.main.sprite_set_animation(get_main_sprite(), animation)
+    sol.main.sprite_set_animation(main_sprite, animation)
     if has_left_blade() then
-      sol.main.sprite_set_animation(get_left_blade_sprite(), animation)
+      sol.main.sprite_set_animation(left_blade_sprite, animation)
     end
     if has_right_blade() then
-      sol.main.sprite_set_animation(get_right_blade_sprite(), animation)
+      sol.main.sprite_set_animation(right_blade_sprite, animation)
     end
 
     sol.enemy.stop_movement()
@@ -138,7 +126,7 @@ end
 
 function event_sprite_animation_finished(sprite, animation)
 
-  if blade_attack and sprite == get_main_sprite() then
+  if blade_attack and sprite == main_sprite then
     blade_attack = false
     sol.enemy.restart()
   end
@@ -149,7 +137,7 @@ function stop_hurting_left_blade()
   sol.enemy.restart()
   if left_blade_life <= 0 then
     sol.main.play_sound("stone")
-    sol.enemy.remove_sprite(left_blade_sprite_name)
+    sol.enemy.remove_sprite(left_blade_sprite)
 
     if not has_right_blade() then
       start_final_phase()
@@ -162,7 +150,7 @@ function stop_hurting_right_blade()
   sol.enemy.restart()
   if right_blade_life <= 0 then
     sol.main.play_sound("stone")
-    sol.enemy.remove_sprite(right_blade_sprite_name)
+    sol.enemy.remove_sprite(right_blade_sprite)
 
     if not has_left_blade() then
       start_final_phase()

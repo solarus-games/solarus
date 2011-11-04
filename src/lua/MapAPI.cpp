@@ -2397,12 +2397,12 @@ int Script::map_api_enemy_set_random_treasure(lua_State *l) {
 }
 
 /**
- * @brief Returns a sprite of an enemy.
+ * @brief Returns the first sprite of an enemy.
+ *
+ * If the enemy has several sprites, the first one created is returned.
  *
  * - Argument 1 (string): name of the enemy
- * - Optional argument 2 (string): name of the animation set of the sprite to get
- * (by default, the first sprite of the enemy is returned)
- * - Return value (sprite): the corresponding sprite
+ * - Return value (sprite): the sprite of this enemy
  *
  * @param l the Lua context that is calling this function
  */
@@ -2415,17 +2415,7 @@ int Script::map_api_enemy_get_sprite(lua_State *l) {
   MapEntities& entities = script.get_map().get_entities();
   Enemy* enemy = (Enemy*) entities.get_entity(ENEMY, enemy_name);
 
-  Sprite* sprite;
-  int nb_arguments = lua_gettop(l);
-  if (nb_arguments == 2) {
-    const std::string& sprite_name = luaL_checkstring(l, 2);
-    sprite = &enemy->get_sprite(sprite_name);
-  }
-  else {
-    sprite = &enemy->get_sprite();
-  }
-
-  int handle = script.create_sprite_handle(*sprite);
+  int handle = script.create_sprite_handle(enemy->get_sprite());
   lua_pushinteger(l, handle);
 
   return 1;

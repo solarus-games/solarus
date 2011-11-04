@@ -942,38 +942,6 @@ int Script::enemy_api_hurt(lua_State *l) {
 }
 
 /**
- * @brief Returns a sprite of this enemy.
- *
- * Your script can then call all sol.main.sprite_* functions.
- *
- * - Optional argument 1 (string): name of the sprite to get
- * (if no argument is given, the first sprite of the enemy is returned)
- * - Return value (sprite): the corresponding sprite of the enemy
- *
- * @param l the Lua context that is calling this function
- */
-int Script::enemy_api_get_sprite(lua_State *l) {
-
-  Script& script = get_script(l, 0, 1);
-  Enemy& enemy = script.get_enemy();
-
-  Sprite* sprite;
-  int nb_arguments = lua_gettop(l);
-  if (nb_arguments == 1) {
-    const std::string& sprite_name = luaL_checkstring(l, 1);
-    sprite = &enemy.get_sprite(sprite_name);
-  }
-  else {
-    sprite = &enemy.get_sprite();
-  }
-
-  int handle = script.create_sprite_handle(*sprite);
-  lua_pushinteger(l, handle);
-
-  return 1;
-}
-
-/**
  * @brief Creates a sprite and adds it to the enemy.
  *
  * - Argument 1 (string): name of the animation set of the sprite to create
@@ -996,21 +964,24 @@ int Script::enemy_api_create_sprite(lua_State *l) {
 }
 
 /**
- * @brief Removes a sprite to the enemy.
+ * @brief Returns the sprite of this enemy.
  *
- * - Argument 1 (string): name of the animation set of the sprite to remove
+ * Your script can then call all sol.main.sprite_* functions.
+ * If the enemy has several sprites, the first one created is returned.
+ *
+ * - Return value (sprite): the sprite of the enemy
  *
  * @param l the Lua context that is calling this function
  */
-int Script::enemy_api_remove_sprite(lua_State *l) {
+int Script::enemy_api_get_sprite(lua_State *l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l, 0, 1);
   Enemy& enemy = script.get_enemy();
 
-  const std::string& animation_set_id = luaL_checkstring(l, 1);
-  enemy.remove_sprite(animation_set_id);
+  int handle = script.create_sprite_handle(enemy.get_sprite());
+  lua_pushinteger(l, handle);
 
-  return 0;
+  return 1;
 }
 
 /**

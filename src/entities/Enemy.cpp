@@ -47,7 +47,7 @@ const std::string Enemy::attack_names[] = {
   "arrow",
   "hookshot",
   "boomerang",
-  "lamp",
+  "fire",
   "script"
 };
 

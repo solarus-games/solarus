@@ -139,7 +139,7 @@ class MapEntity {
     void set_origin(const Rectangle &origin);
     void set_bounding_box_from_sprite();
     void set_bounding_box(const Rectangle &bounding_box);
-    void create_sprite(const SpriteAnimationSetId &id, bool enable_pixel_collisions = false);
+    Sprite& create_sprite(const SpriteAnimationSetId &id, bool enable_pixel_collisions = false);
     void remove_sprite(const SpriteAnimationSetId &id);
     void remove_sprites();
     void clear_old_movements();

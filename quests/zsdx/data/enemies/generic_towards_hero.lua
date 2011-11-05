@@ -12,7 +12,7 @@
 --   damage = 2,
 --   normal_speed = 32,
 --   faster_speed = 48,
---   hurt_sound_style = "normal",
+--   hurt_style = "normal",
 --   push_hero_on_sword = false,
 --   pushed_when_hurt = true,
 --   movement_create = sol.main.random_path_movement_create
@@ -40,8 +40,8 @@ function set_properties(prop)
   if properties.faster_speed == nil then
     properties.faster_speed = 48
   end
-  if properties.hurt_sound_style == nil then
-    properties.hurt_sound_style = "normal"
+  if properties.hurt_style == nil then
+    properties.hurt_style = "normal"
   end
   if properties.pushed_when_hurt == nil then
     properties.pushed_when_hurt = true
@@ -59,7 +59,7 @@ function event_appear()
   sol.enemy.set_life(properties.life)
   sol.enemy.set_damage(properties.damage)
   sol.enemy.create_sprite(properties.sprite)
-  sol.enemy.set_hurt_sound_style(properties.hurt_sound_style)
+  sol.enemy.set_hurt_style(properties.hurt_style)
   sol.enemy.set_pushed_back_when_hurt(properties.pushed_when_hurt)
   sol.enemy.set_push_hero_on_sword(properties.push_hero_on_sword)
   sol.enemy.set_size(16, 16)

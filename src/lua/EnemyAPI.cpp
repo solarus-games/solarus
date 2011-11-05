@@ -296,37 +296,39 @@ int Script::enemy_api_set_can_hurt_hero_running(lua_State* l) {
 }
 
 /**
- * @brief Returns the style of sounds to play when the enemy is hurt or killed.
+ * @brief Returns the style of sounds and animations to play when the enemy is
+ * hurt or killed.
  *
  * - Return value (string): "normal", "monster" or "boss"
  *
  * @param l the Lua context that is calling this function
  */
-int Script::enemy_api_get_hurt_sound_style(lua_State *l) {
+int Script::enemy_api_get_hurt_style(lua_State *l) {
 
   Script& script = get_script(l, 0);
   Enemy& enemy = script.get_enemy();
 
-  const std::string& style_name = Enemy::get_hurt_sound_style_name(enemy.hurt_sound_style);
+  const std::string& style_name = Enemy::get_hurt_style_name(enemy.hurt_style);
   lua_pushstring(l, style_name.c_str());
 
   return 1;
 }
 
 /**
- * @brief Sets the style of sounds to play when the enemy is hurt or killed.
+ * @brief Sets the style of sounds and animations to play when the enemy is
+ * hurt or killed.
  *
  * - Argument 1 (string): "normal", "monster" or "boss"
  *
  * @param l the Lua context that is calling this function
  */
-int Script::enemy_api_set_hurt_sound_style(lua_State *l) {
+int Script::enemy_api_set_hurt_style(lua_State *l) {
 
   Script& script = get_script(l, 1);
   Enemy& enemy = script.get_enemy();
 
   const std::string& style_name = luaL_checkstring(l, 1);
-  enemy.hurt_sound_style = Enemy::get_hurt_sound_style_by_name(style_name);
+  enemy.hurt_style = Enemy::get_hurt_style_by_name(style_name);
 
   return 0;
 }

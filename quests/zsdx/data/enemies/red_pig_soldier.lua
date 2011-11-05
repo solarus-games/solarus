@@ -7,6 +7,6 @@ set_properties({
   life = 12,
   damage = 6,
   play_hero_seen_sound = true,
-  hurt_sound_style = "monster"
+  hurt_style = "monster"
 })
 

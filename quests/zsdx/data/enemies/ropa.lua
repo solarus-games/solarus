@@ -7,7 +7,7 @@ set_properties({
   damage = 4,
   normal_speed = 32,
   faster_speed = 32,
-  hurt_sound_style = "monster",
+  hurt_style = "monster",
   movement_create = sol.main.random_movement_create
 })
 

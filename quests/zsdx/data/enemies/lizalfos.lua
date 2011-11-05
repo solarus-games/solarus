@@ -7,7 +7,7 @@ set_properties({
   life = 5,
   damage = 3,
   play_hero_seen_sound = true,
-  hurt_sound_style = "monster",
+  hurt_style = "monster",
   normal_speed = 48,
   faster_speed = 72
 })

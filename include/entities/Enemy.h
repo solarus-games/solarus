@@ -61,13 +61,14 @@ class Enemy: public Detector {
   protected:
 
     /**
-     * @brief Defines the sounds that can be played when an enemy is hurt.
+     * @brief Defines the style of sounds and animations played when an enemy
+     * is hurt or killed.
      */
-    enum HurtSoundStyle {
-      HURT_SOUND_NORMAL,			/**< "enemy_hurt" (and if necessary "enemy_killed") is played */
-      HURT_SOUND_MONSTER,			/**< "monster_hurt" (and if necessary "enemy_killed") is played */
-      HURT_SOUND_BOSS,				/**< "boss_hurt" or "boss_killed" is played */
-      HURT_SOUND_NUMBER
+    enum HurtStyle {
+      HURT_NORMAL,   /**< "enemy_hurt" (and if necessary "enemy_killed") is played */
+      HURT_MONSTER,  /**< "monster_hurt" (and if necessary "enemy_killed") is played */
+      HURT_BOSS,     /**< "boss_hurt" or "boss_killed" is played and explosions are created */
+      HURT_NUMBER
     };
 
     /**
@@ -90,9 +91,9 @@ class Enemy: public Detector {
     int magic_damage_on_hero;				/**< number of magic points the player loses when he gets hurt
 							 * by this enemy (default: 0) */
     int life;						/**< number of health points of the enemy (default: 1) */
-    HurtSoundStyle hurt_sound_style;			/**< the sound played when this kind of enemy gets hurt by the hero
-							 * (default: HURT_SOUND_NORMAL) */
-    static const std::string hurt_sound_style_names[];  /**< name of each hurt sound style */
+    HurtStyle hurt_style;			/**< style of sounds and animations when this enemy gets hurt
+							 * (default: HURT_NORMAL) */
+    static const std::string hurt_style_names[];  /**< name of each hurt style */
     bool pushed_back_when_hurt;				/**< indicates whether the enemy is pushed back when it gets hurt by the hero
 							 * (default: true) */
     bool push_hero_on_sword;		          	/**< indicates whether the hero is pushed back when he hurts the enemy with his
@@ -241,8 +242,8 @@ class Enemy: public Detector {
     static const std::string& get_attack_name(EnemyAttack attack);
     static EnemyAttack get_attack_by_name(const std::string& attack_name);
 
-    static const std::string& get_hurt_sound_style_name(HurtSoundStyle style);
-    static HurtSoundStyle get_hurt_sound_style_by_name(const std::string& name);
+    static const std::string& get_hurt_style_name(HurtStyle style);
+    static HurtStyle get_hurt_style_by_name(const std::string& name);
 
     // communication with others
     virtual void notify_message_received(Enemy& sender, const std::string& message);

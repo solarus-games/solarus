@@ -7,7 +7,7 @@ initial_xy = {}
 
 function event_appear()
 
-  sol.enemy.set_life(1)
+  sol.enemy.set_life(8)
   sol.enemy.set_damage(4)
   eye_sprite = sol.enemy.create_sprite("enemies/flora_gohma_eye")
   sol.enemy.set_size(104, 64)
@@ -18,9 +18,6 @@ function event_appear()
   sol.enemy.set_attack_consequence("sword", "protected")
   sol.enemy.set_attack_consequence("boomerang", "protected")
   sol.enemy.set_attack_consequence_sprite(eye_sprite, "hookshot", "protected")
-
-  -- TODO remove
-	    sol.enemy.set_attack_consequence_sprite(eye_sprite, "sword", 1)
 
   -- create the petals
   for i = 1, 5 do

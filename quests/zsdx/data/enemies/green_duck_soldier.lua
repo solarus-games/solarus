@@ -6,6 +6,6 @@ set_properties({
   sword_sprite = "enemies/green_duck_soldier_sword",
   life = 4,
   damage = 3,
-  hurt_sound_style = "monster"
+  hurt_style = "monster"
 })
 

@@ -11,7 +11,7 @@ function event_appear()
   sol.enemy.create_sprite("enemies/drakomos_head")
   sol.enemy.set_size(56, 56)
   sol.enemy.set_origin(28, 40)
-  sol.enemy.set_hurt_sound_style("boss")
+  sol.enemy.set_hurt_style("boss")
   sol.enemy.set_obstacle_behavior("flying")
   sol.enemy.set_no_treasure()
 

@@ -13,7 +13,7 @@
 --   play_hero_seen_sound = true,
 --   normal_speed = 32,
 --   faster_speed = 64,
---   hurt_sound_style = "normal"
+--   hurt_style = "normal"
 -- })
 
 -- The parameter of set_properties() is a table.
@@ -46,8 +46,8 @@ function set_properties(prop)
   if properties.faster_speed == nil then
     properties.faster_speed = 64
   end
-  if properties.hurt_sound_style == nil then
-    properties.hurt_sound_style = "normal"
+  if properties.hurt_style == nil then
+    properties.hurt_style = "normal"
   end
 end
 
@@ -55,7 +55,7 @@ function event_appear()
 
   sol.enemy.set_life(properties.life)
   sol.enemy.set_damage(properties.damage)
-  sol.enemy.set_hurt_sound_style(properties.hurt_sound_style)
+  sol.enemy.set_hurt_style(properties.hurt_style)
   sword_sprite = sol.enemy.create_sprite(properties.sword_sprite)
   main_sprite = sol.enemy.create_sprite(properties.main_sprite)
   sol.enemy.set_size(16, 16)

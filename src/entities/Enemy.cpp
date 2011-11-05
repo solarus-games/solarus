@@ -51,7 +51,7 @@ const std::string Enemy::attack_names[] = {
   "script"
 };
 
-const std::string Enemy::hurt_sound_style_names[] = {
+const std::string Enemy::hurt_style_names[] = {
   "normal",
   "monster",
   "boss",
@@ -70,7 +70,7 @@ Enemy::Enemy(const ConstructionParameters &params):
   damage_on_hero(1),
   magic_damage_on_hero(0),
   life(1),
-  hurt_sound_style(HURT_SOUND_NORMAL),
+  hurt_style(HURT_NORMAL),
   pushed_back_when_hurt(true),
   push_hero_on_sword(false),
   can_hurt_hero_running(false),
@@ -184,7 +184,7 @@ MapEntity* Enemy::create(Game &game, const std::string& breed, Rank rank, int sa
 
   if (rank != RANK_NORMAL) {
     enemy->set_enabled(false);
-    enemy->hurt_sound_style = HURT_SOUND_BOSS;
+    enemy->hurt_style = HURT_BOSS;
   }
 
   enemy->set_default_attack_consequences();
@@ -839,22 +839,22 @@ const EnemyReaction::Reaction& Enemy::get_attack_consequence(EnemyAttack attack,
 void Enemy::play_hurt_sound() {
 
   SoundId sound_id = "";
-  switch (hurt_sound_style) {
+  switch (hurt_style) {
 
-    case HURT_SOUND_NORMAL:
+    case HURT_NORMAL:
       sound_id = "enemy_hurt";
       break;
 
-    case HURT_SOUND_MONSTER:
+    case HURT_MONSTER:
       sound_id = "monster_hurt";
       break;
 
-    case HURT_SOUND_BOSS:
+    case HURT_BOSS:
       sound_id = (life > 0) ? "boss_hurt" : "boss_killed";
       break;
 
-    case HURT_SOUND_NUMBER:
-      Debug::die(StringConcat() << "Invalid hurt sound style" << hurt_sound_style);
+    case HURT_NUMBER:
+      Debug::die(StringConcat() << "Invalid hurt style" << hurt_style);
       break;
   }
 
@@ -1024,7 +1024,7 @@ void Enemy::kill() {
   can_attack = false;
   can_attack_again_date = 0;
 
-  if (hurt_sound_style != HURT_SOUND_BOSS) {
+  if (hurt_style != HURT_BOSS) {
     // replace the enemy sprites
     clear_sprites();
     create_sprite("enemies/enemy_killed");
@@ -1065,7 +1065,7 @@ bool Enemy::is_killed() {
  */
 bool Enemy::is_dying_animation_finished() {
   
-  if (hurt_sound_style != HURT_SOUND_BOSS) {
+  if (hurt_style != HURT_BOSS) {
     return get_sprite().is_animation_finished();
   }
 
@@ -1175,32 +1175,32 @@ EnemyAttack Enemy::get_attack_by_name(const std::string& attack_name) {
 }
 
 /**
- * @brief Converts a value of the HurtSoundStyle enumeration into a string.
- * @param style a hurt sound style
+ * @brief Converts a value of the HurtStyle enumeration into a string.
+ * @param style a hurt style
  * @return the corresponding string
  */
-const std::string& Enemy::get_hurt_sound_style_name(HurtSoundStyle style) {
+const std::string& Enemy::get_hurt_style_name(HurtStyle style) {
 
-  Debug::check_assertion(style >= 0 && style < HURT_SOUND_NUMBER,
-      StringConcat() << "Invalid hurt sound style number: " << style);
+  Debug::check_assertion(style >= 0 && style < HURT_NUMBER,
+      StringConcat() << "Invalid hurt style number: " << style);
 
-  return hurt_sound_style_names[style];
+  return hurt_style_names[style];
 }
 
 /**
- * @brief Converts a string into a value of the HurtSoundStyle enumeration.
- * @param name name of a hurt sound style
- * @return the corresponding hurt sound style
+ * @brief Converts a string into a value of the HurtStyle enumeration.
+ * @param name name of a hurt style
+ * @return the corresponding hurt style
  */
-Enemy::HurtSoundStyle Enemy::get_hurt_sound_style_by_name(const std::string& name) {
+Enemy::HurtStyle Enemy::get_hurt_style_by_name(const std::string& name) {
 
-  for (int i = 0; i < HURT_SOUND_NUMBER; i++) {
-    if (hurt_sound_style_names[i] == name) {
-      return HurtSoundStyle(i);
+  for (int i = 0; i < HURT_NUMBER; i++) {
+    if (hurt_style_names[i] == name) {
+      return HurtStyle(i);
     }
   }
 
-  Debug::die(StringConcat() << "Invalid hurt sound style name: " << name);
+  Debug::die(StringConcat() << "Invalid hurt style name: " << name);
   throw;
 }
 

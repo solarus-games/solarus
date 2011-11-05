@@ -7,7 +7,7 @@ set_properties({
   damage = 6,
   normal_speed = 32,
   faster_speed = 48,
-  hurt_sound_style = "monster",
+  hurt_style = "monster",
   push_hero_on_sword = true,
   movement_create = sol.main.random_movement_create
 })

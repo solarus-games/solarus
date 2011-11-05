@@ -9,6 +9,6 @@ set_properties({
   play_hero_seend_sound = true,
   normal_speed = 32,
   faster_speed = 64,
-  hurt_sound_style = "monster"
+  hurt_style = "monster"
 })
 

@@ -718,11 +718,11 @@ returns whether the enemy can hurt the hero even when the hero is running
 sets whether the enemy can hurt the hero even when the hero is running
 (default is false)
 
-- <tt>sol.enemy.get_hurt_sound_style()</tt>:
+- <tt>sol.enemy.get_hurt_style()</tt>:
 returns the style of sound to play when the enemy is hurt:
 "normal", "monster" or "boss"
 
-- <tt>sol.enemy.set_hurt_sound_style(sound_style)</tt>:
+- <tt>sol.enemy.set_hurt_style(style)</tt>:
 sets the style of sound to play when the enemy is hurt:
 "normal", "monster" or "boss" (default is "normal" for usual enemies
 and "boss" for bosses and minibosses)

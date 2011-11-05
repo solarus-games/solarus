@@ -1024,14 +1024,14 @@ void Enemy::kill() {
   can_attack = false;
   can_attack_again_date = 0;
 
-  if (rank == RANK_NORMAL) {
+  if (hurt_sound_style != HURT_SOUND_BOSS) {
     // replace the enemy sprites
     clear_sprites();
     create_sprite("enemies/enemy_killed");
     Sound::play("enemy_killed");
   }
   else {
-    // create some explosions
+    // a boss: create some explosions
     exploding = true;
     nb_explosions = 0;
     next_explosion_date = System::now() + 2000;
@@ -1065,7 +1065,7 @@ bool Enemy::is_killed() {
  */
 bool Enemy::is_dying_animation_finished() {
   
-  if (rank == RANK_NORMAL) {
+  if (hurt_sound_style != HURT_SOUND_BOSS) {
     return get_sprite().is_animation_finished();
   }
 

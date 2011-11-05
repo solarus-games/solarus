@@ -105,10 +105,9 @@ class MapEntity {
 
     int direction;                              /**< direction of the entity, not used for all kinds of entities */
 
-    std::list<Sprite*> sprites;                 /**< sprite(s) representing the entity;
+    std::list<Sprite*> sprites;                 /**< sprites representing the entity;
                                                  * note that some entities manage their sprites themselves rather than using this field */
-    Sprite* first_sprite;                       /**< the first sprite that was created into the sprites map,
-                                                 * stored here because the map does not keep the order from which its elements are added */
+    std::list<Sprite*> old_sprites;             /**< sprites to remove and destroy as soon as possible */
     bool visible;                               /**< indicates that this entity's sprites are currently displayed */
     Movement* movement;                         /**< movement of the entity, not used for all kinds of entities;
                                                  * NULL indicates that the entity has no movement */
@@ -139,9 +138,14 @@ class MapEntity {
     void set_origin(const Rectangle &origin);
     void set_bounding_box_from_sprite();
     void set_bounding_box(const Rectangle &bounding_box);
+
+    // sprites
     Sprite& create_sprite(const SpriteAnimationSetId& id, bool enable_pixel_collisions = false);
     void remove_sprite(Sprite* sprite);
     void clear_sprites();
+    void clear_old_sprites();
+
+    // movement
     void clear_old_movements();
 
     // collisions

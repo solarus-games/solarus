@@ -32,8 +32,9 @@ class Detector: public MapEntity {
 
   private:
 
-    int collision_modes; /**< collision modes of the detector
-			  * (can be an OR combination of CollisionMode values) */
+    int collision_modes;                    /**< collision modes of the detector
+                                             * (can be an OR combination of CollisionMode values) */
+    bool layer_independent_collisions;      /**< indicates that the detector detects collisions on every layer */
 
   protected:
 
@@ -64,6 +65,10 @@ class Detector: public MapEntity {
 
     // destruction
     virtual ~Detector();
+
+    // properties
+    bool has_layer_independent_collisions();
+    void set_layer_independent_collisions(bool independent);
 
     // general collision checking functions
     void check_collision(MapEntity &entity);

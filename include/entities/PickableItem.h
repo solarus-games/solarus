@@ -36,7 +36,6 @@ class PickableItem: public Detector {
     FallingHeight falling_height;               /**< indicates whether the item is falling when it appears */
     bool will_disappear;                        /**< indicates that the item will disappear after an amount of time
                                                  * (only possible for items not saved) */
-    bool layer_independent_collisions;          /**< indicates that the item detects collisions on every layer */
 
     // current state
     Rectangle shadow_xy;                        /**< coordinates of the shadow (which does not move while the item does) */
@@ -74,8 +73,6 @@ class PickableItem: public Detector {
     // properties
     bool is_falling();
     FallingHeight get_falling_height();
-    bool has_layer_independent_collisions();
-    void set_layer_independent_collisions(bool independent);
     const Treasure& get_treasure();
 
     // item state

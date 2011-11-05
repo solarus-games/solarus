@@ -201,6 +201,7 @@ MapEntity::MapEntity(const std::string &name, int direction, Layer layer,
 MapEntity::~MapEntity() {
 
   clear_sprites();
+  clear_old_sprites();
   clear_movement();
   clear_old_movements();
 }
@@ -910,7 +911,7 @@ Sprite& MapEntity::create_sprite(const SpriteAnimationSetId& id, bool enable_pix
 }
 
 /**
- * @brief Removes the specified sprite from this entity and destroys it.
+ * @brief Marks a sprite of this entity to be removed as soon as possible.
  */
 void MapEntity::remove_sprite(Sprite* sprite) {
 
@@ -918,8 +919,7 @@ void MapEntity::remove_sprite(Sprite* sprite) {
   std::list<Sprite*>::iterator it;
   for (it = sprites.begin(); it != sprites.end() && !found; it++) {
     if (*it == sprite) {
-      sprites.erase(it);
-      delete sprite;
+      old_sprites.push_back(sprite);
       found = true;
     }
   }
@@ -928,15 +928,27 @@ void MapEntity::remove_sprite(Sprite* sprite) {
 }
 
 /**
- * @brief Removes and destroys all sprites of this entity.
+ * @brief Removes all sprites of this entity.
+ *
+ * They will be destroyed at next iteration.
  */
 void MapEntity::clear_sprites() {
 
+  old_sprites = sprites;
+  sprites.clear();
+}
+
+/**
+ * @brief Really destroys the sprites that were recently removed.
+ */
+void MapEntity::clear_old_sprites() {
+
   std::list<Sprite*>::iterator it;
-  for (it = sprites.begin(); it != sprites.end(); it++) {
+  for (it = old_sprites.begin(); it != old_sprites.end(); it++) {
+    sprites.remove(*it);
     delete *it;
   }
-  sprites.clear();
+  old_sprites.clear();
 }
 
 /**
@@ -1784,6 +1796,7 @@ void MapEntity::update() {
       }
     }
   }
+  clear_old_sprites();
 
   // update the movement
   if (movement != NULL) {

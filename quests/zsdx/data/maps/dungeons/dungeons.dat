@@ -647,7 +647,7 @@ big = 0
 [dungeon_4.map_60.boss_1]
 floor = 0
 x = 200
-y = 440
+y = 464
 save = 415
 big = 1
 

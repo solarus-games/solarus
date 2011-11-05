@@ -759,6 +759,10 @@ Makes the enemy ignore all attacks.
 - <tt>sol.enemy.set_invincible_sprite(sprite)</tt>:
 Makes a particular sprite of the enemy ignore all attacks.
 
+- <tt>sol.enemy.set_layer_independent_collisions(independent)</tt>:
+Sets whether the collisions with the enemy should be detected
+from every layer.
+
 - <tt>sol.enemy_set_treasure(item_name, variant, savegame_variable)</tt>:
 Sets the treasure of the enemy.
 

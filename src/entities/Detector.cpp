@@ -36,7 +36,8 @@ Detector::Detector(int collision_modes,
 		   const std::string &name, Layer layer,
 		   int x, int y, int width, int height):
   MapEntity(name, 0, layer, x, y, width, height),
-  collision_modes(collision_modes) {
+  collision_modes(collision_modes),
+  layer_independent_collisions(false) {
 
 }
 
@@ -89,6 +90,24 @@ void Detector::enable_pixel_collisions() {
   for (it = get_sprites().begin(); it != get_sprites().end(); it++) {
     (*it)->enable_pixel_collisions();
   }
+}
+
+/**
+ * @brief Returns whether this entity can have collisions with entities even if
+ * they are not on the same layer.
+ * @return true if this entity can collide with entities that are on another layer
+ */
+bool Detector::has_layer_independent_collisions() {
+  return layer_independent_collisions;
+}
+
+/**
+ * @brief Sets whether this entity can have collisions with entities even if
+ * they are not on the same layer.
+ * @param independent true if this entity can collide with entities that are on another layer
+ */
+void Detector::set_layer_independent_collisions(bool independent) {
+  this->layer_independent_collisions = independent;
 }
 
 /**

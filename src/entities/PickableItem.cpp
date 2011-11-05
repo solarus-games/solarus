@@ -39,7 +39,6 @@
 PickableItem::PickableItem(Layer layer, int x, int y, const Treasure &treasure):
   Detector(COLLISION_RECTANGLE | COLLISION_SPRITE, "", layer, x, y, 0, 0),
   treasure(treasure),
-  layer_independent_collisions(false),
   shadow_xy(Rectangle(x, y)),
   appear_date(System::now()),
   entity_followed(NULL) {
@@ -242,24 +241,6 @@ bool PickableItem::is_falling() {
  */
 FallingHeight PickableItem::get_falling_height() {
   return falling_height;
-}
-
-/**
- * @brief Returns whether this entity can have collisions with entities even if
- * they are not on the same layer.
- * @return true if this entity can collide with entities that are on another layer
- */
-bool PickableItem::has_layer_independent_collisions() {
-  return layer_independent_collisions;
-}
-
-/**
- * @brief Sets whether this entity can have collisions with entities even if
- * they are not on the same layer.
- * @param independent true if this entity can collide with entities that are on another layer
- */
-void PickableItem::set_layer_independent_collisions(bool independent) {
-  this->layer_independent_collisions = independent;
 }
 
 /**

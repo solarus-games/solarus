@@ -550,6 +550,25 @@ int Script::enemy_api_set_invincible_sprite(lua_State *l) {
 }
 
 /**
+ * @brief Sets whether the enemy detects collisions on every layer.
+ *
+ * - Argument 1 (boolean): true to detect collisions from every layer
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::enemy_api_set_layer_independent_collisions(lua_State *l) {
+
+  Script& script = get_script(l, 1);
+  Enemy& enemy = script.get_enemy();
+
+  bool independent = lua_toboolean(l, 1) != 0;
+
+  enemy.set_layer_independent_collisions(independent);
+
+  return 0;
+}
+
+/**
  * @brief Sets the treasure dropped by the enemy.
  *
  * - Argument 1 (string): name of the item (possibly "_random" or "_none")

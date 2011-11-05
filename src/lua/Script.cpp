@@ -510,6 +510,7 @@ void Script::register_enemy_api() {
       { "set_default_attack_consequences_sprite", enemy_api_set_default_attack_consequences_sprite },
       { "set_invincible", enemy_api_set_invincible },
       { "set_invincible_sprite", enemy_api_set_invincible_sprite },
+      { "set_layer_independent_collisions", enemy_api_set_layer_independent_collisions },
       { "set_treasure", enemy_api_set_treasure },
       { "set_no_treasure", enemy_api_set_no_treasure },
       { "set_random_treasure", enemy_api_set_random_treasure },

@@ -1040,18 +1040,27 @@ int Script::enemy_api_get_sprite(lua_State *l) {
  * - Argument 2 (string): breed of the enemy to create
  * - Argument 3 (integer): x position relative to the father
  * - Argument 4 (integer): y position relative to the father
+ * - Optional argument 5 (integer): layer of the new enemy (default is the
+ * same as the father)
  *
  * @param l the Lua context that is calling this function
  */
 int Script::enemy_api_create_son(lua_State *l) {
 
-  Script& script = get_script(l, 4);
+  Script& script = get_script(l, 4, 5);
   Enemy& enemy = script.get_enemy();
 
   const std::string& name = luaL_checkstring(l, 1);
   const std::string& breed = luaL_checkstring(l, 2);
   int x = luaL_checkinteger(l, 3);
   int y = luaL_checkinteger(l, 4);
+  int layer;
+  if (lua_gettop(l) >= 5) {
+    layer = luaL_checkinteger(l, 5);
+  }
+  else {
+    layer = enemy.get_layer();
+  }
 
   x += enemy.get_x();
   y += enemy.get_y();
@@ -1059,7 +1068,7 @@ int Script::enemy_api_create_son(lua_State *l) {
   MapEntities& entities = script.get_map().get_entities();
   Treasure treasure = Treasure(script.get_game(), "_random", 1, -1);
   Enemy* son = (Enemy*) Enemy::create(script.get_game(), breed, Enemy::RANK_NORMAL, -1,
-      name, enemy.get_layer(), x, y, 0, treasure);
+      name, Layer(layer), x, y, 0, treasure);
   son->father_name = enemy.get_name();
   entities.add_entity(son);
   son->restart();

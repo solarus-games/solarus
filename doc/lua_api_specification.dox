@@ -837,8 +837,10 @@ the first sprite created is removed.
 Returns the sprite of the enemy. If the enemy has several sprites, the first
 one is returned.
 
-- <tt>sol.enemy.create_son(enemy_name, breed, x, y)</tt>:
-Creates another enemy, specifying its coordinates as relative to the current enemy.
+- <tt>sol.enemy.create_son(enemy_name, breed, x, y, layer)</tt>:
+Creates another enemy, specifying its coordinates as relative to the current
+enemy. The layer is optional: by default, the enemy is created on the same
+layer as the current enemy.
 
 - <tt>sol.enemy.get_father()</tt>:
 Returns the name of the father of the enemy (i.e. the enemy that created the current one),

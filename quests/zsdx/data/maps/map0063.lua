@@ -2,7 +2,6 @@
 
 sol.main.include("maps/prison_guard")
 
-fighting_miniboss = false
 puzzle_next_sensor = 1
 
 function event_map_started(destination_point_name)
@@ -13,8 +12,6 @@ function event_map_started(destination_point_name)
     sol.map.tile_set_enabled("weak_floor", false)
     sol.map.sensor_set_enabled("weak_floor_sensor", false)
   end
-
-  sol.map.door_set_open("miniboss_door", true)
 end
 
 function event_map_opening_transition_finished(destination_point_name)
@@ -41,14 +38,7 @@ function event_hero_on_sensor(sensor_name)
 
   sensor_check_guard(sensor_name)
 
-  if sensor_name == "start_miniboss_sensor"
-      and not sol.game.savegame_get_boolean(517)
-      and not fighting_miniboss then
-    sol.map.door_close("miniboss_door")
-    sol.map.hero_freeze()
-    sol.main.timer_start(miniboss_timer, 1000)
-    fighting_miniboss = true
-  elseif sensor_name == "puzzle_wrong_sensor" then
+  if sensor_name == "puzzle_wrong_sensor" then
     puzzle_next_sensor = 1
   else
     local i = string.match(sensor_name, "puzzle_sensor_([1-4])")
@@ -145,20 +135,6 @@ end
 function weak_floor_block_fall_end()
 
   sol.main.play_sound("bomb")
-end
-
-function miniboss_timer()
-  sol.main.play_music("boss.spc")
-  sol.map.enemy_set_enabled("miniboss", true)
-  sol.map.hero_unfreeze()
-end
-
-function event_enemy_dead(enemy_name)
-
-  if enemy_name == "miniboss" then
-    sol.main.play_music("castle.spc")
-    sol.map.door_open("miniboss_door")
-  end
 end
 
 function puzzle_solved()

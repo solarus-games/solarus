@@ -62,9 +62,9 @@ function go(direction4)
     state = "moving"
 
     local x, y = sol.enemy.get_position()
-    x = x + dxy[index].x * 13
-    y = y + dxy[index].y * 13
-    local m = sol.main.target_movement_create(192, x, y)
+    local angle = direction4 * math.pi / 2
+    local m = sol.main.straight_movement_create(192, angle)
+    sol.main.movement_set_property(m, "max_distance", 104)
     sol.main.movement_set_property(m, "smooth", false)
     sol.enemy.start_movement(m)
   end
@@ -83,7 +83,7 @@ end
 function event_collision_enemy(other_name, other_sprite, my_sprite)
 
   -- TODO: it would be better to have a way of getting the other's race
-  if string.find(other_name, "^pike") and state == "moving" then
+  if string.find(other_name, "^pike_") and state == "moving" then
     go_back()
   end
 end

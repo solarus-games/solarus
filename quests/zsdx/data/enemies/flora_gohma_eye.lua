@@ -4,6 +4,7 @@ petals = {
 remaining_petals = 5
 eye_sprite = nil
 initial_xy = {}
+nb_sons_created = 0
 
 function event_appear()
 
@@ -36,7 +37,7 @@ end
 function event_restart()
 
   for i = 1, 5 do
-    if petals[i] ~= nil then
+    if petals[i].sprite ~= nil then
       sol.main.sprite_set_animation(petals[i].sprite, "petal_"..i)
     end
   end
@@ -44,6 +45,8 @@ function event_restart()
   local m = sol.main.target_movement_create(48, initial_xy.x, initial_xy.y)
   sol.enemy.start_movement(m)
   sol.main.timer_stop_all()
+
+  repeat_create_son()
 end
 
 function event_update()
@@ -108,6 +111,15 @@ function event_hurt(attack, life_lost)
   if sol.enemy.get_life() - life_lost <= 0 then
     -- notify the body to make it stop moving
     sol.enemy.send_message(sol.enemy.get_father(), "dying")
+
+    -- remove the sons
+    for i = 1, nb_sons_created do
+      local son_prefix = sol.enemy.get_name().."_son_"
+      local son_name = son_prefix..i
+      if not sol.map.enemy_is_dead(son_name) then
+	sol.map.enemy_remove(son_name)
+      end
+    end
   end
 end
 
@@ -115,5 +127,21 @@ function event_dead()
 
   -- notify the body
   sol.enemy.send_message(sol.enemy.get_father(), "dead")
+end
+
+function repeat_create_son()
+
+  local son_prefix = sol.enemy.get_name().."_son_"
+  if sol.map.enemy_get_group_count(son_prefix) < 10 then
+    nb_sons_created = nb_sons_created + 1
+    local son_name = son_prefix..nb_sons_created
+    local _, _, layer = sol.map.enemy_get_position(sol.enemy.get_father())
+    sol.enemy.create_son(son_name, "snap_dragon", 0, 0, layer)
+    if math.random(2) == 1 then
+      sol.map.enemy_set_treasure(son_name, "heart", 1, -1)
+    end
+  end
+
+  sol.main.timer_start(repeat_create_son, 1000 + math.random(1000))
 end
 

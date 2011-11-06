@@ -52,20 +52,32 @@ function event_hero_on_sensor(sensor_name)
       and not fighting_miniboss then
     sol.map.door_close("miniboss_door")
     sol.map.hero_freeze()
-    sol.main.timer_start(miniboss_timer, 1000)
+    sol.main.timer_start(start_miniboss, 1000)
     fighting_miniboss = true
   elseif sensor_name == "start_boss_sensor"
       and not sol.game.savegame_get_boolean(415)
       and not fighting_boss then
-    start_boss()
+    sol.map.door_close("boss_door")
+    sol.map.hero_freeze()
+    sol.main.timer_start(start_boss, 1000)
+    fighting_boss = true
   end
 end
 
-function miniboss_timer()
+function start_miniboss()
+
   sol.main.play_music("boss.spc")
   sol.map.enemy_set_enabled("miniboss", true)
   sol.map.hero_unfreeze()
 end
+
+function start_boss()
+
+  sol.main.play_music("boss.spc")
+  sol.map.enemy_set_enabled("boss", true)
+  sol.map.hero_unfreeze()
+end
+
 
 function event_enemy_dead(enemy_name)
 
@@ -73,14 +85,6 @@ function event_enemy_dead(enemy_name)
     sol.main.play_music("light_world_dungeon.spc")
     sol.map.door_open("miniboss_door")
   end
-end
-
-function start_boss()
-
-  fighting_boss = true
-  sol.map.enemy_set_enabled("boss", true)
-  sol.map.door_close("boss_door")
-  sol.main.play_music("boss.spc")
 end
 
 function event_treasure_obtained(item_name, variant, savegame_variable)

@@ -1,6 +1,5 @@
 -- Dungeon 4 1F
 
-fighting_miniboss = false
 fighting_boss = false
 
 function event_map_started(destination_point_name)
@@ -12,8 +11,6 @@ function event_map_started(destination_point_name)
     sol.map.teletransporter_set_enabled("weak_floor_teletransporter", false)
   end
 
-  -- boos and miniboss doors
-  sol.map.door_set_open("miniboss_door", true)
   sol.map.door_set_open("boss_door", true)
 end
 
@@ -47,14 +44,7 @@ end
 
 function event_hero_on_sensor(sensor_name)
 
-  if sensor_name == "start_miniboss_sensor"
-      and not sol.game.savegame_get_boolean(414)
-      and not fighting_miniboss then
-    sol.map.door_close("miniboss_door")
-    sol.map.hero_freeze()
-    sol.main.timer_start(start_miniboss, 1000)
-    fighting_miniboss = true
-  elseif sensor_name == "start_boss_sensor"
+  if sensor_name == "start_boss_sensor"
       and not sol.game.savegame_get_boolean(415)
       and not fighting_boss then
     sol.map.door_close("boss_door")
@@ -64,27 +54,11 @@ function event_hero_on_sensor(sensor_name)
   end
 end
 
-function start_miniboss()
-
-  sol.main.play_music("boss.spc")
-  sol.map.enemy_set_enabled("miniboss", true)
-  sol.map.hero_unfreeze()
-end
-
 function start_boss()
 
   sol.main.play_music("boss.spc")
   sol.map.enemy_set_enabled("boss", true)
   sol.map.hero_unfreeze()
-end
-
-
-function event_enemy_dead(enemy_name)
-
-  if enemy_name == "miniboss" then
-    sol.main.play_music("light_world_dungeon.spc")
-    sol.map.door_open("miniboss_door")
-  end
 end
 
 function event_treasure_obtained(item_name, variant, savegame_variable)

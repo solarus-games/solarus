@@ -589,7 +589,7 @@
 0	1	400	200	24	24	54
 0	1	384	184	24	24	54
 0	1	888	456	16	16	277
-0	1	776	552	144	224	421
+0	1	784	560	128	208	421
 0	1	752	776	24	24	47
 0	1	776	776	144	24	52
 0	1	920	776	24	24	48
@@ -631,10 +631,6 @@
 0	1	736	624	16	8	70
 0	1	736	648	16	8	70
 0	1	728	632	32	16	421
-0	1	792	584	16	16	277
-0	1	888	584	16	16	277
-0	1	792	744	16	16	277
-0	1	888	744	16	16	277
 0	1	640	200	16	16	88
 0	1	656	200	8	16	574
 0	1	632	200	8	16	573
@@ -825,6 +821,18 @@
 0	1	144	416	8	8	456
 0	1	248	408	8	8	453
 0	1	144	408	8	8	455
+12	1	784	656	16	16	custom_obstacle_10	0	1	1	1
+12	1	784	608	48	16	custom_obstacle_11	0	1	1	1
+12	1	784	560	48	16	custom_obstacle_12	0	1	1	1
+12	1	800	704	16	16	custom_obstacle_13	0	1	1	1
+12	1	800	720	32	16	custom_obstacle_14	0	1	1	1
+12	1	800	736	80	16	custom_obstacle_15	0	1	1	1
+12	1	832	624	16	48	custom_obstacle_16	0	1	1	1
+12	1	880	592	16	48	custom_obstacle_17	0	1	1	1
+12	1	864	560	16	32	custom_obstacle_18	0	1	1	1
+12	1	880	704	16	32	custom_obstacle_19	0	1	1	1
+12	1	864	688	32	16	custom_obstacle_20	0	1	1	1
+12	1	848	672	16	16	custom_obstacle_21	0	1	1	1
 18	1	632	200	hidden_weak_wall_2	1	6	403
 12	1	264	984	8	32	custom_obstacle	1	1	1	1
 12	1	288	984	8	32	custom_obstacle_2	1	1	1	1
@@ -860,11 +868,9 @@
 2	1	896	56	16	16	teletransporter_27	0	0	60	destination_point_11
 2	1	776	184	16	16	teletransporter_28	0	0	60	destination_point_7
 5	1	832	296	chest	1	tunic	2	404
-18	1	832	536	miniboss_door	1	0	-1
-18	1	832	488	miniboss_door_2	3	0	-1
 5	1	888	376	chest_2	0	compass	1	405
-18	1	712	624	door_7	0	3	406
-18	1	760	624	door_8	2	3	406
+18	1	832	488	door_7	3	3	406
+18	1	832	536	door_8	1	3	406
 5	1	640	600	chest_3	0	map	1	407
 10	1	632	192	32	24	hidden_weak_wall_closed_2	49	1
 5	1	640	280	chest_4	0	big_key	1	409
@@ -952,9 +958,7 @@
 12	1	576	328	40	8	custom_obstacle_5	0	1	1	1
 12	1	576	416	8	40	custom_obstacle_6	0	1	1	1
 7	1	440	245	enemy_5	3	skeletor	0	-1	_random	1	-1
-18	1	760	624	miniboss_door_4	2	0	-1
-18	1	712	624	miniboss_door_3	0	0	-1
-7	1	848	661	miniboss	3	simple_green_soldier	1	414	fairy	1	-1
+7	1	856	669	enemy_6	3	blue_hardhat_beetle	0	-1	_random	1	-1
 4	1	600	701	0	_random	1	-1
 4	1	600	717	0	_random	1	-1
 4	1	616	717	0	fairy	1	-1
@@ -967,7 +971,6 @@
 4	1	56	173	0	fairy	1	-1
 4	1	152	157	0	_random	1	-1
 4	1	152	173	0	heart	1	-1
-13	1	784	645	16	16	start_miniboss_sensor	0
 13	1	104	261	16	16	start_boss_sensor	0
 7	1	200	464	boss	3	flora_gohma	2	415	heart_container	1	416
 12	1	712	632	16	16	custom_obstacle_7	0	1	1	1
@@ -975,7 +978,40 @@
 1	1	200	245	from_final_room	3	0
 2	1	192	232	16	16	teletransporter_30	0	1	87	from_boss_room
 19	1	192	232	stairs_14	1	2
-1	1	104	261	tmp	3	0
+1	1	784	645	tmp	3	0
+7	1	792	621	enemy_7	0	pike_fixed	0	-1	_random	1	-1
+12	1	760	632	16	16	custom_obstacle_8	0	1	1	1
+12	1	840	536	16	16	custom_obstacle_9	0	1	1	1
+7	1	808	621	enemy_8	0	pike_fixed	0	-1	_random	1	-1
+7	1	792	669	enemy_9	0	pike_fixed	0	-1	_random	1	-1
+7	1	824	621	enemy_10	0	pike_fixed	0	-1	_random	1	-1
+7	1	840	637	enemy_11	0	pike_fixed	0	-1	_random	1	-1
+7	1	840	653	enemy_12	0	pike_fixed	0	-1	_random	1	-1
+7	1	840	669	enemy_13	0	pike_fixed	0	-1	_random	1	-1
+7	1	856	685	enemy_14	0	pike_fixed	0	-1	_random	1	-1
+7	1	808	717	enemy_15	0	pike_fixed	0	-1	_random	1	-1
+7	1	824	733	enemy_16	0	pike_fixed	0	-1	_random	1	-1
+7	1	808	733	enemy_17	0	pike_fixed	0	-1	_random	1	-1
+7	1	808	749	enemy_18	0	pike_fixed	0	-1	_random	1	-1
+7	1	872	701	enemy_19	0	pike_fixed	0	-1	_random	1	-1
+7	1	888	701	enemy_20	0	pike_fixed	0	-1	_random	1	-1
+7	1	824	749	enemy_21	0	pike_fixed	0	-1	_random	1	-1
+7	1	840	749	enemy_22	0	pike_fixed	0	-1	_random	1	-1
+7	1	856	749	enemy_23	0	pike_fixed	0	-1	_random	1	-1
+7	1	872	749	enemy_24	0	pike_fixed	0	-1	_random	1	-1
+7	1	872	733	enemy_25	3	blue_hardhat_beetle	0	-1	_random	1	-1
+7	1	888	733	enemy_26	0	pike_fixed	0	-1	_random	1	-1
+7	1	888	717	enemy_27	0	pike_fixed	0	-1	_random	1	-1
+7	1	888	637	enemy_29	0	pike_fixed	0	-1	_random	1	-1
+7	1	888	621	enemy_30	0	pike_fixed	0	-1	_random	1	-1
+7	1	888	605	enemy_31	0	pike_fixed	0	-1	_random	1	-1
+7	1	872	589	enemy_32	0	pike_fixed	0	-1	_random	1	-1
+7	1	872	573	enemy_33	0	pike_fixed	0	-1	_random	1	-1
+7	1	792	573	enemy_34	0	pike_fixed	0	-1	_random	1	-1
+7	1	808	573	enemy_35	0	pike_fixed	0	-1	_random	1	-1
+7	1	824	573	enemy_36	0	pike_fixed	0	-1	_random	1	-1
+7	1	800	597	enemy_37	3	blue_hardhat_beetle	0	-1	_random	1	-1
+7	1	904	581	enemy_38	3	blue_hardhat_beetle	0	-1	_random	1	-1
 0	2	584	16	96	8	559
 0	2	400	16	96	8	559
 0	2	240	16	96	8	559
@@ -1034,10 +1070,6 @@
 0	2	832	528	32	8	553
 0	2	728	624	8	32	163
 0	2	752	624	8	32	162
-0	2	792	568	16	16	278
-0	2	888	568	16	16	278
-0	2	792	728	16	16	278
-0	2	888	728	16	16	278
 0	2	272	16	32	8	551
 0	2	280	16	16	8	556
 0	2	432	16	32	8	551

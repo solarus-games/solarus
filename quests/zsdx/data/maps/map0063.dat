@@ -125,6 +125,10 @@
 0	0	280	344	24	8	293
 0	0	280	320	24	8	292
 0	0	280	328	24	16	294
+0	0	424	896	16	16	360
+0	0	416	896	8	248	567
+0	0	424	896	32	248	589
+0	0	456	896	8	248	567
 19	0	296	896	stairs	2	4
 19	0	656	1056	stairs_2	1	4
 19	0	752	1056	stairs_4	1	4
@@ -139,13 +143,33 @@
 19	0	288	328	stairs_10	0	4
 18	0	520	1096	door	0	1	516
 18	0	616	1096	door_2	2	1	516
-18	0	520	1096	miniboss_door	0	0	-1
-18	0	616	1096	miniboss_door_2	2	0	-1
 12	0	520	1104	16	16	custom_obstacle_32	0	1	0	0
-13	0	512	1117	16	16	start_miniboss_sensor	0
-7	0	448	1029	miniboss	3	simple_green_soldier	1	517	fairy	1	-1
-7	0	712	1117	enemy_3	3	red_knight_soldier	0	-1	_random	1	-1
 14	0	224	341	crystal
+7	0	512	1085	pike_10	2	pike_detect	0	-1	_random	1	-1
+1	0	512	1117	tmp	2	0
+7	0	512	1053	pike_9	2	pike_detect	0	-1	_random	1	-1
+12	0	504	1088	16	16	custom_obstacle_33	0	1	0	0
+12	0	504	1056	16	16	custom_obstacle_34	0	1	0	0
+7	0	512	1021	pike_8	2	pike_detect	0	-1	_random	1	-1
+7	0	512	989	pike_7	2	pike_detect	0	-1	_random	1	-1
+12	0	504	1024	16	16	custom_obstacle_35	0	1	0	0
+12	0	504	992	16	16	custom_obstacle_36	0	1	0	0
+7	0	512	957	pike_6	2	pike_detect	0	-1	_random	1	-1
+12	0	504	960	16	16	custom_obstacle_37	0	1	0	0
+7	0	368	1085	pike_1	2	pike_detect	0	-1	_random	1	-1
+7	0	368	1053	pike_2	2	pike_detect	0	-1	_random	1	-1
+12	0	360	1088	16	16	custom_obstacle_38	0	1	0	0
+12	0	360	1056	16	16	custom_obstacle_39	0	1	0	0
+7	0	368	1021	pike_3	2	pike_detect	0	-1	_random	1	-1
+7	0	368	989	pike_4	2	pike_detect	0	-1	_random	1	-1
+12	0	360	1024	16	16	custom_obstacle_40	0	1	0	0
+12	0	360	992	16	16	custom_obstacle_41	0	1	0	0
+7	0	368	957	pike_5	2	pike_detect	0	-1	_random	1	-1
+12	0	360	960	16	16	custom_obstacle_42	0	1	0	0
+12	0	504	928	16	16	custom_obstacle_43	0	1	0	0
+12	0	360	928	16	16	custom_obstacle_44	0	1	0	0
+7	0	416	1133	enemy	3	green_knight_soldier	0	-1	_random	1	-1
+7	0	440	917	enemy_3	3	green_knight_soldier	0	-1	_random	1	-1
 0	1	808	616	8	48	238
 0	1	504	456	24	224	51
 0	1	528	616	8	48	237
@@ -1303,9 +1327,6 @@
 7	1	320	653	enemy_5	3	blue_knight_soldier	0	-1	_random	1	-1
 7	1	952	205	enemy_6	3	red_knight_soldier	0	-1	_random	1	-1
 12	1	440	760	8	16	custom_obstacle_31	0	1	0	0
-18	1	216	888	miniboss_door_3	2	0	-1
-18	1	168	888	miniboss_door_4	0	0	-1
-1	1	632	861	tmp	2	0
 13	1	616	957	64	16	puzzle_sensor_2	0
 13	1	760	957	64	16	puzzle_sensor_3	0
 13	1	616	829	64	16	puzzle_sensor_1	0

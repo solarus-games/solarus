@@ -61,13 +61,13 @@ function get_block_position_from_hero()
   local x, y, layer = sol.map.hero_get_position()
   local direction = sol.map.hero_get_direction()
   if direction == 0 then
-    x = x + 20
+    x = x + 21
   elseif direction == 1 then
-    y = y - 20
+    y = y - 21
   elseif direction == 2 then
-    x = x - 20
+    x = x - 21
   elseif direction == 3 then
-    y = y + 20
+    y = y + 21
   end
 
   -- snap the center of the block to the 8*8 grid

@@ -310,6 +310,7 @@ booleans:
 608	dungeon 7 2F: big chest with the cane of somaria
 609	dungeon 7 2F: chest with the big key
 610	dungeon 7 2F: small key block near the big key chest
+611	dungeon 7 2F: chest with the compass
 
 700-799	dungeon 8
 800-899	dungeon 9

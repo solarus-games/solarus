@@ -651,3 +651,10 @@ y = 880
 save = 609
 big = 0
 
+[dungeon_7.map_102.chest_2]
+floor = 1
+x = 48
+y = 880
+save = 611
+big = 0
+

@@ -85,6 +85,8 @@
 19	0	80	608	stairs	3	4
 19	0	632	384	stairs_2	1	4
 1	0	608	557	from_2f_c	3	0
+2	0	600	544	16	16	teletransporter_3	0	1	102	from_1f_c
+19	0	600	544	stairs_3	1	0
 0	1	48	8	1056	16	2
 0	1	800	64	16	96	2
 0	1	936	640	8	176	237
@@ -978,7 +980,7 @@
 7	1	992	461	enemy_4	1	pike_auto	0	-1	_random	1	-1
 7	1	880	245	enemy_5	3	pike_auto	0	-1	_random	1	-1
 1	1	856	477	tmp	1	0
-2	1	512	1016	16	16	teletransporter_2	0	0	101	tmp
+2	1	512	1016	16	16	teletransporter_2	0	0	102	from_1f_c
 12	1	824	440	16	16	custom_obstacle_28	0	1	1	1
 12	1	872	488	16	16	custom_obstacle_30	0	1	1	1
 12	1	920	488	16	16	custom_obstacle_31	0	1	1	1
@@ -992,6 +994,12 @@
 1	1	496	181	from_2f_nc_1	3	0
 1	1	560	181	from_2f_nc_2	3	0
 1	1	920	53	from_2f_ne	3	0
+2	1	488	168	16	16	teletransporter_4	0	1	102	from_1f_nc_1
+19	1	488	168	stairs_4	1	0
+2	1	552	168	16	16	teletransporter_5	0	1	102	from_1f_nc_2
+19	1	552	168	stairs_5	1	0
+2	1	912	40	16	16	teletransporter_6	0	1	102	from_1f_ne
+19	1	912	40	stairs_6	1	0
 0	2	880	32	64	8	304
 0	2	0	0	1104	32	170
 0	2	48	16	16	16	553

@@ -637,3 +637,17 @@ y = 832
 save = 607
 big = 0
 
+[dungeon_7.map_102.chest_0]
+floor = 1
+x = 760
+y = 200
+save = 608
+big = 1
+
+[dungeon_7.map_102.chest_1]
+floor = 1
+x = 448
+y = 880
+save = 609
+big = 0
+

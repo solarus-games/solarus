@@ -1,7 +1,7 @@
 -- Pike that always moves, horizontally or vertically
 -- depending on its direction
 
-obstacle_reached = false
+obstacle_reached = true
 
 function event_appear()
 
@@ -30,24 +30,23 @@ end
 
 function event_obstacle_reached()
 
-  if not obstacle_reached then
-    obstacle_reached = true
-    local sprite = sol.enemy.get_sprite()
-    local direction4 = sol.main.sprite_get_direction(sprite)
-    sol.main.sprite_set_direction(sprite, (direction4 + 2) % 4)
+  local sprite = sol.enemy.get_sprite()
+  local direction4 = sol.main.sprite_get_direction(sprite)
+  sol.main.sprite_set_direction(sprite, (direction4 + 2) % 4)
 
-    local x, y = sol.enemy.get_position()
-    local hero_x, hero_y = sol.map.hero_get_position()
-    if math.abs(x - hero_x) < 184 and math.abs(y - hero_y) < 144 then
-      sol.main.play_sound("sword_tapping")
-    end
-
-    sol.main.timer_start(restore_obstacle_reached, 150)
-    sol.enemy.restart()
+  local x, y = sol.enemy.get_position()
+  local hero_x, hero_y = sol.map.hero_get_position()
+  if not obstacle_reached
+    and math.abs(x - hero_x) < 184
+    and math.abs(y - hero_y) < 144 then
+    sol.main.play_sound("sword_tapping")
   end
+
+  obstacle_reached = true
+  sol.enemy.restart()
 end
 
-function restore_obstacle_reached()
+function event_position_changed()
   obstacle_reached = false
 end
 

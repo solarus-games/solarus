@@ -6,6 +6,7 @@ set_properties({
   sword_sprite = "enemies/red_duck_soldier_sword",
   life = 8,
   damage = 3,
-  hurt_style = "monster"
+  hurt_style = "monster",
+  play_hero_seen_sound = true
 })
 

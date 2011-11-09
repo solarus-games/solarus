@@ -106,6 +106,9 @@
 0	0	160	320	16	16	577
 19	0	976	480	stairs	3	4
 7	0	168	333	w_room_enemy_4	3	blue_duck_soldier	0	-1	_random	1	-1
+7	0	920	381	enemy_10	3	red_duck_soldier	0	-1	_random	1	-1
+7	0	752	309	enemy_11	3	blue_duck_soldier	0	-1	_random	1	-1
+7	0	688	437	enemy_12	3	red_duck_soldier	0	-1	_random	1	-1
 0	1	192	536	648	488	582
 0	1	792	880	48	48	2
 0	1	368	280	64	256	2
@@ -846,6 +849,12 @@
 0	1	16	440	24	16	581
 0	1	296	296	24	16	580
 0	1	296	440	24	16	580
+0	1	80	160	16	16	276
+0	1	144	96	16	16	276
+0	1	208	160	16	16	276
+0	1	336	160	16	16	276
+0	1	392	120	272	24	582
+0	1	392	32	272	24	582
 11	1	976	1000	door_f_switch	1	0	0
 1	1	344	533	from_3f_2	3	0
 12	1	968	496	8	8	custom_obstacle	1	1	1	1
@@ -1052,7 +1061,7 @@
 1	1	808	629	from_3f_10	3	0
 1	1	1040	613	from_3f_11	3	0
 2	1	136	680	32	32	teletransporter_5	0	1	101	from_2f_sw_hole
-8	1	32	125	nw_sign	0	0	entities/hint_stone	dialog#dungeon_7.2f_weak_floor_hint
+8	1	-16	125	nw_hint_stone	0	0	entities/hint_stone	dialog#dungeon_7.2f_weak_floor_hint
 8	1	88	173	torch_1	3	0	entities/torch	item#lamp
 8	1	152	109	torch_2	3	0	entities/torch	item#lamp
 8	1	216	173	torch_3	3	0	entities/torch	item#lamp
@@ -1069,7 +1078,6 @@
 4	1	1000	997	0	_random	1	-1
 4	1	968	997	0	_random	1	-1
 4	1	984	997	0	fairy	1	-1
-1	1	72	517	tmp	3	0
 4	1	1016	997	0	_random	1	-1
 7	1	984	1013	enemy_3	1	pike_auto	0	-1	_random	1	-1
 4	1	952	893	0	_random	1	-1
@@ -1108,6 +1116,26 @@
 7	1	248	333	w_room_enemy_3	3	blue_duck_soldier	0	-1	_random	1	-1
 7	1	88	333	w_room_enemy_1	3	blue_duck_soldier	0	-1	_random	1	-1
 7	1	168	429	w_room_enemy_2	3	blue_duck_soldier	0	-1	_random	1	-1
+10	1	40	104	32	32	weak_floor	2	1
+10	1	40	104	8	32	weak_floor_2	237	1
+2	1	40	104	32	32	weak_floor_teletransporter	0	1	101	from_2f_nw_hole
+13	1	48	117	32	32	weak_floor_sensor	0
+7	1	1040	133	miniboss_1	3	lizalfos	0	-1	_random	1	-1
+7	1	1048	205	miniboss_2	3	lizalfos	0	-1	_random	1	-1
+7	1	984	229	miniboss_3	3	lizalfos	0	-1	_random	1	-1
+7	1	928	221	miniboss_4	3	lizalfos	0	-1	_random	1	-1
+7	1	888	149	miniboss_5	3	lizalfos	0	-1	_random	1	-1
+7	1	976	157	miniboss_6	3	lizalfos	0	-1	_random	1	-1
+18	1	936	40	miniboss_door_3	1	0	-1
+13	1	952	69	16	16	start_miniboss_sensor	0
+1	1	112	861	tmp	-1	0
+7	1	312	141	enemy_5	3	blue_duck_soldier	0	-1	_random	1	-1
+7	1	136	141	enemy_7	3	lizalfos	0	-1	_random	1	-1
+7	1	80	789	enemy_8	3	lizalfos	0	-1	_random	1	-1
+7	1	80	973	enemy_9	3	red_duck_soldier	0	-1	_random	1	-1
+7	1	64	637	enemy_13	3	green_duck_soldier	0	-1	_random	1	-1
+12	1	720	776	16	16	custom_obstacle_3	0	1	1	1
+12	1	720	728	16	16	custom_obstacle_4	0	1	1	1
 0	2	208	704	8	128	308
 0	2	720	864	16	96	553
 0	2	336	608	16	64	553
@@ -1204,8 +1232,6 @@
 0	2	824	64	8	64	309
 0	2	848	64	8	64	308
 0	2	912	32	96	8	304
-0	2	936	32	32	8	152
-0	2	944	32	16	8	273
 0	2	848	80	8	32	160
 0	2	824	80	8	32	161
 0	2	464	160	128	8	304
@@ -1301,6 +1327,12 @@
 0	2	568	344	32	8	153
 0	2	512	344	16	8	272
 0	2	576	344	16	8	272
+0	2	528	56	8	64	584
+0	2	536	56	16	16	584
+10	2	936	32	32	8	miniboss_door_closed	187	1
 10	2	328	512	32	8	boss_door_open	152	1
 10	2	336	512	16	8	boss_door_open_2	271	1
 10	2	328	512	32	8	boss_door_closed	187	1
+1	2	544	69	from_3f_n_hole	-1	0
+10	2	936	32	32	8	miniboss_door_open	152	1
+10	2	944	32	16	8	miniboss_door_open_2	273	1

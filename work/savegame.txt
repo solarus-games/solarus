@@ -317,6 +317,9 @@ booleans:
 615	dungeon 7 2F: door D
 616	dungeon 7 2F: locked door (NW)
 617	dungeon 7 2F: door C
+618	dungeon 7 2F: torches (NW)
+619	dungeon 7 2F: weak floor (NW)
+620	dungeon 7 2F: miniboss (NE)
 
 700-799	dungeon 8
 800-899	dungeon 9

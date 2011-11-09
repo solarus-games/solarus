@@ -5782,7 +5782,7 @@ line2 = "        6  1  8        "
 line3 = "           3  5        "
 skip = all
 
-[dungeon_7.code]
+[dungeon_7.2f_weak_floor_hint]
 #       |-----------------------|
 line1 = "Sous tes pieds dort un"
 line2 = "secret."

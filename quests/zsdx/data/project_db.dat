@@ -111,9 +111,10 @@
 1	9	Green dungeon (DW)
 1	10	Orange dungeon (DW)
 1	11	Pink dungeon (LW)
+1	12	Castle
 1	2	Ice dungeon
 1	14	Forest dungeon
-1	12	Castle
+1	15	Final dungeon
 1	6	Intro
 2	agahnim.spc	Agahnim theme
 2	beginning.spc	Beginning

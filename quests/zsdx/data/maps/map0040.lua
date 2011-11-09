@@ -2,7 +2,7 @@
 
 remove_water_delay = 500 -- delay between each step when some water is disappearing
 
--- Returns whether all fives torches are on
+-- Returns whether all five torches are on
 function are_all_torches_on()
 
   return sol.map.npc_exists("torch_1")

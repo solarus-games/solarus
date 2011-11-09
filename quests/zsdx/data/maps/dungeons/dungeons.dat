@@ -134,6 +134,34 @@ height = 1296
 width = 1304
 height = 1040
 
+[dungeon_9.floor_-1]
+width = 2192
+height = 2192
+
+[dungeon_9.floor_0]
+width = 2192
+height = 2192
+
+[dungeon_9.floor_1]
+width = 2192
+height = 2192
+
+[dungeon_9.floor_2]
+width = 2192
+height = 2192
+
+[dungeon_9.floor_3]
+width = 2192
+height = 2192
+
+[dungeon_9.floor_4]
+width = 2192
+height = 2192
+
+[dungeon_9.floor_5]
+width = 2192
+height = 2192
+
 [dungeon_8.map_47.chest_0]
 floor = 0
 x = 1872

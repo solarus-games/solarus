@@ -2147,24 +2147,28 @@ skip = all
 #       |-----------------------|
 line1 = "        Niveau 1       "
 line2 = "   Donjon de la Forêt  "
+skip = current
 
 [dungeon_2]
 # Lorsqu'on pénètre dans le donjon 2
 #       |-----------------------|
 line1 = "        Niveau 2       "
 line2 = "     Caverne de Roc    "
+skip = current
 
 [dungeon_3]
 # Lorsqu'on pénètre dans le donjon 3
 #       |-----------------------|
 line1 = "        Niveau 3       "
 line2 = " Antre de Maître Arbror"
+skip = current
 
 [dungeon_10]
 # Lorsqu'on pénètre dans le donjon 10
 #       |-----------------------|
-line1 = "     Niveau secret       "
-line2 = "     Tour du Roxor  "
+line1 = "     Niveau secret     "
+line2 = "     Tour du Roxor     "
+skip = current
 
 [found_piece_of_heart.first]
 #       |--------------------|
@@ -5765,6 +5769,12 @@ next = dungeon_6.tom_revelation.13
 line1 = "$v, tu es mon"
 line2 = "dernier espoir..."
 
+[dungeon_7.welcome]
+#       |-----------------------|
+line1 = "        Niveau 7"
+line2 = "   Temple du Cristal   "
+skip = current
+
 [dungeon_7.code]
 #       |-----------------------|
 line1 = "        4  7  2        "
@@ -5772,11 +5782,22 @@ line2 = "        6  1  8        "
 line3 = "           3  5        "
 skip = all
 
+[dungeon_7.code]
+#       |-----------------------|
+line1 = "Sous tes pieds dort un"
+line2 = "secret."
+
+[dungeon_7.2f_dont_fall_alone_hint]
+#       |-----------------------|
+line1 = "La solution consistait"
+line2 = "à ne pas tomber seul."
+
 [dungeon_8.welcome]
 #       |-----------------------|
 line1 = "        Niveau 8"
 line2 = "    Donjon des Pics "
 line3 = "        Rocheux"
+skip = current
 
 [dungeon_10.message1]
 line1 = "essai text"

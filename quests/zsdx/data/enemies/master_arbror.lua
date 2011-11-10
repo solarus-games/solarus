@@ -2,6 +2,7 @@
 
 nb_sons_created = 0
 nb_sons_immobilized = 0
+nb_sons_immobilized_needed = 3 -- number of sons immobilized needed to get him vulnerable
 vulnerable = false
 
 function event_appear()
@@ -45,13 +46,14 @@ function event_hurt(attack, life_lost)
     sol.main.sprite_set_animation_ignore_suspend(sprite, true)
     sol.map.dialog_start("dungeon_3.arbror_killed")
     sol.main.timer_stop_all()
+    remove_sons()
   end
 end
 
 function prepare_son()
 
   son_prefix = sol.enemy.get_name().."_son"
-  if sol.map.enemy_get_group_count(son_prefix) < 3 then
+  if sol.map.enemy_get_group_count(son_prefix) < nb_sons_immobilized_needed then
     local sprite = sol.enemy.get_sprite()
     sol.main.sprite_set_animation(sprite, "preparing_son")
     sol.main.play_sound("hero_pushes")
@@ -77,7 +79,7 @@ function event_sprite_animation_finished(sprite, animation)
     sol.enemy.restart()
   elseif animation == "son_immobilized" then
 
-    if nb_sons_immobilized >= 3
+    if nb_sons_immobilized >= nb_sons_immobilized_needed
         and not vulnerable then
 
       vulnerable = true
@@ -99,18 +101,22 @@ end
 function event_message_received(src_enemy, message)
 
   if message == "begin immobilized" then
-    nb_sons_immobilized = nb_sons_immobilized + 1
-    local sprite = sol.enemy.get_sprite()
-    local animation = sol.main.sprite_get_animation(sprite)
+    if nb_sons_immobilized < nb_sons_immobilized_needed then
+      nb_sons_immobilized = nb_sons_immobilized + 1
+      local sprite = sol.enemy.get_sprite()
+      local animation = sol.main.sprite_get_animation(sprite)
 
-    if animation == "preparing_son" then
-      sol.enemy.restart()
+      if animation == "preparing_son" then
+        sol.enemy.restart()
+      end
+
+      sol.main.sprite_set_animation(sprite, "son_immobilized")
     end
 
-    sol.main.sprite_set_animation(sprite, "son_immobilized")
-
   elseif message == "end immobilized" then
-    nb_sons_immobilized = nb_sons_immobilized - 1
+    if nb_sons_immobilized > 0 then
+      nb_sons_immobilized = nb_sons_immobilized - 1
+    end
   end
 end
 

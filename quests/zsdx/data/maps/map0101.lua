@@ -20,6 +20,14 @@ function event_map_started(destination_point_name)
   end
 end
 
+function event_map_opening_transition_finished(destination_point_name)
+
+  -- show the welcome message
+  if destination_point_name == "from_outside" then
+    sol.map.dialog_start("dungeon_7.welcome")
+  end
+end
+
 function event_hero_on_sensor(sensor_name)
 
   -- door A (south-west timed door)

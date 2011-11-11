@@ -665,20 +665,6 @@ y = 832
 save = 607
 big = 0
 
-[dungeon_7.map_103.chest_0]
-floor = 2
-x = 744
-y = 48
-save = -1
-big = 0
-
-[dungeon_7.map_103.chest_1]
-floor = 2
-x = 456
-y = 72
-save = 622
-big = 0
-
 [dungeon_7.map_102.chest_0]
 floor = 1
 x = 760
@@ -712,5 +698,19 @@ floor = 1
 x = 176
 y = 56
 save = 614
+big = 0
+
+[dungeon_7.map_103.chest_0]
+floor = 2
+x = 744
+y = 48
+save = -1
+big = 0
+
+[dungeon_7.map_103.chest_1]
+floor = 2
+x = 456
+y = 72
+save = 622
 big = 0
 

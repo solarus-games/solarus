@@ -323,6 +323,7 @@ booleans:
 621	dungeon 7 1F: NE door
 622	dungeon 7 3F: chest with the boss key
 623	dungeon 7 3F: NW block fallen into hole A
+624	dungeon 7 3F: NW door
 
 700-799	dungeon 8
 800-899	dungeon 9

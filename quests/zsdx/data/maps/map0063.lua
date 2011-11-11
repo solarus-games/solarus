@@ -11,6 +11,7 @@ function event_map_started(destination_point_name)
   if sol.game.savegame_get_boolean(515) then
     sol.map.tile_set_enabled("weak_floor", false)
     sol.map.sensor_set_enabled("weak_floor_sensor", false)
+    sol.map.block_set_enabled("weak_floor_block", false)
   end
 end
 

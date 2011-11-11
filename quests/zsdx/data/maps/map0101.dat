@@ -310,10 +310,10 @@
 0	1	328	664	16	32	577
 0	1	248	680	48	16	577
 0	1	200	696	32	16	577
-0	1	48	464	152	96	547
-0	1	264	464	72	72	547
-0	1	128	536	176	88	547
-0	1	200	504	64	32	547
+0	1	40	456	152	104	547
+0	1	272	456	72	80	547
+0	1	136	536	168	96	547
+0	1	192	504	80	32	547
 0	1	72	624	32	8	299
 0	1	64	632	8	8	69
 0	1	40	632	8	8	69
@@ -537,12 +537,12 @@
 0	1	816	416	8	16	71
 0	1	840	416	8	16	71
 0	1	408	1016	256	24	52
-0	1	416	416	96	216	547
-0	1	512	416	96	48	547
-0	1	640	464	144	80	547
-0	1	512	544	272	48	547
-0	1	488	632	176	56	547
-0	1	512	592	224	40	547
+0	1	408	416	112	216	547
+0	1	520	416	88	56	547
+0	1	632	480	160	56	547
+0	1	520	536	272	56	547
+0	1	488	632	176	64	547
+0	1	520	592	224	40	547
 0	1	760	696	32	48	577
 0	1	408	808	8	208	237
 0	1	408	808	256	8	179
@@ -791,6 +791,9 @@
 0	1	792	664	32	48	577
 0	1	792	712	16	16	577
 0	1	744	728	16	16	577
+0	1	688	456	104	24	547
+7	1	448	917	enemy_17	3	blue_duck_soldier	0	-1	_random	1	-1
+7	1	584	877	enemy_18	3	blue_duck_soldier	0	-1	_random	1	-1
 12	1	824	392	16	16	custom_obstacle_29	0	1	1	1
 5	1	192	64	chest	0	small_key	1	600
 3	1	168	173	piece_of_heart	1	601
@@ -858,34 +861,32 @@
 2	1	528	1040	16	16	teletransporter	0	1	8	from_dungeon_7
 5	1	688	56	chest_2	0	map	1	602
 8	1	568	53	npc	3	0	entities/hint_stone	dialog#dungeon_7.code
-18	1	272	792	sw_timed_door	1	0	-1
-18	1	272	744	sw_timed_door_2	3	0	-1
+18	1	272	792	door_a	1	0	-1
+18	1	272	744	door_a_2	3	0	-1
 5	1	104	680	chest_3	0	small_key	1	603
 9	1	304	709	block_2	-1	entities/statue	1	1	2
 9	1	80	709	block_3	-1	entities/statue	1	1	2
 12	1	72	624	8	8	custom_obstacle	1	1	1	1
 12	1	96	624	8	8	custom_obstacle_2	1	1	1	1
-12	1	200	464	8	16	custom_obstacle_3	1	1	1	1
-12	1	256	464	8	16	custom_obstacle_4	1	1	1	1
-12	1	336	496	8	16	custom_obstacle_5	1	1	1	1
-12	1	304	608	8	16	custom_obstacle_6	1	1	1	1
-12	1	120	608	8	16	custom_obstacle_7	1	1	1	1
-12	1	48	560	16	8	custom_obstacle_8	1	1	1	1
-6	1	64	560	56	8	jumper	6	16
-12	1	120	560	8	8	custom_obstacle_9	1	1	1	1
-6	1	312	536	24	8	jumper_2	6	16
+12	1	344	488	8	24	custom_obstacle_5	1	1	1	1
+12	1	304	608	8	24	custom_obstacle_6	1	1	1	1
+12	1	128	608	8	24	custom_obstacle_7	1	1	1	1
+12	1	40	560	24	8	custom_obstacle_8	1	1	1	1
+6	1	64	560	64	8	jumper	6	16
+12	1	128	560	8	8	custom_obstacle_9	1	1	1	1
+6	1	312	536	32	8	jumper_2	6	16
 12	1	304	536	8	8	custom_obstacle_10	1	1	1	1
-12	1	200	496	8	8	custom_obstacle_11	1	1	1	1
-12	1	256	496	8	8	custom_obstacle_12	1	1	1	1
-6	1	208	496	48	8	jumper_3	2	16
-6	1	336	512	8	24	jumper_4	0	16
+12	1	192	496	8	8	custom_obstacle_11	1	1	1	1
+12	1	264	496	8	8	custom_obstacle_12	1	1	1	1
+6	1	200	496	64	8	jumper_3	2	16
+6	1	344	512	8	24	jumper_4	0	16
 6	1	304	544	8	64	jumper_5	0	16
-6	1	200	480	8	16	jumper_6	0	16
-6	1	256	480	8	16	jumper_7	4	16
-6	1	120	568	8	40	jumper_8	4	16
+6	1	192	480	8	16	jumper_6	0	16
+6	1	264	480	8	16	jumper_7	4	16
+6	1	128	568	8	40	jumper_8	4	16
 18	1	392	968	sw_door	2	0	604
 18	1	344	968	sw_door_2	0	0	604
-11	1	40	952	sw_timed_door_switch	3	0	0
+11	1	40	952	door_a_switch	3	0	0
 4	1	704	309	0	_random	1	-1
 4	1	720	325	0	_random	1	-1
 4	1	720	309	0	magic_flask	1	-1
@@ -901,23 +902,20 @@
 6	1	432	632	48	8	jumper_12	6	16
 6	1	672	632	64	8	jumper_13	6	16
 6	1	744	592	24	8	jumper_14	6	16
-12	1	768	592	16	8	custom_obstacle_18	1	1	1	1
-12	1	416	632	16	8	custom_obstacle_19	1	1	1	1
-12	1	480	672	8	16	custom_obstacle_20	1	1	1	1
-12	1	664	672	8	16	custom_obstacle_21	1	1	1	1
-12	1	704	456	16	8	custom_obstacle_22	1	1	1	1
-12	1	640	456	16	8	custom_obstacle_23	1	1	1	1
-12	1	608	448	8	16	custom_obstacle_24	1	1	1	1
-12	1	416	408	16	8	custom_obstacle_25	1	1	1	1
-12	1	408	496	8	16	custom_obstacle_26	1	1	1	1
-12	1	408	576	8	16	custom_obstacle_27	1	1	1	1
-6	1	408	512	8	64	jumper_15	4	16
+12	1	408	632	24	8	custom_obstacle_19	1	1	1	1
+12	1	704	448	24	8	custom_obstacle_22	1	1	1	1
+12	1	680	472	8	8	custom_obstacle_23	1	1	1	1
+12	1	608	448	8	24	custom_obstacle_24	1	1	1	1
+12	1	408	408	24	8	custom_obstacle_25	1	1	1	1
+12	1	400	488	8	24	custom_obstacle_26	1	1	1	1
+12	1	400	576	8	24	custom_obstacle_27	1	1	1	1
+6	1	400	512	8	64	jumper_15	4	16
 6	1	480	640	8	32	jumper_16	4	16
 6	1	608	416	8	32	jumper_17	0	16
 6	1	736	600	8	32	jumper_18	0	16
 6	1	664	640	8	32	jumper_19	0	16
 6	1	432	408	176	8	jumper_20	2	16
-6	1	656	456	48	8	jumper_21	2	16
+6	1	688	448	16	8	jumper_21	2	16
 8	1	536	941	sign_1	3	0	entities/hint_stone	map
 4	1	424	1005	0	_random	1	-1
 4	1	440	1005	0	heart	1	-1
@@ -926,37 +924,37 @@
 4	1	456	1005	0	_random	1	-1
 4	1	632	1005	0	_random	1	-1
 18	1	520	792	door_2	1	3	606
-8	1	456	941	sign_2	3	0	_none	map
-8	1	456	845	sign_3	3	0	_none	map
-8	1	584	845	sign_4	3	0	_none	map
-8	1	584	893	sign_5	3	0	_none	map
-8	1	632	893	sign_6	3	0	_none	map
-8	1	632	925	sign_7	3	0	_none	map
-8	1	488	925	sign_8	3	0	_none	map
-8	1	488	877	sign_9	3	0	_none	map
-8	1	600	877	sign_10	3	0	_none	map
-8	1	600	957	sign_11	3	0	_none	map
-8	1	440	957	sign_12	3	0	_none	map
-8	1	440	989	sign_13	3	0	_none	map
-8	1	472	989	sign_14	3	0	_none	map
-8	1	472	893	sign_15	3	0	_none	map
-8	1	440	893	sign_16	3	0	_none	map
-8	1	440	861	sign_17	3	0	_none	map
-8	1	536	861	sign_18	3	0	_none	map
-8	1	536	909	sign_19	3	0	_none	map
-8	1	616	909	sign_20	3	0	_none	map
-8	1	616	973	sign_21	3	0	_none	map
-8	1	648	973	sign_22	3	0	_none	map
-8	1	648	861	sign_23	3	0	_none	map
-8	1	568	861	sign_24	3	0	_none	map
-8	1	568	893	sign_25	3	0	_none	map
-8	1	504	893	sign_26	3	0	_none	map
-8	1	504	829	sign_27	3	0	_none	map
-8	1	424	829	sign_28	3	0	_none	map
-18	1	712	968	se_door	2	0	604
-18	1	664	968	se_door_2	0	0	604
+8	1	456	941	sign_2	-1	0	_none	map
+8	1	456	845	sign_3	-1	0	_none	map
+8	1	584	845	sign_4	-1	0	_none	map
+8	1	584	893	sign_5	-1	0	_none	map
+8	1	632	893	sign_6	-1	0	_none	map
+8	1	632	925	sign_7	-1	0	_none	map
+8	1	488	925	sign_8	-1	0	_none	map
+8	1	488	877	sign_9	-1	0	_none	map
+8	1	600	877	sign_10	-1	0	_none	map
+8	1	600	957	sign_11	-1	0	_none	map
+8	1	440	957	sign_12	-1	0	_none	map
+8	1	440	989	sign_13	-1	0	_none	map
+8	1	472	989	sign_14	-1	0	_none	map
+8	1	472	893	sign_15	-1	0	_none	map
+8	1	440	893	sign_16	-1	0	_none	map
+8	1	440	861	sign_17	-1	0	_none	map
+8	1	536	861	sign_18	-1	0	_none	map
+8	1	536	909	sign_19	-1	0	_none	map
+8	1	616	909	sign_20	-1	0	_none	map
+8	1	616	973	sign_21	-1	0	_none	map
+8	1	648	973	sign_22	-1	0	_none	map
+8	1	648	861	sign_23	-1	0	_none	map
+8	1	568	861	sign_24	-1	0	_none	map
+8	1	568	893	sign_25	-1	0	_none	map
+8	1	504	893	sign_26	-1	0	_none	map
+8	1	504	829	sign_27	-1	0	_none	map
+8	1	424	829	sign_28	-1	0	_none	map
+18	1	712	968	door_b	2	0	604
+18	1	664	968	door_b_2	0	0	604
 5	1	736	832	chest_4	0	small_key	1	607
-11	1	736	912	se_timed_door_switch	3	0	0
+11	1	736	912	door_b_switch	3	0	0
 10	1	40	32	32	32	pipe_under_c_1	569	1
 10	1	1040	648	32	32	pipe_under_c_2	564	1
 13	1	56	93	16	16	pipe_out_c_sensor_1	0
@@ -970,8 +968,8 @@
 18	1	520	744	door_3	3	3	606
 9	1	816	349	block	-1	entities/statue	1	1	2
 11	1	792	56	ne_door_switch	1	0	1
-18	1	904	136	ne_door	1	0	-1
-18	1	904	88	ne_door_2	3	0	-1
+18	1	904	136	ne_door	1	0	621
+18	1	904	88	ne_door_2	3	0	621
 4	1	800	85	0	_random	1	-1
 4	1	816	85	0	_random	1	-1
 4	1	816	69	0	_random	1	-1
@@ -985,7 +983,6 @@
 7	1	936	349	enemy_3	0	pike_auto	0	-1	_random	1	-1
 7	1	992	461	enemy_4	1	pike_auto	0	-1	_random	1	-1
 7	1	896	245	enemy_5	3	pike_auto	0	-1	_random	1	-1
-1	1	856	477	tmp	1	0
 2	1	512	1016	16	16	teletransporter_2	0	0	102	tmp
 12	1	824	440	16	16	custom_obstacle_28	0	1	1	1
 12	1	872	488	16	16	custom_obstacle_30	0	1	1	1
@@ -1033,10 +1030,28 @@
 7	1	856	893	enemy_13	3	lizalfos	0	-1	_random	1	-1
 7	1	880	989	enemy_14	3	lizalfos	0	-1	_random	1	-1
 7	1	976	845	enemy_15	3	lizalfos	0	-1	_random	1	-1
-6	1	440	688	40	8	jumper_22	2	40
+6	1	440	688	48	8	jumper_22	2	40
 7	1	176	365	enemy_16	3	blue_duck_soldier	0	-1	_random	1	-1
-6	1	784	600	8	72	jumper_23	4	40
-6	1	672	688	24	8	jumper_24	2	40
+6	1	784	592	8	72	jumper_23	4	40
+6	1	664	688	96	8	jumper_24	2	40
+13	1	288	813	16	16	door_a_dont_close_sensor	0
+13	1	288	821	16	16	door_a_close_sensor	0
+13	1	728	989	16	16	door_b_dont_close_sensor	0
+13	1	736	989	16	16	door_b_close_sensor_2	0
+13	1	288	749	16	16	door_a_dont_close_sensor_2	0
+13	1	288	741	16	16	door_a_close_sensor_2	0
+13	1	664	989	16	16	door_b_dont_close_sensor_2	0
+13	1	656	989	16	16	door_b_close_sensor	0
+6	1	192	456	24	8	jumper_25	6	40
+6	1	248	456	24	8	jumper_26	6	40
+12	1	264	456	8	24	custom_obstacle_4	1	1	1	1
+12	1	192	456	8	24	custom_obstacle_3	1	1	1	1
+12	1	480	672	8	24	custom_obstacle_20	1	1	1	1
+12	1	664	672	8	24	custom_obstacle_21	1	1	1	1
+12	1	768	592	24	8	custom_obstacle_18	1	1	1	1
+12	1	632	472	24	8	custom_obstacle_55	1	1	1	1
+6	1	656	472	24	8	jumper_27	2	16
+6	1	680	456	8	16	jumper_28	4	16
 0	2	880	32	64	8	304
 0	2	0	0	1104	32	170
 0	2	48	16	16	16	553

@@ -39,6 +39,13 @@ function event_map_started(destination_point_name)
   if destination_point_name == "from_1f_ne" then 
     sol.game.savegame_set_boolean(621, true)
   end
+
+  -- block fallen from 3F
+  if not sol.game.savegame_get_boolean(623) then
+    sol.map.tile_set_enabled("from_hole_a_tile", false)
+    sol.map.block_set_enabled("from_hole_a_block", false)
+  end
+
 end
 
 function event_hero_on_sensor(sensor_name)

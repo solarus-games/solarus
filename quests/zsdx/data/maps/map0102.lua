@@ -34,6 +34,11 @@ function event_map_started(destination_point_name)
   -- miniboss
   sol.map.door_set_open("miniboss_door", true)
   sol.map.enemy_set_group_enabled("miniboss", false)
+
+  -- save the north-west door from 1F
+  if destination_point_name == "from_1f_ne" then 
+    sol.game.savegame_set_boolean(621, true)
+  end
 end
 
 function event_hero_on_sensor(sensor_name)

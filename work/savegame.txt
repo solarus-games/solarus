@@ -320,6 +320,7 @@ booleans:
 618	dungeon 7 2F: torches (NW)
 619	dungeon 7 2F: weak floor (NW)
 620	dungeon 7 2F: miniboss (NE)
+621	dungeon 7 1F: NE door
 
 700-799	dungeon 8
 800-899	dungeon 9

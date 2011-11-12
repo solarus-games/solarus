@@ -81,8 +81,9 @@ function event_chest_empty(chest_name)
     -- choose a random treasure
     local index = math.random(#rewards)
 
-    while sol.game.savegame_get_boolean(rewards[index].savegame_variable) do
-      -- don't give the wooden key or the piece of heart twice
+    while rewards[index].savegame_variable ~= -1 and
+        sol.game.savegame_get_boolean(rewards[index].savegame_variable) do
+      -- don't give a saved reward twice (wooden key or piece of heart)
       index = math.random(#rewards)
     end
 

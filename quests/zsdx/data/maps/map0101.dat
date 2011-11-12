@@ -968,7 +968,7 @@
 7	1	936	349	enemy_3	0	pike_auto	0	-1	_random	1	-1
 7	1	992	461	enemy_4	1	pike_auto	0	-1	_random	1	-1
 7	1	896	245	enemy_5	3	pike_auto	0	-1	_random	1	-1
-2	1	512	1016	16	16	teletransporter_2	0	0	103	tmp
+2	1	512	1016	16	16	teletransporter_2	0	0	103	from_2f_2
 12	1	824	440	16	16	custom_obstacle_28	0	1	1	1
 12	1	872	488	16	16	custom_obstacle_30	0	1	1	1
 12	1	920	488	16	16	custom_obstacle_31	0	1	1	1

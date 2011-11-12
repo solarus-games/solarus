@@ -700,6 +700,13 @@ y = 832
 save = 607
 big = 0
 
+[dungeon_7.map_103.boss_0]
+floor = 2
+x = 544
+y = 789
+save = 625
+big = 1
+
 [dungeon_7.map_103.chest_0]
 floor = 2
 x = 744

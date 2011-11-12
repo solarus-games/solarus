@@ -5792,6 +5792,131 @@ line2 = "secret."
 line1 = "La solution consistait"
 line2 = "à ne pas tomber seul."
 
+[dungeon_7.sahasrahla]
+#       |-----------------------|
+line1 = "$2$v... Merci."
+line2 = "Tu m'as sauvé la vie."
+line3 = ""
+next = dungeon_7.sahasrahla.2
+
+[dungeon_7.sahasrahla.2]
+#       |-----------------------|
+line1 = "Si seulement j'avais pu"
+line2 = "tenir une minute de"
+line3 = "plus..."
+next = dungeon_7.sahasrahla.3
+
+[dungeon_7.sahasrahla.3]
+#       |-----------------------|
+line1 = "Ces bandits m'ont forcé"
+line2 = "à révéler où se"
+line3 = "trouvent Zelda et les"
+next = dungeon_7.sahasrahla.4
+
+[dungeon_7.sahasrahla.4]
+#       |-----------------------|
+line1 = "enfants du Solarus."
+line2 = "Tu dois maintenant les"
+line3 = "protéger avant qu'il ne"
+next = dungeon_7.sahasrahla.5
+
+[dungeon_7.sahasrahla.5]
+#       |-----------------------|
+line1 = "leur arrive malheur..."
+line2 = "Ils sont cachés dans un"
+line3 = "palais à l'est des"
+next = dungeon_7.sahasrahla.6
+
+[dungeon_7.sahasrahla.6]
+#       |-----------------------|
+line1 = "montagnes. Les huit"
+line2 = "êtres du Solarus"
+line3 = "doivent échapper à"
+next = dungeon_7.sahasrahla.7
+
+[dungeon_7.sahasrahla.7]
+#       |-----------------------|
+line1 = "Agahnim, sans quoi le"
+line2 = "sorcier pourrait"
+line3 = "déjouer le sceau créé"
+next = dungeon_7.sahasrahla.8
+
+[dungeon_7.sahasrahla.8]
+#       |-----------------------|
+line1 = "par l'Amulette du"
+line2 = "Solarus, le pendentif"
+line3 = "porté par Zelda et qui"
+next = dungeon_7.sahasrahla.9
+
+[dungeon_7.sahasrahla.9]
+#       |-----------------------|
+line1 = "est nécessaire à la"
+line2 = "reconstitution de la"
+line3 = "Triforce."
+next = dungeon_7.sahasrahla.10
+
+[dungeon_7.sahasrahla.10]
+#       |-----------------------|
+line1 = "Le mystère du Solarus"
+line2 = "est contenu dans ce"
+line3 = "pendentif."
+next = dungeon_7.sahasrahla.11
+
+[dungeon_7.sahasrahla.11]
+#       |-----------------------|
+line1 = "Le possesseur du"
+line2 = "pendentif a la"
+line3 = "possibilité d'invoquer"
+next = dungeon_7.sahasrahla.12
+
+[dungeon_7.sahasrahla.12]
+#       |-----------------------|
+line1 = "le pouvoir du Solarus"
+line2 = "dans le but de sceller"
+line3 = "un objet, un lieu ou"
+next = dungeon_7.sahasrahla.13
+
+[dungeon_7.sahasrahla.13]
+#       |-----------------------|
+line1 = "même un monde, comme le"
+line2 = "firent les sept sages"
+line3 = "lorsqu'ils scellèrent"
+next = dungeon_7.sahasrahla.14
+
+[dungeon_7.sahasrahla.14]
+#       |-----------------------|
+line1 = "la Terre d'Or. Zelda"
+line2 = "est l'héritière de ce"
+line3 = "pouvoir. Elle l'a"
+next = dungeon_7.sahasrahla.15
+
+[dungeon_7.sahasrahla.15]
+#       |-----------------------|
+line1 = "utilisé pour sceller"
+line2 = "les fragments de la"
+line3 = "Triforce, par le biais"
+next = dungeon_7.sahasrahla.16
+
+[dungeon_7.sahasrahla.16]
+#       |-----------------------|
+line1 = "des huit êtres créés"
+line2 = "par le Solarus."
+line3 = "Ainsi, tant qu'elle"
+next = dungeon_7.sahasrahla.17
+
+[dungeon_7.sahasrahla.17]
+#       |-----------------------|
+line1 = "seule connaît le secret"
+line2 = "de ce pendentif, elle"
+line3 = "seule maîtrise le sceau"
+next = dungeon_7.sahasrahla.18
+
+[dungeon_7.sahasrahla.18]
+#       |-----------------------|
+line1 = "de la Triforce. C'est"
+line2 = "pourquoi tu dois"
+line3 = "protéger le sceau."
+
 [dungeon_8.welcome]
 #       |-----------------------|
 line1 = "        Niveau 8"

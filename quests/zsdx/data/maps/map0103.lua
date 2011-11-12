@@ -1,5 +1,6 @@
 -- Dungeon 7 3F
 
+fighting_boss = false
 just_removed_special_torch = false
 special_torch_allow_close = true
 
@@ -29,6 +30,9 @@ function event_map_started(destination_point_name)
   if destination_point_name == "from_2f_11" then
     sol.map.door_set_open("door_a", false)
   end
+
+  -- boss door
+  sol.map.door_set_open("boss_door", true)
 end
 
 function event_block_moved(block_name)
@@ -141,6 +145,19 @@ function event_hero_on_sensor(sensor_name)
       sol.map.tile_set_enabled("special_torch", true)
     end
 
+  -- boss door
+  elseif sensor_name == "close_boss_door_sensor"
+      and sol.map.door_is_open("boss_door") then
+    sol.map.door_close("boss_door")
+    sol.main.play_music("none")
+
+  -- boss
+  elseif sensor_name == "start_boss_sensor"
+      and not sol.game.savegame_get_boolean(625)
+      and not fighting_boss then
+    
+    start_boss()
+
   -- west room
   elseif sensor_name:find("w_room_sensor") then
     sol.main.play_sound("secret")
@@ -169,5 +186,45 @@ function event_hero_on_sensor(sensor_name)
       end
     end
   end
+end
+
+function start_boss()
+
+  sol.main.play_music("boss.spc")
+  sol.map.enemy_set_enabled("boss", true)
+  fighting_boss = true
+end
+
+function event_treasure_obtained(item_name, variant, savegame_variable)
+
+  if item_name == "heart_container" then
+    sol.main.play_music("victory.spc")
+    sol.map.hero_freeze()
+    sol.map.hero_set_direction(3)
+    sol.main.timer_start(start_final_sequence, 9000)
+  end
+end
+
+function start_final_sequence()
+
+  sol.main.play_music("dungeon_finished.spc")
+  sol.map.hero_set_direction(1)
+  sol.map.npc_set_position("sahasrahla", 544, 717)
+  sol.map.camera_move(544, 712, 100, function()
+    sol.map.dialog_start("dungeon_7.sahasrahla")
+    sol.map.dialog_set_variable("dungeon_7.sahasrahla", sol.game.savegame_get_name());
+  end)
+end
+
+function event_dialog_finished(first_message_id)
+
+  if first_message_id == "dungeon_7.sahasrahla" then
+    sol.map.hero_start_victory_sequence()
+  end
+end
+
+function event_hero_victory_sequence_finished()
+  sol.game.set_dungeon_finished(7)
+  sol.map.hero_set_map(8, "from_dungeon_7", 1)
 end
 

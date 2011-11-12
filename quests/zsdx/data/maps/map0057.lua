@@ -39,11 +39,11 @@ function event_hero_on_sensor(sensor_name)
       and not fighting_boss then
 
     sol.map.sensor_set_enabled("start_boss_sensor", false)
-    start_boos()
+    start_boss()
   end
 end
 
-function start_boos()
+function start_boss()
 
   sol.map.hero_freeze()
   sol.map.door_close("boss_door")

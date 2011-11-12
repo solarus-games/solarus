@@ -352,20 +352,20 @@ void Door::action_key_pressed() {
 
       get_savegame().set_boolean(savegame_variable, true);
       if (subtype == SMALL_KEY_BLOCK || subtype == WEAK_BLOCK) {
-	set_open(true);
+        set_open(true);
       }
       else {
-	set_opening();
+        set_opening();
       }
 
       if (requires_small_key()) {
-	get_equipment().remove_small_key();
+        get_equipment().remove_small_key();
       }
       else if (subtype == BIG_KEY) {
-	get_equipment().notify_ability_used("open_dungeon_big_locks");
+        get_equipment().notify_ability_used("open_dungeon_big_locks");
       }
       else if (subtype == BOSS_KEY) {
-	get_equipment().notify_ability_used("open_dungeon_boss_locks");
+        get_equipment().notify_ability_used("open_dungeon_boss_locks");
       }
     }
     else {
@@ -393,12 +393,18 @@ void Door::open() {
 
   Debug::check_assertion(subtype == CLOSED, "This kind of door cannot be open or closed directly");
 
-  Debug::check_assertion(!is_open(),
+  Debug::check_assertion(!is_open() || changing,
       StringConcat() << "Door '" << get_name() << "' is already open");
 
-
   if (changing) {
-    return; // already being open
+    if (is_open()) {
+      // the door is being open: mark it as closed so that we can open it
+      door_open = false;
+    }
+    else {
+      // the door is already being open: nothing to do
+      return;
+    }
   }
 
   set_opening();
@@ -439,11 +445,18 @@ void Door::set_opening() {
  */
 void Door::close() {
 
-  Debug::check_assertion(is_open(),
+  Debug::check_assertion(is_open() || changing,
       StringConcat() << "Door '" << get_name() << "' is already closed");
 
   if (changing) {
-    return; // already being closed
+    if (!is_open()) {
+      // the door is being open: mark it as open so that we can close it
+      door_open = true;
+    }
+    else {
+      // the door is already being closed: nothing to do
+      return;
+    }
   }
 
   set_closing();

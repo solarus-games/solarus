@@ -67,10 +67,13 @@ int Script::game_api_restart(lua_State *l) {
  * - Argument 1 (integer): index of the string value to get (0 to 63)
  * - Return value (string): the string saved at this index
  */
-int Script::game_api_savegame_get_string(lua_State *l) {
+int Script::game_api_savegame_get_string(lua_State* l) {
 
   Script& script = get_script(l, 1);
   int index = luaL_checkinteger(l, 1);
+
+  luaL_argcheck(l, index >= 0 && index < 64, 1,
+      "The index of a savegame string should be between 0 and 63");
 
   const std::string &value = script.get_game().get_savegame().get_string(index);
   lua_pushstring(l, value.c_str());
@@ -89,6 +92,9 @@ int Script::game_api_savegame_get_integer(lua_State *l) {
   Script& script = get_script(l, 1);
   int index = luaL_checkinteger(l, 1);
 
+  luaL_argcheck(l, index >= 0 && index < 2048, 1,
+      "The index of a savegame integer should be between 0 and 2047");
+
   int value = script.get_game().get_savegame().get_integer(index);
   lua_pushinteger(l, value);
 
@@ -105,6 +111,9 @@ int Script::game_api_savegame_get_boolean(lua_State *l) {
 
   Script& script = get_script(l, 1);
   int index = luaL_checkinteger(l, 1);
+
+  luaL_argcheck(l, index >= 0 && index < 32768, 1, (StringConcat()
+      << "Invalid savegame boolean: " << index << " (should be between 0 and 32767").c_str());
 
   bool value = script.get_game().get_savegame().get_boolean(index);
   lua_pushboolean(l, value ? 1 : 0);
@@ -125,7 +134,11 @@ int Script::game_api_savegame_set_string(lua_State *l) {
   int index = luaL_checkinteger(l, 1);
   const std::string &value = luaL_checkstring(l, 2);
 
-  Debug::check_assertion(index >= 32, StringConcat() << "Cannot change savegame string #" << index << ": string variables below 32 are read-only");
+  luaL_argcheck(l, index >= 0 && index < 63, 1, (StringConcat()
+      << "Invalid savegame string: " << index << " (should be between 32 and 63").c_str());
+
+  luaL_argcheck(l, index >= 32, 1, (StringConcat()
+      << "Invalid savegame string: " << index << " (strings below 32 are read-only").c_str());
 
   script.get_game().get_savegame().set_string(index, value);
 
@@ -145,7 +158,11 @@ int Script::game_api_savegame_set_integer(lua_State *l) {
   int index = luaL_checkinteger(l, 1);
   int value = luaL_checkinteger(l, 2);
 
-  Debug::check_assertion(index >= 1024, StringConcat() << "Cannot change savegame integer #" << index << ": integer variables below 1024 are read-only");
+  luaL_argcheck(l, index >= 0 && index < 2048, 1, (StringConcat()
+      << "Invalid savegame integer: " << index << " (should be between 32 and 63").c_str());
+
+  luaL_argcheck(l, index >= 1024, 1, (StringConcat()
+      << "Invalid savegame integer: " << index << " (integers below 32 are read-only").c_str());
 
   script.get_game().get_savegame().set_integer(index, value);
 
@@ -163,6 +180,9 @@ int Script::game_api_savegame_set_boolean(lua_State *l) {
   Script& script = get_script(l, 2);
   int index = luaL_checkinteger(l, 1);
   bool value = lua_toboolean(l, 2) != 0;
+
+  luaL_argcheck(l, index >= 0 && index < 32768, 1, (StringConcat()
+      << "Invalid savegame boolean: " << index << " (should be between 0 and 32767").c_str());
 
   script.get_game().get_savegame().set_boolean(index, value);
 

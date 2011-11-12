@@ -1140,7 +1140,7 @@
 19	1	952	616	stairs_7	3	3
 19	1	1008	616	stairs_8	3	3
 19	1	1064	616	stairs_9	3	3
-2	1	64	416	16	16	teletransporter_9	0	1	55	_same
+2	1	64	416	16	16	teletransporter_9	0	1	55	from_3f_sw_hole
 2	1	488	224	16	16	teletransporter_10	0	1	55	from_3f_w_hole
 2	1	752	232	16	16	teletransporter_11	0	1	55	from_3f_c_hole
 2	1	824	280	16	16	teletransporter_12	0	1	55	_same

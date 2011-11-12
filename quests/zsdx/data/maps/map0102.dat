@@ -1171,6 +1171,9 @@
 1	1	72	949	from_3f_hole_k	-1	0
 1	1	104	1005	from_3f_hole_l	-1	0
 1	1	160	989	from_3f_hole_m	-1	0
+1	1	560	69	from_3f_hole_b	-1	0
+1	1	552	93	from_3f_hole_d	-1	0
+1	1	520	93	from_3f_hole_c	-1	0
 0	2	224	864	32	8	304
 0	2	208	704	8	128	308
 0	2	720	864	16	96	553
@@ -1368,9 +1371,6 @@
 1	2	544	69	from_3f_hole_a	-1	0
 10	2	936	32	32	8	miniboss_door_open	152	1
 10	2	944	32	16	8	miniboss_door_open_2	273	1
-1	2	560	69	from_3f_hole_b	-1	0
-1	2	520	93	from_3f_hole_c	-1	0
-1	2	552	93	from_3f_hole_d	-1	0
 10	2	536	56	16	16	from_hole_a_tile	584	1
 6	2	528	56	8	16	jumper_11	4	24
 6	2	536	72	16	8	jumper_12	6	16

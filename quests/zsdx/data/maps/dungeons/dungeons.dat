@@ -665,10 +665,31 @@ y = 832
 save = 607
 big = 0
 
+[dungeon_7.map_103.chest_0]
+floor = 2
+x = 744
+y = 48
+save = -1
+big = 0
+
+[dungeon_7.map_103.chest_1]
+floor = 2
+x = 456
+y = 72
+save = 622
+big = 0
+
+[dungeon_7.map_103.boss_0]
+floor = 2
+x = 544
+y = 784
+save = 625
+big = 1
+
 [dungeon_7.map_102.chest_0]
 floor = 1
-x = 760
-y = 200
+x = 768
+y = 192
 save = 608
 big = 1
 
@@ -699,25 +720,4 @@ x = 176
 y = 56
 save = 614
 big = 0
-
-[dungeon_7.map_103.chest_0]
-floor = 2
-x = 744
-y = 48
-save = -1
-big = 0
-
-[dungeon_7.map_103.chest_1]
-floor = 2
-x = 456
-y = 72
-save = 622
-big = 0
-
-[dungeon_7.map_103.boss_0]
-floor = 2
-x = 544
-y = 792
-save = 625
-big = 1
 

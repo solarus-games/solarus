@@ -326,6 +326,7 @@ booleans:
 624	dungeon 7 3F: NW door
 625	dungeon 7 3F: boss
 626	dungeon 7 3F: boss heart container
+627	dungeon 7 3F: door A (timed doors)
 
 700-799	dungeon 8
 800-899	dungeon 9

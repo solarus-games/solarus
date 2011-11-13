@@ -31,6 +31,11 @@ function event_map_started(destination_point_name)
     sol.map.door_set_open("door_a", false)
   end
 
+  -- door A (timed doors)
+  if sol.game.savegame_get_boolean(627) then
+    sol.map.switch_set_activated("door_a_switch", true)
+  end
+
   -- boss door
   sol.map.door_set_open("boss_door", true)
 end
@@ -193,6 +198,24 @@ function start_boss()
   sol.main.play_music("boss.spc")
   sol.map.enemy_set_enabled("boss", true)
   fighting_boss = true
+
+  sol.main.timer_start(repeat_give_arrows, 20000)
+end
+
+function repeat_give_arrows()
+
+  -- give arrows if necessary during the boss fight
+  if sol.game.get_item_amount("bow") == 0 then
+    local positions = {
+      { x = 416, y = 685 },
+      { x = 672, y = 685 },
+      { x = 416, y = 885 },
+      { x = 672, y = 885 },
+    }
+    arrow_xy = positions[math.random(#positions)]
+    sol.map.pickable_item_create("arrow", 3, -1, arrow_xy.x, arrow_xy.y, 0)
+  end
+  sol.main.timer_start(repeat_give_arrows, 20000)
 end
 
 function event_treasure_obtained(item_name, variant, savegame_variable)
@@ -226,5 +249,13 @@ end
 function event_hero_victory_sequence_finished()
   sol.game.set_dungeon_finished(7)
   sol.map.hero_set_map(8, "from_dungeon_7", 1)
+end
+
+function event_enemy_dead(enemy_name)
+
+  if enemy_name == "boss" then
+    -- create the heart container manually to be sure it won't be in a hole
+    sol.map.pickable_item_create("heart_container", 1, 626, 544, 789, 0)
+  end
 end
 

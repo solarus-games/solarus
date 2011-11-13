@@ -36,7 +36,7 @@ end
 function event_position_changed(x, y)
 
   if not sol.map.enemy_is_dead(eye) then
-    -- the body just moved: do the same movement to the eye
+    -- the body has just moved: do the same movement to the eye
     local dx = x - current_xy.x
     local dy = y - current_xy.y
     local eye_x, eye_y = sol.map.enemy_get_position(eye)

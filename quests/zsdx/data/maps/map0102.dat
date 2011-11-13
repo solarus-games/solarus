@@ -109,12 +109,12 @@
 7	0	920	381	enemy_10	3	red_duck_soldier	0	-1	_random	1	-1
 7	0	688	437	enemy_12	3	red_duck_soldier	0	-1	_random	1	-1
 7	0	752	309	enemy_11	3	blue_duck_soldier	0	-1	_random	1	-1
+0	1	192	536	648	488	582
 0	1	40	56	624	272	323
 0	1	40	56	8	160	237
 0	1	40	104	32	32	357
 0	1	904	792	160	224	323
 0	1	696	504	368	224	323
-0	1	192	536	648	488	582
 0	1	696	792	64	48	323
 0	1	432	872	144	64	323
 0	1	792	872	48	64	323
@@ -536,12 +536,12 @@
 0	1	1056	1008	8	8	17
 0	1	800	56	8	8	15
 0	1	528	184	16	16	534
-0	1	624	400	280	64	547
-0	1	824	320	232	96	547
-0	1	672	208	128	72	547
-0	1	712	128	40	24	547
-0	1	712	64	56	64	547
-0	1	672	152	80	56	547
+0	1	616	392	288	80	547
+0	1	824	312	240	104	547
+0	1	664	200	144	80	547
+0	1	712	136	48	16	547
+0	1	712	56	64	80	547
+0	1	664	152	96	48	547
 0	1	904	504	8	8	69
 0	1	928	504	8	8	69
 0	1	1032	504	8	8	69
@@ -806,7 +806,6 @@
 0	1	528	72	8	8	69
 0	1	528	64	8	8	71
 0	1	136	200	32	16	101
-0	1	704	392	120	8	547
 0	1	944	984	80	16	101
 0	1	944	880	64	16	101
 0	1	944	912	64	16	101
@@ -871,16 +870,16 @@
 11	1	96	920	code_switch_3	3	0	0
 11	1	144	920	code_switch_5	3	0	0
 12	1	704	144	8	8	custom_obstacle_5	1	1	1	1
-12	1	704	64	8	16	custom_obstacle_6	1	1	1	1
-12	1	672	144	16	8	custom_obstacle_7	1	1	1	1
-12	1	672	280	16	8	custom_obstacle_8	1	1	1	1
-12	1	784	280	16	8	custom_obstacle_9	1	1	1	1
-12	1	816	320	8	16	custom_obstacle_10	1	1	1	1
-12	1	904	448	8	16	custom_obstacle_11	1	1	1	1
-12	1	704	384	16	8	custom_obstacle_12	1	1	1	1
+12	1	704	56	8	24	custom_obstacle_6	1	1	1	1
+12	1	664	144	32	8	custom_obstacle_7	1	1	1	1
+12	1	664	280	24	8	custom_obstacle_8	1	1	1	1
+12	1	784	280	24	8	custom_obstacle_9	1	1	1	1
+12	1	816	312	8	24	custom_obstacle_10	1	1	1	1
+12	1	904	448	8	24	custom_obstacle_11	1	1	1	1
+12	1	696	384	24	8	custom_obstacle_12	1	1	1	1
 12	1	816	384	8	8	custom_obstacle_13	1	1	1	1
 12	1	904	416	8	8	custom_obstacle_14	1	1	1	1
-12	1	1040	416	16	8	custom_obstacle_15	1	1	1	1
+12	1	1040	416	24	8	custom_obstacle_15	1	1	1	1
 6	1	936	496	32	8	jumper	2	40
 6	1	1000	496	32	8	jumper_2	2	40
 6	1	704	80	8	64	jumper_3	4	16
@@ -890,7 +889,7 @@
 6	1	720	384	96	8	jumper_7	2	16
 6	1	912	416	128	8	jumper_8	2	16
 6	1	904	424	8	24	jumper_9	0	16
-5	1	760	200	chest	1	cane_of_somaria	1	608
+5	1	768	192	chest	1	cane_of_somaria	1	608
 1	1	952	53	from_1f_ne	3	0
 1	1	496	181	from_1f_nc_1	3	0
 1	1	560	181	from_1f_nc_2	3	0
@@ -1076,7 +1075,7 @@
 7	1	1000	1013	enemy_2	3	pike_auto	0	-1	_random	1	-1
 4	1	1000	997	0	_random	1	-1
 4	1	968	997	0	_random	1	-1
-4	1	984	997	0	fairy	1	-1
+4	1	984	997	0	heart	1	-1
 4	1	1016	997	0	_random	1	-1
 7	1	984	1013	enemy_3	1	pike_auto	0	-1	_random	1	-1
 4	1	952	893	0	_random	1	-1
@@ -1097,7 +1096,7 @@
 4	1	1040	821	0	_random	1	-1
 4	1	1040	805	0	_random	1	-1
 7	1	1056	805	enemy_6	2	pike_auto	0	-1	_random	1	-1
-13	1	832	909	16	16	open_door_f_sensor	0
+13	1	832	909	16	16	close_door_f_sensor	0
 12	1	1032	776	16	16	custom_obstacle_28	0	1	1	1
 12	1	1032	728	16	16	custom_obstacle_29	0	1	1	1
 12	1	1000	664	16	16	custom_obstacle_30	0	1	1	1
@@ -1110,8 +1109,6 @@
 4	1	784	677	0	_random	1	-1
 4	1	784	661	0	_random	1	-1
 4	1	784	645	0	_random	1	-1
-11	1	40	504	door_a_switch	1	0	0
-4	1	48	517	0	_none	1	-1
 7	1	248	333	w_room_enemy_3	3	blue_duck_soldier	0	-1	_random	1	-1
 7	1	88	333	w_room_enemy_1	3	blue_duck_soldier	0	-1	_random	1	-1
 7	1	168	429	w_room_enemy_2	3	blue_duck_soldier	0	-1	_random	1	-1
@@ -1146,9 +1143,9 @@
 2	1	168	568	16	16	teletransporter_6	0	1	103	from_2f_1
 2	1	336	520	16	16	teletransporter_7	0	1	103	from_2f_2
 2	1	392	264	16	16	teletransporter_8	0	1	103	from_2f_3
-2	1	544	376	16	16	teletransporter_9	0	1	103	from_2f_4
-2	1	512	328	16	16	teletransporter_10	0	1	103	from_2f_5
-2	1	576	328	16	16	teletransporter_11	0	1	103	from_2f_6
+2	1	544	376	16	16	teletransporter_9	0	1	103	from_2f_6
+2	1	512	328	16	16	teletransporter_10	0	1	103	from_2f_4
+2	1	576	328	16	16	teletransporter_11	0	1	103	from_2f_5
 2	1	808	520	16	16	teletransporter_12	0	1	103	from_2f_8
 2	1	808	616	16	16	teletransporter_13	0	1	103	from_2f_10
 2	1	1032	600	16	16	teletransporter_14	0	1	103	from_2f_11
@@ -1174,6 +1171,8 @@
 1	1	560	69	from_3f_hole_b	-1	0
 1	1	552	93	from_3f_hole_d	-1	0
 1	1	520	93	from_3f_hole_c	-1	0
+13	1	72	517	16	16	close_door_ac_sensor	0
+13	1	264	469	16	16	close_door_ac_sensor_2	0
 0	2	224	864	32	8	304
 0	2	208	704	8	128	308
 0	2	720	864	16	96	553

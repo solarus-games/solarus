@@ -432,6 +432,7 @@ void Script::register_map_api() {
       { "bomb_create", map_api_bomb_create },
       { "explosion_create", map_api_explosion_create },
       { "fire_create", map_api_fire_create },
+      { "arrow_remove", map_api_arrow_remove },
       { "enemy_create", map_api_enemy_create },
       { "enemy_remove", map_api_enemy_remove },
       { "enemy_remove_group", map_api_enemy_remove_group },

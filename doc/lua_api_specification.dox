@@ -557,6 +557,9 @@ creates an explosion on the map
 - <tt>sol.map.fire_create(x, y, layer)</tt>:
 creates some fire on the map
 
+- <tt>sol.map.arrow_remove()</tt>
+removes any arrow currently thrown on the map
+
 - <tt>sol.map.enemy_create(enemy_name, breed, layer, x, y)</tt>:
 Creates an enemy on the map.
 

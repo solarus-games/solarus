@@ -123,9 +123,11 @@ class MapEntities {
     static bool compare_y(MapEntity *first, MapEntity *second);
     void set_entity_layer(MapEntity *entity, Layer layer);
 
+    // specific to some entity types
     bool overlaps_raised_blocks(Layer layer, const Rectangle& rectangle);
     bool is_boomerang_present();
     void remove_boomerang();
+    void remove_arrows();
 
     // game loop
     void notify_map_started();

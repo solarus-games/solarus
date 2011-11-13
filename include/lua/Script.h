@@ -246,6 +246,7 @@ class Script {
       map_api_bomb_create,
       map_api_explosion_create,
       map_api_fire_create,
+      map_api_arrow_remove,
       map_api_enemy_create,
       map_api_enemy_remove,
       map_api_enemy_remove_group,

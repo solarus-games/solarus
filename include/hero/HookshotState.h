@@ -28,6 +28,8 @@ class Hero::HookshotState: public Hero::State {
 
     Hookshot *hookshot;    /**< the hookshot thrown by the hero */
 
+    void finish_movement();
+
   public:
 
     HookshotState(Hero &hero);

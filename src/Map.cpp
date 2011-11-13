@@ -869,6 +869,37 @@ Ground Map::get_tile_ground(Layer layer, const Rectangle &coordinates) {
 }
 
 /**
+ * @brief Returns whether there is at least one empty tile in the specified rectangle.
+ *
+ * Only the borders of the rectangle are checked.
+ *
+ * @param layer the layer
+ * @param collision_box the rectangle to test
+ */
+bool Map::has_empty_tiles(Layer layer, const Rectangle& collision_box) {
+
+  bool empty_tile = false;
+
+  // we just check the borders of the collision box
+  int y1 = collision_box.get_y();
+  int y2 = y1 + collision_box.get_height() - 1;
+  int x1 = collision_box.get_x();
+  int x2 = x1 + collision_box.get_width() - 1;
+
+  for (int x = x1; x <= x2 && !empty_tile; x++) {
+    empty_tile = entities->get_obstacle_tile(layer, x, y1) == OBSTACLE_EMPTY
+        || entities->get_obstacle_tile(layer, x, y2) == OBSTACLE_EMPTY;
+  }
+
+  for (int y = y1; y <= y2 && !empty_tile; y++) {
+    empty_tile = entities->get_obstacle_tile(layer, x1, y) == OBSTACLE_EMPTY
+        || entities->get_obstacle_tile(layer, x2, y) == OBSTACLE_EMPTY;
+  }
+
+  return empty_tile;
+}
+
+/**
  * @brief Checks the collisions between an entity and the detectors of the map.
  *
  * This function is called by an entity sensitive to the entity detectors

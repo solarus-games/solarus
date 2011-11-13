@@ -1952,7 +1952,7 @@ void Hero::start_prickle(uint32_t delay) {
 
   Sound::play("hero_hurt");
   get_equipment().remove_life(2);
-  set_state(new BackToSolidGroundState(*this, false, delay, false));
+  start_back_to_solid_ground(false, delay, false);
 }
 
 /**
@@ -2123,6 +2123,19 @@ void Hero::start_bow() {
  */
 void Hero::start_hookshot() {
   set_state(new HookshotState(*this));
+}
+
+/**
+ * @brief Makes the hero return to his last solid ground position.
+ * @param use_memorized_xy true to get back to the place previously memorized (if any),
+ * false to get back to the last coordinates with solid ground
+ * @param end_delay a delay to add at the end before returning control to the hero (default 0)
+ * @param with_sound true to play a sound when returning to solid ground (default true)
+ */
+void Hero::start_back_to_solid_ground(bool use_memorized_xy,
+    uint32_t end_delay, bool with_sound) {
+
+  set_state(new BackToSolidGroundState(*this, use_memorized_xy, end_delay, with_sound));
 }
 
 /**

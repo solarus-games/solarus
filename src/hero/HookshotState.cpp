@@ -16,9 +16,12 @@
  */
 #include "hero/HookshotState.h"
 #include "hero/FreeState.h"
+#include "hero/BackToSolidGroundState.h"
 #include "hero/HeroSprites.h"
 #include "entities/MapEntities.h"
 #include "entities/Hookshot.h"
+#include "lowlevel/Sound.h"
+#include "Map.h"
 
 /**
  * @brief Constructor.
@@ -172,7 +175,40 @@ bool Hero::HookshotState::can_be_hurt(Enemy* attacker) {
  */
 void Hero::HookshotState::notify_obstacle_reached() {
 
-  // an unexpected obstacle was reached (e.g. an NPC who moved after the hookshot passed)
-  hero.start_state_from_ground();
+  // the movement of the hero has finished normally or an early obstacle was
+  // reached (e.g. an NPC who moved after the hookshot passed)
+  finish_movement();
+}
+
+/**
+ * @brief Returns control to the hero after its hookshot movement.
+ *
+ * This function is called when the hero has finished the hookshot movement.
+ * It checks the validity of the destination position.
+ */
+void Hero::HookshotState::finish_movement() {
+
+  const Rectangle& hero_position = hero.get_bounding_box();
+  Layer layer = hero.get_layer();
+  Map& map = get_map();
+
+  if (layer == LAYER_LOW || !map.has_empty_tiles(layer, hero_position)) {
+    // the hero is totally on the same layer: no problem
+    hero.start_state_from_ground();
+  }
+  else {
+    // a part of the hero is on empty tiles: allow this only if the tiles on
+    // the lower layer are not obstacles
+    layer = Layer(layer - 1);
+    if (!map.test_collision_with_obstacles(layer, hero_position, hero)) {
+      hero.start_state_from_ground();
+    }
+    else {
+      // invalid position: get back to the start point
+      // TODO: to get back to the closest valid point from the destination instead
+      Sound::play("hero_hurt");
+      hero.set_state(new BackToSolidGroundState(hero, false, 0, true));
+    }
+  }
 }
 

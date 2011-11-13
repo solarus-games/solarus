@@ -21,6 +21,7 @@
 #include "entities/Block.h"
 #include "entities/Switch.h"
 #include "entities/Crystal.h"
+#include "entities/Hero.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 #include "lowlevel/System.h"
@@ -277,22 +278,24 @@ void Hookshot::update() {
     next_sound_date = now + 150;
   }
 
-  if (!going_back && entity_reached == NULL) {
+  if (entity_reached == NULL) {
+    if (!going_back) {
 
-    if (has_to_go_back) {
-      going_back = true;
-      Movement *movement = new TargetMovement(&get_hero(), 192);
-      clear_movement();
-      set_movement(movement);
+      if (has_to_go_back) {
+        going_back = true;
+        Movement *movement = new TargetMovement(&get_hero(), 192);
+        clear_movement();
+        set_movement(movement);
+      }
+      else if (get_distance(get_hero()) >= 120) {
+        go_back();
+      }
     }
-    else if (get_distance(get_hero()) >= 120) {
-      go_back();
+    else if (get_distance(get_hero()) == 0 ||
+        (get_movement() != NULL && get_movement()->is_finished())) {
+      remove_from_map();
+      get_hero().start_state_from_ground();
     }
-  }
-  else if (get_distance(get_hero()) == 0 ||
-      (get_movement() != NULL && get_movement()->is_finished())) {
-    remove_from_map();
-    get_hero().start_state_from_ground();
   }
 }
 

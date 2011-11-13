@@ -313,6 +313,8 @@ class Hero: public MapEntity {
         const SpriteAnimationSetId& sprite_name);
     void start_bow();
     void start_hookshot();
+    void start_back_to_solid_ground(bool use_memorized_xy,
+        uint32_t end_delay = 0, bool with_sound = true);
     void start_state_from_ground();
 };
 

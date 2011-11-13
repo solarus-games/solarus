@@ -171,6 +171,7 @@ class Map {
     bool test_collision_with_obstacles(Layer layer, int x, int y, MapEntity &entity_to_check);
     Ground get_tile_ground(Layer layer, int x, int y);
     Ground get_tile_ground(Layer layer, const Rectangle &coordinates);
+    bool has_empty_tiles(Layer layer, const Rectangle& collision_box);
 
     // collisions with detectors (checked after a move)
     void check_collision_with_detectors(MapEntity &entity);

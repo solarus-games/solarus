@@ -112,13 +112,6 @@ function event_movement_finished(movement)
   end
 end
 
-function event_obstacle_reached(movement)
-
-  if being_pushed then
-    go_hero()
-  end
-end
-
 function event_custom_attack_received(attack, sprite)
 
   if attack == "sword" and sprite == sword_sprite then

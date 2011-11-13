@@ -53,6 +53,12 @@ function event_map_started(destination_point_name)
     sol.map.tile_set_enabled("from_hole_a_tile", false)
     sol.map.block_set_enabled("from_hole_a_block", false)
   end
+
+  -- shortcut to the boss
+  local shortcut = sol.game.savegame_get_boolean(628)
+  sol.map.switch_set_activated("shortcut_switch", shortcut)
+  sol.map.tile_set_group_enabled("shortcut_on", shortcut)
+  sol.map.tile_set_group_enabled("shortcut_off", not shortcut)
 end
 
 function event_hero_on_sensor(sensor_name)
@@ -129,6 +135,13 @@ function event_switch_activated(switch_name)
   elseif switch_name == "door_d_switch" then
     sol.main.play_sound("secret")
     sol.map.door_open("door_d")
+
+  -- shortcut to the boss
+  elseif switch_name == "shortcut_switch" then
+    sol.map.tile_set_group_enabled("shortcut_on", true)
+    sol.map.tile_set_group_enabled("shortcut_off", false)
+    sol.game.savegame_set_boolean(628, true)
+    sol.main.play_sound("secret")
  
   -- code
   else
@@ -199,6 +212,7 @@ function event_enemy_dead(enemy_name)
       and sol.map.enemy_is_group_dead("miniboss") then
 
     sol.main.play_music("dark_world_dungeon.spc")
+    sol.main.play_sound("secret")
     sol.map.door_open("miniboss_door")
     sol.game.savegame_set_boolean(620, true)
   end

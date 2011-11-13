@@ -26,11 +26,6 @@ function event_map_started(destination_point_name)
     sol.map.door_set_open("ne_door", true)
   end
 
-  -- timed doors
-  if destination_point_name == "from_2f_11" then
-    sol.map.door_set_open("door_a", false)
-  end
-
   -- door A (timed doors)
   if sol.game.savegame_get_boolean(627) then
     sol.map.switch_set_activated("door_a_switch", true)
@@ -175,10 +170,6 @@ function event_hero_on_sensor(sensor_name)
     local door_name = sensor_name:match("^(door_[a-e])_done_sensor$")
     if door_name ~= nil then
       door_timers[door_name] = nil -- disable the timer
-      if door_name == "door_a" then
-	-- just passed the last one
-	sol.main.play_sound("secret")
-      end
     else
 
       -- close a timed door previously passed (i.e. it has no current timer)

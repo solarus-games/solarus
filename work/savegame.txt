@@ -327,6 +327,7 @@ booleans:
 625	dungeon 7 3F: boss
 626	dungeon 7 3F: boss heart container
 627	dungeon 7 3F: door A (timed doors)
+628	dungeon 7 2F: shortcut to the boss
 
 700-799	dungeon 8
 800-899	dungeon 9

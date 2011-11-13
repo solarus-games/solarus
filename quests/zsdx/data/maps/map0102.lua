@@ -13,6 +13,14 @@ function event_map_started(destination_point_name)
   sol.map.door_set_open("door_f", true)
   sol.map.switch_set_activated("door_f_switch", true)
 
+  -- west enemies room
+  sol.map.door_set_open("door_c", true)
+  if sol.game.savegame_get_boolean(616) then
+    local enemy_name = "w_room_enemy_4"
+    local x, y = sol.map.enemy_get_position(enemy_name)
+    sol.map.enemy_set_position(enemy_name, x, y, 1)
+  end
+
   -- saved door D
   if sol.game.savegame_get_boolean(615) then
     sol.map.switch_set_activated("door_d_switch", true)
@@ -45,16 +53,26 @@ function event_map_started(destination_point_name)
     sol.map.tile_set_enabled("from_hole_a_tile", false)
     sol.map.block_set_enabled("from_hole_a_block", false)
   end
-
 end
 
 function event_hero_on_sensor(sensor_name)
 
   -- close door F
-  if sensor_name == "open_door_f_sensor" then
+  if sensor_name == "close_door_f_sensor" then
     sol.map.door_set_open("door_f", false)
     sol.map.switch_set_activated("door_f_switch", false)
  
+  -- doors A and C (west room)
+  elseif sensor_name:find("^close_door_ac_sensor") then
+    if not sol.map.enemy_is_group_dead("w_room_enemy") then
+      if sol.map.door_is_open("door_a") then
+	sol.map.door_close("door_a")
+      end
+      if sol.map.door_is_open("door_c") then
+	sol.map.door_close("door_c")
+      end
+    end
+
   -- miniboss
   elseif sensor_name == "start_miniboss_sensor"
       and not sol.game.savegame_get_boolean(620)
@@ -107,6 +125,11 @@ function event_switch_activated(switch_name)
     sol.main.play_sound("secret")
     sol.map.door_open("door_a")
 
+  -- door D
+  elseif switch_name == "door_d_switch" then
+    sol.main.play_sound("secret")
+    sol.map.door_open("door_d")
+ 
   -- code
   else
     local index = tonumber(string.match(switch_name, "^code_switch_([1-8])$"))
@@ -120,10 +143,14 @@ function event_switch_activated(switch_name)
       if code_nb_activated == 8 then
 	-- the 8 switches are activated
         if code_next_index == 9 then
-	  sol.map.camera_move(72, 552, 250, function()
+	  if not sol.map.door_is_open("door_a") then
+	    sol.map.camera_move(72, 552, 250, function()
+	      sol.main.play_sound("secret")
+	      sol.map.door_open("door_a")
+	    end)
+	  else
 	    sol.main.play_sound("secret")
-	    sol.map.door_open("door_a")
-	  end)
+	  end
 	else
 	  sol.main.play_sound("wrong")
 	  for i = 1, 8 do
@@ -156,14 +183,16 @@ end
 
 function event_enemy_dead(enemy_name)
 
-  -- west enemy room
+  -- west enemies room
   if string.find(enemy_name, "^w_room_enemy")
-    and sol.map.enemy_is_group_dead("w_room_enemy")
-    and not sol.map.door_is_open("door_c") then
-    sol.map.camera_move(264, 504, 250, function()
-      sol.main.play_sound("secret")
+      and sol.map.enemy_is_group_dead("w_room_enemy") then
+    sol.main.play_sound("secret")
+    if not sol.map.door_is_open("door_c") then
       sol.map.door_open("door_c")
-    end)
+    end
+    if not sol.map.door_is_open("door_a") then
+      sol.map.door_open("door_a")
+    end
 
   -- miniboss
   elseif string.find(enemy_name, "^miniboss")

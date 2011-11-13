@@ -95,6 +95,7 @@ end
 
 function event_hero_on_sensor(sensor_name)
 
+  -- Inferno
   if sensor_name == "inferno_sensor" then
     local sprite = sol.map.npc_get_sprite("inferno")
     sol.main.sprite_set_animation(sprite, "opening")
@@ -102,6 +103,18 @@ function event_hero_on_sensor(sensor_name)
     sol.map.hero_freeze()
     sol.map.hero_set_direction(1)
     sol.map.sensor_set_enabled("inferno_sensor", false)
+  end
+end
+
+function event_hero_still_on_sensor(sensor_name)
+
+  -- Witch hut entrance
+  if sensor_name == "potion_shop_door_sensor" then
+    if sol.map.hero_get_direction() == 1
+        and sol.map.tile_is_enabled("potion_shop_door") then
+      sol.map.tile_set_enabled("potion_shop_door", false)
+      sol.main.play_sound("door_open")
+    end
   end
 end
 

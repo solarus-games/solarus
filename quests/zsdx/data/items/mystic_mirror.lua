@@ -33,8 +33,8 @@ function event_npc_interaction_item(npc_name, item_name, variant)
     function repeat_change_riverfall()
       sol.map.tile_set_enabled("riverfall_" .. i, true)
       i = i + 1
-      if i <= 7 then
-        sol.main.timer_start(repeat_change_riverfall, 500)
+      if i <= 8 then
+        sol.main.timer_start(repeat_change_riverfall, 350)
       else
         sol.main.play_sound("secret")
         sol.map.hero_walk(path, false, true)
@@ -46,11 +46,11 @@ function event_npc_interaction_item(npc_name, item_name, variant)
       i = i - 1
       sol.map.tile_set_enabled("riverfall_" .. i, false)
       if i > 1 then
-        sol.main.timer_start(repeat_restore_riverfall, 500)
+        sol.main.timer_start(repeat_restore_riverfall, 350)
       end
     end
 
-    sol.main.timer_start(repeat_change_riverfall, 500)
+    sol.main.timer_start(repeat_change_riverfall, 350)
 
     -- tell the engine that an interaction occured:
     -- event_use() won't be called

@@ -7,6 +7,7 @@ function event_map_started(destination_point_name)
   if sol.game.savegame_get_boolean(905) then
     sol.main.play_music("dark_world.spc")
     sol.map.tileset_set(13)
+    sol.map.tile_set_enabled("rupee_house_door", false)
   end
 
   local m = sol.main.random_path_movement_create(32)
@@ -70,14 +71,6 @@ function event_npc_interaction(npc_name)
   end
 end
 
-function event_hero_on_sensor(sensor_name)
-
-  if sensor_name == "waterfall_sensor" then
-    sol.map.hero_start_jumping(6, 288, true)
-    sol.main.play_sound("jump")
-  end
-end
-
 function remove_village_cave_door()
   sol.map.npc_remove("tom_cave_door")
   sol.map.tile_set_enabled("tom_cave_door_tile", false)
@@ -86,5 +79,31 @@ end
 function remove_stone_lock()
   sol.map.npc_remove("stone_lock")
   sol.map.tile_set_group_enabled("stone_lock_tile", false)
+end
+
+function event_hero_on_sensor(sensor_name)
+
+  if sensor_name == "waterfall_sensor" then
+    sol.map.hero_start_jumping(6, 288, true)
+    sol.main.play_sound("jump")
+  end
+end
+
+function event_hero_still_on_sensor(sensor_name)
+
+  -- entrances of houses
+  local entrances = {
+    "rupee_house", "lyly"
+  }
+  for i = 1, #entrances do
+    if sensor_name == entrances[i] .. "_door_sensor" then
+      if sol.map.hero_get_direction() == 1
+          and sol.map.tile_is_enabled(entrances[i] .. "_door") then
+        sol.map.tile_set_enabled(entrances[i] .. "_door", false)
+        sol.main.play_sound("door_open")
+      end
+      break
+    end
+  end
 end
 

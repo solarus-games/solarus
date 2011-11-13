@@ -930,6 +930,12 @@
 0	0	288	32	16	16	609
 0	0	256	48	8	8	613
 0	0	280	48	8	8	443
+13	0	200	725	32	16	lyly_door_sensor	0
+1	0	208	725	out_grandma_house	3	0
+13	0	112	629	32	16	rupee_house_door_sensor	0
+1	0	120	629	out_rupee_house	3	0
+10	0	200	696	16	16	lyly_door	915	1
+10	0	112	600	16	16	rupee_house_door	915	1
 10	0	656	32	32	16	stone_lock_tile_2	177	1
 10	0	656	16	32	16	stone_lock_tile_3	192	1
 10	0	104	536	88	32	broken_rupee_house_8	1058	1
@@ -938,7 +944,6 @@
 6	0	296	168	24	24	Jump_sensor_3	7	56
 2	0	-16	0	16	1008	to_C1	0	2	3	_side
 2	0	112	600	16	16	to_broken_rupee_house	0	1	70	main_entrance
-1	0	120	629	out_rupee_house	3	0
 4	0	88	253	2	_random	1	-1
 4	0	104	253	2	_random	1	-1
 4	0	120	269	2	_random	1	-1
@@ -1019,7 +1024,6 @@
 7	0	560	957	enemy_3	3	simple_green_soldier	0	-1	_random	0	-1
 8	0	152	685	chignon_woman	3	1	npc/newlink5	map
 8	0	128	469	cliff_man	3	1	npc/static_villager14	dialog#outside_world.village.cliff_man_npc
-1	0	208	725	out_grandma_house	3	0
 2	0	200	696	16	16	to_grandma_house	0	1	11	entrance
 4	0	648	93	3	_random	1	-1
 2	0	272	432	16	16	to_binbin_dungeon	0	1	17	main_entrance

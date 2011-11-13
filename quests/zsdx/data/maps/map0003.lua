@@ -151,3 +151,21 @@ function remove_dungeon_2_door()
   sol.map.tile_set_enabled("dungeon_2_door_tile", false)
 end
 
+function event_hero_still_on_sensor(sensor_name)
+
+  -- entrances of houses
+  local entrances = {
+    "sahasrahla", "shop", "cake_shop", "hero", "telepathic_booth"
+  }
+  for i = 1, #entrances do
+    if sensor_name == entrances[i] .. "_door_sensor" then
+      if sol.map.hero_get_direction() == 1
+          and sol.map.tile_is_enabled(entrances[i] .. "_door") then
+        sol.map.tile_set_enabled(entrances[i] .. "_door", false)
+        sol.main.play_sound("door_open")
+      end
+      break
+    end
+  end
+end
+

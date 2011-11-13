@@ -661,6 +661,10 @@
 2	0	392	528	16	16	teletransporter_2	0	1	114	from_outside
 1	0	496	365	from_east_mountains_cave_5f	3	0
 2	0	488	336	16	16	teletransporter_3	0	1	115	from_outside
+1	0	784	285	from_dungeon_8_cave_2f	3	0
+1	0	784	413	from_dungeon_8_cave_1f	3	0
+2	0	776	256	16	16	teletransporter_4	0	1	117	from_outside
+2	0	776	384	16	16	teletransporter_5	0	1	116	from_outside
 10	1	464	16	48	16	riverfall_7	1081	0
 10	1	464	32	48	16	riverfall_6	1081	0
 10	1	464	48	48	16	riverfall_5	1081	0

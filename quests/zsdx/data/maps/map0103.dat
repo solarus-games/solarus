@@ -890,8 +890,8 @@
 0	1	192	664	16	24	535
 0	1	128	720	32	24	532
 0	1	160	720	16	16	534
-0	1	160	736	16	24	533
-0	1	160	760	16	24	535
+0	1	160	736	16	64	533
+0	1	160	800	16	24	535
 0	1	176	760	104	24	532
 0	1	280	760	16	24	535
 0	1	128	760	16	16	534
@@ -943,6 +943,7 @@
 0	1	704	944	16	64	101
 0	1	368	944	16	64	101
 0	1	592	928	32	8	299
+0	1	160	760	16	16	534
 18	1	848	824	door_b	1	0	-1
 18	1	848	776	door_b_2	3	0	-1
 18	1	1008	856	door_c_2	1	0	-1
@@ -1025,7 +1026,7 @@
 4	1	752	197	0	_random	1	-1
 4	1	704	197	0	_random	1	-1
 4	1	720	197	0	_random	1	-1
-4	1	736	197	0	_random	1	-1
+4	1	736	197	0	magic_flask	1	-1
 10	1	536	56	16	16	hole_a	357	1
 10	1	536	56	8	16	tile	248	1
 2	1	536	56	16	16	hole_a_teletransporter	0	1	102	from_3f_hole_a
@@ -1088,7 +1089,7 @@
 7	1	96	741	enemy_5	3	red_hardhat_beetle	0	-1	_random	1	-1
 7	1	80	909	enemy_9	3	blue_hardhat_beetle	0	-1	_random	1	-1
 7	1	208	989	enemy_10	3	red_hardhat_beetle	0	-1	_random	1	-1
-7	1	168	829	enemy_11	3	blue_hardhat_beetle	0	-1	_random	1	-1
+7	1	160	861	enemy_11	3	blue_hardhat_beetle	0	-1	_random	1	-1
 7	1	224	741	enemy_12	3	red_hardhat_beetle	0	-1	_random	1	-1
 9	1	248	917	block_4	-1	entities/statue	1	1	2
 7	1	72	781	enemy_6	3	lizalfos	0	-1	_random	1	-1
@@ -1110,7 +1111,7 @@
 7	1	1048	445	enemy_19	3	lizalfos	0	-1	_random	1	-1
 13	1	344	549	16	16	close_boss_door_sensor	0
 18	1	328	520	boss_door	1	0	-1
-7	1	544	784	boss	3	gelidrak	2	625	heart_container	1	626
+7	1	544	784	boss	3	gelidrak	2	625	_none	1	-1
 12	1	384	664	320	8	custom_obstacle_27	0	1	0	0
 12	1	384	872	320	8	custom_obstacle_28	0	1	0	0
 12	1	376	672	8	200	custom_obstacle_29	0	1	0	0

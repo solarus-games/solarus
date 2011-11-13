@@ -4,7 +4,7 @@ sol.main.include("enemies/generic_soldier")
 set_properties({
   main_sprite = "enemies/lizalfos",
   sword_sprite = "enemies/lizalfos_sword",
-  life = 7,
+  life = 5,
   damage = 6,
   play_hero_seen_sound = true,
   hurt_style = "monster",

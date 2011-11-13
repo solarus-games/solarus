@@ -74,6 +74,15 @@ function event_movement_changed()
   sol.main.sprite_set_direction(sprite, direction4)
 end
 
+function event_obstacle_reached(movement)
+
+  if not going_hero then
+    go_random()
+    check_hero()
+  end
+end
+
+
 function event_restart()
   go_random()
   check_hero()

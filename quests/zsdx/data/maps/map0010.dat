@@ -657,6 +657,10 @@
 12	0	464	32	48	48	custom_obstacle_9	1	1	1	1
 8	0	504	69	riverfall_detector_e	-1	0	_none	item#mystic_mirror
 8	0	472	69	riverfall_detector_w	-1	0	_none	item#mystic_mirror
+1	0	400	557	from_east_mountains_cave_4f	3	0
+2	0	392	528	16	16	teletransporter_2	0	1	114	from_outside
+1	0	496	365	from_east_mountains_cave_5f	3	0
+2	0	488	336	16	16	teletransporter_3	0	1	115	from_outside
 10	1	464	16	48	16	riverfall_7	1081	0
 10	1	464	32	48	16	riverfall_6	1081	0
 10	1	464	48	48	16	riverfall_5	1081	0

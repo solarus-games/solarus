@@ -2059,6 +2059,23 @@ int Script::map_api_fire_create(lua_State *l) {
 }
 
 /**
+ * @brief Removes any arrow currently thrown from the map.
+ *
+ * This function can be used if you want to destroy an arrow sooner than usual.
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_arrow_remove(lua_State *l) {
+
+  Script& script = get_script(l, 0);
+
+  MapEntities &entities = script.get_map().get_entities();
+  entities.remove_arrows();
+
+  return 0;
+}
+
+/**
  * @brief Creates an enemy on the map.
  *
  * - Argument 1 (string): name of the enemy to create

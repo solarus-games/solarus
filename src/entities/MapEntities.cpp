@@ -867,3 +867,18 @@ void MapEntities::remove_boomerang() {
   }
 }
 
+/**
+ * @brief Removes any boomerang from the map.
+ */
+void MapEntities::remove_arrows() {
+
+  // TODO this function may be slow if there are a lot of entities: store the arrows?
+  std::list<MapEntity*>::iterator it;
+  for (it = all_entities.begin(); it != all_entities.end(); it++) {
+    MapEntity* entity = *it;
+    if (entity->get_type() == ARROW) {
+      remove_entity(entity);
+    }
+  }
+}
+

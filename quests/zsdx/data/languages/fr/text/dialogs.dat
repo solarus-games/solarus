@@ -3035,6 +3035,13 @@ line2 = "C'est fermé à clé !"
 line1 = "   - Serrure Glace -"
 line2 = "C'est fermé à clé !"
 
+[outside_world.mountain_riverfall]
+# Cascade au nord-est des montagnes
+#       |-----------------------|
+line1 = "Il y a sûrement un"
+line2 = "moyen de franchir cette"
+line3 = "cascade..."
+skip = all
 
 [link_house.dream]
 # Link qui entend Sahasrahla en rêve en dormant dans son lit après l'intro

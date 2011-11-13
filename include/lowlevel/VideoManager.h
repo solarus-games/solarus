@@ -22,6 +22,8 @@
  
 /**
  * @brief Displays the window and handles the video mode.
+ *
+ * TODO: don't hardcode the screen size 320*240
  */
 class VideoManager {
 
@@ -36,12 +38,12 @@ class VideoManager {
     WINDOWED_NORMAL,          /**< the 320*240 game surface is directly displayed on a 320*240 window */
     FULLSCREEN_NORMAL,        /**< the 320*240 game surface is directly displayed on a 320*240 screen */
     FULLSCREEN_WIDE,          /**< the 320*240 game surface is stretched into a 640*480 surface
-			       * and then displayed on a widescreen resolution if possible (768*480 or 720*480)
-			       * with two black side bars */
+                               * and then displayed on a widescreen resolution if possible (768*480 or 720*480)
+                               * with two black side bars */
     FULLSCREEN_SCALE2X,       /**< the 320*240 game surface is scaled into a 640*480 screen with the Scale2x algorithm */
     FULLSCREEN_SCALE2X_WIDE,  /**< the 320*240 game surface is scaled into a 640*480 surface with the Scale2x algorithm
-			       * and then displayed on a widescreen resolution if possible (768*480 or 720*480)
-			       * with two black side bars */
+                               * and then displayed on a widescreen resolution if possible (768*480 or 720*480)
+                               * with two black side bars */
     FULLSCREEN_CENTERED,      /**< the 320*240 game surface is displayed as a box inside a 640*480 screen */
     FULLSCREEN_CENTERED_WIDE, /**< the 320*240 game surface is displayed as a box inside a widescreen resolution (768*480 or 720*480) */
     NB_MODES                  /**< number of existing video modes */
@@ -49,47 +51,49 @@ class VideoManager {
 
  private:
 
-  static VideoManager *instance;			/**< the only instance */
-  static Rectangle default_mode_sizes[NB_MODES];	/**< default size of the surface for each video mode */
+  static VideoManager* instance;                    /**< the only instance */
+  static Rectangle default_mode_sizes[NB_MODES];    /**< default size of the surface for each video mode */
 
-  bool disable_window;					/**< indicates that no window is displayed (used for unitary tests) */
-  Rectangle mode_sizes[NB_MODES];			/**< verified size of the surface for each video mode */
-  Rectangle dst_position_wide;				/**< position of the 640*480 surface on the 768*480 or 720*480
-							 * video surface */
+  bool disable_window;                              /**< indicates that no window is displayed (used for unitary tests) */
+  Rectangle mode_sizes[NB_MODES];                   /**< verified size of the surface for each video mode */
+  Rectangle dst_position_wide;                      /**< position of the 640*480 surface on the 768*480 or 720*480
+                                                     * video surface */
 
-  VideoMode video_mode;					/**< current video mode of the screen */
-  Surface *screen_surface;				/**< the screen surface */
+  VideoMode video_mode;                             /**< current video mode of the screen */
+  Surface* screen_surface;                          /**< the screen surface */
 
-  Rectangle dst_position_centered;			/**< position of the 320*240 game surface on the screen surface */
-  int width;						/**< width of the current screen surface */
-  int offset;						/**< width of a side bar when using a widescreen resolution */
-  int end_row_increment;                         	/**< increment used by the stretching and scaling functions
-							 * when changing the row */
+  Rectangle dst_position_centered;                  /**< position of the 320*240 game surface on the screen surface */
+  int width;                                        /**< width of the current screen surface */
+  int offset;                                       /**< width of a side bar when using a widescreen resolution */
+  int end_row_increment;                            /**< increment used by the stretching and scaling functions
+                                                     * when changing the row */
 
   VideoManager(bool disable_window);
   ~VideoManager();
 
-  bool is_mode_supported(VideoMode mode);
-  bool is_fullscreen(VideoMode mode);
-
-  void blit(Surface *src_surface, Surface *dst_surface);
-  void blit_stretched(Surface *src_surface, Surface *dst_surface);
-  void blit_scale2x(Surface *src_surface, Surface *dst_surface);
-  void blit_centered(Surface *src_surface, Surface *dst_surface);
+  void blit(Surface* src_surface, Surface* dst_surface);
+  void blit_stretched(Surface* src_surface, Surface* dst_surface);
+  void blit_scale2x(Surface* src_surface, Surface* dst_surface);
+  void blit_centered(Surface* src_surface, Surface* dst_surface);
 
  public:
 
-  static void initialize(int argc, char **argv);
+  static void initialize(int argc, char** argv);
   static void quit();
   static VideoManager* get_instance();
 
   void switch_video_mode();
   void set_initial_video_mode();
   void set_default_video_mode();
+  bool is_mode_supported(VideoMode mode);
   void set_video_mode(VideoMode mode);
   VideoMode get_video_mode();
 
-  void display(Surface *src_surface);
+  bool is_fullscreen(VideoMode mode);
+  bool is_fullscreen();
+  void switch_fullscreen();
+
+  void display(Surface* src_surface);
 };
 
 #endif

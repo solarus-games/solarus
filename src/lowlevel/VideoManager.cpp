@@ -23,7 +23,7 @@
 #include "lowlevel/StringConcat.h"
 #include "Configuration.h"
 
-VideoManager *VideoManager::instance = NULL;
+VideoManager* VideoManager::instance = NULL;
 
 Rectangle VideoManager::default_mode_sizes[] = {
   Rectangle(0, 0, 640, 480),         // WINDOWED_STRETCHED
@@ -47,7 +47,7 @@ Rectangle VideoManager::default_mode_sizes[] = {
  * @param argc command-line arguments number
  * @param argv command-line arguments
  */
-void VideoManager::initialize(int argc, char **argv) {
+void VideoManager::initialize(int argc, char** argv) {
 
   // check the -no-video option
   bool disable = false;
@@ -131,7 +131,7 @@ VideoManager::~VideoManager() {
  */
 bool VideoManager::is_mode_supported(VideoMode mode) {
 
-  const Rectangle *size = &mode_sizes[mode];
+  const Rectangle* size = &mode_sizes[mode];
 
   if (size->get_width() == 0) {
     return false;
@@ -143,15 +143,6 @@ bool VideoManager::is_mode_supported(VideoMode mode) {
   }
 
   return SDL_VideoModeOK(size->get_width(), size->get_height(), 32, flags) != 0;
-}
-
-/**
- * @brief Returns whether a video mode is in fullscreen.
- * @param mode a video mode
- * @return true if this video mode is in fullscreen
- */
-bool VideoManager::is_fullscreen(VideoMode mode) {
-  return mode >= FULLSCREEN_NORMAL;
 }
 
 /**
@@ -225,7 +216,7 @@ void VideoManager::set_video_mode(VideoMode mode) {
   end_row_increment = 2 * offset + width;
 
   if (!disable_window) {
-    SDL_Surface *screen_internal_surface = SDL_SetVideoMode(size.get_width(), size.get_height(), 32, flags);
+    SDL_Surface* screen_internal_surface = SDL_SetVideoMode(size.get_width(), size.get_height(), 32, flags);
 
     Debug::check_assertion(screen_internal_surface != NULL, StringConcat() << "Cannot create the video surface for mode " << mode);
 
@@ -244,6 +235,45 @@ void VideoManager::set_video_mode(VideoMode mode) {
  */
 VideoManager::VideoMode VideoManager::get_video_mode() {
   return video_mode;
+}
+
+/**
+ * @brief Returns whether a video mode is in fullscreen.
+ * @param mode a video mode
+ * @return true if this video mode is in fullscreen
+ */
+bool VideoManager::is_fullscreen(VideoMode mode) {
+  return mode >= FULLSCREEN_NORMAL;
+}
+
+/**
+ * @brief Returns whether the current video mode is in fullscreen.
+ * @param mode a video mode
+ * @return true if this video mode is in fullscreen
+ */
+bool VideoManager::is_fullscreen() {
+  return is_fullscreen(get_video_mode());
+}
+
+/**
+ * @brief Switch from windowed to fullscreen or from fullscreen to windowed,
+ * keeping an equivalent video mode.
+ */
+void VideoManager::switch_fullscreen() {
+
+  static const VideoMode next_modes[] = {
+      FULLSCREEN_NORMAL,      // WINDOWED_STRETCHED
+      FULLSCREEN_SCALE2X,     // WINDOWED_SCALE2X
+      FULLSCREEN_NORMAL,      // WINDOWED_NORMAL
+      WINDOWED_STRETCHED,     // FULLSCREEN_NORMAL
+      WINDOWED_STRETCHED,     // FULLSCREEN_WIDE
+      WINDOWED_SCALE2X,       // FULLSCREEN_SCALE2X
+      WINDOWED_SCALE2X,       // FULLSCREEN_SCALE2X_WIDE
+      WINDOWED_STRETCHED,     // FULLSCREEN_CENTERED
+      WINDOWED_STRETCHED,     // FULLSCREEN_CENTERED_WIDE
+  };
+
+  set_video_mode(next_modes[get_video_mode()]);
 }
 
 /**
@@ -292,7 +322,7 @@ void VideoManager::display(Surface *src_surface) {
  * @param src_surface the source surface
  * @param dst_surface the destination surface
  */
-void VideoManager::blit(Surface *src_surface, Surface *dst_surface) {
+void VideoManager::blit(Surface* src_surface, Surface* dst_surface) {
   src_surface->blit(dst_surface);
 }
 
@@ -301,7 +331,7 @@ void VideoManager::blit(Surface *src_surface, Surface *dst_surface) {
  * @param src_surface the source surface
  * @param dst_surface the destination surface
  */
-void VideoManager::blit_centered(Surface *src_surface, Surface *dst_surface) {
+void VideoManager::blit_centered(Surface* src_surface, Surface* dst_surface) {
   src_surface->blit(dst_surface, dst_position_centered);
 }
 
@@ -312,7 +342,7 @@ void VideoManager::blit_centered(Surface *src_surface, Surface *dst_surface) {
  * @param src_surface the source surface
  * @param dst_surface the destination surface
  */
-void VideoManager::blit_stretched(Surface *src_surface, Surface *dst_surface) {
+void VideoManager::blit_stretched(Surface* src_surface, Surface* dst_surface) {
 
   SDL_Surface *src_internal_surface = src_surface->get_internal_surface();
   SDL_Surface *dst_internal_surface = dst_surface->get_internal_surface();
@@ -320,8 +350,8 @@ void VideoManager::blit_stretched(Surface *src_surface, Surface *dst_surface) {
   SDL_LockSurface(src_internal_surface);
   SDL_LockSurface(dst_internal_surface);
 
-  uint32_t *src = (uint32_t*) src_internal_surface->pixels;
-  uint32_t *dst = (uint32_t*) dst_internal_surface->pixels;
+  uint32_t* src = (uint32_t*) src_internal_surface->pixels;
+  uint32_t* dst = (uint32_t*) dst_internal_surface->pixels;
 
   int p = offset;
   for (int i = 0; i < 240; i++) {
@@ -348,10 +378,10 @@ void VideoManager::blit_stretched(Surface *src_surface, Surface *dst_surface) {
  * @param src_surface the source surface
  * @param dst_surface the destination surface
  */
-void VideoManager::blit_scale2x(Surface *src_surface, Surface *dst_surface) {
+void VideoManager::blit_scale2x(Surface* src_surface, Surface* dst_surface) {
 
-  SDL_Surface *src_internal_surface = src_surface->get_internal_surface();
-  SDL_Surface *dst_internal_surface = dst_surface->get_internal_surface();
+  SDL_Surface* src_internal_surface = src_surface->get_internal_surface();
+  SDL_Surface* dst_internal_surface = dst_surface->get_internal_surface();
 
   SDL_LockSurface(src_internal_surface);
   SDL_LockSurface(dst_internal_surface);

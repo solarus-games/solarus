@@ -196,6 +196,11 @@ void Solarus::notify_event(InputEvent& event) {
       // F5: change the video mode
       VideoManager::get_instance()->switch_video_mode();
     }
+    else if (key == InputEvent::KEY_RETURN
+        && (event.is_alt_down() || event.is_control_down())) {
+      // Alt + Return or Ctrl + Return: switch fullscreen
+      VideoManager::get_instance()->switch_fullscreen();
+    }
     else if (key == InputEvent::KEY_F4 && event.is_alt_down()) {
       // Alt + F4: quit the program
       exiting = true;

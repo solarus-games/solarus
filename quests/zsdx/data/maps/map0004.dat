@@ -1052,8 +1052,6 @@
 8	0	128	469	cliff_man	3	1	npc/static_villager14	dialog#outside_world.village.cliff_man_npc
 2	0	200	696	16	16	to_grandma_house	0	1	11	entrance
 4	0	648	93	3	_random	1	-1
-2	0	272	432	16	16	to_binbin_dungeon	0	1	17	main_entrance
-1	0	280	461	from_binbin_dungeon	3	0
 1	0	72	477	out_lyriann_cave	3	0
 3	0	48	109	piece_of_heart	1	18
 12	0	272	424	16	8	custom_obstacle	1	1	1	1

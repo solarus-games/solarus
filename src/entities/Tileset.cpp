@@ -17,8 +17,9 @@
 #include "entities/Tileset.h"
 #include "entities/SimpleTilePattern.h"
 #include "entities/AnimatedTilePattern.h"
-#include "entities/ParallaxTilePattern.h"
-#include "entities/ScrollingTilePattern.h"
+#include "entities/SelfScrollingTilePattern.h"
+#include "entities/TimeScrollingTilePattern.h"
+#include "entities/ParallaxScrollingTilePattern.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/Debug.h"
@@ -108,7 +109,8 @@ void Tileset::load() {
 
     int width, height;
 
-    if (animation != 1) { // simple tile pattern, parallax scrolling or scrolling
+    if (animation != 1) {
+      // simple tile pattern, self scrolling, time scrolling or parallax scrolling
 
       int x, y;
 
@@ -122,10 +124,13 @@ void Tileset::load() {
         pattern = new SimpleTilePattern(Obstacle(obstacle), x, y, width, height);
       }
       else if (animation == 2) {
-        pattern = new ParallaxTilePattern(Obstacle(obstacle), x, y, width, height);
+        pattern = new SelfScrollingTilePattern(Obstacle(obstacle), x, y, width, height);
       }
       else if (animation == 3) {
-        pattern = new ScrollingTilePattern(Obstacle(obstacle), x, y, width, height);
+        pattern = new TimeScrollingTilePattern(Obstacle(obstacle), x, y, width, height);
+      }
+      else if (animation == 4) {
+        pattern = new ParallaxScrollingTilePattern(Obstacle(obstacle), x, y, width, height);
       }
       else {
         Debug::die(StringConcat() << "Unknown tile pattern animation: " << animation);

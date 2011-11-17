@@ -16,7 +16,7 @@
  */
 #include "entities/TilePattern.h"
 #include "entities/AnimatedTilePattern.h"
-#include "entities/ScrollingTilePattern.h"
+#include "entities/TimeScrollingTilePattern.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 
@@ -85,7 +85,7 @@ Obstacle TilePattern::get_obstacle() const {
  */
 void TilePattern::update() {
   AnimatedTilePattern::update();
-  ScrollingTilePattern::update();
+  TimeScrollingTilePattern::update();
 }
 
 /**

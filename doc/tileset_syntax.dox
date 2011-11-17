@@ -25,20 +25,41 @@ are from the enumration Obstacle):
 - -3 (hole): the tile is a hole (the hero falls into it)
 - -4 (ladder): the tile is a ladder (the hero walks slowly on it)
 
-A tile pattern also have an animation property:
-- 0 (static pattern): the pattern is not animated (like most of the tiles)
-- 1 (animated pattern): the pattern is an animation of three frames, with the sequence 0-1-2-0 or 0-1-2-1-0
-- 2 (parallax scrolling pattern): the pattern displays a parallax scrolling effect to give a 3D impression
-- 3 (scrolling pattern): the pattern scrolls with the time in a direction
+A tile pattern also has an animation property:
+- 0 (fixed pattern): the pattern is not animated (like most tiles).
+- 1 (animated pattern): the pattern repeats an animation of three frames,
+    with the sequence 0-1-2-0 or 0-1-2-1-0. Examples of use: water, lava,
+    flowers.
+- 2 (self scrolling pattern): when the camera moves, the pattern scrolls on
+    itself (twice slower than the camera). This achieves the same effect as
+    parallax scrolling, but the tile remains displayed at its position.
+    However, this is limited to simple, repeatable patterns:
+    you cannot make big scrolling backgrounds composed of different tiles
+    (use parallax patterns for this)
+    because no tile actually moves with the camera, they just scroll on
+    themselves. Example of use: holes in dungeons.
+- 3 (time scrolling pattern): the pattern scrolls on itself with time in a
+    direction (not implemented yet, will probably be removed in the future).
+- 4 (parallax scrolling pattern): when the camera moves, the place where the
+    pattern is displayed also moves (twice slower) to give illusion of depth.
+    Placing such tiles on your map can be tricky because at runtime, they are
+    displayed elsewhere (except in the particular case where the camera is in
+    (0,0), the top-left corner of the map).
+    Note that collisions properties remain applied to the
+    real position of the tile and not to where they are displayed.
+    Usually, parallax scrolling is used for decoration only. 
+    Example of use: a complex background panorama.
 
-Finally, a tile pattern has a default layer. This is the layer suggested by the map editor when placing
-the tile onto a map:
-- 0 (low layer): the tile is always displayed below the hero (like most of the tiles)
-- 1 (intermediate layer): the hero may be above or below the tile (e.g. a platform)
-- 2 (high layer): the tile is always above the hero (e.g. a tree)
+Finally, a tile pattern has a default layer. This is the layer suggested by
+the map editor when placing the tile onto a map:
+- 0 (low layer): the tile is always displayed below the hero (e.g. lower rooms
+    in dungeons)
+- 1 (intermediate layer): the hero may be above or below the tile (e.g. most of
+    the rooms in dungeons)
+- 2 (high layer): the tile is above everything (e.g. a tree)
 
 When you add a tile to a map with the map editor, it is placed on its default layer,
-but then you may change the layer.
+but then you may then change the layer.
 Thus, the default layer property is only used by the map editor, not by the game.
 
 A tileset description file is a clear text file.

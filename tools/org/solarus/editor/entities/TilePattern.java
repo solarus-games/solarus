@@ -35,15 +35,17 @@ public class TilePattern extends Observable {
 	NONE,
 	SEQUENCE_012,
 	SEQUENCE_0121,
-	PARALLAX,
-	SCROLLING;
+	SELF_SCROLLING,
+	TIME_SCROLLING,
+        PARALLAX_SCROLLING;
 
 	public static final String[] humanNames = {
 	    "None",
 	    "1-2-3-1",
 	    "1-2-3-2-1",
-	    "Parallax scrolling",
+	    "Scrolling on itself",
 	    "Scrolling with time",
+            "Parallax scrolling",
 	};
 
 	public static Animation get(int id) {
@@ -185,19 +187,34 @@ public class TilePattern extends Observable {
 	    this.defaultLayer = Layer.get(Integer.parseInt(tokenizer.nextToken()));
 	    this.images = new BufferedImage[4];
 
-	    if (tilePatternType == 0 || tilePatternType == 2 || tilePatternType == 3) {
+	    if (tilePatternType != 1) {
 
 		// simple tile pattern: "0 obstacle defaultLayer x y width height"
-		// or parallax tile pattern: "2 obstacle defaultLayer x y width height"
-		// or scrolling tile pattern: "3 obstacle defaultLayer x y width height"
+		// or self scrolling tile pattern: "2 obstacle defaultLayer x y width height"
+		// or time scrolling tile pattern: "3 obstacle defaultLayer x y width height"
+		// or parallax scrolling tile pattern: "3 obstacle defaultLayer x y width height"
 		int x = Integer.parseInt(tokenizer.nextToken());
 		int y = Integer.parseInt(tokenizer.nextToken());
 		int width = Integer.parseInt(tokenizer.nextToken());
 		int height = Integer.parseInt(tokenizer.nextToken());
 
 		this.positionInTileset = new Rectangle(x, y, width, height);
-
-		this.animation = (tilePatternType == 2) ? Animation.PARALLAX : Animation.NONE;
+                switch (tilePatternType) {
+                  case 0:
+                    this.animation = Animation.NONE;
+                    break;
+                  case 2:
+                    this.animation = Animation.SELF_SCROLLING;
+                    break;
+                  case 3:
+                    this.animation = Animation.TIME_SCROLLING;
+                    break;
+                  case 4:
+                    this.animation = Animation.PARALLAX_SCROLLING;
+                    break;
+                  default:
+                    throw new ZSDXException("Unknown tile pattern type '" + tilePatternType + "'");
+                }
 	    }
 	    else if (tilePatternType == 1) {
 
@@ -243,15 +260,19 @@ public class TilePattern extends Observable {
 
 	if (!isAnimated()) {
 	    // simple tile pattern: "0 obstacle defaultLayer x y width height"
-	    // or parallax tile pattern: "2 obstacle defaultLayer x y width height"
-	    // or scrolling tile pattern: "3 obstacle defaultLayer x y width height
+	    // or self scrolling tile pattern: "2 obstacle defaultLayer x y width height"
+	    // or time scrolling tile pattern: "3 obstacle defaultLayer x y width height
+	    // or parallax scrolling tile pattern: "4 obstacle defaultLayer x y width height
 
-	    if (animation == Animation.PARALLAX) {
+	    if (animation == Animation.SELF_SCROLLING) {
 		description.append('2');
 	    }
-	    else if (animation == Animation.SCROLLING) {
+	    else if (animation == Animation.TIME_SCROLLING) {
 	        description.append('3');
 	    }
+            else if (animation == Animation.PARALLAX_SCROLLING) {
+                description.append('4');
+            }
 	    else {
 		description.append('0');
 	    }

@@ -14,31 +14,35 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_PARALLAX_TILE_PATTERN_H
-#define SOLARUS_PARALLAX_TILE_PATTERN_H
+#ifndef SOLARUS_TIME_SCROLLING_TILE_PATTERN_H
+#define SOLARUS_TIME_SCROLLING_TILE_PATTERN_H
 
 #include "Common.h"
 #include "entities/SimpleTilePattern.h"
 
 /**
- * @brief Tile pattern with a parallax scrolling effect.
+ * @brief Tile pattern with a scrolling effect.
  *
- * The pattern moves from 1 pixel when the camera moves from 2 pixels.
- * This gives an illusion of depth. Only the position of where the pattern
- * is displayed changes: the real position of the tile never changes.
+ * The pattern scrolls on itself with time,
+ * giving the illusion of a movement.
  */
-class ParallaxTilePattern: public SimpleTilePattern {
+class TimeScrollingTilePattern: public SimpleTilePattern {
+
+  private:
+
+    static int shift;                   /**< number of pixels to shift, increased with the time */
+    static uint32_t next_shift_date;    /**< when the shift variable is incremented */
 
   public:
 
-    ParallaxTilePattern(Obstacle obstacle, int x, int y, int width, int height);
-    ~ParallaxTilePattern();
+    TimeScrollingTilePattern(Obstacle obstacle, int x, int y, int width, int height);
+    ~TimeScrollingTilePattern();
 
+    static void update();
     void display(Surface* destination, const Rectangle& dst_position,
             Tileset& tileset, const Rectangle& viewport);
 
     virtual bool is_animated();
-    virtual bool is_displayed_at_its_position();
 };
 
 #endif

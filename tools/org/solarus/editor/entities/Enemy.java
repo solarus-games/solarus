@@ -29,7 +29,7 @@ public class Enemy extends MapEntity {
      * Description of the default image representing this kind of entity.
      */
     public static final EntityImageDescription[] generalImageDescriptions = {
-	new EntityImageDescription("enemies.png", 0, 4, 16, 16),
+	new EntityImageDescription("miscellaneous_entities.png", 48, 32, 16, 16),
     };
 
     /**

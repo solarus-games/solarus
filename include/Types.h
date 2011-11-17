@@ -202,8 +202,9 @@ class Tileset;
 class TilePattern;
 class SimpleTilePattern;
 class AnimatedTilePattern;
-class ParallaxTilePattern;
-class ScrollingTilePattern;
+class SelfScrollingTilePattern;
+class TimeScrollingTilePattern;
+class ParallaxScrollingTilePattern;
 
 // movements
 class Movement;

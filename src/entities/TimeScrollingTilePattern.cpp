@@ -14,19 +14,23 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#include "entities/ParallaxTilePattern.h"
+#include "entities/TimeScrollingTilePattern.h"
 #include "entities/Tileset.h"
+#include "lowlevel/System.h"
 #include "lowlevel/Surface.h"
 
+int TimeScrollingTilePattern::shift = 0;
+uint32_t TimeScrollingTilePattern::next_shift_date = 0;
+
 /**
- * @brief Creates a tile pattern with parallax scrolling.
+ * @brief Creates a tile pattern with scrolling.
  * @param obstacle is the tile pattern an obstacle?
  * @param x x position of the tile pattern in the tileset
  * @param y y position of the tile pattern in the tileset
  * @param width width of the tile pattern in the tileset
  * @param height height of the tile pattern in the tileset
  */
-ParallaxTilePattern::ParallaxTilePattern(Obstacle obstacle, int x, int y, int width, int height):
+TimeScrollingTilePattern::TimeScrollingTilePattern(Obstacle obstacle, int x, int y, int width, int height):
   SimpleTilePattern(obstacle, x, y, width, height) {
 
 }
@@ -34,8 +38,23 @@ ParallaxTilePattern::ParallaxTilePattern(Obstacle obstacle, int x, int y, int wi
 /**
  * @brief Destructor.
  */
-ParallaxTilePattern::~ParallaxTilePattern() {
+TimeScrollingTilePattern::~TimeScrollingTilePattern() {
 
+}
+
+/**
+ * @brief Updates all scrolling tiles patterns.
+ *
+ * This function is called repeatedly by the map.
+ */
+void TimeScrollingTilePattern::update() {
+
+  uint32_t now = System::now();
+
+  while (now >= next_shift_date) {
+    shift++;
+    next_shift_date += 50;
+  }
 }
 
 /**
@@ -46,16 +65,46 @@ ParallaxTilePattern::~ParallaxTilePattern() {
  * @param viewport coordinates of the top-left corner of dst_surface relative
  * to the map (may be used for scrolling tiles)
  */
-void ParallaxTilePattern::display(Surface* dst_surface, const Rectangle& dst_position,
+void TimeScrollingTilePattern::display(Surface* dst_surface, const Rectangle& dst_position,
     Tileset& tileset, const Rectangle& viewport) {
 
-  Surface* tileset_image = tileset.get_tiles_image();
+  Rectangle src = position_in_tileset;
   Rectangle dst = dst_position;
-  static const int ratio = 2; // distance made by the viewport to move the tile pattern of 1 pixel
-  dst.add_xy(viewport.get_x() / ratio, viewport.get_y() / ratio);
-  tileset_image->blit(position_in_tileset, dst_surface, dst);
 
-  // one day, we can implement several scrolling layers just by changing the ratio
+  int offset_x, offset_y; // display the tile with an offset that depends on the time
+
+  offset_x = src.get_width() - (shift % src.get_width());
+  offset_y = shift % src.get_height();
+
+  src.add_x(offset_x);
+  src.add_width(-offset_x);
+  src.add_y(offset_y);
+  src.add_height(-offset_y);
+  tileset.get_tiles_image()->blit(src, dst_surface, dst);
+
+  src = position_in_tileset;
+  dst = dst_position;
+  src.add_y(offset_y);
+  src.add_height(-offset_y);
+  dst.add_x(src.get_width() - offset_x);
+  src.set_width(offset_x);
+  tileset.get_tiles_image()->blit(src, dst_surface, dst);
+
+  src = position_in_tileset;
+  dst = dst_position;
+  src.add_x(offset_x);
+  src.add_width(-offset_x);
+  dst.add_y(src.get_height() - offset_y);
+  src.set_height(offset_y);
+  tileset.get_tiles_image()->blit(src, dst_surface, dst);
+
+  src = position_in_tileset;
+  dst = dst_position;
+  dst.add_x(src.get_width() - offset_x);
+  src.set_width(offset_x);
+  dst.add_y(src.get_height() - offset_y);
+  src.set_height(offset_y);
+  tileset.get_tiles_image()->blit(src, dst_surface, dst);
 }
 
 /**
@@ -67,24 +116,7 @@ void ParallaxTilePattern::display(Surface* dst_surface, const Rectangle& dst_pos
  *
  * @return true if this tile pattern is animated
  */
-bool ParallaxTilePattern::is_animated() {
+bool TimeScrollingTilePattern::is_animated() {
   return true;
-}
-
-/**
- * @brief Returns whether tiles having this tile pattern are displayed at their
- * position.
- *
- * Usually, this function returns true, and when it is the case, display() is
- * called only for tiles that are located in the current viewport.
- *
- * However, some tile patterns may want to be displayed even when they are not
- * in the viewport, typically to make an illusion of movement like parallax
- * scrolling.
- *
- * @return true to if this tile pattern is always displayed at its coordinates
- */
-bool ParallaxTilePattern::is_displayed_at_its_position() {
-  return false;
 }
 

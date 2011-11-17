@@ -14,31 +14,31 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_SCROLLING_TILE_PATTERN_H
-#define SOLARUS_SCROLLING_TILE_PATTERN_H
+#ifndef SOLARUS_SELF_SCROLLING_TILE_PATTERN_H
+#define SOLARUS_SELF_SCROLLING_TILE_PATTERN_H
 
 #include "Common.h"
 #include "entities/SimpleTilePattern.h"
 
 /**
- * @brief Tile pattern with a scrolling effect.
+ * @brief Tile pattern that scrolls on itself when the camera moves.
  *
- * The pattern shifts with the time inside its rectangle,
- * giving the illusion of a movement.
+ * The pattern scolls on itself from 1 pixel when the camera moves from 2
+ * pixels. This gives an illusion of depth.
+ * It achieves the same effect as ParallaxScrollingTilePattern, but the tile
+ * remains displayed at its initial position.
+ * However, this is limited to simple, repeatable patterns:
+ * you cannot make big scrolling backgrounds composed of different tiles
+ * (use ParallaxScrollingTilePatterns for this) because the tile actually
+ * does not move with the camera, it just scrolls on ifself.
  */
-class ScrollingTilePattern: public SimpleTilePattern {
-
-  private:
-
-    static int shift;                   /**< number of pixels to shift, increased with the time */
-    static uint32_t next_shift_date;    /**< when the shift variable is incremented */
+class SelfScrollingTilePattern: public SimpleTilePattern {
 
   public:
 
-    ScrollingTilePattern(Obstacle obstacle, int x, int y, int width, int height);
-    ~ScrollingTilePattern();
+    SelfScrollingTilePattern(Obstacle obstacle, int x, int y, int width, int height);
+    ~SelfScrollingTilePattern();
 
-    static void update();
     void display(Surface* destination, const Rectangle& dst_position,
             Tileset& tileset, const Rectangle& viewport);
 

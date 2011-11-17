@@ -111,6 +111,7 @@ function event_hurt(attack, life_lost)
   if sol.enemy.get_life() - life_lost <= 0 then
     -- notify the body to make it stop moving
     sol.enemy.send_message(sol.enemy.get_father(), "dying")
+    sol.main.timer_stop_all()
 
     -- remove the sons
     for i = 1, nb_sons_created do

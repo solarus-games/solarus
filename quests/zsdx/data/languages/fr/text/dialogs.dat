@@ -2167,7 +2167,7 @@ skip = current
 # Lorsqu'on pénètre dans le donjon 10
 #       |-----------------------|
 line1 = "     Niveau secret     "
-line2 = "     Tour du Roxor     "
+line2 = "     Tour des Cieux    "
 skip = current
 
 [found_piece_of_heart.first]

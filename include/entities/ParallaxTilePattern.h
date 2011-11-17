@@ -23,8 +23,9 @@
 /**
  * @brief Tile pattern with a parallax scrolling effect.
  *
- * The pattern shifts when the camera moves, giving
- * an illusion of depth.
+ * The pattern moves from 1 pixel when the camera moves from 2 pixels.
+ * This gives an illusion of depth. Only the position of where the pattern
+ * is displayed changes: the real position of the tile never changes.
  */
 class ParallaxTilePattern: public SimpleTilePattern {
 
@@ -33,9 +34,11 @@ class ParallaxTilePattern: public SimpleTilePattern {
     ParallaxTilePattern(Obstacle obstacle, int x, int y, int width, int height);
     ~ParallaxTilePattern();
 
-    void display(Surface *destination, const Rectangle &destination_position, Tileset &tileset);
+    void display(Surface* destination, const Rectangle& dst_position,
+            Tileset& tileset, const Rectangle& viewport);
 
     virtual bool is_animated();
+    virtual bool is_displayed_at_its_position();
 };
 
 #endif

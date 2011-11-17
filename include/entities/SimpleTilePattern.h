@@ -38,7 +38,8 @@ class SimpleTilePattern: public TilePattern {
     SimpleTilePattern(Obstacle obstacle, int x, int y, int width, int height);
     ~SimpleTilePattern();
 
-    virtual void display(Surface *destination, const Rectangle &destination_position, Tileset &tileset);
+    virtual void display(Surface* destination, const Rectangle& dst_position,
+        Tileset& tileset, const Rectangle& viewport);
 
     virtual bool is_animated();
 };

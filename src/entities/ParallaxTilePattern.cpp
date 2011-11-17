@@ -40,64 +40,22 @@ ParallaxTilePattern::~ParallaxTilePattern() {
 
 /**
  * @brief Displays the tile image on a surface.
- * @param destination the destination surface
- * @param dst_position position of the tile pattern on the destination surface
+ * @param dst_surface the surface to draw
+ * @param dst_position position where tile pattern should be displayed on dst_surface
  * @param tileset the tileset of this tile
+ * @param viewport coordinates of the top-left corner of dst_surface relative
+ * to the map (may be used for scrolling tiles)
  */
-void ParallaxTilePattern::display(Surface *destination, const Rectangle &dst_position, Tileset &tileset) {
+void ParallaxTilePattern::display(Surface* dst_surface, const Rectangle& dst_position,
+    Tileset& tileset, const Rectangle& viewport) {
 
-  Rectangle src = position_in_tileset;
+  Surface* tileset_image = tileset.get_tiles_image();
   Rectangle dst = dst_position;
+  static const int ratio = 2; // distance made by the viewport to move the tile pattern of 1 pixel
+  dst.add_xy(viewport.get_x() / ratio, viewport.get_y() / ratio);
+  tileset_image->blit(position_in_tileset, dst_surface, dst);
 
-  int offset_x, offset_y; // display the tile with an offset that depends on its position modulo its size
-
-  if (dst.get_x() >= 0) {
-    offset_x = dst.get_x() % src.get_width();
-  }
-  else { // the modulo operation does not like negative numbers
-    offset_x = src.get_width() - (-dst.get_x() % src.get_width());
-  }
-
-  if (dst.get_y() >= 0) {
-    offset_y = dst.get_y() % src.get_height();
-  }
-  else {
-    offset_y = src.get_height() - (-dst.get_y() % src.get_height());
-  }
-
-  // apply a scrolling ratio
-  offset_x /= 2;
-  offset_y /= 2;
-
-  src.add_x(offset_x);
-  src.add_width(-offset_x);
-  src.add_y(offset_y);
-  src.add_height(-offset_y);
-  tileset.get_tiles_image()->blit(src, destination, dst);
-
-  src = position_in_tileset;
-  dst = dst_position;
-  src.add_y(offset_y);
-  src.add_height(-offset_y);
-  dst.add_x(src.get_width() - offset_x);
-  src.set_width(offset_x);
-  tileset.get_tiles_image()->blit(src, destination, dst);
-
-  src = position_in_tileset;
-  dst = dst_position;
-  src.add_x(offset_x);
-  src.add_width(-offset_x);
-  dst.add_y(src.get_height() - offset_y);
-  src.set_height(offset_y);
-  tileset.get_tiles_image()->blit(src, destination, dst);
-
-  src = position_in_tileset;
-  dst = dst_position;
-  dst.add_x(src.get_width() - offset_x);
-  src.set_width(offset_x);
-  dst.add_y(src.get_height() - offset_y);
-  src.set_height(offset_y);
-  tileset.get_tiles_image()->blit(src, destination, dst);
+  // one day, we can implement several scrolling layers just by changing the ratio
 }
 
 /**
@@ -111,5 +69,22 @@ void ParallaxTilePattern::display(Surface *destination, const Rectangle &dst_pos
  */
 bool ParallaxTilePattern::is_animated() {
   return true;
+}
+
+/**
+ * @brief Returns whether tiles having this tile pattern are displayed at their
+ * position.
+ *
+ * Usually, this function returns true, and when it is the case, display() is
+ * called only for tiles that are located in the current viewport.
+ *
+ * However, some tile patterns may want to be displayed even when they are not
+ * in the viewport, typically to make an illusion of movement like parallax
+ * scrolling.
+ *
+ * @return true to if this tile pattern is always displayed at its coordinates
+ */
+bool ParallaxTilePattern::is_displayed_at_its_position() {
+  return false;
 }
 

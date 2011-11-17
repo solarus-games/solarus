@@ -49,14 +49,18 @@ class TilePattern {
     static void update();
 
     /**
-     * Displays the tile image on a surface.
-     * @param destination the destination surface
-     * @param dst_position position of the tile pattern on the destination surface
-     * @param tileset tileset of this tile
+     * @brief Displays the tile image on a surface.
+     * @param dst_surface the surface to draw
+     * @param dst_position position where tile pattern should be displayed on dst_surface
+     * @param tileset the tileset of this tile
+     * @param viewport coordinates of the top-left corner of dst_surface relative
+     * to the map (may be used for scrolling tiles)
      */
-    virtual void display(Surface *destination, const Rectangle &dst_position, Tileset &tileset) = 0;
+    virtual void display(Surface* destination, const Rectangle& dst_position,
+        Tileset& tileset, const Rectangle& viewport) = 0;
 
     virtual bool is_animated();
+    virtual bool is_displayed_at_its_position();
 };
 
 #endif

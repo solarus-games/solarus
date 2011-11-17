@@ -146,7 +146,7 @@ void DynamicTile::display_on_map() {
 
         if (x <= 320 && x + tile_pattern->get_width() > 0) {
           dst.set_x(x);
-          tile_pattern->display(map_surface, dst, get_map().get_tileset());
+          tile_pattern->display(map_surface, dst, get_map().get_tileset(), get_map().get_camera_position());
         }
       }
     }

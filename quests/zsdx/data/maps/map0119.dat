@@ -491,9 +491,10 @@
 0	0	336	64	208	16	1147
 0	0	376	80	96	16	1147
 0	0	496	104	96	16	1147
+0	0	416	112	16	16	1147
 2	0	-16	0	16	752	to_B3	0	2	4	_side
 2	0	432	408	16	16	to_binbin_dungeon_2	0	1	17	main_entrance
-1	0	440	437	from_binbin_dungeon	3	0
+1	0	440	173	from_binbin_dungeon	3	0
 4	0	408	637	2	_random	1	-1
 4	0	424	637	2	_random	1	-1
 4	0	440	637	2	_random	1	-1

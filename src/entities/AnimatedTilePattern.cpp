@@ -98,14 +98,17 @@ void AnimatedTilePattern::update() {
 }
 
 /**
- * @brief Displays the tile on a surface.
- * @param destination the destination surface
- * @param dst_position position of the tile pattern on the destination surface
- * @param tileset the tileset of this tile pattern
+ * @brief Displays the tile image on a surface.
+ * @param dst_surface the surface to draw
+ * @param dst_position position where tile pattern should be displayed on dst_surface
+ * @param tileset the tileset of this tile
+ * @param viewport coordinates of the top-left corner of dst_surface relative
+ * to the map (may be used for scrolling tiles)
  */
-void AnimatedTilePattern::display(Surface *destination, const Rectangle &dst_position, Tileset &tileset) {
+void AnimatedTilePattern::display(Surface* dst_surface, const Rectangle& dst_position,
+    Tileset& tileset, const Rectangle& viewport) {
 
   Surface *tileset_image = tileset.get_tiles_image();
-  tileset_image->blit(position_in_tileset[current_frames[sequence]], destination, dst_position);
+  tileset_image->blit(position_in_tileset[current_frames[sequence]], dst_surface, dst_position);
 }
 

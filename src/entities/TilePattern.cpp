@@ -103,3 +103,18 @@ bool TilePattern::is_animated() {
   return true;
 }
 
+/**
+ * @brief Returns whether tiles having this tile pattern are displayed at their
+ * position.
+ *
+ * Usually, this function returns true, and when it is the case, display() is
+ * called only for tiles that are located in the current viewport.
+ *
+ * However, some tile patterns may want to be displayed even when they are not
+ * in the viewport, typically to make an illusion of movement like parallax
+ * scrolling.
+ */
+bool TilePattern::is_displayed_at_its_position() {
+  return true;
+}
+

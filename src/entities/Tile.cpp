@@ -111,16 +111,18 @@ void Tile::display(Surface* dst_surface, const Rectangle& viewport) {
       y < limit_y;
       y += tile_pattern->get_height()) {
 
-    if (y <= dst_surface->get_height() && y + tile_pattern->get_height() > 0) {
+    if ((y <= dst_surface->get_height() && y + tile_pattern->get_height() > 0)
+        || !tile_pattern->is_displayed_at_its_position()) {
       dst.set_y(y);
 
       for (int x = get_top_left_x() - viewport.get_x();
           x < limit_x;
           x += tile_pattern->get_width()) {
 
-        if (x <= dst_surface->get_width() && x + tile_pattern->get_width() > 0) {
+        if ((x <= dst_surface->get_width() && x + tile_pattern->get_width() > 0)
+            || !tile_pattern->is_displayed_at_its_position()) {
           dst.set_x(x);
-          tile_pattern->display(dst_surface, dst, get_map().get_tileset());
+          tile_pattern->display(dst_surface, dst, get_map().get_tileset(), viewport);
         }
       }
     }

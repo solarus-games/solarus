@@ -36,7 +36,7 @@ class AnimatedTilePattern: public TilePattern {
      */
     enum AnimationSequence {
       ANIMATION_SEQUENCE_012  = 1,
-      ANIMATION_SEQUENCE_0121 = 2 
+      ANIMATION_SEQUENCE_0121 = 2
     };
 
   private:

@@ -56,7 +56,7 @@ class TilePattern {
      * @param viewport coordinates of the top-left corner of dst_surface relative
      * to the map (may be used for scrolling tiles)
      */
-    virtual void display(Surface* destination, const Rectangle& dst_position,
+    virtual void display(Surface* dst_surface, const Rectangle& dst_position,
         Tileset& tileset, const Rectangle& viewport) = 0;
 
     virtual bool is_animated();

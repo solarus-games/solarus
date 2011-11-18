@@ -248,7 +248,6 @@ bool VideoManager::is_fullscreen(VideoMode mode) {
 
 /**
  * @brief Returns whether the current video mode is in fullscreen.
- * @param mode a video mode
  * @return true if this video mode is in fullscreen
  */
 bool VideoManager::is_fullscreen() {

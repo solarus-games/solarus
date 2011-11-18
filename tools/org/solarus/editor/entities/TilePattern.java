@@ -37,15 +37,19 @@ public class TilePattern extends Observable {
 	SEQUENCE_0121,
 	SELF_SCROLLING,
 	TIME_SCROLLING,
-        PARALLAX_SCROLLING;
+        PARALLAX_SCROLLING,
+        SEQUENCE_012_PARALLAX,
+        SEQUENCE_0121_PARALLAX;
 
 	public static final String[] humanNames = {
 	    "None",
-	    "1-2-3-1",
-	    "1-2-3-2-1",
+	    "3 frames (1-2-3-1)",
+	    "3 frames (1-2-3-2-1)",
 	    "Scrolling on itself",
 	    "Scrolling with time",
             "Parallax scrolling",
+            "3 frames (1-2-3-1) + parallax",
+            "3 frames (1-2-3-2-1) + parallax",
 	};
 
 	public static Animation get(int id) {
@@ -187,7 +191,7 @@ public class TilePattern extends Observable {
 	    this.defaultLayer = Layer.get(Integer.parseInt(tokenizer.nextToken()));
 	    this.images = new BufferedImage[4];
 
-	    if (tilePatternType != 1) {
+	    if (tilePatternType != 1 && tilePatternType != 5) { // single frame
 
 		// simple tile pattern: "0 obstacle defaultLayer x y width height"
 		// or self scrolling tile pattern: "2 obstacle defaultLayer x y width height"
@@ -216,10 +220,16 @@ public class TilePattern extends Observable {
                     throw new ZSDXException("Unknown tile pattern type '" + tilePatternType + "'");
                 }
 	    }
-	    else if (tilePatternType == 1) {
-
-		// animated tile pattern: "1 obstacle defaultLayer animation width height x1 y1 x2 y2 x3 y3"
-		this.animation = Animation.get(Integer.parseInt(tokenizer.nextToken()));
+	    else {
+		// 3-frame tile pattern: "1 obstacle defaultLayer sequence width height x1 y1 x2 y2 x3 y3"
+		// 3-frame + parallax tile pattern: "5 obstacle defaultLayer sequence width height x1 y1 x2 y2 x3 y3"
+                int sequence = Integer.parseInt(tokenizer.nextToken());
+                if (tilePatternType == 1) {
+                  this.animation = (sequence == 1) ? Animation.SEQUENCE_012 : Animation.SEQUENCE_0121;
+                }
+                else {
+                  this.animation = (sequence == 1) ? Animation.SEQUENCE_012_PARALLAX : Animation.SEQUENCE_0121_PARALLAX;
+                }
 
 		int width = Integer.parseInt(tokenizer.nextToken());
 		int height = Integer.parseInt(tokenizer.nextToken());
@@ -238,9 +248,6 @@ public class TilePattern extends Observable {
 		    positionInTileset.width *= 3;
 		}
 	    }
-	    else {
-		throw new ZSDXException("Unknown tile type '" + tilePatternType + "'");
-	    }
 	}
 	catch (NumberFormatException ex) {
 	    throw new ZSDXException("Integer expected");
@@ -258,7 +265,7 @@ public class TilePattern extends Observable {
 
 	StringBuffer description = new StringBuffer();
 
-	if (!isAnimated()) {
+	if (!isMultiFrame()) {
 	    // simple tile pattern: "0 obstacle defaultLayer x y width height"
 	    // or self scrolling tile pattern: "2 obstacle defaultLayer x y width height"
 	    // or time scrolling tile pattern: "3 obstacle defaultLayer x y width height
@@ -290,15 +297,22 @@ public class TilePattern extends Observable {
 	    description.append(positionInTileset.height);
 	}
 	else {
-	    // animated tile pattern: "1 obstacle defaultLayer animationSequence width height x1 y1 x2 y2 x3 y3"
+	    // 3-frame tile pattern: "1 obstacle defaultLayer animationSequence width height x1 y1 x2 y2 x3 y3"
+	    // 3-frame + parallax tile pattern: "5 obstacle defaultLayer animationSequence width height x1 y1 x2 y2 x3 y3"
 
-	    description.append('1');
+            int sequence = (animation == Animation.SEQUENCE_012 || animation == Animation.SEQUENCE_012_PARALLAX) ? 1 : 2;
+            if (animation == Animation.SEQUENCE_012 || animation == Animation.SEQUENCE_0121) {
+	        description.append('1');
+            }
+            else {
+                description.append('5');
+            }
 	    description.append('\t');
 	    description.append(obstacle.getId());
 	    description.append('\t');
 	    description.append(defaultLayer.getId());
 	    description.append('\t');
-	    description.append(animation.getId());
+	    description.append(sequence);
 	    description.append('\t');
 
 	    int width, height, x, y, dx, dy;
@@ -374,7 +388,7 @@ public class TilePattern extends Observable {
 
 	int width = positionInTileset.width;
 	
-	if (isAnimated() && animationSeparation == AnimationSeparation.HORIZONTAL) {
+	if (isMultiFrame() && animationSeparation == AnimationSeparation.HORIZONTAL) {
 	    width = width / 3;
 	}
 
@@ -391,7 +405,7 @@ public class TilePattern extends Observable {
 
 	int height = positionInTileset.height;
 	
-	if (isAnimated() && animationSeparation == AnimationSeparation.VERTICAL) {
+	if (isMultiFrame() && animationSeparation == AnimationSeparation.VERTICAL) {
 	    height = height / 3;
 	}
 
@@ -472,7 +486,7 @@ public class TilePattern extends Observable {
      */
     public void setAnimation(Animation animation) throws TilesetException {
 
-	if (isAnimated(animation)) {
+	if (isMultiFrame(animation)) {
 
 	    // try to set the animation separation
 	    int width = positionInTileset.width;
@@ -505,20 +519,21 @@ public class TilePattern extends Observable {
     }
 
     /**
-     * Returns whether or not the tile pattern is animated.
-     * @return true if the tile pattern is animated, false otherwise
+     * Returns whether or not the tile pattern has an animation with several frames.
+     * @return true if the tile pattern is multi-frame, false otherwise
      */
-    public boolean isAnimated() {
-	return isAnimated(animation);
+    public boolean isMultiFrame() {
+	return isMultiFrame(animation);
     }
 
     /**
-     * Returns whether the specified animation type corresponds to an animated tile.
+     * Returns whether the specified animation type corresponds to a multi-frame animation.
      * @param animation an animation type
-     * @return true if this corresponds to an animated tile, false otherwise
+     * @return true if this animation is multi-frame
      */
-    public boolean isAnimated(Animation animation) {
-	return animation == Animation.SEQUENCE_012 || animation == Animation.SEQUENCE_0121;
+    public boolean isMultiFrame(Animation animation) {
+	return animation == Animation.SEQUENCE_012 || animation == Animation.SEQUENCE_0121
+          || animation == Animation.SEQUENCE_012_PARALLAX || animation == Animation.SEQUENCE_0121_PARALLAX;
     }
 
     /**
@@ -537,7 +552,8 @@ public class TilePattern extends Observable {
      * if the size of the 3 frames formed are not multiple of 8.
      */
     public void setAnimationSeparation(AnimationSeparation animationSeparation) throws TilesetException {
-	if (!isAnimated()) {
+
+	if (!isMultiFrame()) {
 	    return;
 	}
 

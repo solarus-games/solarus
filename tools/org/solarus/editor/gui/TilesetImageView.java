@@ -315,7 +315,7 @@ public class TilesetImageView extends JComponent implements Observer, Scrollable
 		g.drawLine(x1 + 1, y2, x1 + 1, y1);
 
 		// for an animated tile pattern, also draw the separation between the 3 frames
-		if (selectedTilePattern != null && selectedTilePattern.isAnimated()) {
+		if (selectedTilePattern != null && selectedTilePattern.isMultiFrame()) {
 
 		    if (selectedTilePattern.getAnimationSeparation() == TilePattern.AnimationSeparation.HORIZONTAL) {
 			int frame_width = (x2 - x1 + 1) / 3;

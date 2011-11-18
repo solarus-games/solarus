@@ -19,6 +19,11 @@
 #include "lowlevel/Surface.h"
 
 /**
+ * @brief Distance made by the viewport to move the tile pattern of 1 pixel.
+ */
+const int ParallaxScrollingTilePattern::ratio = 2;
+
+/**
  * @brief Creates a tile pattern with parallax scrolling.
  * @param obstacle is the tile pattern an obstacle?
  * @param x x position of the tile pattern in the tileset
@@ -53,8 +58,7 @@ void ParallaxScrollingTilePattern::display(Surface* dst_surface, const Rectangle
     Tileset& tileset, const Rectangle& viewport) {
 
   Surface* tileset_image = tileset.get_tiles_image();
-  Rectangle dst = dst_position;
-  static const int ratio = 2; // distance made by the viewport to move the tile pattern of 1 pixel
+  Rectangle dst(dst_position);
   dst.add_xy(viewport.get_x() / ratio, viewport.get_y() / ratio);
   tileset_image->blit(position_in_tileset, dst_surface, dst);
 

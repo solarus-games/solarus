@@ -49,18 +49,21 @@ class AnimatedTilePattern: public TilePattern {
     const AnimationSequence sequence; /**< Animation sequence type of this tile pattern: 0-1-2-1 or 0-1-2. */
 
     Rectangle position_in_tileset[3]; /**< Array of 3 rectangles representing the 3 animation frames
-				       * of this tile pattern in the tileset image.
-				       * The 3 frames should have the same width and height. */
+                                       * of this tile pattern in the tileset image.
+                                       * The 3 frames should have the same width and height. */
+    bool parallax;                    /**< Indicates that the tile pattern also makes parallax scrolling */
 
   public:
 
     AnimatedTilePattern(Obstacle obstacle, AnimationSequence sequence,
-	int width, int height, int x1, int y1, int x2, int y2, int x3, int y3);
+        int width, int height, int x1, int y1, int x2, int y2, int x3, int y3,
+        bool parallax);
     ~AnimatedTilePattern();
 
     static void update();
     void display(Surface* destination, const Rectangle& dst_position,
-            Tileset& tileset, const Rectangle& viewport);
+        Tileset& tileset, const Rectangle& viewport);
+    virtual bool is_displayed_at_its_position();
 };
 
 #endif

@@ -26,8 +26,8 @@ are from the enumration Obstacle):
 - -4 (ladder): the tile is a ladder (the hero walks slowly on it)
 
 A tile pattern also has an animation property:
-- 0 (fixed pattern): the pattern is not animated (like most tiles).
-- 1 (animated pattern): the pattern repeats an animation of three frames,
+- 0 (fixed pattern): the pattern has no animation (like most tiles).
+- 1 (3-frame pattern): the pattern repeats an animation of three frames,
     with the sequence 0-1-2-0 or 0-1-2-1-0. Examples of use: water, lava,
     flowers.
 - 2 (self scrolling pattern): when the camera moves, the pattern scrolls on
@@ -49,6 +49,8 @@ A tile pattern also has an animation property:
     real position of the tile and not to where they are displayed.
     Usually, parallax scrolling is used for decoration only. 
     Example of use: a complex background panorama.
+- 5 (3-frame + parallax): combines the properties of 3-frame animated
+    patterns and parallax scrolling patterns.
 
 Finally, a tile pattern has a default layer. This is the layer suggested by
 the map editor when placing the tile onto a map:
@@ -82,57 +84,38 @@ using this tileset (with the RGB notation).
 Each one of the remaining lines describes a tile pattern.
 The first element of the line is always the id of the tile pattern (an integer number),
 the second one is the animation type, and 
-the remaining part of the line depends the animation type.
+the remaining part of the line depends on the number of frames of the pattern.
 
-@section non_animated_tile_pattern Non-animated tile pattern
+@section single_frame_patterns Single-frame patterns
 
-Syntax of a non-animated tile pattern:
+Syntax of patterns having only one frame (i.e. fixed patterns,
+self scrolling patterns, time scrolling patterns and parallax scrolling
+patterns):
 
 @verbatim
-id   0   obstacle   default_layer   x   y   width   height
+id   animation_type   obstacle   default_layer   x   y   width   height
 @endverbatim
 
-<tt>id</tt> identifies the pattern. <tt>0</tt> indicates that this is a non-animated
-tile pattern.
+<tt>id</tt> identifies the pattern. <tt>animation_type</tt> indicates the type
+of animation (can be 0, 2, 3 or 4).
 <tt>obstacle</tt> and <tt>default_layer</tt> are the properties explained above.
 <tt>x</tt>, <tt>y</tt>, <tt>width</tt> and <tt>height</tt> define the rectangle
 of the tile pattern in the PNG image.
 
-@section animated_tile_pattern Animated tile pattern
+@section multi_frame_patterns Multi-frame patterns
 
-Syntax of an animated tile pattern:
+Syntax of animations patterns with three frames (i.e. 3-frame patterns
+and 3-frame + parallax patterns):
 
 @verbatim
-id   1   obstacle   default_layer   animation_sequence   width   height   x1   y1   x2   y2   x3   y3
+id   animation_type   obstacle   default_layer   animation_sequence   width   height   x1   y1   x2   y2   x3   y3
 @endverbatim
 
+<tt>animation_type</tt> indicates the type of animation (can be 1 or 5).
 <tt>animation_sequence</tt> determines how the three frames of the animation are played:
 1 means 0-1-2-0, and 2 means 0-1-2-1-0.
 <tt>width</tt>, <tt>height</tt>, <tt>x1</tt>, <tt>y1</tt>, <tt>x2</tt>, <tt>y2</tt>, <tt>x3</tt> and <tt>y3</tt>
 define the location of the three rectangles in the PNG image (the size is the same for all rectangles).
-
-
-@section parallax_tile_pattern Parallax scrolling tile pattern
-
-Syntax of a tile pattern with parallax scrolling:
-
-@verbatim
-id   2   obstacle   default_layer   x   y   width   height
-@endverbatim
-
-The syntax is the same as for non-animated tiles.
-
-@section scrolling_tile_pattern Scrolling tile pattern
-
-Syntax of a scrolling tile pattern:
-
-@verbatim
-id   3   obstacle   default_layer   x   y   width   height
-@endverbatim
-
-The syntax is the same as for non-animated tiles.
-Such tiles are not fully implemented yet.
-In future versions, the direction of the scrolling will be customizable.
 
 */
 

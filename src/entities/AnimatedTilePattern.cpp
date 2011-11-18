@@ -15,6 +15,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "entities/AnimatedTilePattern.h"
+#include "entities/ParallaxScrollingTilePattern.h"
 #include "entities/Tileset.h"
 #include "lowlevel/System.h"
 #include "lowlevel/Surface.h"
@@ -53,14 +54,18 @@ uint32_t AnimatedTilePattern::next_frame_date = 0;
  * @param y2 y position of the second frame in the tileset
  * @param x3 x position of the third frame in the tileset
  * @param y3 y position of the third frame in the tileset
+ * @param parallax true to also set parallax scrolling to the tile pattern
  */
 AnimatedTilePattern::AnimatedTilePattern(Obstacle obstacle,
-					 AnimationSequence sequence,
-					 int width, int height,
-					 int x1, int y1,
-					 int x2, int y2,
-					 int x3, int y3):
-  TilePattern(obstacle, width, height), sequence(sequence) {
+    AnimationSequence sequence,
+    int width, int height,
+    int x1, int y1,
+    int x2, int y2,
+    int x3, int y3,
+    bool parallax):
+  TilePattern(obstacle, width, height),
+  sequence(sequence),
+  parallax(parallax) {
 
   this->position_in_tileset[0] = Rectangle(x1, y1);
   this->position_in_tileset[1] = Rectangle(x2, y2);
@@ -108,7 +113,32 @@ void AnimatedTilePattern::update() {
 void AnimatedTilePattern::display(Surface* dst_surface, const Rectangle& dst_position,
     Tileset& tileset, const Rectangle& viewport) {
 
-  Surface *tileset_image = tileset.get_tiles_image();
-  tileset_image->blit(position_in_tileset[current_frames[sequence]], dst_surface, dst_position);
+  Surface* tileset_image = tileset.get_tiles_image();
+  const Rectangle& src = position_in_tileset[current_frames[sequence]];
+  Rectangle dst(dst_position);
+
+  if (parallax) {
+    dst.add_xy(viewport.get_x() / ParallaxScrollingTilePattern::ratio,
+        viewport.get_y() / ParallaxScrollingTilePattern::ratio);
+  }
+
+  tileset_image->blit(src, dst_surface, dst);
+}
+
+/**
+ * @brief Returns whether tiles having this tile pattern are displayed at their
+ * position.
+ *
+ * Usually, this function returns true, and when it is the case, display() is
+ * called only for tiles that are located in the current viewport.
+ *
+ * However, some tile patterns may want to be displayed even when they are not
+ * in the viewport, typically to make an illusion of movement like parallax
+ * scrolling.
+ *
+ * @return true to if this tile pattern is always displayed at its coordinates
+ */
+bool AnimatedTilePattern::is_displayed_at_its_position() {
+  return !parallax;
 }
 

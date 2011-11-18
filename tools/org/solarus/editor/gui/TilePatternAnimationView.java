@@ -87,7 +87,7 @@ public class TilePatternAnimationView extends JPanel implements ActionListener {
 	    sequenceField.setEnabled(true);
 	    sequenceField.setValue(sequence);
 
-	    if (tilePattern.isAnimated()) {
+	    if (tilePattern.isMultiFrame()) {
 		separationField.setValue(tilePattern.getAnimationSeparation());
 		separationField.setEnabled(true);
 	    }

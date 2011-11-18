@@ -109,8 +109,8 @@ void Tileset::load() {
 
     int width, height;
 
-    if (animation != 1) {
-      // simple tile pattern, self scrolling, time scrolling or parallax scrolling
+    if (animation != 1 && animation != 5) {
+      // fixed, self scrolling, time scrolling or parallax scrolling
 
       int x, y;
 
@@ -137,7 +137,8 @@ void Tileset::load() {
       }
       add_tile_pattern(tile_pattern_id, pattern);
     }
-    else { // animated tile pattern
+    else { // multi-frame pattern
+      bool parallax = (animation == 5);
       int sequence, x1, y1, x2, y2, x3, y3;
 
       FileTools::read(iss, sequence);
@@ -151,7 +152,7 @@ void Tileset::load() {
       FileTools::read(iss, y3);
       add_tile_pattern(tile_pattern_id, new AnimatedTilePattern(Obstacle(obstacle),
 	    AnimatedTilePattern::AnimationSequence(sequence),
-	    width, height, x1, y1, x2, y2, x3, y3));
+	    width, height, x1, y1, x2, y2, x3, y3, parallax));
     }
   }
   FileTools::data_file_close(tileset_file);

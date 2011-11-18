@@ -38,6 +38,8 @@ class ParallaxScrollingTilePattern: public SimpleTilePattern {
 
   public:
 
+    static const int ratio;
+
     ParallaxScrollingTilePattern(Obstacle obstacle, int x, int y, int width, int height);
     ~ParallaxScrollingTilePattern();
 

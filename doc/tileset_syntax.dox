@@ -107,7 +107,7 @@ id   1   obstacle   default_layer   animation_sequence   width   height   x1   y
 @endverbatim
 
 <tt>animation_sequence</tt> determines how the three frames of the animation are played:
-0 means 0-1-2-0, and 1 means 0-1-2-1-0.
+1 means 0-1-2-0, and 2 means 0-1-2-1-0.
 <tt>width</tt>, <tt>height</tt>, <tt>x1</tt>, <tt>y1</tt>, <tt>x2</tt>, <tt>y2</tt>, <tt>x3</tt> and <tt>y3</tt>
 define the location of the three rectangles in the PNG image (the size is the same for all rectangles).
 

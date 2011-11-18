@@ -113,6 +113,8 @@ bool TilePattern::is_animated() {
  * However, some tile patterns may want to be displayed even when they are not
  * in the viewport, typically to make an illusion of movement like parallax
  * scrolling.
+ *
+ * @return true if tiles having this pattern are displayed where they are placed
  */
 bool TilePattern::is_displayed_at_its_position() {
   return true;

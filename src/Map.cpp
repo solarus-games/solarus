@@ -875,6 +875,7 @@ Ground Map::get_tile_ground(Layer layer, const Rectangle &coordinates) {
  *
  * @param layer the layer
  * @param collision_box the rectangle to test
+ * @return true if there is at least one empty tile in this rectangle
  */
 bool Map::has_empty_tiles(Layer layer, const Rectangle& collision_box) {
 

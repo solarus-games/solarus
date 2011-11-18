@@ -69,20 +69,8 @@ class StraightMovement: public Movement {
 
   protected:
 
-    int get_x_move();
-    int get_y_move();
-    void set_x_move(int x_move);
-    void set_y_move(int y_move);
-
-    uint32_t get_next_move_date_x();
-    uint32_t get_next_move_date_y();
     void set_next_move_date_x(uint32_t next_move_date_x);
     void set_next_move_date_y(uint32_t next_move_date_y);
-
-    uint32_t get_x_delay();
-    uint32_t get_y_delay();
-    void set_x_delay(uint32_t x_delay);
-    void set_y_delay(uint32_t y_delay);
 
     void update_x();
     void update_smooth_x();

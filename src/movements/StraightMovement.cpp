@@ -392,66 +392,62 @@ void StraightMovement::update_smooth_x() {
     // x speed needs to be fixed
     uint32_t next_move_date_x_increment = x_delay;
 
-    uint32_t now = System::now();
-    if (now >= next_move_date_x) { // it's time to try a move
+    if (!test_collision_with_obstacles(x_move, 0)) {
 
-      if (!test_collision_with_obstacles(x_move, 0)) {
+      translate_x(x_move); // make the move
 
-        translate_x(x_move); // make the move
-
-        if (y_move != 0 && test_collision_with_obstacles(0, y_move)) {
-          // if there is also a y move, and if this y move is illegal,
-          // we still allow the x move and we give it all the speed
-          next_move_date_x_increment = (int) (1000.0 / get_speed());
-        }
+      if (y_move != 0 && test_collision_with_obstacles(0, y_move)) {
+        // if there is also a y move, and if this y move is illegal,
+        // we still allow the x move and we give it all the speed
+        next_move_date_x_increment = (int) (1000.0 / get_speed());
       }
-      else {
-        if (y_move == 0) {
-          // the move on x is not possible: let's try
-          // to add a move on y to make a diagonal move
+    }
+    else {
+      if (y_move == 0) {
+        // the move on x is not possible: let's try
+        // to add a move on y to make a diagonal move
 
-          if (!test_collision_with_obstacles(x_move, 1)
-              && test_collision_with_obstacles(0, -1)) {
-            translate_xy(x_move, 1);
-            next_move_date_x_increment = (int) (x_delay * Geometry::SQRT_2); // fix the speed
-          }
-          else if (!test_collision_with_obstacles(x_move, -1)
-              && test_collision_with_obstacles(0, 1)) {
-            translate_xy(x_move, -1);
-            next_move_date_x_increment = (int) (x_delay * Geometry::SQRT_2);
-          }
-          else {
+        if (!test_collision_with_obstacles(x_move, 1)
+            && test_collision_with_obstacles(0, -1)) {
+          translate_xy(x_move, 1);
+          next_move_date_x_increment = (int) (x_delay * Geometry::SQRT_2); // fix the speed
+        }
+        else if (!test_collision_with_obstacles(x_move, -1)
+            && test_collision_with_obstacles(0, 1)) {
+          translate_xy(x_move, -1);
+          next_move_date_x_increment = (int) (x_delay * Geometry::SQRT_2);
+        }
+        else {
 
-            /* The diagonal moves didn't work either.
-             * So we look for a place (up to 8 pixels up and down)
-             * where the required move would be allowed.
-             * If we find a such place, then we move towards this place.
-             */
+          /* The diagonal moves didn't work either.
+           * So we look for a place (up to 8 pixels up and down)
+           * where the required move would be allowed.
+           * If we find a such place, then we move towards this place.
+           */
 
-            bool moved = false;
-            for (int i = 1; i <= 8 && !moved; i++) {
+          bool moved = false;
+          for (int i = 1; i <= 8 && !moved; i++) {
 
-              if (!test_collision_with_obstacles(x_move, i) && !test_collision_with_obstacles(0, 1)) {
-                translate_y(1);
-                moved = true;
-              }
-              else if (!test_collision_with_obstacles(x_move, -i) && !test_collision_with_obstacles(0, -1)) {
-                translate_y(-1);
-                moved = true;
-              }
+            if (!test_collision_with_obstacles(x_move, i) && !test_collision_with_obstacles(0, 1)) {
+              translate_y(1);
+              moved = true;
+            }
+            else if (!test_collision_with_obstacles(x_move, -i) && !test_collision_with_obstacles(0, -1)) {
+              translate_y(-1);
+              moved = true;
             }
           }
         }
-        else {
-          // no attractive place was found, but there is a vertical move
-          if (!test_collision_with_obstacles(0, y_move)) {
-            translate_y(y_move);
-            next_move_date_y += (int) (y_delay / Geometry::SQRT_2);
-          }
+      }
+      else {
+        // no attractive place was found, but there is a vertical move
+        if (!test_collision_with_obstacles(0, y_move)) {
+          // do the vertical move right now, don't wait uselessly
+          update_y();
         }
       }
-     next_move_date_x += next_move_date_x_increment;
     }
+    next_move_date_x += next_move_date_x_increment;
   }
 }
 
@@ -468,65 +464,61 @@ void StraightMovement::update_smooth_y() {
     // y speed needs to be fixed
     uint32_t next_move_date_y_increment = y_delay;
 
-    uint32_t now = System::now();
-    if (now >= next_move_date_y) { // it's time to try a move
+    if (!test_collision_with_obstacles(0, y_move)) {
 
-      if (!test_collision_with_obstacles(0, y_move)) {
+      translate_y(y_move); // make the move
 
-        translate_y(y_move); // make the move
-
-        if (x_move != 0 && test_collision_with_obstacles(x_move, 0)) {
-          // if there is also an x move, and if this x move is illegal,
-          // we still allow the y move and we give it all the speed
-          next_move_date_y_increment = (int) (1000.0 / get_speed());
-        }
+      if (x_move != 0 && test_collision_with_obstacles(x_move, 0)) {
+        // if there is also an x move, and if this x move is illegal,
+        // we still allow the y move and we give it all the speed
+        next_move_date_y_increment = (int) (1000.0 / get_speed());
       }
-      else {
-        if (x_move == 0) {
-          // The move on y is not possible: let's try
-          // to add a move on x to make a diagonal move.
+    }
+    else {
+      if (x_move == 0) {
+        // The move on y is not possible: let's try
+        // to add a move on x to make a diagonal move.
 
-          if (!test_collision_with_obstacles(1, y_move)
-              && test_collision_with_obstacles(-1, 0)) {
-            translate_xy(1, y_move);
-            next_move_date_y_increment = (int) (y_delay * Geometry::SQRT_2); // fix the speed
-          }
-          else if (!test_collision_with_obstacles(-1, y_move)
-              && test_collision_with_obstacles(1, 0)) {
-            translate_xy(-1, y_move);
-            next_move_date_y_increment = (int) (y_delay * Geometry::SQRT_2);
-          }
-          else {
-            /* The diagonal moves didn't work either.
-             * So we look for a place (up to 8 pixels on the left and on the right)
-             * where the required move would be allowed.
-             * If we find a such place, then we move towards this place.
-             */
+        if (!test_collision_with_obstacles(1, y_move)
+            && test_collision_with_obstacles(-1, 0)) {
+          translate_xy(1, y_move);
+          next_move_date_y_increment = (int) (y_delay * Geometry::SQRT_2); // fix the speed
+        }
+        else if (!test_collision_with_obstacles(-1, y_move)
+            && test_collision_with_obstacles(1, 0)) {
+          translate_xy(-1, y_move);
+          next_move_date_y_increment = (int) (y_delay * Geometry::SQRT_2);
+        }
+        else {
+          /* The diagonal moves didn't work either.
+           * So we look for a place (up to 8 pixels on the left and on the right)
+           * where the required move would be allowed.
+           * If we find a such place, then we move towards this place.
+           */
 
-            bool moved = false;
-            for (int i = 1; i <= 8 && !moved; i++) {
+          bool moved = false;
+          for (int i = 1; i <= 8 && !moved; i++) {
 
-              if (!test_collision_with_obstacles(i, y_move) && !test_collision_with_obstacles(1, 0)) {
-                translate_x(1);
-                moved = true;
-              }
-              else if (!test_collision_with_obstacles(-i, y_move) && !test_collision_with_obstacles(-1, 0)) {
-                translate_x(-1);
-                moved = true;
-              }
+            if (!test_collision_with_obstacles(i, y_move) && !test_collision_with_obstacles(1, 0)) {
+              translate_x(1);
+              moved = true;
+            }
+            else if (!test_collision_with_obstacles(-i, y_move) && !test_collision_with_obstacles(-1, 0)) {
+              translate_x(-1);
+              moved = true;
             }
           }
         }
-        else {
-          // no attractive place was found, but there is a horizontal move
-          if (!test_collision_with_obstacles(x_move, 0)) {
-            translate_x(x_move);
-            next_move_date_x += (int) (x_delay / Geometry::SQRT_2);
-          }
+      }
+      else {
+        // no attractive place was found, but there is a horizontal move
+        if (!test_collision_with_obstacles(x_move, 0)) {
+          // do the horizontal move right now, don't wait uselessly
+          update_x();
         }
       }
-      next_move_date_y += next_move_date_y_increment;
     }
+    next_move_date_y += next_move_date_y_increment;
   }
 }
 
@@ -536,8 +528,7 @@ void StraightMovement::update_smooth_y() {
  */
 void StraightMovement::update_non_smooth_x() {
 
-  uint32_t now = System::now();
-  if (x_move != 0 && now >= next_move_date_x) { // if it's time to try a move
+  if (x_move != 0) {
 
     // make the move only if there is no collision
     if (!test_collision_with_obstacles(x_move, y_move)) {
@@ -556,8 +547,7 @@ void StraightMovement::update_non_smooth_x() {
  */
 void StraightMovement::update_non_smooth_y() {
 
-  uint32_t now = System::now();
-  if (y_move != 0 && now >= next_move_date_y) { // if it's time to try a move
+  if (y_move != 0) { // if it's time to try a move
 
     // make the move only if there is no collision
     if (!test_collision_with_obstacles(x_move, y_move)) {
@@ -625,12 +615,16 @@ void StraightMovement::update() {
           if (next_move_date_x <= next_move_date_y) {
             // x move first
             update_x();
-            update_y();
+            if (now >= next_move_date_y) {
+              update_y();
+            }
           }
           else {
             // y move first
             update_y();
-            update_x();
+            if (now >= next_move_date_x) {
+              update_x();
+            }
           }
         }
         else {

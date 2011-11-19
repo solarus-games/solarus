@@ -103,7 +103,7 @@ function event_switch_activated(switch_name)
 end
 
 function DB16_camera_move()
-	sol.map.camera_move(808, 1056, 250, BB16_open_door)
+	sol.map.camera_move(808, 1056, 250, DB16_open_door)
 end
 
 function DB16_open_door()

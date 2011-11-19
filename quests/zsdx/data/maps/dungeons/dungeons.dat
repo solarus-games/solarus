@@ -162,27 +162,6 @@ height = 2192
 width = 2192
 height = 2192
 
-[dungeon_8.map_47.chest_0]
-floor = 0
-x = 1872
-y = 1328
-save = -1
-big = 0
-
-[dungeon_8.map_47.chest_1]
-floor = 0
-x = 800
-y = 384
-save = -1
-big = 0
-
-[dungeon_8.map_47.chest_2]
-floor = 0
-x = 160
-y = 1664
-save = -1
-big = 0
-
 [dungeon_8.map_49.chest_0]
 floor = -2
 x = 1344
@@ -719,5 +698,26 @@ floor = 1
 x = 176
 y = 56
 save = 614
+big = 0
+
+[dungeon_8.map_47.chest_0]
+floor = 0
+x = 1872
+y = 1328
+save = -1
+big = 0
+
+[dungeon_8.map_47.chest_1]
+floor = 0
+x = 800
+y = 384
+save = -1
+big = 0
+
+[dungeon_8.map_47.chest_2]
+floor = 0
+x = 160
+y = 1664
+save = -1
 big = 0
 

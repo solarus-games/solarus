@@ -37,13 +37,13 @@ function event_switch_activated(switch_name)
 	end
 end
 
-function BB1_camera_move()
-	sol.map.camera_move(896, 1712, 150, BB1_remove_barrier)
-end
-
 function BB1_remove_barrier()
 	sol.map.tile_set_enabled("LB1", false)
 	sol.main.play_sound("secret")
+end
+
+function BB1_camera_move()
+	sol.map.camera_move(896, 1712, 250, BB1_remove_barrier)
 end
 
 function event_camera_back()

@@ -55,13 +55,11 @@ function repeat_give_arrows()
   -- give arrows if necessary during the boss fight
   if sol.game.get_item_amount("bow") == 0 then
     local positions = {
-      { x = 376, y = 157 },
-      { x = 504, y = 157 },
-      { x = 376, y = 229 },
-      { x = 504, y = 229 },
+      { x = 408, y = 189 },
+      { x = 472, y = 189 },
     }
     arrow_xy = positions[math.random(#positions)]
-    sol.map.pickable_item_create("arrow", 3, -1, arrow_xy.x, arrow_xy.y, 0)
+    sol.map.pickable_item_create("arrow", 3, -1, arrow_xy.x, arrow_xy.y, 1)
   end
   sol.main.timer_start(repeat_give_arrows, 20000)
 end

@@ -37,7 +37,15 @@ function event_dialog_finished(first_message_id, answer)
   end
 end
 
--- Function called when the player has bought the sword.
+-- Function called when the player is obtaining the sword.
+function event_treasure_obtaining(item_name, variant, savegame_variable)
+
+  if item_name == "sword" then
+    sol.main.play_sound("treasure")
+  end
+end
+
+-- Function called when the player has just obtained the sword.
 function event_treasure_obtained(item_name, variant, savegame_variable)
    if (savegame_variable == 30) then
       sol.map.dialog_start("smith_cave.thank_you")

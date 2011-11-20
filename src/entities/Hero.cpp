@@ -1801,6 +1801,16 @@ int Hero::get_sword_damage_factor() {
 }
 
 /**
+ * @brief Returns whether the hero can be hurt currently.
+ * @param attacker an attacker that is trying to hurt the hero
+ * (or NULL if the source of the attack is not an enemy)
+ * @return true if the hero can be hurt
+ */
+bool Hero::can_be_hurt(Enemy* attacker) {
+  return state->can_be_hurt(attacker);
+}
+
+/**
  * @brief Hurts the hero if possible.
  * @param source an entity that hurts the hero (usually an enemy)
  * @param life_points number of heart quarters to remove (this number may be reduced by the tunic)

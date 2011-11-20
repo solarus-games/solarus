@@ -274,6 +274,7 @@ class Hero: public MapEntity {
      */
     void notify_attacked_enemy(EnemyAttack attack, Enemy& victim, EnemyReaction::Reaction& result, bool killed);
     int get_sword_damage_factor();
+    bool can_be_hurt(Enemy* attacker);
     void hurt(MapEntity& source, int life_points, int magic_points);
     void hurt(const Rectangle& source_xy, int life_points, int magic_points);
     void get_back_from_death();

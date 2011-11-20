@@ -702,7 +702,7 @@
 0	1	432	560	32	8	188
 0	1	432	632	32	8	187
 1	1	512	1005	main_entrance	1	0
-2	1	504	1016	16	16	to_outside_world	0	1	119	from_binbin_dungeon
+2	1	504	1016	16	16	to_outside_world	0	1	119	from_dungeon_10
 12	1	552	840	32	8	custom_obstacle_7	1	1	1	1
 12	1	552	864	32	8	custom_obstacle_8	1	1	1	1
 12	1	736	608	8	32	custom_obstacle_2	1	1	1	1

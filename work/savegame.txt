@@ -358,4 +358,6 @@ booleans:
 923	dungeon 1 1F: weak wall
 924	dungeon 1 1F: piece of heart
 925	dungeon 3 4F: big key door
+926     bone key cave: chest with the bone key
+927     bone key cave: chest with 50 rupees
 

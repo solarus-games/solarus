@@ -232,6 +232,9 @@ booleans:
 228	2F: Switchs1
 229	2F: Compass
 
+298     obtained the sword 2 or 3 from the boss
+299     boss killed
+
 301	dungeon 6 2F: chest with boss key
 302	dungeon 6 2F: chest with small key (south-east)
 303	dungeon 6 2F: chest with compass (underwater)

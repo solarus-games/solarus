@@ -1697,8 +1697,8 @@ line3 = "les ennemis !"
 # Epée 2 (Glaive Hylien)
 #       |--------------------|
 icon = 67
-line1 = "Tu as trouvé"
-line2 = "le Glaive Hylien !$0"
+line1 = "$1Tu as trouvé"
+line2 = "le Glaive Hylien !$0$0$0"
 line3 = "Cette nouvelle épée"
 next = _treasure.sword.2.1
 
@@ -1712,9 +1712,9 @@ line3 = "l'ancienne !"
 # Epée 3 (Sabre du Héros)
 #       |--------------------|
 icon = 68
-line1 = "Tu as trouvé"
-line2 = "le Sabre du Héros !"
-line3 = "Cette nouvelle lame$0"
+line1 = "$1Tu as trouvé"
+line2 = "le Sabre du Héros !$0$0$0"
+line3 = "Cette nouvelle lame"
 next = _treasure.sword.2.1
 
 [_treasure.sword.4]

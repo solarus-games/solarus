@@ -121,7 +121,6 @@
 12	1	152	552	16	8	custom_obstacle	0	1	0	0
 13	1	-16	117	16	16	close_eye_sensor	0
 7	1	160	48	laser	3	laser	0	-1	_random	1	-1
-12	1	-32	376	8	16	custom_obstacle_2	1	0	0	0
 8	1	192	613	npc	1	0	entities/hint_stone	dialog#bone_key_cave.hint
 0	2	112	616	96	8	412
 0	2	144	616	32	8	400

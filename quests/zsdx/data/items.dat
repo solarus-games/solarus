@@ -83,11 +83,11 @@
 # - sound_when_picked (string)
 #   When the item is picked up on the ground by the hero (i.e. represented as
 #   a pickable treasure), this variable indicates what sound is played.
-#   The default value is picked_item.
+#   The default value is "picked_item". Can be an empty string.
 #
 # - sound_when_brandished (string)
 #   This variable indicates what sound is played when the item is brandished by the
-#   player. The default value is treasure.
+#   player. The default value is "treasure". Can be an empty string.
 
 [feather]
 savegame_variable = 1100
@@ -269,6 +269,7 @@ initial_variant = 1
 [sword]
 savegame_variable = 1129
 nb_variants = 4
+sound_when_brandished = 
 
 [shield]
 savegame_variable = 1130

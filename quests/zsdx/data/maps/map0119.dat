@@ -1095,9 +1095,16 @@
 1	1	440	205	from_dungeon_10_5f	3	0
 2	1	432	192	16	16	roof_teletransporter	0	1	17	main_entrance
 19	1	432	192	roof_stairs	1	3
-7	1	400	165	boss	3	simple_green_soldier	2	299	_none	1	-1
-12	1	360	136	160	8	custom_obstacle	1	1	1	1
-12	1	360	232	160	8	custom_obstacle_2	1	1	1	1
-12	1	360	144	8	88	custom_obstacle_3	1	1	1	1
-12	1	512	144	8	88	custom_obstacle_4	1	1	1	1
+12	1	360	136	160	8	custom_obstacle	1	0	1	1
+12	1	360	232	160	8	custom_obstacle_2	1	0	1	1
+12	1	360	144	8	88	custom_obstacle_3	1	0	1	1
+12	1	512	144	8	88	custom_obstacle_4	1	0	1	1
+7	1	436	144	boss	3	poutroxor	2	299	_none	1	-1
+12	1	408	192	64	8	custom_obstacle_5	0	1	0	0
+12	1	464	200	8	40	custom_obstacle_6	0	1	0	0
+12	1	328	240	224	8	custom_obstacle_8	0	1	0	0
+12	1	408	200	8	40	custom_obstacle_7	0	1	0	0
+12	1	328	80	224	8	custom_obstacle_9	0	1	0	0
+12	1	328	88	8	152	custom_obstacle_10	0	1	0	0
+12	1	544	88	8	152	custom_obstacle_12	0	1	0	0
 0	2	424	400	32	8	1142

@@ -247,6 +247,7 @@ function event_enemy_dead(enemy_name)
   if enemy_name == "boss" then
     -- create the heart container manually to be sure it won't be in a hole
     sol.map.pickable_item_create("heart_container", 1, 626, 544, 789, 0)
+    sol.main.timer_stop_all()
   end
 end
 

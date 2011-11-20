@@ -85,17 +85,14 @@ Game::Game(Solarus &solarus, Savegame &savegame):
  */
 Game::~Game() {
 
-  delete current_map;
-
-  solarus.get_debug_keys().set_game(NULL);
   Music::play(Music::none);
 
+  delete current_map;
   delete transition;
   delete dialog_box;
   delete pause_menu;
   delete dungeon;
   delete gameover_sequence;
-
   delete keys_effect;
   delete hud;
   delete hero;
@@ -298,10 +295,12 @@ void Game::update_transitions() {
 
     if (reseting) {
       current_map->unload();
+      solarus.get_debug_keys().set_game(NULL);
       set_next_screen(new TitleScreen(solarus));
     }
     else if (restarting) {
       current_map->unload();
+      solarus.get_debug_keys().set_game(NULL);
       set_next_screen(new Game(solarus, savegame));
     }
     else if (transition_direction == Transition::OUT) {

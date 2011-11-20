@@ -33,7 +33,7 @@
  * @param hero_direction direction of the hero sprite before game over
  */
 GameoverSequence::GameoverSequence(Game &game, int hero_direction):
-  game(game), music_id(Music::get_current_music_id()), state(WAITING_START) {
+    game(game), music_id(Music::get_current_music_id()), state(WAITING_START) {
 
   gameover_menu_img = new Surface("gameover_menu.png", Surface::DIR_LANGUAGE);
   fade_sprite = new Sprite("hud/gameover_fade");
@@ -80,88 +80,88 @@ void GameoverSequence::update() {
   hero_dead_sprite->update();
 
   switch (state) {
- 
-  case WAITING_START:
-    if (now >= next_state_date) {
-      state = CLOSING_GAME;
-      fade_sprite->restart_animation();
-      Music::play(Music::none);
-    }
-    break;
 
-  case CLOSING_GAME:
-    fade_sprite->update();
-
-    if (fade_sprite->is_animation_finished()) {
-      state = RED_SCREEN;
-      Sound::play("hero_dying");
-      hero_dead_sprite->set_suspended(false);
-      hero_dead_sprite->set_current_animation("dying");
-      hero_dead_sprite->set_current_direction(0);
-      next_state_date = now + 2000;
-    }
-    break;
-
-  case RED_SCREEN:
-    hero_dead_sprite->update();
-
-    if (hero_dead_sprite->is_last_frame_reached() && now >= next_state_date) {
-      state = OPENING_MENU;
-      fade_sprite->set_current_animation("open");
-    }
-    break;
-
-  case OPENING_MENU:
-    fade_sprite->update();
-    if (fade_sprite->is_animation_finished()) {
-
-      Equipment &equipment = game.get_equipment();
-      if (equipment.has_ability("get_back_from_death")) {
-	state = SAVED_BY_FAIRY;
-	fairy_x = hero_dead_x + 12;
-	fairy_y = hero_dead_y + 21;
-	fairy_movement = new TargetMovement(240, 22, 96);
-	fairy_movement->set_xy(fairy_x, fairy_y);
-	equipment.notify_ability_used("get_back_from_death");
+    case WAITING_START:
+      if (now >= next_state_date) {
+        state = CLOSING_GAME;
+        fade_sprite->restart_animation();
+        Music::play(Music::none);
       }
-      else {
-	state = MENU;
-	Music::play("game_over.spc");
-	fairy_x = 76;
-	fairy_y = 124;
-	cursor_position = 0;
+      break;
+
+    case CLOSING_GAME:
+      fade_sprite->update();
+
+      if (fade_sprite->is_animation_finished()) {
+        state = RED_SCREEN;
+        Sound::play("hero_dying");
+        hero_dead_sprite->set_suspended(false);
+        hero_dead_sprite->set_current_animation("dying");
+        hero_dead_sprite->set_current_direction(0);
+        next_state_date = now + 2000;
       }
-    }
-    break;
+      break;
 
-  case SAVED_BY_FAIRY:
-    fairy_sprite->update();
-    fairy_movement->update();
-    fairy_x = fairy_movement->get_x();
-    fairy_y = fairy_movement->get_y();
-    
-    if (fairy_movement->is_finished()) {
-      state = WAITING_END;
-      next_state_date = now + 1000;
-      game.get_equipment().add_life(7 * 4);
-    }
-    break;
+    case RED_SCREEN:
+      hero_dead_sprite->update();
 
-  case WAITING_END:
-    if (now >= next_state_date) {
-      state = RESUME_GAME;
-      game.get_back_from_death();
-      Music::play(music_id);
-    }
-    break;
+      if (hero_dead_sprite->is_last_frame_reached() && now >= next_state_date) {
+        state = OPENING_MENU;
+        fade_sprite->set_current_animation("open");
+      }
+      break;
 
-  case RESUME_GAME:
+    case OPENING_MENU:
+      fade_sprite->update();
+      if (fade_sprite->is_animation_finished()) {
 
-    break;
+        Equipment &equipment = game.get_equipment();
+        if (equipment.has_ability("get_back_from_death")) {
+          state = SAVED_BY_FAIRY;
+          fairy_x = hero_dead_x + 12;
+          fairy_y = hero_dead_y + 21;
+          fairy_movement = new TargetMovement(240, 22, 96);
+          fairy_movement->set_xy(fairy_x, fairy_y);
+          equipment.notify_ability_used("get_back_from_death");
+        }
+        else {
+          state = MENU;
+          Music::play("game_over.spc");
+          fairy_x = 76;
+          fairy_y = 124;
+          cursor_position = 0;
+        }
+      }
+      break;
 
-  case MENU:
-    fairy_sprite->update();
-    break;
+    case SAVED_BY_FAIRY:
+      fairy_sprite->update();
+      fairy_movement->update();
+      fairy_x = fairy_movement->get_x();
+      fairy_y = fairy_movement->get_y();
+
+      if (fairy_movement->is_finished()) {
+        state = WAITING_END;
+        next_state_date = now + 1000;
+        game.get_equipment().add_life(7 * 4);
+      }
+      break;
+
+    case WAITING_END:
+      if (now >= next_state_date) {
+        state = RESUME_GAME;
+        game.get_back_from_death();
+        Music::play(music_id);
+      }
+      break;
+
+    case RESUME_GAME:
+
+      break;
+
+    case MENU:
+      fairy_sprite->update();
+      break;
 
   }
 }
@@ -223,23 +223,23 @@ void GameoverSequence::key_pressed(GameControls::GameKey key) {
 
       switch (cursor_position) {
 
-      case 0: // save and continue
-	game.get_savegame().save();
-	game.restart();
-	break;
+        case 0: // save and continue
+          game.get_savegame().save();
+          game.restart();
+          break;
 
-      case 1: // save and quit
-	game.get_savegame().save();
-	game.reset();
-	break;
+        case 1: // save and quit
+          game.get_savegame().save();
+          game.reset();
+          break;
 
-      case 2: // continue without saving
-	game.restart();
-	break;
+        case 2: // continue without saving
+          game.restart();
+          break;
 
-      case 3: // quit without saving
-	game.reset();
-	break;
+        case 3: // quit without saving
+          game.reset();
+          break;
 
       }
     }

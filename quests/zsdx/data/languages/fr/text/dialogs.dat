@@ -5250,6 +5250,13 @@ line2 = "attentif saura suivre"
 line3 = "le chemin."
 skip = all
 
+[bone_key_cave.hint]
+#       |-----------------------|
+line1 = "C'est en repoussant la"
+line2 = "lumière que viendra"
+line3 = "la lumière."
+skip = all
+
 [dungeon_2.solarus_child]
 #       |-----------------------|
 line1 = "$2$v... Merci."

@@ -51,46 +51,46 @@
 0	0	488	400	24	16	294
 0	0	488	392	24	8	292
 0	0	488	416	24	8	293
-10	0	192	416	16	16	evil_after_3	472	1
-10	0	208	416	16	16	evil_after_4	472	1
+10	0	336	480	16	16	evil_after_3	472	1
+10	0	208	464	16	16	evil_after_4	472	1
 10	0	192	400	16	16	evil_after_1	472	1
-10	0	208	400	16	16	evil_after_2	472	1
+10	0	256	432	16	16	evil_after_2	472	1
 7	0	200	413	evil_1	3	evil_tile	0	-1	_random	1	-1
-7	0	216	413	evil_2	3	evil_tile	0	-1	_random	1	-1
-7	0	216	429	evil_4	3	evil_tile	0	-1	_random	1	-1
-7	0	200	429	evil_3	3	evil_tile	0	-1	_random	1	-1
-10	0	320	400	16	16	evil_after_5	472	1
-7	0	328	413	evil_5	3	evil_tile	0	-1	_random	1	-1
+7	0	264	445	evil_2	3	evil_tile	0	-1	_random	1	-1
+7	0	216	477	evil_4	3	evil_tile	0	-1	_random	1	-1
+7	0	344	493	evil_3	3	evil_tile	0	-1	_random	1	-1
+10	0	256	448	16	16	evil_after_5	472	1
+7	0	264	461	evil_5	3	evil_tile	0	-1	_random	1	-1
 10	0	336	400	16	16	evil_after_6	472	1
 7	0	344	413	evil_6	3	evil_tile	0	-1	_random	1	-1
-10	0	336	416	16	16	evil_after_7	472	1
-7	0	344	429	evil_7	3	evil_tile	0	-1	_random	1	-1
+10	0	192	480	16	16	evil_after_7	472	1
+7	0	200	493	evil_7	3	evil_tile	0	-1	_random	1	-1
 10	0	320	416	16	16	evil_after_8	472	1
 7	0	328	429	evil_8	3	evil_tile	0	-1	_random	1	-1
 10	0	192	464	16	16	evil_after_9	472	1
 7	0	200	477	evil_9	3	evil_tile	0	-1	_random	1	-1
-10	0	208	464	16	16	evil_after_10	472	1
-7	0	216	477	evil_10	3	evil_tile	0	-1	_random	1	-1
-10	0	208	480	16	16	evil_after_11	472	1
-7	0	216	493	evil_11	3	evil_tile	0	-1	_random	1	-1
-10	0	192	480	16	16	evil_after_12	472	1
-7	0	200	493	evil_12	3	evil_tile	0	-1	_random	1	-1
-10	0	320	464	16	16	evil_after_13	472	1
-7	0	328	477	evil_13	3	evil_tile	0	-1	_random	1	-1
+10	0	208	416	16	16	evil_after_10	472	1
+7	0	216	429	evil_10	3	evil_tile	0	-1	_random	1	-1
+10	0	320	464	16	16	evil_after_11	472	1
+7	0	328	477	evil_11	3	evil_tile	0	-1	_random	1	-1
+10	0	336	416	16	16	evil_after_12	472	1
+7	0	344	429	evil_12	3	evil_tile	0	-1	_random	1	-1
+10	0	208	480	16	16	evil_after_13	472	1
+7	0	216	493	evil_13	3	evil_tile	0	-1	_random	1	-1
 10	0	336	464	16	16	evil_after_14	472	1
 7	0	344	477	evil_14	3	evil_tile	0	-1	_random	1	-1
-10	0	336	480	16	16	evil_after_15	472	1
-7	0	344	493	evil_15	3	evil_tile	0	-1	_random	1	-1
-10	0	320	480	16	16	evil_after_16	472	1
-7	0	328	493	evil_16	3	evil_tile	0	-1	_random	1	-1
-10	0	256	432	16	16	evil_after_17	472	1
-7	0	264	445	evil_17	3	evil_tile	0	-1	_random	1	-1
+10	0	192	416	16	16	evil_after_15	472	1
+7	0	200	429	evil_15	3	evil_tile	0	-1	_random	1	-1
+10	0	272	448	16	16	evil_after_16	472	1
+7	0	280	461	evil_16	3	evil_tile	0	-1	_random	1	-1
+10	0	208	400	16	16	evil_after_17	472	1
+7	0	216	413	evil_17	3	evil_tile	0	-1	_random	1	-1
 10	0	272	432	16	16	evil_after_18	472	1
 7	0	280	445	evil_18	3	evil_tile	0	-1	_random	1	-1
-10	0	272	448	16	16	evil_after_19	472	1
-7	0	280	461	evil_19	3	evil_tile	0	-1	_random	1	-1
-10	0	256	448	16	16	evil_after_20	472	1
-7	0	264	461	evil_20	3	evil_tile	0	-1	_random	1	-1
+10	0	320	480	16	16	evil_after_19	472	1
+7	0	328	493	evil_19	3	evil_tile	0	-1	_random	1	-1
+10	0	320	400	16	16	evil_after_20	472	1
+7	0	328	413	evil_20	3	evil_tile	0	-1	_random	1	-1
 2	0	208	352	16	16	teletransporter_4	0	1	97	entrance_D_1
 1	0	216	365	entrance_D_1	3	0
 18	0	200	352	door1_1	1	0	-1
@@ -248,7 +248,7 @@
 18	1	824	392	door3_2	2	0	-1
 18	1	776	392	door3_1	0	0	-1
 9	1	904	405	block_2	-1	entities/statue	1	1	2
-13	1	768	413	16	16	sensor2	0
+13	1	784	413	16	16	sensor2	0
 11	1	880	424	switch2_1	1	0	0
 9	1	832	61	block	-1	entities/block	1	0	0
 7	1	816	61	enemy	3	pike_detect	0	-1	_random	1	-1
@@ -311,7 +311,7 @@
 9	1	896	77	block_49	-1	entities/block	1	0	0
 19	1	168	32	stairs_4	1	0
 2	1	168	32	16	16	teletransporter	0	1	99	entrance_F_1
-2	1	168	32	16	16	teletransporter	0	1	99	entrance_F_1
+2	1	168	32	16	16	teletransporter_2	0	1	99	entrance_F_1
 1	1	176	45	entrance_F_1	3	0
 0	2	792	392	8	32	320
 0	2	0	0	24	224	170
@@ -338,3 +338,4 @@
 0	2	128	592	848	416	170
 0	2	160	24	32	8	152
 0	2	168	24	16	8	271
+0	2	0	224	128	808	170

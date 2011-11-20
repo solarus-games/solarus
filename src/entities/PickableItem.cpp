@@ -339,10 +339,13 @@ void PickableItem::notify_collision(MapEntity &other_entity, Sprite &other_sprit
  */
 void PickableItem::give_item_to_player() {
 
-  ItemProperties &properties = treasure.get_item_properties();
+  ItemProperties& properties = treasure.get_item_properties();
 
   // play the sound
-  Sound::play(properties.get_sound_when_picked());
+  const SoundId& sound_id = properties.get_sound_when_picked();
+  if (!sound_id.empty()) {
+    Sound::play(sound_id);
+  }
 
   // give the item
   if (properties.is_brandished_when_picked()) {

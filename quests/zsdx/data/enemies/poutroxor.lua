@@ -53,10 +53,10 @@ function skeleton_attack()
     nb_flames_created = nb_flames_created + 1
     local son_name = sol.enemy.get_name() .. "_son_" .. nb_flames_created
     sol.enemy.create_son(son_name, "blue_flame", 0, -48, 2)
-    local x, y = sol.map.enemy_get_position("flame")
+    local x, y = sol.map.enemy_get_position(son_name)
     local hero_x, hero_y = sol.map.hero_get_position()
     local angle = sol.main.get_angle(x, y, hero_x, hero_y)
-    sol.enemy.send_message("flame", angle)
+    sol.enemy.send_message(son_name, angle)
     sol.main.timer_start(skeleton_attack, math.random(1000, 3000))
   end, 500)
 end

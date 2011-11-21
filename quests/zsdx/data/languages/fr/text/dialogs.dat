@@ -2163,13 +2163,6 @@ line1 = "        Niveau 3       "
 line2 = " Antre de Maître Arbror"
 skip = current
 
-[dungeon_10]
-# Lorsqu'on pénètre dans le donjon 10
-#       |-----------------------|
-line1 = "     Niveau secret     "
-line2 = "     Tour des Cieux    "
-skip = current
-
 [found_piece_of_heart.first]
 #       |--------------------|
 icon = 75
@@ -5945,6 +5938,9 @@ line2 = "    Donjon des Pics "
 line3 = "        Rocheux"
 skip = current
 
-[dungeon_10.message1]
-line1 = "essai text"
+[dungeon_10.welcome]
+#       |-----------------------|
+line1 = "     Niveau secret     "
+line2 = "     Tour des Cieux    "
+skip = current
 

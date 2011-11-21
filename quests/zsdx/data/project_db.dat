@@ -4,6 +4,7 @@
 0	7	Outside world B2
 0	3	Outside world A3
 0	4	Outside world B3
+0	119	Outside world C3
 0	6	Outside world A4
 0	5	Outside world B4
 0	0	Intro
@@ -28,6 +29,12 @@
 0	81	Fairy Cave 1F NE
 0	78	Fairy Cave 2F
 0	29	Twin caves
+0	98	Dungeon 10 B1
+0	17	Dungeon 10 1F
+0	97	Dungeon 10 2F
+0	96	Dungeon 10 3F
+0	99	Dungeon 10 4F
+0	100	Dungeon 10 5F
 0	104	Dungeon 9 B1
 0	105	Dungeon 9 1F
 0	106	Dungeon 9 2F
@@ -101,12 +108,6 @@
 0	94	West mountains cave 3F
 0	93	North fairy fountain
 0	95	Potion shop
-0	17	Dungeon 10 1F
-0	97	Dungeon 10 2F
-0	96	Dungeon 10 3F
-0	98	Dungeon 10 B1
-0	100	Dungeon 10 5F
-0	99	Dungeon 10 4F
 0	111	East mountains cave 1F
 0	112	East mountains cave 2F
 0	113	East mountains cave 3F
@@ -115,7 +116,6 @@
 0	116	Cave to dungeon 8 1F
 0	117	Cave to dungeon 8 2F
 0	118	Cave to dungeon 8 B1
-0	119	Outside world C3
 0	120	Bone key cave
 1	1	Light World
 1	13	Dark World

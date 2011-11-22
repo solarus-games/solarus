@@ -379,6 +379,13 @@ public abstract class MapEntity extends Observable {
     }
 
     /**
+     * Returns the current map of this entity.
+     */
+    public Map getMap() {
+	return map;
+    }
+
+    /**
      * Changes the map of this entity.
      * @param map the new map
      */

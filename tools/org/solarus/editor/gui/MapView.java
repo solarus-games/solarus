@@ -16,7 +16,6 @@
  */
 package org.solarus.editor.gui;
 
-import org.solarus.editor.map_editor_actions.ActionUpDownLayer;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.LinkedList;

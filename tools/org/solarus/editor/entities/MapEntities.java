@@ -184,14 +184,15 @@ public class MapEntities implements Iterable<MapEntity> {
     /**
      * Removes an entity from the list.
      * @param entity the entity to remove
+     * @return true if the entity was found and removed
      */
-    public void remove(MapEntity entity) {
+    public boolean remove(MapEntity entity) {
 
 	if (entity.getType() == EntityType.TILE) {
-	    tiles.remove(entity);
+	    return tiles.remove(entity);
 	}
 	else {
-	    dynamicEntities.remove(entity);
+	    return dynamicEntities.remove(entity);
 	}
     }
 

@@ -810,8 +810,10 @@ public class Map extends Observable {
 
     /**
      * Changes the layer of an entity. You should call this method instead of
-     * calling directly MapEntity.setLayer(), because the entity of the 3 layers are
-     * stored in 3 different structures.
+     * calling directly MapEntity.setLayer(), because the entity of the 3
+     * layers are stored in 3 different structures.
+     * If the entity is not known by the map (yet), this method just
+     * calls MapEntity.setLayer().
      * @param entity the entity to change the layer
      * @param layer the new layer
      */
@@ -821,9 +823,11 @@ public class Map extends Observable {
 
 	if (layer != oldLayer) {
 	    entity.setLayer(layer);
-	    allEntities[oldLayer.getId()].remove(entity);
-	    allEntities[layer.getId()].add(entity);
-	    
+
+	    if (allEntities[oldLayer.getId()].remove(entity)) {
+		allEntities[layer.getId()].add(entity);
+	    }
+
 	    setChanged();
 	    notifyObservers();
 	}
@@ -850,7 +854,8 @@ public class Map extends Observable {
 	    }
 	}
 
-	// now sortedEntities contains all selected entities, sorted in the same order as in the map
+	// now sortedEntities contains all entities of the list,
+	// sorted in the same order as in the map
 	return sortedEntities;
     }
 

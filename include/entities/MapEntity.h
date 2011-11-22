@@ -270,8 +270,9 @@ class MapEntity {
     bool is_center_in(const Rectangle &rectangle);
 
     double get_vector_angle(MapEntity &other);
-    int get_distance(MapEntity &other);
     int get_distance(int x, int y);
+    int get_distance(const Rectangle& xy);
+    int get_distance(MapEntity &other);
 
     // collisions
     virtual bool is_obstacle_for(MapEntity &other);

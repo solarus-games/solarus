@@ -51,20 +51,22 @@ class Door: public Detector {
     static const MessageId key_required_message_ids[]; /**< id of the message shown for each subtype */
 
     // properties
-    Subtype subtype;           /**< subtype of door */
-    int savegame_variable;     /**< variable where the door state is saved */
+    Subtype subtype;                  /**< subtype of door */
+    int savegame_variable;            /**< variable where the door state is saved */
 
     // state
-    bool door_open;            /**< indicates that this door is open */
-    bool changing;             /**< indicates that the door is being open or closed */
-    bool initialized;          /**< true if update() was called at least once */
+    bool door_open;                   /**< indicates that this door is open */
+    bool changing;                    /**< indicates that the door is being open or closed */
+    bool initialized;                 /**< true if update() was called at least once */
+    uint32_t next_hint_sound_date;    /**< if the player has the ability to detect weak walls,
+                                       * indicates when a hint sound is played next time */
 
     void set_opening();
     void set_closing();
 
     bool requires_key();
     bool requires_small_key();
-    bool requires_bomb();
+    bool requires_explosion();
     bool can_open();
     void update_dynamic_tiles();
 

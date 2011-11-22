@@ -108,6 +108,7 @@ void DebugKeys::key_pressed(InputEvent::KeyboardKey key) {
           equipment.add_item("world_map", 1);
           equipment.add_item("feather", 1);
           equipment.add_item("flippers", 1);
+          equipment.add_item("magic_cape", 1);
           equipment.set_item_assigned(0, "bow");
           equipment.set_item_assigned(1, "feather");
         }

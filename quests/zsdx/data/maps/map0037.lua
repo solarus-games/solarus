@@ -8,6 +8,10 @@ function event_map_started(destination_point_name)
     -- the player already gave the golden bars and obtained the edelweiss
     sol.map.npc_remove("billy")
   end
+
+  if destination_point_name ~= "from_outside" then
+    sol.map.door_set_open("door", true)
+  end
 end
 
 function event_npc_interaction(npc_name)
@@ -101,10 +105,10 @@ function billy_leave()
   elseif billy_leave_step == 2 then
     sol.main.sprite_set_direction(sprite, 1)
     sol.main.timer_start(billy_leave, 500)
-  elseif billy_leave_step == 3 then    
+  elseif billy_leave_step == 3 then
     sol.map.door_open("door")
     sol.main.timer_start(billy_leave, 500)
-  elseif billy_leave_step == 4 then 
+  elseif billy_leave_step == 4 then
     local m = sol.main.path_movement_create("22222222", 48)
     sol.map.npc_start_movement("billy", m)
     sol.main.sprite_set_animation(sprite, "walking")

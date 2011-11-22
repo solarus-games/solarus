@@ -393,12 +393,12 @@ public class Project {
     }
 
     /**
-     * Returns a map file knowing its id for the current project.
-     * @param mapId id of a map
-     * @return the file corresponding to this id
+     * Returns a dialogs file knowing its id for the current project.
+     * @param dialogsId id of a dialog file
+     * @return the dialogs file corresponding to this id
      */
-    public static File getDialogsFile(String fileName) {
-	return new File(getDialogsPath() + File.separator + fileName);
+    public static File getDialogsFile(String dialogsId) {
+	return new File(getDialogsPath() + File.separator + dialogsId);
     }
     
     /**

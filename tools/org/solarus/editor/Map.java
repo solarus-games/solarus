@@ -195,17 +195,17 @@ public class Map extends Observable {
 	return mapId;
     }
 
+    @Override
+    public String toString() {
+        return getName();
+    }
+
     /**
      * Returns the map name.
-     * @return the name of the map, for example "Link's House"
+     * @return the human name of the map
      */
     public String getName() {
 	return name;
-    }
-
-    @Override
-    public String toString() {
-        return name;
     }
 
     /**

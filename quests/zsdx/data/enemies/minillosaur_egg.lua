@@ -58,7 +58,6 @@ function event_custom_attack_received(attack, sprite)
     break_egg()
     sol.main.play_sound("monster_hurt")
   end
-  return 0 -- don't remove any life points
 end
 
 -- Starts breaking the egg

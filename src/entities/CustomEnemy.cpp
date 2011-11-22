@@ -246,11 +246,10 @@ void CustomEnemy::notify_collision_with_enemy(Enemy& other, Sprite& other_sprite
  * @param attack the attack
  * @param this_sprite the sprite of this enemy subject to the attack, or NULL
  * if the attack does not come from a pixel-precise collision test.
- * @return the number of health points lost (can be 0)
  */
-int CustomEnemy::custom_attack(EnemyAttack attack, Sprite* this_sprite) {
+void CustomEnemy::custom_attack(EnemyAttack attack, Sprite* this_sprite) {
 
-  return script->event_custom_attack_received(attack, this_sprite);
+  script->event_custom_attack_received(attack, this_sprite);
 }
 
 /**

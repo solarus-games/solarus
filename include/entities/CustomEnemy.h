@@ -57,7 +57,7 @@ class CustomEnemy: public Enemy {
     void notify_sprite_frame_changed(Sprite& sprite, const std::string& animation, int frame);
     void notify_sprite_animation_finished(Sprite& sprite, const std::string& animation);
     void notify_collision_with_enemy(Enemy& other, Sprite& other_sprite, Sprite& this_sprite);
-    int custom_attack(EnemyAttack attack, Sprite* this_sprite);
+    void custom_attack(EnemyAttack attack, Sprite* this_sprite);
     void notify_hurt(MapEntity& source, EnemyAttack attack, int life_points);
     void notify_dead();
     void notify_immobilized();

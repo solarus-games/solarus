@@ -300,26 +300,23 @@ void EnemyScript::event_collision_enemy(const std::string& other_name, Sprite& o
 
 /**
  * @brief Notifies the script that the enemy is receiving an attack
- * with a custom effect, which means that your script decides what happens.
- * and returns the number of life points to remove.
+ * with a custom effect, which means that your script decides what happens
+ * and returns whether it did something.
  * @param attack the type of attack received
  * @param sprite the sprite of the enemy that receives the attack, or NULL
  * if the attack does not come from a pixel-precise collision test.
- * @return the number of life points to remove from the enemy
  */
-int EnemyScript::event_custom_attack_received(EnemyAttack attack, Sprite* sprite) {
+void EnemyScript::event_custom_attack_received(EnemyAttack attack, Sprite* sprite) {
 
-  int result = 0;
   if (sprite != NULL) {
     // pixel-perfect collision
-    notify_script("event_custom_attack_received", "si i",
-        Enemy::get_attack_name(attack).c_str(), create_sprite_handle(*sprite), &result);
+    notify_script("event_custom_attack_received", "si",
+        Enemy::get_attack_name(attack).c_str(), create_sprite_handle(*sprite));
   }
   else {
-    notify_script("event_custom_attack_received", "s i",
-        Enemy::get_attack_name(attack).c_str(), &result);
+    notify_script("event_custom_attack_received", "s",
+        Enemy::get_attack_name(attack).c_str());
   }
-  return result;
 }
 
 /**

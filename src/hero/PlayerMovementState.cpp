@@ -138,7 +138,10 @@ int Hero::PlayerMovementState::get_wanted_movement_direction8() {
  * to set the new speed.
  */
 void Hero::PlayerMovementState::notify_walking_speed_changed() {
-  get_player_movement()->set_moving_speed(hero.get_walking_speed());
+
+  if (get_player_movement() != NULL) {
+    get_player_movement()->set_moving_speed(hero.get_walking_speed());
+  }
 }
 
 /**

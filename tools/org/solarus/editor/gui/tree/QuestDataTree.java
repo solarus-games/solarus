@@ -43,9 +43,11 @@ import org.solarus.editor.gui.EditorWindow;
 import org.solarus.editor.gui.FileEditorWindow;
 import org.solarus.editor.gui.MapEditorWindow;
 import org.solarus.editor.gui.TilesetEditorWindow;
+import org.solarus.editor.gui.GuiTools;
 
 /**
- * The Quest data tree
+ * A tree that shows the whole resource database of the game:
+ * maps, tilesets, sprites, enemies, etc.
  */
 public class QuestDataTree extends JTree implements TreeSelectionListener, Observer {
 
@@ -59,8 +61,6 @@ public class QuestDataTree extends JTree implements TreeSelectionListener, Obser
         addTreeSelectionListener(this);
         addMouseListener(new QuestDataTreeMouseAdapter());
         popupMenu = new QuestDataTreePopupMenu();
-        //
-
     }
 
     public void setRoot(String projectPath) {
@@ -74,14 +74,16 @@ public class QuestDataTree extends JTree implements TreeSelectionListener, Obser
 
     public void addMap(Map map) {
         DefaultMutableTreeNode mapNode = (DefaultMutableTreeNode) treeModel.getChild(treeModel.getRoot(), ResourceType.MAP.ordinal());
-        ((EditorTreeModel) treeModel).insertNodeInto(new DefaultMutableTreeNode(map), mapNode, mapNode.getChildCount());
+	ResourceElement element = new ResourceElement(ResourceType.MAP, map.getId(), map.getName());
+        ((EditorTreeModel) treeModel).insertNodeInto(new DefaultMutableTreeNode(element), mapNode, mapNode.getChildCount());
         map.addObserver(this);
         repaint();
     }
 
     public void addTileset(Tileset tileset) {
         DefaultMutableTreeNode tilesetNode = (DefaultMutableTreeNode) treeModel.getChild(treeModel.getRoot(), ResourceType.TILESET.ordinal());
-        tilesetNode.add(new DefaultMutableTreeNode(tileset));
+	ResourceElement element = new ResourceElement(ResourceType.TILESET, tileset.getId(), tileset.getName());
+        tilesetNode.add(new DefaultMutableTreeNode(element));
         repaint();
     }
 
@@ -94,10 +96,10 @@ public class QuestDataTree extends JTree implements TreeSelectionListener, Obser
         public EditorTreeModel(String path) {
             super((new DefaultMutableTreeNode("Quest")));
             for (ResourceType resourceType : ResourceType.values()) {
-                DefaultMutableTreeNode noeudResource = new DefaultMutableTreeNode(resourceType.getName());
-                ((DefaultMutableTreeNode) getRoot()).add(noeudResource);
+                DefaultMutableTreeNode resourceNode = new DefaultMutableTreeNode(resourceType.getName());
+                ((DefaultMutableTreeNode) getRoot()).add(resourceNode);
                 if (Project.isLoaded()) {
-                    addChildren(noeudResource, resourceType);
+                    addChildren(resourceNode, resourceType);
                 }
             }
         }
@@ -108,38 +110,17 @@ public class QuestDataTree extends JTree implements TreeSelectionListener, Obser
         }
 
         protected final void addChildren(DefaultMutableTreeNode parentNode, ResourceType resourceType) {
-            try {
-                Resource resource = Project.getResource(resourceType);
-                String[] ids = resource.getIds();
+            Resource resource = Project.getResource(resourceType);
+            String[] ids = resource.getIds();
 
-                for (int i = 0; i < ids.length; i++) {
-                    switch (resourceType) {
-                        case MAP:
-                            parentNode.add(new DefaultMutableTreeNode(new Map(ids[i])));
-                            break;
-                        case TILESET:
-                            parentNode.add(new DefaultMutableTreeNode(new Tileset(ids[i])));
-                            break;
-                        case DIALOGS:
-                            parentNode.add(new DefaultMutableTreeNode(new Dialogs(ids[i])));
-                            break;
-                        case ENEMY:
-                            parentNode.add(new DefaultMutableTreeNode(new CustomFile(Project.getEnemyScriptFile(ids[i]), resource.getElementName(ids[i]))));
-                            break;
-                        case ITEM:
-                            parentNode.add(new DefaultMutableTreeNode(new CustomFile(Project.getItemScriptFile(ids[i]), resource.getElementName(ids[i]))));
-                            break;
-                        case SPRITE:
-                            parentNode.add(new DefaultMutableTreeNode(new CustomFile(Project.getSpriteFile(ids[i]).getAbsolutePath(), resource.getElementName(ids[i]))));
-                            break;
-                        default:
-                            //CustomFile cf = new CustomFile(resourceName)
-                            parentNode.add(new DefaultMutableTreeNode(resource.getElementName(ids[i])));
-                            break;
-                    }
-                }
-            } catch (ZSDXException zsdxe) {
-            }
+	    try {
+		for (int i = 0; i < ids.length; i++) {
+		    parentNode.add(new DefaultMutableTreeNode(new ResourceElement(resourceType, ids[i], resource.getElementName(ids[i]))));
+		}
+	    }
+	    catch (ZSDXException ex) {
+	        GuiTools.errorDialog("Unexpected error while building the quest tree: " + ex.getMessage());
+	    }
         }
     }
 
@@ -150,57 +131,102 @@ public class QuestDataTree extends JTree implements TreeSelectionListener, Obser
             DefaultMutableTreeNode clickedNode = null;
             try {
                 if (e.getButton() == MouseEvent.BUTTON3) {
+		    // right click: show a popup menu if the element is a map
                     int row = QuestDataTree.this.getRowForLocation(e.getX(), e.getY());
                     if (row == -1) {
                         return;
                     }
                     QuestDataTree.this.setSelectionRow(row);
                     clickedNode = (DefaultMutableTreeNode) QuestDataTree.this.getSelectionPath().getLastPathComponent();
-                    if (clickedNode.getUserObject() instanceof Map) {
-                        popupMenu.setMap((Map) clickedNode.getUserObject());
+		    ResourceElement element = (ResourceElement) clickedNode.getUserObject();
+                    if (element.type == ResourceType.MAP) {
+                        popupMenu.setMap(element.id);
                         popupMenu.show((JComponent) e.getSource(),
                                 e.getX(), e.getY());
                     }
 
                 } else if (e.getClickCount() == 2) {
-
+		    // double-click: open the clicked file
 
                     clickedNode = (DefaultMutableTreeNode) QuestDataTree.this.getSelectionPath().getLastPathComponent();
+		    if (clickedNode.isLeaf()) {
+			ResourceElement element = (ResourceElement) clickedNode.getUserObject();
 
-                    if (clickedNode.getUserObject() instanceof String) {
-                        //
-                    } else if (clickedNode.getUserObject() instanceof Map) {
-                        Map m = ((Map) clickedNode.getUserObject());
-                        MapEditorWindow mapEditor = new MapEditorWindow(quest, editorWindow, m);
-                        editorWindow.addEditor(mapEditor);
-                        m.addObserver(editorWindow);
-                    } else if (clickedNode.getUserObject() instanceof Tileset) {
-                        Tileset t = ((Tileset) clickedNode.getUserObject());
+			switch (element.type) {
 
-                        TilesetEditorWindow tileEditor = new TilesetEditorWindow(quest, editorWindow, t);
-                        editorWindow.addEditor(tileEditor);
-                    } else if (clickedNode.getUserObject() instanceof Dialogs) {
-                        Dialogs d = ((Dialogs) clickedNode.getUserObject());
-                        DialogsEditorWindow dialogsEditor = new DialogsEditorWindow(quest, editorWindow, d);
-                        editorWindow.addEditor(dialogsEditor);
-                    } else {
-                        CustomFile cf = ((CustomFile) clickedNode.getUserObject());
-                        FileEditorWindow fileEditor = new FileEditorWindow(quest, editorWindow, new File(cf.getAbsolutePath()));
-                        editorWindow.addEditor(fileEditor);
-                    }
+			    case MAP:
+			    {
+				Map m = new Map(element.id);
+				MapEditorWindow mapEditor = new MapEditorWindow(quest, editorWindow, m);
+				editorWindow.addEditor(mapEditor);
+				m.addObserver(editorWindow);
+				break;
+			    }
 
-                }
-            } catch (ClassCastException cce) {
-                System.out.println("Le noeud sur lequel on a cliqué est : " + clickedNode);
-                cce.printStackTrace();
-            } catch (NullPointerException npe) {
+			    case TILESET:
+			    {
+				Tileset t = new Tileset(element.id);
+				TilesetEditorWindow tileEditor = new TilesetEditorWindow(quest, editorWindow, t);
+				editorWindow.addEditor(tileEditor);
+				break;
+			    }
+
+			    case DIALOGS:
+			    {
+				/* TODO uncomment this when the dialog editor works
+				Dialogs d = new Dialogs(element.id);
+				DialogsEditorWindow dialogsEditor = new DialogsEditorWindow(quest, editorWindow, d);
+				editorWindow.addEditor(dialogsEditor);
+				*/
+				File f = Project.getDialogsFile(element.id);
+				FileEditorWindow fileEditor = new FileEditorWindow(quest, editorWindow, f);
+
+				editorWindow.addEditor(fileEditor);
+				break;
+			    }
+
+			    case ENEMY:
+			    {
+				File f = new File(Project.getEnemyScriptFile(element.id));
+				FileEditorWindow fileEditor = new FileEditorWindow(quest, editorWindow, f);
+				editorWindow.addEditor(fileEditor);
+				break;
+			    }
+
+			    case ITEM:
+			    {
+				File f = new File(Project.getItemScriptFile(element.id));
+				FileEditorWindow fileEditor = new FileEditorWindow(quest, editorWindow, f);
+				editorWindow.addEditor(fileEditor);
+				break;
+			    }
+
+			    case SPRITE:
+			    {
+				File f = new File(Project.getSpriteFile(element.id).getAbsolutePath());
+				FileEditorWindow fileEditor = new FileEditorWindow(quest, editorWindow, f);
+				editorWindow.addEditor(fileEditor);
+				break;
+			    }
+
+			    default:
+				// this type of resource is not supported by the editor (yet...)
+			}
+		    }
+		}
             }
+	    catch (ZSDXException ex) {
+	        GuiTools.errorDialog(ex.getMessage());
+	    }
         }
     }
 
+    /**
+     * Popup menu associated to maps in the tree.
+     */
     class QuestDataTreePopupMenu extends JPopupMenu implements ActionListener {
 
-        private Map map;
+        private String mapId;
         private JMenuItem mapMenu, scriptMenu;
 
         public QuestDataTreePopupMenu() {
@@ -210,39 +236,52 @@ public class QuestDataTree extends JTree implements TreeSelectionListener, Obser
             scriptMenu = new JMenuItem("Open Map Script");
             add(scriptMenu);
             scriptMenu.addActionListener(this);
-
         }
 
         public void actionPerformed(ActionEvent e) {
+
             if (e.getSource() == mapMenu) {
-                MapEditorWindow mapEditor = new MapEditorWindow(quest, editorWindow, map);
-                editorWindow.addEditor(mapEditor);
-                map.addObserver(editorWindow);
+	        // open the map
+		try {
+		    Map map = new Map(mapId);
+		    MapEditorWindow mapEditor = new MapEditorWindow(quest, editorWindow, map);
+		    editorWindow.addEditor(mapEditor);
+		    map.addObserver(editorWindow);
+		}
+		catch (ZSDXException ex) {
+		    GuiTools.errorDialog("Could not load the map: " + ex.getMessage());
+		}
             } else {
-                String mapId = map.getId();
+	        // open the script
                 File mapScritFile = Project.getMapScriptFile(mapId);
                 FileEditorWindow fileEditor = new FileEditorWindow(quest, editorWindow, mapScritFile);
                 editorWindow.addEditor(fileEditor);
             }
         }
 
-        public void setMap(Map map) {
-            this.map = map;
+        public void setMap(String mapId) {
+            this.mapId = mapId;
         }
     }
 
-    class CustomFile extends File {
+    /**
+     * Stores the id of an element from a resource, its name and its
+     * resource type.
+     */
+    class ResourceElement {
 
-        String resourceName;
+	public final ResourceType type;
+ 	public final String id;
+	public final String name;
 
-        public CustomFile(String s, String n) {
-            super(s);
-            this.resourceName = n;
-        }
+	public ResourceElement(ResourceType type, String id, String name) {
+	    this.type = type;
+	    this.id = id;
+	    this.name = name;
+	}
 
-        @Override
-        public String toString() {
-            return resourceName;
-        }
+	public String toString() {
+	    return name;
+	}
     }
 }

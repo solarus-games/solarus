@@ -253,7 +253,6 @@ public class EditorWindow extends JFrame implements Observer, ProjectObserver, C
         menuNewTileset = new JMenuItem("Tileset");
         menuNewTileset.setMnemonic(KeyEvent.VK_T);
         menuNewTileset.getAccessibleContext().setAccessibleDescription("Create a new tileset");
-        menuNewTileset.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.ALT_MASK));
         menuNewTileset.addActionListener(new ActionNewTileset());
         menuNew.add(menuNewTileset);
         // menu TextFile

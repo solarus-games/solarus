@@ -27,6 +27,12 @@ function event_map_started(destination_point_name)
     sol.map.tile_set_enabled("beaumont_cave_hole", false)
     sol.map.teletransporter_set_enabled("to_beaumont_cave", false)
   end
+
+  -- Dungeon 9 entrance
+  if not sol.game.is_dungeon_finished(8) then
+    sol.map.teletransporter_set_enabled("dungeon_9_teletransporter", false)
+    sol.map.tile_set_enabled("dungeon_9_entrance", false)
+  end
 end
 
 function is_ladder_activated()

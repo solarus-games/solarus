@@ -1085,5 +1085,26 @@
 0	1	80	168	8	16	1148
 0	1	80	200	8	8	1179
 0	1	88	192	8	8	1179
-1	1	440	173	from_binbin_dungeon	3	0
+1	1	440	437	from_dungeon_10	3	0
+13	1	440	221	16	16	start_boss_sensor	0
+10	1	424	168	32	8	roof_entrance_1	1012	1
+10	1	424	176	32	8	roof_entrance_2	1014	1
+10	1	424	184	8	24	roof_entrance_3	1016	1
+10	1	448	184	8	24	roof_entrance_5	1016	1
+10	1	432	184	16	24	roof_entrance_4	1015	1
+1	1	440	205	from_dungeon_10_5f	3	0
+2	1	432	192	16	16	roof_teletransporter	0	1	100	Entrance_H_1
+19	1	432	192	roof_stairs	1	3
+12	1	360	136	160	8	custom_obstacle	1	0	1	1
+12	1	360	232	160	8	custom_obstacle_2	1	0	1	1
+12	1	360	144	8	88	custom_obstacle_3	1	0	1	1
+12	1	512	144	8	88	custom_obstacle_4	1	0	1	1
+7	1	436	144	boss	3	poutroxor	2	299	_none	1	-1
+12	1	408	192	64	8	custom_obstacle_5	0	1	0	0
+12	1	464	200	8	40	custom_obstacle_6	0	1	0	0
+12	1	328	240	224	8	custom_obstacle_8	0	1	0	0
+12	1	408	200	8	40	custom_obstacle_7	0	1	0	0
+12	1	328	80	224	8	custom_obstacle_9	0	1	0	0
+12	1	328	88	8	152	custom_obstacle_10	0	1	0	0
+12	1	544	88	8	152	custom_obstacle_12	0	1	0	0
 0	2	424	400	32	8	1142

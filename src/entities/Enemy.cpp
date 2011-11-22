@@ -762,11 +762,11 @@ void Enemy::restore_movement() {
  */
 void Enemy::attack_hero(Hero &hero, Sprite *this_sprite) {
 
-  if (!is_immobilized() && can_attack) {
+  if (!is_immobilized() && can_attack && hero.can_be_hurt(this)) {
 
     bool hero_protected = false;
-    if (minimum_shield_needed != 0 &&
-	get_equipment().has_ability("shield", minimum_shield_needed)) {
+    if (minimum_shield_needed != 0
+        && get_equipment().has_ability("shield", minimum_shield_needed)) {
 
       double angle = hero.get_vector_angle(*this);
       int protected_direction = (int) ((angle + Geometry::PI_OVER_2 / 2.0) * 4 / Geometry::TWO_PI);
@@ -904,6 +904,7 @@ void Enemy::try_hurt(EnemyAttack attack, MapEntity &source, Sprite *this_sprite)
       else {
         // no attack was made: notify the source correctly
         reaction.type = EnemyReaction::IGNORED;
+        invulnerable = false;
       }
       break;
 
@@ -1135,13 +1136,13 @@ bool Enemy::is_immobilized() {
  *
  * @param attack the attack
  * @param this_sprite the sprite of this enemy subject to the attack, or NULL
- * if the attack does not come from a pixel-precise collision test.
- * @return the number of health points lost (can be 0)
+ * if the attack does not come from a pixel-precise collision test
  */
-int Enemy::custom_attack(EnemyAttack attack, Sprite *this_sprite) {
+void Enemy::custom_attack(EnemyAttack attack, Sprite* this_sprite) {
 
+  // TODO merge Enemy and CustomEnemy since all enemies are scripted now, and
+  // remove this error that cannot happen anyway
   Debug::die(StringConcat() << "The custom attack for enemy '" << get_name() << "' is not defined");
-  return 0;
 }
 
 /**

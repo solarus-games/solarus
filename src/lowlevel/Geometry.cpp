@@ -77,6 +77,17 @@ double Geometry::get_distance(int x1, int y1, int x2, int y2) {
 }
 
 /**
+ * @brief Returns the distance between two points.
+ * @param xy1 coordinates of the first point
+ * @param xy2 coordinates of the second point
+ * @return the distance in pixels
+ */
+double Geometry::get_distance(const Rectangle& xy1, const Rectangle& xy2) {
+
+  return get_distance(xy1.get_x(), xy1.get_y(), xy2.get_x(), xy2.get_y());
+}
+
+/**
  * @brief Returns the angle of the vector formed by two points.
  * @param x1 x coordinate of the first point
  * @param y1 y coordinate of the first point

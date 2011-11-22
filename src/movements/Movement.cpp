@@ -203,7 +203,7 @@ void Movement::translate_xy(const Rectangle &dxy) {
  */
 void Movement::notify_position_changed() {
 
-  if (entity != NULL) {
+  if (entity != NULL && !entity->is_being_removed()) {
     entity->notify_position_changed();
   }
 }
@@ -214,7 +214,7 @@ void Movement::notify_position_changed() {
  */
 void Movement::notify_obstacle_reached() {
 
-  if (entity != NULL) {
+  if (entity != NULL && !entity->is_being_removed()) {
     entity->notify_obstacle_reached();
   }
 }
@@ -309,7 +309,7 @@ void Movement::update() {
 
   if (!finished && is_finished()) {
     finished = true;
-    if (entity != NULL) {
+    if (entity != NULL && !entity->is_being_removed()) {
       entity->notify_movement_finished();
     }
   }

@@ -22,6 +22,8 @@
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 #include "lowlevel/Sound.h"
+#include "lowlevel/System.h"
+#include "lowlevel/Geometry.h"
 #include "lua/MapScript.h"
 #include "Sprite.h"
 #include "Game.h"
@@ -54,8 +56,12 @@ const MessageId Door::key_required_message_ids[] = {
 Door::Door(const std::string &name, Layer layer, int x, int y,
 	     int direction, Subtype subtype, int savegame_variable):
   Detector(COLLISION_FACING_POINT | COLLISION_SPRITE, name, layer, x, y, 16, 16),
-  subtype(subtype), savegame_variable(savegame_variable), door_open(true),
-  changing(false), initialized(false) {
+  subtype(subtype),
+  savegame_variable(savegame_variable),
+  door_open(true),
+  changing(false),
+  initialized(false),
+  next_hint_sound_date(0) {
 
   if (subtype == SMALL_KEY_BLOCK || subtype == WEAK_BLOCK) {
     set_size(16, 16);
@@ -67,7 +73,8 @@ Door::Door(const std::string &name, Layer layer, int x, int y,
     set_size(32, 16);
   }
 
-  create_sprite("entities/door", true);
+  Sprite& sprite = create_sprite("entities/door", true);
+  sprite.set_ignore_suspend(true); // allow the animation while the camera is moving
   set_direction(direction);
 }
 
@@ -245,7 +252,7 @@ void Door::notify_collision(MapEntity &other_entity, Sprite &other_sprite, Sprit
  */
 void Door::notify_collision_with_explosion(Explosion &explosion, Sprite &sprite_overlapping) {
 
-  if (requires_bomb() && !is_open() && !changing) {
+  if (requires_explosion() && !is_open() && !changing) {
     set_opening();
   }
 }
@@ -267,10 +274,10 @@ bool Door::requires_small_key() {
 }
 
 /**
- * @brief Returns whether this door must be open with a bomb explosion.
- * @return true if this door must be open with a bomb explosion
+ * @brief Returns whether this door must be open with an explosion.
+ * @return true if this door must be open with an explosion
  */
-bool Door::requires_bomb() {
+bool Door::requires_explosion() {
   return subtype == WEAK || subtype == VERY_WEAK || subtype == WEAK_BLOCK;
 }
 
@@ -295,7 +302,12 @@ bool Door::can_open() {
  * @param suspended true to suspend the entity
  */
 void Door::set_suspended(bool suspended) {
-  // we never suspend a door to allow the sprite animation even when the camera is moving
+
+  Detector::set_suspended(true);
+
+  if (!suspended && next_hint_sound_date > 0) {
+    next_hint_sound_date += System::now() - when_suspended;
+  }
 }
 
 /**
@@ -308,6 +320,15 @@ void Door::update() {
   if (!initialized) {
     update_dynamic_tiles();
     initialized = true;
+  }
+
+  if (!is_open()
+      && requires_explosion()
+      && get_equipment().has_ability("detect_weak_walls")
+      && Geometry::get_distance(get_center_point(), get_hero().get_center_point()) < 40
+      && System::now() >= next_hint_sound_date) {
+    Sound::play("cane");
+    next_hint_sound_date = System::now() + 500;
   }
 
   if (changing && get_sprite().is_animation_finished()) {
@@ -380,7 +401,7 @@ void Door::action_key_pressed() {
  * @return the sound to play when tapping this detector with the sword
  */
 SoundId Door::get_sword_tapping_sound() {
-  return requires_bomb() ? "sword_tapping_weak_wall" : "sword_tapping";
+  return requires_explosion() ? "sword_tapping_weak_wall" : "sword_tapping";
 }
 
 /**
@@ -423,7 +444,7 @@ void Door::set_opening() {
   if (requires_key()) {
     animation = "opening_key";
   }
-  else if (!requires_bomb()) {
+  else if (!requires_explosion()) {
     animation = "opening";
   }
   // TODO add the animation of a weak wall destroyed by an explosion

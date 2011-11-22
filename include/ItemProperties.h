@@ -59,8 +59,8 @@ class ItemProperties {
 						 * after some time */
     bool brandish_when_picked;			/**< when the item is picked on the ground, indicates that the hero
 						 * brandishes it */
-    SoundId sound_when_picked;			/**< sound to play when the item is picked on the ground */
-    SoundId sound_when_brandished;		/**< sound to play when the item is brandished */
+    SoundId sound_when_picked;			/**< sound to play when the item is picked on the ground (or an empty string) */
+    SoundId sound_when_brandished;		/**< sound to play when the item is brandished (or an empty string )*/
     ShadowSize shadow_size;			/**< size of the shadow when the item is on the ground */
 
   public:

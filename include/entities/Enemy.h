@@ -178,7 +178,7 @@ class Enemy: public Detector {
     bool is_sprite_finished_or_looping();
     void immobilize();
     void stop_immobilized();
-    virtual int custom_attack(EnemyAttack attack, Sprite *this_sprite);
+    virtual void custom_attack(EnemyAttack attack, Sprite* this_sprite);
     virtual void notify_hurt(MapEntity &source, EnemyAttack attack, int life_points);
     virtual void notify_dead();
     virtual void notify_immobilized();

@@ -232,6 +232,7 @@
 9	0	256	181	block_16	-1	entities/block	1	0	0
 8	0	112	213	game_2_man	3	1	npc/static_villager2	map
 10	0	208	152	16	8	game_3_barrier_2	70	1
+2	0	96	296	16	16	teletransporter	0	1	119	from_dungeon_10_5f
 0	2	64	312	96	8	263
 0	2	104	312	32	8	153
 0	2	0	32	16	304	170

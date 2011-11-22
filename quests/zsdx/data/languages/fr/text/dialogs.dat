@@ -1697,8 +1697,8 @@ line3 = "les ennemis !"
 # Epée 2 (Glaive Hylien)
 #       |--------------------|
 icon = 67
-line1 = "Tu as trouvé"
-line2 = "le Glaive Hylien !$0"
+line1 = "$1Tu as trouvé"
+line2 = "le Glaive Hylien !$0$0$0"
 line3 = "Cette nouvelle épée"
 next = _treasure.sword.2.1
 
@@ -1712,9 +1712,9 @@ line3 = "l'ancienne !"
 # Epée 3 (Sabre du Héros)
 #       |--------------------|
 icon = 68
-line1 = "Tu as trouvé"
-line2 = "le Sabre du Héros !"
-line3 = "Cette nouvelle lame$0"
+line1 = "$1Tu as trouvé"
+line2 = "le Sabre du Héros !$0$0$0"
+line3 = "Cette nouvelle lame"
 next = _treasure.sword.2.1
 
 [_treasure.sword.4]
@@ -2161,13 +2161,6 @@ skip = current
 #       |-----------------------|
 line1 = "        Niveau 3       "
 line2 = " Antre de Maître Arbror"
-skip = current
-
-[dungeon_10]
-# Lorsqu'on pénètre dans le donjon 10
-#       |-----------------------|
-line1 = "     Niveau secret     "
-line2 = "     Tour des Cieux    "
 skip = current
 
 [found_piece_of_heart.first]
@@ -5250,6 +5243,13 @@ line2 = "attentif saura suivre"
 line3 = "le chemin."
 skip = all
 
+[bone_key_cave.hint]
+#       |-----------------------|
+line1 = "C'est en repoussant la"
+line2 = "lumière que viendra"
+line3 = "la lumière."
+skip = all
+
 [dungeon_2.solarus_child]
 #       |-----------------------|
 line1 = "$2$v... Merci."
@@ -5938,6 +5938,9 @@ line2 = "    Donjon des Pics "
 line3 = "        Rocheux"
 skip = current
 
-[dungeon_10.message1]
-line1 = "essai text"
+[dungeon_10.welcome]
+#       |-----------------------|
+line1 = "     Niveau secret     "
+line2 = "     Tour des Cieux    "
+skip = current
 

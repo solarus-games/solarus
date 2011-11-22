@@ -86,6 +86,8 @@ int Script::map_api_dialog_set_variable(lua_State *l) {
 /**
  * @brief Changes the style of the future dialog boxes.
  *
+ * TODO: use a string instead
+ *
  * - Argument 1 (integer): the style to set (see the DialogBox::Style enum)
  *
  * @param l the Lua context that is calling this function

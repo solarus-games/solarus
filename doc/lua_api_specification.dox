@@ -158,7 +158,7 @@ The <tt>sol.game</tt> module is available to scripts running into a game.
 <tt>sol.game</tt> can be seen as an object that represents the current game.
 It provides functions to manage the game data.
 
-- <tt>sol.game.save()</tt>/
+- <tt>sol.game.save()</tt>:
 saves the game
 
 - <tt>sol.game.reset()</tt>:
@@ -234,7 +234,8 @@ returns the maximum number of magic points
 sets the maximum number of magic points
 
 - <tt>sol.game.has_ability(ability_name)</tt>:
-returns whether the player has an ability
+Returns whether the player has an ability. Equivalent to
+<tt>sol.game.get_ability(ability_name) > 0</tt>.
 
 - <tt>sol.game.get_ability(ability_name)</tt>:
 returns the level of an ability
@@ -243,7 +244,8 @@ returns the level of an ability
 sets the level of an ability
 
 - <tt>sol.game.has_item(item_name)</tt>:
-returns whether the player has an item
+Returns whether the player has an item. Equivalent to
+<tt>sol.game.get_item(item_name) > 0</tt>.
 
 - <tt>sol.game.get_item(item_name)</tt>:
 returns the possession state of an item
@@ -252,16 +254,21 @@ returns the possession state of an item
 sets the possession state of an item
 
 - <tt>sol.game.has_item_amount(item_name, amount)</tt>:
-returns whether the player has at least the specified amount of an item
+Returns whether the player has at least the specified amount of an item
+(the item must have a counter). Equivalent to
+<tt>sol.game.get_item_amount(item_name) > 0</tt>.
 
 - <tt>sol.game.get_item_amount(item_name)</tt>:
-returns the amount the player has for an item
+Returns the amount the player has for an item
+(the item must have a counter).
 
 - <tt>sol.game.add_item_amount(item_name, amount)</tt>:
-adds an amount of the specified item
+Adds an amount of the specified item (the item
+must have a counter).
 
 - <tt>sol.game.remove_item_amount(item_name, amount)</tt>:
-removes an amount of the specified item
+Removes an amount of the specified item (the item
+must have a counter).
 
 - <tt>sol.game.is_dungeon_finished(dungeon)</tt>:
 returns whether the specified dungeon is finished
@@ -281,10 +288,13 @@ and are prefixed by the type of entity.
 starts a dialog (a sequence of messages) by displaying a first message
 
 - <tt>sol.map.dialog_set_variable(first_message_id, value)</tt>: 
-specifies a value to display inside a dialog
+Specifies a value to display inside a dialog (for example the
+player's name). In this dialog, the sequence <tt>$v</tt> will
+be substituted by this value.
 
 - <tt>sol.map.dialog_set_style(style)</tt>: 
-sets the style of the dialog box for subsequent messages
+Sets the style of the dialog box for subsequent dialogs (0: usual dialog box,
+1: no dialog box, only display the text)
 
 - <tt>sol.map.hud_set_pause_enabled(bool enabled)</tt>: 
 allows or disallows to pause the game (and to save the game)
@@ -300,7 +310,7 @@ sets the light level of the map (0: no light, positive values: full light)
 
 - <tt>sol.map.camera_move(x, y, speed, function, delay_before, delay_after)</tt>: 
 moves the camera to a target point (a usual speed value is 250),
-waits a delay in millisecond (default is 1000), calls a function,
+waits a delay in milliseconds (default is 1000), calls a function,
 waits another delay (default is 1000) and restores the camera;
 the game is suspended during the whole sequence
 
@@ -308,10 +318,16 @@ the game is suspended during the whole sequence
 returns the id of the tileset of this map
 
 - <tt>sol.map.tileset_set(tileset_id)</tt>:
-changes the tileset used to draw the map
+Changes the tileset used to draw the map.
+The new tileset must be compatible with the previous one,
+i.e. every tile of the previous tileset must exist in the new one
+and have the same properties.
+This function keeps the tiles of the previous tileset and loads the
+image of the new tileset.
 
 - <tt>sol.map.sprite_display(sprite, x, y)</tt>:
-displays a sprite at the given position (relative to the the map)
+Displays a sprite at the given position (relative to the the map top-left
+corner). The origin point of the sprite will be displayed at this location.
 
 - <tt>sol.map.treasure_give(item_name, variant, savegame_variable)</tt>: 
 gives a treasure to the player (without using a chest)
@@ -323,19 +339,20 @@ prevents the hero from moving until you call <tt>sol.map.hero_unfreeze()</tt>
 restores the control to the hero, typically after a call to <tt>sol.map.hero_freeze()</tt>
 
 - <tt>sol.map.hero_set_map(map_id, destination_point, transition)</tt>:
-sents the hero on a map (possibly the same one), see Transition::Style for the values of transition
+Sends the hero on a map (possibly the same one), see Transition::Style for the values of transition.
 
 - <tt>sol.map.hero_set_visible(visible)</tt>:
-hides or unhides the hero
+Hides or unhides the hero. The player can continue to control him even if
+he is invisible.
 
 - <tt>sol.map.hero_get_direction()</tt>:
-returns the direction of the hero's sprites
+Returns the direction of the hero's sprites (0 to 3).
 
-- <tt>sol.map.hero_set_direction(direction)</tt>:
-sets the direction of the hero's sprites
+- <tt>sol.map.hero_set_direction(direction4)</tt>:
+Sets the direction of the hero's sprites (0 to 3).
 
 - <tt>sol.map.hero_get_position()</tt>:
-Returns the coordinates and the layer of the hero (3 return values)
+Returns the coordinates and the layer of the hero (3 return values).
 
 - <tt>sol.map.hero_set_position(x, y, layer)</tt>:
 Sets the coordinates and the layer of the hero.
@@ -345,16 +362,22 @@ The layer is optional: by default, it is unchanged.
 places the hero's bounding box exactly on the rectangle of a sensor
 
 - <tt>sol.map.hero_walk(path, loop, ignore_obstacles)</tt>:
-makes the hero move with the specified path
+Makes the hero move with the specified path and a walking animation.
+The player cannot control him during the movement.
 
-- <tt>sol.map.hero_start_jumping(direction, length, ignore_obstacles)</tt>:
+- <tt>sol.map.hero_start_jumping(direction8, length, ignore_obstacles)</tt>:
 makes the hero jump towards the specified direction (0 to 7)
 
 - <tt>sol.map.hero_start_victory_sequence()</tt>:
-makes the hero brandish his sword for a victory
+Makes the hero brandish his sword for a victory.
+When the animation finishes,
+<tt>event_hero_victory_sequence_finished</tt> will be called in the map script.
 
 - <tt>sol.map.hero_start_boomerang(max_distance, speed, tunic_preparing_animation, sprite_name)</tt>:
-makes the hero throw a boomerang
+Makes the hero throw a boomerang.
+<tt>tunic_preparing_animation</tt> is the name of the animation that the
+hero's tunic sprite should take while preparing the boomerang.
+<tt>sprite_name</tt> is the animation set id to use to draw the boomerang then.
 
 - <tt>sol.map.hero_start_bow()</tt>:
 makes the hero shoot an arrow
@@ -363,14 +386,14 @@ makes the hero shoot an arrow
 makes the hero run
 
 - <tt>sol.map.hero_start_hurt(source_x, source_y, life_points, magic_points)</tt>:
-makes the hero be hurt
+Hurts the hero.
 
 - <tt>sol.map.npc_get_position(npc)</tt>:
 Returns the position of an NPC (x, y and layer).
 
 - <tt>sol.map.npc_set_position(npc, x, y, layer)</tt>:
 Sets the position of an NPC. The layer is optional
-(by default, it is unchanged)
+(by default, it is unchanged).
 
 - <tt>sol.map.npc_start_movement(npc, movement)</tt>:
 starts a movement on an NPC
@@ -379,18 +402,14 @@ starts a movement on an NPC
 stops the movement of an NPC
 
 - <tt>sol.map.npc_get_sprite(npc)</tt>:
-makes the sprite of an NPC accessible from the script
-through <tt>sol.main.sprite_*</tt> functions
+Returns the sprite of an NPC. Your script can then use the
+<tt>sol.main.sprite_*</tt> functions on it.
 
 - <tt>sol.map.npc_remove(npc)</tt>:
 removes an NPC from the map
 
 - <tt>sol.map.npc_exists(npc)</tt>:
 checks the existence of an NPC
-
-- <tt>sol.map.npc_get_sprite(npc)</tt>:
-makes the sprite of an NPC accessible from the script
-through <tt>sol.main.sprite_*</tt> functions
 
 - <tt>sol.map.chest_set_open(chest_name, open)</tt>:
 sets the state of a chest (without giving or reseting its content)
@@ -459,13 +478,13 @@ enables or disables a crystal
 enables or disables all crystals having a common prefix
 
 - <tt>sol.map.crystal_get_state()</tt>
-returns the state of crystals (false: initial, true: modified)
+returns the state of crystal blocks (false: initial, true: modified)
 
 - <tt>sol.map.crystal_set_state(state)</tt>
-sets the state of crystals (false: initial, true: modified)
+sets the state of crystal blocks (false: initial, true: modified)
 
 - <tt>sol.map.crystal_change_state()</tt>
-inverts the state of crystals
+inverts the state of crystal blocks
 
 - <tt>sol.map.teletransporter_is_enabled(teletransporter_name)</tt>:
 returns whether a teletransporter is enabled
@@ -535,13 +554,13 @@ changes immediately the state of a door (without playing animation and sound)
 creates a pickable item and places it on the map
 
 - <tt>sol.map.destructible_item_create(subtype, x, y, layer)</tt>:
-creates a destructible item and places it on the mbap
+creates a destructible item and places it on the map
 
 - <tt>sol.map.block_create(x, y, layer, name, properties)</tt>:
 Creates a block and places it on the map.
 <tt>properties</tt> is optional. If provided, it is a table
 whose key-value pairs can be:
-  - <tt>direction</tt> (integer, 0 to 3 or -1 to allow the block to move in any direction (default)),
+  - <tt>direction</tt> (integer, 0 to 3 or -1 to allow the block to move in any direction (default is -1)),
   - <tt>sprite_name</tt> (string, default "entities/block"),
   - <tt>can_be_pushed</tt> (boolean, default true),
   - <tt>can_be_pulled</tt> (boolean, default false),
@@ -610,7 +629,7 @@ one created is returned)
 
 @subsection sol.item Module <tt>sol.item</tt>
 
-The <tt>sol.item</tt> module is available to scripts attached to an item defined in the items.dat file.
+The <tt>sol.item</tt> module is available to scripts attached to an item defined in the <tt>items.dat</tt> file.
 <tt>sol.item</tt> can be seen as an object that represents a particular item of the equipment.
 Depending on the current context, <tt>sol.item</tt> may additionally represent an instance of pickable item present on the map
 or an instance of inventory item currently being used by the hero.
@@ -625,13 +644,13 @@ sets the possession state of the item controlled by this script (0: not possesse
 returns the amount of the item controlled by this script (only for an item with amount)
 
 - <tt>sol.item.set_amount(amount)</tt>:
-sets the amount of the item controlled by this script (only for an item with amount)
+sets the amount of the item controlled by this script (only for an item with a counter)
 
 - <tt>sol.item.add_amount(amount)</tt>:
-increases the amount of the item controlled by this script (only for an item with amount)
+increases the amount of the item controlled by this script (only for an item with a counter)
 
 - <tt>sol.item.remove_amount(amount)</tt>:
-decreases the amount of the item controlled by this script (only for an item with amount)
+decreases the amount of the item controlled by this script (only for an item with a counter)
 
 - <tt>sol.item.get_sprite()</tt>:
 returns the sprite representing the current pickable item
@@ -645,14 +664,14 @@ returns the movement of the current pickable item
 gives another movement to the current pickable item instead of the default one
 (can be called only when there is a current pickable item in the context)
 
-- <tt>sol.item.get_position(x, y, layer)</tt>:
-Returns the position of the current pickable item.
+- <tt>sol.item.get_position()</tt>:
+Returns the position of the current pickable item (returns x, y and the layer).
 Can be called only when there is a current pickable item in the context.
 
 - <tt>sol.item.set_position(x, y, layer)</tt>:
 Sets the position of the current pickable item.
 The layer is optional: by default, it is unchanged.
-(can be called only when there is a current pickable item in the context)
+Can be called only when there is a current pickable item in the context.
 
 - <tt>sol.item.set_layer_independent_collisions(independent)</tt>:
 sets whether the collisions with the current pickable item should be detected
@@ -667,6 +686,9 @@ notifies the hero that he has finished using the current inventory item and can 
 
 The <tt>sol.enemy</tt> module is available to scripts attached to an enemy.
 <tt>sol.enemy</tt> represents a particular instance of enemy.
+Each breed of enemy is controlled by a Lua script.
+If several enemies of the same breed exist on the map, they all have their
+own Lua world, which means they don't share global values.
 
 - <tt>sol.enemy.get_name()</tt>:
 returns the name of the current enemy
@@ -676,7 +698,7 @@ returns the current level of life of the enemy
 
 - <tt>sol.enemy.set_life(life)</tt>:
 sets the level of life of the enemy
-(default is 1)
+(default is 1 when the enemy is created)
 
 - <tt>sol.enemy.add_life(life)</tt>:
 adds some life to the enemy
@@ -722,11 +744,11 @@ sets whether the enemy can hurt the hero even when the hero is running
 (default is false)
 
 - <tt>sol.enemy.get_hurt_style()</tt>:
-returns the style of sound to play when the enemy is hurt:
+returns the style of sounds and animations to play when the enemy is hurt:
 "normal", "monster" or "boss"
 
 - <tt>sol.enemy.set_hurt_style(style)</tt>:
-sets the style of sound to play when the enemy is hurt:
+sets the style of sounds and animations to play when the enemy is hurt:
 "normal", "monster" or "boss" (default is "normal" for usual enemies
 and "boss" for bosses and minibosses)
 
@@ -734,7 +756,9 @@ and "boss" for bosses and minibosses)
 returns whether the enemy can currently attack the hero
 
 - <tt>sol.enemy.set_can_attack(can_attack)</tt>:
-sets whether the enemy can currently attack the hero
+Sets whether the enemy can currently attack the hero (default is true).
+When the enemy restarts after being hurt, <tt>can_attack</tt> is always
+reset to true.
 
 - <tt>sol.enemy.get_minimum_shield_needed()</tt>:
 returns the minimum hero's level of shield that allows him to stop attacks from this enemy
@@ -745,10 +769,19 @@ returns the minimum hero's level of shield that allows him to stop attacks from 
 (0 means that he cannot stop the attacks and is the default)
 
 - <tt>sol.enemy.set_attack_consequence(attack, consequence)</tt>:
-Sets how reacts the enemy when it receives an attack.
+Sets how the enemy reacts when it receives an attack.
+<tt>attack</tt> can be "sword", "thrown_item", "explosion",
+"arrow", "hookshot", "boomerang", or "fire".
+<tt>consequence</tt> can be an integer that indicates the number
+of life points to remove, or the string
+"ignored", "protected", "immobilize" or "custom".
+This reaction will be applied unless the sprite that receives the attack
+has a specific reaction (see <tt>sol.enemy.set_attack_consequence_sprite</tt>). 
 
 - <tt>sol.enemy.set_attack_consequence_sprite(sprite, attack, consequence)</tt>:
-Sets how reacts the enemy when a particular sprite receives an attack.
+Sets how the enemy reacts when a particular sprite receives an attack.
+<tt>attack</tt> and <tt>consequence</tt> can have the same values
+as <tt>sol.enemy.set_attack_consequence</tt>.
 
 - <tt>sol.enemy.set_default_attack_consequences()</tt>:
 Sets the default attack consequences for the enemy.
@@ -758,49 +791,65 @@ Sets the default attack consequences for a particular sprite of the enemy.
 
 - <tt>sol.enemy.set_invincible()</tt>:
 Makes the enemy ignore all attacks.
+Equivalent to calling <tt>sol.enemy.set_attack_consequence(attack,
+"ignored")</tt> for each attack.
 
 - <tt>sol.enemy.set_invincible_sprite(sprite)</tt>:
 Makes a particular sprite of the enemy ignore all attacks.
+Equivalent to calling <tt>sol.enemy.set_attack_consequence_sprite(sprite,
+attack, "ignored")</tt> for each attack.
 
 - <tt>sol.enemy.set_layer_independent_collisions(independent)</tt>:
 Sets whether the collisions with the enemy should be detected
-from every layer.
+from every layer (default is false).
 
-- <tt>sol.enemy_set_treasure(item_name, variant, savegame_variable)</tt>:
+- <tt>sol.enemy.set_treasure(item_name, variant, savegame_variable)</tt>:
 Sets the treasure of the enemy.
+<tt>item_name</tt> can be the name of a valid item, "_none"
+or "_random".
+<tt>savegame_variable</tt> can be -1 if you don't want the item
+to be saved.
 
-- <tt>sol.enemy_set_no_treasure()</tt>:
+- <tt>sol.enemy.set_no_treasure()</tt>:
 Sets no treasure of the enemy.
+Equivalent to <tt>sol.enemy.set_treasure("_none", 1, -1)</tt>.
 
-- <tt>sol.enemy_set_random_treasure()</tt>:
-Sets a random treasure for the enemy.
+- <tt>sol.enemy.set_random_treasure()</tt>:
+Sets a random treasure for the enemy (this is the default behavior).
+Equivalent to <tt>sol.enemy.set_treasure("_random", 1, -1)</tt>.
 
 - <tt>sol.enemy.get_obstacle_behavior()</tt>:
-returns how the enemy behaves with obstacles: "normal", "flying" or "swimming"
+Returns how the enemy behaves with obstacles: "normal", "flying" or "swimming".
 
 - <tt>sol.enemy.set_obstacle_behavior(behavior)</tt>:
-sets how the enemy behaves with obstacles: "normal", "flying" or "swimming"
+Sets how the enemy behaves with obstacles: "normal", "flying" or "swimming".
+"flying" will ignore obstacles like holes, water or lava.
+"swimming" will ignore water.
 
 - <tt>sol.enemy.get_size()</tt>:
-returns the size of the enemy's bounding box (two return values: width and height in pixels)
+Returns the size of the enemy's bounding box (two return values: width and height in pixels).
 
 - <tt>sol.enemy.set_size(width, height)</tt>:
-sets the size of the enemy's bounding box (default: 16, 16)
+Sets the size of the enemy's bounding box (default: 16, 16).
+This is the effective size used to detect obstacles when moving,
+but the sprite of the enemy may be larger, especially for a boss.
 
 - <tt>sol.enemy.get_origin()</tt>:
-returns the coordinates of the origin point of the enemy, relative to its
-bounding box top-left corner (two returns values: x and y)
+Returns the coordinates of the origin point of the enemy, relative to its
+bounding box top-left corner (two returns values: x and y).
 
 - <tt>sol.enemy.set_origin(x, y)</tt>:
-sets the coordinates of the origin point of the enemy, relative to its
-bounding box top-left corner (default: 0, 0)
+Sets the coordinates of the origin point of the enemy, relative to its
+bounding box top-left corner (default: 0, 0).
 
 - <tt>sol.enemy.get_position()</tt>:
-Returns the current position of the enemy on the map (i.e. the position of its origin point).
+Returns the current position of the enemy on the map
+(i.e. the position of its origin point relative to the map's top-left corner).
 Three values are returned: x, y and the layer.
 
 - <tt>sol.enemy.set_position(x, y, layer)</tt>:
-Sets the position of the enemy on the map.
+Sets the position of the enemy on the map
+(i.e. the position of its origin point relative to the map's top-left corner).
 The layer is optional: by default, is is unchanged.
 
 - <tt>sol.enemy.get_distance_to_hero()</tt>:
@@ -812,6 +861,7 @@ with the given parameters.
 
 - <tt>sol.enemy.snap_to_grid()</tt>:
 Makes sure the enemy's top-left corner is aligned with the 8*8 grid of the map.
+Be careful: this function does not check collisions with obstacles.
 
 - <tt>sol.enemy.get_movement()</tt>:
 Returns the current movement of the enemy.
@@ -833,25 +883,31 @@ Hurts the enemy.
 Creates a sprite attached to the enemy and returns it.
 
 - <tt>sol.enemy.remove_sprite(sprite)</tt>:
-Removes and destroys a sprite of this enemy. If sprite is not specified,
-the first sprite created is removed.
+Removes and destroys a sprite of this enemy. If <tt>sprite</tt> is not
+specified, the first sprite that was created is removed.
 
 - <tt>sol.enemy.get_sprite()</tt>:
 Returns the sprite of the enemy. If the enemy has several sprites, the first
-one is returned.
+one that was created is returned.
+If you have created several sprites, this function is probably not for you:
+you should memorize the return value of each call to
+<tt>sol.enemy.create_sprite</tt> instead.
 
 - <tt>sol.enemy.create_son(enemy_name, breed, x, y, layer)</tt>:
 Creates another enemy, specifying its coordinates as relative to the current
 enemy. The layer is optional: by default, the enemy is created on the same
-layer as the current enemy.
+layer as the current one.
 
 - <tt>sol.enemy.get_father()</tt>:
-Returns the name of the father of the enemy (i.e. the enemy that created the current one),
-or an empty string.
+Returns the name of the father of the enemy (if any).
+The father is the enemy that created
+the current one by calling <tt>sol.enemy_create_son</tt>,
+Returns an empty string if the current enemy has no father.
 
 - <tt>sol.enemy.send_message(dst_enemy, message)</tt>:
-Sends a string message to another enemy
-(calls his function event_message_received())
+Sends a string message to another enemy.
+His function event_message_received() will be called,
+and then <tt>sol.enemy.send_message</tt> will return.
 
 @section cpp_to_lua Calling Lua from C++
 
@@ -860,18 +916,17 @@ The corresponding event function of the script is called if it exists.
 An event function is a Lua function prefixed by <tt>event_</tt>.
 We give here the list of event functions that the engine will call if
 you define them in your script.
-As several scripts of different types may exist,
-we also specify what scripts are notified for each event.
+Each event may be called in one or several types of script.
 
 @subsection events_map Map scripts
 
 - <tt>event_update()</tt>:
-called at each cycle (but take care of the performances)
+called at each cycle (so take care of the performances)
 
 - <tt>event_set_suspended(suspended)</tt>:
 called when the game is suspended or resumed
 
-- <tt>event_dialog_started(message_id)</tt>:
+- <tt>event_dialog_started(first_message_id)</tt>:
 called when a dialog starts (i.e. at the beginning of its first message),
 even if the dialog was started by another script
 
@@ -883,13 +938,16 @@ or 1 if the second one was chosen.
 If there was no question, answer is -1.
 
 - <tt>event_camera_back()</tt>: 
-called when the camera (previously sent back by <tt>camera_move()</tt>) reaches the hero
+Called when the camera (previously sent by <tt>sol.map.camera_move()</tt>)
+is back to the hero.
 
 - <tt>event_treasure_obtaining(item_name, variant, savegame_variable)</tt>: 
-called when the player is obtaining a treasure (coming from a chest or not)
+Called when the player is obtaining a treasure (coming from a chest or not),
+just before the dialog starts.
 
 - <tt>event_treasure_obtained(item_name, variant, savegame_variable)</tt>: 
-called when the player has just finished obtaining a treasure
+Called when the player has finished obtaining a treasure, just after the
+dialog.
 
 - <tt>event_map_started(destination_point_name)</tt>:
 called when the map starts, before the opening transition
@@ -898,23 +956,26 @@ called when the map starts, before the opening transition
 called after the opening transition of the map
 
 - <tt>event_switch_activated(switch_name)</tt>:
-called when a switch has just been activated
+Called when a switch has just been activated.
 
 - <tt>event_switch_inactivated(switch_name)</tt>:
-called when a switch has just been disabled
+Called when a switch has just been inactivated.
 
 - <tt>event_switch_left(switch_name)</tt>:
 called when an entity placed on a switch (the hero or a block)
-has just left the switch, no matter the switch was enabled or disabled
+has just left the switch, no matter if the switch was activated or not
 
 - <tt>event_hero_victory_sequence_finished()</tt>:
-called when the victory animation of the hero is finished
+Called when the victory animation of the hero
+(started with <tt>sol.map.hero_start_victory_sequence()</tt>)
+is finished.
 
 - <tt>event_hero_on_sensor(sensor_name)</tt>:
-called when the hero arrives on a sensor
+Called when the hero arrives on a sensor. The bounding box of the hero must
+be entirely inside the sensor's bounding box.
 
 - <tt>event_hero_still_on_sensor(sensor_name)</tt>:
-called continuously while the hero is on a sensor
+Called continuously while the hero is on a sensor.
 
 - <tt>event_npc_interaction(npc_name)</tt>
 (triggered only if the NPC has the property to call the map script):
@@ -930,11 +991,11 @@ called when the hero interacts with an NPC by using ANY inventory item;
 returns true if an interaction actually happened
 
 - <tt>event_npc_interaction_item_finished(npc_name, item_name, variant)</tt>:
-called when the hero has just interacted with an interactive entity (other than an NPC)
+called when the hero has just interacted with an NPC
 by using ANY inventory item
 
 - <tt>event_npc_movement_finished(npc_name)</tt>:
-called when an NPC has finished its movement started by the script
+called when an NPC has finished its movement
 
 - <tt>event_npc_collision_fire(npc_name)</tt>
 (triggered only if the NPC has the property to call the map script):
@@ -944,12 +1005,14 @@ called when some fire touches an NPC
 called when an explosion overlaps a sensor
 
 - <tt>event_chest_empty(chest_name)</tt>:
-called when the hero opens an empty chest: the hero is freezed, your script has
-to define its behavior and then call hero_unfreeze()
+Called when the hero opens an empty chest.
+The hero is freezed, your script has
+to define its behavior (for example giving a treasure or show
+an error message) and then call <tt>sol.map.hero_unfreeze()</tt>.
 
 - <tt>event_shop_item_buying(shop_item_name)</tt>:
-called when the player wants to buy an item in a shop
-and has enough money: if you return false, the player cannot buy it
+Called when the player wants to buy an item in a shop
+and has enough money: if you return false, the player cannot buy it.
 
 - <tt>event_shop_item_bought(shop_item_name)</tt>:
 called when the player has just bought an item in a shop
@@ -970,7 +1033,7 @@ called when an enemy of this map is dead (and its kill animation is finished)
 @subsection events_item Item scripts
 
 - <tt>event_update()</tt>:
-called at each cycle (but take care of the performances)
+called at each cycle (so take care of the performances)
 
 - <tt>event_set_suspended(suspended)</tt>:
 called when the game is suspended or resumed
@@ -978,7 +1041,7 @@ called when the game is suspended or resumed
 - <tt>event_map_changed(new_map_id)</tt>:
 called when a map becomes the current map
 
-- <tt>event_dialog_started(message_id)</tt>
+- <tt>event_dialog_started(first_message_id)</tt>
 (triggered only if this item script started the dialog):
 called when a dialog starts (i.e. at the beginning of its first message)
 
@@ -1008,7 +1071,8 @@ called when the hero has just interacted with an NPC by using ANY inventory item
 called when some fire touches an NPC
 
 - <tt>event_appear(variant, savegame_variable, falling_height)</tt>:
-called when a pickable item whose type is controlled by this script just appeared on the map
+Called when a pickable item whose type is controlled by this script has
+just appeared on the map.
 
 - <tt>event_movement_changed()</tt>:
 called when something changes in the movement of a pickable item whose type is controlled by this script
@@ -1031,12 +1095,12 @@ called when the hero starts using the item controlled by this script from his in
 @subsection events_enemy Enemy scripts
 
 - <tt>event_update()</tt>:
-called at each cycle (but take care of the performances)
+called at each cycle (so take care of the performances)
 
 - <tt>event_set_suspended(suspended)</tt>:
 called when the game is suspended or resumed
 
-- <tt>event_dialog_started(message_id)</tt>
+- <tt>event_dialog_started(first_message_id)</tt>
 (triggered only if this enemy script started the dialog):
 called when a dialog starts (i.e. at the beginning of its first message)
 
@@ -1090,12 +1154,17 @@ called when the enemy detects a collision with another enemy
 
 - <tt>event_custom_attack_received(attack, sprite)</tt>:
 Called when the enemy receives an attack with a custom effect.
+<tt>attack</tt> can be "sword", "thrown_item", "explosion",
+"arrow", "hookshot", "boomerang", or "fire".
 You have to define what happens, for example hurting the enemy, making a
 special reaction, etc. If the attacks comes from a pixel-precise collision
 test, the sprite that receives the attack is passed as a parameter.
 
 - <tt>event_hurt(attack, life_lost)</tt>:
-called when the enemy is hurt
+Called when the enemy is hurt.
+<tt>attack</tt> can be "sword", "thrown_item", "explosion",
+"arrow", "hookshot", "boomerang", or "fire".
+This function is called before removing <tt>life_lost</tt> life points.
 
 - <tt>event_dead()</tt>:
 called when the enemy is killed and has finished to die
@@ -1104,7 +1173,7 @@ called when the enemy is killed and has finished to die
 called when the enemy is immobilized
 
 - <tt>event_message_received(src_enemy, message)</tt>:
-called when the enemy receives a messages from another enemy
+Called when the enemy receives a string message from another enemy.
 
 */
 

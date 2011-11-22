@@ -138,6 +138,15 @@ public class Tile extends MapEntity {
     }
 
     /**
+     * Returns whether the entity sets a specific layer when it is created
+     * on a map.
+     * @return true
+     */
+    public boolean hasInitialLayer() {
+        return true;
+    }
+
+    /**
      * Returns the tile's obstacle property.
      * @return the tile's obstacle property
      */

@@ -573,6 +573,13 @@ public class MapView extends JComponent implements Observer, Scrollable {
 
         try {
 
+	    // first choose a layer if necessary
+	    if (!entityBeingAdded.hasInitialLayer()) {
+	        Layer layer = map.getLayerInRectangle(entityBeingAdded.getPositionInMap());
+                map.setEntityLayer(entityBeingAdded, layer);
+	    }
+
+	    // make sure the entity is valid
             boolean valid = entityBeingAdded.isValid();
 
             if (!valid) {

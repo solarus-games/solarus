@@ -52,6 +52,10 @@ import org.solarus.editor.Map;
  *   - Redefine if necessary the hasName() method:
  *       public boolean hasName(): indicates whether the entity has a 
  *       name property, i.e. if it is identifiable (default is false)
+ *   - Redefine if necessary the hasInitialLayer() method:
+ *       public boolean hasInitialLayer(): indicates that your entity already
+ *       knows on what layer to be created. If you return false, the layer will
+ *       be automatically set to the layer under the cursor.
  *   - Redefine if necessary the isResizable() method:
  *       public boolean isResizable(): indicates whether the entity can
  *       be resized (default is false). If the entity is resizable, you can
@@ -416,7 +420,18 @@ public abstract class MapEntity extends Observable {
 	    return false;
 	}
     }
-    
+
+    /**
+     * Returns whether the entity sets a specific layer when it is created on
+     * a map.
+     * If you return false, when creating the entity and adding it to a map,
+     * the entity will be placed at the highest existing layer under the cursor.
+     * @return true if the entity sets an initial layer when it is created
+     */
+    public boolean hasInitialLayer() {
+        return false;
+    }
+
     /**
      * Returns the entity's obstacle property (default is Obstacle.NONE).
      * @return the obstacle property

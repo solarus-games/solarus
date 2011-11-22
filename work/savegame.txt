@@ -365,4 +365,5 @@ booleans:
 925	dungeon 3 4F: big key door
 926     bone key cave: chest with the bone key
 927     bone key cave: chest with 50 rupees
+928	Billy's cave: door open
 

@@ -1135,13 +1135,13 @@ bool Enemy::is_immobilized() {
  *
  * @param attack the attack
  * @param this_sprite the sprite of this enemy subject to the attack, or NULL
- * if the attack does not come from a pixel-precise collision test.
- * @return the number of health points lost (can be 0)
+ * if the attack does not come from a pixel-precise collision test
  */
-int Enemy::custom_attack(EnemyAttack attack, Sprite *this_sprite) {
+void Enemy::custom_attack(EnemyAttack attack, Sprite* this_sprite) {
 
+  // TODO merge Enemy and CustomEnemy since all enemies are scripted now, and
+  // remove this error that cannot happen anyway
   Debug::die(StringConcat() << "The custom attack for enemy '" << get_name() << "' is not defined");
-  return 0;
 }
 
 /**

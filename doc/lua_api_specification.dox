@@ -1089,9 +1089,10 @@ called when the animation of a sprite of the enemy has just finished
 called when the enemy detects a collision with another enemy
 
 - <tt>event_custom_attack_received(attack, sprite)</tt>:
-called when an attack with a custom effect is received by the enemy:
-you have to define what happens and return the number of life points to remove
-(possibly zero)
+Called when the enemy receives an attack with a custom effect.
+You have to define what happens, for example hurting the enemy, making a
+special reaction, etc. If the attacks comes from a pixel-precise collision
+test, the sprite that receives the attack is passed as a parameter.
 
 - <tt>event_hurt(attack, life_lost)</tt>:
 called when the enemy is hurt

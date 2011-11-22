@@ -96,7 +96,6 @@ function event_custom_attack_received(attack, sprite)
       end, 300)
     end
   end
-  return 0
 end
 
 function event_movement_finished(movement)

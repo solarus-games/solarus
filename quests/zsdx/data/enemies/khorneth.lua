@@ -87,8 +87,6 @@ function event_custom_attack_received(attack, sprite)
     right_blade_life = right_blade_life - 1
     sol.main.timer_start(stop_hurting_right_blade, 400)
   end
-
-  return 0 -- don't remove any life points
 end
 
 function start_blade_attack()

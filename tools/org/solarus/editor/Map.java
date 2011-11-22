@@ -596,9 +596,8 @@ public class Map extends Observable {
     }
 
     /**
-     * Returns all entities of a kind, except the tiles.
-     * @param entityType a type of entity:
-     * MapEntity.ENTITY_DESTINATION_POINT, MapEntity.ENTITY_ENEMY...
+     * Finds all entities of a type on the map.
+     * @param entityType a type of entity
      * @return the list of the entities of this kind on the map
      */
     public List<MapEntity> getEntitiesOfType(EntityType entityType) {
@@ -633,8 +632,8 @@ public class Map extends Observable {
     }
 
     /**
-     * Returns the highest layer having an entity at in a specified
-     * rectangle.
+     * Returns the highest layer where a specified rectangle overlaps an
+     * existing entity.
      * @param rectangle a rectangle
      * @return the highest layer where an entity exists in this rectangle,
      * or Layer.LOW if there is nothing here
@@ -644,7 +643,7 @@ public class Map extends Observable {
         Layer[] layers = { Layer.HIGH, Layer.INTERMEDIATE, Layer.LOW };
 	for (Layer layer: layers) {
 	    for (MapEntity entity: allEntities[layer.getId()]) {
-		if (rectangle.contains(entity.getPositionInMap())) {
+		if (rectangle.intersects(entity.getPositionInMap())) {
 		    return layer;
 		}
 	    }

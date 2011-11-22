@@ -611,7 +611,7 @@ public class Map extends Observable {
     }
 
     /**
-     * Returns the first en tity under a point of the map, in the specified layer.
+     * Returns the first entity under a point of the map, in the specified layer.
      * @param layer the layer
      * @param x x of the point
      * @param y y of the point
@@ -630,6 +630,26 @@ public class Map extends Observable {
 	}
 
 	return null;
+    }
+
+    /**
+     * Returns the highest layer having an entity at in a specified
+     * rectangle.
+     * @param rectangle a rectangle
+     * @return the highest layer where an entity exists in this rectangle,
+     * or Layer.LOW if there is nothing here
+     */
+    public Layer getLayerInRectangle(Rectangle rectangle) {
+
+        Layer[] layers = { Layer.HIGH, Layer.INTERMEDIATE, Layer.LOW };
+	for (Layer layer: layers) {
+	    for (MapEntity entity: allEntities[layer.getId()]) {
+		if (rectangle.contains(entity.getPositionInMap())) {
+		    return layer;
+		}
+	    }
+	}
+	return Layer.LOW;
     }
 
     /**

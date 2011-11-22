@@ -904,6 +904,7 @@ void Enemy::try_hurt(EnemyAttack attack, MapEntity &source, Sprite *this_sprite)
       else {
         // no attack was made: notify the source correctly
         reaction.type = EnemyReaction::IGNORED;
+        invulnerable = false;
       }
       break;
 

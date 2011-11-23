@@ -1,4 +1,4 @@
-1120	976	0	-100	0	2608	-1	13	overworld.spc
+1120	976	0	-100	0	2608	-1	1	overworld.spc
 0	0	544	624	576	184	275
 0	0	760	688	16	16	551
 0	0	104	272	48	16	910
@@ -1581,6 +1581,12 @@
 2	0	744	712	16	16	dungeon_9_teletransporter	1	1	105	from_outside
 10	0	744	712	16	16	tile	275	1
 10	0	744	712	16	16	dungeon_9_entrance	1227	1
+1	0	192	717	to_dungeon_9_2f_w	3	0
+1	0	456	693	to_dungeon_9_2f_e	3	0
+2	0	184	704	16	16	teletransporter	0	1	106	from_outside_w
+2	0	448	680	16	16	teletransporter_2	0	1	106	from_outside_e
+19	0	184	704	stairs	1	3
+19	0	448	680	stairs_2	1	3
 0	2	0	400	48	16	512
 0	2	0	416	48	40	511
 0	2	48	408	8	40	514

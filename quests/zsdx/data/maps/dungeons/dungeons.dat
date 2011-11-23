@@ -132,23 +132,23 @@ height = 1040
 
 [dungeon_9.floor_-1]
 width = 2576
-height = 2256
+height = 2320
 
 [dungeon_9.floor_0]
 width = 2576
-height = 2256
+height = 2320
 
 [dungeon_9.floor_1]
 width = 2576
-height = 2256
+height = 2320
 
 [dungeon_9.floor_2]
 width = 2576
-height = 2256
+height = 2320
 
 [dungeon_9.floor_3]
 width = 2576
-height = 2256
+height = 2320
 
 [dungeon_8.map_49.chest_0]
 floor = -2
@@ -706,5 +706,12 @@ floor = 1
 x = 880
 y = 184
 save = 229
+big = 0
+
+[dungeon_9.map_108.chest_0]
+floor = 3
+x = 1600
+y = 1648
+save = -1
 big = 0
 

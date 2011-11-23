@@ -722,3 +722,10 @@ y = 2032
 save = 800
 big = 0
 
+[dungeon_9.map_105.chest_1]
+floor = 0
+x = 888
+y = 1888
+save = 801
+big = 0
+

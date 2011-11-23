@@ -5938,6 +5938,12 @@ line2 = "    Donjon des Pics "
 line3 = "        Rocheux"
 skip = current
 
+[dungeon_9.welcome]
+#       |-----------------------|
+line1 = "        Niveau 9       "
+line2 = " Temple des Souvenirs  "
+skip = current
+
 [dungeon_10.welcome]
 #       |-----------------------|
 line1 = "     Niveau secret     "

@@ -179,6 +179,8 @@ class Script {
       map_api_hero_get_position,
       map_api_hero_set_position,
       map_api_hero_align_on_sensor,
+      map_api_hero_save_solid_ground,
+      map_api_hero_reset_solid_ground,
       map_api_hero_walk,
       map_api_hero_start_jumping,
       map_api_hero_start_victory_sequence,

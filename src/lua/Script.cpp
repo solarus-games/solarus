@@ -367,6 +367,8 @@ void Script::register_map_api() {
       { "npc_get_position", map_api_npc_get_position },
       { "npc_set_position", map_api_npc_set_position },
       { "hero_align_on_sensor", map_api_hero_align_on_sensor },
+      { "hero_save_solid_ground", map_api_hero_save_solid_ground },
+      { "hero_reset_solid_ground", map_api_hero_reset_solid_ground },
       { "hero_walk", map_api_hero_walk },
       { "hero_start_jumping", map_api_hero_start_jumping },
       { "hero_start_victory_sequence", map_api_hero_start_victory_sequence },

@@ -482,6 +482,56 @@ int Script::map_api_hero_align_on_sensor(lua_State *l) {
 }
 
 /**
+ * @brief Memorizes a position to go back to if the hero falls into a hole or
+ * other bad ground.
+ *
+ * The parameters are optional: by default, they correspond to the current
+ * position of the hero.
+ *
+ * - Optional argument 1 (integer): x coordinate
+ * - Optional argument 2 (integer): y coordinate
+ * - Optional argument 3 (integer): layer
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_hero_save_solid_ground(lua_State* l) {
+
+  Script& script = get_script(l, 0, 3);
+  Hero& hero = script.get_game().get_hero();
+
+  int x, y, layer;
+  if (lua_gettop(l) >= 3) {
+    x = luaL_checkinteger(l, 1);
+    y = luaL_checkinteger(l, 2);
+    layer = luaL_checkinteger(l, 3);
+  }
+  else {
+    x = hero.get_x();
+    y = hero.get_y();
+    layer = hero.get_layer();
+  }
+
+  hero.set_target_solid_ground_coords(Rectangle(x, y), Layer(layer));
+
+  return 0;
+}
+
+/**
+ * @brief Forgets the memorized position to go back to if the hero falls into
+ * a hole or other bad ground.
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_hero_reset_solid_ground(lua_State* l) {
+
+  Script& script = get_script(l, 0);
+  Hero& hero = script.get_game().get_hero();
+
+  hero.reset_target_solid_ground_coords();
+
+  return 0;
+}
+
+/**
  * @brief Makes the hero walk with respect to a path.
  *
  * - Argument 1 (string): the path (each character is a direction between '0' and '7')

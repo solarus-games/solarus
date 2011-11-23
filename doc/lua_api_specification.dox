@@ -361,6 +361,21 @@ The layer is optional: by default, it is unchanged.
 - <tt>sol.map.hero_align_on_sensor(sensor_name)</tt>:
 places the hero's bounding box exactly on the rectangle of a sensor
 
+- <tt>sol.map.hero_save_solid_ground(x, y, layer)</tt>:
+Memorizes a position to go back to if the hero falls into a hole or other bad
+ground. This replaces the usual behavior which is going back to the previous
+solid position just before falling.
+The arguments are optional: by default, they correspond to the current
+position of the hero. But if you provide them, you must set all three of them,
+otherwise they are ignored.
+
+- <tt>sol.map.hero_reset_solid_ground()</tt>:
+Forgets a position that was previously memorized by
+<tt>sol.map.hero_set_solid_ground()</tt> (if any).
+The usual behavior is restored: the hero will now just get
+back to where he was just before falling, instead going to of a memorized
+position.
+
 - <tt>sol.map.hero_walk(path, loop, ignore_obstacles)</tt>:
 Makes the hero move with the specified path and a walking animation.
 The player cannot control him during the movement.
@@ -1066,7 +1081,7 @@ returns true if an interaction actually happened
 (triggered only if the NPC has the property to notify the item controlled by this script):
 called when the hero has just interacted with an NPC by using ANY inventory item
 
-- <tt>event_npc_collision_with_fire(npc_name)</tt>
+- <tt>event_npc_collision_fire(npc_name)</tt>
 (triggered only if the NPC has the property to notify the item controlled by this script):
 called when some fire touches an NPC
 

@@ -1247,6 +1247,22 @@ void Hero::set_target_solid_ground_coords(const Rectangle &target_solid_ground_c
 }
 
 /**
+ * @brief Forgets the point of the map where the hero was supposed to go back
+ * if he falls into a hole or some other bad ground.
+ *
+ * The hero will now get back to the last solid ground instead of going back
+ * to a memorized position.
+ *
+ * @param target_solid_ground_coords coordinates of the position where
+ * the hero will go if he falls into a hole or some other bad ground
+ * @param layer the layer
+ */
+void Hero::reset_target_solid_ground_coords() {
+
+  this->target_solid_ground_coords.set_xy(-1, -1);
+}
+
+/**
  * @brief Returns whether this entity is an obstacle for another one.
  * @param other another entity
  * @return true if this entity is an obstacle for the other one

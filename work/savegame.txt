@@ -335,7 +335,8 @@ booleans:
 628	dungeon 7 2F: shortcut to the boss
 
 700-799	dungeon 8
-800-899	dungeon 9
+
+800	dungeon 9 1F: chest with 50 rupees (SW)
 
 900	junk shop: bought the piece of heart
 901	dungeon 3: miniboss

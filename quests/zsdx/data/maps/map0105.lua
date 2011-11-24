@@ -1,7 +1,11 @@
 -- Dungeon 9 1F
 
+-- puzzle B
 puzzle_b_next = nil -- index of the next correct switch (nil = error or not started)
 puzzle_b_nb_activated = 0
+
+-- torches and bridges
+nb_torches_lit = 0
 
 function event_map_started(destination_point_name)
 
@@ -27,6 +31,14 @@ function event_map_started(destination_point_name)
     sol.map.door_set_open("puzzle_b_door", true)
     sol.map.switch_set_activated("puzzle_b_door_switch", true)
   end
+
+  -- south door
+  if destination_point_name ~= "from_outside" then
+    sol.map.door_set_open("s_door", true)
+  end
+
+  -- bridges that appear when a torch is lit
+  sol.map.tile_set_group_enabled("bridge", false)
 end
 
 function event_map_opening_transition_finished(destination_point_name)
@@ -62,6 +74,16 @@ function event_enemy_dead(enemy_name)
       sol.main.play_sound("chest_appears")
       sol.map.chest_set_enabled("hidden_enemy_chest", true)
     end)
+
+  -- south door
+  elseif enemy_name:find("^s_door_enemy")
+      and sol.map.enemy_is_group_dead("s_door_enemy")
+      and not sol.map.door_is_open("s_door") then
+    sol.map.camera_move(1768, 1800, 250, function()
+      sol.main.play_sound("secret")
+      sol.map.door_open("s_door")
+    end)
+    
   end
 end
 
@@ -160,12 +182,51 @@ end
 
 function event_hero_on_sensor(sensor_name)
 
+  -- puzzle B
   if sensor_name:find("^close_puzzle_b_door_sensor") then
 
     if not sol.map.switch_is_activated("puzzle_b_switch_1")
         and sol.map.door_is_open("puzzle_b_door") then
       sol.map.door_close("puzzle_b_door")
       sol.map.switch_set_activated("puzzle_b_door_switch", false)
+    end
+
+  -- reset solid ground location
+  elseif sensor_name:find("^reset_solid_ground_sensor") then
+    sol.map.hero_reset_solid_ground()
+  end
+end
+
+-- Torches on this map interact with the map script
+-- because we don't want usual behavior from items/lamp.lua:
+-- we want a shorter delay and we want torches to enable the bridge
+function event_npc_interaction(npc_name)
+
+  if string.find(npc_name, "^torch") then
+    sol.map.dialog_start("torch.need_lamp")
+  end
+end
+
+-- Called when fire touches an NPC linked to this map
+function event_npc_collision_fire(npc_name)
+
+  if string.find(npc_name, "^torch") then
+    
+    local torch_sprite = sol.map.npc_get_sprite(npc_name)
+    if sol.main.sprite_get_animation(torch_sprite) == "unlit" then
+      -- temporarily light the torch up
+      sol.main.sprite_set_animation(torch_sprite, "lit")
+      if nb_torches_lit == 0 then
+        sol.map.tile_set_group_enabled("bridge", true)
+      end
+      nb_torches_lit = nb_torches_lit + 1
+      sol.main.timer_start(function()
+        sol.main.sprite_set_animation(torch_sprite, "unlit")
+        nb_torches_lit = nb_torches_lit - 1
+        if nb_torches_lit == 0 then
+	  sol.map.tile_set_group_enabled("bridge", false)
+	end
+      end, 4000)
     end
   end
 end

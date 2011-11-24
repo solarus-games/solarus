@@ -62,7 +62,8 @@ void Hero::SpinAttackState::start(State* previous_state) {
     movement->set_radius_speed(128);
     movement->set_radius(24);
     movement->set_angle_speed(540);
-    movement->set_max_rotations(2);
+    movement->set_max_rotations(3);
+    movement->set_direction(CircleMovement::CLOCKWISE);
     hero.set_movement(movement);
   }
   else {

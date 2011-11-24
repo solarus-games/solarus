@@ -9,6 +9,9 @@ nb_torches_lit = 0
 
 function event_map_started(destination_point_name)
 
+  -- TOOD remove
+  sol.game.set_ability("sword_knowledge", 1)
+
   -- hidden Gibdo and chest
   sol.map.enemy_set_group_enabled("hidden_enemy", false)
   if not sol.game.savegame_get_boolean(800) then

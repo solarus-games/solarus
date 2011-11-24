@@ -163,7 +163,7 @@ class Savegame {
       ABILITY_SHIELD				= 52,
       ABILITY_LIFT				= 53,
       ABILITY_SWIM				= 54,
-      // 55: unused (was ABILITY_SEE_IN_DARK before)
+      ABILITY_SWORD_KNOWLEDGE                   = 55,
       ABILITY_DETECT_WEAK_WALLS			= 56,
       ABILITY_SEE_OUTSIDE_WORLD_MINIMAP		= 57,
       ABILITY_GET_BACK_FROM_DEATH		= 58,

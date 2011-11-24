@@ -26,6 +26,7 @@ class Hero::SpinAttackState: public Hero::State {
 
   private:
 
+    bool being_pushed;           /**< indicates that the hero is being pushed after hitting an enemy */
     void play_spin_attack_sound();
 
   public:
@@ -40,6 +41,10 @@ class Hero::SpinAttackState: public Hero::State {
     bool can_be_hurt(Enemy* attacker);
     bool is_cutting_with_sword(Detector& detector);
     int get_sword_damage_factor();
+    bool is_deep_water_obstacle();
+    bool is_hole_obstacle();
+    bool is_lava_obstacle();
+    bool is_prickle_obstacle();
     bool is_teletransporter_obstacle(Teletransporter& teletransporter);
     void notify_obstacle_reached();
     void notify_attacked_enemy(EnemyAttack attack, Enemy& victim,

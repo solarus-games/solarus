@@ -83,7 +83,7 @@ function throw_egg()
   -- create the egg
   nb_eggs_created = nb_eggs_created + 1
   local egg_name = sol.enemy.get_name().."_minillosaur_"..nb_eggs_created
-  sol.enemy.create_son(egg_name, "minillosaur_egg", 0, 16)
+  sol.enemy.create_son(egg_name, "minillosaur_egg_thrown", 0, 16)
   sol.map.enemy_set_treasure(egg_name, "_none", 1, -1)
   sol.main.play_sound("boss_fireball")
 

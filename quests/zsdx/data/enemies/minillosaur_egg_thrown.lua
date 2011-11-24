@@ -5,14 +5,15 @@ in_egg = nil
 
 -- The enemy appears: create its movement
 function event_appear()
-  
+
   sol.enemy.set_life(2)
   sol.enemy.set_damage(2)
-  sol.enemy.create_sprite("enemies/minillosaur_egg")
+  sol.enemy.create_sprite("enemies/minillosaur_egg_thrown")
   sol.enemy.set_size(24, 32)
   sol.enemy.set_origin(12, 20)
   sol.enemy.set_invincible()
   sol.enemy.set_attack_consequence("sword", "custom")
+  sol.enemy.set_obstacle_behavior("flying")
 
   local sprite = sol.enemy.get_sprite()
   sol.main.sprite_set_animation(sprite, "egg")

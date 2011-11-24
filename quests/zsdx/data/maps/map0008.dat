@@ -854,6 +854,20 @@
 0	0	952	136	16	16	609
 0	0	960	128	8	16	616
 0	0	800	0	16	16	608
+0	0	384	512	16	8	36
+0	0	584	528	16	8	36
+0	0	680	552	16	8	36
+0	0	1056	552	16	8	36
+0	0	816	560	16	8	36
+0	0	368	472	16	16	37
+0	0	648	528	16	16	37
+0	0	336	144	16	8	36
+0	0	624	192	16	8	36
+0	0	552	168	16	8	36
+0	0	464	344	16	8	36
+0	0	208	304	16	8	36
+0	0	600	376	16	8	36
+0	0	832	416	16	8	36
 2	0	0	624	1120	16	to_B1	0	2	9	_side
 2	0	1120	0	16	624	to_A2	0	2	10	_side
 6	0	856	360	32	8	jumper	6	56
@@ -879,8 +893,6 @@
 1	0	784	269	from_west_mountain_cave_2f_e	3	0
 2	0	504	144	16	16	teletransporter_4	0	1	92	from_outside_w
 2	0	776	240	16	16	teletransporter_5	0	1	92	from_outside_e
-1	0	896	349	from_fairy_fountain	3	0
-2	0	888	320	16	16	teletransporter_6	0	1	93	from_outside
 1	0	600	93	from_west_mountain_cave_3f_w	3	0
 2	0	592	64	16	16	teletransporter_7	0	1	94	from_outside_w
 1	0	872	221	from_west_mountain_cave_3f_e	3	0

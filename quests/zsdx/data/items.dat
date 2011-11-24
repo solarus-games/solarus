@@ -219,7 +219,7 @@ savegame_variable = 1116
 
 [level_4_way]
 savegame_variable = 1117
-nb_variants = 3
+nb_variants = 4
 
 [flippers]
 savegame_variable = 1118

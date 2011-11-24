@@ -643,6 +643,22 @@ line2 = "fleur très rare dans"
 line3 = "le royaume d'Hyrule."
 skip = all
 
+[_item_description.level_4_way.4]
+# Précis d'escrime / Tiger scrolls
+#       |--------------------|
+icon = 25
+line1 = "Ce Précis d'escrime"
+line2 = "te permet de"
+line3 = "maîtriser les"
+skip = all
+next = _item_description.level_4_way.4.1
+
+[_item_description.level_4_way.4.1]
+# Précis d'escrime / Tiger scrolls
+#       |--------------------|
+line1 = "techniques avancée"
+line2 = "des arts de l'épée."
+
 [_item_description.flippers.1]
 # Palmes / Flippers
 #       |--------------------|
@@ -1370,6 +1386,21 @@ next = _treasure.level_4_way.3.1
 line1 = "Cette jolie fleur"
 line2 = "des montagnes est"
 line3 = "rarissime !"
+
+[_treasure.level_4_way.4]
+# Précis d'escrime
+#       |--------------------|
+icon = 25
+line1 = "Tu obtiens le Précis"
+line2 = "d'escrime !$0 Tu"
+line3 = "maîtrises désormais"
+next = _treasure.level_4_way.4.1
+
+[_treasure.level_4_way.4.1]
+#       |--------------------|
+line1 = "la technique oubliée"
+line2 = "de l'attaque"
+line3 = "tournoyante avancée."
 
 [_treasure.flippers.1]
 # Palmes
@@ -4446,7 +4477,7 @@ skip = all
 [fairy_cave.first_time]
 #       |-----------------------|
 line1 = "Sois le bienvenu, jeune"
-line2 = "homme au grand courage."
+line2 = "homme plein de sagesse."
 line3 = "J'attendais ta venue."
 next = fairy_cave.first_time.2
 
@@ -4472,13 +4503,50 @@ line3 = "de le posséder."
 [fairy_cave.restore_health]
 #       |-----------------------|
 line1 = "Sois le bienvenu, jeune"
-line2 = "homme au grand courage."
+line2 = "homme plein de sagesse."
 next = fairy_cave.restore_health.2
 
 [fairy_cave.restore_health.2]
 #       |-----------------------|
 line1 = "Je suis la Fée des"
 line2 = "Enchantements. Ferme"
+line3 = "les yeux et relaxe-toi."
+
+[north_fairy_fountain.first_time]
+#       |-----------------------|
+line1 = "Sois le bienvenu, jeune"
+line2 = "homme au grand courage."
+line3 = "J'attendais ta venue."
+next = north_fairy_fountain.first_time.2
+
+[north_fairy_fountain.first_time.2]
+#       |-----------------------|
+line1 = "Je suis la Fée des"
+line2 = "Voyageurs. Toi qui"
+line3 = "traverses le monde pour"
+next = north_fairy_fountain.first_time.3
+
+[north_fairy_fountain.first_time.3]
+#       |-----------------------|
+line1 = "combattre le mal sans"
+line2 = "relâche, permets-moi de"
+line3 = "te transmettre une"
+next = north_fairy_fountain.first_time.4
+
+[north_fairy_fountain.first_time.4]
+#       |-----------------------|
+line1 = "technique ancestrale..."
+
+[north_fairy_fountain.restore_health]
+#       |-----------------------|
+line1 = "Sois le bienvenu, jeune"
+line2 = "homme au grand courage."
+next = north_fairy_fountain.restore_health.2
+
+[north_fairy_fountain.restore_health.2]
+#       |-----------------------|
+line1 = "Je suis la Fée des"
+line2 = "Voyageurs. Ferme"
 line3 = "les yeux et relaxe-toi."
 
 [mountain_cave.mountain_sign]

@@ -25,10 +25,11 @@
 
 /**
  * @brief Creates a circle movement.
+ * @param ignore_obstacles true to ignore obstacles
  */
-CircleMovement::CircleMovement():
+CircleMovement::CircleMovement(bool ignore_obstacles):
 
-  Movement(true),
+  Movement(ignore_obstacles),
   center_entity(NULL),
   center_type(ENEMY),
   current_angle(0),
@@ -365,7 +366,14 @@ void CircleMovement::recompute_position() {
   }
 
   const Rectangle &xy = Geometry::get_xy(center, Geometry::degrees_to_radians(current_angle), current_radius);
-  set_xy(xy);
+  if (get_entity() == NULL
+      || !test_collision_with_obstacles(xy.get_x() - get_entity()->get_x(), xy.get_y() - get_entity()->get_y())) {
+    set_xy(xy);
+    notify_position_changed();
+  }
+  else {
+    notify_obstacle_reached();
+  }
 }
 
 /**
@@ -413,6 +421,14 @@ void CircleMovement::start() {
  */
 bool CircleMovement::is_started() {
   return current_radius != 0 || wanted_radius != 0;
+}
+
+/**
+ * @brief Returns whether this movement is finished.
+ * @return true if this movement is finished
+ */
+bool CircleMovement::is_finished() {
+  return is_stopped();
 }
 
 /**

@@ -97,7 +97,7 @@ class CircleMovement: public Movement {
   public:
 
     // creation and destruction
-    CircleMovement();
+    CircleMovement(bool ignore_obstacles);
     ~CircleMovement();
 
     // state
@@ -106,6 +106,7 @@ class CircleMovement: public Movement {
     void start();
     void stop();
     bool is_started();
+    bool is_finished();
 
     // properties
     void set_center(const Rectangle &center_point);

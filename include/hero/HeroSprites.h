@@ -128,6 +128,7 @@ class HeroSprites {
     void play_sword_sound();
     void set_animation_sword_tapping();
     void set_animation_spin_attack();
+    void set_animation_super_spin_attack();
     void set_animation_grabbing();
     void set_animation_pulling();
     void set_animation_pushing();

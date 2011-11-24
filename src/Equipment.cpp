@@ -834,6 +834,9 @@ int Equipment::get_ability_savegame_variable(const std::string &ability_name) {
   else if (ability_name == "sword") {
     index = Savegame::ABILITY_SWORD;
   }
+  else if (ability_name == "sword_knowledge") {
+    index = Savegame::ABILITY_SWORD_KNOWLEDGE;
+  }
   else if (ability_name == "shield") {
     index = Savegame::ABILITY_SHIELD;
   }

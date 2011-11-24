@@ -58,6 +58,12 @@ spin_attack hero/spin_attack.tunic2.png 4 30 -1
 0	48	24	24	12	21	22	22
 0	72	24	24	12	21	22	22
 
+super_spin_attack hero/spin_attack.tunic2.png 4 30 5
+0	0	24	24	12	21	22	15
+0	24	24	24	12	21	22	15
+0	48	24	24	12	21	22	15
+0	72	24	24	12	21	22	15
+
 victory hero/victory.tunic.png 4 50 17
 0	24	24	24	12	21	18	18
 0	24	24	24	12	21	18	18

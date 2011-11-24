@@ -978,6 +978,18 @@ void HeroSprites::set_animation_spin_attack() {
 }
 
 /**
+ * @brief Starts (or restarts) the "super_spin_attck" animation of the hero's sprites.
+ */
+void HeroSprites::set_animation_super_spin_attack() {
+
+  tunic_sprite->set_current_animation("super_spin_attack");
+  sword_sprite->set_current_animation("super_spin_attack");
+  stop_displaying_sword_stars();
+  stop_displaying_shield();
+  stop_displaying_trail();
+}
+
+/**
  * @brief Starts the "grabbing" animation of the hero's sprites.
  */
 void HeroSprites::set_animation_grabbing() {

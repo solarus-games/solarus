@@ -155,7 +155,7 @@ end
 
 function go_random()
 
-  local m = properties.random_path_movement_create(properties.normal_speed)
+  local m = sol.main.random_movement_create(properties.normal_speed)
   sol.enemy.start_movement(m)
   going_hero = false
 end

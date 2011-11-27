@@ -1096,9 +1096,9 @@ void HeroSprites::set_animation_brandish() {
 void HeroSprites::set_animation_victory() {
 
   tunic_sprite->set_current_animation("victory");
-  tunic_sprite->set_current_direction(0);
+  tunic_sprite->set_current_direction(1);
   sword_sprite->set_current_animation("victory");
-  sword_sprite->set_current_direction(0);
+  sword_sprite->set_current_direction(1);
   stop_displaying_sword_stars();
   stop_displaying_shield();
   stop_displaying_trail();

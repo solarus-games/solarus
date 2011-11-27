@@ -558,8 +558,6 @@
 0	0	928	616	8	8	186
 4	0	168	725	3	_random	1	-1
 4	0	168	741	3	_random	1	-1
-4	0	104	725	4	_random	1	-1
-4	0	104	741	4	_random	1	-1
 1	0	80	757	from_outside	1	0
 1	0	128	709	from_1F_A	3	0
 2	0	72	768	16	16	to_outside	0	1	9	from_mountain_cave_2F

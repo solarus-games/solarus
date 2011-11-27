@@ -372,4 +372,6 @@ booleans:
 926     bone key cave: chest with the bone key
 927     bone key cave: chest with 50 rupees
 928	Billy's cave: door open
+929	north fairy fountain: the fairy has appeared
+930	north fairy fountain: got the tiger scrolls
 

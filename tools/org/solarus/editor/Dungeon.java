@@ -26,6 +26,8 @@ import org.solarus.editor.entities.*;
  * Represents the properties of a dungeon, like the floors
  * and the chests it contains.
  * These properties are loaded and saved from file dungeons.dat.
+ *
+ * TODO: split dungeons.dat in one file per dungeon to simplify
  */
 public class Dungeon {
 
@@ -105,11 +107,13 @@ public class Dungeon {
 	String fileName = getFileName();
 	try {
 	    Ini ini = new Ini(new FileReader(fileName));
-	    removeDungeonElements(ini, map);
 
 	    if (map.isInDungeon()) {
 		Dungeon dungeon = map.getDungeon();
 		dungeon.saveDungeonElements(ini, map);
+	    }
+	    else {
+		removeDungeonElements(ini, map);
 	    }
 	    ini.store(new FileWriter(fileName));
 	}
@@ -120,6 +124,25 @@ public class Dungeon {
     }
 
     /**
+     * Returns all sections of dungeon.dat referring to the specified map.
+     * @param ini the ini file
+     * @param map a map
+     */
+    private static Vector<String> getMapSections(Ini ini, Map map) {
+
+	Vector<String> sections = new Vector<String>();
+
+	String mapString = "map_" + map.getId();
+	for (Ini.Section section: ini.values()) {
+	    String sectionName = section.getName();
+	    if (sectionName.contains(mapString)) {
+	        sections.add(sectionName);
+	    }
+	}
+	return sections;
+    }
+
+    /**
      * Removes from file dungeons.dat any element (chests, or bosses)
      * referencing the specified map.
      * @param ini the ini file
@@ -127,15 +150,7 @@ public class Dungeon {
      */
     private static void removeDungeonElements(Ini ini, Map map) throws IOException {
 
-        Vector<String> sectionsToRemove = new Vector<String>();
-
-	String mapString = "map_" + map.getId();
-	for (Ini.Section section: ini.values()) {
-	    String sectionName = section.getName();
-	    if (sectionName.contains(mapString)) {
-	        sectionsToRemove.add(sectionName);
-	    }
-	}
+        Vector<String> sectionsToRemove = getMapSections(ini, map);
 
 	for (String sectionName: sectionsToRemove) {
 	    ini.remove(sectionName);
@@ -143,25 +158,32 @@ public class Dungeon {
     }
 
     /**
-     * Saves in file dungeons.zmc the dungeon elements (chests and bosses)
-     * of the specified map.
+     * Saves in file dungeons.dat the dungeon elements (chests and bosses)
+     * of the specified map, and removes elements that are not on the map
+     * anymore.
+     * 
      * @param ini the ini file
      * @param map a map
      */
     private void saveDungeonElements(Ini ini, Map map) throws IOException {
 
+        Vector<String> currentSections = getMapSections(ini, map);
+        Vector<String> updatedSections = new Vector<String>();
+
 	nbChestsSaved = 0;
 	nbBossesSaved = 0;
 
+	// add/update the existing elements
 	MapEntities[] allEntities = map.getAllEntities();
 	for (Layer layer: Layer.values()) {
 	    for (MapEntity entity: allEntities[layer.getId()].getDynamicEntities()) {
 
 		if (entity instanceof Chest) {
 		    Chest chest = (Chest) entity;
-		    saveDungeonElement(ini, map, "chest_" + nbChestsSaved,
+		    String section = saveDungeonElement(ini, map, "chest_" + nbChestsSaved,
 			    chest.getX(), chest.getY(),
 			    chest.getIntegerProperty("treasureSavegameVariable"), chest.isBigChest());
+		    updatedSections.add(section);
 		    nbChestsSaved++;
 		}
 		else if (entity instanceof Enemy) {
@@ -169,12 +191,20 @@ public class Dungeon {
 		    Enemy.Rank rank = Enemy.Rank.get(enemy.getIntegerProperty("rank"));
 		    
 		    if (rank != Enemy.Rank.NORMAL) {
-			saveDungeonElement(ini, map, "boss_" + nbBossesSaved,
+			String section = saveDungeonElement(ini, map, "boss_" + nbBossesSaved,
 				enemy.getX(), enemy.getY(), enemy.getIntegerProperty("savegameVariable"),
 				rank == Enemy.Rank.BOSS); 
+			updatedSections.add(section);
 			nbBossesSaved++;
 		    }
 		}
+	    }
+	}
+
+	// remove non-existing elements
+	for (String section: currentSections) {
+	    if (!updatedSections.contains(section)) {
+		ini.remove(section);
 	    }
 	}
     }
@@ -188,8 +218,9 @@ public class Dungeon {
      * @param y y position of the element, relative to the map
      * @param big is this a big chest/boss
      * @param save index of the boolean that stores this element's state
+     * @return name of the section created in the ini file
      */
-    private void saveDungeonElement(Ini ini, Map map, String name, int x, int y, int save, boolean big) {
+    private String saveDungeonElement(Ini ini, Map map, String name, int x, int y, int save, boolean big) {
 
         Point mapLocation = map.getLocation();
 	x += mapLocation.x;
@@ -212,6 +243,8 @@ public class Dungeon {
 	section.put("big", big ? "1" : "0");
 
 	ini.put(sectionName.toString(), section);
+
+	return sectionName.toString();
     }
 
     // floors

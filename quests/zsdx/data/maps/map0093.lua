@@ -65,7 +65,7 @@ function event_dialog_finished(first_message_id, answer)
   if first_message_id == "north_fairy_fountain.first_time" then
     sol.map.hero_unfreeze()
     sol.map.treasure_give("level_4_way", 4, 930)
-  elseif first_message_id == "fairy_cave.restore_health" then
+  elseif first_message_id == "north_fairy_fountain.restore_health" then
     sol.map.hero_unfreeze()
     sol.game.add_life(sol.game.get_max_life())
   end

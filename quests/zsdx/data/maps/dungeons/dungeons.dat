@@ -736,3 +736,31 @@ y = 1408
 save = 805
 big = 0
 
+[dungeon_9.map_105.chest_3]
+floor = 0
+x = 800
+y = 864
+save = 806
+big = 0
+
+[dungeon_9.map_105.chest_4]
+floor = 0
+x = 1136
+y = 864
+save = 807
+big = 1
+
+[dungeon_9.map_105.chest_5]
+floor = 0
+x = 2128
+y = 1112
+save = 808
+big = 0
+
+[dungeon_9.map_105.chest_6]
+floor = 0
+x = 64
+y = 360
+save = 810
+big = 0
+

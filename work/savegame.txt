@@ -201,7 +201,7 @@ booleans:
 198	junk shop: bought the red rupee
 199	junk shop: bought the mirror
 
-200-299: binbin dungeon
+200-299: dungeon 10
 200	1F: Small key 1 
 201	1F: Torches
 202 	1F: Small key 2
@@ -379,4 +379,8 @@ booleans:
 928	Billy's cave: door open
 929	north fairy fountain: the fairy has appeared
 930	north fairy fountain: got the tiger scrolls
+931	hidden palace: chest with the sword
+932	hidden palace D1: chest with 3 bombs
+933	hidden palace D1: chest with 20 rupees
+934	hidden palace D1: bone key door open
 

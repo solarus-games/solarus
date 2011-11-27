@@ -5318,6 +5318,18 @@ line2 = "lumière que viendra"
 line3 = "la lumière."
 skip = all
 
+[hidden_palace.door_closed]
+#       |-----------------------|
+line1 = "Cette porte ne s'ouvre"
+line2 = "pas..."
+skip = all
+
+[hidden_palace.using_bone_key]
+#       |-----------------------|
+icon = 20
+line1 = "$1Tu utilises la Clé"
+line2 = "d'Os..."
+
 [dungeon_2.solarus_child]
 #       |-----------------------|
 line1 = "$2$v... Merci."
@@ -5644,7 +5656,8 @@ line3 = "cette serrure..."
 
 [dungeon_5.prison_1_use_bone_key]
 #       |-----------------------|
-line1 = "Tu utilises la Clé"
+icon = 20
+line1 = "$1Tu utilises la Clé"
 line2 = "d'Os..."
 
 [dungeon_5.prison_2_locked_1]

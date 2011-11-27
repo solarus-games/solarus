@@ -9,9 +9,6 @@ nb_torches_lit = 0
 
 function event_map_started(destination_point_name)
 
-  -- TOOD remove
-  sol.game.set_ability("sword_knowledge", 1)
-
   -- hidden Gibdo and chest
   sol.map.enemy_set_group_enabled("hidden_enemy", false)
   if not sol.game.savegame_get_boolean(800) then
@@ -42,6 +39,29 @@ function event_map_started(destination_point_name)
 
   -- bridges that appear when a torch is lit
   sol.map.tile_set_group_enabled("bridge", false)
+
+  -- west enemies room
+  if not sol.game.savegame_get_boolean(806) then
+    sol.map.chest_set_enabled("w_room_chest", false)
+  end
+  sol.map.enemy_set_group_enabled("w_room_enemy", false)
+  sol.map.door_set_open("w_room_door", true)
+
+  -- central room
+  sol.map.door_set_open("c_door", true)
+
+  -- east enemies room
+  if not sol.game.savegame_get_boolean(808) then
+    sol.map.chest_set_enabled("e_room_chest", false)
+  end
+
+  -- north-west chest
+  if not sol.game.savegame_get_boolean(810) then
+    sol.map.chest_set_enabled("nw_chest", false)
+  else
+    sol.map.switch_set_activated("nw_switch_1", true)
+    sol.map.switch_set_activated("nw_switch_2", true)
+  end
 end
 
 function event_map_opening_transition_finished(destination_point_name)
@@ -87,19 +107,56 @@ function event_enemy_dead(enemy_name)
       sol.map.door_open("s_door")
     end)
     
+  -- west enemies room
+  elseif enemy_name:find("^w_room_enemy")
+      and sol.map.enemy_is_group_dead("w_room_enemy") then
+    sol.main.play_sound("chest_appears")
+    sol.map.chest_set_enabled("w_room_chest", true)
+    if not sol.map.door_is_open("w_room_door") then
+      sol.map.door_open("w_room_door")
+    end
+
+  -- east enemies room
+  elseif enemy_name:find("^e_room_enemy")
+      and sol.map.enemy_is_group_dead("e_room_enemy")
+      and not sol.map.chest_is_enabled("e_room_chest") then
+    sol.map.camera_move(2136, 1120, 250, function()
+      sol.main.play_sound("chest_appears")
+      sol.map.chest_set_enabled("e_room_chest", true)
+    end)
   end
 end
 
 function event_switch_activated(switch_name)
 
   -- door to puzzle B
-  if switch_name == "puzzle_b_door_switch"
-      and not sol.map.door_is_open("puzzle_b_door") then
-    sol.map.camera_move(808, 1544, 250, function()
+  if switch_name == "puzzle_b_door_switch" then
+    if not sol.map.door_is_open("puzzle_b_door") then
+      sol.map.camera_move(808, 1544, 250, function()
+	sol.main.play_sound("secret")
+	sol.map.door_open("puzzle_b_door")
+	sol.map.switch_set_activated("puzzle_b_door_switch", true)
+      end)
+    end
+ 
+  -- north-west chest
+  elseif switch_name:find("^nw_switch") then
+    if not sol.map.chest_is_enabled("nw_chest")
+        and sol.map.switch_is_activated("nw_switch_1")
+        and sol.map.switch_is_activated("nw_switch_2") then
+      sol.main.play_sound("chest_appears")
+      sol.map.chest_set_enabled("nw_chest", true)
+    end
+
+  -- central room
+  elseif switch_name:find("^c_room_switch") then
+    if sol.map.switch_is_activated("c_room_switch_1")
+        and sol.map.switch_is_activated("c_room_switch_2")
+        and sol.map.switch_is_activated("c_room_switch_3")
+        and sol.map.switch_is_activated("c_room_switch_4") then
       sol.main.play_sound("secret")
-      sol.map.door_open("puzzle_b_door")
-      sol.map.switch_set_activated("puzzle_b_door_switch", true)
-    end)
+      sol.map.door_open("c_door")
+    end
 
   -- puzzle B: the switches have to be activated clockwise
   elseif switch_name:find("^puzzle_b_switch") then
@@ -185,8 +242,28 @@ end
 
 function event_hero_on_sensor(sensor_name)
 
+  -- east room
+  if sensor_name == "close_w_room_sensor" then
+
+    if sol.map.door_is_open("w_room_door")
+         and not sol.map.enemy_is_group_dead("w_room_enemy")
+	 and not sol.map.chest_is_enabled("w_room_chest") then
+      sol.map.door_close("w_room_door")
+      sol.map.enemy_set_group_enabled("w_room_enemy", true)
+    end
+
+  -- central room
+  elseif sensor_name:find("^close_c_doors_sensor")
+      and sol.map.door_is_open("c_door")
+      and not sol.map.switch_is_activated("c_room_switch_1") then
+    sol.map.door_close("c_door")
+    sol.map.switch_set_activated("c_room_switch_1", false)
+    sol.map.switch_set_activated("c_room_switch_2", false)
+    sol.map.switch_set_activated("c_room_switch_3", false)
+    sol.map.switch_set_activated("c_room_switch_4", false)
+  
   -- puzzle B
-  if sensor_name:find("^close_puzzle_b_door_sensor") then
+  elseif sensor_name:find("^close_puzzle_b_door_sensor") then
 
     if not sol.map.switch_is_activated("puzzle_b_switch_1")
         and sol.map.door_is_open("puzzle_b_door") then

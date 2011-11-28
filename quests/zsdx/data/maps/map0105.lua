@@ -62,6 +62,12 @@ function event_map_started(destination_point_name)
     sol.map.switch_set_activated("nw_switch_1", true)
     sol.map.switch_set_activated("nw_switch_2", true)
   end
+
+  -- shortcut to the boss
+  if not sol.game.savegame_get_boolean(816) then
+    sol.map.tile_set_enabled("shortcut", false)
+    sol.map.teletransporter_set_enabled("shortcut_teletransporter", false)
+  end
 end
 
 function event_map_opening_transition_finished(destination_point_name)
@@ -194,7 +200,7 @@ function event_switch_activated(switch_name)
         sol.map.switch_set_activated("puzzle_b_door_switch", true)
       end
     end
-  
+
   -- puzzle A: each switch changes its neighboors in the 4 main directions
   elseif switch_name:find("^puzzle_a_switch") then
     sol.main.play_sound("switch")
@@ -234,9 +240,7 @@ end
 function event_switch_left(switch_name)
 
   if switch_name:find("^puzzle_b_switch") then
-    if puzzle_b_nb_activated == 0 then
-      sol.map.switch_set_locked(switch_name, false)
-    end
+    sol.map.switch_set_locked(switch_name, false)
   end
 end
 

@@ -6025,6 +6025,11 @@ line1 = "        Niveau 9       "
 line2 = " Temple des Souvenirs  "
 skip = current
 
+[dungeon_9.clockwise_switches_hint]
+#       |-----------------------|
+line1 = "Tourne comme le temps."
+skip = all
+
 [dungeon_10.welcome]
 #       |-----------------------|
 line1 = "     Niveau secret     "

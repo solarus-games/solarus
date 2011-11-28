@@ -765,3 +765,59 @@ y = 360
 save = 810
 big = 0
 
+[dungeon_9.map_106.chest_0]
+floor = 1
+x = 1800
+y = 320
+save = 811
+big = 0
+
+[dungeon_9.map_106.chest_1]
+floor = 1
+x = 2104
+y = 384
+save = -1
+big = 0
+
+[dungeon_9.map_106.chest_2]
+floor = 1
+x = 2032
+y = 384
+save = -1
+big = 0
+
+[dungeon_9.map_106.chest_3]
+floor = 1
+x = 1984
+y = 384
+save = -1
+big = 0
+
+[dungeon_9.map_106.chest_4]
+floor = 1
+x = 2128
+y = 384
+save = -1
+big = 0
+
+[dungeon_9.map_106.chest_5]
+floor = 1
+x = 2080
+y = 384
+save = -1
+big = 0
+
+[dungeon_9.map_106.chest_6]
+floor = 1
+x = 2008
+y = 384
+save = -1
+big = 0
+
+[dungeon_9.map_106.chest_7]
+floor = 1
+x = 2056
+y = 384
+save = -1
+big = 0
+

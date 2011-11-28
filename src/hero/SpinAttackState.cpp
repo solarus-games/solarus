@@ -19,6 +19,7 @@
 #include "hero/HeroSprites.h"
 #include "entities/Enemy.h"
 #include "movements/StraightMovement.h"
+#include "movements/CircleMovement.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Geometry.h"
@@ -30,7 +31,8 @@
  * @param hero the hero controlled by this state
  */
 Hero::SpinAttackState::SpinAttackState(Hero& hero):
-  State(hero) {
+  State(hero),
+  being_pushed(false) {
 
 }
 
@@ -53,7 +55,20 @@ void Hero::SpinAttackState::start(State* previous_state) {
   play_spin_attack_sound();
 
   // start the animation
-  get_sprites().set_animation_spin_attack();
+  if (get_equipment().has_ability("sword_knowledge")) {
+    get_sprites().set_animation_super_spin_attack();
+    CircleMovement* movement = new CircleMovement(false);
+    movement->set_center(hero.get_xy());
+    movement->set_radius_speed(128);
+    movement->set_radius(24);
+    movement->set_angle_speed(540);
+    movement->set_max_rotations(3);
+    movement->set_direction(CircleMovement::CLOCKWISE);
+    hero.set_movement(movement);
+  }
+  else {
+    get_sprites().set_animation_spin_attack();
+  }
 }
 
 /**
@@ -83,6 +98,11 @@ void Hero::SpinAttackState::update() {
   // check the movement if any
   if (hero.get_movement() != NULL && hero.get_movement()->is_finished()) {
     hero.clear_movement();
+
+    if (!being_pushed) {
+      // end of a super spin attack
+      hero.set_state(new FreeState(hero));
+    }
   }
 }
 
@@ -101,7 +121,7 @@ bool Hero::SpinAttackState::can_sword_hit_crystal() {
  * (or NULL if the source of the attack is not an enemy)
  */
 bool Hero::SpinAttackState::can_be_hurt(Enemy* attacker) {
-  return true;
+  return false;
 }
 
 /**
@@ -143,13 +163,46 @@ void Hero::SpinAttackState::play_spin_attack_sound() {
 }
 
 /**
+ * @brief Returns whether a deep water tile is considered as an obstacle in this state.
+ * @return true if the deep water tiles are considered as obstacles in this state
+ */
+bool Hero::SpinAttackState::is_deep_water_obstacle() {
+  return true;
+}
+
+/**
+ * @brief Returns whether a hole is considered as an obstacle in this state.
+ * @return true if the holes are considered as obstacles in this state
+ */
+bool Hero::SpinAttackState::is_hole_obstacle() {
+  return true;
+}
+
+/**
+ * @brief Returns whether lava is considered as an obstacle in this state.
+ * @return true if lava is considered as obstacles in this state
+ */
+bool Hero::SpinAttackState::is_lava_obstacle() {
+  return true;
+}
+
+/**
+ * @brief Returns whether prickles are considered as an obstacle in this state.
+ * @return true if prickles are considered as obstacles in this state
+ */
+bool Hero::SpinAttackState::is_prickle_obstacle() {
+  return true;
+}
+
+/**
  * @brief Returns whether a teletransporter is considered as an obstacle in this state.
  * @param teletransporter a teletransporter
  * @return true if the teletransporter is an obstacle in this state
  */
 bool Hero::SpinAttackState::is_teletransporter_obstacle(Teletransporter& teletransporter) {
 
-  // if the hero was pushed by an enemy, don't go on a teletransporter
+  // if the hero is pushed by an enemy or making a super spin attack,
+  // don't go on a teletransporter
   return hero.get_movement() != NULL;
 }
 
@@ -160,7 +213,13 @@ bool Hero::SpinAttackState::is_teletransporter_obstacle(Teletransporter& teletra
 void Hero::SpinAttackState::notify_obstacle_reached() {
 
   // the hero reached an obstacle while being pushed after hitting an enemy
+  // or making a super spin attack
   hero.clear_movement();
+
+  if (!being_pushed) {
+    // obstacle while making a super spin attack: finish with a normal spin attack
+    get_sprites().set_animation_spin_attack();
+  }
 }
 
 /**
@@ -177,12 +236,14 @@ void Hero::SpinAttackState::notify_attacked_enemy(EnemyAttack attack, Enemy& vic
 
     if (victim.get_push_hero_on_sword()) {
 
+      being_pushed = true;
       double angle = Geometry::get_angle(victim.get_x(), victim.get_y(),
           hero.get_x(), hero.get_y());
       StraightMovement* movement = new StraightMovement(false, true);
       movement->set_max_distance(24);
       movement->set_speed(120);
       movement->set_angle(angle);
+      hero.clear_movement();
       hero.set_movement(movement);
     }
   }

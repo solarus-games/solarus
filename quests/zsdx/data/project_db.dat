@@ -123,6 +123,7 @@
 0	124	Hidden palace L2
 0	125	Hidden palace L3
 0	126	Hidden palace D1
+0	127	Hidden palace end
 1	1	Light World
 1	13	Dark World
 1	3	Cave
@@ -172,7 +173,7 @@
 2	soldiers.spc	Soldiers
 2	southern_shrine.ogg	Southern Shrine (LA)
 2	rabbit.spc	Turned into a rabbit
-2	title_screen.spc	Title screen 
+2	title_screen.spc	Title screen
 2	triforce.spc	Triforce
 2	victory.spc	Victory
 2	witch_hut.ogg	Witch (LA)
@@ -181,6 +182,7 @@
 3	npc/billy	Billy
 3	npc/black_knight_soldier	Black Knight Soldier
 3	entities/block	Block
+3	entities/bone_key_door	Bone key door
 3	entities/cannon	Cannon
 3	entities/slot_machine	Casino slot machine
 3	npc/castle_guard	Castle guard
@@ -213,7 +215,7 @@
 3	npc/newlink7	Newlink NPC 7
 3	npc/newlink8	Newlink NPC 8
 3	npc/villager1	ALTTP villager 1
-3	npc/villager2	ALTTP villager 2 
+3	npc/villager2	ALTTP villager 2
 3	npc/villager3	ALTTP villager 3
 3	npc/static_villager1	ALTTP static villager 1
 3	npc/static_villager2	ALTTP static villager 2
@@ -409,7 +411,8 @@
 6	fireball_triple	Fireball (triple)
 6	khorneth	Khorneth
 6	papillosaur_king	Papillosaur King
-6	minillosaur_egg	Minillosaur Egg
+6	minillosaur_egg_thrown	Minillosaur Egg (Boss)
+6	minillosaur_egg_fixed	Minillosaur Egg (Dungeon)
 6	khotor	Khotor
 6	chain_and_ball	Chain and ball
 6	mowatulla	Mowatulla

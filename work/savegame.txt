@@ -201,7 +201,7 @@ booleans:
 198	junk shop: bought the red rupee
 199	junk shop: bought the mirror
 
-200-299: binbin dungeon
+200-299: dungeon 10
 200	1F: Small key 1 
 201	1F: Torches
 202 	1F: Small key 2
@@ -336,9 +336,17 @@ booleans:
 
 700-799	dungeon 8
 
-800	dungeon 9 1F: chest with 50 rupees (SW).
-901	dungeon 9 1F: got the map from the chest
-902	dungeon 9 1F: chest with the map appeared
+800	dungeon 9 1F: chest with 50 rupees (SW)
+801	dungeon 9 1F: got the map from the chest
+802	dungeon 9 1F: the chest with the map has appeared
+803	dungeon 9 1F: locked door (SW)
+804	dungeon 9 1F: big key door (S)
+805	dungeon 9 1F: chest with a small key (SE)
+806	dungeon 9 1F: chest with the big key (E)
+807	dungeon 9 1F: big chest with the red tunic
+808	dungeon 9 1F: chest with a small key (W)
+809	dungeon 9 1F: big key door (N)
+810	dungeon 9 1F: chest with a small key (NW)
 
 900	junk shop: bought the piece of heart
 901	dungeon 3: miniboss
@@ -369,4 +377,10 @@ booleans:
 926     bone key cave: chest with the bone key
 927     bone key cave: chest with 50 rupees
 928	Billy's cave: door open
+929	north fairy fountain: the fairy has appeared
+930	north fairy fountain: got the tiger scrolls
+931	hidden palace: chest with the sword
+932	hidden palace D1: chest with 3 bombs
+933	hidden palace D1: chest with 20 rupees
+934	hidden palace D1: bone key door open
 

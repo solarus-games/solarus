@@ -606,7 +606,7 @@ int Script::main_api_circle_movement_create(lua_State *l) {
   MapEntity* center_entity = script.get_map().get_entities().
       get_entity(EntityType(center_type), center_name);
 
-  CircleMovement *movement = new CircleMovement();
+  CircleMovement* movement = new CircleMovement(true);
   movement->set_center(center_entity);
   movement->set_radius(radius);
   int movement_handle = script.create_movement_handle(*movement);

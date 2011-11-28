@@ -222,6 +222,7 @@ class Hero: public MapEntity {
     Ground get_tile_ground();
     const Rectangle get_ground_point();
     void set_target_solid_ground_coords(const Rectangle &target_solid_ground_coords, Layer layer);
+    void reset_target_solid_ground_coords();
 
     /**
      * @name Obstacles.

@@ -1006,17 +1006,12 @@
 11	1	1072	848	DB4	1	0	0
 4	1	1080	861	0	_random	1	-1
 18	1	1112	1000	LD4	3	0	-1
-2	1	1120	1728	16	16	teletransporter	1	1	49	helper_arrival
 18	1	296	1656	LD3_2	0	0	-1
 18	1	1112	1048	LD4_2	1	0	-1
 13	1	1112	997	48	16	DS4	0
 7	1	1460	1565	enemy_4	3	red_helmasaur	0	-1	_random	1	-1
-7	1	1460	1565	enemy_4	3	red_helmasaur	0	-1	_random	1	-1
-7	1	1540	1629	enemy_6	3	red_helmasaur	0	-1	_random	1	-1
 7	1	1540	1629	enemy_8	3	red_helmasaur	0	-1	_random	1	-1
-7	1	1356	1413	enemy_10	3	red_helmasaur	0	-1	_random	1	-1
 7	1	1356	1413	enemy_11	3	red_helmasaur	0	-1	_random	1	-1
-7	1	1548	1397	enemy_16	3	red_helmasaur	0	-1	_random	1	-1
 7	1	1548	1397	enemy_17	3	red_helmasaur	0	-1	_random	1	-1
 0	2	976	1656	8	32	352
 0	2	0	1552	16	240	170

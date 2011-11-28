@@ -1021,9 +1021,12 @@ called when an explosion overlaps a sensor
 
 - <tt>event_chest_empty(chest_name)</tt>:
 Called when the hero opens an empty chest.
-The hero is freezed, your script has
-to define its behavior (for example giving a treasure or show
-an error message) and then call <tt>sol.map.hero_unfreeze()</tt>.
+The hero remains freezed.
+Your script has
+to define what happens (for example giving a treasure or show
+an error message). If you don't give a treasure,
+you have to unblock the hero explicitely by calling
+<tt>sol.map.hero_unfreeze()</tt>.
 
 - <tt>event_shop_item_buying(shop_item_name)</tt>:
 Called when the player wants to buy an item in a shop

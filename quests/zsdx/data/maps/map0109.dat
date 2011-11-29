@@ -665,12 +665,72 @@
 0	0	760	104	16	16	45
 0	0	888	936	24	16	13
 0	0	1784	248	16	16	49
+0	0	1480	456	16	16	45
+0	0	744	264	16	32	19
+0	0	776	328	16	48	19
+18	0	584	720	door_b_3	0	0	-1
+18	0	888	720	door_b_5	0	0	-1
+18	0	936	720	door_b_6	2	0	-1
 1	0	768	1205	from_3f	1	0
 1	0	1680	341	from_6f	3	0
 2	0	760	1208	16	16	teletransporter	1	1	107	from_5f
 10	0	760	1208	16	16	tile	51	1
 2	0	1672	312	16	16	teletransporter_2	1	1	110	from_5f
 10	0	1672	312	16	16	tile_2	51	1
+5	0	456	120	chest_a	0	small_key	1	877
+9	0	736	133	block	2	entities/block	1	0	1
+1	0	768	133	destination_point_1	3	0
+1	0	1488	485	destination_point_2	3	0
+2	0	760	104	16	16	teletransporter_3	0	1	109	destination_point_2
+2	0	1480	456	16	16	teletransporter_4	0	1	109	destination_point_1
+7	0	1072	533	enemy	3	skeletor	0	-1	_random	1	-1
+12	0	936	520	16	16	custom_obstacle	0	1	0	0
+12	0	1192	520	16	16	custom_obstacle_2	0	1	0	0
+18	0	280	512	door_a	0	0	-1
+18	0	328	512	door_a_2	2	0	-1
+9	0	448	533	door_a_block	0	entities/block	1	0	1
+1	0	416	533	tmp	3	0
+7	0	420	741	door_b_enemy_1	3	gibdo	0	-1	_random	1	-1
+7	0	492	789	door_b_enemy_2	3	gibdo	0	-1	_random	1	-1
+18	0	448	600	door_b	3	0	-1
+18	0	448	648	door_b_2	1	0	-1
+18	0	632	720	door_b_4	2	0	-1
+13	0	464	677	16	16	close_door_b_sensor_1	0
+13	0	576	741	16	16	close_door_b_sensor_2	0
+5	0	1064	680	chest	0	small_key	1	878
+12	0	936	728	16	16	custom_obstacle_3	0	1	0	0
+7	0	1132	749	enemy_2	3	red_helmasaur	0	-1	_random	1	-1
+7	0	1020	781	enemy_3	3	red_helmasaur	0	-1	_random	1	-1
+7	0	1068	733	enemy_4	3	red_helmasaur	0	-1	_random	1	-1
+18	0	752	808	door_c	3	0	-1
+18	0	752	856	door_c_2	1	0	-1
+18	0	752	1016	door_c_3	3	0	-1
+18	0	752	1064	door_c_4	1	0	-1
+13	0	768	885	16	16	close_door_c_sensor_1	0
+13	0	768	1013	16	16	close_door_c_sensor_2	0
+7	0	680	933	door_c_enemy_1	3	blue_dogman	0	-1	_random	1	-1
+7	0	856	957	door_c_enemy_2	3	red_dogman	0	-1	_random	1	-1
+9	0	752	741	door_bc_block	0	entities/block	1	0	0
+13	0	768	805	16	16	close_door_bc_sensor	0
+13	0	656	741	16	16	close_door_bc_sensor_2	0
+13	0	880	741	16	16	close_door_bc_sensor_3	0
+12	0	584	728	16	16	custom_obstacle_4	0	1	0	0
+12	0	456	648	16	16	custom_obstacle_5	0	1	0	0
+7	0	400	1157	enemy_5	3	skeletor	0	-1	_random	1	-1
+12	0	584	1144	16	16	custom_obstacle_6	0	1	0	0
+12	0	936	1144	16	16	custom_obstacle_7	0	1	0	0
+7	0	528	1157	enemy_6	3	skeletor	0	-1	_random	1	-1
+7	0	1128	1117	enemy_7	3	skeletor	0	-1	_random	1	-1
+18	0	584	512	door	0	1	879
+18	0	632	512	door_2	2	1	879
+7	0	1328	525	enemy_8	3	blue_hardhat_beetle	0	-1	_random	1	-1
+18	0	1360	440	door_d	1	0	-1
+18	0	1360	392	door_d_2	3	0	-1
+18	0	1544	304	door_d_3	2	0	-1
+18	0	1496	304	door_d_4	0	0	-1
+7	0	1328	309	door_d_enemy	3	khotor	1	880	fairy	1	-1
+13	0	1376	389	16	16	close_door_d_sensor	0
+12	0	1368	392	16	16	custom_obstacle_8	0	1	0	0
 0	2	320	0	592	16	24
 0	2	0	432	16	192	24
 0	2	600	96	8	32	28

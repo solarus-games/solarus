@@ -42,13 +42,14 @@
 0	108	Dungeon 9 4F
 0	109	Dungeon 9 5F
 0	110	Dungeon 9 6F
+0	130	Dungeon 9 boss
 0	47	Dungeon 8 1F
 0	48	Dungeon 8 B1
 0	49	Dungeon 8 B2
 0	50	Dungeon 8 B3
 0	51	Dungeon 8 B4
-0	52	Dungeon 8 Boss
-0	53	Dungeon 8 Hidden room
+0	52	Dungeon 8 boss
+0	53	Dungeon 8 hidden room
 0	101	Dungeon 7 1F
 0	102	Dungeon 7 2F
 0	103	Dungeon 7 3F
@@ -82,6 +83,15 @@
 0	35	Bomb cave 2F
 0	36	Bomb cave 3F
 0	37	Billy's cave S
+0	121	Billy's cave N
+0	122	Hidden palace L0
+0	123	Hidden palace L1
+0	124	Hidden palace L2
+0	125	Hidden palace L3
+0	126	Hidden palace D1
+0	127	Hidden palace end
+0	128	Hidden palace D2
+0	129	Hidden palace D6
 0	39	True hero cave 2F
 0	38	True hero cave 1F
 0	44	Enemies testing arena
@@ -117,15 +127,7 @@
 0	117	Cave to dungeon 8 2F
 0	118	Cave to dungeon 8 B1
 0	120	Bone key cave
-0	121	Billy's cave N
-0	122	Hidden palace L0
-0	123	Hidden palace L1
-0	124	Hidden palace L2
-0	125	Hidden palace L3
-0	126	Hidden palace D1
-0	127	Hidden palace end
-0	128	Hidden palace D2
-0	129	Hidden palace D6
+0	131	The end
 1	1	Light World
 1	13	Dark World
 1	3	Cave
@@ -379,42 +381,42 @@
 5	green_potion	Green potion
 5	blue_potion	Blue potion
 6	bee_guard	Bee Guard
-6	blue_bullblin	Blue Bullblin
-6	red_bullblin	Red Bullblin
-6	blue_dogman	Blue Dogman
-6	red_dogman	Red Dogman
-6	green_duck_soldier	Green Duck Soldier
-6	blue_duck_soldier	Blue Duck Soldier
-6	red_duck_soldier	Red Duck Soldier
+6	bubble	Bubble
+6	blue_bullblin	Bullblin (blue)
+6	red_bullblin	Bullblin (red)
+6	blue_dogman	Dogman (blue)
+6	red_dogman	Dogman (red)
+6	green_duck_soldier	Duck Soldier (green)
+6	blue_duck_soldier	Duck Soldier (blue)
+6	red_duck_soldier	Duck Soldier (red)
+6	evil_tile	Evil Tile
+6	blue_flame	Flame (blue)
+6	fireball_simple	Fireball (simple)
+6	fireball_triple	Fireball (triple)
 6	globul	Globul
-6	green_knight_soldier	Green Knight Soldier
-6	blue_knight_soldier	Blue Knight Soldier
-6	red_knight_soldier	Red Knight Soldier
+6	gibdo	Gibdo
+6	blue_hardhat_beetle	Hardhat Beetle (blue)
+6	red_hardhat_beetle	Hardhat Beetle (red)
+6	red_helmasaur	Helmasaur (red)
+6	green_knight_soldier	Knight Soldier (green)
+6	blue_knight_soldier	Knight Soldier (blue)
+6	red_knight_soldier	Knight Soldier (red)
+6	laser	Laser
 6	lizalfos	Lizalfos
 6	mandible	Mandible
-6	blue_pig_soldier	Blue Pig Soldier
-6	red_pig_soldier	Red Pig Soldier
-6	bubble	Bubble
-6	evil_tile	Evil Tile
-6	gibdo	Gibdo
-6	blue_hardhat_beetle	Blue Hardhat Beetle
-6	red_hardhat_beetle	Red Hardhat Beetle
-6	red_helmasaur	Red Helmasaur
-6	laser	Laser
+6	blue_pig_soldier	Pig Soldier (blue)
+6	red_pig_soldier	Pig Soldier (red)
 6	pike_fixed	Pike (never moving)
 6	pike_auto	Pike (always moving)
 6	pike_detect	Pike (moves near hero)
 6	ropa	Ropa
-6	simple_green_soldier	Green Simple Soldier
+6	simple_green_soldier	Simple Soldier (green)
 6	snap_dragon	Snap Dragon
-6	tentacle	Tentacle
 6	skeletor	Skeletor
-6	fireball_simple	Fireball (simple)
-6	fireball_triple	Fireball (triple)
 6	khorneth	Khorneth
 6	papillosaur_king	Papillosaur King
-6	minillosaur_egg_thrown	Minillosaur Egg (Boss)
-6	minillosaur_egg_fixed	Minillosaur Egg (Dungeon)
+6	minillosaur_egg_thrown	Minillosaur Egg (fixed)
+6	minillosaur_egg_fixed	Minillosaur Egg (thrown)
 6	khotor	Khotor
 6	chain_and_ball	Chain and ball
 6	mowatulla	Mowatulla
@@ -428,7 +430,7 @@
 6	drakomos_lava_spawner	Drakomos lava spawner
 6	gelidrak	Gelidrak
 6	poutroxor	Poutroxor
-6	blue_flame	Blue flame
+6	ganon	Ganon
 7	fr/text/dialogs.dat	French dialogs
 7	en/text/dialogs.dat	English dialogs
 7	de/text/dialogs.dat	Deutsch dialogs

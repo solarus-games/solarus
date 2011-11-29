@@ -403,6 +403,15 @@ makes the hero run
 - <tt>sol.map.hero_start_hurt(source_x, source_y, life_points, magic_points)</tt>:
 Hurts the hero.
 
+- <tt>sol.map.npc_is_enabled(npc_name)</tt>:
+returns whether an NPC is enabled
+
+- <tt>sol.map.npc_set_enabled(npc_name, enable)</tt>:
+enables or disables an NPC
+
+- <tt>sol.map.npc_set_group_enabled(npc_prefix, enable)</tt>:
+enables or disables all NPCs having a common prefix
+
 - <tt>sol.map.npc_get_position(npc)</tt>:
 Returns the position of an NPC (x, y and layer).
 

@@ -1,0 +1,4 @@
+320	240	-1	-100	0	0	-1	6	credits.spc
+1	0	8	13	start_position	3	0
+8	1	8	13	interactive_entity	3	0	entities/the_end	map
+1	1	8	13	from_ending	-1	0

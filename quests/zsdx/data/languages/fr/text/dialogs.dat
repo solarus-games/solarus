@@ -6045,9 +6045,221 @@ skip = all
 line1 = "En bas."
 skip = all
 
+[dungeon_9.boss]
+#       |-----------------------|
+line1 = "Vous voilà enfin, jeune"
+line2 = "gringalet."
+next = dungeon_9.boss.2
+
+[dungeon_9.boss.2]
+#       |-----------------------|
+line1 = "Cela faisait longtemps"
+line2 = "que j'attendais votre"
+line3 = "venue."
+next = dungeon_9.boss.3
+
+[dungeon_9.boss.3]
+#       |-----------------------|
+line1 = "L'heure de notre"
+line2 = "revanche a sonné !"
+line3 = "Préparez-vous à périr."
+
+[dungeon_9.zelda]
+#       |-----------------------|
+line1 = "$1$v... Merci."
+line2 = "Avec cette nouvelle"
+line3 = "victoire sur le mal, tu"
+next = dungeon_9.zelda.2
+
+[dungeon_9.zelda.2]
+#       |-----------------------|
+line1 = "montres une fois encore"
+line2 = "que la sagesse et la"
+line3 = "justice finissent"
+next = dungeon_9.zelda.3
+
+[dungeon_9.zelda.3]
+#       |-----------------------|
+line1 = "toujours par triompher"
+line2 = "sur les forces du"
+line3 = "Malin. Grâce à ce que"
+next = dungeon_9.zelda.4
+
+[dungeon_9.zelda.4]
+#       |-----------------------|
+line1 = "tu as accompli, tu"
+line2 = "permets à notre monde"
+line3 = "de retrouver son"
+next = dungeon_9.zelda.5
+
+[dungeon_9.zelda.5]
+#       |-----------------------|
+line1 = "apparence normale."
+line2 = "Le Royaume d'Hyrule est"
+line3 = "désormais restauré."
+
+[dungeon_9.zelda_children]
+#       |-----------------------|
+line1 = "$1Je dois aujourd'hui"
+line2 = "détruire ce pendentif."
+line3 = "Le pouvoir du Solarus"
+next = dungeon_9.zelda_children.2
+
+[dungeon_9.zelda_children.2]
+#       |-----------------------|
+line1 = "est trop dangereux. En"
+line2 = "le détruisant, il n'y"
+line3 = "aura plus aucun moyen"
+next = dungeon_9.zelda_children.3
+
+[dungeon_9.zelda_children.3]
+#       |-----------------------|
+line1 = "de reconstituer les"
+line2 = "fragments de la"
+line3 = "Triforce, que ce soit"
+next = dungeon_9.zelda_children.4
+
+[dungeon_9.zelda_children.4]
+#       |-----------------------|
+line1 = "pour faire le bien,"
+line2 = "comme tu le fis jadis,"
+line3 = "ou pour faire régner la"
+next = dungeon_9.zelda_children.5
+
+[dungeon_9.zelda_children.5]
+#       |-----------------------|
+line1 = "terreur, comme"
+line2 = "voulurent le faire"
+line3 = "Agahnim puis Ganondorf."
+next = dungeon_9.zelda_children.6
+
+[dungeon_9.zelda_children.6]
+#       |-----------------------|
+line1 = "Le pendentif pourrait"
+line2 = "permettre, à l'aide du"
+line3 = "pouvoir des huit êtres"
+next = dungeon_9.zelda_children.7
+
+[dungeon_9.zelda_children.7]
+#       |-----------------------|
+line1 = "engendrés par l'Essence"
+line2 = "du Solarus, d'annuler"
+line3 = "le Sceau créé."
+next = dungeon_9.zelda_children.8
+
+[dungeon_9.zelda_children.8]
+#       |-----------------------|
+line1 = "C'est pourquoi il est"
+line2 = "nécessaire de le"
+line3 = "détruire."
+
+[dungeon_9.zelda_end]
+#       |-----------------------|
+line1 = "$1C'est terminé.$0"
+line2 = "Le pouvoir du Solarus"
+line3 = "s'est éteint à jamais."
+next = dungeon_9.zelda_end.2
+
+[dungeon_9.zelda_end.2]
+#       |-----------------------|
+line1 = "La Triforce est scellée"
+line2 = "pour l'éternité."
+
 [dungeon_10.welcome]
 #       |-----------------------|
 line1 = "     Niveau secret     "
 line2 = "     Tour des Cieux    "
 skip = current
+
+[credits_1]
+#       |-----------------------|
+line1 = "$1        Crédits"
+next = credits_1.1
+
+[credits_1.1]
+#       |-----------------------|
+line1 = "    Programmation :"
+line2 = "Christopho"
+
+[credits_2]
+#       |-----------------------|
+line1 = "$1     Réalisation" 
+line2 = "       des maps :"
+next = credits_2.1
+
+[credits_2.1]
+#       |-----------------------|
+line1 = "Christopho"
+line2 = "Metallizer"
+line3 = "Binbin"
+next = credits_2.2
+
+[credits_2.2]
+#       |-----------------------|
+line1 = "Mymy"
+
+[credits_3]
+#       |-----------------------|
+line1 = "$1      Graphismes :     "
+line2 = "Newlink"
+next = credits_3.1
+
+[credits_3.1]
+#       |-----------------------|
+line1 = "Neovyse"
+line2 = "@PyroNet"
+line3 = "Djipi"
+
+[credits_4]
+#       |-----------------------|
+line1 = "$1       Musiques :      "
+line2 = "Marine"
+line3 = "Metallizer"
+next = credits_4.1
+
+[credits_4.1]
+#       |-----------------------|
+line1 = "$1       Scénario :      "
+line2 = "Guillaume F."
+line3 = "Christopho"
+
+[credits_6]
+#       |-----------------------|
+line1 = "$1     Remerciements     "
+line2 = "       spéciaux :      "
+line3 = ""
+next = credits_6.1
+
+[credits_6.1]
+#       |-----------------------|
+line1 = "19oj19"
+line2 = "Yohann"
+line3 = "HelpTheWretched"
+next = credits_6.2
+
+[credits_6.2]
+#       |-----------------------|
+line1 = "krytzz"
+line2 = "MultiSync_XV17"
+next = credits_6.3
+
+[credits_6.3]
+#       |-----------------------|
+line1 = "Nintendo"
+line2 = ""
+line3 = ""
+next = credits_6.4
+
+[credits_6.4]
+#       |-----------------------|
+line1 = "Merci d'avoir joué !"
+line2 = ""
+line3 = ""
+next = credits_6.5
+
+[credits_6.5]
+#       |-----------------------|
+line1 = ""
+line2 = ""
+line3 = " www.zelda-solarus.com "
 

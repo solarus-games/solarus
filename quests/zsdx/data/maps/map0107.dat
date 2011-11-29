@@ -273,8 +273,6 @@
 0	1	1760	248	16	32	540
 0	1	1776	256	8	16	71
 0	1	1752	256	8	16	71
-0	1	2080	528	16	16	619
-0	1	2176	384	16	16	619
 0	1	2272	360	16	64	612
 0	1	2056	480	64	32	612
 0	1	2056	416	64	16	612
@@ -296,7 +294,6 @@
 0	1	2400	280	16	16	190
 0	1	2392	432	32	48	619
 0	1	2384	608	16	16	619
-0	1	2368	624	16	16	619
 0	1	2352	640	16	16	619
 0	1	2368	656	16	16	619
 0	1	2384	672	16	16	619
@@ -313,7 +310,7 @@
 0	1	2488	736	16	32	342
 0	1	2288	1840	16	16	276
 0	1	2288	2000	16	16	276
-0	1	2512	1840	16	16	2
+0	1	2512	1880	16	16	2
 0	1	2488	1976	8	8	315
 0	1	2488	1872	8	8	318
 0	1	2344	1896	8	8	307
@@ -442,7 +439,6 @@
 0	1	1680	1368	16	16	612
 0	1	1616	1392	16	16	612
 0	1	1648	1464	16	16	612
-0	1	1664	1408	16	16	619
 0	1	1528	1344	16	16	612
 0	1	1552	1440	16	16	612
 0	1	1440	1360	16	16	612
@@ -456,11 +452,13 @@
 0	1	1680	328	8	24	409
 0	1	1656	328	8	24	410
 0	1	1656	352	32	8	408
-14	1	1768	669	crystal
+18	1	1560	1304	miniboss_door	1	0	-1
+18	1	1768	1304	miniboss_door_2	1	0	-1
+14	1	1864	349	crystal
 15	1	2288	1888	32	16	1
 15	1	2304	1904	16	48	1
 15	1	2288	1952	32	16	1
-14	1	2520	2013	crystal_2
+14	1	2520	1973	crystal_2
 15	1	2136	1832	16	192	0
 15	1	2024	1832	16	192	1
 17	1	1992	1693	2
@@ -630,6 +628,131 @@
 1	1	1672	341	from_2f_w	1	0
 2	1	1664	328	16	16	teletransporter_9	0	1	106	from_3f_w
 19	1	1664	328	stairs_8	3	3
+3	1	1704	421	rupee	1	818
+3	1	1672	421	rupee	1	819
+3	1	1704	453	rupee	1	820
+3	1	1672	453	rupee	1	821
+3	1	1704	485	rupee	1	822
+3	1	1672	485	rupee	1	823
+3	1	1704	517	rupee	1	824
+3	1	1672	517	rupee	1	825
+3	1	1704	549	rupee	1	826
+3	1	1672	549	rupee	1	827
+3	1	1704	581	rupee	1	828
+3	1	1672	581	rupee	1	829
+3	1	1704	613	rupee	1	830
+3	1	1672	613	rupee	1	831
+3	1	1704	645	rupee	1	832
+3	1	1672	645	rupee	1	833
+3	1	1864	421	rupee	1	834
+3	1	1832	421	rupee	1	835
+3	1	1864	453	rupee	1	836
+3	1	1832	453	rupee	1	837
+3	1	1864	485	rupee	1	838
+3	1	1832	485	rupee	1	839
+3	1	1864	517	rupee	1	840
+3	1	1832	517	rupee	1	841
+3	1	1864	549	rupee	1	842
+3	1	1832	549	rupee	1	843
+3	1	1864	581	rupee	1	844
+3	1	1832	581	rupee	1	845
+3	1	1864	613	rupee	1	846
+3	1	1832	613	rupee	1	847
+3	1	1864	645	rupee	1	848
+3	1	1832	645	rupee	1	849
+3	1	1704	677	rupee	1	850
+3	1	1672	677	rupee	1	851
+3	1	1704	709	rupee	1	852
+3	1	1672	709	rupee	1	853
+3	1	1768	677	rupee	1	854
+3	1	1736	677	rupee	1	855
+3	1	1768	709	rupee	1	856
+3	1	1736	709	rupee	1	857
+3	1	1832	677	rupee	1	858
+3	1	1800	677	rupee	1	859
+3	1	1832	709	rupee	1	860
+3	1	1800	709	rupee	1	861
+3	1	1864	677	rupee	1	862
+3	1	1864	709	rupee	1	863
+9	1	2184	397	block	-1	entities/block	1	0	0
+9	1	2088	541	block_2	-1	entities/block	1	0	0
+7	1	2032	637	door_a_enemy_1	3	skeletor	0	-1	_random	1	-1
+7	1	2144	685	door_a_enemy_2	3	skeletor	0	-1	_random	1	-1
+7	1	2140	637	door_a_enemy_3	3	gibdo	0	-1	_random	1	-1
+7	1	2028	685	door_a_enemy_4	3	gibdo	0	-1	_random	1	-1
+9	1	2376	637	block_3	3	entities/block	1	0	1
+1	1	2408	1933	se_destination_point	-1	1
+2	1	2400	640	16	16	teletransporter_10	1	1	107	se_destination_point
+4	1	2520	1893	0	bomb	2	-1
+4	1	1376	1885	0	_random	1	-1
+4	1	1360	1965	0	_random	1	-1
+4	1	1376	1981	0	_random	1	-1
+4	1	1536	1981	0	_random	1	-1
+4	1	1552	1901	0	_random	1	-1
+4	1	1656	1965	0	_random	1	-1
+4	1	1672	1981	0	_random	1	-1
+4	1	1848	1901	0	_random	1	-1
+4	1	1848	1965	0	_random	1	-1
+4	1	1360	1901	0	heart	1	-1
+4	1	1552	1965	0	heart	1	-1
+4	1	1672	1885	0	heart	1	-1
+4	1	1832	1885	0	heart	1	-1
+4	1	1656	1901	0	magic_flask	1	-1
+4	1	1536	1885	0	magic_flask	1	-1
+4	1	1832	1981	0	magic_flask	1	-1
+8	1	1360	1885	door_b_hint_1	3	0	entities/hint_stone	map
+8	1	1552	1885	door_b_hint_2	3	0	entities/hint_stone	map
+8	1	1656	1885	door_b_hint_3	3	0	entities/hint_stone	map
+8	1	1848	1885	door_b_hint_4	3	0	entities/hint_stone	map
+8	1	1848	1981	door_b_hint_5	3	0	entities/hint_stone	map
+8	1	1656	1981	door_b_hint_6	3	0	entities/hint_stone	map
+8	1	1552	1981	door_b_hint_7	3	0	entities/hint_stone	map
+8	1	1360	1981	door_b_hint_8	3	0	entities/hint_stone	map
+18	1	1896	1912	door_b	0	0	864
+18	1	1944	1912	door_b_2	2	0	864
+5	1	2192	1328	chest	0	rupee	3	865
+17	1	1992	1725	2
+17	1	1992	1709	2
+17	1	2024	1725	2
+17	1	2024	1709	2
+17	1	2056	1725	2
+17	1	2056	1709	2
+17	1	2088	1725	2
+17	1	2088	1709	2
+17	1	2120	1725	2
+17	1	2120	1709	2
+17	1	2152	1725	2
+17	1	2152	1709	2
+17	1	2184	1725	2
+17	1	2184	1709	2
+1	1	2200	1757	s_destination_point	-1	1
+2	1	1984	1376	16	16	teletransporter_11	1	1	107	s_destination_point
+2	1	2016	1376	16	16	teletransporter_12	1	1	107	s_destination_point
+2	1	2048	1376	16	16	teletransporter_13	1	1	107	s_destination_point
+2	1	2080	1376	16	16	teletransporter_14	1	1	107	s_destination_point
+2	1	2144	1376	16	16	teletransporter_15	1	1	107	s_destination_point
+2	1	2176	1376	16	16	teletransporter_16	1	1	107	s_destination_point
+9	1	1672	1421	block_4	-1	entities/block	1	0	0
+13	1	1600	1333	16	192	start_miniboss_sensor	0
+7	1	1472	1413	miniboss_1	3	blue_hardhat_beetle	0	-1	_random	1	-1
+7	1	1392	1365	miniboss_2	3	blue_hardhat_beetle	0	-1	_random	1	-1
+7	1	1432	1349	miniboss_3	3	blue_hardhat_beetle	0	-1	_random	1	-1
+7	1	1368	1485	miniboss_4	3	blue_hardhat_beetle	0	-1	_random	1	-1
+12	1	1712	1320	48	192	custom_obstacle	0	1	0	0
+7	1	1440	1493	miniboss_5	3	blue_hardhat_beetle	0	-1	_random	1	-1
+7	1	1416	1445	miniboss_6	3	red_hardhat_beetle	0	-1	_random	1	-1
+7	1	1352	1445	miniboss_7	3	red_hardhat_beetle	0	-1	_random	1	-1
+7	1	1352	1341	miniboss_8	3	red_hardhat_beetle	0	-1	_random	1	-1
+7	1	1520	1501	miniboss_9	3	blue_hardhat_beetle	0	-1	_random	1	-1
+7	1	1496	1461	miniboss_10	3	red_hardhat_beetle	0	-1	_random	1	-1
+7	1	1520	1389	miniboss_11	3	blue_hardhat_beetle	0	-1	_random	1	-1
+7	1	1496	1349	miniboss_12	3	red_hardhat_beetle	0	-1	_random	1	-1
+7	1	1688	1501	miniboss_13	3	blue_hardhat_beetle	0	-1	_random	1	-1
+7	1	1664	1461	miniboss_14	3	red_hardhat_beetle	0	-1	_random	1	-1
+7	1	1680	1405	miniboss_15	3	blue_hardhat_beetle	0	-1	_random	1	-1
+7	1	1664	1349	miniboss_16	3	red_hardhat_beetle	0	-1	_random	1	-1
+18	1	1896	1328	miniboss_door_3	0	0	-1
+18	1	1944	1328	miniboss_door_4	2	0	-1
 0	2	2256	1880	8	96	627
 0	2	2232	1880	8	96	628
 0	2	1936	1880	8	96	627
@@ -678,10 +801,6 @@
 0	2	1376	1808	16	8	433
 0	2	1912	1328	8	32	163
 0	2	1936	1328	8	32	162
-0	2	1768	1296	32	8	429
-0	2	1776	1296	16	8	433
-0	2	1560	1296	32	8	429
-0	2	1568	1296	16	8	433
 0	2	1936	1792	304	16	170
 0	2	1296	2048	1280	272	170
 0	2	1296	1536	624	272	170
@@ -691,3 +810,11 @@
 0	2	1616	768	944	528	170
 0	2	1920	0	656	272	170
 0	2	2240	1808	16	240	170
+18	2	2216	632	door_a	0	0	-1
+18	2	2264	632	door_a_2	2	0	-1
+10	2	1560	1296	32	8	miniboss_door_open	429	1
+10	2	1568	1296	16	8	miniboss_door_open_3	433	1
+10	2	1768	1296	32	8	miniboss_door_open_5	429	1
+10	2	1776	1296	16	8	miniboss_door_open_4	433	1
+10	2	1560	1296	32	8	miniboss_door_closed	431	1
+10	2	1768	1296	32	8	miniboss_door_closed_2	431	1

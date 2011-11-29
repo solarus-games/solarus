@@ -6030,6 +6030,21 @@ skip = current
 line1 = "Tourne comme le temps."
 skip = all
 
+[dungeon_9.3f_door_b_hint_0]
+#       |-----------------------|
+line1 = "A droite."
+skip = all
+
+[dungeon_9.3f_door_b_hint_2]
+#       |-----------------------|
+line1 = "A gauche."
+skip = all
+
+[dungeon_9.3f_door_b_hint_3]
+#       |-----------------------|
+line1 = "En bas."
+skip = all
+
 [dungeon_10.welcome]
 #       |-----------------------|
 line1 = "     Niveau secret     "

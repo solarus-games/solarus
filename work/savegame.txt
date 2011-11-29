@@ -53,6 +53,7 @@ integers (above 1024):
 
 1200	beaumont cave (inferno maze): small keys counter
 1201	lost woods cave: small keys counter
+1202	dungeon 9 3F: hint stone counter (south-west)
 
 booleans:
 
@@ -369,6 +370,20 @@ booleans:
 815	dungeon 9 2F: locked door (N)
 816	dungeon 9 1F: shortcut teletransporter to the boss (S)
 817	dungeon 9 2F: locked door (W)
+818-863	dungeon 9 3F: rupees (NW)
+864	dungeon 9 3F: door B (SW)
+865	dungeon 9 3F: chest with 20 rupees
+866	dungeon 9 3F: miniboss
+867	dungeon 9 4F: weak wall A
+868	dungeon 9 4F: weak wall B
+869	dungeon 9 4F: locked door (N)
+870	dungeon 9 4F: door A
+871	dungeon 9 4F: door B
+872	dungeon 9 4F: chest A (small key)
+873	dungeon 9 4F: chest B (small key)
+874	dungeon 9 4F: locked door (S)
+875	dungeon 9 4F: big chest with the magic cape
+876	dungeon 9 4F: chest C (small key)
 
 900	junk shop: bought the piece of heart
 901	dungeon 3: miniboss

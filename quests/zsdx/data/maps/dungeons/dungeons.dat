@@ -672,7 +672,7 @@ big = 0
 floor = 3
 x = 1600
 y = 1648
-save = -1
+save = 873
 big = 0
 
 [dungeon_9.map_105.chest_0]
@@ -820,5 +820,33 @@ floor = 1
 x = 2056
 y = 384
 save = -1
+big = 0
+
+[dungeon_9.map_107.chest_0]
+floor = 2
+x = 2192
+y = 1328
+save = 865
+big = 0
+
+[dungeon_9.map_108.chest_1]
+floor = 3
+x = 1328
+y = 504
+save = 872
+big = 0
+
+[dungeon_9.map_108.chest_2]
+floor = 3
+x = 1600
+y = 2168
+save = 875
+big = 1
+
+[dungeon_9.map_108.chest_3]
+floor = 3
+x = 2080
+y = 696
+save = 876
 big = 0
 

@@ -375,11 +375,13 @@
 18	0	272	560	door_3	0	0	-1
 18	0	368	560	door_4	2	0	-1
 8	0	152	621	npc_4	3	1	npc/static_villager3	dialog#castle.npc_1
-8	0	416	325	npc	3	1	npc/castle_guard	dialog#castle.where_is_tom
+8	0	416	325	npc_2	3	1	npc/castle_guard	dialog#castle.where_is_tom
 8	0	184	797	walking_npc_2	3	1	npc/newlink3	dialog#castle.npc_3
 18	0	800	416	door_5	1	0	-1
 18	0	800	320	door_6	3	0	-1
 13	0	808	877	16	16	forbidden_door_sensor	0
+8	0	336	325	tom	3	1	npc/tom	map
+1	0	288	701	from_ending	-1	0
 0	1	440	984	336	192	613
 0	1	952	40	160	208	613
 0	1	40	40	176	80	613
@@ -710,7 +712,7 @@
 6	1	944	160	8	56	jumper_8	4	40
 2	1	1064	24	16	16	teletransporter_7	0	1	88	from_1f_ne
 19	1	1064	24	stairs_9	1	1
-8	1	400	61	npc_2	3	1	npc/castle_guard	dialog#castle.forbidden_stairs
+8	1	400	61	npc_3	3	1	npc/castle_guard	dialog#castle.forbidden_stairs
 8	1	400	213	walking_npc_1	3	1	npc/villager1	dialog#castle.npc_2
 0	2	1048	16	64	8	559
 0	2	952	16	64	8	559

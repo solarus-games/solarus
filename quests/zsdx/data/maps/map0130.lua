@@ -35,6 +35,10 @@ function event_dialog_finished(first_message_id)
     sol.main.timer_start(function()
       sol.map.dialog_start("dungeon_9.zelda_end")
     end, 5000)
+  elseif first_message_id == "dungeon_9.zelda_end" then
+    sol.main.timer_start(function()
+      sol.map.hero_set_map(8, "from_ending", 1)
+    end, 2000)
   end
 end
 
@@ -51,7 +55,7 @@ function start_final_sequence()
   sol.map.hero_set_direction(3)
   sol.main.play_music("victory.spc")
   sol.main.timer_start(function()
-    sol.map.hero_set_map(128, "from_boss", 1)
+    sol.map.hero_set_map(130, "from_boss", 1)
   end, 9000)
   sol.main.timer_start(function()
     sol.main.play_music("triforce.spc")

@@ -5,23 +5,40 @@ fighting_boss = false
 function event_map_started(destination_point_name)
 
   local new_music = nil
+  if destination_point_name == "from_ending" then
+    -- game ending sequence
+    sol.map.hero_freeze()
+    sol.map.hero_set_visible(false)
+    sol.map.hud_set_enabled(false)
+    sol.map.enemy_set_group_enabled("", false)
+    new_music = "credits.spc"
+    sol.map.tile_set_group_enabled("roof_entrance", false)
+  else
+    -- enable dark world
+    if sol.game.savegame_get_boolean(905) then
+      new_music = "dark_mountain.spc"
+      sol.map.tileset_set(13)
+    end
 
-  -- enable dark world
-  if sol.game.savegame_get_boolean(905) then
-    new_music = "dark_mountain.spc"
-    sol.map.tileset_set(13)
-  end
+    -- boss fight
+    if destination_point_name == "from_dungeon_10_5f"
+      and not sol.game.savegame_get_boolean(299) then
 
-  -- boss fight
-  if destination_point_name == "from_dungeon_10_5f"
-    and not sol.game.savegame_get_boolean(299) then
-
-    new_music = "none"
-    sol.map.enemy_set_group_enabled("", false) -- disable all simple enemies
+      new_music = "none"
+      sol.map.enemy_set_group_enabled("", false) -- disable all simple enemies
+    end
   end
 
   if new_music ~= nil then
     sol.main.play_music(new_music)
+  end
+end
+
+function event_map_opening_transition_finished(destination_point_name)
+
+  if destination_point_name == "from_ending" then
+    sol.map.dialog_start("credits_6")
+    sol.map.camera_move(440, 96, 25, function() end, 1e6)
   end
 end
 
@@ -104,5 +121,16 @@ function event_hero_victory_sequence_finished()
       sol.main.play_music("overworld.spc")
     end
   end, 1000)
+end
+
+function event_dialog_finished(first_message_id)
+
+  if first_message_id == "credits_6" then
+   sol.main.timer_start(ending_next, 2000)
+  end
+end
+
+function ending_next()
+  sol.map.hero_set_map(131, "from_ending", 1)
 end
 

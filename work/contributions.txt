@@ -25,6 +25,7 @@ SkyJedi + Deather (version Mac)
 krytzz (aide pour cmake, datapath)
 19oj19 (éditeur de maps)
 Marine (musiques)
+Yohann (améliorations de boss)
 
 
 Traduction :

@@ -5,6 +5,25 @@ function event_map_started(destination_point_name)
   -- make the NPCs walk
   random_walk("walking_npc_1")
   random_walk("walking_npc_2")
+
+  if destination_point_name == "from_ending" then
+    -- game ending sequence
+    sol.map.hero_freeze()
+    sol.map.hero_set_visible(false)
+    sol.map.hud_set_enabled(false)
+    sol.map.enemy_set_group_enabled("", false)
+    sol.main.play_music("credits.spc")
+  else
+    sol.map.npc_set_enabled("tom", false)
+  end
+end
+
+function event_map_opening_transition_finished(destination_point_name)
+
+  if destination_point_name == "from_ending" then
+    sol.map.dialog_start("credits_4")
+    sol.map.camera_move(288, 96, 50, function() end, 1e6)
+  end
 end
 
 function random_walk(npc_name)
@@ -36,6 +55,8 @@ function event_dialog_finished(first_message_id)
     sol.map.npc_start_movement(npc_name, m)
     sol.main.sprite_set_animation(sprite, "walking")
     sol.map.hero_freeze()
+  elseif first_message_id == "credits_4" then
+   sol.main.timer_start(ending_next, 2000)
   end
 end
 
@@ -66,5 +87,9 @@ function event_hero_on_sensor(sensor_name)
       sol.map.hero_freeze()
     end
   end
+end
+
+function ending_next()
+  sol.map.hero_set_map(119, "from_ending", 1)
 end
 

@@ -1,8 +1,17 @@
 -- Dungeon 6 3F
 
-fighting_boss = false
+fighting_miniboss = false
 
 function event_map_started(destination_point_name)
+
+  -- game ending sequence
+  if destination_point_name == "from_ending" then
+    sol.map.hero_freeze()
+    sol.map.hero_set_visible(false)
+    sol.map.hud_set_enabled(false)
+    sol.map.enemy_set_group_enabled("", false)
+    sol.main.play_music("credits.spc")
+  end
 
   sol.map.door_set_open("miniboss_door", true)
   sol.map.enemy_set_group_enabled("miniboss", false)
@@ -12,6 +21,14 @@ function event_map_started(destination_point_name)
 
   if sol.game.savegame_get_boolean(323) then
     lock_torches()
+  end
+end
+
+function event_map_opening_transition_finished(destination_point_name)
+
+  if destination_point_name == "from_ending" then
+    sol.map.dialog_start("credits_3")
+    sol.map.camera_move(120, 416, 50, function() end, 1e6)
   end
 end
 
@@ -74,4 +91,14 @@ function event_enemy_dead(enemy_name)
   end
 end
 
+function event_dialog_finished(first_message_id)
+
+  if first_message_id == "credits_3" then
+   sol.main.timer_start(ending_next, 2000)
+  end
+end
+
+function ending_next()
+  sol.map.hero_set_map(89, "from_ending", 1)
+end
 

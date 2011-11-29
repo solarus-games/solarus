@@ -42,13 +42,14 @@
 0	108	Dungeon 9 4F
 0	109	Dungeon 9 5F
 0	110	Dungeon 9 6F
+0	130	Dungeon 9 boss
 0	47	Dungeon 8 1F
 0	48	Dungeon 8 B1
 0	49	Dungeon 8 B2
 0	50	Dungeon 8 B3
 0	51	Dungeon 8 B4
-0	52	Dungeon 8 Boss
-0	53	Dungeon 8 Hidden room
+0	52	Dungeon 8 boss
+0	53	Dungeon 8 hidden room
 0	101	Dungeon 7 1F
 0	102	Dungeon 7 2F
 0	103	Dungeon 7 3F
@@ -126,7 +127,7 @@
 0	117	Cave to dungeon 8 2F
 0	118	Cave to dungeon 8 B1
 0	120	Bone key cave
-0	128	Dungeon 9 boss
+0	131	The end
 1	1	Light World
 1	13	Dark World
 1	3	Cave

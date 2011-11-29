@@ -1115,6 +1115,7 @@
 2	0	960	0	16	1008	to_C3	0	2	119	_side
 1	0	272	461	from_bone_key_cave	3	0
 2	0	264	432	16	16	teletransporter_4	0	1	120	from_outside
+1	0	184	853	from_ending	-1	0
 0	1	56	424	32	24	901
 0	2	760	656	144	40	511
 0	2	608	368	16	32	1025

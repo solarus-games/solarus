@@ -6171,3 +6171,95 @@ line1 = "     Niveau secret     "
 line2 = "     Tour des Cieux    "
 skip = current
 
+[credits_1]
+#       |-----------------------|
+line1 = "$1        Crédits"
+next = credits_1.1
+
+[credits_1.1]
+#       |-----------------------|
+line1 = "    Programmation :"
+line2 = "Christopho"
+
+[credits_2]
+#       |-----------------------|
+line1 = "$1     Réalisation" 
+line2 = "       des maps :"
+next = credits_2.1
+
+[credits_2.1]
+#       |-----------------------|
+line1 = "Christopho"
+line2 = "Metallizer"
+line3 = "Binbin"
+next = credits_2.2
+
+[credits_2.2]
+#       |-----------------------|
+line1 = "Mymy"
+
+[credits_3]
+#       |-----------------------|
+line1 = "$1      Graphismes :     "
+line2 = "Newlink"
+next = credits_3.1
+
+[credits_3.1]
+#       |-----------------------|
+line1 = "Neovyse"
+line2 = "@PyroNet"
+line3 = "Djipi"
+
+[credits_4]
+#       |-----------------------|
+line1 = "$1       Musiques :      "
+line2 = "Marine"
+line3 = "Metallizer"
+next = credits_4.1
+
+[credits_4.1]
+#       |-----------------------|
+line1 = "$1       Scénario :      "
+line2 = "Guillaume F."
+line3 = "Christopho"
+
+[credits_6]
+#       |-----------------------|
+line1 = "$1     Remerciements     "
+line2 = "       spéciaux :      "
+line3 = ""
+next = credits_6.1
+
+[credits_6.1]
+#       |-----------------------|
+line1 = "19oj19"
+line2 = "Yohann"
+line3 = "HelpTheWretched"
+next = credits_6.2
+
+[credits_6.2]
+#       |-----------------------|
+line1 = "krytzz"
+line2 = "MultiSync_XV17"
+next = credits_6.3
+
+[credits_6.3]
+#       |-----------------------|
+line1 = "Nintendo"
+line2 = ""
+line3 = ""
+next = credits_6.4
+
+[credits_6.4]
+#       |-----------------------|
+line1 = "Merci d'avoir joué !"
+line2 = ""
+line3 = ""
+next = credits_6.5
+
+[credits_6.5]
+#       |-----------------------|
+line1 = ""
+line2 = ""
+line3 = " www.zelda-solarus.com "
+

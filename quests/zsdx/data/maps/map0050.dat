@@ -167,8 +167,8 @@
 19	0	800	688	stairs_6	3	4
 1	0	80	61	from_B2_A	3	0
 18	0	552	560	LD14	1	0	-1
-5	0	424	408	chest_2	0	small_key	1	-1
-5	0	864	408	chest_3	0	compass	1	-1
+5	0	424	408	KC05	0	small_key	1	715
+5	0	864	408	CMP	0	compass	1	716
 7	0	1128	413	enemy	3	red_bullblin	0	-1	_random	1	-1
 7	0	1104	373	enemy_2	3	red_bullblin	0	-1	_random	1	-1
 2	0	72	48	16	16	to_B2_A	0	1	49	from_B3_A

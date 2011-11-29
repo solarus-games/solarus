@@ -274,7 +274,7 @@
 19	0	1816	1392	stairs_6	3	4
 2	0	1440	1664	16	16	to_teleporter_A	1	1	48	from_teleporter_A
 8	0	1064	1261	npc	3	0	entities/hint_stone	map
-5	0	1184	1384	chest_3	0	small_key	1	-1
+5	0	1184	1384	KC04	0	small_key	1	707
 9	0	1152	1285	block_21	-1	entities/block	1	0	1
 9	0	1168	1285	block_46	-1	entities/block	1	0	1
 9	0	1216	1285	block_47	-1	entities/block	1	0	1
@@ -284,8 +284,8 @@
 7	0	1320	1277	enemy_13	3	red_hardhat_beetle	0	-1	_random	1	-1
 7	0	1384	1157	enemy_14	3	red_hardhat_beetle	0	-1	_random	1	-1
 12	0	1552	1360	112	16	custom_obstacle_23	0	1	0	0
-5	0	1480	1144	chest_4	0	small_key	1	-1
-11	0	1040	1280	switch_3	3	0	0
+5	0	1480	1144	KC03	0	small_key	1	706
+11	0	1040	1280	CB03	3	0	0
 0	1	48	296	240	32	319
 0	1	40	392	256	32	319
 0	1	288	392	8	32	238
@@ -1060,7 +1060,7 @@
 0	1	48	480	80	96	446
 0	1	192	480	48	96	446
 0	1	240	480	48	128	446
-11	1	1008	1488	switch	1	0	0
+11	1	1008	1488	CB04	1	0	0
 1	1	1672	805	from_1F_A	3	0
 19	1	1664	792	stairs	1	0
 2	1	1664	792	16	16	to_1F_A	0	1	47	from_B1_A
@@ -1068,7 +1068,7 @@
 15	1	2120	808	16	64	0
 7	1	2080	845	enemy	3	skeletor	0	-1	_random	1	-1
 7	1	2104	853	enemy_2	3	skeletor	0	-1	_random	1	-1
-5	1	2168	952	chest	0	small_key	1	-1
+5	1	2168	952	chest	0	croissant	1	718
 18	1	792	792	door	1	0	-1
 18	1	792	744	door_2	3	0	-1
 2	1	1680	864	176	80	hole_to_B2_A	0	1	49	_same
@@ -1150,8 +1150,7 @@
 4	1	1400	1485	0	_random	1	-1
 4	1	1496	1485	0	_random	1	-1
 4	1	1496	1453	0	_random	1	-1
-18	1	936	888	door_3	0	1	0
-18	1	984	888	door_4	2	1	0
+18	1	936	888	KD03	0	1	710
 18	1	616	632	door_5	0	0	-1
 18	1	664	632	door_6	2	0	-1
 18	1	152	232	LD12	3	0	-1
@@ -1234,6 +1233,7 @@
 12	1	248	608	40	8	custom_obstacle_43	1	1	1	1
 12	1	48	736	128	8	custom_obstacle_44	1	1	1	1
 4	1	1016	1501	0	_random	1	-1
+18	1	984	888	KD03_2	2	1	710
 0	2	1656	784	32	8	429
 0	2	1664	784	16	8	433
 0	2	1936	888	8	32	162

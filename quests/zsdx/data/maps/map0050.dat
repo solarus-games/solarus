@@ -651,7 +651,7 @@
 6	1	520	576	8	144	jumper_4	0	40
 11	1	392	584	DB1	1	0	0
 11	1	392	696	DB2	1	0	0
-5	1	792	888	chest	1	_none	1	-1
+5	1	792	888	chest	1	shield	3	719
 9	1	712	845	block_59	-1	entities/statue	1	1	0
 9	1	712	973	block_60	-1	entities/statue	1	1	0
 9	1	904	973	block_61	-1	entities/statue	1	1	0

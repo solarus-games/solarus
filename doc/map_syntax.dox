@@ -391,12 +391,13 @@ Syntax of a switch:
 @endverbatim
 
 Subtypes of switches:
-- 0: walkable, invisible
-- 1: walkable, visible
+- 0: pressure plate, invisible
+- 1: pressure plate, visible
 - 2: target for an arrow
 - 3: solid switch to activate with the sword or other weapons
 
-<tt>needs_block</tt> is a boolean value indicating that the walkable switch needs a block to
+<tt>needs_block</tt> is a boolean value indicating that a switch
+of subtype pressure plate needs a block to
 be activated (nothing happens when the hero walks on it).
 
 <tt>inactivate_when_leaving</tt> is a boolean value indicating that when the hero (or the block)

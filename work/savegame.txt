@@ -361,6 +361,13 @@ booleans:
 808	dungeon 9 1F: chest with a small key (W)
 809	dungeon 9 1F: big key door (N)
 810	dungeon 9 1F: chest with a small key (NW)
+811	dungeon 9 2F: chest with a small key (N)
+812	dungeon 9 2F: barrier open (N)
+813	dungeon 9 2F: locked door (E)
+814	dungeon 9 2F: chest puzzle to get the compass (N)
+815	dungeon 9 2F: locked door (N)
+816	dungeon 9 1F: shortcut teletransporter to the boss (S)
+817	dungeon 9 2F: locked door (W)
 
 900	junk shop: bought the piece of heart
 901	dungeon 3: miniboss

@@ -349,6 +349,7 @@ booleans:
 712	dungeon 8 B3: treasure big chest (BC)
 713	dungeon 8 1F: laser obstacle (LO1)
 714	dungeon 8 B4: key door (KD03)
+715
 
 800	dungeon 9 1F: chest with 50 rupees (SW)
 801	dungeon 9 1F: got the map from the chest

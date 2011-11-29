@@ -680,6 +680,75 @@ int Script::map_api_hero_start_hurt(lua_State *l) {
 }
 
 /**
+ * @brief Returns whether an NPC is enabled.
+ *
+ * - Argument 1 (string): name of the NPC
+ * - Return value (boolean): true if this NPC is enabled
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_npc_is_enabled(lua_State* l) {
+
+  Script& script = get_script(l, 1);
+
+  const std::string& name = luaL_checkstring(l, 1);
+
+  MapEntities& entities = script.get_map().get_entities();
+  MapEntity* npc = entities.get_entity(NON_PLAYING_CHARACTER, name);
+  lua_pushboolean(l, npc->is_enabled());
+
+  return 1;
+}
+
+/**
+ * @brief Enables or disables an NPC.
+ *
+ * - Argument 1 (string): name of the NPC
+ * - Argument 2 (boolean): true to enable the NPC, false to disable it
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_npc_set_enabled(lua_State* l) {
+
+  Script& script = get_script(l, 2);
+
+  const std::string& name = luaL_checkstring(l, 1);
+  bool enabled = lua_toboolean(l, 2);
+
+  MapEntities& entities = script.get_map().get_entities();
+  MapEntity* npc = entities.get_entity(NON_PLAYING_CHARACTER, name);
+  npc->set_enabled(enabled);
+
+  return 0;
+}
+
+/**
+ * @brief Enables or disables a set of NPCs.
+ *
+ * - Argument 1 (string): prefix of the name of the NPCs
+ * - Argument 2 (boolean): true to enable them, false to disable them
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_npc_set_group_enabled(lua_State* l) {
+
+  Script& script = get_script(l, 2);
+
+  const std::string& prefix = luaL_checkstring(l, 1);
+  bool enable = lua_toboolean(l, 2);
+
+  std::list<MapEntity*> entities =
+      script.get_map().get_entities().get_entities_with_prefix(NON_PLAYING_CHARACTER, prefix);
+
+  std::list<MapEntity*>::iterator it;
+  for (it = entities.begin(); it != entities.end(); it++) {
+    (*it)->set_enabled(enable);
+  }
+
+  return 0;
+}
+
+/**
  * @brief Returns the position of an NPC.
  *
  * - Argument 1 (string): name of the NPC

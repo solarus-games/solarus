@@ -259,7 +259,7 @@ big = 0
 floor = -3
 x = 792
 y = 888
-save = -1
+save = 719
 big = 1
 
 [dungeon_6.map_58.chest_0]
@@ -873,8 +873,8 @@ big = 0
 
 [dungeon_8.map_48.chest_3]
 floor = -1
-x = 368
-y = 1472
-save = -1
+x = 600
+y = 1088
+save = 722
 big = 0
 

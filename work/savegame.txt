@@ -354,6 +354,9 @@ booleans:
 716 dungeon 8 B3: compass (CMP)
 717 dungeon 8 B4: key door (KD05)
 718 dungeon 8 B1: croissant chest (CC01)
+719 dungeon 8 B3: mirror shield (SHD)
+720 dungeon 8 B3: door button (DB1)
+721 dungeon 8 B3: door button (DB2)
 
 800	dungeon 9 1F: chest with 50 rupees (SW)
 801	dungeon 9 1F: got the map from the chest

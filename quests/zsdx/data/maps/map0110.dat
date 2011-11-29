@@ -1676,6 +1676,28 @@
 1	1	808	141	from_1f	1	0
 2	1	800	144	16	16	teletransporter	1	1	105	from_6f
 10	1	800	144	16	16	tile	633	1
+13	1	808	229	16	16	puzzle_end_sensor	0
+13	1	1448	1845	16	16	wrong_sensor_3_1	0
+13	1	1128	1333	16	16	wrong_sensor_3_2	0
+13	1	808	1077	16	16	wrong_sensor_3_3	0
+13	1	488	1077	16	16	wrong_sensor_3_4	0
+13	1	808	565	16	16	wrong_sensor_3_5	0
+13	1	1648	1677	16	16	wrong_sensor_0_1	0
+13	1	1648	1421	16	16	wrong_sensor_0_2	0
+13	1	1648	1165	16	16	wrong_sensor_0_3	0
+13	1	1328	909	16	16	wrong_sensor_0_4	0
+13	1	1008	397	16	16	wrong_sensor_0_5	0
+13	1	1248	1677	16	16	wrong_sensor_2_1	0
+13	1	1248	1421	16	16	wrong_sensor_2_2	0
+13	1	928	1165	16	16	wrong_sensor_2_3	0
+13	1	288	909	16	16	wrong_sensor_2_4	0
+13	1	288	653	16	16	wrong_sensor_2_5	0
+13	1	288	397	16	16	wrong_sensor_2_6	0
+13	1	488	229	16	16	wrong_sensor_1_6	0
+13	1	808	741	16	16	wrong_sensor_1_2	0
+13	1	1128	741	16	16	wrong_sensor_1_3	0
+13	1	688	653	16	16	wrong_sensor_0_6	0
+13	1	1448	997	16	16	wrong_sensor_1_4	0
 0	2	1936	1624	8	96	627
 0	2	2232	1624	8	96	628
 0	2	2040	1784	96	8	626

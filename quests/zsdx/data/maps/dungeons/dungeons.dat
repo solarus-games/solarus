@@ -850,3 +850,24 @@ y = 696
 save = 876
 big = 0
 
+[dungeon_9.map_109.chest_0]
+floor = -99
+x = 456
+y = 120
+save = 877
+big = 0
+
+[dungeon_9.map_109.chest_1]
+floor = -99
+x = 1064
+y = 680
+save = 878
+big = 0
+
+[dungeon_9.map_109.boss_0]
+floor = -99
+x = 1328
+y = 309
+save = 880
+big = 0
+

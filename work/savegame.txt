@@ -384,6 +384,10 @@ booleans:
 874	dungeon 9 4F: locked door (S)
 875	dungeon 9 4F: big chest with the magic cape
 876	dungeon 9 4F: chest C (small key)
+877	dungeon 9 5F: chest A (small key)
+878	dungeon 9 5F: chest B (small key)
+879	dungeon 9 5F: locked door
+880	dungeon 9 5F: enemy of door D
 
 900	junk shop: bought the piece of heart
 901	dungeon 3: miniboss

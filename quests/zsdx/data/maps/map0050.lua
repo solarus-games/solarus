@@ -13,10 +13,21 @@ function event_hero_on_sensor(sensor_name)
 	end
 end
 
+DB1_status = false
+DB2_status = false
+
 function event_switch_activated(switch_name)
-	if switch_name == "DB3" then
+	if switch_name == "DB1" then
+		DB1_status = true
+	elseif switch_name == "DB2" then
+		DB2_status = true
+	elseif switch_name == "DB3" then
 		sol.map.door_open("LD12")
 		sol.map.door_open("LD13")
+		sol.main.play_sound("secret")
+	end
+	if DB1_status == true and DB2_status == true then
+		sol.map.door_open("LD14")
 		sol.main.play_sound("secret")
 	end
 end

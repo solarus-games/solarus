@@ -181,6 +181,68 @@
 4	0	848	653	0	rupee	1	-1
 4	0	848	637	0	rupee	1	-1
 4	0	848	621	0	rupee	1	-1
+7	0	712	389	enemy_3	3	tentacle	0	-1	_random	1	-1
+7	0	728	389	enemy_4	3	tentacle	0	-1	_random	1	-1
+7	0	720	405	enemy_5	3	tentacle	0	-1	_random	1	-1
+7	0	736	453	enemy_6	3	tentacle	0	-1	_random	1	-1
+12	0	800	464	16	112	custom_obstacle_7	0	1	0	0
+7	0	560	389	enemy_7	3	tentacle	0	-1	_random	1	-1
+7	0	520	405	enemy_8	3	tentacle	0	-1	_random	1	-1
+7	0	520	421	enemy_9	3	tentacle	0	-1	_random	1	-1
+7	0	904	589	enemy_16	3	pike_detect	0	-1	_random	1	-1
+7	0	712	589	enemy_17	3	pike_detect	0	-1	_random	1	-1
+7	0	264	253	enemy_18	3	pike_fixed	0	-1	_random	1	-1
+7	0	248	269	enemy_19	3	pike_fixed	0	-1	_random	1	-1
+7	0	232	269	enemy_20	3	pike_fixed	0	-1	_random	1	-1
+7	0	216	285	enemy_21	3	pike_fixed	0	-1	_random	1	-1
+7	0	200	285	enemy_22	3	pike_fixed	0	-1	_random	1	-1
+7	0	184	301	enemy_23	3	pike_fixed	0	-1	_random	1	-1
+7	0	184	333	enemy_24	3	pike_fixed	0	-1	_random	1	-1
+7	0	216	349	enemy_25	3	pike_fixed	0	-1	_random	1	-1
+7	0	232	365	enemy_26	3	pike_fixed	0	-1	_random	1	-1
+7	0	232	381	enemy_27	3	pike_fixed	0	-1	_random	1	-1
+7	0	216	413	enemy_28	3	pike_fixed	0	-1	_random	1	-1
+7	0	200	381	enemy_29	3	pike_fixed	0	-1	_random	1	-1
+7	0	184	397	enemy_30	3	pike_fixed	0	-1	_random	1	-1
+7	0	264	429	enemy_31	3	pike_fixed	0	-1	_random	1	-1
+7	0	184	445	enemy_32	3	pike_fixed	0	-1	_random	1	-1
+7	0	200	461	enemy_33	3	pike_fixed	0	-1	_random	1	-1
+7	0	152	429	enemy_34	3	pike_fixed	0	-1	_random	1	-1
+7	0	136	429	enemy_35	3	pike_fixed	0	-1	_random	1	-1
+7	0	104	445	enemy_36	3	pike_fixed	0	-1	_random	1	-1
+7	0	104	461	enemy_37	3	pike_fixed	0	-1	_random	1	-1
+7	0	88	445	enemy_38	3	pike_fixed	0	-1	_random	1	-1
+7	0	88	413	enemy_39	3	pike_fixed	0	-1	_random	1	-1
+7	0	104	397	enemy_40	3	pike_fixed	0	-1	_random	1	-1
+7	0	120	381	enemy_41	3	pike_fixed	0	-1	_random	1	-1
+7	0	136	381	enemy_42	3	pike_fixed	0	-1	_random	1	-1
+7	0	136	333	enemy_43	3	pike_fixed	0	-1	_random	1	-1
+7	0	120	317	enemy_44	3	pike_fixed	0	-1	_random	1	-1
+7	0	104	333	enemy_45	3	pike_fixed	0	-1	_random	1	-1
+7	0	152	285	enemy_46	3	pike_fixed	0	-1	_random	1	-1
+7	0	168	269	enemy_47	3	pike_fixed	0	-1	_random	1	-1
+7	0	136	269	enemy_48	3	pike_fixed	0	-1	_random	1	-1
+7	0	120	269	enemy_49	3	pike_fixed	0	-1	_random	1	-1
+7	0	72	253	enemy_50	3	pike_fixed	0	-1	_random	1	-1
+7	0	88	237	enemy_51	3	pike_fixed	0	-1	_random	1	-1
+7	0	104	221	enemy_52	3	pike_fixed	0	-1	_random	1	-1
+7	0	120	221	enemy_53	3	pike_fixed	0	-1	_random	1	-1
+7	0	136	205	enemy_54	3	pike_fixed	0	-1	_random	1	-1
+7	0	152	221	enemy_55	3	pike_fixed	0	-1	_random	1	-1
+7	0	168	221	enemy_56	3	pike_fixed	0	-1	_random	1	-1
+7	0	216	221	enemy_57	3	pike_fixed	0	-1	_random	1	-1
+7	0	232	221	enemy_58	3	pike_fixed	0	-1	_random	1	-1
+7	0	248	237	enemy_59	3	pike_fixed	0	-1	_random	1	-1
+7	0	120	117	enemy_60	3	red_hardhat_beetle	0	-1	_random	1	-1
+7	0	104	149	enemy_61	3	red_hardhat_beetle	0	-1	_random	1	-1
+7	0	208	109	enemy_62	3	red_hardhat_beetle	0	-1	_random	1	-1
+7	0	248	149	enemy_63	3	red_hardhat_beetle	0	-1	_random	1	-1
+12	0	96	208	144	16	custom_obstacle_11	0	1	0	0
+12	0	128	192	16	16	custom_obstacle_12	0	1	0	0
+12	0	80	224	16	16	custom_obstacle_13	0	1	0	0
+12	0	64	240	16	16	custom_obstacle_14	0	1	0	0
+12	0	240	224	16	16	custom_obstacle_15	0	1	0	0
+12	0	256	240	16	16	custom_obstacle_16	0	1	0	0
 0	1	248	296	752	48	319
 0	1	248	336	112	8	236
 0	1	1320	1064	256	192	303
@@ -649,6 +711,15 @@
 18	1	1432	1000	LD13_2	3	0	-1
 18	1	1256	888	LD12_2	0	0	-1
 13	1	1328	893	16	48	DS12	0
+7	1	1384	832	enemy_10	3	bubble	0	-1	_random	1	-1
+7	1	1512	832	enemy_11	3	bubble	0	-1	_random	1	-1
+7	1	1384	976	enemy_12	3	bubble	0	-1	_random	1	-1
+7	1	1512	976	enemy_13	3	bubble	0	-1	_random	1	-1
+12	1	1256	896	64	16	custom_obstacle_8	0	1	0	0
+12	1	1440	1000	16	64	custom_obstacle_9	0	1	0	0
+7	1	1344	1157	enemy_14	3	red_pig_soldier	0	-1	_random	1	-1
+7	1	1504	1197	enemy_15	3	red_pig_soldier	0	-1	_random	1	-1
+12	1	1256	1152	64	16	custom_obstacle_10	0	1	0	0
 0	2	1112	1040	32	8	429
 0	2	1120	1040	16	8	433
 0	2	1280	1040	16	240	170

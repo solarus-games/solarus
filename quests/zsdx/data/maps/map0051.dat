@@ -124,8 +124,8 @@
 0	1	1240	376	16	80	521
 0	1	1080	392	16	16	277
 0	1	1032	312	16	16	277
-15	1	1208	296	16	48	1
-9	1	1248	325	block	-1	entities/block	1	0	1
+15	1	1160	296	16	48	1
+9	1	1184	325	block	-1	entities/block	1	0	1
 1	1	1200	781	from_B3_A	3	0
 19	1	1192	768	stairs	1	0
 2	1	1192	768	16	16	to_B3_A	0	1	50	from_B4_A
@@ -140,6 +140,12 @@
 14	1	1136	853	crystal
 11	1	1176	856	switch_2	1	0	0
 9	1	1088	909	block_2	-1	entities/statue	1	1	2
+7	1	1216	453	enemy	3	pike_detect	0	-1	_random	1	-1
+7	1	1104	405	enemy_2	3	pike_detect	0	-1	_random	1	-1
+7	1	1056	293	enemy_3	3	pike_detect	0	-1	_random	1	-1
+7	1	1024	357	enemy_4	3	pike_detect	0	-1	_random	1	-1
+7	1	1032	808	enemy_5	3	bubble	0	-1	_random	1	-1
+12	1	1128	720	16	64	custom_obstacle	0	1	0	0
 0	2	728	64	576	184	170
 0	2	984	488	304	16	170
 0	2	984	744	304	16	170

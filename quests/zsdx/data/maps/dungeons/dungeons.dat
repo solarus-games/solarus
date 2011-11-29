@@ -729,6 +729,7 @@ floor = -1
 x = 368
 y = 1472
 save = -1
+big = 0
 
 [dungeon_9.map_105.chest_2]
 floor = 0

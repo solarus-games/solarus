@@ -126,6 +126,7 @@
 0	117	Cave to dungeon 8 2F
 0	118	Cave to dungeon 8 B1
 0	120	Bone key cave
+0	128	Dungeon 9 boss
 1	1	Light World
 1	13	Dark World
 1	3	Cave
@@ -428,6 +429,7 @@
 6	drakomos_lava_spawner	Drakomos lava spawner
 6	gelidrak	Gelidrak
 6	poutroxor	Poutroxor
+6	ganon	Ganon
 7	fr/text/dialogs.dat	French dialogs
 7	en/text/dialogs.dat	English dialogs
 7	de/text/dialogs.dat	Deutsch dialogs

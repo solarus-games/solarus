@@ -731,6 +731,13 @@ y = 952
 save = 718
 big = 0
 
+[dungeon_8.map_48.chest_3]
+floor = -1
+x = 368
+y = 1472
+save = -1
+big = 0
+
 [dungeon_9.map_105.chest_2]
 floor = 0
 x = 2112
@@ -871,10 +878,10 @@ y = 309
 save = 880
 big = 0
 
-[dungeon_8.map_48.chest_3]
-floor = -1
-x = 368
-y = 1472
-save = -1
-big = 0
+[dungeon_9.map_130.boss_0]
+floor = 0
+x = 240
+y = 189
+save = 881
+big = 1
 

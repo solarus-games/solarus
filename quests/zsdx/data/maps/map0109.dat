@@ -689,7 +689,6 @@
 18	0	280	512	door_a	0	0	-1
 18	0	328	512	door_a_2	2	0	-1
 9	0	448	533	door_a_block	0	entities/block	1	0	1
-1	0	416	533	tmp	3	0
 7	0	420	741	door_b_enemy_1	3	gibdo	0	-1	_random	1	-1
 7	0	492	789	door_b_enemy_2	3	gibdo	0	-1	_random	1	-1
 18	0	448	600	door_b	3	0	-1

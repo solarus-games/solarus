@@ -382,6 +382,7 @@ void Script::register_map_api() {
       { "npc_get_sprite", map_api_npc_get_sprite },
       { "npc_remove", map_api_npc_remove },
       { "npc_exists", map_api_npc_exists },
+      { "chest_is_open", map_api_chest_is_open },
       { "chest_set_open", map_api_chest_set_open },
       { "chest_is_enabled", map_api_chest_is_enabled },
       { "chest_set_enabled", map_api_chest_set_enabled },

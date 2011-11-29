@@ -852,6 +852,30 @@ int Script::map_api_npc_exists(lua_State* l) {
 }
 
 /**
+ * @brief Returns whether a chest is open.
+ *
+ * This function returns true as soon as the hero starts opening the chest,
+ * even if the treasure has not yet been brandished (there is a small delay).
+ *
+ * - Argument 1 (string): name of the chest
+ * - Return value (boolean): true if this chest is open
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_chest_is_open(lua_State* l) {
+
+  Script& script = get_script(l, 1);
+
+  const std::string& name = luaL_checkstring(l, 1);
+
+  MapEntities& entities = script.get_map().get_entities();
+  Chest* chest = (Chest*) entities.get_entity(CHEST, name);
+  lua_pushboolean(l, chest->is_open());
+
+  return 1;
+}
+
+/**
  * @brief Sets a chest open or closed.
  *
  * Only the chest sprite is affected (use give_treasure to give a treasure to the player).

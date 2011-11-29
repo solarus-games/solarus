@@ -167,7 +167,7 @@ void Hero::SpinAttackState::play_spin_attack_sound() {
  * @return true if the deep water tiles are considered as obstacles in this state
  */
 bool Hero::SpinAttackState::is_deep_water_obstacle() {
-  return true;
+  return !being_pushed;
 }
 
 /**
@@ -175,7 +175,7 @@ bool Hero::SpinAttackState::is_deep_water_obstacle() {
  * @return true if the holes are considered as obstacles in this state
  */
 bool Hero::SpinAttackState::is_hole_obstacle() {
-  return true;
+  return !being_pushed;
 }
 
 /**
@@ -183,7 +183,7 @@ bool Hero::SpinAttackState::is_hole_obstacle() {
  * @return true if lava is considered as obstacles in this state
  */
 bool Hero::SpinAttackState::is_lava_obstacle() {
-  return true;
+  return !being_pushed;
 }
 
 /**
@@ -191,7 +191,7 @@ bool Hero::SpinAttackState::is_lava_obstacle() {
  * @return true if prickles are considered as obstacles in this state
  */
 bool Hero::SpinAttackState::is_prickle_obstacle() {
-  return true;
+  return !being_pushed;
 }
 
 /**
@@ -236,6 +236,12 @@ void Hero::SpinAttackState::notify_attacked_enemy(EnemyAttack attack, Enemy& vic
 
     if (victim.get_push_hero_on_sword()) {
 
+      if (hero.get_movement() != NULL) {
+        // interrupting a super spin attack: finish with a normal one
+        hero.clear_movement();
+        get_sprites().set_animation_spin_attack();
+      }
+
       being_pushed = true;
       double angle = Geometry::get_angle(victim.get_x(), victim.get_y(),
           hero.get_x(), hero.get_y());
@@ -243,7 +249,6 @@ void Hero::SpinAttackState::notify_attacked_enemy(EnemyAttack attack, Enemy& vic
       movement->set_max_distance(24);
       movement->set_speed(120);
       movement->set_angle(angle);
-      hero.clear_movement();
       hero.set_movement(movement);
     }
   }

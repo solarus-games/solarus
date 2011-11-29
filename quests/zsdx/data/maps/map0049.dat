@@ -711,7 +711,6 @@
 11	1	1088	672	BRoom7	1	0	0
 11	1	1120	672	BRoom8	1	0	0
 11	1	1152	672	BRoom9	1	0	0
-1	1	1664	909	helper_arrival	-1	1
 18	1	936	632	LD15_2	0	0	-1
 15	1	768	1120	16	32	1
 15	1	864	1168	16	32	1
@@ -722,6 +721,35 @@
 18	1	792	1000	LD16_2	3	0	-1
 11	1	1232	1152	DB16	1	0	0
 4	1	1240	1165	0	_none	1	-1
+7	1	488	709	enemy	3	red_duck_soldier	0	-1	_random	1	-1
+7	1	488	597	enemy_2	3	red_duck_soldier	0	-1	_random	1	-1
+7	1	696	853	enemy_3	3	blue_hardhat_beetle	0	-1	_random	1	-1
+7	1	920	885	enemy_4	3	blue_hardhat_beetle	0	-1	_random	1	-1
+7	1	784	989	enemy_5	3	blue_hardhat_beetle	0	-1	_random	1	-1
+12	1	800	744	16	64	custom_obstacle	0	1	0	0
+12	1	800	1000	16	64	custom_obstacle_2	0	1	0	0
+12	1	616	640	64	16	custom_obstacle_3	0	1	0	0
+7	1	1560	573	enemy_6	2	pike_auto	0	-1	_random	1	-1
+7	1	1336	733	enemy_7	0	pike_auto	0	-1	_random	1	-1
+12	1	1440	1000	16	64	custom_obstacle_4	0	1	0	0
+7	1	1428	1149	enemy_8	3	red_helmasaur	0	-1	_random	1	-1
+7	1	1468	1149	enemy_9	3	red_helmasaur	0	-1	_random	1	-1
+7	1	1428	1189	enemy_10	3	red_helmasaur	0	-1	_random	1	-1
+7	1	1468	1189	enemy_11	3	red_helmasaur	0	-1	_random	1	-1
+12	1	1576	896	64	16	custom_obstacle_5	0	1	0	0
+7	1	1672	845	enemy_12	3	blue_pig_soldier	0	-1	_random	1	-1
+7	1	1864	973	enemy_13	3	blue_pig_soldier	0	-1	_random	1	-1
+7	1	1064	832	enemy_15	3	bubble	0	-1	_random	1	-1
+7	1	1192	976	enemy_16	3	bubble	0	-1	_random	1	-1
+7	1	1192	845	enemy_17	3	mandible	0	-1	_random	1	-1
+7	1	1064	989	enemy_18	3	mandible	0	-1	_random	1	-1
+7	1	1024	917	enemy_19	3	mandible	0	-1	_random	1	-1
+7	1	1152	917	enemy_20	3	mandible	0	-1	_random	1	-1
+7	1	1112	1245	enemy_14	3	blue_hardhat_beetle	0	-1	_random	1	-1
+7	1	1016	1085	enemy_21	3	blue_hardhat_beetle	0	-1	_random	1	-1
+7	1	920	1245	enemy_22	3	blue_hardhat_beetle	0	-1	_random	1	-1
+7	1	824	1085	enemy_23	3	blue_hardhat_beetle	0	-1	_random	1	-1
+7	1	728	1245	enemy_24	3	blue_hardhat_beetle	0	-1	_random	1	-1
 0	2	416	608	16	80	170
 0	2	544	608	16	80	170
 0	2	656	528	96	64	170

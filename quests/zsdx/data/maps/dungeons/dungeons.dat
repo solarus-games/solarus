@@ -731,6 +731,48 @@ y = 952
 save = 718
 big = 0
 
+[dungeon_8.map_48.chest_3]
+floor = -1
+x = 368
+y = 1472
+save = -1
+big = 0
+
+[dungeon_9.map_105.chest_2]
+floor = 0
+x = 2112
+y = 1408
+save = 805
+big = 0
+
+[dungeon_9.map_105.chest_3]
+floor = 0
+x = 800
+y = 864
+save = 806
+big = 0
+
+[dungeon_9.map_105.chest_4]
+floor = 0
+x = 1136
+y = 864
+save = 807
+big = 1
+
+[dungeon_9.map_105.chest_5]
+floor = 0
+x = 2128
+y = 1112
+save = 808
+big = 0
+
+[dungeon_9.map_105.chest_6]
+floor = 0
+x = 64
+y = 360
+save = 810
+big = 0
+
 [dungeon_9.map_106.chest_0]
 floor = 1
 x = 1800
@@ -836,10 +878,10 @@ y = 309
 save = 880
 big = 0
 
-[dungeon_8.map_48.chest_3]
-floor = -1
-x = 368
-y = 1472
-save = -1
-big = 0
+[dungeon_9.map_130.boss_0]
+floor = 0
+x = 240
+y = 189
+save = 881
+big = 1
 

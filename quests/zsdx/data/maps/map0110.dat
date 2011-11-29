@@ -1698,6 +1698,9 @@
 13	1	1128	741	16	16	wrong_sensor_1_3	0
 13	1	688	653	16	16	wrong_sensor_0_6	0
 13	1	1448	997	16	16	wrong_sensor_1_4	0
+2	1	704	64	208	32	teletransporter_2	0	1	128	from_6f
+2	1	704	96	32	32	teletransporter_3	0	1	128	from_6f
+2	1	880	96	32	32	teletransporter_4	0	1	128	from_6f
 0	2	1936	1624	8	96	627
 0	2	2232	1624	8	96	628
 0	2	2040	1784	96	8	626

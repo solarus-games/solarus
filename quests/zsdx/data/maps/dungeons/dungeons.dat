@@ -713,21 +713,21 @@ big = 0
 [dungeon_8.map_48.chest_0]
 floor = -1
 x = 1184
-y = 1368
+y = 1384
 save = -1
 big = 0
 
 [dungeon_8.map_48.chest_1]
 floor = -1
-x = 2168
-y = 952
+x = 1480
+y = 1144
 save = -1
 big = 0
 
 [dungeon_8.map_48.chest_2]
 floor = -1
-x = 368
-y = 1472
+x = 2168
+y = 952
 save = -1
 big = 0
 
@@ -869,5 +869,12 @@ floor = -99
 x = 1328
 y = 309
 save = 880
+big = 0
+
+[dungeon_8.map_48.chest_3]
+floor = -1
+x = 368
+y = 1472
+save = -1
 big = 0
 

@@ -154,14 +154,14 @@ height = 2320
 floor = -2
 x = 1344
 y = 624
-save = -1
+save = 712
 big = 0
 
 [dungeon_8.map_49.chest_1]
 floor = -2
 x = 1440
 y = 1152
-save = -1
+save = 711
 big = 0
 
 [dungeon_8.map_49.chest_2]
@@ -245,14 +245,14 @@ big = 1
 floor = -3
 x = 424
 y = 408
-save = -1
+save = 715
 big = 0
 
 [dungeon_8.map_50.chest_1]
 floor = -3
 x = 864
 y = 408
-save = -1
+save = 716
 big = 0
 
 [dungeon_8.map_50.chest_2]
@@ -693,42 +693,42 @@ big = 0
 floor = 0
 x = 1872
 y = 1328
-save = -1
+save = 702
 big = 0
 
 [dungeon_8.map_47.chest_1]
 floor = 0
 x = 800
 y = 384
-save = -1
+save = 705
 big = 0
 
 [dungeon_8.map_47.chest_2]
 floor = 0
 x = 160
 y = 1664
-save = -1
+save = 700
 big = 0
 
 [dungeon_8.map_48.chest_0]
 floor = -1
 x = 1184
 y = 1384
-save = -1
+save = 707
 big = 0
 
 [dungeon_8.map_48.chest_1]
 floor = -1
 x = 1480
 y = 1144
-save = -1
+save = 706
 big = 0
 
 [dungeon_8.map_48.chest_2]
 floor = -1
 x = 2168
 y = 952
-save = -1
+save = 718
 big = 0
 
 [dungeon_9.map_105.chest_2]

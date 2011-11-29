@@ -426,6 +426,9 @@ removes an NPC from the map
 - <tt>sol.map.npc_exists(npc)</tt>:
 checks the existence of an NPC
 
+- <tt>sol.map.chest_is_open(chest_name)</tt>:
+returns the state of a chest
+
 - <tt>sol.map.chest_set_open(chest_name, open)</tt>:
 sets the state of a chest (without giving or reseting its content)
 

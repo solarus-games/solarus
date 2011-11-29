@@ -232,7 +232,7 @@ void Chest::update() {
       }
       else { // the chest is empty
 
-        // mark the chest as found in the savegame
+        // mark the treasure as found in the savegame
         int savegame_variable = treasure.get_savegame_variable();
         if (savegame_variable != -1) {
           get_savegame().set_boolean(savegame_variable, true);

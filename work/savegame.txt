@@ -414,7 +414,7 @@ booleans:
 910	castle B1: chest with 50 rupees
 911	potion shop: got the bottle 2
 912	outside world A3: chest with the bottle 3
-913	bottle 4 (TODO)
+913	castle waterfall: bottle 4
 914	outside world B2: dungeon 6 open
 915	outside world B2: talked to Inferno
 916	outside world B2: got 100 rupees from Inferno

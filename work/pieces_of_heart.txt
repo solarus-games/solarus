@@ -22,7 +22,7 @@ List of the 32 pieces of heart:
 7) Outside world B4: south of the lake (TODO: make a way to this place
    through a cave with a switch to activate with the cane of somaria)
 8) Outside world A4: near the entrance of dungeon 1 2F
-9) TODO: Twin caves (requires the cane of somaria)
+9) Twin caves (requires the cane of somaria)
 10) Outside world A2: island near the castle
 11) Outside world B1: bottom of the vine
 12) Sahasrahla's cave (requires the golden glove)

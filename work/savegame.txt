@@ -433,4 +433,5 @@ booleans:
 933	hidden palace D1: chest with 20 rupees
 934	hidden palace D1: bone key door open
 935	outside world A4: chest with a piece of heart (south)
+936	twin caves: piece of heart
 

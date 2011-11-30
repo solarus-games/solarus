@@ -169,8 +169,8 @@
 18	0	552	560	LD14	1	0	-1
 5	0	424	408	KC05	0	small_key	1	715
 5	0	864	408	CMP	0	compass	1	716
-7	0	1128	413	enemy	3	red_bullblin	0	-1	_random	1	-1
-7	0	1104	373	enemy_2	3	red_bullblin	0	-1	_random	1	-1
+7	0	1112	437	enemy	3	red_bullblin	0	-1	_random	1	-1
+7	0	1080	389	enemy_2	3	red_bullblin	0	-1	_random	1	-1
 2	0	72	48	16	16	to_B2_A	0	1	49	from_B3_A
 15	0	656	624	32	48	0
 15	0	480	368	16	96	1
@@ -720,7 +720,7 @@
 7	1	1344	1157	enemy_14	3	red_pig_soldier	0	-1	_random	1	-1
 7	1	1504	1197	enemy_15	3	red_pig_soldier	0	-1	_random	1	-1
 12	1	1256	1152	64	16	custom_obstacle_10	0	1	0	0
-1	1	1224	909	destination_point	-1	1
+1	1	808	845	destination_point_2	-1	1
 0	2	1112	1040	32	8	429
 0	2	1120	1040	16	8	433
 0	2	1280	1040	16	240	170

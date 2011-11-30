@@ -358,6 +358,9 @@ booleans:
 719 dungeon 8 B3: mirror shield (SHD)
 720 dungeon 8 B3: door button (DB1)
 721 dungeon 8 B3: door button (DB2)
+722 dungeon 8 B1: croissant chest (CC02)
+723 dungeon 8 1F: locked door (LD6)
+724 dungeon 8 1F: piece of hear
 
 800	dungeon 9 1F: chest with 50 rupees (SW)
 801	dungeon 9 1F: got the map from the chest
@@ -395,7 +398,6 @@ booleans:
 878	dungeon 9 5F: chest B (small key)
 879	dungeon 9 5F: locked door
 880	dungeon 9 5F: enemy of door D
-881	dungeon 9: boss killed
 
 900	junk shop: bought the piece of heart
 901	dungeon 3: miniboss
@@ -433,6 +435,4 @@ booleans:
 933	hidden palace D1: chest with 20 rupees
 934	hidden palace D1: bone key door open
 935	outside world A4: chest with a piece of heart (south)
-936	twin caves: piece of heart
-937	laser cave: piece of heart
 

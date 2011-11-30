@@ -908,6 +908,8 @@
 1	0	304	141	from_dungeon_7	3	0
 2	0	296	112	16	16	teletransporter_10	0	1	101	from_outside
 1	0	512	245	from_ending	-1	0
+1	0	896	349	from_laser_cave	3	0
+2	0	888	320	16	16	teletransporter_6	0	1	132	from_outside
 0	2	224	424	8	40	514
 0	2	8	384	48	40	511
 0	2	56	376	8	40	514

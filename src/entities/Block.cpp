@@ -134,6 +134,16 @@ bool Block::is_hole_obstacle() {
 }
 
 /**
+ * @brief Returns whether a teletransporter is currently considered as an obstacle for this entity.
+ * @param teletransporter a teletransporter
+ * @return true if the teletransporter is currently an obstacle for this entity
+ */
+bool Block::is_teletransporter_obstacle(Teletransporter& teletransporter) {
+  // necessary to push a block into a hole having a teletransporter
+  return false;
+}
+
+/**
  * @brief Returns whether the hero is currently considered as an obstacle by this entity.
  * @param hero the hero
  * @return true if the hero is an obstacle for this entity.

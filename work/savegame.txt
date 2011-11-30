@@ -359,6 +359,8 @@ booleans:
 720 dungeon 8 B3: door button (DB1)
 721 dungeon 8 B3: door button (DB2)
 722 dungeon 8 B1: croissant chest (CC02)
+723 dungeon 8 1F: locked door (LD6)
+724 dungeon 8 1F: piece of hear
 
 800	dungeon 9 1F: chest with 50 rupees (SW)
 801	dungeon 9 1F: got the map from the chest

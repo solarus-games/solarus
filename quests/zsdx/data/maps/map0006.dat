@@ -1480,7 +1480,7 @@
 6	0	448	136	24	24	Jump_sensor_5	7	32
 6	0	312	744	32	8	Jump_sensor_6	6	56
 3	0	448	141	piece_of_heart	1	14
-3	0	288	621	piece_of_heart	1	15
+3	0	328	717	piece_of_heart	1	15
 4	0	240	485	4	_random	1	-1
 4	0	112	357	4	_random	1	-1
 4	0	128	269	4	_random	1	-1
@@ -1509,7 +1509,6 @@
 4	0	728	549	3	_random	1	-1
 6	0	248	296	64	8	Jump_sensor_4	6	56
 4	0	328	525	4	_random	1	-1
-5	0	320	704	Chest	0	rupee	5	22
 4	0	568	469	3	_random	1	-1
 4	0	624	389	3	rupee	3	94
 4	0	640	389	3	rupee	2	95
@@ -1588,6 +1587,7 @@
 19	0	184	704	stairs	1	3
 19	0	448	680	stairs_2	1	3
 2	0	744	760	16	16	teletransporter_3	0	0	105	from_outside
+5	0	280	608	Chest	0	rupee	5	22
 0	2	0	400	48	16	512
 0	2	0	416	48	40	511
 0	2	48	408	8	40	514

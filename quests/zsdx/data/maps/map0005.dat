@@ -1149,7 +1149,7 @@
 0	0	448	880	16	16	188
 5	0	840	616	Chest	0	piece_of_heart	1	20
 5	0	512	424	Chest_2	0	rupee	3	19
-5	0	392	848	Chest_3	0	piece_of_heart	1	0
+5	0	392	848	Chest_3	0	piece_of_heart	1	935
 2	0	0	-16	960	16	to_C2	0	2	4	_side
 2	0	-16	0	16	976	to_D1	0	2	6	_side
 6	0	424	632	8	32	Jump_sensor_2	0	56

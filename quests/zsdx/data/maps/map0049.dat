@@ -683,13 +683,13 @@
 14	1	1448	701	crystal_2
 15	1	1536	592	32	32	0
 14	1	1448	605	crystal_3
-8	1	1432	301	npc_11	3	0	entities/hint_stone	map
-8	1	1112	301	npc_12	3	0	entities/hint_stone	map
+8	1	1432	301	TD01	3	0	entities/hint_stone	map
+8	1	1112	301	TD02	3	0	entities/hint_stone	map
 5	1	1440	1152	RC100	0	rupee	5	711
 13	1	1568	901	16	32	DS11	0
 2	1	736	424	144	32	hole_to_B3_C	0	1	50	_same
 2	1	464	608	48	80	hole_to_B3_B	0	1	50	_same
-5	1	1120	896	chest_3	0	boss_key	1	-1
+5	1	1120	896	XK01	0	boss_key	1	726
 15	1	1072	864	112	16	0
 15	1	1072	928	112	16	0
 15	1	1072	880	16	48	0
@@ -733,10 +733,10 @@
 7	1	1560	573	enemy_6	2	pike_auto	0	-1	_random	1	-1
 7	1	1336	733	enemy_7	0	pike_auto	0	-1	_random	1	-1
 12	1	1440	1000	16	64	custom_obstacle_4	0	1	0	0
-7	1	1428	1149	enemy_8	3	red_helmasaur	0	-1	_random	1	-1
-7	1	1468	1149	enemy_9	3	red_helmasaur	0	-1	_random	1	-1
-7	1	1428	1189	enemy_10	3	red_helmasaur	0	-1	_random	1	-1
-7	1	1468	1189	enemy_11	3	red_helmasaur	0	-1	_random	1	-1
+7	1	1428	1149	rupee_enemy_1	3	red_helmasaur	0	-1	_random	1	-1
+7	1	1468	1149	rupee_enemy_2	3	red_helmasaur	0	-1	_random	1	-1
+7	1	1428	1189	rupee_enemy_3	3	red_helmasaur	0	-1	_random	1	-1
+7	1	1468	1189	rupee_enemy_4	3	red_helmasaur	0	-1	_random	1	-1
 12	1	1576	896	64	16	custom_obstacle_5	0	1	0	0
 7	1	1672	845	enemy_12	3	blue_pig_soldier	0	-1	_random	1	-1
 7	1	1864	973	enemy_13	3	blue_pig_soldier	0	-1	_random	1	-1
@@ -751,16 +751,6 @@
 7	1	920	1245	enemy_22	3	blue_hardhat_beetle	0	-1	_random	1	-1
 7	1	824	1085	enemy_23	3	blue_hardhat_beetle	0	-1	_random	1	-1
 7	1	728	1245	enemy_24	3	blue_hardhat_beetle	0	-1	_random	1	-1
-8	1	1080	349	npc	3	0	_none	map
-8	1	1064	413	npc_2	3	0	_none	map
-8	1	1128	445	npc_3	3	0	_none	map
-8	1	1192	413	npc_4	-1	0	_none	map
-8	1	1176	349	npc_5	3	0	_none	map
-8	1	1400	349	npc_6	3	0	_none	map
-8	1	1384	413	npc_7	3	0	_none	map
-8	1	1448	445	npc_8	3	0	_none	map
-8	1	1512	413	npc_9	3	0	_none	map
-8	1	1496	349	npc_10	3	0	_none	map
 18	1	1304	888	KD04	2	1	714
 18	1	1352	888	BD01_2	0	3	713
 18	1	1256	888	KD04_2	0	1	714

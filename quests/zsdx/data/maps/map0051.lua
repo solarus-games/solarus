@@ -1,5 +1,5 @@
 -----------------------------
--- Dungeon 8 B1 script     --
+-- Dungeon 8 B4 script     --
 -----------------------------
 
 -- Legend
@@ -19,6 +19,9 @@ DB04_status = false
 
 function event_map_started()
 	sol.map.light_set(0)
+	if not sol.game.savegame_get_boolean(725) then
+		sol.map.block_set_enabled("STT5", false)
+	end
 end
 
 function event_switch_activated(switch_name)

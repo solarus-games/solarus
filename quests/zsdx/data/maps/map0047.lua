@@ -15,7 +15,13 @@
 
 function event_map_started(destination_point_name)
 	sol.map.door_set_open("LD1", true)
+	sol.map.door_set_open("LD3", true)
 	sol.map.door_set_open("LD4", true)
+
+	-- Map chest hide if not already opened
+	if not sol.game.savegame_get_boolean(700) then
+		sol.map.chest_set_enabled("MAP", false)
+	end
 
 	-- Big key chest hide if not already opened
 	if not sol.game.savegame_get_boolean(705) then
@@ -23,9 +29,9 @@ function event_map_started(destination_point_name)
 	end
 
 	-- Link has mirror shield: no laser obstacles
-  if sol.game.get_item("shield") >= 3 then
-		sol.map.custom_obstacle_set_enabled("LO1", false)
-		sol.map.custom_obstacle_set_enabled("LO2", false)
+  if sol.game.get_ability("shield") >= 3 then
+		sol.map.obstacle_set_enabled("LO1", false)
+		sol.map.obstacle_set_enabled("LO2", false)
 	end
 end
 
@@ -78,6 +84,9 @@ function event_hero_on_sensor(sensor_name)
 		-- LD1 room: when Link enters this room, door LD1 closes and enemies appear, sensor DS1 is disabled
 		sol.map.door_close("LD1")
 		sol.map.sensor_set_enabled("DS1", false)
+	elseif sensor_name == "DS3" then
+		sol.map.door_close("LD3")
+		sol.map.sensor_set_enabled("DS3", false)
 	elseif sensor_name == "DS4" then
 		sol.map.door_close("LD4")
 		sol.map.sensor_set_enabled("DS4", false)
@@ -94,9 +103,19 @@ function event_enemy_dead(enemy_name)
 	-- LD5 room: kill all enemies will open the door LD5
 		sol.map.door_open("LD5")
 		sol.main.play_sound("secret")
+	elseif string.match(enemy_name, "^map_enemy") and sol.map.enemy_is_group_dead("map_enemy") then
+	-- Map chest room: kill all enemies and the chest will appear
+		if not sol.game.savegame_get_boolean(700) then		
+			sol.map.chest_set_enabled("MAP", true)
+			sol.main.play_sound("chest_appears")
+		end
+		sol.map.door_open("LD3")
+		sol.main.play_sound("secret")
 	elseif string.match(enemy_name, "^room_big_enemy") and sol.map.enemy_is_group_dead("room_big_enemy") then
   -- Big key chest room: kill all enemies and the chest will appear
-		sol.map.chest_set_enabled("BK01", true)
-		sol.main.play_sound("chest_appears")
+		if not sol.game.savegame_get_boolean(705) then		
+			sol.map.chest_set_enabled("BK01", true)
+			sol.main.play_sound("chest_appears")
+		end
 	end
 end

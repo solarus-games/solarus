@@ -108,7 +108,7 @@
 0	79	Waterfall cave 1F
 0	80	Waterfall cave B1
 0	82	Cave under waterfall
-0	83	Lake cave
+0	83	Lake east cave
 0	84	Junk shop
 0	88	Castle B1
 0	89	Castle 1F
@@ -130,6 +130,7 @@
 0	131	The end
 0	132	Laser cave
 0	133	Castle waterfall
+0	134	Lake west cave
 1	1	Light World
 1	13	Dark World
 1	3	Cave

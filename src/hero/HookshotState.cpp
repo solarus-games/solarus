@@ -191,21 +191,25 @@ void Hero::HookshotState::finish_movement() {
   const Rectangle& hero_position = hero.get_bounding_box();
   Layer layer = hero.get_layer();
   Map& map = get_map();
+  MapEntities& entities = get_entities();
 
   if (layer == LAYER_LOW || !map.has_empty_tiles(layer, hero_position)) {
     // the hero is totally on the same layer: no problem
     hero.start_state_from_ground();
   }
   else {
-    // a part of the hero is on empty tiles: allow this only if the tiles on
-    // the lower layer are not obstacles
+    // a part of the hero is on empty tiles: this is often illegal, especially
+    // if there are jumpers; allow this only if tiles on
+    // the lower layer are not obstacles, and go to this layer
     layer = Layer(layer - 1);
     if (!map.test_collision_with_obstacles(layer, hero_position, hero)) {
+      Sound::play("hero_lands");
+      entities.set_entity_layer(&hero, layer);
       hero.start_state_from_ground();
     }
     else {
-      // invalid position: get back to the start point
-      // TODO: to get back to the closest valid point from the destination instead
+      // illegal position: get back to the start point
+      // TODO: get back to the closest valid point from the destination instead
       Sound::play("hero_hurt");
       hero.set_state(new BackToSolidGroundState(hero, false, 0, true));
     }

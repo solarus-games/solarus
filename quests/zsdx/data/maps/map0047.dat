@@ -940,6 +940,9 @@
 0	1	1328	464	16	16	2
 0	1	1856	320	16	16	2
 0	1	1632	416	16	16	2
+1	1	1128	37	from_boss	3	0
+19	1	1120	24	stairs_3	1	1
+2	1	1120	24	16	16	to_boss	0	1	52	from_1F
 12	1	1256	384	64	16	custom_obstacle_20	0	1	0	0
 18	1	664	384	WW01	2	5	0
 1	1	1128	1773	from_outside	1	0
@@ -989,10 +992,10 @@
 7	1	1832	1653	room_LD1_enemy_3	3	skeletor	0	-1	_random	1	-1
 7	1	1704	1717	room_LD1_enemy_4	3	tentacle	0	-1	_random	1	-1
 7	1	1768	1645	room_LD1_enemy_2	3	tentacle	0	-1	_random	1	-1
-7	1	136	1661	enemy_12	3	bee_guard	0	-1	_random	1	-1
-7	1	136	1701	enemy_13	3	bee_guard	0	-1	_random	1	-1
-7	1	200	1701	enemy_14	3	bee_guard	0	-1	_random	1	-1
-7	1	200	1661	enemy_15	3	bee_guard	0	-1	_random	1	-1
+7	1	136	1661	map_enemy_1	3	bee_guard	0	-1	_random	1	-1
+7	1	136	1701	map_enemy_3	3	bee_guard	0	-1	_random	1	-1
+7	1	200	1701	map_enemy_4	3	bee_guard	0	-1	_random	1	-1
+7	1	200	1661	map_enemy_2	3	bee_guard	0	-1	_random	1	-1
 1	1	1672	805	from_B1_A	3	0
 19	1	1664	792	stairs_2	1	1
 2	1	1664	792	16	16	to_B1_A	0	1	48	from_1F_A
@@ -1030,9 +1033,9 @@
 4	1	1208	957	0	_random	1	-1
 7	1	1024	832	enemy_7	3	bubble	0	-1	_random	1	-1
 7	1	1232	832	enemy_9	3	bubble	0	-1	_random	1	-1
-13	1	1648	1677	16	16	DS1	0
+13	1	1648	1661	16	48	DS1	0
 18	1	1576	1656	LD1	0	0	-1
-13	1	288	1661	16	48	sensor_2	0
+13	1	288	1661	16	48	DS3	0
 18	1	1304	376	LD6	2	0	723
 18	1	1752	536	LD5	1	0	-1
 2	1	1120	1792	16	16	to_outside	0	1	10	from_dungeon_8
@@ -1040,7 +1043,7 @@
 4	1	56	1621	0	small_key	1	704
 4	1	80	1757	0	_random	1	-1
 4	1	80	1597	0	_random	1	-1
-5	1	160	1664	MAP	0	map	5	700
+5	1	160	1664	MAP	0	map	1	700
 8	1	1456	1445	npc	3	0	entities/hint_stone	map
 4	1	1768	1485	0	_random	1	-1
 18	1	1624	1656	LD1_2	2	0	-1
@@ -1053,7 +1056,7 @@
 7	1	1704	685	room_LD5_enemy_4	3	tentacle	0	-1	_random	1	-1
 7	1	1832	685	room_LD5_enemy_6	3	tentacle	0	-1	_random	1	-1
 18	1	1752	488	LD5_2	3	0	-1
-3	1	416	397	piece_of_heart	1	-1
+3	1	416	397	piece_of_heart	1	724
 11	1	1072	848	DB4	1	0	0
 4	1	1080	861	0	_random	1	-1
 18	1	1112	1000	LD4	3	0	-1
@@ -1119,7 +1122,7 @@
 12	1	1856	968	16	16	custom_obstacle_23	0	1	0	0
 12	1	1120	408	16	16	custom_obstacle_24	0	1	0	0
 10	1	656	360	24	64	WW01_closed	51	1
-2	1	1120	1728	16	16	teletransporter	1	1	50	destination_point_2
+2	1	1120	1728	16	16	teletransporter	1	1	50	debug
 18	1	1112	24	LD20	1	0	-1
 18	1	1256	376	LD6_2	0	0	723
 0	2	976	1656	8	32	352

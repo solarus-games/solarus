@@ -360,7 +360,9 @@ booleans:
 721 dungeon 8 B3: door button (DB2)
 722 dungeon 8 B1: croissant chest (CC02)
 723 dungeon 8 1F: locked door (LD6)
-724 dungeon 8 1F: piece of hear
+724 dungeon 8 1F: piece of heart
+725 dungeon 8 B3: falling statue (STT5)
+726 dungeon 8 B2: boss key chest (XK01)
 
 800	dungeon 9 1F: chest with 50 rupees (SW)
 801	dungeon 9 1F: got the map from the chest

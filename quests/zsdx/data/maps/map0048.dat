@@ -551,7 +551,6 @@
 0	1	928	736	8	8	17
 0	1	680	552	8	8	14
 0	1	928	552	8	8	15
-0	1	688	816	16	16	2
 0	1	704	832	16	16	276
 0	1	704	960	16	16	276
 0	1	896	960	16	16	276
@@ -1059,6 +1058,11 @@
 0	1	248	1392	16	80	326
 0	1	464	720	48	16	2
 0	1	464	560	48	16	2
+0	1	376	1072	16	16	276
+0	1	376	1232	16	16	276
+0	1	624	1072	16	16	276
+0	1	624	1232	16	16	276
+12	1	616	640	64	16	custom_obstacle_14	0	1	0	0
 18	1	504	1560	WW02	1	5	0
 12	1	936	896	64	16	custom_obstacle_53	0	1	0	0
 11	1	1008	1488	CB04	1	0	0
@@ -1068,8 +1072,7 @@
 7	1	2080	845	enemy	3	skeletor	0	-1	_random	1	-1
 7	1	2104	853	enemy_2	3	skeletor	0	-1	_random	1	-1
 5	1	2168	952	chest	0	croissant	1	718
-18	1	792	792	door	1	0	-1
-18	1	792	744	door_2	3	0	-1
+18	1	792	744	LD8	3	0	-1
 2	1	1680	864	176	80	hole_to_B2_A	0	1	49	_same
 9	1	168	77	block	-1	entities/block	1	0	0
 9	1	152	93	block_2	-1	entities/block	1	0	0
@@ -1149,8 +1152,7 @@
 4	1	1496	1485	0	_random	1	-1
 4	1	1496	1453	0	_random	1	-1
 18	1	936	888	KD03	0	1	710
-18	1	616	632	door_5	0	0	-1
-18	1	664	632	door_6	2	0	-1
+18	1	616	632	LD7	0	0	-1
 18	1	152	232	LD12	3	0	-1
 18	1	152	280	LD12_2	1	0	-1
 2	1	240	24	16	16	to_B2_C	0	1	49	from_B1_C
@@ -1164,12 +1166,11 @@
 4	1	504	1597	0	bomb	1	-1
 4	1	520	1597	0	bomb	1	-1
 7	1	240	1472	enemy_3	3	laser	0	-1	_random	1	-1
-7	1	528	661	enemy_4	3	globul	0	-1	_random	1	-1
-7	1	576	717	enemy_5	3	globul	0	-1	_random	1	-1
-7	1	448	661	enemy_6	3	globul	0	-1	_random	1	-1
-7	1	576	605	enemy_7	3	globul	0	-1	_random	1	-1
+7	1	528	661	LD7_enemy_3	3	globul	0	-1	_random	1	-1
+7	1	576	717	LD7_enemy_4	3	globul	0	-1	_random	1	-1
+7	1	448	661	LD7_enemy_2	3	globul	0	-1	_random	1	-1
+7	1	576	605	LD7_enemy_1	3	globul	0	-1	_random	1	-1
 12	1	296	640	64	16	custom_obstacle_13	0	1	0	0
-12	1	616	640	64	16	custom_obstacle_14	0	1	0	0
 12	1	416	624	16	48	custom_obstacle_15	1	0	0	0
 12	1	384	608	32	16	custom_obstacle_16	1	0	0	0
 12	1	432	672	32	16	custom_obstacle_17	1	0	0	0
@@ -1180,14 +1181,14 @@
 7	1	780	1149	enemy_8	3	gibdo	0	-1	_random	1	-1
 7	1	868	1157	enemy_9	3	gibdo	0	-1	_random	1	-1
 7	1	820	1197	enemy_10	3	gibdo	0	-1	_random	1	-1
-12	1	232	1480	16	16	custom_obstacle_22	1	1	1	1
+12	1	232	1472	16	16	LO4	1	0	0	0
 15	1	800	576	16	144	0
 15	1	704	576	16	144	1
 7	1	696	621	enemy_15	0	pike_auto	0	-1	_random	1	-1
 7	1	696	685	enemy_16	0	pike_auto	0	-1	_random	1	-1
 7	1	920	589	enemy_17	2	pike_auto	0	-1	_random	1	-1
 7	1	920	717	enemy_18	2	pike_auto	0	-1	_random	1	-1
-11	1	800	560	switch_2	1	0	0
+11	1	800	560	DB08	1	0	0
 14	1	920	653	crystal
 4	1	808	573	0	_random	1	-1
 4	1	696	573	0	_random	1	-1
@@ -1235,14 +1236,14 @@
 12	1	752	1256	16	64	custom_obstacle_46	0	1	0	0
 12	1	1896	896	64	16	custom_obstacle_48	0	1	0	0
 12	1	528	1256	16	64	custom_obstacle_47	0	1	0	0
-18	1	520	1256	door_3	3	0	-1
-5	1	600	1088	CC02	0	croissant	1	722
-7	1	576	1101	enemy_19	3	blue_hardhat_beetle	0	-1	_random	1	-1
-7	1	496	1165	enemy_20	3	blue_hardhat_beetle	0	-1	_random	1	-1
-7	1	408	1229	enemy_21	3	blue_hardhat_beetle	0	-1	_random	1	-1
+18	1	520	1256	LD9	3	0	-1
+5	1	608	1088	CC02	0	croissant	1	722
+7	1	576	1101	LD9_enemy_1	3	blue_hardhat_beetle	0	-1	_random	1	-1
+7	1	496	1165	LD9_enemy_2	3	blue_hardhat_beetle	0	-1	_random	1	-1
+7	1	408	1229	LD9_enemy_3	3	blue_hardhat_beetle	0	-1	_random	1	-1
 7	1	1680	1437	enemy_22	3	pike_auto	0	-1	_random	1	-1
 7	1	1728	1461	enemy_23	3	pike_auto	0	-1	_random	1	-1
-7	1	1776	1509	enemy_24	3	pike_auto	0	-1	_random	1	-1
+7	1	1776	1461	enemy_24	3	pike_auto	0	-1	_random	1	-1
 4	1	1880	1437	0	heart	1	-1
 4	1	1880	1469	0	heart	1	-1
 4	1	1880	1501	0	heart	1	-1
@@ -1260,7 +1261,7 @@
 12	1	936	1152	64	16	custom_obstacle_55	0	1	0	0
 6	1	216	704	16	8	jumper_12	2	40
 15	1	896	576	16	144	1
-12	1	232	1496	16	16	custom_obstacle_56	0	1	0	0
+12	1	232	1488	16	16	custom_obstacle_56	0	1	0	0
 15	1	2040	808	16	64	1
 15	1	2120	808	16	64	1
 4	1	472	573	0	_random	1	-1
@@ -1271,6 +1272,16 @@
 4	1	504	733	0	_random	1	-1
 10	1	472	1552	80	24	WW02_closed	49	1
 10	1	472	1512	80	24	WW02_closed_2	52	1
+18	1	664	632	LD7_2	2	0	-1
+18	1	792	792	LD8_2	1	0	-1
+11	1	688	816	DB08_2	1	0	0
+4	1	696	829	0	_random	1	-1
+13	1	608	637	16	48	DS7	0
+18	1	520	1304	LD9_2	1	0	-1
+13	1	520	1253	48	16	DS9	0
+1	1	1064	1357	destination_point_2	-1	1
+12	1	368	1176	240	16	custom_obstacle_57	0	1	0	0
+12	1	368	1128	240	16	custom_obstacle_58	0	1	0	0
 0	2	1656	784	32	8	429
 0	2	1664	784	16	8	433
 0	2	1936	888	8	32	162

@@ -214,7 +214,7 @@ function event_switch_activated(switch_name)
 	sol.map.tile_set_enabled("puzzle_a_switch_green_" .. v, on)
 	sol.map.tile_set_enabled("puzzle_a_switch_red_" .. v, not on)
       end
-      
+ 
       -- check the success
       local success = true
       for i = 1, 6 do

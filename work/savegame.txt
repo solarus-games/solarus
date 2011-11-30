@@ -434,4 +434,5 @@ booleans:
 934	hidden palace D1: bone key door open
 935	outside world A4: chest with a piece of heart (south)
 936	twin caves: piece of heart
+937	laser cave: piece of heart
 

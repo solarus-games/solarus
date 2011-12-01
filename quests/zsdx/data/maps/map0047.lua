@@ -1,6 +1,4 @@
------------------------------
--- Dungeon 8 1F script     --
------------------------------
+-- Dungeon 8 1F
 
 -- Legend
 -- RC: Rupee Chest
@@ -13,10 +11,14 @@
 -- BB: Barrier Button
 -- DS: Door Sensor
 
+fighting_boss = false
+
 function event_map_started(destination_point_name)
 	sol.map.door_set_open("LD1", true)
 	sol.map.door_set_open("LD3", true)
 	sol.map.door_set_open("LD4", true)
+	sol.map.door_set_open("boss_door", true)
+	sol.map.npc_set_enabled("billy_npc", false)
 
 	-- Map chest hide if not already opened
 	if not sol.game.savegame_get_boolean(700) then
@@ -92,6 +94,16 @@ function event_hero_on_sensor(sensor_name)
 	elseif sensor_name == "DS4" then
 		sol.map.door_close("LD4")
 		sol.map.sensor_set_enabled("DS4", false)
+	elseif sensor_name == "start_boss_sensor" then
+		if not fighting_boss and not sol.game.savegame_get_boolean(727) then
+			sol.map.door_close("boss_door")
+			sol.map.npc_set_enabled("billy_npc", true)
+			sol.map.hero_freeze()
+			fighting_boss = true
+			sol.main.timer_start(function()
+				sol.map.dialog_start("dungeon_8.billy")
+			end, 1000)
+		end
 	end
 end
 
@@ -119,5 +131,27 @@ function event_enemy_dead(enemy_name)
 			sol.map.chest_set_enabled("BK01", true)
 			sol.main.play_sound("chest_appears")
 		end
+	elseif enemy_name == "boss" then
+		sol.main.timer_start(function()
+			sol.main.play_music("victory.spc")
+			sol.map.hero_freeze()
+			sol.map.hero_set_direction(3)
+		end, 1000)
+		sol.main.timer_start(function()
+			sol.map.door_open("boss_door")
+			sol.main.play_sound("secret")
+			sol.map.hero_unfreeze()
+		end, 10000)
 	end
 end
+
+function event_dialog_finished(first_message_id)
+
+	if first_message_id == "dungeon_8.billy" then
+		sol.main.play_music("boss.spc")
+		sol.map.hero_unfreeze()
+		sol.map.enemy_set_enabled("boss", true)
+		sol.map.npc_set_enabled("billy_npc", false)
+	end
+end
+

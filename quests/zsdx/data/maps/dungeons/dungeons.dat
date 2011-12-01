@@ -885,3 +885,17 @@ y = 189
 save = 881
 big = 1
 
+[dungeon_8.map_47.boss_0]
+floor = 0
+x = 1128
+y = 125
+save = 727
+big = 1
+
+[dungeon_8.map_52.boss_0]
+floor = -99
+x = 632
+y = 373
+save = 728
+big = 1
+

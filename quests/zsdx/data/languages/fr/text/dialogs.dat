@@ -5797,7 +5797,7 @@ next = dungeon_5.agahnim_end.4
 [dungeon_5.agahnim_end.4]
 #       |-----------------------|
 line1 = "pouvoir et il va me"
-line2 = "révéler où se trouve"
+line2 = "révéler où se trouvent"
 line3 = "la Princesse et les"
 next = dungeon_5.agahnim_end.5
 
@@ -6113,10 +6113,171 @@ skip = current
 
 [dungeon_8.hint_B1]
 #       |-----------------------|
-line1 = "Si tu es bloqué, combat"
-line2 = "les pointes par les"
-line3 = "pointes."
+line1 = "Si tu es bloqué,"
+line2 = "combats les pointes par"
+line3 = "les pointes."
 skip = current
+
+[dungeon_8.billy]
+#       |-----------------------|
+line1 = "Tu ne pensais peut-être"
+line2 = "pas retrouver ici ton"
+line3 = "vieil ami Billy le"
+next = dungeon_8.billy.2
+
+[dungeon_8.billy.2]
+#       |-----------------------|
+line1 = "Téméraire, le plus"
+line2 = "grand héros de tous les"
+line3 = "temps !"
+next = dungeon_8.billy.3
+
+[dungeon_8.billy.3]
+#       |-----------------------|
+line1 = "La princesse et les"
+line2 = "huit enfants ne sont"
+line3 = "plus ici."
+next = dungeon_8.billy.4
+
+[dungeon_8.billy.4]
+#       |-----------------------|
+line1 = "Ils avaient en effet"
+line2 = "trouvé refuge dans mon"
+line3 = "palais, et je me suis"
+next = dungeon_8.billy.5
+
+[dungeon_8.billy.5]
+#       |-----------------------|
+line1 = "moi-même chargé de les"
+line2 = "livrer à Agahnim..."
+next = dungeon_8.billy.6
+
+[dungeon_8.billy.6]
+#       |-----------------------|
+line1 = "Maintenant, c'est à ton"
+line2 = "tour de périr !"
+line3 = ""
+
+[dungeon_8.agahnim]
+#       |-----------------------|
+line1 = "$1Ce Billy était vraiment"
+line2 = "un incompétent. Puisque"
+line3 = "ni lui, ni mes autres"
+next = dungeon_8.agahnim.2
+
+[dungeon_8.agahnim.2]
+#       |-----------------------|
+line1 = "serviteurs ne viennent"
+line2 = "à bout de vous, jeune"
+line3 = "parasite, je vais moi-"
+next = dungeon_8.agahnim.3
+
+[dungeon_8.agahnim.3]
+#       |-----------------------|
+line1 = "même m'occuper de votre"
+line2 = "cas. Vous allez"
+line3 = "disparaître une bonne"
+next = dungeon_8.agahnim.4
+
+[dungeon_8.agahnim.4]
+#       |-----------------------|
+line1 = "fois pour toutes. Après"
+line2 = "cela, je pourrai enfin"
+line3 = "m'emparer de la"
+next = dungeon_8.agahnim.5
+
+[dungeon_8.agahnim.5]
+#       |-----------------------|
+line1 = "Triforce et étendre mon"
+line2 = "pouvoir au monde"
+line3 = "entier. Ah ah ah ah !"
+
+[dungeon_8.agahnim_end]
+#       |-----------------------|
+line1 = "$1$0...$0 .........$0"
+line2 = "Je suis vaincu...$0"
+line3 = "C'est la fin...$0"
+next = dungeon_8.agahnim_end.2
+
+[dungeon_8.agahnim_end.2]
+#       |-----------------------|
+line1 = "Je n'ai pas été à la"
+line2 = "hauteur..."
+line3 = ""
+next = dungeon_8.agahnim_end.3
+
+[dungeon_8.agahnim_end.3]
+#       |-----------------------|
+line1 = "Je m'incline devant"
+line2 = "votre bravoure.$0"
+line3 = ""
+next = dungeon_8.agahnim_end.4
+
+[dungeon_8.agahnim_end.4]
+#       |-----------------------|
+line1 = "Mais puisque je n'ai"
+line2 = "pas été capable d'en"
+line3 = "finir avec vous, il est"
+next = dungeon_8.agahnim_end.5
+
+[dungeon_8.agahnim_end.5]
+#       |-----------------------|
+line1 = "désormais temps pour"
+line2 = "moi de libérer mon"
+line3 = "Maître..."
+next = dungeon_8.agahnim_end.6
+
+[dungeon_8.agahnim_end.6]
+#       |-----------------------|
+line1 = "Ah ah ah ah ah ah !!!"
+
+[dungeon_8.ganon]
+#       |-----------------------|
+line1 = "$1Ainsi vous êtes parvenu"
+line2 = "à défaire à nouveau mon"
+line3 = "alter-ego, le sombre"
+next = dungeon_8.ganon.2
+
+[dungeon_8.ganon.2]
+#       |-----------------------|
+line1 = "sorcier Agahnim... Cela"
+line2 = "n'aura servi à rien"
+line3 = "d'autre que de le"
+next = dungeon_8.ganon.3
+
+[dungeon_8.ganon.3]
+#       |-----------------------|
+line1 = "contraindre à me"
+line2 = "libérer. Pour vous"
+line3 = "remercier, je vous"
+next = dungeon_8.ganon.4
+
+[dungeon_8.ganon.4]
+#       |-----------------------|
+line1 = "invite, vous ainsi que"
+line2 = "la Princesse et les"
+line3 = "huit enfants, à me"
+next = dungeon_8.ganon.5
+
+[dungeon_8.ganon.5]
+#       |-----------------------|
+line1 = "rejoindre dans mon"
+line2 = "palais. Je récupèrerai"
+line3 = "ainsi la Triforce, et"
+next = dungeon_8.ganon.6
+
+[dungeon_8.ganon.6]
+#       |-----------------------|
+line1 = "vous serez au premières"
+line2 = "loges pour admirer cet"
+line3 = "évènement."
+next = dungeon_8.ganon.7
+
+[dungeon_8.ganon.7]
+#       |-----------------------|
+line1 = "Laissez-vous donc"
+line2 = "transporter l'esprit..."
+line3 = ""
 
 [dungeon_9.welcome]
 #       |-----------------------|

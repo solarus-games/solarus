@@ -583,8 +583,10 @@ changes immediately the state of a door (without playing animation and sound)
 - <tt>sol.map.pickable_item_create(item_name, variant, savegame_variable, x, y, layer)</tt>:
 creates a pickable item and places it on the map
 
-- <tt>sol.map.destructible_item_create(subtype, x, y, layer)</tt>:
-creates a destructible item and places it on the map
+- <tt>sol.map.destructible_item_create(subtype, x, y, layer, item_name, variant, savegame_variable)</tt>:
+Creates a destructible item and places it on the map.
+The last 3 parameters define the treasure inside the item and are optional
+(by default, the treasure is random).
 
 - <tt>sol.map.block_create(x, y, layer, name, properties)</tt>:
 Creates a block and places it on the map.

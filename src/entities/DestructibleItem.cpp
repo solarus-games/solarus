@@ -56,7 +56,7 @@ const DestructibleItem::Features DestructibleItem::features[] = {
  * item is lifted or cut
  */
 DestructibleItem::DestructibleItem(Layer layer, int x, int y,
-    DestructibleItem::Subtype subtype, const Treasure &treasure):
+    Subtype subtype, const Treasure &treasure):
 
   Detector(COLLISION_NONE, "", layer, x, y, 16, 16),
   subtype(subtype),

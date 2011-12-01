@@ -6019,6 +6019,20 @@ line2 = "    Donjon des Pics "
 line3 = "        Rocheux"
 skip = current
 
+[dungeon_8.hint_1F]
+#       |-----------------------|
+line1 = "Pour continuer ton"
+line2 = "chemin, jette-toi dans"
+line3 = "les abysses du donjon."
+skip = current
+
+[dungeon_8.hint_B1]
+#       |-----------------------|
+line1 = "Si tu es bloqué, combat"
+line2 = "les pointes par les"
+line3 = "pointes."
+skip = current
+
 [dungeon_9.welcome]
 #       |-----------------------|
 line1 = "        Niveau 9       "

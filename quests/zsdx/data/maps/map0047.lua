@@ -36,7 +36,9 @@ function event_map_started(destination_point_name)
 end
 
 function event_map_opening_transition_finished(destination_point_name)
-	sol.map.dialog_start("dungeon_8.welcome")
+	if destination_point_name == "from_outside" then	
+		sol.map.dialog_start("dungeon_8.welcome")
+	end
 end
 
 function event_switch_activated(switch_name)

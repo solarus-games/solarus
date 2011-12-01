@@ -273,7 +273,6 @@
 19	0	1440	1704	stairs_5	3	4
 19	0	1816	1392	stairs_6	3	4
 2	0	1440	1664	16	16	to_teleporter_A	1	1	48	from_teleporter_A
-8	0	1064	1261	npc	3	0	entities/hint_stone	map
 5	0	1184	1384	KC04	0	small_key	1	707
 9	0	1152	1285	block_21	-1	entities/block	1	0	1
 9	0	1168	1285	block_46	-1	entities/block	1	0	1
@@ -1280,6 +1279,7 @@
 13	1	520	1253	48	16	DS9	0
 12	1	368	1176	240	16	custom_obstacle_57	0	1	0	0
 12	1	368	1128	240	16	custom_obstacle_58	0	1	0	0
+8	1	248	301	npc	3	0	entities/hint_stone	dialog#dungeon_8.hint_B1
 0	2	1656	784	32	8	429
 0	2	1664	784	16	8	433
 0	2	1936	888	8	32	162

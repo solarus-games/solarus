@@ -544,8 +544,11 @@ Returns the position of a block (3 return values: x, y, layer).
 Sets the position of a block.
 The layer is optional (by default, it is unchanged).
 
+- <tt>sol.map.shop_item_exists(shop_item_name)</tt>:
+Returns whether a shop item exists on the map.
+
 - <tt>sol.map.shop_item_remove(shop_item_name)</tt>:
-removes a shop item from the map
+Removes a shop item from the map if it exists.
 
 - <tt>sol.map.switch_is_activated(switch_name)</tt>:
 returns whether a switch is activated

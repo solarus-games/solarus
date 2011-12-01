@@ -1743,7 +1743,30 @@ int Script::map_api_block_set_position(lua_State* l) {
 }
 
 /**
- * @brief Removes a shop item from the map.
+ * @brief Returns whether a shop item exists.
+ *
+ * A shop item does not exist anymore if it was bought or if the script called
+ * sol.map.shop_item_remove() on it.
+ *
+ * - Argument 1 (string): name of the shop item
+ * - Return value (boolean): true if a shop item with this name exists
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::map_api_shop_item_exists(lua_State* l) {
+
+  Script& script = get_script(l, 1);
+
+  const std::string& name = luaL_checkstring(l, 1);
+
+  bool exists = script.get_map().get_entities().find_entity(SHOP_ITEM, name) != NULL;
+  lua_pushboolean(l, exists);
+
+  return 1;
+}
+
+/**
+ * @brief Removes a shop item from the map if it exists.
  *
  * - Argument 1 (string): name of the shop item
  *
@@ -1755,7 +1778,11 @@ int Script::map_api_shop_item_remove(lua_State *l) {
 
   const std::string &name = luaL_checkstring(l, 1);
 
-  script.get_map().get_entities().remove_entity(SHOP_ITEM, name);
+  MapEntities& entities = script.get_map().get_entities();
+  MapEntity* shop_item = entities.find_entity(SHOP_ITEM, name);
+  if (shop_item != NULL) {
+    entities.remove_entity(shop_item);
+  }
 
   return 0;
 }

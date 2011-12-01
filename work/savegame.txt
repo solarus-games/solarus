@@ -363,6 +363,9 @@ booleans:
 724 dungeon 8 1F: piece of heart
 725 dungeon 8 B3: falling statue (STT5)
 726 dungeon 8 B2: boss key chest (XK01)
+727 dungeon 8 1F: Billy killed
+728 dungeon 8 boss: Agahnim killed
+729 dungeon 8 boss: heart container
 
 800	dungeon 9 1F: chest with 50 rupees (SW)
 801	dungeon 9 1F: got the map from the chest

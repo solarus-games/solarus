@@ -317,6 +317,10 @@ void Door::update() {
 
   Detector::update();
 
+  if (is_suspended()) {
+    return;
+  }
+
   if (!initialized) {
     update_dynamic_tiles();
     initialized = true;

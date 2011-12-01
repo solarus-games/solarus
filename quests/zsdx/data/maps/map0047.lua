@@ -31,9 +31,13 @@ function event_map_started(destination_point_name)
 	end
 
 	-- Link has mirror shield: no laser obstacles
-  if sol.game.get_ability("shield") >= 3 then
+	if sol.game.get_ability("shield") >= 3 then
 		sol.map.obstacle_set_enabled("LO1", false)
 		sol.map.obstacle_set_enabled("LO2", false)
+	end
+
+	if destination_point_name == "from_boss" or destination_point_name == "from_hidden_room" then
+		sol.map.door_set_open("LD5", true)
 	end
 end
 
@@ -113,7 +117,7 @@ function event_enemy_dead(enemy_name)
 		sol.map.door_open("LD1")
 		sol.map.door_open("LD2")
 		sol.main.play_sound("secret")
-	elseif string.match(enemy_name, "^room_LD5_enemy") and sol.map.enemy_is_group_dead("room_LD5_enemy") then
+	elseif string.match(enemy_name, "^room_LD5_enemy") and sol.map.enemy_is_group_dead("room_LD5_enemy") and not sol.map.door_is_open("LD5") then
 	-- LD5 room: kill all enemies will open the door LD5
 		sol.map.door_open("LD5")
 		sol.main.play_sound("secret")

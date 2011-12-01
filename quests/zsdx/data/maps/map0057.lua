@@ -77,6 +77,8 @@ function event_treasure_obtained(item_name, variant, savegame_variable)
     sol.map.hero_freeze()
     sol.map.hero_set_direction(3)
     sol.main.timer_start(start_final_sequence, 9000)
+  elseif item_name == "quiver" then
+    sol.map.hero_start_victory_sequence()
   end
 end
 
@@ -103,7 +105,11 @@ function event_dialog_finished(first_message_id)
     end,
     1000)
   elseif first_message_id == "dungeon_6.tom_revelation" then
-    sol.map.hero_start_victory_sequence()
+    local variant = 2
+    if sol.game.savegame_get_boolean(939) then
+      variant = 3
+    end
+    sol.map.treasure_give("quiver", variant, 941)
   end
 end
 

@@ -720,7 +720,6 @@
 7	1	1344	1157	enemy_14	3	red_pig_soldier	0	-1	_random	1	-1
 7	1	1504	1197	enemy_15	3	red_pig_soldier	0	-1	_random	1	-1
 12	1	1256	1152	64	16	custom_obstacle_10	0	1	0	0
-1	1	432	709	debug	-1	1
 0	2	1112	1040	32	8	429
 0	2	1120	1040	16	8	433
 0	2	1280	1040	16	240	170

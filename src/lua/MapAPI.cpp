@@ -2079,22 +2079,34 @@ int Script::map_api_pickable_item_create(lua_State *l) {
  * - Argument 2 (integer): x
  * - Argument 3 (integer): y
  * - Argument 4 (integer): layer
+ * - Optional argument 5 (string): treasure item name
+ * - Optional argument 6 (integer): treasure variant
+ * - Optional argument 7 (integer): treasure savegame variable
  *
  * @param l the Lua context that is calling this function
  */
-int Script::map_api_destructible_item_create(lua_State *l) {
+int Script::map_api_destructible_item_create(lua_State* l) {
 
-  Script& script = get_script(l, 4);
+  Script& script = get_script(l, 4, 7);
 
   int subtype = luaL_checkinteger(l, 1);
   int x = luaL_checkinteger(l, 2);
   int y = luaL_checkinteger(l, 3);
   Layer layer = Layer(luaL_checkinteger(l, 4));
+  std::string item_name("_random");
+  int variant = 1;
+  int savegame_variable = -1;
+
+  if (lua_gettop(l) >= 7) {
+    item_name = luaL_checkstring(l, 5);
+    variant = luaL_checkinteger(l, 6);
+    savegame_variable = luaL_checkinteger(l, 7);
+  }
 
   Game& game = script.get_game();
   MapEntities& entities = script.get_map().get_entities();
   entities.add_entity(new DestructibleItem(layer, x, y, DestructibleItem::Subtype(subtype),
-      Treasure(game, "_none", 1, -1)));
+      Treasure(game, item_name, variant, savegame_variable)));
 
   return 0;
 }

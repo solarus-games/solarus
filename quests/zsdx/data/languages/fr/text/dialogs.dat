@@ -2165,7 +2165,7 @@ skip = all
 #       |-----------------------|
 line1 = "Tu es déjà au maximum !"
 
-[_crystal_switch]
+[_crystal]
 # Lorsqu'on regarde un interrupteur de cristal
 #       |-----------------------|
 line1 = "C'est un interrupteur"

@@ -147,7 +147,7 @@ function event_enemy_dead(enemy_name)
 	-- 100 rupee room: kill all enemies
 		if not sol.map.door_is_open("LD15") then
 			sol.main.play_sound("chest_appears")
-			sol.map.chest_set_activated("RC100", true)
+			sol.map.chest_set_enabled("RC100", true)
 		end
 	end
 end

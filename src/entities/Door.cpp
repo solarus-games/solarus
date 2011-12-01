@@ -317,10 +317,6 @@ void Door::update() {
 
   Detector::update();
 
-  if (is_suspended()) {
-    return;
-  }
-
   if (!initialized) {
     update_dynamic_tiles();
     initialized = true;
@@ -330,6 +326,7 @@ void Door::update() {
       && requires_explosion()
       && get_equipment().has_ability("detect_weak_walls")
       && Geometry::get_distance(get_center_point(), get_hero().get_center_point()) < 40
+      && !is_suspended()
       && System::now() >= next_hint_sound_date) {
     Sound::play("cane");
     next_hint_sound_date = System::now() + 500;

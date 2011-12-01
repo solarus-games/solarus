@@ -98,10 +98,6 @@ height = 768
 width = 1152
 height = 768
 
-[dungeon_8.floor_0]
-width = 1936
-height = 1808
-
 [dungeon_7.floor_0]
 width = 1104
 height = 1056
@@ -114,21 +110,25 @@ height = 1056
 width = 1104
 height = 1056
 
+[dungeon_8.floor_0]
+width = 2256
+height = 1808
+
 [dungeon_8.floor_-1]
 width = 2256
 height = 1808
 
 [dungeon_8.floor_-2]
-width = 1992
-height = 1408
+width = 2256
+height = 1808
 
 [dungeon_8.floor_-3]
-width = 1616
-height = 1296
+width = 2256
+height = 1808
 
 [dungeon_8.floor_-4]
-width = 1304
-height = 1040
+width = 2256
+height = 1808
 
 [dungeon_9.floor_-1]
 width = 2576

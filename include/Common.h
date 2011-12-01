@@ -37,7 +37,9 @@
  * TODO: remove level 0 which we never use: error messages are always useful
  * and forcing the access by archive is a stupid restriction
  */
+#ifndef SOLARUS_DEBUG_LEVEL
 #define SOLARUS_DEBUG_LEVEL 1
+#endif
 
 #endif
 

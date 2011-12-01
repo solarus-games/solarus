@@ -42,8 +42,8 @@ add_executable(solarus
   ${main_source_file}
 )
 
-set_target_properties(solarus_static PROPERTIES COMPILE_FLAGS "-g -O3 -Wall -Werror")
-set_target_properties(solarus PROPERTIES COMPILE_FLAGS "-g -O3 -Wall -Werror")
+set_target_properties(solarus_static PROPERTIES COMPILE_FLAGS "-O3 -Wall -Werror")
+set_target_properties(solarus PROPERTIES COMPILE_FLAGS "-O3 -Wall -Werror")
 
 if (DEFINED DEFAULT_QUEST)
   add_definitions(-DDEFAULT_QUEST=\"${DEFAULT_QUEST}\")

@@ -28,12 +28,14 @@
 /**
  * @brief Debug level.
  *
- * - 0 (no debug): no error messages; pick the data only from the archive file; no debug keys; use only compiled (.luac) scripts
- * - >= 1: enable the error messages; pick the data also from the physical data directory; use clear text (.lua) scripts
+ * - 0 (no debug): no error messages; pick the data only from the archive file; no debug keys;
+ * - >= 1: enable the error messages; pick the data also from the physical data directory;
  * - >= 2: enable the debug keys
  *
  * 0 or 1 are ok for a release.
  * TODO: allow to change this value at configure time with a cmake option
+ * TODO: remove level 0 which we never use: error messages are always useful
+ * and forcing the access by archive is a stupid restriction
  */
 #define SOLARUS_DEBUG_LEVEL 1
 

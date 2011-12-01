@@ -42,7 +42,7 @@ List of the 32 pieces of heart:
 27) Dungeon 5 2F: in the teletransporters maze
 28) Dungeon 6 4F: walk under a platform
 29) Dungeon 7 1F: in a pipe
-30) Dungeon 8 1F: TODO: save this piece of heart 
+30) Dungeon 8 1F
 31) Dungeon 9 2F: use one of the two entrances to go to outside world A4
 32) Dungeon 10 4F: chest to reach with the hookshot
 

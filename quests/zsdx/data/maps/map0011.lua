@@ -33,8 +33,12 @@ function event_npc_interaction(npc_name)
   elseif not sol.game.is_dungeon_finished(4) then
     -- use the telepathic booth
     sol.map.dialog_start("grandma_house.go_telepathic_booth")
-  else
+  elseif not sol.game.is_dungeon_finished(5) then
+    -- rupee house broken
     sol.map.dialog_start("grandma_house.dark_world_enabled")
+  else
+    -- use the telepathic booth again
+    sol.map.dialog_start("grandma_house.go_telepathic_booth")
   end
 
 end

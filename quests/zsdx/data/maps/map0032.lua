@@ -18,8 +18,10 @@ function event_npc_interaction(npc_name)
     elseif not sol.game.is_dungeon_finished(5) then
       sol.map.dialog_start("telepathic_booth.hahaha")
       sol.map.dialog_set_variable("telepathic_booth.hahaha", sol.game.savegame_get_name())
+    else
+      sol.map.dialog_start("telepathic_booth.shop")
+      sol.map.dialog_set_variable("telepathic_booth.shop", sol.game.savegame_get_name())
     end
-    -- TODO after dungeon 5
   end
 end
 

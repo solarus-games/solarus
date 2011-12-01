@@ -3592,12 +3592,14 @@ line3 = "Rubis !"
 #       |-----------------------|
 line1 = "Allo ? ... Allo ? ..."
 line2 = "Y'a quelqu'un ? ..."
+skip = all
 
 [telepathic_booth.dungeon_2_not_really_finished]
 #       |-----------------------|
 line1 = "$v, tu m'entends ?"
 line2 = "C'est Mamie Lyly ! La"
 line3 = "télépathie, ça marche !"
+skip = all
 next = telepathic_booth.dungeon_2_not_really_finished.2
 
 [telepathic_booth.dungeon_2_not_really_finished.2]
@@ -3611,6 +3613,7 @@ line3 = "Caverne de Roc ?"
 line1 = "$v, tu m'entends ?"
 line2 = "C'est Mamie Lyly ! La"
 line3 = "télépathie, ça marche !"
+skip = all
 next = telepathic_booth.go_master_arbror.2
 
 [telepathic_booth.go_master_arbror.2]
@@ -3631,6 +3634,7 @@ line3 = "inondés par la rivière."
 line1 = "$v, tu m'entends ?"
 line2 = "C'est Mamie Lyly ! La"
 line3 = "télépathie, ça marche !"
+skip = all
 next = telepathic_booth.go_billy.2
 
 [telepathic_booth.go_billy.2]
@@ -3646,11 +3650,26 @@ line1 = "et sauf de son"
 line2 = "expédition à la"
 line3 = "Montagne des Terreurs !"
 
+[telepathic_booth.go_billy]
+#       |-----------------------|
+line1 = "$v, tu m'entends ?"
+line2 = "C'est Mamie Lyly ! La"
+line3 = "télépathie, ça marche !"
+next = telepathic_booth.go_billy.2
+
+[telepathic_booth.go_billy.2]
+#       |-----------------------|
+line1 = "Connais-tu Billy le"
+line2 = "Téméraire ? Il paraît"
+line3 = "qu'il est revenu sain"
+next = telepathic_booth.go_billy.3
+
 [telepathic_booth.hahaha]
 #       |-----------------------|
 line1 = "Ah ah ah ! Tu cherches"
 line2 = "le vieux peut-être ?"
 line3 = "Sache que désormais"
+skip = all
 next = telepathic_booth.hahaha.2
 
 [telepathic_booth.hahaha.2]
@@ -3663,6 +3682,41 @@ next = telepathic_booth.hahaha.3
 [telepathic_booth.hahaha.3]
 #       |-----------------------|
 line1 = "Ah ah ah ah ah ah !!!"
+
+[telepathic_booth.shop]
+#       |-----------------------|
+line1 = "$v, tu m'entends ?"
+line2 = "C'est Mamie Lyly ! La"
+line3 = "télépathie, ça marche !"
+skip = all
+next = telepathic_booth.shop.2
+
+[telepathic_booth.shop.2]
+#       |-----------------------|
+line1 = "Mais les temps sont"
+line2 = "durs. Le royaume n'est"
+line3 = "plus que désolation et"
+next = telepathic_booth.shop.3
+
+[telepathic_booth.shop.3]
+#       |-----------------------|
+line1 = "dévastation... La vie"
+line2 = "ici semble s'être"
+line3 = "arrêtée."
+next = telepathic_booth.shop.4
+
+[telepathic_booth.shop.4]
+#       |-----------------------|
+line1 = "Sauf pour la boutique"
+line2 = "du village ! Depuis"
+line3 = "qu'ils ne vendent plus"
+next = telepathic_booth.shop.5
+
+[telepathic_booth.shop.5]
+#       |-----------------------|
+line1 = "que des armes de"
+line2 = "survie, ils font"
+line3 = "fortune !"
 
 [smith_cave.without_sword]
 # Dialogue avec le forgeron
@@ -3758,6 +3812,30 @@ next = _unknown
 #       |-----------------------|
 line1 = "Un coeur à consommer"
 line2 = "immédiatement."
+next = _unknown
+
+[lyriann_shop.bomb_bag]
+# Boutique : quand on regarde le sac de bombes 2 ou 3
+#       |-----------------------|
+line1 = "Un plus grand Sac de"
+line2 = "Bombes. Très à la mode"
+line3 = "en ce moment !"
+next = _unknown
+
+[lyriann_shop.quiver]
+# Boutique : quand on regarde le carquois 2 ou 3
+#       |-----------------------|
+line1 = "Un plus grand Carquois."
+line2 = "Bien utile par les" 
+line3 = "temps qui courent."
+next = _unknown
+
+[lyriann_shop.rupee_bag]
+# Boutique : quand on regarde le sac de rubis 2
+#       |-----------------------|
+line1 = "Une nouvelle bourse"
+line2 = "pour transporter plus"
+line3 = "de rubis."
 next = _unknown
 
 [cake_shop.seller.choose_item]

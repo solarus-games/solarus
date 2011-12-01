@@ -421,6 +421,7 @@ void Script::register_map_api() {
       { "block_reset_all", map_api_block_reset_all },
       { "block_get_position", map_api_block_get_position },
       { "block_set_position", map_api_block_set_position },
+      { "shop_item_exists", map_api_shop_item_exists },
       { "shop_item_remove", map_api_shop_item_remove },
       { "switch_is_activated", map_api_switch_is_activated },
       { "switch_set_activated", map_api_switch_set_activated },

@@ -126,12 +126,8 @@ Quêtes annexes à ajouter :
 
 -> Lieux potentiels pour ces quêtes annexes :
 
-- Grotte des montagnes
-- Lac du sud
 - Revenir dans une caverne ou un lieu du début avec grappin / palmes / plume / poigne d'or
-- Donjon 2 1F (SE)
 - Boutiques
-- Cachot 1 du château (actuellement : carquois 3)
 
 --------------
 Mode release :

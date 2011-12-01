@@ -93,6 +93,7 @@ void DebugKeys::key_pressed(InputEvent::KeyboardKey key) {
 
       case InputEvent::KEY_t:
         // quest-specific temporary code
+        /*
         if (!game->is_paused()) {
           equipment.add_item("bow", 1);
           equipment.add_item("bombs_counter", 1);
@@ -112,10 +113,7 @@ void DebugKeys::key_pressed(InputEvent::KeyboardKey key) {
           equipment.set_item_assigned(0, "bow");
           equipment.set_item_assigned(1, "feather");
         }
-        break;
-
-      case InputEvent::KEY_g:
-        equipment.add_item("arrow", 2);
+        */
         break;
 
       case InputEvent::KEY_KP7:

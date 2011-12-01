@@ -442,5 +442,5 @@ booleans:
 938	Lyriann shop: bomb bag 2 or 3
 939	Lyriann shop: quiver 2 or 3
 940	Lyriann shop: huge rupee bag
-941	TODO quiver 2 or 3
+941	end of dungeon 6: quiver 2 or 3
 

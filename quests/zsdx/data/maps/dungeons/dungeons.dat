@@ -733,11 +733,7 @@ big = 0
 
 [dungeon_8.map_48.chest_3]
 floor = -1
-<<<<<<< HEAD
-x = 600
-=======
 x = 608
->>>>>>> 4a6a757f1bf269e7f6dc652453d166ac6712fa61
 y = 1088
 save = 722
 big = 0

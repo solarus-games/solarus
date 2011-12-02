@@ -1,39 +1,9 @@
 set(quest_name "zsdx")
 
-# compile the Lua scripts
-file(GLOB lua_source_files 
-  RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
-  maps/*.lua
-  items/*.lua
-  enemies/*.lua)
-
-set(lua_bin_files "")
-
-MAKE_DIRECTORY("${CMAKE_CURRENT_BINARY_DIR}/maps")
-MAKE_DIRECTORY("${CMAKE_CURRENT_BINARY_DIR}/items")
-MAKE_DIRECTORY("${CMAKE_CURRENT_BINARY_DIR}/enemies")
-
-# convert to Lua bytecode
-foreach(lua_source_file ${lua_source_files})
-  add_custom_command(
-    OUTPUT ${lua_source_file}c
-    MAIN_DEPENDENCY ${lua_source_file}
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-    COMMAND luac -o ${CMAKE_CURRENT_BINARY_DIR}/${lua_source_file}c ${lua_source_file})
-  set(lua_bin_files ${lua_bin_files} ${lua_source_file}c)
-endforeach(lua_source_file ${lua_source_files})
-
-# add lua bytecode to the zip archive
-add_custom_command(
-  OUTPUT compiled_lua
-  DEPENDS ${lua_bin_files}
-  COMMAND zip -q data.solarus ${lua_bin_files}
-)
-
 # data files list
 file(GLOB_RECURSE data_files
   RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
-  *.spc *.ogg *.it *.png *.dat *.ttf *.fon)
+  *.spc *.ogg *.it *.png *.dat *.lua *.ttf *.fon)
 
 # add other data to zip archive
 add_custom_command(
@@ -45,7 +15,7 @@ add_custom_command(
 
 add_custom_target(${quest_name}_data
   ALL
-  DEPENDS data.solarus compiled_lua
+  DEPENDS data.solarus
 )
 
 # create a script that executes the game with this quest

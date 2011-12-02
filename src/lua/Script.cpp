@@ -121,24 +121,10 @@ void Script::load_if_exists(const std::string& script_name) {
     initialize_lua_context();
   }
 
-  // determine the file name (.lua or .luac)
+  // determine the file name (.lua)
   std::ostringstream oss;
   oss << script_name << ".lua";
-  std::string clear_script_name = oss.str();
-  oss << "c";
-  std::string compiled_script_name = oss.str();
-
-  std::string file_name;
-#if SOLARUS_DEBUG_LEVEL == 0
-  file_name = compiled_script_name; // in release mode, only use the compiled version of the script (.luac)
-#else
-  if (FileTools::data_file_exists(clear_script_name)) {
-    file_name = clear_script_name; // in debug mode, we prefer using the clear text script, when available
-  }
-  else {
-    file_name = compiled_script_name;
-  }
-#endif
+  std::string file_name = oss.str();
 
   if (FileTools::data_file_exists(file_name)) {
     // load the file
@@ -421,6 +407,7 @@ void Script::register_map_api() {
       { "block_reset_all", map_api_block_reset_all },
       { "block_get_position", map_api_block_get_position },
       { "block_set_position", map_api_block_set_position },
+      { "shop_item_exists", map_api_shop_item_exists },
       { "shop_item_remove", map_api_shop_item_remove },
       { "switch_is_activated", map_api_switch_is_activated },
       { "switch_set_activated", map_api_switch_set_activated },

@@ -1,0 +1,48 @@
+This file gives the list pieces of hearts in the game and should be used
+as a reference to add/remove/change pieces of hearts and make sure their
+total number is correct.
+
+If you are a player, you will be totally spoiled.
+
+The maximum life is 20 hearts, distributed as follows:
+- 3 initial hearts when starting the game
+- 1 heart container in the Lyriann cave
+- 8 heart containers at the end of dungeons (except dungeons 9 and 10)
+- 8 heart containers formed by 32 pieces of heart.
+Note that each dungeon contains exactly one piece of heart.
+
+List of the 32 pieces of heart:
+
+1) Heros's house (secret room)
+2) Rupee house (reward of game 3)
+3) Outside world A3, on the top of dungeon 3
+4) Outside world B3: jump over holes with the feather
+5) Outside world B4: balcony from the cave under the waterfall
+6) Outside world B4: behind the lake shop
+7) Outside world B4: south of the lake
+8) Outside world A4: near the entrance of dungeon 1 2F
+9) Twin caves (requires the cane of somaria)
+10) Outside world A2: island near the castle
+11) Outside world B1: bottom of the vine
+12) Sahasrahla's cave (requires the golden glove)
+13) Lyriann cave B1: walk on the invisible sensors
+14) Hole and flower cave
+15) True hero cave 1F
+16) Fairy cave 2F: after the hole
+17) Junk shop (499 rupees)
+18) West mountains cave 1F (requires the cane of somaria)
+19) West mountains cave 1F (fall from 2F)
+20) Chests game cave
+21) Waterfall cave 1F: open all chests
+22) Laser cave
+23) Dungeon 1 1F: weak wall
+24) Dungeon 2 1F: find the way under a platform
+25) Dungeon 3 3F: open a barrier in the maze
+26) Dungeon 4 1F: hidden under a platform
+27) Dungeon 5 2F: in the teletransporters maze
+28) Dungeon 6 4F: walk under a platform
+29) Dungeon 7 1F: in a pipe
+30) Dungeon 8 1F
+31) Dungeon 9 2F: use one of the two entrances to go to outside world A4
+32) Dungeon 10 4F: chest to reach with the hookshot
+

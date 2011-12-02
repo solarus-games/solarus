@@ -15,6 +15,9 @@
 
 function event_map_started(destination_point_name)
 	sol.map.door_set_open("LD11", true)
+	if not sol.game.savegame_get_boolean(711)	then
+		sol.map.chest_set_enabled("RC100", false)
+	end
 end
 
 function button_room_test_combination()
@@ -124,5 +127,27 @@ function event_hero_on_sensor(sensor_name)
 	if sensor_name == "DS11" then
 		sol.map.door_close("LD11")
 		sol.map.sensor_set_enabled("DS11", false)
+	end
+end
+
+function event_npc_interaction(npc_name)
+	if npc_name == "TD01" then
+		sol.main.play_sound("warp")
+		hero_x, hero_y = sol.map.hero_get_position()
+		sol.map.hero_set_position(hero_x - 320, hero_y)
+	elseif npc_name == "TD02" then
+		sol.main.play_sound("warp")
+		hero_x, hero_y = sol.map.hero_get_position()
+		sol.map.hero_set_position(hero_x + 320, hero_y)
+	end
+end
+
+function event_enemy_dead(enemy_name)
+	if string.match(enemy_name, "^rupee_enemy") and sol.map.enemy_is_group_dead("rupee_enemy") then	
+	-- 100 rupee room: kill all enemies
+		if not sol.map.door_is_open("LD15") then
+			sol.main.play_sound("chest_appears")
+			sol.map.chest_set_enabled("RC100", true)
+		end
 	end
 end

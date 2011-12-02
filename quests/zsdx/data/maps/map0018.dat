@@ -66,6 +66,11 @@
 16	0	80	104	apples	apple	1	-1	25	lyriann_shop.apples
 16	0	144	104	lamp	lamp	1	31	160	lyriann_shop.lamp
 16	0	208	104	heart	heart	1	-1	10	lyriann_shop.heart
+16	0	80	104	bomb_bag_2	bomb_bag	2	938	650	lyriann_shop.bomb_bag
+16	0	80	104	bomb_bag_3	bomb_bag	3	938	650	lyriann_shop.bomb_bag
+16	0	144	104	quiver_2	quiver	2	939	980	lyriann_shop.quiver
+16	0	144	104	quiver_3	quiver	3	939	980	lyriann_shop.quiver
+16	0	208	104	rupee_bag	rupee_bag	3	940	300	lyriann_shop.rupee_bag
 0	2	112	216	96	8	263
 0	2	0	0	320	16	170
 0	2	0	224	320	16	170

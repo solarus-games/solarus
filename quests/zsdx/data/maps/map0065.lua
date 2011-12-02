@@ -28,6 +28,14 @@ function event_map_started(destination_point_name)
     sol.map.chest_set_enabled("boss_key_chest", false)
   end
 
+  -- bomb bag 2 or 3
+  local variant = 2
+  if sol.game.savegame_get_boolean(938) then
+    -- already has the other one
+    variant = 3
+  end
+  sol.map.destructible_item_create(0, 320, 245, 1, "bomb_bag", variant, 510)
+
   init_guards()
 end
 

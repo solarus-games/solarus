@@ -42,7 +42,7 @@ class DestructibleItem: public Detector {
     enum Subtype {
 
       POT               = 0,
-      SKULL             = 1,
+      SKULL             = 1, // FIXME remove skull (same as pot, only the sprite changes)
       BUSH              = 2,
       STONE_SMALL_WHITE = 3,
       STONE_SMALL_BLACK = 4,

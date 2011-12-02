@@ -108,7 +108,7 @@
 0	79	Waterfall cave 1F
 0	80	Waterfall cave B1
 0	82	Cave under waterfall
-0	83	Lake cave
+0	83	Lake east cave
 0	84	Junk shop
 0	88	Castle B1
 0	89	Castle 1F
@@ -128,6 +128,9 @@
 0	118	Cave to dungeon 8 B1
 0	120	Bone key cave
 0	131	The end
+0	132	Laser cave
+0	133	Castle waterfall
+0	134	Lake west cave
 1	1	Light World
 1	13	Dark World
 1	3	Cave
@@ -192,6 +195,7 @@
 3	npc/castle_guard	Castle guard
 3	entities/castle_lock	Castle prison lock
 3	entities/frozen_door	Frozen door
+3	npc/ganon	Ganon
 3	npc/great_fairy	Great Fairy
 3	entities/bed	Hero's bed
 3	entities/hint_stone	Hint stone
@@ -413,6 +417,7 @@
 6	simple_green_soldier	Simple Soldier (green)
 6	snap_dragon	Snap Dragon
 6	skeletor	Skeletor
+6	tentacle	Tentacle
 6	khorneth	Khorneth
 6	papillosaur_king	Papillosaur King
 6	minillosaur_egg_thrown	Minillosaur Egg (fixed)
@@ -424,12 +429,14 @@
 6	arbror_root	Arbror root
 6	flora_gohma	Flora Gohma
 6	flora_gohma_eye	Flora Gohma eye
-6	agahnim	Agahnim
+6	agahnim	Agahnim (first fight)
+6	agahnim_2	Agahnim (second fight)
 6	drakomos	Drakomos
 6	drakomos_head	Drakomos head
 6	drakomos_lava_spawner	Drakomos lava spawner
 6	gelidrak	Gelidrak
 6	poutroxor	Poutroxor
+6	billy	Billy
 6	ganon	Ganon
 7	fr/text/dialogs.dat	French dialogs
 7	en/text/dialogs.dat	English dialogs

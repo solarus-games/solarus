@@ -63,14 +63,14 @@ booleans:
 12	link house secret room: chest with a piece of heart
 13	outside world C1: chest with 50 rupees (diagonal jump)
 14	piece of heart near dungeon 1
-15	piece of heart near the south-west lake (reachable from dungeon #9) - temporarily switched with the 100 rupees chest 22
+15	piece of heart near the south-west lake (reachable from dungeon 9)
 16	rupee house: game 1: found 50 rupees (best reward)
 17	piece of heart in rupee house (game 3)
 18	chest with piece of heart after the hole above the cliff near the village
 19	chest with 20 rupees in outside world B4
 20	chest with piece of heart in outside world B4 (near the lake shop)
-21	piece of heart in oustide world B4 (near a cavern entrance)
-22	chest with 100 rupees in outside world A4 (near piece of heart from dungeon 9) - temporarily switched with the piece of heart 15
+21	piece of heart in outside world B4 (near a cavern entrance)
+22	chest with 100 rupees in outside world A4 (near piece of heart from dungeon 9)
 23	chest with 20 rupees in outside world A4 (in the dungeon 1 forest)
 24	the monkey has allowed the hero to leave his house
 25	chest with 5 rupees in grandma's house
@@ -234,6 +234,7 @@ booleans:
 229	2F: Compass
 ...
 241     4F: piece of heart
+...
 297     B1: water drained
 298     obtained the sword 2 or 3 from the boss
 299     boss killed
@@ -291,7 +292,7 @@ booleans:
 507	dungeon 5 1F: boss key door
 508	dungeon 5 1F: big key door
 509	dungeon 5 B1: chest with the map
-510	dungeon 5 B1: huge quiver
+510	dungeon 5 B1: bomb bag 2 or 3
 511	dungeon 5 B1: prison 1 open
 512	dungeon 5 B1: prison 2 unlocked once
 513	dungeon 5 1F: locked door (south-west)
@@ -358,6 +359,13 @@ booleans:
 720 dungeon 8 B3: door button (DB1)
 721 dungeon 8 B3: door button (DB2)
 722 dungeon 8 B1: croissant chest (CC02)
+723 dungeon 8 1F: locked door (LD6)
+724 dungeon 8 1F: piece of heart
+725 dungeon 8 B3: falling statue (STT5)
+726 dungeon 8 B2: boss key chest (XK01)
+727 dungeon 8 1F: Billy killed
+728 dungeon 8 boss: Agahnim killed
+729 dungeon 8 boss: heart container
 
 800	dungeon 9 1F: chest with 50 rupees (SW)
 801	dungeon 9 1F: got the map from the chest
@@ -409,7 +417,7 @@ booleans:
 910	castle B1: chest with 50 rupees
 911	potion shop: got the bottle 2
 912	outside world A3: chest with the bottle 3
-913	bottle 4 (TODO)
+913	castle waterfall: bottle 4
 914	outside world B2: dungeon 6 open
 915	outside world B2: talked to Inferno
 916	outside world B2: got 100 rupees from Inferno
@@ -431,4 +439,11 @@ booleans:
 932	hidden palace D1: chest with 3 bombs
 933	hidden palace D1: chest with 20 rupees
 934	hidden palace D1: bone key door open
+935	outside world A4: chest with a piece of heart (south)
+936	twin caves: piece of heart
+937	laser cave: piece of heart
+938	Lyriann shop: bomb bag 2 or 3
+939	Lyriann shop: quiver 2 or 3
+940	Lyriann shop: huge rupee bag
+941	end of dungeon 6: quiver 2 or 3
 

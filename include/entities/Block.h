@@ -52,6 +52,8 @@ class Block: public Detector {
     bool is_displayed_in_y_order();
 
     bool is_obstacle_for(MapEntity& other);
+    bool is_hole_obstacle();
+    bool is_teletransporter_obstacle(Teletransporter& teletransporter);
     bool is_hero_obstacle(Hero& hero);
     bool is_enemy_obstacle(Enemy& enemy);
     bool is_destructible_item_obstacle(DestructibleItem& destructible_item);

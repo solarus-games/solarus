@@ -367,7 +367,7 @@ void Door::display_on_map() {
  */
 void Door::action_key_pressed() {
 
-  if (get_hero().is_free()) {
+  if (get_hero().is_free() && requires_key()) {
     if (can_open()) {
       Sound::play("door_unlocked");
       Sound::play("door_open");

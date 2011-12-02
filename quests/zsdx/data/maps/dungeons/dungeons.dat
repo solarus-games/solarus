@@ -98,6 +98,10 @@ height = 768
 width = 1152
 height = 768
 
+[dungeon_8.floor_0]
+width = 1936
+height = 1808
+
 [dungeon_7.floor_0]
 width = 1104
 height = 1056
@@ -110,25 +114,21 @@ height = 1056
 width = 1104
 height = 1056
 
-[dungeon_8.floor_0]
-width = 2256
-height = 1808
-
 [dungeon_8.floor_-1]
 width = 2256
 height = 1808
 
 [dungeon_8.floor_-2]
-width = 2256
-height = 1808
+width = 1992
+height = 1408
 
 [dungeon_8.floor_-3]
-width = 2256
-height = 1808
+width = 1616
+height = 1296
 
 [dungeon_8.floor_-4]
-width = 2256
-height = 1808
+width = 1304
+height = 1040
 
 [dungeon_9.floor_-1]
 width = 2576
@@ -168,7 +168,7 @@ big = 0
 floor = -2
 x = 1120
 y = 896
-save = 726
+save = -1
 big = 0
 
 [dungeon_4.map_62.chest_0]
@@ -733,7 +733,7 @@ big = 0
 
 [dungeon_8.map_48.chest_3]
 floor = -1
-x = 608
+x = 600
 y = 1088
 save = 722
 big = 0
@@ -883,19 +883,5 @@ floor = 0
 x = 240
 y = 189
 save = 881
-big = 1
-
-[dungeon_8.map_47.boss_0]
-floor = 0
-x = 1128
-y = 125
-save = 727
-big = 1
-
-[dungeon_8.map_52.boss_0]
-floor = -99
-x = 632
-y = 373
-save = 728
 big = 1
 

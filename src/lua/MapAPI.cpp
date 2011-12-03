@@ -1923,10 +1923,11 @@ int Script::map_api_switch_set_group_enabled(lua_State* l) {
 }
 
 /**
- * @brief Opens one or several doors.
+ * @brief Opens one or several doors having a common prefix.
  *
- * The doors must be normal closed doors
- * (not doors for keys or explosions).
+ * The doors must be controlled by the script (not doors for keys or
+ * explosions).
+ * If some doors with this prefix are already open, nothing happens for them.
  * - Argument 1 (string): prefix of the name of the doors to open
  *
  * @param l the Lua context that is calling this function
@@ -1935,21 +1936,24 @@ int Script::map_api_door_open(lua_State *l) {
 
   Script& script = get_script(l, 1);
 
-  const std::string &prefix = luaL_checkstring(l, 1);
+  const std::string& prefix = luaL_checkstring(l, 1);
 
   bool done = false;
   MapEntities &entities = script.get_map().get_entities();
   std::list<MapEntity*> doors = entities.get_entities_with_prefix(DOOR, prefix);
   std::list<MapEntity*>::iterator it;
   for (it = doors.begin(); it != doors.end(); it++) {
-    Door *door = (Door*) (*it);
-    if (!door->is_changing()) {
-      done = true;
+    Door* door = (Door*) (*it);
+    if (!door->is_open()) {
+      if (!door->is_changing()) {
+        done = true;
+      }
+      door->open();
     }
-    door->open();
   }
 
-  // make sure the sound is played only once even if the script calls this function repeatedly while the door is still changing
+  // make sure the sound is played only once even if the script calls
+  // this function repeatedly while the door is still changing
   if (done) {
     Sound::play("door_open");
   }
@@ -1958,10 +1962,11 @@ int Script::map_api_door_open(lua_State *l) {
 }
 
 /**
- * @brief Closes one or several doors.
+ * @brief Closes one or several doors having a common prefix.
  *
- * The doors must be normal, open door
- * (not doors for keys or bombs).
+ * The doors must be controlled by the script (not doors for keys or
+ * explosions).
+ * If some doors with this prefix are already closed, nothing happens for them.
  * - Argument 1 (string): prefix of the name of the doors to close
  *
  * @param l the Lua context that is calling this function
@@ -1970,18 +1975,20 @@ int Script::map_api_door_close(lua_State *l) {
 
   Script& script = get_script(l, 1);
 
-  const std::string &prefix = luaL_checkstring(l, 1);
+  const std::string& prefix = luaL_checkstring(l, 1);
 
   bool done = false;
-  MapEntities &entities = script.get_map().get_entities();
+  MapEntities& entities = script.get_map().get_entities();
   std::list<MapEntity*> doors = entities.get_entities_with_prefix(DOOR, prefix);
   std::list<MapEntity*>::iterator it;
   for (it = doors.begin(); it != doors.end(); it++) {
-    Door *door = (Door*) (*it);
-    if (!door->is_changing()) {
-      done = true;
+    Door* door = (Door*) (*it);
+    if (door->is_open()) {
+      if (!door->is_changing()) {
+        done = true;
+      }
+      door->close();
     }
-    door->close();
   }
 
   // make sure the sound is played only once even if the script calls this function repeatedly while the door is still changing
@@ -1993,7 +2000,7 @@ int Script::map_api_door_close(lua_State *l) {
 }
 
 /**
- * @brief Returns whether a door is open
+ * @brief Returns whether a door is open.
  *
  * - Argument 1 (string): name of the door
  * - Return value (boolean): true if this door is open

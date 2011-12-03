@@ -1271,7 +1271,7 @@
 1	0	512	253	from_east_mountains_cave_2f_e	3	0
 1	0	384	125	from_east_mountains_cave_3f	3	0
 2	0	344	256	16	16	teletransporter_10	0	1	112	from_outside_w
-2	0	504	224	16	16	teletransporter_11	0	1	112	from_3f_e
+2	0	504	224	16	16	teletransporter_11	0	1	112	from_outside_e
 2	0	376	96	16	16	teletransporter_12	0	1	113	from_outside
 0	2	800	688	8	40	513
 0	2	624	336	8	40	513

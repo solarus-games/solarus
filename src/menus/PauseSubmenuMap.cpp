@@ -232,22 +232,23 @@ void PauseSubmenuMap::load_dungeon_map_image() {
     const std::vector<Dungeon::DungeonElement> &chests = dungeon.get_chests(selected_floor);
     for (unsigned int i = 0; i < chests.size(); i++) {
 
-      if (!savegame.get_boolean(chests[i].savegame_variable)) {
+      if (chests[i].savegame_variable != -1
+          && !savegame.get_boolean(chests[i].savegame_variable)) {
 
-	int dx = chests[i].big ? 16 : 8;  // TODO change chests origin point to avoid this
-	int dy = chests[i].big ? 21 : 13;
+        int dx = chests[i].big ? 16 : 8;  // TODO change chests origin point to avoid this
+        int dy = chests[i].big ? 21 : 13;
 
-	dst_position.set_xy(chests[i].x + dx, chests[i].y + dy);
-	to_dungeon_minimap_coordinates(dst_position, dst_position, floor_size);
-	dst_position.add_x((chests[i].big) ? -2 : -1);
-	dst_position.add_y(-1);
+        dst_position.set_xy(chests[i].x + dx, chests[i].y + dy);
+        to_dungeon_minimap_coordinates(dst_position, dst_position, floor_size);
+        dst_position.add_x((chests[i].big) ? -2 : -1);
+        dst_position.add_y(-1);
 
-	if (!chests[i].big) {
-	  dungeon_map_icons->blit(small_chest_src_position, dungeon_map_img, dst_position);
-	}
-	else {
-	  dungeon_map_icons->blit(big_chest_src_position, dungeon_map_img, dst_position);
-	}
+        if (!chests[i].big) {
+          dungeon_map_icons->blit(small_chest_src_position, dungeon_map_img, dst_position);
+        }
+        else {
+          dungeon_map_icons->blit(big_chest_src_position, dungeon_map_img, dst_position);
+        }
       }
     }
 
@@ -258,13 +259,15 @@ void PauseSubmenuMap::load_dungeon_map_image() {
     for (unsigned int i = 0; i < bosses.size(); i++) {
 
       // TODO also display minibosses?
-      if (bosses[i].big && !savegame.get_boolean(bosses[i].savegame_variable)) {
+      if (bosses[i].big
+          && bosses[i].savegame_variable != -1
+          && !savegame.get_boolean(bosses[i].savegame_variable)) {
 
-	dst_position.set_xy(bosses[i].x, bosses[i].y);
-	to_dungeon_minimap_coordinates(dst_position, dst_position, floor_size);
-	dst_position.add_xy(-2, -2);
+        dst_position.set_xy(bosses[i].x, bosses[i].y);
+        to_dungeon_minimap_coordinates(dst_position, dst_position, floor_size);
+        dst_position.add_xy(-2, -2);
 
-	dungeon_map_icons->blit(src_position, dungeon_map_img, dst_position);
+        dungeon_map_icons->blit(src_position, dungeon_map_img, dst_position);
       }
     }
   }
@@ -342,19 +345,19 @@ void PauseSubmenuMap::update() {
     if (moving_visible_y == -1) {
 
       if (!up) {
-	moving_visible_y = down ? 1 : 0;
+        moving_visible_y = down ? 1 : 0;
       }
       else if (world_minimap_visible_y <= 0) {
-	moving_visible_y = 0;
+        moving_visible_y = 0;
       }
     }
     else if (moving_visible_y == 1) {
 
       if (!down) {
-	moving_visible_y = up ? -1 : 0;
+        moving_visible_y = up ? -1 : 0;
       }
       else if (world_minimap_visible_y >= 388 - 133) {
-	moving_visible_y = 0;
+        moving_visible_y = 0;
       }
     }
 

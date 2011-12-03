@@ -48,7 +48,7 @@
 0	0	80	0	8	40	71
 0	0	104	0	8	40	71
 18	0	80	48	door	1	0	928
-5	0	200	56	chest	0	rupee	4	104
+5	0	200	56	chest	0	rupee	5	104
 8	0	152	77	billy	3	1	npc/billy	map
 4	0	72	173	0	rupee	1	-1
 1	0	112	189	from_outside	1	0

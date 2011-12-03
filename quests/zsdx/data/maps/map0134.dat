@@ -122,7 +122,6 @@
 1	1	96	229	from_outside_n	1	0
 18	1	368	440	door	3	0	-1
 9	1	168	93	block	-1	entities/block	1	0	0
-9	1	320	93	block_2	-1	entities/block	1	0	0
 9	1	384	357	block_4	-1	entities/block	1	0	1
 9	1	384	157	block_3	-1	entities/block	1	0	0
 6	1	200	64	8	48	jumper	0	40
@@ -149,6 +148,7 @@
 2	1	376	464	16	16	teletransporter_2	0	1	6	from_lake_west_cave_s
 2	1	88	216	16	16	teletransporter	0	1	6	from_lake_west_cave_n
 19	1	88	216	stairs	3	2
+5	1	304	80	chest	0	rupee	5	942
 0	2	48	232	96	8	412
 0	2	336	456	96	8	412
 0	2	0	0	480	16	170

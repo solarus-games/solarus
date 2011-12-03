@@ -143,7 +143,7 @@ booleans:
 101	cave of the hole near the flower: piece of heart
 102	bomb cave 3F: chest with the bomb bag
 103	dungeon 2: boss heart container
-104	billy's cave: chest with 50 rupees
+104	billy's cave: chest with 100 rupees
 105	mountain cave: piece of heart
 106	mountain cave: chest with the fire stone
 107	piece of heart on the small island near the castle
@@ -197,7 +197,7 @@ booleans:
 193	outside world B2: iron lock
 194	outside world B2: wooden lock
 195	lake cave: chest with the ice key
-196	cave under the waterfall: chest with 50 rupees
+196	cave under the waterfall: chest with 300 rupees
 197	waterfall cave: piece of heart
 198	junk shop: bought the red rupee
 199	junk shop: bought the mirror
@@ -239,6 +239,7 @@ booleans:
 298     obtained the sword 2 or 3 from the boss
 299     boss killed
 
+300	dungeon 6 2F: chest with 100 rupees
 301	dungeon 6 2F: chest with boss key
 302	dungeon 6 2F: chest with small key (south-east)
 303	dungeon 6 2F: chest with compass (underwater)
@@ -277,12 +278,13 @@ booleans:
 411	dungeon 4 1F: chest with the boss key
 412	dungeon 4 1F: weak floor
 413	dungeon 4 1F: piece of heart
-414	(unused)
+414	dungeon 4 1F: chest with 50 rupees
 415	dungeon 4 boss
 416	dungeon 4 heart container
 417	dungeon 4 B1: special torch removed
+418	dungeon 4 1F: chest with 100 rupees
 
-500	dungeon 5 1F: chest with 50 rupees
+500	dungeon 5 1F: chest with 100 rupees
 501	dungeon 5 1F: chest with the compass
 502	dungeon 5 1F: small key (SE)
 503	dungeon 5 1F: chest with the big key
@@ -319,7 +321,7 @@ booleans:
 610	dungeon 7 2F: small key block near the big key chest
 611	dungeon 7 2F: chest with the compass
 612	dungeon 7 2F: boss door
-613	dungeon 7 2F: chest with 50 rupees
+613	dungeon 7 2F: chest with 100 rupees
 614	dungeon 7 2F: chest with a big magic flask
 615	dungeon 7 2F: door D
 616	dungeon 7 2F: locked door (NW)
@@ -370,7 +372,7 @@ booleans:
 731 dungeon 8 1F: weak wall
 732 dungeon 8 B1: weak wall (WW02)
 
-800	dungeon 9 1F: chest with 50 rupees (SW)
+800	dungeon 9 1F: chest with 300 rupees (SW)
 801	dungeon 9 1F: got the map from the chest
 802	dungeon 9 1F: the chest with the map has appeared
 803	dungeon 9 1F: locked door (SW)
@@ -390,7 +392,7 @@ booleans:
 817	dungeon 9 2F: locked door (W)
 818-863	dungeon 9 3F: rupees (NW)
 864	dungeon 9 3F: door B (SW)
-865	dungeon 9 3F: chest with 20 rupees
+865	dungeon 9 3F: chest with 100 rupees
 866	dungeon 9 3F: miniboss
 867	dungeon 9 4F: weak wall A
 868	dungeon 9 4F: weak wall B
@@ -422,7 +424,7 @@ booleans:
 907	outside world A2: entrance door of the castle open
 908	dungeon 3 2F: shortcut A
 909	dungeon 3 2F: shortcut B
-910	castle B1: chest with 50 rupees
+910	castle B1: chest with 300 rupees
 911	potion shop: got the bottle 2
 912	outside world A3: chest with the bottle 3
 913	castle waterfall: bottle 4
@@ -439,7 +441,7 @@ booleans:
 924	dungeon 1 1F: piece of heart
 925	dungeon 3 4F: big key door
 926     bone key cave: chest with the bone key
-927     bone key cave: chest with 50 rupees
+927     bone key cave: chest with 300 rupees
 928	Billy's cave: door open
 929	north fairy fountain: the fairy has appeared
 930	north fairy fountain: got the tiger scrolls
@@ -454,4 +456,5 @@ booleans:
 939	Lyriann shop: quiver 2 or 3
 940	Lyriann shop: huge rupee bag
 941	end of dungeon 6: quiver 2 or 3
+942	lake west cave: chest with 100 rupees
 

@@ -1932,7 +1932,7 @@
 6	0	1064	264	24	24	Jump_sensor_4	5	56
 4	0	824	269	2	_random	1	-1
 4	0	840	269	2	_random	1	-1
-5	0	928	312	Chest	0	rupee	4	13
+5	0	928	312	chest_2	0	rupee	4	13
 4	0	656	677	2	_random	1	-1
 4	0	672	677	2	_random	1	-1
 4	0	688	677	2	_random	1	-1

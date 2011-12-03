@@ -282,7 +282,7 @@
 0	0	112	832	208	80	424
 0	0	352	560	16	64	424
 0	0	208	912	16	48	424
-5	0	256	64	chest	0	rupee	4	196
+5	0	256	64	chest	0	rupee	6	196
 1	0	216	925	from_outside_s	1	0
 1	0	568	861	from_outside_c	1	0
 1	0	544	149	from_outside_n	3	0

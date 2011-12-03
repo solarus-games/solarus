@@ -6,7 +6,7 @@ was_dark_room = false
 -- Called when the hero uses the Lamp
 function event_use()
 
-  local magic_needed = 1 -- number of magic points required
+  local magic_needed = 2 -- number of magic points required
   if sol.game.get_magic() >= magic_needed then
     sol.main.play_sound("lamp")
     sol.game.remove_magic(magic_needed)

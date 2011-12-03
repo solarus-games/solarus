@@ -366,6 +366,9 @@ booleans:
 727 dungeon 8 1F: Billy killed
 728 dungeon 8 boss: Agahnim killed
 729 dungeon 8 boss: heart container
+730 dungeon 8 1F: boss key door
+731 dungeon 8 1F: weak wall
+732 dungeon 8 B1: weak wall (WW02)
 
 800	dungeon 9 1F: chest with 50 rupees (SW)
 801	dungeon 9 1F: got the map from the chest

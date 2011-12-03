@@ -2012,7 +2012,7 @@
 7	0	160	357	enemy_7	3	red_knight_soldier	0	-1	_random	0	-1
 4	0	792	141	3	_random	1	-1
 4	0	672	245	4	_random	1	-1
-5	0	680	216	chest	0	bottle_3	1	912
+5	0	680	216	chest	0	rupee	5	912
 4	0	688	261	4	_random	1	-1
 4	0	704	245	4	_random	1	-1
 4	0	656	245	5	_random	1	-1

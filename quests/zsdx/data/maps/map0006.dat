@@ -1561,7 +1561,7 @@
 6	0	448	136	24	24	Jump_sensor_5	7	32
 6	0	312	744	32	8	Jump_sensor_6	6	56
 3	0	448	141	piece_of_heart	1	14
-3	0	328	717	piece_of_heart	1	15
+3	0	328	733	piece_of_heart	1	15
 4	0	240	485	4	_random	1	-1
 4	0	112	357	4	_random	1	-1
 4	0	128	269	4	_random	1	-1

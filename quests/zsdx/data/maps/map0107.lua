@@ -5,16 +5,20 @@ fighting_miniboss = false
 function event_map_started(destination_point_name)
 
   -- miniboss
-  sol.map.door_set_open("miniboss_door", true)
   sol.map.enemy_set_group_enabled("miniboss", false)
+  sol.map.door_set_open("miniboss_e_door", true)
+  if sol.game.savegame_get_boolean(866) then
+    sol.map.door_set_open("miniboss_door", true)
+  end
 end
 
 function event_enemy_dead(enemy_name)
 
   -- door A
   if enemy_name:match("^door_a_enemy") then
-    if not sol.map.door_is_open("door_a") then
-      sol.map.camera_move(2248, 648, function()
+    if not sol.map.door_is_open("door_a")
+        and sol.map.enemy_is_group_dead("door_a_enemy") then
+      sol.map.camera_move(2248, 648, 250, function()
 	sol.main.play_sound("secret")
 	sol.map.door_open("door_a")
       end)
@@ -67,7 +71,7 @@ function event_hero_on_sensor(sensor_name)
       and not fighting_miniboss then
 
     sol.map.hero_freeze()
-    sol.map.door_close("miniboss_door")
+    sol.map.door_close("miniboss_e_door")
     fighting_miniboss = true
     sol.main.timer_start(function()
       sol.main.play_music("boss.spc")

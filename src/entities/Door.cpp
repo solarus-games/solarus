@@ -303,7 +303,7 @@ bool Door::can_open() {
  */
 void Door::set_suspended(bool suspended) {
 
-  Detector::set_suspended(true);
+  Detector::set_suspended(suspended);
 
   if (!suspended && next_hint_sound_date > 0) {
     next_hint_sound_date += System::now() - when_suspended;

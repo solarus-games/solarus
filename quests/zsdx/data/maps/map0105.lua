@@ -43,8 +43,9 @@ function event_map_started(destination_point_name)
   -- west enemies room
   if not sol.game.savegame_get_boolean(806) then
     sol.map.chest_set_enabled("w_room_chest", false)
+  else
+    sol.map.door_set_open("w_room_door", true)
   end
-  sol.map.door_set_open("w_room_door", true)
 
   -- central room
   sol.map.door_set_open("c_door", true)
@@ -224,7 +225,6 @@ function event_switch_activated(switch_name)
 	end
       end
       if success then
-	sol.main.play_sound("secret")
 	sol.map.tile_set_group_enabled("puzzle_a_switch", false)
 	sol.map.switch_set_group_enabled("puzzle_a_switch", false)
 	sol.map.camera_move(896, 1896, 250, function()
@@ -246,7 +246,7 @@ end
 
 function event_hero_on_sensor(sensor_name)
 
-  -- east room
+  -- west room
   if sensor_name == "close_w_room_sensor" then
 
     if sol.map.door_is_open("w_room_door")
@@ -256,6 +256,8 @@ function event_hero_on_sensor(sensor_name)
       sol.map.enemy_create("w_room_enemy_2", "red_pig_soldier", 1, 808, 885)
       sol.map.enemy_create("w_room_enemy_3", "blue_pig_soldier", 1, 864, 877)
     end
+  elseif sensor_name == "open_w_room_sensor" then
+    sol.map.door_set_open("w_room_door", true)
 
   -- central room
   elseif sensor_name:find("^close_c_doors_sensor")

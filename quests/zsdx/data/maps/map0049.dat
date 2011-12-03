@@ -686,7 +686,6 @@
 8	1	1432	301	TD01	3	0	entities/hint_stone	map
 8	1	1112	301	TD02	3	0	entities/hint_stone	map
 5	1	1440	1152	RC100	0	rupee	5	711
-13	1	1568	901	16	32	DS11	0
 2	1	736	424	144	32	hole_to_B3_C	0	1	50	_same
 2	1	464	608	48	80	hole_to_B3_B	0	1	50	_same
 5	1	1120	896	XK01	0	boss_key	1	726

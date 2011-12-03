@@ -263,7 +263,7 @@
 0	1	272	432	32	8	312
 12	1	400	352	8	8	custom_obstacle	1	1	1	1
 12	1	400	376	8	8	custom_obstacle_2	1	1	1	1
-7	1	556	373	enemy_4	3	ropa	0	-1	_random	1	-1
+7	1	580	397	enemy_4	3	ropa	0	-1	_random	1	-1
 1	1	568	197	from_5f	3	0
 2	1	560	184	16	16	teletransporter_3	0	1	115	from_4f
 19	1	560	184	stairs_3	1	0

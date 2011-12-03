@@ -3,9 +3,12 @@
 function event_hero_on_sensor(sensor_name)
 
   if sensor_name == "puzzle_end_sensor" then
-    -- the end: make a shortcut from 1F
-    sol.main.play_sound("secret")
-    sol.game.savegame_set_boolean(816, true)
+
+    if not sol.game.savegame_get_boolean(816) then
+      -- the end: make a shortcut from 1F
+      sol.main.play_sound("secret")
+      sol.game.savegame_set_boolean(816, true)
+    end
 
   else
     -- wrong room: go back to the beginning

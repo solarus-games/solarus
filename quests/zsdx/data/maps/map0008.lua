@@ -8,7 +8,7 @@ function event_map_started(destination_point_name)
     sol.map.hero_set_visible(false)
     sol.map.hud_set_enabled(false)
     sol.map.enemy_set_group_enabled("", false)
-    sol.main.play_music("credits.spc")
+    sol.main.play_music("fanfare.spc")
   else
     -- enable dark world
     if sol.game.savegame_get_boolean(905) then

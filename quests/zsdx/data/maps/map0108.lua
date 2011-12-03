@@ -44,14 +44,17 @@ end
 
 function event_camera_back()
 
-  -- chest A
-  sol.main.timer_start(function()
-    if not sol.map.chest_is_open("chest_a") then
-      sol.main.play_sound("door_closed")
-      sol.map.chest_set_enabled("chest_a", false)
-      sol.map.switch_set_activated("chest_a_switch", false)
-    end
-  end, 5000, true)
+  local x, y = sol.map.hero_get_position()
+  if y < 360 then
+    -- chest A
+    sol.main.timer_start(function()
+      if not sol.map.chest_is_open("chest_a") then
+	sol.main.play_sound("door_closed")
+	sol.map.chest_set_enabled("chest_a", false)
+	sol.map.switch_set_activated("chest_a_switch", false)
+      end
+    end, 5000, true)
+  end
 end
 
 function event_treasure_obtaining(item_name, variant, savegame_variable)
@@ -70,6 +73,13 @@ function event_enemy_dead(enemy_name)
       sol.main.play_sound("chest_appears")
       sol.map.chest_set_enabled("chest_c", true)
     end
+  end
+end
+
+function event_door_open(door_name)
+
+  if door_name == "weak_wall_a" or door_name == "weak_wall_b" then
+    sol.main.play_sound("secret")
   end
 end
 

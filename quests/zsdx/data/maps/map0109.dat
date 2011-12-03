@@ -668,6 +668,8 @@
 0	0	1480	456	16	16	45
 0	0	744	264	16	32	19
 0	0	776	328	16	48	19
+18	0	1360	392	door_d_2	3	0	-1
+18	0	1360	392	door_4	3	1	885
 18	0	584	720	door_b_3	0	0	-1
 18	0	888	720	door_b_5	0	0	-1
 18	0	936	720	door_b_6	2	0	-1
@@ -709,7 +711,7 @@
 13	0	768	1013	16	16	close_door_c_sensor_2	0
 7	0	680	933	door_c_enemy_1	3	blue_dogman	0	-1	_random	1	-1
 7	0	856	957	door_c_enemy_2	3	red_dogman	0	-1	_random	1	-1
-9	0	752	741	door_bc_block	0	entities/block	1	0	0
+9	0	752	741	door_bc_block	0	entities/block	1	0	1
 13	0	768	805	16	16	close_door_bc_sensor	0
 13	0	656	741	16	16	close_door_bc_sensor_2	0
 13	0	880	741	16	16	close_door_bc_sensor_3	0
@@ -724,12 +726,14 @@
 18	0	632	512	door_2	2	1	879
 7	0	1328	525	enemy_8	3	blue_hardhat_beetle	0	-1	_random	1	-1
 18	0	1360	440	door_d	1	0	-1
-18	0	1360	392	door_d_2	3	0	-1
 18	0	1544	304	door_d_3	2	0	-1
 18	0	1496	304	door_d_4	0	0	-1
-7	0	1328	309	door_d_enemy	3	khotor	1	880	fairy	1	-1
+7	0	1304	285	door_d_enemy	3	khotor	1	880	fairy	1	-1
 13	0	1376	389	16	16	close_door_d_sensor	0
 12	0	1368	392	16	16	custom_obstacle_8	0	1	0	0
+12	0	760	856	16	16	custom_obstacle_9	0	1	0	0
+12	0	760	1016	16	16	custom_obstacle_10	0	1	0	0
+18	0	1360	440	door_3	1	1	885
 0	2	320	0	592	16	24
 0	2	0	432	16	192	24
 0	2	600	96	8	32	28

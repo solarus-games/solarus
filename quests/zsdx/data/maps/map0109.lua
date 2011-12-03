@@ -52,6 +52,7 @@ function event_hero_on_sensor(sensor_name)
     if sol.map.door_is_open("door_d")
         and not sol.map.enemy_is_dead("door_d_enemy") then
       sol.map.door_close("door_d")
+      sol.map.enemy_set_enabled("door_d_enemy", true)
     end
   end
 end

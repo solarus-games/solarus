@@ -11,7 +11,7 @@ function event_map_started(destination_point_name)
     sol.map.hero_set_visible(false)
     sol.map.hud_set_enabled(false)
     sol.map.enemy_set_group_enabled("", false)
-    new_music = "credits.spc"
+    new_music = "fanfare.spc"
     sol.map.tile_set_group_enabled("roof_entrance", false)
   else
     -- enable dark world

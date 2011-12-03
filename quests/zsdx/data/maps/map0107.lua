@@ -9,6 +9,11 @@ function event_map_started(destination_point_name)
   sol.map.door_set_open("miniboss_e_door", true)
   if sol.game.savegame_get_boolean(866) then
     sol.map.door_set_open("miniboss_door", true)
+    if destination_point_name == "from_2f_e" then
+      -- don't let the player obtain the small key of the magic cape
+      -- just by resetting the game
+      sol.map.door_set_open("miniboss_door_2", false)
+    end
   end
 end
 

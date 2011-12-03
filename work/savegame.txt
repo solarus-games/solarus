@@ -426,13 +426,13 @@ booleans:
 909	dungeon 3 2F: shortcut B
 910	castle B1: chest with 300 rupees
 911	potion shop: got the bottle 2
-912	outside world A3: chest with the bottle 3
+912	outside world A3: chest with 100 rupees
 913	castle waterfall: bottle 4
 914	outside world B2: dungeon 6 open
 915	outside world B2: talked to Inferno
 916	outside world B2: got 100 rupees from Inferno
-917	west moutain cave 1F: piece of heart 1
-918	west moutain cave 1F: piece of heart 2
+917	west moutain cave 1F: piece of heart
+918	west moutain cave 3F: piece of heart
 919	outside world A1: entrance of dungeon 7
 920	outside world B1: piece of heart
 921	outside world B1: vine
@@ -457,4 +457,5 @@ booleans:
 940	Lyriann shop: huge rupee bag
 941	end of dungeon 6: quiver 2 or 3
 942	lake west cave: chest with 100 rupees
+943	west moutain cave 1F: chest with the bottle 3
 

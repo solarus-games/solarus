@@ -18,6 +18,12 @@ function event_map_started(destination_point_name)
 	if not sol.game.savegame_get_boolean(711)	then
 		sol.map.chest_set_enabled("RC100", false)
 	end
+	if destination_point_name == "from_B3_C" then
+		sol.map.door_set_open("LD15", true)
+		for i = 1, 9 do
+			sol.map.switch_set_activated("BRoom" .. i, true)
+		end
+	end
 end
 
 function button_room_test_combination()
@@ -121,13 +127,6 @@ end
 function event_camera_back()
 	sol.map.hero_unfreeze()
 	sol.main.timer_start(DB16_time_out, 10000, true)
-end
-
-function event_hero_on_sensor(sensor_name)
-	if sensor_name == "DS11" then
-		sol.map.door_close("LD11")
-		sol.map.sensor_set_enabled("DS11", false)
-	end
 end
 
 function event_npc_interaction(npc_name)

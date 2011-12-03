@@ -44,7 +44,6 @@ function event_map_started(destination_point_name)
   if not sol.game.savegame_get_boolean(806) then
     sol.map.chest_set_enabled("w_room_chest", false)
   end
-  sol.map.enemy_set_group_enabled("w_room_enemy", false)
   sol.map.door_set_open("w_room_door", true)
 
   -- central room
@@ -85,7 +84,8 @@ function event_update()
   if x > 1056 and x < 1200 and y > 1888 and y < 1968
       and not sol.map.chest_is_enabled("hidden_enemy_chest")
       and not sol.map.enemy_is_group_dead("hidden_enemy")
-      and not sol.map.enemy_is_enabled("hidden_enemy_1") then
+      and not sol.map.enemy_is_dead("hidden_enemy_1") 
+      and not sol.map.enemy_is_enabled("hidden_enemy_2") then
 
     sol.main.play_sound("cane")
     sol.map.enemy_set_enabled("hidden_enemy_1", true)
@@ -250,16 +250,18 @@ function event_hero_on_sensor(sensor_name)
   if sensor_name == "close_w_room_sensor" then
 
     if sol.map.door_is_open("w_room_door")
-         and not sol.map.enemy_is_group_dead("w_room_enemy")
 	 and not sol.map.chest_is_enabled("w_room_chest") then
       sol.map.door_close("w_room_door")
-      sol.map.enemy_set_group_enabled("w_room_enemy", true)
+      sol.map.enemy_create("w_room_enemy_1", "blue_pig_soldier", 1, 752, 877)
+      sol.map.enemy_create("w_room_enemy_2", "red_pig_soldier", 1, 808, 885)
+      sol.map.enemy_create("w_room_enemy_3", "blue_pig_soldier", 1, 864, 877)
     end
 
   -- central room
   elseif sensor_name:find("^close_c_doors_sensor")
       and sol.map.door_is_open("c_door")
-      and not sol.map.switch_is_activated("c_room_switch_1") then
+      and not sol.map.switch_is_activated("c_room_switch_1")
+      and sol.map.door_is_open("c_big_key_door") then
     sol.map.door_close("c_door")
     sol.map.switch_set_activated("c_room_switch_1", false)
     sol.map.switch_set_activated("c_room_switch_2", false)

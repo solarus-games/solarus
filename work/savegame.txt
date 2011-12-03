@@ -403,6 +403,9 @@ booleans:
 878	dungeon 9 5F: chest B (small key)
 879	dungeon 9 5F: locked door
 880	dungeon 9 5F: enemy of door D
+881	dungeon 9 1F: boss killed
+882	dungeon 9 1F: pot with a small key (N)
+883	dungeon 9 1F: locked door (N)
 
 900	junk shop: bought the piece of heart
 901	dungeon 3: miniboss

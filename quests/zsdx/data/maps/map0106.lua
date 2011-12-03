@@ -16,8 +16,11 @@ function event_map_started(destination_point_name)
   end
 
   -- enemies rooms
-  sol.map.door_set_open("door_b", true)
   sol.map.door_set_open("door_c", true)
+  if destination_point_name ~= "from_3f_e"
+      and destination_point_name ~= "from_outside_e" then
+    sol.map.door_set_open("door_b", true)
+  end
 
   -- north-east room
   if destination_point_name == "from_3f_e" then
@@ -112,7 +115,7 @@ function event_switch_activated(switch_name)
 	for i = 1, 8 do
 	  sol.map.switch_set_activated("nw_switch_" .. i, false)
 	end
-	nw_switches_next = 0
+	nw_switches_nb_activated = 0
 	sol.map.switch_set_locked(switch_name, true)
 	-- to avoid the switch to be activated again immediately
       else

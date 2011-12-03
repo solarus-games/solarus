@@ -1073,9 +1073,9 @@
 12	1	936	384	16	16	custom_obstacle_12	0	1	0	0
 12	1	800	536	16	16	custom_obstacle_13	0	1	0	0
 12	1	800	488	16	16	custom_obstacle_14	0	1	0	0
-7	1	808	629	door_c_enemy_3	3	blue_hardhat_beetle	0	-1	_random	1	-1
-7	1	872	677	door_c_enemy_4	3	red_hardhat_beetle	0	-1	_random	1	-1
-7	1	752	677	enemy_6	3	blue_pig_soldier	0	-1	_random	1	-1
+7	1	808	629	enemy_10	3	blue_hardhat_beetle	0	-1	_random	1	-1
+7	1	872	677	enemy_9	3	red_hardhat_beetle	0	-1	_random	1	-1
+7	1	752	677	enemy_11	3	blue_pig_soldier	0	-1	_random	1	-1
 18	1	936	632	door_5	0	1	817
 18	1	984	632	door_6	2	1	817
 18	1	1112	792	door_e	1	0	-1
@@ -1184,6 +1184,8 @@
 10	1	2440	528	16	16	ne_puzzle_step_5_12	537	1
 10	1	2448	544	16	16	ne_puzzle_step_5_13	537	1
 10	1	2344	560	128	16	ne_puzzle_step_5_14	537	1
+18	1	2216	888	door	0	1	813
+18	1	2264	888	door_2	2	1	813
 0	2	1560	272	96	8	625
 0	2	2232	856	8	96	628
 0	2	2256	856	8	96	627
@@ -1284,5 +1286,3 @@
 0	2	2016	1120	144	80	170
 10	2	2392	272	32	8	secret_way_open	429	0
 10	2	2400	272	16	8	secret_way_open_2	433	1
-18	2	2216	888	door	0	1	813
-18	2	2264	888	door_2	2	1	813

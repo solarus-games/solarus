@@ -751,8 +751,12 @@
 7	1	1664	1461	miniboss_14	3	red_hardhat_beetle	0	-1	_random	1	-1
 7	1	1680	1405	miniboss_15	3	blue_hardhat_beetle	0	-1	_random	1	-1
 7	1	1664	1349	miniboss_16	3	red_hardhat_beetle	0	-1	_random	1	-1
-18	1	1896	1328	miniboss_door_3	0	0	-1
-18	1	1944	1328	miniboss_door_4	2	0	-1
+18	1	1896	1328	miniboss_e_door	0	0	-1
+18	1	1944	1328	miniboss_e_door_2	2	0	-1
+18	1	2216	632	door_a	0	0	-1
+18	1	2264	632	door_a_2	2	0	-1
+12	1	2216	640	16	16	custom_obstacle_2	0	1	0	0
+12	1	2264	640	16	16	custom_obstacle_3	0	1	0	0
 0	2	2256	1880	8	96	627
 0	2	2232	1880	8	96	628
 0	2	1936	1880	8	96	627
@@ -810,8 +814,6 @@
 0	2	1616	768	944	528	170
 0	2	1920	0	656	272	170
 0	2	2240	1808	16	240	170
-18	2	2216	632	door_a	0	0	-1
-18	2	2264	632	door_a_2	2	0	-1
 10	2	1560	1296	32	8	miniboss_door_open	429	1
 10	2	1568	1296	16	8	miniboss_door_open_3	433	1
 10	2	1768	1296	32	8	miniboss_door_open_5	429	1

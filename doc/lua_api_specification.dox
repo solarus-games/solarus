@@ -569,10 +569,12 @@ enables or disables a switch
 enables or disables all switches having a common prefix
 
 - <tt>sol.map.door_open(door_prefix)</tt>:
-opens one or several doors, playing their animation and sound
+Opens one or several doors, playing their animation and sound.
+If some doors with this prefix are already open, nothing happens for them.
 
 - <tt>sol.map.door_close(door_prefix)</tt>:
-closes one or several doors, playing their animation and sound
+Closes one or several doors, playing their animation and sound.
+Nothing happens if some doors with this prefix are already closed.
 
 - <tt>sol.map.door_is_open(door_name)</tt>:
 returns whether a door is open

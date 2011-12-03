@@ -656,7 +656,7 @@ next = _item_description.level_4_way.4.1
 [_item_description.level_4_way.4.1]
 # Précis d'escrime / Tiger scrolls
 #       |--------------------|
-line1 = "techniques avancée"
+line1 = "techniques avancées"
 line2 = "des arts de l'épée."
 
 [_item_description.flippers.1]

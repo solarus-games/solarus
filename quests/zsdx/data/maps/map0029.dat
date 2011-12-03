@@ -434,7 +434,7 @@
 1	0	192	733	from_outside_west	1	0
 2	0	608	752	16	16	to_outside_east	0	1	6	from_twin_caves_east
 9	0	312	373	block_2	-1	entities/block	1	0	0
-5	0	464	336	chest	0	rupee	3	70
+5	0	464	336	chest	0	rupee	4	70
 1	0	440	557	destination_point_F	-1	1
 1	0	440	589	destination_point_G	-1	1
 1	0	440	717	destination_point_L	-1	1

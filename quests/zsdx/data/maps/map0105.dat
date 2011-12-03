@@ -2015,7 +2015,7 @@
 7	1	1068	1933	hidden_enemy_1	3	gibdo	0	-1	_random	1	-1
 7	1	1188	1933	hidden_enemy_2	3	gibdo	0	-1	_random	1	-1
 4	1	1128	1933	0	heart	1	-1
-5	1	1120	2032	hidden_enemy_chest	0	rupee	4	800
+5	1	1120	2032	hidden_enemy_chest	0	rupee	6	800
 12	1	1184	1768	16	16	custom_obstacle_13	0	1	0	0
 5	1	888	1888	puzzle_a_chest	0	map	1	801
 11	1	736	1904	puzzle_a_switch_1	0	0	1

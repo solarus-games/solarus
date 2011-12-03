@@ -115,7 +115,7 @@
 0	1	168	152	8	8	328
 13	1	160	613	16	16	sensor	2
 5	1	88	48	chest	0	bone_key	1	926
-5	1	216	48	chest_2	0	rupee	4	927
+5	1	216	48	chest_2	0	rupee	6	927
 1	1	160	613	from_outside	1	0
 2	1	152	624	16	16	teletransporter	0	1	4	from_bone_key_cave
 12	1	152	552	16	8	custom_obstacle	0	1	0	0

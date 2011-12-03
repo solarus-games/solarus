@@ -1054,7 +1054,7 @@
 12	1	256	472	16	16	custom_obstacle_25	0	1	1	1
 12	1	64	568	16	16	custom_obstacle_26	0	1	1	1
 12	1	64	520	16	16	custom_obstacle_27	0	1	1	1
-5	1	416	288	chest_4	0	rupee	4	613
+5	1	416	288	chest_4	0	rupee	5	613
 1	1	400	277	from_3f_3	3	0
 1	1	520	341	from_3f_4	1	0
 1	1	584	341	from_3f_5	1	0

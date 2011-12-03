@@ -402,7 +402,7 @@
 19	0	120	128	stairs	1	4
 19	0	368	272	stairs_2	1	4
 19	0	600	960	stairs_3	3	4
-5	0	600	816	chest	0	rupee	4	500
+5	0	600	816	chest	0	rupee	5	500
 14	0	968	925	crystal
 4	0	1072	821	0	small_key	1	502
 19	0	928	136	stairs_4	0	4

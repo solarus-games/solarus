@@ -421,7 +421,7 @@ void Door::open() {
 
   if (changing) {
     if (is_open()) {
-      // the door is being open: mark it as closed so that we can open it
+      // the door is being closed: mark it as closed so that we can open it
       door_open = false;
     }
     else {

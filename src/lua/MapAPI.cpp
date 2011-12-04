@@ -1944,11 +1944,9 @@ int Script::map_api_door_open(lua_State *l) {
   std::list<MapEntity*>::iterator it;
   for (it = doors.begin(); it != doors.end(); it++) {
     Door* door = (Door*) (*it);
-    if (!door->is_open()) {
-      if (!door->is_changing()) {
-        done = true;
-      }
+    if (!door->is_open() || door->is_changing()) {
       door->open();
+      done = true;
     }
   }
 
@@ -1983,11 +1981,9 @@ int Script::map_api_door_close(lua_State *l) {
   std::list<MapEntity*>::iterator it;
   for (it = doors.begin(); it != doors.end(); it++) {
     Door* door = (Door*) (*it);
-    if (door->is_open()) {
-      if (!door->is_changing()) {
-        done = true;
-      }
+    if (door->is_open() || door->is_changing()) {
       door->close();
+      done = true;
     }
   }
 

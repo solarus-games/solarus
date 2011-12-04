@@ -25,6 +25,7 @@ function event_hero_on_sensor(sensor_name)
       and not sol.game.savegame_get_boolean(901)
       and not fighting_miniboss then
     sol.map.hero_freeze()
+    sol.main.play_music("none")
     sol.main.timer_start(miniboss_timer, 1000)
     fighting_miniboss = true
   elseif sensor_name == "start_boss_sensor"
@@ -32,6 +33,7 @@ function event_hero_on_sensor(sensor_name)
       and not fighting_boss then
     sol.map.hero_freeze()
     sol.map.door_close("boss_door")
+    sol.main.play_music("none")
     sol.main.timer_start(start_boss, 1000)
   end
 end

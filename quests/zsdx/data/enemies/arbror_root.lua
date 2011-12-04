@@ -1,6 +1,7 @@
 -- A root of Master Arbror
 
 immobilized = false
+disappearing = false
 
 function event_appear()
 
@@ -16,13 +17,20 @@ end
 
 function event_restart()
 
+  local sprite = sol.enemy.get_sprite()
   if immobilized then
-    local sprite = sol.enemy.get_sprite()
-    sol.main.sprite_set_animation(sprite, "hurt_long")
-    sol.main.timer_stop_all()
-    sol.main.timer_start(disappear, 10000)
-    sol.enemy.stop_movement()
-    sol.enemy.set_can_attack(false)
+    if not disappearing then
+      sol.main.sprite_set_animation(sprite, "hurt_long")
+      sol.main.timer_stop_all()
+      sol.main.timer_start(disappear, 10000)
+      sol.enemy.stop_movement()
+      sol.enemy.set_can_attack(false)
+    else
+      sol.main.sprite_set_animation(sprite, "disappearing")
+      sol.enemy.set_invincible()
+      sol.enemy.stop_movement()
+      sol.enemy.set_can_attack(false)
+    end
   else
     sol.main.timer_start(go, 1000)
     sol.enemy.set_can_attack(true)
@@ -67,6 +75,7 @@ function disappear()
     sol.enemy.send_message(father_name, "end immobilized")
   end
   sol.main.timer_stop_all()
+  disappearing = true
 end
 
 function event_sprite_animation_finished(sprite, animation)

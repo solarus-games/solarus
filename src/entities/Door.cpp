@@ -324,6 +324,7 @@ void Door::update() {
 
   if (!is_open()
       && requires_explosion()
+      && subtype != WEAK_BLOCK
       && get_equipment().has_ability("detect_weak_walls")
       && Geometry::get_distance(get_center_point(), get_hero().get_center_point()) < 40
       && !is_suspended()

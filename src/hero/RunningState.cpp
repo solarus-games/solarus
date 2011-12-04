@@ -111,7 +111,7 @@ void Hero::RunningState::update() {
     }
   }
   else if (hero.get_movement()->is_finished()) {
-    hero.set_state(new FreeState(hero));
+    hero.start_state_from_ground();
   }
 }
 

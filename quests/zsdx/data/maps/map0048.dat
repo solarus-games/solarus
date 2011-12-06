@@ -1279,7 +1279,7 @@
 13	1	520	1253	48	16	DS9	0
 12	1	368	1176	240	16	custom_obstacle_57	0	1	0	0
 12	1	368	1128	240	16	custom_obstacle_58	0	1	0	0
-8	1	248	301	npc	3	0	entities/hint_stone	dialog#dungeon_8.hint_B1
+8	1	248	293	npc	3	0	entities/hint_stone	dialog#dungeon_8.hint_B1
 0	2	1656	784	32	8	429
 0	2	1664	784	16	8	433
 0	2	1936	888	8	32	162

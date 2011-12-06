@@ -5640,7 +5640,7 @@ next = dungeon_4.agahnim.7
 #       |-----------------------|
 line1 = "cet infâme Ganon, lui"
 line2 = "qui a un jour osé"
-line3 = "affirmer que je nétais"
+line3 = "affirmer que je n'étais"
 next = dungeon_4.agahnim.8
 
 [dungeon_4.agahnim.8]

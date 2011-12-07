@@ -1139,20 +1139,20 @@ void MapEntity::set_enabled(bool enabled) {
   else {
     this->enabled = false;
     this->waiting_enabled = false;
+
+    if (get_movement() != NULL) {
+      get_movement()->set_suspended(suspended || !enabled);
+    }
+
+    std::list<Sprite*>::iterator it;
+    for (it = sprites.begin(); it != sprites.end(); it++) {
+
+      Sprite& sprite = *(*it);
+      sprite.set_suspended(suspended || !enabled);
+    }
+
+    notify_enabled(enabled);
   }
-
-  if (get_movement() != NULL) {
-    get_movement()->set_suspended(suspended || !enabled);
-  }
-
-  std::list<Sprite*>::iterator it;
-  for (it = sprites.begin(); it != sprites.end(); it++) {
-
-    Sprite& sprite = *(*it);
-    sprite.set_suspended(suspended || !enabled);
-  }
-
-  notify_enabled(enabled);
 }
 
 /**
@@ -1763,7 +1763,7 @@ void MapEntity::start_fading(int direction) {
 /**
  * @brief Updates the entity.
  *
- * This function is called repeteadly by the map. By default, it updates the position
+ * This function is called repeatedly by the map. By default, it updates the position
  * of the entity according to its movement (if any), and it updates the sprites frames
  * if there are sprites.
  * Redefine it in subclasses for the entities that should be updated
@@ -1779,6 +1779,17 @@ void MapEntity::update() {
       this->enabled = true;
       this->waiting_enabled = false;
       notify_enabled(true);
+
+      if (get_movement() != NULL) {
+        get_movement()->set_suspended(suspended || !enabled);
+      }
+
+      std::list<Sprite*>::iterator it;
+      for (it = sprites.begin(); it != sprites.end(); it++) {
+
+        Sprite& sprite = *(*it);
+        sprite.set_suspended(suspended || !enabled);
+      }
     }
   }
 

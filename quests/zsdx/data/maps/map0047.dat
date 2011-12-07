@@ -47,8 +47,8 @@
 0	0	744	1384	128	48	521
 19	0	872	1664	stairs	0	4
 15	0	728	1640	16	32	1
-11	0	712	1712	BB1	1	0	0
-4	0	720	1725	0	_random	1	-1
+11	0	712	1704	BB1	1	0	0
+4	0	720	1717	0	_random	1	-1
 9	0	544	1669	block_11	-1	entities/block	1	0	0
 9	0	448	1685	block_13	-1	entities/block	1	0	0
 9	0	704	1653	block_12	-1	entities/block	1	0	0
@@ -969,6 +969,8 @@
 0	1	120	624	8	16	73
 0	1	104	624	16	16	190
 0	1	96	624	8	16	72
+18	1	344	1656	LD3	2	0	-1
+18	1	296	1656	LD3_2	0	0	-1
 18	1	1112	232	boss_door_3	3	0	-1
 18	1	1112	280	boss_door_2	1	0	-1
 1	1	1128	37	from_boss	3	0
@@ -1007,7 +1009,7 @@
 12	1	888	1656	8	8	custom_obstacle	1	1	1	1
 12	1	888	1680	8	8	custom_obstacle_2	1	1	1	1
 10	1	896	1696	8	32	LB1	71	1
-6	1	424	1688	304	8	jumper	2	16
+6	1	456	1688	272	8	jumper	2	16
 6	1	424	1728	304	8	jumper_2	6	16
 12	1	864	1688	32	8	custom_obstacle_3	1	1	1	1
 12	1	872	1728	24	8	custom_obstacle_4	1	1	1	1
@@ -1038,7 +1040,6 @@
 18	1	1112	280	door_7	1	4	730
 18	1	1112	232	door_8	3	4	730
 5	1	800	384	BK01	0	big_key	1	705
-18	1	344	1656	LD3	2	0	-1
 4	1	1048	861	0	_random	1	-1
 4	1	1048	893	0	_random	1	-1
 4	1	1048	925	0	_random	1	-1
@@ -1091,7 +1092,6 @@
 11	1	1072	848	DB4	1	0	0
 4	1	1080	861	0	_random	1	-1
 18	1	1112	1000	LD4	3	0	-1
-18	1	296	1656	LD3_2	0	0	-1
 18	1	1112	1048	LD4_2	1	0	-1
 13	1	1112	997	48	16	DS4	0
 7	1	1460	1565	enemy_4	3	red_helmasaur	0	-1	_random	1	-1
@@ -1107,8 +1107,8 @@
 12	1	1576	1152	64	16	custom_obstacle_14	0	1	0	0
 12	1	1256	1664	64	16	custom_obstacle_15	0	1	1	1
 12	1	1120	1512	16	64	custom_obstacle_16	0	1	1	1
-7	1	1128	1277	enemy_20	3	blue_pig_soldier	0	-1	_random	1	-1
-7	1	1024	1405	enemy_21	3	blue_pig_soldier	0	-1	_random	1	-1
+7	1	1128	1277	enemy_20	3	red_bullblin	0	-1	_random	1	-1
+7	1	1024	1405	enemy_21	3	red_bullblin	0	-1	_random	1	-1
 12	1	1120	1000	16	64	custom_obstacle_17	0	1	1	1
 12	1	1760	744	16	64	custom_obstacle_18	0	1	0	0
 12	1	1760	488	16	64	custom_obstacle_19	0	1	0	0
@@ -1146,8 +1146,8 @@
 4	1	1640	317	0	_random	1	-1
 4	1	1640	429	0	_random	1	-1
 4	1	1864	333	0	_random	1	-1
-7	1	720	341	room_big_enemy_1	3	red_pig_soldier	0	-1	fairy	1	-1
-7	1	720	453	room_big_enemy_2	3	red_pig_soldier	0	-1	magic_flask	2	-1
+7	1	720	341	room_big_enemy_1	3	red_bullblin	0	-1	fairy	1	-1
+7	1	720	453	room_big_enemy_2	3	red_bullblin	0	-1	magic_flask	2	-1
 18	1	936	1656	KD01_2	0	1	701
 18	1	1624	1144	KD02_2	2	1	703
 12	1	1856	968	16	16	custom_obstacle_23	0	1	0	0
@@ -1155,10 +1155,9 @@
 10	1	656	360	24	64	WW01_closed	51	1
 18	1	1112	24	boss_door	1	0	-1
 18	1	1256	376	LD6_2	0	0	723
-1	1	1672	693	tmp	3	0
 7	1	1128	125	boss	3	billy	2	727	_none	1	-1
 13	1	1080	205	112	16	start_boss_sensor	0
-2	1	1104	1768	16	16	teletransporter	0	0	50	from_B4_A
+2	1	1104	1768	16	16	teletransporter	0	0	47	tmp
 8	1	1128	125	billy_npc	3	1	npc/billy	map
 10	1	1616	688	24	16	LD5_closed	523	1
 1	1	112	637	from_hidden_room	3	0
@@ -1168,6 +1167,9 @@
 17	1	1400	381	6
 17	1	1400	413	6
 17	1	1400	445	6
+1	1	1128	229	tmp	-1	0
+12	1	440	1688	16	8	custom_obstacle_22	1	1	1	1
+6	1	424	1688	16	8	jumper_5	2	16
 0	2	1296	344	8	96	441
 0	2	1272	344	8	96	442
 0	2	1080	248	96	8	438

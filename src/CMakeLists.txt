@@ -42,8 +42,7 @@ add_executable(solarus
   ${main_source_file}
 )
 
-set_target_properties(solarus_static PROPERTIES COMPILE_FLAGS "-O3 -Wall -Werror")
-set_target_properties(solarus PROPERTIES COMPILE_FLAGS "-O3 -Wall -Werror")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror")
 
 if (DEFINED DEFAULT_QUEST)
   add_definitions(-DDEFAULT_QUEST=\"${DEFAULT_QUEST}\")

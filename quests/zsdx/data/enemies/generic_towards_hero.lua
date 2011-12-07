@@ -82,7 +82,6 @@ function event_obstacle_reached(movement)
   end
 end
 
-
 function event_restart()
   go_random()
   check_hero()

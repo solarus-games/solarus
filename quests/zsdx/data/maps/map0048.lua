@@ -1,6 +1,4 @@
------------------------------
--- Dungeon 8 B1 script     --
------------------------------
+-- Dungeon 8 B1
 
 -- Legend
 -- RC: Rupee Chest
@@ -102,3 +100,11 @@ function event_enemy_dead(enemy_name)
 		sol.main.play_sound("secret")
 	end
 end
+
+function event_door_open(door_name)
+
+  if door_name == "WW02" then
+    sol.main.play_sound("secret")
+  end
+end
+

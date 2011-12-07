@@ -17,8 +17,8 @@ function event_map_started(destination_point_name)
   sol.map.door_set_open("LD1", true)
   sol.map.door_set_open("LD3", true)
   sol.map.door_set_open("LD4", true)
-  sol.map.door_set_open("boss_door", true)
   sol.map.npc_set_enabled("billy_npc", false)
+  sol.map.door_set_open("boss_door", true)
 
   -- Map chest hide if not already opened
   if not sol.game.savegame_get_boolean(700) then
@@ -38,6 +38,11 @@ function event_map_started(destination_point_name)
 
   if destination_point_name == "from_boss" or destination_point_name == "from_hidden_room" then
     sol.map.door_set_open("LD5", true)
+  end
+
+  -- door to Agahnim open if Billy's heart container was picked
+  if sol.game.savegame_get_boolean(729) then
+    sol.map.door_set_open("agahnim_door", true)
   end
 end
 
@@ -85,7 +90,6 @@ end
 function event_camera_back()
   sol.map.hero_unfreeze()
 end
-
 
 function event_hero_on_sensor(sensor_name)
   if sensor_name == "DS1" then
@@ -137,17 +141,21 @@ function event_enemy_dead(enemy_name)
       sol.map.chest_set_enabled("BK01", true)
       sol.main.play_sound("chest_appears")
     end
-  elseif enemy_name == "boss" then
-    sol.main.timer_start(function()
-      sol.main.play_music("victory.spc")
-      sol.map.hero_freeze()
-      sol.map.hero_set_direction(3)
-    end, 1000)
+  end
+end
+
+function event_treasure_obtained(item_name, variant, savegame_variable)
+
+  if item_name == "heart_container" then
+    sol.main.play_music("victory.spc")
+    sol.map.hero_freeze()
+    sol.map.hero_set_direction(3)
     sol.main.timer_start(function()
       sol.map.door_open("boss_door")
+      sol.map.door_open("agahnim_door")
       sol.main.play_sound("secret")
       sol.map.hero_unfreeze()
-    end, 10000)
+    end, 9000)
   end
 end
 

@@ -55,8 +55,7 @@ end
 function event_switch_activated(switch_name)
   if switch_name == "BB1" then
     -- LB1 room
-    sol.map.hero_freeze()
-    sol.main.timer_start(BB1_camera_move, 1000)
+    sol.map.camera_move(896, 1712, 250, BB1_remove_barrier)
   elseif switch_name == "BB2" then
     -- LB2 room
     sol.map.tile_set_enabled("LB2", false)
@@ -83,22 +82,18 @@ function BB1_remove_barrier()
   sol.main.play_sound("secret")
 end
 
-function BB1_camera_move()
-  sol.map.camera_move(896, 1712, 250, BB1_remove_barrier)
-end
-
-function event_camera_back()
-  sol.map.hero_unfreeze()
-end
-
 function event_hero_on_sensor(sensor_name)
   if sensor_name == "DS1" then
     -- LD1 room: when Link enters this room, door LD1 closes and enemies appear, sensor DS1 is disabled
-    sol.map.door_close("LD1")
-    sol.map.sensor_set_enabled("DS1", false)
+    if not sol.map.enemy_is_group_dead("room_LD1_enemy") then
+      sol.map.door_close("LD1")
+      sol.map.sensor_set_enabled("DS1", false)
+    end
   elseif sensor_name == "DS3" then
-    sol.map.door_close("LD3")
-    sol.map.sensor_set_enabled("DS3", false)
+    if not sol.map.enemy_is_group_dead("map_enemy") then
+      sol.map.door_close("LD3")
+      sol.map.sensor_set_enabled("DS3", false)
+    end
   elseif sensor_name == "DS4" then
     sol.map.door_close("LD4")
     sol.map.sensor_set_enabled("DS4", false)
@@ -119,9 +114,11 @@ end
 function event_enemy_dead(enemy_name)
   if string.match(enemy_name, "^room_LD1_enemy") and sol.map.enemy_is_group_dead("room_LD1_enemy") then
     -- LD1 room: kill all enemies will open the doors LD1 and LD2
-    sol.map.door_open("LD1")
-    sol.map.door_open("LD2")
-    sol.main.play_sound("secret")
+    if not sol.map.door_is_open("LD1") then
+      sol.map.door_open("LD1")
+      sol.map.door_open("LD2")
+      sol.main.play_sound("secret")
+    end
   elseif string.match(enemy_name, "^room_LD5_enemy") and sol.map.enemy_is_group_dead("room_LD5_enemy") and not sol.map.door_is_open("LD5") then
     -- LD5 room: kill all enemies will open the door LD5
     sol.map.door_open("LD5")
@@ -131,7 +128,7 @@ function event_enemy_dead(enemy_name)
     if not sol.game.savegame_get_boolean(700) then
       sol.map.chest_set_enabled("MAP", true)
       sol.main.play_sound("chest_appears")
-    else
+    elseif not sol.map.door_is_open("LD3") then
       sol.main.play_sound("secret")
     end
     sol.map.door_open("LD3")

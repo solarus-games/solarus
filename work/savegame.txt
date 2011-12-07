@@ -458,4 +458,5 @@ booleans:
 941	end of dungeon 6: quiver 2 or 3
 942	lake west cave: chest with 100 rupees
 943	west moutain cave 1F: chest with the bottle 3
+944	hidden palace D3: chest with 20 rupees
 

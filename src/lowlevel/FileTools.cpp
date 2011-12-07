@@ -65,9 +65,7 @@ void FileTools::initialize(int argc, char **argv) {
   std::string debug_quest_path = quest_path + "/data"; // in debug mode, read directly from the data directory
   std::string release_quest_path = quest_path + "/data.solarus"; // in release mode, only read from the data.solarus archive
 
-#if SOLARUS_DEBUG_LEVEL >= 1
   PHYSFS_addToSearchPath(debug_quest_path.c_str(), 1);   // data directory
-#endif
   PHYSFS_addToSearchPath(release_quest_path.c_str(), 1); // data.solarus archive
 
   // check the existence of the quest path

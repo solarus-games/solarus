@@ -50,7 +50,7 @@ void DebugKeys::set_game(Game *game) {
  */
 void DebugKeys::key_pressed(InputEvent::KeyboardKey key) {
 
-#if SOLARUS_DEBUG_LEVEL >= 2
+#ifdef SOLARUS_DEBUG_KEYS
   // don't consider the debug keys in release mode
 
   if (game != NULL) {
@@ -181,7 +181,7 @@ void DebugKeys::key_released(InputEvent::KeyboardKey key) {
  */
 void DebugKeys::update() {
 
-#if SOLARUS_DEBUG_LEVEL >= 2
+#ifdef SOLARUS_DEBUG_KEYS
   if (InputEvent::is_shift_down()) {
     if (game != NULL && game->is_showing_message()) {
       game->get_dialog_box().show_all_now();

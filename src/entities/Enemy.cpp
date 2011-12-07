@@ -627,7 +627,7 @@ void Enemy::update() {
  */
 void Enemy::set_suspended(bool suspended) {
 
-  MapEntity::set_suspended(suspended);
+  Detector::set_suspended(suspended);
 
   if (!suspended) {
     uint32_t diff = System::now() - when_suspended;
@@ -645,6 +645,8 @@ void Enemy::set_suspended(bool suspended) {
  * @param enabled true if the entity is now enabled
  */
 void Enemy::notify_enabled(bool enabled) {
+
+  MapEntity::notify_enabled(enabled);
 
   if (enabled) {
     initialize();

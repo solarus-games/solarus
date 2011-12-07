@@ -300,8 +300,7 @@ void EnemyScript::event_collision_enemy(const std::string& other_name, Sprite& o
 
 /**
  * @brief Notifies the script that the enemy is receiving an attack
- * with a custom effect, which means that your script decides what happens
- * and returns whether it did something.
+ * with a custom effect, which means that your script decides what happens.
  * @param attack the type of attack received
  * @param sprite the sprite of the enemy that receives the attack, or NULL
  * if the attack does not come from a pixel-precise collision test.

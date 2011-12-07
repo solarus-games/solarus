@@ -42,11 +42,19 @@ add_executable(solarus
   ${main_source_file}
 )
 
+# compilation options
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror")
 
-if (DEFINED DEFAULT_QUEST)
-  add_definitions(-DDEFAULT_QUEST=\"${DEFAULT_QUEST}\")
-endif (DEFINED DEFAULT_QUEST)
+option(DEBUG_KEYS "Enable the debugging keys." OFF)
+
+if(DEBUG_KEYS)
+  add_definitions(-DSOLARUS_DEBUG_KEYS)
+endif(DEBUG_KEYS)
+
+if(DEFAULT_QUEST)
+set(DEFAULT_QUEST "." CACHE STRING "Path to the quest to launch if none is specified at runtime.")
+add_definitions(-DDEFAULT_QUEST=\"${DEFAULT_QUEST}\")
+endif(DEFAULT_QUEST)
 
 target_link_libraries(solarus
   solarus_static

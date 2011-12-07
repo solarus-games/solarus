@@ -23,8 +23,9 @@
 #include <fstream>
 
 /**
- * @brief Provides functionalities for printing debug messages
- * or making runtime verifications, especially when the code is compiled in debugging mode.
+ * @brief Provides functionalities for printing debug messages or making
+ * runtime verifications, especially when the code is compiled in debugging
+ * mode.
  */
 class Debug {
 
@@ -43,14 +44,14 @@ class Debug {
 /**
  * @brief Prints a message if the program is in debug mode.
  *
- * This function does nothing if SOLARUS_DEBUG_LEVEL is 0.
+ * This function does nothing if NDEBUG is defined.
  *
  * @param message the message to print.
  * @param os the output stream to write (default is std::cout)
  */
 inline void Debug::print(const std::string& message, std::ostream& os) {
 
-#if SOLARUS_DEBUG_LEVEL > 0
+#ifndef NDEBUG
   os << message << std::endl;
 #endif
 }
@@ -62,14 +63,14 @@ inline void Debug::print(const std::string& message, std::ostream& os) {
  * The error message is saved in error.txt.
  * This function should be used to detect fatal errors only, that is,
  * errors in your code or in the quest (the data files) that require to stop the program.
- * This function does nothing if SOLARUS_DEBUG_LEVEL is 0.
+ * This function does nothing if NDEBUG is defined.
  *
  * @param assertion the boolean condition to check
  * @param error_message the error message to attach to the exception when the assertion fails
  */
 inline void Debug::check_assertion(bool assertion, const std::string& error_message) {
 
-#if SOLARUS_DEBUG_LEVEL > 0
+#ifndef NDEBUG
   if (!assertion) {
     die(error_message);
   }

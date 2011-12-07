@@ -31,7 +31,6 @@
 0	1	176	168	8	24	71
 1	1	160	213	destination_point	1	0
 2	1	152	224	16	16	teletransporter	0	1	8	from_west_mountain_cave_1f_w
-7	1	192	189	enemy	3	lizalfos	0	-1	_random	1	-1
 2	1	32	0	16	16	teletransporter_16	0	1	46	destination_point
 0	2	112	216	96	8	357
 0	2	144	216	32	8	188

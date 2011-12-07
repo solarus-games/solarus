@@ -45,7 +45,7 @@
 8	1	632	221	agahnim_npc	1	1	npc/agahnim	map
 13	1	600	133	80	16	start_boss_sensor	0
 1	1	632	485	boss_destination_point	1	0
-7	1	632	373	boss	3	agahnim_2	2	728	heart_container	1	729
+7	1	632	373	boss	3	agahnim_2	2	728	_none	1	-1
 1	1	632	453	ganon_dialog_destination_point	1	0
 0	2	616	56	32	8	429
 0	2	624	56	16	8	433

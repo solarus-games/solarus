@@ -367,7 +367,7 @@ booleans:
 726 dungeon 8 B2: boss key chest (XK01)
 727 dungeon 8 1F: Billy killed
 728 dungeon 8 boss: Agahnim killed
-729 dungeon 8 boss: heart container
+729 dungeon 8 1F: heart container from Billy
 730 dungeon 8 1F: boss key door
 731 dungeon 8 1F: weak wall
 732 dungeon 8 B1: weak wall (WW02)

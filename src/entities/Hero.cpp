@@ -1470,7 +1470,7 @@ void Hero::notify_collision_with_conveyor_belt(ConveyorBelt &conveyor_belt, int 
 
     if (conveyor_belt.overlaps(center)) {
 
-      // check that the player will be able to get out
+      // check that the hero will be able to get out
       Rectangle collision_box = conveyor_belt.get_bounding_box();
       collision_box.add_xy(dx, dy);
 

@@ -220,3 +220,12 @@ bool Hero::PullingState::is_prickle_obstacle() {
   return true;
 }
 
+/**
+ * @brief Returns whether a conveyor belt is considered as an obstacle in this state.
+ * @param conveyor_belt a conveyor belt
+ * @return true if the conveyor belt is an obstacle in this state
+ */
+bool Hero::PullingState::is_conveyor_belt_obstacle(ConveyorBelt& conveyor_belt) {
+  return true;
+}
+

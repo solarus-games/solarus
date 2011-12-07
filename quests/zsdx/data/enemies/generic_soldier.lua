@@ -131,11 +131,7 @@ function event_custom_attack_received(attack, sprite)
     sol.main.movement_set_property(movement, "max_distance", 26)
     sol.main.movement_set_property(movement, "smooth", true)
     sol.enemy.start_movement(movement)
-    return true
   end
-
-  -- tell the engine that the attack is not handled
-  return true
 end
 
 function go_random()

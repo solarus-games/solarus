@@ -364,9 +364,9 @@
 12	1	632	312	8	8	custom_obstacle_2	1	1	1	1
 12	1	656	312	8	8	custom_obstacle_5	1	1	1	1
 6	1	584	312	16	8	jumper_2	2	16
-7	1	552	349	enemy_29	3	blue_bullblin	0	-1	_random	1	-1
-7	1	408	349	enemy_30	3	blue_bullblin	0	-1	_random	1	-1
-7	1	592	349	enemy_31	3	blue_bullblin	0	-1	_random	1	-1
+7	1	384	341	enemy_29	3	blue_bullblin	0	-1	_random	1	-1
+7	1	424	349	enemy_30	3	blue_bullblin	0	-1	_random	1	-1
+7	1	656	277	enemy_31	3	blue_bullblin	0	-1	_random	1	-1
 7	1	352	349	enemy_32	3	blue_bullblin	0	-1	_random	1	-1
 7	1	304	341	enemy_33	3	blue_bullblin	0	-1	_random	1	-1
 7	1	192	349	enemy_34	3	blue_bullblin	0	-1	_random	1	-1
@@ -375,7 +375,6 @@
 12	1	264	328	16	16	custom_obstacle_15	0	1	0	0
 12	1	456	328	16	16	custom_obstacle_16	0	1	0	0
 12	1	504	328	16	16	custom_obstacle_17	0	1	0	0
-12	1	608	320	8	32	custom_obstacle_19	0	1	0	0
 10	1	112	352	32	8	door_closed	414	1
 0	2	496	304	8	64	415
 0	2	472	304	8	64	416

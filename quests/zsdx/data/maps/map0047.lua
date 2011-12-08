@@ -44,6 +44,11 @@ function event_map_started(destination_point_name)
   if sol.game.savegame_get_boolean(729) then
     sol.map.door_set_open("agahnim_door", true)
   end
+
+  -- statues puzzle
+  if sol.game.savegame_get_boolean(723) then
+    sol.map.switch_set_activated("DB06", true)
+  end
 end
 
 function event_map_opening_transition_finished(destination_point_name)
@@ -72,7 +77,6 @@ function event_switch_activated(switch_name)
     sol.map.block_reset("STT1")
     sol.map.block_reset("STT2")
     sol.map.block_reset("STT3")
-    sol.map.block_reset("STT4")
     sol.main.play_sound("warp")
   end
 end

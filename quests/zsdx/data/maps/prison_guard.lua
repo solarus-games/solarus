@@ -49,11 +49,13 @@ function seen_by_guard(guard_name)
 end
 
 function prison_dialog()
+  sol.main.timer_stop_all()
   sol.map.dialog_start("dungeon_5.hero_seen_by_guard")
 end
 
 function send_hero_to_prison()
   hero_seen = false
+  sol.main.timer_stop_all()
   sol.map.hero_set_map(65, "prison", 1)
   if init_prison ~= nil then
     -- special case: we are already on the map of the prison

@@ -265,7 +265,7 @@ void Block::update() {
     if (finished) {
       // the movement is finished (note that the block may have not moved)
       clear_movement();
-      when_can_move = System::now() + 500;
+      when_can_move = System::now() + moving_delay;
 
       // see if the block has moved
       if (get_x() != last_position.get_x() || get_y() != last_position.get_y()) {
@@ -303,7 +303,14 @@ void Block::notify_position_changed() {
  */
 void Block::reset() {
 
+  if (get_movement() != NULL) {
+    // the block was being pushed or pulled by the hero
+    clear_movement();
+    when_can_move = System::now() + moving_delay;
+  }
+
   set_xy(initial_position);
+  last_position.set_xy(initial_position);
   this->maximum_moves = initial_maximum_moves;
 }
 

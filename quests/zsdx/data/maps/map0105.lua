@@ -27,7 +27,8 @@ function event_map_started(destination_point_name)
   sol.map.tile_set_group_enabled("puzzle_a_switch_green", false)
 
   -- puzzle B
-  if destination_point_name == "from_b1_w" then
+  if destination_point_name == "from_b1_w"
+      or destination_point_name == "from_b1_e" then
     sol.map.door_set_open("puzzle_b_door", true)
     sol.map.switch_set_activated("puzzle_b_door_switch", true)
   end

@@ -30,7 +30,8 @@ InventoryItem::InventoryItem(Game &game, const std::string &item_name):
 
   game(game),
   item_name(item_name),
-  variant(game.get_equipment().get_item_variant(item_name)) {
+  variant(game.get_equipment().get_item_variant(item_name)),
+  finished(true) {
 
 }
 

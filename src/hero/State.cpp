@@ -899,7 +899,7 @@ bool Hero::State::can_start_sword() {
  *
  * Returns false by default.
  *
- * @return true if the hero can use an inventoy item in this state
+ * @return true if the hero can use an inventory item in this state
  */
 bool Hero::State::can_start_inventory_item() {
   return false;

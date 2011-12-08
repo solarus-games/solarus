@@ -147,7 +147,7 @@ bool Hero::FreeState::can_start_sword() {
 
 /**
  * @brief Returns whether the hero can use an inventory item in this state.
- * @return true if the hero can use an inventoy item in this state
+ * @return true if the hero can use an inventory item in this state
  */
 bool Hero::FreeState::can_start_inventory_item() {
   return hero.get_ground() != GROUND_HOLE;

@@ -8,9 +8,15 @@ This documentation page is intented to Lua programers who want to know the funct
 For the point of view of the engine, see the documentation of the C++ class Script.
 
 For now, the following types of scripts exist:
-- the script of a map (<tt>maps/mapXXXX.lua</tt>): controls the map XXXX,
-- the script of an item (<tt>items/XXXX.lua</tt>): controls the item named "XXXX" in <tt>items.dat</tt>,
-- (work in progress) the script of an item (<tt>enemies/XXXX.lua</tt>): controls the enemies whose breed is "XXXX".
+- The script of a map (<tt>maps/mapXXXX.lua</tt>): controls the map XXXX.
+- The script of an enemy (<tt>enemies/XXXX.lua</tt>): controls an enemy whose
+breed is "XXXX". Each instance of enemy has its own Lua state (in particular
+its own global values), even if several enemies of the same breed exist at the
+same time on the current map.
+- The script of an item (<tt>items/XXXX.lua</tt>): controls the item named
+"XXXX" in <tt>items.dat</tt>. For each item, only one Lua state is created for
+the whole game and it persists across map changes.
+
 Other types such as scriptable menus will come eventually.
 
 A Lua script can call C++ functions through a global table called <tt>sol</tt>.

@@ -98,10 +98,10 @@ void Hero::PushingState::update() {
     else if (get_controls().get_wanted_direction8() != pushing_direction4 * 2) {
 
       if (get_controls().is_key_pressed(GameControls::ACTION)) {
-	hero.set_state(new GrabbingState(hero));
+        hero.set_state(new GrabbingState(hero));
       }
       else {
-	hero.set_state(new FreeState(hero));
+        hero.set_state(new FreeState(hero));
       }
     }
 
@@ -111,18 +111,18 @@ void Hero::PushingState::update() {
       Detector *facing_entity = hero.get_facing_entity();
       if (facing_entity != NULL) { // the obstacle pushed is an entity
 
-	if (facing_entity->get_type() == BLOCK) { // it can be moved by the hero (TODO dynamic binding)
-	  hero.try_snap_to_facing_entity();
-	}
+        if (facing_entity->get_type() == BLOCK) { // it can be moved by the hero (TODO dynamic binding)
+          hero.try_snap_to_facing_entity();
+        }
 
-	if (facing_entity->moved_by_hero()) {
+        if (facing_entity->moved_by_hero()) {
 
-	  std::string path = "  ";
-	  path[0] = path[1] = '0' + pushing_direction4 * 2;
+          std::string path = "  ";
+          path[0] = path[1] = '0' + pushing_direction4 * 2;
 
-	  hero.set_movement(new PathMovement(path, 40, false, false, false));
-	  pushed_entity = facing_entity;
-	}
+          hero.set_movement(new PathMovement(path, 40, false, false, false));
+          pushed_entity = facing_entity;
+        }
       }
     }
   }

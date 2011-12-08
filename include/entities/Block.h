@@ -40,6 +40,8 @@ class Block: public Detector {
     bool can_be_pushed;         /**< indicates that the hero can push this block */
     bool can_be_pulled;         /**< indicates that the hero can pull this block */
 
+    static const uint32_t moving_delay = 500; /**< delay between two successive moves of a block */
+
   public:
 
     Block(const std::string& name, Layer layer, int x, int y, int direction,

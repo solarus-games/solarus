@@ -116,6 +116,10 @@
 7	0	324	117	enemy	3	gibdo	0	-1	_random	1	-1
 7	0	552	365	enemy_4	3	globul	0	-1	_random	1	-1
 2	0	704	336	64	32	teletransporter_4	0	1	92	from_3f_hole_e
+12	0	352	312	16	16	custom_obstacle_5	0	1	0	0
+12	0	448	312	16	16	custom_obstacle_6	0	1	0	0
+12	0	384	104	16	16	custom_obstacle_8	0	1	0	0
+12	0	480	104	16	16	custom_obstacle_9	0	1	0	0
 0	1	536	248	192	64	2
 0	1	856	312	64	80	2
 0	1	856	392	64	24	52
@@ -290,6 +294,8 @@
 0	1	640	256	48	8	452
 0	1	680	264	8	32	452
 0	1	640	264	8	32	452
+12	1	880	392	16	16	custom_obstacle_10	0	1	0	0
+12	1	152	392	16	16	custom_obstacle_7	0	1	0	0
 1	1	160	405	from_outside_w	1	0
 2	1	152	416	16	16	teletransporter_6	0	1	8	from_west_mountain_cave_3f_w
 1	1	888	405	from_outside_e	1	0

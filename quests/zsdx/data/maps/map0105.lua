@@ -48,7 +48,8 @@ function event_map_started(destination_point_name)
   end
 
   -- central room
-  sol.map.door_set_open("c_door", true)
+  sol.map.door_set_open("c_door_e", true)
+  sol.map.door_set_open("c_door_s", true)
 
   -- east enemies room
   if not sol.game.savegame_get_boolean(808) then
@@ -261,10 +262,12 @@ function event_hero_on_sensor(sensor_name)
 
   -- central room
   elseif sensor_name:find("^close_c_doors_sensor")
-      and sol.map.door_is_open("c_door")
-      and not sol.map.switch_is_activated("c_room_switch_1")
-      and sol.map.door_is_open("c_big_key_door") then
-    sol.map.door_close("c_door")
+      and sol.map.door_is_open("c_door_e")
+      and not sol.map.switch_is_activated("c_room_switch_1") then
+    if sol.map.door_is_open("c_big_key_door") then
+      sol.map.door_close("c_door_s")
+    end
+    sol.map.door_close("c_door_e")
     sol.map.switch_set_activated("c_room_switch_1", false)
     sol.map.switch_set_activated("c_room_switch_2", false)
     sol.map.switch_set_activated("c_room_switch_3", false)

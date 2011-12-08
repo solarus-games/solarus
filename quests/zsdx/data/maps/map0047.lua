@@ -33,7 +33,7 @@ function event_map_started(destination_point_name)
   -- Link has mirror shield: no laser obstacles
   if sol.game.get_ability("shield") >= 3 then
     sol.map.obstacle_set_enabled("LO1", false)
-    sol.map.obstacle_set_enabled("LO2", false)
+    sol.map.obstacle_set_group_enabled("LO2", false)
   end
 
   if destination_point_name == "from_boss" or destination_point_name == "from_hidden_room" then
@@ -48,6 +48,11 @@ function event_map_started(destination_point_name)
   -- statues puzzle
   if sol.game.savegame_get_boolean(723) then
     sol.map.switch_set_activated("DB06", true)
+  end
+
+  -- boss key door and laser
+  if sol.game.savegame_get_boolean(730) then
+    sol.map.enemy_remove("boss_key_door_laser")
   end
 end
 
@@ -167,6 +172,13 @@ function event_dialog_finished(first_message_id)
     sol.map.hero_unfreeze()
     sol.map.enemy_set_enabled("boss", true)
     sol.map.npc_set_enabled("billy_npc", false)
+  end
+end
+
+function event_door_open(door_name)
+
+  if door_name == "boss_key_door" then
+    sol.map.enemy_remove("boss_key_door_laser")
   end
 end
 

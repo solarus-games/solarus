@@ -76,6 +76,7 @@ void FollowMovement::update() {
         }
         else {
           finished = true;
+          notify_obstacle_reached();
         }
       }
     }

@@ -25,18 +25,20 @@
  *
  * At each moment, the entity is placed at a position
  * relative to the entity followed.
+ * If the movement is sensible to obstacles, it becomes finished as
+ * soon as the entity cannot be placed at the requested position.
  */
 class FollowMovement: public Movement {
 
   private:
 
-    MapEntity *entity_followed;		/**< the entity followed by this movement */
-    const int x;			/**< x coordinate of where this entity should be placed,
-					 * relative to the entity followed */
-    const int y;			/**< y coordinate of where this entity should be placed,
-					 * relative to the entity followed */
+    MapEntity *entity_followed;     /**< the entity followed by this movement */
+    const int x;                    /**< x coordinate of where this entity should be placed,
+                                     * relative to the entity followed */
+    const int y;                    /**< y coordinate of where this entity should be placed,
+                                     * relative to the entity followed */
 
-    bool finished;			/**< indicates that the movement is stopped because of a collision */
+    bool finished;                  /**< indicates that the movement is stopped because of obstacles */
 
   protected:
 

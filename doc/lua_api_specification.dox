@@ -297,10 +297,11 @@ Sets the style of the dialog box for subsequent dialogs (0: usual dialog box,
 1: no dialog box, only display the text)
 
 - <tt>sol.map.hud_set_pause_enabled(bool enabled)</tt>: 
-allows or disallows to pause the game (and to save the game)
+Allows or disallows to pause the game (and thus to save the game).
 
 - <tt>sol.map.hud_set_enabled(enabled)</tt>: 
-enables or disables the HUD displaying
+Hides or restores the HUD (the player can still use his items
+and pause the game).
 
 - <tt>sol.map.light_get()</tt>:
 returns the current light level of the map

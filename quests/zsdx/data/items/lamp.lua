@@ -61,9 +61,12 @@ end
 
 -- Called when the current map changes
 function event_map_changed()
-  -- cancel all torch timers so that the previous map does not interfer with the new one
+
+  -- cancel all torch timers so that the previous map does not interfer with
+  -- the new one
   sol.main.timer_stop_all()
   temporary_lit_torches = {}
+  was_dark_room = false
 end
 
 -- Called when the hero presses the action key in front of any NPC

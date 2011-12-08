@@ -253,7 +253,6 @@ void Block::update() {
 
     if (get_movement()->is_finished()) {
       // the block was just stopped by an obstacle: notify the hero
-      hero.notify_grabbed_entity_collision();
       finished = true;
     }
     else if (!hero.is_moving_grabbed_entity()) {
@@ -296,6 +295,16 @@ void Block::notify_position_changed() {
     Sound::play("hero_pushes");
     sound_played = true;
   }
+}
+
+/**
+ * @brief Notifies this entity that it has just failed to change its position
+ * because of obstacles.
+ */
+void Block::notify_obstacle_reached() {
+
+  // the block is stopped by an obstacle while being pushed or pulled
+  get_hero().notify_grabbed_entity_collision();
 }
 
 /**

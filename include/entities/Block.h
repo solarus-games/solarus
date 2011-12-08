@@ -64,6 +64,7 @@ class Block: public Detector {
     void action_key_pressed();
     bool moved_by_hero();
     void notify_position_changed();
+    void notify_obstacle_reached();
 
     void update();
 

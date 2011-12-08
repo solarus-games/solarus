@@ -157,20 +157,31 @@ bool Hero::PushingState::is_moving_grabbed_entity() {
  */
 void Hero::PushingState::notify_grabbed_entity_collision() {
 
-  // the hero has moved one pixel too much
+  // the hero has moved one or several pixels too much
   // because he moved before the block, not knowing that the block would not follow him
 
-  static const Rectangle opposite_dxy[] = {
-    Rectangle(-1, 0),
-    Rectangle( 0, 1),
-    Rectangle( 1, 0),
-    Rectangle( 0,-1)
-  };
+  switch (pushing_direction4) {
 
-  // go back one pixel into the opposite direction
-  Rectangle bounding_box = hero.get_bounding_box();
-  bounding_box.add_xy(opposite_dxy[pushing_direction4]);
-  hero.set_bounding_box(bounding_box);
+    case 0:
+      // east
+      hero.set_x(pushed_entity->get_x() - 16);
+      break;
+
+    case 1:
+      // north
+      hero.set_y(pushed_entity->get_y() + 16);
+      break;
+
+    case 2:
+      // west
+      hero.set_x(pushed_entity->get_x() + 16);
+      break;
+
+    case 3:
+      // south
+      hero.set_y(pushed_entity->get_y() - 16);
+      break;
+  }
 
   stop_moving_pushed_entity();
 }

@@ -45,6 +45,10 @@
 0	0	144	224	8	16	71
 0	0	168	224	8	16	71
 0	0	152	240	16	8	70
+0	0	224	152	16	16	369
+0	0	224	72	16	16	369
+0	0	80	152	16	16	369
+0	0	80	72	16	16	369
 8	0	88	85	torch_1	-1	0	entities/torch	item#lamp
 8	0	88	165	torch_2	-1	0	entities/torch	item#lamp
 8	0	232	165	torch_3	-1	0	entities/torch	item#lamp

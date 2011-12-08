@@ -228,6 +228,7 @@
 7	0	600	301	enemy_28	3	blue_bullblin	0	-1	_random	1	-1
 18	0	112	336	door	3	0	-1
 13	0	128	333	16	16	close_door_sensor	0
+7	0	656	277	enemy_31	3	blue_bullblin	0	-1	_random	1	-1
 0	1	208	56	8	96	418
 0	1	280	56	8	96	417
 0	1	80	232	96	8	413
@@ -366,7 +367,6 @@
 6	1	584	312	16	8	jumper_2	2	16
 7	1	384	341	enemy_29	3	blue_bullblin	0	-1	_random	1	-1
 7	1	424	349	enemy_30	3	blue_bullblin	0	-1	_random	1	-1
-7	1	656	277	enemy_31	3	blue_bullblin	0	-1	_random	1	-1
 7	1	352	349	enemy_32	3	blue_bullblin	0	-1	_random	1	-1
 7	1	304	341	enemy_33	3	blue_bullblin	0	-1	_random	1	-1
 7	1	192	349	enemy_34	3	blue_bullblin	0	-1	_random	1	-1

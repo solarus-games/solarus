@@ -770,11 +770,20 @@ void Enemy::attack_hero(Hero &hero, Sprite *this_sprite) {
     if (minimum_shield_needed != 0
         && get_equipment().has_ability("shield", minimum_shield_needed)) {
 
+      // compute the direction corresponding to the angle between the enemy and the hero
       double angle = hero.get_vector_angle(*this);
-      int protected_direction = (int) ((angle + Geometry::PI_OVER_2 / 2.0) * 4 / Geometry::TWO_PI);
-      protected_direction = (protected_direction + 4) % 4;
+      int protected_direction4 = (int) ((angle + Geometry::PI_OVER_2 / 2.0) * 4 / Geometry::TWO_PI);
+      protected_direction4 = (protected_direction4 + 4) % 4;
 
-      hero_protected = hero.is_facing_direction4(protected_direction);
+      // also get the direction of the enemy's sprite
+      int sprite_opposite_direction4 = -1;
+      if (this_sprite != NULL) {
+        sprite_opposite_direction4 = (this_sprite->get_current_direction() + 2) % 4;
+      }
+
+      // the hero is protected if he is facing the opposite of one of these directions
+      hero_protected = hero.is_facing_direction4(protected_direction4) ||
+          hero.is_facing_direction4(sprite_opposite_direction4);
     }
 
     if (hero_protected) {

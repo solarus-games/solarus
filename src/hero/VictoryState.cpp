@@ -48,7 +48,6 @@ void Hero::VictoryState::start(State* previous_state) {
 
   State::start(previous_state);
 
-  get_sprites().save_animation_direction();
   get_sprites().set_animation_victory();
   get_sprites().set_ignore_suspend(true);
   Sound::play("victory");
@@ -67,7 +66,6 @@ void Hero::VictoryState::stop(State* next_state) {
 
   State::stop(next_state);
   get_sprites().set_ignore_suspend(false);
-  get_sprites().restore_animation_direction();
 }
 
 /**

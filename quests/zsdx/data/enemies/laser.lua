@@ -5,7 +5,7 @@ local initial_position = {}
 function event_appear()
 
   sol.enemy.set_life(1)
-  sol.enemy.set_damage(2)
+  sol.enemy.set_damage(4)
   sol.enemy.create_sprite("enemies/laser")
   sol.enemy.set_size(8, 8)
   sol.enemy.set_origin(4, 4)

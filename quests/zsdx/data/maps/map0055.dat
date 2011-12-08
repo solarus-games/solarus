@@ -856,7 +856,7 @@
 2	1	952	48	16	16	teletransporter_2	1	1	55	destination_point_d
 2	1	984	48	16	16	teletransporter_3	1	1	55	destination_point_b
 2	1	968	64	16	16	teletransporter_4	1	1	55	destination_point_c
-2	1	480	224	32	16	teletransporter_5	0	1	58	_same
+2	1	480	224	32	16	teletransporter_5	0	1	58	from_2f_n_hole
 6	1	872	600	8	32	jumper_3	0	40
 6	1	872	664	8	32	jumper_4	0	40
 15	1	816	640	48	16	0

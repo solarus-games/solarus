@@ -32,6 +32,7 @@ function are_all_torches_on()
       and sol.main.sprite_get_animation(sol.map.npc_get_sprite("torch_1")) == "lit"
       and sol.main.sprite_get_animation(sol.map.npc_get_sprite("torch_2")) == "lit"
       and sol.main.sprite_get_animation(sol.map.npc_get_sprite("torch_3")) == "lit"
+      and sol.main.sprite_get_animation(sol.map.npc_get_sprite("torch_4")) == "lit"
 end
 
 function event_update()

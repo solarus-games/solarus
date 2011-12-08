@@ -36,7 +36,7 @@ class InventoryItem {
     int variant;		/**< the possession state of this item when it is used */
 
     // state
-    bool finished;		/**< true if we have finished using this item */
+    bool finished;		/**< true if we have finished using this item or not using it */
 
   public:
 

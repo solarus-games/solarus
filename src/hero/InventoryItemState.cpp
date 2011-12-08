@@ -53,7 +53,7 @@ void Hero::InventoryItemState::start(State *previous_state) {
   }
 
   if (!interaction) {
-    // no interaction occured with the facing entity: use the item normally
+    // no interaction occurred with the facing entity: use the item normally
     item.start();
   }
 }
@@ -73,7 +73,7 @@ void Hero::InventoryItemState::update() {
 }
 
 /**
- * @brief Returns whether the hero is using an inventory item in this state. *
+ * @brief Returns whether the hero is using an inventory item in this state.
  * @return true if the hero is using an inventory item
  */
 bool Hero::InventoryItemState::is_using_inventory_item() {

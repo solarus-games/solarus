@@ -13,6 +13,10 @@ function event_map_started(destination_point_name)
   else
     sol.map.block_set_enabled("block_saved", false)
   end
+
+  if destination_point_name ~= "main_entrance" then
+    sol.map.door_set_open("eye_door", true)
+  end
 end
 
 function event_door_open(door_name)

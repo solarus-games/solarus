@@ -767,6 +767,7 @@
 7	1	924	237	enemy_7	3	ropa	0	-1	_random	1	-1
 7	1	1040	317	enemy_8	3	blue_hardhat_beetle	0	-1	_random	1	-1
 7	1	1092	469	enemy_9	3	ropa	0	-1	_random	1	-1
+1	1	496	237	from_2f_n_hole	-1	0
 0	2	920	16	96	8	437
 0	2	424	16	384	8	437
 0	2	960	392	64	8	437

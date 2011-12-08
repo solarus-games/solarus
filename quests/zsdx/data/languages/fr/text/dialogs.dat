@@ -2273,6 +2273,7 @@ question = true
 line1 = "Il y a de l'eau ici,"
 line2 = "mais tu n'as pas"
 line3 = "de récipient"
+skip = all
 next = found_water.no_bottle.2
 
 [found_water.no_bottle.2]
@@ -2286,6 +2287,7 @@ icon = 8
 line1 = "Il y a de l'eau ici,"
 line2 = "mais il te faut"
 line3 = "un Flacon vide"
+skip = all
 next = found_water.no_empty_bottle.2
 
 [found_water.no_empty_bottle.2]

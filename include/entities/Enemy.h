@@ -72,6 +72,16 @@ class Enemy: public Detector {
     };
 
     /**
+     * @brief Defines how an enemy behaves with obstacles.
+     */
+    enum ObstacleBehavior {
+      OBSTACLE_BEHAVIOR_NORMAL,   /**< the enemy is on the ground and stops on normal obstacles */
+      OBSTACLE_BEHAVIOR_FLYING,   /**< the enemy ignores holes, lava, water, etc. */
+      OBSTACLE_BEHAVIOR_SWIMMING, /**< the enemy can move in water */
+      OBSTACLE_BEHAVIOR_NUMBER
+    };
+
+    /**
      * @brief This structure contains the parameters needed by the subclasses constructors.
      */
     struct ConstructionParameters {
@@ -111,7 +121,8 @@ class Enemy: public Detector {
     Rank rank;						/**< is this enemy a normal enemy, a miniboss or a boss? */
     int savegame_variable;				/**< index of the boolean variable indicating whether this enemy is killed,
 							 * or -1 if it is not saved */
-    std::string obstacle_behavior;                      /**< behavior with obstacles: "normal", "flying" or "swimming" */
+    ObstacleBehavior obstacle_behavior;                 /**< behavior with obstacles */
+    static const std::string obstacle_behavior_names[]; /**< name of each existing behavior with obstacles */
     bool displayed_in_y_order;                          /**< indicates that the enemy is displayed as the same level as the hero */
     std::string father_name;                            /**< name of the enemy who created this enemy (or an empty string) */
 
@@ -156,6 +167,8 @@ class Enemy: public Detector {
     void set_damage(int damage_on_hero, int magic_damage_on_hero);
     void set_life(int life);
     int get_life();
+    ObstacleBehavior get_obstacle_behavior();
+    void set_obstacle_behavior(ObstacleBehavior behavior);
     void set_pushed_back_when_hurt(bool pushed_back_when_hurt);
     void set_push_hero_on_sword(bool push_hero_on_sword);
     void set_can_hurt_hero_running(bool can_hurt_hero_running);
@@ -244,6 +257,9 @@ class Enemy: public Detector {
 
     static const std::string& get_hurt_style_name(HurtStyle style);
     static HurtStyle get_hurt_style_by_name(const std::string& name);
+
+    static const std::string& get_obstacle_behavior_name(ObstacleBehavior behavior);
+    static ObstacleBehavior get_obstacle_behavior_by_name(const std::string& name);
 
     // communication with others
     virtual void notify_message_received(Enemy& sender, const std::string& message);

@@ -165,7 +165,7 @@ void Detector::check_collision(MapEntity &entity) {
 /**
  * @brief Checks whether a sprite collides with this detector.
  *
- * If there is a collision, the notify_collision(MapEntity*, Sprite*, Sprite*) method is called.
+ * If there is a collision, the notify_collision(MapEntity&, Sprite&, Sprite&) method is called.
  *
  * @param entity the entity to check
  * @param sprite the sprite of that entity
@@ -174,16 +174,14 @@ void Detector::check_collision(MapEntity &entity, Sprite &sprite) {
 
   if (has_collision_mode(COLLISION_SPRITE)
       && &entity != this
-      && (has_layer_independent_collisions() || get_layer() == entity.get_layer())
-      && sprite.are_pixel_collisions_enabled()) {
+      && (has_layer_independent_collisions() || get_layer() == entity.get_layer())) {
 
     // we check the collision between the specified entity's sprite and all sprites of the current entity
     std::list<Sprite*>::iterator it;
     for (it = get_sprites().begin(); it != get_sprites().end(); it++) {
       Sprite &this_sprite = *(*it);
 
-      if (this_sprite.are_pixel_collisions_enabled()
-          && this_sprite.test_collision(sprite, get_x(), get_y(), entity.get_x(), entity.get_y())) {
+      if (this_sprite.test_collision(sprite, get_x(), get_y(), entity.get_x(), entity.get_y())) {
         notify_collision(entity, sprite, this_sprite);
       }
     }

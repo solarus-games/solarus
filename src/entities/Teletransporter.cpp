@@ -42,8 +42,13 @@ Teletransporter::Teletransporter(const std::string &name, Layer layer, int x, in
 				 Subtype subtype, Transition::Style transition_style,
 				 MapId destination_map_id, std::string destination_point_name):
   Detector(COLLISION_CUSTOM, name, layer, x, y, width, height),
-  subtype(subtype), transition_style(transition_style), sound_id(""),
-  destination_map_id(destination_map_id), destination_point_name(destination_point_name), transporting_hero(false) {
+  subtype(subtype),
+  transition_style(transition_style),
+  sound_id(""),
+  destination_map_id(destination_map_id),
+  destination_point_name(destination_point_name),
+  destination_side(-1),
+  transporting_hero(false) {
   
   if (subtype == YELLOW) {
     create_sprite("entities/teletransporter");
@@ -105,7 +110,7 @@ void Teletransporter::set_map(Map &map) {
 
   MapEntity::set_map(map);
 
-  if (is_on_map_side()) {
+  if (destination_point_name == "_side") {
 
     int x = get_x();
     int y = get_y();
@@ -273,6 +278,6 @@ void Teletransporter::transport_hero(Hero &hero) {
  * @return true if this teletransporter is on the side of the map
  */
 bool Teletransporter::is_on_map_side() {
-  return destination_point_name == "_side";
+  return destination_side >= 0;
 }
 

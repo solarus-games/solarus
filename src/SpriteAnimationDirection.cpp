@@ -158,8 +158,7 @@ bool SpriteAnimationDirection::are_pixel_collisions_enabled() const {
 PixelBits& SpriteAnimationDirection::get_pixel_bits(int frame) const {
 
   Debug::check_assertion(pixel_bits != NULL);
-  Debug::check_assertion(frame >= 0 && frame < nb_frames,
-      StringConcat() << "Invalid frame number: " << frame);
+  Debug::check_assertion(frame >= 0 && frame < nb_frames, "Invalid frame number");
 
   return *pixel_bits[frame];
 }

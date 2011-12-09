@@ -166,12 +166,12 @@ bool Teletransporter::test_collision_custom(MapEntity& entity) {
       // scrolling towards an adjacent map
       Rectangle facing_point = hero.get_facing_point(transition_direction);
       collision = hero.is_moving_towards(transition_direction)
-	&& overlaps(facing_point.get_x(), facing_point.get_y());
+	    && overlaps(facing_point.get_x(), facing_point.get_y());
       normal_case = false;
     }
 
     else if (!get_map().test_collision_with_border(get_center_point()) &&
-	hero.get_ground() == GROUND_HOLE) {
+        hero.get_ground() == GROUND_HOLE) {
       // falling into a hole
       collision = overlaps(hero.get_ground_point());
       normal_case = false;
@@ -229,7 +229,7 @@ void Teletransporter::transport_hero(Hero &hero) {
 
   if (is_on_map_side()) {
 
-    // special desination point: side of the map
+    // special destination point: side of the map
     // we determine the appropriate side based on the teletransporter's position;
     // we also place the hero on the old map so that its position corresponds to the new map
 

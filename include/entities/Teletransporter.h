@@ -51,7 +51,8 @@ class Teletransporter: public Detector {
                                            * or "_side" to place the hero on the appropriate side of the map */
     int destination_side;                 /**< when the destination point is "_side", indicates which side
                                            * of the destination map this teletransporters leads to
-                                           * (this depends on the teletransporter position on the map */
+                                           * (this depends on the teletransporter position on the map);
+                                           * -1 means a teletransporter other than "_side" */
     int transition_direction;             /**< when the destination point is "_side", indicates the direction 
                                            * of the transition between the two maps (this is the opposite
                                            * direction of destination_side) */

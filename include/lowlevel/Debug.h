@@ -22,6 +22,12 @@
 #include <iostream>
 #include <fstream>
 
+#ifndef NDEBUG
+#define SOLARUS_ASSERT(condition, message) Debug::check_assertion(condition, message)
+#else
+#define SOLARUS_ASSERT(condition, message)
+#endif
+
 /**
  * @brief Provides functionalities for printing debug messages or making
  * runtime verifications, especially when the code is compiled in debugging
@@ -63,18 +69,15 @@ inline void Debug::print(const std::string& message, std::ostream& os) {
  * The error message is saved in error.txt.
  * This function should be used to detect fatal errors only, that is,
  * errors in your code or in the quest (the data files) that require to stop the program.
- * This function does nothing if NDEBUG is defined.
  *
  * @param assertion the boolean condition to check
  * @param error_message the error message to attach to the exception when the assertion fails
  */
 inline void Debug::check_assertion(bool assertion, const std::string& error_message) {
 
-#ifndef NDEBUG
   if (!assertion) {
     die(error_message);
   }
-#endif
 }
 
 /**

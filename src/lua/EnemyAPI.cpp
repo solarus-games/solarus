@@ -636,7 +636,8 @@ int Script::enemy_api_get_obstacle_behavior(lua_State *l) {
   Script& script = get_script(l, 1);
   Enemy& enemy = script.get_enemy();
 
-  lua_pushstring(l, enemy.obstacle_behavior.c_str());
+  const std::string& behavior_name = Enemy::get_obstacle_behavior_name(enemy.get_obstacle_behavior());
+  lua_pushstring(l, behavior_name.c_str());
 
   return 1;
 }
@@ -653,8 +654,8 @@ int Script::enemy_api_set_obstacle_behavior(lua_State *l) {
   Script& script = get_script(l, 1);
   Enemy& enemy = script.get_enemy();
 
-  const std::string& behavior = luaL_checkstring(l, 1);
-  enemy.obstacle_behavior = behavior;
+  const std::string& behavior_name = luaL_checkstring(l, 1);
+  enemy.set_obstacle_behavior(Enemy::get_obstacle_behavior_by_name(behavior_name));
 
   return 0;
 }

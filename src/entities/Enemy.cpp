@@ -57,6 +57,12 @@ const std::string Enemy::hurt_style_names[] = {
   "boss",
 };
 
+const std::string Enemy::obstacle_behavior_names[] = {
+  "normal",
+  "flying",
+  "swimming",
+};
+
 /**
  * @brief Creates an enemy.
  *
@@ -77,7 +83,7 @@ Enemy::Enemy(const ConstructionParameters &params):
   minimum_shield_needed(0),
   rank(RANK_NORMAL),
   savegame_variable(-1),
-  obstacle_behavior("normal"),
+  obstacle_behavior(OBSTACLE_BEHAVIOR_NORMAL),
   displayed_in_y_order(true),
   father_name(""),
   being_hurt(false),
@@ -275,7 +281,7 @@ bool Enemy::is_destructible_item_obstacle(DestructibleItem& destructible_item) {
   if (this->overlaps(destructible_item)) {
     return false;
   }
-  return obstacle_behavior != "flying";
+  return obstacle_behavior != OBSTACLE_BEHAVIOR_FLYING;
 }
 
 /**
@@ -292,7 +298,8 @@ bool Enemy::is_teletransporter_obstacle(Teletransporter& teletransporter) {
  * @return true if the deep water tiles are currently an obstacle for this entity
  */
 bool Enemy::is_deep_water_obstacle() {
-  return obstacle_behavior != "flying" && obstacle_behavior != "swimming";
+  return obstacle_behavior != OBSTACLE_BEHAVIOR_FLYING
+      && obstacle_behavior != OBSTACLE_BEHAVIOR_SWIMMING;
 }
 
 /**
@@ -308,7 +315,7 @@ bool Enemy::is_shallow_water_obstacle() {
  * @return true if the holes are currently an obstacle for this entity
  */
 bool Enemy::is_hole_obstacle() {
-  return obstacle_behavior != "flying";
+  return obstacle_behavior != OBSTACLE_BEHAVIOR_FLYING;
 }
 
 /**
@@ -324,7 +331,7 @@ bool Enemy::is_prickle_obstacle() {
  * @return true if lava is currently obstacle for this entity
  */
 bool Enemy::is_lava_obstacle() {
-  return obstacle_behavior != "flying";
+  return obstacle_behavior != OBSTACLE_BEHAVIOR_FLYING;
 }
 
 /**
@@ -363,9 +370,25 @@ void Enemy::set_life(int life) {
 int Enemy::get_life() {
   return life;
 }
- 
+
 /**
- * @brief Sets whether the enemy is pushed back when it gets hurt by the hero
+ * @brief Returns the current behavior with obstacles for this enemy.
+ * @return the behavior with obstacles
+ */
+Enemy::ObstacleBehavior Enemy::get_obstacle_behavior() {
+  return obstacle_behavior;
+}
+
+/**
+ * @brief Sets the behavior with obstacles for this enemy.
+ * @param behavior the behavior with obstacles
+ */
+void Enemy::set_obstacle_behavior(ObstacleBehavior behavior) {
+  this->obstacle_behavior = obstacle_behavior;
+}
+
+/**
+ * @brief Sets whether the enemy is pushed back when it gets hurt by the hero.
  * @param pushed_back_when_hurt true to make the enemy pushed back when it gets hury
  */
 void Enemy::set_pushed_back_when_hurt(bool pushed_back_when_hurt) {
@@ -1157,6 +1180,15 @@ void Enemy::custom_attack(EnemyAttack attack, Sprite* this_sprite) {
 }
 
 /**
+ * @brief Sends a message from another enemy to this enemy.
+ * @param sender the sender
+ * @param message the message
+ */
+void Enemy::notify_message_received(Enemy& sender, const std::string& message) {
+
+}
+
+/**
  * @brief Converts an attack enumerated value into a string.
  * @param attack an attack
  * @return the corresponding string
@@ -1217,10 +1249,31 @@ Enemy::HurtStyle Enemy::get_hurt_style_by_name(const std::string& name) {
 }
 
 /**
- * @brief Sends a message from another enemy to this enemy.
- * @param sender the sender
- * @param message the message
+ * @brief Converts a value of the ObstacleBehavior enumeration into a string.
+ * @param behavior a behavior with obstacles
+ * @return the corresponding string
  */
-void Enemy::notify_message_received(Enemy& sender, const std::string& message) {
+const std::string& Enemy::get_obstacle_behavior_name(ObstacleBehavior behavior) {
 
+  Debug::check_assertion(behavior >= 0 && behavior < OBSTACLE_BEHAVIOR_NUMBER,
+      StringConcat() << "Invalid obstacle behavior number: " << behavior);
+
+  return obstacle_behavior_names[behavior];
+}
+
+/**
+ * @brief Converts a string into a value of the ObstacleBehavior enumeration.
+ * @param name name of a behavior with obstacles
+ * @return the corresponding behavior
+ */
+Enemy::ObstacleBehavior Enemy::get_obstacle_behavior_by_name(const std::string& name) {
+
+  for (int i = 0; i < OBSTACLE_BEHAVIOR_NUMBER; i++) {
+    if (obstacle_behavior_names[i] == name) {
+      return ObstacleBehavior(i);
+    }
+  }
+
+  Debug::die(StringConcat() << "Invalid obstacle behavior name: " << name);
+  throw;
 }

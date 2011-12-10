@@ -1071,8 +1071,11 @@ called when a door has just been closed
 called when a block has just been pushed or pulled
 by the hero on a section of 16 pixels (or less if there was an obstacle)
 
+- <tt>event_enemy_dying(enemy_name)</tt>:
+Called when an enemy of this map is dying (its kill animation starts).
+
 - <tt>event_enemy_dead(enemy_name)</tt>:
-called when an enemy of this map is dead (and its kill animation is finished)
+Called when an enemy of this map is dead (and its kill animation is finished).
 
 @subsection events_item Item scripts
 

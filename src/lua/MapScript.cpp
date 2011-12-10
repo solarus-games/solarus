@@ -406,10 +406,19 @@ void MapScript::event_block_moved(const std::string& block_name) {
 }
 
 /**
+ * @brief Notifies the script that an enemy is being killed.
+ * @param enemy_name name of the enemy
+ */
+void MapScript::event_enemy_dying(const std::string& enemy_name) {
+
+  notify_script("event_enemy_dying", "s", enemy_name.c_str());
+}
+
+/**
  * @brief Notifies the script that an enemy has just been killed.
  * @param enemy_name name of the enemy
  */
-void MapScript::event_enemy_dead(const std::string &enemy_name) {
+void MapScript::event_enemy_dead(const std::string& enemy_name) {
 
   notify_script("event_enemy_dead", "s", enemy_name.c_str());
 }

@@ -79,6 +79,12 @@ function event_hero_on_sensor(sensor_name)
       and not sol.game.savegame_get_boolean(93)
       and not fighting_boss then
     start_boss()
+  elseif sensor_name == "close_boss_door_sensor"
+      and sol.map.door_is_open("boss_door")
+      and not sol.game.savegame_get_boolean(93)
+      and not fighting_boss then
+    sol.main.play_music("none")
+    sol.map.door_close("boss_door")
   end
 end
 
@@ -86,7 +92,6 @@ function start_boss()
 
   fighting_boss = true
   sol.map.enemy_set_enabled("boss", true)
-  sol.map.door_close("boss_door")
   sol.main.play_music("boss.spc")
 end
 

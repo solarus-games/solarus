@@ -180,3 +180,16 @@ void DynamicTile::notify_collision(MapEntity &entity_overlapping, CollisionMode 
   }
 }
 
+/**
+ * @brief Notifies this entity that it was just enabled or disabled.
+ * @param enabled true if the entity is now enabled
+ */
+void DynamicTile::notify_enabled(bool enabled) {
+
+  if (is_on_map()
+      && !enabled
+      && test_collision_custom(get_hero())) {
+    // the tile under the hero is disabled: the hero's ground may have changed
+    get_hero().check_position();
+  }
+}

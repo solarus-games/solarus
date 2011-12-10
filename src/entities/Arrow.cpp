@@ -484,6 +484,7 @@ void Arrow::notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
 
   if (result.type == EnemyReaction::PROTECTED) {
     stop();
+    attach_to(victim);
   }
   else if (result.type != EnemyReaction::IGNORED) {
     if (killed) {

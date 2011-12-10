@@ -401,8 +401,8 @@ void PickableItem::set_suspended(bool suspended) {
       // the game is being resumed
       // recalculate the blinking date and the disappearing date
       if (when_suspended != 0) {
-	blink_date = now + (blink_date - when_suspended);
-	disappear_date = now + (disappear_date - when_suspended);
+        blink_date = now + (blink_date - when_suspended);
+        disappear_date = now + (disappear_date - when_suspended);
       }
     }
   }

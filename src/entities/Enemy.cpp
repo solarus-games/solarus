@@ -383,7 +383,7 @@ Enemy::ObstacleBehavior Enemy::get_obstacle_behavior() {
  * @brief Sets the behavior with obstacles for this enemy.
  * @param behavior the behavior with obstacles
  */
-void Enemy::set_obstacle_behavior(ObstacleBehavior behavior) {
+void Enemy::set_obstacle_behavior(ObstacleBehavior obstacle_behavior) {
   this->obstacle_behavior = obstacle_behavior;
 }
 

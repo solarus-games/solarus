@@ -35,8 +35,8 @@ Explosion::Explosion(Layer layer, const Rectangle &xy, bool with_damages):
   // initialize the entity
   create_sprite("entities/explosion");
 
+  get_sprite().enable_pixel_collisions();
   if (with_damages) {
-    get_sprite().enable_pixel_collisions();
     set_bounding_box_from_sprite();
   }
 }

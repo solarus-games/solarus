@@ -168,7 +168,7 @@ class Enemy: public Detector {
     void set_life(int life);
     int get_life();
     ObstacleBehavior get_obstacle_behavior();
-    void set_obstacle_behavior(ObstacleBehavior behavior);
+    void set_obstacle_behavior(ObstacleBehavior obstacle_behavior);
     void set_pushed_back_when_hurt(bool pushed_back_when_hurt);
     void set_push_hero_on_sword(bool push_hero_on_sword);
     void set_can_hurt_hero_running(bool can_hurt_hero_running);

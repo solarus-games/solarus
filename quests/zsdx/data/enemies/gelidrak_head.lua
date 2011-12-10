@@ -81,7 +81,7 @@ function event_hurt(attack, life_lost)
 
   sol.enemy.stop_movement()
 
-  if sol.enemy.get_life() - life_lost > 0 then
+  if sol.enemy.get_life() > 0 then
     -- notify the body (so that it is hurt too)
     sol.enemy.send_message(sol.enemy.get_father(), "hurt")
   else

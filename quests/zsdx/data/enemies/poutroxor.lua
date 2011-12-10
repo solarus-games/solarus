@@ -64,7 +64,7 @@ end
 function event_hurt(attack, life_lost)
 
   sol.main.timer_stop_all()
-  if phase == 1 and sol.enemy.get_life() - life_lost <= 7 then
+  if phase == 1 and sol.enemy.get_life() <= 7 then
     sol.enemy.stop_movement()
     sol.main.play_sound("enemy_killed")
     sol.main.sprite_set_animation(skeleton, "hurt")
@@ -73,7 +73,7 @@ function event_hurt(attack, life_lost)
     sol.map.enemy_remove_group(sol.enemy.get_name() .. "_son")
     skeleton = nil
     sol.enemy.set_attack_consequence_sprite(head, "arrow", 1)
-  elseif sol.enemy.get_life() - life_lost <= 0 then
+  elseif sol.enemy.get_life() <= 0 then
     sol.map.enemy_remove_group(sol.enemy.get_name() .. "_son")
   end
 end

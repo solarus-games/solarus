@@ -1208,7 +1208,7 @@ test, the sprite that receives the attack is passed as a parameter.
 Called when the enemy is hurt.
 <tt>attack</tt> can be "sword", "thrown_item", "explosion",
 "arrow", "hookshot", "boomerang", or "fire".
-This function is called before removing <tt>life_lost</tt> life points.
+This function is called after removing <tt>life_lost</tt> life points.
 
 - <tt>event_dead()</tt>:
 called when the enemy is killed and has finished to die

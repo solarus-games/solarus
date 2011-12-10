@@ -12,6 +12,14 @@ switches_puzzle_order = {
 
 switches_puzzle_nb_enabled = 0
 switches_puzzle_correct = true
+
+-- boss
+local boss_arrows = {
+  [13] = { x = 864, y = 477, created = false },
+  [37] = { x = 896, y = 341, created = false },
+  [55] = { x = 1024, y = 341, created = false },
+  [80] = { x = 1056, y = 477, created = false },
+}
 fighting_boss = false
 
 function event_map_started(destination_point)
@@ -29,6 +37,10 @@ function event_map_started(destination_point)
   if destination_point_name == "from_final_room"
       or sol.game.savegame_get_boolean(103) then
     sol.map.door_set_open("final_room_door", true)
+  end
+
+  if sol.game.savegame_get_boolean(103) then
+    sol.map.tile_set_enabled("boss_killed_floor", true)
   end
 end
 
@@ -79,12 +91,42 @@ function event_hero_on_sensor(sensor_name)
       and not sol.game.savegame_get_boolean(93)
       and not fighting_boss then
     start_boss()
+
   elseif sensor_name == "close_boss_door_sensor"
       and sol.map.door_is_open("boss_door")
       and not sol.game.savegame_get_boolean(93)
       and not fighting_boss then
     sol.main.play_music("none")
     sol.map.door_close("boss_door")
+
+  elseif sensor_name == "save_solid_ground_sensor" then
+    sol.map.hero_save_solid_ground(960, 525, 0)
+
+  elseif sensor_name == "boss_floor_sensor_1" then
+    if fighting_boss
+      and sol.map.tile_is_enabled("boss_floor_1") then
+
+      sol.map.sensor_set_group_enabled("boss_floor_sensor", false)
+      boss_restore_floor(true)
+      boss_change_floor(1, 92, 1, false)
+      sol.main.timer_start(function()
+        sol.map.sensor_set_group_enabled("boss_floor_sensor", true)
+	boss_change_floor(92, 1, -1, true)
+      end, 10000)
+    end
+
+  elseif sensor_name == "boss_floor_sensor_2" then
+    if fighting_boss
+      and sol.map.tile_is_enabled("boss_floor_92") then
+
+      sol.map.sensor_set_group_enabled("boss_floor_sensor", false)
+      boss_restore_floor(true)
+      boss_change_floor(92, 1, -1, false)
+      sol.main.timer_start(function()
+        sol.map.sensor_set_group_enabled("boss_floor_sensor", true)
+	boss_change_floor(1, 92, 1, true)
+      end, 10000)
+    end
   end
 end
 
@@ -107,8 +149,78 @@ end
 
 function open_final_room()
 
-  sol.map.door_open("final_room_door")
   sol.main.play_sound("secret")
+  sol.map.door_open("final_room_door")
+  sol.map.tile_set_enabled("boss_killed_floor", true)
   sol.map.hero_unfreeze()
+end
+
+function boss_change_floor(first, last, inc, enable)
+
+  local index = first
+  local delay
+  if enable then
+    delay = 30
+    for i, v in ipairs(boss_arrows) do
+      v.created = false
+    end
+  else
+    delay = 70
+  end
+
+  function repeat_change()
+    if (enable and index % 10 == 0)
+      or (not enable and index % 5 == 0) then
+      sol.main.play_sound("stone")
+    end
+    
+    -- enable/disable the tile
+    sol.map.tile_set_enabled("boss_floor_" .. index, enable)
+
+    -- create an arrow with some tiles
+    if enable and boss_arrows[index] ~= nil then
+      sol.map.pickable_item_create("arrow", 1, -1,
+          boss_arrows[index].x, boss_arrows[index].y, 0)
+      boss_arrows[index].created = true
+    end
+
+    if index ~= last then
+      sol.main.timer_start(repeat_change, delay)
+    end
+    index = index + inc
+  end
+  repeat_change()
+end
+
+function boss_restore_floor(with_arrows)
+
+  -- restore the whole floor immediately
+  sol.map.tile_set_group_enabled("boss_floor", true)
+  sol.main.timer_stop_all()
+
+  if with_arrows then
+    for i, v in ipairs(boss_arrows) do
+      if not v.created then
+	sol.map.pickable_item_create("arrow", 1, -1, v.x, v.y, 0)
+	v.created = true
+      end
+    end
+  end
+end
+
+function event_enemy_dying(enemy_name)
+
+  if enemy_name == "boss" then
+    boss_restore_floor(false)
+  end
+end
+
+function event_enemy_dead(enemy_name)
+
+  if enemy_name == "boss" then
+    -- create the heart container manually to be sure it won't be in lava
+    sol.map.pickable_item_create("heart_container", 1, 103, 960, 437, 0)
+    sol.main.timer_stop_all()
+  end
 end
 

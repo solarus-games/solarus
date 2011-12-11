@@ -460,4 +460,7 @@ booleans:
 943	west moutain cave 1F: chest with the bottle 3
 944	hidden palace D3: chest with 20 rupees
 945	Sahasrahla's house B1: pot with 20 rupees
+946	Twin caves: weak block
+947	Castle B1: weak wall A
+948	Castle B1: weak wall B
 

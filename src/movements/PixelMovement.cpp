@@ -189,7 +189,9 @@ void PixelMovement::update() {
 
   uint32_t now = System::now();
 
-  while (now >= next_move_date && !finished) {
+  while (now >= next_move_date
+      && !finished
+      && (get_entity() == NULL || get_entity()->get_movement() == this)) {
 
     Rectangle old_xy(get_x(), get_y());
     make_next_step();

@@ -130,3 +130,10 @@ function event_npc_interaction(npc_name)
   end
 end
 
+function event_door_open(door_name)
+
+  if door_name:find("^weak_wall") then
+    sol.main.play_sound("secret")
+  end
+end
+

@@ -40,7 +40,11 @@ function event_map_started(destination_point)
   end
 
   if sol.game.savegame_get_boolean(103) then
+    -- boss heart container already picked
     sol.map.tile_set_enabled("boss_killed_floor", true)
+  elseif sol.game.savegame_get_boolean(93) then
+    -- boss killed, heart container not picked
+    sol.map.pickable_item_create("heart_container", 1, 103, 960, 437, 0)
   end
 end
 

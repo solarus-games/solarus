@@ -212,6 +212,7 @@ function event_enemy_dying(enemy_name)
 
   if enemy_name == "boss" then
     boss_restore_floor(false)
+    sol.map.sensor_set_group_enabled("boss_floor_sensor", false)
   end
 end
 

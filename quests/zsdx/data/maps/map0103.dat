@@ -992,7 +992,7 @@
 12	1	464	928	8	8	custom_obstacle_2	1	1	1	1
 12	1	648	64	8	8	custom_obstacle_3	1	1	1	1
 12	1	648	88	8	8	custom_obstacle_4	1	1	1	1
-5	1	744	48	chest	0	rupee	5	629
+5	1	744	48	chest	0	rupee	6	629
 12	1	720	40	8	24	custom_obstacle_5	1	1	1	1
 12	1	768	104	24	8	custom_obstacle_6	1	1	1	1
 12	1	768	144	24	8	custom_obstacle_7	1	1	1	1

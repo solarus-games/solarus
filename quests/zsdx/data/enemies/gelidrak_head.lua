@@ -1,7 +1,8 @@
 -- Gelidrak's head
 
-vulnerable = false      -- becomes vulnerable when the tail is hurt
-vulnerable_delay = 5000 -- delay while the head remains vulnerable
+local vulnerable = false      -- becomes vulnerable when the tail is hurt
+local vulnerable_delay = 5000 -- delay while the head remains vulnerable
+local nb_flames_created = 0
 
 function event_appear()
 
@@ -14,6 +15,7 @@ function event_appear()
   sol.enemy.set_obstacle_behavior("flying")
   sol.enemy.set_no_treasure()
   sol.enemy.set_layer_independent_collisions(true)
+  sol.enemy.set_push_hero_on_sword(true)
 
   sol.enemy.set_invincible()
   sol.enemy.set_attack_consequence("sword", "protected")
@@ -27,6 +29,7 @@ function event_restart()
 
   if not vulnerable then
     go_back()
+    sol.main.timer_start(throw_flames, math.random(3000, 7000))
   else
     sol.enemy.set_can_attack(false)
   end
@@ -65,6 +68,8 @@ function event_message_received(src_enemy, message)
       sol.enemy.stop_movement()
       sol.enemy.set_can_attack(false)
       sol.enemy.set_attack_consequence("sword", 1)
+      local sprite = sol.enemy.get_sprite()
+      sol.main.sprite_set_animation(sprite, "walking")
       sol.main.timer_stop_all()
       sol.main.timer_start(function()
 	vulnerable = false
@@ -86,6 +91,7 @@ function event_hurt(attack, life_lost)
     sol.enemy.send_message(sol.enemy.get_father(), "hurt")
   else
     sol.main.timer_stop_all()
+    sol.enemy.send_message(sol.enemy.get_father(), "dying")
   end
 end
 
@@ -93,5 +99,31 @@ function event_dead()
 
   -- notify the body
   sol.enemy.send_message(sol.enemy.get_father(), "dead")
+end
+
+function throw_flames()
+
+  nb_flames_created = 0
+  sol.enemy.stop_movement()
+  local sprite = sol.enemy.get_sprite()
+  sol.main.sprite_set_animation(sprite, "preparing_flame")
+  sol.main.play_sound("lamp")
+  sol.main.timer_start(repeat_flame, 500)
+end
+
+function repeat_flame()
+
+  local max_flames_created = 22 - sol.enemy.get_life()
+  if nb_flames_created <= max_flames_created then
+    local son_name = sol.enemy.get_name() .. "_son_" .. nb_flames_created
+    local angle = math.random(360) * math.pi / 180
+    nb_flames_created = nb_flames_created + 1
+    sol.enemy.create_son(son_name, "blue_flame", 0, 16)
+    sol.enemy.send_message(son_name, tostring(angle))
+    sol.main.play_sound("lamp")
+    sol.main.timer_start(repeat_flame, 150)
+  else
+    sol.main.timer_start(sol.enemy.restart, 500)
+  end
 end
 

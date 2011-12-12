@@ -14,6 +14,7 @@ function event_appear()
   sol.enemy.set_obstacle_behavior("flying")
   sol.enemy.set_no_treasure()
   sol.enemy.set_layer_independent_collisions(true)
+  sol.enemy.set_push_hero_on_sword(true)
 
   sol.enemy.set_invincible()
   sol.enemy.set_attack_consequence("arrow", 1)
@@ -50,6 +51,7 @@ function event_movement_finished(m)
   -- the tail was retracted and has just recovered its normal position
   retracted = false
   sol.enemy.set_attack_consequence("arrow", 1)
+  sol.enemy.set_can_attack(true)
   event_restart()
 
   if not sol.map.enemy_is_dead(sol.enemy.get_father()) then
@@ -67,6 +69,7 @@ function event_hurt(attack, life_lost)
   local x, y = sol.map.enemy_get_position(sol.enemy.get_father())
   sol.enemy.set_position(x, y - 48)
   sol.enemy.set_attack_consequence("arrow", "protected")
+  sol.enemy.set_can_attack(false)
   sol.map.arrow_remove()
 end
 

@@ -23,7 +23,7 @@ function event_appear()
 
   sol.enemy.set_life(initial_life)
   sol.enemy.set_damage(4)
-  sol.enemy.create_sprite("enemies/agahnim")
+  sol.enemy.create_sprite("enemies/agahnim_2")
   sol.enemy.set_size(16, 16)
   sol.enemy.set_origin(8, 13)
   sol.enemy.set_invincible()
@@ -95,7 +95,7 @@ end
 function throw_fire()
 
   nb_sons_created = nb_sons_created + 1
-  sol.enemy.create_son("agahnim_fireball_"..nb_sons_created, "fireball_triple", 0, -21)
+  sol.enemy.create_son("agahnim_fireball_"..nb_sons_created, "red_fireball_triple", 0, -21)
 end
 
 function event_message_received(src_enemy, message)

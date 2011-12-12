@@ -943,6 +943,7 @@
 0	1	368	944	16	64	101
 0	1	592	928	32	8	299
 0	1	160	760	16	16	534
+13	1	944	69	48	48	special_torch_dont_close_sensor	0
 18	1	848	824	door_b	1	0	-1
 18	1	848	776	door_b_2	3	0	-1
 18	1	1008	856	door_c_2	1	0	-1
@@ -953,8 +954,6 @@
 18	1	960	920	door_e	3	0	-1
 18	1	888	624	door_a	0	0	627
 18	1	936	624	door_a_2	2	0	627
-13	1	952	93	32	32	special_torch_dont_close_sensor	0
-13	1	952	77	32	16	special_torch_close_sensor	0
 18	1	944	280	ne_door_2	3	0	624
 18	1	944	328	ne_door	1	0	624
 9	1	608	69	block_3	-1	entities/block	1	0	0

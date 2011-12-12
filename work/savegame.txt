@@ -464,4 +464,6 @@ booleans:
 946	Twin caves: weak block
 947	Castle B1: weak wall A
 948	Castle B1: weak wall B
+949	dungeon 3 2F: chest with 300 rupees
+950	dungeon 3 2F: chest with 300 rupees appeared
 

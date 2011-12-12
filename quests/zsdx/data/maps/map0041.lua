@@ -30,6 +30,22 @@ function event_map_started(destination_point_name)
     sol.map.tile_set_group_enabled("shortcut_b", false)
     sol.map.switch_set_activated("shortcut_b_switch", true)
   end
+
+  -- north chest
+  if sol.game.savegame_get_boolean(950) then
+    sol.map.switch_set_activated("n_switch", true)
+  else
+    sol.map.chest_set_enabled("n_chest", false)
+  end
+end
+
+-- Called when the opening transition of the map finished
+function event_map_opening_transition_finished(destination_point_name)
+
+  -- show the welcome message
+  if destination_point_name == "from_outside" then
+    sol.map.dialog_start("dungeon_3")
+  end
 end
 
 function event_enemy_dead(enemy_name)
@@ -66,6 +82,12 @@ function event_switch_activated(switch_name)
     sol.map.tile_set_group_enabled("shortcut_b", false)
     sol.game.savegame_set_boolean(909, true)
     sol.main.play_sound("secret")
+  elseif switch_name == "n_switch" then
+    sol.map.camera_move(280, 56, 250, function()
+      sol.main.play_sound("chest_appears")
+      sol.map.chest_set_enabled("n_chest", true)
+      sol.game.savegame_set_boolean(950, true)
+    end)
   end
 end
 

@@ -181,7 +181,7 @@
 7	0	520	405	enemy_8	3	tentacle	0	-1	_random	1	-1
 7	0	520	421	enemy_9	3	tentacle	0	-1	_random	1	-1
 7	0	904	589	pike_2	3	pike_detect	0	-1	_random	1	-1
-7	0	712	589	pike	3	pike_detect	0	-1	_random	1	-1
+7	0	712	589	pike_1	3	pike_detect	0	-1	_random	1	-1
 7	0	264	253	enemy_18	3	pike_fixed	0	-1	_random	1	-1
 7	0	248	269	enemy_19	3	pike_fixed	0	-1	_random	1	-1
 7	0	232	269	enemy_20	3	pike_fixed	0	-1	_random	1	-1

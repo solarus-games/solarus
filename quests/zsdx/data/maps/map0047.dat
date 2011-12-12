@@ -1150,7 +1150,7 @@
 18	1	1112	24	agahnim_door	1	0	-1
 7	1	1128	125	boss	3	billy	2	727	heart_container	1	729
 13	1	1080	205	112	16	start_boss_sensor	0
-2	1	1104	1768	16	16	teletransporter	0	0	48	tmp
+2	1	1104	1768	16	16	teletransporter	0	0	47	tmp
 8	1	1128	125	billy_npc	3	1	npc/billy	map
 10	1	1616	688	24	16	LD5_closed	523	1
 1	1	112	637	from_hidden_room	3	0
@@ -1171,6 +1171,7 @@
 12	1	1856	1120	16	16	LO2_5	1	0	0	0
 18	1	1112	232	boss_door	3	0	-1
 1	1	1152	445	tmp	-1	0
+2	1	1136	1768	16	16	teletransporter_3	0	0	49	tmp
 0	2	1080	1040	96	8	437
 0	2	1080	1016	96	8	438
 0	2	312	1624	8	96	442

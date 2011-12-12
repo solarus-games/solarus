@@ -457,6 +457,7 @@ int Script::map_api_hero_set_position(lua_State* l) {
   if (layer != -1) {
     script.get_map().get_entities().set_entity_layer(&hero, Layer(layer));
   }
+  hero.check_position();
 
   return 0;
 }

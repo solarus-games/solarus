@@ -3,7 +3,7 @@
 function event_appear()
 
   sol.enemy.set_life(1)
-  sol.enemy.set_damage(4)
+  sol.enemy.set_damage(12)
   sol.enemy.create_sprite("enemies/fireball_simple")
   sol.enemy.set_size(16, 16)
   sol.enemy.set_origin(8, 8)

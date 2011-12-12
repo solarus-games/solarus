@@ -1470,21 +1470,31 @@ void Hero::notify_collision_with_conveyor_belt(ConveyorBelt &conveyor_belt, int 
 
     if (conveyor_belt.overlaps(center)) {
 
-      // check that the hero will be able to completely get out
+      // check that the hero can go in the conveyor belt's direction
+      // (otherwise the hero would be trapped forever if there
+      // is an obstacle 8 pixels after the conveyor belt)
       Rectangle collision_box(0, 0, 16, 16);
       if (dx != 0) { // horizontal conveyor belt
         collision_box.set_xy(get_top_left_x() + dx,
-            conveyor_belt.get_top_left_y() + dy);
+            conveyor_belt.get_top_left_y());
       }
       else { // vertical conveyor belt
-        collision_box.set_xy(conveyor_belt.get_top_left_x() + dx,
+        collision_box.set_xy(conveyor_belt.get_top_left_x(),
             get_top_left_y() + dy);
       }
 
       if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, *this)) {
 
-        // move the hero
-        set_state(new ConveyorBeltState(*this, conveyor_belt));
+        // check that the conveyor belt's exit is clear
+        // (otherwise the hero could not take a blocked conveyor belt the reverse way)
+        collision_box.set_xy(conveyor_belt.get_bounding_box());
+        collision_box.add_xy(dx, dy);
+
+        if (!get_map().test_collision_with_obstacles(get_layer(), collision_box, *this)) {
+
+          // move the hero
+          set_state(new ConveyorBeltState(*this, conveyor_belt));
+        }
       }
     }
   }

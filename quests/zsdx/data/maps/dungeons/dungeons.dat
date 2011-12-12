@@ -574,7 +574,7 @@ big = 0
 floor = 2
 x = 744
 y = 48
-save = -1
+save = 629
 big = 0
 
 [dungeon_7.map_103.chest_1]

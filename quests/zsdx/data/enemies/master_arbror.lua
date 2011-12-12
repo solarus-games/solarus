@@ -1,13 +1,14 @@
 -- A giant tree boss from Newlink
 
-nb_sons_created = 0
-nb_sons_immobilized = 0
-nb_sons_immobilized_needed = 3 -- number of sons immobilized needed to get him vulnerable
-vulnerable = false
+local nb_sons_created = 0
+local nb_sons_immobilized = 0
+local nb_sons_immobilized_needed = 3 -- number of sons immobilized needed to get him vulnerable
+local vulnerable = false
+local initial_life = 12
 
 function event_appear()
 
-  sol.enemy.set_life(12)
+  sol.enemy.set_life(initial_life)
   sol.enemy.set_damage(2)
   sol.enemy.create_sprite("enemies/master_arbror")
   sol.enemy.set_size(16, 16)
@@ -17,6 +18,7 @@ function event_appear()
   sol.enemy.set_attack_consequence("sword", "protected")
   sol.enemy.set_attack_consequence("arrow", "protected")
   sol.enemy.set_attack_consequence("hookshot", "protected")
+  sol.enemy.set_push_hero_on_sword(true)
 end
 
 function event_restart()
@@ -41,18 +43,29 @@ end
 
 function event_hurt(attack, life_lost)
 
-  if sol.enemy.get_life() <= 0 then
+  local life = sol.enemy.get_life()
+  if life <= 0 then
     local sprite = sol.enemy.get_sprite()
     sol.main.sprite_set_animation_ignore_suspend(sprite, true)
     sol.map.dialog_start("dungeon_3.arbror_killed")
     sol.main.timer_stop_all()
     remove_sons()
+  else
+    if life > 9 then 
+      nb_sons_immobilized_needed = 3
+    elseif life > 7 then
+      nb_sons_immobilized_needed = 4
+    elseif life > 5 then
+      nb_sons_immobilized_needed = 5
+    else
+      nb_sons_immobilized_needed = 6
+    end
   end
 end
 
 function prepare_son()
 
-  son_prefix = sol.enemy.get_name().."_son"
+  son_prefix = sol.enemy.get_name() .. "_son"
   if sol.map.enemy_get_group_count(son_prefix) < nb_sons_immobilized_needed then
     local sprite = sol.enemy.get_sprite()
     sol.main.sprite_set_animation(sprite, "preparing_son")
@@ -69,6 +82,8 @@ function create_son()
   nb_sons_created = nb_sons_created + 1
   son_name = sol.enemy.get_name().."_son_"..nb_sons_created
   sol.enemy.create_son(son_name, "arbror_root", x, 80)
+  local speed = 32 + (initial_life - sol.enemy.get_life()) * 5
+  sol.enemy.send_message(son_name, speed)
   sol.main.play_sound("stone")
 end
 

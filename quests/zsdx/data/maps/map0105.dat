@@ -2247,7 +2247,7 @@
 4	1	56	317	0	_none	1	-1
 4	1	56	477	0	_none	1	-1
 1	1	808	1677	tmp	3	0
-2	1	1776	2280	16	16	teletransporter_23	0	0	108	from_3f_se
+2	1	1776	2280	16	16	teletransporter_23	0	0	8	from_ending
 2	1	1744	2280	16	16	teletransporter_5	0	0	130	from_6f
 12	1	2264	1664	16	16	custom_obstacle_23	0	1	0	0
 13	1	2272	1677	16	16	sensor_6	2

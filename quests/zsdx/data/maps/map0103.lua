@@ -30,8 +30,13 @@ function event_map_started(destination_point_name)
     sol.map.switch_set_activated("door_a_switch", true)
   end
 
-  -- boss door
+  -- boss
   sol.map.door_set_open("boss_door", true)
+  if sol.game.savegame_get_boolean(625)
+    and not sol.game.savegame_get_boolean(626) then
+    -- boss killed, heart container not picked
+    sol.map.pickable_item_create("heart_container", 1, 626, 544, 789, 0)
+  end
 
   -- special torch door
   if sol.game.savegame_get_boolean(624) then

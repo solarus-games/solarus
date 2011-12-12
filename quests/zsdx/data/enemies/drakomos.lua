@@ -1,12 +1,12 @@
-head_1 = nil
-head_2 = nil
-ball_sprite = nil
-killing = false
+local head_1 = nil
+local head_2 = nil
+local ball_sprite = nil
+local killing = false
 
 function event_appear()
 
   sol.enemy.set_life(1)
-  sol.enemy.set_damage(1)
+  sol.enemy.set_damage(8)
   sol.enemy.create_sprite("enemies/drakomos")
   sol.enemy.set_size(128, 80)
   sol.enemy.set_origin(64, 64)

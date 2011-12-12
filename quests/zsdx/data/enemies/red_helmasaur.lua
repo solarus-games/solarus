@@ -1,7 +1,7 @@
 function event_appear()
 
   sol.enemy.set_life(4)
-  sol.enemy.set_damage(4)
+  sol.enemy.set_damage(12)
   sol.enemy.create_sprite("enemies/red_helmasaur")
   sol.enemy.set_size(16, 16)
   sol.enemy.set_origin(8, 13)

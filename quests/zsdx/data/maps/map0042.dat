@@ -1212,13 +1212,12 @@
 4	1	968	413	0	heart	1	-1
 4	1	968	429	0	_random	1	-1
 7	1	872	597	enemy	3	mandible	0	-1	_random	1	-1
-7	1	816	85	enemy_2	3	mandible	0	-1	_random	1	-1
-7	1	936	213	enemy_3	3	bee_guard	0	-1	_random	1	-1
-7	1	704	189	enemy_4	3	bee_guard	0	-1	_random	1	-1
-12	1	712	232	16	16	custom_obstacle_7	0	1	1	1
-12	1	920	280	16	16	custom_obstacle_8	0	1	1	1
-12	1	920	488	16	16	custom_obstacle_9	0	1	1	1
-12	1	712	280	16	16	custom_obstacle_10	0	1	1	1
+7	1	928	405	enemy_2	3	mandible	0	-1	_random	1	-1
+7	1	952	589	enemy_3	3	bee_guard	0	-1	_random	1	-1
+7	1	776	421	enemy_4	3	bee_guard	0	-1	_random	1	-1
+12	1	712	232	16	64	custom_obstacle_7	0	1	1	1
+12	1	920	280	16	64	custom_obstacle_8	0	1	1	1
+12	1	920	440	16	64	custom_obstacle_9	0	1	1	1
 12	1	120	328	16	16	custom_obstacle_11	0	1	1	1
 7	1	416	509	enemy_7	3	tentacle	0	-1	_random	1	-1
 7	1	192	485	enemy_8	3	tentacle	0	-1	_random	1	-1

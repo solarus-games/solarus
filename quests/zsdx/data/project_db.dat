@@ -403,8 +403,7 @@
 6	evil_tile	Evil Tile
 6	blue_flame	Flame (blue)
 6	fireball_simple	Fireball (simple)
-6	red_fireball_triple	Fireball (red, triple)
-6	blue_fireball_triple	Fireball (blue, triple)
+6	fireball_triple	Fireball (triple)
 6	globul	Globul
 6	gibdo	Gibdo
 6	blue_hardhat_beetle	Hardhat Beetle (blue)

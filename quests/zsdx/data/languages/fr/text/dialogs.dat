@@ -2003,11 +2003,11 @@ line2 = "Rubis !"
 line3 = "Fantastique !"
 
 [_treasure.rupee.6]
-# 200 rubis
+# 300 rubis
 # Remarque : clin d'oeil à Link's Awakening
 #       |--------------------|
 icon = 90
-line1 = "Tu as trouvé 200"
+line1 = "Tu as trouvé 300"
 line2 = "Rubis !"
 line3 = "C'est l'extase !"
 

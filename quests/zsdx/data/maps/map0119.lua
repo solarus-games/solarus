@@ -21,11 +21,21 @@ function event_map_started(destination_point_name)
     end
 
     -- boss fight
-    if destination_point_name == "from_dungeon_10_5f"
-      and not sol.game.savegame_get_boolean(299) then
+    if destination_point_name == "from_dungeon_10_5f" then
 
-      new_music = "none"
-      sol.map.enemy_set_group_enabled("", false) -- disable all simple enemies
+      if not sol.game.savegame_get_boolean(299) then
+	-- boss not killed yet
+        new_music = "none"
+        sol.map.enemy_set_group_enabled("", false) -- disable all simple enemies
+      elseif not sol.game.savegame_get_boolean(298) then
+	-- boss killed but sword not got yet
+	local variant = 2
+	if sol.game.get_ability("sword") == 2 then
+	  -- the player already has the second one: give the third one instead
+	  variant = 3
+	end
+	sol.map.pickable_item_create("sword", variant, 298, 440, 157, 1)
+      end
     end
   end
 

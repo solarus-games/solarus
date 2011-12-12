@@ -867,6 +867,7 @@
 12	1	640	400	16	16	custom_obstacle_10	0	1	0	0
 9	1	656	525	block_saved	3	entities/block	1	0	0
 12	1	808	144	16	16	custom_obstacle_12	0	1	0	0
+2	1	488	992	16	16	teletransporter_2	0	0	119	from_dungeon_10_5f
 0	2	824	80	160	8	323
 0	2	704	16	64	8	323
 0	2	600	368	96	8	324

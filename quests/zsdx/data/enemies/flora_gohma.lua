@@ -1,6 +1,6 @@
-eye = nil
-current_xy = {}
-ball_sprite = nil
+local eye = nil
+local current_xy = {}
+local ball_sprite = nil
 
 function event_appear()
 
@@ -9,11 +9,14 @@ function event_appear()
   sol.enemy.create_sprite("enemies/flora_gohma")
   sol.enemy.set_size(80, 80)
   sol.enemy.set_origin(40, 64)
-  sol.enemy.set_hurt_style("normal")
+  sol.enemy.set_hurt_style("boss")
   sol.enemy.set_pushed_back_when_hurt(false)
+  sol.enemy.set_push_hero_on_sword(true)
   sol.enemy.set_invincible()
   sol.enemy.set_attack_consequence("sword", "protected")
   sol.enemy.set_attack_consequence("boomerang", "protected")
+  sol.enemy.set_attack_consequence("arrow", "protected")
+  sol.enemy.set_attack_consequence("hookshot", "protected")
 
   -- create the eye
   local my_name = sol.enemy.get_name()
@@ -75,7 +78,6 @@ function event_message_received(src_enemy, message)
     if message == "dying" then
       -- the eye is dying: stop moving
       sol.enemy.stop_movement()
-      sol.main.sprite_set_paused(sol.enemy.get_sprite(), true)
     elseif message == "dead" then
       -- the eye is dead: I'm gonna have to die too
       sol.enemy.hurt(1)

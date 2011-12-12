@@ -22,9 +22,15 @@ arms_up enemies/agahnim.png 4 0 -1
 144	96	48	48	24	45	1	1
 144	144	48	48	24	45	1	1
 
-preparing_fire enemies/agahnim.png 4 300 2
+preparing_red_fireball enemies/agahnim.png 4 300 2
 192	0	48	48	24	45	3	3
 192	48	48	48	24	45	3	3
 192	96	48	48	24	45	3	3
 192	144	48	48	24	45	3	3
+
+preparing_blue_fireball enemies/agahnim.png 4 300 2
+0	192	48	48	24	45	3	3
+0	240	48	48	24	45	3	3
+0	288	48	48	24	45	3	3
+0	336	48	48	24	45	3	3
 

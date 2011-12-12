@@ -1,26 +1,25 @@
--- A triple bouncing fireball, usually thrown by another enemy
+-- A triple bouncing fireball that the hero cannot fight
 
-speed = 192
-bounces = 0
-max_bounces = 3
-used_sword = false
-sprite2 = nil
-sprite3 = nil
+local speed = 192
+local bounces = 0
+local max_bounces = 8
+local sprite2 = nil
+local sprite3 = nil
 
 function event_appear()
 
   sol.enemy.set_life(1)
-  sol.enemy.set_damage(4)
-  sol.enemy.create_sprite("enemies/fireball_triple")
+  sol.enemy.set_damage(8)
+  sol.enemy.create_sprite("enemies/blue_fireball_triple")
   sol.enemy.set_size(16, 16)
   sol.enemy.set_origin(8, 8)
   sol.enemy.set_invincible()
   sol.enemy.set_attack_consequence("sword", "custom")
 
   -- two smaller fireballs just for the displaying
-  sprite2 = sol.main.sprite_create("enemies/fireball_triple")
+  sprite2 = sol.main.sprite_create("enemies/blue_fireball_triple")
   sol.main.sprite_set_animation(sprite2, "small")
-  sprite3 = sol.main.sprite_create("enemies/fireball_triple")
+  sprite3 = sol.main.sprite_create("enemies/blue_fireball_triple")
   sol.main.sprite_set_animation(sprite3, "tiny")
 end
 
@@ -35,8 +34,6 @@ function event_restart()
 end
 
 function event_obstacle_reached()
-
-  --sol.map.enemy_remove(sol.enemy.get_name())
 
   if bounces < max_bounces then
 
@@ -64,23 +61,12 @@ end
 function event_custom_attack_received(attack, sprite)
 
   if attack == "sword" then
-
-    local x, y = sol.enemy.get_position()
-    local hero_x, hero_y = sol.map.hero_get_position()
-    local angle = sol.main.get_angle(hero_x, hero_y - 5, x, y)
-    local m = sol.main.straight_movement_create(speed, angle)
-    sol.enemy.start_movement(m)
-    sol.main.play_sound("boss_fireball")
-    bounces = bounces + 1
-    speed = speed + 48
-    used_sword = true
-  end
-end
-
-function event_collision_enemy(other_name, other_sprite, my_sprite)
-
-  if used_sword then
-    sol.enemy.send_message(other_name, "collision")
+    -- explode
+    local x, y, layer = sol.enemy.get_position()
+    sol.main.play_sound("explosion")
+    sol.game.remove_life(4)
+    sol.map.explosion_create(x, y, layer)
+    sol.map.enemy_remove(sol.enemy.get_name())
   end
 end
 

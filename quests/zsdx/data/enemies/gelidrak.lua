@@ -1,13 +1,13 @@
 -- Gelidrak: an ice dragon from Newlink
 
-head = nil
-head_ball_sprite = nil
-head_vulnerable = false
-tail = nil
-tail_ball_sprite = nil
-tail_retracted = false
-initial_xy = {}
-current_xy = {}
+local head = nil
+local head_ball_sprite = nil
+local head_vulnerable = false
+local tail = nil
+local tail_ball_sprite = nil
+local tail_retracted = false
+local initial_xy = {}
+local current_xy = {}
 
 function event_appear()
 
@@ -18,6 +18,7 @@ function event_appear()
   sol.enemy.set_origin(120, 88)
   sol.enemy.set_obstacle_behavior("flying")
   sol.enemy.set_layer_independent_collisions(true)
+  sol.enemy.set_push_hero_on_sword(true)
 
   sol.enemy.set_invincible()
   sol.enemy.set_attack_consequence("sword", "protected")
@@ -130,10 +131,12 @@ function event_message_received(src_enemy, message)
     if message == "hurt" then
       -- the hero just hurt my head
       sol.enemy.hurt(1)
-    elseif message == "dead" then
-      sol.enemy.hurt(sol.enemy.get_life())
+    elseif message == "dying" then
       -- I'm dying: remove the tail
       sol.map.enemy_remove(tail)
+    elseif message == "dead" then
+      -- the head is dead: make the body die too
+      sol.enemy.hurt(sol.enemy.get_life())
     elseif message == "recovered" then
       -- my head has just stopped being vulnerable
       head_vulnerable = false

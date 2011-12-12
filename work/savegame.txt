@@ -332,7 +332,7 @@ booleans:
 621	dungeon 7 1F: NE door
 622	dungeon 7 3F: chest with the boss key
 623	dungeon 7 3F: NW block fallen into hole A
-624	dungeon 7 3F: NW door
+624	dungeon 7 3F: NE door
 625	dungeon 7 3F: boss
 626	dungeon 7 3F: boss heart container
 627	dungeon 7 3F: door A (timed doors)

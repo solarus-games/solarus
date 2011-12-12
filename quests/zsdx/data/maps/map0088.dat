@@ -506,7 +506,7 @@
 19	1	1040	784	stairs_4	1	0
 1	1	1016	269	from_outside_hole	2	0
 2	1	1032	256	16	16	teletransporter_3	0	1	9	from_dungeon_5_hole
-5	1	960	688	chest	0	rupee	6	910
+5	1	960	688	chest	0	rupee	5	910
 4	1	944	245	0	_random	1	-1
 4	1	992	245	0	_random	1	-1
 18	1	256	496	door	1	0	-1

@@ -425,7 +425,7 @@ booleans:
 907	outside world A2: entrance door of the castle open
 908	dungeon 3 2F: shortcut A
 909	dungeon 3 2F: shortcut B
-910	castle B1: chest with 300 rupees
+910	castle B1: chest with 100 rupees
 911	potion shop: got the bottle 2
 912	outside world A3: chest with 100 rupees
 913	castle waterfall: bottle 4

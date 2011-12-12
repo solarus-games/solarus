@@ -1,0 +1,18 @@
+walking enemies/fireball_triple.png 4 0 -1
+16	16	16	16	8	8	1	1
+0	16	16	16	8	8	1	1
+0	16	16	16	8	8	1	1
+0	16	16	16	8	8	1	1
+
+small enemies/fireball_triple.png 4 0 -1
+16	16	16	16	8	8	1	1
+16	16	16	16	8	8	1	1
+16	16	16	16	8	8	1	1
+16	16	16	16	8	8	1	1
+
+tiny enemies/fireball_triple.png 4 0 -1
+32	16	16	16	8	8	1	1
+32	16	16	16	8	8	1	1
+32	16	16	16	8	8	1	1
+32	16	16	16	8	8	1	1
+

@@ -4,6 +4,12 @@ walking enemies/flora_gohma.png 4 300 0
 0	80	104	64	52	64	4	4
 0	80	104	64	52	64	4	4
 
+eye enemies/flora_gohma.png 4 0 -1
+0	208	104	64	52	64	1	1
+0	208	104	64	52	64	1	1
+0	208	104	64	52	64	1	1
+0	208	104	64	52	64	1	1
+
 hurt enemies/flora_gohma.png 4 50 0
 0	144	104	64	52	64	3	3
 0	144	104	64	52	64	3	3

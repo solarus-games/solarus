@@ -996,7 +996,7 @@
 1	1	200	245	from_final_room	3	0
 2	1	192	232	16	16	teletransporter_30	0	1	87	from_boss_room
 19	1	192	232	stairs_14	1	2
-1	1	784	645	tmp	3	0
+1	1	104	261	tmp	3	0
 7	1	792	621	enemy_7	0	pike_fixed	0	-1	_random	1	-1
 12	1	760	632	16	16	custom_obstacle_8	0	1	1	1
 12	1	840	536	16	16	custom_obstacle_9	0	1	1	1

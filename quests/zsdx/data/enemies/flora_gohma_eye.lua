@@ -1,23 +1,28 @@
-petals = {
+local petals = {
   {}, {}, {}, {}, {}
 }
-remaining_petals = 5
-eye_sprite = nil
-initial_xy = {}
-nb_sons_created = 0
+local remaining_petals = 5
+local eye_sprite = nil
+local arms_sprite = nil
+local initial_xy = {}
+local nb_sons_created = 0
+local speed = 24
 
 function event_appear()
 
-  sol.enemy.set_life(8)
+  sol.enemy.set_life(12)
   sol.enemy.set_damage(4)
   eye_sprite = sol.enemy.create_sprite("enemies/flora_gohma_eye")
+  arms_sprite = sol.enemy.create_sprite("enemies/flora_gohma_eye")
   sol.enemy.set_size(104, 64)
   sol.enemy.set_origin(52, 64)
   sol.enemy.set_hurt_style("boss")
   sol.enemy.set_no_treasure()
+  sol.enemy.set_push_hero_on_sword(true)
   sol.enemy.set_invincible()
   sol.enemy.set_attack_consequence("sword", "protected")
   sol.enemy.set_attack_consequence("boomerang", "protected")
+  sol.enemy.set_attack_consequence("arrow", "protected")
   sol.enemy.set_attack_consequence_sprite(eye_sprite, "hookshot", "protected")
 
   -- create the petals
@@ -36,13 +41,14 @@ end
 
 function event_restart()
 
+  sol.main.sprite_set_animation(eye_sprite, "eye")
   for i = 1, 5 do
     if petals[i].sprite ~= nil then
       sol.main.sprite_set_animation(petals[i].sprite, "petal_"..i)
     end
   end
 
-  local m = sol.main.target_movement_create(48, initial_xy.x, initial_xy.y)
+  local m = sol.main.target_movement_create(speed, initial_xy.x, initial_xy.y)
   sol.enemy.start_movement(m)
   sol.main.timer_stop_all()
 
@@ -89,7 +95,9 @@ function event_custom_attack_received(attack, sprite)
 	  remaining_petals = remaining_petals - 1
 	  if remaining_petals <= 0 then
 	    -- no more petals: make the eye vulnerable
+	    speed = 48
 	    sol.enemy.set_attack_consequence_sprite(eye_sprite, "sword", 1)
+	    sol.enemy.restart()
 	  end
 	end
 
@@ -100,7 +108,7 @@ end
 
 function event_movement_finished(movement)
 
-  local m = sol.main.random_movement_create(24)
+  local m = sol.main.random_movement_create(speed)
   sol.main.movement_set_property(m, "max_distance", 24)
   sol.enemy.start_movement(m)
 end

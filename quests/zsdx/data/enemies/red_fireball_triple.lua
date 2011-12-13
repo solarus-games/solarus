@@ -14,6 +14,7 @@ function event_appear()
   sol.enemy.create_sprite("enemies/red_fireball_triple")
   sol.enemy.set_size(16, 16)
   sol.enemy.set_origin(8, 8)
+  sol.enemy.set_obstacle_behavior("flying")
   sol.enemy.set_invincible()
   sol.enemy.set_attack_consequence("sword", "custom")
 

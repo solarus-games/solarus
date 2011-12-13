@@ -695,6 +695,7 @@
 2	0	776	384	16	16	teletransporter_5	0	1	116	from_outside
 1	0	192	381	from_fairy_fountain	3	0
 2	0	184	352	16	16	teletransporter_11	0	1	93	from_outside
+2	0	832	376	16	16	teletransporter_6	0	0	52	from_1F
 10	1	464	16	48	16	riverfall_7	1081	0
 10	1	464	32	48	16	riverfall_6	1081	0
 10	1	464	48	48	16	riverfall_5	1081	0

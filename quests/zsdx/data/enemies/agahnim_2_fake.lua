@@ -1,4 +1,4 @@
--- Agahnim (Boss of dungeon 8)
+-- Fake Agahnim (with the boss of dungeon 8)
 
 -- possible positions where he appears
 local positions = {
@@ -17,7 +17,6 @@ local positions = {
 }
 
 local nb_sons_created = 0
-local initial_life = 16
 local blue_fireball_proba = 33 -- percent
 local next_fireball_sound
 local next_fireball_breed
@@ -25,19 +24,17 @@ local vulnerable = false
 
 function event_appear()
 
-  sol.enemy.set_life(initial_life)
-  sol.enemy.set_damage(16)
-  sol.enemy.create_sprite("enemies/agahnim_2")
+  sol.enemy.set_life(1)
+  sol.enemy.set_damage(8)
+  sol.enemy.create_sprite("enemies/agahnim_2_fake")
   sol.enemy.set_size(16, 16)
   sol.enemy.set_origin(8, 13)
   sol.enemy.set_position(-100, -100)
   sol.enemy.set_invincible()
-  sol.enemy.set_attack_consequence("sword", "protected")
-  sol.enemy.set_attack_consequence("arrow", "protected")
-  sol.enemy.set_attack_consequence("hookshot", "protected")
-  sol.enemy.set_attack_consequence("boomerang", "protected")
+  sol.enemy.set_attack_consequence("sword", "custom")
   sol.enemy.set_pushed_back_when_hurt(false)
   sol.enemy.set_push_hero_on_sword(true)
+  sol.enemy.set_can_attack(false)
 
   local sprite = sol.enemy.get_sprite()
   sol.main.sprite_set_animation(sprite, "stopped")
@@ -49,7 +46,7 @@ function event_restart()
   sol.main.timer_stop_all()
   local sprite = sol.enemy.get_sprite()
   sol.main.sprite_fade(sprite, 1)
-  sol.main.timer_start(hide, 700)
+  sol.main.timer_start(hide, 500)
 end
 
 function event_update()
@@ -71,7 +68,7 @@ function hide()
 
   vulnerable = false
   sol.enemy.set_position(-100, -100)
-  sol.main.timer_start(unhide, 500)
+  sol.main.timer_start(unhide, 1500)
 end
 
 function unhide()
@@ -89,6 +86,7 @@ function fire_step_1()
   local sprite = sol.enemy.get_sprite()
   sol.main.sprite_set_animation(sprite, "arms_up")
   sol.main.timer_start(fire_step_2, 1000)
+  sol.enemy.set_can_attack(true)
 end
 
 function fire_step_2()
@@ -126,46 +124,33 @@ function fire_step_3()
   function throw_fire()
 
     nb_sons_created = nb_sons_created + 1
-    sol.enemy.create_son("agahnim_fireball_" .. nb_sons_created,
+    sol.enemy.create_son(sol.enemy.get_name() .. "_fireball_" .. nb_sons_created,
         next_fireball_breed, 0, -21)
   end
 
   throw_fire()
   local life = sol.enemy.get_life()
-  if life <=  2 * initial_life / 3 then
-    sol.main.timer_start(throw_fire, 200)
-    sol.main.timer_start(throw_fire, 400)
-    if life <= initial_life / 3 then
-      sol.main.timer_start(throw_fire, 600)
-      sol.main.timer_start(throw_fire, 800)
-    end
-  end
 end
 
-function event_message_received(src_enemy, message)
+function event_custom_attack_received(attack, sprite)
 
-  if string.find(src_enemy, "^agahnim_fireball")
-      and vulnerable then
-
-    sol.main.timer_stop_all()
-    sol.map.enemy_remove(src_enemy)
-    sol.enemy.hurt(1)
-  end
-end
-
-function event_hurt(attack, life_lost)
-
-  local life = sol.enemy.get_life()
-  if life <= 0 then
-    sol.map.enemy_remove_group("agahnim_fireball")
+  if attack == "sword" then
+    -- disappear
     local sprite = sol.enemy.get_sprite()
-    sol.main.sprite_set_animation_ignore_suspend(sprite, true)
-    sol.map.dialog_start("dungeon_8.agahnim_end")
+    sol.main.play_sound("enemy_hurt")
+    sol.main.sprite_fade(sprite, 1)
     sol.main.timer_stop_all()
-  elseif life <= initial_life / 1 then
-    -- create fake Agahnims
-    local fake_name = sol.enemy.get_name() .. "_fake"
---    sol.enemy.create_son(fake_name, "agahnim_2_fake", 0, 0)
+    sol.main.timer_start(function()
+      sol.map.enemy_remove(sol.enemy.get_name())
+    end, 1000)
+  end
+end
+
+function event_collision_enemy(other_name, other_sprite, my_sprite)
+
+  if not other_name:find("fireball") then
+    -- collision with another Agahnim
+    sol.enemy.restart() -- go somewhere else
   end
 end
 

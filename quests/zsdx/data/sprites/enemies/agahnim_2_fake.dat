@@ -1,40 +1,40 @@
-stopped enemies/agahnim.png 4 0 -1
+stopped enemies/agahnim_fake.png 4 0 -1
 0	0	48	48	24	45	1	1
 0	48	48	48	24	45	1	1
 0	96	48	48	24	45	1	1
 0	144	48	48	24	45	1	1
 
-walking enemies/agahnim.png 4 400 1
+walking enemies/agahnim_fake.png 4 400 1
 0	0	48	48	24	45	3	3
 0	48	48	48	24	45	3	3
 0	96	48	48	24	45	3	3
 0	144	48	48	24	45	3	3
 
-hurt enemies/agahnim.png 4 50 0
+hurt enemies/agahnim_fake.png 4 50 0
 336	0	48	48	24	45	3	3
 336	48	48	48	24	45	3	3
 336	96	48	48	24	45	3	3
 336	144	48	48	24	45	3	3
 
-arms_up enemies/agahnim.png 4 0 -1
+arms_up enemies/agahnim_fake.png 4 0 -1
 144	0	48	48	24	45	1	1
 144	48	48	48	24	45	1	1
 144	96	48	48	24	45	1	1
 144	144	48	48	24	45	1	1
 
-preparing_red_fireball enemies/agahnim.png 4 300 2
+preparing_red_fireball enemies/agahnim_fake.png 4 300 2
 192	0	48	48	24	45	3	3
 192	48	48	48	24	45	3	3
 192	96	48	48	24	45	3	3
 192	144	48	48	24	45	3	3
 
-preparing_blue_fireball enemies/agahnim.png 4 300 2
+preparing_blue_fireball enemies/agahnim_fake.png 4 300 2
 0	192	48	48	24	45	3	3
 0	240	48	48	24	45	3	3
 0	288	48	48	24	45	3	3
 0	336	48	48	24	45	3	3
 
-preparing_unknown_fireball enemies/agahnim.png 4 300 2
+preparing_unknown_fireball enemies/agahnim_fake.png 4 300 2
 144	192	48	48	24	45	4	4
 144	240	48	48	24	45	4	4
 144	288	48	48	24	45	4	4

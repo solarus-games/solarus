@@ -1293,7 +1293,7 @@ next = _treasure.pain_au_chocolat.1.1
 #       |--------------------|
 line1 = "Mange un Pain au"
 line2 = "Chocolat pour"
-line3 = "récupérer 3 Coeurs."
+line3 = "récupérer de la vie."
 
 [_treasure.croissant.1]
 # 1 Croissant
@@ -1308,7 +1308,7 @@ next = _treasure.croissant.1.1
 #       |--------------------|
 line1 = "Mange un Croissant"
 line2 = "pour récupérer"
-line3 = "7 Coeurs."
+line3 = "des Coeurs."
 
 [_treasure.rock_key.1]
 # Clé de Roc
@@ -3873,9 +3873,9 @@ next = _unknown
 [cake_shop.croissant]
 # Pâtisserie : quand on regarde les croissants
 #       |-----------------------|
-line1 = "Mange ce croissant"
-line2 = "croustillant pour"
-line3 = "retrouver sept Coeurs."
+line1 = "Ce croissant"
+line2 = "croustillant te"
+line3 = "redonnera sept Coeurs."
 next = _unknown
 
 [cake_shop.apple_pie]

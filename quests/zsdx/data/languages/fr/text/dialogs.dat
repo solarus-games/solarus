@@ -6204,6 +6204,18 @@ line1 = "Triforce et étendre mon"
 line2 = "pouvoir au monde"
 line3 = "entier. Ah ah ah ah !"
 
+[dungeon_8.agahnim_middle]
+#       |-----------------------|
+line1 = "$1$0...$0.............$0 Vous"
+line2 = "êtes plutôt coriace, je"
+line3 = "dois vous l'accorder."
+next = dungeon_8.agahnim_middle.2
+
+[dungeon_8.agahnim_middle.2]
+#       |-----------------------|
+line1 = "Mais que dites-vous de"
+line2 = "cela ?"
+
 [dungeon_8.agahnim_end]
 #       |-----------------------|
 line1 = "$1$0...$0 .........$0"

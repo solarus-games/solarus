@@ -20,7 +20,7 @@ local nb_sons_created = 0
 local blue_fireball_proba = 33 -- percent
 local next_fireball_sound
 local next_fireball_breed
-local vulnerable = false
+local disappearing = false
 
 function event_appear()
 
@@ -32,21 +32,26 @@ function event_appear()
   sol.enemy.set_position(-100, -100)
   sol.enemy.set_invincible()
   sol.enemy.set_attack_consequence("sword", "custom")
+  sol.enemy.set_attack_consequence("arrow", "custom")
+  sol.enemy.set_attack_consequence("hookshot", "custom")
+  sol.enemy.set_attack_consequence("boomerang", "custom")
   sol.enemy.set_pushed_back_when_hurt(false)
   sol.enemy.set_push_hero_on_sword(true)
   sol.enemy.set_can_attack(false)
 
   local sprite = sol.enemy.get_sprite()
   sol.main.sprite_set_animation(sprite, "stopped")
+
 end
 
 function event_restart()
 
-  vulnerable = false
-  sol.main.timer_stop_all()
-  local sprite = sol.enemy.get_sprite()
-  sol.main.sprite_fade(sprite, 1)
-  sol.main.timer_start(hide, 500)
+  if not disappearing then
+    sol.main.timer_stop_all()
+    local sprite = sol.enemy.get_sprite()
+    sol.main.sprite_fade(sprite, 1)
+    sol.main.timer_start(hide, 500)
+  end
 end
 
 function event_update()
@@ -66,9 +71,8 @@ end
 
 function hide()
 
-  vulnerable = false
   sol.enemy.set_position(-100, -100)
-  sol.main.timer_start(unhide, 1500)
+  sol.main.timer_start(unhide, 500)
 end
 
 function unhide()
@@ -118,7 +122,6 @@ function fire_step_3()
   local sprite = sol.enemy.get_sprite()
   sol.main.sprite_set_animation(sprite, "stopped")
   sol.main.play_sound(next_fireball_sound)
-  vulnerable = true
   sol.main.timer_start(sol.enemy.restart, 700)
 
   function throw_fire()
@@ -134,23 +137,40 @@ end
 
 function event_custom_attack_received(attack, sprite)
 
-  if attack == "sword" then
-    -- disappear
-    local sprite = sol.enemy.get_sprite()
-    sol.main.play_sound("enemy_hurt")
-    sol.main.sprite_fade(sprite, 1)
-    sol.main.timer_stop_all()
-    sol.main.timer_start(function()
-      sol.map.enemy_remove(sol.enemy.get_name())
-    end, 1000)
-  end
+  sol.main.play_sound("enemy_hurt")
+  disappear()
+end
+
+function disappear()
+
+  local sprite = sol.enemy.get_sprite()
+  disappearing = true
+  sol.enemy.set_can_attack(false)
+  sol.main.sprite_fade(sprite, 1)
+  sol.main.timer_stop_all()
+  sol.main.timer_start(function()
+    sol.map.enemy_remove(sol.enemy.get_name())
+  end, 500)
 end
 
 function event_collision_enemy(other_name, other_sprite, my_sprite)
 
   if not other_name:find("fireball") then
-    -- collision with another Agahnim
-    sol.enemy.restart() -- go somewhere else
+
+    local x = sol.enemy.get_position()
+    if x > 0 then
+      -- collision with another Agahnim
+      sol.main.timer_stop_all()
+      hide() -- go somewhere else
+    end
+  end
+end
+
+function event_message_received(src_enemy, message)
+
+  if string.find(src_enemy, "^agahnim_fireball") then
+    -- receive a fireball: disappear
+    disappear()
   end
 end
 

@@ -552,10 +552,10 @@
 9	1	928	85	block_3	-1	entities/statue	1	1	2
 9	1	992	85	block_4	-1	entities/statue	1	1	2
 9	1	1040	69	block_5	-1	entities/statue	1	1	2
-4	1	1104	149	0	heart	1	-1
+4	1	1104	149	0	arrow	2	-1
 4	1	1104	133	0	heart	1	-1
 4	1	1088	149	0	heart	1	-1
-4	1	840	149	0	heart	1	-1
+4	1	840	149	0	arrow	2	-1
 4	1	840	133	0	heart	1	-1
 4	1	856	149	0	heart	1	-1
 19	1	168	48	stairs_4	1	0

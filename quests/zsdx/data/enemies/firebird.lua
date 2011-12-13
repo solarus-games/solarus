@@ -3,7 +3,7 @@
 local main_sprite = nil
 local claw_sprite = nil
 local nb_sons_created = 0
-local initial_life = 8
+local initial_life = 7
 
 function event_appear()
 

@@ -15,5 +15,5 @@ function event_restart()
   -- disappear after a few seconds
   sol.main.timer_start(function()
     sol.map.enemy_remove(sol.enemy.get_name())
-  end, 3000)
+  end, 2000)
 end

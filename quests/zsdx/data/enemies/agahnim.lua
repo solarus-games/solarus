@@ -21,6 +21,9 @@ function event_appear()
   sol.enemy.set_origin(8, 13)
   sol.enemy.set_invincible()
   sol.enemy.set_attack_consequence("sword", "protected")
+  sol.enemy.set_attack_consequence("arrow", "protected")
+  sol.enemy.set_attack_consequence("hookshot", "protected")
+  sol.enemy.set_attack_consequence("boomerang", "protected")
   sol.enemy.set_pushed_back_when_hurt(false)
   sol.enemy.set_push_hero_on_sword(true)
 
@@ -129,7 +132,6 @@ function event_hurt(attack, life_lost)
 
   local life = sol.enemy.get_life()
   if life <= 0 then
-
     sol.map.enemy_remove_group("agahnim_fireball")
     sol.enemy.set_life(1)
     finished = true

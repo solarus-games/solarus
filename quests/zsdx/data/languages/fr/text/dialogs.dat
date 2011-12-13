@@ -3591,10 +3591,44 @@ line2 = "ont pillé la Maison des"
 line3 = "Rubis !"
 
 [telepathic_booth.not_working]
-#       |-----------------------|
+ #       |-----------------------|
 line1 = "Allo ? ... Allo ? ..."
 line2 = "Y'a quelqu'un ? ..."
 skip = all
+
+[telepathic_booth.go_sahasrahla]
+#       |-----------------------|
+line1 = "$v, tu m'entends ?"
+line2 = "C'est Mamie Lyly ! La"
+line3 = "télépathie, ça marche !"
+skip = all
+next = telepathic_booth.go_sahasrahla.2
+
+[telepathic_booth.go_sahasrahla.2]
+#       |-----------------------|
+line1 = "Tu devrais aller rendre"
+line2 = "visite à Sahasrahla, il"
+line3 = "a des choses pour toi."
+
+[telepathic_booth.go_twin_caves]
+#       |-----------------------|
+line1 = "$v, tu m'entends ?"
+line2 = "C'est Mamie Lyly ! La"
+line3 = "télépathie, ça marche !"
+skip = all
+next = telepathic_booth.go_twin_caves.2
+
+[telepathic_booth.go_twin_caves.2]
+#       |-----------------------|
+line1 = "Quelque chose me dit"
+line2 = "que les cavernes au sud"
+line3 = "du donjon de la forêt"
+next = telepathic_booth.go_twin_caves.3
+
+[telepathic_booth.go_twin_caves.3]
+#       |-----------------------|
+line1 = "cachent un trésor"
+line2 = "important..."
 
 [telepathic_booth.dungeon_2_not_really_finished]
 #       |-----------------------|
@@ -3665,25 +3699,6 @@ line1 = "Connais-tu Billy le"
 line2 = "Téméraire ? Il paraît"
 line3 = "qu'il est revenu sain"
 next = telepathic_booth.go_billy.3
-
-[telepathic_booth.hahaha]
-#       |-----------------------|
-line1 = "Ah ah ah ! Tu cherches"
-line2 = "le vieux peut-être ?"
-line3 = "Sache que désormais"
-skip = all
-next = telepathic_booth.hahaha.2
-
-[telepathic_booth.hahaha.2]
-#       |-----------------------|
-line1 = "il est en mon pouvoir"
-line2 = "et qu'il va me dire où"
-line3 = "se trouve Zelda !"
-next = telepathic_booth.hahaha.3
-
-[telepathic_booth.hahaha.3]
-#       |-----------------------|
-line1 = "Ah ah ah ah ah ah !!!"
 
 [telepathic_booth.shop]
 #       |-----------------------|

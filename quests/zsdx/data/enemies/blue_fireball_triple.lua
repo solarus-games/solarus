@@ -64,8 +64,8 @@ function event_custom_attack_received(attack, sprite)
   if attack == "sword" then
     -- explode
     local x, y, layer = sol.enemy.get_position()
+    sol.map.hero_start_hurt(x, y, 8, 0)
     sol.main.play_sound("explosion")
-    sol.game.remove_life(4)
     sol.map.explosion_create(x, y, layer)
     sol.map.enemy_remove(sol.enemy.get_name())
   end

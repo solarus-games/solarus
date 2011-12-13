@@ -70,8 +70,6 @@ function event_custom_attack_received(attack, sprite)
     local m = sol.main.straight_movement_create(speed, angle)
     sol.enemy.start_movement(m)
     sol.main.play_sound("boss_fireball")
-    bounces = bounces + 1
-    speed = speed + 48
     used_sword = true
   end
 end
@@ -97,5 +95,19 @@ function event_pre_display()
 
   sol.map.sprite_display(sprite2, x2, y2)
   sol.map.sprite_display(sprite3, x3, y3)
+end
+
+function event_message_received(src_enemy, message)
+
+  if message == "bounce" then
+
+    local m = sol.enemy.get_movement()
+    local angle = sol.main.movement_get_property(m, "angle")
+    angle = angle + math.pi
+
+    sol.main.movement_set_property(m, "angle", angle)
+    sol.main.movement_set_property(m, "speed", speed)
+    used_sword = false
+  end
 end
 

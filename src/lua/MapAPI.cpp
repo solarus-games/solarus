@@ -660,7 +660,8 @@ int Script::map_api_hero_start_running(lua_State *l) {
  *
  * - Argument 1 (integer): x coordinate of whatever is hurting the hero
  * - Argument 2 (integer): y coordinate of whatever is hurting the hero
- * - Argument 3 (integer): number of life points to remove (possibly zero)
+ * - Argument 3 (integer): number of life points to remove (possibly zero,
+ * and may be reduced by the tunic)
  * - Argument 4 (integer): number of magic points to remove (possibly zero)
  *
  * @param l the Lua context that is calling this function

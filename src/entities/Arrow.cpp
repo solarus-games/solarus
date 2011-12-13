@@ -52,7 +52,7 @@ Arrow::Arrow(Hero &hero):
   Movement *movement = new PathMovement(path, 192, true, false, false);
   set_movement(movement);
 
-  disappear_date = System::now() + 1500;
+  disappear_date = System::now() + 10000;
   stop_now = false;
   entity_reached = NULL;
 }

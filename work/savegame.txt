@@ -466,4 +466,5 @@ booleans:
 948	Castle B1: weak wall B
 949	dungeon 3 2F: chest with 300 rupees
 950	dungeon 3 2F: chest with 300 rupees appeared
+951	dungeon 2 1F: chest with 20 rupees (NE)
 

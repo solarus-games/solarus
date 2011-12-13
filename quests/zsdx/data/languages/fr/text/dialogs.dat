@@ -534,15 +534,10 @@ line2 = "Coeurs !"
 # Bottes de Pégase / Pegasus Shoes
 #       |--------------------|
 icon = 13
-line1 = "Cours très vite et"
-line2 = "fracasse des"
-line3 = "obstacles grâce aux"
+line1 = "Cours à toute allure"
+line2 = "grâce aux Bottes de"
+line3 = "Pégase."
 skip = all
-next = _item_description.pegasus_shoes.1.1
-
-[_item_description.pegasus_shoes.1.1]
-#       |--------------------|
-line1 = "Bottes de Pégase !"
 
 [_item_description.mystic_mirror.1]
 # Miroir Mystique / Mystic Mirror
@@ -1233,9 +1228,9 @@ next = _treasure.pegasus_shoes.1.1
 
 [_treasure.pegasus_shoes.1.1]
 #       |--------------------|
-line1 = "Cours, fonce et"
-line2 = "fracasse les"
-line3 = "obstacles !"
+line1 = "Cours, fonce et ne"
+line2 = "perds plus une"
+line3 = "seconde !"
 
 [_treasure.mystic_mirror.1]
 # Miroir Mystique

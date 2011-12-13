@@ -25,5 +25,9 @@ function event_message_received(src_enemy, message)
   sol.main.movement_set_property(m, "ignore_obstacles", true)
   sol.main.movement_set_property(m, "max_distance", 320)
   sol.enemy.start_movement(m)
+
+  -- workaround for flames that sometimes don't move
+  -- (is it the same bug as red flames?)
+  sol.main.timer_start(event_movement_finished, 2000)
 end
 

@@ -520,7 +520,6 @@ int Sprite::get_alpha() const {
  */
 void Sprite::set_alpha(int alpha) {
   this->alpha = alpha;
-  alpha_surface->set_opacity(alpha);
 }
 
 /**
@@ -649,12 +648,13 @@ void Sprite::display(Surface *destination, int x, int y) {
 
   if (!is_animation_finished() && (blink_delay == 0 || blink_is_sprite_visible)) {
 
-    if (get_alpha() >= 255) {
+    if (alpha >= 255) {
       // opaque
       current_animation->display(destination, x, y, current_direction, current_frame);
     }
     else {
       // semi transparent
+      alpha_surface->set_opacity(alpha);
       alpha_surface->fill_with_color(Color::get_black());
       current_animation->display(alpha_surface, x, y, current_direction, current_frame);
       alpha_surface->blit(destination);

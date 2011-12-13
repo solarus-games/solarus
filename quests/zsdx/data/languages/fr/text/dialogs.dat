@@ -5565,8 +5565,8 @@ line3 = "sers-toi de ton plan."
 [dungeon_4.hint_chests]
 #       |-----------------------|
 line1 = "Le croisement des"
-line2 = "coffres indique le"
-line3 = "chemin."
+line2 = "quatre coffres indique"
+line3 = "le chemin."
 
 [dungeon_4.too_cold]
 #       |-----------------------|

@@ -32,3 +32,10 @@ function door_timer()
   sol.main.play_sound("secret")
 end
 
+function event_door_open(door_name)
+
+  if door_name == "weak_block" then
+    sol.main.play_sound("secret")
+  end
+end
+

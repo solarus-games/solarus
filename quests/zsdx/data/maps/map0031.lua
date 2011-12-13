@@ -169,7 +169,7 @@ function boss_change_floor(first, last, inc, enable)
       v.created = false
     end
   else
-    delay = 70
+    delay = 75
   end
 
   function repeat_change()

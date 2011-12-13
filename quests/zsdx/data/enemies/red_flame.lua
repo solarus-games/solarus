@@ -3,7 +3,7 @@
 function event_appear()
 
   sol.enemy.set_life(1)
-  sol.enemy.set_damage(2)
+  sol.enemy.set_damage(1)
   sol.enemy.create_sprite("enemies/red_flame")
   sol.enemy.set_size(16, 16)
   sol.enemy.set_origin(8, 13)
@@ -41,7 +41,7 @@ function event_message_received(src_enemy, message)
 
   -- the message is the angle to take
   local angle = tonumber(message)
-  local m = sol.main.straight_movement_create(192, angle)
+  local m = sol.main.straight_movement_create(144, angle)
   sol.main.movement_set_property(m, "ignore_obstacles", true)
   sol.main.movement_set_property(m, "max_distance", 320)
   sol.enemy.start_movement(m)

@@ -15,10 +15,10 @@ switches_puzzle_correct = true
 
 -- boss
 local boss_arrows = {
-  [13] = { x = 864, y = 477, created = false },
-  [37] = { x = 896, y = 341, created = false },
-  [55] = { x = 1024, y = 341, created = false },
-  [80] = { x = 1056, y = 477, created = false },
+  [13] = { x = 864, y = 477, created = true },
+  [37] = { x = 896, y = 341, created = true },
+  [55] = { x = 1024, y = 341, created = true },
+  [80] = { x = 1056, y = 477, created = true },
 }
 fighting_boss = false
 
@@ -165,7 +165,7 @@ function boss_change_floor(first, last, inc, enable)
   local delay
   if enable then
     delay = 30
-    for i, v in ipairs(boss_arrows) do
+    for k, v in pairs(boss_arrows) do
       v.created = false
     end
   else
@@ -203,10 +203,10 @@ function boss_restore_floor(with_arrows)
   sol.main.timer_stop_all()
 
   if with_arrows then
-    for i, v in ipairs(boss_arrows) do
+    for k, v in pairs(boss_arrows) do
       if not v.created then
-	sol.map.pickable_item_create("arrow", 1, -1, v.x, v.y, 0)
-	v.created = true
+        sol.map.pickable_item_create("arrow", 1, -1, v.x, v.y, 0)
+        v.created = true
       end
     end
   end

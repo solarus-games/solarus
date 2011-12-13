@@ -408,7 +408,7 @@ makes the hero shoot an arrow
 makes the hero run
 
 - <tt>sol.map.hero_start_hurt(source_x, source_y, life_points, magic_points)</tt>:
-Hurts the hero.
+Hurts the hero. The number of life points will be reduced with the tunic level.
 
 - <tt>sol.map.npc_is_enabled(npc_name)</tt>:
 returns whether an NPC is enabled

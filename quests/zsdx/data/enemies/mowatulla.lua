@@ -10,6 +10,7 @@ function event_appear()
   sol.enemy.create_sprite("enemies/mowatulla")
   sol.enemy.set_size(96, 112)
   sol.enemy.set_origin(48, 64)
+  sol.enemy.set_push_hero_on_sword(true)
   sol.enemy.set_invincible()
   sol.enemy.set_attack_consequence("explosion", 1)
 end

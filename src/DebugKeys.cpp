@@ -59,7 +59,7 @@ void DebugKeys::key_pressed(InputEvent::KeyboardKey key) {
     switch (key) {
 
       case InputEvent::KEY_p:
-        equipment.add_life(2);
+        equipment.add_life(12);
         break;
 
       case InputEvent::KEY_m:

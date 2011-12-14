@@ -1094,7 +1094,7 @@ bool Enemy::is_being_hurt() {
  * @return true if the enemy is killed
  */
 bool Enemy::is_killed() {
-  return life <= 0 && (get_sprite().get_animation_set_id() == "enemies/enemy_killed" || !exploding);
+  return life <= 0 && (get_sprite().get_animation_set_id() == "enemies/enemy_killed" || exploding);
 }
 
 /**

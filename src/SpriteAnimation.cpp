@@ -148,7 +148,9 @@ int SpriteAnimation::get_next_frame(int current_direction, int current_frame) co
 void SpriteAnimation::display(Surface *destination, int x, int y,
     int current_direction, int current_frame) {
 
-  directions[current_direction]->display(destination, x, y, current_frame, src_image);
+  if (src_image != NULL) {
+    directions[current_direction]->display(destination, x, y, current_frame, src_image);
+  }
 }
 
 /**

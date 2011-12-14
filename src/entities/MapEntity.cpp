@@ -288,6 +288,7 @@ bool MapEntity::is_on_map() {
 void MapEntity::set_map(Map &map) {
 
   this->map = &map;
+  set_sprites_map(map);
 }
 
 /**
@@ -295,12 +296,21 @@ void MapEntity::set_map(Map &map) {
  */
 void MapEntity::notify_map_started() {
 
-  // notify the sprites (useful for tileset-dependent sprites such as doors and blocks)
+  set_sprites_map(*map);
+}
+
+/**
+ * @brief Notifies the sprites of this entity that they belong to a map.
+ *
+ * This is useful for tileset-dependent sprites such as doors and blocks.
+ */
+void MapEntity::set_sprites_map(Map& map) {
+
   std::list<Sprite*>::iterator it;
   for (it = sprites.begin(); it != sprites.end(); it++) {
 
     Sprite& sprite = *(*it);
-    sprite.set_map(*map);
+    sprite.set_map(map);
   }
 }
 

@@ -447,13 +447,13 @@ void MapEntities::add_entity(MapEntity *entity) {
     if (entity->can_be_obstacle()) {
 
       if (entity->has_layer_independent_collisions()) {
-	// some entities handle collisions on any layer (e.g. stairs inside a single floor)
+        // some entities handle collisions on any layer (e.g. stairs inside a single floor)
         obstacle_entities[LAYER_LOW].push_back(entity);
         obstacle_entities[LAYER_INTERMEDIATE].push_back(entity);
         obstacle_entities[LAYER_HIGH].push_back(entity);
       }
       else {
-	// but usually, an entity collides with only one layer
+        // but usually, an entity collides with only one layer
         obstacle_entities[layer].push_back(entity);
       }
     }
@@ -470,16 +470,16 @@ void MapEntities::add_entity(MapEntity *entity) {
     switch (entity->get_type()) {
 
       case STAIRS:
-	stairs[layer].push_back((Stairs*) entity);
-	break;
+        stairs[layer].push_back((Stairs*) entity);
+        break;
 
       case CRYSTAL_BLOCK:
-	crystal_blocks[layer].push_back((CrystalBlock*) entity);
-	break;
+        crystal_blocks[layer].push_back((CrystalBlock*) entity);
+        break;
 
       case BOOMERANG:
-	this->boomerang = (Boomerang*) entity;
-	break;
+        this->boomerang = (Boomerang*) entity;
+        break;
 
       default:
       break;

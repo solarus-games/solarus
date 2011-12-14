@@ -30,6 +30,7 @@
  * - max_distance
  * - ignore_obstacles
  * - smooth
+ * - displayed_direction (read-only)
  */
 class StraightMovement: public Movement {
 

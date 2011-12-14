@@ -120,6 +120,10 @@ class MapEntity {
                                                  * (if not, it will not be displayed and collisions will not be notified) */
     bool waiting_enabled;                       /**< indicates that the entity will be enabled as soon as the hero stops overlapping it */
 
+  private:
+
+    void set_sprites_map(Map& map);
+
   protected:
 
     bool suspended;                             /**< indicates that the animation and movement of this entity are suspended */

@@ -597,7 +597,7 @@ void Enemy::update() {
   if (is_immobilized() && !is_killed() && now >= end_shaking_date &&
       get_sprite().get_current_animation() == "shaking") {
 
-    stop_immobilized();
+    restart();
   }
 
   if (is_immobilized() && !is_killed() && !is_being_hurt() && now >= start_shaking_date &&
@@ -1154,7 +1154,6 @@ void Enemy::stop_immobilized() {
   immobilized = false;
   end_shaking_date = 0;
   restore_movement();
-  restart();
 }
 
 /**

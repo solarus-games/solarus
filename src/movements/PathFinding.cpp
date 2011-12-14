@@ -139,55 +139,55 @@ std::string PathFinding::compute_path() {
       //std::cout << System::now() << " looking for accessible states\n";
       for (int i = 0; i < 8; i++) {
 
-	Node new_node;
-	int immediate_cost = (i & 1) ? 11 : 8;
-	new_node.previous_cost = current_node->previous_cost + immediate_cost;
-	new_node.location = current_node->location;
-	new_node.location.add_xy(neighbours_locations[i]);
-	new_node.index = get_square_index(new_node.location);
-	//std::cout << "  node in direction " << i << ": index = " << new_node.index << std::endl;
+        Node new_node;
+        int immediate_cost = (i & 1) ? 11 : 8;
+        new_node.previous_cost = current_node->previous_cost + immediate_cost;
+        new_node.location = current_node->location;
+        new_node.location.add_xy(neighbours_locations[i]);
+        new_node.index = get_square_index(new_node.location);
+        //std::cout << "  node in direction " << i << ": index = " << new_node.index << std::endl;
 
-	bool in_closed_list = (closed_list.find(new_node.index) != closed_list.end());
-	if (!in_closed_list && get_manhattan_distance(new_node.location, target) < 200
-	    && is_node_transition_valid(*current_node, i)) {
-	  //std::cout << "  node in direction " << i << " is not in the closed list\n";
-	  // not in the closed list: look in the open list
-	  
-	  bool in_open_list = open_list.find(new_node.index) != open_list.end();
+        bool in_closed_list = (closed_list.find(new_node.index) != closed_list.end());
+        if (!in_closed_list && get_manhattan_distance(new_node.location, target) < 200
+            && is_node_transition_valid(*current_node, i)) {
+          //std::cout << "  node in direction " << i << " is not in the closed list\n";
+          // not in the closed list: look in the open list
 
-	  if (!in_open_list) {
-	    // not in the open list: add it
-	    new_node.heuristic = get_manhattan_distance(new_node.location, target);
-	    new_node.total_cost = new_node.previous_cost + new_node.heuristic;
-	    new_node.parent_index = index;
-	    new_node.direction = '0' + i;
+          bool in_open_list = open_list.find(new_node.index) != open_list.end();
+
+          if (!in_open_list) {
+            // not in the open list: add it
+            new_node.heuristic = get_manhattan_distance(new_node.location, target);
+            new_node.total_cost = new_node.previous_cost + new_node.heuristic;
+            new_node.parent_index = index;
+            new_node.direction = '0' + i;
             open_list[new_node.index] = new_node; 
-	    add_index_sorted(&open_list[new_node.index]);
-	    //std::cout << "  node in direction " << i << " is not in the open list, adding it with cost "
-	    //  << new_node.previous_cost << " (" << current_node->previous_cost << " + "
-	    //  << immediate_cost << ") + " << new_node.heuristic << " and parent " << new_node.parent_index << "\n";
-	  }
-	  else {
-	    //std::cout << "  node in direction " << i << " is already in the open list\n";
-	    Node *existing_node = &open_list[new_node.index];
-	    // already in the open list: see if the current path is better
-	    if (new_node.previous_cost < existing_node->previous_cost) {
-	      existing_node->previous_cost = new_node.previous_cost;
-	      existing_node->total_cost = existing_node->previous_cost + existing_node->heuristic;
-	      existing_node->parent_index = index;
-	      open_list_indices.sort();
-	    }
-	  }
-	}
-	else {
-	  //std::cout << "skipping node in direction " << i << ": already in closed list = "
-	  //  << in_closed_list << ", too far from target = "
-	  //  << (get_manhattan_distance(new_node.location, target) >= 200) << ", invalid transition = "
-	  //  << (!is_node_transition_valid(*current_node, i)) << std::endl;
-	}
+            add_index_sorted(&open_list[new_node.index]);
+            //std::cout << "  node in direction " << i << " is not in the open list, adding it with cost "
+            //  << new_node.previous_cost << " (" << current_node->previous_cost << " + "
+            //  << immediate_cost << ") + " << new_node.heuristic << " and parent " << new_node.parent_index << "\n";
+          }
+          else {
+            //std::cout << "  node in direction " << i << " is already in the open list\n";
+            Node *existing_node = &open_list[new_node.index];
+            // already in the open list: see if the current path is better
+            if (new_node.previous_cost < existing_node->previous_cost) {
+              existing_node->previous_cost = new_node.previous_cost;
+              existing_node->total_cost = existing_node->previous_cost + existing_node->heuristic;
+              existing_node->parent_index = index;
+              open_list_indices.sort();
+            }
+          }
+        }
+        else {
+          //std::cout << "skipping node in direction " << i << ": already in closed list = "
+          //  << in_closed_list << ", too far from target = "
+          //  << (get_manhattan_distance(new_node.location, target) >= 200) << ", invalid transition = "
+          //  << (!is_node_transition_valid(*current_node, i)) << std::endl;
+        }
       }
       if (open_list_indices.empty()) {
-	finished = true;
+        finished = true;
       }
     }
   }

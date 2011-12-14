@@ -208,6 +208,8 @@ void Switch::set_locked(bool locked) {
  */
 void Switch::update() {
 
+  Detector::update();
+
   if (is_enabled() && is_walkable() && entity_overlapping != NULL) {
 
     // if an entity was on the switch, see if it is still there

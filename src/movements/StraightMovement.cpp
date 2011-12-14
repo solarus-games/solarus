@@ -670,6 +670,7 @@ void StraightMovement::update() {
  * - max_distance
  * - ignore_obstacles
  * - smooth
+ * - displayed_direction
  *
  * @param key key of the property to get
  * @return the corresponding value as a string
@@ -692,6 +693,9 @@ const std::string StraightMovement::get_property(const std::string &key) {
   }
   else if (key == "smooth") {
     oss << is_smooth();
+  }
+  else if (key == "displayed_direction") {
+    oss << get_displayed_direction4();
   }
   else {
     Debug::die(StringConcat() << "Unknown property of StraightMovement: '" << key << "'");
@@ -740,6 +744,9 @@ void StraightMovement::set_property(const std::string &key, const std::string &v
     bool smooth;
     iss >> smooth;
     set_smooth(smooth);
+  }
+  else if (key == "displayed_direction") {
+    Debug::die("The property 'displayed_direction' of StraightMovement is read-only");
   }
   else {
     Debug::die(StringConcat() << "Unknown property of StraightMovement: '" << key << "'");

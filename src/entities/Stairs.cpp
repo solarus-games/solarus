@@ -282,18 +282,33 @@ std::string Stairs::get_path(Way way) {
  */
 Rectangle Stairs::get_clipping_rectangle(Way way) {
 
-  Rectangle clipping_rectangle(get_top_left_x(), 0, 16, get_map().get_height());
+  if (subtype == INSIDE_FLOOR) {
+    return Rectangle(0, 0, 0, 0); // no restriction
+  }
 
-  if (subtype == STRAIGHT_DOWNSTAIRS) {
-    
-    if (get_direction() == 1) {
-      clipping_rectangle.set_y(get_top_left_y() - 8);
-      clipping_rectangle.set_height(48);
-    }
-    else {
-      clipping_rectangle.set_y(0);
-      clipping_rectangle.set_height(get_top_left_y() + 16);
-    }
+  Rectangle clipping_rectangle(0, 0, get_map().get_width(), get_map().get_height());
+  bool north = get_direction() == 1; // north or south
+
+  if (north) {
+    clipping_rectangle.set_y(get_top_left_y() - 8);
+    clipping_rectangle.set_height(48);
+  }
+  else { // south
+    clipping_rectangle.set_y(0);
+    clipping_rectangle.set_height(get_top_left_y() + 16);
+  }
+
+  // spiral staircase: hide a side
+  if ((subtype == SPIRAL_DOWNSTAIRS && north)
+      || (subtype == SPIRAL_UPSTAIRS && !north)) {
+     // north downstairs or south upstairs: hide the west side
+    clipping_rectangle.set_x(get_top_left_x());
+    clipping_rectangle.set_width(16);
+  }
+  else if ((subtype == SPIRAL_UPSTAIRS && north)
+      || (subtype == SPIRAL_DOWNSTAIRS && !north)) {
+     // north downstairs or south upstairs: hide the east side
+    clipping_rectangle.set_width(get_top_left_x() + 16);
   }
 
   return clipping_rectangle;

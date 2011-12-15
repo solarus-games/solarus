@@ -45,21 +45,14 @@ const Rectangle PathFinding::transition_collision_boxes[] = {
  * @brief Constructor.
  * @param map the map
  * @param source_entity the entity that will move from the starting point to the target
- * (its position must be a 16*16 rectangle aligned on the map grid)
+ * (its position must be aligned on the map grid)
  * @param target_entity the target entity (its size must be 16*16)
  */
 PathFinding::PathFinding(Map &map, MapEntity &source_entity, MapEntity &target_entity):
   map(map), source_entity(source_entity), target_entity(target_entity) {
 
-  const Rectangle &source = source_entity.get_bounding_box();
-  const Rectangle &target = target_entity.get_bounding_box();
-
-  Debug::check_assertion(source_entity.is_aligned_to_grid()
-      && source.get_width() % 16 == 0
-      && source.get_height() % 16 == 0
-      && target.get_width() % 16 == 0
-      && target.get_height() % 16 == 0,
-      "The source and the target must be 16*16 rectangles and the source must be aligned on the map grid");
+  Debug::check_assertion(source_entity.is_aligned_to_grid(),
+      "The source must be aligned on the map grid");
 }
 
 /**

@@ -296,8 +296,8 @@ void PauseSubmenuMap::key_pressed(GameControls::GameKey key) {
 
       // move the world map
       if (equipment.has_ability("see_outside_world_minimap")) {
-	moving_visible_y = (key == GameControls::UP) ? -1 : 1;
-	next_moving_visible_y_date = System::now();
+        moving_visible_y = (key == GameControls::UP) ? -1 : 1;
+        next_moving_visible_y_date = System::now();
       }
     }
 
@@ -306,17 +306,17 @@ void PauseSubmenuMap::key_pressed(GameControls::GameKey key) {
       int new_selected_floor = selected_floor + ((key == GameControls::UP) ? 1 : -1);
       if (new_selected_floor >= lowest_floor && new_selected_floor <= highest_floor) {
 
-	Sound::play("cursor");
-	hero_head_sprite->restart_animation();
-	selected_floor = new_selected_floor;
-	load_dungeon_map_image();
+        Sound::play("cursor");
+        hero_head_sprite->restart_animation();
+        selected_floor = new_selected_floor;
+        load_dungeon_map_image();
 
-	if (selected_floor <= highest_floor_displayed - 7) {
-	  highest_floor_displayed--;
-	}
-	else if (selected_floor > highest_floor_displayed) {
-	  highest_floor_displayed++;
-	}
+        if (selected_floor <= highest_floor_displayed - 7) {
+          highest_floor_displayed--;
+        }
+        else if (selected_floor > highest_floor_displayed) {
+          highest_floor_displayed++;
+        }
       }
     }
     break;

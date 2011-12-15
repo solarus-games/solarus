@@ -310,6 +310,7 @@ void MapEntities::add_tile(Tile *tile) {
   int tile_height8 = tile->get_height() / 8;
 
   int i, j;
+  Obstacle non_obstacle_triangle;
  
   switch (obstacle) {
 
@@ -333,10 +334,15 @@ void MapEntities::add_tile(Tile *tile) {
 
     /* If the top right corner of the tile is an obstacle,
      * then the top right 8*8 squares are OBSTACLE, the bottom left
-     * 8*8 squares are NO_OBSTACLE and the 8*8 squares on the diagonal
-     * are OBSTACLE_TOP_RIGHT.
+     * 8*8 squares are OBSTACLE_NONE or OBSTACLE_DEEP_WATER and the 8*8 squares
+     * on the diagonal are OBSTACLE_TOP_RIGHT.
      */
   case OBSTACLE_TOP_RIGHT:
+  case OBSTACLE_TOP_RIGHT_WATER:
+
+    non_obstacle_triangle = (obstacle == OBSTACLE_TOP_RIGHT) ?
+        OBSTACLE_NONE : OBSTACLE_DEEP_WATER;
+
     // we traverse each row of 8*8 squares on the tile
     for (i = 0; i < tile_height8; i++) {
 
@@ -345,7 +351,7 @@ void MapEntities::add_tile(Tile *tile) {
 
       // left part of the row: we are in the bottom-left corner
       for (j = 0; j < i; j++) {
-        set_obstacle(layer, tile_x8 + j, tile_y8 + i, OBSTACLE_NONE);
+        set_obstacle(layer, tile_x8 + j, tile_y8 + i, non_obstacle_triangle);
       }
 
       // right part of the row: we are in the top-right corner
@@ -356,12 +362,17 @@ void MapEntities::add_tile(Tile *tile) {
     break;
 
   case OBSTACLE_TOP_LEFT:
+  case OBSTACLE_TOP_LEFT_WATER:
+
+    non_obstacle_triangle = (obstacle == OBSTACLE_TOP_LEFT) ?
+        OBSTACLE_NONE : OBSTACLE_DEEP_WATER;
+
     // we traverse each row of 8*8 squares on the tile
     for (i = 0; i < tile_height8; i++) {
 
       // right part of the row: we are in the bottom-right corner
       for (j = tile_width8 - i; j < tile_width8; j++) {
-        set_obstacle(layer, tile_x8 + j, tile_y8 + i, OBSTACLE_NONE);
+        set_obstacle(layer, tile_x8 + j, tile_y8 + i, non_obstacle_triangle);
       }
 
       // left part of the row: we are in the top-left corner
@@ -375,12 +386,17 @@ void MapEntities::add_tile(Tile *tile) {
     break;
 
   case OBSTACLE_BOTTOM_LEFT:
+  case OBSTACLE_BOTTOM_LEFT_WATER:
+
+    non_obstacle_triangle = (obstacle == OBSTACLE_BOTTOM_LEFT) ?
+        OBSTACLE_NONE : OBSTACLE_DEEP_WATER;
+
     // we traverse each row of 8*8 squares on the tile
     for (i = 0; i < tile_height8; i++) {
 
       // right part of the row: we are in the top-right corner
       for (j = i + 1; j < tile_width8; j++) {
-        set_obstacle(layer, tile_x8 + j, tile_y8 + i, OBSTACLE_NONE);
+        set_obstacle(layer, tile_x8 + j, tile_y8 + i, non_obstacle_triangle);
       }
       // left part of the row: we are in the bottom-left corner
       for (j = 0; j < i; j++) {
@@ -393,6 +409,11 @@ void MapEntities::add_tile(Tile *tile) {
     break;
 
   case OBSTACLE_BOTTOM_RIGHT:
+  case OBSTACLE_BOTTOM_RIGHT_WATER:
+
+    non_obstacle_triangle = (obstacle == OBSTACLE_BOTTOM_RIGHT) ?
+        OBSTACLE_NONE : OBSTACLE_DEEP_WATER;
+
     // we traverse each row of 8*8 squares on the tile
     for (i = 0; i < tile_height8; i++) {
 
@@ -401,7 +422,7 @@ void MapEntities::add_tile(Tile *tile) {
 
       // left part of the row: we are in the top-left corner
       for (j = 0; j < tile_width8 - i - 1; j++) {
-        set_obstacle(layer, tile_x8 + j, tile_y8 + i, OBSTACLE_NONE);
+        set_obstacle(layer, tile_x8 + j, tile_y8 + i, non_obstacle_triangle);
       }
 
       // right part of the row: we are in the bottom-right corner

@@ -20,6 +20,17 @@ are from the enumration Obstacle):
 - 3 (top-left): the upper-left half of the tile is an obstacle
 - 4 (bottom-left): the lower-left half of the tile is an obstacle
 - 5 (bottom-right): the lower-right half of the tile is an obstacle
+- 6 (empty): there is no ground here: you should look at a lower layer
+- 7 (top-right in water): the upper-right half of the tile is an obstacle,
+    the rest is deep water
+- 8 (top-left in water): the upper-left half of the tile is an obstacle,
+    the rest is deep water
+- 9 (bottom-left in water): the lower-left half of the tile is an obstacle,
+    the rest is deep water
+- 10 (bottom-right in water): the lower-right half of the tile is an obstacle,
+    the rest is deep water
+- -1 (deep water): the tile is some deep water (the hero drowns or swims)
+- -2 (shallow water): the tile is shallow water (the hero may walk on it)
 - -1 (deep water): the tile is some deep water (the hero drowns or swims)
 - -2 (shallow water): the tile is shallow water (the hero may walk on it)
 - -3 (hole): the tile is a hole (the hero falls into it)

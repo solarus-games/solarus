@@ -636,6 +636,7 @@ bool Map::test_collision_with_tiles(Layer layer, int x, int y, MapEntity &entity
     break;
 
   case OBSTACLE_TOP_RIGHT:
+  case OBSTACLE_TOP_RIGHT_WATER:
     // the upper right half of the square is an obstacle
     // so we have to test the position of the point
     x_in_tile = x & 7;
@@ -644,6 +645,7 @@ bool Map::test_collision_with_tiles(Layer layer, int x, int y, MapEntity &entity
     break;
 
   case OBSTACLE_TOP_LEFT:
+  case OBSTACLE_TOP_LEFT_WATER:
     // same thing
     x_in_tile = x & 7;
     y_in_tile = y & 7;
@@ -651,12 +653,14 @@ bool Map::test_collision_with_tiles(Layer layer, int x, int y, MapEntity &entity
     break;
 
   case OBSTACLE_BOTTOM_LEFT:
+  case OBSTACLE_BOTTOM_LEFT_WATER:
     x_in_tile = x & 7;
     y_in_tile = y & 7;
     on_obstacle = y_in_tile >= x_in_tile;
     break;
 
   case OBSTACLE_BOTTOM_RIGHT:
+  case OBSTACLE_BOTTOM_RIGHT_WATER:
     x_in_tile = x & 7;
     y_in_tile = y & 7;
     on_obstacle = y_in_tile >= 7 - x_in_tile;
@@ -819,6 +823,10 @@ Ground Map::obstacle_to_ground(Obstacle obstacle) {
       break;
 
     case OBSTACLE_DEEP_WATER:
+    case OBSTACLE_TOP_RIGHT_WATER:
+    case OBSTACLE_TOP_LEFT_WATER:
+    case OBSTACLE_BOTTOM_RIGHT_WATER:
+    case OBSTACLE_BOTTOM_LEFT_WATER:
       ground = GROUND_DEEP_WATER;
       break;
 

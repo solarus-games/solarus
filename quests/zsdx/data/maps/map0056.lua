@@ -28,7 +28,7 @@ function event_map_opening_transition_finished(destination_point_name)
 
   if destination_point_name == "from_ending" then
     sol.map.dialog_start("credits_3")
-    sol.map.camera_move(120, 416, 50, function() end, 1e6)
+    sol.map.camera_move(120, 408, 50, function() end, 1e6)
   end
 end
 

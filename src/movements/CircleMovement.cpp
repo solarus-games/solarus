@@ -45,6 +45,7 @@ CircleMovement::CircleMovement(bool ignore_obstacles):
   duration(0),
   end_movement_date(0),
   max_rotations(0),
+  nb_rotations(0),
   loop_delay(0),
   restart_date(0) {
 

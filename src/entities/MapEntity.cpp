@@ -288,7 +288,9 @@ bool MapEntity::is_on_map() {
 void MapEntity::set_map(Map &map) {
 
   this->map = &map;
-  set_sprites_map(map);
+  if (&get_game().get_current_map() == &map) {
+    set_sprites_map(map);
+  }
 }
 
 /**

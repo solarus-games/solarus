@@ -516,7 +516,7 @@ void MapEntities::remove_entity(MapEntity *entity) {
  */
 void MapEntities::remove_entity(EntityType type, const std::string &name) {
 
-  MapEntity* entity = get_entity(type, name);
+  MapEntity* entity = find_entity(type, name);
   if (entity != NULL) {
     remove_entity(entity);
   }

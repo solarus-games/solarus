@@ -9,6 +9,7 @@ function event_appear()
   sol.enemy.set_origin(8, 13)
   sol.enemy.set_invincible()
   sol.enemy.set_obstacle_behavior("flying")
+  sol.enemy.set_layer_independent_collisions(true)
 end
 
 function event_restart()

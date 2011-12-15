@@ -4,6 +4,29 @@ local torches_error = false
 local torches_next = nil
 local torches_nb_on = 0
 local torches_delay = 15000
+local pickables = {
+  { x =  88, y = 141 },
+  { x = 136, y = 93 },
+  { x = 144, y = 149 },
+  { x = 344, y = 93 },
+  { x = 392, y = 141 },
+  { x = 336, y = 149 },
+  { x = 392, y = 349 },
+  { x = 344, y = 397 },
+  { x = 336, y = 341 },
+  { x = 136, y = 397 },
+  { x =  88, y = 349 },
+  { x = 144, y = 341 },
+--[[  { x = 192, y = 325 },
+  { x = 288, y = 325 },
+  { x = 160, y = 293 },
+  { x = 192, y = 165 },
+  { x = 288, y = 165 },
+  { x = 160, y = 197 },
+  { x = 320, y = 197 },
+  { x = 320, y = 293 }, --]]
+}
+local bonuses_done = {}
 
 function event_map_started(destination_point_name)
 
@@ -12,9 +35,11 @@ function event_map_started(destination_point_name)
     sol.map.enemy_set_enabled("boss", true)
     sol.map.npc_set_enabled("zelda", false)
     sol.map.npc_set_group_enabled("child", false)
+    sol.map.hero_save_solid_ground()
   end
 
   sol.map.switch_set_group_enabled("switch", false)
+  sol.map.tile_set_group_enabled("switch_floor", false)
 end
 
 function event_map_opening_transition_finished(destination_point_name)
@@ -114,10 +139,23 @@ function event_npc_collision_fire(npc_name)
       check_torches()
       sol.main.timer_start(function()
         sol.main.sprite_set_animation(torch_sprite, "unlit")
+	if sol.map.switch_is_enabled("switch_1") then
+	  sol.map.tile_set_group_enabled("switch_floor", false)
+	  sol.map.switch_set_group_enabled("switch", false)
+	  sol.main.play_sound("door_closed")
+	end
         check_torches()
       end, torches_delay)
     end
   end
+end
+
+function unlight_torches()
+
+  for i = 1, 4 do
+    sol.main.sprite_set_animation(sol.map.npc_get_sprite("torch_" .. i), "unlit")
+  end
+  sol.main.timer_stop_all()
 end
 
 function check_torches()
@@ -146,13 +184,14 @@ function check_torches()
   if #on == #states then
    -- all torches are on
     if torches_error then
-      -- TODO
       sol.main.play_sound("wrong")
+      torches_error = false
+      torches_next = nil
+      torches_nb_on = 0
+      unlight_torches()
       --print("wrong")
     else
-      -- TODO
-      sol.main.play_sound("secret")
-      --print("correct")
+      torches_solved()
       torches_next = on[1] % #states + 1
     end
 
@@ -185,5 +224,98 @@ function check_torches()
   end
 
   torches_nb_on = #on
+end
+
+-- Creates a stone that the hero can lift and throw to Ganon.
+function create_stone()
+
+  -- we have to check the position of Ganon and the hero
+  local x, y
+  local boss_x, boss_y = sol.map.enemy_get_position("boss")
+  if boss_x < 240 then
+    x = 280
+  else
+    x = 200
+  end
+  local hero_x, hero_y = sol.map.hero_get_position()
+  if hero_y < 240 then
+    y = 285
+  else
+    y = 205
+  end
+
+  sol.map.destructible_item_create(4, x, y, 0, "_none", 1, -1)
+end
+
+function torches_solved()
+
+  if sol.map.tile_is_enabled("floor_down_1") then
+    -- phase 1
+    sol.main.play_sound("secret")
+    create_stone()
+  else
+    -- phase 2
+    sol.main.play_sound("secret")
+    sol.main.play_sound("door_open")
+    sol.map.tile_set_group_enabled("switch_floor", true)
+    sol.map.switch_set_group_enabled("switch", true)
+    for i = 1, 4 do
+      sol.map.switch_set_activated("switch_" .. i, false)
+      bonuses_done[i] = nil
+    end
+  end
+end
+
+function event_switch_activated(switch_name)
+
+  -- deterministic verion: local index = tonumber(switch_name:match("^switch_([1-4])$"))
+
+  local index
+  repeat
+    index = math.random(4)
+  until bonuses_done[index] == nil
+  bonuses_done[index] = true
+
+  if index == 1 then
+    -- TODO kill small enemies
+    sol.main.play_sound("enemy_killed")
+
+  elseif index == 2 then
+    sol.main.play_sound("secret")
+    create_stone()
+
+  elseif index == 3 then
+    sol.main.play_sound("secret")
+    create_pickables()
+
+  else
+    -- TODO create enemies
+    sol.main.play_sound("wrong")
+  end
+end
+
+function create_pickables()
+
+  for i, v in ipairs(pickables) do
+
+    local i = math.random(100)
+    if i <= 60 then
+      item_name = "magic_flask"
+      variant = 1
+    elseif i <= 90 then
+      item_name = "heart"
+      variant = 1
+    elseif i <= 95 then
+      item_name = "magic_flask"
+      variant = 2
+    elseif i <= 99 then
+      item_name = "arrow"
+      variant = 2
+    else
+      item_name = "fairy"
+      variant = 1
+    end
+    sol.map.pickable_item_create(item_name, variant, -1, v.x, v.y, 0)
+  end
 end
 

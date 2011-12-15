@@ -120,19 +120,19 @@ void Hero::StairsState::stop(State* next_state) {
 
   if (carried_item != NULL) {
 
-    get_sprites().set_lifted_item(NULL);
-
     switch (next_state->get_previous_carried_item_behavior(*carried_item)) {
 
     case CarriedItem::BEHAVIOR_THROW:
       carried_item->throw_item(get_sprites().get_animation_direction());
       get_entities().add_entity(carried_item);
       carried_item = NULL;
+      get_sprites().set_lifted_item(NULL);
       break;
 
     case CarriedItem::BEHAVIOR_DESTROY:
       delete carried_item;
       carried_item = NULL;
+      get_sprites().set_lifted_item(NULL);
       break;
 
     case CarriedItem::BEHAVIOR_KEEP:

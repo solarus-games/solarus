@@ -40,6 +40,10 @@ public enum Obstacle {
     BOTTOM_LEFT(4, "obstacle_bottom_left.png"),
     BOTTOM_RIGHT(5, "obstacle_bottom_right.png"),
     EMPTY(6, "obstacle_empty.png"),
+    TOP_RIGHT_WATER(7, "obstacle_top_right_water.png"),
+    TOP_LEFT_WATER(8, "obstacle_top_left_water.png"),
+    BOTTOM_LEFT_WATER(9, "obstacle_bottom_left_water.png"),
+    BOTTOM_RIGHT_WATER(10, "obstacle_bottom_right_water.png"),
     ;
 
     private int id;
@@ -48,19 +52,23 @@ public enum Obstacle {
     private static ImageIcon[] icons = null;
 
     public static final String[] humanNames = {
-        "Lava",
-        "Prickles",
-	"Ladder",
-	"Hole",
-	"Shallow water",
-	"Deep water",
-	"No obstacle",
-	"Full obstacle",
-	"Top right",
-	"Top left",
-	"Bottom left",
-	"Bottom right",
-	"Empty",
+    	"Lava",
+    	"Prickles",
+    	"Ladder",
+    	"Hole",
+    	"Shallow water",
+    	"Deep water",
+    	"No obstacle",
+    	"Full obstacle",
+    	"Top right",
+    	"Top left",
+    	"Bottom left",
+    	"Bottom right",
+    	"Empty",
+    	"Top right (water)",
+    	"Top left (water)",
+    	"Bottom left (water)",
+    	"Bottom right (water)",
     };
 
     /**

@@ -105,6 +105,7 @@ void DynamicTile::set_map(Map &map) {
  */
 bool DynamicTile::is_obstacle_for(MapEntity &other) {
 
+  bool result;
   switch (tile_pattern->get_obstacle()) {
 
     case OBSTACLE:
@@ -112,11 +113,25 @@ bool DynamicTile::is_obstacle_for(MapEntity &other) {
     case OBSTACLE_TOP_LEFT:
     case OBSTACLE_BOTTOM_LEFT:
     case OBSTACLE_BOTTOM_RIGHT:
-      return true;
+    case OBSTACLE_TOP_RIGHT_WATER:
+    case OBSTACLE_TOP_LEFT_WATER:
+    case OBSTACLE_BOTTOM_LEFT_WATER:
+    case OBSTACLE_BOTTOM_RIGHT_WATER:
+      result = true;
+      break;
 
-    default:
-      return false;
+    case OBSTACLE_EMPTY:
+    case OBSTACLE_NONE:
+    case OBSTACLE_SHALLOW_WATER:
+    case OBSTACLE_DEEP_WATER:
+    case OBSTACLE_HOLE:
+    case OBSTACLE_LAVA:
+    case OBSTACLE_PRICKLE:
+    case OBSTACLE_LADDER:
+      result = false;
+      break;
   }
+  return result;
 }
 
 /**

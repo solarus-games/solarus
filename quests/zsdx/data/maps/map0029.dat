@@ -492,9 +492,9 @@
 2	0	624	568	16	16	teletransporter_P	1	1	29	destination_point_P
 2	0	656	568	16	16	teletransporter_Q	1	1	29	destination_point_Q
 2	0	592	536	16	16	teletransporter_R	1	1	29	destination_point_R
-2	0	600	488	16	16	teletransporter_U	1	1	29	destination_point_A
+2	0	600	488	16	16	teletransporter_U	1	1	29	destination_point_U
 2	0	696	488	16	16	to_conveyor_belt_room	1	1	29	no_top_destination_point
-2	0	696	392	16	16	teletransporter_T	1	1	29	destination_point_A
+2	0	696	392	16	16	teletransporter_T	1	1	29	destination_point_T
 2	0	600	392	16	16	teletransporter_A_22	1	1	29	destination_point_S
 1	0	480	701	destination_point_K	-1	1
 4	0	496	573	0	rupee	2	-1

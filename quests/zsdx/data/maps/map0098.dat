@@ -215,7 +215,7 @@
 9	1	976	925	block_6	-1	entities/block	1	0	1
 9	1	816	925	block_7	-1	entities/block	1	0	1
 9	1	816	893	block_8	-1	entities/block	1	0	1
-7	1	816	909	enemy	0	pike_detect	0	-1	_random	1	-1
+7	1	816	909	pike_1	0	pike_detect	0	-1	_random	1	-1
 9	1	960	821	block_9	-1	entities/block	1	0	1
 9	1	976	821	block_10	3	entities/block	1	0	2
 12	1	216	72	8	8	custom_obstacle	1	1	1	1
@@ -233,7 +233,7 @@
 9	1	576	397	block_19	-1	entities/block	1	0	0
 9	1	592	333	block_20	-1	entities/block	1	0	0
 9	1	576	333	block_21	-1	entities/block	1	0	0
-7	1	976	909	enemy_2	2	pike_detect	0	-1	_random	1	-1
+7	1	976	909	pike_2	2	pike_detect	0	-1	_random	1	-1
 12	1	488	344	8	8	custom_obstacle_6	1	1	1	1
 12	1	488	368	8	8	custom_obstacle_7	1	1	1	1
 12	1	856	152	32	8	custom_obstacle_8	1	1	1	1

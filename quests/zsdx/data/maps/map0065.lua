@@ -99,7 +99,7 @@ function event_dialog_finished(first_message_id, answer)
 
   dialog_check_guard(first_message_id)
 
-  if first_message_id == "dungeon_5.prison_1_use_bone_key" then
+  if first_message_id == "dungeon_5.prison_1_use_iron_key" then
     sol.main.play_sound("secret")
     sol.main.play_sound("door_open")
     sol.map.npc_remove("prison_1_lock")
@@ -111,10 +111,10 @@ function event_npc_interaction(npc_name)
 
   if npc_name == "prison_1_lock" then
 
-    if not sol.game.has_item("bone_key") then
+    if not sol.game.has_item("iron_key") then
       sol.map.dialog_start("dungeon_5.prison_1_locked")
     else
-      sol.map.dialog_start("dungeon_5.prison_1_use_bone_key")
+      sol.map.dialog_start("dungeon_5.prison_1_use_iron_key")
     end
   elseif npc_name == "prison_2_lock" then
     

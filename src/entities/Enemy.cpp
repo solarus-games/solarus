@@ -1056,6 +1056,7 @@ void Enemy::kill() {
   set_collision_modes(COLLISION_NONE);
   if (pushed_back_when_hurt) {
     delete normal_movement;
+    normal_movement = NULL;
   }
   clear_movement();
   invulnerable = true;

@@ -35,19 +35,19 @@ CircleMovement::CircleMovement(bool ignore_obstacles):
   current_angle(0),
   initial_angle(0),
   angle_increment(1),
-  next_angle_change_date(0),
+  next_angle_change_date(System::now()),
   angle_change_delay(5),
   current_radius(0),
   wanted_radius(0),
   previous_radius(0),
-  next_radius_change_date(0),
+  next_radius_change_date(System::now()),
   radius_change_delay(0),
   duration(0),
   end_movement_date(0),
   max_rotations(0),
   nb_rotations(0),
   loop_delay(0),
-  restart_date(0) {
+  restart_date(System::now()) {
 
 }
 

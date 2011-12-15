@@ -43,6 +43,7 @@ class TargetMovement: public StraightMovement {
     int sign_y;                        /**< sign of the y movement (1: down, -1: up) */
     int speed;                         /**< movement's speed */
 
+    static const uint32_t recomputation_delay; /**< delay between two recomputations */
     uint32_t next_recomputation_date;  /**< date when the movement is recalculated */
     bool finished;				       /**< true if the target is reached */
 

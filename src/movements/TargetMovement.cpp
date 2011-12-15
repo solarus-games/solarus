@@ -23,6 +23,8 @@
 #include <sstream>
 #include <cmath>
 
+const uint32_t TargetMovement::recomputation_delay = 150;
+
 /**
  * @brief Creates a new target movement towards a fixed point.
  * @param target_x x coordinate of the target point
@@ -82,7 +84,7 @@ void TargetMovement::set_target(int target_x, int target_y) {
   this->target_x = target_x;
   this->target_y = target_y;
   recompute_movement();
-  next_recomputation_date = System::now() + 200;
+  next_recomputation_date = System::now() + recomputation_delay;
 }
 
 /**
@@ -95,7 +97,7 @@ void TargetMovement::set_target(MapEntity* target_entity) {
   this->target_x = target_x;
   this->target_y = target_y;
   recompute_movement();
-  next_recomputation_date = System::now() + 200;
+  next_recomputation_date = System::now() + recomputation_delay;
 }
 
 /**
@@ -108,7 +110,7 @@ void TargetMovement::update() {
 
   if (System::now() >= next_recomputation_date) {
     recompute_movement();
-    next_recomputation_date += 200;
+    next_recomputation_date += recomputation_delay;
   }
 
   // see if the target is reached

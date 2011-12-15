@@ -499,11 +499,13 @@ void MapEntities::add_entity(MapEntity *entity) {
  */
 void MapEntities::remove_entity(MapEntity *entity) {
 
-  entities_to_remove.push_back(entity);
-  entity->notify_being_removed();
+  if (!entity->is_being_removed()) {
+    entities_to_remove.push_back(entity);
+    entity->notify_being_removed();
 
-  if (entity == (MapEntity*) this->boomerang) {
-    this->boomerang = NULL;
+    if (entity == (MapEntity*) this->boomerang) {
+      this->boomerang = NULL;
+    }
   }
 }
 

@@ -41,6 +41,11 @@ function event_map_started(destination_point_name)
   if sol.game.savegame_get_boolean(159) then
     remove_stone_lock()
   end
+
+  -- NPC
+  if sol.game.is_dungeon_finished(1) then
+    sol.map.npc_remove("cliff_man")
+  end
 end
 
 function event_map_opening_transition_finished(destination_point_name)

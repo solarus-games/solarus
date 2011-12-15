@@ -2726,7 +2726,7 @@ line1 = "ton environnement !"
 
 [outside_world.village.chignon_woman_dungeons]
 #       |-----------------------|
-line1 = "Il paraît que chaque"
+line1 = "On dit que chaque"
 line2 = "donjon du monde cache"
 line3 = "un Fragment de Coeur..."
 skip = all
@@ -2734,7 +2734,7 @@ next = outside_world.village.chignon_woman_dungeons.2
 
 [outside_world.village.chignon_woman_dungeons.2]
 #       |-----------------------|
-line1 = "Intriguant, non ?"
+line1 = "Amusant, non ?"
 
 [outside_world.village.cliff_man_npc]
 # Dialogue avec le vieux près de la grotte de Tom dans le village
@@ -2777,6 +2777,21 @@ next = outside_world.village.hat_man_npc.4
 #       |-----------------------|
 line1 = "Peut-être que tu sauras"
 line2 = "mieux t'en sortir !"
+
+[outside_world.village.hat_man_npc_waterfall]
+# Dialogue avec l'homme au chapeau vert dans le village
+# (une fois le donjon 1 terminé
+#       |-----------------------|
+line1 = "Il paraît qu'un trésor"
+line2 = "est caché sous la"
+line3 = "cascade derrière"
+next = outside_world.village.hat_man_npc_waterfall.2
+skip = all
+
+[outside_world.village.hat_man_npc_waterfall.2]
+#       |-----------------------|
+line1 = "l'ancien château."
+line2 = "Tu y crois, toi ?"
 
 [outside_world.village.rupee_house_sign]
 # Pancarte à l'entrée de la maison des rubis

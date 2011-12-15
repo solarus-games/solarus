@@ -6494,20 +6494,19 @@ line2 = "Christopho$0"
 
 [credits_2]
 #       |-----------------------|
-line1 = "$1       Réalisation" 
-line2 = "       des maps :$0"
+line1 = "$1   Maps et énigmes :"
 next = credits_2.1
 
 [credits_2.1]
 #       |-----------------------|
-line1 = "Christopho"
-line2 = "Metallizer"
-line3 = "Binbin$0"
+line1 = "Christopho$0"
 next = credits_2.2
 
 [credits_2.2]
 #       |-----------------------|
-line1 = "Mymy$0"
+line1 = "Metallizer"
+line2 = "Binbin"
+line3 = "Mymy$0"
 
 [credits_3]
 #       |-----------------------|

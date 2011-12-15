@@ -561,6 +561,14 @@ void HeroSprites::display_on_map() {
 
   map.display_sprite(*tunic_sprite, x, y);
 
+  if (is_trail_visible()) {
+    map.display_sprite(*trail_sprite, x, y);
+  }
+
+  if (hero.is_ground_visible()) {
+    map.display_sprite(*ground_sprite, x, y);
+  }
+
   if (is_sword_visible()) {
     map.display_sprite(*sword_sprite, x, y);
   }
@@ -571,14 +579,6 @@ void HeroSprites::display_on_map() {
 
   if (is_shield_visible()) {
     map.display_sprite(*shield_sprite, x, y);
-  }
-
-  if (is_trail_visible()) {
-    map.display_sprite(*trail_sprite, x, y);
-  }
-
-  if (hero.is_ground_visible()) {
-    map.display_sprite(*ground_sprite, x, y);
   }
 
   if (lifted_item != NULL) {

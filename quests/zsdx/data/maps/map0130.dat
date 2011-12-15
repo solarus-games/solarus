@@ -338,6 +338,7 @@
 10	0	224	384	32	8	switch_floor_down_5	249	1
 10	0	256	384	8	8	switch_floor_down_6	252	1
 10	0	256	392	8	24	switch_floor_down_7	248	1
+2	0	232	416	16	16	teletransporter	0	1	6	from_dungeon_9
 0	1	128	16	224	24	49
 0	1	16	128	24	224	51
 0	1	32	112	16	16	645

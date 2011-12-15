@@ -836,8 +836,6 @@ void MapEntities::set_entity_layer(MapEntity *entity, Layer layer) {
 
   if (layer != old_layer) {
 
-    entity->set_layer(layer);
-
     // update the obstacle list
     if (entity->can_be_obstacle() && !entity->has_layer_independent_collisions()) {
       obstacle_entities[old_layer].remove(entity);
@@ -853,6 +851,9 @@ void MapEntities::set_entity_layer(MapEntity *entity, Layer layer) {
       entities_displayed_first[old_layer].remove(entity);
       entities_displayed_first[layer].push_back(entity);
     }
+
+    // update the entity after the lists because this function might be called again
+    entity->set_layer(layer);
   }
 }
 

@@ -39,7 +39,7 @@ function go_hero()
   sol.enemy.start_movement(m)
 end
 
-function circle()
+function go_circle()
 
   -- make a circle around the father
   local m = sol.main.circle_movement_create(7, sol.enemy.get_father(), 48)
@@ -52,9 +52,16 @@ end
 function event_message_received(src_enemy, message)
 
   if message == "circle" then
-    circle()
+    go_circle()
   elseif message == "go_hero" then
     go_hero()
+  else
+    local delay = tonumber(message:match("^go_hero ([0-9]*)$"))
+    if delay then
+      sol.main.timer_start(function()
+	go_hero()
+      end, delay)
+    end
   end
 end
 

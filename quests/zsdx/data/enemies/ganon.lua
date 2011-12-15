@@ -1,26 +1,23 @@
 -- Ganon - final boss
 
--- phase 1: periodically throws flames to the hero
--- phase 2: also periodically throws a set of fire bats in circles or randomly
---          or towards the hero
+-- Phase 1: Ganon periodically throws flames toward the hero.
+-- 4 torches have to be light fast enough and in the clockwise order
+-- (hint given by the childs) to make spawn a special item to throw to Ganon.
+-- When touched by the item, Ganon is immobilized
+-- and he becomes vulnerable to the sword.
+-- While he is vulnerable, fire bats appear in circle to protect him.
+-- After being immobilized, Ganon jumps towards the center and a
+-- part of the floor is destroyed to make a lava hole.
+-- Once four lava holes are created and Ganon is hurt again,
+-- phase 2 starts.
 
--- phase 1: 4 torches to light fast in the clockwise order
--- (hint given by the childs)
--- gives a special item to throw to Ganon
--- when touched by the item, Ganon is immobilized,
--- he becomes vulnerable to the sword
--- while he is vulnerable, fire bats appear in circle to protect him
--- when a torch is unlit, Ganon jumps towards the center and a floor where he was
--- is destroyed to make a lava hole
--- once the four lava holes are created and Ganon is hurt again,
--- after a fake end, phase 2 starts.
-
--- phase 2: the 4 torches enable 4 solid switches on the sides
--- each switch gives a bonus among:
+-- Phase 2: Ganon also throws fire bats periodically.
+-- The 4 torches now enable 4 solid switches on the sides.
+-- Each switch may give a bonus among:
 -- - special item to throw
 -- - heart or magic flask
--- - kill small enemies
--- - wrong switch, add more small enemies
+-- - kill all small enemies
+-- - wrong switch, add more fire bats
 
 local phase = 1
 local vulnerable = false
@@ -36,8 +33,8 @@ function event_appear()
   sol.enemy.set_life(1000000)
   sol.enemy.set_damage(16)
   sol.enemy.create_sprite("enemies/ganon")
-  sol.enemy.set_size(16, 16)
-  sol.enemy.set_origin(8, 13)
+  sol.enemy.set_size(32, 32)
+  sol.enemy.set_origin(16, 29)
   sol.enemy.set_invincible()
   sol.enemy.set_attack_consequence("sword", "protected")
   sol.enemy.set_attack_consequence("arrow", "protected")
@@ -56,8 +53,7 @@ function event_restart()
       m = sol.main.path_finding_movement_create(64)
       sol.enemy.start_movement(m)
       if not attack_scheduled then
-        sol.main.timer_start(prepare_attack, math.random(3000, 6000))
-	attack_scheduled = true
+	schedule_attack()
       end
     else
       jump()
@@ -86,11 +82,13 @@ function event_immobilized()
     sol.enemy.set_attack_consequence("thrown_item", "protected")
 
     -- make a protection
-    if sol.map.enemy_get_group_count(sol.enemy.get_name()) < 5 then
-      print("go bats!")
+    if sol.map.enemy_get_group_count(sol.enemy.get_name() .. "_bats_") < 9 then
+      --print("go bats!")
       attacking = false
-      prepare_bats()
+      throw_bats()
       cancel_next_attack = true -- otherwise two attacks would be scheduled
+    else
+      --print("no new bats, already enough")
     end
   end
 end
@@ -135,7 +133,7 @@ function finish_jump()
       destroy_floor(floors[nb_floors_destroyed], 1, 50)
     else
       -- go to phase 2
-      sol.enemy.set_life(64)
+      sol.enemy.set_life(24)
       phase = 2
     end
   end
@@ -173,22 +171,26 @@ function destroy_floor(prefix, first, last)
   repeat_change()
 end
 
-function prepare_attack()
+function attack()
 
+  --print("attack!")
   if phase == 1 or math.random(2) == 1 then
-    prepare_flames()
+    throw_flames()
   else
-    prepare_bats()
+    throw_bats()
   end
 end
 
-function prepare_flames()
+function throw_flames()
 
   if vulnerable or jumping or attacking then
+    --print("no flames: jumping =", jumping, "attacking =", attacking,
+    --    "attacking =", attacking)
     return
   end
 
   if cancel_next_attack then
+    --print("no flames: this attack is canceled")
     cancel_next_attack = false
     return
   end
@@ -223,15 +225,15 @@ function prepare_flames()
   repeat_throw_flame()
 end
 
-function prepare_bats()
+function throw_bats()
 
   if jumping or attacking then
-    print("no bats: jumping = ", jumping, " attacking = ", attacking)
+    --print("no bats: jumping =", jumping, "attacking =", attacking)
     return
   end
 
   if cancel_next_attack then
-    print("no bats: this attack is canceled")
+    --print("no bats: this attack is canceled")
     cancel_next_attack = false
     return
   end
@@ -247,13 +249,12 @@ function prepare_bats()
     nb_bats_created = nb_bats_created + 1
     local son_name = prefix .. nb_bats_created
     sol.enemy.create_son(son_name, "fire_bat", 0, -21, 0)
+    if math.random(6) == 1 then
+      sol.map.enemy_set_treasure(son_name, "magic_flask", 1, -1)
+    end
     sol.enemy.send_message(son_name, "circle")
-
-    sol.main.timer_start(function()
-      if not sol.map.enemy_is_dead(son_name) then
-        sol.enemy.send_message(son_name, "go_hero")
-      end
-    end, 2000 + (nb_to_create * 150))
+    local go_hero_delay = 2000 + (nb_to_create * 150)
+    sol.enemy.send_message(son_name, "go_hero " .. go_hero_delay)
 
     nb_to_create = nb_to_create - 1
     if nb_to_create > 0 then
@@ -263,10 +264,25 @@ function prepare_bats()
       attack_scheduled = false
       if not vulnerable then
 	sol.enemy.restart()
+      else
+	cancel_next_attack = false
       end
     end
   end
   sol.enemy.stop_movement()
   repeat_throw_bat()
+end
+
+function schedule_attack()
+
+  sol.main.timer_start(attack, math.random(3000, 6000))
+  attack_scheduled = true
+end
+
+function event_hurt(attack, life_lost)
+
+  if sol.enemy.get_life() <= 0 then
+    sol.main.timer_stop_all()
+  end
 end
 

@@ -108,10 +108,10 @@
 8	0	240	221	zelda	3	1	npc/zelda	map
 7	0	240	189	boss	3	ganon	2	881	_none	1	-1
 1	0	240	261	from_boss	1	0
-8	0	216	285	torch_1	3	0	entities/torch	map
-8	0	248	285	torch_2	3	0	entities/torch	map
-8	0	280	285	torch_3	3	0	entities/torch	map
-8	0	184	285	torch_4	3	0	entities/torch	map
+8	0	120	125	torch_1	3	0	entities/torch	map
+8	0	360	125	torch_2	3	0	entities/torch	map
+8	0	360	365	torch_3	3	0	entities/torch	map
+8	0	120	365	torch_4	3	0	entities/torch	map
 10	0	64	160	8	16	floor_left_2	313	1
 10	0	80	160	16	16	floor_left_3	537	1
 10	0	64	176	16	16	floor_left_4	537	1

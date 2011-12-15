@@ -467,4 +467,5 @@ booleans:
 949	dungeon 3 2F: chest with 300 rupees
 950	dungeon 3 2F: chest with 300 rupees appeared
 951	dungeon 2 1F: chest with 20 rupees (NE)
+952	hidden palace D6: chest with 300 rupees
 

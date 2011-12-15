@@ -70,7 +70,8 @@
 13	0	112	189	16	16	sensor	2
 13	0	96	61	16	16	sensor_2	2
 2	0	88	-16	16	16	teletransporter	0	2	121	_side
-2	0	88	176	16	16	teletransporter_2	0	0	126	tmp
+2	0	120	176	16	16	teletransporter_2	0	0	136	from_d2
+2	0	88	176	16	16	teletransporter_3	0	0	126	tmp
 0	1	64	192	96	8	414
 0	1	96	192	32	8	312
 0	1	48	40	96	8	413

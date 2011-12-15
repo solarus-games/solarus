@@ -1092,10 +1092,15 @@ bool Enemy::is_being_hurt() {
 
 /**
  * @brief Returns whether the enemy is killed.
+ *
+ * An enemy is considered as killed if he has no more life and its dying
+ * animation has started.
+ *
  * @return true if the enemy is killed
  */
 bool Enemy::is_killed() {
-  return life <= 0 && (get_sprite().get_animation_set_id() == "enemies/enemy_killed" || exploding);
+  return life <= 0
+    && (get_sprite().get_animation_set_id() == "enemies/enemy_killed" || next_explosion_date > 0);
 }
 
 /**

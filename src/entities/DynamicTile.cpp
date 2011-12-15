@@ -105,7 +105,7 @@ void DynamicTile::set_map(Map &map) {
  */
 bool DynamicTile::is_obstacle_for(MapEntity &other) {
 
-  bool result;
+  bool result = false;
   switch (tile_pattern->get_obstacle()) {
 
     case OBSTACLE:

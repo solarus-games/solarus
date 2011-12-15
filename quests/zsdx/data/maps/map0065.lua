@@ -21,7 +21,7 @@ function event_map_started(destination_point_name)
   end
 
   if sol.game.savegame_get_boolean(512) then
-    prison_2_nb_messages = 2
+    prison_2_nb_messages = 3
   end
 
   if not sol.game.savegame_get_boolean(519) then

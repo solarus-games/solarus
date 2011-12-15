@@ -25,8 +25,9 @@
 /**
  * @brief Implementation of the A* algorithm to compute a path.
  *
- * This class implements the A* algorithm to compute the path.
- * The entity to move is supposed to have a size of 16*16.
+ * In the current implementation, the computed path always corresponds to a
+ * shape of 16*16. If the entity to move is bigger, some obstacles may prevent
+ * it from following the computed path.
  */
 class PathFinding {
 

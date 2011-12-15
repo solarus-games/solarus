@@ -26,10 +26,15 @@ function event_map_started(destination_point_name)
     remove_dungeon_2_door()
   end
 
-  -- make the NPCs walk
+  -- initialize NPCs
   random_walk("hat_man")
-  random_walk("how_to_save_npc")
   random_walk("grand_son")
+
+  if sol.game.is_dungeon_finished(1) then
+    sol.map.npc_remove("how_to_save_npc")
+  else
+    random_walk("how_to_save_npc")
+  end
 
   -- smith cave with thiefs
   if sol.game.savegame_get_boolean(155) and not sol.game.savegame_get_boolean(156) then
@@ -71,6 +76,14 @@ function event_npc_interaction(npc_name)
       remove_dungeon_2_door()
     else
       sol.map.dialog_start("outside_world.rock_key_required")
+    end
+
+  elseif npc_name == "hat_man" then
+
+    if sol.game.is_dungeon_finished(1) then
+      sol.map.dialog_start("outside_world.village.hat_man_npc_waterfall")
+    else
+      sol.map.dialog_start("outside_world.village.hat_man_npc")
     end
   end
 end

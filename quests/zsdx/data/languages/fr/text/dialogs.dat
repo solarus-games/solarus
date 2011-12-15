@@ -3948,9 +3948,9 @@ line3 = "te donner..."
 [sahasrahla_house.beginning]
 # Chez Sahasrahla : première visite
 #       |-----------------------|
-line1 = "Sahasrahla : Oh, $v,"
-line2 = "tu as entendu mon"
-line3 = "appel. J'ai des choses"
+line1 = "Oh, $v, tu as"
+line2 = "entendu mon appel."
+line3 = "J'ai des choses"
 next = sahasrahla_house.beginning.2
 
 [sahasrahla_house.beginning.2]

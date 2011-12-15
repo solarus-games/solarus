@@ -3,7 +3,7 @@
 local torches_error = false
 local torches_next = nil
 local torches_nb_on = 0
-local torches_delay = 15000
+local torches_delay = 20000
 local pickables = {
   { x =  88, y = 141 },
   { x = 136, y = 93 },
@@ -26,6 +26,29 @@ local pickables = {
   { x = 320, y = 197 },
   { x = 320, y = 293 }, --]]
 }
+local bats = {
+  { x =  88, y = 141 },
+  { x = 136, y = 93 },
+  { x = 144, y = 149 },
+  { x = 344, y = 93 },
+  { x = 392, y = 141 },
+  { x = 336, y = 149 },
+  { x = 392, y = 349 },
+  { x = 344, y = 397 },
+  { x = 336, y = 341 },
+  { x = 136, y = 397 },
+  { x =  88, y = 349 },
+  { x = 144, y = 341 },
+  { x = 192, y = 325 },
+  { x = 288, y = 325 },
+  { x = 160, y = 293 },
+  { x = 192, y = 165 },
+  { x = 288, y = 165 },
+  { x = 160, y = 197 },
+  { x = 320, y = 197 },
+  { x = 320, y = 293 },
+}
+local nb_bats_created = 0
 local bonuses_done = {}
 
 function event_map_started(destination_point_name)
@@ -277,20 +300,25 @@ function event_switch_activated(switch_name)
   bonuses_done[index] = true
 
   if index == 1 then
-    -- TODO kill small enemies
-    sol.main.play_sound("enemy_killed")
+    -- kill small enemies
+    if sol.map.enemy_get_group_count("boss_") > 0 then
+      sol.main.play_sound("enemy_killed")
+      sol.map.enemy_remove_group("boss_")
+    end
 
   elseif index == 2 then
+    -- create the stone that makes Ganon vulnerable
     sol.main.play_sound("secret")
     create_stone()
 
   elseif index == 3 then
+    -- create pickable items
     sol.main.play_sound("secret")
     create_pickables()
 
   else
-    -- TODO create enemies
     sol.main.play_sound("wrong")
+    create_bats()
   end
 end
 
@@ -316,6 +344,14 @@ function create_pickables()
       variant = 1
     end
     sol.map.pickable_item_create(item_name, variant, -1, v.x, v.y, 0)
+  end
+end
+
+function create_bats()
+
+  for i, v in ipairs(bats) do
+    nb_bats_created = nb_bats_created + 1
+    sol.map.enemy_create("bat_" .. nb_bats_created, "fire_bat", 0, v.x, v.y)
   end
 end
 

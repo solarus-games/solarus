@@ -36,7 +36,8 @@ end
 
 function event_block_moved(block_name)
   x, y = sol.map.block_get_position("STT5")
-  if x >= 1088 and x <= 1168 then
+  if x >= 1096 and x <= 1160
+      and y >= 893 and y <= 925 then
     sol.map.block_set_enabled("STT5", false)
     sol.main.play_sound("jump")
     sol.game.savegame_set_boolean(725, true)

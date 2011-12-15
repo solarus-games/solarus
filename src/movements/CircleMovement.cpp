@@ -186,7 +186,7 @@ int CircleMovement::get_initial_angle() {
  */
 void CircleMovement::set_initial_angle(int initial_angle) {
 
-  Debug::check_assertion(initial_angle >= 0 && initial_angle < Geometry::TWO_PI,
+  Debug::check_assertion(initial_angle >= 0 && initial_angle < 360,
       StringConcat() << "Invalid initial angle: " << initial_angle);
 
   this->initial_angle = initial_angle;
@@ -322,11 +322,11 @@ void CircleMovement::update() {
       current_angle += angle_increment;
       current_angle = (360 + current_angle) % 360;
       if (current_angle == initial_angle) {
-	nb_rotations++;
+        nb_rotations++;
 
-	if (nb_rotations == max_rotations) {
-	  stop();
-	}
+        if (nb_rotations == max_rotations) {
+          stop();
+        }
       }
 
       next_angle_change_date += angle_change_delay;

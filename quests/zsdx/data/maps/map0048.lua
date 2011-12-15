@@ -28,6 +28,7 @@ function event_map_started(destination_point_name)
 
   if destination_point_name == "from_1F_A" then
     sol.map.door_set_open("LD8", true)
+    sol.map.switch_set_activated("DB08", true)
   end
 end
 

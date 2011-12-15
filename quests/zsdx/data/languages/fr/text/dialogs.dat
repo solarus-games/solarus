@@ -5755,15 +5755,15 @@ line2 = "On ne bouge plus !"
 
 [dungeon_5.prison_1_locked]
 #       |-----------------------|
-line1 = "Aucune de tes clés ne"
-line2 = "semble rentrer dans"
-line3 = "cette serrure..."
+line1 = "    - Serrure Fer -"
+line2 = "Aucune de tes clés ne"
+line3 = "semble rentrer..."
 
-[dungeon_5.prison_1_use_bone_key]
+[dungeon_5.prison_1_use_iron_key]
 #       |-----------------------|
 icon = 20
 line1 = "$1Tu utilises la Clé"
-line2 = "d'Os..."
+line2 = "de Fer..."
 
 [dungeon_5.prison_2_locked_1]
 #       |-----------------------|

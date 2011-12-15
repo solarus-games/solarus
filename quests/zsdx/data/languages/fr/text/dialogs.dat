@@ -6329,6 +6329,18 @@ skip = all
 line1 = "En bas."
 skip = all
 
+[dungeon_9.5f_childs_hint]
+#       |-----------------------|
+line1 = "$1Pour pouvoir vaincre"
+line2 = "Ganon, les braseros"
+line3 = "doivent être allumés"
+skip = all
+next = dungeon_9.5f_childs_hint.2
+
+[dungeon_9.5f_childs_hint.2]
+#       |-----------------------|
+line1 = "dans le sens du temps."
+
 [dungeon_9.boss]
 #       |-----------------------|
 line1 = "Vous voilà enfin, jeune"

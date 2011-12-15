@@ -5,6 +5,7 @@ function event_map_started(destination_point_name)
   sol.map.door_set_open("door_b", true)
   sol.map.door_set_open("door_c", true)
   sol.map.door_set_open("door_d", true)
+  sol.map.npc_set_group_enabled("child", false)
 end
 
 function event_block_moved(block_name)
@@ -54,6 +55,21 @@ function event_hero_on_sensor(sensor_name)
       sol.map.door_close("door_d")
       sol.map.enemy_set_enabled("door_d_enemy", true)
     end
+
+  -- childs
+  elseif sensor_name == "childs_hint_sensor" then
+    sol.map.hero_freeze()
+    sol.map.hero_set_direction(1)
+    sol.map.npc_set_group_enabled("child", true)
+    for i = 1, 8 do
+      local sprite = sol.map.npc_get_sprite("child_" .. i)
+      sol.main.sprite_set_animation_ignore_suspend(sprite, true)
+    end
+    sol.main.timer_start(function()
+      sol.map.hero_unfreeze()
+      sol.map.sensor_set_enabled(sensor_name, false)
+      sol.map.dialog_start("dungeon_9.5f_childs_hint")
+    end, 3000)
   end
 end
 

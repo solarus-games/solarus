@@ -4,6 +4,7 @@
 guard_name = nil
 hero_seen = false
 
+-- This function should be called by event_dialog_finished in your map.
 function dialog_check_guard(first_message_id)
 
   if first_message_id == "dungeon_5.hero_seen_by_guard" then
@@ -11,6 +12,7 @@ function dialog_check_guard(first_message_id)
   end
 end
 
+-- This function should be called by event_hero_on_sensor in your map.
 function sensor_check_guard(sensor_name)
 
   local guard_num, direction = string.match(sensor_name,

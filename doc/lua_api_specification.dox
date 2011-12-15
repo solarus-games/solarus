@@ -942,7 +942,7 @@ layer as the current one.
 - <tt>sol.enemy.get_father()</tt>:
 Returns the name of the father of the enemy (if any).
 The father is the enemy that created
-the current one by calling <tt>sol.enemy_create_son</tt>,
+the current one by calling <tt>sol.enemy.create_son</tt>,
 Returns an empty string if the current enemy has no father.
 
 - <tt>sol.enemy.send_message(dst_enemy, message)</tt>:

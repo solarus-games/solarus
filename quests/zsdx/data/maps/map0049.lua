@@ -12,7 +12,6 @@
 -- DS: Door Sensor
 
 function event_map_started(destination_point_name)
-  sol.map.door_set_open("LD11", true)
   if not sol.game.savegame_get_boolean(711) then
     sol.map.chest_set_enabled("RC100", false)
   end

@@ -179,7 +179,7 @@ booleans:
 147-152 beaumont cave (inferno maze): small key blocks
 153	beaumont cave opened with the edelweiss
 154	inferno river maze: chest with a fire stone
-155	rupee house broken
+155	rupee house broken (on after dungeon 4, off after dungeon 6)
 156	smith cave: won the battle agains the thiefs
 157	broken rupee house: got the flippers
 158	lake shop: weak wall

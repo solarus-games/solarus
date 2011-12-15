@@ -16,12 +16,12 @@ function event_map_started(destination_point_name)
     if sol.game.savegame_get_boolean(905) then
       sol.main.play_music("dark_world.spc")
       sol.map.tileset_set(13)
-      sol.map.tile_set_enabled("rupee_house_door", false)
     end
 
     -- broken rupee house
     if sol.game.savegame_get_boolean(155) then
       sol.map.teletransporter_set_enabled("to_rupee_house", false)
+      sol.map.tile_set_enabled("rupee_house_door", false)
     else
       sol.map.teletransporter_set_enabled("to_broken_rupee_house", false)
       sol.map.tile_set_group_enabled("broken_rupee_house", false)

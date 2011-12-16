@@ -1046,6 +1046,7 @@ void MapEntity::set_movement(Movement *movement) {
 void MapEntity::clear_movement() {
 
   if (movement != NULL) {
+    movement->set_entity(NULL); // tell the movement to forget me
     old_movements.push_back(movement); // destroy it later
     movement = NULL;
   }

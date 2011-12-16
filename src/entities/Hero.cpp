@@ -1548,7 +1548,7 @@ void Hero::notify_collision_with_jumper(Jumper& jumper) {
 
       // this non-diagonal jumper is not currently an obstacle for the hero
       // (in order to allow his smooth collision movement),
-      // so the hero may be one pixel inside the sensor before jumping
+      // so the hero may be one pixel inside the jumper before jumping
       if (jump_direction % 4 == 0) {
         set_aligned_to_grid_x();
       }

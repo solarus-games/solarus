@@ -45,7 +45,7 @@ void PlayerMovement::update() {
 
   StraightMovement::update();
 
-  if (!get_entity()->is_on_map()) {
+  if (get_entity() == NULL || !get_entity()->is_on_map()) {
     return; // the entity is not ready yet
   }
 
@@ -100,7 +100,7 @@ void PlayerMovement::set_moving_speed(int moving_speed) {
  */
 void PlayerMovement::set_wanted_direction() {
 
-  if (get_entity()->is_on_map()) {
+  if (get_entity() != NULL && get_entity()->is_on_map()) {
     GameControls& controls = get_entity()->get_game().get_controls();
     direction8 = controls.get_wanted_direction8();
   }
@@ -127,8 +127,10 @@ void PlayerMovement::compute_movement() {
     set_angle(Geometry::degrees_to_radians(direction8 * 45));
   }
 
-  // notify the entity that its movement has just changed:
-  // indeed, the entity may need to update its sprites
-  get_entity()->notify_movement_changed();
+  if (get_entity() != NULL) {
+    // notify the entity that its movement has just changed:
+    // indeed, the entity may need to update its sprites
+    get_entity()->notify_movement_changed();
+  }
 }
 

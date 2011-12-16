@@ -565,7 +565,7 @@
 8	1	960	37	npc_3	3	0	entities/hint_stone	dialog#dungeon_2.code_hint
 18	1	944	200	boss_door	1	0	-1
 18	1	944	152	boss_door_2	3	0	-1
-7	1	176	141	enemy_3	3	skeletor	0	-1	_random	1	-1
+7	1	176	189	enemy_3	3	skeletor	0	-1	_random	1	-1
 12	1	168	256	16	16	custom_obstacle_7	0	1	1	1
 4	1	488	61	0	_random	1	-1
 4	1	504	61	0	heart	1	-1

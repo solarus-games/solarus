@@ -4945,7 +4945,6 @@ line3 = "magique."
 line1 = "Comment es-tu arrivé"
 line2 = "ici ??"
 next = chests_game_cave.first_time.2
-skip = current
 
 [chests_game_cave.first_time.2]
 #       |-----------------------|
@@ -4965,6 +4964,7 @@ next = chests_game_cave.play_question
 #       |-----------------------|
 line1 = "Salut ! Une partie"
 line2 = "coûte 30 Rubis."
+skip = current
 next = chests_game_cave.play_question
 
 [chests_game_cave.play_question]

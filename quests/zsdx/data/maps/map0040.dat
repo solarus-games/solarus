@@ -1111,6 +1111,8 @@
 7	1	728	389	enemy_10	3	bee_guard	0	-1	_random	1	-1
 7	1	856	189	enemy_11	3	mandible	0	-1	_random	1	-1
 12	1	904	576	80	8	custom_obstacle_41	0	1	1	1
+12	1	760	96	64	16	custom_obstacle_42	0	1	1	1
+12	1	120	488	16	64	custom_obstacle_43	0	1	1	1
 0	2	88	504	96	8	438
 0	2	152	16	32	8	437
 0	2	88	528	96	8	437

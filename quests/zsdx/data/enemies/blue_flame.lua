@@ -17,6 +17,11 @@ function event_movement_finished(movement)
   sol.map.enemy_remove(sol.enemy.get_name())
 end
 
+function event_obstacle_reached()
+
+  sol.map.enemy_remove(sol.enemy.get_name())
+end
+
 function event_message_received(src_enemy, message)
 
   -- the message is the angle to take
@@ -25,9 +30,5 @@ function event_message_received(src_enemy, message)
   sol.main.movement_set_property(m, "ignore_obstacles", true)
   sol.main.movement_set_property(m, "max_distance", 320)
   sol.enemy.start_movement(m)
-
-  -- workaround for flames that sometimes don't move
-  -- (is it the same bug as red flames?)
-  sol.main.timer_start(event_movement_finished, 2000)
 end
 

@@ -6,7 +6,7 @@ retracted_delay = 3000 -- delay while the tail remains retracted
 function event_appear()
 
   sol.enemy.set_life(1000000)
-  sol.enemy.set_damage(4)
+  sol.enemy.set_damage(12)
   sol.enemy.create_sprite("enemies/gelidrak_tail")
   sol.enemy.set_size(16, 16)
   sol.enemy.set_origin(8, 8)

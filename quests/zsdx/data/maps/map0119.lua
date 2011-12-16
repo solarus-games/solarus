@@ -36,6 +36,8 @@ function event_map_started(destination_point_name)
 	end
 	sol.map.pickable_item_create("sword", variant, 298, 440, 157, 1)
       end
+    else
+      sol.map.tile_set_group_enabled("roof_entrance", false)
     end
   end
 

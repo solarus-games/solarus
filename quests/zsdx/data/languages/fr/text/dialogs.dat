@@ -5570,6 +5570,7 @@ line3 = "à la prospérité !"
 #       |-----------------------|
 line1 = "        Niveau 4"
 line2 = "   Palais de Beaumont  "
+skip = current
 
 [dungeon_4.hint_use_map]
 #       |-----------------------|
@@ -5740,6 +5741,7 @@ line1 = "Ah ah ah ah ah ah !!!"
 #       |-----------------------|
 line1 = "        Niveau 5"
 line2 = "     Ancien Château"
+skip = current
 
 [dungeon_5.pots_hint]
 #       |-----------------------|
@@ -5844,6 +5846,7 @@ line3 = "prochaine fois !"
 #       |-----------------------|
 line1 = "        Niveau 6"
 line2 = "    Dédale d'Inferno   "
+skip = current
 
 [dungeon_6.torches_hint]
 #       |-----------------------|

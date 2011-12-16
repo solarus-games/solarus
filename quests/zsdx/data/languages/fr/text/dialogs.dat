@@ -1422,7 +1422,7 @@ next = _treasure.magic_cape.1.1
 [_treasure.magic_cape.1.1]
 #       |--------------------|
 line1 = "Elle t'avertira si"
-line2 = "tu t'approchees d'un"
+line2 = "tu t'approches d'un"
 line3 = "mur fragile."
 
 [_treasure.iron_key.1]

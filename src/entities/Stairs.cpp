@@ -282,7 +282,7 @@ std::string Stairs::get_path(Way way) {
  */
 Rectangle Stairs::get_clipping_rectangle(Way way) {
 
-  if (subtype == INSIDE_FLOOR) {
+  if (subtype == INSIDE_FLOOR || subtype == STRAIGHT_UPSTAIRS) {
     return Rectangle(0, 0, 0, 0); // no restriction
   }
 

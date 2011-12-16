@@ -92,7 +92,7 @@ function event_npc_interaction(npc_name)
       elseif next_sign == #directions + 1 then
 	sol.map.camera_move(376, 984, 250, function()
 	  sol.main.play_sound("secret")
-	  sol.map.door_set_open("sw_door", true)
+	  sol.map.door_open("sw_door")
 	end)
       end
       next_sign = next_sign + 1

@@ -179,6 +179,8 @@ function event_door_open(door_name)
 
   if door_name == "boss_key_door" then
     sol.map.enemy_remove("boss_key_door_laser")
+  elseif door_name == "WW01" then
+    sol.main.play_sound("secret")
   end
 end
 

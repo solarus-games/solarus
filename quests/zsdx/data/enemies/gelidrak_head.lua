@@ -6,8 +6,8 @@ local nb_flames_created = 0
 
 function event_appear()
 
-  sol.enemy.set_life(16)
-  sol.enemy.set_damage(4)
+  sol.enemy.set_life(24)
+  sol.enemy.set_damage(12)
   sol.enemy.create_sprite("enemies/gelidrak_head")
   sol.enemy.set_size(32, 40)
   sol.enemy.set_origin(16, 24)
@@ -29,7 +29,7 @@ function event_restart()
 
   if not vulnerable then
     go_back()
-    sol.main.timer_start(throw_flames, math.random(3000, 7000))
+    sol.main.timer_start(throw_flames, math.random(2000, 5000))
   else
     sol.enemy.set_can_attack(false)
   end
@@ -84,8 +84,6 @@ end
 
 function event_hurt(attack, life_lost)
 
-  sol.enemy.stop_movement()
-
   if sol.enemy.get_life() > 0 then
     -- notify the body (so that it is hurt too)
     sol.enemy.send_message(sol.enemy.get_father(), "hurt")
@@ -103,21 +101,23 @@ end
 
 function throw_flames()
 
-  nb_flames_created = 0
-  sol.enemy.stop_movement()
-  local sprite = sol.enemy.get_sprite()
-  sol.main.sprite_set_animation(sprite, "preparing_flame")
-  sol.main.play_sound("lamp")
-  sol.main.timer_start(repeat_flame, 500)
+  if sol.map.enemy_get_group_count(sol.enemy.get_name() .. "_son_") < 5 then
+    nb_flames_created = 0
+    sol.enemy.stop_movement()
+    local sprite = sol.enemy.get_sprite()
+    sol.main.sprite_set_animation(sprite, "preparing_flame")
+    sol.main.play_sound("lamp")
+    sol.main.timer_start(repeat_flame, 500)
+  end
 end
 
 function repeat_flame()
 
-  local max_flames_created = 22 - sol.enemy.get_life()
+  local max_flames_created = 32 - sol.enemy.get_life()
   if nb_flames_created <= max_flames_created then
+    nb_flames_created = nb_flames_created + 1
     local son_name = sol.enemy.get_name() .. "_son_" .. nb_flames_created
     local angle = math.random(360) * math.pi / 180
-    nb_flames_created = nb_flames_created + 1
     sol.enemy.create_son(son_name, "blue_flame", 0, 16)
     sol.enemy.send_message(son_name, tostring(angle))
     sol.main.play_sound("lamp")

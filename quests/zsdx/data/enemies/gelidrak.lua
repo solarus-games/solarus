@@ -12,7 +12,7 @@ local current_xy = {}
 function event_appear()
 
   sol.enemy.set_life(1000000)
-  sol.enemy.set_damage(1)
+  sol.enemy.set_damage(12)
   sol.enemy.create_sprite("enemies/gelidrak")
   sol.enemy.set_size(240, 112)
   sol.enemy.set_origin(120, 88)
@@ -130,7 +130,6 @@ function event_message_received(src_enemy, message)
 
     if message == "hurt" then
       -- the hero just hurt my head
-      sol.enemy.hurt(1)
     elseif message == "dying" then
       -- I'm dying: remove the tail
       sol.map.enemy_remove(tail)

@@ -1254,7 +1254,7 @@
 12	1	232	704	16	8	custom_obstacle_42	1	1	1	1
 12	1	248	608	40	8	custom_obstacle_43	1	1	1	1
 12	1	48	736	128	8	custom_obstacle_44	1	1	1	1
-4	1	1064	1501	0	_random	1	-1
+4	1	1064	1501	0	_none	1	-1
 12	1	800	1000	16	64	custom_obstacle_45	0	1	0	0
 12	1	752	1256	16	64	custom_obstacle_46	0	1	0	0
 12	1	1896	896	64	16	custom_obstacle_48	0	1	0	0

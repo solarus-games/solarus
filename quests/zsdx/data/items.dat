@@ -269,6 +269,7 @@ initial_variant = 1
 [sword]
 savegame_variable = 1129
 nb_variants = 4
+sound_when_picked = 
 sound_when_brandished = 
 
 [shield]

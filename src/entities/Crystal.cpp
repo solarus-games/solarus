@@ -82,6 +82,21 @@ EntityType Crystal::get_type() {
 }
 
 /**
+ * @brief Notifies this entity that its map has just become active.
+ */
+void Crystal::notify_map_started() {
+
+  Detector::notify_map_started();
+
+  bool state = get_game().get_crystal_state();
+  if (state != this->state) {
+
+    this->state = state;
+    get_sprite().set_current_animation(state ? "blue_lowered" : "orange_lowered");
+  }
+}
+
+/**
  * @brief Returns whether this entity is an obstacle for another one.
  * @param other another entity
  * @return true if this entity is an obstacle for the other one 

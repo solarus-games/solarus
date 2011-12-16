@@ -19,7 +19,9 @@ function event_map_started(destination_point_name)
     sol.map.obstacle_set_enabled("LO4", false)
   end
 
-  if not sol.game.savegame_get_boolean(706) then
+  if sol.game.savegame_get_boolean(706) then
+    sol.map.switch_set_activated("CB03", true)
+  else
     sol.map.chest_set_enabled("KC03", false)
   end
   if not sol.game.savegame_get_boolean(707) then

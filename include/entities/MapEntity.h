@@ -170,7 +170,7 @@ class MapEntity {
     // destruction
     virtual ~MapEntity();
     void remove_from_map();
-    void notify_being_removed();
+    virtual void notify_being_removed();
     bool is_being_removed();
 
     // entity type features

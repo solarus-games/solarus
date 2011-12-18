@@ -61,6 +61,7 @@ ShopItem::ShopItem(const std::string &name, Layer layer, int x, int y,
  * @brief Destructor.
  */
 ShopItem::~ShopItem() {
+  delete price_digits;
   delete rupee_icon_sprite;
 }
 

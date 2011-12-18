@@ -294,6 +294,8 @@ class Hero: public MapEntity {
     bool is_moving_grabbed_entity();
     void notify_grabbed_entity_collision();
 
+    void start_grass();
+    void start_shallow_water();
     void start_deep_water();
     void start_hole();
     void start_lava();

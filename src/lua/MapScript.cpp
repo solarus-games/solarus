@@ -120,7 +120,7 @@ void MapScript::event_update() {
  */
 void MapScript::event_set_suspended(bool suspended) {
 
-  notify_script("event_suspended", "b", suspended);
+  notify_script("event_suspended", "b", suspended ? 1 : 0);
 }
 
 /**
@@ -363,9 +363,9 @@ bool MapScript::event_chest_empty(const std::string &chest_name) {
  */
 bool MapScript::event_shop_item_buying(const std::string& shop_item_name) {
 
-  bool can_buy = true; // if the function does not exist, allow buying the item
+  int can_buy = true; // if the function does not exist, allow buying the item
   notify_script("event_shop_item_buying", "s b", shop_item_name.c_str(), &can_buy);
-  return can_buy;
+  return can_buy != 0;
 }
 
 /**

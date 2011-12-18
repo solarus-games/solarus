@@ -1146,16 +1146,11 @@ void Hero::notify_ground_changed() {
     break;
 
   case GROUND_SHALLOW_WATER:
+    start_shallow_water();
+    break;
+
   case GROUND_GRASS:
-    {
-      // display a special sprite below the hero
-      sprites->create_ground(ground);
-
-      uint32_t now = System::now();
-      next_ground_date = std::max(next_ground_date, now);
-
-      set_walking_speed(normal_walking_speed * 4 / 5);
-    }
+    start_grass();
     break;
 
   case GROUND_LADDER:
@@ -1876,6 +1871,35 @@ void Hero::hurt(const Rectangle& source_xy, int life_points, int magic_points) {
 }
 
 /**
+ * @brief Displays a grass sprite below the hero and makes him walk slower.
+ */
+void Hero::start_grass() {
+
+  // display a special sprite below the hero
+  sprites->create_ground(GROUND_GRASS);
+
+  uint32_t now = System::now();
+  next_ground_date = std::max(next_ground_date, now);
+
+  set_walking_speed(normal_walking_speed * 4 / 5);
+}
+
+/**
+ * @brief Displays a shallow water sprite below the hero and makes him walk
+ * slower.
+ */
+void Hero::start_shallow_water() {
+
+  // display a special sprite below the hero
+  sprites->create_ground(GROUND_SHALLOW_WATER);
+
+  uint32_t now = System::now();
+  next_ground_date = std::max(next_ground_date, now);
+
+  set_walking_speed(normal_walking_speed * 4 / 5);
+}
+
+/**
  * @brief This function is called when the hero was dead but saved by a fairy.
  */
 void Hero::get_back_from_death() {
@@ -2217,10 +2241,26 @@ void Hero::start_state_from_ground() {
     start_prickle(0);
     break;
 
-  case GROUND_NORMAL:
   case GROUND_SHALLOW_WATER:
+    start_shallow_water();
+    if (state->is_carrying_item()) {
+      set_state(new CarryingState(*this, state->get_carried_item()));
+    }
+    else {
+      set_state(new FreeState(*this));
+    }
+
   case GROUND_GRASS:
+    start_grass();
+    if (state->is_carrying_item()) {
+      set_state(new CarryingState(*this, state->get_carried_item()));
+    }
+    else {
+      set_state(new FreeState(*this));
+    }
+
   case GROUND_LADDER:
+  case GROUND_NORMAL:
   case GROUND_EMPTY:
     if (state->is_carrying_item()) {
       set_state(new CarryingState(*this, state->get_carried_item()));

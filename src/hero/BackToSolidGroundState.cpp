@@ -104,7 +104,7 @@ void Hero::BackToSolidGroundState::update() {
     }
 
     if (now >= end_date) {
-      hero.set_state(new FreeState(hero));
+      hero.start_state_from_ground();
     }
   }
 }

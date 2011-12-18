@@ -32,14 +32,20 @@ function event_map_started(destination_point_name)
     sol.map.door_set_open("LD8", true)
     sol.map.switch_set_activated("DB08", true)
   end
+
+  if destination_point_name ~= "from_B2_C" then
+    sol.map.door_set_open("LD12", true)
+  end
 end
 
 function event_hero_on_sensor(sensor_name)
   if sensor_name == "DS12" then
     -- Push block room		
-    sol.main.play_sound("secret")
-    sol.map.door_open("LD12")
-    sol.map.sensor_set_enabled("DS12", false)
+    if not sol.map.door_is_open("LD12") then
+      sol.main.play_sound("secret")
+      sol.map.door_open("LD12")
+      sol.map.sensor_set_enabled("DS12", false)
+    end
   elseif sensor_name == "DS7" then
     -- Globules monsters room		
     if sol.map.door_is_open("LD7")

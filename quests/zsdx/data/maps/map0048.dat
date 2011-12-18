@@ -1132,7 +1132,6 @@
 9	1	168	157	block_20	-1	entities/block	1	0	0
 9	1	216	157	LD12_block	-1	entities/block	1	0	1
 1	1	248	37	from_B2_C	3	0
-19	1	240	24	stairs_2	1	1
 9	1	872	1405	block_22	-1	entities/block	1	0	0
 9	1	888	1405	block_23	-1	entities/block	1	0	0
 9	1	904	1405	block_24	-1	entities/block	1	0	0
@@ -1184,7 +1183,6 @@
 4	1	1496	1485	0	_random	1	-1
 4	1	1496	1453	0	_random	1	-1
 18	1	152	280	LD12_2	1	0	-1
-2	1	240	24	16	16	to_B2_C	0	1	49	from_B1_C
 13	1	216	157	16	16	DS12	0
 4	1	488	1597	0	_none	1	-1
 4	1	568	1597	0	_none	1	-1
@@ -1317,6 +1315,8 @@
 1	1	272	1485	tmp	-1	0
 12	1	232	1360	16	24	custom_obstacle_6	1	0	1	1
 12	1	296	1408	64	16	custom_obstacle_7	0	1	0	0
+2	1	240	24	16	16	to_B2_C	0	1	49	from_B1_C
+19	1	240	24	stairs_2	1	1
 0	2	1624	784	96	8	437
 0	2	1936	856	8	96	441
 0	2	1912	856	8	96	442

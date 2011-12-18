@@ -65,6 +65,7 @@ class Detector: public MapEntity {
 
     // destruction
     virtual ~Detector();
+    virtual void notify_being_removed();
 
     // properties
     bool has_layer_independent_collisions();

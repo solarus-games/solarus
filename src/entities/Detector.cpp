@@ -375,3 +375,19 @@ SoundId Detector::get_sword_tapping_sound() {
   return "sword_tapping";
 }
 
+/**
+ * @brief Notifies this entity that it is about to be removed.
+ *
+ * This function is called when the entity has just been added
+ * to the list of entities that will be removed from the map
+ * and deleted from the memory as soon as possible.
+ */
+void Detector::notify_being_removed() {
+
+  MapEntity::notify_being_removed();
+
+  if (get_hero().get_facing_entity() == this) {
+    get_hero().set_facing_entity(NULL);
+  }
+}
+

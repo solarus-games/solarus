@@ -77,6 +77,7 @@ class HeroSprites {
     bool is_sword_stars_visible();
     bool is_shield_visible();
     bool is_trail_visible();
+    bool is_ground_visible();
 
     void stop_displaying_sword();
     void stop_displaying_sword_stars();

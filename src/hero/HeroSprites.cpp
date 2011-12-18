@@ -248,6 +248,14 @@ bool HeroSprites::is_trail_visible() {
 }
 
 /**
+ * @brief Returns whether a special ground is displayed under the hero.
+ * @return true if a ground is currently visible under the hero
+ */
+bool HeroSprites::is_ground_visible() {
+  return hero.is_ground_visible() && ground_sprite != NULL;
+}
+
+/**
  * @brief Stops displaying the sword and the sword stars (if any).
  */
 void HeroSprites::stop_displaying_sword() {
@@ -522,7 +530,7 @@ void HeroSprites::update() {
     trail_sprite->update();
   }
 
-  if (hero.is_ground_visible()) {
+  if (is_ground_visible()) {
     ground_sprite->update();
   }
 
@@ -565,7 +573,7 @@ void HeroSprites::display_on_map() {
     map.display_sprite(*trail_sprite, x, y);
   }
 
-  if (hero.is_ground_visible()) {
+  if (is_ground_visible()) {
     map.display_sprite(*ground_sprite, x, y);
   }
 
@@ -613,7 +621,7 @@ void HeroSprites::set_suspended(bool suspended) {
 
   trail_sprite->set_suspended(suspended);
 
-  if (hero.is_ground_visible()) {
+  if (is_ground_visible()) {
     ground_sprite->set_suspended(suspended);
   }
 
@@ -664,7 +672,7 @@ void HeroSprites::restart_animation() {
     trail_sprite->restart_animation();
   }
 
-  if (hero.is_ground_visible()) {
+  if (is_ground_visible()) {
     ground_sprite->restart_animation();
   }
 }
@@ -695,7 +703,7 @@ void HeroSprites::set_ignore_suspend(bool ignore_suspend) {
     trail_sprite->set_ignore_suspend(ignore_suspend);
   }
 
-  if (hero.is_ground_visible()) {
+  if (is_ground_visible()) {
     ground_sprite->set_ignore_suspend(ignore_suspend);
   }
 }
@@ -708,7 +716,8 @@ void HeroSprites::set_ignore_suspend(bool ignore_suspend) {
  */
 void HeroSprites::set_animation_stopped_common() {
 
-  if (hero.is_ground_visible() && hero.get_ground() != GROUND_SHALLOW_WATER) {
+  if (is_ground_visible()
+      && hero.get_ground() != GROUND_SHALLOW_WATER) {
     ground_sprite->set_current_animation("stopped");
   }
   walking = false;
@@ -795,7 +804,7 @@ void HeroSprites::set_animation_stopped_swimming() {
  */
 void HeroSprites::set_animation_walking_common() {
 
-  if (hero.is_ground_visible() && hero.get_ground() != GROUND_SHALLOW_WATER) {
+  if (is_ground_visible() && hero.get_ground() != GROUND_SHALLOW_WATER) {
     ground_sprite->set_current_animation("walking");
   }
 

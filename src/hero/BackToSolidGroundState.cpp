@@ -104,7 +104,7 @@ void Hero::BackToSolidGroundState::update() {
     }
 
     if (now >= end_date) {
-      hero.start_state_from_ground();
+      hero.set_state(new FreeState(hero));
     }
   }
 }
@@ -179,7 +179,7 @@ bool Hero::BackToSolidGroundState::is_touching_ground() {
  * @return true if the collision are ignored
  */
 bool Hero::BackToSolidGroundState::are_collisions_ignored() {
-  return true;
+  return System::now() < end_date;
 }
 
 /**

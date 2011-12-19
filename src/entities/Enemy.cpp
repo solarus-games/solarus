@@ -88,7 +88,6 @@ Enemy::Enemy(const ConstructionParameters &params):
   father_name(""),
   being_hurt(false),
   stop_hurt_date(0),
-  normal_movement(NULL),
   invulnerable(false),
   vulnerable_again_date(0),
   can_attack(true),
@@ -108,9 +107,6 @@ Enemy::Enemy(const ConstructionParameters &params):
  */
 Enemy::~Enemy() {
 
-  if (get_movement() != NULL && get_movement() != normal_movement) {
-    delete normal_movement;
-  }
 }
 
 /**
@@ -579,7 +575,6 @@ void Enemy::update() {
       }
       else {
         clear_movement();
-        restore_movement(); // restore the previous movement
         restart();
       }
     }
@@ -752,28 +747,6 @@ void Enemy::notify_collision_with_explosion(Explosion &explosion, Sprite &sprite
 void Enemy::notify_collision_with_fire(Fire& fire, Sprite& sprite_overlapping) {
 
   try_hurt(ATTACK_FIRE, fire, &sprite_overlapping);
-}
-
-/**
- * @brief Stops the movement temporarily.
- */
-void Enemy::stop_movement() {
-  
-  if (get_movement() != NULL) {
-    normal_movement = get_movement();
-  }
-  set_movement(NULL);
-}
-
-/**
- * @brief Restores the movement previously stopped with stop_movement().
- */
-void Enemy::restore_movement() {
-
-  if (normal_movement != NULL) {
-    set_movement(normal_movement);
-    normal_movement = NULL;
-  }
 }
 
 /**
@@ -996,8 +969,8 @@ void Enemy::hurt(MapEntity &source) {
   set_animation("hurt");
   play_hurt_sound();
 
-  // save the movement
-  stop_movement();
+  // stop any movement
+  clear_movement();
 
   // push the enemy back
   if (pushed_back_when_hurt) {
@@ -1054,10 +1027,6 @@ void Enemy::kill() {
 
   // stop any movement and disable attacks
   set_collision_modes(COLLISION_NONE);
-  if (pushed_back_when_hurt) {
-    delete normal_movement;
-    normal_movement = NULL;
-  }
   clear_movement();
   invulnerable = true;
   can_attack = false;
@@ -1159,7 +1128,6 @@ void Enemy::stop_immobilized() {
 
   immobilized = false;
   end_shaking_date = 0;
-  restore_movement();
 }
 
 /**

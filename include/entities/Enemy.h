@@ -130,8 +130,6 @@ class Enemy: public Detector {
     bool enabled;					/**< indicates that the enemy is enabled */
     bool being_hurt;					/**< indicates that the enemy is being hurt */
     uint32_t stop_hurt_date;				/**< date when the enemy stops being hurt */
-    Movement *normal_movement;				/**< backup of the enemy's movement, which is replaced by
-							 * a straight movement while it is hurt */
     bool invulnerable;					/**< indicates that the enemy cannot be hurt for now */
     uint32_t vulnerable_again_date;			/**< date when the enemy can be hurt again */
     bool can_attack;					/**< indicates that the enemy can currently attack the hero */
@@ -158,9 +156,6 @@ class Enemy: public Detector {
      */
     virtual void initialize() = 0;
     virtual void restart();
-
-    void stop_movement();
-    void restore_movement();
 
     // functions available to the subclasses to define the enemy type properties (they can also change directly the fields)
     void set_damage(int damage_on_hero);

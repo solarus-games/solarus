@@ -2081,6 +2081,20 @@ void Hero::start_free() {
 }
 
 /**
+ * @brief Lets the hero walk, keeping a possible carried item from the
+ * previous state.
+ */
+void Hero::start_free_or_carrying() {
+
+  if (state->is_carrying_item()) {
+    set_state(new CarryingState(*this, state->get_carried_item()));
+  }
+  else {
+    set_state(new FreeState(*this));
+  }
+}
+
+/**
  * @brief Makes the hero brandish a treasure.
  * @param treasure the treasure to give him (you have to delete it after the hero brandishes it)
  */
@@ -2243,31 +2257,18 @@ void Hero::start_state_from_ground() {
 
   case GROUND_SHALLOW_WATER:
     start_shallow_water();
-    if (state->is_carrying_item()) {
-      set_state(new CarryingState(*this, state->get_carried_item()));
-    }
-    else {
-      set_state(new FreeState(*this));
-    }
+    start_free_or_carrying();
+    break;
 
   case GROUND_GRASS:
     start_grass();
-    if (state->is_carrying_item()) {
-      set_state(new CarryingState(*this, state->get_carried_item()));
-    }
-    else {
-      set_state(new FreeState(*this));
-    }
+    start_free_or_carrying();
+    break;
 
   case GROUND_LADDER:
   case GROUND_NORMAL:
   case GROUND_EMPTY:
-    if (state->is_carrying_item()) {
-      set_state(new CarryingState(*this, state->get_carried_item()));
-    }
-    else {
-      set_state(new FreeState(*this));
-    }
+    start_free_or_carrying();
     break;
   }
 }

@@ -24,12 +24,6 @@ function event_restart()
   sol.main.timer_start(event_movement_finished, 2000)
 end
 
-function event_obstacle_reached()
-  -- not sure why an obstacle is reached, probably a bug
-  -- because obstacles are supposed to be ignored
-  event_movement_finished()
-end
-
 function event_movement_finished(movement)
 
   -- create a circle of fire

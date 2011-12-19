@@ -635,7 +635,7 @@ void StraightMovement::update() {
         update_y();
       }
 
-      if (!is_suspended() && get_entity() != NULL) {
+      if (!is_suspended() && get_entity() != NULL && !finished) {
 
         // the movement was successful if the entity's coordinates have changed
         // and the movement was not stopped

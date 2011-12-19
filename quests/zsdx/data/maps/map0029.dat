@@ -64,10 +64,8 @@
 0	0	296	664	8	8	69
 0	0	296	432	8	232	71
 0	0	296	568	8	8	69
-0	0	288	704	16	16	364
 0	0	64	704	32	16	364
 0	0	64	688	16	16	364
-0	0	304	688	16	16	364
 0	0	176	664	16	24	359
 0	0	168	664	8	24	361
 0	0	192	664	8	24	362
@@ -420,13 +418,10 @@
 2	0	264	200	16	16	teletransporter_3	1	1	29	no_right_destination_point
 2	0	184	752	16	16	to_outside_west	0	1	6	from_twin_caves_west
 9	0	312	389	block	-1	entities/block	1	0	2
-11	0	304	704	door_switch	1	0	0
-4	0	312	717	0	_none	1	-1
+11	0	304	704	door_switch	3	0	0
 4	0	88	717	0	_random	1	-1
 4	0	72	701	0	rupee	1	-1
 4	0	72	717	0	_random	1	-1
-4	0	296	717	0	_random	1	-1
-4	0	312	701	0	_random	1	-1
 12	0	168	656	32	8	custom_obstacle	1	1	1	1
 12	0	248	608	32	8	custom_obstacle_2	1	1	1	1
 1	0	192	733	from_outside_west	1	0
@@ -498,8 +493,7 @@
 2	0	600	392	16	16	teletransporter_A_22	1	1	29	destination_point_S
 1	0	480	701	destination_point_K	-1	1
 4	0	496	573	0	rupee	2	-1
-11	0	464	400	barrier_switch	1	0	0
-4	0	472	413	0	_none	1	-1
+11	0	464	400	barrier_switch	3	0	0
 10	0	600	656	32	32	barrier	399	1
 15	0	608	96	48	16	1
 15	0	576	112	64	16	1

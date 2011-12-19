@@ -131,6 +131,10 @@ function event_message_received(src_enemy, message)
   elseif message == "end immobilized" then
     if nb_sons_immobilized > 0 then
       nb_sons_immobilized = nb_sons_immobilized - 1
+      if not vulnerable then
+	sol.main.timer_stop_all()
+        sol.main.timer_start(prepare_son, 4000)
+      end
     end
   end
 end

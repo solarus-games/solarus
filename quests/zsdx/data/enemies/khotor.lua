@@ -6,7 +6,7 @@ function event_appear(creator_name)
 
   -- set the properties
   sol.enemy.set_life(12)
-  sol.enemy.set_damage(2)
+  sol.enemy.set_damage(3)
   sol.enemy.set_pushed_back_when_hurt(false)
   sol.enemy.set_push_hero_on_sword(true)
   sol.enemy.create_sprite("enemies/khotor")

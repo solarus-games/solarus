@@ -28,8 +28,9 @@ end
 function event_restart()
 
   if not vulnerable then
-    go_back()
+    sol.main.timer_stop_all()
     sol.main.timer_start(throw_flames, math.random(2000, 5000))
+    go_back()
   else
     sol.enemy.set_can_attack(false)
   end

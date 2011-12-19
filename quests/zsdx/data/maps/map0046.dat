@@ -26,10 +26,8 @@
 1	1	160	213	destination_point	1	0
 2	1	152	224	16	16	teletransporter	0	1	8	from_west_mountain_cave_1f_w
 2	1	32	0	16	16	teletransporter_16	0	1	46	destination_point
-17	1	128	133	0
-17	1	128	149	0
-9	1	144	133	block	-1	entities/block	1	0	1
-9	1	152	149	block_2	-1	entities/block	1	0	1
+7	1	156	133	enemy	3	gibdo	0	-1	_random	1	-1
+12	1	152	120	16	16	custom_obstacle	0	1	0	0
 0	2	112	216	96	8	357
 0	2	144	216	32	8	188
 0	2	0	0	320	16	170

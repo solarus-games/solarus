@@ -17,9 +17,6 @@ function event_appear()
   sol.main.sprite_set_animation(sprite, "shell")
   in_shell = true
   sol.main.timer_start(break_shell, 1000)
-
-  local m = sol.main.target_movement_create(64)
-  sol.enemy.start_movement(m)
 end
 
 -- The enemy was stopped for some reason and should restart
@@ -28,6 +25,8 @@ function event_restart()
   if in_shell then
     local sprite = sol.enemy.get_sprite()
     sol.main.sprite_set_animation(sprite, "shell")
+    local m = sol.main.target_movement_create(64)
+    sol.enemy.start_movement(m)
   end
 end
 

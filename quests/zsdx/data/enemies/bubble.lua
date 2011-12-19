@@ -14,8 +14,6 @@ function event_appear()
   sol.enemy.set_origin(6, 6)
   sol.enemy.set_can_hurt_hero_running(true)
   sol.enemy.set_invincible()
-  local m = sol.main.straight_movement_create(80, 0)
-  sol.enemy.start_movement(m)
 end
 
 -- The enemy was stopped for some reason and should restart
@@ -62,7 +60,9 @@ end
 -- Makes the Bubble go towards a diagonal direction (1, 3, 5 or 7)
 function go(direction8)
 
-  local m = sol.enemy.get_movement()
+  local m = sol.main.straight_movement_create(80, 0)
+  sol.enemy.start_movement(m)
+
   sol.main.movement_set_property(m, "speed", 80)
   sol.main.movement_set_property(m, "angle", direction8 * math.pi / 4)
   last_direction8 = direction8

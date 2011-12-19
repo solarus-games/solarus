@@ -17,16 +17,16 @@ function event_appear(creator_name)
   sol.enemy.set_attack_consequence("thrown_item", 1)
   sol.enemy.set_attack_consequence("arrow", 1)
 
-  -- set the movement
-  local m = sol.main.random_path_movement_create(40)
-  sol.enemy.start_movement(m)
-
   -- create the chain and ball
   chain_name = sol.enemy.get_name().."_chain"
   sol.enemy.create_son(chain_name, "chain_and_ball", -16, -33)
 end
 
 function event_restart()
+
+  -- set the movement
+  local m = sol.main.random_path_movement_create(40)
+  sol.enemy.start_movement(m)
 
   sol.map.enemy_set_enabled(chain_name, true)
 end

@@ -76,7 +76,7 @@ function event_position_changed(x, y)
   end
 end
 
-function event_enabled()
+function event_restart()
 
   local m = sol.main.circle_movement_create(7, father_name, 56)
   sol.main.movement_set_property(m, "center_dx", center_xy.x)

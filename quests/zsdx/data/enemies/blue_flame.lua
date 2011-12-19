@@ -17,11 +17,6 @@ function event_movement_finished(movement)
   sol.map.enemy_remove(sol.enemy.get_name())
 end
 
-function event_obstacle_reached()
-
-  sol.map.enemy_remove(sol.enemy.get_name())
-end
-
 function event_message_received(src_enemy, message)
 
   -- the message is the angle to take

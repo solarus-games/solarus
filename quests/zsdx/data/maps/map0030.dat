@@ -835,7 +835,7 @@
 6	1	936	616	8	24	jumper_4	0	40
 10	1	104	536	32	8	barrier	70	1
 7	1	272	405	enemy	3	skeletor	0	-1	small_key	1	74
-12	1	216	384	8	32	custom_obstacle_17	0	1	1	1
+12	1	224	384	8	32	custom_obstacle_17	0	1	1	1
 12	1	224	440	8	16	custom_obstacle_18	0	1	1	1
 5	1	656	216	chest_2	0	big_key	1	84
 5	1	56	536	chest_4	0	rupee	2	87

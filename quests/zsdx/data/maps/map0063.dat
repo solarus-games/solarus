@@ -1157,8 +1157,8 @@
 17	1	1072	205	6
 17	1	840	909	2
 5	1	880	872	chest_2	0	small_key	1	505
-9	1	824	909	block	-1	entities/block	1	0	2
-9	1	824	893	block_3	-1	entities/block	1	0	2
+9	1	824	893	s_block_2	-1	entities/block	1	0	2
+9	1	824	909	s_block_1	-1	entities/block	1	0	2
 9	1	840	925	block_4	-1	entities/block	1	0	0
 12	1	288	888	32	8	custom_obstacle	1	1	1	1
 12	1	288	912	32	8	custom_obstacle_2	1	1	1	1
@@ -1332,6 +1332,7 @@
 13	1	616	829	64	16	puzzle_sensor_1	0
 13	1	760	829	64	16	puzzle_sensor_4	0
 9	1	240	509	block_6	-1	entities/block	1	0	2
+13	1	240	749	16	64	save_s_blocks_sensor	0
 0	2	88	960	32	8	560
 0	2	664	688	96	8	560
 0	2	664	712	96	8	559

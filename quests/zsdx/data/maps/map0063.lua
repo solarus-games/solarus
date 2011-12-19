@@ -13,6 +13,12 @@ function event_map_started(destination_point_name)
     sol.map.sensor_set_enabled("weak_floor_sensor", false)
     sol.map.block_set_enabled("weak_floor_block", false)
   end
+
+  -- blocks necessary to go back when found the feather
+  if sol.game.savegame_get_boolean(517) then
+    sol.map.block_set_position("s_block_1", 336, 773)
+    sol.map.block_set_position("s_block_2", 368, 773)
+  end
 end
 
 function event_map_opening_transition_finished(destination_point_name)
@@ -41,6 +47,12 @@ function event_hero_on_sensor(sensor_name)
 
   if sensor_name == "puzzle_wrong_sensor" then
     puzzle_next_sensor = 1
+  elseif sensor_name == "save_s_blocks_sensor" then
+    if sol.game.has_item("feather")
+        and not sol.game.savegame_get_boolean(517) then
+      -- solved the blocks puzzle necessary to exit this floor
+      sol.game.savegame_set_boolean(517, true)
+    end
   else
     local i = string.match(sensor_name, "puzzle_sensor_([1-4])")
     if i ~= nil

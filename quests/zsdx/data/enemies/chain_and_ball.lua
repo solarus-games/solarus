@@ -24,7 +24,7 @@ function event_appear()
 
   -- set the properties
   sol.enemy.set_life(1)
-  sol.enemy.set_damage(2)
+  sol.enemy.set_damage(3)
   sol.enemy.create_sprite("enemies/chain_and_ball")
   sol.enemy.set_size(16, 16)
   sol.enemy.set_origin(8, 8)

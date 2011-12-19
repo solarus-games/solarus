@@ -1,4 +1,4 @@
-zsdx-1.1 (current development version)
+zsdx-1.1 (under development)
 
 * Fix a crash when jumping from grass into a hole
 * Fix a possible crash when buying potions
@@ -16,4 +16,29 @@ zsdx-1.1 (current development version)
 zsdx-1.0 (2011-12-16)
 
 * Initial release of Zelda Mystery of Solarus DX
+
+-------------------------------------------------------------------------------
+
+zsxd-1.4 (under development)
+
+* Fix a duplicate heart container
+
+zsxd-1.3 (2011-08-12)
+
+* Add the English translation
+* Fix a precision bug with sensors
+
+zsxd-1.2 (2011-04-23)
+
+* Fix a Windows issue with mono sound effects
+
+zsxd-1.1 (2011-04-02)
+
+* Use libvorbisfile instead of libsndfile for sound effects
+* Replace the last sword by a new rupee bag
+* Various minor improvements
+
+zsxd-1.0 (2011-04-01)
+
+* Initial release of Zelda Mystery of Solarus XD
 

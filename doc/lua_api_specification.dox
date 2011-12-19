@@ -1165,9 +1165,10 @@ called when the enemy has just been enabled
 called when the enemy has just been disabled
 
 - <tt>event_restart()</tt>:
-called when the enemy is restarting its movement because
+Called when the enemy is restarting its movement because
 something happended (for example the enemy has just been created,
-or it was just hurt)
+or it was just hurt).
+If your enemy moves, it is usual to create its movement in this function.
 
 - <tt>event_pre_display()</tt>:
 called just before the enemy is displayed (you may display additional things below the enemy)

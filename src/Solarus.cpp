@@ -31,7 +31,11 @@
  * @param argc number of arguments of the command line
  * @param argv command-line arguments
  */
-Solarus::Solarus(int argc, char** argv) {
+Solarus::Solarus(int argc, char** argv):
+  current_screen(NULL),
+  root_surface(NULL),
+  debug_keys(NULL),
+  exiting(false) {
 
   // initialize lowlevel features (audio, video, files...)
   System::initialize(argc, argv);
@@ -40,7 +44,6 @@ Solarus::Solarus(int argc, char** argv) {
 
   // create the first screen
   current_screen = new LanguageScreen(*this);
-  exiting = false;
 }
 
 /**
@@ -67,13 +70,15 @@ DebugKeys& Solarus::get_debug_keys() {
  * @brief Skips the menus and starts the game immediately.
  *
  * This function can be called during the title screen or the selection menu to skip them
- * and start the game immediately with the first savegame (for debugging purposes only!).
+ * and start the game immediately with a savegame (for debugging purposes).
+ *
+ * @param savegame_file name of the savegame file to load
  */
-void Solarus::skip_menus() {
+void Solarus::skip_menus(const std::string& savegame_file) {
 
-  if (FileTools::data_file_exists("save1.dat")) {
+  if (FileTools::data_file_exists(savegame_file)) {
 
-    Savegame savegame("save1.dat");
+    Savegame savegame(savegame_file);
     Game* game = new Game(*this, savegame);
     delete current_screen;
     current_screen = game;
@@ -148,15 +153,15 @@ void Solarus::main_loop() {
 
       if (delay <= 0) { // it's time to display
 
-	// see if the FPS number is too high
-	if (just_displayed && frame_interval <= 30) {
-	  frame_interval += 5; // display the screen less often
-	  //std::cout << "\rFPS: " << (1000 / frame_interval) << std::flush;
-	}
+        // see if the FPS number is too high
+        if (just_displayed && frame_interval <= 30) {
+          frame_interval += 5; // display the screen less often
+          //std::cout << "\rFPS: " << (1000 / frame_interval) << std::flush;
+        }
 
-	next_frame_date = now + frame_interval;
-	just_displayed = true;
-	display();
+        next_frame_date = now + frame_interval;
+        just_displayed = true;
+        display();
       }
       else {
         just_displayed = false;

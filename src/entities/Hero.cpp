@@ -1247,10 +1247,6 @@ void Hero::set_target_solid_ground_coords(const Rectangle &target_solid_ground_c
  *
  * The hero will now get back to the last solid ground instead of going back
  * to a memorized position.
- *
- * @param target_solid_ground_coords coordinates of the position where
- * the hero will go if he falls into a hole or some other bad ground
- * @param layer the layer
  */
 void Hero::reset_target_solid_ground_coords() {
 

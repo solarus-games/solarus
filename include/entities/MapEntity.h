@@ -268,6 +268,7 @@ class MapEntity {
     bool overlaps(const Rectangle &rectangle);
     bool overlaps(int x, int y);
     bool overlaps(MapEntity &other);
+    bool overlaps_camera();
     bool is_origin_point_in(const Rectangle &rectangle);
     bool is_facing_point_in(const Rectangle &rectangle);
     bool is_facing_point_in(const Rectangle &rectangle, int direction);
@@ -277,6 +278,7 @@ class MapEntity {
     int get_distance(int x, int y);
     int get_distance(const Rectangle& xy);
     int get_distance(MapEntity &other);
+    int get_distance_to_camera();
 
     // collisions
     virtual bool is_obstacle_for(MapEntity &other);
@@ -322,12 +324,11 @@ class MapEntity {
     virtual bool is_destructible_item_obstacle(DestructibleItem& destructible_item);
     virtual bool is_sword_ignored();
 
-    // suspended
+    // game loop
     bool is_suspended();
     virtual void set_suspended(bool suspended);
-
-    // game loop
     virtual void update();
+    bool is_displayed();
     virtual void display_on_map();
 };
 

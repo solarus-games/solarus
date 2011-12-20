@@ -213,7 +213,9 @@ void Crystal::display_on_map() {
   MapEntity::display_on_map();
 
   // display the star
-  get_map().display_sprite(*star_sprite, get_top_left_x() + star_xy.get_x(), get_top_left_y() + star_xy.get_y());
+  if (is_displayed()) {
+    get_map().display_sprite(*star_sprite, get_top_left_x() + star_xy.get_x(), get_top_left_y() + star_xy.get_y());
+  }
 }
 
 /**

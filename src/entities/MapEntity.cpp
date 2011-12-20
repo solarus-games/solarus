@@ -1089,6 +1089,11 @@ void MapEntity::notify_position_changed() {
  */
 void MapEntity::check_collision_with_detectors() {
 
+  if (get_distance_to_camera() >= 480) {
+    // don't check detectors far for the visible area
+    return;
+  }
+
   // detect simple collisions
   get_map().check_collision_with_detectors(*this);
 
@@ -1466,6 +1471,30 @@ bool MapEntity::overlaps(MapEntity &other) {
 }
 
 /**
+ * @brief Returns whether the bounding box or a sprite of this entity overlaps
+ * the visible part of the map
+ * @return true if the entity is in the visible part of the map
+ */
+bool MapEntity::overlaps_camera() {
+
+  if (bounding_box.overlaps(get_map().get_camera_position())) {
+    return true;
+  }
+
+  bool found = false;
+  std::list<Sprite*>::iterator it;
+  for (it = sprites.begin(); it != sprites.end() && !found; it++) {
+    const Sprite* sprite = *it;
+    const Rectangle sprite_origin = sprite->get_origin();
+    Rectangle sprite_bounding_box = sprite->get_size();
+    sprite_bounding_box.add_xy(get_xy());
+    sprite_bounding_box.add_xy(-sprite_origin.get_x(), -sprite_origin.get_y());
+    found = sprite_bounding_box.overlaps(get_map().get_camera_position());
+  }
+  return found;
+}
+
+/**
  * @brief Returns whether or not this entity's origin point is in
  * the specified rectangle.
  * @param rectangle the rectangle to check
@@ -1549,6 +1578,18 @@ int MapEntity::get_distance(const Rectangle& xy) {
  */
 int MapEntity::get_distance(MapEntity &other) {
   return (int) Geometry::get_distance(get_x(), get_y(), other.get_x(), other.get_y());
+}
+
+/**
+ * @brief Returns the distance between the origin of this entity
+ * and the center point of the visible part of the map.
+ * @return the distance in pixels
+ */
+int MapEntity::get_distance_to_camera() {
+
+  const Rectangle& camera = get_map().get_camera_position();
+  return (int) Geometry::get_distance(get_x(), get_y(),
+      camera.get_x() + 160, camera.get_y() + 120);
 }
 
 /**
@@ -1839,13 +1880,23 @@ void MapEntity::update() {
 }
 
 /**
+ * @brief Returns whether this entity should be drawn on the map.
+ * @return true if the entity is visible and has a sprite in the visible part
+ * of the map
+ */
+bool MapEntity::is_displayed() {
+  return is_visible() && overlaps_camera();
+}
+
+/**
  * @brief Displays the entity on the map.
  *
- * By default, this function displays the entity's sprites (if any).
+ * By default, this function displays the entity's sprites (if any) and if
+ * at least one of them is in the visible part of the map.
  */
 void MapEntity::display_on_map() {
 
-  if (is_visible()) {
+  if (is_displayed()) {
     // display the sprites
     std::list<Sprite*>::iterator it;
     for (it = sprites.begin(); it != sprites.end(); it++) {

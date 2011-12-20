@@ -225,6 +225,7 @@ void CrystalBlock::update() {
 
 /**
  * @brief Displays the entity on the map.
+ *
  * This is a redefinition of MapEntity::display_on_map to repeat the block pattern.
  */
 void CrystalBlock::display_on_map() {

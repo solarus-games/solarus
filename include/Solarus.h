@@ -49,7 +49,7 @@ class Solarus {
     void set_exiting();
     bool is_exiting();
 
-    void skip_menus();
+    void skip_menus(const std::string& savegame_file);
     DebugKeys& get_debug_keys();
 };
 

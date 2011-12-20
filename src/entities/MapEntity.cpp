@@ -1887,6 +1887,7 @@ void MapEntity::update() {
  * of the map
  */
 bool MapEntity::is_displayed() {
+
   return is_visible() && overlaps_camera();
 }
 

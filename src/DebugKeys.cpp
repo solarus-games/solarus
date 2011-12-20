@@ -162,9 +162,17 @@ void DebugKeys::key_pressed(InputEvent::KeyboardKey key) {
         break;
     }
   }
-  else if (key == InputEvent::KEY_TABULATION) {
+  else {
     // no game yet
-    solarus.skip_menus();
+    if (key == InputEvent::KEY_F1) {
+      solarus.skip_menus("save1.dat");
+    }
+    else if (key == InputEvent::KEY_F2) {
+      solarus.skip_menus("save2.dat");
+    }
+    else if (key == InputEvent::KEY_F3) {
+      solarus.skip_menus("save3.dat");
+    }
   }
 #endif
 }

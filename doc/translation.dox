@@ -7,7 +7,7 @@ If you wish to contribute to a translation of Zelda Mystery of Solarus DX or Zel
 Several files have to be translated so that a quest works in a new language:
 - some images containing text,
 - some strings displayed in the HUD and the menu,
-- all dialogs of the game (this represents most of the work to do)
+- all dialogs of the game (most of the work to do is here).
 All these language-specific data files are in the directory
 <tt>languages/XX</tt> of the quest data (where <tt>XX</tt>
 is the code of the language, for instance <tt>en</tt> or <tt>fr</tt>).
@@ -84,12 +84,20 @@ image displayed when the program starts, before the title screen
 
 @section strings Strings
 
+The engine displays some text in the menus, before and during the game.
+All these strings are loaded from the file
+<tt>languages/XX/text/strings.dat</tt>.
+The file must be encoded in UTF-8 and respect the simple syntax specified
+in the @ref dialog_syntax page.
+
 @section dialogs Dialogs
 
-@section instructions Instructions manual
-
-@section description Description of the game
-
+Dialogs are all messages displayed to the player in the dialog box during the
+game. They represent the biggest part of the translation work.
+All dialogs are defined in the file
+<tt>languages/XX/text/dialogs.dat</tt>.
+This file is an ini file whose precise content is specified 
+in the @ref dialog_syntax page.
 
 */
 

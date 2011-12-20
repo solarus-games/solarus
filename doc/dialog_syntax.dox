@@ -12,9 +12,8 @@ See the @ref translation page if you are interested in translating the game
 
 The engine needs to display some string in the menus.
 All these strings are loaded from the file <tt>languages/XX/text/strings.dat</tt>.
-As they are required by the engine only, you should not need to change them when you make a quest.
 As an example, we give here the <tt>languages/fr/text/strings.dat</tt> file of Zelda Mystery of Solarus DX.
-The syntax and the translation instructions is explained in the comments.
+The syntax and the translation instructions are explained in the comments.
 
 @verbatim
 # Language: French
@@ -36,11 +35,12 @@ map.caption.dungeon_name_1		Donjon de la Forêt
 map.caption.dungeon_name_2		Caverne de Roc
 map.caption.dungeon_name_3		Antre de$Maître Arbror
 map.caption.dungeon_name_4		Palais de Beaumont
-map.caption.dungeon_name_5		Ancien$Château d'Hyrule
+map.caption.dungeon_name_5		Ancien$Château
 map.caption.dungeon_name_6		Caverne d'Inferno
-map.caption.dungeon_name_7		Temple de Glace
+map.caption.dungeon_name_7		Temple du Cristal
 map.caption.dungeon_name_8		Donjon des$Pics Rocheux
 map.caption.dungeon_name_9		Temple des Souvenirs
+map.caption.dungeon_name_10		Tour des Cieux
 
 # Quest status submenu
 quest_status.caption.rupee_bag_1	Sac de Rubis
@@ -54,9 +54,9 @@ quest_status.caption.quiver_2		Grand Carquois
 quest_status.caption.quiver_3		Carquois Géant
 quest_status.caption.world_map		Carte du Monde
 quest_status.caption.pieces_of_heart	Fragments de Coeur
-quest_status.caption.tunic_0		Cotte de Mailles$verte
-quest_status.caption.tunic_1		Cotte de Mailles$bleue
-quest_status.caption.tunic_2		Cotte de Mailles$rouge
+quest_status.caption.tunic_1		Cotte de Mailles$verte
+quest_status.caption.tunic_2		Cotte de Mailles$bleue
+quest_status.caption.tunic_3		Cotte de Mailles$rouge
 quest_status.caption.sword_1		Epée du Courage
 quest_status.caption.sword_2		Glaive Hylien
 quest_status.caption.sword_3		Sabre du Héros
@@ -66,44 +66,63 @@ quest_status.caption.shield_2		Bouclier de Feu
 quest_status.caption.shield_3		Bouclier Miroir
 
 # Inventory submenu
-inventory.caption.item_0_1	Plume
-inventory.caption.item_1_1	Bombes
-inventory.caption.item_2_1	Arc
-inventory.caption.item_2_2	Arc & Flèches
-inventory.caption.item_3_1	Boomerang
-inventory.caption.item_4_1	Lanterne
-inventory.caption.item_5_1	Grappin
-inventory.caption.item_6_1	Flacon Magique$(Vide)
-inventory.caption.item_6_2	Flacon Magique$(Eau)
-inventory.caption.item_6_3	Flacon Magique$(Potion rouge)
-inventory.caption.item_6_4	Flacon Magique$(Potion verte)
-inventory.caption.item_6_5	Flacon Magique$(Potion blue)
-inventory.caption.item_6_6	Flacon Magique$(Fée)
+inventory.caption.item.feather.1			Plume
+inventory.caption.item.bombs_counter.1			Bombes
+inventory.caption.item.bow.1				Arc
+inventory.caption.item.bow.2				Arc & Flèches
+inventory.caption.item.boomerang.1			Boomerang
+inventory.caption.item.boomerang.2			Super Boomerang
+inventory.caption.item.lamp.1				Lanterne
+inventory.caption.item.hookshot.1			Grappin
+inventory.caption.item.bottle_1.1			Flacon Magique$(Vide)
+inventory.caption.item.bottle_1.2			Flacon Magique$(Eau)
+inventory.caption.item.bottle_1.3			Flacon Magique$(Potion rouge)
+inventory.caption.item.bottle_1.4			Flacon Magique$(Potion verte)
+inventory.caption.item.bottle_1.5			Flacon Magique$(Potion blue)
+inventory.caption.item.bottle_1.6			Flacon Magique$(Fée)
 
-inventory.caption.item_7_1	Bottes de Pégase
-inventory.caption.item_8_1	Miroir Mystique
-inventory.caption.item_9_1	Canne de Somaria
-inventory.caption.item_10_1	Pommes
-inventory.caption.item_11_1	Pains au Chocolat
-inventory.caption.item_12_1	Croissants
+inventory.caption.item.pegasus_shoes.1			Bottes de Pégase
+inventory.caption.item.mystic_mirror.1			Miroir Mystique
+inventory.caption.item.cane_of_somaria.1		Canne de Somaria
+inventory.caption.item.apples_counter.1			Pommes
+inventory.caption.item.pains_au_chocolat_counter.1	Pains au Chocolat
+inventory.caption.item.croissants_counter.1		Croissants
+inventory.caption.item.bottle_2.1			Flacon Magique$(Vide)
+inventory.caption.item.bottle_2.2			Flacon Magique$(Eau)
+inventory.caption.item.bottle_2.3			Flacon Magique$(Potion rouge)
+inventory.caption.item.bottle_2.4			Flacon Magique$(Potion verte)
+inventory.caption.item.bottle_2.5			Flacon Magique$(Potion blue)
+inventory.caption.item.bottle_2.6			Flacon Magique$(Fée)
 
-inventory.caption.item_14_1	Clé de Roc
-inventory.caption.item_15_1	Clé Rouge
-inventory.caption.item_16_1	Clé de Terre
-inventory.caption.item_17_1	Tarte aux Pommes
-inventory.caption.item_17_2	Lingots d'or
-inventory.caption.item_17_3	Edelweiss
-inventory.caption.item_17_4	Clé d'Os
-inventory.caption.item_18_1	Palmes
-inventory.caption.item_19_1	Cape Magique
+inventory.caption.item.rock_key.1			Clé de Roc
+inventory.caption.item.bone_key.1			Clé d'Os
+inventory.caption.item.clay_key.1			Clé de Terre
+inventory.caption.item.level_4_way.1			Tarte aux Pommes
+inventory.caption.item.level_4_way.2			Lingots d'or
+inventory.caption.item.level_4_way.3			Edelweiss
+inventory.caption.item.level_4_way.4			Précis d'escrime
+inventory.caption.item.flippers.1			Palmes
+inventory.caption.item.magic_cape.1			Cape Magique
+inventory.caption.item.bottle_3.1			Flacon Magique$(Vide)
+inventory.caption.item.bottle_3.2			Flacon Magique$(Eau)
+inventory.caption.item.bottle_3.3			Flacon Magique$(Potion rouge)
+inventory.caption.item.bottle_3.4			Flacon Magique$(Potion verte)
+inventory.caption.item.bottle_3.5			Flacon Magique$(Potion bleue)
+inventory.caption.item.bottle_3.6			Flacon Magique$(Fée)
 
-inventory.caption.item_21_1	Clé de Fer
-inventory.caption.item_22_1	Clé de Pierre
-inventory.caption.item_23_1	Clé de Bois
-inventory.caption.item_24_1	Clé de Glace
-inventory.caption.item_25_1	Poigne de Fer
-inventory.caption.item_25_2	Poigne d'Or
-inventory.caption.item_26_1	Pierres de Feu
+inventory.caption.item.iron_key.1			Clé de Fer
+inventory.caption.item.stone_key.1			Clé de Pierre
+inventory.caption.item.wooden_key.1			Clé de Bois
+inventory.caption.item.ice_key.1			Clé de Glace
+inventory.caption.item.glove.1				Poigne de Fer
+inventory.caption.item.glove.2				Poigne d'Or
+inventory.caption.item.fire_stones_counter.1		Pierres de Feu
+inventory.caption.item.bottle_4.1			Flacon Magique$(Vide)
+inventory.caption.item.bottle_4.2			Flacon Magique$(Eau)
+inventory.caption.item.bottle_4.3			Flacon Magique$(Potion rouge)
+inventory.caption.item.bottle_4.4			Flacon Magique$(Potion verte)
+inventory.caption.item.bottle_4.5			Flacon Magique$(Potion blue)
+inventory.caption.item.bottle_4.6			Flacon Magique$(Fée)
 
 # Options submenu
 options.caption.press_action_change_mode	Appuyez sur Action$pour changer de mode
@@ -170,21 +189,15 @@ title_screen.press_space	Appuyez sur espace
 
 @section dialogs Dialogs
 
-The dialogs represent most of the translators work.
-The dialogs are all messages shown to the player in the dialog box during the game.
-They are divided in two parts:
-- the dialogs displayed by the engine: <tt>languages/XX/text/engine_dialogs.dat</tt>. These are all predetermined dialogs that are shown
-automatically depending on what the player does.
-They include opening a chest, obtaining a fairy, reading an item's description in the inventory,
-buying an item in a shop, etc.
-If you create a quest, you normally should not have to change them, unless you are also changing the engine
-(for example to create a new item).
-However, you may need to translate them one day.
-- the quest-specific dialogs: <tt>languages/XX/text/game_dialogs.dat</tt>. They include all dialogs with NPCs and interacting with a puzzle or a mini-game.
+Dialogs are all messages shown to the player in the dialog box during the game.
+They are all defined in the file
+<tt>languages/XX/text/dialogs.dat</tt>.
+Some dialogs are triggered by the engine and others by the quest.
 
-Both dialog files have the same syntax. They are ini files encoded in UTF-8 and obey strict rules so that
+It is an ini file encoded in UTF-8 and it obeys strict rules so that
 the sequences of dialogs are displayed correctly in the game.
-We give here the full syntax specification of the dialog files.
+We give here the full syntax specification of the dialog files,
+with instructions for quest makers and translators.
 
 This is a Windows ini-like syntax.
 Lines starting with the character '#' are comments and are ignored by the engine.
@@ -193,14 +206,13 @@ A message is one, two or three lines of text to display in the dialog box.
 A message has the following syntax:
 
 - An id, inside square brackets.
-For all engine messages, (the one is this file), the id
-starts with the character '_'.
 The id allows the engine to refer to the message it want to display.
-If you want to translate the dialogs, don't translate the id.
+If you are translating the dialogs, don't translate the id!
 
 - The values <tt>line1</tt>, <tt>line2</tt> and <tt>line3</tt>:
 they determine the content of the message. The text can
 be inside quotes. A line shoud not exceed 23 characters.
+If you are translating, this is the content to translate.
 
 - The value <tt>next</tt>: id of the next message to display
 in the sequence. If this value is not set, the current message
@@ -216,11 +228,11 @@ of the sequence.
 A message having a question (see below) is always displayed 
 with an arrow.
 
-Sometimes, event if a sequence is finished, you may
+Sometimes, even if a sequence is finished, you may
 want to show an arrow.
 This is typically the case when you know that another
 sequence will start immediately, but you don't know which one yet
-(this may depend on the quest). In this case, you can
+(a script will decide at the last moment). In this case, you can
 set the special word <tt>_unknown</tt> as the value of <tt>next</tt>
 to indicate that the sequence will be followed by another one,
 unknown for now.
@@ -228,20 +240,25 @@ This will display the arrow instead of the square, but everything
 works exactly like the value <tt>next</tt> was not set.
 
 - By convention, when some text is too long to be in a single
-message (i.e. three lines), we use a sequence of message:
+message (i.e. three lines), we use a sequence of messages:
 we put the rest of the text in one
 or several messages whose id is the one of the first message,
 concatenated with <tt>.2</tt> for the second one, <tt>.3</tt>
 for the third one, etc.
-We set the appropriate values of <tt>next</tt> to make the sequence work.
-Translators can change the number of messages in a sequence
-without any problem of id.
-Only the first id of the sequence must have the same name than in the reference language.
-If the id of the last message of the sequence ends with ".4" instead
-of ".3" because the translated dialog didn't fit in the same number
-of messages, it still works.
-The translators only need to synchronize the messages whose id ends with
-".2", ".3", etc.
+Those suffixes are only a convention, there is no hard rule here.
+And we set the appropriate values of <tt>next</tt> to make the sequence work.
+
+Translators can change the number of messages in a sequence because of course,
+some languages are more verbose than other.
+This won't cause any problem of id.
+Only the first id of the sequence must have the exact same name than
+in the reference language.
+
+For example, if the id of the last message of your sequence ends with ".4" instead
+of ".3" (because the translated dialog didn't fit in the same number
+of messages), don't worry, it will still work.
+You only need to synchronize the messages that are the beginning
+of a dialog sequence.
 
 - The value <tt>skip</tt>: defines what happens when the player
 tries to skip the dialog (by pressing the sword key).
@@ -265,16 +282,15 @@ and the text cannot exceed 20 characters (instead of 23 when there is no
 icon). The icon remains displayed in the next message, until its value
 is changed or the dialog box is closed. A value of -1 means that you
 want to remove the icon.
-The icons are mostly used by the engine dialogs, for instance when the
-player gets a treasure.
 
-- The value <tt>question</tt> (true or false): shows a question to the player with two
+- The value <tt>question</tt> (true or false): shows a question to the player
+with two
 choices. The first line is considered as the question and the two
 other lines are the two possible answers.
-Those lines are then limited to 20 characters (instead of 23
+Those two lines are then limited to 20 characters (instead of 23
 when there is no question) because a cursor lets the player choose his answer.
 It is possible to have both a question and an icon: then, the maximum
-number of character is the two last lines is 17.
+number of character is the last two lines is 17.
 
 If there is a question, you can define a value <tt>next2</tt>.
 <tt>next</tt> specifies the message to show when the first answer is selected.
@@ -286,8 +302,9 @@ If the value of <tt>skip</tt> is <tt>all</tt> during a message with a question,
 then everything works as it was <tt>current</tt> instead of <tt>all</tt>
 for this message.
 However, if the message with the question is part of a sequence that
-can be skipped (<tt>skip</tt> = <tt>all</tt>),
-then the whole sequence may be skipped including the question message.
+can be skipped (<tt>skip = all</tt>),
+then the whole sequence may be skipped before the message with the question
+comes and it will never be shown.
 
 - Finally, there exists special characters that you can put in the body of a message:
   - <tt>$0</tt>: makes a break of one second in the letter scrolling,
@@ -295,7 +312,7 @@ then the whole sequence may be skipped including the question message.
   - <tt>$2</tt>: set the letter scrolling speed to medium
   - <tt>$3</tt>: set the letter scrolling speed to fast (default)
   - <tt>$v</tt>: inserts the value of a variable in the message
-  (then the program must specify this value)
+  (but the engine or a script must specify this value)
 
 Here is an small example of such a dialog file.
 

@@ -281,7 +281,7 @@ void Block::update() {
       get_map_script().event_block_moved(get_name());
     }
   }
-  get_map().check_collision_with_detectors(*this);
+  check_collision_with_detectors(false);
 }
 
 /**

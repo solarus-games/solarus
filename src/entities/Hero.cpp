@@ -223,7 +223,7 @@ void Hero::update() {
   sprites->update();
   if (!is_suspended()) {
     update_ground();
-    get_map().check_collision_with_detectors(*this);
+    check_collision_with_detectors(false);
     check_gameover();
   }
 }
@@ -1009,7 +1009,7 @@ void Hero::check_position() {
   }
 
   // see the ground indicated by the dynamic entities, also find the facing entity
-  check_collision_with_detectors();
+  check_collision_with_detectors(true);
 
   if (this->ground != previous_ground) {
     notify_ground_changed();

@@ -153,7 +153,7 @@ class MapEntity {
     void clear_old_movements();
 
     // collisions
-    void check_collision_with_detectors();
+    void check_collision_with_detectors(bool with_pixel_precise);
 
     // easy access to various game objects
     MapEntities& get_entities();

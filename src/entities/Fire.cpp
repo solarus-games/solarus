@@ -112,7 +112,7 @@ void Fire::update() {
     remove_from_map();
   }
   else {
-    check_collision_with_detectors();
+    check_collision_with_detectors(true);
   }
 }
 

@@ -1081,15 +1081,17 @@ void MapEntity::notify_obstacle_reached() {
  */
 void MapEntity::notify_position_changed() {
 
-  check_collision_with_detectors();
+  check_collision_with_detectors(true);
 }
 
 /**
  * @brief Checks collisions between this entity and the detectors of the map.
+ * @param with_pixel_precise true to include pixel-precise collisions (if any),
+ * false to only check simple collisions
  */
-void MapEntity::check_collision_with_detectors() {
+void MapEntity::check_collision_with_detectors(bool with_pixel_precise) {
 
-  if (get_distance_to_camera() >= 480) {
+  if (get_distance_to_camera() >= 320) {
     // don't check detectors far for the visible area
     return;
   }

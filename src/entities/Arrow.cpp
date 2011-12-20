@@ -349,7 +349,7 @@ void Arrow::update() {
     if (entity_reached == NULL) {
       clear_movement();
     }
-    get_map().check_collision_with_detectors(*this);
+    check_collision_with_detectors(false);
   }
 
   // destroy the arrow when disappear_date is reached

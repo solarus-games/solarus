@@ -132,7 +132,7 @@ void Explosion::notify_sprite_frame_changed(Sprite& sprite, const std::string& a
 
   if (frame == 1) {
     // also detect non-pixel precise collisions
-    check_collision_with_detectors();
+    check_collision_with_detectors(true);
   }
 }
 

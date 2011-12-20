@@ -299,8 +299,7 @@ void Bomb::update() {
   }
 
   // check collision with explosions, conveyor belts, etc.
-  get_map().check_collision_with_detectors(*this);
-  get_map().check_collision_with_detectors(*this, get_sprite());
+  check_collision_with_detectors(true);
 }
 
 /**

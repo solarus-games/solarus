@@ -12,7 +12,7 @@ Certaines images du moteur de jeu contiennent du texte. En voici la liste exhaus
   - Voir		regarder un élément interactif dans le jeu (une pancarte, un endroit énigmatique...)
   - Ouvrir		ouvrir un coffre ou une porte
   - Action		actionner un objet
-  - Soulever		soulever et porte un pot, un buisson, une pierre...
+  - Soulever		soulever et porter un pot, un buisson, une pierre...
   - Jeter		jeter un objet porté
   - Saisir		saisir un bloc ou une statue
   - Arrêter		arrêter ce qui est en cours (comme un objet qui consomme de l'énergie magique en continu)

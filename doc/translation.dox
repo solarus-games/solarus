@@ -1,0 +1,95 @@
+/**
+@page translation How to translate a quest
+
+We describe here how to translate a Solarus quest.
+If you wish to contribute to a translation of Zelda Mystery of Solarus DX or Zelda Mystery of Solarus XD, feel free to contact us.
+
+Several files have to be translated so that a quest works in a new language:
+- some images containing text,
+- some strings displayed in the HUD and the menu,
+- all dialogs of the game (this represents most of the work to do)
+All these language-specific data files are in the directory
+<tt>languages/XX</tt> of the quest data (where <tt>XX</tt>
+is the code of the language, for instance <tt>en</tt> or <tt>fr</tt>).
+
+@section images Images
+
+Some images used by the game engine contain text.
+They all are in the directory <tt>languages/XX/images</tt>
+If you are making a translation of one of our games, we can do the pixel work
+for you, just give us the textual translations.
+
+Here is the exhaustive list of language-specific images and their content:
+- <tt>languages/XX/images/action_icon.png</tt>:
+image containing all the possible variants of the action icon
+(the blue icon in the game):
+  - Confirm: validate a choice while saving the game
+  - Next: show the next message during a dialog
+  - Info: in the inventory menu, show information about an item
+  - Back: get back to the game after a dialog
+  - Check: look at an interactive element in the game (like a sign or a door)
+  - Open: open a door or a chest
+  - Action: activate an object
+  - Pick up: lift an item like a pot, a bush, a stone, etc.
+  - Throw: throw a lifted item
+  - Grab: grab a block
+  - Stop: stop an ongoing action (like using an item that consumes magic points)
+  - Speak: talk to an NPC
+  - Change: change the value of an option in a menu
+  - Swim: swim faster in water
+
+- <tt>languages/XX/images/sword_icon.png</tt>:
+image containing all the possible variants of the sword icon
+(the green icon in the game):
+  - Save: save the game
+  - Back: get back to the game after a dialog
+  - Confirm: validate a choice while saving the game
+  - Skip: skip the current message of a dialog sequence
+
+- <tt>languages/XX/images/pause_icon.png</tt>:
+image containing all the possible variants of the pause icon
+(the orange icon in the game):
+  - Pause: pause the game
+  - Back: unpause the game
+
+- <tt>languages/XX/images/floors.png</tt>:
+image containing all possible floor numbers that can be displayed in dungeons:
+  - B16: sixteenth basement floor
+  - B15: fifteenth basement floor
+  - ...
+  - B1: first basement floor
+  - 1F: first floor
+  - 2F: second floor
+  - ...
+  - 16F: sixteenth floor
+
+- <tt>languages/XX/images/gameover_menu.png</tt>:
+image displayed when the game is over:
+  - Game Over
+  - Save and continue
+  - Save and exit
+  - Continue without saving
+  - Exit without saving
+
+- <tt>languages/XX/images/pause_submenus.png</tt>:
+image containing the background of each pause submenu and its title:
+  - Inventory: title of the inventory submenu, that displays the items found by the player
+  - Map: title of the map submenu, that displays the world minimap or the current dungeon minimap
+  - Quest status: title of the quest status submenu, that displays the equipment, the pieces of heart and the finished dungeons
+  - Options: title of the options submenu, that lets the player configure the video mode and the keyboard and joypad commands
+
+- <tt>languages/XX/images/title_screen_initialization.png</tt>:
+image displayed when the program starts, before the title screen
+  - Zelda Solarus presents
+
+@section strings Strings
+
+@section dialogs Dialogs
+
+@section instructions Instructions manual
+
+@section description Description of the game
+
+
+*/
+

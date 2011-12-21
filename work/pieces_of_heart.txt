@@ -31,7 +31,7 @@ List of the 32 pieces of heart:
 16) Fairy cave 2F: after the hole
 17) Junk shop (499 rupees)
 18) West mountains cave 1F (requires the cane of somaria)
-19) West mountains cave 1F (fall from 2F)
+19) West mountains cave 3F (come from the east entrance)
 20) Chests game cave
 21) Waterfall cave 1F: open all chests
 22) Laser cave

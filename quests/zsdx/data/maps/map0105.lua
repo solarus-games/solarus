@@ -86,8 +86,9 @@ function event_update()
   local x, y = sol.map.hero_get_position()
   if x > 1056 and x < 1200 and y > 1888 and y < 1968
       and not sol.map.chest_is_enabled("hidden_enemy_chest")
-      and not sol.map.enemy_is_group_dead("hidden_enemy")
       and not sol.map.enemy_is_dead("hidden_enemy_1") 
+      and not sol.map.enemy_is_dead("hidden_enemy_2")
+      and not sol.map.enemy_is_enabled("hidden_enemy_1")
       and not sol.map.enemy_is_enabled("hidden_enemy_2") then
 
     sol.main.play_sound("cane")

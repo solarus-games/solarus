@@ -18,3 +18,4 @@ function event_hero_on_sensor(sensor_name)
     sol.map.door_close("creeper_door")
   end
 end
+

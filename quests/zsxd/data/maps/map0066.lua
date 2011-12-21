@@ -37,7 +37,7 @@ end
 
 function event_enemy_dead(enemy_name)
 
-  if string.match(enemy_name, "^fight")
+  if string.find(enemy_name, "^fight")
       and sol.map.enemy_is_group_dead("fight") then
 
     sol.main.play_sound("chest_appears")
@@ -45,5 +45,4 @@ function event_enemy_dead(enemy_name)
     sol.map.door_open("fight_door")
   end
 end
-
 

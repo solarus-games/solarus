@@ -5,7 +5,7 @@ function event_use()
     sol.main.play_sound("wrong")
   else
     sol.item.remove_amount(1)
-    x, y, layer = get_bomb_position_from_hero(x, y)
+    local x, y, layer = get_bomb_position_from_hero(x, y)
     sol.map.bomb_create(x, y, layer)
     sol.main.play_sound("bomb")
   end
@@ -14,8 +14,8 @@ end
 
 function get_bomb_position_from_hero()
 
-  x, y, layer = sol.map.hero_get_position()
-  direction = sol.map.hero_get_direction()
+  local x, y, layer = sol.map.hero_get_position()
+  local direction = sol.map.hero_get_direction()
   if direction == 0 then
     x = x + 16
   elseif direction == 1 then
@@ -28,3 +28,4 @@ function get_bomb_position_from_hero()
 
   return x, y, layer
 end
+

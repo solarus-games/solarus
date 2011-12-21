@@ -4,12 +4,14 @@
 function event_appear(variant)
 
    -- create a movement that goes into random directions, with a speed of 28 pixels per second
-  movement = sol.main.random_movement_create(28)
+  local movement = sol.main.random_movement_create(28)
+  sol.main.movement_set_property(movement, "ignore_obstacles", true)
   sol.main.movement_set_property(movement, "max_distance", 40) -- don't go too far
   sol.item.start_movement(movement) -- associate this movement to the fairy
 
   -- put the fairy on the highest layer to show it above all walls
-  sol.item.set_layer(2)
+  local x, y = sol.item.get_position()
+  sol.item.set_position(x, y, 2)
   sol.item.set_layer_independent_collisions(true) -- but detect collisions with lower layers anyway
 end
 
@@ -17,13 +19,16 @@ end
 -- update the direction of the fairy's sprite
 function event_movement_changed()
 
-  movement = sol.item.get_movement()
-  sprite = sol.item.get_sprite()
-  angle = tonumber(sol.main.movement_get_property(movement, "angle")) -- retrieve the current movement's direction
-  if angle >= 90 and angle < 270 then
-    sol.main.sprite_set_direction(sprite, 1) -- look to the left
-  else
-    sol.main.sprite_set_direction(sprite, 0) -- look to the right
+  if not sol.item.is_following_entity() then
+
+    local movement = sol.item.get_movement()
+    local sprite = sol.item.get_sprite()
+    local angle = tonumber(sol.main.movement_get_property(movement, "angle")) -- retrieve the current movement's direction
+    if angle >= 90 and angle < 270 then
+      sol.main.sprite_set_direction(sprite, 1) -- look to the left
+    else
+      sol.main.sprite_set_direction(sprite, 0) -- look to the right
+    end
   end
 end
 
@@ -31,9 +36,9 @@ end
 function event_obtaining(variant, savegame_variable)
 
   if sol.game.has_item("bottle_1")
-    or sol.game.has_item("bottle_2")
-    or sol.game.has_item("bottle_3")
-    or sol.game.has_item("bottle_4") then
+      or sol.game.has_item("bottle_2")
+      or sol.game.has_item("bottle_3")
+      or sol.game.has_item("bottle_4") then
 
     -- the player has a bottle: start the dialog
     sol.map.dialog_start("found_fairy")
@@ -53,7 +58,7 @@ function event_dialog_finished(first_message_id, answer)
       sol.game.add_life(7 * 4)
     else
       -- keep the fairy in a bottle
-      first_empty_bottle = get_first_empty_bottle()
+      local first_empty_bottle = get_first_empty_bottle()
       if first_empty_bottle == "" then
         -- no empty bottle
         sol.map.dialog_start("found_fairy.no_empty_bottle")
@@ -74,7 +79,7 @@ end
 -- Returns the item name of an empty bottle, or an empty string if there is no empty bottle
 function get_first_empty_bottle()
 
-  result = ""
+  local result = ""
 
   if sol.game.get_item("bottle_1") == 1 then
     result = "bottle_1"

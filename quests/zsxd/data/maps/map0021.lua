@@ -4,7 +4,7 @@
 
 local guichet43_sprite
 
-function envent_map_started(destination_point_name)
+function event_map_started(destination_point_name)
 
   guichet43_sprite = sol.map.npc_get_sprite("GC43S")
 end

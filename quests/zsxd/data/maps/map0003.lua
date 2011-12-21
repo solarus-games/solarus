@@ -22,15 +22,14 @@ end
 
 
 -- Function called when the player wants to talk to a non-playing character.
--- If the NPC is the guard, then the dialog starts.
-function event_npc_dialog(npc_name)
-  if string.find(npc_name, "guard") then
+function event_npc_interaction(npc_name)
+  if npc_name == "guard" then
     if sol.map.hero_get_direction() == 0 then
       sol.map.dialog_start("outside_fields_SO.guard_ok")
     else
       sol.map.dialog_start("outside_fields_SO.guard_nok")
     end
-  elseif string.find(npc_name, "forest_monkey") then
+  elseif npc_name == "forest_monkey" then
     sol.main.play_sound("monkey")
     if sol.game.savegame_get_boolean(48) then -- has boots
       sol.map.dialog_start("outside_fields_SO.forest_monkey_end")

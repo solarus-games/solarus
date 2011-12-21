@@ -1058,17 +1058,17 @@
 15	1	40	336	64	16	0
 2	1	72	152	16	16	departure_D	1	1	22	arrival_D
 2	1	72	152	16	16	departure_D_2	1	1	22	arrival_D
-9	1	2248	533	block_5	-1	entities/statue	0	1	0
-9	1	2248	573	block_6	-1	entities/statue	0	1	0
-9	1	2248	613	block_7	-1	entities/statue	0	1	0
-9	1	2328	533	block_8	-1	entities/statue	0	1	0
-9	1	2328	573	block_9	-1	entities/statue	0	1	0
-9	1	2328	613	block_10	-1	entities/statue	0	1	0
+9	1	2248	533	block_5	-1	entities/statue	1	1	0
+9	1	2248	573	block_6	-1	entities/statue	1	1	0
+9	1	2248	613	block_7	-1	entities/statue	1	1	0
+9	1	2328	533	block_8	-1	entities/statue	1	1	0
+9	1	2328	573	block_9	-1	entities/statue	1	1	0
+9	1	2328	613	block_10	-1	entities/statue	1	1	0
 9	1	2504	749	block_11	-1	entities/block	1	0	0
 9	1	2504	845	block_12	-1	entities/block	1	0	0
 9	1	2648	845	block_13	-1	entities/block	1	0	0
 9	1	2648	749	block_14	-1	entities/block	1	0	0
-9	1	2512	1069	GBS	-1	entities/statue	0	1	2
+9	1	2512	1069	GBS	-1	entities/statue	1	1	2
 5	1	1456	528	chest_5	0	_none	1	150
 5	1	1456	560	CK4	0	small_key	1	128
 5	1	1488	560	chest_2	0	_none	1	154

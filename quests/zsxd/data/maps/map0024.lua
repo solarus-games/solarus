@@ -4,7 +4,7 @@
 
 local giga_bouton_pushed = false
 local dialogue_trop_leger_fait = false
-local guichet33_sprite = 
+local guichet33_sprite
 
 function event_map_started(destination_point_name)
 
@@ -272,12 +272,10 @@ end
 -- Appui sur le giga bouton d'extra collision à charge supérieure de 15.000 megawatts
 function giga_bouton_activated()
 
-  sol.main.play_sound("switch")        
   sol.map.switch_set_activated("giga_bouton", true)
-  sol.map.hero_freeze()
   sol.map.sensor_set_enabled("infinite_corridor", false)        
-  sol.main.timer_start(giga_bouton_camera_move, 500)
   sol.game.savegame_set_boolean(126, true)
+  giga_bouton_camera_move()
 end
 
 function event_treasure_obtained(item_name, variant, savegame_variable)

@@ -422,7 +422,7 @@
 4	1	2296	565	0	_random	1	-1
 4	1	2296	581	0	_random	1	-1
 4	1	2280	581	0	_random	1	-1
-9	1	2896	125	block_35	-1	entities/statue	0	1	0
+9	1	2896	125	block_35	-1	entities/statue	1	1	0
 8	1	536	285	interactive_entity	3	1	npc/thief	map
 8	1	536	317	GC84	3	0	_none	map
 8	1	2592	325	GC82	3	1	npc/newlink1	map

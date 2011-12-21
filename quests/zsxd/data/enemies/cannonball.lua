@@ -1,7 +1,7 @@
 -- Cannonball or random sprite
 -- made for the ALTTP room in Temple of Stupidities 1F NE
 
-random_balls = {
+local random_balls = {
   {
     sprite = "enemies/cannonball",
     sound = "cannonball",
@@ -120,6 +120,7 @@ function event_appear()
   sol.enemy.set_damage(0)
   sol.enemy.set_invincible()
 
+  local index
   if math.random(4) == 4 then
     -- choose between all stupid stuff
     index = math.random(#random_balls)
@@ -127,20 +128,24 @@ function event_appear()
     -- choose between the 3 real cannonballs
     index = math.random(3)
   end
-  props = random_balls[index]
+  local props = random_balls[index]
 
   sol.enemy.create_sprite(props.sprite)
   sol.enemy.set_size(props.width, props.height)
   sol.enemy.set_origin(props.origin_x, props.origin_y)
-  x, y = sol.enemy.get_position()
+  local x, y = sol.enemy.get_position()
   sol.enemy.set_position(x + props.dx, y + props.dy)
   sol.main.play_sound(props.sound)
+end
 
-  m = sol.main.temporal_movement_create(48, math.pi * 3 / 2, 7000)
+function event_restart()
+
+  local m = sol.main.straight_movement_create(48, math.pi * 3 / 2)
   sol.enemy.start_movement(m)
 end
 
-function event_movement_finished(movement)
+function event_obstacle_reached()
+
   sol.map.enemy_remove(sol.enemy.get_name())
 end
 

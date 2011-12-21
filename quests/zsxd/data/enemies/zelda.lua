@@ -11,15 +11,16 @@ function event_appear()
 end
 
 function event_restart()
-  m = sol.main.path_finding_movement_create(64)
+
+  local m = sol.main.path_finding_movement_create(64)
   sol.enemy.start_movement(m)
 end
 
 function event_movement_changed()
 
-  m = sol.enemy.get_movement()
-  direction4 = sol.main.movement_get_property(m, "displayed_direction")
-  sprite = sol.enemy.get_sprite()
+  local m = sol.enemy.get_movement()
+  local direction4 = sol.main.movement_get_property(m, "displayed_direction")
+  local sprite = sol.enemy.get_sprite()
   sol.main.sprite_set_direction(sprite, direction4)
 end
 

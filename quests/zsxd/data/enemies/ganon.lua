@@ -1,6 +1,6 @@
 -- Ganon in the temple of stupidities (2F NE)
 
-being_pushed = false
+local being_pushed = false
 
 function event_appear()
 
@@ -15,16 +15,17 @@ function event_appear()
 end
 
 function event_restart()
-  m = sol.main.path_finding_movement_create(32)
+
+  local m = sol.main.path_finding_movement_create(32)
   sol.enemy.start_movement(m)
 end
 
 function event_movement_changed()
 
   if not being_pushed then
-    m = sol.enemy.get_movement()
-    direction4 = sol.main.movement_get_property(m, "displayed_direction")
-    sprite = sol.enemy.get_sprite()
+    local m = sol.enemy.get_movement()
+    local direction4 = sol.main.movement_get_property(m, "displayed_direction")
+    local sprite = sol.enemy.get_sprite()
     if direction4 == 1 then
       sol.main.sprite_set_direction(sprite, 1)
     else
@@ -35,11 +36,11 @@ end
 
 function event_update()
 
-  x, y = sol.enemy.get_position()
+  local x, y = sol.enemy.get_position()
   if x > 1216 and sol.enemy.get_life() > 0 then
     sol.enemy.set_layer(0)
     sol.enemy.set_life(0)
-    sprite = sol.enemy.get_sprite()
+    local sprite = sol.enemy.get_sprite()
     sol.main.sprite_set_animation(sprite, "hurt")
     sol.main.play_sound("boss_killed")
   elseif x > 1176 and not being_pushed then
@@ -52,11 +53,12 @@ function event_custom_attack_received(attack, sprite)
   if attack == "sword" then
     sol.main.play_sound("sword_tapping")
     being_pushed = true
-    x, y = sol.enemy.get_position()
-    hero_x, hero_y = sol.map.hero_get_position()
-    angle = sol.main.get_angle(hero_x, hero_y, x, y)
-    movement = sol.main.temporal_movement_create(128, angle, 200)
-    sol.enemy.start_movement(movement)
+    local x, y = sol.enemy.get_position()
+    local hero_x, hero_y = sol.map.hero_get_position()
+    local angle = sol.main.get_angle(hero_x, hero_y, x, y)
+    local m = sol.main.straight_movement_create(128, angle)
+    sol.main.movement_set_property(m, "max_distance", 26)
+    sol.enemy.start_movement(m)
   end
 end
 
@@ -67,5 +69,10 @@ function event_movement_finished(movement)
   end
 end
 
+function event_obstacle_reached()
 
+  if being_pushed then
+    event_restart()
+  end
+end
 

@@ -75,6 +75,7 @@ function event_appear()
   sol.enemy.set_hurt_style(properties.hurt_style)
   sol.enemy.set_pushed_back_when_hurt(properties.pushed_when_hurt)
   sol.enemy.set_push_hero_on_sword(properties.push_hero_on_sword)
+  sol.enemy.set_invincible()
   sol.enemy.set_size(16, 16)
   sol.enemy.set_origin(8, 12)
   if not properties.obstacle_behavior == nil then
@@ -99,12 +100,13 @@ function event_obstacle_reached(movement)
   end
 end
 
-
 function event_restart()
 
   if not awaken then
     local sprite = sol.enemy.get_sprite()
     sol.main.sprite_set_animation(sprite, properties.asleep_animation)
+  else
+    go_hero()
   end
   check_hero()
 end
@@ -138,6 +140,7 @@ function event_sprite_animation_finished(sprite, animation)
     sol.enemy.set_size(16, 16)
     sol.enemy.set_origin(8, 13)
     sol.enemy.snap_to_grid()
+    sol.enemy.set_default_attack_consequences()
     awaken = true
     go_hero()
   end

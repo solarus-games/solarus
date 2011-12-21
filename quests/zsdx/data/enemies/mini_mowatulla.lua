@@ -27,6 +27,9 @@ function event_restart()
     sol.main.sprite_set_animation(sprite, "shell")
     local m = sol.main.target_movement_create(64)
     sol.enemy.start_movement(m)
+  else
+    local m = sol.main.path_finding_movement_create(64)
+    sol.enemy.start_movement(m)
   end
 end
 
@@ -45,10 +48,9 @@ function event_sprite_animation_finished(sprite, animation)
   if animation == "shell_breaking" then
     sol.main.sprite_set_animation(sprite, "walking")
     sol.enemy.snap_to_grid()
-    local m = sol.main.path_finding_movement_create(64)
-    sol.enemy.start_movement(m)
     sol.enemy.set_default_attack_consequences()
     in_shell = false
+    sol.enemy.restart()
   end
 end
 

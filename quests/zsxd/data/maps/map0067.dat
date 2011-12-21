@@ -89,37 +89,37 @@
 19	0	152	496	stairs_2	1	4
 19	0	152	400	stairs_3	3	4
 19	0	456	320	stairs_4	1	4
-9	0	72	333	block	-1	0	1
-9	0	88	333	block_2	-1	0	1
-9	0	104	333	block_3	-1	0	1
-9	0	120	333	block_4	-1	0	1
-9	0	136	333	block_5	-1	0	1
-9	0	152	333	block_6	-1	0	1
-9	0	168	333	block_7	-1	0	1
-9	0	184	333	block_8	-1	0	1
-9	0	200	333	block_9	-1	0	1
-9	0	216	333	block_10	-1	0	1
-9	0	232	333	block_11	-1	0	1
-9	0	248	333	block_12	-1	0	1
-9	0	88	365	block_14	-1	0	1
-9	0	104	365	block_15	-1	0	1
-9	0	120	365	block_16	-1	0	1
-9	0	136	365	block_17	-1	0	1
-9	0	152	365	block_18	-1	0	1
-9	0	168	365	block_19	-1	0	1
-9	0	184	365	block_20	-1	0	1
-9	0	200	365	block_21	-1	0	1
-9	0	216	365	block_22	-1	0	1
-9	0	232	365	block_23	-1	0	1
-9	0	232	381	block_27	-1	0	1
-9	0	216	397	block_28	-1	0	1
-9	0	248	381	block_24	-1	0	1
-9	0	248	365	block_26	-1	0	1
-9	0	72	397	block_29	-1	0	1
-9	0	72	365	block_13	-1	0	1
-9	0	88	381	block_25	-1	0	1
-9	0	72	381	block_30	-1	0	1
-9	0	88	397	block_31	-1	0	1
+9	0	72	333	block	-1	entities/block	1	0	1
+9	0	88	333	block_2	-1	entities/block	1	0	1
+9	0	104	333	block_3	-1	entities/block	1	0	1
+9	0	120	333	block_4	-1	entities/block	1	0	1
+9	0	136	333	block_5	-1	entities/block	1	0	1
+9	0	152	333	block_6	-1	entities/block	1	0	1
+9	0	168	333	block_7	-1	entities/block	1	0	1
+9	0	184	333	block_8	-1	entities/block	1	0	1
+9	0	200	333	block_9	-1	entities/block	1	0	1
+9	0	216	333	block_10	-1	entities/block	1	0	1
+9	0	232	333	block_11	-1	entities/block	1	0	1
+9	0	248	333	block_12	-1	entities/block	1	0	1
+9	0	88	365	block_14	-1	entities/block	1	0	1
+9	0	104	365	block_15	-1	entities/block	1	0	1
+9	0	120	365	block_16	-1	entities/block	1	0	1
+9	0	136	365	block_17	-1	entities/block	1	0	1
+9	0	152	365	block_18	-1	entities/block	1	0	1
+9	0	168	365	block_19	-1	entities/block	1	0	1
+9	0	184	365	block_20	-1	entities/block	1	0	1
+9	0	200	365	block_21	-1	entities/block	1	0	1
+9	0	216	365	block_22	-1	entities/block	1	0	1
+9	0	232	365	block_23	-1	entities/block	1	0	1
+9	0	232	381	block_27	-1	entities/block	1	0	1
+9	0	216	397	block_28	-1	entities/block	1	0	1
+9	0	248	381	block_24	-1	entities/block	1	0	1
+9	0	248	365	block_26	-1	entities/block	1	0	1
+9	0	72	397	block_29	-1	entities/block	1	0	1
+9	0	72	365	block_13	-1	entities/block	1	0	1
+9	0	88	381	block_25	-1	entities/block	1	0	1
+9	0	72	381	block_30	-1	entities/block	1	0	1
+9	0	88	397	block_31	-1	entities/block	1	0	1
 0	1	40	520	8	96	443
 0	1	16	16	24	24	45
 0	1	280	16	24	24	46

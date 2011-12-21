@@ -1059,17 +1059,17 @@
 18	1	2496	424	WW2_2	3	5	130
 10	1	2472	424	48	24	WW2_closed_2	52	1
 10	1	2472	464	48	24	WW2_closed	49	1
-9	1	2504	501	block	-1	1	2
+9	1	2504	501	block	-1	entities/statue	0	1	2
 8	1	2248	765	interactive_entity_2	3	1	npc/static_villager12	map
 8	1	2312	765	interactive_entity_3	3	1	npc/static_villager10	map
 6	1	1928	680	8	48	jump_sensor	0	40
 6	1	1760	680	8	48	jump_sensor_2	4	40
 8	1	2632	277	monkey	3	1	npc/monkey	map
 7	1	2648	573	globul_a	3	globul	0	-1	_random	1	-1
-9	1	2544	541	block_5	-1	0	0
-9	1	2544	605	block_6	-1	0	0
-9	1	2640	605	block_7	-1	0	0
-9	1	2640	541	block_8	-1	0	0
+9	1	2544	541	block_5	-1	entities/block	1	0	0
+9	1	2544	605	block_6	-1	entities/block	1	0	0
+9	1	2640	605	block_7	-1	entities/block	1	0	0
+9	1	2640	541	block_8	-1	entities/block	1	0	0
 19	1	2960	24	stairs_5	1	1
 1	1	2968	37	from1Fb_right	3	0
 2	1	2960	24	16	16	to1Fb_right	0	1	21	from2Fa_right

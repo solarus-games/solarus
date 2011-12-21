@@ -15,7 +15,7 @@ end
 
 function random_monkey_run(speed)
 
-  m = sol.main.random_path_movement_create(speed)
+  local m = sol.main.random_path_movement_create(speed)
   sol.map.npc_start_movement("forest_monkey", m)
   sol.main.sprite_set_animation(sol.map.npc_get_sprite("forest_monkey"), "walking")
 end
@@ -47,10 +47,10 @@ end
 function event_dialog_finished(first_message_id, answer)
   if first_message_id == "outside_fields_SO.guard_ok" then
 
-    s = sol.map.npc_get_sprite("guard")
+    local s = sol.map.npc_get_sprite("guard")
     if sol.main.sprite_get_animation(s) ~= "walking" then
       -- make the guard move
-      m = sol.main.path_movement_create("000000000066", 24)
+      local m = sol.main.path_movement_create("000000000066", 24)
       sol.main.sprite_set_animation(s, "walking")
       sol.map.npc_start_movement("guard", m)
     end

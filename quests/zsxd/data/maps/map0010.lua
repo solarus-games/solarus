@@ -1,4 +1,4 @@
-function event_npc_dialog(npc_name)
+function event_npc_interaction(npc_name)
 
   if not sol.game.savegame_get_boolean(61) then
     sol.map.dialog_start("water_house.give_bottle")

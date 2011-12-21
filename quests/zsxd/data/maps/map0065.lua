@@ -1,16 +1,16 @@
 -- Temple of Stupidities 1F NE
 
-will_remove_water = false
+local will_remove_water = false
 
 function event_map_started(destination_point_name)
 
   -- switches of stairs of the central room
-  for i = 1,7 do
+  for i = 1, 7 do
     if not sol.game.savegame_get_boolean(292 + i) then
-      sol.map.stairs_set_enabled("stairs_"..i, false)
-      sol.map.switch_set_activated("stairs_"..i.."_switch", false)
+      sol.map.stairs_set_enabled("stairs_" .. i, false)
+      sol.map.switch_set_activated("stairs_".. i .. "_switch", false)
     else
-      sol.map.switch_set_activated("stairs_"..i.."_switch", true)
+      sol.map.switch_set_activated("stairs_" .. i .. "_switch", true)
     end
   end
 
@@ -35,9 +35,9 @@ end
 
 function event_switch_activated(switch_name)
 
-  i = string.match(switch_name, "^stairs_([1-7])_switch$")
+  local i = string.match(switch_name, "^stairs_([1-7])_switch$")
   if (i ~= nil) then
-    sol.map.stairs_set_enabled("stairs_"..i, true)
+    sol.map.stairs_set_enabled("stairs_" .. i, true)
     sol.main.play_sound("secret")
     sol.game.savegame_set_boolean(292 + i, true)
   elseif switch_name == "switch_torch_1_on" then
@@ -113,7 +113,7 @@ end
 
 function event_enemy_dead(enemy_name)
 
-  if string.match(enemy_name, '^fight_room')
+  if string.find(enemy_name, '^fight_room')
       and sol.map.enemy_is_group_dead("fight_room") then
 
     sol.main.play_sound("secret")
@@ -128,16 +128,17 @@ end
 function event_hero_on_sensor(sensor_name)
 
   if sensor_name == "remove_water_sensor"
-     and not sol.game.savegame_get_boolean(283)
-     and not will_remove_water then
+      and not sol.game.savegame_get_boolean(283)
+      and not will_remove_water then
 
-    sol.main.timer_start(500, "remove_2f_sw_water", false)
+    sol.main.timer_start(remove_2f_sw_water, 500)
     will_remove_water = true
   elseif sensor_name == "start_boss_sensor" then
-    if sol.map.door_is_open("boss_door") and not sol.game.savegame_get_boolean(306) then
+    if sol.map.door_is_open("boss_door")
+        and not sol.game.savegame_get_boolean(306) then
       sol.map.door_close("boss_door")
       sol.map.hero_freeze()
-      sol.main.timer_start(1000, "start_boss", false)
+      sol.main.timer_start(start_boss, 1000)
     end
   end
 end
@@ -154,18 +155,19 @@ function start_boss()
 
   sol.map.enemy_set_enabled("boss", true)
   sol.main.play_music("ganon_theme.spc")
-  sol.main.timer_start(1000, "ganon_dialog", false)
+  sol.main.timer_start(ganon_dialog, 1000)
   sol.map.hero_unfreeze()
 end
 
 function ganon_dialog()
+
   sol.map.dialog_start("dungeon_1.ganon")
 end
 
 function event_hero_interaction(entity_name)
 
   if entity_name == "boss_hint_stone" then
-    sol.main.timer_start(9000, "another_castle", false)
+    sol.main.timer_start(another_castle, 9000)
     sol.main.play_music("victory.spc")
     sol.map.hero_set_direction(3)
     sol.map.hero_freeze()
@@ -175,24 +177,27 @@ end
 function another_castle()
 
   sol.map.dialog_start("dungeon_1.boss_hint_stone")
-  sol.map.dialog_set_variable("dungeon_1.boss_hint_stone", sol.game.savegame_get_name())
+  sol.map.dialog_set_variable("dungeon_1.boss_hint_stone",
+    sol.game.savegame_get_name())
 end
 
 function event_dialog_finished(first_message_id)
 
   if first_message_id == "dungeon_1.boss_hint_stone" then
-    sol.main.timer_start(1000, "victory", false)
+    sol.main.timer_start(victory, 1000)
   elseif first_message_id == "dungeon_1.ganon" then
     sol.main.play_music("ganon_battle.spc")
   end
 end
 
 function victory()
+
   sol.map.hero_start_victory_sequence()
-  sol.main.timer_start(2000, "leave_dungeon", false)
+  sol.main.timer_start(leave_dungeon, 2000)
 end
 
 function leave_dungeon()
+
   sol.main.play_sound("warp")
   sol.map.hero_set_map(4, "from_temple_of_stupidities", 1)
 end

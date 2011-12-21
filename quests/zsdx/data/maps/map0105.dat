@@ -2036,10 +2036,10 @@
 11	1	800	1936	puzzle_a_switch_6	0	0	1
 10	1	800	1936	16	16	puzzle_a_switch_green_6	635	1
 10	1	800	1936	16	16	puzzle_a_switch_red_6	636	1
-11	1	800	1616	puzzle_b_switch_1	3	0	0
-11	1	848	1664	puzzle_b_switch_2	3	0	0
-11	1	800	1712	puzzle_b_switch_3	3	0	0
-11	1	752	1664	puzzle_b_switch_4	3	0	0
+11	1	800	1616	puzzle_b_switch_1	1	0	0
+11	1	848	1664	puzzle_b_switch_2	1	0	0
+11	1	800	1712	puzzle_b_switch_3	1	0	0
+11	1	752	1664	puzzle_b_switch_4	1	0	0
 18	1	792	1560	puzzle_b_door	1	0	-1
 18	1	792	1512	puzzle_b_door_2	3	0	-1
 18	1	872	1816	puzzle_b_door_3	1	0	-1

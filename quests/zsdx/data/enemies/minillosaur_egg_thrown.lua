@@ -18,9 +18,6 @@ function event_appear()
   local sprite = sol.enemy.get_sprite()
   sol.main.sprite_set_animation(sprite, "egg")
   in_egg = true
-  local x, y = sol.enemy.get_position()
-  local hero_x, hero_y = sol.map.hero_get_position()
-  local angle = sol.main.get_angle(x, y, hero_x, hero_y)
 end
 
 -- The enemy was stopped for some reason and should restart
@@ -29,6 +26,9 @@ function event_restart()
   if in_egg then
     local sprite = sol.enemy.get_sprite()
     sol.main.sprite_set_animation(sprite, "egg")
+    local x, y = sol.enemy.get_position()
+    local hero_x, hero_y = sol.map.hero_get_position()
+    local angle = sol.main.get_angle(x, y, hero_x, hero_y)
     local m = sol.main.straight_movement_create(120, angle)
     sol.main.movement_set_property(m, "max_distance", 180)
     sol.main.movement_set_property(m, "smooth", false)

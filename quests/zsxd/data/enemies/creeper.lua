@@ -1,7 +1,7 @@
 -- Creeper
 
-explosion_soon = false
-going_hero = false
+local explosion_soon = false
+local going_hero = false
 
 function event_appear()
 
@@ -20,8 +20,8 @@ end
 
 function check_hero()
 
-  distance_to_hero = sol.enemy.get_distance_to_hero()
-  near_hero = distance_to_hero < 40
+  local distance_to_hero = sol.enemy.get_distance_to_hero()
+  local near_hero = distance_to_hero < 40
 
   if distance_to_hero < 160 and not going_hero then
     go_hero()
@@ -30,8 +30,8 @@ function check_hero()
   end
 
   if not near_hero and distance_to_hero < 80 then
-    x, y = sol.enemy.get_position()
-    hero_x, hero_y = sol.map.hero_get_position()
+    local x, y = sol.enemy.get_position()
+    local hero_x, hero_y = sol.map.hero_get_position()
     if hero_y < y and y - hero_y >= 40 then
       near_hero = true
     end
@@ -39,12 +39,12 @@ function check_hero()
 
   if near_hero and not explosion_soon then
     explosion_soon = true
-    sprite = sol.enemy.get_sprite()
+    local sprite = sol.enemy.get_sprite()
     sol.main.sprite_set_animation(sprite, "hurt")
     sol.main.play_sound("creeper")
-    sol.main.timer_start(600, "explode_if_near_hero", false)
+    sol.main.timer_start(explode_if_near_hero, 600)
   else
-    sol.main.timer_start(100, "check_hero", false)
+    sol.main.timer_start(check_hero, 100)
   end
 end
 
@@ -54,8 +54,8 @@ function explode_if_near_hero()
   near_hero = distance < 70
 
   if not near_hero and distance_to_hero < 90 then
-    x, y = sol.enemy.get_position()
-    hero_x, hero_y = sol.map.hero_get_position()
+    local x, y = sol.enemy.get_position()
+    local hero_x, hero_y = sol.map.hero_get_position()
     if hero_y < y and y - hero_y >= 20 then
       near_hero = true
     end
@@ -64,8 +64,8 @@ function explode_if_near_hero()
   if not near_hero then
     -- cancel the explosion
     explosion_soon = false
-    sol.main.timer_start(400, "check_hero", false)
-    sprite = sol.enemy.get_sprite()
+    sol.main.timer_start(check_hero, 400)
+    local sprite = sol.enemy.get_sprite()
     sol.main.sprite_set_animation(sprite, "walking")
   else
     -- explode
@@ -86,13 +86,15 @@ function explode_if_near_hero()
 end
 
 function go_random()
-  m = sol.main.random_path_movement_create(40)
+
+  local m = sol.main.random_path_movement_create(40)
   sol.enemy.start_movement(m)
   going_hero = false
 end
 
 function go_hero()
-  m = sol.main.target_movement_create(40)
+  
+  local m = sol.main.target_movement_create(40)
   sol.enemy.start_movement(m)
   going_hero = true
 end

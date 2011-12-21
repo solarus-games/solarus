@@ -1,8 +1,10 @@
-zsdx-1.2 (under development)
+zsdx-1.2 (2011-12-21)
 
-* Attempt to fix a crash with enemies by removing a useless and buggy feature
+* Dungeon 9: fix a crash with two enemies that appear on a platform
+* Attempt to fix a crash with mummies by removing a useless and buggy feature
 * Dungeon 10: let hero to go back from the roof after killing the boss
 * Dungeon 6: it was possible to bypass a part of the dungeon
+* Dungeon 1: fix the fixed minillosaur eggs
 * Small map improvements
 
 zsdx-1.1 (2011-12-19)

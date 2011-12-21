@@ -450,7 +450,7 @@ booleans:
 932	hidden palace D1: chest with 3 bombs
 933	hidden palace D1: chest with 20 rupees
 934	hidden palace D1: bone key door open
-935	outside world A4: chest with a piece of heart (south)
+935	outside world B4: chest with a piece of heart (south)
 936	twin caves: piece of heart
 937	laser cave: piece of heart
 938	Lyriann shop: bomb bag 2 or 3

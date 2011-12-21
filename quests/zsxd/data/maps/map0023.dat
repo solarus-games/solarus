@@ -384,45 +384,45 @@
 1	1	2896	37	from1Fb_right	3	0
 19	1	2888	24	stairs_4	1	1
 2	1	2888	24	16	16	to1Fb_right	0	1	21	from2Fb_right
-9	1	376	93	block	-1	0	0
-9	1	376	109	block_2	-1	0	0
-9	1	376	125	block_3	-1	0	0
-9	1	376	141	block_4	-1	0	0
-9	1	376	157	block_5	-1	0	0
-9	1	392	157	block_6	-1	0	0
-9	1	408	157	block_7	-1	0	0
-9	1	392	189	block_8	-1	0	0
-9	1	408	141	block_9	-1	0	0
-9	1	408	109	block_10	-1	0	0
-9	1	408	93	block_11	-1	0	0
-9	1	424	109	block_12	-1	0	0
-9	1	440	109	block_13	-1	0	0
-9	1	440	125	block_14	-1	0	0
-9	1	440	141	block_15	-1	0	0
-9	1	440	157	block_16	-1	0	0
-9	1	440	173	block_17	-1	0	0
-9	1	472	173	block_18	-1	0	0
-9	1	472	189	block_19	-1	0	0
-9	1	472	109	block_20	-1	0	0
-9	1	488	109	block_21	-1	0	0
-9	1	504	109	block_22	-1	0	0
-9	1	504	125	block_23	-1	0	0
-9	1	504	141	block_24	-1	0	0
-9	1	504	157	block_25	-1	0	0
-9	1	504	173	block_26	-1	0	0
-9	1	520	125	block_27	-1	0	0
-9	1	536	125	block_28	-1	0	0
-9	1	536	173	block_29	-1	0	0
-9	1	536	189	block_30	-1	0	0
-9	1	2792	61	block_31	-1	0	0
-9	1	2792	189	block_32	-1	0	0
-9	1	3000	189	block_33	-1	0	0
-9	1	3000	61	block_34	-1	0	0
+9	1	376	93	block	-1	entities/block	1	0	0
+9	1	376	109	block_2	-1	entities/block	1	0	0
+9	1	376	125	block_3	-1	entities/block	1	0	0
+9	1	376	141	block_4	-1	entities/block	1	0	0
+9	1	376	157	block_5	-1	entities/block	1	0	0
+9	1	392	157	block_6	-1	entities/block	1	0	0
+9	1	408	157	block_7	-1	entities/block	1	0	0
+9	1	392	189	block_8	-1	entities/block	1	0	0
+9	1	408	141	block_9	-1	entities/block	1	0	0
+9	1	408	109	block_10	-1	entities/block	1	0	0
+9	1	408	93	block_11	-1	entities/block	1	0	0
+9	1	424	109	block_12	-1	entities/block	1	0	0
+9	1	440	109	block_13	-1	entities/block	1	0	0
+9	1	440	125	block_14	-1	entities/block	1	0	0
+9	1	440	141	block_15	-1	entities/block	1	0	0
+9	1	440	157	block_16	-1	entities/block	1	0	0
+9	1	440	173	block_17	-1	entities/block	1	0	0
+9	1	472	173	block_18	-1	entities/block	1	0	0
+9	1	472	189	block_19	-1	entities/block	1	0	0
+9	1	472	109	block_20	-1	entities/block	1	0	0
+9	1	488	109	block_21	-1	entities/block	1	0	0
+9	1	504	109	block_22	-1	entities/block	1	0	0
+9	1	504	125	block_23	-1	entities/block	1	0	0
+9	1	504	141	block_24	-1	entities/block	1	0	0
+9	1	504	157	block_25	-1	entities/block	1	0	0
+9	1	504	173	block_26	-1	entities/block	1	0	0
+9	1	520	125	block_27	-1	entities/block	1	0	0
+9	1	536	125	block_28	-1	entities/block	1	0	0
+9	1	536	173	block_29	-1	entities/block	1	0	0
+9	1	536	189	block_30	-1	entities/block	1	0	0
+9	1	2792	61	block_31	-1	entities/block	1	0	0
+9	1	2792	189	block_32	-1	entities/block	1	0	0
+9	1	3000	189	block_33	-1	entities/block	1	0	0
+9	1	3000	61	block_34	-1	entities/block	1	0	0
 4	1	2280	565	0	bomb	2	-1
 4	1	2296	565	0	_random	1	-1
 4	1	2296	581	0	_random	1	-1
 4	1	2280	581	0	_random	1	-1
-9	1	2896	125	block_35	-1	1	0
+9	1	2896	125	block_35	-1	entities/statue	0	1	0
 8	1	536	285	interactive_entity	3	1	npc/thief	map
 8	1	536	317	GC84	3	0	_none	map
 8	1	2592	325	GC82	3	1	npc/newlink1	map

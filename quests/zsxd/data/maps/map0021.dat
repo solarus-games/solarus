@@ -842,7 +842,7 @@
 15	1	1872	752	48	16	1
 15	1	1872	584	48	16	0
 4	1	1880	613	0	_random	1	-1
-9	1	2288	309	block	-1	1	2
+9	1	2288	309	block	-1	entities/statue	0	1	2
 5	1	2176	272	CC1	0	croissant	1	117
 5	1	1872	536	CR3	0	rupee	5	118
 15	1	2496	288	16	16	0
@@ -863,22 +863,22 @@
 15	1	2640	384	32	16	1
 15	1	2624	288	16	112	1
 5	1	2648	992	CV5	0	heart	1	119
-9	1	2208	1021	block_2	-1	1	2
-9	1	2224	1021	block_3	-1	1	2
-9	1	2240	1021	block_4	-1	1	2
-9	1	2256	1021	block_5	-1	1	2
-9	1	2272	1021	block_6	-1	1	2
-9	1	2288	1021	block_7	-1	1	2
-9	1	2304	1021	block_8	-1	1	2
-9	1	2320	1021	block_9	-1	1	2
-9	1	2336	1021	block_10	-1	1	2
-9	1	2352	1021	block_11	-1	1	2
-9	1	2368	1021	block_12	-1	1	2
-9	1	2288	325	block_13	-1	1	2
-9	1	2288	341	block_14	-1	1	2
-9	1	2288	357	block_15	-1	1	2
-9	1	2288	373	block_16	-1	1	2
-9	1	2288	389	block_17	-1	1	2
+9	1	2208	1021	block_2	-1	entities/statue	0	1	2
+9	1	2224	1021	block_3	-1	entities/statue	0	1	2
+9	1	2240	1021	block_4	-1	entities/statue	0	1	2
+9	1	2256	1021	block_5	-1	entities/statue	0	1	2
+9	1	2272	1021	block_6	-1	entities/statue	0	1	2
+9	1	2288	1021	block_7	-1	entities/statue	0	1	2
+9	1	2304	1021	block_8	-1	entities/statue	0	1	2
+9	1	2320	1021	block_9	-1	entities/statue	0	1	2
+9	1	2336	1021	block_10	-1	entities/statue	0	1	2
+9	1	2352	1021	block_11	-1	entities/statue	0	1	2
+9	1	2368	1021	block_12	-1	entities/statue	0	1	2
+9	1	2288	325	block_13	-1	entities/statue	0	1	2
+9	1	2288	341	block_14	-1	entities/statue	0	1	2
+9	1	2288	357	block_15	-1	entities/statue	0	1	2
+9	1	2288	373	block_16	-1	entities/statue	0	1	2
+9	1	2288	389	block_17	-1	entities/statue	0	1	2
 8	1	2352	261	DT1	3	0	entities/hint_stone	dialog#crazy_house.hint_part2
 8	1	920	597	interactive_entity	3	1	npc/static_villager2	map
 8	1	920	637	GC47	3	0	_none	map

@@ -1224,10 +1224,10 @@
 10	1	696	792	96	64	c_water_less_a	446	0
 10	1	704	800	80	48	c_water_less_b	446	0
 10	1	712	808	64	32	c_water_less_c	446	0
-9	1	136	501	block	-1	0	0
-9	1	152	517	block_3	3	0	1
-9	1	168	517	block_4	-1	0	0
-9	1	184	501	block_6	-1	0	0
+9	1	136	501	block	-1	entities/block	1	0	0
+9	1	152	517	block_3	3	entities/block	1	0	1
+9	1	168	517	block_4	-1	entities/block	1	0	0
+9	1	184	501	block_6	-1	entities/block	1	0	0
 1	1	1072	981	from_2f_boss	3	0
 2	1	1064	968	16	16	teletransporter_6	0	1	65	from_1f_boss
 19	1	1064	968	stairs_11	1	2

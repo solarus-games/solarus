@@ -1140,11 +1140,11 @@
 6	1	904	376	16	8	jump_sensor_15	6	40
 5	1	688	816	fight_chest	0	small_key	1	244
 5	1	152	336	chest_5	0	small_key	1	243
-9	1	1360	109	block	-1	0	0
-9	1	1360	141	block_2	-1	0	0
-9	1	1392	109	block_3	-1	0	0
-9	1	1392	141	block_4	-1	0	0
-9	1	1376	125	block_5	-1	0	1
+9	1	1360	109	block	-1	entities/block	1	0	0
+9	1	1360	141	block_2	-1	entities/block	1	0	0
+9	1	1392	109	block_3	-1	entities/block	1	0	0
+9	1	1392	141	block_4	-1	entities/block	1	0	0
+9	1	1376	125	block_5	-1	entities/block	1	0	1
 12	1	72	120	8	32	custom_obstacle_3	1	1	1	1
 12	1	96	120	8	32	custom_obstacle_4	1	1	1	1
 15	1	104	304	16	80	0

@@ -2034,7 +2034,7 @@ line2 = "rupees!"
 #       |-----------------------|
 line1 = "You can't get anymore!"
 
-[_crystal_switch]
+[_crystal]
 # Lorsqu'on regarde un interrupteur de cristal
 #       |-----------------------|
 line1 = "It's a crystal switch."

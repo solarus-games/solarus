@@ -33,6 +33,8 @@ function event_dialog_finished(first_message_id)
 end
 
 function wake_up()
+
+  local bed_sprite = sol.map.npc_get_sprite("bed")
   sol.main.play_music("village.spc")
   sol.map.npc_remove("snores")
   sol.main.sprite_set_animation(bed_sprite, "hero_waking")
@@ -40,6 +42,8 @@ function wake_up()
 end
 
 function jump_from_bed()
+
+  local bed_sprite = sol.map.npc_get_sprite("bed")
   sol.map.hero_set_visible(true)
   sol.map.hero_start_jumping(0, 8, true)
   sol.map.hud_set_pause_enabled(true)

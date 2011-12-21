@@ -140,7 +140,7 @@
 0	0	544	64	8	8	69
 0	0	488	736	16	48	364
 0	0	408	736	16	48	364
-9	0	408	133	block_2	-1	entities/statue	0	1	2
+9	0	408	133	block_2	-1	entities/statue	1	1	2
 7	0	592	605	ennemy_1	3	red_bullblin	0	-1	_random	1	-1
 13	0	416	757	96	16	sensor_close_trap_door	0
 2	0	448	848	16	16	teletransporter	0	2	38	_side
@@ -152,14 +152,14 @@
 7	0	184	605	ennemy_2	3	red_bullblin	0	-1	_random	1	-1
 13	0	312	589	48	48	make_appear_c3	0
 8	0	472	133	interactive_entity	3	0	entities/sign	dialog#freaking_cave_indic2
-9	0	400	149	block	-1	entities/statue	0	1	2
-9	0	424	133	block_3	-1	entities/statue	0	1	2
-9	0	416	149	block_4	-1	entities/statue	0	1	2
-9	0	432	149	block_5	-1	entities/statue	0	1	2
-9	0	392	165	block_6	-1	entities/statue	0	1	2
-9	0	408	165	block_7	-1	entities/statue	0	1	2
-9	0	424	165	block_8	-1	entities/statue	0	1	2
-9	0	440	165	block_9	-1	entities/statue	0	1	2
+9	0	400	149	block	-1	entities/statue	1	1	2
+9	0	424	133	block_3	-1	entities/statue	1	1	2
+9	0	416	149	block_4	-1	entities/statue	1	1	2
+9	0	432	149	block_5	-1	entities/statue	1	1	2
+9	0	392	165	block_6	-1	entities/statue	1	1	2
+9	0	408	165	block_7	-1	entities/statue	1	1	2
+9	0	424	165	block_8	-1	entities/statue	1	1	2
+9	0	440	165	block_9	-1	entities/statue	1	1	2
 3	0	416	93	bomb_bag	1	56
 18	0	440	784	trap_door	3	0	-1
 2	0	520	64	16	16	teletransporter_2	1	1	38	back

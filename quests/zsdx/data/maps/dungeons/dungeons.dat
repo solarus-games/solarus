@@ -879,7 +879,7 @@ save = 880
 big = 0
 
 [dungeon_9.map_130.boss_0]
-floor = 0
+floor = -99
 x = 240
 y = 189
 save = 881

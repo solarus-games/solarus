@@ -153,9 +153,10 @@
 7	1	172	373	enemy_3	3	red_helmasaur	0	-1	_random	1	-1
 7	1	204	477	enemy_4	3	red_helmasaur	0	-1	_random	1	-1
 2	1	320	240	16	16	teletransporter	0	2	123	_side
-1	1	264	285	tmp	3	0
+1	1	272	381	tmp	3	0
 2	1	320	368	16	16	teletransporter_2	0	2	127	_side
 8	1	288	381	bone_key_door	2	0	entities/bone_key_door	map
+2	1	280	384	16	16	teletransporter_3	0	0	37	from_outside
 0	2	296	200	8	224	442
 0	2	296	200	8	96	442
 0	2	0	144	40	480	170

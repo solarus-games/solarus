@@ -45,6 +45,8 @@ class MapEntity {
         Layer layer, int x, int y); /**< a function to parse a certain type of entity */
     static CreationFunction* creation_functions[];     /**< the creation functions of all types of entities */
     static const Rectangle directions_to_xy_moves[8];  /**< converts a direction (0 to 7) into a one-pixel xy move */
+    static const int max_collision_distance_to_camera; /**< above this distance from the visible area,
+                                                        * collisions with detectors are ignored */
 
     /**
      * @brief Describes the features of each type of entity.
@@ -152,8 +154,9 @@ class MapEntity {
     // movement
     void clear_old_movements();
 
-    // collisions
+    // collisions with other entities
     void check_collision_with_detectors(bool with_pixel_precise);
+    void check_collision_with_detectors(Sprite& sprite);
 
     // easy access to various game objects
     MapEntities& get_entities();

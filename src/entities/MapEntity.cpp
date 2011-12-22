@@ -111,6 +111,8 @@ const Rectangle MapEntity::directions_to_xy_moves[] = {
   Rectangle( 1, 1)
 };
 
+const int MapEntity::max_collision_distance_to_camera = 400;
+
 /**
  * @brief Creates a map entity without specifying its properties now.
  */
@@ -1091,7 +1093,7 @@ void MapEntity::notify_position_changed() {
  */
 void MapEntity::check_collision_with_detectors(bool with_pixel_precise) {
 
-  if (get_distance_to_camera() >= 320) {
+  if (get_distance_to_camera() > max_collision_distance_to_camera) {
     // don't check detectors far for the visible area
     return;
   }
@@ -1108,6 +1110,21 @@ void MapEntity::check_collision_with_detectors(bool with_pixel_precise) {
       get_map().check_collision_with_detectors(*this, sprite);
     }
   }
+}
+
+/**
+ * @brief Checks pixel-precise collisions between a particular sprite of this
+ * entity and the detectors of the map.
+ * @param sprite the sprite to check
+ */
+void MapEntity::check_collision_with_detectors(Sprite& sprite) {
+
+  if (get_distance_to_camera() > max_collision_distance_to_camera) {
+    // don't check detectors far for the visible area
+    return;
+  }
+
+  get_map().check_collision_with_detectors(*this, sprite);
 }
 
 /**
@@ -1863,7 +1880,7 @@ void MapEntity::update() {
     if (sprite.has_frame_changed()) {
 
       if (sprite.are_pixel_collisions_enabled()) {
-        get_map().check_collision_with_detectors(*this, sprite);
+        check_collision_with_detectors(sprite);
       }
 
       notify_sprite_frame_changed(sprite, sprite.get_current_animation(), sprite.get_current_frame());

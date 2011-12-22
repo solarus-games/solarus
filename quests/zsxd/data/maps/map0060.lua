@@ -20,7 +20,7 @@ function event_switch_activated(switch_name)
     end
 
     if next_switch_index == 5 and not sol.map.door_is_open("code_door") then
-      sol.map.camera_move(1072, 456, 250, big_code_ok_dialog)
+      sol.map.dialog_start("dungeon_1.big_code_ok")
     elseif next_switch_index > #switches_good_order then
       sol.map.dialog_start("dungeon_1.big_code_completed")
     end
@@ -29,16 +29,13 @@ function event_switch_activated(switch_name)
   end
 end
 
-function big_code_ok_dialog()
-
-  sol.map.dialog_start("dungeon_1.big_code_ok")
-end
-
 function event_dialog_finished(first_message_id, answer)
 
   if first_message_id == "dungeon_1.big_code_ok" then
-    sol.map.door_open("code_door")
-    sol.main.play_sound("secret")
+    sol.map.camera_move(1072, 456, 250, function()
+      sol.map.door_open("code_door")
+      sol.main.play_sound("secret")
+    end)
   end
 end
 

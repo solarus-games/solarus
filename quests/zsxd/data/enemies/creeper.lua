@@ -14,6 +14,7 @@ function event_appear()
 end
 
 function event_restart()
+
   go_random()
   check_hero()
 end
@@ -50,10 +51,10 @@ end
 
 function explode_if_near_hero()
 
-  distance = sol.enemy.get_distance_to_hero()
-  near_hero = distance < 70
+  local distance = sol.enemy.get_distance_to_hero()
+  local near_hero = distance < 70
 
-  if not near_hero and distance_to_hero < 90 then
+  if not near_hero and distance < 90 then
     local x, y = sol.enemy.get_position()
     local hero_x, hero_y = sol.map.hero_get_position()
     if hero_y < y and y - hero_y >= 20 then
@@ -69,8 +70,7 @@ function explode_if_near_hero()
     sol.main.sprite_set_animation(sprite, "walking")
   else
     -- explode
-    x, y = sol.enemy.get_position()
-    layer = sol.enemy.get_layer()
+    local x, y, layer = sol.enemy.get_position()
     sol.main.play_sound("explosion")
     sol.map.explosion_create(x, y - 16, layer)
     sol.map.explosion_create(x + 32, y - 16, layer)

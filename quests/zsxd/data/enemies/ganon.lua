@@ -38,7 +38,7 @@ function event_update()
 
   local x, y = sol.enemy.get_position()
   if x > 1216 and sol.enemy.get_life() > 0 then
-    sol.enemy.set_layer(0)
+    sol.enemy.set_position(x, y, 0) -- go to low layer
     sol.enemy.set_life(0)
     local sprite = sol.enemy.get_sprite()
     sol.main.sprite_set_animation(sprite, "hurt")

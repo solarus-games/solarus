@@ -42,6 +42,8 @@ class Block: public Detector {
 
     static const uint32_t moving_delay = 500; /**< delay between two successive moves of a block */
 
+    void movement_by_hero_finished();
+
   public:
 
     Block(const std::string& name, Layer layer, int x, int y, int direction,
@@ -62,11 +64,10 @@ class Block: public Detector {
     void notify_collision(MapEntity& entity_overlapping, CollisionMode collision_mode);
     void notify_collision_with_switch(Switch& sw, CollisionMode collision_mode);
     void action_key_pressed();
-    bool moved_by_hero();
+    bool start_movement_by_hero();
+    void stop_movement_by_hero();
     void notify_position_changed();
     void notify_obstacle_reached();
-
-    void update();
 
     void reset();
 };

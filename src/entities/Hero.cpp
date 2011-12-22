@@ -957,6 +957,14 @@ bool Hero::is_direction_locked() {
 }
 
 /**
+ * @brief This function is called when the movement of the entity is finished.
+ */
+void Hero::notify_movement_finished() {
+
+  state->notify_movement_finished();
+}
+
+/**
  * @brief Notifies this entity that it has just failed to change its position
  * because of obstacles.
  */
@@ -973,6 +981,7 @@ void Hero::notify_obstacle_reached() {
 void Hero::notify_position_changed() {
 
   check_position();
+  state->notify_position_changed();
 }
 
 /**

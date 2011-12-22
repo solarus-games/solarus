@@ -356,15 +356,28 @@ bool Detector::interaction_with_inventory_item(InventoryItem &item) {
 }
 
 /**
- * @brief This function is called when the player tries to push or pull this detector.
+ * @brief This function is called when the player tries to push or pull this
+ * detector.
  *
  * By default, nothing happens.
  * Redefine your function in the subclasses to make something happen with the entity.
  *
  * @return true if the detector was pushed or pulled successfully
  */
-bool Detector::moved_by_hero() {
+bool Detector::start_movement_by_hero() {
   return false;
+}
+
+/**
+ * @brief This function is called when the player finishes to push or pull
+ * this detector.
+ *
+ * By default, nothing happens.
+ * Redefine your function in the subclasses to make something happen with the entity.
+ *
+ * @return true if the detector was pushed or pulled successfully
+ */
+void Detector::stop_movement_by_hero() {
 }
 
 /**

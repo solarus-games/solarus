@@ -3,7 +3,7 @@ set(quest_name "zsxd")
 # data files list
 file(GLOB_RECURSE data_files
   RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
-  *.spc *.ogg *.it *.png *.dat *.ttf *.fon)
+  *.spc *.ogg *.it *.png *.dat *.lua *.ttf *.fon)
 
 # add other data to zip archive
 add_custom_command(

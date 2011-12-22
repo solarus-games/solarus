@@ -954,7 +954,7 @@
 13	1	1056	669	16	16	hide_hero_sensor_7	0
 13	1	1048	669	16	16	unhide_hero_sensor_6	0
 18	1	520	744	door_3	3	3	606
-9	1	816	349	block	-1	entities/statue	1	1	2
+9	1	896	389	block	-1	entities/statue	1	1	2
 11	1	792	56	ne_door_switch	1	0	1
 18	1	904	136	ne_door	1	0	621
 18	1	904	88	ne_door_2	3	0	621
@@ -1044,6 +1044,7 @@
 4	1	816	725	0	magic_flask	2	-1
 4	1	816	741	0	_random	2	-1
 4	1	800	741	0	_random	2	-1
+1	1	880	389	tmp	3	0
 0	2	880	32	64	8	304
 0	2	0	0	1104	32	170
 0	2	48	16	16	16	553

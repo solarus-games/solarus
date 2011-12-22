@@ -74,6 +74,10 @@ end
 
 function event_map_opening_transition_finished(destination_point_name)
 
+  -- sol.main.timer_start(function()
+  --  sol.game.reset()
+  -- end, 60000)
+
   -- show the welcome message
   if destination_point_name == "from_outside" then
     sol.map.dialog_start("dungeon_9.welcome")

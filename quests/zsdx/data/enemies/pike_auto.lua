@@ -1,7 +1,7 @@
 -- Pike that always moves, horizontally or vertically
 -- depending on its direction
 
-obstacle_reached = true
+local recent_obstacle = 0
 
 function event_appear()
 
@@ -36,17 +36,20 @@ function event_obstacle_reached()
 
   local x, y = sol.enemy.get_position()
   local hero_x, hero_y = sol.map.hero_get_position()
-  if not obstacle_reached
-    and math.abs(x - hero_x) < 184
-    and math.abs(y - hero_y) < 144 then
+  if recent_obstacle == 0
+      and math.abs(x - hero_x) < 184
+      and math.abs(y - hero_y) < 144 then
     sol.main.play_sound("sword_tapping")
   end
 
-  obstacle_reached = true
+  recent_obstacle = 8
   sol.enemy.restart()
 end
 
 function event_position_changed()
-  obstacle_reached = false
+
+  if recent_obstacle > 0 then
+    recent_obstacle = recent_obstacle - 1
+  end
 end
 

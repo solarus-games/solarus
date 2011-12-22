@@ -21,7 +21,7 @@ end
 
 function event_camera_back()
   -- start the door timer once the camera is back
-  sol.main.timer_start(timer, timer_delay)
+  sol.main.timer_start(timer, timer_delay, true)
 end
 
 function event_hero_on_sensor(sensor_name)
@@ -58,21 +58,21 @@ end
 function open_door_a()
 
   sol.map.door_open("stupid_run_door_a")
-  timer = "close_door_a"
+  timer = close_door_a
   timer_delay = 7000
 end
 
 function open_door_b()
 
   sol.map.door_open("stupid_run_door_b")
-  timer = "close_door_b"
+  timer = close_door_b
   timer_delay = 3500
 end
 
 function open_door_c()
 
   sol.map.door_open("stupid_run_door_c")
-  timer = "close_door_c"
+  timer = close_door_c
   timer_delay = 4000
 end
 

@@ -164,9 +164,9 @@ function ganon_dialog()
   sol.map.dialog_start("dungeon_1.ganon")
 end
 
-function event_hero_interaction(entity_name)
+function event_npc_interaction(npc_name)
 
-  if entity_name == "boss_hint_stone" then
+  if npc_name == "boss_hint_stone" then
     sol.main.timer_start(another_castle, 9000)
     sol.main.play_music("victory.spc")
     sol.map.hero_set_direction(3)

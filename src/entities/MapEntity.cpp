@@ -1776,9 +1776,6 @@ bool MapEntity::is_suspended() {
 
 /**
  * @brief Suspends or resumes the movement and the animations of this entity.
- *
- * This function is called by the map when the game is suspended or resumed.
- *
  * @param suspended true to suspend the movement and the animations, false to resume them
  */
 void MapEntity::set_suspended(bool suspended) {
@@ -1896,6 +1893,15 @@ void MapEntity::update() {
     movement->update();
   }
   clear_old_movements();
+
+  // suspend the entity if far from the camera
+  bool far = get_distance_to_camera() > max_collision_distance_to_camera;
+  if (far && !is_suspended()) {
+    set_suspended(true);
+  }
+  else if (!far && is_suspended() && !get_game().is_suspended()) {
+    set_suspended(false);
+  }
 }
 
 /**

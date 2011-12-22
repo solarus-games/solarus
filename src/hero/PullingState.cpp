@@ -70,29 +70,14 @@ void Hero::PullingState::update() {
 
   State::update();
 
-  if (is_moving_grabbed_entity()) { // the hero is pulling an entity and is currently moving it (typically a block)
-
-    // detect when the hero movement is finished
-    // because the hero has covered 16 pixels, has reached an obstacle or has aligned the entity on the grid
-
-    PathMovement *movement = (PathMovement*) hero.get_movement();
-
-    bool horizontal = get_sprites().get_animation_direction() % 2 == 0;
-    bool has_reached_grid = movement->get_total_distance_covered() > 8
-      && ((horizontal && hero.is_aligned_to_grid_x()) || (!horizontal && hero.is_aligned_to_grid_y()));
-
-    if (movement->is_finished() || has_reached_grid) {
-      stop_moving_pulled_entity();
-    }
-  }
-  else { // he is not moving an entity
+  if (!is_moving_grabbed_entity()) {
 
     int wanted_direction8 = get_controls().get_wanted_direction8();
     int opposite_direction8 = (get_sprites().get_animation_direction8() + 4) % 8;
 
     // stop pulling if the action key is released or if there is no more obstacle
     if (!get_controls().is_key_pressed(GameControls::ACTION)
-	|| !hero.is_facing_obstacle()) {
+        || !hero.is_facing_obstacle()) {
       hero.set_state(new FreeState(hero));
     }
 
@@ -107,18 +92,18 @@ void Hero::PullingState::update() {
       Detector *facing_entity = hero.get_facing_entity();
       if (facing_entity != NULL) {
 
-	if (facing_entity->get_type() == BLOCK) { // TODO use dynamic binding
-	  hero.try_snap_to_facing_entity();
-	}
+        if (facing_entity->get_type() == BLOCK) { // TODO use dynamic binding
+          hero.try_snap_to_facing_entity();
+        }
 
-	if (facing_entity->moved_by_hero()) {
+        if (facing_entity->start_movement_by_hero()) {
 
-	  std::string path = "  ";
-	  path[0] = path[1] = '0' + opposite_direction8;
+          std::string path = "  ";
+          path[0] = path[1] = '0' + opposite_direction8;
 
-	  hero.set_movement(new PathMovement(path, 40, false, false, false));
-	  pulled_entity = facing_entity;
-	}
+          hero.set_movement(new PathMovement(path, 40, false, false, false));
+          pulled_entity = facing_entity;
+        }
       }
     }
   }
@@ -145,23 +130,56 @@ bool Hero::PullingState::is_moving_grabbed_entity() {
  */
 void Hero::PullingState::notify_grabbed_entity_collision() {
 
-  // the hero has moved one pixel too much
-  // because he moved before the block, not knowing that the block would not follow him
-
-  static const Rectangle straight_dxy[] = {
-    Rectangle( 1, 0),
-    Rectangle( 0,-1),
-    Rectangle(-1, 0),
-    Rectangle( 0, 1)
-  };
-
-  // go back one pixel into the direction
-  int pulling_direction4 = get_sprites().get_animation_direction();
-  Rectangle bounding_box = hero.get_bounding_box();
-  bounding_box.add_xy(straight_dxy[pulling_direction4]);
-  hero.set_bounding_box(bounding_box);
-
   stop_moving_pulled_entity();
+}
+
+/**
+ * @brief Notifies this state that the movement if finished.
+ */
+void Hero::PullingState::notify_movement_finished() {
+
+  if (is_moving_grabbed_entity()) {
+    // the 16 pixels of the path are completed
+    //std::cout << "stop moving block: 16 pixels were completed\n";
+    stop_moving_pulled_entity();
+  }
+}
+
+/**
+ * @brief Notifies this state that the hero has just failed to change its
+ * position because of obstacles.
+ */
+void Hero::PullingState::notify_obstacle_reached() {
+
+  if (is_moving_grabbed_entity()) {
+    // an obstacle is reached before the 16 pixels are completed
+    //std::cout << "stop moving block: the hero has reached an obstacle\n";
+    stop_moving_pulled_entity();
+  }
+}
+
+/**
+ * @brief Notifies this state that the hero has just changed its
+ * position.
+ */
+void Hero::PullingState::notify_position_changed() {
+
+  if (is_moving_grabbed_entity()) {
+    // if the entity has made more than 8 pixels and is aligned on the grid,
+    // we stop the movement
+
+    PathMovement *movement = (PathMovement*) hero.get_movement();
+
+    bool horizontal = get_sprites().get_animation_direction() % 2 == 0;
+    bool has_reached_grid = movement->get_total_distance_covered() > 8
+      && ((horizontal && pulled_entity->is_aligned_to_grid_x())
+          || (!horizontal && pulled_entity->is_aligned_to_grid_y()));
+
+    if (has_reached_grid) {
+      //std::cout << "stop moving block: the entity has reached the grid\n";
+      stop_moving_pulled_entity();
+    }
+  }
 }
 
 /**
@@ -173,7 +191,38 @@ void Hero::PullingState::notify_grabbed_entity_collision() {
  */
 void Hero::PullingState::stop_moving_pulled_entity() {
 
+  if (pulled_entity != NULL) {
+    pulled_entity->stop_movement_by_hero();
+
+    // the hero may have moved one or several pixels too much
+    // because he moved before the block, not knowing that the block would not follow him
+
+    int direction4 = get_sprites().get_animation_direction();
+    switch (direction4) {
+
+      case 0:
+        // east
+        hero.set_x(pulled_entity->get_x() - 16);
+        break;
+
+      case 1:
+        // north
+        hero.set_y(pulled_entity->get_y() + 16);
+        break;
+
+      case 2:
+        // west
+        hero.set_x(pulled_entity->get_x() + 16);
+        break;
+
+      case 3:
+        // south
+        hero.set_y(pulled_entity->get_y() - 16);
+        break;
+    }
+  }
   pulled_entity = NULL;
+
   hero.clear_movement();
   hero.set_state(new GrabbingState(hero));
 }

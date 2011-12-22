@@ -207,6 +207,7 @@ class Hero: public MapEntity {
     void notify_position_changed();
     void notify_layer_changed();
     void notify_movement_changed();
+    void notify_movement_finished();
     void reset_movement();
 
     /**

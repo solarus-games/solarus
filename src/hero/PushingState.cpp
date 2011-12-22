@@ -29,7 +29,8 @@
  * @param hero the hero controlled by this state
  */
 Hero::PushingState::PushingState(Hero &hero):
-  State(hero) {
+  State(hero),
+  pushed_entity(NULL) {
 
 }
 
@@ -48,7 +49,6 @@ void Hero::PushingState::start(State *previous_state) {
 
   State::start(previous_state);
 
-  pushed_entity = NULL;
   pushing_direction4 = get_sprites().get_animation_direction();
   get_sprites().set_animation_pushing();
 }
@@ -72,22 +72,7 @@ void Hero::PushingState::update() {
 
   State::update();
 
-  if (is_moving_grabbed_entity()) { // the hero is pushing an entity and is currently moving it (typically a block)
-
-    // detect when the hero movement is finished
-    // because the hero has covered 16 pixels, has reached an obstacle or has aligned the entity on the grid
-
-    PathMovement *movement = (PathMovement*) hero.get_movement();
-
-    bool horizontal = pushing_direction4 % 2 == 0;
-    bool has_reached_grid = movement->get_total_distance_covered() > 8
-      && ((horizontal && hero.is_aligned_to_grid_x()) || (!horizontal && hero.is_aligned_to_grid_y()));
-
-    if (movement->is_finished() || has_reached_grid) {
-      stop_moving_pushed_entity();
-    }
-  }
-  else { // the hero is pushing a fixed obstacle
+  if (!is_moving_grabbed_entity()) { // the hero is pushing a fixed obstacle
 
     // stop pushing if there is no more obstacle
     if (!hero.is_facing_obstacle()) {
@@ -115,7 +100,7 @@ void Hero::PushingState::update() {
           hero.try_snap_to_facing_entity();
         }
 
-        if (facing_entity->moved_by_hero()) {
+        if (facing_entity->start_movement_by_hero()) {
 
           std::string path = "  ";
           path[0] = path[1] = '0' + pushing_direction4 * 2;
@@ -157,45 +142,95 @@ bool Hero::PushingState::is_moving_grabbed_entity() {
  */
 void Hero::PushingState::notify_grabbed_entity_collision() {
 
-  // the hero has moved one or several pixels too much
-  // because he moved before the block, not knowing that the block would not follow him
-
-  switch (pushing_direction4) {
-
-    case 0:
-      // east
-      hero.set_x(pushed_entity->get_x() - 16);
-      break;
-
-    case 1:
-      // north
-      hero.set_y(pushed_entity->get_y() + 16);
-      break;
-
-    case 2:
-      // west
-      hero.set_x(pushed_entity->get_x() + 16);
-      break;
-
-    case 3:
-      // south
-      hero.set_y(pushed_entity->get_y() - 16);
-      break;
-  }
-
+  //std::cout << "stop moving block: the block has reached an obstacle\n";
   stop_moving_pushed_entity();
 }
 
 /**
+ * @brief Notifies this state that the movement if finished.
+ */
+void Hero::PushingState::notify_movement_finished() {
+
+  if (is_moving_grabbed_entity()) {
+    // the 16 pixels of the path are completed
+    //std::cout << "stop moving block: 16 pixels were completed\n";
+    stop_moving_pushed_entity();
+  }
+}
+
+/**
+ * @brief Notifies this state that the hero has just failed to change its
+ * position because of obstacles.
+ */
+void Hero::PushingState::notify_obstacle_reached() {
+
+  if (is_moving_grabbed_entity()) {
+    // an obstacle is reached before the 16 pixels are completed
+    //std::cout << "stop moving block: the hero has reached an obstacle\n";
+    stop_moving_pushed_entity();
+  }
+}
+
+/**
+ * @brief Notifies this state that the hero has just changed its
+ * position.
+ */
+void Hero::PushingState::notify_position_changed() {
+
+  if (is_moving_grabbed_entity()) {
+    // if the entity has made more than 8 pixels and is aligned on the grid,
+    // we stop the movement
+
+    PathMovement *movement = (PathMovement*) hero.get_movement();
+
+    bool horizontal = pushing_direction4 % 2 == 0;
+    bool has_reached_grid = movement->get_total_distance_covered() > 8
+      && ((horizontal && pushed_entity->is_aligned_to_grid_x())
+          || (!horizontal && pushed_entity->is_aligned_to_grid_y()));
+
+    if (has_reached_grid) {
+      //std::cout << "stop moving block: the entity has reached the grid\n";
+      stop_moving_pushed_entity();
+    }
+  }
+}
+
+/**
  * @brief Makes the hero stop pushing the entity he is facing.
- *
- * This function is called while moving the entity, when the 
- * hero or the entity collides with an obstacle or when
- * the hero's movement is finished.
  */
 void Hero::PushingState::stop_moving_pushed_entity() {
 
-  pushed_entity = NULL;
+  if (pushed_entity != NULL) {
+    pushed_entity->stop_movement_by_hero();
+
+    // the hero may have moved one or several pixels too much
+    // because he moved before the block, not knowing that the block would not follow him
+
+    switch (pushing_direction4) {
+
+      case 0:
+        // east
+        hero.set_x(pushed_entity->get_x() - 16);
+        break;
+
+      case 1:
+        // north
+        hero.set_y(pushed_entity->get_y() + 16);
+        break;
+
+      case 2:
+        // west
+        hero.set_x(pushed_entity->get_x() + 16);
+        break;
+
+      case 3:
+        // south
+        hero.set_y(pushed_entity->get_y() - 16);
+        break;
+    }
+    pushed_entity = NULL;
+  }
+
   hero.clear_movement();
 
   if (!get_controls().is_key_pressed(GameControls::ACTION)) {

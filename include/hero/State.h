@@ -92,7 +92,9 @@ class Hero::State {
     virtual void notify_walking_speed_changed();
     virtual void notify_layer_changed();
     virtual void notify_movement_changed();
+    virtual void notify_movement_finished();
     virtual void notify_obstacle_reached();
+    virtual void notify_position_changed();
 
     // ground
     virtual bool can_avoid_deep_water();

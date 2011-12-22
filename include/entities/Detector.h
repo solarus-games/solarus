@@ -77,7 +77,8 @@ class Detector: public MapEntity {
 
     virtual void action_key_pressed();
     virtual bool interaction_with_inventory_item(InventoryItem &item);
-    virtual bool moved_by_hero();
+    virtual bool start_movement_by_hero();
+    virtual void stop_movement_by_hero();
     virtual SoundId get_sword_tapping_sound();
 };
 

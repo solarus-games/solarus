@@ -39,6 +39,9 @@ class Hero::PullingState: public Hero::State {
     void stop(State *next_state);
     void update();
     void notify_grabbed_entity_collision();
+    void notify_movement_finished();
+    void notify_position_changed();
+    void notify_obstacle_reached();
     bool is_grabbing_or_pulling();
     bool is_moving_grabbed_entity();
     bool is_deep_water_obstacle();

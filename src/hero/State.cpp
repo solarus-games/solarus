@@ -450,10 +450,23 @@ void Hero::State::notify_movement_changed() {
 }
 
 /**
+ * @brief Notifies this state that the movement if finished.
+ */
+void Hero::State::notify_movement_finished() {
+}
+
+/**
  * @brief Notifies this state that the hero has just failed to change its
  * position because of obstacles.
  */
 void Hero::State::notify_obstacle_reached() {
+}
+
+/**
+ * @brief Notifies this state that the hero has just changed its
+ * position.
+ */
+void Hero::State::notify_position_changed() {
 }
 
 /**

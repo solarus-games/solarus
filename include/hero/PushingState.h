@@ -26,8 +26,8 @@ class Hero::PushingState: public Hero::State {
 
   private:
 
-    int pushing_direction4;			/**< direction where the hero is looking (0 to 3) */
-    Detector *pushed_entity;			/**< the entity the hero is pushing (or NULL) */
+    int pushing_direction4;       /**< direction where the hero is looking (0 to 3) */
+    Detector *pushed_entity;      /**< the entity the hero is pushing (or NULL) */
 
     void stop_moving_pushed_entity();
 
@@ -43,6 +43,9 @@ class Hero::PushingState: public Hero::State {
     bool can_start_sword();
     bool is_moving_grabbed_entity();
     void notify_grabbed_entity_collision();
+    void notify_movement_finished();
+    void notify_obstacle_reached();
+    void notify_position_changed();
 
     bool can_be_hurt(Enemy* attacker);
     bool is_deep_water_obstacle();

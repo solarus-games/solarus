@@ -207,7 +207,7 @@ void Block::action_key_pressed() {
  * @brief This function is called when the player tries to push or pull this block.
  * @return true if the player is allowed to move this block
  */
-bool Block::moved_by_hero() {
+bool Block::start_movement_by_hero() {
 
   Hero& hero = get_hero();
   bool pulling = hero.is_grabbing_or_pulling();
@@ -237,54 +237,6 @@ bool Block::moved_by_hero() {
 }
 
 /**
- * @brief Updates the entity.
- */
-void Block::update() {
-
-  Detector::update();
-
-  Hero& hero = get_hero();
-
-  if (get_movement() != NULL) {
-    // the block is being pushed or pulled by the hero
-
-    // determine whether the movement is finished
-    bool finished = false;
-
-    if (get_movement()->is_finished()) {
-      // the block was just stopped by an obstacle: notify the hero
-      finished = true;
-    }
-    else if (!hero.is_moving_grabbed_entity()) {
-      // the hero stopped the movement, either because the 16 pixels were
-      // covered or because the hero met an obstacle
-      finished = true;
-    }
-
-    if (finished) {
-      // the movement is finished (note that the block may have not moved)
-      clear_movement();
-      when_can_move = System::now() + moving_delay;
-
-      // see if the block has moved
-      if (get_x() != last_position.get_x() || get_y() != last_position.get_y()) {
-
-        // the block has moved
-        last_position.set_xy(get_x(), get_y()); // save the new position for next time
-
-        if (maximum_moves == 1) { // if the block could be moved only once,
-          maximum_moves = 0;      // then it cannot move anymore
-        }
-      }
-
-      // notify the script
-      get_map_script().event_block_moved(get_name());
-    }
-  }
-  get_map().check_collision_with_detectors(*this);
-}
-
-/**
  * @brief Notifies the block that it has just moved.
  */
 void Block::notify_position_changed() {
@@ -295,6 +247,8 @@ void Block::notify_position_changed() {
     Sound::play("hero_pushes");
     sound_played = true;
   }
+
+  get_map().check_collision_with_detectors(*this);
 }
 
 /**
@@ -305,6 +259,30 @@ void Block::notify_obstacle_reached() {
 
   // the block is stopped by an obstacle while being pushed or pulled
   get_hero().notify_grabbed_entity_collision();
+}
+
+/**
+ * @brief This function is called when this entity stops being moved by the
+ * hero.
+ */
+void Block::stop_movement_by_hero() {
+
+  clear_movement();
+  when_can_move = System::now() + moving_delay;
+
+  // see if the block has moved
+  if (get_x() != last_position.get_x() || get_y() != last_position.get_y()) {
+
+    // the block has moved
+    last_position.set_xy(get_x(), get_y()); // save the new position for next time
+
+    if (maximum_moves == 1) { // if the block could be moved only once,
+      maximum_moves = 0;      // then it cannot move anymore
+    }
+  }
+
+  // notify the script
+  get_map_script().event_block_moved(get_name());
 }
 
 /**

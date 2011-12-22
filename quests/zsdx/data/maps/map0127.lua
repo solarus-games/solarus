@@ -8,15 +8,13 @@ end
 function event_chest_empty(chest_name)
 
   if chest_name == "sword_chest" then
-    local variant
-    if sol.game.savegame_get_boolean(298) then
+    local variant = 2
+    if sol.game.get_ability("sword") >= 2 then
       -- already got sword 2
       variant = 3
-    else
-      variant = 2
     end
+    sol.map.treasure_give("sword", variant, -1)
   end
-  sol.map.treasure_give("sword", variant, -1)
 end
 
 function event_treasure_obtaining(item_name, variant, savegame_variable)

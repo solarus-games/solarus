@@ -30,7 +30,7 @@ function event_map_started(destination_point_name)
       elseif not sol.game.savegame_get_boolean(298) then
 	-- boss killed but sword not got yet
 	local variant = 2
-	if sol.game.get_ability("sword") == 2 then
+	if sol.game.get_ability("sword") >= 2 then
 	  -- the player already has the second one: give the third one instead
 	  variant = 3
 	end
@@ -125,6 +125,7 @@ function event_hero_victory_sequence_finished()
 
   sol.game.set_dungeon_finished(10)
   sol.map.hero_set_map(119, "from_dungeon_10", 1)
+  sol.map.enemy_set_group_enabled("", true) -- enable simple enemies back
 
   sol.main.timer_start(function()
     if sol.game.savegame_get_boolean(905) then

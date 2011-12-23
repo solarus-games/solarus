@@ -29,6 +29,9 @@ file(
   source_files
   *.cpp
   ../include/*.h
+if(APPLE)
+  ../osx/*
+endif(APPLE)
 )
 
 set(main_source_file Main.cc)

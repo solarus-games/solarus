@@ -1,7 +1,0 @@
-normal hud/magic_bar.png 2 0 -1
-0	8	46	8	0	0	1	1
-46	8	88	8	0	0	1	1
-
-decreasing hud/magic_bar.png 2 200 0
-0	0	46	8	0	0	3	1
-46	0	88	8	0	0	3	1

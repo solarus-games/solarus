@@ -15,7 +15,7 @@ version=$1
 
 rm -rf ${app}-${version}
 mkdir ${app}-${version}
-git archive -o ${app}-${version}/tmp.tar HEAD CMakeLists.txt doc cmake include src license.txt  install.txt readme.txt
+git archive -o ${app}-${version}/tmp.tar HEAD ChangeLog CMakeLists.txt doc cmake include src license.txt  install.txt readme.txt
 cd ${app}-${version}
 tar xf tmp.tar
 rm tmp.tar

@@ -14,13 +14,13 @@ version=$2
 
 rm -rf "${quest}-${version}"
 mkdir "${quest}-${version}"
-cd "quests/${quest}/data"
-git archive -o "../../../${quest}-${version}/tmp.tar" HEAD .
-cd "../../../${quest}-${version}"
+cd "quests/${quest}"
+git archive -o "../../${quest}-${version}/tmp.tar" HEAD .
+cd "../../${quest}-${version}"
 tar xf tmp.tar
 rm tmp.tar
 cd ..
 rm -f "${quest}-${version}.tar.gz"
 tar czf "${quest}-${version}.tar.gz" "${quest}-${version}"
-#rm -rf "${quest}-${version}"
+rm -rf "${quest}-${version}"
 

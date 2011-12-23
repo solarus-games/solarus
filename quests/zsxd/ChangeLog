@@ -1,6 +1,7 @@
-zsxd-1.4 (under development)
+zsxd-1.4 (2011-12-23)
 
-* Uses solarus-0.9.0 (changes logs of solarus and zsdx will now be separated)
+* Use solarus-0.9.0 (changelogs of solarus and zsxd will now be separated)
+* Includes all improvements and bug fixes of solarus since zsxd-1.3
 * Fix a duplicate heart container
 
 zsxd-1.3 (2011-08-12)

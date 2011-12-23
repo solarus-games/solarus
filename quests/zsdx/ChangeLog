@@ -1,6 +1,6 @@
-zsdx-1.3 (under development)
+zsdx-1.3 (2011-12-23)
 
-* Uses solarus-0.9.0 (changes logs of solarus and zsdx will now be separated)
+* Use solarus-0.9.0 (changelogs of solarus and zsdx will now be separated)
 * Dungeon 7: fix a possible crash with statues and pikes
 * Make sure swords are obtained in the correct order
 * Don't play the sound of pikes too frequently when they don't have much space

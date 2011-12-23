@@ -16,6 +16,10 @@
  */
 #ifndef SOLARUS_NOMAIN
 
+#ifdef __APPLE__
+  #include "SDL.h"
+#endif
+
 #include "Solarus.h"
 
 /**

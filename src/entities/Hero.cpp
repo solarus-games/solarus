@@ -1192,7 +1192,9 @@ Ground Hero::get_ground() {
  */
 void Hero::set_ground(Ground ground) {
 
-  if (ground != this->ground && ground != GROUND_EMPTY) {
+  if (ground != this->ground
+      && ground != GROUND_EMPTY
+      && !state->are_collisions_ignored()) {
     this->ground = ground;
   }
   // we don't call notify_ground_changed() from here because set_ground()

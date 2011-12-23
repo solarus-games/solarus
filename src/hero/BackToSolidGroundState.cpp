@@ -176,10 +176,10 @@ bool Hero::BackToSolidGroundState::is_touching_ground() {
 
 /**
  * @brief Returns whether this state ignores the collisions with the detectors and the ground.
- * @return true if the collision are ignored
+ * @return true if the collisions are ignored
  */
 bool Hero::BackToSolidGroundState::are_collisions_ignored() {
-  return System::now() < end_date;
+  return true;
 }
 
 /**

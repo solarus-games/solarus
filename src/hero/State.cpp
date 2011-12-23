@@ -544,7 +544,7 @@ void Hero::State::notify_ground_changed() {
 
 /**
  * @brief Returns whether this state ignores the collisions with the detectors and the ground.
- * @return true if the collision are ignored
+ * @return true if the collisions are ignored
  */
 bool Hero::State::are_collisions_ignored() {
   return false;

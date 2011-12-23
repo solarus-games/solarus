@@ -27,46 +27,60 @@
  * @param image_position position of the image on this surface
  */
 PixelBits::PixelBits(Surface& surface, const Rectangle& image_position) {
-
-  SDL_PixelFormat* format = surface.get_internal_surface()->format;
-  Debug::check_assertion(format->BitsPerPixel == 8, "This surface should have an 8-bit pixel format");
-
-  uint8_t colorkey = (uint8_t) format->colorkey;
-
-  width = image_position.get_width();
-  height = image_position.get_height();
-
-  nb_integers_per_row = width >> 5; // width / 32
-  if ((width & 31) != 0) { // width % 32 != 0
-    nb_integers_per_row++;
-  }
-
-  uint8_t* pixels = (uint8_t*) surface.get_internal_surface()->pixels;
-  int pixel_index = image_position.get_y() * surface.get_width() + image_position.get_x();
-
-  bits = new uint32_t*[height];
-  for (int i = 0; i < height; i++) {
-    bits[i] = new uint32_t[nb_integers_per_row];
-
-    // fill the bits for this row
-    int k = -1;
-    uint32_t mask = 0x00000000;
-    for (int j = 0; j < width; j++) {
-
-      if (mask == 0x00000000) {
-        k++;
-        mask = 0x80000000;
-        bits[i][k] = 0x00000000;
-      }
-
-      if (pixels[pixel_index] != colorkey) {
-        bits[i][k] |= mask;
-      }
-      mask >>= 1;
-      pixel_index++;
+    SDL_PixelFormat* format = surface.get_internal_surface()->format;
+#ifdef __APPLE__
+    Debug::check_assertion(format->BitsPerPixel%8 == 0 && format->BitsPerPixel != 24, "This surface should have an 8/16/32-bit pixel format");
+    
+    int pxIn32Bit = 32/format->BitsPerPixel;
+    uint32_t pxMask = 0xffffffff<<8-8/pxIn32Bit;
+    uint32_t colorkey = format->colorkey;
+#else
+    Debug::check_assertion(format->BitsPerPixel == 8, "This surface should have an 8-bit pixel format");
+    
+    uint8_t colorkey = (uint8_t) format->colorkey;
+#endif
+    
+    width = image_position.get_width();
+    height = image_position.get_height();
+    
+    nb_integers_per_row = width >> 5; // width / 32
+    if ((width & 31) != 0) { // width % 32 != 0
+        nb_integers_per_row++;
     }
-    pixel_index += surface.get_width() - width;
-  }
+    
+#ifdef __APPLE__
+    uint32_t* pixels = (uint32_t*) surface.get_internal_surface()->pixels;
+#else
+    uint8_t* pixels = (uint8_t*) surface.get_internal_surface()->pixels;
+#endif
+    int pixel_index = image_position.get_y() * surface.get_width() + image_position.get_x();
+    
+    bits = new uint32_t*[height];
+    for (int i = 0; i < height; i++) {
+        bits[i] = new uint32_t[nb_integers_per_row];
+        
+        // fill the bits for this row
+        int k = -1;
+        uint32_t mask = 0x00000000;
+        for (int j = 0; j < width; j++) {
+            
+            if (mask == 0x00000000) {
+                k++;
+                mask = 0x80000000;
+                bits[i][k] = 0x00000000;
+            }
+#ifdef __APPLE__
+            if ((pixels[pixel_index/pxIn32Bit] << pixel_index%pxIn32Bit*format->BitsPerPixel & pxMask) != colorkey) {
+#else
+            if (pixels[pixel_index] != colorkey) {
+#endif
+                bits[i][k] |= mask;
+            }
+            mask >>= 1;
+            pixel_index++;
+        }
+        pixel_index += surface.get_width() - width;
+    }
 }
 
 /**

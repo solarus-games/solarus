@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include <SDL.h>
+#include "SDL_endian.h"
 
 /**
  * @brief Represents a color.

@@ -1,0 +1,36 @@
+zsdx-1.3 (under development)
+
+* Uses solarus-0.9.0 (changes logs of solarus and zsdx will now be separated)
+* Dungeon 7: fix a possible crash with statues and pikes
+* Make sure swords are obtained in the correct order
+* Don't play the sound of pikes too frequently when they don't have much space
+* After the boss of dungeon 10, re-enable enemies of the map
+
+zsdx-1.2 (2011-12-21)
+
+* Dungeon 9: fix a crash with two enemies that appear on a platform
+* Attempt to fix a crash with mummies by removing a useless and buggy feature
+* Dungeon 10: let hero to go back from the roof after killing the boss
+* Dungeon 6: it was possible to bypass a part of the dungeon
+* Dungeon 1: fix the fixed minillosaur eggs
+* Small map improvements
+
+zsdx-1.1 (2011-12-19)
+
+* Fix a crash when jumping from grass into a hole
+* Fix a possible crash when buying potions
+* Fix a memory leak with shop items
+* Dungeon 9: two doors were traversable
+* Dungeon 3: the boss could become inactive after a while
+* Dungeon 7: some flames of the boss stayed fixed
+* Adjust the difficulty of some bosses
+* West mountains cave: the hero could be stuck after falling
+* Dungeon 8: open a door
+* Dungeon 8 minimap: remove an unexisting door
+* Minor map improvements
+* Update copyright info
+
+zsdx-1.0 (2011-12-16)
+
+* Initial release of Zelda Mystery of Solarus DX
+

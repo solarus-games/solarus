@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# This script creates an archive with the sources files for solarus
+# (without data).
+# Usage: ./make_solarus_src_package version_number
+
+app="solarus"
+if [ $# != 1 ];
+then
+  echo "Usage: $0 version_number"
+  exit 1
+fi
+
+version=$1
+
+rm -rf ${app}-${version}
+mkdir ${app}-${version}
+git archive -o ${app}-${version}/tmp.tar HEAD CMakeLists.txt doc cmake include src license.txt  install.txt readme.txt
+cd ${app}-${version}
+tar xf tmp.tar
+rm tmp.tar
+cd ..
+rm -f ${app}-${version}-src.tar.gz
+tar czf ${app}-${version}-src.tar.gz ${app}-${version}
+rm -rf ${app}-${version}
+

@@ -52,8 +52,8 @@ if(DEBUG_KEYS)
 endif(DEBUG_KEYS)
 
 if(DEFAULT_QUEST)
-set(DEFAULT_QUEST "." CACHE STRING "Path to the quest to launch if none is specified at runtime.")
-add_definitions(-DDEFAULT_QUEST=\"${DEFAULT_QUEST}\")
+  set(DEFAULT_QUEST "." CACHE STRING "Path to the quest to launch if none is specified at runtime.")
+  add_definitions(-DDEFAULT_QUEST=\"${DEFAULT_QUEST}\")
 endif(DEFAULT_QUEST)
 
 target_link_libraries(solarus

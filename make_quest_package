@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# This script creates an archive with the files of a quest.
+# Usage: ./make_quest_package quest version_number
+
+if [ $# != 2 ];
+then
+  echo "Usage: $0 quest version_number"
+  exit 1
+fi
+
+quest=$1
+version=$2
+
+rm -rf "${quest}-${version}"
+mkdir "${quest}-${version}"
+cd "quests/${quest}/data"
+git archive -o "../../../${quest}-${version}/tmp.tar" HEAD .
+cd "../../../${quest}-${version}"
+tar xf tmp.tar
+rm tmp.tar
+cd ..
+rm -f "${quest}-${version}.tar.gz"
+tar czf "${quest}-${version}.tar.gz" "${quest}-${version}"
+#rm -rf "${quest}-${version}"
+

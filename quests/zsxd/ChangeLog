@@ -1,0 +1,24 @@
+zsxd-1.4 (under development)
+
+* Uses solarus-0.9.0 (changes logs of solarus and zsdx will now be separated)
+* Fix a duplicate heart container
+
+zsxd-1.3 (2011-08-12)
+
+* Add the English translation
+* Fix a precision bug with sensors
+
+zsxd-1.2 (2011-04-23)
+
+* Fix a Windows issue with mono sound effects
+
+zsxd-1.1 (2011-04-02)
+
+* Use libvorbisfile instead of libsndfile for sound effects
+* Replace the last sword by a new rupee bag
+* Various minor improvements
+
+zsxd-1.0 (2011-04-01)
+
+* Initial release of Zelda Mystery of Solarus XD
+

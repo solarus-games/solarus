@@ -32,7 +32,7 @@ Surface::Surface(int width, int height):
 #ifndef __APPLE__
   this->internal_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, width, height, 32, 0, 0, 0, 0);
 #else
-  this->internal_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, width, height, 0x0000ff00, 0x00ff0000, 0xff000000, 0x00000000);
+  this->internal_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, width, height, 32, 0x0000ff00, 0x00ff0000, 0xff000000, 0x00000000);
 #endif
 }
 

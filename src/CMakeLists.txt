@@ -25,16 +25,38 @@ include_directories(
 )
 
 file(
-  GLOB_RECURSE
+  GLOB
   source_files
   *.cpp
+  entities/*.cpp
+  hero/*.cpp
+  hud/*.cpp
+  lowlevel/*.cpp
+  lua/*.cpp
+  menus/*.cpp
+  movements/*.cpp
+  snes_spc/*.cpp
   ../include/*.h
-if(APPLE)
-  ../osx/*
-endif(APPLE)
+  ../include/entities/*.h
+  ../include/hero/*.h
+  ../include/hud/*.h
+  ../include/lowlevel/*.h
+  ../include/lua/*.h
+  ../include/menus/*.h
+  ../include/movements/*.h
+  ../include/simpleini/*.h
+  ../include/snes_spc/*.h
 )
 
-set(main_source_file Main.cc)
+if(APPLE)
+  set(source_files
+    ${source_files}
+    src/lowlevel/osx/*.h
+    ../include/lowlevel/osx/*.h
+  )
+endif(APPLE)
+
+set(main_source_file lowlevel/Main.cc)
 
 add_library(solarus_static
   STATIC

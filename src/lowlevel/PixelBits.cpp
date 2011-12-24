@@ -28,15 +28,17 @@
  */
 PixelBits::PixelBits(Surface& surface, const Rectangle& image_position) {
     SDL_PixelFormat* format = surface.get_internal_surface()->format;
+
 #ifdef __APPLE__
-    Debug::check_assertion(format->BitsPerPixel%8 == 0 && format->BitsPerPixel != 24, "This surface should have an 8/16/32-bit pixel format");
+    Debug::check_assertion(format->BitsPerPixel % 8 == 0
+        && format->BitsPerPixel != 24, "This surface should have an 8/16/32-bit pixel format");
     
-    int pxIn32Bit = 32/format->BitsPerPixel;
-    uint32_t pxMask = 0xffffffff<<8-8/pxIn32Bit;
+    int pxIn32Bit = 32 / format->BitsPerPixel;
+    uint32_t pxMask = 0xffffffff << (8 - 8 / pxIn32Bit);
     uint32_t colorkey = format->colorkey;
 #else
     Debug::check_assertion(format->BitsPerPixel == 8, "This surface should have an 8-bit pixel format");
-    
+
     uint8_t colorkey = (uint8_t) format->colorkey;
 #endif
     
@@ -70,7 +72,7 @@ PixelBits::PixelBits(Surface& surface, const Rectangle& image_position) {
                 bits[i][k] = 0x00000000;
             }
 #ifdef __APPLE__
-            if ((pixels[pixel_index/pxIn32Bit] << pixel_index%pxIn32Bit*format->BitsPerPixel & pxMask) != colorkey) {
+            if ((pixels[pixel_index / pxIn32Bit] << pixel_index % pxIn32Bit * format->BitsPerPixel & pxMask) != colorkey) {
 #else
             if (pixels[pixel_index] != colorkey) {
 #endif

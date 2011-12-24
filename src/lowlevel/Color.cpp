@@ -35,14 +35,12 @@ Color Color::cyan;
  * @brief Initializes the color static fields.
  */
 void Color::initialize() {
-
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-  format_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 1, 1,
-      32, 0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff);
+#ifndef __APPLE__
+  format_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 1, 1, 32, 0, 0, 0, 0);
 #else
-  format_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 1, 1,
-      32, 0, 0, 0, 0);
+  format_surface = SDL_CreateRGBSurface(SDL_HWSURFACE, 1, 1, 32, 0x0000ff00, 0x00ff0000, 0xff000000, 0x00000000);
 #endif
+  
 
   black =    Color(  0,   0,   0); 
   white =    Color(255, 255, 255);

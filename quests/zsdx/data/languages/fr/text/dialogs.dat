@@ -4432,8 +4432,8 @@ next = lyriann_cave.tom.see_you_later.2
 
 [lyriann_cave.tom.see_you_later.2]
 #       |-----------------------|
-line1 = "un coup de main au"
-line2 = "cours de ton aventure."
+line1 = "coup de main au cours"
+line2 = "de ton aventure."
 
 [outside_world.tom_dungeon_1_entrance.hey]
 # Entrée du donjon 1 : quand on s'approche

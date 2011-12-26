@@ -49,10 +49,13 @@ file(
 )
 
 if(APPLE)
+  include_directories(
+    ${SOLARUS_SOURCE_DIR}/include/lowlevel/osx
+  )
   set(source_files
     ${source_files}
-    src/lowlevel/osx/*.h
-    ../include/lowlevel/osx/*.h
+    src/lowlevel/osx/SDLMain.m
+    ../include/lowlevel/osx/SDLMain.h
   )
 endif(APPLE)
 

@@ -33,11 +33,7 @@ function event_update()
 
     lock_torches()
     sol.main.play_sound("secret")
-
-    -- make sure the player cannot enter dungeon 3 if dungeon 2 is not finished
-    if sol.game.is_dungeon_finished(2) then
-      sol.map.door_open("door")
-    end
+    sol.map.door_open("door")
   end
 end
 

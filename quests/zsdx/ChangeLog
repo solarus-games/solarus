@@ -7,6 +7,7 @@ zsdx-1.4 (under development)
 * Don't make enemies follow the hero if they are on a different layer
 * Potion shop: fix the coordinates on the minimap
 * Dungeon 8 B2: a staircase was missing on the minimap
+* Change how the hero is forced to finish dungeon 2 before starting dungeon 3
 
 zsdx-1.3 (2011-12-23)
 

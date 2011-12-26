@@ -34,7 +34,11 @@ function event_map_started(destination_point_name)
     -- already has the other one
     variant = 3
   end
-  sol.map.destructible_item_create(0, 320, 245, 1, "bomb_bag", variant, 510)
+  sol.map.destructible_item_create("pot", 320, 245, 1, {
+    treasure_item = "bomb_bag",
+    treasure_variant = variant,
+    treasure_savegame_variable = 510
+  })
 
   init_guards()
 end

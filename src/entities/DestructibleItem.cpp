@@ -20,6 +20,12 @@
 #include "entities/PickableItem.h"
 #include "entities/CarriedItem.h"
 #include "movements/FallingHeight.h"
+#include "lua/MapScript.h"
+#include "lowlevel/FileTools.h"
+#include "lowlevel/System.h"
+#include "lowlevel/Sound.h"
+#include "lowlevel/Debug.h"
+#include "lowlevel/StringConcat.h"
 #include "Game.h"
 #include "DialogBox.h"
 #include "KeysEffect.h"
@@ -28,22 +34,20 @@
 #include "Treasure.h"
 #include "Map.h"
 #include "Sprite.h"
-#include "lowlevel/FileTools.h"
-#include "lowlevel/System.h"
-#include "lowlevel/Sound.h"
+#include <lauxlib.h>
 
 /**
  * @brief Features of each type of destructible item.
  */
 const DestructibleItem::Features DestructibleItem::features[] = {
   // animation set, sound, can be lifted, can be cut, can_explode, can_regenerate, weight, damage, special ground
-  {"entities/pot",               "stone", true,  false, false, false, 0, 2, GROUND_NORMAL},
-  {"entities/skull",             "stone", true,  false, false, false, 0, 2, GROUND_NORMAL},
-  {"entities/bush",              "bush",  true,  true,  false, false, 1, 1, GROUND_NORMAL},
-  {"entities/stone_small_white", "stone", true,  false, false, false, 1, 2, GROUND_NORMAL},
-  {"entities/stone_small_black", "stone", true,  false, false, false, 2, 4, GROUND_NORMAL},
-  {"entities/grass",             "bush",  false, true,  false, false, 0, 0, GROUND_GRASS},
-  {"entities/bomb_flower",       "bush",  true,   true, true,  true,  1, 1, GROUND_NORMAL},
+  {"pot",         "entities/pot",               "stone", true,  false, false, false, 0, 2, GROUND_NORMAL},
+  {"",            "",                           "",      false, false, false, false, 0, 1, GROUND_NORMAL},
+  {"bush",        "entities/bush",              "bush",  true,  true,  false, false, 1, 1, GROUND_NORMAL},
+  {"white_stone", "entities/stone_small_white", "stone", true,  false, false, false, 1, 2, GROUND_NORMAL},
+  {"black_stone", "entities/stone_small_black", "stone", true,  false, false, false, 2, 4, GROUND_NORMAL},
+  {"grass",       "entities/grass",             "bush",  false, true,  false, false, 0, 0, GROUND_GRASS},
+  {"bomb_flower", "entities/bomb_flower",       "bush",  true,   true, true,  true,  1, 1, GROUND_NORMAL},
 };
 
 /**
@@ -63,7 +67,8 @@ DestructibleItem::DestructibleItem(Layer layer, int x, int y,
   treasure(treasure),
   is_being_cut(false),
   regeneration_date(0),
-  is_regenerating(false) {
+  is_regenerating(false),
+  destruction_callback_ref(LUA_REFNIL) {
 
   set_origin(8, 13);
   create_sprite(get_animation_set_id());
@@ -277,7 +282,7 @@ void DestructibleItem::notify_collision(MapEntity &other_entity, Sprite &other_s
       create_pickable_item();
 
       if (can_explode()) {
-	explode();
+        explode();
       }
     }
   }
@@ -326,11 +331,12 @@ void DestructibleItem::action_key_pressed() {
 
       // remove the item from the map
       if (!features[subtype].can_regenerate) {
-	remove_from_map();
+        destruction_callback();
+        remove_from_map();
       }
       else {
-	// the item can actually regenerate
-	play_destroy_animation();
+        // the item can actually regenerate
+        play_destroy_animation();
       }
     }
     else {
@@ -340,10 +346,10 @@ void DestructibleItem::action_key_pressed() {
         get_dialog_box().start_dialog("_cannot_lift_should_cut");
       }
       else if (!get_equipment().has_ability("lift", 1)) {
-	get_dialog_box().start_dialog("_cannot_lift_too_heavy");
+        get_dialog_box().start_dialog("_cannot_lift_too_heavy");
       }
       else {
-	get_dialog_box().start_dialog("_cannot_lift_still_too_heavy");
+        get_dialog_box().start_dialog("_cannot_lift_still_too_heavy");
       }
     }
   }
@@ -360,6 +366,27 @@ void DestructibleItem::play_destroy_animation() {
   if (!is_displayed_in_y_order()) {
     get_entities().bring_to_front(this); // show animation destroy to front
   }
+}
+
+/**
+ * @brief Sets a Lua function to be called when this destructible item is
+ * destroyed.
+ * @param destroy_callback_ref a Lua ref to the callback in the registry
+ * (if you pass LUA_REFNIL, this function removes the previous callback that
+ * was set, if any)
+ */
+void DestructibleItem::set_destruction_callback(int destruction_callback_ref) {
+
+  this->destruction_callback_ref = destruction_callback_ref;
+}
+
+/**
+ * @brief Calls the Lua destruction callback of this item (if any).
+ */
+void DestructibleItem::destruction_callback() {
+
+  get_map_script().do_callback(destruction_callback_ref);
+  destruction_callback_ref = LUA_REFNIL;
 }
 
 /**
@@ -418,6 +445,7 @@ void DestructibleItem::update() {
 
     if (!features[subtype].can_regenerate) {
       // remove the item from the map
+      destruction_callback();
       remove_from_map();
     }
     else {
@@ -435,5 +463,38 @@ void DestructibleItem::update() {
     get_sprite().set_current_animation("on_ground");
     is_regenerating = false;
   }
+}
+
+/**
+ * @brief Converts a value of the Subtype enumeration into a string.
+ * @param subtype a subtype of destructible item
+ * @return the name of this subtype
+ */
+const std::string& DestructibleItem::get_subtype_name(Subtype subtype) {
+
+  Debug::check_assertion(subtype >= 0 && subtype != DEPRECATED_1
+      && subtype < SUBTYPE_NUMBER, StringConcat()
+      << "Invalid destructible item subtype number: " << subtype);
+
+  return features[subtype].name;
+}
+
+/**
+ * @brief Converts a subtype name into a value of the Subtype enumeration.
+ * @param subtype_name the name of a destructible item subtype
+ * @return the corresponding subtype
+ */
+DestructibleItem::Subtype DestructibleItem::get_subtype_by_name(
+    const std::string& subtype_name) {
+
+  for (int i = 0; i < SUBTYPE_NUMBER; i++) {
+    if (i != DEPRECATED_1 && features[i].name == subtype_name) {
+      return Subtype(i);
+    }
+  }
+
+  Debug::die(StringConcat() << "Invalid destructible item subtype name: '"
+      << subtype_name << "'");
+  throw;
 }
 

@@ -2081,38 +2081,68 @@ int Script::map_api_pickable_item_create(lua_State *l) {
 /**
  * @brief Places a new destructible item on the map.
  *
- * - Argument 1 (integer): subtype of destructible item
+ * - Argument 1 (integer): subtype of destructible item ("pot", "bush",
+ * "white_stone", "black_stone", "grass" or "bomb_flower
  * - Argument 2 (integer): x
  * - Argument 3 (integer): y
  * - Argument 4 (integer): layer
- * - Optional argument 5 (string): treasure item name
- * - Optional argument 6 (integer): treasure variant
- * - Optional argument 7 (integer): treasure savegame variable
+ * - Optional argument 5 (table): properties (possible keys are
+ * treasure_item, treasure_variant, treasure_savegame_variable,
+ * destroy_callback)
  *
  * @param l the Lua context that is calling this function
  */
 int Script::map_api_destructible_item_create(lua_State* l) {
 
-  Script& script = get_script(l, 4, 7);
+  Script& script = get_script(l, 4, 5);
 
-  int subtype = luaL_checkinteger(l, 1);
+  const std::string& subtype_name = luaL_checkstring(l, 1);
   int x = luaL_checkinteger(l, 2);
   int y = luaL_checkinteger(l, 3);
   Layer layer = Layer(luaL_checkinteger(l, 4));
-  std::string item_name("_random");
-  int variant = 1;
-  int savegame_variable = -1;
 
-  if (lua_gettop(l) >= 7) {
-    item_name = luaL_checkstring(l, 5);
-    variant = luaL_checkinteger(l, 6);
-    savegame_variable = luaL_checkinteger(l, 7);
+  // default properties
+  std::string treasure_item = "_random";
+  int treasure_variant = 1;
+  int treasure_savegame_variable = -1;
+  int destruction_callback_ref = LUA_NOREF;
+
+  if (lua_gettop(l) >= 5) {
+    luaL_checktype(l, 5, LUA_TTABLE);
+
+    // traverse the table, looking for properties
+    lua_pushnil(l); // first key
+    while (lua_next(l, 5) != 0) {
+
+      const std::string& key = luaL_checkstring(l, -2);
+      if (key == "treasure_item") {
+        treasure_item = luaL_checkstring(l, -1);
+      }
+      else if (key == "treasure_variant") {
+        treasure_variant = luaL_checkinteger(l, -1);
+      }
+      else if (key == "treasure_savegame_variable") {
+        treasure_savegame_variable = lua_toboolean(l, -1) != 0;
+      }
+      else if (key == "destruction_callback") {
+        // store the callback into the registry
+        luaL_argcheck(l, lua_isfunction(l, -1), 5,
+            "destruction_callback should be a function");
+        destruction_callback_ref = luaL_ref(l, LUA_REGISTRYINDEX);
+        lua_pushnil(l);
+      }
+      lua_pop(l, 1); // pop the value, let the key for the iteration
+    }
   }
 
-  Game& game = script.get_game();
+  DestructibleItem::Subtype subtype =
+      DestructibleItem::get_subtype_by_name(subtype_name);
   MapEntities& entities = script.get_map().get_entities();
-  entities.add_entity(new DestructibleItem(layer, x, y, DestructibleItem::Subtype(subtype),
-      Treasure(game, item_name, variant, savegame_variable)));
+  DestructibleItem* destructible_item =
+      new DestructibleItem(layer, x, y, subtype, Treasure(script.get_game(),
+          treasure_item, treasure_variant, treasure_savegame_variable));
+  destructible_item->set_destruction_callback(destruction_callback_ref);
+  entities.add_entity(destructible_item);
 
   return 0;
 }

@@ -592,10 +592,19 @@ changes immediately the state of a door (without playing animation and sound)
 - <tt>sol.map.pickable_item_create(item_name, variant, savegame_variable, x, y, layer)</tt>:
 creates a pickable item and places it on the map
 
-- <tt>sol.map.destructible_item_create(subtype, x, y, layer, item_name, variant, savegame_variable)</tt>:
+- <tt>sol.map.destructible_item_create(subtype, x, y, layer, properties)</tt>:
 Creates a destructible item and places it on the map.
-The last 3 parameters define the treasure inside the item and are optional
-(by default, the treasure is random).
+<tt>subtype</tt> can be "pot", "bush", "white_stone", "black_stone", "grass"
+or "bomb_flower".
+<tt>properties</tt> is optional. If provided, it is a table
+whose key-value pairs can be:
+  - <tt>treasure_name</tt> (string, default "_random"): treasure under the
+    destructible item, can also be "_none" or "_random",
+  - <tt>treasure_variant</tt> (integer, default 1): variant of this treasure,
+  - <tt>treasure_savegame_variable</tt> (integer, default -1): savegame
+    variable of this treasure (-1 means not saved),
+  - <tt>destruction_callback</tt> (function, default nil): a function that will
+    be called when the destructible item is destroyed.
 
 - <tt>sol.map.block_create(x, y, layer, name, properties)</tt>:
 Creates a block and places it on the map.

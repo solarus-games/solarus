@@ -42,13 +42,13 @@ class DestructibleItem: public Detector {
     enum Subtype {
 
       POT               = 0,
-      SKULL             = 1, // FIXME remove skull (same as pot, only the sprite changes)
+      DEPRECATED_1      = 1,
       BUSH              = 2,
       STONE_SMALL_WHITE = 3,
       STONE_SMALL_BLACK = 4,
       GRASS             = 5,
-      BOMB_FLOWER       = 6 
-
+      BOMB_FLOWER       = 6,
+      SUBTYPE_NUMBER    = 7,
     };
 
   private:
@@ -57,29 +57,33 @@ class DestructibleItem: public Detector {
      * This structure defines the properties of a destructible item type.
      */
     struct Features {
-      SpriteAnimationSetId animation_set_id;	/**< animation set used for this type of destructible item */
-      SoundId destruction_sound_id;		/**< sound played when the item is destroyed */
-      bool can_be_lifted;			/**< indicates that this item is an obstacle and can be lifted */
-      bool can_be_cut;				/**< indicates that this item can be cut with the sword */
-      bool can_explode;				/**< indicates that this item explodes after a delay */
-      bool can_regenerate;			/**< indicates that this item regenerates once lifted */
-      int weight;				/**< for liftable items: weight of the item (0: light,
-						 * 1: iron glove required, 2: golden glove required) */
-      int damage_on_enemies;			/**< damage the item can cause to enemies (1: few, 2: normal, 3: a lot) */
-      Ground special_ground;			/**< for a non-obstacle item, indicates a special ground to display */
+      std::string name;                          /**< name of this subtype of destructible item */
+      SpriteAnimationSetId animation_set_id;     /**< animation set for the sprite */
+      SoundId destruction_sound_id;              /**< sound played when the item is destroyed */
+      bool can_be_lifted;                        /**< indicates that this item is an obstacle and can be lifted */
+      bool can_be_cut;                           /**< indicates that this item can be cut with the sword */
+      bool can_explode;                          /**< indicates that this item explodes after a delay */
+      bool can_regenerate;                       /**< indicates that this item regenerates once lifted */
+      int weight;                                /**< for liftable items: weight of the item (corresponds to the level
+                                                  * of "lift" ability required) */
+      int damage_on_enemies;                     /**< damage the item can cause to enemies */
+      Ground special_ground;                     /**< for a non-obstacle item, indicates a special ground to display */
     };
 
-    Subtype subtype;				/**< the subtype of destructible item */
-    Treasure treasure;				/**< the pickable item that appears when the item is lifted or cut */
+    Subtype subtype;                             /**< the subtype of destructible item */
+    Treasure treasure;                           /**< the pickable item that appears when the item is lifted or cut */
 
-    bool is_being_cut;				/**< indicates that the item is being cut */
-    uint32_t regeneration_date;			/**< date when the item starts regenerating */
-    bool is_regenerating;			/**< indicates that the item is currently regenerating */
+    bool is_being_cut;                           /**< indicates that the item is being cut */
+    uint32_t regeneration_date;                  /**< date when the item starts regenerating */
+    bool is_regenerating;                        /**< indicates that the item is currently regenerating */
+    int destruction_callback_ref;                /**< Lua registry ref of a function to call when the item is destroyed */
 
     static const Features features[];
+    static const std::string subtype_names[];
 
     void play_destroy_animation();
     void create_pickable_item();
+    void destruction_callback();
 
   public:
 
@@ -99,6 +103,7 @@ class DestructibleItem: public Detector {
     void explode();
     bool can_explode();
     bool is_disabled();
+    void set_destruction_callback(int destroy_callback_ref);
 
     bool is_obstacle_for(MapEntity &other);
     bool test_collision_custom(MapEntity &entity);
@@ -109,6 +114,9 @@ class DestructibleItem: public Detector {
 
     void set_suspended(bool suspended);
     void update();
+
+    static const std::string& get_subtype_name(Subtype subtype);
+    static Subtype get_subtype_by_name(const std::string& subtype_name);
 };
 
 #endif

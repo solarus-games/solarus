@@ -30,7 +30,7 @@ function event_restart()
       end
     else
       local x, y, layer = sol.enemy.get_position()
-      sol.map.destructible_item_create(4, x, y, layer)
+      sol.map.destructible_item_create("black_stone", x, y, layer)
     end
   end, 1000)
 end

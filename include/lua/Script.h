@@ -386,6 +386,8 @@ class Script {
     void event_npc_interaction(const std::string& npc_name);
     bool event_npc_interaction_item(const std::string& npc_name, const std::string& item_name, int variant);
     void event_npc_collision_fire(const std::string &npc_name);
+
+    void do_callback(int callback_ref);
 };
 
 #endif

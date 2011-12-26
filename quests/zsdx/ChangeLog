@@ -1,11 +1,13 @@
 zsdx-1.4 (under development)
 
+* Use solarus-0.9.1
 * Dungeon 1: restart the boss minillosaurs after they are hurt
 * Dungeon 9: the player could be stuck if using a bomb on a crystal
 * Dungeon 9: the player could be stuck because of an incorrect jump length
 * West mountains cave 1F: the player could be stuck if a door was closed
 * Dungeon 1: the miniboss could be displayed under a wall
 * Don't make enemies follow the hero if they are on a different layer
+* Dungeon 9 boss: don't create more than one stone at a time
 * Potion shop: fix the coordinates on the minimap
 * Dungeon 8 B2: a staircase was missing on the minimap
 * Change how the hero is forced to finish dungeon 2 before starting dungeon 3

@@ -4,6 +4,7 @@ local torches_error = false
 local torches_next = nil
 local torches_nb_on = 0
 local torches_delay = 20000
+local allow_stone_creation = true
 local pickables = {
   { x =  88, y = 141 },
   { x = 136, y = 93 },
@@ -257,15 +258,25 @@ function create_stone()
     y = 205
   end
 
-  sol.map.destructible_item_create(4, x, y, 0, "_none", 1, -1)
+  sol.map.destructible_item_create("black_stone", x, y, 0, {
+    treasure_item = "_none",
+    destruction_callback = on_stone_destroyed})
+  allow_stone_creation = false
+end
+
+function on_stone_destroyed()
+
+  allow_stone_creation = true
 end
 
 function torches_solved()
 
   if sol.map.tile_is_enabled("floor_down_1") then
     -- phase 1
-    sol.main.play_sound("secret")
-    create_stone()
+    if allow_stone_creation then
+      sol.main.play_sound("secret")
+      create_stone()
+    end
   else
     -- phase 2
     sol.main.play_sound("secret")
@@ -298,8 +309,10 @@ function event_switch_activated(switch_name)
 
   elseif index == 2 then
     -- create the stone that makes Ganon vulnerable
-    sol.main.play_sound("secret")
-    create_stone()
+    if allow_stone_creation then
+      sol.main.play_sound("secret")
+      create_stone()
+    end
 
   elseif index == 3 then
     -- create pickable items

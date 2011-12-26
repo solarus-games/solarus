@@ -1034,3 +1034,27 @@ void Script::event_npc_collision_fire(const std::string &npc_name) {
 
   notify_script("event_npc_collision_fire", "s", npc_name.c_str());
 }
+
+/**
+ * @brief Calls a function stored in the registry with a reference and
+ * unreferences it.
+ * @param callback_ref (if LUA_REFNIL, nothing is done)
+ */
+void Script::do_callback(int callback_ref) {
+
+  if (callback_ref != LUA_REFNIL) {
+    lua_rawgeti(l, LUA_REGISTRYINDEX, callback_ref);
+    if (!lua_isfunction(l, -1)) {
+      Debug::die(StringConcat() << "No such Lua callback (function expected, got "
+          << luaL_typename(l, -1) << ")");
+    }
+
+    if (lua_pcall(l, 0, 0, 0) != 0) {
+      Debug::print(StringConcat() << "Error in callback function:"
+          << lua_tostring(l, -1));
+      lua_pop(l, 1);
+    }
+    luaL_unref(l, LUA_REGISTRYINDEX, callback_ref);
+  }
+}
+

@@ -6,6 +6,7 @@ zsdx-1.4 (under development)
 * Dungeon 1: the miniboss could be displayed under a wall
 * Don't make enemies follow the hero if they are on a different layer
 * Potion shop: fix the coordinates on the minimap
+* Dungeon 8 B2: a staircase was missing on the minimap
 
 zsdx-1.3 (2011-12-23)
 

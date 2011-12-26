@@ -1,5 +1,7 @@
 -- Smith cave
 
+local sword_price = 75
+
 -- Function called when the player wants to talk to a non-playing character.
 function event_npc_interaction(npc_name)
 
@@ -24,13 +26,13 @@ function event_dialog_finished(first_message_id, answer)
       sol.map.dialog_start("smith_cave.not_buying")
     else
       -- wants to buy the sword
-      if sol.game.get_money() < 80 then
+      if sol.game.get_money() < sword_price then
         -- not enough money
         sol.main.play_sound("wrong")
         sol.map.dialog_start("smith_cave.not_enough_money")
       else
         -- enough money: buy the sword
-        sol.game.remove_money(80)
+        sol.game.remove_money(sword_price)
         sol.map.treasure_give("sword", 1, 30)
       end
     end

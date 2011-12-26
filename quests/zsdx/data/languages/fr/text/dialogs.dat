@@ -3756,7 +3756,7 @@ next = smith_cave.without_sword.2
 [smith_cave.without_sword.2]
 #       |-----------------------|
 line1 = "Je te la vends pour la"
-line2 = "modique somme de 80"
+line2 = "modique somme de 75"
 line3 = "rubis !"
 next = smith_cave.without_sword.3
 

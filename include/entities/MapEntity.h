@@ -154,10 +154,6 @@ class MapEntity {
     // movement
     void clear_old_movements();
 
-    // collisions with other entities
-    void check_collision_with_detectors(bool with_pixel_precise);
-    void check_collision_with_detectors(Sprite& sprite);
-
     // easy access to various game objects
     MapEntities& get_entities();
     MapScript& get_map_script();
@@ -284,8 +280,11 @@ class MapEntity {
     int get_distance_to_camera();
 
     // collisions
-    virtual bool is_obstacle_for(MapEntity &other);
     virtual bool has_layer_independent_collisions();
+
+    void check_collision_with_detectors(bool with_pixel_precise);
+    void check_collision_with_detectors(Sprite& sprite);
+
     virtual void notify_collision_with_enemy(Enemy &enemy);
     virtual void notify_collision_with_destructible_item(DestructibleItem &destructible_item, CollisionMode collision_mode);
     virtual void notify_collision_with_teletransporter(Teletransporter &teletransporter, CollisionMode collision_mode);
@@ -306,6 +305,7 @@ class MapEntity {
     virtual void notify_attacked_enemy(EnemyAttack attack, Enemy& victim,
         EnemyReaction::Reaction& result, bool killed);
 
+    virtual bool is_obstacle_for(MapEntity &other);
     virtual bool is_shallow_water_obstacle();
     virtual bool is_deep_water_obstacle();
     virtual bool is_hole_obstacle();

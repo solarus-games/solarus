@@ -438,7 +438,7 @@ void PickableItem::update() {
     // wait 0.7 second before allowing the hero to take the item
     if (!can_be_picked && now >= allow_pick_date) {
       can_be_picked = true;
-      get_map().check_collision_with_detectors(get_hero());
+      get_hero().check_collision_with_detectors(false);
     }
     else {
       // make the item blink and then disappear

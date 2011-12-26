@@ -1740,7 +1740,7 @@ int Script::map_api_block_set_position(lua_State* l) {
     MapEntities& entities = script.get_map().get_entities();
     entities.set_entity_layer(block, Layer(layer));
   }
-  script.get_map().check_collision_with_detectors(*block);
+  block->check_collision_with_detectors(false);
 
   return 0;
 }
@@ -2176,7 +2176,7 @@ int Script::map_api_block_create(lua_State* l) {
   Block* block = new Block(name, layer, x, y, direction, sprite_name,
       can_be_pushed, can_be_pulled, maximum_moves);
   entities.add_entity(block);
-  script.get_map().check_collision_with_detectors(*block);
+  block->check_collision_with_detectors(false);
 
   return 0;
 }

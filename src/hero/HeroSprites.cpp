@@ -510,9 +510,9 @@ void HeroSprites::update() {
   if (is_sword_visible()) {
     sword_sprite->update();
     sword_sprite->set_current_frame(tunic_sprite->get_current_frame());
-    hero.get_map().check_collision_with_detectors(hero, *sword_sprite);
+    hero.check_collision_with_detectors(*sword_sprite);
   }
-  hero.get_map().check_collision_with_detectors(hero, *tunic_sprite);
+  hero.check_collision_with_detectors(*tunic_sprite);
 
   if (is_sword_stars_visible()) {
     // the stars are not synchronized with the other sprites

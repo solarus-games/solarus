@@ -248,7 +248,7 @@ void Block::notify_position_changed() {
     sound_played = true;
   }
 
-  get_map().check_collision_with_detectors(*this);
+  check_collision_with_detectors(false);
 }
 
 /**

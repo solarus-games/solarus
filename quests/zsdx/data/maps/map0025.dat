@@ -425,6 +425,7 @@
 2	1	432	424	16	16	teletransporter	0	1	24	from_1F_hole
 12	1	696	40	176	16	custom_obstacle_14	0	1	0	0
 2	1	464	424	16	16	teletransporter_2	0	1	25	from_1F
+12	1	792	272	80	16	custom_obstacle_15	0	1	0	0
 0	2	208	224	8	64	352
 0	2	184	224	8	64	353
 0	2	552	216	8	64	353

@@ -139,7 +139,7 @@ bool Hero::HookshotState::is_stairs_obstacle(Stairs& stairs) {
  * @return true if the sensor is an obstacle in this state
  */
 bool Hero::HookshotState::is_sensor_obstacle(Sensor& sensor) {
-  return true;
+  return false;
 }
 
 /**

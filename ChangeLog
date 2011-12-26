@@ -1,6 +1,8 @@
 solarus-0.9.1 (under development)
 
 * Experimental: optimize displaying and collisions far from the visible area
+* Experimental: sensors are not obstacles anymore when jumping or using the
+hookshot, they are activated instead
 * Include Mac OS X packaging changes to the git repository
 
 solarus-0.9.0 (2011-12-23)

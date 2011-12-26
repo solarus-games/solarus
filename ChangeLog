@@ -1,5 +1,6 @@
 solarus-0.9.1 (under development)
 
+* Experimental: optimize displaying and collisions far from the visible area
 * Include Mac OS X packaging changes to the git repository
 
 solarus-0.9.0 (2011-12-23)

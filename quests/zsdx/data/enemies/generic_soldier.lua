@@ -83,7 +83,11 @@ end
 
 function check_hero()
 
-  local near_hero = sol.enemy.get_distance_to_hero() < 100
+  local _, _, layer = sol.enemy.get_position()
+  local _, _, hero_layer = sol.map.hero_get_position()
+  local near_hero = layer == hero_layer
+    and sol.enemy.get_distance_to_hero() < 100
+
   if near_hero and not going_hero then
     if properties.play_hero_seen_sound then
       sol.main.play_sound("hero_seen")

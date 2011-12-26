@@ -1,7 +1,7 @@
 zsdx-1.4 (under development)
 
 * Dungeon 1: restart the boss minillosaurs after they are hurt
-* Include Mac OS X packaging changes to the git repository
+* Potion shop: fix the coordinates on the minimap
 
 zsdx-1.3 (2011-12-23)
 

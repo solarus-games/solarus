@@ -33,6 +33,8 @@ function event_restart()
     sol.main.movement_set_property(m, "max_distance", 180)
     sol.main.movement_set_property(m, "smooth", false)
     sol.enemy.start_movement(m)
+  else
+    go_hero()
   end
 end
 
@@ -77,11 +79,16 @@ function event_sprite_animation_finished(sprite, animation)
     sol.main.sprite_set_animation(sprite, "walking")
     sol.enemy.set_size(16, 16)
     sol.enemy.set_origin(8, 12)
-    sol.enemy.snap_to_grid()
-    local m = sol.main.path_finding_movement_create(40)
-    sol.enemy.start_movement(m)
-    sol.enemy.set_default_attack_consequences()
-    in_egg = false
+    go_hero()
   end
+end
+
+function go_hero()
+
+  sol.enemy.snap_to_grid()
+  local m = sol.main.path_finding_movement_create(40)
+  sol.enemy.start_movement(m)
+  sol.enemy.set_default_attack_consequences()
+  in_egg = false
 end
 

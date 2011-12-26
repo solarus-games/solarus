@@ -2,6 +2,7 @@ zsdx-1.4 (under development)
 
 * Dungeon 1: restart the boss minillosaurs after they are hurt
 * Dungeon 9: the player could be stuck if using a bomb on a crystal
+* West mountains cave 1F: the player could be stuck if a door was closed
 * Dungeon 1: the miniboss could be displayed under a wall
 * Potion shop: fix the coordinates on the minimap
 

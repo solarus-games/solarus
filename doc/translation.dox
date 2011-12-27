@@ -95,8 +95,8 @@ in the @ref dialog_syntax page.
 Dialogs are all messages displayed to the player in the dialog box during the
 game. They represent the biggest part of the translation work.
 All dialogs are defined in the file
-<tt>languages/XX/text/dialogs.dat</tt>.
-This file is an ini file whose precise content is specified 
+<tt>languages/XX/text/dialogs.lua</tt>.
+This file is a Lua data file whose precise content is specified 
 in the @ref dialog_syntax page.
 
 */

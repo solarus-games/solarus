@@ -191,102 +191,98 @@ title_screen.press_space	Appuyez sur espace
 
 Dialogs are all messages shown to the player in the dialog box during the game.
 They are all defined in the file
-<tt>languages/XX/text/dialogs.dat</tt>.
+<tt>languages/XX/text/dialogs.lua</tt>.
 Some dialogs are triggered by the engine and others by the quest.
 
-It is an ini file encoded in UTF-8 and it obeys strict rules so that
-the sequences of dialogs are displayed correctly in the game.
-We give here the full syntax specification of the dialog files,
+It is a Lua file encoded in UTF-8.
+You don't have to know Lua to add, change or translate dialogs.
+We give here the full specification of the dialog file,
 with instructions for quest makers and translators.
 
-This is a Windows ini-like syntax.
-Lines starting with the character '#' are comments and are ignored by the engine.
-A dialog is a sequence of one or several messages.
-A message is one, two or three lines of text to display in the dialog box.
-A message has the following syntax:
+Before solarus 0.9.1, the dialogs were an ini file with a more complicated
+syntax. Translating dialogs was error prone.
+In <tt>tools/data_files_converstion/</tt>, we provide a script to convert
+your old dialog files to the new Lua format.
 
-- An id, inside square brackets.
-The id allows the engine to refer to the message it want to display.
-If you are translating the dialogs, don't translate the id!
+Lines starting with the characters '--' are comments and are ignored by the
+engine.
 
-- The values <tt>line1</tt>, <tt>line2</tt> and <tt>line3</tt>:
-they determine the content of the message. The text can
-be inside quotes. A line shoud not exceed 23 characters.
-If you are translating, this is the content to translate.
+The definition of a dialog starts with <tt>Dialog{</tt> and ends with
+<tt>}</tt>.
+Inside the braces, the properties of the dialog are specified.
+Properties are declared with the syntax <tt>key = value</tt> and
+separated with commas. It is allowed to have an extra comma after
+the last property. Properties with string values should be enclosed between
+double quotes, except when specified otherwise.
+Each dialog may have the following properties:
 
-- The value <tt>next</tt>: id of the next message to display
-in the sequence. If this value is not set, the current message
-is considered as the last one and the dialog box is closed
-when the current message is finished.
+- <tt>id</tt>: a string (between double quotes) identifying the dialog.
+The id allows the engine and the scripts to refer to the message they want to
+display.
+If you are translating dialogs, you must never translate the id!
 
-If <tt>next</tt> is set, then an arrow is displayed on the
-bottom of the current message to indicate that there will
-be a next message.
-If <tt>next</tt> is not set, then this arrow is replaced
-by a square to indicate that this message was the last one
-of the sequence.
-A message having a question (see below) is always displayed 
-with an arrow.
+- <tt>text</tt>: content of the dialog.
+If you are translating dialogs, <tt>text</tt> is the only value to translate.
+The text has usually several lines.
+In the game, it will be displayed in groups of 3 lines because the dialog box
+has space for 3 lines. Each group of 3 lines is called a message.
+The text should be enclosed between <tt>[[</tt> and <tt>]]</tt>, which is
+the Lua notation for multiline strings.
+A line shoud not exceed 23 characters.
+To make sure you don't exceed this limit, you can put a comment
+of 23 dashes (but place this comment outside the string).
+And you should use an editor with a fixed width font.
 
-Sometimes, even if a sequence is finished, you may
-want to show an arrow.
-This is typically the case when you know that another
-sequence will start immediately, but you don't know which one yet
-(a script will decide at the last moment). In this case, you can
-set the special word <tt>_unknown</tt> as the value of <tt>next</tt>
-to indicate that the sequence will be followed by another one,
-unknown for now.
-This will display the arrow instead of the square, but everything
-works exactly like the value <tt>next</tt> was not set.
-
-- By convention, when some text is too long to be in a single
-message (i.e. three lines), we use a sequence of messages:
-we put the rest of the text in one
-or several messages whose id is the one of the first message,
-concatenated with <tt>.2</tt> for the second one, <tt>.3</tt>
-for the third one, etc.
-Those suffixes are only a convention, there is no hard rule here.
-And we set the appropriate values of <tt>next</tt> to make the sequence work.
-
-Translators can change the number of messages in a sequence because of course,
-some languages are more verbose than other.
-This won't cause any problem of id.
-Only the first id of the sequence must have the exact same name than
-in the reference language.
-
-For example, if the id of the last message of your sequence ends with ".4" instead
-of ".3" (because the translated dialog didn't fit in the same number
-of messages), don't worry, it will still work.
-You only need to synchronize the messages that are the beginning
-of a dialog sequence.
-
-- The value <tt>skip</tt>: defines what happens when the player
+- <tt>skip</tt>: defines what happens when the player
 tries to skip the dialog (by pressing the sword key).
 There are three possible values:
-  - <tt>none</tt> (default): the message cannot be skipped.
-  - <tt>current</tt>: if the key is pressed, the whole current message
+  - <tt>"none"</tt> or <tt>nil</tt> (default): the message cannot be skipped.
+  - <tt>"current"</tt>: if the key is pressed, the current group of 3 lines
     is immediately shown (instead of being displayed letter by letter).
     This allows to get to the next message faster.
-  - <tt>all</tt>: the whole sequence of messages can be skipped.
+  - <tt>"all"</tt>: the whole sequence of messages can be skipped.
     The dialog box is immediataly closed and
-    the next messages will not be displayed at all.
+    the next groups of 3 lines will not be displayed at all.
     Use this only for non-essential dialogs that can be read again later.
-The value of <tt>skip</tt> takes effect for the current message and all next
-messages of the sequence, until it is changed or the dialog box is closed.
+The value of <tt>skip</tt> takes effect applies until the dialog box is closed.
 
-- The value <tt>icon</tt>: displays a small image of size 16*16 pixels 
-in the dialog box. The value is a number
+- <tt>icon</tt>: displays a small image of 16*16 pixels in the dialog box.
+The value is a number
 that identifies the icon in the icon image file.
 The icon (if any) is displayed on the left of the message
 and the text cannot exceed 20 characters (instead of 23 when there is no
 icon). The icon remains displayed in the next message, until its value
-is changed or the dialog box is closed. A value of -1 means that you
-want to remove the icon.
+is changed or the dialog box is closed. A value of -1 or <tt>nil</tt>
+means that you want to remove the icon.
 
-- The value <tt>question</tt> (true or false): shows a question to the player
-with two
-choices. The first line is considered as the question and the two
-other lines are the two possible answers.
+- <tt>next</tt>: id of the next dialog to display, between double quotes.
+If this value is not set, the dialog box is closed
+when the current dialog is finished.
+
+During the last message (group of 3 lines) of a dialog,
+if <tt>next</tt> is set, then an arrow is displayed on the
+bottom of the dialog box to indicate that there will
+be a next dialog.
+If <tt>next</tt> is not set, then this arrow is replaced
+by a square to indicate that this message was the last one.
+A message having a question (see below) is always displayed 
+with an arrow.
+
+Sometimes, even if a dialog is finished, you may
+want to show an arrow.
+This is typically the case when you know that another
+dialog will start immediately, but you don't know which one yet
+(a script will decide at the last moment). In this case, you can
+set an empty string (<tt>""</tt>) as the value of <tt>next</tt>
+to indicate that the dialog will be followed by another one,
+unknown for now.
+This will display the arrow instead of the square, but everything
+works exactly as if the value <tt>next</tt> was not set.
+
+- <tt>question</tt>: if set to <tt>true</tt>, the last message
+(group of 3 lines) of the dialog will be displayed as a question
+with two choices. The first line of the message is considered as the question
+and the two other lines are the two possible answers.
 Those two lines are then limited to 20 characters (instead of 23
 when there is no question) because a cursor lets the player choose his answer.
 It is possible to have both a question and an icon: then, the maximum
@@ -294,67 +290,69 @@ number of character is the last two lines is 17.
 
 If there is a question, you can define a value <tt>next2</tt>.
 <tt>next</tt> specifies the message to show when the first answer is selected.
-<tt>next2</tt> specifies the message to show when the second answer is selected.
-As for <tt>next</tt>, if <tt>next2</tt> is unspecified and the player choses
+<tt>next2</tt> specifies the message to show when the second answer is
+selected.
+As for <tt>next</tt>, if <tt>next2</tt> is unspecified and the player chooses
 the second answer, the sequence stops and the dialog box is closed.
-When a message has a question, it cannot be skipped.
-If the value of <tt>skip</tt> is <tt>all</tt> during a message with a question,
-then everything works as it was <tt>current</tt> instead of <tt>all</tt>
-for this message.
-However, if the message with the question is part of a sequence that
-can be skipped (<tt>skip = all</tt>),
-then the whole sequence may be skipped before the message with the question
-comes and it will never be shown.
+If the value of <tt>skip</tt> is <tt>"all"</tt> in a dialog with a
+question, then everything works as if it was <tt>"current"</tt> instead of
+<tt>"all"</tt>.
 
-- Finally, there exists special characters that you can put in the body of a message:
+- Finally, there exists special characters that you can put in the text of a
+message:
   - <tt>$0</tt>: makes a break of one second in the letter scrolling,
-  - <tt>$1</tt>: set the letter scrolling speed to slow
-  - <tt>$2</tt>: set the letter scrolling speed to medium
-  - <tt>$3</tt>: set the letter scrolling speed to fast (default)
+  - <tt>$1</tt>: set the letter scrolling speed to slow,
+  - <tt>$2</tt>: set the letter scrolling speed to medium,
+  - <tt>$3</tt>: set the letter scrolling speed to fast (default),
   - <tt>$v</tt>: inserts the value of a variable in the message
-  (but the engine or a script must specify this value)
+  (but the engine or a script must specify this value).
+The letter scrolling speed applies until the dialog box is closed.
 
-Here is an small example of such a dialog file.
+Here is an small example of a dialog file.
 
 @verbatim
+Dialog{
+  id = "wise_man",
+  skip = "current",
+  question = true,
+  next = "wise_man.thanks",
+  next2 = "wise_man.insisting",
+  text = [[
+I can feel courage in
+you, $v.
+Do you think you can
+protect the Princess?
+Definitely!
+No way
+  ]],
+}
+-----------------------
 
-[wise_man]
-#       |-----------------------|
-line1 = "I can feel courage in"
-line2 = "you, $v."
-line3 = "Do you think you can"
-next = wise_man.2
-skip = current
+Dialog{
+  id = "wise_man.insisting",
+  question = true,
+  next = "wise_man.thanks",
+  next2 = "wise_man.insisting",
+  text = [[
+$v, I beg you.
+You are the only
+one able to protect
+our kingdom...
+Sure
+No way
+  ]],
+}
+-----------------------
 
-[wise_man.2]
-#       |-----------------------|
-line1 = "protect the Princess?"
-line2 = "Definitely!"
-line3 = "No way"
-question = true
-next = wise_man.thanks
-next2 = wise_man.insisting
+Dialog{
+  id = "wise_man.thanks",
+  text = [[
+I knew I could count on
+your immense bravery.
+  ]],
+}
+-----------------------
 
-[wise_man.insisting]
-#       |-----------------------|
-line1 = "$v, I beg you"
-line2 = "you are the only"
-line3 = "one able to protect"
-next = wise_man.insisting.2
-
-[wise_man.insisting.2]
-#       |-----------------------|
-line1 = "our kingdom..."
-line2 = "Sure"
-line3 = "No way"
-question = true
-next = wise_man.thanks
-next2 = wise_man.insisting
-
-[wise_man.thanks]
-#       |-----------------------|
-line1 = "I knew I could count on"
-line2 = "your immense bravery."
 @endverbatim
 
 */

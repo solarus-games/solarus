@@ -20,6 +20,7 @@
 #include "entities/MapEntities.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
+#include "lowlevel/Geometry.h"
 #include "Game.h"
 #include "Map.h"
 #include <lua.hpp>
@@ -801,13 +802,33 @@ int Script::enemy_api_set_position(lua_State* l) {
  *
  * @param l the Lua context that is calling this function
  */
-int Script::enemy_api_get_distance_to_hero(lua_State *l) {
+int Script::enemy_api_get_distance_to_hero(lua_State* l) {
 
   Script& script = get_script(l, 0);
   Enemy& enemy = script.get_enemy();
   Hero& hero = script.get_game().get_hero();
 
   lua_pushinteger(l, enemy.get_distance(hero));
+
+  return 1;
+}
+
+/**
+ * @brief Returns the angle between the enemy and the hero
+ *
+ * - Return value (integer): the angle of the vector in radians
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::enemy_api_get_angle_to_hero(lua_State* l) {
+
+  Script& script = get_script(l, 0);
+  Enemy& enemy = script.get_enemy();
+  Hero& hero = script.get_game().get_hero();
+
+  double angle = Geometry::get_angle(enemy.get_x(), enemy.get_y(),
+      hero.get_x(), hero.get_y());
+  lua_pushnumber(l, angle);
 
   return 1;
 }

@@ -5,6 +5,7 @@ solarus-0.9.1 (under development)
 hookshot, they are activated instead
 * Include Mac OS X packaging changes to the git repository
 * Lua: improve the prototype of sol.map.destructible_item_create
+* Lua: add a function sol.enemy.get_angle_to_hero()
 * Allow the ground sprite below the hero to be tileset dependent
 * Show a different sprite animation when plunging into lava or water
 

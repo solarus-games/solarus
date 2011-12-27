@@ -905,6 +905,9 @@ The layer is optional: by default, is is unchanged.
 - <tt>sol.enemy.get_distance_to_hero()</tt>:
 Returns the distance in pixels between the enemy and the hero.
 
+- <tt>sol.enemy.get_angle_to_hero()</tt>:
+Returns the angle in radians of the vector from the enemy to the hero.
+
 - <tt>sol.enemy.test_obstacles(dx, dy)</tt>:
 Returns whether there would be a collision if the enemy was translated
 with the given parameters.

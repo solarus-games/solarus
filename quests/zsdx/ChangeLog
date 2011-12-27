@@ -13,6 +13,7 @@ zsdx-1.4 (under development)
 * Change the color of shallow water and grass below the hero in the dark world
 * Change the color of the splash sprites when plunging into lava
 * Pikes: vertical pikes failed to move if the hero was too close
+* Dungeon 4 boss: a petal was harder to reach once others were killed
 * Change how the hero is forced to finish dungeon 2 before starting dungeon 3
 * Smith cave: change the price of the sword (75 instead of 80)
 

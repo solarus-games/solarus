@@ -61,7 +61,8 @@ function event_update()
   local hero_x, hero_y = sol.map.hero_get_position()
   if hero_y < y - 60 and
       (petals[2].sprite ~= nil and hero_x <= x and hero_x > x - 32
-      or petals[5].sprite ~= nil and hero_x >= x and hero_x < x + 32) then
+      or petals[5].sprite ~= nil and hero_x >= x and hero_x < x + 32
+      or petals[1].sprite ~= nil) then
     -- the top petals are too hard to reach: let the hookshot traverse
     -- the main sprite
     sol.enemy.set_attack_consequence_sprite(eye_sprite, "hookshot", "ignored")

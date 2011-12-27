@@ -269,6 +269,7 @@ void Script::register_main_api() {
       { "movement_get_property", main_api_movement_get_property },
       { "movement_set_property", main_api_movement_set_property },
       { "movement_test_obstacles", main_api_movement_test_obstacles },
+      { "get_distance", main_api_get_distance },
       { "get_angle", main_api_get_angle },
       { NULL, NULL }
   };

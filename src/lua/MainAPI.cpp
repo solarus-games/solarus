@@ -728,6 +728,31 @@ int Script::main_api_movement_test_obstacles(lua_State *l) {
 }
 
 /**
+ * @brief Returns the distance in pixels between two points.
+ *
+ * - Argument 1 (integer): x coordinate of the first point
+ * - Argument 2 (integer): y coordinate of the first point
+ * - Argument 3 (integer): x coordinate of the second point
+ * - Argument 4 (integer): y coordinate of the second point
+ * - Return value (integer): the distance in pixels
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::main_api_get_distance(lua_State *l) {
+
+  get_script(l, 4);
+  int x1 = luaL_checkinteger(l, 1);
+  int y1 = luaL_checkinteger(l, 2);
+  int x2 = luaL_checkinteger(l, 3);
+  int y2 = luaL_checkinteger(l, 4);
+
+  int distance = (int) Geometry::get_distance(x1, y1, x2, y2);
+  lua_pushinteger(l, distance);
+
+  return 1;
+}
+
+/**
  * @brief Returns the angle between the specified vector and the x axis.
  *
  * - Argument 1 (integer): x coordinate of the first point of the vector

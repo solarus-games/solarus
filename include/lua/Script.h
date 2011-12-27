@@ -115,6 +115,7 @@ class Script {
       main_api_movement_get_property,
       main_api_movement_set_property,
       main_api_movement_test_obstacles,
+      main_api_get_distance,
       main_api_get_angle,
 
       // game API

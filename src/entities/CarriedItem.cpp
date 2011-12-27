@@ -387,7 +387,7 @@ void CarriedItem::update() {
     }
     else if (break_on_intermediate_layer) {
       break_item();
-      get_entities().set_entity_layer(this, LAYER_INTERMEDIATE);
+      get_entities().set_entity_layer(*this, LAYER_INTERMEDIATE);
       break_on_intermediate_layer = false;
     }
     else if (get_movement()->is_stopped() || y_increment >= 7) {

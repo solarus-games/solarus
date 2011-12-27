@@ -519,7 +519,7 @@ void Hero::place_on_destination_point(Map& map, const Rectangle& previous_map_lo
     }
     set_map(map);
     last_solid_ground_coords = get_xy();
-    map.get_entities().set_entity_layer(this, layer);
+    map.get_entities().set_entity_layer(*this, layer);
 
     start_free();
   }
@@ -569,7 +569,7 @@ void Hero::place_on_destination_point(Map& map, const Rectangle& previous_map_lo
       set_map(map, destination_point->get_direction());
       set_xy(destination_point->get_x(), destination_point->get_y());
       last_solid_ground_coords = get_xy();
-      map.get_entities().set_entity_layer(this, destination_point->get_layer());
+      map.get_entities().set_entity_layer(*this, destination_point->get_layer());
 
       map.get_entities().remove_boomerang(); // useful when the map remains the same
 
@@ -1051,7 +1051,7 @@ void Hero::check_position() {
         && entities.get_obstacle_tile(layer, x, y + 15) == OBSTACLE_EMPTY
         && entities.get_obstacle_tile(layer, x + 15, y + 15) == OBSTACLE_EMPTY) {
 
-      get_entities().set_entity_layer(this, Layer(layer - 1));
+      get_entities().set_entity_layer(*this, Layer(layer - 1));
       if (state->is_free() && get_tile_ground() == GROUND_NORMAL) {
         Sound::play("hero_lands");
       }

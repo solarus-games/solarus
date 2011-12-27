@@ -789,7 +789,7 @@ int Script::enemy_api_set_position(lua_State* l) {
 
   if (layer != -1) {
     MapEntities& entities = script.get_map().get_entities();
-    entities.set_entity_layer(&enemy, Layer(layer));
+    entities.set_entity_layer(enemy, Layer(layer));
   }
 
   return 0;

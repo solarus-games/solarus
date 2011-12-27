@@ -165,7 +165,7 @@ void Sensor::activate(Hero& hero) {
 
       case CHANGE_LAYER:
         // we change the hero's layer
-        get_entities().set_entity_layer(&hero, get_layer());
+        get_entities().set_entity_layer(hero, get_layer());
         break;
 
       case RETURN_FROM_BAD_GROUND:

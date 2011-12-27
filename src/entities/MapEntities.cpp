@@ -830,30 +830,30 @@ bool MapEntities::compare_y(MapEntity *first, MapEntity *second) {
  * @param entity an entity
  * @param layer the new layer
  */
-void MapEntities::set_entity_layer(MapEntity *entity, Layer layer) {
+void MapEntities::set_entity_layer(MapEntity& entity, Layer layer) {
 
-  Layer old_layer = entity->get_layer();
+  Layer old_layer = entity.get_layer();
 
   if (layer != old_layer) {
 
     // update the obstacle list
-    if (entity->can_be_obstacle() && !entity->has_layer_independent_collisions()) {
-      obstacle_entities[old_layer].remove(entity);
-      obstacle_entities[layer].push_back(entity);
+    if (entity.can_be_obstacle() && !entity.has_layer_independent_collisions()) {
+      obstacle_entities[old_layer].remove(&entity);
+      obstacle_entities[layer].push_back(&entity);
     }
 
     // update the sprites list
-    if (entity->is_displayed_in_y_order()) {
-      entities_displayed_y_order[old_layer].remove(entity);
-      entities_displayed_y_order[layer].push_back(entity);
+    if (entity.is_displayed_in_y_order()) {
+      entities_displayed_y_order[old_layer].remove(&entity);
+      entities_displayed_y_order[layer].push_back(&entity);
     }
-    else if (entity->can_be_displayed()) {
-      entities_displayed_first[old_layer].remove(entity);
-      entities_displayed_first[layer].push_back(entity);
+    else if (entity.can_be_displayed()) {
+      entities_displayed_first[old_layer].remove(&entity);
+      entities_displayed_first[layer].push_back(&entity);
     }
 
     // update the entity after the lists because this function might be called again
-    entity->set_layer(layer);
+    entity.set_layer(layer);
   }
 }
 

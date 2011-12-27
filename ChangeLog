@@ -9,6 +9,7 @@ hookshot, they are activated instead
 * Lua: add a function sol.main.get_distance(x1, y1, x2, y2)
 * Allow the ground sprite below the hero to be tileset dependent
 * Show a different sprite animation when plunging into lava or water
+* Add debug keys to change the hero's layer
 
 solarus-0.9.0 (2011-12-23)
 

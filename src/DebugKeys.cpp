@@ -16,9 +16,11 @@
 #include "DebugKeys.h"
 #include "Solarus.h"
 #include "Game.h"
+#include "Map.h"
 #include "DialogBox.h"
 #include "Equipment.h"
 #include "entities/Hero.h"
+#include "entities/MapEntities.h"
 #include "movements/Movement.h"
 
 /**
@@ -91,30 +93,29 @@ void DebugKeys::key_pressed(InputEvent::KeyboardKey key) {
         }
         break;
 
-      case InputEvent::KEY_t:
-        // quest-specific temporary code
-        /*
-        if (!game->is_paused()) {
-          equipment.add_item("bow", 1);
-          equipment.add_item("bombs_counter", 1);
-          equipment.add_item("boomerang", 1);
-          equipment.add_item("lamp", 1);
-          equipment.add_item("hookshot", 1);
-          equipment.add_item("pegasus_shoes", 1);
-          equipment.add_item("bottle_1", 1);
-          equipment.add_item("glove", 2);
-          equipment.add_item("pain_au_chocolat", 1);
-          equipment.add_item("croissant", 1);
-          equipment.add_item("clay_key", 1);
-          equipment.add_item("world_map", 1);
-          equipment.add_item("feather", 1);
-          equipment.add_item("flippers", 1);
-          equipment.add_item("magic_cape", 1);
-          equipment.set_item_assigned(0, "bow");
-          equipment.set_item_assigned(1, "feather");
+      case InputEvent::KEY_g:
+      {
+        Hero& hero = game->get_hero();
+        Layer layer = hero.get_layer();
+        if (layer != LAYER_LOW) {
+          layer = Layer(layer - 1);
+          game->get_current_map().get_entities().set_entity_layer(hero, layer);
+          hero.check_position();
         }
-        */
         break;
+      }
+
+      case InputEvent::KEY_t:
+      {
+        Hero& hero = game->get_hero();
+        Layer layer = hero.get_layer();
+        if (layer != LAYER_HIGH) {
+          layer = Layer(layer + 1);
+          game->get_current_map().get_entities().set_entity_layer(hero, layer);
+          hero.check_position();
+        }
+        break;
+      }
 
       case InputEvent::KEY_KP7:
         equipment.set_max_magic(0);

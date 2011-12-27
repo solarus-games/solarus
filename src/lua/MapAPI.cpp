@@ -455,7 +455,7 @@ int Script::map_api_hero_set_position(lua_State* l) {
   hero.set_xy(x, y);
 
   if (layer != -1) {
-    script.get_map().get_entities().set_entity_layer(&hero, Layer(layer));
+    script.get_map().get_entities().set_entity_layer(hero, Layer(layer));
   }
   hero.check_position();
 
@@ -805,7 +805,7 @@ int Script::map_api_npc_set_position(lua_State* l) {
 
   if (layer != -1) {
     MapEntities& entities = script.get_map().get_entities();
-    entities.set_entity_layer(npc, Layer(layer));
+    entities.set_entity_layer(*npc, Layer(layer));
   }
 
   return 0;
@@ -1738,7 +1738,7 @@ int Script::map_api_block_set_position(lua_State* l) {
 
   if (layer != -1) {
     MapEntities& entities = script.get_map().get_entities();
-    entities.set_entity_layer(block, Layer(layer));
+    entities.set_entity_layer(*block, Layer(layer));
   }
   block->check_collision_with_detectors(false);
 
@@ -2560,7 +2560,7 @@ int Script::map_api_enemy_set_position(lua_State* l) {
 
   if (layer != -1) {
     MapEntities& entities = script.get_map().get_entities();
-    entities.set_entity_layer(enemy, Layer(layer));
+    entities.set_entity_layer(*enemy, Layer(layer));
   }
 
   return 0;

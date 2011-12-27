@@ -204,7 +204,7 @@ void Hero::HookshotState::finish_movement() {
     layer = Layer(layer - 1);
     if (!map.test_collision_with_obstacles(layer, hero_position, hero)) {
       Sound::play("hero_lands");
-      entities.set_entity_layer(&hero, layer);
+      entities.set_entity_layer(hero, layer);
       hero.start_state_from_ground();
     }
     else {

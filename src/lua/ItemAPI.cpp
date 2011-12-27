@@ -346,7 +346,7 @@ int Script::item_api_set_position(lua_State* l) {
   pickable_item->set_xy(x, y);
   if (layer != -1) {
     MapEntities& entities = script.get_map().get_entities();
-    entities.set_entity_layer(pickable_item, Layer(layer));
+    entities.set_entity_layer(*pickable_item, Layer(layer));
   }
 
   return 0;

@@ -121,7 +121,7 @@ class MapEntities {
     void bring_to_front(MapEntity *entity);
     void destroy_all_entities();
     static bool compare_y(MapEntity *first, MapEntity *second);
-    void set_entity_layer(MapEntity *entity, Layer layer);
+    void set_entity_layer(MapEntity& entity, Layer layer);
 
     // specific to some entity types
     bool overlaps_raised_blocks(Layer layer, const Rectangle& rectangle);

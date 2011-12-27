@@ -93,7 +93,7 @@ void Hero::StairsState::start(State* previous_state) {
   if (stairs.is_inside_floor()) {
     if (way == Stairs::NORMAL_WAY) {
       // low layer to intermediate layer: change the layer now
-      get_entities().set_entity_layer(&hero, LAYER_INTERMEDIATE);
+      get_entities().set_entity_layer(hero, LAYER_INTERMEDIATE);
     }
   }
   else {
@@ -174,7 +174,7 @@ void Hero::StairsState::update() {
     if (hero.get_movement()->is_finished()) {
 
       if (way == Stairs::REVERSE_WAY) {
-        get_entities().set_entity_layer(&hero, LAYER_LOW);
+        get_entities().set_entity_layer(hero, LAYER_LOW);
       }
       hero.clear_movement();
       if (carried_item == NULL) {

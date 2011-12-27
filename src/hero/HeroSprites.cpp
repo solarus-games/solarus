@@ -636,13 +636,17 @@ void HeroSprites::set_suspended(bool suspended) {
 }
 
 /**
- * @brief Notifies this entity that its map has just become active.
+ * @brief Notifies the hero's sprites that a map has just become active.
  */
 void HeroSprites::notify_map_started() {
 
-  // the lifted item may be tileset dependent
+  // some sprites may be tileset dependent
   if (lifted_item != NULL) {
     lifted_item->notify_map_started();
+  }
+
+  if (is_ground_visible()) {
+    ground_sprite->set_map(hero.get_map());
   }
 }
 
@@ -1167,6 +1171,7 @@ void HeroSprites::create_ground(Ground ground) {
 
   delete ground_sprite;
   ground_sprite = new Sprite(ground_sprite_ids[ground - 1]);
+  ground_sprite->set_map(hero.get_map());
   if (hero.get_ground() != GROUND_SHALLOW_WATER) {
     ground_sprite->set_current_animation(walking ? "walking" : "stopped");
   }

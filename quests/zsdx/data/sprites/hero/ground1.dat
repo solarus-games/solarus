@@ -1,5 +1,5 @@
-stopped hero/ground.png 1 0 -1
-0	0	16	8	8	4	1	1
+stopped tileset 1 0 -1
+272	168	16	8	8	4	1	1
 
-walking hero/ground.png 1 100 0
-0	0	16	8	8	4	3	3
+walking tileset 1 100 0
+272	168	16	8	8	4	3	3

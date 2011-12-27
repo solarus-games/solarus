@@ -114,7 +114,7 @@ void HeartsView::update() {
       nb_current_hearts_displayed++;
 
       if (nb_current_hearts_displayed % 4 == 0 && game != NULL) {
-	Sound::play("heart");
+        Sound::play("heart");
       }
     }
 
@@ -130,14 +130,14 @@ void HeartsView::update() {
 
       uint32_t now = System::now();
       if (empty_heart_sprite->get_current_animation() != "danger") {
-	empty_heart_sprite->set_current_animation("danger");
-	next_danger_sound_date = now + 250;
+        empty_heart_sprite->set_current_animation("danger");
+        next_danger_sound_date = now + 250;
       }
       empty_heart_sprite->update();
 
       if (now > next_danger_sound_date) {
-	next_danger_sound_date = now + 750;
-	Sound::play("danger");
+        next_danger_sound_date = now + 750;
+        Sound::play("danger");
       }
 
       need_rebuild = true;
@@ -186,6 +186,7 @@ void HeartsView::rebuild() {
   if (remaining_fraction != 0) {
 
     heart_position.set_x((i % 10) * 9);
+    heart_position.set_y((i / 10) * 9);
     img_hearts->blit(fraction_heart_positions[remaining_fraction - 1], surface_drawn, heart_position);
   }
 }

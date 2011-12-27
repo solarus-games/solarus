@@ -2,7 +2,7 @@
 
 state = "stopped" -- "stopped", "moving", "going_back", "paused"
 initial_xy = {}
-activation_distance = 20
+activation_distance = 24
 
 function event_appear()
 
@@ -36,7 +36,8 @@ function event_update()
       else
 	go(2)
       end
-    elseif math.abs(dx) < activation_distance then
+    end
+    if state == "stopped" and math.abs(dx) < activation_distance then
       if dy > 0 then
 	go(3)
       else

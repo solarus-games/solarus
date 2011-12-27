@@ -47,7 +47,12 @@ void Hero::PlungingState::start(State* previous_state) {
 
   State::start(previous_state);
 
-  get_sprites().set_animation_plunging();
+  if (hero.get_ground() == GROUND_DEEP_WATER) {
+    get_sprites().set_animation("plunging_water", "");
+  }
+  else {
+    get_sprites().set_animation("plunging_lava", "");
+  }
   Sound::play("splash");
 }
 

@@ -127,11 +127,17 @@ hurt hero/miscellaneous.png 4 0 -1
 dying hero/dying.png 1 125 9
 0	0	24	24	12	21	10	10
 
-plunging hero/plunging.png 4 50 -1
+plunging_water hero/plunging.png 4 50 -1
 0	0	56	24	28	21	6	6
 0	24	56	24	28	21	6	6
 0	48	56	24	28	21	6	6
 0	72	56	24	28	21	6	6
+
+plunging_lava hero/plunging.png 4 50 -1
+336	0	56	24	28	21	6	6
+336	24	56	24	28	21	6	6
+336	48	56	24	28	21	6	6
+336	72	56	24	28	21	6	6
 
 swimming_stopped hero/swimming.png 4 300 0
 0	0	40	40	20	29	2	2

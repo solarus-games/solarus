@@ -1069,17 +1069,6 @@ void HeroSprites::set_animation_hurt() {
 }
 
 /**
- * @brief Starts the "plunging" animation of the hero's sprites.
- */
-void HeroSprites::set_animation_plunging() {
-
-  tunic_sprite->set_current_animation("plunging");
-  stop_displaying_sword();
-  stop_displaying_shield();
-  stop_displaying_trail();
-}
-
-/**
  * @brief Starts the "falling" animation of the hero's sprites.
  */
 void HeroSprites::set_animation_falling() {

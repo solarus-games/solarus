@@ -10,7 +10,7 @@ zsdx-1.4 (under development)
 * Dungeon 9 boss: don't create more than one stone at a time
 * Potion shop: fix the coordinates on the minimap
 * Dungeon 8 B2: a staircase was missing on the minimap
-* Change the color of shallow water below the hero in the dark world
+* Change the color of shallow water and grass below the hero in the dark world
 * Change how the hero is forced to finish dungeon 2 before starting dungeon 3
 * Smith cave: change the price of the sword (75 instead of 80)
 

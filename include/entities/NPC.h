@@ -67,7 +67,7 @@ class NPC: public Detector {
 
     Subtype subtype;                    /**< subtpype of NPC */
     Behavior behavior;                  /**< type of action done when the player interacts with this entity */
-    MessageId message_to_show;          /**< message to show when an interaction occurs, or an empty string */
+    std::string dialog_to_show;         /**< dialog to show when an interaction occurs, or an empty string */
     Script* script_to_call;             /**< map script or item script to call when an interaction occurs, or NULL */
 
     void initialize_sprite(SpriteAnimationSetId& sprite_name, int initial_direction);
@@ -75,8 +75,9 @@ class NPC: public Detector {
 
   public:
 
-    NPC(Game& game, const std::string& name, Layer layer, int x, int y, Subtype subtype,
-	SpriteAnimationSetId sprite_name, int initial_direction, const std::string& behavior_string);
+    NPC(Game& game, const std::string& name, Layer layer, int x, int y,
+        Subtype subtype, SpriteAnimationSetId sprite_name,
+        int initial_direction, const std::string& behavior_string);
     ~NPC();
     static CreationFunction parse;
 

@@ -47,8 +47,8 @@ class Door: public Detector {
 
   private:
 
-    static const std::string animations[];             /**< sprite animation name of each subtype */
-    static const MessageId key_required_message_ids[]; /**< id of the message shown for each subtype */
+    static const std::string animations[];              /**< sprite animation name of each subtype */
+    static const std::string key_required_dialog_ids[]; /**< id of the dialog shown for each subtype */
 
     // properties
     Subtype subtype;                  /**< subtype of door */

@@ -383,10 +383,11 @@ class Script {
     bool has_played_music();
 
     void event_map_changed(Map &map);
-    void event_dialog_started(const MessageId &message_id);
-    void event_dialog_finished(const MessageId &first_message_id, int answer);
+    void event_dialog_started(const std::string& dialog_id);
+    void event_dialog_finished(const std::string& dialog_id, int answer);
     void event_npc_interaction(const std::string& npc_name);
-    bool event_npc_interaction_item(const std::string& npc_name, const std::string& item_name, int variant);
+    bool event_npc_interaction_item(const std::string& npc_name,
+        const std::string& item_name, int variant);
     void event_npc_collision_fire(const std::string &npc_name);
 
     void do_callback(int callback_ref);

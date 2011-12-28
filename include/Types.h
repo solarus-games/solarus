@@ -60,11 +60,6 @@ typedef std::string SoundId;
  */
 typedef std::string SpriteAnimationSetId;
 
-/**
- * @brief Type of the id of messages.
- */
-typedef std::string MessageId;
-
 // declaration of all classes to avoid dependencies between the header files
 
 // main classes

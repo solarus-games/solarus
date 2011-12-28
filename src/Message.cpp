@@ -41,14 +41,11 @@ static const uint32_t char_delays[3] = {
  * @param x x position of the dialog box
  * @param y y position of the dialog box
  */
-Message::Message(DialogBox *dialog_box, MessageId message_id, int x, int y):
-  dialog_box(dialog_box), x(x), y(y) {
-
-  // parse the message
-  parse(message_id);
+Message::Message(DialogBox& dialog_box, const std::string& dialog_id, int x, int y):
+  dialog_box(dialog_box) {
 
   // create the text surfaces
-  int text_x = x + ((dialog_box->get_icon_number() == -1) ? 16 : 48);
+  int text_x = x + ((dialog_box.get_icon_number() == -1) ? 16 : 48);
   int text_y = y - 1;
   for (int i = 0; i < 3; i++) {
     text_y += 13;
@@ -80,90 +77,11 @@ Message::~Message() {
 }
 
 /**
- * @brief Reads the message from the data file and initializes
- * the fields accordingly.
- * @param message_id id of the message
- */
-void Message::parse(MessageId message_id) {
-
-  // open the file
-  std::string file_name = "text/dialogs.dat";
-
-  // parse the message
-  IniFile ini_file(file_name, IniFile::READ_LANGUAGE);
-
-  Debug::check_assertion(ini_file.has_group(message_id), StringConcat() << "The message '" << message_id << "' does not exist");
-  ini_file.set_group(message_id);
-
-  // text
-  lines[0] = ini_file.get_string_value("line1", "");
-  lines[1] = ini_file.get_string_value("line2", "");
-  lines[2] = ini_file.get_string_value("line3", "");
-  for (int i = 0; i < 3; i++) {
-    int size = lines[i].size();
-    if (lines[i][0] == '"') {
-      lines[i] = lines[i].substr(1);
-      size--;
-    }
-    if (lines[i][size - 1] == '"') {
-      lines[i] = lines[i].substr(0, size - 1);
-    }
-  }
-
-  // icon
-  int icon_number = ini_file.get_integer_value("icon", -2);
-  if (icon_number != -2) {
-    // if an icon number is specified (even -1)
-    dialog_box->set_icon_number(icon_number);
-  }
-
-  // next message
-  next_message_id = ini_file.get_string_value("next", "");
-  next_message_id_2 = ini_file.get_string_value("next2", "");
-
-  // question
-  question = ini_file.get_boolean_value("question", false);
-
-  // skip mode
-  const std::string &skip_mode_text = ini_file.get_string_value("skip", "");
-
-  if (skip_mode_text != "") { // a skip mode is specified
-    DialogBox::SkipMode skip_mode;
-    if (skip_mode_text == "current") {
-      skip_mode = DialogBox::SKIP_CURRENT;
-    }
-    else if (skip_mode_text == "all") {
-      skip_mode = question ? DialogBox::SKIP_CURRENT : DialogBox::SKIP_ALL;
-    }
-    else {
-      skip_mode = DialogBox::SKIP_NONE;
-    }
-    dialog_box->set_skip_mode(skip_mode);
-  }
-}
-
-/**
  * @brief Returns whether this message is a question.
  * @return true if the message is a question
  */
 bool Message::is_question() {
   return question;
-}
-
-/**
- * @brief Returns the id of the next message to display.
- *
- * If this is the last message, an empty string is returned.
- *
- * @return the id of the message to display when this one is over
- */
-MessageId Message::get_next_message_id() {
-
-  if (question && dialog_box->get_last_answer() == 1) {
-    return next_message_id_2;
-  }
-
-  return next_message_id;
 }
 
 /**
@@ -178,6 +96,7 @@ bool Message::is_finished() {
  * @brief Shows all characters of the message now.
  */
 void Message::show_all_now() {
+
   show_all = true;
   update_char_delay();
 }
@@ -190,7 +109,7 @@ void Message::show_all_now() {
 void Message::update_char_delay() {
 
   if (!show_all) {
-    delay = char_delays[dialog_box->get_speed()];
+    delay = char_delays[dialog_box.get_speed()];
   }
   else {
     delay = 0;
@@ -233,24 +152,24 @@ void Message::add_character() {
 
     case '1':
       // slow
-      dialog_box->set_speed(DialogBox::SPEED_SLOW);
+      dialog_box.set_speed(DialogBox::SPEED_SLOW);
       update_char_delay();
       break;
 
     case '2':
       // medium
-      dialog_box->set_speed(DialogBox::SPEED_MEDIUM);
+      dialog_box.set_speed(DialogBox::SPEED_MEDIUM);
       update_char_delay();
       break;
 
     case '3':
       // fast
-      dialog_box->set_speed(DialogBox::SPEED_FAST);
+      dialog_box.set_speed(DialogBox::SPEED_FAST);
       update_char_delay();
       break;
 
     case 'v':
-      set_variable(dialog_box->get_variable());
+      set_variable(dialog_box.get_variable());
       break;
 
     default:
@@ -277,7 +196,7 @@ void Message::add_character() {
     }
 
     uint32_t now = System::now();
-    if (now >= next_sound_date && dialog_box->is_letter_sound_enabled()) {
+    if (now >= next_sound_date && dialog_box.is_letter_sound_enabled()) {
       Sound::play("message_letter");
       next_sound_date = now + 100;
     }
@@ -288,7 +207,8 @@ void Message::add_character() {
  * @brief Replaces the first occurence of "$v" by the specified value.
  * @param value the value to set
  */
-void Message::set_variable(const std::string &value) {
+void Message::set_variable(const std::string& value) {
+
   char_index -= 2;
   lines[line_index] = lines[line_index].replace(char_index, 2, value);
 }

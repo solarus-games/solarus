@@ -336,7 +336,7 @@ the interaction will be started only if the hero touches the south face of the e
 
 <tt>behavior</tt> describes what happens when the player presses the action key near this entity.
 There are three possible options:
-- dialog#XXX: starts a dialog with first message XXX
+- dialog#XXX: starts the dialog with id XXX
 - map: calls the map script (event_hero_interaction)
 - item#XXX calls the script of the item XXX (event_hero_interaction)
 
@@ -462,7 +462,7 @@ A shop item is a treasure one can buy in a shop in exchange for money.
 
 Syntax of a shop item:
 @verbatim
-16	layer	x	y	entity_name	treasure_name	treasure_variant	treasure_savegame_variable	price	message_id
+16	layer	x	y	entity_name	treasure_name	treasure_variant	treasure_savegame_variable	price	dialog_id
 @endverbatim
 
 <tt>treasure_name</tt>, <tt>treasure_variant</tt> and <tt>treasure_savegame_variable</tt>
@@ -476,8 +476,8 @@ and is not removed from the map.
 
 <tt>price</tt> is the number of rupees to pay to buy the item.
 
-<tt>message_id</tt> is the id of the message to show when the player looks at the item.
-The message describes the item. It is automatically followed by a dialog that asks to the player
+<tt>dialog_id</tt> is the id of the dialog to show when the player looks at the item.
+The dialog describes the item. It is automatically followed by a dialog that asks to the player
 if he wants to buy the item.
 
 @section conveyor_belt Conveyor belt (17)

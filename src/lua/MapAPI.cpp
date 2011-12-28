@@ -40,45 +40,40 @@
 #include <lua.hpp>
 
 /**
- * @brief Creates a dialog box and starts displaying a message.
+ * @brief Shows the dialog box and starts displaying a dialog.
  *
- * If the message is followed by other messages, they are also
- * displayed.
- * If the message (or one of its next messages) contains a variable,
- * then you have to call dialog_set_variable() to specify its value.
+ * If the dialog contains a variable,
+ * then you have to call sol.map.dialog_set_variable() to specify its value.
  *
- * - Argument 1 (string): id of the message to display
+ * - Argument 1 (string): id of the dialog to display
  *
  * @param l the Lua context that is calling this function
  */
-int Script::map_api_dialog_start(lua_State *l) {
+int Script::map_api_dialog_start(lua_State* l) {
 
   Script& script = get_script(l, 1);
-  const std::string &message_id = luaL_checkstring(l, 1);
+  const std::string& dialog_id = luaL_checkstring(l, 1);
 
-  script.get_game().get_dialog_box().start_dialog(message_id, &script);
+  script.get_game().get_dialog_box().start_dialog(dialog_id, &script);
 
   return 0;
 }
 
 /**
- * @brief Sets the value of the variable in a diabog.
+ * @brief Sets the value of the variable in a dialog.
  *
- * The function has to be called after the dialog box is created,
- * i.e. after calling dialog_start().
- *
- * - Argument 1 (string): id of the message containing the variable
+ * - Argument 1 (string): id of the dialog containing the variable
  * - Argument 2 (string): value of the variable
  *
  * @param l the Lua context that is calling this function
  */
-int Script::map_api_dialog_set_variable(lua_State *l) {
+int Script::map_api_dialog_set_variable(lua_State* l) {
 
   Script& script = get_script(l, 2);
-  const MessageId &message_id = luaL_checkstring(l, 1);
-  const std::string &value = luaL_checkstring(l, 2);
+  const std::string& dialog_id = luaL_checkstring(l, 1);
+  const std::string& value = luaL_checkstring(l, 2);
 
-  script.get_game().get_dialog_box().set_variable(message_id, value);
+  script.get_game().get_dialog_box().set_variable(dialog_id, value);
 
   return 0;
 }

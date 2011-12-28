@@ -869,7 +869,7 @@ bool Script::is_new_timer_suspended(void) {
   if (apis_enabled && GAME_API) {
     // start the timer even if the game is suspended (e.g. a timer started during a camera movement)
     // except when it is suspended because of a dialog box
-    return get_game().is_showing_message();
+    return get_game().is_showing_dialog();
   }
 
   return false;
@@ -974,28 +974,28 @@ void Script::event_map_changed(Map &map) {
 /**
  * @brief Notifies the script that a dialog has just started to be displayed
  * in the dialog box.
- * @param message_id id of the first message in this dialog
+ * @param dialog_id id of the dialog
  */
-void Script::event_dialog_started(const MessageId &message_id) {
+void Script::event_dialog_started(const std::string& dialog_id) {
 
-  notify_script("event_dialog_started", "s", message_id.c_str());
+  notify_script("event_dialog_started", "s", dialog_id.c_str());
 }
 
 /**
  * @brief Notifies the script that the dialog box has just finished.
  *
- * This function is called when the last message of a dialog is finished.
+ * This function is called when the last group of 3 lines of a dialog is
+ * finished.
  * The dialog box has just been closed but the game is still suspended.
  * Note that this event is not called if the dialog was skipped.
  *
- * @param first_message_id id of the first message in the dialog
- * that has just finished
+ * @param dialog_id id of the dialog that has just finished
  * @param answer the answer selected by the player: 0 for the first one,
  * 1 for the second one, -1 if there was no question
  */
-void Script::event_dialog_finished(const MessageId &first_message_id, int answer) {
+void Script::event_dialog_finished(const std::string& dialog_id, int answer) {
 
-  notify_script("event_dialog_finished", "si", first_message_id.c_str(), answer);
+  notify_script("event_dialog_finished", "si", dialog_id.c_str(), answer);
 }
 
 /**

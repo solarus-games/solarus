@@ -79,10 +79,9 @@ class DialogBox {
     // current message
     KeysEffect::ActionKeyEffect action_key_effect_saved;  /**< effect of the action key before starting the message sequence */
     KeysEffect::SwordKeyEffect sword_key_effect_saved;    /**< effect of the sword key before starting the message sequence */
-    MessageId first_message_id;                     /**< id of the first message of the current sequence */
-    Message *current_message;                       /**< the message currently shown (NULL if the dialog box is disabled) */
-    MessageId current_message_id;                   /**< id of the message currently shown */
-    std::map<MessageId, std::string> variables;     /**< variables to display if the next messages */
+    std::string dialog_id;                          /**< id of the current dialog */
+    Message* current_message;                       /**< the message currently shown (NULL if the dialog box is disabled) */
+    std::map<std::string, std::string> variables;   /**< variables to display in dialogs */
     Script* issuer_script;                          /**< the script (if any) that started the current sequence of messages */
 
     Speed speed;                                    /**< speed of the text */
@@ -90,7 +89,7 @@ class DialogBox {
     int icon_number;                                /* index of the 16*16 icon displayed, or -1 if there is no icon */
     bool skipped;                                   /* true if the user has skipped the dialog */
     int last_answer;                                /**< the answer selected in the last message sequence: 0 for the first one, 1 for the second one,
-						     * -1 if there was no question */ 
+                                                     * -1 if there was no question */
 
     // graphics
     Surface *dialog_surface;                        /**< surface where the dialog is drawn*/
@@ -106,7 +105,7 @@ class DialogBox {
     Rectangle icon_dst_position;                    /**< destination rectangle of the icon */
 
     void set_vertical_position(VerticalPosition vertical_position);
-    void show_message(const MessageId &message_id);
+    void show_message();
     void show_next_message();
     void close();
 
@@ -126,8 +125,8 @@ class DialogBox {
     bool is_enabled();
 
     // current message
-    void start_dialog(const MessageId &first_message_id, Script *issuer_script = NULL,
-	VerticalPosition vertical_position = POSITION_AUTO);
+    void start_dialog(const std::string& dialog_id, Script *issuer_script = NULL,
+        VerticalPosition vertical_position = POSITION_AUTO);
     Speed get_speed();
     void set_speed(Speed speed);
     SkipMode get_skip_mode();
@@ -135,13 +134,13 @@ class DialogBox {
     int get_icon_number();
     void set_icon_number(int icon_number);
     bool is_letter_sound_enabled();
-    void set_variable(const MessageId &first_message_id, const std::string &value);
-    void set_variable(const MessageId &first_message_id, int value);
+    void set_variable(const std::string& dialog_id, const std::string &value);
+    void set_variable(const std::string& dialog_id, int value);
     const std::string& get_variable();
     int get_last_answer();
     void set_last_answer(int answer);
     void key_pressed(GameControls::GameKey key);
-    MessageId get_first_message_id();
+    const std::string& get_dialog_id();
     bool is_finished();
     bool was_skipped();
     void show_all_now();

@@ -34,7 +34,8 @@
  * @param game the game this dialog box belongs to
  */
 DialogBox::DialogBox(Game &game):
-  game(game), current_message(NULL) {
+  game(game),
+  current_message(NULL) {
 
   // initialize the surface
   dialog_surface = new Surface(320, 240);
@@ -187,46 +188,48 @@ bool DialogBox::is_letter_sound_enabled() {
 }
 
 /**
- * @brief Specifies the value of a variable that will occur in a future message.
+ * @brief Specifies the value of a variable that will occur in a dialog.
  *
- * A value is expected in a message when the '$v' sequence is read.
- * You can specify only one variable at the same time per message sequence.
- * If a variable was already specified for this sequence of messages, it is replaced.
+ * A value is expected in a dialog when the '$v' sequence is read.
+ * You can specify only one variable at the same time per dialog.
+ * If a variable was already specified for this dialog, it is replaced.
  *
- * @param first_message_id id of the first message of the sequence where this value will appear
+ * @param dialog_id id of the dialog where this value will appear
  * @param value the value to add
  */
-void DialogBox::set_variable(const MessageId &first_message_id, const std::string &value) {
-  variables[first_message_id] = value;
+void DialogBox::set_variable(const std::string& dialog_id, const std::string& value) {
+  variables[dialog_id] = value;
 }
 
 /**
- * @brief Same thing as set_variable(MessageId, string) but with an integer parameter.
+ * @brief Same thing as set_variable(string, string) but with an integer parameter.
  *
  * This function just converts the integer value to a string
  * add calls the other function.
  *
- * @param first_message_id id of the first message of the sequence where this value will appear
+ * @param dialog id id of the dialog where this value will appear
  * @param value the value to set
  */
-void DialogBox::set_variable(const MessageId &first_message_id, int value) {
+void DialogBox::set_variable(const std::string& dialog_id, int value) {
+
   std::ostringstream oss;
   oss << value;
-  set_variable(first_message_id, oss.str());
+  set_variable(dialog_id, oss.str());
 }
 
 /**
  * @brief Returns the variable specified by a previous
- * call to set_variable(), for the current sequence of messages.
+ * call to set_variable(), for the current dialog.
  * This function is called by
  * the current message when it reads the '$v' sequence.
  * @return the value of the variable
  */
 const std::string& DialogBox::get_variable() {
 
-  const std::string &value = variables[first_message_id];
+  const std::string& value = variables[dialog_id];
 
-  Debug::check_assertion(value.size() > 0, StringConcat() << "Missing variable in message '" << current_message_id << "'");
+  Debug::check_assertion(value.size() > 0, StringConcat()
+      << "Missing variable in dialog '" << dialog_id << "'");
 
   return value;
 }
@@ -252,22 +255,23 @@ void DialogBox::set_last_answer(int answer) {
 }
 
 /**
- * @brief Starts a sequence of messages.
+ * @brief Starts a dialog.
  *
  * The dialog box should not be enabled already when you call this function.
  *
- * @param first_message_id id of the first message of the sequence
+ * @param dialog_id of the dialog
  * @param issuer_script the script that issued the request to start a dialog
  * (will be notified when the dialog finishes), or NULL
  * @param vertical_position vertical position where to display the dialog box (default: auto)
  */
-void DialogBox::start_dialog(const MessageId &first_message_id, Script *issuer_script,
+void DialogBox::start_dialog(const std::string& dialog_id, Script* issuer_script,
     VerticalPosition vertical_position) {
 
-  Debug::check_assertion(!is_enabled(), StringConcat() << "Cannot start message sequence '" << first_message_id << ": the dialog box is already enabled");
+  Debug::check_assertion(!is_enabled(), StringConcat() <<
+      "Cannot start dialog '" << dialog_id << ": the dialog box is already enabled");
 
   // save the action and sword keys
-  KeysEffect &keys_effect = game.get_keys_effect();
+  KeysEffect& keys_effect = game.get_keys_effect();
   action_key_effect_saved = keys_effect.get_action_key_effect();
   sword_key_effect_saved = keys_effect.get_sword_key_effect();
 
@@ -277,27 +281,26 @@ void DialogBox::start_dialog(const MessageId &first_message_id, Script *issuer_s
   set_skip_mode(SKIP_NONE);
   set_icon_number(-1);
   this->skipped = false;
-  this->first_message_id = first_message_id;
-  show_message(first_message_id);
+  this->dialog_id = dialog_id;
+  show_message();
 
   // notify the scripts
-  game.get_map_script().event_dialog_started(first_message_id);
+  game.get_map_script().event_dialog_started(dialog_id);
   this->issuer_script = issuer_script;
   if (issuer_script != NULL) {
-    issuer_script->event_dialog_started(first_message_id);
+    issuer_script->event_dialog_started(dialog_id);
   }
 }
 
 /**
  * @brief Shows a new message in the dialog box.
- * @param message_id id of the message to create (must be a valid id)
  */
-void DialogBox::show_message(const MessageId &message_id) {
+void DialogBox::show_message() {
 
   // create the message
   delete current_message;
-  current_message = new Message(this, message_id, box_dst_position.get_x(), box_dst_position.get_y());
-  current_message_id = message_id;
+  current_message = new Message(*this, dialog_id,
+      box_dst_position.get_x(), box_dst_position.get_y());
 
   if (current_message->is_question()) {
     set_last_answer(0);
@@ -326,10 +329,10 @@ void DialogBox::show_message(const MessageId &message_id) {
  */
 void DialogBox::show_next_message() {
 
-  MessageId next_message_id = current_message->get_next_message_id();
+  const std::string next_dialog_id; // TODO
 
-  if (next_message_id != "" && next_message_id != "_unknown") {
-    show_message(next_message_id);
+  if (next_dialog_id != "" && next_dialog_id != "_unknown") {
+    show_message();
   }
   else {
     close();
@@ -351,14 +354,14 @@ void DialogBox::close() {
   keys_effect.set_sword_key_effect(sword_key_effect_saved);
 
   // notify the script if necessary
-  if (!skipped && first_message_id[0] != '_') { // FIXME: remove the '_' restriction
+  if (!skipped && dialog_id[0] != '_') { // FIXME: remove the '_' restriction
     // a dialog of the quest was just finished: notify the scripts
-    Script &map_script = game.get_map_script();
-    map_script.event_dialog_finished(first_message_id, last_answer);
+    Script& map_script = game.get_map_script();
+    map_script.event_dialog_finished(dialog_id, last_answer);
 
     if (issuer_script != NULL && issuer_script != &map_script) {
       // also notify the issuer script if different
-      issuer_script->event_dialog_finished(first_message_id, last_answer);
+      issuer_script->event_dialog_finished(dialog_id, last_answer);
     }
   }
 }
@@ -452,11 +455,11 @@ void DialogBox::show_all_now() {
 }
 
 /**
- * @brief Returns the id of the first message shown in the current dialog box sequence.
- * @return the id of the first message shown
+ * @brief Returns the id of the current dialog.
+ * @return the id of the dialog currently shown
  */
-MessageId DialogBox::get_first_message_id() {
-  return first_message_id;
+const std::string& DialogBox::get_dialog_id() {
+  return dialog_id;
 }
 
 /**
@@ -503,8 +506,8 @@ void DialogBox::update() {
     KeysEffect &keys_effect = game.get_keys_effect();
     if (!end_message_sprite->is_animation_started()) {
 
-      MessageId next_message_id = current_message->get_next_message_id();
-      if (next_message_id != "" || current_message->is_question()) {
+      const std::string next_dialog_id; // TODO
+      if (next_dialog_id != "" || current_message->is_question()) {
         end_message_sprite->set_current_animation("next");
         keys_effect.set_action_key_effect(KeysEffect::ACTION_KEY_NEXT);
       }

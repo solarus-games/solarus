@@ -282,7 +282,7 @@ void PickableItem::notify_collision(MapEntity &entity_overlapping, CollisionMode
 
   if (entity_overlapping.is_hero()
       && can_be_picked
-      && !get_game().is_showing_message()) {
+      && !get_game().is_showing_dialog()) {
     remove_from_map();
     give_item_to_player();
   }

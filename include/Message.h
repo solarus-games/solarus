@@ -21,54 +21,44 @@
 #include "DialogBox.h"
 
 /**
- * @brief A message displayed in a dialog box.
+ * @brief Lines of text displayed in a dialog box.
  *
- * This class parses the message from a data file and displays it in a dialog box.
+ * This class displays three lines of text in a dialog box.
  * A message is usually part of a sequence of several messages called a dialog.
  */
 class Message {
 
   private:
 
-    // the dialog box where this message is displayed
-    DialogBox *dialog_box;
-
     // properties of the message
 
-    std::string lines[3];        // the 3 lines of the message
-    TextSurface *text_surfaces[3];
-    bool question;               // is this message a question?
-    MessageId next_message_id;   // id of the next message (or an empty string if this is the last message)
-    MessageId next_message_id_2;
+    DialogBox& dialog_box;            /**< the dialog box where this message is displayed */
+    std::string lines[3];             /**< the 3 lines of text of the message */
+    TextSurface* text_surfaces[3];    /**< the 3 corresponding text surfaces */
+    bool question;                    /**< is this message a question? */
+    bool last;                        /**< is this message the last one of the dialog? */
 
-    int x;
-    int y;
+    // current state of displaying
 
-    void parse(MessageId message_id);
-    void set_variable(const std::string &value);
-
-    // current state of the display
-
-    unsigned int line_index;     // line currently displayed (0 to 2)
-    unsigned int char_index;     // index of the next character to show
-    uint32_t delay;
-    uint32_t next_char_date;
-    bool show_all;
-
-    uint32_t next_sound_date;
+    unsigned int line_index;          /**< line currently displayed (0 to 2) */
+    unsigned int char_index;          /**< index of the next character to show */
+    uint32_t delay;                   /**< delay between two characters in milliseconds */
+    uint32_t next_char_date;          /**< when the next character is displayed */
+    uint32_t next_sound_date;         /**< date of the next character sound */
+    bool show_all;                    /**< makes all text be displayed now */
 
     void update_char_delay();
     void add_character();
+    void set_variable(const std::string& value);
 
   public:
 
     // creation and destruction
-    Message(DialogBox *dialog_box, MessageId message_id, int x, int y);
+    Message(DialogBox& dialog_box, const std::string& dialog_id, int x, int y);
     ~Message();
 
     // message properties
     bool is_question();
-    MessageId get_next_message_id();
 
     // message current state
     bool is_finished();

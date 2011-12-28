@@ -40,13 +40,16 @@
  * @param y y coordinate of the entity to create
  * @param treasure the treasure that the hero can buy (will be deleted automatically)
  * @param price the treasure's price in rupees
- * @param message_id id of the message describing the item when the player watches it
+ * @param dialog_id id of the dialog describing the item when the player watches it
  */
-ShopItem::ShopItem(const std::string &name, Layer layer, int x, int y,
-		   const Treasure &treasure, int price, const MessageId &message_id):
+ShopItem::ShopItem(const std::string& name, Layer layer, int x, int y,
+		   const Treasure& treasure, int price, const std::string& dialog_id):
   Detector(COLLISION_FACING_POINT, name, layer, x, y, 32, 32),
-  treasure(treasure), price(price), message_id(message_id),
-  is_looking_item(false), is_asking_question(false) {
+  treasure(treasure),
+  price(price),
+  dialog_id(dialog_id),
+  is_looking_item(false),
+  is_asking_question(false) {
 
   std::ostringstream oss;
   oss << price;
@@ -61,6 +64,7 @@ ShopItem::ShopItem(const std::string &name, Layer layer, int x, int y,
  * @brief Destructor.
  */
 ShopItem::~ShopItem() {
+
   delete price_digits;
   delete rupee_icon_sprite;
 }
@@ -77,22 +81,22 @@ ShopItem::~ShopItem() {
  * @param y y coordinate of the entity
  * @return the instance created
  */
-MapEntity* ShopItem::parse(Game &game, std::istream &is, Layer layer, int x, int y) {
+MapEntity* ShopItem::parse(Game& game, std::istream& is, Layer layer, int x, int y) {
 
   std::string name, treasure_name;
   int treasure_variant, treasure_savegame_variable, price;
-  MessageId message_id;
+  std::string dialog_id;
 
   FileTools::read(is, name);
   FileTools::read(is, treasure_name);
   FileTools::read(is, treasure_variant);
   FileTools::read(is, treasure_savegame_variable);
   FileTools::read(is, price);
-  FileTools::read(is, message_id);
+  FileTools::read(is, dialog_id);
 
   return create(game, name, Layer(layer), x, y,
       Treasure(game, treasure_name, treasure_variant, treasure_savegame_variable),
-      price, message_id);
+      price, dialog_id);
 }
 
 /**
@@ -104,18 +108,18 @@ MapEntity* ShopItem::parse(Game &game, std::istream &is, Layer layer, int x, int
  * @param y y coordinate of the entity to create
  * @param treasure the treasure that the hero can buy
  * @param price the treasure's price in rupees
- * @param message_id id of the message describing the item when the player watches it
+ * @param dialog_id id of the dialog describing the item when the player watches it
  * @return the shop item created, or NULL if it is already bought
  */
-ShopItem* ShopItem::create(Game &game, const std::string &name, Layer layer, int x, int y,
-			    const Treasure &treasure, int price, const MessageId &message_id) {
+ShopItem* ShopItem::create(Game& game, const std::string& name, Layer layer, int x, int y,
+    const Treasure &treasure, int price, const std::string& dialog_id) {
 
   // see if the item is not already bought
   if (treasure.is_found()) {
     return NULL;
   }
 
-  return new ShopItem(name, layer, x, y, treasure, price, message_id);
+  return new ShopItem(name, layer, x, y, treasure, price, dialog_id);
 }
 
 /**
@@ -161,7 +165,7 @@ void ShopItem::notify_collision(MapEntity &entity_overlapping, CollisionMode col
     Hero &hero = (Hero&) entity_overlapping;
 
     if (get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_NONE
-	&& hero.is_free()) {
+        && hero.is_free()) {
 
       // we show the 'look' icon
       get_keys_effect().set_action_key_effect(KeysEffect::ACTION_KEY_LOOK);
@@ -181,7 +185,7 @@ void ShopItem::action_key_pressed() {
   if (get_hero().is_free()
       && get_keys_effect().get_action_key_effect() == KeysEffect::ACTION_KEY_LOOK) {
 
-    get_dialog_box().start_dialog(message_id);
+    get_dialog_box().start_dialog(dialog_id);
     is_looking_item = true;
   }
 }
@@ -191,16 +195,16 @@ void ShopItem::action_key_pressed() {
  */
 void ShopItem::update() {
 
-  if (is_looking_item && !get_game().is_showing_message()) {
+  if (is_looking_item && !get_game().is_showing_dialog()) {
 
     // the description message has just finished
-    std::string question_message_id = "_shop.question";
-    get_dialog_box().start_dialog(question_message_id);
-    get_dialog_box().set_variable(question_message_id, price);
+    const std::string question_dialog_id = "_shop.question";
+    get_dialog_box().start_dialog(question_dialog_id);
+    get_dialog_box().set_variable(question_dialog_id, price);
     is_asking_question = true;
     is_looking_item = false;
   }
-  else if (is_asking_question && !get_game().is_showing_message()) {
+  else if (is_asking_question && !get_game().is_showing_dialog()) {
 
     // the question has just finished
     is_asking_question = false;
@@ -209,17 +213,17 @@ void ShopItem::update() {
     if (answer == 0) {
 
       // the player wants to buy the item
-      Equipment &equipment = get_equipment();
+      Equipment& equipment = get_equipment();
 
       if (equipment.get_money() < price) {
-	// not enough rupees
-	Sound::play("wrong");
-	get_dialog_box().start_dialog("_shop.not_enough_money");
+        // not enough rupees
+        Sound::play("wrong");
+        get_dialog_box().start_dialog("_shop.not_enough_money");
       }
       else if (equipment.has_item_maximum(treasure.get_item_name())) {
-	// the player already has the maximum amount of this item
-	Sound::play("wrong");
-	get_dialog_box().start_dialog("_shop.amount_full");
+        // the player already has the maximum amount of this item
+        Sound::play("wrong");
+        get_dialog_box().start_dialog("_shop.amount_full");
       }
       else {
 

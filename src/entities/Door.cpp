@@ -38,7 +38,7 @@ const std::string Door::animations[] = {
   "closed", "small_key", "small_key_block", "big_key", "boss_key", "weak", "very_weak", "", "weak_block"
 };
 
-const MessageId Door::key_required_message_ids[] = {
+const std::string Door::key_required_dialog_ids[] = {
   "", "_small_key_required", "_small_key_required", "_big_key_required", "_boss_key_required", "", "", "", ""
 };
 
@@ -53,7 +53,7 @@ const MessageId Door::key_required_message_ids[] = {
  * @param savegame_variable variable where the door's state is saved
  * (can be -1 for the subtype CLOSED)
  */
-Door::Door(const std::string &name, Layer layer, int x, int y,
+Door::Door(const std::string& name, Layer layer, int x, int y,
 	     int direction, Subtype subtype, int savegame_variable):
   Detector(COLLISION_FACING_POINT | COLLISION_SPRITE, name, layer, x, y, 16, 16),
   subtype(subtype),
@@ -393,7 +393,7 @@ void Door::action_key_pressed() {
     }
     else {
       Sound::play("wrong");
-      get_dialog_box().start_dialog(key_required_message_ids[subtype]);
+      get_dialog_box().start_dialog(key_required_dialog_ids[subtype]);
     }
   }
 }

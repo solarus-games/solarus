@@ -31,7 +31,7 @@ class HUD {
     int nb_elements;
     HudElement *elements[16];
 
-    bool showing_message;
+    bool showing_dialog;
 
     void update_blinking();
 

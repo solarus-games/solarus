@@ -44,7 +44,7 @@
  * @param direction for a generalized NPC: direction for which the interactions are allowed
  * (0 to 4, or -1 for any direction), for a usual NPC: initial direction of the NPC's sprite
  * @param behavior_string indicates what happens when the hero interacts with this NPC:
- * "message#XXX" to start the dialog XXX, "map" to call the map script
+ * "dialog#XXX" to start the dialog XXX, "map" to call the map script
  * (with an event_hero_interaction() call) or "item#XXX" to call the script
  * of item XXX  (with an event_hero_interaction() call)
  */
@@ -53,7 +53,7 @@ NPC::NPC(Game& game, const std::string& name, Layer layer, int x, int y,
     int direction, const std::string& behavior_string):
   Detector(COLLISION_FACING_POINT | COLLISION_RECTANGLE, name, layer, x, y, 0, 0),
   subtype(subtype),
-  message_to_show(""),
+  dialog_to_show(""),
   script_to_call(NULL) {
 
   initialize_sprite(sprite_name, direction);
@@ -73,7 +73,7 @@ NPC::NPC(Game& game, const std::string& name, Layer layer, int x, int y,
   }
   else if (behavior_string.substr(0, 7) == "dialog#") {
     behavior = BEHAVIOR_DIALOG;
-    message_to_show = behavior_string.substr(7);
+    dialog_to_show = behavior_string.substr(7);
   }
   else {
     Debug::die(StringConcat() << "Invalid behavior string for interactive entity '" << name
@@ -282,7 +282,7 @@ void NPC::action_key_pressed() {
     if (effect != KeysEffect::ACTION_KEY_LIFT) {
       // start the normal behavior
       if (behavior == BEHAVIOR_DIALOG) {
-        get_dialog_box().start_dialog(message_to_show);
+        get_dialog_box().start_dialog(dialog_to_show);
       }
       else {
         call_script_hero_interaction();

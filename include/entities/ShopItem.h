@@ -36,7 +36,7 @@ class ShopItem: public Detector {
     // data
     Treasure treasure;                /**< the treasure the player can buy */
     int price;                        /**< the treasure's price in rupees */
-    MessageId message_id;             /**< id of the message describing the shop item */
+    std::string dialog_id;            /**< id of the dialog describing the shop item */
 
     // displaying
     TextSurface *price_digits;        /**< the digits that show the price */
@@ -46,14 +46,14 @@ class ShopItem: public Detector {
     bool is_looking_item;             /**< indicates that the message describing the item is being shown */
     bool is_asking_question;          /**< indicates that the buy question is being shown */
 
-    ShopItem(const std::string &name, Layer layer, int x, int y,
-	const Treasure &treasure, int price, const MessageId &message_id);
+    ShopItem(const std::string& name, Layer layer, int x, int y,
+        const Treasure& treasure, int price, const std::string& dialog_id);
 
   public:
 
     ~ShopItem();
-    static ShopItem* create(Game &game, const std::string &name, Layer layer, int x, int y,
-	const Treasure &treasure, int price, const MessageId &message_id);
+    static ShopItem* create(Game& game, const std::string& name, Layer layer, int x, int y,
+        const Treasure& treasure, int price, const std::string& dialog_id);
     static CreationFunction parse;
 
     EntityType get_type();

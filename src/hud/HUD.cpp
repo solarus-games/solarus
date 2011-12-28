@@ -32,7 +32,9 @@
  * @param game the current game (cannot be NULL)
  */
 HUD::HUD(Game &game):
-  game(game), nb_elements(0), showing_message(false) {
+  game(game),
+  nb_elements(0),
+  showing_dialog(false) {
 
   elements[nb_elements++] = new HeartsView(game, 216, 6);
   elements[nb_elements++] = new RupeesCounter(game, 8, 220);
@@ -110,21 +112,21 @@ void HUD::update_blinking() {
  */
 void HUD::update() {
 
-  // detect when the game is showing a message
-  if (game.is_showing_message() && !showing_message) {
-    showing_message = true;
+  // detect when the game is showing a dialog
+  if (game.is_showing_dialog() && !showing_dialog) {
+    showing_dialog = true;
 
-    // a message is shown: hide or move the top-left icons
+    // a dialog is shown: hide or move the top-left icons
     elements[3]->set_visible(false); // item 0
     elements[4]->set_visible(false); // item 1
     elements[6]->set_visible(false); // pause icon
     elements[5]->set_position(-11, 17); // sword icon
     elements[7]->set_position(-11, 43); // action icon
   }
-  else if (!game.is_showing_message()) {
+  else if (!game.is_showing_dialog()) {
 
-    if (showing_message) {
-      showing_message = false;
+    if (showing_dialog) {
+      showing_dialog = false;
 
       // a message is finished: restore the top-left icons
       elements[3]->set_visible(true); // item 0

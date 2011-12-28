@@ -3696,20 +3696,6 @@ line1 = "et sauf de son"
 line2 = "expédition à la"
 line3 = "Montagne des Terreurs !"
 
-[telepathic_booth.go_billy]
-#       |-----------------------|
-line1 = "$v, tu m'entends ?"
-line2 = "C'est Mamie Lyly ! La"
-line3 = "télépathie, ça marche !"
-next = telepathic_booth.go_billy.2
-
-[telepathic_booth.go_billy.2]
-#       |-----------------------|
-line1 = "Connais-tu Billy le"
-line2 = "Téméraire ? Il paraît"
-line3 = "qu'il est revenu sain"
-next = telepathic_booth.go_billy.3
-
 [telepathic_booth.shop]
 #       |-----------------------|
 line1 = "$v, tu m'entends ?"

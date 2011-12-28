@@ -2078,7 +2078,7 @@ line1 = "C'est fermé à clé !"
 #       |--------------------|
 icon = 73
 line1 = "Il te faut la Grande"
-line2 = "Clé pour cette
+line2 = "Clé pour cette"
 line3 = "serrure !"
 
 [_boss_key_required]
@@ -3946,9 +3946,9 @@ skip = none
 
 [crazy_house.guichet_82_un]
 #       |-----------------------|
-line1 = "Désolé, il te faut"
-line2 = "au un sac d'olive pour
-line3 = "obtenir ce roc magma."
+line1 = "Désolé, il te faut au"
+line2 = "moins un sac d'olives"
+line3 = "pour ce roc magma."
 skip = current
 
 [crazy_house.guichet_82_ok]
@@ -4641,7 +4641,7 @@ next = outside_fields_SE.yoda_finished.1
 #       |-----------------------|
 line1 = "lieux : l'avenir, le"
 line2 = "passé, de vieux amis"
-line3 = "disparus.
+line3 = "disparus."
 
 [outside_fields_SE.west_sign]
 #       |-----------------------|
@@ -5018,7 +5018,7 @@ next = desert.east_house.back_from_dead.2
 #       |-----------------------|
 line1 = "Les jeunes de nos jours"
 line2 = "sont vraiment des"
-line3 = "inconscients !
+line3 = "inconscients !"
 next = desert.east_house.back_from_dead.3
 
 [desert.east_house.back_from_dead.3]

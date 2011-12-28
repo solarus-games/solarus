@@ -31,7 +31,7 @@ std::map<std::string, std::string> FileTools::languages;
  * @param argc number of command-line arguments
  * @param argv command line arguments
  */
-void FileTools::initialize(int argc, char **argv) {
+void FileTools::initialize(int argc, char** argv) {
 
   PHYSFS_init(argv[0]);
 
@@ -107,9 +107,10 @@ void FileTools::quit() {
 
 /**
  * @brief Loads the list of available languages.
- * @param arg_language the language specified as command-line argument (or an empty string if not specified)
+ * @param arg_language the language specified as command-line argument
+ * (or an empty string if not specified)
  */
-void FileTools::initialize_languages(const std::string &arg_language) {
+void FileTools::initialize_languages(const std::string& arg_language) {
 
   // first determine the languages available
   IniFile ini("languages/languages.dat", IniFile::READ);
@@ -117,8 +118,9 @@ void FileTools::initialize_languages(const std::string &arg_language) {
 
     std::string language_code = ini.get_group();
     std::string language_name = ini.get_string_value("name", "");
-    Debug::check_assertion(language_name.size() != 0,
-	StringConcat() << "Missing language name in file 'languages/languages.dat' for group '" << language_code << "'");
+    Debug::check_assertion(language_name.size() != 0, StringConcat() <<
+        "Missing language name in file 'languages/languages.dat' for group '"
+        << language_code << "'");
     languages[language_code] = language_name;
 
     if (ini.get_boolean_value("default", false)) {
@@ -145,7 +147,7 @@ void FileTools::initialize_languages(const std::string &arg_language) {
  *
  * @param language_code code of the language
  */
-void FileTools::set_language(const std::string &language_code) {
+void FileTools::set_language(const std::string& language_code) {
 
   Debug::check_assertion(languages[language_code].size() > 0, StringConcat() << "Unknown language '" << language_code << "'");
   FileTools::language_code = language_code;
@@ -160,7 +162,7 @@ void FileTools::set_language(const std::string &language_code) {
  *
  * @return code of the language, or an empty string if no language is set
  */
-const std::string & FileTools::get_language() {
+const std::string& FileTools::get_language() {
   return language_code;
 }
 
@@ -174,7 +176,7 @@ const std::string & FileTools::get_language() {
  * @return code of the default language, or an empty string if the languages file
  * does not specify a default language
  */
-const std::string & FileTools::get_default_language() {
+const std::string& FileTools::get_default_language() {
   return default_language_code;
 }
 
@@ -183,7 +185,7 @@ const std::string & FileTools::get_default_language() {
  * @brief Returns the list of available languages.
  * @return the available languages (mapping of language codes to language names)
  */
-const std::map<std::string, std::string> & FileTools::get_languages() {
+const std::map<std::string, std::string>& FileTools::get_languages() {
   return languages;
 }
 
@@ -192,7 +194,7 @@ const std::map<std::string, std::string> & FileTools::get_languages() {
  * @param file_name a file name relative to a directory from the search path
  * @return true if this file exists
  */
-bool FileTools::data_file_exists(const std::string &file_name) {
+bool FileTools::data_file_exists(const std::string& file_name) {
   return PHYSFS_exists(file_name.c_str());
 }
 
@@ -207,14 +209,15 @@ bool FileTools::data_file_exists(const std::string &file_name) {
  * @param language_specific true if the file is specific to the current language
  * @return the input stream
  */
-std::istream & FileTools::data_file_open(const std::string &file_name, bool language_specific) {
+std::istream& FileTools::data_file_open(const std::string& file_name,
+    bool language_specific) {
 
   size_t size;
-  char *buffer;
+  char* buffer;
   data_file_open_buffer(file_name, &buffer, &size, language_specific);
 
   // create an input stream
-  std::istringstream *is = new std::istringstream(std::string(buffer, size));
+  std::istringstream* is = new std::istringstream(std::string(buffer, size));
   data_file_close_buffer(buffer);
   return *is;
 }
@@ -223,7 +226,7 @@ std::istream & FileTools::data_file_open(const std::string &file_name, bool lang
  * @brief Closes a text file previously open with data_file_open().
  * @param data_file the input stream to close
  */
-void FileTools::data_file_close(const std::istream &data_file) {
+void FileTools::data_file_close(const std::istream& data_file) {
   delete &data_file;
 }
 
@@ -234,7 +237,8 @@ void FileTools::data_file_close(const std::istream &data_file) {
  * @param size number of bytes to read
  * @param language_specific true if the file is specific to the current language
  */
-void FileTools::data_file_open_buffer(const std::string &file_name, char **buffer, size_t *size, bool language_specific) {
+void FileTools::data_file_open_buffer(const std::string& file_name, char** buffer,
+    size_t* size, bool language_specific) {
 
   std::string full_file_name;
   if (language_specific) {
@@ -245,15 +249,18 @@ void FileTools::data_file_open_buffer(const std::string &file_name, char **buffe
   }
 
   // open the file
-  Debug::check_assertion(PHYSFS_exists(full_file_name.c_str()), StringConcat() << "Data file " << full_file_name << " does not exist");
+  Debug::check_assertion(PHYSFS_exists(full_file_name.c_str()), StringConcat()
+      << "Data file " << full_file_name << " does not exist");
   PHYSFS_file* file = PHYSFS_openRead(full_file_name.c_str());
-  Debug::check_assertion(file != NULL, StringConcat() << "Cannot open data file " << full_file_name);
+  Debug::check_assertion(file != NULL, StringConcat()
+      << "Cannot open data file " << full_file_name);
 
   // load it into memory
   *size = PHYSFS_fileLength(file);
 
   *buffer = new char[*size];
-  Debug::check_assertion(buffer != NULL, StringConcat() << "Cannot allocate memory to read file " << full_file_name);
+  Debug::check_assertion(buffer != NULL, StringConcat()
+      << "Cannot allocate memory to read file " << full_file_name);
 
   PHYSFS_read(file, *buffer, 1, *size);
   PHYSFS_close(file);
@@ -266,15 +273,19 @@ void FileTools::data_file_open_buffer(const std::string &file_name, char **buffe
  * @param size number of bytes to write
  *
  */
-void FileTools::data_file_save_buffer(const std::string &file_name, const char *buffer, size_t size) {
+void FileTools::data_file_save_buffer(const std::string& file_name,
+    const char* buffer, size_t size) {
 
   // open the file to write
   PHYSFS_file *file = PHYSFS_openWrite(file_name.c_str());
-  Debug::check_assertion(file != NULL, StringConcat() << "Cannot open file '" << file_name << "' for writing: " << PHYSFS_getLastError());
+  Debug::check_assertion(file != NULL, StringConcat()
+      << "Cannot open file '" << file_name << "' for writing: "
+      << PHYSFS_getLastError());
  
   // save the memory buffer 
   if (PHYSFS_write(file, buffer, size, 1) == -1) {
-    Debug::die(StringConcat() << "Cannot write file '" << file_name << "': " << PHYSFS_getLastError());
+    Debug::die(StringConcat() << "Cannot write file '" << file_name
+        << "': " << PHYSFS_getLastError());
   }
   PHYSFS_close(file);
 }
@@ -283,7 +294,8 @@ void FileTools::data_file_save_buffer(const std::string &file_name, const char *
  * @brief Closes a data buffer previously open with data_file_open_buffer().
  * @param buffer the buffer to close
  */
-void FileTools::data_file_close_buffer(char *buffer) {
+void FileTools::data_file_close_buffer(char* buffer) {
+
   delete[] buffer;
 }
  
@@ -291,7 +303,8 @@ void FileTools::data_file_close_buffer(char *buffer) {
  * @brief Removes a file from the write directory.
  * @param file_name name of the file to delete
  */
-void FileTools::data_file_delete(const std::string &file_name) {
+void FileTools::data_file_delete(const std::string& file_name) {
+
   PHYSFS_delete(file_name.c_str());
 }
 
@@ -303,7 +316,7 @@ void FileTools::data_file_delete(const std::string &file_name) {
  * @param is an input stream
  * @param value the value read
  */
-void FileTools::read(std::istream &is, int &value) {
+void FileTools::read(std::istream& is, int& value) {
 
   if (!(is >> value)) {
     Debug::die("Cannot read integer from input stream");
@@ -318,7 +331,7 @@ void FileTools::read(std::istream &is, int &value) {
  * @param is an input stream
  * @param value the value read
  */
-void FileTools::read(std::istream &is, uint32_t &value) {
+void FileTools::read(std::istream& is, uint32_t& value) {
 
   int v;
   read(is, v);
@@ -334,7 +347,7 @@ void FileTools::read(std::istream &is, uint32_t &value) {
  * @param is an input stream
  * @param value the value read
  */
-void FileTools::read(std::istream &is, std::string &value) {
+void FileTools::read(std::istream& is, std::string& value) {
 
   if (!(is >> value)) {
     Debug::die("Cannot read string from input stream");

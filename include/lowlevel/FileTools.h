@@ -38,30 +38,32 @@ class FileTools {
     static std::string language_code;                    /**< code of the current language (e.g. "en", "fr", etc.) */
     static std::string default_language_code;            /**< code of the default language */
 
-    static void initialize_languages(const std::string &arg_language);
+    static void initialize_languages(const std::string& arg_language);
 
   public:
 
-    static void initialize(int argc, char **argv);
+    static void initialize(int argc, char** argv);
     static void quit();
 
-    static void set_language(const std::string &language_code);
-    static const std::string & get_language();
-    static const std::string & get_default_language();
-    static const std::map<std::string, std::string> & get_languages();
+    static void set_language(const std::string& language_code);
+    static const std::string& get_language();
+    static const std::string& get_default_language();
+    static const std::map<std::string, std::string>& get_languages();
 
-    static bool data_file_exists(const std::string &file_name);
-    static std::istream & data_file_open(const std::string &file_name, bool language_specific = false);
-    static void data_file_close(const std::istream &data_file);
-    static void data_file_open_buffer(const std::string &file_name, char **buffer, size_t *size,
-	bool language_specific = false);
-    static void data_file_save_buffer(const std::string &file_name, const char *buffer, size_t size);
-    static void data_file_close_buffer(char *buffer);
-    static void data_file_delete(const std::string &file_name);
+    static bool data_file_exists(const std::string& file_name);
+    static std::istream& data_file_open(const std::string& file_name,
+        bool language_specific = false);
+    static void data_file_close(const std::istream& data_file);
+    static void data_file_open_buffer(const std::string& file_name,
+        char** buffer, size_t* size, bool language_specific = false);
+    static void data_file_save_buffer(const std::string& file_name,
+        const char* buffer, size_t size);
+    static void data_file_close_buffer(char* buffer);
+    static void data_file_delete(const std::string& file_name);
 
-    static void read(std::istream &is, int &value);
-    static void read(std::istream &is, uint32_t &value);
-    static void read(std::istream &is, std::string &value);
+    static void read(std::istream& is, int& value);
+    static void read(std::istream& is, uint32_t& value);
+    static void read(std::istream& is, std::string& value);
 };
 
 #endif

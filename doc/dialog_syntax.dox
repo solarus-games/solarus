@@ -207,7 +207,7 @@ your old dialog files to the new Lua format.
 Lines starting with the characters '--' are comments and are ignored by the
 engine.
 
-The definition of a dialog starts with <tt>Dialog{</tt> and ends with
+The definition of a dialog starts with <tt>dialog{</tt> and ends with
 <tt>}</tt>.
 Inside the braces, the properties of the dialog are specified.
 Properties are declared with the syntax <tt>key = value</tt> and
@@ -311,7 +311,7 @@ The letter scrolling speed applies until the dialog box is closed.
 Here is an small example of a dialog file.
 
 @verbatim
-Dialog{
+dialog{
   id = "wise_man",
   skip = "current",
   question = true,
@@ -328,7 +328,7 @@ No way
 }
 -----------------------
 
-Dialog{
+dialog{
   id = "wise_man.insisting",
   question = true,
   next = "wise_man.thanks",
@@ -344,7 +344,7 @@ No way
 }
 -----------------------
 
-Dialog{
+dialog{
   id = "wise_man.thanks",
   text = [[
 I knew I could count on

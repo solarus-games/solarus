@@ -1,7 +1,7 @@
 solarus-0.9.1 (under development)
 
-* Experimental: new syntax of the dialog file in Lua that makes
-parsing, writing and translating dialogs easier
+* Experimental: new syntax of dialog files in Lua that makes parsing, writing
+and translating dialogs easier (a conversion script is available)
 * Experimental: optimize displaying and collisions far from the visible area
 * Experimental: sensors are not obstacles anymore when jumping or using the
 hookshot, they are activated instead

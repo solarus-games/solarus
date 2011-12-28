@@ -5296,10 +5296,6 @@ line1 = "Soit."
 line1 = "Tu as déjà bénéficié de"
 line2 = "cette faveur."
 
-[inferno.want_rupees]
-#       |-----------------------|
-line1 = "Soit."
-
 [inferno.want_black_stones]
 #       |-----------------------|
 line1 = "Avant de soulever ces"

@@ -666,53 +666,85 @@ dialog{
   id = "_item_description.poivron_counter.1",
   icon = 40,
   skip = "all",
+  next = "_item_description.poivron_counter.1_2",
   text = [[
 Ces poivrons sont
 très demandés par
 ceux qui aiment
-manger épicé.
 ]]
 }
 --------------------
+
+dialog{
+  id = "_item_description.poivron_counter.1_2",
+  text = [[
+manger épicé.
+]]
+}
+-----------------------
 
 dialog{
   id = "_item_description.balai_counter.1",
   icon = 41,
   skip = "all",
+  next = "_item_description.balai_counter.1_2",
   text = [[
 Un balai vieux et
 usagé, personne ne
 voudra te le
-reprendre !
 ]]
 }
 --------------------
+
+dialog{
+  id = "_item_description.balai_counter.1_2",
+  text = [[
+reprendre !
+]]
+}
+-----------------------
 
 dialog{
   id = "_item_description.cuillere_counter.1",
   icon = 42,
   skip = "all",
+  next = "_item_description.cuillere_counter.1_2",
   text = [[
 De belles cuillères
 en argent, ne
 t'enfuie pas avec
-vilain !
 ]]
 }
 --------------------
 
 dialog{
+  id = "_item_description.cuillere_counter.1_2",
+  text = [[
+vilain !
+]]
+}
+-----------------------
+
+dialog{
   id = "_item_description.tapisserie_counter.1",
   icon = 43,
   skip = "all",
+  next = "_item_description.tapisserie_counter.1_2",
   text = [[
 Une tapisserie du
 XVIIIème siècle, un
 travail comme on
-n'en fait plus.
 ]]
 }
 --------------------
+
+dialog{
+  id = "_item_description.tapisserie_counter.1_2",
+  text = [[
+n'en fait plus.
+]]
+}
+-----------------------
 
 dialog{
   id = "_item_description.roc_magma_counter.1",
@@ -752,45 +784,76 @@ dialog{
   id = "_item_description.bocal_epice_counter.1",
   icon = 47,
   skip = "all",
+  next = "_item_description.bocal_epice_counter.1_2",
   text = [[
 Des bocaux d'épices
 contenant du thym,
 romarin, coriandre,
+]]
+}
+--------------------
+
+dialog{
+  id = "_item_description.bocal_epice_counter.1_2",
+  text = [[
 touteuh la
 chaleureuh du
 sudeuh !
 ]]
 }
---------------------
+-----------------------
 
 dialog{
   id = "_item_description.hache_counter.1",
   icon = 48,
   skip = "all",
+  next = "_item_description.hache_counter.1_2",
   text = [[
 Merveilleusement
 aiguisée, cette
 hache est garantie
-20 ans.
 ]]
 }
 --------------------
 
 dialog{
+  id = "_item_description.hache_counter.1_2",
+  text = [[
+20 ans.
+]]
+}
+-----------------------
+
+dialog{
   id = "_item_description.parfum_counter.1",
   icon = 49,
   skip = "all",
+  next = "_item_description.parfum_counter.1_2",
   text = [[
 Parfum de marque
 renommée, ce Kipu
 les fera toutes
-tomber comme des
-mouches !
 ]]
 }
 --------------------
 
---  Plume
+dialog{
+  id = "_item_description.parfum_counter.1_2",
+  text = [[
+tomber comme des
+mouches !
+]]
+}
+-----------------------
+
+-- ---------------------
+-- Obtention d'un trésor
+-- ---------------------
+-- 
+-- Les messages ci-dessous sont affichés lorsque le joueur obtient
+-- un trésor, généralement en ouvrant un coffre ou en l'achetant
+-- dans un magasin.
+-- Plume
 dialog{
   id = "_treasure.feather.1",
   icon = 0,
@@ -805,7 +868,7 @@ moins essayer !
 }
 --------------------
 
---  Arc seul
+-- Arc seul
 dialog{
   id = "_treasure.bow.1",
   icon = 2,
@@ -817,7 +880,7 @@ Robin des Bois !
 }
 --------------------
 
---  Arc & Flèches
+-- Arc & Flèches
 dialog{
   id = "_treasure.bow.2",
   icon = 3,
@@ -829,7 +892,7 @@ Robin des Bois !
 }
 --------------------
 
---  Boomerang
+-- Boomerang
 dialog{
   id = "_treasure.boomerang.1",
   icon = 4,
@@ -848,7 +911,7 @@ de les découvrir !
 }
 --------------------
 
---  Lanterne
+-- Lanterne
 dialog{
   id = "_treasure.lamp.1",
   icon = 5,
@@ -864,7 +927,7 @@ braseros.
 }
 --------------------
 
---  Grappin
+-- Grappin
 dialog{
   id = "_treasure.hookshot.1",
   icon = 6,
@@ -878,7 +941,7 @@ inacessibles !
 }
 --------------------
 
---  Flacon vide
+-- Flacon vide
 dialog{
   id = "_treasure.bottle_1.1",
   icon = 7,
@@ -891,7 +954,7 @@ intérêt quelconque !
 }
 --------------------
 
---  Eau
+-- Eau
 dialog{
   id = "_treasure.bottle_1.2",
   icon = 8,
@@ -902,7 +965,7 @@ l'eau !
 }
 --------------------
 
---  Potion rouge
+-- Potion rouge
 dialog{
   id = "_treasure.bottle_1.3",
   icon = 9,
@@ -916,7 +979,7 @@ retrouver toute ton
 }
 --------------------
 
---  Potion verte
+-- Potion verte
 dialog{
   id = "_treasure.bottle_1.4",
   icon = 10,
@@ -930,7 +993,7 @@ retrouver toute ton
 }
 --------------------
 
---  Potion bleue
+-- Potion bleue
 dialog{
   id = "_treasure.bottle_1.5",
   icon = 11,
@@ -944,7 +1007,7 @@ vie et ta magie !
 }
 --------------------
 
---  Fée dans Flacon
+-- Fée dans Flacon
 dialog{
   id = "_treasure.bottle_1.6",
   icon = 12,
@@ -962,7 +1025,7 @@ Coeurs.
 }
 --------------------
 
---  Flacon vide
+-- Flacon vide
 dialog{
   id = "_treasure.bottle_2.1",
   icon = 7,
@@ -975,7 +1038,7 @@ intérêt quelconque !
 }
 --------------------
 
---  Eau
+-- Eau
 dialog{
   id = "_treasure.bottle_2.2",
   icon = 8,
@@ -986,7 +1049,7 @@ l'eau !
 }
 --------------------
 
---  Potion rouge
+-- Potion rouge
 dialog{
   id = "_treasure.bottle_2.3",
   icon = 9,
@@ -1000,7 +1063,7 @@ retrouver toute ton
 }
 --------------------
 
---  Potion verte
+-- Potion verte
 dialog{
   id = "_treasure.bottle_2.4",
   icon = 10,
@@ -1014,7 +1077,7 @@ retrouver toute ton
 }
 --------------------
 
---  Potion bleue
+-- Potion bleue
 dialog{
   id = "_treasure.bottle_2.5",
   icon = 11,
@@ -1028,7 +1091,7 @@ vie et ta magie !
 }
 --------------------
 
---  Fée dans Flacon
+-- Fée dans Flacon
 dialog{
   id = "_treasure.bottle_2.6",
   icon = 12,
@@ -1046,7 +1109,7 @@ Coeurs.
 }
 --------------------
 
---  Flacon vide
+-- Flacon vide
 dialog{
   id = "_treasure.bottle_3.1",
   icon = 7,
@@ -1059,7 +1122,7 @@ intérêt quelconque !
 }
 --------------------
 
---  Eau
+-- Eau
 dialog{
   id = "_treasure.bottle_3.2",
   icon = 8,
@@ -1070,7 +1133,7 @@ l'eau !
 }
 --------------------
 
---  Potion rouge
+-- Potion rouge
 dialog{
   id = "_treasure.bottle_3.3",
   icon = 9,
@@ -1084,7 +1147,7 @@ retrouver toute ton
 }
 --------------------
 
---  Potion verte
+-- Potion verte
 dialog{
   id = "_treasure.bottle_3.4",
   icon = 10,
@@ -1098,7 +1161,7 @@ retrouver toute ton
 }
 --------------------
 
---  Potion bleue
+-- Potion bleue
 dialog{
   id = "_treasure.bottle_3.5",
   icon = 11,
@@ -1112,7 +1175,7 @@ vie et ta magie !
 }
 --------------------
 
---  Fée dans Flacon
+-- Fée dans Flacon
 dialog{
   id = "_treasure.bottle_3.6",
   icon = 12,
@@ -1130,7 +1193,7 @@ Coeurs.
 }
 --------------------
 
---  Flacon vide
+-- Flacon vide
 dialog{
   id = "_treasure.bottle_4.1",
   icon = 7,
@@ -1143,7 +1206,7 @@ intérêt quelconque !
 }
 --------------------
 
---  Eau
+-- Eau
 dialog{
   id = "_treasure.bottle_4.2",
   icon = 8,
@@ -1154,7 +1217,7 @@ l'eau !
 }
 --------------------
 
---  Potion rouge
+-- Potion rouge
 dialog{
   id = "_treasure.bottle_4.3",
   icon = 9,
@@ -1168,7 +1231,7 @@ retrouver toute ton
 }
 --------------------
 
---  Potion verte
+-- Potion verte
 dialog{
   id = "_treasure.bottle_4.4",
   icon = 10,
@@ -1182,7 +1245,7 @@ retrouver toute ton
 }
 --------------------
 
---  Potion bleue
+-- Potion bleue
 dialog{
   id = "_treasure.bottle_4.5",
   icon = 11,
@@ -1196,7 +1259,7 @@ vie et ta magie !
 }
 --------------------
 
---  Fée dans Flacon
+-- Fée dans Flacon
 dialog{
   id = "_treasure.bottle_4.6",
   icon = 12,
@@ -1214,7 +1277,7 @@ Coeurs.
 }
 --------------------
 
---  Bottes de Pégase
+-- Bottes de Pégase
 dialog{
   id = "_treasure.pegasus_shoes.1",
   icon = 13,
@@ -1229,7 +1292,7 @@ super vite !
 }
 --------------------
 
---  Miroir Mystique
+-- Miroir Mystique
 dialog{
   id = "_treasure.mystic_mirror.1",
   icon = 14,
@@ -1244,7 +1307,7 @@ quête...
 }
 --------------------
 
---  Canne de Somaria
+-- Canne de Somaria
 dialog{
   id = "_treasure.cane_of_somaria.1",
   icon = 15,
@@ -1259,7 +1322,7 @@ blocs et t'accrocher
 }
 --------------------
 
---  3 Pommes
+-- 3 Pommes
 dialog{
   id = "_treasure.apple.1",
   icon = 16,
@@ -1273,7 +1336,7 @@ des Coeurs !
 }
 --------------------
 
---  1 Pain au Chocolat
+-- 1 Pain au Chocolat
 dialog{
   id = "_treasure.pain_au_chocolat.1",
   icon = 17,
@@ -1287,7 +1350,7 @@ récupérer 3 Coeurs.
 }
 --------------------
 
---  1 Croissant
+-- 1 Croissant
 dialog{
   id = "_treasure.croissant.1",
   icon = 18,
@@ -1302,7 +1365,7 @@ pour récupérer
 }
 --------------------
 
---  Clé de Roc
+-- Clé de Roc
 dialog{
   id = "_treasure.rock_key.1",
   icon = 19,
@@ -1313,7 +1376,7 @@ Clé de Roc !$0
 }
 --------------------
 
---  Clé d'os
+-- Clé d'os
 dialog{
   id = "_treasure.bone_key.1",
   icon = 20,
@@ -1326,7 +1389,7 @@ le répère de Ganon !
 }
 --------------------
 
---  Clé de Terre
+-- Clé de Terre
 dialog{
   id = "_treasure.clay_key.1",
   icon = 21,
@@ -1340,7 +1403,7 @@ village !
 }
 --------------------
 
---  Tarte aux Pommes
+-- Tarte aux Pommes
 dialog{
   id = "_treasure.apple_pie.1",
   icon = 22,
@@ -1354,7 +1417,7 @@ grave !
 }
 --------------------
 
---  Palmes
+-- Palmes
 dialog{
   id = "_treasure.flippers.1",
   icon = 26,
@@ -1368,7 +1431,7 @@ profonde !
 }
 --------------------
 
---  Cape Magique
+-- Cape Magique
 dialog{
   id = "_treasure.magic_cape.1",
   icon = 27,
@@ -1382,7 +1445,7 @@ mur fragile.
 }
 --------------------
 
---  Clé de Fer
+-- Clé de Fer
 dialog{
   id = "_treasure.iron_key.1",
   icon = 28,
@@ -1396,7 +1459,7 @@ va avec !
 }
 --------------------
 
---  Clé de Pierre
+-- Clé de Pierre
 dialog{
   id = "_treasure.stone_key.1",
   icon = 29,
@@ -1410,7 +1473,7 @@ correspond ?
 }
 --------------------
 
---  Clé de Bois
+-- Clé de Bois
 dialog{
   id = "_treasure.wooden_key.1",
   icon = 30,
@@ -1423,7 +1486,7 @@ tu peux l'utiliser !
 }
 --------------------
 
---  Clé de Glace
+-- Clé de Glace
 dialog{
   id = "_treasure.ice_key.1",
   icon = 31,
@@ -1437,7 +1500,7 @@ lieu glacial...
 }
 --------------------
 
---  Poigne de Fer
+-- Poigne de Fer
 dialog{
   id = "_treasure.glove.1",
   icon = 32,
@@ -1451,7 +1514,7 @@ maintenant !
 }
 --------------------
 
---  Poigne d'Or
+-- Poigne d'Or
 dialog{
   id = "_treasure.glove.2",
   icon = 33,
@@ -1465,7 +1528,7 @@ noires !
 }
 --------------------
 
---  Pierre de Feu
+-- Pierre de Feu
 dialog{
   id = "_treasure.fire_stone.1",
   icon = 34,
@@ -1476,7 +1539,7 @@ Pierre de Feu !
 }
 --------------------
 
---  Carte du Monde
+-- Carte du Monde
 dialog{
   id = "_treasure.world_map.1",
   icon = 50,
@@ -1489,7 +1552,7 @@ dans l'écran Carte.
 }
 --------------------
 
---  Grand sac de rubis
+-- Grand sac de rubis
 dialog{
   id = "_treasure.rupee_bag.2",
   icon = 52,
@@ -1505,7 +1568,7 @@ pu être utile !
 }
 --------------------
 
---  Sac de rubis géant
+-- Sac de rubis géant
 dialog{
   id = "_treasure.rupee_bag.3",
   icon = 53,
@@ -1518,7 +1581,7 @@ jusqu'à 999 rubis !
 }
 --------------------
 
---  Petit sac de bombes
+-- Petit sac de bombes
 dialog{
   id = "_treasure.bomb_bag.1",
   icon = 54,
@@ -1533,7 +1596,7 @@ BOUM !
 }
 --------------------
 
---  Grand sac de bombes
+-- Grand sac de bombes
 dialog{
   id = "_treasure.bomb_bag.2",
   icon = 55,
@@ -1548,7 +1611,7 @@ jusqu'à 11 Bombes !
 }
 --------------------
 
---  Sac de bombes géant
+-- Sac de bombes géant
 dialog{
   id = "_treasure.bomb_bag.3",
   icon = 56,
@@ -1562,7 +1625,7 @@ jusqu'à 12 Bombes !
 }
 --------------------
 
---  Grand carquois 
+-- Grand carquois 
 dialog{
   id = "_treasure.quiver.2",
   icon = 58,
@@ -1576,7 +1639,7 @@ au lieu de 10 !
 }
 --------------------
 
---  Carquois géant
+-- Carquois géant
 dialog{
   id = "_treasure.quiver.3",
   icon = 59,
@@ -1590,7 +1653,7 @@ au lieu de 30 !
 }
 --------------------
 
---  Cotte de mailles bleue
+-- Cotte de mailles bleue
 dialog{
   id = "_treasure.tunic.2",
   icon = 61,
@@ -1605,7 +1668,7 @@ plus glaciales...
 }
 --------------------
 
---  Cotte de mailles rouge
+-- Cotte de mailles rouge
 dialog{
   id = "_treasure.tunic.3",
   icon = 62,
@@ -1620,7 +1683,7 @@ les ennemis !
 }
 --------------------
 
---  Bouclier
+-- Bouclier
 dialog{
   id = "_treasure.shield.1",
   icon = 63,
@@ -1634,7 +1697,7 @@ traîner dehors ?
 }
 --------------------
 
---  Bouclier de Feu
+-- Bouclier de Feu
 dialog{
   id = "_treasure.shield.2",
   icon = 64,
@@ -1649,7 +1712,7 @@ enflammées !
 }
 --------------------
 
---  Bouclier Miroir
+-- Bouclier Miroir
 dialog{
   id = "_treasure.shield.3",
   icon = 65,
@@ -1840,7 +1903,7 @@ Ca poutre !
 }
 --------------------
 
---  1 Bombe
+-- 1 Bombe
 dialog{
   id = "_treasure.bomb.1",
   icon = 82,
@@ -1863,7 +1926,7 @@ obstacle.
 }
 -----------------------
 
---  3 Bombes
+-- 3 Bombes
 dialog{
   id = "_treasure.bomb.2",
   icon = 82,
@@ -1876,7 +1939,7 @@ Utilise une Bombe
 }
 --------------------
 
---  8 Bombes
+-- 8 Bombes
 dialog{
   id = "_treasure.bomb.3",
   icon = 82,
@@ -1889,7 +1952,7 @@ Utilise une Bombe
 }
 --------------------
 
---  1 Flèche
+-- 1 Flèche
 dialog{
   id = "_treasure.arrow.1",
   icon = 83,
@@ -1912,7 +1975,7 @@ des ennemis coriaces
 }
 -----------------------
 
---  5 Flèches
+-- 5 Flèches
 dialog{
   id = "_treasure.arrow.2",
   icon = 83,
@@ -1925,7 +1988,7 @@ Utilise l'Arc et les
 }
 --------------------
 
---  10 Flèches
+-- 10 Flèches
 dialog{
   id = "_treasure.arrow.3",
   icon = 83,
@@ -1938,7 +2001,7 @@ Utilise l'Arc et les
 }
 --------------------
 
---  1 Coeur
+-- 1 Coeur
 dialog{
   id = "_treasure.heart.1",
   icon = 84,
@@ -1949,7 +2012,7 @@ Coeur !
 }
 --------------------
 
---  Petite bouteille de magie
+-- Petite bouteille de magie
 dialog{
   id = "_treasure.magic_flask.1",
   icon = 85,
@@ -1961,7 +2024,7 @@ d'énergie magique !
 }
 --------------------
 
---  Grande bouteille de magie
+-- Grande bouteille de magie
 dialog{
   id = "_treasure.magic_flask.2",
   icon = 86,
@@ -1973,7 +2036,7 @@ d'énergie magique !
 }
 --------------------
 
---  1 rubis vert
+-- 1 rubis vert
 dialog{
   id = "_treasure.rupee.1",
   icon = 90,
@@ -1984,7 +2047,7 @@ Rubis !
 }
 --------------------
 
---  1 rubis bleu
+-- 1 rubis bleu
 dialog{
   id = "_treasure.rupee.2",
   icon = 91,
@@ -1996,7 +2059,7 @@ Il vaut 5 Rubis !
 }
 --------------------
 
---  1 rubis rouge
+-- 1 rubis rouge
 dialog{
   id = "_treasure.rupee.3",
   icon = 92,
@@ -2008,7 +2071,7 @@ Il vaut 20 Rubis !
 }
 --------------------
 
---  50 rubis
+-- 50 rubis
 -- Remarque : clin d'oeil à Link's Awakening
 dialog{
   id = "_treasure.rupee.4",
@@ -2021,7 +2084,7 @@ Merveilleux !
 }
 --------------------
 
---  100 rubis
+-- 100 rubis
 -- Remarque : clin d'oeil à Link's Awakening
 dialog{
   id = "_treasure.rupee.5",
@@ -2034,7 +2097,7 @@ Fantastique !
 }
 --------------------
 
---  200 rubis
+-- 200 rubis
 -- Remarque : clin d'oeil à Link's Awakening
 dialog{
   id = "_treasure.rupee.6",
@@ -2047,7 +2110,7 @@ C'est l'extase !
 }
 --------------------
 
---  Zelda
+-- Zelda
 dialog{
   id = "_treasure.zelda.1",
   text = [[
@@ -2163,17 +2226,30 @@ tout... ou pas.
 dialog{
   id = "_treasure.parfum.1",
   icon = 49,
+  next = "_treasure.parfum.1_2",
   text = [[
 On te donne le
 parfum Kipu de
 Cacaco Charnel, va
+]]
+}
+--------------------
+
+dialog{
+  id = "_treasure.parfum.1_2",
+  text = [[
 vite le refourguer
 à quelqu'un avant de
 mourir asphyxié !
 ]]
 }
---------------------
+-----------------------
 
+-- ---------------
+-- Autres messages
+-- ---------------
+-- 
+-- Autres messages divers affichés par le moteur de jeu
 -- Affiché à la fin des dialogues expliquant
 -- que le joueur a obtenu un objet qui consomme
 -- de l'énergie magique (même message que dans ALTTP)
@@ -2571,15 +2647,26 @@ pénurie de pots.
 
 dialog{
   id = "caverne_maudite.pancarte",
+  next = "caverne_maudite.pancarte2",
   text = [[
 Libère-toi de tout.
 Oublie la peur, le doute,
 et la vraisemblance.
+]]
+}
+-----------------------
+
+dialog{
+  id = "caverne_maudite.pancarte2",
+  text = [[
 Libère ton esprit $v.
 ]]
 }
 -----------------------
 
+-- =========================================
+-- BUREAU DES OBJETS TROUVES
+-- =========================================
 dialog{
   id = "crazy_house.title",
   text = [[
@@ -2604,14 +2691,38 @@ Objets Trouvés.
 dialog{
   id = "crazy_house.welcome_message_2",
   skip = "current",
+  next = "crazy_house.welcome_message_3",
   text = [[
 Aussi connu sous le nom
 de... 3T :
 Tu Trouves de Tout !
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.welcome_message_3",
+  next = "crazy_house.welcome_message_4",
+  text = [[
 Papier et crayon sont
 de rigueur...
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.welcome_message_4",
+  next = "crazy_house.welcome_message_5",
+  text = [[
 A gauche : Accueil,
 guichets 11, 21.
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.welcome_message_5",
+  text = [[
 A droite :
 guichets 12, 22
 ]]
@@ -2674,10 +2785,18 @@ droite
 dialog{
   id = "crazy_house.directions_2F",
   skip = "current",
+  next = "crazy_house.directions_2F_2",
   text = [[
 A gauche :
 guichets 45, 47, 49, 84
 En bas : guichet 21
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.directions_2F_2",
+  text = [[
 A droite : guichet 33
 Escalier :
 guichet 11, accueil
@@ -2724,14 +2843,38 @@ guichets 41, 43, 82
 dialog{
   id = "crazy_house.directions_3F",
   skip = "current",
+  next = "crazy_house.directions_3F_2",
   text = [[
 A droite :
 guichets 31, 32, 36
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.directions_3F_2",
+  next = "crazy_house.directions_3F_2_2",
+  text = [[
 A gauche : giga bouton
 d'extra collision à
 charge supérieure de
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.directions_3F_2_2",
+  next = "crazy_house.directions_3F_2_3",
+  text = [[
 15 000 Mégawatts.
 En haut : guichet 82
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.directions_3F_2_3",
+  text = [[
 Cet écriteau est
 également là pour vous
 gêner. Merci.
@@ -2786,10 +2929,18 @@ Mégawatts.
 dialog{
   id = "crazy_house.alcoholic_man",
   skip = "current",
+  next = "crazy_house.alcoholic_man_2",
   text = [[
 Hip ! Je ne sais
 même... hip ! plus...
 comment je suis hip !
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.alcoholic_man_2",
+  text = [[
 ... arrivé ici ! Hip !
 ]]
 }
@@ -2798,15 +2949,39 @@ comment je suis hip !
 dialog{
   id = "crazy_house.infinite_greetings",
   skip = "current",
+  next = "crazy_house.infinite_greetings_2",
   text = [[
 Tu dois appuyer sur
 le giga bouton d'extra
 collision à charge
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.infinite_greetings_2",
+  next = "crazy_house.infinite_greetings_3",
+  text = [[
 supérieure de 15 000
 Mégawatts pour
 traverser le couloir
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.infinite_greetings_3",
+  next = "crazy_house.infinite_greetings_4",
+  text = [[
 sans fin, ce que tu
 n'as pas fait !
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.infinite_greetings_4",
+  text = [[
 GWAH HA HA HA HA !
 ]]
 }
@@ -2815,28 +2990,92 @@ GWAH HA HA HA HA !
 dialog{
   id = "crazy_house.hint_part2",
   skip = "current",
+  next = "crazy_house.hint_part2_2",
   text = [[
 En touchant cette
 dalle, un guichetier te
 contacte par
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.hint_part2_2",
+  next = "crazy_house.hint_part2_3",
+  text = [[
 télépathie.
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.hint_part2_3",
+  next = "crazy_house.hint_part2_4",
+  text = [[
 Humm humm 1, 2...
 1, 2... vous
 m'entendez ?
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.hint_part2_4",
+  next = "crazy_house.hint_part2_5",
+  text = [[
 C'est branché là ?
 Ha hum...
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.hint_part2_5",
+  next = "crazy_house.hint_part2_6",
+  text = [[
 Jeune aventurier, si
 vous ne souhaitez
 écouler votre courte
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.hint_part2_6",
+  next = "crazy_house.hint_part2_7",
+  text = [[
 retraite dans les
 tréfonds de l'admi-
 nistration, suivez mon
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.hint_part2_7",
+  next = "crazy_house.hint_part2_8",
+  text = [[
 conseil : le cristal
 caché doit être activé
 à distance.
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.hint_part2_8",
+  next = "crazy_house.hint_part2_9",
+  text = [[
 Quoi, vous l'avez déjà
 fait ? Ah...
 Hum... attendez,
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.hint_part2_9",
+  text = [[
 crr... je passe sous
 un tunnel crr...
 crr... crr... clic !
@@ -2844,7 +3083,6 @@ crr... crr... clic !
 }
 -----------------------
 
--- |-----------------------|	
 dialog{
   id = "crazy_house.chemin_de_dieu",
   skip = "current",
@@ -2857,10 +3095,6 @@ foi.
 }
 -----------------------
 
--- |-----------------------|	
--- ==============================================
--- AGENT EN GREVE
--- ==============================================
 dialog{
   id = "crazy_house.chemin_de_dieu_2",
   skip = "current",
@@ -2871,19 +3105,46 @@ Junior !
 }
 -----------------------
 
+-- ==============================================
+-- AGENT EN GREVE
+-- ==============================================
 dialog{
   id = "crazy_house.public_agent",
   skip = "all",
+  next = "crazy_house.public_agent_2",
   text = [[
 Quoi ? Tu veux passer ?
 Nan mais tu vois pas
 que je suis en grève ?
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.public_agent_2",
+  next = "crazy_house.public_agent_3",
+  text = [[
 Je te jure ! Vous, les
 gens du privé, vous
 ne comprennez rien à
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.public_agent_3",
+  next = "crazy_house.public_agent_4",
+  text = [[
 nos revendications mais
 vous vous permettez
 quand même de nous
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.public_agent_4",
+  text = [[
 juger.
 Allez ! Du balai,
 suppôt du MEDEF !!
@@ -2891,22 +3152,65 @@ suppôt du MEDEF !!
 }
 -----------------------
 
+-- ==============================================
+-- ACCUEIL
+-- ==============================================
 dialog{
   id = "crazy_house.accueil_ech_eq_0",
+  next = "crazy_house.accueil_ech_eq_0_2",
   text = [[
 Bonjour monsieur, vous
 avez perdu quelque
 chose ?
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.accueil_ech_eq_0_2",
+  next = "crazy_house.accueil_ech_eq_0_3",
+  text = [[
 Quel est l'objet que
 vous recherchez ?
 $0Des gants ?
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.accueil_ech_eq_0_3",
+  next = "crazy_house.accueil_ech_eq_0_4",
+  text = [[
 Attendez, je regarde...
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.accueil_ech_eq_0_4",
+  next = "crazy_house.accueil_ech_eq_0_5",
+  text = [[
 Hmmm je ne suis pas
 sûre, peut-être que
 vous pouvez vous
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.accueil_ech_eq_0_5",
+  next = "crazy_house.accueil_ech_eq_0_6",
+  text = [[
 rendre au guichet 21.
 Prenez l'escalier et
 vous le trouverez
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.accueil_ech_eq_0_6",
+  text = [[
 au premier étage.
 ]]
 }
@@ -2924,15 +3228,39 @@ guichet 21.
 
 dialog{
   id = "crazy_house.accueil_ech_eq_2",
+  next = "crazy_house.accueil_ech_eq_2_2",
   text = [[
 Oui ? Ah, le guichetier
 ne comprend rien ?
 Hmmm, essayez peut-être
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.accueil_ech_eq_2_2",
+  next = "crazy_house.accueil_ech_eq_2_3",
+  text = [[
 le guichet 41, il est
 au rez-de-chaussée mais
 vous devez faire le
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.accueil_ech_eq_2_3",
+  next = "crazy_house.accueil_ech_eq_2_4",
+  text = [[
 tour par le premier
 étage.
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.accueil_ech_eq_2_4",
+  text = [[
 Passez par l'escalier
 derrière moi puis
 demandez aux gens.
@@ -2942,10 +3270,18 @@ demandez aux gens.
 
 dialog{
   id = "crazy_house.accueil_ech_eq_3",
+  next = "crazy_house.accueil_ech_eq_3_2",
   text = [[
 Le guichet 41 est au
 rez-de-chaussée, passez
 d'abord par l'escalier
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.accueil_ech_eq_3_2",
+  text = [[
 derrière moi et
 demandez aux gens.
 ]]
@@ -2964,10 +3300,18 @@ dans l'aile gauche.
 
 dialog{
   id = "crazy_house.accueil_ech_eo_5-7",
+  next = "crazy_house.accueil_ech_eo_5-7_2",
   text = [[
 Le guichet 12... Il est
 à cet étage mais dans
 l'aile droite,
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.accueil_ech_eo_5-7_2",
+  text = [[
 il va falloir passer
 par le premier étage
 encore une fois.
@@ -2977,13 +3321,29 @@ encore une fois.
 
 dialog{
   id = "crazy_house.accueil_ech_eq_6",
+  next = "crazy_house.accueil_ech_eq_6_2",
   text = [[
 Le guichet 32 se situe
 au deuxième étage dans
 l'aile droite.
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.accueil_ech_eq_6_2",
+  next = "crazy_house.accueil_ech_eq_6_3",
+  text = [[
 Vous devez prendre
 l'escalier au premier
 étage, près du
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.accueil_ech_eq_6_3",
+  text = [[
 guichet 82.
 ]]
 }
@@ -3001,10 +3361,18 @@ dans l'aide droite.
 
 dialog{
   id = "crazy_house.accueil_ech_eq_9",
+  next = "crazy_house.accueil_ech_eq_9_2",
   text = [[
 Le guichet 12 est à cet
 étage, mais dans l'aile
 droite.
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.accueil_ech_eq_9_2",
+  text = [[
 Passez par le premier
 étage pour faire le
 tour.
@@ -3014,10 +3382,18 @@ tour.
 
 dialog{
   id = "crazy_house.accueil_ech_eq_10",
+  next = "crazy_house.accueil_ech_eq_10_2",
   text = [[
 Pour vous rendre au
 guichet 33, vous devez
 monter jusqu'au
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.accueil_ech_eq_10_2",
+  text = [[
 deuxième étage, dans
 l'aile gauche.
 ]]
@@ -3026,13 +3402,29 @@ l'aile gauche.
 
 dialog{
   id = "crazy_house.accueil_ech_eq_11",
+  next = "crazy_house.accueil_ech_eq_11_2",
   text = [[
 Vous ne savez pas quoi
 faire de cette clé ?
 C'est la clé d'un local
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.accueil_ech_eq_11_2",
+  next = "crazy_house.accueil_ech_eq_11_3",
+  text = [[
 au deuxième étage je
 étage je crois, dans
 l'aile gauche...
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.accueil_ech_eq_11_3",
+  text = [[
 ... si mes souvenirs
 sont bons.
 ]]
@@ -3041,10 +3433,18 @@ sont bons.
 
 dialog{
   id = "crazy_house.accueil_epi_eo_1-7",
+  next = "crazy_house.accueil_epi_eo_1-7_2",
   text = [[
 Si vous cherchez des
 poivrons, allez au
 guichet 84.
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.accueil_epi_eo_1-7_2",
+  text = [[
 Il est au premier
 étage, aile gauche.
 ]]
@@ -3053,9 +3453,17 @@ Il est au premier
 
 dialog{
   id = "crazy_house.accueil_epi_eo_2-6",
+  next = "crazy_house.accueil_epi_eo_2-6_2",
   text = [[
 Guichet 11, juste
 derrière moi monsieur.
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.accueil_epi_eo_2-6_2",
+  text = [[
 (mon dieu, mais il n'a
 aucune mémoire !)
 ]]
@@ -3064,10 +3472,18 @@ aucune mémoire !)
 
 dialog{
   id = "crazy_house.accueil_epi_eo_3-5",
+  next = "crazy_house.accueil_epi_eo_3-5_2",
   text = [[
 Pour trouver le
 guichet 22, rendez-vous
 au premier étage
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.accueil_epi_eo_3-5_2",
+  text = [[
 aile droite, par
 l'escalier derrière
 moi.
@@ -3077,10 +3493,18 @@ moi.
 
 dialog{
   id = "crazy_house.accueil_epi_eo_4-9",
+  next = "crazy_house.accueil_epi_eo_4-9_2",
   text = [[
 Des sacs de riz ?
 Voyons... guichet 36,
 c'est au deuxième étage
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.accueil_epi_eo_4-9_2",
+  text = [[
 aile droite. Il faut
 prendre l'escalier
 du premier aile droite.
@@ -3100,13 +3524,29 @@ désolé.
 
 dialog{
   id = "crazy_house.accueil_bal_eo_1-6-8-10",
+  next = "crazy_house.accueil_bal_eo_1-6-8-10_2bis",
   text = [[
 Le guichet 22 doit
 avoir des tapisseries
 et des balais.
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.accueil_bal_eo_1-6-8-10_2bis",
+  next = "crazy_house.accueil_bal_eo_1-6-8-10_2",
+  text = [[
 Pour le trouver,
 rendez-vous au premier
 étage aile droite par
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.accueil_bal_eo_1-6-8-10_2",
+  text = [[
 l'escalier derrière
 moi.
 ]]
@@ -3125,10 +3565,18 @@ droite.
 
 dialog{
   id = "crazy_house.accueil_bal_eq_3",
+  next = "crazy_house.accueil_bal_eq_3_2",
   text = [[
 Le guichet 45 ?
 Hummm, où l'ont-il mis
 celui-là... ? Il doit
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.accueil_bal_eq_3_2",
+  text = [[
 être au rez-de-chaussée
 aile gauche s'il n'a
 pas été déplacé...
@@ -3148,10 +3596,18 @@ droite.
 
 dialog{
   id = "crazy_house.accueil_bal_eo_5-9",
+  next = "crazy_house.accueil_bal_eo_5-9_2",
   text = [[
 Mais je ne vous ai
 pas déjà dit que le
 guichet 11 était
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.accueil_bal_eo_5-9_2",
+  text = [[
 juste derrière moi ?
 ]]
 }
@@ -3183,9 +3639,6 @@ Bonne continuation !
 }
 -----------------------
 
--- ==============================================
--- GUICHET 11
--- ==============================================
 dialog{
   id = "crazy_house.depot_ici",
   text = [[
@@ -3194,6 +3647,9 @@ dialog{
 }
 -----------------------
 
+-- ==============================================
+-- GUICHET 11
+-- ==============================================
 dialog{
   id = "crazy_house.guichet_11",
   skip = "current",
@@ -3206,10 +3662,18 @@ dialog{
 dialog{
   id = "crazy_house.guichet_11_ech_ne_9",
   skip = "current",
+  next = "crazy_house.guichet_11_ech_ne_9_2",
   text = [[
 C'est à quel sujet ?
 Vous avez perdu quoi ?
 Mais monsieur, il faut
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_11_ech_ne_9_2",
+  text = [[
 vous adresser à
 l'accueil.
 ]]
@@ -3219,15 +3683,39 @@ l'accueil.
 dialog{
   id = "crazy_house.guichet_11_ech_eq_9",
   skip = "current",
+  next = "crazy_house.guichet_11_ech_eq_9_2",
   text = [[
 Oui nous avons trouvé
 des haches, mais chaque
 hache ne pourra
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_11_ech_eq_9_2",
+  next = "crazy_house.guichet_11_ech_eq_9_3",
+  text = [[
 être échangée que
 contre une tapisserie.
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_11_ech_eq_9_3",
+  next = "crazy_house.guichet_11_ech_eq_9_4",
+  text = [[
 Où trouver des
 tapisseries ? Je crois
 au guichet 22, ils sont
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_11_ech_eq_9_4",
+  text = [[
 un peu fous là-bas
 mais bon...
 ]]
@@ -3237,11 +3725,19 @@ mais bon...
 dialog{
   id = "crazy_house.guichet_11_ech_eq_9_ht",
   skip = "current",
-  next = "crazy_house.guichet_11_ech_eq_9_ht_3",
+  next = "crazy_house.guichet_11_ech_eq_9_ht_2",
   text = [[
 Ah, vous avez des
 tapisseries ? Je vous
 échange chaque
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_11_ech_eq_9_ht_2",
+  next = "crazy_house.guichet_11_ech_eq_9_ht_3",
+  text = [[
 tapisserie contre une
 hache.
 ]]
@@ -3263,11 +3759,19 @@ Plutôt mourir !
 dialog{
   id = "crazy_house.guichet_11_bal_eq_9",
   skip = "current",
-  next = "crazy_house.guichet_11_bal_eq_9_3",
+  next = "crazy_house.guichet_11_bal_eq_9_2",
   text = [[
 Ah, vous avez des
 tapisseries ? Je vous
 échange chaque
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_11_bal_eq_9_2",
+  next = "crazy_house.guichet_11_bal_eq_9_3",
+  text = [[
 tapisserie contre
 une hache.
 ]]
@@ -3288,10 +3792,18 @@ Plutôt mourir !
 
 dialog{
   id = "crazy_house.guichet_11_bal_err",
+  next = "crazy_house.guichet_11_bal_err_2",
   text = [[
 Comment ? C'est des
 haches que vous
 vouliez ?
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_11_bal_err_2",
+  text = [[
 Mais je n'en ai jamais
 eu. C'est ça ou rien
 monsieur !
@@ -3299,6 +3811,10 @@ monsieur !
 }
 -----------------------
 
+-- ==============================================
+-- GUICHET 12A
+-- ==============================================
+-- 
 dialog{
   id = "crazy_house.guichet_12_sign",
   skip = "current",
@@ -3325,32 +3841,75 @@ monsieur.
 dialog{
   id = "crazy_house.guichet_12A_ech_eq_5",
   skip = "current",
+  next = "crazy_house.guichet_12A_ech_eq_5_2",
   text = [[
 Ma collègue est en
 pause déjeuner.
 Si vous cherchez
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_12A_ech_eq_5_2",
+  next = "crazy_house.guichet_12A_ech_eq_5_3",
+  text = [[
 quelque chose de
 particulier, peut-
 être qu'ils auront
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_12A_ech_eq_5_3",
+  next = "crazy_house.guichet_12A_ech_eq_5_4",
+  text = [[
 ce que vous cherchez au
 guichet 32.
 Où c'est ?
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_12A_ech_eq_5_4",
+  text = [[
 Faut voir
 ça à l'accueil !
 ]]
 }
 -----------------------
 
+-- ==============================================
+-- GUICHET 12B
+-- ==============================================
 dialog{
   id = "crazy_house.guichet_12B_ech_eq_3",
   skip = "current",
+  next = "crazy_house.guichet_12B_ech_eq_3_2",
   text = [[
 Que puis-je pour vous ?
 Le guichet 41 ?
 Logiquement il y a un
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_12B_ech_eq_3_2",
+  next = "crazy_house.guichet_12B_ech_eq_3_3",
+  text = [[
 escalier qui permet
 d'accéder au premier
 étage pour trouver
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_12B_ech_eq_3_3",
+  text = [[
 le 41 mais il a été
 condamné, désolé
 monsieur.
@@ -3361,14 +3920,30 @@ monsieur.
 dialog{
   id = "crazy_house.guichet_12B_ech_eq_7",
   skip = "current",
-  next = "crazy_house.guichet_12B_ech_eq_7_4",
+  next = "crazy_house.guichet_12B_ech_eq_7_2",
   text = [[
 Un parfum ? Nous avons
 cela oui, mais je peux
 vous demander un
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_12B_ech_eq_7_2",
+  next = "crazy_house.guichet_12B_ech_eq_7_3",
+  text = [[
 service ? Il me
 faudrait un bocal
 d'épices et un balai.
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_12B_ech_eq_7_3",
+  next = "crazy_house.guichet_12B_ech_eq_7_4",
+  text = [[
 Je vous les échange
 contre un parfum.
 ]]
@@ -3455,18 +4030,37 @@ relou ?
 dialog{
   id = "crazy_house.guichet_12B_aw",
   skip = "current",
+  next = "crazy_house.guichet_12B_aw_2",
   text = [[
 Vous connaissez la
 rumeur ? Il y aurait
 une statue qui cache un
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_12B_aw_2",
+  next = "crazy_house.guichet_12B_aw_3",
+  text = [[
 mur fragile, mais bon,
 de là à ce qu'on trouve
 un trésor dans ce
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_12B_aw_3",
+  text = [[
 bâtiment public...
 ]]
 }
 -----------------------
 
+-- ==============================================
+-- GUICHET 21
+-- ==============================================
 dialog{
   id = "crazy_house.guichet_21_ici",
   skip = "current",
@@ -3489,16 +4083,40 @@ Mon premier amour...
 
 dialog{
   id = "crazy_house.guichet_21_ech_eq_1",
+  next = "crazy_house.guichet_21_ech_eq_1_2",
   text = [[
 Comment ? Vous avez mal
 aux dents ?
 Ah, ne m'en parlez pas,
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_21_ech_eq_1_2",
+  next = "crazy_house.guichet_21_ech_eq_1_3",
+  text = [[
 dans ma jeunesse, on
 s'achetait des
 sucreries avec l'argent
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_21_ech_eq_1_3",
+  next = "crazy_house.guichet_21_ech_eq_1_4",
+  text = [[
 de poche que nos
 parents nous donnaient,
 du coup les caries
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_21_ech_eq_1_4",
+  text = [[
 s'installaient en moins
 de deux, j'en ai mal
 rien que d'y penser...
@@ -3506,17 +4124,36 @@ rien que d'y penser...
 }
 -----------------------
 
+-- ==============================================
+-- GUICHET 22
+-- ==============================================
 dialog{
   id = "crazy_house.guichet_22A",
   skip = "current",
-  next = "crazy_house.guichet_22_question",
+  next = "crazy_house.guichet_22A_2",
   text = [[
 Bienvenue au guichet
 22, le meilleur guichet
 au monde !
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_22A_2",
+  next = "crazy_house.guichet_22A_3",
+  text = [[
 Ici on vous approvi-
 sionne en tout : on
 peut vous donner un
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_22A_3",
+  next = "crazy_house.guichet_22_question",
+  text = [[
 balai contre un roc
 magma.
 ]]
@@ -3526,14 +4163,30 @@ magma.
 dialog{
   id = "crazy_house.guichet_22B",
   skip = "current",
-  next = "crazy_house.guichet_22_question",
+  next = "crazy_house.guichet_22B_2",
   text = [[
 Bienvenue au guichet
 22, le meilleur
 guichet au monde !
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_22B_2",
+  next = "crazy_house.guichet_22B_3",
+  text = [[
 Ici on vous approvi-
 sionne en tout :
 on peut vous donner
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_22B_3",
+  next = "crazy_house.guichet_22_question",
+  text = [[
 une tapisserie contre
 un sac de riz.
 ]]
@@ -3555,9 +4208,17 @@ Euuuhh......... Non !
 dialog{
   id = "crazy_house.guichet_22_rm_un",
   skip = "current",
+  next = "crazy_house.guichet_22_rm_un_2",
   text = [[
 Ah, mais vous n'avez
 pas de roc magma...
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_22_rm_un_2",
+  text = [[
 Quel dommage !
 Revenez plus tard.
 ]]
@@ -3584,9 +4245,6 @@ un sac de riz.
 }
 -----------------------
 
--- ==============================================
--- GUICHET 31
--- ==============================================
 dialog{
   id = "crazy_house.guichet_22_sr_ok",
   skip = "current",
@@ -3597,6 +4255,9 @@ tapisserie !
 }
 -----------------------
 
+-- ==============================================
+-- GUICHET 31
+-- ==============================================
 dialog{
   id = "crazy_house.guichet_31_ici",
   skip = "current",
@@ -3642,10 +4303,6 @@ fou !
 }
 -----------------------
 
--- |-----------------------|		
--- ==============================================
--- GUICHET 32
--- ==============================================
 dialog{
   id = "crazy_house.guichet_31_4",
   skip = "all",
@@ -3656,6 +4313,9 @@ contre moi !...
 }
 -----------------------
 
+-- ==============================================
+-- GUICHET 32
+-- ==============================================
 dialog{
   id = "crazy_house.guichet_32_ici",
   skip = "current",
@@ -3668,13 +4328,29 @@ dialog{
 dialog{
   id = "crazy_house.guichet_32_ech_le_6",
   skip = "current",
+  next = "crazy_house.guichet_32_ech_le_6_2",
   text = [[
 Un parfum ? Non désolé,
 nous on a des
 cuillères.
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_32_ech_le_6_2",
+  next = "crazy_house.guichet_32_ech_le_6_3",
+  text = [[
 Le guichet 12 ? Si
 l'employée était en
 pause, elle est
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_32_ech_le_6_3",
+  text = [[
 sûrement revenue à
 l'heure qu'il est, vous
 devriez retourner voir.
@@ -3685,11 +4361,19 @@ devriez retourner voir.
 dialog{
   id = "crazy_house.guichet_32_ech_ne_6",
   skip = "current",
-  next = "crazy_house.guichet_32_ech_ne_6_3",
+  next = "crazy_house.guichet_32_ech_ne_6_2",
   text = [[
 Ici au guichet 32, on
 peut vous proposer une
 cuillère contre une
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_32_ech_ne_6_2",
+  next = "crazy_house.guichet_32_ech_ne_6_3",
+  text = [[
 hache, le marché
 est très prometteur.
 ]]
@@ -3719,9 +4403,6 @@ honorer cet échange.
 }
 -----------------------
 
--- ==============================================
--- GUICHET 33
--- ==============================================
 dialog{
   id = "crazy_house.guichet_32_ech_ne_6_no",
   text = [[
@@ -3732,19 +4413,46 @@ chose.
 }
 -----------------------
 
+-- ==============================================
+-- GUICHET 33
+-- ==============================================
 dialog{
   id = "crazy_house.guichet_33_ech_le_2",
   skip = "current",
+  next = "crazy_house.guichet_33_ech_le_2_2",
   text = [[
 Bienvenue au guichet
 33, c'est moi qui
 détiens les clés
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_33_ech_le_2_2",
+  next = "crazy_house.guichet_33_ech_le_2_3",
+  text = [[
 des différents dépôts.
 Mais les clients ne
 sont pas autorisés à y
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_33_ech_le_2_3",
+  next = "crazy_house.guichet_33_ech_le_2_4",
+  text = [[
 pénétrer. D'ailleurs,
 vous n'êtes pas censé
 savoir ça.
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_33_ech_le_2_4",
+  text = [[
 Pourquoi j'en parle
 moi ?
 ]]
@@ -3754,10 +4462,18 @@ moi ?
 dialog{
   id = "crazy_house.guichet_33_ech_eq_3",
   skip = "current",
+  next = "crazy_house.guichet_33_ech_eq_3_2",
   text = [[
 Non désolé ce n'est pas
 le guichet 41, vous
 êtes au 33.
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_33_ech_eq_3_2",
+  text = [[
 Le téléporteur sur
 votre gauche va vers
 le guichet 22.
@@ -3768,21 +4484,61 @@ le guichet 22.
 dialog{
   id = "crazy_house.guichet_33_ech_ge_4",
   skip = "current",
+  next = "crazy_house.guichet_33_ech_ge_4_2",
   text = [[
 Oui ? La clé du dépôt ?
 Ah mais non ! Je ne
 donne pas les clés à
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_33_ech_ge_4_2",
+  next = "crazy_house.guichet_33_ech_ge_4_3",
+  text = [[
 n'importe qui ! Si vous
 me rapportez un beau
 parfum, je serai
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_33_ech_ge_4_3",
+  next = "crazy_house.guichet_33_ech_ge_4_4",
+  text = [[
 peut-être plus enclin
 à vous confier les
 clés.
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_33_ech_ge_4_4",
+  next = "crazy_house.guichet_33_ech_ge_4_5",
+  text = [[
 Je crois que quelqu'un
 a dû en retrouver un.
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_33_ech_ge_4_5",
+  next = "crazy_house.guichet_33_ech_ge_4_6",
+  text = [[
 Essayez le guichet 12,
 ils pourraient vous
 renseigner là-dessus.
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_33_ech_ge_4_6",
+  text = [[
 Où est ce guichet ?
 Aucune idée, demandez
 à l'accueil.
@@ -3793,29 +4549,64 @@ Aucune idée, demandez
 dialog{
   id = "crazy_house.guichet_33_parfum",
   skip = "current",
+  next = "crazy_house.guichet_33_parfum_2",
   text = [[
 Jor ! Tu as trouvé le
 parfum ?!
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_33_parfum_2",
+  next = "crazy_house.guichet_33_parfum_3",
+  text = [[
 Je n'aurais jamais cru
 ça possible !
 Mais je suis un homme
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_33_parfum_3",
+  next = "crazy_house.guichet_33_parfum_4",
+  text = [[
 de parole, je te confie
 la clé qui te permettra
 d'accéder au dépôt.
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_33_parfum_4",
+  text = [[
 N'y fous par le bazar,
 hein ?
 ]]
 }
 -----------------------
 
+-- ==============================================
+-- GUICHET 36
+-- ==============================================
 dialog{
   id = "crazy_house.guichet_36",
   skip = "current",
-  next = "crazy_house.guichet_36_3",
+  next = "crazy_house.guichet_36_2",
   text = [[
 Bienvenue au guichet
 36, je suis Panoda
 Fichage, je vends des
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_36_2",
+  next = "crazy_house.guichet_36_3",
+  text = [[
 sacs de riz : 50 rubis
 pour trois.
 ]]
@@ -3834,9 +4625,6 @@ En fait non
 }
 -----------------------
 
--- ==============================================
--- GUICHET 41
--- ==============================================
 dialog{
   id = "crazy_house.guichet_36_un",
   skip = "current",
@@ -3847,6 +4635,9 @@ au moins 50 rubis.
 }
 -----------------------
 
+-- ==============================================
+-- GUICHET 41
+-- ==============================================
 dialog{
   id = "crazy_house.guichet_41_ici",
   skip = "current",
@@ -3870,18 +4661,50 @@ bien besoin.
 dialog{
   id = "crazy_house.guichet_41_ech_eq_3",
   skip = "current",
+  next = "crazy_house.guichet_41_ech_eq_3_2",
   text = [[
 Bonjour, vous cherchez
 des gants ?
 Un instant...
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_41_ech_eq_3_2",
+  next = "crazy_house.guichet_41_ech_eq_3_3",
+  text = [[
 Hmm oui nous avons ça,
 ils ont été stockés au
 dépôt.
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_41_ech_eq_3_3",
+  next = "crazy_house.guichet_41_ech_eq_3_4",
+  text = [[
 Mais je n'ai pas la
 clé, il va falloir
 demander au guichet 33,
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_41_ech_eq_3_4",
+  next = "crazy_house.guichet_41_ech_eq_3_5",
+  text = [[
 c'est lui qui a toutes
 les clés.
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_41_ech_eq_3_5",
+  text = [[
 Il est situé au
 deuxième étage aile
 gauche.
@@ -3889,6 +4712,9 @@ gauche.
 }
 -----------------------
 
+-- ==============================================
+-- GUICHET 43
+-- ==============================================
 dialog{
   id = "crazy_house.guichet_43_ici",
   skip = "current",
@@ -3955,9 +4781,6 @@ Ce que les gens peuvent
 }
 -----------------------
 
--- ==============================================
--- GUICHET 45
--- ==============================================
 dialog{
   id = "crazy_house.guichet_43f",
   skip = "all",
@@ -3968,6 +4791,9 @@ moi ?...
 }
 -----------------------
 
+-- ==============================================
+-- GUICHET 45
+-- ==============================================
 dialog{
   id = "crazy_house.guichet_45",
   skip = "current",
@@ -3980,27 +4806,91 @@ dialog{
 dialog{
   id = "crazy_house.guichet_45_ech_eq_3",
   skip = "current",
+  next = "crazy_house.guichet_45_ech_eq_3_2",
   text = [[
 Monsieur ? Le guichet
 41 ? Ici c'est le 45.
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_45_ech_eq_3_2",
+  next = "crazy_house.guichet_45_ech_eq_3_3",
+  text = [[
 Attendez, je vais
 demander à un
 collègue...
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_45_ech_eq_3_3",
+  next = "crazy_house.guichet_45_ech_eq_3_4",
+  text = [[
 ....
 ....
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_45_ech_eq_3_4",
+  next = "crazy_house.guichet_45_ech_eq_3_5",
+  text = [[
 Allo ? Maurice ? Oui
 c'est Josiane. Dis-moi,
 t'es bien au 41 toi ?
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_45_ech_eq_3_5",
+  next = "crazy_house.guichet_45_ech_eq_3_6",
+  text = [[
 OK, t'es situé où ?
 D'accord... Merci, je
 t'envoie un client.
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_45_ech_eq_3_6",
+  next = "crazy_house.guichet_45_ech_eq_3_7",
+  text = [[
 Salut, gros bisou...
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_45_ech_eq_3_7",
+  next = "crazy_house.guichet_45_ech_eq_3_8",
+  text = [[
 Alors, vous n'êtes pas
 au bon endroit, il va
 falloir vous diriger
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_45_ech_eq_3_8",
+  next = "crazy_house.guichet_45_ech_eq_3_9",
+  text = [[
 vers le guichet 12,
 proche de l'entrée de
 l'immeuble.
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_45_ech_eq_3_9",
+  text = [[
 Voilà, bonne journée.
 ]]
 }
@@ -4009,14 +4899,30 @@ Voilà, bonne journée.
 dialog{
   id = "crazy_house.guichet_45_ech_ne_3",
   skip = "current",
-  next = "crazy_house.guichet_45_ech_ne_3_4",
+  next = "crazy_house.guichet_45_ech_ne_3_2",
   text = [[
 Monsieur, vous ne
 chercheriez pas des
 sacs d'olives par
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_45_ech_ne_3_2",
+  next = "crazy_house.guichet_45_ech_ne_3_3",
+  text = [[
 hasard ? Je pourrais
 éventuellement vous en
 échanger un contre une
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_45_ech_ne_3_3",
+  next = "crazy_house.guichet_45_ech_ne_3_4",
+  text = [[
 cuillère.
 ]]
 }
@@ -4045,9 +4951,6 @@ cullière.
 }
 -----------------------
 
--- ==============================================
--- GUICHET 47
--- ==============================================
 dialog{
   id = "crazy_house.guichet_45_ech_ok",
   skip = "current",
@@ -4058,6 +4961,9 @@ sac d'olives.
 }
 -----------------------
 
+-- ==============================================
+-- GUICHET 47
+-- ==============================================
 dialog{
   id = "crazy_house.guichet_47",
   skip = "current",
@@ -4070,19 +4976,24 @@ dialog{
 dialog{
   id = "crazy_house.guichet_47_ech_ne_3",
   skip = "current",
+  next = "crazy_house.guichet_47_ech_ne_3_2",
   text = [[
 Immatriculer une
 galère ? Non, on vous a
 mal dirigé. Vous devez
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_47_ech_ne_3_2",
+  text = [[
 vous adresser à la
 capitainerie au port !
 ]]
 }
 -----------------------
 
--- ==============================================
--- GUICHET 49
--- ==============================================
 dialog{
   id = "crazy_house.guichet_47_ech_eq_3",
   skip = "current",
@@ -4094,6 +5005,9 @@ Ah non ici c'est le 47.
 }
 -----------------------
 
+-- ==============================================
+-- GUICHET 49
+-- ==============================================
 dialog{
   id = "crazy_house.guichet_49_ici",
   skip = "current",
@@ -4106,15 +5020,26 @@ dialog{
 dialog{
   id = "crazy_house.guichet_49",
   skip = "current",
+  next = "crazy_house.guichet_49_2",
   text = [[
 On m'a reléguée dans ce
 sous-sol, isolée de
 tous...
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_49_2",
+  text = [[
 Bouh ouh ouh !
 ]]
 }
 -----------------------
 
+-- ==============================================
+-- GUICHET 82
+-- ==============================================
 dialog{
   id = "crazy_house.guichet_82_ici",
   skip = "current",
@@ -4127,11 +5052,19 @@ dialog{
 dialog{
   id = "crazy_house.guichet_82",
   skip = "current",
-  next = "crazy_house.guichet_82_3",
+  next = "crazy_house.guichet_82_2",
   text = [[
 Hmmmm... je déprime,
 j'ai besoin d'un sac
 d'olives pour mon
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_82_2",
+  next = "crazy_house.guichet_82_3",
+  text = [[
 chat mais personne ne
 semble en avoir...
 *soupir*
@@ -4142,11 +5075,19 @@ semble en avoir...
 dialog{
   id = "crazy_house.guichet_82_3",
   skip = "current",
-  next = "crazy_house.guichet_82_5",
+  next = "crazy_house.guichet_82_4",
   text = [[
 Tu n'aurais pas un
 sac d'olives par
 hasard ?
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_82_4",
+  next = "crazy_house.guichet_82_5",
+  text = [[
 Je t'échange ton sac
 d'olives contre un roc
 magma.
@@ -4180,16 +5121,27 @@ pour ce roc magma.
 dialog{
   id = "crazy_house.guichet_82_ok",
   skip = "current",
+  next = "crazy_house.guichet_82_ok_2",
   text = [[
 Oh my god ! Tu as le
 sac d'olives, c'est
 trop bien !
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_82_ok_2",
+  text = [[
 Voici ton roc magma
 bien mérité.
 ]]
 }
 -----------------------
 
+-- ==============================================
+-- GUICHET 84
+-- ==============================================
 dialog{
   id = "crazy_house.guichet_84_ici",
   skip = "current",
@@ -4202,13 +5154,29 @@ dialog{
 dialog{
   id = "crazy_house.guichet_84_ech_eq_3",
   skip = "current",
+  next = "crazy_house.guichet_84_ech_eq_3_2",
   text = [[
 Pardon ? Le guichet
 41 ?
 Vous n'y êtes pas, ici
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_84_ech_eq_3_2",
+  next = "crazy_house.guichet_84_ech_eq_3_3",
+  text = [[
 c'est le guichet 84.
 Pour le 41, vous devez
 descendre au
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_84_ech_eq_3_3",
+  text = [[
 au rez-de-chaussée.
 ]]
 }
@@ -4217,13 +5185,29 @@ au rez-de-chaussée.
 dialog{
   id = "crazy_house.guichet_84_ech_ne_3_nh",
   skip = "current",
+  next = "crazy_house.guichet_84_ech_ne_3_nh_2",
   text = [[
 Ici, nous avons des
 poivrons. En échange
 d'une hache, on vous 
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_84_ech_ne_3_nh_2",
+  next = "crazy_house.guichet_84_ech_ne_3_nh_3",
+  text = [[
 offre un poivron.
 J'ai entendu dire
 qu'ils avaient des
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_84_ech_ne_3_nh_3",
+  text = [[
 haches au guichet 11.
 ]]
 }
@@ -4256,26 +5240,53 @@ Oh no !!
 dialog{
   id = "crazy_house.guichet_84_ech_ne_3_un",
   skip = "current",
+  next = "crazy_house.guichet_84_ech_ne_3_un_2",
   text = [[
 Hé ho le gnome vert !
 N'essaye pas de
 m'arnarquer !
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.guichet_84_ech_ne_3_un_2",
+  text = [[
 Tu amènes la hache
 ou t'auras rien !
 ]]
 }
 -----------------------
 
+-- ==============================================
+-- VIEILLARD
+-- ==============================================
 dialog{
   id = "crazy_house.vieillard",
   skip = "current",
-  next = "crazy_house.vieillard_ronfl",
+  next = "crazy_house.vieillard_2",
   text = [[
 Ronfl... ZZZ.... Hein ?
 Quoi ? Tu voudrais pas
 un bocal d'épices, par
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.vieillard_2",
+  next = "crazy_house.vieillard_3",
+  text = [[
 hasard ? Héhé, je lis
 dans les pensées.
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.vieillard_3",
+  next = "crazy_house.vieillard_ronfl",
+  text = [[
 Si tu m'apportes un
 poivron, je serai
 peut-être conciliant...
@@ -4286,14 +5297,30 @@ peut-être conciliant...
 dialog{
   id = "crazy_house.vieillard_poivron",
   skip = "current",
-  next = "crazy_house.vieillard_ronfl",
+  next = "crazy_house.vieillard_poivron_2",
   text = [[
 Ah mais qu'est-ce que
 c'est que ça ?
 Je ne t'ai jamais
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.vieillard_poivron_2",
+  next = "crazy_house.vieillard_poivron_3",
+  text = [[
 demandé de poivron !
 Ce que je cherche c'est
 un sac de riz !
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.vieillard_poivron_3",
+  next = "crazy_house.vieillard_ronfl",
+  text = [[
 Ah les jeunes ils
 n'écoutent rien !
 ]]
@@ -4303,11 +5330,19 @@ n'écoutent rien !
 dialog{
   id = "crazy_house.vieillard_riz_quantite",
   skip = "current",
-  next = "crazy_house.vieillard_ronfl",
+  next = "crazy_house.vieillard_riz_quantite_2",
   text = [[
 ZZZ... Hein ?...
 Mais tu n'a pas
 de sac de riz !
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.vieillard_riz_quantite_2",
+  next = "crazy_house.vieillard_ronfl",
+  text = [[
 Allez zou ! Va en
 chercher.
 ]]
@@ -4317,25 +5352,46 @@ chercher.
 dialog{
   id = "crazy_house.vieillard_riz_ok",
   skip = "current",
+  next = "crazy_house.vieillard_riz_ok_2",
   text = [[
 ZZZ....
 Oh oui Jacqueline...
 Ronfl... AH !!
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.vieillard_riz_ok_2",
+  next = "crazy_house.vieillard_riz_ok_3",
+  text = [[
 Pourquoi m'as-tu
 réveillé ? J'étais au
 beau milieu d'un
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.vieillard_riz_ok_3",
+  next = "crazy_house.vieillard_riz_ok_4",
+  text = [[
 merveilleux rêve.
 Tu as le riz ? Eh bien
 voilà quand tu veux !
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.vieillard_riz_ok_4",
+  text = [[
 Voici mon précieux
 bocal d'épices.
 ]]
 }
 -----------------------
 
--- ==============================================
--- APOTHICAIRE
--- ==============================================
 dialog{
   id = "crazy_house.vieillard_ronfl",
   text = [[
@@ -4344,14 +5400,25 @@ Ronfl... ZZZ...
 }
 -----------------------
 
+-- ==============================================
+-- APOTHICAIRE
+-- ==============================================
 dialog{
   id = "crazy_house.apothicaire",
   skip = "current",
-  next = "crazy_house.apothicaire_3",
+  next = "crazy_house.apothicaire_2",
   text = [[
 Salutations jeune
 aventurier, je vends
 des sacs de riz pour
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.apothicaire_2",
+  next = "crazy_house.apothicaire_3",
+  text = [[
 la modique somme de
 20 rubis l'unité.
 ]]
@@ -4383,18 +5450,23 @@ C'est pas très gentil
 dialog{
   id = "crazy_house.apothicaire_rubis",
   skip = "current",
+  next = "crazy_house.apothicaire_rubis_2",
   text = [[
 Ah mais non vous n'avez
 pas assez de rubis,
 c'est 20 rubis pour
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.apothicaire_rubis_2",
+  text = [[
 obtenir un sac de riz.
 ]]
 }
 -----------------------
 
--- ==============================================
--- AUTRES PNJ
--- ==============================================
 dialog{
   id = "crazy_house.apothicaire_oui",
   skip = "current",
@@ -4405,19 +5477,46 @@ une bonne affaire.
 }
 -----------------------
 
+-- ==============================================
+-- AUTRES PNJ
+-- ==============================================
 dialog{
   id = "crazy_house.pnja",
   skip = "current",
+  next = "crazy_house.pnja_2",
   text = [[
 Oh là là ! J'en peux
 plus moi de cet
 endroit ! On me balade
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.pnja_2",
+  next = "crazy_house.pnja_3",
+  text = [[
 de guichet en guichet,
 si tu veux mon avis,
 ils le font exprès pour
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.pnja_3",
+  next = "crazy_house.pnja_4",
+  text = [[
 justifier leur
 salaire... que dis-je,
 leur rente !
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.pnja_4",
+  text = [[
 C'est un scandale !
 ]]
 }
@@ -4426,13 +5525,29 @@ C'est un scandale !
 dialog{
   id = "crazy_house.pnjb",
   skip = "current",
+  next = "crazy_house.pnjb_2",
   text = [[
 Ah ! J'étais venu dans
 cette bâtisse pour
 proposer de leur
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.pnjb_2",
+  next = "crazy_house.pnjb_3",
+  text = [[
 fournir des bouteilles
 d'eau, mais visiblement
 ils n'en veulent pas.
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.pnjb_3",
+  text = [[
 Quel dommage !
 Ils ne savent pas ce
 qu'ils ratent.
@@ -4443,13 +5558,29 @@ qu'ils ratent.
 dialog{
   id = "crazy_house.pnjc",
   skip = "current",
+  next = "crazy_house.pnjc_2",
   text = [[
 Je suis la seule
 employée chargée du
 ménage dans cet
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.pnjc_2",
+  next = "crazy_house.pnjc_3",
+  text = [[
 immeuble, près de
 14 000 mètres carrés à
 couvrir,
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.pnjc_3",
+  text = [[
 si ce n'est pas de
 l'escalavage ça...
 ]]
@@ -4459,22 +5590,62 @@ l'escalavage ça...
 dialog{
   id = "crazy_house.pnjd",
   skip = "current",
+  next = "crazy_house.pnjd_2",
   text = [[
 C'est étrange, quand je
 suis allé au 2ème étage
 pour aller chercher un
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.pnjd_2",
+  next = "crazy_house.pnjd_3",
+  text = [[
 formulaire bleu pour
 l'établissement du
 laisser-passer A38,
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.pnjd_3",
+  next = "crazy_house.pnjd_4",
+  text = [[
 on m'a parlé d'un giga
 bouton trucmuche à méga
 tension de je ne sais
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.pnjd_4",
+  next = "crazy_house.pnjd_5",
+  text = [[
 pas quoi. A mon avis vu
 le nom du bouzin, ça
 ça doit être un
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.pnjd_5",
+  next = "crazy_house.pnjd_6",
+  text = [[
 mécanisme très
 compliqué, pas sûr que
 t'arrives à l'actionner
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.pnjd_6",
+  text = [[
 tout seul. Il faudrait
 le forcer avec un truc
 lourd.
@@ -4485,28 +5656,61 @@ lourd.
 dialog{
   id = "crazy_house.pnje",
   skip = "current",
+  next = "crazy_house.pnje_2",
   text = [[
 J'ai constaté que la
 dame du guichet 11
 était une vraie tête en
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.pnje_2",
+  next = "crazy_house.pnje_3",
+  text = [[
 l'air, elle m'a déjà
 perdu un roc magma que
 j'avais confié le temps
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.pnje_3",
+  next = "crazy_house.pnje_4",
+  text = [[
 que je trouve une
 cuillère dans cette
 maison qui rend fou...
+]]
+}
+-----------------------
+
+dialog{
+  id = "crazy_house.pnje_4",
+  text = [[
 Quel tissu
 d'incompétents ici !
 ]]
 }
 -----------------------
 
+-- ==============================================
 dialog{
   id = "geek_house.sign_a",
+  next = "geek_house.sign_a2",
   text = [[
 Itération Optimiste sur
 les Politiques et
 Apprentissage du jeu
+]]
+}
+-----------------------
+
+dialog{
+  id = "geek_house.sign_a2",
+  text = [[
 de Zelda.
 ]]
 }
@@ -4514,13 +5718,29 @@ de Zelda.
 
 dialog{
   id = "geek_house.sign_b",
+  next = "geek_house.sign_b2",
   text = [[
 switch (panneau)
 case 1: break;
 case 2: break;
+]]
+}
+-----------------------
+
+dialog{
+  id = "geek_house.sign_b2",
+  next = "geek_house.sign_b3",
+  text = [[
 case 3: break;
 case 4: break;
 case 5: break;
+]]
+}
+-----------------------
+
+dialog{
+  id = "geek_house.sign_b3",
+  text = [[
 /* Il faut que je
 définisse les cases
 pour ce panneau. */
@@ -4582,10 +5802,18 @@ TODO
 
 dialog{
   id = "geek_house.sign_i",
+  next = "geek_house.sign_i2",
   text = [[
 2.21 gigowatts !!!
 2.21 gigowatts !!!
 Mon Dieu !!!
+]]
+}
+-----------------------
+
+dialog{
+  id = "geek_house.sign_i2",
+  text = [[
 Mais enfin c'est
 quoi un gigowatt ?
 ]]
@@ -4613,9 +5841,17 @@ féminin / masculin.
 
 dialog{
   id = "outside_fields_SO_endofgame1",
+  next = "outside_fields_SO_endofgame2",
   text = [[
 Téléporteur vers la 
 fin du jeu.
+]]
+}
+-----------------------
+
+dialog{
+  id = "outside_fields_SO_endofgame2",
+  text = [[
 -- en panne --
 ]]
 }
@@ -4642,11 +5878,27 @@ très pénible...
 
 dialog{
   id = "outside_fields_SO.chest_link_house",
+  next = "outside_fields_SO.chest_link_house2",
   text = [[
 C'est vide !
+]]
+}
+-----------------------
+
+dialog{
+  id = "outside_fields_SO.chest_link_house2",
+  next = "outside_fields_SO.chest_link_house3",
+  text = [[
 Tu croyais vraiment
 qu'il y avait
 un trésor juste
+]]
+}
+-----------------------
+
+dialog{
+  id = "outside_fields_SO.chest_link_house3",
+  text = [[
 derrière ta maison ?!?
 ]]
 }
@@ -4672,19 +5924,75 @@ Bonne journée à vous.
 
 dialog{
   id = "outside_fields_SO.forest_monkey_start",
-  next = "outside_fields_SO.forest_monkey_end",
+  next = "outside_fields_SO.forest_monkey_start2",
   text = [[
 Ook !
 Tu veux mes bottes ?
+]]
+}
+-----------------------
+
+dialog{
+  id = "outside_fields_SO.forest_monkey_start2",
+  next = "outside_fields_SO.forest_monkey_start3",
+  text = [[
 ...
+]]
+}
+-----------------------
+
+dialog{
+  id = "outside_fields_SO.forest_monkey_start3",
+  next = "outside_fields_SO.forest_monkey_start4",
+  text = [[
 Ce sont les tiennes ?
+]]
+}
+-----------------------
+
+dialog{
+  id = "outside_fields_SO.forest_monkey_start4",
+  next = "outside_fields_SO.forest_monkey_start5",
+  text = [[
 Tu rêves ! Je les ai
 trouvées, elles sont
 à moi !
+]]
+}
+-----------------------
+
+dialog{
+  id = "outside_fields_SO.forest_monkey_start5",
+  next = "outside_fields_SO.forest_monkey_start6",
+  text = [[
 ...
+]]
+}
+-----------------------
+
+dialog{
+  id = "outside_fields_SO.forest_monkey_start6",
+  next = "outside_fields_SO.forest_monkey_start7",
+  text = [[
 Bon je veux bien te les
 donner, mais...
+]]
+}
+-----------------------
+
+dialog{
+  id = "outside_fields_SO.forest_monkey_start7",
+  next = "outside_fields_SO.forest_monkey_start8",
+  text = [[
 J'ai faim !!!
+]]
+}
+-----------------------
+
+dialog{
+  id = "outside_fields_SO.forest_monkey_start8",
+  next = "outside_fields_SO.forest_monkey_end",
+  text = [[
 Amène-moi une tarte aux
 pommes en échange.
 ]]
@@ -4693,15 +6001,55 @@ pommes en échange.
 
 dialog{
   id = "outside_fields_SO.forest_monkey_give_boots",
-  next = "outside_fields_SO.forest_monkey_end",
+  next = "outside_fields_SO.forest_monkey_give_boots2",
   text = [[
 Ook ! Super, une tarte
 aux pommes !!!
 Tiens, voilà tes bottes.
+]]
+}
+-----------------------
+
+dialog{
+  id = "outside_fields_SO.forest_monkey_give_boots2",
+  next = "outside_fields_SO.forest_monkey_give_boots3",
+  text = [[
 ...
+]]
+}
+-----------------------
+
+dialog{
+  id = "outside_fields_SO.forest_monkey_give_boots3",
+  next = "outside_fields_SO.forest_monkey_give_boots4",
+  text = [[
 Il manque les lacets ?
+]]
+}
+-----------------------
+
+dialog{
+  id = "outside_fields_SO.forest_monkey_give_boots4",
+  next = "outside_fields_SO.forest_monkey_give_boots5",
+  text = [[
 Bah...
+]]
+}
+-----------------------
+
+dialog{
+  id = "outside_fields_SO.forest_monkey_give_boots5",
+  next = "outside_fields_SO.forest_monkey_give_boots6",
+  text = [[
 J'avais faim !!!
+]]
+}
+-----------------------
+
+dialog{
+  id = "outside_fields_SO.forest_monkey_give_boots6",
+  next = "outside_fields_SO.forest_monkey_end",
+  text = [[
 Il fallait être plus
 rapide !
 ]]
@@ -4953,10 +6301,26 @@ pelouse.
 
 dialog{
   id = "outside_fields_NO.drunk",
+  next = "outside_fields_NO.drunk2",
   text = [[
 Tu ne te souviens plus
 de ta soirée ?
+]]
+}
+-----------------------
+
+dialog{
+  id = "outside_fields_NO.drunk2",
+  next = "outside_fields_NO.drunk3",
+  text = [[
 Moi non plus...
+]]
+}
+-----------------------
+
+dialog{
+  id = "outside_fields_NO.drunk3",
+  text = [[
 Ca m'arrive tout le
 temps.
 ]]
@@ -4965,10 +6329,26 @@ temps.
 
 dialog{
   id = "outside_fields_NO.lady_b",
+  next = "outside_fields_NO.lady_b2",
   text = [[
 Tu as perdu Zelda ?
 ...
+]]
+}
+-----------------------
+
+dialog{
+  id = "outside_fields_NO.lady_b2",
+  next = "outside_fields_NO.lady_b3",
+  text = [[
 **Mari indigne...**
+]]
+}
+-----------------------
+
+dialog{
+  id = "outside_fields_NO.lady_b3",
+  text = [[
 Non, je ne sais pas
 où elle est.
 ]]
@@ -4977,9 +6357,17 @@ où elle est.
 
 dialog{
   id = "outside_fields_NO.guy_a",
+  next = "outside_fields_NO.guy_a2",
   text = [[
 Tu as perdu quelque
 chose ?
+]]
+}
+-----------------------
+
+dialog{
+  id = "outside_fields_NO.guy_a2",
+  text = [[
 As-tu été voir au
 Bureau des Objets
 Trouvés ?
@@ -5059,9 +6447,17 @@ collées sur les murs.
 
 dialog{
   id = "outside_fields_SO.attente_a",
+  next = "outside_fields_SO.attente_a2",
   text = [[
       BUREAU DES       
     OBJETS TROUVES     
+]]
+}
+-----------------------
+
+dialog{
+  id = "outside_fields_SO.attente_a2",
+  text = [[
 A partir de ce point,
 un jour d'attente.
 ]]
@@ -5070,9 +6466,17 @@ un jour d'attente.
 
 dialog{
   id = "outside_fields_SO.attente_b",
+  next = "outside_fields_SO.attente_b2",
   text = [[
       BUREAU DES       
     OBJETS TROUVES     
+]]
+}
+-----------------------
+
+dialog{
+  id = "outside_fields_SO.attente_b2",
+  text = [[
 A partir de ce point,
 douze heures d'attente.
 ]]
@@ -5081,9 +6485,17 @@ douze heures d'attente.
 
 dialog{
   id = "outside_fields_SO.attente_c",
+  next = "outside_fields_SO.attente_c2",
   text = [[
       BUREAU DES       
     OBJETS TROUVES     
+]]
+}
+-----------------------
+
+dialog{
+  id = "outside_fields_SO.attente_c2",
+  text = [[
 A partir de ce point,
 six heures d'attente.
 ]]
@@ -5092,9 +6504,17 @@ six heures d'attente.
 
 dialog{
   id = "outside_fields_SO.attente_d",
+  next = "outside_fields_SO.attente_d2",
   text = [[
       BUREAU DES       
     OBJETS TROUVES     
+]]
+}
+-----------------------
+
+dialog{
+  id = "outside_fields_SO.attente_d2",
+  text = [[
 Vous y êtes presque !
 Plus qu'à faire la
 queue à l'intérieur.

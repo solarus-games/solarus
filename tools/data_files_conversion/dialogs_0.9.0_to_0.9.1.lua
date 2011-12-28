@@ -53,7 +53,7 @@
 -- manually.
 -- Example:
 
--- Dialog{
+-- dialog{
 --   id = "wise_man",
 --   skip = "current",
 --   question = true,
@@ -70,7 +70,7 @@
 -- }
 -- -----------------------
 -- 
--- Dialog{
+-- dialog{
 --   id = "wise_man.insisting",
 --   question = true,
 --   next = "wise_man.thanks"
@@ -86,7 +86,7 @@
 -- }
 -- -----------------------
 -- 
--- Dialog{
+-- dialog{
 --   id = "wise_man.thanks",
 --   text = [[
 --     I knew I could count on
@@ -163,11 +163,18 @@ function parse_ini()
         message.line3 = line3
       elseif comment then
         -- comments
-        if not comment:find("^[-|]*$") then -- skip line length comments
-          if message.comments == nil then
-            message.comments = {}
-          end
-          message.comments[#message.comments + 1] = comment
+        if not comment:find("^[-| \t]*|[-| \t]*$") then -- skip line size comments
+	  if message.line1 or message.line2 or message.line3 then
+	    if message.comments_after == nil then
+	      message.comments_after = {}
+	    end
+            message.comments_after[#message.comments_after + 1] = comment
+	  else
+	    if message.comments == nil then
+	      message.comments = {}
+	    end
+	    message.comments[#message.comments + 1] = comment
+	  end
         end
       else
         print("-- Warning: ignoring invalid line " .. line_number .. ": '"
@@ -229,9 +236,9 @@ function debug_can_be_merged(message)
   elseif #message.previous ~= 1 then
     print("No: this message has multiple predecessors (" .. #message.previous
         .. ")")
-  elseif not (message.id:find("\.[0-9][0-9]*$")
-      or message.id:find("\.[0-9][0-9]*bis$")
-      or message.id:find("\.[0-9][0-9]*ter$")) then
+  elseif not (message.id:find("%.[0-9][0-9]*$")
+      or message.id:find("%.[0-9][0-9]*bis$")
+      or message.id:find("%.[0-9][0-9]*ter$")) then
     print("No: this message does not have a typical sequence suffix")
   elseif message.icon ~= nil then
     print("No: this message changes the icon")
@@ -256,9 +263,9 @@ function can_be_merged(message)
   return message ~= nil
       and message.previous ~= nil
       and #message.previous == 1
-      and (message.id:find("\.[0-9][0-9]*$")
-          or message.id:find("\.[0-9][0-9]*bis$")
-          or message.id:find("\.[0-9][0-9]*ter$"))
+      and (message.id:find("%.[0-9][0-9]*$")
+          or message.id:find("%.[0-9][0-9]*bis$")
+          or message.id:find("%.[0-9][0-9]*ter$"))
       and message.icon == nil
       and message.skip == nil
   -- we assume that scripts and maps never refer to messages having both a
@@ -304,6 +311,7 @@ function merge_messages(all_messages, all_ids)
       dialog.next = s[#s].next
       dialog.next2 = s[#s].next2
       dialog.comments = s[1].comments
+      dialog.comments_after = s[#s].comments_after
       dialog.text = ""
       for _, m in pairs(s) do
         local blanks = ""
@@ -372,6 +380,11 @@ function print_dialogs(dialogs)
       io.write("--------------------\n\n")
     else
       io.write("-----------------------\n\n")
+    end
+    if v.comments_after then
+      for _, c in ipairs(v.comments_after) do
+        io.write("-- " .. c .. "\n")
+      end
     end
   end
 end

@@ -752,7 +752,14 @@ apporte-les
 }
 --------------------
 
---  Plume
+-- ---------------------
+-- Obtention d'un trésor
+-- ---------------------
+-- 
+-- Les messages ci-dessous sont affichés lorsque le joueur obtient
+-- un trésor, généralement en ouvrant un coffre ou en l'achetant
+-- dans un magasin.
+-- Plume
 dialog{
   id = "_treasure.feather.1",
   icon = 0,
@@ -767,7 +774,7 @@ obstacles !
 }
 --------------------
 
---  Arc seul
+-- Arc seul
 dialog{
   id = "_treasure.bow.1",
   icon = 2,
@@ -782,7 +789,7 @@ coriaces !
 }
 --------------------
 
---  Arc & Flèches
+-- Arc & Flèches
 dialog{
   id = "_treasure.bow.2",
   icon = 3,
@@ -795,7 +802,7 @@ ennemis coriaces
 }
 --------------------
 
---  Boomerang
+-- Boomerang
 dialog{
   id = "_treasure.boomerang.1",
   icon = 4,
@@ -814,7 +821,7 @@ de les découvrir !
 }
 --------------------
 
---  Super Boomerang
+-- Super Boomerang
 dialog{
   id = "_treasure.boomerang.2",
   icon = 35,
@@ -828,7 +835,7 @@ l'ancien !
 }
 --------------------
 
---  Lanterne
+-- Lanterne
 dialog{
   id = "_treasure.lamp.1",
   icon = 5,
@@ -844,7 +851,7 @@ braseros.
 }
 --------------------
 
---  Grappin
+-- Grappin
 dialog{
   id = "_treasure.hookshot.1",
   icon = 6,
@@ -858,7 +865,7 @@ inacessibles !
 }
 --------------------
 
---  Flacon vide
+-- Flacon vide
 dialog{
   id = "_treasure.bottle_1.1",
   icon = 7,
@@ -871,7 +878,7 @@ diverses substances.
 }
 --------------------
 
---  Eau
+-- Eau
 dialog{
   id = "_treasure.bottle_1.2",
   icon = 8,
@@ -883,7 +890,7 @@ de l'eau !
 }
 --------------------
 
---  Potion rouge
+-- Potion rouge
 dialog{
   id = "_treasure.bottle_1.3",
   icon = 9,
@@ -897,7 +904,7 @@ retrouver toute ton
 }
 --------------------
 
---  Potion verte
+-- Potion verte
 dialog{
   id = "_treasure.bottle_1.4",
   icon = 10,
@@ -911,7 +918,7 @@ retrouver toute ton
 }
 --------------------
 
---  Potion bleue
+-- Potion bleue
 dialog{
   id = "_treasure.bottle_1.5",
   icon = 11,
@@ -925,7 +932,7 @@ vie et ta magie !
 }
 --------------------
 
---  Fée dans Flacon
+-- Fée dans Flacon
 dialog{
   id = "_treasure.bottle_1.6",
   icon = 12,
@@ -944,7 +951,7 @@ Coeurs.
 }
 --------------------
 
---  Flacon vide
+-- Flacon vide
 dialog{
   id = "_treasure.bottle_2.1",
   icon = 7,
@@ -957,7 +964,7 @@ diverses substances.
 }
 --------------------
 
---  Eau
+-- Eau
 dialog{
   id = "_treasure.bottle_2.2",
   icon = 8,
@@ -969,7 +976,7 @@ de l'eau !
 }
 --------------------
 
---  Potion rouge
+-- Potion rouge
 dialog{
   id = "_treasure.bottle_2.3",
   icon = 9,
@@ -983,7 +990,7 @@ retrouver toute ton
 }
 --------------------
 
---  Potion verte
+-- Potion verte
 dialog{
   id = "_treasure.bottle_2.4",
   icon = 10,
@@ -997,7 +1004,7 @@ retrouver toute ton
 }
 --------------------
 
---  Potion bleue
+-- Potion bleue
 dialog{
   id = "_treasure.bottle_2.5",
   icon = 11,
@@ -1011,7 +1018,7 @@ vie et ta magie !
 }
 --------------------
 
---  Fée dans Flacon
+-- Fée dans Flacon
 dialog{
   id = "_treasure.bottle_2.6",
   icon = 12,
@@ -1030,7 +1037,7 @@ Coeurs.
 }
 --------------------
 
---  Flacon vide
+-- Flacon vide
 dialog{
   id = "_treasure.bottle_3.1",
   icon = 7,
@@ -1043,7 +1050,7 @@ diverses substances.
 }
 --------------------
 
---  Eau
+-- Eau
 dialog{
   id = "_treasure.bottle_3.2",
   icon = 8,
@@ -1055,7 +1062,7 @@ de l'eau !
 }
 --------------------
 
---  Potion rouge
+-- Potion rouge
 dialog{
   id = "_treasure.bottle_3.3",
   icon = 9,
@@ -1069,7 +1076,7 @@ retrouver toute ton
 }
 --------------------
 
---  Potion verte
+-- Potion verte
 dialog{
   id = "_treasure.bottle_3.4",
   icon = 10,
@@ -1083,7 +1090,7 @@ retrouver toute ton
 }
 --------------------
 
---  Potion bleue
+-- Potion bleue
 dialog{
   id = "_treasure.bottle_3.5",
   icon = 11,
@@ -1097,7 +1104,7 @@ vie et ta magie !
 }
 --------------------
 
---  Fée dans Flacon
+-- Fée dans Flacon
 dialog{
   id = "_treasure.bottle_3.6",
   icon = 12,
@@ -1116,7 +1123,7 @@ Coeurs.
 }
 --------------------
 
---  Flacon vide
+-- Flacon vide
 dialog{
   id = "_treasure.bottle_4.1",
   icon = 7,
@@ -1129,7 +1136,7 @@ diverses substances.
 }
 --------------------
 
---  Eau
+-- Eau
 dialog{
   id = "_treasure.bottle_4.2",
   icon = 8,
@@ -1141,7 +1148,7 @@ de l'eau !
 }
 --------------------
 
---  Potion rouge
+-- Potion rouge
 dialog{
   id = "_treasure.bottle_4.3",
   icon = 9,
@@ -1155,7 +1162,7 @@ retrouver toute ton
 }
 --------------------
 
---  Potion verte
+-- Potion verte
 dialog{
   id = "_treasure.bottle_4.4",
   icon = 10,
@@ -1169,7 +1176,7 @@ retrouver toute ton
 }
 --------------------
 
---  Potion bleue
+-- Potion bleue
 dialog{
   id = "_treasure.bottle_4.5",
   icon = 11,
@@ -1183,7 +1190,7 @@ vie et ta magie !
 }
 --------------------
 
---  Fée dans Flacon
+-- Fée dans Flacon
 dialog{
   id = "_treasure.bottle_4.6",
   icon = 12,
@@ -1202,7 +1209,7 @@ Coeurs.
 }
 --------------------
 
---  Bottes de Pégase
+-- Bottes de Pégase
 dialog{
   id = "_treasure.pegasus_shoes.1",
   icon = 13,
@@ -1216,7 +1223,7 @@ seconde !
 }
 --------------------
 
---  Miroir Mystique
+-- Miroir Mystique
 dialog{
   id = "_treasure.mystic_mirror.1",
   icon = 14,
@@ -1231,7 +1238,7 @@ quête...
 }
 --------------------
 
---  Canne de Somaria
+-- Canne de Somaria
 dialog{
   id = "_treasure.cane_of_somaria.1",
   icon = 15,
@@ -1246,7 +1253,7 @@ blocs et t'accrocher
 }
 --------------------
 
---  3 Pommes
+-- 3 Pommes
 dialog{
   id = "_treasure.apple.1",
   icon = 16,
@@ -1260,7 +1267,7 @@ des Coeurs !
 }
 --------------------
 
---  1 Pain au Chocolat
+-- 1 Pain au Chocolat
 dialog{
   id = "_treasure.pain_au_chocolat.1",
   icon = 17,
@@ -1274,7 +1281,7 @@ récupérer de la vie.
 }
 --------------------
 
---  1 Croissant
+-- 1 Croissant
 dialog{
   id = "_treasure.croissant.1",
   icon = 18,
@@ -1289,7 +1296,7 @@ des Coeurs.
 }
 --------------------
 
---  Clé de Roc
+-- Clé de Roc
 dialog{
   id = "_treasure.rock_key.1",
   icon = 19,
@@ -1300,7 +1307,7 @@ Clé de Roc !$0
 }
 --------------------
 
---  Clé d'os
+-- Clé d'os
 dialog{
   id = "_treasure.bone_key.1",
   icon = 20,
@@ -1313,7 +1320,7 @@ elle bien servir ?
 }
 --------------------
 
---  Clé de Terre
+-- Clé de Terre
 dialog{
   id = "_treasure.clay_key.1",
   icon = 21,
@@ -1327,7 +1334,7 @@ village !
 }
 --------------------
 
---  Tarte aux Pommes
+-- Tarte aux Pommes
 dialog{
   id = "_treasure.level_4_way.1",
   icon = 22,
@@ -1342,7 +1349,7 @@ drôle d'aspect...
 }
 --------------------
 
---  Lingots d'or
+-- Lingots d'or
 dialog{
   id = "_treasure.level_4_way.2",
   icon = 23,
@@ -1356,7 +1363,7 @@ inestimable !
 }
 --------------------
 
---  Edelweiss
+-- Edelweiss
 dialog{
   id = "_treasure.level_4_way.3",
   icon = 24,
@@ -1370,7 +1377,7 @@ rarissime !
 }
 --------------------
 
---  Précis d'escrime
+-- Précis d'escrime
 dialog{
   id = "_treasure.level_4_way.4",
   icon = 25,
@@ -1385,7 +1392,7 @@ tournoyante avancée.
 }
 --------------------
 
---  Palmes
+-- Palmes
 dialog{
   id = "_treasure.flippers.1",
   icon = 26,
@@ -1399,7 +1406,7 @@ profonde !
 }
 --------------------
 
---  Cape Magique
+-- Cape Magique
 dialog{
   id = "_treasure.magic_cape.1",
   icon = 27,
@@ -1413,7 +1420,7 @@ mur fragile.
 }
 --------------------
 
---  Clé de Fer
+-- Clé de Fer
 dialog{
   id = "_treasure.iron_key.1",
   icon = 28,
@@ -1427,7 +1434,7 @@ va avec !
 }
 --------------------
 
---  Clé de Pierre
+-- Clé de Pierre
 dialog{
   id = "_treasure.stone_key.1",
   icon = 29,
@@ -1441,7 +1448,7 @@ correspond ?
 }
 --------------------
 
---  Clé de Bois
+-- Clé de Bois
 dialog{
   id = "_treasure.wooden_key.1",
   icon = 30,
@@ -1454,7 +1461,7 @@ tu peux l'utiliser !
 }
 --------------------
 
---  Clé de Glace
+-- Clé de Glace
 dialog{
   id = "_treasure.ice_key.1",
   icon = 31,
@@ -1468,7 +1475,7 @@ lieu glacial...
 }
 --------------------
 
---  Poigne de Fer
+-- Poigne de Fer
 dialog{
   id = "_treasure.glove.1",
   icon = 32,
@@ -1482,7 +1489,7 @@ pierres.
 }
 --------------------
 
---  Poigne d'Or
+-- Poigne d'Or
 dialog{
   id = "_treasure.glove.2",
   icon = 33,
@@ -1496,7 +1503,7 @@ noires !
 }
 --------------------
 
---  Pierre de Feu
+-- Pierre de Feu
 dialog{
   id = "_treasure.fire_stone.1",
   icon = 34,
@@ -1507,7 +1514,7 @@ Pierre de Feu !
 }
 --------------------
 
---  Carte du Monde
+-- Carte du Monde
 dialog{
   id = "_treasure.world_map.1",
   icon = 50,
@@ -1520,7 +1527,7 @@ dans l'écran Carte.
 }
 --------------------
 
---  Grand sac de rubis
+-- Grand sac de rubis
 dialog{
   id = "_treasure.rupee_bag.2",
   icon = 52,
@@ -1533,7 +1540,7 @@ jusqu'à 300 rubis !
 }
 --------------------
 
---  Sac de rubis géant
+-- Sac de rubis géant
 dialog{
   id = "_treasure.rupee_bag.3",
   icon = 53,
@@ -1546,7 +1553,7 @@ jusqu'à 999 rubis !
 }
 --------------------
 
---  Petit sac de bombes
+-- Petit sac de bombes
 dialog{
   id = "_treasure.bomb_bag.1",
   icon = 54,
@@ -1561,7 +1568,7 @@ sauter !
 }
 --------------------
 
---  Grand sac de bombes
+-- Grand sac de bombes
 dialog{
   id = "_treasure.bomb_bag.2",
   icon = 55,
@@ -1576,7 +1583,7 @@ au lieu de 10 !
 }
 --------------------
 
---  Sac de bombes géant
+-- Sac de bombes géant
 dialog{
   id = "_treasure.bomb_bag.3",
   icon = 56,
@@ -1590,7 +1597,7 @@ au lieu de 30 !
 }
 --------------------
 
---  Grand carquois 
+-- Grand carquois 
 dialog{
   id = "_treasure.quiver.2",
   icon = 58,
@@ -1604,7 +1611,7 @@ au lieu de 10 !
 }
 --------------------
 
---  Carquois géant
+-- Carquois géant
 dialog{
   id = "_treasure.quiver.3",
   icon = 59,
@@ -1618,7 +1625,7 @@ au lieu de 30 !
 }
 --------------------
 
---  Cotte de mailles bleue
+-- Cotte de mailles bleue
 dialog{
   id = "_treasure.tunic.2",
   icon = 61,
@@ -1636,7 +1643,7 @@ plus glaciales...
 }
 --------------------
 
---  Cotte de mailles rouge
+-- Cotte de mailles rouge
 dialog{
   id = "_treasure.tunic.3",
   icon = 62,
@@ -1651,7 +1658,7 @@ les ennemis !
 }
 --------------------
 
---  Bouclier
+-- Bouclier
 dialog{
   id = "_treasure.shield.1",
   icon = 63,
@@ -1665,7 +1672,7 @@ ennemis !
 }
 --------------------
 
---  Bouclier de Feu
+-- Bouclier de Feu
 dialog{
   id = "_treasure.shield.2",
   icon = 64,
@@ -1680,7 +1687,7 @@ enflammées !
 }
 --------------------
 
---  Bouclier Miroir
+-- Bouclier Miroir
 dialog{
   id = "_treasure.shield.3",
   icon = 65,
@@ -1869,7 +1876,7 @@ supplémentaire !
 }
 --------------------
 
---  1 Bombe
+-- 1 Bombe
 dialog{
   id = "_treasure.bomb.1",
   icon = 82,
@@ -1892,7 +1899,7 @@ obstacle.
 }
 -----------------------
 
---  3 Bombes
+-- 3 Bombes
 dialog{
   id = "_treasure.bomb.2",
   icon = 82,
@@ -1905,7 +1912,7 @@ Utilise une Bombe
 }
 --------------------
 
---  8 Bombes
+-- 8 Bombes
 dialog{
   id = "_treasure.bomb.3",
   icon = 82,
@@ -1918,7 +1925,7 @@ Utilise une Bombe
 }
 --------------------
 
---  1 Flèche
+-- 1 Flèche
 dialog{
   id = "_treasure.arrow.1",
   icon = 83,
@@ -1941,7 +1948,7 @@ des ennemis coriaces
 }
 -----------------------
 
---  5 Flèches
+-- 5 Flèches
 dialog{
   id = "_treasure.arrow.2",
   icon = 83,
@@ -1954,7 +1961,7 @@ Utilise l'Arc et les
 }
 --------------------
 
---  10 Flèches
+-- 10 Flèches
 dialog{
   id = "_treasure.arrow.3",
   icon = 83,
@@ -1967,7 +1974,7 @@ Utilise l'Arc et les
 }
 --------------------
 
---  1 Coeur
+-- 1 Coeur
 dialog{
   id = "_treasure.heart.1",
   icon = 84,
@@ -1978,7 +1985,7 @@ Coeur !
 }
 --------------------
 
---  Petite bouteille de magie
+-- Petite bouteille de magie
 dialog{
   id = "_treasure.magic_flask.1",
   icon = 85,
@@ -1990,7 +1997,7 @@ d'énergie magique !
 }
 --------------------
 
---  Grande bouteille de magie
+-- Grande bouteille de magie
 dialog{
   id = "_treasure.magic_flask.2",
   icon = 86,
@@ -2002,7 +2009,7 @@ d'énergie magique !
 }
 --------------------
 
---  1 rubis vert
+-- 1 rubis vert
 dialog{
   id = "_treasure.rupee.1",
   icon = 90,
@@ -2013,7 +2020,7 @@ Rubis !
 }
 --------------------
 
---  1 rubis bleu
+-- 1 rubis bleu
 dialog{
   id = "_treasure.rupee.2",
   icon = 91,
@@ -2025,7 +2032,7 @@ Il vaut 5 Rubis !
 }
 --------------------
 
---  1 rubis rouge
+-- 1 rubis rouge
 dialog{
   id = "_treasure.rupee.3",
   icon = 92,
@@ -2037,7 +2044,7 @@ Il vaut 20 Rubis !
 }
 --------------------
 
---  50 rubis
+-- 50 rubis
 -- Remarque : clin d'oeil à Link's Awakening
 dialog{
   id = "_treasure.rupee.4",
@@ -2050,7 +2057,7 @@ Merveilleux !
 }
 --------------------
 
---  100 rubis
+-- 100 rubis
 -- Remarque : clin d'oeil à Link's Awakening
 dialog{
   id = "_treasure.rupee.5",
@@ -2063,7 +2070,7 @@ Fantastique !
 }
 --------------------
 
---  300 rubis
+-- 300 rubis
 -- Remarque : clin d'oeil à Link's Awakening
 dialog{
   id = "_treasure.rupee.6",
@@ -2076,7 +2083,7 @@ C'est l'extase !
 }
 --------------------
 
---  Potion rouge
+-- Potion rouge
 dialog{
   id = "_treasure.red_potion.1",
   icon = 96,
@@ -2090,7 +2097,7 @@ retrouver toute ton
 }
 --------------------
 
---  Potion verte
+-- Potion verte
 dialog{
   id = "_treasure.green_potion.1",
   icon = 97,
@@ -2104,7 +2111,7 @@ retrouver toute ton
 }
 --------------------
 
---  Potion bleue
+-- Potion bleue
 dialog{
   id = "_treasure.blue_potion.1",
   icon = 98,
@@ -2118,6 +2125,11 @@ vie et ta magie !
 }
 --------------------
 
+-- ---------------
+-- Autres messages
+-- ---------------
+-- 
+-- Autres messages divers affichés par le moteur de jeu
 -- Affiché à la fin des dialogues expliquant
 -- que le joueur a obtenu un objet qui consomme
 -- de l'énergie magique (même message que dans ALTTP)
@@ -2600,6 +2612,18 @@ la magie du sceau.
 }
 -----------------------
 
+-- next = intro4.4
+-- [intro4.4]
+-- #       |-----------------------|
+-- line1 = "Il en était fini du vil"
+-- line2 = "Ganondorf. Il devint"
+-- line3 = "ainsi prisonnier de"
+-- next = intro4.5
+-- [intro4.5]
+-- #       |-----------------------|
+-- line1 = "la vision maléfique du"
+-- line2 = "monde qu'il avait lui-"
+-- line3 = "même créée."
 -- Intro : fresque 5
 dialog{
   id = "intro5",
@@ -2672,6 +2696,8 @@ monstres !
 }
 -----------------------
 
+-- _unknown car on sait qu'il va y avoir une suite, mais on ne sait pas encore laquelle
+-- cela permet d'indiquer au moteur d'afficher une flèche en bas de la boîte de dialogue et non un carré
 -- Suite du dialogue avec le singe, dans le cas où on n'a pas le bouclier
 dialog{
   id = "outside_world.village.monkey.without_shield",
@@ -3819,8 +3845,6 @@ souhaites acheter.
 -----------------------
 
 -- Boutique : quand on regarde les pommes
--- _unknown car c'est le moteur qui se chargera de la suite pour gérer la vente
--- cela permet d'afficher une flèche en bas de la boîte de dialogue au lieu du carré
 dialog{
   id = "lyriann_shop.apples",
   next = "_unknown",
@@ -3832,6 +3856,8 @@ rapporte un Coeur.
 }
 -----------------------
 
+-- _unknown car c'est le moteur qui se chargera de la suite pour gérer la vente
+-- cela permet d'afficher une flèche en bas de la boîte de dialogue au lieu du carré
 -- Boutique : quand on regarde la lanterne
 dialog{
   id = "lyriann_shop.lamp",

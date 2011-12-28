@@ -21,9 +21,9 @@ function event_npc_interaction(npc_name)
   end
 end
 
-function event_dialog_finished(first_message_id)
+function event_dialog_finished(dialog_id)
 
-  if first_message_id == "hidden_palace.using_bone_key" then
+  if dialog_id == "hidden_palace.using_bone_key" then
     sol.main.play_sound("door_open")
     sol.main.play_sound("door_unlocked")
     sol.main.play_sound("secret")

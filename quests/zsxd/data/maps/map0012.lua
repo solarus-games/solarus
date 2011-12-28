@@ -22,9 +22,9 @@ function angry_zelda()
   sol.map.dialog_start("link_cave.angry_zelda")
 end
 
-function event_dialog_finished(first_message_id)
+function event_dialog_finished(dialog_id)
 
-  if first_message_id == "link_cave.angry_zelda" then
+  if dialog_id == "link_cave.angry_zelda" then
 
     local m = sol.main.jump_movement_create(6, 24)
     sol.main.movement_set_property(m, "ignore_obstacles", true)

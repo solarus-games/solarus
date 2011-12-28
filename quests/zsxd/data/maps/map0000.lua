@@ -25,9 +25,9 @@ function intro()
   sol.map.dialog_start("link_house.intro")
 end
 
-function event_dialog_finished(first_message_id)
+function event_dialog_finished(dialog_id)
 
-  if first_message_id == "link_house.intro" then
+  if dialog_id == "link_house.intro" then
     sol.main.timer_start(wake_up, 2000)
   end
 end

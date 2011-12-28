@@ -166,21 +166,21 @@ function event_hero_on_sensor(sensor_name)
   end
 end
 
-function event_dialog_finished(first_message_id, answer)
+function event_dialog_finished(dialog_id, answer)
 
-  if first_message_id == "crazy_house.infinite_greetings" then
+  if dialog_id == "crazy_house.infinite_greetings" then
     -- Ouverture de la porte vers le couloir sans fin
     if not sol.map.door_is_open("bowser_door") then
       sol.map.door_open("bowser_door")
     end
     sol.map.sensor_set_enabled("bowser_leave", true)
-  elseif first_message_id == "crazy_house.guichet_33_parfum" then
+  elseif dialog_id == "crazy_house.guichet_33_parfum" then
     -- Obtention clé du guichet 33 suite à l'apport du parfum
     if sol.game.get_item_amount("parfum_counter") > 0 then
       sol.map.treasure_give("small_key", 1, 123)
       sol.game.remove_item_amount("parfum_counter", 1)
     end
-  elseif first_message_id == "crazy_house.apothicaire" then
+  elseif dialog_id == "crazy_house.apothicaire" then
     -- Achat de sacs de riz à l'apothicaire        	
     if answer == 0 then
       if sol.game.get_money() >= 20 then
@@ -205,10 +205,10 @@ function event_dialog_finished(first_message_id, answer)
     else
       sol.map.dialog_start("crazy_house.apothicaire_non")
     end
-  elseif first_message_id == "crazy_house.apothicaire_oui" then
+  elseif dialog_id == "crazy_house.apothicaire_oui" then
     -- Remise du sac de riz achetés à l'apothicaire
     sol.map.treasure_give("sac_riz", 1, -1)
-  elseif first_message_id == "crazy_house.guichet_36" then
+  elseif dialog_id == "crazy_house.guichet_36" then
     -- Achat de 3 sacs de riz à Panoda Fichage
     if answer == 0 then
       if sol.game.get_money() >= 50 then
@@ -230,7 +230,7 @@ function event_dialog_finished(first_message_id, answer)
         sol.map.dialog_start("crazy_house.guichet_36_un")
       end
     end
-  elseif first_message_id == "crazy_house.guichet_32_ech_ne_6" then
+  elseif dialog_id == "crazy_house.guichet_32_ech_ne_6" then
     -- Echange de hache contre cuillere
     if answer == 0 then
       if sol.game.get_item_amount("hache_counter") >= 1 then

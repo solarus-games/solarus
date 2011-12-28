@@ -11,11 +11,11 @@ function event_obtained(variant)
   sol.map.dialog_start(message_id[nb_pieces_of_heart + 1])
 end
 
-function event_dialog_finished(first_message_id, answer)
+function event_dialog_finished(dialog_id, answer)
 
   local nb_pieces_of_heart = sol.game.savegame_get_integer(1030)
 
-  if first_message_id == message_id[nb_pieces_of_heart + 1] then
+  if dialog_id == message_id[nb_pieces_of_heart + 1] then
 
     sol.game.savegame_set_integer(1030, (nb_pieces_of_heart + 1) % 4)
     if (nb_pieces_of_heart == 3) then

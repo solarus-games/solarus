@@ -46,16 +46,16 @@ function event_npc_interaction(npc_name)
   end
 end
 
-function event_dialog_finished(first_message_id)
+function event_dialog_finished(dialog_id)
 
-  if first_message_id == "castle.forbidden_door_wtf" then
+  if dialog_id == "castle.forbidden_door_wtf" then
     local m = sol.main.path_movement_create("22", 32)
     local npc_name = "forbidden_door_npc"
     local sprite = sol.map.npc_get_sprite(npc_name)
     sol.map.npc_start_movement(npc_name, m)
     sol.main.sprite_set_animation(sprite, "walking")
     sol.map.hero_freeze()
-  elseif first_message_id == "credits_4" then
+  elseif dialog_id == "credits_4" then
    sol.main.timer_start(ending_next, 2000)
   end
 end

@@ -103,8 +103,8 @@ function event_hero_still_on_sensor(sensor_name)
   sensor_check_guard(sensor_name)
 end
 
-function event_dialog_finished(first_message_id, answer)
+function event_dialog_finished(dialog_id, answer)
 
-  dialog_check_guard(first_message_id)
+  dialog_check_guard(dialog_id)
 end
 

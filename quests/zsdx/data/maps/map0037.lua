@@ -26,9 +26,9 @@ function event_npc_interaction(npc_name)
   end
 end
 
-function event_dialog_finished(first_message_id, answer)
+function event_dialog_finished(dialog_id, answer)
 
-  if first_message_id == "billy_cave.what_do_you_have" then
+  if dialog_id == "billy_cave.what_do_you_have" then
     if sol.game.get_item("level_4_way") == 2 then
       -- the player has the golden bars
       sol.map.dialog_start("billy_cave.with_golden_bars")
@@ -36,21 +36,21 @@ function event_dialog_finished(first_message_id, answer)
       sol.map.dialog_start("billy_cave.without_golden_bars")
     end
 
-  elseif first_message_id == "billy_cave.without_golden_bars" then
+  elseif dialog_id == "billy_cave.without_golden_bars" then
     if answer == 0 then
       give_croissant()
      else
       give_apple_pie()
     end
 
-  elseif first_message_id == "billy_cave.with_golden_bars" then
+  elseif dialog_id == "billy_cave.with_golden_bars" then
     if answer == 0 then
       give_golden_bars()
      else
       give_apple_pie()
     end
 
-  elseif first_message_id == "billy_cave.give_golden_bars" then
+  elseif dialog_id == "billy_cave.give_golden_bars" then
     sol.map.treasure_give("level_4_way", 3, 134)
   end
 end

@@ -290,10 +290,10 @@ and the elements displayed with it.
 Most of the functions provided here apply to an entity of the map (possibly the hero)
 and are prefixed by the type of entity.
 
-- <tt>sol.map.dialog_start(first_message_id)</tt>: 
-starts a dialog (a sequence of messages) by displaying a first message
+- <tt>sol.map.dialog_start(dialog_id)</tt>:
+Show a dialog box.
 
-- <tt>sol.map.dialog_set_variable(first_message_id, value)</tt>: 
+- <tt>sol.map.dialog_set_variable(dialog_id, value)</tt>:
 Specifies a value to display inside a dialog (for example the
 player's name). In this dialog, the sequence <tt>$v</tt> will
 be substituted by this value.
@@ -979,13 +979,13 @@ called at each cycle (so take care of the performances)
 - <tt>event_set_suspended(suspended)</tt>:
 called when the game is suspended or resumed
 
-- <tt>event_dialog_started(first_message_id)</tt>:
-called when a dialog starts (i.e. at the beginning of its first message),
-even if the dialog was started by another script
+- <tt>event_dialog_started(dialog_id)</tt>:
+Called when a dialog box starts, even if the dialog was started by another
+script.
 
-- <tt>event_dialog_finished(first_message_id, answer)</tt>:
-called when a dialog finishes (i.e. once its last message is finished),
-even if the dialog was started by another script.
+- <tt>event_dialog_finished(dialog_id, answer)</tt>:
+Called when a dialog finishes (i.e. once its last group of 3 lines is
+finished), even if the dialog was started by another script.
 If there was a question, answer is 0 if the first answer was chosen,
 or 1 if the second one was chosen.
 If there was no question, answer is -1.
@@ -1100,32 +1100,33 @@ called when the game is suspended or resumed
 - <tt>event_map_changed(new_map_id)</tt>:
 called when a map becomes the current map
 
-- <tt>event_dialog_started(first_message_id)</tt>
+- <tt>event_dialog_started(dialog_id)</tt>:
 (triggered only if this item script started the dialog):
-called when a dialog starts (i.e. at the beginning of its first message)
+called when a dialog box starts
 
-- <tt>event_dialog_finished(first_message_id, answer)</tt>
+- <tt>event_dialog_finished(dialog_id, answer)</tt>:
 (triggered only if this item script started the dialog):
-called when a dialog finishes (i.e. once its last message is finished)
+called when a dialog finishes (i.e. once its last group of 3 lines
+is finished)
 
-- <tt>event_npc_interaction(npc_name)</tt>
+- <tt>event_npc_interaction(npc_name)</tt>:
 (triggered only if the npc has the property to notify the item controlled by this script):
 called when the hero interacts with an NPC by pressing the action key
 
-- <tt>event_npc_interaction_finished(npc_name)</tt>
+- <tt>event_npc_interaction_finished(npc_name)</tt>:
 (triggered only if the NPC has the property to notify the item controlled by this script):
 called when the hero has just interacted with an NPC by pressing the action key
 
-- <tt>event_npc_interaction_item(npc_name, item_name, variant)</tt>
+- <tt>event_npc_interaction_item(npc_name, item_name, variant)</tt>:
 (triggered only if the NPC has the property to notify the item controlled by this script):
 called when the hero interacts with an NPC by using ANY inventory item;
 returns true if an interaction actually happened
 
-- <tt>event_npc_interaction_item_finished(npc_name, item_name, variant)</tt>
+- <tt>event_npc_interaction_item_finished(npc_name, item_name, variant)</tt>:
 (triggered only if the NPC has the property to notify the item controlled by this script):
 called when the hero has just interacted with an NPC by using ANY inventory item
 
-- <tt>event_npc_collision_fire(npc_name)</tt>
+- <tt>event_npc_collision_fire(npc_name)</tt>:
 (triggered only if the NPC has the property to notify the item controlled by this script):
 called when some fire touches an NPC
 
@@ -1159,13 +1160,13 @@ called at each cycle (so take care of the performances)
 - <tt>event_set_suspended(suspended)</tt>:
 called when the game is suspended or resumed
 
-- <tt>event_dialog_started(first_message_id)</tt>
+- <tt>event_dialog_started(dialog_id)</tt>:
 (triggered only if this enemy script started the dialog):
-called when a dialog starts (i.e. at the beginning of its first message)
+called when a dialog starts
 
-- <tt>event_dialog_finished(first_message_id, answer)</tt>
+- <tt>event_dialog_finished(dialog_id, answer)</tt>:
 (triggered only if this enemy script started the dialog):
-called when a dialog finishes (i.e. once its last message is finished)
+called when a dialog finishes (i.e. once its last group of 3 lines is finished)
 
 - <tt>event_appear()</tt>:
 called when an instance of the enemy controlled by this script has just been created on the map

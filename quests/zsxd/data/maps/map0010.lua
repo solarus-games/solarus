@@ -7,9 +7,9 @@ function event_npc_interaction(npc_name)
   end
 end
 
-function event_dialog_finished(first_message_id)
+function event_dialog_finished(dialog_id)
 
-  if first_message_id == "water_house.give_bottle" then
+  if dialog_id == "water_house.give_bottle" then
     sol.map.treasure_give("bottle_2", 2, 61)
   end
 end

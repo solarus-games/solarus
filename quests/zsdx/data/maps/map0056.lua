@@ -91,9 +91,9 @@ function event_enemy_dead(enemy_name)
   end
 end
 
-function event_dialog_finished(first_message_id)
+function event_dialog_finished(dialog_id)
 
-  if first_message_id == "credits_3" then
+  if dialog_id == "credits_3" then
    sol.main.timer_start(ending_next, 2000)
   end
 end

@@ -76,17 +76,17 @@ function event_npc_interaction(npc_name)
   end
 end
 
-function event_dialog_finished(first_message_id, answer)
+function event_dialog_finished(dialog_id, answer)
 
-  if first_message_id == "crazy_house.guichet_43" then
+  if dialog_id == "crazy_house.guichet_43" then
     -- Pipelette (guichet 43) qui se tourne vers Link, énervée
     sol.main.sprite_set_direction(guichet43_sprite, 3)
     sol.map.dialog_start("crazy_house.guichet_43n")
-  elseif first_message_id == "crazy_house.guichet_43n" then
+  elseif dialog_id == "crazy_house.guichet_43n" then
     -- Pipelette reprend sa conversation
     sol.main.sprite_set_direction(guichet43_sprite, 2)
     sol.map.dialog_start("crazy_house.guichet_43f")
-  elseif first_message_id == "crazy_house.guichet_45_ech_ne_3" then
+  elseif dialog_id == "crazy_house.guichet_45_ech_ne_3" then
     if answer == 0 then
       if sol.game.get_item_amount("cuillere_counter") >= 1 then
         sol.map.dialog_start("crazy_house.guichet_45_ech_ok")
@@ -95,7 +95,7 @@ function event_dialog_finished(first_message_id, answer)
         sol.map.dialog_start("crazy_house.guichet_45_ech_un")
       end
     end
-  elseif first_message_id == "crazy_house.guichet_45_ech_ok" then
+  elseif dialog_id == "crazy_house.guichet_45_ech_ok" then
     sol.map.treasure_give("sac_olive", 1, -1)
     sol.game.remove_item_amount("cuillere_counter", 1)
   end

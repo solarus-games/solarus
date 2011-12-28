@@ -47,9 +47,9 @@ function event_use()
   end
 end
 
-function event_dialog_finished(first_message_id, answer)
+function event_dialog_finished(dialog_id, answer)
 
-  if first_message_id == "use_bottle_with_water" then
+  if dialog_id == "use_bottle_with_water" then
 
     if answer == 0 then
 
@@ -60,7 +60,7 @@ function event_dialog_finished(first_message_id, answer)
     end
     sol.item.set_finished()
 
-  elseif first_message_id == "found_water" then
+  elseif dialog_id == "found_water" then
 
     if answer == 0 then
       sol.map.treasure_give(get_first_empty_bottle(), 2, -1)

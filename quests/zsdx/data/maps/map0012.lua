@@ -65,15 +65,15 @@ function has_obtained_bow()
 end
 
 -- Function called when the dialog box is being closed
--- first_message_id: name of the first message of the sequence that has just finished
+-- dialog_id: name of the first message of the sequence that has just finished
 -- answer: the answer of the question (0 or 1) or -1 if there was no question
-function event_dialog_finished(first_message_id, answer)
+function event_dialog_finished(dialog_id, answer)
 
-  if first_message_id == "sahasrahla_house.beginning" or
-    first_message_id == "sahasrahla_house.give_world_map" then
+  if dialog_id == "sahasrahla_house.beginning" or
+    dialog_id == "sahasrahla_house.give_world_map" then
     -- give the world map to the player
     sol.map.treasure_give("world_map", 1, 33)
-  elseif first_message_id == "sahasrahla_house.quest_accepted" and not sol.map.door_is_open("door") then
+  elseif dialog_id == "sahasrahla_house.quest_accepted" and not sol.map.door_is_open("door") then
     sol.map.door_open("door")
   end
 end

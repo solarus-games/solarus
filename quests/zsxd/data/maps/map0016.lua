@@ -13,9 +13,9 @@ function event_npc_interaction(npc_name)
   end
 end
 
-function event_dialog_finished(first_message_id)
+function event_dialog_finished(dialog_id)
 
-  if first_message_id == "desert.east_house.back_from_dead" then
+  if dialog_id == "desert.east_house.back_from_dead" then
     sol.map.door_open("door")
   end
 end

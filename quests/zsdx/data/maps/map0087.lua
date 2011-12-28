@@ -27,11 +27,11 @@ function start_final_sequence()
   sol.map.dialog_set_variable("dungeon_4.solarus_child", sol.game.savegame_get_name());
 end
 
-function event_dialog_finished(first_message_id, answer)
+function event_dialog_finished(dialog_id, answer)
 
-  if first_message_id == "dungeon_4.solarus_child" then
+  if dialog_id == "dungeon_4.solarus_child" then
     sol.map.hero_start_victory_sequence()
-  elseif first_message_id == "dungeon_4.agahnim" then
+  elseif dialog_id == "dungeon_4.agahnim" then
     agahnim_sequence_5()
   end
 end

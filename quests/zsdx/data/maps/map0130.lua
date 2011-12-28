@@ -67,15 +67,15 @@ function event_map_opening_transition_finished(destination_point_name)
   end
 end
 
-function event_dialog_finished(first_message_id)
+function event_dialog_finished(dialog_id)
 
-  if first_message_id == "dungeon_9.boss" then
+  if dialog_id == "dungeon_9.boss" then
     sol.main.play_music("ganon_battle.spc")
-  elseif first_message_id == "dungeon_9.zelda" then
+  elseif dialog_id == "dungeon_9.zelda" then
     sol.main.timer_start(function()
       sol.map.dialog_start("dungeon_9.zelda_children")
     end, 1000)
-  elseif first_message_id == "dungeon_9.zelda_children" then
+  elseif dialog_id == "dungeon_9.zelda_children" then
     sol.main.play_music("none")
     sol.main.play_sound("world_warp")
     sol.main.timer_start(function()
@@ -86,7 +86,7 @@ function event_dialog_finished(first_message_id)
     sol.main.timer_start(function()
       sol.map.dialog_start("dungeon_9.zelda_end")
     end, 5000)
-  elseif first_message_id == "dungeon_9.zelda_end" then
+  elseif dialog_id == "dungeon_9.zelda_end" then
     sol.main.timer_start(function()
       sol.map.hero_set_map(8, "from_ending", 1)
     end, 2000)

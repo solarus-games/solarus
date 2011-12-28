@@ -90,9 +90,9 @@ end
 
 -- Function called when the dialog box is being closed.
 -- If the player was talking to the monkey, we do the appropriate action
-function event_dialog_finished(first_message_id, answer)
+function event_dialog_finished(dialog_id, answer)
 
-  if first_message_id == "outside_world.village.monkey" then
+  if dialog_id == "outside_world.village.monkey" then
 
     -- show another message depending on the shield
     if sol.game.has_ability("shield") then
@@ -101,7 +101,7 @@ function event_dialog_finished(first_message_id, answer)
       sol.map.dialog_start("outside_world.village.monkey.without_shield")
      end
 
-  elseif first_message_id == "outside_world.village.monkey.with_shield" then
+  elseif dialog_id == "outside_world.village.monkey.with_shield" then
     -- make the monkey leave
     sol.map.hero_freeze()
     sol.main.play_sound("monkey")
@@ -113,7 +113,7 @@ function event_dialog_finished(first_message_id, answer)
     monkey_jumps = 1
     sol.game.savegame_set_boolean(24, true)
 
-  elseif first_message_id == "outside_world.village.tree_woman" then
+  elseif dialog_id == "outside_world.village.tree_woman" then
     sol.map.treasure_give("rupee", 1, -1)
   end
 end

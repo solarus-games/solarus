@@ -50,9 +50,9 @@ function event_hero_on_sensor(sensor_name)
   end
 end
 
-function event_dialog_finished(first_message_id)
+function event_dialog_finished(dialog_id)
 
-  if first_message_id == "outside_fields_SE.yoda_give_sword" then
+  if dialog_id == "outside_fields_SE.yoda_give_sword" then
     sol.map.treasure_give("sword", 2, 66)
   end
 end

@@ -33,18 +33,18 @@ function event_npc_interaction(npc_name)
   end
 end
 
-function event_dialog_finished(first_message_id, answer)
+function event_dialog_finished(dialog_id, answer)
 
-  if first_message_id == "outside_world.surprise_wall_guy.closed" then
+  if dialog_id == "outside_world.surprise_wall_guy.closed" then
     if sol.game.get_item("level_4_way") == 1 then
       -- the player has the apple pie
       sol.map.dialog_start("outside_world.surprise_wall_guy.give_me_apple_pie")
     end
-  elseif first_message_id == "outside_world.surprise_wall_guy.give_me_apple_pie"
+  elseif dialog_id == "outside_world.surprise_wall_guy.give_me_apple_pie"
       and answer == 0 then
     sol.game.set_item("level_4_way", 0)
     sol.map.dialog_start("outside_world.surprise_wall_guy.thanks")
-  elseif first_message_id == "outside_world.surprise_wall_guy.thanks" then
+  elseif dialog_id == "outside_world.surprise_wall_guy.thanks" then
     sol.map.tile_set_enabled("surprise_wall_door_tile", false)
     sol.map.npc_remove("surprise_wall_door")
     sol.game.savegame_set_boolean(136, true)

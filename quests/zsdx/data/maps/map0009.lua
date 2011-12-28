@@ -107,9 +107,9 @@ function start_boss()
   fighting_boss = true
 end
 
-function event_dialog_finished(first_message_id, answer)
+function event_dialog_finished(dialog_id, answer)
 
-  if first_message_id == "dungeon_5.agahnim_beginning" then
+  if dialog_id == "dungeon_5.agahnim_beginning" then
     sol.main.play_music("ganon_battle.spc")
   end
 end

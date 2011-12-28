@@ -62,12 +62,12 @@ function event_hero_on_sensor(sensor_name)
   end
 end
 
-function event_dialog_finished(first_message_id, answer)
+function event_dialog_finished(dialog_id, answer)
 
-  if first_message_id == "fairy_cave.first_time" then
+  if dialog_id == "fairy_cave.first_time" then
     sol.map.hero_unfreeze()
     sol.map.treasure_give("boomerang", 2, 100)
-  elseif first_message_id == "fairy_cave.restore_health" then
+  elseif dialog_id == "fairy_cave.restore_health" then
     sol.map.hero_unfreeze()
     sol.game.add_life(sol.game.get_max_life())
   end

@@ -22,10 +22,10 @@ function event_hero_on_sensor(sensor_name)
   end
 end
 
-function event_dialog_finished(first_message_id, answer)
+function event_dialog_finished(dialog_id, answer)
 
-  if first_message_id == "cake_shop.dont_leave" 
-    or first_message_id == "cake_shop.seller.ask_apples_again" then
+  if dialog_id == "cake_shop.dont_leave" 
+    or dialog_id == "cake_shop.seller.ask_apples_again" then
 
     sol.game.savegame_set_boolean(46, true)
 
@@ -41,7 +41,7 @@ function event_dialog_finished(first_message_id, answer)
 	sol.map.dialog_start("cake_shop.no_apples")
       end
     end
-  elseif first_message_id == "cake_shop.thank_you" then
+  elseif dialog_id == "cake_shop.thank_you" then
     sol.map.treasure_give("bottle_1", 1, 32)
   end
 end

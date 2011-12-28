@@ -16,9 +16,9 @@ function event_npc_interaction(npc_name)
 end
 
 -- Function called when the dialog box is being closed.
-function event_dialog_finished(first_message_id, answer)
+function event_dialog_finished(dialog_id, answer)
 
-  if first_message_id == "smith_cave.without_sword" then
+  if dialog_id == "smith_cave.without_sword" then
     -- the dialog was the question to buy the sword
 
     if answer == 1 then

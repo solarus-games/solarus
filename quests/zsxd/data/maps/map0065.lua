@@ -181,11 +181,11 @@ function another_castle()
     sol.game.savegame_get_name())
 end
 
-function event_dialog_finished(first_message_id)
+function event_dialog_finished(dialog_id)
 
-  if first_message_id == "dungeon_1.boss_hint_stone" then
+  if dialog_id == "dungeon_1.boss_hint_stone" then
     sol.main.timer_start(victory, 1000)
-  elseif first_message_id == "dungeon_1.ganon" then
+  elseif dialog_id == "dungeon_1.ganon" then
     sol.main.play_music("ganon_battle.spc")
   end
 end

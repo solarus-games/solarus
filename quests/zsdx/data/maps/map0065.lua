@@ -99,11 +99,11 @@ function event_hero_still_on_sensor(sensor_name)
   sensor_check_guard(sensor_name)
 end
 
-function event_dialog_finished(first_message_id, answer)
+function event_dialog_finished(dialog_id, answer)
 
-  dialog_check_guard(first_message_id)
+  dialog_check_guard(dialog_id)
 
-  if first_message_id == "dungeon_5.prison_1_use_iron_key" then
+  if dialog_id == "dungeon_5.prison_1_use_iron_key" then
     sol.main.play_sound("secret")
     sol.main.play_sound("door_open")
     sol.map.npc_remove("prison_1_lock")

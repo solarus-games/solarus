@@ -230,9 +230,9 @@ function start_final_sequence()
   end)
 end
 
-function event_dialog_finished(first_message_id)
+function event_dialog_finished(dialog_id)
 
-  if first_message_id == "dungeon_7.sahasrahla" then
+  if dialog_id == "dungeon_7.sahasrahla" then
     sol.map.hero_start_victory_sequence()
   end
 end

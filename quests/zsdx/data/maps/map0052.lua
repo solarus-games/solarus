@@ -36,16 +36,16 @@ function event_hero_on_sensor(sensor_name)
   end
 end
 
-function event_dialog_finished(first_message_id)
+function event_dialog_finished(dialog_id)
 
-  if first_message_id == "dungeon_8.agahnim" then
+  if dialog_id == "dungeon_8.agahnim" then
     sol.map.hero_set_map(52, "boss_destination_point", 1)
     sol.main.timer_start(function()
       sol.main.play_music("ganon_battle.spc")
       sol.map.enemy_set_enabled("boss", true)
       sol.map.npc_set_enabled("agahnim_npc", false)
     end, 100)
-  elseif first_message_id == "dungeon_8.ganon" then
+  elseif dialog_id == "dungeon_8.ganon" then
     sol.main.play_sound("world_warp")
     sol.main.timer_start(function()
       sol.map.hud_set_pause_enabled(true)

@@ -15,7 +15,7 @@ function event_map_started(destination_point_name)
   sol.map.dialog_start("intro0")
 end
 
-function event_dialog_finished(first_message_id)
+function event_dialog_finished(dialog_id)
 
   if fresco == 0 then
     sol.map.tile_set_enabled("black_screen", false)

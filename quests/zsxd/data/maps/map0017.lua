@@ -15,9 +15,9 @@ function credits()
   sol.map.dialog_start("the_end.credits")
 end
 
-function event_dialog_finished(first_message_id)
+function event_dialog_finished(dialog_id)
 
-  if first_message_id == "the_end.credits" then
+  if dialog_id == "the_end.credits" then
     sol.game.reset()
   end
 end

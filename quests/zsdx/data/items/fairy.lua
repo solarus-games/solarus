@@ -49,9 +49,9 @@ function event_obtaining(variant, savegame_variable)
   end
 end
 
-function event_dialog_finished(first_message_id, answer)
+function event_dialog_finished(dialog_id, answer)
 
-  if first_message_id == "found_fairy" then
+  if dialog_id == "found_fairy" then
 
     if answer ~= 1 then
       -- restore 7 hearts
@@ -70,7 +70,7 @@ function event_dialog_finished(first_message_id, answer)
       end
     end
 
-  elseif first_message_id == "found_fairy.no_empty_bottle" then
+  elseif dialog_id == "found_fairy.no_empty_bottle" then
     -- after the 'no empty bottle' message, restore 7 hearts
     sol.game.add_life(7 * 4)
   end

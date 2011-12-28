@@ -43,8 +43,8 @@ end
 
 -- Function called when the dialog box is being closed.
 -- If the player was talking to the guard, we do the appropriate action
-function event_dialog_finished(first_message_id, answer)
-  if first_message_id == "outside_fields_SO.guard_ok" then
+function event_dialog_finished(dialog_id, answer)
+  if dialog_id == "outside_fields_SO.guard_ok" then
 
     local s = sol.map.npc_get_sprite("guard")
     if sol.main.sprite_get_animation(s) ~= "walking" then
@@ -53,7 +53,7 @@ function event_dialog_finished(first_message_id, answer)
       sol.main.sprite_set_animation(s, "walking")
       sol.map.npc_start_movement("guard", m)
     end
-  elseif first_message_id == "outside_fields_SO.forest_monkey_give_boots" then
+  elseif dialog_id == "outside_fields_SO.forest_monkey_give_boots" then
     sol.map.treasure_give("pegasus_shoes", 1, 48)
     sol.game.remove_item_amount("apple_pie_counter", 1)
   end

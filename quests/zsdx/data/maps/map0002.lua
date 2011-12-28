@@ -119,12 +119,12 @@ function event_npc_interaction(npc_name)
 end
 
 -- Function called when the dialog box is being closed
--- first_message_id: name of the first message of the sequence that has just finished
+-- dialog_id: name of the first message of the sequence that has just finished
 -- answer: the answer of the question (0 or 1) or -1 if there was no question
-function event_dialog_finished(first_message_id, answer)
+function event_dialog_finished(dialog_id, answer)
 
-  if first_message_id == "rupee_house.game_1.intro" or 
-    first_message_id == "rupee_house.game_1.play_again_question" then
+  if dialog_id == "rupee_house.game_1.intro" or 
+    dialog_id == "rupee_house.game_1.play_again_question" then
     -- if the dialog was the game 1 question
 
     if answer == 1 then
@@ -150,8 +150,8 @@ function event_dialog_finished(first_message_id, answer)
       end
     end
 
-  elseif first_message_id == "rupee_house.game_2.intro"  or
-    first_message_id == "rupee_house.game_2.reward.none" then
+  elseif dialog_id == "rupee_house.game_2.intro"  or
+    dialog_id == "rupee_house.game_2.reward.none" then
 
     if answer == 1 then
       -- don't want to play the game
@@ -161,7 +161,7 @@ function event_dialog_finished(first_message_id, answer)
       sol.map.dialog_start("rupee_house.game_2.choose_bet")
     end
 
-  elseif first_message_id == "rupee_house.game_2.choose_bet" then
+  elseif dialog_id == "rupee_house.game_2.choose_bet" then
 
     if answer == 0 then
       -- bet 5 rupees
@@ -191,12 +191,12 @@ function event_dialog_finished(first_message_id, answer)
 	sol.main.sprite_set_paused(v.sprite, false)
       end
     end
-  elseif string.find(first_message_id, "^rupee_house.game_2.reward.") then
+  elseif string.find(dialog_id, "^rupee_house.game_2.reward.") then
     -- reward in game 2
     sol.game.add_money(game_2_reward)
 
-  elseif first_message_id == "rupee_house.game_3.intro" or 
-    first_message_id == "rupee_house.game_3.restart_question" then
+  elseif dialog_id == "rupee_house.game_3.intro" or 
+    dialog_id == "rupee_house.game_3.restart_question" then
     -- if the dialog was the game 3 question
 
     if answer == 1 then
@@ -226,12 +226,12 @@ function event_dialog_finished(first_message_id, answer)
       end
     end
 
-  elseif first_message_id == "rupee_house.game_3.go" then 
+  elseif dialog_id == "rupee_house.game_3.go" then 
     sol.main.timer_start(game_3_timer, 8000, true);
     sol.map.sensor_set_enabled("game_3_sensor", true);
 
   -- stop game 3 when the player founds the piece of heart
-  elseif string.find(first_message_id, "^found_piece_of_heart") then
+  elseif string.find(dialog_id, "^found_piece_of_heart") then
     sol.map.tile_set_enabled("game_3_final_barrier", false)
     sol.main.play_sound("secret")
     playing_game_3 = false

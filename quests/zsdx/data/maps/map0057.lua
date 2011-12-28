@@ -93,9 +93,9 @@ function start_final_sequence()
   end)
 end
 
-function event_dialog_finished(first_message_id)
+function event_dialog_finished(dialog_id)
 
-  if first_message_id == "dungeon_6.tom" then
+  if dialog_id == "dungeon_6.tom" then
 
     sol.main.play_music("none")
     sol.main.timer_start(function()
@@ -104,7 +104,7 @@ function event_dialog_finished(first_message_id)
       sol.map.dialog_set_variable("dungeon_6.tom_revelation", sol.game.savegame_get_name());
     end,
     1000)
-  elseif first_message_id == "dungeon_6.tom_revelation" then
+  elseif dialog_id == "dungeon_6.tom_revelation" then
     local variant = 2
     if sol.game.savegame_get_boolean(939) then
       variant = 3

@@ -26,9 +26,9 @@ function sahasrahla_dream()
   sol.map.dialog_set_variable("link_house.dream", sol.game.savegame_get_name())
 end
 
-function event_dialog_finished(first_message_id)
+function event_dialog_finished(dialog_id)
   
-  if first_message_id == "link_house.dream" then
+  if dialog_id == "link_house.dream" then
     sol.main.timer_start(wake_up, 1000)
   end
 end

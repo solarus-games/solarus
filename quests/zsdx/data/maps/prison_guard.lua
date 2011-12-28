@@ -5,9 +5,9 @@ guard_name = nil
 hero_seen = false
 
 -- This function should be called by event_dialog_finished in your map.
-function dialog_check_guard(first_message_id)
+function dialog_check_guard(dialog_id)
 
-  if first_message_id == "dungeon_5.hero_seen_by_guard" then
+  if dialog_id == "dungeon_5.hero_seen_by_guard" then
     sol.main.timer_start(send_hero_to_prison, 1000)
   end
 end

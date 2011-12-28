@@ -133,9 +133,9 @@ function inferno_set_open()
   sol.map.teletransporter_set_enabled("to_dungeon_6", true)
 end
 
-function event_dialog_finished(first_message_id, answer)
+function event_dialog_finished(dialog_id, answer)
 
-  if first_message_id == "inferno.found_fire_stones" then
+  if dialog_id == "inferno.found_fire_stones" then
 
     if answer == 0 then
       -- black stones
@@ -148,9 +148,9 @@ function event_dialog_finished(first_message_id, answer)
         sol.map.dialog_start("inferno.want_rupees_again")
       end
     end 
-  elseif first_message_id == "inferno.want_rupees" then
+  elseif dialog_id == "inferno.want_rupees" then
     sol.map.treasure_give("rupee", 5, 916)
-  elseif first_message_id == "inferno.want_black_stones" then
+  elseif dialog_id == "inferno.want_black_stones" then
     inferno_open()
   end
 end

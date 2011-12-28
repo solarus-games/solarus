@@ -51,9 +51,9 @@ function event_npc_interaction(npc_name)
   end
 end
 
-function event_dialog_finished(first_message_id)
+function event_dialog_finished(dialog_id)
 
-  if first_message_id == "credits_1" then
+  if dialog_id == "credits_1" then
    sol.main.timer_start(ending_next, 2000)
   end
 end

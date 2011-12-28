@@ -41,10 +41,10 @@ function event_npc_interaction(npc_name)
   end
 end
 
-function event_dialog_finished(first_message_id, answer)
+function event_dialog_finished(dialog_id, answer)
 
-  if first_message_id == "chests_game_cave.first_time"
-      or first_message_id == "chests_game_cave.not_first_time" then
+  if dialog_id == "chests_game_cave.first_time"
+      or dialog_id == "chests_game_cave.not_first_time" then
 
     if answer == 0 then
       if sol.game.get_money() >= 30 then

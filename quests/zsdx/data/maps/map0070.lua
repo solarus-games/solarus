@@ -18,9 +18,9 @@ function event_npc_interaction(npc_name)
   end
 end
 
-function event_dialog_finished(first_message_id, answer)
+function event_dialog_finished(dialog_id, answer)
 
-  if first_message_id == "rupee_house_broken.thanks" then
+  if dialog_id == "rupee_house_broken.thanks" then
     sol.map.treasure_give("flippers", 1, 157)
   end
 end

@@ -45,9 +45,9 @@ function event_npc_interaction(npc_name)
   end
 end
 
-function event_dialog_finished(first_message_id, answer)
+function event_dialog_finished(dialog_id, answer)
 
-  if first_message_id == "crazy_house.guichet_82" then
+  if dialog_id == "crazy_house.guichet_82" then
     -- Choix de réponse au guichet 82
     if answer == 0 then
       -- Contrôle de la quantité
@@ -58,11 +58,11 @@ function event_dialog_finished(first_message_id, answer)
         sol.map.dialog_start("crazy_house.guichet_82_ok")
       end
     end
-  elseif first_message_id == "crazy_house.guichet_82_ok" then
+  elseif dialog_id == "crazy_house.guichet_82_ok" then
     -- Obtention du roc magma au guichet 82
     sol.map.treasure_give("roc_magma", 1, -1)
     sol.game.remove_item_amount("sac_olive_counter", 1)
-  elseif first_message_id == "crazy_house.guichet_84_ech_ne_3_hh" then
+  elseif dialog_id == "crazy_house.guichet_84_ech_ne_3_hh" then
     -- Choix de réponse au guichet 84
     if answer == 0 then
       -- Contrôle de la quantité

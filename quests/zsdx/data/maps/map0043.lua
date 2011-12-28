@@ -61,9 +61,9 @@ function start_boss()
   sol.map.dialog_start("dungeon_3.arbror_hello")
 end
 
-function event_dialog_finished(first_message_id)
+function event_dialog_finished(dialog_id)
 
-  if first_message_id == "dungeon_3.arbror_hello" then
+  if dialog_id == "dungeon_3.arbror_hello" then
     sol.map.hero_unfreeze()
     sol.main.play_music("boss.spc")
     fighting_boss = true

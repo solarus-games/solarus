@@ -29,9 +29,9 @@ function event_switch_activated(switch_name)
   end
 end
 
-function event_dialog_finished(first_message_id, answer)
+function event_dialog_finished(dialog_id, answer)
 
-  if first_message_id == "dungeon_1.big_code_ok" then
+  if dialog_id == "dungeon_1.big_code_ok" then
     sol.map.camera_move(1072, 456, 250, function()
       sol.map.door_open("code_door")
       sol.main.play_sound("secret")

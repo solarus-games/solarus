@@ -112,9 +112,9 @@ function event_npc_interaction(npc_name)
   end
 end
 
-function event_dialog_finished(first_message_id, answer)
+function event_dialog_finished(dialog_id, answer)
 
-  if first_message_id == "crazy_house.vieillard_riz_ok" then
+  if dialog_id == "crazy_house.vieillard_riz_ok" then
     sol.map.treasure_give("bocal_epice", 1, -1)
     sol.game.remove_item_amount("sac_riz_counter", 1)
     -- branche 1411 finie
@@ -122,7 +122,7 @@ function event_dialog_finished(first_message_id, answer)
       sol.game.savegame_set_integer(1410, 9)
     end
     sol.game.savegame_set_integer(1411, 10)
-  elseif first_message_id == "crazy_house.guichet_22A" then
+  elseif dialog_id == "crazy_house.guichet_22A" then
     if answer == 0 then
       if sol.game.get_item_amount("roc_magma_counter") < 1 then
         sol.main.play_sound("wrong")
@@ -131,7 +131,7 @@ function event_dialog_finished(first_message_id, answer)
         sol.map.dialog_start("crazy_house.guichet_22_rm_ok")
       end
     end
-  elseif first_message_id == "crazy_house.guichet_22B" then
+  elseif dialog_id == "crazy_house.guichet_22B" then
     if answer == 0 then
       if sol.game.get_item_amount("sac_riz_counter") < 1 then
         sol.main.play_sound("wrong")
@@ -140,14 +140,14 @@ function event_dialog_finished(first_message_id, answer)
         sol.map.dialog_start("crazy_house.guichet_22_sr_ok")
       end
     end
-  elseif first_message_id == "crazy_house.guichet_22_rm_ok" then
+  elseif dialog_id == "crazy_house.guichet_22_rm_ok" then
     sol.map.treasure_give("balai", 1, -1)
     sol.game.remove_item_amount("roc_magma_counter", 1)
     -- branche 1412 finie
     if sol.game.get_item_amount("bocal_epice_counter") > 0 then
       sol.game.savegame_set_integer(1410, 9)
     end
-  elseif first_message_id == "crazy_house.guichet_22_sr_ok" then
+  elseif dialog_id == "crazy_house.guichet_22_sr_ok" then
     sol.map.treasure_give("tapisserie", 1, -1)
     sol.game.remove_item_amount("sac_riz_counter", 1)
     -- Incrémentation branche 1411

@@ -165,9 +165,9 @@ function event_treasure_obtained(item_name, variant, savegame_variable)
   end
 end
 
-function event_dialog_finished(first_message_id)
+function event_dialog_finished(dialog_id)
 
-  if first_message_id == "dungeon_8.billy" then
+  if dialog_id == "dungeon_8.billy" then
     sol.main.play_music("boss.spc")
     sol.map.hero_unfreeze()
     sol.map.enemy_set_enabled("boss", true)

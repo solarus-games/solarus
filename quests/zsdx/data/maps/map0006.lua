@@ -59,9 +59,9 @@ function event_hero_on_sensor(sensor_name)
   end
 end
 
-function event_dialog_finished(first_message_id, answer)
+function event_dialog_finished(dialog_id, answer)
 
-  if first_message_id == "outside_world.tom_dungeon_1_entrance.hey" then
+  if dialog_id == "outside_world.tom_dungeon_1_entrance.hey" then
     sol.map.hero_freeze()
     sol.map.hero_set_direction(0)
     sol.map.npc_set_position("tom", 528, 245)
@@ -69,18 +69,18 @@ function event_dialog_finished(first_message_id, answer)
     sol.main.movement_set_property(m, "ignore_obstacles", true)
     sol.map.npc_start_movement("tom", m)
     sol.main.sprite_set_animation(tom_sprite, "walking")
-  elseif first_message_id == "outside_world.tom_dungeon_1_entrance.need_help" then
+  elseif dialog_id == "outside_world.tom_dungeon_1_entrance.need_help" then
     sol.main.sprite_set_direction(tom_sprite, 1)
     sol.main.timer_start(tom_timer_1, 1500)
-  elseif first_message_id == "outside_world.tom_dungeon_1_entrance.let_me_see" then
+  elseif dialog_id == "outside_world.tom_dungeon_1_entrance.let_me_see" then
     sol.main.play_sound("jump")
     local m = sol.main.jump_movement_create(4, 16)
     sol.main.movement_set_property(m, "ignore_obstacles", true)
     sol.map.npc_start_movement("tom", m)
-  elseif first_message_id == "outside_world.tom_dungeon_1_entrance.open" then
+  elseif dialog_id == "outside_world.tom_dungeon_1_entrance.open" then
     sol.main.sprite_set_animation(tom_sprite, "walking")
     sol.main.timer_start(tom_timer_3, 300)
-  elseif first_message_id == "outside_world.beaumont_hill_put_edelweiss" then
+  elseif dialog_id == "outside_world.beaumont_hill_put_edelweiss" then
     sol.map.hero_freeze()
     sol.main.timer_start(edelweiss_explode, 1000)
   end

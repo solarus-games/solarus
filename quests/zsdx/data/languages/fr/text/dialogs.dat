@@ -5972,12 +5972,6 @@ next = dungeon_6.tom_revelation.13
 line1 = "Prends donc ceci, c'est"
 line2 = "ma modeste contribution"
 line3 = "pour ta quête..."
-dungeon_6.tom_revelation.14
-
-[dungeon_6.tom_revelation.14]
-#       |-----------------------|
-line1 = "$v, tu es mon"
-line2 = "dernier espoir..."
 
 [dungeon_7.welcome]
 #       |-----------------------|

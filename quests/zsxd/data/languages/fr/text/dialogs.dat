@@ -20,9 +20,9 @@
 # qu'il faut traduire.
 #
 # - La valeur next : donne l'identificateur du prochain message
-# à afficher. Si cette valeur n'est pas définie, cela signifie
-# que ce message était le dernier de la série et la boîte de 
-# dialogue va se fermer une fois qu'il sera terminé.
+# à afficher. Si cette valeur n'est pas définie, cela signifie
+# que ce message était le dernier de la série et la boîte de 
+# dialogue va se fermer une fois qu'il sera terminé.
 # Si la valeur next existe, alors une flèche s'affiche en bas du message courant,
 # indiquant que ce message va être suivi d'un autre.
 # Si la valeur next n'existe pas, alors la flèche est remplacée par un carré
@@ -51,8 +51,8 @@
 # ".2", ".3", etc, qu'il faut bien se synchroniser.
 #
 # - La valeur skip : définit ce qui se passe lorsque le joueur
-# tente d'interrompre le message en appuyant sur la touche C. Il y a
-# 3 valeurs possibles :
+# tente d'interrompre le message en appuyant sur la touche C. Il y a
+# 3 valeurs possibles :
 #    - none (par défaut) : le message ne peut pas être passé.
 #    - current : si on appuie sur C, le message courant s'affiche
 #                immédiatement en entier (au lieu de défiler lettre par lettre).
@@ -71,13 +71,13 @@
 # le fichier image des icônes. L'icône s'affiche à gauche du texte
 # et le texte ne doit pas dépasser 20 caractères (au lieu de 23 en
 # temps normal). Elle reste affichée dans les messages suivants,
-# jusqu'à ce que sa valeur soit changée ou que la boîte de dialogue
-# se ferme. Une valeur de -1 signifie d'enlever l'icône.
+# jusqu'à ce que sa valeur soit changée ou que la boîte de dialogue
+# se ferme. Une valeur de -1 signifie d'enlever l'icône.
 # Les icônes sont surtout utilisées dans les messages du moteur de
 # jeu, par exemple lorsque le joueur obtient un trésor.
 #
 # - La valeur question : permet d'afficher une question avec deux
-# réponses au choix. La première ligne est la question
+# réponses au choix. La première ligne est la question
 # et les deux dernières lignes sont les deux réponses possibles.
 # Ces deux lignes sont alors limitées à 20
 # caractères (au lieu de 23 en temps normal) car un curseur en
@@ -100,15 +100,15 @@
 # avec question par la suite. C'est possible tant que le message contenant
 # la question n'est pas commencé.
 #
-# - Enfin, il existe des séquences particulières que l'on peut
+# - Enfin, il existe des séquences particulières que l'on peut
 # insérer dans le texte d'un message :
 #    - $0 : fait une pause d'une seconde dans le défilement du message.
 #    - $1 : met une vitesse de défilement lente
 #    - $2 : met une vitesse de défilement moyenne
 #    - $3 : met une vitesse de déliement rapide (par défaut)
 #    - $v : permet d'insérer la valeur d'une variable dans le texte
-#           du message (la valeur est alors spécifiée dans
-#           le programme qui a demandé l'affichage du message)
+#           du message (la valeur est alors spécifiée dans
+#           le programme qui a demandé l'affichage du message)
 #
 #
 # - Les commentaires suivants permettent de vérifier le nombre
@@ -133,9 +133,9 @@
 # -------------------------------------
 # 
 # Les messages ci-dessous sont affichés dans l'écran d'inventaire
-# lorsque le joueur souhaite afficher la description d'un item
-# qu'il possède. Ces messages peuvent être annulés en appuyant
-# sur C.
+# lorsque le joueur souhaite afficher la description d'un item
+# qu'il possède. Ces messages peuvent être annulés en appuyant
+# sur C.
 # L'identificateur de chacun de ces messages est de la forme _item_description.x.y
 # où x est le nom qui identifie l'item (conformément à ce qui est défini dans quest.dat)
 # et y est la variante de cet item possédée par le joueur (un nombre entier).
@@ -765,7 +765,7 @@ line2 = "mouches !"
 # dans un magasin.
 
 [_treasure.feather.1]
-# Plume
+# Plume
 #       |--------------------|
 icon = 0
 line1 = "Tu as trouvé la"
@@ -780,7 +780,7 @@ line2 = "obstacles ! Ou au"
 line3 = "moins essayer !"
 
 [_treasure.bow.1]
-# Arc seul
+# Arc seul
 #       |--------------------|
 icon = 2
 line1 = "Tu as trouvé l'Arc !$0"
@@ -788,7 +788,7 @@ line2 = "Tu peux jouer à"
 line3 = "Robin des Bois !"
 
 [_treasure.bow.2]
-# Arc & Flèches
+# Arc & Flèches
 #       |--------------------|
 icon = 3
 line1 = "Tu as trouvé l'Arc !$0"
@@ -796,7 +796,7 @@ line2 = "Tu peux jouer à"
 line3 = "Robin des Bois !"
 
 [_treasure.boomerang.1]
-# Boomerang
+# Boomerang
 #       |--------------------|
 icon = 4
 line1 = "Tu as trouvé le"
@@ -823,7 +823,7 @@ next = _treasure.boomerang.1.3
 line1 = "de les découvrir !"
 
 [_treasure.lamp.1]
-# Lanterne
+# Lanterne
 #       |--------------------|
 icon = 5
 line1 = "Tu as trouvé la"
@@ -839,7 +839,7 @@ line3 = "braseros."
 next = _warning_magic
 
 [_treasure.hookshot.1]
-# Grappin
+# Grappin
 #       |--------------------|
 icon = 6
 line1 = "Tu as trouvé le"
@@ -853,7 +853,7 @@ line1 = "vers des endroits"
 line2 = "inacessibles !"
 
 [_treasure.bottle_1.1]
-# Flacon vide
+# Flacon vide
 #       |--------------------|
 icon = 7
 line1 = "Tu as trouvé un"
@@ -866,14 +866,14 @@ line1 = "Ca a sûrement un"
 line2 = "intérêt quelconque !"
 
 [_treasure.bottle_1.2]
-# Eau
+# Eau
 #       |--------------------|
 icon = 8
 line1 = "Tu as trouvé de"
 line2 = "l'eau !"
 
 [_treasure.bottle_1.3]
-# Potion rouge
+# Potion rouge
 #       |--------------------|
 icon = 9
 line1 = "Tu as trouvé de la"
@@ -887,7 +887,7 @@ line2 = "retrouver toute ton"
 line3 = "énergie vitale."
 
 [_treasure.bottle_1.4]
-# Potion verte
+# Potion verte
 #       |--------------------|
 icon = 10
 line1 = "Tu as trouvé de la"
@@ -901,7 +901,7 @@ line2 = "retrouver toute ton"
 line3 = "énergie magique."
 
 [_treasure.bottle_1.5]
-# Potion bleue
+# Potion bleue
 #       |--------------------|
 icon = 11
 line1 = "Tu as trouvé de la"
@@ -915,7 +915,7 @@ line2 = "retrouver toute ta"
 line3 = "vie et ta magie !"
 
 [_treasure.bottle_1.6]
-# Fée dans Flacon
+# Fée dans Flacon
 #       |--------------------|
 icon = 12
 line1 = "Tu as capturé une"
@@ -937,7 +937,7 @@ line2 = "récupérer des"
 line3 = "Coeurs."
 
 [_treasure.bottle_2.1]
-# Flacon vide
+# Flacon vide
 #       |--------------------|
 icon = 7
 line1 = "Tu as trouvé un"
@@ -950,14 +950,14 @@ line1 = "Ca a sûrement un"
 line2 = "intérêt quelconque !"
 
 [_treasure.bottle_2.2]
-# Eau
+# Eau
 #       |--------------------|
 icon = 8
 line1 = "Tu as trouvé de"
 line2 = "l'eau !"
 
 [_treasure.bottle_2.3]
-# Potion rouge
+# Potion rouge
 #       |--------------------|
 icon = 9
 line1 = "Tu as trouvé de la"
@@ -971,7 +971,7 @@ line2 = "retrouver toute ton"
 line3 = "énergie vitale."
 
 [_treasure.bottle_2.4]
-# Potion verte
+# Potion verte
 #       |--------------------|
 icon = 10
 line1 = "Tu as trouvé de la"
@@ -985,7 +985,7 @@ line2 = "retrouver toute ton"
 line3 = "énergie magique."
 
 [_treasure.bottle_2.5]
-# Potion bleue
+# Potion bleue
 #       |--------------------|
 icon = 11
 line1 = "Tu as trouvé de la"
@@ -999,7 +999,7 @@ line2 = "retrouver toute ta"
 line3 = "vie et ta magie !"
 
 [_treasure.bottle_2.6]
-# Fée dans Flacon
+# Fée dans Flacon
 #       |--------------------|
 icon = 12
 line1 = "Tu as capturé une"
@@ -1021,7 +1021,7 @@ line2 = "récupérer des"
 line3 = "Coeurs."
 
 [_treasure.bottle_3.1]
-# Flacon vide
+# Flacon vide
 #       |--------------------|
 icon = 7
 line1 = "Tu as trouvé un"
@@ -1034,14 +1034,14 @@ line1 = "Ca a sûrement un"
 line2 = "intérêt quelconque !"
 
 [_treasure.bottle_3.2]
-# Eau
+# Eau
 #       |--------------------|
 icon = 8
 line1 = "Tu as trouvé de"
 line2 = "l'eau !"
 
 [_treasure.bottle_3.3]
-# Potion rouge
+# Potion rouge
 #       |--------------------|
 icon = 9
 line1 = "Tu as trouvé de la"
@@ -1055,7 +1055,7 @@ line2 = "retrouver toute ton"
 line3 = "énergie vitale."
 
 [_treasure.bottle_3.4]
-# Potion verte
+# Potion verte
 #       |--------------------|
 icon = 10
 line1 = "Tu as trouvé de la"
@@ -1069,7 +1069,7 @@ line2 = "retrouver toute ton"
 line3 = "énergie magique."
 
 [_treasure.bottle_3.5]
-# Potion bleue
+# Potion bleue
 #       |--------------------|
 icon = 11
 line1 = "Tu as trouvé de la"
@@ -1083,7 +1083,7 @@ line2 = "retrouver toute ta"
 line3 = "vie et ta magie !"
 
 [_treasure.bottle_3.6]
-# Fée dans Flacon
+# Fée dans Flacon
 #       |--------------------|
 icon = 12
 line1 = "Tu as capturé une"
@@ -1105,7 +1105,7 @@ line2 = "récupérer des"
 line3 = "Coeurs."
 
 [_treasure.bottle_4.1]
-# Flacon vide
+# Flacon vide
 #       |--------------------|
 icon = 7
 line1 = "Tu as trouvé un"
@@ -1118,14 +1118,14 @@ line1 = "Ca a sûrement un"
 line2 = "intérêt quelconque !"
 
 [_treasure.bottle_4.2]
-# Eau
+# Eau
 #       |--------------------|
 icon = 8
 line1 = "Tu as trouvé de"
 line2 = "l'eau !"
 
 [_treasure.bottle_4.3]
-# Potion rouge
+# Potion rouge
 #       |--------------------|
 icon = 9
 line1 = "Tu as trouvé de la"
@@ -1139,7 +1139,7 @@ line2 = "retrouver toute ton"
 line3 = "énergie vitale."
 
 [_treasure.bottle_4.4]
-# Potion verte
+# Potion verte
 #       |--------------------|
 icon = 10
 line1 = "Tu as trouvé de la"
@@ -1153,7 +1153,7 @@ line2 = "retrouver toute ton"
 line3 = "énergie magique."
 
 [_treasure.bottle_4.5]
-# Potion bleue
+# Potion bleue
 #       |--------------------|
 icon = 11
 line1 = "Tu as trouvé de la"
@@ -1167,7 +1167,7 @@ line2 = "retrouver toute ta"
 line3 = "vie et ta magie !"
 
 [_treasure.bottle_4.6]
-# Fée dans Flacon
+# Fée dans Flacon
 #       |--------------------|
 icon = 12
 line1 = "Tu as capturé une"
@@ -1189,7 +1189,7 @@ line2 = "récupérer des"
 line3 = "Coeurs."
 
 [_treasure.pegasus_shoes.1]
-# Bottes de Pégase
+# Bottes de Pégase
 #       |--------------------|
 icon = 13
 line1 = "Tu as retrouvé les"
@@ -1204,7 +1204,7 @@ line2 = "mais tu peux aller"
 line3 = "super vite !"
 
 [_treasure.mystic_mirror.1]
-# Miroir Mystique
+# Miroir Mystique
 #       |--------------------|
 icon = 14
 line1 = "Tu as trouvé le"
@@ -1219,7 +1219,7 @@ line2 = "sans doute dans ta"
 line3 = "quête..."
 
 [_treasure.cane_of_somaria.1]
-# Canne de Somaria
+# Canne de Somaria
 #       |--------------------|
 icon = 15
 line1 = "Tu as trouvé la"
@@ -1234,7 +1234,7 @@ line3 = "à l'aide du Grappin."
 next = _warning_magic
 
 [_treasure.apple.1]
-# 3 Pommes
+# 3 Pommes
 #       |--------------------|
 icon = 16
 line1 = "Tu as trouvé 3"
@@ -1248,7 +1248,7 @@ line2 = "tard pour récupérer"
 line3 = "des Coeurs !"
 
 [_treasure.pain_au_chocolat.1]
-# 1 Pain au Chocolat
+# 1 Pain au Chocolat
 #       |--------------------|
 icon = 17
 line1 = "Tu as trouvé un Pain"
@@ -1262,7 +1262,7 @@ line2 = "Chocolat pour"
 line3 = "récupérer 3 Coeurs."
 
 [_treasure.croissant.1]
-# 1 Croissant
+# 1 Croissant
 #       |--------------------|
 icon = 18
 line1 = "Tu as trouvé un"
@@ -1277,14 +1277,14 @@ line2 = "pour récupérer"
 line3 = "7 Coeurs."
 
 [_treasure.rock_key.1]
-# Clé de Roc
+# Clé de Roc
 #       |--------------------|
 icon = 19
 line1 = "Tu as trouvé la"
 line2 = "Clé de Roc !$0"
 
 [_treasure.bone_key.1]
-# Clé d'os
+# Clé d'os
 #       |--------------------|
 icon = 20
 line1 = "Tu as trouvé la"
@@ -1297,7 +1297,7 @@ line1 = "Tu peux entrer dans"
 line2 = "le répère de Ganon !"
 
 [_treasure.clay_key.1]
-# Clé de Terre
+# Clé de Terre
 #       |--------------------|
 icon = 21
 line1 = "Tu as trouvé la"
@@ -1311,7 +1311,7 @@ line2 = "ouvrir la grotte du"
 line3 = "village !"
 
 [_treasure.apple_pie.1]
-# Tarte aux Pommes
+# Tarte aux Pommes
 #       |--------------------|
 icon = 22
 line1 = "Tu as trouvé une"
@@ -1325,7 +1325,7 @@ line2 = "mais c'est pas"
 line3 = "grave !"
 
 [_treasure.flippers.1]
-# Palmes
+# Palmes
 #       |--------------------|
 icon = 26
 line1 = "Tu as trouvé les"
@@ -1339,7 +1339,7 @@ line2 = "nager en eau"
 line3 = "profonde !"
 
 [_treasure.magic_cape.1]
-# Cape Magique
+# Cape Magique
 #       |--------------------|
 icon = 27
 line1 = "Tu as trouvé la Cape"
@@ -1353,7 +1353,7 @@ line2 = "tu t'approchees d'un"
 line3 = "mur fragile."
 
 [_treasure.iron_key.1]
-# Clé de Fer
+# Clé de Fer
 #       |--------------------|
 icon = 28
 line1 = "Tu as trouvé la"
@@ -1367,7 +1367,7 @@ line2 = "avoir une porte qui"
 line3 = "va avec !"
 
 [_treasure.stone_key.1]
-# Clé de Pierre
+# Clé de Pierre
 #       |--------------------|
 icon = 29
 line1 = "Tu as trouvé la"
@@ -1381,7 +1381,7 @@ line2 = "serrure qui"
 line3 = "correspond ?"
 
 [_treasure.wooden_key.1]
-# Clé de Bois
+# Clé de Bois
 #       |--------------------|
 icon = 30
 line1 = "Tu as trouvé la"
@@ -1394,7 +1394,7 @@ line1 = "A toi de voir où"
 line2 = "tu peux l'utiliser !"
 
 [_treasure.ice_key.1]
-# Clé de Glace
+# Clé de Glace
 #       |--------------------|
 icon = 31
 line1 = "Tu as trouvé la"
@@ -1408,7 +1408,7 @@ line2 = "doute l'entrée d'un"
 line3 = "lieu glacial..."
 
 [_treasure.glove.1]
-# Poigne de Fer
+# Poigne de Fer
 #       |--------------------|
 icon = 32
 line1 = "Tu as trouvé la"
@@ -1422,7 +1422,7 @@ line2 = "soulever des trucs,"
 line3 = "maintenant !"
 
 [_treasure.glove.2]
-# Poigne d'Or
+# Poigne d'Or
 #       |--------------------|
 icon = 33
 line1 = "Tu as trouvé la"
@@ -1436,14 +1436,14 @@ line2 = "soulever les pierres"
 line3 = "noires !"
 
 [_treasure.fire_stone.1]
-# Pierre de Feu
+# Pierre de Feu
 #       |--------------------|
 icon = 34
 line1 = "Tu as trouvé une"
 line2 = "Pierre de Feu !"
 
 [_treasure.world_map.1]
-# Carte du Monde
+# Carte du Monde
 #       |--------------------|
 icon = 50
 line1 = "Tu as trouvé la"
@@ -1456,7 +1456,7 @@ line1 = "Tu peux l'afficher"
 line2 = "dans l'écran Carte."
 
 [_treasure.rupee_bag.2]
-# Grand sac de rubis
+# Grand sac de rubis
 #       |--------------------|
 icon = 52
 line1 = "Tu as trouvé le"
@@ -1476,7 +1476,7 @@ line2 = "soit fini, ça aurait"
 line3 = "pu être utile !"
 
 [_treasure.rupee_bag.3]
-# Sac de rubis géant
+# Sac de rubis géant
 #       |--------------------|
 icon = 53
 line1 = "Tu as trouvé le"
@@ -1489,7 +1489,7 @@ line1 = "Il peut contenir"
 line2 = "jusqu'à 999 rubis !"
 
 [_treasure.bomb_bag.1]
-# Petit sac de bombes
+# Petit sac de bombes
 #       |--------------------|
 icon = 54
 line1 = "Tu as trouvé le Sac"
@@ -1504,7 +1504,7 @@ line2 = "pschhhhhhhhhhhhhhhht $0 $3"
 line3 = "BOUM !"
 
 [_treasure.bomb_bag.2]
-# Grand sac de bombes
+# Grand sac de bombes
 #       |--------------------|
 icon = 55
 line1 = "Tu as trouvé le"
@@ -1519,7 +1519,7 @@ line2 = "Il peut contenir"
 line3 = "jusqu'à 11 Bombes !"
 
 [_treasure.bomb_bag.3]
-# Sac de bombes géant
+# Sac de bombes géant
 #       |--------------------|
 icon = 56
 line1 = "Tu as trouvé le Sac"
@@ -1533,7 +1533,7 @@ line2 = "Il peut contenir"
 line3 = "jusqu'à 12 Bombes !"
 
 [_treasure.quiver.2]
-# Grand carquois 
+# Grand carquois 
 #       |--------------------|
 icon = 58
 line1 = "Tu as trouvé le"
@@ -1547,7 +1547,7 @@ line2 = "jusqu'à 30 Flèches"
 line3 = "au lieu de 10 !"
 
 [_treasure.quiver.3]
-# Carquois géant
+# Carquois géant
 #       |--------------------|
 icon = 59
 line1 = "Tu as trouvé le"
@@ -1561,7 +1561,7 @@ line2 = "jusqu'à 100 Flèches"
 line3 = "au lieu de 30 !"
 
 [_treasure.tunic.2]
-# Cotte de mailles bleue
+# Cotte de mailles bleue
 #       |--------------------|
 icon = 61
 line1 = "Tu as trouvé la"
@@ -1576,7 +1576,7 @@ line2 = "aux températures les"
 line3 = "plus glaciales..."
 
 [_treasure.tunic.3]
-# Cotte de mailles rouge
+# Cotte de mailles rouge
 #       |--------------------|
 icon = 62
 line1 = "Tu as trouvé la"
@@ -1591,7 +1591,7 @@ line2 = "plus efficace contre"
 line3 = "les ennemis !"
 
 [_treasure.shield.1]
-# Bouclier
+# Bouclier
 #       |--------------------|
 icon = 63
 line1 = "Tu as retrouvé ton"
@@ -1605,7 +1605,7 @@ line2 = "l'avais laissé"
 line3 = "traîner dehors ?"
 
 [_treasure.shield.2]
-# Bouclier de Feu
+# Bouclier de Feu
 #       |--------------------|
 icon = 64
 line1 = "Tu as trouvé le"
@@ -1620,7 +1620,7 @@ line2 = "attaques"
 line3 = "enflammées !"
 
 [_treasure.shield.3]
-# Bouclier Miroir
+# Bouclier Miroir
 #       |--------------------|
 icon = 65
 line1 = "Tu as trouvé le"
@@ -1807,7 +1807,7 @@ line2 = "supplémentaire !"
 line3 = "Ca poutre !"
 
 [_treasure.bomb.1]
-# 1 Bombe
+# 1 Bombe
 #       |--------------------|
 icon = 82
 line1 = "Tu as trouvé une"
@@ -1822,7 +1822,7 @@ line2 = "un ennemi ou un"
 line3 = "obstacle."
 
 [_treasure.bomb.2]
-# 3 Bombes
+# 3 Bombes
 #       |--------------------|
 icon = 82
 line1 = "Tu as trouvé 3"
@@ -1831,7 +1831,7 @@ line3 = "Utilise une Bombe"
 next = _treasure.bomb.1.1
 
 [_treasure.bomb.3]
-# 8 Bombes
+# 8 Bombes
 #       |--------------------|
 icon = 82
 line1 = "Tu as trouvé 8"
@@ -1840,7 +1840,7 @@ line3 = "Utilise une Bombe"
 next = _treasure.bomb.1.1
 
 [_treasure.arrow.1]
-# 1 Flèche
+# 1 Flèche
 #       |--------------------|
 icon = 83
 line1 = "Tu as trouvé une"
@@ -1855,7 +1855,7 @@ line2 = "des ennemis coriaces"
 line3 = "à distance."
 
 [_treasure.arrow.2]
-# 5 Flèches
+# 5 Flèches
 #       |--------------------|
 icon = 83
 line1 = "Tu as trouvé 5"
@@ -1864,7 +1864,7 @@ line3 = "Utilise l'Arc et les"
 next = _treasure.arrow.1.1
 
 [_treasure.arrow.3]
-# 10 Flèches
+# 10 Flèches
 #       |--------------------|
 icon = 83
 line1 = "Tu as trouvé 10"
@@ -1873,14 +1873,14 @@ line3 = "Utilise l'Arc et les"
 next = _treasure.arrow.1.1
 
 [_treasure.heart.1]
-# 1 Coeur
+# 1 Coeur
 #       |--------------------|
 icon = 84
 line1 = "Tu as trouvé un"
 line2 = "Coeur !"
 
 [_treasure.magic_flask.1]
-# Petite bouteille de magie
+# Petite bouteille de magie
 #       |--------------------|
 icon = 85
 line1 = "Tu as trouvé une"
@@ -1888,7 +1888,7 @@ line2 = "petite bouteille"
 line3 = "d'énergie magique !"
 
 [_treasure.magic_flask.2]
-# Grande bouteille de magie
+# Grande bouteille de magie
 #       |--------------------|
 icon = 86
 line1 = "Tu as trouvé une"
@@ -1896,14 +1896,14 @@ line2 = "grande bouteille"
 line3 = "d'énergie magique !"
 
 [_treasure.rupee.1]
-# 1 rubis vert
+# 1 rubis vert
 #       |--------------------|
 icon = 90
 line1 = "Tu as trouvé un"
 line2 = "Rubis !"
 
 [_treasure.rupee.2]
-# 1 rubis bleu
+# 1 rubis bleu
 #       |--------------------|
 icon = 91
 line1 = "Tu as trouvé un"
@@ -1911,7 +1911,7 @@ line2 = "Rubis bleu."
 line3 = "Il vaut 5 Rubis !"
 
 [_treasure.rupee.3]
-# 1 rubis rouge
+# 1 rubis rouge
 #       |--------------------|
 icon = 92
 line1 = "Tu as trouvé un"
@@ -1919,7 +1919,7 @@ line2 = "Rubis rouge !"
 line3 = "Il vaut 20 Rubis !"
 
 [_treasure.rupee.4]
-# 50 rubis
+# 50 rubis
 # Remarque : clin d'oeil à Link's Awakening
 #       |--------------------|
 icon = 90
@@ -1928,7 +1928,7 @@ line2 = "Rubis !"
 line3 = "Merveilleux !"
 
 [_treasure.rupee.5]
-# 100 rubis
+# 100 rubis
 # Remarque : clin d'oeil à Link's Awakening
 #       |--------------------|
 icon = 90
@@ -1937,7 +1937,7 @@ line2 = "Rubis !"
 line3 = "Fantastique !"
 
 [_treasure.rupee.6]
-# 200 rubis
+# 200 rubis
 # Remarque : clin d'oeil à Link's Awakening
 #       |--------------------|
 icon = 90
@@ -1946,7 +1946,7 @@ line2 = "Rubis !"
 line3 = "C'est l'extase !"
 
 [_treasure.zelda.1]
-# Zelda
+# Zelda
 #       |-----------------------|
 line1 = "Tu as retrouvé la"
 line2 = "Princesse Zelda !"

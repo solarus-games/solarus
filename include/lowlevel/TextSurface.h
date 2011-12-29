@@ -102,8 +102,8 @@ class TextSurface {
 
     TextSurface(int x, int y);
     TextSurface(int x, int y,
-	HorizontalAlignment horizontal_alignment,
-	VerticalAlignment vertical_alignment);
+        HorizontalAlignment horizontal_alignment,
+        VerticalAlignment vertical_alignment);
     ~TextSurface();
 
     void set_font(const std::string font_id);

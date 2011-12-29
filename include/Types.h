@@ -118,13 +118,12 @@ class Dungeon;
 class Treasure;
 class Map;
 class MapLoader;
-class DialogBox;
-class Message;
 class Timer;
 class GameoverSequence;
 class Camera;
 class Dialog;
 class DialogResource;
+class DialogBox;
 
 // scripts
 class Script;

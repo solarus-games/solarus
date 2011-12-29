@@ -21,7 +21,9 @@
 #include "KeysEffect.h"
 #include "GameControls.h"
 #include "Dialog.h"
+#include "Sprite.h"
 #include "lowlevel/Rectangle.h"
+#include "lowlevel/Surface.h"
 #include <map>
 
 /**
@@ -61,53 +63,10 @@ class DialogBox {
       SPEED_FAST     // default
     };
 
-  private:
-
-    // dialog properties
-    Game &game;                                     /**< the game this dialog box belongs to */
-    Style style;                                    /**< style of the dialog box */
-
-    // current message
-    KeysEffect::ActionKeyEffect action_key_effect_saved;  /**< effect of the action key before starting the message sequence */
-    KeysEffect::SwordKeyEffect sword_key_effect_saved;    /**< effect of the sword key before starting the message sequence */
-    std::string dialog_id;                          /**< id of the current dialog */
-    Message* current_message;                       /**< the message currently shown (NULL if the dialog box is disabled) */
-    std::map<std::string, std::string> variables;   /**< variables to display in dialogs */
-    Script* issuer_script;                          /**< the script (if any) that started the current sequence of messages */
-
-    Speed speed;                                    /**< speed of the text */
-    Dialog::SkipMode skip_mode;                     /**< indicates what happens when the user tries to skip the current message */
-    int icon_number;                                /* index of the 16*16 icon displayed, or -1 if there is no icon */
-    bool skipped;                                   /* true if the user has skipped the dialog */
-    int last_answer;                                /**< the answer selected in the last message sequence: 0 for the first one, 1 for the second one,
-                                                     * -1 if there was no question */
-
-    // graphics
-    Surface *dialog_surface;                        /**< surface where the dialog is drawn*/
-    Surface *box_img;                               /**< image of the dialog box frame */
-    Surface *icons_img;                             /**< image containing all possible icons used in messages */
-    Sprite *end_message_sprite;                     /**< sprite displayed when the current message is finished*/
-
-    // position of the images
-    Rectangle box_src_position;                     /**< rectangle of the dialog box in its source image */
-    Rectangle box_dst_position;                     /**< destination rectangle of the dialog box image */
-    Rectangle question_src_position;                /**< rectangle of the question icon in the source image */
-    Rectangle question_dst_position;                /**< destination rectangle of the question image (depends on the answer currently selected) */
-    Rectangle icon_dst_position;                    /**< destination rectangle of the icon */
-
-    void set_vertical_position(VerticalPosition vertical_position);
-    void show_message();
-    void show_next_message();
-    void close();
-
-    void action_key_pressed();
-    void sword_key_pressed();
-    void up_or_down_key_pressed();
-
   public:
 
     // creation and destruction
-    DialogBox(Game &game);
+    DialogBox(Game& game);
     ~DialogBox();
 
     // dialog properties
@@ -118,18 +77,11 @@ class DialogBox {
     // current message
     void start_dialog(const std::string& dialog_id, Script *issuer_script = NULL,
         VerticalPosition vertical_position = POSITION_AUTO);
-    Speed get_speed();
-    void set_speed(Speed speed);
-    Dialog::SkipMode get_skip_mode();
-    void set_skip_mode(Dialog::SkipMode skip_mode);
-    int get_icon_number();
-    void set_icon_number(int icon_number);
     bool is_letter_sound_enabled();
     void set_variable(const std::string& dialog_id, const std::string &value);
     void set_variable(const std::string& dialog_id, int value);
     const std::string& get_variable();
     int get_last_answer();
-    void set_last_answer(int answer);
     void key_pressed(GameControls::GameKey key);
     const std::string& get_dialog_id();
     bool is_finished();
@@ -138,7 +90,64 @@ class DialogBox {
 
     // update and display
     void update();
-    void display(Surface *destination_surface);
+    void display(Surface* destination_surface);
+
+  private:
+
+    static const int nb_visible_lines = 3;          /**< maximum number of lines displayed at the same time */
+    static const uint32_t char_delays[];            /**< delays between two characters depending on the dialog speed */
+
+    // dialog box properties
+    Game& game;                                     /**< the game this dialog box belongs to */
+    KeysEffect::ActionKeyEffect action_key_effect_saved;  /**< effect of the action key before starting the dialog */
+    KeysEffect::SwordKeyEffect sword_key_effect_saved;    /**< effect of the sword key before starting the dialog */
+    std::string dialog_id;                          /**< id of the current dialog or an empty string */
+    Dialog dialog;                                  /**< current dialog */
+    std::map<std::string, std::string> variables;   /**< variables to display in dialogs */
+    Script* issuer_script;                          /**< the script (if any) that started the current dialog */
+    Style style;                                    /**< style of the dialog box */
+    Dialog::SkipMode skip_mode;                     /**< indicates what happens when the user tries to skip the dialog */
+    int icon_number;                                /* index of the 16*16 icon displayed, or -1 if there is no icon */
+    bool skipped;                                   /* true if the user has skipped the dialog (SKIP_ALL) */
+    int last_answer;                                /**< the answer selected in the last dialog: 0 for the first one, 1 for the second one,
+                                                     * -1 if there was no question */
+
+    // displaying text gradually
+    std::list<std::string>::const_iterator line_it; /**< iterator over the lines of the current dialog */
+    std::string lines[nb_visible_lines];            /**< text of the 3 lines currently shown */
+    TextSurface* line_surfaces[nb_visible_lines];   /**< text surface of each line */
+    int line_index;                                 /**< line of the dialog box currently shown (0 to nb_visible_lines) */
+    unsigned int char_index;                        /**< index of the next character to show in the current line */
+    uint32_t char_delay;                            /**< delay between two characters in milliseconds */
+    uint32_t next_char_date;                        /**< when the next character should be displayed */
+    uint32_t next_sound_date;                       /**< date of the next letter scrolling sound */
+    bool show_all;                                  /**< true to display all 3 lines now */
+
+    // graphics
+    Surface dialog_surface;                         /**< surface where the dialog is drawn*/
+    Surface box_img;                                /**< image of the dialog box frame */
+    Surface icons_img;                              /**< image containing all possible icons used in dialogs */
+    Sprite end_lines_sprite;                        /**< sprite displayed when 3 lines are finished */
+
+    // position of the images
+    Rectangle box_src_position;                     /**< rectangle of the dialog box in its source image */
+    Rectangle box_dst_position;                     /**< destination rectangle of the dialog box image */
+    Rectangle question_src_position;                /**< rectangle of the question icon in the source image */
+    Rectangle question_dst_position;                /**< destination rectangle of the question image (depends on the answer currently selected) */
+    Rectangle icon_dst_position;                    /**< destination rectangle of the icon */
+
+    void set_vertical_position(VerticalPosition vertical_position);
+    void show_more_lines();
+    void show_next_dialog();
+    bool is_full();
+    void close();
+
+    void action_key_pressed();
+    void sword_key_pressed();
+    void up_or_down_key_pressed();
+
+    void update_lines();
+    void add_character();
 };
 
 #endif

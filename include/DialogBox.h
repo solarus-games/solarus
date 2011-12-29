@@ -20,6 +20,7 @@
 #include "Common.h"
 #include "KeysEffect.h"
 #include "GameControls.h"
+#include "Dialog.h"
 #include "lowlevel/Rectangle.h"
 #include <map>
 
@@ -60,16 +61,6 @@ class DialogBox {
       SPEED_FAST     // default
     };
 
-    /**
-     * Indicates what happens when the user tries to skip
-     * the current message.
-     */
-    enum SkipMode {
-      SKIP_NONE,    /**< the current message cannot be skipped */
-      SKIP_CURRENT, /**< the player can display the current message to its end immediately */
-      SKIP_ALL      /**< the current message and the next ones can be totally skipped */
-    };
-
   private:
 
     // dialog properties
@@ -85,7 +76,7 @@ class DialogBox {
     Script* issuer_script;                          /**< the script (if any) that started the current sequence of messages */
 
     Speed speed;                                    /**< speed of the text */
-    SkipMode skip_mode;                             /**< indicates what happens when the user tries to skip the current message */
+    Dialog::SkipMode skip_mode;                     /**< indicates what happens when the user tries to skip the current message */
     int icon_number;                                /* index of the 16*16 icon displayed, or -1 if there is no icon */
     bool skipped;                                   /* true if the user has skipped the dialog */
     int last_answer;                                /**< the answer selected in the last message sequence: 0 for the first one, 1 for the second one,
@@ -129,8 +120,8 @@ class DialogBox {
         VerticalPosition vertical_position = POSITION_AUTO);
     Speed get_speed();
     void set_speed(Speed speed);
-    SkipMode get_skip_mode();
-    void set_skip_mode(SkipMode skip_mode);
+    Dialog::SkipMode get_skip_mode();
+    void set_skip_mode(Dialog::SkipMode skip_mode);
     int get_icon_number();
     void set_icon_number(int icon_number);
     bool is_letter_sound_enabled();

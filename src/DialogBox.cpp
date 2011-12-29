@@ -148,7 +148,7 @@ void DialogBox::set_speed(Speed speed) {
  * @brief Returns the current skip mode of the dialog box.
  * @return the skip mode
  */
-DialogBox::SkipMode DialogBox::get_skip_mode() {
+Dialog::SkipMode DialogBox::get_skip_mode() {
   return skip_mode;
 }
 
@@ -156,7 +156,7 @@ DialogBox::SkipMode DialogBox::get_skip_mode() {
  * @brief Sets the skip mode of the dialog box.
  * @param skip_mode the new skip mode
  */
-void DialogBox::set_skip_mode(SkipMode skip_mode) {
+void DialogBox::set_skip_mode(Dialog::SkipMode skip_mode) {
   this->skip_mode = skip_mode;
 }
 
@@ -278,7 +278,7 @@ void DialogBox::start_dialog(const std::string& dialog_id, Script* issuer_script
   // initialize the dialog box with the default parameters
   set_vertical_position(vertical_position);
   set_speed(SPEED_FAST);
-  set_skip_mode(SKIP_NONE);
+  set_skip_mode(Dialog::SKIP_NONE);
   set_icon_number(-1);
   this->skipped = false;
   this->dialog_id = dialog_id;
@@ -314,7 +314,7 @@ void DialogBox::show_message() {
   KeysEffect &keys_effect = game.get_keys_effect();
   keys_effect.set_action_key_effect(KeysEffect::ACTION_KEY_NONE);
 
-  if (get_skip_mode() != SKIP_NONE) {
+  if (get_skip_mode() != Dialog::SKIP_NONE) {
     keys_effect.set_sword_key_effect(KeysEffect::SWORD_KEY_SKIP);
     keys_effect.set_action_key_effect(KeysEffect::ACTION_KEY_NEXT);
   }
@@ -402,7 +402,7 @@ void DialogBox::action_key_pressed() {
   if (current_message->is_finished()) { // the current message is over
     show_next_message();
   }
-  else if (skip_mode != SKIP_NONE) {
+  else if (skip_mode != Dialog::SKIP_NONE) {
     show_all_now();
   }
 }
@@ -412,14 +412,14 @@ void DialogBox::action_key_pressed() {
  */
 void DialogBox::sword_key_pressed() {
 
-  if (skip_mode == SKIP_ALL) {
+  if (skip_mode == Dialog::SKIP_ALL) {
     skipped = true;
     close();
   }
   else if (current_message->is_finished()) {
     show_next_message();
   }
-  else if (skip_mode == SKIP_CURRENT) {
+  else if (skip_mode == Dialog::SKIP_CURRENT) {
     show_all_now();
   }
 }

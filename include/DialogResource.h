@@ -14,38 +14,42 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SOLARUS_STRING_RESOURCE_H
-#define SOLARUS_STRING_RESOURCE_H
+#ifndef SOLARUS_DIALOG_RESOURCE_H
+#define SOLARUS_DIALOG_RESOURCE_H
 
 #include "Common.h"
+#include "Dialog.h"
 #include <map>
 
+struct lua_State;
+
 /**
- * @brief Provides access to strings translated in the current language.
+ * @brief Provides access to dialogs translated in the current language.
  *
- * This class provides some strings loaded from an external file containing
- * the texts in the current language.
- * This class is used only to load simple strings such as the ones displayed
- * in the menus.
- * The messages displayed in the dialog box during the game come from another
- * data file (see classe DialogResource).
+ * This class provides the game dialogs loaded from an external file
+ * that depends on the current language.
+ * This class is used to load all dialogs displayed in the dialog box during
+ * the game.
  */
-class StringResource {
-
-  private:
-
-    static std::map<std::string, std::string> strings;
-
-    // we don't need to instantiate this class
-    StringResource();
-    ~StringResource();
+class DialogResource {
 
   public:
 
     static void initialize();
     static void quit();
 
-    static const std::string& get_string(const std::string& key);
+    static const Dialog& get_dialog(const std::string& dialog_id);
+
+  private:
+
+    static const std::string file_name;           /**< the dialog file */
+    static std::map<std::string, Dialog> dialogs; /**< all dialogs of the game */
+
+    // we don't need to instantiate this class
+    DialogResource();
+    ~DialogResource();
+
+    static int l_dialog(lua_State* l);
 };
 
 #endif

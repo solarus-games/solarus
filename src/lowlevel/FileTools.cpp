@@ -20,6 +20,7 @@
 #include "lowlevel/StringConcat.h"
 #include "Configuration.h"
 #include "StringResource.h"
+#include "DialogResource.h"
 #include <physfs.h>
 
 std::string FileTools::language_code;
@@ -101,6 +102,8 @@ void FileTools::initialize(int argc, char** argv) {
  * @brief Quits the file tools.
  */
 void FileTools::quit() {
+
+  DialogResource::quit();
   StringResource::quit();
   PHYSFS_deinit();
 }
@@ -153,6 +156,7 @@ void FileTools::set_language(const std::string& language_code) {
   FileTools::language_code = language_code;
   Configuration::set_value("language", language_code);
   StringResource::initialize();
+  DialogResource::initialize();
 }
 
 /**

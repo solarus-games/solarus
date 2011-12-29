@@ -123,6 +123,8 @@ class Message;
 class Timer;
 class GameoverSequence;
 class Camera;
+class Dialog;
+class DialogResource;
 
 // scripts
 class Script;

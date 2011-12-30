@@ -217,23 +217,24 @@ int DialogBox::get_last_answer() {
 void DialogBox::start_dialog(const std::string& dialog_id, Script* issuer_script,
     VerticalPosition vertical_position) {
 
-  Debug::check_assertion(!is_enabled() || is_finished(), StringConcat()
+  Debug::check_assertion(!is_enabled() || is_full(), StringConcat()
       << "Cannot start dialog '" << dialog_id
-      << ": another dialog '" << this->dialog_id << "' is already started");
+      << "': another dialog '" << this->dialog_id << "' is already started");
 
-  if (!is_enabled()) {
+  bool first = !is_enabled();
+  if (first) {
     // save the action and sword keys
     KeysEffect& keys_effect = game.get_keys_effect();
     action_key_effect_saved = keys_effect.get_action_key_effect();
     sword_key_effect_saved = keys_effect.get_sword_key_effect();
   }
 
-  // get the dialog data
-  this->dialog = DialogResource::get_dialog(dialog_id);
+  // initialize the dialog data
+  this->dialog_id = dialog_id;
+  this->dialog = DialogResource::get_dialog(this->dialog_id);
   this->line_it = dialog.get_lines().begin();
-
-  // initialize the dialog box properties
-  set_vertical_position(vertical_position);
+  this->line_index = 0;
+  this->char_index = 0;
   this->char_delay = char_delays[SPEED_FAST];
   this->skip_mode = Dialog::SKIP_NONE;
   this->skipped = false;
@@ -246,7 +247,9 @@ void DialogBox::start_dialog(const std::string& dialog_id, Script* issuer_script
   }
   question_dst_position.set_y(box_dst_position.get_y() + 27);
 
-  if (!is_enabled()) {
+  if (first) {
+    set_vertical_position(vertical_position);
+
     // notify the scripts
     game.get_map_script().event_dialog_started(dialog_id);
     this->issuer_script = issuer_script;
@@ -254,8 +257,6 @@ void DialogBox::start_dialog(const std::string& dialog_id, Script* issuer_script
       issuer_script->event_dialog_started(dialog_id);
     }
   }
-
-  this->dialog_id = dialog_id;
 
   // start displaying text
   show_more_lines();
@@ -266,7 +267,7 @@ void DialogBox::start_dialog(const std::string& dialog_id, Script* issuer_script
  */
 void DialogBox::show_more_lines() {
 
-  if (is_full()) {
+  if (line_it == dialog.get_lines().end()) {
     show_next_dialog();
     return;
   }
@@ -418,7 +419,7 @@ void DialogBox::sword_key_pressed() {
 }
 
 /**
- * @brief This function is called when the user pressed the up or down arrow key.
+ * @brief This function is called when the user pressed the up or down key.
  */
 void DialogBox::up_or_down_key_pressed() {
 
@@ -467,16 +468,6 @@ bool DialogBox::is_full() {
 }
 
 /**
- * @brief Returns whether the dialog box has been closed, i.e.
- * whether the last message was shown and the
- * user has pressed the key, or the dialog was skipped.
- * @return true if the dialog is finished
- */
-bool DialogBox::is_finished() {
-  return dialog_id.size() == 0 || skipped;
-}
-
-/**
  * @brief When the dialog box is finished, returns whether it was skipped.
  * @return true if the dialog was skipped
  */
@@ -509,7 +500,9 @@ void DialogBox::update() {
     KeysEffect& keys_effect = game.get_keys_effect();
     if (!end_lines_sprite.is_animation_started()) {
 
-      if (dialog.has_next() || dialog.is_question()) {
+      if (line_it != dialog.get_lines().end()
+          || dialog.has_next()
+          || dialog.is_question()) {
         end_lines_sprite.set_current_animation("next");
         keys_effect.set_action_key_effect(KeysEffect::ACTION_KEY_NEXT);
       }

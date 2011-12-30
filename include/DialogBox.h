@@ -84,7 +84,6 @@ class DialogBox {
     int get_last_answer();
     void key_pressed(GameControls::GameKey key);
     const std::string& get_dialog_id();
-    bool is_finished();
     bool was_skipped();
     void show_all_now();
 

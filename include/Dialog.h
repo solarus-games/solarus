@@ -58,7 +58,7 @@ class Dialog {
 
   private:
 
-    int icon;                     /**< index of an icon to show (-1 for none) */
+    int icon;                     /**< index of an icon to show (-1 for none, -2 for unchanged) */
     SkipMode skip_mode;           /**< skip mode of this dialog */
     bool question;                /**< is this dialog a question? */
     std::string next;             /**< id of the next dialog if any (possibly "_unknown") */

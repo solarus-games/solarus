@@ -20,7 +20,7 @@
  * @brief Constructor.
  */
 Dialog::Dialog():
-  icon(-1),
+  icon(-2),
   skip_mode(SKIP_NONE),
   question(false),
   next(""),
@@ -57,13 +57,15 @@ Dialog::~Dialog() {
  */
 Dialog& Dialog::operator=(const Dialog& other) {
 
-  this->icon = other.icon;
-  this->skip_mode = other.skip_mode;
-  this->question = other.question;
-  this->next = other.next;
-  this->next2 = other.next2;
-  this->text = other.text;
-  this->lines = other.lines;
+  if (&other != this) {
+    this->icon = other.icon;
+    this->skip_mode = other.skip_mode;
+    this->question = other.question;
+    this->next = other.next;
+    this->next2 = other.next2;
+    this->text = other.text;
+    this->lines = other.lines;
+  }
 
   return *this;
 }
@@ -196,8 +198,8 @@ const std::list<std::string>& Dialog::get_lines() const {
 /**
  * @brief Sets the text of this dialog.
  *
- * Lines must be separated by '\n'. The last line of text should not end by
- * '\n'.
+ * Lines must be separated by '\n'. The last line of text may end with '\n'.
+ *
  *
  * @return the text of this dialog
  */
@@ -208,7 +210,10 @@ void Dialog::set_text(const std::string& text) {
   size_t end;
   do {
     end = text.find_first_of('\n', start);
-    lines.push_back(text.substr(start, end - start));
+    const std::string line = text.substr(start, end - start);
+    if (line.size() > 0) {
+      lines.push_back(line);
+    }
     start = end + 1;
   }
   while (end != std::string::npos);

@@ -2375,11 +2375,21 @@ dialog{
   id = "found_fairy",
   icon = 81,
   skip = "current",
-  question = true,
+  next = "found_fairy.1",
   text = [[
 Tu as trouvé une
 Fée, elle est
 merveilleuse !
+]]
+}
+--------------------
+
+-- |--------------------___|
+dialog{
+  id = "found_fairy.1",
+  icon = -1,
+  question = true,
+  text = [[
 Que vas-tu en faire ?
 Récupérer des Coeurs
 La conserver

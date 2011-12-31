@@ -137,9 +137,7 @@ function parse_ini()
         message.id = id
       elseif icon then
         -- line with an icon number
-        if icon ~= -1 then
-          message.icon = tonumber(icon)
-        end
+        message.icon = tonumber(icon)
       elseif skip then
         -- line with the skip property ("none", "current" or "all")
         message.skip = skip

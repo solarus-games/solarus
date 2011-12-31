@@ -2473,6 +2473,7 @@ cool !
 
 dialog{
   id = "found_fairy.1",
+  icon = -1,
   skip = "none",
   question = true,
   text = [[
@@ -2481,7 +2482,7 @@ Récupérer des Coeurs
 La conserver
 ]]
 }
------------------------
+--------------------
 
 -- Lorsqu'on veut conserver une Fée mais qu'on n'a pas de Flacon vide
 dialog{

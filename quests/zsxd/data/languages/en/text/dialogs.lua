@@ -2375,6 +2375,7 @@ that's cool!
 
 dialog{
   id = "found_fairy.1",
+  icon = -1,
   skip = "none",
   question = true,
   text = [[
@@ -2383,7 +2384,7 @@ Recover Hearts
 Keep her in a Bottle
 ]]
 }
------------------------
+--------------------
 
 -- Lorsqu'on veut conserver une Fée mais qu'on n'a pas de Flacon vide
 dialog{

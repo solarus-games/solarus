@@ -33,8 +33,8 @@
 
 const uint32_t DialogBox::char_delays[] = {
   60, // slow
-  45,  // medium
-  30   // fast (default)
+  45, // medium
+  30  // fast (default)
 };
 
 /**
@@ -227,18 +227,26 @@ void DialogBox::start_dialog(const std::string& dialog_id, Script* issuer_script
     KeysEffect& keys_effect = game.get_keys_effect();
     action_key_effect_saved = keys_effect.get_action_key_effect();
     sword_key_effect_saved = keys_effect.get_sword_key_effect();
+    this->icon_number = -1;
+    this->skip_mode = Dialog::SKIP_NONE;
+    this->char_delay = char_delays[SPEED_FAST];
+    this->dialog_id = dialog_id;
   }
 
   // initialize the dialog data
-  this->dialog_id = dialog_id;
-  this->dialog = DialogResource::get_dialog(this->dialog_id);
+  this->dialog = DialogResource::get_dialog(dialog_id);
   this->line_it = dialog.get_lines().begin();
   this->line_index = 0;
   this->char_index = 0;
-  this->char_delay = char_delays[SPEED_FAST];
-  this->skip_mode = Dialog::SKIP_NONE;
   this->skipped = false;
-  this->icon_number = dialog.get_icon();
+
+  if (dialog.get_skip_mode() != Dialog::SKIP_UNCHANGED) {
+    this->skip_mode = dialog.get_skip_mode();
+  }
+
+  if (dialog.get_icon() != -2) { // -2 means unchanged
+    this->icon_number = dialog.get_icon();
+  }
   if (dialog.is_question()) {
     this->last_answer = 0;
   }
@@ -263,11 +271,11 @@ void DialogBox::start_dialog(const std::string& dialog_id, Script* issuer_script
 }
 
 /**
- * @brief Shows a new group of 3 lines in the dialog box.
+ * @brief Shows a new group of 3 lines in the dialog box, if any.
  */
 void DialogBox::show_more_lines() {
 
-  if (line_it == dialog.get_lines().end()) {
+  if (!has_more_lines()) {
     show_next_dialog();
     return;
   }
@@ -296,7 +304,7 @@ void DialogBox::show_more_lines() {
     line_surfaces[i]->set_y(text_y);
     line_surfaces[i]->set_text("");
 
-    if (line_it != dialog.get_lines().end()) {
+    if (has_more_lines()) {
       lines[i] = *line_it;
       line_it++;
     }
@@ -305,7 +313,7 @@ void DialogBox::show_more_lines() {
     }
   }
 
-  if (dialog.is_question()) {
+  if (dialog.is_question() && !has_more_lines()) {
     text_x += 24;
     line_surfaces[nb_visible_lines - 2]->set_x(text_x);
     line_surfaces[nb_visible_lines - 1]->set_x(text_x);
@@ -315,7 +323,6 @@ void DialogBox::show_more_lines() {
   this->line_index = 0;
   this->char_index = 0;
   this->next_char_date = this->next_sound_date = System::now();
-  this->show_all = false;
 }
 
 /** 
@@ -340,6 +347,8 @@ void DialogBox::show_next_dialog() {
  */
 void DialogBox::close() {
 
+  const std::string previous_dialog_id = dialog_id;
+  Script* previous_issuer_script = issuer_script;
   dialog_id = "";
 
   // restore the action and sword keys
@@ -348,16 +357,18 @@ void DialogBox::close() {
   keys_effect.set_sword_key_effect(sword_key_effect_saved);
 
   // notify the script if necessary
-  if (!skipped && dialog_id[0] != '_') { // FIXME: remove the '_' restriction
+  if (!skipped && previous_dialog_id[0] != '_') { // FIXME: remove the '_' restriction
     // a dialog of the quest was just finished: notify the scripts
     Script& map_script = game.get_map_script();
-    map_script.event_dialog_finished(dialog_id, last_answer);
+    map_script.event_dialog_finished(previous_dialog_id, last_answer);
 
-    if (issuer_script != NULL && issuer_script != &map_script) {
+    if (previous_issuer_script != NULL
+        && previous_issuer_script != &map_script) {
       // also notify the issuer script if different
-      issuer_script->event_dialog_finished(dialog_id, last_answer);
+      previous_issuer_script->event_dialog_finished(previous_dialog_id, last_answer);
     }
   }
+
 }
 
 /**
@@ -423,12 +434,14 @@ void DialogBox::sword_key_pressed() {
  */
 void DialogBox::up_or_down_key_pressed() {
 
-  if (is_full() && dialog.is_question()) {
+  if (dialog.is_question()
+      && !has_more_lines()
+      && is_full()) {
 
     // switch the answer
     last_answer = 1 - last_answer;
     question_dst_position.set_y(
-        box_dst_position.get_y() + ((last_answer == 1) ? 27 : 40));
+        box_dst_position.get_y() + ((last_answer == 0) ? 27 : 40));
     Sound::play("cursor");
   }
 }
@@ -444,8 +457,20 @@ void DialogBox::show_all_now() {
   if (is_full()) {
     show_more_lines();
   }
+  else {
 
-  show_all = true;
+    // check the end of the current line
+    while (!is_full()) {
+
+      if (char_index >= lines[line_index].size()) {
+        char_index = 0;
+        line_index++;
+      }
+      if (!is_full()) {
+        add_character();
+      }
+    }
+  }
 }
 
 /**
@@ -468,11 +493,13 @@ bool DialogBox::is_full() {
 }
 
 /**
- * @brief When the dialog box is finished, returns whether it was skipped.
- * @return true if the dialog was skipped
+ * @brief Returns whether there are more lines remaining to display after the
+ * current 3 lines.
+ * @return true if there are more lines
  */
-bool DialogBox::was_skipped() {
-  return skipped;
+bool DialogBox::has_more_lines() {
+
+  return line_it != dialog.get_lines().end();
 }
 
 /**
@@ -490,7 +517,7 @@ void DialogBox::update() {
   // update the text displaying
   update_lines();
 
-  // handle the end of the message
+  // handle the end of the visible lines
   if (is_full()) {
 
     // update the message end arrow
@@ -500,7 +527,7 @@ void DialogBox::update() {
     KeysEffect& keys_effect = game.get_keys_effect();
     if (!end_lines_sprite.is_animation_started()) {
 
-      if (line_it != dialog.get_lines().end()
+      if (has_more_lines()
           || dialog.has_next()
           || dialog.is_question()) {
         end_lines_sprite.set_current_animation("next");
@@ -556,7 +583,9 @@ void DialogBox::display(Surface* destination_surface) {
   }
 
   // display the question arrow
-  if (is_full() && dialog.is_question()) {
+  if (dialog.is_question()
+      && is_full()
+      && !has_more_lines()) {
     box_img.blit(question_src_position, &dialog_surface, question_dst_position);
   }
 

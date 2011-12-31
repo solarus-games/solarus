@@ -31,9 +31,10 @@ class Dialog {
      * Indicates what happens when the user tries to skip a dialog.
      */
     enum SkipMode {
-      SKIP_NONE,    /**< the current dialog cannot be skipped */
-      SKIP_CURRENT, /**< the player can display the 3 current lines immediately */
-      SKIP_ALL      /**< the dialog box can be totally skipped */
+      SKIP_NONE,      /**< the current dialog cannot be skipped */
+      SKIP_CURRENT,   /**< the player can display the 3 current lines immediately */
+      SKIP_ALL,       /**< the dialog box can be totally skipped */
+      SKIP_UNCHANGED  /**< keep the skip property of the previous dialog */
     };
 
     Dialog();

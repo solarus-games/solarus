@@ -21,7 +21,7 @@
  */
 Dialog::Dialog():
   icon(-2),
-  skip_mode(SKIP_NONE),
+  skip_mode(SKIP_UNCHANGED),
   question(false),
   next(""),
   next2(""),

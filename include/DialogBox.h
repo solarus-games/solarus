@@ -84,7 +84,6 @@ class DialogBox {
     int get_last_answer();
     void key_pressed(GameControls::GameKey key);
     const std::string& get_dialog_id();
-    bool was_skipped();
     void show_all_now();
 
     // update and display
@@ -120,7 +119,6 @@ class DialogBox {
     uint32_t char_delay;                            /**< delay between two characters in milliseconds */
     uint32_t next_char_date;                        /**< when the next character should be displayed */
     uint32_t next_sound_date;                       /**< date of the next letter scrolling sound */
-    bool show_all;                                  /**< true to display all 3 lines now */
 
     // graphics
     Surface dialog_surface;                         /**< surface where the dialog is drawn*/
@@ -139,6 +137,7 @@ class DialogBox {
     void show_more_lines();
     void show_next_dialog();
     bool is_full();
+    bool has_more_lines();
     void close();
 
     void action_key_pressed();

@@ -12,6 +12,7 @@ function event_map_started(destination_point_name)
   end
 
   sol.map.door_set_open("boss_door", true)
+  sol.map.door_set_open("final_room_door", true)
 end
 
 function event_map_opening_transition_finished(destination_point_name)
@@ -48,6 +49,7 @@ function event_hero_on_sensor(sensor_name)
       and not sol.game.savegame_get_boolean(415)
       and not fighting_boss then
     sol.map.door_close("boss_door")
+    sol.map.door_close("final_room_door")
     sol.map.hero_freeze()
     sol.main.timer_start(start_boss, 1000)
     fighting_boss = true

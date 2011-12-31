@@ -281,7 +281,7 @@ booleans:
 414	dungeon 4 1F: chest with 50 rupees
 415	dungeon 4 boss
 416	dungeon 4 heart container
-417	dungeon 4 B1: special torch removed
+417	dungeon 4 B1: special torch removed (unused since zsdx 1.4)
 418	dungeon 4 1F: chest with 100 rupees
 
 500	dungeon 5 1F: chest with 100 rupees

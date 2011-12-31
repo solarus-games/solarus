@@ -2,12 +2,9 @@
 
 function event_map_started(destination_point_name)
 
-  if sol.game.savegame_get_boolean(417) then
-    -- place the block so that the special torch is already disabled
-    sol.map.tile_set_group_enabled("special_torch", false)
-    sol.map.switch_set_activated("special_torch_switch", true)
-    sol.map.block_set_position("block", 752, 453, 1);
-  end
+  -- evil tiles
+  sol.map.door_set_open("evil_tiles_door", true)
+  init_evil_tiles()
 end
 
 function event_switch_activated(switch_name)
@@ -18,12 +15,6 @@ function event_switch_activated(switch_name)
   elseif switch_name == "door_b_switch" then
     sol.map.door_open("door_b")
     sol.main.play_sound("secret")
-  elseif switch_name == "special_torch_switch" then
-    if sol.map.tile_is_enabled("special_torch") then
-      sol.map.tile_set_group_enabled("special_torch", false)
-      sol.main.play_sound("secret")
-      sol.game.savegame_set_boolean(417, true)
-    end
   end
 end
 
@@ -31,19 +22,21 @@ function event_switch_inactivated(switch_name)
 
   if switch_name == "door_b_switch" then
     sol.map.door_close("door_b")
-  elseif switch_name == "special_torch_switch" then
-    sol.map.tile_set_group_enabled("special_torch", true)
-    sol.main.play_sound("door_closed")
   end
 end
 
 function event_hero_on_sensor(sensor_name)
 
   if sensor_name == "close_door_a_sensor"
-      and sol.map.door_is_open("door_a")
-      and not sol.map.door_is_open("door_b") then
+      and sol.map.door_is_open("door_a") then
     sol.map.door_close("door_a")
     sol.map.switch_set_activated("door_a_switch", false)
+  elseif sensor_name:find("^evil_tiles_sensor") then
+    if sol.map.door_is_open("evil_tiles_door")
+        and not sol.map.enemy_is_dead("evil_tile_1") then
+      sol.map.door_close("evil_tiles_door")
+      sol.main.timer_start(start_evil_tiles, 2000)
+    end
   elseif sensor_name == "sensor_1" and sol.map.tile_is_enabled("sensor_1_off") then
     sol.main.play_sound("switch")
     sol.map.tile_set_group_enabled("sensor_1_on", true)
@@ -59,5 +52,65 @@ function event_hero_on_sensor(sensor_name)
     sol.main.play_sound("switch")
     sol.map.tile_set_group_enabled("sensor_4_on", not sol.map.tile_is_enabled("sensor_4_on"))
   end
+end
+
+-- Initializes evil tiles (this function should be called
+-- from event_map_started)
+function init_evil_tiles()
+  sol.map.enemy_set_group_enabled("evil_tile", false)
+  sol.map.tile_set_group_enabled("evil_tile_after", false)
+end
+
+-- Starts the attack of evil tiles
+-- (this function can be called when the hero enters the room of evil tiles)
+function start_evil_tiles()
+
+  local total = sol.map.enemy_get_group_count("evil_tile")
+  local next = 1 -- number of the next evil tile to spawn
+  local spawn_delay = 1500 -- delay between two tiles
+
+  sol.map.enemy_set_group_enabled("evil_tile", false)
+  sol.map.tile_set_group_enabled("evil_tile_after", false)
+
+  -- spawns a tile and schedules the next one
+  function repeat_spawn()
+
+    sol.map.enemy_set_enabled("evil_tile_"..next, true)
+    sol.map.tile_set_enabled("evil_tile_after_"..next, true)
+    next = next + 1
+    if next <= total then
+      sol.main.timer_start(repeat_spawn, spawn_delay)
+    end
+  end
+
+  -- plays a sound repeatedly as long as at least one tile is moving
+  function repeat_sound()
+
+    sol.main.play_sound("walk_on_grass")
+
+    -- repeat the sound until the last tile starts animation "destroy"
+    local again = false
+    local remaining = sol.map.enemy_get_group_count("evil_tile")
+    if remaining > 1 then
+      again = true
+    elseif remaining == 1 then
+      local sprite = sol.map.enemy_get_sprite("evil_tile_"..total)
+      again = sol.main.sprite_get_animation(sprite) ~= "destroy"
+    end
+
+    if again then
+      sol.main.timer_start(repeat_sound, 150)
+    else 
+      finish_evil_tiles()
+    end
+  end
+
+  repeat_spawn()
+  repeat_sound()
+end
+
+function finish_evil_tiles()
+
+  sol.map.door_open("evil_tiles_door")
 end
 

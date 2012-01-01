@@ -9,6 +9,7 @@ zsdx-1.4 (under development)
 * Don't make enemies follow the hero if they are on a different layer
 * Dungeon 9 boss: don't create more than one stone at a time
 * Potion shop: fix the coordinates on the minimap
+* Inferno river maze: fix the coordinates on the minimap
 * Dungeon 8 B4: the two switches could remain activated when leaving them
 * Dungeon 8 B2: a staircase was missing on the minimap
 * Change the color of shallow water and grass below the hero in the dark world

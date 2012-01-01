@@ -15,7 +15,10 @@ zsdx-1.4 (under development)
 * Change the color of the splash sprites when plunging into lava
 * Pikes: vertical pikes failed to move if the hero was too close
 * Dungeon 4 boss: a petal was harder to reach once others were killed
+* Dungeon 4 boss: keep the door to the final room open after the boss
+* Dungeon 4: replace a boring and buggy room by a room with evil tiles
 * Fix a typo for blue potions in the inventory
+* Fix the name of dungeon 6 in the minimap
 * Change how the hero is forced to finish dungeon 2 before starting dungeon 3
 * Smith cave: change the price of the sword (75 instead of 80)
 * Various minor improvements

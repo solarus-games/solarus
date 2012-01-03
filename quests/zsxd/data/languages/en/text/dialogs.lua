@@ -87,6 +87,7 @@ magical counter!
 dialog{
   id = "_item_description.hookshot.1",
   icon = 6,
+  skip = "all",
   text = [[
 Hoist yourself to
 unreachable places
@@ -662,18 +663,10 @@ dialog{
   id = "_item_description.poivron_counter.1",
   icon = 40,
   skip = "all",
-  next = "_item_description.poivron_counter.1_2",
   text = [[
 These peppers are a
 a real treasure
 for people who like
-]]
-}
---------------------
-
-dialog{
-  id = "_item_description.poivron_counter.1_2",
-  text = [[
 spicy food.
 ]]
 }
@@ -707,18 +700,10 @@ dialog{
   id = "_item_description.tapisserie_counter.1",
   icon = 43,
   skip = "all",
-  next = "_item_description.tapisserie_counter.1_2",
   text = [[
 An old tapestry of
 the XVIIIth century.
 Nobody makes them
-]]
-}
---------------------
-
-dialog{
-  id = "_item_description.tapisserie_counter.1_2",
-  text = [[
 like this now.
 ]]
 }
@@ -785,18 +770,10 @@ dialog{
   id = "_item_description.parfum_counter.1",
   icon = 49,
   skip = "all",
-  next = "_item_description.parfum_counter.1_2",
   text = [[
 Internationally
 acclaimed fragrance,
 this Kipu will make
-]]
-}
---------------------
-
-dialog{
-  id = "_item_description.parfum_counter.1_2",
-  text = [[
 girls fall in your
 arms!
 ]]
@@ -1689,18 +1666,9 @@ be with you !
 dialog{
   id = "_treasure.sword.3",
   icon = 68,
-  next = "_treasure.sword.3.1",
   text = [[
 You found
 Excalibur!$0
-]]
-}
---------------------
-
-dialog{
-  id = "_treasure.sword.3.1",
-  icon = 68,
-  text = [[
 It's a shame the
 game is over, you
 could have used it!
@@ -2132,18 +2100,10 @@ or not.
 dialog{
   id = "_treasure.parfum.1",
   icon = 49,
-  next = "_treasure.parfum.1_2",
   text = [[
 Wi give you:
 Fragrance Kipu de
 Cacaco Charnel,
-]]
-}
---------------------
-
-dialog{
-  id = "_treasure.parfum.1_2",
-  text = [[
 get rid of it ASAP
 before you die of
 asphyxia!
@@ -2206,18 +2166,9 @@ Big Key to open it!
 dialog{
   id = "_boss_key_required",
   icon = 74,
-  next = "_boss_key_required.2",
   text = [[
 This door leads
 to Ganon!
-]]
-}
---------------------
-
-dialog{
-  id = "_boss_key_required.2",
-  icon = 74,
-  text = [[
 Don't even try to
 open it whithout
 the Master Key!
@@ -2310,19 +2261,10 @@ something...
 dialog{
   id = "found_piece_of_heart.first",
   icon = 75,
-  next = "found_piece_of_heart.first.2",
   text = [[
 Don't EVEN think
 about it: you need
 3 more of them to
-]]
-}
---------------------
-
-dialog{
-  id = "found_piece_of_heart.first.2",
-  icon = 75,
-  text = [[
 have a new Heart.
 ]]
 }
@@ -2547,18 +2489,10 @@ break them all?
 
 dialog{
   id = "caverne_maudite.pancarte",
-  next = "caverne_maudite.pancarte2",
   text = [[
 You have to let it all
 go. Fear, doubt and
 disbelief...
-]]
-}
------------------------
-
-dialog{
-  id = "caverne_maudite.pancarte2",
-  text = [[
 Free your mind $v.
 ]]
 }
@@ -2580,48 +2514,19 @@ dialog{
 dialog{
   id = "crazy_house.welcome_message",
   skip = "current",
-  next = "crazy_house.welcome_message_2",
   text = [[
 Welcome to the Lost and
 Found Office.
-]]
-}
------------------------
 
-dialog{
-  id = "crazy_house.welcome_message_2",
-  skip = "current",
-  next = "crazy_house.welcome_message_3",
-  text = [[
 Also known as... 3T:
 Things To Trade!
-]]
-}
------------------------
 
-dialog{
-  id = "crazy_house.welcome_message_3",
-  next = "crazy_house.welcome_message_4",
-  text = [[
 You'll need pen and
 paper...
-]]
-}
------------------------
 
-dialog{
-  id = "crazy_house.welcome_message_4",
-  next = "crazy_house.welcome_message_5",
-  text = [[
 Left: Reception,
 counters 11, 21.
-]]
-}
------------------------
 
-dialog{
-  id = "crazy_house.welcome_message_5",
-  text = [[
 Right:
 counters 12, 22
 ]]
@@ -2683,18 +2588,10 @@ Warp to the right wing
 dialog{
   id = "crazy_house.directions_2F",
   skip = "current",
-  next = "crazy_house.directions_2F_2",
   text = [[
 Left:
 counters 45, 47, 49, 84
 Down: counter 21
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.directions_2F_2",
-  text = [[
 Right: counter 33
 Stairs:
 counter 11, reception
@@ -2741,38 +2638,16 @@ counters 41, 43, 82
 dialog{
   id = "crazy_house.directions_3F",
   skip = "current",
-  next = "crazy_house.directions_3F_2",
   text = [[
 Right:
 counters 31, 32, 36
-]]
-}
------------------------
 
-dialog{
-  id = "crazy_house.directions_3F_2",
-  next = "crazy_house.directions_3F_2_2",
-  text = [[
 Left: 1500 Megawatt
 Aperture Science Heavy
 Duty Super-Colliding
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.directions_3F_2_2",
-  next = "crazy_house.directions_3F_2_3",
-  text = [[
 Super Button.
 Up: counter 82
-]]
-}
------------------------
 
-dialog{
-  id = "crazy_house.directions_3F_2_3",
-  text = [[
 This sign is here to
 bother you. Thank you.
 ]]
@@ -2826,18 +2701,10 @@ Super Button.
 dialog{
   id = "crazy_house.alcoholic_man",
   skip = "current",
-  next = "crazy_house.alcoholic_man_2",
   text = [[
 Burp! I don't even...
 ... rememburps!...
 how I came... burp!
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.alcoholic_man_2",
-  text = [[
 ... back here! Burps!
 ]]
 }
@@ -2846,39 +2713,16 @@ dialog{
 dialog{
   id = "crazy_house.infinite_greetings",
   skip = "current",
-  next = "crazy_house.infinite_greetings_2",
   text = [[
 You must activate the
 1500 Megawatt Aperture
 Science Heavy Duty
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.infinite_greetings_2",
-  next = "crazy_house.infinite_greetings_3",
-  text = [[
 Super-Colliding Super
 Button to get across
 the neverending
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.infinite_greetings_3",
-  next = "crazy_house.infinite_greetings_4",
-  text = [[
 corridor. Exactly what
 you forgot to do!
-]]
-}
------------------------
 
-dialog{
-  id = "crazy_house.infinite_greetings_4",
-  text = [[
 BWAH HA HA HA HA!
 ]]
 }
@@ -2887,90 +2731,31 @@ BWAH HA HA HA HA!
 dialog{
   id = "crazy_house.hint_part2",
   skip = "current",
-  next = "crazy_house.hint_part2_2",
   text = [[
 Touch this slab and the
 the counter clerk will
 use telepathy to talk
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.hint_part2_2",
-  next = "crazy_house.hint_part2_3",
-  text = [[
 to you.
-]]
-}
------------------------
 
-dialog{
-  id = "crazy_house.hint_part2_3",
-  next = "crazy_house.hint_part2_4",
-  text = [[
+
 Humm humm 1, 2...
 1, 2... do you hear me?
-]]
-}
------------------------
 
-dialog{
-  id = "crazy_house.hint_part2_4",
-  next = "crazy_house.hint_part2_5",
-  text = [[
 I'm on air?
 Ha hum...
-]]
-}
------------------------
 
-dialog{
-  id = "crazy_house.hint_part2_5",
-  next = "crazy_house.hint_part2_6",
-  text = [[
 Young man, this crazy
 house will become your
 tomb if you don't
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.hint_part2_6",
-  next = "crazy_house.hint_part2_7",
-  text = [[
 listen to me.
 Follow my advice:
 the hidden crystal
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.hint_part2_7",
-  next = "crazy_house.hint_part2_8",
-  text = [[
 must be remotely
 activated.
-]]
-}
------------------------
 
-dialog{
-  id = "crazy_house.hint_part2_8",
-  next = "crazy_house.hint_part2_9",
-  text = [[
 What, you've done it
 before? Hum...
 Herrr... wait,
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.hint_part2_9",
-  text = [[
 crr... I pass through
 a tunnel crr...
 crr... crr... beeep!
@@ -2995,29 +2780,13 @@ You must believe, boy!
 dialog{
   id = "crazy_house.public_agent",
   skip = "all",
-  next = "crazy_house.public_agent_2",
   text = [[
 What? You want to go
 through? Don't you
 see I'm on strike?
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.public_agent_2",
-  next = "crazy_house.public_agent_3",
-  text = [[
 God damnit! You people
 in the private sector,
 do not understand our
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.public_agent_3",
-  text = [[
 demands but still allow
 you to judge us!
 Go away!
@@ -3030,48 +2799,19 @@ Go away!
 -- ==============================================
 dialog{
   id = "crazy_house.accueil_ech_eq_0",
-  next = "crazy_house.accueil_ech_eq_0_2",
   text = [[
 Hello Sir, have you
 lost something?
-]]
-}
------------------------
 
-dialog{
-  id = "crazy_house.accueil_ech_eq_0_2",
-  next = "crazy_house.accueil_ech_eq_0_3",
-  text = [[
 What are you looking
 for?
 $0Gloves?
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.accueil_ech_eq_0_3",
-  next = "crazy_house.accueil_ech_eq_0_4",
-  text = [[
 Wait, I check...
-]]
-}
------------------------
 
-dialog{
-  id = "crazy_house.accueil_ech_eq_0_4",
-  next = "crazy_house.accueil_ech_eq_0_5",
-  text = [[
+
 Hmmm I'm not sure,
 maybe you should go to
 counter 21.
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.accueil_ech_eq_0_5",
-  text = [[
 Go upstairs and you'll
 find it at the second
 floor.
@@ -3090,39 +2830,16 @@ me to find counter 21.
 
 dialog{
   id = "crazy_house.accueil_ech_eq_2",
-  next = "crazy_house.accueil_ech_eq_2_2",
   text = [[
 Yes? Uh, the counter
 clerck is a fool?
 Hmmm, maybe you should
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.accueil_ech_eq_2_2",
-  next = "crazy_house.accueil_ech_eq_2_3",
-  text = [[
 check counter 41. It's
 here on the ground
 floor, but you have to
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.accueil_ech_eq_2_3",
-  next = "crazy_house.accueil_ech_eq_2_4",
-  text = [[
 reach it by crossing
 the second floor.
-]]
-}
------------------------
 
-dialog{
-  id = "crazy_house.accueil_ech_eq_2_4",
-  text = [[
 Use the stairs behind
 me and ask people.
 ]]
@@ -3131,18 +2848,10 @@ me and ask people.
 
 dialog{
   id = "crazy_house.accueil_ech_eq_3",
-  next = "crazy_house.accueil_ech_eq_3_2",
   text = [[
 Counter 41 is on the
 ground floor, first
 use the stairs behind
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.accueil_ech_eq_3_2",
-  text = [[
 me and ask people
 around.
 ]]
@@ -3161,18 +2870,10 @@ wing.
 
 dialog{
   id = "crazy_house.accueil_ech_eo_5-7",
-  next = "crazy_house.accueil_ech_eo_5-7_2",
   text = [[
 Counter 12... This is
 the good floor, but
 it's in the right wing.
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.accueil_ech_eo_5-7_2",
-  text = [[
 You have to go through
 the second floor once
 again.
@@ -3182,18 +2883,10 @@ again.
 
 dialog{
   id = "crazy_house.accueil_ech_eq_6",
-  next = "crazy_house.accueil_ech_eq_6_2",
   text = [[
 Counter 32 is on the
 third floor of the
 right wing.
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.accueil_ech_eq_6_2",
-  text = [[
 You have to use the
 stairs on the second
 floor, near counter 82.
@@ -3213,18 +2906,10 @@ in the right wing.
 
 dialog{
   id = "crazy_house.accueil_ech_eq_9",
-  next = "crazy_house.accueil_ech_eq_9_2",
   text = [[
 Counter 12 is on this
 floor, but in the
 right wing.
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.accueil_ech_eq_9_2",
-  text = [[
 Go through the second
 floor to go around.
 ]]
@@ -3233,19 +2918,10 @@ floor to go around.
 
 dialog{
   id = "crazy_house.accueil_ech_eq_10",
-  next = "crazy_house.accueil_ech_eq_10_2",
   text = [[
 To find counter 33, you
 you have to go up the
 third floor, in the
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.accueil_ech_eq_10_2",
-  text = [[
-
 left wing.
 ]]
 }
@@ -3253,29 +2929,13 @@ left wing.
 
 dialog{
   id = "crazy_house.accueil_ech_eq_11",
-  next = "crazy_house.accueil_ech_eq_11_2",
   text = [[
 You don't know what to
 do with this key?
 It unlocks a room
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.accueil_ech_eq_11_2",
-  next = "crazy_house.accueil_ech_eq_11_3",
-  text = [[
 on the third floor I
 think, in the left
 wing...
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.accueil_ech_eq_11_3",
-  text = [[
 ... if I remember
 correctly.
 ]]
@@ -3284,18 +2944,10 @@ correctly.
 
 dialog{
   id = "crazy_house.accueil_epi_eo_1-7",
-  next = "crazy_house.accueil_epi_eo_1-7_2",
   text = [[
 If you look for
 peppers, check counter
 84.
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.accueil_epi_eo_1-7_2",
-  text = [[
 You'll find it on the
 second floor, left wing.
 ]]
@@ -3304,17 +2956,10 @@ second floor, left wing.
 
 dialog{
   id = "crazy_house.accueil_epi_eo_2-6",
-  next = "crazy_house.accueil_epi_eo_2-6_2",
   text = [[
 Counter 11? Just behind
 me, Sir.
-]]
-}
------------------------
 
-dialog{
-  id = "crazy_house.accueil_epi_eo_2-6_2",
-  text = [[
 (Oh god, he has no
 memory!)
 ]]
@@ -3323,18 +2968,10 @@ memory!)
 
 dialog{
   id = "crazy_house.accueil_epi_eo_3-5",
-  next = "crazy_house.accueil_epi_eo_3-5_2",
   text = [[
 To find counter 22, go
 to the second floor in
 the right wing.
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.accueil_epi_eo_3-5_2",
-  text = [[
 Use the stairs behind
 me.
 ]]
@@ -3343,18 +2980,10 @@ me.
 
 dialog{
   id = "crazy_house.accueil_epi_eo_4-9",
-  next = "crazy_house.accueil_epi_eo_4-9_2",
   text = [[
 Some bags of rice?
 Let's see... counter 36
 on the third floor,
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.accueil_epi_eo_4-9_2",
-  text = [[
 right wing. Use the
 stairs of the second
 floor, right wing.
@@ -3374,18 +3003,10 @@ talking about, sorry.
 
 dialog{
   id = "crazy_house.accueil_bal_eo_1-6-8-10",
-  next = "crazy_house.accueil_bal_eo_1-6-8-10_2bis",
   text = [[
 At counter 22, you
 should find tapestries
 and brooms. To reach
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.accueil_bal_eo_1-6-8-10_2bis",
-  text = [[
 it, go to the second
 floor, right wing. Use
 the stairs behind me.
@@ -3405,18 +3026,10 @@ wing.
 
 dialog{
   id = "crazy_house.accueil_bal_eq_3",
-  next = "crazy_house.accueil_bal_eq_3_2",
   text = [[
 Counter 45?
 Hummm, where was it
 last time... ? I think
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.accueil_bal_eq_3_2",
-  text = [[
 on the ground floor
 left wing. If no one
 moved it...
@@ -3493,18 +3106,10 @@ dialog{
 dialog{
   id = "crazy_house.guichet_11_ech_ne_9",
   skip = "current",
-  next = "crazy_house.guichet_11_ech_ne_9_2",
   text = [[
 What is it about?
 What did you lose?
 But Sir, you have to
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.guichet_11_ech_ne_9_2",
-  text = [[
 ask this to the
 reception first.
 ]]
@@ -3514,38 +3119,14 @@ reception first.
 dialog{
   id = "crazy_house.guichet_11_ech_eq_9",
   skip = "current",
-  next = "crazy_house.guichet_11_ech_eq_9_2",
   text = [[
 Yes, we found some
 axes, but each one of
 them must be traded
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.guichet_11_ech_eq_9_2",
-  next = "crazy_house.guichet_11_ech_eq_9_3",
-  text = [[
 with a tapestry.
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.guichet_11_ech_eq_9_3",
-  next = "crazy_house.guichet_11_ech_eq_9_4",
-  text = [[
 Where can you find
 tapestries ?
 Counter 22 has some,
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.guichet_11_ech_eq_9_4",
-  text = [[
 I think. He's quite
 crazy but...
 ]]
@@ -3555,20 +3136,11 @@ crazy but...
 dialog{
   id = "crazy_house.guichet_11_ech_eq_9_ht",
   skip = "current",
-  next = "crazy_house.guichet_11_ech_eq_9_ht_2",
+  question = true,
   text = [[
 You have some
 tapestries? I trade an
 axe for a tapestry.
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.guichet_11_ech_eq_9_ht_2",
-  skip = "none",
-  question = true,
-  text = [[
 What you think?
 OK ok!
 No way!
@@ -3579,20 +3151,11 @@ No way!
 dialog{
   id = "crazy_house.guichet_11_bal_eq_9",
   skip = "current",
-  next = "crazy_house.guichet_11_bal_eq_9_2",
+  question = true,
   text = [[
 You have some
 tapestries? I trade an
 axe for a tapestry.
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.guichet_11_bal_eq_9_2",
-  skip = "none",
-  question = true,
-  text = [[
 What you think?
 OK ok!
 No way!
@@ -3602,17 +3165,10 @@ No way!
 
 dialog{
   id = "crazy_house.guichet_11_bal_err",
-  next = "crazy_house.guichet_11_bal_err_2",
   text = [[
 What? You wanted an
 axe?
-]]
-}
------------------------
 
-dialog{
-  id = "crazy_house.guichet_11_bal_err_2",
-  text = [[
 But I never had some!
 Take this or go away
 Sir!
@@ -3650,29 +3206,13 @@ Sir.
 dialog{
   id = "crazy_house.guichet_12A_ech_eq_5",
   skip = "current",
-  next = "crazy_house.guichet_12A_ech_eq_5_2",
   text = [[
 My colleague is on
 lunch break. If you are
 looking for something
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.guichet_12A_ech_eq_5_2",
-  next = "crazy_house.guichet_12A_ech_eq_5_3",
-  text = [[
 specific, perhaps they
 will have what you want
 at counter 32.
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.guichet_12A_ech_eq_5_3",
-  text = [[
 Where is it?
 Go and ask to the
 reception!
@@ -3686,29 +3226,13 @@ reception!
 dialog{
   id = "crazy_house.guichet_12B_ech_eq_3",
   skip = "current",
-  next = "crazy_house.guichet_12B_ech_eq_3_2",
   text = [[
 How can I help you?
 Counter 41? Logically
 there is a staircase
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.guichet_12B_ech_eq_3_2",
-  next = "crazy_house.guichet_12B_ech_eq_3_3",
-  text = [[
 that allows access to
 the second floor to
 find the 41 but it's
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.guichet_12B_ech_eq_3_3",
-  text = [[
 barred. Sorry, Sir.
 ]]
 }
@@ -3717,31 +3241,14 @@ barred. Sorry, Sir.
 dialog{
   id = "crazy_house.guichet_12B_ech_eq_7",
   skip = "current",
-  next = "crazy_house.guichet_12B_ech_eq_7_2",
+  question = true,
   text = [[
 A perfume? Yes, we have
 some, but I have to ask
 you something.
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.guichet_12B_ech_eq_7_2",
-  next = "crazy_house.guichet_12B_ech_eq_7_3",
-  text = [[
 I need a spice jar and
 a broom. I'll trade
 them for some perfume.
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.guichet_12B_ech_eq_7_3",
-  skip = "none",
-  question = true,
-  text = [[
 We have a deal?
 Yeah, yeah...
 Naah, you kcus!
@@ -3752,11 +3259,11 @@ Naah, you kcus!
 dialog{
   id = "crazy_house.guichet_12B_ech_eq_7_un",
   skip = "current",
-  next = "crazy_house.guichet_12B_ech_eq_7_un_fin",
   text = [[
 You have nothing!
 I'm sure that you'll
-find them...
+find them.
+Keep hope.
 ]]
 }
 -----------------------
@@ -3764,11 +3271,11 @@ find them...
 dialog{
   id = "crazy_house.guichet_12B_ech_eq_7_un_balai",
   skip = "current",
-  next = "crazy_house.guichet_12B_ech_eq_7_un_fin",
   text = [[
 But you don't have a
 broom ! I'm sure that
-you'll find it....
+you'll find it..
+Keep hope.
 ]]
 }
 -----------------------
@@ -3776,18 +3283,10 @@ you'll find it....
 dialog{
   id = "crazy_house.guichet_12B_ech_eq_7_un_bocal",
   skip = "current",
-  next = "crazy_house.guichet_12B_ech_eq_7_un_fin",
   text = [[
 But you don't have the
 spice jar! I'm sure
-that you'll find it...
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.guichet_12B_ech_eq_7_un_fin",
-  text = [[
+that you'll find it.
 Keep hope.
 ]]
 }
@@ -3816,29 +3315,13 @@ Kcus? What's this kcus?
 dialog{
   id = "crazy_house.guichet_12B_aw",
   skip = "current",
-  next = "crazy_house.guichet_12B_aw_2",
   text = [[
 You know the rumor? A
 fragile wall is hidden
 behind a statue. But
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.guichet_12B_aw_2",
-  next = "crazy_house.guichet_12B_aw_3",
-  text = [[
 that's only a rumor.
 Nobody ever found a
 treasure in this
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.guichet_12B_aw_3",
-  text = [[
 public building...
 ]]
 }
@@ -3869,39 +3352,16 @@ of my first love...
 
 dialog{
   id = "crazy_house.guichet_21_ech_eq_1",
-  next = "crazy_house.guichet_21_ech_eq_1_2",
   text = [[
 What? Your teeth hurt?
 Eh, I kown what you're
 talking about. In my
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.guichet_21_ech_eq_1_2",
-  next = "crazy_house.guichet_21_ech_eq_1_3",
-  text = [[
 childhood, I bought
 candies with the money
 that my parents gave
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.guichet_21_ech_eq_1_3",
-  next = "crazy_house.guichet_21_ech_eq_1_4",
-  text = [[
 me. Caries grew like
 mushrooms in my mouth.
-]]
-}
------------------------
 
-dialog{
-  id = "crazy_house.guichet_21_ech_eq_1_4",
-  text = [[
 It hurts just
 thinking about it...
 ]]
@@ -3914,30 +3374,14 @@ thinking about it...
 dialog{
   id = "crazy_house.guichet_22A",
   skip = "current",
-  next = "crazy_house.guichet_22A_2",
+  next = "crazy_house.guichet_22_question",
   text = [[
 Welcome to counter 22,
 the best counter in the
 whole world!
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.guichet_22A_2",
-  next = "crazy_house.guichet_22A_3",
-  text = [[
 Here, you can find
 anything you want:
 we can trade a broom
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.guichet_22A_3",
-  next = "crazy_house.guichet_22_question",
-  text = [[
 for a magma rock.
 ]]
 }
@@ -3946,30 +3390,14 @@ for a magma rock.
 dialog{
   id = "crazy_house.guichet_22B",
   skip = "current",
-  next = "crazy_house.guichet_22B_2",
+  next = "crazy_house.guichet_22_question",
   text = [[
 Welcome to counter 22,
 the best counter in the
 whole world!
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.guichet_22B_2",
-  next = "crazy_house.guichet_22B_3",
-  text = [[
 Here, you can find
 anything you want:
 we can trade a
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.guichet_22B_3",
-  next = "crazy_house.guichet_22_question",
-  text = [[
 tapestry for a bag of
 rice.
 ]]
@@ -3978,7 +3406,6 @@ rice.
 
 dialog{
   id = "crazy_house.guichet_22_question",
-  skip = "none",
   question = true,
   text = [[
 We have a deal?
@@ -4044,31 +3471,13 @@ dialog{
 dialog{
   id = "crazy_house.guichet_31",
   skip = "all",
-  next = "crazy_house.guichet_31_2",
   text = [[
 I'm sure my boss wants
 to fire me! I sense he
 is angry with me!
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.guichet_31_2",
-  skip = "all",
-  next = "crazy_house.guichet_31_3",
-  text = [[
 He'll find something
 wrong with my work, but
 I do the best I can!
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.guichet_31_3",
-  skip = "all",
-  text = [[
 The world is against
 me!...
 ]]
@@ -4090,28 +3499,13 @@ dialog{
 dialog{
   id = "crazy_house.guichet_32_ech_le_6",
   skip = "current",
-  next = "crazy_house.guichet_32_ech_le_6_2",
   text = [[
 Some perfume? Sorry,
 we only have spoons.
-]]
-}
------------------------
 
-dialog{
-  id = "crazy_house.guichet_32_ech_le_6_2",
-  next = "crazy_house.guichet_32_ech_le_6_3",
-  text = [[
 Counter 12? If the
 employee was on break,
 she is certainly back
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.guichet_32_ech_le_6_3",
-  text = [[
 in the moment, you
 should go back there.
 ]]
@@ -4121,29 +3515,14 @@ should go back there.
 dialog{
   id = "crazy_house.guichet_32_ech_ne_6",
   skip = "current",
-  next = "crazy_house.guichet_32_ech_ne_6_2",
+  question = true,
   text = [[
 Here at counter 32,
 a spoon can be traded
 with an axe, the deal
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.guichet_32_ech_ne_6_2",
-  next = "crazy_house.guichet_32_ech_ne_6_3",
-  text = [[
 is really promising.
-]]
-}
------------------------
 
-dialog{
-  id = "crazy_house.guichet_32_ech_ne_6_3",
-  skip = "none",
-  question = true,
-  text = [[
+
 What do you think?
 Why not?
 Noooooooooooooo!!
@@ -4178,29 +3557,13 @@ there!
 dialog{
   id = "crazy_house.guichet_33_ech_le_2",
   skip = "current",
-  next = "crazy_house.guichet_33_ech_le_2_2",
   text = [[
 Welcome to counter 33.
 I'm in charge of the
 storage room keys.
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.guichet_33_ech_le_2_2",
-  next = "crazy_house.guichet_33_ech_le_2_3",
-  text = [[
 But customers are NOT
 allowed to enter.
 By the way, you're not
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.guichet_33_ech_le_2_3",
-  text = [[
 supposed to know what I
 just said. Why did I
 told you this?
@@ -4211,17 +3574,10 @@ told you this?
 dialog{
   id = "crazy_house.guichet_33_ech_eq_3",
   skip = "current",
-  next = "crazy_house.guichet_33_ech_eq_3_2",
   text = [[
 I'm sorry, this is
 counter 33, not the 41.
-]]
-}
------------------------
 
-dialog{
-  id = "crazy_house.guichet_33_ech_eq_3_2",
-  text = [[
 The warp on your left
 leads to counter 22.
 ]]
@@ -4231,50 +3587,19 @@ leads to counter 22.
 dialog{
   id = "crazy_house.guichet_33_ech_ge_4",
   skip = "current",
-  next = "crazy_house.guichet_33_ech_ge_4_2",
   text = [[
 What? The storage room
 key? I'm sorry! I won't
 give the key to anyone!
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.guichet_33_ech_ge_4_2",
-  next = "crazy_house.guichet_33_ech_ge_4_3",
-  text = [[
 If you give me a nice
 perfume, I would MAYBE
 let you borrow them.
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.guichet_33_ech_ge_4_3",
-  next = "crazy_house.guichet_33_ech_ge_4_4",
-  text = [[
 I think someone
 managed to find one.
-]]
-}
------------------------
 
-dialog{
-  id = "crazy_house.guichet_33_ech_ge_4_4",
-  next = "crazy_house.guichet_33_ech_ge_4_5",
-  text = [[
 Try counter 12, they
 will perhaps give you
 more information.
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.guichet_33_ech_ge_4_5",
-  text = [[
 Where's this counter?
 I have no idea, ask to
 the reception.
@@ -4285,39 +3610,16 @@ the reception.
 dialog{
   id = "crazy_house.guichet_33_parfum",
   skip = "current",
-  next = "crazy_house.guichet_33_parfum_2",
   text = [[
 Wow! You found the
 perfume?!
-]]
-}
------------------------
 
-dialog{
-  id = "crazy_house.guichet_33_parfum_2",
-  next = "crazy_house.guichet_33_parfum_3",
-  text = [[
 I never thought someone
 could do this!
 But I'm a man of word,
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.guichet_33_parfum_3",
-  next = "crazy_house.guichet_33_parfum_4",
-  text = [[
 I entrust you with the
 key leading to the
 storage room.
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.guichet_33_parfum_4",
-  text = [[
 DO NOT make a mess
 inside, will ya?
 ]]
@@ -4330,29 +3632,14 @@ inside, will ya?
 dialog{
   id = "crazy_house.guichet_36",
   skip = "current",
-  next = "crazy_house.guichet_36_2",
+  question = true,
   text = [[
 Welcome to counter 36,
 I'm Bill Board, I sell
 bags of rice:
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.guichet_36_2",
-  next = "crazy_house.guichet_36_3",
-  text = [[
 50 rupees for 3 bags.
-]]
-}
------------------------
 
-dialog{
-  id = "crazy_house.guichet_36_3",
-  skip = "none",
-  question = true,
-  text = [[
+
 Interested?
 Oh yeah!
 Er, no...
@@ -4396,50 +3683,19 @@ badly.
 dialog{
   id = "crazy_house.guichet_41_ech_eq_3",
   skip = "current",
-  next = "crazy_house.guichet_41_ech_eq_3_2",
   text = [[
 Hello, you're looking
 for gloves?
 Wait a minute...
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.guichet_41_ech_eq_3_2",
-  next = "crazy_house.guichet_41_ech_eq_3_3",
-  text = [[
 Hmm we have some, they
 have been stored in the
 storage room.
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.guichet_41_ech_eq_3_3",
-  next = "crazy_house.guichet_41_ech_eq_3_4",
-  text = [[
 But I don't have the
 key, go and ask to
 counter 33, he's the
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.guichet_41_ech_eq_3_4",
-  next = "crazy_house.guichet_41_ech_eq_3_5",
-  text = [[
 one in charge of all
 the keys.
-]]
-}
------------------------
 
-dialog{
-  id = "crazy_house.guichet_41_ech_eq_3_5",
-  text = [[
 You'll find him on the
 third floor, left
 wing.
@@ -4462,31 +3718,13 @@ dialog{
 dialog{
   id = "crazy_house.guichet_43",
   skip = "all",
-  next = "crazy_house.guichet_43_2",
   text = [[
 Did you know? His
 mother flirted with the
 postman!
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.guichet_43_2",
-  skip = "all",
-  next = "crazy_house.guichet_43_3",
-  text = [[
 I swear!
 Poor boy, what a shock
 for him, that's
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.guichet_43_3",
-  skip = "all",
-  text = [[
 unbelievable what
 people can do
 sometimes...
@@ -4497,28 +3735,13 @@ sometimes...
 dialog{
   id = "crazy_house.guichet_43n",
   skip = "all",
-  next = "crazy_house.guichet_43n_2",
   text = [[
 WHAT?!! Don't you see
 I'm busy at the moment?
-]]
-}
------------------------
 
-dialog{
-  id = "crazy_house.guichet_43n_2",
-  skip = "all",
-  text = [[
 How rude are people
 nowadays!
-]]
-}
------------------------
 
-dialog{
-  id = "crazy_house.guichet_43f",
-  skip = "all",
-  text = [[
 Roh... what was I
 saying?...
 ]]
@@ -4540,90 +3763,30 @@ dialog{
 dialog{
   id = "crazy_house.guichet_45_ech_eq_3",
   skip = "current",
-  next = "crazy_house.guichet_45_ech_eq_3_2",
   text = [[
 Sir? Counter 41?
 That's the 45.
-]]
-}
------------------------
 
-dialog{
-  id = "crazy_house.guichet_45_ech_eq_3_2",
-  next = "crazy_house.guichet_45_ech_eq_3_3",
-  text = [[
 Wait, I ask to my
 colleague...
 ....
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.guichet_45_ech_eq_3_3",
-  next = "crazy_house.guichet_45_ech_eq_3_4",
-  text = [[
 ....
 ....
-]]
-}
------------------------
 
-dialog{
-  id = "crazy_house.guichet_45_ech_eq_3_4",
-  next = "crazy_house.guichet_45_ech_eq_3_5",
-  text = [[
 Hello? Maurice?
 This is Josiane.
 Tell me you're in 41?
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.guichet_45_ech_eq_3_5",
-  next = "crazy_house.guichet_45_ech_eq_3_6",
-  text = [[
 OK, where are you?
 Ok... Thanks, here's a
 customer for you.
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.guichet_45_ech_eq_3_6",
-  next = "crazy_house.guichet_45_ech_eq_3_7",
-  text = [[
 See ya...
-]]
-}
------------------------
 
-dialog{
-  id = "crazy_house.guichet_45_ech_eq_3_7",
-  next = "crazy_house.guichet_45_ech_eq_3_8",
-  text = [[
+
 So... This is the wrong
 place, you have to go
 to counter 12, near the
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.guichet_45_ech_eq_3_8",
-  next = "crazy_house.guichet_45_ech_eq_3_9",
-  text = [[
 entrance of the
 building.
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.guichet_45_ech_eq_3_9",
-  text = [[
 Have a nice day, Sir.
 ]]
 }
@@ -4632,31 +3795,14 @@ Have a nice day, Sir.
 dialog{
   id = "crazy_house.guichet_45_ech_ne_3",
   skip = "current",
-  next = "crazy_house.guichet_45_ech_ne_3_2",
+  question = true,
   text = [[
 Sir, are you interested
 in trading some sacks
 of olives?
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.guichet_45_ech_ne_3_2",
-  next = "crazy_house.guichet_45_ech_ne_3_3",
-  text = [[
 I'd like to trade a
 sack of olives for a
 spoon.
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.guichet_45_ech_ne_3_3",
-  skip = "none",
-  question = true,
-  text = [[
 Interested?
 Hmmm...
 Hmmm...
@@ -4699,18 +3845,10 @@ dialog{
 dialog{
   id = "crazy_house.guichet_47_ech_ne_3",
   skip = "current",
-  next = "crazy_house.guichet_47_ech_ne_3_2",
   text = [[
 Want to register a
 galley? They've sent
 you to the wrong place,
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.guichet_47_ech_ne_3_2",
-  text = [[
 you want the
 harbourmaster's office
 down by the port!
@@ -4744,17 +3882,10 @@ dialog{
 dialog{
   id = "crazy_house.guichet_49",
   skip = "current",
-  next = "crazy_house.guichet_49_2",
   text = [[
 I was relegated to the
 basement, all alone...
-]]
-}
------------------------
 
-dialog{
-  id = "crazy_house.guichet_49_2",
-  text = [[
 Booh ooh ooh !
 ]]
 }
@@ -4775,53 +3906,20 @@ dialog{
 dialog{
   id = "crazy_house.guichet_82",
   skip = "current",
-  next = "crazy_house.guichet_82_2",
+  question = true,
   text = [[
 Hmmm... I get depressed
 because I need a sack
 of olives to feed my
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.guichet_82_2",
-  next = "crazy_house.guichet_82_3",
-  text = [[
 cat but nobody seems to
 have some...
 *sigh*
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.guichet_82_3",
-  skip = "current",
-  next = "crazy_house.guichet_82_4",
-  text = [[
 By chance, you don't
 have a sack of olives?
 I trade your sack of
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.guichet_82_4",
-  next = "crazy_house.guichet_82_5",
-  text = [[
 olives for a magma
 rock.
-]]
-}
------------------------
 
-dialog{
-  id = "crazy_house.guichet_82_5",
-  skip = "none",
-  question = true,
-  text = [[
 We have a deal?
 Of course!
 In your dreams...
@@ -4843,18 +3941,10 @@ magma rock.
 dialog{
   id = "crazy_house.guichet_82_ok",
   skip = "current",
-  next = "crazy_house.guichet_82_ok_2",
   text = [[
 Oh my gosh!
 You have a sack of
 olives, you rock!
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.guichet_82_ok_2",
-  text = [[
 Here's your magma rock,
 you deserve it.
 ]]
@@ -4876,18 +3966,10 @@ dialog{
 dialog{
   id = "crazy_house.guichet_84_ech_eq_3",
   skip = "current",
-  next = "crazy_house.guichet_84_ech_eq_3_2",
   text = [[
 Excuse me? Counter 41?
 You're wrong, this is
 the 84. To find the 41,
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.guichet_84_ech_eq_3_2",
-  text = [[
 you have to go to the
 ground floor.
 ]]
@@ -4897,18 +3979,10 @@ ground floor.
 dialog{
   id = "crazy_house.guichet_84_ech_ne_3_nh",
   skip = "current",
-  next = "crazy_house.guichet_84_ech_ne_3_nh_2",
   text = [[
 We have peppers here.
 We trade them for an
 axe if you want.
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.guichet_84_ech_ne_3_nh_2",
-  text = [[
 I heard you can find an
 axe at counter 11.
 ]]
@@ -4918,18 +3992,11 @@ axe at counter 11.
 dialog{
   id = "crazy_house.guichet_84_ech_ne_3_hh",
   skip = "current",
-  next = "crazy_house.guichet_84_ech_ne_3_hh_2",
-  text = [[
-Axe for a pepper.
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.guichet_84_ech_ne_3_hh_2",
-  skip = "none",
   question = true,
   text = [[
+Axe for a pepper.
+
+
 Deal?
 Yay!
 Oh no!!
@@ -4940,18 +4007,10 @@ Oh no!!
 dialog{
   id = "crazy_house.guichet_84_ech_ne_3_un",
   skip = "current",
-  next = "crazy_house.guichet_84_ech_ne_3_un_2",
   text = [[
 He ho the green gnome!
 Don't try to swindle
 me!
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.guichet_84_ech_ne_3_un_2",
-  text = [[
 Bring the axe or you
 get NOTHING!
 ]]
@@ -4964,29 +4023,14 @@ get NOTHING!
 dialog{
   id = "crazy_house.vieillard",
   skip = "current",
-  next = "crazy_house.vieillard_2",
+  next = "crazy_house.vieillard_ronfl",
   text = [[
 Snort... ZZZ... Huh?
 By chance, you're
 looking for a spice
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.vieillard_2",
-  next = "crazy_house.vieillard_3",
-  text = [[
 jar? Hehe, I can read
 in your thoughts.
-]]
-}
------------------------
 
-dialog{
-  id = "crazy_house.vieillard_3",
-  next = "crazy_house.vieillard_ronfl",
-  text = [[
 Bring me a pepper and
 maybe I'll help you...
 ]]
@@ -4996,28 +4040,14 @@ maybe I'll help you...
 dialog{
   id = "crazy_house.vieillard_poivron",
   skip = "current",
-  next = "crazy_house.vieillard_poivron_2",
+  next = "crazy_house.vieillard_ronfl",
   text = [[
 But... What's this?
 I never asked for a
 pepper!
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.vieillard_poivron_2",
-  next = "crazy_house.vieillard_poivron_3",
-  text = [[
 I want a bag of rice!
-]]
-}
------------------------
 
-dialog{
-  id = "crazy_house.vieillard_poivron_3",
-  next = "crazy_house.vieillard_ronfl",
-  text = [[
+
 Ah youth, they listen
 to nothing !
 ]]
@@ -5027,19 +4057,11 @@ to nothing !
 dialog{
   id = "crazy_house.vieillard_riz_quantite",
   skip = "current",
-  next = "crazy_house.vieillard_riz_quantite_2",
+  next = "crazy_house.vieillard_ronfl",
   text = [[
 ZZZ... Huh ?...
 But you don't have
 a bag of rice!
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.vieillard_riz_quantite_2",
-  next = "crazy_house.vieillard_ronfl",
-  text = [[
 Go away! I want some!
 ]]
 }
@@ -5048,29 +4070,13 @@ Go away! I want some!
 dialog{
   id = "crazy_house.vieillard_riz_ok",
   skip = "current",
-  next = "crazy_house.vieillard_riz_ok_2",
   text = [[
 ZZZ....
 Oh Jacqueline...
 Snort... AH!!
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.vieillard_riz_ok_2",
-  next = "crazy_house.vieillard_riz_ok_3",
-  text = [[
 Why did you awake me?
 I had a wonderful
 dream...
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.vieillard_riz_ok_3",
-  text = [[
 You found some rice?
 That's it! Now here's
 my precious spice jar.
@@ -5092,29 +4098,14 @@ Snort... ZZZ...
 dialog{
   id = "crazy_house.apothicaire",
   skip = "current",
-  next = "crazy_house.apothicaire_2",
+  question = true,
   text = [[
 Greetings, young lad.
 I sell some bags of
 rice for a low price.
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.apothicaire_2",
-  next = "crazy_house.apothicaire_3",
-  text = [[
 20 rupees a bag.
-]]
-}
------------------------
 
-dialog{
-  id = "crazy_house.apothicaire_3",
-  skip = "none",
-  question = true,
-  text = [[
+
 We have a deal?
 Of course!
 Noo, foolish thief!
@@ -5159,29 +4150,13 @@ deal.
 dialog{
   id = "crazy_house.pnja",
   skip = "current",
-  next = "crazy_house.pnja_2",
   text = [[
 Oh la la! I can't stand
 this place anymore! I'm
 moved from one counter
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.pnja_2",
-  next = "crazy_house.pnja_3",
-  text = [[
 to another, I'm sure
 they're doing this to
 justify their salary...
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.pnja_3",
-  text = [[
 A real pension I'd say!
 It's a scandal!
 ]]
@@ -5191,28 +4166,13 @@ It's a scandal!
 dialog{
   id = "crazy_house.pnjb",
   skip = "current",
-  next = "crazy_house.pnjb_2",
   text = [[
 Ah! I came to this
 office to provide them
 some bottle of water,
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.pnjb_2",
-  next = "crazy_house.pnjb_3",
-  text = [[
 but it seems they don't
 care. What a shame!
-]]
-}
------------------------
 
-dialog{
-  id = "crazy_house.pnjb_3",
-  text = [[
 They don't know what
 they're missing.
 ]]
@@ -5222,18 +4182,10 @@ they're missing.
 dialog{
   id = "crazy_house.pnjc",
   skip = "current",
-  next = "crazy_house.pnjc_2",
   text = [[
 I'm the only employee
 in charge of cleaning
 the building, about
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.pnjc_2",
-  text = [[
 14,000 square meters,
 this is really slavery.
 ]]
@@ -5243,62 +4195,22 @@ this is really slavery.
 dialog{
   id = "crazy_house.pnjd",
   skip = "current",
-  next = "crazy_house.pnjd_2",
   text = [[
 Weird, when I went to
 the second floor,
 looking for the blue
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.pnjd_2",
-  next = "crazy_house.pnjd_3",
-  text = [[
 form used to obtain the
 permit A38, someone
 talked about an
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.pnjd_3",
-  next = "crazy_house.pnjd_4",
-  text = [[
 overture conscience
 heavy beauty super
 coding super button
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.pnjd_4",
-  next = "crazy_house.pnjd_5",
-  text = [[
 or someting like that.
 IMO it must be a very
 elaborate mechanism.
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.pnjd_5",
-  next = "crazy_house.pnjd_6",
-  text = [[
 I don't think you're
 able to make it work
 alone.
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.pnjd_6",
-  text = [[
 Maybe you could try
 with some heavy stuff.
 ]]
@@ -5308,39 +4220,16 @@ with some heavy stuff.
 dialog{
   id = "crazy_house.pnje",
   skip = "current",
-  next = "crazy_house.pnje_2",
   text = [[
 I noticed the employee
 of counter 11 has her
 head in the clouds.
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.pnje_2",
-  next = "crazy_house.pnje_3",
-  text = [[
 She lost a magma rock
 I confided her while I
 was looking for a spoon
-]]
-}
------------------------
-
-dialog{
-  id = "crazy_house.pnje_3",
-  next = "crazy_house.pnje_4",
-  text = [[
 in this place that
 sends you mad...
-]]
-}
------------------------
 
-dialog{
-  id = "crazy_house.pnje_4",
-  text = [[
 What a bunch of
 incompetents !
 ]]
@@ -5360,29 +4249,13 @@ the Game of Tetris.
 
 dialog{
   id = "geek_house.sign_b",
-  next = "geek_house.sign_b2",
   text = [[
 switch (sign)
 case 1: break;
 case 2: break;
-]]
-}
------------------------
-
-dialog{
-  id = "geek_house.sign_b2",
-  next = "geek_house.sign_b3",
-  text = [[
 case 3: break;
 case 4: break;
 case 5: break;
-]]
-}
------------------------
-
-dialog{
-  id = "geek_house.sign_b3",
-  text = [[
 /* I have to define the
 cases for this sign. */
 ]]
@@ -5442,18 +4315,10 @@ TODO
 
 dialog{
   id = "geek_house.sign_i",
-  next = "geek_house.sign_i2",
   text = [[
 1.21 gigawatts!
 1.21 gigawatts!
 Great Scott!!!
-]]
-}
------------------------
-
-dialog{
-  id = "geek_house.sign_i2",
-  text = [[
 What the hell
 is a gigawatt?
 ]]
@@ -5480,17 +4345,10 @@ equality too !
 
 dialog{
   id = "outside_fields_SO_endofgame1",
-  next = "outside_fields_SO_endofgame2",
   text = [[
 Warp to the end of the
 game.
-]]
-}
------------------------
 
-dialog{
-  id = "outside_fields_SO_endofgame2",
-  text = [[
 -- out of order --
 ]]
 }
@@ -5515,16 +4373,10 @@ mailbox...
 
 dialog{
   id = "outside_fields_SO.chest_link_house",
-  next = "outside_fields_SO.chest_link_house2",
   text = [[
 It's empty !
-]]
-}
------------------------
 
-dialog{
-  id = "outside_fields_SO.chest_link_house2",
-  text = [[
+
 You REALLY thought you
 would find a treasure
 just behind your house?
@@ -5552,75 +4404,29 @@ Have a nice day.
 
 dialog{
   id = "outside_fields_SO.forest_monkey_start",
-  next = "outside_fields_SO.forest_monkey_start2",
+  next = "outside_fields_SO.forest_monkey_end",
   text = [[
 Ook!
 You want my boots?
-]]
-}
------------------------
 
-dialog{
-  id = "outside_fields_SO.forest_monkey_start2",
-  next = "outside_fields_SO.forest_monkey_start3",
-  text = [[
 ...
-]]
-}
------------------------
 
-dialog{
-  id = "outside_fields_SO.forest_monkey_start3",
-  next = "outside_fields_SO.forest_monkey_start4",
-  text = [[
+
 These are yours?
-]]
-}
------------------------
 
-dialog{
-  id = "outside_fields_SO.forest_monkey_start4",
-  next = "outside_fields_SO.forest_monkey_start5",
-  text = [[
+
 You're dreaming!
 I found them, they're
 mine!
-]]
-}
------------------------
-
-dialog{
-  id = "outside_fields_SO.forest_monkey_start5",
-  next = "outside_fields_SO.forest_monkey_start6",
-  text = [[
 ...
-]]
-}
------------------------
 
-dialog{
-  id = "outside_fields_SO.forest_monkey_start6",
-  next = "outside_fields_SO.forest_monkey_start7",
-  text = [[
+
 Ok, I agree to give
 them to you, but...
-]]
-}
------------------------
 
-dialog{
-  id = "outside_fields_SO.forest_monkey_start7",
-  next = "outside_fields_SO.forest_monkey_start8",
-  text = [[
 I'm hungry!!!
-]]
-}
------------------------
 
-dialog{
-  id = "outside_fields_SO.forest_monkey_start8",
-  next = "outside_fields_SO.forest_monkey_end",
-  text = [[
+
 Bring me an apple pie
 and we'll trade.
 ]]
@@ -5629,55 +4435,23 @@ and we'll trade.
 
 dialog{
   id = "outside_fields_SO.forest_monkey_give_boots",
-  next = "outside_fields_SO.forest_monkey_give_boots2",
+  next = "outside_fields_SO.forest_monkey_end",
   text = [[
 Ook! Great, an apple
 pie!!!
 Here are your boots.
-]]
-}
------------------------
-
-dialog{
-  id = "outside_fields_SO.forest_monkey_give_boots2",
-  next = "outside_fields_SO.forest_monkey_give_boots3",
-  text = [[
 ...
-]]
-}
------------------------
 
-dialog{
-  id = "outside_fields_SO.forest_monkey_give_boots3",
-  next = "outside_fields_SO.forest_monkey_give_boots4",
-  text = [[
+
 Laces are missing?
-]]
-}
------------------------
 
-dialog{
-  id = "outside_fields_SO.forest_monkey_give_boots4",
-  next = "outside_fields_SO.forest_monkey_give_boots5",
-  text = [[
+
 Well...
-]]
-}
------------------------
 
-dialog{
-  id = "outside_fields_SO.forest_monkey_give_boots5",
-  next = "outside_fields_SO.forest_monkey_give_boots6",
-  text = [[
+
 I was hungry!!!
-]]
-}
------------------------
 
-dialog{
-  id = "outside_fields_SO.forest_monkey_give_boots6",
-  next = "outside_fields_SO.forest_monkey_end",
-  text = [[
+
 You had to move faster!
 ]]
 }
@@ -5862,39 +4636,16 @@ Mount Typython
 
 dialog{
   id = "outside_fields_NO_indic",
-  next = "outside_fields_NO_indic_b",
   text = [[
 West: Castle
 East: Sandpit Desert
 Mount Typython
-]]
-}
------------------------
-
-dialog{
-  id = "outside_fields_NO_indic_b",
-  next = "outside_fields_NO_indic_c",
-  text = [[
 South East:
 Lost and Found Office
 and maybe more.
-]]
-}
------------------------
-
-dialog{
-  id = "outside_fields_NO_indic_c",
-  next = "outside_fields_NO_indic_d",
-  text = [[
 Under your feet:
 Green grass
-]]
-}
------------------------
 
-dialog{
-  id = "outside_fields_NO_indic_d",
-  text = [[
 Above:
 Nothing or nothing of
 what you can see.
@@ -5922,26 +4673,13 @@ if you mow the lawn.
 
 dialog{
   id = "outside_fields_NO.drunk",
-  next = "outside_fields_NO.drunk2",
   text = [[
 You don't remember your
 last evening party?
-]]
-}
------------------------
 
-dialog{
-  id = "outside_fields_NO.drunk2",
-  next = "outside_fields_NO.drunk3",
-  text = [[
 Me neither...
-]]
-}
------------------------
 
-dialog{
-  id = "outside_fields_NO.drunk3",
-  text = [[
+
 It happens all the
 time.
 ]]
@@ -5950,26 +4688,13 @@ time.
 
 dialog{
   id = "outside_fields_NO.lady_b",
-  next = "outside_fields_NO.lady_b2",
   text = [[
 You lost Zelda?
 ...
-]]
-}
------------------------
 
-dialog{
-  id = "outside_fields_NO.lady_b2",
-  next = "outside_fields_NO.lady_b3",
-  text = [[
 **Unworthy husband...**
-]]
-}
------------------------
 
-dialog{
-  id = "outside_fields_NO.lady_b3",
-  text = [[
+
 No, I don't know where
 she is.
 ]]
@@ -5978,16 +4703,10 @@ she is.
 
 dialog{
   id = "outside_fields_NO.guy_a",
-  next = "outside_fields_NO.guy_a2",
   text = [[
 Did you lose something?
-]]
-}
------------------------
 
-dialog{
-  id = "outside_fields_NO.guy_a2",
-  text = [[
+
 Did you take a look at
 the Lost and Found
 Office?
@@ -6068,17 +4787,10 @@ pasted on the walls.
 
 dialog{
   id = "outside_fields_SO.attente_a",
-  next = "outside_fields_SO.attente_a2",
   text = [[
     LOST AND FOUND     
         OFFICE         
-]]
-}
------------------------
 
-dialog{
-  id = "outside_fields_SO.attente_a2",
-  text = [[
 From that point, one
 day of waiting.
 ]]
@@ -6087,17 +4799,10 @@ day of waiting.
 
 dialog{
   id = "outside_fields_SO.attente_b",
-  next = "outside_fields_SO.attente_b2",
   text = [[
     LOST AND FOUND     
         OFFICE         
-]]
-}
------------------------
 
-dialog{
-  id = "outside_fields_SO.attente_b2",
-  text = [[
 From that point,
 twelve-hour wait.
 ]]
@@ -6106,17 +4811,10 @@ twelve-hour wait.
 
 dialog{
   id = "outside_fields_SO.attente_c",
-  next = "outside_fields_SO.attente_c2",
   text = [[
     LOST AND FOUND     
         OFFICE         
-]]
-}
------------------------
 
-dialog{
-  id = "outside_fields_SO.attente_c2",
-  text = [[
 From that point,
 six-hour wait.
 ]]
@@ -6125,17 +4823,10 @@ six-hour wait.
 
 dialog{
   id = "outside_fields_SO.attente_d",
-  next = "outside_fields_SO.attente_d2",
   text = [[
     LOST AND FOUND     
         OFFICE         
-]]
-}
------------------------
 
-dialog{
-  id = "outside_fields_SO.attente_d2",
-  text = [[
 You're almost there!
 You just have to queue
 inside.
@@ -6631,7 +5322,6 @@ another castle.
 
 dialog{
   id = "dungeon_1.ganon",
-  next = "dungeon_1.ganon.7tris",
   text = [[
 Princess Zelda?
 No, she's not there.
@@ -6650,13 +5340,6 @@ her? Ha ha ha ha ha!
 In short, she isn't
 here. Did you look
 everywhere in your
-]]
-}
------------------------
-
-dialog{
-  id = "dungeon_1.ganon.7tris",
-  text = [[
 home?
 You should think to
 take a look at your

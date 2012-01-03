@@ -2904,7 +2904,7 @@ aux lettres des gens !
 dialog{
   id = "outside_world.village.tree_woman",
   skip = "all",
-  next = "outside_world.village.tree_woman.2",
+  next = "outside_world.village.tree_woman.long_text",
   text = [[
 Tu es perdu dans les
 commandes ? Laisse-moi
@@ -2914,10 +2914,10 @@ t'expliquer. Les icônes
 -----------------------
 
 dialog{
-  id = "outside_world.village.tree_woman.2",
+  id = "outside_world.village.tree_woman.long_text",
   question = true,
   next = "outside_world.village.tree_woman.thank_you",
-  next2 = "outside_world.village.tree_woman.15",
+  next2 = "outside_world.village.tree_woman.again",
   text = [[
 en haut à gauche sont
 disposées comme les
@@ -2961,6 +2961,17 @@ une manette !
 Tu as tout compris ?
 Oui
 Non, pas du tout !
+]]
+}
+-----------------------
+
+dialog{
+  id = "outside_world.village.tree_woman.again",
+  next = "outside_world.village.tree_woman.long_text",
+  text = [[
+Bon, je te réexplique,
+mais écoute bien cette
+fois-ci. Les icônes
 ]]
 }
 -----------------------

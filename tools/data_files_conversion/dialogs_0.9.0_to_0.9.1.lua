@@ -221,9 +221,10 @@ function find_previous(all_messages)
   end
 end
 
--- Print verbose messages about what can_be_merged(message) does.
-function debug_can_be_merged(message)
+-- Print verbose messages about what can_be_merged() does.
+function debug_can_be_merged(all_messages, id)
 
+  local message = all_messages[id]
   if message == nil then
     return
   end
@@ -234,13 +235,17 @@ function debug_can_be_merged(message)
   elseif #message.previous ~= 1 then
     print("No: this message has multiple predecessors (" .. #message.previous
         .. ")")
+  elseif all_messages[message.previous[1]].question then
+    print("No: the predecessor is a question")
   elseif not (message.id:find("%.[0-9][0-9]*$")
       or message.id:find("%.[0-9][0-9]*bis$")
       or message.id:find("%.[0-9][0-9]*ter$")) then
     print("No: this message does not have a typical sequence suffix")
-  elseif message.icon ~= nil then
+  elseif message.icon ~= nil
+      and message.icon ~= all_messages[message.previous[1]].icon then
     print("No: this message changes the icon")
-  elseif message.skip ~= nil then
+  elseif message.skip ~= nil
+      and message.skip ~= all_messages[message.previous[1]].skip then
     print("No: this message changes the skip property")
   else
     print("Yes")
@@ -251,9 +256,11 @@ end
 -- into a sequence.
 -- Note that if the dialogs don't follow the 0.9.0 conventions for successive
 -- messages, there is no perfect way to be sure
-function can_be_merged(message)
+function can_be_merged(all_messages, id)
 
-  -- debug_can_be_merged(message)
+  -- debug_can_be_merged(all_messages, id)
+
+  local message = all_messages[id]
 
   -- if the message has only one predecessor, and has an id with has a typical
   -- sequence suffix, and does not change icon or skip,
@@ -261,11 +268,14 @@ function can_be_merged(message)
   return message ~= nil
       and message.previous ~= nil
       and #message.previous == 1
+      and not all_messages[message.previous[1]].question
       and (message.id:find("%.[0-9][0-9]*$")
           or message.id:find("%.[0-9][0-9]*bis$")
           or message.id:find("%.[0-9][0-9]*ter$"))
-      and message.icon == nil
-      and message.skip == nil
+      and (message.icon == nil
+          or (message.icon == all_messages[message.previous[1]].icon))
+      and (message.skip == nil
+          or (message.skip == all_messages[message.previous[1]].skip))
   -- we assume that scripts and maps never refer to messages having both a
   -- sequence suffix and a unique predecessor
   -- (if they do, a dialog won't be created for them as they are merged!)
@@ -279,14 +289,13 @@ function merge_messages(all_messages, all_ids)
   local sequences = {}
 
   for _, id in ipairs(all_ids) do
-    local m = all_messages[id]
-    if not can_be_merged(m) then
+    if not can_be_merged(all_messages, id) then
       -- it's the beginning of a sequence
+      local m = all_messages[id]
       sequences[id] = {}
       sequences[id][1] = m
 
-      while not m.question
-          and can_be_merged(all_messages[m.next]) do
+      while can_be_merged(all_messages, m.next) do
         -- the current message is not a question and its successor
         -- can be merged with it
         m = all_messages[m.next]

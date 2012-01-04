@@ -2083,7 +2083,7 @@ int Script::map_api_pickable_item_create(lua_State *l) {
  * - Argument 4 (integer): layer
  * - Optional argument 5 (table): properties (possible keys are
  * treasure_item, treasure_variant, treasure_savegame_variable,
- * destroy_callback)
+ * destruction_callback)
  *
  * @param l the Lua context that is calling this function
  */
@@ -2100,7 +2100,7 @@ int Script::map_api_destructible_item_create(lua_State* l) {
   std::string treasure_item = "_random";
   int treasure_variant = 1;
   int treasure_savegame_variable = -1;
-  int destruction_callback_ref = LUA_NOREF;
+  int destruction_callback_ref = LUA_REFNIL;
 
   if (lua_gettop(l) >= 5) {
     luaL_checktype(l, 5, LUA_TTABLE);

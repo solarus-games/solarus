@@ -12,6 +12,7 @@ musics/
 hud/
   inventory.dat
 languages/
+  languages.dat
   XX/
     text/
       strings.dat

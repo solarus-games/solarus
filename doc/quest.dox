@@ -168,26 +168,29 @@ before the title screen. The language selected is then saved
 The <tt>languages</tt> directory contains all language-specific data files
 (strings, dialogs and sprites).
 
-The <tt>languages.dat</tt> ini-like file gives the list of the supported language
+The <tt>languages/languages.lua</tt> file gives the list of the supported language
 and indicates the default one.
 We give here an example of this file:
 
 @verbatim
-[fr]
-name = Français
+language{
+  code = "fr",
+  name = "Français"
+}
 
-[en]
-name = English
-default = true
+language{
+  code = "en",
+  name = "English",
+  default = true
+}
 
-[de]
-name = Deutsch
-
-[nl]
-name = Nederlands
+language{
+  code = "de",
+  name = "Deutsch"
+}
 @endverbatim
 
-The language code (in square brackets) represents the name of the directory
+The value <tt>code</tt> represents the name of the directory
 containing the language-specific files of this language.
 The value <tt>name</tt> is a human-readable name for the language.
 This name is displayed to the user in the language selection screen and in the options menu.

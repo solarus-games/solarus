@@ -15,13 +15,14 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "lowlevel/FileTools.h"
-#include "lowlevel/IniFile.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
+#include "lowlevel/IniFile.h"
 #include "Configuration.h"
 #include "StringResource.h"
 #include "DialogResource.h"
 #include <physfs.h>
+#include <lua.hpp>
 
 std::string FileTools::language_code;
 std::string FileTools::default_language_code;
@@ -63,11 +64,11 @@ void FileTools::initialize(int argc, char** argv) {
   // the path defined during the build process, or the current directory
   // if nothing was specified
 
-  std::string debug_quest_path = quest_path + "/data"; // in debug mode, read directly from the data directory
-  std::string release_quest_path = quest_path + "/data.solarus"; // in release mode, only read from the data.solarus archive
+  std::string dir_quest_path = quest_path + "/data";
+  std::string archive_quest_path = quest_path + "/data.solarus";
 
-  PHYSFS_addToSearchPath(debug_quest_path.c_str(), 1);   // data directory
-  PHYSFS_addToSearchPath(release_quest_path.c_str(), 1); // data.solarus archive
+  PHYSFS_addToSearchPath(dir_quest_path.c_str(), 1);   // data directory
+  PHYSFS_addToSearchPath(archive_quest_path.c_str(), 1); // data.solarus archive
 
   // check the existence of the quest path
   if (!FileTools::data_file_exists("quest.dat")) {
@@ -115,22 +116,26 @@ void FileTools::quit() {
  */
 void FileTools::initialize_languages(const std::string& arg_language) {
 
-  // first determine the languages available
-  IniFile ini("languages/languages.dat", IniFile::READ);
-  for (ini.start_group_iteration(); ini.has_more_groups(); ini.next_group()) {
+  static const std::string file_name = "languages/languages.lua";
 
-    std::string language_code = ini.get_group();
-    std::string language_name = ini.get_string_value("name", "");
-    Debug::check_assertion(language_name.size() != 0, StringConcat() <<
-        "Missing language name in file 'languages/languages.dat' for group '"
-        << language_code << "'");
-    languages[language_code] = language_name;
+  // read the languages file
+  lua_State* l = lua_open();
+  size_t size;
+  char* buffer;
+  FileTools::data_file_open_buffer(file_name, &buffer, &size);
+  luaL_loadbuffer(l, buffer, size, file_name.c_str());
+  FileTools::data_file_close_buffer(buffer);
 
-    if (ini.get_boolean_value("default", false)) {
-      default_language_code = language_code;
-    }
+  lua_register(l, "language", l_language);
+  if (lua_pcall(l, 0, 0, 0) != 0) {
+    Debug::die(StringConcat() << "Failed to load language file: "
+        << lua_tostring(l, -1));
+    lua_pop(l, 1);
   }
 
+  lua_close(l);
+
+  // set a language
   if (arg_language.size() != 0) {
     set_language(arg_language);
   }
@@ -143,6 +148,58 @@ void FileTools::initialize_languages(const std::string& arg_language) {
 }
 
 /**
+ * @brief Function called by Lua to add a language.
+
+ * - Argument 1 (table): properties of the language (keys must be code and
+ * name).
+ *
+ * @param l the Lua context that is calling this function
+ * @return number of values to return to Lua
+ */
+int FileTools::l_language(lua_State* l) {
+
+  luaL_checktype(l, 1, LUA_TTABLE);
+
+  std::string code;
+  std::string name;
+
+  // traverse the table, looking for properties
+  lua_pushnil(l); // first key
+  while (lua_next(l, 1) != 0) {
+
+    const std::string& key = luaL_checkstring(l, -2);
+    if (key == "code") {
+      code = luaL_checkstring(l, -1);
+    }
+    else if (key == "name") {
+      name = luaL_checkstring(l, -1);
+    }
+    else if (key == "default") {
+      bool is_default = lua_toboolean(l, -1);
+      if (is_default) {
+        default_language_code = language_code;
+      }
+    }
+    else {
+      luaL_error(l, (StringConcat() << "Invalid key '" << key << "'").c_str());
+    }
+    lua_pop(l, 1); // pop the value, let the key for the iteration
+  }
+
+  if (code.empty()) {
+    luaL_error(l, "The code of this language is missing");
+  }
+
+  if (name.empty()) {
+    luaL_error(l, "The name of this language is missing");
+  }
+
+  languages[code] = name;
+
+  return 0;
+}
+
+/**
  * @brief Sets the current language.
  *
  * The language-specific data will be loaded from the directory of this language.
@@ -152,7 +209,8 @@ void FileTools::initialize_languages(const std::string& arg_language) {
  */
 void FileTools::set_language(const std::string& language_code) {
 
-  Debug::check_assertion(languages[language_code].size() > 0, StringConcat() << "Unknown language '" << language_code << "'");
+  Debug::check_assertion(languages[language_code].size() > 0,
+      StringConcat() << "Unknown language '" << language_code << "'");
   FileTools::language_code = language_code;
   Configuration::set_value("language", language_code);
   StringResource::initialize();
@@ -173,7 +231,7 @@ const std::string& FileTools::get_language() {
 /**
  * @brief Returns the default language.
  *
- * This default language is indicated in the languages file (languages/languages.dat).
+ * This default language is indicated in the languages file (languages/languages.lua).
  * It can be used to pick a language without user interaction, but you still have
  * to call set_language() otherwise no initial language is set.
  *

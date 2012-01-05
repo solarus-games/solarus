@@ -20,6 +20,8 @@
 #include "Common.h"
 #include <map>
 
+struct lua_State;
+
 /**
  * @brief Handles access to data files.
  *
@@ -39,6 +41,7 @@ class FileTools {
     static std::string default_language_code;            /**< code of the default language */
 
     static void initialize_languages(const std::string& arg_language);
+    static int l_language(lua_State* l);
 
   public:
 

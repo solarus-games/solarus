@@ -165,7 +165,6 @@ nb_variants = 6
 
 [pegasus_shoes]
 savegame_variable = 1107
-can_be_assigned = true
 
 [mystic_mirror]
 savegame_variable = 1108

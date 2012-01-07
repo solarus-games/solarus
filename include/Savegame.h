@@ -158,15 +158,16 @@ class Savegame {
        * @name General abilities.
        * @{
        */
-      ABILITY_TUNIC				= 50,
-      ABILITY_SWORD				= 51,
-      ABILITY_SHIELD				= 52,
-      ABILITY_LIFT				= 53,
-      ABILITY_SWIM				= 54,
-      ABILITY_SWORD_KNOWLEDGE                   = 55,
-      ABILITY_DETECT_WEAK_WALLS			= 56,
-      ABILITY_SEE_OUTSIDE_WORLD_MINIMAP		= 57,
-      ABILITY_GET_BACK_FROM_DEATH		= 58,
+      ABILITY_TUNIC                         = 50,
+      ABILITY_SWORD                         = 51,
+      ABILITY_SHIELD                        = 52,
+      ABILITY_LIFT                          = 53,
+      ABILITY_SWIM                          = 54,
+      ABILITY_SWORD_KNOWLEDGE               = 55,
+      ABILITY_DETECT_WEAK_WALLS             = 56,
+      ABILITY_SEE_OUTSIDE_WORLD_MINIMAP     = 57,
+      ABILITY_GET_BACK_FROM_DEATH           = 58,
+      ABILITY_RUN                           = 59,
       /**
        * @}
        */

@@ -105,6 +105,11 @@ void Hero::FreeState::action_key_pressed() {
     // grab an obstacle
     hero.set_state(new GrabbingState(hero));
   }
+  else if (get_equipment().has_ability("run")) {
+
+    // run
+    hero.start_running();
+  }
 }
 
 /**

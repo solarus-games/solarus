@@ -1,6 +1,7 @@
-function event_use()
+sol.game.set_ability("run", sol.item.get_variant())
 
-  sol.map.hero_start_running()
-  sol.item.set_finished()
+function event_variant_changed(variant)
+
+  sol.game.set_ability("run", variant)
 end
 

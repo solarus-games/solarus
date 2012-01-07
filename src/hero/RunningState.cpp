@@ -144,13 +144,7 @@ bool Hero::RunningState::is_bouncing() {
  */
 bool Hero::RunningState::is_pressing_running_key() {
 
-  int slot = get_equipment().get_item_slot("pegasus_shoes"); // TODO make this quest-dependent
-  if (slot == -1) {
-    return false;
-  }
-
-  GameControls::GameKey key = (slot == 0) ? GameControls::ITEM_1 : GameControls::ITEM_2;
-  return get_controls().is_key_pressed(key);
+  return get_controls().is_key_pressed(GameControls::ACTION);
 }
 
 /**

@@ -1,6 +1,7 @@
 zsdx-1.4 (under development)
 
 * Use solarus-0.9.1
+* The Pegasus Shoes can now be used with the action key
 * Dungeon 1: restart the boss minillosaurs after they are hurt
 * Dungeon 9: the player could be stuck if using a bomb on a crystal
 * Dungeon 9: the player could be stuck because of an incorrect jump length

@@ -846,6 +846,9 @@ int Equipment::get_ability_savegame_variable(const std::string &ability_name) {
   else if (ability_name == "swim") {
     index = Savegame::ABILITY_SWIM;
   }
+  else if (ability_name == "run") {
+    index = Savegame::ABILITY_RUN;
+  }
   else if (ability_name == "detect_weak_walls") {
     index = Savegame::ABILITY_DETECT_WEAK_WALLS;
   }

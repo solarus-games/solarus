@@ -458,9 +458,11 @@ dialog{
   icon = 13,
   skip = "all",
   text = [[
-Cours à toute allure
+Fonce à toute allure
 grâce aux Bottes de
 Pégase.
+Appuie sur la touche
+Action pour courir.
 ]]
 }
 --------------------
@@ -1216,9 +1218,14 @@ dialog{
   text = [[
 Tu as trouvé les
 Bottes de Pégase !$0
-Cours, fonce et ne
-perds plus une
-seconde !
+
+Cours, fonce et
+traverse les ennemis
+coriaces !
+
+Appuie sur la touche
+Action pour utiliser
+les Bottes.
 ]]
 }
 --------------------
@@ -1942,8 +1949,8 @@ dialog{
   id = "_treasure.arrow.1.1",
   text = [[
 Flèches pour vaincre
-des ennemis coriaces
-à distance.
+des ennemis à
+distance.
 ]]
 }
 -----------------------

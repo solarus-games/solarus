@@ -19,9 +19,6 @@ function ini_parse(file)
 
       local id = line:match("^ *%[(.*)%]")
       local key, value = line:match("^ *([-_a-zA-Z0-9]*) *= *(.*)")
-      print("id", id)
-      print("value", key)
-      print("key", value)
 
       if id then
         -- new group
@@ -50,7 +47,7 @@ function ini_parse(file)
     error("No groups were found. Is this an ini file?")
   end
 
-  all_groups[groups.id] = group
+  all_groups[group.id] = group
   all_ids[#all_ids + 1] = group.id
 
   return all_groups, all_ids

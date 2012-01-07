@@ -4,7 +4,6 @@
 -- (experimental and very incomplete for now)
 -- Usage: ./validator.lua path/to/your/quest
 
-
 dofile("languages.lua")
 
 if #arg ~= 1 then
@@ -13,8 +12,5 @@ if #arg ~= 1 then
 end
 
 local quest_dir = arg[1] .. "/data"
+check_languages(quest_dir)
 
--- temporary
-local fr = load_dialogs(quest_dir .. "/languages/fr/text/dialogs.lua")
---local en = load_dialogs(quest_dir .. "/languages/en/text/dialogs.lua")
---check_dialogs_translation(en, fr)

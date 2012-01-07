@@ -2173,7 +2173,17 @@ void Hero::start_lifting(CarriedItem *item_to_lift) {
  * @brief Starts running with the speed shoes.
  */
 void Hero::start_running() {
-  set_state(new RunningState(*this));
+
+  // the running state may be triggered by the action key or an inventory item key
+  GameControls::GameKey key;
+  if (is_free()) {
+    key = GameControls::ACTION;
+  }
+  else {
+    key = get_controls().is_key_pressed(GameControls::ITEM_1) ?
+        GameControls::ITEM_1 : GameControls::ITEM_2;
+  }
+  set_state(new RunningState(*this, key));
 }
 
 /**

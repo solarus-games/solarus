@@ -24,16 +24,17 @@
 #include "lowlevel/Sound.h"
 #include "lowlevel/Geometry.h"
 #include "Game.h"
-#include "GameControls.h"
 #include "Map.h"
 #include "Equipment.h"
 
 /**
  * @brief Constructor.
  * @param hero the hero controlled by this state
+ * @param key the game key that triggers running
  */
-Hero::RunningState::RunningState(Hero &hero):
-  State(hero) {
+Hero::RunningState::RunningState(Hero& hero, GameControls::GameKey key):
+  State(hero),
+  key(key) {
 
 }
 
@@ -139,12 +140,13 @@ bool Hero::RunningState::is_bouncing() {
 }
 
 /**
- * @brief Returns whether the hero is pressing the item key corresponding to the running shoes.
- * @return true if the hero is pressing the item key corresponding to the running shoes
+ * @brief Returns whether the hero is still pressing the key that made him
+ * start running.
+ * @return true if the hero is still pressing the running key
  */
 bool Hero::RunningState::is_pressing_running_key() {
 
-  return get_controls().is_key_pressed(GameControls::ACTION);
+  return get_controls().is_key_pressed(key);
 }
 
 /**

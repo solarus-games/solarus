@@ -15,13 +15,14 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "menus/LanguageScreen.h"
-#include "menus/TitleScreen.h"
+#include "CustomScreen.h"
 #include "Transition.h"
 #include "lowlevel/Sound.h"
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/TextSurface.h"
 #include "lowlevel/InputEvent.h"
+#include "lowlevel/IniFile.h"
 
 const int LanguageScreen::max_visible_languages = 10;
 
@@ -69,6 +70,9 @@ LanguageScreen::LanguageScreen(Solarus &solarus):
     FileTools::set_language(language_codes[0]);
     finished = true;
   }
+
+  // preload all sounds
+  Sound::load_all();
 }
 
 /**
@@ -116,7 +120,7 @@ void LanguageScreen::set_cursor_position(int cursor_position) {
 void LanguageScreen::update() {
 
   if (finished) {
-    set_next_screen(new TitleScreen(solarus));
+    start_next_screen();
   }
 
   if (transition != NULL) {
@@ -182,3 +186,13 @@ void LanguageScreen::notify_event(InputEvent &event) {
   }
 }
 
+/**
+ * @brief Ends the language screen and starts the first screen of the quest.
+ */
+void LanguageScreen::start_next_screen() {
+
+  IniFile ini("quest.dat", IniFile::READ);
+  ini.set_group("info");
+  std::string script_file = ini.get_string_value("first_screen");
+  set_next_screen(new CustomScreen(solarus, script_file));
+}

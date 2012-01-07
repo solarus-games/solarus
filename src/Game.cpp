@@ -25,8 +25,8 @@
 #include "Dungeon.h"
 #include "GameoverSequence.h"
 #include "DebugKeys.h"
+#include "CustomScreen.h"
 #include "hud/HUD.h"
-#include "menus/TitleScreen.h"
 #include "menus/PauseMenu.h"
 #include "entities/Hero.h"
 #include "lowlevel/Color.h"
@@ -296,7 +296,11 @@ void Game::update_transitions() {
     if (reseting) {
       current_map->unload();
       solarus.get_debug_keys().set_game(NULL);
-      set_next_screen(new TitleScreen(solarus));
+
+      IniFile ini("quest.dat", IniFile::READ);
+      ini.set_group("info");
+      std::string screen_name = ini.get_string_value("first_screen");
+      set_next_screen(new CustomScreen(solarus, screen_name));
     }
     else if (restarting) {
       current_map->unload();

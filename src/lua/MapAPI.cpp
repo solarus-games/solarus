@@ -51,7 +51,7 @@
  */
 int Script::map_api_dialog_start(lua_State* l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
   const std::string& dialog_id = luaL_checkstring(l, 1);
 
   script.get_game().get_dialog_box().start_dialog(dialog_id, &script);
@@ -69,7 +69,7 @@ int Script::map_api_dialog_start(lua_State* l) {
  */
 int Script::map_api_dialog_set_variable(lua_State* l) {
 
-  Script& script = get_script(l, 2);
+  Script& script = get_script(l);
   const std::string& dialog_id = luaL_checkstring(l, 1);
   const std::string& value = luaL_checkstring(l, 2);
 
@@ -89,7 +89,7 @@ int Script::map_api_dialog_set_variable(lua_State* l) {
  */
 int Script::map_api_dialog_set_style(lua_State *l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
   int style = luaL_checkinteger(l, 1);
 
   script.get_game().get_dialog_box().set_style(DialogBox::Style(style));
@@ -106,7 +106,7 @@ int Script::map_api_dialog_set_style(lua_State *l) {
  */
 int Script::map_api_hud_set_enabled(lua_State *l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
   bool enabled = lua_toboolean(l, 1) != 0;
 
   script.get_game().set_hud_enabled(enabled);
@@ -122,7 +122,7 @@ int Script::map_api_hud_set_enabled(lua_State *l) {
  */
 int Script::map_api_hud_set_pause_enabled(lua_State *l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
   bool pause_key_available = lua_toboolean(l, 1) != 0;
 
   script.get_game().set_pause_key_available(pause_key_available);
@@ -139,7 +139,7 @@ int Script::map_api_hud_set_pause_enabled(lua_State *l) {
  */
 int Script::map_api_light_get(lua_State *l) {
 
-  Script& script = get_script(l, 0);
+  Script& script = get_script(l);
 
   int light = script.get_map().get_light();
 
@@ -158,7 +158,7 @@ int Script::map_api_light_get(lua_State *l) {
  */
 int Script::map_api_light_set(lua_State *l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   int light = luaL_checkinteger(l, 1);
 
@@ -183,7 +183,7 @@ int Script::map_api_light_set(lua_State *l) {
  */
 int Script::map_api_camera_move(lua_State* l) {
 
-  Script& script = get_script(l, 4, 6);
+  Script& script = get_script(l);
   int x = luaL_checkinteger(l, 1);
   int y = luaL_checkinteger(l, 2);
   int speed = luaL_checkinteger(l, 3);
@@ -229,7 +229,7 @@ int Script::map_api_camera_move(lua_State* l) {
  */
 int Script::map_api_treasure_give(lua_State *l) {
 
-  Script& script = get_script(l, 3);
+  Script& script = get_script(l);
   const std::string &item_name = luaL_checkstring(l, 1);
   int variant = luaL_checkinteger(l, 2);
   int savegame_variable = luaL_checkinteger(l, 3);
@@ -251,7 +251,7 @@ int Script::map_api_treasure_give(lua_State *l) {
  */
 int Script::map_api_sprite_display(lua_State *l) {
 
-  Script& script = get_script(l, 3);
+  Script& script = get_script(l);
   int sprite_handle = luaL_checkinteger(l, 1);
   int x = luaL_checkinteger(l, 2);
   int y = luaL_checkinteger(l, 3);
@@ -271,7 +271,7 @@ int Script::map_api_sprite_display(lua_State *l) {
  */
 int Script::map_api_tileset_get(lua_State *l) {
 
-  Script& script = get_script(l, 0);
+  Script& script = get_script(l);
 
   TilesetId id = script.get_map().get_tileset_id();
 
@@ -291,7 +291,7 @@ int Script::map_api_tileset_get(lua_State *l) {
  */
 int Script::map_api_tileset_set(lua_State *l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   TilesetId id = luaL_checkinteger(l, 1);
 
@@ -306,7 +306,7 @@ int Script::map_api_tileset_set(lua_State *l) {
  */
 int Script::map_api_hero_freeze(lua_State *l) {
 
-  Script& script = get_script(l, 0);
+  Script& script = get_script(l);
 
   script.get_game().get_hero().start_freezed();
 
@@ -319,7 +319,7 @@ int Script::map_api_hero_freeze(lua_State *l) {
  */
 int Script::map_api_hero_unfreeze(lua_State *l) {
 
-  Script& script = get_script(l, 0);
+  Script& script = get_script(l);
 
   script.get_game().get_hero().start_free();
 
@@ -337,7 +337,7 @@ int Script::map_api_hero_unfreeze(lua_State *l) {
  */
 int Script::map_api_hero_set_map(lua_State *l) {
 
-  Script& script = get_script(l, 3);
+  Script& script = get_script(l);
 
   MapId map_id = luaL_checkinteger(l, 1);
   const std::string &destination_point_name = luaL_checkstring(l, 2);
@@ -359,7 +359,7 @@ int Script::map_api_hero_set_map(lua_State *l) {
  */
 int Script::map_api_hero_set_visible(lua_State *l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   bool visible = lua_toboolean(l, 1) != 0;
 
@@ -377,7 +377,7 @@ int Script::map_api_hero_set_visible(lua_State *l) {
  */
 int Script::map_api_hero_get_direction(lua_State *l) {
 
-  Script& script = get_script(l, 0);
+  Script& script = get_script(l);
 
   int direction = script.get_game().get_hero().get_animation_direction();
   lua_pushinteger(l, direction);
@@ -394,7 +394,7 @@ int Script::map_api_hero_get_direction(lua_State *l) {
  */
 int Script::map_api_hero_set_direction(lua_State *l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   int direction = luaL_checkinteger(l, 1);
 
@@ -414,7 +414,7 @@ int Script::map_api_hero_set_direction(lua_State *l) {
  */
 int Script::map_api_hero_get_position(lua_State *l) {
 
-  Script& script = get_script(l, 0);
+  Script& script = get_script(l);
 
   Hero &hero = script.get_game().get_hero();
 
@@ -437,7 +437,7 @@ int Script::map_api_hero_get_position(lua_State *l) {
  */
 int Script::map_api_hero_set_position(lua_State* l) {
 
-  Script& script = get_script(l, 2, 3);
+  Script& script = get_script(l);
 
   int x = luaL_checkinteger(l, 1);
   int y = luaL_checkinteger(l, 2);
@@ -466,7 +466,7 @@ int Script::map_api_hero_set_position(lua_State* l) {
  */
 int Script::map_api_hero_align_on_sensor(lua_State *l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   const std::string &name = luaL_checkstring(l, 1);
 
@@ -492,7 +492,7 @@ int Script::map_api_hero_align_on_sensor(lua_State *l) {
  */
 int Script::map_api_hero_save_solid_ground(lua_State* l) {
 
-  Script& script = get_script(l, 0, 3);
+  Script& script = get_script(l);
   Hero& hero = script.get_game().get_hero();
 
   int x, y, layer;
@@ -519,7 +519,7 @@ int Script::map_api_hero_save_solid_ground(lua_State* l) {
  */
 int Script::map_api_hero_reset_solid_ground(lua_State* l) {
 
-  Script& script = get_script(l, 0);
+  Script& script = get_script(l);
   Hero& hero = script.get_game().get_hero();
 
   hero.reset_target_solid_ground_coords();
@@ -538,7 +538,7 @@ int Script::map_api_hero_reset_solid_ground(lua_State* l) {
  */
 int Script::map_api_hero_walk(lua_State *l) {
 
-  Script& script = get_script(l, 3);
+  Script& script = get_script(l);
 
   const std::string &path = luaL_checkstring(l, 1);
   bool loop = lua_toboolean(l, 2) != 0;
@@ -560,7 +560,7 @@ int Script::map_api_hero_walk(lua_State *l) {
  */
 int Script::map_api_hero_start_jumping(lua_State *l) {
 
-  Script& script = get_script(l, 3);
+  Script& script = get_script(l);
 
   int direction = luaL_checkinteger(l, 1);
   int length = luaL_checkinteger(l, 2);
@@ -578,7 +578,7 @@ int Script::map_api_hero_start_jumping(lua_State *l) {
  */
 int Script::map_api_hero_start_victory_sequence(lua_State *l) {
 
-  Script& script = get_script(l, 0);
+  Script& script = get_script(l);
 
   script.get_game().get_hero().start_victory();
 
@@ -598,7 +598,7 @@ int Script::map_api_hero_start_victory_sequence(lua_State *l) {
  */
 int Script::map_api_hero_start_boomerang(lua_State* l) {
 
-  Script& script = get_script(l, 4);
+  Script& script = get_script(l);
 
   int max_distance = luaL_checkinteger(l, 1);
   int speed = luaL_checkinteger(l, 2);
@@ -617,7 +617,7 @@ int Script::map_api_hero_start_boomerang(lua_State* l) {
  */
 int Script::map_api_hero_start_bow(lua_State *l) {
 
-  Script& script = get_script(l, 0);
+  Script& script = get_script(l);
 
   script.get_game().get_hero().start_bow();
 
@@ -630,7 +630,7 @@ int Script::map_api_hero_start_bow(lua_State *l) {
  */
 int Script::map_api_hero_start_hookshot(lua_State *l) {
 
-  Script& script = get_script(l, 0);
+  Script& script = get_script(l);
 
   script.get_game().get_hero().start_hookshot();
 
@@ -643,7 +643,7 @@ int Script::map_api_hero_start_hookshot(lua_State *l) {
  */
 int Script::map_api_hero_start_running(lua_State *l) {
 
-  Script& script = get_script(l, 0);
+  Script& script = get_script(l);
 
   script.get_game().get_hero().start_running();
 
@@ -663,7 +663,7 @@ int Script::map_api_hero_start_running(lua_State *l) {
  */
 int Script::map_api_hero_start_hurt(lua_State *l) {
 
-  Script& script = get_script(l, 4);
+  Script& script = get_script(l);
 
   int source_x = luaL_checkinteger(l, 1);
   int source_y = luaL_checkinteger(l, 2);
@@ -686,7 +686,7 @@ int Script::map_api_hero_start_hurt(lua_State *l) {
  */
 int Script::map_api_npc_is_enabled(lua_State* l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   const std::string& name = luaL_checkstring(l, 1);
 
@@ -707,7 +707,7 @@ int Script::map_api_npc_is_enabled(lua_State* l) {
  */
 int Script::map_api_npc_set_enabled(lua_State* l) {
 
-  Script& script = get_script(l, 2);
+  Script& script = get_script(l);
 
   const std::string& name = luaL_checkstring(l, 1);
   bool enabled = lua_toboolean(l, 2);
@@ -729,7 +729,7 @@ int Script::map_api_npc_set_enabled(lua_State* l) {
  */
 int Script::map_api_npc_set_group_enabled(lua_State* l) {
 
-  Script& script = get_script(l, 2);
+  Script& script = get_script(l);
 
   const std::string& prefix = luaL_checkstring(l, 1);
   bool enable = lua_toboolean(l, 2);
@@ -757,7 +757,7 @@ int Script::map_api_npc_set_group_enabled(lua_State* l) {
  */
 int Script::map_api_npc_get_position(lua_State* l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   const std::string& name = luaL_checkstring(l, 1);
 
@@ -784,7 +784,7 @@ int Script::map_api_npc_get_position(lua_State* l) {
  */
 int Script::map_api_npc_set_position(lua_State* l) {
 
-  Script& script = get_script(l, 3, 4);
+  Script& script = get_script(l);
 
   const std::string& name = luaL_checkstring(l, 1);
   int x = luaL_checkinteger(l, 2);
@@ -816,7 +816,7 @@ int Script::map_api_npc_set_position(lua_State* l) {
  */
 int Script::map_api_npc_start_movement(lua_State *l) {
 
-  Script& script = get_script(l, 2);
+  Script& script = get_script(l);
 
   const std::string& name = luaL_checkstring(l, 1);
   int movement_handle = luaL_checkinteger(l, 2);
@@ -840,7 +840,7 @@ int Script::map_api_npc_start_movement(lua_State *l) {
  */
 int Script::map_api_npc_stop_movement(lua_State* l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   const std::string& name = luaL_checkstring(l, 1);
 
@@ -863,7 +863,7 @@ int Script::map_api_npc_stop_movement(lua_State* l) {
  */
 int Script::map_api_npc_get_sprite(lua_State* l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   const std::string& entity_name = luaL_checkstring(l, 1);
 
@@ -885,7 +885,7 @@ int Script::map_api_npc_get_sprite(lua_State* l) {
  */
 int Script::map_api_npc_remove(lua_State* l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   const std::string& name = luaL_checkstring(l, 1);
 
@@ -905,7 +905,7 @@ int Script::map_api_npc_remove(lua_State* l) {
  */
 int Script::map_api_npc_exists(lua_State* l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   const std::string& name = luaL_checkstring(l, 1);
 
@@ -930,7 +930,7 @@ int Script::map_api_npc_exists(lua_State* l) {
  */
 int Script::map_api_chest_is_open(lua_State* l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   const std::string& name = luaL_checkstring(l, 1);
 
@@ -953,7 +953,7 @@ int Script::map_api_chest_is_open(lua_State* l) {
  */
 int Script::map_api_chest_set_open(lua_State *l) {
 
-  Script& script = get_script(l, 2);
+  Script& script = get_script(l);
 
   const std::string &name = luaL_checkstring(l, 1);
   bool open = lua_toboolean(l, 2) != 0;
@@ -975,7 +975,7 @@ int Script::map_api_chest_set_open(lua_State *l) {
  */
 int Script::map_api_chest_is_enabled(lua_State* l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   const std::string& name = luaL_checkstring(l, 1);
 
@@ -997,7 +997,7 @@ int Script::map_api_chest_is_enabled(lua_State* l) {
  */
 int Script::map_api_chest_set_enabled(lua_State* l) {
 
-  Script& script = get_script(l, 2);
+  Script& script = get_script(l);
 
   const std::string& name = luaL_checkstring(l, 1);
   bool enabled = lua_toboolean(l, 2) != 0;
@@ -1019,7 +1019,7 @@ int Script::map_api_chest_set_enabled(lua_State* l) {
  */
 int Script::map_api_chest_set_group_enabled(lua_State* l) {
 
-  Script& script = get_script(l, 2);
+  Script& script = get_script(l);
 
   const std::string& prefix = luaL_checkstring(l, 1);
   bool enable = lua_toboolean(l, 2) != 0;
@@ -1045,7 +1045,7 @@ int Script::map_api_chest_set_group_enabled(lua_State* l) {
  */
 int Script::map_api_tile_is_enabled(lua_State* l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   const std::string& name = luaL_checkstring(l, 1);
 
@@ -1066,7 +1066,7 @@ int Script::map_api_tile_is_enabled(lua_State* l) {
  */
 int Script::map_api_tile_set_enabled(lua_State* l) {
 
-  Script& script = get_script(l, 2);
+  Script& script = get_script(l);
 
   const std::string& name = luaL_checkstring(l, 1);
   bool enable = lua_toboolean(l, 2) != 0;
@@ -1088,7 +1088,7 @@ int Script::map_api_tile_set_enabled(lua_State* l) {
  */
 int Script::map_api_tile_set_group_enabled(lua_State* l) {
 
-  Script& script = get_script(l, 2);
+  Script& script = get_script(l);
 
   const std::string& prefix = luaL_checkstring(l, 1);
   bool enable = lua_toboolean(l, 2) != 0;
@@ -1114,7 +1114,7 @@ int Script::map_api_tile_set_group_enabled(lua_State* l) {
  */
 int Script::map_api_stairs_is_enabled(lua_State *l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   const std::string &name = luaL_checkstring(l, 1);
 
@@ -1138,7 +1138,7 @@ int Script::map_api_stairs_is_enabled(lua_State *l) {
  */
 int Script::map_api_stairs_set_enabled(lua_State *l) {
 
-  Script& script = get_script(l, 2);
+  Script& script = get_script(l);
 
   const std::string &name = luaL_checkstring(l, 1);
   bool enable = lua_toboolean(l, 2) != 0;
@@ -1160,7 +1160,7 @@ int Script::map_api_stairs_set_enabled(lua_State *l) {
  */
 int Script::map_api_stairs_set_group_enabled(lua_State* l) {
 
-  Script& script = get_script(l, 2);
+  Script& script = get_script(l);
 
   const std::string& prefix = luaL_checkstring(l, 1);
   bool enable = lua_toboolean(l, 2) != 0;
@@ -1186,7 +1186,7 @@ int Script::map_api_stairs_set_group_enabled(lua_State* l) {
  */
 int Script::map_api_obstacle_is_enabled(lua_State *l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   const std::string &name = luaL_checkstring(l, 1);
 
@@ -1207,7 +1207,7 @@ int Script::map_api_obstacle_is_enabled(lua_State *l) {
  */
 int Script::map_api_obstacle_set_enabled(lua_State *l) {
 
-  Script& script = get_script(l, 2);
+  Script& script = get_script(l);
 
   const std::string &name = luaL_checkstring(l, 1);
   bool enable = lua_toboolean(l, 2) != 0;
@@ -1229,7 +1229,7 @@ int Script::map_api_obstacle_set_enabled(lua_State *l) {
  */
 int Script::map_api_obstacle_set_group_enabled(lua_State* l) {
 
-  Script& script = get_script(l, 2);
+  Script& script = get_script(l);
 
   const std::string& prefix = luaL_checkstring(l, 1);
   bool enable = lua_toboolean(l, 2) != 0;
@@ -1255,7 +1255,7 @@ int Script::map_api_obstacle_set_group_enabled(lua_State* l) {
  */
 int Script::map_api_sensor_is_enabled(lua_State *l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   const std::string &name = luaL_checkstring(l, 1);
 
@@ -1276,7 +1276,7 @@ int Script::map_api_sensor_is_enabled(lua_State *l) {
  */
 int Script::map_api_sensor_set_enabled(lua_State *l) {
 
-  Script& script = get_script(l, 2);
+  Script& script = get_script(l);
 
   const std::string &name = luaL_checkstring(l, 1);
   bool enable = lua_toboolean(l, 2) != 0;
@@ -1298,7 +1298,7 @@ int Script::map_api_sensor_set_enabled(lua_State *l) {
  */
 int Script::map_api_sensor_set_group_enabled(lua_State* l) {
 
-  Script& script = get_script(l, 2);
+  Script& script = get_script(l);
 
   const std::string& prefix = luaL_checkstring(l, 1);
   bool enable = lua_toboolean(l, 2) != 0;
@@ -1324,7 +1324,7 @@ int Script::map_api_sensor_set_group_enabled(lua_State* l) {
  */
 int Script::map_api_jumper_is_enabled(lua_State* l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   const std::string& name = luaL_checkstring(l, 1);
 
@@ -1345,7 +1345,7 @@ int Script::map_api_jumper_is_enabled(lua_State* l) {
  */
 int Script::map_api_jumper_set_enabled(lua_State* l) {
 
-  Script& script = get_script(l, 2);
+  Script& script = get_script(l);
 
   const std::string& name = luaL_checkstring(l, 1);
   bool enable = lua_toboolean(l, 2) != 0;
@@ -1367,7 +1367,7 @@ int Script::map_api_jumper_set_enabled(lua_State* l) {
  */
 int Script::map_api_jumper_set_group_enabled(lua_State* l) {
 
-  Script& script = get_script(l, 2);
+  Script& script = get_script(l);
 
   const std::string& prefix = luaL_checkstring(l, 1);
   bool enable = lua_toboolean(l, 2) != 0;
@@ -1393,7 +1393,7 @@ int Script::map_api_jumper_set_group_enabled(lua_State* l) {
  */
 int Script::map_api_crystal_is_enabled(lua_State* l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   const std::string& name = luaL_checkstring(l, 1);
 
@@ -1410,7 +1410,7 @@ int Script::map_api_crystal_is_enabled(lua_State* l) {
  */
 int Script::map_api_crystal_set_enabled(lua_State* l) {
 
-  Script& script = get_script(l, 2);
+  Script& script = get_script(l);
 
   const std::string& name = luaL_checkstring(l, 1);
   bool enable = lua_toboolean(l, 2) != 0;
@@ -1432,7 +1432,7 @@ int Script::map_api_crystal_set_enabled(lua_State* l) {
  */
 int Script::map_api_crystal_set_group_enabled(lua_State* l) {
 
-  Script& script = get_script(l, 2);
+  Script& script = get_script(l);
 
   const std::string& prefix = luaL_checkstring(l, 1);
   bool enable = lua_toboolean(l, 2) != 0;
@@ -1458,7 +1458,7 @@ int Script::map_api_crystal_set_group_enabled(lua_State* l) {
  */
 int Script::map_api_crystal_get_state(lua_State *l) {
 
-  Script& script = get_script(l, 0);
+  Script& script = get_script(l);
 
   Game& game = script.get_game();
   lua_pushboolean(l, game.get_crystal_state());
@@ -1476,7 +1476,7 @@ int Script::map_api_crystal_get_state(lua_State *l) {
  */
 int Script::map_api_crystal_set_state(lua_State *l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
   bool state = lua_toboolean(l, 1);
 
   Game& game = script.get_game();
@@ -1493,7 +1493,7 @@ int Script::map_api_crystal_set_state(lua_State *l) {
  */
 int Script::map_api_crystal_change_state(lua_State *l) {
 
-  Script& script = get_script(l, 0);
+  Script& script = get_script(l);
 
   Game& game = script.get_game();
   game.change_crystal_state();
@@ -1511,7 +1511,7 @@ int Script::map_api_crystal_change_state(lua_State *l) {
  */
 int Script::map_api_teletransporter_is_enabled(lua_State* l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   const std::string& name = luaL_checkstring(l, 1);
 
@@ -1532,7 +1532,7 @@ int Script::map_api_teletransporter_is_enabled(lua_State* l) {
  */
 int Script::map_api_teletransporter_set_enabled(lua_State* l) {
 
-  Script& script = get_script(l, 2);
+  Script& script = get_script(l);
 
   const std::string& name = luaL_checkstring(l, 1);
   bool enable = lua_toboolean(l, 2) != 0;
@@ -1554,7 +1554,7 @@ int Script::map_api_teletransporter_set_enabled(lua_State* l) {
  */
 int Script::map_api_teletransporter_set_group_enabled(lua_State* l) {
 
-  Script& script = get_script(l, 2);
+  Script& script = get_script(l);
 
   const std::string& prefix = luaL_checkstring(l, 1);
   bool enable = lua_toboolean(l, 2) != 0;
@@ -1580,7 +1580,7 @@ int Script::map_api_teletransporter_set_group_enabled(lua_State* l) {
  */
 int Script::map_api_block_is_enabled(lua_State* l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   const std::string& name = luaL_checkstring(l, 1);
 
@@ -1601,7 +1601,7 @@ int Script::map_api_block_is_enabled(lua_State* l) {
  */
 int Script::map_api_block_set_enabled(lua_State* l) {
 
-  Script& script = get_script(l, 2);
+  Script& script = get_script(l);
 
   const std::string& name = luaL_checkstring(l, 1);
   bool enable = lua_toboolean(l, 2) != 0;
@@ -1623,7 +1623,7 @@ int Script::map_api_block_set_enabled(lua_State* l) {
  */
 int Script::map_api_block_set_group_enabled(lua_State* l) {
 
-  Script& script = get_script(l, 2);
+  Script& script = get_script(l);
 
   const std::string& prefix = luaL_checkstring(l, 1);
   bool enable = lua_toboolean(l, 2) != 0;
@@ -1648,7 +1648,7 @@ int Script::map_api_block_set_group_enabled(lua_State* l) {
  */
 int Script::map_api_block_reset(lua_State *l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   const std::string& name = luaL_checkstring(l, 1);
 
@@ -1665,7 +1665,7 @@ int Script::map_api_block_reset(lua_State *l) {
  */
 int Script::map_api_block_reset_all(lua_State *l) {
 
-  Script& script = get_script(l, 0);
+  Script& script = get_script(l);
 
   MapEntities &entities = script.get_map().get_entities();
   std::list<MapEntity*> blocks = entities.get_entities(BLOCK);
@@ -1690,7 +1690,7 @@ int Script::map_api_block_reset_all(lua_State *l) {
  */
 int Script::map_api_block_get_position(lua_State* l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   const std::string& name = luaL_checkstring(l, 1);
 
@@ -1717,7 +1717,7 @@ int Script::map_api_block_get_position(lua_State* l) {
  */
 int Script::map_api_block_set_position(lua_State* l) {
 
-  Script& script = get_script(l, 3, 4);
+  Script& script = get_script(l);
 
   const std::string& name = luaL_checkstring(l, 1);
   int x = luaL_checkinteger(l, 2);
@@ -1753,7 +1753,7 @@ int Script::map_api_block_set_position(lua_State* l) {
  */
 int Script::map_api_shop_item_exists(lua_State* l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   const std::string& name = luaL_checkstring(l, 1);
 
@@ -1772,7 +1772,7 @@ int Script::map_api_shop_item_exists(lua_State* l) {
  */
 int Script::map_api_shop_item_remove(lua_State *l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   const std::string &name = luaL_checkstring(l, 1);
 
@@ -1795,7 +1795,7 @@ int Script::map_api_shop_item_remove(lua_State *l) {
  */
 int Script::map_api_switch_is_activated(lua_State *l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   const std::string &name = luaL_checkstring(l, 1);
 
@@ -1817,7 +1817,7 @@ int Script::map_api_switch_is_activated(lua_State *l) {
  */
 int Script::map_api_switch_set_activated(lua_State *l) {
 
-  Script& script = get_script(l, 2);
+  Script& script = get_script(l);
 
   const std::string &name = luaL_checkstring(l, 1);
   bool activate = lua_toboolean(l, 2) != 0;
@@ -1839,7 +1839,7 @@ int Script::map_api_switch_set_activated(lua_State *l) {
  */
 int Script::map_api_switch_set_locked(lua_State *l) {
 
-  Script& script = get_script(l, 2);
+  Script& script = get_script(l);
 
   const std::string &name = luaL_checkstring(l, 1);
   bool lock = lua_toboolean(l, 2) != 0;
@@ -1861,7 +1861,7 @@ int Script::map_api_switch_set_locked(lua_State *l) {
  */
 int Script::map_api_switch_is_enabled(lua_State* l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   const std::string& name = luaL_checkstring(l, 1);
 
@@ -1882,7 +1882,7 @@ int Script::map_api_switch_is_enabled(lua_State* l) {
  */
 int Script::map_api_switch_set_enabled(lua_State* l) {
 
-  Script& script = get_script(l, 2);
+  Script& script = get_script(l);
 
   const std::string& name = luaL_checkstring(l, 1);
   bool enable = lua_toboolean(l, 2) != 0;
@@ -1904,7 +1904,7 @@ int Script::map_api_switch_set_enabled(lua_State* l) {
  */
 int Script::map_api_switch_set_group_enabled(lua_State* l) {
 
-  Script& script = get_script(l, 2);
+  Script& script = get_script(l);
 
   const std::string& prefix = luaL_checkstring(l, 1);
   bool enable = lua_toboolean(l, 2) != 0;
@@ -1932,7 +1932,7 @@ int Script::map_api_switch_set_group_enabled(lua_State* l) {
  */
 int Script::map_api_door_open(lua_State *l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   const std::string& prefix = luaL_checkstring(l, 1);
 
@@ -1969,7 +1969,7 @@ int Script::map_api_door_open(lua_State *l) {
  */
 int Script::map_api_door_close(lua_State *l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   const std::string& prefix = luaL_checkstring(l, 1);
 
@@ -2003,7 +2003,7 @@ int Script::map_api_door_close(lua_State *l) {
  */
 int Script::map_api_door_is_open(lua_State *l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
   const std::string &name = luaL_checkstring(l, 1);
 
   MapEntities &entities = script.get_map().get_entities();
@@ -2023,7 +2023,7 @@ int Script::map_api_door_is_open(lua_State *l) {
  */
 int Script::map_api_door_set_open(lua_State *l) {
 
-  Script& script = get_script(l, 2);
+  Script& script = get_script(l);
 
   const std::string &prefix = luaL_checkstring(l, 1);
   bool open = lua_toboolean(l, 2) != 0;
@@ -2053,7 +2053,7 @@ int Script::map_api_door_set_open(lua_State *l) {
  */
 int Script::map_api_pickable_item_create(lua_State *l) {
 
-  Script& script = get_script(l, 6);
+  Script& script = get_script(l);
 
   const std::string &item_name = luaL_checkstring(l, 1);
   int variant = luaL_checkinteger(l, 2);
@@ -2089,7 +2089,7 @@ int Script::map_api_pickable_item_create(lua_State *l) {
  */
 int Script::map_api_destructible_item_create(lua_State* l) {
 
-  Script& script = get_script(l, 4, 5);
+  Script& script = get_script(l);
 
   const std::string& subtype_name = luaL_checkstring(l, 1);
   int x = luaL_checkinteger(l, 2);
@@ -2156,7 +2156,7 @@ int Script::map_api_destructible_item_create(lua_State* l) {
  */
 int Script::map_api_block_create(lua_State* l) {
 
-  Script& script = get_script(l, 4, 5);
+  Script& script = get_script(l);
 
   int x = luaL_checkinteger(l, 1);
   int y = luaL_checkinteger(l, 2);
@@ -2217,7 +2217,7 @@ int Script::map_api_block_create(lua_State* l) {
  */
 int Script::map_api_bomb_create(lua_State *l) {
 
-  Script& script = get_script(l, 3);
+  Script& script = get_script(l);
 
   int x = luaL_checkinteger(l, 1);
   int y = luaL_checkinteger(l, 2);
@@ -2240,7 +2240,7 @@ int Script::map_api_bomb_create(lua_State *l) {
  */
 int Script::map_api_explosion_create(lua_State *l) {
 
-  Script& script = get_script(l, 3);
+  Script& script = get_script(l);
 
   int x = luaL_checkinteger(l, 1);
   int y = luaL_checkinteger(l, 2);
@@ -2263,7 +2263,7 @@ int Script::map_api_explosion_create(lua_State *l) {
  */
 int Script::map_api_fire_create(lua_State *l) {
 
-  Script& script = get_script(l, 3);
+  Script& script = get_script(l);
 
   int x = luaL_checkinteger(l, 1);
   int y = luaL_checkinteger(l, 2);
@@ -2284,7 +2284,7 @@ int Script::map_api_fire_create(lua_State *l) {
  */
 int Script::map_api_arrow_remove(lua_State *l) {
 
-  Script& script = get_script(l, 0);
+  Script& script = get_script(l);
 
   MapEntities &entities = script.get_map().get_entities();
   entities.remove_arrows();
@@ -2305,7 +2305,7 @@ int Script::map_api_arrow_remove(lua_State *l) {
  */
 int Script::map_api_enemy_create(lua_State *l) {
 
-  Script& script = get_script(l, 5);
+  Script& script = get_script(l);
 
   const std::string& name = luaL_checkstring(l, 1);
   const std::string& breed = luaL_checkstring(l, 2);
@@ -2332,7 +2332,7 @@ int Script::map_api_enemy_create(lua_State *l) {
  */
 int Script::map_api_enemy_remove(lua_State *l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   const std::string& name = luaL_checkstring(l, 1);
 
@@ -2351,7 +2351,7 @@ int Script::map_api_enemy_remove(lua_State *l) {
  */
 int Script::map_api_enemy_remove_group(lua_State *l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   const std::string& prefix = luaL_checkstring(l, 1);
 
@@ -2371,7 +2371,7 @@ int Script::map_api_enemy_remove_group(lua_State *l) {
  */
 int Script::map_api_enemy_is_enabled(lua_State* l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   const std::string& name = luaL_checkstring(l, 1);
 
@@ -2393,7 +2393,7 @@ int Script::map_api_enemy_is_enabled(lua_State* l) {
  */
 int Script::map_api_enemy_set_enabled(lua_State* l) {
 
-  Script& script = get_script(l, 2);
+  Script& script = get_script(l);
 
   const std::string& name = luaL_checkstring(l, 1);
   bool enable = lua_toboolean(l, 2);
@@ -2415,7 +2415,7 @@ int Script::map_api_enemy_set_enabled(lua_State* l) {
  */
 int Script::map_api_enemy_set_group_enabled(lua_State* l) {
 
-  Script& script = get_script(l, 2);
+  Script& script = get_script(l);
 
   const std::string& prefix = luaL_checkstring(l, 1);
   bool enable = lua_toboolean(l, 2) != 0;
@@ -2442,7 +2442,7 @@ int Script::map_api_enemy_set_group_enabled(lua_State* l) {
  */
 int Script::map_api_enemy_is_dead(lua_State *l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   const std::string &name = luaL_checkstring(l, 1);
 
@@ -2466,7 +2466,7 @@ int Script::map_api_enemy_is_dead(lua_State *l) {
  */
 int Script::map_api_enemy_is_group_dead(lua_State *l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   const std::string &prefix = luaL_checkstring(l, 1);
 
@@ -2487,7 +2487,7 @@ int Script::map_api_enemy_is_group_dead(lua_State *l) {
  */
 int Script::map_api_enemy_get_group_count(lua_State *l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   const std::string& prefix = luaL_checkstring(l, 1);
 
@@ -2511,7 +2511,7 @@ int Script::map_api_enemy_get_group_count(lua_State *l) {
  */
 int Script::map_api_enemy_get_position(lua_State* l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   const std::string& name = luaL_checkstring(l, 1);
 
@@ -2539,7 +2539,7 @@ int Script::map_api_enemy_get_position(lua_State* l) {
  */
 int Script::map_api_enemy_set_position(lua_State* l) {
 
-  Script& script = get_script(l, 3, 4);
+  Script& script = get_script(l);
 
   const std::string& name = luaL_checkstring(l, 1);
   int x = luaL_checkinteger(l, 2);
@@ -2573,7 +2573,7 @@ int Script::map_api_enemy_set_position(lua_State* l) {
  */
 int Script::map_api_enemy_set_treasure(lua_State *l) {
 
-  Script& script = get_script(l, 4);
+  Script& script = get_script(l);
 
   const std::string& enemy_name = luaL_checkstring(l, 1);
   const std::string& item_name = luaL_checkstring(l, 2);
@@ -2597,7 +2597,7 @@ int Script::map_api_enemy_set_treasure(lua_State *l) {
  */
 int Script::map_api_enemy_set_no_treasure(lua_State *l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   const std::string& enemy_name = luaL_checkstring(l, 1);
 
@@ -2618,7 +2618,7 @@ int Script::map_api_enemy_set_no_treasure(lua_State *l) {
  */
 int Script::map_api_enemy_set_random_treasure(lua_State *l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   const std::string& enemy_name = luaL_checkstring(l, 1);
 
@@ -2642,7 +2642,7 @@ int Script::map_api_enemy_set_random_treasure(lua_State *l) {
  */
 int Script::map_api_enemy_get_sprite(lua_State *l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   const std::string& enemy_name = luaL_checkstring(l, 1);
 

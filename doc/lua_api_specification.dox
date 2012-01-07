@@ -54,13 +54,21 @@ In both cases, you can then call all sprite-related functions
 and give the sprite handle as first paramater.
 
 - <tt>sol.main.include(script_name)</tt>:	
-includes another script into this one
+Includes another script into this one.
+
+- <tt>sol.main.start_screen(screen_name)</tt>:
+Ends the current screen and starts another one.
+Not possible during a game.
+
+- <tt>sol.main.start_game(savegame_file)</tt>:
+Ends the current screen and starts a game.
+Not possible during a game.
 
 - <tt>sol.main.play_sound(sound_id)</tt>:
-plays a sound
+Plays a sound.
 
 - <tt>sol.main.play_music(music_id)</tt>:
-plays a music
+Plays a music.
 
 - <tt>sol.main.timer_start(function, duration, with_sound)</tt>:
 starts a timer which will calls a function once finished

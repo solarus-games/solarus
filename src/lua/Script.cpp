@@ -211,6 +211,19 @@ Enemy& Script::get_enemy() {
 }
 
 /**
+ * @brief Returns the screen controlled by this script (if any).
+ *
+ * Scripts that want to control the screen must redefine this function.
+ *
+ * @return the screen controlled by this script
+ */
+CustomScreen& Script::get_screen() {
+
+  Debug::die("This script does not control the screen");
+  throw;
+}
+
+/**
  * @brief Tells the Lua context what C++ functions it can call.
  */
 void Script::register_apis() {
@@ -230,6 +243,8 @@ void Script::register_apis() {
   if (apis_enabled && ENEMY_API) {
     register_enemy_api();
   }
+
+  initialize_surface_module();
 }
 
 /**
@@ -237,8 +252,10 @@ void Script::register_apis() {
  */
 void Script::register_main_api() {
 
-  static luaL_Reg main_api[] = {
+  static const luaL_Reg main_api[] = {
       { "include", main_api_include },
+      { "start_screen", main_api_start_screen },
+      { "start_game", main_api_start_game },
       { "play_sound", main_api_play_sound },
       { "play_music", main_api_play_music },
       { "timer_start", main_api_timer_start },
@@ -281,7 +298,7 @@ void Script::register_main_api() {
  */
 void Script::register_game_api() {
 
-  static luaL_Reg game_api[] = {
+  static const luaL_Reg game_api[] = {
       { "save", game_api_save },
       { "reset", game_api_reset },
       { "restart", game_api_restart },
@@ -330,7 +347,7 @@ void Script::register_game_api() {
  */
 void Script::register_map_api() {
 
-  static luaL_Reg map_api[] = {
+  static const luaL_Reg map_api[] = {
       { "dialog_start", map_api_dialog_start },
       { "dialog_set_variable", map_api_dialog_set_variable },
       { "dialog_set_style", map_api_dialog_set_style },
@@ -452,7 +469,7 @@ void Script::register_map_api() {
  */
 void Script::register_item_api() {
 
-  static luaL_Reg item_api[] = {
+  static const luaL_Reg item_api[] = {
       { "get_variant", item_api_get_variant },
       { "set_variant", item_api_set_variant },
       { "get_amount", item_api_get_amount },
@@ -477,7 +494,7 @@ void Script::register_item_api() {
  */
 void Script::register_enemy_api() {
 
-  static luaL_Reg enemy_api[] = {
+  static const luaL_Reg enemy_api[] = {
       { "get_name", enemy_api_get_name },
       { "get_life", enemy_api_get_life },
       { "set_life", enemy_api_set_life },
@@ -540,24 +557,13 @@ void Script::register_enemy_api() {
 }
 
 /**
- * @brief When Lua calls a C++ static method, this function retrieves the corresponding Script object.
+ * @brief When Lua calls a C++ static method, this function retrieves the
+ * corresponding Script object.
  *
- * It can also check the number of parameters of the call.
- *
- * @param context the Lua context
- * @param min_arguments the minimum number of arguments expected
- * @param max_arguments the maximum number of arguments expected (default is min_arguments)
+ * @param l the Lua context
  * @return the Script object that initiated the call
  */
-Script& Script::get_script(lua_State* l, int min_arguments, int max_arguments) {
-
-  // check the number of arguments
-  if (max_arguments == -1) {
-    max_arguments = min_arguments;
-  }
-  if (lua_gettop(l) < min_arguments || lua_gettop(l) > max_arguments) {
-    luaL_error(l, "Invalid number of arguments when calling C++ from Lua");
-  }
+Script& Script::get_script(lua_State* l) {
 
   // retrieve the Script object
   lua_getfield(l, LUA_REGISTRYINDEX, "sol.cpp_object");
@@ -722,10 +728,7 @@ bool Script::notify_script(const std::string &function_name, const std::string &
 
     // call the function
     int nb_results = format.size() - i;
-    if (lua_pcall(l, nb_arguments, nb_results, 0) != 0) {
-      Debug::print(StringConcat() << "Error in " << function_name << "(): "
-          << lua_tostring(l, -1));
-      lua_pop(l, 1);
+    if (!call_script(nb_arguments, nb_results, function_name)) {
       nb_results = 0;
     }
 
@@ -747,6 +750,34 @@ bool Script::notify_script(const std::string &function_name, const std::string &
   return exists;
 }
 
+/**
+ * @brief Calls the Lua function with its arguments on top of the stack.
+ *
+ * This function is like lua_pcall, except that it additionaly handles the
+ * error message if an error occurs in the Lua code (the error is printed).
+ * This function leaves the results on the stack if there is no error,
+ * and leaves nothing on the stack in case of error.
+ *
+ * @param nb_arguments number of arguments placed on the Lua stack above the
+ * function to call
+ * @param nb_results number of results expected (you get them on the stack if
+ * there is no error)
+ * @param function_name a name describing the Lua function (only used to print
+ * the error message if any)
+ * @return true in case of success
+ */
+bool Script::call_script(int nb_arguments, int nb_results,
+    const std::string& function_name) {
+
+  if (lua_pcall(l, nb_arguments, nb_results, 0) != 0) {
+    Debug::print(StringConcat() << "Error in " << function_name << "(): "
+        << lua_tostring(l, -1));
+    lua_pop(l, 1);
+    return false;
+  }
+
+  return true;
+}
 /**
  * @brief Updates the script.
  */
@@ -868,7 +899,7 @@ void Script::remove_all_timers() {
  */
 bool Script::is_new_timer_suspended(void) {
 
-  if (apis_enabled && GAME_API) {
+  if (apis_enabled & GAME_API) {
     // start the timer even if the game is suspended (e.g. a timer started during a camera movement)
     // except when it is suspended because of a dialog box
     return get_game().is_showing_dialog();

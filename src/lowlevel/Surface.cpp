@@ -104,7 +104,7 @@ Surface::~Surface() {
  * @brief Returns the width of the surface.
  * @return the width in pixels
  */
-int Surface::get_width() {
+int Surface::get_width() const {
   return internal_surface->w;
 }
 
@@ -112,7 +112,7 @@ int Surface::get_width() {
  * @brief Returns the height of the surface.
  * @return the height in pixels
  */
-int Surface::get_height() {
+int Surface::get_height() const {
   return internal_surface->h;
 }
 
@@ -120,7 +120,7 @@ int Surface::get_height() {
  * @brief Returns the size of this surface.
  * @return the size of this surface
  */
-const Rectangle Surface::get_size() {
+const Rectangle Surface::get_size() const {
   
   return Rectangle(0, 0, get_width(), get_height());
 }
@@ -132,7 +132,7 @@ const Rectangle Surface::get_size() {
  *
  * @param color the transparency color to set
  */
-void Surface::set_transparency_color(Color& color) {
+void Surface::set_transparency_color(const Color& color) {
   SDL_SetColorKey(internal_surface, SDL_SRCCOLORKEY, color.get_internal_value());
 }
 

@@ -45,21 +45,6 @@
  */
 class Screen {
 
-  protected:
-
-    Solarus &solarus;           /**< the main object of the program (it manages the screens) */
-
-  private:
-
-    bool screen_finished;       /**< indicates that the current screen is finished and should be destroyed */
-    Screen *next_screen;        /**< when the current screen is finished, indicates the next screen */
-
-  protected:
-
-    Screen(Solarus &solarus);
-
-    void set_next_screen(Screen *next_screen);
-
   public:
 
     virtual ~Screen();
@@ -83,16 +68,28 @@ class Screen {
      *
      * @param screen_surface the surface to draw
      */
-    virtual void display(Surface *screen_surface) = 0;
+    virtual void display(Surface* screen_surface) = 0;
 
     /**
-     * @brief Notifies this screen that an event just occured.
+     * @brief Notifies this screen that an event just occurred.
      *
      * This function is called by the main loop when there is an input event.
      *
      * @param event the event to handle
      */
-    virtual void notify_event(InputEvent &event) = 0;
+    virtual void notify_event(InputEvent& event) = 0;
+
+  private:
+
+    bool screen_finished;       /**< indicates that the current screen is finished and should be destroyed */
+    Screen* next_screen;        /**< when the current screen is finished, indicates the next screen */
+
+  protected:
+
+    Solarus& solarus;           /**< the main object of the program (it manages the screens) */
+
+    Screen(Solarus& solarus);
+    void set_next_screen(Screen* next_screen);
 };
 
 #endif

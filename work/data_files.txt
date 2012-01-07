@@ -52,7 +52,6 @@ sounds/
   hero_lands.ogg
   hero_pushes.ogg
   hookshot.ogg
-  intro.ogg
   jump.ogg
   lift.ogg
   magic_bar.ogg

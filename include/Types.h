@@ -90,6 +90,7 @@ class StringConcat;
 
 // menus
 class LanguageScreen;
+class CustomScreen;
 class TitleScreen;
 class SelectionMenu;
 class SelectionMenuPhase;
@@ -130,6 +131,7 @@ class Script;
 class MapScript;
 class ItemScript;
 class EnemyScript;
+class MenuScript;
 
 // HUD
 class HUD;

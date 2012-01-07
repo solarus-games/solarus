@@ -27,7 +27,7 @@
  */
 int Script::game_api_save(lua_State *l) {
 
-  Script& script = get_script(l, 0);
+  Script& script = get_script(l);
 
   script.get_game().get_savegame().save();
 
@@ -37,9 +37,9 @@ int Script::game_api_save(lua_State *l) {
 /**
  * @brief Resets the game (comes back to the title screen).
  */
-int Script::game_api_reset(lua_State *l) {
+int Script::game_api_reset(lua_State* l) {
 
-  Script& script = get_script(l, 0);
+  Script& script = get_script(l);
 
   script.get_game().reset();
 
@@ -54,7 +54,7 @@ int Script::game_api_reset(lua_State *l) {
  */
 int Script::game_api_restart(lua_State *l) {
 
-  Script& script = get_script(l, 0);
+  Script& script = get_script(l);
 
   script.get_game().restart();
 
@@ -69,7 +69,7 @@ int Script::game_api_restart(lua_State *l) {
  */
 int Script::game_api_savegame_get_string(lua_State* l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
   int index = luaL_checkinteger(l, 1);
 
   luaL_argcheck(l, index >= 0 && index < 64, 1,
@@ -89,7 +89,7 @@ int Script::game_api_savegame_get_string(lua_State* l) {
  */
 int Script::game_api_savegame_get_integer(lua_State *l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
   int index = luaL_checkinteger(l, 1);
 
   luaL_argcheck(l, index >= 0 && index < 2048, 1,
@@ -109,7 +109,7 @@ int Script::game_api_savegame_get_integer(lua_State *l) {
  */
 int Script::game_api_savegame_get_boolean(lua_State *l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
   int index = luaL_checkinteger(l, 1);
 
   luaL_argcheck(l, index >= 0 && index < 32768, 1, (StringConcat()
@@ -130,7 +130,7 @@ int Script::game_api_savegame_get_boolean(lua_State *l) {
  */
 int Script::game_api_savegame_set_string(lua_State *l) {
 
-  Script& script = get_script(l, 2);
+  Script& script = get_script(l);
   int index = luaL_checkinteger(l, 1);
   const std::string &value = luaL_checkstring(l, 2);
 
@@ -154,7 +154,7 @@ int Script::game_api_savegame_set_string(lua_State *l) {
  */
 int Script::game_api_savegame_set_integer(lua_State *l) {
 
-  Script& script = get_script(l, 2);
+  Script& script = get_script(l);
   int index = luaL_checkinteger(l, 1);
   int value = luaL_checkinteger(l, 2);
 
@@ -177,7 +177,7 @@ int Script::game_api_savegame_set_integer(lua_State *l) {
  */
 int Script::game_api_savegame_set_boolean(lua_State *l) {
 
-  Script& script = get_script(l, 2);
+  Script& script = get_script(l);
   int index = luaL_checkinteger(l, 1);
   bool value = lua_toboolean(l, 2) != 0;
 
@@ -196,7 +196,7 @@ int Script::game_api_savegame_set_boolean(lua_State *l) {
  */
 int Script::game_api_savegame_get_name(lua_State *l) {
 
-  Script& script = get_script(l, 0);
+  Script& script = get_script(l);
 
   const std::string &name = script.get_game().get_savegame().get_string(Savegame::PLAYER_NAME);
   lua_pushstring(l, name.c_str());
@@ -211,7 +211,7 @@ int Script::game_api_savegame_get_name(lua_State *l) {
  */
 int Script::game_api_get_life(lua_State *l) {
 
-  Script& script = get_script(l, 0);
+  Script& script = get_script(l);
 
   int life = script.get_game().get_equipment().get_life();
   lua_pushinteger(l, life);
@@ -226,7 +226,7 @@ int Script::game_api_get_life(lua_State *l) {
  */
 int Script::game_api_add_life(lua_State *l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   int life = luaL_checkinteger(l, 1);
 
@@ -242,7 +242,7 @@ int Script::game_api_add_life(lua_State *l) {
  */
 int Script::game_api_remove_life(lua_State *l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   int life = luaL_checkinteger(l, 1);
 
@@ -258,7 +258,7 @@ int Script::game_api_remove_life(lua_State *l) {
  */
 int Script::game_api_get_max_life(lua_State *l) {
 
-  Script& script = get_script(l, 0);
+  Script& script = get_script(l);
 
   int life = script.get_game().get_equipment().get_max_life();
   lua_pushinteger(l, life);
@@ -273,7 +273,7 @@ int Script::game_api_get_max_life(lua_State *l) {
  */
 int Script::game_api_set_max_life(lua_State *l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   int life = luaL_checkinteger(l, 1);
   script.get_game().get_equipment().set_max_life(life);
@@ -288,7 +288,7 @@ int Script::game_api_set_max_life(lua_State *l) {
  */
 int Script::game_api_add_max_life(lua_State *l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   int life = luaL_checkinteger(l, 1);
 
@@ -305,7 +305,7 @@ int Script::game_api_add_max_life(lua_State *l) {
  */
 int Script::game_api_get_money(lua_State *l) {
 
-  Script& script = get_script(l, 0);
+  Script& script = get_script(l);
 
   int money = script.get_game().get_equipment().get_money();
   lua_pushinteger(l, money);
@@ -320,7 +320,7 @@ int Script::game_api_get_money(lua_State *l) {
  */
 int Script::game_api_add_money(lua_State *l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   int money = luaL_checkinteger(l, 1);
 
@@ -336,7 +336,7 @@ int Script::game_api_add_money(lua_State *l) {
  */
 int Script::game_api_remove_money(lua_State *l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   int money = luaL_checkinteger(l, 1);
 
@@ -352,7 +352,7 @@ int Script::game_api_remove_money(lua_State *l) {
  */
 int Script::game_api_get_magic(lua_State *l) {
 
-  Script& script = get_script(l, 0);
+  Script& script = get_script(l);
 
   int magic = script.get_game().get_equipment().get_magic();
   lua_pushinteger(l, magic);
@@ -367,7 +367,7 @@ int Script::game_api_get_magic(lua_State *l) {
  */
 int Script::game_api_add_magic(lua_State *l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   int magic = luaL_checkinteger(l, 1);
 
@@ -383,7 +383,7 @@ int Script::game_api_add_magic(lua_State *l) {
  */
 int Script::game_api_remove_magic(lua_State *l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   int magic = luaL_checkinteger(l, 1);
 
@@ -399,7 +399,7 @@ int Script::game_api_remove_magic(lua_State *l) {
  */
 int Script::game_api_start_decreasing_magic(lua_State *l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   uint32_t delay = luaL_checkinteger(l, 1);
 
@@ -413,7 +413,7 @@ int Script::game_api_start_decreasing_magic(lua_State *l) {
  */
 int Script::game_api_stop_decreasing_magic(lua_State *l) {
 
-  Script& script = get_script(l, 0);
+  Script& script = get_script(l);
 
   script.get_game().get_equipment().stop_removing_magic();
 
@@ -427,7 +427,7 @@ int Script::game_api_stop_decreasing_magic(lua_State *l) {
  */
 int Script::game_api_get_max_magic(lua_State *l) {
 
-  Script& script = get_script(l, 0);
+  Script& script = get_script(l);
 
   int magic = script.get_game().get_equipment().get_max_magic();
   lua_pushinteger(l, magic);
@@ -442,7 +442,7 @@ int Script::game_api_get_max_magic(lua_State *l) {
  */
 int Script::game_api_set_max_magic(lua_State *l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   int magic = luaL_checkinteger(l, 1);
   script.get_game().get_equipment().set_max_magic(magic);
@@ -460,7 +460,7 @@ int Script::game_api_set_max_magic(lua_State *l) {
  */
 int Script::game_api_has_ability(lua_State *l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   const std::string &ability_name = luaL_checkstring(l, 1);
 
@@ -481,7 +481,7 @@ int Script::game_api_has_ability(lua_State *l) {
  */
 int Script::game_api_set_ability(lua_State *l) {
 
-  Script& script = get_script(l, 2);
+  Script& script = get_script(l);
 
   const std::string &ability_name = luaL_checkstring(l, 1);
   int level = luaL_checkinteger(l, 2);
@@ -499,7 +499,7 @@ int Script::game_api_set_ability(lua_State *l) {
  */
 int Script::game_api_get_ability(lua_State *l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   const std::string &ability_name = luaL_checkstring(l, 1);
 
@@ -519,7 +519,7 @@ int Script::game_api_get_ability(lua_State *l) {
  */
 int Script::game_api_has_item(lua_State *l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   const std::string &item_name = luaL_checkstring(l, 1);
 
@@ -538,7 +538,7 @@ int Script::game_api_has_item(lua_State *l) {
  */
 int Script::game_api_get_item(lua_State *l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   const std::string &item_name = luaL_checkstring(l, 1);
 
@@ -557,7 +557,7 @@ int Script::game_api_get_item(lua_State *l) {
  */
 int Script::game_api_set_item(lua_State *l) {
 
-  Script& script = get_script(l, 2);
+  Script& script = get_script(l);
 
   const std::string &item_name = luaL_checkstring(l, 1);
   int variant = luaL_checkinteger(l, 2);
@@ -578,7 +578,7 @@ int Script::game_api_set_item(lua_State *l) {
  */
 int Script::game_api_has_item_amount(lua_State *l) {
 
-  Script& script = get_script(l, 2);
+  Script& script = get_script(l);
 
   const std::string &item_name = luaL_checkstring(l, 1);
   int amount = luaL_checkinteger(l, 2);
@@ -597,7 +597,7 @@ int Script::game_api_has_item_amount(lua_State *l) {
  */
 int Script::game_api_get_item_amount(lua_State *l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   const std::string &item_name = luaL_checkstring(l, 1);
 
@@ -615,7 +615,7 @@ int Script::game_api_get_item_amount(lua_State *l) {
  */
 int Script::game_api_add_item_amount(lua_State *l) {
 
-  Script& script = get_script(l, 2);
+  Script& script = get_script(l);
 
   const std::string &item_name = luaL_checkstring(l, 1);
   int amount = luaL_checkinteger(l, 2);
@@ -633,7 +633,7 @@ int Script::game_api_add_item_amount(lua_State *l) {
  */
 int Script::game_api_remove_item_amount(lua_State *l) {
 
-  Script& script = get_script(l, 2);
+  Script& script = get_script(l);
 
   const std::string &item_name = luaL_checkstring(l, 1);
   int amount = luaL_checkinteger(l, 2);
@@ -656,7 +656,7 @@ int Script::game_api_remove_item_amount(lua_State *l) {
  */
 int Script::game_api_is_dungeon_finished(lua_State *l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   int dungeon = luaL_checkinteger(l, 1);
   bool finished = script.get_game().get_equipment().is_dungeon_finished(dungeon);
@@ -676,7 +676,7 @@ int Script::game_api_is_dungeon_finished(lua_State *l) {
  */
 int Script::game_api_set_dungeon_finished(lua_State *l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   int dungeon = luaL_checkinteger(l, 1);
   script.get_game().get_equipment().set_dungeon_finished(dungeon);

@@ -97,7 +97,7 @@ Color::Color(int r, int g, int b) {
  *
  * @return the 32-bit value of this color
  */
-uint32_t Color::get_internal_value() {
+uint32_t Color::get_internal_value() const {
   return internal_value;
 }
 

@@ -108,7 +108,7 @@ class TextSurface {
 
     void set_font(const std::string font_id);
     void set_alignment(HorizontalAlignment horizontal_alignment,
-	VerticalAlignment vertical_alignment);
+        VerticalAlignment vertical_alignment);
     void set_rendering_mode(RenderingMode rendering_mode);
     void set_text_color(Color &color);
     void set_text_color(int r, int g, int b);

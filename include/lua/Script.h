@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include <map>
+#include <set>
 
 struct lua_State;
 
@@ -28,6 +29,75 @@ struct lua_State;
  * This class and its subclasses provide an API that allows Lua scripts to call C++ functions.
  */
 class Script {
+
+  public:
+
+    virtual ~Script();
+
+    // possible scripted objects (each type of script may control some of them)
+    virtual Game& get_game();
+    virtual Map& get_map();
+    virtual ItemProperties& get_item_properties();
+    virtual Enemy& get_enemy();
+    virtual CustomScreen& get_screen();
+
+    // main loop
+    virtual void update();
+    virtual void set_suspended(bool suspended);
+
+    // calling specific Lua functions
+    void event_map_changed(Map &map);
+    void event_dialog_started(const std::string& dialog_id);
+    void event_dialog_finished(const std::string& dialog_id, int answer);
+    void event_npc_interaction(const std::string& npc_name);
+    bool event_npc_interaction_item(const std::string& npc_name,
+        const std::string& item_name, int variant);
+    void event_npc_collision_fire(const std::string& npc_name);
+
+    bool has_played_music();
+    void do_callback(int callback_ref);
+
+  private:
+
+    typedef int (FunctionAvailableToScript) (lua_State *l);  /**< type of the functions that can be called by a Lua script */
+
+    // script data
+    // TODO reimplement sprites, movements and timers as userdata
+    std::map<int, Timer*> timers;                        /**< the timers currently running for this script */
+
+    std::map<int, Sprite*> sprites;                      /**< the sprites accessible from this script */
+    std::map<int, Sprite*> unassigned_sprites;           /**< the sprites accessible from this script and that
+                                                          * are not assigned to an object yet (the script has to delete them) */
+    std::map<int, Movement*> movements;                  /**< the movements accessible from this script */
+    std::map<int, Movement*> unassigned_movements;       /**< the movements accessible from this script and that
+                                                          * are not assigned to an object yet (the script has to delete them) */
+
+    std::set<Surface*> surfaces_created;                 /**< surfaces created by Lua */
+
+    bool music_played;
+
+    // APIs
+    uint32_t apis_enabled;                               /**< an OR combination of APIs enabled */
+
+    // calling C++ from Lua
+    static Script& get_script(lua_State* l);
+    static Surface& check_surface(lua_State* l, int index);
+
+    // initialization of modules
+    void register_apis();
+    void register_main_api();
+    void register_game_api();
+    void register_map_api();
+    void register_item_api();
+    void register_enemy_api();
+    void initialize_surface_module();
+
+    // timers
+    void remove_all_timers();
+    bool is_new_timer_suspended(void);
+
+    // debugging
+    void print_stack();
 
   protected:
 
@@ -42,49 +112,43 @@ class Script {
       ENEMY_API         = 0x0010
     };
 
-  private:
+    lua_State* l;                        /**< the execution context of the Lua script */
 
-    typedef int (FunctionAvailableToScript) (lua_State *l);  /**< type of the functions that can be called by a Lua script */
+    Script(uint32_t apis_enabled);
 
-    // script data
-    std::map<int, Timer*> timers;                        /**< the timers currently running for this script */
-
-    std::map<int, Sprite*> sprites;                      /**< the sprites accessible from this script */
-    std::map<int, Sprite*> unassigned_sprites;           /**< the sprites accessible from this script and that
-                                                          * are not assigned to an object yet (the script has to delete them) */
-    std::map<int, Movement*> movements;                  /**< the movements accessible from this script */
-    std::map<int, Movement*> unassigned_movements;       /**< the movements accessible from this script and that
-                                                          * are not assigned to an object yet (the script has to delete them) */
-    bool music_played;
-
-    // APIs
-    uint32_t apis_enabled;                               /**< an OR combination of APIs enabled */
-
-    // calling a Lua function from C++
+    // Lua
     bool find_lua_function(const std::string& function_name);
-
-    // calling a C++ function from Lua (and retrieve the instance of Script)
-    static Script& get_script(lua_State* context, int min_arguments, int max_arguments = -1);
-
-    // initialization
-    void register_apis();
-    void register_main_api();
-    void register_game_api();
-    void register_map_api();
-    void register_item_api();
-    void register_enemy_api();
+    bool notify_script(const std::string &function_name, const std::string &format = "", ...);
+    bool call_script(int nb_arguments, int nb_results, const std::string& function_name);
+    void initialize_lua_context();
+    void load(const std::string &script_name);
+    void load_if_exists(const std::string &script_name);
+    bool is_loaded();
 
     // timers
-    void remove_all_timers();
-    bool is_new_timer_suspended(void);
+    static void add_timer(lua_State* l, uint32_t duration, bool with_sound);
 
-    // debugging
-    void print_stack();
+    // sprites
+    int create_sprite_handle(Sprite &sprite);
+    Sprite& get_sprite(int sprite_handle);
 
+    // movements
+    int create_movement_handle(Movement &movement);
+    Movement& get_movement(int movement_handle);
+    Movement& start_movement(int movement_handle);
+
+    // surfaces
+    static void push_surface(lua_State* l, Surface& surface);
+
+  private:
+
+    // implementation of the APIs
     static FunctionAvailableToScript 
 
       // main API
       main_api_include,
+      main_api_start_screen,
+      main_api_start_game,
       main_api_play_sound,
       main_api_play_music,
       main_api_timer_start,
@@ -343,56 +407,16 @@ class Script {
       enemy_api_get_sprite,
       enemy_api_create_son,
       enemy_api_get_father,
-      enemy_api_send_message;
+      enemy_api_send_message,
 
-  protected:
-
-    lua_State* l;                        /**< the execution context of the Lua script */
-
-    Script(uint32_t apis_enabled);
-
-    // timers
-    static void add_timer(lua_State* l, uint32_t duration, bool with_sound);
-
-    // sprites
-    int create_sprite_handle(Sprite &sprite);
-    Sprite& get_sprite(int sprite_handle);
-
-    // movements
-    int create_movement_handle(Movement &movement);
-    Movement& get_movement(int movement_handle);
-    Movement& start_movement(int movement_handle);
-
-    // Lua
-    bool notify_script(const std::string &function_name, const std::string &format = "", ...);
-    void initialize_lua_context();
-    void load(const std::string &script_name);
-    void load_if_exists(const std::string &script_name);
-    bool is_loaded();
-
-  public:
-
-    // game objects
-    virtual Game& get_game();
-    virtual Map& get_map();
-    virtual ItemProperties& get_item_properties();
-    virtual Enemy& get_enemy();
-
-    virtual ~Script();
-
-    virtual void update();
-    virtual void set_suspended(bool suspended);
-    bool has_played_music();
-
-    void event_map_changed(Map &map);
-    void event_dialog_started(const std::string& dialog_id);
-    void event_dialog_finished(const std::string& dialog_id, int answer);
-    void event_npc_interaction(const std::string& npc_name);
-    bool event_npc_interaction_item(const std::string& npc_name,
-        const std::string& item_name, int variant);
-    void event_npc_collision_fire(const std::string &npc_name);
-
-    void do_callback(int callback_ref);
+      // surface API
+      surface_api_create,
+      surface_api_fill_color,
+      surface_api_draw,
+      surface_api_get_size,
+      surface_api_set_transparency_color,
+      surface_api_set_opacity,
+      surface_meta_gc;
 };
 
 #endif

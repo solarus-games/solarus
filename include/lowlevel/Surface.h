@@ -61,11 +61,11 @@ class Surface {
     Surface(const Surface& other);
     ~Surface();
 
-    int get_width();
-    int get_height();
-    const Rectangle get_size();
+    int get_width() const;
+    int get_height() const;
+    const Rectangle get_size() const;
 
-    void set_transparency_color(Color& color);
+    void set_transparency_color(const Color& color);
     void set_opacity(int opacity);
     void set_clipping_rectangle(const Rectangle& clipping_rectangle = Rectangle());
     void fill_with_color(Color& color);

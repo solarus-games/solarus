@@ -38,7 +38,7 @@
  */
 int Script::item_api_get_variant(lua_State *l) {
 
-  Script& script = get_script(l, 0);
+  Script& script = get_script(l);
 
   ItemProperties &properties = script.get_item_properties();
   Equipment &equipment = script.get_game().get_equipment();
@@ -58,7 +58,7 @@ int Script::item_api_get_variant(lua_State *l) {
  */
 int Script::item_api_set_variant(lua_State *l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   int variant = luaL_checkinteger(l, 1);
   ItemProperties &properties = script.get_item_properties();
@@ -78,7 +78,7 @@ int Script::item_api_set_variant(lua_State *l) {
  */
 int Script::item_api_get_amount(lua_State *l) {
 
-  Script& script = get_script(l, 0);
+  Script& script = get_script(l);
 
   ItemProperties &properties = script.get_item_properties();
   Equipment &equipment = script.get_game().get_equipment();
@@ -98,7 +98,7 @@ int Script::item_api_get_amount(lua_State *l) {
  */
 int Script::item_api_set_amount(lua_State *l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   int amount = luaL_checkinteger(l, 1);
   ItemProperties &properties = script.get_item_properties();
@@ -118,7 +118,7 @@ int Script::item_api_set_amount(lua_State *l) {
  */
 int Script::item_api_add_amount(lua_State *l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   int amount = luaL_checkinteger(l, 1);
   ItemProperties &properties = script.get_item_properties();
@@ -138,7 +138,7 @@ int Script::item_api_add_amount(lua_State *l) {
  */
 int Script::item_api_remove_amount(lua_State *l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   int amount = luaL_checkinteger(l, 1);
   ItemProperties &properties = script.get_item_properties();
@@ -161,7 +161,7 @@ int Script::item_api_remove_amount(lua_State *l) {
  */
 int Script::item_api_get_sprite(lua_State *l) {
 
-  Script& script = get_script(l, 0);
+  Script& script = get_script(l);
 
   // retrieve the pickable item
   const std::string &item_name = script.get_item_properties().get_name();
@@ -191,7 +191,7 @@ int Script::item_api_get_sprite(lua_State *l) {
  */
 int Script::item_api_get_movement(lua_State *l) {
 
-  Script& script = get_script(l, 0);
+  Script& script = get_script(l);
 
   // retrieve the pickable item
   const std::string &item_name = script.get_item_properties().get_name();
@@ -223,7 +223,7 @@ int Script::item_api_get_movement(lua_State *l) {
  */
 int Script::item_api_start_movement(lua_State *l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   // retrieve the movement
   int movement_handle = luaL_checkinteger(l, 1);
@@ -260,7 +260,7 @@ int Script::item_api_start_movement(lua_State *l) {
  */
 int Script::item_api_is_following_entity(lua_State* l) {
 
-  Script& script = get_script(l, 0);
+  Script& script = get_script(l);
 
   // retrieve the pickable item
   const std::string& item_name = script.get_item_properties().get_name();
@@ -291,7 +291,7 @@ int Script::item_api_is_following_entity(lua_State* l) {
  */
 int Script::item_api_get_position(lua_State *l) {
 
-  Script& script = get_script(l, 0);
+  Script& script = get_script(l);
 
   // retrieve the pickable item
   const std::string &item_name = script.get_item_properties().get_name();
@@ -325,7 +325,7 @@ int Script::item_api_get_position(lua_State *l) {
  */
 int Script::item_api_set_position(lua_State* l) {
 
-  Script& script = get_script(l, 2, 3);
+  Script& script = get_script(l);
 
   int x = luaL_checkinteger(l, 1);
   int y = luaL_checkinteger(l, 2);
@@ -364,7 +364,7 @@ int Script::item_api_set_position(lua_State* l) {
  */
 int Script::item_api_set_layer_independent_collisions(lua_State *l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
 
   bool independent = lua_toboolean(l, 1) != 0;
 
@@ -392,7 +392,7 @@ int Script::item_api_set_layer_independent_collisions(lua_State *l) {
  */
 int Script::item_api_set_finished(lua_State *l) {
 
-  Script& script = get_script(l, 0);
+  Script& script = get_script(l);
 
   // retrieve the inventory item from the hero
   Hero &hero = script.get_game().get_hero();

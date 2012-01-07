@@ -44,6 +44,7 @@ class LanguageScreen: public Screen {
     bool finished;
 
     void set_cursor_position(int cursor_position);
+    void start_next_screen();
 
   public:
 

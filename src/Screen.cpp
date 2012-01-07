@@ -21,8 +21,10 @@
  * @brief Creates a screen.
  * @param solarus the application object (some screens need it)
  */
-Screen::Screen(Solarus &solarus):
-  solarus(solarus), screen_finished(false), next_screen(NULL) {
+Screen::Screen(Solarus& solarus):
+  screen_finished(false),
+  next_screen(NULL),
+  solarus(solarus) {
 
 }
 
@@ -40,7 +42,8 @@ Screen::~Screen() {
  * @param next_screen the next screen to show, or NULL
  * to restart the program.
  */
-void Screen::set_next_screen(Screen *next_screen) {
+void Screen::set_next_screen(Screen* next_screen) {
+
   this->screen_finished = true;
   this->next_screen = next_screen;
 }
@@ -50,7 +53,8 @@ void Screen::set_next_screen(Screen *next_screen) {
  * screen that should be displayed now.
  * @return the next screen
  */
-Screen * Screen::get_next_screen() {
+Screen* Screen::get_next_screen() {
+
   return next_screen;
 }
 
@@ -64,6 +68,7 @@ Screen * Screen::get_next_screen() {
  * @return true if the screen finished
  */
 bool Screen::is_screen_finished() {
+
   return screen_finished;
 }
 

@@ -51,7 +51,7 @@ function event_restart()
 
   if not jumping and not attacking then
     if not vulnerable then
-      m = sol.main.path_finding_movement_create(64)
+      m = sol.movement.path_finding_movement_create(64)
       sol.enemy.start_movement(m)
       sol.enemy.set_hurt_style("normal")
       if not attack_scheduled then
@@ -101,7 +101,7 @@ function jump()
   local x, y = sol.enemy.get_position()
   local hero_x, hero_y = sol.map.hero_get_position()
   local angle = sol.main.get_angle(hero_x, hero_y, x, y)
-  local m = sol.main.target_movement_create(128, 240, 245)
+  local m = sol.movement.target_movement_create(128, 240, 245)
   sol.enemy.start_movement(m)
   sol.main.play_sound("jump")
   local sprite = sol.enemy.get_sprite()

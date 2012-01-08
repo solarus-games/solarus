@@ -19,6 +19,7 @@
 
 #include "Common.h"
 #include <map>
+#include <list>
 #include <set>
 
 struct lua_State;
@@ -59,7 +60,17 @@ class Script {
 
   private:
 
+    /**
+     * @brief Stores a transition effect and a function to be called
+     * when it's finished.
+     */
+    struct TransitionInfo {
+      Transition* transition;     /* a transition effect started by the script */
+      int callback;               /* Lua ref to the function to call when the transition finishes */
+    };
+
     // script data
+    std::map<Surface*, TransitionInfo> transitions;      /**< transitions applied to surfaces */
     // TODO reimplement timers as userdata? timer:stop, timer:set_with_sound(true)
     std::map<int, Timer*> timers;                        /**< the timers currently running for this script */
 
@@ -104,6 +115,13 @@ class Script {
     // timers
     void remove_all_timers();
     bool is_new_timer_suspended(void);
+
+    // transitions
+    void start_transition(Surface& surface, Transition& transition,
+        int callback);
+    void stop_transition(Surface& surface);
+    void stop_transitions();
+    void update_transitions();
 
     // debugging
     void print_stack();
@@ -395,6 +413,8 @@ class Script {
       surface_api_get_size,
       surface_api_set_transparency_color,
       surface_api_set_opacity,
+      surface_api_fade_in,
+      surface_api_fade_out,
       surface_meta_gc,
 
       // text surface API

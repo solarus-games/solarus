@@ -43,7 +43,8 @@ Transition::~Transition() {
  * @param game the current game if any (used by some kinds of transitions)
  * @return the transition created
  */
-Transition * Transition::create(Transition::Style style, Transition::Direction direction, Game *game) {
+Transition * Transition::create(Transition::Style style,
+    Transition::Direction direction, Game *game) {
 
   Transition *transition = NULL;
 

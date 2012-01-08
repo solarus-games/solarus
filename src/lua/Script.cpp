@@ -746,7 +746,10 @@ bool Script::call_script(int nb_arguments, int nb_results,
  */
 void Script::update() {
 
-  // update the timers
+  // transitions
+  update_transitions();
+
+  // timers
   std::map<int, Timer*>::iterator it;
 
   for (it = timers.begin(); it != timers.end(); it++) {

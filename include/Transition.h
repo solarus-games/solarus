@@ -45,17 +45,6 @@ class Transition {
       OUT = 1
     };
 
-  protected:
-
-    Game *game;                    /**< the current game if any (required by some kinds of transitions) */
-    Direction direction;           /**< direction of the transition (in or out) */
-    Surface *previous_surface;     /**< during an in transition, this is the surface that was displayed 
-				    * when the out transition was played */
-
-    Transition(Direction direction);
-
-  public:
-
     virtual ~Transition();
     static Transition *create(Style style, Direction direction, Game *game = NULL);
 
@@ -90,6 +79,16 @@ class Transition {
      * @param surface the surface to draw
      */
     virtual void display(Surface *surface) = 0;
+
+  protected:
+
+    Game *game;                    /**< the current game if any (required by some kinds of transitions) */
+    Direction direction;           /**< direction of the transition (in or out) */
+    Surface *previous_surface;     /**< during an in transition, this is the surface that was displayed
+                                    * when the out transition was played */
+
+    Transition(Direction direction);
+
 };
 
 #endif

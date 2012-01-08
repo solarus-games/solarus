@@ -20,6 +20,7 @@
 #include "lowlevel/Surface.h"
 #include "lowlevel/TextSurface.h"
 #include "Sprite.h"
+#include "TransitionFade.h"
 
 const char* Script::surface_module_name = "sol.surface";
 
@@ -35,6 +36,8 @@ void Script::initialize_surface_module() {
       { "get_size", surface_api_get_size },
       { "set_transparency_color", surface_api_set_transparency_color },
       { "set_opacity", surface_api_set_opacity },
+      { "fade_in", surface_api_fade_in },
+      { "fade_out", surface_api_fade_out },
       { NULL, NULL }
   };
 
@@ -174,6 +177,9 @@ int Script::surface_meta_gc(lua_State* l) {
   Script& script = get_script(l);
 
   Surface* surface = *((Surface**) luaL_checkudata(l, 1, surface_module_name));
+
+  script.stop_transition(*surface);
+
   if (script.surfaces_created.count(surface) > 0) {
     delete surface;
     script.surfaces_created.erase(surface);
@@ -211,6 +217,8 @@ int Script::surface_api_fill_color(lua_State* l) {
  */
 int Script::surface_api_draw(lua_State* l) {
 
+  Script& script = get_script(l);
+
   Surface& destination_surface = check_surface(l, 1);
 
   int x = 0;
@@ -223,6 +231,9 @@ int Script::surface_api_draw(lua_State* l) {
   // the second parameter may be a surface, a text surface or a sprite
   if (is_userdata(l, 2, surface_module_name)) {
     Surface& surface = check_surface(l, 2);
+    if (script.transitions.count(&surface) > 0) {
+      script.transitions[&surface].transition->display(&surface);
+    }
     surface.blit(&destination_surface, Rectangle(x, y));
   }
   else if (is_userdata(l, 2, text_surface_module_name)) {
@@ -293,4 +304,157 @@ int Script::surface_api_set_opacity(lua_State* l) {
   surface.set_opacity(opacity);
 
   return 0;
+}
+
+/**
+ * @brief Starts playing a fade-in effect on a surface.
+ *
+ * - Argument 1 (surface): a surface
+ * - Optional argument 2 (number): delay in milliseconds between two frames
+ * in the fade-in animation (default 20)
+ * - Optional argument 3 (function): a Lua function to be called when the
+ * fade-in effect finishes (can be the second argument if you don't set a delay)
+ *
+ * @param l the Lua context that is calling this function
+ * @return the number of values to return to Lua
+ */
+int Script::surface_api_fade_in(lua_State* l) {
+
+  Script& script = get_script(l);
+
+  uint32_t delay = 20;
+  int callback = LUA_REFNIL;
+
+  Surface& surface = check_surface(l, 1);
+
+  if (lua_gettop(l) >= 2) {
+    // the second argument can be the delay or the callback
+    int index = 2;
+    if (lua_isnumber(l, index)) {
+      delay = lua_tonumber(l, index);
+      index++;
+    }
+    // the next argument (if any) is the callback
+    if (lua_gettop(l) >= index) {
+      // store the callback into the registry
+      lua_settop(l, index);
+      callback = luaL_ref(l, LUA_REGISTRYINDEX);
+    }
+  }
+
+  TransitionFade* transition = new TransitionFade(Transition::IN);
+  transition->set_delay(delay);
+  script.start_transition(surface, *transition, callback);
+
+  return 0;
+}
+
+/**
+ * @brief Starts playing a fade-out effect on a surface.
+ *
+ * - Argument 1 (surface): a surface
+ * - Optional argument 2 (number): delay in milliseconds between two frames
+ * in the fade-out animation (default 20)
+ * - Optional argument 3 (function): a Lua function to be called when the
+ * fade-out effect finishes (can be the second argument if you don't set a delay)
+ *
+ * @param l the Lua context that is calling this function
+ * @return the number of values to return to Lua
+ */
+int Script::surface_api_fade_out(lua_State* l) {
+
+  Script& script = get_script(l);
+
+  uint32_t delay = 20;
+  int callback = LUA_REFNIL;
+
+  Surface& surface = check_surface(l, 1);
+
+  if (lua_gettop(l) >= 2) {
+    // the second argument can be the delay or the callback
+    int index = 2;
+    if (lua_isnumber(l, index)) {
+      delay = lua_tonumber(l, index);
+      index++;
+    }
+    // the next argument (if any) is the callback
+    if (lua_gettop(l) >= index) {
+      // store the callback into the registry
+      lua_settop(l, index);
+      callback = luaL_ref(l, LUA_REGISTRYINDEX);
+    }
+  }
+
+  Transition* transition = Transition::create(
+      Transition::FADE, Transition::OUT, &script.get_game());
+  ((TransitionFade*) transition)->set_delay(delay);
+  script.start_transition(surface, *transition, callback);
+
+  return 0;
+}
+
+/**
+ * @brief Starts a transition effect on a surface.
+ * @param surface a surface
+ * @param transition a transition to apply to this surface
+ * @param callback a lua ref to the function to call when the transition,
+ * finishes or LUA_REFNIL to call no function
+ */
+void Script::start_transition(Surface& surface, Transition& transition, int callback) {
+
+  // cancel any previous transition;
+  stop_transition(surface);
+
+  transitions[&surface].transition = &transition;
+  transitions[&surface].callback = callback;
+
+  transition.start();
+}
+
+#include <iostream>
+/**
+ * @brief Stops the transition effect (if any) applied to the specified
+ * surface.
+ * @param surface a surface
+ */
+void Script::stop_transition(Surface& surface) {
+
+  if (transitions.count(&surface) > 0) {
+    TransitionInfo info = transitions[&surface];
+    luaL_unref(l, LUA_REGISTRYINDEX, info.callback); // forget the callback if any
+    delete info.transition; // destroy the transition object
+    transitions.erase(&surface);
+  }
+}
+
+/**
+ * @brief Stops any transition effect started by this script.
+ */
+void Script::stop_transitions() {
+
+  std::map<Surface*, TransitionInfo>::iterator it;
+  for (it = transitions.begin(); it != transitions.end(); it++) {
+    TransitionInfo info = it->second;
+    luaL_unref(l, LUA_REGISTRYINDEX, info.callback);
+    delete info.transition;
+  }
+  transitions.clear();
+}
+
+/**
+ * @brief Updates transitions currently applied to surfaces by this script.
+ */
+void Script::update_transitions() {
+
+  std::map<Surface*, TransitionInfo>::iterator it;
+  for (it = transitions.begin(); it != transitions.end(); it++) {
+    TransitionInfo info = it->second;
+    info.transition->update();
+    if (info.transition->is_finished()) {
+      delete info.transition;
+      do_callback(info.callback);
+      transitions.erase(it);
+      break;
+    }
+  }
 }

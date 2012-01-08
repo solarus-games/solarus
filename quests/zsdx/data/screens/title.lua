@@ -102,6 +102,9 @@ function phase_title()
     sol.main.timer_start(move_clouds, 50)
   end
   sol.main.timer_start(move_clouds, 50)
+
+  -- show an opening transition
+  title_surface:fade_in(30)
 end
 
 function event_display(destination_surface)

@@ -23,7 +23,9 @@
  * @param direction direction of the transition effect (in or out)
  */
 TransitionFade::TransitionFade(Transition::Direction direction):
-  Transition(direction), alpha(-1) {
+  Transition(direction),
+  finished(false),
+  alpha(-1) {
 
   if (direction == OUT) {
     alpha_start = 256;
@@ -75,10 +77,11 @@ bool TransitionFade::is_started() {
 
 /**
  * @brief Returns whether the transition effect is finished.
- * @return true
+ * @return true if the transition effect is finished
  */
 bool TransitionFade::is_finished() {
-  return alpha == alpha_limit;
+
+  return finished;
 }
 
 /**
@@ -110,5 +113,8 @@ void TransitionFade::display(Surface *surface) {
   // display the transition effect on the surface
   int alpha_impl = std::min(alpha, 255);
   surface->set_opacity(alpha_impl);
+
+  // make sure the final displaying was made before finishing
+  finished = (alpha == alpha_limit);
 }
 

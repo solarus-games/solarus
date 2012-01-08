@@ -27,6 +27,7 @@ class TransitionFade: public Transition {
 
   private:
 
+    bool finished;
     int alpha_start;
     int alpha_limit;
     int alpha_increment;
@@ -47,7 +48,6 @@ class TransitionFade: public Transition {
     bool is_finished();
     void update();
     void display(Surface *surface);
-
 };
 
 #endif

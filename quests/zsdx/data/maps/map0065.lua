@@ -87,10 +87,10 @@ function init_guard(guard_name, x, y, direction, path)
     sol.main.movement_set_property(m, "loop", true)
     sol.main.movement_set_property(m, "ignore_obstacles", true)
     sol.map.npc_start_movement(guard_name, m)
-    sol.main.sprite_set_animation(sprite, "walking")
+    sprite:set_animation("walking")
   else
-    sol.main.sprite_set_animation(sprite, "stopped")
-    sol.main.sprite_set_direction(sprite, direction)
+    sprite:set_animation("stopped")
+    sprite:set_direction(direction)
   end
 end
 

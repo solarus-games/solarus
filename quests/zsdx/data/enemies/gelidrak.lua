@@ -31,15 +31,15 @@ function event_appear()
   local my_name = sol.enemy.get_name()
   head = my_name .. "_head"
   sol.enemy.create_son(head, "gelidrak_head", 0, 48)
-  head_ball_sprite = sol.main.sprite_create("enemies/gelidrak")
-  sol.main.sprite_set_animation(head_ball_sprite, "head_ball")
+  head_ball_sprite = sol.sprite.create("enemies/gelidrak")
+  head_ball_sprite:set_animation("head_ball")
 
   -- create the tail
   local my_name = sol.enemy.get_name()
   tail = my_name .. "_tail"
   sol.enemy.create_son(tail, "gelidrak_tail", 0, -112)
-  tail_ball_sprite = sol.main.sprite_create("enemies/gelidrak")
-  sol.main.sprite_set_animation(tail_ball_sprite, "tail_ball")
+  tail_ball_sprite = sol.sprite.create("enemies/gelidrak")
+  tail_ball_sprite:set_animation("tail_ball")
 
   initial_xy.x, initial_xy.y = sol.enemy.get_position()
 end
@@ -48,10 +48,10 @@ function event_restart()
 
   local sprite = sol.enemy.get_sprite()
   if head_vulnerable then
-    sol.main.sprite_set_animation(sprite, "fast")
+    sprite:set_animation("fast")
     sol.enemy.set_can_attack(false)
   else
-    sol.main.sprite_set_animation(sprite, "walking")
+    sprite:set_animation("walking")
     local m = sol.main.random_movement_create(32)
     sol.enemy.start_movement(m)
   end
@@ -115,7 +115,7 @@ function event_message_received(src_enemy, message)
       head_vulnerable = true
       sol.enemy.set_can_attack(false)
       local sprite = sol.enemy.get_sprite()
-      sol.main.sprite_set_animation(sprite, "fast")
+      sprite:set_animation("fast")
       sol.enemy.stop_movement()
       sol.enemy.send_message(head, "vulnerable")
     elseif message == "recovering" then

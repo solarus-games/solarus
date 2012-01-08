@@ -21,6 +21,6 @@ function event_movement_changed()
   local m = sol.enemy.get_movement()
   local direction4 = sol.main.movement_get_property(m, "displayed_direction")
   local sprite = sol.enemy.get_sprite()
-  sol.main.sprite_set_direction(sprite, direction4)
+  sprite:set_direction(direction4)
 end
 

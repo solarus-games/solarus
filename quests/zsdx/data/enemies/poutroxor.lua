@@ -46,10 +46,10 @@ end
 -- Make the skeleton throw a blue flame
 function skeleton_attack()
 
-  sol.main.sprite_set_animation(skeleton, "attack")
+  skeleton:set_animation("attack")
   sol.main.play_sound("ice")
   sol.main.timer_start(function()
-    sol.main.sprite_set_animation(skeleton, "walking")
+    skeleton:set_animation("walking")
     nb_flames_created = nb_flames_created + 1
     local son_name = sol.enemy.get_name() .. "_son_" .. nb_flames_created
     sol.enemy.create_son(son_name, "blue_flame", 0, -48, 2)
@@ -67,7 +67,7 @@ function event_hurt(attack, life_lost)
   if phase == 1 and sol.enemy.get_life() <= 7 then
     sol.enemy.stop_movement()
     sol.main.play_sound("enemy_killed")
-    sol.main.sprite_set_animation(skeleton, "hurt")
+    skeleton:set_animation("hurt")
     phase = 2
     sol.enemy.remove_sprite(skeleton)
     sol.map.enemy_remove_group(sol.enemy.get_name() .. "_son")
@@ -83,7 +83,7 @@ function big_attack()
 
   nb_flames_created = 0
   sol.enemy.stop_movement()
-  sol.main.sprite_set_animation(head, "attack")
+  head:set_animation("attack")
   sol.main.play_sound("lamp")
   sol.main.timer_start(repeat_flame, 500)
 end

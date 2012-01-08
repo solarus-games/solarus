@@ -31,8 +31,8 @@ function event_appear()
   sol.enemy.set_invincible()
 
   -- create a second sprite that stays in the script
-  link_sprite = sol.main.sprite_create("enemies/chain_and_ball")
-  sol.main.sprite_set_animation(link_sprite, "chain")
+  link_sprite = sol.sprite.create("enemies/chain_and_ball")
+  link_sprite:set_animation("chain")
 
   -- initialize the links of the chain
   for i = 1, nb_links do

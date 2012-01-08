@@ -22,7 +22,7 @@ function event_map_started(destination_point_name)
 
   for k, v in pairs(game_2_slots) do
     v.sprite = sol.map.npc_get_sprite(k)
-    sol.main.sprite_set_frame(v.sprite, v.initial_frame)
+    v.sprite:set_frame(v.initial_frame)
   end
   game_2_man_sprite = sol.map.npc_get_sprite("game_2_man")
 end
@@ -89,22 +89,22 @@ function event_npc_interaction(npc_name)
     
     if playing_game_2 then
 
-      sol.main.sprite_set_direction(game_2_man_sprite, 0)
+      game_2_man_sprite:set_direction(0)
 
       if game_2_slots[npc_name].symbol == -1 then
 	-- stop this reel
 
 	local sprite = game_2_slots[npc_name].sprite
-	local current_symbol = math.floor(sol.main.sprite_get_frame(sprite) / 3)
+	local current_symbol = math.floor(sprite:get_frame() / 3)
 	game_2_slots[npc_name].symbol = (current_symbol + math.random(2)) % 7
 	game_2_slots[npc_name].current_delay = game_2_slots[npc_name].current_delay + 100
-	sol.main.sprite_set_frame_delay(sprite, game_2_slots[npc_name].current_delay)
+	sprite:set_frame_delay(game_2_slots[npc_name].current_delay)
 
 	-- test code (temporary code to win every game)
 	--	 for k, v in pairs(game_2_slots) do
 	--	    v.symbol = game_2_slots[npc_name].symbol
 	--	    v.current_delay = game_2_slots[npc_name].current_delay + 100
-	--	    sol.main.sprite_set_frame_delay(v.sprite, v.current_delay)
+	--	    v.sprite:set_frame_delay(v.current_delay)
 	--	 end
 	-----------
 
@@ -185,10 +185,10 @@ function event_dialog_finished(dialog_id, answer)
       for k, v in pairs(game_2_slots) do
 	v.symbol = -1
 	v.current_delay = v.initial_delay
-	sol.main.sprite_set_animation(v.sprite, "started")
-	sol.main.sprite_set_frame_delay(v.sprite, v.current_delay)
-	sol.main.sprite_set_frame(v.sprite, v.initial_frame)
-	sol.main.sprite_set_paused(v.sprite, false)
+	v.sprite:set_animation("started")
+	v.sprite:set_frame_delay(v.current_delay)
+	v.sprite:set_frame(v.initial_frame)
+	v.sprite:set_paused(false)
       end
     end
   elseif string.find(dialog_id, "^rupee_house.game_2.reward.") then
@@ -311,7 +311,7 @@ function event_update()
       local frame = sol.main.sprite_get_frame(v.sprite)
 
       if not sol.main.sprite_is_paused(v.sprite) and frame == v.symbol * 3 then
-	sol.main.sprite_set_paused(v.sprite, true)
+	v.sprite:set_paused(true)
 	v.initial_frame = frame
 	nb_finished = nb_finished + 1
 

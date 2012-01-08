@@ -25,9 +25,9 @@ function event_movement_changed()
     local sprite = sol.item.get_sprite()
     local angle = tonumber(sol.main.movement_get_property(movement, "angle")) -- retrieve the current movement's direction
     if angle >= 90 and angle < 270 then
-      sol.main.sprite_set_direction(sprite, 1) -- look to the left
+      sprite:set_direction(1) -- look to the left
     else
-      sol.main.sprite_set_direction(sprite, 0) -- look to the right
+      sprite:set_direction(0) -- look to the right
     end
   end
 end

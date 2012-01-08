@@ -70,9 +70,9 @@ function event_movement_changed()
   direction4 = sol.main.movement_get_property(m, "displayed_direction")
   sprite = sol.enemy.get_sprite()
   if direction4 == 1 then
-    sol.main.sprite_set_direction(sprite, 1)
+    sprite:set_direction(1)
   else
-    sol.main.sprite_set_direction(sprite, 0)
+    sprite:set_direction(0)
   end
 end
 
@@ -105,7 +105,7 @@ function jump()
   sol.enemy.start_movement(m)
   sol.main.play_sound("jump")
   local sprite = sol.enemy.get_sprite()
-  sol.main.sprite_set_animation(sprite, "jumping")
+  sprite:set_animation("jumping")
   sol.enemy.set_attack_consequence("sword", "protected")
   sol.enemy.set_attack_consequence("thrown_item", "ignored")
   vulnerable = false
@@ -121,7 +121,7 @@ end
 function event_movement_finished(m)
 
   local sprite = sol.enemy.get_sprite()
-  if sol.main.sprite_get_animation(sprite) == "jumping" then
+  if sprite:get_animation() == "jumping" then
     finish_jump()
   end
 end

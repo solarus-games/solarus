@@ -82,7 +82,7 @@ function event_appear()
     sol.enemy.set_obstacle_behavior(properties.obstacle_behavior)
   end
   local sprite = sol.enemy.get_sprite()
-  sol.main.sprite_set_animation(sprite, properties.asleep_animation)
+  sprite:set_animation(properties.asleep_animation)
 end
 
 function event_movement_changed()
@@ -90,7 +90,7 @@ function event_movement_changed()
   local m = sol.enemy.get_movement()
   local direction4 = sol.main.movement_get_property(m, "displayed_direction")
   local sprite = sol.enemy.get_sprite()
-  sol.main.sprite_set_direction(sprite, direction4)
+  sprite:set_direction(direction4)
 end
 
 function event_obstacle_reached(movement)
@@ -104,7 +104,7 @@ function event_restart()
 
   if not awaken then
     local sprite = sol.enemy.get_sprite()
-    sol.main.sprite_set_animation(sprite, properties.asleep_animation)
+    sprite:set_animation(properties.asleep_animation)
   else
     go_hero()
   end
@@ -140,7 +140,7 @@ function event_sprite_animation_finished(sprite, animation)
 
   -- if the awakening transition is finished, make the enemy go toward the hero.
   if animation == properties.awaking_animation then
-    sol.main.sprite_set_animation(sprite, properties.normal_animation)
+    sprite:set_animation(properties.normal_animation)
     sol.enemy.set_size(16, 16)
     sol.enemy.set_origin(8, 13)
     sol.enemy.snap_to_grid()
@@ -154,7 +154,7 @@ function wake_up()
 
   sol.enemy.stop_movement()
   local sprite = sol.enemy.get_sprite()
-  sol.main.sprite_set_animation(sprite, properties.awaking_animation)
+  sprite:set_animation(properties.awaking_animation)
   if properties.awakening_sound ~= nil then
       sol.main.play_sound(properties.awakening_sound)
   end

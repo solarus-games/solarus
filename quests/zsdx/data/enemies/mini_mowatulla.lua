@@ -14,7 +14,7 @@ function event_appear()
   sol.enemy.set_invincible()
 
   local sprite = sol.enemy.get_sprite()
-  sol.main.sprite_set_animation(sprite, "shell")
+  sprite:set_animation("shell")
   in_shell = true
   sol.main.timer_start(break_shell, 1000)
 end
@@ -24,7 +24,7 @@ function event_restart()
 
   if in_shell then
     local sprite = sol.enemy.get_sprite()
-    sol.main.sprite_set_animation(sprite, "shell")
+    sprite:set_animation("shell")
     local m = sol.main.target_movement_create(64)
     sol.enemy.start_movement(m)
   else
@@ -38,7 +38,7 @@ function break_shell()
 
   local sprite = sol.enemy.get_sprite()
   sol.enemy.stop_movement()
-  sol.main.sprite_set_animation(sprite, "shell_breaking")
+  sprite:set_animation("shell_breaking")
 end
 
 --  The animation of a sprite is finished
@@ -46,7 +46,7 @@ function event_sprite_animation_finished(sprite, animation)
 
   -- if the shell was breaking, let the mini mowatulla go
   if animation == "shell_breaking" then
-    sol.main.sprite_set_animation(sprite, "walking")
+    sprite:set_animation("walking")
     sol.enemy.snap_to_grid()
     sol.enemy.set_default_attack_consequences()
     in_shell = false

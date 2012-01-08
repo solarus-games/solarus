@@ -32,7 +32,7 @@ function event_dialog_finished(dialog_id)
     sol.map.npc_start_movement("zelda", m)
 
     local zelda_sprite = sol.map.npc_get_sprite("zelda")
-    sol.main.sprite_set_animation(zelda_sprite, "walking")
+    zelda_sprite:set_animation("walking")
 
     sol.map.door_close("door")
   end

@@ -70,7 +70,7 @@ function event_message_received(src_enemy, message)
       sol.enemy.set_can_attack(false)
       sol.enemy.set_attack_consequence("sword", 1)
       local sprite = sol.enemy.get_sprite()
-      sol.main.sprite_set_animation(sprite, "walking")
+      sprite:set_animation("walking")
       sol.main.timer_stop_all()
       sol.main.timer_start(function()
 	vulnerable = false
@@ -106,7 +106,7 @@ function throw_flames()
     nb_flames_created = 0
     sol.enemy.stop_movement()
     local sprite = sol.enemy.get_sprite()
-    sol.main.sprite_set_animation(sprite, "preparing_flame")
+    sprite:set_animation("preparing_flame")
     sol.main.play_sound("lamp")
     sol.main.timer_start(repeat_flame, 500)
   end

@@ -41,7 +41,7 @@ function check_hero()
   if near_hero and not explosion_soon then
     explosion_soon = true
     local sprite = sol.enemy.get_sprite()
-    sol.main.sprite_set_animation(sprite, "hurt")
+    sprite:set_animation("hurt")
     sol.main.play_sound("creeper")
     sol.main.timer_start(explode_if_near_hero, 600)
   else
@@ -67,7 +67,7 @@ function explode_if_near_hero()
     explosion_soon = false
     sol.main.timer_start(check_hero, 400)
     local sprite = sol.enemy.get_sprite()
-    sol.main.sprite_set_animation(sprite, "walking")
+    sprite:set_animation("walking")
   else
     -- explode
     local x, y, layer = sol.enemy.get_position()

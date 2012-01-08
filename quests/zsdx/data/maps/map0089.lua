@@ -30,7 +30,7 @@ function random_walk(npc_name)
 
   local m = sol.main.random_path_movement_create(32)
   sol.map.npc_start_movement(npc_name, m)
-  sol.main.sprite_set_animation(sol.map.npc_get_sprite(npc_name), "walking")
+  sol.map.npc_get_sprite(npc_name):set_animation("walking")
 end
 
 function event_npc_interaction(npc_name)
@@ -53,7 +53,7 @@ function event_dialog_finished(dialog_id)
     local npc_name = "forbidden_door_npc"
     local sprite = sol.map.npc_get_sprite(npc_name)
     sol.map.npc_start_movement(npc_name, m)
-    sol.main.sprite_set_animation(sprite, "walking")
+    sprite:set_animation("walking")
     sol.map.hero_freeze()
   elseif dialog_id == "credits_4" then
    sol.main.timer_start(ending_next, 2000)
@@ -66,8 +66,8 @@ function event_npc_movement_finished(npc_name)
 
     sol.map.hero_unfreeze()
     local sprite = sol.map.npc_get_sprite(npc_name)
-    if sol.main.sprite_get_direction(sprite) == 1 then
-      sol.main.sprite_set_direction(sprite, 3)
+    if sprite:get_direction() == 1 then
+      sprite:set_direction(3)
       sol.map.hero_walk("4444", false, false)
     end
   end
@@ -83,7 +83,7 @@ function event_hero_on_sensor(sensor_name)
       local sprite = sol.map.npc_get_sprite(npc_name)
       local m = sol.main.path_movement_create("66", 32)
       sol.map.npc_start_movement(npc_name, m)
-      sol.main.sprite_set_animation(sprite, "walking")
+      sprite:set_animation("walking")
       sol.map.hero_freeze()
     end
   end

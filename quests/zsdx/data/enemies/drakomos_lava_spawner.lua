@@ -19,7 +19,7 @@ function event_restart()
   sol.enemy.set_can_attack(false)
   sol.main.timer_start(function()
     local sprite = sol.enemy.get_sprite()
-    sol.main.sprite_set_animation(sprite, "disappearing")
+    sprite:set_animation("disappearing")
     sol.main.play_sound("ice")
 
     if math.random(2) == 1 or sol.enemy.get_distance_to_hero() < 24 then

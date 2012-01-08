@@ -58,10 +58,10 @@ end
 function are_all_torches_on()
 
   return sol.map.npc_exists("torch1")
-    and sol.main.sprite_get_animation(sol.map.npc_get_sprite("torch1")) == "lit"
-    and sol.main.sprite_get_animation(sol.map.npc_get_sprite("torch2")) == "lit"
-    and sol.main.sprite_get_animation(sol.map.npc_get_sprite("torch3")) == "lit"
-    and sol.main.sprite_get_animation(sol.map.npc_get_sprite("torch4")) == "lit"
+    and sol.map.npc_get_sprite("torch1")):get_animation() == "lit"
+    and sol.map.npc_get_sprite("torch2")):get_animation() == "lit"
+    and sol.map.npc_get_sprite("torch3")):get_animation() == "lit"
+    and sol.map.npc_get_sprite("torch4")):get_animation() == "lit"
 end
 
 function lock_torches()

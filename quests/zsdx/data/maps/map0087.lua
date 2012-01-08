@@ -4,8 +4,8 @@ function event_map_opening_transition_finished(destination_point_name)
 
   local solarus_child_sprite = sol.map.npc_get_sprite("solarus_child")
   sol.map.npc_set_position("solarus_child", 160, 165)
-  sol.main.sprite_set_animation(solarus_child_sprite, "stopped")
-  sol.main.sprite_set_animation_ignore_suspend(solarus_child_sprite, true)
+  solarus_child_sprite:set_animation("stopped")
+  solarus_child_sprite:set_ignore_suspend(true)
 end
 
 function event_npc_interaction(npc_name)
@@ -51,7 +51,7 @@ end
 function agahnim_sequence_2()
 
   local sprite = sol.map.npc_get_sprite("solarus_child")
-  sol.main.sprite_fade(sprite, 1)
+  sprite:fade(1)
   sol.main.play_music("none")
   sol.main.play_sound("warp")
   sol.main.timer_start(agahnim_sequence_3, 3000)
@@ -73,7 +73,7 @@ function agahnim_sequence_5()
 
 -- FIXME not working
 --  s = sol.map.npc_get_sprite("agahnim")
---  sol.main.sprite_fade(s, 1)
+--  s:fade(1)
 --  sol.main.play_sound("warp")
   sol.main.timer_start(agahnim_sequence_6, 2000)
 end

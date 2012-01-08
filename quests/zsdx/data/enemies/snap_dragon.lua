@@ -41,18 +41,18 @@ function go_random()
   sol.enemy.start_movement(m)
 
   local sprite = sol.enemy.get_sprite()
-  sol.main.sprite_set_direction(sprite, rand4 - 1)
+  sprite:set_direction(rand4 - 1)
 
   sol.main.timer_stop_all()
   sol.main.timer_start(function()
-    sol.main.sprite_set_animation(sprite, "bite")
+    sprite:set_animation("bite")
   end, 300 + math.random(1500))
 end
 
 function event_sprite_animation_finished(sprite, animation)
 
   if animation == "bite" then
-    sol.main.sprite_set_animation(sprite, "walking")
+    sprite:set_animation("walking")
   end
 end
 

@@ -53,7 +53,7 @@ function go()
   local m = sol.main.random_path_movement_create(64)
   sol.enemy.start_movement(m)
   local sprite = sol.enemy.get_sprite()
-  sol.main.sprite_set_animation(sprite, "walking")
+  sprite:set_animation("walking")
 end
 
 function son_phase_soon()
@@ -65,7 +65,7 @@ end
 function son_phase()
 
   local sprite = sol.enemy.get_sprite()
-  sol.main.sprite_set_animation(sprite, "preparing_son")
+  sprite:set_animation("preparing_son")
   sol.main.play_sound("stone")
   sol.main.timer_start(throw_son, 1500)
 
@@ -93,7 +93,7 @@ function throw_son()
   else
     -- finish the son phase
     local sprite = sol.enemy.get_sprite()
-    sol.main.sprite_set_animation(sprite, "walking")
+    sprite:set_animation("walking")
     local duration = 3500 + (math.random(3) * 1000)
     sol.main.timer_start(jump_or_son_phase, duration)
     sol.main.timer_start(go, 500)
@@ -140,7 +140,7 @@ function jump_phase()
   sol.main.movement_set_property(m, "speed", 96)
   sol.enemy.start_movement(m)
   local sprite = sol.enemy.get_sprite()
-  sol.main.sprite_set_animation(sprite, "jumping")
+  sprite:set_animation("jumping")
   sol.main.play_sound("jump")
 end
 

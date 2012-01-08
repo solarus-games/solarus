@@ -26,7 +26,7 @@ function event_obstacle_reached()
 
   -- look to the left or to the right
   local sprite = sol.enemy.get_sprite()
-  local animation = sol.main.sprite_get_animation(sprite)
+  local animation = sprite:get_animation()
   if animation == "walking" then
     look_left_or_right()
   end
@@ -42,7 +42,7 @@ end
 function event_sprite_animation_finished(sprite, animation)
 
   -- if the enemy was stopped and looking to a direction, go to that direction
-  local direction = sol.main.sprite_get_direction(sprite)
+  local direction = sprite:get_direction()
   if animation == "stopped_watching_left" then
     go((direction + 1) % 4)
   elseif animation == "stopped_watching_right" then
@@ -55,8 +55,8 @@ function go(direction4)
 
   -- set the sprite
   local sprite = sol.enemy.get_sprite()
-  sol.main.sprite_set_animation(sprite, "walking")
-  sol.main.sprite_set_direction(sprite, direction4)
+  sprite:set_animation("walking")
+  sprite:set_direction(direction4)
 
   -- set the movement
   local m = sol.enemy.get_movement()
@@ -72,9 +72,9 @@ function look_left_or_right()
 
   local sprite = sol.enemy.get_sprite()
   if math.random(2) == 1 then
-    sol.main.sprite_set_animation(sprite, "stopped_watching_left")
+    sprite:set_animation("stopped_watching_left")
   else
-    sol.main.sprite_set_animation(sprite, "stopped_watching_right")
+    sprite:set_animation("stopped_watching_right")
   end
 end
 

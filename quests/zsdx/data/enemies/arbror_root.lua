@@ -24,12 +24,12 @@ function event_restart()
 
   local sprite = sol.enemy.get_sprite()
   if disappearing then
-    sol.main.sprite_set_animation(sprite, "disappearing")
+    sprite:set_animation("disappearing")
     sol.enemy.set_invincible()
     sol.enemy.stop_movement()
     sol.enemy.set_can_attack(false)
   elseif immobilized then
-    sol.main.sprite_set_animation(sprite, "hurt_long")
+    sprite:set_animation("hurt_long")
     sol.main.timer_stop_all()
     sol.main.timer_start(disappear, 10000)
     sol.enemy.stop_movement()
@@ -71,7 +71,7 @@ function disappear()
 
   if not disappearing then
     local sprite = sol.enemy.get_sprite()
-    sol.main.sprite_set_animation(sprite, "disappearing")
+    sprite:set_animation("disappearing")
     sol.enemy.set_invincible()
     sol.enemy.set_can_attack(false)
 

@@ -26,8 +26,8 @@ function event_appear()
   sol.enemy.set_attack_consequence_sprite(right_blade_sprite, "sword", "custom")
 
   -- when a blade sprite has the same animation than the main sprite, synchronize their frames
-  sol.main.sprite_synchronize(left_blade_sprite, main_sprite)
-  sol.main.sprite_synchronize(right_blade_sprite, main_sprite)
+  left_blade_sprite:synchronize(main_sprite)
+  right_blade_sprite:synchronize(main_sprite)
 end
 
 function event_restart()
@@ -61,12 +61,12 @@ function event_custom_attack_received(attack, sprite)
 
   if has_left_blade()
     and sprite == left_blade_sprite
-    and sol.main.sprite_get_animation(sprite) ~= "stopped" then  
+    and sprite:get_animation() ~= "stopped" then  
 
-    sol.main.sprite_set_animation(sprite, "hurt")
-    sol.main.sprite_set_animation(main_sprite, "stopped")
+    sprite:set_animation("hurt")
+    main_sprite:set_animation("stopped")
     if has_right_blade() then
-      sol.main.sprite_set_animation(right_blade_sprite, "stopped")
+      right_blade_sprite:set_animation("stopped")
     end
     sol.enemy.stop_movement()
     sol.main.play_sound("boss_hurt")
@@ -75,12 +75,12 @@ function event_custom_attack_received(attack, sprite)
 
   elseif has_right_blade()
     and sprite == right_blade_sprite
-    and sol.main.sprite_get_animation(sprite) ~= "stopped" then  
+    and sprite:get_animation() ~= "stopped" then  
 
-    sol.main.sprite_set_animation(sprite, "hurt")
-    sol.main.sprite_set_animation(main_sprite, "stopped")
+    sprite:set_animation("hurt")
+    main_sprite:set_animation("stopped")
     if has_left_blade() then
-      sol.main.sprite_set_animation(left_blade_sprite, "stopped")
+      left_blade_sprite:set_animation("stopped")
     end
     sol.enemy.stop_movement()
     sol.main.play_sound("boss_hurt")
@@ -109,12 +109,12 @@ function start_blade_attack()
       animation = "right_blade_attack"
     end
 
-    sol.main.sprite_set_animation(main_sprite, animation)
+    main_sprite:set_animation(animation)
     if has_left_blade() then
-      sol.main.sprite_set_animation(left_blade_sprite, animation)
+      left_blade_sprite:set_animation(animation)
     end
     if has_right_blade() then
-      sol.main.sprite_set_animation(right_blade_sprite, animation)
+      right_blade_sprite:set_animation(animation)
     end
 
     sol.enemy.stop_movement()

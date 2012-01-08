@@ -16,7 +16,7 @@ function event_appear()
   sol.enemy.set_obstacle_behavior("flying")
 
   local sprite = sol.enemy.get_sprite()
-  sol.main.sprite_set_animation(sprite, "egg")
+  sprite:set_animation("egg")
   in_egg = true
 end
 
@@ -25,7 +25,7 @@ function event_restart()
 
   if in_egg then
     local sprite = sol.enemy.get_sprite()
-    sol.main.sprite_set_animation(sprite, "egg")
+    sprite:set_animation("egg")
     local x, y = sol.enemy.get_position()
     local hero_x, hero_y = sol.map.hero_get_position()
     local angle = sol.main.get_angle(x, y, hero_x, hero_y)
@@ -42,7 +42,7 @@ end
 function event_obstacle_reached()
 
   local sprite = sol.enemy.get_sprite()
-  if sol.main.sprite_get_animation(sprite) == "egg" then
+  if sprite:get_animation() == "egg" then
     break_egg()
   end
 end
@@ -56,7 +56,7 @@ end
 -- The enemy receives an attack whose consequence is "custom"
 function event_custom_attack_received(attack, sprite)
 
-  if attack == "sword" and sol.main.sprite_get_animation(sprite) == "egg" then
+  if attack == "sword" and sprite:get_animation() == "egg" then
     -- the egg is hit by the sword
     break_egg()
     sol.main.play_sound("monster_hurt")
@@ -68,7 +68,7 @@ function break_egg()
 
   local sprite = sol.enemy.get_sprite()
   sol.enemy.stop_movement()
-  sol.main.sprite_set_animation(sprite, "egg_breaking")
+  sprite:set_animation("egg_breaking")
 end
 
 --  The animation of a sprite is finished
@@ -76,7 +76,7 @@ function event_sprite_animation_finished(sprite, animation)
 
   -- if the egg was breaking, make the minillosaur go
   if animation == "egg_breaking" then
-    sol.main.sprite_set_animation(sprite, "walking")
+    sprite:set_animation("walking")
     sol.enemy.set_size(16, 16)
     sol.enemy.set_origin(8, 12)
     go_hero()

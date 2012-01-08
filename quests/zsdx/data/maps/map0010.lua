@@ -14,7 +14,7 @@ function event_map_started(destination_point_name)
     sol.map.tile_set_group_enabled("vine", false)
   else
     local sprite = sol.map.npc_get_sprite("vine")
-    sol.main.sprite_set_paused(sprite, true)
+    sprite:set_paused(true)
   end
 end
 
@@ -54,7 +54,7 @@ function show_vine()
   end)
 
   local sprite = sol.map.npc_get_sprite("vine")
-  sol.main.sprite_set_animation_ignore_suspend(sprite, true)
-  sol.main.sprite_set_paused(sprite, false)
+  sprite:set_ignore_suspend(true)
+  sprite:set_paused(false)
 end
 

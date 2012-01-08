@@ -18,8 +18,8 @@ function event_appear()
   head_2 = my_name.."_head_2"
   sol.enemy.create_son(head_1, "drakomos_head", -76, 40)
   sol.enemy.create_son(head_2, "drakomos_head", 76, 40)
-  ball_sprite = sol.main.sprite_create("enemies/drakomos")
-  sol.main.sprite_set_animation(ball_sprite, "ball")
+  ball_sprite = sol.sprite.create("enemies/drakomos")
+  ball_sprite:set_animation("ball")
 end
 
 function event_update()

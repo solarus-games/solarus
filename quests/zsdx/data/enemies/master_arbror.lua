@@ -30,7 +30,7 @@ function event_restart()
   if not vulnerable then
     go()
   else
-    sol.main.sprite_set_animation(sprite, "vulnerable")
+    sprite:set_animation("vulnerable")
   end
 end
 
@@ -49,7 +49,7 @@ function event_hurt(attack, life_lost)
   local life = sol.enemy.get_life()
   if life <= 0 then
     local sprite = sol.enemy.get_sprite()
-    sol.main.sprite_set_animation_ignore_suspend(sprite, true)
+    sprite:set_ignore_suspend(true)
     sol.map.dialog_start("dungeon_3.arbror_killed")
     sol.main.timer_stop_all()
     remove_sons()
@@ -69,11 +69,11 @@ end
 function prepare_son()
 
   local sprite = sol.enemy.get_sprite()
-  if not vulnerable and sol.main.sprite_get_animation(sprite) == "walking" then
+  if not vulnerable and sprite:get_animation() == "walking" then
     son_prefix = sol.enemy.get_name() .. "_son"
     if sol.map.enemy_get_group_count(son_prefix) < nb_sons_immobilized_needed then
       local sprite = sol.enemy.get_sprite()
-      sol.main.sprite_set_animation(sprite, "preparing_son")
+      sprite:set_animation("preparing_son")
       sol.main.play_sound("hero_pushes")
       sol.main.timer_start(create_son, 1000)
       sol.enemy.stop_movement()
@@ -98,7 +98,7 @@ end
 function event_sprite_animation_finished(sprite, animation)
 
   if animation == "preparing_son" then
-    sol.main.sprite_set_animation(sprite, "walking")
+    sprite:set_animation("walking")
     sol.enemy.restart()
   elseif animation == "son_immobilized" then
 
@@ -109,13 +109,13 @@ function event_sprite_animation_finished(sprite, animation)
       sol.enemy.set_attack_consequence("sword", 1)
       sol.enemy.set_attack_consequence("arrow", 2)
       sol.enemy.stop_movement()
-      sol.main.sprite_set_animation(sprite, "vulnerable")
+      sprite:set_animation("vulnerable")
       sol.main.play_sound("boss_hurt")
       sol.main.timer_stop_all()
       sol.main.timer_start(stop_vulnerable, 4000)
       remove_sons()
     else
-      sol.main.sprite_set_animation(sprite, "walking")
+      sprite:set_animation("walking")
     end
   end
 end
@@ -126,13 +126,13 @@ function event_message_received(src_enemy, message)
     if nb_sons_immobilized < nb_sons_immobilized_needed then
       nb_sons_immobilized = nb_sons_immobilized + 1
       local sprite = sol.enemy.get_sprite()
-      local animation = sol.main.sprite_get_animation(sprite)
+      local animation = sprite:get_animation()
 
       if animation == "preparing_son" then
         sol.enemy.restart()
       end
 
-      sol.main.sprite_set_animation(sprite, "son_immobilized")
+      sprite:set_animation("son_immobilized")
     end
 
   elseif message == "end immobilized" then

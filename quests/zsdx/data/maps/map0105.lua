@@ -310,15 +310,15 @@ function event_npc_collision_fire(npc_name)
   if string.find(npc_name, "^torch") then
     
     local torch_sprite = sol.map.npc_get_sprite(npc_name)
-    if sol.main.sprite_get_animation(torch_sprite) == "unlit" then
+    if torch_sprite:get_animation() == "unlit" then
       -- temporarily light the torch up
-      sol.main.sprite_set_animation(torch_sprite, "lit")
+      torch_sprite:set_animation("lit")
       if nb_torches_lit == 0 then
         sol.map.tile_set_group_enabled("bridge", true)
       end
       nb_torches_lit = nb_torches_lit + 1
       sol.main.timer_start(function()
-        sol.main.sprite_set_animation(torch_sprite, "unlit")
+        torch_sprite:set_animation("unlit")
         nb_torches_lit = nb_torches_lit - 1
         if nb_torches_lit == 0 then
 	  sol.map.tile_set_group_enabled("bridge", false)

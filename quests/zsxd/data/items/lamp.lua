@@ -41,7 +41,7 @@ function unlight_oldest_torch()
   local entity = table.remove(temporary_lit_torches, 1)                   -- remove the torch from the FIFO
   if sol.map.npc_exists(entity) then                       -- see if it still exists
     local torch_sprite = sol.map.npc_get_sprite(entity)    -- get its sprite
-    sol.main.sprite_set_animation(torch_sprite, "unlit")                  -- change the animation
+    torch_sprite:set_animation("unlit")                  -- change the animation
   end
 
   if #temporary_lit_torches == 0 and was_dark_room then
@@ -84,9 +84,9 @@ function event_npc_collision_fire(npc_name)
   if string.find(npc_name, "^torch") then
     
     local torch_sprite = sol.map.npc_get_sprite(npc_name)
-    if sol.main.sprite_get_animation(torch_sprite) == "unlit" then
+    if torch_sprite:get_animation() == "unlit" then
       -- temporarily light the torch up
-      sol.main.sprite_set_animation(torch_sprite, "lit")
+      torch_sprite:set_animation("lit")
       sol.main.timer_start(unlight_oldest_torch, 10000)
       table.insert(temporary_lit_torches, npc_name)
 

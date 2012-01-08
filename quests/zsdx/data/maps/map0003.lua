@@ -48,7 +48,7 @@ function random_walk(npc_name)
 
   local m = sol.main.random_path_movement_create(32)
   sol.map.npc_start_movement(npc_name, m)
-  sol.main.sprite_set_animation(sol.map.npc_get_sprite(npc_name), "walking")
+  sol.map.npc_get_sprite(npc_name):set_animation("walking")
 end
 
 -- Function called when the player wants to talk to a non-playing character.
@@ -109,7 +109,7 @@ function event_dialog_finished(dialog_id, answer)
     sol.main.movement_set_property(m, "ignore_obstacles", true)
     sol.main.movement_set_property(m, "speed", monkey_jump_speed)
     sol.map.npc_start_movement("monkey", m)
-    sol.main.sprite_set_animation(monkey_sprite, "jumping")
+    monkey_sprite:set_animation("jumping")
     monkey_jumps = 1
     sol.game.savegame_set_boolean(24, true)
 
@@ -131,7 +131,7 @@ function event_npc_movement_finished(npc_name)
     sol.main.movement_set_property(m, "ignore_obstacles", true)
     sol.main.movement_set_property(m, "speed", monkey_jump_speed)
     sol.map.npc_start_movement("monkey", m)
-    sol.main.sprite_set_animation(monkey_sprite, "jumping")
+    monkey_sprite:set_animation("jumping")
     monkey_jumps = 3
   else
     -- last jump finished: remove the monkey from the map and unfreeze the hero
@@ -148,7 +148,7 @@ function monkey_timer()
   sol.main.movement_set_property(m, "ignore_obstacles", true)
   sol.main.movement_set_property(m, "speed", monkey_jump_speed)
   sol.map.npc_start_movement("monkey", m)
-  sol.main.sprite_set_animation(monkey_sprite, "jumping")
+  monkey_sprite:set_animation("jumping")
   monkey_jumps = 2
 end
 

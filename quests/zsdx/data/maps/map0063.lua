@@ -38,7 +38,7 @@ function init_guard(guard_name, path)
   sol.main.movement_set_property(m, "loop", true)
   sol.main.movement_set_property(m, "ignore_obstacles", true)
   sol.map.npc_start_movement(guard_name, m)
-  sol.main.sprite_set_animation(sprite, "walking")
+  sprite:set_animation("walking")
 end
 
 function event_hero_on_sensor(sensor_name)
@@ -102,9 +102,9 @@ end
 function are_all_torches_on()
 
   return sol.map.npc_exists("torch_1")
-      and sol.main.sprite_get_animation(sol.map.npc_get_sprite("torch_1")) == "lit"
-      and sol.main.sprite_get_animation(sol.map.npc_get_sprite("torch_2")) == "lit"
-      and sol.main.sprite_get_animation(sol.map.npc_get_sprite("torch_3")) == "lit"
+      and sol.map.npc_get_sprite("torch_1")):get_animation() == "lit"
+      and sol.map.npc_get_sprite("torch_2")):get_animation() == "lit"
+      and sol.map.npc_get_sprite("torch_3")):get_animation() == "lit"
 end
 
 -- Makes all torches on forever

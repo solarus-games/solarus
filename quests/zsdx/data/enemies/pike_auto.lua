@@ -22,7 +22,7 @@ end
 function event_restart()
 
   local sprite = sol.enemy.get_sprite()
-  local direction4 = sol.main.sprite_get_direction(sprite)
+  local direction4 = sprite:get_direction()
   local m = sol.main.path_movement_create(tostring(direction4 * 2), 192)
   sol.main.movement_set_property(m, "loop", true)
   sol.enemy.start_movement(m)
@@ -31,8 +31,8 @@ end
 function event_obstacle_reached()
 
   local sprite = sol.enemy.get_sprite()
-  local direction4 = sol.main.sprite_get_direction(sprite)
-  sol.main.sprite_set_direction(sprite, (direction4 + 2) % 4)
+  local direction4 = sprite:get_direction()
+  sprite:set_direction((direction4 + 2) % 4)
 
   local x, y = sol.enemy.get_position()
   local hero_x, hero_y = sol.map.hero_get_position()

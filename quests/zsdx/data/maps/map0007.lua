@@ -23,7 +23,7 @@ function event_map_started(destination_point_name)
     sol.map.npc_remove("inferno")
   else
     local sprite = sol.map.npc_get_sprite("inferno")
-    sol.main.sprite_set_animation_ignore_suspend(sprite, true)
+    sprite:set_ignore_suspend(true)
     if sol.game.savegame_get_boolean(914) then
       inferno_set_open()
     end
@@ -98,7 +98,7 @@ function event_hero_on_sensor(sensor_name)
   -- Inferno
   if sensor_name == "inferno_sensor" then
     local sprite = sol.map.npc_get_sprite("inferno")
-    sol.main.sprite_set_animation(sprite, "opening")
+    sprite:set_animation("opening")
     sol.main.timer_start(inferno_open_finish, 1050)
     sol.map.hero_freeze()
     sol.map.hero_set_direction(1)
@@ -129,7 +129,7 @@ end
 function inferno_set_open()
 
   local sprite = sol.map.npc_get_sprite("inferno")
-  sol.main.sprite_set_animation(sprite, "open")
+  sprite:set_animation("open")
   sol.map.teletransporter_set_enabled("to_dungeon_6", true)
 end
 

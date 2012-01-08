@@ -100,8 +100,8 @@ function event_movement_changed()
   if not being_pushed then
     movement = sol.enemy.get_movement()
     local direction4 = sol.main.movement_get_property(movement, "displayed_direction")
-    sol.main.sprite_set_direction(main_sprite, direction4)
-    sol.main.sprite_set_direction(sword_sprite, direction4)
+    main_sprite:set_direction(direction4)
+    sword_sprite:set_direction(direction4)
   end
 end
 

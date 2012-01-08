@@ -12,7 +12,7 @@ function show_fairy()
 
   sol.map.npc_set_position("great_fairy", 160, 77)
   local sprite = sol.map.npc_get_sprite("great_fairy")
-  sol.main.sprite_set_animation_ignore_suspend(sprite, true)
+  sprite:set_ignore_suspend(true)
   sol.map.npc_remove("torch_1")
   sol.map.npc_remove("torch_2")
   sol.map.npc_remove("torch_3")
@@ -30,10 +30,10 @@ end
 function are_all_torches_on()
 
   return sol.map.npc_exists("torch_1")
-      and sol.main.sprite_get_animation(sol.map.npc_get_sprite("torch_1")) == "lit"
-      and sol.main.sprite_get_animation(sol.map.npc_get_sprite("torch_2")) == "lit"
-      and sol.main.sprite_get_animation(sol.map.npc_get_sprite("torch_3")) == "lit"
-      and sol.main.sprite_get_animation(sol.map.npc_get_sprite("torch_4")) == "lit" 
+      and sol.map.npc_get_sprite("torch_1")):get_animation() == "lit"
+      and sol.map.npc_get_sprite("torch_2")):get_animation() == "lit"
+      and sol.map.npc_get_sprite("torch_3")):get_animation() == "lit"
+      and sol.map.npc_get_sprite("torch_4")):get_animation() == "lit" 
 end
 
 function event_update()

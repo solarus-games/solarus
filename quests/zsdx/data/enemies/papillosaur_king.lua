@@ -69,7 +69,7 @@ end
 function egg_phase()
 
   local sprite = sol.enemy.get_sprite()
-  sol.main.sprite_set_animation(sprite, "preparing_egg")
+  sprite:set_animation("preparing_egg")
   sol.main.play_sound("boss_charge")
   sol.main.timer_start(throw_egg, 1500)
 
@@ -95,7 +95,7 @@ function throw_egg()
   else
     -- finish the egg phase
     local sprite = sol.enemy.get_sprite()
-    sol.main.sprite_set_animation(sprite, "walking")
+    sprite:set_animation("walking")
     -- Don't throw eggs when desperate!
     if sol.enemy.get_life() > 1 then
       -- Schedule the next one in a few seconds

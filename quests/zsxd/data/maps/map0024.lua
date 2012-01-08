@@ -103,7 +103,7 @@ function event_npc_interaction(npc_name)
   elseif npc_name == "GC32" then
     guichet_32()
   elseif npc_name == "GC33Front" then
-    sol.main.sprite_set_direction(guichet33_sprite, 3)
+    guichet33_sprite:set_direction(3)
     guichet_33()
   elseif npc_name == "GC36" then
     guichet_36()

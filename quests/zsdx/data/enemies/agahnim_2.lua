@@ -45,7 +45,7 @@ function event_appear()
   sol.enemy.set_can_attack(false)
 
   local sprite = sol.enemy.get_sprite()
-  sol.main.sprite_set_animation(sprite, "stopped")
+  sprite:set_animation("stopped")
 end
 
 function event_restart()
@@ -53,8 +53,8 @@ function event_restart()
   vulnerable = false
   sol.main.timer_stop_all()
   local sprite = sol.enemy.get_sprite()
-  sol.main.sprite_set_animation_ignore_suspend(sprite, false)
-  sol.main.sprite_fade(sprite, 1)
+  sprite:set_ignore_suspend(false)
+  sprite:fade(1)
   sol.main.timer_start(hide, 700)
 end
 
@@ -62,7 +62,7 @@ function event_update()
 
   -- look in the direction of the hero
   local sprite = sol.enemy.get_sprite()
-  sol.main.sprite_set_direction(sprite, get_direction4_to_hero())
+  sprite:set_direction(get_direction4_to_hero())
 end
 
 function get_direction4_to_hero()
@@ -88,8 +88,8 @@ function unhide()
   local position = (positions[math.random(#positions)])
   sol.enemy.set_position(position.x, position.y)
   local sprite = sol.enemy.get_sprite()
-  sol.main.sprite_set_direction(sprite, get_direction4_to_hero())
-  sol.main.sprite_fade(sprite, 0)
+  sprite:set_direction(get_direction4_to_hero())
+  sprite:fade(0)
   sol.main.timer_start(fire_step_1, 1000)
 end
 
@@ -97,7 +97,7 @@ function fire_step_1()
 
   -- before preparing a fireball
   local sprite = sol.enemy.get_sprite()
-  sol.main.sprite_set_animation(sprite, "arms_up")
+  sprite:set_animation("arms_up")
   sol.main.timer_start(fire_step_2, 1000)
   sol.enemy.set_can_attack(true)
 end
@@ -110,13 +110,13 @@ function fire_step_2()
 
   if math.random(5) == 1 then
     -- don't tell the player if it will be red or blue
-    sol.main.sprite_set_animation(sprite, "preparing_unknown_fireball")
+    sprite:set_animation("preparing_unknown_fireball")
   elseif blue then
     -- blue fireball: for the hero can do nothing but run away
-    sol.main.sprite_set_animation(sprite, "preparing_blue_fireball")
+    sprite:set_animation("preparing_blue_fireball")
   else
     -- red fireball: possible to throw it back to Agahnim
-    sol.main.sprite_set_animation(sprite, "preparing_red_fireball")
+    sprite:set_animation("preparing_red_fireball")
   end
 
   if blue then
@@ -134,7 +134,7 @@ function fire_step_3()
 
   -- throw the fireball(s)
   local sprite = sol.enemy.get_sprite()
-  sol.main.sprite_set_animation(sprite, "stopped")
+  sprite:set_animation("stopped")
   sol.main.play_sound(next_fireball_sound)
   vulnerable = true
 
@@ -200,12 +200,12 @@ function event_hurt(attack, life_lost)
     -- dying
     sol.map.enemy_remove_group("agahnim_fireball")
     sol.map.enemy_remove_group(sol.enemy.get_name() .. "_")
-    sol.main.sprite_set_animation_ignore_suspend(sprite, true)
+    sprite:set_ignore_suspend(true)
     sol.map.dialog_start("dungeon_8.agahnim_end")
     sol.main.timer_stop_all()
   elseif life <= initial_life * 2 / 3 then
     -- not dying yet: start creating fakes after a few hits
-    sol.main.sprite_set_animation_ignore_suspend(sprite, true)
+    sprite:set_ignore_suspend(true)
     if not middle_dialog then
       sol.map.dialog_start("dungeon_8.agahnim_middle")
       middle_dialog = true

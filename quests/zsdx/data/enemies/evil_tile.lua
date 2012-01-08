@@ -12,8 +12,8 @@ function event_appear()
   sol.enemy.set_invincible()
   sol.enemy.set_attack_consequence("sword", "custom")
 
-  shadow_sprite = sol.main.sprite_create("entities/shadow")
-  sol.main.sprite_set_animation(shadow_sprite, "big")
+  shadow_sprite = sol.sprite.create("entities/shadow")
+  shadow_sprite:set_animation("big")
 end
 
 function event_restart()
@@ -55,7 +55,7 @@ function destroy()
     local sprite = sol.enemy.get_sprite()
     sol.enemy.set_can_attack(false)
     sol.enemy.stop_movement()
-    sol.main.sprite_set_animation(sprite, "destroy")
+    sprite:set_animation("destroy")
     sol.main.play_sound("stone")
     sol.main.timer_stop_all()
   end

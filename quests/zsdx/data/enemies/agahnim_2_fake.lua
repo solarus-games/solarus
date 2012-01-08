@@ -41,7 +41,7 @@ function event_appear()
   sol.enemy.set_can_attack(false)
 
   local sprite = sol.enemy.get_sprite()
-  sol.main.sprite_set_animation(sprite, "stopped")
+  sprite:set_animation("stopped")
 
 end
 
@@ -50,7 +50,7 @@ function event_restart()
   if not disappearing then
     sol.main.timer_stop_all()
     local sprite = sol.enemy.get_sprite()
-    sol.main.sprite_fade(sprite, 1)
+    sprite:fade(1)
     sol.main.timer_start(hide, 500)
   end
 end
@@ -58,7 +58,7 @@ end
 function event_update()
 
   local sprite = sol.enemy.get_sprite()
-  sol.main.sprite_set_direction(sprite, get_direction4_to_hero())
+  sprite:set_direction(get_direction4_to_hero())
 end
 
 function get_direction4_to_hero()
@@ -81,15 +81,15 @@ function unhide()
   local position = (positions[math.random(#positions)])
   sol.enemy.set_position(position.x, position.y)
   local sprite = sol.enemy.get_sprite()
-  sol.main.sprite_set_direction(sprite, get_direction4_to_hero())
-  sol.main.sprite_fade(sprite, 0)
+  sprite:set_direction(get_direction4_to_hero())
+  sprite:fade(0)
   sol.main.timer_start(fire_step_1, 1000)
 end
 
 function fire_step_1()
 
   local sprite = sol.enemy.get_sprite()
-  sol.main.sprite_set_animation(sprite, "arms_up")
+  sprite:set_animation("arms_up")
   sol.main.timer_start(fire_step_2, 1000)
   sol.enemy.set_can_attack(true)
 end
@@ -100,11 +100,11 @@ function fire_step_2()
   local blue = math.random(100) <= blue_fireball_proba
 
   if math.random(5) == 1 then
-    sol.main.sprite_set_animation(sprite, "preparing_unknown_fireball")
+    sprite:set_animation("preparing_unknown_fireball")
   elseif blue then
-    sol.main.sprite_set_animation(sprite, "preparing_blue_fireball")
+    sprite:set_animation("preparing_blue_fireball")
   else
-    sol.main.sprite_set_animation(sprite, "preparing_red_fireball")
+    sprite:set_animation("preparing_red_fireball")
   end
 
   if blue then
@@ -121,7 +121,7 @@ end
 function fire_step_3()
 
   local sprite = sol.enemy.get_sprite()
-  sol.main.sprite_set_animation(sprite, "stopped")
+  sprite:set_animation("stopped")
   sol.main.play_sound(next_fireball_sound)
   sol.main.timer_start(sol.enemy.restart, 700)
 
@@ -147,7 +147,7 @@ function disappear()
   local sprite = sol.enemy.get_sprite()
   disappearing = true
   sol.enemy.set_can_attack(false)
-  sol.main.sprite_fade(sprite, 1)
+  sprite:fade(1)
   sol.main.timer_stop_all()
   sol.main.timer_start(function()
     sol.map.enemy_remove(sol.enemy.get_name())

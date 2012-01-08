@@ -21,7 +21,7 @@ function sensor_check_guard(sensor_name)
     guard_name = "guard_"..guard_num
     local sprite = sol.map.npc_get_sprite(guard_name)
     direction = tonumber(direction)
-    if sol.main.sprite_get_direction(sprite) == direction then
+    if sprite:get_direction() == direction then
 
       local x, y = sol.map.npc_get_position(guard_name)
       local hero_x, hero_y = sol.map.hero_get_position()
@@ -43,7 +43,7 @@ function seen_by_guard(guard_name)
   hero_seen = true
   sol.map.hero_freeze()
   local sprite = sol.map.npc_get_sprite(guard_name)
-  sol.main.sprite_set_animation(sprite, "walking")
+  sprite:set_animation("walking")
   local m = sol.main.target_movement_create(96)
   sol.map.npc_start_movement(guard_name, m)
   sol.main.timer_start(prison_dialog, 500)

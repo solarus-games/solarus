@@ -80,11 +80,11 @@ function event_dialog_finished(dialog_id, answer)
 
   if dialog_id == "crazy_house.guichet_43" then
     -- Pipelette (guichet 43) qui se tourne vers Link, énervée
-    sol.main.sprite_set_direction(guichet43_sprite, 3)
+    guichet43_sprite:set_direction(3)
     sol.map.dialog_start("crazy_house.guichet_43n")
   elseif dialog_id == "crazy_house.guichet_43n" then
     -- Pipelette reprend sa conversation
-    sol.main.sprite_set_direction(guichet43_sprite, 2)
+    guichet43_sprite:set_direction(2)
     sol.map.dialog_start("crazy_house.guichet_43f")
   elseif dialog_id == "crazy_house.guichet_45_ech_ne_3" then
     if answer == 0 then

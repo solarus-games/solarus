@@ -29,7 +29,7 @@ function event_appear()
   sol.enemy.set_push_hero_on_sword(true)
 
   local sprite = sol.enemy.get_sprite()
-  sol.main.sprite_set_animation(sprite, "stopped")
+  sprite:set_animation("stopped")
 end
 
 function event_restart()
@@ -39,10 +39,10 @@ function event_restart()
   local sprite = sol.enemy.get_sprite()
 
   if not finished then
-    sol.main.sprite_fade(sprite, 1)
+    sprite:fade(1)
     sol.main.timer_start(hide, 700)
   else
-    sol.main.sprite_set_animation(sprite, "hurt")
+    sprite:set_animation("hurt")
     sol.map.hero_freeze()
     sol.main.timer_start(end_dialog, 500)
     sol.main.timer_start(fade_out, 1000)
@@ -62,15 +62,15 @@ function unhide()
   local position = (positions[math.random(#positions)])
   sol.enemy.set_position(position.x, position.y)
   local sprite = sol.enemy.get_sprite()
-  sol.main.sprite_set_direction(sprite, position.direction4)
-  sol.main.sprite_fade(sprite, 0)
+  sprite:set_direction(position.direction4)
+  sprite:fade(0)
   sol.main.timer_start(fire_step_1, 1000)
 end
 
 function fire_step_1()
 
   local sprite = sol.enemy.get_sprite()
-  sol.main.sprite_set_animation(sprite, "arms_up")
+  sprite:set_animation("arms_up")
   sol.main.timer_start(fire_step_2, 1000)
 end
 
@@ -78,9 +78,9 @@ function fire_step_2()
 
   local sprite = sol.enemy.get_sprite()
   if math.random(100) <= blue_fireball_proba then
-    sol.main.sprite_set_animation(sprite, "preparing_blue_fireball")
+    sprite:set_animation("preparing_blue_fireball")
   else
-    sol.main.sprite_set_animation(sprite, "preparing_red_fireball")
+    sprite:set_animation("preparing_red_fireball")
   end
   sol.main.play_sound("boss_charge")
   sol.main.timer_start(fire_step_3, 1500)
@@ -91,14 +91,14 @@ function fire_step_3()
   local sprite = sol.enemy.get_sprite()
 
   local sound, breed
-  if sol.main.sprite_get_animation(sprite) == "preparing_blue_fireball" then
+  if sprite:get_animation() == "preparing_blue_fireball" then
     sound = "cane"
     breed = "blue_fireball_triple"
   else
     sound = "boss_fireball"
     breed = "red_fireball_triple"
   end
-  sol.main.sprite_set_animation(sprite, "stopped")
+  sprite:set_animation("stopped")
   sol.main.play_sound(sound)
 
   vulnerable = true
@@ -151,14 +151,14 @@ function end_dialog()
   end
 
   local sprite = sol.enemy.get_sprite()
-  sol.main.sprite_set_animation_ignore_suspend(sprite, true)
+  sprite:set_ignore_suspend(true)
   sol.map.dialog_start("dungeon_5.agahnim_end")
 end
 
 function fade_out()
 
   local sprite = sol.enemy.get_sprite()
-  sol.main.sprite_fade(sprite, 1)
+  sprite:fade(1)
 end
 
 function escape()

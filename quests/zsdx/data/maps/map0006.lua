@@ -68,9 +68,9 @@ function event_dialog_finished(dialog_id, answer)
     local m = sol.main.path_movement_create("44444444444444444444222", 48)
     sol.main.movement_set_property(m, "ignore_obstacles", true)
     sol.map.npc_start_movement("tom", m)
-    sol.main.sprite_set_animation(tom_sprite, "walking")
+    tom_sprite:set_animation("walking")
   elseif dialog_id == "outside_world.tom_dungeon_1_entrance.need_help" then
-    sol.main.sprite_set_direction(tom_sprite, 1)
+    tom_sprite:set_direction(1)
     sol.main.timer_start(tom_timer_1, 1500)
   elseif dialog_id == "outside_world.tom_dungeon_1_entrance.let_me_see" then
     sol.main.play_sound("jump")
@@ -78,7 +78,7 @@ function event_dialog_finished(dialog_id, answer)
     sol.main.movement_set_property(m, "ignore_obstacles", true)
     sol.map.npc_start_movement("tom", m)
   elseif dialog_id == "outside_world.tom_dungeon_1_entrance.open" then
-    sol.main.sprite_set_animation(tom_sprite, "walking")
+    tom_sprite:set_animation("walking")
     sol.main.timer_start(tom_timer_3, 300)
   elseif dialog_id == "outside_world.beaumont_hill_put_edelweiss" then
     sol.map.hero_freeze()
@@ -91,17 +91,17 @@ function event_npc_movement_finished(npc_name)
 
   local x, y = sol.map.npc_get_position("tom")
   if x ~= 352 then
-    sol.main.sprite_set_direction(tom_sprite, 2)
+    tom_sprite:set_direction(2)
     sol.map.dialog_start("outside_world.tom_dungeon_1_entrance.need_help")
   else
-    sol.main.sprite_set_direction(tom_sprite, 1)
+    tom_sprite:set_direction(1)
     sol.main.timer_start(tom_timer_2, 1000)
   end
 end
 
 function tom_timer_1()
   sol.map.dialog_start("outside_world.tom_dungeon_1_entrance.let_me_see")
-  sol.main.sprite_set_direction(tom_sprite, 2)
+  tom_sprite:set_direction(2)
 end
 
 function tom_timer_2()
@@ -109,7 +109,7 @@ function tom_timer_2()
 end
 
 function tom_timer_3()
-  sol.main.sprite_set_animation(tom_sprite, "stopped")
+  tom_sprite:set_animation("stopped")
   ladder_step1()
 end
 

@@ -24,8 +24,8 @@ function event_appear()
   sol.enemy.create_son(eye, "flora_gohma_eye", 0, -112)
 
   -- create the balls of the neck
-  ball_sprite = sol.main.sprite_create("enemies/flora_gohma_eye")
-  sol.main.sprite_set_animation(ball_sprite, "ball")
+  ball_sprite = sol.sprite.create("enemies/flora_gohma_eye")
+  ball_sprite:set_animation("ball")
 end
 
 function event_restart()

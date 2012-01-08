@@ -85,7 +85,7 @@ function event_dialog_finished(message_id, answer)
     if y ~= tom_initial_y then
       local m = sol.main.path_movement_create("2222220000002222222222222222", 48)
       sol.map.npc_start_movement("tom", m)
-      sol.main.sprite_set_animation(tom_sprite, "walking")
+      tom_sprite:set_animation("walking")
     end
   end
 
@@ -100,7 +100,7 @@ function start_moving_tom()
   local m = sol.main.path_movement_create("0000666666", 48)
   sol.map.npc_set_position("tom", 88, 509)
   sol.map.npc_start_movement("tom", m)
-  sol.main.sprite_set_animation(tom_sprite, "walking")
+  tom_sprite:set_animation("walking")
 end
 
 function event_npc_movement_finished(npc)
@@ -113,7 +113,7 @@ function event_npc_movement_finished(npc)
     end
   else
     sol.map.npc_set_position("tom", tom_initial_x, tom_initial_y)
-    sol.main.sprite_set_direction(tom_sprite, 3)
+    tom_sprite:set_direction(3)
     sol.map.hero_unfreeze()
   end
 end

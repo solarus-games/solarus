@@ -63,7 +63,7 @@ function event_hero_on_sensor(sensor_name)
     sol.map.npc_set_group_enabled("child", true)
     for i = 1, 8 do
       local sprite = sol.map.npc_get_sprite("child_" .. i)
-      sol.main.sprite_set_animation_ignore_suspend(sprite, true)
+      sprite:set_ignore_suspend(true)
     end
     sol.main.timer_start(function()
       sol.map.hero_unfreeze()

@@ -30,7 +30,7 @@ function event_map_started(destination_point_name)
 
   local m = sol.main.random_path_movement_create(32)
   sol.map.npc_start_movement("chignon_woman", m)
-  sol.main.sprite_set_animation(sol.map.npc_get_sprite("chignon_woman"), "walking")
+  sol.map.npc_get_sprite("chignon_woman"):set_animation("walking")
 
   -- remove Tom's cave door if open
   if sol.game.savegame_get_boolean(36) then

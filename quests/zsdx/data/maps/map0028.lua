@@ -11,8 +11,8 @@ function event_map_started(destination_point_name)
     sol.map.hud_set_pause_enabled(false)
     sol.map.dialog_set_style(0)
     local snores_sprite = sol.map.npc_get_sprite("snores")
-    sol.main.sprite_set_animation_ignore_suspend(snores_sprite, true)
-    sol.main.sprite_set_animation(bed_sprite, "hero_sleeping")
+    snores_sprite:set_ignore_suspend(true)
+    bed_sprite:set_animation("hero_sleeping")
     sol.map.hero_freeze()
     sol.map.hero_set_visible(false)
     sol.main.timer_start(sahasrahla_dream, 2000)
@@ -35,7 +35,7 @@ end
 
 function wake_up()
   sol.map.npc_remove("snores")
-  sol.main.sprite_set_animation(bed_sprite, "hero_waking")
+  bed_sprite:set_animation("hero_waking")
   sol.main.timer_start(jump_from_bed, 500)
 end
 
@@ -43,7 +43,7 @@ function jump_from_bed()
   sol.map.hero_set_visible(true)
   sol.map.hero_start_jumping(4, 24, true)
   sol.map.hud_set_pause_enabled(true)
-  sol.main.sprite_set_animation(bed_sprite, "empty_open")
+  bed_sprite:set_animation("empty_open")
   sol.main.play_sound("hero_lands");
 end
 

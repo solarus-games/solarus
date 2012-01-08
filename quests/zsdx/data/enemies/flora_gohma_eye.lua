@@ -41,10 +41,10 @@ end
 
 function event_restart()
 
-  sol.main.sprite_set_animation(eye_sprite, "eye")
+  eye_sprite:set_animation("eye")
   for i = 1, 5 do
     if petals[i].sprite ~= nil then
-      sol.main.sprite_set_animation(petals[i].sprite, "petal_"..i)
+      petals[i].sprite:set_animation("petal_"..i)
     end
   end
 
@@ -81,12 +81,12 @@ function event_custom_attack_received(attack, sprite)
       petals[i].life = petals[i].life - 1
       sol.enemy.hurt(0)
       sol.main.play_sound("enemy_hurt")
-      sol.main.sprite_set_animation(petals[i].sprite, "petal_hurt_"..i)
+      petals[i].sprite:set_animation("petal_hurt_"..i)
       sol.main.timer_start(function()
 
 	if petals[i].life > 0 then
 	  -- restore the petal animation
-	  sol.main.sprite_set_animation(petals[i].sprite, "petal_"..i)
+	  petals[i].sprite:set_animation("petal_"..i)
 	else
 	  -- destroy the petal
 	  sol.main.play_sound("stone")

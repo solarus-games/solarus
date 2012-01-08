@@ -10,7 +10,7 @@ function event_map_started(destination_point_name)
   end
 
   local yoda_sprite = sol.map.npc_get_sprite("yoda")
-  sol.main.sprite_set_animation(yoda_sprite, "walking")
+  yoda_sprite:set_animation("walking")
 end
 
 function event_npc_interaction(npc_name)

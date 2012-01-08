@@ -80,7 +80,7 @@ function event_dialog_finished(dialog_id)
     sol.main.play_sound("world_warp")
     sol.main.timer_start(function()
       for i = 1, 8 do
-	sol.main.sprite_fade(sol.map.npc_get_sprite("child_" .. i), 1)
+	sol.map.npc_get_sprite("child_" .. i):fade(1)
       end
     end, 1000)
     sol.main.timer_start(function()
@@ -121,8 +121,8 @@ function start_zelda_sequence()
     local npc_name = "child_" .. i
     sol.map.npc_set_enabled(npc_name, true)
     local sprite = sol.map.npc_get_sprite(npc_name)
-    sol.main.sprite_set_animation_ignore_suspend(sprite, true)
-    sol.main.sprite_fade(sprite, 0)
+    sprite:set_ignore_suspend(true)
+    sprite:fade(0)
   end
 
   sol.main.timer_start(function()
@@ -147,12 +147,12 @@ function event_npc_collision_fire(npc_name)
   if string.find(npc_name, "^torch") then
     
     local torch_sprite = sol.map.npc_get_sprite(npc_name)
-    if sol.main.sprite_get_animation(torch_sprite) == "unlit" then
+    if torch_sprite:get_animation() == "unlit" then
       -- temporarily light the torch up
-      sol.main.sprite_set_animation(torch_sprite, "lit")
+      torch_sprite:set_animation("lit")
       check_torches()
       sol.main.timer_start(function()
-        sol.main.sprite_set_animation(torch_sprite, "unlit")
+        torch_sprite:set_animation("unlit")
 	if sol.map.switch_is_enabled("switch_1") then
 	  sol.map.tile_set_group_enabled("switch_floor", false)
 	  sol.map.switch_set_group_enabled("switch", false)
@@ -167,7 +167,7 @@ end
 function unlight_torches()
 
   for i = 1, 4 do
-    sol.main.sprite_set_animation(sol.map.npc_get_sprite("torch_" .. i), "unlit")
+    sol.map.npc_get_sprite("torch_" .. i):set_animation("unlit")
   end
   sol.main.timer_stop_all()
 end
@@ -175,10 +175,10 @@ end
 function check_torches()
   
   local states = {
-    sol.main.sprite_get_animation(sol.map.npc_get_sprite("torch_1")) == "lit",
-    sol.main.sprite_get_animation(sol.map.npc_get_sprite("torch_2")) == "lit",
-    sol.main.sprite_get_animation(sol.map.npc_get_sprite("torch_3")) == "lit",
-    sol.main.sprite_get_animation(sol.map.npc_get_sprite("torch_4")) == "lit"
+    sol.map.npc_get_sprite("torch_1")):get_animation() == "lit",
+    sol.map.npc_get_sprite("torch_2")):get_animation() == "lit",
+    sol.map.npc_get_sprite("torch_3")):get_animation() == "lit",
+    sol.map.npc_get_sprite("torch_4")):get_animation() == "lit"
   }
   local on = {}
 

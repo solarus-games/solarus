@@ -19,10 +19,10 @@ function event_appear()
   sol.enemy.set_attack_consequence("sword", "custom")
 
   -- two smaller fireballs just for the displaying
-  sprite2 = sol.main.sprite_create("enemies/red_fireball_triple")
-  sol.main.sprite_set_animation(sprite2, "small")
-  sprite3 = sol.main.sprite_create("enemies/red_fireball_triple")
-  sol.main.sprite_set_animation(sprite3, "tiny")
+  sprite2 = sol.sprite.create("enemies/red_fireball_triple")
+  sprite2:set_animation("small")
+  sprite3 = sol.sprite.create("enemies/red_fireball_triple")
+  sprite3:set_animation("tiny")
 end
 
 function event_restart()

@@ -14,8 +14,8 @@ function event_map_started(destination_point_name)
     -- initialize the direction of the frozen door sprites
     frozen_door_sprite = sol.map.npc_get_sprite("frozen_door")
     frozen_door_opposite_sprite = sol.map.npc_get_sprite("frozen_door_opposite")
-    sol.main.sprite_set_direction(frozen_door_sprite, 3)
-    sol.main.sprite_set_direction(frozen_door_opposite_sprite, 1)
+    frozen_door_sprite:set_direction(3)
+    frozen_door_opposite_sprite:set_direction(1)
   end
 end
 
@@ -37,8 +37,8 @@ function event_npc_interaction_item(npc_name, item_name, variant)
     -- using water on the frozen door
     sol.map.hero_freeze()
     sol.main.play_sound("item_in_water")
-    sol.main.sprite_set_animation(frozen_door_sprite, "disappearing")
-    sol.main.sprite_set_animation(frozen_door_opposite_sprite, "disappearing")
+    frozen_door_sprite:set_animation("disappearing")
+    frozen_door_opposite_sprite:set_animation("disappearing")
     sol.main.timer_start(timer_frozen_door, 800)
     sol.game.set_item(item_name, 1) -- make the bottle empty
     return true

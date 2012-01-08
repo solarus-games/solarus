@@ -11,7 +11,7 @@ function event_appear()
   sol.enemy.set_damage(2)
   main_sprite = sol.enemy.create_sprite("enemies/firebird")
   claw_sprite = sol.enemy.create_sprite("enemies/firebird")
-  sol.main.sprite_set_animation(claw_sprite, "claw")
+  claw_sprite:set_animation("claw")
   sol.enemy.set_size(16, 16)
   sol.enemy.set_origin(8, 13)
   sol.enemy.set_obstacle_behavior("flying")
@@ -29,7 +29,7 @@ end
 
 function event_restart()
 
-  sol.main.sprite_set_animation(claw_sprite, "claw")
+  claw_sprite:set_animation("claw")
   local m = sol.main.random_movement_create(64)
   sol.enemy.start_movement(m)
   sol.main.timer_stop_all()

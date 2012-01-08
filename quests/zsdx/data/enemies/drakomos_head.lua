@@ -35,7 +35,7 @@ function event_restart()
   sol.main.timer_start(function()
       sol.enemy.stop_movement()
       local sprite = sol.enemy.get_sprite()
-      sol.main.sprite_set_animation(sprite, "preparing_fire")
+      sprite:set_animation("preparing_fire")
       sol.main.play_sound("lamp")
       sol.main.timer_start(repeat_fire, 500)
     end,

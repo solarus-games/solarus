@@ -47,7 +47,7 @@ function start_evil_tiles()
       again = true
     elseif remaining == 1 then
       local sprite = sol.map.enemy_get_sprite("evil_tile_"..total)
-      again = sol.main.sprite_get_animation(sprite) ~= "destroy"
+      again = sprite:get_animation() ~= "destroy"
     end
 
     if again then

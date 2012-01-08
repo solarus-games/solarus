@@ -172,8 +172,7 @@ int Script::item_api_get_sprite(lua_State *l) {
   Debug::check_assertion(pickable_item != NULL,
                 "Cannot call sol.item.get_sprite(): there is no current pickable item");
 
-  int handle = script.create_sprite_handle(pickable_item->get_sprite());
-  lua_pushinteger(l, handle);
+  push_sprite(l, pickable_item->get_sprite());
 
   return 1;
 }

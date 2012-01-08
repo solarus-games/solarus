@@ -264,38 +264,56 @@ void EnemyScript::event_movement_finished(Movement& movement) {
 }
 
 /**
- * @brief Notifies the script that the animation of a sprite of the enemy has just finished.
+ * @brief Notifies the script that the animation of a sprite of the enemy has
+ * just finished.
  * @param sprite a sprite of the enemy
  * @param animation the animation that was playing
  */
-void EnemyScript::event_sprite_animation_finished(Sprite& sprite, const std::string& animation) {
+void EnemyScript::event_sprite_animation_finished(Sprite& sprite,
+    const std::string& animation) {
 
-  notify_script("event_sprite_animation_finished", "is",
-      create_sprite_handle(sprite), animation.c_str());
+  const std::string& function_name = "event_sprite_animation_finished";
+  find_lua_function(function_name);
+  push_sprite(l, sprite);
+  lua_pushstring(l, animation.c_str());
+  call_script(2, 0, function_name);
 }
 
 /**
- * @brief Notifies the script that the animation of a sprite of the enemy has just finished.
+ * @brief Notifies the script that the animation frame of a sprite of the
+ * enemy has just changed.
  * @param sprite a sprite of the enemy
  * @param animation the current animation
  * @param frame the new frame
  */
-void EnemyScript::event_sprite_frame_changed(Sprite& sprite, const std::string& animation, int frame) {
+void EnemyScript::event_sprite_frame_changed(Sprite& sprite,
+    const std::string& animation, int frame) {
 
-  notify_script("event_sprite_frame_changed", "isi",
-      create_sprite_handle(sprite), animation.c_str(), frame);
+  const std::string& function_name = "event_sprite_frame_changed";
+  find_lua_function(function_name);
+  push_sprite(l, sprite);
+  lua_pushstring(l, animation.c_str());
+  lua_pushinteger(l, frame);
+  call_script(3, 0, function_name);
 }
 
 /**
- * @brief Notifies the script that this enemy has detected a collision with another enemy.
+ * @brief Notifies the script that this enemy has detected a collision with
+ * another enemy.
  * @param other_name name of the other enemy
- * @param other_sprite the other enemy's sprite that overlaps a sprite of this enemy
+ * @param other_sprite the other enemy's sprite that overlaps a sprite of this
+ * enemy
  * @param this_sprite this enemy's sprite that overlaps the other
  */
-void EnemyScript::event_collision_enemy(const std::string& other_name, Sprite& other_sprite, Sprite& this_sprite) {
+void EnemyScript::event_collision_enemy(const std::string& other_name,
+    Sprite& other_sprite, Sprite& this_sprite) {
 
-  notify_script("event_collision_enemy", "sii", other_name.c_str(),
-      create_sprite_handle(other_sprite), create_sprite_handle(this_sprite));
+  const std::string& function_name = "event_collision_enemy";
+  find_lua_function(function_name);
+  lua_pushstring(l, other_name.c_str());
+  push_sprite(l, other_sprite);
+  push_sprite(l, this_sprite);
+  call_script(3, 0, function_name);
 }
 
 /**
@@ -305,17 +323,20 @@ void EnemyScript::event_collision_enemy(const std::string& other_name, Sprite& o
  * @param sprite the sprite of the enemy that receives the attack, or NULL
  * if the attack does not come from a pixel-precise collision test.
  */
-void EnemyScript::event_custom_attack_received(EnemyAttack attack, Sprite* sprite) {
+void EnemyScript::event_custom_attack_received(EnemyAttack attack,
+    Sprite* sprite) {
 
+  const std::string& function_name = "event_custom_attack_received";
+  find_lua_function(function_name);
+  lua_pushstring(l, Enemy::get_attack_name(attack).c_str());
+
+  int nb_arguments = 1;
   if (sprite != NULL) {
-    // pixel-perfect collision
-    notify_script("event_custom_attack_received", "si",
-        Enemy::get_attack_name(attack).c_str(), create_sprite_handle(*sprite));
+    // pixel-precise collision
+    push_sprite(l, *sprite);
+    nb_arguments = 2;
   }
-  else {
-    notify_script("event_custom_attack_received", "s",
-        Enemy::get_attack_name(attack).c_str());
-  }
+  call_script(nb_arguments, 0, function_name);
 }
 
 /**

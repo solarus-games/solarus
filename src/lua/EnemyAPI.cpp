@@ -462,9 +462,8 @@ int Script::enemy_api_set_attack_consequence_sprite(lua_State *l) {
   Script& script = get_script(l);
   Enemy& enemy = script.get_enemy();
 
-  int sprite_handle = luaL_checkinteger(l, 1);
+  Sprite& sprite = check_sprite(l, 1);
   const std::string& attack_name = luaL_checkstring(l, 2);
-  Sprite& sprite = script.get_sprite(sprite_handle);
   EnemyAttack attack = Enemy::get_attack_by_name(attack_name);
 
   if (lua_isnumber(l, 3)) {
@@ -506,8 +505,7 @@ int Script::enemy_api_set_default_attack_consequences_sprite(lua_State *l) {
 
   Script& script = get_script(l);
   Enemy& enemy = script.get_enemy();
-  int sprite_handle = luaL_checkinteger(l, 1);
-  Sprite& sprite = script.get_sprite(sprite_handle);
+  Sprite& sprite = check_sprite(l, 1);
 
   enemy.set_default_attack_consequences_sprite(sprite);
 
@@ -544,8 +542,7 @@ int Script::enemy_api_set_invincible_sprite(lua_State *l) {
 
   Script& script = get_script(l);
   Enemy& enemy = script.get_enemy();
-  int sprite_handle = luaL_checkinteger(l, 1);
-  Sprite& sprite = script.get_sprite(sprite_handle);
+  Sprite& sprite = check_sprite(l, 1);
 
   enemy.set_no_attack_consequences_sprite(sprite);
 
@@ -1037,9 +1034,7 @@ int Script::enemy_api_create_sprite(lua_State *l) {
 
   const std::string& animation_set_id = luaL_checkstring(l, 1);
   Sprite& sprite = enemy.create_sprite(animation_set_id, true);
-
-  int handle = script.create_sprite_handle(sprite);
-  lua_pushinteger(l, handle);
+  push_sprite(l, sprite);
 
   return 1;
 }
@@ -1059,7 +1054,7 @@ int Script::enemy_api_remove_sprite(lua_State *l) {
 
   Sprite* sprite;
   if (lua_gettop(l) >= 1) {
-    sprite = &script.get_sprite(luaL_checkinteger(l, 1));
+    sprite = &check_sprite(l, 1);
   }
   else {
     sprite = &enemy.get_sprite();
@@ -1084,9 +1079,7 @@ int Script::enemy_api_get_sprite(lua_State *l) {
 
   Script& script = get_script(l);
   Enemy& enemy = script.get_enemy();
-
-  int handle = script.create_sprite_handle(enemy.get_sprite());
-  lua_pushinteger(l, handle);
+  push_sprite(l, enemy.get_sprite());
 
   return 1;
 }

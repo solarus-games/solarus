@@ -57,17 +57,10 @@ Script::~Script() {
     }
   }
 
-  // delete the movements and sprites still stored by this script, if any
+  // delete the movements still stored by this script, if any
   {
     std::map<int, Movement*>::iterator it;
     for (it = unassigned_movements.begin(); it != unassigned_movements.end(); it++) {
-      delete it->second;
-    }
-  }
-
-  {
-    std::map<int, Sprite*>::iterator it;
-    for (it = unassigned_sprites.begin(); it != unassigned_sprites.end(); it++) {
       delete it->second;
     }
   }
@@ -248,6 +241,7 @@ void Script::register_apis() {
   // modules available to all scripts
   initialize_surface_module();
   initialize_text_surface_module();
+  initialize_sprite_module();
 }
 
 /**
@@ -263,20 +257,6 @@ void Script::register_main_api() {
       { "play_music", main_api_play_music },
       { "timer_start", main_api_timer_start },
       { "timer_stop_all", main_api_timer_stop_all },
-      { "sprite_create", main_api_sprite_create },
-      { "sprite_get_animation", main_api_sprite_get_animation },
-      { "sprite_set_animation", main_api_sprite_set_animation },
-      { "sprite_get_direction", main_api_sprite_get_direction },
-      { "sprite_set_direction", main_api_sprite_set_direction },
-      { "sprite_get_frame", main_api_sprite_get_frame },
-      { "sprite_set_frame", main_api_sprite_set_frame },
-      { "sprite_get_frame_delay", main_api_sprite_get_frame_delay },
-      { "sprite_set_frame_delay", main_api_sprite_set_frame_delay },
-      { "sprite_is_paused", main_api_sprite_is_paused },
-      { "sprite_set_paused", main_api_sprite_set_paused },
-      { "sprite_set_animation_ignore_suspend", main_api_sprite_set_animation_ignore_suspend },
-      { "sprite_fade", main_api_sprite_fade },
-      { "sprite_synchronize", main_api_sprite_synchronize },
       { "pixel_movement_create", main_api_pixel_movement_create },
       { "random_movement_create", main_api_random_movement_create },
       { "path_movement_create", main_api_path_movement_create },
@@ -967,38 +947,6 @@ Color Script::check_color(lua_State* l, int index) {
   lua_pop(l, 3);
 
   return color;
-}
-
-/**
- * @brief Makes a sprite accessible from the script.
- *
- * If the sprite is already accessible from this script,
- * this function returns the already known handle.
- *
- * @param sprite the sprite to make accessible
- * @return a handle that can be used by scripts to refer to this sprite
- */
-int Script::create_sprite_handle(Sprite &sprite) {
-
-  int handle = sprite.get_unique_id();
-  if (sprites.find(handle) == sprites.end()) {
-    sprites[handle] = &sprite;
-  }
-
-  return handle;
-}
-
-/**
- * @brief Returns a sprite handled by this script.
- * @param sprite_handle handle of the sprite to get
- * @return the corresponding sprite
- */
-Sprite& Script::get_sprite(int sprite_handle) {
-
-  Debug::check_assertion(sprites.count(sprite_handle) > 0,
-    StringConcat() << "No sprite with handle '" << sprite_handle << "'");
-
-  return *sprites[sprite_handle];
 }
 
 /**

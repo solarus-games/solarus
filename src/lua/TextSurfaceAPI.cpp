@@ -63,6 +63,7 @@ void Script::initialize_text_surface_module() {
  * text surface and returns it.
  * @param l a Lua context
  * @param index an index in the stack
+ * @return the text surface
  */
 TextSurface& Script::check_text_surface(lua_State* l, int index) {
 

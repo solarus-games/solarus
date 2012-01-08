@@ -62,12 +62,9 @@ class Script {
     typedef int (FunctionAvailableToScript) (lua_State *l);  /**< type of the functions that can be called by a Lua script */
 
     // script data
-    // TODO reimplement sprites, movements and timers as userdata
+    // TODO reimplement movements and timers as userdata
     std::map<int, Timer*> timers;                        /**< the timers currently running for this script */
 
-    std::map<int, Sprite*> sprites;                      /**< the sprites accessible from this script */
-    std::map<int, Sprite*> unassigned_sprites;           /**< the sprites accessible from this script and that
-                                                          * are not assigned to an object yet (the script has to delete them) */
     std::map<int, Movement*> movements;                  /**< the movements accessible from this script */
     std::map<int, Movement*> unassigned_movements;       /**< the movements accessible from this script and that
                                                           * are not assigned to an object yet (the script has to delete them) */
@@ -75,6 +72,7 @@ class Script {
     // userdata created by Lua, this info is used to know if we can garbage collect them
     std::set<Surface*> surfaces_created;                 /**< surfaces created by Lua */
     std::set<TextSurface*> text_surfaces_created;        /**< text surfaces created by Lua */
+    std::set<Sprite*> sprites_created;                   /**< sprites created by Lua */
 
     bool music_played;
 
@@ -82,13 +80,10 @@ class Script {
     uint32_t apis_enabled;                               /**< an OR combination of APIs enabled */
     static const char* surface_module_name;
     static const char* text_surface_module_name;
+    static const char* sprite_module_name;
 
     // calling C++ from Lua
     static Script& get_script(lua_State* l);
-    static Color check_color(lua_State* l, int index);
-    static bool is_userdata(lua_State* l, int index, const std::string& module_name);
-    static Surface& check_surface(lua_State* l, int index);
-    static TextSurface& check_text_surface(lua_State* l, int index);
 
     // initialization of modules
     void register_apis();
@@ -97,8 +92,16 @@ class Script {
     void register_map_api();
     void register_item_api();
     void register_enemy_api();
+
+    // types
     void initialize_surface_module();
     void initialize_text_surface_module();
+    void initialize_sprite_module();
+    static Color check_color(lua_State* l, int index);
+    static bool is_userdata(lua_State* l, int index, const std::string& module_name);
+    static Surface& check_surface(lua_State* l, int index);
+    static TextSurface& check_text_surface(lua_State* l, int index);
+    static Sprite& check_sprite(lua_State* l, int index);
 
     // timers
     void remove_all_timers();
@@ -136,18 +139,15 @@ class Script {
     // timers
     static void add_timer(lua_State* l, uint32_t duration, bool with_sound);
 
-    // sprites
-    int create_sprite_handle(Sprite &sprite);
-    Sprite& get_sprite(int sprite_handle);
-
     // movements
     int create_movement_handle(Movement &movement);
     Movement& get_movement(int movement_handle);
     Movement& start_movement(int movement_handle);
 
-    // surfaces
+    // userdata
     static void push_surface(lua_State* l, Surface& surface);
     static void push_text_surface(lua_State* l, TextSurface& text_surface);
+    static void push_sprite(lua_State* l, Sprite& sprite);
 
   private:
 
@@ -162,20 +162,6 @@ class Script {
       main_api_play_music,
       main_api_timer_start,
       main_api_timer_stop_all,
-      main_api_sprite_create,
-      main_api_sprite_get_animation,
-      main_api_sprite_set_animation,
-      main_api_sprite_get_direction,
-      main_api_sprite_set_direction,
-      main_api_sprite_get_frame,
-      main_api_sprite_set_frame,
-      main_api_sprite_get_frame_delay,
-      main_api_sprite_set_frame_delay,
-      main_api_sprite_is_paused,
-      main_api_sprite_set_paused,
-      main_api_sprite_set_animation_ignore_suspend,
-      main_api_sprite_fade,
-      main_api_sprite_synchronize,
       main_api_pixel_movement_create,
       main_api_random_movement_create,
       main_api_path_movement_create,
@@ -431,7 +417,24 @@ class Script {
       text_surface_api_create,
       text_surface_api_get_text,
       text_surface_api_set_text,
-      text_surface_meta_gc;
+      text_surface_meta_gc,
+
+      // sprite API
+      sprite_api_create,
+      sprite_api_get_animation,
+      sprite_api_set_animation,
+      sprite_api_get_direction,
+      sprite_api_set_direction,
+      sprite_api_get_frame,
+      sprite_api_set_frame,
+      sprite_api_get_frame_delay,
+      sprite_api_set_frame_delay,
+      sprite_api_is_paused,
+      sprite_api_set_paused,
+      sprite_api_set_ignore_suspend,
+      sprite_api_fade,
+      sprite_api_synchronize,
+      sprite_meta_gc;
 };
 
 #endif

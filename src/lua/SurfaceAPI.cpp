@@ -19,6 +19,7 @@
 #include "lowlevel/Color.h"
 #include "lowlevel/Surface.h"
 #include "lowlevel/TextSurface.h"
+#include "Sprite.h"
 
 const char* Script::surface_module_name = "sol.surface";
 
@@ -68,6 +69,7 @@ void Script::initialize_surface_module() {
  * surface and returns it.
  * @param l a Lua context
  * @param index an index in the stack
+ * @return the surface
  */
 Surface& Script::check_surface(lua_State* l, int index) {
 
@@ -218,7 +220,7 @@ int Script::surface_api_draw(lua_State* l) {
     y = luaL_checkinteger(l, 4);
   }
 
-  // the second parameter may be a surface, a text surface or a sprite (TODO)
+  // the second parameter may be a surface, a text surface or a sprite
   if (is_userdata(l, 2, surface_module_name)) {
     Surface& surface = check_surface(l, 2);
     surface.blit(&destination_surface, Rectangle(x, y));
@@ -227,6 +229,10 @@ int Script::surface_api_draw(lua_State* l) {
     TextSurface& text_surface = check_text_surface(l, 2);
     text_surface.set_position(x, y);
     text_surface.display(&destination_surface);
+  }
+  else if (is_userdata(l, 2, sprite_module_name)) {
+    Sprite& sprite = check_sprite(l, 2);
+    sprite.display(&destination_surface, x, y);
   }
 
   return 0;

@@ -54,7 +54,7 @@ class EnemyReaction {
     static const std::string reaction_names[]; /**< name of each reaction type */
 
     Reaction general_reaction;                 /**< reaction to make unless sprite-specific override */
-    std::map<int, Reaction> sprite_reactions;  /**< sprite-specific reaction (overrides the default one) */
+    std::map<const Sprite*, Reaction> sprite_reactions;  /**< sprite-specific reaction (overrides the default one) */
 
   public:
 

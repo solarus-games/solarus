@@ -252,11 +252,10 @@ int Script::map_api_treasure_give(lua_State *l) {
 int Script::map_api_sprite_display(lua_State *l) {
 
   Script& script = get_script(l);
-  int sprite_handle = luaL_checkinteger(l, 1);
+  Sprite& sprite = check_sprite(l, 1);
   int x = luaL_checkinteger(l, 2);
   int y = luaL_checkinteger(l, 3);
 
-  Sprite& sprite = script.get_sprite(sprite_handle);
   script.get_map().display_sprite(sprite, x, y);
 
   return 0;
@@ -856,8 +855,7 @@ int Script::map_api_npc_stop_movement(lua_State* l) {
  * @brief Makes the sprite of an NPC accessible from the script.
  *
  * - Argument 1 (string): name of the NPC
- * - Return value (sprite): the sprite of this NPC (your script can then pass it as a parameter
- * to all sol.main.sprite_* functions)
+ * - Return value (sprite): the sprite of this NPC
  *
  * @param l the Lua context that is calling this function
  */
@@ -869,9 +867,7 @@ int Script::map_api_npc_get_sprite(lua_State* l) {
 
   MapEntities& entities = script.get_map().get_entities();
   NPC* npc = (NPC*) entities.get_entity(NON_PLAYING_CHARACTER, entity_name);
-
-  int handle = script.create_sprite_handle(npc->get_sprite());
-  lua_pushinteger(l, handle);
+  push_sprite(l, npc->get_sprite());
 
   return 1;
 }
@@ -2648,9 +2644,7 @@ int Script::map_api_enemy_get_sprite(lua_State *l) {
 
   MapEntities& entities = script.get_map().get_entities();
   Enemy* enemy = (Enemy*) entities.get_entity(ENEMY, enemy_name);
-
-  int handle = script.create_sprite_handle(enemy->get_sprite());
-  lua_pushinteger(l, handle);
+  push_sprite(l, enemy->get_sprite());
 
   return 1;
 }

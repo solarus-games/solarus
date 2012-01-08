@@ -597,13 +597,18 @@ bool Script::find_lua_function(const std::string& function_name) {
 /**
  * @brief Calls a Lua function of the current script, possibly with arguments and return values of various types.
  *
+ * TODO kill this function and push parameters manually instead. This function is too limited
+ * because it is restricted to basic C types (varargs don't work with std::string).
+ * It is also error-prone: bool return values segfault on some systems and there are no
+ * compilation warnings.
+ *
  * This is just a convenient method to push the parameters and pop the results for you
  * in addition to calling the Lua function.
  * However, this function uses the variable number of parameters mechanism of cstdarg, which
  * is inherently C and not C++.
- * This means you have to use C-style strings instead of std::string.
+ * This means you have to use C-style strings instead of std::string and int instead of bool.
  *
- * The arguments and results of the Lua function are passed thanks to the variable number of
+ * The arguments and results of the Lua function are passed thanks to the variadic
  * parameters (possibly of different types) of this C++ method.
  * The format parameter of this C++ method specifies the type of each
  * argument and each result of the Lua function to call.
@@ -741,6 +746,7 @@ bool Script::call_script(int nb_arguments, int nb_results,
 
   return true;
 }
+
 /**
  * @brief Updates the script.
  */

@@ -36,6 +36,7 @@
 #include "entities/DestructibleItem.h"
 #include "entities/Bomb.h"
 #include "entities/Fire.h"
+#include "movements/Movement.h"
 #include "lowlevel/Sound.h"
 #include <lua.hpp>
 
@@ -818,11 +819,11 @@ int Script::map_api_npc_start_movement(lua_State *l) {
   Script& script = get_script(l);
 
   const std::string& name = luaL_checkstring(l, 1);
-  int movement_handle = luaL_checkinteger(l, 2);
+  Movement& movement = check_movement(l, 2);
+  movement.set_suspended(false);
 
   MapEntities& entities = script.get_map().get_entities();
   NPC* npc = (NPC*) entities.get_entity(NON_PLAYING_CHARACTER, name);
-  Movement& movement = script.start_movement(movement_handle);
 
   npc->clear_movement();
   npc->set_movement(&movement);

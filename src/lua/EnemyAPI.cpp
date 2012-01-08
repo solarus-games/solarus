@@ -18,6 +18,7 @@
 #include "entities/Enemy.h"
 #include "entities/Hero.h"
 #include "entities/MapEntities.h"
+#include "movements/Movement.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
 #include "lowlevel/Geometry.h"
@@ -934,9 +935,7 @@ int Script::enemy_api_get_movement(lua_State *l) {
     lua_pushnil(l);
   }
   else {
-    int handle = script.create_movement_handle(*movement);
-    script.start_movement(handle);
-    lua_pushinteger(l, handle);
+    push_movement(l, *movement);
   }
 
   return 1;
@@ -951,14 +950,13 @@ int Script::enemy_api_get_movement(lua_State *l) {
  *
  * @param l the Lua context that is calling this function
  */
-int Script::enemy_api_start_movement(lua_State *l) {
+int Script::enemy_api_start_movement(lua_State* l) {
 
   Script& script = get_script(l);
   Enemy& enemy = script.get_enemy();
 
-  // retrieve the movement
-  int movement_handle = luaL_checkinteger(l, 1);
-  Movement& movement = script.start_movement(movement_handle);
+  Movement& movement = check_movement(l, 1);
+  movement.set_suspended(false);
 
   enemy.clear_movement();
   enemy.set_movement(&movement);

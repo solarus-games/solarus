@@ -33,8 +33,8 @@
  * @param apis_enabled an OR-combination of APIs to enable
  */
 Script::Script(uint32_t apis_enabled):
-  music_played(false),
   apis_enabled(apis_enabled),
+  music_played(false),
   l(NULL) {
 
 }
@@ -53,14 +53,6 @@ Script::~Script() {
   {
     std::map<int, Timer*>::iterator it;
     for (it = timers.begin(); it != timers.end(); it++) {
-      delete it->second;
-    }
-  }
-
-  // delete the movements still stored by this script, if any
-  {
-    std::map<int, Movement*>::iterator it;
-    for (it = unassigned_movements.begin(); it != unassigned_movements.end(); it++) {
       delete it->second;
     }
   }
@@ -257,18 +249,6 @@ void Script::register_main_api() {
       { "play_music", main_api_play_music },
       { "timer_start", main_api_timer_start },
       { "timer_stop_all", main_api_timer_stop_all },
-      { "pixel_movement_create", main_api_pixel_movement_create },
-      { "random_movement_create", main_api_random_movement_create },
-      { "path_movement_create", main_api_path_movement_create },
-      { "random_path_movement_create", main_api_random_path_movement_create },
-      { "path_finding_movement_create", main_api_path_finding_movement_create },
-      { "target_movement_create", main_api_target_movement_create },
-      { "straight_movement_create", main_api_straight_movement_create },
-      { "circle_movement_create", main_api_circle_movement_create },
-      { "jump_movement_create", main_api_jump_movement_create },
-      { "movement_get_property", main_api_movement_get_property },
-      { "movement_set_property", main_api_movement_set_property },
-      { "movement_test_obstacles", main_api_movement_test_obstacles },
       { "get_distance", main_api_get_distance },
       { "get_angle", main_api_get_angle },
       { NULL, NULL }
@@ -947,61 +927,6 @@ Color Script::check_color(lua_State* l, int index) {
   lua_pop(l, 3);
 
   return color;
-}
-
-/**
- * @brief Makes a movement accessible from the script.
- *
- * If the movement is already accessible from this script,
- * this function returns the already known handle.
- *
- * @param movement the movement to make accessible
- * @return a handle that can be used by scripts to refer to this movement
- */
-int Script::create_movement_handle(Movement &movement) {
-
-  int handle = movement.get_unique_id();
-  if (movements.find(handle) == movements.end()) {
-    movements[handle] = &movement;
-    unassigned_movements[handle] = &movement;
-    movement.set_suspended(true); // suspended until it is assigned to an object
-  }
-
-  return handle;
-}
-
-/**
- * @brief Returns a movement handled by this script.
- * @param movement_handle handle of the movement to get
- * @return the corresponding movement
- */
-Movement& Script::get_movement(int movement_handle) {
-
-  Debug::check_assertion(movements.count(movement_handle) > 0,
-    StringConcat() << "No movement with handle '" << movement_handle << "'");
-
-  return *movements[movement_handle];
-}
-
-/**
- * @brief Starts a movement handled by this script and removes it from the list of unassigned movements.
- *
- * This function is called when the movement is assigned to an object.
- *
- * @param movement_handle handle of the movement
- * @return the corresponding movement
- */
-Movement& Script::start_movement(int movement_handle) {
-
-  Movement &movement = get_movement(movement_handle);
-
-  if (unassigned_movements.count(movement_handle) > 0) {
-    // the movemnt is still stored by the script: detach it
-    movement.set_suspended(false);
-    unassigned_movements.erase(movement_handle);
-  }
-
-  return movement;
 }
 
 /**

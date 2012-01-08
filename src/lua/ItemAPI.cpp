@@ -202,8 +202,7 @@ int Script::item_api_get_movement(lua_State *l) {
                 "Cannot call sol.item.get_movement(): there is no current pickable item");
 
   Movement *movement = pickable_item->get_movement();
-  int handle = script.create_movement_handle(*movement);
-  lua_pushinteger(l, handle);
+  push_movement(l, *movement);
 
   return 1;
 }
@@ -224,9 +223,8 @@ int Script::item_api_start_movement(lua_State *l) {
 
   Script& script = get_script(l);
 
-  // retrieve the movement
-  int movement_handle = luaL_checkinteger(l, 1);
-  Movement &movement = script.start_movement(movement_handle);
+  Movement& movement = check_movement(l, 1);
+  movement.set_suspended(false);
 
   // retrieve the pickable item
   const std::string &item_name = script.get_item_properties().get_name();

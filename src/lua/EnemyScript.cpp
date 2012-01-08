@@ -251,7 +251,10 @@ void EnemyScript::event_obstacle_reached() {
  */
 void EnemyScript::event_movement_changed(Movement& movement) {
 
-  notify_script("event_movement_changed", "i", create_movement_handle(movement));
+  const std::string& function_name = "event_movement_changed";
+  find_lua_function(function_name);
+  push_movement(l, movement);
+  call_script(1, 0, function_name);
 }
 
 /**
@@ -260,7 +263,10 @@ void EnemyScript::event_movement_changed(Movement& movement) {
  */
 void EnemyScript::event_movement_finished(Movement& movement) {
 
-  notify_script("event_movement_finished", "i", create_movement_handle(movement));
+  const std::string& function_name = "event_movement_finished";
+  find_lua_function(function_name);
+  push_movement(l, movement);
+  call_script(1, 0, function_name);
 }
 
 /**

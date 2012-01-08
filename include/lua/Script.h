@@ -59,28 +59,24 @@ class Script {
 
   private:
 
-    typedef int (FunctionAvailableToScript) (lua_State *l);  /**< type of the functions that can be called by a Lua script */
-
     // script data
-    // TODO reimplement movements and timers as userdata
+    // TODO reimplement timers as userdata? timer:stop, timer:set_with_sound(true)
     std::map<int, Timer*> timers;                        /**< the timers currently running for this script */
-
-    std::map<int, Movement*> movements;                  /**< the movements accessible from this script */
-    std::map<int, Movement*> unassigned_movements;       /**< the movements accessible from this script and that
-                                                          * are not assigned to an object yet (the script has to delete them) */
 
     // userdata created by Lua, this info is used to know if we can garbage collect them
     std::set<Surface*> surfaces_created;                 /**< surfaces created by Lua */
     std::set<TextSurface*> text_surfaces_created;        /**< text surfaces created by Lua */
     std::set<Sprite*> sprites_created;                   /**< sprites created by Lua */
-
-    bool music_played;
+    std::set<Movement*> movements_created;               /**< movements created by Lua */
 
     // APIs
     uint32_t apis_enabled;                               /**< an OR combination of APIs enabled */
     static const char* surface_module_name;
     static const char* text_surface_module_name;
     static const char* sprite_module_name;
+    static const char* movement_module_name;
+
+    bool music_played;
 
     // calling C++ from Lua
     static Script& get_script(lua_State* l);
@@ -97,11 +93,13 @@ class Script {
     void initialize_surface_module();
     void initialize_text_surface_module();
     void initialize_sprite_module();
-    static Color check_color(lua_State* l, int index);
+    void initialize_movement_module();
     static bool is_userdata(lua_State* l, int index, const std::string& module_name);
     static Surface& check_surface(lua_State* l, int index);
     static TextSurface& check_text_surface(lua_State* l, int index);
     static Sprite& check_sprite(lua_State* l, int index);
+    static Movement& check_movement(lua_State* l, int index);
+    static Color check_color(lua_State* l, int index);
 
     // timers
     void remove_all_timers();
@@ -139,17 +137,15 @@ class Script {
     // timers
     static void add_timer(lua_State* l, uint32_t duration, bool with_sound);
 
-    // movements
-    int create_movement_handle(Movement &movement);
-    Movement& get_movement(int movement_handle);
-    Movement& start_movement(int movement_handle);
-
     // userdata
     static void push_surface(lua_State* l, Surface& surface);
     static void push_text_surface(lua_State* l, TextSurface& text_surface);
     static void push_sprite(lua_State* l, Sprite& sprite);
+    static void push_movement(lua_State* l, Movement& movement);
 
   private:
+
+    typedef int (FunctionAvailableToScript) (lua_State *l);  /**< type of the functions that can be called by a Lua script */
 
     // implementation of the APIs
     static FunctionAvailableToScript 
@@ -162,18 +158,6 @@ class Script {
       main_api_play_music,
       main_api_timer_start,
       main_api_timer_stop_all,
-      main_api_pixel_movement_create,
-      main_api_random_movement_create,
-      main_api_path_movement_create,
-      main_api_random_path_movement_create,
-      main_api_path_finding_movement_create,
-      main_api_target_movement_create,
-      main_api_straight_movement_create,
-      main_api_circle_movement_create,
-      main_api_jump_movement_create,
-      main_api_movement_get_property,
-      main_api_movement_set_property,
-      main_api_movement_test_obstacles,
       main_api_get_distance,
       main_api_get_angle,
 
@@ -434,7 +418,22 @@ class Script {
       sprite_api_set_ignore_suspend,
       sprite_api_fade,
       sprite_api_synchronize,
-      sprite_meta_gc;
+      sprite_meta_gc,
+
+      // movement
+      movement_api_pixel_movement_create,
+      movement_api_random_movement_create,
+      movement_api_path_movement_create,
+      movement_api_random_path_movement_create,
+      movement_api_path_finding_movement_create,
+      movement_api_target_movement_create,
+      movement_api_straight_movement_create,
+      movement_api_circle_movement_create,
+      movement_api_jump_movement_create,
+      movement_api_get_property,
+      movement_api_set_property,
+      movement_api_test_obstacles,
+      movement_meta_gc;
 };
 
 #endif

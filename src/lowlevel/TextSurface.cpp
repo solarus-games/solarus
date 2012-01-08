@@ -150,6 +150,30 @@ void TextSurface::set_font(const std::string font_id) {
 }
 
 /**
+ * @brief Sets the horizontal text alignment.
+ * @param horizontal_alignment horizontal alignment of the text: ALIGN_LEFT,
+ * ALIGN_CENTER or ALIGN_RIGHT
+ */
+void TextSurface::set_horizontal_alignment(HorizontalAlignment horizontal_alignment) {
+
+  this->horizontal_alignment = horizontal_alignment;
+
+  rebuild();
+}
+
+/**
+ * @brief Sets the vertical text alignment.
+ * @param horizontal_alignment horizontal alignment of the text: ALIGN_TOP,
+ * ALIGN_MIDDLE or ALIGN_BOTTOM
+ */
+void TextSurface::set_vertical_alignment(VerticalAlignment vertical_alignment) {
+
+  this->vertical_alignment = vertical_alignment;
+
+  rebuild();
+}
+
+/**
  * @brief Sets the text alignment.
  * @param horizontal_alignment horizontal alignment of the text: ALIGN_LEFT,
  * ALIGN_CENTER or ALIGN_RIGHT
@@ -276,7 +300,7 @@ const std::string & TextSurface::get_text() {
  * @return true if there is no texte
  */
 bool TextSurface::is_empty() {
-  return text == "";
+  return text.empty();
 }
 
 /**

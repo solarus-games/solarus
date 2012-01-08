@@ -24,7 +24,6 @@ languages/
       pause_icon.png
       pause_submenus.png
       sword_icon.png
-      title_screen_initialization.png
 text/
   fonts.dat
 
@@ -150,13 +149,4 @@ sprites/
     selection_menu_save3.png
     selection_menu_mode.png
     selection_menu_letters.png
-    title_daylight_background.png
-    title_sunset_background.png
-    title_night_background.png
-    title_daylight_clouds.png
-    title_sunset_clouds.png
-    title_night_clouds.png
-    title_logo.png
-    title_dx.png
-    title_star.png
 

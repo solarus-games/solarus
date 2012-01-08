@@ -3,11 +3,10 @@ Lua -> C++:
 sol.surface.create([w, h])
 sol.surface.create(file, [language_specific])
 sol.surface.create(other_surface, [x, y, w, h])
-surface:fill_color(r, v, b)
+surface:fill_color({r, v, b})
 surface:draw(surface / text_surface / sprite, [dst_x, dst_y])
 surface:get_size()
-surface:set_transparency_color(r, v, b)
-surface:get_opacity()
+surface:set_transparency_color({r, v, b})
 surface:set_opacity(opacity)
 
 sol.text_surface.create(properties)

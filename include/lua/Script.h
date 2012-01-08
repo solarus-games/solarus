@@ -72,16 +72,23 @@ class Script {
     std::map<int, Movement*> unassigned_movements;       /**< the movements accessible from this script and that
                                                           * are not assigned to an object yet (the script has to delete them) */
 
+    // userdata created by Lua, this info is used to know if we can garbage collect them
     std::set<Surface*> surfaces_created;                 /**< surfaces created by Lua */
+    std::set<TextSurface*> text_surfaces_created;        /**< text surfaces created by Lua */
 
     bool music_played;
 
     // APIs
     uint32_t apis_enabled;                               /**< an OR combination of APIs enabled */
+    static const char* surface_module_name;
+    static const char* text_surface_module_name;
 
     // calling C++ from Lua
     static Script& get_script(lua_State* l);
+    static Color check_color(lua_State* l, int index);
+    static bool is_userdata(lua_State* l, int index, const std::string& module_name);
     static Surface& check_surface(lua_State* l, int index);
+    static TextSurface& check_text_surface(lua_State* l, int index);
 
     // initialization of modules
     void register_apis();
@@ -91,6 +98,7 @@ class Script {
     void register_item_api();
     void register_enemy_api();
     void initialize_surface_module();
+    void initialize_text_surface_module();
 
     // timers
     void remove_all_timers();
@@ -139,6 +147,7 @@ class Script {
 
     // surfaces
     static void push_surface(lua_State* l, Surface& surface);
+    static void push_text_surface(lua_State* l, TextSurface& text_surface);
 
   private:
 
@@ -416,7 +425,13 @@ class Script {
       surface_api_get_size,
       surface_api_set_transparency_color,
       surface_api_set_opacity,
-      surface_meta_gc;
+      surface_meta_gc,
+
+      // text surface API
+      text_surface_api_create,
+      text_surface_api_get_text,
+      text_surface_api_set_text,
+      text_surface_meta_gc;
 };
 
 #endif

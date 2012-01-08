@@ -39,7 +39,7 @@ class TextSurface {
      */
     enum HorizontalAlignment {
       ALIGN_LEFT,                                     /**< the text is aligned to the left */
-      ALIGN_CENTER,                                   /**< the text is centerd */
+      ALIGN_CENTER,                                   /**< the text is centered */
       ALIGN_RIGHT                                     /**< the text is aligned to the right */
     };
 
@@ -76,7 +76,7 @@ class TextSurface {
     };
 
     static std::map<std::string, FontData> fonts;     /**< the data of each font, loaded from the file text/fonts.dat
-							(fond id -> font data) */
+                                                       * (fond id -> font data) */
     static std::string default_font_id;               /**< id of the default font to use */
 
     std::string font_id;                              /**< id of the font of the current text surface */
@@ -107,17 +107,19 @@ class TextSurface {
     ~TextSurface();
 
     void set_font(const std::string font_id);
+    void set_horizontal_alignment(HorizontalAlignment horizontal_alignment);
+    void set_vertical_alignment(VerticalAlignment vertical_alignment);
     void set_alignment(HorizontalAlignment horizontal_alignment,
         VerticalAlignment vertical_alignment);
     void set_rendering_mode(RenderingMode rendering_mode);
-    void set_text_color(Color &color);
+    void set_text_color(Color& color);
     void set_text_color(int r, int g, int b);
-    void set_background_color(Color &color);
+    void set_background_color(Color& color);
     void set_position(int x, int y);
     void set_x(int x);
     void set_y(int y);
-    void set_text(const std::string &text);
-    const std::string & get_text();
+    void set_text(const std::string& text);
+    const std::string& get_text();
     bool is_empty();
     void add_char(char c);
 
@@ -125,8 +127,7 @@ class TextSurface {
     int get_height();
     const Rectangle get_size();
 
-    void display(Surface *destination);
-
+    void display(Surface* destination);
 };
 
 #endif

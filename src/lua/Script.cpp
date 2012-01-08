@@ -19,6 +19,7 @@
 #include "lowlevel/FileTools.h"
 #include "lowlevel/Debug.h"
 #include "lowlevel/StringConcat.h"
+#include "lowlevel/Color.h"
 #include "Game.h"
 #include "Map.h"
 #include "Timer.h"
@@ -244,7 +245,9 @@ void Script::register_apis() {
     register_enemy_api();
   }
 
+  // modules available to all scripts
   initialize_surface_module();
+  initialize_text_surface_module();
 }
 
 /**
@@ -906,6 +909,64 @@ bool Script::is_new_timer_suspended(void) {
   }
 
   return false;
+}
+
+/**
+ * @brief Returns whether a value is a userdata of a given type.
+ * @param l a Lua context
+ * @param index an index in the stack
+ * @param module_name name of a userdata metatable in the registry
+ * @return true if the value is a userdata with this metatable
+ */
+bool Script::is_userdata(lua_State* l, int index, const std::string& module_name) {
+
+  if (index < 0) {
+    // ensure a positive index
+    index = lua_gettop(l) + index + 1;
+  }
+
+                                  /* ... udata ... */
+  void *udata = lua_touserdata(l, index);
+  if (udata == NULL) {
+    // it's not a userdata
+    return false;
+  }
+  if (!lua_getmetatable(l, index)) {
+    // the userdata has no metatable
+    return false;
+  }
+                                  /* ... udata ... mt_found */
+  lua_getfield(l, LUA_REGISTRYINDEX, module_name.c_str());
+                                  /* ... udata ... mt_found mt_expected */
+  bool result = lua_rawequal(l, -1, -2);
+  lua_pop(l, 2);
+                                  /* ... udata ... */
+  return result;
+}
+
+/**
+ * @brief Checks that the value at the given index is a color and returns it.
+ * @param l a Lua state
+ * @param index an index in the Lua stack
+ * @return the color at this index
+ */
+Color Script::check_color(lua_State* l, int index) {
+
+  if (index < 0) {
+    // ensure a positive index
+    index = lua_gettop(l) + index + 1;
+  }
+
+  luaL_checktype(l, index, LUA_TTABLE);
+  lua_rawgeti(l, index, 1);
+  lua_rawgeti(l, index, 2);
+  lua_rawgeti(l, index, 3);
+  Color color(luaL_checkinteger(l, -3),
+    luaL_checkinteger(l, -2),
+    luaL_checkinteger(l, -1));
+  lua_pop(l, 3);
+
+  return color;
 }
 
 /**

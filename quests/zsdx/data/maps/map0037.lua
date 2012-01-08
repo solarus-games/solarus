@@ -99,7 +99,7 @@ function billy_leave()
   if billy_leave_step == 1 then
     sol.map.hero_freeze()
     local m = sol.main.path_movement_create("4444444", 48)
-    sol.main.movement_set_property(m, "ignore_obstacles", true)
+    m:set_property("ignore_obstacles", true)
     sol.map.npc_start_movement("billy", m)
     sprite:set_animation("walking")
   elseif billy_leave_step == 2 then

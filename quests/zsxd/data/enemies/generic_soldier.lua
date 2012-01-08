@@ -99,7 +99,7 @@ function event_movement_changed()
 
   if not being_pushed then
     movement = sol.enemy.get_movement()
-    local direction4 = sol.main.movement_get_property(movement, "displayed_direction")
+    local direction4 = movement:get_property("displayed_direction")
     main_sprite:set_direction(direction4)
     sword_sprite:set_direction(direction4)
   end
@@ -128,8 +128,8 @@ function event_custom_attack_received(attack, sprite)
     local hero_x, hero_y = sol.map.hero_get_position()
     local angle = sol.main.get_angle(hero_x, hero_y, x, y)
     movement = sol.main.straight_movement_create(128, angle)
-    sol.main.movement_set_property(movement, "max_distance", 26)
-    sol.main.movement_set_property(movement, "smooth", true)
+    movement:set_property("max_distance", 26)
+    movement:set_property("smooth", true)
     sol.enemy.start_movement(movement)
   end
 end

@@ -32,8 +32,8 @@ function event_restart()
 
   if not retracted then
     local m = sol.main.path_movement_create("000077334444444455110000", 64)
-    sol.main.movement_set_property(m, "ignore_obstacles", true)
-    sol.main.movement_set_property(m, "loop", true)
+    m:set_property("ignore_obstacles", true)
+    m:set_property("loop", true)
     sol.enemy.start_movement(m)
   else
     sol.enemy.stop_movement()

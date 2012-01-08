@@ -5,8 +5,8 @@ function event_appear(variant)
 
    -- create a movement that goes into random directions, with a speed of 28 pixels per second
   local movement = sol.main.random_movement_create(28)
-  sol.main.movement_set_property(movement, "ignore_obstacles", true)
-  sol.main.movement_set_property(movement, "max_distance", 40) -- don't go too far
+  movement:set_property("ignore_obstacles", true)
+  movement:set_property("max_distance", 40) -- don't go too far
   sol.item.start_movement(movement) -- associate this movement to the fairy
 
   -- put the fairy on the highest layer to show it above all walls
@@ -23,7 +23,7 @@ function event_movement_changed()
 
     local movement = sol.item.get_movement()
     local sprite = sol.item.get_sprite()
-    local angle = tonumber(sol.main.movement_get_property(movement, "angle")) -- retrieve the current movement's direction
+    local angle = tonumber(movement:get_property("angle")) -- retrieve the current movement's direction
     if angle >= 90 and angle < 270 then
       sprite:set_direction(1) -- look to the left
     else

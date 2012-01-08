@@ -79,12 +79,12 @@ end
 function event_restart()
 
   local m = sol.main.circle_movement_create(7, father_name, 56)
-  sol.main.movement_set_property(m, "center_dx", center_xy.x)
-  sol.main.movement_set_property(m, "center_dy", center_xy.y)
-  sol.main.movement_set_property(m, "radius_speed", 50)
-  sol.main.movement_set_property(m, "max_rotations", 4)
-  sol.main.movement_set_property(m, "loop", 2000)
-  sol.main.movement_set_property(m, "angle_speed", 360)
+  m:set_property("center_dx", center_xy.x)
+  m:set_property("center_dy", center_xy.y)
+  m:set_property("radius_speed", 50)
+  m:set_property("max_rotations", 4)
+  m:set_property("loop", 2000)
+  m:set_property("angle_speed", 360)
   sol.enemy.start_movement(m)
 end
 

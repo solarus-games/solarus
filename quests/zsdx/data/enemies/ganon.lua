@@ -67,7 +67,7 @@ function event_movement_changed()
 
   -- take the appropriate sprite direction
   m = sol.enemy.get_movement()
-  direction4 = sol.main.movement_get_property(m, "displayed_direction")
+  direction4 = m:get_property("displayed_direction")
   sprite = sol.enemy.get_sprite()
   if direction4 == 1 then
     sprite:set_direction(1)

@@ -137,7 +137,7 @@ function jump_phase()
   end
 
   local m = sol.main.jump_movement_create(direction8, 112)
-  sol.main.movement_set_property(m, "speed", 96)
+  m:set_property("speed", 96)
   sol.enemy.start_movement(m)
   local sprite = sol.enemy.get_sprite()
   sprite:set_animation("jumping")

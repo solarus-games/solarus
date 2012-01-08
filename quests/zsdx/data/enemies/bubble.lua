@@ -43,11 +43,11 @@ function event_obstacle_reached()
   local try3 = (last_direction8 + 4) % 8;
 
   local m = sol.enemy.get_movement()
-  if not sol.main.movement_test_obstacles(m, dxy[try1 + 1].x, dxy[try1 + 1].y) then
+  if not m:test_obstacles(dxy[try1 + 1].x, dxy[try1 + 1].y) then
 
     local x, y = sol.enemy.get_position()
     go(try1)
-  elseif not sol.main.movement_test_obstacles(m, dxy[try2 + 1].x, dxy[try2 + 1].y) then
+  elseif not m:test_obstacles(dxy[try2 + 1].x, dxy[try2 + 1].y) then
 
     local x, y = sol.enemy.get_position()
     go(try2)
@@ -63,8 +63,8 @@ function go(direction8)
   local m = sol.main.straight_movement_create(80, 0)
   sol.enemy.start_movement(m)
 
-  sol.main.movement_set_property(m, "speed", 80)
-  sol.main.movement_set_property(m, "angle", direction8 * math.pi / 4)
+  m:set_property("speed", 80)
+  m:set_property("angle", direction8 * math.pi / 4)
   last_direction8 = direction8
 end
 

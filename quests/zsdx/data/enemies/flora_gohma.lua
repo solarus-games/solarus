@@ -31,7 +31,7 @@ end
 function event_restart()
 
   local m = sol.main.random_movement_create(16)
-  sol.main.movement_set_property(m, "max_distance", 24)
+  m:set_property("max_distance", 24)
   sol.enemy.start_movement(m)
   current_xy.x, current_xy.y = sol.enemy.get_position()
 end

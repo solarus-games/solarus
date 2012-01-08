@@ -37,8 +37,8 @@ end
 function go()
 
   local m = sol.main.random_movement_create(16)
-  sol.main.movement_set_property(m, "max_distance", 16)
-  --sol.main.movement_set_property(m, "ignore_obstacles", true)
+  m:set_property("max_distance", 16)
+  --m:set_property("ignore_obstacles", true)
   sol.enemy.start_movement(m)
   sol.main.timer_stop_all()
   sol.main.timer_start(prepare_son, math.random(2000, 3000))

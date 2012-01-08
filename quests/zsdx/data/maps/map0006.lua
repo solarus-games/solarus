@@ -66,7 +66,7 @@ function event_dialog_finished(dialog_id, answer)
     sol.map.hero_set_direction(0)
     sol.map.npc_set_position("tom", 528, 245)
     local m = sol.main.path_movement_create("44444444444444444444222", 48)
-    sol.main.movement_set_property(m, "ignore_obstacles", true)
+    m:set_property("ignore_obstacles", true)
     sol.map.npc_start_movement("tom", m)
     tom_sprite:set_animation("walking")
   elseif dialog_id == "outside_world.tom_dungeon_1_entrance.need_help" then
@@ -75,7 +75,7 @@ function event_dialog_finished(dialog_id, answer)
   elseif dialog_id == "outside_world.tom_dungeon_1_entrance.let_me_see" then
     sol.main.play_sound("jump")
     local m = sol.main.jump_movement_create(4, 16)
-    sol.main.movement_set_property(m, "ignore_obstacles", true)
+    m:set_property("ignore_obstacles", true)
     sol.map.npc_start_movement("tom", m)
   elseif dialog_id == "outside_world.tom_dungeon_1_entrance.open" then
     tom_sprite:set_animation("walking")

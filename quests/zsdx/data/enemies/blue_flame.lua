@@ -22,8 +22,8 @@ function event_message_received(src_enemy, message)
   -- the message is the angle to take
   local angle = tonumber(message)
   local m = sol.main.straight_movement_create(192, angle)
-  sol.main.movement_set_property(m, "ignore_obstacles", true)
-  sol.main.movement_set_property(m, "max_distance", 320)
+  m:set_property("ignore_obstacles", true)
+  m:set_property("max_distance", 320)
   sol.enemy.start_movement(m)
 end
 

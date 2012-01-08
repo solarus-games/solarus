@@ -61,10 +61,10 @@ function go(direction4)
   -- set the movement
   local m = sol.enemy.get_movement()
   local max_distance = 40 + math.random(120)
-  sol.main.movement_set_property(m, "max_distance", max_distance)
-  sol.main.movement_set_property(m, "smooth", true)
-  sol.main.movement_set_property(m, "speed", 40)
-  sol.main.movement_set_property(m, "angle", direction4 * math.pi / 2)
+  m:set_property("max_distance", max_distance)
+  m:set_property("smooth", true)
+  m:set_property("speed", 40)
+  m:set_property("angle", direction4 * math.pi / 2)
 end
 
 -- Makes the soldier look to its left or to its right (random choice)

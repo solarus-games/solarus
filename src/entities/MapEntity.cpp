@@ -111,8 +111,6 @@ const Rectangle MapEntity::directions_to_xy_moves[] = {
   Rectangle( 1, 1)
 };
 
-const int MapEntity::max_collision_distance_to_camera = 400;
-
 /**
  * @brief Creates a map entity without specifying its properties now.
  */
@@ -127,6 +125,7 @@ MapEntity::MapEntity():
   being_removed(false),
   enabled(true),
   waiting_enabled(false),
+  optimization_distance(default_optimization_distance),
   suspended(false),
   when_suspended(0) {
 
@@ -158,6 +157,7 @@ MapEntity::MapEntity(Layer layer, int x, int y, int width, int height):
   being_removed(false),
   enabled(true),
   waiting_enabled(false),
+  optimization_distance(default_optimization_distance),
   suspended(false),
   when_suspended(0) {
 
@@ -188,6 +188,7 @@ MapEntity::MapEntity(const std::string &name, int direction, Layer layer,
   being_removed(false),
   enabled(true),
   waiting_enabled(false),
+  optimization_distance(default_optimization_distance),
   suspended(false),
   when_suspended(0) {
 
@@ -883,6 +884,28 @@ void MapEntity::set_origin(const Rectangle &origin) {
 }
 
 /**
+ * @brief Returns the optimization distance of this entity.
+ *
+ * Above this distance from the visible area, the entity is suspended.
+ *
+ * @return the optimization distance (0 means infinite)
+ */
+int MapEntity::get_optimization_distance() {
+  return optimization_distance;
+}
+
+/**
+ * @brief Sets the optimization distance of this entity.
+ *
+ * Above this distance from the visible area, the entity is suspended.
+ *
+ * @param distance the optimization distance (0 means infinite)
+ */
+void MapEntity::set_optimization_distance(int distance) {
+  this->optimization_distance = distance;
+}
+
+/**
  * @brief Returns whether the entity has at least one sprite.
  * @return true if the entity has at least one sprite.
  */
@@ -1093,7 +1116,7 @@ void MapEntity::notify_position_changed() {
  */
 void MapEntity::check_collision_with_detectors(bool with_pixel_precise) {
 
-  if (get_distance_to_camera() > max_collision_distance_to_camera) {
+  if (get_distance_to_camera() > optimization_distance && optimization_distance > 0) {
     // don't check detectors far for the visible area
     return;
   }
@@ -1119,7 +1142,7 @@ void MapEntity::check_collision_with_detectors(bool with_pixel_precise) {
  */
 void MapEntity::check_collision_with_detectors(Sprite& sprite) {
 
-  if (get_distance_to_camera() > max_collision_distance_to_camera) {
+  if (get_distance_to_camera() > optimization_distance && optimization_distance > 0) {
     // don't check detectors far for the visible area
     return;
   }
@@ -1895,7 +1918,8 @@ void MapEntity::update() {
   clear_old_movements();
 
   // suspend the entity if far from the camera
-  bool far = get_distance_to_camera() > max_collision_distance_to_camera;
+  bool far = get_distance_to_camera() > optimization_distance
+      && optimization_distance > 0;
   if (far && !is_suspended()) {
     set_suspended(true);
   }

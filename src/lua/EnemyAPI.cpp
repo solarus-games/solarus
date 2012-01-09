@@ -662,6 +662,44 @@ int Script::enemy_api_set_obstacle_behavior(lua_State *l) {
 }
 
 /**
+ * @brief Returns the optimization distance of the enemy.
+ *
+ * - Return value (integer): above this distance from the visible area, the enemy
+ * is optimized away (0 means infinite)
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::enemy_api_get_optimization_distance(lua_State* l) {
+
+  Script& script = get_script(l, 1);
+  Enemy& enemy = script.get_enemy();
+
+  lua_pushinteger(l, enemy.get_optimization_distance());
+
+  return 1;
+}
+
+/**
+ * @brief Sets the optimization distance of the enemy.
+ *
+ * - Argument 1 (integer): above this distance from the visible area, the enemy
+ * is optimized away (0 means infinite)
+ *
+ * @param l the Lua context that is calling this function
+ */
+int Script::enemy_api_set_optimization_distance(lua_State* l) {
+
+  Script& script = get_script(l, 1);
+  Enemy& enemy = script.get_enemy();
+
+  int distance = luaL_checkinteger(l, 1);
+
+  enemy.set_optimization_distance(distance);
+
+  return 0;
+}
+
+/**
  * @brief Returns the size of the enemy.
  *
  * - Return value 1 (integer): width in pixels
@@ -1092,6 +1130,7 @@ int Script::enemy_api_create_son(lua_State *l) {
   Enemy* son = (Enemy*) Enemy::create(script.get_game(), breed, Enemy::RANK_NORMAL, -1,
       name, Layer(layer), x, y, 0, treasure);
   son->father_name = enemy.get_name();
+  son->set_optimization_distance(enemy.get_optimization_distance());
   entities.add_entity(son);
   son->restart();
 

@@ -511,6 +511,8 @@ void Script::register_enemy_api() {
       { "set_random_treasure", enemy_api_set_random_treasure },
       { "get_obstacle_behavior", enemy_api_get_obstacle_behavior },
       { "set_obstacle_behavior", enemy_api_set_obstacle_behavior },
+      { "get_optimization_distance", enemy_api_get_optimization_distance },
+      { "set_optimization_distance", enemy_api_set_optimization_distance },
       { "get_size", enemy_api_get_size },
       { "set_size", enemy_api_set_size },
       { "get_origin", enemy_api_get_origin },

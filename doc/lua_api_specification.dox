@@ -876,6 +876,19 @@ Sets how the enemy behaves with obstacles: "normal", "flying" or "swimming".
 "flying" will ignore obstacles like holes, water or lava.
 "swimming" will ignore water.
 
+- <tt>sol.enemy.get_optimization_distance(distance)</tt>:
+Returns the optimization threshold. Above this distance from the visible area
+of the map, the enemy will be suspended.
+A value of 0 means an infinite distance (the enemy is never optimized away).
+
+
+- <tt>sol.enemy.set_optimization_distance(distance)</tt>:
+Sets the optimization threshold. Above this distance from the visible area
+of the map, the enemy will be suspended. The default value is usually fine,
+but you may need to increase it in some cases, for example for a boss in a
+huge room. A value of 0 means an infinite distance (the enemy is never
+optimized away).
+
 - <tt>sol.enemy.get_size()</tt>:
 Returns the size of the enemy's bounding box (two return values: width and height in pixels).
 

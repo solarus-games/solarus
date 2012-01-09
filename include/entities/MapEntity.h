@@ -45,8 +45,6 @@ class MapEntity {
         Layer layer, int x, int y); /**< a function to parse a certain type of entity */
     static CreationFunction* creation_functions[];     /**< the creation functions of all types of entities */
     static const Rectangle directions_to_xy_moves[8];  /**< converts a direction (0 to 7) into a one-pixel xy move */
-    static const int max_collision_distance_to_camera; /**< above this distance from the visible area,
-                                                        * collisions with detectors are ignored */
 
     /**
      * @brief Describes the features of each type of entity.
@@ -122,7 +120,10 @@ class MapEntity {
                                                  * (if not, it will not be displayed and collisions will not be notified) */
     bool waiting_enabled;                       /**< indicates that the entity will be enabled as soon as the hero stops overlapping it */
 
-  private:
+    int optimization_distance;                  /**< above this distance from the visible area,
+                                                 * the entity is suspended (0 means infinite) */
+    static const int
+        default_optimization_distance = 400;    /**< default value */
 
     void set_sprites_map(Map& map);
 
@@ -144,6 +145,8 @@ class MapEntity {
     void set_origin(const Rectangle &origin);
     void set_bounding_box_from_sprite();
     void set_bounding_box(const Rectangle &bounding_box);
+    int get_optimization_distance();
+    void set_optimization_distance(int distance);
 
     // sprites
     Sprite& create_sprite(const SpriteAnimationSetId& id, bool enable_pixel_collisions = false);

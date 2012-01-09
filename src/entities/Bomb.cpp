@@ -44,6 +44,7 @@ Bomb::Bomb(Layer layer, int x, int y):
   get_sprite().enable_pixel_collisions();
   set_size(16, 16);
   set_origin(8, 13);
+  set_optimization_distance(0); // make the bomb explode even if the hero runs far away
 }
 
 /**
@@ -307,10 +308,8 @@ void Bomb::update() {
  */
 void Bomb::explode() {
 
-  if (get_distance_to_camera() <= max_collision_distance_to_camera) {
-    get_entities().add_entity(new Explosion(get_layer(), get_center_point(), true));
-    Sound::play("explosion");
-  }
+  get_entities().add_entity(new Explosion(get_layer(), get_center_point(), true));
+  Sound::play("explosion");
   remove_from_map();
 }
 

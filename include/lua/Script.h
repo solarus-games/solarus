@@ -321,6 +321,8 @@ class Script {
       enemy_api_set_random_treasure,
       enemy_api_get_obstacle_behavior,
       enemy_api_set_obstacle_behavior,
+      enemy_api_get_optimization_distance,
+      enemy_api_set_optimization_distance,
       enemy_api_get_size,
       enemy_api_set_size,
       enemy_api_get_origin,

@@ -53,6 +53,7 @@ function event_restart()
     if not vulnerable then
       m = sol.main.path_finding_movement_create(64)
       sol.enemy.start_movement(m)
+      sol.enemy.set_hurt_style("normal")
       if not attack_scheduled then
 	schedule_attack()
       end
@@ -81,6 +82,7 @@ function event_immobilized()
     vulnerable = true
     sol.enemy.set_attack_consequence("sword", 1)
     sol.enemy.set_attack_consequence("thrown_item", "protected")
+    sol.enemy.set_hurt_style("boss")
 
     -- make a protection
     if sol.map.enemy_get_group_count(sol.enemy.get_name() .. "_bats_") < 9 then

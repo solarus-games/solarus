@@ -214,7 +214,10 @@ void Door::update_dynamic_tiles() {
  */
 void Door::notify_collision(MapEntity &entity_overlapping, CollisionMode collision_mode) {
 
-  if (!is_open() && entity_overlapping.is_hero() && requires_key()) {
+  if (!is_open()
+      && entity_overlapping.is_hero()
+      && requires_key()
+      && !is_changing()) {
 
     Hero &hero = (Hero&) entity_overlapping;
 
@@ -368,7 +371,7 @@ void Door::display_on_map() {
  */
 void Door::action_key_pressed() {
 
-  if (get_hero().is_free() && requires_key()) {
+  if (get_hero().is_free() && requires_key() && !is_changing()) {
     if (can_open()) {
       Sound::play("door_unlocked");
       Sound::play("door_open");
@@ -390,6 +393,8 @@ void Door::action_key_pressed() {
       else if (subtype == BOSS_KEY) {
         get_equipment().notify_ability_used("open_dungeon_boss_locks");
       }
+
+      get_hero().check_position();
     }
     else {
       Sound::play("wrong");

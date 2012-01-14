@@ -1,19 +1,23 @@
 -- This screen is displayed when the program starts, after the language
 -- selection screen (if any).
 
-local phase = "black"
+local phase
 local title_surface -- surface where everything is drawn
 
 function event_menu_started()
 
   -- black screen during 0.3 seconds
+  phase = "black"
+
   title_surface = sol.surface.create()
   sol.main.timer_start(phase_zs_presents, 300)
 end
 
 function phase_zs_presents()
 
+  -- "Zelda Solarus presents" displayed for two seconds
   phase = "zs_presents"
+
   local zs_presents_img =
       sol.surface.create("title_screen_initialization.png", true)
 
@@ -27,6 +31,7 @@ end
 
 function phase_title()
 
+  -- actual title screen
   phase = "title"
 
   -- start music
@@ -53,6 +58,7 @@ function phase_title()
   clouds_img = sol.surface.create("menus/title_" .. time_of_day
       .. "_clouds.png")
   logo_img = sol.surface.create("menus/title_logo.png")
+  logo_img:start_movement(sol.movement.straight_movement_create(32, math.pi))
 
   website_img = sol.text_surface.create{
     font = "dialog",

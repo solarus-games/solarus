@@ -669,7 +669,7 @@ int Script::enemy_api_set_obstacle_behavior(lua_State *l) {
  */
 int Script::enemy_api_get_optimization_distance(lua_State* l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
   Enemy& enemy = script.get_enemy();
 
   lua_pushinteger(l, enemy.get_optimization_distance());
@@ -687,7 +687,7 @@ int Script::enemy_api_get_optimization_distance(lua_State* l) {
  */
 int Script::enemy_api_set_optimization_distance(lua_State* l) {
 
-  Script& script = get_script(l, 1);
+  Script& script = get_script(l);
   Enemy& enemy = script.get_enemy();
 
   int distance = luaL_checkinteger(l, 1);

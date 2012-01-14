@@ -67,6 +67,11 @@ void Script::initialize_text_surface_module() {
  */
 TextSurface& Script::check_text_surface(lua_State* l, int index) {
 
+  if (index < 0) {
+    // ensure a positive index
+    index = lua_gettop(l) + index + 1;
+  }
+
   TextSurface** surface = (TextSurface**)
       luaL_checkudata(l, index, text_surface_module_name);
   return **surface;
@@ -78,15 +83,15 @@ TextSurface& Script::check_text_surface(lua_State* l, int index) {
  */
 void Script::push_text_surface(lua_State* l, TextSurface& text_surface) {
 
-                                  /* ... */
+                                  // ...
   TextSurface** block_adress = (TextSurface**)
       lua_newuserdata(l, sizeof(TextSurface*));
   *block_adress = &text_surface;
-                                  /* ... text_surface */
+                                  // ... text_surface
   luaL_getmetatable(l, text_surface_module_name);
-                                  /* ... text_surface mt */
+                                  // ... text_surface mt
   lua_setmetatable(l, -2);
-                                  /* ... text_surface */
+                                  // ... text_surface
 }
 
 /**

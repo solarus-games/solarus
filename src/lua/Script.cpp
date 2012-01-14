@@ -752,8 +752,8 @@ bool Script::call_script(int nb_arguments, int nb_results,
  */
 void Script::update() {
 
-  // transitions
-  update_transitions();
+  // effects
+  update_surface_effects();
 
   // timers
   std::map<int, Timer*>::iterator it;

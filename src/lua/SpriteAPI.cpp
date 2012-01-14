@@ -16,6 +16,7 @@
  */
 #include <lua.hpp>
 #include "lua/Script.h"
+#include "movements/Movement.h"
 #include "Sprite.h"
 
 const char* Script::sprite_module_name = "sol.sprite";
@@ -40,6 +41,8 @@ void Script::initialize_sprite_module() {
       { "set_ignore_suspend", sprite_api_set_ignore_suspend },
       { "fade", sprite_api_fade },
       { "synchronize", sprite_api_synchronize },
+      { "start_movement", sprite_api_start_movement },
+      { "stop_movement", sprite_api_stop_movement },
       { NULL, NULL }
   };
 
@@ -63,6 +66,12 @@ void Script::initialize_sprite_module() {
   // metatable.__index = sol.sprite
   lua_setfield(l, -2, "__index");
                                   // sol.sprite mt
+
+  // also use the metatable to store the transitions and movements of sprites
+  lua_newtable(l);
+                                  // sol.sprite mt movements
+  lua_setfield(l, -2, "movements");
+                                  // sol.sprite mt
   lua_pop(l, 2);
                                   // --
 }
@@ -76,6 +85,11 @@ void Script::initialize_sprite_module() {
  */
 Sprite& Script::check_sprite(lua_State* l, int index) {
 
+  if (index < 0) {
+    // ensure a positive index
+    index = lua_gettop(l) + index + 1;
+  }
+
   Sprite** sprite = (Sprite**) luaL_checkudata(l, index, sprite_module_name);
   return **sprite;
 }
@@ -86,14 +100,14 @@ Sprite& Script::check_sprite(lua_State* l, int index) {
  */
 void Script::push_sprite(lua_State* l, Sprite& sprite) {
 
-                                  /* ... */
+                                  // ...
   Sprite** block_adress = (Sprite**) lua_newuserdata(l, sizeof(Sprite*));
   *block_adress = &sprite;
-                                  /* ... sprite */
+                                  // ... sprite
   luaL_getmetatable(l, sprite_module_name);
-                                  /* ... sprite mt */
+                                  // ... sprite mt
   lua_setmetatable(l, -2);
-                                  /* ... sprite */
+                                  // ... sprite
 }
 
 /**
@@ -363,6 +377,60 @@ int Script::sprite_api_synchronize(lua_State *l) {
   else {
     sprite.set_synchronized_to(NULL);
   }
+
+  return 0;
+}
+
+/**
+ * @brief Starts a movement on a sprite.
+ *
+ * - Argument 1 (sprite): a sprite
+ * - Argument 2 (movement): the movement to apply
+ * - Optional argument 3 (function): a Lua function to be called when the
+ * movement finishes
+ *
+ * @param l the Lua context that is calling this function
+ * @return the number of values to return to Lua
+ */
+int Script::sprite_api_start_movement(lua_State* l) {
+
+  /*
+  Script& script = get_script(l);
+
+  int callback = LUA_REFNIL;
+
+  Sprite& sprite = check_sprite(l, 1);
+  Movement& movement = check_movement(l, 2);
+
+  // the next argument (if any) is the callback
+  if (lua_gettop(l) >= 3) {
+    // store the callback into the registry
+    lua_settop(l, 3);
+    callback = luaL_ref(l, LUA_REGISTRYINDEX);
+  }
+
+  script.start_sprite_movement(sprite, movement, callback);
+  */
+
+  return 0;
+}
+
+/**
+ * @brief Stops the movement (if any) of a sprite.
+ *
+ * - Argument 1 (sprite): a sprite
+ *
+ * @param l the Lua context that is calling this function
+ * @return the number of values to return to Lua
+ */
+int Script::sprite_api_stop_movement(lua_State* l) {
+
+  /*
+  Script& script = get_script(l);
+
+  Sprite& sprite = check_sprite(l, 1);
+  script.stop_sprite_movement(sprite);
+  */
 
   return 0;
 }

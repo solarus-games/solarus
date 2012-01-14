@@ -60,21 +60,11 @@ class Script {
 
   private:
 
-    /**
-     * @brief Stores a transition effect and a function to be called
-     * when it's finished.
-     */
-    struct TransitionInfo {
-      Transition* transition;     /* a transition effect started by the script */
-      int callback;               /* Lua ref to the function to call when the transition finishes */
-    };
-
     // script data
-    std::map<Surface*, TransitionInfo> transitions;      /**< transitions applied to surfaces */
     // TODO reimplement timers as userdata? timer:stop, timer:set_with_sound(true)
     std::map<int, Timer*> timers;                        /**< the timers currently running for this script */
 
-    // userdata created by Lua, this info is used to know if we can garbage collect them
+    // userdata created by Lua (this info is used to know if we can garbage collect them)
     std::set<Surface*> surfaces_created;                 /**< surfaces created by Lua */
     std::set<TextSurface*> text_surfaces_created;        /**< text surfaces created by Lua */
     std::set<Sprite*> sprites_created;                   /**< sprites created by Lua */
@@ -116,12 +106,12 @@ class Script {
     void remove_all_timers();
     bool is_new_timer_suspended(void);
 
-    // transitions
-    void start_transition(Surface& surface, Transition& transition,
-        int callback);
-    void stop_transition(Surface& surface);
-    void stop_transitions();
-    void update_transitions();
+    // surfaces and sprites
+    static void get_surface_effects(lua_State* l, int index);
+    static void stop_surface_transition(lua_State* l, int index);
+    void update_surface_effects();
+    static void display_surface_with_effects(lua_State* l, int index,
+        Surface& dst_surface, Rectangle dst_xy);
 
     // debugging
     void print_stack();
@@ -415,6 +405,8 @@ class Script {
       surface_api_set_opacity,
       surface_api_fade_in,
       surface_api_fade_out,
+      surface_api_start_movement,
+      surface_api_stop_movement,
       surface_meta_gc,
 
       // text surface API
@@ -438,6 +430,8 @@ class Script {
       sprite_api_set_ignore_suspend,
       sprite_api_fade,
       sprite_api_synchronize,
+      sprite_api_start_movement,
+      sprite_api_stop_movement,
       sprite_meta_gc,
 
       // movement

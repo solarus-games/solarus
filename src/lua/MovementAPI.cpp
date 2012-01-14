@@ -88,6 +88,11 @@ void Script::initialize_movement_module() {
  */
 Movement& Script::check_movement(lua_State* l, int index) {
 
+  if (index < 0) {
+    // ensure a positive index
+    index = lua_gettop(l) + index + 1;
+  }
+
   Movement** movement = (Movement**) luaL_checkudata(l, index, movement_module_name);
   return **movement;
 }
@@ -98,14 +103,14 @@ Movement& Script::check_movement(lua_State* l, int index) {
  */
 void Script::push_movement(lua_State* l, Movement& movement) {
 
-                                  /* ... */
+                                  // ...
   Movement** block_adress = (Movement**) lua_newuserdata(l, sizeof(Movement*));
   *block_adress = &movement;
-                                  /* ... movement */
+                                  // ... movement
   luaL_getmetatable(l, movement_module_name);
-                                  /* ... movement mt */
+                                  // ... movement mt
   lua_setmetatable(l, -2);
-                                  /* ... movement */
+                                  // ... movement
 }
 
 /**

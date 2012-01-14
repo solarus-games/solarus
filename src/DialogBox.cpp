@@ -462,7 +462,7 @@ void DialogBox::show_all_now() {
     // check the end of the current line
     while (!is_full()) {
 
-      if (char_index >= lines[line_index].size()) {
+      while (!is_full() && char_index >= lines[line_index].size()) {
         char_index = 0;
         line_index++;
       }

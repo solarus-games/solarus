@@ -342,7 +342,8 @@ void TextSurface::rebuild() {
     break;
   }
 
-  Debug::check_assertion(internal_surface != NULL, StringConcat() << "Cannot create the text surface for string '" << text << "': " << SDL_GetError());
+  Debug::check_assertion(internal_surface != NULL, StringConcat()
+      << "Cannot create the text surface for string '" << text << "': " << SDL_GetError());
   surface = new Surface(internal_surface);
 
   // calculate the coordinates of the top-left corner

@@ -12,6 +12,7 @@ zsdx-1.4 (under development)
 * Potion shop: fix the coordinates on the minimap
 * Inferno river maze: fix the coordinates on the minimap
 * Dungeon 8 B4: the two switches could remain activated when leaving them
+* Dungeon 8 B4: the hero could be stuck if the door was closed
 * Dungeon 8 B2: a staircase was missing on the minimap
 * Change the color of shallow water and grass below the hero in the dark world
 * Change the color of the splash sprites when plunging into lava

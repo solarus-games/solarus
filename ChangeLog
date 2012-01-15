@@ -5,6 +5,7 @@ and translating dialogs easier (a conversion script is available)
 * Experimental: optimize displaying and collisions far from the visible area
 * Experimental: sensors are not obstacles anymore when jumping or using the
 hookshot, they are activated instead
+* Fix locked doors and blocks that could consume more than one small key
 * The player can now run with the action key if he has the ability "run"
 * Include Mac OS X packaging changes to the git repository
 * HUD: the 11th heart was not displayed correctly when incomplete

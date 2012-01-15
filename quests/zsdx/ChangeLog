@@ -21,6 +21,8 @@ zsdx-1.4 (under development)
 * Dungeon 4: replace a boring and buggy room by a room with evil tiles
 * Fix a typo for blue potions in the inventory
 * Fix the name of dungeon 6 in the minimap
+* Dungeon 9 boss: make a different sound when immobilized
+* Fairy cave: don't force the player do the blocks puzzle twice
 * Change how the hero is forced to finish dungeon 2 before starting dungeon 3
 * Smith cave: change the price of the sword (75 instead of 80)
 * Various minor improvements

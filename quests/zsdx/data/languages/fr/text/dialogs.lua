@@ -5088,7 +5088,7 @@ dialog{
 Bienvenue au Bazar du
 Coin ! Des articles de
 premier choix à des
-prix tout-à-fait
+prix tout à fait
 exceptionnels !
 Sers-toi !
 ]]

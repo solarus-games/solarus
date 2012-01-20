@@ -6,14 +6,14 @@ language{
 
 --[[
 language{
-  code = "en",
-  name = "English",
-  default = true
+  code = "de",
+  name = "Deutsch"
 }
 
 language{
-  code = "de",
-  name = "German"
+  code = "en",
+  name = "English",
+  default = true
 }
 --]]
 

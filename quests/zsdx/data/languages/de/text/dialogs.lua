@@ -1,746 +1,749 @@
 -- This is a Lua dialog file for solarus 0.9.1 or greater.
 -- This dialog file was converted from the 0.9.0 ini syntax using the script
--- tools/data_files_converstion/dialogs_0.9.0_to_0.9.1.lua.
+-- tools/data_files_conversion/0.9.0_to_0.9.1/convert_dialogs.lua.
 
--- Plume / Feather
+-- Plume / Feather / Feder
 dialog{
   id = "_item_description.feather.1",
   icon = 0,
   skip = "all",
   text = [[
-Utilise la Plume
-pour sauter et fran-
-chir des obstacles.
+Benutze die Feder,
+um zu springen und
+Hindernisse zu
+überwinden.
 ]]
 }
 --------------------
 
--- Bombes / Bombs
+-- Bombes / Bombs / Bomben
 dialog{
   id = "_item_description.bombs_counter.1",
   icon = 1,
   skip = "all",
   text = [[
-Utilise les Bombes
-contre les ennemis
-ou pour faire
-exploser des
-obstacles.
+Setze Bomben gegen
+Gegner ein oder um
+Hindernisse zu
+sprengen.
 ]]
 }
 --------------------
 
--- Arc / Bow
+-- Arc / Bow / Bogen
 dialog{
   id = "_item_description.bow.1",
   icon = 2,
   skip = "all",
   text = [[
-Tu n'as plus de
-Flèches !
+Du hast keine
+Pfeile mehr übrig!
 ]]
 }
 --------------------
 
--- Arc & Flèches / Bow & Arrows
+-- Arc & Flèches / Bow & Arrows / Bogen & Pfeile
 dialog{
   id = "_item_description.bow.2",
   icon = 3,
   skip = "all",
   text = [[
-Tire des Flèches
-pour vaincre des
-ennemis coriaces.
+Benutze Pfeile, um
+zähe Gegner
+zu besiegen.
 ]]
 }
 --------------------
 
--- Boomerang
+-- Boomerang / Bumerang
 dialog{
   id = "_item_description.boomerang.1",
   icon = 4,
   skip = "all",
   text = [[
-Utilise le Boomerang
-pour immobiliser les
-ennemis ou attraper
-des objets à
-distance.
+Mit dem Bumerang
+kannst Du Gegner
+lähmen und entfernte
+Gegenstände
+aufsammeln.
 ]]
 }
 --------------------
 
--- Super Boomerang
+-- Super Boomerang / Superbumerang
 dialog{
   id = "_item_description.boomerang.2",
   icon = 35,
   skip = "all",
   text = [[
-Utilise le Super
-Boomerang pour
-immobiliser les
-ennemis ou attraper
-des objets à
-distance.
+Mit dem Super-
+bumerang kannst Du
+Gegner lähmen und
+entfernte
+Gegenstände
+aufsammeln.
 ]]
 }
 --------------------
 
--- Lanterne / Lamp
+-- Lanterne / Lamp / Lampe
 dialog{
   id = "_item_description.lamp.1",
   icon = 5,
   skip = "all",
   text = [[
-Eclaire-toi dans le
-noir ou allume des
-braseros à l'aide
-de la Lanterne. Mais
-surveille ton
-compteur magique !
+Bringe Licht ins
+Dunkel oder zünde
+mit der Lampe
+Fackeln an. Aber
+achte auf Deinen
+Magieverbrauch!
 ]]
 }
 --------------------
 
--- Grappin / Hook Shot
+-- Grappin / Hook Shot / Enterhaken
 dialog{
   id = "_item_description.hookshot.1",
   icon = 6,
   skip = "all",
   text = [[
-Hisse-toi à des
-endroits
-inaccessibles grâce
-au Grappin.
+Mit dem Enterhaken
+kannst Du Dich an
+sonst unerreichbare
+Orte ziehen.
 ]]
 }
 --------------------
 
--- Flacon Magique vide / Empty bottle
+-- Flacon Magique vide / Empty bottle / leere Flasche
 dialog{
   id = "_item_description.bottle_1.1",
   icon = 7,
   skip = "all",
   text = [[
-Le Flacon Magique
-peut contenir di-
-verses substances...
+In einer Flasche
+kann man nützliche
+Dinge aufbewahren...
 ]]
 }
 --------------------
 
--- Eau dans Flacon / Water in Bottle
+-- Eau dans Flacon / Water in Bottle / Wasser in der Flasche
 dialog{
   id = "_item_description.bottle_1.2",
   icon = 8,
   skip = "all",
   text = [[
-Ton Flacon Magique
-contient de l'eau.
-Verse-la à un
-endroit approprié...
+Deine Flasche ist
+mit Wasser gefüllt.
+Leere sie an einem
+geeigneten Ort...
 ]]
 }
 --------------------
 
--- Potion rouge / Red potion
+-- Potion rouge / Red potion / Roter Trank
 dialog{
   id = "_item_description.bottle_1.3",
   icon = 9,
   skip = "all",
   text = [[
-Bois de la Potion
-rouge pour retrouver
-tous tes Coeurs.
+Trinke den roten
+Trank, um Deine
+Herzleiste voll
+aufzufüllen.
 ]]
 }
 --------------------
 
--- Potion verte / Red potion
+-- Potion verte / Green potion / Grüner Trank
 dialog{
   id = "_item_description.bottle_1.4",
   icon = 10,
   skip = "all",
   text = [[
-Bois de la Potion
-verte pour retrouver
-toute ta magie.
+Trinke den grünen
+Trank, um Deine
+Magie aufzufüllen.
 ]]
 }
 --------------------
 
--- Potion bleue / Red potion
+-- Potion bleue / Blue potion / Blauer Trank
 dialog{
   id = "_item_description.bottle_1.5",
   icon = 11,
   skip = "all",
   text = [[
-Bois de la Potion
-bleue pour retrouver
-vie et magie !
+Trinke den blauen
+Trank, um Herzen und
+Magie aufzufüllen!
 ]]
 }
 --------------------
 
--- Fée dans Flacon / Fairy in Bottle
+-- Fée dans Flacon / Fairy in Bottle / Fee in der Flasche
 dialog{
   id = "_item_description.bottle_1.6",
   icon = 12,
   skip = "all",
   text = [[
-Cette Fée te viendra
-en aide si tu es en
-difficulté.
-Tu peux aussi
-l'utiliser à tout
-moment pour
-récupérer des
-Coeurs !
+Diese Fee wird Dir
+in der Not zur
+Hilfe kommen.
+Du kannst sie aber
+auch jederzeit
+benutzen, um
+einige Herzen
+aufzufüllen!
 ]]
 }
 --------------------
 
--- Flacon Magique vide / Empty bottle
+-- Flacon Magique vide / Empty bottle / leere Flasche
 dialog{
   id = "_item_description.bottle_2.1",
   icon = 7,
   skip = "all",
   text = [[
-Le Flacon Magique
-peut contenir di-
-verses substances...
+In einer Flasche
+kann man nützliche
+Dinge aufbewahren...
 ]]
 }
 --------------------
 
--- Eau dans Flacon / Water in Bottle
+-- Eau dans Flacon / Water in Bottle / Wasser in der Flasche
 dialog{
   id = "_item_description.bottle_2.2",
   icon = 8,
   skip = "all",
   text = [[
-Ton Flacon Magique
-contient de l'eau.
-Verse-la à un
-endroit approprié...
+Deine Flasche ist
+mit Wasser gefüllt.
+Leere sie an einem
+geeigneten Ort...
 ]]
 }
 --------------------
 
--- Potion rouge / Red potion
+-- Potion rouge / Red potion / Roter Trank
 dialog{
   id = "_item_description.bottle_2.3",
   icon = 9,
   skip = "all",
   text = [[
-Bois de la Potion
-rouge pour retrouver
-tous tes Coeurs.
+Trinke den roten
+Trank, um Deine
+Herzleiste voll
+aufzufüllen.
 ]]
 }
 --------------------
 
--- Potion verte / Red potion
+-- Potion verte / Green potion / Grüner Trank
 dialog{
   id = "_item_description.bottle_2.4",
   icon = 10,
   skip = "all",
   text = [[
-Bois de la Potion
-verte pour retrouver
-toute ta magie.
+Trinke den grünen
+Trank, um Deine
+Magie aufzufüllen.
 ]]
 }
 --------------------
 
--- Potion bleue / Red potion
+-- Potion bleue / Blue potion / Blauer Trank
 dialog{
   id = "_item_description.bottle_2.5",
   icon = 11,
   skip = "all",
   text = [[
-Bois de la Potion
-bleue pour retrouver
-vie et magie !
+Trinke den blauen
+Trank, um Herzen und
+Magie aufzufüllen!
 ]]
 }
 --------------------
 
--- Fée dans Flacon / Fairy in Bottle
+-- Fée dans Flacon / Fairy in Bottle / Fee in der Flasche
 dialog{
   id = "_item_description.bottle_2.6",
   icon = 12,
   skip = "all",
   text = [[
-Cette Fée te viendra
-en aide si tu es en
-difficulté.
-Tu peux aussi
-l'utiliser à tout
-moment pour
-récupérer des
-Coeurs !
+Diese Fee wird Dir
+in der Not zur
+Hilfe kommen.
+Du kannst sie aber
+auch jederzeit
+benutzen, um
+einige Herzen
+aufzufüllen!
 ]]
 }
 --------------------
 
--- Flacon Magique vide / Empty bottle
+-- Flacon Magique vide / Empty bottle / leere Flasche
 dialog{
   id = "_item_description.bottle_3.1",
   icon = 7,
   skip = "all",
   text = [[
-Le Flacon Magique
-peut contenir di-
-verses substances...
+In einer Flasche
+kann man nützliche
+Dinge aufbewahren...
 ]]
 }
 --------------------
 
--- Eau dans Flacon / Water in Bottle
+-- Eau dans Flacon / Water in Bottle / Wasser in der Flasche
 dialog{
   id = "_item_description.bottle_3.2",
   icon = 8,
   skip = "all",
   text = [[
-Ton Flacon Magique
-contient de l'eau.
-Verse-la à un
-endroit approprié...
+Deine Flasche ist
+mit Wasser gefüllt.
+Leere sie an einem
+geeigneten Ort...
 ]]
 }
 --------------------
 
--- Potion rouge / Red potion
+-- Potion rouge / Red potion / Roter Trank
 dialog{
   id = "_item_description.bottle_3.3",
   icon = 9,
   skip = "all",
   text = [[
-Bois de la Potion
-rouge pour retrouver
-tous tes Coeurs.
+Trinke den roten
+Trank, um Deine
+Herzleiste voll
+aufzufüllen.
 ]]
 }
 --------------------
 
--- Potion verte / Red potion
+-- Potion verte / Green potion / Grüner Trank
 dialog{
   id = "_item_description.bottle_3.4",
   icon = 10,
   skip = "all",
   text = [[
-Bois de la Potion
-verte pour retrouver
-toute ta magie.
+Trinke den grünen
+Trank, um Deine
+Magie aufzufüllen.
 ]]
 }
 --------------------
 
--- Potion bleue / Red potion
+-- Potion bleue / Blue potion / Blauer Trank
 dialog{
   id = "_item_description.bottle_3.5",
   icon = 11,
   skip = "all",
   text = [[
-Bois de la Potion
-bleue pour retrouver
-vie et magie !
+Trinke den blauen
+Trank, um Herzen und
+Magie aufzufüllen!
 ]]
 }
 --------------------
 
--- Fée dans Flacon / Fairy in Bottle
+-- Fée dans Flacon / Fairy in Bottle / Fee in der Flasche
 dialog{
   id = "_item_description.bottle_3.6",
   icon = 12,
   skip = "all",
   text = [[
-Cette Fée te viendra
-en aide si tu es en
-difficulté.
-Tu peux aussi
-l'utiliser à tout
-moment pour
-récupérer des
-Coeurs !
+Diese Fee wird Dir
+in der Not zur
+Hilfe kommen.
+Du kannst sie aber
+auch jederzeit
+benutzen, um
+einige Herzen
+aufzufüllen!
 ]]
 }
 --------------------
 
--- Flacon Magique vide / Empty bottle
+-- Flacon Magique vide / Empty bottle / leere Flasche
 dialog{
   id = "_item_description.bottle_4.1",
   icon = 7,
   skip = "all",
   text = [[
-Le Flacon Magique
-peut contenir di-
-verses substances...
+In einer Flasche
+kann man nützliche
+Dinge aufbewahren...
 ]]
 }
 --------------------
 
--- Eau dans Flacon / Water in Bottle
+-- Eau dans Flacon / Water in Bottle / Wasser in der Flasche
 dialog{
   id = "_item_description.bottle_4.2",
   icon = 8,
   skip = "all",
   text = [[
-Ton Flacon Magique
-contient de l'eau.
-Verse-la à un
-endroit approprié...
+Deine Flasche ist
+mit Wasser gefüllt.
+Leere sie an einem
+geeigneten Ort...
 ]]
 }
 --------------------
 
--- Potion rouge / Red potion
+-- Potion rouge / Red potion / Roter Trank
 dialog{
   id = "_item_description.bottle_4.3",
   icon = 9,
   skip = "all",
   text = [[
-Bois de la Potion
-rouge pour retrouver
-tous tes Coeurs.
+Trinke den roten
+Trank, um Deine
+Herzleiste voll
+aufzufüllen.
 ]]
 }
 --------------------
 
--- Potion verte / Red potion
+-- Potion verte / Green potion / Grüner Trank
 dialog{
   id = "_item_description.bottle_4.4",
   icon = 10,
   skip = "all",
   text = [[
-Bois de la Potion
-verte pour retrouver
-toute ta magie.
+Trinke den grünen
+Trank, um Deine
+Magie aufzufüllen.
 ]]
 }
 --------------------
 
--- Potion bleue / Red potion
+-- Potion bleue / Blue potion / Blauer Trank
 dialog{
   id = "_item_description.bottle_4.5",
   icon = 11,
   skip = "all",
   text = [[
-Bois de la Potion
-bleue pour retrouver
-vie et magie !
+Trinke den blauen
+Trank, um Herzen und
+Magie aufzufüllen!
 ]]
 }
 --------------------
 
--- Fée dans Flacon / Fairy in Bottle
+-- Fée dans Flacon / Fairy in Bottle / Fee in der Flasche
 dialog{
   id = "_item_description.bottle_4.6",
   icon = 12,
   skip = "all",
   text = [[
-Cette Fée te viendra
-en aide si tu es en
-difficulté.
-Tu peux aussi
-l'utiliser à tout
-moment pour
-récupérer des
-Coeurs !
+Diese Fee wird Dir
+in der Not zur
+Hilfe kommen.
+Du kannst sie aber
+auch jederzeit
+benutzen, um
+einige Herzen
+aufzufüllen!
 ]]
 }
 --------------------
 
--- Bottes de Pégase / Pegasus Shoes
+-- Bottes de Pégase / Pegasus Shoes /Pegasus-Stiefel
 dialog{
   id = "_item_description.pegasus_shoes.1",
   icon = 13,
   skip = "all",
   text = [[
-Fonce à toute allure
-grâce aux Bottes de
-Pégase.
-Appuie sur la touche
-Action pour courir.
+Renne wie der Blitz
+und zertrümmere die
+Hindernisse mit den
+Pegasus-Stiefeln!
 ]]
 }
 --------------------
 
--- Miroir Mystique / Mystic Mirror
+-- Miroir Mystique / Mystic Mirror / Zauberspiegel
 dialog{
   id = "_item_description.mystic_mirror.1",
   icon = 14,
   skip = "all",
   text = [[
-Le Miroir Mystique
-aurait de mystérieux
-pouvoirs...
+Es heißt, der
+Zauberspiegel habe
+geheimnisvolle
+Kräfte...
 ]]
 }
 --------------------
 
--- Canne de Somaria / Cane of Somaria
+-- Canne de Somaria / Cane of Somaria / Somaria-Stab
 dialog{
   id = "_item_description.cane_of_somaria.1",
   icon = 15,
   skip = "all",
   next = "_warning_magic",
   text = [[
-Crée des blocs et
-accroche-toi à
-l'aide du Grappin.
+Erstelle Felsen als
+Ankerpunkte für
+Deinen Enterhaken.
 ]]
 }
 --------------------
 
--- Pommes / Apples
+-- Pommes / Apples / Äpfel
 dialog{
   id = "_item_description.apples_counter.1",
   icon = 16,
   skip = "all",
   text = [[
-Mange des Pommes
-pour récupérer des
-Coeurs.
+Iss einen Apfel, um
+eines Deiner Herzen
+aufzufüllen.
 ]]
 }
 --------------------
 
--- Pains au Chocolat / Pains au Chocolat
+-- Pains au Chocolat / Pains au Chocolat / Schokobrötchen
 dialog{
   id = "_item_description.pains_au_chocolat_counter.1",
   icon = 17,
   skip = "all",
   text = [[
-Mange un Pain au
-Chocolat pour
-récupéer 3 Coeurs.
+Iss ein Schoko-
+bröchen, um 3
+Herzen aufzufüllen.
 ]]
 }
 --------------------
 
--- Croissant / Croissant
+-- Croissant / Croissant / Hörnchen
 dialog{
   id = "_item_description.croissants_counter.1",
   icon = 18,
   skip = "all",
   text = [[
-Mange un Croissant
-pour récupérer
-7 Coeurs.
+Iss ein Hörnchen,
+um 7 Herzen wieder-
+herzustellen.
 ]]
 }
 --------------------
 
--- Clé de Roc / Rock Key
+-- Clé de Roc / Rock Key / Felsschlüssel
 dialog{
   id = "_item_description.rock_key.1",
   icon = 19,
   skip = "all",
   text = [[
-La Clé de Roc. Mais
-où est donc la bonne
-serrure ?
+Der Felsschlüssel.
+Wo ist bloß das
+passende Schloss?
 ]]
 }
 --------------------
 
--- Clé d'Os / Bone Key
+-- Clé d'Os / Bone Key / Knochenschlüssel
 dialog{
   id = "_item_description.bone_key.1",
   icon = 20,
   skip = "all",
   text = [[
-A quoi peut servir
-la Clé d'Os ?
+Wozu dient wohl der
+Knochenschlüssel?
 ]]
 }
 --------------------
 
--- Clé de Terre / Clay Key
+-- Clé de Terre / Clay Key / Erdschlüssel
 dialog{
   id = "_item_description.clay_key.1",
   icon = 21,
   skip = "all",
   text = [[
-La Clé de Terre, qui
-permet d'ouvrir la
-grotte du village.
+Der Erdschlüssel. Er
+öffnet den Höhlen-
+eingang im Dorf.
 ]]
 }
 --------------------
 
--- Tarte aux Pommes / Apple Pie
+-- Tarte aux Pommes / Apple Pie / Apfelkuchen
 dialog{
   id = "_item_description.level_4_way.1",
   icon = 22,
   skip = "all",
   text = [[
-Cette Tarte aux
-Pommes a un drôle
-d'aspect...
+Dieser Apfelkuchen
+sieht seltsam aus...
 ]]
 }
 --------------------
 
--- Lingots d'or / Golden bars
+-- Lingots d'or / Golden bars / Goldbarren
 dialog{
   id = "_item_description.level_4_way.2",
   icon = 23,
   skip = "all",
   text = [[
-Ce sont trois
-authentiques
-lingots d'or !
+Das sind drei
+wahrhaftige
+Goldbarren!
 ]]
 }
 --------------------
 
--- Edelweiss / Edelweiss
+-- Edelweiss / Edelweiss / Edelweiß
 dialog{
   id = "_item_description.level_4_way.3",
   icon = 24,
   skip = "all",
   text = [[
-L'Edelweiss est une
-fleur très rare dans
-le royaume d'Hyrule.
+Das Edelweiß ist
+in Hyrule eine
+sehr seltene Blume.
 ]]
 }
 --------------------
 
--- Précis d'escrime / Tiger scrolls
+-- Précis d'escrime / Tiger scrolls / Schwerttechnik
 dialog{
   id = "_item_description.level_4_way.4",
   icon = 25,
   skip = "all",
   text = [[
-Ce Précis d'escrime
-te permet de
-maîtriser les
-techniques avancées
-des arts de l'épée.
+Diese Schriftrolle
+weist Dich in
+fortgeschrittene
+Techniken der
+Schwertkunst ein.
 ]]
 }
 --------------------
 
--- Palmes / Flippers
+-- Palmes / Flippers / Flossen
 dialog{
   id = "_item_description.flippers.1",
   icon = 26,
   skip = "all",
   text = [[
-Les Palmes te
-permettent de nager
-dans l'eau profonde.
+Mit den Flossen
+kannst Du in tiefen
+Gewässern schwimmen.
 ]]
 }
 --------------------
 
--- Cape magique / Magic Cape
+-- Cape magique / Magic Cape / magischer Umhang
 dialog{
   id = "_item_description.magic_cape.1",
   icon = 27,
   skip = "all",
   text = [[
-La Cape Magique
-t'avertit si tu
-t'approches d'un
-mur fragile...
+Der magische Umhang
+warnt Dich, wenn Du
+Dich in der Nähe
+einer brüchigen
+Wand befindest.
 ]]
 }
 --------------------
 
--- Clé de Fer / Iron Key
+-- Clé de Fer / Iron Key / Eisenschlüssel
 dialog{
   id = "_item_description.iron_key.1",
   icon = 28,
   skip = "all",
   text = [[
-La Clé de Fer.
-Mais ne te trompe
-pas de serrure !
+Der Eisenschlüssel.
+Nun bloß nicht das
+Schloss verwechseln!
 ]]
 }
 --------------------
 
--- Clé de Pierre / Stone Key
+-- Clé de Pierre / Stone Key / Steinschlüssel
 dialog{
   id = "_item_description.stone_key.1",
   icon = 29,
   skip = "all",
   text = [[
-La Clé de Pierre.
-Reste à trouver la
-bonne serrure !
+Der Steinschlüssel.
+Jetzt fehlt noch das
+richtige Schloss!
 ]]
 }
 --------------------
 
--- Clé de Bois / Wooden Key
+-- Clé de Bois / Wooden Key / Holzschlüssel
 dialog{
   id = "_item_description.wooden_key.1",
   icon = 30,
   skip = "all",
   text = [[
-La Clé de Bois. Mais
-une seule serrure
-est la bonne...
+Der Holzschlüssel.
+Er passt nur in ein
+einziges Schloss...
 ]]
 }
 --------------------
 
--- Clé de Glace / Ice Key
+-- Clé de Glace / Ice Key / Eisschlüssel
 dialog{
   id = "_item_description.ice_key.1",
   icon = 31,
   skip = "all",
   text = [[
-La Clé de Glace.
-A toi de trouver un
-lieu gelé pour la
-faire fonctionner !
+Der Eisschlüssel.
+Finde einen eisigen
+Ort, um ihn zu
+benutzen!
 ]]
 }
------------------------
+--------------------
 
--- Poigne de Fer / Iron Glove
+-- Poigne de Fer / Iron Glove / Krafthandschuhe
 dialog{
   id = "_item_description.glove.1",
   icon = 32,
   skip = "all",
   text = [[
-La Poigne de Fer te
-permet de soulever
-les pierres.
+Mit dem Krafthand-
+schuh kannst Du
+Steine heben.
 ]]
 }
 --------------------
 
--- Poigne d'Or / Golden Glove
+-- Poigne d'Or / Golden Glove / Titanhandschuh
 dialog{
   id = "_item_description.glove.2",
   icon = 33,
   skip = "all",
   text = [[
-Soulève les pierres
-noires grâce à la
-Poigne d'Or.
+Hebe mit dem
+Titanhandschuh
+auch dunkle Steine.
 ]]
 }
 --------------------
 
--- Pierres de Feu / Fire Stones
+-- Pierres de Feu / Fire Stones / Feuersteine
 dialog{
   id = "_item_description.fire_stones_counter.1",
   icon = 34,
   skip = "all",
   text = [[
-Trouve les trois
-Pierres de Feu et
-apporte-les
-à Inferno.
+Finde die drei
+Feuersteine und
+bringe sie Inferno.
 ]]
 }
 --------------------
@@ -752,948 +755,961 @@ apporte-les
 -- Les messages ci-dessous sont affichés lorsque le joueur obtient
 -- un trésor, généralement en ouvrant un coffre ou en l'achetant
 -- dans un magasin.
--- Plume
+--  Plume
 dialog{
   id = "_treasure.feather.1",
   icon = 0,
   skip = "all",
   text = [[
-Tu as trouvé la
-Plume !$0 Utilise-la
-pour sauter et
-franchir des
-obstacles !
+Du hast die Feder
+gefunden! $0Benutze
+sie, um zu springen
+und Hindernisse zu
+überwinden.
 ]]
 }
 --------------------
 
--- Arc seul
+--  Arc seul
 dialog{
   id = "_treasure.bow.1",
   icon = 2,
   text = [[
-Tu as trouvé l'Arc !$0
-Trouve des Flèches
-et tu pourras
-vaincre à distance
-les ennemis
-coriaces !
+Du hast den Bogen
+gefunden! $0Finde
+Pfeile und Du wirst
+Deine zähen Gegner
+aus der Ferne
+besiegen können.
 ]]
 }
 --------------------
 
--- Arc & Flèches
+--  Arc & Flèches
 dialog{
   id = "_treasure.bow.2",
   icon = 3,
   text = [[
-Tu as trouvé l'Arc !$0
-Tu peux combattre
-ennemis coriaces
-à distance !
+Du hast einen Bogen
+und Pfeile gefunden!
+$0Du kannst nun
+Deine zähen Gegner
+aus der Ferne
+besiegen.
 ]]
 }
 --------------------
 
--- Boomerang
+--  Boomerang
 dialog{
   id = "_treasure.boomerang.1",
   icon = 4,
   text = [[
-Tu as trouvé le
-Boomerang !$0 Tu peux
-immobiliser les
-ennemis ou attraper
-des objets à
-distance.
-Il y a plusieurs
-techniques pour le
-manipuler, à toi
-de les découvrir !
+Du hast den Bumerang
+gefunden!$0 Du kannst
+damit Gegner lähmen
+und entfernte
+Gegenstände
+aufsammeln.
+Seine geschickte
+Handhabung bietet
+viele Möglichkeiten.
+Es liegt nun an Dir,
+sie zu entdecken.
 ]]
 }
 --------------------
 
--- Super Boomerang
+--  Super Boomerang
 dialog{
   id = "_treasure.boomerang.2",
   icon = 35,
   text = [[
-Tu as trouvé le
-Super Boomerang !$0
-Il est plus rapide
-et plus puissant que
-l'ancien !
+Du hast den
+Superbumerang
+gefunden!$0
+Er ist schneller
+und stärker als
+der alte.
 ]]
 }
 --------------------
 
--- Lanterne
+--  Lanterne
 dialog{
   id = "_treasure.lamp.1",
   icon = 5,
   next = "_warning_magic",
   text = [[
-Tu as trouvé la
-Lanterne !$0 Elle
-t'éclaire dans le
-noir et te permet
-d'allumer des
-braseros.
+Du hast die Lampe
+gefunden!$0 Sie
+erhellt dunkle Orte.
+Du kannst mit
+ihr auch Fackeln
+anzünden.
 ]]
 }
 --------------------
 
--- Grappin
+--  Grappin
 dialog{
   id = "_treasure.hookshot.1",
   icon = 6,
   text = [[
-Tu as trouvé le
-Grappin !$0 Immobilise
-les ennemis et vole
-vers des endroits
-inacessibles !
+Du hast den
+Enterhaken gefunden!
+$0 Lähme die Gegner
+und ziehe Dich an
+unerreichbare Orte!
 ]]
 }
 --------------------
 
--- Flacon vide
+--  Flacon vide
 dialog{
   id = "_treasure.bottle_1.1",
   icon = 7,
   text = [[
-Tu as trouvé un
-Flacon Magique !$0
-Remplis-le avec
-diverses substances.
+Du hast eine Flasche
+gefunden!$0
+Du kannst sie mit
+verschiedenen Dingen
+füllen.
 ]]
 }
 --------------------
 
--- Eau
+--  Eau
 dialog{
   id = "_treasure.bottle_1.2",
   icon = 8,
   text = [[
-Tu as rempli ton
-Flacon Magique avec
-de l'eau !
+Du hast Wasser in
+Deine Flasche
+gefüllt.
 ]]
 }
 --------------------
 
--- Potion rouge
+--  Potion rouge
 dialog{
   id = "_treasure.bottle_1.3",
   icon = 9,
   text = [[
-Tu as trouvé de la
-Potion Rouge !$0
-Bois-la pour
-retrouver toute ton
-énergie vitale.
+Du hast einen roten
+Trank gefunden!$0
+Trink ihn, um Deine
+Herzleiste voll
+aufzufüllen.
 ]]
 }
 --------------------
 
--- Potion verte
+--  Potion verte
 dialog{
   id = "_treasure.bottle_1.4",
   icon = 10,
   text = [[
-Tu as trouvé de la
-Potion Verte !$0
-Bois-la pour
-retrouver toute ton
-énergie magique.
+Du hast einen grünen
+Trank gefunden!$0
+Trink ihn, um Deine
+magische Energie
+aufzufüllen.
 ]]
 }
 --------------------
 
--- Potion bleue
+--  Potion bleue
 dialog{
   id = "_treasure.bottle_1.5",
   icon = 11,
   text = [[
-Tu as trouvé de la
-Potion Bleue !$0
-Bois-la pour
-retrouver toute ta
-vie et ta magie !
+Du hast einen blauen
+Trank gefunden!$0
+Trinke ihn, um alle
+Herzen und Deine
+Magie aufzufüllen!
 ]]
 }
 --------------------
 
--- Fée dans Flacon
+--  Fée dans Flacon
 dialog{
   id = "_treasure.bottle_1.6",
   icon = 12,
   skip = "all",
   text = [[
-Tu as capturé une
-Fée ! Elle te
-viendra en aide si
-tu es en difficulté.
-Tu peux aussi
-l'utiliser à tout
-moment pour
-récupérer des
-Coeurs.
+Du hast eine Fee
+gefangen! Sie wird
+Dir in der Not zur
+Hilfe eilen. Du
+kannst sie aber auch
+jederzeit benutzen,
+um einige Herzen
+aufzufüllen.
 ]]
 }
 --------------------
 
--- Flacon vide
+--  Flacon vide
 dialog{
   id = "_treasure.bottle_2.1",
   icon = 7,
   text = [[
-Tu as trouvé un
-Flacon Magique !$0
-Remplis-le avec
-diverses substances.
+Du hast eine Flasche
+gefunden!$0
+Du kannst sie mit
+verschiedenen Dingen
+füllen.
 ]]
 }
 --------------------
 
--- Eau
+--  Eau
 dialog{
   id = "_treasure.bottle_2.2",
   icon = 8,
   text = [[
-Tu as rempli ton
-Flacon Magique avec
-de l'eau !
+Du hast Wasser in
+Deine Flasche
+gefüllt.
 ]]
 }
 --------------------
 
--- Potion rouge
+--  Potion rouge
 dialog{
   id = "_treasure.bottle_2.3",
   icon = 9,
   text = [[
-Tu as trouvé de la
-Potion Rouge !$0
-Bois-la pour
-retrouver toute ton
-énergie vitale.
+Du hast einen roten
+Trank gefunden!$0
+Trink ihn, um Deine
+Herzleiste voll
+aufzufüllen.
 ]]
 }
 --------------------
 
--- Potion verte
+--  Potion verte
 dialog{
   id = "_treasure.bottle_2.4",
   icon = 10,
   text = [[
-Tu as trouvé de la
-Potion Verte !$0
-Bois-la pour
-retrouver toute ton
-énergie magique.
+Du hast einen grünen
+Trank gefunden!$0
+Trink ihn, um Deine
+magische Energie
+aufzufüllen.
 ]]
 }
 --------------------
 
--- Potion bleue
+--  Potion bleue
 dialog{
   id = "_treasure.bottle_2.5",
   icon = 11,
   text = [[
-Tu as trouvé de la
-Potion Bleue !$0
-Bois-la pour
-retrouver toute ta
-vie et ta magie !
+Du hast einen blauen
+Trank gefunden!$0
+Trinke ihn, um alle
+Herzen und Deine
+Magie aufzufüllen!
 ]]
 }
 --------------------
 
--- Fée dans Flacon
+--  Fée dans Flacon
 dialog{
   id = "_treasure.bottle_2.6",
   icon = 12,
   skip = "all",
   text = [[
-Tu as capturé une
-Fée ! Elle te
-viendra en aide si
-tu es en difficulté.
-Tu peux aussi
-l'utiliser à tout
-moment pour
-récupérer des
-Coeurs.
+Du hast eine Fee
+gefangen! Sie wird
+Dir in der Not zur
+Hilfe eilen. Du
+kannst sie aber auch
+jederzeit benutzen,
+um einige Herzen
+aufzufüllen.
 ]]
 }
 --------------------
 
--- Flacon vide
+--  Flacon vide
 dialog{
   id = "_treasure.bottle_3.1",
   icon = 7,
   text = [[
-Tu as trouvé un
-Flacon Magique !$0
-Remplis-le avec
-diverses substances.
+Du hast eine Flasche
+gefunden!$0
+Du kannst sie mit
+verschiedenen Dingen
+füllen.
 ]]
 }
 --------------------
 
--- Eau
+--  Eau
 dialog{
   id = "_treasure.bottle_3.2",
   icon = 8,
   text = [[
-Tu as rempli ton
-Flacon Magique avec
-de l'eau !
+Du hast Wasser in
+Deine Flasche
+gefüllt.
 ]]
 }
 --------------------
 
--- Potion rouge
+--  Potion rouge
 dialog{
   id = "_treasure.bottle_3.3",
   icon = 9,
   text = [[
-Tu as trouvé de la
-Potion Rouge !$0
-Bois-la pour
-retrouver toute ton
-énergie vitale.
+Du hast einen roten
+Trank gefunden!$0
+Trink ihn, um Deine
+Herzleiste voll
+aufzufüllen.
 ]]
 }
 --------------------
 
--- Potion verte
+--  Potion verte
 dialog{
   id = "_treasure.bottle_3.4",
   icon = 10,
   text = [[
-Tu as trouvé de la
-Potion Verte !$0
-Bois-la pour
-retrouver toute ton
-énergie magique.
+Du hast einen grünen
+Trank gefunden!$0
+Trink ihn, um Deine
+magische Energie
+aufzufüllen.
 ]]
 }
 --------------------
 
--- Potion bleue
+--  Potion bleue
 dialog{
   id = "_treasure.bottle_3.5",
   icon = 11,
   text = [[
-Tu as trouvé de la
-Potion Bleue !$0
-Bois-la pour
-retrouver toute ta
-vie et ta magie !
+Du hast einen blauen
+Trank gefunden!$0
+Trinke ihn, um alle
+Herzen und Deine
+Magie aufzufüllen!
 ]]
 }
 --------------------
 
--- Fée dans Flacon
+--  Fée dans Flacon
 dialog{
   id = "_treasure.bottle_3.6",
   icon = 12,
   skip = "all",
   text = [[
-Tu as capturé une
-Fée ! Elle te
-viendra en aide si
-tu es en difficulté.
-Tu peux aussi
-l'utiliser à tout
-moment pour
-récupérer des
-Coeurs.
+Du hast eine Fee
+gefangen! Sie wird
+Dir in der Not zur
+Hilfe eilen. Du
+kannst sie aber auch
+jederzeit benutzen,
+um einige Herzen
+aufzufüllen.
 ]]
 }
 --------------------
 
--- Flacon vide
+--  Flacon vide
 dialog{
   id = "_treasure.bottle_4.1",
   icon = 7,
   text = [[
-Tu as trouvé un
-Flacon Magique !$0
-Remplis-le avec
-diverses substances.
+Du hast eine Flasche
+gefunden!$0
+Du kannst sie mit
+verschiedenen Dingen
+füllen.
 ]]
 }
 --------------------
 
--- Eau
+--  Eau
 dialog{
   id = "_treasure.bottle_4.2",
   icon = 8,
   text = [[
-Tu as rempli ton
-Flacon Magique avec
-de l'eau !
+Du hast Wasser in
+Deine Flasche
+gefüllt.
 ]]
 }
 --------------------
 
--- Potion rouge
+--  Potion rouge
 dialog{
   id = "_treasure.bottle_4.3",
   icon = 9,
   text = [[
-Tu as trouvé de la
-Potion Rouge !$0
-Bois-la pour
-retrouver toute ton
-énergie vitale.
+Du hast einen roten
+Trank gefunden!$0
+Trink ihn, um Deine
+Herzleiste voll
+aufzufüllen.
 ]]
 }
 --------------------
 
--- Potion verte
+--  Potion verte
 dialog{
   id = "_treasure.bottle_4.4",
   icon = 10,
   text = [[
-Tu as trouvé de la
-Potion Verte !$0
-Bois-la pour
-retrouver toute ton
-énergie magique.
+Du hast einen grünen
+Trank gefunden!$0
+Trink ihn, um Deine
+magische Energie
+aufzufüllen.
 ]]
 }
 --------------------
 
--- Potion bleue
+--  Potion bleue
 dialog{
   id = "_treasure.bottle_4.5",
   icon = 11,
   text = [[
-Tu as trouvé de la
-Potion Bleue !$0
-Bois-la pour
-retrouver toute ta
-vie et ta magie !
+Du hast einen blauen
+Trank gefunden!$0
+Trinke ihn, um alle
+Herzen und Deine
+Magie aufzufüllen!
 ]]
 }
 --------------------
 
--- Fée dans Flacon
+--  Fée dans Flacon
 dialog{
   id = "_treasure.bottle_4.6",
   icon = 12,
   skip = "all",
   text = [[
-Tu as capturé une
-Fée ! Elle te
-viendra en aide si
-tu es en difficulté.
-Tu peux aussi
-l'utiliser à tout
-moment pour
-récupérer des
-Coeurs.
+Du hast eine Fee
+gefangen! Sie wird
+Dir in der Not zur
+Hilfe eilen. Du
+kannst sie aber auch
+jederzeit benutzen,
+um einige Herzen
+aufzufüllen.
 ]]
 }
 --------------------
 
--- Bottes de Pégase
+--  Bottes de Pégase
 dialog{
   id = "_treasure.pegasus_shoes.1",
   icon = 13,
   text = [[
-Tu as trouvé les
-Bottes de Pégase !$0
-
-Cours, fonce et
-traverse les ennemis
-coriaces !
-
-Appuie sur la touche
-Action pour utiliser
-les Bottes.
+Du hast die Pegasus-
+Stiefel gefunden!$0
+Renne wie der Blitz
+und zertrümmere die
+Hindernisse.
 ]]
 }
 --------------------
 
--- Miroir Mystique
+--  Miroir Mystique
 dialog{
   id = "_treasure.mystic_mirror.1",
   icon = 14,
   text = [[
-Tu as trouvé le
-Miroir Mystique !$0
-Ses étranges
-pouvoirs t'aideront
-sans doute dans ta
-quête...
+Du hast den Zauber-
+spiegel gefunden!$0
+Die geheimnisvollen
+Kräften des Spiegels
+werden sicherlich
+von Nutzen sein...
 ]]
 }
 --------------------
 
--- Canne de Somaria
+--  Canne de Somaria
 dialog{
   id = "_treasure.cane_of_somaria.1",
   icon = 15,
   next = "_warning_magic",
   text = [[
-Tu as trouvé la
-Canne de Somaria !$0
-Tu peux créer des
-blocs et t'accrocher
-à l'aide du Grappin.
+Du hast den Somaria-
+Stab gefunden!$0
+Du kannst Felsblöcke
+erstellen und sie
+als Ankerpunkt für
+Deinen Enterhaken
+benutzen.
 ]]
 }
 --------------------
 
--- 3 Pommes
+--  3 Pommes
 dialog{
   id = "_treasure.apple.1",
   icon = 16,
   text = [[
-Tu as trouvé 3
-Pommes !$0
-Consomme-les plus
-tard pour récupérer
-des Coeurs !
+Du hast drei Äpfel
+gefunden!$0
+Iss sie später, um
+Herzen aufzufüllen.
 ]]
 }
 --------------------
 
--- 1 Pain au Chocolat
+--  1 Pain au Chocolat
 dialog{
   id = "_treasure.pain_au_chocolat.1",
   icon = 17,
   text = [[
-Tu as trouvé un Pain
-au Chocolat !$0
-Mange un Pain au
-Chocolat pour
-récupérer de la vie.
+Du hast ein Schoko-
+brötchen gefunden!$0
+Iss ein Brötchen, um
+ein paar Herzen
+wiederherzustellen.
 ]]
 }
 --------------------
 
--- 1 Croissant
+--  1 Croissant
 dialog{
   id = "_treasure.croissant.1",
   icon = 18,
   text = [[
-Tu as trouvé un
-Croissant !$0 Il est
-croustillant !
-Mange un Croissant
-pour récupérer
-des Coeurs.
+Du hast ein Hörnchen
+gefunden!$0 Es ist
+schön knusprig.
+Iss ein Hörnchen, um
+einige Deiner Herzen
+wiederherzustellen.
 ]]
 }
 --------------------
 
--- Clé de Roc
+--  Clé de Roc
 dialog{
   id = "_treasure.rock_key.1",
   icon = 19,
   text = [[
-Tu as trouvé la
-Clé de Roc !$0
+Du hast den
+Felsschlüssel
+gefunden!$0
 ]]
 }
 --------------------
 
--- Clé d'os
+--  Clé d'os
 dialog{
   id = "_treasure.bone_key.1",
   icon = 20,
   text = [[
-Tu as trouvé la
-Clé d'Os !$0
-Mais à quoi peut-
-elle bien servir ?
+Du hast den
+Knochenschlüssel
+gefunden!$0
+Wozu er wohl
+gut sein mag?
 ]]
 }
 --------------------
 
--- Clé de Terre
+--  Clé de Terre
 dialog{
   id = "_treasure.clay_key.1",
   icon = 21,
   text = [[
-Tu as trouvé la
-Clé de Terre !$0
-Tu peux maintenant
-ouvrir la grotte du
-village !
+Du hast den
+Erdschlüssel
+gefunden!$0
+Du kannst nun den
+Höhleneingang im
+Dorf öffnen.
 ]]
 }
 --------------------
 
--- Tarte aux Pommes
+--  Tarte aux Pommes
 dialog{
   id = "_treasure.level_4_way.1",
   icon = 22,
   text = [[
-Tu as trouvé une
-Tarte aux Pommes !$0
-$1...$3 Hmmm, à ta
-place, je n'y goûte-
-rais pas, elle a un
-drôle d'aspect...
+Du hast einen Apfel-
+kuchen gefunden!$0
+$1...$3 Hm, vielleicht
+solltest Du ihn
+nicht essen. Er
+sieht seltsam aus...
 ]]
 }
 --------------------
 
--- Lingots d'or
+--  Lingots d'or
 dialog{
   id = "_treasure.level_4_way.2",
   icon = 23,
   text = [[
-Tu as trouvé des
-Lingots d'or !!!$0
-Ils brillent et ont
-une valeur
-inestimable !
+Du hast Goldbarren
+gefunden!$0
+Sie glänzen und
+haben einen
+unschätzbaren Wert!
 ]]
 }
 --------------------
 
--- Edelweiss
+--  Edelweiss
 dialog{
   id = "_treasure.level_4_way.3",
   icon = 24,
   text = [[
-Tu as trouvé un
-Edelweiss !$0
-Cette jolie fleur
-des montagnes est
-rarissime !
+Du hast ein Edelweiß
+gefunden!$0
+Diese hübsche
+Bergblume ist
+äußerst selten.
 ]]
 }
 --------------------
 
--- Précis d'escrime
+--  Précis d'escrime
 dialog{
   id = "_treasure.level_4_way.4",
   icon = 25,
   text = [[
-Tu obtiens le Précis
-d'escrime !$0 Tu
-maîtrises désormais
-la technique oubliée
-de l'attaque
-tournoyante avancée.
+Du erhälst die
+Schriftrolle der
+Schwertkunst!$0
+Du beherrschst nun
+die vergessene
+Technik des
+fortgeschrittenen
+Wirbelangriffs.
 ]]
 }
 --------------------
 
--- Palmes
+--  Palmes
 dialog{
   id = "_treasure.flippers.1",
   icon = 26,
   text = [[
-Tu as trouvé les
-Palmes !$0
-Tu peux maintenant
-nager en eau
-profonde !
+Du hast die Flossen
+gefunden!$0
+Du kannst nun in
+tiefen Gewässern
+schwimmen.
 ]]
 }
 --------------------
 
--- Cape Magique
+--  Cape Magique
 dialog{
   id = "_treasure.magic_cape.1",
   icon = 27,
   text = [[
-Tu as trouvé la Cape
-Magique !$0
-Elle t'avertira si
-tu t'approches d'un
-mur fragile.
+Du hast den
+magischen Umhang
+gefunden!$0
+Er warnt Dich, wenn
+die Wand neben Dir
+brüchig ist.
 ]]
 }
 --------------------
 
--- Clé de Fer
+--  Clé de Fer
 dialog{
   id = "_treasure.iron_key.1",
   icon = 28,
   text = [[
-Tu as trouvé la
-Clé de Fer !$0
-Il doit bien y
-avoir une porte qui
-va avec !
+Du hast den
+gefunden!$0
+Jetzt fehlt nur noch
+die passende Tür.
 ]]
 }
 --------------------
 
--- Clé de Pierre
+--  Clé de Pierre
 dialog{
   id = "_treasure.stone_key.1",
   icon = 29,
   text = [[
-Tu as trouvé la
-Clé de Pierre !$0
-Mais où est la
-serrure qui
-correspond ?
+Du hast den
+Steinschlüssel
+gefunden!$0
+Wo ist bloß das
+Schloss, das zu ihm
+passt?
 ]]
 }
 --------------------
 
--- Clé de Bois
+--  Clé de Bois
 dialog{
   id = "_treasure.wooden_key.1",
   icon = 30,
   text = [[
-Tu as trouvé la
-Clé de Bois !$0
-A toi de voir où
-tu peux l'utiliser !
+Du hast den
+Holzschlüssel
+gefunden!$0
+Jetzt musst Du
+herausfinden, wo Du
+ihn benutzen kannst.
 ]]
 }
 --------------------
 
--- Clé de Glace
+--  Clé de Glace
 dialog{
   id = "_treasure.ice_key.1",
   icon = 31,
   text = [[
-Tu as trouvé la
-Clé de Glace !$0
-Elle protège sans
-doute l'entrée d'un
-lieu glacial...
+Du hast den
+Eisschlüssel
+gefunden!$0
+Er führt ohne
+Zweifel an einen
+eisigen Ort...
 ]]
 }
 --------------------
 
--- Poigne de Fer
+--  Poigne de Fer
 dialog{
   id = "_treasure.glove.1",
   icon = 32,
   text = [[
-Tu as trouvé la
-Poigne de Fer !$0
-Elle te permet de
-soulever les
-pierres.
+Du hast den
+Krafthandschuh
+gefunden!$0
+Mit ihm kannst Du
+Steine heben.
 ]]
 }
 --------------------
 
--- Poigne d'Or
+--  Poigne d'Or
 dialog{
   id = "_treasure.glove.2",
   icon = 33,
   text = [[
-Tu as trouvé la
-Poigne d'Or !$0
-Tu peux maintenant
-soulever les pierres
-noires !
+Du hast den Titan-
+handschuh gefunden!$0
+Nun kannst Du auch
+die dunklen Steine
+heben.
 ]]
 }
 --------------------
 
--- Pierre de Feu
+--  Pierre de Feu
 dialog{
   id = "_treasure.fire_stone.1",
   icon = 34,
   text = [[
-Tu as trouvé une
-Pierre de Feu !
+Du hast einen
+Feuerstein gefunden!
 ]]
 }
 --------------------
 
--- Carte du Monde
+--  Carte du Monde
 dialog{
   id = "_treasure.world_map.1",
   icon = 50,
   text = [[
-Tu as trouvé la
-Carte du Monde !$0
-Tu peux l'afficher
-dans l'écran Carte.
+Du hast die
+Weltkarte gefunden!$0
+Du kannst sie
+Dir im Kartenmenü
+anschauen.
 ]]
 }
 --------------------
 
--- Grand sac de rubis
+--  Grand sac de rubis
 dialog{
   id = "_treasure.rupee_bag.2",
   icon = 52,
   text = [[
-Tu as trouvé le
-Grand Sac de Rubis !$0
-Il peut contenir
-jusqu'à 300 rubis !
+Du hast den großen
+Geldbeutel gefunden!$0
+Darin ist Platz für
+300 Rubine.
 ]]
 }
 --------------------
 
--- Sac de rubis géant
+--  Sac de rubis géant
 dialog{
   id = "_treasure.rupee_bag.3",
   icon = 53,
   text = [[
-Tu as trouvé le
-Sac de Rubis Géant !$0
-Il peut contenir
-jusqu'à 999 rubis !
+Du hast den riesigen
+Geldbeutel gefunden!$0
+Darin ist Platz für
+999 Rubine.
 ]]
 }
 --------------------
 
--- Petit sac de bombes
+--  Petit sac de bombes
 dialog{
   id = "_treasure.bomb_bag.1",
   icon = 54,
   text = [[
-Tu as trouvé le Sac
-de Bombes !$0 Il
-contient 10 Bombes.
-Assigne-les à une
-touche et fais tout
-sauter !
+Du hast die Bomben-
+tasche gefunden!$0 Sie
+enthält 10 Bomben.
+Weise sie einer
+Taste zu und sprenge
+alles in die Luft!
 ]]
 }
 --------------------
 
--- Grand sac de bombes
+--  Grand sac de bombes
 dialog{
   id = "_treasure.bomb_bag.2",
   icon = 55,
   text = [[
-Tu as trouvé le
-Grand Sac de
-Bombes !$0
-Il peut contenir
-jusqu'à 30 Bombes
-au lieu de 10 !
+Du hast die große
+Bombentasche
+gefunden!$0
+Anstatt 10 kannst
+Du nun bis zu 30
+Bomben tragen.
 ]]
 }
 --------------------
 
--- Sac de bombes géant
+--  Sac de bombes géant
 dialog{
   id = "_treasure.bomb_bag.3",
   icon = 56,
   text = [[
-Tu as trouvé le Sac
-de Bombes Géant !$0
-Il peut contenir
-jusqu'à 99 Bombes
-au lieu de 30 !
+Du hast die riesige
+Bombentasche
+gefunden!$0
+Anstatt 30 kannst
+Du nun bis zu 99
+Bomben tragen.
 ]]
 }
 --------------------
 
--- Grand carquois 
+--  Grand carquois 
 dialog{
   id = "_treasure.quiver.2",
   icon = 58,
   text = [[
-Tu as trouvé le
-Grand Carquois !$0
-Il peut contenir
-jusqu'à 30 Flèches
-au lieu de 10 !
+Du hast den großen
+Köcher gefunden!$0
+Anstatt 10 kannst
+Du nun bis zu 30
+Pfeile tragen.
 ]]
 }
 --------------------
 
--- Carquois géant
+--  Carquois géant
 dialog{
   id = "_treasure.quiver.3",
   icon = 59,
   text = [[
-Tu as trouvé le
-Carquois Géant !$0
-Il peut contenir
-jusqu'à 99 Flèches
-au lieu de 30 !
+Du hast den riesigen
+Köcher gefunden!$0
+Anstatt 30 kannst
+Du nun bis zu 99
+Pfeile tragen.
 ]]
 }
 --------------------
 
--- Cotte de mailles bleue
+--  Cotte de mailles bleue
 dialog{
   id = "_treasure.tunic.2",
   icon = 61,
   text = [[
-Tu as trouvé la
-Cotte de Mailles
-bleue !
-Elle te protège
-mieux contre les
-ennemis et te permet
-de résister aux
-températures les
-plus glaciales...
+Du hast das blaue
+Kettenhemd gefunden!$0
+Es schützt Dich
+besser gegen
+Angriffe und Du
+kannst damit
+selbst den eisigsten
+Temperaturen
+trotzen.
 ]]
 }
 --------------------
 
--- Cotte de mailles rouge
+--  Cotte de mailles rouge
 dialog{
   id = "_treasure.tunic.3",
   icon = 62,
   text = [[
-Tu as trouvé la
-Cotte de Mailles
-rouge !$0 Elle te
-protège de manière
-plus efficace contre
-les ennemis !
+Du hast das rote
+Kettenhemd gefunden!$0
+Es bietet Dir einen
+besseren Schutz
+gegen gegnerische
+Angriffe.
 ]]
 }
 --------------------
 
--- Bouclier
+--  Bouclier
 dialog{
   id = "_treasure.shield.1",
   icon = 63,
   text = [[
-Tu as trouvé le
-Bouclier !$0
-Tu peux repousser
-les attaques des
-ennemis !
+Du hast den Schild
+gefunden!$0
+Du kannst die
+Angriffe Deiner
+Gegner abwehren.
 ]]
 }
 --------------------
 
--- Bouclier de Feu
+--  Bouclier de Feu
 dialog{
   id = "_treasure.shield.2",
   icon = 64,
   text = [[
-Tu as trouvé le
-Bouclier de Feu !$0
-Tu es désormais
-protégé contre les
-attaques
-enflammées !
+Du hast den
+Feuerschild
+gefunden!$0
+Du bist nun vor
+Feuerangriffen
+geschützt.
 ]]
 }
 --------------------
 
--- Bouclier Miroir
+--  Bouclier Miroir
 dialog{
   id = "_treasure.shield.3",
   icon = 65,
   text = [[
-Tu as trouvé le
-Bouclier Miroir !$0
-Tu peux désormais
-contrer les lasers !
+Du hast den
+Spiegelschild
+gefunden!$0
+Du kannst jetzt
+Laserstrahlen
+zurückwerfen.
 ]]
 }
 --------------------
@@ -1703,11 +1719,11 @@ dialog{
   id = "_treasure.sword.1",
   icon = 66,
   text = [[
-Tu as obtenu l'Epée
-du Courage !$0
-Tu peux croiser le
-fer et affronter
-les ennemis !
+Du hast das Schwert
+des Mutes erhalten!$0
+Du kannst nun Deinen
+Gegnern im Gefecht
+die Stirn bieten.
 ]]
 }
 --------------------
@@ -1718,9 +1734,9 @@ dialog{
   icon = 67,
   next = "_treasure.sword.2.1",
   text = [[
-$1Tu as trouvé
-le Glaive Hylien !$0$0$0
-Cette nouvelle épée
+$1Du hast das
+hyrulische Schwert
+gefunden!$0$0$0
 ]]
 }
 --------------------
@@ -1728,9 +1744,9 @@ Cette nouvelle épée
 dialog{
   id = "_treasure.sword.2.1",
   text = [[
-est deux fois plus
-puissante que
-l'ancienne !
+Dieses neue Schwert
+ist doppelt so stark
+wie das alte.
 ]]
 }
 -----------------------
@@ -1741,9 +1757,8 @@ dialog{
   icon = 68,
   next = "_treasure.sword.2.1",
   text = [[
-$1Tu as trouvé
-le Sabre du Héros !$0$0$0
-Cette nouvelle lame
+$1Du hast den Helden-
+säbel gefunden!$0$0$0
 ]]
 }
 --------------------
@@ -1753,12 +1768,12 @@ dialog{
   id = "_treasure.sword.4",
   icon = 69,
   text = [[
-Tu as trouvé la Lame
-Purificatrice !$0
-La puissance de
-cette épée ultime
-dépasse
-l'entendement...
+Du hast die Klinge
+des reinen Lichts
+gefunden!$0 Dieses
+Meisterschwert hat
+eine unglaubliche
+Macht...
 ]]
 }
 --------------------
@@ -1874,7 +1889,7 @@ supplémentaire !
 }
 --------------------
 
--- 1 Bombe
+--  1 Bombe
 dialog{
   id = "_treasure.bomb.1",
   icon = 82,
@@ -1897,7 +1912,7 @@ obstacle.
 }
 -----------------------
 
--- 3 Bombes
+--  3 Bombes
 dialog{
   id = "_treasure.bomb.2",
   icon = 82,
@@ -1910,7 +1925,7 @@ Utilise une Bombe
 }
 --------------------
 
--- 8 Bombes
+--  8 Bombes
 dialog{
   id = "_treasure.bomb.3",
   icon = 82,
@@ -1923,7 +1938,7 @@ Utilise une Bombe
 }
 --------------------
 
--- 1 Flèche
+--  1 Flèche
 dialog{
   id = "_treasure.arrow.1",
   icon = 83,
@@ -1940,13 +1955,13 @@ dialog{
   id = "_treasure.arrow.1.1",
   text = [[
 Flèches pour vaincre
-des ennemis à
-distance.
+des ennemis coriaces
+à distance.
 ]]
 }
 -----------------------
 
--- 5 Flèches
+--  5 Flèches
 dialog{
   id = "_treasure.arrow.2",
   icon = 83,
@@ -1959,7 +1974,7 @@ Utilise l'Arc et les
 }
 --------------------
 
--- 10 Flèches
+--  10 Flèches
 dialog{
   id = "_treasure.arrow.3",
   icon = 83,
@@ -1972,7 +1987,7 @@ Utilise l'Arc et les
 }
 --------------------
 
--- 1 Coeur
+--  1 Coeur
 dialog{
   id = "_treasure.heart.1",
   icon = 84,
@@ -1983,7 +1998,7 @@ Coeur !
 }
 --------------------
 
--- Petite bouteille de magie
+--  Petite bouteille de magie
 dialog{
   id = "_treasure.magic_flask.1",
   icon = 85,
@@ -1995,7 +2010,7 @@ d'énergie magique !
 }
 --------------------
 
--- Grande bouteille de magie
+--  Grande bouteille de magie
 dialog{
   id = "_treasure.magic_flask.2",
   icon = 86,
@@ -2007,7 +2022,7 @@ d'énergie magique !
 }
 --------------------
 
--- 1 rubis vert
+--  1 rubis vert
 dialog{
   id = "_treasure.rupee.1",
   icon = 90,
@@ -2018,7 +2033,7 @@ Rubis !
 }
 --------------------
 
--- 1 rubis bleu
+--  1 rubis bleu
 dialog{
   id = "_treasure.rupee.2",
   icon = 91,
@@ -2030,7 +2045,7 @@ Il vaut 5 Rubis !
 }
 --------------------
 
--- 1 rubis rouge
+--  1 rubis rouge
 dialog{
   id = "_treasure.rupee.3",
   icon = 92,
@@ -2042,7 +2057,7 @@ Il vaut 20 Rubis !
 }
 --------------------
 
--- 50 rubis
+--  50 rubis
 -- Remarque : clin d'oeil à Link's Awakening
 dialog{
   id = "_treasure.rupee.4",
@@ -2055,7 +2070,7 @@ Merveilleux !
 }
 --------------------
 
--- 100 rubis
+--  100 rubis
 -- Remarque : clin d'oeil à Link's Awakening
 dialog{
   id = "_treasure.rupee.5",
@@ -2068,7 +2083,7 @@ Fantastique !
 }
 --------------------
 
--- 300 rubis
+--  300 rubis
 -- Remarque : clin d'oeil à Link's Awakening
 dialog{
   id = "_treasure.rupee.6",
@@ -2081,7 +2096,7 @@ C'est l'extase !
 }
 --------------------
 
--- Potion rouge
+--  Potion rouge
 dialog{
   id = "_treasure.red_potion.1",
   icon = 96,
@@ -2095,7 +2110,7 @@ retrouver toute ton
 }
 --------------------
 
--- Potion verte
+--  Potion verte
 dialog{
   id = "_treasure.green_potion.1",
   icon = 97,
@@ -2109,7 +2124,7 @@ retrouver toute ton
 }
 --------------------
 
--- Potion bleue
+--  Potion bleue
 dialog{
   id = "_treasure.blue_potion.1",
   icon = 98,
@@ -3784,7 +3799,7 @@ J'ai forgé moi-même
 cette magnifique Epée
 en bronze.
 Je te la vends pour la
-modique somme de 75
+modique somme de 80
 rubis !
 Avec seulement ton
 minable bouclier, tu
@@ -4430,8 +4445,8 @@ dialog{
 Si tu le souhaites, en
 cas de besoin, je
 viendrai te donner un
-coup de main au cours
-de ton aventure.
+un coup de main au
+cours de ton aventure.
 ]]
 }
 -----------------------
@@ -5070,7 +5085,7 @@ dialog{
 Bienvenue au Bazar du
 Coin ! Des articles de
 premier choix à des
-prix tout à fait
+prix tout-à-fait
 exceptionnels !
 Sers-toi !
 ]]

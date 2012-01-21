@@ -211,7 +211,7 @@ void Dialog::set_text(const std::string& text) {
   do {
     end = text.find_first_of('\n', start);
     const std::string line = text.substr(start, end - start);
-    if (line.size() > 0) {
+    if (end != std::string::npos) {
       lines.push_back(line);
     }
     start = end + 1;

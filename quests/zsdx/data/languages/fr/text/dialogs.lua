@@ -2405,6 +2405,7 @@ dialog{
   text = [[
 Veux-tu mettre de
 l'eau dans ton
+
 Flacon Magique ?
 Oui
 Non
@@ -2447,6 +2448,7 @@ dialog{
   text = [[
 Ton Flacon Magique
 contient de l'eau.
+
 Que veux-tu faire ?
 Vider l'eau
 La conserver
@@ -2478,6 +2480,7 @@ dialog{
   text = [[
 Un Pain au Chocolat
 te redonne 3 Coeurs.
+
 Que veux-tu faire ?
 En manger un
 Ne rien faire
@@ -3201,6 +3204,7 @@ dialog{
   text = [[
 Tu veux retenter ta
 chance ?
+
 C'est 20 rubis !
 Oui
 Non
@@ -3233,6 +3237,7 @@ tente d'aligner trois
 symboles identiques
 pour gagner plusieurs
 fois ta mise !
+
 Alors, tu veux jouer ?
 Oui
 Non
@@ -3433,6 +3438,7 @@ dialog{
   text = [[
 Tu veux recommencer à
 zéro ?
+
 C'est 10 rubis !
 Oui
 Non
@@ -4179,6 +4185,7 @@ dialog{
   text = [[
 Les mémoires de
 Sahasrahla.
+
 Veux-tu les lire ?
 Oui
 Non
@@ -4302,6 +4309,7 @@ accepte mon aide. J'ai
 protéger notre Roi.
 Laisse-moi une occasion
 de me racheter !
+
 Acceptes-tu mon aide ?
 Oui
 Non
@@ -4353,6 +4361,8 @@ N'oublie pas que le
 Boomerang revient
 toujours vers toi,
 même si tu te déplaces.
+
+
 Que veux-tu faire ?
 Continuer
 Rendre le Boomerang
@@ -4832,6 +4842,7 @@ dialog{
   text = [[
 Donne-moi cette tarte
 aux pommes !
+
 Alors ?
 OK
 Pas question

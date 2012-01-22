@@ -54,7 +54,7 @@ if(APPLE)
   )
   set(source_files
     ${source_files}
-    src/lowlevel/osx/SDLMain.m
+    lowlevel/osx/SDLMain.m
     ../include/lowlevel/osx/SDLMain.h
   )
 endif(APPLE)

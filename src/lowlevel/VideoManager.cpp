@@ -94,7 +94,11 @@ VideoManager::VideoManager(bool disable_window):
     mode_sizes[i] = default_mode_sizes[i];
   }
 
+#ifndef __APPLE
   int flags = SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_FULLSCREEN;
+#else
+  int flags = SDL_SWSURFACE | SDL_FULLSCREEN;
+#endif
   if (SDL_VideoModeOK(768, 480, 32, flags)) {
     mode_sizes[FULLSCREEN_WIDE].set_size(768, 480);
     mode_sizes[FULLSCREEN_SCALE2X_WIDE].set_size(768, 480);
@@ -137,7 +141,12 @@ bool VideoManager::is_mode_supported(VideoMode mode) {
     return false;
   }
 
+#ifndef __APPLE
   int flags = SDL_HWSURFACE | SDL_DOUBLEBUF;
+#else
+  int flags = SDL_SWSURFACE;
+#endif
+  
   if (is_fullscreen(mode)) {
     flags |= SDL_FULLSCREEN;
   }
@@ -193,7 +202,11 @@ void VideoManager::set_video_mode(VideoMode mode) {
 
   const Rectangle &size = mode_sizes[mode];
 
+#ifndef __APPLE
   int flags = SDL_HWSURFACE | SDL_DOUBLEBUF;
+#else
+  int flags = SDL_SWSURFACE;
+#endif
   int show_cursor;
   if (is_fullscreen(mode)) {
     flags |= SDL_FULLSCREEN;
@@ -346,11 +359,23 @@ void VideoManager::blit_stretched(Surface* src_surface, Surface* dst_surface) {
   SDL_Surface *src_internal_surface = src_surface->get_internal_surface();
   SDL_Surface *dst_internal_surface = dst_surface->get_internal_surface();
 
+#ifdef __APPLE
+  SDL_Surface* bufferImg = SDL_CreateRGBSurface(SDL_SWSURFACE,dst_internal_surface->w,dst_internal_surface->h,32,0,0,0,0);
+#endif
+
   SDL_LockSurface(src_internal_surface);
+#ifdef __APPLE
+  SDL_LockSurface(bufferImg);
+#else
   SDL_LockSurface(dst_internal_surface);
+#endif
 
   uint32_t* src = (uint32_t*) src_internal_surface->pixels;
+#ifdef __APPLE
+  uint32_t* dst = (uint32_t*) bufferImg->pixels;
+#else
   uint32_t* dst = (uint32_t*) dst_internal_surface->pixels;
+#endif
 
   int p = offset;
   for (int i = 0; i < 240; i++) {
@@ -364,8 +389,17 @@ void VideoManager::blit_stretched(Surface* src_surface, Surface* dst_surface) {
     p += end_row_increment;
   }
 
+#ifdef __APPLE
+  SDL_UnlockSurface(bufferImg);
+#else
   SDL_UnlockSurface(dst_internal_surface);
+#endif
   SDL_UnlockSurface(src_internal_surface);
+  
+#ifdef __APPLE
+  SDL_BlitSurface(bufferImg,NULL,dst_internal_surface,NULL);
+  SDL_FreeSurface(bufferImg);
+#else
 }
 
 /**
@@ -382,11 +416,23 @@ void VideoManager::blit_scale2x(Surface* src_surface, Surface* dst_surface) {
   SDL_Surface* src_internal_surface = src_surface->get_internal_surface();
   SDL_Surface* dst_internal_surface = dst_surface->get_internal_surface();
 
-  SDL_LockSurface(src_internal_surface);
-  SDL_LockSurface(dst_internal_surface);
+#ifdef __APPLE
+  SDL_Surface* bufferImg = SDL_CreateRGBSurface(SDL_SWSURFACE,dst_internal_surface->w,dst_internal_surface->h,32,0,0,0,0);
+#endif
 
-  uint32_t *src = (uint32_t*) src_internal_surface->pixels;
-  uint32_t *dst = (uint32_t*) dst_internal_surface->pixels;
+  SDL_LockSurface(src_internal_surface);
+#ifdef __APPLE
+  SDL_LockSurface(bufferImg);
+#else
+  SDL_LockSurface(dst_internal_surface);
+#endif
+
+  uint32_t* src = (uint32_t*) src_internal_surface->pixels;
+#ifdef __APPLE
+  uint32_t* dst = (uint32_t*) bufferImg->pixels;
+#else
+  uint32_t* dst = (uint32_t*) dst_internal_surface->pixels;
+#endif
 
   int b, d, e = 0, f,  h;
   int e1 = offset, e2, e3, e4;
@@ -427,7 +473,16 @@ void VideoManager::blit_scale2x(Surface* src_surface, Surface* dst_surface) {
     e1 += end_row_increment;
   }
 
+#ifdef __APPLE
+  SDL_UnlockSurface(bufferImg);
+#else
   SDL_UnlockSurface(dst_internal_surface);
+#endif
   SDL_UnlockSurface(src_internal_surface);
+  
+#ifdef __APPLE
+  SDL_BlitSurface(bufferImg,NULL,dst_internal_surface,NULL);
+  SDL_FreeSurface(bufferImg);
+#else
 }
 

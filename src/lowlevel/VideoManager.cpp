@@ -399,7 +399,7 @@ void VideoManager::blit_stretched(Surface* src_surface, Surface* dst_surface) {
 #ifdef __APPLE
   SDL_BlitSurface(bufferImg,NULL,dst_internal_surface,NULL);
   SDL_FreeSurface(bufferImg);
-#else
+#endif
 }
 
 /**
@@ -483,6 +483,6 @@ void VideoManager::blit_scale2x(Surface* src_surface, Surface* dst_surface) {
 #ifdef __APPLE
   SDL_BlitSurface(bufferImg,NULL,dst_internal_surface,NULL);
   SDL_FreeSurface(bufferImg);
-#else
+#endif
 }
 

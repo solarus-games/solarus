@@ -34,7 +34,7 @@ PixelBits::PixelBits(Surface& surface, const Rectangle& image_position) {
       && format->BitsPerPixel != 24, "This surface should have an 8/16/32-bit pixel format");
 
   int pxIn32Bit = 32 / format->BitsPerPixel;
-  uint32_t pxMask = 0xffffffff << (32 - 32 / pxIn32Bit);
+  uint32_t pxMask = 0xffffffff << (32 - format->BitsPerPixel);
 
   uint32_t colorkey = format->colorkey;
 #else

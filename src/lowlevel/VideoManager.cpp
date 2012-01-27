@@ -25,6 +25,13 @@
 
 VideoManager* VideoManager::instance = NULL;
 
+#ifndef __APPLE
+const int VideoManager::surface_flags = SDL_HWSURFACE | SDL_DOUBLEBUF;
+#else
+/* on Mac OS X the SDL hardware surfaces are buggy */
+const int VideoManager::surface_flags = SDL_SWSURFACE;
+#endif
+
 Rectangle VideoManager::default_mode_sizes[] = {
   Rectangle(0, 0, 640, 480),         // WINDOWED_STRETCHED
   Rectangle(0, 0, 640, 480),         // WINDOWED_SCALE2X
@@ -94,11 +101,8 @@ VideoManager::VideoManager(bool disable_window):
     mode_sizes[i] = default_mode_sizes[i];
   }
 
-#ifndef __APPLE
-  int flags = SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_FULLSCREEN;
-#else
-  int flags = SDL_SWSURFACE | SDL_FULLSCREEN;
-#endif
+  int flags = surface_flags | SDL_FULLSCREEN;
+
   if (SDL_VideoModeOK(768, 480, 32, flags)) {
     mode_sizes[FULLSCREEN_WIDE].set_size(768, 480);
     mode_sizes[FULLSCREEN_SCALE2X_WIDE].set_size(768, 480);
@@ -141,12 +145,8 @@ bool VideoManager::is_mode_supported(VideoMode mode) {
     return false;
   }
 
-#ifndef __APPLE
-  int flags = SDL_HWSURFACE | SDL_DOUBLEBUF;
-#else
-  int flags = SDL_SWSURFACE;
-#endif
-  
+  int flags = surface_flags;
+
   if (is_fullscreen(mode)) {
     flags |= SDL_FULLSCREEN;
   }
@@ -202,11 +202,7 @@ void VideoManager::set_video_mode(VideoMode mode) {
 
   const Rectangle &size = mode_sizes[mode];
 
-#ifndef __APPLE
-  int flags = SDL_HWSURFACE | SDL_DOUBLEBUF;
-#else
-  int flags = SDL_SWSURFACE;
-#endif
+  int flags = surface_flags;
   int show_cursor;
   if (is_fullscreen(mode)) {
     flags |= SDL_FULLSCREEN;
@@ -356,26 +352,25 @@ void VideoManager::blit_centered(Surface* src_surface, Surface* dst_surface) {
  */
 void VideoManager::blit_stretched(Surface* src_surface, Surface* dst_surface) {
 
-  SDL_Surface *src_internal_surface = src_surface->get_internal_surface();
-  SDL_Surface *dst_internal_surface = dst_surface->get_internal_surface();
+  SDL_Surface* src_internal_surface = src_surface->get_internal_surface();
+  SDL_Surface* dst_internal_surface = dst_surface->get_internal_surface();
+  SDL_Surface* surface_to_draw;
 
-#ifdef __APPLE
-  SDL_Surface* bufferImg = SDL_CreateRGBSurface(SDL_SWSURFACE,dst_internal_surface->w,dst_internal_surface->h,32,0,0,0,0);
+#ifndef __APPLE
+  surface_to_draw = dst_internal_surface;
+#else
+  /* On Mac OS X an intermediate surface is needed.
+   * FIXME: creating a new surface at each blit is probably a horrible loss
+   * of performance */
+  surface_to_draw = SDL_CreateRGBSurface(SDL_SWSURFACE,
+      dst_internal_surface->w, dst_internal_surface->h, 32, 0, 0, 0, 0);
 #endif
 
   SDL_LockSurface(src_internal_surface);
-#ifdef __APPLE
-  SDL_LockSurface(bufferImg);
-#else
-  SDL_LockSurface(dst_internal_surface);
-#endif
+  SDL_LockSurface(surface_to_draw);
 
   uint32_t* src = (uint32_t*) src_internal_surface->pixels;
-#ifdef __APPLE
-  uint32_t* dst = (uint32_t*) bufferImg->pixels;
-#else
-  uint32_t* dst = (uint32_t*) dst_internal_surface->pixels;
-#endif
+  uint32_t* dst = (uint32_t*) surface_to_draw->pixels;
 
   int p = offset;
   for (int i = 0; i < 240; i++) {
@@ -389,16 +384,12 @@ void VideoManager::blit_stretched(Surface* src_surface, Surface* dst_surface) {
     p += end_row_increment;
   }
 
-#ifdef __APPLE
-  SDL_UnlockSurface(bufferImg);
-#else
-  SDL_UnlockSurface(dst_internal_surface);
-#endif
+  SDL_UnlockSurface(surface_to_draw);
   SDL_UnlockSurface(src_internal_surface);
-  
+ 
 #ifdef __APPLE
-  SDL_BlitSurface(bufferImg,NULL,dst_internal_surface,NULL);
-  SDL_FreeSurface(bufferImg);
+  SDL_BlitSurface(surface_to_draw, NULL, dst_internal_surface, NULL);
+  SDL_FreeSurface(surface_to_draw);
 #endif
 }
 
@@ -415,24 +406,23 @@ void VideoManager::blit_scale2x(Surface* src_surface, Surface* dst_surface) {
 
   SDL_Surface* src_internal_surface = src_surface->get_internal_surface();
   SDL_Surface* dst_internal_surface = dst_surface->get_internal_surface();
+  SDL_Surface* surface_to_draw;
 
-#ifdef __APPLE
-  SDL_Surface* bufferImg = SDL_CreateRGBSurface(SDL_SWSURFACE,dst_internal_surface->w,dst_internal_surface->h,32,0,0,0,0);
+#ifndef __APPLE
+  surface_to_draw = dst_internal_surface;
+#else
+  /* On Mac OS X an intermediate surface is needed.
+   * FIXME: creating a new surface at each blit is probably a horrible loss
+   * of performance */
+  SDL_Surface* surface_to_draw = SDL_CreateRGBSurface(SDL_SWSURFACE,
+      dst_internal_surface->w, dst_internal_surface->h, 32, 0, 0, 0, 0);
 #endif
 
   SDL_LockSurface(src_internal_surface);
-#ifdef __APPLE
-  SDL_LockSurface(bufferImg);
-#else
-  SDL_LockSurface(dst_internal_surface);
-#endif
+  SDL_LockSurface(surface_to_draw);
 
   uint32_t* src = (uint32_t*) src_internal_surface->pixels;
-#ifdef __APPLE
-  uint32_t* dst = (uint32_t*) bufferImg->pixels;
-#else
-  uint32_t* dst = (uint32_t*) dst_internal_surface->pixels;
-#endif
+  uint32_t* dst = (uint32_t*) surface_to_draw->pixels;
 
   int b, d, e = 0, f,  h;
   int e1 = offset, e2, e3, e4;
@@ -473,16 +463,12 @@ void VideoManager::blit_scale2x(Surface* src_surface, Surface* dst_surface) {
     e1 += end_row_increment;
   }
 
-#ifdef __APPLE
-  SDL_UnlockSurface(bufferImg);
-#else
-  SDL_UnlockSurface(dst_internal_surface);
-#endif
+  SDL_UnlockSurface(surface_to_draw);
   SDL_UnlockSurface(src_internal_surface);
-  
+ 
 #ifdef __APPLE
-  SDL_BlitSurface(bufferImg,NULL,dst_internal_surface,NULL);
-  SDL_FreeSurface(bufferImg);
+  SDL_BlitSurface(surface_to_draw, NULL, dst_internal_surface, NULL);
+  SDL_FreeSurface(surface_to_draw);
 #endif
 }
 

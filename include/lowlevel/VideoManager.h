@@ -53,6 +53,7 @@ class VideoManager {
 
   static VideoManager* instance;                    /**< the only instance */
   static Rectangle default_mode_sizes[NB_MODES];    /**< default size of the surface for each video mode */
+  static const int surface_flags;                   /**< SDL flags for surfaces */
 
   bool disable_window;                              /**< indicates that no window is displayed (used for unitary tests) */
   Rectangle mode_sizes[NB_MODES];                   /**< verified size of the surface for each video mode */

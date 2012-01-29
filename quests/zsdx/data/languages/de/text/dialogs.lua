@@ -1,3 +1,5 @@
+-- Warning: ignoring invalid line 1: '﻿# Ce fichier comporte l'ensemble des messages affichés'
+-- Warning: ignoring invalid line 6012: 'dungeon_6.tom_revelation.14'
 -- This is a Lua dialog file for solarus 0.9.1 or greater.
 -- This dialog file was converted from the 0.9.0 ini syntax using the script
 -- tools/data_files_conversion/0.9.0_to_0.9.1/convert_dialogs.lua.
@@ -137,6 +139,7 @@ dialog{
   text = [[
 Deine Flasche ist
 mit Wasser gefüllt.
+
 Leere sie an einem
 geeigneten Ort...
 ]]
@@ -222,6 +225,7 @@ dialog{
   text = [[
 Deine Flasche ist
 mit Wasser gefüllt.
+
 Leere sie an einem
 geeigneten Ort...
 ]]
@@ -307,6 +311,7 @@ dialog{
   text = [[
 Deine Flasche ist
 mit Wasser gefüllt.
+
 Leere sie an einem
 geeigneten Ort...
 ]]
@@ -392,6 +397,7 @@ dialog{
   text = [[
 Deine Flasche ist
 mit Wasser gefüllt.
+
 Leere sie an einem
 geeigneten Ort...
 ]]
@@ -872,6 +878,7 @@ dialog{
   text = [[
 Du hast eine Flasche
 gefunden!$0
+
 Du kannst sie mit
 verschiedenen Dingen
 füllen.
@@ -898,6 +905,7 @@ dialog{
   text = [[
 Du hast einen roten
 Trank gefunden!$0
+
 Trink ihn, um Deine
 Herzleiste voll
 aufzufüllen.
@@ -912,6 +920,7 @@ dialog{
   text = [[
 Du hast einen grünen
 Trank gefunden!$0
+
 Trink ihn, um Deine
 magische Energie
 aufzufüllen.
@@ -926,6 +935,7 @@ dialog{
   text = [[
 Du hast einen blauen
 Trank gefunden!$0
+
 Trinke ihn, um alle
 Herzen und Deine
 Magie aufzufüllen!
@@ -958,6 +968,7 @@ dialog{
   text = [[
 Du hast eine Flasche
 gefunden!$0
+
 Du kannst sie mit
 verschiedenen Dingen
 füllen.
@@ -984,6 +995,7 @@ dialog{
   text = [[
 Du hast einen roten
 Trank gefunden!$0
+
 Trink ihn, um Deine
 Herzleiste voll
 aufzufüllen.
@@ -998,6 +1010,7 @@ dialog{
   text = [[
 Du hast einen grünen
 Trank gefunden!$0
+
 Trink ihn, um Deine
 magische Energie
 aufzufüllen.
@@ -1012,6 +1025,7 @@ dialog{
   text = [[
 Du hast einen blauen
 Trank gefunden!$0
+
 Trinke ihn, um alle
 Herzen und Deine
 Magie aufzufüllen!
@@ -1044,6 +1058,7 @@ dialog{
   text = [[
 Du hast eine Flasche
 gefunden!$0
+
 Du kannst sie mit
 verschiedenen Dingen
 füllen.
@@ -1070,6 +1085,7 @@ dialog{
   text = [[
 Du hast einen roten
 Trank gefunden!$0
+
 Trink ihn, um Deine
 Herzleiste voll
 aufzufüllen.
@@ -1084,6 +1100,7 @@ dialog{
   text = [[
 Du hast einen grünen
 Trank gefunden!$0
+
 Trink ihn, um Deine
 magische Energie
 aufzufüllen.
@@ -1098,6 +1115,7 @@ dialog{
   text = [[
 Du hast einen blauen
 Trank gefunden!$0
+
 Trinke ihn, um alle
 Herzen und Deine
 Magie aufzufüllen!
@@ -1130,6 +1148,7 @@ dialog{
   text = [[
 Du hast eine Flasche
 gefunden!$0
+
 Du kannst sie mit
 verschiedenen Dingen
 füllen.
@@ -1156,6 +1175,7 @@ dialog{
   text = [[
 Du hast einen roten
 Trank gefunden!$0
+
 Trink ihn, um Deine
 Herzleiste voll
 aufzufüllen.
@@ -1170,6 +1190,7 @@ dialog{
   text = [[
 Du hast einen grünen
 Trank gefunden!$0
+
 Trink ihn, um Deine
 magische Energie
 aufzufüllen.
@@ -1184,6 +1205,7 @@ dialog{
   text = [[
 Du hast einen blauen
 Trank gefunden!$0
+
 Trinke ihn, um alle
 Herzen und Deine
 Magie aufzufüllen!
@@ -1216,6 +1238,7 @@ dialog{
   text = [[
 Du hast die Pegasus-
 Stiefel gefunden!$0
+
 Renne wie der Blitz
 und zertrümmere die
 Hindernisse.
@@ -1246,6 +1269,7 @@ dialog{
   text = [[
 Du hast den Somaria-
 Stab gefunden!$0
+
 Du kannst Felsblöcke
 erstellen und sie
 als Ankerpunkt für
@@ -1262,6 +1286,7 @@ dialog{
   text = [[
 Du hast drei Äpfel
 gefunden!$0
+
 Iss sie später, um
 Herzen aufzufüllen.
 ]]
@@ -1275,6 +1300,7 @@ dialog{
   text = [[
 Du hast ein Schoko-
 brötchen gefunden!$0
+
 Iss ein Brötchen, um
 ein paar Herzen
 wiederherzustellen.
@@ -1360,6 +1386,7 @@ dialog{
   text = [[
 Du hast Goldbarren
 gefunden!$0
+
 Sie glänzen und
 haben einen
 unschätzbaren Wert!
@@ -1374,6 +1401,7 @@ dialog{
   text = [[
 Du hast ein Edelweiß
 gefunden!$0
+
 Diese hübsche
 Bergblume ist
 äußerst selten.
@@ -1405,6 +1433,7 @@ dialog{
   text = [[
 Du hast die Flossen
 gefunden!$0
+
 Du kannst nun in
 tiefen Gewässern
 schwimmen.
@@ -1434,6 +1463,7 @@ dialog{
   text = [[
 Du hast den
 gefunden!$0
+
 Jetzt fehlt nur noch
 die passende Tür.
 ]]
@@ -1506,6 +1536,7 @@ dialog{
   text = [[
 Du hast den Titan-
 handschuh gefunden!$0
+
 Nun kannst Du auch
 die dunklen Steine
 heben.
@@ -1531,6 +1562,7 @@ dialog{
   text = [[
 Du hast die
 Weltkarte gefunden!$0
+
 Du kannst sie
 Dir im Kartenmenü
 anschauen.
@@ -1545,6 +1577,7 @@ dialog{
   text = [[
 Du hast den großen
 Geldbeutel gefunden!$0
+
 Darin ist Platz für
 300 Rubine.
 ]]
@@ -1558,6 +1591,7 @@ dialog{
   text = [[
 Du hast den riesigen
 Geldbeutel gefunden!$0
+
 Darin ist Platz für
 999 Rubine.
 ]]
@@ -1616,6 +1650,7 @@ dialog{
   text = [[
 Du hast den großen
 Köcher gefunden!$0
+
 Anstatt 10 kannst
 Du nun bis zu 30
 Pfeile tragen.
@@ -1630,6 +1665,7 @@ dialog{
   text = [[
 Du hast den riesigen
 Köcher gefunden!$0
+
 Anstatt 30 kannst
 Du nun bis zu 99
 Pfeile tragen.
@@ -1677,6 +1713,7 @@ dialog{
   text = [[
 Du hast den Schild
 gefunden!$0
+
 Du kannst die
 Angriffe Deiner
 Gegner abwehren.
@@ -1721,6 +1758,7 @@ dialog{
   text = [[
 Du hast das Schwert
 des Mutes erhalten!$0
+
 Du kannst nun Deinen
 Gegnern im Gefecht
 die Stirn bieten.
@@ -1797,6 +1835,7 @@ dialog{
   text = [[
 Tu as trouvé
 la Carte !
+
 Utilise-la pour
 connaître le plan
 du donjon.
@@ -1828,6 +1867,7 @@ dialog{
   text = [[
 Tu as trouvé une
 Petite Clé !
+
 Tu peux ouvrir une
 porte verrouillée
 dans les environs.
@@ -1883,6 +1923,7 @@ dialog{
   text = [[
 Tu as trouvé un
 Réceptacle de Coeur.
+
 Tu obtiens un Coeur
 supplémentaire !
 ]]
@@ -2103,6 +2144,7 @@ dialog{
   text = [[
 Tu as trouvé de la
 Potion Rouge !$0
+
 Bois-la pour
 retrouver toute ton
 énergie vitale.
@@ -2117,6 +2159,7 @@ dialog{
   text = [[
 Tu as trouvé de la
 Potion Verte !$0
+
 Bois-la pour
 retrouver toute ton
 énergie magique.
@@ -2131,6 +2174,7 @@ dialog{
   text = [[
 Tu as trouvé de la
 Potion Bleue !$0
+
 Bois-la pour
 retrouver toute ta
 vie et ta magie !
@@ -2229,6 +2273,7 @@ dialog{
   text = [[
 Oh là là, c'est
 bien trop lourd !
+
 Tu n'y arriveras jamais
 rien que par la force
 de tes bras !
@@ -2368,6 +2413,7 @@ dialog{
   text = [[
 Tu as trouvé quatre
 Fragments de Coeur.
+
 Tu obtiens un Coeur
 supplémentaire !
 ]]
@@ -2420,6 +2466,7 @@ dialog{
   text = [[
 Veux-tu mettre de
 l'eau dans ton
+
 Flacon Magique ?
 Oui
 Non
@@ -2462,6 +2509,7 @@ dialog{
   text = [[
 Ton Flacon Magique
 contient de l'eau.
+
 Que veux-tu faire ?
 Vider l'eau
 La conserver
@@ -2493,6 +2541,7 @@ dialog{
   text = [[
 Un Pain au Chocolat
 te redonne 3 Coeurs.
+
 Que veux-tu faire ?
 En manger un
 Ne rien faire
@@ -2824,6 +2873,7 @@ de dilapider toutes tes
 économies !
 Quoique, tu as l'air
 plus doué que moi.
+
 Peut-être que tu sauras
 mieux t'en sortir !
 ]]
@@ -3182,6 +3232,7 @@ dialog{
   text = [[
 Va choisir l'un des
 trois coffres !
+
 Mais ne compte pas sur
 moi pour t'aider !
 ]]
@@ -3216,6 +3267,7 @@ dialog{
   text = [[
 Tu veux retenter ta
 chance ?
+
 C'est 20 rubis !
 Oui
 Non
@@ -3248,6 +3300,7 @@ tente d'aligner trois
 symboles identiques
 pour gagner plusieurs
 fois ta mise !
+
 Alors, tu veux jouer ?
 Oui
 Non
@@ -3448,6 +3501,7 @@ dialog{
   text = [[
 Tu veux recommencer à
 zéro ?
+
 C'est 10 rubis !
 Oui
 Non
@@ -3481,6 +3535,7 @@ dialog{
   text = [[
 Au secours !
 Au secours !
+
 La maison a été
 dévalisée !
 ]]
@@ -3541,6 +3596,7 @@ sent la plaine. C'est
 mauvais signe : je suis
 sûre que quelque chose
 de grave est arrivé.
+
 Tu cherches une épée ?
 Ces choses-là ne sont
 plus de mon âge !
@@ -4194,6 +4250,7 @@ dialog{
   text = [[
 Les mémoires de
 Sahasrahla.
+
 Veux-tu les lire ?
 Oui
 Non
@@ -4291,6 +4348,7 @@ d'énigmes, de trésors
 et de dangers.
 Cela me semble très
 courageux de ta part !
+
 S'il te plaît, accepte
 mon aide... J'ai
 échoué, je n'ai pas su
@@ -4368,6 +4426,8 @@ N'oublie pas que le
 Boomerang revient
 toujours vers toi,
 même si tu te déplaces.
+
+
 Que veux-tu faire ?
 Continuer
 Rendre le Boomerang
@@ -4598,6 +4658,7 @@ Enchantements. Toi qui
 veilles sur la justice,
 permets-moi de t'offrir
 ce présent...
+
 Tu as prouvé par le
 passé que tu méritais
 de le posséder.
@@ -4610,6 +4671,7 @@ dialog{
   text = [[
 Sois le bienvenu, jeune
 homme plein de sagesse.
+
 Je suis la Fée des
 Enchantements. Ferme
 les yeux et relaxe-toi.
@@ -4639,6 +4701,7 @@ dialog{
   text = [[
 Sois le bienvenu, jeune
 homme au grand courage.
+
 Je suis la Fée des
 Voyageurs. Ferme
 les yeux et relaxe-toi.
@@ -4713,6 +4776,8 @@ Je suis Billy le
 Téméraire, le plus
 grand aventurier de
 tous les temps.
+
+
 Lors de mon expédition
 à la Montagne des
 Terreurs, j'ai rapporté
@@ -4721,6 +4786,7 @@ Même la Princesse Zelda
 ne saurait le trouver.
 C'est une plante
 extrêmement rare.
+
 Et je suis le seul à en
 avoir. J'ai franchi
 tous les obstacles
@@ -4729,6 +4795,7 @@ Terreurs, affronté tous
 les périls, et je me
 suis sorti de toutes
 les situations.
+
 C'est donc héroïquement
 que j'ai trouvé cette
 fleur d'une valeur
@@ -4847,6 +4914,7 @@ dialog{
   text = [[
 Donne-moi cette tarte
 aux pommes !
+
 Alors ?
 OK
 Pas question
@@ -4975,6 +5043,7 @@ dialog{
   text = [[
 Comment es-tu arrivé
 ici ??
+
 ... Maintenant que tu
 es là, je te propose de
 participer en
@@ -5071,6 +5140,7 @@ dialog{
   text = [[
 
      Bazar du Coin
+
 Le plus grand choix
 d'articles à un prix
 vraiment exceptionnel !
@@ -5210,6 +5280,7 @@ dialog{
   text = [[
 ........$0....?!$#!@&=!??
 .....$0..................
+
 Comment es-tu arrivé
 ici ? L'accès aux
 cachots est interdit !
@@ -5325,6 +5396,7 @@ dialog{
   text = [[
 Tu subiras trois
 épreuves de courage.
+
 Rivière.
 $0Montagne.
 $0Beaumont.
@@ -5673,6 +5745,7 @@ Grâce à toi, nous
 sommes désormais au
 complet et la Triforce
 est en sécurité.
+
 Puisse le héros mener
 le Royaume à la paix et
 à la prospérité !
@@ -5685,6 +5758,7 @@ dialog{
   text = [[
 $1A G A H N I M !
 $3Et oui, lui-même !
+
 Le sorcier revenu de
 l'empire des morts !
 Ah ah ah ah ah ah !!!
@@ -5717,6 +5791,7 @@ constaterez très vite
 que le royaume est déjà
 sous mon contrôle...
 Ah ah ah ah ah ah ah !
+
 Quant à vous, jeune
 aventurier
 présomptueux, l'heure
@@ -5844,6 +5919,7 @@ Vous m'avez vaincu
 cette fois...
 Mais nous nous
 reverrons !
+
 Votre petite aventure
 ne change rien...
 Sahasrahla est en mon
@@ -5852,6 +5928,7 @@ révéler où se trouvent
 la Princesse et les
 huit enfants...
 Ah ah ah ah ah !
+
 Sur ce, je dois vous
 laisser. A une
 prochaine fois !
@@ -6002,6 +6079,7 @@ dialog{
   text = [[
 $2$v... Merci.
 Tu m'as sauvé la vie.
+
 Si seulement j'avais pu
 tenir une minute de
 plus...
@@ -6107,6 +6185,7 @@ trouvé refuge dans mon
 palais, et je me suis
 moi-même chargé de les
 livrer à Agahnim...
+
 Maintenant, c'est à ton
 tour de périr !
 ]]
@@ -6155,8 +6234,10 @@ Je suis vaincu...$0
 C'est la fin...$0
 Je n'ai pas été à la
 hauteur...
+
 Je m'incline devant
 votre bravoure.$0
+
 Mais puisque je n'ai
 pas été capable d'en
 finir avec vous, il est
@@ -6258,6 +6339,7 @@ dialog{
   text = [[
 Vous voilà enfin, jeune
 gringalet.
+
 Cela faisait longtemps
 que j'attendais votre
 venue.
@@ -6347,6 +6429,8 @@ dialog{
   id = "credits_1",
   text = [[
 $1        Crédits$0
+
+
     Programmation :
 Christopho$0
 ]]
@@ -6357,7 +6441,11 @@ dialog{
   id = "credits_2",
   text = [[
 $1   Maps et énigmes :
+
+
 Christopho$0
+
+
 Metallizer
 Binbin
 Mymy$0
@@ -6370,6 +6458,7 @@ dialog{
   text = [[
 $1      Graphismes :     
 Newlink$0
+
 Neovyse
 @PyroNet
 Djipi$0
@@ -6387,6 +6476,8 @@ $1       Scénario :
 Guillaume F.
 Christopho$0
 $1       Tests :$0      
+
+
 Thyb
 Morwenn
 BenObiWan$0
@@ -6399,13 +6490,19 @@ dialog{
   text = [[
 $1     Remerciements     
        spéciaux :$0      
+
 19oj19
 Yohann
 HelpTheWretched$0
 krytzz
 MultiSync_XV17$0
+
 Nintendo$0
+
+
 Merci d'avoir joué !$0
+
+
 
 
  www.zelda-solarus.com$0

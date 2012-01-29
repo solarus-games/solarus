@@ -25,6 +25,7 @@ zsdx-1.4 (under development)
 * Dungeon 1: make the blocks puzzle shorter and add a chest with a croissant
 * Dungeon 5: move the first small key to the basements
 * Dungeon 5: set a random configuration of doors open in the prison
+* Dungeon 5: move the feather puzzle to reduce the distance of blocks
 * Fix a typo for blue potions in the inventory
 * Fix the name of dungeon 6 in the minimap
 * Dungeon 9 boss: make a different sound when immobilized

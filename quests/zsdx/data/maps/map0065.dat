@@ -580,7 +580,7 @@
 12	1	776	680	16	16	custom_obstacle_15	0	1	0	0
 7	1	904	413	enemy_2	3	blue_knight_soldier	0	-1	_random	1	-1
 7	1	672	653	enemy_3	3	red_knight_soldier	0	-1	_random	1	-1
-7	1	1016	933	enemy_4	3	blue_knight_soldier	0	-1	_random	1	-1
+7	1	1016	933	enemy_4	3	blue_knight_soldier	0	-1	small_key	1	502
 7	1	896	901	enemy_7	3	green_knight_soldier	0	-1	_random	1	-1
 7	1	952	93	enemy_8	3	green_knight_soldier	0	-1	_random	1	-1
 7	1	1048	141	enemy_9	3	green_knight_soldier	0	-1	_random	1	-1

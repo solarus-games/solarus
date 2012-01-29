@@ -286,7 +286,7 @@ booleans:
 
 500	dungeon 5 1F: chest with 100 rupees
 501	dungeon 5 1F: chest with the compass
-502	dungeon 5 1F: small key (SE)
+502	dungeon 5 B1: small key (SE)
 503	dungeon 5 1F: chest with the big key
 504	dungeon 5 2F: big chest with the feather
 505	dungeon 5 2F: chest with a small key

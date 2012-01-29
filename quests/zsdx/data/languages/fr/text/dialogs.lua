@@ -1,6 +1,6 @@
 -- This is a Lua dialog file for solarus 0.9.1 or greater.
 -- This dialog file was converted from the 0.9.0 ini syntax using the script
--- tools/data_files_converstion/dialogs_0.9.0_to_0.9.1.lua.
+-- tools/data_files_conversion/0.9.0_to_0.9.1/convert_dialogs.lua.
 
 -- Plume / Feather
 dialog{
@@ -137,6 +137,7 @@ dialog{
   text = [[
 Ton Flacon Magique
 contient de l'eau.
+
 Verse-la à un
 endroit approprié...
 ]]
@@ -221,6 +222,7 @@ dialog{
   text = [[
 Ton Flacon Magique
 contient de l'eau.
+
 Verse-la à un
 endroit approprié...
 ]]
@@ -305,6 +307,7 @@ dialog{
   text = [[
 Ton Flacon Magique
 contient de l'eau.
+
 Verse-la à un
 endroit approprié...
 ]]
@@ -389,6 +392,7 @@ dialog{
   text = [[
 Ton Flacon Magique
 contient de l'eau.
+
 Verse-la à un
 endroit approprié...
 ]]
@@ -703,7 +707,7 @@ lieu gelé pour la
 faire fonctionner !
 ]]
 }
------------------------
+--------------------
 
 -- Poigne de Fer / Iron Glove
 dialog{
@@ -821,6 +825,7 @@ dialog{
   text = [[
 Tu as trouvé le
 Super Boomerang !$0
+
 Il est plus rapide
 et plus puissant que
 l'ancien !
@@ -865,6 +870,7 @@ dialog{
   text = [[
 Tu as trouvé un
 Flacon Magique !$0
+
 Remplis-le avec
 diverses substances.
 ]]
@@ -890,6 +896,7 @@ dialog{
   text = [[
 Tu as trouvé de la
 Potion Rouge !$0
+
 Bois-la pour
 retrouver toute ton
 énergie vitale.
@@ -904,6 +911,7 @@ dialog{
   text = [[
 Tu as trouvé de la
 Potion Verte !$0
+
 Bois-la pour
 retrouver toute ton
 énergie magique.
@@ -918,6 +926,7 @@ dialog{
   text = [[
 Tu as trouvé de la
 Potion Bleue !$0
+
 Bois-la pour
 retrouver toute ta
 vie et ta magie !
@@ -951,6 +960,7 @@ dialog{
   text = [[
 Tu as trouvé un
 Flacon Magique !$0
+
 Remplis-le avec
 diverses substances.
 ]]
@@ -976,6 +986,7 @@ dialog{
   text = [[
 Tu as trouvé de la
 Potion Rouge !$0
+
 Bois-la pour
 retrouver toute ton
 énergie vitale.
@@ -990,6 +1001,7 @@ dialog{
   text = [[
 Tu as trouvé de la
 Potion Verte !$0
+
 Bois-la pour
 retrouver toute ton
 énergie magique.
@@ -1004,6 +1016,7 @@ dialog{
   text = [[
 Tu as trouvé de la
 Potion Bleue !$0
+
 Bois-la pour
 retrouver toute ta
 vie et ta magie !
@@ -1037,6 +1050,7 @@ dialog{
   text = [[
 Tu as trouvé un
 Flacon Magique !$0
+
 Remplis-le avec
 diverses substances.
 ]]
@@ -1062,6 +1076,7 @@ dialog{
   text = [[
 Tu as trouvé de la
 Potion Rouge !$0
+
 Bois-la pour
 retrouver toute ton
 énergie vitale.
@@ -1076,6 +1091,7 @@ dialog{
   text = [[
 Tu as trouvé de la
 Potion Verte !$0
+
 Bois-la pour
 retrouver toute ton
 énergie magique.
@@ -1090,6 +1106,7 @@ dialog{
   text = [[
 Tu as trouvé de la
 Potion Bleue !$0
+
 Bois-la pour
 retrouver toute ta
 vie et ta magie !
@@ -1123,6 +1140,7 @@ dialog{
   text = [[
 Tu as trouvé un
 Flacon Magique !$0
+
 Remplis-le avec
 diverses substances.
 ]]
@@ -1148,6 +1166,7 @@ dialog{
   text = [[
 Tu as trouvé de la
 Potion Rouge !$0
+
 Bois-la pour
 retrouver toute ton
 énergie vitale.
@@ -1162,6 +1181,7 @@ dialog{
   text = [[
 Tu as trouvé de la
 Potion Verte !$0
+
 Bois-la pour
 retrouver toute ton
 énergie magique.
@@ -1176,6 +1196,7 @@ dialog{
   text = [[
 Tu as trouvé de la
 Potion Bleue !$0
+
 Bois-la pour
 retrouver toute ta
 vie et ta magie !
@@ -1211,12 +1232,11 @@ Tu as trouvé les
 Bottes de Pégase !$0
 
 Cours, fonce et
-traverse les ennemis
+travers les ennemis
 coriaces !
-
 Appuie sur la touche
 Action pour utiliser
-les Bottes.
+les bottes.
 ]]
 }
 --------------------
@@ -1244,6 +1264,7 @@ dialog{
   text = [[
 Tu as trouvé la
 Canne de Somaria !$0
+
 Tu peux créer des
 blocs et t'accrocher
 à l'aide du Grappin.
@@ -1258,6 +1279,7 @@ dialog{
   text = [[
 Tu as trouvé 3
 Pommes !$0
+
 Consomme-les plus
 tard pour récupérer
 des Coeurs !
@@ -1272,6 +1294,7 @@ dialog{
   text = [[
 Tu as trouvé un Pain
 au Chocolat !$0
+
 Mange un Pain au
 Chocolat pour
 récupérer de la vie.
@@ -1312,6 +1335,7 @@ dialog{
   text = [[
 Tu as trouvé la
 Clé d'Os !$0
+
 Mais à quoi peut-
 elle bien servir ?
 ]]
@@ -1325,6 +1349,7 @@ dialog{
   text = [[
 Tu as trouvé la
 Clé de Terre !$0
+
 Tu peux maintenant
 ouvrir la grotte du
 village !
@@ -1354,6 +1379,7 @@ dialog{
   text = [[
 Tu as trouvé des
 Lingots d'or !!!$0
+
 Ils brillent et ont
 une valeur
 inestimable !
@@ -1368,6 +1394,7 @@ dialog{
   text = [[
 Tu as trouvé un
 Edelweiss !$0
+
 Cette jolie fleur
 des montagnes est
 rarissime !
@@ -1397,6 +1424,7 @@ dialog{
   text = [[
 Tu as trouvé les
 Palmes !$0
+
 Tu peux maintenant
 nager en eau
 profonde !
@@ -1411,6 +1439,7 @@ dialog{
   text = [[
 Tu as trouvé la Cape
 Magique !$0
+
 Elle t'avertira si
 tu t'approches d'un
 mur fragile.
@@ -1425,6 +1454,7 @@ dialog{
   text = [[
 Tu as trouvé la
 Clé de Fer !$0
+
 Il doit bien y
 avoir une porte qui
 va avec !
@@ -1439,6 +1469,7 @@ dialog{
   text = [[
 Tu as trouvé la
 Clé de Pierre !$0
+
 Mais où est la
 serrure qui
 correspond ?
@@ -1453,6 +1484,7 @@ dialog{
   text = [[
 Tu as trouvé la
 Clé de Bois !$0
+
 A toi de voir où
 tu peux l'utiliser !
 ]]
@@ -1466,6 +1498,7 @@ dialog{
   text = [[
 Tu as trouvé la
 Clé de Glace !$0
+
 Elle protège sans
 doute l'entrée d'un
 lieu glacial...
@@ -1480,6 +1513,7 @@ dialog{
   text = [[
 Tu as trouvé la
 Poigne de Fer !$0
+
 Elle te permet de
 soulever les
 pierres.
@@ -1494,6 +1528,7 @@ dialog{
   text = [[
 Tu as trouvé la
 Poigne d'Or !$0
+
 Tu peux maintenant
 soulever les pierres
 noires !
@@ -1519,6 +1554,7 @@ dialog{
   text = [[
 Tu as trouvé la
 Carte du Monde !$0
+
 Tu peux l'afficher
 dans l'écran Carte.
 ]]
@@ -1532,6 +1568,7 @@ dialog{
   text = [[
 Tu as trouvé le
 Grand Sac de Rubis !$0
+
 Il peut contenir
 jusqu'à 300 rubis !
 ]]
@@ -1545,6 +1582,7 @@ dialog{
   text = [[
 Tu as trouvé le
 Sac de Rubis Géant !$0
+
 Il peut contenir
 jusqu'à 999 rubis !
 ]]
@@ -1588,6 +1626,7 @@ dialog{
   text = [[
 Tu as trouvé le Sac
 de Bombes Géant !$0
+
 Il peut contenir
 jusqu'à 99 Bombes
 au lieu de 30 !
@@ -1602,6 +1641,7 @@ dialog{
   text = [[
 Tu as trouvé le
 Grand Carquois !$0
+
 Il peut contenir
 jusqu'à 30 Flèches
 au lieu de 10 !
@@ -1616,6 +1656,7 @@ dialog{
   text = [[
 Tu as trouvé le
 Carquois Géant !$0
+
 Il peut contenir
 jusqu'à 99 Flèches
 au lieu de 30 !
@@ -1663,6 +1704,7 @@ dialog{
   text = [[
 Tu as trouvé le
 Bouclier !$0
+
 Tu peux repousser
 les attaques des
 ennemis !
@@ -1692,6 +1734,7 @@ dialog{
   text = [[
 Tu as trouvé le
 Bouclier Miroir !$0
+
 Tu peux désormais
 contrer les lasers !
 ]]
@@ -1705,6 +1748,7 @@ dialog{
   text = [[
 Tu as obtenu l'Epée
 du Courage !$0
+
 Tu peux croiser le
 fer et affronter
 les ennemis !
@@ -1782,6 +1826,7 @@ dialog{
   text = [[
 Tu as trouvé
 la Carte !
+
 Utilise-la pour
 connaître le plan
 du donjon.
@@ -1813,6 +1858,7 @@ dialog{
   text = [[
 Tu as trouvé une
 Petite Clé !
+
 Tu peux ouvrir une
 porte verrouillée
 dans les environs.
@@ -1868,6 +1914,7 @@ dialog{
   text = [[
 Tu as trouvé un
 Réceptacle de Coeur.
+
 Tu obtiens un Coeur
 supplémentaire !
 ]]
@@ -2088,6 +2135,7 @@ dialog{
   text = [[
 Tu as trouvé de la
 Potion Rouge !$0
+
 Bois-la pour
 retrouver toute ton
 énergie vitale.
@@ -2102,6 +2150,7 @@ dialog{
   text = [[
 Tu as trouvé de la
 Potion Verte !$0
+
 Bois-la pour
 retrouver toute ton
 énergie magique.
@@ -2116,6 +2165,7 @@ dialog{
   text = [[
 Tu as trouvé de la
 Potion Bleue !$0
+
 Bois-la pour
 retrouver toute ta
 vie et ta magie !
@@ -2214,6 +2264,7 @@ dialog{
   text = [[
 Oh là là, c'est
 bien trop lourd !
+
 Tu n'y arriveras jamais
 rien que par la force
 de tes bras !
@@ -2353,6 +2404,7 @@ dialog{
   text = [[
 Tu as trouvé quatre
 Fragments de Coeur.
+
 Tu obtiens un Coeur
 supplémentaire !
 ]]
@@ -2812,6 +2864,7 @@ de dilapider toutes tes
 économies !
 Quoique, tu as l'air
 plus doué que moi.
+
 Peut-être que tu sauras
 mieux t'en sortir !
 ]]
@@ -3170,6 +3223,7 @@ dialog{
   text = [[
 Va choisir l'un des
 trois coffres !
+
 Mais ne compte pas sur
 moi pour t'aider !
 ]]
@@ -3472,6 +3526,7 @@ dialog{
   text = [[
 Au secours !
 Au secours !
+
 La maison a été
 dévalisée !
 ]]
@@ -3532,6 +3587,7 @@ sent la plaine. C'est
 mauvais signe : je suis
 sûre que quelque chose
 de grave est arrivé.
+
 Tu cherches une épée ?
 Ces choses-là ne sont
 plus de mon âge !
@@ -4283,6 +4339,7 @@ d'énigmes, de trésors
 et de dangers.
 Cela me semble très
 courageux de ta part !
+
 S'il te plaît, accepte
 mon aide... J'ai
 échoué, je n'ai pas su
@@ -4593,6 +4650,7 @@ Enchantements. Toi qui
 veilles sur la justice,
 permets-moi de t'offrir
 ce présent...
+
 Tu as prouvé par le
 passé que tu méritais
 de le posséder.
@@ -4605,6 +4663,7 @@ dialog{
   text = [[
 Sois le bienvenu, jeune
 homme plein de sagesse.
+
 Je suis la Fée des
 Enchantements. Ferme
 les yeux et relaxe-toi.
@@ -4634,6 +4693,7 @@ dialog{
   text = [[
 Sois le bienvenu, jeune
 homme au grand courage.
+
 Je suis la Fée des
 Voyageurs. Ferme
 les yeux et relaxe-toi.
@@ -4708,6 +4768,8 @@ Je suis Billy le
 Téméraire, le plus
 grand aventurier de
 tous les temps.
+
+
 Lors de mon expédition
 à la Montagne des
 Terreurs, j'ai rapporté
@@ -4716,6 +4778,7 @@ Même la Princesse Zelda
 ne saurait le trouver.
 C'est une plante
 extrêmement rare.
+
 Et je suis le seul à en
 avoir. J'ai franchi
 tous les obstacles
@@ -4724,6 +4787,7 @@ Terreurs, affronté tous
 les périls, et je me
 suis sorti de toutes
 les situations.
+
 C'est donc héroïquement
 que j'ai trouvé cette
 fleur d'une valeur
@@ -4971,6 +5035,7 @@ dialog{
   text = [[
 Comment es-tu arrivé
 ici ??
+
 ... Maintenant que tu
 es là, je te propose de
 participer en
@@ -5067,6 +5132,7 @@ dialog{
   text = [[
 
      Bazar du Coin
+
 Le plus grand choix
 d'articles à un prix
 vraiment exceptionnel !
@@ -5206,6 +5272,7 @@ dialog{
   text = [[
 ........$0....?!$#!@&=!??
 .....$0..................
+
 Comment es-tu arrivé
 ici ? L'accès aux
 cachots est interdit !
@@ -5321,6 +5388,7 @@ dialog{
   text = [[
 Tu subiras trois
 épreuves de courage.
+
 Rivière.
 $0Montagne.
 $0Beaumont.
@@ -5669,6 +5737,7 @@ Grâce à toi, nous
 sommes désormais au
 complet et la Triforce
 est en sécurité.
+
 Puisse le héros mener
 le Royaume à la paix et
 à la prospérité !
@@ -5681,6 +5750,7 @@ dialog{
   text = [[
 $1A G A H N I M !
 $3Et oui, lui-même !
+
 Le sorcier revenu de
 l'empire des morts !
 Ah ah ah ah ah ah !!!
@@ -5713,6 +5783,7 @@ constaterez très vite
 que le royaume est déjà
 sous mon contrôle...
 Ah ah ah ah ah ah ah !
+
 Quant à vous, jeune
 aventurier
 présomptueux, l'heure
@@ -5840,6 +5911,7 @@ Vous m'avez vaincu
 cette fois...
 Mais nous nous
 reverrons !
+
 Votre petite aventure
 ne change rien...
 Sahasrahla est en mon
@@ -5848,6 +5920,7 @@ révéler où se trouvent
 la Princesse et les
 huit enfants...
 Ah ah ah ah ah !
+
 Sur ce, je dois vous
 laisser. A une
 prochaine fois !
@@ -5998,6 +6071,7 @@ dialog{
   text = [[
 $2$v... Merci.
 Tu m'as sauvé la vie.
+
 Si seulement j'avais pu
 tenir une minute de
 plus...
@@ -6103,6 +6177,7 @@ trouvé refuge dans mon
 palais, et je me suis
 moi-même chargé de les
 livrer à Agahnim...
+
 Maintenant, c'est à ton
 tour de périr !
 ]]
@@ -6151,8 +6226,10 @@ Je suis vaincu...$0
 C'est la fin...$0
 Je n'ai pas été à la
 hauteur...
+
 Je m'incline devant
 votre bravoure.$0
+
 Mais puisque je n'ai
 pas été capable d'en
 finir avec vous, il est
@@ -6254,6 +6331,7 @@ dialog{
   text = [[
 Vous voilà enfin, jeune
 gringalet.
+
 Cela faisait longtemps
 que j'attendais votre
 venue.
@@ -6343,6 +6421,8 @@ dialog{
   id = "credits_1",
   text = [[
 $1        Crédits$0
+
+
     Programmation :
 Christopho$0
 ]]
@@ -6353,7 +6433,11 @@ dialog{
   id = "credits_2",
   text = [[
 $1   Maps et énigmes :
+
+
 Christopho$0
+
+
 Metallizer
 Binbin
 Mymy$0
@@ -6366,6 +6450,7 @@ dialog{
   text = [[
 $1      Graphismes :     
 Newlink$0
+
 Neovyse
 @PyroNet
 Djipi$0
@@ -6383,6 +6468,8 @@ $1       Scénario :
 Guillaume F.
 Christopho$0
 $1       Tests :$0      
+
+
 Thyb
 Morwenn
 BenObiWan$0
@@ -6395,13 +6482,19 @@ dialog{
   text = [[
 $1     Remerciements     
        spéciaux :$0      
+
 19oj19
 Yohann
 HelpTheWretched$0
 krytzz
 MultiSync_XV17$0
+
 Nintendo$0
+
+
 Merci d'avoir joué !$0
+
+
 
 
  www.zelda-solarus.com$0

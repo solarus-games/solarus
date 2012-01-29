@@ -162,17 +162,17 @@ function parse_ini()
       elseif comment then
         -- comments
         if not comment:find("^[-| \t]*|[-| \t]*$") then -- skip line size comments
-	  if message.line1 or message.line2 or message.line3 then
-	    if message.comments_after == nil then
-	      message.comments_after = {}
-	    end
+          if message.line1 or message.line2 or message.line3 then
+            if message.comments_after == nil then
+              message.comments_after = {}
+            end
             message.comments_after[#message.comments_after + 1] = comment
-	  else
-	    if message.comments == nil then
-	      message.comments = {}
-	    end
-	    message.comments[#message.comments + 1] = comment
-	  end
+          else
+            if message.comments == nil then
+              message.comments = {}
+            end
+            message.comments[#message.comments + 1] = comment
+          end
         end
       else
         print("-- Warning: ignoring invalid line " .. line_number .. ": '"
@@ -322,21 +322,23 @@ function merge_messages(all_messages, all_ids)
       dialog.text = ""
       for _, m in pairs(s) do
         local blanks = ""
-        if m.line1 and m.line1 ~= "" then
-          dialog.text = dialog.text .. m.line1 .. "\n"
-        else
-          blanks = "\n"
+        if not m.line1 then
+          m.line1 = ""
         end
-        if m.line2 and m.line2 ~= "" then
-          dialog.text = dialog.text .. blanks .. m.line2 .. "\n"
-	  blanks = ""
-        else
-          blanks = blanks .. "\n"
+        if not m.line2 then
+          m.line2 = ""
         end
-        if m.line3 and m.line3 ~= "" then
-          dialog.text = dialog.text .. blanks .. m.line3 .. "\n"
+        if not m.line3 then
+          m.line3 = ""
         end
+        dialog.text = dialog.text
+            .. m.line1 .. "\n"
+            .. m.line2 .. "\n"
+            .. m.line3 .. "\n"
       end
+
+      -- remove final empty lines
+      dialog.text = dialog.text:gsub("\n\n*$", "\n")
     end
   end
 

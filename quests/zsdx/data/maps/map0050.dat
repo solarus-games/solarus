@@ -167,10 +167,10 @@
 15	0	656	624	32	48	0
 15	0	480	368	16	96	1
 4	0	768	621	0	rupee	1	-1
-4	0	768	637	0	rupee	1	-1
+4	0	768	637	0	magic_flask	1	-1
 4	0	768	653	0	rupee	1	-1
 4	0	848	653	0	rupee	1	-1
-4	0	848	637	0	rupee	1	-1
+4	0	848	637	0	magic_flask	1	-1
 4	0	848	621	0	rupee	1	-1
 7	0	712	389	enemy_3	3	tentacle	0	-1	_random	1	-1
 7	0	728	389	enemy_4	3	tentacle	0	-1	_random	1	-1

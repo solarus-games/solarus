@@ -2,7 +2,14 @@
 
 sol.main.include("maps/prison_guard")
 
-prison_2_nb_messages = 0
+local prison_2_nb_messages = 0
+local door_sets = { -- possible doors open when going to prison
+  { "door_b", "door_d", "door_f", "door_h", "door_g" },
+  { "door_b", "door_d", "door_f", "door_h", "door_g" },
+  { "door_b", "door_d", "door_e", "door_f", "door_g" },
+  { "door_b", "door_d", "door_e", "door_f", "door_g" },
+  { "door_a", "door_c", "door_e", "door_d", "door_f", "door_h" },
+}
 
 function event_map_started(destination_point_name)
 
@@ -40,6 +47,15 @@ function event_map_started(destination_point_name)
     treasure_savegame_variable = 510
   })
 
+  -- initialize doors
+  local i = 1
+  if destination_point_name == "prison" then
+    i = math.random(#door_sets)
+  end
+  for _, door in ipairs(door_sets[i]) do
+    sol.map.door_set_open(door, true)
+  end
+
   init_guards()
 end
 
@@ -57,7 +73,15 @@ function init_guards()
 end
 
 function init_prison()
+
   sol.map.npc_set_position("prison_2_lock", 648, 325)
+ 
+  -- change the configuration of the doors
+  local i = math.random(#door_sets)
+  sol.map.door_set_open("door", false)
+  for _, door in ipairs(door_sets[i]) do
+    sol.map.door_set_open(door, true)
+  end
 end
 
 function init_guard(guard_name, x, y, direction, path)

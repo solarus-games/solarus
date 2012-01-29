@@ -338,6 +338,7 @@ booleans:
 627	dungeon 7 3F: door A (timed doors)
 628	dungeon 7 2F: shortcut to the boss
 629	dungeon 7 3F: chest with 300 rupees
+630	dungeon 7 2F: door A (code)
 
 700 dungeon 8 1F: map chest (MAP)
 701 dungeon 8 1F: key door (KD01)
@@ -470,4 +471,5 @@ booleans:
 952	hidden palace D6: chest with 300 rupees
 953	fairy cave 2F: barrier open
 954	dungeon 1 B1: chest with a croissant
+
 

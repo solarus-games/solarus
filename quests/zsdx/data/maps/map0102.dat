@@ -903,8 +903,8 @@
 18	1	1024	728	door_f	3	0	-1
 18	1	712	776	door_d_2	1	0	615
 18	1	712	728	door_d	3	0	615
-18	1	56	568	door_a	1	0	-1
-18	1	56	520	door_a_2	3	0	-1
+18	1	56	568	door_a	1	0	630
+18	1	56	520	door_a_2	3	0	630
 18	1	248	520	door_c_2	1	0	-1
 18	1	248	472	door_c	3	0	617
 18	1	136	312	door_b_2	0	1	616
@@ -1173,8 +1173,8 @@
 1	1	560	69	from_3f_hole_b	-1	0
 1	1	552	93	from_3f_hole_d	-1	0
 1	1	520	93	from_3f_hole_c	-1	0
-13	1	72	517	16	16	close_door_ac_sensor	0
-13	1	264	469	16	16	close_door_ac_sensor_2	0
+13	1	72	517	16	16	close_door_c_sensor	0
+13	1	264	469	16	16	close_door_c_sensor_2	0
 11	1	320	544	shortcut_switch	3	0	0
 10	1	552	536	32	16	shortcut_on_3	585	1
 10	1	488	536	16	16	shortcut_on_4	585	1

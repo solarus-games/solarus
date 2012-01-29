@@ -21,6 +21,13 @@ function event_map_started(destination_point_name)
     sol.map.enemy_set_position(enemy_name, x, y, 1)
   end
 
+  -- saved door A (code)
+  if sol.game.savegame_get_boolean(630) then
+    for i = 1, 8 do
+      sol.map.switch_set_activated("code_switch_" .. i, true)
+    end
+  end
+
   -- saved door D
   if sol.game.savegame_get_boolean(615) then
     sol.map.switch_set_activated("door_d_switch", true)
@@ -68,15 +75,11 @@ function event_hero_on_sensor(sensor_name)
     sol.map.door_set_open("door_f", false)
     sol.map.switch_set_activated("door_f_switch", false)
  
-  -- doors A and C (west room)
-  elseif sensor_name:find("^close_door_ac_sensor") then
-    if not sol.map.enemy_is_group_dead("w_room_enemy") then
-      if sol.map.door_is_open("door_a") then
-	sol.map.door_close("door_a")
-      end
-      if sol.map.door_is_open("door_c") then
-	sol.map.door_close("door_c")
-      end
+  -- door C (west room)
+  elseif sensor_name:find("^close_door_c_sensor") then
+    if not sol.map.enemy_is_group_dead("w_room_enemy")
+        and sol.map.door_is_open("door_c") then
+      sol.map.door_close("door_c")
     end
 
   -- miniboss
@@ -125,11 +128,6 @@ function event_switch_activated(switch_name)
       sol.main.play_sound("secret")
       sol.map.door_open("door_f")
     end)
-
-  -- door A
-  elseif switch_name == "door_a_switch" then
-    sol.main.play_sound("secret")
-    sol.map.door_open("door_a")
 
   -- door D
   elseif switch_name == "door_d_switch" then

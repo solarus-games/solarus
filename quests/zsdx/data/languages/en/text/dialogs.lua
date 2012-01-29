@@ -1,6 +1,6 @@
 -- This is a Lua dialog file for solarus 0.9.1 or greater.
 -- This dialog file was converted from the 0.9.0 ini syntax using the script
--- tools/data_files_conversion/0.9.0_to_0.9.1/convert_dialogs.lua.
+-- tools/data_files_conversion/dialogs_0.9.0_to_0.9.1.lua.
 
 -- Plume / Feather
 dialog{
@@ -8,9 +8,9 @@ dialog{
   icon = 0,
   skip = "all",
   text = [[
-Utilise la Plume
-pour sauter et fran-
-chir des obstacles.
+Use the feather
+to jump and
+cross obstacles.
 ]]
 }
 --------------------
@@ -21,11 +21,9 @@ dialog{
   icon = 1,
   skip = "all",
   text = [[
-Utilise les Bombes
-contre les ennemis
-ou pour faire
-exploser des
-obstacles.
+Use Bombs against
+enemies or to
+destroy obstacles.
 ]]
 }
 --------------------
@@ -36,8 +34,8 @@ dialog{
   icon = 2,
   skip = "all",
   text = [[
-Tu n'as plus de
-Flèches !
+You don't have
+any Arrows left!
 ]]
 }
 --------------------
@@ -48,9 +46,9 @@ dialog{
   icon = 3,
   skip = "all",
   text = [[
-Tire des Flèches
-pour vaincre des
-ennemis coriaces.
+Throw Arrows to
+defeat tougher
+enemies.
 ]]
 }
 --------------------
@@ -61,11 +59,10 @@ dialog{
   icon = 4,
   skip = "all",
   text = [[
-Utilise le Boomerang
-pour immobiliser les
-ennemis ou attraper
-des objets à
-distance.
+Use the Boomerang to
+freeze enemies or to
+catch objects from
+a certain distance.
 ]]
 }
 --------------------
@@ -76,11 +73,10 @@ dialog{
   icon = 35,
   skip = "all",
   text = [[
-Utilise le Super
-Boomerang pour
-immobiliser les
-ennemis ou attraper
-des objets à
+Use the Super
+Boomerang to freeze
+or to catch objects
+from a certain
 distance.
 ]]
 }
@@ -92,12 +88,12 @@ dialog{
   icon = 5,
   skip = "all",
   text = [[
-Eclaire-toi dans le
-noir ou allume des
-braseros à l'aide
-de la Lanterne. Mais
-surveille ton
-compteur magique !
+Light up places
+in the dark or
+start a fire with
+the Lamp. But
+look at your
+magic bar!
 ]]
 }
 --------------------
@@ -108,10 +104,10 @@ dialog{
   icon = 6,
   skip = "all",
   text = [[
-Hisse-toi à des
-endroits
-inaccessibles grâce
-au Grappin.
+Hoist yourself to
+inaccessible places
+with the help
+of the HookShot.
 ]]
 }
 --------------------
@@ -122,9 +118,9 @@ dialog{
   icon = 7,
   skip = "all",
   text = [[
-Le Flacon Magique
-peut contenir di-
-verses substances...
+The magic bottle
+can contain
+various substances!
 ]]
 }
 --------------------
@@ -135,11 +131,11 @@ dialog{
   icon = 8,
   skip = "all",
   text = [[
-Ton Flacon Magique
-contient de l'eau.
+Your magic bottle
+contains water!
 
-Verse-la à un
-endroit approprié...
+Use it at an
+appropriate spot!
 ]]
 }
 --------------------
@@ -150,9 +146,9 @@ dialog{
   icon = 9,
   skip = "all",
   text = [[
-Bois de la Potion
-rouge pour retrouver
-tous tes Coeurs.
+Drink red potion
+to fill up
+your Heart bar!
 ]]
 }
 --------------------
@@ -163,9 +159,9 @@ dialog{
   icon = 10,
   skip = "all",
   text = [[
-Bois de la Potion
-verte pour retrouver
-toute ta magie.
+Drink green potion
+to fill up
+your magic bar!
 ]]
 }
 --------------------
@@ -176,9 +172,9 @@ dialog{
   icon = 11,
   skip = "all",
   text = [[
-Bois de la Potion
-bleue pour retrouver
-vie et magie !
+Drink blue potion
+to fill up both
+heart and magic bar!
 ]]
 }
 --------------------
@@ -189,14 +185,12 @@ dialog{
   icon = 12,
   skip = "all",
   text = [[
-Cette Fée te viendra
-en aide si tu es en
-difficulté.
-Tu peux aussi
-l'utiliser à tout
-moment pour
-récupérer des
-Coeurs !
+This fairy will help
+you if needed.
+
+You can also use it
+whenever you want to
+recover your Hearts!
 ]]
 }
 --------------------
@@ -207,9 +201,9 @@ dialog{
   icon = 7,
   skip = "all",
   text = [[
-Le Flacon Magique
-peut contenir di-
-verses substances...
+The magic bottle
+can contain
+various substances!
 ]]
 }
 --------------------
@@ -220,11 +214,11 @@ dialog{
   icon = 8,
   skip = "all",
   text = [[
-Ton Flacon Magique
-contient de l'eau.
+Your magic bottle
+contains water!
 
-Verse-la à un
-endroit approprié...
+Use it at an
+appropriate spot!
 ]]
 }
 --------------------
@@ -235,9 +229,9 @@ dialog{
   icon = 9,
   skip = "all",
   text = [[
-Bois de la Potion
-rouge pour retrouver
-tous tes Coeurs.
+Drink red potion
+to fill up
+your Heart bar!
 ]]
 }
 --------------------
@@ -248,9 +242,9 @@ dialog{
   icon = 10,
   skip = "all",
   text = [[
-Bois de la Potion
-verte pour retrouver
-toute ta magie.
+Drink green potion
+to fill up
+your magic bar!
 ]]
 }
 --------------------
@@ -261,9 +255,9 @@ dialog{
   icon = 11,
   skip = "all",
   text = [[
-Bois de la Potion
-bleue pour retrouver
-vie et magie !
+Drink blue potion
+to fill up both
+heart and magic bar!
 ]]
 }
 --------------------
@@ -274,14 +268,12 @@ dialog{
   icon = 12,
   skip = "all",
   text = [[
-Cette Fée te viendra
-en aide si tu es en
-difficulté.
-Tu peux aussi
-l'utiliser à tout
-moment pour
-récupérer des
-Coeurs !
+This fairy will help
+you if needed.
+
+You can also use it
+whenever you want to
+recover your Hearts!
 ]]
 }
 --------------------
@@ -292,9 +284,9 @@ dialog{
   icon = 7,
   skip = "all",
   text = [[
-Le Flacon Magique
-peut contenir di-
-verses substances...
+The magic bottle
+can contain
+various substances!
 ]]
 }
 --------------------
@@ -305,11 +297,11 @@ dialog{
   icon = 8,
   skip = "all",
   text = [[
-Ton Flacon Magique
-contient de l'eau.
+Your magic bottle
+contains water!
 
-Verse-la à un
-endroit approprié...
+Use it at an
+appropriate spot!
 ]]
 }
 --------------------
@@ -320,9 +312,9 @@ dialog{
   icon = 9,
   skip = "all",
   text = [[
-Bois de la Potion
-rouge pour retrouver
-tous tes Coeurs.
+Drink red potion
+to fill up
+your Heart bar!
 ]]
 }
 --------------------
@@ -333,9 +325,9 @@ dialog{
   icon = 10,
   skip = "all",
   text = [[
-Bois de la Potion
-verte pour retrouver
-toute ta magie.
+Drink green potion
+to fill up
+your magic bar!
 ]]
 }
 --------------------
@@ -346,9 +338,9 @@ dialog{
   icon = 11,
   skip = "all",
   text = [[
-Bois de la Potion
-bleue pour retrouver
-vie et magie !
+Drink blue potion
+to fill up both
+heart and magic bar!
 ]]
 }
 --------------------
@@ -359,14 +351,12 @@ dialog{
   icon = 12,
   skip = "all",
   text = [[
-Cette Fée te viendra
-en aide si tu es en
-difficulté.
-Tu peux aussi
-l'utiliser à tout
-moment pour
-récupérer des
-Coeurs !
+This fairy will help
+you if needed.
+
+You can also use it
+whenever you want to
+recover your Hearts!
 ]]
 }
 --------------------
@@ -377,9 +367,9 @@ dialog{
   icon = 7,
   skip = "all",
   text = [[
-Le Flacon Magique
-peut contenir di-
-verses substances...
+The magic bottle
+can contain
+various substances!
 ]]
 }
 --------------------
@@ -390,11 +380,11 @@ dialog{
   icon = 8,
   skip = "all",
   text = [[
-Ton Flacon Magique
-contient de l'eau.
+Your magic bottle
+contains water!
 
-Verse-la à un
-endroit approprié...
+Use it at an
+appropriate spot!
 ]]
 }
 --------------------
@@ -405,9 +395,9 @@ dialog{
   icon = 9,
   skip = "all",
   text = [[
-Bois de la Potion
-rouge pour retrouver
-tous tes Coeurs.
+Drink red potion
+to fill up
+your Heart bar!
 ]]
 }
 --------------------
@@ -418,9 +408,9 @@ dialog{
   icon = 10,
   skip = "all",
   text = [[
-Bois de la Potion
-verte pour retrouver
-toute ta magie.
+Drink green potion
+to fill up
+your magic bar!
 ]]
 }
 --------------------
@@ -431,9 +421,9 @@ dialog{
   icon = 11,
   skip = "all",
   text = [[
-Bois de la Potion
-bleue pour retrouver
-vie et magie !
+Drink blue potion
+to fill up both
+heart and magic bar!
 ]]
 }
 --------------------
@@ -444,14 +434,12 @@ dialog{
   icon = 12,
   skip = "all",
   text = [[
-Cette Fée te viendra
-en aide si tu es en
-difficulté.
-Tu peux aussi
-l'utiliser à tout
-moment pour
-récupérer des
-Coeurs !
+This fairy will help
+you if needed.
+
+You can also use it
+whenever you want to
+recover your Hearts!
 ]]
 }
 --------------------
@@ -462,11 +450,11 @@ dialog{
   icon = 13,
   skip = "all",
   text = [[
-Fonce à toute allure
-grâce aux Bottes de
-Pégase.
-Appuie sur la touche
-Action pour courir.
+Run as fast as
+lightning by using
+the Pegasus Shoes.
+Press the Action key
+to run.
 ]]
 }
 --------------------
@@ -477,9 +465,8 @@ dialog{
   icon = 14,
   skip = "all",
   text = [[
-Le Miroir Mystique
-aurait de mystérieux
-pouvoirs...
+The Mystic Mirror
+has strange powers.
 ]]
 }
 --------------------
@@ -491,9 +478,9 @@ dialog{
   skip = "all",
   next = "_warning_magic",
   text = [[
-Crée des blocs et
-accroche-toi à
-l'aide du Grappin.
+Create a block and
+hook yourself to it
+using the HookShot.
 ]]
 }
 --------------------
@@ -504,9 +491,8 @@ dialog{
   icon = 16,
   skip = "all",
   text = [[
-Mange des Pommes
-pour récupérer des
-Coeurs.
+Eat Apples to
+recover some Hearts.
 ]]
 }
 --------------------
@@ -517,9 +503,9 @@ dialog{
   icon = 17,
   skip = "all",
   text = [[
-Mange un Pain au
-Chocolat pour
-récupéer 3 Coeurs.
+Eat a Chocolate
+Bread to recover
+3 Hearts.
 ]]
 }
 --------------------
@@ -530,9 +516,8 @@ dialog{
   icon = 18,
   skip = "all",
   text = [[
-Mange un Croissant
-pour récupérer
-7 Coeurs.
+Eat a Croissant to
+recover 7 Hearts.
 ]]
 }
 --------------------
@@ -543,9 +528,9 @@ dialog{
   icon = 19,
   skip = "all",
   text = [[
-La Clé de Roc. Mais
-où est donc la bonne
-serrure ?
+The Rock key! But
+where is the right
+lock ?
 ]]
 }
 --------------------
@@ -556,8 +541,8 @@ dialog{
   icon = 20,
   skip = "all",
   text = [[
-A quoi peut servir
-la Clé d'Os ?
+How could you use
+the Bone Key ?
 ]]
 }
 --------------------
@@ -568,9 +553,9 @@ dialog{
   icon = 21,
   skip = "all",
   text = [[
-La Clé de Terre, qui
-permet d'ouvrir la
-grotte du village.
+The Clay Key, that
+lets you open the
+village's cave.
 ]]
 }
 --------------------
@@ -581,9 +566,8 @@ dialog{
   icon = 22,
   skip = "all",
   text = [[
-Cette Tarte aux
-Pommes a un drôle
-d'aspect...
+This Apple Pie has a
+strange aspect...
 ]]
 }
 --------------------
@@ -594,9 +578,9 @@ dialog{
   icon = 23,
   skip = "all",
   text = [[
-Ce sont trois
-authentiques
-lingots d'or !
+These are 3
+authentic golden
+bars!
 ]]
 }
 --------------------
@@ -607,9 +591,9 @@ dialog{
   icon = 24,
   skip = "all",
   text = [[
-L'Edelweiss est une
-fleur très rare dans
-le royaume d'Hyrule.
+The Edelweiss is a
+rare flower in the
+Kingdom of Hyrule.
 ]]
 }
 --------------------
@@ -620,11 +604,10 @@ dialog{
   icon = 25,
   skip = "all",
   text = [[
-Ce Précis d'escrime
-te permet de
-maîtriser les
-techniques avancées
-des arts de l'épée.
+These Tiger scrolls
+let you master
+advanced sword
+techniques.
 ]]
 }
 --------------------
@@ -635,9 +618,8 @@ dialog{
   icon = 26,
   skip = "all",
   text = [[
-Les Palmes te
-permettent de nager
-dans l'eau profonde.
+The flippers let you
+swim in deep waters.
 ]]
 }
 --------------------
@@ -648,10 +630,9 @@ dialog{
   icon = 27,
   skip = "all",
   text = [[
-La Cape Magique
-t'avertit si tu
-t'approches d'un
-mur fragile...
+The Magic Cape warns
+you when you're near
+a weak wall.
 ]]
 }
 --------------------
@@ -662,9 +643,9 @@ dialog{
   icon = 28,
   skip = "all",
   text = [[
-La Clé de Fer.
-Mais ne te trompe
-pas de serrure !
+The Iron Key.
+But don't miss
+the right lock!
 ]]
 }
 --------------------
@@ -675,9 +656,9 @@ dialog{
   icon = 29,
   skip = "all",
   text = [[
-La Clé de Pierre.
-Reste à trouver la
-bonne serrure !
+The Stone Key!
+Let's find the
+right lock!
 ]]
 }
 --------------------
@@ -688,9 +669,9 @@ dialog{
   icon = 30,
   skip = "all",
   text = [[
-La Clé de Bois. Mais
-une seule serrure
-est la bonne...
+The Wooden Key. But
+one lock is the
+right one!
 ]]
 }
 --------------------
@@ -701,13 +682,12 @@ dialog{
   icon = 31,
   skip = "all",
   text = [[
-La Clé de Glace.
-A toi de trouver un
-lieu gelé pour la
-faire fonctionner !
+The Ice Key. You must
+find a frozen spot so
+that it'll work !
 ]]
 }
---------------------
+-----------------------
 
 -- Poigne de Fer / Iron Glove
 dialog{
@@ -715,9 +695,8 @@ dialog{
   icon = 32,
   skip = "all",
   text = [[
-La Poigne de Fer te
-permet de soulever
-les pierres.
+Those Iron gloves
+let you lift rocks.
 ]]
 }
 --------------------
@@ -728,9 +707,9 @@ dialog{
   icon = 33,
   skip = "all",
   text = [[
-Soulève les pierres
-noires grâce à la
-Poigne d'Or.
+Lift up black rocks
+by using the
+Golden Gloves.
 ]]
 }
 --------------------
@@ -741,60 +720,58 @@ dialog{
   icon = 34,
   skip = "all",
   text = [[
-Trouve les trois
-Pierres de Feu et
-apporte-les
-à Inferno.
+Find all three Fire
+Stones and bring
+them to Inferno.
 ]]
 }
 --------------------
 
 -- ---------------------
--- Obtention d'un trésor
+-- When finding a treasure
 -- ---------------------
--- 
--- Les messages ci-dessous sont affichés lorsque le joueur obtient
--- un trésor, généralement en ouvrant un coffre ou en l'achetant
--- dans un magasin.
--- Plume
+--
+-- Messages shown above are seen when the player
+-- obtain a treasure, usually by opening a chest or by buying it from a
+-- merchant in a shop.
+-- Plume / Feather
 dialog{
   id = "_treasure.feather.1",
   icon = 0,
   skip = "all",
   text = [[
-Tu as trouvé la
-Plume !$0 Utilise-la
-pour sauter et
-franchir des
+You found the
+Feather !$0 Use it to
+jump and get over
 obstacles !
 ]]
 }
 --------------------
 
--- Arc seul
+-- Arc seul / Bow alone
 dialog{
   id = "_treasure.bow.1",
   icon = 2,
   text = [[
-Tu as trouvé l'Arc !$0
-Trouve des Flèches
-et tu pourras
-vaincre à distance
-les ennemis
-coriaces !
+You found the Bow !$0
+Find some arrows
+and you will be
+able to overcome
+remotely tougher
+enemies !
 ]]
 }
 --------------------
 
--- Arc & Flèches
+-- Arc & Flèches / Bow & Arrows
 dialog{
   id = "_treasure.bow.2",
   icon = 3,
   text = [[
-Tu as trouvé l'Arc !$0
-Tu peux combattre
-ennemis coriaces
-à distance !
+You found the Bow !$0
+You can fight
+tougher ennemies
+at a safe distance !
 ]]
 }
 --------------------
@@ -804,12 +781,12 @@ dialog{
   id = "_treasure.boomerang.1",
   icon = 4,
   text = [[
-Tu as trouvé le
-Boomerang !$0 Tu peux
-immobiliser les
-ennemis ou attraper
-des objets à
-distance.
+You found the
+Boomerang !$0 You can
+immobilize enemies
+enemies or catch
+some objects
+remotely.
 Il y a plusieurs
 techniques pour le
 manipuler, à toi
@@ -823,24 +800,24 @@ dialog{
   id = "_treasure.boomerang.2",
   icon = 35,
   text = [[
-Tu as trouvé le
+You found the
 Super Boomerang !$0
 
-Il est plus rapide
-et plus puissant que
-l'ancien !
+It's faster and
+more powerful than
+the older one !
 ]]
 }
 --------------------
 
--- Lanterne
+-- Lanterne / Lantern
 dialog{
   id = "_treasure.lamp.1",
   icon = 5,
   next = "_warning_magic",
   text = [[
-Tu as trouvé la
-Lanterne !$0 Elle
+You found the
+Lantern !$0 Elle
 t'éclaire dans le
 noir et te permet
 d'allumer des
@@ -849,47 +826,48 @@ braseros.
 }
 --------------------
 
--- Grappin
+-- Grappin / Hook Shot
 dialog{
   id = "_treasure.hookshot.1",
   icon = 6,
   text = [[
-Tu as trouvé le
-Grappin !$0 Immobilise
-les ennemis et vole
-vers des endroits
-inacessibles !
+You found the
+Hook Shot !$0
+
+Immobilize your
+enemies and fly to
+inaccessible places!
 ]]
 }
 --------------------
 
--- Flacon vide
+-- Flacon vide / empty Flask
 dialog{
   id = "_treasure.bottle_1.1",
   icon = 7,
   text = [[
-Tu as trouvé un
-Flacon Magique !$0
+You found a
+Magic Flask!$0
 
-Remplis-le avec
-diverses substances.
+Fill it with
+various substances.
 ]]
 }
 --------------------
 
--- Eau
+-- Eau / Water
 dialog{
   id = "_treasure.bottle_1.2",
   icon = 8,
   text = [[
-Tu as rempli ton
-Flacon Magique avec
-de l'eau !
+You filled your
+Magic Flask with
+water !
 ]]
 }
 --------------------
 
--- Potion rouge
+-- Potion rouge / red Potion
 dialog{
   id = "_treasure.bottle_1.3",
   icon = 9,
@@ -925,7 +903,7 @@ dialog{
   icon = 11,
   text = [[
 Tu as trouvé de la
-Potion Bleue !$0
+Blue potion !$0
 
 Bois-la pour
 retrouver toute ta
@@ -940,7 +918,7 @@ dialog{
   icon = 12,
   skip = "all",
   text = [[
-Tu as capturé une
+You captured a
 Fée ! Elle te
 viendra en aide si
 tu es en difficulté.
@@ -985,7 +963,7 @@ dialog{
   icon = 9,
   text = [[
 Tu as trouvé de la
-Potion Rouge !$0
+Red Potion !$0
 
 Bois-la pour
 retrouver toute ton
@@ -1248,6 +1226,7 @@ dialog{
   text = [[
 Tu as trouvé le
 Miroir Mystique !$0
+
 Ses étranges
 pouvoirs t'aideront
 sans doute dans ta
@@ -1634,7 +1613,7 @@ au lieu de 30 !
 }
 --------------------
 
--- Grand carquois 
+-- Grand carquois
 dialog{
   id = "_treasure.quiver.2",
   icon = 58,
@@ -1704,7 +1683,6 @@ dialog{
   text = [[
 Tu as trouvé le
 Bouclier !$0
-
 Tu peux repousser
 les attaques des
 ennemis !
@@ -1987,8 +1965,8 @@ dialog{
   id = "_treasure.arrow.1.1",
   text = [[
 Flèches pour vaincre
-des ennemis à
-distance.
+des ennemis coriaces
+à distance.
 ]]
 }
 -----------------------
@@ -2176,7 +2154,7 @@ vie et ta magie !
 -- ---------------
 -- Autres messages
 -- ---------------
--- 
+--
 -- Autres messages divers affichés par le moteur de jeu
 -- Affiché à la fin des dialogues expliquant
 -- que le joueur a obtenu un objet qui consomme
@@ -2337,7 +2315,7 @@ dialog{
   id = "dungeon_1",
   skip = "current",
   text = [[
-        Niveau 1       
+    	Niveau 1  	 
    Donjon de la Forêt  
 ]]
 }
@@ -2348,8 +2326,8 @@ dialog{
   id = "dungeon_2",
   skip = "current",
   text = [[
-        Niveau 2       
-     Caverne de Roc    
+    	Niveau 2  	 
+ 	Caverne de Roc    
 ]]
 }
 -----------------------
@@ -2359,7 +2337,7 @@ dialog{
   id = "dungeon_3",
   skip = "current",
   text = [[
-        Niveau 3       
+    	Niveau 3  	 
  Antre de Maître Arbror
 ]]
 }
@@ -2402,11 +2380,9 @@ dialog{
   id = "found_piece_of_heart.fourth",
   icon = 78,
   text = [[
-Tu as trouvé quatre
-Fragments de Coeur.
-
-Tu obtiens un Coeur
-supplémentaire !
+You found 4 Pieces
+of Heart. You got
+an extra Heart!
 ]]
 }
 --------------------
@@ -2418,9 +2394,9 @@ dialog{
   skip = "current",
   next = "found_fairy.1",
   text = [[
-Tu as trouvé une
-Fée, elle est
-merveilleuse !
+You found a
+fairy, she is
+wonderful!
 ]]
 }
 --------------------
@@ -2432,7 +2408,7 @@ dialog{
   question = true,
   text = [[
 Que vas-tu en faire ?
-Récupérer des Coeurs
+recover your health
 La conserver
 ]]
 }
@@ -2524,13 +2500,13 @@ Ne rien faire
 }
 --------------------
 
--- Utiliser un Pain au Chocolat
+-- Use chocolate bread
 dialog{
   id = "use_pains_au_chocolat",
   icon = 17,
   question = true,
   text = [[
-Un Pain au Chocolat
+Chocolate bread
 te redonne 3 Coeurs.
 
 Que veux-tu faire ?
@@ -2572,21 +2548,21 @@ dialog{
   id = "intro0",
   skip = "current",
   text = [[
-$2D'anciennes légendes
-racontent qu'il y a
-bien longtemps,
-existait un magnifique
-royaume du nom d'Hyrule.
-Ce royaume prospérait
-sous la bénédiction de
-trois déesses
-représentées sous la
-forme de la Triforce.
-Sept Sages scellèrent
-la Triforce dans la
-Terre d'Or, le reflet
-utopique du monde. Puis
-les siècles passèrent...
+$2Ancient legends 
+tell that there
+a long time ago,
+existed a magnificent
+kingdom named Hyrule.
+This kingdom prospered 
+Under the blessing of
+three goddesses
+represented by
+the Triforce.
+Seven sages sealed
+the Triforce in the
+Golden land, le reflet
+utopique du monde. Then
+the centuries passed...
 ]]
 }
 -----------------------
@@ -4366,7 +4342,6 @@ accepte mon aide. J'ai
 protéger notre Roi.
 Laisse-moi une occasion
 de me racheter !
-
 Acceptes-tu mon aide ?
 Oui
 Non

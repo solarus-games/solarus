@@ -509,15 +509,15 @@ big = 1
 
 [dungeon_4.map_60.chest_3]
 floor = 0
-x = 888
-y = 376
+x = 640
+y = 600
 save = 405
 big = 0
 
 [dungeon_4.map_60.chest_4]
 floor = 0
-x = 640
-y = 600
+x = 472
+y = 376
 save = 407
 big = 0
 
@@ -908,7 +908,7 @@ big = 0
 
 [dungeon_4.map_60.chest_6]
 floor = 0
-x = 472
+x = 792
 y = 376
 save = 408
 big = 0

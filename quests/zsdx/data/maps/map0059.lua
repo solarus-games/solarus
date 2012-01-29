@@ -51,6 +51,9 @@ function event_hero_on_sensor(sensor_name)
   elseif sensor_name == "sensor_4" then
     sol.main.play_sound("switch")
     sol.map.tile_set_group_enabled("sensor_4_on", not sol.map.tile_is_enabled("sensor_4_on"))
+  elseif sensor_name == "sensor_5" and sol.map.tile_is_enabled("sensor_2_on") then
+    sol.main.play_sound("switch")
+    sol.map.tile_set_group_enabled("sensor_2_on", false)
   end
 end
 

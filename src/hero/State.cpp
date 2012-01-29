@@ -551,11 +551,22 @@ bool Hero::State::are_collisions_ignored() {
 }
 
 /**
- * @brief Returns whether a deep water tile is considered as an obstacle in this state.
+ * @brief Returns whether shallow water is considered as an obstacle in this state.
  *
  * Returns false by default.
  *
- * @return true if the deep water tiles are considered as obstacles in this state
+ * @return true if shallow water is considered as an obstacle in this state
+ */
+bool Hero::State::is_shallow_water_obstacle() {
+  return false;
+}
+
+/**
+ * @brief Returns whether deep water tile is considered as an obstacle in this state.
+ *
+ * Returns false by default.
+ *
+ * @return true if deep water is considered as an obstacle in this state
  */
 bool Hero::State::is_deep_water_obstacle() {
   return false;

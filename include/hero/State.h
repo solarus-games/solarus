@@ -107,6 +107,7 @@ class Hero::State {
 
     // obstacles and collisions
     virtual bool are_collisions_ignored();
+    virtual bool is_shallow_water_obstacle();
     virtual bool is_deep_water_obstacle();
     virtual bool is_hole_obstacle();
     virtual bool is_lava_obstacle();

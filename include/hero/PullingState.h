@@ -44,6 +44,7 @@ class Hero::PullingState: public Hero::State {
     void notify_obstacle_reached();
     bool is_grabbing_or_pulling();
     bool is_moving_grabbed_entity();
+    bool is_shallow_water_obstacle();
     bool is_deep_water_obstacle();
     bool is_hole_obstacle();
     bool is_lava_obstacle();

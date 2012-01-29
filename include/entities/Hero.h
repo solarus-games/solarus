@@ -231,6 +231,7 @@ class Hero: public MapEntity {
      * Information about what is considered as an obstacle for the hero.
      */
     bool is_obstacle_for(MapEntity &other);
+    bool is_shallow_water_obstacle();
     bool is_deep_water_obstacle();
     bool is_hole_obstacle();
     bool is_lava_obstacle();

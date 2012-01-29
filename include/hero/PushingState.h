@@ -48,6 +48,7 @@ class Hero::PushingState: public Hero::State {
     void notify_position_changed();
 
     bool can_be_hurt(Enemy* attacker);
+    bool is_shallow_water_obstacle();
     bool is_deep_water_obstacle();
     bool is_hole_obstacle();
     bool is_lava_obstacle();

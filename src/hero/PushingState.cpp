@@ -257,8 +257,16 @@ bool Hero::PushingState::can_be_hurt(Enemy* attacker) {
 }
 
 /**
- * @brief Returns whether a deep water tile is considered as an obstacle in this state.
- * @return true if the deep water tiles are considered as obstacles in this state
+ * @brief Returns whether shallow water is considered as an obstacle in this state.
+ * @return true if shallow water is considered as an obstacle in this state
+ */
+bool Hero::PushingState::is_shallow_water_obstacle() {
+  return true;
+}
+
+/**
+ * @brief Returns whether deep water is considered as an obstacle in this state.
+ * @return true if deep water is considered as an obstacle in this state
  */
 bool Hero::PushingState::is_deep_water_obstacle() {
   return true;

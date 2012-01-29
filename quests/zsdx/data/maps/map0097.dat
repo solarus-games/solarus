@@ -572,8 +572,8 @@
 8	1	656	677	torch2_2	3	0	entities/torch	item#lamp
 8	1	432	845	torch1_1	3	0	entities/torch	item#lamp
 8	1	656	845	torch2_1	3	0	entities/torch	item#lamp
-9	1	552	261	block2_1	-1	entities/block	1	0	1
-9	1	536	261	block1_1	-1	entities/block	1	0	1
+9	1	552	261	block2_1	-1	entities/block	1	0	0
+9	1	536	261	block1_1	-1	entities/block	1	0	0
 1	1	216	357	entrance_D_1	3	0
 12	1	224	384	8	8	custom_obstacle_7	1	1	1	1
 12	1	200	384	8	8	custom_obstacle_8	1	1	1	1

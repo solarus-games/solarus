@@ -6,6 +6,7 @@ zsdx-1.4 (under development)
 * Dungeon 9: the player could be stuck if using a bomb on a crystal
 * Dungeon 9: the player could be stuck because of an incorrect jump length
 * West mountains cave 1F: the player could be stuck if a door was closed
+* Dungeon 10: a part of the main puzzle could be skipped because of blocks
 * Dungeon 1: the miniboss could be displayed under a wall
 * Don't make enemies follow the hero if they are on a different layer
 * Dungeon 9 boss: don't create more than one stone at a time

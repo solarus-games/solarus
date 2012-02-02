@@ -7,30 +7,11 @@ function event_map_started(destination_point_name)
   init_evil_tiles()
 end
 
-function event_switch_activated(switch_name)
-
-  if switch_name == "door_a_switch" then
-    sol.map.door_open("door_a")
-    sol.main.play_sound("secret")
-  elseif switch_name == "door_b_switch" then
-    sol.map.door_open("door_b")
-    sol.main.play_sound("secret")
-  end
-end
-
-function event_switch_inactivated(switch_name)
-
-  if switch_name == "door_b_switch" then
-    sol.map.door_close("door_b")
-  end
-end
-
 function event_hero_on_sensor(sensor_name)
 
   if sensor_name == "close_door_a_sensor"
       and sol.map.door_is_open("door_a") then
     sol.map.door_close("door_a")
-    sol.map.switch_set_activated("door_a_switch", false)
   elseif sensor_name:find("^evil_tiles_sensor") then
     if sol.map.door_is_open("evil_tiles_door")
         and not sol.map.enemy_is_dead("evil_tile_1") then

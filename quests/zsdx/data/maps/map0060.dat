@@ -973,8 +973,8 @@
 13	1	640	381	32	32	weak_floor_sensor	0
 7	1	648	693	enemy_3	3	red_bullblin	0	-1	_random	1	-1
 7	1	664	485	enemy_4	3	skeletor	0	-1	bomb	2	-1
-12	1	576	328	40	8	custom_obstacle_5	0	1	1	1
-12	1	576	416	8	40	custom_obstacle_6	0	1	1	1
+12	1	576	320	40	8	custom_obstacle_5	0	1	1	1
+12	1	456	352	48	8	custom_obstacle_6	0	1	1	1
 7	1	440	245	enemy_5	3	skeletor	0	-1	_random	1	-1
 7	1	856	669	enemy_6	3	blue_hardhat_beetle	0	-1	_random	1	-1
 4	1	600	701	0	_random	1	-1

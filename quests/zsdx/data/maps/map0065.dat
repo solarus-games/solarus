@@ -535,7 +535,7 @@
 13	1	832	509	288	48	guard_5_sensor_0	0
 13	1	832	509	48	240	guard_5_sensor_1	0
 13	1	1072	509	48	240	guard_5_sensor_3	0
-13	1	648	269	16	16	prison_sensor	0
+13	1	648	253	16	16	prison_sensor	0
 13	1	208	549	144	64	guard_1_sensor_2	0
 1	1	1072	37	from_1f_ne	3	0
 1	1	1048	797	from_1f_se	3	0
@@ -561,7 +561,7 @@
 8	1	296	573	guard_1	2	1	npc/black_knight_soldier	map
 13	1	208	661	144	64	guard_2_sensor_2	0
 8	1	296	685	guard_2	2	1	npc/black_knight_soldier	map
-1	1	648	269	prison	3	0
+1	1	648	253	prison	3	0
 8	1	328	325	prison_1_lock	3	0	entities/castle_lock	map
 8	1	648	325	prison_2_lock	1	0	entities/castle_lock	map
 8	1	288	821	guard_3	2	1	npc/black_knight_soldier	map

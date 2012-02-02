@@ -74,14 +74,7 @@ end
 
 function init_prison()
 
-  sol.map.npc_set_position("prison_2_lock", 648, 325)
- 
-  -- change the configuration of the doors
-  local i = math.random(#door_sets)
-  sol.map.door_set_open("door", false)
-  for _, door in ipairs(door_sets[i]) do
-    sol.map.door_set_open(door, true)
-  end
+  sol.map.npc_set_position("prison_2_lock", 648, 325) 
 end
 
 function init_guard(guard_name, x, y, direction, path)
@@ -115,6 +108,13 @@ function event_hero_on_sensor(sensor_name)
 
   if sensor_name == "prison_sensor" then
     init_guards()
+
+    -- change the configuration of the doors
+    local i = math.random(#door_sets)
+    sol.map.door_set_open("door", false)
+    for _, door in ipairs(door_sets[i]) do
+      sol.map.door_set_open(door, true)
+    end
   end
 end
 

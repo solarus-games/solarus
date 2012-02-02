@@ -1,3 +1,12 @@
+-- English dialogs
+-- Contributors
+-- * AleX_XelA
+-- * Christopho
+-- * JeFF
+-- Please add your name to this list if you helped.
+-- These names will appear in the English localization credits
+-- at the end of the game.
+
 -- This is a Lua dialog file for solarus 0.9.1 or greater.
 -- This dialog file was converted from the 0.9.0 ini syntax using the script
 -- tools/data_files_conversion/dialogs_0.9.0_to_0.9.1.lua.
@@ -98,7 +107,7 @@ magic bar!
 }
 --------------------
 
--- Grappin / Hook Shot
+-- Grappin / Hookshot
 dialog{
   id = "_item_description.hookshot.1",
   icon = 6,
@@ -107,7 +116,7 @@ dialog{
 Hoist yourself to
 inaccessible places
 with the help
-of the HookShot.
+of the Hookshot.
 ]]
 }
 --------------------
@@ -236,7 +245,7 @@ your Heart bar!
 }
 --------------------
 
--- Potion verte / Red potion
+-- Potion verte / Green potion
 dialog{
   id = "_item_description.bottle_2.4",
   icon = 10,
@@ -249,7 +258,7 @@ your magic bar!
 }
 --------------------
 
--- Potion bleue / Red potion
+-- Potion bleue / Blue potion
 dialog{
   id = "_item_description.bottle_2.5",
   icon = 11,
@@ -319,7 +328,7 @@ your Heart bar!
 }
 --------------------
 
--- Potion verte / Red potion
+-- Potion verte / Green potion
 dialog{
   id = "_item_description.bottle_3.4",
   icon = 10,
@@ -332,7 +341,7 @@ your magic bar!
 }
 --------------------
 
--- Potion bleue / Red potion
+-- Potion bleue / Blue potion
 dialog{
   id = "_item_description.bottle_3.5",
   icon = 11,
@@ -480,7 +489,7 @@ dialog{
   text = [[
 Create a block and
 hook yourself to it
-using the HookShot.
+using the Hookshot.
 ]]
 }
 --------------------
@@ -684,7 +693,7 @@ dialog{
   text = [[
 The Ice Key. You must
 find a frozen spot so
-that it'll work !
+that it'll work!
 ]]
 }
 -----------------------
@@ -727,6 +736,20 @@ them to Inferno.
 }
 --------------------
 
+-- Carte du Monde / World Map
+dialog{
+  id = "_treasure.world_map.1",
+  icon = 50,
+  text = [[
+You found the
+overworld Map!$0
+
+View it on the
+Map screen.
+]]
+}
+--------------------
+
 -- ---------------------
 -- When finding a treasure
 -- ---------------------
@@ -734,6 +757,8 @@ them to Inferno.
 -- Messages shown above are seen when the player
 -- obtain a treasure, usually by opening a chest or by buying it from a
 -- merchant in a shop.
+--------------------
+
 -- Plume / Feather
 dialog{
   id = "_treasure.feather.1",
@@ -741,9 +766,9 @@ dialog{
   skip = "all",
   text = [[
 You found the
-Feather !$0 Use it to
+Feather!$0 Use it to
 jump and get over
-obstacles !
+obstacles!
 ]]
 }
 --------------------
@@ -753,12 +778,12 @@ dialog{
   id = "_treasure.bow.1",
   icon = 2,
   text = [[
-You found the Bow !$0
+You found the Bow!$0
 Find some arrows
 and you will be
 able to overcome
 remotely tougher
-enemies !
+enemies!
 ]]
 }
 --------------------
@@ -768,10 +793,10 @@ dialog{
   id = "_treasure.bow.2",
   icon = 3,
   text = [[
-You found the Bow !$0
+You found the Bow!$0
 You can fight
 tougher ennemies
-at a safe distance !
+at a safe distance!
 ]]
 }
 --------------------
@@ -782,15 +807,15 @@ dialog{
   icon = 4,
   text = [[
 You found the
-Boomerang !$0 You can
+Boomerang!$0 You can
 immobilize enemies
 enemies or catch
 some objects
 remotely.
-Il y a plusieurs
-techniques pour le
-manipuler, à toi
-de les découvrir !
+There are several 
+ways of using it,
+it’s up to you to
+unravel them!
 ]]
 }
 --------------------
@@ -801,11 +826,11 @@ dialog{
   icon = 35,
   text = [[
 You found the
-Super Boomerang !$0
+Super Boomerang!$0
 
 It's faster and
 more powerful than
-the older one !
+the older one!
 ]]
 }
 --------------------
@@ -817,7 +842,7 @@ dialog{
   next = "_warning_magic",
   text = [[
 You found the
-Lantern !$0 Elle
+Lantern!$0 Elle
 t'éclaire dans le
 noir et te permet
 d'allumer des
@@ -832,7 +857,7 @@ dialog{
   icon = 6,
   text = [[
 You found the
-Hook Shot !$0
+Hook Shot!$0
 
 Immobilize your
 enemies and fly to
@@ -862,391 +887,391 @@ dialog{
   text = [[
 You filled your
 Magic Flask with
-water !
+water!
 ]]
 }
 --------------------
 
--- Potion rouge / red Potion
+-- Potion rouge / Red potion
 dialog{
   id = "_treasure.bottle_1.3",
   icon = 9,
   text = [[
-Tu as trouvé de la
-Potion Rouge !$0
+You found some Red
+Potion!$0
 
-Bois-la pour
-retrouver toute ton
-énergie vitale.
+Drink it to
+recover your health.
 ]]
 }
 --------------------
 
--- Potion verte
+-- Potion verte / Green potion
 dialog{
   id = "_treasure.bottle_1.4",
   icon = 10,
   text = [[
-Tu as trouvé de la
-Potion Verte !$0
+You found some
+Green Potion!$0
 
-Bois-la pour
-retrouver toute ton
-énergie magique.
+Drink it to
+recover your magic
+energy.
 ]]
 }
 --------------------
 
--- Potion bleue
+-- Potion bleue / Blue potion
 dialog{
   id = "_treasure.bottle_1.5",
   icon = 11,
   text = [[
-Tu as trouvé de la
-Blue potion !$0
+You found some 
+Blue Potion!$0
 
-Bois-la pour
-retrouver toute ta
-vie et ta magie !
+Drink it to fully
+restore both your
+health and magic!
 ]]
 }
 --------------------
 
--- Fée dans Flacon
+-- Fée dans Flacon / Fairy in Bottle
 dialog{
   id = "_treasure.bottle_1.6",
   icon = 12,
   skip = "all",
   text = [[
 You captured a
-Fée ! Elle te
-viendra en aide si
-tu es en difficulté.
-Tu peux aussi
-l'utiliser à tout
-moment pour
-récupérer des
-Coeurs.
+Fairy! It will
+come in aid in
+the most desperate
+times.
+You may also use
+it at any time to
+recover some
+Hearts.
 ]]
 }
 --------------------
 
--- Flacon vide
+-- Flacon vide / Empty Flask
 dialog{
   id = "_treasure.bottle_2.1",
   icon = 7,
   text = [[
-Tu as trouvé un
-Flacon Magique !$0
+You found a Magic
+Flask!$0
 
-Remplis-le avec
-diverses substances.
+Fill it with
+diverse contents.
 ]]
 }
 --------------------
 
--- Eau
+-- Eau / Water
 dialog{
   id = "_treasure.bottle_2.2",
   icon = 8,
   text = [[
-Tu as rempli ton
-Flacon Magique avec
-de l'eau !
+You filled your
+Magic Flask with
+Water!
 ]]
 }
 --------------------
 
--- Potion rouge
+-- Potion rouge / Red potion
 dialog{
   id = "_treasure.bottle_2.3",
   icon = 9,
   text = [[
-Tu as trouvé de la
-Red Potion !$0
+You found some
+Red Potion!$0
 
-Bois-la pour
-retrouver toute ton
-énergie vitale.
+Drink it to
+recover your health.
 ]]
 }
 --------------------
 
--- Potion verte
+-- Potion verte / Green potion
 dialog{
   id = "_treasure.bottle_2.4",
   icon = 10,
   text = [[
-Tu as trouvé de la
-Potion Verte !$0
+You found some
+Green Potion!$0
 
-Bois-la pour
-retrouver toute ton
-énergie magique.
+Drink it to
+recover your magic
+energy.
 ]]
 }
 --------------------
 
--- Potion bleue
+-- Potion bleue / Blue potion
 dialog{
   id = "_treasure.bottle_2.5",
   icon = 11,
   text = [[
-Tu as trouvé de la
-Potion Bleue !$0
+You found some 
+Blue Potion!$0
 
-Bois-la pour
-retrouver toute ta
-vie et ta magie !
+Drink it to fully
+restore both your
+health and magic!
 ]]
 }
+
 --------------------
 
--- Fée dans Flacon
+-- Fée dans Flacon / Fairy in Bottle
 dialog{
   id = "_treasure.bottle_2.6",
   icon = 12,
   skip = "all",
   text = [[
-Tu as capturé une
-Fée ! Elle te
-viendra en aide si
-tu es en difficulté.
-Tu peux aussi
-l'utiliser à tout
-moment pour
-récupérer des
-Coeurs.
+You captured a
+Fairy! It will
+come in aid in
+the most desperate
+times.
+You may also use
+it at any time to
+recover some
+Hearts.
 ]]
 }
+
 --------------------
 
--- Flacon vide
+-- Flacon vide / Empty Flask
 dialog{
   id = "_treasure.bottle_3.1",
   icon = 7,
   text = [[
-Tu as trouvé un
-Flacon Magique !$0
+You found a Magic
+Flask!$0
 
-Remplis-le avec
-diverses substances.
+Fill it with
+diverse contents.
 ]]
 }
 --------------------
 
--- Eau
+-- Eau / Water
 dialog{
   id = "_treasure.bottle_3.2",
   icon = 8,
   text = [[
-Tu as rempli ton
-Flacon Magique avec
-de l'eau !
+You filled your
+Magic Flask with
+water!
 ]]
 }
 --------------------
 
--- Potion rouge
+-- Potion rouge / Red potion
 dialog{
   id = "_treasure.bottle_3.3",
   icon = 9,
   text = [[
-Tu as trouvé de la
-Potion Rouge !$0
+You found some
+Red Potion!$0
 
-Bois-la pour
-retrouver toute ton
-énergie vitale.
+Drink it to
+recover your health.
 ]]
 }
 --------------------
 
--- Potion verte
+-- Potion verte / Green potion
 dialog{
   id = "_treasure.bottle_3.4",
   icon = 10,
   text = [[
-Tu as trouvé de la
-Potion Verte !$0
+You found some
+Green Potion!$0
 
-Bois-la pour
-retrouver toute ton
-énergie magique.
+Drink it to
+recover your magic
+energy.
 ]]
 }
 --------------------
 
--- Potion bleue
+-- Potion bleue / Blue potion
 dialog{
   id = "_treasure.bottle_3.5",
   icon = 11,
   text = [[
-Tu as trouvé de la
-Potion Bleue !$0
+You found some 
+Blue Potion!$0
 
-Bois-la pour
-retrouver toute ta
-vie et ta magie !
+Drink it to fully
+restore both your
+health and magic!
 ]]
 }
 --------------------
 
--- Fée dans Flacon
+-- Fée dans Flacon / Fairy in Bottle
 dialog{
   id = "_treasure.bottle_3.6",
   icon = 12,
   skip = "all",
   text = [[
-Tu as capturé une
-Fée ! Elle te
-viendra en aide si
-tu es en difficulté.
-Tu peux aussi
-l'utiliser à tout
-moment pour
-récupérer des
-Coeurs.
+You captured a
+Fairy! It will
+come in aid in
+the most desperate
+times.
+You may also use
+it at any time to
+recover some
+Hearts.
 ]]
 }
+
 --------------------
 
--- Flacon vide
+-- Flacon vide / Empty Flask
 dialog{
   id = "_treasure.bottle_4.1",
   icon = 7,
   text = [[
-Tu as trouvé un
-Flacon Magique !$0
+You found a Magic
+Flask!$0
 
-Remplis-le avec
-diverses substances.
+Fill it with
+diverse contents.
 ]]
 }
 --------------------
 
--- Eau
+-- Eau / Water
 dialog{
   id = "_treasure.bottle_4.2",
   icon = 8,
   text = [[
-Tu as rempli ton
-Flacon Magique avec
-de l'eau !
+You filled your
+Magic Flask with
+water!
 ]]
 }
 --------------------
 
--- Potion rouge
+-- Potion rouge / Red potion
 dialog{
   id = "_treasure.bottle_4.3",
   icon = 9,
   text = [[
-Tu as trouvé de la
-Potion Rouge !$0
+You found some
+Red Potion!$0
 
-Bois-la pour
-retrouver toute ton
-énergie vitale.
+Drink it to
+recover your health.
 ]]
 }
 --------------------
 
--- Potion verte
+-- Potion verte / Green potion
 dialog{
   id = "_treasure.bottle_4.4",
   icon = 10,
   text = [[
-Tu as trouvé de la
-Potion Verte !$0
+You found some
+Green Potion!$0
 
-Bois-la pour
-retrouver toute ton
-énergie magique.
+Drink it to
+recover your magic
+energy.
 ]]
 }
 --------------------
 
--- Potion bleue
+-- Potion bleue / Blue potion
 dialog{
   id = "_treasure.bottle_4.5",
   icon = 11,
   text = [[
-Tu as trouvé de la
-Potion Bleue !$0
+You found some 
+Blue Potion!$0
 
-Bois-la pour
-retrouver toute ta
-vie et ta magie !
+Drink it to fully
+restore both your
+health and magic!
 ]]
 }
 --------------------
 
--- Fée dans Flacon
+-- Fée dans Flacon / Fairy in Bottle
 dialog{
   id = "_treasure.bottle_4.6",
   icon = 12,
   skip = "all",
   text = [[
-Tu as capturé une
-Fée ! Elle te
-viendra en aide si
-tu es en difficulté.
-Tu peux aussi
-l'utiliser à tout
-moment pour
-récupérer des
-Coeurs.
+You captured a
+Fairy! It will
+come in aid in
+the most desperate
+times.
+You may also use
+it at any time to
+recover some
+Hearts.
 ]]
 }
 --------------------
 
--- Bottes de Pégase
+-- Bottes de Pégase / Pegasus Boots
 dialog{
   id = "_treasure.pegasus_shoes.1",
   icon = 13,
   text = [[
-Tu as trouvé les
-Bottes de Pégase !$0
+You found the
+Pegasus Boots!$0
 
-Cours, fonce et
-travers les ennemis
-coriaces !
-Appuie sur la touche
-Action pour utiliser
-les bottes.
+Run, rush through
+the toughest 
+enemies!
+Press the Action
+button tu use the
+boots.
 ]]
 }
 --------------------
 
--- Miroir Mystique
+-- Miroir Mystique / Mystic Mirror
 dialog{
   id = "_treasure.mystic_mirror.1",
   icon = 14,
   text = [[
-Tu as trouvé le
-Miroir Mystique !$0
+You found the
+Mystic Mirror!$0
 
-Ses étranges
-pouvoirs t'aideront
-sans doute dans ta
-quête...
+Its strange powers
+will surely be of
+good help in your
+quest...
 ]]
 }
 --------------------
 
--- Canne de Somaria
+-- Canne de Somaria / Cane of Somaria
 dialog{
   id = "_treasure.cane_of_somaria.1",
   icon = 15,
   next = "_warning_magic",
   text = [[
-Tu as trouvé la
-Canne de Somaria !$0
+You found the
+Cane of Somaria!$0
 
-Tu peux créer des
-blocs et t'accrocher
-à l'aide du Grappin.
+You can create
+blocks and grab
+onto them with
+the Hookshot.
 ]]
 }
 --------------------
@@ -1540,209 +1565,206 @@ dans l'écran Carte.
 }
 --------------------
 
--- Grand sac de rubis
+-- Grand sac de rubis / Big Wallet
 dialog{
   id = "_treasure.rupee_bag.2",
   icon = 52,
   text = [[
-Tu as trouvé le
-Grand Sac de Rubis !$0
+You found the
+Big Wallet!$0
 
-Il peut contenir
-jusqu'à 300 rubis !
+It can hold up
+to 300 rupees!
 ]]
 }
 --------------------
 
--- Sac de rubis géant
+-- Sac de rubis géant / Giant Wallet
 dialog{
   id = "_treasure.rupee_bag.3",
   icon = 53,
   text = [[
-Tu as trouvé le
-Sac de Rubis Géant !$0
+You found the
+Giant Wallet!$0
 
-Il peut contenir
-jusqu'à 999 rubis !
+It can hold up
+to 999 rupees!
 ]]
 }
 --------------------
 
--- Petit sac de bombes
+-- Petit sac de bombes / Small Bomb bag
 dialog{
   id = "_treasure.bomb_bag.1",
   icon = 54,
   text = [[
-Tu as trouvé le Sac
-de Bombes !$0 Il
-contient 10 Bombes.
-Assigne-les à une
-touche et fais tout
-sauter !
+You found the Bomb
+bag!$0 It holds
+10 bombs.
+Assign them to a
+key and let's
+start bombing!
 ]]
 }
 --------------------
 
--- Grand sac de bombes
+-- Grand sac de bombes / Big Bomb bag
 dialog{
   id = "_treasure.bomb_bag.2",
   icon = 55,
   text = [[
-Tu as trouvé le
-Grand Sac de
-Bombes !$0
-Il peut contenir
-jusqu'à 30 Bombes
-au lieu de 10 !
+You found the Big
+Bomb Bag!$0
+It can hold up to
+30 bombs instead
+of 10!
 ]]
 }
 --------------------
 
--- Sac de bombes géant
+-- Sac de bombes géant / Giant Bomb Bag
 dialog{
   id = "_treasure.bomb_bag.3",
   icon = 56,
   text = [[
-Tu as trouvé le Sac
-de Bombes Géant !$0
+You found the Giant
+Bomb Bag!$0
 
-Il peut contenir
-jusqu'à 99 Bombes
-au lieu de 30 !
+It can hold up to
+99 bombs instead
+of 30!
 ]]
 }
 --------------------
 
--- Grand carquois
+-- Grand carquois / Large Quiver
 dialog{
   id = "_treasure.quiver.2",
   icon = 58,
   text = [[
-Tu as trouvé le
-Grand Carquois !$0
+You found the 
+Large Quiver!$0
 
-Il peut contenir
-jusqu'à 30 Flèches
-au lieu de 10 !
+It can hold up to
+30 arrows instead
+of 10!
 ]]
 }
 --------------------
 
--- Carquois géant
+-- Carquois géant / Giant Quiver
 dialog{
   id = "_treasure.quiver.3",
   icon = 59,
   text = [[
-Tu as trouvé le
-Carquois Géant !$0
+You found the
+Giant Quiver!$0
 
-Il peut contenir
-jusqu'à 99 Flèches
-au lieu de 30 !
+It can hold up to
+99 arrows instead
+of 30!
 ]]
 }
 --------------------
 
--- Cotte de mailles bleue
+-- Cotte de mailles bleue / Blue Mail
 dialog{
   id = "_treasure.tunic.2",
   icon = 61,
   text = [[
-Tu as trouvé la
-Cotte de Mailles
-bleue !$0
-Elle te protège
-mieux contre les
-ennemis et te permet
-de résister aux
-températures les
-plus glaciales...
+You found
+the Blue Mail!$0
+This armor reduces
+the damage you take
+from enemies.
+It also protects
+you from a freezing
+environment...
 ]]
 }
 --------------------
 
--- Cotte de mailles rouge
+-- Cotte de mailles rouge / Red Mail
 dialog{
   id = "_treasure.tunic.3",
   icon = 62,
   text = [[
-Tu as trouvé la
-Cotte de Mailles
-rouge !$0 Elle te
-protège de manière
-plus efficace contre
-les ennemis !
+You found the
+Red Mail!$0 This
+provides even 
+better protection
+than the Blue
+Mail!
 ]]
 }
 --------------------
 
--- Bouclier
+-- Bouclier / Shield
 dialog{
   id = "_treasure.shield.1",
   icon = 63,
   text = [[
-Tu as trouvé le
-Bouclier !$0
-Tu peux repousser
-les attaques des
-ennemis !
+You found the
+Shield!$0
+You can defend
+yourself from
+enemy attacks!
 ]]
 }
 --------------------
 
--- Bouclier de Feu
+-- Bouclier de Feu / Fire Shield
 dialog{
   id = "_treasure.shield.2",
   icon = 64,
   text = [[
-Tu as trouvé le
-Bouclier de Feu !$0
-Tu es désormais
-protégé contre les
-attaques
-enflammées !
+You found the
+Fire Shield!$0
+You are now 
+protected from
+fire attacks!
 ]]
 }
 --------------------
 
--- Bouclier Miroir
+-- Bouclier Miroir / Mirror Shield
 dialog{
   id = "_treasure.shield.3",
   icon = 65,
   text = [[
-Tu as trouvé le
-Bouclier Miroir !$0
+You found the
+Mirror Shield!$0
 
-Tu peux désormais
-contrer les lasers !
+You can now stop
+laser attacks!
 ]]
 }
 --------------------
 
--- Epée 1 (Epée du courage)
+-- Epée 1 (Epée du courage) / First Sword
 dialog{
   id = "_treasure.sword.1",
   icon = 66,
   text = [[
-Tu as obtenu l'Epée
-du Courage !$0
+You found the
+Sword of Courage!$0
 
-Tu peux croiser le
-fer et affronter
-les ennemis !
+You can slash
+and kill your
+enemies!
 ]]
 }
 --------------------
 
--- Epée 2 (Glaive Hylien)
+-- Epée 2 (Glaive Hylien) / Hylian Blade
 dialog{
   id = "_treasure.sword.2",
   icon = 67,
   next = "_treasure.sword.2.1",
   text = [[
-$1Tu as trouvé
-le Glaive Hylien !$0$0$0
-Cette nouvelle épée
+$1You found the
+Hylian Blade!$0$0$0
+This new weapon
 ]]
 }
 --------------------
@@ -1750,164 +1772,167 @@ Cette nouvelle épée
 dialog{
   id = "_treasure.sword.2.1",
   text = [[
-est deux fois plus
-puissante que
-l'ancienne !
+is twice as
+powerful as the
+previous one!
 ]]
 }
 -----------------------
 
--- Epée 3 (Sabre du Héros)
+-- Epée 3 (Sabre du Héros) / Hero's Sword
 dialog{
   id = "_treasure.sword.3",
   icon = 68,
   next = "_treasure.sword.2.1",
   text = [[
-$1Tu as trouvé
-le Sabre du Héros !$0$0$0
-Cette nouvelle lame
+$1You found the
+Hero's Sword!$0$0$0
+This new blade
 ]]
 }
 --------------------
 
--- Epée 4 (Lame Purificatrice)
+-- Epée 4 (Lame Purificatrice) / Master Sword
 dialog{
   id = "_treasure.sword.4",
   icon = 69,
   text = [[
-Tu as trouvé la Lame
-Purificatrice !$0
-La puissance de
-cette épée ultime
-dépasse
-l'entendement...
+You found the
+Master Sword!$0
+The power of
+this ultimate
+sword is beyond
+everything...
 ]]
 }
 --------------------
 
--- Demi de magie
+-- Demi de magie / Half Magic Meter
 dialog{
   id = "_treasure.magic_bar.2",
   icon = 99,
   text = [[
-Tu as trouvé le Demi
-de Magie ! Ta barre
-magique a doublé !
+You found the Half
+Magic Meter! Your
+Magic Meter just
+doubled!
 ]]
 }
 --------------------
 
--- Carte
+-- Carte / Map
 dialog{
   id = "_treasure.map.1",
   icon = 70,
   text = [[
-Tu as trouvé
-la Carte !
+You got the Map!
 
-Utilise-la pour
-connaître le plan
-du donjon.
+You can use it
+to see your
+current position
+and the rest of
+the dungeon.
 ]]
 }
 --------------------
 
--- Boussole
+-- Boussole / Compass
 dialog{
   id = "_treasure.compass.1",
   icon = 71,
   text = [[
-Tu as trouvé
-la Boussole ! Elle
-indique ta position
-sur la Carte, les
-emplacements des
-coffres et du Boss.
-C'est ça
-le progrès !
+You found the
+Compass! 
+Now you can
+pinpoint the lair
+of the dungeon's
+evil master as well
+as the treasure 
+chests!
 ]]
 }
 --------------------
 
--- Petite clé
+-- Petite clé / Small key
 dialog{
   id = "_treasure.small_key.1",
   icon = 72,
   text = [[
-Tu as trouvé une
-Petite Clé !
+You found a Small
+Key!
 
-Tu peux ouvrir une
-porte verrouillée
-dans les environs.
+This key will open
+a locked door. You
+can use it only in
+this dungeon.
 ]]
 }
 --------------------
 
--- Grande Clé
+-- Grande Clé / Big Key
 dialog{
   id = "_treasure.big_key.1",
   icon = 73,
   text = [[
-Tu as trouvé la
-Grande Clé ! Tu peux
-désormais ouvrir les
-portes spéciales et
-découvrir de
-nouveaux trésors !
+You found the Big
+Key!
+You can now open
+special doors and
+get new treasures!
 ]]
 }
 --------------------
 
--- Clé du Maître
+-- Clé du Maître / Boss Key
 dialog{
   id = "_treasure.boss_key.1",
   icon = 74,
   text = [[
-Tu as trouvé la
-Clé du Maître ! Tu
-peux maintenant
-entrer dans le
-repaire du maître
-des lieux !
+You got the Boss
+Key! 
+Now you can get
+inside the chamber
+where the Boss lurks.
 ]]
 }
 --------------------
 
--- Fragment de Coeur
+-- Fragment de Coeur / Piece of heart
 dialog{
   id = "_treasure.piece_of_heart.1",
   icon = 79,
   text = [[
-Tu as trouvé un
-Fragment de Coeur !
+You got a Piece of
+Heart!
 ]]
 }
 --------------------
 
--- Réceptacle de Coeur
+-- Réceptacle de Coeur / Heart Container
 dialog{
   id = "_treasure.heart_container.1",
   icon = 80,
   text = [[
-Tu as trouvé un
-Réceptacle de Coeur.
+You got a Heart
+Container!
 
-Tu obtiens un Coeur
-supplémentaire !
+Your maximum life
+energy is increased
+by one heart. Your
+life energy will be
+totally filled.
 ]]
 }
 --------------------
 
--- 1 Bombe
+-- 1 Bombe / 1 Bomb
 dialog{
   id = "_treasure.bomb.1",
   icon = 82,
   next = "_treasure.bomb.1.1",
   text = [[
-Tu as trouvé une
-Bombe !$0
-Utilise une Bombe
+You found a Bomb!$0
+Use a Bomb 
 ]]
 }
 --------------------
@@ -1915,48 +1940,42 @@ Utilise une Bombe
 dialog{
   id = "_treasure.bomb.1.1",
   text = [[
-pour faire exploser
-un ennemi ou un
-obstacle.
+Use a Bomb 
+to make an enemy or an
+obstacle explode.
 ]]
 }
 -----------------------
 
--- 3 Bombes
+-- 3 Bombes / 3 Bombs
 dialog{
   id = "_treasure.bomb.2",
   icon = 82,
   next = "_treasure.bomb.1.1",
   text = [[
-Tu as trouvé 3
-Bombes !$0
-Utilise une Bombe
+You found 3 Bombs!$0
 ]]
 }
 --------------------
 
--- 8 Bombes
+-- 8 Bombes / 8 Bombs
 dialog{
   id = "_treasure.bomb.3",
   icon = 82,
   next = "_treasure.bomb.1.1",
   text = [[
-Tu as trouvé 8
-Bombes !$0
-Utilise une Bombe
+You found 8 Bombs!$0
 ]]
 }
 --------------------
 
--- 1 Flèche
+-- 1 Flèche / 1 Arrow
 dialog{
   id = "_treasure.arrow.1",
   icon = 83,
   next = "_treasure.arrow.1.1",
   text = [[
-Tu as trouvé une
-Flèche !$0
-Utilise l'Arc et les
+You found an Arrow!$0
 ]]
 }
 --------------------
@@ -1964,189 +1983,184 @@ Utilise l'Arc et les
 dialog{
   id = "_treasure.arrow.1.1",
   text = [[
-Flèches pour vaincre
-des ennemis coriaces
-à distance.
+Use the Bow and Arrows
+to defeat tough
+enemies from afar.
 ]]
 }
 -----------------------
 
--- 5 Flèches
+-- 5 Flèches / 5 Arrows
 dialog{
   id = "_treasure.arrow.2",
   icon = 83,
   next = "_treasure.arrow.1.1",
   text = [[
-Tu as trouvé 5
-Flèches !$0
-Utilise l'Arc et les
+You found 5 Arrows!$0
 ]]
 }
 --------------------
 
--- 10 Flèches
+-- 10 Flèches / 10 Arrows
 dialog{
   id = "_treasure.arrow.3",
   icon = 83,
   next = "_treasure.arrow.1.1",
   text = [[
-Tu as trouvé 10
-Flèches !$0
-Utilise l'Arc et les
+You found 10 Arrows!$0
 ]]
 }
 --------------------
 
--- 1 Coeur
+-- 1 Coeur / 1 Heart
 dialog{
   id = "_treasure.heart.1",
   icon = 84,
   text = [[
-Tu as trouvé un
-Coeur !
+You found a Heart!
 ]]
 }
 --------------------
 
--- Petite bouteille de magie
+-- Petite bouteille de magie / Magic Flask
 dialog{
   id = "_treasure.magic_flask.1",
   icon = 85,
   text = [[
-Tu as trouvé une
-petite bouteille
-d'énergie magique !
+You got a Magic
+Flask!
+Your Magic Meter
+is filled.
 ]]
 }
 --------------------
 
--- Grande bouteille de magie
+-- Grande bouteille de magie / Magic Jar
 dialog{
   id = "_treasure.magic_flask.2",
   icon = 86,
   text = [[
-Tu as trouvé une
-grande bouteille
-d'énergie magique !
+You got a Magic Jar!
+Your Magic Meter
+is greatly filled.
 ]]
 }
 --------------------
 
--- 1 rubis vert
+-- 1 rubis vert / 1 green rupee
 dialog{
   id = "_treasure.rupee.1",
   icon = 90,
   text = [[
-Tu as trouvé un
-Rubis !
+You got a Green
+Rupee!
+That's one Rupee!
 ]]
 }
 --------------------
 
--- 1 rubis bleu
+-- 1 rubis bleu / 1 blue rupee
 dialog{
   id = "_treasure.rupee.2",
   icon = 91,
   text = [[
-Tu as trouvé un
-Rubis bleu.
-Il vaut 5 Rubis !
+You got a Blue
+Rupee!
+That's five Rupees!
 ]]
 }
 --------------------
 
--- 1 rubis rouge
+-- 1 rubis rouge / 1 red rupee
 dialog{
   id = "_treasure.rupee.3",
   icon = 92,
   text = [[
-Tu as trouvé un
-Rubis rouge !
-Il vaut 20 Rubis !
+You got a Red
+Rupee!
+That's 20 Rupees!
 ]]
 }
 --------------------
 
--- 50 rubis
+-- 50 rubis / 50 rupees
 -- Remarque : clin d'oeil à Link's Awakening
 dialog{
   id = "_treasure.rupee.4",
   icon = 90,
   text = [[
-Tu as trouvé 50
-Rubis !
-Merveilleux !
+You found 50 Rupees!
+Marvelous!
 ]]
 }
 --------------------
 
--- 100 rubis
+-- 100 rubis / 100 rupees
 -- Remarque : clin d'oeil à Link's Awakening
 dialog{
   id = "_treasure.rupee.5",
   icon = 90,
   text = [[
-Tu as trouvé 100
-Rubis !
-Fantastique !
+You found 100 Rupees!
+Fantastic!
 ]]
 }
 --------------------
 
--- 300 rubis
+-- 300 rubis / 300 rupees
 -- Remarque : clin d'oeil à Link's Awakening
 dialog{
   id = "_treasure.rupee.6",
   icon = 90,
   text = [[
-Tu as trouvé 300
-Rubis !
-C'est l'extase !
+You found 300 Rupees!
+How wonderful!
 ]]
 }
 --------------------
 
--- Potion rouge
+-- Potion rouge / Red potion
 dialog{
   id = "_treasure.red_potion.1",
   icon = 96,
   text = [[
-Tu as trouvé de la
-Potion Rouge !$0
+You found some Red
+Potion!$0
 
-Bois-la pour
-retrouver toute ton
-énergie vitale.
+Drink it to
+completely restore
+your life energy.
 ]]
 }
 --------------------
 
--- Potion verte
+-- Potion verte / Green potion
 dialog{
   id = "_treasure.green_potion.1",
   icon = 97,
   text = [[
-Tu as trouvé de la
-Potion Verte !$0
+You found some Green
+Potion!$0
 
-Bois-la pour
-retrouver toute ton
-énergie magique.
+Drink it to
+completely restore
+your magic energy.
 ]]
 }
 --------------------
 
--- Potion bleue
+-- Potion bleue / Blue potion
 dialog{
   id = "_treasure.blue_potion.1",
   icon = 98,
   text = [[
-Tu as trouvé de la
-Potion Bleue !$0
+You found some Blue
+Potion!$0
 
-Bois-la pour
-retrouver toute ta
-vie et ta magie !
+Drink it to
+completely restore
+both your life and
+magic energy.
 ]]
 }
 --------------------
@@ -2162,8 +2176,8 @@ vie et ta magie !
 dialog{
   id = "_warning_magic",
   text = [[
-Mais surveille ton
-compteur magique !
+Watch your Magic
+Meter!
 ]]
 }
 -----------------------
@@ -2172,8 +2186,8 @@ compteur magique !
 dialog{
   id = "_empty_chest",
   text = [[
-Ce coffre est vide !
-Tant pis pour toi !
+This chest is empty!
+Too bad!
 ]]
 }
 -----------------------
@@ -2185,7 +2199,7 @@ dialog{
   icon = 72,
   skip = "all",
   text = [[
-C'est fermé à clé !
+The door is locked!
 ]]
 }
 --------------------
@@ -2197,9 +2211,10 @@ dialog{
   icon = 73,
   skip = "all",
   text = [[
-Il te faut la Grande
-Clé pour ouvrir
-cette serrure !
+Eh? It's locked!
+If you had the Big
+Key you might be
+able to open it!
 ]]
 }
 --------------------
@@ -2210,12 +2225,11 @@ dialog{
   icon = 74,
   skip = "all",
   text = [[
-C'est la porte du
-repère du maître du
-donjon !
-Il te faut la
-Clé du Maître
-pour l'ouvrir.
+It's the door leading
+to the dungeon's evil
+master!
+You will need the Boss
+Key to open it.
 ]]
 }
 --------------------
@@ -2226,9 +2240,9 @@ dialog{
   id = "_cannot_lift_should_cut",
   skip = "all",
   text = [[
-Il te faudrait quelque
-chose de tranchant pour
-couper ces buissons...
+You would need something
+sharp to cut through these
+bushes.
 ]]
 }
 -----------------------
@@ -2240,12 +2254,11 @@ dialog{
   id = "_cannot_lift_too_heavy",
   skip = "all",
   text = [[
-Oh là là, c'est
-bien trop lourd !
+Darn it, this is
+way too heavy!
 
-Tu n'y arriveras jamais
-rien que par la force
-de tes bras !
+You'll never make it
+with your bare hands!
 ]]
 }
 -----------------------
@@ -2256,8 +2269,8 @@ dialog{
   id = "_cannot_lift_still_too_heavy",
   skip = "all",
   text = [[
-C'est beaucoup trop
-lourd pour toi !
+It's still too heavy
+for you!
 ]]
 }
 -----------------------
@@ -2268,9 +2281,9 @@ dialog{
   id = "_shop.question",
   question = true,
   text = [[
-Prix : $v rubis.
-Acheter
-Ne pas acheter
+Price: $v rupees.
+Buy
+Don't Buy
 ]]
 }
 -----------------------
@@ -2281,8 +2294,8 @@ dialog{
   id = "_shop.not_enough_money",
   skip = "all",
   text = [[
-Désolé, mais tu n'as
-pas assez d'argent !
+Sorry, you don't
+have enough Rupees!
 ]]
 }
 -----------------------
@@ -2293,7 +2306,7 @@ pas assez d'argent !
 dialog{
   id = "_shop.amount_full",
   text = [[
-Tu es déjà au maximum !
+You are already full!
 ]]
 }
 -----------------------
@@ -2303,9 +2316,9 @@ dialog{
   id = "_crystal",
   skip = "all",
   text = [[
-C'est un interrupteur
-de cristal. Frappe-le
-avec quelque chose...
+It's a crystal switch.
+Try hitting it with
+something...
 ]]
 }
 -----------------------
@@ -2315,8 +2328,8 @@ dialog{
   id = "dungeon_1",
   skip = "current",
   text = [[
-    	Niveau 1  	 
-   Donjon de la Forêt  
+    	Level 1  	 
+   Forest Dungeon  
 ]]
 }
 -----------------------
@@ -2326,7 +2339,7 @@ dialog{
   id = "dungeon_2",
   skip = "current",
   text = [[
-    	Niveau 2  	 
+    	Level 2  	 
  	Caverne de Roc    
 ]]
 }
@@ -2337,8 +2350,8 @@ dialog{
   id = "dungeon_3",
   skip = "current",
   text = [[
-    	Niveau 3  	 
- Antre de Maître Arbror
+    	Level 3  	 
+ Master Treear's Lair
 ]]
 }
 -----------------------
@@ -2347,9 +2360,11 @@ dialog{
   id = "found_piece_of_heart.first",
   icon = 75,
   text = [[
-Collecte-en quatre
-pour former un
-nouveau Coeur.
+Collect four pieces
+total to get another
+Heart Container. More
+containers mean more
+life energy!
 ]]
 }
 --------------------
@@ -2358,9 +2373,10 @@ dialog{
   id = "found_piece_of_heart.second",
   icon = 76,
   text = [[
-Encore deux et
-tu obtiendras
-un nouveau Coeur.
+So far you've collected
+two pieces. With two
+more pieces, you will
+gain more life energy!
 ]]
 }
 --------------------
@@ -2369,9 +2385,11 @@ dialog{
   id = "found_piece_of_heart.third",
   icon = 77,
   text = [[
-Plus qu'un à trouver
-pour former un
-nouveau Coeur !
+Now you've collected
+three pieces! With 
+another piece, your
+life energy will be
+powered up!
 ]]
 }
 --------------------
@@ -2380,7 +2398,7 @@ dialog{
   id = "found_piece_of_heart.fourth",
   icon = 78,
   text = [[
-You found 4 Pieces
+You found four Pieces
 of Heart. You got
 an extra Heart!
 ]]
@@ -2407,9 +2425,10 @@ dialog{
   icon = -1,
   question = true,
   text = [[
-Que vas-tu en faire ?
-recover your health
-La conserver
+What do you want to
+do ?
+Recover your health
+Keep it
 ]]
 }
 --------------------
@@ -2419,8 +2438,8 @@ dialog{
   id = "found_fairy.no_empty_bottle",
   skip = "current",
   text = [[
-Tu n'as pas de Flacon
-vide !
+You don't have an
+empty bottle!
 ]]
 }
 -----------------------
@@ -2431,12 +2450,12 @@ dialog{
   icon = 8,
   question = true,
   text = [[
-Veux-tu mettre de
-l'eau dans ton
+Do you want to put
+some Water in your
 
-Flacon Magique ?
-Oui
-Non
+Magic Flask ?
+Yes
+No
 ]]
 }
 --------------------
@@ -2446,10 +2465,9 @@ dialog{
   id = "found_water.no_bottle",
   skip = "all",
   text = [[
-Il y a de l'eau ici,
-mais tu n'as pas
-de récipient
-pour la stocker...
+There is some Water
+here, but you lack
+a way of storing it...
 ]]
 }
 -----------------------
@@ -2460,10 +2478,11 @@ dialog{
   icon = 8,
   skip = "all",
   text = [[
-Il y a de l'eau ici,
-mais il te faut
-un Flacon vide
-pour la stocker...
+There is some Water
+here, but you need
+to empty a Magic
+Flask before getting
+it...
 ]]
 }
 --------------------
@@ -2474,12 +2493,13 @@ dialog{
   icon = 8,
   question = true,
   text = [[
-Ton Flacon Magique
-contient de l'eau.
+Your Magic Flask contains
+some Water.
 
-Que veux-tu faire ?
-Vider l'eau
-La conserver
+What do you want to
+do ?
+Pour Water
+Keep it
 ]]
 }
 --------------------
@@ -2490,12 +2510,12 @@ dialog{
   icon = 16,
   question = true,
   text = [[
-Prendre une pomme te
-permet de récupérer
-un Coeur.
-Que veux-tu faire ?
-Manger une pomme
-Ne rien faire
+Eating an apple will
+restore one heart.
+What do you want to
+do ?
+Eat an apple
+Nothing
 ]]
 }
 --------------------
@@ -2507,11 +2527,12 @@ dialog{
   question = true,
   text = [[
 Chocolate bread
-te redonne 3 Coeurs.
+restores three hearts.
 
-Que veux-tu faire ?
-En manger un
-Ne rien faire
+What do you want to
+do ?
+Eat one
+Nothing
 ]]
 }
 --------------------
@@ -2522,12 +2543,12 @@ dialog{
   icon = 18,
   question = true,
   text = [[
-Un Croissant te
-permet de retrouver
-7 Coeurs.
-Que veux-tu faire ?
-En manger un
-Ne rien faire
+A Croissant restores
+seven hearts.
+What do you want to
+do ?
+Eat one
+Nothing
 ]]
 }
 --------------------
@@ -2536,9 +2557,9 @@ dialog{
   id = "torch.need_lamp",
   skip = "all",
   text = [[
-Il y a sûrement un
-moyen d'allumer
-cette torche...
+There's surely a
+way of lighting
+this lamp...
 ]]
 }
 -----------------------
@@ -2560,33 +2581,31 @@ represented by
 the Triforce.
 Seven sages sealed
 the Triforce in the
-Golden land, le reflet
-utopique du monde. Then
+Golden Land. Then
 the centuries passed...
 ]]
 }
 -----------------------
-
 -- Intro : fresque 1
 dialog{
   id = "intro1",
   skip = "current",
   text = [[
-$2Bien des générations
-plus tard, un maléfice
-sembla menacer Hyrule.
-Un mystérieux sorcier
-nommé Agahnim repoussa
-les ténèbres. Acclamé
-par le peuple, le Roi
-le nomma à un poste
-haut placé. En réalité,
-le sorcier complotait
-contre la famille
-royale. Il tentait de
-faire revenir Ganondorf,
-roi des bandits d'un
-temps oublié.
+$2Many generations later,
+an evil spell seemed to
+threaten Hyrule.
+A mysterious sorcerer
+by the name of Agahnim
+repelled the evil. Praised
+by many, the King trusted
+him with a high-ranked
+status. The sorcerer
+was in fact planning
+against the royal
+family. He wanted to
+bring back Ganondorf,
+king of thieves from
+a forgotten time.
 ]]
 }
 -----------------------
@@ -2596,12 +2615,11 @@ dialog{
   id = "intro2",
   skip = "current",
   text = [[
-$2On raconte qu'un jeune
-homme vêtu de vert se
-lança dans une quête,
-explorant des temples
-perdus, traversant les
-plaines et les vallées.
+$2It is said that a young
+man dressed in green went
+on a quest, exploring lost
+temples, traveling through
+plains and valleys.
 ]]
 }
 -----------------------
@@ -2611,15 +2629,13 @@ dialog{
   id = "intro3",
   skip = "current",
   text = [[
-$2Finalement, celui que
-l'on nomma le Héros sut
-repousser le maléfice.
-Grâce à son courage, il
-triompha de Ganondorf,
-qui avait établi son
-siège dans une
-imposante pyramide au
-sein de la Terre d'Or.
+$2Eventually, he who was
+known as the Hero repelled
+the evil. Thanks to his
+courage, he defeated
+Ganondorf, who had built
+an imposing pyramid on the
+Golden Land.
 ]]
 }
 -----------------------
@@ -2629,48 +2645,35 @@ dialog{
   id = "intro4",
   skip = "current",
   text = [[
-$2Le jeune Héros formula
-alors le voeu
-d'emprisonner Ganondorf
-éternellement dans la
-Terre d'Or.
-Le Roi d'Hyrule, de la
-lignée des Sept Sages,
-l'enferma en invoquant
-la magie du sceau.
+$2The young Hero then
+wished for Ganondorf
+to be imprisoned forever
+in the Golden Land.
+The King of Hyrule, a
+descendant of the Seven
+Sages, cast him away by
+using the magic of the
+seal.
 ]]
 }
 -----------------------
 
--- next = intro4.4
--- [intro4.4]
--- #       |-----------------------|
--- line1 = "Il en était fini du vil"
--- line2 = "Ganondorf. Il devint"
--- line3 = "ainsi prisonnier de"
--- next = intro4.5
--- [intro4.5]
--- #       |-----------------------|
--- line1 = "la vision maléfique du"
--- line2 = "monde qu'il avait lui-"
--- line3 = "même créée."
--- Intro : fresque 5
 dialog{
   id = "intro5",
   skip = "current",
   text = [[
-$2Mais quelques années
-plus tard, le Roi
-d'Hyrule fut victime
-d'un étrange mal. Les
-médecins de tout le
-royaume tentèrent de
-trouver un remède, mais
-en vain... Le Roi
-disparut en emportant
-son pouvoir. Le sceau
-des Sept Sages était à
-nouveau fragilisé.
+$2But a few years
+later, Hyrule's King
+became ill beyond
+any chance of curing.
+Doctors from across
+the kingdom tried to
+cure him but to no
+avail... The King
+vanished and so did
+his power. The seal
+of the Seven Sages
+weakened once again.
 ]]
 }
 -----------------------
@@ -2680,23 +2683,22 @@ dialog{
   id = "intro6",
   skip = "current",
   text = [[
-$2Le Héros, suivant les
-conseils de son maître
-Sahasrahla, confia la
-Triforce à la Princesse
-Zelda, héritière des
-pouvoirs royaux.
-Zelda s'associa à huit
-mystérieux enfants pour
-séparer la Triforce en
-huit fragments et les
-dissimuler aux quatre
-coins du royaume.
-Les habitants purent
-ainsi continuer à vivre
-paisiblement.
-C'est à ce moment que
-débute notre épopée...
+$2The Hero, under the
+guidance of his master
+Sahasrahla, trusted
+the heiress of the
+royal powers, Princess
+Zelda with the
+Triforce.
+Zelda teamed with eight
+mysterious child to
+shatter the Triforce
+into eight fragments
+and to conceal them
+across the kingdom.
+Peace was restored.
+And so begins our
+journey...
 ]]
 }
 -----------------------
@@ -2705,8 +2707,8 @@ débute notre épopée...
 dialog{
   id = "outside_world.village.welcome_sign",
   text = [[
-       Bienvenue
-       à Lyriann
+       Welcome
+       to Lyriann
 ]]
 }
 -----------------------
@@ -2716,12 +2718,12 @@ dialog{
   id = "outside_world.village.monkey",
   next = "_unknown",
   text = [[
-Au secours ! Depuis
-cette nuit, tout le
-monde a peur !
-Le village a été
-encerclé par des
-monstres !
+Help! Everyone is
+scared since the
+night!
+The village has been
+surrounded by
+monsters!
 ]]
 }
 -----------------------
@@ -2732,11 +2734,10 @@ monstres !
 dialog{
   id = "outside_world.village.monkey.without_shield",
   text = [[
-Je ne sais pas ce qui
-se passe, mais si tu
-veux mon avis, tu ne
-devrais pas t'aventurer
-dehors sans protection.
+I do not know what is
+happening, but I wouldn't
+leave town without
+protection.
 ]]
 }
 -----------------------
@@ -2745,11 +2746,11 @@ dehors sans protection.
 dialog{
   id = "outside_world.village.monkey.with_shield",
   text = [[
-Je ne sais pas ce qui
-se passe, mais si tu
-veux mon avis, ton
-Bouclier ne sera pas de
-trop... Sois prudent !
+I do not know what is
+happening, but you are
+right to at least have
+a Shield with you...
+Be cautious!
 ]]
 }
 -----------------------
@@ -2759,18 +2760,19 @@ dialog{
   id = "outside_world.village.grand_son_npc",
   skip = "current",
   text = [[
-Si tu ne sais plus quoi
-faire à un moment de
-ton aventure, tu
-devrais aller voir
-Mamie Lyly, elle adore
-donner des conseils et
-guider les aventuriers.
-Elle habite à côté de
-la Maison des Rubis.
-Mais je n'en sais pas
-plus, je ne suis qu'un
-môme !
+If you do not know
+what to do at one
+point in your journey,
+you should go see
+Grandma Lyly, she
+loves giving advice
+and guiding
+adventurers.
+She lives next to
+the Rupees' House.
+But I don't know
+much more, I'm just
+a kid!
 ]]
 }
 -----------------------
@@ -2780,22 +2782,20 @@ dialog{
   id = "outside_world.village.chignon_woman",
   skip = "all",
   text = [[
-Quand l'icône bleue
-apparaît, elle indique
-ce que tu peux faire en
-appuyant sur la touche
-Action (espace).
-Selon ce que tu es en
-train d'examiner, tu
-peux faire différentes
-actions comme regarder,
-parler avec quelqu'un,
-lire une pancarte,
-soulever un vase...
-Observe bien l'icône
-bleue pour savoir quand
-tu peux interagir avec
-ton environnement !
+When the blue icon
+appears, it tells what
+you can do by pressing
+the Action key (space).
+Depending on what you
+are examining, it will
+trigger several actions
+such as looking, talking,
+reading a sign, lifting
+a vase...
+Keep an eye on the icon
+to know when you can 
+interact with your
+environment!
 ]]
 }
 -----------------------
@@ -2804,10 +2804,10 @@ dialog{
   id = "outside_world.village.chignon_woman_dungeons",
   skip = "all",
   text = [[
-On dit que chaque
-donjon du monde cache
-un Fragment de Coeur...
-Amusant, non ?
+It is said that every
+dungeon hides a Piece
+of Heart...
+Funny, isn't it ?
 ]]
 }
 -----------------------
@@ -2817,12 +2817,12 @@ dialog{
   id = "outside_world.village.cliff_man_npc",
   skip = "all",
   text = [[
-Sais-tu que tu peux
-sauter de certaines
-falaises ? Ca pourrait
-te permettre d'attein-
-dre des endroits
-difficiles d'accès.
+Did you know that
+you can jump off
+certain cliffs ?
+It could allow you
+to reach particular
+spots.
 ]]
 }
 -----------------------
@@ -2832,17 +2832,17 @@ dialog{
   id = "outside_world.village.hat_man_npc",
   skip = "all",
   text = [[
-Si tu manques d'argent,
-je ne te conseille pas
-d'aller à la Maison des
-Rubis, car tu risques
-de dilapider toutes tes
-économies !
-Quoique, tu as l'air
-plus doué que moi.
+If you are in need of
+rupees, I recommend not
+going to the Rupees'
+House, as you might just
+end up needing even more
+rupees!
+Although, you do seem
+smarter than me.
 
-Peut-être que tu sauras
-mieux t'en sortir !
+Perhaps you'll do
+better than me!
 ]]
 }
 -----------------------
@@ -2852,12 +2852,14 @@ mieux t'en sortir !
 dialog{
   id = "outside_world.village.hat_man_npc_waterfall",
   skip = "all",
-  text = [[
-Il paraît qu'un trésor
-est caché sous la
-cascade derrière
-l'ancien château.
-Tu y crois, toi ?
+  text = [[ 
+There is supposed
+to be a treasure 
+hidden by the
+waterfall behind
+the ancient castle.
+Do you believe it's
+true ?
 ]]
 }
 -----------------------
@@ -2866,9 +2868,9 @@ Tu y crois, toi ?
 dialog{
   id = "outside_world.village.rupee_house_sign",
   text = [[
-  - Maison des Rubis -
-Gagnez de l'argent
-tout en vous amusant !
+  - Rupees' House -
+Earn some Rupees
+while having fun!
 ]]
 }
 -----------------------
@@ -2880,11 +2882,11 @@ tout en vous amusant !
 dialog{
   id = "outside_world.village.waterfall_sign",
   text = [[
-Servez-vous de notre
-eau fraîche de la
-cascade !
-  Office de Tourisme
-      de Lyriann
+Please feel free to
+take our fresh spring
+water home with you.
+      Lyriann
+  Tourist Center
 ]]
 }
 -----------------------
@@ -2894,7 +2896,7 @@ dialog{
   id = "outside_world.village.cake_shop_sign",
   text = [[
 
-       Pâtisserie
+       Bakery
 ]]
 }
 -----------------------
@@ -2904,7 +2906,7 @@ dialog{
   id = "outside_world.village.shop_sign",
   text = [[
 
-        Boutique
+        Shop
 ]]
 }
 -----------------------
@@ -2914,9 +2916,8 @@ dialog{
   id = "outside_world.village.letter_box",
   skip = "all",
   text = [[
-Ca ne se fait pas de
-fouiller dans la boîte
-aux lettres des gens !
+Don't start looking
+into what's not yours!
 ]]
 }
 -----------------------
@@ -2927,9 +2928,9 @@ dialog{
   skip = "all",
   next = "outside_world.village.tree_woman.long_text",
   text = [[
-Tu es perdu dans les
-commandes ? Laisse-moi
-t'expliquer. Les icônes
+You're lost with the
+HUD ? Let me explain.
+The icons above to the
 ]]
 }
 -----------------------
@@ -2940,48 +2941,41 @@ dialog{
   next = "outside_world.village.tree_woman.thank_you",
   next2 = "outside_world.village.tree_woman.again",
   text = [[
-en haut à gauche sont
-disposées comme les
-touches du clavier.
-La touche C correspond
-à l'icône verte, elle
-te permet de donner un
-coup d'épée. Mais
-lorsque le jeu est en
-pause, l'icône change
-et t'indique que la
-touche C sert à
-sauvegarder !
-Et quand tu discutes
-avec quelqu'un, elle te
-permet d'interrompre la
-conversation. Bref,
-observe bien l'icône
-verte pour savoir ce
-que fait la touche C.
-Les autres icônes sont
-les touches autour
-de C : l'icône orange
-(touche D) sert à
-mettre le jeu en pause,
-l'icône bleue (espace)
-est la touche Action,
-et les deux icônes
-grises représentent les
-objets attribués aux
-touches X et V. Donc
-regarde toujours ce qui
-est indiqué sur les
-icônes. N'oublie pas
-que tu peux aussi
-personnaliser tes
-commandes dans l'écran
-des options, et que tu
-peux même jouer avec
-une manette !
-Tu as tout compris ?
-Oui
-Non, pas du tout !
+left are aligned like
+the keys on a keyboard
+The C key is the green
+icon, you use the sword
+by pressing it. But when
+the game is paused, the
+icon changes and tells
+you that the C key is
+used to save your game!
+And when you're talking
+to someone, it allows
+you to end a
+conversation. Just keep
+an eye on the green icon 
+to know what the C key 
+does.
+The other icons are
+the keys surrounding
+the C key: the orange
+icon (D key) pauses the
+game, the blue icon
+(spacebar) is the Action
+button, and the two grey
+icons are the objects
+assigned to the X and
+V keys. So always keep
+an eye on what the icons
+say. Don't forget that
+you can customize the
+controls in the options
+screen, and that you can
+even play with a gamepad!
+Did you get it all ?
+Yes
+No, I did not
 ]]
 }
 -----------------------
@@ -2990,9 +2984,10 @@ dialog{
   id = "outside_world.village.tree_woman.again",
   next = "outside_world.village.tree_woman.long_text",
   text = [[
-Bon, je te réexplique,
-mais écoute bien cette
-fois-ci. Les icônes
+Well, let me explain
+once again, but listen
+carefully this time.
+The icons above to the
 ]]
 }
 -----------------------
@@ -3000,12 +2995,12 @@ fois-ci. Les icônes
 dialog{
   id = "outside_world.village.tree_woman.thank_you",
   text = [[
-Merci de m'avoir
-écoutée jusqu'au bout !
-Je t'en suis très
-reconnaissante ! Tiens,
-tu as bien mérité
-ce petit cadeau.
+Thank you for listening
+to the whole
+explanation!
+I am really thankful!
+Here, you deserve this
+little gift.
 ]]
 }
 -----------------------
@@ -6266,7 +6261,7 @@ dialog{
   id = "dungeon_9.3f_door_b_hint_0",
   skip = "all",
   text = [[
-A droite.
+To the right.
 ]]
 }
 -----------------------
@@ -6275,7 +6270,7 @@ dialog{
   id = "dungeon_9.3f_door_b_hint_2",
   skip = "all",
   text = [[
-A gauche.
+To the left.
 ]]
 }
 -----------------------
@@ -6284,7 +6279,7 @@ dialog{
   id = "dungeon_9.3f_door_b_hint_3",
   skip = "all",
   text = [[
-En bas.
+Below.
 ]]
 }
 -----------------------
@@ -6386,8 +6381,8 @@ dialog{
   id = "dungeon_10.welcome",
   skip = "current",
   text = [[
-     Niveau secret     
-     Tour des Cieux    
+     Secret level     
+     Tower of the Gods
 ]]
 }
 -----------------------
@@ -6395,10 +6390,10 @@ dialog{
 dialog{
   id = "credits_1",
   text = [[
-$1        Crédits$0
+$1        Credits$0
 
 
-    Programmation :
+    Programming:
 Christopho$0
 ]]
 }
@@ -6407,7 +6402,7 @@ Christopho$0
 dialog{
   id = "credits_2",
   text = [[
-$1   Maps et énigmes :
+$1   Maps and puzzles:
 
 
 Christopho$0
@@ -6423,13 +6418,13 @@ Mymy$0
 dialog{
   id = "credits_3",
   text = [[
-$1      Graphismes :     
+$1      Graphical assets:     
 Newlink$0
 
 Neovyse
 @PyroNet
 Djipi$0
-$1       Musiques :      
+$1       Music:      
 Marine
 Metallizer$0
 ]]
@@ -6439,10 +6434,10 @@ Metallizer$0
 dialog{
   id = "credits_4",
   text = [[
-$1       Scénario :      
+$1       Story:      
 Guillaume F.
 Christopho$0
-$1       Tests :$0      
+$1       Tests:$0      
 
 
 Thyb
@@ -6455,8 +6450,7 @@ BenObiWan$0
 dialog{
   id = "credits_6",
   text = [[
-$1     Remerciements     
-       spéciaux :$0      
+$1     Special thanks to:$0      
 
 19oj19
 Yohann
@@ -6467,7 +6461,7 @@ MultiSync_XV17$0
 Nintendo$0
 
 
-Merci d'avoir joué !$0
+Thanks for playing!$0
 
 
 
@@ -6476,4 +6470,3 @@ Merci d'avoir joué !$0
 ]]
 }
 -----------------------
-

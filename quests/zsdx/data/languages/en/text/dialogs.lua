@@ -1,15 +1,33 @@
+-- Zelda Mystery of Solarus DX:
 -- English dialogs
--- Contributors
--- * AleX_XelA
--- * Christopho
--- * JeFF
+
+-- ****** Contributors ******
 -- Please add your name to this list if you helped.
 -- These names will appear in the English localization credits
 -- at the end of the game.
+-- * AleX_XelA
+-- * Christopho
+-- * JeFF
 
--- This is a Lua dialog file for solarus 0.9.1 or greater.
--- This dialog file was converted from the 0.9.0 ini syntax using the script
--- tools/data_files_conversion/dialogs_0.9.0_to_0.9.1.lua.
+-- ****** Please respect the limit of each line! ******
+-- 23 chars for normal lines,
+-- 20 chars for dialogs with an icon or lines that are answers to a question,
+-- 17 chars for lines with both an icon and an answer.
+-- Each dialog ends with a comment with dashes indicating the maximum line size.
+-- Please don't exceed the maximum size of lines,
+-- and don't break lines too early either.
+
+-- ****** Typo warning! ******
+-- Remember that ponctuation characters like ! ? : ; are preceeded by a space
+-- character in French and NOT in English.
+
+-- ****** More documentation ******
+-- If you have a doubt, please refer to the doc:
+-- http://www.solarus-engine.org/doc/dialog_syntax.html
+-- or just ask.
+
+-- Thanks for your contribution!
+
 
 -- Plume / Feather
 dialog{

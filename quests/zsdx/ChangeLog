@@ -29,6 +29,7 @@ zsdx-1.4 (under development)
 * Dungeon 5: move the feather puzzle to reduce the distance of blocks
 * Dungeon 7: save the switches code
 * Dungeon 9: a miniboss door was strangely made closed again
+* Dungeon 10: make some enemies give bombs
 * Fix a typo for blue potions in the inventory
 * Fix the name of dungeon 6 in the minimap
 * Dungeon 9 boss: make a different sound when immobilized

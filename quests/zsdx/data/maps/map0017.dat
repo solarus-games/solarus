@@ -307,7 +307,7 @@
 9	0	800	893	seroom_block_2	-1	entities/block	1	0	0
 7	0	752	917	seroom_enemy_2	2	tentacle	0	-1	_random	1	-1
 7	0	824	869	seroom_enemy_1	2	tentacle	0	-1	_random	1	-1
-7	0	784	941	seroom_enemy_3	2	tentacle	0	-1	_random	1	-1
+7	0	784	941	seroom_enemy_3	2	tentacle	0	-1	bomb	1	-1
 4	0	608	965	0	arrow	1	-1
 4	0	584	965	0	arrow	1	-1
 15	0	864	824	16	144	1
@@ -737,7 +737,7 @@
 5	1	784	512	chest	0	_none	1	224
 7	1	656	677	enemy_group1_1	2	skeletor	0	-1	_random	1	-1
 7	1	432	613	enemy_group1_3	2	skeletor	0	-1	_random	1	-1
-7	1	584	717	enemy_group1_2	2	skeletor	0	-1	_random	1	-1
+7	1	584	717	enemy_group1_2	2	skeletor	0	-1	bomb	1	-1
 9	1	288	693	block_14	-1	entities/block	1	0	0
 9	1	304	693	block_15	1	entities/block	1	0	2
 7	1	952	317	neroom_enemy_1	2	tentacle	0	-1	_random	1	-1

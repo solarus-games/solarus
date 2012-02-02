@@ -259,7 +259,7 @@
 7	0	232	589	enemy_group2_3	3	skeletor	0	-1	_random	1	-1
 7	0	880	453	enemy_group2_4	3	lizalfos	0	-1	_random	1	-1
 7	0	792	525	enemy_group2_5	3	lizalfos	0	-1	_random	1	-1
-7	0	888	629	enemy_group2_6	3	lizalfos	0	-1	_random	1	-1
+7	0	888	629	enemy_group2_6	3	lizalfos	0	-1	bomb	1	-1
 7	0	808	693	enemy_group2_7	3	lizalfos	0	-1	_random	1	-1
 7	0	880	797	enemy_group2_8	3	lizalfos	0	-1	_random	1	-1
 7	0	232	477	enemy_group2_9	3	lizalfos	0	-1	_random	1	-1

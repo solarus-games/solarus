@@ -59,14 +59,22 @@ void StringResource::initialize() {
     }
  
     // get the key
-    std::string key = line.substr(0, line.find_first_of(" \t"));
+    size_t index = line.find_first_of(" \t");
+    Debug::check_assertion(index != std::string::npos,
+	StringConcat() << "strings.dat, line " << i
+	<< ": invalid line (expected a key and a value)");
+    std::string key = line.substr(0, index);
 
     // get the value
-    size_t index = line.find_last_of("\t");
-    Debug::check_assertion(index != std::string::npos && index + 1 < line.size(),
+    do {
+      index++;
+    } while (index < line.size()
+	&& (line[index] == ' ' || line[index] == '\t'));
+
+    Debug::check_assertion(index < line.size(),
       StringConcat() << "strings.dat, line " << i
-      << ": cannot read string value for key '" << key << "'");
-    strings[key] = line.substr(index + 1);
+      << ": the value of key '" << key << "' is missing");
+    strings[key] = line.substr(index);
   }
 
   FileTools::data_file_close(file);

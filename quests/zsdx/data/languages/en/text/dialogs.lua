@@ -17,6 +17,9 @@
 -- Each dialog ends with a comment with dashes indicating the maximum line size.
 -- Please don't exceed the maximum size of lines,
 -- and don't break lines too early either.
+-- Don't try to reproduce the exact same lines: it's normal for dialogs to be
+-- shorter or longer than in the language you are translating from.
+-- It's also normal for lines to end on different words.
 
 -- ****** Typo warning! ******
 -- Remember that ponctuation characters like ! ? : ; are preceeded by a space
@@ -1356,11 +1359,11 @@ dialog{
   id = "_treasure.bone_key.1",
   icon = 20,
   text = [[
-You found the
-Bone Key!$0
+You found the Bone
+Key!$0
 
-But what could it
-be used for?
+But what could it be
+used for?
 ]]
 }
 --------------------
@@ -1370,11 +1373,11 @@ dialog{
   id = "_treasure.clay_key.1",
   icon = 21,
   text = [[
-You found the
-Clay Key!$0
+You found the Clay
+Key!$0
 
-Now you can open
-the village cave!
+Now you can open the
+village cave!
 ]]
 }
 --------------------

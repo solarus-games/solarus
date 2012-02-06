@@ -2448,7 +2448,7 @@ dialog{
   skip = "current",
   text = [[
 You don't have an
-empty bottle!
+empty Flask!
 ]]
 }
 -----------------------
@@ -4091,7 +4091,7 @@ dialog{
 Oh, thank you, how nice
 of you! I'm sorry I
 only have this empty
-bottle... It's a small
+Flask... It's a small
 reward but I'm sure you
 will make good use of
 it.
@@ -4431,7 +4431,7 @@ t'aide à nouveau.
 dialog{
   id = "lyriann_cave.tom.leaving",
   text = [[
-Hé ! Attends !
+Hey! Wait!
 ]]
 }
 -----------------------
@@ -4497,7 +4497,7 @@ de ton aventure.
 dialog{
   id = "outside_world.tom_dungeon_1_entrance.hey",
   text = [[
-Hé !
+Hey!
 ]]
 }
 -----------------------
@@ -4505,7 +4505,7 @@ Hé !
 dialog{
   id = "outside_world.tom_dungeon_1_entrance.need_help",
   text = [[
-Tu as besoin d'aide ?
+Do you need any help?
 ]]
 }
 -----------------------
@@ -4513,16 +4513,20 @@ Tu as besoin d'aide ?
 dialog{
   id = "outside_world.tom_dungeon_1_entrance.let_me_see",
   text = [[
-Hmmm, je parie qu'une
-échelle est cachée là.
-Voyons cela...
+Hmmm, I bet there is a
+ladder hidden here.
+Let's see...
 ]]
 }
 -----------------------
+-- Need more context on how it is débloqué
+-- to translate it properly
 
 dialog{
   id = "outside_world.tom_dungeon_1_entrance.open",
   text = [[
+I think I can move it.
+$0Voila!
 Je crois que je vais
 pouvoir la débloquer.
 $0Et voilà !
@@ -4591,7 +4595,7 @@ le Royaume à la paix et
 dialog{
   id = "outside_world.rock_key_required",
   text = [[
-C'est fermé à clé !
+It's locked!
 ]]
 }
 -----------------------
@@ -4694,7 +4698,7 @@ dialog{
   id = "mountain_cave.mountain_sign",
   skip = "all",
   text = [[
-Montagne des Terreurs
+Mount Terror
         --->
 ]]
 }
@@ -4737,7 +4741,7 @@ dialog{
   skip = "all",
   text = [[
 
-     Ancien Château
+     Ancient Castle
          <---
 ]]
 }
@@ -4810,9 +4814,9 @@ dialog{
   id = "billy_cave.without_golden_bars",
   question = true,
   text = [[
-Que me proposes-tu ?
-Un croissant
-Une tarte aux pommes
+What will you give me?
+A croissant
+An apple pie
 ]]
 }
 -----------------------
@@ -4821,9 +4825,9 @@ dialog{
   id = "billy_cave.with_golden_bars",
   question = true,
   text = [[
-Que me proposes-tu ?
-Des lingots d'or
-Une tarte aux pommes
+What will you give me?
+Golden bars
+An apple pie
 ]]
 }
 -----------------------
@@ -4831,8 +4835,8 @@ Une tarte aux pommes
 dialog{
   id = "billy_cave.give_croissant_without",
   text = [[
-Tu n'as même pas de
-croissant ! Voleur !
+You don't even have a
+croissant! Thief!
 ]]
 }
 -----------------------
@@ -4840,8 +4844,8 @@ croissant ! Voleur !
 dialog{
   id = "billy_cave.give_croissant",
   text = [[
-Un croissant ?
-Tu te moques de moi ?
+A croissant?
+Are you kidding me?
 ]]
 }
 -----------------------
@@ -4849,8 +4853,8 @@ Tu te moques de moi ?
 dialog{
   id = "billy_cave.give_apple_pie_without",
   text = [[
-Pfff ! Tu n'as même pas
-de tarte aux pommes !
+Pfft! You don't even
+have any apple pies!
 ]]
 }
 -----------------------
@@ -4868,12 +4872,12 @@ est loin d'être
 dialog{
   id = "billy_cave.give_golden_bars",
   text = [[
-Quoi ? Tu as des
-lingots d'or ?$1...
+What? You have golden
+bars?$1...
 $0...$0....................
-$3Marché conclu !
-Tiens, voilà ta stupide
-fleur...
+$3Deal!
+Here, take your stupid
+flower...
 ]]
 }
 -----------------------
@@ -4893,12 +4897,11 @@ dialog{
   id = "outside_world.surprise_wall_guy.give_me_apple_pie",
   question = true,
   text = [[
-Donne-moi cette tarte
-aux pommes !
+Give me that apple pie!
 
-Alors ?
+Well?
 OK
-Pas question
+No way
 ]]
 }
 -----------------------
@@ -4906,10 +4909,10 @@ Pas question
 dialog{
   id = "outside_world.surprise_wall_guy.open",
   text = [[
-Des gens croient qu'il
-y a un trésor derrière
-ce mur, mais je n'en ai
-jamais trouvé !
+Some people believe
+there is treasure
+behind this wall, but
+I've never found any.
 ]]
 }
 -----------------------
@@ -4927,7 +4930,7 @@ je mange la tarte.
 dialog{
   id = "outside_world.surprise_wall_closed",
   text = [[
-C'est fermé !
+It's closed!
 ]]
 }
 -----------------------
@@ -4936,7 +4939,7 @@ dialog{
   id = "surprise_wall.direction_0",
   text = [[
 
-        À droite      
+	Right
 ]]
 }
 -----------------------
@@ -4945,7 +4948,7 @@ dialog{
   id = "surprise_wall.direction_1",
   text = [[
 
-        En haut        
+	Up
 ]]
 }
 -----------------------
@@ -4954,7 +4957,7 @@ dialog{
   id = "surprise_wall.direction_2",
   text = [[
 
-        À gauche       
+	Left
 ]]
 }
 -----------------------
@@ -4963,7 +4966,7 @@ dialog{
   id = "surprise_wall.direction_3",
   text = [[
 
-         En bas        
+	 Down
 ]]
 }
 -----------------------
@@ -5040,8 +5043,8 @@ dialog{
   skip = "current",
   next = "chests_game_cave.play_question",
   text = [[
-Salut ! Une partie
-coûte 30 Rubis.
+Hi! One game costs 30
+Rupees.
 ]]
 }
 -----------------------
@@ -5050,9 +5053,10 @@ dialog{
   id = "chests_game_cave.play_question",
   question = true,
   text = [[
-Tu veux jouer ?
-Oui
-Non
+
+Do you want to play?
+Yes
+No
 ]]
 }
 -----------------------
@@ -5061,8 +5065,8 @@ dialog{
   id = "chests_game_cave.not_enough_money",
   skip = "all",
   text = [[
-Tu n'as pas assez de
-Rubis !
+You don't have enough
+Rupees!
 ]]
 }
 -----------------------
@@ -5094,14 +5098,16 @@ de Coeur.
 ]]
 }
 -----------------------
+-- Might be able to translate this a little better
 
 dialog{
   id = "chests_game_cave.start_game",
   skip = "all",
   text = [[
-Merci ! Tu peux ouvrir
-l'un des coffres. Son
-Son contenu est à toi.
+Thanks! You can open
+one of the chests.
+Whatever is inside is
+all yours.
 ]]
 }
 -----------------------
@@ -5110,7 +5116,7 @@ dialog{
   id = "chests_game_cave.already_playing",
   skip = "all",
   text = [[
-Choisis un coffre !
+Pick a chest!
 ]]
 }
 -----------------------
@@ -5202,8 +5208,8 @@ spécial.
 dialog{
   id = "junk_shop.piece_of_heart",
   text = [[
-Un authentique Fragment
-de Coeur.
+An authentic Heart
+Fragment.
 ]]
 }
 -----------------------
@@ -5211,9 +5217,8 @@ de Coeur.
 dialog{
   id = "junk_shop.pain_au_chocolat",
   text = [[
-Un Pain au Chocolat
-pour récupérer des
-Coeurs.
+A Chocolate Bread for
+recovering Hearts.
 ]]
 }
 -----------------------
@@ -5473,9 +5478,9 @@ vie et magie !
 dialog{
   id = "potion_shop.no_empty_bottle",
   text = [[
-Sans Flacon vide, tu ne
-peux pas acheter cette
-potion ! Héhéhé...
+You can't buy this
+potion without an empty
+Flask! Hehehe...
 ]]
 }
 -----------------------
@@ -5483,9 +5488,9 @@ potion ! Héhéhé...
 dialog{
   id = "potion_shop.red_potion",
   text = [[
-La potion rouge :
-restaure la vie !
-Héhéhé...
+Red potion:
+restores life!
+Hehehe...
 ]]
 }
 -----------------------
@@ -5493,9 +5498,9 @@ Héhéhé...
 dialog{
   id = "potion_shop.green_potion",
   text = [[
-La potion verte :
-restaure ta barre de
-magie ! Héhéhé...
+Green potion:
+restores your magic
+bar! Hehehe...
 ]]
 }
 -----------------------
@@ -5503,9 +5508,9 @@ magie ! Héhéhé...
 dialog{
   id = "potion_shop.blue_potion",
   text = [[
-La potion bleue :
-restaure vie et magie !
-Héhéhé...
+Blue potion:
+restores life and
+magic! Hehehe...
 ]]
 }
 -----------------------

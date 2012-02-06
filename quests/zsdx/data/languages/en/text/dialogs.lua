@@ -3274,8 +3274,8 @@ Welcome to the
 brand-new slot
 machine!
 Put in 5 or 20 rupees
-and try your best
-to align three of the
+and try your best to
+align three of the same
 same symbol to win
 several times what
 you put in!
@@ -3429,18 +3429,18 @@ dialog{
   id = "rupee_house.game_3.intro",
   question = true,
   text = [[
-Le but du jeu est de
-traverser le labyrinthe
-dans un temps limité
-puis de pousser les
-blocs pour te frayer un
-chemin. Cela ne te
-coûtera que 10 rubis
-et il y a un Fragment
-de Coeur à gagner !
-Alors, tu veux jouer ?
-Oui
-Non
+The goal of the game
+is to get through the
+maze within the time
+limit while pushing
+blocks to clear a path.
+It only costs 10 rupees
+and you can win a Heart
+Fragment!
+So, do you want to
+play?
+Yes
+No
 ]]
 }
 -----------------------

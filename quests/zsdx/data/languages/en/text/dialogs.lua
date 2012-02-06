@@ -8,6 +8,7 @@
 -- * AleX_XelA
 -- * Christopho
 -- * JeFF
+-- * rypervenche
 
 -- ****** Please respect the limit of each line! ******
 -- 23 chars for normal lines,
@@ -1355,11 +1356,11 @@ dialog{
   id = "_treasure.bone_key.1",
   icon = 20,
   text = [[
-Tu as trouvé la
-Clé d'Os !$0
+You found the
+Bone Key!$0
 
-Mais à quoi peut-
-elle bien servir ?
+But what could it
+be used for?
 ]]
 }
 --------------------
@@ -1369,12 +1370,11 @@ dialog{
   id = "_treasure.clay_key.1",
   icon = 21,
   text = [[
-Tu as trouvé la
-Clé de Terre !$0
+You found the
+Clay Key!$0
 
-Tu peux maintenant
-ouvrir la grotte du
-village !
+Now you can open
+the village cave!
 ]]
 }
 --------------------

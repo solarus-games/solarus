@@ -4347,32 +4347,35 @@ dialog{
   question = true,
   next2 = "lyriann_cave.tom.refuse_help",
   text = [[
-Jeune explorateur,
-accepte mon aide. J'ai
-échoué, je n'ai pas su
-protéger notre Roi.
-Laisse-moi une occasion
-de me racheter !
-Acceptes-tu mon aide ?
-Oui
-Non
+Young explorer, accept
+my help. I have
+failed, I wasn't able
+to protect our King.
+Give me a chance to
+make it up!
+Will you accept my
+help?
+Yes
+No
 ]]
 }
 -----------------------
 
 -- Grotte de Tom : quand on accepte son aide
+-- I'm not extremely happy with this translation
+-- "If you manage...impressed!" Too word for word.
 dialog{
   id = "lyriann_cave.tom.accept_help",
   text = [[
-Merci. Je peux te
-prêter ceci, j'espère
-que cela te sera utile.
-N'oublie pas de me le
-rendre quand tu auras
-terminé.
-Si tu obtiens le
-Réceptacle de Coeur,
-je serai impressionné !
+Thank you. I can lend
+you this, I hope it
+will be useful. Don't
+forget to return it to
+me once you have
+finished.
+If you manage to obtain
+the Heart Container, I
+will be very impressed!
 ]]
 }
 -----------------------
@@ -4381,7 +4384,7 @@ je serai impressionné !
 dialog{
   id = "lyriann_cave.tom.refuse_help",
   text = [[
-Bien, comme tu voudras.
+Fine, as you wish.
 ]]
 }
 -----------------------
